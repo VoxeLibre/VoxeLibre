@@ -48,29 +48,6 @@ if minetest.get_modpath("screwdriver") then
 	end
 end
 
----Checks the direction (param2) of a ladder and a trapdoor and determine if they are
----facing the same direction.
----
----@param ladder integer The param2 value of the ladder.
----@param trapdoor integer The param2 value of the trapdoor.
----@return boolean If the ladder and trapdoor are in the same direction.
-function check_direction(ladder, trapdoor)
-	local convert_table = {};
-	convert_table[2] = { 1, 23 }
-	convert_table[3] = { 3, 21 }
-	convert_table[4] = { 0, 20 }
-	convert_table[5] = { 2, 22 }
-
-	local conversion = convert_table[ladder];
-	if conversion == nil then
-		return false
-	elseif conversion[1] == trapdoor or conversion[2] == trapdoor then
-		return true
-	end
-
-	return false
-end
-
 function mcl_doors:register_trapdoor(name, def)
 	local groups = table.copy(def.groups)
 	if groups == nil then
@@ -102,7 +79,7 @@ function mcl_doors:register_trapdoor(name, def)
 			-- Checking if there is something underneath the trapdoor
 			if bottom_node then
 				local is_ladder = minetest.get_item_group(bottom_node.name, "ladder")
-				local same_direction = check_direction(bottom_node.param2, me.param2)
+				local same_direction = mcl_core.check_direction(bottom_node.param2, me.param2)
 				if is_ladder > 0 and same_direction then
 					name_end = "_ladder"
 				end
@@ -124,20 +101,22 @@ function mcl_doors:register_trapdoor(name, def)
 	longdesc = def._doc_items_longdesc
 	if not longdesc then
 		if def.only_redstone_can_open then
-			longdesc = S("Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.")
+			longdesc = S(
+				"Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.")
 		else
-			longdesc = S("Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.")
+			longdesc = S(
+				"Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.")
 		end
 	end
 	usagehelp = def._doc_items_usagehelp
 	if not usagehelp and not def.only_redstone_can_open then
 		usagehelp = S("To open or close this trapdoor, rightclick it or send a redstone signal to it.")
 	end
-    if def.only_redstone_can_open then
-        tt_help = S("Openable by redstone power")
-    else
-        tt_help = S("Openable by players and redstone power")
-    end
+	if def.only_redstone_can_open then
+		tt_help = S("Openable by redstone power")
+	else
+		tt_help = S("Openable by players and redstone power")
+	end
 
 	-- Closed trapdoor
 
@@ -163,7 +142,7 @@ function mcl_doors:register_trapdoor(name, def)
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
 		tiles = tiles_closed,
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		use_texture_alpha = "clip",
 		inventory_image = def.inventory_image,
 		wield_image = def.wield_image,
 		is_ground_content = false,
@@ -178,13 +157,15 @@ function mcl_doors:register_trapdoor(name, def)
 		node_box = {
 			type = "fixed",
 			fixed = {
-			{-8/16, -8/16, -8/16, 8/16, -5/16, 8/16},},
+				{ -8 / 16, -8 / 16, -8 / 16, 8 / 16, -5 / 16, 8 / 16 }, },
 		},
-		mesecons = {effector = {
-			action_on = (function(pos, node)
-				punch(pos)
-			end),
-		}},
+		mesecons = {
+			effector = {
+				action_on = (function(pos, node)
+					punch(pos)
+				end),
+			}
+		},
 		on_place = function(itemstack, placer, pointed_thing)
 			local p0 = pointed_thing.under
 			local p1 = pointed_thing.above
@@ -199,7 +180,7 @@ function mcl_doors:register_trapdoor(name, def)
 
 			--local origname = itemstack:get_name()
 			if p0.y - 1 == p1.y or (fpos > 0 and fpos < 0.5)
-					or (fpos < -0.5 and fpos > -0.999999999) then
+				or (fpos < -0.5 and fpos > -0.999999999) then
 				param2 = param2 + 20
 				if param2 == 21 then
 					param2 = 23
@@ -229,10 +210,10 @@ function mcl_doors:register_trapdoor(name, def)
 	groups_open.trapdoor = 2
 	groups_open.not_in_creative_inventory = 1
 	-- Non-climbable opened
-	minetest.register_node(name.."_open", {
+	minetest.register_node(name .. "_open", {
 		drawtype = "nodebox",
 		tiles = tiles_open,
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		use_texture_alpha = "clip",
 		is_ground_content = false,
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -245,22 +226,24 @@ function mcl_doors:register_trapdoor(name, def)
 		drop = name,
 		node_box = {
 			type = "fixed",
-			fixed = {-0.5, -0.5, 5/16, 0.5, 0.5, 0.5}
+			fixed = { -0.5, -0.5, 5 / 16, 0.5, 0.5, 0.5 }
 		},
 		on_rightclick = on_rightclick,
-		mesecons = {effector = {
-			action_off = (function(pos, node)
-				punch(pos)
-			end),
-		}},
+		mesecons = {
+			effector = {
+				action_off = (function(pos, node)
+					punch(pos)
+				end),
+			}
+		},
 		on_rotate = on_rotate,
 	})
 
 	-- Climbable opened
-	minetest.register_node(name.."_ladder", {
+	minetest.register_node(name .. "_ladder", {
 		drawtype = "nodebox",
 		tiles = tiles_open,
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		use_texture_alpha = "clip",
 		is_ground_content = false,
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -274,19 +257,20 @@ function mcl_doors:register_trapdoor(name, def)
 		drop = name,
 		node_box = {
 			type = "fixed",
-			fixed = {-0.5, -0.5, 5/16, 0.5, 0.5, 0.5}
+			fixed = { -0.5, -0.5, 5 / 16, 0.5, 0.5, 0.5 }
 		},
 		on_rightclick = on_rightclick,
-		mesecons = {effector = {
-			action_off = (function(pos, node)
-				punch(pos)
-			end),
-		}},
+		mesecons = {
+			effector = {
+				action_off = (function(pos, node)
+					punch(pos)
+				end),
+			}
+		},
 		on_rotate = on_rotate,
 	})
 
 	if minetest.get_modpath("doc") then
-		doc.add_entry_alias("nodes", name, "nodes", name.."_open")
+		doc.add_entry_alias("nodes", name, "nodes", name .. "_open")
 	end
-
 end

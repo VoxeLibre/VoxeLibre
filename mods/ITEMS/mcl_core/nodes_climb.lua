@@ -17,15 +17,17 @@ end
 ---@param ladder integer The param2 value of the ladder.
 ---@param trapdoor integer The param2 value of the trapdoor.
 ---@return boolean If the ladder and trapdoor are in the same direction.
-local function check_direction(ladder, trapdoor)
-	local convert_table = {};
-	convert_table[2] = { 1, 23 }
-	convert_table[3] = { 3, 21 }
-	convert_table[4] = { 0, 20 }
-	convert_table[5] = { 2, 22 }
+function mcl_core.check_direction(ladder, trapdoor)
+	local convert_table = {
+		nil,
+		{ 1, 23 },
+		{ 3, 21 },
+		{ 0, 20 },
+		{ 2, 22 },
+	}
 
 	local conversion = convert_table[ladder];
-	if conversion == nil then
+	if not conversion then
 		return false
 	elseif conversion[1] == trapdoor or conversion[2] == trapdoor then
 		return true
@@ -42,7 +44,10 @@ end
 local function update_trapdoor(pos, ladder, event)
 	local top_pos = vector.add(pos, { x = 0, y = 1, z = 0 })
 	local top_node = minetest.get_node_or_nil(top_pos)
-	if top_node then
+
+
+	if top_node and minetest.get_item_group(top_node.name, "trapdoor") == 2
+		and mcl_core.check_direction(ladder, top_node.param2) then
 		local new_name = top_node.name
 		if event == "place" then
 			new_name = string.gsub(new_name, "open$", "ladder")
@@ -50,26 +55,23 @@ local function update_trapdoor(pos, ladder, event)
 			new_name = string.gsub(new_name, "ladder$", "open")
 		end
 
-		local is_trapdoor = minetest.get_item_group(top_node.name, "trapdoor")
-
 		-- If node above is an opened trapdoor
-		if is_trapdoor == 2 and check_direction(ladder, top_node.param2) then
-			minetest.swap_node(top_pos, {
-				name = new_name,
-				param1 = top_node.param1,
-				param2 = top_node.param2,
-			})
-		end
+		minetest.swap_node(top_pos, {
+			name = new_name,
+			param1 = top_node.param1,
+			param2 = top_node.param2,
+		})
 	end
 end
 
 -- TODO: Move ladders into their own API.
 minetest.register_node("mcl_core:ladder", {
 	description = S("Ladder"),
-	_doc_items_longdesc = S("A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns."),
+	_doc_items_longdesc = S(
+		"A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns."),
 	drawtype = "signlike",
 	is_ground_content = false,
-	tiles = {"default_ladder.png"},
+	tiles = { "default_ladder.png" },
 	inventory_image = "default_ladder.png",
 	wield_image = "default_ladder.png",
 	paramtype = "light",
@@ -79,11 +81,11 @@ minetest.register_node("mcl_core:ladder", {
 	climbable = true,
 	node_box = {
 		type = "wallmounted",
-		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
+		wall_side = { -0.5, -0.5, -0.5, -7 / 16, 0.5, 0.5 },
 	},
 	selection_box = {
 		type = "wallmounted",
-		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
+		wall_side = { -0.5, -0.5, -0.5, -7 / 16, 0.5, 0.5 },
 	},
 	stack_max = 64,
 	groups = {
@@ -113,7 +115,7 @@ minetest.register_node("mcl_core:ladder", {
 
 		-- Don't allow to place the ladder at particular nodes
 		if (groups and (groups.glass or groups.leaves or groups.slab)) or
-				node.name == "mcl_core:ladder" or node.name == "mcl_core:ice" or node.name == "mcl_nether:glowstone" or node.name == "mcl_ocean:sea_lantern" then
+			node.name == "mcl_core:ladder" or node.name == "mcl_core:ice" or node.name == "mcl_nether:glowstone" or node.name == "mcl_ocean:sea_lantern" then
 			return itemstack
 		end
 
@@ -135,7 +137,7 @@ minetest.register_node("mcl_core:ladder", {
 
 		if success then
 			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+				minetest.sound_play(idef.sounds.place, { pos = above, gain = 1 }, true)
 			end
 		end
 		return itemstack
@@ -155,9 +157,10 @@ minetest.register_node("mcl_core:ladder", {
 
 minetest.register_node("mcl_core:vine", {
 	description = S("Vines"),
-	_doc_items_longdesc = S("Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread."),
+	_doc_items_longdesc = S(
+		"Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread."),
 	drawtype = "signlike",
-	tiles = {"mcl_core_vine.png"},
+	tiles = { "mcl_core_vine.png" },
 	color = "#48B518",
 	inventory_image = "mcl_core_vine.png",
 	wield_image = "mcl_core_vine.png",
@@ -173,9 +176,18 @@ minetest.register_node("mcl_core:vine", {
 	},
 	stack_max = 64,
 	groups = {
-		handy = 1, axey = 1, shearsy = 1, swordy = 1, deco_block = 1,
-		dig_by_piston = 1, destroy_by_lava_flow = 1, compostability = 50,
-		flammable = 2, fire_encouragement = 15, fire_flammability = 100, foliage_palette_wallmounted = 1
+		handy = 1,
+		axey = 1,
+		shearsy = 1,
+		swordy = 1,
+		deco_block = 1,
+		dig_by_piston = 1,
+		destroy_by_lava_flow = 1,
+		compostability = 50,
+		flammable = 2,
+		fire_encouragement = 15,
+		fire_flammability = 100,
+		foliage_palette_wallmounted = 1
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
@@ -217,7 +229,7 @@ minetest.register_node("mcl_core:vine", {
 
 		if success then
 			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+				minetest.sound_play(idef.sounds.place, { pos = above, gain = 1 }, true)
 			end
 		end
 		return itemstack
@@ -240,7 +252,7 @@ minetest.register_node("mcl_core:vine", {
 	-- If dug, also dig a “dependant” vine below it.
 	-- A vine is dependant if it hangs from this node and has no supporting block.
 	on_dig = function(pos, node, digger)
-		local below = vector.offset(pos,0,-1,0)
+		local below = vector.offset(pos, 0, -1, 0)
 		local belownode = minetest.get_node(below)
 		minetest.node_dig(pos, node, digger)
 		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
