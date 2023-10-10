@@ -78,7 +78,6 @@ local axolotl = {
 	attack_animals = true,
 	specific_attack = {
 		"extra_mobs_cod",
-		"mobs_mc:sheep",
 		"extra_mobs_glow_squid",
 		"extra_mobs_salmon",
 		"extra_mobs_tropical_fish",
