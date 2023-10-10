@@ -42,7 +42,7 @@ end
 ---@param ladder integer The param2 value of the ladder.
 ---@param event "place" | "destruct" The place or destruct event.
 local function update_trapdoor(pos, ladder, event)
-	local top_pos = vector.add(pos, { x = 0, y = 1, z = 0 })
+	local top_pos = vector.offset(pos, 0, 1, 0)
 	local top_node = minetest.get_node_or_nil(top_pos)
 
 

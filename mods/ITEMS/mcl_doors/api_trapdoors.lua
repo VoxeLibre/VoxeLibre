@@ -73,7 +73,7 @@ function mcl_doors:register_trapdoor(name, def)
 		else
 			minetest.sound_play(def.sound_open, { pos = pos, gain = 0.3, max_hear_distance = 16 }, true)
 
-			local bottom_node = minetest.get_node_or_nil(vector.subtract(pos, { x = 0, y = 1, z = 0 }))
+			local bottom_node = minetest.get_node_or_nil(vector.offset(pos, 0, -1, 0))
 			local name_end = "_open"
 
 			-- Checking if there is something underneath the trapdoor
