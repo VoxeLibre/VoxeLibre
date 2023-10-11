@@ -114,9 +114,7 @@ mcl_mobs.register_mob("mobs_mc:spider", spider)
 local cave_spider = table.copy(spider)
 cave_spider.description = S("Cave Spider")
 cave_spider.textures = { {"mobs_mc_cave_spider.png^(mobs_mc_spider_eyes.png^[makealpha:0,0,0)"} }
--- TODO: Poison damage
--- TODO: Revert damage to 2
-cave_spider.damage = 3 -- damage increased to undo non-existing poison
+cave_spider.damage = 2
 cave_spider.hp_min = 1
 cave_spider.hp_max = 12
 cave_spider.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.46, 0.35}
@@ -138,6 +136,11 @@ cave_spider.walk_velocity = 1.3
 cave_spider.run_velocity = 3.2
 cave_spider.sounds = table.copy(spider.sounds)
 cave_spider.sounds.base_pitch = 1.25
+cave_spider.dealt_effect = {
+	name = "poison",
+	factor = 2.5,
+	dur = 7,
+}
 mcl_mobs.register_mob("mobs_mc:cave_spider", cave_spider)
 
 

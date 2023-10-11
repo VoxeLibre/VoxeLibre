@@ -21,6 +21,8 @@ local function atan(x)
 	end
 end
 
+mcl_mobs.effect_functions = {}
+
 
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
@@ -382,7 +384,8 @@ function mob_class:monster_attack()
 		-- find specific mob to attack, failing that attack player/npc/animal
 		if specific_attack(self.specific_attack, name)
 				and (type == "player" or ( type == "npc" and self.attack_npcs )
-				or (type == "animal" and self.attack_animals == true)) then
+				or (type == "animal" and self.attack_animals == true)
+				or (self.extra_hostile and not self.attack_exception(player))) then
 			p = player:get_pos()
 			sp = s
 
@@ -1103,6 +1106,11 @@ function mob_class:do_states_attack (dtime)
 							full_punch_interval = 1.0,
 							damage_groups = {fleshy = self.damage}
 						}, nil)
+						if self.dealt_effect then
+							mcl_mobs.effect_functions[self.dealt_effect.name](
+								self.attack, self.dealt_effect.factor, self.dealt_effect.dur
+							)
+						end
 					end
 				else
 					self.custom_attack(self, p)
@@ -1209,6 +1217,9 @@ function mob_class:do_states_attack (dtime)
 				end
 			end
 		end
+
+	elseif self.attack_type == "custom" and self.attack_state then
+		self.attack_state(self, dtime)
 	else
 
 	end

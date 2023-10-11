@@ -96,6 +96,11 @@ mcl_mobs.register_mob("mobs_mc:witherskeleton", {
 	fear_height = 4,
 	harmed_by_heal = true,
 	fire_resistant = true,
+	dealt_effect = {
+		name = "withering",
+		factor = 1,
+		dur = 10,
+	},
 })
 
 --spawn

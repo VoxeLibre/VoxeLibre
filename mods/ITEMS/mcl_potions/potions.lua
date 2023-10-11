@@ -79,7 +79,7 @@ local function register_potion(def)
 	if def.is_inv then
 		dur = dur * mcl_potions.INV_FACTOR
 	end
-	if def.name == "poison" or def.name == "regeneration" then
+	if def.name == "poison" or def.name == "regeneration" or def.name == "withering" then
 		dur = 45
 	end
 
@@ -93,7 +93,7 @@ local function register_potion(def)
 		local _tt
 		if effect and def.is_dur then
 			_tt = perc_string(effect).." | "..time_string(dur)
-			if def.name == "poison" or def.name == "regeneration" then
+			if def.name == "poison" or def.name == "regeneration" or def.name == "withering" then
 				_tt = S("1 HP/@1s | @2", effect, time_string(dur))
 			end
 		elseif def.name == "healing" or def.name == "harming" then
@@ -235,6 +235,8 @@ local function register_potion(def)
 			effect_II = def.effect*mcl_potions.II_FACTOR
 		elseif def.name == "poison" or def.name == "regeneration" then
 			effect_II = 1.2
+		elseif def.name == "withering" then
+			effect_II = 2
 		else
 			effect_II = def.effect^mcl_potions.II_FACTOR
 		end
@@ -327,7 +329,7 @@ local function register_potion(def)
 	if def.is_plus then
 
 		local dur_pl = dur * mcl_potions.PLUS_FACTOR
-		if def.name == "poison" or def.name == "regeneration" then
+		if def.name == "poison" or def.name == "regeneration" or def.name == "withering" then
 			dur_pl = 90
 		end
 
@@ -533,6 +535,20 @@ local leaping_def = {
 	is_plus = true,
 }
 
+local withering_def = {
+	name = "withering",
+	description = S("Withering"),
+	_tt = nil,
+	_longdesc = S("Applies the withering effect which deals damage at a regular interval and can kill."),
+	color = "#000000",
+	effect = 4,
+	is_dur = true,
+	on_use = mcl_potions.withering_func,
+	is_II = true,
+	is_plus = true,
+	is_inv = true,
+}
+
 local poison_def = {
 	name = "poison",
 	description = S("Poison"),
@@ -597,7 +613,7 @@ local fire_resistance_def = {
 
 local defs = { awkward_def, mundane_def, thick_def, dragon_breath_def,
 	healing_def, harming_def, night_vision_def, swiftness_def,
-	slowness_def, leaping_def, poison_def, regeneration_def,
+	slowness_def, leaping_def, withering_def, poison_def, regeneration_def,
 	invisibility_def, water_breathing_def, fire_resistance_def}
 
 for _, def in ipairs(defs) do
