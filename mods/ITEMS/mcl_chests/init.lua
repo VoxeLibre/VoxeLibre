@@ -532,9 +532,12 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		_mcl_hardness = 2.5,
 
 		on_rightclick = function(pos, node, clicker)
-			if minetest.registered_nodes[minetest.get_node({ x = pos.x, y = pos.y + 1, z = pos.z }).name].groups.opaque == 1 then
-				-- won't open if there is no space from the top
-				return false
+			local topnode = minetest.get_node({ x = pos.x, y = pos.y + 1, z = pos.z })
+			if topnode and topnode.name and minetest.registered_nodes[topnode.name] then
+				if minetest.registered_nodes[topnode.name].groups.opaque == 1 then
+					-- won't open if there is no space from the top
+					return false
+				end
 			end
 			local name = minetest.get_meta(pos):get_string("name")
 			if name == "" then
