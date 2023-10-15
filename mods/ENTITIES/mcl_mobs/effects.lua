@@ -1,5 +1,7 @@
 local math, tonumber, vector, minetest, mcl_mobs = math, tonumber, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
+local validate_vector = mcl_util.validate_vector
+
 local active_particlespawners = {}
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local DEFAULT_FALL_SPEED = -9.81*1.5
@@ -8,16 +10,6 @@ local PATHFINDING = "gowp"
 
 local player_transfer_distance = tonumber(minetest.settings:get("player_transfer_distance")) or 128
 if player_transfer_distance == 0 then player_transfer_distance = math.huge end
-
-
-local function validate_vector (vect)
-	if vect then
-		if tonumber(vect.x) and tonumber(vect.y) and tonumber(vect.z) then
-			return true
-		end
-	end
-	return false
-end
 
 -- custom particle effects
 function mcl_mobs.effect(pos, amount, texture, min_size, max_size, radius, gravity, glow, go_down)

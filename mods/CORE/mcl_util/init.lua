@@ -74,6 +74,18 @@ function mcl_util.check_dtime_timer(self, dtime, timer_name, threshold)
 	return false
 end
 
+-- While we should always favour the new minetest vector functions such as vector.new or vector.offset which validate on
+-- creation. There may be cases where state gets corrupted and we may have to check the vector is valid if created the
+-- old way. This allows us to do this as a tactical solution until old style vectors are completely removed.
+function mcl_util.validate_vector (vect)
+	if vect then
+		if tonumber(vect.x) and tonumber(vect.y) and tonumber(vect.z) then
+			return true
+		end
+	end
+	return false
+end
+
 -- Minetest 5.3.0 or less can only measure the light level. This came in at 5.4
 -- This function has been known to fail in multiple places so the error handling is added increase safety and improve
 -- debugging. See:
