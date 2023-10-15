@@ -19,11 +19,11 @@ local pixels_rgba = {
 image_rgba = tga_encoder.image(pixels_rgba)
 
 image_rgba:save(
-	"type2_32bpp_bt_raw.tga",
+	"type2_32bpp_bt.tga",
 	{ color_format="B8G8R8A8", compression="RAW" }
 )
 image_rgba:save(
-	"type2_32bpp_bt_rle.tga",
+	"type10_32bpp_bt.tga",
 	{ color_format="B8G8R8A8", compression="RLE" }
 )
 
@@ -46,19 +46,19 @@ local pixels_rgb = {
 image_rgb = tga_encoder.image(pixels_rgb)
 
 image_rgb:save(
-	"type2_24bpp_bt_raw.tga",
+	"type2_24bpp_bt.tga",
 	{ color_format="B8G8R8", compression="RAW" }
 )
 image_rgb:save(
-	"type2_24bpp_bt_rle.tga",
+	"type10_24bpp_bt.tga",
 	{ color_format="B8G8R8", compression="RLE" }
 )
 
 image_rgb:save(
-	"type2_16bpp_bt_raw.tga",
+	"type2_16bpp_bt.tga",
 	{ color_format="A1R5G5B5", compression="RAW" }
 )
 image_rgb:save(
-	"type2_16bpp_bt_rle.tga",
+	"type10_16bpp_bt.tga",
 	{ color_format="A1R5G5B5", compression="RLE" }
 )
