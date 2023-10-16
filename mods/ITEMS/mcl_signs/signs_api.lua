@@ -85,7 +85,7 @@ end
 mcl_signs = {}
 
 -- GLOBALS
-mcl_signs.sign_groups = { handy = 1, axey = 1, deco_block = 1, material_wood = 1, attached_node = 1, dig_by_piston = 1, flammable = -1 }
+mcl_signs.sign_groups = { handy = 1, axey = 1, deco_block = 1, material_wood = 1, attached_node = 1, flammable = -1 }
 --- colors used for wools.
 mcl_signs.mcl_wool_colors = {
 	unicolor_white = "#FFFFFF",
