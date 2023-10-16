@@ -1,5 +1,6 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
+local validate_vector = mcl_util.validate_vector
 
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
@@ -355,7 +356,7 @@ function mob_class:set_yaw(yaw, delay, dtime)
 
 	if math.abs(target_shortest_path_nums) > 10 then
 		self.object:set_yaw(self.object:get_yaw()+(target_shortest_path*(3.6*ddtime)))
-		if self.acc then
+		if validate_vector(self.acc) then
 			self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), target_shortest_path*(3.6*ddtime))
 		end
 	end
