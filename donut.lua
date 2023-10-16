@@ -55,7 +55,13 @@ function render_frame(A, B)
       local sintheta = math.sin(theta)
 
       -- phi goes around the center of revolution of a torus
-      for phi=0, 2*math.pi, phi_spacing do
+      local phi = 0
+      while phi <= 2*math.pi do
+         if ( phi > 2*math.pi * 3/8 ) and ( phi < 2*math.pi * 5/8 ) then
+            phi = phi + (phi_spacing * 128)
+         else
+            phi = phi + phi_spacing
+         end
         -- precompute sines and cosines of phi
          local cosphi = math.cos(phi)
          local sinphi = math.sin(phi)
