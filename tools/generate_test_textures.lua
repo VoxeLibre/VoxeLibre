@@ -1,3 +1,4 @@
+#!/usr/bin/env lua5.1
 dofile("../init.lua")
 
 local _ = { 0 }
