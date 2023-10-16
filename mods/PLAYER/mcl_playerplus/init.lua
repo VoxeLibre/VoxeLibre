@@ -154,27 +154,27 @@ end
 
 local player_props_elytra = {
 	collisionbox = { -0.35, 0, -0.35, 0.35, 0.8, 0.35 },
-	eye_height = 0.5,
+	eye_height = 0.6,
 	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
 }
 local player_props_riding = {
 	collisionbox = { -0.312, 0, -0.312, 0.312, 1.8, 0.312 },
-	eye_height = 1.5,
+	eye_height = 1.6,
 	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
 }
 local player_props_sneaking = {
 	collisionbox = { -0.312, 0, -0.312, 0.312, 1.8, 0.312 },
-	eye_height = 1.35,
+	eye_height = 1.45,
 	nametag_color = { r = 225, b = 225, a = 0, g = 225 }
 }
 local player_props_swimming = {
 	collisionbox = { -0.312, 0, -0.312, 0.312, 0.8, 0.312 },
-	eye_height = 0.5,
+	eye_height = 0.6,
 	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
 }
 local player_props_normal = {
 	collisionbox = { -0.312, 0, -0.312, 0.312, 1.8, 0.312 },
-	eye_height = 1.5,
+	eye_height = 1.6,
 	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
 }
 
