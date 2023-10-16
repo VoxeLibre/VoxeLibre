@@ -43,7 +43,13 @@ function render_frame(A, B)
    local sinB = math.sin(B)
 
    -- theta goas around the cross-sectional circle of a torus
-   for theta=0, 2*math.pi, theta_spacing do
+   local theta = 0
+   while theta <= 2*math.pi do
+      if ( theta < 2*math.pi * 1/8 ) or ( theta > 2*math.pi * 7/8 ) then
+         theta = theta + (theta_spacing * 16)
+      else
+         theta = theta + theta_spacing
+      end
       -- precompute sines and cosines of theta
       local costheta = math.cos(theta)
       local sintheta = math.sin(theta)
