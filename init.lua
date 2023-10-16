@@ -56,6 +56,11 @@ function image:encode_image_spec(properties)
 		"B8G8R8" == color_format or -- (B8G8R8 = 3 bytes = 24 bits)
 		"B8G8R8A8" == color_format -- (B8G8R8A8 = 4 bytes = 32 bits)
 	)
+	local scanline_order = properties.scanline_order
+	assert (
+		"bottom-top" == scanline_order or
+		"top-bottom" == scanline_order
+	)
 	local pixel_depth
 	if 0 ~= #properties.colormap then
 		pixel_depth = self.pixel_depth
@@ -63,13 +68,29 @@ function image:encode_image_spec(properties)
 		pixel_depth = pixel_depth_by_color_format[color_format]
 	end
 	assert( nil ~= pixel_depth)
-	self.data = self.data
-		.. string.char(0, 0) -- X-origin
-		.. string.char(0, 0) -- Y-origin
-		.. string.char(self.width  % 256, math.floor(self.width  / 256)) -- width
-		.. string.char(self.height % 256, math.floor(self.height / 256)) -- height
-		.. string.char(pixel_depth)
-		.. string.char(0) -- image descriptor
+	-- the origin is the bottom left corner of the image (always)
+	local x_origin_lo = 0
+	local x_origin_hi = 0
+	local y_origin_lo = 0
+	local y_origin_hi = 0
+	local image_descriptor = 0 -- equal to bottom-top scanline order
+	local width_lo = self.width % 256
+	local width_hi = math.floor(self.width  / 256)
+	local height_lo = self.height % 256
+	local height_hi = math.floor(self.height / 256)
+	if "top-bottom" == scanline_order then
+		image_descriptor = 32
+		y_origin_lo = height_lo
+		y_origin_hi = height_hi
+	end
+	self.data = self.data .. string.char (
+		x_origin_lo, x_origin_hi,
+		y_origin_lo, y_origin_hi,
+		width_lo, width_hi,
+		height_lo, height_hi,
+		pixel_depth,
+		image_descriptor
+	)
 end
 
 function image:encode_colormap(properties)
@@ -564,6 +585,7 @@ function image:encode(properties)
 	local properties = properties or {}
 	properties.colormap = properties.colormap or {}
 	properties.compression = properties.compression or "RAW"
+        properties.scanline_order = properties.scanline_order or "bottom-top"
 
 	self.pixel_depth = #self.pixels[1][1] * 8
 
