@@ -6,7 +6,7 @@
 
 -- cargo-culted by erle 2023-09-18
 
-local theta_spacing = 0.1  -- 0.07
+local theta_spacing = 0.01  -- 0.07
 local phi_spacing = 0.002  -- 0.02
 
 local R1 = 1
