@@ -19,14 +19,13 @@ end
 ---@return boolean If the ladder and trapdoor are in the same direction.
 function mcl_core.check_direction(ladder, trapdoor)
 	local convert_table = {
-		nil,
 		{ 1, 23 },
 		{ 3, 21 },
 		{ 0, 20 },
 		{ 2, 22 },
 	}
 
-	local conversion = convert_table[ladder];
+	local conversion = convert_table[ladder - 1];
 	if not conversion then
 		return false
 	elseif conversion[1] == trapdoor or conversion[2] == trapdoor then
