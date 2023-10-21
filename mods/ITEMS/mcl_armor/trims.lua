@@ -44,3 +44,21 @@ minetest.register_craft({
         {"mcl_core:diamond","mcl_core:diamond","mcl_core:diamond"},
     }
 })
+
+minetest.register_craft({
+    output = mod_registername .. "silence",
+    recipe = {
+        {"mcl_core:diamond","mcl_core:diamond","mcl_core:diamond"},
+        {"mcl_core:diamond", mod_registername.."ward","mcl_core:diamond"},
+        {"mcl_core:diamond","mcl_core:diamond","mcl_core:diamond"},
+    }
+})
+
+minetest.register_craft({
+    output = mod_registername .. "wayfinder",
+    recipe = {
+        {"mcl_core:diamond","mcl_core:diamond","mcl_core:diamond"},
+        {"mcl_core:diamond", "mcl_maps:empty_map","mcl_core:diamond"},
+        {"mcl_core:diamond","mcl_core:diamond","mcl_core:diamond"},
+    }
+})

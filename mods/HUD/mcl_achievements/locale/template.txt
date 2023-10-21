@@ -111,3 +111,7 @@ Voluntary Exile=
 Kill a raid captain. Maybe consider staying away from the local villages for the time being...=
 Tactical Fishing=
 Catch a fish... without a fishing rod!=
+Crafting a New Look=
+Craft a trimmed armor at a Smithing Table=
+Smithing with Style=
+Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder=

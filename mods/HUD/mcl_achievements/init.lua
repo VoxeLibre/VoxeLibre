@@ -431,6 +431,27 @@ awards.register_achievement("mcl:wax_off", {
 	group = "Husbandry",
 })
 
+-- Triggered in mcl_smithing_table
+awards.register_achievement("mcl:trim", {
+	title = S("Crafting a New Look"),
+	description = S("Craft a trimmed armor at a Smithing Table"),
+	icon = "dune_armor_trim_smithing_template.png",
+	type = "Advancement",
+	group = "Adventure",
+})
+
+awards.register_achievement("mcl:lots_of_trimming", {
+	title = S("Smithing with Style"),
+	description = S("Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder"),
+	icon = "silence_armor_trim_smithing_template.png",
+	type = "Advancement",
+	group = "Adventure",
+	on_unlock = function(name, awdef)
+		-- delete json that is no longer needed
+		minetest.get_player_by_name(name):get_meta():set_string("mcl_smithing_table:achievement_trims", "")
+	end,
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 if non_pc_achievements then
