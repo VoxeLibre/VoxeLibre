@@ -161,6 +161,8 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	end
 end
 
+local swamp_light_max = 7
+
 local function slime_spawn_check(pos, environmental_light, artificial_light, sky_light)
 	local maxlight = swamp_light_max
 
@@ -308,7 +310,6 @@ local cave_min = mcl_vars.mg_overworld_min
 local cave_max = water_level - 23
 
 local swampy_biomes = {"Swampland", "MangroveSwamp"}
-local swamp_light_max = 7
 local swamp_min = water_level
 local swamp_max = water_level + 27
 
