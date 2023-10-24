@@ -117,6 +117,7 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	_doc_items_longdesc = S("Barrels are containers which provide 27 inventory slots."),
 	_doc_items_usagehelp = S("To access its inventory, rightclick it. When broken, the items will drop out."),
 	tiles = { "mcl_barrels_barrel_top.png^[transformR270", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png" },
+	is_ground_content = false,
 	paramtype = "light",
 	paramtype2 = "facedir",
 	on_place = function(itemstack, placer, pointed_thing)
@@ -166,6 +167,7 @@ minetest.register_node("mcl_barrels:barrel_open", {
 	_doc_items_usagehelp = S("To access its inventory, rightclick it. When broken, the items will drop out."),
 	_doc_items_create_entry = false,
 	tiles = { "mcl_barrels_barrel_top_open.png", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png" },
+	is_ground_content = false,
 	paramtype = "light",
 	paramtype2 = "facedir",
 	drop = "mcl_barrels:barrel_closed",

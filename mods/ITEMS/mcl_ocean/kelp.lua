@@ -662,6 +662,7 @@ minetest.register_node("mcl_ocean:dried_kelp_block", {
 	description = S("Dried Kelp Block"),
 	_doc_items_longdesc = S("A decorative block that serves as a great furnace fuel."),
 	tiles = { "mcl_ocean_dried_kelp_top.png", "mcl_ocean_dried_kelp_bottom.png", "mcl_ocean_dried_kelp_side.png" },
+	is_ground_content = false,
 	groups = {
 		handy = 1, hoey = 1, building_block = 1, compostability = 50,
 		flammable = 2, fire_encouragement = 30, fire_flammability = 60

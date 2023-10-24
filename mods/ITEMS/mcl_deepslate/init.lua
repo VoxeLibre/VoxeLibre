@@ -199,6 +199,7 @@ local function register_deepslate_variant(item, desc, longdesc)
 		_doc_items_longdesc = S(longdesc),
 		_doc_items_hidden = false,
 		tiles = { "mcl_"..texture..".png" },
+		is_ground_content = false,
 		groups = { pickaxey = 1, building_block = 1, material_stone = 1 },
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		_mcl_blast_resistance = 6,

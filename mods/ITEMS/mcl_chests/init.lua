@@ -390,6 +390,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		drawtype = "mesh",
 		mesh = "mcl_chests_chest.b3d",
 		tiles = small_textures,
+		is_ground_content = false,
 		use_texture_alpha = "opaque",
 		paramtype = "light",
 		paramtype2 = "facedir",

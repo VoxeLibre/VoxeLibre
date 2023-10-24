@@ -7,7 +7,6 @@ minetest.register_node("mcl_lush_caves:moss", {
 	_doc_items_entry_name = "moss",
 	_doc_items_hidden = false,
 	tiles = {"mcl_lush_caves_moss_block.png"},
-	is_ground_content = false,
 	groups = {handy=1, hoey=2, dirt=1, soil=1, soil_sapling=2, enderman_takable=1, building_block=1,flammable=1,fire_encouragement=60, fire_flammability=20, grass_block_no_snow = 1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 0.1,
@@ -130,8 +129,6 @@ minetest.register_node("mcl_lush_caves:rooted_dirt", {
 	_doc_items_longdesc = S("Rooted dirt"),
 	_doc_items_hidden = false,
 	tiles = {"mcl_lush_caves_rooted_dirt.png"},
-	is_ground_content = true,
-	stack_max = 64,
 	groups = {handy=1,shovely=1, dirt=1, building_block=1, path_creation_possible=1},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 0.5,
@@ -141,7 +138,6 @@ minetest.register_node("mcl_lush_caves:rooted_dirt", {
 minetest.register_craftitem("mcl_lush_caves:glow_berry", {
 	description = S("Glow berry"),
 	_doc_items_longdesc = S("This is a food item which can be eaten."),
-	stack_max = 64,
 	inventory_image = "mcl_lush_caves_glow_berries.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
@@ -236,7 +232,6 @@ minetest.register_node("mcl_lush_caves:spore_blossom", {
 	drawtype = "plantlike",
 	param2type = "meshoptions",
 	place_param2 = 4,
-	is_ground_content = true,
 	groups = {handy = 1, plant = 1},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	selection_box = {

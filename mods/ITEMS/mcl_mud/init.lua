@@ -5,7 +5,6 @@ minetest.register_node("mcl_mud:mud", {
 	_doc_items_longdesc = S("Mud is a decorative block that generates in mangrove swamps. Mud can also be obtained by using water bottles on dirt or coarse dirt."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_mud.png"},
-	is_ground_content = true,
 	sounds = {
 		footstep = {name="mud_footsteps", gain=1},
 		dug = {name="mud_place_dug", gain=1},
@@ -27,6 +26,7 @@ minetest.register_node("mcl_mud:packed_mud", {
 	_doc_items_longdesc = S("Packed mud is a decorative block used to craft mud bricks."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_mud_packed_mud.png"},
+	is_ground_content = false,
 	groups = {handy=1, pickaxey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 3,
@@ -39,6 +39,7 @@ minetest.register_node("mcl_mud:mud_bricks", {
 	_doc_items_hidden = false,
 	tiles = {"mcl_mud_bricks.png"},
 	groups = {handy=1, pickaxey=1, building_block=1},
+	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 1.5,

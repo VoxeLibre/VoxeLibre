@@ -33,6 +33,7 @@ for i=0,4 do
 				"respawn_anchor_bottom.png",
 				"respawn_anchor_side0.png"
 			},
+			is_ground_content = false,
 			on_rightclick = rightclick,
 			groups = {pickaxey=1, material_stone=1},
 			_mcl_hardness = 22.5,

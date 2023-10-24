@@ -10,6 +10,7 @@ minetest.register_node("mcl_cartography_table:cartography_table", {
 		"mcl_cartography_table_side3.png", "mcl_cartography_table_side2.png",
 		"mcl_cartography_table_side3.png", "mcl_cartography_table_side1.png"
 	},
+	is_ground_content = false,
 	paramtype2 = "facedir",
 	groups = { axey = 2, handy = 1, deco_block = 1, material_wood = 1, flammable = 1 },
 	sounds = mcl_sounds.node_sound_wood_defaults(),

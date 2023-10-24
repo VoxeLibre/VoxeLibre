@@ -70,7 +70,7 @@ minetest.register_node("mcl_nether:netheriteblock", {
 	_doc_items_longdesc = S("Netherite block is very hard and can be made of 9 netherite ingots."),
 	stack_max = 64,
 	tiles = {"mcl_nether_netheriteblock.png"},
-	is_ground_content = true,
+	is_ground_content = false,
 	groups = { pickaxey=4, building_block=1, material_stone=1, xp = 0, fire_immune=1 },
 	drop = "mcl_nether:netheriteblock",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
