@@ -453,7 +453,7 @@ minetest.register_node("mcl_blast_furnace:blast_furnace", {
 		"blast_furnace_side.png", "blast_furnace_front.png"
 	},
 	paramtype2 = "facedir",
-	groups = { pickaxey = 1, container = 4, deco_block = 1, material_stone = 1 },
+	groups = { pickaxey = 1, container = 2, deco_block = 1, material_stone = 1 },
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 
@@ -514,6 +514,11 @@ minetest.register_node("mcl_blast_furnace:blast_furnace", {
 	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_pull = mcl_furnaces.hoppers_on_try_pull,
+	_mcl_hoppers_on_try_push = mcl_furnaces.hoppers_on_try_push,
+	_mcl_hoppers_on_after_push = function(pos)
+		minetest.get_node_timer(pos):start(1.0)
+	end,
 })
 
 minetest.register_node("mcl_blast_furnace:blast_furnace_active", {
@@ -531,7 +536,7 @@ minetest.register_node("mcl_blast_furnace:blast_furnace_active", {
 	paramtype = "light",
 	light_source = LIGHT_ACTIVE_FURNACE,
 	drop = "mcl_blast_furnace:blast_furnace",
-	groups = { pickaxey = 1, container = 4, deco_block = 1, not_in_creative_inventory = 1, material_stone = 1 },
+	groups = { pickaxey = 1, container = 2, deco_block = 1, not_in_creative_inventory = 1, material_stone = 1 },
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_timer = blast_furnace_node_timer,
@@ -574,6 +579,8 @@ minetest.register_node("mcl_blast_furnace:blast_furnace_active", {
 	_mcl_hardness = 3.5,
 	on_rotate = on_rotate,
 	after_rotate = after_rotate_active,
+	_mcl_hoppers_on_try_pull = mcl_furnaces.hoppers_on_try_pull,
+	_mcl_hoppers_on_try_push = mcl_furnaces.hoppers_on_try_push,
 })
 
 minetest.register_craft({

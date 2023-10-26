@@ -10,6 +10,8 @@ local sf = string.format
 
 local mod_doc = minetest.get_modpath("doc")
 
+mcl_chests = {}
+
 -- Christmas chest setup
 local it_is_christmas = false
 local date = os.date("*t")
@@ -596,7 +598,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		groups = {
 			handy = 1,
 			axey = 1,
-			container = 5,
+			container = 2,
 			not_in_creative_inventory = 1,
 			material_wood = 1,
 			flammable = -1,
@@ -751,6 +753,34 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		end,
 		mesecons = mesecons,
 		on_rotate = no_rotate,
+		_mcl_hoppers_on_try_pull = function(pos, hop_pos, hop_inv, hop_list)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			local stack_id = mcl_util.select_stack(inv, "main", hop_inv, hop_list)
+			if stack_id ~= nil then
+				return inv, "main", stack_id
+			end
+			local node = minetest.get_node(pos)
+			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
+			local meta_other = minetest.get_meta(pos_other)
+			local inv_other = meta_other:get_inventory()
+			stack_id = mcl_util.select_stack(inv_other, "main", hop_inv, hop_list)
+			return inv_other, "main", stack_id
+		end,
+		_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			local stack_id = mcl_util.select_stack(hop_inv, hop_list, inv, "main")
+			if stack_id ~= nil then
+				return inv, "main", stack_id
+			end
+			local node = minetest.get_node(pos)
+			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
+			local meta_other = minetest.get_meta(pos_other)
+			local inv_other = meta_other:get_inventory()
+			stack_id = mcl_util.select_stack(hop_inv, hop_list, inv_other, "main")
+			return inv_other, "main", stack_id
+		end,
 	})
 
 	minetest.register_node("mcl_chests:" .. basename .. "_right", {
@@ -766,7 +796,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		groups = {
 			handy = 1,
 			axey = 1,
-			container = 6,
+			container = 2,
 			not_in_creative_inventory = 1,
 			material_wood = 1,
 			flammable = -1,
@@ -916,6 +946,34 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		end,
 		mesecons = mesecons,
 		on_rotate = no_rotate,
+		_mcl_hoppers_on_try_pull = function(pos, hop_pos, hop_inv, hop_list)
+			local node = minetest.get_node(pos)
+			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
+			local meta_other = minetest.get_meta(pos_other)
+			local inv_other = meta_other:get_inventory()
+			local stack_id = mcl_util.select_stack(inv_other, "main", hop_inv, hop_list)
+			if stack_id ~= nil then
+				return inv_other, "main", stack_id
+			end
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			stack_id = mcl_util.select_stack(inv, "main", hop_inv, hop_list)
+			return inv, "main", stack_id
+		end,
+		_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
+			local node = minetest.get_node(pos)
+			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
+			local meta_other = minetest.get_meta(pos_other)
+			local inv_other = meta_other:get_inventory()
+			local stack_id = mcl_util.select_stack(hop_inv, hop_list, inv_other, "main")
+			if stack_id ~= nil then
+				return inv_other, "main", stack_id
+			end
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			stack_id = mcl_util.select_stack(hop_inv, hop_list, inv, "main")
+			return inv, "main", stack_id
+		end,
 	})
 
 	if mod_doc then
@@ -1305,7 +1363,7 @@ for color, desc in pairs(boxtypes) do
 		groups = {
 			handy = 1,
 			pickaxey = 1,
-			container = 3,
+			container = 2,
 			deco_block = 1,
 			dig_by_piston = 1,
 			shulker_box = 1,
@@ -1378,7 +1436,7 @@ for color, desc in pairs(boxtypes) do
 		groups = {
 			handy = 1,
 			pickaxey = 1,
-			container = 3,
+			container = 2,
 			deco_block = 1,
 			dig_by_piston = 1,
 			shulker_box = 1,
@@ -1471,6 +1529,11 @@ for color, desc in pairs(boxtypes) do
 		end,
 		_mcl_blast_resistance = 6,
 		_mcl_hardness = 2,
+		_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			return inv, "main", mcl_util.select_stack(hop_inv, hop_list, inv, "main", mcl_chests.is_not_shulker_box)
+		end,
 	})
 
 	if mod_doc and not is_canonical then
@@ -1485,6 +1548,14 @@ for color, desc in pairs(boxtypes) do
 		output = "mcl_chests:" .. color .. "_shulker_box",
 		recipe = { "group:shulker_box", "mcl_dye:" .. color },
 	})
+end
+
+--- Returns false if itemstack is a shulker box
+---@param itemstack ItemStack
+---@return boolean
+function mcl_chests.is_not_shulker_box(stack)
+	local g = minetest.get_item_group(stack:get_name(), "shulker_box")
+	return g == 0 or g == nil
 end
 
 minetest.register_craft({

@@ -170,16 +170,8 @@ These groups are used mostly for informational purposes
 * `ammo_bow=1`: Item is used as ammo for bows
 * `non_combat_armor=1`: Item can be equipped as armor, but is not made for combat (e.g. zombie head, pumpkin)
 * `container`: Node is a container which physically stores items within and has at least 1 inventory
-   * `container=2`: Has one inventory with list name `"main"`. Items can be placed and taken freely
-   * `container=3`: Same as `container=2`, but shulker boxes can not be inserted
-   * `container=4`: Furnace-like, has lists `"src"`, `"fuel"` and `"dst"`.
-                    It is expected that this also reacts on `on_timer`;
-                    the node timer must be started from other mods when they add into `"src"` or `"fuel"`
-   * `container=5`: Left part of a 2-part horizontal connected container. Both parts have a `"main"` inventory
-                    list. Both inventories are considered to belong together. This is used for large chests.
-   * `container=6`: Same as above, but for the right part.
-   * `container=7`: Has inventory list "`main`", no movement allowed
-   * `container=1`: Other/unspecified container type
+   * `container=1`: Container type, which does not allow hoppers to transfer items
+   * `container=2`: Items can be placed and taken freely. Can have inventory with list name `"main"` or define `_mcl_hoppers_on_try_pull`, `_mcl_hoppers_on_try_push`, `_mcl_hoppers_on_after_pull`, `_mcl_hoppers_on_after_push` to play along hoppers nicely.
 * `spawn_egg=1`: Spawn egg
 
 * `pressure_plate=1`: Pressure plate (off)

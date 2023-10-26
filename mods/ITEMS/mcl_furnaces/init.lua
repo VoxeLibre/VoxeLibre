@@ -4,6 +4,8 @@ local F = minetest.formspec_escape
 
 local LIGHT_ACTIVE_FURNACE = 13
 
+mcl_furnaces = {}
+
 --
 -- Formspecs
 --
@@ -445,6 +447,31 @@ local function furnace_node_timer(pos, elapsed)
 	return result
 end
 
+function mcl_furnaces.hoppers_on_try_pull(pos, hop_pos, hop_inv, hop_list)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	local stack = inv:get_stack("dst", 1)
+	if not stack:is_empty() and hop_inv:room_for_item(hop_list, stack) then
+		return inv, "dst", 1
+	end
+	-- Allow empty bucket extraction
+	stack = inv:get_stack("fuel", 1)
+	if not stack:is_empty() and not mcl_util.is_fuel(stack) and hop_inv:room_for_item(hop_list, stack) then
+		return inv, "fuel", 1
+	end
+	return nil, nil, nil
+end
+
+function mcl_furnaces.hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	if math.abs(pos.y - hop_pos.y) > math.abs(pos.x - hop_pos.x) and math.abs(pos.y - hop_pos.y) > math.abs(pos.z - hop_pos.z) then
+		return inv, "src", mcl_util.select_stack(hop_inv, hop_list, inv, "src")
+	else
+		return inv, "fuel", mcl_util.select_stack(hop_inv, hop_list, inv, "fuel", mcl_util.is_fuel)
+	end
+end
+
 local on_rotate, after_rotate_active
 if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
@@ -475,7 +502,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 		"default_furnace_side.png", "default_furnace_front.png"
 	},
 	paramtype2 = "facedir",
-	groups = { pickaxey = 1, container = 4, deco_block = 1, material_stone = 1 },
+	groups = { pickaxey = 1, container = 2, deco_block = 1, material_stone = 1 },
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 
@@ -538,6 +565,11 @@ minetest.register_node("mcl_furnaces:furnace", {
 	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_pull = mcl_furnaces.hoppers_on_try_pull,
+	_mcl_hoppers_on_try_push = mcl_furnaces.hoppers_on_try_push,
+	_mcl_hoppers_on_after_push = function(pos)
+		minetest.get_node_timer(pos):start(1.0)
+	end,
 })
 
 minetest.register_node("mcl_furnaces:furnace_active", {
@@ -552,7 +584,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	paramtype = "light",
 	light_source = LIGHT_ACTIVE_FURNACE,
 	drop = "mcl_furnaces:furnace",
-	groups = { pickaxey = 1, container = 4, deco_block = 1, not_in_creative_inventory = 1, material_stone = 1 },
+	groups = { pickaxey = 1, container = 2, deco_block = 1, not_in_creative_inventory = 1, material_stone = 1 },
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_timer = furnace_node_timer,
@@ -592,6 +624,8 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	_mcl_hardness = 3.5,
 	on_rotate = on_rotate,
 	after_rotate = after_rotate_active,
+	_mcl_hoppers_on_try_pull = mcl_furnaces.hoppers_on_try_pull,
+	_mcl_hoppers_on_try_push = mcl_furnaces.hoppers_on_try_push,
 })
 
 minetest.register_craft({
