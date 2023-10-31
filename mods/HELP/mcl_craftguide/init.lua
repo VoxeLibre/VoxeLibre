@@ -774,7 +774,7 @@ local function search(data)
 	for i = 1, #data.items_raw do
 		local item = data.items_raw[i]
 		local def  = reg_items[item]
-		local desc = lower(def.description)
+		local desc = string.lower(M.get_translated_string(data.lang_code, def.description))
 		local search_in = item .. desc
 		local to_add
 
@@ -838,6 +838,7 @@ local function init_data(name)
 		iX      = sfinv_only and 8 or DEFAULT_SIZE,
 		items   = init_items,
 		items_raw = init_items,
+		lang_code = M.get_player_information(name).lang_code or 'en',
 	}
 end
 
