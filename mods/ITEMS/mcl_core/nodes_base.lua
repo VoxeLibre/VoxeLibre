@@ -406,7 +406,7 @@ mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_wi
 minetest.register_node("mcl_core:grass_path", {
 	tiles = {"mcl_core_grass_path_top.png", "default_dirt.png", "mcl_core_grass_path_side.png"},
 	description = S("Grass Path"),
-	_doc_items_longdesc = S("Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel. A grass path turns into dirt when it is below a solid block."),
+	_doc_items_longdesc = S("Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel."),
 	drop = "mcl_core:dirt",
 	is_ground_content = true,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
@@ -419,7 +419,7 @@ minetest.register_node("mcl_core:grass_path", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = {handy=1,shovely=1, cultivatable=2, dirtifies_below_solid=1, dirtifier=1, deco_block=1 },
+	groups = {handy=1,shovely=1, cultivatable=2, dirtifies_below_solid=1, dirtifier=1, deco_block=1, path_remove_possible=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.1},
 	}),
