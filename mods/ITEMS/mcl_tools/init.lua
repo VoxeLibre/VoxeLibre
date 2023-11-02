@@ -171,7 +171,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 	end
 
 -- Remove grass paths
-	if (minetest.get_item_group(node.name, "path_remove_possible") == 1) and placer:get_player_control().sneak == true then
+	if (minetest.get_item_group(node.name, "path_remove_possible") == 1) and placer:get_player_control().sneak then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
@@ -194,7 +194,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 	end
 
 -- Make grass paths
-	if (minetest.get_item_group(node.name, "path_creation_possible") == 1) then
+	if (minetest.get_item_group(node.name, "path_creation_possible") == 1) and not placer:get_player_control().sneak then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
