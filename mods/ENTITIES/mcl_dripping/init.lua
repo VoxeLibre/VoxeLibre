@@ -82,7 +82,7 @@ end
 
 mcl_dripping.register_drop({
 	liquid   = "water",
-	texture  = "default_water_source_animated.png",
+	texture  = "mcl_core_water_source_animation.png",
 	light    = 1,
 	nodes    = { "group:opaque", "group:leaves" },
 	sound    = "drippingwater_drip",
@@ -92,7 +92,7 @@ mcl_dripping.register_drop({
 
 mcl_dripping.register_drop({
 	liquid   = "lava",
-	texture  = "default_lava_source_animated.png",
+	texture  = "mcl_core_lava_source_animation.png",
 	light    = math.max(7, minetest.registered_nodes["mcl_core:lava_source"].light_source - 3),
 	nodes    = { "group:opaque" },
 	sound    = "drippingwater_lavadrip",

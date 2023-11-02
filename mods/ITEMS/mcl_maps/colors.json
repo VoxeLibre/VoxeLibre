@@ -4664,7 +4664,7 @@
     126,
     164
   ],
-  "default_water_source_animated.png": [
+  "mcl_core_water_source_animation.png": [
     37,
     98,
     129
@@ -4984,7 +4984,7 @@
     79,
     64
   ],
-  "default_water_flowing_animated.png": [
+  "mcl_core_water_flow_animation.png": [
     38,
     101,
     129
@@ -5009,7 +5009,7 @@
     89,
     86
   ],
-  "default_lava_flowing_animated.png": [
+  "mcl_core_lava_flow_animation.png": [
     177,
     42,
     16
@@ -5059,7 +5059,7 @@
     142,
     123
   ],
-  "default_lava_source_animated.png": [
+  "mcl_core_lava_source_animation.png": [
     180,
     45,
     17
@@ -6603,16 +6603,6 @@
     56,
     56,
     64
-  ],
-  "default_river_water_flowing_animated.png": [
-    38,
-    123,
-    130
-  ],
-  "default_river_water_source_animated.png": [
-    37,
-    120,
-    130
   ],
   "mcl_armor_stand_item.png": [
     134,
@@ -9009,17 +8999,17 @@
     127,
     113
   ],
-  "bucket_river_water.png": [
+  "mcl_buckets_river_water_bucket.png": [
     139,
     152,
     155
   ],
-  "bucket_water.png": [
+  "mcl_buckets_water_bucket.png": [
     139,
     147,
     155
   ],
-  "bucket.png": [
+  "mcl_buckets_bucket.png": [
     147,
     143,
     139

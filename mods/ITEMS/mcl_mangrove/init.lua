@@ -183,7 +183,7 @@ mcl_flowerpots.register_potted_flower("mcl_mangrove:propagule", {
 	image = "mcl_mangrove_propagule.png",
 })
 
-local water_tex = "default_water_source_animated.png^[verticalframe:16:0^[multiply:#3F76E4"
+local water_tex = "mcl_core_water_source_animation.png^[verticalframe:16:0^[multiply:#3F76E4"
 
 local wlroots = {
 	description = S("water logged mangrove roots"),
@@ -194,12 +194,12 @@ local wlroots = {
 		S("These cannot be crafted yet only occure when get in contact of water."),
 	_doc_items_hidden = false,
 	tiles = {
-		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
+		{name="mcl_core_water_source_animation.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
 	},
 	special_tiles = {
 		-- New-style water source material (mostly unused)
 		{
-			name="default_water_source_animated.png",
+			name="mcl_core_water_source_animation.png",
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0},
 			backface_culling = false,
 		}
@@ -245,7 +245,7 @@ local rwlroots = table.copy(wlroots)
 -- FIXME luacheck complains that this is a repeated definition of water_tex.
 -- Maybe the tiles definition below should be replaced with the animated tile
 -- definition as per above?
-water_tex = "default_water_source_animated.png^[verticalframe:16:0^[multiply:#0084FF"
+water_tex = "mcl_core_water_source_animation.png^[verticalframe:16:0^[multiply:#0084FF"
 rwlroots.tiles = {
 	"("..water_tex..")^mcl_mangrove_roots_top.png",
 	"("..water_tex..")^mcl_mangrove_roots_side.png",

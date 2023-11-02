@@ -21,7 +21,7 @@ mcl_dripping.register_drop({
 	-- The group the liquid's nodes belong to
 	liquid   = "water",
 	-- The texture used (particles will take a random 2x2 area of it)
-	texture  = "default_water_source_animated.png",
+	texture  = "mcl_core_water_source_animation.png",
 	-- Define particle glow, ranges from `0` to `minetest.LIGHT_MAX`
 	light    = 1,
 	-- The nodes (or node group) the particles will spawn under

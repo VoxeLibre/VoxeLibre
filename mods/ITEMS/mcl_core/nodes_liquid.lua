@@ -18,17 +18,17 @@ end
 minetest.register_node("mcl_core:water_flowing", {
 	description = S("Flowing Water"),
 	_doc_items_create_entry = false,
-	wield_image = "default_water_flowing_animated.png^[verticalframe:64:0",
+	wield_image = "mcl_core_water_flow_animation.png^[verticalframe:64:0",
 	drawtype = "flowingliquid",
-	tiles = {"default_water_flowing_animated.png^[verticalframe:64:0"},
+	tiles = {"mcl_core_water_flow_animation.png^[verticalframe:64:0"},
 	special_tiles = {
 		{
-			image="default_water_flowing_animated.png",
+			image="mcl_core_water_flow_animation.png",
 			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=1.5}
 		},
 		{
-			image="default_water_flowing_animated.png",
+			image="mcl_core_water_flow_animation.png",
 			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=1.5}
 		},
@@ -71,12 +71,12 @@ S("• When water is directly below lava, the water turns into stone."),
 	drawtype = "liquid",
 	waving = 3,
 	tiles = {
-		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0}}
+		{name="mcl_core_water_source_animation.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0}}
 	},
 	special_tiles = {
 		-- New-style water source material (mostly unused)
 		{
-			name="default_water_source_animated.png",
+			name="mcl_core_water_source_animation.png",
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0},
 			backface_culling = false,
 		}
@@ -119,17 +119,17 @@ S("• When water is directly below lava, the water turns into stone."),
 minetest.register_node("mcl_core:lava_flowing", {
 	description = S("Flowing Lava"),
 	_doc_items_create_entry = false,
-	wield_image = "default_lava_flowing_animated.png^[verticalframe:64:0",
+	wield_image = "mcl_core_lava_flow_animation.png^[verticalframe:64:0",
 	drawtype = "flowingliquid",
-	tiles = {"default_lava_flowing_animated.png^[verticalframe:64:0"},
+	tiles = {"mcl_core_lava_flow_animation.png^[verticalframe:64:0"},
 	special_tiles = {
 		{
-			image="default_lava_flowing_animated.png",
+			image="mcl_core_lava_flow_animation.png",
 			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=6.6}
 		},
 		{
-			image="default_lava_flowing_animated.png",
+			image="mcl_core_lava_flow_animation.png",
 			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=6.6}
 		},
@@ -182,12 +182,12 @@ S("• When flowing water touches flowing lava either from above or horizontally
 S("• When lava is directly above water, the water turns into stone."),
 	drawtype = "liquid",
 	tiles = {
-		{name="default_lava_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0}}
+		{name="mcl_core_lava_source_animation.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0}}
 	},
 	special_tiles = {
 		-- New-style lava source material (mostly unused)
 		{
-			name="default_lava_source_animated.png",
+			name="mcl_core_lava_source_animation.png",
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0},
 			backface_culling = false,
 		}
