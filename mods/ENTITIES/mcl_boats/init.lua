@@ -160,7 +160,7 @@ local boat = {
 minetest.register_on_respawnplayer(detach_object)
 
 function boat.on_rightclick(self, clicker)
-	if self._passenger or not clicker or clicker:get_attach() then
+	if self._passenger or not clicker or clicker:get_attach() or (self.name == "mcl_boats:chest_boat" and self._driver) then
 		return
 	end
 	attach_object(self, clicker)
