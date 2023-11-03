@@ -1,7 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 --                                          ____________________________
---_________________________________________/    Variables & Functions    \_________ 
+--_________________________________________/    Variables & Functions    \_________
 
 local eat = minetest.item_eat(6, "mcl_core:bowl") --6 hunger points, player receives mcl_core:bowl after eating
 
@@ -12,7 +12,7 @@ local flower_effect = {
 	[ "mcl_flowers:dandelion" ] = "hunger",
 	[ "mcl_flowers:cornflower" ] = "jump",
 	[ "mcl_flowers:oxeye_daisy" ] = "regeneration",
-	[ "mcl_flowers:poppy" ] = "night_vision"	
+	[ "mcl_flowers:poppy" ] = "night_vision"
 }
 
 local effects = {
@@ -53,13 +53,27 @@ local function get_random_effect()
 	return effects[keys[math.random(#keys)]]
 end
 
-local function eat_stew(itemstack, placer, pointed_thing)
+local function eat_stew(itemstack, user, pointed_thing)
+	if pointed_thing.type == "node" then
+		if user and not user:get_player_control().sneak then
+			-- Use pointed node's on_rightclick function first, if present
+			local node = minetest.get_node(pointed_thing.under)
+			if user and not user:get_player_control().sneak then
+				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+				end
+			end
+		end
+	elseif pointed_thing.type == "object" then
+		return itemstack
+	end
+
 	local e = itemstack:get_meta():get_string("effect")
 	local f = effects[e]
 	if not f then
 		f = get_random_effect()
 	end
-	if f(itemstack,placer,pointed_thing) then
+	if f(itemstack, user, pointed_thing) then
 		return "mcl_core:bowl"
 	end
 end
