@@ -207,28 +207,7 @@ function mcl_stairs.cornerstair.add(name, stairtiles)
 	local node_def = minetest.registered_nodes[name]
 	local outer_tiles
 	local inner_tiles
-	if stairtiles == "woodlike" then
-		outer_tiles = table.copy(node_def.tiles)
-		inner_tiles = table.copy(node_def.tiles)
-		for i=2,6 do
-			if outer_tiles[i] == nil then
-				outer_tiles[i] = outer_tiles[i-1]
-			end
-			if inner_tiles[i] == nil then
-				inner_tiles[i] = inner_tiles[i-1]
-			end
-		end
-		local t = node_def.tiles[1]
-		outer_tiles[1] = t.."^("..t.."^[transformR90^mcl_stairs_turntexture.png^[makealpha:255,0,255)"
-		outer_tiles[2] = t.."^("..t.."^mcl_stairs_turntexture.png^[transformR270^[makealpha:255,0,255)"
-		outer_tiles[3] = t
-		inner_tiles[1] = t.."^("..t.."^[transformR90^(mcl_stairs_turntexture.png^[transformR180)^[makealpha:255,0,255)"
-		inner_tiles[2] = t.."^("..t.."^[transformR270^(mcl_stairs_turntexture.png^[transformR90)^[makealpha:255,0,255)"
-		inner_tiles[3] = t
-	elseif stairtiles == nil or stairtiles == "default" then
-		outer_tiles = node_def.tiles
-		inner_tiles = node_def.tiles
-	else
+	if stairtiles ~= nil and stairtiles ~= "default" and stairtiles ~= "woodlike" then
 		outer_tiles = stairtiles[1]
 		inner_tiles = stairtiles[2]
 	end
