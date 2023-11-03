@@ -62,7 +62,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 	head_swivel = "head.control",
 	bone_eye_height = 11,
 	head_eye_height = 3,
-	horrizonatal_head_height=0,
+	horizontal_head_height=0,
 	curiosity = 60,
 	head_yaw = "z",
 

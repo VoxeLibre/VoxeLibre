@@ -13,7 +13,7 @@ local axolotl = {
 	head_swivel = "head.control",
 	bone_eye_height = -1,
 	head_eye_height = -0.5,
-	horrizonatal_head_height = 0,
+	horizontal_head_height = 0,
 	curiosity = 10,
 	head_yaw="z",
 

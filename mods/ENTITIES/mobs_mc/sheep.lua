@@ -67,7 +67,7 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	head_swivel = "head.control",
 	bone_eye_height = 3.3,
 	head_eye_height = 1.1,
-	horrizonatal_head_height=-.7,
+	horizontal_head_height=-.7,
 	curiosity = 6,
 	head_yaw="z",
 	visual = "mesh",

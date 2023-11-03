@@ -147,7 +147,7 @@ function mcl_mobs.register_mob(name, def)
 		head_eye_height = def.head_eye_height or def.bone_eye_height or 0, -- how hight aproximatly the mobs head is fromm the ground to tell the mob how high to look up at the player
 		curiosity = def.curiosity or 1, -- how often mob will look at player on idle
 		head_yaw = def.head_yaw or "y", -- axis to rotate head on
-		horrizonatal_head_height = def.horrizonatal_head_height or 0,
+		horizontal_head_height = def.horizontal_head_height or 0,
 		wears_armor = def.wears_armor, -- a number value used to index texture slot for armor
 		stepheight = def.stepheight or 0.6,
 		name = name,

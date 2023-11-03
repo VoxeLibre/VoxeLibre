@@ -410,7 +410,7 @@ function mob_class:check_head_swivel(dtime)
 		--final_rotation = vector.new(0,0,0)
 	end
 
-	mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horrizonatal_head_height), final_rotation)
+	mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horizontal_head_height), final_rotation)
 end
 
 
