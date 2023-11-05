@@ -15,7 +15,7 @@ end
 ---
 ---@param pos mt.Vector The position of the ladder.
 ---@param event "place" | "destruct" The place or destruct event.
-local function update_trapdoor(pos, event)
+function mcl_core.update_trapdoor(pos, event)
 	local top_pos = vector.offset(pos, 0, 1, 0)
 	local top_node = minetest.get_node_or_nil(top_pos)
 
@@ -115,10 +115,10 @@ minetest.register_node("mcl_core:ladder", {
 		return itemstack
 	end,
 	after_destruct = function(pos, old)
-		update_trapdoor(pos, "destruct")
+		mcl_core.update_trapdoor(pos, "destruct")
 	end,
 	after_place_node = function(pos)
-		update_trapdoor(pos, "place")
+		mcl_core.update_trapdoor(pos, "place")
 	end,
 	_mcl_blast_resistance = 0.4,
 	_mcl_hardness = 0.4,
@@ -158,7 +158,8 @@ minetest.register_node("mcl_core:vine", {
 		flammable = 2,
 		fire_encouragement = 15,
 		fire_flammability = 100,
-		foliage_palette_wallmounted = 1
+		foliage_palette_wallmounted = 1,
+		ladder = 1
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
@@ -229,6 +230,12 @@ minetest.register_node("mcl_core:vine", {
 		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
 			minetest.registered_nodes[node.name].on_dig(below, node, digger)
 		end
+	end,
+	after_destruct = function(pos, old)
+		mcl_core.update_trapdoor(pos, "destruct")
+	end,
+	after_place_node = function(pos)
+		mcl_core.update_trapdoor(pos, "place")
 	end,
 
 
