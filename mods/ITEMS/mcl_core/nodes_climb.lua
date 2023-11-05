@@ -11,42 +11,15 @@ local function rotate_climbable(pos, node, user, mode)
 	return false
 end
 
----Checks the direction (param2) of a ladder and a trapdoor and determine if they are
----facing the same direction.
----
----@param ladder integer The param2 value of the ladder.
----@param trapdoor integer The param2 value of the trapdoor.
----@return boolean If the ladder and trapdoor are in the same direction.
-function mcl_core.check_direction(ladder, trapdoor)
-	local convert_table = {
-		{ 1, 23 },
-		{ 3, 21 },
-		{ 0, 20 },
-		{ 2, 22 },
-	}
-
-	local conversion = convert_table[ladder - 1];
-	if not conversion then
-		return false
-	elseif conversion[1] == trapdoor or conversion[2] == trapdoor then
-		return true
-	end
-
-	return false
-end
-
 ---Updates the trapdoor above (if any).
 ---
 ---@param pos mt.Vector The position of the ladder.
----@param ladder integer The param2 value of the ladder.
 ---@param event "place" | "destruct" The place or destruct event.
-local function update_trapdoor(pos, ladder, event)
+local function update_trapdoor(pos, event)
 	local top_pos = vector.offset(pos, 0, 1, 0)
 	local top_node = minetest.get_node_or_nil(top_pos)
 
-
-	if top_node and minetest.get_item_group(top_node.name, "trapdoor") == 2
-		and mcl_core.check_direction(ladder, top_node.param2) then
+	if top_node and minetest.get_item_group(top_node.name, "trapdoor") == 2 then
 		local new_name = top_node.name
 		if event == "place" then
 			new_name = string.gsub(new_name, "open$", "ladder")
@@ -142,11 +115,10 @@ minetest.register_node("mcl_core:ladder", {
 		return itemstack
 	end,
 	after_destruct = function(pos, old)
-		update_trapdoor(pos, old.param2, "destruct")
+		update_trapdoor(pos, "destruct")
 	end,
 	after_place_node = function(pos)
-		local me = minetest.get_node(pos)
-		update_trapdoor(pos, me.param2, "place")
+		update_trapdoor(pos, "place")
 	end,
 	_mcl_blast_resistance = 0.4,
 	_mcl_hardness = 0.4,

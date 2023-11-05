@@ -79,8 +79,7 @@ function mcl_doors:register_trapdoor(name, def)
 			-- Checking if there is something underneath the trapdoor
 			if bottom_node then
 				local is_ladder = minetest.get_item_group(bottom_node.name, "ladder")
-				local same_direction = mcl_core.check_direction(bottom_node.param2, me.param2)
-				if is_ladder > 0 and same_direction then
+				if is_ladder > 0 then
 					name_end = "_ladder"
 				end
 			end
