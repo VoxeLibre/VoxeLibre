@@ -290,6 +290,10 @@ fix_doubleplants (Mcimport double plant fixes) bool true
 # Allow players to create Minecraft-like maps.
 enable_real_maps (Enable Real Maps) bool true
 
+# Enable workarounds for faulty mob navigation.
+# Hack 1: teleport golems home if they are very far from home
+mcl_mob_allow_nav_hacks (Mob navigation hacks) bool false
+
 [Additional Features]
 # Enable Bookshelf inventories
 mcl_bookshelf_inventories (Enable bookshelf inventories) bool true

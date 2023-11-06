@@ -4,12 +4,14 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
+local allow_nav_hacks = minetest.settings:get_bool("mcl_mob_allow_nav_hacks ",false)
 
 --###################
 --################### IRON GOLEM
 --###################
 
-local etime = 0
+local walk_dist = 40
+local tele_dist = 80
 
 mcl_mobs.register_mob("mobs_mc:iron_golem", {
 	description = S("Iron Golem"),
@@ -85,11 +87,23 @@ mcl_mobs.register_mob("mobs_mc:iron_golem", {
 		punch_start = 40,  punch_end = 50,
 	},
 	jump = true,
-	on_step = function(self,dtime)
-		etime = etime + dtime
-		if etime > 10 then
-			if self._home and vector.distance(self._home,self.object:get_pos()) > 50 then
-				self:gopath(self._home)
+	do_custom = function(self, dtime)
+		self.home_timer = (self.home_timer or 0) + dtime
+
+		if self.home_timer > 10 then
+			self.home_timer = 0
+			if self._home and self.state ~= "attack" then
+				local dist = vector.distance(self._home,self.object:get_pos())
+				if allow_nav_hacks and dist >= tele_dist then
+					self.object:set_pos(self._home)
+					self.state = "stand"
+					self.order = "follow"
+				elseif dist >= walk_dist then
+					self:gopath(self._home, function(self)
+						self.state = "stand"
+						self.order = "follow"
+					end)
+				end
 			end
 		end
 	end,
