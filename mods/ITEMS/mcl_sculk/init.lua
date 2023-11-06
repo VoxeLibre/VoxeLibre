@@ -215,9 +215,23 @@ minetest.register_node("mcl_sculk:vein", {
 		type = "wallmounted",
 	},
 	groups = {
-		handy = 1, axey = 1, shearsy = 1, swordy = 1, deco_block = 1,
-		dig_by_piston = 1, destroy_by_lava_flow = 1, sculk = 1, dig_by_water = 1,
+		handy = 1,
+		axey = 1,
+		shearsy = 1,
+		swordy = 1,
+		deco_block = 1,
+		dig_by_piston = 1,
+		destroy_by_lava_flow = 1,
+		sculk = 1,
+		dig_by_water = 1,
+		ladder = 1
 	},
+	after_destruct = function(pos, old)
+		mcl_core.update_trapdoor(pos, "destruct")
+	end,
+	after_place_node = function(pos)
+		mcl_core.update_trapdoor(pos, "place")
+	end,
 	sounds = sounds,
 	drop = "",
 	_mcl_shears_drop = true,
