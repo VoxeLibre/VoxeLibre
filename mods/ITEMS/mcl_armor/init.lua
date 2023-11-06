@@ -60,7 +60,7 @@ mcl_armor = {
 	trims = {
 		core_textures	= {},
 		blacklisted		= {["mcl_armor:elytra"]=true, ["mcl_armor:elytra_enchanted"]=true},
-		overlays        = {"sentry","dune","coast","wild","tide","ward","vex","rib","snout","eye","spire"},
+		overlays        = {"sentry","dune","coast","wild","tide","ward","vex","rib","snout","eye","spire","silence","wayfinder"},
 		colors			= {["amethyst"]="#8246a5",["gold"]="#ce9627",["emerald"]="#1b9958",["copper"]="#c36447",["diamond"]="#5faed8",["iron"]="#938e88",["lapis"]="#1c306b",["netherite"]="#302a26",["quartz"]="#c9bcb9",["redstone"]="#af2c23"},
 	},
 }

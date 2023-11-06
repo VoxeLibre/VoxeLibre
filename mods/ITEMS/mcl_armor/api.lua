@@ -326,7 +326,7 @@ end
 tt.register_snippet(function(itemstring, toolcaps, stack)
 	if not stack then return nil end
 	local meta = stack:get_meta()
-	if meta:get_string("mcl_armor:trim_overlay") == "" then return nil end -- remember, get_string returns "" if the key doesn't exist
+	if not mcl_armor.is_trimmed(stack) then return nil end 
 	-- we need to get the part of the overlay image between the overlay begin ( and the trim name end _
 	-- we COULD easily store this info in meta, but that would bloat the meta storage, as the same few values would be stored over and over again on every trimmed item
 	-- this is fine here as this code gets only executed when you put armor and a trim in a smithing table
@@ -334,3 +334,9 @@ tt.register_snippet(function(itemstring, toolcaps, stack)
 	local trim_name = full_overlay:match("%((.-)%_") 
 	return "Upgrade:\n " .. trim_name:gsub("^%l", string.upper) .. " Armor Trim"
 end)
+
+function mcl_armor.is_trimmed(itemstack)
+	-- this meta value will be there for every trimmed armor piece
+	-- remember, get_string returns "" if the key doesn't exist
+	return itemstack:get_meta():get_string("mcl_armor:trim_overlay") ~= ""
+end
