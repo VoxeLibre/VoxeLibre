@@ -128,8 +128,6 @@ local fortune_wheat_seed_drop = {
 	overwrite = true,
 }
 
--- CHECKME: How does tall grass behave when pushed by a piston?
-
 --- Tall Grass ---
 local def_tallgrass = {
 	description = S("Tall Grass"),
@@ -155,7 +153,7 @@ local def_tallgrass = {
 	groups = {
 		handy = 1, shearsy = 1, attached_node = 1, deco_block = 1,
 		plant = 1, place_flowerlike = 2, non_mycelium_plant = 1,
-		flammable = 3, fire_encouragement = 60, fire_flammability = 100,
+		flammable = 3, fire_encouragement = 60, fire_flammability = 10, dig_by_piston = 1,
 		dig_by_water = 1, destroy_by_lava_flow = 1, compostability = 30, grass_palette = 1
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -252,7 +250,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		paramtype2 = paramtype2,
 		palette = palette,
 		walkable = false,
-		buildable_to = true,
+		buildable_to = false,
 		drop = drop_bottom,
 		_mcl_shears_drop = shears_drop,
 		_mcl_fortune_drop = fortune_drop,
@@ -354,7 +352,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		paramtype2 = paramtype2,
 		palette = palette,
 		walkable = false,
-		buildable_to = true,
+		buildable_to = false,
 		selection_box = {
 			type = "fixed",
 			fixed = { -selbox_radius, -0.5, -selbox_radius, selbox_radius, selbox_top_height, selbox_radius },

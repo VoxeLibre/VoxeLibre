@@ -117,7 +117,7 @@ local function is_available(pos)
 		return false, n
 	end
 	if minetest.registered_nodes[name] then
-		return minetest.registered_nodes[name].buildable_to, n or false, n
+		return minetest.registered_nodes[name].buildable_to or minetest.get_item_group(name, "dig_by_piston") == 1, n or false, n
 	end
 	return false, n
 end
@@ -126,6 +126,7 @@ end
 function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 	-- determine the number of nodes to be pushed
 	local nodes = {}
+	local dig_nodes = {}
 	local frontiers = {pos}
 
 	while #frontiers > 0 do
@@ -140,47 +141,50 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 			return
 		end
 
-		if not node_replaceable(nn.name) then
-			if #nodes >= maximum then return nil, false end
-			table.insert(nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
-
-			-- add connected nodes to frontiers, connected is a vector list
-			-- the vectors must be absolute positions
-			local connected = {}
-            local has_loop
-			if minetest.registered_nodes[nn.name]
-			and minetest.registered_nodes[nn.name].mvps_sticky then
-				connected, has_loop = minetest.registered_nodes[nn.name].mvps_sticky(np, nn, piston_pos)
-				if has_loop then
-					return {}, true
-				end
-			end
-
-			table.insert(connected, vector.add(np, dir))
-
-			-- Make sure there are no duplicates in frontiers / nodes before
-			-- adding nodes in "connected" to frontiers
-			for _, cp in ipairs(connected) do
-				local duplicate = false
-				for _, rp in ipairs(nodes) do
-					if vector.equals(cp, rp.pos) then
-						duplicate = true
+		if minetest.get_item_group(nn.name, "dig_by_piston") == 1 then
+			-- if we want the node to drop, e.g. sugar cane, do not count towards push limit
+			table.insert(dig_nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
+		else
+			if not node_replaceable(nn.name) then
+				table.insert(nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
+				if #nodes > maximum then return nil, nil, false, true end
+				
+				-- add connected nodes to frontiers, connected is a vector list
+				-- the vectors must be absolute positions
+				local connected = {}
+				local has_loop
+				if minetest.registered_nodes[nn.name] and minetest.registered_nodes[nn.name].mvps_sticky then
+					connected, has_loop = minetest.registered_nodes[nn.name].mvps_sticky(np, nn, piston_pos)
+					if has_loop then
+						return {}, {}, true, false
 					end
 				end
-				for _, fp in ipairs(frontiers) do
-					if vector.equals(cp, fp) then
-						duplicate = true
+				table.insert(connected, vector.add(np, dir))
+				
+				-- Make sure there are no duplicates in frontiers / nodes before
+				-- adding nodes in "connected" to frontiers
+				for _, cp in ipairs(connected) do
+					local duplicate = false
+					for _, rp in ipairs(nodes) do
+						if vector.equals(cp, rp.pos) then
+							duplicate = true
+						end
 					end
-				end
-				if not duplicate and not mesecon.is_mvps_stopper(minetest.get_node(cp)) then
-					table.insert(frontiers, cp)
+					for _, fp in ipairs(frontiers) do
+						if vector.equals(cp, fp) then
+							duplicate = true
+						end
+					end
+					if not duplicate and not mesecon.is_mvps_stopper(minetest.get_node(cp)) and minetest.get_item_group(nn.name, "dig_by_piston") == 0 then
+						table.insert(frontiers, cp)
+					end
 				end
 			end
 		end
 		table.remove(frontiers, 1)
 	end
 
-	return nodes, false
+	return nodes, dig_nodes, false, false
 end
 
 function mesecon.mvps_set_owner(pos, placer)
@@ -203,6 +207,11 @@ local function are_protected(nodes, player_name)
 end
 
 function mesecon.mvps_push(pos, dir, maximum, player_name, piston_pos)
+	-- check if the node in front of the piston is protected against player_name (to prevent replacing air)
+	if minetest.is_protected(pos, player_name) then
+		return false
+	end
+
 	return mesecon.mvps_push_or_pull(pos, dir, dir, maximum, player_name, piston_pos)
 end
 
@@ -222,9 +231,9 @@ end
 -- movedir: direction of actual movement
 -- maximum: maximum nodes to be pushed
 function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name, piston_pos)
-	local nodes, has_loop = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos)
+	local nodes, dig_nodes, has_loop, too_many = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos)
 
-	if has_loop then
+	if has_loop or too_many then
 		return false
 	end
 
@@ -235,6 +244,9 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 	for i in ipairs(nodes) do
 		newpos[i] = vector.add(nodes[i].pos, movedir)
 		if (newpos[i].x == piston_pos.x) and (newpos[i].y == piston_pos.y) and (newpos[i].z == piston_pos.z) then
+			return
+		end
+		if minetest.is_protected(newpos[i], player_name) then
 			return
 		end
 		if not is_available(newpos[i]) then
@@ -253,18 +265,35 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 		end
 	end
 
-	if are_protected(nodes, player_name) then
+	local all_nodes = nodes
+	if dig_nodes and #dig_nodes > 0 then all_nodes = mesecon.join_table(dig_nodes, nodes) end
+	if are_protected(all_nodes, player_name) then
 		return
 	end
 
 	local first_dropper = nil
 	-- remove all nodes
-	for id, n in ipairs(nodes) do
+	for id, n in ipairs(all_nodes) do
 		n.meta = minetest.get_meta(n.pos):to_table()
-		local is_dropper = mesecon.is_mvps_dropper(n.node, movedir, nodes, id)
+		local is_dropper = mesecon.is_mvps_dropper(n.node, movedir, all_nodes, id)
 		if is_dropper then
-			--local drops = minetest.get_node_drops(n.node.name, "")
-			minetest.dig_node(n.pos)
+			-- if current node has already been destroyed (e.g. chain reaction of sugar cane breaking), skip it
+			if minetest.get_node(n.pos).name == n.node.name then
+				-- simulate dig_node using handle_node_drops
+				local drops = minetest.get_node_drops(n.node.name, "")
+				local counted_drops = {}
+				minetest.remove_node(n.pos)
+				for _, callback in pairs(minetest.registered_on_dignodes) do
+					callback(n.pos, n)
+				end
+				for _, item in ipairs(drops) do
+					if type(item) ~= "string" then
+						item = item:get_name() .. item:get_count()
+					end
+					table.insert(counted_drops, item)
+				end
+				minetest.handle_node_drops(n.pos, counted_drops)
+			end
 		else
 			minetest.remove_node(n.pos)
 			local node_timer = minetest.get_node_timer(n.pos)
@@ -273,13 +302,13 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 			end
 		end
 		if is_dropper then
-			first_dropper = id
-			break
+			-- get id of the first dropper, but we still let everything else drop, so don't break here
+			if not first_dropper then first_dropper = id end
 		end
 	end
 
 	-- update mesecons for removed nodes ( has to be done after all nodes have been removed )
-	for id, n in ipairs(nodes) do
+	for id, n in ipairs(all_nodes) do
 		if first_dropper and id >= first_dropper then
 			break
 		end
@@ -287,7 +316,7 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 	end
 
 	-- add nodes
-	for id, n in ipairs(nodes) do
+	for id, n in ipairs(all_nodes) do
 		if first_dropper and id >= first_dropper then
 			break
 		end
@@ -394,6 +423,7 @@ mesecon.register_mvps_stopper("mcl_core:realm_barrier")
 mesecon.register_mvps_stopper("mcl_core:void")
 mesecon.register_mvps_stopper("mcl_core:bedrock")
 mesecon.register_mvps_stopper("mcl_core:obsidian")
+mesecon.register_mvps_stopper("mcl_core:crying_obsidian")
 mesecon.register_mvps_stopper("mcl_chests:ender_chest")
 mesecon.register_mvps_stopper("mcl_chests:ender_chest_small")
 mesecon.register_mvps_stopper("mcl_mobspawners:spawner")
@@ -411,10 +441,9 @@ mesecon.register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_on")
 mesecon.register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_off")
 mesecon.register_mvps_stopper("mcl_banners:hanging_banner")
 mesecon.register_mvps_stopper("mcl_banners:standing_banner")
-mesecon.register_mvps_stopper("mcl_campfires:campfire")
-mesecon.register_mvps_stopper("mcl_campfires:campfire_lit")
-mesecon.register_mvps_stopper("mcl_campfires:soul_campfire")
-mesecon.register_mvps_stopper("mcl_campfires:soul_campfire_lit")
+mesecon.register_mvps_stopper("mcl_beehives:bee_nest")
+mesecon.register_mvps_stopper("mcl_beehives:beehive")
+mesecon.register_mvps_stopper("mcl_compass:lodestone")
 
 -- Unmovable by technical restrictions.
 -- Open formspec would screw up if node is destroyed (minor problem)
@@ -445,13 +474,14 @@ mesecon.register_mvps_stopper("mcl_chests:trapped_chest")
 mesecon.register_mvps_stopper("mcl_chests:trapped_chest_small")
 mesecon.register_mvps_stopper("mcl_chests:trapped_chest_left")
 mesecon.register_mvps_stopper("mcl_chests:trapped_chest_right")
-mesecon.register_mvps_stopper("mcl_signs:wall_sign")
-mesecon.register_mvps_stopper("mcl_signs:standing_sign")
-mesecon.register_mvps_stopper("mcl_signs:standing_sign22_5")
-mesecon.register_mvps_stopper("mcl_signs:standing_sign45")
-mesecon.register_mvps_stopper("mcl_signs:standing_sign67_5")
 mesecon.register_mvps_stopper("mcl_barrels:barrel_open")
 mesecon.register_mvps_stopper("mcl_barrels:barrel_closed")
+mesecon.register_mvps_stopper("mcl_campfires:campfire")
+mesecon.register_mvps_stopper("mcl_campfires:campfire_lit")
+mesecon.register_mvps_stopper("mcl_campfires:soul_campfire")
+mesecon.register_mvps_stopper("mcl_campfires:soul_campfire_lit")
+mesecon.register_mvps_stopper("mcl_lectern:lectern")
+mesecon.register_mvps_stopper("mcl_grindstone:grindstone")
 
 
 -- Unmovable by design: objects
@@ -495,8 +525,6 @@ mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_2")
 mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_3")
 
 mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_door")
-mesecon.register_mvps_unsticky("mcl_bamboo:bamboo_trapdoor")
-mesecon.register_mvps_unsticky("mcl_signs:wall_sign_bamboo")
 mesecon.register_mvps_unsticky("mcl_bamboo:scaffolding")
 
 -- Beds
@@ -532,21 +560,6 @@ mesecon.register_mvps_unsticky("mcl_beds:bed_white_top")
 mesecon.register_mvps_unsticky("mcl_beds:bed_white_bottom")
 mesecon.register_mvps_unsticky("mcl_beds:bed_yellow_top")
 mesecon.register_mvps_unsticky("mcl_beds:bed_yellow_bottom")
--- Buttons
-mesecon.register_mvps_unsticky("mesecons_button:button_stone_off")
-mesecon.register_mvps_unsticky("mesecons_button:button_stone_on")
-mesecon.register_mvps_unsticky("mesecons_button:button_wood_off")
-mesecon.register_mvps_unsticky("mesecons_button:button_wood_on")
-mesecon.register_mvps_unsticky("mesecons_button:button_acaciawood_off")
-mesecon.register_mvps_unsticky("mesecons_button:button_acaciawood_on")
-mesecon.register_mvps_unsticky("mesecons_button:button_birchwood_off")
-mesecon.register_mvps_unsticky("mesecons_button:button_birchwood_on")
-mesecon.register_mvps_unsticky("mesecons_button:button_darkwood_off")
-mesecon.register_mvps_unsticky("mesecons_button:button_darkwood_on")
-mesecon.register_mvps_unsticky("mesecons_button:button_sprucewood_off")
-mesecon.register_mvps_unsticky("mesecons_button:button_sprucewood_on")
-mesecon.register_mvps_unsticky("mesecons_button:button_junglewood_off")
-mesecon.register_mvps_unsticky("mesecons_button:button_junglewood_on")
 -- Cactus, Sugarcane & Vines
 mesecon.register_mvps_unsticky("mcl_core:cactus")
 mesecon.register_mvps_unsticky("mcl_core:reeds")
@@ -559,23 +572,6 @@ mesecon.register_mvps_unsticky("mcl_cake:cake_4")
 mesecon.register_mvps_unsticky("mcl_cake:cake_5")
 mesecon.register_mvps_unsticky("mcl_cake:cake_6")
 mesecon.register_mvps_unsticky("mcl_cake:cake")
--- Carpet
-mesecon.register_mvps_unsticky("mcl_wool:black_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:blue_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:brown_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:cyan_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:green_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:grey_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:light_blue_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:lime_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:orange_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:magenta_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:pink_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:purple_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:red_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:silver_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:white_carpet")
-mesecon.register_mvps_unsticky("mcl_wool:yellow_carpet")
 -- Carved & Jack O'Lantern Pumpkins, Pumpkin & Melon
 mesecon.register_mvps_unsticky("mcl_farming:pumpkin_face")
 mesecon.register_mvps_unsticky("mcl_farming:pumpkin_face_light")
@@ -907,16 +903,16 @@ mesecon.register_mvps_unsticky("mcl_chests:black_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:blue_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:brown_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:cyan_shulker_box_small")
+mesecon.register_mvps_unsticky("mcl_chests:dark_green_shulker_box_small")
+mesecon.register_mvps_unsticky("mcl_chests:dark_grey_shulker_box_small")
+mesecon.register_mvps_unsticky("mcl_chests:lightblue_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:green_shulker_box_small")
-mesecon.register_mvps_unsticky("mcl_chests:grey_shulker_box_small")
-mesecon.register_mvps_unsticky("mcl_chests:light_blue_shulker_box_small")
-mesecon.register_mvps_unsticky("mcl_chests:lime_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:orange_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:magenta_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:pink_shulker_box_small")
-mesecon.register_mvps_unsticky("mcl_chests:purple_shulker_box_small")
+mesecon.register_mvps_unsticky("mcl_chests:violet_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:red_shulker_box_small")
-mesecon.register_mvps_unsticky("mcl_chests:silver_shulker_box_small")
+mesecon.register_mvps_unsticky("mcl_chests:grey_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:white_shulker_box_small")
 mesecon.register_mvps_unsticky("mcl_chests:yellow_shulker_box_small")
 -- Snow

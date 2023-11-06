@@ -85,7 +85,7 @@ end
 mcl_signs = {}
 
 -- GLOBALS
-mcl_signs.sign_groups = { handy = 1, axey = 1, deco_block = 1, material_wood = 1, attached_node = 1, dig_by_piston = 1, flammable = -1 }
+mcl_signs.sign_groups = { handy = 1, axey = 1, deco_block = 1, material_wood = 1, attached_node = 1, flammable = -1 }
 --- colors used for wools.
 mcl_signs.mcl_wool_colors = {
 	unicolor_white = "#FFFFFF",
@@ -764,6 +764,15 @@ function mcl_signs.register_sign (modname, color, _name, ttsign)
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign22_5" .. _name, 1 })
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign45" .. _name, 2 })
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign67_5" .. _name, 3 })
+
+	-- register as unpushable
+	if minetest.get_modpath("mesecons_mvps") then
+		mesecon.register_mvps_stopper("mcl_signs:wall_sign" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign22_5" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign45" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign67_5" .. _name)
+	end
 end
 
 --- The same as register_sign, except caller defines the textures. Note, there is a greyscale version of the sign,
@@ -1002,6 +1011,14 @@ function mcl_signs.register_sign_custom (modname, _name, tiles, color, inventory
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign45" .. _name, 2 })
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign67_5" .. _name, 3 })
 
+	-- register as unpushable
+	if minetest.get_modpath("mesecons_mvps") then
+		mesecon.register_mvps_stopper("mcl_signs:wall_sign" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign22_5" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign45" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign67_5" .. _name)
+	end
 end
 
 --- Override an existing sign, tint the textures, and gives it an unique node name. Creates both wall and standing signs.
@@ -1234,6 +1251,15 @@ function mcl_signs.reregister_sign (modname, color, _name, ttsign)
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign22_5" .. _name, 1 })
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign45" .. _name, 2 })
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign67_5" .. _name, 3 })
+
+	-- register as unpushable
+	if minetest.get_modpath("mesecons_mvps") then
+		mesecon.register_mvps_stopper("mcl_signs:wall_sign" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign22_5" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign45" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign67_5" .. _name)
+	end
 end
 
 --- The same as reregister_sign, except caller defines the textures. Note, there is a greyscale version of the sign,
@@ -1469,6 +1495,14 @@ function mcl_signs.reregister_sign_custom (modname, _name, tiles, color, invento
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign45" .. _name, 2 })
 	table.insert(mcl_signs.standing_rotation_levels, { "mcl_signs:standing_sign67_5" .. _name, 3 })
 
+	-- register as unpushable
+	if minetest.get_modpath("mesecons_mvps") then
+		mesecon.register_mvps_stopper("mcl_signs:wall_sign" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign22_5" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign45" .. _name)
+		mesecon.register_mvps_stopper("mcl_signs:standing_sign67_5" .. _name)
+	end
 end
 
 --- Usage: Call this with the mod's name, the wood's item string (for the planks), and with the sign's suffix.

@@ -251,7 +251,7 @@ local bamboo_def = {
 minetest.register_node(BAMBOO, bamboo_def)
 
 local bamboo_top = table.copy(bamboo_def)
-bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
+bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, dig_by_piston = 1, plant = 1, non_mycelium_plant = 1, flammable = 3}
 bamboo_top.tiles = {"mcl_bamboo_endcap.png"}
 bamboo_top.drawtype = "plantlike_rooted" --"plantlike"
 --bamboo_top.paramtype2 = "meshoptions"
@@ -361,7 +361,7 @@ bamboo_one_def.selection_box = {
 		{-0.05, -0.5, 0.285, -0.275, 0.5, 0.06},
 	}
 }
-bamboo_one_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
+bamboo_one_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, dig_by_piston = 1, plant = 1, non_mycelium_plant = 1, flammable = 3}
 mcl_bamboo.mcl_log(dump(mcl_bamboo.bamboo_index))
 minetest.register_node(mcl_bamboo.bamboo_index[2], bamboo_one_def)
 local bamboo_two_def = table.copy(bamboo_def)
@@ -385,7 +385,7 @@ bamboo_two_def.selection_box = {
 		{0.25, -0.5, 0.325, 0.025, 0.5, 0.100},
 	}
 }
-bamboo_two_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
+bamboo_two_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, dig_by_piston = 1, plant = 1, non_mycelium_plant = 1, flammable = 3}
 minetest.register_node(mcl_bamboo.bamboo_index[3], bamboo_two_def)
 local bamboo_three_def = table.copy(bamboo_def)
 
@@ -408,5 +408,5 @@ bamboo_three_def.selection_box = {
 		{-0.125, -0.5, 0.125, -0.3125, 0.5, 0.3125},
 	}
 }
-bamboo_three_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, flammable = 3}
+bamboo_three_def.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, dig_by_piston = 1, plant = 1, non_mycelium_plant = 1, flammable = 3}
 minetest.register_node(mcl_bamboo.bamboo_index[4], bamboo_three_def)

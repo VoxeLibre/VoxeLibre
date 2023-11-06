@@ -138,14 +138,12 @@ local function piston_off(pos, node)
 end
 
 local function piston_orientate(pos, placer)
-	mesecon.mvps_set_owner(pos, placer)
-
 	-- not placed by player
 	if not placer then return end
-
+	
 	-- placer pitch in degrees
 	local pitch = placer:get_look_vertical() * (180 / math.pi)
-
+	
 	local node = minetest.get_node(pos)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 	if pitch > 55 then
@@ -153,6 +151,9 @@ local function piston_orientate(pos, placer)
 	elseif pitch < -55 then
 		minetest.add_node(pos, {name=pistonspec.piston_down})
 	end
+
+	-- set owner meta after setting node, or it will not keep
+	mesecon.mvps_set_owner(pos, placer)
 end
 
 

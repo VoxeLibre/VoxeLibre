@@ -118,7 +118,7 @@ function mcl_lanterns.register_lantern(name, def)
 		node_placement_prediction = "",
 		sunlight_propagates = true,
 		light_source = def.light_level,
-		groups = {pickaxey = 1, attached_node = 1, deco_block = 1, lantern = 1},
+		groups = {pickaxey = 1, attached_node = 1, deco_block = 1, lantern = 1, dig_by_piston=1},
 		selection_box = {
 			type = "fixed",
 			fixed = {

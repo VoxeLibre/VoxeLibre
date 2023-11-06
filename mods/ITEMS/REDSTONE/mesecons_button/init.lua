@@ -211,6 +211,11 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		output = "mesecons_button:button_"..basename.."_off",
 		recipe = {{ recipeitem }},
 	})
+
+	if minetest.get_modpath("mesecons_mvps") then
+		mesecon.register_mvps_unsticky("mesecons_button:button_"..basename.."_off")
+		mesecon.register_mvps_unsticky("mesecons_button:button_"..basename.."_on")
+	end
 end
 
 mesecon.register_button(

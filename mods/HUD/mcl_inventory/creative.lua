@@ -741,12 +741,14 @@ if minetest.is_creative_enabled("") then
 			for _, item in ipairs(drops) do
 				minetest.add_item(pos, item)
 			end
-		end
-		local inv = digger:get_inventory()
-		if inv then
-			for _, item in ipairs(drops) do
-				if not inv:contains_item("main", item, true) then
-					inv:add_item("main", item)
+		else
+			-- If there is a player
+			local inv = digger:get_inventory()
+			if inv then
+				for _, item in ipairs(drops) do
+					if not inv:contains_item("main", item, true) then
+						inv:add_item("main", item)
+					end
 				end
 			end
 		end
