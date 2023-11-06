@@ -180,16 +180,18 @@ function mcl_enchanting.combine(itemstack, combine_with)
 		return false
 	end
 	local enchantments = mcl_enchanting.get_enchantments(itemstack)
+	local any_new_enchantment = false
 	for enchantment, combine_level in pairs(mcl_enchanting.get_enchantments(combine_with)) do
 		local enchantment_def = mcl_enchanting.enchantments[enchantment]
 		local enchantment_level = enchantments[enchantment]
-		if enchantment_level then
+		if enchantment_level then -- The enchantment already exist in the provided item
 			if enchantment_level == combine_level then
 				enchantment_level = math.min(enchantment_level + 1, enchantment_def.max_level)
 			else
 				enchantment_level = math.max(enchantment_level, combine_level)
 			end
-		elseif mcl_enchanting.item_supports_enchantment(itemname, enchantment) then
+			any_new_enchantment = any_new_enchantment or ( enchantment_level ~= enchantments[enchantment] )
+		elseif mcl_enchanting.item_supports_enchantment(itemname, enchantment) then -- this is a new enchantement to try to add
 			local supported = true
 			for incompatible in pairs(enchantment_def.incompatible) do
 				if enchantments[incompatible] then
@@ -199,24 +201,18 @@ function mcl_enchanting.combine(itemstack, combine_with)
 			end
 			if supported then
 				enchantment_level = combine_level
+				any_new_enchantment = true
 			end
 		end
 		if enchantment_level and enchantment_level > 0 then
 			enchantments[enchantment] = enchantment_level
 		end
 	end
-	local any_enchantment = false
-	for enchantment, enchantment_level in pairs(enchantments) do
-		if enchantment_level > 0 then
-			any_enchantment = true
-			break
-		end
-	end
-	if any_enchantment then
+	if any_new_enchantment then
 		itemstack:set_name(enchanted_itemname)
+		mcl_enchanting.set_enchantments(itemstack, enchantments)
 	end
-	mcl_enchanting.set_enchantments(itemstack, enchantments)
-	return true
+	return any_new_enchantment
 end
 
 function mcl_enchanting.enchantments_snippet(_, _, itemstack)
