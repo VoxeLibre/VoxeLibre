@@ -27,7 +27,7 @@ Or you can play in “creative mode” in which you can build almost anything in
 ## How to play (quick start)
 ### Getting started
 * **Punch a tree** trunk until it breaks and collect wood
-* Place the **wood into the 2×2 grid** (your “crafting grid” in your inventory menu and craft 4 wood planks
+* Place the **wood into the 2×2 grid** (your “crafting grid” in your inventory menu) and craft 4 wood planks
 * Place the 4 wood planks in a 2×2 shape in the crafting grid to **make a crafting table**
 * **Rightclick the crafting table** for a 3×3 crafting grid to craft more complex things
 * Use the **crafting guide** (book icon) to learn all the possible crafting recipes
@@ -37,15 +37,15 @@ Or you can play in “creative mode” in which you can build almost anything in
 
 ### Farming
 * Find seeds
-* Craft hoe
-* Rightclick dirt or similar block with hoe to create farmland
+* Craft a hoe
+* Rightclick dirt or a similar block with a hoe to create farmland
 * Place seeds on farmland and watch them grow
-* Collect plant when fully grown
+* Collect plants when fully grown
 * If near water, farmland becomes wet and speeds up growth
 
 ### Furnace
-* Craft furnace
-* Furnace allows you to obtain more items
+* Craft a furnace
+* The furnace allows you to obtain more items
 * Upper slot must contain a smeltable item (example: iron ore)
 * Lower slot must contain a fuel item (example: coal)
 * See tooltips in crafting guide to learn about fuels and smeltable items
@@ -162,7 +162,7 @@ Bonus features (not found in Minecraft):
 * Built-in crafting guide which shows you crafting and smelting recipes
 * In-game help system containing extensive help about gameplay basics, blocks, items and more
 * Temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
-* Saplings in chests in mapgen v6
+* Saplings in chests in [mapgen v6](https://wiki.minetest.net/Map_generator#v6)
 * Fully moddable (thanks to Minetest's powerful Lua API)
 * New blocks and items:
     * Lookup tool, shows you the help for whatever it touches
