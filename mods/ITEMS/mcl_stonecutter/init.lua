@@ -15,8 +15,12 @@ mcl_stonecutter.registered_recipes = {}
 --   - defaults to 1
 --   - non-int rounded down
 function mcl_stonecutter.register_recipe(input, output, count)
-	if not (minetest.registered_items[input] and minetest.registered_items[output]) then
-		error("Input or output is not a registered item")
+	if mcl_stonecutter.registered_recipes[input] and mcl_stonecutter.registered_recipes[input][output] then return end
+	if not minetest.registered_items[input] then
+		error("Input is not a registered item: ".. input)
+	end
+	if not minetest.registered_items[output] then
+		error("Output is not a registered item: ".. output)
 	end
 	local n = count
 	if type(count) ~= "number" then
@@ -27,6 +31,21 @@ function mcl_stonecutter.register_recipe(input, output, count)
 		mcl_stonecutter.registered_recipes[input] = {}
 	end
 	mcl_stonecutter.registered_recipes[input][output] = n
+
+	local fallthrough = mcl_stonecutter.registered_recipes[output]
+	if fallthrough then
+		for o, c in pairs(fallthrough) do
+			mcl_stonecutter.register_recipe(input, o, c)
+		end
+	end
+
+	for i, recipes in pairs(mcl_stonecutter.registered_recipes) do
+		for name, c in pairs(recipes) do
+			if name == input then
+				mcl_stonecutter.register_recipe(i, output, c*n)
+			end
+		end
+	end
 end
 
 -- formspecs
@@ -88,6 +107,7 @@ local function update_stonecutter_slots(pos, str)
 		end
 	else
 		meta:set_string("formspec", show_stonecutter_formspec(nil))
+		inv:set_stack("output", 1, "")
 	end
 end
 
