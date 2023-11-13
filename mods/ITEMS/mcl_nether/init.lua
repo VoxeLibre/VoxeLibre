@@ -415,5 +415,9 @@ minetest.register_craft({
 	}
 })
 
+-- TODO register stonecutter recipe for chiseled nether brick when it is added
+mcl_stonecutter.register_recipe("mcl_nether:quartz_block", "mcl_nether:quartz_chiseled")
+mcl_stonecutter.register_recipe("mcl_nether:quartz_block", "mcl_nether:quartz_pillar")
+
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/nether_wart.lua")
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/lava.lua")
