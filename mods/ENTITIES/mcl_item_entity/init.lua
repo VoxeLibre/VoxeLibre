@@ -362,6 +362,119 @@ function minetest.handle_node_drops(pos, drops, digger)
 	end
 end
 
+local function user_name(user)
+	return user and user:get_player_name() or ""
+end
+
+-- Returns a logging function. For empty names, does not log.
+local function make_log(name)
+	return name ~= "" and minetest.log or function() end
+end
+
+function minetest.node_dig(pos, node, digger)
+	local diggername = user_name(digger)
+	local log = make_log(diggername)
+	local def = minetest.registered_nodes[node.name]
+	-- Copy pos because the callback could modify it
+	if def and (not def.diggable or
+			(def.can_dig and not def.can_dig(vector.copy(pos), digger))) then
+		log("info", diggername .. " tried to dig "
+			.. node.name .. " which is not diggable "
+			.. minetest.pos_to_string(pos))
+		return false
+	end
+
+	if minetest.is_protected(pos, diggername) then
+		log("action", diggername
+				.. " tried to dig " .. node.name
+				.. " at protected position "
+				.. minetest.pos_to_string(pos))
+		minetest.record_protection_violation(pos, diggername)
+		return false
+	end
+
+	log('action', diggername .. " digs "
+		.. node.name .. " at " .. minetest.pos_to_string(pos))
+
+	local wielded = digger and digger:get_wielded_item()
+	local drops = minetest.get_node_drops(node, wielded and wielded:get_name())
+
+	-- Check to see if metadata should be preserved.
+	if def and def.preserve_metadata then
+		local oldmeta = minetest.get_meta(pos):to_table().fields
+		-- Copy pos and node because the callback can modify them.
+		local pos_copy = vector.copy(pos)
+		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
+		local drop_stacks = {}
+		for k, v in pairs(drops) do
+			drop_stacks[k] = ItemStack(v)
+		end
+		drops = drop_stacks
+		def.preserve_metadata(pos_copy, node_copy, oldmeta, drops)
+	end
+
+	-- Handle drops
+	minetest.handle_node_drops(pos, drops, digger)
+
+	if wielded then
+		local wdef = wielded:get_definition()
+		local tp = wielded:get_tool_capabilities()
+		local dp = minetest.get_dig_params(def and def.groups, tp, wielded:get_wear())
+		if wdef and wdef.after_use then
+			wielded = wdef.after_use(wielded, digger, node, dp) or wielded
+		else
+			-- Wear out tool
+			if not minetest.is_creative_enabled(diggername) then
+				wielded:add_wear(dp.wear)
+				if wielded:get_count() == 0 and wdef.sound and wdef.sound.breaks then
+					minetest.sound_play(wdef.sound.breaks, {
+						pos = pos,
+						gain = 0.5
+					}, true)
+				end
+			end
+		end
+		digger:set_wielded_item(wielded)
+	end
+
+	local oldmetadata = nil
+	if def and def.after_dig_node then
+		oldmetadata = minetest.get_meta(pos):to_table()
+	end
+
+	-- Remove node and update
+	minetest.remove_node(pos)
+
+	-- Play sound if it was done by a player
+	if diggername ~= "" and def and def.sounds and def.sounds.dug then
+		minetest.sound_play(def.sounds.dug, {
+			pos = pos,
+			exclude_player = diggername,
+		}, true)
+	end
+
+	-- Run callback
+	if def and def.after_dig_node then
+		-- Copy pos and node because callback can modify them
+		local pos_copy = vector.copy(pos)
+		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
+		def.after_dig_node(pos_copy, node_copy, oldmetadata, digger)
+	end
+
+	-- Run script hook
+	for _, callback in ipairs(minetest.registered_on_dignodes) do
+		local origin = minetest.callback_origins[callback]
+		minetest.set_last_run_mod(origin.mod)
+
+		-- Copy pos and node because callback can modify them
+		local pos_copy = vector.copy(pos)
+		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
+		callback(pos_copy, node_copy, digger)
+	end
+
+	return true
+end
+
 -- Drop single items by default
 function minetest.item_drop(itemstack, dropper, pos)
 	if dropper and dropper:is_player() then
