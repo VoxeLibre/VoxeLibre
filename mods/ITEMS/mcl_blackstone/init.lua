@@ -12,7 +12,7 @@ minetest.register_node("mcl_blackstone:blackstone", {
 	tiles = {"mcl_blackstone_top.png", "mcl_blackstone_top.png", "mcl_blackstone_side.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, cobble=1, stonecuttable=21},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, cobble=1},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
@@ -400,3 +400,10 @@ minetest.register_craft({
 		{ "group:soul_block" },
 	}
 })
+
+-- stonecutter recipes
+mcl_stonecutter.register_recipe("mcl_blackstone:basalt", "mcl_blackstone:basalt_polished")
+mcl_stonecutter.register_recipe("mcl_blackstone:blackstone", "mcl_blackstone:blackstone_polished")
+mcl_stonecutter.register_recipe("mcl_blackstone:blackstone_polished", "mcl_blackstone:blackstone_chiseled_polished")
+mcl_stonecutter.register_recipe("mcl_blackstone:blackstone_polished", "mcl_blackstone:blackstone_brick_polished")
+mcl_stonecutter.register_recipe("mcl_nether:quartz_block", "mcl_blackstone:quartz_brick")
