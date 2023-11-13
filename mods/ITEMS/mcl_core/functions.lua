@@ -1451,6 +1451,20 @@ minetest.register_abm({
 	end
 })
 
+-- Freeze water
+minetest.register_abm({
+	label = "Freeze water in cold areas",
+	nodenames = {"mcl_core:water_source", "mclx_core:river_water_source"},
+	interval = 32,
+	chance = 8,
+	action = function(pos, node)
+		if mcl_weather.has_snow(pos) then
+			node.name = "mcl_core:ice"
+			minetest.swap_node(pos, node)
+		end
+	end
+})
+
 --[[ Call this for vines nodes only.
 Given the pos and node of a vines node, this returns true if the vines are supported
 and false if the vines are currently floating.
