@@ -51,7 +51,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 	-- TODO: sounds
 	-- TODO: Make shulker dye-able
 	visual_size = {x=3, y=3},
-	walk_chance = 0,
+	walk_chance = 10,
 	knock_back = false,
 	jump = false,
 	can_despawn = false,
@@ -65,25 +65,23 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		looting_factor = 0.0625},
 	},
 	animation = {
-		stand_speed = 25, walk_speed = 0, run_speed = 50, punch_speed = 25,
+		stand_speed = 25, walk_speed = 25, run_speed = 50, punch_speed = 25,
 		speed_normal = 25,		speed_run = 50,
 		stand_start = 0,		stand_end = 25,
-		walk_start = 25,		walk_end = 45,
-		run_start = 45,		run_end = 85,
+		walk_start = 65,		walk_end = 65,
+		run_start = 65,		run_end = 85,
         punch_start = 80,  punch_end = 100,
 	},
 	view_range = 16,
 	fear_height = 0,
+	walk_velocity = 0,
+    run_velocity = 0,
 	noyaw = true,
 	do_custom = function(self,dtime)
 		local pos = self.object:get_pos()
 		if math.floor(self.object:get_yaw()) ~=0 then
 			self.object:set_yaw(0)
 			mcl_mobs:yaw(self, 0, 0, dtime)
-		end
-		if self.state == "walk" or self.state == "stand" then
-			self.state = "stand"
-			self:set_animation("stand")
 		end
 		if self.state == "attack" then
 			self:set_animation("punch")
