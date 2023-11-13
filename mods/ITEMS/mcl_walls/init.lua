@@ -282,6 +282,8 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				{source, source, source},
 			}
 		})
+
+		mcl_stonecutter.register_recipe(source, nodename)
 	end
 end
 

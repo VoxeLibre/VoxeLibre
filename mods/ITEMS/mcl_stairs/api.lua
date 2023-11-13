@@ -173,6 +173,9 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 				{recipeitem, recipeitem, recipeitem},
 			},
 		})
+
+		-- Stonecutter recipe
+		mcl_stonecutter.register_recipe(recipeitem, "mcl_stairs:stair_".. subname)
 	end
 
 	mcl_stairs.cornerstair.add("mcl_stairs:stair_"..subname, corner_stair_texture_override)
@@ -342,6 +345,8 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 				{recipeitem, recipeitem, recipeitem},
 			},
 		})
+
+		mcl_stonecutter.register_recipe(recipeitem, lower_slab, 2)
 
 	end
 
