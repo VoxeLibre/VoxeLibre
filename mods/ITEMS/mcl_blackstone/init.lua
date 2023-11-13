@@ -73,7 +73,7 @@ minetest.register_node("mcl_blackstone:basalt_polished", {
 	on_place = mcl_util.rotate_axis,
 	on_rotate = on_rotate,
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecutter_output=19},
+	groups = {cracky = 3, pickaxey=1, material_stone=1},
 	_mcl_blast_resistance = 4.2,
 	_mcl_hardness = 1.25,
 })
@@ -85,7 +85,7 @@ minetest.register_node("mcl_blackstone:basalt", {
 	on_place = mcl_util.rotate_axis,
 	on_rotate = on_rotate,
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecuttable=19},
+	groups = {cracky = 3, pickaxey=1, material_stone=1},
 	_mcl_blast_resistance = 4.2,
 	_mcl_hardness = 1.25,
 })
@@ -103,7 +103,7 @@ minetest.register_node("mcl_blackstone:blackstone_polished", {
 	tiles = {"mcl_blackstone_polished.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecuttable=21, stonecutter_output=21},
+	groups = {cracky = 3, pickaxey=1, material_stone=1},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
 })
@@ -112,7 +112,7 @@ minetest.register_node("mcl_blackstone:blackstone_chiseled_polished", {
 	tiles = {"mcl_blackstone_chiseled_polished.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecutter_output=21},
+	groups = {cracky = 3, pickaxey=1, material_stone=1},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
@@ -121,7 +121,7 @@ minetest.register_node("mcl_blackstone:blackstone_brick_polished", {
 	tiles = {"mcl_blackstone_polished_bricks.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecutter_output=21},
+	groups = {cracky = 3, pickaxey=1, material_stone=1},
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
@@ -131,7 +131,7 @@ minetest.register_node("mcl_blackstone:quartz_brick", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	groups = {cracky = 3, pickaxey=1, material_stone=1, stonecutter_output=14},
+	groups = {cracky = 3, pickaxey=1, material_stone=1},
 	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
@@ -194,7 +194,7 @@ end
 
 --slabs/stairs
 mcl_stairs.register_stair_and_slab("blackstone", "mcl_blackstone:blackstone",
-		{cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21},
+		{cracky=3, pickaxey=1, material_stone=1},
 		{"mcl_blackstone_top.png", "mcl_blackstone_top.png", "mcl_blackstone_side.png"},
 		S("Blackstone Stairs"),
 		S("Blackstone Slab"),
@@ -202,7 +202,7 @@ mcl_stairs.register_stair_and_slab("blackstone", "mcl_blackstone:blackstone",
 		S("Double Blackstone Slab"), nil)
 
 mcl_stairs.register_stair_and_slab("blackstone_polished", "mcl_blackstone:blackstone_polished",
-		{cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21},
+		{cracky=3, pickaxey=1, material_stone=1},
 		{"mcl_blackstone_polished.png"},
 		S("Polished Blackstone Stairs"),
 		S("Polished Blackstone Slab"),
@@ -210,7 +210,7 @@ mcl_stairs.register_stair_and_slab("blackstone_polished", "mcl_blackstone:blacks
 		S("Double Polished Blackstone Slab"), nil)
 
 mcl_stairs.register_stair_and_slab("blackstone_chiseled_polished", "mcl_blackstone:blackstone_chiseled_polished",
-		{cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21},
+		{cracky=3, pickaxey=1, material_stone=1},
 		{"mcl_blackstone_chiseled_polished.png"},
 		S("Chiseled Polished Blackstone Stairs"),
 		S("Chiseled Polished Blackstone Slab"),
@@ -218,7 +218,7 @@ mcl_stairs.register_stair_and_slab("blackstone_chiseled_polished", "mcl_blacksto
 		S("Double Chiseled Polished Blackstone Slab"), nil)
 
 mcl_stairs.register_stair_and_slab("blackstone_brick_polished", "mcl_blackstone:blackstone_brick_polished",
-		{cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21},
+		{cracky=3, pickaxey=1, material_stone=1},
 		{"mcl_blackstone_polished_bricks.png"},
 		S("Polished Blackstone Brick Stair Stairs"),
 		S("Polished Blackstone Brick Stair Slab"),
@@ -236,7 +236,7 @@ mcl_walls.register_wall(
 		"mcl_blackstone_side.png"
 	},
 	"",
-	{ cracky=3, pickaxey=1, material_stone=1, stonecutter_output=21 }
+	{ cracky=3, pickaxey=1, material_stone=1 }
 )
 
 --lavacooling
