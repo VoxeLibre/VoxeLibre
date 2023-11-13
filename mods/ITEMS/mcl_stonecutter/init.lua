@@ -5,6 +5,30 @@
 
 local S = minetest.get_translator("mcl_stonecutter")
 
+mcl_stonecutter = {}
+mcl_stonecutter.registered_recipes = {}
+
+-- API
+-- input - string - name of a registered item
+-- output - string - name of a registered item
+-- count - int - number of the output -
+--   - defaults to 1
+--   - non-int rounded down
+function mcl_stonecutter.register_recipe(input, output, count)
+	if not (minetest.registered_items[input] and minetest.registered_items[output]) then
+		error("Input or output is not a registered item")
+	end
+	local n = count
+	if type(count) ~= "number" then
+		n = 1
+	end
+	n = math.floor(n)
+	if not mcl_stonecutter.registered_recipes[input] then
+		mcl_stonecutter.registered_recipes[input] = {}
+	end
+	mcl_stonecutter.registered_recipes[input][output] = n
+end
+
 -- formspecs
 local function show_stonecutter_formspec(items, input)
 	local cut_items = {}
@@ -13,13 +37,13 @@ local function show_stonecutter_formspec(items, input)
 
 	-- This loops through all the items that can be made and inserted into the formspec
 	if items ~= nil then
-		for index, value in pairs(items) do
+		for name, count in pairs(items) do
 			x_len = x_len + 1
 			if x_len > 5 then
 				y_len = y_len + 1
 				x_len = 1
 			end
-			table.insert(cut_items,string.format("item_image_button[%f,%f;%f,%f;%s;%s;%s]",x_len+1,y_len,1,1, value, value, ""))
+			table.insert(cut_items,string.format("item_image_button[%f,%f;%f,%f;%s;%s;%s]",x_len+1,y_len,1,1, name, name, tostring(count)))
 		end
 	end
 
@@ -43,65 +67,27 @@ local function show_stonecutter_formspec(items, input)
 	return formspec
 end
 
-
---Checks for the string for the different stair and wall positions that shouldn't be craftable
-local function check(item_name, input_name)
-	print(item_name)
-	if string.match(item_name, "mcl_walls") then
-		if string.match(item_name, "%d") then
-			return true
-		end
-	end
-	if string.match(item_name, "_outer") then
-		return true
-	elseif string.match(item_name, "_inner") then
-		return true
-	elseif string.match(item_name, "_top") then
-		return true
-	elseif string.match(item_name, "_double") then
-		return true
-	end
-	if minetest.get_item_group(item_name, "stonecutter_stage") == 0 and minetest.get_item_group(input_name, "stonecutter_stage") > 0 then
-		return true
-	end
-	return false
-end
-
-
 -- Updates the formspec
-local function update_stonecutter_slots(pos,str)
+local function update_stonecutter_slots(pos, str)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local input = inv:get_stack("input", 1)
 	local name = input:get_name()
-	local compat_item = minetest.get_item_group(name, "stonecuttable")
+	local recipes = mcl_stonecutter.registered_recipes[name]
 
-	-- Checks if input is in the group
-	if compat_item > 0 then
-		local cuttable_recipes = {}
-		for item_name, item_def in pairs(minetest.registered_items) do
-			if item_def.groups and item_def.groups["stonecutter_output"] == compat_item then
-				if check(item_name, name) == false and name ~= item_name then
-					table.insert(cuttable_recipes, item_name)
-				end
-			end
+	if recipes then
+		meta:set_string("formspec", show_stonecutter_formspec(recipes))
+		if str then
+			local recipe = recipes[str]
+			if not recipe then return end
+			local cut_item = ItemStack(str)
+			cut_item:set_count(recipe)
+			inv:set_stack("output", 1, cut_item)
+		else
+			inv:set_stack("output", 1, "")
 		end
-		meta:set_string("formspec", show_stonecutter_formspec(cuttable_recipes))
 	else
 		meta:set_string("formspec", show_stonecutter_formspec(nil))
-	end
-
-	-- Checks if the chosen item is a slab or not, if it's a slab set the output to be a stack of 2
-	if minetest.get_item_group(str, "stonecutter_output") > 0 then
-		local cut_item = ItemStack(str)
-		if string.match(str, "mcl_stairs:slab_") then
-			cut_item:set_count(2)
-		else
-			cut_item:set_count(1)
-		end
-		inv:set_stack("output", 1, cut_item)
-	else
-		inv:set_stack("output", 1, "")
 	end
 end
 
@@ -114,6 +100,7 @@ local function drop_stonecutter_items(pos, meta)
 		if not stack:is_empty() then
 			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
 			minetest.add_item(p, stack)
+-- 			inv:set_stack("input", i, ItemStack())
 		end
 	end
 end
@@ -127,18 +114,18 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 		"mcl_stonecutter_bottom.png",
 		"mcl_stonecutter_side.png",
 		"mcl_stonecutter_side.png",
-		{name="mcl_stonecutter_saw.png", 
+		{name="mcl_stonecutter_saw.png",
 		animation={
-			type="vertical_frames", 
-			aspect_w=16, 
-			aspect_h=16, 
+			type="vertical_frames",
+			aspect_w=16,
+			aspect_h=16,
 			length=1
 		}},
-		{name="mcl_stonecutter_saw.png", 
+		{name="mcl_stonecutter_saw.png",
 		animation={
-			type="vertical_frames", 
-			aspect_w=16, 
-			aspect_h=16, 
+			type="vertical_frames",
+			aspect_w=16,
+			aspect_h=16,
 			length=1
 		}}
 	},
