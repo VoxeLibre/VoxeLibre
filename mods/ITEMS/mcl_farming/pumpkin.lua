@@ -101,7 +101,7 @@ local pumpkin_base_def = {
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png"},
 	groups = {
 		handy = 1, axey = 1, plant = 1, building_block = 1, dig_by_piston = 1, dig_immediate_piston = 1,
-		enderman_takable = 1, compostability = 65
+		pumpkin = 1, enderman_takable = 1, compostability = 65
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = on_rotate,
@@ -199,7 +199,7 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 	paramtype2 = "facedir",
 	light_source = minetest.LIGHT_MAX,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
-	groups = {handy=1,axey=1, building_block=1, dig_by_piston=1 },
+	groups = {handy=1, axey=1, pumpkin=1, building_block=1, dig_by_piston=1 },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		-- Attempt to spawn iron golem or snow golem

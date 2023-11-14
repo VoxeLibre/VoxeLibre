@@ -152,8 +152,6 @@ function mesecon.noteblock_play(pos, param2)
 		soundname="mesecons_noteblock_xylophone_metal"
 	elseif block_below_name == "mcl_nether:soul_sand" then
 		soundname="mesecons_noteblock_cowbell"
-	elseif block_below_name == "mcl_farming:pumpkin" or block_below_name == "mcl_farming:pumpkin_face" or block_below_name == "mcl_farming:pumpkin_face_light" then
-		soundname="mesecons_noteblock_didgeridoo"
 	elseif block_below_name == "mcl_core:emeraldblock" then
 		soundname="mesecons_noteblock_squarewave"
 	elseif block_below_name == "mcl_farming:hay_block" then
@@ -162,6 +160,8 @@ function mesecon.noteblock_play(pos, param2)
 		soundname="mesecons_noteblock_piano_digital"
 	elseif minetest.get_item_group(block_below_name, "wool") ~= 0 then
 		soundname="mesecons_noteblock_guitar"
+	elseif minetest.get_item_group(block_below_name, "pumpkin") ~= 0 then
+		soundname="mesecons_noteblock_didgeridoo"
 	elseif minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
 		soundname="mesecons_noteblock_hit"
 	elseif minetest.get_item_group(block_below_name, "material_wood") ~= 0 then
