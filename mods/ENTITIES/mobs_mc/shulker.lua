@@ -35,7 +35,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 	type = "monster",
 	spawn_class = "hostile",
 	attack_type = "shoot",
-	shoot_interval = 1.0,
+	shoot_interval = 5.5,
 	arrow = "mobs_mc:shulkerbullet",
 	shoot_offset = 0.5,
 	passive = false,
@@ -79,6 +79,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 	noyaw = true,
 	do_custom = function(self,dtime)
 		local pos = self.object:get_pos()
+		self.shoot_interval = math.random(1, 5.5)
 		if math.floor(self.object:get_yaw()) ~=0 then
 			self.object:set_yaw(0)
 			mcl_mobs:yaw(self, 0, 0, dtime)
