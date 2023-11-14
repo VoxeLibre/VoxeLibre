@@ -68,8 +68,10 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		stand_speed = 25, walk_speed = 25, run_speed = 50, punch_speed = 25,
 		speed_normal = 25,		speed_run = 50,
 		stand_start = 0,		stand_end = 25,
-		walk_start = 65,		walk_end = 65,
+		walk_start = 45,		walk_end = 65,
+		walk_loop = false,
 		run_start = 65,		run_end = 85,
+		run_loop
         punch_start = 80,  punch_end = 100,
 	},
 	view_range = 16,
@@ -85,7 +87,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 			mcl_mobs:yaw(self, 0, 0, dtime)
 		end
 		if self.state == "attack" then
-			self:set_animation("punch")
+			self:set_animation("run")
 		end
 		self.path.way = false
 		self.look_at_players = false
