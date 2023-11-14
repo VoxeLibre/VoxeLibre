@@ -71,7 +71,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		walk_start = 45,		walk_end = 65,
 		walk_loop = false,
 		run_start = 65,		run_end = 85,
-		run_loop
+		run_loop = false,
         punch_start = 80,  punch_end = 100,
 	},
 	view_range = 16,
