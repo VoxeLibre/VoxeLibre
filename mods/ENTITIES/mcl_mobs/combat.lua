@@ -1231,6 +1231,9 @@ function mob_class:do_states_attack (dtime)
 					-- important for mcl_shields
 					ent._shooter = self.object
 					ent._saved_shooter_pos = self.object:get_pos()
+					if ent.homing then
+						ent._target = self.attack
+					end
 				end
 
 				local amount = (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z) ^ 0.5
