@@ -158,7 +158,7 @@ mcl_mobs.register_arrow("mobs_mc:shulkerbullet", {
 	visual_size = {x = 0.25, y = 0.25},
 	textures = {"mobs_mc_shulkerbullet.png"},
 	velocity = 6,
-
+	homing = true,
 	hit_player = function(self, player)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
