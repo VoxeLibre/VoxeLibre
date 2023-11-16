@@ -43,7 +43,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 	hp_max = 30,
 	xp_min = 5,
 	xp_max = 5,
-	armor = 150,
+	armor = 20,
 	collisionbox = {-0.5, -0.01, -0.5, 0.5, 0.99, 0.5},
 	visual = "mesh",
 	mesh = "mobs_mc_shulker.b3d",
@@ -77,7 +77,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 	view_range = 16,
 	fear_height = 0,
 	walk_velocity = 0,
-    run_velocity = 0,
+	run_velocity = 0,
 	noyaw = true,
 	do_custom = function(self,dtime)
 		local pos = self.object:get_pos()
@@ -88,6 +88,11 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		end
 		if self.state == "attack" then
 			self:set_animation("run")
+			self:armor = 0
+		if self.state  == "stand" then
+			self.armor = 20
+		if self.state == "walk" or self.state == "run" then
+			self.armor = 0
 		end
 		self.path.way = false
 		self.look_at_players = false
