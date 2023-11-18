@@ -362,15 +362,16 @@ function minetest.handle_node_drops(pos, drops, digger)
 	end
 end
 
+-- the following code is pulled from Minetest builtin without changes except for the call order being changed,
+-- until a comment saying explicitly it's the end of such code
+-- TODO if this gets a fix in the engine, remove the block of code
 local function user_name(user)
 	return user and user:get_player_name() or ""
 end
-
 -- Returns a logging function. For empty names, does not log.
 local function make_log(name)
 	return name ~= "" and minetest.log or function() end
 end
-
 function minetest.node_dig(pos, node, digger)
 	local diggername = user_name(digger)
 	local log = make_log(diggername)
@@ -474,6 +475,7 @@ function minetest.node_dig(pos, node, digger)
 
 	return true
 end
+-- end of code pulled from Minetest
 
 -- Drop single items by default
 function minetest.item_drop(itemstack, dropper, pos)
