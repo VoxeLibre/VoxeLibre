@@ -22,6 +22,30 @@ function table.update_nil(t, ...)
 	return t
 end
 
+---Works the same as `pairs`, but order returned by keys
+---
+---Taken from https://www.lua.org/pil/19.3.html
+---@generic T: table, K, V, C
+---@param t T
+---@param f? fun(a: C, b: C):boolean
+---@return fun():K, V
+function table.pairs_by_keys(t, f)
+	local a = {}
+	for n in pairs(t) do table.insert(a, n) end
+	table.sort(a, f)
+
+	local i = 0        -- iterator variable
+	local function iter() -- iterator function
+		i = i + 1
+		if a[i] == nil then
+			return nil
+		else
+			return a[i], t[a[i]]
+		end
+	end
+	return iter
+end
+
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
 local LOG_MODULE = "[MCL2]"
 function mcl_util.mcl_log(message, module, bypass_default_logger)
