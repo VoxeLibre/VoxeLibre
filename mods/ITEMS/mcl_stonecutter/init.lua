@@ -2,35 +2,65 @@
 --||||| STONECUTTER |||||
 --|||||||||||||||||||||||
 
+-- The stonecutter is implemented just like the crafting table, meaning the node doesn't have any state.
+-- Instead it trigger the display of a per-player menu. The input and output slots, the wanted item are stored into the player meta.
+--
+-- Player inventory lists:
+--  * stonecutter_input (1)
+--  * stonecutter_output (1)
+-- Player meta:
+--  * stonecutter_selected (string, wanted item name)
+
 
 local S = minetest.get_translator("mcl_stonecutter")
+local C = minetest.colorize
+local show_formspec = minetest.show_formspec
+
+local formspec_name = "mcl_stonecutter:stonecutter"
 
 mcl_stonecutter = {}
+
+
+---Table of registered recipes
+---
+---```lua
+---mcl_stonecutter.registered_recipes = {
+---    ["mcl_core:input_item"] = {
+---        ["mcl_core:output_item"] = 1,
+---        ["mcl_core:output_item2"] = 2,
+---    },
+---}
+---```
+---@type table<string, table<string, integer>>
 mcl_stonecutter.registered_recipes = {}
 
--- API
--- input - string - name of a registered item
--- output - string - name of a registered item
--- count - int - number of the output -
---   - defaults to 1
---   - non-int rounded down
+
+---Registers a recipe for the stonecutter
+---@param input string Name of a registered item
+---@param output string Name of a registered item
+---@param count? integer Number of the output, defaults to `1`
 function mcl_stonecutter.register_recipe(input, output, count)
-	if mcl_stonecutter.registered_recipes[input] and mcl_stonecutter.registered_recipes[input][output] then return end
+	if mcl_stonecutter.registered_recipes[input] and mcl_stonecutter.registered_recipes[input][output] then
+		minetest.log("warning",
+			"[mcl_stonecutter] Recipe already registered: [" .. input .. "] -> [" .. output .. " " .. count .. "]")
+		return
+	end
+
 	if not minetest.registered_items[input] then
-		error("Input is not a registered item: ".. input)
+		error("Input is not a registered item: " .. input)
 	end
+
 	if not minetest.registered_items[output] then
-		error("Output is not a registered item: ".. output)
+		error("Output is not a registered item: " .. output)
 	end
-	local n = count
-	if type(count) ~= "number" then
-		n = 1
-	end
-	n = math.floor(n)
+
+	count = count or 1
+
 	if not mcl_stonecutter.registered_recipes[input] then
 		mcl_stonecutter.registered_recipes[input] = {}
 	end
-	mcl_stonecutter.registered_recipes[input][output] = n
+
+	mcl_stonecutter.registered_recipes[input][output] = count
 
 	local fallthrough = mcl_stonecutter.registered_recipes[output]
 	if fallthrough then
@@ -42,88 +72,239 @@ function mcl_stonecutter.register_recipe(input, output, count)
 	for i, recipes in pairs(mcl_stonecutter.registered_recipes) do
 		for name, c in pairs(recipes) do
 			if name == input then
-				mcl_stonecutter.register_recipe(i, output, c*n)
+				mcl_stonecutter.register_recipe(i, output, c * count)
 			end
 		end
 	end
 end
 
--- formspecs
-local function show_stonecutter_formspec(items, input)
-	local cut_items = {}
-	local x_len = 0
-	local y_len = 0.5
+---Minetest currently (5.7) doesn't prevent using `:` characters in field names
+---But using them prevent the buttons from beeing styled with `style[]` elements
+---https://github.com/minetest/minetest/issues/14013
 
-	-- This loops through all the items that can be made and inserted into the formspec
-	if items ~= nil then
-		for name, count in pairs(items) do
-			x_len = x_len + 1
-			if x_len > 5 then
-				y_len = y_len + 1
-				x_len = 1
-			end
-			table.insert(cut_items,string.format("item_image_button[%f,%f;%f,%f;%s;%s;%s]",x_len+1,y_len,1,1, name, name, tostring(count)))
-		end
+---@param itemname string
+local function itenname_to_fieldname(itemname)
+	return string.gsub(itemname, ":", "__")
+end
+
+---@param fieldname string
+local function fieldname_to_itemname(fieldname)
+	return string.gsub(fieldname, "__", ":")
+end
+
+---Build the formspec for the stonecutter with given output button
+---@param player mt.PlayerObjectRef
+---@param items? table<string, integer>
+local function build_stonecutter_formspec(player, items)
+	local meta = player:get_meta()
+	local selected = meta:get_string("stonecutter_selected")
+
+	items = items or {}
+
+	-- Buttons are 3.5 / 4 = 0.875 wide
+	local c = 0
+	local items_content = "style_type[item_image_button;noclip=false;content_offset=0]" ..
+		(selected ~= "" and "style[" .. itenname_to_fieldname(selected) .. ";border=false;bgimg=mcl_inventory_button9_pressed.png;bgimg_pressed=mcl_inventory_button9_pressed.png;bgimg_middle=2,2]" or "")
+
+	for name, count in table.pairs_by_keys(items) do
+		c = c + 1
+		local x = ((c - 1) % 4) * 0.875
+		local y = (math.floor((c - 1) / 4)) * 0.875
+
+		items_content = items_content ..
+			string.format("item_image_button[%f,%f;0.875,0.875;%s;%s;]", x, y,
+				name, itenname_to_fieldname(name), tostring(count))
 	end
 
-	local formspec = "size[9,8.75]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"label[1,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Stone Cutter"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.74;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-	"list[context;input;0.5,1.7;1,1;]"..
-	mcl_formspec.get_itemslot_bg(0.5,1.7,1,1)..
-	"list[context;output;7.5,1.7;1,1;]"..
-	mcl_formspec.get_itemslot_bg(7.5,1.7,1,1)..
-	table.concat(cut_items)..
-	"listring[context;output]"..
-	"listring[current_player;main]"..
-	"listring[context;input]"..
-	"listring[current_player;main]"
+	local formspec = table.concat({
+		"formspec_version[4]",
+		"size[11.75,10.425]",
+		"label[0.375,0.375;" .. C(mcl_formspec.label_color, S("Stone Cutter")) .. "]",
+
+		-- Pattern input slot
+		mcl_formspec.get_itemslot_bg_v4(1.625, 2, 1, 1),
+		"list[current_player;stonecutter_input;1.625,2;1,1;]",
+
+		-- Container background
+		"image[4.075,0.7;3.6,3.6;mcl_inventory_background9.png;2]",
+
+		-- Style for item image buttons
+		"style_type[item_image_button;noclip=false;content_offset=0]",
+
+		-- Scroll Container with buttons if needed
+		"scroll_container[4.125,0.75;3.5,3.5;scroll;vertical;0.875]",
+		items_content,
+		"scroll_container_end[]",
+
+		-- Scrollbar
+		-- TODO: style the scrollbar correctly when possible
+		"scrollbaroptions[min=0;max=" ..
+		math.max(math.floor(#items / 4) + 1 - 4, 0) .. ";smallstep=1;largesteps=1]",
+		"scrollbar[7.625,0.7;0.75,3.6;vertical;scroll;0]",
+
+		-- Output slot
+		mcl_formspec.get_itemslot_bg_v4(9.75, 2, 1, 1, 0.2),
+		"list[current_player;stonecutter_output;9.75,2;1,1;]",
+
+		-- Player inventory
+		"label[0.375,4.7;" .. C(mcl_formspec.label_color, S("Inventory")) .. "]",
+		mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+		"list[current_player;main;0.375,5.1;9,3;9]",
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+		"list[current_player;main;0.375,9.05;9,1;]",
+
+		"listring[current_player;stonecutter_output]",
+		"listring[current_player;main]",
+		"listring[current_player;stonecutter_input]",
+		"listring[current_player;main]",
+	})
 
 	return formspec
 end
 
--- Updates the formspec
-local function update_stonecutter_slots(pos, str)
-	local meta = minetest.get_meta(pos)
-	local inv = meta:get_inventory()
-	local input = inv:get_stack("input", 1)
-	local name = input:get_name()
-	local recipes = mcl_stonecutter.registered_recipes[name]
+
+---Display stonecutter menu to a player
+---@param player mt.PlayerObjectRef
+function mcl_stonecutter.show_stonecutter_form(player)
+	show_formspec(player:get_player_name(), formspec_name,
+		build_stonecutter_formspec(player,
+			mcl_stonecutter.registered_recipes[player:get_inventory():get_stack("stonecutter_input", 1):get_name()]))
+end
+
+---Change the selected output item.
+---@param player mt.PlayerObjectRef
+---@param item_name? string The item name of the output
+function set_selected_item(player, item_name)
+	player:get_meta():set_string("stonecutter_selected", item_name and item_name or "")
+end
+
+minetest.register_on_joinplayer(function(player)
+	local inv = player:get_inventory()
+
+	inv:set_size("stonecutter_input", 1)
+	inv:set_size("stonecutter_output", 1)
+
+	set_selected_item(player, nil)
+
+	--The player might have items remaining in the slots from the previous join; this is likely
+	--when the server has been shutdown and the server didn't clean up the player inventories.
+	mcl_util.move_player_list(player, "stonecutter_input")
+	mcl_util.move_player_list(player, "stonecutter_output")
+end)
+
+minetest.register_on_leaveplayer(function(player)
+	set_selected_item(player, nil)
+
+	mcl_util.move_player_list(player, "stonecutter_input")
+	mcl_util.move_player_list(player, "stonecutter_output")
+end)
+
+---Update content of the stonecutter output slot with the input slot and the selected item
+---@param player mt.PlayerObjectRef
+function update_stonecutter_slots(player)
+	local meta = player:get_meta()
+	local inv = player:get_inventory()
+
+	local input = inv:get_stack("stonecutter_input", 1)
+	local recipes = mcl_stonecutter.registered_recipes[input:get_name()]
+	local output_item = meta:get_string("stonecutter_selected")
 
 	if recipes then
-		meta:set_string("formspec", show_stonecutter_formspec(recipes))
-		if str then
-			local recipe = recipes[str]
-			if not recipe then return end
-			local cut_item = ItemStack(str)
-			cut_item:set_count(recipe)
-			inv:set_stack("output", 1, cut_item)
+		if output_item then
+			local recipe = recipes[output_item]
+			if recipe then
+				local cut_item = ItemStack(output_item)
+				cut_item:set_count(recipe)
+				inv:set_stack("stonecutter_output", 1, cut_item)
+			else
+				inv:set_stack("stonecutter_output", 1, nil)
+			end
 		else
-			inv:set_stack("output", 1, "")
+			inv:set_stack("stonecutter_output", 1, nil)
 		end
 	else
-		meta:set_string("formspec", show_stonecutter_formspec(nil))
-		inv:set_stack("output", 1, "")
+		inv:set_stack("stonecutter_output", 1, nil)
+	end
+
+	mcl_stonecutter.show_stonecutter_form(player)
+end
+
+--Drop items in slots and reset selected item on closing
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname ~= formspec_name then return end
+
+	if fields.quit then
+		mcl_util.move_player_list(player, "stonecutter_input")
+		mcl_util.move_player_list(player, "stonecutter_output")
+		return
+	end
+
+	for field_name, value in pairs(fields) do
+		if field_name ~= "scroll" then
+			local itemname = fieldname_to_itemname(field_name)
+			player:get_meta():set_string("stonecutter_selected", itemname)
+			set_selected_item(player, itemname)
+			update_stonecutter_slots(player)
+			mcl_stonecutter.show_stonecutter_form(player)
+			break
+		end
+	end
+end)
+
+
+minetest.register_allow_player_inventory_action(function(player, action, inventory, inventory_info)
+	if action == "move" then
+		if inventory_info.to_list == "stonecutter_output" then
+			return 0
+		end
+
+		if inventory_info.from_list == "stonecutter_output" and inventory_info.to_list == "stonecutter_input" then
+			if inventory:get_stack(inventory_info.to_list, inventory_info.to_index):is_empty() then
+				return inventory_info.count
+			else
+				return 0
+			end
+		end
+	elseif action == "put" then
+		if inventory_info.to_list == "stonecutter_output" then
+			return 0
+		end
+	end
+end)
+
+function remove_from_input(player, inventory)
+	local meta = player:get_meta()
+	local selected = meta:get_string("stonecutter_selected")
+	local istack = inventory:get_stack("stonecutter_input", 1)
+
+	-- selected should normally never be nil, but just in case
+	if selected then
+		istack:set_count(math.max(0, istack:get_count() - 1))
+		inventory:set_stack("stonecutter_input", 1, istack)
 	end
 end
 
--- Only drop the items that were in the input slot
-local function drop_stonecutter_items(pos, meta)
-	local meta = minetest.get_meta(pos)
-	local inv = meta:get_inventory()
-	for i=1, inv:get_size("input") do
-		local stack = inv:get_stack("input", i)
-		if not stack:is_empty() then
-			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-			minetest.add_item(p, stack)
--- 			inv:set_stack("input", i, ItemStack())
+minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
+	if action == "move" then
+		if inventory_info.to_list == "stonecutter_input" or inventory_info.from_list == "stonecutter_input" then
+			update_stonecutter_slots(player)
+			return
+		elseif inventory_info.from_list == "stonecutter_output" then
+			remove_from_input(player, inventory)
+			update_stonecutter_slots(player)
+		end
+	elseif action == "put" then
+		if inventory_info.listname == "stonecutter_input" or inventory_info.listname == "stonecutter_input" then
+			update_stonecutter_slots(player)
+		end
+	elseif action == "take" then
+		if inventory_info.listname == "stonecutter_output" then
+			remove_from_input(player, inventory)
+			update_stonecutter_slots(player)
 		end
 	end
-end
+end)
 
 minetest.register_node("mcl_stonecutter:stonecutter", {
 	description = S("Stone Cutter"),
@@ -134,134 +315,43 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 		"mcl_stonecutter_bottom.png",
 		"mcl_stonecutter_side.png",
 		"mcl_stonecutter_side.png",
-		{name="mcl_stonecutter_saw.png",
-		animation={
-			type="vertical_frames",
-			aspect_w=16,
-			aspect_h=16,
-			length=1
-		}},
-		{name="mcl_stonecutter_saw.png",
-		animation={
-			type="vertical_frames",
-			aspect_w=16,
-			aspect_h=16,
-			length=1
-		}}
+		{
+			name = "mcl_stonecutter_saw.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 1
+			}
+		},
+		{
+			name = "mcl_stonecutter_saw.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 1
+			}
+		}
 	},
 	use_texture_alpha = "clip",
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	groups = { pickaxey=1, material_stone=1 },
+	groups = { pickaxey = 1, material_stone = 1 },
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0.0625, 0.5}, -- NodeBox1
-			{-0.4375, 0.0625, 0, 0.4375, 0.5, 0}, -- NodeBox2
+			{ -0.5,    -0.5,   -0.5, 0.5,    0.0625, 0.5 }, -- NodeBox1
+			{ -0.4375, 0.0625, 0,    0.4375, 0.5,    0 }, -- NodeBox2
 		}
 	},
 	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	on_destruct = drop_stonecutter_items,
-	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
-		local name = player:get_player_name()
-		if minetest.is_protected(pos, name) then
-			minetest.record_protection_violation(pos, name)
-			return 0
-		else
-			return stack:get_count()
-		end
-	end,
-	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		local name = player:get_player_name()
-		if minetest.is_protected(pos, name) then
-			minetest.record_protection_violation(pos, name)
-			return 0
-		elseif to_list == "output" then
-			return 0
-		elseif from_list == "output" and to_list == "input" then
-			local meta = minetest.get_meta(pos)
-			local inv = meta:get_inventory()
-			if inv:get_stack(to_list, to_index):is_empty() then
-				return count
-			else
-				return 0
-			end
-		else
-			return count
-		end
-	end,
-	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		local meta = minetest.get_meta(pos)
-		if from_list == "output" and to_list == "input" then
-			local inv = meta:get_inventory()
-			for i=1, inv:get_size("input") do
-				if i ~= to_index then
-					local istack = inv:get_stack("input", i)
-					istack:set_count(math.max(0, istack:get_count() - count))
-					inv:set_stack("input", i, istack)
-				end
-			end
-		end
-		update_stonecutter_slots(pos)
-	end,
-	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		local name = player:get_player_name()
-		if minetest.is_protected(pos, name) then
-			minetest.record_protection_violation(pos, name)
-			return 0
-		elseif listname == "output" then
-			return 0
-		else
-			return stack:get_count()
-		end
-	end,
-	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		update_stonecutter_slots(pos)
-	end,
-	on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		local meta = minetest.get_meta(pos)
-		if listname == "output" then
-			local inv = meta:get_inventory()
-			local input = inv:get_stack("input", 1)
-			input:take_item()
-			inv:set_stack("input", 1, input)
-			if input:get_count() == 0 then
-				meta:set_string("cut_stone", nil)
-			end
-		else
-			meta:set_string("cut_stone", nil)
-		end
-		update_stonecutter_slots(pos)
-	end,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("output", 1)
-		local form = show_stonecutter_formspec()
-		meta:set_string("formspec", form)
-	end,
 	on_rightclick = function(pos, node, player, itemstack)
 		if not player:get_player_control().sneak then
-			update_stonecutter_slots(pos)
-		end
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-		if fields then
-			for field_name, value in pairs(fields) do
-				local item_name = tostring(field_name)
-				if item_name then
-					update_stonecutter_slots(pos, item_name)
-				end
-			end
+			mcl_stonecutter.show_stonecutter_form(player)
 		end
 	end,
 })

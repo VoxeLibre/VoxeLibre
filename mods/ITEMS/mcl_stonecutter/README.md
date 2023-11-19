@@ -12,10 +12,14 @@ Adds the stonecutter block. Used to cut stone like materials into stairs, slabs,
 * Stairs, slabs and walls get their recipes registered automatically
 * Recipe chains are followed automatically, so any recipes taking `output` of another recipe as input will also be taking `input` of that recipe as their input
 
+### Displaying the Stonecutter menu
+
+* To display the stonecutter formspec to a player use `mcl_stonecutter.show_stonecutter_form(player)`
+
 License of code
 ---------------
 See the main MineClone 2 README.md file.
-Author: PrairieWind, ChrisPHP, cora, Herowl
+Author: PrairieWind, ChrisPHP, cora, Herowl, AFCMS
 
 License of media
 ----------------
