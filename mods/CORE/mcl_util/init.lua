@@ -1137,3 +1137,53 @@ function mcl_util.get_colorwallmounted_rotation(pos)
 		end
 	end
 end
+
+---Move items from one inventory list to another, drop items that do not fit in provided pos and direction.
+---@param src_inv mt.InvRef
+---@param src_listname string
+---@param out_inv mt.InvRef
+---@param out_listname string
+---@param pos mt.Vector Position to throw items at
+---@param dir? mt.Vector Direction to throw items in
+---@param insta_collect? boolean Enable instant collection, let players collect dropped items instantly. Default `false`
+function mcl_util.move_list(src_inv, src_listname, out_inv, out_listname, pos, dir, insta_collect)
+	local src_list = src_inv:get_list(src_listname)
+
+	if not src_list then return end
+	for i, stack in ipairs(src_list) do
+		if out_inv:room_for_item(out_listname, stack) then
+			out_inv:add_item(out_listname, stack)
+		else
+			local p = vector.copy(pos)
+			p.x = p.x + (math.random(1, 3) * 0.2)
+			p.z = p.z + (math.random(1, 3) * 0.2)
+
+			local obj = minetest.add_item(p, stack)
+			if obj then
+				if dir then
+					local v = vector.copy(dir)
+					v.x = v.x * 4
+					v.y = v.y * 4 + 2
+					v.z = v.z * 4
+					obj:set_velocity(v)
+					minetest.log("error", vector.to_string(v))
+				end
+				if not insta_collect then
+					obj:get_luaentity()._insta_collect = false
+				end
+			end
+		end
+
+		stack:clear()
+		src_inv:set_stack(src_listname, i, stack)
+	end
+end
+
+---Move items from a player's inventory list to its main inventory list, drop items that do not fit in front of him.
+---@param player mt.PlayerObjectRef
+---@param src_listname string
+function mcl_util.move_player_list(player, src_listname)
+	mcl_util.move_list(player:get_inventory(), src_listname, player:get_inventory(), "main",
+		vector.offset(player:get_pos(), 0, 1.2, 0),
+		player:get_look_dir(), false)
+end
