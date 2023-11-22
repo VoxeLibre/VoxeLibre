@@ -613,8 +613,8 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	spawn_dictionary[key]["check_position"] = check_position
 
 	summary_chance = summary_chance + chance
-end
 
+end
 
 local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
@@ -973,9 +973,21 @@ if mobs_spawn then
 		return spawning_position
 	end
 
+	local cumulative_chance = nil
+	local mob_library_worker_table = nil
+	local function initialize_spawn_data()
+		if not mob_library_worker_table then
+			mob_library_worker_table = table_copy(spawn_dictionary)
+		end
+		if not cumulative_chance then
+			cumulative_chance = 0
+			for k, v in pairs(mob_library_worker_table) do
+				cumulative_chance = cumulative_chance + v.chance
+			end
+		end
+	end
+
 	local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
-		--create a disconnected clone of the spawn dictionary, prevents memory leak
-		local mob_library_worker_table = table_copy(spawn_dictionary)
 
 		local spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES)
 		if not spawning_position then
@@ -992,18 +1004,25 @@ if mobs_spawn then
 		perlin_noise = perlin_noise or minetest_get_perlin(noise_params)
 		local noise = perlin_noise:get_3d(spawning_position)
 		local current_summary_chance = summary_chance
+		local spawn_loop_counter = #mob_library_worker_table
 
-		table.shuffle(mob_library_worker_table)
-
-		while #mob_library_worker_table > 0 do
-			local mob_chance_offset = (math_round(noise * current_summary_chance + 12345) % current_summary_chance) + 1
+		while spawn_loop_counter > 0 do
+			table.shuffle(mob_library_worker_table)
+			local mob_chance_offset = math_random(1, cumulative_chance)
 			local mob_index = 1
 			local mob_chance = mob_library_worker_table[mob_index].chance
 			local step_chance = mob_chance
 			while step_chance < mob_chance_offset do
 				mob_index = mob_index + 1
-				mob_chance = mob_library_worker_table[mob_index].chance
-				step_chance = step_chance + mob_chance
+				if mob_index <= #mob_library_worker_table then
+					mob_chance = mob_library_worker_table[mob_index].chance
+					step_chance = step_chance + mob_chance
+				else
+					step_chance = 1000000
+				end
+			end
+			if mob_index > #mob_library_worker_table then
+				mob_index = 1
 			end
 			--minetest.log(mob_def.name.." "..step_chance.. " "..mob_chance)
 
@@ -1089,7 +1108,7 @@ if mobs_spawn then
 
 			end
 			current_summary_chance = current_summary_chance - mob_chance
-			table_remove(mob_library_worker_table, mob_index)
+			spawn_loop_counter = spawn_loop_counter - 1
 		end
 	end
 
@@ -1101,6 +1120,7 @@ if mobs_spawn then
 
 		timer = timer + dtime
 		if timer < WAIT_FOR_SPAWN_ATTEMPT then return end
+		initialize_spawn_data()
 		timer = 0
 
 		local players = get_connected_players()
