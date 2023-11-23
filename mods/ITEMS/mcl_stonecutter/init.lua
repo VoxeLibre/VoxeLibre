@@ -92,6 +92,20 @@ local function fieldname_to_itemname(fieldname)
 	return string.gsub(fieldname, "__", ":")
 end
 
+-- Get the player configured stack size when taking items from creative inventory
+---@param player mt.PlayerObjectRef
+---@return integer
+local function get_stack_size(player)
+	return player:get_meta():get_int("mcl_stonecutter:switch_stack")
+end
+
+-- Set the player configured stack size when taking items from creative inventory
+---@param player mt.PlayerObjectRef
+---@param n integer
+local function set_stack_size(player, n)
+	player:get_meta():set_int("mcl_stonecutter:switch_stack", n)
+end
+
 ---Build the formspec for the stonecutter with given output button
 ---@param player mt.PlayerObjectRef
 ---@param items? table<string, integer>
@@ -141,6 +155,11 @@ local function build_stonecutter_formspec(player, items)
 		"scrollbaroptions[min=0;max=" ..
 		math.max(math.floor(#items / 4) + 1 - 4, 0) .. ";smallstep=1;largesteps=1]",
 		"scrollbar[7.625,0.7;0.75,3.6;vertical;scroll;0]",
+
+		-- Switch stack size button
+		"image_button[9.75,0.75;1,1;mcl_stonecutter_saw.png^[verticalframe:3:1;__switch_stack;]",
+		"label[10.25,1.5;" .. C("#FFFFFF", tostring(get_stack_size(player))) .. "]",
+		"tooltip[__switch_stack;" .. S("Switch stack size") .. "]",
 
 		-- Output slot
 		mcl_formspec.get_itemslot_bg_v4(9.75, 2, 1, 1, 0.2),
@@ -209,13 +228,16 @@ function update_stonecutter_slots(player)
 	local input = inv:get_stack("stonecutter_input", 1)
 	local recipes = mcl_stonecutter.registered_recipes[input:get_name()]
 	local output_item = meta:get_string("stonecutter_selected")
+	local stack_size = meta:get_int("mcl_stonecutter:switch_stack")
 
 	if recipes then
 		if output_item then
 			local recipe = recipes[output_item]
 			if recipe then
 				local cut_item = ItemStack(output_item)
-				cut_item:set_count(recipe)
+				local count = math.min(math.floor(stack_size/recipe), input:get_count()) * recipe
+				if count < recipe then count = recipe end
+				cut_item:set_count(count)
 				inv:set_stack("stonecutter_output", 1, cut_item)
 			else
 				inv:set_stack("stonecutter_output", 1, nil)
@@ -237,6 +259,17 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
 		mcl_util.move_player_list(player, "stonecutter_input")
 		mcl_util.move_player_list(player, "stonecutter_output")
+		return
+	end
+
+	if fields.__switch_stack then
+		local switch = 1
+		if get_stack_size(player) == 1 then
+			switch = 64
+		end
+		set_stack_size(player, switch)
+		update_stonecutter_slots(player)
+		mcl_stonecutter.show_stonecutter_form(player)
 		return
 	end
 
@@ -277,10 +310,15 @@ function remove_from_input(player, inventory)
 	local meta = player:get_meta()
 	local selected = meta:get_string("stonecutter_selected")
 	local istack = inventory:get_stack("stonecutter_input", 1)
+	local recipes = mcl_stonecutter.registered_recipes[istack:get_name()]
+	local stack_size = meta:get_int("mcl_stonecutter:switch_stack")
 
 	-- selected should normally never be nil, but just in case
-	if selected then
-		istack:set_count(math.max(0, istack:get_count() - 1))
+	if selected and recipes then
+		local recipe = recipes[selected]
+		local count = math.floor(stack_size/recipe)
+		if count < 1 then count = 1 end
+		istack:set_count(math.max(0, istack:get_count() - count))
 		inventory:set_stack("stonecutter_input", 1, istack)
 	end
 end
