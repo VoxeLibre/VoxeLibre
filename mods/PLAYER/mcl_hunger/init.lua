@@ -146,8 +146,9 @@ minetest.register_globalstep(function(dtime)
 		local food_level = mcl_hunger.get_hunger(player)
 		local food_saturation_level = mcl_hunger.get_saturation(player)
 		local player_health = player:get_hp()
+		local max_tick_timer = tonumber(minetest.settings:get("mcl_health_regen_delay")) or 4
 
-		if food_tick_timer > 4.0 then
+		if food_tick_timer > max_tick_timer then
 			food_tick_timer = 0
 
 			-- let hunger work always
@@ -173,7 +174,7 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
-		elseif food_tick_timer > 0.5 and food_level == 20 and food_saturation_level > 0 then -- fast regeneration
+		elseif food_tick_timer > max_tick_timer and food_level == 20 and food_saturation_level > 0 then -- fast regeneration
 			if player_health > 0 and player_health < 20 then
 				food_tick_timer = 0
 				player:set_hp(player_health+1)

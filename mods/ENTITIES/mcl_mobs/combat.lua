@@ -532,11 +532,28 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		return
 	end
 
+	local time_now = minetest.get_us_time()
+
 	local is_player = hitter:is_player()
 
 	if is_player then
+		local time_diff = time_now - self.invul_timestamp
+
+		-- check for invulnerability time in microseconds (0.5 second)
+		if time_diff <= 500000 and time_diff >= 0 then
+			return
+		end
+
+		local mob_pos = self.object:get_pos()
+		local player_pos = hitter:get_pos()
+
+		-- is mob out of reach?
+		if vector.distance(mob_pos, player_pos) > 3 then
+			return
+		end
+
 		-- is mob protected?
-		if self.protected and minetest.is_protected(self.object:get_pos(), hitter:get_player_name()) then
+		if self.protected and minetest.is_protected(mob_pos, hitter:get_player_name()) then
 			return
 		end
 
@@ -545,7 +562,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		end
 
 		-- set/update 'drop xp' timestamp if hitted by player
-		self.xp_timestamp = minetest.get_us_time()
+		self.xp_timestamp = time_now
 	end
 
 
@@ -657,6 +674,9 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			-- do damage
 			self.health = self.health - damage
 
+			-- give invulnerability
+			self.invul_timestamp = time_now
+
 			-- skip future functions if dead, except alerting others
 			if self:check_for_death( "hit", {type = "punch", puncher = hitter}) then
 				die = true
@@ -672,10 +692,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			if not v then return end
 			local r = 1.4 - math.min(punch_interval, 1.4)
 			local kb = r * (math.abs(v.x)+math.abs(v.z))
-			local up = 2
+			local up = 2.625
 
 			if die==true then
-				kb=kb*2
+				kb=kb*1.25
 			end
 
 			-- if already in air then dont go up anymore when hit
@@ -689,7 +709,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			if tool_capabilities.damage_groups["knockback"] then
 				kb = tool_capabilities.damage_groups["knockback"]
 			else
-				kb = kb * 1.5
+				kb = kb * 1.25
 			end
 
 
@@ -699,9 +719,19 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			end
 			if hitter and is_player then
 				local wielditem = hitter:get_wielded_item()
-				kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
-			elseif luaentity and luaentity._knockback then
+				local hv = hitter:get_velocity()
+				local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
+				local player_mag = math.sqrt((hv.x * hv.x) + (hv.z * hv.z))
+				local mob_mag = math.sqrt((v.x * v.x) + (v.z * v.z))
+				kb = kb + 9 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+				-- add player velocity to mob knockback
+				if dir_dot > 0 and mob_mag <= player_mag * 0.625 then
+					kb = kb + ((math.abs(hv.x) + math.abs(hv.z)) * r)
+				end
+			elseif luaentity and luaentity._knockback and die == false then
 				kb = kb + luaentity._knockback
+			elseif luaentity and luaentity._knockback and die == true then
+				kb = kb + luaentity._knockback * 0.25
 			end
 			self._kb_turn = true
 			self._turn_to=self.object:get_yaw()-1.57

@@ -171,6 +171,7 @@ function mcl_mobs.register_mob(name, def)
 		xp_min = def.xp_min or 0,
 		xp_max = def.xp_max or 0,
 		xp_timestamp = 0,
+		invul_timestamp = 0,
 		breath_max = def.breath_max or 15,
 		breathes_in_water = def.breathes_in_water or false,
 		physical = true,
