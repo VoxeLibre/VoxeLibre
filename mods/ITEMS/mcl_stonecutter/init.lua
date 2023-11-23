@@ -299,14 +299,37 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 				return 0
 			end
 		end
+
+		if inventory_info.from_list == "stonecutter_output" then
+			local selected = player:get_meta():get_string("stonecutter_selected")
+			local istack = inventory:get_stack("stonecutter_input", 1)
+			local recipes = mcl_stonecutter.registered_recipes[istack:get_name()]
+			if not selected or not recipes then return 0 end
+			local recipe = recipes[selected]
+			local remainder = inventory_info.count % recipe
+			if remainder ~= 0 then
+				return 0
+			end
+		end
 	elseif action == "put" then
 		if inventory_info.to_list == "stonecutter_output" then
 			return 0
 		end
+		if inventory_info.from_list == "stonecutter_output" then
+			local selected = player:get_meta():get_string("stonecutter_selected")
+			local istack = inventory:get_stack("stonecutter_input", 1)
+			local recipes = mcl_stonecutter.registered_recipes[istack:get_name()]
+			if not selected or not recipes then return 0 end
+			local recipe = recipes[selected]
+			local remainder = inventory_info.stack:get_count() % recipe
+			if remainder ~= 0 then
+				return 0
+			end
+		end
 	end
 end)
 
-function remove_from_input(player, inventory)
+function remove_from_input(player, inventory, crafted_count)
 	local meta = player:get_meta()
 	local selected = meta:get_string("stonecutter_selected")
 	local istack = inventory:get_stack("stonecutter_input", 1)
@@ -316,7 +339,7 @@ function remove_from_input(player, inventory)
 	-- selected should normally never be nil, but just in case
 	if selected and recipes then
 		local recipe = recipes[selected]
-		local count = math.floor(stack_size/recipe)
+		local count = crafted_count/recipe
 		if count < 1 then count = 1 end
 		istack:set_count(math.max(0, istack:get_count() - count))
 		inventory:set_stack("stonecutter_input", 1, istack)
@@ -329,7 +352,7 @@ minetest.register_on_player_inventory_action(function(player, action, inventory,
 			update_stonecutter_slots(player)
 			return
 		elseif inventory_info.from_list == "stonecutter_output" then
-			remove_from_input(player, inventory)
+			remove_from_input(player, inventory, inventory_info.count)
 			update_stonecutter_slots(player)
 		end
 	elseif action == "put" then
@@ -338,7 +361,7 @@ minetest.register_on_player_inventory_action(function(player, action, inventory,
 		end
 	elseif action == "take" then
 		if inventory_info.listname == "stonecutter_output" then
-			remove_from_input(player, inventory)
+			remove_from_input(player, inventory, inventory_info.stack:get_count())
 			update_stonecutter_slots(player)
 		end
 	end
