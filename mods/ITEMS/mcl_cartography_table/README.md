@@ -1,6 +1,6 @@
 mcl_cartography_table
 -------------------
-Cartography Tables, by PrairieWind
+Cartography Tables, by PrairieWind, mirqf and AFCM
 
 Adds Cartography Tables to VoxeLibre.
 
