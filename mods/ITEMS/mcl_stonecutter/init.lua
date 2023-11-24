@@ -9,7 +9,8 @@
 --  * stonecutter_input (1)
 --  * stonecutter_output (1)
 -- Player meta:
---  * stonecutter_selected (string, wanted item name)
+--  * mcl_stonecutter:selected (string, wanted item name)
+--  * mcl_stonecutter:switch_stack (int, wanted craft count: 1 or 64 = once or until full stack)
 
 
 local S = minetest.get_translator("mcl_stonecutter")
@@ -111,7 +112,7 @@ end
 ---@param items? table<string, integer>
 local function build_stonecutter_formspec(player, items)
 	local meta = player:get_meta()
-	local selected = meta:get_string("stonecutter_selected")
+	local selected = meta:get_string("mcl_stonecutter:selected")
 
 	items = items or {}
 
@@ -195,7 +196,7 @@ end
 ---@param player mt.PlayerObjectRef
 ---@param item_name? string The item name of the output
 function set_selected_item(player, item_name)
-	player:get_meta():set_string("stonecutter_selected", item_name and item_name or "")
+	player:get_meta():set_string("mcl_stonecutter:selected", item_name and item_name or "")
 end
 
 minetest.register_on_joinplayer(function(player)
@@ -227,7 +228,7 @@ function update_stonecutter_slots(player)
 
 	local input = inv:get_stack("stonecutter_input", 1)
 	local recipes = mcl_stonecutter.registered_recipes[input:get_name()]
-	local output_item = meta:get_string("stonecutter_selected")
+	local output_item = meta:get_string("mcl_stonecutter:selected")
 	local stack_size = meta:get_int("mcl_stonecutter:switch_stack")
 
 	if recipes then
@@ -276,7 +277,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	for field_name, value in pairs(fields) do
 		if field_name ~= "scroll" then
 			local itemname = fieldname_to_itemname(field_name)
-			player:get_meta():set_string("stonecutter_selected", itemname)
+			player:get_meta():set_string("mcl_stonecutter:selected", itemname)
 			set_selected_item(player, itemname)
 			update_stonecutter_slots(player)
 			mcl_stonecutter.show_stonecutter_form(player)
@@ -301,7 +302,7 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 		end
 
 		if inventory_info.from_list == "stonecutter_output" then
-			local selected = player:get_meta():get_string("stonecutter_selected")
+			local selected = player:get_meta():get_string("mcl_stonecutter:selected")
 			local istack = inventory:get_stack("stonecutter_input", 1)
 			local recipes = mcl_stonecutter.registered_recipes[istack:get_name()]
 			if not selected or not recipes then return 0 end
@@ -316,7 +317,7 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 			return 0
 		end
 		if inventory_info.from_list == "stonecutter_output" then
-			local selected = player:get_meta():get_string("stonecutter_selected")
+			local selected = player:get_meta():get_string("mcl_stonecutter:selected")
 			local istack = inventory:get_stack("stonecutter_input", 1)
 			local recipes = mcl_stonecutter.registered_recipes[istack:get_name()]
 			if not selected or not recipes then return 0 end
@@ -331,7 +332,7 @@ end)
 
 function remove_from_input(player, inventory, crafted_count)
 	local meta = player:get_meta()
-	local selected = meta:get_string("stonecutter_selected")
+	local selected = meta:get_string("mcl_stonecutter:selected")
 	local istack = inventory:get_stack("stonecutter_input", 1)
 	local recipes = mcl_stonecutter.registered_recipes[istack:get_name()]
 	local stack_size = meta:get_int("mcl_stonecutter:switch_stack")
