@@ -10,7 +10,7 @@ minetest.register_node("mcl_mud:mud", {
 		dug = {name="mud_place_dug", gain=1},
 		place = {name="mud_place_dug", gain=1},
 	},
-	groups = {handy=1, shovely=1, enderman_takable=1, grass_block=1, soil_sugarcane=1, building_block=1},
+	groups = {handy=1, shovely=1, enderman_takable=1, grass_block=1, soil_sugarcane=1, building_block=1, converts_to_moss = 1},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	collision_box = {
