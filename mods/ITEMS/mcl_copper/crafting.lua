@@ -61,8 +61,8 @@ end
 
 local cuttable_blocks = { "block", "waxed_block", "block_exposed", "waxed_block_exposed", "block_weathered", "waxed_block_weathered", "block_oxidized", "waxed_block_oxidized" }
 
-for _, w in ipairs(cuttable_blocks) do
-	mcl_stonecutter.register_recipe("mcl_copper:"..w, "mcl_copper:"..w.."_cut")
+for _, c in ipairs(cuttable_blocks) do
+	mcl_stonecutter.register_recipe("mcl_copper:"..c, "mcl_copper:"..c.."_cut", 4)
 end
 
 minetest.register_craft({
