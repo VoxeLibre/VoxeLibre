@@ -88,10 +88,10 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		end
 		if self.state == "attack" then
 			self:set_animation("run")
-			self:armor = 0
-		if self.state  == "stand" then
+			self.armor = 0
+		elseif self.state  == "stand" then
 			self.armor = 20
-		if self.state == "walk" or self.state == "run" then
+		elseif self.state == "walk" or self.state == "run" then
 			self.armor = 0
 		end
 		self.path.way = false
