@@ -210,14 +210,14 @@ minetest.register_on_joinplayer(function(player)
 	--The player might have items remaining in the slots from the previous join; this is likely
 	--when the server has been shutdown and the server didn't clean up the player inventories.
 	mcl_util.move_player_list(player, "stonecutter_input")
-	mcl_util.move_player_list(player, "stonecutter_output")
+	player:get_inventory():set_list("stonecutter_output", {})
 end)
 
 minetest.register_on_leaveplayer(function(player)
 	set_selected_item(player, nil)
 
 	mcl_util.move_player_list(player, "stonecutter_input")
-	mcl_util.move_player_list(player, "stonecutter_output")
+	player:get_inventory():set_list("stonecutter_output", {})
 end)
 
 ---Update content of the stonecutter output slot with the input slot and the selected item
@@ -259,7 +259,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if fields.quit then
 		mcl_util.move_player_list(player, "stonecutter_input")
-		mcl_util.move_player_list(player, "stonecutter_output")
+		player:get_inventory():set_list("stonecutter_output", {})
 		return
 	end
 
