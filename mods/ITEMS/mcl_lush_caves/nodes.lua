@@ -1,6 +1,36 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 
+function mcl_lush_caves.bone_meal_moss(itemstack, placer, pointed_thing, pos)
+	if minetest.get_node(vector.offset(pos, 0, 1, 0)).name ~= "air" then
+		return false
+	end
+
+	local x_max = math.random(2, 3)
+	local z_max = math.random(2, 3)
+	local area_positions = minetest.find_nodes_in_area_under_air(
+		vector.offset(pos, -x_max, -6, -z_max),
+		vector.offset(pos, x_max, 4, z_max),
+		{ "group:converts_to_moss" }
+	)
+
+	for _, conversion_pos in pairs(area_positions) do
+		local x_distance = math.abs(pos.x - conversion_pos.x)
+		local z_distance = math.abs(pos.z - conversion_pos.z)
+
+		if x_distance == x_max and z_distance == z_max then
+			-- no moss here
+		elseif x_distance == x_max or z_distance == z_max then
+			if math.random() < 0.75 then
+				minetest.set_node(conversion_pos, { name = "mcl_lush_caves:moss" })
+			end
+ 		else
+			minetest.set_node(conversion_pos, { name = "mcl_lush_caves:moss" })
+		end
+	end
+	return true
+end
+
 minetest.register_node("mcl_lush_caves:moss", {
 	description = S("Moss"),
 	_doc_items_longdesc = S("Moss is a green block found in lush caves"),
@@ -11,6 +41,7 @@ minetest.register_node("mcl_lush_caves:moss", {
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 0.1,
 	_mcl_hardness = 0.1,
+	_on_bone_meal = mcl_lush_caves.bone_meal_moss,
 })
 
 minetest.register_node("mcl_lush_caves:moss_carpet", {
