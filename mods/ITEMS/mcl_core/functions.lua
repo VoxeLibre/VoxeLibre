@@ -1458,7 +1458,7 @@ minetest.register_abm({
 	interval = 32,
 	chance = 8,
 	action = function(pos, node)
-		if mcl_weather.has_snow(pos) and minetest.get_node_light(pos, 0) < 12 then
+		if mcl_weather.has_snow(pos) and minetest.get_natural_light(vector.offset(pos,0,1,0), 0.5) == minetest.LIGHT_MAX + 1 and minetest.get_node_light(pos) < 10 then
 			node.name = "mcl_core:ice"
 			minetest.swap_node(pos, node)
 		end
