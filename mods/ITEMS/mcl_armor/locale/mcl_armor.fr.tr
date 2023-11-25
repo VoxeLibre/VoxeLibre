@@ -47,4 +47,5 @@ Thorns=Épines
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflète une partie des dégâts subis lors de la frappe, au prix d'une réduction de la durabilité à chaque déclenchement.
 Aqua Affinity=Affinité aquatique
 
-
+#Translations for armor trims
+Smithing Template '@1'=Modèle à forger '@1'

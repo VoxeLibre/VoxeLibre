@@ -17,4 +17,4 @@ A wooden button is a redstone component made out of wood which can be pushed to 
 Provides redstone power when pushed=Выдаёт сигнал редстоуна при нажатии
 Push duration: @1s=Длительность нажатия: @1с
 Pushable by arrow=Нажимается стрелами
-A button is a redstone compent which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=Кнопка это компонент редстоуна, её можно нажать, чтобы получить сигнал редстоуна. При нажатии она включает соседние компоненты редстоуна на @1 с.
+A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=Кнопка это компонент редстоуна, её можно нажать, чтобы получить сигнал редстоуна. При нажатии она включает соседние компоненты редстоуна на @1 с.

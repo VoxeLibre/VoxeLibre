@@ -17,3 +17,4 @@ A wooden button is a redstone component made out of wood which can be pushed to 
 Provides redstone power when pushed=Fournit une puissance de redstone lorsqu'il est poussé
 Push duration: @1s=Durée de poussée : @1s
 Pushable by arrow=Poussable par une flèche
+A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=Un bouton est un composant redstone qui peut être poussé afin de fournir de la puissance redstone. Lorsqu'il est poussé, il fournit de la puissance redstone pendant @1 seconde.

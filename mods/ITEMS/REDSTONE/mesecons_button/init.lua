@@ -108,7 +108,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		if groups_off.material_wood ~= 0 then
 			longdesc = S("A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows.")
 		else
-			longdesc = S("A button is a redstone compent which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.", button_timer)
+			longdesc = S("A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.", button_timer)
 		end
 	end
 
