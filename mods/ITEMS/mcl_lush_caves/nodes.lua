@@ -1,6 +1,48 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 
+-- Return a vegetation type with the following chances
+--   Tall Grass: 52.08%
+--   Moss Carpet: 26.04%
+--   Double Grass: 10.42%
+--   Azalea Leaves: 7.29%
+--   Flowering Azalea Leaves: 4.17%
+local function random_moss_vegetation()
+	local x = math.random()
+	if x < 0.5208 then
+		return "mcl_flowers:tallgrass"
+	elseif x < 0.7812 then
+		return "mcl_lush_caves:moss_carpet"
+	elseif x < 0.8854 then
+		return "mcl_flowers:double_grass"
+	elseif x < 0.9583 then
+		return "mcl_lush_caves:azalea_leaves"
+	else
+		return "mcl_lush_caves:azalea_leaves_flowering"
+	end
+end
+
+-- sets the node at 'pos' to moss and with a 60% chance sets the node above to
+-- vegatation
+local function set_moss_with_chance_vegetation(pos)
+	minetest.set_node(pos, { name = "mcl_lush_caves:moss" })
+	if math.random() < 0.6 then
+		local vegetation = random_moss_vegetation()
+		local pos_up = vector.offset(pos, 0, 1, 0)
+		if vegetation == "mcl_flowers:double_grass" then
+			local pos_up2 = vector.offset(pos, 0, 2, 0)
+			if minetest.registered_nodes[minetest.get_node(pos_up2).name].buildable_to then
+				minetest.set_node(pos_up, { name = "mcl_flowers:double_grass" })
+				minetest.set_node(pos_up2, { name = "mcl_flowers:double_grass_top" })
+			else
+				minetest.set_node(pos_up, { name = "mcl_flowers:tallgrass" })
+			end
+		else
+			minetest.set_node(pos_up, { name = vegetation })
+		end
+	end
+end
+
 function mcl_lush_caves.bone_meal_moss(itemstack, placer, pointed_thing, pos)
 	if minetest.get_node(vector.offset(pos, 0, 1, 0)).name ~= "air" then
 		return false
@@ -22,10 +64,10 @@ function mcl_lush_caves.bone_meal_moss(itemstack, placer, pointed_thing, pos)
 			-- no moss here
 		elseif x_distance == x_max or z_distance == z_max then
 			if math.random() < 0.75 then
-				minetest.set_node(conversion_pos, { name = "mcl_lush_caves:moss" })
+				set_moss_with_chance_vegetation(conversion_pos)
 			end
  		else
-			minetest.set_node(conversion_pos, { name = "mcl_lush_caves:moss" })
+			set_moss_with_chance_vegetation(conversion_pos)
 		end
 	end
 	return true
