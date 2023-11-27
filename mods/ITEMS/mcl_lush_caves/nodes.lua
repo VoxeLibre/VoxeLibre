@@ -323,61 +323,67 @@ minetest.register_node("mcl_lush_caves:spore_blossom", {
 	end)
 })
 
---[[
-minetest.register_node("mcl_lush_caves:azalea", {
-	description = S("Azalea"),
-	inventory_image = "mcl_lush_caves_azalea_plant.png",
-	drawtype = "allfaces_optional",
---	drawtype = "nodebox",
---	node_box = {
---		type = "fixed",
---		fixed = {
---			{ -16/16, -0/16, -16/16,  16/16, 16/16,  16/16 },
---			{ -2/16, -16/16, -2/16,  2/16,  0/16,  2/16 },
---		}
---	},
-	--tiles = { "blank.png" },
-	tiles = {
-		"mcl_lush_caves_azalea_top.png",
-		"mcl_lush_caves_azalea_top.png",
-		"mcl_lush_caves_azalea_side.png",
-		"mcl_lush_caves_azalea_side.png",
-		"mcl_lush_caves_azalea_side.png",
-		"mcl_lush_caves_azalea_side.png",
-	},
-	is_ground_content = false,
-	groups = { handy=1 },
-	sounds = mcl_sounds.node_sound_dirt_defaults(),
-	_mcl_blast_resistance = 0,
-	_mcl_hardness = 0,
-	use_texture_alpha = "clip",
-})
-
-minetest.register_node("mcl_lush_caves:azalea_flowering", {
-	description = S("Flowering azalea"),
-	inventory_image = "mcl_lush_caves_azalea_flowering_top.png",
-	drawtype = "nodebox",
+local tpl_azalea = {
+  drawtype = "nodebox",
 	node_box = {
-		type = "fixed",
-		fixed = {
-			{ -16/16, -4/16, -16/16,  16/16, 16/16,  16/16 },
-			{ -2/16, -16/16, -2/16,  2/16,  -4/16,  2/16 },
-		}
-	},
-	--tiles = { "blank.png" },
-	tiles = {
-		"mcl_lush_caves_azalea_flowering_top.png",
-		"mcl_lush_caves_azalea_flowering_top.png",
-		"mcl_lush_caves_azalea_flowering_side.png",
-		"mcl_lush_caves_azalea_flowering_side.png",
-		"mcl_lush_caves_azalea_flowering_side.png",
-		"mcl_lush_caves_azalea_flowering_side.png",
-	},
+    type = "fixed",
+    fixed = {
+      { -8/16, -4/16, -8/16, 8/16, 8/16, 8/16 },
+      { -2/16, -8/16, -2/16, 2/16, -4/16, 2/16 },
+    }
+  },
 	is_ground_content = false,
-	groups = { handy=1 },
+	groups = {
+		handy = 1, shearsy = 1,
+		plant = 1, non_mycelium_plant = 1,
+		dig_by_piston = 1, dig_by_water = 1,
+		flammable = 2, fire_encouragement = 15, fire_flammability = 40,
+	},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	paramtype = "light",
+	sunlight_propagates = true,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 	use_texture_alpha = "clip",
+	on_place = mcl_util.generate_on_place_plant_function(function(pos, node, itemstack)
+			local floor_name = minetest.get_node_or_nil(vector.offset(pos, 0, -1, 0)).name
+			if not floor_name then return false end
+			if minetest.get_item_group(floor_name, "soil_sapling") > 0 or floor_name == "mcl_lush_caves:rooted_dirt" or floor_name == "mcl_mangrove:mangrove_mud_roots" or floor_name == "mcl_mud:mud" or floor_name == "mcl_core:clay" then
+				return true
+			end
+	end),
+}
+
+local azalea = table.merge(
+	tpl_azalea, {
+		description = S("Azalea"),
+		_doc_items_longdesc = S("Azalea is a small plant which often occurs in lush caves. It can be broken by hand or any tool. By using bone meal, azalea can be turned into an azalea tree."),
+		_doc_items_entry_name = "azalea",
+		tiles = {
+			"mcl_lush_caves_azalea_top.png",
+			"mcl_lush_caves_azalea_bottom.png",
+			"mcl_lush_caves_azalea_side.png",
+			"mcl_lush_caves_azalea_side.png",
+			"mcl_lush_caves_azalea_side.png",
+			"mcl_lush_caves_azalea_side.png",
+		},
 })
---]]
+azalea.groups.compostability = 65
+minetest.register_node("mcl_lush_caves:azalea", azalea)
+
+local azalea_flowering = table.merge(
+	tpl_azalea, {
+		description = S("Flowering Azalea"),
+		_doc_items_longdesc = S("Flowering azalea is a small plant which often occurs in lush caves. It can be broken by hand or any tool. By using bone meal, flowering azalea can be turned into an azalea tree."),
+		_doc_items_entry_name = "azalea_flowering",
+		tiles = {
+			"mcl_lush_caves_azalea_flowering_top.png",
+			"mcl_lush_caves_azalea_flowering_bottom.png",
+			"mcl_lush_caves_azalea_flowering_side.png",
+			"mcl_lush_caves_azalea_flowering_side.png",
+			"mcl_lush_caves_azalea_flowering_side.png",
+			"mcl_lush_caves_azalea_flowering_side.png",
+		},
+})
+azalea_flowering.groups.compostability = 85
+minetest.register_node("mcl_lush_caves:azalea_flowering", azalea_flowering)
