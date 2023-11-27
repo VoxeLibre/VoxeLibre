@@ -1,4 +1,5 @@
 local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
 -- Return a vegetation type with the following chances
@@ -352,6 +353,20 @@ local tpl_azalea = {
 				return true
 			end
 	end),
+  _on_bone_meal = function(itemstack, placer, pointed_thing, pos)
+		if math.random() > 0.45 or not mcl_trees.check_growth_simple(pos, 6) then return end
+		minetest.set_node(vector.offset(pos, 0, -1, 0), { name = "mcl_lush_caves:rooted_dirt" })
+    minetest.remove_node(pos)
+    minetest.place_schematic(
+			vector.offset(pos, -3, 0, -3),
+			modpath.."/schematics/azalea1.mts",
+			"random",
+			nil,
+			false,
+			"place_center_x place_center_z"
+		)
+    return true
+  end
 }
 
 local azalea = table.merge(
