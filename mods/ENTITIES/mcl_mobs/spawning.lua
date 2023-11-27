@@ -16,7 +16,6 @@ local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local get_biome_name               = minetest.get_biome_name
 local get_objects_inside_radius    = minetest.get_objects_inside_radius
 local get_connected_players        = minetest.get_connected_players
-local minetest_get_perlin          = minetest.get_perlin
 
 local math_random    = math.random
 local math_floor     = math.floor
