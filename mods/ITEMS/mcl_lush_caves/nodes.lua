@@ -5,8 +5,8 @@ local S = minetest.get_translator(modname)
 --   Tall Grass: 52.08%
 --   Moss Carpet: 26.04%
 --   Double Grass: 10.42%
---   Azalea Leaves: 7.29%
---   Flowering Azalea Leaves: 4.17%
+--   Azalea: 7.29%
+--   Flowering Azalea: 4.17%
 local function random_moss_vegetation()
 	local x = math.random()
 	if x < 0.5208 then
@@ -16,9 +16,9 @@ local function random_moss_vegetation()
 	elseif x < 0.8854 then
 		return "mcl_flowers:double_grass"
 	elseif x < 0.9583 then
-		return "mcl_lush_caves:azalea_leaves"
+		return "mcl_lush_caves:azalea"
 	else
-		return "mcl_lush_caves:azalea_leaves_flowering"
+		return "mcl_lush_caves:azalea_flowering"
 	end
 end
 
