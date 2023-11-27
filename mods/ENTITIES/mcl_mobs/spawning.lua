@@ -97,19 +97,6 @@ local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
-local noise_params = {
-	offset = 0,
-	scale  = 3,
-	spread = {
-		x = 301,
-		y = 50,
-		z = 304,
-	},
-	seed = 100,
-	octaves = 3,
-	persistence = 0.5,
-}
-
 -- THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
 -- Also used for missing parameter
 -- Please update the list when adding new biomes!
@@ -875,8 +862,6 @@ minetest.register_chatcommand("spawn_mob",{
 
 if mobs_spawn then
 
-	local perlin_noise
-
 	-- Get pos to spawn, x and z are randomised, y is range
 
 
@@ -1001,8 +986,6 @@ if mobs_spawn then
 
 		--grab mob that fits into the spawning location
 		--randomly grab a mob, don't exclude any possibilities
-		perlin_noise = perlin_noise or minetest_get_perlin(noise_params)
-		local noise = perlin_noise:get_3d(spawning_position)
 		local current_summary_chance = summary_chance
 		local spawn_loop_counter = #mob_library_worker_table
 
