@@ -60,14 +60,14 @@ function mcl_lush_caves.bone_meal_moss(itemstack, placer, pointed_thing, pos)
 		local x_distance = math.abs(pos.x - conversion_pos.x)
 		local z_distance = math.abs(pos.z - conversion_pos.z)
 
-		if x_distance == x_max and z_distance == z_max then
-			-- no moss here
-		elseif x_distance == x_max or z_distance == z_max then
-			if math.random() < 0.75 then
+		if not ( x_distance == x_max and z_distance == z_max ) then
+			if x_distance == x_max or z_distance == z_max then
+				if math.random() < 0.75 then
+					set_moss_with_chance_vegetation(conversion_pos)
+				end
+			else
 				set_moss_with_chance_vegetation(conversion_pos)
 			end
- 		else
-			set_moss_with_chance_vegetation(conversion_pos)
 		end
 	end
 	return true
