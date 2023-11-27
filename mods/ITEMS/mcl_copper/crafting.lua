@@ -41,7 +41,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_copper:mcl_copper:block_weathered_cut 4",
+	output = "mcl_copper:block_weathered_cut 4",
 	recipe = {
 		{ "mcl_copper:block_weathered", "mcl_copper:block_weathered" },
 		{ "mcl_copper:block_weathered", "mcl_copper:block_weathered" },
