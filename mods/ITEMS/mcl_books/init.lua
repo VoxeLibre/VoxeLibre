@@ -438,7 +438,7 @@ minetest.register_node("mcl_books:bookshelf", {
 		flammable = 3,
 		fire_encouragement = 30,
 		fire_flammability = 20,
-		container = 1
+		container = 2
 	},
 	drop = "mcl_books:book 3",
 	sounds = wood_sound,
@@ -472,6 +472,12 @@ minetest.register_node("mcl_books:bookshelf", {
 	on_blast = on_blast,
 	on_rightclick = bookshelf_gui,
 	on_destruct = close_forms,
+	_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		return inv, "main", mcl_util.select_stack(hop_inv, hop_list, inv, "main",
+				function(stack) return minetest.get_item_group(stack:get_name(), "book") == 1 or stack:get_name() == "mcl_enchanting:book_enchanted" end)
+	end,
 })
 
 minetest.register_craft({

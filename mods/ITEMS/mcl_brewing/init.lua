@@ -376,13 +376,41 @@ local function allow_take(pos, listname, index, stack, player)
 	end
 end
 
+local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	if math.abs(pos.y - hop_pos.y) > math.abs(pos.x - hop_pos.x) and math.abs(pos.y - hop_pos.y) > math.abs(pos.z - hop_pos.z) then
+		return inv, "input", mcl_util.select_stack(hop_inv, hop_list, inv, "input",
+			function(stack) return minetest.get_item_group(stack:get_name(), "brewitem") == 1 and minetest.get_item_group(stack:get_name(), "bottle") == 0 end)
+	else
+		local stack = mcl_util.select_stack(hop_inv, hop_list, inv, "fuel", function(stack) return stack:get_name() == "mcl_mobitems:blaze_powder" end)
+		if stack then
+			return inv, "fuel", stack
+		else
+			return inv, "stand", mcl_util.select_stack(hop_inv, hop_list, inv, "stand",
+				function(stack) return minetest.get_item_group(stack:get_name(), "bottle") == 1 end)
+		end
+	end
+end
+
+local function hoppers_on_try_pull(pos, hop_pos, hop_inv, hop_list)
+	local meta = minetest.get_meta(pos)
+	local stand_timer = meta:get_float("stand_timer") or 0
+	if stand_timer > 0 then
+		return nil, nil, nil
+	end
+
+	local inv = meta:get_inventory()
+	local stack = mcl_util.select_stack(inv, "stand", hop_inv, hop_list)
+	return inv, "stand", stack
+end
 
 minetest.register_node("mcl_brewing:stand_000", {
 	description = S("Brewing Stand"),
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, brewitem=1 },
+	groups = {pickaxey=1, container = 2, brewitem=1 },
 	tiles = tiles,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	drop = "mcl_brewing:stand",
@@ -444,12 +472,20 @@ minetest.register_node("mcl_brewing:stand_000", {
 
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_push = hoppers_on_try_push,
+	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
+	_mcl_hoppers_on_after_push = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
+	_mcl_hoppers_on_after_pull = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
 })
 minetest.register_node("mcl_brewing:stand_100", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = { pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
 	tiles = tiles,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	drop = "mcl_brewing:stand",
@@ -514,13 +550,21 @@ minetest.register_node("mcl_brewing:stand_100", {
 	end,
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_push = hoppers_on_try_push,
+	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
+	_mcl_hoppers_on_after_push = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
+	_mcl_hoppers_on_after_pull = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
 })
 
 minetest.register_node("mcl_brewing:stand_010", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	drop = "mcl_brewing:stand",
@@ -586,13 +630,21 @@ minetest.register_node("mcl_brewing:stand_010", {
 	end,
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_push = hoppers_on_try_push,
+	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
+	_mcl_hoppers_on_after_push = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
+	_mcl_hoppers_on_after_pull = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
 })
 
 minetest.register_node("mcl_brewing:stand_001", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	drop = "mcl_brewing:stand",
@@ -653,13 +705,21 @@ minetest.register_node("mcl_brewing:stand_001", {
 	end,
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_push = hoppers_on_try_push,
+	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
+	_mcl_hoppers_on_after_push = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
+	_mcl_hoppers_on_after_pull = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
 })
 
 minetest.register_node("mcl_brewing:stand_110", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	drop = "mcl_brewing:stand",
@@ -730,13 +790,21 @@ minetest.register_node("mcl_brewing:stand_110", {
 	end,
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_push = hoppers_on_try_push,
+	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
+	_mcl_hoppers_on_after_push = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
+	_mcl_hoppers_on_after_pull = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
 })
 
 minetest.register_node("mcl_brewing:stand_101", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	drop = "mcl_brewing:stand",
@@ -803,13 +871,21 @@ minetest.register_node("mcl_brewing:stand_101", {
 	end,
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_push = hoppers_on_try_push,
+	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
+	_mcl_hoppers_on_after_push = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
+	_mcl_hoppers_on_after_pull = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
 })
 
 minetest.register_node("mcl_brewing:stand_011", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	drop = "mcl_brewing:stand",
@@ -876,13 +952,21 @@ minetest.register_node("mcl_brewing:stand_011", {
 	end,
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_push = hoppers_on_try_push,
+	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
+	_mcl_hoppers_on_after_push = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
+	_mcl_hoppers_on_after_pull = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
 })
 
 minetest.register_node("mcl_brewing:stand_111", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
 	drop = "mcl_brewing:stand",
@@ -956,6 +1040,14 @@ minetest.register_node("mcl_brewing:stand_111", {
 	end,
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
+	_mcl_hoppers_on_try_push = hoppers_on_try_push,
+	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
+	_mcl_hoppers_on_after_push = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
+	_mcl_hoppers_on_after_pull = function(pos)
+		on_put(pos, nil, nil, nil, nil)
+	end,
 })
 
 minetest.register_craft({

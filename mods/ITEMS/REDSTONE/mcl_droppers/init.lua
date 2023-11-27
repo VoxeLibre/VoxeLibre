@@ -125,7 +125,11 @@ local dropperdef = {
 			local dropnode = minetest.get_node(droppos)
 			-- Do not drop into solid nodes, unless they are containers
 			local dropnodedef = minetest.registered_nodes[dropnode.name]
-			if dropnodedef.walkable and not dropnodedef.groups.container then
+			if dropnodedef.groups.container == 2 then
+				-- If they are containers - double down as hopper
+				mcl_util.hopper_push(pos, droppos)
+			end
+			if dropnodedef.walkable then
 				return
 			end
 			local stacks = {}
@@ -141,25 +145,18 @@ local dropperdef = {
 				local dropitem = ItemStack(stack)
 				dropitem:set_count(1)
 				local stack_id = stacks[r].stackpos
-
-				-- If it's a container, attempt to put it into the container
-				local dropped = mcl_util.move_item_container(pos, droppos, nil, stack_id)
-				-- No container?
-				if not dropped and not dropnodedef.groups.container then
-					-- Drop item normally
-					local pos_variation = 100
-					droppos = vector.offset(droppos,
-						math.random(-pos_variation, pos_variation) / 1000,
-						math.random(-pos_variation, pos_variation) / 1000,
-						math.random(-pos_variation, pos_variation) / 1000
-					)
-					local item_entity = minetest.add_item(droppos, dropitem)
-					local drop_vel = vector.subtract(droppos, pos)
-					local speed = 3
-					item_entity:set_velocity(vector.multiply(drop_vel, speed))
-					stack:take_item()
-					inv:set_stack("main", stack_id, stack)
-				end
+				local pos_variation = 100
+				droppos = vector.offset(droppos,
+					math.random(-pos_variation, pos_variation) / 1000,
+					math.random(-pos_variation, pos_variation) / 1000,
+					math.random(-pos_variation, pos_variation) / 1000
+				)
+				local item_entity = minetest.add_item(droppos, dropitem)
+				local drop_vel = vector.subtract(droppos, pos)
+				local speed = 3
+				item_entity:set_velocity(vector.multiply(drop_vel, speed))
+				stack:take_item()
+				inv:set_stack("main", stack_id, stack)
 			end
 		end,
 		rules = mesecon.rules.alldirs,
