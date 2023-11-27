@@ -243,6 +243,10 @@ for i = 1, 3 do
 		output = "mcl_deepslate:deepslate_"..deepslate_variants[i+1][1].." 4",
 		recipe = { { s, s }, { s, s } }
 	})
+	mcl_stonecutter.register_recipe(
+		"mcl_deepslate:deepslate_"..deepslate_variants[i][1],
+		"mcl_deepslate:deepslate_"..deepslate_variants[i+1][1]
+	)
 end
 
 for _, p in pairs({ "bricks", "tiles" }) do
@@ -275,3 +279,5 @@ minetest.register_craft({
 		{ "mcl_stairs:slab_deepslate_cobbled" },
 	},
 })
+
+mcl_stonecutter.register_recipe("mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_chiseled")

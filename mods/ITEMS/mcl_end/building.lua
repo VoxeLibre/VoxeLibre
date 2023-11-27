@@ -211,3 +211,5 @@ minetest.register_craft({
 	},
 })
 
+mcl_stonecutter.register_recipe("mcl_end:end_stone", "mcl_end:end_bricks")
+mcl_stonecutter.register_recipe("mcl_end:purpur_block", "mcl_end:purpur_pillar")

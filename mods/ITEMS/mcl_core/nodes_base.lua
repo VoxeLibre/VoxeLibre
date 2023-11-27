@@ -1124,6 +1124,19 @@ minetest.register_node("mcl_core:snowblock", {
 	_mcl_silk_touch_drop = true,
 })
 
+-- Stonecutter recipes
+mcl_stonecutter.register_recipe("mcl_core:stone", "mcl_core:stonebrick")
+mcl_stonecutter.register_recipe("mcl_core:stone", "mcl_core:stonebrickcarved")
+mcl_stonecutter.register_recipe("mcl_core:stonebrick", "mcl_core:stonebrickcarved")
+mcl_stonecutter.register_recipe("mcl_core:granite", "mcl_core:granite_smooth")
+mcl_stonecutter.register_recipe("mcl_core:andesite", "mcl_core:andesite_smooth")
+mcl_stonecutter.register_recipe("mcl_core:diorite", "mcl_core:diorite_smooth")
+mcl_stonecutter.register_recipe("mcl_core:sandstone", "mcl_core:sandstonesmooth")
+mcl_stonecutter.register_recipe("mcl_core:sandstone", "mcl_core:sandstonecarved")
+mcl_stonecutter.register_recipe("mcl_core:redsandstone", "mcl_core:redsandstonesmooth")
+mcl_stonecutter.register_recipe("mcl_core:redsandstone", "mcl_core:redsandstonecarved")
+
+
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_core:stone_with_redstone", "nodes", "mcl_core:stone_with_redstone_lit")

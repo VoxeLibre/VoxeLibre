@@ -30,7 +30,18 @@ for w=1, #woods do
 			wood[5])
 end
 
-mcl_stairs.register_stair_and_slab_simple("stone_rough", "mcl_core:stone", S("Stone Stairs"), S("Stone Slab"), S("Double Stone Slab"))
+
+mcl_stairs.register_slab("stone_rough", "mcl_core:stone",
+		{pickaxey=1, material_stone=1},
+		{"default_stone.png"},
+		S("Stone Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Stone Slab"))
+mcl_stairs.register_stair("stone_rough", "mcl_core:stone",
+		{pickaxey=1, material_stone=1},
+		{"default_stone.png"},
+		S("Stone Stairs"),
+		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
 
 mcl_stairs.register_slab("stone", "mcl_core:stone_smooth",
 		{pickaxey=1, material_stone=1},
@@ -39,43 +50,127 @@ mcl_stairs.register_slab("stone", "mcl_core:stone_smooth",
 		mcl_sounds.node_sound_stone_defaults(), 6, 2,
 		S("Double Polished Stone Slab"))
 
-mcl_stairs.register_stair_and_slab_simple("andesite", "mcl_core:andesite", S("Andesite Stairs"), S("Andesite Slab"), S("Double Andesite Slab"))
-mcl_stairs.register_stair_and_slab_simple("granite", "mcl_core:granite", S("Granite Stairs"), S("Granite Slab"), S("Double Granite Slab"))
-mcl_stairs.register_stair_and_slab_simple("diorite", "mcl_core:diorite", S("Diorite Stairs"), S("Diorite Slab"), S("Double Diorite Slab"))
+mcl_stairs.register_stair("andesite", "mcl_core:andesite",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_andesite.png"},
+		S("Andesite Stairs"),
+		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
+mcl_stairs.register_slab("andesite", "mcl_core:andesite",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_andesite.png"},
+		S("Andesite Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Andesite Slab"))
 
-mcl_stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", S("Cobblestone Stairs"), S("Cobblestone Slab"), S("Double Cobblestone Slab"))
-mcl_stairs.register_stair_and_slab_simple("mossycobble", "mcl_core:mossycobble", S("Mossy Cobblestone Stairs"), S("Mossy Cobblestone Slab"), S("Double Mossy Cobblestone Slab"))
+mcl_stairs.register_stair("granite", "mcl_core:granite",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_granite.png"},
+		S("Granite Stairs"),
+		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
+mcl_stairs.register_slab("granite", "mcl_core:granite",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_granite.png"},
+		S("Granite Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Granite Slab"))
 
-mcl_stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", S("Brick Stairs"), S("Brick Slab"), S("Double Brick Slab"))
+mcl_stairs.register_stair("diorite", "mcl_core:diorite",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_diorite.png"},
+		S("Granite Stairs"),
+		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
+mcl_stairs.register_slab("diorite", "mcl_core:diorite",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_diorite.png"},
+		S("Diorite Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Diorite Slab"))
 
+mcl_stairs.register_stair("cobble", "mcl_core:cobble",
+		{pickaxey=1, material_stone=1},
+		{"default_cobble.png"},
+		S("Cobblestone Stairs"),
+		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
+mcl_stairs.register_slab("cobble", "mcl_core:cobble",
+		{pickaxey=1, material_stone=1},
+		{"default_cobble.png"},
+		S("Cobblestone Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Cobblestone Slab"))
 
-mcl_stairs.register_stair("sandstone", "group:normal_sandstone",
+mcl_stairs.register_stair("mossycobble", "mcl_core:mossycobble",
+		{pickaxey=1, material_stone=1},
+		{"default_mossycobble.png"},
+		S("Mossy Cobblestone Stairs"),
+		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
+mcl_stairs.register_slab("mossycobble", "mcl_core:mossycobble",
+		{pickaxey=1, material_stone=1},
+		{"default_mossycobble.png"},
+		S("Mossy Cobblestone Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Mossy Cobblestone Slab"))
+
+mcl_stairs.register_stair("brick_block", "mcl_core:brick_block",
+		{pickaxey=1, material_stone=1},
+		{"default_brick.png"},
+		S("Brick Stairs"),
+		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
+mcl_stairs.register_slab("brick_block", "mcl_core:brick_block",
+		{pickaxey=1, material_stone=1},
+		{"default_brick.png"},
+		S("Brick Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Brick Slab"))
+
+mcl_stairs.register_stair("sandstone", "mcl_core:sandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 		S("Sandstone Stairs"),
 		mcl_sounds.node_sound_stone_defaults(),	0.8, 0.8,
 		nil, "mcl_core:sandstone")	--fixme: extra parameter from previous release
-mcl_stairs.register_slab("sandstone", "group:normal_sandstone",
+mcl_stairs.register_slab("sandstone", "mcl_core:sandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 		S("Sandstone Slab"),
 		mcl_sounds.node_sound_stone_defaults(),	6, 2,
 		S("Double Sandstone Slab"), "mcl_core:sandstone")	--fixme: extra parameter from previous release
-mcl_stairs.register_stair_and_slab_simple("sandstonesmooth2", "mcl_core:sandstonesmooth2", S("Smooth Sandstone Stairs"), S("Smooth Sandstone Slab"), S("Double Smooth Sandstone Slab"))
 
-mcl_stairs.register_stair("redsandstone", "group:red_sandstone",
+mcl_stairs.register_stair("sandstonesmooth2", "mcl_core:sandstonesmooth2",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_sandstone_top.png"},
+		S("Smooth Sandstone Stairs"),
+		mcl_sounds.node_sound_stone_defaults(),	0.8, 0.8)
+mcl_stairs.register_slab("sandstonesmooth2", "mcl_core:sandstonesmooth2",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_sandstone_top.png"},
+		S("Smooth Sandstone Slab"),
+		mcl_sounds.node_sound_stone_defaults(),	6, 2,
+		S("Double Smooth Sandstone Slab"))
+
+mcl_stairs.register_stair("redsandstone", "mcl_core:redsandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_normal.png"},
 		S("Red Sandstone Stairs"),
 		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8,
 		nil, "mcl_core:redsandstone")	--fixme: extra parameter from previous release
-mcl_stairs.register_slab("redsandstone", "group:red_sandstone",
+mcl_stairs.register_slab("redsandstone", "mcl_core:redsandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_normal.png"},
 		S("Red Sandstone Slab"),
 		mcl_sounds.node_sound_stone_defaults(), 6, 2,
 		S("Double Red Sandstone Slab"), "mcl_core:redsandstone")	--fixme: extra parameter from previous release
-mcl_stairs.register_stair_and_slab_simple("redsandstonesmooth2", "mcl_core:redsandstonesmooth2", S("Smooth Red Sandstone Stairs"), S("Smooth Red Sandstone Slab"), S("Double Smooth Red Sandstone Slab"))
+
+mcl_stairs.register_stair("redsandstonesmooth2", "mcl_core:redsandstonesmooth2",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_red_sandstone_top.png"},
+		S("Smooth Red Sandstone Stairs"),
+		mcl_sounds.node_sound_stone_defaults(),	0.8, 0.8)
+mcl_stairs.register_slab("redsandstonesmooth2", "mcl_core:redsandstonesmooth2",
+		{pickaxey=1, material_stone=1},
+		{"mcl_core_red_sandstone_top.png"},
+		S("Smooth Red Sandstone Slab"),
+		mcl_sounds.node_sound_stone_defaults(),	6, 2,
+		S("Double Smooth Red Sandstone Slab"))
 
 -- Intentionally not group:stonebrick because of mclx_stairs
 mcl_stairs.register_stair("stonebrick", "mcl_core:stonebrick",
@@ -91,20 +186,30 @@ mcl_stairs.register_slab("stonebrick", "mcl_core:stonebrick",
 		mcl_sounds.node_sound_stone_defaults(), 6, 2,
 		S("Double Stone Bricks Slab"), "mcl_core:stonebrick")	--fixme: extra parameter from previous release
 
-mcl_stairs.register_stair("quartzblock", "group:quartz_block",
+mcl_stairs.register_stair("quartzblock", "mcl_nether:quartz_block",
 		{pickaxey=1, material_stone=1},
 		{"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
 		S("Quartz Stairs"),
 		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8,
 		nil, "mcl_nether:quartz_block")	--fixme: extra parameter from previous release
-mcl_stairs.register_slab("quartzblock", "group:quartz_block",
+mcl_stairs.register_slab("quartzblock", "mcl_nether:quartz_block",
 		{pickaxey=1, material_stone=1},
 		{"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
 		S("Quartz Slab"),
 		mcl_sounds.node_sound_stone_defaults(), 6, 2,
 		S("Double Quartz Slab"), "mcl_nether:quartz_block")	--fixme: extra parameter from previous release
 
-mcl_stairs.register_stair_and_slab_simple("quartz_smooth", "mcl_nether:quartz_smooth", S("Smooth Quartz Stairs"), S("Smooth Quartz Slab"), S("Double Smooth Quartz Slab"))
+mcl_stairs.register_stair("quartz_smooth", "mcl_nether:quartz_smooth",
+		{pickaxey=1, material_stone=1},
+		{"mcl_nether_quartz_block_bottom.png"},
+		S("Smooth Quartz Stairs"),
+		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
+mcl_stairs.register_slab("quartz_smooth", "mcl_nether:quartz_smooth",
+		{pickaxey=1, material_stone=1},
+		{"mcl_nether_quartz_block_bottom.png"},
+		S("Smooth Quartz Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Smooth Quartz Slab"))
 
 mcl_stairs.register_stair_and_slab("nether_brick", "mcl_nether:nether_brick",
 		{pickaxey=1, material_stone=1},
@@ -121,27 +226,73 @@ mcl_stairs.register_stair_and_slab("red_nether_brick", "mcl_nether:red_nether_br
 		mcl_sounds.node_sound_stone_defaults(), 6, 2,
 		S("Double Red Nether Brick Slab"), nil)
 
-mcl_stairs.register_stair_and_slab_simple("end_bricks", "mcl_end:end_bricks", S("End Stone Brick Stairs"), S("End Stone Brick Slab"), S("Double End Stone Brick Slab"))
+mcl_stairs.register_stair_and_slab("end_bricks", "mcl_end:end_bricks",
+		{pickaxey=1, material_stone=1},
+		{"mcl_end_end_bricks.png"},
+		S("End Stone Brick Stairs"),
+		S("End Stone Brick Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double End Stone Brick Slab"), nil)
 
-mcl_stairs.register_stair("purpur_block", "group:purpur_block",
+mcl_stairs.register_stair("purpur_block", "mcl_end:purpur_block",
 		{pickaxey=1, material_stone=1},
 		{"mcl_end_purpur_block.png"},
 		S("Purpur Stairs"),
 		mcl_sounds.node_sound_stone_defaults(),	6, 1.5,
 		nil)
-mcl_stairs.register_slab("purpur_block", "group:purpur_block",
+mcl_stairs.register_slab("purpur_block", "mcl_end:purpur_block",
 		{pickaxey=1, material_stone=1},
 		{"mcl_end_purpur_block.png"},
 		S("Purpur Slab"),
 		mcl_sounds.node_sound_stone_defaults(),	6, 2,
 		S("Double Purpur Slab"))
 
-mcl_stairs.register_stair_and_slab_simple("prismarine", "mcl_ocean:prismarine", S("Prismarine Stairs"), S("Prismarine Slab"), S("Double Prismarine Slab"))
+mcl_stairs.register_stair("prismarine", "mcl_ocean:prismarine",
+		{pickaxey=1, material_stone=1},
+		{{name="mcl_ocean_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
+		S("Prismarine Stairs"),
+		mcl_sounds.node_sound_stone_defaults(),	6, 1.5,
+		nil)
+mcl_stairs.register_slab("prismarine", "mcl_ocean:prismarine",
+		{pickaxey=1, material_stone=1},
+		{{name="mcl_ocean_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
+		S("Prismarine Slab"),
+		mcl_sounds.node_sound_stone_defaults(),	6, 2,
+		S("Double Prismarine Slab"))
 
-mcl_stairs.register_stair_and_slab_simple("mud_brick", "mcl_mud:mud_bricks", S("Mud Brick Stair"), S("Mud Brick Slab"), S("Double Mud Brick Slab"))
+mcl_stairs.register_stair("prismarine_brick", "mcl_ocean:prismarine_brick",
+		{pickaxey=1, material_stone=1},
+		{"mcl_ocean_prismarine_bricks.png"},
+		S("prismarine Brick Stairs"),
+		mcl_sounds.node_sound_stone_defaults(),	6, 1.5,
+		nil)
+mcl_stairs.register_slab("prismarine_brick", "mcl_ocean:prismarine_brick",
+		{pickaxey=1, material_stone=1},
+		{"mcl_ocean_prismarine_bricks.png"},
+		S("prismarine Brick Slab"),
+		mcl_sounds.node_sound_stone_defaults(),	6, 2,
+		S("Double prismarine_brick Slab"))
 
-mcl_stairs.register_stair_and_slab_simple("prismarine_brick", "mcl_ocean:prismarine_brick", S("Prismarine Brick Stairs"), S("Prismarine Brick Slab"), S("Double Prismarine Brick Slab"))
-mcl_stairs.register_stair_and_slab_simple("prismarine_dark", "mcl_ocean:prismarine_dark", S("Dark Prismarine Stairs"), S("Dark Prismarine Slab"), S("Double Dark Prismarine Slab"))
+mcl_stairs.register_stair("prismarine_dark", "mcl_ocean:prismarine_dark",
+		{pickaxey=1, material_stone=1},
+		{"mcl_ocean_prismarine_dark.png"},
+		S("prismarine Brick Stairs"),
+		mcl_sounds.node_sound_stone_defaults(),	6, 1.5,
+		nil)
+mcl_stairs.register_slab("prismarine_dark", "mcl_ocean:prismarine_dark",
+		{pickaxey=1, material_stone=1},
+		{"mcl_ocean_prismarine_dark.png"},
+		S("Dark Prismarine Slab"),
+		mcl_sounds.node_sound_stone_defaults(),	6, 2,
+		S("Double Dark Prismarine Slab"))
+
+mcl_stairs.register_stair_and_slab("mud_brick", "mcl_mud:mud_bricks",
+		{pickaxey=1, material_stone=1},
+		{"mcl_mud_bricks.png"},
+		S("Mud Brick Stairs"),
+		S("Mud Brick Slab"),
+		mcl_sounds.node_sound_stone_defaults(), 6, 2,
+		S("Double Mud Brick Slab"), nil)
 
 mcl_stairs.register_slab("andesite_smooth", "mcl_core:andesite_smooth",
 		{pickaxey=1},
