@@ -73,6 +73,9 @@ mcl_elytra_rocket_speed (Elytra rocket speed cap) float 3.5 2.0 5.5
 # If enabled, chat messages are shown to everyone when a player dies.
 mcl_showDeathMessages (Show death messages) bool true
 
+# If enabled, chat messages are shown to everyone when a player makes an advancement.
+mcl_showAdvancementMessages (Show advancement messages) bool true
+
 # If enabled, the recipe book will progressively be filled with new recipes that can be crafted from all items you ever have had in your inventory.
 # Recommended for new players and for a spoiler-free gameplay experience.
 # If disabled, all recipes will be shown.
