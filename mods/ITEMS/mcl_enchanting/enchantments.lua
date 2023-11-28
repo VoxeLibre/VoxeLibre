@@ -286,7 +286,13 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 			knockback = knockback + dir_dot * 2
 		end
 	elseif luaentity and luaentity._knockback then
-		knockback = knockback + luaentity._knockback
+		local kb = knockback + luaentity._knockback / 4
+		local punch_dir = dir
+		punch_dir.y = 0
+		punch_dir = vector.normalize(punch_dir) * kb
+		punch_dir.y = 4
+		player:add_velocity(punch_dir)
+		knockback = 0
 	end
 	return knockback
 end
