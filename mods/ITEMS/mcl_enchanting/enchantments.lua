@@ -278,7 +278,13 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 	end
 	if hitter and hitter:is_player() then
 		local wielditem = hitter:get_wielded_item()
-		knockback = knockback + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+		knockback = knockback + 5 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+		-- add player velocity to knockback
+		local hv = hitter:get_velocity()
+		local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
+		if dir_dot > 0 then
+			knockback = knockback + dir_dot * 2
+		end
 	elseif luaentity and luaentity._knockback then
 		knockback = knockback + luaentity._knockback
 	end

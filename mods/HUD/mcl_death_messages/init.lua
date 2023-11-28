@@ -156,7 +156,6 @@ mcl_death_messages = {
 			plain = "@1 died a sweet death",
 			assist = "@1 was poked to death by a sweet berry bush whilst trying to escape @2",
 		},
-		-- Missing snowballs: The Minecraft wiki mentions them but the MC source code does not.
 	},
 }
 
