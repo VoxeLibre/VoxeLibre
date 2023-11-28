@@ -516,6 +516,28 @@ end
 
 -- deal damage and effects when mob punched
 function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
+	local is_player = hitter:is_player()
+	local mob_pos = self.object:get_pos()
+	local player_pos = hitter:get_pos()
+
+	if is_player then
+		-- is mob out of reach?
+		if  vector.distance(mob_pos, player_pos) > 3 then
+			return
+		end
+		-- is mob protected?
+		if self.protected and minetest.is_protected(mob_pos, hitter:get_player_name()) then
+			return
+		end
+	end
+
+	local time_now = minetest.get_us_time()
+	local time_diff = time_now - self.invul_timestamp
+
+	-- check for invulnerability time in microseconds (0.5 second)
+	if time_diff <= 500000 and time_diff >= 0 then
+		return
+	end
 
 	-- custom punch function
 	if self.do_punch then
@@ -534,29 +556,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	local time_now = minetest.get_us_time()
 
-	local is_player = hitter:is_player()
-
 	if is_player then
-		local time_diff = time_now - self.invul_timestamp
-
-		-- check for invulnerability time in microseconds (0.5 second)
-		if time_diff <= 500000 and time_diff >= 0 then
-			return
-		end
-
-		local mob_pos = self.object:get_pos()
-		local player_pos = hitter:get_pos()
-
-		-- is mob out of reach?
-		if vector.distance(mob_pos, player_pos) > 3 then
-			return
-		end
-
-		-- is mob protected?
-		if self.protected and minetest.is_protected(mob_pos, hitter:get_player_name()) then
-			return
-		end
-
 		if minetest.is_creative_enabled(hitter:get_player_name()) then
 			self.health = 0
 		end
