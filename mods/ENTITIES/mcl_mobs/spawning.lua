@@ -732,27 +732,26 @@ local function spawn_check(pos, spawn_def)
 				local sky_light = minetest.get_natural_light(pos)
 				local art_light = minetest.get_artificial_light(my_node.param1)
 
-				if dimension == "nether" then
-					if art_light <= nether_threshold then
-						return true
-					end
-				elseif dimension == "end" then
-					if art_light <= end_threshold then
-						return true
-					end
-				elseif dimension == "overworld" then
-					if mob_type == "monster" then
-						if mob_def.spawn_check then
-							return mob_def.spawn_check(pos, gotten_light, art_light, sky_light)
-						elseif art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
+				if mob_def.spawn_check then
+					return mob_def.spawn_check(pos, gotten_light, art_light, sky_light)
+				elseif mob_type == "monster" then
+					if dimension == "nether" then
+						if art_light <= nether_threshold then
 							return true
 						end
-					else
-						if mob_def.spawn_check then
-							return mob_def.spawn_check(pos, gotten_light, art_light, sky_light)
-						elseif gotten_light > overworld_passive_threshold then
+					elseif dimension == "end" then
+						if art_light <= end_threshold then
 							return true
 						end
+					elseif dimension == "overworld" then
+						if art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
+							return true
+						end
+					end
+				else
+					-- passive threshold is apparently the same in all dimensions ...
+					if gotten_light > overworld_passive_threshold then
+						return true
 					end
 				end
 			else
