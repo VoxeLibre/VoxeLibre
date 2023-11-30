@@ -156,7 +156,7 @@ function mcl_sounds.node_sound_glass_defaults(table)
 	table.footstep = table.footstep or
 			{name="default_glass_footstep", gain=0.3}
 	table.dug = table.dug or
-			{name="default_break_glass", gain=1.0}
+			{name="default_break_glass", gain=0.7}
 	table.dig = table.dig or
 			{name="default_dig_cracky", gain=0.5}
 	mcl_sounds.node_sound_defaults(table)
