@@ -10,12 +10,12 @@
 # Itemname (ca. 25%)
 @1 (ca. @2%)=
 # List separator (e.g. “one, two, three”)
-, =, 
+, =,
 # Final list separator (e.g. “One, two and three”)
- and = e 
+ and = e
 1 second=1 segundo
 A transparent block, basically empty space. It is usually left behind after digging something.=Um bloco transparente, basicamente um vazio. Isso geralmente fica no lugar de um bloco removido.
-Air=Ár
+Air=Ar
 Blocks=Blocos
 Building another block at this block will place it inside and replace it.=Construir outro bloco nesse bloco vai subistitui-lo.
 Building this block is completely silent.=Construir esse bloco é completamente silencioso.
