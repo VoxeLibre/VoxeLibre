@@ -314,6 +314,7 @@ minetest.register_node("mcl_lush_caves:spore_blossom", {
 	},
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
+	node_placement_prediction = "",
 	on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node,stack)
 		local above = vector.offset(place_pos,0,1,0)
 		local snn = minetest.get_node_or_nil(above).name
@@ -346,6 +347,7 @@ local tpl_azalea = {
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 	use_texture_alpha = "clip",
+	node_placement_prediction = "",
 	on_place = mcl_util.generate_on_place_plant_function(function(pos, node, itemstack)
 			local floor_name = minetest.get_node_or_nil(vector.offset(pos, 0, -1, 0)).name
 			if not floor_name then return false end
