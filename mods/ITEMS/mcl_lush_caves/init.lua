@@ -122,7 +122,8 @@ function mcl_lush_caves.makeazalea(pos,def,pr)
 			end
 		end
 	end
-	minetest.place_schematic(vector.offset(surface_pos,-3,0,-3),modpath.."/schematics/azalea1.mts","random",nil,nil,"place_center_x place_center_z")
+	minetest.set_node(surface_pos,{name="mcl_lush_caves:rooted_dirt"})
+	minetest.place_schematic(vector.offset(surface_pos,-3,1,-3),modpath.."/schematics/azalea1.mts","random",nil,nil,"place_center_x place_center_z")
 	minetest.log("action","[mcl_lush_caves] Azalea generated at "..minetest.pos_to_string(surface_pos))
 	return true
 end
