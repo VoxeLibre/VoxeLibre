@@ -1,6 +1,7 @@
 mcl_lush_caves = {}
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
 
 local PARTICLE_DISTANCE = 25
 
@@ -218,4 +219,16 @@ minetest.register_craft({
 		type = "fuel",
 		recipe = "mcl_lush_caves:azalea_flowering",
 		burntime = 5,
+})
+
+mcl_flowerpots.register_potted_flower("mcl_lush_caves:azalea", {
+	name = "azalea",
+	desc = S("Azalea Plant"),
+	image = "mcl_lush_caves_azalea_side.png",
+})
+
+mcl_flowerpots.register_potted_flower("mcl_lush_caves:azalea_flowering", {
+	name = "azalea_flowering",
+	desc = S("Flowering Azalea Plant"),
+	image = "mcl_lush_caves_azalea_flowering_side.png",
 })
