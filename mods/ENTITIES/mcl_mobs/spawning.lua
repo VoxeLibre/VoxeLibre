@@ -995,11 +995,8 @@ if mobs_spawn then
 					mob_chance = mob_library_worker_table[mob_index].chance
 					step_chance = step_chance + mob_chance
 				else
-					step_chance = 1000000
+					break
 				end
-			end
-			if mob_index > #mob_library_worker_table then
-				mob_index = 1
 			end
 			--minetest.log(mob_def.name.." "..step_chance.. " "..mob_chance)
 
