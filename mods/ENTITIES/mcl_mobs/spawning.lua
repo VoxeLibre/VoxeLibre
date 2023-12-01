@@ -980,7 +980,9 @@ if mobs_spawn then
 		--output_mob_stats(mob_counts_wide)
 
 		--grab mob that fits into the spawning location
-		--randomly grab a mob, don't exclude any possibilities
+		--use random weighted choice with replacement to grab a mob, don't exclude any possibilities
+		--shuffle table once every loop to provide equal inclusion probability to all mobs
+		--repeat grabbing a mob to maintain existing spawn rates
 		local spawn_loop_counter = #mob_library_worker_table
 
 		while spawn_loop_counter > 0 do
