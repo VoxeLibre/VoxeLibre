@@ -437,7 +437,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 
 })
 
-local wither_rose_soil = { "group:grass_block", "mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_nether:netherrack", "group:soul_block", "mcl_mud:mud", "mcl_moss:moss" }
+local wither_rose_soil = { "group:grass_block", "mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_nether:netherrack", "group:soul_block", "mcl_mud:mud", "mcl_lush_caves:moss" }
 local function spawn_wither_rose(obj)
 	local n = minetest.find_node_near(obj:get_pos(),2,wither_rose_soil)
 	if n then

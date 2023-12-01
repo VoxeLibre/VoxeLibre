@@ -80,7 +80,7 @@ minetest.register_node("mcl_lush_caves:moss", {
 	_doc_items_entry_name = "moss",
 	_doc_items_hidden = false,
 	tiles = {"mcl_lush_caves_moss_block.png"},
-	groups = {handy=1, hoey=2, dirt=1, soil=1, soil_sapling=2, enderman_takable=1, building_block=1,flammable=1,fire_encouragement=60, fire_flammability=20, grass_block_no_snow = 1 },
+	groups = { handy=1, hoey=2, dirt=1, soil=1, soil_bamboo=1, soil_sapling=2, soil_sugarcane=1, enderman_takable=1, building_block=1, flammable=1, fire_encouragement=60, fire_flammability=20, grass_block_no_snow = 1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 0.1,
 	_mcl_hardness = 0.1,
