@@ -326,6 +326,8 @@ minetest.register_node("mcl_lush_caves:spore_blossom", {
 })
 
 local tpl_azalea = {
+	_tt_help = S("Needs soil and bone meal to grow"),
+	_doc_items_hidden = false,
   drawtype = "nodebox",
 	node_box = {
     type = "fixed",
@@ -340,6 +342,7 @@ local tpl_azalea = {
 		plant = 1, non_mycelium_plant = 1,
 		dig_by_piston = 1, dig_by_water = 1,
 		flammable = 2, fire_encouragement = 15, fire_flammability = 40,
+		deco_block = 1,
 	},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	paramtype = "light",
