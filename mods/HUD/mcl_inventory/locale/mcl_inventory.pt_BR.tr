@@ -1,0 +1,22 @@
+# textdomain: mcl_inventory
+Recipe book=Livro de receitas
+Help=Ajuda
+Select player skin=Selecionar skin do jogador
+Advancements=Progressos
+Building Blocks=Blocos de construção
+Decoration Blocks=Blocos de decoração
+Redstone=Redstone
+Transportation=Transporte
+Brewing=Fermentação
+Miscellaneous=Diversos
+Search Items=Pesquisar Itens
+Foodstuffs=Comida
+Tools=Ferramentas
+Combat=Combate
+Mobs=Mobs
+Materials=Materiais
+Survival Inventory=Inventário do Sobrevivência
+Crafting=Fabricação
+Inventory=Inventário
+@1/@2=@1/@2
+Switch stack size=Trocar tamanho da pilha
