@@ -432,7 +432,6 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 local spawn_dictionary = {}
 --this is where all of the spawning information  is kept for mobs that don't naturally spawn
 local non_spawn_dictionary = {}
-local summary_chance = 0
 
 function mcl_mobs:spawn_setup(def)
 	if not mobs_spawn then return end
@@ -494,7 +493,6 @@ function mcl_mobs:spawn_setup(def)
 		check_position   = check_position,
 		on_spawn         = on_spawn,
 	}
-	summary_chance = summary_chance + chance
 end
 
 function mcl_mobs:mob_light_lvl(mob_name, dimension)
@@ -597,8 +595,6 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	spawn_dictionary[key]["max_height"] = max_height
 	spawn_dictionary[key]["day_toggle"] = day_toggle
 	spawn_dictionary[key]["check_position"] = check_position
-
-	summary_chance = summary_chance + chance
 
 end
 
@@ -985,7 +981,6 @@ if mobs_spawn then
 
 		--grab mob that fits into the spawning location
 		--randomly grab a mob, don't exclude any possibilities
-		local current_summary_chance = summary_chance
 		local spawn_loop_counter = #mob_library_worker_table
 
 		while spawn_loop_counter > 0 do
@@ -1089,7 +1084,6 @@ if mobs_spawn then
 				end
 
 			end
-			current_summary_chance = current_summary_chance - mob_chance
 			spawn_loop_counter = spawn_loop_counter - 1
 		end
 	end
