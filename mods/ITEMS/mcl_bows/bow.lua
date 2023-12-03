@@ -33,6 +33,9 @@ local bow_load = {}
 -- Another player table, this one stores the wield index of the bow being charged
 local bow_index = {}
 
+-- define FOV modifier(s)
+mcl_fovapi.register_modifier("bowcomplete", 0.8, 1, true, false, nil, nil)
+
 function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
 	if power == nil then
@@ -183,6 +186,9 @@ end
 
 -- Resets the bow charging state and player speed. To be used when the player is no longer charging the bow
 local function reset_bow_state(player, also_reset_bows)
+	-- clear the FOV change from the player.
+	mcl_fovapi.remove_modifier(player, "bowcomplete") -- for the complete zoom in FOV Modifier.
+
 	bow_load[player:get_player_name()] = nil
 	bow_index[player:get_player_name()] = nil
 	if minetest.get_modpath("playerphysics") then
@@ -314,6 +320,9 @@ controls.register_on_hold(function(player, key, time)
 		end
 		bow_load[name] = minetest.get_us_time()
 		bow_index[name] = player:get_wield_index()
+
+		-- begin Bow Zoom.
+		mcl_fovapi.apply_modifier(player, "bowcomplete")
 	else
 		if player:get_wield_index() == bow_index[name] then
 			if type(bow_load[name]) == "number" then
