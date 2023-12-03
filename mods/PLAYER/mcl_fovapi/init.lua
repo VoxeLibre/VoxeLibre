@@ -27,23 +27,24 @@ minetest.register_on_joinplayer(function(player)
 
 end)
 
--- clear when player leaves
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
-	-- Remove default FOV
+
+	-- handle clean up
 	mcl_fovapi.default_fov[name] = nil
+	mcl_fovapi.applied_modifiers[name] = nil
 end)
 
 function mcl_fovapi.register_modifier(name, fov_factor, time, is_multiplier, exclusive, on_start, on_end)
 	if is_multiplier ~= true and is_multiplier ~= false then
-		is_multiplier = false
+		is_multiplier = true
 	end
 	if exclusive ~= true and exclusive ~= false then
 		exclusive = false
 	end
 	local def = {
 		modifer_name = name,
-		fov = fov_factor,
+		fov_factor = fov_factor,
 		time = time,
 		is_multiplier = is_multiplier,
 		exclusive = exclusive,
