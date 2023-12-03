@@ -6,7 +6,7 @@ mcl_skins = {
 	simple_skins = {},
 	texture_to_simple_skin = {},
 	item_names = {"base", "footwear", "eye", "mouth", "bottom", "top", "hair", "headwear"},
-	tab_names = {"skin", "template", "base", "headwear", "hair", "eye", "mouth", "top", "arm", "bottom", "footwear"},
+	tab_names = {"skin", "template", "base", "headwear", "hair", "eye", "mouth", "top", "arm", "bottom", "footwear", "cape"},
 	tab_descriptions = {
 		template = S("Templates"),
 		arm = S("Arm size"),
@@ -19,6 +19,7 @@ mcl_skins = {
 		hair = S("Hairs"),
 		headwear = S("Headwears"),
 		skin = S("Skins"),
+		cape = S("Capes")
 	},
 	template1 = {}, -- Stores edit skin values for template1
 	template2 = {}, -- Stores edit skin values for template2
@@ -136,6 +137,9 @@ function mcl_skins.compile_skin(skin)
 		if #output > 0 then output = output .. "^" end
 		output = output .. layers[rank]
 	end
+	if skin.cape ~= "nocape" then
+		output =  output .. "^(" .. skin.cape .. "_body.png)"
+	end
 	return output
 end
 
@@ -231,7 +235,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 		formspec = formspec ..
 			"style[" .. tab .. ";content_offset=16,0]" ..
 			"button[0.3," .. y .. ";4,0.8;" .. tab .. ";" .. mcl_skins.tab_descriptions[tab] .. "]" ..
-			"image[0.4," .. y + 0.1 .. ";0.6,0.6;mcl_skins_icons.png^[verticalframe:11:" .. i - 1 .. "]"
+			"image[0.4," .. y + 0.1 .. ";0.6,0.6;mcl_skins_icons.png^[verticalframe:12:" .. i - 1 .. "]"
 			
 		if skin.simple_skins_id then break end
 	end
@@ -305,6 +309,29 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			",blank.png,blank.png;0,180;false;true;0,0]" ..
 			
 			"button[7.5,5.2;2,0.8;template2;" .. S("Select") .. "]"
+
+	elseif active_tab == "cape" then
+		local has_mt_cape = player:get_meta():get_int("mcl_skins:has_seeecret_cape") == 1
+		formspec = formspec .. 
+			"label[6,3;" .. S("(None)") .. "]"..
+			"button[5.5,4.2;2,0.8;nocape;" .. S("Select") .. "]"..
+
+			"image[9,2;1,2;slimecape.png]"..
+			"button[8.5,4.2;2,0.8;slimecape;" .. S("Select") .. "]"..
+
+			"image[6,7;1,2;mtcape.png]" ..  -- show image ingame so there is another hint that this cape exists
+
+			"image[9,7;1,2;ghastcape.png]" ..
+			"button[8.5,9.2;2,0.8;ghastcape;" .. S("Select") .. "]"..
+
+			"image[12,7;1,2;mclcape.png]" ..
+			"button[11.5,9.2;2,0.8;mclcape;" .. S("Select") .. "]"
+
+		if has_mt_cape then
+			formspec = formspec ..
+			--"image[9,2;1,2;mtcape.png]"
+			"button[5.5,9.2;2,0.8;mtcape;" .. S("Select") .. "]"
+		end
 			
 	elseif mcl_skins[active_tab] then
 		formspec = formspec ..
@@ -472,6 +499,26 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_skins.update_player_skin(player)
 		mcl_skins.show_formspec(player, active_tab, page_num)
 		return true
+	elseif fields.nocape then
+		mcl_skins.player_skins[player].cape = "nocape"
+		mcl_skins.update_player_skin(player)
+		return true
+	elseif fields.slimecape then
+		mcl_skins.player_skins[player].cape = "slimecape"
+		mcl_skins.update_player_skin(player)
+		return true
+	elseif fields.ghastcape then
+		mcl_skins.player_skins[player].cape = "ghastcape"
+		mcl_skins.update_player_skin(player)
+		return true
+	elseif fields.mtcape then
+		mcl_skins.player_skins[player].cape = "mtcape"
+		mcl_skins.update_player_skin(player)
+		return true
+	elseif fields.mclcape then
+		mcl_skins.player_skins[player].cape = "mclcape"
+		mcl_skins.update_player_skin(player)
+		return true
 	end
 	
 	for i, tab in pairs(mcl_skins.tab_names) do
@@ -600,12 +647,14 @@ local function init()
 	mcl_skins.template1.top_color = 0xff993535
 	mcl_skins.template1.bottom_color = 0xff644939
 	mcl_skins.template1.slim_arms = false
+	mcl_skins.template1.cape = "nocape"
 	
 	mcl_skins.template2.base_color = mcl_skins.base_color[1]
 	mcl_skins.template2.hair_color = 0xff715d57
 	mcl_skins.template2.top_color = 0xff346840
 	mcl_skins.template2.bottom_color = 0xff383532
 	mcl_skins.template2.slim_arms = true
+	mcl_skins.template2.cape = "nocape"
 
 	mcl_skins.register_simple_skin({
 		index = 0,

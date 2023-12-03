@@ -503,6 +503,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			chatbuttonused = true
 			local message = custom_sleep_message or S("Hey! Would you guys mind sleeping?")
 			minetest.chat_send_all(minetest.format_chat_message(player:get_player_name(), message))
+			if (custom_sleep_message and len(custom_sleep_message) == 5 and minetest.sha1(custom_sleep_message) == "cd6f53e544ed020fb8ff9dae3f2637eb6e0aae43") then
+				-- crack this hash for a special minetest cape, no salt or pepper
+				-- rules for all characters: acii value between 33 and 38 or 48 and 57 or 65 and 80
+				player:get_meta():set_int("mcl_skins:has_seeecret_cape", 1) -- "seeecret" so just using grep on the 'normal' word won't work
+			end
 		end
 		return
 	end
