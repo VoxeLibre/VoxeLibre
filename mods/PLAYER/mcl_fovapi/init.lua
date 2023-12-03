@@ -60,6 +60,10 @@ function mcl_fovapi.register_modifier(name, fov_factor, time, is_multiplier, exc
 
 end
 
+minetest.register_on_respawnplayer(function(player)
+	mcl_fovapi.remove_all_modifiers(player:get_player_name())
+end)
+
 function mcl_fovapi.apply_modifier(player, modifier_name)
 	if player == nil then
 		return
@@ -162,6 +166,9 @@ function mcl_fovapi.remove_all_modifiers(player)
 	end
 
 	player:set_fov(0, false, 0)
+	if mcl_fovapi.registered_modifiers[modifier_name].on_end ~= nil then
+		mcl_fovapi.registered_modifiers[modifier_name].on_end(player)
+	end
 
 end
 
