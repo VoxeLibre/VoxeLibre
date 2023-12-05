@@ -128,6 +128,10 @@ if minetest.is_creative_enabled("") then
 		-- build ssettlement
 		on_place = function(itemstack, placer, pointed_thing)
 			if not pointed_thing.under then return end
+			if not minetest.check_player_privs(placer, "server") then
+				minetest.chat_send_player(placer:get_player_name(), S("Placement denied. You need the “server” privilege to place villages."))
+				return
+			end
 			local minp = vector.subtract(	pointed_thing.under, half_map_chunk_size)
 		        local maxp = vector.add(	pointed_thing.under, half_map_chunk_size)
 			build_a_settlement(minp, maxp, math.random(0,32767))

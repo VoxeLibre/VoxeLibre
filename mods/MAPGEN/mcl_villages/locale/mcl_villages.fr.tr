@@ -1,3 +1,4 @@
 # textdomain: mcl_villages
 Chiseled Stone Village Bricks=Pierre sculptée du village
 mcl_villages build tool=outil de construction de mcl_villages
+Placement denied. You need the “server” privilege to place villages.=Placement refusé. Vous devez disposer du privilège "server" pour placer des villages.

@@ -1,3 +1,4 @@
 # textdomain: mcl_villages
 Chiseled Stone Village Bricks=Резные деревенские каменные кирпичи
 mcl_villages build tool=Инструмент постройки деревни
+Placement denied. You need the “server” privilege to place villages.=Размещение запрещено. Для размещения деревень необходима привилегия "server".
