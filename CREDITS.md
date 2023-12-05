@@ -119,7 +119,6 @@
 * Morik666
 * Eliy21
 * mdk
-* pepebotella
 * Alessandra Lozoya
 * VanicGame
 * ThePython10110

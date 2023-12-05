@@ -93,6 +93,9 @@ Pistons now work better thanks to seventeenthShulker, who fixed many bugs relate
 * Fixed /clear being unclear and dangerous – by Herowl
 * Fixed players sometimes being stuck dead even on relog – by Eliy21
 
+### Special thanks
+* For extensive testing – to Michieal
+
 ### Crashes fixed
 * Unknown nodes and callbacks related crash – by MrRar
 * Campfire and bamboo related crash – by Michieal
