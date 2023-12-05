@@ -675,6 +675,7 @@ minetest.register_on_joinplayer(function(player)
 	-- Respawn dead players on joining
 	if hp <= 0 then
 		player:respawn()
+		minetest.log("warning", name .. " joined the game with 0 hp and has been forced to respawn")
 	end
 end)
 
