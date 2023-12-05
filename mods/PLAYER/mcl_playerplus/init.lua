@@ -657,6 +657,7 @@ end)
 -- set to blank on join (for 3rd party mods)
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
+	local hp = player:get_hp()
 
 	mcl_playerplus_internal[name] = {
 		lastPos = nil,
@@ -671,6 +672,10 @@ minetest.register_on_joinplayer(function(player)
 	player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0))
 	player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3, 5.785, 0))
 	player:set_bone_position("Body_Control", vector.new(0, 6.75, 0))
+	-- Respawn dead players on joining
+	if hp <= 0 then
+		player:respawn()
+	end
 end)
 
 -- clear when player leaves
