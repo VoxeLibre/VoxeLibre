@@ -44,18 +44,6 @@ local function get_drops(self)
 		max = 2,
 		looting = "common",
 		})
-	if self._saddle then
-		table.insert(self.drops,{name = "mcl_mobitems:saddle",
-		chance = 1,
-		min = 1,
-		max = 1,})
-	end
-	if self._chest then
-		table.insert(self.drops,{name = "mcl_chests:chest",
-		chance = 1,
-		min = 1,
-		max = 1,})
-	end
 end
 
 -- Helper functions to determine equipment rules
@@ -245,9 +233,17 @@ local horse = {
 
 	on_die = function(self, pos)
 
-		-- drop saddle when horse is killed while riding
+		-- drop saddle when horse is killed
 		if self._saddle then
 			minetest.add_item(pos, "mcl_mobitems:saddle")
+		end
+		-- drop chest when mule/donkey is killed
+		if self._chest then
+			minetest.add_item(pos, "mcl_chests:chest")
+		end
+		-- drop armor when horse is killed
+		if self._wearing_armor then
+			minetest.add_item(pos, self._horse_armor)
 		end
 		-- also detach from horse properly
 		if self.driver then
@@ -401,6 +397,7 @@ local horse = {
 				-- Put on armor and take armor from player's inventory
 				local armor = minetest.get_item_group(iname, "horse_armor")
 				self._horse_armor = iname
+				self._wearing_armor = true
 				local w = clicker:get_wielded_item()
 				if not minetest.is_creative_enabled(clicker:get_player_name()) then
 					w:take_item()
