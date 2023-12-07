@@ -99,31 +99,78 @@ function mcl_lush_caves.makelake(pos,def,pr)
 	return true
 end
 
-function mcl_lush_caves.makeazalea(pos,def,pr)
-	local airup = minetest.find_nodes_in_area_under_air(vector.offset(pos,0,40,0),pos,{"mcl_core:dirt_with_grass"})
-	if #airup == 0 then
-		return end
-	local surface_pos = airup[1]
-	local nn = minetest.find_nodes_in_area(vector.offset(pos,-4,0,-4),vector.offset(pos,4,40,4),{"group:material_stone","mcl_core:dirt","mcl_core:coarse_dirt"})
-	table.sort(nn,function(a, b) return vector_distance_xz(surface_pos, a) < vector_distance_xz(surface_pos, b) end)
-	minetest.set_node(pos,{name="mcl_lush_caves:rooted_dirt"})
-	for i=1,math.random(1,#nn) do
-		local below = vector.offset(nn[i],0,-1,0)
-		minetest.set_node(nn[i],{name="mcl_lush_caves:rooted_dirt"})
-		if minetest.get_node(below).name == "air" then
-			minetest.set_node(below,{name = "mcl_lush_caves:hanging_roots"})
+local function set_of_content_ids_by_group(group)
+	local result = {}
+	for name, def in pairs(minetest.registered_nodes) do
+		if def.groups[group] then
+			result[minetest.get_content_id(name)] = true
 		end
 	end
-	for _,v in pairs(nn) do
-		for _,a in pairs(adjacents) do
-			local p = vector.add(v,a)
-			if minetest.get_item_group(minetest.get_node(p).name,"material_stone") > 0 then
-				if math.random(2) == 1 then minetest.set_node(p,{name="mcl_core:stone"}) end
+	return result
+end
+
+local CONVERTS_TO_ROOTED_DIRT = set_of_content_ids_by_group("material_stone")
+CONVERTS_TO_ROOTED_DIRT[minetest.get_content_id("mcl_core:dirt")] = true
+CONVERTS_TO_ROOTED_DIRT[minetest.get_content_id("mcl_core:coarse_dirt")] = true
+local CONTENT_HANGING_ROOTS = minetest.get_content_id("mcl_lush_caves:hanging_roots")
+local CONTENT_ROOTED_DIRT = minetest.get_content_id("mcl_lush_caves:rooted_dirt")
+
+local function squared_average(a, b)
+	local s = a + b
+	return s*s/4
+end
+
+-- Azalea tree voxel manipulator buffer
+local data = {}
+
+function mcl_lush_caves.makeazalea(pos, def, pr)
+	local distance = {x = 4, y = 40, z = 4}
+	local airup = minetest.find_nodes_in_area_under_air(vector.offset(pos, 0, distance.y, 0), pos, {"mcl_core:dirt_with_grass"})
+	if #airup == 0 then return end
+	local surface_pos = airup[1]
+
+	local function squared_distance(x, z)
+		local dx = x - pos.x
+		local dz = z - pos.z
+		return dx*dx + dz*dz
+	end
+
+	local maximum_random_value = squared_average(distance.x, distance.z) + 1
+
+	local min = vector.offset(pos, -distance.x, -1, -distance.z)
+	local max = vector.offset(pos, distance.x, distance.y, distance.z)
+
+	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+	vm:get_data(data)
+
+	local a = VoxelArea:new({MinEdge = emin, MaxEdge = emax})
+
+	local vi, below
+	for z = min.z, max.z do
+		for y = min.y + 1, surface_pos.y - 1 do
+			for x = min.x, max.x do
+				vi = a:index(x, y, z)
+				local probability_value = maximum_random_value - squared_distance(x, z)
+				if CONVERTS_TO_ROOTED_DIRT[data[vi]] and pr:next(1, maximum_random_value) <= probability_value then
+					data[vi] = CONTENT_ROOTED_DIRT
+					below = a:index(x, y - 1, z)
+					if data[below] == minetest.CONTENT_AIR then
+						data[below] = CONTENT_HANGING_ROOTS
+					end
+				end
 			end
 		end
 	end
-	minetest.set_node(surface_pos,{name="mcl_lush_caves:rooted_dirt"})
-	minetest.place_schematic(vector.offset(surface_pos,-3,1,-3),modpath.."/schematics/azalea1.mts","random",nil,nil,"place_center_x place_center_z")
+	data[a:index(surface_pos.x, surface_pos.y, surface_pos.z)] = CONTENT_ROOTED_DIRT
+	vm:set_data(data)
+	minetest.place_schematic_on_vmanip(vm,
+		vector.offset(surface_pos, -3, 1, -3),
+		modpath.."/schematics/azalea1.mts",
+		"random",nil,nil,
+		"place_center_x place_center_z"
+	)
+	vm:calc_lighting()
+	vm:write_to_map()
 	minetest.log("action","[mcl_lush_caves] Azalea generated at "..minetest.pos_to_string(surface_pos))
 	return true
 end
