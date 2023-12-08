@@ -121,7 +121,6 @@ return {
 		"Morik666",
 		"Eliy21",
 		"mdk",
-		"pepebotella",
 		"Alessandra Lozoya",
 		"VanicGame",
 		"ThePython10110",
@@ -129,6 +128,7 @@ return {
 		"Montandalar",
 		"mim",
 		"Dark",
+		"Bakawun",
 	}},
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",

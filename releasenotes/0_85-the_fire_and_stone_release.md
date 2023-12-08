@@ -24,6 +24,7 @@
 * Isaac Dennis
 * ADLON
 * Sab Pyrope
+* Bakawun
 
 ### Mobs improvements
 Creeper received some adjustments, should be smarter, but easier to avoid if you're quick. Axolotl on the other hand won't eat your sheep anymore.
@@ -92,6 +93,8 @@ Pistons now work better thanks to seventeenthShulker, who fixed many bugs relate
 * Pumpkin group – by rudzik8
 * Fixed /clear being unclear and dangerous – by Herowl
 * Fixed players sometimes being stuck dead even on relog – by Eliy21
+* Restricted access to the village builder tool to server privs - by Eliy21
+* Fixed horse equipment drops - by Bakawun
 
 ### Special thanks
 * For extensive testing – to Michieal
