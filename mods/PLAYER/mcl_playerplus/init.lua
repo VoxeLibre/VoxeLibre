@@ -727,6 +727,20 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 	end
 end, -200)
 
+-- damage invulnerability
+mcl_damage.register_modifier(function(obj, damage, reason)
+	local invul = obj:get_meta():get_int("mcl_damage:invulnerable")
+	if invul > 0 then
+		return 0
+	else
+		obj:get_meta():set_int("mcl_damage:invulnerable", 1)
+		minetest.after(0.5, function()
+			obj:get_meta():set_int("mcl_damage:invulnerable", 0)
+		end)
+		return damage
+	end
+end, -1000)
+
 minetest.register_on_respawnplayer(function(player)
 	local pos = player:get_pos()
 	minetest.add_particlespawner({

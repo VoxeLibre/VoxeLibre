@@ -99,8 +99,8 @@ mcl_creative_dig_speed (Creative mode dig speed) float 0.2
 mcl_enable_hunger (Hunger mechanic) bool true
 
 # Health regeneration delay when hunger bar is full
-# Default:4
-mcl_health_regen_delay (Health regen delay) float 4 0
+# Default: 0.5 s
+mcl_health_regen_delay (Health regen delay) float 0.5 0
 
 [Mobs]
 # If enabled, mobs will spawn naturally. This does not affect
