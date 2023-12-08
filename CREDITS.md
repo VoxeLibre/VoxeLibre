@@ -8,30 +8,32 @@
 
 ## Maintainers
 * AncientMariner
-* Nicu
+* Herowl
 
 ## Previous Maintainers
 * Fleckenstein
 * cora
+* Nicu
 
 ## Developers
 * AFCMS
 * epCode
 * chmodsayshello
-* PrairieWind
 * MrRar
 * FossFanatic 
 * SmokeyDope
+* Faerraven / Michieal
+* Codiac
 
 ## Past Developers
 * jordan4ibanez
 * iliekprogrammar
 * kabou
 * kay27
-* Faerraven / Michieal
 * MysticTempest
 * NO11
 * SumianVoice
+* PrairieWind
 
 ## Contributors
 * RandomLegoBrick
@@ -112,6 +114,19 @@
 * Niterux
 * appgurueu
 * seventeenthShulker
+* DinoNuggies4665
+* basxto
+* Morik666
+* Eliy21
+* mdk
+* Alessandra Lozoya
+* VanicGame
+* ThePython10110
+* Araca
+* Montandalar
+* mim
+* Dark
+* Bakawun
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -155,6 +170,7 @@
 * cora
 * Faerraven / Michieal
 * PrairieWind
+* ChrisPHP
 
 ## 3D Models
 * 22i
@@ -162,6 +178,7 @@
 * epCode
 * Faerraven / Michieal
 * SumianVoice
+* thunder1035
 
 ## Textures
 * XSSheep
@@ -181,6 +198,8 @@
 * Aeonix_Aeon
 * Wbjitscool
 * SmokeyDope
+* thunder1035
+* Herowl
 
 ## Translations
 * Wuzzy
@@ -200,6 +219,9 @@
 * Temak
 * megustanlosfrijoles
 * kbundg
+* Isaac Dennis
+* ADLON
+* Sab Pyrope
 
 ## Funders
 * 40W
