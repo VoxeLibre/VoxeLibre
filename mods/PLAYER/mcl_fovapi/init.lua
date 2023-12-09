@@ -35,28 +35,42 @@ minetest.register_on_leaveplayer(function(player)
 	mcl_fovapi.applied_modifiers[name] = nil
 end)
 
-function mcl_fovapi.register_modifier(name, fov_factor, time, is_multiplier, exclusive, on_start, on_end)
-	if is_multiplier ~= true and is_multiplier ~= false then
-		is_multiplier = true
+function mcl_fovapi.register_modifier(def)
+	if type(def.name) ~= "string" then
+		error("Modifier name must be a string")
 	end
-	if exclusive ~= true and exclusive ~= false then
-		exclusive = false
+	if type(def.fov_factor) ~= "number" then
+		error("FOV factor must be a number")
 	end
-	local def = {
-		modifer_name = name,
-		fov_factor = fov_factor,
-		time = time,
-		is_multiplier = is_multiplier,
-		exclusive = exclusive,
-		on_start = on_start,
-		on_end = on_end,
-	}
+	if type(def.time) ~= "number" then
+		error("Transition time must be a number")
+	end
+
+	if def.on_start ~= nil and type(def.on_start) ~= "function" then
+		error("Callback on_start must be a function")
+	end
+	if def.on_end ~= nil and type(def.on_end) ~= "function" then
+		error("Callback on_end must be a function")
+	end
+
+	local mdef = {}
+
+	mdef.fov_factor = def.fov_factor
+	mdef.time = def.time
+
+	if def.is_multiplier == false then mdef.is_multiplier = false
+	else mdef.is_multiplier = true end
+	if def.exclusive == true then mdef.exclusive = true
+	else mdef.exclusive = false end
+
+	mdef.on_start = def.on_start
+	mdef.on_end = def.on_end
 
 	if DEBUG then
 		minetest.log("FOV::Modifier Definition Registered:\n" .. dump(def))
 	end
 
-	mcl_fovapi.registered_modifiers[name] = def
+	mcl_fovapi.registered_modifiers[def.name] = mdef
 
 end
 
@@ -130,6 +144,7 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 	end
 
 	mcl_fovapi.applied_modifiers[player][modifier_name] = nil
+	local modifier = mcl_fovapi.registered_modifiers[modifier_name]
 
 	-- check for other fov modifiers, and set them up, or reset to default.
 
@@ -139,6 +154,7 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 	end
 
 	if #applied == 0 then
+		player:set_fov(0, false, modifier.time)
 		return
 	end
 	local exc = false
@@ -154,10 +170,11 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 		player:set_fov(exc.fov_factor, exc.is_multiplier, 0) -- we want this to be immediate.
 	else
 		-- handle normal fov modifiers.
-		player:set_fov(0, false, 0) -- we want this to be immediate.
+		local fov_factor = 1
 		for x in applied do
-			player:set_fov(x.fov_factor, true, 0)
+			fov_factor = fov_factor * x.fov_factor
 		end
+		player:set_fov(fov_factor, true, modifier.time)
 	end
 
 	if mcl_fovapi.registered_modifiers[modifier_name].on_end ~= nil then
