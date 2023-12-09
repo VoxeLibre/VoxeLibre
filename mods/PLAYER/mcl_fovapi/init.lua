@@ -74,10 +74,14 @@ function mcl_fovapi.apply_modifier(player, modifier_name)
 	if mcl_fovapi.registered_modifiers[modifier_name] == nil then
 		return
 	end
-	if mcl_fovapi.applied_modifiers ~= nil and mcl_fovapi.applied_modifiers[player] ~= nil and mcl_fovapi.applied_modifiers[player][modifier_name] ~= nil then
+	if mcl_fovapi.applied_modifiers and mcl_fovapi.applied_modifiers[player] and mcl_fovapi.applied_modifiers[player][modifier_name] then
 		if mcl_fovapi.applied_modifiers[player][modifier_name] and mcl_fovapi.applied_modifiers[player][modifier_name] == true then
 			return
 		end
+	end
+
+	if mcl_fovapi.applied_modifiers[player] == nil then
+		mcl_fovapi.applied_modifiers[player] = {}
 	end
 
 	local modifier = mcl_fovapi.registered_modifiers[modifier_name]
@@ -86,6 +90,7 @@ function mcl_fovapi.apply_modifier(player, modifier_name)
 	end
 
 	mcl_fovapi.applied_modifiers[player][modifier_name] = true -- set the applied to be true.
+
 	if DEBUG then
 		minetest.log("FOV::Player Applied Modifiers :" .. dump(mcl_fovapi.applied_modifiers[player]))
 	end
