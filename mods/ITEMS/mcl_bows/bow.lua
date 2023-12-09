@@ -38,6 +38,7 @@ mcl_fovapi.register_modifier({
 	name = "bowcomplete",
 	fov_factor = 0.8,
 	time = 1,
+	reset_time = 0.3,
 	is_multiplier = true,
 })
 

@@ -45,6 +45,9 @@ function mcl_fovapi.register_modifier(def)
 	if type(def.time) ~= "number" then
 		error("Transition time must be a number")
 	end
+	if def.reset_time ~= nil and type(def.reset_time) ~= "number" then
+		error("Reset time, if provided, must be a number")
+	end
 
 	if def.on_start ~= nil and type(def.on_start) ~= "function" then
 		error("Callback on_start must be a function")
@@ -57,6 +60,7 @@ function mcl_fovapi.register_modifier(def)
 
 	mdef.fov_factor = def.fov_factor
 	mdef.time = def.time
+	mdef.reset_time = def.reset_time or def.time
 
 	if def.is_multiplier == false then mdef.is_multiplier = false
 	else mdef.is_multiplier = true end
@@ -168,7 +172,7 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 
 	local elem = next
 	if elem(applied) == nil then
-		player:set_fov(0, false, modifier.time)
+		player:set_fov(0, false, modifier.reset_time)
 		return
 	end
 	local exc = false
@@ -198,7 +202,7 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 				fov_factor = fov_factor * x.fov_factor
 			end
 		end
-		player:set_fov(fov_factor, not non_multiplier_added, modifier.time)
+		player:set_fov(fov_factor, not non_multiplier_added, modifier.reset_time)
 	end
 
 	if mcl_fovapi.registered_modifiers[modifier_name].on_end ~= nil then
