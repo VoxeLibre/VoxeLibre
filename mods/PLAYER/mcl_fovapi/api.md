@@ -1,13 +1,13 @@
 ### FOV API
 
 <!-- TOC -->
-    * [FOV API](#fov-api)
-      * [Description](#description)
-      * [Troubleshooting](#troubleshooting)
-      * [Modifier Definition](#modifier-definition-)
-      * [Global MCL_FOVAPI Tables](#global-mclfovapi-tables)
-      * [Namespaces](#namespaces)
-      * [Functions](#functions)
+* [FOV API](#fov-api)
+    * [Description](#description)
+    * [Troubleshooting](#troubleshooting)
+    * [Modifier Definition](#modifier-definition-)
+    * [Global MCL_FOVAPI Tables](#global-mclfovapi-tables)
+    * [Namespaces](#namespaces)
+    * [Functions](#functions)
 <!-- TOC -->
 
 #### Description
@@ -20,20 +20,24 @@ Use it to see what is going on.
 #### Modifier Definition 
 ```lua 
 def = {
-    modifer_name = name, 
+    name = name,
     fov_factor = fov_factor,
     time = time,
+    reset_time = reset_time,
     is_multiplier = is_multiplier,
     exclusive = exclusive,
     on_start = on_start,
     on_end = on_end,
 }
 ```
-* Modifier Name: The name of the Modifier, used to identify the specific modifier. Case sensitive.
+* Name: The name of the Modifier, used to identify the specific modifier. Case sensitive.
 * FOV Factor: A float value defining the FOV to apply. Can be an absolute or percentage, depending on Exclusive and 
     Is_Multiplier.
 * Time: A float value defining the number of seconds to take when applying the FOV Factor. 
     Used to smoothly move between FOVs. Use 0 for an immediate FOV Shift. (Transition time.)
+* Reset Time: A float value defining the number of seconds to take when removing the FOV Factor.
+    Used to smoothly move between FOVs. Use 0 for an immediate FOV Shift. (Reset transition time.)
+    *If not provided, defaults to **Time***
 * Is Multiplier: A bool value used to specify if the FOV Factor is an absolute FOV value or if it should be a percentage 
     of the current FOV. Defaults to `true` if not defined.
 * Exclusive: A bool value used to specify whether the modifier will override all other FOV modifiers. An example of this 
@@ -60,7 +64,7 @@ settings. (Expressed as a value usable in `player:set_fov`.)
 `mcl_fovapi` is the default API Namespace.
 
 #### Functions
-`mcl_fovapi.register_modifier(name, fov_factor, time, is_multiplier, exclusive, on_start, on_end)`
+`mcl_fovapi.register_modifier(def)`
 
 Used to register a new FOV Modifier for use. Must be called before applying said modifier to a player.
 See Modifier Definition for what the parameters are.
