@@ -74,8 +74,10 @@ function mcl_fovapi.apply_modifier(player, modifier_name)
 	if mcl_fovapi.registered_modifiers[modifier_name] == nil then
 		return
 	end
-	if mcl_fovapi.applied_modifiers[player][modifier_name] and mcl_fovapi.applied_modifiers[player][modifier_name] == true then
-		return
+	if mcl_fovapi.applied_modifiers ~= nil and mcl_fovapi.applied_modifiers[player] ~= nil and mcl_fovapi.applied_modifiers[player][modifier_name] ~= nil then
+		if mcl_fovapi.applied_modifiers[player][modifier_name] and mcl_fovapi.applied_modifiers[player][modifier_name] == true then
+			return
+		end
 	end
 
 	local modifier = mcl_fovapi.registered_modifiers[modifier_name]
@@ -113,7 +115,9 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 		return
 	end
 
-	if mcl_fovapi.applied_modifiers[player][modifier_name] == nil then return end
+	if mcl_fovapi.applied_modifiers[player][modifier_name] == nil then
+		return
+	end
 
 	if DEBUG then
 		local name = player:get_player_name()
