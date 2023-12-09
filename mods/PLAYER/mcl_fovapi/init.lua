@@ -123,8 +123,21 @@ function mcl_fovapi.apply_modifier(player, modifier_name)
 		player:set_fov(modifier.fov_factor, modifier.is_multiplier, modifier.time)
 	else
 		-- not exclusive? let's apply it in the mix.
-		-- assume is_multiplier is true.
-		player:set_fov(modifier.fov_factor, true, modifier.time)
+		local fov_factor, is_mult = player:get_fov()
+		if fov_factor == 0 then
+			fov_factor = 1
+			is_mult = true
+		end
+		if modifier.is_multiplier or is_mult then
+			fov_factor = fov_factor * modifier.fov_factor
+		else
+			fov_factor = (fov_factor + modifier.fov_factor) / 2
+		end
+		if modifier.is_multiplier and is_mult then
+			player:set_fov(fov_factor, true, modifier.time)
+		else
+			player:set_fov(fov_factor, false, modififer.time)
+		end
 	end
 
 end
@@ -153,12 +166,13 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 		applied[k] = mcl_fovapi.registered_modifiers[k]
 	end
 
-	if #applied == 0 then
+	local elem = next
+	if elem(applied) == nil then
 		player:set_fov(0, false, modifier.time)
 		return
 	end
 	local exc = false
-	for k in applied do
+	for k, _ in pairs(applied) do
 		if applied[k].exclusive == true then
 			exc = applied[k]
 			break
@@ -171,10 +185,20 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 	else
 		-- handle normal fov modifiers.
 		local fov_factor = 1
-		for x in applied do
-			fov_factor = fov_factor * x.fov_factor
+		local non_multiplier_added = false
+		for _, x in pairs(applied) do
+			if not x.is_multiplier then
+				if non_multiplier_added then
+					fov_factor = (fov_factor + x.fov_factor) / 2
+				else
+					non_multiplier_added = true
+					fov_factor = fov_factor * x.fov_factor
+				end
+			else
+				fov_factor = fov_factor * x.fov_factor
+			end
 		end
-		player:set_fov(fov_factor, true, modifier.time)
+		player:set_fov(fov_factor, not non_multiplier_added, modifier.time)
 	end
 
 	if mcl_fovapi.registered_modifiers[modifier_name].on_end ~= nil then
