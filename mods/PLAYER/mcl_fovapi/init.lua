@@ -12,15 +12,10 @@ local pairs = pairs
 -- Globals
 mcl_fovapi = {}
 
-mcl_fovapi.default_fov = {} -- Handles default fov for players
 mcl_fovapi.registered_modifiers = {}
 mcl_fovapi.applied_modifiers = {}
 
 minetest.register_on_joinplayer(function(player)
-	local name = player:get_player_name()
-	-- Assign default FOV
-	mcl_fovapi.default_fov[name] = player:get_fov()
-
 	if DEBUG then
 		minetest.log("FOV::Player: " .. name .. "\nFOV: " .. player:get_fov())
 	end
@@ -31,7 +26,6 @@ minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 
 	-- handle clean up
-	mcl_fovapi.default_fov[name] = nil
 	mcl_fovapi.applied_modifiers[name] = nil
 end)
 

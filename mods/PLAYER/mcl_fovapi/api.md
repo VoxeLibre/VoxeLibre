@@ -37,7 +37,7 @@ def = {
     Used to smoothly move between FOVs. Use 0 for an immediate FOV Shift. (Transition time.)
 * Reset Time: A float value defining the number of seconds to take when removing the FOV Factor.
     Used to smoothly move between FOVs. Use 0 for an immediate FOV Shift. (Reset transition time.)
-    *If not provided, defaults to **Time***
+    Defaults to `time` if not defined.
 * Is Multiplier: A bool value used to specify if the FOV Factor is an absolute FOV value or if it should be a percentage 
     of the current FOV. Defaults to `true` if not defined.
 * Exclusive: A bool value used to specify whether the modifier will override all other FOV modifiers. An example of this 
@@ -57,8 +57,7 @@ There are three tables that are accessible via the API. They are `registered_mod
 
 `mcl_fovapi.registered_modifiers` has the definitions of all the registered FOV Modifiers. Indexed by Modifier Name. 
 And, `mcl_fovapi.applied_modifiers` is indexed by the Player Name. It contains the names of all the modifiers applied to the 
-player. The `mcl_fovapi.default_fov` table is indexed by the Player Name, and contains the Default FOVs of the player from the 
-settings. (Expressed as a value usable in `player:set_fov`.)
+player.
 
 #### Namespaces
 `mcl_fovapi` is the default API Namespace.
