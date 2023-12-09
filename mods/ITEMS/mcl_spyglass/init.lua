@@ -17,7 +17,13 @@ minetest.register_craft({
 	}
 })
 
-mcl_fovapi.register_modifier("spyglass", 8, 0.1,false, true, nil, nil)
+mcl_fovapi.register_modifier({
+	name = "spyglass",
+	fov_factor = 8,
+	time = 0.1,
+	is_multiplier = false,
+	exclusive = true,
+})
 
 local spyglass_scope = {}
 

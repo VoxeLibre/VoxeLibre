@@ -34,7 +34,12 @@ local bow_load = {}
 local bow_index = {}
 
 -- define FOV modifier(s)
-mcl_fovapi.register_modifier("bowcomplete", 0.8, 1, true, false, nil, nil)
+mcl_fovapi.register_modifier({
+	name = "bowcomplete",
+	fov_factor = 0.8,
+	time = 1,
+	is_multiplier = true,
+})
 
 function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
