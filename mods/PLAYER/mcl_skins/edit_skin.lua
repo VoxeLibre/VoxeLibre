@@ -24,7 +24,7 @@ mcl_skins = {
 	template1 = {}, -- Stores edit skin values for template1
 	template2 = {}, -- Stores edit skin values for template2
 	base = {}, -- List of base textures
-	
+
 	-- Base color is separate to keep the number of junk nodes registered in check
 	base_color = {0xffeeb592, 0xffb47a57, 0xff8d471d},
 	color = {
@@ -64,11 +64,11 @@ function mcl_skins.register_item(item)
 	if item.template1 then
 		mcl_skins.template1[item.type] = texture
 	end
-	
+
 	if item.template2 then
 		mcl_skins.template2[item.type] = texture
 	end
-	
+
 	table.insert(mcl_skins[item.type], texture)
 	mcl_skins.masks[texture] = item.mask
 	mcl_skins.preview_rotations[texture] = item.preview_rotation
@@ -137,7 +137,7 @@ function mcl_skins.compile_skin(skin)
 		if #output > 0 then output = output .. "^" end
 		output = output .. layers[rank]
 	end
-	if skin.cape ~= "nocape" then
+	if skin.cape and skin.cape ~= "nocape" then
 		output =  output .. "^(" .. skin.cape .. "_body.png)"
 	end
 	return output
@@ -147,11 +147,11 @@ function mcl_skins.update_player_skin(player)
 	if not player then
 		return
 	end
-	
+
 	local skin = mcl_skins.player_skins[player]
 
 	mcl_player.player_set_skin(player, mcl_skins.compile_skin(skin))
-	
+
 	local slim_arms
 	if skin.simple_skins_id then
 		slim_arms = mcl_skins.texture_to_simple_skin[skin.simple_skins_id].slim_arms
@@ -217,29 +217,29 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 	local formspec_data = mcl_skins.player_formspecs[player]
 	local skin = mcl_skins.player_skins[player]
 	formspec_data.active_tab = active_tab
-	
+
 	local page_count = calculate_page_count(active_tab)
 	if page_num < 1 then page_num = 1 end
 	if page_num > page_count then page_num = page_count end
 	formspec_data.page_num = page_num
-	
+
 	local formspec = "formspec_version[3]size[14.2,11]"
-	
+
 	for i, tab in pairs(mcl_skins.tab_names) do
 		if tab == active_tab then
 			formspec = formspec ..
 				"style[" .. tab .. ";bgcolor=green]"
 		end
-		
+
 		local y = 0.3 + (i - 1) * 0.8
 		formspec = formspec ..
 			"style[" .. tab .. ";content_offset=16,0]" ..
 			"button[0.3," .. y .. ";4,0.8;" .. tab .. ";" .. mcl_skins.tab_descriptions[tab] .. "]" ..
 			"image[0.4," .. y + 0.1 .. ";0.6,0.6;mcl_skins_icons.png^[verticalframe:12:" .. i - 1 .. "]"
-			
+
 		if skin.simple_skins_id then break end
 	end
-	
+
 	local slim_arms
 	if skin.simple_skins_id then
 		slim_arms = mcl_skins.texture_to_simple_skin[skin.simple_skins_id].slim_arms
@@ -268,21 +268,21 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 		}
 		simple_skins_id = simple_skins_id or
 			mcl_skins.simple_skins[EDIT_SKIN_KEY].texture
-		
+
 		for i = page_start, page_end do
 			local skin = mcl_skins.simple_skins[i]
 			local j = i - page_start - 1
 			local mesh = skin.slim_arms and "mcl_armor_character_female.b3d" or
 				"mcl_armor_character.b3d"
-			
+
 			local x = 4.5 + (j + 1) % 4 * 1.6
 			local y = 0.3 + math.floor((j + 1) / 4) * 3.1
-			
+
 			formspec = formspec ..
 				"model[" .. x .. "," .. y .. ";1.5,3;player_mesh;" .. mesh .. ";" ..
 				skin.texture ..
 				",blank.png,blank.png;0,180;false;true;0,0]"
-			
+
 			if simple_skins_id == skin.texture then
 				formspec = formspec ..
 					"style[" .. i ..
@@ -292,7 +292,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			formspec = formspec ..
 				"button[" .. x .. "," .. y .. ";1.5,3;" .. i .. ";]"
 		end
-		
+
 		if page_start == EDIT_SKIN_KEY then
 			formspec = formspec .. "image[4.85,1;0.8,0.8;mcl_skins_button.png]"
 		end
@@ -307,12 +307,12 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			"model[7.5,2;2,3;player_mesh;mcl_armor_character_female.b3d;" ..
 			mcl_skins.compile_skin(mcl_skins.template2) ..
 			",blank.png,blank.png;0,180;false;true;0,0]" ..
-			
+
 			"button[7.5,5.2;2,0.8;template2;" .. S("Select") .. "]"
 
 	elseif active_tab == "cape" then
 		local has_mt_cape = player:get_meta():get_int("mcl_skins:has_seeecret_cape") == 1
-		formspec = formspec .. 
+		formspec = formspec ..
 			"label[6,3;" .. S("(None)") .. "]"..
 			"button[5.5,4.2;2,0.8;nocape;" .. S("Select") .. "]"..
 
@@ -332,14 +332,14 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			--"image[9,2;1,2;mtcape.png]"
 			"button[5.5,9.2;2,0.8;mtcape;" .. S("Select") .. "]"
 		end
-			
+
 	elseif mcl_skins[active_tab] then
 		formspec = formspec ..
 			"style_type[button;bgcolor=#00000000]"
 		local textures = mcl_skins[active_tab]
 		local page_start = (page_num - 1) * 16 + 1
 		local page_end = math.min(page_start + 16 - 1, #textures)
-		
+
 		for j = page_start, page_end do
 			local i = j - page_start + 1
 			local texture = textures[j]
@@ -350,21 +350,21 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 				preview = preview .. "^(" .. mask .. "^[colorize:" .. color .. ":alpha)"
 			end
 			preview = preview .. "^" .. texture
-			
+
 			local mesh = "mcl_skins_head.obj"
 			if active_tab == "top" then
 				mesh = "mcl_skins_top.obj"
 			elseif active_tab == "bottom" or active_tab == "footwear" then
 				mesh = "mcl_skins_bottom.obj"
 			end
-			
+
 			local rot_x = -10
 			local rot_y = 20
 			if mcl_skins.preview_rotations[texture] then
 				rot_x = mcl_skins.preview_rotations[texture].x
 				rot_y = mcl_skins.preview_rotations[texture].y
 			end
-			
+
 			i = i - 1
 			local x = 4.5 + i % 4 * 1.6
 			local y = 0.3 + math.floor(i / 4) * 1.6
@@ -373,7 +373,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 				";1.5,1.5;" .. mesh .. ";" .. mesh .. ";" ..
 				preview ..
 				";" .. rot_x .. "," .. rot_y .. ";false;false;0,0]"
-			
+
 			if skin[active_tab] == texture then
 				formspec = formspec ..
 					"style[" .. texture ..
@@ -392,11 +392,11 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			"button[" .. x .. ",0.3;1,1;arm;]"
 	end
 
-	
+
 	if skin[active_tab .. "_color"] then
 		local colors = mcl_skins.color
 		if active_tab == "base" then colors = mcl_skins.base_color end
-		
+
 		local tab_color = active_tab .. "_color"
 		local selected_color = skin[tab_color]
 		for i, colorspec in pairs(colors) do
@@ -408,7 +408,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 				"image_button[" .. x .. "," .. y ..
 				";0.8,0.8;blank.png^[noalpha^[colorize:" ..
 				color .. ":alpha;" .. colorspec .. ";]"
-				
+
 			if selected_color == colorspec then
 				formspec = formspec ..
 					"style[" .. color ..
@@ -416,9 +416,9 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 					"bgimg_pressed=mcl_skins_select_overlay.png]" ..
 					"button[" .. x .. "," .. y .. ";0.8,0.8;" .. color .. ";]"
 			end
-				
+
 		end
-		
+
 		if not (active_tab == "base") then
 			-- Bitwise Operations !?!?!
 			local red = math.floor(selected_color / 0x10000) - 0xff00
@@ -427,22 +427,22 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			formspec = formspec ..
 				"container[10.2,8]" ..
 				"scrollbaroptions[min=0;max=255;smallstep=20]" ..
-				
+
 				"box[0.4,0;2.49,0.38;red]" ..
 				"label[0.2,0.2;-]" ..
 				"scrollbar[0.4,0;2.5,0.4;horizontal;red;" .. red .."]" ..
 				"label[2.9,0.2;+]" ..
-				
+
 				"box[0.4,0.6;2.49,0.38;green]" ..
 				"label[0.2,0.8;-]" ..
 				"scrollbar[0.4,0.6;2.5,0.4;horizontal;green;" .. green .."]" ..
 				"label[2.9,0.8;+]" ..
-				
+
 				"box[0.4,1.2;2.49,0.38;blue]" ..
 				"label[0.2,1.4;-]" ..
 				"scrollbar[0.4,1.2;2.5,0.4;horizontal;blue;" .. blue .. "]" ..
 				"label[2.9,1.4;+]" ..
-				
+
 				"container_end[]"
 		end
 	end
@@ -451,12 +451,12 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 		formspec = formspec ..
 			"image_button[4.5,6.7;1,1;mcl_skins_arrow.png^[transformFX;previous_page;]"
 	end
-	
+
 	if page_num < page_count then
 		formspec = formspec ..
 			"image_button[9.8,6.7;1,1;mcl_skins_arrow.png;next_page;]"
 	end
-	
+
 	if page_count > 1 then
 		formspec = formspec ..
 			"label[7.3,7.2;" .. page_num .. " / " .. page_count .. "]"
@@ -483,7 +483,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		formspec_data.form_send_job:cancel()
 		formspec_data.form_send_job = nil
 	end
-	
+
 	if fields.quit then
 		mcl_skins.save(player)
 		return true
@@ -520,17 +520,17 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_skins.update_player_skin(player)
 		return true
 	end
-	
+
 	for i, tab in pairs(mcl_skins.tab_names) do
 		if fields[tab] then
 			mcl_skins.show_formspec(player, tab, 1)
 			return true
 		end
 	end
-	
+
 	local skin = mcl_skins.player_skins[player]
 	if not skin then return true end
-	
+
 	if fields.next_page then
 		page_num = page_num + 1
 		mcl_skins.show_formspec(player, active_tab, page_num)
@@ -540,7 +540,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_skins.show_formspec(player, active_tab, page_num)
 		return true
 	end
-	
+
 	if active_tab == "arm" then
 		if fields.thick_arms then
 			skin.slim_arms = false
@@ -551,7 +551,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_skins.show_formspec(player, active_tab, page_num)
 		return true
 	end
-	
+
 	if
 		skin[active_tab .. "_color"] and (
 			fields.red and fields.red:find("^CHG") or
@@ -565,7 +565,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		red = tonumber(red) or 0
 		green = tonumber(green) or 0
 		blue = tonumber(blue) or 0
-		
+
 		local color = 0xff000000 + red * 0x10000 + green * 0x100 + blue
 		if color >= 0 and color <= 0xffffffff then
 			-- We delay resedning the form because otherwise it will break dragging scrollbars
@@ -580,7 +580,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			return true
 		end
 	end
-	
+
 	local field
 	for f, value in pairs(fields) do
 		if value == "" then
@@ -588,7 +588,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			break
 		end
 	end
-	
+
 	if field and active_tab == "skin" then
 		local index = tonumber(field)
 		index = index and math.floor(index) or 0
@@ -603,7 +603,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 		return true
 	end
-	
+
 	-- See if field is a texture
 	if
 		field and mcl_skins[active_tab] and
@@ -614,7 +614,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_skins.show_formspec(player, active_tab, page_num)
 		return true
 	end
-		
+
 	-- See if field is a color
 	local number = tonumber(field)
 	if number and skin[active_tab .. "_color"] then
@@ -638,7 +638,7 @@ local function init()
 	local json, error = minetest.parse_json(data)
 	assert(json, error)
 	f:close()
-	
+
 	for _, item in pairs(json) do
 		mcl_skins.register_item(item)
 	end
@@ -648,7 +648,7 @@ local function init()
 	mcl_skins.template1.bottom_color = 0xff644939
 	mcl_skins.template1.slim_arms = false
 	mcl_skins.template1.cape = "nocape"
-	
+
 	mcl_skins.template2.base_color = mcl_skins.base_color[1]
 	mcl_skins.template2.hair_color = 0xff715d57
 	mcl_skins.template2.top_color = 0xff346840
