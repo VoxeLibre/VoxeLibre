@@ -311,7 +311,6 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			"button[7.5,5.2;2,0.8;template2;" .. S("Select") .. "]"
 
 	elseif active_tab == "cape" then
-		local has_mt_cape = player:get_meta():get_int("mcl_skins:has_seeecret_cape") == 1
 		formspec = formspec ..
 			"label[6,3;" .. S("(None)") .. "]"..
 			"button[5.5,4.2;2,0.8;nocape;" .. S("Select") .. "]"..
@@ -319,19 +318,14 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			"image[9,2;1,2;slimecape.png]"..
 			"button[8.5,4.2;2,0.8;slimecape;" .. S("Select") .. "]"..
 
-			"image[6,7;1,2;mtcape.png]" ..  -- show image ingame so there is another hint that this cape exists
+			"image[6,7;1,2;mtcape.png]" ..
+			"button[5.5,9.2;2,0.8;mtcape;" .. S("Select") .. "]" ..
 
 			"image[9,7;1,2;ghastcape.png]" ..
 			"button[8.5,9.2;2,0.8;ghastcape;" .. S("Select") .. "]"..
 
 			"image[12,7;1,2;mclcape.png]" ..
 			"button[11.5,9.2;2,0.8;mclcape;" .. S("Select") .. "]"
-
-		if has_mt_cape then
-			formspec = formspec ..
-			--"image[9,2;1,2;mtcape.png]"
-			"button[5.5,9.2;2,0.8;mtcape;" .. S("Select") .. "]"
-		end
 
 	elseif mcl_skins[active_tab] then
 		formspec = formspec ..
