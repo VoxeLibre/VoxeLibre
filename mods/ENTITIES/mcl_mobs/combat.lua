@@ -1250,11 +1250,10 @@ function mob_class:do_states_attack (dtime)
 
 	elseif self.attack_type == "custom" and self.attack_state then
 		self.attack_state(self, dtime)
-	else
+	end
 
 	if self.on_attack then
 		self.on_attack(self, dtime)
 	end
 
-	end
 end
