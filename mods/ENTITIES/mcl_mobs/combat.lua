@@ -1252,5 +1252,9 @@ function mob_class:do_states_attack (dtime)
 		self.attack_state(self, dtime)
 	else
 
+	if self.on_attack then
+		self.on_attack(self, dtime)
+	end
+
 	end
 end

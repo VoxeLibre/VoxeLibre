@@ -314,7 +314,8 @@ function mcl_mobs.register_mob(name, def)
 
 			return self:mob_activate(staticdata, def, dtime)
 		end,
-		attack_state = def.attack_state,
+		attack_state = def.attack_state, -- custom attack state
+		on_attack = def.on_attack, -- called after attack, useful with otherwise predefined attack states (not custom)
 		harmed_by_heal = def.harmed_by_heal,
 		is_boss = def.is_boss,
 		dealt_effect = def.dealt_effect,
