@@ -192,7 +192,7 @@ minetest.register_node("mcl_lush_caves:cave_vines_lit", {
 	_mcl_blast_resistance = 0,
 	_mcl_blast_hardness = 1,
 	drop = "mcl_lush_caves:glow_berry",
-	on_dig = function(pos)
+	on_rightclick = function(pos)
 		minetest.add_item(pos,"mcl_lush_caves:glow_berry")
 		minetest.set_node(pos,{name="mcl_lush_caves:cave_vines"})
 	end,
