@@ -15,13 +15,6 @@ mcl_fovapi = {}
 mcl_fovapi.registered_modifiers = {}
 mcl_fovapi.applied_modifiers = {}
 
-minetest.register_on_joinplayer(function(player)
-	if DEBUG then
-		minetest.log("FOV::Player: " .. name .. "\nFOV: " .. player:get_fov())
-	end
-
-end)
-
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 
@@ -134,7 +127,7 @@ function mcl_fovapi.apply_modifier(player, modifier_name)
 		if modifier.is_multiplier and is_mult then
 			player:set_fov(fov_factor, true, modifier.time)
 		else
-			player:set_fov(fov_factor, false, modififer.time)
+			player:set_fov(fov_factor, false, modifier.time)
 		end
 	end
 
