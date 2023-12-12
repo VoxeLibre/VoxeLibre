@@ -28,6 +28,32 @@ local nidp2_degrotate = {
 		15,
 	}
 }
+local mcl2standingsigns = {}
+mcl2standingsigns["mcl_signs:standing_sign"] = "mcl_signs:standing_sign_oak"
+mcl2standingsigns["mcl_signs:standing_sign_acaciawood"] = "mcl_signs:standing_sign_acacia"
+mcl2standingsigns["mcl_signs:standing_sign_junglewood"] = "mcl_signs:standing_sign_jungle"
+mcl2standingsigns["mcl_signs:standing_sign_birchwood"] = "mcl_signs:standing_sign_birch"
+mcl2standingsigns["mcl_signs:standing_sign_darkwood"] = "mcl_signs:standing_sign_dark_oak"
+mcl2standingsigns["mcl_signs:standing_sign_sprucewood"] = "mcl_signs:standing_sign_spruce"
+mcl2standingsigns["mcl_signs:standing_sign_mangrove_wood"] = "mcl_signs:standing_sign_mangrove"
+mcl2standingsigns["mcl_signs:standing_sign_crimson_hyphae_wood"] = "mcl_signs:standing_sign_crimson"
+mcl2standingsigns["mcl_signs:standing_sign_warped_hyphae_wood"] = "mcl_signs:standing_sign_warped"
+mcl2standingsigns["mcl_signs:standing_sign_cherrywood"] = "mcl_signs:standing_sign_cherry_blossom"
+
+local mcl2rotsigns = {}
+
+for _,v in pairs(rotkeys) do
+	mcl2rotsigns["mcl_signs:standing_sign"..v] = "mcl_signs:standing_sign_oak"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_acaciawood"] = "mcl_signs:standing_sign_acacia"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_junglewood"] = "mcl_signs:standing_sign_jungle"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_birchwood"] = "mcl_signs:standing_sign_birch"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_darkwood"] = "mcl_signs:standing_sign_dark_oak"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_sprucewood"] = "mcl_signs:standing_sign_spruce"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_mangrove_wood"] = "mcl_signs:standing_sign_mangrove"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_crimson_hyphae_wood"] = "mcl_signs:standing_sign_crimson"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_warped_hyphae_wood"] = "mcl_signs:standing_sign_warped"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_cherrywood"] = "mcl_signs:standing_sign_cherry_blossom"
+end
 
 function mcl_signs.upgrade_sign_meta(pos)
 		local m = minetest.get_meta(pos)
@@ -48,14 +74,23 @@ end
 
 function mcl_signs.upgrade_sign_rot(pos,node)
 	local numsign = false
+
 	for _,v in pairs(rotkeys) do
-		if node.name:find(v) then
+		if mcl2rotsigns[node.name] then
+			node.name = mcl2rotsigns[node.name]
+			node.param2 = nidp2_degrotate[v][node.param2 + 1]
+			numsign = true
+		elseif node.name:find(v) then
 			node.name = node.name:gsub(v,"")
 			node.param2 = nidp2_degrotate[v][node.param2 + 1]
 			numsign = true
 		end
 	end
+
 	if not numsign then
+		if mcl2standingsigns[node.name] then
+			node.name = mcl2standingsigns[node.name]
+		end
 		local def = minetest.registered_nodes[node.name]
 		if def and def._mcl_sign_type == "standing" then
 			if node.param2 == 1 or node.param2 == 121 then
@@ -80,6 +115,8 @@ minetest.register_lbm({
 	action = mcl_signs.upgrade_sign_rot,
 })
 
+for k,_ in pairs(mcl2rotsigns) do table.insert(mcl_signs.old_rotnames, k) end
+for k,_ in pairs(mcl2standingsigns) do table.insert(mcl_signs.old_rotnames, k) end
 minetest.register_lbm({
 	nodenames = mcl_signs.old_rotnames,
 	name = "mcl_signs:update_old_rotated_standing",
