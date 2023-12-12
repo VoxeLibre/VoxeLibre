@@ -21,6 +21,7 @@ mcl_fovapi.register_modifier({
 	name = "spyglass",
 	fov_factor = 8,
 	time = 0.1,
+	reset_time = 0,
 	is_multiplier = false,
 	exclusive = true,
 })
