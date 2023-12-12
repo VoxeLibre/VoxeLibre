@@ -89,6 +89,10 @@ function mcl_fovapi.apply_modifier(player, modifier_name)
 		mcl_fovapi.applied_modifiers[player] = {}
 	end
 
+	for k, _ in pairs(mcl_fovapi.applied_modifiers[player]) do
+		if mcl_fovapi.registered_modifiers[k].exclusive == true then return end
+	end
+
 	local modifier = mcl_fovapi.registered_modifiers[modifier_name]
 	if modifier.on_start ~= nil then
 		modifier.on_start(player)
