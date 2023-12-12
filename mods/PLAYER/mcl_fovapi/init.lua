@@ -15,11 +15,17 @@ mcl_fovapi = {}
 mcl_fovapi.registered_modifiers = {}
 mcl_fovapi.applied_modifiers = {}
 
+minetest.register_on_joinplayer(function(player)
+	local player_name = player:get_player_name()
+
+	-- initialization
+	mcl_fovapi.applied_modifiers[player_name] = {}
+end)
 minetest.register_on_leaveplayer(function(player)
-	local name = player:get_player_name()
+	local player_name = player:get_player_name()
 
 	-- handle clean up
-	mcl_fovapi.applied_modifiers[name] = nil
+	mcl_fovapi.applied_modifiers[player_name] = nil
 end)
 
 function mcl_fovapi.register_modifier(def)
@@ -66,47 +72,38 @@ function mcl_fovapi.register_modifier(def)
 end
 
 minetest.register_on_respawnplayer(function(player)
-	mcl_fovapi.remove_all_modifiers(player:get_player_name())
+	mcl_fovapi.remove_all_modifiers(player)
 end)
 
 function mcl_fovapi.apply_modifier(player, modifier_name)
-	if player == nil then
-		return
-	end
-	if modifier_name == nil then
+	if not player or not modifier_name then
 		return
 	end
 	if mcl_fovapi.registered_modifiers[modifier_name] == nil then
 		return
 	end
-	if mcl_fovapi.applied_modifiers and mcl_fovapi.applied_modifiers[player] and mcl_fovapi.applied_modifiers[player][modifier_name] then
-		if mcl_fovapi.applied_modifiers[player][modifier_name] and mcl_fovapi.applied_modifiers[player][modifier_name] == true then
-			return
-		end
+	local player_name = player:get_player_name()
+	if mcl_fovapi.applied_modifiers and mcl_fovapi.applied_modifiers[player_name] and mcl_fovapi.applied_modifiers[player_name][modifier_name] then
+		return
 	end
 
-	if mcl_fovapi.applied_modifiers[player] == nil then
-		mcl_fovapi.applied_modifiers[player] = {}
-	end
-
-	for k, _ in pairs(mcl_fovapi.applied_modifiers[player]) do
+	for k, _ in pairs(mcl_fovapi.applied_modifiers[player_name]) do
 		if mcl_fovapi.registered_modifiers[k].exclusive == true then return end
 	end
 
 	local modifier = mcl_fovapi.registered_modifiers[modifier_name]
-	if modifier.on_start ~= nil then
+	if modifier.on_start then
 		modifier.on_start(player)
 	end
 
-	mcl_fovapi.applied_modifiers[player][modifier_name] = true -- set the applied to be true.
+	mcl_fovapi.applied_modifiers[player_name][modifier_name] = true -- set the applied to be true.
 
 	if DEBUG then
-		minetest.log("FOV::Player Applied Modifiers :" .. dump(mcl_fovapi.applied_modifiers[player]))
+		minetest.log("FOV::Player Applied Modifiers :" .. dump(mcl_fovapi.applied_modifiers[player_name]))
 	end
-	local pname = player:get_player_name()
 
 	if DEBUG then
-		minetest.log("FOV::Modifier applied to player:" .. pname .. " modifier: " .. modifier_name)
+		minetest.log("FOV::Modifier applied to player:" .. player_name .. " modifier: " .. modifier_name)
 	end
 
 	-- modifier apply code.
@@ -138,26 +135,27 @@ function mcl_fovapi.apply_modifier(player, modifier_name)
 end
 
 function mcl_fovapi.remove_modifier(player, modifier_name)
-	if player == nil then
+	if not player or not modifier_name then
 		return
 	end
 
-	if mcl_fovapi.applied_modifiers[player][modifier_name] == nil then
-		return
+	local player_name = player:get_player_name()
+	if not mcl_fovapi.applied_modifiers[player_name]
+		or not mcl_fovapi.applied_modifiers[player_name][modifier_name] then
+			return
 	end
 
 	if DEBUG then
-		local name = player:get_player_name()
-		minetest.log("FOV::Player: " .. name .. " modifier: " .. modifier_name .. "removed.")
+		minetest.log("FOV::Player: " .. player_name .. " modifier: " .. modifier_name .. "removed.")
 	end
 
-	mcl_fovapi.applied_modifiers[player][modifier_name] = nil
+	mcl_fovapi.applied_modifiers[player_name][modifier_name] = nil
 	local modifier = mcl_fovapi.registered_modifiers[modifier_name]
 
 	-- check for other fov modifiers, and set them up, or reset to default.
 
 	local applied = {}
-	for k, _ in pairs(mcl_fovapi.applied_modifiers[player]) do
+	for k, _ in pairs(mcl_fovapi.applied_modifiers[player_name]) do
 		applied[k] = mcl_fovapi.registered_modifiers[k]
 	end
 
@@ -196,30 +194,29 @@ function mcl_fovapi.remove_modifier(player, modifier_name)
 		player:set_fov(fov_factor, not non_multiplier_added, modifier.reset_time)
 	end
 
-	if mcl_fovapi.registered_modifiers[modifier_name].on_end ~= nil then
+	if mcl_fovapi.registered_modifiers[modifier_name].on_end then
 		mcl_fovapi.registered_modifiers[modifier_name].on_end(player)
 	end
 end
 
 function mcl_fovapi.remove_all_modifiers(player)
-	if player == nil then
+	if not player then
 		return
 	end
 
+	local player_name = player:get_player_name()
 	if DEBUG then
-		local name = player:get_player_name()
-		minetest.log("FOV::Player: " .. name .. " modifiers have been reset.")
+		minetest.log("FOV::Player: " .. player_name .. " modifiers have been reset.")
 	end
 
-	for x in mcl_fovapi.applied_modifiers[player] do
+	for name, x in pairs(mcl_fovapi.applied_modifiers[player_name]) do
 		x = nil
+		if mcl_fovapi.registered_modifiers[name].on_end then
+			mcl_fovapi.registered_modifiers[name].on_end(player)
+		end
 	end
 
 	player:set_fov(0, false, 0)
-	if mcl_fovapi.registered_modifiers[modifier_name].on_end ~= nil then
-		mcl_fovapi.registered_modifiers[modifier_name].on_end(player)
-	end
-
 end
 
 --[[
