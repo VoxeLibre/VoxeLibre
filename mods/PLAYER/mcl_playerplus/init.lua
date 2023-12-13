@@ -663,6 +663,8 @@ minetest.register_on_joinplayer(function(player)
 		lastPos = nil,
 		swimDistance = 0,
 		jump_cooldown = -1,	-- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
+		last_damage = 0,
+		invul_timestamp = 0,
 	}
 	mcl_playerplus.elytra[player] = {active = false, rocketing = 0, speed = 0}
 
@@ -727,19 +729,35 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 	end
 end, -200)
 
--- damage invulnerability
-mcl_damage.register_modifier(function(obj, damage, reason)
-	local invul = obj:get_meta():get_int("mcl_damage:invulnerable")
-	if invul > 0 then
-		return 0
-	else
-		obj:get_meta():set_int("mcl_damage:invulnerable", 1)
-		minetest.after(0.5, function()
-			obj:get_meta():set_int("mcl_damage:invulnerable", 0)
-		end)
-		return damage
+minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+	-- damage invulnerability
+	if hitter then
+		local name = player:get_player_name()
+		local time_now = minetest.get_us_time()
+		local invul_timestamp = mcl_playerplus_internal[name].invul_timestamp
+		local time_diff = time_now - invul_timestamp
+		-- check for invulnerability time in microseconds (0.5 second)
+		if time_diff <= 500000 and time_diff >= 0 then
+			damage = damage - mcl_playerplus_internal[name].last_damage
+			if damage < 0 then
+				damage = 0
+			end
+			return damage
+		else
+			mcl_playerplus_internal[name].last_damage = damage
+			mcl_playerplus_internal[name].invul_timestamp = time_now
+		end
 	end
-end, -1000)
+	-- attack reach limit
+	if hitter and hitter:is_player() then
+		local player_pos = player:get_pos()
+		local hitter_pos = hitter:get_pos()
+		if vector.distance(player_pos, hitter_pos) > 3 then
+			damage = 0
+			return damage
+		end
+	end
+end)
 
 minetest.register_on_respawnplayer(function(player)
 	local pos = player:get_pos()
