@@ -282,7 +282,7 @@ function mcl_campfires.register_campfire(name, def)
 					type="vertical_frames",
 					aspect_w=32,
 					aspect_h=16,
-					length=2.0
+					length=0.8
 				 }}
 		},
 		overlay_tiles = {
