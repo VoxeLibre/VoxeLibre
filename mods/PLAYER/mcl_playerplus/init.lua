@@ -730,6 +730,15 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 end, -200)
 
 minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+	-- attack reach limit
+	if hitter and hitter:is_player() then
+		local player_pos = player:get_pos()
+		local hitter_pos = hitter:get_pos()
+		if vector.distance(player_pos, hitter_pos) > 3 then
+			damage = 0
+			return damage
+		end
+	end
 	-- damage invulnerability
 	if hitter then
 		local name = player:get_player_name()
@@ -746,15 +755,6 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 		else
 			mcl_playerplus_internal[name].last_damage = damage
 			mcl_playerplus_internal[name].invul_timestamp = time_now
-		end
-	end
-	-- attack reach limit
-	if hitter and hitter:is_player() then
-		local player_pos = player:get_pos()
-		local hitter_pos = hitter:get_pos()
-		if vector.distance(player_pos, hitter_pos) > 3 then
-			damage = 0
-			return damage
 		end
 	end
 end)
