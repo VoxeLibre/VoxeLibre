@@ -279,8 +279,20 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 	if hitter and hitter:is_player() and distance <= 3 then
 		local wielditem = hitter:get_wielded_item()
 		knockback = knockback + 5 * mcl_enchanting.get_enchantment(wielditem, "knockback")
-		-- add player velocity to knockback
+		-- add vertical lift to knockback
 		local v = player:get_velocity()
+		if v and v.y <= 0.1 and v.y >= -0.1 and dir.y <= 0.44 then
+			player:add_velocity({
+				x = 0,
+				y = 4.5,
+				z = 0
+			})
+			-- add minimum knockback
+			if knockback <= 1.5 then
+				knockback = knockback + 6
+			end
+		end
+		-- add player velocity to knockback
 		local hv = hitter:get_velocity()
 		local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
 		local hitter_mag = math.sqrt((hv.x * hv.x) + (hv.z * hv.z))
