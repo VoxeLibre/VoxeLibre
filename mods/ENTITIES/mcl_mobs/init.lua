@@ -437,7 +437,7 @@ function mcl_mobs.register_arrow(name, def)
 						self.object:set_velocity(vector.direction(self.object:get_pos(), p) * self.velocity)
 					end
 				else
-					self.target = nil
+					self._target = nil
 				end
 			end
 
