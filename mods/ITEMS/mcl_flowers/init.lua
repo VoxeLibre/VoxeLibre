@@ -383,9 +383,6 @@ add_large_plant("peony", S("Peony"), S("A peony is a large plant which occupies 
 add_large_plant("rose_bush", S("Rose Bush"), S("A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production."), "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 5/16, 1/16)
 add_large_plant("lilac", S("Lilac"), S("A lilac is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 5/16, 6/16)
 
--- TODO: Make the sunflower face East. Requires a mesh for the top node.
-add_large_plant("sunflower", S("Sunflower"), S("A sunflower is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 6/16, 6/16)
-
 local longdesc_grass = S("Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.")
 local longdesc_fern = S("Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.")
 
@@ -521,5 +518,33 @@ if mod_mcimport and mg_name == "singlenode" and fix_doubleplants == true then
 		end,
 	})
 end
+
+minetest.register_node("mcl_flowers:sunflower", {
+	description = S("Sunflower"),
+	_doc_items_longdesc = S("A sunflower is a large plant which occupies two blocks. It is mainly used in dye production."),
+	drawtype = "mesh",
+	groups = {
+		attached_node = 1, deco_block = 1,
+		dig_by_water = 1, destroy_by_lava_flow = 1, dig_by_piston = 1,
+		flammable = 2, fire_encouragement = 60, fire_flammability = 100,
+		plant = 1, double_plant = 1, non_mycelium_plant = 1, compostability = 65, grass_palette = nil
+	},
+	inventory_image = "mcl_flowers_double_plant_sunflower_front.png",
+	mesh = "mcl_flowers_sunflower.obj",
+	paramtype = "light",
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.25, -0.5, -0.25, 0.25, 1.5, 0.25}
+	},
+	sunlight_propagates = true,
+	tiles = {
+		"mcl_flowers_double_plant_sunflower_bottom.png",
+		"mcl_flowers_double_plant_sunflower_bottom.png",
+		"mcl_flowers_double_plant_sunflower_front.png",
+		"mcl_flowers_double_plant_sunflower_back.png"
+	},
+	walkable = false,
+	wield_image = "mcl_flowers_double_plant_sunflower_front.png"
+})
 
 dofile(modpath.."/register.lua")

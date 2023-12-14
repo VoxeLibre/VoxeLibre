@@ -1,0 +1,32 @@
+# Blender 3.6.4 MTL File: 'sunflower.blend'
+# www.blender.org
+
+newmtl Flower_1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Minetest-5.8/games/mineclone2/textures/mcl_flowers_double_plant_sunflower_front.png
+
+newmtl Flower_2
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Minetest-5.8/games/mineclone2/textures/mcl_flowers_double_plant_sunflower_back.png
+
+newmtl Stem
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd C:/Minetest-5.8/games/mineclone2/textures/mcl_flowers_double_plant_sunflower_bottom.png
