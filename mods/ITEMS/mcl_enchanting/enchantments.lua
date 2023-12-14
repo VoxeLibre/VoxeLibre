@@ -293,7 +293,7 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 			})
 			-- add minimum knockback
 			if knockback <= 1.5 then
-				knockback = knockback + 4.5
+				knockback = knockback + 4.875
 			end
 		end
 		-- add player velocity to knockback
