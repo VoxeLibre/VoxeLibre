@@ -525,8 +525,8 @@ minetest.register_node("mcl_flowers:sunflower", {
 	drawtype = "mesh",
 	groups = {
 		attached_node = 1, deco_block = 1,
-		dig_by_water = 1, destroy_by_lava_flow = 1, dig_by_piston = 1,
-		flammable = 2, fire_encouragement = 60, fire_flammability = 100,
+		dig_by_water = 1, destroy_by_lava_flow = 1, dig_by_piston = 1, dig_immediate = 3,
+		flammable = 2, flower = 1, fire_encouragement = 60, fire_flammability = 100,
 		plant = 1, double_plant = 1, non_mycelium_plant = 1, compostability = 65, grass_palette = nil
 	},
 	inventory_image = "mcl_flowers_double_plant_sunflower_front.png",
@@ -536,6 +536,7 @@ minetest.register_node("mcl_flowers:sunflower", {
 		type = "fixed",
 		fixed = {-0.25, -0.5, -0.25, 0.25, 1.5, 0.25}
 	},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	sunlight_propagates = true,
 	tiles = {
 		"mcl_flowers_double_plant_sunflower_bottom.png",
