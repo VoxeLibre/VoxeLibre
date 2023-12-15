@@ -4804,60 +4804,32 @@ local function register_decorations()
 				b = {"FlowerForest"}
 			end
 
-			if name ~= "sunflower" then
-				minetest.register_decoration({
-					deco_type = "schematic",
-					schematic = {
-						size = {x = 1, y = 3, z = 1},
-						data = {
-							{name = "air", prob = 0},
-							{name = "mcl_flowers:" .. name, param1 = 255, },
-							{name = "mcl_flowers:" .. name .. "_top", param1 = 255, },
-						},
+			minetest.register_decoration({
+				deco_type = "schematic",
+				schematic = {
+					size = {x = 1, y = 3, z = 1},
+					data = {
+						{name = "air", prob = 0},
+						{name = "mcl_flowers:" .. name, param1 = 255, },
+						{name = "mcl_flowers:" .. name .. "_top", param1 = 255, },
 					},
-					place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+				},
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 
-					sidelen = 16,
-					noise_params = {
-						offset = o,
-						scale = 0.01,
-						spread = {x = 300, y = 300, z = 300},
-						seed = seed,
-						octaves = 5,
-						persist = 0.62,
-					},
-					y_min = 1,
-					y_max = mcl_vars.mg_overworld_max,
-					flags = "",
-					biomes = b,
-				})
-			else
-				minetest.register_decoration({
-					deco_type = "schematic",
-					schematic = {
-						size = {x = 1, y = 2, z = 1},
-						data = {
-							{name = "air", prob = 0},
-							{name = "mcl_flowers:" .. name, param1 = 255, },
-						},
-					},
-					place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-
-					sidelen = 16,
-					noise_params = {
-						offset = o,
-						scale = 0.01,
-						spread = {x = 300, y = 300, z = 300},
-						seed = seed,
-						octaves = 5,
-						persist = 0.62,
-					},
-					y_min = 1,
-					y_max = mcl_vars.mg_overworld_max,
-					flags = "",
-					biomes = b,
-				})
-			end
+				sidelen = 16,
+				noise_params = {
+					offset = o,
+					scale = 0.01,
+					spread = {x = 300, y = 300, z = 300},
+					seed = seed,
+					octaves = 5,
+					persist = 0.62,
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				flags = "",
+				biomes = b,
+			})
 		end
 	end
 
