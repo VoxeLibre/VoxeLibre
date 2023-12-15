@@ -286,12 +286,14 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		-- add vertical lift to knockback
 		local v = player:get_velocity()
 		local invul = player:get_meta():get_int("mcl_damage:invulnerable")
-		if v and v.y <= 0.1 and v.y >= -0.1 and dir.y <= 0.44 and invul == 0 then
-			player:add_velocity({
-				x = 0,
-				y = 4.5,
-				z = 0
-			})
+		if v and v.y <= 0.1 and v.y >= -0.1 and invul == 0 then
+			if dir.y <= 0.44 then
+				player:add_velocity({
+					x = 0,
+					y = 4.5,
+					z = 0
+				})
+			end
 			-- add minimum knockback
 			if knockback <= 1.5 then
 				knockback = knockback + 4.875
