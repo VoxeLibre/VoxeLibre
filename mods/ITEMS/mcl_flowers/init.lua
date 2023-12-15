@@ -534,7 +534,7 @@ minetest.register_node("mcl_flowers:sunflower", {
 	paramtype = "light",
 	selection_box = {
 		type = "fixed",
-		fixed = {-0.25, -0.5, -0.25, 0.25, 1.5, 0.25}
+		fixed = {-1/4, -1/2, -1/4, 1/4, 8/7, 1/4}
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	sunlight_propagates = true,
