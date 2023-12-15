@@ -741,7 +741,7 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 	-- damage invulnerability
 	if hitter then
 		local name = player:get_player_name()
-		-- check for invulnerability time for 0.5 second
+		-- check for invulnerability time (0.5 second)
 		local invul = player:get_meta():get_int("mcl_damage:invulnerable")
 		if invul > 0 then
 			damage = damage - mcl_playerplus_internal[name].last_damage
