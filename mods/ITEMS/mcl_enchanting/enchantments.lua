@@ -287,7 +287,7 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		local v = player:get_velocity()
 		local invul = player:get_meta():get_int("mcl_damage:invulnerable")
 		if v and v.y <= 0.01 and v.y >= -0.01 and invul == 0 then
-			if dir.y <= 0.44 then
+			if dir.y <= 0.44 and distance <= 3 then
 				if mcl_enchanting.get_enchantment(wielditem, "knockback") == 0 then
 					player:add_velocity({x = 0, y = 6.4, z = 0})
 				else
@@ -313,6 +313,8 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		end
 		if knockback > 6.4375 and dir.y >= 0.3 then
 			knockback = 6.4375
+		elseif knockback <= 6.4375 and dir.y >= 0.3 then
+			knockback = 1
 		end
 		-- remove knockback if invulnerable
 		if invul > 0 then
