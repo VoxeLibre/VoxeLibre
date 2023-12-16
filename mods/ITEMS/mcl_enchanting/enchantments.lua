@@ -282,7 +282,7 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 	end
 	if hitter and hitter:is_player() and distance <= 3 then
 		local wielditem = hitter:get_wielded_item()
-		knockback = knockback + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+		knockback = knockback + 3.22 * mcl_enchanting.get_enchantment(wielditem, "knockback")
 		-- add vertical lift to knockback
 		local v = player:get_velocity()
 		local invul = player:get_meta():get_int("mcl_damage:invulnerable")
@@ -308,12 +308,9 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		local hitter_mag = math.sqrt((hv.x * hv.x) + (hv.z * hv.z))
 		local player_mag = math.sqrt((v.x * v.x) + (v.z * v.z))
 		if dir_dot > 0 and player_mag <= hitter_mag * 0.625 then
-			knockback = knockback + hitter_mag * 0.375
+			knockback = knockback + hitter_mag * 0.6875
 		end
-		-- add maximum knockback limit
-		if knockback > 12.875 then
-			knockback = 12.875
-		end
+		-- add vertical knockback limit on angled hit
 		if knockback > 6.275 and dir.y >= 0.3 and v.y == 0 and enchant == 0 then
 			knockback = 6.275
 		end
