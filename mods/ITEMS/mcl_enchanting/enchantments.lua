@@ -289,20 +289,14 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		local v = player:get_velocity()
 		local invul = player:get_meta():get_int("mcl_damage:invulnerable")
 		if v and v.y <= 0.01 and v.y >= -0.01 and invul == 0 then
-			if dir.y <= 0.3 then
-				local regular_v = 6.4
-				local enchant_v = 7
-				if dir.y <= 0.27 then
-					regular_v = regular_v * math.abs(dir.y - 1)
-					enchant_v = enchant_v * math.abs(dir.y - 1)
-				end
-				if enchant == 0 then
-					player:add_velocity({x = 0, y = regular_v, z = 0})
-				else
-					player:add_velocity({x = 0, y = enchant_v, z = 0})
-				end
-			elseif dir.y <= 0.44 and dir.y > 0.3 and enchant > 0 then
-				knockback = knockback + 3
+			local regular_v = 6.4
+			local enchant_v = 7
+			regular_v = regular_v * math.abs(dir.y - 1)
+			enchant_v = enchant_v * math.abs(dir.y - 1)
+			if enchant == 0 then
+				player:add_velocity({x = 0, y = regular_v, z = 0})
+			else
+				player:add_velocity({x = 0, y = enchant_v, z = 0})
 			end
 			-- add minimum knockback
 			if knockback <= 1.5 then
@@ -316,10 +310,6 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		local player_mag = math.sqrt((v.x * v.x) + (v.z * v.z))
 		if dir_dot > 0 and player_mag <= hitter_mag * 0.625 then
 			knockback = knockback + hitter_mag * 0.6875
-		end
-		-- add vertical knockback limit on angled hit
-		if knockback > 6.275 and dir.y >= 0.3 and v.y == 0 and enchant == 0 then
-			knockback = 6.275
 		end
 		-- remove knockback if invulnerable
 		if invul > 0 then
