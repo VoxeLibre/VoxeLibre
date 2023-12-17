@@ -759,10 +759,10 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 		else
 			mcl_playerplus_internal[name].last_damage = damage
 			mcl_playerplus_internal[name].invul_timestamp = time_now
-			local invul = player:get_meta():get_int("mcl_damage:invulnerable")
-			if invul > 0 then
-				player:get_meta():set_int("mcl_damage:invulnerable", 0)
-			end
+			player:get_meta():set_int("mcl_damage:damage_animation", 1)
+			minetest.after(0.5, function()
+				player:get_meta():set_int("mcl_damage:damage_animation", 0)
+			end)
 		end
 	end
 end)
