@@ -287,11 +287,11 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		knockback = knockback + 3.22 * enchant
 		-- add vertical lift to knockback
 		local v = player:get_velocity()
+		local added_v = 0
 		local invul = player:get_meta():get_int("mcl_damage:invulnerable")
 		if v and v.y <= 0.01 and v.y >= -0.01 and invul == 0 then
 			local regular_v = 6.4
 			local enchant_v = 7
-			local added_v = 0
 			regular_v = regular_v * math.abs(dir.y - 1)
 			enchant_v = enchant_v * math.abs(dir.y - 1)
 			if enchant == 0 then
@@ -301,9 +301,6 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 				player:add_velocity({x = 0, y = enchant_v, z = 0})
 				added_v = enchant_v
 			end
-			minetest.after(0.25, function()
-				player:add_velocity({x = 0, y = -added_v * 0.375 , z = 0})
-			end)
 			-- add minimum knockback
 			if knockback <= 1.5 then
 				knockback = knockback + 4.875
@@ -317,6 +314,10 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		if dir_dot > 0 and player_mag <= hitter_mag * 0.625 then
 			knockback = knockback + hitter_mag * 0.6875
 		end
+		-- reduce floatiness
+		minetest.after(0.25, function()
+			player:add_velocity({x = 0, y = (v.y + added_v) * -0.375 , z = 0})
+		end)
 		-- remove knockback if invulnerable
 		if invul > 0 then
 			knockback = 0
