@@ -542,6 +542,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	elseif fields.nocape then
 		mcl_skins.player_skins[player].cape = "blank.png"
 		mcl_skins.update_player_skin(player)
+		mcl_armor.update(player) --update elytra cape
 		return true
 	elseif active_tab == "cape" then
 		for cape_index = ((page_num - 1) * 5) + 1, math.min(#mcl_skins.cape, page_num * 5) do
@@ -549,6 +550,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			if fields[cape.name] then
 				mcl_skins.player_skins[player].cape = cape.mask -- the actual overlay image
 				mcl_skins.update_player_skin(player)
+				mcl_armor.update(player) --update elytra cape
 				return true
 			end
 		end
