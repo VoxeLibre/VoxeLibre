@@ -291,13 +291,19 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		if v and v.y <= 0.01 and v.y >= -0.01 and invul == 0 then
 			local regular_v = 6.4
 			local enchant_v = 7
+			local added_v = 0
 			regular_v = regular_v * math.abs(dir.y - 1)
 			enchant_v = enchant_v * math.abs(dir.y - 1)
 			if enchant == 0 then
 				player:add_velocity({x = 0, y = regular_v, z = 0})
+				added_v = regular_v
 			else
 				player:add_velocity({x = 0, y = enchant_v, z = 0})
+				added_v = enchant_v
 			end
+			minetest.after(0.25, function()
+				player:add_velocity({x = 0, y = -added_v * 0.375 , z = 0})
+			end)
 			-- add minimum knockback
 			if knockback <= 1.5 then
 				knockback = knockback + 4.875
