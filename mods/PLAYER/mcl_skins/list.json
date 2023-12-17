@@ -292,6 +292,6 @@
 		"type": "cape",
 		"name": "mclcape",
 		"mask": "mclcape_body.png",
-		"selector_func" : "return function (player) local playername = player:get_player_name() local maintainers_and_devs = {mcl_credits.people[1][3], mcl_credits.people[2][3], mcl_credits.people[3][3], mcl_credits.people[4][3], mcl_credits.people[5][3], mcl_credits.people[6][3]} for _, array in pairs(maintainers_and_devs) do for _, name in pairs(array) do if name == playername then return true end end end return false end"
+		"selector_func" : null
 	}
 ]
