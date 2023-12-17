@@ -48,7 +48,7 @@ function mcl_bows_s.shoot_arrow_crossbow(arrow_item, pos, dir, yaw, shooter, pow
 	if damage == nil then
 		damage = 3
 	end
-	local knockback
+	local knockback = 4.875
 	if crossbow_stack then
 		local enchantments = mcl_enchanting.get_enchantments(crossbow_stack)
 		if enchantments.piercing then
