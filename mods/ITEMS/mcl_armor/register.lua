@@ -241,7 +241,7 @@ minetest.register_tool("mcl_armor:elytra", {
 		local cape = mcl_skins.player_skins[obj].cape
 		if cape ~= "blank.png" then
 			local skinval = mcl_player.player_get_skin(obj)
-			skinval = skinval:gsub("^" .. cape, "")
+			skinval = skinval:gsub("%^" .. cape, "")
 			mcl_player.player_set_skin(obj, skinval)
 			-- this doesn't mess with the data mcl_skins has, so when mcl_skins reloads (which happens when the elytra is unequipped), the normal cape returns
 		end

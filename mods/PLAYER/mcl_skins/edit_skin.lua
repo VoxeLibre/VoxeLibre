@@ -161,8 +161,16 @@ function mcl_skins.update_player_skin(player)
 	end
 
 	local skin = mcl_skins.player_skins[player]
+	local skinval = mcl_skins.compile_skin(skin)
 
-	mcl_player.player_set_skin(player, mcl_skins.compile_skin(skin))
+	if player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra" then
+		skinval = skinval:gsub("%^" .. skin.cape, "")
+		-- don't render the "normal" cape on players while wearing the elytra.
+		-- this is NOT used when the player puts an elytra on, see register.lua in mcl_armor for that.
+		-- this is used when a player joins or changes something regarding their skin.
+	end
+
+	mcl_player.player_set_skin(player, skinval)
 
 	local slim_arms
 	if skin.simple_skins_id then
@@ -705,7 +713,7 @@ end
 init()
 
 if not minetest.settings:get_bool("mcl_keepInventory", false) then
-	minetest.register_on_dieplayer(function(player)
+	minetest.register_on_respawnplayer(function(player)
 		mcl_skins.update_player_skin(player) -- ensures players have their cape again after dying with an elytra
 	end)
 end
