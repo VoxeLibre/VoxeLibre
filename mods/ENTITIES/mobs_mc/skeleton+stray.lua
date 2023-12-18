@@ -44,6 +44,11 @@ local skeleton = {
 			"mcl_bows_bow_0.png", -- wielded_item
 		}
 	},
+	sounds = {
+		random = "mobs_mc_skeleton_random.2",
+		death = "mobs_mc_skeleton_death",
+		damage = "mobs_mc_skeleton_hurt",
+		distance = 16,
 	walk_velocity = 1.2,
 	run_velocity = 2.0,
 	damage = 2,

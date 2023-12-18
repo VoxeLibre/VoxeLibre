@@ -37,7 +37,7 @@ mcl_mobs.register_mob("mobs_mc:witherskeleton", {
 	visual_size = {x=1.2, y=1.2},
 	makes_footstep_sound = true,
 	sounds = {
-		random = "mobs_mc_skeleton_random",
+		random = "mobs_mc_skeleton_random.1",
 		death = "mobs_mc_skeleton_death",
 		damage = "mobs_mc_skeleton_hurt",
 		distance = 16,
