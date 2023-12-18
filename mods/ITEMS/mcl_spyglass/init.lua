@@ -17,6 +17,15 @@ minetest.register_craft({
 	}
 })
 
+mcl_fovapi.register_modifier({
+	name = "spyglass",
+	fov_factor = 8,
+	time = 0.1,
+	reset_time = 0,
+	is_multiplier = false,
+	exclusive = true,
+})
+
 local spyglass_scope = {}
 
 local function add_scope(player)
@@ -37,7 +46,8 @@ local function remove_scope(player)
 		player:hud_remove(spyglass_scope[player])
 		spyglass_scope[player] = nil
 		player:hud_set_flags({wielditem = true})
-		player:set_fov(86.1)
+		mcl_fovapi.remove_modifier(player, "spyglass") -- use the api to remove the FOV effect.
+		-- old code: player:set_fov(86.1)
 	end
 end
 
@@ -55,7 +65,8 @@ controls.register_on_hold(function(player, key, time)
 	if key ~= "RMB" then return end
 	local wielditem = player:get_wielded_item()
 	if wielditem:get_name() == "mcl_spyglass:spyglass" then
-		player:set_fov(8, false, 0.1)
+		mcl_fovapi.apply_modifier(player, "spyglass") -- apply the FOV effect.
+		-- old code: player:set_fov(8, false, 0.1)
 		if spyglass_scope[player] == nil then
 			add_scope(player)
 		end

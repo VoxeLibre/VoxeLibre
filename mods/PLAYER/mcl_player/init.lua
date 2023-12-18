@@ -177,7 +177,7 @@ minetest.register_on_joinplayer(function(player)
 	player_textures[name] = { "character.png", "blank.png", "blank.png" }
 
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
-	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
+-- 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
 end)
 
 minetest.register_on_leaveplayer(function(player)
