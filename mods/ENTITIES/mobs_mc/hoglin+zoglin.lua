@@ -94,10 +94,10 @@ zoglin.description = S("Zoglin")
 zoglin.fire_resistant = 1
 zoglin.textures = {"extra_mobs_zoglin.png"}
 sounds = {
-                random = "extra_mobs_hoglin.2",
-                damage = "extra_mobs_hoglin_hurt",
-                death = "extra_mobs_hoglin_hurt",
-                distance = 16,
+		random = "extra_mobs_hoglin.2",
+		damage = "extra_mobs_hoglin_hurt",
+		death = "extra_mobs_hoglin_hurt",
+		distance = 16,
         },
 zoglin.do_custom = function()
 	return
