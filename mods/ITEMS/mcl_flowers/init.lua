@@ -534,33 +534,4 @@ if mod_mcimport and mg_name == "singlenode" and fix_doubleplants == true then
 	})
 end
 
-minetest.register_node("mcl_flowers:sunflower", {
-	description = S("Sunflower"),
-	_doc_items_longdesc = S("A sunflower is a large plant which occupies two blocks. It is mainly used in dye production."),
-	drawtype = "mesh",
-	groups = {
-		attached_node = 1, deco_block = 1,
-		dig_by_water = 1, destroy_by_lava_flow = 1, dig_by_piston = 1, dig_immediate = 3,
-		flammable = 2, flower = 1, fire_encouragement = 60, fire_flammability = 100,
-		plant = 1, double_plant = 1, non_mycelium_plant = 1, compostability = 65, grass_palette = nil
-	},
-	inventory_image = "mcl_flowers_double_plant_sunflower_front.png",
-	mesh = "mcl_flowers_sunflower.obj",
-	paramtype = "light",
-	selection_box = {
-		type = "fixed",
-		fixed = {-1/4, -1/2, -1/4, 1/4, 8/7, 1/4}
-	},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	sunlight_propagates = true,
-	tiles = {
-		"mcl_flowers_double_plant_sunflower_bottom.png",
-		"mcl_flowers_double_plant_sunflower_bottom.png",
-		"mcl_flowers_double_plant_sunflower_front.png",
-		"mcl_flowers_double_plant_sunflower_back.png"
-	},
-	walkable = false,
-	wield_image = "mcl_flowers_double_plant_sunflower_front.png"
-})
-
 dofile(modpath.."/register.lua")
