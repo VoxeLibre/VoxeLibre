@@ -316,8 +316,14 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		end
 		-- reduce floatiness
 		minetest.after(0.25, function()
-			player:add_velocity({x = 0, y = (v.y + added_v) * -0.375 , z = 0})
+			player:add_velocity({x = 0, y = (v.y + added_v) * -0.375, z = 0})
 		end)
+		-- reduce knockback when moving towards hitter while attacking
+		local self_dir_dot = (v.x * dir.x) + (v.z * dir.z)
+		local control = player:get_player_control()
+		if self_dir_dot < -4.3 and control.up and control.LMB then
+			knockback = knockback * 0.6
+		end
 		-- remove knockback if invulnerable
 		if invul > 0 then
 			knockback = 0
