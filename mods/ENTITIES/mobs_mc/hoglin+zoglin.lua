@@ -31,8 +31,9 @@ local hoglin = {
 	} },
 	visual_size = {x=3, y=3},
 	sounds = {
-		random = "extra_mobs_hoglin",
+		random = "extra_mobs_hoglin.1",
 		damage = "extra_mobs_hoglin_hurt",
+		death = "extra_mobs_hoglin_hurt",
 		distance = 16,
 	},
 	jump = true,
