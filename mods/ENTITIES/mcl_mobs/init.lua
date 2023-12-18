@@ -334,6 +334,13 @@ function mcl_mobs.register_mob(name, def)
 end -- END mcl_mobs.register_mob function
 
 
+function mcl_mobs.get_arrow_damage_func(damage, typ)
+	local typ = mcl_damage.types[typ] and typ or "arrow"
+	return function(projectile, object)
+		return mcl_util.deal_damage(object, damage, {type = typ})
+	end
+end
+
 -- register arrow for shoot attack
 function mcl_mobs.register_arrow(name, def)
 
@@ -350,6 +357,7 @@ function mcl_mobs.register_arrow(name, def)
 		hit_node = def.hit_node,
 		hit_mob = def.hit_mob,
 		hit_object = def.hit_object,
+		homing = def.homing,
 		drop = def.drop or false, -- drops arrow as registered item when true
 		collisionbox = {0, 0, 0, 0, 0, 0}, -- remove box around arrows
 		timer = 0,
@@ -419,6 +427,17 @@ function mcl_mobs.register_arrow(name, def)
 					self.object:remove();
 
 					return
+				end
+			end
+
+			if self.homing and self._target then
+				local p = self._target:get_pos()
+				if p then
+					if minetest.line_of_sight(self.object:get_pos(), p) then
+						self.object:set_velocity(vector.direction(self.object:get_pos(), p) * self.velocity)
+					end
+				else
+					self._target = nil
 				end
 			end
 
