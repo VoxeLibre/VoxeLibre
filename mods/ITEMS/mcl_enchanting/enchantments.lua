@@ -307,12 +307,15 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 			end
 		end
 		-- add player velocity to knockback
+		local h_name = hitter:get_player_name()
 		local hv = hitter:get_velocity()
 		local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
 		local hitter_mag = math.sqrt((hv.x * hv.x) + (hv.z * hv.z))
 		local player_mag = math.sqrt((v.x * v.x) + (v.z * v.z))
-		if dir_dot > 0 then
+		if dir_dot > 0 and mcl_sprint.is_sprinting(h_name) then
 			knockback = knockback + hitter_mag * 0.6875
+		elseif dir_dot > 0 then
+			knockback = knockback + hitter_mag * 0.34375
 		end
 		-- reduce floatiness
 		minetest.after(0.25, function()
