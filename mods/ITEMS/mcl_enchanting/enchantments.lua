@@ -317,7 +317,7 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		if dir_dot > 0 and mcl_sprint.is_sprinting(h_name) then
 			knockback = knockback + hitter_mag * 0.6875
 		elseif dir_dot > 0 then
-			knockback = knockback + hitter_mag * 0.34375
+			knockback = knockback + hitter_mag * 0.515625
 		end
 		-- reduce floatiness
 		minetest.after(0.25, function()
