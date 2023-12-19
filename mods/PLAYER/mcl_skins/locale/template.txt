@@ -10,5 +10,5 @@ Bottoms=
 Tops=
 Hairs=
 Headwears=
-Open skin configuration screen.= 
+Open skin configuration screen.=
 Select=
