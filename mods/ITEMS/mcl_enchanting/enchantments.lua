@@ -308,6 +308,11 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 				knockback = knockback + 0.609375
 			end
 		end
+		-- counteract forward velocity when hit
+		local self_dir_dot = (v.x * dir.x) + (v.z * dir.z)
+		if self_dir_dot < 0 then
+			player:add_velocity({x = v.x * -1, y = 0, z = v.z * -1})
+		end
 		-- add player velocity to knockback
 		local h_name = hitter:get_player_name()
 		local hv = hitter:get_velocity()
