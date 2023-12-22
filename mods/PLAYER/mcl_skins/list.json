@@ -284,12 +284,6 @@
 	},
 	{
 		"type": "cape",
-		"name": "mtcape",
-		"mask": "mtcape_body.png",
-		"selector_func" : null
-	},
-	{
-		"type": "cape",
 		"name": "mclcape",
 		"mask": "mclcape_body.png",
 		"selector_func" : null
