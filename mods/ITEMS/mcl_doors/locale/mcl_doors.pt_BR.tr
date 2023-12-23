@@ -20,5 +20,5 @@ Wooden trapdoors are horizontal barriers whch can be opened and closed by hand o
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou fechar um alçapão, aperte com o botão direito nela ou acione-o com um sinal de redstone.
 Iron Trapdoor=Alçapão de Ferro
 Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Alçapões de ferro são barreiras horizontais que podem ser abertas ou fechadas por sinais de redstone, mas não manualmente. Eles ocupam a parte inferior ou superior de um bloco, dependendo de como foram colocados. Quando abertos, podem ser escaladas como escadas.
-Openable by players and redstone power=Aberto por jogadores ou sinal de redstone
+Openable by players and redstone power=Aberto por jogadores e sinal de redstone
 Openable by redstone power=Aberto por sinal de redstone
