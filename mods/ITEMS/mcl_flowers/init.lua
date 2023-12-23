@@ -192,7 +192,7 @@ if has_mcl_flowerpots then
 	})
 end
 
-local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, grass_color, fortune_drop)
+local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, grass_color, fortune_drop, mesh)
 	if not inv_img then
 		inv_img = top_img
 	end
@@ -236,13 +236,26 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		drop_top = drop
 		drop_bottom = drop
 	end
+	-- Sunflower mesh and tiles
+	local top_drawtype, bottom_drawtype
+	local bottom_tiles = {}
+	if not mesh then
+		top_drawtype = "plantlike"
+		bottom_drawtype = "plantlike"
+		table.insert(bottom_tiles, bottom_img)
+	else
+		top_drawtype = "airlike"
+		bottom_drawtype = "mesh"
+		bottom_tiles = bottom_img
+	end
+	-- Bottom
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_create_entry = create_entry,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = plant_usage_help,
-		drawtype = "plantlike",
-		tiles = { bottom_img },
+		drawtype = bottom_drawtype,
+		tiles = bottom_tiles,
 		inventory_image = inv_img,
 		wield_image = inv_img,
 		sunlight_propagates = true,
@@ -334,6 +347,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		end,
 		groups = bottom_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		mesh = mesh
 	})
 
 	local top_groups = table.copy(bottom_groups)
@@ -345,7 +359,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	minetest.register_node("mcl_flowers:"..name.."_top", {
 		description = desc.." " .. S("(Top Part)"),
 		_doc_items_create_entry = false,
-		drawtype = "plantlike",
+		drawtype = top_drawtype,
 		tiles = { top_img },
 		sunlight_propagates = true,
 		paramtype = "light",
@@ -382,9 +396,7 @@ end
 add_large_plant("peony", S("Peony"), S("A peony is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 6/16)
 add_large_plant("rose_bush", S("Rose Bush"), S("A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production."), "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 5/16, 1/16)
 add_large_plant("lilac", S("Lilac"), S("A lilac is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 5/16, 6/16)
-
--- TODO: Make the sunflower face East. Requires a mesh for the top node.
-add_large_plant("sunflower", S("Sunflower"), S("A sunflower is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 6/16, 6/16)
+add_large_plant("sunflower", S("Sunflower"), S("A sunflower is a large plant which occupies two blocks. It is mainly used in dye production."), {"mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_back.png"}, nil, "mcl_flowers_double_plant_sunflower_front.png", 6/16, 6/16, "mcl_flowers:sunflower", nil, true, nil, nil, "mcl_flowers_sunflower.obj")
 
 local longdesc_grass = S("Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.")
 local longdesc_fern = S("Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.")
