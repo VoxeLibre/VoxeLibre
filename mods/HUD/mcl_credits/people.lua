@@ -129,6 +129,8 @@ return {
 		"mim",
 		"Dark",
 		"Bakawun",
+		"JoseDouglas26",
+		"Zasco",
 	}},
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",
@@ -224,6 +226,7 @@ return {
 		"Isaac Dennis",
 		"ADLON",
 		"Sab Pyrope",
+		"JoseDouglas26",
 	}},
 	{S("Funders"), 0xF7FF00, {
 		"40W",
