@@ -327,7 +327,7 @@ function mcl_util.hopper_push(pos, dst_pos)
 
 	local dst_list = 'main'
 	local dst_inv, stack_id
-	
+
 	if dst_def._mcl_hoppers_on_try_push then
 		dst_inv, dst_list, stack_id = dst_def._mcl_hoppers_on_try_push(dst_pos, pos, hop_inv, hop_list)
 	else
@@ -365,7 +365,7 @@ function mcl_util.hopper_pull(pos, src_pos)
 
 	local src_list = 'main'
 	local src_inv, stack_id
-	
+
 	if src_def._mcl_hoppers_on_try_pull then
 		src_inv, src_list, stack_id = src_def._mcl_hoppers_on_try_pull(src_pos, pos, hop_inv, hop_list)
 	else
@@ -1095,4 +1095,13 @@ function mcl_util.move_player_list(player, src_listname)
 	mcl_util.move_list(player:get_inventory(), src_listname, player:get_inventory(), "main",
 		vector.offset(player:get_pos(), 0, 1.2, 0),
 		player:get_look_dir(), false)
+end
+
+function mcl_util.is_it_christmas()
+	local date = os.date("*t")
+	if date.month == 12 and date.day >= 24 or date.month == 1 and date.day <= 7 then
+		return true
+	else
+		return false
+	end
 end
