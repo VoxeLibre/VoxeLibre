@@ -127,6 +127,8 @@
 * mim
 * Dark
 * Bakawun
+* JoseDouglas26
+* Zasco
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -222,6 +224,7 @@
 * Isaac Dennis
 * ADLON
 * Sab Pyrope
+* JoseDouglas26
 
 ## Funders
 * 40W
