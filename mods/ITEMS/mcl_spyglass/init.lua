@@ -38,6 +38,12 @@ local function add_scope(player)
 			text = "mcl_spyglass_scope.png",
 		})
 		player:hud_set_flags({wielditem = false})
+		if mcl_util.is_it_christmas() then
+			local time = minetest.get_timeofday()
+			if (time < 0.01 or time > 0.99) and player:get_look_vertical() < -1.335 then
+				player:set_moon({texture = "mcl_moon_special.png"})
+			end
+		end
 	end
 end
 
