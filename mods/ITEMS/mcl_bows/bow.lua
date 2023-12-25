@@ -239,7 +239,7 @@ end
 
 
 controls.register_on_release(function(player, key, time)
-	if key~="RMB" then return end
+	if key~="RMB" and key~="zoom" then return end
 	--local inv = minetest.get_inventory({type="player", name=player:get_player_name()})
 	local wielditem = player:get_wielded_item()
 	if (wielditem:get_name()=="mcl_bows:bow_0" or wielditem:get_name()=="mcl_bows:bow_1" or wielditem:get_name()=="mcl_bows:bow_2" or
@@ -307,28 +307,30 @@ end)
 controls.register_on_hold(function(player, key, time)
 	local name = player:get_player_name()
 	local creative = minetest.is_creative_enabled(name)
-	if key ~= "RMB" or not (creative or get_arrow(player)) then
+	if (key ~= "RMB" and key ~= "zoom") or not (creative or get_arrow(player)) then
 		return
 	end
 	--local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
-	if bow_load[name] == nil and (wielditem:get_name()=="mcl_bows:bow" or wielditem:get_name()=="mcl_bows:bow_enchanted") and wielditem:get_meta():get("active") and (creative or get_arrow(player)) then
-		local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
-		if enchanted then
-			wielditem:set_name("mcl_bows:bow_0_enchanted")
-		else
-			wielditem:set_name("mcl_bows:bow_0")
-		end
-		player:set_wielded_item(wielditem)
-		if minetest.get_modpath("playerphysics") then
-			-- Slow player down when using bow
-			playerphysics.add_physics_factor(player, "speed", "mcl_bows:use_bow", PLAYER_USE_BOW_SPEED)
-		end
-		bow_load[name] = minetest.get_us_time()
-		bow_index[name] = player:get_wield_index()
+	if bow_load[name] == nil
+		and (wielditem:get_name()=="mcl_bows:bow" or wielditem:get_name()=="mcl_bows:bow_enchanted")
+		and (wielditem:get_meta():get("active") or key == "zoom") and (creative or get_arrow(player)) then
+			local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
+			if enchanted then
+				wielditem:set_name("mcl_bows:bow_0_enchanted")
+			else
+				wielditem:set_name("mcl_bows:bow_0")
+			end
+			player:set_wielded_item(wielditem)
+			if minetest.get_modpath("playerphysics") then
+				-- Slow player down when using bow
+				playerphysics.add_physics_factor(player, "speed", "mcl_bows:use_bow", PLAYER_USE_BOW_SPEED)
+			end
+			bow_load[name] = minetest.get_us_time()
+			bow_index[name] = player:get_wield_index()
 
-		-- begin Bow Zoom.
-		mcl_fovapi.apply_modifier(player, "bowcomplete")
+			-- begin Bow Zoom.
+			mcl_fovapi.apply_modifier(player, "bowcomplete")
 	else
 		if player:get_wield_index() == bow_index[name] then
 			if type(bow_load[name]) == "number" then

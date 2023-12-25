@@ -58,17 +58,21 @@ local function remove_scope(player)
 end
 
 controls.register_on_press(function(player, key)
-	if key ~= "RMB" then return end
-	add_scope(player)
+	if key ~= "RMB" and key ~= "zoom" then return end
+	if spyglass_scope[player] == nil then
+		add_scope(player)
+	end
 end)
 
 controls.register_on_release(function(player, key, time)
-	if key ~= "RMB" then return end
+	if key ~= "RMB" and key ~= "zoom" then return end
+	local ctrl = player:get_player_control()
+	if key == "RMB" and ctrl.zoom or key == "zoom" and ctrl.place then return end
 	remove_scope(player)
 end)
 
 controls.register_on_hold(function(player, key, time)
-	if key ~= "RMB" then return end
+	if key ~= "RMB" and key ~= "zoom" then return end
 	local wielditem = player:get_wielded_item()
 	if wielditem:get_name() == "mcl_spyglass:spyglass" then
 		mcl_fovapi.apply_modifier(player, "spyglass") -- apply the FOV effect.

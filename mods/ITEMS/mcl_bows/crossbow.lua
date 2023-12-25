@@ -263,7 +263,7 @@ end
 
 
 controls.register_on_release(function(player, key, time)
-	if key~="RMB" then return end
+	if key~="RMB" and key~="zoom" then return end
 	--local inv = minetest.get_inventory({type="player", name=player:get_player_name()})
 	local wielditem = player:get_wielded_item()
 	if wielditem:get_name()=="mcl_bows:crossbow_2" and get_arrow(player) or wielditem:get_name()=="mcl_bows:crossbow_2" and minetest.is_creative_enabled(player:get_player_name()) or wielditem:get_name()=="mcl_bows:crossbow_2_enchanted" and get_arrow(player) or wielditem:get_name()=="mcl_bows:crossbow_2_enchanted" and minetest.is_creative_enabled(player:get_player_name()) then
@@ -359,7 +359,7 @@ end)
 controls.register_on_hold(function(player, key, time)
 	local name = player:get_player_name()
 	local creative = minetest.is_creative_enabled(name)
-	if key ~= "RMB" then
+	if key ~= "RMB" and key ~= "zoom" then
 		return
 	end
 	--local inv = minetest.get_inventory({type="player", name=name})
@@ -373,22 +373,24 @@ controls.register_on_hold(function(player, key, time)
 		BOW_CHARGE_TIME_FULL = _BOW_CHARGE_TIME_FULL
 	end
 
-	if bow_load[name] == nil and (wielditem:get_name()=="mcl_bows:crossbow" or wielditem:get_name()=="mcl_bows:crossbow_enchanted") and wielditem:get_meta():get("active") and (creative or get_arrow(player)) then
-		local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
-		if enchanted then
-			wielditem:set_name("mcl_bows:crossbow_0_enchanted")
-			play_load_sound(0, player:get_pos())
-		else
-			wielditem:set_name("mcl_bows:crossbow_0")
-			play_load_sound(0, player:get_pos())
-		end
-		player:set_wielded_item(wielditem)
-		if minetest.get_modpath("playerphysics") then
-			-- Slow player down when using bow
-			playerphysics.add_physics_factor(player, "speed", "mcl_bows:use_crossbow", PLAYER_USE_CROSSBOW_SPEED)
-		end
-		bow_load[name] = minetest.get_us_time()
-		bow_index[name] = player:get_wield_index()
+	if bow_load[name] == nil
+		and (wielditem:get_name()=="mcl_bows:crossbow" or wielditem:get_name()=="mcl_bows:crossbow_enchanted")
+		and (wielditem:get_meta():get("active") or key=="zoom") and (creative or get_arrow(player)) then
+			local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
+			if enchanted then
+				wielditem:set_name("mcl_bows:crossbow_0_enchanted")
+				play_load_sound(0, player:get_pos())
+			else
+				wielditem:set_name("mcl_bows:crossbow_0")
+				play_load_sound(0, player:get_pos())
+			end
+			player:set_wielded_item(wielditem)
+			if minetest.get_modpath("playerphysics") then
+				-- Slow player down when using bow
+				playerphysics.add_physics_factor(player, "speed", "mcl_bows:use_crossbow", PLAYER_USE_CROSSBOW_SPEED)
+			end
+			bow_load[name] = minetest.get_us_time()
+			bow_index[name] = player:get_wield_index()
 	else
 		if player:get_wield_index() == bow_index[name] then
 			if type(bow_load[name]) == "number" then
