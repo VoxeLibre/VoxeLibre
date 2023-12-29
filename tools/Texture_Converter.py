@@ -302,13 +302,13 @@ def convert_textures():
 	# TODO: Curves
 	rails = [
 		# (Straigt src, curved src, t-junction dest, crossing dest)
-		("rail_normal.png", "rail_normal_turned.png", "default_rail_t_junction.png", "default_rail_crossing.png"),
-		("rail_golden.png", "rail_normal_turned.png", "carts_rail_t_junction_pwr.png", "carts_rail_crossing_pwr.png"),
-		("rail_golden_powered.png", "rail_normal_turned.png", "mcl_minecarts_rail_golden_t_junction_powered.png", "mcl_minecarts_rail_golden_crossing_powered.png"),
-		("rail_detector.png", "rail_normal_turned.png", "mcl_minecarts_rail_detector_t_junction.png", "mcl_minecarts_rail_detector_crossing.png"),
-		("rail_detector_powered.png", "rail_normal_turned.png", "mcl_minecarts_rail_detector_t_junction_powered.png", "mcl_minecarts_rail_detector_crossing_powered.png"),
-		("rail_activator.png", "rail_normal_turned.png", "mcl_minecarts_rail_activator_t_junction.png", "mcl_minecarts_rail_activator_crossing.png"),
-		("rail_activator_powered.png", "rail_normal_turned.png", "mcl_minecarts_rail_activator_d_t_junction.png", "mcl_minecarts_rail_activator_powered_crossing.png"),
+		("rail.png", "rail_corner.png", "default_rail_t_junction.png", "default_rail_crossing.png"),
+		("powered_rail.png", "rail_corner.png", "carts_rail_t_junction_pwr.png", "carts_rail_crossing_pwr.png"),
+		("powered_rail_on.png", "rail_corner.png", "mcl_minecarts_rail_golden_t_junction_powered.png", "mcl_minecarts_rail_golden_crossing_powered.png"),
+		("detector_rail.png", "rail_corner.png", "mcl_minecarts_rail_detector_t_junction.png", "mcl_minecarts_rail_detector_crossing.png"),
+		("detector_rail_on.png", "rail_corner.png", "mcl_minecarts_rail_detector_t_junction_powered.png", "mcl_minecarts_rail_detector_crossing_powered.png"),
+		("activator_rail.png", "rail_corner.png", "mcl_minecarts_rail_activator_t_junction.png", "mcl_minecarts_rail_activator_crossing.png"),
+		("activator_rail_on.png", "rail_corner.png", "mcl_minecarts_rail_activator_d_t_junction.png", "mcl_minecarts_rail_activator_powered_crossing.png"),
 	]
 	for r in rails:
 		os.system("composite -compose Dst_Over "+tex_dir+"/block/"+r[0]+" "+tex_dir+"/block/"+r[1]+" "+target_dir("/mods/ENTITIES/mcl_minecarts/textures")+"/"+r[2])
