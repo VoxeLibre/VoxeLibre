@@ -311,9 +311,9 @@ def convert_textures():
 		("rail_activator_powered.png", "rail_normal_turned.png", "mcl_minecarts_rail_activator_d_t_junction.png", "mcl_minecarts_rail_activator_powered_crossing.png"),
 	]
 	for r in rails:
-		os.system("composite -compose Dst_Over "+tex_dir+"/blocks/"+r[0]+" "+tex_dir+"/blocks/"+r[1]+" "+target_dir("/mods/ENTITIES/mcl_minecarts/textures")+"/"+r[2])
-		os.system("convert "+tex_dir+"/blocks/"+r[0]+" -rotate 90 "+tempfile1.name)
-		os.system("composite -compose Dst_Over "+tempfile1.name+" "+tex_dir+"/blocks/"+r[0]+" "+target_dir("/mods/ENTITIES/mcl_minecarts/textures")+"/"+r[3])
+		os.system("composite -compose Dst_Over "+tex_dir+"/block/"+r[0]+" "+tex_dir+"/block/"+r[1]+" "+target_dir("/mods/ENTITIES/mcl_minecarts/textures")+"/"+r[2])
+		os.system("convert "+tex_dir+"/block/"+r[0]+" -rotate 90 "+tempfile1.name)
+		os.system("composite -compose Dst_Over "+tempfile1.name+" "+tex_dir+"/block/"+r[0]+" "+target_dir("/mods/ENTITIES/mcl_minecarts/textures")+"/"+r[3])
 
 	# Convert banner overlays
 	overlays = [
