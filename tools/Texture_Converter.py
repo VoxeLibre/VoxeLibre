@@ -373,26 +373,26 @@ def convert_textures():
 
 
 		# Leaves
-		colorize_alpha(FOLIAG, tex_dir+"/block/oak_leaves.png", "116+143", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_leaves.png")
-		colorize_alpha(FOLIAG, tex_dir+"/block/big_oak_leaves.png", "158+177", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_big_oak.png")
-		colorize_alpha(FOLIAG, tex_dir+"/block/acacia_leaves.png", "40+255", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_acacia_leaves.png")
-		colorize_alpha(FOLIAG, tex_dir+"/block/spruce_leaves.png", "226+230", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_spruce.png")
-		colorize_alpha(FOLIAG, tex_dir+"/block/birch_leaves.png", "141+186", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_birch.png")
-		colorize_alpha(FOLIAG, tex_dir+"/block/jungle_leaves.png", "16+39", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_jungleleaves.png")
+		colorize_alpha(FOLIAG, tex_dir+"/block/oak_leaves.png", "116+143", str(PXSIZE), target_dir("/textures")+"/default_leaves.png")
+		colorize_alpha(FOLIAG, tex_dir+"/block/dark_oak_leaves.png", "158+177", str(PXSIZE), target_dir("/textures")+"/mcl_core_leaves_big_oak.png")
+		colorize_alpha(FOLIAG, tex_dir+"/block/acacia_leaves.png", "40+255", str(PXSIZE), target_dir("/textures")+"/default_acacia_leaves.png")
+		colorize_alpha(FOLIAG, tex_dir+"/block/spruce_leaves.png", "226+230", str(PXSIZE), target_dir("/textures")+"/mcl_core_leaves_spruce.png")
+		colorize_alpha(FOLIAG, tex_dir+"/block/birch_leaves.png", "141+186", str(PXSIZE), target_dir("/textures")+"/mcl_core_leaves_birch.png")
+		colorize_alpha(FOLIAG, tex_dir+"/block/jungle_leaves.png", "16+39", str(PXSIZE), target_dir("/textures")+"/default_jungleleaves.png")
 
 		# Waterlily
-		colorize_alpha(FOLIAG, tex_dir+"/block/lily_pad.png", "16+39", str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/flowers_waterlily.png")
+		colorize_alpha(FOLIAG, tex_dir+"/block/lily_pad.png", "16+39", str(PXSIZE), target_dir("/textures")+"/flowers_waterlily.png")
 
 		# Vines
-		colorize_alpha(FOLIAG, tex_dir+"/block/vine.png", "16+39", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_vine.png")
+		colorize_alpha(FOLIAG, tex_dir+"/block/vine.png", "16+39", str(PXSIZE), target_dir("/textures")+"/mcl_core_vine.png")
 
 		# Tall grass, fern (inventory images)
 		pcol = "50+173" # Plains grass color
 		# TODO: TALLGRASS.png does no longer exist
-		colorize_alpha(GRASS, tex_dir+"/block/tallgrass.png", pcol, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_tallgrass_inv.png")
-		colorize_alpha(GRASS, tex_dir+"/block/fern.png", pcol, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_fern_inv.png")
-		colorize_alpha(GRASS, tex_dir+"/block/large_fern_top.png", pcol, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_fern_inv.png")
-		colorize_alpha(GRASS, tex_dir+"/block/tall_grass_top.png", pcol, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_grass_inv.png")
+		colorize_alpha(GRASS, tex_dir+"/block/tallgrass.png", pcol, str(PXSIZE), target_dir("/textures")+"/mcl_flowers_tallgrass_inv.png")
+		colorize_alpha(GRASS, tex_dir+"/block/fern.png", pcol, str(PXSIZE), target_dir("/textures")+"/mcl_flowers_fern_inv.png")
+		colorize_alpha(GRASS, tex_dir+"/block/large_fern_top.png", pcol, str(PXSIZE), target_dir("/textures")+"/mcl_flowers_double_plant_fern_inv.png")
+		colorize_alpha(GRASS, tex_dir+"/block/tall_grass_top.png", pcol, str(PXSIZE), target_dir("/textures")+"/mcl_flowers_double_plant_grass_inv.png")
 
 		# Convert grass palette: https://minecraft.fandom.com/wiki/Tint
 		grass_colors = [
@@ -429,7 +429,7 @@ def convert_textures():
 			["25+25"], # 29 - Mushroom Fields and Mushroom Field Shore (MushroomIsland, MushroomIslandShore, MushroomIsland_ocean)
 		]
 
-		grass_palette_file = target_dir("/mods/ITEMS/mcl_core/textures") + "/mcl_core_palette_grass.png"
+		grass_palette_file = target_dir("/textures") + "/mcl_core_palette_grass.png"
 		os.system("convert -size 16x16 canvas:transparent " + grass_palette_file)
 
 		for i, color in enumerate(grass_colors):
