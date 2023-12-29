@@ -242,7 +242,7 @@ minetest.register_globalstep(function(dtime)
 					player:get_meta():set_int("mcl_damage:damage_animation", 0)
 				end)
 			elseif mcl_playerplus.elytra[player] and mcl_playerplus.elytra[player].active then
-				player_set_animation(player, "stand")
+
 			elseif walking and velocity.x > 0.35
 				or walking and velocity.x < -0.35
 				or walking and velocity.z > 0.35
