@@ -67,7 +67,7 @@ for opt, arg in opts:
 This will convert textures from Minecraft resource packs to
 a Minetest texture pack.
 
-Supported Minecraft version: 1.19 (Java Edition)
+Supported Minecraft version: 1.20 (Java Edition)
 
 Syntax:""")
 		print(syntax_help)
