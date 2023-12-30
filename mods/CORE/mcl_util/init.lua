@@ -1075,7 +1075,7 @@ function mcl_util.move_list(src_inv, src_listname, out_inv, out_listname, pos, d
 					v.y = v.y * 4 + 2
 					v.z = v.z * 4
 					obj:set_velocity(v)
-					minetest.log("error", vector.to_string(v))
+					mcl_util.mcl_log("item velocity calculated "..vector.to_string(v), "[mcl_util]")
 				end
 				if not insta_collect then
 					obj:get_luaentity()._insta_collect = false
