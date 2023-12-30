@@ -37,3 +37,14 @@ The setting disabling deepslate generation now works properly thanks to Zasco.
 ### Crash fixes
 * Villager trading UI crash by JoseDouglas26
 * Piston related crash by cora
+
+## 0.86.1 hotfix
+* Implemented a fix to a graphical glitch regression introduced in release 0.86, which had been fixed but wasn't loaded into the tag.
+* Added a workaround to enable mobile players to use bows, crossbows and spyglasses by using zoom key (they can't *hold* `place`).
+(both fixes by Herowl)
+
+## 0.86.2 hotfix
+* Implemented refactorization of player-related combat code by Eliy21. This fixes a critical bug which can cause players to become invulnerable indefinitely.
+* Optimized some textures for size.
+* Fixed XP orbs breaking randomly (by Herowl).
+* Fixed a cryptic error message (by Herowl).
