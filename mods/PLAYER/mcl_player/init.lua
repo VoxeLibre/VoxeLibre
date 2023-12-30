@@ -228,6 +228,11 @@ minetest.register_globalstep(function(dtime)
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "die")
+			elseif player:get_meta():get_int("mcl_damage:damage_animation") > 0 then
+				player_set_animation(player, "walk", animation_speed_mod)
+				minetest.after(0.5, function()
+					player:get_meta():set_int("mcl_damage:damage_animation", 0)
+				end)
 			elseif mcl_playerplus.elytra[player] and mcl_playerplus.elytra[player].active then
 				player_set_animation(player, "stand")
 			elseif walking and velocity.x > 0.35

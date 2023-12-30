@@ -522,7 +522,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	if is_player then
 		-- is mob out of reach?
-		if  vector.distance(mob_pos, player_pos) > 3 then
+		if vector.distance(mob_pos, player_pos) > 3 then
 			return
 		end
 		-- is mob protected?
