@@ -22,6 +22,13 @@ function table.update_nil(t, ...)
 	return t
 end
 
+-- Copies the table then updates
+function table.merge(t, ...)
+	local t2 = table.copy(t)
+	return table.update(t2, ...)
+end
+
+
 ---Works the same as `pairs`, but order returned by keys
 ---
 ---Taken from https://www.lua.org/pil/19.3.html
@@ -629,6 +636,21 @@ function mcl_util.replace_mob(obj, mob)
 	obj:set_yaw(rot)
 	return obj
 end
+
+
+function mcl_util.traverse_tower(pos, dir, callback)
+	local node = minetest.get_node(pos)
+	local i = 0
+	while minetest.get_node(pos).name == node.name do
+		if callback and callback(pos, dir, node) then
+			return pos,i,true
+		end
+		i = i + 1
+		pos = vector.offset(pos, 0, dir, 0)
+	end
+	return vector.offset(pos, 0, -dir, 0), i
+end
+
 
 function mcl_util.get_pointed_thing(player, liquid)
 	local pos = vector.offset(player:get_pos(), 0, player:get_properties().eye_height, 0)
