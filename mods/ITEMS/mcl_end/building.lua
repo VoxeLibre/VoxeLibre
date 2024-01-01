@@ -166,22 +166,18 @@ for num, row in ipairs(colored_end_rods) do
 	def.description = desc
 	def._doc_items_longdesc = nil
 	def._doc_items_create_entry = false
+	local side_tex
 	if name == "pink" then
 		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
+		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
 	elseif num > 4 then
 		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:300^[opacity:120)"
+		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:300^[opacity:120)"
 	else
 		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:-100^[opacity:170)"
+		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:-100^[opacity:170)"
 	end
-	for i=3, 6 do
-		if name == "pink" then
-			def.tiles[i] = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
-		elseif num > 4 then
-			def.tiles[i] = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:300^[opacity:120)"
-		else
-			def.tiles[i] = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:-100^[opacity:170)"
-		end
-	end
+	for i=3, 6 do def.tiles[i] = side_tex end
 	minetest.register_node(end_rod_name.."_"..name, def)
 	minetest.register_craft({
 		type = "shapeless",
