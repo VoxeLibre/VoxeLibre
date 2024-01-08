@@ -663,6 +663,22 @@ mcl_dye.register_on_bone_meal_apply(function(pt,user)
 	end
 end)
 
+minetest.register_abm({
+	label = "Turn Crimson Nylium and Warped Nylium below solid block into Netherrack",
+	nodenames = {"mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium"},
+	neighbors = {"group:solid"},
+	interval = 8,
+	chance = 50,
+	action = function(pos, node)
+		local above = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local name = minetest.get_node(above).name
+		local nodedef = minetest.registered_nodes[name]
+		if name ~= "ignore" and nodedef and (nodedef.groups and nodedef.groups.solid) then
+			minetest.set_node(pos, {name = "mcl_nether:netherrack"})
+		end
+	end
+})
+
 mcl_doors:register_door("mcl_crimson:crimson_door", {
 	description = S("Crimson Door"),
 	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
