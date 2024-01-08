@@ -23,6 +23,7 @@ http://minetest.net/forum/viewtopic.php?id=2787
 License:
 Sourcecode: CC-BY-SA 4 (see below)
 Graphics: CC-BY-SA 4 (see below)
+Sweet Berry textures by SmokeyDope (CC-BY-SA 4)
 
 See also:
 http://minetest.net/
