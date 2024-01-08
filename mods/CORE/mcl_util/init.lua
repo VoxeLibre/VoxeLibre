@@ -160,7 +160,7 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 		return
 	end
 	local undef = minetest.registered_nodes[unode.name]
-	if undef and undef.on_rightclick then
+	if undef and undef.on_rightclick and not invert_wall then
 		undef.on_rightclick(pointed_thing.under, unode, placer,
 			itemstack, pointed_thing)
 		return
@@ -198,25 +198,11 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 
 	local p2
 	if is_y then
-		if invert_wall then
-			if fdir == 3 or fdir == 1 then
-				p2 = 12
-			else
-				p2 = 6
-			end
-		end
+		p2 = 0
 	elseif is_x then
-		if invert_wall then
-			p2 = 0
-		else
-			p2 = 12
-		end
+		p2 = 12
 	elseif is_z then
-		if invert_wall then
-			p2 = 0
-		else
-			p2 = 6
-		end
+		p2 = 6
 	end
 	minetest.set_node(pos, {name = wield_name, param2 = p2})
 
