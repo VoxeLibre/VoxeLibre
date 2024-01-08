@@ -230,7 +230,10 @@ minetest.register_globalstep(function(dtime)
 				player_set_animation(player, "die")
 			elseif player:get_meta():get_int("mcl_damage:damage_animation") > 0 then
 				player_set_animation(player, "walk", animation_speed_mod)
+				local name = player:get_player_name()
 				minetest.after(0.5, function()
+					local player = minetest.get_player_by_name(name)
+					if not player then return end
 					player:get_meta():set_int("mcl_damage:damage_animation", 0)
 				end)
 			elseif mcl_playerplus.elytra[player] and mcl_playerplus.elytra[player].active then
