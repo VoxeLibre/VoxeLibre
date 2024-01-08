@@ -502,7 +502,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/block,glowstone.png,/textures,mcl_nether_glowstone.png,,,,,,,
 /assets/minecraft/textures/block,magma.png,/textures,mcl_nether_magma.png,,,,,,,
 /assets/minecraft/textures/block,nether_bricks.png,/textures,mcl_nether_nether_brick.png,,,,,,,
-/assets/minecraft/textures/item,nether_bricks.png,/textures,mcl_nether_netherbrick.png,,,,,,,
+/assets/minecraft/textures/item,nether_brick.png,/textures,mcl_nether_netherbrick.png,,,,,,,
 /assets/minecraft/textures/block,netherrack.png,/textures,mcl_nether_netherrack.png,,,,,,,
 /assets/minecraft/textures/block,nether_wart_block.png,/textures,mcl_nether_nether_wart_block.png,,,,,,,
 /assets/minecraft/textures/item,nether_wart.png,/textures,mcl_nether_nether_wart.png,,,,,,,
