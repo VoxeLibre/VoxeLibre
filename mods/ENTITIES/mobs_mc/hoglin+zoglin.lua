@@ -98,7 +98,7 @@ sounds = {
 		damage = "extra_mobs_hoglin_hurt",
 		death = "extra_mobs_hoglin_hurt",
 		distance = 16,
-        },
+        }
 zoglin.do_custom = function()
 	return
 end
