@@ -8,32 +8,18 @@ __author__ = "Wuzzy"
 __license__ = "MIT License"
 __status__ = "Development"
 
-import shutil, csv, os, tempfile, sys, getopt, glob
+import shutil, csv, os, tempfile, sys, argparse, glob
 from PIL import Image
 from collections import Counter
+
+# Constants
+SUPPORTED_MINECRAFT_VERSION="1.20"
 
 # Helper vars
 home = os.environ["HOME"]
 mineclone2_path = home + "/.minetest/games/mineclone2"
 working_dir = os.getcwd()
 appname = "Texture_Converter.py"
-
-### SETTINGS ###
-output_dir = working_dir
-
-base_dir = None
-
-# If True, will only make console output but not convert anything.
-dry_run = False
-
-# If True, textures will be put into a texture pack directory structure.
-# If False, textures will be put into MineClone 2 directories.
-make_texture_pack = True
-
-# If True, prints all copying actions
-verbose = False
-
-PXSIZE = None
 
 def detect_pixel_size(directory):
     sizes = []
@@ -46,55 +32,32 @@ def detect_pixel_size(directory):
     print(f"Autodetected pixel size: {most_common_size[0]}x{most_common_size[1]}")
     return most_common_size[0]
 
-syntax_help = appname+""" -i <input dir> [-o <output dir>] [-d] [-v|-q] [-h]
-Mandatory argument:
--i <input directory>
-	Directory of Minecraft resource pack to convert
+# Argument parsing
+description_text = f"""This is the official MineClone 2 Texture Converter.
+                   This will convert textures from Minecraft resource packs to
+                   a Minetest texture pack.
 
-Optional arguments:
--p <texture size>
-	Specify the size (in pixels) of the original textures (default: 16)
--o <output directory>
-	Directory in which to put the resulting Minetest texture pack
-	(default: working directory)
--d
-	Just pretend to convert textures and just print output, but do not actually
-	change any files.
--v
-	Print out all copying actions
--h
-	Show this help and exit"""
-try:
-	opts, args = getopt.getopt(sys.argv[1:],"hi:o:p:dv")
-except getopt.GetoptError:
-	print(
-"""ERROR! The options you gave me make no sense!
+                   Supported Minecraft version: {SUPPORTED_MINECRAFT_VERSION} (Java Edition)
+				   """
+parser = argparse.ArgumentParser(description=description_text)
+parser.add_argument("-i", "--input", required=True, help="Directory of Minecraft resource pack to convert")
+parser.add_argument("-o", "--output", default=working_dir, help="Directory in which to put the resulting Minetest texture pack")
+parser.add_argument("-p", "--pixelsize", type=int, help="Size (in pixels) of the original textures")
+parser.add_argument("-d", "--dry_run", action="store_true", help="Pretend to convert textures without changing any files")
+parser.add_argument("-v", "--verbose", action="store_true", help="Print out all copying actions")
+args = parser.parse_args()
 
-Here's the syntax reference:""")
-	print(syntax_help)
-	sys.exit(2)
-for opt, arg in opts:
-	if opt == "-h":
-		print(
-"""This is the official MineClone 2 Texture Converter.
-This will convert textures from Minecraft resource packs to
-a Minetest texture pack.
-
-Supported Minecraft version: 1.20 (Java Edition)
-
-Syntax:""")
-		print(syntax_help)
-		sys.exit()
-	elif opt == "-d":
-		dry_run = True
-	elif opt == "-v":
-		verbose = True
-	elif opt == "-i":
-		base_dir = arg
-	elif opt == "-o":
-		output_dir = arg
-	elif opt == "-p":
-		PXSIZE = int(arg)
+### SETTINGS ###
+base_dir = args.input
+output_dir = args.output
+PXSIZE = args.pixelsize
+# If True, will only make console output but not convert anything.
+dry_run = args.dry_run
+# If True, prints all copying actions
+verbose = args.verbose
+# If True, textures will be put into a texture pack directory structure.
+# If False, textures will be put into MineClone 2 directories.
+make_texture_pack = True  # Adjust as needed
 
 if PXSIZE is None:
     PXSIZE = detect_pixel_size(base_dir)
