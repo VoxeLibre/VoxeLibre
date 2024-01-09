@@ -139,18 +139,18 @@ def convert_textures():
 
 			src_dir = row[0]
 			src_filename = row[1]
-			dst_dir = row[2]
-			dst_filename = row[3]
+			dst_dir = './textures'
+			dst_filename = row[2]
 			if row[4] != "":
-				xs = int(row[4])
-				ys = int(row[5])
-				xl = int(row[6])
-				yl = int(row[7])
-				xt = int(row[8])
-				yt = int(row[9])
+				xs = int(row[3])
+				ys = int(row[4])
+				xl = int(row[5])
+				yl = int(row[6])
+				xt = int(row[7])
+				yt = int(row[8])
 			else:
 				xs = None
-			blacklisted = row[10]
+			blacklisted = row[9]
 
 			if blacklisted == "y":
 				# Skip blacklisted files
