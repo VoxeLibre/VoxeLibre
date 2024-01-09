@@ -8,7 +8,9 @@ __author__ = "Wuzzy"
 __license__ = "MIT License"
 __status__ = "Development"
 
-import shutil, csv, os, tempfile, sys, getopt
+import shutil, csv, os, tempfile, sys, getopt, glob
+from PIL import Image
+from collections import Counter
 
 # Helper vars
 home = os.environ["HOME"]
@@ -31,7 +33,18 @@ make_texture_pack = True
 # If True, prints all copying actions
 verbose = False
 
-PXSIZE = 16
+PXSIZE = None
+
+def detect_pixel_size(directory):
+    sizes = []
+    for filename in glob.glob(directory + '/**/*.png', recursive=True):
+        with Image.open(filename) as img:
+            sizes.append(img.size)
+    if not sizes:
+        return 16  # Default to 16x16 if no PNG files are found
+    most_common_size = Counter(sizes).most_common(1)[0][0]
+    print(f"Autodetected pixel size: {most_common_size[0]}x{most_common_size[1]}")
+    return most_common_size[0]
 
 syntax_help = appname+""" -i <input dir> [-o <output dir>] [-d] [-v|-q] [-h]
 Mandatory argument:
@@ -83,6 +96,9 @@ Syntax:""")
 	elif opt == "-p":
 		PXSIZE = int(arg)
 
+if PXSIZE is None:
+    PXSIZE = detect_pixel_size(base_dir)
+
 if base_dir == None:
 	print(
 """ERROR: You didn't tell me the path to the Minecraft resource pack.
@@ -110,6 +126,7 @@ if len(output_dir_name) == 0:
 		output_dir_name = "New_MineClone_2_Texture_Pack"
 
 # FUNCTION DEFINITIONS
+
 def colorize(colormap, source, colormap_pixel, texture_size, destination):
 	os.system("convert "+colormap+" -crop 1x1+"+colormap_pixel+" -depth 8 -resize "+texture_size+"x"+texture_size+" "+tempfile1.name)
 	os.system("composite -compose Multiply "+tempfile1.name+" "+source+" "+destination)
