@@ -112,6 +112,7 @@ end
 
 function mcl_shields.is_blocking(obj)
 	if not obj:is_player() then return end
+        if mcl_shields.players[obj] then
 	local blocking = mcl_shields.players[obj].blocking
 	if blocking <= 0 then
 		return
@@ -122,6 +123,7 @@ function mcl_shields.is_blocking(obj)
 		shieldstack = obj:get_inventory():get_stack("offhand", 1)
 	end
 	return blocking, shieldstack
+end
 end
 
 mcl_damage.register_modifier(function(obj, damage, reason)
