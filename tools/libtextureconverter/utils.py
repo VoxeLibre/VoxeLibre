@@ -1,4 +1,5 @@
 import shutil, csv, os, tempfile, sys, argparse, glob, re, zipfile
+from .config import SUPPORTED_MINECRAFT_VERSION
 from PIL import Image
 from collections import Counter
 
@@ -27,8 +28,8 @@ def colorize_alpha(colormap, source, colormap_pixel, texture_size, destination, 
 	colorize(colormap, source, colormap_pixel, texture_size, destination, tempfile2_name)
 	os.system("composite -compose Dst_In "+source+" "+tempfile2_name+" -alpha Set "+destination)
 
-def find_highest_minecraft_version(home):
-    version_pattern = re.compile(r"1\.20\.\d+")
+def find_highest_minecraft_version(home, supported_version):
+    version_pattern = re.compile(re.escape(supported_version) + r"\.\d+")
     versions_dir = os.path.join(home, ".minecraft", "versions")
     highest_version = None
     if os.path.isdir(versions_dir):
@@ -39,7 +40,7 @@ def find_highest_minecraft_version(home):
     return highest_version
 
 def handle_default_minecraft_texture(home, output_dir):
-    version = find_highest_minecraft_version(home)
+    version = find_highest_minecraft_version(home, SUPPORTED_MINECRAFT_VERSION)
     if not version:
         print("No suitable Minecraft version found.")
         sys.exit(1)
