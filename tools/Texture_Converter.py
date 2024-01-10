@@ -36,7 +36,7 @@ def main():
             print(f"ERROR: No valid resource packs specified. Use '{appname} -h' for help.")
             sys.exit(2)
 
-        convert_resource_packs(resource_packs, args.output, args.pixelsize, args.dry_run, args.verbose, make_texture_pack)
+        convert_resource_packs(resource_packs, args.output, args.pixel_size, args.dry_run, args.verbose, make_texture_pack)
 
 if __name__ == "__main__":
     main()

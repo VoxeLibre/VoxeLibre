@@ -3,7 +3,10 @@ from tkinter import filedialog, messagebox, ttk, font
 from libtextureconverter.utils import handle_default_minecraft_texture, find_all_minecraft_resourcepacks
 from libtextureconverter.config import home
 from libtextureconverter.common import convert_resource_packs
-import time, os, threading
+import time
+import os
+import threading
+
 
 class TextureConverterGUI:
     def __init__(self, root):
@@ -17,10 +20,16 @@ class TextureConverterGUI:
         # Frame for instructions
         self.instruction_frame = tk.Frame(self.root)
         self.instruction_frame.pack(fill='x', padx=10, pady=10)
-        tk.Label(self.instruction_frame, text="Do you want to convert installed resource packs, or convert a single zip file?").pack(side='left', fill='x', expand=True)
+        tk.Label(
+            self.instruction_frame,
+            text="Do you want to convert installed resource packs, or convert a single zip file?").pack(
+            side='left',
+            fill='x',
+            expand=True)
 
         # Table-like structure using Treeview
-        self.tree = ttk.Treeview(self.root, columns=('Convert', 'Description'), show='headings')
+        self.tree = ttk.Treeview(self.root, columns=(
+            'Convert', 'Description'), show='headings')
         self.tree.heading('Convert', text='Convert')
         self.tree.heading('Description', text='Description')
 
@@ -34,15 +43,16 @@ class TextureConverterGUI:
         for entry in entries:
             self.tree.insert('', 'end', values=entry)
 
-
-
         # Button Frame
         self.button_frame = tk.Frame(self.root)
-        self.button_frame.pack(fill='x', padx=10, pady=10, side='bottom')  # Ensure the buttons are at the bottom
+        # Ensure the buttons are at the bottom
+        self.button_frame.pack(fill='x', padx=10, pady=10, side='bottom')
         # Create and pack the buttons separately
-        self.ok_button = tk.Button(self.button_frame, text="OK", command=self.confirm_selection)
+        self.ok_button = tk.Button(
+            self.button_frame, text="OK", command=self.confirm_selection)
         self.ok_button.pack(side=tk.RIGHT, padx=5)
-        self.cancel_button = tk.Button(self.button_frame, text="Cancel", command=self.cancel_conversion)
+        self.cancel_button = tk.Button(
+            self.button_frame, text="Cancel", command=self.cancel_conversion)
         self.cancel_button.pack(side=tk.RIGHT)
 
         self.tree.pack(fill='both', expand=True, padx=10, pady=10)
@@ -55,8 +65,10 @@ class TextureConverterGUI:
         # Measure and set the column widths
         convert_width = tk.font.Font().measure('Convert') + 20
         description_width = max(
-            tk.font.Font().measure(self.tree.set(item, 'Description')) for item in self.tree.get_children()
-        ) + 20
+            tk.font.Font().measure(
+                self.tree.set(
+                    item,
+                    'Description')) for item in self.tree.get_children()) + 20
 
         # Apply the column widths
         self.tree.column('Convert', width=convert_width, anchor='center')
@@ -71,7 +83,8 @@ class TextureConverterGUI:
         self.tree.config(height=num_items)
 
         # Calculate the total height needed
-        total_height = self.instruction_frame.winfo_height() + self.button_frame.winfo_height() + tree_height + 20
+        total_height = self.instruction_frame.winfo_height(
+        ) + self.button_frame.winfo_height() + tree_height + 20
 
         # Calculate the total width needed
         total_width = convert_width + description_width + 20
@@ -82,9 +95,9 @@ class TextureConverterGUI:
         # Prevent the window from resizing smaller than it should
         self.root.minsize(int(total_width), int(total_height))
 
-        # Update the idle tasks to recalculate sizes, may help to remove extra space
+        # Update the idle tasks to recalculate sizes, may help to remove extra
+        # space
         self.root.update_idletasks()
-
 
     def confirm_selection(self):
         self.cancel_button.config(state=tk.NORMAL)
@@ -97,15 +110,15 @@ class TextureConverterGUI:
         self.root.update_idletasks()  # Update the geometry of the widgets
         self.root.minsize(self.root.winfo_width(), self.root.winfo_height())
 
-
-
     def show_loading_screen(self, option):
         # Display a non-blocking loading message
-        self.loading_label = tk.Label(self.root, text="Converting textures, please wait...", fg="blue")
+        self.loading_label = tk.Label(
+            self.root, text="Converting textures, please wait...", fg="blue")
         self.loading_label.pack()
 
         # Start the conversion process in a separate thread
-        conversion_thread = threading.Thread(target=self.perform_conversion, args=(option,), daemon=True)
+        conversion_thread = threading.Thread(
+            target=self.perform_conversion, args=(option,), daemon=True)
         conversion_thread.start()
 
         # Disable the OK button while the conversion is in progress
@@ -119,12 +132,13 @@ class TextureConverterGUI:
         verbose = False
         output_dir = os.path.join(home, ".minetest", "textures")
         make_texture_pack = True
-        
+
         # Determine the resource packs to convert based on the option
         if option == 'all':
             resource_packs = find_all_minecraft_resourcepacks()
         elif option == 'default':
-            resource_packs = [handle_default_minecraft_texture(home, output_dir)]
+            resource_packs = [
+                handle_default_minecraft_texture(home, output_dir)]
         elif option == 'other':
             folder_selected = filedialog.askdirectory()
             if folder_selected:
@@ -136,13 +150,15 @@ class TextureConverterGUI:
                 return
 
         # Convert resource packs
-        convert_resource_packs(resource_packs, output_dir, pixelsize, dry_run, verbose, make_texture_pack)
+        convert_resource_packs(resource_packs, output_dir,
+                               pixelsize, dry_run, verbose, make_texture_pack)
 
         # Update the GUI after conversion
         self.loading_label.pack_forget()
         self.ok_button.config(state=tk.NORMAL)
-        messagebox.showinfo("Conversion Complete", f"Resource Packs '{', '.join(resource_packs)}' converted.")
-
+        messagebox.showinfo(
+            "Conversion Complete",
+            f"Resource Packs '{', '.join(resource_packs)}' converted.")
 
     def convert_all(self):
         # Simulate a conversion process
@@ -162,17 +178,20 @@ class TextureConverterGUI:
             time.sleep(2)  # Simulate some time for conversion
 
     def cancel_conversion(self):
-        # Placeholder for cancel action, you may need to implement actual cancellation logic
+        # Placeholder for cancel action, you may need to implement actual
+        # cancellation logic
         print("Conversion cancelled by user.")
         self.loading_label.pack_forget()
         self.ok_button.config(state=tk.NORMAL)
         self.cancel_button.config(state=tk.DISABLED)
+
 
 def main():
     root = tk.Tk()
     app = TextureConverterGUI(root)
     app.adjust_column_widths()
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
