@@ -15,6 +15,7 @@ from collections import Counter
 from libtextureconverter.utils import detect_pixel_size, target_dir, colorize, colorize_alpha, handle_default_minecraft_texture, find_all_minecraft_resourcepacks
 from libtextureconverter.convert import convert_textures
 from libtextureconverter.config import SUPPORTED_MINECRAFT_VERSION, working_dir, mineclone2_path, appname, home
+from libtextureconverter.gui import main as launch_gui
 
 # Argument parsing
 description_text = f"""This is the official MineClone 2 Texture Converter.
@@ -45,60 +46,65 @@ verbose = args.verbose
 # If False, textures will be put into MineClone 2 directories.
 make_texture_pack = True  # Adjust as needed
 
-if args.default:
-    base_dir = handle_default_minecraft_texture(home, output_dir)
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        # No arguments supplied, launch the GUI
+        launch_gui()
+    else:
+        if args.default:
+            base_dir = handle_default_minecraft_texture(home, output_dir)
 
-if base_dir == None and not args.all:
-	print(
-"""ERROR: You didn't tell me the path to the Minecraft resource pack.
-Mind-reading has not been implemented yet.
+        if base_dir == None and not args.all:
+        	print(
+        """ERROR: You didn't tell me the path to the Minecraft resource pack.
+        Mind-reading has not been implemented yet.
 
-Try this:
-    """+appname+""" -i <path to resource pack>
+        Try this:
+            """+appname+""" -i <path to resource pack>
 
-For the full help, use:
-    """+appname+""" -h""")
-	sys.exit(2);
+        For the full help, use:
+            """+appname+""" -h""")
+        	sys.exit(2);
 
-### END OF SETTINGS ###
+        ### END OF SETTINGS ###
 
 
-resource_packs = []
+        resource_packs = []
 
-if args.all:
-    for resource_path in find_all_minecraft_resourcepacks():
-        resource_packs.append(resource_path)
+        if args.all:
+            for resource_path in find_all_minecraft_resourcepacks():
+                resource_packs.append(resource_path)
 
-if make_texture_pack and args.input:
-    resource_packs.append(args.input)
+        if make_texture_pack and args.input:
+            resource_packs.append(args.input)
 
-for base_dir in resource_packs:
-    tex_dir = base_dir + "/assets/minecraft/textures"
+        for base_dir in resource_packs:
+            tex_dir = base_dir + "/assets/minecraft/textures"
 
-    # Get texture pack name (from directory name)
-    bdir_split = base_dir.split("/")
-    output_dir_name = bdir_split[-1]
-    if len(output_dir_name) == 0:
-    	if len(bdir_split) >= 2:
-    		output_dir_name = base_dir.split("/")[-2]
-    	else:
-    		# Fallback
-    		output_dir_name = "New_MineClone_2_Texture_Pack"
+            # Get texture pack name (from directory name)
+            bdir_split = base_dir.split("/")
+            output_dir_name = bdir_split[-1]
+            if len(output_dir_name) == 0:
+            	if len(bdir_split) >= 2:
+            		output_dir_name = base_dir.split("/")[-2]
+            	else:
+            		# Fallback
+            		output_dir_name = "New_MineClone_2_Texture_Pack"
 
-    # ENTRY POINT
-    if make_texture_pack and not os.path.isdir(output_dir+"/"+output_dir_name):
-    	os.mkdir(output_dir+"/"+output_dir_name)
+            # ENTRY POINT
+            if make_texture_pack and not os.path.isdir(output_dir+"/"+output_dir_name):
+            	os.mkdir(output_dir+"/"+output_dir_name)
 
-    # If, set to convert all resourcepacks, then autodetect pixel size
-    if args.all:
-        PXSIZE = None
+            # If, set to convert all resourcepacks, then autodetect pixel size
+            if args.all:
+                PXSIZE = None
 
-    if PXSIZE is None:
-        PXSIZE = detect_pixel_size(base_dir)
-    tempfile1 = tempfile.NamedTemporaryFile()
-    tempfile2 = tempfile.NamedTemporaryFile()
+            if PXSIZE is None:
+                PXSIZE = detect_pixel_size(base_dir)
+            tempfile1 = tempfile.NamedTemporaryFile()
+            tempfile2 = tempfile.NamedTemporaryFile()
 
-    convert_textures(make_texture_pack, dry_run, verbose, base_dir, tex_dir, tempfile1, tempfile2, output_dir, output_dir_name, mineclone2_path, PXSIZE)
+            convert_textures(make_texture_pack, dry_run, verbose, base_dir, tex_dir, tempfile1, tempfile2, output_dir, output_dir_name, mineclone2_path, PXSIZE)
 
-    tempfile1.close()
-    tempfile2.close()
+            tempfile1.close()
+            tempfile2.close()
