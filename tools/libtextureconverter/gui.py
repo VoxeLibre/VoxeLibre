@@ -1,8 +1,9 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk, font
 from libtextureconverter.utils import handle_default_minecraft_texture, find_all_minecraft_resourcepacks
-from libtextureconverter.config import home
+from libtextureconverter.config import home, get_minetest_directory
 from libtextureconverter.common import convert_resource_packs
+
 import time
 import os
 import threading
