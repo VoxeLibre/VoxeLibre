@@ -8,11 +8,15 @@ import glob
 import re
 import zipfile
 from .config import SUPPORTED_MINECRAFT_VERSION, home
-from PIL import Image
 from collections import Counter
 import platform
+from wand.image import Image
+from wand.color import Color
+from wand.display import display
+import warnings
 
 def detect_pixel_size(directory):
+    from PIL import Image
     sizes = []
     for filename in glob.glob(directory + '/**/*.png', recursive=True):
         with Image.open(filename) as img:
@@ -23,7 +27,6 @@ def detect_pixel_size(directory):
     print(
         f"Autodetected pixel size: {most_common_size[0]}x{most_common_size[1]}")
     return most_common_size[0]
-
 
 def target_dir(
         directory,
@@ -37,26 +40,42 @@ def target_dir(
         return mineclone2_path + directory
 
 
-def colorize(
-        colormap,
-        source,
-        colormap_pixel,
-        texture_size,
-        destination,
-        tempfile1_name):
-    os.system(
-        "convert " +
-        colormap +
-        " -crop 1x1+" +
-        colormap_pixel +
-        " -depth 8 -resize " +
-        texture_size +
-        "x" +
-        texture_size +
-        " " +
-        tempfile1_name)
-    os.system("composite -compose Multiply " +
-              tempfile1_name + " " + source + " " + destination)
+def colorize(colormap, source, colormap_pixel, texture_size, destination, tempfile1_name):
+    try:
+        # Convert the colormap_pixel to integer coordinates
+        x, y = map(int, colormap_pixel.split('+'))
+
+        # Define texture size as integer
+        texture_size = int(texture_size)
+
+        with Image(filename=colormap) as img:
+            # Crop the image
+            img.crop(x, y, width=1, height=1)
+
+            # Set depth (This might be ignored by Wand as it manages depth automatically)
+            img.depth = 8
+
+            # Resize the image
+            img.resize(texture_size, texture_size)
+
+            # Save the result
+            img.save(filename=tempfile1_name)
+
+    except Exception as e:
+        warnings.warn(f"An error occurred during the first image processing operation: {e}")
+
+    try:
+        # Load the images
+        with Image(filename=tempfile1_name) as top_image:
+            with Image(filename=source) as bottom_image:
+                # Perform composite operation with Multiply blend mode
+                bottom_image.composite(top_image, 0, 0, operator='multiply')
+
+                # Save the result
+                bottom_image.save(filename=destination)
+
+    except Exception as e:
+        warnings.warn(f"An error occurred during the second image processing operation: {e}")
 
 
 def colorize_alpha(
@@ -68,8 +87,19 @@ def colorize_alpha(
         tempfile2_name):
     colorize(colormap, source, colormap_pixel,
              texture_size, destination, tempfile2_name)
-    os.system("composite -compose Dst_In " + source + " " +
-              tempfile2_name + " -alpha Set " + destination)
+    try:
+        with Image(filename=source) as source_image:
+            with Image(filename=tempfile2_name) as tempfile2_image:
+                # Perform composite operation with Dst_In blend mode
+                tempfile2_image.composite(source_image, 0, 0, operator='dst_in')
+
+                # Set alpha channel
+                tempfile2_image.alpha_channel = 'set'
+
+                # Save the result
+                tempfile2_image.save(filename=destination)
+    except Exception as e:
+        warnings.warn(f"An error occurred during the second image processing operation: {e}")
 
 
 def find_highest_minecraft_version(home, supported_version):

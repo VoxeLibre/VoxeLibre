@@ -6,6 +6,11 @@ import tempfile
 import sys
 import argparse
 import glob
+from wand.image import Image
+from wand.color import Color
+from wand.display import display
+from wand.drawing import Drawing
+import warnings
 
 # Conversion of map backgrounds
 def convert_map_textures(
@@ -23,20 +28,17 @@ def convert_map_textures(
     # Convert map background
     map_background_file = tex_dir + "/map/map_background.png"
     if os.path.isfile(map_background_file):
-        os.system(
-            "convert " +
-            map_background_file +
-            " -interpolate Integer -filter point -resize \"140x140\" " +
-            target_dir(
-                "/mods/ITEMS/mcl_maps/textures",
-                make_texture_pack,
-                output_dir,
-                output_dir_name,
-                mineclone2_path) +
-            "/mcl_maps_map_background.png")
+        destination_path = target_dir("/mods/ITEMS/mcl_maps/textures", make_texture_pack, output_dir, output_dir_name, mineclone2_path) + "/mcl_maps_map_background.png"
+
+        with Image(filename=map_background_file) as img:
+            # Resize the image with 'point' filter
+            img.resize(140, 140, filter='point')
+
+            # Save the result
+            img.save(filename=destination_path)
+
 
 # Convert armor textures
-
 
 def convert_armor_textures(
         make_texture_pack,
@@ -126,6 +128,7 @@ def convert_armor_textures(
             helmet = adir + "/" + a[3]
             chestplate = adir + "/" + a[4]
             boots = adir + "/" + a[6]
+            # helmet
             os.system("convert -size " +
                       str(APXSIZE *
                           4) +
@@ -150,59 +153,53 @@ def convert_armor_textures(
                       str(APXSIZE) +
                       "+0+0 \\) -composite -channel A -fx \"(a > 0.0) ? 1.0 : 0.0\" " +
                       helmet)
-            os.system("convert -size " +
-                      str(APXSIZE *
-                          4) +
-                      "x" +
-                      str(APXSIZE *
-                          2) +
-                      " xc:none \\( " +
-                      layer_1 +
-                      " -scale " +
-                      str(APXSIZE *
-                          4) +
-                      "x" +
-                      str(APXSIZE *
-                          2) +
-                      " -geometry +" +
-                      str(APXSIZE) +
-                      "+" +
-                      str(APXSIZE) +
-                      " -crop " +
-                      str(APXSIZE *
-                          2.5) +
-                      "x" +
-                      str(APXSIZE) +
-                      "+" +
-                      str(APXSIZE) +
-                      "+" +
-                      str(APXSIZE) +
-                      " \\) -composite -channel A -fx \"(a > 0.0) ? 1.0 : 0.0\" " +
-                      chestplate)
-            os.system("convert -size " +
-                      str(APXSIZE *
-                          4) +
-                      "x" +
-                      str(APXSIZE *
-                          2) +
-                      " xc:none \\( " +
-                      layer_1 +
-                      " -scale " +
-                      str(APXSIZE *
-                          4) +
-                      "x" +
-                      str(APXSIZE *
-                          2) +
-                      " -geometry +0+" +
-                      str(APXSIZE) +
-                      " -crop " +
-                      str(APXSIZE) +
-                      "x" +
-                      str(APXSIZE) +
-                      "+0+" +
-                      str(APXSIZE) +
-                      " \\) -composite -channel A -fx \"(a > 0.0) ? 1.0 : 0.0\" " +
-                      boots)
+
+
+
+            # chestplate
+            with Image(width=APXSIZE * 4, height=APXSIZE * 2, background=Color('none')) as img:
+                # Load layer_1 and scale
+                with Image(filename=layer_1) as layer1:
+                    layer1.resize(APXSIZE * 4, APXSIZE * 2)
+
+                    # Define the crop geometry
+                    crop_width = int(APXSIZE * 2.5)
+                    crop_height = APXSIZE
+                    crop_x = APXSIZE
+                    crop_y = APXSIZE
+
+                    # Crop the image
+                    layer1.crop(crop_x, crop_y, width=crop_width, height=crop_height)
+
+                    # Composite layer1 over the transparent image
+                    img.composite(layer1, APXSIZE, APXSIZE)
+
+                # Apply channel operation
+                img.fx("a > 0.0 ? 1.0 : 0.0", channel='alpha')
+
+                # Save the result
+                img.save(filename=chestplate)
+            with Image(width=APXSIZE * 4, height=APXSIZE * 2, background=Color('none')) as img:
+                with Image(filename=layer_1) as layer1:
+                    # Scale the image
+                    layer1.resize(APXSIZE * 4, APXSIZE * 2)
+
+                    # Crop the image
+                    crop_x = 0
+                    crop_y = APXSIZE
+                    crop_width = APXSIZE
+                    crop_height = APXSIZE
+                    layer1.crop(crop_x, crop_y, width=crop_width, height=crop_height)
+
+                    # Composite the cropped image over the transparent image
+                    img.composite(layer1, 0, APXSIZE)
+
+                # Apply the channel operation
+                img.fx("a > 0.0 ? 1.0 : 0.0", channel='alpha')
+
+                # Save the result
+                img.save(filename=boots)
+
         if os.path.isfile(layer_2):
             leggings = adir + "/" + a[5]
             os.system("convert -size " +
