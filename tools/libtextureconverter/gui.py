@@ -1,7 +1,9 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk, font
-import time
-import threading
+from libtextureconverter.utils import handle_default_minecraft_texture, find_all_minecraft_resourcepacks
+from libtextureconverter.config import home
+from libtextureconverter.common import convert_resource_packs
+import time, os, threading
 
 class TextureConverterGUI:
     def __init__(self, root):
@@ -111,24 +113,36 @@ class TextureConverterGUI:
         self.cancel_button.config(state=tk.NORMAL)
 
     def perform_conversion(self, option):
-        # Example names, replace with actual texture pack names after conversion
-        texture_pack_names = ["Texture Pack 1", "Texture Pack 2", "Texture Pack 3"]
-        # Simulate a time-consuming process
-
-        # Perform the selected action
+        # Set default values for pixelsize, dry_run, and verbose
+        pixelsize = None
+        dry_run = False
+        verbose = False
+        output_dir = os.path.join(home, ".minetest", "textures")
+        make_texture_pack = True
+        
+        # Determine the resource packs to convert based on the option
         if option == 'all':
-            self.convert_all()
+            resource_packs = find_all_minecraft_resourcepacks()
         elif option == 'default':
-            self.convert_default()
+            resource_packs = [handle_default_minecraft_texture(home, output_dir)]
         elif option == 'other':
-            self.open_folder_dialog()
+            folder_selected = filedialog.askdirectory()
+            if folder_selected:
+                resource_packs = [folder_selected]
+            else:
+                # User canceled the folder selection
+                self.loading_label.pack_forget()
+                self.ok_button.config(state=tk.NORMAL)
+                return
 
-        # Remove the loading message and update the conversion status
+        # Convert resource packs
+        convert_resource_packs(resource_packs, output_dir, pixelsize, dry_run, verbose, make_texture_pack)
+
+        # Update the GUI after conversion
         self.loading_label.pack_forget()
-        messagebox.showinfo("Conversion Complete", f"Resource Packs '{', '.join(texture_pack_names)}' converted.")
-
-        # Re-enable the OK button after the conversion is done
         self.ok_button.config(state=tk.NORMAL)
+        messagebox.showinfo("Conversion Complete", f"Resource Packs '{', '.join(resource_packs)}' converted.")
+
 
     def convert_all(self):
         # Simulate a conversion process

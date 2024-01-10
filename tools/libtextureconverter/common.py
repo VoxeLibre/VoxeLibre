@@ -5,7 +5,6 @@ from collections import Counter
 from libtextureconverter.utils import detect_pixel_size, target_dir, colorize, colorize_alpha, handle_default_minecraft_texture, find_all_minecraft_resourcepacks
 from libtextureconverter.convert import convert_textures
 from libtextureconverter.config import SUPPORTED_MINECRAFT_VERSION, working_dir, mineclone2_path, appname, home
-from libtextureconverter.gui import main as launch_gui
 
 def convert_resource_packs(resource_packs, output_dir, PXSIZE, dry_run, verbose, make_texture_pack):
     for base_dir in resource_packs:
