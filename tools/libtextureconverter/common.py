@@ -7,7 +7,7 @@ from libtextureconverter.convert import convert_textures
 from libtextureconverter.config import SUPPORTED_MINECRAFT_VERSION, working_dir, mineclone2_path, appname, home
 from libtextureconverter.gui import main as launch_gui
 
-def convert_resource_packs(resource_packs, output_dir, PXSIZE):
+def convert_resource_packs(resource_packs, output_dir, PXSIZE, dry_run, verbose, make_texture_pack):
     for base_dir in resource_packs:
         print(f"Converting resource pack: {base_dir}")
 
@@ -33,13 +33,7 @@ def convert_resource_packs(resource_packs, output_dir, PXSIZE):
 
         try:
             # Perform the actual conversion
-            convert_textures(
-                base_dir=base_dir,
-                tex_dir=tex_dir,
-                temp_files=(tempfile1.name, tempfile2.name),
-                output_dir=output_path,
-                pixel_size=pixel_size
-            )
+            convert_textures(make_texture_pack, dry_run, verbose, base_dir, tex_dir, tempfile1, tempfile2,output_dir, output_dir_name, mineclone2_path, pixel_size)
         finally:
             # Clean up temporary files
             tempfile1.close()
