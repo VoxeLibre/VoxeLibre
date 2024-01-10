@@ -1,5 +1,5 @@
 import shutil, csv, os, tempfile, sys, argparse, glob, re, zipfile
-from .config import SUPPORTED_MINECRAFT_VERSION
+from .config import SUPPORTED_MINECRAFT_VERSION, home
 from PIL import Image
 from collections import Counter
 
@@ -38,6 +38,26 @@ def find_highest_minecraft_version(home, supported_version):
                 if not highest_version or folder > highest_version:
                     highest_version = folder
     return highest_version
+
+def find_all_minecraft_resourcepacks():
+    resourcepacks_dir = os.path.join(home, '.minecraft', 'resourcepacks')
+
+    if not os.path.isdir(resourcepacks_dir):
+        print(f"Resource packs directory not found: {resourcepacks_dir}")
+        return
+
+    resourcepacks = []
+    for folder in os.listdir(resourcepacks_dir):
+        folder_path = os.path.join(resourcepacks_dir, folder)
+        if os.path.isdir(folder_path):
+            pack_png_path = os.path.join(folder_path, 'pack.png')
+            if os.path.isfile(pack_png_path):
+                print(f"Adding resourcepack '{folder}'")
+                resourcepacks.append(folder_path)
+            else:
+                print(f"pack.png not found in resourcepack '{folder}', not converting")
+
+    return resourcepacks
 
 def handle_default_minecraft_texture(home, output_dir):
     version = find_highest_minecraft_version(home, SUPPORTED_MINECRAFT_VERSION)
