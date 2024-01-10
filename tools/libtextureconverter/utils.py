@@ -10,7 +10,7 @@ import zipfile
 from .config import SUPPORTED_MINECRAFT_VERSION, home
 from PIL import Image
 from collections import Counter
-
+import platform
 
 def detect_pixel_size(directory):
     sizes = []

@@ -130,7 +130,7 @@ class TextureConverterGUI:
         pixelsize = None
         dry_run = False
         verbose = False
-        output_dir = os.path.join(home, ".minetest", "textures")
+        output_dir = os.path.join(get_minetest_directory(), "textures")
         make_texture_pack = True
 
         # Determine the resource packs to convert based on the option
