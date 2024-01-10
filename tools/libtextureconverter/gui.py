@@ -23,7 +23,7 @@ class TextureConverterGUI:
         self.instruction_frame.pack(fill='x', padx=10, pady=10)
         tk.Label(
             self.instruction_frame,
-            text="Do you want to convert installed resource packs, or convert a single zip file?").pack(
+            text="Do you want to convert installed resource packs, or convert a single folder?").pack(
             side='left',
             fill='x',
             expand=True)
@@ -38,7 +38,7 @@ class TextureConverterGUI:
         entries = [
             ('all', 'Find Minecraft resource packs installed in your minecraft folders and convert those automatically'),
             ('default', 'Convert the default resource pack'),
-            ('other', 'Choose a file to convert manually')
+            ('other', 'Choose a folder to convert manually')
         ]
 
         for entry in entries:
