@@ -224,11 +224,17 @@ minetest.register_on_leaveplayer(function(player)
 	mcl_skins.player_formspecs[player] = nil
 end)
 
-local function calculate_page_count(tab)
+local function calculate_page_count(tab, player)
 	if tab == "skin" then
 		return math.ceil((#mcl_skins.simple_skins + 2) / 8)
 	elseif tab == "cape" then
-		return math.ceil(#mcl_skins.cape / 5)
+		local player_capes = 0
+		for _, cape in pairs(mcl_skins.cape) do
+			if type(cape.selector_func) == "nil" or cape.selector_func(player) then
+				player_capes = player_capes + 1
+			end
+		end
+		return math.ceil((player_capes + 1) / 5) -- add one so the player can select no cape as well
 	elseif mcl_skins[tab] then
 		return math.ceil(#mcl_skins[tab] / 16)
 	end
@@ -240,7 +246,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 	local skin = mcl_skins.player_skins[player]
 	formspec_data.active_tab = active_tab
 
-	local page_count = calculate_page_count(active_tab)
+	local page_count = calculate_page_count(active_tab, player)
 	if page_num < 1 then page_num = 1 end
 	if page_num > page_count then page_num = page_count end
 	formspec_data.page_num = page_num
@@ -337,33 +343,32 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 
 	elseif cape_tab then
 		local possize = {{"6,2;1,2", "5.5,4.2;2,0.8"}, {"9,2;1,2","8.5,4.2;2,0.8"}, {"6,7;1,2","5.5,9.2;2,0.8"}, {"9,7;1,2","8.5,9.2;2,0.8"},{"12,7;1,2","11.5,9.2;2,0.8"}}
-		local slot_start = 1
-		local slot_end = #mcl_skins.cape % (page_num * 5)
+		local player_capes = {} -- contains all capes the player is allowed to wear
+		for _, cape in pairs (mcl_skins.cape) do
+			if type(cape.selector_func) == "nil" or cape.selector_func(player) then
+				table.insert(player_capes, cape)
+			end
+		end
 
-		if slot_end == 0 then slot_end = 5 end
+		local slot_offset = 0
 		
 		if page_num == 1 then
 			formspec = formspec ..
 				"label[6,3;" .. S("(None)") .. "]"..
 				"button[5.5,4.2;2,0.8;nocape;" .. S("Select") .. "]"
-			slot_start = 2
+			slot_offset = 1
 		end
 
-		for slot = slot_start, slot_end do
-			local cape = mcl_skins.cape[((page_num -1) * 5) + slot]
+		local array_start = page_num * 5 - 4
+		local index_offset = page_num == 1 and 1 or 2
+
+		for slot = 1 + slot_offset, page_num ~= page_count and 5 or (#player_capes % 5 == 0 and 1 or #player_capes % 5) + slot_offset do
+			local cape = player_capes[array_start + slot - slot_offset - index_offset]
 			local pos = possize[slot]
-			
-			local show = true
-			if type(cape.selector_func) == "function" then
-				show = cape.selector_func(player)
-			end
-			if not show then
-				slot = slot - 1
-			else
-				formspec = formspec ..
-					"image[" .. possize[slot][1] .. ";" .. cape.name ..".png]"..
-					"button[" .. possize[slot][2] .. ";" .. cape.name ..";" .. S("Select") .. "]"
-			end
+
+			formspec = formspec ..
+				"image[" .. possize[slot][1] .. ";" .. cape.name ..".png]"..
+				"button[" .. possize[slot][2] .. ";" .. cape.name ..";" .. S("Select") .. "]"
 		end
 
 	elseif mcl_skins[active_tab] then
@@ -551,6 +556,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_skins.player_skins[player].cape = "blank.png"
 		mcl_skins.update_player_skin(player)
 		mcl_armor.update(player) --update elytra cape
+		mcl_skins.show_formspec(player, active_tab, page_num)
 		return true
 	elseif active_tab == "cape" then
 		for cape_index = ((page_num - 1) * 5) + 1, math.min(#mcl_skins.cape, page_num * 5) do
@@ -559,6 +565,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				mcl_skins.player_skins[player].cape = cape.mask -- the actual overlay image
 				mcl_skins.update_player_skin(player)
 				mcl_armor.update(player) --update elytra cape
+				mcl_skins.show_formspec(player, active_tab, page_num)
 				return true
 			end
 		end
