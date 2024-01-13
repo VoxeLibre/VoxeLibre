@@ -202,31 +202,26 @@ def convert_armor_textures(
 
         if os.path.isfile(layer_2):
             leggings = adir + "/" + a[5]
-            os.system("convert -size " +
-                      str(APXSIZE *
-                          4) +
-                      "x" +
-                      str(APXSIZE *
-                          2) +
-                      " xc:none \\( " +
-                      layer_2 +
-                      " -scale " +
-                      str(APXSIZE *
-                          4) +
-                      "x" +
-                      str(APXSIZE *
-                          2) +
-                      " -geometry +0+" +
-                      str(APXSIZE) +
-                      " -crop " +
-                      str(APXSIZE *
-                          2.5) +
-                      "x" +
-                      str(APXSIZE) +
-                      "+0+" +
-                      str(APXSIZE) +
-                      " \\) -composite -channel A -fx \"(a > 0.0) ? 1.0 : 0.0\" " +
-                      leggings)
+            with Image(width=APXSIZE * 4, height=APXSIZE * 2, background=Color('none')) as img:
+                with Image(filename=layer_2) as layer2:
+                    # Scale the image
+                    layer2.resize(APXSIZE * 4, APXSIZE * 2)
+
+                    # Apply geometry and crop
+                    crop_width = int(APXSIZE * 2.5)
+                    crop_height = APXSIZE
+                    crop_x = 0
+                    crop_y = APXSIZE
+                    layer2.crop(left=crop_x, top=crop_y, width=crop_width, height=crop_height)
+
+                    # Composite the cropped image over the transparent image
+                    img.composite(layer2, 0, APXSIZE)
+
+                # Apply channel operation
+                img.fx("a > 0.0 ? 1.0 : 0.0", channel='alpha')
+
+                # Save the result
+                img.save(filename=leggings)
 
 # Convert chest textures
 

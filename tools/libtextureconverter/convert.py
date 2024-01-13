@@ -21,65 +21,71 @@ def convert_standard_textures(
     output_dir_name,
     mineclone2_path,
      PXSIZE):
-	failed_conversions = 0
-	with open("Conversion_Table.csv", newline="") as csvfile:
-		reader = csv.reader(csvfile, delimiter=",", quotechar='"')
-		first_row = True
-		for row in reader:
-			# Skip first row
-			if first_row:
-				first_row = False
-				continue
-			src_dir = row[0]
-			src_filename = row[1]
-			dst_dir = './textures'
-			dst_filename = row[2]
-			if row[4] != "":
-				xs = int(row[3])
-				ys = int(row[4])
-				xl = int(row[5])
-				yl = int(row[6])
-				xt = int(row[7])
-				yt = int(row[8])
-			else:
-				xs = None
-			blacklisted = row[9]
+    failed_conversions = 0
+    with open("Conversion_Table.csv", newline="") as csvfile:
+        reader = csv.reader(csvfile, delimiter=",", quotechar='"')
+        first_row = True
+        for row in reader:
+            # Skip first row
+            if first_row:
+                first_row = False
+                continue
+            src_dir = row[0]
+            src_filename = row[1]
+            dst_dir = './textures'
+            dst_filename = row[2]
+            if row[4] != "":
+                xs = int(row[3])
+                ys = int(row[4])
+                xl = int(row[5])
+                yl = int(row[6])
+                xt = int(row[7])
+                yt = int(row[8])
+            else:
+                xs = None
+            blacklisted = row[9]
 
-			if blacklisted == "y":
-				# Skip blacklisted files
-				continue
+            if blacklisted == "y":
+                # Skip blacklisted files
+                continue
 
-			if make_texture_pack == False and dst_dir == "":
-				# If destination dir is empty, this texture is not supposed to be used in MCL2
-				# (but maybe an external mod). It should only be used in texture packs.
-				# Otherwise, it must be ignored.
-				# Example: textures for mcl_supplemental
-				continue
+            if make_texture_pack == False and dst_dir == "":
+                # If destination dir is empty, this texture is not supposed to be used in MCL2
+                # (but maybe an external mod). It should only be used in texture packs.
+                # Otherwise, it must be ignored.
+                # Example: textures for mcl_supplemental
+                continue
 
-			src_file = base_dir + src_dir + "/" + src_filename  # source file
-			src_file_exists = os.path.isfile(src_file)
-			dst_file = target_dir(dst_dir, make_texture_pack, output_dir, output_dir_name,
+            src_file = base_dir + src_dir + "/" + src_filename  # source file
+            src_file_exists = os.path.isfile(src_file)
+            dst_file = target_dir(dst_dir, make_texture_pack, output_dir, output_dir_name,
 			                      mineclone2_path) + "/" + dst_filename  # destination file
 
-			if src_file_exists == False:
-				print("WARNING: Source file does not exist: " + src_file)
-				failed_conversions = failed_conversions + 1
-				continue
-
-			if xs != None:
-				# Crop and copy images
-				if not dry_run:
-					os.system("convert " + src_file + " -crop " + xl +
-					          "x" + yl + "+" + xs + "+" + ys + " " + dst_file)
-				if verbose:
-					print(src_file + " → " + dst_file)
-			else:
+            if src_file_exists == False:
+                print("WARNING: Source file does not exist: " + src_file)
+                failed_conversions = failed_conversions + 1
+                continue
+            if xs != None:
+                # Crop and copy images
+                if not dry_run:
+                    crop_width = int(xl)
+                    crop_height = int(yl)
+                    offset_x = int(xs)
+                    offset_y = int(ys)
+                    with Image(filename=src_file) as img:
+                        # Crop the image
+                        img.crop(left=offset_x, top=offset_y, width=crop_width, height=crop_height)
+                        # Save the result
+                        img.save(filename=dst_file)
+                if verbose:
+                    print(src_file + " → " + dst_file)
+            else:
 				# Copy image verbatim
-				if not dry_run:
-					shutil.copy2(src_file, dst_file)
-				if verbose:
-					print(src_file + " → " + dst_file)
-	return failed_conversions
+                if not dry_run:
+                    shutil.copy2(src_file, dst_file)
+                if verbose:
+                    print(src_file + " → " + dst_file)
+    return failed_conversions
 
 
 def convert_textures(make_texture_pack, dry_run, verbose, base_dir, tex_dir, tempfile1, tempfile2, output_dir, output_dir_name, mineclone2_path, PXSIZE):
