@@ -78,6 +78,29 @@ local function eat_stew(itemstack, user, pointed_thing)
 	end
 end
 
+local function eat_stew_delayed(itemstack, user, pointed_thing)
+	-- Wrapper for handling mcl_hunger delayed eating
+	local name = user:get_player_name()
+	mcl_hunger.eat_internal[name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
+	mcl_hunger.eat_internal[name]._custom_var = {
+		itemstack = itemstack,
+		user = user,
+		pointed_thing = pointed_thing,
+	}
+	mcl_hunger.eat_internal[name]._custom_func = eat_stew
+	mcl_hunger.eat_internal[name]._custom_wrapper = function(name)
+
+		mcl_hunger.eat_internal[name]._custom_func(
+			mcl_hunger.eat_internal[name]._custom_var.itemstack,
+			mcl_hunger.eat_internal[name]._custom_var.user,
+			mcl_hunger.eat_internal[name]._custom_var.pointed_thing
+		)
+	end
+
+	mcl_hunger.eat_internal[name]._custom_do_delayed = true -- Only _custom_wrapper will be executed after holding RMB or LMB within a specified delay
+	--minetest.do_item_eat(0, "mcl_core:bowl", itemstack, user, pointed_thing)
+end
+
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() ~= "mcl_sus_stew:stew" then return end
 	for f,e in pairs(flower_effect) do
@@ -96,8 +119,10 @@ minetest.register_craftitem("mcl_sus_stew:stew",{
 	description = S("Suspicious Stew"),
 	inventory_image = "sus_stew.png",
 	stack_max = 1,
-	on_place = eat_stew,
-	on_secondary_use = eat_stew,
+	--on_place = eat_stew,
+	--on_secondary_use = eat_stew,
+	on_place = eat_stew_delayed,
+	on_secondary_use = eat_stew_delayed,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1, not_in_creative_inventory=1,},
 	_mcl_saturation = 7.2,
 })
