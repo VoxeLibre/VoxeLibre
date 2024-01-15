@@ -145,6 +145,41 @@ local function drink_milk(itemstack, player, pointed_thing)
 	return bucket
 end
 
+local function drink_milk_delayed(itemstack, player, pointed_thing)
+
+	local function drink_milk(itemstack, player, pointed_thing)
+		--local bucket = minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
+		-- Check if we were allowed to drink this (eat delay check)
+		--if mcl_hunger.active and (bucket:get_name() ~= "mcl_mobitems:milk_bucket" or minetest.is_creative_enabled(player:get_player_name())) then
+		if mcl_hunger.active and (player:get_inventory():get_stack("main", player:get_wield_index(), itemstack) == "mcl_mobitems:milk_bucket" or minetest.is_creative_enabled(player:get_player_name())) then
+			mcl_hunger.stop_poison(player)
+		end
+		mcl_potions._reset_player_effects(player)
+		return bucket
+	end
+
+	-- Wrapper for handling mcl_hunger delayed eating
+	local name = player:get_player_name()
+	mcl_hunger.eat_internal[name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
+	mcl_hunger.eat_internal[name]._custom_var = {
+		itemstack = itemstack,
+		player = player,
+		pointed_thing = pointed_thing,
+	}
+	mcl_hunger.eat_internal[name]._custom_func = drink_milk
+	mcl_hunger.eat_internal[name]._custom_wrapper = function(name)
+
+		mcl_hunger.eat_internal[name]._custom_func(
+			mcl_hunger.eat_internal[name]._custom_var.itemstack,
+			mcl_hunger.eat_internal[name]._custom_var.player,
+			mcl_hunger.eat_internal[name]._custom_var.pointed_thing
+		)
+	end
+
+	--mcl_hunger.eat_internal[name]._custom_do_delayed = true -- Only _custom_wrapper will be executed after holding RMB or LMB within a specified delay
+	minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
+end
+
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = S("Milk"),
 	_tt_help = minetest.colorize(mcl_colors.GREEN, S("Removes all status effects")),
@@ -152,8 +187,10 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	_doc_items_usagehelp = S("Use the placement key to drink the milk."),
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
-	on_place = drink_milk,
-	on_secondary_use = drink_milk,
+	--on_place = drink_milk, -- Will do effect immediately but not reduce item count until eating delay ends which makes it exploitable by deliberately not finishing delay
+	--on_secondary_use = drink_milk,
+	on_place = drink_milk_delayed,
+	on_secondary_use = drink_milk_delayed,
 	stack_max = 1,
 	groups = { food = 3, can_eat_when_full = 1 },
 })
