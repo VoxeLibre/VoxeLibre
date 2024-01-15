@@ -12,12 +12,14 @@ local S = minetest.get_translator("mobs_mc")
 
 -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
 minetest.register_entity("mobs_mc:spider_eyes", {
-	pointable = false,
-	visual = "mesh",
-	mesh = "mobs_mc_spider.b3d",
-	visual_size = {x=1.01/3, y=1.01/3},
-	textures = {
-		"mobs_mc_spider_eyes.png",
+	initial_properties = {
+		pointable = false,
+		visual = "mesh",
+		mesh = "mobs_mc_spider.b3d",
+		visual_size = {x=1.01/3, y=1.01/3},
+		textures = {
+			"mobs_mc_spider_eyes.png",
+		},
 	},
 	on_step = function(self)
 		if self and self.object then
