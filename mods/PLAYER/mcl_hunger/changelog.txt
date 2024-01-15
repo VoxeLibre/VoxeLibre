@@ -49,3 +49,7 @@ Initial release
 - Fix mod not working with both intllib and mod security enabled
 - Add missing screenshot
 - Rewrite README and use Markdown format
+
+0.6.0
+-----
+- Add eating delay
