@@ -39,8 +39,10 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 	arrow = "mobs_mc:shulkerbullet",
 	shoot_offset = 0.5,
 	passive = false,
-	hp_min = 30,
-	hp_max = 30,
+	initial_properties = {
+		hp_min = 30,
+		hp_max = 30,
+	},
 	xp_min = 5,
 	xp_max = 5,
 	armor = 20,

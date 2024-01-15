@@ -16,8 +16,10 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	spawn_class = "hostile",
 	pathfinding = 1,
 	group_attack = true,
-	hp_min = 10,
-	hp_max = 10,
+	initial_properties = {
+		hp_min = 10,
+		hp_max = 10
+	},
 	xp_min = 5,
 	xp_max = 5,
 	collisionbox = {-2, 0, -2, 2, 4, 2, rotate=true},

@@ -131,8 +131,10 @@ mcl_mobs.register_mob("mobs_mc:parrot", {
 	spawn_class = "passive",
 	passive = true,
 	pathfinding = 1,
-	hp_min = 6,
-	hp_max = 6,
+	initial_properties = {
+		hp_min = 6,
+		hp_max = 6
+	},
 	xp_min = 1,
 	xp_max = 3,
 	head_swivel = "head.control",

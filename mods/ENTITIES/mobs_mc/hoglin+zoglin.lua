@@ -14,8 +14,10 @@ local hoglin = {
 	type = "monster",
 	passive = false,
 	spawn_class = "hostile",
-	hp_min = 40,
-	hp_max = 40,
+	initial_properties = {
+		hp_min = 40,
+		hp_max = 40,
+	},
 	xp_min = 9,
 	xp_max = 9,
 	armor = {fleshy = 90},

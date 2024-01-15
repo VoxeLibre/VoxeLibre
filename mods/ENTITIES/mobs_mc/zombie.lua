@@ -49,8 +49,10 @@ local zombie = {
 	description = S("Zombie"),
 	type = "monster",
 	spawn_class = "hostile",
-	hp_min = 20,
-	hp_max = 20,
+	initial_properties = {
+		hp_min = 20,
+		hp_max = 20,
+	},
 	xp_min = 5,
 	xp_max = 5,
 	head_swivel = "head.control",

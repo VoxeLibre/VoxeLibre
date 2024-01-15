@@ -8,8 +8,10 @@ local cow_def = {
 	spawn_class = "passive",
 	passive = true,
 	runaway = true,
-	hp_min = 10,
-	hp_max = 10,
+	initial_properties = {
+		hp_min = 10,
+		hp_max = 10
+	},
 	xp_min = 1,
 	xp_max = 3,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},

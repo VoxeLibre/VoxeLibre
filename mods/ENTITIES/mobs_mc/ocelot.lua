@@ -32,8 +32,10 @@ local ocelot = {
 	can_despawn = true,
 	spawn_in_group = 3,
 	spawn_in_group_min = 1,
-	hp_min = 10,
-	hp_max = 10,
+	initial_properties = {
+		hp_min = 10,
+		hp_max = 10
+	},
 	xp_min = 1,
 	xp_max = 3,
 	head_swivel = "head.control",

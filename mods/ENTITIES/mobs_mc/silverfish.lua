@@ -15,8 +15,10 @@ mcl_mobs.register_mob("mobs_mc:silverfish", {
 	passive = false,
 	group_attack = true,
 	reach = 1,
-	hp_min = 8,
-	hp_max = 8,
+	initial_properties = {
+		hp_min = 8,
+		hp_max = 8,
+	},
 	xp_min = 5,
 	xp_max = 5,
 	armor = {fleshy = 100, arthropod = 100},

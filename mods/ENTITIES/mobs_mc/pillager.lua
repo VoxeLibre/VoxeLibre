@@ -19,8 +19,10 @@ pillager = {
 	description = S("Pillager"),
 	type = "monster",
 	spawn_class = "hostile",
-	hp_min = 24,
-	hp_max = 24,
+	initial_properties = {
+		hp_min = 24,
+		hp_max = 24,
+	},
 	xp_min = 6,
 	xp_max = 6,
 	breath_max = -1,
