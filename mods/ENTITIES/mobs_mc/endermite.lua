@@ -9,8 +9,10 @@ mcl_mobs.register_mob("mobs_mc:endermite", {
 	type = "monster",
 	spawn_class = "hostile",
 	passive = false,
-	hp_min = 8,
-	hp_max = 8,
+	initial_properties = {
+		hp_min = 8,
+		hp_max = 8
+	},
 	xp_min = 3,
 	xp_max = 3,
 	armor = {fleshy = 100, arthropod = 100},

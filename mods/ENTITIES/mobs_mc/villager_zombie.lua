@@ -30,8 +30,10 @@ mcl_mobs.register_mob("mobs_mc:villager_zombie", {
 	type = "monster",
 	spawn_class = "hostile",
 	spawn_in_group = 1,
-	hp_min = 20,
-	hp_max = 20,
+	initial_properties = {
+		hp_min = 20,
+		hp_max = 20,
+	},
 	xp_min = 5,
 	xp_max = 5,
 	breath_max = -1,

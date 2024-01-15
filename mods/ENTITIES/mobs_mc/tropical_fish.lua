@@ -63,8 +63,10 @@ local tropical_fish = {
 	spawn_class = "water_ambient",
 	can_despawn = true,
 	passive = true,
-	hp_min = 3,
-	hp_max = 3,
+	initial_properties = {
+		hp_min = 3,
+		hp_max = 3,
+	},
 	xp_min = 1,
 	xp_max = 3,
 	armor = 100,

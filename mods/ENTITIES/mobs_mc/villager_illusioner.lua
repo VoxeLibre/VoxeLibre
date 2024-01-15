@@ -21,8 +21,10 @@ mcl_mobs.register_mob("mobs_mc:illusioner", {
 			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
-	hp_min = 32,
-	hp_max = 32,
+	initial_properties = {
+		hp_min = 32,
+		hp_max = 32,
+	},
 	xp_min = 6,
 	xp_max = 6,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},

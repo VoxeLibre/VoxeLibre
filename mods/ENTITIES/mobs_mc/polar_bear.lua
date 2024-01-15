@@ -13,8 +13,10 @@ mcl_mobs.register_mob("mobs_mc:polar_bear", {
 	spawn_class = "passive",
 	runaway = false,
 	passive = false,
-	hp_min = 30,
-	hp_max = 30,
+	initial_properties = {
+		hp_min = 30,
+		hp_max = 30,
+	},
 	xp_min = 1,
 	xp_max = 3,
         breath_max = -1,

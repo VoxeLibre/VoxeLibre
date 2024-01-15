@@ -2106,8 +2106,10 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 	type = "npc",
 	spawn_class = "passive",
 	passive = true,
-	hp_min = 20,
-	hp_max = 20,
+	initial_properties = {
+		hp_min = 20,
+		hp_max = 20,
+	},
 	head_swivel = "head.control",
 	head_eye_height = 1.5,
 	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8

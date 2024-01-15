@@ -20,8 +20,10 @@ mcl_mobs.register_mob("mobs_mc:evoker", {
 	can_despawn = false,
 	physical = true,
 	pathfinding = 1,
-	hp_min = 24,
-	hp_max = 24,
+	initial_properties = {
+		hp_min = 24,
+		hp_max = 24,
+	},
 	xp_min = 10,
 	xp_max = 10,
 	head_swivel = "head.control",

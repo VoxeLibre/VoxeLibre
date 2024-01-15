@@ -12,8 +12,10 @@ local wolf = {
 	type = "animal",
 	spawn_class = "passive",
 	can_despawn = true,
-	hp_min = 8,
-	hp_max = 8,
+	initial_properties = {
+		hp_min = 8,
+		hp_max = 8,
+	},
 	xp_min = 1,
 	xp_max = 3,
 	passive = false,

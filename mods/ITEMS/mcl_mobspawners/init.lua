@@ -327,8 +327,10 @@ minetest.register_node("mcl_mobspawners:spawner", {
 -- Mob spawner doll (rotating icon inside cage)
 
 local doll_def = {
-	hp_max = 1,
-	physical = false,
+	initial_properties = {
+		hp_max = 1,
+		physical = false,
+	},
 	pointable = false,
 	visual = "mesh",
 	makes_footstep_sound = false,

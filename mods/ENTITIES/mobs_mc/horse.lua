@@ -151,8 +151,10 @@ local horse = {
 		"mcl_farming:carrot_item_gold",
 	},
 	passive = true,
-	hp_min = 15,
-	hp_max = 30,
+	initial_properties = {
+		hp_min = 15,
+		hp_max = 30
+	},
 	xp_min = 1,
 	xp_max = 3,
 	floats = 1,

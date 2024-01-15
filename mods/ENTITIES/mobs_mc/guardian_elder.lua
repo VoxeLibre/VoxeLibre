@@ -10,8 +10,10 @@ mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 	description = S("Elder Guardian"),
 	type = "monster",
 	spawn_class = "hostile",
-	hp_min = 80,
-	hp_max = 80,
+	initial_properties = {
+		hp_min = 80,
+		hp_max = 80,
+	},
 	xp_min = 10,
 	xp_max = 10,
 	breath_max = -1,

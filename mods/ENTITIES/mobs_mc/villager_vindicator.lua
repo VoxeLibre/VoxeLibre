@@ -16,8 +16,10 @@ mcl_mobs.register_mob("mobs_mc:vindicator", {
 	spawn_class = "hostile",
 	physical = false,
 	pathfinding = 1,
-	hp_min = 24,
-	hp_max = 24,
+	initial_properties = {
+		hp_min = 24,
+		hp_max = 24
+	},
 	xp_min = 6,
 	xp_max = 6,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},

@@ -71,8 +71,10 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 	description = S("Wither"),
 	type = "monster",
 	spawn_class = "hostile",
-	hp_max = 300,
-	hp_min = 300,
+	initial_properties = {
+		hp_max = 300,
+		hp_min = 300,
+	},
 	xp_min = 50,
 	xp_max = 50,
 	armor = {undead = 80, fleshy = 100},
@@ -575,4 +577,3 @@ mcl_mobs.register_egg("mobs_mc:wither", S("Wither"), "#4f4f4f", "#4f4f4f", 0, tr
 
 mcl_wip.register_wip_item("mobs_mc:wither")
 mcl_mobs:non_spawn_specific("mobs_mc:wither","overworld",0,minetest.LIGHT_MAX+1)
-
