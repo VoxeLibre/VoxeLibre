@@ -65,8 +65,10 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 	head_bone_position = vector.new( 0, 10.62, 0 ), -- for minetest <= 5.8
 	curiosity = 60,
 
-	hp_min = 15,
-	hp_max = 30,
+	initial_properties = {
+		hp_min = 15,
+		hp_max = 30,
+	},
 	xp_min = 1,
 	xp_max = 3,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},

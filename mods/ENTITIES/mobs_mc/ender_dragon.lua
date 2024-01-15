@@ -51,8 +51,10 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 	pathfinding = 1,
 	attacks_animals = true,
 	walk_chance = 100,
-	hp_max = 200,
-	hp_min = 200,
+	initial_properties = {
+		hp_max = 200,
+		hp_min = 200,
+	},
 	xp_min = 500,
 	xp_max = 500,
 	collisionbox = {-2, 3, -2, 2, 5, 2},

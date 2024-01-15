@@ -242,8 +242,10 @@ local zombified_piglin = {
 	type = "animal",
 	passive = false,
 	spawn_class = "passive",
-	hp_min = 20,
-	hp_max = 20,
+	initial_properties = {
+		hp_min = 20,
+		hp_max = 20,
+	},
 	xp_min = 6,
 	xp_max = 6,
 	armor = {undead = 90, fleshy = 90},

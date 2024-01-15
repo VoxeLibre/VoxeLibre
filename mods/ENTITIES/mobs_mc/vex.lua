@@ -17,8 +17,10 @@ mcl_mobs.register_mob("mobs_mc:vex", {
 	passive = false,
 	attack_type = "dogfight",
 	physical = false,
-	hp_min = 14,
-	hp_max = 14,
+	initial_properties = {
+		hp_min = 14,
+		hp_max = 14,
+	},
 	xp_min = 6,
 	xp_max = 6,
 	collisionbox = {-0.2, 0.2, -0.2, 0.2, 1.0, 0.2},  --bat

@@ -25,8 +25,10 @@ mcl_mobs.register_mob("mobs_mc:snowman", {
 	type = "npc",
 	spawn_class = "passive",
 	passive = true,
-	hp_min = 4,
-	hp_max = 4,
+	initial_properties = {
+		hp_min = 4,
+		hp_max = 4,
+	},
 	pathfinding = 1,
 	view_range = 10,
 	fall_damage = 0,

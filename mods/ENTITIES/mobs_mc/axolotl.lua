@@ -6,8 +6,10 @@ local axolotl = {
 	spawn_class = "axolotl",
 	can_despawn = true,
 	passive = false,
-	hp_min = 14,
-	hp_max = 14,
+	initial_properties = {
+		hp_min = 14,
+		hp_max = 14
+	},
 	xp_min = 1,
 	xp_max = 7,
 

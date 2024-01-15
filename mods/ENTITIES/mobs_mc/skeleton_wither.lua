@@ -13,8 +13,10 @@ mcl_mobs.register_mob("mobs_mc:witherskeleton", {
 	description = S("Wither Skeleton"),
 	type = "monster",
 	spawn_class = "hostile",
-	hp_min = 20,
-	hp_max = 20,
+	initial_properties = {
+		hp_min = 20,
+		hp_max = 20,
+	},
 	xp_min = 6,
 	xp_max = 6,
 	breath_max = -1,

@@ -14,8 +14,10 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 	spawn_class = "passive",
 	passive = true,
 	runaway = true,
-	hp_min = 4,
-	hp_max = 4,
+	initial_properties = {
+		hp_min = 4,
+		hp_max = 4,
+	},
 	xp_min = 1,
 	xp_max = 3,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.69, 0.2},

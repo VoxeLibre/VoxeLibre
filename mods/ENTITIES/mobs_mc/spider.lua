@@ -39,8 +39,10 @@ local spider = {
 	pathfinding = 1,
 	damage = 2,
 	reach = 2,
-	hp_min = 16,
-	hp_max = 16,
+	initial_properties = {
+		hp_min = 16,
+		hp_max = 16,
+	},
 	xp_min = 5,
 	xp_max = 5,
 	armor = {fleshy = 100, arthropod = 100},

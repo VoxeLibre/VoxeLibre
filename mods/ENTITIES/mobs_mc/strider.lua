@@ -15,8 +15,10 @@ local strider = {
 	type = "animal",
 	passive = true,
 	spawn_class = "passive",
-	hp_min = 20,
-	hp_max = 20,
+	initial_properties = {
+		hp_min = 20,
+		hp_max = 20,
+	},
 	xp_min = 9,
 	xp_max = 9,
 	armor = {fleshy = 90},

@@ -35,8 +35,10 @@ local dolphin = {
 	spawn_class = "water",
 	can_despawn = true,
 	passive = true,
-	hp_min = 10,
-	hp_max = 10,
+	initial_properties = {
+		hp_min = 10,
+		hp_max = 10
+	},
 	xp_min = 1,
 	xp_max = 3,
 	armor = 100,
