@@ -72,7 +72,7 @@ local oban_layers = {
 
 
 local oban_def = table.copy(minetest.registered_entities["mcl_banners:standing_banner"])
-oban_def.visual_size = { x=1, y=1 }
+oban_def.initial_properties.visual_size = { x=1, y=1 }
 local old_step = oban_def.on_step
 oban_def.on_step = function(self,dtime)
 	if not self.object:get_attach() then return self.object:remove() end
