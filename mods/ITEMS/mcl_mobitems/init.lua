@@ -335,7 +335,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	stack_max = 1,
 	on_place = minetest.item_eat(10, "mcl_core:bowl"),
 	on_secondary_use = minetest.item_eat(10, "mcl_core:bowl"),
-	groups = { food = 3, eatable = 10 },
+	groups = { food = 2, eatable = 10 },
 	_mcl_saturation = 12.0,
 })
 
