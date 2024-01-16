@@ -761,6 +761,36 @@ function mob_class:do_env_damage()
 		end
 	end
 
+	-- Cactus damage
+	local near = minetest.find_node_near(pos, 1, "mcl_core:cactus", true)
+	if not near and near ~= nil then
+		near = find_node_near({x=pos.x, y=pos.y-1, z=pos.z}, 1, "mcl_core:cactus", true)
+	end
+	if near then
+		-- is mob touching the cactus?
+		local dist = vector.distance(pos, near)
+		local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
+		if dist < 1.25 or dist_feet < 1.9 then
+			if self.health ~= 0 then
+				self:damage_mob("cactus", 2)
+
+				if self:check_for_death("cactus", {type = "environment",
+						pos = pos, node = self.standing_in}) then
+					return true
+				end
+			end
+		end
+	end
+	-- is mob standing on the cactus?
+	if self.standing_on == "mcl_core:cactus" or self.standing_in == "mcl_core:cactus" or self.standing_under == "mcl_core:cactus" then
+		self:damage_mob("cactus", 2)
+
+		if self:check_for_death("cactus", {type = "environment",
+				pos = pos, node = self.standing_in}) then
+			return true
+		end
+	end
+
 	-- Drowning damage
 	if self.breath_max ~= -1 then
 		local drowning = false
