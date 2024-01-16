@@ -95,6 +95,12 @@ local function eat_stew_delayed(itemstack, user, pointed_thing)
 			mcl_hunger.eat_internal[name]._custom_var.user,
 			mcl_hunger.eat_internal[name]._custom_var.pointed_thing
 		)
+
+		local user = mcl_hunger.eat_internal[name]._custom_var.user
+
+		minetest.after(0, function()
+			user:get_inventory():set_stack("main", user:get_wield_index(), "mcl_core:bowl")
+		end)
 	end
 
 	mcl_hunger.eat_internal[name]._custom_do_delayed = true -- Only _custom_wrapper will be executed after holding RMB or LMB within a specified delay
