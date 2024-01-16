@@ -67,6 +67,7 @@ minetest.register_on_joinplayer(function(player)
 		_custom_wrapper = nil, -- Will execute alongside minetest.do_item_eat if not empty and _custom_itemstack is equal to current player itemstack
 		_custom_do_delayed = false, -- If true, then will execute only _custom_wrapper after holding RMB or LMB within a delay specified by mcl_hunger.EATING_DELAY (Use to bypass minetest.do_item_eat entirely)
 	}
+	playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
 end)
 
 -- Clear when player leaves
@@ -283,6 +284,18 @@ minetest.register_globalstep(function(dtime)
 
 				if eat_effects_cooldown[player] > 0.2 then
 					eat_effects_cooldown[player] = 0
+
+					if not mcl_hunger.eat_internal[player_name].user then
+						mcl_hunger.eat_internal[player_name].user = player
+					end
+	
+					if not mcl_hunger.eat_internal[player_name].itemname then
+						mcl_hunger.eat_internal[player_name].itemname = current_itemstack:get_name()
+					end
+
+					if not mcl_hunger.eat_internal[player_name].hp_change then
+						mcl_hunger.eat_internal[player_name].hp_change = 0
+					end
 
 					local pos = player:get_pos()
 					local itemname = mcl_hunger.eat_internal[player_name].itemname
