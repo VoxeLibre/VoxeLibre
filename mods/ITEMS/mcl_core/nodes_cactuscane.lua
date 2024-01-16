@@ -137,20 +137,22 @@ minetest.register_node("mcl_core:reeds", {
 	_mcl_hardness = 0,
 })
 
-local function cactus_damage_check(obj)
+-- Moved cactus mob damage logic to /ENTITIES/mcl_mobs/physics.lua
+--[[
+local function cactus_damage_check(obj, is_mob)
 	-- where am I?
 	local pos = obj:get_pos()
 	if pos then
 		-- Am I near a cactus?
-		local near = minetest.find_node_near(pos, 1, "mcl_core:cactus")
+		local near = minetest.find_node_near(pos, 1, "mcl_core:cactus", true)
 		if not near and near ~= nil then
-			near = find_node_near({x=pos.x, y=pos.y-1, z=pos.z}, 1, "mcl_core:cactus")
+			near = find_node_near({x=pos.x, y=pos.y-1, z=pos.z}, 1, "mcl_core:cactus", true)
 		end
 		if near then
 			-- Am I touching the cactus? If so, it hurts
 			local dist = vector.distance(pos, near)
 			local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
-			if dist < 1.1 or dist_feet < 1.1 then
+			if dist < 1.1 or dist_feet < 1.1 or (is_mob and (dist < 1.25 or dist_feet < 1.9)) then
 				if obj:get_hp() > 0 then
 					mcl_util.deal_damage(obj, 1, {type = "cactus"})
 				end
@@ -169,7 +171,8 @@ minetest.register_globalstep(function(dtime)
 	--end
 	for _,ent in pairs(minetest.luaentities) do
 		if ent.is_mob then
-			cactus_damage_check(ent.object)
+			cactus_damage_check(ent.object, true)
 		end
 	end
 end)
+]]
