@@ -146,22 +146,34 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 	end
 	self.object:set_properties(table.merge(base_props, { wield_item = self._item}))
 end
+
 function mcl_itemframes.tpl_entity:get_staticdata()
 	local s = { item = self._item, itemframe_pos = self._itemframe_pos, itemstack = self._itemstack, map_id = self._map_id }
 	s.props = self.object:get_properties()
 	return minetest.serialize(s)
 end
+
 function mcl_itemframes.tpl_entity:on_activate(staticdata, dtime_s)
 	local s = minetest.deserialize(staticdata)
 	if s then
+		if not s._itemframe_pos or not s._itemstack or not s._item then
+			--try to re-initialize items without proper staticdata
+			local p = minetest.find_node_near(self.object:get_pos(), 1, {"group:itemframe"})
+			self.object:remove()
+			if p then
+				update_entity(p)
+			end
+			return
+		end
 		self._itemframe_pos = s.itemframe_pos
 		self._itemstack = s.itemstack
 		self._item = s.item
 		self._map_id = s.map_id
-		update_entity(self._itemframe_pos, ItemStack(self._itemstack))
+		update_entity(self._itemframe_pos)
 		return
 	end
 end
+
 function mcl_itemframes.tpl_entity:on_step(dtime)
 	self._timer = (self._timer and self._timer - dtime) or 1
 	if self._timer > 0 then return end
