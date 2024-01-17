@@ -73,6 +73,7 @@ local function remove_entity(pos)
 		l.object:remove()
 	end
 end
+mcl_itemframes.remove_entity = remove_entity
 
 local function drop_item(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
@@ -88,6 +89,7 @@ local function get_map_id(itemstack)
 end
 
 local function update_entity(pos)
+	if not pos then return end
 	local inv = minetest.get_meta(pos):get_inventory()
 	local itemstack = inv:get_stack("main", 1)
 	if not itemstack then
@@ -127,6 +129,11 @@ end
 
 -- Entity functions
 function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
+	if not itemstack or not itemstack.get_name then
+		self.object:remove()
+		update_entity(pos)
+		return
+	end
 	self._itemframe_pos = pos
 	self._item = itemstack:get_name()
 	self._stack = itemstack
@@ -155,16 +162,15 @@ end
 
 function mcl_itemframes.tpl_entity:on_activate(staticdata, dtime_s)
 	local s = minetest.deserialize(staticdata)
-	if s then
-		if not s._itemframe_pos or not s._itemstack or not s._item then
-			--try to re-initialize items without proper staticdata
-			local p = minetest.find_node_near(self.object:get_pos(), 1, {"group:itemframe"})
-			self.object:remove()
-			if p then
-				update_entity(p)
-			end
-			return
+	if (type(staticdata) == "string" and dtime_s and dtime_s > 0) then
+		--try to re-initialize items without proper staticdata
+		local p = minetest.find_node_near(self.object:get_pos(), 1, {"group:itemframe"})
+		self.object:remove()
+		if p then
+			update_entity(p)
 		end
+		return
+	elseif s then
 		self._itemframe_pos = s.itemframe_pos
 		self._itemstack = s.itemstack
 		self._item = s.item
@@ -200,7 +206,7 @@ end
 
 minetest.register_entity("mcl_itemframes:item", mcl_itemframes.tpl_entity)
 
-mcl_itemframes.register_itemframe("item_frame", {
+mcl_itemframes.register_itemframe("frame", {
 	node = {
 		description = S("Item Frame"),
 		_tt_help = S("Can hold an item"),
@@ -212,7 +218,7 @@ mcl_itemframes.register_itemframe("item_frame", {
 	},
 })
 
-mcl_itemframes.register_itemframe("glow_item_frame", {
+mcl_itemframes.register_itemframe("glow_frame", {
 	node = {
 		description = S("Glow Item Frame"),
 		_tt_help = S("Can hold an item and glows"),
