@@ -250,3 +250,5 @@ minetest.register_craft({
 	output = 'mcl_itemframes:glow_item_frame',
 	recipe = { 'mcl_mobitems:glow_ink_sac', 'mcl_itemframes:item_frame' },
 })
+
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/compat.lua")
