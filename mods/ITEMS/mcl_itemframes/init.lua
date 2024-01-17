@@ -26,8 +26,6 @@ local map_props = {
 	textures = { "blank.png" },
 }
 
-local function block_inv() return 0 end
-
 mcl_itemframes.tpl_node = {
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -43,15 +41,15 @@ mcl_itemframes.tpl_node = {
 	_mcl_hardness = 0.5,
 	_mcl_blast_resistance = 0.5,
 	after_dig_node = mcl_util.drop_items_from_meta_container({"main"}),
-	allow_metadata_inventory_move = block_inv,
-	allow_metadata_inventory_put = block_inv,
-	allow_metadata_inventory_take = block_inv,
+	allow_metadata_inventory_move = function() return 0 end,
+	allow_metadata_inventory_put = function() return 0 end,
+	allow_metadata_inventory_take = function() return 0 end,
 }
 
 mcl_itemframes.tpl_entity = {
 	initial_properties = base_props,
 }
-
+--Utility functions
 local function find_entity(pos)
 	for _,o in pairs(minetest.get_objects_inside_radius(pos, 0.45)) do
 		local l = o:get_luaentity()
@@ -89,14 +87,12 @@ local function get_map_id(itemstack)
 	return map_id
 end
 
-local function update_entity(pos, itemstack)
+local function update_entity(pos)
+	local inv = minetest.get_meta(pos):get_inventory()
+	local itemstack = inv:get_stack("main", 1)
 	if not itemstack then
-		local inv = minetest.get_meta(pos):get_inventory()
-		itemstack = inv:get_stack("main", 1)
-		if not itemstack then
-			remove_entity(pos)
-			return
-		end
+		remove_entity(pos)
+		return
 	end
 	local itemstring = itemstack:get_name()
 	local l = find_or_create_entity(pos)
@@ -107,13 +103,15 @@ local function update_entity(pos, itemstack)
 	l:set_item(itemstack, pos)
 	return l
 end
+mcl_itemframes.update_entity = update_entity
 
+--Node functions
 function mcl_itemframes.tpl_node.on_rightclick(pos, node, clicker, pstack, pointed_thing)
 	local itemstack = pstack:take_item()
 	local inv = minetest.get_meta(pos):get_inventory()
 	drop_item(pos)
 	inv:set_stack("main", 1, itemstack)
-	update_entity(pos, itemstack)
+	update_entity(pos)
 	if not minetest.is_creative_enabled(clicker:get_player_name()) then
 		return pstack
 	end
@@ -127,6 +125,7 @@ function mcl_itemframes.tpl_node.on_construct(pos)
 	inv:set_size("main", 1)
 end
 
+-- Entity functions
 function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 	self._itemframe_pos = pos
 	self._item = itemstack:get_name()
@@ -189,7 +188,7 @@ end
 
 minetest.register_entity("mcl_itemframes:item", mcl_itemframes.tpl_entity)
 
-mcl_itemframes.register_itemframe("frame", {
+mcl_itemframes.register_itemframe("item_frame", {
 	node = {
 		description = S("Item Frame"),
 		_tt_help = S("Can hold an item"),
@@ -201,7 +200,7 @@ mcl_itemframes.register_itemframe("frame", {
 	},
 })
 
-mcl_itemframes.register_itemframe("glow_frame", {
+mcl_itemframes.register_itemframe("glow_item_frame", {
 	node = {
 		description = S("Glow Item Frame"),
 		_tt_help = S("Can hold an item and glows"),
