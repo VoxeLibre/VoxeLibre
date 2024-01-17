@@ -26,6 +26,8 @@ local map_props = {
 	textures = { "blank.png" },
 }
 
+local function block_inv() return 0 end
+
 mcl_itemframes.tpl_node = {
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -40,6 +42,10 @@ mcl_itemframes.tpl_node = {
 	node_placement_prediction = "",
 	_mcl_hardness = 0.5,
 	_mcl_blast_resistance = 0.5,
+	after_dig_node = mcl_util.drop_items_from_meta_container({"main"}),
+	allow_metadata_inventory_move = block_inv,
+	allow_metadata_inventory_put = block_inv,
+	allow_metadata_inventory_take = block_inv,
 }
 
 mcl_itemframes.tpl_entity = {
@@ -70,13 +76,11 @@ local function remove_entity(pos)
 	end
 end
 
-local function drop_item(pos, itemstring)
-	if itemstring and itemstring ~= "" then
-		local stack = ItemStack(itemstring)
-		if minetest.registered_items[stack:get_name()] then
-			minetest.add_item(pos, stack)
-		end
-	end
+local function drop_item(pos)
+	local inv = minetest.get_meta(pos):get_inventory()
+	minetest.add_item(pos, inv:get_stack("main", 1))
+	inv:set_stack("main", 1, ItemStack(""))
+	remove_entity(pos)
 end
 
 local function get_map_id(itemstack)
@@ -87,10 +91,9 @@ end
 
 local function update_entity(pos, itemstack)
 	if not itemstack then
-		local mstring = minetest.get_meta(pos):get_string("item")
-		if mstring ~= "" then
-			itemstack = ItemStack(mstring)
-		else
+		local inv = minetest.get_meta(pos):get_inventory()
+		itemstack = inv:get_stack("main", 1)
+		if not itemstack then
 			remove_entity(pos)
 			return
 		end
@@ -107,20 +110,21 @@ end
 
 function mcl_itemframes.tpl_node.on_rightclick(pos, node, clicker, pstack, pointed_thing)
 	local itemstack = pstack:take_item()
-	local m = minetest.get_meta(pos)
-	drop_item(pos, m:get_string("item"))
-	m:set_string("item", itemstack:to_string())
+	local inv = minetest.get_meta(pos):get_inventory()
+	drop_item(pos)
+	inv:set_stack("main", 1, itemstack)
 	update_entity(pos, itemstack)
 	if not minetest.is_creative_enabled(clicker:get_player_name()) then
 		return pstack
 	end
 end
 
-function mcl_itemframes.tpl_node.after_dig_node(pos, oldnode, oldmetadata, digger)
-	if oldmetadata and oldmetadata.fields and oldmetadata.fields.item then
-		drop_item(pos, oldmetadata.fields.item)
-	end
-	remove_entity(pos)
+mcl_itemframes.tpl_node.on_destruct = remove_entity
+
+function mcl_itemframes.tpl_node.on_construct(pos)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	inv:set_size("main", 1)
 end
 
 function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
