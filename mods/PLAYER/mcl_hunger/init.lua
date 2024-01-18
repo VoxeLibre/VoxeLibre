@@ -43,6 +43,18 @@ mcl_hunger.debug = false
 -- Cooldown timers for each player, to force a short delay between consuming 2 food items
 mcl_hunger.last_eat = {}
 
+-- Is player eating API
+function mcl_hunger.is_eating(name)
+	local result
+	if name then
+		if type(name) ~= "string" then
+			name = name:get_player_name()
+		end
+		result = mcl_hunger.eat_internal[name].is_eating_no_padding
+	end
+	return result
+end
+
 -- Variables for each player, to handle delayed eating
 mcl_hunger.eat_internal = {}
 
@@ -52,6 +64,7 @@ minetest.register_on_joinplayer(function(player)
 
 	mcl_hunger.eat_internal[name] = {
 		is_eating = false,
+		is_eating_no_padding = false,
 		itemname = nil,
 		item_definition = nil,
 		hp_change = nil,
@@ -184,6 +197,7 @@ local function clear_eat_internal_and_timers(player, player_name)
 	playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
 	mcl_hunger.eat_internal[player_name] = {
 		is_eating = false,
+		is_eating_no_padding = false,
 		itemname = nil,
 		item_definition = nil,
 		hp_change = nil,
@@ -253,6 +267,9 @@ minetest.register_globalstep(function(dtime)
 
 		-- Eating delay code
 		if mcl_hunger.eat_internal[player_name].is_eating or mcl_hunger.eat_internal[player_name]._custom_do_delayed then
+			mcl_hunger.eat_internal[player_name].is_eating = true
+			mcl_hunger.eat_internal[player_name].is_eating_no_padding = true
+
 			local control = player:get_player_control()
 			local inv = player:get_inventory()
 			local current_itemstack = player:get_wielded_item()
@@ -340,6 +357,7 @@ minetest.register_globalstep(function(dtime)
 
 			elseif eat_start_timers[player] and eat_start_timers[player] > 0.2 then
 				playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
+				mcl_hunger.eat_internal[player_name].is_eating_no_padding = false
 
 			elseif eat_start_timers[player] and eat_start_timers[player] > mcl_hunger.EATING_TOUCHSCREEN_DELAY_PADDING then
 				clear_eat_internal_and_timers(player, player_name)
