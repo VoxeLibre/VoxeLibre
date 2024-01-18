@@ -770,7 +770,29 @@ function mob_class:do_env_damage()
 		-- is mob touching the cactus?
 		local dist = vector.distance(pos, near)
 		local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
-		if dist < 1.25 or dist_feet < 1.9 then
+		local large_mob = false
+		if self.name == "mobs_mc:ender_dragon" or
+			self.name == "mobs_mc:ghast" or
+			self.name == "mobs_mc:guardian_elder" or
+			self.name == "mobs_mc:hoglin" or
+			self.name == "mobs_mc:zoglin" or
+			self.name == "mobs_mc:horse" or
+			self.name == "mobs_mc:skeleton_horse" or
+			self.name == "mobs_mc:zombie_horse" or
+			self.name == "mobs_mc:donkey" or
+			self.name == "mobs_mc:mule" or
+			self.name == "mobs_mc:iron_golem" or
+			self.name == "mobs_mc:polar_bear" or
+			self.name == "mobs_mc:slime_big" or
+			self.name == "mobs_mc:magma_cube_big" or
+			self.name == "mobs_mc:spider" or
+			self.name == "mobs_mc:cave_spider" or
+			self.name == "mobs_mc:strider" or
+			self.name == "mobs_mc:wither" then
+
+			large_mob = true
+		end
+		if (not large_mob and (dist < 1.03 or dist_feet < 1.6)) or (large_mob and (1.25 or dist_feet < 1.9)) then
 			if self.health ~= 0 then
 				self:damage_mob("cactus", 2)
 
