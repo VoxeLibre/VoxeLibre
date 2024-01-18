@@ -41,6 +41,7 @@ function minetest.do_item_eat(hp_change, replace_with_item, itemstack, user, poi
 		if not no_eat_delay and not mcl_hunger.eat_internal[name].is_eating and not mcl_hunger.eat_internal[name].do_item_eat and (can_eat_when_full or (mcl_hunger.get_hunger(user) < 20)) then
 			local itemname = itemstack:get_name()
 			mcl_hunger.eat_internal[name].is_eating = true
+			mcl_hunger.eat_internal[name].is_eating_no_padding = true
 			mcl_hunger.eat_internal[name].itemname = itemname
 			mcl_hunger.eat_internal[name].item_definition = minetest.registered_items[itemname]
 			mcl_hunger.eat_internal[name].hp_change = hp_change
