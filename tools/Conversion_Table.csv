@@ -960,6 +960,7 @@ Source path,Source file,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/entity/wolf,wolf_collar.png,mobs_mc_wolf_collar.png,,,,,,,
 /assets/minecraft/textures/entity/wolf,wolf.png,mobs_mc_wolf.png,,,,,,,
 /assets/minecraft/textures/entity/wolf,wolf_tame.png,mobs_mc_wolf_tame.png,,,,,,,
+/assets/minecraft/textures/entity/piglin,piglin.png,extra_mobs_piglin.png,,,,,,,
 /assets/minecraft/textures/entity/piglin,zombified_piglin.png,mobs_mc_zombie_pigman.png,,,,,,,
 /assets/minecraft/textures/entity/zombie,zombie.png,mobs_mc_zombie.png,,,,,,,
 /assets/minecraft/textures/gui,icons.png,hbhunger_bgicon.png,16,27,9,9,0,0,y
