@@ -129,6 +129,11 @@ function mcl_player.player_set_skin(player, texture)
 	update_player_textures(player)
 end
 
+function mcl_player.player_get_skin(player)
+	local name = player:get_player_name()
+	return player_textures[name][1]
+end
+
 function mcl_player.player_set_armor(player, texture)
 	local name = player:get_player_name()
 	player_textures[name][2] = texture

@@ -227,5 +227,27 @@ minetest.register_tool("mcl_armor:elytra", {
 	on_place = mcl_armor.equip_on_use,
 	on_secondary_use = mcl_armor.equip_on_use,
 	_mcl_armor_element = "torso",
-	_mcl_armor_texture = "mcl_armor_elytra.png"
+	_mcl_armor_texture = function(obj, itemstack)
+		if obj:is_player() then
+			local cape = mcl_skins.player_skins[obj].cape
+			if cape ~= "blank.png" then
+				return cape:gsub("_body", "_elytra")
+			end
+		end
+		return "mcl_armor_elytra.png"
+	end,
+	_on_equip =  function(obj, itemstack)
+		if not obj:is_player() then return end
+		local cape = mcl_skins.player_skins[obj].cape
+		if cape ~= "blank.png" then
+			local skinval = mcl_player.player_get_skin(obj)
+			skinval = skinval:gsub("%^" .. cape, "")
+			mcl_player.player_set_skin(obj, skinval)
+			-- this doesn't mess with the data mcl_skins has, so when mcl_skins reloads (which happens when the elytra is unequipped), the normal cape returns
+		end
+	end,
+	_on_unequip = function(obj, itemstack)
+		if not obj:is_player() then return end
+		mcl_skins.update_player_skin(obj)
+	end
 })
