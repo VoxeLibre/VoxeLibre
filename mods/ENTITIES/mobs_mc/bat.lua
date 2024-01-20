@@ -150,7 +150,7 @@ mcl_mobs:spawn_specific(
 0,
 maxlight,
 20,
-5000,
+100,
 2,
 mcl_vars.mg_overworld_min,
 mobs_mc.water_level-1)
