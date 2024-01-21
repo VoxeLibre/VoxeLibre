@@ -148,6 +148,22 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		end
 		return itemstack
 	end,
+	on_place = function(itemstack, placer, pointed_thing)
+		local under = pointed_thing.under
+		local above = pointed_thing.above
+		local unode = minetest.get_node(under)
+		if under.y < above.y then
+			minetest.set_node(above, {name = "mcl_crimson:twisting_vines"})
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
+				itemstack:take_item()
+			end
+		else
+			if unode.name == "mcl_crimson:twisting_vines" then
+				return minetest.registered_nodes[unode.name].on_rightclick(under, unode, placer, itemstack, pointed_thing)
+			end
+		end
+		return itemstack
+	end,
 	on_dig = function(pos, node, digger)
 		local above = vector.offset(pos,0,1,0)
 		local abovenode = minetest.get_node(above)
@@ -223,7 +239,22 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		end
 		return itemstack
 	end,
-
+	on_place = function(itemstack, placer, pointed_thing)
+		local under = pointed_thing.under
+		local above = pointed_thing.above
+		local unode = minetest.get_node(under)
+		if under.y > above.y then
+			minetest.set_node(above, {name = "mcl_crimson:weeping_vines"})
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
+				itemstack:take_item()
+			end
+		else
+			if unode.name == "mcl_crimson:weeping_vines" then
+				return minetest.registered_nodes[unode.name].on_rightclick(under, unode, placer, itemstack, pointed_thing)
+			end
+		end
+		return itemstack
+	end,
 	on_dig = function(pos, node, digger)
 		local below = vector.offset(pos,0,-1,0)
 		local belownode = minetest.get_node(below)
