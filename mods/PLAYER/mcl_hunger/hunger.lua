@@ -40,15 +40,17 @@ function minetest.do_item_eat(hp_change, replace_with_item, itemstack, user, poi
 		-- Don't allow eating when player has full hunger bar (some exceptional items apply)
 		if not no_eat_delay and not mcl_hunger.eat_internal[name].is_eating and not mcl_hunger.eat_internal[name].do_item_eat and (can_eat_when_full or (mcl_hunger.get_hunger(user) < 20)) then
 			local itemname = itemstack:get_name()
-			mcl_hunger.eat_internal[name].is_eating = true
-			mcl_hunger.eat_internal[name].is_eating_no_padding = true
-			mcl_hunger.eat_internal[name].itemname = itemname
-			mcl_hunger.eat_internal[name].item_definition = minetest.registered_items[itemname]
-			mcl_hunger.eat_internal[name].hp_change = hp_change
-			mcl_hunger.eat_internal[name].replace_with_item = replace_with_item
-			mcl_hunger.eat_internal[name].itemstack = itemstack
-			mcl_hunger.eat_internal[name].user = user
-			mcl_hunger.eat_internal[name].pointed_thing = pointed_thing
+			table.update(mcl_hunger.eat_internal[name], {
+				is_eating = true,
+				is_eating_no_padding = true,
+				itemname = itemname,
+				item_definition = minetest.registered_items[itemname],
+				hp_change = hp_change,
+				replace_with_item = replace_with_item,
+				itemstack = itemstack,
+				user = user,
+				pointed_thing = pointed_thing
+			})
 		elseif (mcl_hunger.eat_internal[name].do_item_eat or no_eat_delay) and (can_eat_when_full or (mcl_hunger.get_hunger(user) < 20)) then
 			if mcl_hunger.eat_internal[name]._custom_itemstack and
 				mcl_hunger.eat_internal[name]._custom_wrapper and
