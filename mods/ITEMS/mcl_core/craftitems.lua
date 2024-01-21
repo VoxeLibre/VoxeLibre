@@ -183,6 +183,17 @@ end
 
 local function eat_gapple_delayed(itemstack, placer, pointed_thing)
 
+	if pointed_thing.type == "node" then
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+	elseif pointed_thing.type == "object" then
+		return itemstack
+	end
+
 	local function eat_gapple(itemstack, placer, pointed_thing)
 		if pointed_thing.type == "node" then
 			local node = minetest.get_node(pointed_thing.under)
