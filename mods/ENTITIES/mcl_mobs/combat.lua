@@ -35,14 +35,19 @@ function mob_class:day_docile()
 	end
 end
 
--- attack player/mob
-function mob_class:do_attack(player)
+-- get this mob to attack the object
+function mob_class:do_attack(object)
 
 	if self.state == "attack" or self.state == "die" then
 		return
 	end
 
-	self.attack = player
+
+	if object:is_player() and not minetest.settings:get_bool("enable_damage") then
+		return
+	end
+
+	self.attack = object
 	self.state = "attack"
 
 	-- TODO: Implement war_cry sound without being annoying
