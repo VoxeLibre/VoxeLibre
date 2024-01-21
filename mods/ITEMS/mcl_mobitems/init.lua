@@ -147,6 +147,17 @@ end
 
 local function drink_milk_delayed(itemstack, player, pointed_thing)
 
+	if pointed_thing.type == "node" then
+		local node = minetest.get_node(pointed_thing.under)
+		if player and not player:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, player, itemstack) or itemstack
+			end
+		end
+	elseif pointed_thing.type == "object" then
+		return itemstack
+	end
+
 	local function drink_milk(itemstack, player, pointed_thing)
 		--local bucket = minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
 		-- Check if we were allowed to drink this (eat delay check)
