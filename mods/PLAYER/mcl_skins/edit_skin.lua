@@ -163,6 +163,8 @@ function mcl_skins.update_player_skin(player)
 	local skin = mcl_skins.player_skins[player]
 	local skinval = mcl_skins.compile_skin(skin)
 
+	if not skin.cape then skin.cape = "blank.png" end
+
 	if player:get_inventory():get_stack("armor", 3):get_name() == "mcl_armor:elytra" then
 		skinval = skinval:gsub("%^" .. skin.cape, "")
 		-- don't render the "normal" cape on players while wearing the elytra.
@@ -283,7 +285,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 
 
 	local cape_tab = active_tab == "cape"
-	
+
 	if active_tab == "skin" then
 		local page_start = (page_num - 1) * 8 - 1
 		local page_end = math.min(page_start + 8 - 1, #mcl_skins.simple_skins)
@@ -351,7 +353,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 		end
 
 		local slot_offset = 0
-		
+
 		if page_num == 1 then
 			formspec = formspec ..
 				"label[6,3;" .. S("(None)") .. "]"..
@@ -486,7 +488,7 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 	end
 
 	if page_num > 1 then
-		if cape_tab then 
+		if cape_tab then
 			formspec = formspec ..
 				"image_button[4.5,0.7;1,1;mcl_skins_arrow.png^[transformFX;previous_page;]"
 		else
