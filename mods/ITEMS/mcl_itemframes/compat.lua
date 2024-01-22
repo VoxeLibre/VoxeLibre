@@ -1,8 +1,6 @@
 local entity_stub = {
 	on_activate = function(self)
-		local pos = self.object:get_pos()
 		self.object:remove()
-		mcl_itemframes.update_entity(pos)
 	end
 }
 
