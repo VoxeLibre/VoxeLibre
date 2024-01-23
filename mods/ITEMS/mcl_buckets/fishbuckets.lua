@@ -49,7 +49,6 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 			end
 			if water then
 				minetest.set_node(pos,{name = water})
-				blockwatch.log_event(pos, "bucket_fish", placer:get_player_name(), fish)
 			end
 			if not placer or not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack = ItemStack("mcl_buckets:bucket_empty")

@@ -470,7 +470,6 @@ function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 	end
 
 	add_node(pointed_thing.above, {name="mcl_fire:fire"})
-	blockwatch.log_event(pointed_thing.above, "use", pname, "flint_and_steel")
 end
 
 minetest.register_lbm({

@@ -185,7 +185,6 @@ local function on_place_bucket(itemstack, user, pointed_thing)
 
 				-- Place liquid
 				place_liquid(pos, node_place)
-				blockwatch.log_event(pos, "bucket-place", player_name, node_place)
 
 				-- Update doc mod
 				if mod_doc and doc.entry_exists("nodes", node_place) then
@@ -234,8 +233,6 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 			end
 			add_node(under, {name="air"})
 			sound_take(node_name, under)
-			blockwatch.log_event(under, "bucket-take", user:get_player_name(), node_name)
-
 
 			if mod_doc and doc.entry_exists("nodes", node_name) then
 				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_name)
