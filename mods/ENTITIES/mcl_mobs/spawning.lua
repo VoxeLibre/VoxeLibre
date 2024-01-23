@@ -16,6 +16,7 @@ local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local get_biome_name               = minetest.get_biome_name
 local get_objects_inside_radius    = minetest.get_objects_inside_radius
 local get_connected_players        = minetest.get_connected_players
+local minetest_get_perlin          = minetest.get_perlin
 
 local math_random    = math.random
 local math_floor     = math.floor
@@ -95,6 +96,19 @@ mcl_log("Percentage of hostile spawns are group: " .. hostile_group_percentage_s
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
+
+local noise_params = {
+	offset = 0,
+	scale  = 3,
+	spread = {
+		x = 301,
+		y = 50,
+		z = 304,
+	},
+	seed = 100,
+	octaves = 3,
+	persistence = 0.5,
+}
 
 -- THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
 -- Also used for missing parameter
@@ -432,6 +446,7 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 local spawn_dictionary = {}
 --this is where all of the spawning information  is kept for mobs that don't naturally spawn
 local non_spawn_dictionary = {}
+local summary_chance = 0
 
 function mcl_mobs:spawn_setup(def)
 	if not mobs_spawn then return end
@@ -493,6 +508,7 @@ function mcl_mobs:spawn_setup(def)
 		check_position   = check_position,
 		on_spawn         = on_spawn,
 	}
+	summary_chance = summary_chance + chance
 end
 
 function mcl_mobs:mob_light_lvl(mob_name, dimension)
@@ -596,7 +612,9 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	spawn_dictionary[key]["day_toggle"] = day_toggle
 	spawn_dictionary[key]["check_position"] = check_position
 
+	summary_chance = summary_chance + chance
 end
+
 
 local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
@@ -857,6 +875,8 @@ minetest.register_chatcommand("spawn_mob",{
 
 if mobs_spawn then
 
+	local perlin_noise
+
 	-- Get pos to spawn, x and z are randomised, y is range
 
 
@@ -953,21 +973,9 @@ if mobs_spawn then
 		return spawning_position
 	end
 
-	local cumulative_chance = nil
-	local mob_library_worker_table = nil
-	local function initialize_spawn_data()
-		if not mob_library_worker_table then
-			mob_library_worker_table = table_copy(spawn_dictionary)
-		end
-		if not cumulative_chance then
-			cumulative_chance = 0
-			for k, v in pairs(mob_library_worker_table) do
-				cumulative_chance = cumulative_chance + v.chance
-			end
-		end
-	end
-
 	local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
+		--create a disconnected clone of the spawn dictionary, prevents memory leak
+		local mob_library_worker_table = table_copy(spawn_dictionary)
 
 		local spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES)
 		if not spawning_position then
@@ -980,25 +988,22 @@ if mobs_spawn then
 		--output_mob_stats(mob_counts_wide)
 
 		--grab mob that fits into the spawning location
-		--use random weighted choice with replacement to grab a mob, don't exclude any possibilities
-		--shuffle table once every loop to provide equal inclusion probability to all mobs
-		--repeat grabbing a mob to maintain existing spawn rates
-		local spawn_loop_counter = #mob_library_worker_table
+		--randomly grab a mob, don't exclude any possibilities
+		perlin_noise = perlin_noise or minetest_get_perlin(noise_params)
+		local noise = perlin_noise:get_3d(spawning_position)
+		local current_summary_chance = summary_chance
 
-		while spawn_loop_counter > 0 do
-			table.shuffle(mob_library_worker_table)
-			local mob_chance_offset = math_random(1, cumulative_chance)
+		table.shuffle(mob_library_worker_table)
+
+		while #mob_library_worker_table > 0 do
+			local mob_chance_offset = (math_round(noise * current_summary_chance + 12345) % current_summary_chance) + 1
 			local mob_index = 1
 			local mob_chance = mob_library_worker_table[mob_index].chance
 			local step_chance = mob_chance
 			while step_chance < mob_chance_offset do
 				mob_index = mob_index + 1
-				if mob_index <= #mob_library_worker_table then
-					mob_chance = mob_library_worker_table[mob_index].chance
-					step_chance = step_chance + mob_chance
-				else
-					break
-				end
+				mob_chance = mob_library_worker_table[mob_index].chance
+				step_chance = step_chance + mob_chance
 			end
 			--minetest.log(mob_def.name.." "..step_chance.. " "..mob_chance)
 
@@ -1083,7 +1088,8 @@ if mobs_spawn then
 				end
 
 			end
-			spawn_loop_counter = spawn_loop_counter - 1
+			current_summary_chance = current_summary_chance - mob_chance
+			table_remove(mob_library_worker_table, mob_index)
 		end
 	end
 
@@ -1095,7 +1101,6 @@ if mobs_spawn then
 
 		timer = timer + dtime
 		if timer < WAIT_FOR_SPAWN_ATTEMPT then return end
-		initialize_spawn_data()
 		timer = 0
 
 		local players = get_connected_players()

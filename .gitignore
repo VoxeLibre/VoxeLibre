@@ -6,5 +6,3 @@
 /.idea/
 *.xcf
 .Rproj.user
-prompt.txt
-__pycache__

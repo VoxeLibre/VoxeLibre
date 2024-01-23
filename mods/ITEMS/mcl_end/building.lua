@@ -59,18 +59,16 @@ minetest.register_node("mcl_end:purpur_pillar", {
 	_mcl_hardness = 1.5,
 })
 
-local end_rod_name = "mcl_end:end_rod"
-local end_rod_side_tex = "mcl_end_end_rod_side.png"
-local end_rod_def = {
+minetest.register_node("mcl_end:end_rod", {
 	description = S("End Rod"),
 	_doc_items_longdesc = S("End rods are decorative light sources."),
 	tiles = {
 		"mcl_end_end_rod_top.png",
 		"mcl_end_end_rod_bottom.png",
-		end_rod_side_tex,
-		end_rod_side_tex,
-		end_rod_side_tex,
-		end_rod_side_tex,
+		"mcl_end_end_rod_side.png",
+		"mcl_end_end_rod_side.png",
+		"mcl_end_end_rod_side.png",
+		"mcl_end_end_rod_side.png",
 	},
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -78,7 +76,7 @@ local end_rod_def = {
 	paramtype2 = "facedir",
 	light_source = minetest.LIGHT_MAX,
 	sunlight_propagates = true,
-	groups = { dig_immediate=3, deco_block=1, destroy_by_lava_flow=1, end_rod=1 },
+	groups = { dig_immediate=3, deco_block=1, destroy_by_lava_flow=1, },
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -134,58 +132,7 @@ local end_rod_def = {
 
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 0,
-}
-minetest.register_node(end_rod_name, end_rod_def)
-
--- register colored end_rods
-local colored_end_rods = {
-	{"white",      S("White End Rod"),      	"white"},
-	{"grey",       S("Grey End Rod"),       	"dark_grey"},
-	{"silver",     S("Light Grey End Rod"),		"grey"},
-	{"black",      S("Black End Rod"),      	"black"},
-	{"red",        S("Red End Rod"),        	"red"},
-	{"yellow",     S("Yellow End Rod"),     	"yellow"},
-	{"green",      S("Green End Rod"),      	"dark_green"},
-	{"cyan",       S("Cyan End Rod"),       	"cyan"},
-	{"blue",       S("Blue End Rod"),       	"blue"},
-	{"magenta",    S("Magenta End Rod"),    	"magenta"},
-	{"orange",     S("Orange End Rod"),     	"orange"},
-	{"purple",     S("Purple End Rod"),     	"violet"},
-	{"brown",      S("Brown End Rod"),      	"brown"},
-	{"pink",       S("Pink End Rod"),       	"pink"},
-	{"lime",       S("Lime End Rod"),       	"green"},
-	{"lightblue",  S("Light Blue End Rod"), 	"lightblue"},
-}
-local top_mask = "^[mask:mobs_mc_empty.png\\^[fill\\:2x2\\:7,7\\:white"
-local side_mask = "^[mask:mobs_mc_empty.png\\^[fill\\:16x15\\:0,0\\:white"
-for num, row in ipairs(colored_end_rods) do
-	local name = row[1]
-	local desc = row[2]
-	local dye = row[3]
-	local def = table.copy(end_rod_def)
-	def.description = desc
-	def._doc_items_longdesc = nil
-	def._doc_items_create_entry = false
-	local side_tex
-	if name == "pink" then
-		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
-		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
-	elseif num > 4 then
-		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:300^[opacity:120)"
-		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:300^[opacity:120)"
-	else
-		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:-100^[opacity:170)"
-		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:-100^[opacity:170)"
-	end
-	for i=3, 6 do def.tiles[i] = side_tex end
-	minetest.register_node(end_rod_name.."_"..name, def)
-	minetest.register_craft({
-		type = "shapeless",
-		output = end_rod_name.."_"..name,
-		recipe = {"group:end_rod", "mcl_dye:"..dye}
-	})
-end
-
+})
 
 minetest.register_node("mcl_end:dragon_egg", {
 	description = S("Dragon Egg"),

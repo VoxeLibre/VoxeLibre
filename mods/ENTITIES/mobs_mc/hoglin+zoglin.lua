@@ -31,9 +31,8 @@ local hoglin = {
 	} },
 	visual_size = {x=3, y=3},
 	sounds = {
-		random = "extra_mobs_hoglin.1",
+		random = "extra_mobs_hoglin",
 		damage = "extra_mobs_hoglin_hurt",
-		death = "extra_mobs_hoglin_hurt",
 		distance = 16,
 	},
 	jump = true,
@@ -93,12 +92,6 @@ local zoglin = table.copy(hoglin)
 zoglin.description = S("Zoglin")
 zoglin.fire_resistant = 1
 zoglin.textures = {"extra_mobs_zoglin.png"}
-sounds = {
-		random = "extra_mobs_hoglin.2",
-		damage = "extra_mobs_hoglin_hurt",
-		death = "extra_mobs_hoglin_hurt",
-		distance = 16,
-        }
 zoglin.do_custom = function()
 	return
 end
@@ -136,7 +129,7 @@ mcl_mobs:spawn_specific(
 0,
 minetest.LIGHT_MAX+1,
 30,
-200,
+6000,
 3,
 mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)

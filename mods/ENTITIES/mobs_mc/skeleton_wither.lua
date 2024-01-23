@@ -116,7 +116,7 @@ mcl_mobs:spawn_specific(
 0,
 7,
 30,
-500,
+5000,
 5,
 mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)

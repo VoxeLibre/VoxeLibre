@@ -186,7 +186,7 @@ mcl_mobs:spawn_specific(
 0,
 minetest.LIGHT_MAX+1,
 30,
-300,
+15000,
 5,
 mobs_mc.water_level+15,
 mcl_vars.mg_overworld_max)

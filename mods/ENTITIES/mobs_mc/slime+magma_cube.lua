@@ -6,7 +6,6 @@ local MAPBLOCK_SIZE = 16
 local seed = minetest.get_mapgen_setting("seed")
 
 local slime_chunk_match
-local slime_chunk_spawn_max = mcl_worlds.layer_to_y(40)
 local x_modifier
 local z_modifier
 
@@ -167,11 +166,11 @@ local swamp_light_max = 7
 local function slime_spawn_check(pos, environmental_light, artificial_light, sky_light)
 	local maxlight = swamp_light_max
 
-	if pos.y <= slime_chunk_spawn_max and is_slime_chunk(pos) then
+	if is_slime_chunk(pos) then
 		maxlight = minetest.LIGHT_MAX + 1
 	end
 
-	return math.max(artificial_light, sky_light) <= maxlight
+	return artificial_light <= maxlight
 end
 
 -- Slime
@@ -322,7 +321,7 @@ cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
-1000,
+12000,
 4,
 cave_min,
 cave_max,
@@ -336,7 +335,7 @@ swampy_biomes,
 0,
 swamp_light_max,
 30,
-1000,
+12000,
 4,
 swamp_min,
 swamp_max)
@@ -349,7 +348,7 @@ cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
-1000,
+8500,
 4,
 cave_min,
 cave_max,
@@ -363,7 +362,7 @@ swampy_biomes,
 0,
 swamp_light_max,
 30,
-1000,
+8500,
 4,
 swamp_min,
 swamp_max)
@@ -376,7 +375,7 @@ cave_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
-1000,
+10000,
 4,
 cave_min,
 cave_max,
@@ -390,7 +389,7 @@ swampy_biomes,
 0,
 swamp_light_max,
 30,
-1000,
+10000,
 4,
 swamp_min,
 swamp_max)
@@ -513,7 +512,7 @@ magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
-100,
+15000,
 4,
 nether_min,
 nether_max)
@@ -526,7 +525,7 @@ magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
-100,
+15500,
 4,
 nether_min,
 nether_max)
@@ -539,7 +538,7 @@ magma_cube_biomes,
 0,
 minetest.LIGHT_MAX+1,
 30,
-100,
+16000,
 4,
 nether_min,
 nether_max)

@@ -3,19 +3,6 @@ mcl_inventory = {}
 dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/creative.lua")
 dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/survival.lua")
 
-local old_is_creative_enabled = minetest.is_creative_enabled
-
-function minetest.is_creative_enabled(name)
-	if old_is_creative_enabled(name) then return true end
-	if not name then return false end
-	assert(type(name) == "string", "minetest.is_creative_enabled requires a string (the playername) argument.")
-	local p = minetest.get_player_by_name(name)
-	if p then
-		return p:get_meta():get_string("gamemode") == "creative"
-	end
-	return false
-end
-
 ---@param player mt.PlayerObjectRef
 ---@param armor_change_only? boolean
 local function set_inventory(player, armor_change_only)
@@ -86,14 +73,12 @@ end)
 
 ---@param player mt.PlayerObjectRef
 function mcl_inventory.update_inventory(player)
-	local player_name = player:get_player_name()
-	local is_gamemode_creative = minetest.is_creative_enabled(player_name)
-	if is_gamemode_creative then
+	local player_gamemode = mcl_gamemode.get_gamemode(player)
+	if player_gamemode == "creative" then
 		mcl_inventory.set_creative_formspec(player)
-	elseif not is_gamemode_creative then
+	elseif player_gamemode == "survival" then
 		player:set_inventory_formspec(mcl_inventory.build_survival_formspec(player))
 	end
-	mcl_meshhand.update_player(player)
 end
 
 mcl_gamemode.register_on_gamemode_change(function(player, old_gamemode, new_gamemode)

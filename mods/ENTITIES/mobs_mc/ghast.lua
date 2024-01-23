@@ -33,7 +33,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 		death = "mobs_mc_zombie_death",
 		attack = "mobs_fireball",
 		random = "mobs_eerie",
-		distance = 80,
+		distance = 16,
 		-- TODO: damage
 		-- TODO: better death
 	},
@@ -50,10 +50,10 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 		run_start = 0,		run_end = 40,
 	},
 	fall_damage = 0,
-	view_range = 64,
+	view_range = 100,
 	attack_type = "dogshoot",
 	arrow = "mobs_mc:fireball",
-	shoot_interval = 3,
+	shoot_interval = 3.5,
 	shoot_offset = -5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,
@@ -97,7 +97,7 @@ mcl_mobs:spawn_specific(
 0,
 7,
 30,
-400,
+72000,
 2,
 mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
@@ -107,7 +107,7 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	visual = "sprite",
 	visual_size = {x = 1, y = 1},
 	textures = {"mcl_fire_fire_charge.png"},
-	velocity = 5,
+	velocity = 15,
 	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
 	_is_fireball = true,
 

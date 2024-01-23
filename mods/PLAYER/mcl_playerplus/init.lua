@@ -366,7 +366,7 @@ minetest.register_globalstep(function(dtime)
 			set_properties(player, player_props_elytra)
 
 			-- control body bone when flying
-			local body_rot = vector.new(degrees(dir_to_pitch(player_velocity)) + 110, -player_vel_yaw + yaw, 180)
+			local body_rot = vector.new((75 - degrees(dir_to_pitch(player_velocity))), -player_vel_yaw + yaw, 0)
 			set_bone_pos(player, "Body_Control", nil, body_rot)
 		elseif parent then
 			set_properties(player, player_props_riding)

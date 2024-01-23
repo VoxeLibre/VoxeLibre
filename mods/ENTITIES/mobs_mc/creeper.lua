@@ -407,7 +407,7 @@ mcl_mobs:spawn_specific(
 0,
 7,
 20,
-1000,
+16500,
 2,
 mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)

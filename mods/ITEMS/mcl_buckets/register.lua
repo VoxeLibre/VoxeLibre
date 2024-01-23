@@ -32,6 +32,7 @@ if mod_mcl_core then
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
 				if nn ~= "mcl_cauldrons:cauldron_3_lava" then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3_lava"})
+					
 				end
 				sound_place("mcl_core:lava_source", pos)
 				return false, true

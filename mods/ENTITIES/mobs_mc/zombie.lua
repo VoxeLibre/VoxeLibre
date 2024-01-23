@@ -243,7 +243,7 @@ mcl_mobs:spawn_specific(
 0,
 7,
 30,
-1000,
+6000,
 4,
 mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
@@ -332,7 +332,7 @@ mcl_mobs:spawn_specific(
 0,
 7,
 30,
-50,
+60000,
 4,
 mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
@@ -348,7 +348,7 @@ mcl_mobs:spawn_specific(
 0,
 7,
 30,
-2400,
+6500,
 4,
 mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
@@ -362,7 +362,7 @@ mcl_mobs:spawn_specific(
 0,
 7,
 30,
-120,
+65000,
 4,
 mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)

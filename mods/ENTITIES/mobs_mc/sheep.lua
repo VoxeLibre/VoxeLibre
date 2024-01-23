@@ -379,7 +379,7 @@ mcl_mobs:spawn_specific(
 9,
 minetest.LIGHT_MAX+1,
 30,
-120,
+15000,
 3,
 mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)

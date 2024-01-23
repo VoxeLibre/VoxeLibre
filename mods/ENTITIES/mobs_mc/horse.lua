@@ -609,7 +609,7 @@ mcl_mobs:spawn_specific(
 0,
 minetest.LIGHT_MAX+1,
 30,
-40,
+15000,
 4,
 mobs_mc.water_level+3,
 mcl_vars.mg_overworld_max)
@@ -632,7 +632,7 @@ mcl_mobs:spawn_specific(
 9,
 minetest.LIGHT_MAX+1,
 30,
-10,
+15000,
 4,
 mobs_mc.water_level+3,
 mcl_vars.mg_overworld_max)
