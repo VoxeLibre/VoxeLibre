@@ -181,6 +181,67 @@ local function eat_gapple(itemstack, placer, pointed_thing)
 	return gapple_hunger_restore(itemstack, placer, pointed_thing)
 end
 
+local function eat_gapple_delayed(itemstack, placer, pointed_thing)
+
+	if pointed_thing.type == "node" then
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+	elseif pointed_thing.type == "object" then
+		return itemstack
+	end
+
+	local function eat_gapple(itemstack, placer, pointed_thing)
+		if pointed_thing.type == "node" then
+			local node = minetest.get_node(pointed_thing.under)
+			if placer and not placer:get_player_control().sneak then
+				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				end
+			end
+		elseif pointed_thing.type == "object" then
+			return itemstack
+		end
+
+		local regen_duration, absorbtion_factor = 5, 1
+		if itemstack:get_name() == "mcl_core:apple_gold_enchanted" then
+			regen_duration, absorbtion_factor = 20, 4
+			mcl_potions.fire_resistance_func(placer, 1, 300)
+			mcl_potions.leaping_func(placer, 1, 300)
+			if enable_fapples then
+				mcl_potions.swiftness_func(placer, absorbtion_factor, 120)
+			end
+		end
+		-- TODO: Absorbtion
+		mcl_potions.regeneration_func(placer, 2, regen_duration)
+		--return gapple_hunger_restore(itemstack, placer, pointed_thing)
+	end
+
+	-- Wrapper for handling mcl_hunger delayed eating
+	local name = placer:get_player_name()
+	mcl_hunger.eat_internal[name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
+	mcl_hunger.eat_internal[name]._custom_var = {
+		itemstack = itemstack,
+		placer = placer,
+		pointed_thing = pointed_thing,
+	}
+	mcl_hunger.eat_internal[name]._custom_func = eat_gapple
+	mcl_hunger.eat_internal[name]._custom_wrapper = function(name)
+
+		mcl_hunger.eat_internal[name]._custom_func(
+			mcl_hunger.eat_internal[name]._custom_var.itemstack,
+			mcl_hunger.eat_internal[name]._custom_var.placer,
+			mcl_hunger.eat_internal[name]._custom_var.pointed_thing
+		)
+	end
+
+	--mcl_hunger.eat_internal[name]._custom_do_delayed = true -- Only _custom_wrapper will be executed after holding RMB or LMB within a specified delay
+	minetest.do_item_eat(4, nil, itemstack, placer, pointed_thing)
+end
+
 minetest.register_craftitem("mcl_core:apple_gold", {
 	-- TODO: Add special highlight color
 	description = S("Golden Apple"),
@@ -188,8 +249,10 @@ minetest.register_craftitem("mcl_core:apple_gold", {
 	wield_image = "mcl_core_apple_golden.png",
 	inventory_image = "mcl_core_apple_golden.png",
 	stack_max = 64,
-	on_place = eat_gapple,
-	on_secondary_use = eat_gapple,
+	--on_place = eat_gapple, -- Will do effect immediately but not reduce item count until eating delay ends which makes it exploitable by deliberately not finishing delay
+	--on_secondary_use = eat_gapple,
+	on_place = eat_gapple_delayed,
+	on_secondary_use = eat_gapple_delayed,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1 },
 	_mcl_saturation = 9.6,
 })
@@ -200,8 +263,10 @@ minetest.register_craftitem("mcl_core:apple_gold_enchanted", {
 	wield_image = "mcl_core_apple_golden.png" .. mcl_enchanting.overlay,
 	inventory_image = "mcl_core_apple_golden.png" .. mcl_enchanting.overlay,
 	stack_max = 64,
-	on_place = eat_gapple,
-	on_secondary_use = eat_gapple,
+	--on_place = eat_gapple,
+	--on_secondary_use = eat_gapple,
+	on_place = eat_gapple_delayed,
+	on_secondary_use = eat_gapple_delayed,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1 },
 	_mcl_saturation = 9.6,
 })

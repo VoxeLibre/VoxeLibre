@@ -105,6 +105,10 @@ mcl_hunger_debug (Hunger debug) bool false
 # Default: 0.5 s
 mcl_health_regen_delay (Health regen delay) float 0.5 0
 
+# Eating delay while holding right-click
+# Default: 1.61 s
+mcl_eating_delay (Eating delay) float 1.61 0
+
 [Mobs]
 # If enabled, mobs will spawn naturally. This does not affect
 # affect mob spawners.

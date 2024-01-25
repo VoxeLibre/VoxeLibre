@@ -30,6 +30,10 @@ mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
 mcl_hunger.EXHAUST_HUNGER = 5 -- Hunger status effect at base level.
 mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
 
+mcl_hunger.EATING_DELAY = tonumber(minetest.settings:get("mcl_eating_delay")) or 1.61
+mcl_hunger.EATING_WALK_SPEED = tonumber(minetest.settings:get("movement_speed_crouch")) / tonumber(minetest.settings:get("movement_speed_walk"))
+mcl_hunger.EATING_TOUCHSCREEN_DELAY_PADDING = 0.75
+
 mcl_hunger.SATURATION_INIT = 5 -- Initial saturation for new/respawning players
 
 -- Debug Mode. If enabled, saturation and exhaustion are shown as well.
@@ -38,6 +42,53 @@ mcl_hunger.debug = false
 
 -- Cooldown timers for each player, to force a short delay between consuming 2 food items
 mcl_hunger.last_eat = {}
+
+-- Is player eating API
+function mcl_hunger.is_eating(name)
+	local result
+	if name then
+		if type(name) ~= "string" then
+			name = name:get_player_name()
+		end
+		result = mcl_hunger.eat_internal[name].is_eating_no_padding
+	end
+	return result
+end
+
+-- Variables for each player, to handle delayed eating
+mcl_hunger.eat_internal = {}
+
+-- Set per player internal variables for delayed eating
+minetest.register_on_joinplayer(function(player)
+	local name = player:get_player_name()
+
+	mcl_hunger.eat_internal[name] = {
+		is_eating = false,
+		is_eating_no_padding = false,
+		itemname = nil,
+		item_definition = nil,
+		hp_change = nil,
+		replace_with_item = nil,
+		itemstack = nil,
+		user = nil,
+		pointed_thing = nil,
+		pitch = nil,
+		do_item_eat = false,
+		_custom_itemstack = nil, -- Used as comparison to make sure _custom_wrapper only executes when the same item is eaten
+		_custom_var = {}, -- Variables that can be used by _custom_var and _custom_wrapper
+		_custom_func = nil, -- Can be executed by _custom_wrapper
+		_custom_wrapper = nil, -- Will execute alongside minetest.do_item_eat if not empty and _custom_itemstack is equal to current player itemstack
+		_custom_do_delayed = false, -- If true, then will execute only _custom_wrapper after holding RMB or LMB within a delay specified by mcl_hunger.EATING_DELAY (Use to bypass minetest.do_item_eat entirely)
+	}
+	playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
+end)
+
+-- Clear when player leaves
+minetest.register_on_leaveplayer(function(player)
+	local name = player:get_player_name()
+
+	mcl_hunger.eat_internal[name] = nil
+end)
 
 dofile(modpath.."/api.lua")
 dofile(modpath.."/hunger.lua")
@@ -138,6 +189,35 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 end)
 
 local food_tick_timers = {} -- one food_tick_timer per player, keys are the player-objects
+local eat_start_timers = {}
+local eat_tick_timers = {}
+local eat_effects_cooldown = {}
+
+local function clear_eat_internal_and_timers(player, player_name)
+	playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
+	mcl_hunger.eat_internal[player_name] = {
+		is_eating = false,
+		is_eating_no_padding = false,
+		itemname = nil,
+		item_definition = nil,
+		hp_change = nil,
+		replace_with_item = nil,
+		itemstack = nil,
+		user = nil,
+		pointed_thing = nil,
+		pitch = nil,
+		do_item_eat = false,
+		_custom_itemstack = nil,
+		_custom_var = {},
+		_custom_func = nil,
+		_custom_wrapper = nil,
+		_custom_do_delayed = false,
+	}
+	eat_start_timers[player] = 0
+	eat_tick_timers[player] = 0
+	eat_effects_cooldown[player] = 0
+end
+
 minetest.register_globalstep(function(dtime)
 	for _,player in pairs(minetest.get_connected_players()) do
 
@@ -184,6 +264,109 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		food_tick_timers[player] = food_tick_timer -- update food_tick_timer table
+
+		-- Eating delay code
+		if mcl_hunger.eat_internal[player_name].is_eating or mcl_hunger.eat_internal[player_name]._custom_do_delayed then
+			mcl_hunger.eat_internal[player_name].is_eating = true
+			mcl_hunger.eat_internal[player_name].is_eating_no_padding = true
+
+			local control = player:get_player_control()
+			local inv = player:get_inventory()
+			local current_itemstack = player:get_wielded_item()
+
+			if not eat_start_timers[player] then
+				eat_start_timers[player] = 0
+			end
+
+			eat_start_timers[player] = eat_start_timers[player] + dtime
+
+			if not eat_tick_timers[player] then
+				eat_tick_timers[player] = 0
+			end
+
+			if not eat_effects_cooldown[player] then
+				eat_effects_cooldown[player] = 0
+			end
+
+			if not mcl_hunger.eat_internal[player_name].pitch then
+				mcl_hunger.eat_internal[player_name].pitch = 1 + math.random(-10, 10)*0.005
+			end
+
+			-- check if holding RMB (or LMB as workaround for touchscreen)
+			if (current_itemstack == mcl_hunger.eat_internal[player_name].itemstack or current_itemstack == mcl_hunger.eat_internal[player_name]._custom_itemstack) and (control.RMB or control.LMB) then
+				eat_tick_timers[player] = eat_tick_timers[player] + dtime
+				eat_effects_cooldown[player] = eat_effects_cooldown[player] + dtime
+
+				playerphysics.add_physics_factor(player, "speed", "mcl_hunger:eating_speed", mcl_hunger.EATING_WALK_SPEED)
+
+				if eat_effects_cooldown[player] > 0.2 then
+					eat_effects_cooldown[player] = 0
+
+					if not mcl_hunger.eat_internal[player_name].user then
+						mcl_hunger.eat_internal[player_name].user = player
+					end
+	
+					if not mcl_hunger.eat_internal[player_name].itemname then
+						mcl_hunger.eat_internal[player_name].itemname = current_itemstack:get_name()
+					end
+
+					if not mcl_hunger.eat_internal[player_name].hp_change then
+						mcl_hunger.eat_internal[player_name].hp_change = 0
+					end
+
+					local pos = player:get_pos()
+					local itemname = mcl_hunger.eat_internal[player_name].itemname
+					local def = minetest.registered_items[itemname]
+
+					mcl_hunger.eat_effects(
+						mcl_hunger.eat_internal[player_name].user,
+						mcl_hunger.eat_internal[player_name].itemname,
+						pos,
+						mcl_hunger.eat_internal[player_name].hp_change,
+						def,
+						mcl_hunger.eat_internal[player_name].pitch
+					)
+				end
+
+				-- check if eating delay is over
+				if eat_tick_timers[player] >= mcl_hunger.EATING_DELAY then
+
+					if not mcl_hunger.eat_internal[player_name]._custom_do_delayed then
+						mcl_hunger.eat_internal[player_name].do_item_eat = true
+
+						minetest.do_item_eat(
+							mcl_hunger.eat_internal[player_name].hp_change,
+							mcl_hunger.eat_internal[player_name].replace_with_item,
+							mcl_hunger.eat_internal[player_name].itemstack,
+							mcl_hunger.eat_internal[player_name].user,
+							mcl_hunger.eat_internal[player_name].pointed_thing
+						)
+
+					-- bypass minetest.do_item_eat and only execute _custom_wrapper
+					elseif mcl_hunger.eat_internal[player_name]._custom_itemstack and
+						mcl_hunger.eat_internal[player_name]._custom_wrapper and
+						mcl_hunger.eat_internal[player_name]._custom_itemstack == current_itemstack then
+
+						mcl_hunger.eat_internal[player_name]._custom_wrapper(player_name)
+
+						player:get_inventory():set_stack("main", player:get_wield_index(), itemstack)
+					end
+
+					clear_eat_internal_and_timers(player, player_name)
+				end
+
+			elseif eat_start_timers[player] and eat_start_timers[player] > 0.2 then
+				playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
+				mcl_hunger.eat_internal[player_name].is_eating_no_padding = false
+
+			elseif eat_start_timers[player] and eat_start_timers[player] > mcl_hunger.EATING_TOUCHSCREEN_DELAY_PADDING then
+				clear_eat_internal_and_timers(player, player_name)
+			end
+		end
+
+		if eat_start_timers[player] and eat_start_timers[player] > mcl_hunger.EATING_DELAY + mcl_hunger.EATING_TOUCHSCREEN_DELAY_PADDING then
+			clear_eat_internal_and_timers(player, player_name)
+		end
 	end
 end)
 
