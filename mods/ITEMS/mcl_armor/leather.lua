@@ -53,10 +53,10 @@ local function get_texture_function(texture)
 		end
 
 		if mcl_enchanting.is_enchanted(itemstack:get_name()) then
-			minetest.chat_send_all(out..mcl_enchanting.overlay)
+-- 			minetest.chat_send_all(out..mcl_enchanting.overlay) -- TODO remove
 			return out..mcl_enchanting.overlay
 		else
-			minetest.chat_send_all(out)
+-- 			minetest.chat_send_all(out) -- TODO remove
 			return out
 		end
 	end
@@ -64,6 +64,9 @@ local function get_texture_function(texture)
 end
 
 function mcl_armor.colorize_leather_armor(itemstack, colorstring)
+	if not itemstack or minetest.get_item_group(itemstack:get_name(), "armor_leather") == 0 then
+		return
+	end
 	local color = color_string_to_table(colorstring)
 	local meta = itemstack:get_meta()
 	local old_color = meta:get_string("mcl_armor:color")
@@ -83,7 +86,7 @@ function mcl_armor.colorize_leather_armor(itemstack, colorstring)
 end
 
 function mcl_armor.wash_leather_armor(itemstack)
-	if not itemstack or not itemstack:get_definition().groups.armor_leather == 1 then
+	if not itemstack or minetest.get_item_group(itemstack:get_name(), "armor_leather") == 0 then
 		return
 	end
 	local meta = itemstack:get_meta()
@@ -119,7 +122,7 @@ mcl_armor.register_set({
 })
 
 tt.register_priority_snippet(function(_, _, itemstack)
-	if not itemstack or not itemstack:get_definition().groups.armor_leather == 1 then
+	if not itemstack or minetest.get_item_group(itemstack:get_name(), "armor_leather") == 0 then
 		return
 	end
 	local color = itemstack:get_meta():get_string("mcl_armor:color")
@@ -137,7 +140,7 @@ minetest.register_chatcommand("color_leather", {
 		local player = minetest.get_player_by_name(name)
 		if player then
 			local item = player:get_wielded_item()
-			if not item or not item:get_definition().groups.armor_leather == 1 then
+			if not item or minetest.get_item_group(item:get_name(), "armor_leather") == 0 then
 				return false, "Not leather armor."
 			end
 			if param == "wash" then
