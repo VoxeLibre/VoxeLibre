@@ -53,10 +53,8 @@ local function get_texture_function(texture)
 		end
 
 		if mcl_enchanting.is_enchanted(itemstack:get_name()) then
--- 			minetest.chat_send_all(out..mcl_enchanting.overlay) -- TODO remove
 			return out..mcl_enchanting.overlay
 		else
--- 			minetest.chat_send_all(out) -- TODO remove
 			return out
 		end
 	end
@@ -68,9 +66,11 @@ function mcl_armor.colorize_leather_armor(itemstack, colorstring)
 		return
 	end
 	local color = color_string_to_table(colorstring)
+	colorstring = minetest.colorspec_to_colorstring(color)
 	local meta = itemstack:get_meta()
 	local old_color = meta:get_string("mcl_armor:color")
-	if old_color ~= "" then
+	if old_color == colorstring then return
+	elseif old_color ~= "" then
 		color = calculate_color(
 			color_string_to_table(minetest.colorspec_to_colorstring(old_color)),
 			color
@@ -131,6 +131,56 @@ tt.register_priority_snippet(function(_, _, itemstack)
 		return text, false
 	end
 end)
+
+for name, element in pairs(mcl_armor.elements) do
+	local modname = minetest.get_current_modname()
+	local itemname = modname .. ":" .. element.name .. "_leather"
+	minetest.register_craft({
+		type = "shapeless",
+		output = itemname,
+		recipe = {
+			itemname,
+			"group:dye",
+		},
+	})
+	local ench_itemname = itemname .. "_enchanted"
+	minetest.register_craft({
+		type = "shapeless",
+		output = ench_itemname,
+		recipe = {
+			ench_itemname,
+			"group:dye",
+		},
+	})
+end
+
+local function colorizing_crafting(itemstack, player, old_craft_grid, craft_inv)
+	if minetest.get_item_group(itemstack:get_name(), "armor_leather") == 0 then
+		return
+	end
+
+	local found_la = nil
+	local dye_color = nil
+	for _, item in pairs(old_craft_grid) do
+		local name = item:get_name()
+		if name == "" then
+			-- continue
+		elseif minetest.get_item_group(name, "armor_leather") > 0 then
+			if found_la then return end
+			found_la = item
+		elseif minetest.get_item_group(name, "dye") > 0 then
+			if dye_color then return end
+			for _, row in pairs(colors) do
+				if row[3] == name then dye_color = row[4] end
+			end
+		else return end
+	end
+
+	return mcl_armor.colorize_leather_armor(found_la, dye_color) or ItemStack()
+end
+
+minetest.register_craft_predict(colorizing_crafting)
+minetest.register_on_craft(colorizing_crafting)
 
 
 minetest.register_chatcommand("color_leather", {
