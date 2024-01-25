@@ -54,7 +54,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	attack_type = "dogshoot",
 	arrow = "mobs_mc:fireball",
 	shoot_interval = 3,
-	shoot_offset = -5,
+	shoot_offset = -0.5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,
 	passive = false,
@@ -109,6 +109,7 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 5,
 	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
+	_lifetime = 10,
 	_is_fireball = true,
 
 	hit_player = function(self, player)
