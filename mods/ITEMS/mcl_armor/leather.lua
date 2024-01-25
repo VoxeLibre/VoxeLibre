@@ -20,25 +20,36 @@ local colors = {
 	{ "white", "White", "mcl_dye:white", "#d1d7d8" },
 }
 
---local function get_color_rgb(color)
---    return tonumber(str.sub(first, 2, 3)), tonumber(str.sub(first, 4, 5)), tonumber(str.sub(first, 6, 7))
---end
+-- #608b03 from #495d20
 
+local function color_string_to_table(colorstring)
+	return {
+		r = tonumber(colorstring:sub(2,3), 16), -- 16 as second parameter allows hexadecimal
+		g = tonumber(colorstring:sub(4,5), 16),
+		b = tonumber(colorstring:sub(6,7), 16),
+	}
+end
+
+local function av(a, b)
+	return (a + b)/2
+end
 
 local function calculate_color(first, last)
-    --local first_r = tonumber(str.sub(first, 2, 3))
-    --local first_g = tonumber(str.sub(first, 4, 5))
-    return tonumber(first)*tonumber(last)
+    return {
+		r = av(first.r, last.r),
+		g = av(first.g, last.g),
+		b = av(first.b, last.b),
+    }
 end
 
 local function get_texture_function(texture)
 	local function get_texture(_, itemstack)
 		local out
-		local color = itemstack:get_meta():get_string("color")
+		local color = itemstack:get_meta():get_string("mcl_armor:color")
 		if color == "" or color == nil then
 			out = texture
 		else
-			out = texture.."^[multiply:"..color
+			out = texture.."^[hsl:0:100:50^[multiply:"..color
 		end
 
 		if mcl_enchanting.is_enchanted(itemstack:get_name()) then
@@ -50,6 +61,36 @@ local function get_texture_function(texture)
 		end
 	end
 	return get_texture
+end
+
+function mcl_armor.colorize_leather_armor(itemstack, colorstring)
+	local color = color_string_to_table(colorstring)
+	local meta = itemstack:get_meta()
+	local old_color = meta:get_string("mcl_armor:color")
+	if old_color ~= "" then
+		color = calculate_color(
+			color_string_to_table(minetest.colorspec_to_colorstring(old_color)),
+			color
+		)
+		colorstring = minetest.colorspec_to_colorstring(color)
+	end
+	meta:set_string("mcl_armor:color", colorstring)
+	meta:set_string("inventory_image",
+		itemstack:get_definition().inventory_image .. "^[hsl:0:100:50^[multiply:" .. colorstring
+	)
+	tt.reload_itemstack_description(itemstack)
+	return itemstack
+end
+
+function mcl_armor.wash_leather_armor(itemstack)
+	if not itemstack or not itemstack:get_definition().groups.armor_leather == 1 then
+		return
+	end
+	local meta = itemstack:get_meta()
+	meta:set_string("mcl_armor:color", "")
+	meta:set_string("inventory_image", "")
+	tt.reload_itemstack_description(itemstack)
+	return itemstack
 end
 
 mcl_armor.register_set({
@@ -81,28 +122,32 @@ tt.register_priority_snippet(function(_, _, itemstack)
 	if not itemstack or not itemstack:get_definition().groups.armor_leather == 1 then
 		return
 	end
-	local color = itemstack:get_meta():get_string("color")
+	local color = itemstack:get_meta():get_string("mcl_armor:color")
 	if color and color ~= "" then
-		--TODO: replace by just "Dyed"
 		local text = C(mcl_colors.GRAY, "Dyed: "..color)
 		return text, false
 	end
 end)
 
 
--- This command is only temporary
-
 minetest.register_chatcommand("color_leather", {
 	params = "<color>",
-	description = "Colorize a leather armor",
+	description = "Colorize a piece of leather armor, or wash it",
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
 			local item = player:get_wielded_item()
-			item:get_meta():set_string("color", param)
-			tt.reload_itemstack_description(item)
-			player:set_wielded_item(item)
-			return true, "Done."
+			if not item or not item:get_definition().groups.armor_leather == 1 then
+				return false, "Not leather armor."
+			end
+			if param == "wash" then
+				player:set_wielded_item(mcl_armor.wash_leather_armor(item))
+				return true, "Washed."
+			end
+			local colorstring = minetest.colorspec_to_colorstring(param)
+			if not colorstring then return false, "Invalid color" end
+			player:set_wielded_item(mcl_armor.colorize_leather_armor(item, colorstring))
+			return true, "Done: " .. colorstring
 		else
 			return false, "Player isn't online"
 		end
