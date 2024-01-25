@@ -53,7 +53,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	view_range = 64,
 	attack_type = "dogshoot",
 	arrow = "mobs_mc:fireball",
-	shoot_interval = 3,
+	shoot_interval = 5,
 	shoot_offset = -0.5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,
@@ -131,6 +131,10 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 			damage_groups = {fleshy = 6},
 		}, nil)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, true)
+		local ent = mob:get_luaentity()
+		if not ent or ent.health <= 0 then
+			awards.unlock(self._puncher:get_player_name(), "mcl:fireball_redir_serv")
+		end
 	end,
 
 	hit_node = function(self, pos, node)
