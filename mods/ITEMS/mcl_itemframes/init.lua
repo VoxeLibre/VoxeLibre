@@ -134,7 +134,18 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 		update_entity(pos)
 		return
 	end
-	self._itemframe_pos = pos
+	if pos then
+		self._itemframe_pos = pos
+	else
+		pos = self._itemframe_pos
+	end
+	local ndef = minetest.registered_nodes[minetest.get_node(pos).name]
+	if not ndef._mcl_itemframe then
+		self.object:remove()
+		update_entity()
+		return
+	end
+	local def = mcl_itemframes.registered_itemframes[ndef._mcl_itemframe]
 	self._item = itemstack:get_name()
 	self._stack = itemstack
 	self._map_id = get_map_id(itemstack)
@@ -151,7 +162,7 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 		end)
 		return
 	end
-	self.object:set_properties(table.merge(base_props, { wield_item = self._item}))
+	self.object:set_properties(table.merge(base_props, { wield_item = self._item}, def.object_properties or {}))
 end
 
 function mcl_itemframes.tpl_entity:get_staticdata()
@@ -189,7 +200,7 @@ function mcl_itemframes.tpl_entity:on_step(dtime)
 		return
 	end
 	if minetest.get_item_group(self._item, "clock") > 0 then
-		self:set_item("mcl_clock:clock_"..mcl_clock.get_clock_frame())
+		self:set_item(ItemStack("mcl_clock:clock_"..mcl_clock.get_clock_frame()))
 	end
 end
 
