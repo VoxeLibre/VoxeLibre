@@ -103,10 +103,10 @@ local function get_armor_texture(textures, name, modname, itemname, itemstring)
 		end
 
 		if overlay == "" then return core_armor_texture end -- key not present; armor not trimmed
-				
+
 		return core_armor_texture .. overlay
 	end
-	
+
 	return func
 end
 
@@ -129,6 +129,7 @@ function mcl_armor.register_set(def)
 		local groups = table.copy(groups)
 		groups["armor_" .. name] = 1
 		groups["combat_armor_" .. name] = 1
+		groups["armor_" .. def.name] = 1
 		groups.armor = 1
 		groups.combat_armor = 1
 		groups.mcl_armor_points = def.points[name]
@@ -326,12 +327,12 @@ end
 tt.register_snippet(function(itemstring, toolcaps, stack)
 	if not stack then return nil end
 	local meta = stack:get_meta()
-	if not mcl_armor.is_trimmed(stack) then return nil end 
+	if not mcl_armor.is_trimmed(stack) then return nil end
 	-- we need to get the part of the overlay image between the overlay begin ( and the trim name end _
 	-- we COULD easily store this info in meta, but that would bloat the meta storage, as the same few values would be stored over and over again on every trimmed item
 	-- this is fine here as this code gets only executed when you put armor and a trim in a smithing table
 	local full_overlay = meta:get_string("mcl_armor:trim_overlay")
-	local trim_name = full_overlay:match("%((.-)%_") 
+	local trim_name = full_overlay:match("%((.-)%_")
 	return "Upgrade:\n " .. trim_name:gsub("^%l", string.upper) .. " Armor Trim"
 end)
 
