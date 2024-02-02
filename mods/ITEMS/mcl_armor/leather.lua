@@ -20,8 +20,6 @@ local colors = {
 	{ "white", "White", "mcl_dye:white", "#d1d7d8" },
 }
 
--- #608b03 from #495d20
-
 local function color_string_to_table(colorstring)
 	return {
 		r = tonumber(colorstring:sub(2,3), 16), -- 16 as second parameter allows hexadecimal
@@ -186,6 +184,7 @@ minetest.register_on_craft(colorizing_crafting)
 minetest.register_chatcommand("color_leather", {
 	params = "<color>",
 	description = "Colorize a piece of leather armor, or wash it",
+	privs = {debug = true},
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 		if player then
