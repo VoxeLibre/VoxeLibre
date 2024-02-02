@@ -132,10 +132,10 @@ local function init_hud(player)
 	mcl_hunger.eat_anim_hud[name] = player:hud_add({
 		hud_elem_type = "image",
 		text = "blank.png",
-		position = {x = 1, y = 1},
+		position = {x = 0.5, y = 1},
 		scale = {x = 30, y = 30},
-		alignment = {x = -1, y = -1},
-		offset = {x = -50, y = 50},
+		alignment = {x = 0, y = -1},
+		offset = {x = 0, y = -30},
 		z_index = -200,
 	})
 end
@@ -319,7 +319,7 @@ minetest.register_globalstep(function(dtime)
 				local wield_image = itemstackdef.wield_image
 				if not wield_image or wield_image == "" then wield_image = itemstackdef.inventory_image end
 				player:hud_change(mcl_hunger.eat_anim_hud[player_name], "text", wield_image)
-				player:hud_change(mcl_hunger.eat_anim_hud[player_name], "offset", {x = -50, y = 50*math.sin(10*eat_tick_timers[player]+math.random())+30})
+				player:hud_change(mcl_hunger.eat_anim_hud[player_name], "offset", {x = 0, y = 50*math.sin(10*eat_tick_timers[player]+math.random())-50})
 
 				if eat_effects_cooldown[player] > 0.2 then
 					eat_effects_cooldown[player] = 0
