@@ -4,27 +4,28 @@ local doc_mod = minetest.get_modpath("doc")
 local block = {}
 
 block.dyes = {
-	{"white",      S("White Terracotta"),      S("White Glazed Terracotta"),	S("White Concrete Powder"),		S("White Concrete"),		"white"},
-	{"grey",       S("Grey Terracotta"),       S("Grey Glazed Terracotta"),		S("Grey Concrete Powder"),		S("Grey Concrete"),		"dark_grey"},
-	{"silver",     S("Light Grey Terracotta"), S("Light Grey Glazed Terracotta"),	S("Light Grey Concrete Powder"),	S("Light Grey Concrete"),	"grey"},
-	{"black",      S("Black Terracotta"),      S("Black Glazed Terracotta"),	S("Black Concrete Powder"),		S("Black Concrete"),		"black"},
-	{"red",        S("Red Terracotta"),        S("Red Glazed Terracotta"),		S("Red Concrete Powder"),		S("Red Concrete"),		"red"},
-	{"yellow",     S("Yellow Terracotta"),     S("Yellow Glazed Terracotta"),	S("Yellow Concrete Powder"),		S("Yellow Concrete"),		"yellow"},
-	{"green",      S("Green Terracotta"),      S("Green Glazed Terracotta"),	S("Green Concrete Powder"),		S("Green Concrete"),		"dark_green"},
-	{"cyan",       S("Cyan Terracotta"),       S("Cyan Glazed Terracotta"),		S("Cyan Concrete Powder"),		S("Cyan Concrete"),		"cyan"},
-	{"blue",       S("Blue Terracotta"),       S("Blue Glazed Terracotta"),		S("Blue Concrete Powder"),		S("Blue Concrete"),		"blue"},
-	{"magenta",    S("Magenta Terracotta"),    S("Magenta Glazed Terracotta"),	S("Magenta Concrete Powder"),		S("Magenta Concrete"),		"magenta"},
-	{"orange",     S("Orange Terracotta"),     S("Orange Glazed Terracotta"),	S("Orange Concrete Powder"),		S("Orange Concrete"),		"orange"},
-	{"purple",     S("Purple Terracotta"),     S("Purple Glazed Terracotta"),	S("Purple Concrete Powder"),		S("Purple Concrete"),		"violet"},
-	{"brown",      S("Brown Terracotta"),      S("Brown Glazed Terracotta"),	S("Brown Concrete Powder"),		S("Brown Concrete"),		"brown"},
-	{"pink",       S("Pink Terracotta"),       S("Pink Glazed Terracotta"),		S("Pink Concrete Powder"),		S("Pink Concrete"),		"pink"},
-	{"lime",       S("Lime Terracotta"),       S("Lime Glazed Terracotta"),		S("Lime Concrete Powder"),		S("Lime Concrete"),		"green"},
-	{"light_blue", S("Light Blue Terracotta"), S("Light Blue Glazed Terracotta"),	S("Light Blue Concrete Powder"),	S("Light Blue Concrete"),	"lightblue"},
+	{"white",      S("White Terracotta"),      S("White Glazed Terracotta"),	S("White Glazed Terracotta Pillar"),	S("White Concrete Powder"),		S("White Concrete"),		"white"},
+	{"grey",       S("Grey Terracotta"),       S("Grey Glazed Terracotta"),		S("Grey Glazed Terracotta Pillar"),		S("Grey Concrete Powder"),		S("Grey Concrete"),		"dark_grey"},
+	{"silver",     S("Light Grey Terracotta"), S("Light Grey Glazed Terracotta"),	S("Light Grey Glazed Terracotta Pillar"),	S("Light Grey Concrete Powder"),	S("Light Grey Concrete"),	"grey"},
+	{"black",      S("Black Terracotta"),      S("Black Glazed Terracotta"),	S("Black Glazed Terracotta Pillar"),	S("Black Concrete Powder"),		S("Black Concrete"),		"black"},
+	{"red",        S("Red Terracotta"),        S("Red Glazed Terracotta"),		S("Red Glazed Terracotta Pillar"),		S("Red Concrete Powder"),		S("Red Concrete"),		"red"},
+	{"yellow",     S("Yellow Terracotta"),     S("Yellow Glazed Terracotta"),	S("Yellow Glazed Terracotta Pillar"),	S("Yellow Concrete Powder"),		S("Yellow Concrete"),		"yellow"},
+	{"green",      S("Green Terracotta"),      S("Green Glazed Terracotta"),	S("Green Glazed Terracotta Pillar"),	S("Green Concrete Powder"),		S("Green Concrete"),		"dark_green"},
+	{"cyan",       S("Cyan Terracotta"),       S("Cyan Glazed Terracotta"),		S("Cyan Glazed Terracotta Pillar"),		S("Cyan Concrete Powder"),		S("Cyan Concrete"),		"cyan"},
+	{"blue",       S("Blue Terracotta"),       S("Blue Glazed Terracotta"),		S("Blue Glazed Terracotta Pillar"),		S("Blue Concrete Powder"),		S("Blue Concrete"),		"blue"},
+	{"magenta",    S("Magenta Terracotta"),    S("Magenta Glazed Terracotta"),	S("Magenta Glazed Terracotta Pillar"),	S("Magenta Concrete Powder"),		S("Magenta Concrete"),		"magenta"},
+	{"orange",     S("Orange Terracotta"),     S("Orange Glazed Terracotta"),	S("Orange Glazed Terracotta Pillar"),	S("Orange Concrete Powder"),		S("Orange Concrete"),		"orange"},
+	{"purple",     S("Purple Terracotta"),     S("Purple Glazed Terracotta"),	S("Purple Glazed Terracotta Pillar"),	S("Purple Concrete Powder"),		S("Purple Concrete"),		"violet"},
+	{"brown",      S("Brown Terracotta"),      S("Brown Glazed Terracotta"),	S("Brown Glazed Terracotta Pillar"),	S("Brown Concrete Powder"),		S("Brown Concrete"),		"brown"},
+	{"pink",       S("Pink Terracotta"),       S("Pink Glazed Terracotta"),		S("Pink Glazed Terracotta Pillar"),		S("Pink Concrete Powder"),		S("Pink Concrete"),		"pink"},
+	{"lime",       S("Lime Terracotta"),       S("Lime Glazed Terracotta"),		S("Lime Glazed Terracotta Pillar"),		S("Lime Concrete Powder"),		S("Lime Concrete"),		"green"},
+	{"light_blue", S("Light Blue Terracotta"), S("Light Blue Glazed Terracotta"),	S("Light Blue Glazed Terracotta Pillar"),	S("Light Blue Concrete Powder"),	S("Light Blue Concrete"),	"lightblue"},
 }
 local canonical_color = "yellow"
 
 local hc_desc = S("Terracotta is a basic building material. It comes in many different colors.")
 local gt_desc = S("Glazed terracotta is a decorative block with a complex pattern. It can be rotated by placing it in different directions.")
+local gtp_desc = S("Glazed terracotta pillar is a decorative block with a complex pattern. It can be used with Glazed terracotta to make uneven patterns.")
 local cp_desc = S("Concrete powder is used for creating concrete, but it can also be used as decoration itself. It comes in different colors. Concrete powder turns into concrete of the same color when it comes in contact with water.")
 local c_desc = S("Concrete is a decorative block which comes in many different colors. It is notable for having a very strong and clean color.")
 local cp_tt = S("Turns into concrete on water contact")
@@ -57,8 +58,9 @@ for _, row in ipairs(block.dyes) do
 	local is_canonical = name == canonical_color
 	local sdesc_hc = row[2]
 	local sdesc_gt = row[3]
-	local sdesc_cp = row[4]
-	local sdesc_c = row[5]
+	local sdesc_gtp = row[4]
+	local sdesc_cp = row[5]
+	local sdesc_c = row[6]
 	local ldesc_hc, ldesc_gt, ldesc_cp, ldesc_c
 	local create_entry
 	local ename_hc, ename_gt, ename_cp, ename_c
@@ -66,16 +68,18 @@ for _, row in ipairs(block.dyes) do
 	if is_canonical then
 		ldesc_hc = hc_desc
 		ldesc_gt = gt_desc
+		ldesc_gtp = gtp_desc
 		ldesc_cp = cp_desc
 		ldesc_c = c_desc
 		ename_hc = S("Colored Terracotta")
 		ename_gt = S("Glazed Terracotta")
+		ename_gtp = S("Glazed Terracotta Pillar")
 		ename_cp = S("Concrete Powder")
 		ename_c = S("Concrete")
 	else
 		create_entry = false
 	end
-	local craft_color_group = row[6]
+	local craft_color_group = row[7]
 	-- Node Definition
 	minetest.register_node("mcl_colorblocks:hardened_clay_"..name, {
 		description = sdesc_hc,
@@ -162,6 +166,22 @@ for _, row in ipairs(block.dyes) do
 		_mcl_hardness = 1.4,
 		on_rotate = on_rotate,
 	})
+	minetest.register_node("mcl_colorblocks:glazed_terracotta_pillar_"..name, {
+		description = sdesc_gtp,
+		_doc_items_longdesc = ldesc_gtp,
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = ename_gtp,
+		tiles = {"mcl_colorblocks_glazed_terracotta_pillar_top_"..name..".png", "mcl_colorblocks_glazed_terracotta_pillar_top_"..name..".png", "mcl_colorblocks_glazed_terracotta_pillar_side_"..name..".png"},
+		groups = {handy=1,pickaxey=1, glazed_terracotta=1,building_block=1, material_stone=1},
+		paramtype2 = "facedir",
+		stack_max = 64,
+		is_ground_content = false,
+		sounds = mcl_sounds.node_sound_stone_defaults(),
+		_mcl_blast_resistance = 4.2,
+		_mcl_hardness = 1.4,
+		on_place = mcl_util.rotate_axis,
+		on_rotate = on_rotate,
+	})
 
 	if not is_canonical and doc_mod then
 		doc.add_entry_alias("nodes", "mcl_colorblocks:hardened_clay_"..canonical_color, "nodes", "mcl_colorblocks:hardened_clay_"..name)
@@ -196,6 +216,16 @@ for _, row in ipairs(block.dyes) do
 			recipe = "mcl_colorblocks:hardened_clay_"..name,
 			cooktime = 10,
 		})
+
+		minetest.register_craft({
+			output = "mcl_colorblocks:glazed_terracotta_pillar_"..name.." 2",
+			recipe = {
+				{"mcl_colorblocks:glazed_terracotta_"..name},
+				{"mcl_colorblocks:glazed_terracotta_"..name},
+			}
+		})
+
+		mcl_stonecutter.register_recipe("mcl_colorblocks:glazed_terracotta_"..name, "mcl_colorblocks:glazed_terracotta_pillar_"..name)
 	end
 end
 
