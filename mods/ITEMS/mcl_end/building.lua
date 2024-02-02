@@ -60,32 +60,20 @@ minetest.register_node("mcl_end:purpur_pillar", {
 })
 
 local end_rod_name = "mcl_end:end_rod"
-local end_rod_side_tex = "mcl_end_end_rod_side.png"
 local end_rod_def = {
 	description = S("End Rod"),
 	_doc_items_longdesc = S("End rods are decorative light sources."),
 	tiles = {
-		"mcl_end_end_rod_top.png",
-		"mcl_end_end_rod_bottom.png",
-		end_rod_side_tex,
-		end_rod_side_tex,
-		end_rod_side_tex,
-		end_rod_side_tex,
+		"mcl_end_end_rod.png",
 	},
-	drawtype = "nodebox",
+	drawtype = "mesh",
+	mesh = "mcl_end_rod.obj",
 	is_ground_content = false,
 	paramtype = "light",
 	paramtype2 = "facedir",
 	light_source = minetest.LIGHT_MAX,
 	sunlight_propagates = true,
 	groups = { dig_immediate=3, deco_block=1, destroy_by_lava_flow=1, end_rod=1 },
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.125, -0.5, -0.125, 0.125, -0.4375, 0.125}, -- Base
-			{-0.0625, -0.4375, -0.0625, 0.0625, 0.5, 0.0625}, -- Rod
-		},
-	},
 	selection_box = {
 		type = "fixed",
 		fixed = {
@@ -156,8 +144,7 @@ local colored_end_rods = {
 	{"lime",       S("Lime End Rod"),       	"green"},
 	{"lightblue",  S("Light Blue End Rod"), 	"lightblue"},
 }
-local top_mask = "^[mask:mobs_mc_empty.png\\^[fill\\:2x2\\:7,7\\:white"
-local side_mask = "^[mask:mobs_mc_empty.png\\^[fill\\:16x15\\:0,0\\:white"
+local end_rod_mask = "^[mask:mcl_end_end_rod_mask.png"
 for num, row in ipairs(colored_end_rods) do
 	local name = row[1]
 	local desc = row[2]
@@ -168,16 +155,12 @@ for num, row in ipairs(colored_end_rods) do
 	def._doc_items_create_entry = false
 	local side_tex
 	if name == "pink" then
-		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
-		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
+		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. end_rod_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
 	elseif num > 4 then
-		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:300^[opacity:120)"
-		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:300^[opacity:120)"
+		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. end_rod_mask .. "^[multiply:" .. name .. "^[hsl:0:300^[opacity:120)"
 	else
-		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. top_mask .. "^[multiply:" .. name .. "^[hsl:0:-100^[opacity:170)"
-		side_tex = end_rod_side_tex .. "^(" .. end_rod_side_tex .. side_mask .. "^[multiply:" .. name .. "^[hsl:0:-100^[opacity:170)"
+		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. end_rod_mask .. "^[multiply:" .. name .. "^[hsl:0:-100^[opacity:170)"
 	end
-	for i=3, 6 do def.tiles[i] = side_tex end
 	minetest.register_node(end_rod_name.."_"..name, def)
 	minetest.register_craft({
 		type = "shapeless",
