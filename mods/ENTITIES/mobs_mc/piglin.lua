@@ -16,6 +16,13 @@ local trading_items = {
 	{ itemstring = "mcl_throwing:ender_pearl", amount_min = 2, amount_max = 6 },
 	{ itemstring = "mcl_potions:fire_resistance", amount_min = 1, amount_max = 1 },
 	{ itemstring = "mcl_potions:fire_resistance_splash", amount_min = 1, amount_max = 1 },
+	{ itemstring = "mcl_enchanting:book_enchanted", amount_min = 1, amount_max = 1 },
+	{ itemstring = "mcl_armor:boots_iron_enchanted", amount_min = 1, amount_max = 1 },
+	{ itemstring = "mcl_blackstone:blackstone", amount_min = 8, amount_max = 16 },
+	{ itemstring = "mcl_bows:arrow", amount_min = 6, amount_max = 12 },
+	{ itemstring = "mcl_core:crying_obsidian", amount_min = 1, amount_max = 1 },
+	{ itemstring = "mcl_fire:fire_charge", amount_min = 1, amount_max = 1 },
+	--{ itemstring = "FIXME:spectral_arrow", amount_min = 6, amount_max = 12 },
 }
 
 local S = minetest.get_translator("mobs_mc")
@@ -148,7 +155,12 @@ local piglin = {
 						if nn and #nn > 0 then
 							p = vector.offset(nn[math.random(#nn)],0,1,0)
 						end
-						minetest.add_item(p, self.what_traded.itemstring)
+						local stack = ItemStack(self.what_traded.itemstring)
+						if mcl_enchanting.is_enchanted(self.what_traded.itemstring) then
+							local enchantment = "soul_speed"
+							mcl_enchanting.enchant(stack, enchantment, mcl_enchanting.random(nil, 1, mcl_enchanting.enchantments[enchantment].max_level))
+						end
+						minetest.add_item(p, stack)
 					end
 				end
 			end)
