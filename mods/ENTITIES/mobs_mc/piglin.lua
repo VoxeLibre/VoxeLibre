@@ -149,19 +149,18 @@ local piglin = {
 				local c_pos = self.object:get_pos()
 				if c_pos then
 					self.what_traded = trading_items[math.random(#trading_items)]
-					for x = 1, math.random(self.what_traded.amount_min, self.what_traded.amount_max) do
-						local p = c_pos
-						local nn=minetest.find_nodes_in_area_under_air(vector.offset(c_pos,-1,-1,-1),vector.offset(c_pos,1,1,1),{"group:solid"})
-						if nn and #nn > 0 then
-							p = vector.offset(nn[math.random(#nn)],0,1,0)
-						end
-						local stack = ItemStack(self.what_traded.itemstring)
-						if mcl_enchanting.is_enchanted(self.what_traded.itemstring) then
-							local enchantment = "soul_speed"
-							mcl_enchanting.enchant(stack, enchantment, mcl_enchanting.random(nil, 1, mcl_enchanting.enchantments[enchantment].max_level))
-						end
-						minetest.add_item(p, stack)
+					local stack = ItemStack(self.what_traded.itemstring)
+					stack:set_count(math.random(self.what_traded.amount_min, self.what_traded.amount_max))
+					if mcl_enchanting.is_enchanted(self.what_traded.itemstring) then
+						local enchantment = "soul_speed"
+						mcl_enchanting.enchant(stack, enchantment, mcl_enchanting.random(nil, 1, mcl_enchanting.enchantments[enchantment].max_level))
 					end
+					local p = c_pos
+					local nn=minetest.find_nodes_in_area_under_air(vector.offset(c_pos,-1,-1,-1),vector.offset(c_pos,1,1,1),{"group:solid"})
+					if nn and #nn > 0 then
+						p = vector.offset(nn[math.random(#nn)],0,1,0)
+					end
+					minetest.add_item(p, stack)
 				end
 			end)
 		end
