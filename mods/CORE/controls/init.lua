@@ -31,6 +31,7 @@ local known_controls = {
 	aux1 = true,
 	down = true,
 	up = true,
+	zoom = true,
 }
 
 minetest.register_on_joinplayer(function(player)

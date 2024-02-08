@@ -550,6 +550,13 @@ awards.register_achievement("mcl:obsidian", {
 	type = "Advancement",
 	group = "Overworld",
 })
+awards.register_achievement("mcl:fireball_redir_serv", {
+	title		= S("Fireball Redirection Service"),
+	description = S("Defeat a ghast with his own weapon."),
+	icon		= "mcl_fire_fire_charge.png",
+	type = "Advancement",
+	group = "Nether",
+})
 
 awards.register_achievement("mcl:hero_of_the_village", {
 	title = S("Hero of the Village"),

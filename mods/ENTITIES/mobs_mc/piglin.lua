@@ -61,8 +61,10 @@ local piglin = {
 	} },
 	visual_size = {x=1, y=1},
 	sounds = {
-		random = "extra_mobs_piglin",
-		damage = "extra_mobs_piglin_hurt",
+		random = "mobs_mc_zombiepig_random",
+		war_cry = "mobs_mc_zombiepig_war_cry",                  death = "mobs_mc_zombiepig_death",
+		damage = "mobs_mc_zombiepig_hurt.2",
+		death = "mobs_mc_zombiepig_death.2",
 		distance = 16,
 	},
 	jump = true,
@@ -397,7 +399,7 @@ mcl_mobs:spawn_specific(
 0,
 minetest.LIGHT_MAX+1,
 30,
-6000,
+150,
 3,
 mcl_vars.mg_lava_nether_max,
 mcl_vars.mg_nether_max)
@@ -413,7 +415,7 @@ mcl_mobs:spawn_specific(
 0,
 minetest.LIGHT_MAX+1,
 30,
-6000,
+150,
 3,
 mcl_vars.mg_lava_nether_max,
 mcl_vars.mg_nether_max)
@@ -429,7 +431,7 @@ mcl_mobs:spawn_specific(
 		0,
 		minetest.LIGHT_MAX+1,
 		30,
-		6000,
+		1000,
 		3,
 		mcl_vars.mg_nether_min,
 		mcl_vars.mg_nether_max)
@@ -446,7 +448,7 @@ mcl_mobs:spawn_specific(
 		0,
 		minetest.LIGHT_MAX+1,
 		30,
-		100000,
+		50,
 		4,
 		mcl_vars.mg_nether_min,
 		mcl_vars.mg_nether_max)

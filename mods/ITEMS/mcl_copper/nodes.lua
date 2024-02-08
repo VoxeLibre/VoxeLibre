@@ -156,12 +156,10 @@ mcl_copper.register_copper_variants("block", {
 	groups = {pickaxey = 2, building_block = 1},
 	--_mcl_doors = true,
 })
-
 mcl_copper.register_copper_variants("cut", {
 	groups = {pickaxey = 2, building_block = 1},
 	_mcl_stairs = true,
 })
-
 mcl_copper.register_copper_variants("grate", {
 	drawtype = "allfaces",
 	groups = {pickaxey = 2, building_block = 1, disable_suffocation = 1},

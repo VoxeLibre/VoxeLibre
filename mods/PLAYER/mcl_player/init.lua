@@ -129,6 +129,11 @@ function mcl_player.player_set_skin(player, texture)
 	update_player_textures(player)
 end
 
+function mcl_player.player_get_skin(player)
+	local name = player:get_player_name()
+	return player_textures[name][1]
+end
+
 function mcl_player.player_set_armor(player, texture)
 	local name = player:get_player_name()
 	player_textures[name][2] = texture
@@ -177,7 +182,7 @@ minetest.register_on_joinplayer(function(player)
 	player_textures[name] = { "character.png", "blank.png", "blank.png" }
 
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
-	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
+-- 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
 end)
 
 minetest.register_on_leaveplayer(function(player)
@@ -228,8 +233,16 @@ minetest.register_globalstep(function(dtime)
 			-- Apply animations based on what the player is doing
 			if player:get_hp() == 0 then
 				player_set_animation(player, "die")
+			elseif player:get_meta():get_int("mcl_damage:damage_animation") > 0 then
+				player_set_animation(player, "walk", animation_speed_mod)
+				local name = player:get_player_name()
+				minetest.after(0.5, function()
+					local player = minetest.get_player_by_name(name)
+					if not player then return end
+					player:get_meta():set_int("mcl_damage:damage_animation", 0)
+				end)
 			elseif mcl_playerplus.elytra[player] and mcl_playerplus.elytra[player].active then
-				player_set_animation(player, "stand")
+
 			elseif walking and velocity.x > 0.35
 				or walking and velocity.x < -0.35
 				or walking and velocity.z > 0.35

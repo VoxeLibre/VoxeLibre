@@ -316,10 +316,15 @@ minetest.register_node(SCAFFOLDING_NAME, {
 			-- A quick check, that may or may not work, to attempt to prevent placing things on the side of other nodes.
 			local dir = vector.subtract(pointed.under, pointed.above)
 			local wdir = minetest.dir_to_wallmounted(dir)
+			local anode = minetest.get_node(pointed.above).name
 			if wdir == 1 then
-				minetest.set_node(pointed.above, { name = SCAFFOLDING_NAME, param2 = 0 })
-				if not minetest.is_creative_enabled(placer:get_player_name()) then
-					itemstack:take_item(1)
+				if (anode == "air" or minetest.registered_nodes[anode].buildable_to) and not mcl_bamboo.is_protected(pointed.above, placer) then
+					minetest.set_node(pointed.above, { name = SCAFFOLDING_NAME, param2 = 0 })
+					if not minetest.is_creative_enabled(placer:get_player_name()) then
+						itemstack:take_item(1)
+					end
+				else
+					return
 				end
 				return itemstack
 			else

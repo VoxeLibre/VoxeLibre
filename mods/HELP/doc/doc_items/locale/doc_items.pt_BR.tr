@@ -10,12 +10,12 @@
 # Itemname (ca. 25%)
 @1 (ca. @2%)=
 # List separator (e.g. “one, two, three”)
-, =, 
+, =,
 # Final list separator (e.g. “One, two and three”)
- and = e 
+ and = e
 1 second=1 segundo
 A transparent block, basically empty space. It is usually left behind after digging something.=Um bloco transparente, basicamente um vazio. Isso geralmente fica no lugar de um bloco removido.
-Air=Ár
+Air=Ar
 Blocks=Blocos
 Building another block at this block will place it inside and replace it.=Construir outro bloco nesse bloco vai subistitui-lo.
 Building this block is completely silent.=Construir esse bloco é completamente silencioso.
@@ -129,12 +129,12 @@ Unknown item (@1)=Item desconhecido (@1)
 • @1: @2, @3=
 • Flowing range: @1=
 • No flowing=
-• Not renewable=
-• Renewable=
-• Viscosity: @1=
+• Not renewable=• Não renovável
+• Renewable=• Renovável
+• Viscosity: @1=• Viscosidade: @1
 Itemstring: "@1"=
-Durability: @1 uses=
-Durability: @1=
+Durability: @1 uses=Durabilidade: @1 usos
+Durability: @1=Durabilidade: @1
 Mining durability:=
 • @1, level @2: @3 uses=
 • @1, level @2: Unlimited=

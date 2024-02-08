@@ -129,27 +129,6 @@ minetest.register_ore({
 
 
 minetest.register_ore({
-    ore_type       = "blob",
-    ore            = "mcl_deepslate:deepslate",
-    wherein        = { "mcl_core:stone" },
-    clust_scarcity = 200,
-    clust_num_ores = 100,
-    clust_size     = 10,
-    y_min          = deepslate_min,
-    y_max          = deepslate_max,
-    noise_params = {
-        offset  = 0,
-        scale   = 1,
-        spread  = { x = 250, y = 250, z = 250 },
-        seed    = 12345,
-        octaves = 3,
-        persist = 0.6,
-        lacunarity = 2,
-        flags = "defaults",
-    }
-})
-
-minetest.register_ore({
 	ore_type       = "blob",
 	ore            = "mcl_deepslate:tuff",
 	wherein        = { "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_deepslate:deepslate" },
@@ -173,6 +152,27 @@ minetest.register_ore({
 -- DEEPSLATE
 if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 
+	minetest.register_ore({
+		ore_type       = "blob",
+		ore            = "mcl_deepslate:deepslate",
+		wherein        = { "mcl_core:stone" },
+		clust_scarcity = 200,
+		clust_num_ores = 100,
+		clust_size     = 10,
+		y_min          = deepslate_min,
+		y_max          = deepslate_max,
+		noise_params = {
+			offset  = 0,
+			scale   = 1,
+			spread  = { x = 250, y = 250, z = 250 },
+			seed    = 12345,
+			octaves = 3,
+			persist = 0.6,
+			lacunarity = 2,
+			flags = "defaults",
+		}
+	})
+	
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_deepslate:infested_deepslate",

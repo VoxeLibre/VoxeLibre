@@ -133,7 +133,11 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 		if wielditem then
 			local fire_aspect_level = mcl_enchanting.get_enchantment(wielditem, "fire_aspect")
 			if fire_aspect_level > 0 then
-				mcl_burning.set_on_fire(player, fire_aspect_level * 4)
+				local player_pos = player:get_pos()
+				local hitter_pos = hitter:get_pos()
+				if vector.distance(hitter_pos, player_pos) <= 3 then
+					mcl_burning.set_on_fire(player, fire_aspect_level * 4)
+				end
 			end
 		end
 	end
@@ -276,11 +280,73 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 	if hitter then
 		luaentity = hitter:get_luaentity()
 	end
-	if hitter and hitter:is_player() then
+	if hitter and hitter:is_player() and distance <= 3 then
 		local wielditem = hitter:get_wielded_item()
-		knockback = knockback + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+		--knockback = knockback + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+		local enchant = mcl_enchanting.get_enchantment(wielditem, "knockback")
+		knockback = knockback + 3.22 * enchant
+		-- add vertical lift to knockback
+		local v = player:get_velocity()
+		local added_v = 0
+		local invul = player:get_meta():get_int("mcl_damage:invulnerable")
+		if v and v.y <= 0.01 and v.y >= -0.01 and invul == 0 then
+			local regular_v = 6.4
+			local enchant_v = 7
+			regular_v = regular_v * math.abs(dir.y - 1)
+			enchant_v = enchant_v * math.abs(dir.y - 1)
+			if enchant == 0 then
+				player:add_velocity({x = 0, y = regular_v, z = 0})
+				added_v = regular_v
+			else
+				player:add_velocity({x = 0, y = enchant_v, z = 0})
+				added_v = enchant_v
+			end
+			-- add minimum knockback
+			if knockback <= 1.5 then
+				knockback = knockback + 4.875
+			elseif knockback <= 6.19 then
+				knockback = knockback + 0.609375
+			end
+		end
+		-- counteract forward velocity when hit
+		local self_dir_dot = (v.x * dir.x) + (v.z * dir.z)
+		if self_dir_dot < 0 then
+			player:add_velocity({x = v.x * -1, y = 0, z = v.z * -1})
+		end
+		-- add player velocity to knockback
+		local h_name = hitter:get_player_name()
+		local hv = hitter:get_velocity()
+		local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
+		local hitter_mag = math.sqrt((hv.x * hv.x) + (hv.z * hv.z))
+		if dir_dot > 0 and mcl_sprint.is_sprinting(h_name) then
+			knockback = knockback + hitter_mag * 0.6875
+		elseif dir_dot > 0 then
+			knockback = knockback + hitter_mag * 0.515625
+		end
+		-- reduce floatiness
+		minetest.after(0.25, function()
+			player:add_velocity({x = 0, y = (v.y + added_v) * -0.375, z = 0})
+		end)
+		-- reduce knockback when moving towards hitter while attacking
+		local self_dir_dot = (v.x * dir.x) + (v.z * dir.z)
+		local control = player:get_player_control()
+		if self_dir_dot < -4.3 and control.up and control.LMB then
+			knockback = knockback * 0.6
+		end
+		-- remove knockback if invulnerable
+		if invul > 0 then
+			knockback = 0
+		end
+	elseif hitter and hitter:is_player() and distance > 3 then
+		knockback = 0
 	elseif luaentity and luaentity._knockback then
-		knockback = knockback + luaentity._knockback
+		local kb = knockback + luaentity._knockback / 4
+		local punch_dir = dir
+		punch_dir.y = 0
+		punch_dir = vector.normalize(punch_dir) * kb
+		punch_dir.y = 4
+		player:add_velocity(punch_dir)
+		knockback = 0
 	end
 	return knockback
 end

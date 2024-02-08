@@ -20,7 +20,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	hp_max = 10,
 	xp_min = 5,
 	xp_max = 5,
-	collisionbox = {-2, 5, -2, 2, 9, 2},
+	collisionbox = {-2, 0, -2, 2, 4, 2, rotate=true},
 	visual = "mesh",
 	mesh = "mobs_mc_ghast.b3d",
 	spawn_in_group = 1,
@@ -33,7 +33,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 		death = "mobs_mc_zombie_death",
 		attack = "mobs_fireball",
 		random = "mobs_eerie",
-		distance = 16,
+		distance = 80,
 		-- TODO: damage
 		-- TODO: better death
 	},
@@ -50,11 +50,11 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 		run_start = 0,		run_end = 40,
 	},
 	fall_damage = 0,
-	view_range = 100,
+	view_range = 64,
 	attack_type = "dogshoot",
 	arrow = "mobs_mc:fireball",
-	shoot_interval = 3.5,
-	shoot_offset = -5,
+	shoot_interval = 5,
+	shoot_offset = -0.5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,
 	passive = false,
@@ -97,7 +97,7 @@ mcl_mobs:spawn_specific(
 0,
 7,
 30,
-72000,
+400,
 2,
 mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
@@ -107,8 +107,9 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	visual = "sprite",
 	visual_size = {x = 1, y = 1},
 	textures = {"mcl_fire_fire_charge.png"},
-	velocity = 15,
+	velocity = 5,
 	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
+	_lifetime = 10,
 	_is_fireball = true,
 
 	hit_player = function(self, player)
@@ -130,6 +131,10 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 			damage_groups = {fleshy = 6},
 		}, nil)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, true)
+		local ent = mob:get_luaentity()
+		if not ent or ent.health <= 0 then
+			awards.unlock(self._puncher:get_player_name(), "mcl:fireball_redir_serv")
+		end
 	end,
 
 	hit_node = function(self, pos, node)

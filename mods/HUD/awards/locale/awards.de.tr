@@ -1,7 +1,7 @@
 # textdomain:awards
 @1: @2=@1: @2
 @1 (got)=@1 (erhalten)
-@1’s awards:=Auszeichnungen von @:
+@1’s awards:=Auszeichnungen von @1:
 (Secret Advancement)=(Geheime Auszeichnung)
 Achievement gotten!=Auszeichnung erhalten!
 Achievement gotten:=Auszeichnung erhalten:

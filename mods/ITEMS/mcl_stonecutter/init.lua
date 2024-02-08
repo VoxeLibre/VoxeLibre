@@ -392,7 +392,7 @@ minetest.register_node("mcl_stonecutter:stonecutter", {
 				type = "vertical_frames",
 				aspect_w = 16,
 				aspect_h = 16,
-				length = 1
+				length = 0.15
 			}
 		}
 	},

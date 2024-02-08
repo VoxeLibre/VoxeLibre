@@ -61,7 +61,26 @@ function return_on_use(def, effect, dur)
 			return itemstack
 		end
 
-		def.on_use(user, effect, dur)
+		--def.on_use(user, effect, dur) -- Will do effect immediately but not reduce item count until eating delay ends which makes it exploitable by deliberately not finishing delay
+
+		-- Wrapper for handling mcl_hunger delayed eating
+		local name = user:get_player_name()
+		mcl_hunger.eat_internal[name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
+		mcl_hunger.eat_internal[name]._custom_var = {
+			user = user,
+			effect = effect,
+			dur = dur,
+		}
+		mcl_hunger.eat_internal[name]._custom_func = def.on_use
+		mcl_hunger.eat_internal[name]._custom_wrapper = function(name)
+
+			mcl_hunger.eat_internal[name]._custom_func(
+				mcl_hunger.eat_internal[name]._custom_var.user,
+				mcl_hunger.eat_internal[name]._custom_var.effect,
+				mcl_hunger.eat_internal[name]._custom_var.dur
+			)
+		end
+
 		local old_name, old_count = itemstack:get_name(), itemstack:get_count()
 		itemstack = minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		if old_name ~= itemstack:get_name() or old_count ~= itemstack:get_count() then

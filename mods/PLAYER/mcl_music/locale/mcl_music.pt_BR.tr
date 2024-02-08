@@ -1,0 +1,7 @@
+# textdomain: mcl_music
+You need the debug privilege in order to turn ingame music on or off for somebody else!=Você precisa do privilégio debug para poder ligar ou desligar a música para alguém!
+Couldn't find player @1!=O jogador @1 não pôde ser localizado!
+Set music for @1 to: @2=Definida música @1 para: @2
+Turns music for yourself or another player on or off.=Liga ou desliga a música para você ou outro jogador.
+on=ligado
+off=desligado

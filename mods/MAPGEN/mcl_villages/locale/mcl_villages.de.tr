@@ -1,0 +1,4 @@
+# textdomain: mcl_villages
+Chiseled Stone Village Bricks=Dorfziegel aus gemeißeltem Stein
+mcl_villages build tool=mcl_villages Konstruktionswerkzeug
+Placement denied. You need the “server” privilege to place villages.=Platzierung verweigert. Sie benötigen das "server" Privileg, um Dörfer zu platzieren.
