@@ -17,222 +17,135 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_copper:cut 4",
+	output = "mcl_copper:block_raw",
 	recipe = {
-		{ "mcl_copper:block", "mcl_copper:block" },
-		{ "mcl_copper:block", "mcl_copper:block" },
+		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
+		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
+		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
 	},
 })
 
 minetest.register_craft({
-	output = "mcl_copper:waxed_cut 4",
+	output = "mcl_copper:block",
 	recipe = {
-		{ "mcl_copper:waxed_block", "mcl_copper:waxed_block" },
-		{ "mcl_copper:waxed_block", "mcl_copper:waxed_block" },
+		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
+		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
+		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
 	},
 })
 
-minetest.register_craft({
-	output = "mcl_copper:cut_exposed 4",
-	recipe = {
-		{ "mcl_copper:block_exposed", "mcl_copper:block_exposed" },
-		{ "mcl_copper:block_exposed", "mcl_copper:block_exposed" },
-	},
-})
+local function get_shape(name, material)
+	if name == "cut" then
+		return {
+			{material, material},
+			{material, material}
+		}
+	elseif name == "grate" then
+		return {
+			{"", material, ""},
+			{material, "", material},
+			{"", material, ""}
+		}
+	elseif name == "chiseled" then
+		return {
+			{material},
+			{material},
+		}
+	elseif name == "door" then
+		return {
+			{material, material},
+			{material, material},
+			{material, material}
+		}
+	elseif name == "trapdoor" then
+		return {
+			{material, material, material},
+			{material, material, material}
+		}
+	elseif name == "bulb_off" then
+		return {
+			{"", material, ""},
+			{material, "mcl_mobitems:blaze_rod", material},
+			{"", "mesecons:redstone", ""}
+		}
+	else
+		return {}
+	end
+end
 
-minetest.register_craft({
-	output = "mcl_copper:waxed_cut_exposed 4",
-	recipe = {
-		{ "mcl_copper:waxed_block_exposed", "mcl_copper:waxed_block_exposed" },
-		{ "mcl_copper:waxed_block_exposed", "mcl_copper:waxed_block_exposed" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_copper:cut_weathered 4",
-	recipe = {
-		{ "mcl_copper:block_weathered", "mcl_copper:block_weathered" },
-		{ "mcl_copper:block_weathered", "mcl_copper:block_weathered" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_copper:waxed_cut_weathered 4",
-	recipe = {
-		{ "mcl_copper:waxed_block_weathered", "mcl_copper:waxed_block_weathered" },
-		{ "mcl_copper:waxed_block_weathered", "mcl_copper:waxed_block_weathered" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_copper:cut_oxidized 4",
-	recipe = {
-		{ "mcl_copper:block_oxidized", "mcl_copper:block_oxidized" },
-		{ "mcl_copper:block_oxidized", "mcl_copper:block_oxidized" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_copper:waxed_cut_oxidized 4",
-	recipe = {
-		{ "mcl_copper:waxed_block_oxidized", "mcl_copper:waxed_block_oxidized" },
-		{ "mcl_copper:waxed_block_oxidized", "mcl_copper:waxed_block_oxidized" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_copper:grate 4",
-	recipe = {
-		{ "", "mcl_copper:block", "" },
-		{ "mcl_copper:block", "", "mcl_copper:block" },
-		{ "", "mcl_copper:block", "" }
+function mcl_copper.register_variants_recipes(name, material, amount)
+	local materials = {}
+	local names = {
+		name, "waxed_"..name,
+		name.."_exposed", "waxed_"..name.."_exposed",
+		name.."_weathered", "waxed_"..name.."_weathered",
+		name.."_oxidized", "waxed_"..name.."_oxidized"
 	}
-})
+	if type(material) == "string" then
+		materials = {
+			"mcl_copper:"..material, "mcl_copper:waxed_"..material,
+			"mcl_copper:"..material.."_exposed", "mcl_copper:waxed_"..material.."_exposed",
+			"mcl_copper:"..material.."_weathered", "mcl_copper:waxed_"..material.."_weathered",
+			"mcl_copper:"..material.."_oxidized", "mcl_copper:waxed_"..material.."_oxidized"
+		}
+	elseif type(material) == "table" then
+		if #material == 8 then
+			materials = material
+		else
+			return
+		end
+	else
+		return
+	end
 
-minetest.register_craft({
-	output = "mcl_copper:waxed_grate 4",
-	recipe = {
-		{ "", "mcl_copper:waxed_block", "" },
-		{ "mcl_copper:waxed_block", "", "mcl_copper:waxed_block" },
-		{ "", "mcl_copper:waxed_block", "" }
-	}
-})
+	for i = 1, 8 do
+		minetest.register_craft({
+			output = "mcl_copper:"..names[i].." "..tostring(amount),
+			recipe = get_shape(name, materials[i])
+		})
+	end
+end
 
-minetest.register_craft({
-	output = "mcl_copper:grate_exposed 4",
-	recipe = {
-		{ "", "mcl_copper:block_exposed", "" },
-		{ "mcl_copper:block_exposed", "", "mcl_copper:block_exposed" },
-		{ "", "mcl_copper:block_exposed", "" }
-	}
-})
+mcl_copper.register_variants_recipes("cut", "block", 4)
+mcl_copper.register_variants_recipes("grate", "block", 4)
+--mcl_copper.register_variants_recipes("door", "block", 3)
+--mcl_copper.register_variants_recipes("trapdoor", "block", 2)
+mcl_copper.register_variants_recipes("bulb_off", "block", 4)
 
-minetest.register_craft({
-	output = "mcl_copper:waxed_grate_exposed 4",
-	recipe = {
-		{ "", "mcl_copper:waxed_block_exposed", "" },
-		{ "mcl_copper:waxed_block_exposed", "", "mcl_copper:waxed_block_exposed" },
-		{ "", "mcl_copper:waxed_block_exposed", "" }
-	}
-})
+local chiseled_materials = {
+	"mcl_stairs:slab_copper_cut",
+	"mcl_stairs:slab_waxed_copper_cut",
+	"mcl_stairs:slab_copper_exposed_cut",
+	"mcl_stairs:slab_waxed_copper_exposed_cut",
+	"mcl_stairs:slab_copper_weathered_cut",
+	"mcl_stairs:slab_waxed_copper_weathered_cut",
+	"mcl_stairs:slab_copper_oxidized_cut",
+	"mcl_stairs:slab_waxed_copper_oxidized_cut"
+}
 
-minetest.register_craft({
-	output = "mcl_copper:grate_weathered 4",
-	recipe = {
-		{ "", "mcl_copper:block_weathered", "" },
-		{ "mcl_copper:block_weathered", "", "mcl_copper:block_weathered" },
-		{ "", "mcl_copper:block_weathered", "" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:waxed_grate_weathered 4",
-	recipe = {
-		{ "", "mcl_copper:waxed_block_weathered", "" },
-		{ "mcl_copper:waxed_block_weathered", "", "mcl_copper:waxed_block_weathered" },
-		{ "", "mcl_copper:waxed_block_weathered", "" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:grate_oxidized 4",
-	recipe = {
-		{ "", "mcl_copper:block_oxidized", "" },
-		{ "mcl_copper:block_oxidized", "", "mcl_copper:block_oxidized" },
-		{ "", "mcl_copper:block_oxidized", "" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:waxed_grate_oxidized 4",
-	recipe = {
-		{ "", "mcl_copper:waxed_block_oxidized", "" },
-		{ "mcl_copper:waxed_block_oxidized", "", "mcl_copper:waxed_block_oxidized" },
-		{ "", "mcl_copper:waxed_block_oxidized", "" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:chiseled 1",
-	recipe = {
-		{ "mcl_stairs:slab_copper_cut" },
-		{ "mcl_stairs:slab_copper_cut" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:waxed_chiseled 1",
-	recipe = {
-		{ "mcl_stairs:slab_waxed_copper_cut" },
-		{ "mcl_stairs:slab_waxed_copper_cut" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:chiseled_exposed 1",
-	recipe = {
-		{ "mcl_stairs:slab_copper_exposed_cut" },
-		{ "mcl_stairs:slab_copper_exposed_cut" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:waxed_chiseled_exposed 1",
-	recipe = {
-		{ "mcl_stairs:slab_waxed_copper_exposed_cut" },
-		{ "mcl_stairs:slab_waxed_copper_exposed_cut" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:chiseled_weathered 1",
-	recipe = {
-		{ "mcl_stairs:slab_copper_weathered_cut" },
-		{ "mcl_stairs:slab_copper_weathered_cut" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:waxed_chiseled_weathered 1",
-	recipe = {
-		{ "mcl_stairs:slab_waxed_copper_weathered_cut" },
-		{ "mcl_stairs:slab_waxed_copper_weathered_cut" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:chiseled_oxidized 1",
-	recipe = {
-		{ "mcl_stairs:slab_copper_oxidized_cut" },
-		{ "mcl_stairs:slab_copper_oxidized_cut" }
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_copper:waxed_chiseled_oxidized 1",
-	recipe = {
-		{ "mcl_stairs:slab_waxed_copper_oxidized_cut" },
-		{ "mcl_stairs:slab_waxed_copper_oxidized_cut" }
-	}
-})
+mcl_copper.register_variants_recipes("chiseled", chiseled_materials, 1)
 
 local waxable_blocks = {
 	"block",
 	"cut",
 	"grate",
 	"chiseled",
+	"bulb_off",
 	"block_exposed",
 	"cut_exposed",
 	"grate_exposed",
 	"chiseled_exposed",
+	"bulb_off_exposed",
 	"block_weathered",
 	"cut_weathered",
 	"grate_weathered",
 	"chiseled_weathered",
+	"bulb_off_weathered",
 	"block_oxidized",
 	"cut_oxidized",
 	"grate_oxidized",
-	"chiseled_oxidized"
+	"chiseled_oxidized",
+	"bulb_off_oxidized"
 }
 
 for _, w in ipairs(waxable_blocks) do

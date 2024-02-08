@@ -22,6 +22,30 @@ mcl_copper.copper_descs = {
         "Exposed Chiseled Copper", "Waxed Exposed Chiseled Copper",
         "Weathered Chiseled Copper", "Waxed Weathered Chiseled Copped",
         "Oxidized Chiseled Copper", "Waxed Oxidized Chiseled Copper"
+    },
+    ["bulb_off"] = {
+        "Copper Bulb", "Waxed Copper Bulb",
+        "Exposed Copper Bulb", "Waxed Exposed Copper Bulb",
+        "Weathered Copper Bulb", "Waxed Weathered Copper Bulb",
+        "Oxidized Copper Bulb", "Waxed Oxidized Copper Bulb"
+    },
+    ["bulb_on"] = {
+        "Lit Copper Bulb", "Lit Waxed Copper Bulb",
+        "Lit Exposed Copper Bulb", "Lit Waxed Exposed Copper Bulb",
+        "Lit Weathered Copper Bulb", "Lit Waxed Weathered Copper Bulb",
+        "Lit Oxidized Copper Bulb", "Lit Waxed Oxidized Copper Bulb"
+    },
+    ["bulb_powered_off"] = {
+        "Powered Copper Bulb", "Powered Waxed Copper Bulb",
+        "Powered Exposed Copper Bulb", "Powered Waxed Exposed Copper Bulb",
+        "Powered Weathered Copper Bulb", "Powered Waxed Weathered Copper Bulb",
+        "Powered Oxidized Copper Bulb", "Powered Waxed Oxidized Copper Bulb"
+    },
+    ["bulb_powered_on"] = {
+        "Powered Lit Copper Bulb", "Powered Lit Waxed Copper Bulb",
+        "Powered Lit Exposed Copper Bulb", "Powered Lit Waxed Exposed Copper Bulb",
+        "Powered Lit Weathered Copper Bulb", "Powered Lit Waxed Weathered Copper Bulb",
+        "Powered Lit Oxidized Copper Bulb", "Powered Lit Waxed Oxidized Copper Bulb"
     }
 }
 
@@ -49,6 +73,30 @@ mcl_copper.copper_longdescs = {
         "Exposed chiseled copper is a decorative block.",
         "Weathered chiseled copper is a decorative block.",
         "Oxidized chiseled copper is a decorative block."
+    },
+    ["bulb_off"] = {
+        "Copper bulb is a decorative block and a light source when lited.",
+        "Exposed copper bulb is a decorative block and a light source when lited.",
+        "Weathered copper bulb is a decorative block and a light source when lited.",
+        "Oxidized copper bulb is a decorative block and a light source when lited."
+    },
+    ["bulb_on"] = {
+        "Copper bulb is a decorative block and a light source.",
+        "Exposed copper bulb is a decorative block and a light source.",
+        "Weathered copper bulb is a decorative block and a light source.",
+        "Oxidized copper bulb is a decorative block and a light source."
+    },
+    ["bulb_powered_off"] = {
+        "Copper bulb is a decorative block and a light source when lited.",
+        "Exposed copper bulb is a decorative block and a light source when lited.",
+        "Weathered copper bulb is a decorative block and a light source when lited.",
+        "Oxidized copper bulb is a decorative block and a light source when lited."
+    },
+    ["bulb_powered_on"] = {
+        "Copper bulb is a decorative block and a light source.",
+        "Exposed copper bulb is a decorative block and a light source.",
+        "Weathered copper bulb is a decorative block and a light source.",
+        "Oxidized copper bulb is a decorative block and a light source."
     }
 }
 
@@ -86,4 +134,15 @@ mcl_copper.stairs_descs = {
     ["waxed_copper_oxidized_cut"] = {
         "Waxed Slab of Oxidized Cut Copper", "Waxed Double Slab of Oxidized Cut Copper", "Waxed Stairs of Oxidized Cut Copper"
     }
+}
+
+mcl_copper.doors_descs = {
+    {"Copper Door", "Copper Trapdoor"},
+    {"Waxed Copper Door", "Waxed Copper Trapdoor"},
+    {"Exposed Copper Door", "Exposed Copper Trapdoor"},
+    {"Waxed Exposed Copper Door", "Waxed Exposed Copper Trapdoor"},
+    {"Weathered Copper Door", "Weathered Copper Trapdoor"},
+    {"Waxed Weathered Copper Door", "Waxed Weathered Copper Trapdoor"},
+    {"Oxidized Copper Door", "Oxidized Copper Trapdoor"},
+    {"Waxed Oxidized Copper Door", "Waxed Oxidized Copper Trapdoor"}
 }

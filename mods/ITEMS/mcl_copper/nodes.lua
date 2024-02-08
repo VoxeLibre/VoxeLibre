@@ -1,8 +1,9 @@
 local S = minetest.get_translator("mcl_copper")
 
 function mcl_copper.register_copper_variants(name, definitions)
+	local light_level = nil
 	local oxidized_variant, stripped_variant, waxed_variant
-	local groups = table.copy(definitions.groups)
+	local mcl_copper_groups = table.copy(definitions.groups)
 	local names = {
 		name, "waxed_"..name,
 		name.."_exposed", "waxed_"..name.."_exposed",
@@ -18,11 +19,11 @@ function mcl_copper.register_copper_variants(name, definitions)
 
 	for i = 1, #names do
 		if names[i]:find("waxed") then
-			groups.waxed = 1
+			mcl_copper_groups.waxed = 1
 			stripped_variant = "mcl_copper:"..names[i-1]
 		else
 			if not names[i]:find("oxidized") then
-				groups.oxidizable = 1
+				mcl_copper_groups.oxidizable = 1
 				oxidized_variant = "mcl_copper:"..names[i+2]
 			end
 			if i ~= 1 then
@@ -31,12 +32,17 @@ function mcl_copper.register_copper_variants(name, definitions)
 			waxed_variant = "mcl_copper:"..names[i+1]
 		end
 
+		if definitions.light_source then
+			light_level = definitions.light_source-3*(math.ceil(i/2)-1)-math.floor(i/5)-math.floor(i/7)
+		end
+
 		minetest.register_node("mcl_copper:"..names[i], {
 			description = S(mcl_copper.copper_descs[name][i]),
 			drawtype = definitions.drawtype or "normal",
-			groups = groups,
+			groups = mcl_copper_groups,
 			is_ground_content = false,
-			light_source = nil,
+			light_source = light_level,
+			mesecons = definitions.mesecons,
 			paramtype = definitions.paramtype or "none",
 			paramtype2 = definitions.paramtype2 or "none",
 			sounds = mcl_sounds.node_sound_metal_defaults(),
@@ -52,19 +58,71 @@ function mcl_copper.register_copper_variants(name, definitions)
 
 		if definitions._mcl_stairs then
 			local subname = mcl_copper.stairs_subnames[name][i]
-			groups.building_block = 0
+			local mcl_stairs_groups = table.copy(mcl_copper_groups)
 
 			mcl_stairs.register_slab(subname, "mcl_copper:"..names[i],
-				groups, {tiles[math.ceil(i/2)], tiles[math.ceil(i/2)], tiles[math.ceil(i/2)]},
+				mcl_stairs_groups, {tiles[math.ceil(i/2)], tiles[math.ceil(i/2)], tiles[math.ceil(i/2)]},
 				S(mcl_copper.stairs_descs[subname][1]), nil, nil, nil,
 				S(mcl_copper.stairs_descs[subname][2])
 			)
 
 			mcl_stairs.register_stair(subname, "mcl_copper:"..names[i],
-				groups, {tiles[math.ceil(i/2)], tiles[math.ceil(i/2)], tiles[math.ceil(i/2)],
+				mcl_stairs_groups, {tiles[math.ceil(i/2)], tiles[math.ceil(i/2)], tiles[math.ceil(i/2)],
 				tiles[math.ceil(i/2)], tiles[math.ceil(i/2)], tiles[math.ceil(i/2)]},
 				S(mcl_copper.stairs_descs[subname][3]), nil, nil, nil, "woodlike"
 			)
+		end
+
+		if definitions._mcl_doors then
+			local itemimg, lowertext, uppertext, frontimg, sideimg
+			local door_groups = table.copy(mcl_copper_groups)
+			local trapdoor_groups = table.copy(mcl_copper_groups)
+			door_groups.building_block = 0
+			door_groups.mesecon_effector_on = 1
+			trapdoor_groups.building_block = 0
+			trapdoor_groups.mesecon_effector_on = 1
+
+			if i % 2 == 1 then
+				itemimg = "mcl_copper_item_"..names[i]:gsub(name, "door")..".png"
+				lowertext = "mcl_copper_"..names[i]:gsub(name, "door").."_lower.png"
+				uppertext = "mcl_copper_"..names[i]:gsub(name, "door").."_upper.png"
+				frontimg = "mcl_copper_"..names[i]:gsub(name, "trapdoor")..".png"
+				sideimg = "mcl_copper_"..names[i]:gsub(name, "trapdoor").."_side.png"
+			else
+				itemimg = "mcl_copper_item_"..names[i-1]:gsub(name, "door")..".png"
+				lowertext = "mcl_copper_"..names[i-1]:gsub(name, "door").."_lower.png"
+				uppertext = "mcl_copper_"..names[i-1]:gsub(name, "door").."_upper.png"
+				frontimg = "mcl_copper_"..names[i-1]:gsub(name, "trapdoor")..".png"
+				sideimg = "mcl_copper_"..names[i-1]:gsub(name, "trapdoor").."_side.png"
+			end
+
+			mcl_doors:register_door("mcl_copper:"..names[i]:gsub(name, "door"), {
+				description = S(mcl_copper.doors_descs[i][1]),
+				groups = door_groups,
+				inventory_image = itemimg,
+				only_redstone_can_open = false,
+				sounds = mcl_sounds.node_sound_metal_defaults(),
+				sound_close = "doors_steel_door_close",
+				sound_open = "doors_steel_door_open",
+				tiles_bottom = lowertext,
+				tiles_top = uppertext,
+				_mcl_blast_resistance = 3,
+				_mcl_hardness = 3
+			})
+
+			mcl_doors:register_trapdoor("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
+				description = S(mcl_copper.doors_descs[i][2]),
+				groups = trapdoor_groups,
+				only_redstone_can_open = false,
+				sounds = mcl_sounds.node_sound_metal_defaults(),
+				sound_close = "doors_steel_door_close",
+				sound_open = "doors_steel_door_open",
+				tile_front = frontimg,
+				tile_side = sideimg,
+				wield_image = frontimg,
+				_mcl_blast_resistance = 3,
+				_mcl_hardness = 3
+			})
 		end
 	end
 end
@@ -98,15 +156,66 @@ mcl_copper.register_copper_variants("block", {
 	groups = {pickaxey = 2, building_block = 1},
 	--_mcl_doors = true,
 })
+
 mcl_copper.register_copper_variants("cut", {
 	groups = {pickaxey = 2, building_block = 1},
 	_mcl_stairs = true,
 })
+
 mcl_copper.register_copper_variants("grate", {
 	drawtype = "allfaces",
 	groups = {pickaxey = 2, building_block = 1, disable_suffocation = 1},
 	sunlight_propagates = true,
 })
+
 mcl_copper.register_copper_variants("chiseled", {
 	groups = {pickaxey = 2, building_block = 1}
+})
+
+mcl_copper.register_copper_variants("bulb_off", {
+	groups = {pickaxey = 2, building_block = 1},
+	mesecons = {
+		effector = {
+			action_on = function (pos, node)
+				minetest.swap_node(pos, {name = node.name:gsub("bulb_off", "bulb_powered_on")})
+			end
+		}
+	},
+})
+
+mcl_copper.register_copper_variants("bulb_on", {
+	groups = {pickaxey = 2, building_block = 1, not_in_creative_inventory = 1},
+	light_source = 14,
+	mesecons = {
+		effector = {
+			action_on = function (pos, node)
+				minetest.swap_node(pos, {name = node.name:gsub("bulb_on", "bulb_powered_off")})
+			end
+		}
+	},
+	paramtype = "light"
+})
+
+mcl_copper.register_copper_variants("bulb_powered_off", {
+	groups = {pickaxey = 2, building_block = 1, not_in_creative_inventory = 1},
+	mesecons = {
+		effector = {
+			action_off = function (pos, node)
+				minetest.swap_node(pos, {name = node.name:gsub("bulb_powered_off", "bulb_off")})
+			end
+		}
+	}
+})
+
+mcl_copper.register_copper_variants("bulb_powered_on", {
+	groups = {pickaxey = 2, building_block = 1, not_in_creative_inventory = 1},
+	light_source = 14,
+	mesecons = {
+		effector = {
+			action_off = function (pos, node)
+				minetest.swap_node(pos, {name = node.name:gsub("bulb_powered_on", "bulb_on")})
+			end
+		}
+	},
+	paramtype = "light"
 })
