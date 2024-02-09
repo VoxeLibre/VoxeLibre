@@ -3,12 +3,6 @@ mcl_itemframes.registered_nodes = {}
 mcl_itemframes.registered_itemframes = {}
 local S = minetest.get_translator(minetest.get_current_modname())
 
---[[ TODO: implement stubs for these entities and remove/replace them
-	minetest.register_entity("mcl_itemframes:map", map_item_base)
-	minetest.register_entity("mcl_itemframes:glow_item", frame_item_base)
-	minetest.register_entity("mcl_itemframes:glow_map", map_item_base)
---]]
-
 local fbox = {type = "fixed", fixed = {-6/16, -1/2, -6/16, 7/16, -7/16, 6/16}}
 
 local base_props = {
