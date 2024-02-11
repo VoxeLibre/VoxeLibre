@@ -1,6 +1,7 @@
 local S = minetest.get_translator("mcl_copper")
 
 function mcl_copper.register_copper_variants(name, definitions)
+	local description, drop
 	local light_level = nil
 	local oxidized_variant, stripped_variant, waxed_variant
 	local mcl_copper_groups = table.copy(definitions.groups)
@@ -18,6 +19,16 @@ function mcl_copper.register_copper_variants(name, definitions)
 	}
 
 	for i = 1, #names do
+		if type(mcl_copper.copper_descs[name][i]) == "string" then
+			description = S(mcl_copper.copper_descs[name][i])
+		elseif type(mcl_copper.copper_descs[name][i]) == "table" then
+			description = S("@1 "..mcl_copper.copper_descs[name][i][2], S(mcl_copper.copper_descs[name][i][1]))
+		end
+
+		if definitions.drop then
+			drop = "mcl_copper:"..names[i]:gsub(name, definitions.drop)
+		end
+
 		if names[i]:find("waxed") then
 			mcl_copper_groups.waxed = 1
 			stripped_variant = "mcl_copper:"..names[i-1]
@@ -37,8 +48,9 @@ function mcl_copper.register_copper_variants(name, definitions)
 		end
 
 		minetest.register_node("mcl_copper:"..names[i], {
-			description = S(mcl_copper.copper_descs[name][i]),
+			description = description,
 			drawtype = definitions.drawtype or "normal",
+			drop = drop or nil,
 			groups = mcl_copper_groups,
 			is_ground_content = false,
 			light_source = light_level,
@@ -123,6 +135,26 @@ function mcl_copper.register_copper_variants(name, definitions)
 				_mcl_blast_resistance = 3,
 				_mcl_hardness = 3
 			})
+
+			if names[i]:find("waxed") then
+				minetest.override_item("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
+					_mcl_stripped_variant =  "mcl_copper:"..names[i-1]:gsub(name, "trapdoor")
+				})
+			else
+				if not names[i]:find("oxidized") then
+					minetest.override_item("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
+						_mcl_oxidized_variant = "mcl_copper:"..names[i+2]:gsub(name, "trapdoor")
+					})
+				end
+				if i ~= 1 then
+					minetest.override_item("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
+						_mcl_stripped_variant = "mcl_copper:"..names[i-2]:gsub(name, "trapdoor")
+					})
+				end
+				minetest.override_item("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
+					_mcl_waxed_variant = "mcl_copper:"..names[i+1]:gsub(name, "trapdoor")
+				})
+			end
 		end
 	end
 end
@@ -141,7 +173,7 @@ minetest.register_node("mcl_copper:stone_with_copper", {
 	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
-minetest.register_node("mcl_copper:block_raw", {
+minetest.register_node("mcl_copper:raw_block", {
 	description = S("Block of Raw Copper"),
 	_doc_items_longdesc = S("A block used for compact raw copper storage."),
 	tiles = {"mcl_copper_raw_block.png"},
@@ -154,12 +186,14 @@ minetest.register_node("mcl_copper:block_raw", {
 
 mcl_copper.register_copper_variants("block", {
 	groups = {pickaxey = 2, building_block = 1},
-	--_mcl_doors = true,
+	_mcl_doors = true,
 })
+
 mcl_copper.register_copper_variants("cut", {
 	groups = {pickaxey = 2, building_block = 1},
 	_mcl_stairs = true,
 })
+
 mcl_copper.register_copper_variants("grate", {
 	drawtype = "allfaces",
 	groups = {pickaxey = 2, building_block = 1, disable_suffocation = 1},
@@ -182,6 +216,7 @@ mcl_copper.register_copper_variants("bulb_off", {
 })
 
 mcl_copper.register_copper_variants("bulb_on", {
+	drop = "bulb_off",
 	groups = {pickaxey = 2, building_block = 1, not_in_creative_inventory = 1},
 	light_source = 14,
 	mesecons = {
@@ -195,6 +230,7 @@ mcl_copper.register_copper_variants("bulb_on", {
 })
 
 mcl_copper.register_copper_variants("bulb_powered_off", {
+	drop = "bulb_off",
 	groups = {pickaxey = 2, building_block = 1, not_in_creative_inventory = 1},
 	mesecons = {
 		effector = {
@@ -206,6 +242,7 @@ mcl_copper.register_copper_variants("bulb_powered_off", {
 })
 
 mcl_copper.register_copper_variants("bulb_powered_on", {
+	drop = "bulb_off",
 	groups = {pickaxey = 2, building_block = 1, not_in_creative_inventory = 1},
 	light_source = 14,
 	mesecons = {

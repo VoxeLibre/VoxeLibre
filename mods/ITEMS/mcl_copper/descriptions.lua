@@ -1,3 +1,6 @@
+local lit_desc = "(Lit)"
+local pow_desc = "(Powered)"
+local mix_desc = "(Lit and Powered)"
 mcl_copper.copper_descs = {
     ["block"] = {
         "Block of Copper", "Waxed Block of Copper",
@@ -30,22 +33,22 @@ mcl_copper.copper_descs = {
         "Oxidized Copper Bulb", "Waxed Oxidized Copper Bulb"
     },
     ["bulb_on"] = {
-        "Lit Copper Bulb", "Lit Waxed Copper Bulb",
-        "Lit Exposed Copper Bulb", "Lit Waxed Exposed Copper Bulb",
-        "Lit Weathered Copper Bulb", "Lit Waxed Weathered Copper Bulb",
-        "Lit Oxidized Copper Bulb", "Lit Waxed Oxidized Copper Bulb"
+        {"Copper Bulb", lit_desc}, {"Waxed Copper Bulb", lit_desc},
+        {"Exposed Copper Bulb", lit_desc}, {"Waxed Exposed Copper Bulb", lit_desc},
+        {"Weathered Copper Bulb", lit_desc}, {"Waxed Weathered Copper Bulb", lit_desc},
+        {"Oxidized Copper Bulb", lit_desc}, {"Waxed Oxidized Copper Bulb", lit_desc}
     },
     ["bulb_powered_off"] = {
-        "Powered Copper Bulb", "Powered Waxed Copper Bulb",
-        "Powered Exposed Copper Bulb", "Powered Waxed Exposed Copper Bulb",
-        "Powered Weathered Copper Bulb", "Powered Waxed Weathered Copper Bulb",
-        "Powered Oxidized Copper Bulb", "Powered Waxed Oxidized Copper Bulb"
+        {"Copper Bulb", pow_desc}, {"Waxed Copper Bulb", pow_desc},
+        {"Exposed Copper Bulb", pow_desc}, {"Waxed Exposed Copper Bulb", pow_desc},
+        {"Weathered Copper Bulb", pow_desc}, {"Waxed Weathered Copper Bulb", pow_desc},
+        {"Oxidized Copper Bulb", pow_desc}, {"Waxed Oxidized Copper Bulb", pow_desc}
     },
     ["bulb_powered_on"] = {
-        "Powered Lit Copper Bulb", "Powered Lit Waxed Copper Bulb",
-        "Powered Lit Exposed Copper Bulb", "Powered Lit Waxed Exposed Copper Bulb",
-        "Powered Lit Weathered Copper Bulb", "Powered Lit Waxed Weathered Copper Bulb",
-        "Powered Lit Oxidized Copper Bulb", "Powered Lit Waxed Oxidized Copper Bulb"
+        {"Copper Bulb", mix_desc}, {"Waxed Copper Bulb", mix_desc},
+        {"Exposed Copper Bulb", mix_desc}, {"Waxed Exposed Copper Bulb", mix_desc},
+        {"Weathered Copper Bulb", mix_desc}, {"Waxed Weathered Copper Bulb", mix_desc},
+        {"Oxidized Copper Bulb", mix_desc}, {"Waxed Oxidized Copper Bulb", mix_desc}
     }
 }
 

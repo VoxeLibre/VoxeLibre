@@ -130,3 +130,13 @@ for i = 1, #oxidized_stairs do
 	def_variant_waxed = "mcl_stairs:stair_waxed_copper_" .. oxidized_stairs[i]
 	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
 end
+
+minetest.register_alias("mcl_copper:raw_block", "mcl_copper:block_raw")
+minetest.register_alias("mcl_copper:cut", "mcl_copper:block_cut")
+minetest.register_alias("mcl_copper:waxed_cut", "mcl_copper:waxed_block_cut")
+minetest.register_alias("mcl_copper:cut_exposed", "mcl_copper:block_exposed_cut")
+minetest.register_alias("mcl_copper:waxed_cut_exposed", "mcl_copper:waxed_block_exposed_cut")
+minetest.register_alias("mcl_copper:cut_weathered", "mcl_copper:block_weathered_cut")
+minetest.register_alias("mcl_copper:waxed_cut_weathered", "mcl_copper:waxed_block_weathered_cut")
+minetest.register_alias("mcl_copper:cut_oxidized", "mcl_copper:block_oxidized_cut")
+minetest.register_alias("mcl_copper:waxed_cut_oxidized", "mcl_copper:waxed_block_oxidized_cut")

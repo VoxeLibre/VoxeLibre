@@ -1,23 +1,5 @@
 minetest.register_craft({
-	output = "mcl_copper:block_raw",
-	recipe = {
-		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
-		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
-		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_copper:block",
-	recipe = {
-		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
-		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
-		{ "mcl_copper:copper_ingot", "mcl_copper:copper_ingot", "mcl_copper:copper_ingot" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_copper:block_raw",
+	output = "mcl_copper:raw_block",
 	recipe = {
 		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
 		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
@@ -109,7 +91,7 @@ end
 mcl_copper.register_variants_recipes("cut", "block", 4)
 mcl_copper.register_variants_recipes("grate", "block", 4)
 --mcl_copper.register_variants_recipes("door", "block", 3)
---mcl_copper.register_variants_recipes("trapdoor", "block", 2)
+mcl_copper.register_variants_recipes("trapdoor", "block", 2)
 mcl_copper.register_variants_recipes("bulb_off", "block", 4)
 
 local chiseled_materials = {
@@ -130,22 +112,18 @@ local waxable_blocks = {
 	"cut",
 	"grate",
 	"chiseled",
-	"bulb_off",
 	"block_exposed",
 	"cut_exposed",
 	"grate_exposed",
 	"chiseled_exposed",
-	"bulb_off_exposed",
 	"block_weathered",
 	"cut_weathered",
 	"grate_weathered",
 	"chiseled_weathered",
-	"bulb_off_weathered",
 	"block_oxidized",
 	"cut_oxidized",
 	"grate_oxidized",
-	"chiseled_oxidized",
-	"bulb_off_oxidized"
+	"chiseled_oxidized"
 }
 
 for _, w in ipairs(waxable_blocks) do
@@ -185,7 +163,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_copper:raw_copper 9",
 	recipe = {
-		{ "mcl_copper:block_raw" },
+		{ "mcl_copper:raw_block" },
 	},
 })
 
@@ -206,6 +184,6 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_copper:block",
-	recipe = "mcl_copper:block_raw",
+	recipe = "mcl_copper:raw_block",
 	cooktime = 90,
 })
