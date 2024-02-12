@@ -475,8 +475,11 @@ minetest.register_node("mcl_books:bookshelf", {
 	_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		return inv, "main", mcl_util.select_stack(hop_inv, hop_list, inv, "main",
-				function(stack) return minetest.get_item_group(stack:get_name(), "book") == 1 or stack:get_name() == "mcl_enchanting:book_enchanted" end)
+		local filter = function(stack)
+			return minetest.get_item_group(stack:get_name(), "book") == 1 or
+			       stack:get_name() == "mcl_enchanting:book_enchanted"
+		end
+		return inv, "main", mcl_util.select_stack(hop_inv, hop_list, inv, "main", filter, 1)
 	end,
 })
 

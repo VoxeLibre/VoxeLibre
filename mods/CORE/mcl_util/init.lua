@@ -257,12 +257,21 @@ end
 ---@param dst_inventory InvRef Destination inventory to push to
 ---@param dst_list string Name of destination inventory list to push to
 ---@param condition? fun(stack: ItemStack) Condition which items are allowed to be transfered.
+---@param count? integer Number of items to try to transfer at once
 ---@return integer Item stack number to be transfered
-function mcl_util.select_stack(src_inventory, src_list, dst_inventory, dst_list, condition)
+function mcl_util.select_stack(src_inventory, src_list, dst_inventory, dst_list, condition, count)
 	local src_size = src_inventory:get_size(src_list)
 	local stack
 	for i = 1, src_size do
 		stack = src_inventory:get_stack(src_list, i)
+
+		-- Allow for partial stack movement
+		if count then
+			local new_stack = ItemStack(stack)
+			new_stack:set_count(count)
+			stack = new_stack
+		end
+
 		if not stack:is_empty() and dst_inventory:room_for_item(dst_list, stack) and ((condition == nil or condition(stack))) then
 			return i
 		end
@@ -280,21 +289,22 @@ end
 -- Returns true on success and false on failure
 -- Possible failures: No item in source slot, destination inventory full
 function mcl_util.move_item(source_inventory, source_list, source_stack_id, destination_inventory, destination_list)
-	if not source_inventory:is_empty(source_list) then
-		local stack = source_inventory:get_stack(source_list, source_stack_id)
-		if not stack:is_empty() then
-			local new_stack = ItemStack(stack)
-			new_stack:set_count(1)
-			if not destination_inventory:room_for_item(destination_list, new_stack) then
-				return false
-			end
-			stack:take_item()
-			source_inventory:set_stack(source_list, source_stack_id, stack)
-			destination_inventory:add_item(destination_list, new_stack)
-			return true
-		end
+	-- Can't move items we don't have
+	if source_inventory:is_empty(source_list) then return false end
+
+	-- Can't move from an empty stack
+	local stack = source_inventory:get_stack(source_list, source_stack_id)
+	if stack:is_empty() then return false end
+
+	local new_stack = ItemStack(stack)
+	new_stack:set_count(1)
+	if not destination_inventory:room_for_item(destination_list, new_stack) then
+		return false
 	end
-	return false
+	stack:take_item()
+	source_inventory:set_stack(source_list, source_stack_id, stack)
+	destination_inventory:add_item(destination_list, new_stack)
+	return true
 end
 
 --- Try pushing item from hopper inventory to destination inventory
@@ -314,25 +324,23 @@ function mcl_util.hopper_push(pos, dst_pos)
 	local dst_list = 'main'
 	local dst_inv, stack_id
 
+	-- Find a inventory stack in the destination
 	if dst_def._mcl_hoppers_on_try_push then
 		dst_inv, dst_list, stack_id = dst_def._mcl_hoppers_on_try_push(dst_pos, pos, hop_inv, hop_list)
 	else
 		local dst_meta = minetest.get_meta(dst_pos)
 		dst_inv = dst_meta:get_inventory()
-		stack_id = mcl_util.select_stack(hop_inv, hop_list, dst_inv, dst_list)
+		stack_id = mcl_util.select_stack(hop_inv, hop_list, dst_inv, dst_list, nil, 1)
+	end
+	if not stack_id then return false end
+
+	-- Move the item
+	local ok = mcl_util.move_item(hop_inv, hop_list, stack_id, dst_inv, dst_list)
+	if dst_def._mcl_hoppers_on_after_push then
+		dst_def._mcl_hoppers_on_after_push(dst_pos)
 	end
 
-	if stack_id ~= nil then
-		local ok = mcl_util.move_item(hop_inv, hop_list, stack_id, dst_inv, dst_list)
-		if dst_def._mcl_hoppers_on_after_push then
-			dst_def._mcl_hoppers_on_after_push(dst_pos)
-		end
-		if ok then
-			return true
-		end
-	end
-
-	return false
+	return ok
 end
 
 -- Try pulling from source inventory to hopper inventory
@@ -357,7 +365,7 @@ function mcl_util.hopper_pull(pos, src_pos)
 	else
 		local src_meta = minetest.get_meta(src_pos)
 		src_inv = src_meta:get_inventory()
-		stack_id = mcl_util.select_stack(src_inv, src_list, hop_inv, hop_list)
+		stack_id = mcl_util.select_stack(src_inv, src_list, hop_inv, hop_list, nil, 1)
 	end
 
 	if stack_id ~= nil then
