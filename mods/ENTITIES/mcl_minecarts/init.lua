@@ -305,9 +305,193 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 	local passenger_attach_position = vector.new(0, -1.75, 0)
 
+	local function do_movement_step( self )
+		local vel = self.object:get_velocity()
+		local pos, rou_pos, node = self.object:get_pos()
+		local update = {}
+
+		local dir, last_switch = nil, nil
+		if not pos then
+			pos = self.object:get_pos()
+		end
+		if self._old_pos and not self._punched then
+			local flo_pos = vector.floor(pos)
+			local flo_old = vector.floor(self._old_pos)
+			if vector.equals(flo_pos, flo_old) and (not has_fuel) then
+				return
+				-- Prevent querying the same node over and over again
+			end
+
+			if not rou_pos then
+				rou_pos = vector.round(pos)
+			end
+			local rou_old = vector.round(self._old_pos)
+			if not node then
+				node = minetest.get_node(rou_pos)
+			end
+			local node_old = minetest.get_node(rou_old)
+
+			-- Update detector rails
+			if node.name == "mcl_minecarts:detector_rail" then
+				local newnode = {name="mcl_minecarts:detector_rail_on", param2 = node.param2}
+				minetest.swap_node(rou_pos, newnode)
+				mesecon.receptor_on(rou_pos)
+			end
+			if node_old.name == "mcl_minecarts:detector_rail_on" then
+				local newnode = {name="mcl_minecarts:detector_rail", param2 = node_old.param2}
+				minetest.swap_node(rou_old, newnode)
+				mesecon.receptor_off(rou_old)
+			end
+			-- Activate minecart if on activator rail
+			if node_old.name == "mcl_minecarts:activator_rail_on" and self.on_activate_by_rail then
+				self:on_activate_by_rail()
+			end
+		end
+
+		-- Stop cart if velocity vector flips
+		if self._old_vel and self._old_vel.y == 0 and
+				(self._old_vel.x * vel.x < 0 or self._old_vel.z * vel.z < 0) then
+			self._old_vel = {x = 0, y = 0, z = 0}
+			self._old_pos = pos
+			self.object:set_velocity(vector.new())
+			self.object:set_acceleration(vector.new())
+			return
+		end
+		self._old_vel = vector.new(vel)
+
+		if self._old_pos then
+			local diff = vector.subtract(self._old_pos, pos)
+			for _,v in ipairs({"x","y","z"}) do
+				if math.abs(diff[v]) > 1.1 then
+					local expected_pos = vector.add(self._old_pos, self._old_dir)
+					dir, last_switch = mcl_minecarts:get_rail_direction(pos, self._old_dir, ctrl, self._old_switch, self._railtype)
+
+					if vector.equals(dir, {x=0, y=0, z=0}) then
+						dir = false
+						pos = vector.new(expected_pos)
+						update.pos = true
+					end
+					break
+				end
+			end
+		end
+
+		if vel.y == 0 then
+			for _,v in ipairs({"x", "z"}) do
+				if vel[v] ~= 0 and math.abs(vel[v]) < 0.9 then
+					vel[v] = 0
+					update.vel = true
+				end
+			end
+		end
+
+		local cart_dir = mcl_minecarts:velocity_to_dir(vel)
+		local max_vel = mcl_minecarts.speed_max
+		if not dir then
+			dir, last_switch = mcl_minecarts:get_rail_direction(pos, cart_dir, ctrl, self._old_switch, self._railtype)
+		end
+
+		local new_acc = {x=0, y=0, z=0}
+		if vector.equals(dir, {x=0, y=0, z=0}) and not has_fuel then
+			vel = {x=0, y=0, z=0}
+			update.vel = true
+		else
+			-- If the direction changed
+			if dir.x ~= 0 and self._old_dir.z ~= 0 then
+				vel.x = dir.x * math.abs(vel.z)
+				vel.z = 0
+				pos.z = math.floor(pos.z + 0.5)
+				update.pos = true
+			end
+			if dir.z ~= 0 and self._old_dir.x ~= 0 then
+				vel.z = dir.z * math.abs(vel.x)
+				vel.x = 0
+				pos.x = math.floor(pos.x + 0.5)
+				update.pos = true
+			end
+			-- Up, down?
+			if dir.y ~= self._old_dir.y then
+				vel.y = dir.y * math.abs(vel.x + vel.z)
+				pos = vector.round(pos)
+				update.pos = true
+			end
+
+			-- Slow down or speed up
+			local acc = dir.y * -1.8
+			local friction = 0.4
+			local ndef = minetest.registered_nodes[minetest.get_node(pos).name]
+			local speed_mod = ndef and ndef._rail_acceleration
+
+			acc = acc - friction
+
+			if has_fuel then
+				acc = acc + 0.6
+			end
+
+			if speed_mod and speed_mod ~= 0 then
+				acc = acc + speed_mod + friction
+			end
+
+			new_acc = vector.multiply(dir, acc)
+		end
+
+		self.object:set_acceleration(new_acc)
+		self._old_pos = vector.new(pos)
+		self._old_dir = vector.new(dir)
+		self._old_switch = last_switch
+
+		-- Limits
+		for _,v in ipairs({"x","y","z"}) do
+			if math.abs(vel[v]) > max_vel then
+				vel[v] = mcl_minecarts:get_sign(vel[v]) * max_vel
+				new_acc[v] = 0
+				update.vel = true
+			end
+		end
+
+
+		if update.pos or self._punched then
+			local yaw = 0
+			if dir.x < 0 then
+				yaw = 0.5
+			elseif dir.x > 0 then
+				yaw = 1.5
+			elseif dir.z < 0 then
+				yaw = 1
+			end
+			self.object:set_yaw(yaw * math.pi)
+		end
+
+		if self._punched then
+			self._punched = false
+		end
+
+		if not (update.vel or update.pos) then
+			return
+		end
+
+		local anim = {x=0, y=0}
+		if dir.y == -1 then
+			anim = {x=1, y=1}
+		elseif dir.y == 1 then
+			anim = {x=2, y=2}
+		end
+		self.object:set_animation(anim, 1, 0)
+
+		self.object:set_velocity(vel)
+		if update.pos then
+			self.object:set_pos(pos)
+		end
+	end
+
 	function cart:on_step(dtime)
 		hopper_take_item(self, dtime)
 
+		local vel = self.object:get_velocity()
+		local pos, rou_pos, node = self.object:get_pos()
+		local update = {}
+
+		-- Controls
 		local ctrl, player = nil, nil
 		if self._driver then
 			player = minetest.get_player_by_name(self._driver)
@@ -319,17 +503,23 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 					return
 				end
 			end
+
+			-- Give achievement when player reached a distance of 1000 nodes from the start position
+			if vector.distance(self._start_pos, pos) >= 1000 then
+				awards.unlock(self._driver, "mcl:onARail")
+			end
 		end
 
-		local vel = self.object:get_velocity()
-		local update = {}
-		if self._last_float_check == nil then
-			self._last_float_check = 0
-		else
-			self._last_float_check = self._last_float_check + dtime
+		-- Go faster when punched
+		if self._punched then
+			vel = vector.add(vel, self._velocity)
+			self.object:set_velocity(vel)
+			self._old_dir.y = 0
+		elseif vector.equals(vel, {x=0, y=0, z=0}) and (not has_fuel) then
+			return
 		end
 
-		local pos, rou_pos, node = self.object:get_pos()
+		-- Drop minecart if it collides with a cactus node
 		local r = 0.6
 		for _, node_pos in pairs({{r, 0}, {0, r}, {-r, 0}, {0, -r}}) do
 			if minetest.get_node(vector.offset(pos, node_pos[1], 0, node_pos[2])).name == "mcl_core:cactus" then
@@ -341,6 +531,17 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				return
 			end
 		end
+
+		-- Debug
+		local node = minetest.get_node(pos).name
+		local dist = 0
+		if pos and self._old_pos then
+			dist = vector.distance(pos,self._old_pos)
+		end
+		if dist > 1.5 then
+			print("pos="..tostring(pos)..",dist="..tostring(dist)..",node="..tostring(node)..",old_pos="..tostring(self._old_pos)..",vel="..tostring(vel))
+		end
+		-- Rail jumps can occur when dist > 1.5, because the cart can skip over a gap in track
 
 		-- Grab mob
 		if math.random(1,20) > 15 and not self._passenger then
@@ -366,6 +567,11 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		end
 
 		-- Drop minecart if it isn't on a rail anymore
+		if self._last_float_check == nil then
+			self._last_float_check = 0
+		else
+			self._last_float_check = self._last_float_check + dtime
+		end
 		if self._last_float_check >= mcl_minecarts.check_float_time then
 			pos = self.object:get_pos()
 			rou_pos = vector.round(pos)
@@ -458,202 +664,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			end
 		end
 
-		if self._punched then
-			vel = vector.add(vel, self._velocity)
-			self.object:set_velocity(vel)
-			self._old_dir.y = 0
-		elseif vector.equals(vel, {x=0, y=0, z=0}) and (not has_fuel) then
-			return
-		end
-
-		local dir, last_switch, restart_pos = nil, nil, nil
-		if not pos then
-			pos = self.object:get_pos()
-		end
-		if self._old_pos and not self._punched then
-			local flo_pos = vector.floor(pos)
-			local flo_old = vector.floor(self._old_pos)
-			if vector.equals(flo_pos, flo_old) and (not has_fuel) then
-				return
-				-- Prevent querying the same node over and over again
-			end
-
-			if not rou_pos then
-				rou_pos = vector.round(pos)
-			end
-			local rou_old = vector.round(self._old_pos)
-			if not node then
-				node = minetest.get_node(rou_pos)
-			end
-			local node_old = minetest.get_node(rou_old)
-
-			-- Update detector rails
-			if node.name == "mcl_minecarts:detector_rail" then
-				local newnode = {name="mcl_minecarts:detector_rail_on", param2 = node.param2}
-				minetest.swap_node(rou_pos, newnode)
-				mesecon.receptor_on(rou_pos)
-			end
-			if node.name == "mcl_minecarts:golden_rail_on" then
-				restart_pos = rou_pos
-			end
-			if node_old.name == "mcl_minecarts:detector_rail_on" then
-				local newnode = {name="mcl_minecarts:detector_rail", param2 = node_old.param2}
-				minetest.swap_node(rou_old, newnode)
-				mesecon.receptor_off(rou_old)
-			end
-			-- Activate minecart if on activator rail
-			if node_old.name == "mcl_minecarts:activator_rail_on" and self.on_activate_by_rail then
-				self:on_activate_by_rail()
-			end
-		end
-
-		-- Stop cart if velocity vector flips
-		if self._old_vel and self._old_vel.y == 0 and
-				(self._old_vel.x * vel.x < 0 or self._old_vel.z * vel.z < 0) then
-			self._old_vel = {x = 0, y = 0, z = 0}
-			self._old_pos = pos
-			self.object:set_velocity(vector.new())
-			self.object:set_acceleration(vector.new())
-			return
-		end
-		self._old_vel = vector.new(vel)
-
-		if self._old_pos then
-			local diff = vector.subtract(self._old_pos, pos)
-			for _,v in ipairs({"x","y","z"}) do
-				if math.abs(diff[v]) > 1.1 then
-					local expected_pos = vector.add(self._old_pos, self._old_dir)
-					dir, last_switch = mcl_minecarts:get_rail_direction(pos, self._old_dir, ctrl, self._old_switch, self._railtype)
-					if vector.equals(dir, {x=0, y=0, z=0}) then
-						dir = false
-						pos = vector.new(expected_pos)
-						update.pos = true
-					end
-					break
-				end
-			end
-		end
-
-		if vel.y == 0 then
-			for _,v in ipairs({"x", "z"}) do
-				if vel[v] ~= 0 and math.abs(vel[v]) < 0.9 then
-					vel[v] = 0
-					update.vel = true
-				end
-			end
-		end
-
-		local cart_dir = mcl_minecarts:velocity_to_dir(vel)
-		local max_vel = mcl_minecarts.speed_max
-		if not dir then
-			dir, last_switch = mcl_minecarts:get_rail_direction(pos, cart_dir, ctrl, self._old_switch, self._railtype)
-		end
-
-		local new_acc = {x=0, y=0, z=0}
-		if vector.equals(dir, {x=0, y=0, z=0}) and not has_fuel then
-			vel = {x=0, y=0, z=0}
-			update.vel = true
-		else
-			-- If the direction changed
-			if dir.x ~= 0 and self._old_dir.z ~= 0 then
-				vel.x = dir.x * math.abs(vel.z)
-				vel.z = 0
-				pos.z = math.floor(pos.z + 0.5)
-				update.pos = true
-			end
-			if dir.z ~= 0 and self._old_dir.x ~= 0 then
-				vel.z = dir.z * math.abs(vel.x)
-				vel.x = 0
-				pos.x = math.floor(pos.x + 0.5)
-				update.pos = true
-			end
-			-- Up, down?
-			if dir.y ~= self._old_dir.y then
-				vel.y = dir.y * math.abs(vel.x + vel.z)
-				pos = vector.round(pos)
-				update.pos = true
-			end
-
-			-- Slow down or speed up
-			local acc = dir.y * -1.8
-			local friction = 0.4
-			local ndef = minetest.registered_nodes[minetest.get_node(pos).name]
-			local speed_mod = ndef and ndef._rail_acceleration
-
-			acc = acc - friction
-
-			if has_fuel then
-				acc = acc + 0.6
-			end
-
-			if speed_mod and speed_mod ~= 0 then
-				acc = acc + speed_mod + friction
-			end
-
-			new_acc = vector.multiply(dir, acc)
-		end
-
-		self.object:set_acceleration(new_acc)
-		self._old_pos = vector.new(pos)
-		self._old_dir = vector.new(dir)
-		self._old_switch = last_switch
-
-		-- Limits
-		for _,v in ipairs({"x","y","z"}) do
-			if math.abs(vel[v]) > max_vel then
-				vel[v] = mcl_minecarts:get_sign(vel[v]) * max_vel
-				new_acc[v] = 0
-				update.vel = true
-			end
-		end
-
-		-- Give achievement when player reached a distance of 1000 nodes from the start position
-		if self._driver and (vector.distance(self._start_pos, pos) >= 1000) then
-			awards.unlock(self._driver, "mcl:onARail")
-		end
-
-
-		if update.pos or self._punched then
-			local yaw = 0
-			if dir.x < 0 then
-				yaw = 0.5
-			elseif dir.x > 0 then
-				yaw = 1.5
-			elseif dir.z < 0 then
-				yaw = 1
-			end
-			self.object:set_yaw(yaw * math.pi)
-		end
-
-		if self._punched then
-			self._punched = false
-		end
-
-		if not (update.vel or update.pos) then
-			return
-		end
-
-
-		local anim = {x=0, y=0}
-		if dir.y == -1 then
-			anim = {x=1, y=1}
-		elseif dir.y == 1 then
-			anim = {x=2, y=2}
-		end
-		self.object:set_animation(anim, 1, 0)
-
-		self.object:set_velocity(vel)
-		if update.pos then
-			self.object:set_pos(pos)
-		end
-		
-		-- stopped on "mcl_minecarts:golden_rail_on"
-		if vector.equals(vel, {x=0, y=0, z=0}) and restart_pos then
-			local dir = mcl_minecarts:get_start_direction(restart_pos)
-			if dir then
-				mcl_minecarts:set_velocity(self, dir)
-			end
-		end
+		do_movement_step(self)
 	end
 
 	function cart:get_staticdata()
