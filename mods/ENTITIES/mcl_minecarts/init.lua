@@ -12,6 +12,7 @@ dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_minecarts", false)
+local DEBUG = false
 local function mcl_log(message)
 	if LOGGING_ON then
 		mcl_util.mcl_log(message, "[Minecarts]", true)
@@ -182,6 +183,15 @@ end
 -- Table for item-to-entity mapping. Keys: itemstring, Values: Corresponding entity ID
 local entity_mapping = {}
 
+local function make_staticdata( railtype, connected_at, dir )
+	return {
+		railtype = railtype,
+		connected_at = connected_at,
+		dir = vector.new(dir),
+		velocity = 0
+	}
+end
+
 local function register_entity(entity_id, mesh, textures, drop, on_rightclick, on_activate_by_rail)
 	local cart = {
 		initial_properties = {
@@ -236,10 +246,16 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 	function cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
 		local staticdata = self._staticdata
+		if not staticdata then
+			staticdata = make_staticdata()
+			self._staticdata = staticdata
+		end
+
 		local pos = staticdata.connected_at
 		if not pos then
+			pos = self.object:get_pos()
 			print("TODO: handle detached cart behavior")
-			return
+			--return
 		end
 
 		-- Fix railtype field
@@ -370,6 +386,21 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		staticdata.dir = next_dir
 		self.object:move_to(next_pos)
 
+		if DEBUG and self._driver then
+			local prefix = "    "
+			if next_dir ~= dir then
+				prefix = "--->"
+			end
+			print( prefix
+			    .. "pos="..tostring(pos)
+			    ..",dir="..tostring(dir)
+			    ..",next_dir="..tostring(next_dir)
+			    ..",next_pos="..tostring(next_pos)
+			    ..",velocity="..tostring(staticdata.velocity)
+			    ..",distance="..tostring(distance)
+			)
+		end
+
 		-- Handle track interactions
 		local pos_rounded = vector.round(pos)
 		if pos_rounded ~= next_pos_rounded then
@@ -385,8 +416,6 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				new_node_def._mcl_minecarts_on_enter( next_pos_rounded, self )
 			end
 		end
-
-		--print("pos="..tostring(next_pos)..",dir="..tostring(next_dir)..",staticdata="..tostring(staticdata))
 	end
 
 	local function process_acceleration(self, timestep)
@@ -432,12 +461,15 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 	local function do_movement( self, dtime )
 		local staticdata = self._staticdata
 
+		-- Break long movements into fixed-size steps so that
+		-- it is impossible to jump across gaps due to server lag
+		-- causing large timesteps
 		local total_distance = dtime * ( staticdata.velocity or 0 )
 		local remaining_distance = total_distance
 		local max_step_distance = 0.5
 		local steps = math.ceil(total_distance / max_step_distance )
 
-		process_acceleration(self,dtime)
+		process_acceleration(self,dtime * max_step_distance / total_distance)
 
 		for i = 1,steps do
 			local step_distance = max_step_distance
@@ -448,13 +480,16 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				remaining_distance = remaining_distance - max_step_distance
 			end
 
+			-- Don't try to perform very small steps
+			if step_distance < 0.001 then break end
+
+			-- Handle acceleration on everything except the first step, as that was
+			-- done outside the loop
 			if i ~= 1 then
-				-- Go faster/slower
-				local timestep = dtime * step_distance / total_distance
-				process_acceleration(self, timestep)
+				process_acceleration(self, dtime * step_distance / total_distance)
 			end
 
-			do_movement_step(self,step_distance)
+			do_movement_step(self, step_distance)
 		end
 
 		-- Clear punched flag now that movement for this step has been completed
@@ -464,6 +499,10 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 	function cart:on_step(dtime)
 		hopper_take_item(self, dtime)
 		local staticdata = self._staticdata
+		if not staticdata then
+			staticdata = make_staticdata()
+			self._staticdata = staticdata
+		end
 
 		local pos, rou_pos, node = self.object:get_pos()
 		local update = {}
@@ -663,12 +702,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	-- Update static data
 	local le = cart:get_luaentity()
 	if le then
-		le._staticdata = {
-			railtype = railtype,
-			connected_at = railpos,
-			dir = vector.new(cart_dir),
-			velocity = 0,
-		}
+		le._staticdata = make_staticdata( railtype, railpos, cart_dir )
 	end
 
 	-- Handle track behaviors
