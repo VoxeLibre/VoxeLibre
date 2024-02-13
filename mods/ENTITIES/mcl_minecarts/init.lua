@@ -207,15 +207,22 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		_old_pos = nil,
 		_old_vel = {x=0, y=0, z=0},
 		_old_switch = 0,
-		_railtype = nil,
+		_staticdata = {
+			railtype = nil,
+		},
 	}
 
 	function cart:on_activate(staticdata, dtime_s)
 		-- Initialize
 		local data = minetest.deserialize(staticdata)
 		if type(data) == "table" then
-			self._railtype = data._railtype
-			self._passenger = data._passenger
+			-- Migrate old data
+			if data._railtype then
+				data.railtype = data._railtype
+				data._railtype = nil
+			end
+
+			self._staticdata = data
 		end
 		self.object:set_armor_groups({immortal=1})
 
@@ -231,13 +238,13 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 	function cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
 		local pos = self.object:get_pos()
-		if not self._railtype then
+		if not self._staticdata.railtype then
 			local node = minetest.get_node(vector.floor(pos)).name
-			self._railtype = minetest.get_item_group(node, "connect_to_raillike")
+			self._staticdata.railtype = minetest.get_item_group(node, "connect_to_raillike")
 		end
 
 		if not puncher or not puncher:is_player() then
-			local cart_dir = mcl_minecarts:get_rail_direction(pos, {x=1, y=0, z=0}, nil, nil, self._railtype)
+			local cart_dir = mcl_minecarts:get_rail_direction(pos, {x=1, y=0, z=0}, nil, nil, self._staticdata.railtype)
 			if vector.equals(cart_dir, {x=0, y=0, z=0}) then
 				return
 			end
@@ -290,7 +297,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 		local punch_dir = mcl_minecarts:velocity_to_dir(puncher:get_look_dir())
 		punch_dir.y = 0
-		local cart_dir = mcl_minecarts:get_rail_direction(pos, punch_dir, nil, nil, self._railtype)
+		local cart_dir = mcl_minecarts:get_rail_direction(pos, punch_dir, nil, nil, self._staticdata.railtype)
 		if vector.equals(cart_dir, {x=0, y=0, z=0}) then
 			return
 		end
@@ -364,7 +371,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			for _,v in ipairs({"x","y","z"}) do
 				if math.abs(diff[v]) > 1.1 then
 					local expected_pos = vector.add(self._old_pos, self._old_dir)
-					dir, last_switch = mcl_minecarts:get_rail_direction(pos, self._old_dir, ctrl, self._old_switch, self._railtype)
+					dir, last_switch = mcl_minecarts:get_rail_direction(pos, self._old_dir, ctrl, self._old_switch, self._staticdata.railtype)
 
 					if vector.equals(dir, {x=0, y=0, z=0}) then
 						dir = false
@@ -388,7 +395,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		local cart_dir = mcl_minecarts:velocity_to_dir(vel)
 		local max_vel = mcl_minecarts.speed_max
 		if not dir then
-			dir, last_switch = mcl_minecarts:get_rail_direction(pos, cart_dir, ctrl, self._old_switch, self._railtype)
+			dir, last_switch = mcl_minecarts:get_rail_direction(pos, cart_dir, ctrl, self._old_switch, self._staticdata.railtype)
 		end
 
 		local new_acc = {x=0, y=0, z=0}
@@ -533,15 +540,18 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		end
 
 		-- Debug
-		local node = minetest.get_node(pos).name
-		local dist = 0
-		if pos and self._old_pos then
-			dist = vector.distance(pos,self._old_pos)
+		if false then
+			local node = minetest.get_node(pos).name
+			local dist = 0
+			if pos and self._old_pos then
+				dist = vector.distance(pos,self._old_pos)
+			end
+			if dist > 1.5 then
+				print("pos="..tostring(pos)..",dist="..tostring(dist)..",node="..tostring(node)..",old_pos="..
+				      tostring(self._old_pos)..",vel="..tostring(vel))
+			end
+			-- Rail jumps can occur when dist > 1.5, because the cart can skip over a gap in track
 		end
-		if dist > 1.5 then
-			print("pos="..tostring(pos)..",dist="..tostring(dist)..",node="..tostring(node)..",old_pos="..tostring(self._old_pos)..",vel="..tostring(vel))
-		end
-		-- Rail jumps can occur when dist > 1.5, because the cart can skip over a gap in track
 
 		-- Grab mob
 		if math.random(1,20) > 15 and not self._passenger then
@@ -577,7 +587,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			rou_pos = vector.round(pos)
 			node = minetest.get_node(rou_pos)
 			local g = minetest.get_item_group(node.name, "connect_to_raillike")
-			if g ~= self._railtype and self._railtype then
+			if g ~= self._staticdata.railtype and self._staticdata.railtype then
 				-- Detach driver
 				if player then
 					if self._old_pos then
@@ -668,7 +678,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 	end
 
 	function cart:get_staticdata()
-		return minetest.serialize({_railtype = self._railtype})
+		return minetest.serialize(self._staticdata)
 	end
 
 	minetest.register_entity(entity_id, cart)
@@ -703,7 +713,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
 	local le = cart:get_luaentity()
 	if le then
-		le._railtype = railtype
+		le._staticdata.railtype = railtype
 	end
 	local cart_dir
 	if node.name == "mcl_minecarts:golden_rail_on" then
