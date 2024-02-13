@@ -76,16 +76,10 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	local cur
 	local left_check, right_check = true, true
 
-	-- Check left and right
-	local left = vector.new(0, 0, 0)
-	local right = vector.new(0, 0, 0)
-	if dir.z ~= 0 and dir.x == 0 then
-		left.x = -dir.z
-		right.x = dir.z
-	elseif dir.x ~= 0 and dir.z == 0 then
-		left.z = dir.x
-		right.z = -dir.x
-	end
+	-- Calculate left, right and back
+	local left  = vector.new(-dir.z, dir.y,  dir.x)
+	local right = vector.new( dir.z, dir.y, -dir.x)
+	local back  = vector.new(-dir.x, dir.y, -dir.z)
 
 	if ctrl then
 		if old_switch == 1 then
@@ -132,11 +126,7 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	end
 	-- Backwards
 	if not old_switch then
-		cur = mcl_minecarts:check_front_up_down(pos, vector.new(
-				-dir.x,
-				dir.y,
-				-dir.z
-			), true, railtype)
+		cur = mcl_minecarts:check_front_up_down(pos, back, true, railtype)
 		if cur then
 			return cur
 		end
