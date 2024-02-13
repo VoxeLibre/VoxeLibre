@@ -184,12 +184,14 @@ local entity_mapping = {}
 
 local function register_entity(entity_id, mesh, textures, drop, on_rightclick, on_activate_by_rail)
 	local cart = {
-		physical = false,
-		collisionbox = {-10/16., -0.5, -10/16, 10/16, 0.25, 10/16},
-		visual = "mesh",
-		mesh = mesh,
-		visual_size = {x=1, y=1},
-		textures = textures,
+		initial_properties = {
+			physical = false,
+			collisionbox = {-10/16., -0.5, -10/16, 10/16, 0.25, 10/16},
+			visual = "mesh",
+			mesh = mesh,
+			visual_size = {x=1, y=1},
+			textures = textures,
+		},
 
 		on_rightclick = on_rightclick,
 
