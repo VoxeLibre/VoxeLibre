@@ -141,5 +141,5 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 			return cur
 		end
 	end
-	return vector.new(0,0,0) --{x=0, y=0, z=0}
+	return vector.new(0,0,0)
 end

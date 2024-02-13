@@ -181,6 +181,11 @@ register_rail("mcl_minecarts:activator_rail_on",
 			},
 
 		},
+		_mcl_minecarts_on_enter = function(pos, cart)
+			if cart.on_activate_by_rail then
+				cart:on_activate_by_rail()
+			end
+		end,
 		drop = "mcl_minecarts:activator_rail",
 	},
 	false
@@ -200,6 +205,16 @@ register_rail("mcl_minecarts:detector_rail",
 				rules = rail_rules_short,
 			},
 		},
+		_mcl_minecarts_on_enter = function(pos, cart)
+			local node = minetest.get_node(pos)
+
+			local newnode = {
+				name = "mcl_minecarts:detector_rail_on",
+				param2 = node.param2
+			}
+			minetest.swap_node( pos, newnode )
+			mesecon.receptor_on(pos)
+		end,
 	}
 )
 
@@ -214,6 +229,16 @@ register_rail("mcl_minecarts:detector_rail_on",
 				rules = rail_rules_short,
 			},
 		},
+		_mcl_minecarts_on_leave = function(pos, cart)
+			local node = minetest.get_node(pos)
+
+			local newnode = {
+				name = "mcl_minecarts:detector_rail",
+				param2 = node.param2
+			}
+			minetest.swap_node( pos, newnode )
+			mesecon.receptor_off(pos)
+		end,
 		drop = "mcl_minecarts:detector_rail",
 	},
 	false
