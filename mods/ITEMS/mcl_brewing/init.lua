@@ -382,7 +382,7 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 
 	if math.abs(pos.y - hop_pos.y) > math.abs(pos.x - hop_pos.x) and math.abs(pos.y - hop_pos.y) > math.abs(pos.z - hop_pos.z)
 	then
-		local filter = function(stack)
+		local function filter(stack)
 			return minetest.get_item_group(stack:get_name(), "brewitem") == 1 and
 			       minetest.get_item_group(stack:get_name(), "bottle") == 0
 		end
@@ -396,7 +396,7 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 		if stack then
 			return inv, "fuel", stack
 		else
-			local filter = function(stack)
+			local function filter(stack)
 				return minetest.get_item_group(stack:get_name(), "bottle") == 1
 			end
 			return inv, "stand", mcl_util.select_stack(hop_inv, hop_list, inv, "stand", filter, 1)

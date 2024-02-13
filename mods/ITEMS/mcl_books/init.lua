@@ -475,7 +475,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		local filter = function(stack)
+		local function filter(stack)
 			return minetest.get_item_group(stack:get_name(), "book") == 1 or
 			       stack:get_name() == "mcl_enchanting:book_enchanted"
 		end
