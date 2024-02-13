@@ -29,7 +29,7 @@ local function detach_driver(self)
 	self._start_pos = nil
 	if player then
 		player:set_detach()
-		player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+		player:set_eye_offset(vector.new(0,0,0),vector.new(0,0,0))
 		mcl_player.player_set_animation(player, "stand" , 30)
 	end
 end
@@ -196,17 +196,13 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		_driver = nil, -- player who sits in and controls the minecart (only for minecart!)
 		_passenger = nil, -- for mobs
 		_punched = false, -- used to re-send _velocity and position
-		_velocity = {x=0, y=0, z=0}, -- only used on punch
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
 		_last_float_check = nil, -- timestamp of last time the cart was checked to be still on a rail
 		_fueltime = nil, -- how many seconds worth of fuel is left. Only used by minecart with furnace
 		_boomtimer = nil, -- how many seconds are left before exploding
 		_blinktimer = nil, -- how many seconds are left before TNT blinking
 		_blink = false, -- is TNT blink texture active?
-		_old_dir = {x=0, y=0, z=0},
 		_old_pos = nil,
-		_old_vel = {x=0, y=0, z=0},
-		_old_switch = 0,
 		_staticdata = nil,
 	}
 
@@ -252,8 +248,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 		-- Handle punches by something other than the player
 		if not puncher or not puncher:is_player() then
-			local cart_dir = mcl_minecarts:get_rail_direction(pos, {x=1, y=0, z=0}, nil, nil, staticdata.railtype)
-			if vector.equals(cart_dir, {x=0, y=0, z=0}) then
+			local cart_dir = mcl_minecarts:get_rail_direction(pos, vector.new(1,0,0), nil, nil, staticdata.railtype)
+			if vector.equals(cart_dir, vector.new(0,0,0)) then
 				return
 			end
 
@@ -310,7 +306,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		punch_dir.y = 0
 
 		local cart_dir = mcl_minecarts:get_rail_direction(pos, punch_dir, nil, nil, self._staticdata.railtype)
-		if vector.equals(cart_dir, {x=0, y=0, z=0}) then
+		if vector.equals(cart_dir, vector.new(0,0,0)) then
 			return
 		end
 
@@ -552,7 +548,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 					end
 					mcl_player.player_attached[self._driver] = nil
 					player:set_detach()
-					player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+					player:set_eye_offset(vector.new(0,0,0),vector.new(0,0,0))
 				end
 
 				-- Explode if already ignited
@@ -659,7 +655,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	local entity_id = entity_mapping[itemstack:get_name()]
 	local cart = minetest.add_entity(railpos, entity_id)
 	local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
-	local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
+	local cart_dir = mcl_minecarts:get_rail_direction(railpos, vector.new(1,0,0), nil, nil, railtype)
 	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
 	-- Update static data
@@ -719,7 +715,7 @@ local function register_craftitem(itemstring, entity_id, description, tt_help, l
 			local placed
 			if minetest.get_item_group(dropnode.name, "rail") ~= 0 then
 				-- FIXME: This places minecarts even if the spot is already occupied
-				local pointed_thing = { under = droppos, above = { x=droppos.x, y=droppos.y+1, z=droppos.z } }
+				local pointed_thing = { under = droppos, above = vector.new( droppos.x, droppos.y+1, droppos.z ) }
 				placed = mcl_minecarts.place_minecart(stack, pointed_thing)
 			end
 			if placed == nil then
@@ -788,13 +784,13 @@ register_minecart(
 			self._driver = player_name
 			self._start_pos = self.object:get_pos()
 			mcl_player.player_attached[player_name] = true
-			clicker:set_attach(self.object, "", {x=0, y=-1.75, z=-2}, {x=0, y=0, z=0})
+			clicker:set_attach(self.object, "", vector.new(1,-1.75,-2), vector.new(0,0,0))
 			mcl_player.player_attached[name] = true
 			minetest.after(0.2, function(name)
 				local player = minetest.get_player_by_name(name)
 				if player then
 					mcl_player.player_set_animation(player, "sit" , 30)
-					player:set_eye_offset({x=0, y=-5.5, z=0},{x=0, y=-4, z=0})
+					player:set_eye_offset(vector.new(0,-5.5,0), vector.new(0,-4,0))
 					mcl_title.set(clicker, "actionbar", {text=S("Sneak to dismount"), color="white", stay=60})
 				end
 			end, name)
