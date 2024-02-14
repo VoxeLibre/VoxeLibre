@@ -417,11 +417,17 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		if next_dir == dir * -1 then
 			-- TODO: detach the cart if there isn't a stop after the rail
 			staticdata.velocity = 0
-			next_pos = vector.round(next_pos)
+			local next_pos_before_round = vector.copy(next_pos)
+			next_pos = vector.round(next_pos + dir * 0.5)
 
 			if DEBUG and self._driver then
 				local node_name = minetest.get_node(next_pos).name
-				print("Stopping cart on "..node_name.." at "..tostring(next_pos))
+				print("Stopping cart on "..node_name.." at "..tostring(next_pos)
+				    .." pos="..tostring(pos)
+				    ..",next_pos="..tostring(next_pos)
+				    ..",next_pos_before_round="..tostring(next_pos_before_round)
+				    ..",distance="..distance
+				)
 			end
 		end
 
@@ -707,7 +713,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 	end
 
 	function cart:get_staticdata()
-		return minetest.serialize(self._staticdata)
+		return minetest.serialize(self._staticdata or {})
 	end
 
 	minetest.register_entity(entity_id, cart)
