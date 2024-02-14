@@ -1,5 +1,5 @@
 minetest.register_craft({
-	output = "mcl_copper:raw_block",
+	output = "mcl_copper:block_raw",
 	recipe = {
 		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
 		{ "mcl_copper:raw_copper", "mcl_copper:raw_copper", "mcl_copper:raw_copper" },
@@ -56,13 +56,24 @@ local function get_shape(name, material)
 end
 
 function mcl_copper.register_variants_recipes(name, material, amount)
+	local names
 	local materials = {}
-	local names = {
-		name, "waxed_"..name,
-		name.."_exposed", "waxed_"..name.."_exposed",
-		name.."_weathered", "waxed_"..name.."_weathered",
-		name.."_oxidized", "waxed_"..name.."_oxidized"
-	}
+	if name ~= "cut" then
+		names = {
+			name, "waxed_"..name,
+			name.."_exposed", "waxed_"..name.."_exposed",
+			name.."_weathered", "waxed_"..name.."_weathered",
+			name.."_oxidized", "waxed_"..name.."_oxidized"
+		}
+	else
+		names = {
+			"block_"..name, "waxed_block_"..name,
+			"block_exposed_"..name, "waxed_block_exposed_"..name,
+			"block_weathered_"..name, "waxed_block_weathered_"..name,
+			"block_oxidized_"..name, "waxed_block_oxidized_"..name
+		}
+	end
+
 	if type(material) == "string" then
 		materials = {
 			"mcl_copper:"..material, "mcl_copper:waxed_"..material,
@@ -90,7 +101,7 @@ end
 
 mcl_copper.register_variants_recipes("cut", "block", 4)
 mcl_copper.register_variants_recipes("grate", "block", 4)
---mcl_copper.register_variants_recipes("door", "block", 3)
+mcl_copper.register_variants_recipes("door", "block", 3)
 mcl_copper.register_variants_recipes("trapdoor", "block", 2)
 mcl_copper.register_variants_recipes("bulb_off", "block", 4)
 
@@ -109,21 +120,25 @@ mcl_copper.register_variants_recipes("chiseled", chiseled_materials, 1)
 
 local waxable_blocks = {
 	"block",
-	"cut",
+	"block_cut",
 	"grate",
 	"chiseled",
+	"bulb_off",
 	"block_exposed",
-	"cut_exposed",
+	"block_exposed_cut",
 	"grate_exposed",
 	"chiseled_exposed",
+	"bulb_off_exposed",
 	"block_weathered",
-	"cut_weathered",
+	"block_weathered_cut",
 	"grate_weathered",
 	"chiseled_weathered",
+	"bulb_off_weathered",
 	"block_oxidized",
-	"cut_oxidized",
+	"block_oxidized_cut",
 	"grate_oxidized",
-	"chiseled_oxidized"
+	"chiseled_oxidized",
+	"bulb_off_oxidized"
 }
 
 for _, w in ipairs(waxable_blocks) do
@@ -147,10 +162,10 @@ local cuttable_blocks = {
 }
 
 for _, c in ipairs(cuttable_blocks) do
-	mcl_stonecutter.register_recipe("mcl_copper:"..c, "mcl_copper:"..c:gsub("block", "cut"), 4)
+	mcl_stonecutter.register_recipe("mcl_copper:"..c, "mcl_copper:"..c.."_cut", 4)
 	mcl_stonecutter.register_recipe("mcl_copper:"..c, "mcl_copper:"..c:gsub("block", "grate"), 4)
 	mcl_stonecutter.register_recipe("mcl_copper:"..c, "mcl_copper:"..c:gsub("block", "chiseled"), 4)
-	mcl_stonecutter.register_recipe("mcl_copper:"..c:gsub("block", "cut"), "mcl_copper:"..c:gsub("block", "chiseled"), 1)
+	mcl_stonecutter.register_recipe("mcl_copper:"..c.."_cut", "mcl_copper:"..c:gsub("block", "chiseled"))
 end
 
 minetest.register_craft({
@@ -163,7 +178,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_copper:raw_copper 9",
 	recipe = {
-		{ "mcl_copper:raw_block" },
+		{ "mcl_copper:block_raw" },
 	},
 })
 
@@ -184,6 +199,6 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_copper:block",
-	recipe = "mcl_copper:raw_block",
+	recipe = "mcl_copper:block_raw",
 	cooktime = 90,
 })

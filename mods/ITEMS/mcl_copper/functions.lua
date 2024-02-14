@@ -1,142 +1,73 @@
-local stair_oxidization = {
-	{ "cut", "exposed_cut" },
-	{ "cut_inner", "exposed_cut_inner" },
-	{ "cut_outer", "exposed_cut_outer" },
-	{ "exposed_cut", "weathered_cut" },
-	{ "exposed_cut_inner", "weathered_cut_inner" },
-	{ "exposed_cut_outer", "weathered_cut_outer" },
-	{ "weathered_cut", "oxidized_cut" },
-	{ "weathered_cut_inner", "oxidized_cut_inner" },
-	{ "weathered_cut_outer", "oxidized_cut_outer" }
-}
+function mcl_copper.register_oxidation_and_scraping(mod_name, subname, decay_chain)
+	local item, oxidized_item
 
-local slab_oxidization = {
-	{ "cut", "exposed_cut" },
-	{ "cut_top", "exposed_cut_top" },
-	{ "cut_double", "exposed_cut_double" },
-	{ "exposed_cut", "weathered_cut" },
-	{ "exposed_cut_top", "weathered_cut_top" },
-	{ "exposed_cut_double", "weathered_cut_double" },
-	{ "weathered_cut", "oxidized_cut" },
-	{ "weathered_cut_top", "oxidized_cut_top" },
-	{ "weathered_cut_double", "oxidized_cut_double" },
-}
+	for i = 1, #decay_chain - 1 do
+		item = mod_name..":"..subname..decay_chain[i]
+		oxidized_item = mod_name..":"..subname..decay_chain[i + 1]
 
-local def
-local def_variant_oxidized
-local def_variant_waxed
-local def_variant_scraped
+		minetest.override_item(item, {_mcl_oxidized_variant = oxidized_item})
+		minetest.override_item(oxidized_item, {_mcl_stripped_variant = item})
 
--- set up oxidized and waxed variants.
-for i = 1, #stair_oxidization do
-	-- stairs
-	def = "mcl_stairs:stair_copper_" .. stair_oxidization[i][1]
-	def_variant_oxidized = "mcl_stairs:stair_copper_" .. stair_oxidization[i][2]
-	minetest.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
-
-	def_variant_waxed = "mcl_stairs:stair_waxed_copper_" .. stair_oxidization[i][1]
-	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
-
-	-- slabs
-	def = "mcl_stairs:slab_copper_" .. slab_oxidization[i][1]
-	def_variant_oxidized = "mcl_stairs:slab_copper_" .. slab_oxidization[i][2]
-	minetest.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
-
-	def_variant_waxed = "mcl_stairs:slab_waxed_copper_" .. slab_oxidization[i][1]
-	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
-end
-
--- Set up scraped variants.
-for i = 1, #stair_oxidization do
-	-- does both stairs and slabs.
-	if i > 3 then
-		def = "mcl_stairs:stair_copper_" .. stair_oxidization[i][1]
-		def_variant_scraped = "mcl_stairs:stair_copper_" .. stair_oxidization[i - 3][1]
-		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
-
-		def = "mcl_stairs:slab_copper_" .. slab_oxidization[i][1]
-		def_variant_scraped = "mcl_stairs:slab_copper_" .. slab_oxidization[i - 3][1]
-		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
-	end
-	if i > 6 then
-		def = "mcl_stairs:stair_copper_" .. stair_oxidization[i][2]
-		def_variant_scraped = "mcl_stairs:stair_copper_" .. stair_oxidization[i][1]
-		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
-
-		def = "mcl_stairs:slab_copper_" .. slab_oxidization[i][2]
-		def_variant_scraped = "mcl_stairs:slab_copper_" .. slab_oxidization[i][1]
-		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+		if subname:find("stair") then
+			minetest.override_item(item.."_inner", {_mcl_oxidized_variant = oxidized_item.."_inner"})
+			minetest.override_item(item.."_outer", {_mcl_oxidized_variant = oxidized_item.."_outer"})
+			minetest.override_item(oxidized_item.."_inner", {_mcl_stripped_variant = item.."_inner"})
+			minetest.override_item(oxidized_item.."_outer", {_mcl_stripped_variant = item.."_outer"})
+		elseif subname:find("slab") then
+			minetest.override_item(item.."_double", {_mcl_oxidized_variant = oxidized_item.."_double"})
+			minetest.override_item(item.."_top", {_mcl_oxidized_variant = oxidized_item.."_top"})
+			minetest.override_item(oxidized_item.."_double", {_mcl_stripped_variant = item.."_double"})
+			minetest.override_item(oxidized_item.."_top", {_mcl_stripped_variant = item.."_top"})
+		end
 	end
 end
 
--- Set up scraped variants for waxed stairs.
-local waxed_variants = {
-	{ "waxed_copper_cut", "copper_cut" },
-	{ "waxed_copper_exposed_cut", "copper_exposed_cut" },
-	{ "waxed_copper_weathered_cut", "copper_weathered_cut" },
-	{ "waxed_copper_oxidized_cut", "copper_oxidized_cut" },
-}
+function mcl_copper.register_waxing_and_scraping(mod_name, subname, decay_chain)
+	local waxed_item, unwaxed_item
 
-for i = 1, #waxed_variants do
-	-- stairs
-	def = "mcl_stairs:stair_" .. waxed_variants[i][1]
-	def_variant_scraped = "mcl_stairs:stair_" .. waxed_variants[i][2]
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	for i = 1, #decay_chain do
+		waxed_item = mod_name..":"..subname..decay_chain[i]
+		unwaxed_item = mod_name..":"..subname:gsub("waxed_", "")..decay_chain[i]
 
-	def = "mcl_stairs:stair_" .. waxed_variants[i][1] .. "_inner"
-	def_variant_scraped = "mcl_stairs:stair_" .. waxed_variants[i][2] .. "_inner"
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+		minetest.override_item(waxed_item, {_mcl_stripped_variant = unwaxed_item})
+		minetest.override_item(unwaxed_item, {_mcl_waxed_variant = waxed_item})
 
-	def = "mcl_stairs:stair_" .. waxed_variants[i][1] .. "_outer"
-	def_variant_scraped = "mcl_stairs:stair_" .. waxed_variants[i][2] .. "_outer"
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
-
-	-- slab
-	def = "mcl_stairs:slab_" .. waxed_variants[i][1]
-	def_variant_scraped = "mcl_stairs:slab_" .. waxed_variants[i][2]
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
-
-	def = "mcl_stairs:slab_" .. waxed_variants[i][1] .. "_top"
-	def_variant_scraped = "mcl_stairs:slab_" .. waxed_variants[i][2] .. "_top"
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
-
-	def = "mcl_stairs:slab_" .. waxed_variants[i][1] .. "_double"
-	def_variant_scraped = "mcl_stairs:slab_" .. waxed_variants[i][2] .. "_double"
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
-
+		if subname:find("stair") then
+			minetest.override_item(waxed_item.."_inner", {_mcl_stripped_variant = unwaxed_item.."_inner"})
+			minetest.override_item(waxed_item.."_outer", {_mcl_stripped_variant = unwaxed_item.."_outer"})
+			minetest.override_item(unwaxed_item.."_inner", {_mcl_waxed_variant = waxed_item.."_inner"})
+			minetest.override_item(unwaxed_item.."_outer", {_mcl_waxed_variant = waxed_item.."_outer"})
+		elseif subname:find("slab") then
+			minetest.override_item(waxed_item.."_double", {_mcl_stripped_variant = unwaxed_item.."_double"})
+			minetest.override_item(waxed_item.."_top", {_mcl_stripped_variant = unwaxed_item.."_top"})
+			minetest.override_item(unwaxed_item.."_double", {_mcl_waxed_variant = waxed_item.."_double"})
+			minetest.override_item(unwaxed_item.."_top", {_mcl_waxed_variant = waxed_item.."_top"})
+		end
+	end
 end
 
--- Waxed Oxidized Slabs and Stairs
-local oxidized_slabs = {
-	"oxidized_cut",
-	"oxidized_cut_double",
-	"oxidized_cut_top"
+local cut_decay_chain = {
+	"_cut",
+	"_exposed_cut",
+	"_weathered_cut",
+	"_oxidized_cut"
+}
+local trapdoor_decay_chain = {
+	"",
+	"_exposed",
+	"_weathered",
+	"_oxidized"
+}
+local waxed_trapdoor_decay_chain = {
+	"",
+	"_exposed",
+	"_weathered",
+	"_oxidized"
 }
 
-for i = 1, #oxidized_slabs do
-	def = "mcl_stairs:slab_copper_" .. oxidized_slabs[i]
-	def_variant_waxed = "mcl_stairs:slab_waxed_copper_" .. oxidized_slabs[i]
-	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
-end
-
-local oxidized_stairs = {
-	"oxidized_cut",
-	"oxidized_cut_inner",
-	"oxidized_cut_outer"
-}
-
-for i = 1, #oxidized_stairs do
-	def = "mcl_stairs:stair_copper_" .. oxidized_stairs[i]
-	def_variant_waxed = "mcl_stairs:stair_waxed_copper_" .. oxidized_stairs[i]
-	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
-end
-
-minetest.register_alias("mcl_copper:raw_block", "mcl_copper:block_raw")
-minetest.register_alias("mcl_copper:cut", "mcl_copper:block_cut")
-minetest.register_alias("mcl_copper:waxed_cut", "mcl_copper:waxed_block_cut")
-minetest.register_alias("mcl_copper:cut_exposed", "mcl_copper:block_exposed_cut")
-minetest.register_alias("mcl_copper:waxed_cut_exposed", "mcl_copper:waxed_block_exposed_cut")
-minetest.register_alias("mcl_copper:cut_weathered", "mcl_copper:block_weathered_cut")
-minetest.register_alias("mcl_copper:waxed_cut_weathered", "mcl_copper:waxed_block_weathered_cut")
-minetest.register_alias("mcl_copper:cut_oxidized", "mcl_copper:block_oxidized_cut")
-minetest.register_alias("mcl_copper:waxed_cut_oxidized", "mcl_copper:waxed_block_oxidized_cut")
+mcl_copper.register_oxidation_and_scraping("mcl_stairs", "stair_copper", cut_decay_chain)
+mcl_copper.register_oxidation_and_scraping("mcl_stairs", "slab_copper", cut_decay_chain)
+mcl_copper.register_oxidation_and_scraping("mcl_copper", "trapdoor", trapdoor_decay_chain)
+mcl_copper.register_waxing_and_scraping("mcl_stairs", "stair_waxed_copper", cut_decay_chain)
+mcl_copper.register_waxing_and_scraping("mcl_stairs", "slab_waxed_copper", cut_decay_chain)
+mcl_copper.register_waxing_and_scraping("mcl_copper", "waxed_trapdoor", waxed_trapdoor_decay_chain)

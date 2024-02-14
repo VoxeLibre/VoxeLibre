@@ -1,6 +1,7 @@
 local lit_desc = "(Lit)"
 local pow_desc = "(Powered)"
 local mix_desc = "(Lit and Powered)"
+
 mcl_copper.copper_descs = {
     ["block"] = {
         "Block of Copper", "Waxed Block of Copper",
@@ -23,7 +24,7 @@ mcl_copper.copper_descs = {
     ["chiseled"] = {
         "Chiseled Copper", "Waxed Chiseled Copper",
         "Exposed Chiseled Copper", "Waxed Exposed Chiseled Copper",
-        "Weathered Chiseled Copper", "Waxed Weathered Chiseled Copped",
+        "Weathered Chiseled Copper", "Waxed Weathered Chiseled Copper",
         "Oxidized Chiseled Copper", "Waxed Oxidized Chiseled Copper"
     },
     ["bulb_off"] = {
@@ -120,10 +121,10 @@ mcl_copper.stairs_descs = {
         "Waxed Slab of Cut Copper", "Waxed Double Slab of Cut Copper", "Waxed Stairs of Cut Copper",
     },
     ["copper_exposed_cut"] = {
-        "Slab of Exposed Cut Copper", "Double Slab of Exposed Cut Copper", "Stairs of Exposed Cut waxed_copper_oxidized_cut"
+        "Slab of Exposed Cut Copper", "Double Slab of Exposed Cut Copper", "Stairs of Exposed Cut Copper"
     },
     ["waxed_copper_exposed_cut"] = {
-        "Waxed Slab of Exposed Cut Copper", "Waxed Double Slab of Exposed Cut Copper", "Stairs of Exposed Cut Copper"
+        "Waxed Slab of Exposed Cut Copper", "Waxed Double Slab of Exposed Cut Copper", "Waxed Stairs of Exposed Cut Copper"
     },
     ["copper_weathered_cut"] = {
         "Slab of Weathered Cut Copper", "Double Slab of Weathered Cut Copper", "Stairs of Weathered Cut Copper"

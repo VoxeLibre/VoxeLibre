@@ -1,16 +1,84 @@
 local S = minetest.get_translator("mcl_copper")
 
+local function set_description(descs, s_index, n_index)
+	local description
+
+	if type(descs[s_index][n_index]) == "string" then
+		description = S(descs[s_index][n_index])
+	elseif type(descs[s_index][n_index]) == "table" then
+		description = S("@1 "..descs[s_index][n_index][2], S(descs[s_index][n_index][1]))
+	else
+		return nil
+	end
+
+	return description
+end
+
+local function set_drop(drop, old_name, index_name)
+	if drop and old_name and index_name then
+		drop = "mcl_copper:"..old_name:gsub(index_name, drop)
+	end
+
+	return drop
+end
+
+local function set_groups(name, groups)
+	local groups = table.copy(groups)
+
+	if name and groups then
+		if name:find("waxed") then
+			groups.waxed = 1
+		elseif not name:find("oxidized") then
+			groups.oxidizable = 1
+		end
+
+		if name:find("door") then
+			groups.building_block = 0
+			groups.mesecon_effector_on = 1
+		end
+	else
+		return nil
+	end
+
+	return groups
+end
+
+local function set_light_level(light_source, index)
+	local ceil, floor_5, floor_7 = math.ceil(index / 2), math.floor(index / 5), math.floor(index / 7)
+	if light_source then
+		light_source = light_source - 3 * (ceil - 1) - floor_5 - floor_7
+	end
+
+	return light_source
+end
+
+local function set_tiles(tiles, index)
+	if not tiles or not index then
+		return
+	end
+
+	return tiles[math.ceil(index / 2)]
+end
+
 function mcl_copper.register_copper_variants(name, definitions)
-	local description, drop
-	local light_level = nil
-	local oxidized_variant, stripped_variant, waxed_variant
-	local mcl_copper_groups = table.copy(definitions.groups)
-	local names = {
-		name, "waxed_"..name,
-		name.."_exposed", "waxed_"..name.."_exposed",
-		name.."_weathered", "waxed_"..name.."_weathered",
-		name.."_oxidized", "waxed_"..name.."_oxidized"
-	}
+	local names, oxidized_variant, stripped_variant, waxed_variant
+
+	if name ~= "cut" then
+		names = {
+			name, "waxed_"..name,
+			name.."_exposed", "waxed_"..name.."_exposed",
+			name.."_weathered", "waxed_"..name.."_weathered",
+			name.."_oxidized", "waxed_"..name.."_oxidized"
+		}
+	else
+		names = {
+			"block_"..name, "waxed_block_"..name,
+			"block_exposed_"..name, "waxed_block_exposed_"..name,
+			"block_weathered_"..name, "waxed_block_weathered_"..name,
+			"block_oxidized_"..name, "waxed_block_oxidized_"..name
+		}
+	end
+
 	local tiles = {
 		"mcl_copper_"..name..".png",
 		"mcl_copper_"..name.."_exposed.png",
@@ -19,22 +87,10 @@ function mcl_copper.register_copper_variants(name, definitions)
 	}
 
 	for i = 1, #names do
-		if type(mcl_copper.copper_descs[name][i]) == "string" then
-			description = S(mcl_copper.copper_descs[name][i])
-		elseif type(mcl_copper.copper_descs[name][i]) == "table" then
-			description = S("@1 "..mcl_copper.copper_descs[name][i][2], S(mcl_copper.copper_descs[name][i][1]))
-		end
-
-		if definitions.drop then
-			drop = "mcl_copper:"..names[i]:gsub(name, definitions.drop)
-		end
-
 		if names[i]:find("waxed") then
-			mcl_copper_groups.waxed = 1
 			stripped_variant = "mcl_copper:"..names[i-1]
 		else
 			if not names[i]:find("oxidized") then
-				mcl_copper_groups.oxidizable = 1
 				oxidized_variant = "mcl_copper:"..names[i+2]
 			end
 			if i ~= 1 then
@@ -43,23 +99,19 @@ function mcl_copper.register_copper_variants(name, definitions)
 			waxed_variant = "mcl_copper:"..names[i+1]
 		end
 
-		if definitions.light_source then
-			light_level = definitions.light_source-3*(math.ceil(i/2)-1)-math.floor(i/5)-math.floor(i/7)
-		end
-
 		minetest.register_node("mcl_copper:"..names[i], {
-			description = description,
+			description = set_description(mcl_copper.copper_descs, name, i),
 			drawtype = definitions.drawtype or "normal",
-			drop = drop or nil,
-			groups = mcl_copper_groups,
+			drop = set_drop(definitions.drop, names[i], name),
+			groups = set_groups(names[i], definitions.groups),
 			is_ground_content = false,
-			light_source = light_level,
+			light_source = set_light_level(definitions.light_source, i),
 			mesecons = definitions.mesecons,
 			paramtype = definitions.paramtype or "none",
 			paramtype2 = definitions.paramtype2 or "none",
 			sounds = mcl_sounds.node_sound_metal_defaults(),
 			sunlight_propagates = definitions.sunlight_propagates or false,
-			tiles = {tiles[math.ceil(i/2)]},
+			tiles = {set_tiles(tiles, i)},
 			_doc_items_longdesc = S(mcl_copper.copper_longdescs[name][math.ceil(i/2)]),
 			_mcl_blast_resistance = 6,
 			_mcl_hardness = 3,
@@ -70,29 +122,24 @@ function mcl_copper.register_copper_variants(name, definitions)
 
 		if definitions._mcl_stairs then
 			local subname = mcl_copper.stairs_subnames[name][i]
-			local mcl_stairs_groups = table.copy(mcl_copper_groups)
 
-			mcl_stairs.register_slab(subname, "mcl_copper:"..names[i],
-				mcl_stairs_groups, {tiles[math.ceil(i/2)], tiles[math.ceil(i/2)], tiles[math.ceil(i/2)]},
-				S(mcl_copper.stairs_descs[subname][1]), nil, nil, nil,
-				S(mcl_copper.stairs_descs[subname][2])
+			mcl_stairs.register_slab(subname, "mcl_copper:"..names[i], set_groups(subname, definitions.groups),
+				{set_tiles(tiles, i), set_tiles(tiles, i), set_tiles(tiles, i)},
+				set_description(mcl_copper.stairs_descs, subname, 1), nil, nil, nil,
+				set_description(mcl_copper.stairs_descs, subname, 2)
 			)
 
-			mcl_stairs.register_stair(subname, "mcl_copper:"..names[i],
-				mcl_stairs_groups, {tiles[math.ceil(i/2)], tiles[math.ceil(i/2)], tiles[math.ceil(i/2)],
-				tiles[math.ceil(i/2)], tiles[math.ceil(i/2)], tiles[math.ceil(i/2)]},
-				S(mcl_copper.stairs_descs[subname][3]), nil, nil, nil, "woodlike"
+			mcl_stairs.register_stair(subname, "mcl_copper:"..names[i], set_groups(subname, definitions.groups),
+				{set_tiles(tiles, i), set_tiles(tiles, i), set_tiles(tiles, i),
+				set_tiles(tiles, i), set_tiles(tiles, i), set_tiles(tiles, i)},
+				set_description(mcl_copper.stairs_descs, subname, 3), nil, nil, nil, "woodlike"
 			)
 		end
 
 		if definitions._mcl_doors then
 			local itemimg, lowertext, uppertext, frontimg, sideimg
-			local door_groups = table.copy(mcl_copper_groups)
-			local trapdoor_groups = table.copy(mcl_copper_groups)
-			door_groups.building_block = 0
-			door_groups.mesecon_effector_on = 1
-			trapdoor_groups.building_block = 0
-			trapdoor_groups.mesecon_effector_on = 1
+			local door_groups = set_groups(names[i]:gsub(name, "door"), definitions.groups)
+			local trapdoor_groups = set_groups(names[i]:gsub(name, "trapdoor"), definitions.groups)
 
 			if i % 2 == 1 then
 				itemimg = "mcl_copper_item_"..names[i]:gsub(name, "door")..".png"
@@ -135,26 +182,6 @@ function mcl_copper.register_copper_variants(name, definitions)
 				_mcl_blast_resistance = 3,
 				_mcl_hardness = 3
 			})
-
-			if names[i]:find("waxed") then
-				minetest.override_item("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
-					_mcl_stripped_variant =  "mcl_copper:"..names[i-1]:gsub(name, "trapdoor")
-				})
-			else
-				if not names[i]:find("oxidized") then
-					minetest.override_item("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
-						_mcl_oxidized_variant = "mcl_copper:"..names[i+2]:gsub(name, "trapdoor")
-					})
-				end
-				if i ~= 1 then
-					minetest.override_item("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
-						_mcl_stripped_variant = "mcl_copper:"..names[i-2]:gsub(name, "trapdoor")
-					})
-				end
-				minetest.override_item("mcl_copper:"..names[i]:gsub(name, "trapdoor"), {
-					_mcl_waxed_variant = "mcl_copper:"..names[i+1]:gsub(name, "trapdoor")
-				})
-			end
 		end
 	end
 end
@@ -173,7 +200,7 @@ minetest.register_node("mcl_copper:stone_with_copper", {
 	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
-minetest.register_node("mcl_copper:raw_block", {
+minetest.register_node("mcl_copper:block_raw", {
 	description = S("Block of Raw Copper"),
 	_doc_items_longdesc = S("A block used for compact raw copper storage."),
 	tiles = {"mcl_copper_raw_block.png"},
@@ -211,7 +238,7 @@ mcl_copper.register_copper_variants("bulb_off", {
 			action_on = function (pos, node)
 				minetest.swap_node(pos, {name = node.name:gsub("bulb_off", "bulb_powered_on")})
 			end
-		}
+		},
 	},
 })
 
@@ -224,7 +251,7 @@ mcl_copper.register_copper_variants("bulb_on", {
 			action_on = function (pos, node)
 				minetest.swap_node(pos, {name = node.name:gsub("bulb_on", "bulb_powered_off")})
 			end
-		}
+		},
 	},
 	paramtype = "light"
 })
