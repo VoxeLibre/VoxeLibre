@@ -7,6 +7,7 @@ mcl_minecarts = {}
 mcl_minecarts.modpath = minetest.get_modpath(modname)
 mcl_minecarts.speed_max = 10
 mcl_minecarts.check_float_time = 15
+local max_step_distance = 0.5
 
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
@@ -192,6 +193,22 @@ local function make_staticdata( railtype, connected_at, dir )
 	}
 end
 
+local function to_dirstring(dir)
+	if dir.x == 0 then
+		if dir.z == 1 then
+			return "north"
+		else
+			return "south"
+		end
+	elseif dir.z == 0 then
+		if dir.x == 1 then
+			return " east"
+		else
+			return " west"
+		end
+	end
+end
+
 local function register_entity(entity_id, mesh, textures, drop, on_rightclick, on_activate_by_rail)
 	local cart = {
 		initial_properties = {
@@ -345,16 +362,51 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 	local passenger_attach_position = vector.new(0, -1.75, 0)
 
-	local function do_movement_step(self, distance)
+	local function distance_to_next_block( dir, pos )
+		if dir.x == 1 then
+			return 1 - ( pos.x - math.floor(pos.x) )
+		elseif dir.x == -1 then
+			return pos.x - math.floor(pos.x)
+		elseif dir.z == 1 then
+			return 1 - ( pos.z - math.floor(pos.z) )
+		elseif dir.z == -1 then
+			return pos.z - math.floor(pos.z)
+		elseif dir.y == 1 then
+			return 1 - ( pos.y - math.floor(pos.z) )
+		else
+			return pos.y - math.floor(pos.y)
+		end
+	end
+
+	local function do_movement_step(self, remaining_distance)
 		local staticdata = self._staticdata
 		local pos = self.object:get_pos()
 		local dir = staticdata.dir or vector.new(1,0,0)
 		dir = vector.new(dir)
 
-		-- Calculate raw location
-		local next_dir,last_switch = mcl_minecarts:get_rail_direction(pos, dir, nil, nil, staticdata.railtype)
-		next_dir = vector.new(next_dir) -- Needed to isolate the carts from one another
-		local next_pos = vector.new(pos + next_dir * distance)
+		-- Calculate the distance to the next block
+		-- This is just short of a full block to keep from jumping
+		local distance_to_next = distance_to_next_block( dir, pos ) - 0.01
+		local next_pos
+		local next_dir,last_switch
+		next_dir = dir
+		if distance_to_next < 0.01 then
+			distance_to_next = 0.5
+
+			-- Calculate next direction
+			next_dir,last_switch = mcl_minecarts:get_rail_direction(pos, dir, nil, nil, staticdata.railtype)
+			next_dir = vector.copy(next_dir) -- Needed to isolate the carts from one another
+		elseif distance_to_next > max_step_distance then
+			distance_to_next = max_step_distance
+		end
+
+		local distance = remaining_distance
+		if distance > distance_to_next then
+			distance = distance_to_next
+		end
+
+		-- Calculate next position
+		next_pos = vector.new(pos + next_dir * distance)
 
 		-- Fix up position
 		if next_dir.x == 0 then next_pos.x = math.floor(next_pos.x+0.5) end
@@ -363,10 +415,14 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 		-- Direction flipped, stop
 		if next_dir == dir * -1 then
-			print("Stopping cart")
 			-- TODO: detach the cart if there isn't a stop after the rail
 			staticdata.velocity = 0
-			next_pos = vector.round(next_pos + dir)
+			next_pos = vector.round(next_pos)
+
+			if DEBUG and self._driver then
+				local node_name = minetest.get_node(next_pos).name
+				print("Stopping cart on "..node_name.." at "..tostring(next_pos))
+			end
 		end
 
 		-- Update cart orientation
@@ -393,8 +449,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			end
 			print( prefix
 			    .. "pos="..tostring(pos)
-			    ..",dir="..tostring(dir)
-			    ..",next_dir="..tostring(next_dir)
+			    ..",dir="..to_dirstring(dir)
+			    ..",next_dir="..to_dirstring(next_dir)
 			    ..",next_pos="..tostring(next_pos)
 			    ..",velocity="..tostring(staticdata.velocity)
 			    ..",distance="..tostring(distance)
@@ -416,6 +472,9 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				new_node_def._mcl_minecarts_on_enter( next_pos_rounded, self )
 			end
 		end
+
+		-- Report distance traveled
+		return distance
 	end
 
 	local function process_acceleration(self, timestep)
@@ -466,30 +525,15 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		-- causing large timesteps
 		local total_distance = dtime * ( staticdata.velocity or 0 )
 		local remaining_distance = total_distance
-		local max_step_distance = 0.5
-		local steps = math.ceil(total_distance / max_step_distance )
 
 		process_acceleration(self,dtime * max_step_distance / total_distance)
 
-		for i = 1,steps do
-			local step_distance = max_step_distance
-			if remaining_distance < max_step_distance then
-				step_distance = remaining_distance
-				remaining_distance = 0
-			else
-				remaining_distance = remaining_distance - max_step_distance
-			end
-
-			-- Don't try to perform very small steps
-			if step_distance < 0.001 then break end
-
-			-- Handle acceleration on everything except the first step, as that was
-			-- done outside the loop
-			if i ~= 1 then
+		while remaining_distance > 0.1 do
+			local step_distance = do_movement_step(self, remaining_distance)
+			if step_distance > 0.1 then
 				process_acceleration(self, dtime * step_distance / total_distance)
 			end
-
-			do_movement_step(self, step_distance)
+			remaining_distance = remaining_distance - step_distance
 		end
 
 		-- Clear punched flag now that movement for this step has been completed
@@ -521,8 +565,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				end
 
 				-- Experimental controls
-				self._go_forward = ctrl.up
-				self._brake = ctrl.down
+				--self._go_forward = ctrl.up
+				--self._brake = ctrl.down
 			end
 
 			-- Give achievement when player reached a distance of 1000 nodes from the start position
@@ -583,14 +627,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			local g = minetest.get_item_group(node.name, "connect_to_raillike")
 			if g ~= self._staticdata.railtype and self._staticdata.railtype then
 				-- Detach driver
-				if player then
-					if self._old_pos then
-						self.object:set_pos(self._old_pos)
-					end
-					mcl_player.player_attached[self._driver] = nil
-					player:set_detach()
-					player:set_eye_offset(vector.new(0,0,0),vector.new(0,0,0))
-				end
+				detach_driver(self)
 
 				-- Explode if already ignited
 				if self._boomtimer then
