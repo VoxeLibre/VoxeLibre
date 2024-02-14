@@ -18,6 +18,9 @@ function mcl_copper.register_oxidation_and_scraping(mod_name, subname, decay_cha
 			minetest.override_item(item.."_top", {_mcl_oxidized_variant = oxidized_item.."_top"})
 			minetest.override_item(oxidized_item.."_double", {_mcl_stripped_variant = item.."_double"})
 			minetest.override_item(oxidized_item.."_top", {_mcl_stripped_variant = item.."_top"})
+		elseif subname:find("trapdoor") then
+			minetest.override_item(item.."_open", {_mcl_oxidized_variant = oxidized_item.."_open"})
+			minetest.override_item(oxidized_item.."_open", {_mcl_stripped_variant = item.."_open"})
 		end
 	end
 end
@@ -42,6 +45,9 @@ function mcl_copper.register_waxing_and_scraping(mod_name, subname, decay_chain)
 			minetest.override_item(waxed_item.."_top", {_mcl_stripped_variant = unwaxed_item.."_top"})
 			minetest.override_item(unwaxed_item.."_double", {_mcl_waxed_variant = waxed_item.."_double"})
 			minetest.override_item(unwaxed_item.."_top", {_mcl_waxed_variant = waxed_item.."_top"})
+		elseif subname:find("trapdoor") then
+			minetest.override_item(waxed_item.."_open", {_mcl_stripped_variant = unwaxed_item.."_open"})
+			minetest.override_item(unwaxed_item.."_open", {_mcl_waxed_variant = waxed_item.."_open"})
 		end
 	end
 end
