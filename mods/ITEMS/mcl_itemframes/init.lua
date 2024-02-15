@@ -156,7 +156,12 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 		end)
 		return
 	end
-	self.object:set_properties(table.merge(base_props, { wield_item = self._item}, def.object_properties or {}))
+	local idef = itemstack:get_definition()
+	local ws = idef.wield_scale
+	self.object:set_properties(table.merge(base_props, {
+		wield_item = self._item,
+		visual_size = { x = base_props.visual_size.x / ws.x, y = base_props.visual_size.y / ws.y },
+	}, def.object_properties or {}))
 end
 
 function mcl_itemframes.tpl_entity:get_staticdata()
