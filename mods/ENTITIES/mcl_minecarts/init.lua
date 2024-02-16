@@ -188,8 +188,9 @@ local function make_staticdata( railtype, connected_at, dir )
 	return {
 		railtype = railtype,
 		connected_at = connected_at,
+		distance = 0,
+		velocity = 0,
 		dir = vector.new(dir),
-		velocity = 0
 	}
 end
 
@@ -380,104 +381,79 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 	local function do_movement_step(self, remaining_distance)
 		local staticdata = self._staticdata
-		local pos = self.object:get_pos()
-		local dir = staticdata.dir or vector.new(1,0,0)
-		dir = vector.new(dir)
 
-		-- Calculate the distance to the next block
-		-- This is just short of a full block to keep from jumping
-		local distance_to_next = distance_to_next_block( dir, pos ) - 0.01
-		local next_pos
-		local next_dir,last_switch
-		next_dir = dir
-		if distance_to_next < 0.01 then
-			distance_to_next = 0.5
+		local pos = staticdata.connected_at
 
-			-- Calculate next direction
-			next_dir,last_switch = mcl_minecarts:get_rail_direction(pos, dir, nil, nil, staticdata.railtype)
-			next_dir = vector.copy(next_dir) -- Needed to isolate the carts from one another
-		elseif distance_to_next > max_step_distance then
-			distance_to_next = max_step_distance
-		end
+		if not pos then return remaining_distance end
+		if staticdata.velocity < 0.1 then return remaining_distance end
 
-		local distance = remaining_distance
-		if distance > distance_to_next then
-			distance = distance_to_next
-		end
+		local remaining_in_block = 1 - ( staticdata.distance or 0 )
+		local dinstance = 0
+		if remaining_in_block > remaining_distance then
+			distance = remaining_distance
+			staticdata.distance = ( staticdata.distance or 0 ) + distance
+			pos = pos + staticdata.dir * staticdata.distance
+		else
+			distance = remaining_in_block
+			staticdata.distance = 0
 
-		-- Calculate next position
-		next_pos = vector.new(pos + next_dir * distance)
-
-		-- Fix up position
-		if next_dir.x == 0 then next_pos.x = math.floor(next_pos.x+0.5) end
-		if next_dir.y == 0 then next_pos.y = math.floor(next_pos.y+0.5) end
-		if next_dir.z == 0 then next_pos.z = math.floor(next_pos.z+0.5) end
-
-		-- Direction flipped, stop
-		if next_dir == dir * -1 then
-			-- TODO: detach the cart if there isn't a stop after the rail
-			staticdata.velocity = 0
-			local next_pos_before_round = vector.copy(next_pos)
-			next_pos = vector.round(next_pos + dir * 0.5)
-
-			if DEBUG and self._driver then
-				local node_name = minetest.get_node(next_pos).name
-				print("Stopping cart on "..node_name.." at "..tostring(next_pos)
-				    .." pos="..tostring(pos)
-				    ..",next_pos="..tostring(next_pos)
-				    ..",next_pos_before_round="..tostring(next_pos_before_round)
-				    ..",distance="..distance
-				)
+			-- Leave the old node
+			local old_node_name = minetest.get_node(pos).name
+			local old_node_def = minetest.registered_nodes[old_node_name]
+			if old_node_def._mcl_minecarts_on_leave then
+				old_node_def._mcl_minecarts_on_leave( pos, self )
 			end
+
+			-- Anchor at the next node
+			pos = pos + staticdata.dir
+			staticdata.connected_at = pos
+
+			-- Enter the new node
+			local new_node_name = minetest.get_node(pos).name
+			local new_node_def = minetest.registered_nodes[new_node_name]
+			if new_node_def._mcl_minecarts_on_enter then
+				new_node_def._mcl_minecarts_on_enter( pos, self )
+			end
+
+			-- check for hopper under the rail
+			local under_pos = pos - vector.new(0,1,0)
+			local under_node_name = minetest.get_node(under_pos).name
+			local under_node_def = minetest.registered_nodes[under_node_name]
+			print( "under_node_name="..under_node_name..", hopper="..tostring(under_node_def.groups.hopper))
+			if under_node_def and under_node_def.groups.hopper ~= 0 then
+				print( "Attempt pull_from_minecart" )
+				if mcl_hoppers.pull_from_minecart( self, under_pos, self._inv_size or 0 ) then
+					staticdata.delay = 1.5
+				end
+			end
+
+			-- Get the next direction
+			next_dir,last_switch = mcl_minecarts:get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
+
+			-- Handle end of track
+			if next_dir == staticdata.dir * -1 then
+				print("Stopping cart at "..tostring(pos))
+				staticdata.velocity = 0
+				distence = remaining_distance
+			end
+
+			-- Update cart direction
+			staticdata.dir = next_dir
 		end
+
+		self.object:move_to(pos)
 
 		-- Update cart orientation
 		local yaw = 0
-		if next_dir.x < 0 then
+		local dir = staticdata.dir
+		if dir.x < 0 then
 			yaw = 0.5
-		elseif next_dir.x > 0 then
+		elseif dir.x > 0 then
 			yaw = 1.5
 		elseif dir.z < 0 then
 			yaw = 1
 		end
 		self.object:set_yaw( yaw * math.pi )
-
-		-- Update cart position
-		local next_pos_rounded = vector.round(next_pos)
-		staticdata.connected_at = next_pos_rounded
-		staticdata.dir = next_dir
-		self.object:move_to(next_pos)
-
-		if DEBUG and self._driver then
-			local prefix = "    "
-			if next_dir ~= dir then
-				prefix = "--->"
-			end
-			print( prefix
-			    .. "pos="..tostring(pos)
-			    ..",dir="..to_dirstring(dir)
-			    ..",next_dir="..to_dirstring(next_dir)
-			    ..",next_pos="..tostring(next_pos)
-			    ..",velocity="..tostring(staticdata.velocity)
-			    ..",distance="..tostring(distance)
-			)
-		end
-
-		-- Handle track interactions
-		local pos_rounded = vector.round(pos)
-		if pos_rounded ~= next_pos_rounded then
-			local old_node_name = minetest.get_node(pos_rounded).name
-			local old_node_def = minetest.registered_nodes[old_node_name]
-			if old_node_def._mcl_minecarts_on_leave then
-				old_node_def._mcl_minecarts_on_leave( pos_rounded, self )
-			end
-
-			local new_node_name = minetest.get_node(next_pos_rounded).name
-			local new_node_def = minetest.registered_nodes[new_node_name]
-			if new_node_def._mcl_minecarts_on_enter then
-				new_node_def._mcl_minecarts_on_enter( next_pos_rounded, self )
-			end
-		end
 
 		-- Report distance traveled
 		return distance
@@ -485,10 +461,12 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 	local function process_acceleration(self, timestep)
 		local staticdata = self._staticdata
+		if not staticdata.connected_at then return end
 
-		local pos = self.object:get_pos()
+		local pos = staticdata.connected_at
 		local node_name = minetest.get_node(pos).name
 		local node_def = minetest.registered_nodes[node_name]
+		local max_vel = mcl_minecarts.speed_max
 
 		if self._go_forward then
 			self._acceleration = 2
@@ -499,16 +477,19 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		elseif self._fueltime and self._fueltime > 0 then
 			self._acceleration = 0.6
 		else
-			self._acceleration = node_def._rail_acceleration or -0.4
+			if staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
+				self._acceleration = 0
+			else
+				self._acceleration = node_def._rail_acceleration or -0.4
+			end
 		end
 
-		if self._acceleration > 0 and staticdata.velocity < 0.1 then
+		if self._acceleration > 0 and (staticdata.velocity or 0) < 0.1 then
 			staticdata.velocity = 0.1
 		end
 
 		if math.abs(self._acceleration) > 0.1 then
 			staticdata.velocity = ( staticdata.velocity or 0 ) + self._acceleration * timestep
-			local max_vel = mcl_minecarts.speed_max
 			if staticdata.velocity > max_vel then
 				staticdata.velocity = max_vel
 			elseif staticdata.velocity < 0.1 then
@@ -516,8 +497,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			end
 		end
 
-		if false and staticdata.velocity > 0 then
-			print( "acceleration="..tostring(self._acceleration)..",velocity="..tostring(staticdata.velocity)..
+		if DEBUG and staticdata.velocity > 0 then
+			print( "    acceleration="..tostring(self._acceleration)..",velocity="..tostring(staticdata.velocity)..
 			       ",timestep="..tostring(timestep))
 		end
 	end
@@ -525,6 +506,14 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 	local function do_movement( self, dtime )
 		local staticdata = self._staticdata
+
+		-- Allow the carts to be delay for the rest of the world to react before moving again
+		if ( staticdata.delay or 0 ) > dtime then
+			staticdata.delay = staticdata.delay - dtime
+			return
+		else
+			staticdata.delay = 0
+		end
 
 		-- Break long movements into fixed-size steps so that
 		-- it is impossible to jump across gaps due to server lag
@@ -555,8 +544,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		end
 
 		local pos, rou_pos, node = self.object:get_pos()
-		local update = {}
-		local acceleration = 0
+		--local update = {}
+		--local acceleration = 0
 
 		-- Controls
 		local ctrl, player = nil, nil

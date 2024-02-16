@@ -9,6 +9,8 @@ local function mcl_log(message)
 	end
 end
 
+mcl_hoppers = {}
+
 --[[ BEGIN OF NODE DEFINITIONS ]]
 
 local mcl_hoppers_formspec = table.concat({
@@ -464,8 +466,8 @@ local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
 				dest_inv:add_item("main", stack:take_item())
 				inv:set_stack("main", i, stack)
 
-				-- Take one item and stop until next time
-				return
+				-- Take one item and stop until next time, report that we took something
+				return true
 			else
 				mcl_log("no Room")
 			end
@@ -475,6 +477,7 @@ local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
 		end
 	end
 end
+mcl_hoppers.pull_from_minecart = hopper_pull_from_mc
 
 local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
 	local dest_inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
