@@ -31,6 +31,16 @@ function mcl_copper.register_oxidation_and_scraping(mod_name, subname, decay_cha
 			minetest.override_item(oxidized_item.."_b_2", {_mcl_stripped_variant = item.."_b_2"})
 			minetest.override_item(item.."_t_2", {_mcl_oxidized_variant = oxidized_item.."_t_2"})
 			minetest.override_item(oxidized_item.."_t_2", {_mcl_stripped_variant = item.."_t_2"})
+
+			minetest.override_item(item.."_b_3", {_mcl_oxidized_variant = oxidized_item.."_b_3"})
+			minetest.override_item(oxidized_item.."_b_3", {_mcl_stripped_variant = item.."_b_3"})
+			minetest.override_item(item.."_t_3", {_mcl_oxidized_variant = oxidized_item.."_t_3"})
+			minetest.override_item(oxidized_item.."_t_3", {_mcl_stripped_variant = item.."_t_3"})
+
+			minetest.override_item(item.."_b_4", {_mcl_oxidized_variant = oxidized_item.."_b_4"})
+			minetest.override_item(oxidized_item.."_b_4", {_mcl_stripped_variant = item.."_b_4"})
+			minetest.override_item(item.."_t_4", {_mcl_oxidized_variant = oxidized_item.."_t_4"})
+			minetest.override_item(oxidized_item.."_t_4", {_mcl_stripped_variant = item.."_t_4"})
 		end
 	end
 end
@@ -68,6 +78,16 @@ function mcl_copper.register_waxing_and_scraping(mod_name, subname, decay_chain)
 			minetest.override_item(unwaxed_item.."_b_2", {_mcl_waxed_variant = waxed_item.."_b_2"})
 			minetest.override_item(waxed_item.."_t_2", {_mcl_stripped_variant = unwaxed_item.."_t_2"})
 			minetest.override_item(unwaxed_item.."_t_2", {_mcl_waxed_variant = waxed_item.."_t_2"})
+
+			minetest.override_item(waxed_item.."_b_3", {_mcl_stripped_variant = unwaxed_item.."_b_3"})
+			minetest.override_item(unwaxed_item.."_b_3", {_mcl_waxed_variant = waxed_item.."_b_3"})
+			minetest.override_item(waxed_item.."_t_3", {_mcl_stripped_variant = unwaxed_item.."_t_3"})
+			minetest.override_item(unwaxed_item.."_t_3", {_mcl_waxed_variant = waxed_item.."_t_3"})
+
+			minetest.override_item(waxed_item.."_b_4", {_mcl_stripped_variant = unwaxed_item.."_b_4"})
+			minetest.override_item(unwaxed_item.."_b_4", {_mcl_waxed_variant = waxed_item.."_b_4"})
+			minetest.override_item(waxed_item.."_t_4", {_mcl_stripped_variant = unwaxed_item.."_t_4"})
+			minetest.override_item(unwaxed_item.."_t_4", {_mcl_waxed_variant = waxed_item.."_t_4"})
 		end
 	end
 end
