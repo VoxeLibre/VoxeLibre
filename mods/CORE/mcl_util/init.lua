@@ -266,7 +266,7 @@ function mcl_util.select_stack(src_inventory, src_list, dst_inventory, dst_list,
 		stack = src_inventory:get_stack(src_list, i)
 
 		-- Allow for partial stack movement
-		if count then
+		if count and stack:get_count() >= count then
 			local new_stack = ItemStack(stack)
 			new_stack:set_count(count)
 			stack = new_stack
