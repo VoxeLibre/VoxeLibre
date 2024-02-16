@@ -116,47 +116,50 @@ end
 local function try_object_pickup(player, inv, object, checkpos)
 	if not inv then return end
 
+	local le = object:get_luaentity()
+
 	-- Check magnet timer
-	if not (object:get_luaentity()._magnet_timer >= 0) then return end
-	if not (object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time) then return end
+	if not (le._magnet_timer >= 0) then return end
+	if not (le._magnet_timer < item_drop_settings.magnet_time) then return end
 
-	-- Make sure we have room for the item
-	local itemstack = ItemStack(object:get_luaentity().itemstring)
-	if not inv:room_for_item("main", itemstack ) then
-		return
-	end
-
-	-- Collection
-	if object:get_luaentity()._removed then return end
+	-- Don't try to collect again
+	if le._removed then return end
 
 	-- Ignore if itemstring is not set yet
-	if object:get_luaentity().itemstring == "" then return end
+	if le.itemstring == "" then return end
 
-	inv:add_item("main", itemstack )
+	-- Add what we can to the inventory
+	local itemstack = ItemStack(le.itemstring)
+	local leftovers = inv:add_item("main", itemstack )
 
 	check_pickup_achievements(object, player)
 
-	-- Destroy entity
-	-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
-	object:get_luaentity().target = checkpos
-	object:get_luaentity()._removed = true
+	if leftovers:is_empty() then
+		-- Destroy entity
+		-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
+		le.target = checkpos
+		le._removed = true
 
-	-- Stop the object
-	object:set_velocity(vector.zero())
-	object:set_acceleration(vector.zero())
-	object:move_to(checkpos)
+		-- Stop the object
+		object:set_velocity(vector.zero())
+		object:set_acceleration(vector.zero())
+		object:move_to(checkpos)
 
-	-- Update sound pool
-	local name = player:get_player_name()
-	pool[name] = ( pool[name] or 0 ) + 1
+		-- Update sound pool
+		local name = player:get_player_name()
+		pool[name] = ( pool[name] or 0 ) + 1
 
-	-- Make sure the object gets removed
-	minetest.after(0.25, function()
-		--safety check
-		if object and object:get_luaentity() then
-			object:remove()
-		end
-	end)
+		-- Make sure the object gets removed
+		minetest.after(0.25, function()
+			--safety check
+			if object and object:get_luaentity() then
+				object:remove()
+			end
+		end)
+	else
+		-- Update entity itemstring
+		le.itemstring = leftovers:to_string()
+	end
 end
 
 minetest.register_globalstep(function(_)
