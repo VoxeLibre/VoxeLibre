@@ -8,22 +8,35 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local alldirs = { { x = 0, y = 0, z = 1 }, { x = 1, y = 0, z = 0 }, { x = 0, y = 0, z = -1 }, { x = -1, y = 0, z = 0 }, { x = 0, y = -1, z = 0 }, { x = 0, y = 1, z = 0 } }
 
 -- Waxing Function
-function mcl_honey.wax_block(pos, node, player, itemstack)
+function mcl_honey.wax_block(pos, node, player, itemstack, pointed_thing)
 	-- prevent modification of protected nodes.
 	if mcl_util.check_position_protection(pos, player) then
 		return
 	end
 
 	local def = minetest.registered_nodes[node.name]
-
-	if def and def._mcl_waxed_variant then
-		node.name = def._mcl_waxed_variant
+	if player:get_player_control().sneak then
+		if def and def._mcl_waxed_variant then
+			if def.groups.door == 1 then
+				if node.name:find("_b_") then
+					local top_pos = { x = pos.x, y = pos.y + 1, z = pos.z }
+					minetest.swap_node(top_pos, { name = def._mcl_waxed_variant:gsub("_b_", "_t_") })
+				elseif node.name:find("_t_") then
+					local bot_pos = { x = pos.x,  y = pos.y - 1, z = pos.z }
+					minetest.swap_node(bot_pos, { name = def._mcl_waxed_variant:gsub("_t_", "_b_") })
+				end
+			end
+		else
+			return
+		end
 	else
-		return
+		if def and def.on_rightclick then
+			return def.on_rightclick(pos, node, player, itemstack, pointed_thing)
+		end
 	end
 
 	node.name = def._mcl_waxed_variant
-	minetest.set_node(pos, node)
+	minetest.swap_node(pos, node)
 	awards.unlock(player:get_player_name(), "mcl:wax_on")
 	if not minetest.is_creative_enabled(player:get_player_name()) then
 		itemstack:take_item()
@@ -46,7 +59,7 @@ minetest.register_craftitem("mcl_honey:honeycomb", {
 		local pos = pointed_thing.under
 
 		-- wax the block. This is the only viable usage of honeycomb's on_place. If it "fails" to wax, then nothing is changed.
-		return mcl_honey.wax_block(pos, node, placer, itemstack)
+		return mcl_honey.wax_block(pos, node, placer, itemstack, pointed_thing)
 	end,
 })
 

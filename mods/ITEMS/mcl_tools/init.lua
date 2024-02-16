@@ -410,6 +410,16 @@ local function make_stripped_trunk(itemstack, placer, pointed_thing)
     if noddef._mcl_stripped_variant == nil then
 		return itemstack
 	else
+		if noddef.groups.door == 1 then
+			local pt_under = pointed_thing.under
+			if node_name:find("_b_") then
+				local top_pos = {x = pt_under.x, y = pt_under.y + 1, z = pt_under.z}
+				minetest.swap_node(top_pos, {name=noddef._mcl_stripped_variant:gsub("_b_", "_t_")})
+			elseif node_name:find("_t_") then
+				local bot_pos = {x = pt_under.x, y = pt_under.y - 1, z = pt_under.z}
+				minetest.swap_node(bot_pos, {name=noddef._mcl_stripped_variant:gsub("_t_", "_b_")})
+			end
+		end
 		minetest.swap_node(pointed_thing.under, {name=noddef._mcl_stripped_variant, param2=node.param2})
 		if minetest.get_item_group(node_name, "waxed") ~= 0 then
 			awards.unlock(placer:get_player_name(), "mcl:wax_off")
