@@ -113,6 +113,52 @@ local function disable_physics(object, luaentity, ignore_check, reset_movement)
 	end
 end
 
+local function try_object_pickup(player, inv, object, checkpos)
+	if not inv then return end
+
+	-- Check magnet timer
+	if not (object:get_luaentity()._magnet_timer >= 0) then return end
+	if not (object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time) then return end
+
+	-- Make sure we have room for the item
+	local itemstack = ItemStack(object:get_luaentity().itemstring)
+	if not inv:room_for_item("main", itemstack ) then
+		return
+	end
+
+	-- Collection
+	if object:get_luaentity()._removed then return end
+
+	-- Ignore if itemstring is not set yet
+	if object:get_luaentity().itemstring == "" then return end
+
+	inv:add_item("main", itemstack )
+
+	check_pickup_achievements(object, player)
+
+	-- Destroy entity
+	-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
+	object:get_luaentity().target = checkpos
+	object:get_luaentity()._removed = true
+
+	-- Stop the object
+	object:set_velocity(vector.zero())
+	object:set_acceleration(vector.zero())
+	object:move_to(checkpos)
+
+	-- Update sound pool
+	local name = player:get_player_name()
+	pool[name] = ( pool[name] or 0 ) + 1
+
+	-- Make sure the object gets removed
+	minetest.after(0.25, function()
+		--safety check
+		if object and object:get_luaentity() then
+			object:remove()
+		end
+	end)
+end
+
 minetest.register_globalstep(function(_)
 	tick = not tick
 
@@ -147,40 +193,7 @@ minetest.register_globalstep(function(_)
 					object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer
 					and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
 
-					if object:get_luaentity()._magnet_timer >= 0 and
-						object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and
-						inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
-
-						-- Collection
-						if not object:get_luaentity()._removed then
-							-- Ignore if itemstring is not set yet
-							if object:get_luaentity().itemstring ~= "" then
-								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
-
-								check_pickup_achievements(object, player)
-
-								-- Destroy entity
-								-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
-								object:get_luaentity().target = checkpos
-								object:get_luaentity()._removed = true
-
-								object:set_velocity(vector.zero())
-								object:set_acceleration(vector.zero())
-
-								object:move_to(checkpos)
-
-								pool[name] = pool[name] + 1
-
-								minetest.after(0.25, function()
-									--safety check
-									if object and object:get_luaentity() then
-										object:remove()
-									end
-								end)
-							end
-						end
-					end
-
+					try_object_pickup( player, inv, object, checkpos )
 				elseif not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mcl_experience:orb" then
 					local entity = object:get_luaentity()
 					entity.collector = player:get_player_name()
