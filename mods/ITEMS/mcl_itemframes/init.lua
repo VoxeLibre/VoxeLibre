@@ -241,6 +241,19 @@ mcl_itemframes.register_itemframe("glow_frame", {
 	object_properties = { glow = 15 },
 })
 
+awards.register_achievement("mcl_itemframes:glowframe", {
+	title = S("Glow and Behold!"),
+	description = S("Craft a glow item frame."),
+	icon = "mcl_itemframes_glow_item_frame.png",
+	trigger = {
+		type = "craft",
+		item = "mcl_itemframes:glow_item_frame",
+		target = 1
+	},
+	type = "Advancement",
+	group = "Overworld",
+})
+
 minetest.register_lbm({
 	label = "Respawn item frame item entities",
 	name = "mcl_itemframes:respawn_entities",
