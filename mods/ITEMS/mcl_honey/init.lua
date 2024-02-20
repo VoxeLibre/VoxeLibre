@@ -20,10 +20,10 @@ function mcl_honey.wax_block(pos, node, player, itemstack, pointed_thing)
 			if def.groups.door == 1 then
 				if node.name:find("_b_") then
 					local top_pos = { x = pos.x, y = pos.y + 1, z = pos.z }
-					minetest.swap_node(top_pos, { name = def._mcl_waxed_variant:gsub("_b_", "_t_") })
+					minetest.swap_node(top_pos, { name = def._mcl_waxed_variant:gsub("_b_", "_t_"), param2 = node.param2 })
 				elseif node.name:find("_t_") then
 					local bot_pos = { x = pos.x,  y = pos.y - 1, z = pos.z }
-					minetest.swap_node(bot_pos, { name = def._mcl_waxed_variant:gsub("_t_", "_b_") })
+					minetest.swap_node(bot_pos, { name = def._mcl_waxed_variant:gsub("_t_", "_b_"), param2 = node.param2 })
 				end
 			end
 		else
