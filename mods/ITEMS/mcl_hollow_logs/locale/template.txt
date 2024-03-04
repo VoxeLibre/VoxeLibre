@@ -1,0 +1,14 @@
+# textdomain: mcl_hollow_logs
+
+Hollow @1=
+Stripped @1=
+Acacia Log=
+Birch Log=
+Cherry Log=
+Crimson Stem=
+Dark Oak Log=
+Jungle Log=
+Mangrove Log=
+Oak Log=
+Spruce Log=
+Warped Stem=
