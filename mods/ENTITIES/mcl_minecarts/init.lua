@@ -363,20 +363,28 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 	local passenger_attach_position = vector.new(0, -1.75, 0)
 
-	local function distance_to_next_block( dir, pos )
-		if dir.x == 1 then
-			return 1 - ( pos.x - math.floor(pos.x) )
-		elseif dir.x == -1 then
-			return pos.x - math.floor(pos.x)
-		elseif dir.z == 1 then
-			return 1 - ( pos.z - math.floor(pos.z) )
-		elseif dir.z == -1 then
-			return pos.z - math.floor(pos.z)
-		elseif dir.y == 1 then
-			return 1 - ( pos.y - math.floor(pos.z) )
+	local function update_cart_orientation(self,staticdata)
+		local rot = self.object:get_rotation()
+		local dir = staticdata.dir
+		if dir.x < 0 then
+			rot.y = 0.5 * math.pi
+		elseif dir.x > 0 then
+			rot.y = 1.5 * math.pi
+		elseif dir.z < 0 then
+			rot.y = 1 * math.pi
 		else
-			return pos.y - math.floor(pos.y)
+			rot.y = 0
 		end
+
+		-- Forward/backwards tilt (pitch)
+		if dir.y < 0 then
+			rot.x = -0.25 * math.pi
+		elseif dir.y > 0 then
+			rot.x = 0.25 * math.pi
+		else
+			rot.x = 0
+		end
+		self.object:set_rotation(rot)
 	end
 
 	local function do_movement_step(self, remaining_distance)
@@ -419,20 +427,23 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			local under_pos = pos - vector.new(0,1,0)
 			local under_node_name = minetest.get_node(under_pos).name
 			local under_node_def = minetest.registered_nodes[under_node_name]
-			print( "under_node_name="..under_node_name..", hopper="..tostring(under_node_def.groups.hopper))
+			if DEBUG then print( "under_node_name="..under_node_name..", hopper="..tostring(under_node_def.groups.hopper)) end
 			if under_node_def and under_node_def.groups.hopper ~= 0 then
-				print( "Attempt pull_from_minecart" )
+				if DEBUG then print( "Attempt pull_from_minecart" ) end
 				if mcl_hoppers.pull_from_minecart( self, under_pos, self._inv_size or 0 ) then
 					staticdata.delay = 1.5
 				end
 			end
 
 			-- Get the next direction
-			next_dir,last_switch = mcl_minecarts:get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
+			local next_dir,_ = mcl_minecarts:get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
+			if DEBUG and next_dir ~= staticdata.dir then
+				print( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
+			end
 
 			-- Handle end of track
 			if next_dir == staticdata.dir * -1 then
-				print("Stopping cart at "..tostring(pos))
+				if DEBUG then print("Stopping cart at "..tostring(pos)) end
 				staticdata.velocity = 0
 				distence = remaining_distance
 			end
@@ -444,16 +455,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		self.object:move_to(pos)
 
 		-- Update cart orientation
-		local yaw = 0
-		local dir = staticdata.dir
-		if dir.x < 0 then
-			yaw = 0.5
-		elseif dir.x > 0 then
-			yaw = 1.5
-		elseif dir.z < 0 then
-			yaw = 1
-		end
-		self.object:set_yaw( yaw * math.pi )
+		update_cart_orientation(self,staticdata)
 
 		-- Report distance traveled
 		return distance
@@ -463,33 +465,39 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		local staticdata = self._staticdata
 		if not staticdata.connected_at then return end
 
+		local acceleration = 0
+		local friction = 0.1
+
+		if DEBUG and staticdata.velocity > 0 then
+			print( "    acceleration="..tostring(acceleration)..",velocity="..tostring(staticdata.velocity)..
+			       ",timestep="..tostring(timestep)..
+			       ",dir="..tostring(staticdata.dir))
+		end
+
 		local pos = staticdata.connected_at
 		local node_name = minetest.get_node(pos).name
 		local node_def = minetest.registered_nodes[node_name]
 		local max_vel = mcl_minecarts.speed_max
 
 		if self._go_forward then
-			self._acceleration = 2
+			acceleration = 2
 		elseif self._brake then
-			self._acceleration = -1.5
+			acceleration = -1.5
 		elseif self._punched then
-			self._acceleration = 2
-		elseif self._fueltime and self._fueltime > 0 then
-			self._acceleration = 0.6
-		else
-			if staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
-				self._acceleration = 0
-			else
-				self._acceleration = node_def._rail_acceleration or -0.4
+			if statcdata.velocity < 1 then
+				staticdata.velocity = 1
 			end
+			acceleration = 2
+		elseif self._fueltime and self._fueltime > 0 then
+			acceleration = 0.6
+		elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
+			acceleration = 0
+		else
+			acceleration = node_def._rail_acceleration or -friction
 		end
 
-		if self._acceleration > 0 and (staticdata.velocity or 0) < 0.1 then
-			staticdata.velocity = 0.1
-		end
-
-		if math.abs(self._acceleration) > 0.1 then
-			staticdata.velocity = ( staticdata.velocity or 0 ) + self._acceleration * timestep
+		if math.abs(acceleration) > (friction / 5) then
+			staticdata.velocity = ( staticdata.velocity or 0 ) + acceleration * timestep
 			if staticdata.velocity > max_vel then
 				staticdata.velocity = max_vel
 			elseif staticdata.velocity < 0.1 then
@@ -497,12 +505,47 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			end
 		end
 
+		-- Factor in gravity after everything else
+		local gravity_accel = 0
+		local gravity_strength = friction + 0.2
+		if staticdata.dir.y < 0 then
+			gravity_accel = gravity_strength
+		elseif staticdata.dir.y > 0 then
+			gravity_accel = -gravity_strength
+		end
+		if DEBUG and gravity_accel ~= 0 then
+			print("gravity_accel="..tostring(gravity_accel))
+		end
+		if gravity_accel ~= 0 then
+			staticdata.velocity = (staticdata.velocity or 0) + gravity_accel
+			if staticdata.velocity < 0 then
+				if DEBUG then
+					print("Gravity flipped direction")
+				end
+				staticdata.velocity = staticdata.velocity * -1
+
+				-- Update direction
+				local next_dir,_ = mcl_minecarts:get_rail_direction(pos + staticdata.dir, staticdata.dir * -1, nil, nil, staticdata.railtype)
+				if DEBUG and next_dir ~= staticdata.dir then
+					print( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
+				end
+				staticdata.dir = next_dir
+
+				update_cart_orientation(self,staticdata)
+			end
+		end
+
+		-- Force the cart to stop if moving slowly enough
+		if (staticdata.velocity or 0) < 0.1 then
+			staticdata.velocity = 0
+		end
+
 		if DEBUG and staticdata.velocity > 0 then
-			print( "    acceleration="..tostring(self._acceleration)..",velocity="..tostring(staticdata.velocity)..
-			       ",timestep="..tostring(timestep))
+			print( "    acceleration="..tostring(acceleration)..",velocity="..tostring(staticdata.velocity)..
+			       ",timestep="..tostring(timestep)..
+			       ",dir="..tostring(staticdata.dir))
 		end
 	end
-
 
 	local function do_movement( self, dtime )
 		local staticdata = self._staticdata
@@ -522,6 +565,11 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		local remaining_distance = total_distance
 
 		process_acceleration(self,dtime * max_step_distance / total_distance)
+
+		-- Skip processing stopped railcarts
+		if not staticdata.velocity or math.abs(staticdata.velocity) < 0.05 then
+			return
+		end
 
 		while remaining_distance > 0.1 do
 			local step_distance = do_movement_step(self, remaining_distance)
