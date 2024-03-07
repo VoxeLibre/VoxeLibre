@@ -447,8 +447,8 @@ The values for X, Y and Z work like this:=Les valeurs pour X, Y et Z fonctionnen
 You can view your current position in the debug screen (open with [F5]).=Vous pouvez afficher votre position actuelle dans l'écran de débogage (ouvrir avec [F5]).
 
 # MCL2 extensions
-Creative Mode=Mode Creatif
-Enabling Creative Mode in MineClone 2 applies the following changes:=L'activation du mode créatif dans MineClone 2 applique les modifications suivantes:
+Creative Mode=Mode créatif
+Enabling Creative Mode in MineClone 2 applies the following changes:=L'activation du mode créatif dans MineClone 2 applique les modifications suivantes :
 • You keep the things you've placed=• Vous gardez les choses que vous avez placées
 • Creative inventory is available to obtain most items easily=• Un inventaire créatif est disponible pour obtenir facilement la plupart des objets
 • Hand breaks all default blocks instantly=• La main brise instantanément tous les blocs par défaut
