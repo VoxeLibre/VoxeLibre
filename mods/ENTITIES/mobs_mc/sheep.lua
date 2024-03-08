@@ -111,7 +111,7 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 		run_start = 81, run_end = 121, run_speed = 60,
 		eat_start = 121, eat_start = 161, eat_loop = false,
 	},
-	follow = { "mcl_farming:wheat_item" },
+	follow = { "mcl_farming:wheat_item", "mcl_shepherd:shepherd_staff" },
 	view_range = 12,
 
 	-- Eat grass
@@ -379,7 +379,7 @@ mcl_mobs:spawn_specific(
 9,
 minetest.LIGHT_MAX+1,
 30,
-15000,
+120,
 3,
 mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)

@@ -38,7 +38,7 @@ local stem_drop = {
 		{ items = {"mcl_farming:pumpkin_seeds 2"}, rarity = 31 },
 
 		-- 3 seeds: 1/125 chance
-		{ items = {"mcl_farming:pumkin_seeds 3"}, rarity = 125 },
+		{ items = {"mcl_farming:pumpkin_seeds 3"}, rarity = 125 },
 	},
 }
 

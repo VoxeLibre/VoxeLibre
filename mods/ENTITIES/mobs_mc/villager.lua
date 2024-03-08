@@ -1941,6 +1941,7 @@ local trade_inventory = {
 			if not wanted2:is_empty() then
 				inv:remove_item("input", inv:get_stack("wanted", 2))
 			end
+			local name = player:get_player_name()
 			local trader = player_trading_with[name]
 			minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name(),object=trader.object}, true)
 		end
@@ -2335,7 +2336,7 @@ mcl_mobs:spawn_specific(
 0,
 minetest.LIGHT_MAX+1,
 30,
-20,
+2,
 4,
 mobs_mc.water_level+1,
 mcl_vars.mg_overworld_max)

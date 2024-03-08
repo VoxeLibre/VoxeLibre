@@ -385,7 +385,7 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 			mcl_title.set(player, "actionbar", {text=message, color="white", stay=60})
 		else -- someone just successfully entered a bed
 			local connected_players = minetest.get_connected_players()
-			local sleep_hud_message = S("@1/@2 players currently in bed.", player_in_bed, players_in_bed_setting() * #connected_players / 100)
+			local sleep_hud_message = S("@1/@2 players currently in bed.", player_in_bed, math.ceil(players_in_bed_setting() * #connected_players / 100))
 			for _, player in pairs(connected_players) do
 				if not mcl_beds.player[player:get_player_name()] then -- only send message to players not sleeping.
 					if mcl_title.params_get(player) then mcl_title.clear(player) end -- clear, old message is still being displayed

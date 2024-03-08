@@ -160,7 +160,7 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 		return
 	end
 	local undef = minetest.registered_nodes[unode.name]
-	if undef and undef.on_rightclick then
+	if undef and undef.on_rightclick and not invert_wall then
 		undef.on_rightclick(pointed_thing.under, unode, placer,
 			itemstack, pointed_thing)
 		return
@@ -198,25 +198,11 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 
 	local p2
 	if is_y then
-		if invert_wall then
-			if fdir == 3 or fdir == 1 then
-				p2 = 12
-			else
-				p2 = 6
-			end
-		end
+		p2 = 0
 	elseif is_x then
-		if invert_wall then
-			p2 = 0
-		else
-			p2 = 12
-		end
+		p2 = 12
 	elseif is_z then
-		if invert_wall then
-			p2 = 0
-		else
-			p2 = 6
-		end
+		p2 = 6
 	end
 	minetest.set_node(pos, {name = wield_name, param2 = p2})
 
@@ -327,7 +313,7 @@ function mcl_util.hopper_push(pos, dst_pos)
 
 	local dst_list = 'main'
 	local dst_inv, stack_id
-	
+
 	if dst_def._mcl_hoppers_on_try_push then
 		dst_inv, dst_list, stack_id = dst_def._mcl_hoppers_on_try_push(dst_pos, pos, hop_inv, hop_list)
 	else
@@ -365,7 +351,7 @@ function mcl_util.hopper_pull(pos, src_pos)
 
 	local src_list = 'main'
 	local src_inv, stack_id
-	
+
 	if src_def._mcl_hoppers_on_try_pull then
 		src_inv, src_list, stack_id = src_def._mcl_hoppers_on_try_pull(src_pos, pos, hop_inv, hop_list)
 	else
@@ -1075,7 +1061,7 @@ function mcl_util.move_list(src_inv, src_listname, out_inv, out_listname, pos, d
 					v.y = v.y * 4 + 2
 					v.z = v.z * 4
 					obj:set_velocity(v)
-					minetest.log("error", vector.to_string(v))
+					mcl_util.mcl_log("item velocity calculated "..vector.to_string(v), "[mcl_util]")
 				end
 				if not insta_collect then
 					obj:get_luaentity()._insta_collect = false
@@ -1095,4 +1081,13 @@ function mcl_util.move_player_list(player, src_listname)
 	mcl_util.move_list(player:get_inventory(), src_listname, player:get_inventory(), "main",
 		vector.offset(player:get_pos(), 0, 1.2, 0),
 		player:get_look_dir(), false)
+end
+
+function mcl_util.is_it_christmas()
+	local date = os.date("*t")
+	if date.month == 12 and date.day >= 24 or date.month == 1 and date.day <= 7 then
+		return true
+	else
+		return false
+	end
 end

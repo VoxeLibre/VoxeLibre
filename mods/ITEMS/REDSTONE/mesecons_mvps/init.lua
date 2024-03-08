@@ -284,7 +284,7 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 				local counted_drops = {}
 				minetest.remove_node(n.pos)
 				for _, callback in pairs(minetest.registered_on_dignodes) do
-					callback(n.pos, n)
+					callback(n.pos, n.node)
 				end
 				for _, item in ipairs(drops) do
 					if type(item) ~= "string" then

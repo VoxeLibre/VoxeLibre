@@ -1,0 +1,4 @@
+# textdomain: mcl_info
+Set debug bit mask: 0 @= disable, 1 @= biome name, 2 @= coordinates, 3 @= all=Defina a máscara de bits de debug: 0 @= desabilitado, 1 @= nome do bioma, 2 @= coordenadas, 3 @= todos
+Error! Possible values are integer numbers from @1 to @2=Erro! Valores possíveis são números inteiros de @1 até @2
+Debug bit mask set to @1=Máscara de bits de debug definida como @1

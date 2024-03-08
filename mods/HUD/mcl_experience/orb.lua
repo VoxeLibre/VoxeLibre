@@ -155,7 +155,7 @@ minetest.register_entity("mcl_experience:orb", {
 		collisionbox = {-0.2, -0.2, -0.2, 0.2, 0.2, 0.2},
 		visual = "sprite",
 		visual_size = {x = 0.4, y = 0.4},
-		textures = {name="mcl_experience_orb.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0}},
+		textures = {"mcl_experience_orb.png"},
 		spritediv = {x = 1, y = 14},
 		initial_sprite_basepos = {x = 0, y = 0},
 		is_visible = true,

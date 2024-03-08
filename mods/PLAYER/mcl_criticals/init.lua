@@ -23,8 +23,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 				texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
 			})
 			minetest.sound_play("mcl_criticals_hit", {object = obj})
-			-- the minecraft wiki is actually wrong about a crit dealing 150% damage, see minecraft source code
-			return damage + math.random(0, math.floor(damage * 1.5 + 2))
+			return damage * math.random(1.5, 2.5)
 		end
 	end
 end, -100)

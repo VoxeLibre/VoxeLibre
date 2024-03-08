@@ -1,0 +1,13 @@
+# textdomain: mcl_mobs
+Peaceful mode active! No monsters will spawn.=Modo pacífico ativado! Nenhum monstro será gerado.
+This allows you to place a single mob.=Isso permite você posicionar um único mob.
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Posicione-o onde você deseja que o mob apareça. Animais serão gerados domesticados, a menos que você segure pressionada a tecla de agachar enquanto posiciona. Se você posicionar em um gerador de mobs, você muda o mob que será gerado.
+You need the “maphack” privilege to change the mob spawner.=Você precisa do privilégio "maphack" para mudar o gerador de mobs.
+Name Tag=Etiqueta
+A name tag is an item to name a mob.=Uma etiqueta é um item para nomear um mob.
+Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Antes de você usar a etiqueta, você precisa determinar um nome em uma bigorna. Assim você pode usar a etiqueta para nomear um mob. Isso consumirá a etiqueta.
+Only peaceful mobs allowed!=Apenas mobs pacíficos permitidos!
+Give names to mobs=Dá nome aos mobs
+Set name at anvil=Determine um nome em uma bigorna
+Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player.=Remove mobs especifícos exceto os mobs nomeados ou domesticados. Como segundo parâmetro, use nametagged/tamed para selecionar apenas mobs nomeados/domesticados, ou um alcançe para especificar uma distância máxima em relação ao jogador.
+Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=Uso padrão. Eliminando mobs hostis. Para mais opções por favor digite: /help clearmobs

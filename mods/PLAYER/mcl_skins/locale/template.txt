@@ -12,3 +12,4 @@ Hairs=
 Headwears=
 Open skin configuration screen.= 
 Select=
+Capes=

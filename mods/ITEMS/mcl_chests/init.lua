@@ -13,17 +13,7 @@ local mod_doc = minetest.get_modpath("doc")
 mcl_chests = {}
 
 -- Christmas chest setup
-local it_is_christmas = false
-local date = os.date("*t")
-if (
-		date.month == 12 and (
-			date.day == 24 or
-			date.day == 25 or
-			date.day == 26
-		)
-	) then
-	it_is_christmas = true
-end
+local it_is_christmas = mcl_util.is_it_christmas()
 
 local tiles_chest_normal_small = { "mcl_chests_normal.png" }
 local tiles_chest_normal_double = { "mcl_chests_normal_double.png" }

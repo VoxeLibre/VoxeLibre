@@ -305,6 +305,9 @@ Origin of those models:
     * `mobs_mc_rabbit_random.*.ogg` (CC0)
         * Changes were made.
         * Source: <https://freesound.org/people/Alshred/>
+* [epCode]
+    * `extra_mobs_hoglin*.ogg` (LGPL 3.0)
+        * Source: <https://git.minetest.land/epCode/extra_mobs/src/branch/master/sounds>
 
 Note: Many of these sounds have been more or less modified to fit the game.
 

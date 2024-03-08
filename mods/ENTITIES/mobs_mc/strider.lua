@@ -225,7 +225,7 @@ mcl_mobs:spawn_setup({
 	},
 	min_height = mcl_vars.mg_nether_min,
 	max_height = mcl_vars.mg_nether_max,
-	chance = 2000,
+	chance = 200,
 })
 
 mcl_mobs:spawn_setup({
@@ -241,7 +241,7 @@ mcl_mobs:spawn_setup({
 	},
 	min_height = mcl_vars.mg_nether_min,
 	max_height = mcl_vars.mg_nether_max,
-	chance = 100,
+	chance = 20,
 })
 
 -- spawn eggs

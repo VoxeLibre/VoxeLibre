@@ -32,6 +32,9 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 	if not self.follow then
 		return false
 	end
+	if clicker:get_wielded_item():get_definition()._mcl_not_consumable then
+		return false
+	end
 	-- can eat/tame with item in hand
 	if self.nofollow or self:follow_holding(clicker) then
 		local consume_food = false

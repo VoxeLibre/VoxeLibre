@@ -263,5 +263,29 @@
 		"mask": "mcl_skins_base_1_mask.png",
 		"template1": true,
 		"template2": true
+	},
+	{
+		"type": "cape",
+		"name": "mtcape",
+		"mask": "mtcape_body.png",
+		"selector_func" : null
+	},
+	{
+		"type": "cape",
+		"name": "slimecape",
+		"mask": "slimecape_body.png",
+		"selector_func" : null
+	},
+	{
+		"type": "cape",
+		"name": "ghastcape",
+		"mask": "ghastcape_body.png",
+		"selector_func" : null
+	},
+	{
+		"type": "cape",
+		"name": "mclcape",
+		"mask": "mclcape_body.png",
+		"selector_func" : null
 	}
 ]

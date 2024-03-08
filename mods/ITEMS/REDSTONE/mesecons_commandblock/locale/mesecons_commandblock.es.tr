@@ -1,7 +1,7 @@
 # textdomain: mesecons_commandblock
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Error: el comando "@1" no existe; su bloque de comando no ha sido cambiado. Utilice el comando de chat "help" para obtener una lista de los comandos disponibles.
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Error: el comando "@1" no existe; su bloque de comando no ha sido cambiado. Utilice el comando de chat "help" para obtener una lista de los comandos disponibles. Sugerencia: intente eliminar la barra diagonal inicial.
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Error: ¡No tiene suficientes privilegios para usar el comando “@ 1” (faltan privilegios: @ 2)! El bloque de comando no ha sido cambiado.
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Error: ¡No tiene suficientes privilegios para usar el comando “@1” (faltan privilegios: @2)! El bloque de comando no ha sido cambiado.
 Error: No commander! Block must be replaced.=Error: ¡Sin dueño! El bloque debe ser reemplazado.
 Commander: @1=Dueño: @1
 Submit=Aceptar

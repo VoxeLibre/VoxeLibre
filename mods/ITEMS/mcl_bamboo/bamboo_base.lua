@@ -280,31 +280,7 @@ local bamboo_block_def = {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 2,
 	_mcl_stripped_variant = "mcl_bamboo:bamboo_block_stripped", -- this allows us to use the built in Axe's strip block.
-	on_place = function(itemstack, placer, pointed_thing)
-		if not pointed_thing then
-			return itemstack
-		end
-
-		if pointed_thing.type ~= "node" then -- make sure that pointed_thing is not null and is pointing at a node.
-			return itemstack
-		end
-
-		local pos = pointed_thing.under
-
-		if mcl_bamboo.is_protected(pos, placer) then
-			return
-		end
-
-		-- Use pointed node's on_rightclick function first, if present
-		local node = minetest.get_node(pointed_thing.under)
-		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-			end
-		end
-
-		return minetest.item_place(itemstack, placer, pointed_thing, minetest.dir_to_facedir(vector.direction(pointed_thing.above, pointed_thing.under)))
-	end,
+	on_place = mcl_util.rotate_axis,
 }
 
 minetest.register_node("mcl_bamboo:bamboo_block", bamboo_block_def)

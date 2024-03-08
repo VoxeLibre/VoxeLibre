@@ -64,40 +64,24 @@ local function cancelClientSprinting(name)
 	players[name].clientSprint = false
 end
 
+mcl_fovapi.register_modifier({
+	name = "sprint",
+	fov_factor = 1.1,
+	time = 0.15,
+	is_multiplier = true,
+})
+
 local function setSprinting(playerName, sprinting) --Sets the state of a player (0=stopped/moving, 1=sprinting)
 	if not sprinting and not mcl_sprint.is_sprinting(playerName) then return end
 	local player = minetest.get_player_by_name(playerName)
-	local controls = player:get_player_control()
 	if players[playerName] then
 		players[playerName].sprinting = sprinting
-		local fov_old = players[playerName].fov
-		local fov_new = fov_old
-		local fade_time = .15
-		if sprinting == true
-		or controls.RMB
-		and string.find(player:get_wielded_item():get_name(), "mcl_bows:bow")
-		and player:get_wielded_item():get_name() ~= "mcl_bows:bow" then
-			if sprinting == true then
-				fov_new = math.min(players[playerName].fov + 0.05, 1.2)
-			else
-				fov_new = .7
-				players[playerName].fade_time = .3
-			end
-			if sprinting == true then
-				playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
-			end
-		elseif sprinting == false
-		and player:get_wielded_item():get_name() ~= "mcl_bows:bow_0"
-		and player:get_wielded_item():get_name() ~= "mcl_bows:bow_1"
-		and player:get_wielded_item():get_name() ~= "mcl_bows:bow_2" then
-			fov_new = math.max(players[playerName].fov - 0.05, 1.0)
-			if sprinting == false then
-				playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
-			end
-		end
-		if fov_new ~= fov_old then
-			players[playerName].fov = fov_new
-			player:set_fov(fov_new, true, fade_time)
+		if sprinting then
+			playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
+			mcl_fovapi.apply_modifier(player, "sprint")
+		else
+			playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
+			mcl_fovapi.remove_modifier(player, "sprint")
 		end
 		return true
 	end
