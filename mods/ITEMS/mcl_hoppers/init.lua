@@ -32,6 +32,61 @@ local mcl_hoppers_formspec = table.concat({
 	"listring[current_player;main]",
 })
 
+local function straight_hopper_act(pos, node, active_object_count, active_count_wider)
+	local timer = minetest.get_node_timer(pos)
+	if timer:is_started() then
+		--Pause if already recived item this tick
+		return
+	end
+	timer:start(1.0)
+
+	-- Move from internal inventory to dst first
+	local dst_pos = vector.offset(pos, 0, -1, 0)
+	local dst_node = minetest.get_node(dst_pos)
+	local dst_name = dst_node.name
+	local dst_def = minetest.registered_nodes[dst_name]
+
+	if dst_def._mcl_hopper_act then
+		dst_def._mcl_hopper_act( dst_pos, dst_node, active_object_count, active_count_wider )
+	end
+
+	mcl_util.hopper_push(pos, dst_pos)
+	local src_pos = vector.offset(pos, 0, 1, 0)
+	mcl_util.hopper_pull(pos, src_pos)
+end
+
+local function bent_hopper_act(pos, node, active_object_count, active_object_count_wider)
+	local timer = minetest.get_node_timer(pos)
+	if timer:is_started() then
+		--Pause if already recived item this tick
+		return
+	end
+	timer:start(1.0)
+
+	-- Determine to which side the hopper is facing, get nodes
+	local face = minetest.get_node(pos).param2
+	local dst_pos = {}
+	if face == 0 then
+		dst_pos = vector.offset(pos, -1, 0, 0)
+	elseif face == 1 then
+		dst_pos = vector.offset(pos, 0, 0, 1)
+	elseif face == 2 then
+		dst_pos = vector.offset(pos, 1, 0, 0)
+	elseif face == 3 then
+		dst_pos = vector.offset(pos, 0, 0, -1)
+	end
+	local dst_node = minetest.get_node(dst_pos)
+	local dst_name = dst_node.name
+	local dst_def = minetest.registered_nodes[dst_name]
+	if dst_def._mcl_hopper_act then
+		dst_def._mcl_hopper_act( dst_pos, dst_node, active_object_count, active_count_wider )
+	end
+	mcl_util.hopper_push(pos, dst_pos)
+
+	local src_pos = vector.offset(pos, 0, 1, 0)
+	mcl_util.hopper_pull(pos, src_pos)
+end
+
 -- Downwards hopper (base definition)
 
 ---@type node_definition
@@ -206,6 +261,7 @@ def_hopper_enabled.mesecons = {
 		end,
 	},
 }
+def_hopper_enabled._mcl_hopper_act = straight_hopper_act
 
 minetest.register_node("mcl_hoppers:hopper", def_hopper_enabled)
 
@@ -355,6 +411,7 @@ def_hopper_side_enabled.mesecons = {
 		end,
 	},
 }
+def_hopper_side_enabled._mcl_hopper_act = bent_hopper_act
 minetest.register_node("mcl_hoppers:hopper_side", def_hopper_side_enabled)
 
 ---@type node_definition
@@ -559,24 +616,7 @@ minetest.register_abm({
 	neighbors = { "group:container" },
 	interval = 1.0,
 	chance = 1,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		if minetest.get_node_timer(pos):is_started() then
-			return
-		end
-
-		-- Move from internal inventory to dst first 
-		local dst_pos = vector.offset(pos, 0, -1, 0)
-		local pushed = mcl_util.hopper_push(pos, dst_pos)
-		
-		local src_pos = vector.offset(pos, 0, 1, 0)
-		mcl_util.hopper_pull(pos, src_pos)
-
-		local dst_node = minetest.get_node(dst_pos)
-		if pushed and (dst_node.name == "mcl_hoppers:hopper" or dst_node.name == "mcl_hoppers:hopper_side") then
-			--Pause destination hopper
-			minetest.get_node_timer(dst_pos):start(1.0)
-		end
-	end,
+	action = straight_hopper_act,
 })
 
 -- Register push/pull for "bent" hopper
@@ -586,35 +626,7 @@ minetest.register_abm({
 	neighbors = { "group:container" },
 	interval = 1.0,
 	chance = 1,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		if minetest.get_node_timer(pos):is_started() then
-			--Pause if already recived item this tick
-			return
-		end
-
-		-- Determine to which side the hopper is facing, get nodes
-		local face = minetest.get_node(pos).param2
-		local dst_pos = {}
-		if face == 0 then
-			dst_pos = vector.offset(pos, -1, 0, 0)
-		elseif face == 1 then
-			dst_pos = vector.offset(pos, 0, 0, 1)
-		elseif face == 2 then
-			dst_pos = vector.offset(pos, 1, 0, 0)
-		elseif face == 3 then
-			dst_pos = vector.offset(pos, 0, 0, -1)
-		end
-		local pushed = mcl_util.hopper_push(pos, dst_pos)
-		
-		local src_pos = vector.offset(pos, 0, 1, 0)
-		mcl_util.hopper_pull(pos, src_pos)
-		
-		local dst_node = minetest.get_node(dst_pos)
-		if pushed and (dst_node.name == "mcl_hoppers:hopper" or dst_node.name == "mcl_hoppers:hopper_side") then
-			--Pause destination hopper
-			minetest.get_node_timer(dst_pos):start(1.0)
-		end
-	end,
+	action = bent_hopper_act,
 })
 
 minetest.register_craft({
