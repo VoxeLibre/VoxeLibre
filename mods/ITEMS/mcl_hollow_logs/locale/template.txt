@@ -1,14 +1,21 @@
 # textdomain: mcl_hollow_logs
-
-Hollow @1=
-Stripped @1=
-Acacia Log=
-Birch Log=
-Cherry Log=
-Crimson Stem=
-Dark Oak Log=
-Jungle Log=
-Mangrove Log=
-Oak Log=
-Spruce Log=
-Warped Stem=
+Hollow Acacia Log=
+Hollow Birch Log=
+Hollow Cherry Log=
+Hollow Dark Oak Log=
+Hollow Jungle Log=
+Hollow Mangrove Log=
+Hollow Oak Log=
+Hollow Spruce Log=
+Hollow Crimson Stem=
+Hollow Warped Stem=
+Stripped Hollow Acacia Log=
+Stripped Hollow Birch Log=
+Stripped Hollow Cherry Log=
+Stripped Hollow Dark Oak Log=
+Stripped Hollow Jungle Log=
+Stripped Hollow Mangrove Log=
+Stripped Hollow Oak Log=
+Stripped Hollow Spruce Log=
+Stripped Hollow Crimson Stem=
+Stripped Hollow Warped Stem=

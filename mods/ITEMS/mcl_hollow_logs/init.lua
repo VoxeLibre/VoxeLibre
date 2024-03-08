@@ -1,7 +1,22 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local core_logs = {"acacia", "birch", "dark_oak", "jungle", "oak", "spruce"}
+logs = {
+    {"acaciatree", "Hollow Acacia Log", "Stripped Hollow Acacia Log"},
+    {"birchtree", "Hollow Birch Log", "Stripped Hollow Birch Log"},
+    {"darktree", "Hollow Dark Oak Log", "Stripped Hollow Dark Oak Log"},
+    {"jungletree", "Hollow Jungle Log", "Stripped Hollow Jungle Log"},
+    {"sprucetree", "Hollow Spruce Log", "Stripped Hollow Spruce Log"},
+    {"tree", "Hollow Oak Log", "Stripped Hollow Oak Log"}
+}
+
+if minetest.get_modpath("mcl_cherry_blossom") then
+    table.insert(logs, {"cherrytree", "Hollow Cherry Log", "Stripped Hollow Cherry Log"})
+end
+
+if minetest.get_modpath("mcl_mangrove") then
+    table.insert(logs, {"mangrove_tree", "Hollow Mangrove Log", "Stripped Hollow Mangrove Log"})
+end
 
 local collisionbox = {
     type = "fixed",
@@ -13,19 +28,14 @@ local collisionbox = {
     }
 }
 
-local function set_desc(name)
-    return (name:gsub("_", " "):gsub("(%a)([%w_']*)", function (first, rest)
-        return first:upper()..rest:lower()
-    end))
-end
+for i = 1, #logs do
+    local name = logs[i][1]
+    local normal_desc = logs[i][2]
+    local stripped_desc = logs[i][3]
 
-for i = 1, #core_logs do
-    local name = core_logs[i]
-    local desc = set_desc(name)
-
-    minetest.register_node(":mcl_core:"..name.."_log_hollow", {
+    minetest.register_node("mcl_hollow_logs:"..name.."_hollow", {
         collision_box = collisionbox,
-        description = S("Hollow @1", S(desc.." Log")),
+        description = S(normal_desc),
         drawtype = "mesh",
         groups = {
             axey = 1, building_block = 1, fire_encouragement = 5, fire_flammability = 5, flammable = 2,
@@ -40,12 +50,12 @@ for i = 1, #core_logs do
         tiles = {"mcl_hollow_logs_"..name..".png"},
         _mcl_blast_resistance = 2,
         _mcl_hardness = 2,
-        _mcl_stripped_variant = "mcl_core:stripped_"..name.."_log_hollow"
+        _mcl_stripped_variant = "mcl_hollow_logs:stripped_"..name.."_hollow"
     })
 
-    minetest.register_node(":mcl_core:stripped_"..name.."_log_hollow", {
+    minetest.register_node("mcl_hollow_logs:stripped_"..name.."_hollow", {
         collision_box = collisionbox,
-        description = S("Hollow @1", S(desc.." Log")),
+        description = S(stripped_desc),
         drawtype = "mesh",
         groups = {
             axey = 1, building_block = 1, fire_encouragement = 5, fire_flammability = 5, flammable = 2,
@@ -63,53 +73,12 @@ for i = 1, #core_logs do
     })
 end
 
-if minetest.get_modpath("mcl_cherry_blossom") then
-    minetest.register_node(":mcl_cherry_blossom:cherry_log_hollow", {
-        collision_box = collisionbox,
-        description = S("Hollow @1", S("Cherry Log")),
-        drawtype = "mesh",
-        groups = {
-            axey = 1, building_block = 1, fire_encouragement = 5, fire_flammability = 5, flammable = 2,
-            handy = 1, hollow_log = 1
-        },
-        mesh = "mcl_hollow_logs_log.obj",
-        on_place = mcl_util.rotate_axis,
-        paramtype = "light",
-        paramtype2 = "facedir",
-        sounds = mcl_sounds.node_sound_wood_defaults(),
-        sunlight_propagates = true,
-        tiles = {"mcl_hollow_logs_cherry.png"},
-        _mcl_blast_resistance = 2,
-        _mcl_hardness = 2,
-       _mcl_stripped_variant = "mcl_cherry_blossom:stripped_cherry_log_hollow"
-    })
-
-    minetest.register_node(":mcl_cherry_blossom:stripped_cherry_log_hollow", {
-        collision_box = collisionbox,
-        description = S("Stripped @1", S("Hollow @1", S("Cherry Log"))),
-        drawtype = "mesh",
-        groups = {
-            axey = 1, building_block = 1, fire_encouragement = 5, fire_flammability = 5, flammable = 2,
-            handy = 1, hollow_log = 1
-        },
-        mesh = "mcl_hollow_logs_log.obj",
-        on_place = mcl_util.rotate_axis,
-        paramtype = "light",
-        paramtype2 = "facedir",
-        sounds = mcl_sounds.node_sound_wood_defaults(),
-        sunlight_propagates = true,
-        tiles = {"mcl_hollow_logs_stripped_cherry.png"},
-        _mcl_blast_resistance = 2,
-        _mcl_hardness = 2
-    })
-end
-
 if minetest.get_modpath("mcl_crimson") then
-    minetest.register_node(":mcl_crimson:crimson_stem_hollow", {
+    minetest.register_node("mcl_hollow_logs:crimson_hyphae_hollow", {
         collision_box = collisionbox,
-        description = S("Hollow @1", S("Crimson Stem")),
+        description = S("Hollow Crimson Stem"),
         drawtype = "mesh",
-        groups = {axey = 1, building_block = 1, handy = 1},
+        groups = {axey = 1, building_block = 1, handy = 1, hollow_stem = 1},
         mesh = "mcl_hollow_logs_log.obj",
         on_place = mcl_util.rotate_axis,
         paramtype = "light",
@@ -119,14 +88,14 @@ if minetest.get_modpath("mcl_crimson") then
         tiles = {"mcl_hollow_logs_crimson.png"},
         _mcl_blast_resistance = 2,
         _mcl_hardness = 2,
-       _mcl_stripped_variant = "mcl_crimson:stripped_crimson_stem_hollow"
+       _mcl_stripped_variant = "mcl_hollow_logs:stripped_crimson_hyphae_hollow"
     })
 
-    minetest.register_node(":mcl_crimson:stripped_crimson_stem_hollow", {
+    minetest.register_node("mcl_hollow_logs:stripped_crimson_hyphae_hollow", {
         collision_box = collisionbox,
-        description = S("Stripped @1", S("Hollow @1", S("Crimson Stem"))),
+        description = S("Stripped Hollow Crimson Stem"),
         drawtype = "mesh",
-        groups = {axey = 1, building_block = 1, handy = 1},
+        groups = {axey = 1, building_block = 1, handy = 1, hollow_stem = 1},
         mesh = "mcl_hollow_logs_log.obj",
         on_place = mcl_util.rotate_axis,
         paramtype = "light",
@@ -138,11 +107,11 @@ if minetest.get_modpath("mcl_crimson") then
         _mcl_hardness = 2
     })
 
-    minetest.register_node(":mcl_crimson:warped_stem_hollow", {
+    minetest.register_node("mcl_hollow_logs:warped_hyphae_hollow", {
         collision_box = collisionbox,
-        description = S("Hollow @1", S("Warped Stem")),
+        description = S("Hollow Warped Stem"),
         drawtype = "mesh",
-        groups = {axey = 1, building_block = 1, handy = 1},
+        groups = {axey = 1, building_block = 1, handy = 1, hollow_stem = 1},
         mesh = "mcl_hollow_logs_log.obj",
         on_place = mcl_util.rotate_axis,
         paramtype = "light",
@@ -152,14 +121,14 @@ if minetest.get_modpath("mcl_crimson") then
         tiles = {"mcl_hollow_logs_warped.png"},
         _mcl_blast_resistance = 2,
         _mcl_hardness = 2,
-       _mcl_stripped_variant = "mcl_crimson:stripped_warped_stem_hollow"
+       _mcl_stripped_variant = "mcl_hollow_logs:stripped_warped_hyphae_hollow"
     })
 
-    minetest.register_node(":mcl_crimson:stripped_warped_stem_hollow", {
+    minetest.register_node("mcl_hollow_logs:stripped_warped_hyphae_hollow", {
         collision_box = collisionbox,
-        description = S("Stripped @1", S("Hollow @1", S("Warped Stem"))),
+        description = S("Stripped Hollow Warped Stem"),
         drawtype = "mesh",
-        groups = {axey = 1, building_block = 1, handy = 1},
+        groups = {axey = 1, building_block = 1, handy = 1, hollow_stem = 1},
         mesh = "mcl_hollow_logs_log.obj",
         on_place = mcl_util.rotate_axis,
         paramtype = "light",
@@ -167,47 +136,6 @@ if minetest.get_modpath("mcl_crimson") then
         sounds = mcl_sounds.node_sound_wood_defaults(),
         sunlight_propagates = true,
         tiles = {"mcl_hollow_logs_stripped_warped.png"},
-        _mcl_blast_resistance = 2,
-        _mcl_hardness = 2
-    })
-end
-
-if minetest.get_modpath("mcl_mangrove") then
-    minetest.register_node(":mcl_mangrove:mangrove_log_hollow", {
-        collision_box = collisionbox,
-        description = S("Hollow @1", S("Mangrove Log")),
-        drawtype = "mesh",
-        groups = {
-            axey = 1, building_block = 1, fire_encouragement = 5, fire_flammability = 5, flammable = 2,
-            handy = 1, hollow_log = 1
-        },
-        mesh = "mcl_hollow_logs_log.obj",
-        on_place = mcl_util.rotate_axis,
-        paramtype = "light",
-        paramtype2 = "facedir",
-        sounds = mcl_sounds.node_sound_wood_defaults(),
-        sunlight_propagates = true,
-        tiles = {"mcl_hollow_logs_mangrove.png"},
-        _mcl_blast_resistance = 2,
-        _mcl_hardness = 2,
-       _mcl_stripped_variant = "mcl_mangrove:stripped_mangrove_log_hollow"
-    })
-
-    minetest.register_node(":mcl_mangrove:stripped_mangrove_log_hollow", {
-        collision_box = collisionbox,
-        description = S("Stipped @1", S("Hollow @1", S("Mangrove Log"))),
-        drawtype = "mesh",
-        groups = {
-            axey = 1, building_block = 1, fire_encouragement = 5, fire_flammability = 5, flammable = 2,
-            handy = 1, hollow_log = 1
-        },
-        mesh = "mcl_hollow_logs_log.obj",
-        on_place = mcl_util.rotate_axis,
-        paramtype = "light",
-        paramtype2 = "facedir",
-        sounds = mcl_sounds.node_sound_wood_defaults(),
-        sunlight_propagates = true,
-        tiles = {"mcl_hollow_logs_stripped_mangrove.png"},
         _mcl_blast_resistance = 2,
         _mcl_hardness = 2
     })
