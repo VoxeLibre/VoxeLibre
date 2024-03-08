@@ -11,11 +11,11 @@ mcl_hollow_logs.logs = {
 }
 
 if minetest.get_modpath("mcl_cherry_blossom") then
-    table.insert(logs, {"cherrytree", "Hollow Cherry Log", "Stripped Hollow Cherry Log"})
+    table.insert(mcl_hollow_logs.logs, {"cherrytree", "Hollow Cherry Log", "Stripped Hollow Cherry Log"})
 end
 
 if minetest.get_modpath("mcl_mangrove") then
-    table.insert(logs, {"mangrove_tree", "Hollow Mangrove Log", "Stripped Hollow Mangrove Log"})
+    table.insert(mcl_hollow_logs.logs, {"mangrove_tree", "Hollow Mangrove Log", "Stripped Hollow Mangrove Log"})
 end
 
 local collisionbox = {
@@ -28,10 +28,10 @@ local collisionbox = {
     }
 }
 
-for i = 1, #logs do
-    local name = logs[i][1]
-    local normal_desc = logs[i][2]
-    local stripped_desc = logs[i][3]
+for i = 1, #mcl_hollow_logs.logs do
+    local name = mcl_hollow_logs.logs[i][1]
+    local normal_desc = mcl_hollow_logs.logs[i][2]
+    local stripped_desc = mcl_hollow_logs.logs[i][3]
 
     minetest.register_node("mcl_hollow_logs:"..name.."_hollow", {
         collision_box = collisionbox,
