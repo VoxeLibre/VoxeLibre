@@ -1,7 +1,7 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 local S = minetest.get_translator(minetest.get_current_modname())
 
-logs = {
+mcl_hollow_logs.logs = {
     {"acaciatree", "Hollow Acacia Log", "Stripped Hollow Acacia Log"},
     {"birchtree", "Hollow Birch Log", "Stripped Hollow Birch Log"},
     {"darktree", "Hollow Dark Oak Log", "Stripped Hollow Dark Oak Log"},
