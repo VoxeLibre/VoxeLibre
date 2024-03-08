@@ -1,6 +1,6 @@
-for i = 1, #logs do
+for i = 1, #mcl_hollow_logs.logs do
     local mod, material, stripped_material
-    local name = logs[i][1]
+    local name = mcl_hollow_logs.logs[i][1]
 
     if name:find("cherry") then
         mod = "mcl_cherry_blossom:"
@@ -18,7 +18,7 @@ for i = 1, #logs do
     end
 
     minetest.register_craft({
-        output = "mcl_hollow_logs:"..logs[i][1].."_hollow 4",
+        output = "mcl_hollow_logs:"..name.."_hollow 4",
         recipe = {
             {"", material, ""},
             {material, "", material},
@@ -27,7 +27,7 @@ for i = 1, #logs do
     })
 
     minetest.register_craft({
-        output = "mcl_hollow_logs:stripped_"..logs[i][1].."_hollow 4",
+        output = "mcl_hollow_logs:stripped_"..name.."_hollow 4",
         recipe = {
             {"", stripped_material, ""},
             {stripped_material, "", stripped_material},
