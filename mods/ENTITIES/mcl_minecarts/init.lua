@@ -272,8 +272,15 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		local pos = staticdata.connected_at
 		if not pos then
 			pos = self.object:get_pos()
-			print("TODO: handle detached cart behavior")
-			--return
+			-- Try to reattach
+			local rounded_pos = vector.round(pos)
+			if mcl_minecarts:is_rail(rounded_pos) and vector.distance(pos, rounded_pos) < 0.25 then
+				-- Reattach
+				staticdata.connected_at = rounded_pos
+				pos = rounded_pos
+			else
+				print("TODO: handle detached cart behavior")
+			end
 		end
 
 		-- Fix railtype field
@@ -525,10 +532,13 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 				-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
 				staticdata.velocity = staticdata.velocity * -1
-				staticdata.dir = -staticdata.dir
+				next_dir = -staticdata.dir
 				pos = pos + staticdata.dir
 				staticdata.distance = 1 - staticdata.distance
 				staticdata.connected_at = pos
+
+				local next_dir,_ = mcl_minecarts:get_rail_direction(pos + staticdata.dir, next_dir, nil, nil, staticdata.railtype)
+				staticdata.dir = next_dir
 
 				update_cart_orientation(self,staticdata)
 			end
