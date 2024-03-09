@@ -522,14 +522,13 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				if DEBUG then
 					print("Gravity flipped direction")
 				end
-				staticdata.velocity = staticdata.velocity * -1
 
-				-- Update direction
-				local next_dir,_ = mcl_minecarts:get_rail_direction(pos + staticdata.dir, staticdata.dir * -1, nil, nil, staticdata.railtype)
-				if DEBUG and next_dir ~= staticdata.dir then
-					print( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
-				end
-				staticdata.dir = next_dir
+				-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
+				staticdata.velocity = staticdata.velocity * -1
+				staticdata.dir = -staticdata.dir
+				pos = pos + staticdata.dir
+				staticdata.distance = 1 - staticdata.distance
+				staticdata.connected_at = pos
 
 				update_cart_orientation(self,staticdata)
 			end
