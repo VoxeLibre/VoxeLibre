@@ -8,6 +8,7 @@ mcl_minecarts.modpath = minetest.get_modpath(modname)
 mcl_minecarts.speed_max = 10
 mcl_minecarts.check_float_time = 15
 local max_step_distance = 0.5
+local friction = 0.1
 
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
@@ -371,26 +372,41 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 	local passenger_attach_position = vector.new(0, -1.75, 0)
 
 	local function update_cart_orientation(self,staticdata)
-		local rot = self.object:get_rotation()
+		-- constants
+		local _2_pi = math.pi * 2
+		local pi = math.pi
 		local dir = staticdata.dir
-		if dir.x < 0 then
-			rot.y = 0.5 * math.pi
-		elseif dir.x > 0 then
-			rot.y = 1.5 * math.pi
-		elseif dir.z < 0 then
-			rot.y = 1 * math.pi
+
+		-- Calculate an angle from the x,z direction components
+		local rot_y = math.atan2( dir.x, dir.z ) + ( staticdata.rot_adjust or 0 )
+		if rot_y < 0 then
+			rot_y = rot_y + _2_pi
+		end
+
+		-- Check if the rotation is a 180 flip and don't change if so
+		local rot = self.object:get_rotation()
+		local diff = math.abs((rot_y - ( rot.y + pi ) % _2_pi) )
+		if diff < 0.001 or diff > _2_pi - 0.001 then
+			-- Update rotation adjust and recalculate the rotation
+			staticdata.rot_adjust = ( ( staticdata.rot_adjust or 0 ) + pi ) % _2_pi
+			rot.y = math.atan2( dir.x, dir.z ) + ( staticdata.rot_adjust or 0 )
 		else
-			rot.y = 0
+			rot.y = rot_y
 		end
 
 		-- Forward/backwards tilt (pitch)
 		if dir.y < 0 then
-			rot.x = -0.25 * math.pi
+			rot.x = -0.25 * pi
 		elseif dir.y > 0 then
-			rot.x = 0.25 * math.pi
+			rot.x = 0.25 * pi
 		else
 			rot.x = 0
 		end
+
+		if ( staticdata.rot_adjust or 0 ) < 0.01 then
+			rot.x = -rot.x
+		end
+
 		self.object:set_rotation(rot)
 	end
 
@@ -473,7 +489,6 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		if not staticdata.connected_at then return end
 
 		local acceleration = 0
-		local friction = 0.1
 
 		if DEBUG and staticdata.velocity > 0 then
 			print( "    acceleration="..tostring(acceleration)..",velocity="..tostring(staticdata.velocity)..
@@ -491,9 +506,6 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		elseif self._brake then
 			acceleration = -1.5
 		elseif self._punched then
-			if statcdata.velocity < 1 then
-				staticdata.velocity = 1
-			end
 			acceleration = 2
 		elseif self._fueltime and self._fueltime > 0 then
 			acceleration = 0.6
@@ -565,6 +577,11 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			return
 		else
 			staticdata.delay = 0
+		end
+
+		local initial_velocity = 1
+		if self._punched and statcdata.velocity < initial_velocity then
+			staticdata.velocity = initial_velocity
 		end
 
 		-- Break long movements into fixed-size steps so that
