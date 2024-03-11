@@ -1157,7 +1157,7 @@ register_minecart({
 		end
 	end,
 	on_activate_by_rail = activate_tnt_minecart,
-	creative = false
+	creative = true
 })
 
 
