@@ -88,20 +88,33 @@ local rail_checks = {
 	{ -1,  0,  0 }, -- backwards
 }
 
+local rail_checks_diagonal = {
+	{ 1,  1,  0 }, -- forward along diagonal
+	{ 1,  0,  0 }, -- left
+	{ 0,  1,  0 }, -- right
+}
+
+local north = vector.new(0,0,1)
+local south = vector.new(0,0,-1)
+local east  = vector.new(1,0,0)
+local west = vector.new(-1,0,0)
+
 -- Rotate diagonal directions 45 degrees clockwise
 local diagonal_convert = {
-	nw = vector.new( 0,0, 1), -- north
-	ne = vector.new( 1,0, 0), -- east
-	se = vector.new( 0,0,-1), -- south
-	sw = vector.new(-1,0, 0), -- west
+	nw = west,
+	ne = north,
+	se = east,
+	sw = south,
 }
 
 function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	local pos = vector.round(pos_)
 
 	-- Diagonal conversion
+	local checks = rail_checks
 	if dir.x ~= 0 and dir.z ~= 0 then
 		dir = diagonal_convert[ mcl_minecarts:name_from_dir(dir, false) ]
+		checks = rail_checks_diagonal
 	end
 
 	-- Calculate coordinate space
@@ -109,7 +122,7 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	local up = vector.new(0,1,0)
 
 	-- Perform checks
-	for _,check in ipairs(rail_checks) do
+	for _,check in ipairs(checks) do
 		local check_dir = dir * check[1] + right * check[2] + up * check[3]
 		local check_pos = pos + check_dir
 		if mcl_minecarts:is_rail(check_pos,railtype) then
