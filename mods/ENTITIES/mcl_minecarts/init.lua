@@ -850,6 +850,19 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	return itemstack
 end
 
+local function dropper_place_minecart(dropitem, pos)
+	local node = minetest.get_node(pos)
+	local nodedef = minetest.registered_nodes[node.name]
+
+	-- Don't try to place the minecart if pos isn't a rail
+	if (nodedef.groups.rail or 0) == 0 then return false end
+
+	mcl_minecarts.place_minecart(dropitem, {
+		above = pos,
+		under = vector.offset(pos,0,-1,0)
+	})
+	return true
+end
 
 local function register_craftitem(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
 	entity_mapping[itemstring] = entity_id
@@ -860,6 +873,7 @@ local function register_craftitem(itemstring, entity_id, description, tt_help, l
 	end
 	local def = {
 		stack_max = 1,
+		_mcl_dropper_on_drop = dropper_place_minecart,
 		on_place = function(itemstack, placer, pointed_thing)
 			if not pointed_thing.type == "node" then
 				return

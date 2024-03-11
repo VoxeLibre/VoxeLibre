@@ -132,9 +132,9 @@ local dropperdef = {
 				-- If they are containers - double down as hopper
 				mcl_util.hopper_push(pos, droppos)
 			end
-			if dropnodedef.walkable then
-				return
-			end
+			if dropnodedef.walkable then return end
+
+			-- Build a list of items in the dropper
 			local stacks = {}
 			for i = 1, inv:get_size("main") do
 				local stack = inv:get_stack("main", i)
@@ -142,17 +142,36 @@ local dropperdef = {
 					table.insert(stacks, { stack = stack, stackpos = i })
 				end
 			end
+
+			-- Pick an item to drop
+			local dropitem = nil
+			local stack = nil
+			local r = nil
 			if #stacks >= 1 then
-				local r = math.random(1, #stacks)
-				local stack = stacks[r].stack
-				local dropitem = ItemStack(stack)
+				r = math.random(1, #stacks)
+				stack = stacks[r].stack
+				dropitem = ItemStack(stack)
 				local stackdef = core.registered_items[stack:get_name()]
 				if not stackdef then
 					return
 				end
-
 				dropitem:set_count(1)
-				local stack_id = stacks[r].stackpos
+			end
+			if not dropitem then return end
+
+			-- Flag for if the item was dropped. If true the item will be removed from
+			-- the inventory after dropping
+			local item_dropped = false
+
+			-- Check if the drop item has a custom handler
+			local itemdef = minetest.registered_craftitems[dropitem:get_name()]
+			if itemdef._mcl_dropper_on_drop then
+				item_dropped = itemdef._mcl_dropper_on_drop(dropitem, droppos)
+			end
+
+			-- If a custom handler wasn't successful then drop the item as an entity
+			if not item_dropped then
+				-- Drop as entity
 				local pos_variation = 100
 				droppos = vector.offset(droppos,
 					math.random(-pos_variation, pos_variation) / 1000,
@@ -164,6 +183,12 @@ local dropperdef = {
 				local speed = 3
 				item_entity:set_velocity(vector.multiply(drop_vel, speed))
 				stack:take_item()
+				item_dropped = trie
+			end
+
+			-- Remove dropped items from inventory
+			if item_dropped then
+				local stack_id = stacks[r].stackpos
 				inv:set_stack("main", stack_id, stack)
 			end
 		end,
