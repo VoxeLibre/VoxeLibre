@@ -46,90 +46,76 @@ function mcl_minecarts:is_rail(pos, railtype)
 	return minetest.get_item_group(node, "connect_to_raillike") == railtype
 end
 
-function mcl_minecarts:check_front_up_down(pos, dir_, check_down, railtype)
-	local dir = vector.new(dir_)
-	-- Front
-	dir.y = 0
-	local cur = vector.add(pos, dir)
-	if mcl_minecarts:is_rail(cur, railtype) then
-		return dir
+--[[
+  Returns a string description of a direction, with optional _up/_down suffix
+]]
+function mcl_minecarts:name_from_dir(dir, vertical)
+	local res = ""
+
+	if dir.z ==  1 then res = res .. "n" end
+	if dir.z == -1 then res = res .. "s" end
+
+	if dir.x == -1 then res = res .. "w" end
+	if dir.x ==  1 then res = res .. "e" end
+
+	if vertical then
+		if dir.y ==  1 then res = res .. "_up" end
+		if dir.y ==  1 then res = res .. "_down" end
 	end
-	-- Up
-	if check_down then
-		dir.y = 1
-		cur = vector.add(pos, dir)
-		if mcl_minecarts:is_rail(cur, railtype) then
-			return dir
-		end
-	end
-	-- Down
-	dir.y = -1
-	cur = vector.add(pos, dir)
-	if mcl_minecarts:is_rail(cur, railtype) then
-		return dir
-	end
-	return nil
+
+	return res
 end
+
+
+--[[
+	An array of (u,v,w) positions to check. Actual direction is u * dir + v * right + w * vector.new(0,1,0)
+]]
+local rail_checks = {
+	{  1,  0,  0 }, -- forwards
+	{  1,  0,  1 }, -- forwards and up
+	{  1,  0, -1 }, -- forwards and down
+
+	{  1,  1,  0 }, -- diagonal left
+	{  0,  1,  0 }, -- left
+	{  0,  1,  1 }, -- left and up
+	{  0,  1, -1 }, -- left and down
+
+	{  1, -1,  0 }, -- diagonal right
+	{  0, -1,  0 }, -- right
+	{  0, -1,  1 }, -- right and up
+	{  0, -1, -1 }, -- right and down
+
+	{ -1,  0,  0 }, -- backwards
+}
+
+-- Rotate diagonal directions 45 degrees clockwise
+local diagonal_convert = {
+	nw = vector.new( 0,0, 1), -- north
+	ne = vector.new( 1,0, 0), -- east
+	se = vector.new( 0,0,-1), -- south
+	sw = vector.new(-1,0, 0), -- west
+}
 
 function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	local pos = vector.round(pos_)
-	local cur
-	local left_check, right_check = true, true
 
-	-- Calculate left, right and back
-	local left  = vector.new(-dir.z, dir.y,  dir.x)
+	-- Diagonal conversion
+	if dir.x ~= 0 and dir.z ~= 0 then
+		dir = diagonal_convert[ mcl_minecarts:name_from_dir(dir, false) ]
+	end
+
+	-- Calculate coordinate space
 	local right = vector.new( dir.z, dir.y, -dir.x)
-	local back  = vector.new(-dir.x, dir.y, -dir.z)
+	local up = vector.new(0,1,0)
 
-	if ctrl then
-		if old_switch == 1 then
-			left_check = false
-		elseif old_switch == 2 then
-			right_check = false
-		end
-		if ctrl.left and left_check then
-			cur = mcl_minecarts:check_front_up_down(pos, left, false, railtype)
-			if cur then
-				return cur, 1
-			end
-			left_check = false
-		end
-		if ctrl.right and right_check then
-			cur = mcl_minecarts:check_front_up_down(pos, right, false, railtype)
-			if cur then
-				return cur, 2
-			end
-			right_check = true
+	-- Perform checks
+	for _,check in ipairs(rail_checks) do
+		local check_dir = dir * check[1] + right * check[2] + up * check[3]
+		local check_pos = pos + check_dir
+		if mcl_minecarts:is_rail(check_pos,railtype) then
+			return check_dir
 		end
 	end
 
-	-- Normal
-	cur = mcl_minecarts:check_front_up_down(pos, dir, true, railtype)
-	if cur then
-		return cur
-	end
-
-	-- Left, if not already checked
-	if left_check then
-		cur = mcl_minecarts:check_front_up_down(pos, left, false, railtype)
-		if cur then
-			return cur
-		end
-	end
-
-	-- Right, if not already checked
-	if right_check then
-		cur = mcl_minecarts:check_front_up_down(pos, right, false, railtype)
-		if cur then
-			return cur
-		end
-	end
-	-- Backwards
-	if not old_switch then
-		cur = mcl_minecarts:check_front_up_down(pos, back, true, railtype)
-		if cur then
-			return cur
-		end
-	end
 	return vector.new(0,0,0)
 end
