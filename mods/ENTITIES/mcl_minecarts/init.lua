@@ -31,10 +31,10 @@ local function handle_cart_enter(self,pos)
 	end
 
 	-- Handle above-track behaviors (to ensure hoppers can transfer at least one item)
-	pos = pos + vector.new(0,1,0)
-	local node = minetest.get_node(pos)
+	local above_pos = pos + vector.new(0,1,0)
+	local node = minetest.get_node(above_pos)
 	if node_def._mcl_minecarts_on_enter_below then
-		node_def._mcl_minecarts_on_enter_below(pos, cart)
+		node_def._mcl_minecarts_on_enter_below(above_pos, cart)
 	end
 
 	-- Handle cart-specific behaviors
@@ -116,7 +116,7 @@ local function do_movement_step(self, remaining_distance)
 		staticdata.connected_at = pos
 
 		-- Enter the new node
-		handle_cart_enter(self,pos)
+		handle_cart_enter(self, pos)
 
 		-- check for hopper under the rail
 		local under_pos = pos - vector.new(0,1,0)
@@ -639,6 +639,9 @@ local function register_entity(entity_id, def)
 			staticdata = make_staticdata()
 			self._staticdata = staticdata
 		end
+		if (staticdata.hopper_delay or 0) > 0 then
+			staticdata.hopper_delay = staticdata.hopper_delay - dtime
+		end
 
 		local pos, rou_pos, node = self.object:get_pos()
 		--local update = {}
@@ -835,7 +838,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 		le._staticdata = make_staticdata( railtype, railpos, cart_dir )
 	end
 
-	handle_cart_enter( railpos )
+	handle_cart_enter(le, railpos)
 
 	local pname = ""
 	if placer then
@@ -1083,7 +1086,17 @@ register_minecart({
 	on_rightclick = nil,
 	on_activate_by_rail = nil,
 	_mcl_minecarts_on_enter = function(self,pos)
-		-- TODO: try to pull from containers into our inventory
+		local staticdata = self._staticdata
+		if (staticdata.hopper_delay or 0) > 0 then
+			return
+		end
+
+		-- try to pull from containers into our inventory
+		local inv = mcl_entity_invs.load_inv(self,5)
+		local above_pos = pos + vector.new(0,1,0)
+		mcl_util.hopper_pull_to_inventory(inv, 'main', above_pos)
+
+		staticdata.hopper_delay =  (staticdata.hopper_delay or 0) + (1/20)
 	end,
 	creative = true
 })
