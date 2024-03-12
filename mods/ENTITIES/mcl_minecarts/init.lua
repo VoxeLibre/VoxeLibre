@@ -122,12 +122,11 @@ local function do_movement_step(self, remaining_distance)
 		local under_pos = pos - vector.new(0,1,0)
 		local under_node_name = minetest.get_node(under_pos).name
 		local under_node_def = minetest.registered_nodes[under_node_name]
+		local hopper_pulled = false
 		if DEBUG then print( "under_node_name="..under_node_name..", hopper="..tostring(under_node_def.groups.hopper)) end
 		if under_node_def and under_node_def.groups.hopper ~= 0 then
-			if DEBUG then print( "Attempt pull_from_minecart" ) end
-			if mcl_hoppers.pull_from_minecart( self, under_pos, self._inv_size or 0 ) then
-				staticdata.delay = 1.5
-			end
+			hopper_pulled = mcl_hoppers.pull_from_minecart( self, under_pos, self._inv_size or 0 )
+			if DEBUG then print( "Attempt pull_from_minecart, hopper_pulled="..tostring(hopper_pulled) ) end
 		end
 
 		-- Get the next direction
@@ -137,10 +136,17 @@ local function do_movement_step(self, remaining_distance)
 		end
 
 		-- Handle end of track
-		if next_dir == staticdata.dir * -1 then
+		if next_dir == staticdata.dir * -1 and ( hopper_pulled or next_dir.y == 0 ) then
 			if DEBUG then print("Stopping cart at "..tostring(pos)) end
 			staticdata.velocity = 0
-			distence = remaining_distance
+
+			-- If there is a hopper under here, force the cart to stay put for 1.5 seconds
+			-- to allow redstone time to process
+			if hopper_pulled then
+				staticdata.delay = 1.5
+			end
+
+			distance = remaining_distance
 		end
 
 		-- Update cart direction
@@ -191,7 +197,7 @@ local function process_acceleration(self, timestep)
 		staticdata.velocity = ( staticdata.velocity or 0 ) + acceleration * timestep
 		if staticdata.velocity > max_vel then
 			staticdata.velocity = max_vel
-		elseif staticdata.velocity < 0.1 then
+		elseif staticdata.velocity < (friction/5) then
 			staticdata.velocity = 0
 		end
 	end
@@ -265,7 +271,7 @@ local function do_movement( self, dtime )
 	process_acceleration(self,dtime * max_step_distance / total_distance)
 
 	-- Skip processing stopped railcarts
-	if not staticdata.velocity or math.abs(staticdata.velocity) < 0.05 then
+	if not staticdata.velocity or math.abs(staticdata.velocity) < (friction/5) then
 		return
 	end
 

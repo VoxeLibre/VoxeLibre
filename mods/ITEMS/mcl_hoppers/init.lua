@@ -448,7 +448,7 @@ local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
 	local dest_inv = dest_meta:get_inventory()
 	if not dest_inv then
 		mcl_log("No dest inv")
-		return
+		return false
 	end
 
 	mcl_log("inv. size: " .. mc_ent._inv_size)
