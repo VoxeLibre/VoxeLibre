@@ -111,6 +111,9 @@ local function update_cart_orientation(self,staticdata)
 	if ( staticdata.rot_adjust or 0 ) < 0.01 then
 		rot.x = -rot.x
 	end
+	if dir.z ~= 0 then
+		rot.x = -rot.x
+	end
 
 	self.object:set_rotation(rot)
 end
