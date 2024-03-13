@@ -118,6 +118,28 @@ local function update_cart_orientation(self,staticdata)
 	self.object:set_rotation(rot)
 end
 
+local function direction_away_from_players(self, staticdata)
+	local objs = minetest.get_objects_inside_radius(self.object:get_pos(), 1.1)
+	for n=1,#objs do
+		obj = objs[n]
+		local player_name = obj:get_player_name()
+		if player_name and player_name ~= "" and not ( self._driver and self._driver == player_name ) then
+			local diff = obj:get_pos() - self.object:get_pos()
+			local length = vector.distance(vector.new(0,0,0),diff)
+			local vec = diff / length
+			local force = vector.dot( vec, vector.normalize(staticdata.dir) )
+
+			if force > 0.5 then
+				return -length * 4
+			elseif force < -0.5 then
+				return length * 4
+			end
+		end
+	end
+
+	return 0
+end
+
 local function calculate_acceleration(self, staticdata)
 	local acceleration = 0
 
@@ -158,6 +180,17 @@ local function calculate_acceleration(self, staticdata)
 	return acceleration
 end
 
+local function reverse_direction(self, staticdata)
+	-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
+	local next_dir = -staticdata.dir
+	staticdata.connected_at = staticdata.connected_at + staticdata.dir
+	staticdata.distance = 1 - staticdata.distance
+
+	-- recalculate direction
+	local next_dir,_ = mcl_minecarts:get_rail_direction(staticdata.connected_at, next_dir, nil, nil, staticdata.railtype)
+	staticdata.dir = next_dir
+end
+
 local function do_movement_step(self, dtime)
 	local staticdata = self._staticdata
 	if not staticdata.connected_at then return 0 end
@@ -167,6 +200,15 @@ local function do_movement_step(self, dtime)
 	local remaining_in_block = 1 - x_0
 	local a = calculate_acceleration(self, staticdata)
 	local v_0 = staticdata.velocity
+
+	-- Repel minecarts
+	local away = direction_away_from_players(self, staticdata)
+	if away > 0 then
+		v_0 = away
+	elseif away < 0 then
+		reverse_direction(self, staticdata)
+		v_0 = -away
+	end
 
 	if DEBUG and ( v_0 > 0 or a ~= 0 ) then
 		print( "    cart #"..tostring(staticdata.cart_id)..
@@ -265,18 +307,10 @@ local function do_movement_step(self, dtime)
 		-- Velocity should be zero at this point
 		staticdata.velocity = 0
 
-		-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
-		local next_dir = -staticdata.dir
-		pos = pos + staticdata.dir
-		staticdata.distance = 1 - staticdata.distance
-		staticdata.connected_at = pos
-
-		-- recalculate direction
-		local next_dir,_ = mcl_minecarts:get_rail_direction(pos + staticdata.dir, next_dir, nil, nil, staticdata.railtype)
-		staticdata.dir = next_dir
+		reverse_direction(self, staticdata)
 
 		-- Intermediate movement
-		pos = pos + staticdata.dir * staticdata.distance
+		pos = staticdata.connected_at + staticdata.dir * staticdata.distance
 	else
 		-- Intermediate movement
 		pos = pos + staticdata.dir * staticdata.distance
@@ -536,7 +570,7 @@ local function register_entity(entity_id, def)
 	assert( def.drop, "drop is required parameter" )
 	local cart = {
 		initial_properties = {
-			physical = false,
+			physical = true,
 			collisionbox = {-10/16., -0.5, -10/16, 10/16, 0.25, 10/16},
 			visual = "mesh",
 			mesh = def.mesh,
