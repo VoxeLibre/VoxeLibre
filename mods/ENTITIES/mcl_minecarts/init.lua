@@ -21,7 +21,8 @@ local function mcl_log(message)
 	end
 end
 
-local function handle_cart_enter(self,pos)
+local function handle_cart_enter(self, pos, next_dir)
+	local staticdata = self._staticdata
 	local node = minetest.get_node(pos)
 
 	-- Handle track behaviors
@@ -30,11 +31,35 @@ local function handle_cart_enter(self,pos)
 		node_def._mcl_minecarts_on_enter(pos, cart)
 	end
 
+	-- check for hopper under the rail
+	local under_pos = pos - vector.new(0,1,0)
+	local under_node_name = minetest.get_node(under_pos).name
+	local under_node_def = minetest.registered_nodes[under_node_name]
+	if under_node_def._mcl_minecarts_on_enter_above then
+		under_node_def._mcl_minecarts_on_enter_above(under_pos, cart)
+	else
+		local hopper_pulled = false
+		if DEBUG then print( "under_node_name="..under_node_name..", hopper="..tostring(under_node_def.groups.hopper)) end
+		if under_node_def and under_node_def.groups.hopper ~= 0 then
+			hopper_pulled = mcl_hoppers.pull_from_minecart( self, under_pos, self._inv_size or 0 )
+			if DEBUG then print( "Attempt pull_from_minecart, hopper_pulled="..tostring(hopper_pulled) ) end
+
+			if hopper_pulled and next_dir ~= staticdata.dir then
+				-- If there was an item pulled by a hopper under the rails force the cart to stay put for 1.5 seconds
+				-- to allow redstone time to process
+				if hopper_pulled then
+					staticdata.delay = 1.5
+				end
+			end
+		end
+	end
+
 	-- Handle above-track behaviors (to ensure hoppers can transfer at least one item)
 	local above_pos = pos + vector.new(0,1,0)
-	local node = minetest.get_node(above_pos)
-	if node_def._mcl_minecarts_on_enter_below then
-		node_def._mcl_minecarts_on_enter_below(above_pos, cart)
+	local above_node_name = minetest.get_node(above_pos).name
+	local above_node_def = minetest.registered_nodes[above_node_name]
+	if above_node_def._mcl_minecarts_on_enter_below then
+		above_node_def._mcl_minecarts_on_enter_below(above_pos, cart)
 	end
 
 	-- Handle cart-specific behaviors
@@ -90,88 +115,12 @@ local function update_cart_orientation(self,staticdata)
 	self.object:set_rotation(rot)
 end
 
-local function do_movement_step(self, remaining_distance)
-	local staticdata = self._staticdata
-
-	local pos = staticdata.connected_at
-
-	if not pos then return remaining_distance end
-	if staticdata.velocity < 0.1 then return remaining_distance end
-
-	local remaining_in_block = 1 - ( staticdata.distance or 0 )
-	local dinstance = 0
-	if remaining_in_block > remaining_distance then
-		distance = remaining_distance
-		staticdata.distance = ( staticdata.distance or 0 ) + distance
-		pos = pos + staticdata.dir * staticdata.distance
-	else
-		distance = remaining_in_block
-		staticdata.distance = 0
-
-		-- Leave the old node
-		handle_cart_leave(pos)
-
-		-- Anchor at the next node
-		pos = pos + staticdata.dir
-		staticdata.connected_at = pos
-
-		-- Enter the new node
-		handle_cart_enter(self, pos)
-
-		-- check for hopper under the rail
-		local under_pos = pos - vector.new(0,1,0)
-		local under_node_name = minetest.get_node(under_pos).name
-		local under_node_def = minetest.registered_nodes[under_node_name]
-		local hopper_pulled = false
-		if DEBUG then print( "under_node_name="..under_node_name..", hopper="..tostring(under_node_def.groups.hopper)) end
-		if under_node_def and under_node_def.groups.hopper ~= 0 then
-			hopper_pulled = mcl_hoppers.pull_from_minecart( self, under_pos, self._inv_size or 0 )
-			if DEBUG then print( "Attempt pull_from_minecart, hopper_pulled="..tostring(hopper_pulled) ) end
-		end
-
-		-- Get the next direction
-		local next_dir,_ = mcl_minecarts:get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
-		if DEBUG and next_dir ~= staticdata.dir then
-			print( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
-		end
-
-		-- Handle end of track
-		if next_dir == staticdata.dir * -1 and ( hopper_pulled or next_dir.y == 0 ) then
-			if DEBUG then print("Stopping cart at "..tostring(pos)) end
-			staticdata.velocity = 0
-
-			-- If there is a hopper under here, force the cart to stay put for 1.5 seconds
-			-- to allow redstone time to process
-			if hopper_pulled then
-				staticdata.delay = 1.5
-			end
-
-			distance = remaining_distance
-		end
-
-		-- Update cart direction
-		staticdata.dir = next_dir
-	end
-
-	self.object:move_to(pos)
-
-	-- Update cart orientation
-	update_cart_orientation(self,staticdata)
-
-	-- Report distance traveled
-	return distance
-end
-
-local function process_acceleration(self, timestep)
-	local staticdata = self._staticdata
-	if not staticdata.connected_at then return end
-
+local function calculate_acceleration(self, staticdata)
 	local acceleration = 0
 
-	if DEBUG and staticdata.velocity > 0 then
-		print( "    acceleration="..tostring(acceleration)..",velocity="..tostring(staticdata.velocity)..
-		       ",timestep="..tostring(timestep)..
-		       ",dir="..tostring(staticdata.dir))
+	-- Apply friction if moving
+	if staticdata.velocity > 0 then
+		acceleration = -friction
 	end
 
 	local pos = staticdata.connected_at
@@ -188,63 +137,217 @@ local function process_acceleration(self, timestep)
 	elseif self._fueltime and self._fueltime > 0 then
 		acceleration = 0.6
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
-		acceleration = 0
+		-- Standard friction
 	else
-		acceleration = node_def._rail_acceleration or -friction
+		acceleration = node_def._rail_acceleration or acceleration
 	end
 
-	if math.abs(acceleration) > (friction / 5) then
+	-- Factor in gravity after everything else
+	local gravity_strength = 9.8 --friction * 5
+	if staticdata.dir.y < 0 then
+		acceleration = gravity_strength - friction
+	elseif staticdata.dir.y > 0 then
+		acceleration = -gravity_strength + friction
+	end
+
+	return acceleration
+end
+
+local function do_movement_step(self, dtime)
+	local staticdata = self._staticdata
+	if not staticdata.connected_at then return 0 end
+
+	-- Calculate timestep remaiing in this block
+	local x_0 = staticdata.distance or 0
+	local remaining_in_block = 1 - x_0
+	local a = calculate_acceleration(self, staticdata)
+	local v_0 = staticdata.velocity
+
+	if DEBUG and ( v_0 > 0 or a ~= 0 ) then
+		print( "    cart #"..tostring(staticdata.cart_id)..
+		       ": a="..tostring(a)..
+		        ",v_0="..tostring(v_0)..
+		        ",x_0="..tostring(x_0)..
+		        ",timestep="..tostring(timestep)..
+		        ",dir="..tostring(staticdata.dir)..
+			",connected_at="..tostring(staticdata.connected_at)..
+			",distance="..tostring(staticdata.distance)
+		)
+	end
+
+	-- Not moving
+	if a == 0 and v_0 == 0 then return 0 end
+
+	-- Movement equation with acceleration: x_1 = x_0 + v_0 * t + 0.5 * a * t*t
+	local timestep
+	local stops_in_block = false
+	local inside = v_0 * v_0 + 2 * a * remaining_in_block
+	if inside < 0 then
+		-- Would stop or reverse direction inside this block, calculate time to v_1 = 0
+		timestep = -v_0 / a
+		stops_in_block = true
+	elseif a ~= 0 then
+		-- Setting x_1 = x_0 + remaining_in_block, and solving for t gives:
+		timestep = ( math.sqrt( v_0 * v_0 + 2 * a * remaining_in_block) - v_0 ) / a
+	else
+		timestep = remaining_in_block / v_0
+	end
+
+	-- Truncate timestep to remaining time delta
+	if timestep > dtime then
+		timestep = dtime
+	end
+
+	-- Truncate timestep to prevent v_1 from being larger that speed_max
+	local v_max = mcl_minecarts.speed_max
+	if v_0 + a * timestep > v_max then
+		timestep = ( v_max - v_0 ) / a
+	end
+
+	-- Prevent infinite loops
+	if timestep <= 0 then return 0 end
+
+	-- Calculate v_1 taking v_max into account
+	local v_1 = v_0 + a * timestep
+	if v_1 > v_max then
+		v_1 = v_max
+	elseif v_1 < friction / 5 then
+		v_1 = 0
+	end
+
+	-- Calculate x_1
+	local x_1 = x_0 + timestep * v_0 + 0.5 * a * timestep * timestep
+
+	-- Update position and velocity of the minecart
+	staticdata.velocity = v_1
+	staticdata.distance = x_1
+
+	-- Entity movement
+	local pos = staticdata.connected_at
+
+	-- Handle movement to next block, account for loss of precision in calculations
+	if x_1 >= 0.99 then
+		staticdata.distance = 0
+
+		-- Leave the old node
+		handle_cart_leave(pos)
+
+		-- Anchor at the next node
+		pos = pos + staticdata.dir
+		staticdata.connected_at = pos
+
+		-- Get the next direction
+		local next_dir,_ = mcl_minecarts:get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
+		if DEBUG and next_dir ~= staticdata.dir then
+			print( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
+		end
+
+		-- Enter the new node
+		handle_cart_enter(self, pos, next_dir)
+
+		-- Handle end of track
+		if next_dir == staticdata.dir * -1 and ( hopper_pulled or next_dir.y == 0 ) then
+			if DEBUG then print("Stopping cart at end of track at "..tostring(pos)) end
+			staticdata.velocity = 0
+		end
+
+		-- Update cart direction
+		staticdata.dir = next_dir
+	elseif stops_in_block and v_1 < (friction/5) and a <= 0 then
+		-- Handle direction flip due to gravity
+		if DEBUG then print("Gravity flipped direction") end
+
+		-- Velocity should be zero at this point
+		staticdata.velocity = 0
+
+		-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
+		local next_dir = -staticdata.dir
+		pos = pos + staticdata.dir
+		staticdata.distance = 1 - staticdata.distance
+		staticdata.connected_at = pos
+
+		-- recalculate direction
+		local next_dir,_ = mcl_minecarts:get_rail_direction(pos + staticdata.dir, next_dir, nil, nil, staticdata.railtype)
+		staticdata.dir = next_dir
+
+		-- Intermediate movement
+		pos = pos + staticdata.dir * staticdata.distance
+	else
+		-- Intermediate movement
+		pos = pos + staticdata.dir * staticdata.distance
+	end
+
+	self.object:move_to(pos)
+
+	-- Update cart orientation
+	update_cart_orientation(self,staticdata)
+
+	-- Debug reporting
+	if DEBUG and ( v_0 > 0 or v_1 > 0 ) then
+		print( "    cart #"..tostring(staticdata.cart_id)..
+		       ": a="..tostring(a)..
+		        ",v_0="..tostring(v_0)..
+		        ",v_1="..tostring(v_1)..
+		        ",x_0="..tostring(x_0)..
+		        ",x_1="..tostring(x_1)..
+		        ",timestep="..tostring(timestep)..
+		        ",dir="..tostring(staticdata.dir)..
+			",pos="..tostring(pos)..
+			",connected_at="..tostring(staticdata.connected_at)..
+			",distance="..tostring(staticdata.distance)
+		)
+	end
+
+	-- Report the amount of time processed
+	return dtime - timestep
+
+	--[[
+
+	---Process acceleration
+	local pos = staticdata.connected_at
+
+	-- Apply acceleleration
+	if math.abs(acceleration) > 0 then
+		-- Apply simple acceleration
 		staticdata.velocity = ( staticdata.velocity or 0 ) + acceleration * timestep
+
+		-- Apply friction to resist direction of velocity
+		if staticdata.velocity > 0 then
+			staticdata.velocity = ( staticdata.velocity ) - friction * timestep
+
+			-- Velocity flip due to friction should stop movement
+			if staticdata.velocity < 0 then
+				if DEBUG then print("Friction stopped minecart") end
+				staticdata.velocity = 0
+			end
+		else
+		end
+
 		if staticdata.velocity > max_vel then
 			staticdata.velocity = max_vel
 		elseif staticdata.velocity < (friction/5) then
+			if DEBUG then print("Stopping cart at "..tostring(pos)) end
 			staticdata.velocity = 0
 		end
 	end
 
-	-- Factor in gravity after everything else
-	local gravity_accel = 0
-	local gravity_strength = friction + 0.2
-	if staticdata.dir.y < 0 then
-		gravity_accel = gravity_strength
-	elseif staticdata.dir.y > 0 then
-		gravity_accel = -gravity_strength
-	end
-	if DEBUG and gravity_accel ~= 0 then
-		print("gravity_accel="..tostring(gravity_accel))
-	end
-	if gravity_accel ~= 0 then
-		staticdata.velocity = (staticdata.velocity or 0) + gravity_accel
-		if staticdata.velocity < 0 then
-			if DEBUG then
-				print("Gravity flipped direction")
-			end
-
-			-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
-			staticdata.velocity = staticdata.velocity * -1
-			next_dir = -staticdata.dir
-			pos = pos + staticdata.dir
-			staticdata.distance = 1 - staticdata.distance
-			staticdata.connected_at = pos
-
-			local next_dir,_ = mcl_minecarts:get_rail_direction(pos + staticdata.dir, next_dir, nil, nil, staticdata.railtype)
-			staticdata.dir = next_dir
-
-			update_cart_orientation(self,staticdata)
-		end
-	end
-
 	-- Force the cart to stop if moving slowly enough
-	if (staticdata.velocity or 0) < 0.1 then
+	if (staticdata.velocity or 0) < (friction/5) then
 		staticdata.velocity = 0
 	end
 
-	if DEBUG and staticdata.velocity > 0 then
-		print( "    acceleration="..tostring(acceleration)..",velocity="..tostring(staticdata.velocity)..
-		       ",timestep="..tostring(timestep)..
-		       ",dir="..tostring(staticdata.dir))
-	end
+
+	-- Handle movement
+	local pos = staticdata.connected_at
+
+	if not pos then return remaining_distance end
+	if staticdata.velocity < 0.1 then return remaining_distance end
+
+	-- Report distance traveled
+	return distance
+	]]--
 end
+
 
 local function do_movement( self, dtime )
 	local staticdata = self._staticdata
@@ -262,25 +365,11 @@ local function do_movement( self, dtime )
 		staticdata.velocity = initial_velocity
 	end
 
-	-- Break long movements into fixed-size steps so that
-	-- it is impossible to jump across gaps due to server lag
+	-- Break long movements at block boundaries to make it
+	-- it impossible to jump across gaps due to server lag
 	-- causing large timesteps
-	local total_distance = dtime * ( staticdata.velocity or 0 )
-	local remaining_distance = total_distance
-
-	process_acceleration(self,dtime * max_step_distance / total_distance)
-
-	-- Skip processing stopped railcarts
-	if not staticdata.velocity or math.abs(staticdata.velocity) < (friction/5) then
-		return
-	end
-
-	while remaining_distance > 0.1 do
-		local step_distance = do_movement_step(self, remaining_distance)
-		if step_distance > 0.1 then
-			process_acceleration(self, dtime * step_distance / total_distance)
-		end
-		remaining_distance = remaining_distance - step_distance
+	while dtime > 0 do
+		dtime = do_movement_step(self, dtime)
 	end
 
 	-- Clear punched flag now that movement for this step has been completed
@@ -457,6 +546,7 @@ local function make_staticdata( railtype, connected_at, dir )
 		distance = 0,
 		velocity = 0,
 		dir = vector.new(dir),
+		cart_id = math.random(1,1000000000),
 	}
 end
 
@@ -641,6 +731,10 @@ local function register_entity(entity_id, def)
 	function cart:on_step(dtime)
 		hopper_take_item(self, dtime)
 		local staticdata = self._staticdata
+
+		-- Make sure all carts have an ID to isolate them
+		staticdata.cart_id = staticdata.cart_id or math.random(1,1000000000)
+
 		if not staticdata then
 			staticdata = make_staticdata()
 			self._staticdata = staticdata
