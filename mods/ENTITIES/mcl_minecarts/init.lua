@@ -28,7 +28,7 @@ local function handle_cart_enter(self, pos, next_dir)
 	-- Handle track behaviors
 	local node_def = minetest.registered_nodes[node.name]
 	if node_def._mcl_minecarts_on_enter then
-		node_def._mcl_minecarts_on_enter(pos, cart)
+		node_def._mcl_minecarts_on_enter(pos, self)
 	end
 
 	-- check for hopper under the rail
@@ -36,7 +36,7 @@ local function handle_cart_enter(self, pos, next_dir)
 	local under_node_name = minetest.get_node(under_pos).name
 	local under_node_def = minetest.registered_nodes[under_node_name]
 	if under_node_def._mcl_minecarts_on_enter_above then
-		under_node_def._mcl_minecarts_on_enter_above(under_pos, cart)
+		under_node_def._mcl_minecarts_on_enter_above(under_pos, self)
 	else
 		local hopper_pulled = false
 		if DEBUG then print( "under_node_name="..under_node_name..", hopper="..tostring(under_node_def.groups.hopper)) end
@@ -59,7 +59,7 @@ local function handle_cart_enter(self, pos, next_dir)
 	local above_node_name = minetest.get_node(above_pos).name
 	local above_node_def = minetest.registered_nodes[above_node_name]
 	if above_node_def._mcl_minecarts_on_enter_below then
-		above_node_def._mcl_minecarts_on_enter_below(above_pos, cart)
+		above_node_def._mcl_minecarts_on_enter_below(above_pos, self)
 	end
 
 	-- Handle cart-specific behaviors
@@ -139,11 +139,13 @@ local function calculate_acceleration(self, staticdata)
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
 		-- Standard friction
 	else
-		acceleration = node_def._rail_acceleration or acceleration
+		if node_def._rail_acceleration then
+			acceleration = node_def._rail_acceleration * 4
+		end
 	end
 
 	-- Factor in gravity after everything else
-	local gravity_strength = 9.8 --friction * 5
+	local gravity_strength = 2.45 --friction * 5
 	if staticdata.dir.y < 0 then
 		acceleration = gravity_strength - friction
 	elseif staticdata.dir.y > 0 then
@@ -300,52 +302,6 @@ local function do_movement_step(self, dtime)
 
 	-- Report the amount of time processed
 	return dtime - timestep
-
-	--[[
-
-	---Process acceleration
-	local pos = staticdata.connected_at
-
-	-- Apply acceleleration
-	if math.abs(acceleration) > 0 then
-		-- Apply simple acceleration
-		staticdata.velocity = ( staticdata.velocity or 0 ) + acceleration * timestep
-
-		-- Apply friction to resist direction of velocity
-		if staticdata.velocity > 0 then
-			staticdata.velocity = ( staticdata.velocity ) - friction * timestep
-
-			-- Velocity flip due to friction should stop movement
-			if staticdata.velocity < 0 then
-				if DEBUG then print("Friction stopped minecart") end
-				staticdata.velocity = 0
-			end
-		else
-		end
-
-		if staticdata.velocity > max_vel then
-			staticdata.velocity = max_vel
-		elseif staticdata.velocity < (friction/5) then
-			if DEBUG then print("Stopping cart at "..tostring(pos)) end
-			staticdata.velocity = 0
-		end
-	end
-
-	-- Force the cart to stop if moving slowly enough
-	if (staticdata.velocity or 0) < (friction/5) then
-		staticdata.velocity = 0
-	end
-
-
-	-- Handle movement
-	local pos = staticdata.connected_at
-
-	if not pos then return remaining_distance end
-	if staticdata.velocity < 0.1 then return remaining_distance end
-
-	-- Report distance traveled
-	return distance
-	]]--
 end
 
 
@@ -360,7 +316,7 @@ local function do_movement( self, dtime )
 		staticdata.delay = 0
 	end
 
-	local initial_velocity = 1
+	local initial_velocity = 2
 	if self._punched and statcdata.velocity < initial_velocity then
 		staticdata.velocity = initial_velocity
 	end
@@ -414,7 +370,14 @@ local function activate_tnt_minecart(self, timer)
 	minetest.sound_play("tnt_ignite", {pos = self.object:get_pos(), gain = 1.0, max_hear_distance = 15}, true)
 end
 
-local activate_normal_minecart = detach_driver
+local function activate_normal_minecart(self)
+	detach_driver(self)
+
+	if self._passenger then
+		local mob = self._passenger.object
+		mob:set_detach()
+	end
+end
 
 local function hopper_take_item(self, dtime)
 	local pos = self.object:get_pos()
