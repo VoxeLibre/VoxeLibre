@@ -1022,7 +1022,7 @@ register_minecart({
 		local player_name = clicker:get_player_name()
 		if self._driver and player_name == self._driver then
 			--detach_driver(self)
-		elseif not self._driver then
+		elseif not self._driver and not clicker:get_player_control().sneak then
 			self._driver = player_name
 			self._start_pos = self.object:get_pos()
 			mcl_player.player_attached[player_name] = true
