@@ -764,6 +764,15 @@ local function register_entity(entity_id, def)
 
 		watches[#watches+1] = pos
 	end
+	function cart:remove_node_watch(pos)
+		local new_watches = {}
+		for _,node_pos in ipairs(watches) do
+			if node_pos ~= post then
+				new_watches[#new_watches] = node_pos
+			end
+		end
+		staticdata.node_watches = new_watches
+	end
 
 	function cart:on_step(dtime)
 		-- TODO: move to _mcl_minecarts_on_step handler and on_enter handler for hopper minecart
