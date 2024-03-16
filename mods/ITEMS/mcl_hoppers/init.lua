@@ -437,6 +437,7 @@ minetest.register_node("mcl_hoppers:hopper_side_disabled", def_hopper_side_disab
 
 --[[ END OF NODE DEFINITIONS ]]
 
+
 local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
 	local inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
 	if not inv then
@@ -558,7 +559,7 @@ minetest.register_abm({
 							and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
 							mcl_log("Minecart close enough")
 							if entity.name == "mcl_minecarts:hopper_minecart" then
-								hopper_pull_from_mc(entity, pos, 5)
+								--hopper_pull_from_mc(entity, pos, 5)
 							elseif entity.name == "mcl_minecarts:chest_minecart" or entity.name == "mcl_boats:chest_boat" then
 								hopper_pull_from_mc(entity, pos, 27)
 							end
@@ -567,7 +568,7 @@ minetest.register_abm({
 							and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
 							mcl_log("Minecart close enough")
 							if entity.name == "mcl_minecarts:hopper_minecart" then
-								hopper_push_to_mc(entity, pos, 5)
+								--hopper_push_to_mc(entity, pos, 5)
 							elseif entity.name == "mcl_minecarts:chest_minecart" or entity.name == "mcl_boats:chest_boat" then
 								hopper_push_to_mc(entity, pos, 27)
 							end

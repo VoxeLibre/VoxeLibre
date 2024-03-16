@@ -68,7 +68,7 @@ end
 
 
 --[[
-	An array of (u,v,w) positions to check. Actual direction is u * dir + v * right + w * vector.new(0,1,0)
+	An array of (u,v,w) positions to check. Actual direction is u * dir + v * right + w * up
 ]]
 local rail_checks = {
 	{  1,  0,  0 }, -- forwards

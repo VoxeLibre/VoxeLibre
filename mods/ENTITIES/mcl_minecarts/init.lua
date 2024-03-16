@@ -21,59 +21,79 @@ local function mcl_log(message)
 	end
 end
 
-local function handle_cart_enter(self, pos, next_dir)
-	local staticdata = self._staticdata
-	local node = minetest.get_node(pos)
+mcl_minecarts.on_enter_below = function(pos, cart, next_dir, node_def)
+	local staticdata = cart._staticdata
+	if (node_def.groups.hopper or 0) == 0 then return end
 
-	-- Handle track behaviors
-	local node_def = minetest.registered_nodes[node.name]
-	if node_def._mcl_minecarts_on_enter then
-		node_def._mcl_minecarts_on_enter(pos, self)
-	end
+	local hopper_pulled = mcl_hoppers.pull_from_minecart( cart, pos, cart._inv_size or 0 )
+	if DEBUG then print( "Attempt pull_from_minecart, hopper_pulled="..tostring(hopper_pulled) ) end
 
-	-- check for hopper under the rail
-	local under_pos = pos - vector.new(0,1,0)
-	local under_node_name = minetest.get_node(under_pos).name
-	local under_node_def = minetest.registered_nodes[under_node_name]
-	if under_node_def._mcl_minecarts_on_enter_above then
-		under_node_def._mcl_minecarts_on_enter_above(under_pos, self)
-	else
-		local hopper_pulled = false
-		if DEBUG then print( "under_node_name="..under_node_name..", hopper="..tostring(under_node_def.groups.hopper)) end
-		if under_node_def and under_node_def.groups.hopper ~= 0 then
-			hopper_pulled = mcl_hoppers.pull_from_minecart( self, under_pos, self._inv_size or 0 )
-			if DEBUG then print( "Attempt pull_from_minecart, hopper_pulled="..tostring(hopper_pulled) ) end
-
-			if hopper_pulled and next_dir ~= staticdata.dir then
-				-- If there was an item pulled by a hopper under the rails force the cart to stay put for 1.5 seconds
-				-- to allow redstone time to process
-				if hopper_pulled then
-					staticdata.delay = 1.5
-				end
-			end
+	if hopper_pulled and next_dir ~= staticdata.dir then
+		-- If there was an item pulled by a hopper under the rails force the cart to stay put for 1.5 seconds
+		-- to allow redstone time to process
+		if hopper_pulled then
+			staticdata.delay = 1.5
 		end
-	end
-
-	-- Handle above-track behaviors (to ensure hoppers can transfer at least one item)
-	local above_pos = pos + vector.new(0,1,0)
-	local above_node_name = minetest.get_node(above_pos).name
-	local above_node_def = minetest.registered_nodes[above_node_name]
-	if above_node_def._mcl_minecarts_on_enter_below then
-		above_node_def._mcl_minecarts_on_enter_below(above_pos, self)
-	end
-
-	-- Handle cart-specific behaviors
-	if self._mcl_minecarts_on_enter then
-		self._mcl_minecarts_on_enter(self, pos)
 	end
 end
 
-local function handle_cart_leave(pos)
-	local node_name = minetest.get_node(pos).name
-	local node_def = minetest.registered_nodes[node_name]
-	if node_def._mcl_minecarts_on_leave then
-		node_def._mcl_minecarts_on_leave(pos, self)
+--[[
+	Array of hooks { {u,v,w}, name }
+	Actual position is pos + u * dir + v * right + w * up
+]]
+local enter_exit_checks = {
+	{ 0, 0, 0, "" },
+	{ 0, 0, 1, "_above" },
+	{ 0, 0,-1, "_below" },
+	{ 0, 1, 0, "_side" },
+	{ 0,-1, 0, "_side" },
+}
+
+local function handle_cart_enter_exit(self, pos, next_dir, event)
+	local staticdata = self._staticdata
+
+	local dir = staticdata.dir
+	local right = vector.new( dir.z, dir.y, -dir.x)
+	local up = vector.new(0,1,0)
+	for _,check in ipairs(enter_exit_checks) do
+		local check_pos = pos + dir * check[1] + right * check[2] + up * check[3]
+		local node = minetest.get_node(check_pos)
+		local node_def = minetest.registered_nodes[node.name]
+
+		-- node-specific hook
+		local hook = node_def["_mcl_minecarts_"..event..check[4]]
+		if hook then hook(check_pos, self, next_dir) end
+
+		-- global minecart hook
+		hook = mcl_minecarts[event..check[4]]
+		if hook then hook(check_pos, self, next_dir, node_def) end
 	end
+
+	-- Handle cart-specific behaviors
+	local hook = self["_mcl_minecarts_"..event]
+	if hook then hook(self, pos) end
+end
+local function handle_cart_enter(self, pos, next_dir)
+	handle_cart_enter_exit(self, pos, next_dir, "on_enter" )
+end
+local function handle_cart_leave(self, pos, next_dir)
+	handle_cart_enter_exit(self, pos, next_dir, "on_leave" )
+end
+
+local function handle_cart_node_watches(self, dtime)
+	local staticdata = self._staticdata
+	local watches = staticdata.node_watches or {}
+	local new_watches = {}
+	for _,node_pos in ipairs(watches) do
+		local node = minetest.get_node(node_pos)
+		local node_def = minetest.registered_nodes[node.name]
+		local hook = node_def._mcl_minecarts_node_on_step
+		if hook and hook(node_pos, self, dtime) then
+			new_watches[#new_watches] = node_pos
+		end
+	end
+
+	staticdata.node_watches = new_watches
 end
 
 local function update_cart_orientation(self,staticdata)
@@ -276,10 +296,8 @@ local function do_movement_step(self, dtime)
 	if x_1 >= 0.99 then
 		staticdata.distance = 0
 
-		-- Leave the old node
-		handle_cart_leave(pos)
-
 		-- Anchor at the next node
+		local old_pos = pos
 		pos = pos + staticdata.dir
 		staticdata.connected_at = pos
 
@@ -288,6 +306,9 @@ local function do_movement_step(self, dtime)
 		if DEBUG and next_dir ~= staticdata.dir then
 			print( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
 		end
+
+		-- Leave the old node
+		handle_cart_leave(self, old_pos, next_dir )
 
 		-- Enter the new node
 		handle_cart_enter(self, pos, next_dir)
@@ -362,7 +383,12 @@ local function do_movement( self, dtime )
 	-- it impossible to jump across gaps due to server lag
 	-- causing large timesteps
 	while dtime > 0 do
-		dtime = do_movement_step(self, dtime)
+		local new_dtime = do_movement_step(self, dtime)
+
+		-- Handle node watches here in steps to prevent server lag from changing behavior
+		handle_cart_node_watches(self, dtime - new_dtime)
+
+		dtime = new_dtime
 	end
 
 	-- Clear punched flag now that movement for this step has been completed
@@ -581,6 +607,7 @@ local function register_entity(entity_id, def)
 		on_activate_by_rail = def.on_activate_by_rail,
 		_mcl_minecarts_on_enter = def._mcl_minecarts_on_enter,
 		_mcl_minecarts_on_place = def._mcl_minecarts_on_place,
+		_mcl_minecarts_on_step = def._mcl_minecarts_on_step,
 
 		_driver = nil, -- player who sits in and controls the minecart (only for minecart!)
 		_passenger = nil, -- for mobs
@@ -728,8 +755,20 @@ local function register_entity(entity_id, def)
 
 	local passenger_attach_position = vector.new(0, -1.75, 0)
 
+	function cart:add_node_watch(pos)
+		local staticdata = self._staticdata
+		local watches = staticdata.watches
+		for _,watch in ipairs(watches) do
+			if watch == pos then return end
+		end
+
+		watches[#watches+1] = pos
+	end
+
 	function cart:on_step(dtime)
+		-- TODO: move to _mcl_minecarts_on_step handler and on_enter handler for hopper minecart
 		hopper_take_item(self, dtime)
+
 		local staticdata = self._staticdata
 
 		-- Make sure all carts have an ID to isolate them
@@ -787,6 +826,7 @@ local function register_entity(entity_id, def)
 			end
 		end
 
+		-- TODO: move to _mcl_minecarts_on_step handler for plain minecart
 		-- Grab mob
 		if math.random(1,20) > 15 and not self._passenger then
 			if self.name == "mcl_minecarts:minecart" then
@@ -811,6 +851,7 @@ local function register_entity(entity_id, def)
 		end
 
 		-- Drop minecart if it isn't on a rail anymore
+		--[[ Remove this entirely once off-cart minecart behavior is implemented
 		if self._last_float_check == nil then
 			self._last_float_check = 0
 		else
@@ -837,7 +878,14 @@ local function register_entity(entity_id, def)
 			end
 			self._last_float_check = 0
 		end
+		]]
 
+		local hook = cart._mcl_minecarts_on_step
+		if hook then hook(cart,dtime) end
+
+		-- TODO: move the below into cart-specific hooks
+
+		-- TODO: move to _mcl_minecarts_on_step handler for furnace minecart
 		-- Update furnace stuff
 		if self._fueltime and self._fueltime > 0 then
 			self._fueltime = self._fueltime - dtime
@@ -857,6 +905,7 @@ local function register_entity(entity_id, def)
 		end
 		local has_fuel = self._fueltime and self._fueltime > 0
 
+		-- TODO: move to _mcl_minecarts_on_step handler for TNT minecart
 		-- Update TNT stuff
 		if self._boomtimer then
 			-- Explode
