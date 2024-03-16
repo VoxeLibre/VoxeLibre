@@ -436,7 +436,6 @@ local function hopper_take_item(self, dtime)
 	local objs = minetest.get_objects_inside_radius(above_pos, 1.25)
 
 	if objs then
-
 		mcl_log("there is an itemstring. Number of objs: ".. #objs)
 
 		for k, v in pairs(objs) do
@@ -581,6 +580,7 @@ local function register_entity(entity_id, def)
 		on_rightclick = def.on_rightclick,
 		on_activate_by_rail = def.on_activate_by_rail,
 		_mcl_minecarts_on_enter = def._mcl_minecarts_on_enter,
+		_mcl_minecarts_on_place = def._mcl_minecarts_on_place,
 
 		_driver = nil, -- player who sits in and controls the minecart (only for minecart!)
 		_passenger = nil, -- for mobs
@@ -932,6 +932,11 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	local cart_dir = mcl_minecarts:get_rail_direction(railpos, vector.new(1,0,0), nil, nil, railtype)
 	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
+	-- Call placer
+	if cart._mcl_minecarts_on_place then
+		cart._mcl_minecarts_on_place(self, placer)
+	end
+
 	-- Update static data
 	local le = cart:get_luaentity()
 	if le then
@@ -1176,7 +1181,16 @@ register_minecart({
 	icon = "mcl_minecarts_minecart_command_block.png",
 	drop = {"mcl_minecarts:minecart"},
 	on_rightclick = nil,
-	on_activate_by_rail = nil,
+	_mcl_minecarts_on_place = function(self, placer)
+		if mesecon and mesecon.command_block then
+			mesecons.command_block.configure_entity(self, placer)
+		end
+	end,
+	on_activate_by_rail = function(self, timer)
+		if mesecon and mesecond.command_block then
+			mesecons.command_block.resolve_command_entity(self)
+		end
+	end,
 	creative = false
 })
 
