@@ -618,10 +618,20 @@ local function get_next_mob_spawn_pos(pos)
 		return nil
 	end
 
+	local y_min
+	local y_max
+	if goal_pos.y > pos.y then
+		y_min = math_round(pos.y)
+		y_max = math_round(pos.y) + MOB_SPAWN_ZONE_MIDDLE
+	else
+		y_min = math_round(pos.y) - MOB_SPAWN_ZONE_MIDDLE
+		y_max = math_round(pos.y)
+	end
+
 	-- Ask engine for valid spawn locations
 	local spawning_position_list = find_nodes_in_area_under_air(
-			{x = goal_pos.x, y = math_round(pos.y) - MOB_SPAWN_ZONE_MIDDLE, z = goal_pos.z},
-			{x = goal_pos.x, y = math_round(pos.y) + MOB_SPAWN_ZONE_MIDDLE, z = goal_pos.z},
+			{x = goal_pos.x, y = y_min, z = goal_pos.z},
+			{x = goal_pos.x, y = y_max, z = goal_pos.z},
 			{"group:solid", "group:water", "group:lava"}
 	)
 
