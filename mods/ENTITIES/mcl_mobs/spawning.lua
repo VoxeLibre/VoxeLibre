@@ -973,7 +973,7 @@ if mobs_spawn then
 		--mcl_log("mapgen_limit: " .. SPAWN_MAPGEN_LIMIT)
 		while max_loops > 0 do
 			local spawning_position = get_next_mob_spawn_pos(pos)
-			if spawning_position then return spawning_position
+			if spawning_position then return spawning_position end
 			max_loops = max_loops - 1
 
 		end
