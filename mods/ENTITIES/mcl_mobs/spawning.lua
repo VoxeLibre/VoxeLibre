@@ -23,6 +23,7 @@ local math_ceil      = math.ceil
 local math_cos       = math.cos
 local math_sin       = math.sin
 local math_round     = function(x) return (x > 0) and math_floor(x + 0.5) or math_ceil(x - 0.5) end
+local math_sqrt      = math.sqrt
 
 local vector_distance = vector.distance
 local vector_new      = vector.new
@@ -618,15 +619,33 @@ local function get_next_mob_spawn_pos(pos)
 		return nil
 	end
 
+	-- Calculate upper/lower y limits
+	local R1 = MOB_SPAWN_ZONE_MIDDLE
+	local d = vector_distance( pos, vector.new( goal_pos.x, pos.y, goal_pos.z ) ) -- distance from player to projected point on horizontal plane
+	local y1 = math_sqrt( R1*R1 - d*d ) -- absolue value of distance to outer sphere
+
 	local y_min
 	local y_max
-	if goal_pos.y > pos.y then
-		y_min = math_round(pos.y)
-		y_max = math_round(pos.y) + MOB_SPAWN_ZONE_MIDDLE
+	if d >= MOB_SPAWN_ZONE_INNER then
+		-- Outer region, y range has both ends on the outer sphere
+		y_min = pos.y - y1
+		y_max = pos.y + y1
 	else
-		y_min = math_round(pos.y) - MOB_SPAWN_ZONE_MIDDLE
-		y_max = math_round(pos.y)
+		-- Inner region, y range spans between inner and outer spheres
+		local R2 = MOB_SPAWN_ZONE_INNER
+		local y2 = math_sqrt( R2*R2 - d*d )
+		if goal_pos.y > pos. y then
+			-- Upper hemisphere
+			y_min = pos.y + y2
+			y_max = pos.y + y1
+		else
+			-- Lower hemisphere
+			y_min = pos.y - y1
+			y_max = pos.y - y2
+		end
 	end
+	y_min = math_round(y_min)
+	y_max = math_round(y_max)
 
 	-- Ask engine for valid spawn locations
 	local spawning_position_list = find_nodes_in_area_under_air(
