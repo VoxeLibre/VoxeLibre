@@ -13,7 +13,7 @@ minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 	end
 })
 
-local size = {[0]=-5, -3, 2}
+local size = {[0]=-5, -4, -3}
 
 for i = 0, 2 do
 	minetest.register_node("mcl_farming:beetroot_".. i, {
