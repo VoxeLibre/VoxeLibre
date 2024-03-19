@@ -78,24 +78,14 @@ local podinfo = {
 	{	desc = S("Premature Cocoa Pod"),
 		longdesc = S("Cocoa pods grow on the side of jungle trees in 3 stages."),
 		tiles = {
-			"[combine:16x16:6,1=mcl_cocoas_cocoa_stage_0.png",
-			"[combine:16x16:6,11=mcl_cocoas_cocoa_stage_0.png",
 			"mcl_cocoas_cocoa_stage_0.png",
-			"mcl_cocoas_cocoa_stage_0.png^[transformFX",
-			"[combine:16x16:-5,0=mcl_cocoas_cocoa_stage_0.png",
-			"[combine:16x16:-5,0=mcl_cocoas_cocoa_stage_0.png",
 		},
 		n_box = {-0.125, -0.0625, 0.1875, 0.125, 0.25, 0.4375},
 		s_box = {-0.125, -0.0625, 0.1875, 0.125, 0.5,  0.5   },
 	},
 	{	desc = S("Medium Cocoa Pod"),
 		tiles = {
-			"[combine:16x16:5,1=mcl_cocoas_cocoa_stage_1.png",
-			"[combine:16x16:5,9=mcl_cocoas_cocoa_stage_1.png",
 			"mcl_cocoas_cocoa_stage_1.png",
-			"mcl_cocoas_cocoa_stage_1.png^[transformFX",
-			"[combine:16x16:-4,0=mcl_cocoas_cocoa_stage_1.png",
-			"[combine:16x16:-4,0=mcl_cocoas_cocoa_stage_1.png",
 		},
 		n_box = {-0.1875, -0.1875, 0.0625, 0.1875, 0.25, 0.4375},
 		s_box = {-0.1875, -0.1875, 0.0625, 0.1875, 0.5,  0.5   },
@@ -103,15 +93,7 @@ local podinfo = {
 	{	desc = S("Mature Cocoa Pod"),
 		longdesc = S("A mature cocoa pod grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further."),
 		tiles = {
-		-- The following 2 textures were derived from the original
-		-- because the size of the top/bottom is slightly different :-(
-		-- TODO: Find a way to *only* use the base texture
-			"mcl_cocoas_cocoa_top_stage_2.png",
-			"mcl_cocoas_cocoa_top_stage_2.png^[transformFY",
 			"mcl_cocoas_cocoa_stage_2.png",
-			"mcl_cocoas_cocoa_stage_2.png^[transformFX",
-			"[combine:16x16:-3,0=mcl_cocoas_cocoa_stage_2.png",
-			"[combine:16x16:-3,0=mcl_cocoas_cocoa_stage_2.png",
 		},
 		n_box = {-0.25, -0.3125, -0.0625, 0.25, 0.25, 0.4375},
 		s_box = {-0.25, -0.3125, -0.0625, 0.25, 0.5,  0.5   },
