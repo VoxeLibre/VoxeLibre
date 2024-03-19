@@ -83,17 +83,20 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	light_source = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
-	on_rightclick = function(pos, node, pointed_thing, player, itemstack)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			local nodepos = minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
-			if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
-				local random = math.random(1, 5)
-				if random == 1 then
-					minetest.remove_node(pos)
-					generate_warped_tree(pos)
-				end
+	_mcl_on_bonemealing = function(pointed_thing, player)
+		local pos = pointed_thing.under
+		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
+
+		if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
+			local random = math.random(1, 5)
+			if random == 1 then
+				minetest.remove_node(pos)
+				generate_warped_tree(pos)
+				return true
 			end
 		end
+
+		return false
 	end,
 	_mcl_blast_resistance = 0,
 })
@@ -102,6 +105,12 @@ mcl_flowerpots.register_potted_flower("mcl_crimson:warped_fungus", {
 	name = "warped_fungus",
 	desc = S("Warped Fungus"),
 	image = "mcl_crimson_warped_fungus.png",
+	_mcl_on_bonemealing = function(pt,user)
+		local n = has_nylium_neighbor(pt.under)
+		if n then
+			minetest.set_node(pt.under,n)
+		end
+	end,
 })
 
 minetest.register_node("mcl_crimson:twisting_vines", {
@@ -393,6 +402,11 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
+	_mcl_on_bonemealing = function(pt,user)
+		local node = minetest.get_node(pt.under)
+		spread_nether_plants(pt.under,node)
+		return true
+	end,
 })
 
 --Stem bark, stripped stem and bark
@@ -525,17 +539,21 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
 	},
 	node_placement_prediction = "",
-	on_rightclick = function(pos, node, pointed_thing, player)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
-			if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
-				local random = math.random(1, 5)
-				if random == 1 then
-					minetest.remove_node(pos)
-					generate_crimson_tree(pos)
-				end
+	_mcl_on_bonemealing = function(pointed_thing, player)
+		local pos = pointed_thing.under
+		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
+		if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
+			local random = math.random(1, 5)
+			if random == 1 then
+				minetest.remove_node(pos)
+				generate_crimson_tree(pos)
+
+				return true
 			end
 		end
+
+		-- Failed to spread nylium
+		return false
 	end,
 	_mcl_blast_resistance = 0,
 })
@@ -682,6 +700,11 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
+	_mcl_on_bonemealing = function(pt,user)
+		local node = minetest.get_node(pt.under)
+		spread_nether_plants(pt.under,node)
+		return true
+	end,
 })
 
 minetest.register_craft({
@@ -722,19 +745,6 @@ minetest.register_craft({
 
 mcl_stairs.register_stair("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_stair_groups, false, S("Crimson Stair"))
 mcl_stairs.register_slab("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_slab_groups, false, S("Crimson Slab"))
-
-mcl_dye.register_on_bone_meal_apply(function(pt,user)
-	if not pt.type == "node" then return end
-	local node = minetest.get_node(pt.under)
-	if node.name == "mcl_nether:netherrack" then
-		local n = has_nylium_neighbor(pt.under)
-		if n then
-			minetest.set_node(pt.under,n)
-		end
-	elseif node.name == "mcl_crimson:warped_nylium" or node.name == "mcl_crimson:crimson_nylium" then
-		spread_nether_plants(pt.under,node)
-	end
-end)
 
 minetest.register_abm({
 	label = "Turn Crimson Nylium and Warped Nylium below solid block into Netherrack",
