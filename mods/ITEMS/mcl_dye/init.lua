@@ -119,6 +119,7 @@ end
 --
 function mcl_dye.add_bone_meal_particle(pos, def)
 	minetest.log("warning", "mcl_dye.add_bone_meal_particles() is deprecated.  Read mcl_bone_meal/API.md!")
+	print(debug.traceback())
 	mcl_bone_meal.add_bone_meal_particle(pos, def)
 end
 
