@@ -68,17 +68,6 @@ local function legacy_apply_bone_meal(pointed_thing, placer)
 		end
 	end
 
---[[
-	Here for when Bonemeal becomes an api, there's code if needed for handling applying to bamboo.
-	-- Handle applying bonemeal to bamboo.
-	elseif mcl_bamboo.is_bamboo(n.name) then
-		local success = mcl_bamboo.grow_bamboo(pos, true)
-		if success then
-			mcl_dye.add_bone_meal_particle(pos)
-		end
-		return success
---]]
-
 	return false
 end
 -- End legacy bone meal API
