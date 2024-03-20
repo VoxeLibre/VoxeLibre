@@ -26,7 +26,7 @@ Rails can be used to build transport tracks for minecarts. Activator rails are u
 To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.=Per far sì che questo binario attivi i carrelli da miniera, alimentalo con della redstone e manda un carrello da miniera su questo pezzo di binario.
 Detector Rail=Binario rilevatore
 Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=I binari possono essere usati per costruire percorsi per i carrelli da miniera. Un binario rilevatore è in grado di rilevare il passaggio di un carrello da miniera e attivare un circuito di redstone.
-To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=Per rilevare un carrello da miniera e fornire energia di redstone¸ collagalo a delle tracce di redstone o dei meccanismi di redstone e manda un carrello da miniera sopra il binario.
+To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=Per rilevare un carrello da miniera e fornire energia di redstone, collagalo a delle tracce di redstone o dei meccanismi di redstone e manda un carrello da miniera sopra il binario.
 Track for minecarts=Tracciato per carrelli da miniera
 Speed up when powered, slow down when not powered=Accelera quando alimentato, rallenta quando non alimentato
 Activates minecarts when powered=Attiva i carrelli da miniera quando alimentato
