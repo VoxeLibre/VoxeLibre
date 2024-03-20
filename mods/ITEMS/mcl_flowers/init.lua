@@ -183,6 +183,36 @@ def_fern.groups.compostability = 65
 
 minetest.register_node("mcl_flowers:fern", def_fern)
 
+
+--- Clover ---
+-- Similar deal as fern, we can copy a lot from tall grass
+local def_clover = table.copy(def_tallgrass)
+def_clover.description = S("Clover")
+def_clover._doc_items_longdesc = S("Clovers are small plants which occur naturally in plains and other temperate biomes. They can be picked up and planted again.")
+def_clover.drawtype = "mesh"
+def_clover.mesh = "mcl_clover_3leaf.obj"
+def_clover.tiles = { "mcl_flowers_clover.png" }
+def_clover.inventory_image = "mcl_flowers_clover_inv.png"
+def_clover.wield_image = "mcl_flowers_clover_inv.png"
+def_clover.drop = nil
+def_clover.selection_box = {
+	type = "fixed",
+	fixed = { -4/16, -0.5, -4/16, 4/16, 0, 4/16 },
+}
+def_clover.groups.compostability = 30
+
+minetest.register_node("mcl_flowers:clover", def_clover)
+
+local def_4l_clover = table.copy(def_clover)
+def_4l_clover.description = S("Four-leaf Clover")
+def_4l_clover._doc_items_longdesc = S("Clovers are small plants which occur naturally in plains and other temperate biomes. They can be picked up and planted again.")
+def_4l_clover.mesh = "mcl_clover_4leaf.obj"
+def_4l_clover.tiles = { "mcl_flowers_fourleaf_clover.png" }
+def_4l_clover.inventory_image = "mcl_flowers_fourleaf_clover_inv.png"
+def_4l_clover.wield_image = "mcl_flowers_fourleaf_clover_inv.png"
+
+minetest.register_node("mcl_flowers:fourleaf_clover", def_4l_clover)
+
 if has_mcl_flowerpots then
 	mcl_flowerpots.register_potted_flower("mcl_flowers:fern", {
 		name = "fern",
