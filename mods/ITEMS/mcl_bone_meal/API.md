@@ -42,6 +42,15 @@ Spawns standard or custom bone meal particles.
 * `def`: (optional) particle definition; see minetest.add_particlespawner()
 	for more details.
 
+## mcl_bone_meal.use_bone_meal(itemstack, placer, pointed_thing)
+For use in on_rightclick handlers that need support bone meal processing in addition
+to other behaviors. Before calling, verify that the player is wielding bone meal.
+* `itemstack`: The stack of bone meal being used
+* `placer`: ObjectRef of the player who aplied the bone meal, can be nil!
+* `pointed_thing`: exact pointing location (see Minetest API), where the
+	bone meal is applied
+
+Returns itemstack with one bone meal consumed if not in creative mode.
 
 # Legacy API
 The bone meal API also provides a legacy compatibility function.  This

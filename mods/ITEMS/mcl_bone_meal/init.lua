@@ -60,26 +60,14 @@ end
 
 -- Legacy registered users of the old API are handled through this function.
 --
-local function apply_bone_meal(pointed_thing, placer)
+local function legacy_apply_bone_meal(pointed_thing, placer)
+	-- Legacy API support
 	for _, func in pairs(mcl_bone_meal.bone_meal_callbacks) do
 		if func(pointed_thing, placer) then
 			return true
 		end
 	end
 
-	local pos = pointed_thing.under
-	local n = minetest.get_node(pos)
-	if n.name == "" then return false end
-
-	-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
-	if string.find(n.name, "mcl_farming:sweet_berry_bush_") then
-		mcl_dye.add_bone_meal_particle(pos)
-		if n.name == "mcl_farming:sweet_berry_bush_3" then
-			return minetest.add_item(vector.offset(pos,math.random()-0.5,math.random()-0.5,math.random()-0.5),"mcl_farming:sweet_berry")
-		else
-			return mcl_farming:grow_plant("plant_sweet_berry_bush", pos, n, 0, true)
-		end
-		return true
 --[[
 	Here for when Bonemeal becomes an api, there's code if needed for handling applying to bamboo.
 	-- Handle applying bonemeal to bamboo.
@@ -90,11 +78,41 @@ local function apply_bone_meal(pointed_thing, placer)
 		end
 		return success
 --]]
-	end
 
 	return false
 end
 -- End legacy bone meal API
+
+mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
+	local pos = pointed_thing.under
+
+	-- Check protection
+	if mcl_util.check_area_protection(pos, pointed_thing.above, placer) then return false end
+
+	local node = minetest.get_node(pos)
+	local ndef = minetest.registered_nodes[node.name]
+	local success = false
+
+	-- If the pointed node can be bonemealed, let it handle the processing.
+	if ndef and ndef._mcl_on_bonemealing then
+		success = ndef._mcl_on_bonemealing(pointed_thing, placer)
+	else
+		-- Otherwise try the legacy API.
+		success = legacy_apply_bone_meal(pointed_thing, placer)
+	end
+
+	-- Particle effects
+	if success then
+		mcl_bone_meal.add_bone_meal_particle(pos)
+	end
+
+	-- Take the item
+	if not placer or not minetest.is_creative_enabled(placer:get_player_name()) then
+		itemstack:take_item()
+	end
+
+	return itemstack
+end
 
 minetest.register_craftitem("mcl_bone_meal:bone_meal", {
 	description = S("Bone Meal"),
@@ -107,26 +125,15 @@ minetest.register_craftitem("mcl_bone_meal:bone_meal", {
 		local pos = pointed_thing.under
 		local node = minetest.get_node(pos)
 		local ndef = minetest.registered_nodes[node.name]
+
 		-- Use pointed node's on_rightclick function first, if present.
 		if placer and not placer:get_player_control().sneak then
 			if ndef and ndef.on_rightclick then
 				return ndef.on_rightclick(pos, node, placer, itemstack, pointed_thing) or itemstack
 			end
 		end
-		-- If the pointed node can be bonemealed, let it handle the processing.
-		if ndef and ndef._mcl_on_bonemealing then
-			if ndef._mcl_on_bonemealing(pointed_thing, placer) then
-				mcl_bone_meal.add_bone_meal_particle(pos)
-			end
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item()
-			end
-		-- Otherwise try the legacy API.
-		elseif apply_bone_meal(pointed_thing, placer) and
-				not minetest.is_creative_enabled(placer:get_player_name()) then
-			itemstack:take_item()
-		end
-		return itemstack
+
+		return mcl_bone_meal.use_bone_meal(itemstack, placer, pointed_thing)
 	end,
 	_on_dispense = function(itemstack, pos, droppos, dropnode, dropdir)
 		local pointed_thing
@@ -135,21 +142,8 @@ minetest.register_craftitem("mcl_bone_meal:bone_meal", {
 		else
 			pointed_thing = {above = pos, under = droppos}
 		end
-		local node = minetest.get_node(pointed_thing.under)
-		local ndef = minetest.registered_nodes[node.name]
-		-- If the pointed node can be bonemealed, let it handle the processing.
-		if ndef and ndef._mcl_on_bonemealing then
-			if ndef._mcl_on_bonemealing(pointed_thing, nil) then
-				mcl_bone_meal.add_bone_meal_particle(pos)
-			end
-			itemstack:take_item()
-		else
-			-- Otherwise try the legacy API.
-			if apply_bone_meal(pointed_thing, nil) then
-				itemstack:take_item()
-			end
-		end
-		return itemstack
+
+		return mcl_bone_meal.use_bone_meal(itemstack, nil, pointed_thing)
 	end,
 	_dispense_into_walkable = true
 })
