@@ -54,7 +54,10 @@ mcl_bone_meal.bone_meal_callbacks = {}
 --
 function mcl_bone_meal.register_on_bone_meal_apply(func)
 	minetest.log("warning", "register_on_bone_meal_apply(func) is deprecated. Read mcl_bone_meal/API.md!")
-	print(debug.traceback())
+	local lines = string.split(debug.traceback(),"\n")
+	for _,line in ipairs(lines) do
+		minetest.log("warning",line)
+	end
 	table.insert(mcl_bone_meal.bone_meal_callbacks, func)
 end
 
