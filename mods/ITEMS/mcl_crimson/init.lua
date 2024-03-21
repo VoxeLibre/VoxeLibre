@@ -28,9 +28,11 @@ function grow_vines(pos, moreontop ,vine, dir)
 					minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
 				end
 			end
-			break
+			return true
 		end
 	until n.name ~= "air" and n.name ~= vine
+
+	return false
 end
 
 local nether_plants = {
@@ -130,6 +132,9 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
+	_mcl_on_bonemealing = function(pointed_thing, placer)
+		return grow_vines(pointed_thing.under, math.random(1, 3),"mcl_crimson:twisting_vines")
+	end,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		local pn = clicker:get_player_name()
 		if clicker:is_player() and minetest.is_protected(vector.offset(pos,0,1,0), pn or "") then
@@ -150,10 +155,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		end
 
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				itemstack:take_item()
-			end
-			grow_vines(pos, math.random(1, 3),"mcl_crimson:twisting_vines")
+			return mcl_bone_meal.use_bone_meal(itemstack, clicker, {under=pos})
 		end
 		return itemstack
 	end,
@@ -220,6 +222,9 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
+	_mcl_on_bonemealing = function(pointed_thing, placer)
+		return grow_vines(pointed_thing.under, math.random(1, 3),"mcl_crimson:weeping_vines")
+	end,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		local pn = clicker:get_player_name()
 		if clicker:is_player() and minetest.is_protected(vector.offset(pos,0,1,0), pn or "") then
@@ -240,10 +245,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		end
 
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				itemstack:take_item()
-			end
-			grow_vines(pos, math.random(1, 3),"mcl_crimson:weeping_vines", -1)
+			return mcl_bone_meal.use_bone_meal(itemstack, clicker, {under=pos})
 		end
 		return itemstack
 	end,

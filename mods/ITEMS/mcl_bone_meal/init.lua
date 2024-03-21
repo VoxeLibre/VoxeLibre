@@ -81,13 +81,16 @@ mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
 	local node = minetest.get_node(pos)
 	local ndef = minetest.registered_nodes[node.name]
 	local success = false
+	local consume
 
 	-- If the pointed node can be bonemealed, let it handle the processing.
 	if ndef and ndef._mcl_on_bonemealing then
 		success = ndef._mcl_on_bonemealing(pointed_thing, placer)
+		consume = true
 	else
 		-- Otherwise try the legacy API.
 		success = legacy_apply_bone_meal(pointed_thing, placer)
+		consume = success
 	end
 
 	-- Particle effects
@@ -96,7 +99,7 @@ mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
 	end
 
 	-- Take the item
-	if not placer or not minetest.is_creative_enabled(placer:get_player_name()) then
+	if consume and ( not placer or not minetest.is_creative_enabled(placer:get_player_name()) ) then
 		itemstack:take_item()
 	end
 
