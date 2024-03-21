@@ -27,11 +27,11 @@ local function damage_explosion(self, damagemulitplier)
 	for _,obj in pairs(objects) do
 		if obj:is_player() then
 			mcl_util.deal_damage(obj, damagemulitplier - vector.distance(p, obj:get_pos()), {type = "explosion"})
-		elseif obj:get_luaentity().is_mob then
+		elseif obj:get_luaentity() and obj:get_luaentity().is_mob then
 			obj:punch(self.object, 1.0, {
 				full_punch_interval=1.0,
 				damage_groups={fleshy=damagemulitplier - vector.distance(p, obj:get_pos())},
-			}, self.object:get_velocity())
+			}, self.object:get_velocity()) -- TODO possibly change the punch dir to be outwards instead of rocket velocity
 		end
 	end
 end
