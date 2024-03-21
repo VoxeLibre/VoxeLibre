@@ -131,12 +131,6 @@ function mcl_dye.register_on_bone_meal_apply(func)
 	mcl_bone_meal.register_on_bone_meal_apply(func)
 end
 
-minetest.register_craft({
-	output = "mcl_bone_meal:bone_meal 3",
-	recipe = {{"mcl_mobitems:bone"}},
-})
-
-
 -- Dye creation recipes.
 --
 minetest.register_craft({
