@@ -37,7 +37,7 @@ function mcl_bone_meal.add_bone_meal_particle(pos, def)
 		maxexptime = def.maxexptime or 4,
 		minsize = def.minsize or 0.7,
 		maxsize = def.maxsize or 2.4,
-		texture = "mcl_particles_bonemeal.png^[colorize:#00EE00:125", -- TODO: real MC color
+		texture = "mcl_particles_bonemeal.png^[colorize:#00EE00:125",
 		glow = def.glow or 1,
 	})
 end
