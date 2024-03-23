@@ -146,14 +146,23 @@ local function direction_away_from_players(self, staticdata)
 		local player_name = obj:get_player_name()
 		if player_name and player_name ~= "" and not ( self._driver and self._driver == player_name ) then
 			local diff = obj:get_pos() - self.object:get_pos()
+
 			local length = vector.distance(vector.new(0,0,0),diff)
 			local vec = diff / length
 			local force = vector.dot( vec, vector.normalize(staticdata.dir) )
 
-			if force > 0.5 then
-				return -length * 4
-			elseif force < -0.5 then
-				return length * 4
+			-- Check if this would push past the end of the track and don't move it it would
+			-- This prevents an oscillation that would otherwise occur
+			local dir = staticdata.dir
+			if force > 0 then
+				dir = -dir
+			end
+			if mcl_minecarts:is_rail( staticdata.connected_at + dir ) then
+				if force > 0.5 then
+					return -length * 4
+				elseif force < -0.5 then
+					return length * 4
+				end
 			end
 		end
 	end
@@ -290,7 +299,7 @@ local function do_movement_step(self, dtime)
 	staticdata.velocity = v_1
 	staticdata.distance = x_1
 
-	if DEBUG and ( v_0 > 0 or a ~= 0 ) then
+	if DEBUG and (1==0) and ( v_0 > 0 or a ~= 0 ) then
 		print( "-   cart #"..tostring(staticdata.cart_id)..
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
