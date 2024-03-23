@@ -180,7 +180,7 @@ local function calculate_acceleration(self, staticdata)
 		acceleration = -1.5
 	elseif self._punched then
 		acceleration = 2
-	elseif self._fueltime and self._fueltime > 0 then
+	elseif (staticdata.fueltime or 0) > 0 then
 		acceleration = 0.6
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
 		-- Standard friction
@@ -268,7 +268,7 @@ local function do_movement_step(self, dtime)
 
 	-- Truncate timestep to prevent v_1 from being larger that speed_max
 	local v_max = mcl_minecarts.speed_max
-	if v_0 + a * timestep > v_max then
+	if (v_0 ~= v_max) and ( v_0 + a * timestep > v_max) then
 		timestep = ( v_max - v_0 ) / a
 	end
 
@@ -289,6 +289,21 @@ local function do_movement_step(self, dtime)
 	-- Update position and velocity of the minecart
 	staticdata.velocity = v_1
 	staticdata.distance = x_1
+
+	if DEBUG and ( v_0 > 0 or a ~= 0 ) then
+		print( "-   cart #"..tostring(staticdata.cart_id)..
+		       ": a="..tostring(a)..
+		        ",v_0="..tostring(v_0)..
+		        ",v_1="..tostring(v_1)..
+		        ",x_0="..tostring(x_0)..
+		        ",x_1="..tostring(x_1)..
+		        ",timestep="..tostring(timestep)..
+		        ",dir="..tostring(staticdata.dir)..
+			",connected_at="..tostring(staticdata.connected_at)..
+			",distance="..tostring(staticdata.distance)
+		)
+	end
+
 
 	-- Entity movement
 	local pos = staticdata.connected_at
@@ -625,7 +640,6 @@ local function register_entity(entity_id, def)
 		_punched = false, -- used to re-send _velocity and position
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
 		_last_float_check = nil, -- timestamp of last time the cart was checked to be still on a rail
-		_fueltime = nil, -- how many seconds worth of fuel is left. Only used by minecart with furnace
 		_boomtimer = nil, -- how many seconds are left before exploding
 		_blinktimer = nil, -- how many seconds are left before TNT blinking
 		_blink = false, -- is TNT blink texture active?
@@ -1102,16 +1116,15 @@ register_minecart({
 	icon = "mcl_minecarts_minecart_furnace.png",
 	drop = {"mcl_minecarts:minecart", "mcl_furnaces:furnace"},
 	on_rightclick = function(self, clicker)
+		local staticdata = self._staticdata
+
 		-- Feed furnace with coal
 		if not clicker or not clicker:is_player() then
 			return
 		end
-		if not self._fueltime then
-			self._fueltime = 0
-		end
 		local held = clicker:get_wielded_item()
 		if minetest.get_item_group(held:get_name(), "coal") == 1 then
-			self._fueltime = self._fueltime + 180
+			staticdata.fueltime = (staticdata.fueltime or 0) + 180
 
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				held:take_item()
@@ -1134,10 +1147,12 @@ register_minecart({
 	on_activate_by_rail = nil,
 	creative = true,
 	_mcl_minecarts_on_step = function(self, dtime)
+		local staticdata = self._staticdata
+
 		-- Update furnace stuff
-		if self._fueltime and self._fueltime > 0 then
-			self._fueltime = self._fueltime - dtime
-			if self._fueltime <= 0 then
+		if (staticdata.fueltime or 0) > 0 then
+			staticdata.fueltime = (staticdata.fueltime or dtime) - dtime
+			if staticdata.fueltime <= 0 then
 				self.object:set_properties({textures =
 					{
 					"default_furnace_top.png",
@@ -1148,10 +1163,9 @@ register_minecart({
 					"default_furnace_side.png",
 					"mcl_minecarts_minecart.png",
 				}})
-				self._fueltime = 0
+				staticdata.fueltime = 0
 			end
 		end
-		--local has_fuel = self._fueltime and self._fueltime > 0
 	end
 })
 
