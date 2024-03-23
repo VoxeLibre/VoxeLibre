@@ -645,6 +645,9 @@ local function register_entity(entity_id, def)
 			-- Fix up types
 			data.dir = vector.new(data.dir)
 
+			-- Make sure all carts have an ID to isolate them
+			data.cart_id = staticdata.cart_id or math.random(1,1000000000)
+
 			self._staticdata = data
 		end
 		self.object:set_armor_groups({immortal=1})
@@ -671,12 +674,13 @@ local function register_entity(entity_id, def)
 			pos = self.object:get_pos()
 			-- Try to reattach
 			local rounded_pos = vector.round(pos)
-			if mcl_minecarts:is_rail(rounded_pos) and vector.distance(pos, rounded_pos) < 0.25 then
+			if mcl_minecarts:is_rail(rounded_pos) and vector.distance(pos, rounded_pos) < 0.5 then
 				-- Reattach
 				staticdata.connected_at = rounded_pos
 				pos = rounded_pos
 			else
-				mineclone.log("warning","TODO: handle detached cart behavior")
+				minetest.log("warning","rounded_pos="..tostring(rounded_pos)..",dist="..vector.distance(pos, rounded_pos))
+				minetest.log("warning","TODO: handle detached cart behavior")
 			end
 		end
 
@@ -783,7 +787,7 @@ local function register_entity(entity_id, def)
 
 		local new_watches = {}
 		for _,node_pos in ipairs(watches) do
-			if node_pos ~= post then
+			if node_pos ~= pos then
 				new_watches[#new_watches] = node_pos
 			end
 		end
@@ -791,18 +795,12 @@ local function register_entity(entity_id, def)
 	end
 
 	function cart:on_step(dtime)
-		-- TODO: move to _mcl_minecarts_on_step handler and on_enter handler for hopper minecart
-		hopper_take_item(self, dtime)
-
 		local staticdata = self._staticdata
-
-		-- Make sure all carts have an ID to isolate them
-		staticdata.cart_id = staticdata.cart_id or math.random(1,1000000000)
-
 		if not staticdata then
 			staticdata = make_staticdata()
 			self._staticdata = staticdata
 		end
+
 		if (staticdata.hopper_delay or 0) > 0 then
 			staticdata.hopper_delay = staticdata.hopper_delay - dtime
 		end
@@ -849,129 +847,9 @@ local function register_entity(entity_id, def)
 			end
 		end
 
-		-- TODO: move to _mcl_minecarts_on_step handler for plain minecart
-		-- Grab mob
-		if math.random(1,20) > 15 and not self._passenger then
-			if self.name == "mcl_minecarts:minecart" then
-				local mobsnear = minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)
-				for n=1, #mobsnear do
-					local mob = mobsnear[n]
-					if mob then
-						local entity = mob:get_luaentity()
-						if entity and entity.is_mob then
-							self._passenger = entity
-							mob:set_attach(self.object, "", passenger_attach_position, vector.zero())
-							break
-						end
-					end
-				end
-			end
-		elseif self._passenger then
-			local passenger_pos = self._passenger.object:get_pos()
-			if not passenger_pos then
-				self._passenger = nil
-			end
-		end
-
-		-- Drop minecart if it isn't on a rail anymore
-		--[[ Remove this entirely once off-cart minecart behavior is implemented
-		if self._last_float_check == nil then
-			self._last_float_check = 0
-		else
-			self._last_float_check = self._last_float_check + dtime
-		end
-		if self._last_float_check >= mcl_minecarts.check_float_time then
-			pos = self.object:get_pos()
-			rou_pos = vector.round(pos)
-			node = minetest.get_node(rou_pos)
-			local g = minetest.get_item_group(node.name, "connect_to_raillike")
-			if g ~= self._staticdata.railtype and self._staticdata.railtype then
-				-- Detach driver
-				detach_driver(self)
-
-				-- Explode if already ignited
-				if self._boomtimer then
-					self.object:remove()
-					mcl_explosions.explode(pos, 4, { drop_chance = 1.0 })
-					return
-				end
-
-				-- Do not drop minecart. It goes off the rails too frequently, and anyone using them for farms won't
-				-- notice and lose their iron and not bother. Not cool until fixed.
-			end
-			self._last_float_check = 0
-		end
-		]]
-
-		local hook = cart._mcl_minecarts_on_step
-		if hook then hook(cart,dtime) end
-
-		-- TODO: move the below into cart-specific hooks
-
-		-- TODO: move to _mcl_minecarts_on_step handler for furnace minecart
-		-- Update furnace stuff
-		if self._fueltime and self._fueltime > 0 then
-			self._fueltime = self._fueltime - dtime
-			if self._fueltime <= 0 then
-				self.object:set_properties({textures =
-					{
-					"default_furnace_top.png",
-					"default_furnace_top.png",
-					"default_furnace_front.png",
-					"default_furnace_side.png",
-					"default_furnace_side.png",
-					"default_furnace_side.png",
-					"mcl_minecarts_minecart.png",
-				}})
-				self._fueltime = 0
-			end
-		end
-		local has_fuel = self._fueltime and self._fueltime > 0
-
-		-- TODO: move to _mcl_minecarts_on_step handler for TNT minecart
-		-- Update TNT stuff
-		if self._boomtimer then
-			-- Explode
-			self._boomtimer = self._boomtimer - dtime
-			local pos = self.object:get_pos()
-			if self._boomtimer <= 0 then
-				self.object:remove()
-				mcl_explosions.explode(pos, 4, { drop_chance = 1.0 })
-				return
-			else
-				tnt.smoke_step(pos)
-			end
-		end
-		if self._blinktimer then
-			self._blinktimer = self._blinktimer - dtime
-			if self._blinktimer <= 0 then
-				self._blink = not self._blink
-				if self._blink then
-					self.object:set_properties({textures =
-					{
-					"default_tnt_top.png",
-					"default_tnt_bottom.png",
-					"default_tnt_side.png",
-					"default_tnt_side.png",
-					"default_tnt_side.png",
-					"default_tnt_side.png",
-					"mcl_minecarts_minecart.png",
-					}})
-				else
-					self.object:set_properties({textures =
-					{
-					"mcl_tnt_blink.png",
-					"mcl_tnt_blink.png",
-					"mcl_tnt_blink.png",
-					"mcl_tnt_blink.png",
-					"mcl_tnt_blink.png",
-					"mcl_tnt_blink.png",
-					"mcl_minecarts_minecart.png",
-					}})
-				end
-				self._blinktimer = tnt.BLINKTIMER
-			end
-		end
+		-- Cart specific behaviors
+		local hook = self._mcl_minecarts_on_step
+		if hook then hook(self,dtime) end
 	end
 
 	function cart:get_staticdata()
@@ -1152,7 +1030,31 @@ register_minecart({
 			end, name)
 		end
 	end,
-	on_activate_by_rail = activate_normal_minecart
+	on_activate_by_rail = activate_normal_minecart,
+	_mcl_minecarts_on_step = function(self, dtime)
+		-- Grab mob
+		if math.random(1,20) > 15 and not self._passenger then
+			if self.name == "mcl_minecarts:minecart" then
+				local mobsnear = minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)
+				for n=1, #mobsnear do
+					local mob = mobsnear[n]
+					if mob then
+						local entity = mob:get_luaentity()
+						if entity and entity.is_mob then
+							self._passenger = entity
+							mob:set_attach(self.object, "", passenger_attach_position, vector.zero())
+							break
+						end
+					end
+				end
+			end
+		elseif self._passenger then
+			local passenger_pos = self._passenger.object:get_pos()
+			if not passenger_pos then
+				self._passenger = nil
+			end
+		end
+	end
 })
 
 -- Minecart with Chest
@@ -1230,7 +1132,27 @@ register_minecart({
 		end
 	end,
 	on_activate_by_rail = nil,
-	creative = true
+	creative = true,
+	_mcl_minecarts_on_step = function(self, dtime)
+		-- Update furnace stuff
+		if self._fueltime and self._fueltime > 0 then
+			self._fueltime = self._fueltime - dtime
+			if self._fueltime <= 0 then
+				self.object:set_properties({textures =
+					{
+					"default_furnace_top.png",
+					"default_furnace_top.png",
+					"default_furnace_front.png",
+					"default_furnace_side.png",
+					"default_furnace_side.png",
+					"default_furnace_side.png",
+					"mcl_minecarts_minecart.png",
+				}})
+				self._fueltime = 0
+			end
+		end
+		--local has_fuel = self._fueltime and self._fueltime > 0
+	end
 })
 
 -- Minecart with Command Block
@@ -1287,7 +1209,7 @@ register_minecart({
 	groups = { container = 1 },
 	on_rightclick = nil,
 	on_activate_by_rail = nil,
-	_mcl_minecarts_on_enter = function(self,pos)
+	_mcl_minecarts_on_enter = function(self, pos)
 		local staticdata = self._staticdata
 		if (staticdata.hopper_delay or 0) > 0 then
 			return
@@ -1296,9 +1218,12 @@ register_minecart({
 		-- try to pull from containers into our inventory
 		local inv = mcl_entity_invs.load_inv(self,5)
 		local above_pos = pos + vector.new(0,1,0)
-		mcl_util.hopper_pull_to_inventory(inv, 'main', above_pos)
+		mcl_util.hopper_pull_to_inventory(inv, 'main', above_pos, pos)
 
 		staticdata.hopper_delay =  (staticdata.hopper_delay or 0) + (1/20)
+	end,
+	_mcl_minecarts_on_step = function(self, dtime)
+		hopper_take_item(self, dtime)
 	end,
 	creative = true
 })
@@ -1345,7 +1270,52 @@ register_minecart({
 		end
 	end,
 	on_activate_by_rail = activate_tnt_minecart,
-	creative = true
+	creative = true,
+	_mcl_minecarts_on_step = function(self, dtime)
+		-- Update TNT stuff
+		if self._boomtimer then
+			-- Explode
+			self._boomtimer = self._boomtimer - dtime
+			local pos = self.object:get_pos()
+			if self._boomtimer <= 0 then
+				self.object:remove()
+				mcl_explosions.explode(pos, 4, { drop_chance = 1.0 })
+				return
+			else
+				tnt.smoke_step(pos)
+			end
+		end
+		if self._blinktimer then
+			self._blinktimer = self._blinktimer - dtime
+			if self._blinktimer <= 0 then
+				self._blink = not self._blink
+				if self._blink then
+					self.object:set_properties({textures =
+					{
+					"default_tnt_top.png",
+					"default_tnt_bottom.png",
+					"default_tnt_side.png",
+					"default_tnt_side.png",
+					"default_tnt_side.png",
+					"default_tnt_side.png",
+					"mcl_minecarts_minecart.png",
+					}})
+				else
+					self.object:set_properties({textures =
+					{
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_minecarts_minecart.png",
+					}})
+				end
+				self._blinktimer = tnt.BLINKTIMER
+			end
+		end
+	end,
 })
 
 

@@ -231,7 +231,7 @@ function mcl_util.hopper_push(pos, dst_pos)
 	return ok
 end
 
-function mcl_util.hopper_pull_to_inventory(hop_inv, hop_list, src_pos)
+function mcl_util.hopper_pull_to_inventory(hop_inv, hop_list, src_pos, pos)
 	-- TODO: merge together with hopper_pull after https://git.minetest.land/MineClone2/MineClone2/pulls/4190 is merged
 	-- Get node pos' for item transfer
 	local src = minetest.get_node(src_pos)
