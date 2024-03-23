@@ -180,7 +180,7 @@ local function calculate_acceleration(self, staticdata)
 		acceleration = -1.5
 	elseif self._punched then
 		acceleration = 2
-	elseif (staticdata.fueltime or 0) > 0 then
+	elseif (staticdata.fueltime or 0) > 0 and staticdata.velocity <= 4 then
 		acceleration = 0.6
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
 		-- Standard friction
@@ -815,6 +815,10 @@ local function register_entity(entity_id, def)
 			self._staticdata = staticdata
 		end
 
+		-- Cart specific behaviors
+		local hook = self._mcl_minecarts_on_step
+		if hook then hook(self,dtime) end
+
 		if (staticdata.hopper_delay or 0) > 0 then
 			staticdata.hopper_delay = staticdata.hopper_delay - dtime
 		end
@@ -860,10 +864,6 @@ local function register_entity(entity_id, def)
 				return
 			end
 		end
-
-		-- Cart specific behaviors
-		local hook = self._mcl_minecarts_on_step
-		if hook then hook(self,dtime) end
 	end
 
 	function cart:get_staticdata()
@@ -1125,6 +1125,11 @@ register_minecart({
 		local held = clicker:get_wielded_item()
 		if minetest.get_item_group(held:get_name(), "coal") == 1 then
 			staticdata.fueltime = (staticdata.fueltime or 0) + 180
+
+			-- Trucate to 27 minutes (9 uses)
+			if staticdata.fueltime > 27*60 then
+				staticdata.fuel_time = 27*60
+			end
 
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				held:take_item()
