@@ -61,8 +61,9 @@ local function handle_cart_enter_exit(self, pos, next_dir, event)
 		local node_def = minetest.registered_nodes[node.name]
 
 		-- node-specific hook
-		local hook = node_def["_mcl_minecarts_"..event..check[4]]
-		if hook then hook(check_pos, self, next_dir) end
+		local hook_name = "_mcl_minecarts_"..event..check[4]
+		local hook = node_def[hook_name]
+		if hook then hook(check_pos, self, next_dir, pos) end
 
 		-- global minecart hook
 		hook = mcl_minecarts[event..check[4]]
@@ -89,7 +90,7 @@ local function handle_cart_node_watches(self, dtime)
 		local node_def = minetest.registered_nodes[node.name]
 		local hook = node_def._mcl_minecarts_node_on_step
 		if hook and hook(node_pos, self, dtime) then
-			new_watches[#new_watches] = node_pos
+			new_watches[#new_watches+1] = node_pos
 		end
 	end
 
@@ -141,7 +142,7 @@ end
 local function direction_away_from_players(self, staticdata)
 	local objs = minetest.get_objects_inside_radius(self.object:get_pos(), 1.1)
 	for n=1,#objs do
-		obj = objs[n]
+		local obj = objs[n]
 		local player_name = obj:get_player_name()
 		if player_name and player_name ~= "" and not ( self._driver and self._driver == player_name ) then
 			local diff = obj:get_pos() - self.object:get_pos()
@@ -314,7 +315,7 @@ local function do_movement_step(self, dtime)
 		handle_cart_enter(self, pos, next_dir)
 
 		-- Handle end of track
-		if next_dir == staticdata.dir * -1 and ( hopper_pulled or next_dir.y == 0 ) then
+		if next_dir == staticdata.dir * -1 and next_dir.y == 0 then
 			if DEBUG then print("Stopping cart at end of track at "..tostring(pos)) end
 			staticdata.velocity = 0
 		end
@@ -593,6 +594,13 @@ end
 
 local function register_entity(entity_id, def)
 	assert( def.drop, "drop is required parameter" )
+
+	-- Entity groups
+	local groups = { minecart = 1 }
+	for k,v in pairs(def.groups or {}) do
+		groups[k] = v
+	end
+
 	local cart = {
 		initial_properties = {
 			physical = true,
@@ -603,8 +611,11 @@ local function register_entity(entity_id, def)
 			textures = def.textures,
 		},
 
+		groups = groups,
+
 		on_rightclick = def.on_rightclick,
 		on_activate_by_rail = def.on_activate_by_rail,
+
 		_mcl_minecarts_on_enter = def._mcl_minecarts_on_enter,
 		_mcl_minecarts_on_place = def._mcl_minecarts_on_place,
 		_mcl_minecarts_on_step = def._mcl_minecarts_on_step,
@@ -665,7 +676,7 @@ local function register_entity(entity_id, def)
 				staticdata.connected_at = rounded_pos
 				pos = rounded_pos
 			else
-				print("TODO: handle detached cart behavior")
+				mineclone.log("warning","TODO: handle detached cart behavior")
 			end
 		end
 
@@ -757,14 +768,19 @@ local function register_entity(entity_id, def)
 
 	function cart:add_node_watch(pos)
 		local staticdata = self._staticdata
-		local watches = staticdata.watches
+		local watches = staticdata.node_watches or {}
+
 		for _,watch in ipairs(watches) do
 			if watch == pos then return end
 		end
 
 		watches[#watches+1] = pos
+		staticdata.node_watches = watches
 	end
 	function cart:remove_node_watch(pos)
+		local staticdata = self._staticdata
+		local watches = staticdata.node_watches or {}
+
 		local new_watches = {}
 		for _,node_pos in ipairs(watches) do
 			if node_pos ~= post then
@@ -792,8 +808,6 @@ local function register_entity(entity_id, def)
 		end
 
 		local pos, rou_pos, node = self.object:get_pos()
-		--local update = {}
-		--local acceleration = 0
 
 		-- Controls
 		local ctrl, player = nil, nil
@@ -820,7 +834,7 @@ local function register_entity(entity_id, def)
 
 		do_movement(self, dtime)
 
-		-- TODO: move this into do_movement_step
+		-- TODO: move this into mcl_core:cactus _mcl_minecarts_on_enter_side
 		-- Drop minecart if it collides with a cactus node
 		local r = 0.6
 		for _, node_pos in pairs({{r, 0}, {0, r}, {-r, 0}, {0, -r}}) do
@@ -1156,6 +1170,7 @@ register_minecart({
 	},
 	icon = "mcl_minecarts_minecart_chest.png",
 	drop = {"mcl_minecarts:minecart", "mcl_chests:chest"},
+	groups = { container = 1 },
 	on_rightclick = nil,
 	on_activate_by_rail = nil,
 	creative = true
@@ -1269,6 +1284,7 @@ register_minecart({
 	},
 	icon = "mcl_minecarts_minecart_hopper.png",
 	drop = {"mcl_minecarts:minecart", "mcl_hoppers:hopper"},
+	groups = { container = 1 },
 	on_rightclick = nil,
 	on_activate_by_rail = nil,
 	_mcl_minecarts_on_enter = function(self,pos)

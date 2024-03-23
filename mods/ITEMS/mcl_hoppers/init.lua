@@ -96,6 +96,48 @@ local function bent_hopper_act(pos, node, active_object_count, active_object_cou
 	mcl_util.hopper_pull(pos, src_pos)
 end
 
+local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
+	local dest_inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
+	if not dest_inv then
+		mcl_log("No inv")
+		return false
+	end
+
+	local meta = minetest.get_meta(dest_pos)
+	local inv = meta:get_inventory()
+	if not inv then
+		mcl_log("No dest inv")
+		return
+	end
+
+	mcl_log("inv. size: " .. mc_ent._inv_size)
+	for i = 1, mc_ent._inv_size, 1 do
+		local stack = inv:get_stack("main", i)
+
+		mcl_log("i: " .. tostring(i))
+		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
+		mcl_log("Count: " .. tostring(stack:get_count()))
+		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+
+		if not stack:get_name() or stack:get_name() ~= "" then
+			if dest_inv:room_for_item("main", stack:peek_item()) then
+				mcl_log("Room so unload")
+				dest_inv:add_item("main", stack:take_item())
+				inv:set_stack("main", i, stack)
+
+				-- Take one item and stop until next time
+				return
+			else
+				mcl_log("no Room")
+			end
+
+		else
+			mcl_log("nothing there")
+		end
+	end
+end
+
+
 -- Downwards hopper (base definition)
 
 ---@type node_definition
@@ -200,6 +242,29 @@ local def_hopper = {
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name() ..
 			" takes stuff from mcl_hoppers at " .. minetest.pos_to_string(pos))
+	end,
+	_mcl_minecarts_on_enter_above = function(pos, cart, next_dir)
+		-- Only push to containers
+		if cart.groups and (cart.groups.container or 0) ~= 0 then
+			cart:add_node_watch(pos)
+		end
+	end,
+	_mcl_minecarts_on_leave_above = function(pos, cart, next_dir)
+		cart:remove_node_watch(pos)
+	end,
+	_mcl_minecarts_node_on_step = function(pos, cart, dtime)
+		local meta = minetest.get_meta(pos)
+
+		local timer = meta:get_int("minecart_hopper_timer")
+		if timer < dtime then
+			hopper_push_to_mc(cart, pos, 5)
+			timer = timer + 1
+		else
+			timer = timer - dtime
+		end
+		meta:set_int("minecart_hopper_timer", timer)
+
+		return true
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
@@ -406,6 +471,44 @@ local def_hopper_side = {
 	on_rotate = on_rotate,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
+	_mcl_minecarts_on_enter_side = function(pos, cart, next_dir, rail_pos)
+		-- Only try to push to minecarts when the spout position is pointed at the rail
+		local face = minetest.get_node(pos).param2
+		local dst_pos = {}
+		if face == 0 then
+			dst_pos = vector.offset(pos, -1, 0, 0)
+		elseif face == 1 then
+			dst_pos = vector.offset(pos, 0, 0, 1)
+		elseif face == 2 then
+			dst_pos = vector.offset(pos, 1, 0, 0)
+		elseif face == 3 then
+			dst_pos = vector.offset(pos, 0, 0, -1)
+		end
+		if dst_pos ~= rail_pos then return end
+
+		-- Only push to containers
+		if cart.groups and (cart.groups.container or 0) ~= 0 then
+			cart:add_node_watch(pos)
+		end
+	end,
+	_mcl_minecarts_on_leave_side = function(pos, cart, next_dir)
+		cart:remove_node_watch(pos)
+	end,
+	_mcl_minecarts_node_on_step = function(pos, cart, dtime)
+		local meta = minetest.get_meta(pos)
+
+		local timer = meta:get_int("minecart_hopper_timer")
+		if timer < dtime then
+			hopper_push_to_mc(cart, pos, 5)
+			timer = timer + 1
+		else
+			timer = timer - dtime
+		end
+		meta:set_int("minecart_hopper_timer", timer)
+
+		return true
+	end,
+
 	_mcl_blast_resistance = 4.8,
 	_mcl_hardness = 3,
 }
@@ -479,47 +582,6 @@ local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
 	end
 end
 mcl_hoppers.pull_from_minecart = hopper_pull_from_mc
-
-local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
-	local dest_inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
-	if not dest_inv then
-		mcl_log("No inv")
-		return false
-	end
-
-	local meta = minetest.get_meta(dest_pos)
-	local inv = meta:get_inventory()
-	if not inv then
-		mcl_log("No dest inv")
-		return
-	end
-
-	mcl_log("inv. size: " .. mc_ent._inv_size)
-	for i = 1, mc_ent._inv_size, 1 do
-		local stack = inv:get_stack("main", i)
-
-		mcl_log("i: " .. tostring(i))
-		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
-		mcl_log("Count: " .. tostring(stack:get_count()))
-		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
-
-		if not stack:get_name() or stack:get_name() ~= "" then
-			if dest_inv:room_for_item("main", stack:peek_item()) then
-				mcl_log("Room so unload")
-				dest_inv:add_item("main", stack:take_item())
-				inv:set_stack("main", i, stack)
-
-				-- Take one item and stop until next time
-				return
-			else
-				mcl_log("no Room")
-			end
-
-		else
-			mcl_log("nothing there")
-		end
-	end
-end
 
 --[[ BEGIN OF ABM DEFINITONS ]]
 
