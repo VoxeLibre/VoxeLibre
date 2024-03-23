@@ -9,6 +9,7 @@ mcl_minecarts.speed_max = 10
 mcl_minecarts.check_float_time = 15
 local max_step_distance = 0.5
 local friction = 0.4
+local MINECART_MAX_HP = 4
 
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
@@ -184,11 +185,9 @@ local function calculate_acceleration(self, staticdata)
 	local max_vel = mcl_minecarts.speed_max
 
 	if self._go_forward then
-		acceleration = 2
+		acceleration = 4
 	elseif self._brake then
 		acceleration = -1.5
-	elseif self._punched then
-		acceleration = 2
 	elseif (staticdata.fueltime or 0) > 0 and staticdata.velocity <= 4 then
 		acceleration = 0.6
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
@@ -399,11 +398,6 @@ local function do_movement( self, dtime )
 		staticdata.delay = 0
 	end
 
-	local initial_velocity = 2
-	if self._punched and statcdata.velocity < initial_velocity then
-		staticdata.velocity = initial_velocity
-	end
-
 	-- Break long movements at block boundaries to make it
 	-- it impossible to jump across gaps due to server lag
 	-- causing large timesteps
@@ -415,9 +409,6 @@ local function do_movement( self, dtime )
 
 		dtime = new_dtime
 	end
-
-	-- Clear punched flag now that movement for this step has been completed
-	self._punched = false
 end
 
 local function detach_driver(self)
@@ -439,7 +430,6 @@ local function activate_tnt_minecart(self, timer)
 	if self._boomtimer then
 		return
 	end
-	self.object:set_armor_groups({immortal=1})
 	if timer then
 		self._boomtimer = timer
 	else
@@ -461,6 +451,7 @@ end
 local function activate_normal_minecart(self)
 	detach_driver(self)
 
+	-- Detach passenger
 	if self._passenger then
 		local mob = self._passenger.object
 		mob:set_detach()
@@ -635,6 +626,8 @@ local function register_entity(entity_id, def)
 			textures = def.textures,
 		},
 
+		hp_max = MINECART_MAX_HP,
+
 		groups = groups,
 
 		on_rightclick = def.on_rightclick,
@@ -646,7 +639,6 @@ local function register_entity(entity_id, def)
 
 		_driver = nil, -- player who sits in and controls the minecart (only for minecart!)
 		_passenger = nil, -- for mobs
-		_punched = false, -- used to re-send _velocity and position
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
 		_last_float_check = nil, -- timestamp of last time the cart was checked to be still on a rail
 		_boomtimer = nil, -- how many seconds are left before exploding
@@ -673,7 +665,6 @@ local function register_entity(entity_id, def)
 
 			self._staticdata = data
 		end
-		self.object:set_armor_groups({immortal=1})
 
 		-- Activate cart if on activator rail
 		if self.on_activate_by_rail then
@@ -684,110 +675,36 @@ local function register_entity(entity_id, def)
 			end
 		end
 	end
-
-	function cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
+	function cart:on_death(killer)
 		local staticdata = self._staticdata
-		if not staticdata then
-			staticdata = make_staticdata()
-			self._staticdata = staticdata
+		detach_driver(self)
+
+		-- Detach passenger
+		if self._passenger then
+			local mob = self._passenger.object
+			mob:set_detach()
 		end
 
-		local pos = staticdata.connected_at
-		if not pos then
-			pos = self.object:get_pos()
-			-- Try to reattach
-			local rounded_pos = vector.round(pos)
-			if mcl_minecarts:is_rail(rounded_pos) and vector.distance(pos, rounded_pos) < 0.5 then
-				-- Reattach
-				staticdata.connected_at = rounded_pos
-				pos = rounded_pos
-			else
-				minetest.log("warning","rounded_pos="..tostring(rounded_pos)..",dist="..vector.distance(pos, rounded_pos))
-				minetest.log("warning","TODO: handle detached cart behavior")
-			end
+		-- Leave nodes
+		if staticdata.attached_at then
+			handle_cart_leave(self, staticdata.attached_at, staticdata.dir )
+		else
+			mcl_log("TODO: handle detatched minecart death")
 		end
 
-		-- Fix railtype field
-		if not staticdata.railtype then
-			local node = minetest.get_node(vector.floor(pos)).name
-			staticdata.railtype = minetest.get_item_group(node, "connect_to_raillike")
-		end
-
-		-- Handle punches by something other than the player
-		if not puncher or not puncher:is_player() then
-			local cart_dir = mcl_minecarts:get_rail_direction(pos, vector.new(1,0,0), nil, nil, staticdata.railtype)
-			if vector.equals(cart_dir, vector.new(0,0,0)) then
-				return
+		-- Drop items
+		local drop = def.drop
+		if not minetest.is_creative_enabled(killer:get_player_name()) then
+			for d=1, #drop do
+				minetest.add_item(self.object:get_pos(), drop[d])
 			end
-
-			staticdata.dir = cart_dir
-			self._punched = true
-			return
-		end
-
-		-- Punch+sneak: Pick up minecart (unless TNT was ignited)
-		if puncher:get_player_control().sneak and not self._boomtimer then
-			if self._driver then
-				if self._old_pos then
-					self.object:set_pos(self._old_pos)
-				end
-				detach_driver(self)
-			end
-
-			-- Disable detector rail
-			local rou_pos = vector.round(pos)
-			local node = minetest.get_node(rou_pos)
-			if node.name == "mcl_minecarts:detector_rail_on" then
-				local newnode = {name="mcl_minecarts:detector_rail", param2 = node.param2}
-				minetest.swap_node(rou_pos, newnode)
-				mesecon.receptor_off(rou_pos)
-			end
-
-			-- Drop items and remove cart entity
-			local drop = def.drop
-			if not minetest.is_creative_enabled(puncher:get_player_name()) then
-				for d=1, #drop do
-					minetest.add_item(self.object:get_pos(), drop[d])
-				end
-			elseif puncher and puncher:is_player() then
-				local inv = puncher:get_inventory()
-				for d=1, #drop do
-					if not inv:contains_item("main", drop[d]) then
-						inv:add_item("main", drop[d])
-					end
+		elseif puncher and killer:is_player() then
+			local inv = killer:get_inventory()
+			for d=1, #drop do
+				if not inv:contains_item("main", drop[d]) then
+					inv:add_item("main", drop[d])
 				end
 			end
-
-			self.object:remove()
-			return
-		end
-
-		-- Handle player punches
-		local vel = self.object:get_velocity()
-		if puncher:get_player_name() == self._driver then
-			if math.abs(vel.x + vel.z) > 7 then
-				return
-			end
-		end
-
-		local punch_dir = mcl_minecarts:velocity_to_dir(puncher:get_look_dir())
-		punch_dir.y = 0
-
-		local cart_dir = mcl_minecarts:get_rail_direction(pos, punch_dir, nil, nil, self._staticdata.railtype)
-		if vector.equals(cart_dir, vector.new(0,0,0)) then
-			return
-		end
-
-		staticdata.dir = cart_dir
-
-		time_from_last_punch = math.min(time_from_last_punch, tool_capabilities.full_punch_interval)
-		local f = 3 * (time_from_last_punch / tool_capabilities.full_punch_interval)
-
-		-- Perform acceleration here
-		staticdata.velocity = (staticdata.velocity or 0 ) + f
-		local max_vel = mcl_minecarts.speed_max
-		if staticdata.velocity > max_vel then
-			staticdata.velocity = max_vel
 		end
 	end
 
@@ -824,6 +741,25 @@ local function register_entity(entity_id, def)
 			self._staticdata = staticdata
 		end
 
+		-- Regen
+		local hp = self.object:get_hp()
+		if hp < MINECART_MAX_HP then
+			if (staticdata.regen_timer or 0) > 0.5 then
+				hp = hp + 1
+				staticdata.regen_timer = staticdata.regen_timer - 1
+			end
+			staticdata.regen_timer = (staticdata.regen_timer or 0) + dtime
+			self.object:set_hp(hp)
+		else
+			staticdata.regen_timer = nil
+		end
+
+		-- Fix railtype field
+		if staticdata.connected_at and not staticdata.railtype then
+			local node = minetest.get_node(vector.floor(pos)).name
+			staticdata.railtype = minetest.get_item_group(node, "connect_to_raillike")
+		end
+
 		-- Cart specific behaviors
 		local hook = self._mcl_minecarts_on_step
 		if hook then hook(self,dtime) end
@@ -847,8 +783,8 @@ local function register_entity(entity_id, def)
 				end
 
 				-- Experimental controls
-				--self._go_forward = ctrl.up
-				--self._brake = ctrl.down
+				self._go_forward = ctrl.up
+				self._brake = ctrl.down
 			end
 
 			-- Give achievement when player reached a distance of 1000 nodes from the start position
