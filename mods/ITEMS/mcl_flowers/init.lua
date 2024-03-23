@@ -162,7 +162,7 @@ local def_tallgrass = {
 	_mcl_fortune_drop = fortune_wheat_seed_drop,
 	node_placement_prediction = "",
 	on_place = on_place_flower,
-	_mcl_on_bonemealing = function(pointed_thing, placer)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.under
 		local n = minetest.get_node(pos)
 		-- Grow into double tallgrass
@@ -192,7 +192,7 @@ def_fern.selection_box = {
 	fixed = { -6/16, -0.5, -6/16, 6/16, 5/16, 6/16 },
 }
 def_fern.groups.compostability = 65
-def_fern._mcl_on_bonemealing = function(pointed_thing, placer)
+def_fern._on_bone_meal = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.under
 		local n = minetest.get_node(pos)
 		-- Grow into double fern.
@@ -272,7 +272,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		bottom_groups.flower = 1
 		bottom_groups.place_flowerlike = 1
 		bottom_groups.dig_immediate = 3
-		on_bonemealing = function(pointed_thing, placer)
+		on_bonemealing = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
 			minetest.add_item(pos, "mcl_flowers:"..name)
 			return true
@@ -411,7 +411,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(top)
 			end
 		end,
-		_mcl_on_bonemealing = on_bonemealing,
+		_on_bone_meal = on_bonemealing,
 		groups = bottom_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		mesh = mesh
@@ -450,7 +450,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(bottom)
 			end
 		end,
-		_mcl_on_bonemealing = on_bonemealing,
+		_on_bone_meal = on_bonemealing,
 		groups = top_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})

@@ -34,7 +34,7 @@ local bamboo_def = {
 	wield_image = "mcl_bamboo_bamboo_shoot.png",
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	_mcl_on_bonemealing = function(pointed_thing, placer)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.under
 		return mcl_bamboo.grow_bamboo(pos, true)
 	end,

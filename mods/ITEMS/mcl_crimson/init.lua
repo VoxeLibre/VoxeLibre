@@ -85,7 +85,7 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	light_source = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
-	_mcl_on_bonemealing = function(pointed_thing, player)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.under
 		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
 
@@ -107,7 +107,7 @@ mcl_flowerpots.register_potted_flower("mcl_crimson:warped_fungus", {
 	name = "warped_fungus",
 	desc = S("Warped Fungus"),
 	image = "mcl_crimson_warped_fungus.png",
-	_mcl_on_bonemealing = function(pt,user)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local n = has_nylium_neighbor(pt.under)
 		if n then
 			minetest.set_node(pt.under,n)
@@ -132,7 +132,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
-	_mcl_on_bonemealing = function(pointed_thing, placer)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		return grow_vines(pointed_thing.under, math.random(1, 3),"mcl_crimson:twisting_vines")
 	end,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
@@ -222,7 +222,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
-	_mcl_on_bonemealing = function(pointed_thing, placer)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		return grow_vines(pointed_thing.under, math.random(1, 3),"mcl_crimson:weeping_vines")
 	end,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
@@ -404,7 +404,7 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
-	_mcl_on_bonemealing = function(pt,user)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local node = minetest.get_node(pt.under)
 		spread_nether_plants(pt.under,node)
 		return true
@@ -541,7 +541,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
 	},
 	node_placement_prediction = "",
-	_mcl_on_bonemealing = function(pointed_thing, player)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.under
 		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
 		if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
@@ -702,7 +702,7 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
-	_mcl_on_bonemealing = function(pt,user)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local node = minetest.get_node(pt.under)
 		spread_nether_plants(pt.under,node)
 		return true

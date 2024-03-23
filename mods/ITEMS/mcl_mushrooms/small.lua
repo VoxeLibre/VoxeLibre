@@ -88,7 +88,7 @@ minetest.register_node("mcl_mushrooms:mushroom_brown", {
 	},
 	node_placement_prediction = "",
 	on_place = on_place,
-	_mcl_on_bonemealing = function(pointed_thing, placer)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local schematic = schempath .. "mcl_mushrooms_huge_brown.mts"
 		local offset = vector.new(-3, -1, -3)
 		return apply_bonemeal(pointed_thing.under, schematic, offset)
@@ -120,7 +120,7 @@ minetest.register_node("mcl_mushrooms:mushroom_red", {
 	},
 	node_placement_prediction = "",
 	on_place = on_place,
-	_mcl_on_bonemealing = function(pointed_thing, placer)
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local schematic = schempath .. "mcl_mushrooms_huge_red.mts"
 		local offset = vector.new(-2, -1, -2)
 		return apply_bonemeal(pointed_thing.under, schematic, offset)

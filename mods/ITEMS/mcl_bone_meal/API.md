@@ -3,29 +3,32 @@
 Bonemealing callbacks and particle functions.
 
 
-## _mcl_on_bonemealing(pointed_thing, placer)
+## _on_bone_meal(itemstack, placer, pointed_thing)
 The bone meal API provides a callback definition that nodes can use to
 register a handler that is executed when a bone meal item is used on it.
 
 Nodes that wish to use the bone meal API should in their node registration
-define a callback handler named `_mcl_on_bonemealing`.
+define a callback handler named `_on_bone_meal`.
 
 Note that by registering the callback handler, the node declares that bone
 meal can be used on it and as a result, when the user is not in creative
 mode, the used bone meal is spent and taken from the itemstack passed to
-the `on_place()` handler of the bone meal item used.
+the `on_place()` handler of the bone meal item used regardless of whether
+the bone meal had an effect on the node and regardless of the result of
+the callback handler.
 
 It is for all intents and purposes up to the callback defined in the node to
 decide how to handle the specific effect that bone meal has on that node.
 
-The `_mcl_on_bonemealing` callback handler is a
+The `_on_bone_meal` callback handler is a
 
-  `function(pointed_thing, placer)`
+  `function(itemstack, placer, pointed_thing)`
 
 Its arguments are:
+* `itemstack`: the stack of bonem eal being applied
+* `placer`: ObjectRef of the player who aplied the bone meal, can be nil!
 * `pointed_thing`: exact pointing location (see Minetest API), where the
 	bone meal is applied
-* `placer`: ObjectRef of the player who aplied the bone meal, can be nil!
 
 The return value of the handler function indicates if the bonemealing had
 its intended effect.  If `true`, 'bone meal particles' are spawned at the
@@ -63,6 +66,7 @@ Called when the bone meal is applied anywhere.
 	bone meal is applied
 * `placer`: ObjectRef of the player who aplied the bone meal, can be nil!
 This function is deprecated and will be removed at some time in the future.
+Bone meal is not consumed unless the provided function returns true.
 
 ## mcl_dye.add_bone_meal_particle(pos, def)
 ## mcl_dye.register_on_bone_meal_apply(function(pointed_thing, user))

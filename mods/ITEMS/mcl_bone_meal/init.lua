@@ -87,8 +87,8 @@ mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
 	local consume
 
 	-- If the pointed node can be bonemealed, let it handle the processing.
-	if ndef and ndef._mcl_on_bonemealing then
-		success = ndef._mcl_on_bonemealing(pointed_thing, placer)
+	if ndef and ndef._on_bone_meal then
+		success = ndef._on_bone_meal(itemstack, placer, pointed_thing)
 		consume = true
 	else
 		-- Otherwise try the legacy API.

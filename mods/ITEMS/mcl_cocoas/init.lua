@@ -137,7 +137,7 @@ for i = 1, 3 do
 		on_rotate = false,
 		_mcl_blast_resistance = 3,
 		_mcl_hardness = 0.2,
-		_mcl_on_bonemealing = function(pointed_thing, placer)
+		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
 			return cocoa_grow(pos)
 		end,
@@ -149,7 +149,7 @@ for i = 1, 3 do
 	end
 	if i == 3 then
 		def.drop = "mcl_cocoas:cocoa_beans 3"
-		def._mcl_on_bonemealing = nil
+		def._on_bone_mealing = nil
 	end
 
 	minetest.register_node("mcl_cocoas:cocoa_" .. i, table.copy(def))

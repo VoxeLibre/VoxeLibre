@@ -41,7 +41,7 @@ for i = 0, 2 do
 		},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
-		_mcl_on_bonemealing = function(pointed_thing, placer)
+		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
 			local n = minetest.get_node(pos)
 			-- 75% chance to advance to next stage

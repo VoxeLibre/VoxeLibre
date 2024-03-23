@@ -8,7 +8,7 @@
 -- mcl_core, such as mcl_flowers.
 --
 -- To work around this restriction, the bonemealing callback is defined here
--- and the _mcl_on_bonemealing callback in "mcl_core:dirt_with_grass" node
+-- and the _on_bone_meal callback in "mcl_core:dirt_with_grass" node
 -- definition is overwritten with it.
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
@@ -124,12 +124,12 @@ local olddef = minetest.registered_nodes[nodename]
 if not olddef then
 	minetest.log("warning", "'mcl_core:dirt_with_grass' not registered, cannot add override!")
 else
-	local oldhandler = olddef._mcl_on_bonemealing
-	local newhandler = function (pointed_thing, placer)
+	local oldhandler = olddef._on_bone_meal
+	local newhandler = function(itemstack, placer, pointed_thing)
 		bonemeal_grass(pointed_thing, placer)
 		if oldhandler then
-			oldhandler(pointed_thing, placer)
+			oldhandler(itemstack, placer, pointed_thing)
 		end
 	end
-	minetest.override_item(nodename, {_mcl_on_bonemealing = newhandler})
+	minetest.override_item(nodename, {_on_bone_meal = newhandler})
 end

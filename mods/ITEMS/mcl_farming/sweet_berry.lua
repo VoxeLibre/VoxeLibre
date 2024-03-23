@@ -20,13 +20,13 @@ for i=0, 3 do
 		minetest.swap_node(pos, {name = "mcl_farming:sweet_berry_bush_1"})
 	end
 	if i ~= 3 then
-		on_bonemealing = function(pointed_thing, placer)
+		on_bonemealing = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
 			local node = minetest.get_node(pos)
 			return mcl_farming:grow_plant("plant_sweet_berry_bush", pos, node, 0, true)
 		end
 	else
-		on_bonemealing = function(pointed_thing, placer)
+		on_bonemealing = function(itemstack, placer, pointed_thing)
 			do_berry_drop(pointed_thing.under)
 		end
 	end
@@ -64,7 +64,7 @@ for i=0, 3 do
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 		_mcl_hardness = 0,
-		_mcl_on_bonemealing = on_bonemealing,
+		_on_bone_meal = on_bonemealing,
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 			local pn = clicker:get_player_name()
 			if clicker:is_player() and minetest.is_protected(pos, pn) then
