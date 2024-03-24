@@ -241,9 +241,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			if vector.equals(cart_dir, {x=0, y=0, z=0}) then
 				return
 			end
-			self._velocity = vector.multiply(cart_dir, 3)
-			self._old_pos = nil
-			self._punched = true
+			mcl_minecarts:set_velocity(self, cart_dir)
 			return
 		end
 
@@ -300,9 +298,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		time_from_last_punch = math.min(time_from_last_punch, tool_capabilities.full_punch_interval)
 		local f = 3 * (time_from_last_punch / tool_capabilities.full_punch_interval)
 
-		self._velocity = vector.multiply(cart_dir, f)
-		self._old_pos = nil
-		self._punched = true
+		mcl_minecarts:set_velocity(self, cart_dir, f)
 	end
 
 	cart.on_activate_by_rail = on_activate_by_rail
@@ -470,7 +466,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			return
 		end
 
-		local dir, last_switch = nil, nil
+		local dir, last_switch, restart_pos = nil, nil, nil
 		if not pos then
 			pos = self.object:get_pos()
 		end
@@ -496,6 +492,9 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				local newnode = {name="mcl_minecarts:detector_rail_on", param2 = node.param2}
 				minetest.swap_node(rou_pos, newnode)
 				mesecon.receptor_on(rou_pos)
+			end
+			if node.name == "mcl_minecarts:golden_rail_on" then
+				restart_pos = rou_pos
 			end
 			if node_old.name == "mcl_minecarts:detector_rail_on" then
 				local newnode = {name="mcl_minecarts:detector_rail", param2 = node_old.param2}
@@ -647,6 +646,14 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 		if update.pos then
 			self.object:set_pos(pos)
 		end
+		
+		-- stopped on "mcl_minecarts:golden_rail_on"
+		if vector.equals(vel, {x=0, y=0, z=0}) and restart_pos then
+			local dir = mcl_minecarts:get_start_direction(restart_pos)
+			if dir then
+				mcl_minecarts:set_velocity(self, dir)
+			end
+		end
 	end
 
 	function cart:get_staticdata()
@@ -687,7 +694,15 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	if le then
 		le._railtype = railtype
 	end
-	local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
+	local cart_dir
+	if node.name == "mcl_minecarts:golden_rail_on" then
+		cart_dir = mcl_minecarts:get_start_direction(railpos)
+	end
+	if cart_dir then
+		mcl_minecarts:set_velocity(le, cart_dir)
+	else
+		cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
+	end
 	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
 	local pname = ""
