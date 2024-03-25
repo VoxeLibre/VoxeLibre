@@ -17,6 +17,8 @@ local DEFAULT_COLOR = "#000000"
 
 local SIGN_GLOW_INTENSITY = 14
 
+local signs_editable = minetest.settings:get_bool("mcl_signs_editable", false)
+
 local S = minetest.get_translator(minetest.get_current_modname())
 local F = minetest.formspec_escape
 
@@ -253,6 +255,8 @@ function sign_tpl.on_rightclick(pos, node, clicker, itemstack, pointed_thing)
 		if not minetest.is_creative_enabled(clicker:get_player_name()) then
 			itemstack:take_item()
 		end
+	elseif signs_editable then
+		mcl_signs.show_formspec(clicker, pos)
 	end
 	return itemstack
 end
@@ -279,14 +283,14 @@ local sign_wall = table_merge(sign_tpl,{
 --Formspec
 function mcl_signs.show_formspec(player, pos)
 	if not pos then return end
-	minetest.show_formspec(
-			player:get_player_name(),
-			"mcl_signs:set_text_" .. pos.x .. "_" .. pos.y .. "_" .. pos.z,
-			"size[6,3]textarea[0.25,0.25;6,1.5;text;" ..
-			F(S("Enter sign text:")) .. ";]label[0,1.5;" ..
-			F(S("Maximum line length: 15")) .. "\n" ..
-			F(S("Maximum lines: 4")) ..
-			"]button_exit[0,2.5;6,1;submit;" .. F(S("Done")) .. "]"
+	local old_text = minetest.get_meta(pos):get_string("text")
+	minetest.show_formspec(player:get_player_name(),
+		"mcl_signs:set_text_" .. pos.x .. "_" .. pos.y .. "_" .. pos.z,
+		"size[6,3]textarea[0.25,0.25;6,1.5;text;" ..
+		F(S("Enter sign text:")) .. ";"..minetest.formspec_escape(old_text) .."]label[0,1.5;" ..
+		F(S("Maximum line length: 15")) .. "\n" ..
+		F(S("Maximum lines: 4")) ..
+		"]button_exit[0,2.5;6,1;submit;" .. F(S("Done")) .. "]"
 	)
 end
 
@@ -297,11 +301,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if not pos or not pos.x or not pos.y or not pos.z then
 			return
 		end
-
-		set_signmeta(pos,{
-			text = fields.text,
-		})
-		mcl_signs.update_sign(pos)
+		if signs_editable or minetest.get_meta(pos):get_string("text") == "" then
+			set_signmeta(pos,{
+				text = fields.text,
+			})
+			mcl_signs.update_sign(pos)
+		end
 	end
 end)
 

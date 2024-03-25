@@ -337,6 +337,9 @@ mcl_enable_hamburger (Enable Hamburger) bool true
 # Starting Inventory contents (given directly to the new player) type: bool
 give_starting_inv (Player Starter Pack) bool false
 
+# Allow editing signs
+mcl_signs_editable (Allow Editing Signs) bool false
+
 [Debugging]
 # If enabled, this will show the itemstring of an item in the description.
 mcl_item_id_debug (Item ID Debug) bool false
