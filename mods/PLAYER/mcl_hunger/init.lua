@@ -266,7 +266,7 @@ minetest.register_globalstep(function(dtime)
 		food_tick_timers[player] = food_tick_timer -- update food_tick_timer table
 
 		-- Eating delay code
-		if mcl_hunger.eat_internal[player_name].is_eating or mcl_hunger.eat_internal[player_name]._custom_do_delayed then
+		if mcl_hunger.eat_internal[player_name] and mcl_hunger.eat_internal[player_name].is_eating or mcl_hunger.eat_internal[player_name]._custom_do_delayed then
 			mcl_hunger.eat_internal[player_name].is_eating = true
 			mcl_hunger.eat_internal[player_name].is_eating_no_padding = true
 
