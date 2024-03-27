@@ -61,9 +61,9 @@ for _, row in ipairs(block.dyes) do
 	local sdesc_gtp = row[4]
 	local sdesc_cp = row[5]
 	local sdesc_c = row[6]
-	local ldesc_hc, ldesc_gt, ldesc_cp, ldesc_c
+	local ldesc_hc, ldesc_gt, ldesc_cp, ldesc_c, ldesc_gtp
 	local create_entry
-	local ename_hc, ename_gt, ename_cp, ename_c
+	local ename_hc, ename_gt, ename_cp, ename_c, ename_gtp
 	local ltt_cp = cp_tt
 	if is_canonical then
 		ldesc_hc = hc_desc
