@@ -5590,7 +5590,7 @@ local function register_decorations()
 			num_spawn_by = 1,
 		})
 	end
-	local function register_flower(name, biomes, seed, is_in_flower_forest)
+	local function register_flower(name, biomes, seed, is_in_flower_forest, custom_rarity_mod)
 		if is_in_flower_forest == nil then
 			is_in_flower_forest = true
 		end
@@ -5600,7 +5600,7 @@ local function register_decorations()
 				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 				sidelen = 16,
 				noise_params = {
-					offset = 0.0008,
+					offset = 0.0008 + (custom_rarity_mod or 0),
 					scale = 0.006,
 					spread = {x = 100, y = 100, z = 100},
 					seed = seed,
@@ -5652,6 +5652,9 @@ local function register_decorations()
 
 	register_flower("lily_of_the_valley", nil, 325)
 	register_flower("cornflower", flower_biomes2, 486)
+
+	register_flower("clover", flower_biomes1, 3, false, 0.04)
+	register_flower("fourleaf_clover", flower_biomes1, 13, false, -0.002)
 end
 
 -- Decorations in non-Overworld dimensions
