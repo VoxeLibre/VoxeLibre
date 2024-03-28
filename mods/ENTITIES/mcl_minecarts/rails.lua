@@ -1,6 +1,10 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
+mod.RAIL_GROUPS = {
+	STANDARD = 1,
+	CURVES = 2,
+}
 local S = minetest.get_translator(modname)
 
 local function drop_railcarts(pos)
@@ -73,8 +77,9 @@ local function register_rail_v2(itemstring, def)
 
 	-- Build rail groups
 	local groups = table.copy(RAIL_DEFAULT_GROUPS)
-	if def.groups then table.merge(groups, def.groups) end
+	if def.groups then table_merge(groups, def.groups) end
 	def.groups = groups
+
 
 	-- Build the node definition
 	local ndef = {
@@ -93,9 +98,11 @@ local function register_rail_v2(itemstring, def)
 	if not ndef.inventory_image then ndef.inventory_image = ndef.tiles[1] end
 	if not ndef.wield_image then ndef.wield_image = ndef.tiles[1] end
 
+	print("registering rail "..itemstring.." with definition: "..dump(ndef))
+
 	-- Make registrations
 	minetest.register_node(itemstring, ndef)
-	minetest.register_craft(craft)
+	if craft then minetest.register_craft(craft) end
 end
 mod.register_rail = register_rail_v2
 

@@ -948,7 +948,7 @@ local function register_minecart(def)
 	register_entity(def.entity_id, def)
 	register_craftitem(def.itemstring, def.entity_id, def.description, def.tt_help, def.longdesc, def.usagehelp, def.icon, def.creative)
 	if minetest.get_modpath("doc_identifier") then
-		doc.sub.identifier.register_object(def.entity_id, "craftitems", itemstring)
+		doc.sub.identifier.register_object(def.entity_id, "craftitems", def.itemstring)
 	end
 end
 
