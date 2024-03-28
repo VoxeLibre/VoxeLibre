@@ -698,7 +698,7 @@ local function register_entity(entity_id, def)
 			for d=1, #drop do
 				minetest.add_item(self.object:get_pos(), drop[d])
 			end
-		elseif puncher and killer:is_player() then
+		elseif killer and killer:is_player() then
 			local inv = killer:get_inventory()
 			for d=1, #drop do
 				if not inv:contains_item("main", drop[d]) then
@@ -841,15 +841,16 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	local cart_dir = mcl_minecarts:get_rail_direction(railpos, vector.new(1,0,0), nil, nil, railtype)
 	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
-	-- Call placer
-	if cart._mcl_minecarts_on_place then
-		cart._mcl_minecarts_on_place(self, placer)
-	end
-
 	-- Update static data
 	local le = cart:get_luaentity()
 	if le then
 		le._staticdata = make_staticdata( railtype, railpos, cart_dir )
+	end
+
+	-- Call placer
+	if le._mcl_minecarts_on_place then
+		print("Calling on_place")
+		le._mcl_minecarts_on_place(le, placer)
 	end
 
 	handle_cart_enter(le, railpos)
@@ -1118,6 +1119,20 @@ register_minecart({
 		end
 	end
 })
+function table_metadata(table)
+	return {
+		table = table,
+		set_string = function(self, key, value)
+			print("set_string("..tostring(key)..", "..tostring(value)..")")
+			self.table[key] = tostring(value)
+		end,
+		get_string = function(self, key)
+			if self.table[key] then
+				return tostring(self.table[key])
+			end
+		end
+	}
+end
 
 -- Minecart with Command Block
 register_minecart({
@@ -1139,18 +1154,27 @@ register_minecart({
 	},
 	icon = "mcl_minecarts_minecart_command_block.png",
 	drop = {"mcl_minecarts:minecart"},
-	on_rightclick = nil,
+	on_rightclick = function(self, clicker)
+		self._staticdata.meta = self._staticdata.meta or {}
+		local meta = table_metadata(self._staticdata.meta)
+
+		mesecon.commandblock.handle_rightclick(meta, clicker)
+	end,
 	_mcl_minecarts_on_place = function(self, placer)
-		if mesecon and mesecon.command_block then
-			mesecons.command_block.configure_entity(self, placer)
-		end
+		-- Create a fake metadata object that stores into the cart's staticdata
+		self._staticdata.meta = self._staticdata.meta or {}
+		local meta = table_metadata(self._staticdata.meta)
+
+		mesecon.commandblock.initialize(meta)
+		mesecon.commandblock.place(meta, placer)
 	end,
 	on_activate_by_rail = function(self, timer)
-		if mesecon and mesecond.command_block then
-			mesecons.command_block.resolve_command_entity(self)
-		end
+		self._staticdata.meta = self._staticdata.meta or {}
+		local meta = table_metadata(self._staticdata.meta)
+
+		mesecon.commandblock.action_on(meta, self.object:get_pos())
 	end,
-	creative = false
+	creative = true
 })
 
 -- Minecart with Hopper

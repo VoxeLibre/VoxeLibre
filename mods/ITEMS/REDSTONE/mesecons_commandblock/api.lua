@@ -211,6 +211,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			return
 		end
 		local meta = formspec_metas[fs_id]
+		formspec_metas[fs_id] = nil
 
 		-- Verify the command
 		local check, error_message = check_commands(fields.commands, player:get_player_name())
