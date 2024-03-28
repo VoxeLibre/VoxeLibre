@@ -4,6 +4,7 @@ local S = minetest.get_translator(modname)
 local has_mcl_wip = minetest.get_modpath("mcl_wip")
 
 mcl_minecarts = {}
+local mod = mcl_minecarts
 mcl_minecarts.modpath = minetest.get_modpath(modname)
 mcl_minecarts.speed_max = 10
 mcl_minecarts.check_float_time = 15

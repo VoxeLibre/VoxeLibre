@@ -1,50 +1,114 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+local mod = mcl_minecarts
+local S = minetest.get_translator(modname)
+
+local function drop_railcarts(pos)
+	-- Scan for minecarts in this pos and force them to execute their "floating" check.
+	-- Normally, this will make them drop.
+	local objs = minetest.get_objects_inside_radius(pos, 1)
+	for o=1, #objs do
+		local le = objs[o]:get_luaentity()
+		if le then
+			-- All entities in this mod are minecarts, so this works
+			if string.sub(le.name, 1, 14) == "mcl_minecarts:" then
+				le._last_float_check = mcl_minecarts.check_float_time
+			end
+		end
+	end
+end
+
+local RAIL_DEFAULTS = {
+	is_ground_content = true,
+	paramtype = "light",
+	selection_box = {
+		type = "fixed",
+		fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
+	},
+	stack_max = 64,
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 0.7,
+	_mcl_hardness = 0.7,
+	after_destruct = drop_railcarts,
+}
+local RAIL_DEFAULT_GROUPS = {
+	handy=1, pickaxey=1,
+	attached_node=1,
+	rail=1,
+	connect_to_raillike=minetest.raillike_group("rail"),
+	dig_by_water=0,destroy_by_lava_flow=0,
+	transport=1
+}
+
+local function table_merge(base, overlay)
+	for k,v in pairs(overlay) do
+		base[k] = v
+	end
+end
 
 -- Template rail function
 local function register_rail(itemstring, tiles, def_extras, creative)
-	local groups = {handy=1,pickaxey=1, attached_node=1,rail=1,connect_to_raillike=minetest.raillike_group("rail"),dig_by_water=0,destroy_by_lava_flow=0, transport=1}
+	local groups = table.copy(RAIL_DEFAULT_GROUPS)
 	if creative == false then
 		groups.not_in_creative_inventory = 1
 	end
 	local ndef = {
 		drawtype = "raillike",
 		tiles = tiles,
-		is_ground_content = false,
 		inventory_image = tiles[1],
 		wield_image = tiles[1],
-		paramtype = "light",
-		walkable = false,
-		selection_box = {
-			type = "fixed",
-			fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
-		},
-		stack_max = 64,
 		groups = groups,
-		sounds = mcl_sounds.node_sound_metal_defaults(),
-		_mcl_blast_resistance = 0.7,
-		_mcl_hardness = 0.7,
-		after_destruct = function(pos)
-			-- Scan for minecarts in this pos and force them to execute their "floating" check.
-			-- Normally, this will make them drop.
-			local objs = minetest.get_objects_inside_radius(pos, 1)
-			for o=1, #objs do
-				local le = objs[o]:get_luaentity()
-				if le then
-					-- All entities in this mod are minecarts, so this works
-					if string.sub(le.name, 1, 14) == "mcl_minecarts:" then
-						le._last_float_check = mcl_minecarts.check_float_time
-					end
-				end
-			end
-		end,
 	}
-	if def_extras then
-		for k,v in pairs(def_extras) do
-			ndef[k] = v
-		end
-	end
+	table_merge(ndef, RAIL_DEFAULTS)
+	ndef.walkable = false -- Old behavior
+	table_merge(ndef, def_extras)
 	minetest.register_node(itemstring, ndef)
 end
+local function register_rail_v2(itemstring, def)
+	assert(def.tiles)
+
+	-- Extract out the craft recipe
+	local craft = def.craft
+	def.craft = nil
+
+	-- Build rail groups
+	local groups = table.copy(RAIL_DEFAULT_GROUPS)
+	if def.groups then table.merge(groups, def.groups) end
+	def.groups = groups
+
+	-- Build the node definition
+	local ndef = {
+		drawtype = "nodebox",
+		node_box = {
+			type = "fixed",
+			fixed = {
+				{-8/16, -8/16, -8/16, 8/16, -7/16, 8/15}
+			}
+		}
+	}
+	table_merge(ndef, RAIL_DEFAULTS)
+	table_merge(ndef, def)
+
+	-- Add sensible defaults
+	if not ndef.inventory_image then ndef.inventory_image = ndef.tiles[1] end
+	if not ndef.wield_image then ndef.wield_image = ndef.tiles[1] end
+
+	-- Make registrations
+	minetest.register_node(itemstring, ndef)
+	minetest.register_craft(craft)
+end
+mod.register_rail = register_rail_v2
+
+-- Setup shared text
+local railuse = S(
+	"Place them on the ground to build your railway, the rails will automatically connect to each other and will"..
+	" turn into curves, T-junctions, crossings and slopes as needed."
+)
+mod.text = mod.text or {}
+mod.text.railuse = railuse
+
+-- Register rails
+dofile(modpath.."/rails/standard.lua")
 
 -- Redstone rules
 local rail_rules_long =
@@ -66,8 +130,6 @@ local rail_rules_long =
 
 local rail_rules_short = mesecon.rules.pplate
 
-local railuse = S("Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.")
-
 -- Normal rail
 register_rail("mcl_minecarts:rail",
 	{"default_rail.png", "default_rail_curved.png", "default_rail_t_junction.png", "default_rail_crossing.png"},
@@ -86,7 +148,8 @@ register_rail("mcl_minecarts:golden_rail",
 		description = S("Powered Rail"),
 		_tt_help = S("Track for minecarts").."\n"..S("Speed up when powered, slow down when not powered"),
 		_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts."),
-		_doc_items_usagehelp = railuse .. "\n" .. S("Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power."),
+		_doc_items_usagehelp = railuse .. "\n" .. S("Without redstone power, the rail will brake minecarts. To make this rail accelerate"..
+			" minecarts, power it with redstone power."),
 		_rail_acceleration = -3,
 		mesecons = {
 			conductor = {
@@ -247,15 +310,6 @@ register_rail("mcl_minecarts:detector_rail_on",
 
 
 -- Crafting
-minetest.register_craft({
-	output = "mcl_minecarts:rail 16",
-	recipe = {
-		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
-		{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
-		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
-	}
-})
-
 minetest.register_craft({
 	output = "mcl_minecarts:golden_rail 6",
 	recipe = {
