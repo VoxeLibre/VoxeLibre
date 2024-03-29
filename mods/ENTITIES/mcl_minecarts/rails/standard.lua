@@ -21,24 +21,24 @@ local west  = vector.new(-1, 0, 0); local W = 8
 
 local HORIZONTAL_CONNECTIONS = { north, south, east, west }
 local HORIZONTAL_STANDARD_MAPPINGS = {
-	[N]       = "_ns",
-	[S]       = "_ns",
-	[N+S]     = "_ns",
+	[N]       = { "", 0 },
+	[S]       = { "", 0 },
+	[N+S]     = { "", 0 },
 
-	[E]       = "_ew",
-	[W]       = "_ew",
-	[E+W]     = "_ew",
+	[E]       = { "", 1 },
+	[W]       = { "", 1 },
+	[E+W]     = { "", 1 },
 }
 local HORIZONTAL_CURVES_MAPPINGS = {
-	[N+E]     = "_corner_ne",
-	[N+W]     = "_corner_nw",
-	[S+E]     = "_corner_se",
-	[S+W]     = "_corner_sw",
+	[N+E]     = { "_corner", 3 },
+	[N+W]     = { "_corner", 2 },
+	[S+E]     = { "_corner", 0 },
+	[S+W]     = { "_corner", 1 },
 
-	[N+E+W]   = "_tee_new_off",
-	[S+E+W]   = "_tee_sew_off",
-	[N+S+E]   = "_tee_nse_off",
-	[N+S+W]   = "_tee_nsw_off",
+	[N+E+W]   = { "_tee_off", 3 },
+	[S+E+W]   = { "_tee_off", 1 },
+	[N+S+E]   = { "_tee_off", 0 },
+	[N+S+W]   = { "_tee_off", 2 },
 
 --	[N+S+E+W] = "_cross",
 }
@@ -80,10 +80,11 @@ local function update_rail_connections(pos, update_neighbors)
 
 	local mapping = mappings[connections]
 	if mapping then
-		local new_name = nodedef._mcl_minecarts.base_name..mapping
-		if new_name ~= node.name then
-			print("swapping "..node.name.." for "..new_name.." at "..tostring(pos))
+		local new_name = nodedef._mcl_minecarts.base_name..mapping[1]
+		if new_name ~= node.name or node.param2 ~= mapping[2] then
+			print("swapping "..node.name.." for "..new_name..","..tostring(mapping[2]).." at "..tostring(pos))
 			node.name = new_name
+			node.param2 = mapping[2]
 			minetest.swap_node(pos, node)
 		end
 	end
@@ -100,70 +101,66 @@ local BASE_DEF = {
 	groups = {
 		rail = mod.RAIL_GROUPS.CURVES,
 	},
+	paramtype = "light",
+	paramtype2 = "facedir",
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		update_rail_connections(pos, true)
 	end,
-}
-local CORNERS = {
-	{ "nw", "I" },
-	{ "ne", "R90" },
-	{ "se", "R180" },
-	{ "sw", "R270" },
-}
-local TEES = {
-	{ "nse", "I", "FX" },
-	{ "nsw", "R90", "FXR90" },
-	{ "new", "R180", "FY" },
-	{ "sew", "R270", "FYR90" },
 }
 local function register_curves_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
 	table_merge(base_def,{
 		_mcl_minecarts = { base_name = base_name },
-		drop = base_name.."_ns",
+		drop = base_name,
 	})
 	table_merge(base_def, def)
 
 	-- Register the base node
-	mod.register_rail(base_name.."_ns", table_merge(table.copy(base_def),{
-		tiles = {"default_gravel.png^"..tiles[1]},
+	mod.register_rail(base_name, table_merge(table.copy(base_def),{
+		tiles = { tiles[1] },
 	}))
 	BASE_DEF.craft = nil
 
-	-- East-west variant
-	mod.register_rail(base_name.."_ew", table_merge(table.copy(base_def),{
-		tiles = { "default_gravel.png^[transformR90:"..tiles[1].."" },
+	-- Corner variants
+	mod.register_rail(base_name.."_corner", table_merge(table.copy(base_def),{
+		tiles = { tiles[2] },
 		groups = {
 			not_in_creative_inventory = 1,
 		},
 	}))
 
-	-- Corner variants
-	for _,c in ipairs(CORNERS) do
-		mod.register_rail(base_name.."_corner_"..c[1], table_merge(table.copy(base_def),{
-			tiles = { "default_gravel.png^[transform"..c[2]..":"..tiles[2] },
-			groups = {
-				not_in_creative_inventory = 1,
-			},
-		}))
-	end
-
 	-- Tee variants
-	for _,t in ipairs(TEES) do
-		mod.register_rail(base_name.."_tee_"..t[1].."_off", table_merge(table.copy(base_def),{
-			tiles = { "default_gravel.png^[transform"..t[2]..":"..tiles[3] },
-			groups = {
-				not_in_creative_inventory = 1,
-			},
-		}))
-		mod.register_rail(base_name.."_tee_"..t[1].."_on", table_merge(table.copy(base_def),{
-			tiles = { "default_gravel.png^[transform"..t[3]..":"..tiles[3] },
-			groups = {
-				not_in_creative_inventory = 1,
-			},
-		}))
-	end
+	mod.register_rail(base_name.."_tee_off", table_merge(table.copy(base_def),{
+		tiles = { tiles[3] },
+		groups = {
+			not_in_creative_inventory = 1,
+		},
+		mesecons = {
+			effector = {
+				action_on = function(pos, node)
+					local new_node = {name = base_name.."_tee_on", param2 = node.param2}
+					minetest.swap_node(pos, new_node)
+				end,
+				rules = mesecon.rules.alldirs,
+			}
+		}
+	}))
+	mod.register_rail(base_name.."_tee_on", table_merge(table.copy(base_def),{
+		tiles = { tiles[4] },
+		groups = {
+			not_in_creative_inventory = 1,
+		},
+		mesecons = {
+			effector = {
+				action_off = function(pos, node)
+					local new_node = {name = base_name.."_tee_off", param2 = node.param2}
+					minetest.swap_node(pos, new_node)
+				end,
+				rules = mesecon.rules.alldirs,
+			}
+		}
+	}))
 
 	-- Cross variant
 	--[[
@@ -176,9 +173,15 @@ local function register_curves_rail(base_name, tiles, def)
 	]]
 end
 mod.register_curves_rail = register_curves_rail
-register_curves_rail("mcl_minecarts:rail", {"default_rail.png", "default_rail_curved.png", "default_rail_t_junction.png", "default_rail_crossing.png"},{
+register_curves_rail("mcl_minecarts:rail_v2", {
+	"default_rail.png", 
+	"default_rail_curved.png",
+	"default_rail_t_junction.png",
+	"default_rail_t_junction_on.png",
+	"default_rail_crossing.png"
+},{
 	craft = {
-		output = "mcl_minecarts:rail_ns 16",
+		output = "mcl_minecarts:rail_v2 16",
 		recipe = {
 			{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
 			{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
