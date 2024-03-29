@@ -94,7 +94,7 @@ mod.update_rail_connections = update_rail_connections
 -- Now get the translator after we have finished using S for other things
 local S = minetest.get_translator(modname)
 local BASE_DEF = {
-	description = S("Rail"),
+	description = S("New Rail"), -- Temporary name to make debugging easier
 	_tt_help = S("Track for minecarts"),
 	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
 	_doc_items_usagehelp = mod.text.railuse,
@@ -160,6 +160,10 @@ local function register_curves_rail(base_name, tiles, def)
 				rules = mesecon.rules.alldirs,
 			}
 		}
+	}))
+	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(base_def),{
+		description = S("Sloped Rail"), -- Temporary name to make debugging easier
+		tiles = { tiles[1] },
 	}))
 
 	-- Cross variant

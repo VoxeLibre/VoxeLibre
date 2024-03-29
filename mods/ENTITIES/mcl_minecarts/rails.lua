@@ -80,7 +80,6 @@ local function register_rail_v2(itemstring, def)
 	if def.groups then table_merge(groups, def.groups) end
 	def.groups = groups
 
-
 	-- Build the node definition
 	local ndef = {
 		drawtype = "nodebox",
@@ -105,6 +104,49 @@ local function register_rail_v2(itemstring, def)
 	if craft then minetest.register_craft(craft) end
 end
 mod.register_rail = register_rail_v2
+
+
+local function register_rail_sloped(itemstring, def)
+	assert(def.tiles)
+
+	-- Build rail groups
+	local groups = table.copy(RAIL_DEFAULT_GROUPS)
+	if def.groups then table_merge(groups, def.groups) end
+	def.groups = groups
+
+	-- Build the node definition
+	local ndef = table.copy(RAIL_DEFAULTS)
+	table_merge(ndef,{
+		drawtype = "mesh",
+		mesh = "sloped_track.obj",
+		collision_box = {
+			type = "fixed",
+			fixed = {
+				{ -0.5, -0.5, -0.5,  0.5,  0.0,  0.5 },
+				{ -0.5,  0.0,  0.0,  0.5,  0.5,  0.5 }
+			}
+		},
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{ -0.5, -0.5, -0.5,  0.5,  0.0,  0.5 },
+				{ -0.5,  0.0,  0.0,  0.5,  0.5,  0.5 }
+			}
+		}
+	})
+	table_merge(ndef, def)
+
+	-- Add sensible defaults
+	if not ndef.inventory_image then ndef.inventory_image = ndef.tiles[1] end
+	if not ndef.wield_image then ndef.wield_image = ndef.tiles[1] end
+
+	print("registering sloped rail "..itemstring.." with definition: "..dump(ndef))
+
+	-- Make registrations
+	minetest.register_node(itemstring, ndef)
+	if craft then minetest.register_craft(craft) end
+end
+mod.register_rail_sloped = register_rail_sloped
 
 -- Setup shared text
 local railuse = S(
