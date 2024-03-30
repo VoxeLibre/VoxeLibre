@@ -225,22 +225,6 @@ register_rail("mcl_minecarts:golden_rail_on",
 				onstate = "mcl_minecarts:golden_rail_on",
 				rules = rail_rules_long,
 			},
-			effector = {
-				action_on = function(pos, node)
-					local dir = mcl_minecarts:get_start_direction(pos)
-					if not dir then return end
-					local objs = minetest.get_objects_inside_radius(pos, 1)
-					for _, o in pairs(objs) do
-						local l = o:get_luaentity()
-						local v = o:get_velocity()
-						if l and string.sub(l.name, 1, 14) == "mcl_minecarts:"
-						and v and vector.equals(v, vector.zero())
-						then
-							mcl_minecarts:set_velocity(l, dir)
-						end
-					end
-end,
-			},
 		},
 		drop = "mcl_minecarts:golden_rail",
 	},
