@@ -110,6 +110,13 @@ local diagonal_convert = {
 function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	local pos = vector.round(pos_)
 
+	-- Handle new track types that have track-specific direction handler
+	local node = minetest.get_node(pos)
+	local node_def = minetest.registered_nodes[node.name]
+	if node_def and node_def._mcl_minecarts and node_def._mcl_minecarts.get_next_dir then
+		return node_def._mcl_minecarts.get_next_dir(pos, dir, node)
+	end
+
 	-- Diagonal conversion
 	local checks = rail_checks
 	if dir.x ~= 0 and dir.z ~= 0 then
