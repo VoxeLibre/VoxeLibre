@@ -15,40 +15,55 @@ local function table_merge(base, overlay)
 end
 
 local north = vector.new( 0, 0, 1); local N = 1
-local south = vector.new( 0, 0,-1); local S = 2 -- Note: this is overwritten below
+local south = vector.new( 0, 0,-1); local S = 2 -- Note: S is overwritten below with the translator
 local east  = vector.new( 1, 0, 0); local E = 4
 local west  = vector.new(-1, 0, 0); local W = 8
 
-local HORIZONTAL_CONNECTIONS = { north, south, east, west }
-local HORIZONTAL_STANDARD_MAPPINGS = {
-	[N]       = { "", 0 },
-	[S]       = { "", 0 },
-	[N+S]     = { "", 0 },
+local CONNECTIONS = { north, south, east, west }
+local HORIZONTAL_STANDARD_RULES = {
+	[N]       = { "", 0, mask = N, score = 1 },
+	[S]       = { "", 0, mask = S, score = 1 },
+	[N+S]     = { "", 0, mask = N+S, score = 2 },
 
-	[E]       = { "", 1 },
-	[W]       = { "", 1 },
-	[E+W]     = { "", 1 },
+	[E]       = { "", 1, mask = E, score = 1 },
+	[W]       = { "", 1, mask = W, score = 1 },
+	[E+W]     = { "", 1, mask = E+W, score = 2 },
 }
-local HORIZONTAL_CURVES_MAPPINGS = {
-	[N+E]     = { "_corner", 3 },
-	[N+W]     = { "_corner", 2 },
-	[S+E]     = { "_corner", 0 },
-	[S+W]     = { "_corner", 1 },
 
-	[N+E+W]   = { "_tee_off", 3 },
-	[S+E+W]   = { "_tee_off", 1 },
-	[N+S+E]   = { "_tee_off", 0 },
-	[N+S+W]   = { "_tee_off", 2 },
+local HORIZONTAL_CURVES_RULES = {
+	[N+E]     = { "_corner", 3, name = "ne corner", mask = N+E, score = 3 },
+	[N+W]     = { "_corner", 2, name = "nw corner", mask = N+W, score = 3 },
+	[S+E]     = { "_corner", 0, name = "se corner", mask = S+E, score = 3 },
+	[S+W]     = { "_corner", 1, name = "sw corner", mask = S+W, score = 3 },
 
---	[N+S+E+W] = "_cross",
+	[N+E+W]   = { "_tee_off", 3, mask = N+E+W, score = 4 },
+	[S+E+W]   = { "_tee_off", 1, mask = S+E+W, score = 4 },
+	[N+S+E]   = { "_tee_off", 0, mask = N+S+E, score = 4 },
+	[N+S+W]   = { "_tee_off", 2, mask = N+S+W, score = 4 },
+
+	[N+S+E+W] = { "_cross", 0, mask = N+S+E+W, score = 5 },
 }
-table_merge(HORIZONTAL_CURVES_MAPPINGS, HORIZONTAL_STANDARD_MAPPINGS)
-local HORIZONTAL_MAPPINGS_BY_RAIL_GROUP = {
-	[1] = HORIZONTAL_STANDARD_MAPPINGS,
-	[2] = HORIZONTAL_CURVES_MAPPINGS,
+
+table_merge(HORIZONTAL_CURVES_RULES, HORIZONTAL_STANDARD_RULES)
+local HORIZONTAL_RULES_BY_RAIL_GROUP = {
+	[1] = HORIZONTAL_STANDARD_RULES,
+	[2] = HORIZONTAL_CURVES_RULES,
 }
-print(dump(HORIZONTAL_MAPPINGS_BY_RAIL_GROUP))
-local DIRECTION_BITS = {N, S, E, W}
+
+local function check_connection_rule(pos, connections, rule)
+	-- All bits in the mask must be set for the connection to be possible
+	if bit.band(rule.mask,connections) ~= rule.mask then
+		--print("Mask mismatch ("..tostring(rule.mask)..","..tostring(connections)..")")
+		return false
+	end
+
+	-- If there is an allow filter, that mush also return true
+	if rule.allow and rule.allow(rule, connections, pos) then
+		return false
+	end
+
+	return true
+end
 
 local function update_rail_connections(pos, update_neighbors)
 	local node = minetest.get_node(pos)
@@ -59,38 +74,105 @@ local function update_rail_connections(pos, update_neighbors)
 	end
 
 	-- Get the mappings to use
-	local mappings = HORIZONTAL_MAPPINGS_BY_RAIL_GROUP[nodedef.groups.rail]
-	if not mappings then return end
+	local rules = HORIZONTAL_RULES_BY_RAIL_GROUP[nodedef.groups.rail]
+	if nodedef._mcl_minecarts and nodedef._mcl_minecarts.connection_rules then -- Custom connection rules
+		rules = nodedef._mcl_minecarts.connection_rules
+	end
+	if not rules then return end
 
 	-- Horizontal rules, Check for rails on each neighbor
 	local connections = 0
-	for i = 1,4 do
-		local neighbor = vector.add(pos, HORIZONTAL_CONNECTIONS[i])
+	for i,dir in ipairs(CONNECTIONS) do
+		local neighbor = vector.add(pos, dir)
 		local node = minetest.get_node(neighbor)
 		local nodedef = minetest.registered_nodes[node.name]
 
-		if nodedef.groups.rail then
-			connections = connections + DIRECTION_BITS[i]
-		end
-
-		if update_neighbors then
-			update_rail_connections(neighbor, false)
+		-- TODO: modify to only allow connections to the ends of rails (direction rules)
+		if (nodedef.groups or {}).rail and nodedef._mcl_minecarts and nodedef._mcl_minecarts.get_next_dir then
+			local diff = vector.direction(neighbor, pos)
+			local next_dir = nodedef._mcl_minecarts.get_next_dir(neighbor, diff, node)
+			if next_dir == diff then
+				connections = connections + bit.lshift(1,i - 1)
+			end
 		end
 	end
 
-	local mapping = mappings[connections]
-	if mapping then
-		local new_name = nodedef._mcl_minecarts.base_name..mapping[1]
-		if new_name ~= node.name or node.param2 ~= mapping[2] then
-			print("swapping "..node.name.." for "..new_name..","..tostring(mapping[2]).." at "..tostring(pos))
-			node.name = new_name
-			node.param2 = mapping[2]
-			minetest.swap_node(pos, node)
+	-- Select the best allowed connection
+	local rule = nil
+	local score = 0
+	for k,r in pairs(rules) do
+		if check_connection_rule(pos, connections, r) then
+			if r.score > score then
+				--print("Best rule so far is "..dump(r))
+				score = r.score
+				rule = r
+			end
 		end
+	end
+	if not rule then return end
+
+	-- Apply the mapping
+	local new_name = nodedef._mcl_minecarts.base_name..rule[1]
+	if new_name ~= node.name or node.param2 ~= rule[2] then
+		print("swapping "..node.name.." for "..new_name..","..tostring(rule[2]).." at "..tostring(pos))
+		node.name = new_name
+		node.param2 = rule[2]
+		minetest.swap_node(pos, node)
+	end
+
+	if rule.after then
+		rule.after(rule, pos, connections)
 	end
 end
 mod.update_rail_connections = update_rail_connections
 
+local function rail_dir_straight(pos, dir, node)
+	if node.param2 == 0 or node.param2 == 2 then
+		if vector.equals(dir, north) then
+			return north
+		else
+			return south
+		end
+	else
+		if vector.equals(dir,east) then
+			return east
+		else
+			return west
+		end
+	end
+end
+local function rail_dir_curve(pos, dir, node)
+	if node.param2 == 0 then
+		-- South and East
+		if vector.equals(dir, south) then return south end
+		if vector.equals(dir, north) then return east end
+		if vector.equals(dir, west) then return south end
+		if vector.equals(dir, east) then return east end
+	elseif node.param2 == 1 then
+		-- South and West
+		if vector.equals(dir, south) then return south end
+		if vector.equals(dir, north) then return west end
+		if vector.equals(dir, west) then return west end
+		if vector.equals(dir, east) then return south end
+	elseif node.param2 == 2 then
+		-- North and West
+		if vector.equals(dir, south) then return west end
+		if vector.equals(dir, north) then return north end
+		if vector.equals(dir, west) then return west end
+		if vector.equals(dir, east) then return north end
+	elseif node.param2 == 3 then
+		-- North and East
+		if vector.equals(dir, south) then return east end
+		if vector.equals(dir, north) then return north end
+		if vector.equals(dir, west) then return north end
+		if vector.equals(dir, east) then return east end
+	end
+end
+
+local function rail_dir_cross(pos, dir, node)
+	-- Always continue in the same direction. No direction changes allowed
+	return dir
+end
 -- Now get the translator after we have finished using S for other things
 local S = minetest.get_translator(modname)
 local BASE_DEF = {
@@ -119,12 +201,18 @@ local function register_curves_rail(base_name, tiles, def)
 	-- Register the base node
 	mod.register_rail(base_name, table_merge(table.copy(base_def),{
 		tiles = { tiles[1] },
+		_mcl_minecarts = {
+			get_next_dir = rail_dir_straight
+		}
 	}))
 	BASE_DEF.craft = nil
 
 	-- Corner variants
 	mod.register_rail(base_name.."_corner", table_merge(table.copy(base_def),{
 		tiles = { tiles[2] },
+		_mcl_minecarts = {
+			get_next_dir = rail_dir_curve,
+		},
 		groups = {
 			not_in_creative_inventory = 1,
 		},
@@ -163,18 +251,19 @@ local function register_curves_rail(base_name, tiles, def)
 	}))
 	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(base_def),{
 		description = S("Sloped Rail"), -- Temporary name to make debugging easier
+		_mcl_minecarts = {
+			get_next_dir = rail_dir_cross,
+		},
 		tiles = { tiles[1] },
 	}))
 
 	-- Cross variant
-	--[[
 	mod.register_rail(base_name.."_cross", table_merge(table.copy(base_def),{
-		tiles = { tiles[4] },
+		tiles = { tiles[5] },
 		groups = {
 			not_in_creative_inventory = 1,
 		},
 	}))
-	]]
 end
 mod.register_curves_rail = register_curves_rail
 register_curves_rail("mcl_minecarts:rail_v2", {
