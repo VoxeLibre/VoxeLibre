@@ -36,6 +36,8 @@ mcl_vars.MAP_BLOCKSIZE = math.max(1, minetest.MAP_BLOCKSIZE or 16)
 mcl_vars.mapgen_limit = math.max(1, tonumber(minetest.get_mapgen_setting("mapgen_limit")) or 31000)
 mcl_vars.MAX_MAP_GENERATION_LIMIT = math.max(1, minetest.MAX_MAP_GENERATION_LIMIT or 31000)
 
+-- Central chunk is offset from 0,0,0 coordinates by 32 nodes (2 blocks)
+-- See more in https://git.minetest.land/MineClone2/MineClone2/wiki/World-structure%3A-positions%2C-boundaries%2C-blocks%2C-chunks%2C-dimensions%2C-barriers-and-the-void
 local central_chunk_offset = -math.floor(mcl_vars.chunksize / 2)
 
 mcl_vars.central_chunk_offset_in_nodes = central_chunk_offset * mcl_vars.MAP_BLOCKSIZE

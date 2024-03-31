@@ -2,8 +2,6 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
-local SCAN_2_MAP_CHUNKS = true -- slower but helps to find more suitable places
-
 -- Localize functions for better performance
 local abs = math.abs
 local ceil = math.ceil
@@ -16,21 +14,90 @@ local add = vector.add
 local mul = vector.multiply
 local sub = vector.subtract
 
+local log = function(level, message)
+	minetest.log(level, string.format("[mcl_portals] %s", message))
+end
+
 -- Setup
+
+-- === CAUTION ===
+-- the following values: SEARCH_DISTANCE_OVERWORLD, SEARCH_DISTANCE_NETHER,
+-- BUILD_DISTANCE_XY, W_MAX, and NETHER_COMPRESSION have been set to together
+-- guarantee that standard 2-wide portals will never split into two exits.
+-- Splitting will still occur rarely for portals in the overworld wider than 2,
+-- will still be likely for portals in the nether wider than 16, and guaranteed
+-- for portals in the nether wider than 18.
+-- Changing one value without changing the others might have uninteded
+-- consequences. You have been warned :-)
+
+-- Distance compression factor for the nether. If you change this, you might
+-- want to recalculate SEARCH_DISTANCE_* and W_MAX too.
+local NETHER_COMPRESSION		= 8
+-- Maximum distance from the ideal build spot where active parts of portals are
+-- allowed to be placed. This would ideally be smaller (16 as in MC), but for mapgen
+-- performance reasons, the search area is clipped by chunk, so if very unlucky
+-- the actual area could be a quarter of the expected size.
+local BUILD_DISTANCE_XZ			= 24
+-- The following two values define distance to search existing portal exits for.
+-- Roughly corresponds to Minecraft's "8 chunks away" for the overworld (17
+-- chunks centered on the ideal position), and "1 chunk away" for the nether (3
+-- chunks centered on the ideal position).
+-- The search is boundary-inclusive, meaning for position 0 in the overworld,
+-- search will be from -128 to 128.
+-- If you change this, keep in mind our exits table keying divisor is 256, so
+-- small changes might have outsize performance impact. With 128, at most 4
+-- buckets will be searched.
+local SEARCH_DISTANCE_NETHER		= BUILD_DISTANCE_XZ + 1 -- 25
+local SEARCH_DISTANCE_OVERWORLD		= SEARCH_DISTANCE_NETHER * NETHER_COMPRESSION -- 200
+-- Limits of portal sizes (includes the frame)
 local W_MIN, W_MAX			= 4, 23
 local H_MIN, H_MAX			= 5, 23
+-- Limits to active nodes (mcl_portals:portal)
 local N_MIN, N_MAX			= 6, (W_MAX-2) * (H_MAX-2)
-local TRAVEL_X, TRAVEL_Y, TRAVEL_Z	= 8, 1, 8
 local LIM_MIN, LIM_MAX			= mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
 local PLAYER_COOLOFF, MOB_COOLOFF	= 3, 14 -- for this many seconds they won't teleported again
 local TOUCH_CHATTER_TIME		= 1 -- prevent multiple teleportation attempts caused by multiple portal touches, for this number of seconds
 local CHATTER_US			= TOUCH_CHATTER_TIME * 1000000
 local DELAY				= 3 -- seconds before teleporting in Nether portal in Survival mode (4 minus ABM interval time)
-local DISTANCE_MAX			= 128
+-- Speeds up the search by allowing some non-air nodes to be replaced when
+-- looking for acceptable portal locations. Setting this lower means the
+-- algorithm will do more searching. Even at 0, there is no risk of finding
+-- nothing - the most airy location will be used as fallback anyway.
+local ACCEPTABLE_PORTAL_REPLACES	= 2
+
+
 local PORTAL				= "mcl_portals:portal"
 local OBSIDIAN				= "mcl_core:obsidian"
-local O_Y_MIN, O_Y_MAX			= max(mcl_vars.mg_overworld_min, -31), min(mcl_vars.mg_overworld_max, 2048)
-local N_Y_MIN, N_Y_MAX			= mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_top_min - H_MIN
+
+-- Dimension-specific Y boundaries for portal exit search.  Portal search
+-- algorithm will only ever look at two vertically offset chunks.  It will
+-- select whether the second chunk is up or down based on which side has more
+-- "valid" Y-space (where valid is defined as space between *_Y_MIN and
+-- *_Y_MAX).
+-- For nether, selection of the boundaries doesn't matter, because it fits
+-- entirely within two chunks.
+local N_Y_MIN				= mcl_vars.mg_lava_nether_max + 1
+local N_Y_MAX				= mcl_vars.mg_bedrock_nether_top_min
+local N_Y_SPAN				= N_Y_MAX - N_Y_MIN
+-- Overworld however is much taller. Let's select the boundaries so that we
+-- maximise the Y-space (so align with chunk boundary), and also pick an area
+-- that has a good chance of having "find_nodes_in_area_under_air" return
+-- something (so ideally caves, or surface, not just sky).
+-- For the bottom bound, we try for the first chunk boundary in the negative Ys (-32).
+local O_Y_MIN				= max(mcl_vars.mg_lava_overworld_max + 1, mcl_vars.central_chunk_offset_in_nodes)
+-- Since O_Y_MIN is also used as a base for converting coordinates, we need to
+-- make sure the top bound is high enough to encompass entire nether height. In
+-- v7 mapgen nether is flatter than overworld, so this results in a span of
+-- exactly two chunks.
+-- Due to the O_Y_MIN being used as a base, the preferred build locations will
+-- be in the bottom part of the overworld range (in v7 around -32 to 61), and
+-- the high locations will be used as a fallback.  If we see too many
+-- underground portals, we may need to shift just this base upwards (new setting).
+local O_Y_SPAN				= max(N_Y_SPAN, 2 * mcl_vars.chunk_size_in_nodes - 1)
+local O_Y_MAX				= min(mcl_vars.mg_overworld_max_official, O_Y_MIN + O_Y_SPAN)
+
+log("verbose", string.format("N_Y_MIN=%.1f, N_Y_MAX=%.1f, O_Y_MIN=%.1f, O_Y_MAX=%.1f", N_Y_MIN, N_Y_MAX, O_Y_MIN, O_Y_MAX))
+log("verbose", string.format("Nether span is %.1f, overworld span is %.1f", N_Y_MAX-N_Y_MIN+1, O_Y_MAX-O_Y_MIN+1))
 
 -- Alpha and particles
 local node_particles_allowed = minetest.settings:get("mcl_node_particles") or "none"
@@ -47,11 +114,26 @@ end
 
 local chatter = {}
 
-local queue = {}
-local chunks = {}
+-- Searching for portal exits, finding locations and building portals can be time consuming.
+-- We can queue origins together, on the assumption they will all go to the same place in the end.
+local origin_queue = {}
+-- At the same time, we never want to build two portals in the same area at the
+-- same time, because they will interfere and we can end up with broken portals,
+-- possibly stranding the player. We won't use queue here - double queueing can
+-- lead to deadlocks.  We will instead interrupt the portal building, and rely
+-- on the ABM to try again later.
+local chunk_building = {}
 
 local storage = mcl_portals.storage
+
+-- `exits` is a table storing portal exits (both nether or overworld) bucketed
+-- by 256x256 areas (with each bucket containing many exits, and covering entire range of Y).
+-- An exit is a location of ignited PORTAL block, with another PORTAL block above
+-- and obsidian below. Thus each portal will register at minimum two exits, but more
+-- for bigger portals up to the maximum of W_MAX-2.
+-- This table should be maintained using `add_exits`, `remove_exits` and `find_exit`.
 local exits = {}
+
 local keys = minetest.deserialize(storage:get_string("nether_exits_keys") or "return {}") or {}
 for _, key in pairs(keys) do
 	local n = tonumber(key)
@@ -59,14 +141,6 @@ for _, key in pairs(keys) do
 		exits[key] = minetest.deserialize(storage:get_string("nether_exits_"..key) or "return {}") or {}
 	end
 end
-minetest.register_on_shutdown(function()
-	local keys={}
-	for key, data in pairs(exits) do
-		storage:set_string("nether_exits_"..tostring(key), minetest.serialize(data))
-		keys[#keys+1] = key
-	end
-	storage:set_string("nether_exits_keys", minetest.serialize(keys))
-end)
 
 local get_node = mcl_vars.get_node
 local set_node = minetest.set_node
@@ -74,7 +148,6 @@ local registered_nodes = minetest.registered_nodes
 local is_protected = minetest.is_protected
 local find_nodes_in_area = minetest.find_nodes_in_area
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
-local log = minetest.log
 local pos_to_string = minetest.pos_to_string
 local is_area_protected = minetest.is_area_protected
 local get_us_time = minetest.get_us_time
@@ -92,15 +165,19 @@ local limits = {
 	},
 }
 
-local function save_portal_pos(pos,target_pos)
-	local p1 = vector.offset(pos,-2,-1,-2)
-	local p2 = vector.offset(pos,2,15,2)
+-- Deletes exit from this portal's node storage.
+local function delete_portal_pos(pos)
+	local p1 = vector.offset(pos,-5,-1,-5)
+	local p2 = vector.offset(pos,5,5,5)
 	local nn = find_nodes_in_area(p1,p2,{"mcl_portals:portal"})
 	for _,p in pairs(nn) do
-		minetest.get_meta(p):set_string("target_portal",minetest.hash_node_position(target_pos))
+		minetest.get_meta(p):set_string("target_portal","")
 	end
 end
 
+-- Gets exit for this portal from node storage. After Jan 2024 this is only used
+-- for old portals, so that players don't get surprises. New portals, or portals that lost
+-- node storage due to destruction should use the lookup table.
 local function get_portal_pos(pos)
 	local p1 = vector.offset(pos,-5,-1,-5)
 	local p2 = vector.offset(pos,5,5,5)
@@ -113,124 +190,290 @@ local function get_portal_pos(pos)
 	end
 end
 
--- This function registers exits from Nether portals.
--- Incoming verification performed: two nodes must be portal nodes, and an obsidian below them.
--- If the verification passes - position adds to the table and saves to mod storage on exit.
+-- `exits` is a lookup table bucketing exits by 256x256 areas. This function
+-- returns a key for provided position p.
+local function get_exit_key(p)
+	local x, z = floor(p.x), floor(p.z)
+	return floor(z/256) * 256 + floor(x/256)
+end
+
+-- Add an exit to the exits table without writing to disk. Returns the exits
+-- table key if modification was done, and specifies whether the key was new.
 local function add_exit(p)
-	if not p or not p.y or not p.z or not p.x then return end
+	local retval = {key=false, new=false}
+
+	if not p or not p.y or not p.z or not p.x then
+		return retval
+	end
 	local x, y, z = floor(p.x), floor(p.y), floor(p.z)
 	local p = {x = x, y = y, z = z}
-	if get_node({x=x,y=y-1,z=z}).name ~= OBSIDIAN or get_node(p).name ~= PORTAL or get_node({x=x,y=y+1,z=z}).name ~= PORTAL then return end
-	local k = floor(z/256) * 256 + floor(x/256)
+
+	if get_node({x=x,y=y-1,z=z}).name ~= OBSIDIAN
+		or get_node(p).name ~= PORTAL
+		or get_node({x=x,y=y+1,z=z}).name ~= PORTAL
+	then
+		return retval
+	end
+
+	local k = get_exit_key(p)
 	if not exits[k] then
 		exits[k]={}
+		retval.new = true
 	end
+
 	local e = exits[k]
 	for i = 1, #e do
 		local t = e[i]
 		if t and t.x == p.x and t.y == p.y and t.z == p.z then
-			return
+			return retval
 		end
 	end
+
 	e[#e+1] = p
-	log("action", "[mcl_portals] Exit added at " .. pos_to_string(p))
+	retval.key = k
+	return retval
 end
 
--- This function removes Nether portals exits.
+-- This function registers one or more exits from Nether portals and writes
+-- updated table buckets to disk.
+-- Exit position must be an ignited PORTAL block that sits on top of obsidian,
+-- and has additional PORTAL block above it.
+-- This function will silently skip exits that are invalid during the call-time.
+-- If the verification passes, a new exit is added to the table of exits and
+-- saved to mod storage later. Duplicate exits will be skipped and won't cause
+-- writes.
+local function add_exits(positions)
+	local keys_to_write = {}
+	local new_key_present = false
+
+	for _, p in ipairs(positions) do
+		local r = add_exit(p)
+		if r.key ~= false then
+			if r.new then
+				new_key_present = true
+				keys[#keys+1] = r.key
+			end
+			keys_to_write[#keys_to_write+1] = r.key
+			log("verbose", "Exit added at " .. pos_to_string(p))
+		end
+	end
+
+	for _, key in ipairs(keys_to_write) do
+		storage:set_string("nether_exits_"..tostring(key), minetest.serialize(exits[key]))
+	end
+	if new_key_present then
+		storage:set_string("nether_exits_keys", minetest.serialize(keys))
+	end
+end
+
+-- Removes one portal exit from the exits table without writing to disk.
+-- Returns the false or bucket key if change was made.
 local function remove_exit(p)
-	if not p or not p.y or not p.z or not p.x then return end
+	if not p or not p.y or not p.z or not p.x then
+		return false
+	end
+
 	local x, y, z = floor(p.x), floor(p.y), floor(p.z)
-	local k = floor(z/256) * 256 + floor(x/256)
-	if not exits[k] then return end
 	local p = {x = x, y = y, z = z}
+
+	local k = get_exit_key(p)
+	if not exits[k] then
+		return false
+	end
+
 	local e = exits[k]
 	if e then
 		for i, t in pairs(e) do
 			if t and t.x == x and t.y == y and t.z == z then
 				e[i] = nil
-				log("action", "[mcl_portals] Nether portal removed from " .. pos_to_string(p))
-				return
+				return k
 			end
 		end
 	end
+
+	return false
 end
 
--- This functon searches Nether portal nodes whitin distance specified
-local function find_exit(p, dx, dy, dz)
-	if not p or not p.y or not p.z or not p.x then return end
-	local dx, dy, dz = dx or DISTANCE_MAX, dy or DISTANCE_MAX, dz or DISTANCE_MAX
-	if dx < 1 or dy < 1 or dz < 1 then return false end
+-- Removes one or more portal exits and writes updated table buckets to disk.
+local function remove_exits(positions)
+	local keys_to_write = {}
 
-    --y values aren't used
+	for _, p in ipairs(positions) do
+		r = remove_exit(p)
+		if r ~= false then
+			keys_to_write[#keys_to_write+1] = r
+			log("verbose", "Exit removed from " .. pos_to_string(p))
+		end
+	end
+
+	for _, key in ipairs(keys_to_write) do
+		storage:set_string("nether_exits_"..tostring(key), minetest.serialize(exits[key]))
+	end
+end
+
+-- Searches for portal exits nearby point p within the distances specified by dx
+-- and dz (but only in the same dimension). Otherwise as in Minecraft, the
+-- search is bounded by X and Z, but not Y.
+-- If multiple exits are found, use Euclidean distance to find the nearest. This
+-- uses all three coordinates.
+local function find_exit(p, dx, dz)
+	local dim = mcl_worlds.pos_to_dimension(p)
+
+	if not p or not p.y or not p.z or not p.x then
+		log("warning", "Corrupt position passed to find_exit: "..pos_to_string(p)..".")
+		return
+	end
+	if dx < 1 or dz < 1 then return false end
+
 	local x = floor(p.x)
-    --local y = floor(p.y)
-    local z = floor(p.z)
+	local z = floor(p.z)
 
-	local x1 = x-dx+1
-    --local y1 = y-dy+1
-    local z1 = z-dz+1
+	local x1 = x-dx
+	local z1 = z-dz
 
-    local x2 = x+dx-1
-    --local y2 = y+dy-1
-    local z2 = z+dz-1
+	local x2 = x+dx
+	local z2 = z+dz
 
+	-- Scan the relevant hash table keys for viable exits. Dimension's entire Y is scanned.
 	local k1x, k2x = floor(x1/256), floor(x2/256)
 	local k1z, k2z = floor(z1/256), floor(z2/256)
-
-	local t, d
-	for kx = k1x, k2x do for kz = k1z, k2z do
-		local k = kz*256 + kx
-		local e = exits[k]
-		if e then
-			for _, t0 in pairs(e) do
-				local d0 = dist(p, t0)
-				if not d or d>d0 then
-					d = d0
-					t = t0
-					if d==0 then return t end
+	local nearest_exit, nearest_distance
+	for kx = k1x, k2x do
+		for kz = k1z, k2z do
+			local k = kz*256 + kx
+			local e = exits[k]
+			if e then
+				for _, t0 in pairs(e) do
+					if mcl_worlds.pos_to_dimension(t0) == dim then
+						-- exit is in the correct dimension
+						if abs(t0.x-p.x) <= dx and abs(t0.z-p.z) <= dz then
+							-- exit is within the search range
+							local d0 = dist(p, t0)
+							if not nearest_distance or nearest_distance>d0 then
+								-- it is the only exit so far, or it is the Euclidean-closest exit
+								nearest_distance = d0
+								nearest_exit = t0
+								if nearest_distance==0 then return nearest_exit end
+							end
+						end
+					end
 				end
 			end
 		end
-	end end
-
-	if t and abs(t.x-p.x) <= dx and abs(t.y-p.y) <= dy and abs(t.z-p.z) <= dz then
-		return t
 	end
+
+	return nearest_exit
 end
 
-
--- Ping-Pong the coordinate for Fast Travelling, https://git.minetest.land/Wuzzy/MineClone2/issues/795#issuecomment-11058
-local function ping_pong(x, m, l1, l2)
-	if x < 0 then
-		return	 l1 + abs(((x*m+l1) % (l1*4)) - (l1*2)), 	floor(x*m/l1/2)  + ((ceil(x*m/l1)+1)%2) * ((x*m)%l1)/l1
-	end
-	return		 l2 - abs(((x*m+l2) % (l2*4)) - (l2*2)), 	floor(x*m/l2/2) + (floor(x*m/l2)%2) * ((x*m)%l2)/l2
-end
-
-local function get_target(p)
-	if p and p.y and p.x and p.z then
-		local x, z = p.x, p.z
-		local y, d = mcl_worlds.y_to_layer(p.y)
-		local o1, o2 -- y offset
-		if y then
-			if d=="nether" then
-				x, o1 = ping_pong(x, TRAVEL_X, LIM_MIN, LIM_MAX)
-				z, o2 = ping_pong(z, TRAVEL_Z, LIM_MIN, LIM_MAX)
-				y = floor(y * TRAVEL_Y + (o1+o2) / 16 * LIM_MAX)
-				y = min(max(y + O_Y_MIN, O_Y_MIN), O_Y_MAX)
-			elseif d=="overworld" then
-				x, y, z = floor(x / TRAVEL_X + 0.5), floor(y / TRAVEL_Y + 0.5), floor(z / TRAVEL_Z + 0.5)
-				y = min(max(y + N_Y_MIN, N_Y_MIN), N_Y_MAX)
-			end
-			return {x=x, y=y, z=z}, d
+minetest.register_chatcommand("dumpportalkeys", {
+	description = S("Dump all portal keys"),
+	privs = { debug = true },
+	func = function(name, param)
+		keys = {}
+		for k, _ in pairs(exits) do
+			keys[#keys+1] = k
 		end
+		output = string.format("Nether portal exits keys: %s", table.concat(keys, ", "))
+		return true, output
+	end,
+})
+
+local function dump_key(key)
+	output = string.format("[%d] => ", tonumber(key))
+	for _,p in pairs(exits[tonumber(key)]) do
+		output = output .. minetest.pos_to_string(p) .. " "
 	end
+	output = output .. "\n"
+	return output
+end
+
+minetest.register_chatcommand("dumpportalexits", {
+	description = S("Dump coordinates of registered nether portal exits"),
+	privs = { debug = true },
+	params = "[key]",
+	func = function(name, param)
+		local key = param
+
+		if not key or key == "" then
+			output = "Nether portal exit locations (all dimensions):\n"
+		else
+			output = string.format("Nether portal exit locations for key [%s] (all dimensions):\n", key)
+		end
+
+		if not key or key == "" then
+			local count = 0
+			for k, _ in pairs(exits) do
+				count = count + 1
+				if count>100 then
+					output = output .. "The list exceeds 100 keys, truncated. Try /dumpportalkeys, then /dumpportalexits KEY"
+					break
+				end
+
+				output = output .. dump_key(k)
+			end
+		else
+			-- key specified, no limits
+			if not exits[tonumber(key)] then
+				output = output .. string.format("No exits in key [%s]\n", key)
+			else
+				dump_key(key)
+			end
+		end
+
+		return true, output
+	end,
+})
+
+-- Map coordinates between dimensions. Distances in X and Z are scaled by NETHER_COMPRESSION.
+-- Distances in Y are mapped directly. Caller should check the return value, this function
+-- returns nil if there is no valid mapping - for example if the target would be out of world.
+local function get_target(p)
+	if not p or not p.y or not p.x or not p.z then
+		return
+	end
+
+	local _, dim = mcl_worlds.y_to_layer(p.y)
+	local x,y,z
+	if dim=="nether" then
+		-- traveling to OW
+		x = floor(p.x * NETHER_COMPRESSION)
+		z = floor(p.z * NETHER_COMPRESSION)
+
+		if x>=LIM_MAX or x<=LIM_MIN or z>=LIM_MAX or z<=LIM_MIN then
+			-- Traveling out of bounds is forbidden.
+			return
+		end
+
+		y = max(min(p.y, N_Y_MAX), N_Y_MIN)
+		y = y - N_Y_MIN
+		y = O_Y_MIN + y
+		y = max(min(y, O_Y_MAX), O_Y_MIN)
+	else
+		-- traveling to the nether
+		x = floor(p.x / NETHER_COMPRESSION)
+		z = floor(p.z / NETHER_COMPRESSION)
+
+		if x>=LIM_MAX or x<=LIM_MIN or z>=LIM_MAX or z<=LIM_MIN then
+			-- Traveling out of bounds is forbidden.
+			return
+		end
+
+		y = max(min(p.y, O_Y_MAX), O_Y_MIN)
+		y = y - O_Y_MIN
+		y = N_Y_MIN + y
+		y = max(min(y, N_Y_MAX), N_Y_MIN)
+	end
+
+	return vector.new(x,y,z)
 end
 
 -- Destroy a nether portal.  Connected portal nodes are searched and removed
 -- using 'bulk_set_node'.  This function is called from 'after_destruct' of
 -- nether portal nodes.  The flag 'destroying_portal' is used to avoid this
 -- function being called recursively through callbacks in 'bulk_set_node'.
+-- To maintain portal integrity, it is permitted to destroy protected portal
+-- blocks if the portal structure is only partly protected, and the player
+-- destroys the part that is sticking out.
 local destroying_portal = false
 local function destroy_nether_portal(pos, node)
 	if destroying_portal then
@@ -267,7 +510,7 @@ local function destroy_nether_portal(pos, node)
 		end
 		check_remove({x = pos.x, y = pos.y - 1, z = pos.z})
 		check_remove({x = pos.x, y = pos.y + 1, z = pos.z})
-		remove_exit(pos)
+		remove_exits({pos})
 		i = i + 1
 	end
 
@@ -277,6 +520,7 @@ end
 
 local on_rotate
 if minetest.get_modpath("screwdriver") then
+	-- Presumably because it messes with the placement of exits.
 	on_rotate = screwdriver.disallow
 end
 
@@ -335,14 +579,12 @@ minetest.register_node(PORTAL, {
 	_mcl_blast_resistance = 0,
 })
 
-local function light_frame(x1, y1, z1, x2, y2, z2, name, node, node_frame)
+local function build_and_light_frame(x1, y1, z1, x2, y2, z2, name)
 	local orientation = 0
 	if x1 == x2 then
 		orientation = 1
 	end
 	local pos = {}
-	local node = node or {name = PORTAL, param2 = orientation}
-	local node_frame = node_frame or {name = OBSIDIAN}
 	for x = x1 - 1 + orientation, x2 + 1 - orientation do
 		pos.x = x
 		for z = z1 - orientation, z2 + orientation do
@@ -351,28 +593,87 @@ local function light_frame(x1, y1, z1, x2, y2, z2, name, node, node_frame)
 				pos.y = y
 				local frame = (x < x1) or (x > x2) or (y < y1) or (y > y2) or (z < z1) or (z > z2)
 				if frame then
-					set_node(pos, node_frame)
+					set_node(pos, {name = OBSIDIAN})
 				else
-					set_node(pos, node)
-					add_exit({x=pos.x, y=pos.y-1, z=pos.z})
+					set_node(pos, {name = PORTAL, param2 = orientation})
+					add_exits({
+						{x=pos.x, y=pos.y-1, z=pos.z}
+					})
 				end
 			end
 		end
 	end
 end
 
---Build arrival portal
-function build_nether_portal(pos, width, height, orientation, name, clear_before_build)
-	local width, height, orientation = width or W_MIN - 2, height or H_MIN - 2, orientation or random(0, 1)
+-- Create a portal, where cube_pos1 is the "bottom-left" coordinate of the
+-- W_MINxH_MIN cube to contain the portal - i.e. the coordinate with the
+-- smallest X, Y and Z. We will be placing the portal in the middle-ish, so
+-- that block +1,+1,+1 is guaranteed to be a portal block. The build area
+-- includes frame.
+-- Small obsidian platform will be created on either side of the exit if there
+-- is no nodes there, or nodes underneath (one step down is permitted).
+-- Orientation 0 is portal alongside X axis, 1 alongside Z.
+function build_nether_portal(cube_pos1, width, height, orientation, name, clear_before_build)
+	local width, height, orientation = width or W_MIN, height or H_MIN, orientation or random(0, 1)
+	local width_inner = width-2
+	local height_inner = height-2
+
+	local cube_pos2 = add(cube_pos1, vector.new(width-1, height-1, width-1))
+	if is_area_protected(cube_pos1, cube_pos2, name) then
+		if name then
+			minetest.chat_send_player(name, "Unable to build portal, area is protected.")
+		end
+		return
+	end
+
+	-- Calculate "bottom-left" position of the PORTAL blocks.
+	-- Offset Y because we don't want it in the floor.
+	-- Offset X and Z to fit the frame and place the portal in the middle-ish.
+	local pos = add(cube_pos1, vector.new(1,1,1))
 
 	if clear_before_build then
-		light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width - 1), pos.y + height - 1, pos.z + orientation * (width - 1), name, {name="air"}, {name="air"})
+		local clear1, clear2
+		if orientation == 0 then
+			clear1 = vector.new(
+				cube_pos1.x,
+				cube_pos1.y + 1, -- do not delete floor
+				cube_pos1.z
+			)
+			clear2 = vector.new(
+				cube_pos1.x + width - 1,
+				cube_pos1.y + height - 2,
+				cube_pos1.z + 2 -- both sides of the entrance, so player has somewhere to step.
+			)
+		else
+			clear1 = vector.new(
+				cube_pos1.x,
+				cube_pos1.y + 1, -- do not delete floor
+				cube_pos1.z
+			)
+			clear2 = vector.new(
+				cube_pos1.x + 2, -- both sides of the entrance, so player has somewhere to step.
+				cube_pos1.y + height - 2,
+				cube_pos1.z + width - 1
+			)
+		end
+
+		log("verbose", "Clearing between "..pos_to_string(clear1).." and "..pos_to_string(clear2))
+		local airs = {}
+		for x = clear1.x, clear2.x do
+			for y = clear1.y, clear2.y do
+				for z = clear1.z, clear2.z do
+					airs[#airs+1] = vector.new(x,y,z)
+				end
+			end
+		end
+		minetest.bulk_set_node(airs, {name="air"})
 	end
-	light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width - 1), pos.y + height - 1, pos.z + orientation * (width - 1), name)
+
+	build_and_light_frame(pos.x, pos.y, pos.z, pos.x + (1 - orientation) * (width_inner - 1), pos.y + height_inner - 1, pos.z + orientation * (width_inner - 1), name)
 
 	-- Build obsidian platform:
-	for x = pos.x - orientation, pos.x + orientation + (width - 1) * (1 - orientation), 1 + orientation do
-		for z = pos.z - 1 + orientation, pos.z + 1 - orientation + (width - 1) * orientation, 2 - orientation do
+	for x = pos.x - orientation, pos.x + orientation + (width_inner - 1) * (1 - orientation), 1 + orientation do
+		for z = pos.z - 1 + orientation, pos.z + 1 - orientation + (width_inner - 1) * orientation, 2 - orientation do
 			local pp = {x = x, y = pos.y - 1, z = z}
 			local pp_1 = {x = x, y = pos.y - 2, z = z}
 			local nn = get_node(pp).name
@@ -383,11 +684,12 @@ function build_nether_portal(pos, width, height, orientation, name, clear_before
 		end
 	end
 
-	log("action", "[mcl_portals] Destination Nether portal generated at "..pos_to_string(pos).."!")
+	log("verbose", "Portal generated at "..pos_to_string(pos).."!")
 
 	return pos
 end
 
+-- Spawn portal at location - spawning is not guaranteed if target area is protected.
 function mcl_portals.spawn_nether_portal(pos, rot, pr, name)
 	if not pos then return end
 	local o = 0
@@ -398,8 +700,72 @@ function mcl_portals.spawn_nether_portal(pos, rot, pr, name)
 			o = random(0,1)
 		end
 	end
-	build_nether_portal(pos, nil, nil, o, name, true)
+	return build_nether_portal(pos, W_MIN, H_MIN, o, name, true)
 end
+
+-- Useful for testing - it lets player point to a block and create the portal in
+-- the exact spot using the block as floor, with correct orientation (facing the
+-- player). Alternatively, portals can be created at exact locations and
+-- orientations (which spawn structure doesn't support).
+minetest.register_chatcommand("spawnportal", {
+	description = S("Spawn a new nether portal at pointed thing, or at [x],[y],[z]. "
+		.."The portal will either face the player, or use the passed [orientation]. "
+		.."Orientation 0 means alongside X axis."),
+	privs = { debug = true },
+	params = "[x] [y] [z] [orientation]",
+	func = function(name, param)
+		local params = {}
+		for p in param:gmatch("-?[0-9]+") do table.insert(params, p) end
+
+		local exit
+		if #params==0 then
+			local player = minetest.get_player_by_name(name)
+			if not player then return false, "Player not found" end
+
+			local yaw = player:get_look_horizontal()
+			local player_rotation = yaw / (math.pi*2)
+			local orientation
+			if (player_rotation<=0.875 and player_rotation>0.625)
+				or (player_rotation<=0.375 and player_rotation>0.125)
+			then
+				orientation = "90"
+			else
+				orientation = "0"
+			end
+
+			local pointed_thing = mcl_util.get_pointed_thing(player, false)
+			if not pointed_thing then return false, "Not pointing to anything" end
+			if pointed_thing.type~="node" then return false, "Not pointing to a node" end
+
+			local pos = pointed_thing.under
+			-- Portal node will appear above the pointed node. The pointed node will turn into obsidian.
+			exit = mcl_portals.spawn_nether_portal(add(pos, vector.new(-1,0,-1)), orientation, nil, name)
+		elseif #params==3 or #params==4 then
+			pos = {
+				x=tonumber(params[1]),
+				y=tonumber(params[2]),
+				z=tonumber(params[3])
+			}
+
+			local orientation = 0
+			if #params==4 then
+				if tonumber(params[4])==1 then orientation = "90" else orientation = "0" end
+			end
+
+			-- Portal will be placed so that the first registered exit is at requested location.
+			exit = mcl_portals.spawn_nether_portal(add(pos, vector.new(-1,-1,-1)), orientation, nil, name)
+		else
+			return false, "Invalid parameters. Pass either zero, three or four"
+		end
+
+		if exit then
+			return true, "Spawned!"
+		else
+			return false, "Unable to spawn portal, area could be protected"
+		end
+	end,
+})
+
 
 -- Teleportation cooloff for some seconds, to prevent back-and-forth teleportation
 local function stop_teleport_cooloff(o)
@@ -429,195 +795,398 @@ local function finalize_teleport(obj, exit)
 	end
 	local _, dim = mcl_worlds.y_to_layer(exit.y)
 
-	local saved_portal = find_exit(get_portal_pos(objpos),10,10,10)
-
-	if saved_portal then exit = saved_portal end
-
-
 	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
 	objpos = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
-	if get_node(objpos).name ~= PORTAL then return end
+	if get_node(objpos).name ~= PORTAL then
+		log("action", "Entity no longer standing in portal")
+		return
+	end
 
-	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS -- 1 of 2 -- TODO: Remove --
-	-- Old worlds have no exits indexed - adding the exit to return here:
-	add_exit(objpos)
-	-- TEMPORATY CODE SECTION ENDS HERE --
-
+	-- In case something went wrong, make sure the origin portal is always added as a viable exit.
+	-- In the ideal case, this is not needed, as the exits are added upon ignition. Before Jan 2024 this
+	-- was broken, so there will be a lot of half-added portals out there!
+	add_exits({objpos})
 
 	-- Enable teleportation cooloff for some seconds, to prevent back-and-forth teleportation
 	teleport_cooloff(obj)
 
-	-- Teleport
-	save_portal_pos(objpos,exit)
 	obj:set_pos(exit)
-	minetest.after(1,function()
-		save_portal_pos(exit,objpos)
-	end)
+
+	local lua_entity = obj:get_luaentity()
 	if is_player then
 		mcl_worlds.dimension_change(obj, dim)
 		minetest.sound_play("mcl_portals_teleport", {pos=exit, gain=0.5, max_hear_distance = 16}, true)
-		log("action", "[mcl_portals] player "..name.." teleported to Nether portal at "..pos_to_string(exit)..".")
+		log("action", "Player "..name.." teleported to portal at "..pos_to_string(exit)..".")
 		if dim == "nether" then
 			awards.unlock(obj:get_player_name(), "mcl:theNether")
 		end
-	else
-		log("action", "[mcl_portals] entity teleported to Nether portal at "..pos_to_string(exit)..".")
+	elseif lua_entity then
+		log("verbose", string.format(
+			"Entity %s teleported to portal at %s",
+			lua_entity.name,
+			pos_to_string(exit)
+		))
 	end
 end
 
-local function create_portal_2(pos1, name, obj)
-	local orientation = 0
-	local pos2 = {x = pos1.x + 3, y = pos1.y + 3, z = pos1.z + 3}
-	local nodes = find_nodes_in_area(pos1, pos2, {"air"})
-	if #nodes == 64 then
-		orientation = random(0,1)
+local function is_origin_queued(origin)
+	local key = pos_to_string(origin)
+	if origin_queue[key] then
+		return true
 	else
-		pos2.x = pos2.x - 1
-		nodes = find_nodes_in_area(pos1, pos2, {"air"})
-		if #nodes == 48 then
-			orientation = 1
+		return false
+	end
+end
+
+local function is_entity_queued()
+	for _, q in pairs(origin_queue) do
+		if q[obj] then
+			return true
 		end
 	end
-	local exit = build_nether_portal(pos1, W_MIN-2, H_MIN-2, orientation, name)
-	finalize_teleport(obj, exit)
-	local cn = mcl_vars.get_chunk_number(pos1)
-	chunks[cn] = nil
-	if queue[cn] then
-		for next_obj, _ in pairs(queue[cn]) do
-			if next_obj ~= obj then
-				finalize_teleport(next_obj, exit)
+
+	return false
+end
+
+local function origin_enqueue(obj, origin)
+	local key = pos_to_string(origin)
+	log("verbose", string.format("Queueing entity for origin %s", key))
+	local q = origin_queue[key] or {}
+	if not q[obj] then
+		q[obj] = true
+		origin_queue[key] = q
+	end
+end
+
+-- Flush the queue of entities waiting for specific origin.
+-- Pass nil/false exit to purge the queue without teleporting.
+local function origin_flush(origin, exit)
+	local key = pos_to_string(origin)
+
+	local count_teleported = 0
+	local count_removed = 0
+	if origin_queue[key] then
+		for obj, value in pairs(origin_queue[key]) do
+			if value and exit then
+				finalize_teleport(obj, exit)
+				count_teleported = count_teleported + 1
+			else
+				count_removed = count_removed + 1
 			end
 		end
-		queue[cn] = nil
+		origin_queue[key] = nil
 	end
+	log("verbose", string.format(
+		"Finished flushing entities waiting for origin %s: removed %d, proceeded to teleport %d",
+		key,
+		count_removed,
+		count_teleported
+	))
+end
+
+local function find_build_limits(pos, target_dim)
+	-- Find node extremes of the pos's chunk.
+	-- According to what people said in minetest discord and couple of docs, mapgen
+	-- works on entire chunks, so we need to limit the search to chunk boundary.
+	-- The goal is to emerge at most two chunks.
+	local chunk_limit1 = add(
+		mul(
+			mcl_vars.pos_to_chunk(pos),
+			mcl_vars.chunk_size_in_nodes
+		),
+		vector.new(
+			mcl_vars.central_chunk_offset_in_nodes,
+			mcl_vars.central_chunk_offset_in_nodes,
+			mcl_vars.central_chunk_offset_in_nodes
+		)
+	)
+	local chunk_limit2 = add(
+		chunk_limit1,
+		vector.new(
+			mcl_vars.chunk_size_in_nodes - 1,
+			mcl_vars.chunk_size_in_nodes - 1,
+			mcl_vars.chunk_size_in_nodes - 1
+		)
+	)
+
+	-- Limit search area by using search distances. There is no Y build limit.
+	local build_limit1 = add(
+		pos,
+		-- minus 1 to account for the pos block being included.
+		-- plus 1 to account for the portal block offset (ignore frame)
+		vector.new(-BUILD_DISTANCE_XZ-1+1, 0, -BUILD_DISTANCE_XZ-1+1)
+	)
+	local build_limit2 = add(
+		pos,
+		-- plus 1 to account for the portal block offset (ignore frame)
+		-- minus potential portal width, so that the generated portal doesn't "stick out"
+		vector.new(BUILD_DISTANCE_XZ+1-(W_MIN-1), 0, BUILD_DISTANCE_XZ+1-(W_MIN-1))
+	)
+
+	-- Start with chunk limits
+	pos1 = vector.new(chunk_limit1.x, chunk_limit1.y, chunk_limit1.z)
+	pos2 = vector.new(chunk_limit2.x, chunk_limit2.y, chunk_limit2.z)
+
+	-- Make sure the portal is not built beyond chunk boundary
+	-- (we will be searching for the node with lowest X, Y and Z)
+	pos2.x = pos2.x-(W_MIN-1)
+	pos2.y = pos2.y-(H_MIN-1)
+	pos2.z = pos2.z-(W_MIN-1)
+	-- Avoid negative volumes
+	if pos2.x < pos1.x then pos2.x = pos1.x end
+	if pos2.y < pos1.y then pos2.y = pos1.y end
+	if pos2.z < pos1.z then pos2.z = pos1.z end
+
+	-- Apply build distances.
+	pos1 = {
+		x = max(pos1.x, build_limit1.x),
+		y = pos1.y,
+		z = max(pos1.z, build_limit1.z)
+	}
+	pos2 = {
+		x = min(pos2.x, build_limit2.x),
+		y = pos2.y,
+		z = min(pos2.z, build_limit2.z)
+	}
+
+	-- Apply dimension-specific distances, so that player does not end up in void or in lava.
+	local limit1, limit2 = limits[target_dim].pmin, limits[target_dim].pmax
+	pos1 = {
+		x = max(pos1.x, limit1.x),
+		y = max(pos1.y, limit1.y),
+		z = max(pos1.z, limit1.z)
+	}
+	pos2 = {
+		x = min(pos2.x, limit2.x),
+		y = min(pos2.y, limit2.y),
+		z = min(pos2.z, limit2.z)
+	}
+
+	local diff = add(pos2, mul(pos1, -1))
+	local area = diff.x * diff.z
+	local msg = string.format(
+		"Portal build area between %s-%s, a %dx%dx%d cuboid with floor area of %d nodes. "
+			.."Chunk limit was at [%s,%s]. "
+			.."Ideal build area was at [(%d,*,%d),(%d,*,%d)].",
+		pos_to_string(pos1),
+		pos_to_string(pos2),
+		diff.x,
+		diff.y,
+		diff.z,
+		area,
+		pos_to_string(chunk_limit1),
+		pos_to_string(chunk_limit2),
+		build_limit1.x,
+		build_limit1.z,
+		build_limit2.x,
+		build_limit2.z
+	)
+	log("verbose", msg)
+
+	return pos1, pos2
 end
 
 local function get_lava_level(pos, pos1, pos2)
 	if pos.y > -1000 then
-		return max(min(mcl_vars.mg_lava_overworld_max, pos2.y-1), pos1.y+1)
+		return mcl_vars.mg_lava_overworld_max
 	end
-	return max(min(mcl_vars.mg_lava_nether_max, pos2.y-1), pos1.y+1)
+	return mcl_vars.mg_lava_nether_max
 end
 
-local function ecb_scan_area_2(blockpos, action, calls_remaining, param)
+local function search_for_build_location(blockpos, action, calls_remaining, param)
 	if calls_remaining and calls_remaining > 0 then return end
-	local pos, pos1, pos2, name, obj = param.pos, param.pos1, param.pos2, param.name or "", param.obj
-	local pos0, distance
-	local lava = get_lava_level(pos, pos1, pos2)
 
-	-- THIS IS A TEMPORATY CODE SECTION FOR COMPATIBILITY REASONS -- 2 of 2 -- TODO: Remove --
-	-- Find portals for old worlds (new worlds keep them all in the table):
+	local target, pos1, pos2, name, obj = param.target, param.pos1, param.pos2, param.name or "", param.obj
+	local chunk = mcl_vars.get_chunk_number(target)
+	local pos0, distance
+	local most_airy_count, most_airy_pos, most_airy_distance = param.most_airy_count, param.most_airy_pos, param.most_airy_distance
+	local lava = get_lava_level(target, pos1, pos2)
+
+	-- Portal might still exist in the area even though nothing was found in the table.
+	-- This could be due to bugs, or old worlds (portals added before the exits table).
+	-- Handle gracefully by searching and adding exits as appropriate.
+	local exit
 	local portals = find_nodes_in_area(pos1, pos2, {PORTAL})
 	if portals and #portals>0 then
 		for _, p in pairs(portals) do
-			add_exit(p)
+			-- This will only add legitimate exits that are not on the list,
+			-- and will only save if there was any changes.
+			add_exits({p})
 		end
-		local exit = find_exit(pos)
-		if exit then
-			finalize_teleport(obj, exit)
+
+		if param.target_dim=="nether" then
+			exit = find_exit(target, SEARCH_DISTANCE_NETHER, SEARCH_DISTANCE_NETHER)
+		else
+			exit = find_exit(target, SEARCH_DISTANCE_OVERWORLD, SEARCH_DISTANCE_OVERWORLD)
 		end
+	end
+
+	if exit then
+		log("verbose", "Using a newly found exit at "..pos_to_string(exit))
+		origin_flush(param.origin, exit)
+		chunk_building[chunk] = false
 		return
 	end
-	-- TEMPORATY CODE SECTION ENDS HERE --
 
+	-- No suitable portal was found, look for a suitable space and build a new one in the emerged blocks.
 
 	local nodes = find_nodes_in_area_under_air(pos1, pos2, {"group:building_block"})
+	-- Sort by distance so that we are checking the nearest nodes first.
+	-- This can speed up the search considerably if there is space around the ideal X and Z.
+	table.sort(nodes, function(a,b)
+		local da = dist(param.ideal_target, add(a, vector.new(1,1,1)))
+		local db = dist(param.ideal_target, add(b, vector.new(1,1,1)))
+		return da<db
+	end)
+
 	if nodes then
 		local nc = #nodes
-		log("action", "[mcl_portals] Area for destination Nether portal emerged! Found " .. tostring(nc) .. " nodes under the air around "..pos_to_string(pos))
 		if nc > 0 then
 			for i=1,nc do
 				local node = nodes[i]
-				local node1 = {x=node.x,   y=node.y+1, z=node.z  }
-				local node2 = {x=node.x+2, y=node.y+3, z=node.z+2}
+				local portal_node = add(node, vector.new(1,1,1)) -- Skip the frame
+				local node1 = add(node, vector.new(0,1,0)) -- Floor can be solid
+				local node2 = add(node, vector.new(W_MIN-1,H_MIN-1,W_MIN-1))
+
 				local nodes2 = find_nodes_in_area(node1, node2, {"air"})
 				if nodes2 then
 					local nc2 = #nodes2
-					if nc2 == 27 and not is_area_protected(node, node2, name) then
-						local distance0 = dist(pos, node)
-						if distance0 < 2 then
-							log("action", "[mcl_portals] found space at pos "..pos_to_string(node).." - creating a portal")
-							create_portal_2(node1, name, obj)
-							return
-						end
-						if not distance or (distance0 < distance) or (distance0 < distance-1 and node.y > lava and pos0.y < lava) then
-							log("verbose", "[mcl_portals] found distance "..tostring(distance0).." at pos "..pos_to_string(node))
+
+					if not is_area_protected(node, node2, name) and node.y > lava then
+						local distance0 = dist(param.ideal_target, portal_node)
+
+						if nc2 >= (W_MIN*(H_MIN-1)*W_MIN) - ACCEPTABLE_PORTAL_REPLACES then
+							-- We have sorted the candidates by distance, this is the best location.
 							distance = distance0
-							pos0 = {x=node1.x, y=node1.y, z=node1.z}
+							pos0 = {x=node.x, y=node.y, z=node.z}
+							log("verbose", "Found acceptable location at "..pos_to_string(pos0)..", distance "..distance0..", air nodes "..nc2)
+							break
+						elseif not most_airy_pos or nc2>most_airy_count then
+							-- Remember the cube with the most amount of air as a fallback.
+							most_airy_count = nc2
+							most_airy_distance = distance0
+							most_airy_pos = {x=node.x, y=node.y, z=node.z}
+							log("verbose", "Found fallback location at "..pos_to_string(most_airy_pos)..", distance "..distance0..", air nodes "..nc2)
+						elseif most_airy_pos and nc2==most_airy_count and distance0<most_airy_distance then
+							-- Use distance as a tiebreaker.
+							most_airy_distance = distance0
+							most_airy_pos = {x=node.x, y=node.y, z=node.z}
+							log("verbose", "Found fallback location at "..pos_to_string(most_airy_pos)..", distance "..distance0..", air nodes "..nc2)
 						end
+
 					end
 				end
 			end
 		end
 	end
-	if distance then -- several nodes of air might be better than lava lake, right?
-		log("action", "[mcl_portals] using backup pos "..pos_to_string(pos0).." to create a portal")
-		create_portal_2(pos0, name, obj)
+	if pos0 then
+		log("verbose", "Building portal at "..pos_to_string(pos0)..", distance "..distance)
+		local exit = build_nether_portal(pos0, W_MIN, H_MIN, random(0,1), name)
+		origin_flush(param.origin, exit)
+		chunk_building[chunk] = false
 		return
 	end
 
-	if param.next_chunk_1 and param.next_chunk_2 and param.next_pos then
-		local pos1, pos2, p = param.next_chunk_1, param.next_chunk_2, param.next_pos
-		if p.x >= pos1.x and p.x <= pos2.x and p.y >= pos1.y and p.y <= pos2.y and p.z >= pos1.z and p.z <= pos2.z then
-			log("action", "[mcl_portals] Making additional search in chunk below, because current one doesn't contain any air space for portal, target pos "..pos_to_string(p))
-			minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = p, pos1 = pos1, pos2 = pos2, name=name, obj=obj})
+	-- Look in chunks above or below, depending on which side has more
+	-- space. Since our Y map distance is quite short due to the flatness of
+	-- the non-lava nether, falling back like this should cover entire Y range.
+	if param.chunk_counter==1 then
+		if limits[param.target_dim].pmax.y-target.y > target.y-limits[param.target_dim].pmin.y then
+			-- Look up
+			direction = 1
+			log("verbose", "No space found, emerging one chunk above")
+		else
+			-- Look down
+			direction = -1
+			log("verbose", "No space found, emerging one chunk below")
+		end
+
+		local new_target = {x=target.x, y=target.y + direction * mcl_vars.chunk_size_in_nodes, z=target.z}
+		pos1, pos2 = find_build_limits(new_target, param.target_dim)
+		local diff = add(pos2, mul(pos1, -1))
+
+		-- Only emerge if there is sufficient headroom to actually fit entire portal.
+		if diff.y+1>=H_MIN then
+			local new_chunk = mcl_vars.get_chunk_number(new_target)
+			if chunk_building[new_chunk] then
+				log("verbose", string.format("Secondary chunk %s is currently busy, backing off", new_chunk))
+				origin_flush(param.origin, nil)
+				return
+			end
+
+			chunk_building[new_chunk] = true
+			minetest.emerge_area(pos1, pos2, search_for_build_location, {
+				origin=param.origin,
+				target = new_target,
+				target_dim = target_dim,
+				ideal_target = param.ideal_target,
+				pos1 = pos1,
+				pos2 = pos2,
+				name=name,
+				obj=obj,
+				chunk_counter=param.chunk_counter+1,
+				most_airy_count=most_airy_count,
+				most_airy_pos=most_airy_pos,
+				most_airy_distance=most_airy_distance
+			})
+
+			chunk_building[chunk] = false
 			return
 		end
 	end
 
-	log("action", "[mcl_portals] found no space, reverting to target pos "..pos_to_string(pos).." - creating a portal")
-	if pos.y < lava then
-		pos.y = lava + 1
-	else
-		pos.y = pos.y + 1
+	-- Fall back to the most airy position in previous chunk, in this chunk,
+	-- or if all else fails to ideal position. This could replace a lot of blocks.
+	local fallback = param.ideal_target
+
+	if most_airy_pos then
+		log(
+			"verbose",
+			string.format(
+				"Falling back to the most airy position at %s, distance %d",
+				pos_to_string(most_airy_pos),
+				most_airy_distance
+			)
+		)
+		fallback = most_airy_pos
 	end
-	create_portal_2(pos, name, obj)
+
+	if fallback.y <= lava then
+		fallback.y = lava + 1
+	end
+
+	log("verbose", "Forcing portal at "..pos_to_string(fallback)..", lava at "..lava)
+	local exit = build_nether_portal(fallback, W_MIN, H_MIN, random(0,1), name, true)
+	origin_flush(param.origin, exit)
+	chunk_building[chunk] = false
 end
 
-local function create_portal(pos, limit1, limit2, name, obj)
-	local cn = mcl_vars.get_chunk_number(pos)
-	if chunks[cn] then
-		local q = queue[cn] or {}
-		q[obj] = true
-		queue[cn] = q
+local function create_portal(origin, target, target_dim, name, obj)
+	local chunk = mcl_vars.get_chunk_number(target)
+	if chunk_building[chunk] then
+		log("verbose", string.format("Primary chunk %s is currently busy, backing off", chunk))
+		origin_flush(origin, nil)
 		return
 	end
-	chunks[cn] = true
+	chunk_building[chunk] = true
 
-	-- we need to emerge the area here, but currently (mt5.4/mcl20.71) map generation is slow
-	-- so we'll emerge single chunk only: 5x5x5 blocks, 80x80x80 nodes maximum
-	-- and maybe one more chunk from below if (SCAN_2_MAP_CHUNKS = true)
-
-	local pos1 = add(mul(mcl_vars.pos_to_chunk(pos), mcl_vars.chunk_size_in_nodes), mcl_vars.central_chunk_offset_in_nodes)
-	local pos2 = add(pos1, mcl_vars.chunk_size_in_nodes - 1)
-
-	if not SCAN_2_MAP_CHUNKS then
-		if limit1 and limit1.x and limit1.y and limit1.z then
-			pos1 = {x = max(min(limit1.x, pos.x), pos1.x), y = max(min(limit1.y, pos.y), pos1.y), z = max(min(limit1.z, pos.z), pos1.z)}
-		end
-		if limit2 and limit2.x and limit2.y and limit2.z  then
-			pos2 = {x = min(max(limit2.x, pos.x), pos2.x), y = min(max(limit2.y, pos.y), pos2.y), z = min(max(limit2.z, pos.z), pos2.z)}
-		end
-		minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = vector.new(pos), pos1 = pos1, pos2 = pos2, name=name, obj=obj})
-		return
-	end
-
-	-- Basically the copy of code above, with minor additions to continue the search in single additional chunk below:
-	local next_chunk_1 = {x = pos1.x, y = pos1.y - mcl_vars.chunk_size_in_nodes, z = pos1.z}
-	local next_chunk_2 = add(next_chunk_1, mcl_vars.chunk_size_in_nodes - 1)
-	local next_pos = {x = pos.x, y=max(next_chunk_2.y, limit1.y), z = pos.z}
-	if limit1 and limit1.x and limit1.y and limit1.z then
-		pos1 = {x = max(min(limit1.x, pos.x), pos1.x), y = max(min(limit1.y, pos.y), pos1.y), z = max(min(limit1.z, pos.z), pos1.z)}
-		next_chunk_1 = {x = max(min(limit1.x, next_pos.x), next_chunk_1.x), y = max(min(limit1.y, next_pos.y), next_chunk_1.y), z = max(min(limit1.z, next_pos.z), next_chunk_1.z)}
-	end
-	if limit2 and limit2.x and limit2.y and limit2.z  then
-		pos2 = {x = min(max(limit2.x, pos.x), pos2.x), y = min(max(limit2.y, pos.y), pos2.y), z = min(max(limit2.z, pos.z), pos2.z)}
-		next_chunk_2 = {x = min(max(limit2.x, next_pos.x), next_chunk_2.x), y = min(max(limit2.y, next_pos.y), next_chunk_2.y), z = min(max(limit2.z, next_pos.z), next_chunk_2.z)}
-	end
-	minetest.emerge_area(pos1, pos2, ecb_scan_area_2, {pos = vector.new(pos), pos1 = pos1, pos2 = pos2, name=name, obj=obj, next_chunk_1 = next_chunk_1, next_chunk_2 = next_chunk_2, next_pos = next_pos})
+	local pos1, pos2 = find_build_limits(target, target_dim)
+	minetest.emerge_area(pos1, pos2, search_for_build_location, {
+		origin = origin,
+		target = target,
+		target_dim = target_dim,
+		ideal_target = vector.new(target.x, target.y, target.z), -- copy
+		pos1 = pos1,
+		pos2 = pos2,
+		name=name,
+		obj=obj,
+		chunk_counter=1
+	})
 end
 
 local function available_for_nether_portal(p)
+	-- No need to check for protected - non-owner can't ignite blocks anyway.
+
 	local nn = get_node(p).name
 	local obsidian = nn == OBSIDIAN
 	if nn ~= "air" and minetest.get_item_group(nn, "fire") ~= 1 then
@@ -681,11 +1250,23 @@ local function check_and_light_shape(pos, orientation)
 		return false
 	end
 
+	-- Light the portal
 	for i = 1, node_counter do
-		local node_pos = node_list[i]
-		minetest.set_node(node_pos, {name = PORTAL, param2 = orientation})
-		add_exit(node_pos)
+		minetest.set_node(node_list[i], {name = PORTAL, param2 = orientation})
 	end
+
+	-- Register valid portal exits (each portal has at least two!)
+	-- Before Jan 2024, there was a bug that did not register all exits upon ignition.
+	-- This means portals lit before that time will only become live as people use them
+	-- (and only specific portal blocks).
+	for i = 1, node_counter do
+		-- Improvement possible: we are only interested in the bottom
+		-- blocks as exits, but here all ignited blocks are passed in.
+		-- This can cause a lot of failed validations on very large
+		-- portals that we know can be skipped.
+		add_exits({node_list[i]})
+	end
+
 	return true
 end
 
@@ -695,11 +1276,22 @@ end
 -- If no Nether portal can be lit, nothing happens.
 -- Returns true if portal created
 function mcl_portals.light_nether_portal(pos)
+
 	-- Only allow to make portals in Overworld and Nether
 	local dim = mcl_worlds.pos_to_dimension(pos)
 	if dim ~= "overworld" and dim ~= "nether" then
 		return false
 	end
+
+	if not get_target(pos) then
+		-- Prevent ignition of portals that would lead to out of bounds positions.
+		log("verbose", string.format(
+			"No target found for position %s - portal would lead to invalid exit",
+			pos_to_string(pos)
+		))
+		return
+	end
+
 	local orientation = random(0, 1)
 	for orientation_iteration = 1, 2 do
 		if check_and_light_shape(pos, orientation) then
@@ -710,33 +1302,103 @@ function mcl_portals.light_nether_portal(pos)
 	return false
 end
 
+local function check_portal_then_teleport(obj, origin, exit)
+	-- Check we are not sending the player on a one-way trip.
+	minetest.emerge_area(exit, exit, function (blockpos, action, calls_remaining, param)
+		if calls_remaining and calls_remaining > 0 then return end
+
+		if get_node(exit).name ~= PORTAL then
+			-- Bogus exit! Break the teleportation so we don't strand the player.
+			-- The process will begin again after cooloff through the ABM, and might either
+			-- find another exit, or build a new portal. This will manifest to the
+			-- player as a teleportation that takes longer than usual.
+			log("warning", "removing bogus portal exit encountered at "..pos_to_string(exit)..", exit no longer exists")
+
+			remove_exits({exit})
+			-- Also remove from structure storage, otherwise ABM will try the same bad exit again.
+			local objpos = obj:get_pos()
+			delete_portal_pos({x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)})
+
+			origin_flush(origin, nil)
+			return
+		end
+
+		origin_flush(origin, exit)
+	end)
+end
+
+
 -- Teleport function
-local function teleport_no_delay(obj, pos)
+local function teleport_no_delay(obj, portal_pos)
 	local is_player = obj:is_player()
 	if (not is_player and not obj:get_luaentity()) or cooloff[obj] then return end
 
 	local objpos = obj:get_pos()
 	if not objpos then return end
 
-	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
-	objpos = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
-	if get_node(objpos).name ~= PORTAL then return end
+	local _, current_dim = mcl_worlds.y_to_layer(objpos.y)
+	local target_dim = dimension_to_teleport[current_dim]
 
-	local target, dim = get_target(objpos)
-	if not target then return end
+	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
+	origin = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
+	if get_node(origin).name ~= PORTAL then return end
+
+	local target = get_target(origin)
+	if not target then
+		log("verbose", string.format(
+			"No target found for position %s - no valid exit found",
+			pos_to_string(origin)
+		))
+		return
+	end
 
 	local name
 	if is_player then
 		name = obj:get_player_name()
 	end
 
-	local exit = find_exit(target)
+	if is_entity_queued(obj) then
+		-- Let's not allow one entity to generate a lot of work by just moving around in a portal.
+		log("verbose", "Entity already queued")
+		return
+	end
+
+	log("verbose", string.format("Target calculated as %s", pos_to_string(target)))
+
+	local already_queued = is_origin_queued(origin)
+	origin_enqueue(obj, origin)
+
+	if already_queued then
+		-- Origin is already being processed, so wait in queue for the result.
+		log("verbose", string.format("Origin %s already queued", pos_to_string(origin)))
+		return
+	end
+
+	local exit
+	local saved_portal_position = get_portal_pos(origin)
+	if saved_portal_position then
+		-- Before Jan 2024, portal exits were sticky - they were stored
+		-- in nodes. If such a position is found, look for the exit
+		-- there, so that the players don't get any surprises.
+		-- Sticky exit can be removed by destroying and rebuilding the portal.
+		log("verbose", "Using block-saved portal exit: "..pos_to_string(saved_portal_position)..".")
+		exit = find_exit(saved_portal_position, 10, 10)
+	end
+
+	if not exit then
+		-- Search for nearest suitable exit in the lookup table.
+		if target_dim=="nether" then
+			exit = find_exit(target, SEARCH_DISTANCE_NETHER, SEARCH_DISTANCE_NETHER)
+		else
+			exit = find_exit(target, SEARCH_DISTANCE_OVERWORLD, SEARCH_DISTANCE_OVERWORLD)
+		end
+	end
+
 	if exit then
-		finalize_teleport(obj, exit)
+		log("verbose", "Exit found at "..pos_to_string(exit).." for target "..pos_to_string(target).." traveling from "..pos_to_string(origin))
+		check_portal_then_teleport(obj, origin, exit)
 	else
-		dim = dimension_to_teleport[dim]
-		-- need to create arrival portal
-		create_portal(target, limits[dim].pmin, limits[dim].pmax, name, obj)
+		create_portal(origin, target, target_dim, name, obj)
 	end
 end
 
@@ -846,8 +1508,9 @@ minetest.register_abm({
 				})
 			end
 		end
-		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 1)) do	--maikerumine added for objects to travel
-			local lua_entity = obj:get_luaentity()				--maikerumine added for objects to travel
+		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 1)) do
+			-- Teleport players, mobs, boats etc.
+			local lua_entity = obj:get_luaentity()
 			if (obj:is_player() or lua_entity) and prevent_portal_chatter(obj) then
 				teleport(obj, pos)
 			end
@@ -865,7 +1528,9 @@ local usagehelp = S("To open a Nether portal, place an upright frame of obsidian
 minetest.override_item(OBSIDIAN, {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usagehelp,
-	after_destruct = function(pos, node)
+	on_destruct = function(pos, node)
+		-- Permit extinguishing of protected portals if the frame is
+		-- sticking out of the protected area to maintain integrity.
 		local function check_remove(pos, orientation)
 			local node = get_node(pos)
 			if node and node.name == PORTAL then
@@ -884,13 +1549,14 @@ minetest.override_item(OBSIDIAN, {
 
 	_on_ignite = function(user, pointed_thing)
 		local x, y, z = pointed_thing.under.x, pointed_thing.under.y, pointed_thing.under.z
-		-- Check empty spaces around obsidian and light all frames found:
+		-- Check empty spaces around obsidian and light all frames found.
+		-- Permit igniting of portals that are partly protected to maintain integrity.
 		local portals_placed =
 				mcl_portals.light_nether_portal({x = x - 1, y = y, z = z}) or mcl_portals.light_nether_portal({x = x + 1, y = y, z = z}) or
 				mcl_portals.light_nether_portal({x = x, y = y - 1, z = z}) or mcl_portals.light_nether_portal({x = x, y = y + 1, z = z}) or
 				mcl_portals.light_nether_portal({x = x, y = y, z = z - 1}) or mcl_portals.light_nether_portal({x = x, y = y, z = z + 1})
 		if portals_placed then
-			log("action", "[mcl_portals] Nether portal activated at "..pos_to_string({x=x,y=y,z=z})..".")
+			log("verbose", "Nether portal activated at "..pos_to_string({x=x,y=y,z=z})..".")
 			if minetest.get_modpath("doc") then
 				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", PORTAL)
 
@@ -911,13 +1577,21 @@ mcl_structures.register_structure("nether_portal",{
 	nospawn = true,
 	filenames = {
 		modpath.."/schematics/mcl_portals_nether_portal.mts"
-	},
-	after_place = function(pos,def,pr,blockseed)
-	end
+	}
 })
 mcl_structures.register_structure("nether_portal_open",{
 	nospawn = true,
 	filenames = {
 		modpath.."/schematics/mcl_portals_nether_portal_open.mts"
 	},
+	after_place = function(pos,def,pr,blockseed)
+		-- The mts is the smallest portal (two wide) and places the first PORTAL block
+		-- above the location of the caller (y+1). The second one is either at x+1 or z+1.
+		local portals = find_nodes_in_area(add(pos, vector.new(0,1,0)), add(pos, vector.new(1,1,1)), {PORTAL})
+		if portals and #portals>0 then
+			for _, p in pairs(portals) do
+				add_exits({p})
+			end
+		end
+	end
 })
