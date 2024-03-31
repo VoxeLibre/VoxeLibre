@@ -780,3 +780,15 @@ function mcl_util.remove_entity(luaentity)
 
 	luaentity.object:remove()
 end
+local function table_merge(base, overlay)
+	for k,v in pairs(overlay) do
+		if type(base[k]) == "table" then
+			table_merge(base[k], v)
+		else
+			base[k] = v
+		end
+	end
+	return base
+end
+mcl_util.table_merge = table_merge
+
