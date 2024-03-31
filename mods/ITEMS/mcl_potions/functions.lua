@@ -121,11 +121,8 @@ function mcl_potions.register_effect(def)
 	if type(name) ~= "string" then
 		error("Unable to register effect: name is not a string")
 	end
-	if name == "list" then
-		error("Unable to register effect: list is a reserved word")
-	end
-	if name == "heal" then
-		error("Unable to register effect: heal is a reserved word")
+	if name == "list" or name == "heal" or name == "remove" or name == "clear" then
+		error("Unable to register effect: " .. name .. " is a reserved word")
 	end
 	if registered_effects[name] then
 		error("Effect named "..name.." already registered!")
