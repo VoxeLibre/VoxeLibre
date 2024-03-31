@@ -10,6 +10,12 @@ function mcl_minecarts:get_sign(z)
 	end
 end
 
+function get_path(base, first, ...)
+	if not first then return base end
+	if not base then return end
+	return get_path(base[first], ...)
+end
+
 function mcl_minecarts:velocity_to_dir(v)
 	if math.abs(v.x) > math.abs(v.z) then
 		return vector.new(
@@ -82,13 +88,13 @@ mod.west = west
 
 local CONNECTIONS = { north, south, east, west }
 local HORIZONTAL_STANDARD_RULES = {
-	[N]       = { "", 0, mask = N, score = 1 },
-	[S]       = { "", 0, mask = S, score = 1 },
-	[N+S]     = { "", 0, mask = N+S, score = 2 },
+	[N]       = { "", 0, mask = N, score = 1, can_slope = true },
+	[S]       = { "", 0, mask = S, score = 1, can_slope = true },
+	[N+S]     = { "", 0, mask = N+S, score = 2, can_slope = true },
 
-	[E]       = { "", 1, mask = E, score = 1 },
-	[W]       = { "", 1, mask = W, score = 1 },
-	[E+W]     = { "", 1, mask = E+W, score = 2 },
+	[E]       = { "", 1, mask = E, score = 1, can_slope = true },
+	[W]       = { "", 1, mask = W, score = 1, can_slope = true },
+	[E+W]     = { "", 1, mask = E+W, score = 2, can_slope = true },
 }
 
 local HORIZONTAL_CURVES_RULES = {
@@ -127,6 +133,26 @@ local function check_connection_rule(pos, connections, rule)
 end
 mod.check_connection_rules = check_connection_rules
 
+local function make_sloped_if_straight(pos, dir)
+	local node = minetest.get_node(pos)
+	local nodedef = minetest.registered_nodes[node.name]
+
+	local param2 = 0
+	if dir == east then
+		param2 = 3
+	elseif dir == west then
+		param2 = 1
+	elseif dir == north then
+		param2 = 2
+	elseif dir == south then
+		param2 = 0
+	end
+
+	if get_path( nodedef, "_mcl_minecarts", "railtype" ) == "straight" then
+		minetest.swap_node(pos, {name = nodedef._mcl_minecarts.base_name .. "_sloped", param2 = param2})
+	end
+end
+
 local function update_rail_connections(pos, update_neighbors)
 	local node = minetest.get_node(pos)
 	local nodedef = minetest.registered_nodes[node.name]
@@ -150,13 +176,17 @@ local function update_rail_connections(pos, update_neighbors)
 		local nodedef = minetest.registered_nodes[node.name]
 
 		-- Only allow connections to the open ends of rails, as decribed by get_next_dir
-		if (nodedef.groups or {}).rail and nodedef._mcl_minecarts and nodedef._mcl_minecarts.get_next_dir then
+		if get_path(nodedef, "groups", "rail") and get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) then
+		--if nodedef and (nodedef.groups or {}).rail and nodedef._mcl_minecarts and nodedef._mcl_minecarts.get_next_dir then
 			local diff = vector.direction(neighbor, pos)
 			local next_dir = nodedef._mcl_minecarts.get_next_dir(neighbor, diff, node)
 			if next_dir == diff then
 				connections = connections + bit.lshift(1,i - 1)
 			end
 		end
+
+		-- Check for rasing rails to slopes
+		make_sloped_if_straight( vector.offset(neighbor, 0, -1, 0), dir )
 	end
 
 	-- Select the best allowed connection
@@ -171,20 +201,35 @@ local function update_rail_connections(pos, update_neighbors)
 			end
 		end
 	end
-	if not rule then return end
+	if rule then
 
-	-- Apply the mapping
-	local new_name = nodedef._mcl_minecarts.base_name..rule[1]
-	if new_name ~= node.name or node.param2 ~= rule[2] then
-		print("swapping "..node.name.." for "..new_name..","..tostring(rule[2]).." at "..tostring(pos))
-		node.name = new_name
-		node.param2 = rule[2]
-		minetest.swap_node(pos, node)
+		-- Apply the mapping
+		local new_name = nodedef._mcl_minecarts.base_name..rule[1]
+		if new_name ~= node.name or node.param2 ~= rule[2] then
+			print("swapping "..node.name.." for "..new_name..","..tostring(rule[2]).." at "..tostring(pos))
+			node.name = new_name
+			node.param2 = rule[2]
+			minetest.swap_node(pos, node)
+		end
+
+		if rule.after then
+			rule.after(rule, pos, connections)
+		end
 	end
 
-	if rule.after then
-		rule.after(rule, pos, connections)
+	local node_def = minetest.registered_nodes[node.name]
+	if get_path(node_def, "_mcl_minecarts", "can_slope") then
+		for _,dir in ipairs(CONNECTIONS) do
+			if mcl_minecarts:is_rail(vector.offset(pos,dir.x,1,dir.z)) then
+				local rev_dir = vector.direction(dir,vector.new(0,0,0))
+				print("try to make slope at "..tostring(pos))
+				make_sloped_if_straight(pos, rev_dir)
+			end
+		end
+	else
+		print(node.name.." can't slope")
 	end
+
 end
 mod.update_rail_connections = update_rail_connections
 

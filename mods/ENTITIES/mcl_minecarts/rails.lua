@@ -98,7 +98,7 @@ local BASE_DEF = {
 		}
 	},
 	paramtype = "light",
-	paramtype2 = "facedir",
+	paramtype2 = "4dir",
 }
 table_merge(BASE_DEF, RAIL_DEFAULTS) -- Merge together old rail values
 
@@ -213,26 +213,31 @@ end
 local function register_straight_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
-	table_merge(base_def,{
+	local sloped_def = table.copy(SLOPED_RAIL_DEF)
+	local add = {
 		tiles = { tiles[1] },
-		_mcl_minecarts = { base_name = base_name },
 		drop = base_name,
 		groups = {
-			rail = mod.RAIL_GROUPS.STRANDARD,
+			rail = mod.RAIL_GROUPS.STANDARD,
 		},
 		_mcl_minecarts = {
 			base_name = base_name,
-			get_next_dir = rail_dir_straight
+			get_next_dir = rail_dir_straight,
+			can_slope = true,
 		},
-	})
-	table_merge(base_def, def)
+	}
+	table_merge(base_def, add); table_merge(sloped_def, add)
+	table_merge(base_def, def); table_merge(sloped_def, def)
 
 	-- Register the base node
 	mod.register_rail(base_name, base_def)
-	base_def.craft = false
+	base_def.craft = nil; sloped_def.craft = nil
 	table_merge(base_def,{
 		groups = {
 			not_in_creative_inventory = 1,
+		},
+		_mcl_minecarts = {
+			railtype = "straight",
 		},
 	})
 
@@ -243,6 +248,9 @@ local function register_straight_rail(base_name, tiles, def)
 			get_next_dir = rail_dir_cross,
 		},
 		tiles = { tiles[1] },
+		_mcl_minecarts = {
+			railtype = "sloped",
+		},
 	}))
 end
 mod.register_straight_rail = register_straight_rail
@@ -250,21 +258,25 @@ mod.register_straight_rail = register_straight_rail
 local function register_curves_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
-	table_merge(base_def,{
+	local sloped_def = table.copy(SLOPED_RAIL_DEF)
+	local add = {
 		_mcl_minecarts = { base_name = base_name },
 		groups = {
 			rail = mod.RAIL_GROUPS.CURVES
 		},
 		drop = base_name,
-	})
-	table_merge(base_def, def)
+	}
+	table_merge(base_def, add); table_merge(sloped_def, add)
+	table_merge(base_def, def); table_merge(sloped_def, def)
 
 	-- Register the base node
 	mod.register_rail(base_name, table_merge(table.copy(base_def),{
 		tiles = { tiles[1] },
 		_mcl_minecarts = {
-			get_next_dir = rail_dir_straight
-		}
+			get_next_dir = rail_dir_straight,
+			railtype = "straight",
+			can_slope = true,
+		},
 	}))
 
 	-- Update for other variants
@@ -280,6 +292,7 @@ local function register_curves_rail(base_name, tiles, def)
 		tiles = { tiles[2] },
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_curve,
+			railtype = "corner",
 		},
 	}))
 
@@ -297,12 +310,16 @@ local function register_curves_rail(base_name, tiles, def)
 				end,
 				rules = mesecon.rules.alldirs,
 			}
-		}
+		},
+		_mcl_minecarts = {
+			railtype = "corner",
+		},
 	}))
 	mod.register_rail(base_name.."_tee_on", table_merge(table.copy(base_def),{
 		tiles = { tiles[4] },
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_tee,
+			railtype = "tee",
 		},
 		mesecons = {
 			effector = {
@@ -316,10 +333,11 @@ local function register_curves_rail(base_name, tiles, def)
 	}))
 
 	-- Sloped variant
-	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(base_def),{
+	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(sloped_def),{
 		description = S("Sloped Rail"), -- Temporary name to make debugging easier
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_cross,
+			railtype = "tee",
 		},
 		tiles = { tiles[1] },
 	}))
@@ -327,6 +345,9 @@ local function register_curves_rail(base_name, tiles, def)
 	-- Cross variant
 	mod.register_rail(base_name.."_cross", table_merge(table.copy(base_def),{
 		tiles = { tiles[5] },
+		_mcl_minecarts = {
+			railtype = "cross",
+		},
 	}))
 end
 mod.register_curves_rail = register_curves_rail
