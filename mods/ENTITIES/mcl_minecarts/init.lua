@@ -695,7 +695,7 @@ local function register_entity(entity_id, def)
 
 		-- Drop items
 		local drop = def.drop
-		if not minetest.is_creative_enabled(killer:get_player_name()) then
+		if not killer or not minetest.is_creative_enabled(killer:get_player_name()) then
 			for d=1, #drop do
 				minetest.add_item(self.object:get_pos(), drop[d])
 			end

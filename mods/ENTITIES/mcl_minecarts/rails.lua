@@ -165,7 +165,7 @@ local function rail_dir_straight(pos, dir, node)
 	local next_pos = vector.add(pos, raw_dir)
 	local next_node = minetest.get_node(next_pos)
 	local node_def = minetest.registered_nodes[next_node.name]
-	if node_def and node_def.groups and node_def.groups.solid then
+	if node_def and node_def.groups and ( node_def.groups.solid or node_def.groups.stair ) then
 		-- Reverse the direction without giving -0 members
 		return vector.direction(next_pos, pos)
 	else
@@ -359,7 +359,7 @@ mod.register_rail_sloped = register_rail_sloped
 local rail_rules_long =
 {{x=-1,  y= 0, z= 0, spread=true},
  {x= 1,  y= 0, z= 0, spread=true},
--- {x= 0,  y=-1, z= 0, spread=true},
+ {x= 0,  y=-1, z= 0, spread=true},
  {x= 0,  y= 1, z= 0, spread=true},
  {x= 0,  y= 0, z=-1, spread=true},
  {x= 0,  y= 0, z= 1, spread=true},
