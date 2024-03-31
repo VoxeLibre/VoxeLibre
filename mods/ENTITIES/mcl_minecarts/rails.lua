@@ -77,12 +77,20 @@ local function register_rail(itemstring, tiles, def_extras, creative)
 	table_merge(ndef, def_extras)
 	minetest.register_node(itemstring, ndef)
 end
+
+-- Now get the translator after we have finished using S for other things
+mod.text = mod.text or {}
+mod.text.railuse = railuse
 local BASE_DEF = {
+	description = S("New Rail"), -- Temporary name to make debugging easier
+	_tt_help = S("Track for minecarts"),
 	_doc_items_usagehelp = railuse,
-	groups = {
-		rail = 1,
-	},
+	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
+	after_place_node = function(pos, placer, itemstack, pointed_thing)
+		update_rail_connections(pos, true)
+	end,
 	drawtype = "nodebox",
+	groups = RAIL_DEFAULT_GROUPS,
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -93,7 +101,6 @@ local BASE_DEF = {
 	paramtype2 = "facedir",
 }
 table_merge(BASE_DEF, RAIL_DEFAULTS) -- Merge together old rail values
-table_merge(BASE_DEF.groups, RAIL_DEFAULT_GROUPS)
 
 local SLOPED_RAIL_DEF = table.copy(BASE_DEF)
 table_merge(SLOPED_RAIL_DEF,{
@@ -115,22 +122,18 @@ table_merge(SLOPED_RAIL_DEF,{
 	}
 })
 
-local function register_rail_v2(itemstring, def)
-	assert(def.tiles)
+local function register_rail_v2(itemstring, ndef)
+	assert(ndef.tiles)
 
 	-- Extract out the craft recipe
-	local craft = def.craft
-	def.craft = nil
-
-	-- Merge together the definition with the base definition
-	local ndef = table.copy(def)
-	table_merge(ndef, BASE_DEF)
+	local craft = ndef.craft
+	ndef.craft = nil
 
 	-- Add sensible defaults
 	if not ndef.inventory_image then ndef.inventory_image = ndef.tiles[1] end
 	if not ndef.wield_image then ndef.wield_image = ndef.tiles[1] end
 
-	--print("registering rail "..itemstring.." with definition: "..dump(ndef))
+	print("registering rail "..itemstring.." with definition: "..dump(ndef))
 
 	-- Make registrations
 	minetest.register_node(itemstring, ndef)
@@ -139,18 +142,34 @@ end
 mod.register_rail = register_rail_v2
 
 local function rail_dir_straight(pos, dir, node)
-	if node.param2 == 0 or node.param2 == 2 then
-		if vector.equals(dir, north) then
-			return north
+	local function inside(pos,dir,node)
+		if node.param2 == 0 or node.param2 == 2 then
+			if vector.equals(dir, north) then
+				return north
+			else
+				return south
+			end
 		else
-			return south
+			if vector.equals(dir,east) then
+				return east
+			else
+				return west
+			end
 		end
+	end
+
+	local raw_dir = inside(pos, dir, node)
+
+	-- Handle reversing if there is a solid block in the next position
+	-- Only do this for straight tracks
+	local next_pos = vector.add(pos, raw_dir)
+	local next_node = minetest.get_node(next_pos)
+	local node_def = minetest.registered_nodes[next_node.name]
+	if node_def and node_def.groups and node_def.groups.solid then
+		-- Reverse the direction without giving -0 members
+		return vector.direction(next_pos, pos)
 	else
-		if vector.equals(dir,east) then
-			return east
-		else
-			return west
-		end
+		return raw_dir
 	end
 end
 local function rail_dir_curve(pos, dir, node)
@@ -181,50 +200,61 @@ local function rail_dir_curve(pos, dir, node)
 	end
 end
 
+local function rail_dir_tee(pos, dir, node)
+	-- TODO: implement
+	return north
+end
+
 local function rail_dir_cross(pos, dir, node)
 	-- Always continue in the same direction. No direction changes allowed
 	return dir
 end
 
--- Now get the translator after we have finished using S for other things
-local S = minetest.get_translator(modname)
-mod.text = mod.text or {}
-mod.text.railuse = railuse
-local BASE_DEF = {
-	description = S("New Rail"), -- Temporary name to make debugging easier
-	_tt_help = S("Track for minecarts"),
-	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
-	groups = {
-		rail = mod.RAIL_GROUPS.CURVES,
-	},
-	after_place_node = function(pos, placer, itemstack, pointed_thing)
-		update_rail_connections(pos, true)
-	end,
-}
 local function register_straight_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
 	table_merge(base_def,{
+		tiles = { tiles[1] },
 		_mcl_minecarts = { base_name = base_name },
 		drop = base_name,
+		groups = {
+			rail = mod.RAIL_GROUPS.STRANDARD,
+		},
+		_mcl_minecarts = {
+			base_name = base_name,
+			get_next_dir = rail_dir_straight
+		},
 	})
 	table_merge(base_def, def)
 
 	-- Register the base node
-	mod.register_rail(base_name, table_merge(table.copy(base_def),{
-		tiles = { tiles[1] },
+	mod.register_rail(base_name, base_def)
+	base_def.craft = false
+	table_merge(base_def,{
+		groups = {
+			not_in_creative_inventory = 1,
+		},
+	})
+
+	-- Sloped variant
+	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(base_def),{
+		description = S("Sloped Rail"), -- Temporary name to make debugging easier
 		_mcl_minecarts = {
-			get_next_dir = rail_dir_straight
-		}
+			get_next_dir = rail_dir_cross,
+		},
+		tiles = { tiles[1] },
 	}))
-	BASE_DEF.craft = nil
 end
 mod.register_straight_rail = register_straight_rail
+
 local function register_curves_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
 	table_merge(base_def,{
 		_mcl_minecarts = { base_name = base_name },
+		groups = {
+			rail = mod.RAIL_GROUPS.CURVES
+		},
 		drop = base_name,
 	})
 	table_merge(base_def, def)
@@ -236,16 +266,20 @@ local function register_curves_rail(base_name, tiles, def)
 			get_next_dir = rail_dir_straight
 		}
 	}))
-	BASE_DEF.craft = nil
+
+	-- Update for other variants
+	base_def.craft = nil
+	table_merge(base_def, {
+		groups = {
+			not_in_creative_inventory = 1
+		}
+	})
 
 	-- Corner variants
 	mod.register_rail(base_name.."_corner", table_merge(table.copy(base_def),{
 		tiles = { tiles[2] },
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_curve,
-		},
-		groups = {
-			not_in_creative_inventory = 1,
 		},
 	}))
 
@@ -267,8 +301,8 @@ local function register_curves_rail(base_name, tiles, def)
 	}))
 	mod.register_rail(base_name.."_tee_on", table_merge(table.copy(base_def),{
 		tiles = { tiles[4] },
-		groups = {
-			not_in_creative_inventory = 1,
+		_mcl_minecarts = {
+			get_next_dir = rail_dir_tee,
 		},
 		mesecons = {
 			effector = {
@@ -280,6 +314,8 @@ local function register_curves_rail(base_name, tiles, def)
 			}
 		}
 	}))
+
+	-- Sloped variant
 	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(base_def),{
 		description = S("Sloped Rail"), -- Temporary name to make debugging easier
 		_mcl_minecarts = {
@@ -291,9 +327,6 @@ local function register_curves_rail(base_name, tiles, def)
 	-- Cross variant
 	mod.register_rail(base_name.."_cross", table_merge(table.copy(base_def),{
 		tiles = { tiles[5] },
-		groups = {
-			not_in_creative_inventory = 1,
-		},
 	}))
 end
 mod.register_curves_rail = register_curves_rail

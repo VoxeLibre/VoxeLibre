@@ -149,7 +149,7 @@ local function update_rail_connections(pos, update_neighbors)
 		local node = minetest.get_node(neighbor)
 		local nodedef = minetest.registered_nodes[node.name]
 
-		-- TODO: modify to only allow connections to the ends of rails (direction rules)
+		-- Only allow connections to the open ends of rails, as decribed by get_next_dir
 		if (nodedef.groups or {}).rail and nodedef._mcl_minecarts and nodedef._mcl_minecarts.get_next_dir then
 			local diff = vector.direction(neighbor, pos)
 			local next_dir = nodedef._mcl_minecarts.get_next_dir(neighbor, diff, node)

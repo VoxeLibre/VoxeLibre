@@ -782,7 +782,7 @@ function mcl_util.remove_entity(luaentity)
 end
 local function table_merge(base, overlay)
 	for k,v in pairs(overlay) do
-		if type(base[k]) == "table" then
+		if type(base[k]) == "table" and type(v) == "table" then
 			table_merge(base[k], v)
 		else
 			base[k] = v
