@@ -2,18 +2,40 @@ local vector = vector
 local mod = mcl_minecarts
 local table_merge = mcl_util.table_merge
 
+function get_path(base, first, ...)
+	if not first then return base end
+	if not base then return end
+	return get_path(base[first], ...)
+end
+
+local function force_get_node(pos)
+	local node = minetest.get_node(pos)
+	if node.name ~= "ignore" then return node end
+
+	local vm = minetest.get_voxel_manip()
+	local emin, emax = vm:read_from_map(pos, pos)
+	local area = VoxelArea:new{
+		MinEdge = emin,
+		MaxEdge = emax,
+	}
+	local data = vm:get_data()
+	local param_data = vm:get_light_data()
+	local param2_data = vm:get_param2_data()
+
+	local vi = area:indexp(pos)
+	return {
+		name = minetest.get_name_from_content_id(data[vi]),
+		param = param_data[vi],
+		param2 = param2_data[vi]
+	}
+end
+
 function mcl_minecarts:get_sign(z)
 	if z == 0 then
 		return 0
 	else
 		return z / math.abs(z)
 	end
-end
-
-function get_path(base, first, ...)
-	if not first then return base end
-	if not base then return end
-	return get_path(base[first], ...)
 end
 
 function mcl_minecarts:velocity_to_dir(v)
@@ -33,25 +55,15 @@ function mcl_minecarts:velocity_to_dir(v)
 end
 
 function mcl_minecarts:is_rail(pos, railtype)
-	local node = minetest.get_node(pos).name
-	if node == "ignore" then
-		local vm = minetest.get_voxel_manip()
-		local emin, emax = vm:read_from_map(pos, pos)
-		local area = VoxelArea:new{
-			MinEdge = emin,
-			MaxEdge = emax,
-		}
-		local data = vm:get_data()
-		local vi = area:indexp(pos)
-		node = minetest.get_name_from_content_id(data[vi])
-	end
-	if minetest.get_item_group(node, "rail") == 0 then
+	local node_name = force_get_node(pos).name
+
+	if minetest.get_item_group(node_name, "rail") == 0 then
 		return false
 	end
 	if not railtype then
 		return true
 	end
-	return minetest.get_item_group(node, "connect_to_raillike") == railtype
+	return minetest.get_item_group(node_name, "connect_to_raillike") == railtype
 end
 
 --[[
@@ -177,10 +189,9 @@ local function update_rail_connections(pos, update_neighbors)
 
 		-- Only allow connections to the open ends of rails, as decribed by get_next_dir
 		if get_path(nodedef, "groups", "rail") and get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) then
-		--if nodedef and (nodedef.groups or {}).rail and nodedef._mcl_minecarts and nodedef._mcl_minecarts.get_next_dir then
-			local diff = vector.direction(neighbor, pos)
-			local next_dir = nodedef._mcl_minecarts.get_next_dir(neighbor, diff, node)
-			if next_dir == diff then
+			local rev_dir = vector.direction(dir,vector.new(0,0,0))
+			--local next_dir = nodedef._mcl_minecarts.get_next_dir(neighbor, rev_dir, node)
+			if mcl_minecarts:is_connection(neighbor, rev_dir) then
 				connections = connections + bit.lshift(1,i - 1)
 			end
 		end
@@ -220,14 +231,12 @@ local function update_rail_connections(pos, update_neighbors)
 	local node_def = minetest.registered_nodes[node.name]
 	if get_path(node_def, "_mcl_minecarts", "can_slope") then
 		for _,dir in ipairs(CONNECTIONS) do
-			if mcl_minecarts:is_rail(vector.offset(pos,dir.x,1,dir.z)) then
-				local rev_dir = vector.direction(dir,vector.new(0,0,0))
-				print("try to make slope at "..tostring(pos))
+			local higher_rail_pos = vector.offset(pos,dir.x,1,dir.z)
+			local rev_dir = vector.direction(dir,vector.new(0,0,0))
+			if mcl_minecarts:is_rail(higher_rail_pos) and mcl_minecarts:is_connection(higher_rail_pos, rev_dir) then
 				make_sloped_if_straight(pos, rev_dir)
 			end
 		end
-	else
-		print(node.name.." can't slope")
 	end
 
 end
@@ -272,6 +281,16 @@ local diagonal_convert = {
 	se = east,
 	sw = south,
 }
+
+function mcl_minecarts:is_connection(pos, dir)
+	local node = force_get_node(pos)
+	local nodedef = minetest.registered_nodes[node.name]
+
+	local get_next_dir = get_path(nodedef, "_mcl_minecarts", "get_next_dir")
+	if not get_next_dir then return end
+
+	return get_next_dir(pos, dir, node) == dir
+end
 
 function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	local pos = vector.round(pos_)
