@@ -29,6 +29,7 @@ dofile(modpath .. "/splash.lua")
 dofile(modpath .. "/lingering.lua")
 dofile(modpath .. "/tipped_arrow.lua")
 dofile(modpath .. "/potions.lua")
+local potions = mcl_potions.registered_potions
 
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = S("Fermented Spider Eye"),
@@ -370,97 +371,110 @@ local output_table = {
 	["mcl_potions:awkward"] = awkward_table,
 }
 
-
-local enhancement_table = {}
-local extension_table = {}
-local potions = {}
-
-for i, potion in ipairs({"healing","harming","swiftness","slowness",
-	 "leaping","poison","regeneration","invisibility","fire_resistance",
-	 -- "weakness","strength",
-	 "water_breathing","night_vision", "withering"}) do
-
-	table.insert(potions, potion)
-
-	if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" and potion ~= "water_breathing" and potion ~= "fire_resistance" then
-		enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
-		enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
-		table.insert(potions, potion.."_2")
-	end
-
-	if potion ~= "healing" and potion ~= "harming" then
-		extension_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_plus_splash"
-		extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
-		table.insert(potions, potion.."_plus")
-	end
-
-end
-
-for i, potion in ipairs({"awkward", "mundane", "thick", "water"}) do
-	table.insert(potions, potion)
-end
-
-
 local inversion_table = {
 	["mcl_potions:healing"] = "mcl_potions:harming",
-	["mcl_potions:healing_2"] = "mcl_potions:harming_2",
 	["mcl_potions:swiftness"] = "mcl_potions:slowness",
-	["mcl_potions:swiftness_plus"] = "mcl_potions:slowness_plus",
 	["mcl_potions:leaping"] = "mcl_potions:slowness",
-	["mcl_potions:leaping_plus"] = "mcl_potions:slowness_plus",
 	["mcl_potions:night_vision"] = "mcl_potions:invisibility",
-	["mcl_potions:night_vision_plus"] = "mcl_potions:invisibility_plus",
 	["mcl_potions:poison"] = "mcl_potions:harming",
-	["mcl_potions:poison_2"] = "mcl_potions:harming_2",
-	["mcl_potions:healing_splash"] = "mcl_potions:harming_splash",
-	["mcl_potions:healing_2_splash"] = "mcl_potions:harming_2_splash",
-	["mcl_potions:swiftness_splash"] = "mcl_potions:slowness_splash",
-	["mcl_potions:swiftness_plus_splash"] = "mcl_potions:slowness_plus_splash",
-	["mcl_potions:leaping_splash"] = "mcl_potions:slowness_splash",
-	["mcl_potions:leaping_plus_splash"] = "mcl_potions:slowness_plus_splash",
-	["mcl_potions:night_vision_splash"] = "mcl_potions:invisibility_splash",
-	["mcl_potions:night_vision_plus_splash"] = "mcl_potions:invisibility_plus_splash",
-	["mcl_potions:poison_splash"] = "mcl_potions:harming_splash",
-	["mcl_potions:poison_2_splash"] = "mcl_potions:harming_2_splash",
+-- 	["mcl_potions:healing_splash"] = "mcl_potions:harming_splash",
+-- 	["mcl_potions:swiftness_splash"] = "mcl_potions:slowness_splash",
+-- 	["mcl_potions:leaping_splash"] = "mcl_potions:slowness_splash",
+-- 	["mcl_potions:night_vision_splash"] = "mcl_potions:invisibility_splash",
+-- 	["mcl_potions:poison_splash"] = "mcl_potions:harming_splash",
 }
-
 
 local splash_table = {}
 local lingering_table = {}
 
-for i, potion in ipairs(potions) do
-	splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
-	lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
+for potion, def in pairs(potions) do
+	if def.has_splash then
+		splash_table[potion] = potion.."_splash"
+	end
+	if def.has_lingering then
+		lingering_table[potion.."_splash"] = potion.."_lingering"
+	end
 end
 
 
 local mod_table = {
-	["mesecons:wire_00000000_off"] = extension_table,
 	["mcl_potions:fermented_spider_eye"] = inversion_table,
-	["mcl_nether:glowstone_dust"] = enhancement_table,
 	["mcl_mobitems:gunpowder"] = splash_table,
 	["mcl_potions:dragon_breath"] = lingering_table,
 }
 
--- Compare two ingredients for compatable alchemy
+local function extend_dur(potionstack)
+	local def = potions[potionstack:get_name()]
+	if not def then return false end -- somehow, it initially always fails
+	if not def.has_plus then return false end -- bail out if can't be extended
+	local potionstack = ItemStack(potionstack)
+	local meta = potionstack:get_meta()
+	local potent = meta:get_int("mcl_potions:potion_potent")
+	local plus = meta:get_int("mcl_potions:potion_plus")
+	if plus == 0 then
+		if potent ~= 0 then
+			meta:set_int("mcl_potions:potion_potent", 0)
+		end
+		meta:set_int("mcl_potions:potion_plus", def._default_extend_level)
+		tt.reload_itemstack_description(potionstack)
+		return potionstack
+	end
+	return false
+end
+
+local function enhance_pow(potionstack)
+	local def = potions[potionstack:get_name()]
+	if not def then return false end -- somehow, it initially always fails
+	if not def.has_potent then return false end -- bail out if has no potent variant
+	local potionstack = ItemStack(potionstack)
+	local meta = potionstack:get_meta()
+	local potent = meta:get_int("mcl_potions:potion_potent")
+	local plus = meta:get_int("mcl_potions:potion_plus")
+	if potent == 0 then
+		if plus ~= 0 then
+			meta:set_int("mcl_potions:potion_plus", 0)
+		end
+		meta:set_int("mcl_potions:potion_potent", def._default_potent_level-1)
+		tt.reload_itemstack_description(potionstack)
+		return potionstack
+	end
+	return false
+end
+
+local meta_mod_table = {
+	["mesecons:wire_00000000_off"] = extend_dur,
+	["mcl_nether:glowstone_dust"] = enhance_pow,
+}
+
+-- Find an alchemical recipe for given ingredient and potion
+-- returns outcome
 function mcl_potions.get_alchemy(ingr, pot)
-	if output_table[pot] then
+	local brew_selector = output_table[pot:get_name()]
+	if brew_selector and brew_selector[ingr] then
+		local meta = pot:get_meta():to_table()
+		local alchemy = ItemStack(brew_selector[ingr])
+		local metaref = alchemy:get_meta()
+		metaref:from_table(meta)
+		tt.reload_itemstack_description(alchemy)
+		return alchemy
+	end
 
-		local brew_table = output_table[pot]
-
-		if brew_table[ingr] then
-			return brew_table[ingr]
+	brew_selector = mod_table[ingr]
+	if brew_selector then
+		local brew = brew_selector[pot:get_name()]
+		if brew then
+			local meta = pot:get_meta():to_table()
+			local alchemy = ItemStack(brew)
+			local metaref = alchemy:get_meta()
+			metaref:from_table(meta)
+			tt.reload_itemstack_description(alchemy)
+			return alchemy
 		end
 	end
 
-	if mod_table[ingr] then
-
-		local brew_table = mod_table[ingr]
-
-		if brew_table[pot] then
-			return brew_table[pot]
-		end
-
+	if meta_mod_table[ingr] then
+		local brew_func = meta_mod_table[ingr]
+		if brew_func then return brew_func(pot) end
 	end
 
 	return false
@@ -493,10 +507,6 @@ minetest.register_globalstep(function(dtime)
 end)
 
 mcl_wip.register_wip_item("mcl_potions:night_vision")
-mcl_wip.register_wip_item("mcl_potions:night_vision_plus")
 mcl_wip.register_wip_item("mcl_potions:night_vision_splash")
-mcl_wip.register_wip_item("mcl_potions:night_vision_plus_splash")
 mcl_wip.register_wip_item("mcl_potions:night_vision_lingering")
-mcl_wip.register_wip_item("mcl_potions:night_vision_plus_lingering")
 mcl_wip.register_wip_item("mcl_potions:night_vision_arrow")
-mcl_wip.register_wip_item("mcl_potions:night_vision_plus_arrow")
