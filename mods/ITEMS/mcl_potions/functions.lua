@@ -1317,7 +1317,7 @@ function mcl_potions._reset_player_effects(player, set_hud)
 	end
 
 	for name, effect in pairs(registered_effects) do
-		if effect.on_end then effect.on_end(player) end
+		if EF[name][player] and effect.on_end then effect.on_end(player) end
 	end
 
 	mcl_potions._clear_cached_player_data(player)
