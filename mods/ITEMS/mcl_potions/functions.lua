@@ -94,6 +94,7 @@ end
 -- on_hit_timer - function(object, factor, duration) - if defined runs a hit_timer depending on timer_uses_factor value
 -- on_end - function(object) - called when the effect wears off
 -- after_end - function(object) - called when the effect wears off, after purging the data of the effect
+-- on_save_effect - function(object - called when the effect is to be serialized for saving (supposed to do cleanup)
 -- particle_color - string - colorstring for particles - defaults to #3000EE
 -- uses_factor - bool - whether factor affects the effect
 -- lvl1_factor - integer - factor for lvl1 effect - defaults to 1 if uses_factor
@@ -144,6 +145,7 @@ function mcl_potions.register_effect(def)
 	pdef.on_step = def.on_step
 	pdef.on_hit_timer = def.on_hit_timer
 	pdef.on_end = def.on_end
+	pdef.on_save_effect = def.on_save_effect
 	if not def.particle_color then
 		pdef.particle_color = "#3000EE"
 	else
@@ -503,6 +505,72 @@ mcl_potions.register_effect({
 	uses_factor = true,
 	lvl1_factor = 30,
 	lvl2_factor = 20,
+})
+
+local GLOW_DISTANCE = 30
+local CLOSE_GLOW_LIMIT = 3
+local MIN_GLOW_SCALE = 1
+local MAX_GLOW_SCALE = 4
+local SCALE_DIFF = MAX_GLOW_SCALE - MIN_GLOW_SCALE
+local SCALE_FACTOR = (GLOW_DISTANCE - CLOSE_GLOW_LIMIT) / SCALE_DIFF
+local abs = math.abs
+mcl_potions.register_effect({
+	name = "glowing",
+	description = S("Glowing"),
+	get_tt = function(factor)
+		return S("more visible at all times")
+	end,
+	on_start = function(object, factor)
+		EF.glowing[object].waypoints = {}
+	end,
+	on_step = function(dtime, object, factor, duration)
+		local pos = object:get_pos()
+		if not pos then return end
+		local x, y, z = pos.x, pos.y, pos.z
+		for _, player in pairs(minetest.get_connected_players()) do
+			local pp = player:get_pos()
+			if pp and player ~= object then
+				local hud_id = EF.glowing[object].waypoints[player]
+				if abs(pp.x-x) < GLOW_DISTANCE and abs(pp.y-y) < GLOW_DISTANCE
+					and abs(pp.z-z) < GLOW_DISTANCE then
+						local distance = vector.distance(pos, pp)
+						local scale
+						if distance <= CLOSE_GLOW_LIMIT then scale = MAX_GLOW_SCALE
+						elseif distance >= GLOW_DISTANCE then scale = MIN_GLOW_SCALE
+						else scale = (GLOW_DISTANCE - distance) / SCALE_FACTOR + MIN_GLOW_SCALE end
+						if hud_id then
+							player:hud_change(hud_id, "world_pos", pos)
+							player:hud_change(hud_id, "scale", {x = scale, y = scale})
+						else
+							EF.glowing[object].waypoints[player] = player:hud_add({
+								hud_elem_type = "image_waypoint",
+								position = {x = 0.5, y = 0.5},
+								scale = {x = scale, y = scale},
+								text = "mcl_potions_glow_waypoint.png",
+								alignment = {x = 0, y = -1},
+								world_pos = pos,
+							})
+						end
+				elseif hud_id then
+					player:hud_remove(hud_id)
+					EF.glowing[object].waypoints[player] = nil
+				end
+			end
+		end
+	end,
+	on_end = function(object)
+		for player, hud_id in pairs(EF.glowing[object].waypoints) do
+			if player:get_pos() then player:hud_remove(hud_id) end
+		end
+	end,
+	on_save_effect = function(object)
+		for player, hud_id in pairs(EF.glowing[object].waypoints) do
+			if player:get_pos() then player:hud_remove(hud_id) end
+		end
+		EF.glowing[object].waypoints = {}
+	end,
+	particle_color = "#FFFF00",
+	uses_factor = false,
 })
 
 mcl_potions.register_effect({
@@ -1334,6 +1402,7 @@ function mcl_potions._save_player_effects(player)
 	local meta = player:get_meta()
 
 	for name, effect in pairs(registered_effects) do
+		if effect.on_save_effect and EF[name][player] then effect.on_save_effect(player) end
 		meta:set_string("mcl_potions:_EF_"..name, minetest.serialize(EF[name][player]))
 	end
 end
