@@ -18,6 +18,13 @@ local log = function(level, message)
 	minetest.log(level, string.format("[mcl_portals] %s", message))
 end
 
+-- Resources
+
+-- Issue that has a lot of context: https://git.minetest.land/MineClone2/MineClone2/issues/4120
+-- Minecraft portal mechanics: https://minecraft.fandom.com/wiki/Tutorials/Nether_portals
+-- Flow diagram: https://docs.google.com/drawings/d/1WIl4pVuxgOxI3Ncxk4g6D1pL4Fyll3bQ-fX6L9yyiLw/edit
+-- Useful boundaries: https://git.minetest.land/MineClone2/MineClone2/wiki/World-structure%3A-positions%2C-boundaries%2C-blocks%2C-chunks%2C-dimensions%2C-barriers-and-the-void
+
 -- Setup
 
 -- === CAUTION ===
@@ -34,19 +41,39 @@ end
 -- want to recalculate SEARCH_DISTANCE_* and W_MAX too.
 local NETHER_COMPRESSION		= 8
 -- Maximum distance from the ideal build spot where active parts of portals are
--- allowed to be placed. This would ideally be smaller (16 as in MC), but for mapgen
--- performance reasons, the search area is clipped by chunk, so if very unlucky
--- the actual area could be a quarter of the expected size.
+-- allowed to be placed.
+-- There is a tradeoff here between the "walking" distance (distance to walk in
+-- the overworld to get a new nether portal exit, which we want to be as similar
+-- to Minecraft as possible, which is 136 [16*8+8]), and the area available for
+-- exit search (which we want to maximise).
+-- For our mapgen performance reasons, our search area is clipped by chunk, so
+-- in the unlucky corner case the worst-case build area could be a quarter of
+-- the expected size.
+-- For MC build distance of 16, which gives a build area of 1,089 X-Z blocks
+-- [(16+16+1)*(16+16+1)]. To guarantee this area here, we'd need to pick a build
+-- distance of 32 [(32+32+1)*(32+32+1)/4]. But build distance of 32 implies
+-- walking distance of 264 [32*8+8], which is already quite far, so need to pick
+-- the right tradeoff:
+--
+-- Build dist   Minimum build area      Minimum walk distance
+-- 48            2,401                  392
+-- 32            1,089                  264
+-- 24            625                    200
+-- 16            289                    136
 local BUILD_DISTANCE_XZ			= 24
 -- The following two values define distance to search existing portal exits for.
--- Roughly corresponds to Minecraft's "8 chunks away" for the overworld (17
+-- For context, Minecraft search is "8 chunks away" for the overworld (17
 -- chunks centered on the ideal position), and "1 chunk away" for the nether (3
 -- chunks centered on the ideal position).
+-- To prevent portal splitting on spawned portals, we add one to the build
+-- distance: spawned portals are 2-wide, so we need to make sure that we can
+-- reach the second exit block (which can spawn in the direction away from the
+-- player).
 -- The search is boundary-inclusive, meaning for position 0 in the overworld,
--- search will be from -128 to 128.
+-- search will be from -N to N.
 -- If you change this, keep in mind our exits table keying divisor is 256, so
--- small changes might have outsize performance impact. With 128, at most 4
--- buckets will be searched.
+-- small changes might have outsize performance impact. At <=128, max 4 buckets
+-- are searched, at 200 max 9 buckets are searched.
 local SEARCH_DISTANCE_NETHER		= BUILD_DISTANCE_XZ + 1 -- 25
 local SEARCH_DISTANCE_OVERWORLD		= SEARCH_DISTANCE_NETHER * NETHER_COMPRESSION -- 200
 -- Limits of portal sizes (includes the frame)
