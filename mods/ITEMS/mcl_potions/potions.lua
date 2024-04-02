@@ -250,6 +250,7 @@ function mcl_potions.register_potion(def)
 	pdef.on_place = on_use
 	pdef.on_secondary_use = on_use
 
+	local internal_def = table.copy(pdef)
 	minetest.register_craftitem(modname..":"..name, pdef)
 
 	if def.has_splash or def.has_splash == nil then
@@ -270,7 +271,7 @@ function mcl_potions.register_potion(def)
 		sdef.on_splash = def.custom_splash_effect
 		if not def._effect_list then sdef.instant = true end
 		mcl_potions.register_splash(name, splash_desc, color, sdef)
-		pdef.has_splash = true
+		internal_def.has_splash = true
 	end
 
 	if def.has_lingering or def.has_lingering == nil then
@@ -292,7 +293,7 @@ function mcl_potions.register_potion(def)
 		ldef.while_lingering = def.custom_linger_effect
 		if not def._effect_list then ldef.instant = true end
 		mcl_potions.register_lingering(name, ling_desc, color, ldef)
-		pdef.has_lingering = true
+		internal_def.has_lingering = true
 	end
 
 	if def.has_arrow then
@@ -320,10 +321,10 @@ function mcl_potions.register_potion(def)
 		adef.custom_effect = def.custom_effect
 		if not def._effect_list then adef.instant = true end
 		mcl_potions.register_arrow(name, arr_desc, color, adef)
-		pdef.has_arrow = true
+		internal_def.has_arrow = true
 	end
 
-	mcl_potions.registered_potions[modname..":"..name] = pdef
+	mcl_potions.registered_potions[modname..":"..name] = internal_def
 end
 
 mcl_potions.register_potion({
