@@ -1,4 +1,11 @@
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator("mcl_lightning_rods")
+
+mcl_lightning_rods = {}
+local mod = mcl_lightning_rods
+
+dofile(modpath.."/api.lua")
 
 ---@type nodebox
 local cbox = {
@@ -59,6 +66,17 @@ local rod_def = {
 
 		return minetest.item_place(itemstack, placer, pointed_thing, param2)
 	end,
+	after_place_node = function(pos, placer, itemstack, pointed_thing)
+		mod.register_lightning_attractor(pos)
+	end,
+	after_destruct = function(pos, oldnode)
+		mod.unregister_lightning_attractor(pos)
+	end,
+	_on_lightning_strike = function(pos, node)
+		minetest.set_node(pos, { name = "mcl_lightning_rods:rod_powered", param2 = node.param2 })
+		mesecon.receptor_on(pos, mesecon.rules.alldirs)
+		minetest.get_node_timer(pos):start(0.4)
+	end,
 
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 3,
@@ -92,21 +110,21 @@ end
 
 minetest.register_node("mcl_lightning_rods:rod_powered", rod_def_a)
 
-
 lightning.register_on_strike(function(pos, pos2, objects)
-	local lr = minetest.find_node_near(pos, 128, { "group:attracts_lightning" }, true)
+	local lr = mod.find_closest_attractor(pos, 64)
+	if not lr then return end
 
-	if lr then
-		local node = minetest.get_node(lr)
+	-- Make sure this possition attracts lightning
+	local node = minetest.get_node(lr)
+	if minetest.get_item_group(node.name, "attracts_lightning") == 0 then return end
 
-		if node.name == "mcl_lightning_rods:rod" then
-			minetest.set_node(lr, { name = "mcl_lightning_rods:rod_powered", param2 = node.param2 })
-			mesecon.receptor_on(lr, mesecon.rules.alldirs)
-			minetest.get_node_timer(lr):start(0.4)
-		end
+	-- Allow the node to process a lightning strike
+	local nodedef = minetest.registered_nodes[node.name]
+	if nodedef and nodedef._on_lightning_strike then
+		nodedef._on_lightning_strike(lr, node)
 	end
 
-	return lr, nil
+	return lr
 end)
 
 minetest.register_craft({
@@ -116,4 +134,11 @@ minetest.register_craft({
 		{ "", "mcl_copper:copper_ingot", "" },
 		{ "", "mcl_copper:copper_ingot", "" },
 	},
+})
+minetest.register_lbm({
+	name = "mcl_lightning_rods:index_rods",
+	nodenames = {"mcl_lightning_rods:rod","mcl_lightning_rods:rod_powered"},
+	action = function(pos, node)
+		mod.register_lightning_attractor(pos)
+	end
 })
