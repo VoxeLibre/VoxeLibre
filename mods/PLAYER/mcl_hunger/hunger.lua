@@ -1,18 +1,6 @@
 --local S = minetest.get_translator(minetest.get_current_modname())
 
-local function is_fake_player(player)
-	-- Simple checks
-	if not player then return true end
-	if player:is_player() == false then return true end
-	if not player.get_player_name then return true end
-
-	-- Check if the player is logged in
-	local objref = minetest.get_player_by_name( player:get_player_name() )
-	if not objref then return true end
-	if objref ~= player then return true end
-
-	return false
-end
+local is_fake_player = mcl_util.is_fake_player
 
 -- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
 function minetest.do_item_eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
