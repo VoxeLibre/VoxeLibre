@@ -15,6 +15,7 @@
 --
 
 local S = minetest.get_translator(minetest.get_current_modname())
+local is_fake_player = mcl_util.is_fake_player
 
 awards.register_trigger("dig", function(def)
 	local tmp = {
@@ -236,7 +237,7 @@ awards.register_onCraft = awards.register_on_craft
 
 -- Trigger Handles
 minetest.register_on_dignode(function(pos, oldnode, digger)
-	if not digger or not pos or not oldnode then
+	if is_fake_player(digger) or not pos or not oldnode then
 		return
 	end
 
@@ -261,7 +262,7 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 end)
 
 minetest.register_on_placenode(function(pos, node, digger)
-	if not digger or not pos or not node or not digger:get_player_name() or digger:get_player_name()=="" then
+	if is_fake_player(digger) or not pos or not node or not digger:get_player_name() or digger:get_player_name()=="" then
 		return
 	end
 	local data = awards.players[digger:get_player_name()]
@@ -286,6 +287,7 @@ minetest.register_on_placenode(function(pos, node, digger)
 end)
 
 minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+	if is_fake_player(user) then return end
 	if not user or not itemstack or not user:get_player_name() or user:get_player_name()=="" then
 		return
 	end
@@ -310,7 +312,7 @@ minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, 
 end)
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-	if not player or not itemstack then
+	if is_fake_player(player) or not itemstack then
 		return
 	end
 
@@ -338,7 +340,7 @@ end)
 minetest.register_on_dieplayer(function(player)
 	-- Run checks
 	local name = player:get_player_name()
-	if not player or not name or name=="" then
+	if is_fake_player(player) or not name or name=="" then
 		return
 	end
 
@@ -359,8 +361,9 @@ end)
 
 minetest.register_on_joinplayer(function(player)
 	-- Run checks
+	if is_fake_player(player) then return end
 	local name = player:get_player_name()
-	if not player or not name or name=="" then
+	if not name or name=="" then
 		return
 	end
 
@@ -390,6 +393,7 @@ minetest.register_on_chat_message(function(name, message)
 	awards.assertPlayer(name)
 	local data = awards.players[name]
 	local player = minetest.get_player_by_name(name)
+	if is_fake_player(player) then return end
 
 	-- Increment counter
 	data.chats = data.chats + 1
