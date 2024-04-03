@@ -89,7 +89,6 @@ local function enable_physics(object, luaentity, ignore_check)
 		object:set_properties({
 			physical = true
 		})
-		object:set_acceleration(vector.new(0, -get_gravity(), 0))
 	end
 end
 
@@ -870,7 +869,6 @@ minetest.register_entity(":__builtin:item", {
 
 		self.object:set_armor_groups({ immortal = 1 })
 		-- self.object:set_velocity(vector.new(0, 2, 0))
-		self.object:set_acceleration(vector.new(0, -get_gravity(), 0))
 		self:set_item(self.itemstring)
 	end,
 

@@ -22,11 +22,11 @@ function mod.get_environment_effect(pos, vel, staticdata, mass)
 		end
 	end
 
-	if vector.length(v) > 0.01 or vector.length(a) > 0.01 then
-		return v,a
-	else
-		return -- nil,nil
-	end
+	-- Disable small effects
+	if vector.length(v) < 0.01 then v = nil end
+	if vector.length(a) < 0.01 then a = nil end
+
+	return v,a
 end
 
 function mod.apply_entity_environmental_physics(self, data)
@@ -35,6 +35,9 @@ function mod.apply_entity_environmental_physics(self, data)
 	local pos = self.object:get_pos()
 	local vel = self.object:get_velocity()
 	local new_velocity,new_acceleration = mcl_physics.get_environment_effect(pos, vel, data, 1)
+
+	if new_velocity then print("new_velocity="..tostring(new_velocity)) end
+	if new_acceleration then print("new_acceleration="..tostring(new_acceleration)) end
 
 	-- Update entity states
 	self._flowing = data.flowing
