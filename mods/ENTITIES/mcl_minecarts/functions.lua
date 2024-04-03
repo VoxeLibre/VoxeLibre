@@ -108,6 +108,7 @@ local HORIZONTAL_STANDARD_RULES = {
 	[W]       = { "", 1, mask = W, score = 1, can_slope = true },
 	[E+W]     = { "", 1, mask = E+W, score = 2, can_slope = true },
 }
+mod.HORIZONTAL_STANDARD_RULES = HORIZONTAL_STANDARD_RULES
 
 local HORIZONTAL_CURVES_RULES = {
 	[N+E]     = { "_corner", 3, name = "ne corner", mask = N+E, score = 3 },
@@ -122,8 +123,9 @@ local HORIZONTAL_CURVES_RULES = {
 
 	[N+S+E+W] = { "_cross", 0, mask = N+S+E+W, score = 5 },
 }
-
 table_merge(HORIZONTAL_CURVES_RULES, HORIZONTAL_STANDARD_RULES)
+mod.HORIZONTAL_CURVES_RULES = HORIZONTAL_CURVES_RULES
+
 local HORIZONTAL_RULES_BY_RAIL_GROUP = {
 	[1] = HORIZONTAL_STANDARD_RULES,
 	[2] = HORIZONTAL_CURVES_RULES,
@@ -165,7 +167,31 @@ local function make_sloped_if_straight(pos, dir)
 	end
 end
 
-local function update_rail_connections(pos, update_neighbors)
+local function get_rail_connections(pos, opt)
+	local legacy = opt and opt.legacy
+	local ignore_neighbor_connections = opt and opt.ignore_neighbor_connections
+
+	local connections = 0
+	for i,dir in ipairs(CONNECTIONS) do
+		local neighbor = vector.add(pos, dir)
+		local node = minetest.get_node(neighbor)
+		local nodedef = minetest.registered_nodes[node.name]
+
+		-- Only allow connections to the open ends of rails, as decribed by get_next_dir
+		if get_path(nodedef, "groups", "rail") and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
+			local rev_dir = vector.direction(dir,vector.new(0,0,0))
+			if ignore_neighbor_connections or mcl_minecarts:is_connection(neighbor, rev_dir) then
+				connections = connections + bit.lshift(1,i - 1)
+			end
+		end
+	end
+	return connections
+end
+mod.get_rail_connections = get_rail_connections
+
+local function update_rail_connections(pos, opt)
+	local ignore_neighbor_connections = opt and opt.ignore_neighbor_connections
+
 	local node = minetest.get_node(pos)
 	local nodedef = minetest.registered_nodes[node.name]
 	if not nodedef._mcl_minecarts then
@@ -181,22 +207,11 @@ local function update_rail_connections(pos, update_neighbors)
 	if not rules then return end
 
 	-- Horizontal rules, Check for rails on each neighbor
-	local connections = 0
+	local connections = get_rail_connections(pos, opt)
+
+	-- Check for rasing rails to slopes
 	for i,dir in ipairs(CONNECTIONS) do
 		local neighbor = vector.add(pos, dir)
-		local node = minetest.get_node(neighbor)
-		local nodedef = minetest.registered_nodes[node.name]
-
-		-- Only allow connections to the open ends of rails, as decribed by get_next_dir
-		if get_path(nodedef, "groups", "rail") and get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) then
-			local rev_dir = vector.direction(dir,vector.new(0,0,0))
-			--local next_dir = nodedef._mcl_minecarts.get_next_dir(neighbor, rev_dir, node)
-			if mcl_minecarts:is_connection(neighbor, rev_dir) then
-				connections = connections + bit.lshift(1,i - 1)
-			end
-		end
-
-		-- Check for rasing rails to slopes
 		make_sloped_if_straight( vector.offset(neighbor, 0, -1, 0), dir )
 	end
 
@@ -212,8 +227,8 @@ local function update_rail_connections(pos, update_neighbors)
 			end
 		end
 	end
-	if rule then
 
+	if rule then
 		-- Apply the mapping
 		local new_name = nodedef._mcl_minecarts.base_name..rule[1]
 		if new_name ~= node.name or node.param2 ~= rule[2] then

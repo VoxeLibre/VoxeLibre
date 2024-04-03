@@ -87,7 +87,7 @@ local BASE_DEF = {
 	_doc_items_usagehelp = railuse,
 	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
-		update_rail_connections(pos, true)
+		update_rail_connections(pos)
 	end,
 	drawtype = "nodebox",
 	groups = RAIL_DEFAULT_GROUPS,
@@ -595,3 +595,50 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_minecarts:golden_rail", "nodes", "mcl_minecarts:golden_rail_on")
 end
 
+if 0==0 then
+local CURVY_RAILS_MAP = {
+	["mcl_minecarts:rail"] = "mcl_minecarts:rail_v2",
+}
+minetest.register_lbm({
+	name = "mcl_minecarts:update_legacy_curvy_rails",
+	nodenames = {"mcl_minecarts:rail"},
+	action = function(pos, node)
+		node.name = CURVY_RAILS_MAP[node.name]
+		if node.name then
+			minetest.swap_node(pos, node)
+			mod.update_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
+		end
+	end
+})
+local STRAIGHT_RAILS_MAP ={
+	["mcl_minecarts:golden_rail"] = "mcl_minecarts:golden_rail_v2",
+	["mcl_minecarts:golden_rail_on"] = "mcl_minecarts:golden_rail_v2_on",
+	["mcl_minecarts:activator_rail"] = "mcl_minecarts_activator_rail_v2",
+	["mcl_minecarts:activator_rail_on"] = "mcl_minecarts:activator_rail_v2_on",
+	["mcl_minecarts:detector_rail"] = "mcl_minecarts:detector_rail_v2",
+	["mcl_minecarts:detector_rail_on"] = "mcl_minecarts:detector_rail_v2_on",
+}
+minetest.register_lbm({
+	name = "mcl_minecarts:update_legacy_straight_rails",
+	nodenames = {"mcl_minecarts:golden_rail"},
+	action = function(pos, node)
+		node.name = STRAIGHT_RAILS_MAP[node.name]
+		if node.name then
+			local connections = mod.get_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
+			if not mod.HORIZONTAL_STANDARD_RULES[connections] then
+				-- Drop an immortal object at this location
+				local item_entity = minetest.add_item(pos, ItemStack(node.name))
+				if item_entity then
+					item_entity:get_luaentity()._immortal = true
+				end
+
+				-- This is a configuration that doesn't exist in the new rail
+				-- Replace with a standard rail
+				node.name = "mcl_minecarts:rail_v2"
+			end
+			minetest.swap_node(pos, node)
+			mod.update_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
+		end
+	end
+})
+end
