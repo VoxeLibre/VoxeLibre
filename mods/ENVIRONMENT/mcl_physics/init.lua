@@ -24,7 +24,7 @@ mod.register_environment_effect(function(pos, vel, staticdata)
 	return vector.new(vec.x, -0.22, vec.z),nil
 end)
 
--- Simple gravity and bouency
+-- Simple gravity and bouancy
 mod.register_environment_effect(function(pos, vel, staticdata)
 	-- Get the node and node definition
 	local node = minetest.get_node_or_nil(pos);
