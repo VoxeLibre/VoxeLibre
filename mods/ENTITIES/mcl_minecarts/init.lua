@@ -850,7 +850,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 
 	-- Call placer
 	if le._mcl_minecarts_on_place then
-		print("Calling on_place")
+		--print("Calling on_place")
 		le._mcl_minecarts_on_place(le, placer)
 	end
 
@@ -1124,7 +1124,7 @@ function table_metadata(table)
 	return {
 		table = table,
 		set_string = function(self, key, value)
-			print("set_string("..tostring(key)..", "..tostring(value)..")")
+			--print("set_string("..tostring(key)..", "..tostring(value)..")")
 			self.table[key] = tostring(value)
 		end,
 		get_string = function(self, key)

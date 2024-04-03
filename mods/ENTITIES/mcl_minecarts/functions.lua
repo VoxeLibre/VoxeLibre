@@ -232,7 +232,7 @@ local function update_rail_connections(pos, opt)
 		-- Apply the mapping
 		local new_name = nodedef._mcl_minecarts.base_name..rule[1]
 		if new_name ~= node.name or node.param2 ~= rule[2] then
-			print("swapping "..node.name.." for "..new_name..","..tostring(rule[2]).." at "..tostring(pos))
+			--print("swapping "..node.name.." for "..new_name..","..tostring(rule[2]).." at "..tostring(pos))
 			node.name = new_name
 			node.param2 = rule[2]
 			minetest.swap_node(pos, node)
