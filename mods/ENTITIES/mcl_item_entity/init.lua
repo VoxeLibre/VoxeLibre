@@ -662,62 +662,6 @@ local function push_out_item_stuck_in_solid(self, dtime, p, def, is_in_water)
 	end
 end
 
-local function move_items_in_water (self, p, def, node, is_floating, is_in_water)
-	-- Move item around on flowing liquids; add 'source' check to allow items to continue flowing a bit in the source block of flowing water.
-	if def and not is_floating and (def.liquidtype == "flowing" or def.liquidtype == "source") then
-		self._flowing = true
-
-		--[[ Get flowing direction (function call from flowlib), if there's a liquid.
-        NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
-        Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
-		local vec = flowlib.quick_flow(p, node)
-		-- Just to make sure we don't manipulate the speed for no reason
-		if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
-			-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
-			local f = 1.2
-			-- Set new item moving speed into the direciton of the liquid
-			local newv = vector.multiply(vec, f)
-			-- Swap to acceleration instead of a static speed to better mimic MC mechanics.
-			self.object:set_acceleration(vector.new(newv.x, -0.22, newv.z))
-
-			self.physical_state = true
-			self._flowing = true
-			self.object:set_properties({
-				physical = true
-			})
-			return true
-		end
-		if is_in_water and def.liquidtype == "source" then
-			local cur_vec = self.object:get_velocity()
-			-- apply some acceleration in the opposite direction so it doesn't slide forever
-			local vec = {
-				x = 0 - cur_vec.x * 0.9,
-				y = 3 - cur_vec.y * 0.9,
-				z = 0 - cur_vec.z * 0.9
-			}
-			self.object:set_acceleration(vec)
-			-- slow down the item in water
-			local vel = self.object:get_velocity()
-			if vel.y < 0 then
-				vel.y = vel.y * 0.9
-			end
-			self.object:set_velocity(vel)
-			if self.physical_state ~= false or self._flowing ~= true then
-				self.physical_state = true
-				self._flowing = true
-				self.object:set_properties({
-					physical = true
-				})
-			end
-		end
-	elseif self._flowing == true and not is_in_water and not is_floating then
-		-- Disable flowing physics if not on/in flowing liquid
-		self._flowing = false
-		enable_physics(self.object, self, true)
-		return true
-	end
-end
-
 minetest.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
@@ -1060,7 +1004,7 @@ minetest.register_entity(":__builtin:item", {
 
 		if push_out_item_stuck_in_solid(self, dtime, p, def, is_in_water) then return end
 
-		if move_items_in_water (self, p, def, node, is_floating, is_in_water) then return end
+		mcl_physics.apply_entity_environmental_physics(self)
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
 		local nn = minetest.get_node(vector.offset(p, 0, -0.5, 0)).name

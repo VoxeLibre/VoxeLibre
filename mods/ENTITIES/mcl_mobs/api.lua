@@ -317,8 +317,11 @@ local function on_step_work(self, dtime, moveresult)
 
 	local player_in_active_range = self:player_in_active_range()
 	self:check_suspend(player_in_active_range)
-	self:check_water_flow()
+
+	-- Handle environmental physics
+	mcl_physics.apply_entity_environmental_physics(self)
 	self._can_jump_cliff = not self._jumping_cliff and self:can_jump_cliff()
+
 	self:flop()
 	self:check_smooth_rotation(dtime)
 
