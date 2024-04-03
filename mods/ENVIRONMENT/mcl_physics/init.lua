@@ -7,7 +7,7 @@ dofile(modpath.."/api.lua")
 
 -- TODO: move to Flowlib
 local FLOW_SPEED = 1.39
-mod.register_effect(function(pos, vel, staticdata)
+mod.register_environment_effect(function(pos, vel, staticdata)
 	-- Get the node and node definition
 	local node = minetest.get_node_or_nil(pos)
 	if not node then return end
@@ -36,5 +36,16 @@ mod.register_effect(function(pos, vel, staticdata)
 end)
 
 -- Node effects
-mod.register_effect
+mod.register_environment_effect(function(pos, vel, staticdata)
+	local pos_r = vector.round(pos)
+	local node = minetest.get_node(pos_r)
+	local nodedef = minetest.registered_nodes[node.name]
+	if not nodedef then return end
+
+	if nodedef._mcl_physics_effect then
+		return nodedef._mcl_physics_effect(pos, vel, staticdata)
+	end
+
+	return -- nil,nil
+end)
 
