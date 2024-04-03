@@ -2,8 +2,8 @@ local mod = mcl_physics
 
 local registered_environment_effects = {}
 
-function mod.register_enviornment_effect(effect)
-	local list = registered_effects
+function mod.register_environment_effect(effect)
+	local list = registered_environment_effects
 	list[#list + 1] = effect
 end
 
@@ -22,7 +22,7 @@ function mod.get_environment_effect(pos, vel, staticdata, mass)
 		end
 	end
 
-	if vector.length(v) > 0.01 or vector.length(a) > vector.length(a) > 0.01 then
+	if vector.length(v) > 0.01 or vector.length(a) > 0.01 then
 		return v,a
 	else
 		return -- nil,nil
