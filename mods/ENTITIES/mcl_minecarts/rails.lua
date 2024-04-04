@@ -372,7 +372,6 @@ local function register_rail_sloped(itemstring, def)
 
 	-- Make registrations
 	minetest.register_node(itemstring, ndef)
-	if craft then minetest.register_craft(craft) end
 end
 mod.register_rail_sloped = register_rail_sloped
 
@@ -595,13 +594,12 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_minecarts:golden_rail", "nodes", "mcl_minecarts:golden_rail_on")
 end
 
-if 0==0 then
 local CURVY_RAILS_MAP = {
 	["mcl_minecarts:rail"] = "mcl_minecarts:rail_v2",
 }
 minetest.register_lbm({
 	name = "mcl_minecarts:update_legacy_curvy_rails",
-	nodenames = {"mcl_minecarts:rail"},
+	nodenames = mcl_util.table_keys(CURVY_RAILS_MAP),
 	action = function(pos, node)
 		node.name = CURVY_RAILS_MAP[node.name]
 		if node.name then
@@ -620,7 +618,7 @@ local STRAIGHT_RAILS_MAP ={
 }
 minetest.register_lbm({
 	name = "mcl_minecarts:update_legacy_straight_rails",
-	nodenames = {"mcl_minecarts:golden_rail"},
+	nodenames = mcl_util.table_keys(STRAIGHT_RAILS_MAP),
 	action = function(pos, node)
 		node.name = STRAIGHT_RAILS_MAP[node.name]
 		if node.name then
@@ -641,4 +639,3 @@ minetest.register_lbm({
 		end
 	end
 })
-end

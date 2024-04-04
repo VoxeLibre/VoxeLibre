@@ -792,3 +792,11 @@ local function table_merge(base, overlay)
 end
 mcl_util.table_merge = table_merge
 
+function mcl_util.table_keys(t)
+	local keys = {}
+	for k,_ in pairs(t) do
+		keys[#keys + 1] = k
+	end
+	return keys
+end
+

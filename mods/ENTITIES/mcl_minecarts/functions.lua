@@ -145,7 +145,6 @@ local function check_connection_rule(pos, connections, rule)
 
 	return true
 end
-mod.check_connection_rules = check_connection_rules
 
 local function make_sloped_if_straight(pos, dir)
 	local node = minetest.get_node(pos)

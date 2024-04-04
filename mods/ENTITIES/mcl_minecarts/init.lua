@@ -39,6 +39,22 @@ mcl_minecarts.on_enter_below = function(pos, cart, next_dir, node_def)
 	end
 end
 
+local function detach_minecart(self)
+	local staticdata = self._staticdata
+	print("Detaching minecart")
+
+	staticdata.connected_at = nil
+	self.object:set_velocity(staticdata.dir * staticdata.velocity)
+end
+local function try_detach_minecart(self)
+	local staticdata = self._staticdata
+
+	local node = minetest.get_node(staticdata.connected_at)
+	if minetest.get_item_group(node.name, "rail") == 0 then
+		detach_minecart(self)
+	end
+end
+
 --[[
 	Array of hooks { {u,v,w}, name }
 	Actual position is pos + u * dir + v * right + w * up
@@ -174,6 +190,9 @@ end
 
 local function calculate_acceleration(self, staticdata)
 	local acceleration = 0
+
+	-- Fix up movement data
+	staticdata.velocity = staticdata.velocity or 0
 
 	-- Apply friction if moving
 	if staticdata.velocity > 0 then
@@ -338,6 +357,8 @@ local function do_movement_step(self, dtime)
 		-- Enter the new node
 		handle_cart_enter(self, pos, next_dir)
 
+		try_detach_minecart(self)
+
 		-- Handle end of track
 		if next_dir == staticdata.dir * -1 and next_dir.y == 0 then
 			if DEBUG then print("Stopping cart at end of track at "..tostring(pos)) end
@@ -409,6 +430,40 @@ local function do_movement( self, dtime )
 		handle_cart_node_watches(self, dtime - new_dtime)
 
 		dtime = new_dtime
+	end
+end
+
+local function do_detached_movement(self, dtime)
+	local staticdata = self._staticdata
+
+	-- Apply physics
+	if mcl_physics then
+		mcl_physics.apply_entity_environmental_physics(self)
+	else
+		-- Simple physics
+		local friction = self.object:get_velocity()
+		friction.y = 0
+
+		local accel = vector.new(0,-9.81,0) -- gravity
+		accel = vector.add(accel, vector.multiply(friction,-0.9))
+		self.object:set_acceleration(accel)
+	end
+
+	-- Try to reconnect to rail
+	local pos_r = vector.round(self.object:get_pos())
+	local node = minetest.get_node(pos_r)
+	if minetest.get_item_group(node.name, "rail") ~= 0 then
+		print("Reconnected railcart at "..tostring(pos_r))
+		staticdata.connected_at = pos_r
+		staticdata.railtype = node.name
+
+		local freebody_velocity = self.object:get_velocity()
+		staticdata.dir = vector.normalize(freebody_velocity)
+		staticdata.velocity = vector.length(freebody_velocity)
+
+		-- Clear freebody movement
+		self.object:set_velocity(vector.new(0,0,0))
+		self.object:set_acceleration(vector.new(0,0,0))
 	end
 end
 
@@ -756,6 +811,7 @@ local function register_entity(entity_id, def)
 		end
 
 		-- Fix railtype field
+		local pos = self.object:get_pos()
 		if staticdata.connected_at and not staticdata.railtype then
 			local node = minetest.get_node(vector.floor(pos)).name
 			staticdata.railtype = minetest.get_item_group(node, "connect_to_raillike")
@@ -768,8 +824,6 @@ local function register_entity(entity_id, def)
 		if (staticdata.hopper_delay or 0) > 0 then
 			staticdata.hopper_delay = staticdata.hopper_delay - dtime
 		end
-
-		local pos, rou_pos, node = self.object:get_pos()
 
 		-- Controls
 		local ctrl, player = nil, nil
@@ -794,7 +848,11 @@ local function register_entity(entity_id, def)
 			end
 		end
 
-		do_movement(self, dtime)
+		if staticdata.connected_at then
+			do_movement(self, dtime)
+		else
+			do_detached_movement(self, dtime)
+		end
 
 		-- TODO: move this into mcl_core:cactus _mcl_minecarts_on_enter_side
 		-- Drop minecart if it collides with a cactus node
@@ -850,7 +908,6 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 
 	-- Call placer
 	if le._mcl_minecarts_on_place then
-		--print("Calling on_place")
 		le._mcl_minecarts_on_place(le, placer)
 	end
 
