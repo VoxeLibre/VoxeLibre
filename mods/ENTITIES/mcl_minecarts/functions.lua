@@ -98,6 +98,31 @@ mod.south = south
 mod.east = east
 mod.west = west
 
+--[[
+	mcl_minecarts.snap_direction(dir)
+
+	returns a valid cart direction that has the smallest angle difference to `dir'
+]]
+local VALID_DIRECTIONS = {
+	north, vector.offset(north, 0, 1, 0), vector.offset(north, 0, -1, 0),
+	south, vector.offset(south, 0, 1, 0), vector.offset(south, 0, -1, 0),
+	east,  vector.offset(east,  0, 1, 0), vector.offset(east,  0, -1, 0),
+	west,  vector.offset(west,  0, 1, 0), vector.offset(west,  0, -1, 0),
+}
+function mod.snap_direction(dir)
+	dir = vector.normalize(dir)
+	local best = nil
+	local diff = -1
+	for _,d in pairs(VALID_DIRECTIONS) do
+		local dot = vector.dot(dir,d)
+		if dot > diff then
+			best = d
+			diff = dot
+		end
+	end
+	return best
+end
+
 local CONNECTIONS = { north, south, east, west }
 local HORIZONTAL_STANDARD_RULES = {
 	[N]       = { "", 0, mask = N, score = 1, can_slope = true },

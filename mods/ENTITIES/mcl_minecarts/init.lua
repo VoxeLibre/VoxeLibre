@@ -41,7 +41,6 @@ end
 
 local function detach_minecart(self)
 	local staticdata = self._staticdata
-	print("Detaching minecart")
 
 	staticdata.connected_at = nil
 	self.object:set_velocity(staticdata.dir * staticdata.velocity)
@@ -453,13 +452,15 @@ local function do_detached_movement(self, dtime)
 	local pos_r = vector.round(self.object:get_pos())
 	local node = minetest.get_node(pos_r)
 	if minetest.get_item_group(node.name, "rail") ~= 0 then
-		print("Reconnected railcart at "..tostring(pos_r))
 		staticdata.connected_at = pos_r
 		staticdata.railtype = node.name
 
 		local freebody_velocity = self.object:get_velocity()
-		staticdata.dir = vector.normalize(freebody_velocity)
-		staticdata.velocity = vector.length(freebody_velocity)
+		staticdata.dir = mod:get_rail_direction(pos_r, mod.snap_direction(freebody_velocity))
+
+		-- Use vector projection to only keep the velocity in the new direction of movement on the rail
+		-- https://en.wikipedia.org/wiki/Vector_projection
+		staticdata.velocity = vector.dot(staticdata.dir,freebody_velocity)
 
 		-- Clear freebody movement
 		self.object:set_velocity(vector.new(0,0,0))
