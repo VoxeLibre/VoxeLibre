@@ -7,7 +7,6 @@ function get_path(base, first, ...)
 	if not base then return end
 	return get_path(base[first], ...)
 end
-
 local function force_get_node(pos)
 	local node = minetest.get_node(pos)
 	if node.name ~= "ignore" then return node end
@@ -66,31 +65,11 @@ function mcl_minecarts:is_rail(pos, railtype)
 	return minetest.get_item_group(node_name, "connect_to_raillike") == railtype
 end
 
---[[
-  Returns a string description of a direction, with optional _up/_down suffix
-]]
-function mcl_minecarts:name_from_dir(dir, vertical)
-	local res = ""
-
-	if dir.z ==  1 then res = res .. "n" end
-	if dir.z == -1 then res = res .. "s" end
-
-	if dir.x == -1 then res = res .. "w" end
-	if dir.x ==  1 then res = res .. "e" end
-
-	if vertical then
-		if dir.y ==  1 then res = res .. "_up" end
-		if dir.y ==  1 then res = res .. "_down" end
-	end
-
-	return res
-end
-
-
-local north = vector.new( 0, 0, 1); local N = 1
-local south = vector.new( 0, 0,-1); local S = 2 -- Note: S is overwritten below with the translator
-local east  = vector.new( 1, 0, 0); local E = 4
-local west  = vector.new(-1, 0, 0); local W = 8
+-- Directional constants
+local north = vector.new( 0, 0, 1); local N = 1 -- 4dir = 0
+local east  = vector.new( 1, 0, 0); local E = 4 -- 4dir = 1
+local south = vector.new( 0, 0,-1); local S = 2 -- 4dir = 2 Note: S is overwritten below with the translator
+local west  = vector.new(-1, 0, 0); local W = 8 -- 4dir = 3
 
 -- Share. Consider moving this to some shared location
 mod.north = north
@@ -191,6 +170,16 @@ local function make_sloped_if_straight(pos, dir)
 	end
 end
 
+local function is_connection(pos, dir)
+	local node = force_get_node(pos)
+	local nodedef = minetest.registered_nodes[node.name]
+
+	local get_next_dir = get_path(nodedef, "_mcl_minecarts", "get_next_dir")
+	if not get_next_dir then return end
+
+	return get_next_dir(pos, dir, node) == dir
+end
+
 local function get_rail_connections(pos, opt)
 	local legacy = opt and opt.legacy
 	local ignore_neighbor_connections = opt and opt.ignore_neighbor_connections
@@ -204,7 +193,7 @@ local function get_rail_connections(pos, opt)
 		-- Only allow connections to the open ends of rails, as decribed by get_next_dir
 		if get_path(nodedef, "groups", "rail") and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
 			local rev_dir = vector.direction(dir,vector.new(0,0,0))
-			if ignore_neighbor_connections or mcl_minecarts:is_connection(neighbor, rev_dir) then
+			if ignore_neighbor_connections or is_connection(neighbor, rev_dir) then
 				connections = connections + bit.lshift(1,i - 1)
 			end
 		end
@@ -272,7 +261,7 @@ local function update_rail_connections(pos, opt)
 		for _,dir in ipairs(CONNECTIONS) do
 			local higher_rail_pos = vector.offset(pos,dir.x,1,dir.z)
 			local rev_dir = vector.direction(dir,vector.new(0,0,0))
-			if mcl_minecarts:is_rail(higher_rail_pos) and mcl_minecarts:is_connection(higher_rail_pos, rev_dir) then
+			if mcl_minecarts:is_rail(higher_rail_pos) and is_connection(higher_rail_pos, rev_dir) then
 				make_sloped_if_straight(pos, rev_dir)
 			end
 		end
@@ -281,85 +270,45 @@ local function update_rail_connections(pos, opt)
 end
 mod.update_rail_connections = update_rail_connections
 
---[[
-	An array of (u,v,w) positions to check. Actual direction is u * dir + v * right + w * up
-]]
-local rail_checks = {
-	{  1,  0,  0 }, -- forwards
-	{  1,  0,  1 }, -- forwards and up
-	{  1,  0, -1 }, -- forwards and down
-
-	{  1,  1,  0 }, -- diagonal left
-	{  0,  1,  0 }, -- left
-	{  0,  1,  1 }, -- left and up
-	{  0,  1, -1 }, -- left and down
-
-	{  1, -1,  0 }, -- diagonal right
-	{  0, -1,  0 }, -- right
-	{  0, -1,  1 }, -- right and up
-	{  0, -1, -1 }, -- right and down
-
-	{ -1,  0,  0 }, -- backwards
-}
-
-local rail_checks_diagonal = {
-	{ 1,  1,  0 }, -- forward along diagonal
-	{ 1,  0,  0 }, -- left
-	{ 0,  1,  0 }, -- right
-}
-
 local north = vector.new(0,0,1)
 local south = vector.new(0,0,-1)
 local east  = vector.new(1,0,0)
 local west = vector.new(-1,0,0)
 
--- Rotate diagonal directions 45 degrees clockwise
-local diagonal_convert = {
-	nw = west,
-	ne = north,
-	se = east,
-	sw = south,
-}
+local function is_ahead_slope(pos, dir)
+	local ahead = vector.add(pos,dir)
+	if mcl_minecarts:is_rail(ahead) then return false end
 
-function mcl_minecarts:is_connection(pos, dir)
-	local node = force_get_node(pos)
-	local nodedef = minetest.registered_nodes[node.name]
+	local below = vector.offset(ahead,0,-1,0)
+	if not mcl_minecarts:is_rail(below) then return false end
 
-	local get_next_dir = get_path(nodedef, "_mcl_minecarts", "get_next_dir")
-	if not get_next_dir then return end
-
-	return get_next_dir(pos, dir, node) == dir
+	local node_name = force_get_node(below).name
+	return minetest.get_item_group(node_name, "rail_slope") ~= 0
 end
-
 function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	local pos = vector.round(pos_)
 
 	-- Handle new track types that have track-specific direction handler
 	local node = minetest.get_node(pos)
 	local node_def = minetest.registered_nodes[node.name]
-	if node_def and node_def._mcl_minecarts and node_def._mcl_minecarts.get_next_dir then
-		return node_def._mcl_minecarts.get_next_dir(pos, dir, node)
+	local get_next_dir = get_path(node_def,"_mcl_minecarts","get_next_dir")
+	if not get_next_dir then return dir end
+
+	dir = node_def._mcl_minecarts.get_next_dir(pos, dir, node)
+
+	-- Handle going downhill
+	if is_ahead_slope(pos,dir) then
+		dir = vector.offset(dir,0,-1,0)
 	end
 
-	-- Diagonal conversion
-	local checks = rail_checks
-	if dir.x ~= 0 and dir.z ~= 0 then
-		dir = diagonal_convert[ mcl_minecarts:name_from_dir(dir, false) ]
-		checks = rail_checks_diagonal
+	-- Handle reversing if there is a solid block in the next position
+	local next_pos = vector.add(pos, dir)
+	local next_node = minetest.get_node(next_pos)
+	local node_def = minetest.registered_nodes[next_node.name]
+	if node_def and node_def.groups and ( node_def.groups.solid or node_def.groups.stair ) then
+		-- Reverse the direction without giving -0 members
+		return vector.direction(next_pos, pos)
+	else
+		return dir
 	end
-
-	-- Calculate coordinate space
-	local right = vector.new( dir.z, dir.y, -dir.x)
-	local up = vector.new(0,1,0)
-
-	-- Perform checks
-	for _,check in ipairs(checks) do
-		local check_dir = dir * check[1] + right * check[2] + up * check[3]
-		local check_pos = pos + check_dir
-		if mcl_minecarts:is_rail(check_pos,railtype) then
-			return check_dir
-		end
-	end
-
-	return vector.new(0,0,0)
 end

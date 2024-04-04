@@ -1,11 +1,13 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
+local S = minetest.get_translator(modname)
 mod.RAIL_GROUPS = {
 	STANDARD = 1,
 	CURVES = 2,
 }
-local S = minetest.get_translator(modname)
+
+-- Inport functions and constants from elsewhere
 local table_merge = mcl_util.table_merge
 local check_connection_rules = mod.check_connection_rules
 local update_rail_connections = mod.update_rail_connections
@@ -13,14 +15,6 @@ local north = mod.north
 local south = mod.south
 local east = mod.east
 local west = mod.west
-
--- Setup shared text
-local railuse = S(
-	"Place them on the ground to build your railway, the rails will automatically connect to each other and will"..
-	" turn into curves, T-junctions, crossings and slopes as needed."
-)
-mod.text = mod.text or {}
-mod.text.railuse = railuse
 
 local function drop_railcarts(pos)
 	-- Scan for minecarts in this pos and force them to execute their "floating" check.
@@ -37,60 +31,78 @@ local function drop_railcarts(pos)
 	end
 end
 
-local RAIL_DEFAULTS = {
-	is_ground_content = true,
-	paramtype = "light",
-	selection_box = {
-		type = "fixed",
-		fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
-	},
-	stack_max = 64,
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.7,
-	_mcl_hardness = 0.7,
-	after_destruct = drop_railcarts,
-}
-local RAIL_DEFAULT_GROUPS = {
-	handy=1, pickaxey=1,
-	attached_node=1,
-	rail=1,
-	connect_to_raillike=minetest.raillike_group("rail"),
-	dig_by_water=0,destroy_by_lava_flow=0,
-	transport=1
-}
-
--- Template rail function
-local function register_rail(itemstring, tiles, def_extras, creative)
-	local groups = table.copy(RAIL_DEFAULT_GROUPS)
-	if creative == false then
-		groups.not_in_creative_inventory = 1
+--- Rail direction Handleres
+local function rail_dir_straight(pos, dir, node)
+	if node.param2 == 0 or node.param2 == 2 then
+		if vector.equals(dir, north) then
+			return north
+		else
+			return south
+		end
+	else
+		if vector.equals(dir,east) then
+			return east
+		else
+			return west
+		end
 	end
-	local ndef = {
-		drawtype = "raillike",
-		tiles = tiles,
-		inventory_image = tiles[1],
-		wield_image = tiles[1],
-		groups = groups,
-	}
-	table_merge(ndef, RAIL_DEFAULTS)
-	ndef.walkable = false -- Old behavior
-	table_merge(ndef, def_extras)
-	minetest.register_node(itemstring, ndef)
+end
+local function rail_dir_sloped(pos, dir, node)
+	local uphill = minetest.fourdir_to_dir(node.param2)
+	local downhill = minetest.fourdir_to_dir((node.param2+2)%4)
+	local up_uphill = vector.offset(uphill,0,1,0)
+
+	if vector.equals(dir, uphill) or vector.equals(dir, up_uphill) then
+		return up_uphill
+	else
+		return downhill
+	end
+end
+local function rail_dir_curve(pos, dir, node)
+	if node.param2 == 0 then -- north
+		-- South and East
+		if vector.equals(dir, south) then return south end
+		if vector.equals(dir, north) then return east end
+		if vector.equals(dir, west) then return south end
+		if vector.equals(dir, east) then return east end
+	elseif node.param2 == 1 then -- east
+		-- South and West
+		if vector.equals(dir, south) then return south end
+		if vector.equals(dir, north) then return west end
+		if vector.equals(dir, west) then return west end
+		if vector.equals(dir, east) then return south end
+	elseif node.param2 == 2 then
+		-- North and West
+		if vector.equals(dir, south) then return west end
+		if vector.equals(dir, north) then return north end
+		if vector.equals(dir, west) then return west end
+		if vector.equals(dir, east) then return north end
+	elseif node.param2 == 3 then
+		-- North and East
+		if vector.equals(dir, south) then return east end
+		if vector.equals(dir, north) then return north end
+		if vector.equals(dir, west) then return north end
+		if vector.equals(dir, east) then return east end
+	end
+end
+local function rail_dir_tee(pos, dir, node)
+	minetest.log("warning","TODO: implement rail_dir_tee()")
+	return north
+end
+local function rail_dir_cross(pos, dir, node)
+	-- Always continue in the same direction. No direction changes allowed
+	return dir
 end
 
--- Now get the translator after we have finished using S for other things
+-- Setup shared text
+local railuse = S(
+	"Place them on the ground to build your railway, the rails will automatically connect to each other and will"..
+	" turn into curves, T-junctions, crossings and slopes as needed."
+)
 mod.text = mod.text or {}
 mod.text.railuse = railuse
 local BASE_DEF = {
-	description = S("New Rail"), -- Temporary name to make debugging easier
-	_tt_help = S("Track for minecarts"),
-	_doc_items_usagehelp = railuse,
-	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
-	after_place_node = function(pos, placer, itemstack, pointed_thing)
-		update_rail_connections(pos)
-	end,
 	drawtype = "nodebox",
-	groups = RAIL_DEFAULT_GROUPS,
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -99,13 +111,44 @@ local BASE_DEF = {
 	},
 	paramtype = "light",
 	paramtype2 = "4dir",
+	stack_max = 64,
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	is_ground_content = true,
+	paramtype = "light",
+	selection_box = {
+		type = "fixed",
+		fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
+	},
+	groups = {
+		handy=1, pickaxey=1,
+		attached_node=1,
+		rail=1,
+		connect_to_raillike=minetest.raillike_group("rail"),
+		dig_by_water=0,destroy_by_lava_flow=0,
+		transport=1
+	},
+	description = S("New Rail"), -- Temporary name to make debugging easier
+	_tt_help = S("Track for minecarts"),
+	_doc_items_usagehelp = railuse,
+	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
+	after_place_node = function(pos, placer, itemstack, pointed_thing)
+		update_rail_connections(pos)
+	end,
+	after_destruct = drop_railcarts,
+	_mcl_minecarts = {
+		get_next_dir = rail_dir_straight,
+	},
+	_mcl_blast_resistance = 0.7,
+	_mcl_hardness = 0.7,
 }
-table_merge(BASE_DEF, RAIL_DEFAULTS) -- Merge together old rail values
 
 local SLOPED_RAIL_DEF = table.copy(BASE_DEF)
 table_merge(SLOPED_RAIL_DEF,{
 	drawtype = "mesh",
 	mesh = "sloped_track.obj",
+	groups = {
+		rail_slope = 1,
+	},
 	collision_box = {
 		type = "fixed",
 		fixed = {
@@ -119,7 +162,10 @@ table_merge(SLOPED_RAIL_DEF,{
 			{ -0.5, -0.5, -0.5,  0.5,  0.0,  0.5 },
 			{ -0.5,  0.0,  0.0,  0.5,  0.5,  0.5 }
 		}
-	}
+	},
+	_mcl_minecarts = {
+		get_next_dir = rail_dir_sloped,
+	},
 })
 
 local function register_rail_v2(itemstring, ndef)
@@ -141,75 +187,6 @@ local function register_rail_v2(itemstring, ndef)
 end
 mod.register_rail = register_rail_v2
 
-local function rail_dir_straight(pos, dir, node)
-	local function inside(pos,dir,node)
-		if node.param2 == 0 or node.param2 == 2 then
-			if vector.equals(dir, north) then
-				return north
-			else
-				return south
-			end
-		else
-			if vector.equals(dir,east) then
-				return east
-			else
-				return west
-			end
-		end
-	end
-
-	local raw_dir = inside(pos, dir, node)
-
-	-- Handle reversing if there is a solid block in the next position
-	-- Only do this for straight tracks
-	local next_pos = vector.add(pos, raw_dir)
-	local next_node = minetest.get_node(next_pos)
-	local node_def = minetest.registered_nodes[next_node.name]
-	if node_def and node_def.groups and ( node_def.groups.solid or node_def.groups.stair ) then
-		-- Reverse the direction without giving -0 members
-		return vector.direction(next_pos, pos)
-	else
-		return raw_dir
-	end
-end
-local function rail_dir_curve(pos, dir, node)
-	if node.param2 == 0 then
-		-- South and East
-		if vector.equals(dir, south) then return south end
-		if vector.equals(dir, north) then return east end
-		if vector.equals(dir, west) then return south end
-		if vector.equals(dir, east) then return east end
-	elseif node.param2 == 1 then
-		-- South and West
-		if vector.equals(dir, south) then return south end
-		if vector.equals(dir, north) then return west end
-		if vector.equals(dir, west) then return west end
-		if vector.equals(dir, east) then return south end
-	elseif node.param2 == 2 then
-		-- North and West
-		if vector.equals(dir, south) then return west end
-		if vector.equals(dir, north) then return north end
-		if vector.equals(dir, west) then return west end
-		if vector.equals(dir, east) then return north end
-	elseif node.param2 == 3 then
-		-- North and East
-		if vector.equals(dir, south) then return east end
-		if vector.equals(dir, north) then return north end
-		if vector.equals(dir, west) then return north end
-		if vector.equals(dir, east) then return east end
-	end
-end
-
-local function rail_dir_tee(pos, dir, node)
-	-- TODO: implement
-	return north
-end
-
-local function rail_dir_cross(pos, dir, node)
-	-- Always continue in the same direction. No direction changes allowed
-	return dir
-end
-
 local function register_straight_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
@@ -222,7 +199,6 @@ local function register_straight_rail(base_name, tiles, def)
 		},
 		_mcl_minecarts = {
 			base_name = base_name,
-			get_next_dir = rail_dir_straight,
 			can_slope = true,
 		},
 	}
@@ -245,7 +221,7 @@ local function register_straight_rail(base_name, tiles, def)
 	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(base_def),{
 		description = S("Sloped Rail"), -- Temporary name to make debugging easier
 		_mcl_minecarts = {
-			get_next_dir = rail_dir_cross,
+			get_next_dir = rail_dir_sloped,
 		},
 		tiles = { tiles[1] },
 		_mcl_minecarts = {
@@ -336,7 +312,7 @@ local function register_curves_rail(base_name, tiles, def)
 	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(sloped_def),{
 		description = S("Sloped Rail"), -- Temporary name to make debugging easier
 		_mcl_minecarts = {
-			get_next_dir = rail_dir_cross,
+			get_next_dir = rail_dir_sloped,
 			railtype = "tee",
 		},
 		tiles = { tiles[1] },
@@ -346,6 +322,7 @@ local function register_curves_rail(base_name, tiles, def)
 	mod.register_rail(base_name.."_cross", table_merge(table.copy(base_def),{
 		tiles = { tiles[5] },
 		_mcl_minecarts = {
+			get_next_dir = rail_dir_cross,
 			railtype = "cross",
 		},
 	}))
@@ -354,11 +331,6 @@ mod.register_curves_rail = register_curves_rail
 
 local function register_rail_sloped(itemstring, def)
 	assert(def.tiles)
-
-	-- Build rail groups
-	local groups = table.copy(RAIL_DEFAULT_GROUPS)
-	if def.groups then table_merge(groups, def.groups) end
-	def.groups = groups
 
 	-- Build the node definition
 	local ndef = table.copy(SLOPED_RAIL_DEF)
@@ -416,7 +388,6 @@ mod.register_curves_rail("mcl_minecarts:rail_v2", {
 		}
 	},
 })
-register_rail("mcl_minecarts:rail", {"default_rail.png", "default_rail_curved.png", "default_rail_t_junction.png", "default_rail_crossing.png"}, {}, false ) -- deprecated
 
 -- Powered rail (off = brake mode)
 mod.register_straight_rail("mcl_minecarts:golden_rail_v2",{ "mcl_minecarts_rail_golden.png" },{
@@ -446,7 +417,6 @@ mod.register_straight_rail("mcl_minecarts:golden_rail_v2",{ "mcl_minecarts_rail_
 		}
 	}
 })
-register_rail("mcl_minecarts:golden_rail", {"mcl_minecarts_rail_golden.png", "mcl_minecarts_rail_golden_curved.png", "mcl_minecarts_rail_golden_t_junction.png", "mcl_minecarts_rail_golden_crossing.png"}, {}, false ) -- deprecated
 
 -- Powered rail (on = acceleration mode)
 mod.register_straight_rail("mcl_minecarts:golden_rail_v2_on",{ "mcl_minecarts_rail_golden_powered.png" },{
@@ -466,7 +436,6 @@ mod.register_straight_rail("mcl_minecarts:golden_rail_v2_on",{ "mcl_minecarts_ra
 	},
 	drop = "mcl_minecarts:golden_rail_v2",
 })
-register_rail("mcl_minecarts:golden_rail_on", {"mcl_minecarts_rail_golden_powered.png", "mcl_minecarts_rail_golden_curved_powered.png", "mcl_minecarts_rail_golden_t_junction_powered.png", "mcl_minecarts_rail_golden_crossing_powered.png"}, { }, false ) -- deprecated
 
 -- Activator rail (off)
 mod.register_straight_rail("mcl_minecarts:activator_rail_v2", {"mcl_minecarts_rail_activator.png"},{
@@ -491,7 +460,6 @@ mod.register_straight_rail("mcl_minecarts:activator_rail_v2", {"mcl_minecarts_ra
 		}
 	},
 })
-register_rail("mcl_minecarts:activator_rail", {"mcl_minecarts_rail_activator.png", "mcl_minecarts_rail_activator_curved.png", "mcl_minecarts_rail_activator_t_junction.png", "mcl_minecarts_rail_activator_crossing.png"}, {} ) -- deprecated
 
 -- Activator rail (on)
 mod.register_straight_rail("mcl_minecarts:activator_rail_v2_on", {"mcl_minecarts_rail_activator_powered.png"},{
@@ -528,7 +496,6 @@ mod.register_straight_rail("mcl_minecarts:activator_rail_v2_on", {"mcl_minecarts
 	end,
 	drop = "mcl_minecarts:activator_rail_v2",
 })
-register_rail("mcl_minecarts:activator_rail_on", {"mcl_minecarts_rail_activator_powered.png", "mcl_minecarts_rail_activator_curved_powered.png", "mcl_minecarts_rail_activator_t_junction_powered.png", "mcl_minecarts_rail_activator_crossing_powered.png"}, { }, false ) -- deprecated
 
 -- Detector rail (off)
 mod.register_straight_rail("mcl_minecarts:detector_rail_v2",{"mcl_minecarts_rail_detector.png"},{
@@ -561,7 +528,6 @@ mod.register_straight_rail("mcl_minecarts:detector_rail_v2",{"mcl_minecarts_rail
 		}
 	}
 })
-register_rail("mcl_minecarts:detector_rail", {"mcl_minecarts_rail_detector.png", "mcl_minecarts_rail_detector_curved.png", "mcl_minecarts_rail_detector_t_junction.png", "mcl_minecarts_rail_detector_crossing.png"}, {} ) -- deprecated
 
 -- Detector rail (on)
 mod.register_straight_rail("mcl_minecarts:detector_rail_v2_on",{"mcl_minecarts_rail_detector_powered.png"},{
@@ -587,7 +553,6 @@ mod.register_straight_rail("mcl_minecarts:detector_rail_v2_on",{"mcl_minecarts_r
 	end,
 	drop = "mcl_minecarts:detector_rail_v2",
 })
-register_rail("mcl_minecarts:detector_rail_on",	{"mcl_minecarts_rail_detector_powered.png", "mcl_minecarts_rail_detector_curved_powered.png", "mcl_minecarts_rail_detector_t_junction_powered.png", "mcl_minecarts_rail_detector_crossing_powered.png"}, { }, false ) -- deprecated
 
 -- Aliases
 if minetest.get_modpath("doc") then
