@@ -562,6 +562,9 @@ end
 local CURVY_RAILS_MAP = {
 	["mcl_minecarts:rail"] = "mcl_minecarts:rail_v2",
 }
+for old,new in pairs(CURVY_RAILS_MAP) do
+	minetest.register_alias(old, new)
+end
 minetest.register_lbm({
 	name = "mcl_minecarts:update_legacy_curvy_rails",
 	nodenames = mcl_util.table_keys(CURVY_RAILS_MAP),
@@ -581,6 +584,9 @@ local STRAIGHT_RAILS_MAP ={
 	["mcl_minecarts:detector_rail"] = "mcl_minecarts:detector_rail_v2",
 	["mcl_minecarts:detector_rail_on"] = "mcl_minecarts:detector_rail_v2_on",
 }
+for old,new in pairs(STRAIGHT_RAILS_MAP) do
+	minetest.register_alias(old, new)
+end
 minetest.register_lbm({
 	name = "mcl_minecarts:update_legacy_straight_rails",
 	nodenames = mcl_util.table_keys(STRAIGHT_RAILS_MAP),
