@@ -56,15 +56,16 @@ local function handle_cart_enter_exit(self, pos, next_dir, event)
 		local check_pos = pos + dir * check[1] + right * check[2] + up * check[3]
 		local node = minetest.get_node(check_pos)
 		local node_def = minetest.registered_nodes[node.name]
+		if node_def then
+			-- node-specific hook
+			local hook_name = "_mcl_minecarts_"..event..check[4]
+			local hook = node_def[hook_name]
+			if hook then hook(check_pos, self, next_dir, pos) end
 
-		-- node-specific hook
-		local hook_name = "_mcl_minecarts_"..event..check[4]
-		local hook = node_def[hook_name]
-		if hook then hook(check_pos, self, next_dir, pos) end
-
-		-- global minecart hook
-		hook = mcl_minecarts[event..check[4]]
-		if hook then hook(check_pos, self, next_dir, node_def) end
+			-- global minecart hook
+			hook = mcl_minecarts[event..check[4]]
+			if hook then hook(check_pos, self, next_dir, node_def) end
+		end
 	end
 
 	-- Handle cart-specific behaviors
@@ -85,9 +86,11 @@ local function handle_cart_node_watches(self, dtime)
 	for _,node_pos in ipairs(watches) do
 		local node = minetest.get_node(node_pos)
 		local node_def = minetest.registered_nodes[node.name]
-		local hook = node_def._mcl_minecarts_node_on_step
-		if hook and hook(node_pos, self, dtime) then
-			new_watches[#new_watches+1] = node_pos
+		if node_def then
+			local hook = node_def._mcl_minecarts_node_on_step
+			if hook and hook(node_pos, self, dtime) then
+				new_watches[#new_watches+1] = node_pos
+			end
 		end
 	end
 
@@ -197,10 +200,8 @@ local function calculate_acceleration(self, staticdata)
 		acceleration = 0.6
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
 		-- Standard friction
-	else
-		if node_def._rail_acceleration then
-			acceleration = node_def._rail_acceleration * 4
-		end
+	elseif node_def and node_def._rail_acceleration then
+		acceleration = node_def._rail_acceleration * 4
 	end
 
 	-- Factor in gravity after everything else
@@ -860,11 +861,9 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 end
 
 local function dropper_place_minecart(dropitem, pos)
-	local node = minetest.get_node(pos)
-	local nodedef = minetest.registered_nodes[node.name]
-
 	-- Don't try to place the minecart if pos isn't a rail
-	if (nodedef.groups.rail or 0) == 0 then return false end
+	local node = minetest.get_node(pos)
+	if minetest.get_item_group(node.name, "rail") == 0 then return false end
 
 	mcl_minecarts.place_minecart(dropitem, {
 		above = pos,
