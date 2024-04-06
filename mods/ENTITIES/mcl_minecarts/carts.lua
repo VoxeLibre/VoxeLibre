@@ -116,7 +116,10 @@ local function handle_cart_leave(self, pos, next_dir)
 	handle_cart_enter_exit(self, pos, next_dir, "on_leave" )
 end
 
-local function handle_cart_collision(cart1, pos, next_dir)
+local function handle_cart_collision(cart1, prev_pos, next_dir)
+	-- Look ahead one block
+	local pos = vector.add(prev_pos, next_dir)
+
 	local meta = minetest.get_meta(pos)
 	local carts = minetest.deserialize(meta:get_string("_mcl_minecarts_carts")) or {}
 	local cart_uuid = nil
@@ -159,6 +162,9 @@ local function handle_cart_collision(cart1, pos, next_dir)
 
 	cart1_staticdata.velocity = v1
 	cart2_staticdata.velocity = v2
+
+	-- Force the other cart to move the same direction this one was
+	cart2_staticdata.dir = cart1_staticdata.dir
 end
 
 local function handle_cart_node_watches(self, dtime)
