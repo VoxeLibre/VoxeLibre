@@ -136,34 +136,40 @@ local function update_cart_orientation(self,staticdata)
 	self.object:set_rotation(rot)
 end
 
-local function direction_away_from_players(self, staticdata)
+local function vector_away_from_players(self, staticdata)
 	local objs = minetest.get_objects_inside_radius(self.object:get_pos(), 1.1)
 	for n=1,#objs do
 		local obj = objs[n]
 		local player_name = obj:get_player_name()
 		if player_name and player_name ~= "" and not ( self._driver and self._driver == player_name ) then
-			local diff = obj:get_pos() - self.object:get_pos()
-
-			local length = vector.distance(vector.new(0,0,0),diff)
-			local vec = diff / length
-			local force = vector.dot( vec, vector.normalize(staticdata.dir) )
-
-			-- Check if this would push past the end of the track and don't move it it would
-			-- This prevents an oscillation that would otherwise occur
-			local dir = staticdata.dir
-			if force > 0 then
-				dir = -dir
-			end
-			if mcl_minecarts:is_rail( staticdata.connected_at + dir ) then
-				if force > 0.5 then
-					return -length * 4
-				elseif force < -0.5 then
-					return length * 4
-				end
-			end
+			return obj:get_pos() - self.object:get_pos()
 		end
 	end
 
+	return nil
+end
+
+local function direction_away_from_players(self, staticdata)
+	local diff = vector_away_from_players(self, staticdata)
+	if not diff then return 0 end
+
+	local length = vector.distance(vector.new(0,0,0),diff)
+	local vec = diff / length
+	local force = vector.dot( vec, vector.normalize(staticdata.dir) )
+
+	-- Check if this would push past the end of the track and don't move it it would
+	-- This prevents an oscillation that would otherwise occur
+	local dir = staticdata.dir
+	if force > 0 then
+		dir = -dir
+	end
+	if mcl_minecarts:is_rail( staticdata.connected_at + dir ) then
+		if force > 0.5 then
+			return -length * 4
+		elseif force < -0.5 then
+			return length * 4
+		end
+	end
 	return 0
 end
 
@@ -428,6 +434,12 @@ local function do_detached_movement(self, dtime)
 		local accel = vector.new(0,-9.81,0) -- gravity
 		accel = vector.add(accel, vector.multiply(friction,-0.9))
 		self.object:set_acceleration(accel)
+	end
+
+	local away = vector_away_from_players(self, staticdata)
+	if away then
+		local v = self.object:get_velocity()
+		self.object:set_velocity(v - away)
 	end
 
 	-- Try to reconnect to rail
@@ -801,21 +813,25 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 		return
 	end
 
-	local railpos, node
+	local spawn_pos = pointed_thing.above
+	local cart_dir = vector.new(1,0,0)
+
+	local railtype, railpos, node
 	if mcl_minecarts:is_rail(pointed_thing.under) then
 		railpos = pointed_thing.under
-		node = minetest.get_node(pointed_thing.under)
 	elseif mcl_minecarts:is_rail(pointed_thing.above) then
 		railpos = pointed_thing.above
-		node = minetest.get_node(pointed_thing.above)
-	else
-		return
+	end
+	if railpos then
+		spawn_pos = railpos
+		node = minetest.get_node(railpos)
+		railtype = minetest.get_item_group(node.name, "connect_to_raillike")
+		cart_dir = mcl_minecarts:get_rail_direction(railpos, vector.new(1,0,0), nil, nil, railtype)
 	end
 
 	local entity_id = entity_mapping[itemstack:get_name()]
-	local cart = minetest.add_entity(railpos, entity_id)
-	local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
-	local cart_dir = mcl_minecarts:get_rail_direction(railpos, vector.new(1,0,0), nil, nil, railtype)
+	local cart = minetest.add_entity(spawn_pos, entity_id)
+
 	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
 	-- Update static data
@@ -829,7 +845,9 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 		le._mcl_minecarts_on_place(le, placer)
 	end
 
-	handle_cart_enter(le, railpos)
+	if railpos then
+		handle_cart_enter(le, railpos)
+	end
 
 	local pname = ""
 	if placer then
