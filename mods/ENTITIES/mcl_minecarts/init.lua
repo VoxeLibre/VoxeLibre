@@ -9,6 +9,6 @@ mcl_minecarts.speed_max = 10
 mcl_minecarts.check_float_time = 15
 mcl_minecarts.FRICTION = 0.4
 
-for _,filename in pairs({"functions","rails","train","storage","carts"}) do
+for _,filename in pairs({"storage","functions","rails","train","carts"}) do
 	dofile(modpath.."/"..filename..".lua")
 end

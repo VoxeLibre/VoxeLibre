@@ -27,21 +27,6 @@ local max_step_distance = 0.5
 local MINECART_MAX_HP = 4
 local PASSENGER_ATTACH_POSITION = vector.new(0, -1.75, 0)
 
-local function detach_minecart(self)
-	local staticdata = self._staticdata
-
-	staticdata.connected_at = nil
-	self.object:set_velocity(staticdata.dir * staticdata.velocity)
-end
-local function try_detach_minecart(self)
-	local staticdata = self._staticdata
-
-	local node = minetest.get_node(staticdata.connected_at)
-	if minetest.get_item_group(node.name, "rail") == 0 then
-		detach_minecart(self)
-	end
-end
-
 local function detach_driver(self)
 	if not self._driver then
 		return

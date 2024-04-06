@@ -10,6 +10,7 @@ local friction = mcl_minecarts.FRICTION
 -- Imports
 local train_length = mod.train_length
 local update_train = mod.update_train
+local link_cart_ahead = mod.link_cart_ahead
 local update_cart_orientation = mod.update_cart_orientation
 local get_cart_data = mod.get_cart_data
 
@@ -141,10 +142,10 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 	local m1 = cart1_staticdata.mass
 	local m2 = cart2_staticdata.mass
 
-	if u2 == 0 and u1 < 1 and train_length(cart1) < 3 then
-		-- Link carts
-		cart2_staticdata.behind = cart1_staticdata.uuid
-		cart1_staticdata.ahead = cart1_staticdata.uuid
+	print("u1="..tostring(u1)..",u2="..tostring(u2))
+	if u2 == 0 and u1 < 4 and train_length(cart1) < 3 then
+		link_cart_ahead(cart1, cart2)
+		cart2_staticdata.dir = mcl_minecarts:get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 		cart2_staticdata.velocity = cart1_staticdata.velocity
 		return
 	end
@@ -243,7 +244,7 @@ local function reverse_direction(self, staticdata)
 	-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
 	local next_dir = -staticdata.dir
 	staticdata.connected_at = staticdata.connected_at + staticdata.dir
-	staticdata.distance = 1 - staticdata.distance
+	staticdata.distance = 1 - (staticdata.distance or 0)
 
 	-- recalculate direction
 	local next_dir,_ = mcl_minecarts:get_rail_direction(staticdata.connected_at, next_dir, nil, nil, staticdata.railtype)
