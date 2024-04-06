@@ -177,7 +177,7 @@ table_merge(SLOPED_RAIL_DEF,{
 	},
 })
 
-local function register_rail_v2(itemstring, ndef)
+function mod.register_rail(itemstring, ndef)
 	assert(ndef.tiles)
 
 	-- Extract out the craft recipe
@@ -188,15 +188,14 @@ local function register_rail_v2(itemstring, ndef)
 	if not ndef.inventory_image then ndef.inventory_image = ndef.tiles[1] end
 	if not ndef.wield_image then ndef.wield_image = ndef.tiles[1] end
 
-	--print("registering rail "..itemstring.." with definition: "..dump(ndef))
+	print("registering rail "..itemstring.." with definition: "..dump(ndef))
 
 	-- Make registrations
 	minetest.register_node(itemstring, ndef)
 	if craft then minetest.register_craft(craft) end
 end
-mod.register_rail = register_rail_v2
 
-local function register_straight_rail(base_name, tiles, def)
+function mod.register_straight_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
 	local sloped_def = table.copy(SLOPED_RAIL_DEF)
@@ -235,9 +234,8 @@ local function register_straight_rail(base_name, tiles, def)
 		},
 	}))
 end
-mod.register_straight_rail = register_straight_rail
 
-local function register_curves_rail(base_name, tiles, def)
+function mod.register_curves_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
 	local sloped_def = table.copy(SLOPED_RAIL_DEF)
@@ -333,9 +331,8 @@ local function register_curves_rail(base_name, tiles, def)
 		},
 	}))
 end
-mod.register_curves_rail = register_curves_rail
 
-local function register_rail_sloped(itemstring, def)
+function mod.register_rail_sloped(itemstring, def)
 	assert(def.tiles)
 
 	-- Build the node definition
@@ -351,7 +348,6 @@ local function register_rail_sloped(itemstring, def)
 	-- Make registrations
 	minetest.register_node(itemstring, ndef)
 end
-mod.register_rail_sloped = register_rail_sloped
 
 -- Redstone rules
 local rail_rules_long =

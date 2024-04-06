@@ -1,5 +1,6 @@
 local modname = minetest.get_current_modname()
 local mod = mcl_minecarts
+local storage = minetest.get_mod_storage()
 local S = minetest.get_translator(modname)
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_minecarts", false)
@@ -18,6 +19,32 @@ local max_step_distance = 0.5
 local friction = 0.4
 local MINECART_MAX_HP = 4
 local PASSENGER_ATTACH_POSITION = vector.new(0, -1.75, 0)
+
+local cart_data = {}
+local cart_data_fail_cache = {}
+
+local function get_cart_data(uuid)
+	if cart_data[uuid] then return cart_data[uuid] end
+	if cart_data_fail_cache[uuid] then return nil end
+
+	local data = minetest.deserialize(storage:get_string("cart-"..uuid))
+	if not data then
+		cart_data_fail_cache[uuid] = true
+		return nil
+	end
+
+	cart_data[uuid] = data
+	return data
+end
+local function save_cart_data(uuid)
+	if not cart_data[uuid] then return end
+	storage:set_string("cart-"..uuid,minetest.serialize(cart_data[uuid]))
+end
+local function destroy_cart_data(uuid)
+	storage:set_string("cart-"..uuid,"")
+	cart_data[uuid] = nil
+	cart_data_fail_cache[uuid] = true
+end
 
 local function detach_minecart(self)
 	local staticdata = self._staticdata
@@ -72,11 +99,66 @@ local function handle_cart_enter_exit(self, pos, next_dir, event)
 	local hook = self["_mcl_minecarts_"..event]
 	if hook then hook(self, pos) end
 end
+local function set_metadata_cart_status(pos, uuid, state)
+	local meta = minetest.get_meta(pos)
+	local carts = minetest.deserialize(meta:get_string("_mcl_minecarts_carts")) or {}
+	carts[uuid] = state
+	meta:set_string("_mcl_minecarts_carts", minetest.serialize(carts))
+end
 local function handle_cart_enter(self, pos, next_dir)
+	--print("entering "..tostring(pos))
+	set_metadata_cart_status(pos, self._staticdata.uuid, 1)
 	handle_cart_enter_exit(self, pos, next_dir, "on_enter" )
 end
 local function handle_cart_leave(self, pos, next_dir)
+	--print("leaving "..tostring(pos))
+	set_metadata_cart_status(pos, self._staticdata.uuid, nil)
 	handle_cart_enter_exit(self, pos, next_dir, "on_leave" )
+end
+
+local function handle_cart_collision(cart1, pos, next_dir)
+	local meta = minetest.get_meta(pos)
+	local carts = minetest.deserialize(meta:get_string("_mcl_minecarts_carts")) or {}
+	local cart_uuid = nil
+	local dirty = false
+	for uuid,v in pairs(carts) do
+		-- Clean up dead carts
+		if not get_cart_data(uuid) then
+			carts[uuid] = nil
+			dirty = true
+			uuid = nil
+		end
+
+		if uuid and uuid ~= cart1._staticdata.uuid then cart_uuid = uuid end
+	end
+	if dirty then
+		meta:set_string("_mcl_minecarts_carts",minetest.serialize(carts))
+	end
+
+	local meta = minetest.get_meta(vector.add(pos,next_dir))
+	if not cart_uuid then return end
+	minetest.log("action","cart #"..cart1._staticdata.uuid.." collided with cart #"..cart_uuid.." at "..tostring(pos))
+
+	local cart2_aoid = mcl_util.get_active_object_id_from_uuid(cart_uuid)
+	local cart2 = minetest.luaentities[cart2_aoid]
+	if not cart2 then return end
+
+	local cart1_staticdata = cart1._staticdata
+	local cart2_staticdata = cart2._staticdata
+
+	local u1 = cart1_staticdata.velocity
+	local u2 = cart2_staticdata.velocity
+	local m1 = cart1_staticdata.mass
+	local m2 = cart2_staticdata.mass
+
+	-- Calculate new velocities according to https://en.wikipedia.org/wiki/Elastic_collision#One-dimensional_Newtonian
+	local c1 = m1 + m2
+	local d = m1 - m2
+	local v1 = (      d * u1 + 2 * m2 * u2 ) / c1
+	local v2 = ( 2 * m1 * u1 +      d * u2 ) / c1
+
+	cart1_staticdata.velocity = v1
+	cart2_staticdata.velocity = v2
 end
 
 local function handle_cart_node_watches(self, dtime)
@@ -246,7 +328,7 @@ local function do_movement_step(self, dtime)
 	end
 
 	if DEBUG and ( v_0 > 0 or a ~= 0 ) then
-		print( "    cart #"..tostring(staticdata.cart_id)..
+		print( "    cart "..tostring(staticdata.uuid)..
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
 		        ",x_0="..tostring(x_0)..
@@ -305,7 +387,7 @@ local function do_movement_step(self, dtime)
 	staticdata.distance = x_1
 
 	if DEBUG and (1==0) and ( v_0 > 0 or a ~= 0 ) then
-		print( "-   cart #"..tostring(staticdata.cart_id)..
+		print( "-   cart #"..tostring(staticdata.uuid)..
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
 		        ",v_1="..tostring(v_1)..
@@ -336,6 +418,9 @@ local function do_movement_step(self, dtime)
 		if DEBUG and next_dir ~= staticdata.dir then
 			print( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
 		end
+
+		-- Handle cart collisions
+		handle_cart_collision(self, pos, next_dir)
 
 		-- Leave the old node
 		handle_cart_leave(self, old_pos, next_dir )
@@ -376,7 +461,7 @@ local function do_movement_step(self, dtime)
 
 	-- Debug reporting
 	if DEBUG and ( v_0 > 0 or v_1 > 0 ) then
-		print( "    cart #"..tostring(staticdata.cart_id)..
+		print( "    cart #"..tostring(staticdata.uuid)..
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
 		        ",v_1="..tostring(v_1)..
@@ -615,7 +700,7 @@ local function make_staticdata( railtype, connected_at, dir )
 		distance = 0,
 		velocity = 0,
 		dir = vector.new(dir),
-		cart_id = math.random(1,1000000000),
+		mass = 1,
 	}
 end
 
@@ -644,24 +729,40 @@ local DEFAULT_CART_DEF = {
 	_staticdata = nil,
 }
 function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
+	-- Transfer older data
+	local data = minetest.deserialize(staticdata) or {}
+	if not data.uuid then
+		data.uuid  = mcl_util.get_uuid(self.object)
+	end
+	local cd = get_cart_data(data.uuid)
+	if not cd then
+		cart_data[data.uuid] = data
+		cart_data_fail_cache[data.uuid] = nil
+		save_cart_data(data.uuid)
+	end
+
 	-- Initialize
-	local data = minetest.deserialize(staticdata)
 	if type(data) == "table" then
 		-- Migrate old data
 		if data._railtype then
 			data.railtype = data._railtype
 			data._railtype = nil
 		end
+
 		-- Fix up types
 		data.dir = vector.new(data.dir)
 
+		-- Fix mass
+		data.mass = data.mass or 1
+
 		-- Make sure all carts have an ID to isolate them
-		data.cart_id = staticdata.cart_id or math.random(1,1000000000)
+		self._uuid = data.uuid
+		data.uuid = mcl_util.get_uuid(self.object)
 
 		self._staticdata = data
 	end
 
-	-- Activate cart if on activator rail
+	-- Activate cart if on powered activator rail
 	if self.on_activate_by_rail then
 		local pos = self.object:get_pos()
 		local node = minetest.get_node(vector.floor(pos))
@@ -670,6 +771,11 @@ function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
 		end
 	end
 end
+function DEFAULT_CART_DEF:get_staticdata()
+	save_cart_data(self._staticdata.uuid)
+	return minetest.serialize({uuid = self._staticdata.uuid})
+end
+
 function DEFAULT_CART_DEF:add_node_watch(pos)
 	local staticdata = self._staticdata
 	local watches = staticdata.node_watches or {}
@@ -692,9 +798,6 @@ function DEFAULT_CART_DEF:remove_node_watch(pos)
 		end
 	end
 	staticdata.node_watches = new_watches
-end
-function DEFAULT_CART_DEF:get_staticdata()
-	return minetest.serialize(self._staticdata or {})
 end
 function DEFAULT_CART_DEF:on_step(dtime)
 	local staticdata = self._staticdata
@@ -765,11 +868,14 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	local r = 0.6
 	for _, node_pos in pairs({{r, 0}, {0, r}, {-r, 0}, {0, -r}}) do
 		if minetest.get_node(vector.offset(pos, node_pos[1], 0, node_pos[2])).name == "mcl_core:cactus" then
+			self:on_death()
+			--[[
 			detach_driver(self)
 			local drop = self.drop
 			for d = 1, #drop do
 				minetest.add_item(pos, drop[d])
 			end
+			]]
 			self.object:remove()
 			return
 		end
@@ -777,6 +883,8 @@ function DEFAULT_CART_DEF:on_step(dtime)
 end
 function DEFAULT_CART_DEF:on_death(killer)
 	local staticdata = self._staticdata
+	minetest.log("action", "cart #"..staticdata.uuid.." was killed")
+
 	detach_driver(self)
 
 	-- Detach passenger
@@ -791,6 +899,9 @@ function DEFAULT_CART_DEF:on_death(killer)
 	else
 		mcl_log("TODO: handle detatched minecart death")
 	end
+
+	-- Remove data
+	destroy_cart_data(staticdata.uuid)
 
 	-- Drop items
 	local drop = self.drop
@@ -838,7 +949,12 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	-- Update static data
 	local le = cart:get_luaentity()
 	if le then
-		le._staticdata = make_staticdata( railtype, railpos, cart_dir )
+		local uuid = mcl_util.get_uuid(cart)
+		data = make_staticdata( railtype, railpos, cart_dir )
+		data.uuid = uuid
+		cart_data[uuid] = data
+		le._staticdata = data
+		save_cart_data(le._staticdata.uuid)
 	end
 
 	-- Call placer
@@ -1386,3 +1502,8 @@ if minetest.get_modpath("mcl_wip") then
 	mcl_wip.register_wip_item("mcl_minecarts:furnace_minecart")
 	mcl_wip.register_wip_item("mcl_minecarts:command_block_minecart")
 end
+
+minetest.register_globalstep(function(dtime)
+	-- TODO: handle periodically updating out-of-range carts
+end)
+
