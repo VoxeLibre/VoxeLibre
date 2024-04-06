@@ -156,6 +156,7 @@ table_merge(SLOPED_RAIL_DEF,{
 	mesh = "sloped_track.obj",
 	groups = {
 		rail_slope = 1,
+		not_in_creative_inventory = 1,
 	},
 	collision_box = {
 		type = "fixed",
@@ -217,9 +218,6 @@ local function register_straight_rail(base_name, tiles, def)
 	mod.register_rail(base_name, base_def)
 	base_def.craft = nil; sloped_def.craft = nil
 	table_merge(base_def,{
-		groups = {
-			not_in_creative_inventory = 1,
-		},
 		_mcl_minecarts = {
 			railtype = "straight",
 		},

@@ -414,12 +414,15 @@ end
 local function do_detached_movement(self, dtime)
 	local staticdata = self._staticdata
 
+	-- Make sure the object is still valid before trying to move it
+	if not self.object or not self.object:get_pos() then return end
+
 	-- Apply physics
 	if mcl_physics then
 		mcl_physics.apply_entity_environmental_physics(self)
 	else
 		-- Simple physics
-		local friction = self.object:get_velocity()
+		local friction = self.object:get_velocity() or vector.new(0,0,0)
 		friction.y = 0
 
 		local accel = vector.new(0,-9.81,0) -- gravity
@@ -1322,7 +1325,7 @@ register_minecart({
 			local pos = self.object:get_pos()
 			if self._boomtimer <= 0 then
 				self.object:remove()
-				mcl_explosions.explode(pos, 4, { drop_chance = 1.0 })
+				mcl_explosions.explode(pos, 6, { drop_chance = 1.0 })
 				return
 			else
 				tnt.smoke_step(pos)
