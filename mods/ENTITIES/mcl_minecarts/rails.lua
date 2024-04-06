@@ -33,6 +33,8 @@ end
 
 --- Rail direction Handleres
 local function rail_dir_straight(pos, dir, node)
+	dir = vector.new(dir.x, 0, dir.z)
+
 	if node.param2 == 0 or node.param2 == 2 then
 		if vector.equals(dir, north) then
 			return north
@@ -59,6 +61,8 @@ local function rail_dir_sloped(pos, dir, node)
 	end
 end
 local function rail_dir_curve(pos, dir, node)
+	dir = vector.new(dir.x, 0, dir.z)
+
 	if node.param2 == 0 then -- north
 		-- South and East
 		if vector.equals(dir, south) then return south end
@@ -86,10 +90,14 @@ local function rail_dir_curve(pos, dir, node)
 	end
 end
 local function rail_dir_tee(pos, dir, node)
+	dir = vector.new(dir.x, 0, dir.z)
+
 	minetest.log("warning","TODO: implement rail_dir_tee()")
 	return north
 end
 local function rail_dir_cross(pos, dir, node)
+	dir = vector.new(dir.x, 0, dir.z)
+
 	-- Always continue in the same direction. No direction changes allowed
 	return dir
 end

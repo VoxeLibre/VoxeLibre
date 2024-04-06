@@ -296,19 +296,19 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 
 	dir = node_def._mcl_minecarts.get_next_dir(pos, dir, node)
 
-	-- Handle going downhill
-	if is_ahead_slope(pos,dir) then
-		dir = vector.offset(dir,0,-1,0)
-	end
-
 	-- Handle reversing if there is a solid block in the next position
 	local next_pos = vector.add(pos, dir)
 	local next_node = minetest.get_node(next_pos)
 	local node_def = minetest.registered_nodes[next_node.name]
 	if node_def and node_def.groups and ( node_def.groups.solid or node_def.groups.stair ) then
 		-- Reverse the direction without giving -0 members
-		return vector.direction(next_pos, pos)
-	else
-		return dir
+		dir = vector.direction(next_pos, pos)
 	end
+
+	-- Handle going downhill
+	if is_ahead_slope(pos,dir) then
+		dir = vector.offset(dir,0,-1,0)
+	end
+
+	return dir
 end
