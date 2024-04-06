@@ -312,3 +312,48 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 
 	return dir
 end
+function mcl_minecarts:update_cart_orientation()
+	local staticdata = self._staticdata
+
+	-- constants
+	local _2_pi = math.pi * 2
+	local pi = math.pi
+	local dir = staticdata.dir
+
+	-- Calculate an angle from the x,z direction components
+	local rot_y = math.atan2( dir.x, dir.z ) + ( staticdata.rot_adjust or 0 )
+	if rot_y < 0 then
+		rot_y = rot_y + _2_pi
+	end
+
+	-- Check if the rotation is a 180 flip and don't change if so
+	local rot = self.object:get_rotation()
+	local diff = math.abs((rot_y - ( rot.y + pi ) % _2_pi) )
+	if diff < 0.001 or diff > _2_pi - 0.001 then
+		-- Update rotation adjust and recalculate the rotation
+		staticdata.rot_adjust = ( ( staticdata.rot_adjust or 0 ) + pi ) % _2_pi
+		rot.y = math.atan2( dir.x, dir.z ) + ( staticdata.rot_adjust or 0 )
+	else
+		rot.y = rot_y
+	end
+
+	-- Forward/backwards tilt (pitch)
+	if dir.y < 0 then
+		rot.x = -0.25 * pi
+	elseif dir.y > 0 then
+		rot.x = 0.25 * pi
+	else
+		rot.x = 0
+	end
+
+	if ( staticdata.rot_adjust or 0 ) < 0.01 then
+		rot.x = -rot.x
+	end
+	if dir.z ~= 0 then
+		rot.x = -rot.x
+	end
+
+	self.object:set_rotation(rot)
+end
+
+

@@ -188,7 +188,7 @@ function mod.register_rail(itemstring, ndef)
 	if not ndef.inventory_image then ndef.inventory_image = ndef.tiles[1] end
 	if not ndef.wield_image then ndef.wield_image = ndef.tiles[1] end
 
-	print("registering rail "..itemstring.." with definition: "..dump(ndef))
+	--print("registering rail "..itemstring.." with definition: "..dump(ndef))
 
 	-- Make registrations
 	minetest.register_node(itemstring, ndef)
