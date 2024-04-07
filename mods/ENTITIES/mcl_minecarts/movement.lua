@@ -24,6 +24,10 @@ mod.detach_minecart = detach_minecart
 
 local function try_detach_minecart(self)
 	local staticdata = self._staticdata
+	if not staticdata then return end
+
+	-- Don't try to detach if alread detached
+	if not staticdata.connected_at then return end
 
 	local node = minetest.get_node(staticdata.connected_at)
 	if minetest.get_item_group(node.name, "rail") == 0 then
@@ -461,7 +465,13 @@ local function do_detached_movement(self, dtime)
 		friction.y = 0
 
 		local accel = vector.new(0,-9.81,0) -- gravity
-		accel = vector.add(accel, vector.multiply(friction,-0.9))
+
+		-- Don't apply friction in the air
+		local pos_rounded = vector.round(self.object:get_pos())
+		if minetest.get_node(vector.offset(pos_rounded,0,-1,0)).name ~= "air" then
+			accel = vector.add(accel, vector.multiply(friction,-0.9))
+		end
+
 		self.object:set_acceleration(accel)
 	end
 

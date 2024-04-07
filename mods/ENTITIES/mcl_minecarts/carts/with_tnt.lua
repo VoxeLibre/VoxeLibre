@@ -3,7 +3,12 @@ local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 
--- Minecart with TNT
+local function detonate_tnt_minecart(self)
+	local pos = self.object:get_pos()
+	self.object:remove()
+	mcl_explosions.explode(pos, 6, { drop_chance = 1.0 })
+end
+
 local function activate_tnt_minecart(self, timer)
 	if self._boomtimer then
 		return
@@ -76,19 +81,24 @@ mod.register_minecart({
 	on_activate_by_rail = activate_tnt_minecart,
 	creative = true,
 	_mcl_minecarts_on_step = function(self, dtime)
-		-- Update TNT stuff
+		-- Impacts reduce the speed greatly. Use this to trigger explosions
+		local current_speed = vector.length(self.object:get_velocity())
+		if current_speed < (self._old_speed or 0) - 6 then
+			detonate_tnt_minecart(self)
+		end
+		self._old_speed = current_speed
+
 		if self._boomtimer then
 			-- Explode
 			self._boomtimer = self._boomtimer - dtime
-			local pos = self.object:get_pos()
 			if self._boomtimer <= 0 then
-				self.object:remove()
-				mcl_explosions.explode(pos, 6, { drop_chance = 1.0 })
+				detonate_tnt_minecart(self)
 				return
 			else
 				tnt.smoke_step(pos)
 			end
 		end
+
 		if self._blinktimer then
 			self._blinktimer = self._blinktimer - dtime
 			if self._blinktimer <= 0 then
