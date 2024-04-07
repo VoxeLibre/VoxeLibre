@@ -105,6 +105,11 @@ mcl_itemframes.update_entity = update_entity
 function mcl_itemframes.tpl_node.on_rightclick(pos, node, clicker, pstack, pointed_thing)
 	local itemstack = pstack:take_item()
 	local inv = minetest.get_meta(pos):get_inventory()
+	local name = clicker:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return
+	end
 	drop_item(pos)
 	inv:set_stack("main", 1, itemstack)
 	update_entity(pos)
