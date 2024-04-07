@@ -370,8 +370,6 @@ local function do_movement_step(self, dtime)
 		-- Enter the new node
 		handle_cart_enter(self, pos, next_dir)
 
-		try_detach_minecart(self)
-
 		-- Handle end of track
 		if next_dir == staticdata.dir * -1 and next_dir.y == 0 then
 			if DEBUG then print("Stopping cart at end of track at "..tostring(pos)) end
@@ -437,6 +435,7 @@ local function do_movement( self, dtime )
 	-- causing large timesteps
 	while dtime > 0 do
 		local new_dtime = do_movement_step(self, dtime)
+		try_detach_minecart(self)
 
 		update_train(self)
 
