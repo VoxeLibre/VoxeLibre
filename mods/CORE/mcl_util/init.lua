@@ -76,6 +76,15 @@ function mcl_util.mcl_log(message, module, bypass_default_logger)
 		minetest.log(selected_module .. " " .. message)
 	end
 end
+function mcl_util.make_mcl_logger(label, option)
+	-- Return dummy function if debug option isn't set
+	if not minetest.settings:get_bool(option,false) then return function() end, false end
+
+	local label_text = "["..tostring(label).."]"
+	return function(message)
+		mcl_util.mcl_log(message, label_text, true)
+	end, true
+end
 
 local player_timers = {}
 
@@ -824,6 +833,9 @@ function mcl_util.get_active_object_id(obj)
 end
 function mcl_util.get_active_object_id_from_uuid(uuid)
 	return uuid_to_aoid_cache[uuid] or scan_active_objects() or uuid_to_aoid_cache[uuid]
+end
+function mcl_util.get_luaentity_from_uuid(uuid)
+	return minetest.luaentities[ mcl_util.get_active_object_id_from_uuid(uuid) ]
 end
 function mcl_util.get_uuid(obj)
 	local le = obj:get_luaentity()

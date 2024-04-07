@@ -3,13 +3,7 @@ local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_minecarts", false)
-local DEBUG = false
-local function mcl_log(message)
-	if LOGGING_ON then
-		mcl_util.mcl_log(message, "[Minecarts]", true)
-	end
-end
+local mcl_log = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
 
 -- Imports
 local table_merge = mcl_util.table_merge
@@ -53,6 +47,7 @@ local function make_staticdata( railtype, connected_at, dir )
 		velocity = 0,
 		dir = vector.new(dir),
 		mass = 1,
+		seq = 1,
 	}
 end
 
@@ -86,8 +81,15 @@ function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
 	if not data.uuid then
 		data.uuid  = mcl_util.get_uuid(self.object)
 	end
+	self._seq = data.seq or 1
+
 	local cd = get_cart_data(data.uuid)
-	if not cd then update_cart_data(data) end
+	if not cd then
+		update_cart_data(data)
+	else
+		if not cd.seq then cd.seq = 1 end
+		data = cd
+	end
 
 	-- Initialize
 	if type(data) == "table" then
@@ -121,7 +123,7 @@ function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
 end
 function DEFAULT_CART_DEF:get_staticdata()
 	save_cart_data(self._staticdata.uuid)
-	return minetest.serialize({uuid = self._staticdata.uuid})
+	return minetest.serialize({uuid = self._staticdata.uuid, seq=self._seq})
 end
 
 function DEFAULT_CART_DEF:add_node_watch(pos)
@@ -147,11 +149,25 @@ function DEFAULT_CART_DEF:remove_node_watch(pos)
 	end
 	staticdata.node_watches = new_watches
 end
+function DEFAULT_CART_DEF:get_cart_position()
+	local staticdata = self._staticdata
+
+	if staticdata.connected_at then
+		return staticdata.connected_at + staticdata.dir * staticdata.distance
+	else
+		return self.object:get_pos()
+	end
+end
 function DEFAULT_CART_DEF:on_step(dtime)
 	local staticdata = self._staticdata
 	if not staticdata then
 		staticdata = make_staticdata()
 		self._staticdata = staticdata
+	end
+
+	if self._seq ~= staticdata.seq then
+		print("TODO: remove cart #"..staticdata.uuid.." with sequence number mismatch")
+		print("self.seq="..tostring(self._seq)..", staticdata.seq="..tostring(staticdata.seq))
 	end
 
 	-- Regen

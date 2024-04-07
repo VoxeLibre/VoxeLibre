@@ -73,6 +73,10 @@ mcl_minecarts.register_minecart({
 
 		-- Update furnace stuff
 		if (staticdata.fueltime or 0) > 0 then
+			if staticdata.velocity < 0.25 then
+				staticdata.velocity = 0.25
+			end
+
 			staticdata.fueltime = (staticdata.fueltime or dtime) - dtime
 			if staticdata.fueltime <= 0 then
 				self.object:set_properties({textures =

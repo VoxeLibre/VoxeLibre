@@ -4,8 +4,9 @@ local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 
 -- Constants
-local DEBUG = false
+local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
 local friction = mcl_minecarts.FRICTION
+local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
 
 -- Imports
 local train_length = mod.train_length
@@ -131,6 +132,10 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 
 	local meta = minetest.get_meta(vector.add(pos,next_dir))
 	if not cart_uuid then return end
+
+	-- Don't collide with the train car in front of you
+	if cart1._staticdata.ahead == cart_uuid then return end
+
 	minetest.log("action","cart #"..cart1._staticdata.uuid.." collided with cart #"..cart_uuid.." at "..tostring(pos))
 
 	local cart2_aoid = mcl_util.get_active_object_id_from_uuid(cart_uuid)
@@ -146,8 +151,8 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 	local m1 = cart1_staticdata.mass
 	local m2 = cart2_staticdata.mass
 
-	print("u1="..tostring(u1)..",u2="..tostring(u2))
-	if u2 == 0 and u1 < 4 and train_length(cart1) < 3 then
+	--print("u1="..tostring(u1)..",u2="..tostring(u2))
+	if u2 == 0 and u1 < 4 and train_length(cart1) < MAX_TRAIN_LENGTH then
 		link_cart_ahead(cart1, cart2)
 		cart2_staticdata.dir = mcl_minecarts:get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 		cart2_staticdata.velocity = cart1_staticdata.velocity
@@ -275,7 +280,7 @@ local function do_movement_step(self, dtime)
 	end
 
 	if DEBUG and ( v_0 > 0 or a ~= 0 ) then
-		print( "    cart "..tostring(staticdata.uuid)..
+		mcl_debug("    cart "..tostring(staticdata.uuid)..
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
 		        ",x_0="..tostring(x_0)..
@@ -334,7 +339,7 @@ local function do_movement_step(self, dtime)
 	staticdata.distance = x_1
 
 	if DEBUG and (1==0) and ( v_0 > 0 or a ~= 0 ) then
-		print( "-   cart #"..tostring(staticdata.uuid)..
+		mcl_debug( "-   cart #"..tostring(staticdata.uuid)..
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
 		        ",v_1="..tostring(v_1)..
@@ -362,7 +367,7 @@ local function do_movement_step(self, dtime)
 		-- Get the next direction
 		local next_dir,_ = mcl_minecarts:get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
 		if DEBUG and next_dir ~= staticdata.dir then
-			print( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
+			mcl_debug( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
 		end
 
 		-- Handle cart collisions
@@ -376,7 +381,7 @@ local function do_movement_step(self, dtime)
 
 		-- Handle end of track
 		if next_dir == staticdata.dir * -1 and next_dir.y == 0 then
-			if DEBUG then print("Stopping cart at end of track at "..tostring(pos)) end
+			if DEBUG then mcl_debug("Stopping cart at end of track at "..tostring(pos)) end
 			staticdata.velocity = 0
 		end
 
@@ -384,7 +389,7 @@ local function do_movement_step(self, dtime)
 		staticdata.dir = next_dir
 	elseif stops_in_block and v_1 < (friction/5) and a <= 0 then
 		-- Handle direction flip due to gravity
-		if DEBUG then print("Gravity flipped direction") end
+		if DEBUG then mcl_debug("Gravity flipped direction") end
 
 		-- Velocity should be zero at this point
 		staticdata.velocity = 0
@@ -405,7 +410,7 @@ local function do_movement_step(self, dtime)
 
 	-- Debug reporting
 	if DEBUG and ( v_0 > 0 or v_1 > 0 ) then
-		print( "    cart #"..tostring(staticdata.uuid)..
+		mcl_debug( "    cart #"..tostring(staticdata.uuid)..
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
 		        ",v_1="..tostring(v_1)..
