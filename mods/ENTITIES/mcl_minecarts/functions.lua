@@ -356,4 +356,10 @@ function mcl_minecarts:update_cart_orientation()
 	self.object:set_rotation(rot)
 end
 
+function mod.get_cart_position(cart_staticdata)
+	local data = cart_staticdata
+	if not data.connected_at then return end
+
+	return vector.add(data.connected_at, vector.multiply(data.dir or vector.zero(), data.distance or 0))
+end
 

@@ -9,6 +9,7 @@ mod.speed_max = 10
 mod.check_float_time = 15
 mod.FRICTION = 0.4
 mod.MAX_TRAIN_LENGTH = 4
+mod.CART_BLOCK_SIZE = 64
 
 for _,filename in pairs({"storage","functions","rails","train","carts"}) do
 	dofile(modpath.."/"..filename..".lua")

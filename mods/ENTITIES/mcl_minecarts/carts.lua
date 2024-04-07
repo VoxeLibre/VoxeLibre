@@ -6,11 +6,13 @@ local S = minetest.get_translator(modname)
 local mcl_log = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
 
 -- Imports
+local CART_BLOCK_SIZE = mod.CART_BLOCK_SIZE
 local table_merge = mcl_util.table_merge
 local get_cart_data = mod.get_cart_data
 local save_cart_data = mod.save_cart_data
 local update_cart_data = mod.update_cart_data
 local destroy_cart_data = mod.destroy_cart_data
+local find_carts_by_block_map = mod.find_carts_by_block_map
 local do_movement,do_detached_movement,handle_cart_enter = dofile(modpath.."/movement.lua")
 assert(do_movement)
 assert(do_detached_movement)
@@ -165,9 +167,15 @@ function DEFAULT_CART_DEF:on_step(dtime)
 		self._staticdata = staticdata
 	end
 
+	-- Repair cart_type
+	if not staticdata.cart_type then
+		staticdata.cart_type = self.name
+	end
+
 	if self._seq ~= staticdata.seq then
-		print("TODO: remove cart #"..staticdata.uuid.." with sequence number mismatch")
-		print("self.seq="..tostring(self._seq)..", staticdata.seq="..tostring(staticdata.seq))
+		print("removing cart #"..staticdata.uuid.." with sequence number mismatch")
+		self.object:remove()
+		return
 	end
 
 	-- Regen
@@ -309,6 +317,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 		local uuid = mcl_util.get_uuid(cart)
 		data = make_staticdata( railtype, railpos, cart_dir )
 		data.uuid = uuid
+		data.cart_type = entity_id
 		update_cart_data(data)
 		le._staticdata = data
 		save_cart_data(le._staticdata.uuid)
@@ -447,7 +456,67 @@ if minetest.get_modpath("mcl_wip") then
 	mcl_wip.register_wip_item("mcl_minecarts:command_block_minecart")
 end
 
+local function respawn_cart(cart)
+	local cart_type = cart.cart_type or "mcl_minecarts:minecart"
+	local pos = mod.get_cart_position(cart)
+	print("Respawning cart #"..cart.uuid.." at "..tostring(pos))
+
+	-- Update sequence so that old cart entities get removed
+	cart.seq = (cart.seq or 1) + 1
+	save_cart_data(cart.uuid)
+
+	-- Create the new entity
+	local entity = minetest.add_entity(pos, cart_type)
+	local le = entity:get_luaentity()
+	le._seq = cart.seq
+	le._uuid = cart.uuid
+	le._staticdata = cart
+
+	-- We intentionally don't call the normal hooks because this minecart was already there
+end
+
+-- Try to respawn cart entities for carts that have moved into range of a player
+local function try_respawn_carts()
+	-- Build a map of blocks near players
+	local block_map = {}
+	local players = minetest.get_connected_players()
+	for _,player in pairs(players) do
+		local pos = player:get_pos()
+		local min = vector.floor(vector.divide(vector.offset(pos,-CART_BLOCK_SIZE,-CART_BLOCK_SIZE,-CART_BLOCK_SIZE), CART_BLOCK_SIZE))
+		local max = vector.floor(vector.divide(vector.offset(pos, CART_BLOCK_SIZE, CART_BLOCK_SIZE, CART_BLOCK_SIZE), CART_BLOCK_SIZE)) + vector.new(1,1,1)
+		for z = min.z,max.z do
+			for y = min.y,max.y do
+				for x = min.x,min.x do
+					block_map[ vector.to_string(vector.new(x,y,z)) ] = true
+				end
+			end
+		end
+	end
+
+	-- Find all cart data that are in these blocks
+	local carts = find_carts_by_block_map(block_map)
+
+	-- Check to see if any of these don't have an entity
+	for _,cart in pairs(carts) do
+		local le = mcl_util.get_luaentity_from_uuid(cart.uuid)
+		if not le then
+			respawn_cart(cart)
+		end
+	end
+end
+
+local timer = 0
 minetest.register_globalstep(function(dtime)
+	timer = timer - dtime
+	if timer <= 0 then
+		local start_time = minetest.get_us_time()
+		try_respawn_carts()
+		local stop_time = minetest.get_us_time()
+		local duration = (stop_time - start_time) / 1e6
+		timer = duration / 50e-6 -- Schedule 50us per second
+		--print("Took "..tostring(duration).." seconds, rescheduling for "..tostring(timer).." seconds in the future")
+	end
+
 	-- TODO: handle periodically updating out-of-range carts
 end)
 
