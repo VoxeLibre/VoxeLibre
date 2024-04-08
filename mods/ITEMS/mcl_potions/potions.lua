@@ -633,7 +633,7 @@ mcl_potions.register_potion({
 	desc_suffix = S("of Health Boost"),
 	_tt = nil,
 	_longdesc = S("Increases health."),
-	color = "#FF2222",
+	color = "#BE1919",
 	_effect_list = {
 		health_boost = {},
 	},
