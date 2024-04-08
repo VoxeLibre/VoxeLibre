@@ -398,6 +398,21 @@ local awkward_table = {
 	["mcl_mobitems:spider_eye"] = "mcl_potions:poison",
 	["mcl_flowers:wither_rose"] = "mcl_potions:withering",
 	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping",
+
+	["mcl_flowers:fourleaf_clover"] = "mcl_potions:luck",
+	["mcl_farming:potato_item_poison"] = "mcl_potions:nausea",
+	-- TODO slow falling
+	-- TODO levitation?
+	-- TODO darkness?
+	-- TODO absorption
+	-- TODO health boost?
+	-- TODO resistance
+	-- TODO turtle master?
+	-- TODO frost
+	-- TODO blindness?
+	-- TODO food poisoning?
+	-- TODO saturation?
+	-- TODO haste
 }
 -- API
 -- register a potion recipe brewed from awkward potion
@@ -416,6 +431,7 @@ end
 mcl_potions.register_ingredient_potion("mcl_potions:awkward", awkward_table)
 
 -- TODO mundane and thick potion recipes
+-- TODO glowing out of thick
 
 
 local mod_table = { }
@@ -442,6 +458,8 @@ local inversion_table = {
 	["mcl_potions:leaping"] = "mcl_potions:slowness",
 	["mcl_potions:night_vision"] = "mcl_potions:invisibility",
 	["mcl_potions:poison"] = "mcl_potions:harming",
+	["mcl_potions:luck"] = "mcl_potions:bad_luck",
+	["mcl_potions:haste"] = "mcl_potions:fatigue",
 }
 -- API
 function mcl_potions.register_inversion_recipe(input, output)

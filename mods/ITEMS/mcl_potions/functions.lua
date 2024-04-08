@@ -569,7 +569,7 @@ mcl_potions.register_effect({
 		end
 		EF.glowing[object].waypoints = {}
 	end,
-	particle_color = "#FFFF00",
+	particle_color = "#FFFF77",
 	uses_factor = false,
 })
 

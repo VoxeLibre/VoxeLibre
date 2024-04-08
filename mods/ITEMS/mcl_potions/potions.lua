@@ -489,7 +489,7 @@ mcl_potions.register_potion({
 	desc_suffix = S("of Withering"),
 	_tt = nil,
 	_longdesc = S("Applies the withering effect which deals damage at a regular interval and can kill."),
-	color = "#000000",
+	color = "#292929",
 	_effect_list = {
 		withering = {dur=mcl_potions.DURATION_POISON},
 	},
@@ -576,6 +576,232 @@ mcl_potions.register_potion({
 	color = "#484D48",
 	_effect_list = {
 		weakness = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "slow_falling",
+	desc_suffix = S("of Slow Falling"),
+	_tt = nil,
+	_longdesc = S("Instead of falling, you descend gracefully."),
+	color = "#ACCCFF",
+	_effect_list = {
+		slow_falling = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "levitation",
+	desc_suffix = S("of Levitation"),
+	_tt = nil,
+	_longdesc = S("Floats body slowly upwards."),
+	color = "#420E7E",
+	_effect_list = {
+		levitation = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "darkness",
+	desc_suffix = S("of Darkness"),
+	_tt = nil,
+	_longdesc = S("Surrounds with darkness."),
+	color = "#000000",
+	_effect_list = {
+		darkness = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "glowing",
+	desc_suffix = S("of Glowing"),
+	_tt = nil,
+	_longdesc = S("Highlights for others to see."),
+	color = "#FFFF77",
+	_effect_list = {
+		glowing = {},
+	},
+	has_arrow = false, -- TODO add a spectral arrow instead (in mcl_bows?)
+})
+
+mcl_potions.register_potion({
+	name = "health_boost",
+	desc_suffix = S("of Health Boost"),
+	_tt = nil,
+	_longdesc = S("Increases health."),
+	color = "#FF2222",
+	_effect_list = {
+		health_boost = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "absorption",
+	desc_suffix = S("of Absorption"),
+	_tt = nil,
+	_longdesc = S("Absorbs some incoming damage."),
+	color = "#B59500",
+	_effect_list = {
+		absorption = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "resistance",
+	desc_suffix = S("of Resistance"),
+	_tt = nil,
+	_longdesc = S("Descreases damage taken."),
+	color = "#2552A5",
+	_effect_list = {
+		resistance = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "resistance",
+	desc_suffix = S("of Resistance"),
+	_tt = nil,
+	_longdesc = S("Descreases damage taken."),
+	color = "#2552A5",
+	_effect_list = {
+		resistance = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "turtle_master",
+	desc_suffix = S("of Turtle Master"),
+	_tt = nil,
+	_longdesc = S("Descreases damage taken at the cost of speed."),
+	color = "#255235",
+	_effect_list = {
+		resistance = {
+			level = 3,
+			dur = 20,
+		},
+		slowness = {
+			level = 4,
+			level_scaling = 2,
+			dur = 20,
+		},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "luck",
+	desc_suffix = S("of Luck"),
+	_tt = nil,
+	_longdesc = S("Increases luck."),
+	color = "#7BFF42",
+	_effect_list = {
+		luck = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "bad_luck",
+	desc_suffix = S("of Bad Luck"),
+	_tt = nil,
+	_longdesc = S("Decreases luck."),
+	color = "#887343",
+	_effect_list = {
+		bad_luck = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "frost",
+	desc_suffix = S("of Frost"),
+	_tt = nil,
+	_longdesc = S("Freezes..."),
+	color = "#5B7DAA",
+	_effect_list = {
+		frost = {},
+	},
+	has_arrow = true,
+	-- TODO implement effect stacking?
+})
+
+mcl_potions.register_potion({
+	name = "blindness",
+	desc_suffix = S("of Blindness"),
+	_tt = nil,
+	_longdesc = S("Impairs sight."),
+	color = "#586868",
+	_effect_list = {
+		blindness = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "nausea",
+	desc_suffix = S("of Nausea"),
+	_tt = nil,
+	_longdesc = S("Disintegrates senses."),
+	color = "#715C7F",
+	_effect_list = {
+		nausea = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "food_poisoning",
+	desc_suffix = S("of Food Poisoning"),
+	_tt = nil,
+	_longdesc = S("Moves bowels too fast."),
+	color = "#83A061",
+	_effect_list = {
+		food_poisoning = {},
+	},
+	has_arrow = true,
+	-- TODO implement effect stacking?
+})
+
+mcl_potions.register_potion({
+	name = "saturation",
+	desc_suffix = S("of Saturation"),
+	_tt = nil,
+	_longdesc = S("Satisfies hunger."),
+	color = "#CEAE29",
+	_effect_list = {
+		saturation = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "haste",
+	desc_suffix = S("of Haste"),
+	_tt = nil,
+	_longdesc = S("Increases digging and attack speed."),
+	color = "#FFFF00",
+	_effect_list = {
+		haste = {},
+	},
+	has_arrow = true,
+})
+
+mcl_potions.register_potion({
+	name = "fatigue",
+	desc_suffix = S("of Fatigue"),
+	_tt = nil,
+	_longdesc = S("Decreases digging and attack speed."),
+	color = "#64643D",
+	_effect_list = {
+		fatigue = {},
 	},
 	has_arrow = true,
 })
