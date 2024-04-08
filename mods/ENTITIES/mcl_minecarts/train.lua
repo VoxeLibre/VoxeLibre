@@ -72,13 +72,14 @@ function mod.update_train(cart)
 	-- Do no special processing if the cart is not part of a train
 	if not staticdata.ahead and not staticdata.behind then return end
 
-	-- Calculate the average velocity of all train cars
-	local sum_velocity = 0
+	-- Calculate the maximum velocity of all train cars
+	local velocity = 0
+	local count = 0
 	for cart in train_cars(cart) do
-		if cart.velocity or 0 > velocity then
-			velocity = cart.velocity
-		end
+		velocity = velocity + (cart.velocity or 0)
+		count = count + 1
 	end
+	velocity = velocity / count
 	print("Using velocity "..tostring(velocity))
 
 	-- Set the entire train to the average velocity
@@ -86,17 +87,19 @@ function mod.update_train(cart)
 	for c in train_cars(cart) do
 		local e = 0
 		local separation
+		local cart_velocity = velocity
 		if behind then
 			separation = distance_between_cars(behind, c)
 			local e = 0
-			if separation > 1.25 then
-				velocity = velocity * 0.9
+			if separation > 1.6 then
+				cart_velocity = velocity * 0.9
 			elseif separation < 1.15 then
-				velocity = velocity * 1.1
+				cart_velocity = velocity * 1.1
 			end
 		end
-		print(tostring(c.behind).."->"..c.uuid.."->"..tostring(c.ahead).."("..tostring(separation)..")  setting cart #"..c.uuid.." velocity to "..tostring(velocity))
-		c.velocity = velocity
+		print(tostring(c.behind).."->"..c.uuid.."->"..tostring(c.ahead).."("..tostring(separation)..")  setting cart #"..
+			c.uuid.." velocity from "..tostring(c.velocity).." to "..tostring(cart_velocity))
+		c.velocity = cart_velocity
 
 		behind = c
 	end

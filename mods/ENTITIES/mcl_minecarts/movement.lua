@@ -14,6 +14,7 @@ local update_train = mod.update_train
 local link_cart_ahead = mod.link_cart_ahead
 local update_cart_orientation = mod.update_cart_orientation
 local get_cart_data = mod.get_cart_data
+local get_cart_position = mod.get_cart_position
 
 local function detach_minecart(self)
 	local staticdata = self._staticdata
@@ -118,7 +119,8 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 	local dirty = false
 	for uuid,v in pairs(carts) do
 		-- Clean up dead carts
-		if not get_cart_data(uuid) then
+		local data = get_cart_data(uuid)
+		if not data then
 			carts[uuid] = nil
 			dirty = true
 			uuid = nil
@@ -138,13 +140,9 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 
 	minetest.log("action","cart #"..cart1._staticdata.uuid.." collided with cart #"..cart_uuid.." at "..tostring(pos))
 
-	local cart2_aoid = mcl_util.get_active_object_id_from_uuid(cart_uuid)
-	local cart2 = minetest.luaentities[cart2_aoid]
-	if not cart2 then return end
-
 	-- Standard Collision Handling
 	local cart1_staticdata = cart1._staticdata
-	local cart2_staticdata = cart2._staticdata
+	local cart2_staticdata = get_cart_data(cart_uuid)
 
 	local u1 = cart1_staticdata.velocity
 	local u2 = cart2_staticdata.velocity
@@ -153,7 +151,7 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 
 	--print("u1="..tostring(u1)..",u2="..tostring(u2))
 	if u2 == 0 and u1 < 4 and train_length(cart1) < MAX_TRAIN_LENGTH then
-		link_cart_ahead(cart1, cart2)
+		link_cart_ahead(cart1, {_staticdata=cart2_staticdata})
 		cart2_staticdata.dir = mcl_minecarts:get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 		cart2_staticdata.velocity = cart1_staticdata.velocity
 		return

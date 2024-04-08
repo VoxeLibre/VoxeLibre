@@ -16,6 +16,13 @@ local function get_cart_data(uuid)
 	if not data then
 		cart_data_fail_cache[uuid] = true
 		return nil
+	else
+		-- Repair broken data
+		if not data.distance then data.distance = 0 end
+		if data.distance == 0/0 then data.distance = 0 end
+		if data.distance == -0/0 then data.distance = 0 end
+		data.dir = vector.new(data.dir)
+		data.connected_at = vector.new(data.connected_at)
 	end
 
 	cart_data[uuid] = data

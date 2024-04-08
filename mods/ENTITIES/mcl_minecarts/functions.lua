@@ -358,7 +358,8 @@ end
 
 function mod.get_cart_position(cart_staticdata)
 	local data = cart_staticdata
-	if not data.connected_at then return end
+	if not data then return nil end
+	if not data.connected_at then return nil end
 
 	return vector.add(data.connected_at, vector.multiply(data.dir or vector.zero(), data.distance or 0))
 end
