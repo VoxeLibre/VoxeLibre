@@ -114,3 +114,12 @@ function mod.link_cart_ahead(cart, cart_ahead)
 	staticdata.ahead = ca_staticdata.uuid
 	ca_staticdata.behind = staticdata.uuid
 end
+
+
+function mod.reverse_train(cart)
+	for c in train_cars(cart) do
+		mod.reverse_cart_direction(c)
+		c.behind,c.ahead = c.ahead,c.behind
+	end
+end
+

@@ -11,6 +11,7 @@ local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
 -- Imports
 local train_length = mod.train_length
 local update_train = mod.update_train
+local reverse_train = mod.reverse_train
 local link_cart_ahead = mod.link_cart_ahead
 local update_cart_orientation = mod.update_cart_orientation
 local get_cart_data = mod.get_cart_data
@@ -248,14 +249,12 @@ local function calculate_acceleration(self, staticdata)
 end
 
 local function reverse_direction(self, staticdata)
-	-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
-	local next_dir = -staticdata.dir
-	staticdata.connected_at = staticdata.connected_at + staticdata.dir
-	staticdata.distance = 1 - (staticdata.distance or 0)
+	if staticdata.behind or staticdata.ahead then
+		reverse_train(self)
+		return
+	end
 
-	-- recalculate direction
-	local next_dir,_ = mcl_minecarts:get_rail_direction(staticdata.connected_at, next_dir, nil, nil, staticdata.railtype)
-	staticdata.dir = next_dir
+	mod.reverse_cart_direction(staticdata)
 end
 
 local function do_movement_step(self, dtime)

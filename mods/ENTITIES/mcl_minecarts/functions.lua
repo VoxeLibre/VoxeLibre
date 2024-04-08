@@ -364,3 +364,15 @@ function mod.get_cart_position(cart_staticdata)
 	return vector.add(data.connected_at, vector.multiply(data.dir or vector.zero(), data.distance or 0))
 end
 
+function mod.reverse_cart_direction(staticdata)
+
+	-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
+	local next_dir = -staticdata.dir
+	staticdata.connected_at = staticdata.connected_at + staticdata.dir
+	staticdata.distance = 1 - (staticdata.distance or 0)
+
+	-- recalculate direction
+	local next_dir,_ = mod:get_rail_direction(staticdata.connected_at, next_dir, nil, nil, staticdata.railtype)
+	staticdata.dir = next_dir
+end
+
