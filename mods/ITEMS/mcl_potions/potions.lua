@@ -468,6 +468,7 @@ mcl_potions.register_potion({
 	_effect_list = {
 		slowness = {dur=mcl_potions.DURATION_INV},
 	},
+	default_potent_level = 4,
 	has_arrow = true,
 })
 
@@ -555,124 +556,27 @@ mcl_potions.register_potion({
 	has_arrow = true,
 })
 
+mcl_potions.register_potion({
+	name = "strength",
+	desc_suffix = S("of Strength"),
+	_tt = nil,
+	_longdesc = S("Increases attack power."),
+	color = "#932423",
+	_effect_list = {
+		strength = {},
+	},
+	has_arrow = true,
+})
 
+mcl_potions.register_potion({
+	name = "weakness",
+	desc_suffix = S("of Weakness"),
+	_tt = nil,
+	_longdesc = S("Decreases attack power."),
+	color = "#484D48",
+	_effect_list = {
+		weakness = {},
+	},
+	has_arrow = true,
+})
 
--- minetest.register_craftitem("mcl_potions:weakness", {
--- 	description = S("Weakness"),
--- 	_tt_help = TODO,
--- 	_doc_items_longdesc = brewhelp,
--- 	wield_image = potion_image("#484D48"),
--- 	inventory_image = potion_image("#484D48"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
--- 	stack_max = 1,
---
--- 	on_place = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, -4, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#484D48")
--- 		return itemstack
--- 	end,
---
--- 	on_secondary_use = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, -4, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#484D48")
--- 		return itemstack
--- 	end
--- })
---
--- minetest.register_craftitem("mcl_potions:weakness_plus", {
--- 	description = S("Weakness +"),
--- 	_tt_help = TODO,
--- 	_doc_items_longdesc = brewhelp,
--- 	wield_image = potion_image("#484D48"),
--- 	inventory_image = potion_image("#484D48"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
--- 	stack_max = 1,
---
--- 	on_place = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, -4, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#484D48")
--- 		return itemstack
--- 	end,
---
--- 	on_secondary_use = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, -4, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#484D48")
--- 		return itemstack
--- 	end
--- })
---
--- minetest.register_craftitem("mcl_potions:strength", {
--- 	description = S("Strength"),
--- 	_tt_help = TODO,
--- 	_doc_items_longdesc = brewhelp,
--- 	wield_image = potion_image("#932423"),
--- 	inventory_image = potion_image("#932423"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
--- 	stack_max = 1,
---
--- 	on_place = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, 3, mcl_potions.DURATION)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#932423")
--- 		return itemstack
--- 	end,
---
--- 	on_secondary_use = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, 3, mcl_potions.DURATION)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#932423")
--- 		return itemstack
--- 	end
--- })
---
--- minetest.register_craftitem("mcl_potions:strength_2", {
--- 	description = S("Strength II"),
--- 	_tt_help = TODO,
--- 	_doc_items_longdesc = brewhelp,
--- 	wield_image = potion_image("#932423"),
--- 	inventory_image = potion_image("#932423"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
--- 	stack_max = 1,
---
--- 	on_place = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, 6, mcl_potions.DURATION_2)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#932423")
--- 		return itemstack
--- 	end,
---
--- 	on_secondary_use = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, 6, mcl_potions.DURATION_2)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#932423")
--- 		return itemstack
--- 	end
--- })
---
--- minetest.register_craftitem("mcl_potions:strength_plus", {
--- 	description = S("Strength +"),
--- 	_tt_help = TODO,
--- 	_doc_items_longdesc = brewhelp,
--- 	wield_image = potion_image("#932423"),
--- 	inventory_image = potion_image("#932423"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
--- 	stack_max = 1,
---
--- 	on_place = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, 3, mcl_potions.DURATION_PLUS)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#932423")
--- 		return itemstack
--- 	end,
---
--- 	on_secondary_use = function(itemstack, user, pointed_thing)
--- 		mcl_potions.weakness_func(user, 3, mcl_potions.DURATION_PLUS)
--- 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
--- 		mcl_potions._use_potion(itemstack, user, "#932423")
--- 		return itemstack
--- 	end
--- })

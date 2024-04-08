@@ -260,7 +260,7 @@ mcl_potions.register_effect({
 	name = "strength",
 	description = S("Strength"),
 	get_tt = function(factor)
-		return S("+@1% melee damage", factor-1)
+		return S("+@1% melee damage", 100*(factor-1))
 	end,
 	particle_color = "#932423",
 	uses_factor = true,
@@ -272,7 +272,7 @@ mcl_potions.register_effect({
 	name = "weakness",
 	description = S("Weakness"),
 	get_tt = function(factor)
-		return S("-@1% melee damage", 1-factor)
+		return S("-@1% melee damage", 100*(1-factor))
 	end,
 	particle_color = "#485D48",
 	uses_factor = true,
