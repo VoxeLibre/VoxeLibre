@@ -430,8 +430,43 @@ function mcl_potions.register_awkward_brew(ingr, potion)
 end
 mcl_potions.register_ingredient_potion("mcl_potions:awkward", awkward_table)
 
--- TODO mundane and thick potion recipes
--- TODO glowing out of thick
+local mundane_table = {
+	["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
+}
+-- API
+-- register a potion recipe brewed from mundane potion
+function mcl_potions.register_mundane_brew(ingr, potion)
+	if mundane_table[ingr] then
+		error("Attempt to register the same ingredient twice!")
+	end
+	if type(ingr) ~= "string" then
+		error("Invalid argument! ingr must be a string")
+	end
+	if type(potion) ~= "string" then
+		error("Invalid argument! potion must be a string")
+	end
+	mundane_table[ingr] = potion
+end
+mcl_potions.register_ingredient_potion("mcl_potions:mundane", mundane_table)
+
+local thick_table = {
+	-- TODO glowing from some shining cave flowers
+}
+-- API
+-- register a potion recipe brewed from thick potion
+function mcl_potions.register_thick_brew(ingr, potion)
+	if thick_table[ingr] then
+		error("Attempt to register the same ingredient twice!")
+	end
+	if type(ingr) ~= "string" then
+		error("Invalid argument! ingr must be a string")
+	end
+	if type(potion) ~= "string" then
+		error("Invalid argument! potion must be a string")
+	end
+	thick_table[ingr] = potion
+end
+mcl_potions.register_ingredient_potion("mcl_potions:thick", thick_table)
 
 
 local mod_table = { }
