@@ -7,8 +7,8 @@ local S = minetest.get_translator(modname)
 local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
 local friction = mcl_minecarts.FRICTION
 local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
-DEBUG = true
-mcl_debug = function(msg) print(msg) end
+--DEBUG = false
+--mcl_debug = function(msg) print(msg) end
 
 -- Imports
 local train_length = mod.train_length
@@ -30,13 +30,9 @@ end
 mod.detach_minecart = detach_minecart
 
 local function try_detach_minecart(staticdata)
-	if not staticdata then return end
-
-	-- Don't try to detach if alread detached
-	if not staticdata.connected_at then return end
-
-	local node = minetest.get_node(staticdata.connected_at)
-	if minetest.get_item_group(node.name, "rail") == 0 then
+	if not staticdata or not staticdata.connected_at then return end
+	if not mod:is_rail(staticdata.connected_at) then
+		print("Detaching minecart"..tostring(staticdata.uuid))
 		detach_minecart(staticdata)
 	end
 end
@@ -77,10 +73,10 @@ local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 	-- Handle cart-specific behaviors
 	if luaentity then
 		local hook = luaentity["_mcl_minecarts_"..event]
+		if hook then hook(self, pos) end
 	else
-		minetest.log("warning", "TODO: chanve _mcl_minecarts_"..event.." calling so it is not dependent on the existence of a luaentity")
+		--minetest.log("warning", "TODO: change _mcl_minecarts_"..event.." calling so it is not dependent on the existence of a luaentity")
 	end
-	if hook then hook(self, pos) end
 end
 local function set_metadata_cart_status(pos, uuid, state)
 	local meta = minetest.get_meta(pos)
@@ -117,6 +113,8 @@ local function handle_cart_node_watches(staticdata, dtime)
 end
 
 local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
+	if not cart1_staticdata then return end
+
 	-- Look ahead one block
 	local pos = vector.add(prev_pos, next_dir)
 
@@ -387,7 +385,7 @@ local function do_movement_step(staticdata, dtime)
 		end
 
 		-- Handle cart collisions
-		handle_cart_collision(self, pos, next_dir)
+		handle_cart_collision(staticdata, pos, next_dir)
 
 		-- Leave the old node
 		handle_cart_leave(staticdata, old_pos, next_dir )

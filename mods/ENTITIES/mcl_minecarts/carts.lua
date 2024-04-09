@@ -68,9 +68,8 @@ end
 -- Table for item-to-entity mapping. Keys: itemstring, Values: Corresponding entity ID
 local entity_mapping = {}
 
-local function make_staticdata( railtype, connected_at, dir )
+local function make_staticdata( _, connected_at, dir )
 	return {
-		railtype = railtype,
 		connected_at = connected_at,
 		distance = 0,
 		velocity = 0,
@@ -122,12 +121,6 @@ function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
 
 	-- Initialize
 	if type(data) == "table" then
-		-- Migrate old data
-		if data._railtype then
-			data.railtype = data._railtype
-			data._railtype = nil
-		end
-
 		-- Fix up types
 		data.dir = vector.new(data.dir)
 
@@ -194,11 +187,17 @@ function DEFAULT_CART_DEF:on_step(dtime)
 		self._staticdata = staticdata
 	end
 
+
+	-- Update entity position
+	local pos = mod.get_cart_position(staticdata)
+	if pos then self.object:move_to(pos) end
+
 	-- Repair cart_type
 	if not staticdata.cart_type then
 		staticdata.cart_type = self.name
 	end
 
+	-- Remove superceded entities
 	if self._seq ~= staticdata.seq then
 		print("removing cart #"..staticdata.uuid.." with sequence number mismatch")
 		self.object:remove()
@@ -207,22 +206,11 @@ function DEFAULT_CART_DEF:on_step(dtime)
 
 	-- Regen
 	local hp = self.object:get_hp()
-	if hp < MINECART_MAX_HP then
-		if (staticdata.regen_timer or 0) > 0.5 then
-			hp = hp + 1
-			staticdata.regen_timer = staticdata.regen_timer - 1
-		end
-		staticdata.regen_timer = (staticdata.regen_timer or 0) + dtime
+	local time_now = minetest.get_gametime()
+	if hp < MINECART_MAX_HP and staticdata.last_regen <= time_now - 1 then
+		staticdata.last_regen = time_now
+		hp = hp + 1
 		self.object:set_hp(hp)
-	else
-		staticdata.regen_timer = nil
-	end
-
-	-- Fix railtype field
-	local pos = self.object:get_pos()
-	if staticdata.connected_at and not staticdata.railtype then
-		local node = minetest.get_node(vector.floor(pos)).name
-		staticdata.railtype = minetest.get_item_group(node, "connect_to_raillike")
 	end
 
 	-- Cart specific behaviors
@@ -256,27 +244,12 @@ function DEFAULT_CART_DEF:on_step(dtime)
 		end
 	end
 
-	if staticdata.connected_at then
-		do_movement(staticdata, dtime)
-
-		-- Update entity
-		local pos = mod.get_cart_position(staticdata)
-		if pos then self.object:move_to(pos) end
-		mod.update_cart_orientation(self)
-	else
+	if not staticdata.connected_at then
 		do_detached_movement(self, dtime)
 	end
 
-	-- TODO: move this into mcl_core:cactus _mcl_minecarts_on_enter_side
-	-- Drop minecart if it collides with a cactus node
-	local r = 0.6
-	for _, node_pos in pairs({{r, 0}, {0, r}, {-r, 0}, {0, -r}}) do
-		if minetest.get_node(vector.offset(pos, node_pos[1], 0, node_pos[2])).name == "mcl_core:cactus" then
-			self:on_death()
-			self.object:remove()
-			return
-		end
-	end
+	mod.update_cart_orientation(self)
+
 end
 function DEFAULT_CART_DEF:on_death(killer)
 	local staticdata = self._staticdata
@@ -325,7 +298,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	local spawn_pos = pointed_thing.above
 	local cart_dir = vector.new(1,0,0)
 
-	local railtype, railpos, node
+	local railpos, node
 	if mcl_minecarts:is_rail(pointed_thing.under) then
 		railpos = pointed_thing.under
 	elseif mcl_minecarts:is_rail(pointed_thing.above) then
@@ -334,8 +307,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	if railpos then
 		spawn_pos = railpos
 		node = minetest.get_node(railpos)
-		railtype = minetest.get_item_group(node.name, "connect_to_raillike")
-		cart_dir = mcl_minecarts:get_rail_direction(railpos, vector.new(1,0,0), nil, nil, railtype)
+		cart_dir = mcl_minecarts:get_rail_direction(railpos, vector.new(1,0,0))
 	end
 
 	local entity_id = entity_mapping[itemstack:get_name()]
@@ -343,16 +315,18 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 
 	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
+	-- Setup cart data
+	local uuid = mcl_util.get_uuid(cart)
+	data = make_staticdata( nil, railpos, cart_dir )
+	data.uuid = uuid
+	data.cart_type = entity_id
+	update_cart_data(data)
+	save_cart_data(uuid)
+
 	-- Update static data
 	local le = cart:get_luaentity()
 	if le then
-		local uuid = mcl_util.get_uuid(cart)
-		data = make_staticdata( railtype, railpos, cart_dir )
-		data.uuid = uuid
-		data.cart_type = entity_id
-		update_cart_data(data)
 		le._staticdata = data
-		save_cart_data(le._staticdata.uuid)
 	end
 
 	-- Call placer
@@ -361,7 +335,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	end
 
 	if railpos then
-		handle_cart_enter(le, railpos)
+		handle_cart_enter(data, railpos)
 	end
 
 	local pname = ""
@@ -518,7 +492,7 @@ local function try_respawn_carts()
 		local max = vector.floor(vector.divide(vector.offset(pos, CART_BLOCK_SIZE, CART_BLOCK_SIZE, CART_BLOCK_SIZE), CART_BLOCK_SIZE)) + vector.new(1,1,1)
 		for z = min.z,max.z do
 			for y = min.y,max.y do
-				for x = min.x,min.x do
+				for x = min.x,max.x do
 					block_map[ vector.to_string(vector.new(x,y,z)) ] = true
 				end
 			end
@@ -545,10 +519,42 @@ minetest.register_globalstep(function(dtime)
 		try_respawn_carts()
 		local stop_time = minetest.get_us_time()
 		local duration = (stop_time - start_time) / 1e6
-		timer = duration / 50e-6 -- Schedule 50us per second
+		timer = duration / 250e-6 -- Schedule 50us per second
+		if timer > 5 then timer = 5 end
 		--print("Took "..tostring(duration).." seconds, rescheduling for "..tostring(timer).." seconds in the future")
 	end
 
-	-- TODO: handle periodically updating out-of-range carts
+	-- Handle periodically updating out-of-range carts
+	-- TODO: change how often cart positions are updated based on velocity
+	for uuid,staticdata in mod.carts() do
+		local pos = mod.get_cart_position(staticdata)
+		local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
+		--[[
+		print("cart# "..uuid..
+			",velocity="..tostring(staticdata.velocity)..
+			",pos="..tostring(pos)..
+			",le="..tostring(le)..
+			",connected_at="..tostring(staticdata.connected_at)
+		)]]
+
+		--- Non-entity code
+		if staticdata.connected_at then
+			do_movement(staticdata, dtime)
+
+			-- TODO: move this into mcl_core:cactus _mcl_minecarts_on_enter_side
+			-- Drop minecart if it collides with a cactus node
+			local pos = mod.get_cart_position(staticdata)
+			if pos then
+				local r = 0.6
+				for _, node_pos in pairs({{r, 0}, {0, r}, {-r, 0}, {0, -r}}) do
+					if minetest.get_node(vector.offset(pos, node_pos[1], 0, node_pos[2])).name == "mcl_core:cactus" then
+						self:on_death()
+						self.object:remove()
+						return
+					end
+				end
+			end
+		end
+	end
 end)
 

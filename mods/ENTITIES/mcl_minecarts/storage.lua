@@ -54,6 +54,10 @@ function mod.destroy_cart_data(uuid)
 	cart_data_fail_cache[uuid] = true
 end
 
+function mod.carts()
+	return pairs(cart_data)
+end
+
 function mod.find_carts_by_block_map(block_map)
 	local cart_list = {}
 	for _,data in pairs(cart_data) do
@@ -68,3 +72,8 @@ function mod.find_carts_by_block_map(block_map)
 	return cart_list
 end
 
+minetest.register_on_shutdown(function()
+	for uuid,_ in pairs(cart_data) do
+		save_cart_data(uuid)
+	end
+end)
