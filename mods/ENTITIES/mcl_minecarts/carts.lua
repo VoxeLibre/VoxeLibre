@@ -107,7 +107,7 @@ function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
 	-- Transfer older data
 	local data = minetest.deserialize(staticdata) or {}
 	if not data.uuid then
-		data.uuid  = mcl_util.get_uuid(self.object)
+		data.uuid  = mcl_util.assign_uuid(self.object)
 	end
 	self._seq = data.seq or 1
 
@@ -202,7 +202,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	-- Regen
 	local hp = self.object:get_hp()
 	local time_now = minetest.get_gametime()
-	if hp < MINECART_MAX_HP and staticdata.last_regen <= time_now - 1 then
+	if hp < MINECART_MAX_HP and (staticdata.last_regen or 0) <= time_now - 1 then
 		staticdata.last_regen = time_now
 		hp = hp + 1
 		self.object:set_hp(hp)
@@ -308,7 +308,7 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	local entity_id = entity_mapping[itemstack:get_name()]
 
 	-- Setup cart data
-	local uuid = mcl_util.get_uuid(cart)
+	local uuid = mcl_util.gen_uuid()
 	data = make_staticdata( nil, railpos, cart_dir )
 	data.uuid = uuid
 	data.cart_type = entity_id
