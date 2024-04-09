@@ -21,9 +21,10 @@ assert(handle_cart_enter)
 -- Constants
 local max_step_distance = 0.5
 local MINECART_MAX_HP = 4
-local PASSENGER_ATTACH_POSITION = vector.new(0, -1.75, 0)
 
 local function detach_driver(self)
+	local staticdata = self._staticdata
+
 	if not self._driver then
 		return
 	end
@@ -45,9 +46,22 @@ local function detach_driver(self)
 	-- Detatch the player object from the minecart
 	local player = minetest.get_player_by_name(driver_name)
 	if player then
+		local dir = staticdata.dir or vector.new(1,0,0)
+		local cart_pos = mod.get_cart_position(staticdata) or self.object:get_pos()
+		local new_pos = vector.offset(cart_pos, -dir.z, 0, dir.x)
 		player:set_detach()
+		print("placing player at "..tostring(new_pos).." from cart at "..tostring(cart_pos)..", old_pos="..tostring(player:get_pos()).."dir="..tostring(dir))
+
+		-- There needs to be a delay here or the player's position won't update
+		minetest.after(0.1,function(driver_name,new_pos)
+			local player = minetest.get_player_by_name(driver_name)
+			player:moveto(new_pos, false)
+		end, driver_name, new_pos)
+
 		player:set_eye_offset(vector.new(0,0,0),vector.new(0,0,0))
 		mcl_player.player_set_animation(player, "stand" , 30)
+	else
+		print("No player object found for "..driver_name)
 	end
 end
 

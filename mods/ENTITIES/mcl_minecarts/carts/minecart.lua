@@ -1,6 +1,10 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local mcl_log = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
+local mod = mcl_minecarts
+
+-- Imports
+local PASSENGER_ATTACH_POSITION = mod.PASSENGER_ATTACH_POSITION
 
 local function activate_normal_minecart(self)
 	detach_driver(self)
@@ -12,7 +16,7 @@ local function activate_normal_minecart(self)
 	end
 end
 
-mcl_minecarts.register_minecart({
+mod.register_minecart({
 	itemstring = "mcl_minecarts:minecart",
 	craft = {
 		output = "mcl_minecarts:minecart",
