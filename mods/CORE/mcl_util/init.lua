@@ -851,9 +851,9 @@ function mcl_util.assign_uuid(obj)
 	assert(obj)
 
 	local le = obj:get_luaentity()
-	if le._uuid then return le._uuid end
-
-	le._uuid = mcl_util.gen_uuid()
+	if not le._uuid then
+		le._uuid = mcl_util.gen_uuid()
+	end
 
 	-- Update the cache with this new id
 	aoid = mcl_util.get_active_object_id(obj)

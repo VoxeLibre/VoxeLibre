@@ -470,21 +470,20 @@ local function respawn_cart(cart)
 		local d = vector.distance(player:get_pos(), pos)
 		if not distance or d < distance then distance = d end
 	end
-	if not distance or distance > 115 then return end
+	if not distance or distance > 90 then return end
 
-	print("Respawning cart #"..cart.uuid.." at "..tostring(pos)..",distance="..distance)
+	print("Respawning cart #"..cart.uuid.." at "..tostring(pos)..",distance="..distance..",node="..minetest.get_node(pos).name)
 
 	-- Update sequence so that old cart entities get removed
 	cart.seq = (cart.seq or 1) + 1
 	save_cart_data(cart.uuid)
 
-	-- Create the new entity
+	-- Create the new entity and refresh caches
 	local sd = minetest.serialize({ uuid=cart.uuid, seq=cart.seq })
 	local entity = minetest.add_entity(pos, cart_type, sd)
 	local le = entity:get_luaentity()
-	le._seq = cart.seq
-	le._uuid = cart.uuid
 	le._staticdata = cart
+	mcl_util.assign_uuid(entity)
 
 	-- We intentionally don't call the normal hooks because this minecart was already there
 end
