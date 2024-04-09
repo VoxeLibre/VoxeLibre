@@ -171,13 +171,21 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 	cart2_staticdata.dir = mcl_minecarts:get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 end
 
-
 local function vector_away_from_players(self, staticdata)
-	local objs = minetest.get_objects_inside_radius(self.object:get_pos(), 1.1)
-	for n=1,#objs do
-		local obj = objs[n]
+	local function player_repel(obj, self)
+		-- Only repel from players
 		local player_name = obj:get_player_name()
-		if player_name and player_name ~= "" and not ( self._driver and self._driver == player_name ) then
+		if not player_name or player_name == "" then return false end
+
+		-- Don't repel away from players in minecarts
+		local playerinfo = mcl_playerinfo[player_name]
+		if playerinfo and playerinfo.attached_to then return false end
+
+		return true
+	end
+
+	for _,obj in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1.1)) do
+		if player_repel(obj, self) then
 			return obj:get_pos() - self.object:get_pos()
 		end
 	end

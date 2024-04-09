@@ -1,5 +1,6 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
+local mcl_log = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
 
 local function activate_normal_minecart(self)
 	detach_driver(self)
@@ -35,28 +36,35 @@ mcl_minecarts.register_minecart({
 	icon = "mcl_minecarts_minecart_normal.png",
 	drop = {"mcl_minecarts:minecart"},
 	on_rightclick = function(self, clicker)
-		local name = clicker:get_player_name()
-		if not clicker or not clicker:is_player() then
-			return
-		end
+		-- Make sure we have a player
+		if not clicker or not clicker:is_player() then return end
+
 		local player_name = clicker:get_player_name()
-		if self._driver and player_name == self._driver then
-			--detach_driver(self)
-		elseif not self._driver and not clicker:get_player_control().sneak then
-			self._driver = player_name
-			self._start_pos = self.object:get_pos()
-			mcl_player.player_attached[player_name] = true
-			clicker:set_attach(self.object, "", vector.new(1,-1.75,-2), vector.new(0,0,0))
-			mcl_player.player_attached[name] = true
-			minetest.after(0.2, function(name)
-				local player = minetest.get_player_by_name(name)
-				if player then
-					mcl_player.player_set_animation(player, "sit" , 30)
-					player:set_eye_offset(vector.new(0,-5.5,0), vector.new(0,-4,0))
-					mcl_title.set(clicker, "actionbar", {text=S("Sneak to dismount"), color="white", stay=60})
-				end
-			end, name)
+		if self._driver or clicker:get_player_control().sneak then return end
+
+		-- Update cart information
+		self._driver = player_name
+		self._start_pos = self.object:get_pos()
+
+		-- Update player information
+		local uuid = self._staticdata.uuid
+		local playerinfo = mcl_playerinfo[player_name]
+		if playerinfo and self._staticdata then
+			playerinfo.attached_to = uuid
 		end
+		mcl_player.player_attached[player_name] = true
+		minetest.log("action", player_name.." entered minecart #"..tostring(uuid).." at "..tostring(self._start_pos))
+
+		-- Attach the player object to the minecart
+		clicker:set_attach(self.object, "", vector.new(1,-1.75,-2), vector.new(0,0,0))
+		minetest.after(0.2, function(name)
+			local player = minetest.get_player_by_name(name)
+			if player then
+				mcl_player.player_set_animation(player, "sit" , 30)
+				player:set_eye_offset(vector.new(0,-5.5,0), vector.new(0,-4,0))
+				mcl_title.set(clicker, "actionbar", {text=S("Sneak to dismount"), color="white", stay=60})
+			end
+		end, player_name)
 	end,
 	on_activate_by_rail = activate_normal_minecart,
 	_mcl_minecarts_on_step = function(self, dtime)

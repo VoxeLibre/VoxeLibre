@@ -27,10 +27,23 @@ local function detach_driver(self)
 	if not self._driver then
 		return
 	end
-	mcl_player.player_attached[self._driver] = nil
-	local player = minetest.get_player_by_name(self._driver)
+
+	-- Update player infomation
+	local driver_name = self._driver
+	local playerinfo = mcl_playerinfo[driver_name]
+	if playerinfo then
+		playerinfo.attached_to = nil
+	end
+	mcl_player.player_attached[driver_name] = nil
+
+	minetest.log("action", driver_name.." left a minecart")
+
+	-- Update cart informatino
 	self._driver = nil
 	self._start_pos = nil
+
+	-- Detatch the player object from the minecart
+	local player = minetest.get_player_by_name(driver_name)
 	if player then
 		player:set_detach()
 		player:set_eye_offset(vector.new(0,0,0),vector.new(0,0,0))

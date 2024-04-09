@@ -21,8 +21,6 @@ local function node_ok(pos, fallback)
 	return fallback
 end
 
-local time = 0
-
 local function get_player_nodes(player_pos)
 	local work_pos = table.copy(player_pos)
 
@@ -43,11 +41,10 @@ local function get_player_nodes(player_pos)
 	return node_stand, node_stand_below, node_head, node_feet, node_head_top
 end
 
+local time = 0
 minetest.register_globalstep(function(dtime)
-
-	time = time + dtime
-
 	-- Run the rest of the code every 0.5 seconds
+	time = time + dtime
 	if time < 0.5 then
 		return
 	end

@@ -89,7 +89,7 @@ function mod.update_train(cart)
 
 	-- Only update from the back
 	if staticdata.behind or not staticdata.ahead then return end
-	print("\nUpdating train")
+	--print("\nUpdating train")
 
 	-- Do no special processing if the cart is not part of a train
 	if not staticdata.ahead and not staticdata.behind then return end
@@ -102,7 +102,7 @@ function mod.update_train(cart)
 		count = count + 1
 	end
 	velocity = velocity / count
-	print("Using velocity "..tostring(velocity))
+	--print("Using velocity "..tostring(velocity))
 
 	-- Set the entire train to the average velocity
 	local behind = nil
@@ -125,8 +125,10 @@ function mod.update_train(cart)
 				cart_velocity = velocity * 1.1
 			end
 		end
+		--[[
 		print(tostring(c.behind).."->"..c.uuid.."->"..tostring(c.ahead).."("..tostring(separation)..")  setting cart #"..
 			c.uuid.." velocity from "..tostring(c.velocity).." to "..tostring(cart_velocity))
+		]]
 		c.velocity = cart_velocity
 
 		behind = c
