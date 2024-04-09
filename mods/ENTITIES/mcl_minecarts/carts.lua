@@ -257,7 +257,12 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	end
 
 	if staticdata.connected_at then
-		do_movement(self, dtime)
+		do_movement(staticdata, dtime)
+
+		-- Update entity
+		local pos = mod.get_cart_position(staticdata)
+		if pos then self.object:move_to(pos) end
+		mod.update_cart_orientation(self)
 	else
 		do_detached_movement(self, dtime)
 	end

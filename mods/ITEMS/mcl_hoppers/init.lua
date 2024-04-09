@@ -253,6 +253,11 @@ local def_hopper = {
 		cart:remove_node_watch(pos)
 	end,
 	_mcl_minecarts_node_on_step = function(pos, cart, dtime)
+		if not cart then
+			minetest.log("warning", "trying to process hopper-to-minecart movement without luaentity")
+			return
+		end
+
 		local meta = minetest.get_meta(pos)
 
 		local timer = meta:get_int("minecart_hopper_timer")

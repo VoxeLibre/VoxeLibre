@@ -7,6 +7,8 @@ local S = minetest.get_translator(modname)
 local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
 local friction = mcl_minecarts.FRICTION
 local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
+DEBUG = true
+mcl_debug = function(msg) print(msg) end
 
 -- Imports
 local train_length = mod.train_length
@@ -17,16 +19,17 @@ local update_cart_orientation = mod.update_cart_orientation
 local get_cart_data = mod.get_cart_data
 local get_cart_position = mod.get_cart_position
 
-local function detach_minecart(self)
-	local staticdata = self._staticdata
-
+local function detach_minecart(staticdata)
 	staticdata.connected_at = nil
-	self.object:set_velocity(staticdata.dir * staticdata.velocity)
+
+	local luaentity = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
+	if luaentity then
+		luaentity.object:set_velocity(staticdata.dir * staticdata.velocity)
+	end
 end
 mod.detach_minecart = detach_minecart
 
-local function try_detach_minecart(self)
-	local staticdata = self._staticdata
+local function try_detach_minecart(staticdata)
 	if not staticdata then return end
 
 	-- Don't try to detach if alread detached
@@ -34,7 +37,7 @@ local function try_detach_minecart(self)
 
 	local node = minetest.get_node(staticdata.connected_at)
 	if minetest.get_item_group(node.name, "rail") == 0 then
-		detach_minecart(self)
+		detach_minecart(staticdata)
 	end
 end
 
@@ -50,9 +53,8 @@ local enter_exit_checks = {
 	{ 0,-1, 0, "_side" },
 }
 
-local function handle_cart_enter_exit(self, pos, next_dir, event)
-	local staticdata = self._staticdata
-
+local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
+	local luaentity = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
 	local dir = staticdata.dir
 	local right = vector.new( dir.z, dir.y, -dir.x)
 	local up = vector.new(0,1,0)
@@ -64,16 +66,20 @@ local function handle_cart_enter_exit(self, pos, next_dir, event)
 			-- node-specific hook
 			local hook_name = "_mcl_minecarts_"..event..check[4]
 			local hook = node_def[hook_name]
-			if hook then hook(check_pos, self, next_dir, pos) end
+			if hook then hook(check_pos, luaentity, next_dir, pos) end
 
 			-- global minecart hook
 			hook = mcl_minecarts[event..check[4]]
-			if hook then hook(check_pos, self, next_dir, node_def) end
+			if hook then hook(check_pos, luaentity, next_dir, node_def) end
 		end
 	end
 
 	-- Handle cart-specific behaviors
-	local hook = self["_mcl_minecarts_"..event]
+	if luaentity then
+		local hook = luaentity["_mcl_minecarts_"..event]
+	else
+		minetest.log("warning", "TODO: chanve _mcl_minecarts_"..event.." calling so it is not dependent on the existence of a luaentity")
+	end
 	if hook then hook(self, pos) end
 end
 local function set_metadata_cart_status(pos, uuid, state)
@@ -82,26 +88,26 @@ local function set_metadata_cart_status(pos, uuid, state)
 	carts[uuid] = state
 	meta:set_string("_mcl_minecarts_carts", minetest.serialize(carts))
 end
-local function handle_cart_enter(self, pos, next_dir)
+local function handle_cart_enter(staticdata, pos, next_dir)
 	--print("entering "..tostring(pos))
-	set_metadata_cart_status(pos, self._staticdata.uuid, 1)
-	handle_cart_enter_exit(self, pos, next_dir, "on_enter" )
+	set_metadata_cart_status(pos, staticdata.uuid, 1)
+	handle_cart_enter_exit(staticdata, pos, next_dir, "on_enter" )
 end
-local function handle_cart_leave(self, pos, next_dir)
+local function handle_cart_leave(staticdata, pos, next_dir)
 	--print("leaving "..tostring(pos))
-	set_metadata_cart_status(pos, self._staticdata.uuid, nil)
-	handle_cart_enter_exit(self, pos, next_dir, "on_leave" )
+	set_metadata_cart_status(pos, staticdata.uuid, nil)
+	handle_cart_enter_exit(staticdata, pos, next_dir, "on_leave" )
 end
-local function handle_cart_node_watches(self, dtime)
-	local staticdata = self._staticdata
+local function handle_cart_node_watches(staticdata, dtime)
 	local watches = staticdata.node_watches or {}
 	local new_watches = {}
+	local luaentity = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
 	for _,node_pos in ipairs(watches) do
 		local node = minetest.get_node(node_pos)
 		local node_def = minetest.registered_nodes[node.name]
 		if node_def then
 			local hook = node_def._mcl_minecarts_node_on_step
-			if hook and hook(node_pos, self, dtime) then
+			if hook and hook(node_pos, luaentity, dtime) then
 				new_watches[#new_watches+1] = node_pos
 			end
 		end
@@ -110,7 +116,7 @@ local function handle_cart_node_watches(self, dtime)
 	staticdata.node_watches = new_watches
 end
 
-local function handle_cart_collision(cart1, prev_pos, next_dir)
+local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 	-- Look ahead one block
 	local pos = vector.add(prev_pos, next_dir)
 
@@ -127,7 +133,7 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 			uuid = nil
 		end
 
-		if uuid and uuid ~= cart1._staticdata.uuid then cart_uuid = uuid end
+		if uuid and uuid ~= cart1_staticdata.uuid then cart_uuid = uuid end
 	end
 	if dirty then
 		meta:set_string("_mcl_minecarts_carts",minetest.serialize(carts))
@@ -137,12 +143,11 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 	if not cart_uuid then return end
 
 	-- Don't collide with the train car in front of you
-	if cart1._staticdata.ahead == cart_uuid then return end
+	if cart1_staticdata.ahead == cart_uuid then return end
 
-	minetest.log("action","cart #"..cart1._staticdata.uuid.." collided with cart #"..cart_uuid.." at "..tostring(pos))
+	minetest.log("action","cart #"..cart1_staticdata.uuid.." collided with cart #"..cart_uuid.." at "..tostring(pos))
 
 	-- Standard Collision Handling
-	local cart1_staticdata = cart1._staticdata
 	local cart2_staticdata = get_cart_data(cart_uuid)
 
 	local u1 = cart1_staticdata.velocity
@@ -171,8 +176,8 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 	cart2_staticdata.dir = mcl_minecarts:get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 end
 
-local function vector_away_from_players(self, staticdata)
-	local function player_repel(obj, self)
+local function vector_away_from_players(cart, staticdata)
+	local function player_repel(obj)
 		-- Only repel from players
 		local player_name = obj:get_player_name()
 		if not player_name or player_name == "" then return false end
@@ -184,8 +189,13 @@ local function vector_away_from_players(self, staticdata)
 		return true
 	end
 
-	for _,obj in pairs(minetest.get_objects_inside_radius(self.object:get_pos(), 1.1)) do
-		if player_repel(obj, self) then
+	-- Get the cart position
+	local cart_pos = mod.get_cart_position(staticdata)
+	if cart then cart_pos = cart.object:get_pos() end
+	if not cart_pos then return nil end
+
+	for _,obj in pairs(minetest.get_objects_inside_radius(cart_pos, 1.1)) do
+		if player_repel(obj) then
 			return obj:get_pos() - self.object:get_pos()
 		end
 	end
@@ -193,8 +203,8 @@ local function vector_away_from_players(self, staticdata)
 	return nil
 end
 
-local function direction_away_from_players(self, staticdata)
-	local diff = vector_away_from_players(self, staticdata)
+local function direction_away_from_players(staticdata)
+	local diff = vector_away_from_players(staticdata)
 	if not diff then return 0 end
 
 	local length = vector.distance(vector.new(0,0,0),diff)
@@ -217,7 +227,7 @@ local function direction_away_from_players(self, staticdata)
 	return 0
 end
 
-local function calculate_acceleration(self, staticdata)
+local function calculate_acceleration(staticdata)
 	local acceleration = 0
 
 	-- Fix up movement data
@@ -233,9 +243,11 @@ local function calculate_acceleration(self, staticdata)
 	local node_def = minetest.registered_nodes[node_name]
 	local max_vel = mcl_minecarts.speed_max
 
-	if self._go_forward then
+	local ctrl = staticdata.controls or {}
+
+	if ctrl.go_forward then
 		acceleration = 4
-	elseif self._brake then
+	elseif ctrl.brake then
 		acceleration = -1.5
 	elseif (staticdata.fueltime or 0) > 0 and staticdata.velocity <= 4 then
 		acceleration = 0.6
@@ -256,7 +268,7 @@ local function calculate_acceleration(self, staticdata)
 	return acceleration
 end
 
-local function reverse_direction(self, staticdata)
+local function reverse_direction(staticdata)
 	if staticdata.behind or staticdata.ahead then
 		reverse_train(self)
 		return
@@ -265,18 +277,17 @@ local function reverse_direction(self, staticdata)
 	mod.reverse_cart_direction(staticdata)
 end
 
-local function do_movement_step(self, dtime)
-	local staticdata = self._staticdata
+local function do_movement_step(staticdata, dtime)
 	if not staticdata.connected_at then return 0 end
 
 	-- Calculate timestep remaiing in this block
 	local x_0 = staticdata.distance or 0
 	local remaining_in_block = 1 - x_0
-	local a = calculate_acceleration(self, staticdata)
+	local a = calculate_acceleration(staticdata)
 	local v_0 = staticdata.velocity
 
 	-- Repel minecarts
-	local away = direction_away_from_players(self, staticdata)
+	local away = direction_away_from_players(nil, staticdata)
 	if away > 0 then
 		v_0 = away
 	elseif away < 0 then
@@ -379,10 +390,10 @@ local function do_movement_step(self, dtime)
 		handle_cart_collision(self, pos, next_dir)
 
 		-- Leave the old node
-		handle_cart_leave(self, old_pos, next_dir )
+		handle_cart_leave(staticdata, old_pos, next_dir )
 
 		-- Enter the new node
-		handle_cart_enter(self, pos, next_dir)
+		handle_cart_enter(staticdata, pos, next_dir)
 
 		-- Handle end of track
 		if next_dir == staticdata.dir * -1 and next_dir.y == 0 then
@@ -399,7 +410,7 @@ local function do_movement_step(self, dtime)
 		-- Velocity should be zero at this point
 		staticdata.velocity = 0
 
-		reverse_direction(self, staticdata)
+		reverse_direction(staticdata)
 
 		-- Intermediate movement
 		pos = staticdata.connected_at + staticdata.dir * staticdata.distance
@@ -407,11 +418,6 @@ local function do_movement_step(self, dtime)
 		-- Intermediate movement
 		pos = pos + staticdata.dir * staticdata.distance
 	end
-
-	self.object:move_to(pos)
-
-	-- Update cart orientation
-	update_cart_orientation(self)
 
 	-- Debug reporting
 	if DEBUG and ( v_0 > 0 or v_1 > 0 ) then
@@ -433,8 +439,8 @@ local function do_movement_step(self, dtime)
 	return dtime - timestep
 end
 
-local function do_movement( self, dtime )
-	local staticdata = self._staticdata
+local function do_movement( staticdata, dtime )
+	assert(staticdata)
 
 	-- Allow the carts to be delay for the rest of the world to react before moving again
 	if ( staticdata.delay or 0 ) > dtime then
@@ -448,13 +454,13 @@ local function do_movement( self, dtime )
 	-- it impossible to jump across gaps due to server lag
 	-- causing large timesteps
 	while dtime > 0 do
-		local new_dtime = do_movement_step(self, dtime)
-		try_detach_minecart(self)
+		local new_dtime = do_movement_step(staticdata, dtime)
+		try_detach_minecart(staticdata)
 
-		update_train(self)
+		update_train(staticdata)
 
 		-- Handle node watches here in steps to prevent server lag from changing behavior
-		handle_cart_node_watches(self, dtime - new_dtime)
+		handle_cart_node_watches(staticdata, dtime - new_dtime)
 
 		dtime = new_dtime
 	end

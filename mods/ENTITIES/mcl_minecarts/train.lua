@@ -9,6 +9,8 @@ local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
 
 -- Follow .behind to the back end of a train
 local function find_back(start)
+	assert(start)
+
 	while start.behind do
 		local nxt = get_cart_data(start.behind)
 		if not nxt then return start end
@@ -18,8 +20,10 @@ local function find_back(start)
 end
 
 -- Iterate across all the cars in a train
-local function train_cars(anchor)
-	local back = find_back(anchor._staticdata)
+local function train_cars(staticdata)
+	assert(staticdata)
+
+	local back = find_back(staticdata)
 	local limit = MAX_TRAIN_LENGTH
 	return function()
 		if not back or limit <= 0 then return end
@@ -84,8 +88,8 @@ local function break_train_at(cart)
 end
 mod.break_train_at = break_train_at
 
-function mod.update_train(cart)
-	local staticdata = cart._staticdata
+function mod.update_train(staticdata)
+	--local staticdata = cart._staticdata
 
 	-- Only update from the back
 	if staticdata.behind or not staticdata.ahead then return end
@@ -97,7 +101,7 @@ function mod.update_train(cart)
 	-- Calculate the maximum velocity of all train cars
 	local velocity = 0
 	local count = 0
-	for cart in train_cars(cart) do
+	for cart in train_cars(staticdata) do
 		velocity = velocity + (cart.velocity or 0)
 		count = count + 1
 	end
@@ -106,7 +110,7 @@ function mod.update_train(cart)
 
 	-- Set the entire train to the average velocity
 	local behind = nil
-	for c in train_cars(cart) do
+	for c in train_cars(staticdata) do
 		local e = 0
 		local separation
 		local cart_velocity = velocity
@@ -144,7 +148,6 @@ function mod.link_cart_ahead(cart, cart_ahead)
 	staticdata.ahead = ca_staticdata.uuid
 	ca_staticdata.behind = staticdata.uuid
 end
-
 
 function mod.reverse_train(cart)
 	for c in train_cars(cart) do
