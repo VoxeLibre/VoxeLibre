@@ -4,6 +4,7 @@ local mod = mcl_minecarts
 
 -- Imports
 local get_cart_data = mod.get_cart_data
+local save_cart_data = mod.save_cart_data
 local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
 
 -- Follow .behind to the back end of a train
@@ -62,6 +63,27 @@ function mod.distance_between_cars(car1, car2)
 end
 local distance_between_cars = mod.distance_between_cars
 
+local function break_train_at(cart)
+	if cart.ahead then
+		local ahead = get_cart_data(cart.ahead)
+		if ahead then
+			ahead.behind = nil
+			cart.ahead = nil
+			save_cart_data(ahead.uuid)
+		end
+	end
+	if cart.behind then
+		local behind = get_cart_data(cart.behind)
+		if behind then
+			behind.ahead = nil
+			cart.behind = nil
+			save_cart_data(behind.uuid)
+		end
+	end
+	save_cart_data(cart.uuid)
+end
+mod.break_train_at = break_train_at
+
 function mod.update_train(cart)
 	local staticdata = cart._staticdata
 
@@ -88,11 +110,17 @@ function mod.update_train(cart)
 		local e = 0
 		local separation
 		local cart_velocity = velocity
-		if behind then
+		if not c.connected_at then
+			break_train_at(c)
+		elseif behind then
 			separation = distance_between_cars(behind, c)
 			local e = 0
-			if separation > 1.6 then
+			if not separation then
+				break_train_at(c)
+			elseif separation > 1.6 then
 				cart_velocity = velocity * 0.9
+			elseif separation > 2.5 then
+				break_train_at(c)
 			elseif separation < 1.15 then
 				cart_velocity = velocity * 1.1
 			end

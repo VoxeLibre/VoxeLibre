@@ -121,7 +121,7 @@ local function handle_cart_collision(cart1, prev_pos, next_dir)
 	for uuid,v in pairs(carts) do
 		-- Clean up dead carts
 		local data = get_cart_data(uuid)
-		if not data then
+		if not data or not data.connected_at then
 			carts[uuid] = nil
 			dirty = true
 			uuid = nil
