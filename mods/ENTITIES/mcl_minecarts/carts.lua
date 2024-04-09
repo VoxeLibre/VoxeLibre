@@ -119,20 +119,15 @@ function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
 		data = cd
 	end
 
-	-- Initialize
-	if type(data) == "table" then
-		-- Fix up types
-		data.dir = vector.new(data.dir)
+	-- Fix up types
+	data.dir = vector.new(data.dir)
 
-		-- Fix mass
-		data.mass = data.mass or 1
+	-- Fix mass
+	data.mass = data.mass or 1
 
-		-- Make sure all carts have an ID to isolate them
-		self._uuid = data.uuid
-		data.uuid = mcl_util.get_uuid(self.object)
-
-		self._staticdata = data
-	end
+	-- Make sure all carts have an ID to isolate them
+	self._uuid = data.uuid
+	self._staticdata = data
 
 	-- Activate cart if on powered activator rail
 	if self.on_activate_by_rail then
@@ -311,9 +306,6 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	end
 
 	local entity_id = entity_mapping[itemstack:get_name()]
-	local cart = minetest.add_entity(spawn_pos, entity_id)
-
-	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
 	-- Setup cart data
 	local uuid = mcl_util.get_uuid(cart)
@@ -322,6 +314,12 @@ function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 	data.cart_type = entity_id
 	update_cart_data(data)
 	save_cart_data(uuid)
+
+	-- Create the entity with the staticdata already setup
+	local sd = minetest.serialize({ uuid=uuid, seq=1 })
+	local cart = minetest.add_entity(spawn_pos, entity_id, sd)
+
+	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
 	-- Update static data
 	local le = cart:get_luaentity()
@@ -465,14 +463,24 @@ end
 local function respawn_cart(cart)
 	local cart_type = cart.cart_type or "mcl_minecarts:minecart"
 	local pos = mod.get_cart_position(cart)
-	print("Respawning cart #"..cart.uuid.." at "..tostring(pos))
+
+	local players = minetest.get_connected_players()
+	local distance = nil
+	for _,player in pairs(players) do
+		local d = vector.distance(player:get_pos(), pos)
+		if not distance or d < distance then distance = d end
+	end
+	if not distance or distance > 115 then return end
+
+	print("Respawning cart #"..cart.uuid.." at "..tostring(pos)..",distance="..distance)
 
 	-- Update sequence so that old cart entities get removed
 	cart.seq = (cart.seq or 1) + 1
 	save_cart_data(cart.uuid)
 
 	-- Create the new entity
-	local entity = minetest.add_entity(pos, cart_type)
+	local sd = minetest.serialize({ uuid=cart.uuid, seq=cart.seq })
+	local entity = minetest.add_entity(pos, cart_type, sd)
 	local le = entity:get_luaentity()
 	le._seq = cart.seq
 	le._uuid = cart.uuid
