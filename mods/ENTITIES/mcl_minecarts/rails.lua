@@ -636,7 +636,7 @@ minetest.register_lbm({
 local STRAIGHT_RAILS_MAP ={
 	["mcl_minecarts:golden_rail"] = "mcl_minecarts:golden_rail_v2",
 	["mcl_minecarts:golden_rail_on"] = "mcl_minecarts:golden_rail_v2_on",
-	["mcl_minecarts:activator_rail"] = "mcl_minecarts_activator_rail_v2",
+	["mcl_minecarts:activator_rail"] = "mcl_minecarts:activator_rail_v2",
 	["mcl_minecarts:activator_rail_on"] = "mcl_minecarts:activator_rail_v2_on",
 	["mcl_minecarts:detector_rail"] = "mcl_minecarts:detector_rail_v2",
 	["mcl_minecarts:detector_rail_on"] = "mcl_minecarts:detector_rail_v2_on",
