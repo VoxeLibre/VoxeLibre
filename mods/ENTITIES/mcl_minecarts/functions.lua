@@ -285,7 +285,7 @@ local function is_ahead_slope(pos, dir)
 	local node_name = force_get_node(below).name
 	return minetest.get_item_group(node_name, "rail_slope") ~= 0
 end
-function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
+function mcl_minecarts:get_rail_direction(pos_, dir)
 	local pos = vector.round(pos_)
 
 	-- Handle new track types that have track-specific direction handler
@@ -312,7 +312,7 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 
 	return dir
 end
-function mcl_minecarts:update_cart_orientation()
+function mcl_minecarts.update_cart_orientation(self)
 	local staticdata = self._staticdata
 
 	-- constants
