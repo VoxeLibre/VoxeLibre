@@ -249,7 +249,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	mod.update_cart_orientation(self)
 
 end
-local function kill_cart(staticdata)
+function mod.kill_cart(staticdata)
 	local pos
 	minetest.log("action", "cart #"..staticdata.uuid.." was killed")
 
@@ -272,6 +272,9 @@ local function kill_cart(staticdata)
 			local mob = le._passenger.object
 			mob:set_detach()
 		end
+
+		-- Remove the entity
+		le.object:remove()
 	else
 		pos = mod.get_cart_position(staticdata)
 	end
@@ -292,8 +295,9 @@ local function kill_cart(staticdata)
 
 	-- Remove data
 	destroy_cart_data(staticdata.uuid)
-
 end
+local kill_cart = mod.kill_cart
+
 function DEFAULT_CART_DEF:on_death(killer)
 	kill_cart(self._staticdata)
 end
@@ -561,26 +565,6 @@ minetest.register_globalstep(function(dtime)
 		--- Non-entity code
 		if staticdata.connected_at then
 			do_movement(staticdata, dtime)
-
-			-- TODO: move this into mcl_core:cactus _mcl_minecarts_on_enter_side
-			-- Drop minecart if it collides with a cactus node
-			local pos = mod.get_cart_position(staticdata)
-			if pos then
-				local r = 0.6
-				for _, node_pos in pairs({{r, 0}, {0, r}, {-r, 0}, {0, -r}}) do
-					if minetest.get_node(vector.offset(pos, node_pos[1], 0, node_pos[2])).name == "mcl_core:cactus" then
-						kill_cart(staticdata)
-						local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
-						if le then
-							le:on_death()
-							le.object:remove()
-						else
-							kill_cart(staticdata)
-						end
-						return
-					end
-				end
-			end
 		end
 	end
 end)

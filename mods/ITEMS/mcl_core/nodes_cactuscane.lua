@@ -48,6 +48,11 @@ minetest.register_node("mcl_core:cactus", {
 	end),
 	_mcl_blast_resistance = 0.4,
 	_mcl_hardness = 0.4,
+	_mcl_minecarts_on_enter_side = function(pos, _, _, _, cart_data)
+		if mcl_minecarts then
+			mcl_minecarts.kill_cart(cart_data)
+		end
+	end,
 })
 
 minetest.register_node("mcl_core:reeds", {
