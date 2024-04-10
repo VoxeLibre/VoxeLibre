@@ -62,11 +62,11 @@ local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 			-- node-specific hook
 			local hook_name = "_mcl_minecarts_"..event..check[4]
 			local hook = node_def[hook_name]
-			if hook then hook(check_pos, luaentity, next_dir, pos) end
+			if hook then hook(check_pos, luaentity, next_dir, pos, staticdata) end
 
 			-- global minecart hook
 			hook = mcl_minecarts[event..check[4]]
-			if hook then hook(check_pos, luaentity, next_dir, node_def) end
+			if hook then hook(check_pos, luaentity, next_dir, pos, staticdata, node_def) end
 		end
 	end
 

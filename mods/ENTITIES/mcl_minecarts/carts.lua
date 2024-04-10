@@ -249,17 +249,9 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	mod.update_cart_orientation(self)
 
 end
-function DEFAULT_CART_DEF:on_death(killer)
-	local staticdata = self._staticdata
+local function kill_cart(staticdata)
+	local pos
 	minetest.log("action", "cart #"..staticdata.uuid.." was killed")
-
-	detach_driver(self)
-
-	-- Detach passenger
-	if self._passenger then
-		local mob = self._passenger.object
-		mob:set_detach()
-	end
 
 	-- Leave nodes
 	if staticdata.attached_at then
@@ -268,23 +260,42 @@ function DEFAULT_CART_DEF:on_death(killer)
 		mcl_log("TODO: handle detatched minecart death")
 	end
 
+	-- Handle entity-related items
+	local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
+	if le then
+		pos = le.object:get_pos()
+
+		detach_driver(le)
+
+		-- Detach passenger
+		if le._passenger then
+			local mob = le._passenger.object
+			mob:set_detach()
+		end
+	else
+		pos = mod.get_cart_position(staticdata)
+	end
+
+	-- Drop items
+	if not staticdata.dropped then
+		local entity_def = minetest.registered_entities[staticdata.cart_type]
+		if entity_def then
+			local drop = entity_def.drop
+			for d=1, #drop do
+				minetest.add_item(pos, drop[d])
+			end
+
+			-- Prevent item duplication
+			staticdata.dropped = true
+		end
+	end
+
 	-- Remove data
 	destroy_cart_data(staticdata.uuid)
 
-	-- Drop items
-	local drop = self.drop
-	if not killer or not minetest.is_creative_enabled(killer:get_player_name()) then
-		for d=1, #drop do
-			minetest.add_item(self.object:get_pos(), drop[d])
-		end
-	elseif killer and killer:is_player() then
-		local inv = killer:get_inventory()
-		for d=1, #drop do
-			if not inv:contains_item("main", drop[d]) then
-				inv:add_item("main", drop[d])
-			end
-		end
-	end
+end
+function DEFAULT_CART_DEF:on_death(killer)
+	kill_cart(self._staticdata)
 end
 
 -- Place a minecart at pointed_thing
@@ -558,8 +569,14 @@ minetest.register_globalstep(function(dtime)
 				local r = 0.6
 				for _, node_pos in pairs({{r, 0}, {0, r}, {-r, 0}, {0, -r}}) do
 					if minetest.get_node(vector.offset(pos, node_pos[1], 0, node_pos[2])).name == "mcl_core:cactus" then
-						self:on_death()
-						self.object:remove()
+						kill_cart(staticdata)
+						local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
+						if le then
+							le:on_death()
+							le.object:remove()
+						else
+							kill_cart(staticdata)
+						end
 						return
 					end
 				end
