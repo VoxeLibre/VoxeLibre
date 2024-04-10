@@ -194,7 +194,7 @@ local function vector_away_from_players(cart, staticdata)
 
 	for _,obj in pairs(minetest.get_objects_inside_radius(cart_pos, 1.1)) do
 		if player_repel(obj) then
-			return obj:get_pos() - self.object:get_pos()
+			return obj:get_pos() - cart_pos
 		end
 	end
 
@@ -202,7 +202,7 @@ local function vector_away_from_players(cart, staticdata)
 end
 
 local function direction_away_from_players(staticdata)
-	local diff = vector_away_from_players(staticdata)
+	local diff = vector_away_from_players(nil,staticdata)
 	if not diff then return 0 end
 
 	local length = vector.distance(vector.new(0,0,0),diff)
@@ -242,10 +242,11 @@ local function calculate_acceleration(staticdata)
 	local max_vel = mcl_minecarts.speed_max
 
 	local ctrl = staticdata.controls or {}
+	local time_active = minetest.get_gametime() - 0.25
 
-	if ctrl.go_forward then
+	if (ctrl.forward or 0) > time_active then
 		acceleration = 4
-	elseif ctrl.brake then
+	elseif (ctrl.brake or 0) > time_active then
 		acceleration = -1.5
 	elseif (staticdata.fueltime or 0) > 0 and staticdata.velocity <= 4 then
 		acceleration = 0.6
@@ -285,11 +286,11 @@ local function do_movement_step(staticdata, dtime)
 	local v_0 = staticdata.velocity
 
 	-- Repel minecarts
-	local away = direction_away_from_players(nil, staticdata)
+	local away = direction_away_from_players(staticdata)
 	if away > 0 then
 		v_0 = away
 	elseif away < 0 then
-		reverse_direction(self, staticdata)
+		reverse_direction(staticdata)
 		v_0 = -away
 	end
 

@@ -229,8 +229,11 @@ function DEFAULT_CART_DEF:on_step(dtime)
 			end
 
 			-- Experimental controls
-			self._go_forward = ctrl.up
-			self._brake = ctrl.down
+			local now_time = minetest.get_gametime()
+			local controls = {}
+			if ctrl.up then controls.forward = now_time end
+			if ctrl.down then controls.brake = now_time end
+			staticdata.controls = controls
 		end
 
 		-- Give achievement when player reached a distance of 1000 nodes from the start position
