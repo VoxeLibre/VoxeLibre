@@ -89,11 +89,65 @@ local function rail_dir_curve(pos, dir, node)
 		if vector.equals(dir, east) then return east end
 	end
 end
-local function rail_dir_tee(pos, dir, node)
+
+
+local function rail_dir_tee_off(pos, dir, node)
 	dir = vector.new(dir.x, 0, dir.z)
 
-	minetest.log("warning","TODO: implement rail_dir_tee()")
-	return north
+	if node.param2 == 0 then -- north
+		-- South and East
+		if vector.equals(dir, south) then return south end
+		if vector.equals(dir, north) then return east end
+		if vector.equals(dir, west) then return south end
+		if vector.equals(dir, east) then return east end
+	elseif node.param2 == 1 then -- east
+		-- South and West
+		if vector.equals(dir, south) then return south end
+		if vector.equals(dir, north) then return west end
+		if vector.equals(dir, west) then return west end
+		if vector.equals(dir, east) then return south end
+	elseif node.param2 == 2 then
+		-- North and West
+		if vector.equals(dir, south) then return west end
+		if vector.equals(dir, north) then return north end
+		if vector.equals(dir, west) then return west end
+		if vector.equals(dir, east) then return north end
+	elseif node.param2 == 3 then
+		-- North and East
+		if vector.equals(dir, south) then return east end
+		if vector.equals(dir, north) then return north end
+		if vector.equals(dir, west) then return north end
+		if vector.equals(dir, east) then return east end
+	end
+end
+local function rail_dir_tee_on(pos, dir, node)
+	dir = vector.new(dir.x, 0, dir.z)
+
+	if node.param2 == 0 then -- north
+		-- South and East
+		if vector.equals(dir, south) then return east end
+		if vector.equals(dir, north) then return north end
+		if vector.equals(dir, west) then return north end
+		if vector.equals(dir, east) then return east end
+	elseif node.param2 == 1 then -- east
+		-- South and West
+		if vector.equals(dir, south) then return south end
+		if vector.equals(dir, north) then return east end
+		if vector.equals(dir, west) then return south end
+		if vector.equals(dir, east) then return east end
+	elseif node.param2 == 2 then
+		-- North and West
+		if vector.equals(dir, south) then return south end
+		if vector.equals(dir, north) then return west end
+		if vector.equals(dir, west) then return west end
+		if vector.equals(dir, east) then return south end
+	elseif node.param2 == 3 then
+		-- North and East
+		if vector.equals(dir, south) then return west end
+		if vector.equals(dir, north) then return north end
+		if vector.equals(dir, west) then return west end
+		if vector.equals(dir, east) then return north end
+	end
 end
 local function rail_dir_cross(pos, dir, node)
 	dir = vector.new(dir.x, 0, dir.z)
@@ -292,13 +346,14 @@ function mod.register_curves_rail(base_name, tiles, def)
 			}
 		},
 		_mcl_minecarts = {
-			railtype = "corner",
+			get_next_dir = rail_dir_tee_off,
+			railtype = "tee",
 		},
 	}))
 	mod.register_rail(base_name.."_tee_on", table_merge(table.copy(base_def),{
 		tiles = { tiles[4] },
 		_mcl_minecarts = {
-			get_next_dir = rail_dir_tee,
+			get_next_dir = rail_dir_tee_on,
 			railtype = "tee",
 		},
 		mesecons = {
