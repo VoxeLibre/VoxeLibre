@@ -17,12 +17,55 @@
 - [rails.lua](./rails.lua) - This file contains code related to rail registation,
   placement, connection rules and cart direction selection. This contains the rail
   behaviors and the LBM code for updating legacy rail nodes to the new versions
-  that don't use the railtype render type.
+  that don't use the raillike draw type.
 
 - [storage.lua](./storage.lua) - This file contains the code than manages minecart
   state data to allow processing minecarts while entities are unloaded.
 
 - [train.lua](./train.lua) - This file contains code related to multi-car trains.
+
+## Rail Nodes
+
+Previous versions of mcl\_minecarts used one node type for each rail type (standard,
+powered, detector and activator) using the raillike draw type that minetest provides.
+This version does not use the raillike draw type and instead uses a 1/16th of a block
+high nodebox and uses an additional node definition for each variant. The variants
+present are:
+
+- straight
+- sloped
+- corner
+- tee
+- cross
+
+Of the rail types provided by this module, standard has all of these variants. The
+remaining types only have straight and sloped variants.
+
+Unlike the old rail type, this version will only update connections when placed, and
+will only place a variant that already has connections into the space the rail is
+being placed. Here is how to create the various varients:
+
+- Straight rail is placed when with zero or one adjacent rail nodes. If no rails
+  are adjacent, the rail is placed in line with the direction the player is facing.
+  If there is exactly one adjacent rail present, the straight rail will always rotate
+  to connect to it.
+
+- Sloped rail is placed when there are two rails in a straight line, with one being
+  one block higher. When rail is placed adjacent to a straight rail one block lower
+  and the rail is facing the block the rail is being placed on, the lower rail will
+  convert into a slope.
+
+- A corner rail is placed when there are exactly two adjacent rails that are not in
+  a line and lead into the space the rail is being placed. The corner will be rotated
+  to connect these two rails.
+
+- A tee rail is placed where there are exactly three rails adjact and those existing
+  rails lead into the the space the new rail is being placed.
+
+- A rail cross is placed when there is rail in all four adjacent blocks and they all
+  have a path into the space the new rail is being placed.
+
+The tee variant will interact with redstone and mesecons to switch the curved section.
 
 ## On-rail Minecart Movement
 
