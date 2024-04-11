@@ -149,7 +149,6 @@ function DEFAULT_CART_DEF:_mcl_entity_invs_load_items()
 end
 function DEFAULT_CART_DEF:_mcl_entity_invs_save_items(items)
 	local staticdata = self._staticdata
-	print("Saving entity inventory items="..dump(items))
 	staticdata.inventory = table.copy(items)
 end
 

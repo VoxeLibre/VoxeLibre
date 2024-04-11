@@ -261,11 +261,12 @@ function mod.register_straight_rail(base_name, tiles, def)
 	})
 
 	-- Sloped variant
-	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(base_def),{
+	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(sloped_def),{
 		description = S("Sloped Rail"), -- Temporary name to make debugging easier
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_sloped,
 		},
+		mesecons = def.mesecons_sloped,
 		tiles = { tiles[1] },
 		_mcl_minecarts = {
 			railtype = "sloped",
@@ -444,7 +445,15 @@ mod.register_straight_rail("mcl_minecarts:golden_rail_v2",{ "mcl_minecarts_rail_
 		conductor = {
 			state = mesecon.state.off,
 			offstate = "mcl_minecarts:golden_rail_v2",
-			onstate = "mcl_minecarts:golden_rail_v2_on",
+			onstate  = "mcl_minecarts:golden_rail_v2_on",
+			rules = rail_rules_long,
+		},
+	},
+	mesecons_sloped = {
+		conductor = {
+			state = mesecon.state.off,
+			offstate = "mcl_minecarts:golden_rail_v2_sloepd",
+			onstate  = "mcl_minecarts:golden_rail_v2_on_sloped",
 			rules = rail_rules_long,
 		},
 	},
@@ -471,7 +480,15 @@ mod.register_straight_rail("mcl_minecarts:golden_rail_v2_on",{ "mcl_minecarts_ra
 		conductor = {
 			state = mesecon.state.on,
 			offstate = "mcl_minecarts:golden_rail_v2",
-			onstate = "mcl_minecarts:golden_rail_v2_on",
+			onstate  = "mcl_minecarts:golden_rail_v2_on",
+			rules = rail_rules_long,
+		},
+	},
+	mesecons_sloped = {
+		conductor = {
+			state = mesecon.state.on,
+			offstate = "mcl_minecarts:golden_rail_v2_sloped",
+			onstate  = "mcl_minecarts:golden_rail_v2_on_sloped",
 			rules = rail_rules_long,
 		},
 	},
@@ -488,7 +505,15 @@ mod.register_straight_rail("mcl_minecarts:activator_rail_v2", {"mcl_minecarts_ra
 		conductor = {
 			state = mesecon.state.off,
 			offstate = "mcl_minecarts:activator_rail_v2",
-			onstate = "mcl_minecarts:activator_rail_v2_on",
+			onstate  = "mcl_minecarts:activator_rail_v2_on",
+			rules = rail_rules_long,
+		},
+	},
+	mesecons_sloped = {
+		conductor = {
+			state = mesecon.state.off,
+			offstate = "mcl_minecarts:activator_rail_v2_sloped",
+			onstate  = "mcl_minecarts:activator_rail_v2_on_sloped",
 			rules = rail_rules_long,
 		},
 	},
@@ -503,6 +528,16 @@ mod.register_straight_rail("mcl_minecarts:activator_rail_v2", {"mcl_minecarts_ra
 })
 
 -- Activator rail (on)
+local function activator_rail_action_on(pos, node)
+	local pos2 = { x = pos.x, y =pos.y + 1, z = pos.z }
+	local objs = minetest.get_objects_inside_radius(pos2, 1)
+	for _, o in pairs(objs) do
+		local l = o:get_luaentity()
+		if l and string.sub(l.name, 1, 14) == "mcl_minecarts:" and l.on_activate_by_rail then
+			l:on_activate_by_rail()
+		end
+	end
+end
 mod.register_straight_rail("mcl_minecarts:activator_rail_v2_on", {"mcl_minecarts_rail_activator_powered.png"},{
 	_doc_items_create_entry = false,
 	groups = {
@@ -512,21 +547,25 @@ mod.register_straight_rail("mcl_minecarts:activator_rail_v2_on", {"mcl_minecarts
 		conductor = {
 			state = mesecon.state.on,
 			offstate = "mcl_minecarts:activator_rail_v2",
-			onstate = "mcl_minecarts:activator_rail_v2_on",
+			onstate  = "mcl_minecarts:activator_rail_v2_on",
 			rules = rail_rules_long,
 		},
 		effector = {
 			-- Activate minecarts
-			action_on = function(pos, node)
-				local pos2 = { x = pos.x, y =pos.y + 1, z = pos.z }
-				local objs = minetest.get_objects_inside_radius(pos2, 1)
-				for _, o in pairs(objs) do
-					local l = o:get_luaentity()
-					if l and string.sub(l.name, 1, 14) == "mcl_minecarts:" and l.on_activate_by_rail then
-						l:on_activate_by_rail()
-					end
-				end
-			end,
+			action_on = activator_rail_action_on,
+		},
+
+	},
+	mesecons_sloped = {
+		conductor = {
+			state = mesecon.state.on,
+			offstate = "mcl_minecarts:activator_rail_v2_sloped",
+			onstate  = "mcl_minecarts:activator_rail_v2_on_sloped",
+			rules = rail_rules_long,
+		},
+		effector = {
+			-- Activate minecarts
+			action_on = activator_rail_action_on,
 		},
 
 	},
