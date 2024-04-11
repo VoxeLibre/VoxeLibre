@@ -1,12 +1,12 @@
 # Table of Contents
 1. [Useful Constants](#useful-constants)
 2. [Rail](#rail)
-  1. [Constants](#constants)
-  2. [Functions](#functions)
-  3. [Node Definition Options](#node-definition-options)
+   1. [Constants](#constants)
+   2. [Functions](#functions)
+   3. [Node Definition Options](#node-definition-options)
 3. [Cart Functions](#cart-functions)
 4. [Cart Data Functions](#cart-data-functions)
-5. [Cart-Node Interactions](#cart-node-iteractions)
+5. [Cart-Node Interactions](#cart-node-interactions)
 6. [Train Functions](#train-functions)
 
 ## Useful Constants
