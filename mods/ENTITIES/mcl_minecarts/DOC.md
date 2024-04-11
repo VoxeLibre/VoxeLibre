@@ -1,4 +1,29 @@
 
+## Organization
+- [ init.lua](./init.lua) - module entrypoint. The other files are included from here
+  and several constants are defined here
+
+- [carts.lua](./carts/lua) - This file contains code related to cart entities, cart
+  type registration,  creation, estruction and updating. The global step function
+  responsible for updating attached carts is in this file. The various carts are
+  referenced from this file but actually reside in the subdirectory [carts/](./carts/).
+
+- [functions.lua](./functions.lua) - This file contains various minecart and rail
+  utility functions used by the rest of the code.
+
+- [movement.lua](./movement.lua) - This file contains the code related to cart
+  movement physics.
+
+- [rails.lua](./rails.lua) - This file contains code related to rail registation,
+  placement, connection rules and cart direction selection. This contains the rail
+  behaviors and the LBM code for updating legacy rail nodes to the new versions
+  that don't use the railtype render type.
+
+- [storage.lua](./storage.lua) - This file contains the code than manages minecart
+  state data to allow processing minecarts while entities are unloaded.
+
+- [train.lua](./train.lua) - This file contains code related to multi-car trains.
+
 ## On-rail Minecart Movement
 
 Minecart movement is handled in two distinct regimes: on a rail and off. The
