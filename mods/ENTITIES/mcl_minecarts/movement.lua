@@ -240,7 +240,6 @@ local function calculate_acceleration(staticdata)
 	local pos = staticdata.connected_at
 	local node_name = minetest.get_node(pos).name
 	local node_def = minetest.registered_nodes[node_name]
-	local max_vel = SPEED_MAX
 
 	local ctrl = staticdata.controls or {}
 	local time_active = minetest.get_gametime() - 0.25
@@ -251,7 +250,7 @@ local function calculate_acceleration(staticdata)
 		acceleration = -1.5
 	elseif (staticdata.fueltime or 0) > 0 and staticdata.velocity <= 4 then
 		acceleration = 0.6
-	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or max_vel ) then
+	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or SPEED_MAX ) then
 		-- Standard friction
 	elseif node_def and node_def._rail_acceleration then
 		acceleration = node_def._rail_acceleration * 4

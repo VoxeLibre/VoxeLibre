@@ -33,7 +33,7 @@ Processing for minecart movement is as follows:
    4. The cart checks for nearby carts and collides elastically with these. The
       calculations for these collisions are in the function `handle_cart_collision`
    5. If the cart enters a new block, determine the new direction the cart will
-      move with `mcl_minecarts:get_rail_direction` in [functions.lua](./functions.lua].
+      move with `mcl_minecarts:get_rail_direction` in [functions.lua](./functions.lua).
       The rail nodes provide a hook `_mcl_minecarts.get_next_direction` that
       provides this information based on the previous movement direction.
 3. If an entity exists for a given cart, the entity will update its position
