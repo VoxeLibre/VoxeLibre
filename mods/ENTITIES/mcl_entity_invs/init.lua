@@ -35,7 +35,9 @@ function mcl_entity_invs.load_inv(ent,size)
 		mcl_log("load_inv 3")
 		inv =  minetest.create_detached_inventory(ent._inv_id, inv_callbacks)
 		inv:set_size("main", size)
-		if ent._items then
+		if ent._mcl_entity_invs_load_items then
+			inv:set_list("main",ent:_mcl_entity_invs_load_items())
+		elseif ent._items then
 			inv:set_list("main",ent._items)
 		end
 	else
@@ -46,9 +48,14 @@ end
 
 function mcl_entity_invs.save_inv(ent)
 	if ent._inv then
-		ent._items = {}
+		local items = {}
 		for i,it in ipairs(ent._inv:get_list("main")) do
-			ent._items[i] = it:to_string()
+			items[i] = it:to_string()
+		end
+		if ent._mcl_entity_invs_save_items then
+			ent:_mcl_entity_invs_save_items(items)
+		else
+			ent._items = items
 		end
 		minetest.remove_detached_inventory(ent._inv_id)
 		ent._inv = nil

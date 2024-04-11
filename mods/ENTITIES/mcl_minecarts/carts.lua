@@ -143,6 +143,16 @@ function DEFAULT_CART_DEF:get_staticdata()
 	return minetest.serialize({uuid = self._staticdata.uuid, seq=self._seq})
 end
 
+function DEFAULT_CART_DEF:_mcl_entity_invs_load_items()
+	local staticdata = self._staticdata
+	return staticdata.inventory or {}
+end
+function DEFAULT_CART_DEF:_mcl_entity_invs_save_items(items)
+	local staticdata = self._staticdata
+	print("Saving entity inventory items="..dump(items))
+	staticdata.inventory = table.copy(items)
+end
+
 function DEFAULT_CART_DEF:add_node_watch(pos)
 	local staticdata = self._staticdata
 	local watches = staticdata.node_watches or {}
@@ -246,7 +256,6 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	end
 
 	mod.update_cart_orientation(self)
-
 end
 function mod.kill_cart(staticdata)
 	local pos
