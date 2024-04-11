@@ -178,6 +178,15 @@ local BASE_DEF = {
 	_tt_help = S("Track for minecarts"),
 	_doc_items_usagehelp = railuse,
 	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
+	on_place = function(itemstack, placer, pointed_thing)
+		local node_name = minetest.get_node(pointed_thing.under).name
+		-- Don't allow placing rail above rail
+		if minetest.get_item_group(node_name,"rail") == 0 then
+			return minetest.item_place_node(itemstack, placer, pointed_thing)
+		else
+			return itemstack
+		end
+	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		update_rail_connections(pos)
 	end,
