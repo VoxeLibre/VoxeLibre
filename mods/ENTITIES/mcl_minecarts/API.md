@@ -25,7 +25,7 @@ second. Defined as 10 blocks/second.
 
 - `mcl_minecarts.CART_BLOCKS_SIZE`
 
-The size of blocks to use when searching for carts to respawn. Default is 64.
+The size of blocks to use when searching for carts to respawn. Defined as is 64 blocks.
 
 - `mcl_minecarts.FRICTION`
 
@@ -76,6 +76,11 @@ Calculate the rail adjacency information for rail placement. Arguments are:
     a cart can travel. Used for converting legacy rail to newer equivalents.
   - `ignore_neightbor_connections` - if true, don't check that a cart could leave
     the neighboring node from this direction.
+
+`mcl_minecarts:is_rail(position, railtype)`
+
+Determines if the node at `position` is a rail. If `railtype` is provided,
+determine if the node at `position` is that type of rail.
 
 `mcl_minecarts.register_rail(itemstring, node_definition)`
 

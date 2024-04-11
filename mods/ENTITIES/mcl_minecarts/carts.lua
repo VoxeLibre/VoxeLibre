@@ -182,7 +182,6 @@ function DEFAULT_CART_DEF:on_step(dtime)
 		self._staticdata = staticdata
 	end
 
-
 	-- Update entity position
 	local pos = mod.get_cart_position(staticdata)
 	if pos then self.object:move_to(pos) end
@@ -551,8 +550,8 @@ minetest.register_globalstep(function(dtime)
 	-- TODO: change how often cart positions are updated based on velocity
 	for uuid,staticdata in mod.carts() do
 		local pos = mod.get_cart_position(staticdata)
-		local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
 		--[[
+		local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
 		print("cart# "..uuid..
 			",velocity="..tostring(staticdata.velocity)..
 			",pos="..tostring(pos)..
