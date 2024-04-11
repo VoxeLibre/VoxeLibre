@@ -72,6 +72,18 @@ function mod.find_carts_by_block_map(block_map)
 	return cart_list
 end
 
+function mod.add_block_map(block_map, min_pos, max_pos)
+	local min = vector.floor(vector.divide(min_pos), CART_BLOCK_SIZE)
+	local max = vector.floor(vector.divide(max_pos), CART_BLOCK_SIZE) + vector.new(1,1,1)
+	for z = min.z,max.z do
+		for y = min.y,max.y do
+			for x = min.x,max.x do
+				block_map[ vector.to_string(vector.new(x,y,z)) ] = true
+			end
+		end
+	end
+end
+
 minetest.register_on_shutdown(function()
 	for uuid,_ in pairs(cart_data) do
 		save_cart_data(uuid)

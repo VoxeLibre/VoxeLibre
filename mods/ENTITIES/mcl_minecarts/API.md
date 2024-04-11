@@ -1,6 +1,6 @@
 # Table of Contents
-1. Useful Constants
-2. Rail
+1. [Useful Constants](#useful-constants)
+2. [Rail](#rail)
 3. [Cart functions](#cart-functions)
 4. [Cart-Node Interactions](#cart-node-iteractions)
 
@@ -33,6 +33,11 @@ and the following named options:
   highest store is selected.
 - `can_slope` - true if the result of this rule can be converted into a slope.
 
+`mcl_minecarts.RAIL_GROUPS.STANDARD`
+`mcl_minecarts.RAIL_GROUPS.CURVES`
+
+These constants are used to specify a rail node's `group.rail` value.
+
 ### Functions
 
 `mcl_minecarts.get_rail_connections(node_position, options)`
@@ -46,6 +51,19 @@ Calculate the rail adjacency information for rail placement. Arguments are:
   - `ignore_neightbor_connections` - if true, don't check that a cart could leave
     the neighboring node from this direction.
 
+`mcl_minecarts.register_rail(itemstring, node_definition)`
+
+Registers a rail with a few sensible defaults and if a craft recipe was specified,
+register that as well.
+
+`mcl_minecarts.register_straight_rail(base_name, tiles, node_definition)`
+
+Registers a rail with only straight and sloped variants.
+
+`mcl_minecarts.register_curves_rail(base_name, tiles, node_definition)`
+
+Registers a rail with straight, sloped, curved, tee and cross variants.
+
 `mcl_minecarts.update_rail_connections(node_position, options)`
 
 Converts the rail at `node_position`, if possible, another variant (curve, etc.)
@@ -57,7 +75,25 @@ passed thru to `mcl_minecarts.get_rail_connections()`
 Returns the next direction a cart traveling in the direction specified in `cart_direction`
 will travel from the rail located at `rail_position`.
 
-## Cart functions <a name='#cart-functions'></a>
+### Node Definition Options
+
+`_mcl_minecarts.railtype`
+
+This declares the variant type of the rail. This will be one of the following:
+
+- "straight" - two connections opposite each other and no vertical change.
+- "sloped" - two connections opposite each other with one of these connections
+   one block higher.
+- "corner" - two connections at 90 degrees from each other.
+- "tee" - three connections
+- "cross" - four connections allowing only straight-thru movement
+
+#### Hooks
+`_mcl_minecarts.get_next_dir = function(node_position, current_direction, node)`
+
+Called to get the next direction a cart will travel after passing thru this node.
+
+## Cart Functions
 
 `mcl_minecarts.detach_minecart(cart_data)`
 
@@ -69,6 +105,10 @@ at the same speed it was moving at before it detaches.
 
 Compute the location of a minecart from its cart data. This works even when the entity
 is unloaded.
+
+`mcl_minecarts.kill_cart(cart_data)`
+
+Kills a cart and drops it as an item, even if the cart entity is unloaded.
 
 `mcl_minecarts.reverse_cart_direction(cart_data)`
 
@@ -82,7 +122,36 @@ Returns a valid cart movement direction that has the smallest angle between it a
 
 Updates the rotation of a cart entity to match the cart's data.
 
-## Cart-Node interactions
+## Cart Data Functions
+
+`mcl_minecarts.destroy_cart_data(uuid)`
+
+Destroys the data for the cart with the identitfier in `uuid`.
+
+`mcl_minecarts.find_carts_by_block_map(block_map)`
+
+Returns a list of cart data for carts located in the blocks specified in `block_map`. Used
+to respawn carts entering areas around players.
+
+`mcl_minecarts.add_blocks_to_map(block_map, min_pos, max_pos)`
+
+Add blocks that fully contain `min_pos` and `max_pos` to `block_map` for use by
+ `mcl_minecarts.find_cart_by_block_map`.
+
+`mcl_minecarts.get_cart_data(uuid)`
+
+Loads the data for the cart with the identitfier in `uuid`.
+
+`mcl_minecarts.save_cart_data(uuid)`
+
+Saves the data for the cart with the identifier in `uuid`.
+
+`mcl_minecart.update_cart_data(data)`
+
+Replaces the cart data for the cart with the identifier in `data.uuid`, then saves
+the data.
+
+## Cart-Node Interactions
 
 As the cart moves thru the environment, it can interact with the surrounding blocks
 thru a number of handlers in the block definitions. All these handlers are defined
@@ -126,3 +195,41 @@ The available hooks are:
 
 Only a single function can be installed in each of these handlers. Before installing,
 preserve the existing handler and call it from inside your handler if not `nil`.
+
+## Train Functions
+
+`mcl_minecarts.break_train_at(cart_data)`
+
+Splits a train apart at the specified cart.
+
+`mcl_minecarts.distance_between_cars(cart1_data, cart2_data)`
+
+Returns the distance between two carts even if both entities are unloaded, or nil if either
+cart is not on a rail.
+
+`mcl_minecarts.is_in_same_train(cart1_data, cart2_data)`
+
+Returns true if cart1 and cart2 are a part of the same train and false otherwise.
+
+`mcl_minecarts.link_cart_ahead(cart_data, cart_ahead_data)`
+
+Given two carts, link them together into a train, with the second cart ahead of the first.
+
+`mcl_minecarts.train_cars(cart_data)`
+
+Use to iterate over all carts in a train. Expected usage:
+
+`for cart in mcl_minecarts.train_cars(cart) do --[[ code ]] end`
+
+`mcl_minecarts.reverse_train(cart)`
+
+Make all carts in a train reverse and start moving in the opposite direction.
+
+`mcl_minecarts.train_length(cart_data)`
+
+Compute the current length of the train containing the cart whose data is `cart_data`.
+
+`mcl_minecarts.update_train(cart_data)`
+
+When provided with the rear-most cart of a tain, update speeds of all carts in the train
+so that it holds together and moves as a unit.

@@ -513,15 +513,11 @@ local function try_respawn_carts()
 	local players = minetest.get_connected_players()
 	for _,player in pairs(players) do
 		local pos = player:get_pos()
-		local min = vector.floor(vector.divide(vector.offset(pos,-CART_BLOCK_SIZE,-CART_BLOCK_SIZE,-CART_BLOCK_SIZE), CART_BLOCK_SIZE))
-		local max = vector.floor(vector.divide(vector.offset(pos, CART_BLOCK_SIZE, CART_BLOCK_SIZE, CART_BLOCK_SIZE), CART_BLOCK_SIZE)) + vector.new(1,1,1)
-		for z = min.z,max.z do
-			for y = min.y,max.y do
-				for x = min.x,max.x do
-					block_map[ vector.to_string(vector.new(x,y,z)) ] = true
-				end
-			end
-		end
+		mod.add_blocks_to_map(
+			block_map,
+			vector.offset(pos,-CART_BLOCK_SIZE,-CART_BLOCK_SIZE,-CART_BLOCK_SIZE),
+			vector.offset(pos, CART_BLOCK_SIZE, CART_BLOCK_SIZE, CART_BLOCK_SIZE)
+		)
 	end
 
 	-- Find all cart data that are in these blocks
