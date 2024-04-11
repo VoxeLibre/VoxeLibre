@@ -1,17 +1,43 @@
 # Table of Contents
 1. [Useful Constants](#useful-constants)
 2. [Rail](#rail)
-3. [Cart functions](#cart-functions)
-4. [Cart-Node Interactions](#cart-node-iteractions)
+  1. [Constants](#constants)
+  2. [Functions](#functions)
+  3. [Node Definition Options](#node-definition-options)
+3. [Cart Functions](#cart-functions)
+4. [Cart Data Functions](#cart-data-functions)
+5. [Cart-Node Interactions](#cart-node-iteractions)
+6. [Train Functions](#train-functions)
 
 ## Useful Constants
 
-`mcl_minecarts.north`
-`mcl_minecarts.south`
-`mcl_minecarts.east`
-`mcl_minecarts.west`
+- `mcl_minecarts.north`
+- `mcl_minecarts.south`
+- `mcl_minecarts.east`
+- `mcl_minecarts.west`
 
 Human-readable names for the cardinal directions.
+
+- `mcl_minecarts.SPEED_MAX`
+
+Maximum speed that minecarts will be accelerated to with powered rails, in blocks per
+second. Defined as 10 blocks/second.
+
+- `mcl_minecarts.CART_BLOCKS_SIZE`
+
+The size of blocks to use when searching for carts to respawn. Default is 64.
+
+- `mcl_minecarts.FRICTION`
+
+Rail friction. Defined as is 0.4 blocks/second^2.
+
+- `mcl_minecarts.MAX_TRAIN_LENGTH`
+
+The maximum number of carts that can be in a single train. Defined as 4 carts.
+
+- `mcl_minecarts.PASSENGER_ATTACH_POSITION`
+
+Where to attach passengers to the minecarts.
 
 ## Rail
 
@@ -109,6 +135,20 @@ is unloaded.
 `mcl_minecarts.kill_cart(cart_data)`
 
 Kills a cart and drops it as an item, even if the cart entity is unloaded.
+
+`mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)`
+
+Places a minecart at the location specified by `pointed_thing`
+
+`mcl_minecarts.register_minecart(minecart_definition)`
+
+Registers a minecart. `minecart_definition` defines the entity. All the options supported by
+normal minetest entities are supported, with a few additions:
+
+- `craft` - Crafting recipe for this cart.
+- `drop` - List of items to drop when the cart is killed. (required)
+- `entity_id` - The entity id of the cart. (required)
+- `itemstring` - This is the itemstring to use for this entity. (required)
 
 `mcl_minecarts.reverse_cart_direction(cart_data)`
 

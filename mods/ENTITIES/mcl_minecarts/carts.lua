@@ -303,7 +303,7 @@ function DEFAULT_CART_DEF:on_death(killer)
 end
 
 -- Place a minecart at pointed_thing
-function mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
+function mod.place_minecart(itemstack, pointed_thing, placer)
 	if not pointed_thing.type == "node" then
 		return
 	end
@@ -369,7 +369,7 @@ local function dropper_place_minecart(dropitem, pos)
 	local node = minetest.get_node(pos)
 	if minetest.get_item_group(node.name, "rail") == 0 then return false end
 
-	mcl_minecarts.place_minecart(dropitem, {
+	mod.place_minecart(dropitem, {
 		above = pos,
 		under = vector.offset(pos,0,-1,0)
 	})
@@ -397,7 +397,7 @@ local function register_minecart_craftitem(itemstring, def)
 				end
 			end
 
-			return mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
+			return mod.place_minecart(itemstack, pointed_thing, placer)
 		end,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 			-- Place minecart as entity on rail. If there's no rail, just drop it.
@@ -405,7 +405,7 @@ local function register_minecart_craftitem(itemstring, def)
 			if minetest.get_item_group(dropnode.name, "rail") ~= 0 then
 				-- FIXME: This places minecarts even if the spot is already occupied
 				local pointed_thing = { under = droppos, above = vector.new( droppos.x, droppos.y+1, droppos.z ) }
-				placed = mcl_minecarts.place_minecart(stack, pointed_thing)
+				placed = mod.place_minecart(stack, pointed_thing)
 			end
 			if placed == nil then
 				-- Drop item
@@ -438,9 +438,11 @@ Register a minecart
 * on_activate_by_rail: Called when above activator rail
 * creative: If false, don't show in Creative Inventory
 ]]
-function mcl_minecarts.register_minecart(def)
-	assert( def.drop, "def.drop is required parameter" )
-	assert( def.itemstring, "def.itemstring is required parameter" )
+function mod.register_minecart(def)
+	-- Make sure all required parameters are present
+	for _,name in pairs({"drop","itemstring","entity_id"}) do
+		assert( def[name], "def."..name..", a required parameter, is missing")
+	end
 
 	local entity_id = def.entity_id; def.entity_id = nil
 	local craft = def.craft; def.craft = nil
@@ -463,7 +465,7 @@ function mcl_minecarts.register_minecart(def)
 		minetest.register_craft(craft)
 	end
 end
-local register_minecart = mcl_minecarts.register_minecart
+local register_minecart = mod.register_minecart
 
 dofile(modpath.."/carts/minecart.lua")
 dofile(modpath.."/carts/with_chest.lua")

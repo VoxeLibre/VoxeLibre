@@ -312,7 +312,7 @@ function mcl_minecarts:get_rail_direction(pos_, dir)
 
 	return dir
 end
-function mcl_minecarts.update_cart_orientation(self)
+function mod.update_cart_orientation(self)
 	local staticdata = self._staticdata
 
 	-- constants

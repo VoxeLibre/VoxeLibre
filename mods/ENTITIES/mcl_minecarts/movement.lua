@@ -5,12 +5,13 @@ local S = minetest.get_translator(modname)
 
 -- Constants
 local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
-local friction = mcl_minecarts.FRICTION
-local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
 --DEBUG = false
 --mcl_debug = function(msg) print(msg) end
 
 -- Imports
+local FRICTION = mcl_minecarts.FRICTION
+local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
+local SPEED_MAX = mod.SPEED_MAX
 local train_length = mod.train_length
 local update_train = mod.update_train
 local reverse_train = mod.reverse_train
@@ -233,13 +234,13 @@ local function calculate_acceleration(staticdata)
 
 	-- Apply friction if moving
 	if staticdata.velocity > 0 then
-		acceleration = -friction
+		acceleration = -FRICTION
 	end
 
 	local pos = staticdata.connected_at
 	local node_name = minetest.get_node(pos).name
 	local node_def = minetest.registered_nodes[node_name]
-	local max_vel = mcl_minecarts.speed_max
+	local max_vel = SPEED_MAX
 
 	local ctrl = staticdata.controls or {}
 	local time_active = minetest.get_gametime() - 0.25
@@ -259,9 +260,9 @@ local function calculate_acceleration(staticdata)
 	-- Factor in gravity after everything else
 	local gravity_strength = 2.45 --friction * 5
 	if staticdata.dir.y < 0 then
-		acceleration = gravity_strength - friction
+		acceleration = gravity_strength - FRICTION
 	elseif staticdata.dir.y > 0 then
-		acceleration = -gravity_strength + friction
+		acceleration = -gravity_strength + FRICTION
 	end
 
 	return acceleration
@@ -330,7 +331,7 @@ local function do_movement_step(staticdata, dtime)
 	end
 
 	-- Truncate timestep to prevent v_1 from being larger that speed_max
-	local v_max = mcl_minecarts.speed_max
+	local v_max = SPEED_MAX
 	if (v_0 ~= v_max) and ( v_0 + a * timestep > v_max) then
 		timestep = ( v_max - v_0 ) / a
 	end
@@ -342,7 +343,7 @@ local function do_movement_step(staticdata, dtime)
 	local v_1 = v_0 + a * timestep
 	if v_1 > v_max then
 		v_1 = v_max
-	elseif v_1 < friction / 5 then
+	elseif v_1 < FRICTION / 5 then
 		v_1 = 0
 	end
 
@@ -402,7 +403,7 @@ local function do_movement_step(staticdata, dtime)
 
 		-- Update cart direction
 		staticdata.dir = next_dir
-	elseif stops_in_block and v_1 < (friction/5) and a <= 0 then
+	elseif stops_in_block and v_1 < (FRICTION/5) and a <= 0 then
 		-- Handle direction flip due to gravity
 		if DEBUG then mcl_debug("Gravity flipped direction") end
 

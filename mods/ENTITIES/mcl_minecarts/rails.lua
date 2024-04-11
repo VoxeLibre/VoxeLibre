@@ -16,21 +16,6 @@ local south = mod.south
 local east = mod.east
 local west = mod.west
 
-local function drop_railcarts(pos)
-	-- Scan for minecarts in this pos and force them to execute their "floating" check.
-	-- Normally, this will make them drop.
-	local objs = minetest.get_objects_inside_radius(pos, 1)
-	for o=1, #objs do
-		local le = objs[o]:get_luaentity()
-		if le then
-			-- All entities in this mod are minecarts, so this works
-			if string.sub(le.name, 1, 14) == "mcl_minecarts:" then
-				le._last_float_check = mcl_minecarts.check_float_time
-			end
-		end
-	end
-end
-
 --- Rail direction Handleres
 local function rail_dir_straight(pos, dir, node)
 	dir = vector.new(dir.x, 0, dir.z)
@@ -196,7 +181,6 @@ local BASE_DEF = {
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		update_rail_connections(pos)
 	end,
-	after_destruct = drop_railcarts,
 	_mcl_minecarts = {
 		get_next_dir = rail_dir_straight,
 	},
