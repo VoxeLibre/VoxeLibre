@@ -185,8 +185,8 @@ local function vector_away_from_players(cart, staticdata)
 		if not player_name or player_name == "" then return false end
 
 		-- Don't repel away from players in minecarts
-		local playerinfo = mcl_playerinfo[player_name]
-		if playerinfo and playerinfo.attached_to then return false end
+		local player_meta = mcl_playerinfo.get_mod_meta(player_name, modname)
+		if player_meta.attached_to then return false end
 
 		return true
 	end

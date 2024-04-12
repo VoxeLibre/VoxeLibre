@@ -42,8 +42,8 @@ local function detach_driver(self)
 	-- Update cart informatino
 	self._driver = nil
 	self._start_pos = nil
-	local meta = mcl_playerinfo.get_mod_meta(driver_name, modname)
-	meta.attached_to = nil
+	local player_meta = mcl_playerinfo.get_mod_meta(driver_name, modname)
+	player_meta.attached_to = nil
 
 	-- Detatch the player object from the minecart
 	local player = minetest.get_player_by_name(driver_name)
@@ -267,7 +267,7 @@ function mod.kill_cart(staticdata, killer)
 	if staticdata.attached_at then
 		handle_cart_leave(self, staticdata.attached_at, staticdata.dir )
 	else
-		mcl_log("TODO: handle detatched minecart death")
+		--mcl_log("TODO: handle detatched minecart death")
 	end
 
 	-- Handle entity-related items
@@ -527,7 +527,7 @@ local function respawn_cart(cart)
 	end
 	if not distance or distance > 90 then return end
 
-	print("Respawning cart #"..cart.uuid.." at "..tostring(pos)..",distance="..distance..",node="..minetest.get_node(pos).name)
+	mcl_log("Respawning cart #"..cart.uuid.." at "..tostring(pos)..",distance="..distance..",node="..minetest.get_node(pos).name)
 
 	-- Update sequence so that old cart entities get removed
 	cart.seq = (cart.seq or 1) + 1
@@ -613,8 +613,8 @@ end)
 
 minetest.register_on_joinplayer(function(player)
 	local player_name = player:get_player_name()
-	local meta = mcl_playerinfo.get_mod_meta(player_name, modname)
-	local cart_uuid = meta.attached_to
+	local player_meta = mcl_playerinfo.get_mod_meta(player_name, modname)
+	local cart_uuid = player_meta.attached_to
 	if cart_uuid then
 		local cartdata = get_cart_data(cart_uuid)
 

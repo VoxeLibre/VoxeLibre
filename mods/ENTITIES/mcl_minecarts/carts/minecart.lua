@@ -30,8 +30,8 @@ function mod.attach_driver(cart, player)
 	cart._start_pos = cart.object:get_pos()
 
 	-- Keep track of player attachment
-	local meta = mcl_playerinfo.get_mod_meta(player_name, modname)
-	meta.attached_to = cart._uuid
+	local player_meta = mcl_playerinfo.get_mod_meta(player_name, modname)
+	player_meta.attached_to = cart._uuid
 	staticdata.last_player = player_name
 
 	-- Update player information
