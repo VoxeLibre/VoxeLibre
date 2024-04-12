@@ -285,7 +285,6 @@ local def_hopper = {
 			" takes stuff from mcl_hoppers at " .. minetest.pos_to_string(pos))
 	end,
 	_mcl_minecarts_on_enter_below = function(pos, cart, next_dir)
-		print("Cart entered above "..tostring(pos))
 		-- Only pull to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
@@ -293,8 +292,6 @@ local def_hopper = {
 		end
 	end,
 	_mcl_minecarts_on_enter_above = function(pos, cart, next_dir)
-		print("Cart entered below "..tostring(pos))
-
 		-- Only push to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
@@ -312,25 +309,18 @@ local def_hopper = {
 			return
 		end
 
-		local meta = minetest.get_meta(pos)
+		if not mcl_util.metadata_timer(minetest.get_meta(pos), "minecart_hopper_timer", dtime) then return end
 
 		local cart_pos = mcl_minecarts.get_cart_position(cartdata)
+		if not cart_pos then return false end
+		if pos.x ~= cart_pos.x or pos.z ~= cart_pos.z then return end
 
-		local timer = meta:get_int("minecart_hopper_timer")
-		if timer < dtime then
-			if vector.direction(pos,cart_pos).y > 0 then
-				-- The cart is above us, pull from minecart
-				print("Pulling from cart above "..tostring(pos))
-				hopper_pull_from_mc(cart, pos, 5)
-			else
-				print("Pushing to cart below "..tostring(pos))
-				hopper_push_to_mc(cart, pos, 5)
-			end
-			timer = timer + 1
+		if vector.direction(pos,cart_pos).y > 0 then
+			-- The cart is above us, pull from minecart
+			hopper_pull_from_mc(cart, pos, 5)
 		else
-			timer = timer - dtime
+			hopper_push_to_mc(cart, pos, 5)
 		end
-		meta:set_int("minecart_hopper_timer", timer)
 
 		return true
 	end,
@@ -540,11 +530,8 @@ local def_hopper_side = {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
 	_mcl_minecarts_on_enter_below = function(pos, cart, next_dir)
-		print("Cart entered above "..tostring(pos)..",cart="..tostring(cart))
-
 		-- Only push to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
-			print("Pulling from cart above "..tostring(pos))
 			cart:add_node_watch(pos)
 			hopper_pull_from_mc(cart, pos, 5)
 		end
@@ -583,28 +570,17 @@ local def_hopper_side = {
 	_mcl_minecarts_node_on_step = function(pos, cart, dtime, cartdata)
 		if not cart then return end
 
-		local tick = false
-		local meta = minetest.get_meta(pos)
-		local timer = meta:get_int("minecart_hopper_timer")
-		print("dtime="..dtime..",timer="..timer)
-		if timer < dtime then
-			tick = true
-			timer = timer + 1
-		else
-			timer = timer - dtime
-		end
-		meta:set_int("minecart_hopper_timer", timer)
+		if not mcl_util.metadata_timer(minetest.get_meta(pos), "minecart_hopper_timer", dtime) then return end
 
-		if tick then
-			local cart_pos = mcl_minecarts.get_cart_position(cartdata)
-			if not cart_pos then return false end
+		local cart_pos = mcl_minecarts.get_cart_position(cartdata)
+		if not cart_pos then return false end
+		if cart_pos.x ~= pos.x or cart_pos.z ~= pos.x then return end
 
-			print("uuid="..cartdata.uuid)
-			if cart_pos.y == pos.y then
-				hopper_push_to_mc(cart, pos, 5)
-			elseif cart_pos.y > pos.y then
-				hopper_pull_from_mc(cart, pos, 5)
-			end
+		print("uuid="..cartdata.uuid)
+		if cart_pos.y == pos.y then
+			hopper_push_to_mc(cart, pos, 5)
+		elseif cart_pos.y > pos.y then
+			hopper_pull_from_mc(cart, pos, 5)
 		end
 
 		return true

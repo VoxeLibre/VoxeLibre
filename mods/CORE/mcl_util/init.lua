@@ -861,4 +861,16 @@ function mcl_util.assign_uuid(obj)
 
 	return le._uuid
 end
+function mcl_util.metadata_timer(meta, name, dtime)
+	local tick = false
+	local timer = meta:get_float(name)
+	if timer < dtime then
+		tick = true
+		timer = timer + 1
+	else
+		timer = timer - dtime
+	end
+	meta:set_float(name, timer)
+	if not tick then return true end
+end
 
