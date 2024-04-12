@@ -383,7 +383,7 @@ local professions = {
 			},
 
 			{
-			{ { "mcl_core:emerald", 7, 7 }, { "mcl_itemframes:item_frame", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 7 }, { "mcl_itemframes:frame", 1, 1 } },
 
 			{ { "mcl_core:emerald", 3, 3 }, { "mcl_banners:banner_item_white", 1, 1 } },
 			{ { "mcl_core:emerald", 3, 3 }, { "mcl_banners:banner_item_grey", 1, 1 } },
