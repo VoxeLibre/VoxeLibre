@@ -156,13 +156,13 @@ mod.register_minecart({
 	groups = { container = 1 },
 	on_rightclick = nil,
 	on_activate_by_rail = nil,
-	_mcl_minecarts_on_enter = function(self, pos)
-		local staticdata = self._staticdata
+	_mcl_minecarts_on_enter = function(self, pos, staticdata)
 		if (staticdata.hopper_delay or 0) > 0 then
 			return
 		end
 
 		-- try to pull from containers into our inventory
+		if not self then return end
 		local inv = mcl_entity_invs.load_inv(self,5)
 		local above_pos = pos + vector.new(0,1,0)
 		mcl_util.hopper_pull_to_inventory(inv, 'main', above_pos, pos)

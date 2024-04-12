@@ -156,8 +156,8 @@ function DEFAULT_CART_DEF:add_node_watch(pos)
 	local staticdata = self._staticdata
 	local watches = staticdata.node_watches or {}
 
-	for _,watch in ipairs(watches) do
-		if watch == pos then return end
+	for i=1,#watches do
+		if watches[i] == pos then return end
 	end
 
 	watches[#watches+1] = pos
@@ -168,9 +168,10 @@ function DEFAULT_CART_DEF:remove_node_watch(pos)
 	local watches = staticdata.node_watches or {}
 
 	local new_watches = {}
-	for _,node_pos in ipairs(watches) do
+	for i=1,#watches do
+		local node_pos = watches[i]
 		if node_pos ~= pos then
-			new_watches[#new_watches] = node_pos
+			new_watches[#new_watches + 1] = node_pos
 		end
 	end
 	staticdata.node_watches = new_watches
@@ -256,7 +257,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 
 	mod.update_cart_orientation(self)
 end
-function mod.kill_cart(staticdata)
+function mod.kill_cart(staticdata, killer)
 	local pos
 	minetest.log("action", "cart #"..staticdata.uuid.." was killed")
 
@@ -288,16 +289,33 @@ function mod.kill_cart(staticdata)
 
 	-- Drop items
 	if not staticdata.dropped then
+
+		-- Try to drop the cart
 		local entity_def = minetest.registered_entities[staticdata.cart_type]
 		if entity_def then
-			local drop = entity_def.drop
-			for d=1, #drop do
-				minetest.add_item(pos, drop[d])
+			local drop_cart = true
+			if killer and minetest.is_creative_enabled(killer:get_player_name()) then
+				drop_cart = false
 			end
 
-			-- Prevent item duplication
-			staticdata.dropped = true
+			if drop_cart then
+				local drop = entity_def.drop
+				for d=1, #drop do
+					minetest.add_item(pos, drop[d])
+				end
+			end
 		end
+
+		-- Drop any items in the inventory
+		local inventory = staticdata.inventory
+		if inventory then
+			for i=1,#inventory do
+				minetest.add_item(pos, inventory[i])
+			end
+		end
+
+		-- Prevent item duplication
+		staticdata.dropped = true
 	end
 
 	-- Remove data
@@ -306,7 +324,7 @@ end
 local kill_cart = mod.kill_cart
 
 function DEFAULT_CART_DEF:on_death(killer)
-	kill_cart(self._staticdata)
+	kill_cart(self._staticdata, killer)
 end
 
 -- Create a minecart
@@ -551,6 +569,8 @@ end
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
+
+	-- Periodically respawn carts that come into range of a player
 	timer = timer - dtime
 	if timer <= 0 then
 		local start_time = minetest.get_us_time()
@@ -559,11 +579,13 @@ minetest.register_globalstep(function(dtime)
 		local duration = (stop_time - start_time) / 1e6
 		timer = duration / 250e-6 -- Schedule 50us per second
 		if timer > 5 then timer = 5 end
-		--print("Took "..tostring(duration).." seconds, rescheduling for "..tostring(timer).." seconds in the future")
 	end
 
 	-- Handle periodically updating out-of-range carts
 	-- TODO: change how often cart positions are updated based on velocity
+	local start_time
+	if DEBUG then start_time = minetest.get_us_time() end
+
 	for uuid,staticdata in mod.carts() do
 		local pos = mod.get_cart_position(staticdata)
 		--[[
@@ -579,6 +601,11 @@ minetest.register_globalstep(function(dtime)
 		if staticdata.connected_at then
 			do_movement(staticdata, dtime)
 		end
+	end
+
+	if DEBUG then
+		local stop_time = minetest.get_us_time()
+		print("Update took "..((stop_time-start_time)*1e-6).." seconds")
 	end
 end)
 

@@ -185,7 +185,8 @@ local function get_rail_connections(pos, opt)
 	local ignore_neighbor_connections = opt and opt.ignore_neighbor_connections
 
 	local connections = 0
-	for i,dir in ipairs(CONNECTIONS) do
+	for i = 1,#CONNECTIONS do
+		dir = CONNECTIONS[i]
 		local neighbor = vector.add(pos, dir)
 		local node = minetest.get_node(neighbor)
 		local nodedef = minetest.registered_nodes[node.name]
@@ -223,7 +224,8 @@ local function update_rail_connections(pos, opt)
 	local connections = get_rail_connections(pos, opt)
 
 	-- Check for rasing rails to slopes
-	for i,dir in ipairs(CONNECTIONS) do
+	for i = 1,#CONNECTIONS do
+		local dir = CONNECTIONS[i]
 		local neighbor = vector.add(pos, dir)
 		make_sloped_if_straight( vector.offset(neighbor, 0, -1, 0), dir )
 	end
@@ -258,7 +260,8 @@ local function update_rail_connections(pos, opt)
 
 	local node_def = minetest.registered_nodes[node.name]
 	if get_path(node_def, "_mcl_minecarts", "can_slope") then
-		for _,dir in ipairs(CONNECTIONS) do
+		for i=1,#CONNECTIONS do
+			local dir = CONNECTIONS[i]
 			local higher_rail_pos = vector.offset(pos,dir.x,1,dir.z)
 			local rev_dir = vector.direction(dir,vector.new(0,0,0))
 			if mcl_minecarts:is_rail(higher_rail_pos) and is_connection(higher_rail_pos, rev_dir) then

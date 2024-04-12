@@ -55,7 +55,9 @@ local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 	local dir = staticdata.dir
 	local right = vector.new( dir.z, dir.y, -dir.x)
 	local up = vector.new(0,1,0)
-	for _,check in ipairs(enter_exit_checks) do
+	for i=1,#enter_exit_checks do
+		local check = enter_exit_checks[i]
+
 		local check_pos = pos + dir * check[1] + right * check[2] + up * check[3]
 		local node = minetest.get_node(check_pos)
 		local node_def = minetest.registered_nodes[node.name]
@@ -74,7 +76,7 @@ local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 	-- Handle cart-specific behaviors
 	if luaentity then
 		local hook = luaentity["_mcl_minecarts_"..event]
-		if hook then hook(self, pos) end
+		if hook then hook(luaentity, pos, staticdata) end
 	else
 		--minetest.log("warning", "TODO: change _mcl_minecarts_"..event.." calling so it is not dependent on the existence of a luaentity")
 	end
@@ -99,12 +101,13 @@ local function handle_cart_node_watches(staticdata, dtime)
 	local watches = staticdata.node_watches or {}
 	local new_watches = {}
 	local luaentity = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
-	for _,node_pos in ipairs(watches) do
+	for i=1,#watches do
+		local node_pos = watches[i]
 		local node = minetest.get_node(node_pos)
 		local node_def = minetest.registered_nodes[node.name]
 		if node_def then
 			local hook = node_def._mcl_minecarts_node_on_step
-			if hook and hook(node_pos, luaentity, dtime) then
+			if hook and hook(node_pos, luaentity, dtime, staticdata) then
 				new_watches[#new_watches+1] = node_pos
 			end
 		end
