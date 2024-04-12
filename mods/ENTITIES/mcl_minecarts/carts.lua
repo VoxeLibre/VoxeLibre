@@ -3,7 +3,7 @@ local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 
-local mcl_log = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
+local mcl_log,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
 
 -- Imports
 local CART_BLOCK_SIZE = mod.CART_BLOCK_SIZE
@@ -612,6 +612,7 @@ minetest.register_globalstep(function(dtime)
 end)
 
 minetest.register_on_joinplayer(function(player)
+	-- Try cart reattachment
 	local player_name = player:get_player_name()
 	local player_meta = mcl_playerinfo.get_mod_meta(player_name, modname)
 	local cart_uuid = player_meta.attached_to
