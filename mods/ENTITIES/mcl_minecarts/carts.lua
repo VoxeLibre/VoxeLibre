@@ -42,6 +42,8 @@ local function detach_driver(self)
 	-- Update cart informatino
 	self._driver = nil
 	self._start_pos = nil
+	local meta = mcl_playerinfo.get_mod_meta(driver_name, modname)
+	meta.attached_to = nil
 
 	-- Detatch the player object from the minecart
 	local player = minetest.get_player_by_name(driver_name)
@@ -606,6 +608,45 @@ minetest.register_globalstep(function(dtime)
 	if DEBUG then
 		local stop_time = minetest.get_us_time()
 		print("Update took "..((stop_time-start_time)*1e-6).." seconds")
+	end
+end)
+
+minetest.register_on_joinplayer(function(player)
+	local player_name = player:get_player_name()
+	local meta = mcl_playerinfo.get_mod_meta(player_name, modname)
+	local cart_uuid = meta.attached_to
+	if cart_uuid then
+		print("Trying to reattach "..player_name.." to cart #"..cart_uuid)
+		local cartdata = get_cart_data(cart_uuid)
+
+		-- Can't get into a cart that was destroyed
+		if not cartdata then
+			print("Failed to get cartdata")
+			return
+		end
+
+		-- Don't reattach players if someone else got in the cart
+		if cartdata.last_player ~= player_name then
+			print("Somebody else got in the cart while you were gone")
+			return
+		end
+
+		minetest.after(0.2,function(player_name, cart_uuid)
+			local player = minetest.get_player_by_name(player_name)
+			if not player then
+				print("Can't get an ObjectRef for "..player_name)
+				return
+			end
+
+			local cart = mcl_util.get_luaentity_from_uuid(cart_uuid)
+			if not cart then
+				print("Can't find the luaentity for cart #"..cart_uuid)
+				return
+			end
+
+			mod.attach_driver(cart, player)
+
+		end, player_name, cart_uuid)
 	end
 end)
 

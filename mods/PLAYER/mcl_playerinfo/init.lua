@@ -1,7 +1,10 @@
 local table = table
 
+local storage = minetest.get_mod_storage()
+
 -- Player state for public API
 mcl_playerinfo = {}
+local player_mod_metadata = {}
 
 -- Get node but use fallback for nil or unknown
 local function node_ok(pos, fallback)
@@ -73,6 +76,23 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
+function mcl_playerinfo.get_mod_meta(player_name, modname)
+	-- Load the player's metadata
+	local meta = player_mod_metadata[player_name]
+	if not meta then
+		meta = minetest.deserialize(storage:get_string(player_name))
+	end
+	if not meta then
+		meta = {}
+	end
+	player_mod_metadata[player_name] = meta
+
+	-- Get the requested module's section of the metadata
+	local mod_meta = meta[modname] or {}
+	meta[modname] = mod_meta
+	return mod_meta
+end
+
 -- set to blank on join (for 3rd party mods)
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
@@ -84,7 +104,6 @@ minetest.register_on_joinplayer(function(player)
 		node_stand_below = "",
 		node_head_top = "",
 	}
-
 end)
 
 -- clear when player leaves
@@ -92,4 +111,10 @@ minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 
 	mcl_playerinfo[name] = nil
+end)
+
+minetest.register_on_shutdown(function()
+	for name,data in pairs(player_mod_metadata) do
+		storage:set_string(name, minetest.serialize(data))
+	end
 end)
