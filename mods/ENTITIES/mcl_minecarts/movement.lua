@@ -494,6 +494,11 @@ local function do_detached_movement(self, dtime)
 	if away then
 		local v = self.object:get_velocity()
 		self.object:set_velocity(v - away)
+
+		-- Boost the minecart vertically a bit to get over the edge of rails and things like carpets
+		local boost = vector.offset(vector.multiply(vector.normalize(away), 0.1), 0, 0.07, 0) -- 1/16th + 0.0075
+		local pos = self.object:get_pos()
+		self.object:set_pos(vector.add(pos,boost))
 	end
 
 	-- Try to reconnect to rail
