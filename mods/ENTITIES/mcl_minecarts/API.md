@@ -126,6 +126,10 @@ Called to get the next direction a cart will travel after passing thru this node
 
 ## Cart Functions
 
+`mcl_minecarts.attach_driver(cart, player)`
+
+This attaches (ObjectRef) `player` to the (LuaEntity) `cart`.
+
 `mcl_minecarts.detach_minecart(cart_data)`
 
 This detaches a minecart from any rail it is attached to and makes it start moving
