@@ -177,7 +177,9 @@ local function is_connection(pos, dir)
 	local get_next_dir = get_path(nodedef, "_mcl_minecarts", "get_next_dir")
 	if not get_next_dir then return end
 
-	return get_next_dir(pos, dir, node) == dir
+	local next_dir = get_next_dir(pos, dir, node)
+	next_dir.y = 0
+	return vector.equals(next_dir, dir)
 end
 
 local function get_rail_connections(pos, opt)
@@ -188,14 +190,25 @@ local function get_rail_connections(pos, opt)
 	for i = 1,#CONNECTIONS do
 		dir = CONNECTIONS[i]
 		local neighbor = vector.add(pos, dir)
-		local node = minetest.get_node(neighbor)
+		local node = force_get_node(neighbor)
 		local nodedef = minetest.registered_nodes[node.name]
 
 		-- Only allow connections to the open ends of rails, as decribed by get_next_dir
-		if get_path(nodedef, "groups", "rail") and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
-			local rev_dir = vector.direction(dir,vector.new(0,0,0))
+		if mcl_minecarts:is_rail(neighbor) and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
+			local rev_dir = vector.direction(dir,vector.zero())
 			if ignore_neighbor_connections or is_connection(neighbor, rev_dir) then
-				connections = connections + bit.lshift(1,i - 1)
+				connections = bit.bor(connections, bit.lshift(1,i - 1))
+			end
+		end
+
+		-- Check for sloped rail one block down
+		local below_neighbor = vector.offset(neighbor, 0, -1, 0)
+		local node = force_get_node(below_neighbor)
+		local nodedef = minetest.registered_nodes[node.name]
+		if mcl_minecarts:is_rail(below_neighbor) and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
+			local rev_dir = vector.direction(dir, vector.zero())
+			if ignore_neighbor_connections or is_connection(below_neighbor, rev_dir) then
+				connections = bit.bor(connections, bit.lshift(1,i - 1))
 			end
 		end
 	end
