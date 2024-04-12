@@ -861,16 +861,16 @@ function mcl_util.assign_uuid(obj)
 
 	return le._uuid
 end
-function mcl_util.metadata_timer(meta, name, dtime)
-	local tick = false
-	local timer = meta:get_float(name)
-	if timer < dtime then
-		tick = true
-		timer = timer + 1
-	else
-		timer = timer - dtime
+function mcl_util.metadata_last_act(meta, name, delay)
+	local last_act = meta:get_float(name)
+	local now = minetest.get_us_time() * 1e-6
+	if last_act > now + 0.5 then
+		-- Last action was in the future, clock went backwards, so reset
+	elseif last_act >= now - delay then
+		return false
 	end
-	meta:set_float(name, timer)
-	if not tick then return true end
+
+	meta:set_float(name, now)
+	return true
 end
 

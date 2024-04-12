@@ -445,12 +445,13 @@ local function do_movement( staticdata, dtime )
 	assert(staticdata)
 
 	-- Allow the carts to be delay for the rest of the world to react before moving again
+	--[[
 	if ( staticdata.delay or 0 ) > dtime then
 		staticdata.delay = staticdata.delay - dtime
 		return
 	else
 		staticdata.delay = 0
-	end
+	end]]
 
 	-- Break long movements at block boundaries to make it
 	-- it impossible to jump across gaps due to server lag

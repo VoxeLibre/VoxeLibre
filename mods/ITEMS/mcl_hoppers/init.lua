@@ -96,7 +96,12 @@ local function bent_hopper_act(pos, node, active_object_count, active_object_cou
 	mcl_util.hopper_pull(pos, src_pos)
 end
 
+--[[
+  Returns true if an item was pushed to the minecart
+]]
 local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
+	if not mcl_util.metadata_last_act(minetest.get_meta(dest_pos), "hopper_push_timer", 1) then return false end
+
 	local dest_inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
 	if not dest_inv then
 		mcl_log("No inv")
@@ -136,7 +141,12 @@ local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
 		end
 	end
 end
+--[[
+  Returns true if an item was pulled from the minecart
+]]
 local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
+	if not mcl_util.metadata_last_act(minetest.get_meta(dest_pos), "hopper_pull_timer", 1) then return false end
+
 	local inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
 	if not inv then
 		mcl_log("No inv")
@@ -309,12 +319,12 @@ local def_hopper = {
 			return
 		end
 
-		if not mcl_util.metadata_timer(minetest.get_meta(pos), "minecart_hopper_timer", dtime) then return end
-
 		local cart_pos = mcl_minecarts.get_cart_position(cartdata)
 		if not cart_pos then return false end
-		if pos.x ~= cart_pos.x or pos.z ~= cart_pos.z then return end
-
+		if vector.distance(cart_pos, pos) > 1.5 then
+			cart:remove_node_watch(pos)
+			return
+		end
 		if vector.direction(pos,cart_pos).y > 0 then
 			-- The cart is above us, pull from minecart
 			hopper_pull_from_mc(cart, pos, 5)
@@ -538,6 +548,7 @@ local def_hopper_side = {
 	end,
 	_mcl_minecarts_on_leave_below = function(pos, cart, next_dir)
 		if not cart then return end
+
 		cart:remove_node_watch(pos)
 	end,
 	_mcl_minecarts_on_enter_side = function(pos, cart, next_dir, rail_pos)
@@ -561,6 +572,8 @@ local def_hopper_side = {
 		if cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
 		end
+
+		hopper_push_to_mc(cart, pos, 5)
 	end,
 	_mcl_minecarts_on_leave_side = function(pos, cart, next_dir)
 		if not cart then return end
@@ -570,13 +583,13 @@ local def_hopper_side = {
 	_mcl_minecarts_node_on_step = function(pos, cart, dtime, cartdata)
 		if not cart then return end
 
-		if not mcl_util.metadata_timer(minetest.get_meta(pos), "minecart_hopper_timer", dtime) then return end
-
 		local cart_pos = mcl_minecarts.get_cart_position(cartdata)
 		if not cart_pos then return false end
-		if cart_pos.x ~= pos.x or cart_pos.z ~= pos.x then return end
+		if vector.distance(cart_pos, pos) > 1.5 then
+			cart:remove_node_watch(pos)
+			return false
+		end
 
-		print("uuid="..cartdata.uuid)
 		if cart_pos.y == pos.y then
 			hopper_push_to_mc(cart, pos, 5)
 		elseif cart_pos.y > pos.y then
