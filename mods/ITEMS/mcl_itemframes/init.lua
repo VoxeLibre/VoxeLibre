@@ -271,7 +271,7 @@ minetest.register_lbm({
 
 -- Register the base frame's recipes.
 minetest.register_craft({
-	output = "mcl_itemframes:item_frame",
+	output = "mcl_itemframes:frame",
 	recipe = {
 		{ "mcl_core:stick", "mcl_core:stick", "mcl_core:stick" },
 		{ "mcl_core:stick", "mcl_mobitems:leather", "mcl_core:stick" },
@@ -281,7 +281,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "shapeless",
-	output = 'mcl_itemframes:glow_item_frame',
+	output = 'mcl_itemframes:glow_frame',
 	recipe = { 'mcl_mobitems:glow_ink_sac', 'mcl_itemframes:item_frame' },
 })
 
