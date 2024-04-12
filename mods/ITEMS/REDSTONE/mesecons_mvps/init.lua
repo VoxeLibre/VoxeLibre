@@ -667,7 +667,8 @@ mesecon.register_mvps_unsticky("mcl_heads:steve")
 mesecon.register_mvps_unsticky("mcl_heads:wither_skeleton")
 mesecon.register_mvps_unsticky("mcl_heads:zombie")
 -- Item Frame
-mesecon.register_mvps_unsticky("mcl_itemframes:item_frame")
+mesecon.register_mvps_unsticky("mcl_itemframes:frame")
+mesecon.register_mvps_unsticky("mcl_itemframes:glow_frame")
 -- Ladder
 mesecon.register_mvps_unsticky("mcl_core:ladder")
 -- Lava & Water
