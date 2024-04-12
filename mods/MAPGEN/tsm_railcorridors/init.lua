@@ -1,7 +1,9 @@
 local pairs = pairs
 local tonumber = tonumber
 
-tsm_railcorridors = {}
+tsm_railcorridors = {
+	after = {},
+}
 
 -- Load node names
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/gameconfig.lua")
@@ -169,6 +171,10 @@ local function SetNodeIfCanBuild(pos, node, check_above, can_replace_rail)
 			(can_replace_rail and name == tsm_railcorridors.nodes.rail)
 			) then
 		minetest.set_node(pos, node)
+		local after = tsm_railcorridors.on_place_node[node.name]
+		if after then
+			after(pos, node)
+		end
 		return true
 	else
 		return false
@@ -390,30 +396,6 @@ local function PlaceChest(pos, param2)
 		local items = tsm_railcorridors.get_treasures(pr)
 		mcl_loot.fill_inventory(inv, "main", items, pr)
 	end
-end
-
--- This function checks if a cart has ACTUALLY been spawned.
--- To be calld by minetest.after.
--- This is a workaround thanks to the fact that minetest.add_entity is unreliable as fuck
--- See: https://github.com/minetest/minetest/issues/4759
--- FIXME: Kill this horrible hack with fire as soon you can.
-local RecheckCartHack = nil
-if not minetest.features.random_state_restore then -- proxy for minetest > 5.9.0, this feature will not be removed
-RecheckCartHack = function(params)
-	local pos = params[1]
-	local cart_id = params[2]
-	-- Find cart
-	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
-		if obj ~= nil and obj:get_luaentity().name == cart_id then
-			-- Cart found! We can now safely call the callback func.
-			-- (calling it earlier has the danger of failing)
-			minetest.log("info", "[tsm_railcorridors] Cart spawn succeeded: "..minetest.pos_to_string(pos))
-			tsm_railcorridors.on_construct_cart(pos, obj, pr_carts)
-			return
-		end
-	end
-	minetest.log("info", "[tsm_railcorridors] Cart spawn FAILED: "..minetest.pos_to_string(pos))
-end
 end
 
 -- Try to place a cobweb.
@@ -938,17 +920,13 @@ local function spawn_carts()
 			-- See <https://github.com/minetest/minetest/issues/4759>
 			local cart_id = tsm_railcorridors.carts[cart_type]
 			minetest.log("info", "[tsm_railcorridors] Cart spawn attempt: "..minetest.pos_to_string(cpos))
-			local obj = minetest.add_entity(cpos, cart_id)
+			local cart_staticdata = nil
 
-			-- This checks if the cart is actually spawned, it's a giant hack!
-			-- Note that the callback function is also called there.
-			-- TODO: Move callback function to this position when the
-			-- minetest.add_entity bug has been fixed (supposedly in 5.9.0?)
-			if RecheckCartHack then
-				minetest.after(3, RecheckCartHack, {cpos, cart_id})
-			else
-				tsm_railcorridors.on_construct_cart(cpos, obj, pr_carts)
-			end
+			-- Try to create cart staticdata
+			local hook = tsm_railcorridors.create_cart_staticdata
+			if hook then cart_staticdata = hook(cart_id, cpos, pr) end
+
+			minetest.add_entity(cpos, cart_id, cart_staticdata)
 		end
 	end
 	carts_table = {}
@@ -957,7 +935,7 @@ end
 -- Start generation of a rail corridor system
 -- main_cave_coords is the center of the floor of the dirt room, from which
 -- all corridors expand.
-local function create_corridor_system(main_cave_coords)
+local function create_corridor_system(main_cave_coords, pr)
 
 	-- Dirt room size
 	local maxsize = 6
@@ -1112,13 +1090,22 @@ mcl_structures.register_structure("mineshaft",{
 	y_min = mcl_vars.mg_overworld_min,
 	place_func = function(pos,_,pr,blockseed)
 		local r = pr:next(-50,-10)
+		r = -10
 		local p = vector.offset(pos,0,r,0)
 		if p.y < mcl_vars.mg_overworld_min + 5 then
 			p.y = mcl_vars.mg_overworld_min + 5
 		end
-		if p.y > -10 then return true end
+		--if p.y > -10 then return true end
 		InitRandomizer(blockseed)
-		create_corridor_system(p)
+
+		local hook = tsm_railcorridors.on_start
+		if hook then hook() end
+
+		create_corridor_system(p, pr)
+
+		local hook = tsm_railcorridors.on_finish
+		if hook then hook() end
+
 		return true
 	end,
 

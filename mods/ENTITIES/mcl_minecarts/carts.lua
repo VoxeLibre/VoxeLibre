@@ -309,6 +309,20 @@ function DEFAULT_CART_DEF:on_death(killer)
 	kill_cart(self._staticdata)
 end
 
+-- Create a minecart
+function mod.create_minecart(entity_id, pos, dir)
+	-- Setup cart data
+	local uuid = mcl_util.gen_uuid()
+	data = make_staticdata( nil, pos, dir )
+	data.uuid = uuid
+	data.cart_type = entity_id
+	update_cart_data(data)
+	save_cart_data(uuid)
+
+	return uuid
+end
+local create_minecart = mod.create_minecart
+
 -- Place a minecart at pointed_thing
 function mod.place_minecart(itemstack, pointed_thing, placer)
 	if not pointed_thing.type == "node" then
@@ -332,13 +346,7 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 
 	local entity_id = entity_mapping[itemstack:get_name()]
 
-	-- Setup cart data
-	local uuid = mcl_util.gen_uuid()
-	data = make_staticdata( nil, railpos, cart_dir )
-	data.uuid = uuid
-	data.cart_type = entity_id
-	update_cart_data(data)
-	save_cart_data(uuid)
+	local uuid = create_minecart(entity_id, railpos, cart_dir)
 
 	-- Create the entity with the staticdata already setup
 	local sd = minetest.serialize({ uuid=uuid, seq=1 })
