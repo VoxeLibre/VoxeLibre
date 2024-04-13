@@ -5,8 +5,8 @@ local modpath = minetest.get_modpath(modname)
 -- by debiankaios
 -- adapted for mcl2 by cora
 
-local wood_slab_groups = {handy = 1, axey = 1, flammable = 3, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, wood_slab = 1}
-local wood_stair_groups = {handy = 1, axey = 1, flammable = 3, material_wood = 1, fire_encouragement = 5, fire_flammability = 20, wood_stairs = 1}
+local wood_slab_groups = {handy = 1, axey = 1, material_wood = 1, wood_slab = 1}
+local wood_stair_groups = {handy = 1, axey = 1, material_wood = 1, wood_stairs = 1}
 
 local function generate_warped_tree(pos)
 	minetest.place_schematic(pos,modpath.."/schematics/warped_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
@@ -463,7 +463,7 @@ minetest.register_craft({
 minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 	description = S("Warped Hyphae Wood"),
 	tiles = {"mcl_crimson_warped_hyphae_wood.png"},
-	groups = {handy = 5,axey = 1, flammable = 3, wood=1,building_block = 1, material_wood = 1, fire_encouragement = 5, fire_flammability = 20},
+	groups = {handy = 5,axey = 1, wood=1,building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_hardness = 2,
 })
@@ -475,6 +475,27 @@ minetest.register_craft({
 	output = "mcl_crimson:warped_hyphae_wood 4",
 	recipe = {
 		{"mcl_crimson:warped_hyphae"},
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_hyphae_wood 4",
+	recipe = {
+		{"mcl_crimson:warped_hyphae_bark"},
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_hyphae_wood 4",
+	recipe = {
+		{"mcl_crimson:stripped_warped_hyphae"},
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:warped_hyphae_wood 4",
+	recipe = {
+		{"mcl_crimson:stripped_warped_hyphae_bark"},
 	},
 })
 
@@ -671,6 +692,27 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "mcl_crimson:crimson_hyphae_wood 4",
+	recipe = {
+		{"mcl_crimson:crimson_hyphae_bark"},
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_hyphae_wood 4",
+	recipe = {
+		{"mcl_crimson:stripped_crimson_hyphae"},
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_crimson:crimson_hyphae_wood 4",
+	recipe = {
+		{"mcl_crimson:stripped_crimson_hyphae_bark"},
+	},
+})
+
+minetest.register_craft({
 	output = "mcl_crimson:crimson_nylium 2",
 	recipe = {
 		{"mcl_nether:nether_wart"},
@@ -715,7 +757,7 @@ mcl_doors:register_door("mcl_crimson:crimson_door", {
 	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
 	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
 	inventory_image = "mcl_crimson_crimson_door.png",
-	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
+	groups = {handy=1,axey=1, material_wood=1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
 	tiles_bottom = "mcl_crimson_crimson_door_bottom.png",
@@ -730,7 +772,7 @@ mcl_doors:register_trapdoor("mcl_crimson:crimson_trapdoor", {
 	tile_front = "mcl_crimson_crimson_trapdoor.png",
 	tile_side = "mcl_crimson_crimson_trapdoor_side.png",
 	wield_image = "mcl_crimson_crimson_trapdoor.png",
-	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
+	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -741,7 +783,7 @@ mcl_fences.register_fence_and_fence_gate(
 	S("Crimson Fence"),
 	S("Crimson Fence Gate"),
 	"mcl_crimson_crimson_fence.png",
-	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
+	{handy=1,axey=1,fence_wood=1},
 	minetest.registered_nodes["mcl_crimson:crimson_hyphae"]._mcl_hardness,
 	minetest.registered_nodes["mcl_crimson:crimson_hyphae"]._mcl_blast_resistance,
 	{"group:fence_wood"},
@@ -753,7 +795,7 @@ mcl_doors:register_door("mcl_crimson:warped_door", {
 	_doc_items_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."),
 	_doc_items_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."),
 	inventory_image = "mcl_crimson_warped_door.png",
-	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
+	groups = {handy=1,axey=1, material_wood=1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
 	tiles_bottom = "mcl_crimson_warped_door_bottom.png",
@@ -768,7 +810,7 @@ mcl_doors:register_trapdoor("mcl_crimson:warped_trapdoor", {
 	tile_front = "mcl_crimson_warped_trapdoor.png",
 	tile_side = "mcl_crimson_warped_trapdoor_side.png",
 	wield_image = "mcl_crimson_warped_trapdoor.png",
-	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1, flammable=-1},
+	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1},
 	_mcl_hardness = 3,
 	_mcl_blast_resistance = 3,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -779,7 +821,7 @@ mcl_fences.register_fence_and_fence_gate(
 	S("Warped Fence"),
 	S("Warped Fence Gate"),
 	"mcl_crimson_warped_fence.png",
-	{handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20},
+	{handy=1,axey=1,fence_wood=1},
 	minetest.registered_nodes["mcl_crimson:warped_hyphae"]._mcl_hardness,
 	minetest.registered_nodes["mcl_crimson:warped_hyphae"]._mcl_blast_resistance,
 	{"group:fence_wood"},

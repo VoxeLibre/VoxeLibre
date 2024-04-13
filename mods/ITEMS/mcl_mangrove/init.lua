@@ -400,6 +400,27 @@ minetest.register_craft({
 	})
 
 minetest.register_craft({
+		output = "mcl_mangrove:mangrove_wood 4",
+		recipe = {
+			{"mcl_mangrove:mangrove_tree_bark"},
+		}
+	})
+
+minetest.register_craft({
+		output = "mcl_mangrove:mangrove_wood 4",
+		recipe = {
+			{"mcl_mangrove:mangrove_stripped"},
+		}
+	})
+
+minetest.register_craft({
+		output = "mcl_mangrove:mangrove_wood 4",
+		recipe = {
+			{"mcl_mangrove:mangrove_stripped_bark"},
+		}
+	})
+
+minetest.register_craft({
 	type = "fuel",
 	recipe = "group:fence_wood",
 	burntime = 15,

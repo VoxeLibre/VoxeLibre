@@ -2,6 +2,8 @@
 local planks = "mcl_cherry_blossom:cherrywood"
 local logs = "mcl_cherry_blossom:cherrytree"
 local stripped_logs = "mcl_cherry_blossom:stripped_cherrytree"
+local wood = "mcl_cherry_blossom:cherrytree_bark"
+local stripped_wood = "mcl_cherry_blossom:stripped_cherrytree_bark"
 
 minetest.register_craft({
 	output = "mcl_cherry_blossom:cherrytree_bark 3",
@@ -23,6 +25,27 @@ minetest.register_craft({
 	output = "mcl_cherry_blossom:cherrywood 4",
 	recipe = {
 		{ logs },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_cherry_blossom:cherrywood 4",
+	recipe = {
+		{ wood },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_cherry_blossom:cherrywood 4",
+	recipe = {
+		{ stripped_logs },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_cherry_blossom:cherrywood 4",
+	recipe = {
+		{ stripped_wood },
 	}
 })
 
