@@ -30,6 +30,8 @@ local strider = {
 	} },
 	visual_size = {x=3, y=3},
 	sounds = {
+		eat = "mobs_mc_animal_eat_generic",
+		distance = 16,
 	},
 	jump = true,
 	makes_footstep_sound = true,
@@ -51,6 +53,7 @@ local strider = {
 		walk_start = 1,
 		walk_end = 20,
 	},
+	follow = { "mcl_crimson:warped_fungus" },
 	lava_damage = 0,
 	fire_damage = 0,
 	light_damage = 0,
@@ -67,8 +70,13 @@ local strider = {
 	do_custom = function(self, dtime)
 
 		if minetest.find_node_near(self.object:get_pos(), 2, {"mcl_core:lava_source","mcl_core:lava_flowing","mcl_nether:nether_lava_source","mcl_nether:nether_lava_flowing"}) then
-			self.walk_velocity = 2
-			self.run_velocity = 4
+			if self.driver then
+				self.walk_velocity = 4
+				self.run_velocity = 8
+			else
+				self.walk_velocity = 2
+				self.run_velocity = 4
+			end
 			self.base_texture[1] = "extra_mobs_strider.png"
 			self.shaking = false
 		else
@@ -122,7 +130,7 @@ local strider = {
 
 		local wielditem = clicker:get_wielded_item()
 
-		if wielditem:get_name() ~= "mcl_crimson:warped_fungus" then
+		if wielditem:get_name() == "mcl_crimson:warped_fungus" then
 			if self:feed_tame(clicker, 1, true, true) then return end
 		end
 
@@ -206,7 +214,7 @@ textures = { {
 } }
 baby_strider.walk_velocity = 1.2
 baby_strider.run_velocity = 2.4
-baby_strider.child = 1
+baby_strider.child = true
 
 mcl_mobs.register_mob("mobs_mc:baby_strider", baby_strider)
 

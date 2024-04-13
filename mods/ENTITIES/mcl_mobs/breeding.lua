@@ -322,7 +322,7 @@ function mob_class:toggle_sit(clicker,p)
 		particle = "mobs_mc_wolf_icon_roam.png"
 		self.order = "roam"
 		self.state = "stand"
-		self.walk_chance = default_walk_chance
+		self.walk_chance = 50
 		self.jump = true
 		self:set_animation("stand")
 		-- TODO: Add sitting model
