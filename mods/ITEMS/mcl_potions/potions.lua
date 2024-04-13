@@ -656,7 +656,7 @@ mcl_potions.register_potion({
 	name = "resistance",
 	desc_suffix = S("of Resistance"),
 	_tt = nil,
-	_longdesc = S("Descreases damage taken."),
+	_longdesc = S("Decreases damage taken."),
 	color = "#2552A5",
 	_effect_list = {
 		resistance = {},
@@ -668,7 +668,7 @@ mcl_potions.register_potion({
 	name = "resistance",
 	desc_suffix = S("of Resistance"),
 	_tt = nil,
-	_longdesc = S("Descreases damage taken."),
+	_longdesc = S("Decreases damage taken."),
 	color = "#2552A5",
 	_effect_list = {
 		resistance = {},
@@ -680,7 +680,7 @@ mcl_potions.register_potion({
 	name = "turtle_master",
 	desc_suffix = S("of Turtle Master"),
 	_tt = nil,
-	_longdesc = S("Descreases damage taken at the cost of speed."),
+	_longdesc = S("Decreases damage taken at the cost of speed."),
 	color = "#255235",
 	_effect_list = {
 		resistance = {
