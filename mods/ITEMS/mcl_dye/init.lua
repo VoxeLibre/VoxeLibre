@@ -182,6 +182,10 @@ local function apply_bone_meal(pointed_thing, user)
 	local n = minetest.get_node(pos)
 	if n.name == "" then return false end
 
+	if mcl_util.check_area_protection(pos, pointed_thing.above, user) then
+		return false
+	end
+
 	for _, func in pairs(mcl_dye.bone_meal_callbacks) do
 		if func(pointed_thing, user) then
 			return true
