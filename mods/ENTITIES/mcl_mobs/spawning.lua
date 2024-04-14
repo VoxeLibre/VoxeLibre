@@ -596,14 +596,42 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	spawn_dictionary[key]["max_height"] = max_height
 	spawn_dictionary[key]["day_toggle"] = day_toggle
 	spawn_dictionary[key]["check_position"] = check_position
-
 end
+
+-- Calculate the inverse of a piecewise linear function f(x). Line segments are represented as two
+-- adjacent points specified as { x, f(x) }. At least 2 points are required. If there are most solutions,
+-- the one with a lower x value will be chosen.
+local function inverse_pwl(fx, f)
+	if fx < f[1][2] then
+		return f[1][1]
+	end
+
+	for i=2,#f do
+		local x0,fx0 = unpack(f[i-1])
+		local x1,fx1 = unpack(f[i  ])
+		if fx < fx1 then
+			return (fx - fx0) * (x1 - x0) / (fx1 - fx0) + x0
+		end
+	end
+
+	return f[#f][1]
+end
+
+local SPAWN_DISTANCE_CDF_PWL = {
+	{0.000,0.00},
+	{0.083,0.40},
+	{0.416,0.75},
+	{1.000,1.00},
+}
 
 local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
-	-- TODO We should consider spawning something a little further away sporadically.
-	-- It would be good for sky farms and variance, rather than all being on the 24 - 32 block away radius
-	local distance = math_random(MOB_SPAWN_ZONE_INNER, MOB_SPAWN_ZONE_MIDDLE)
+	-- Select a distance such that distances closer to the player are selected much more often than
+	-- those further away from the player.
+	local fx = (math_random(1,10000)-1) / 10000
+	local x = inverse_pwl(fx, SPAWN_DISTANCE_CDF_PWL)
+	distance = x * (MOB_SPAWN_ZONE_OUTER - MOB_SPAWN_ZONE_INNER) + MOB_SPAWN_ZONE_INNER
+	--print("Using spawn distance of "..tostring(distance).."  fx="..tostring(fx)..",x="..tostring(x))
 
 	-- TODO Floor xoff and zoff and add 0.5 so it tries to spawn in the middle of the square. Less failed attempts.
 	-- Use spherical coordinates https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
@@ -652,7 +680,7 @@ local function get_next_mob_spawn_pos(pos)
 			{x = goal_pos.x, y = y_min, z = goal_pos.z},
 			{x = goal_pos.x, y = y_max, z = goal_pos.z},
 			{"group:solid", "group:water", "group:lava"}
-	)
+	) or {}
 
 	-- Select only the locations at a valid distance
 	local valid_positions = {}
@@ -1231,7 +1259,6 @@ function mob_class:check_despawn(pos, dtime)
 		end
 	end
 end
-
 
 minetest.register_chatcommand("mobstats",{
 	privs = { debug = true },
