@@ -1385,11 +1385,17 @@ function mcl_potions._reset_player_effects(player, set_hud)
 		return
 	end
 
+	local removed_effects = {}
 	for name, effect in pairs(registered_effects) do
 		if EF[name][player] and effect.on_end then effect.on_end(player) end
+		if effect.after_end then table.insert(removed_effects, effect.after_end) end
 	end
 
 	mcl_potions._clear_cached_player_data(player)
+
+	for i=1, #removed_effects do
+		removed_effects[i](player)
+	end
 
 	if set_hud ~= false then
 		potions_set_hud(player)
@@ -1535,7 +1541,16 @@ function mcl_potions.get_total_fatigue(object)
 end
 
 function mcl_potions.clear_effect(object, effect)
-	EF[effect][object] = nil
+	if not EF[effect] then
+		minetest.log("warning", "[mcl_potions] Tried to remove an effect that is not registered: " .. dump(effect))
+		return false
+	end
+	local def = registered_effects[effect]
+	if EF[effect][object] then
+		if def.on_end then def.on_end(object) end
+		EF[effect][object] = nil
+		if def.after_end then def.after_end(object) end
+	end
 	if not object:is_player() then return end
 	potions_set_hud(object)
 end
