@@ -648,7 +648,7 @@ local function get_next_mob_spawn_pos(pos)
 	end
 
 	-- Calculate upper/lower y limits
-	local R1 = MOB_SPAWN_ZONE_MIDDLE
+	local R1 = MOB_SPAWN_ZONE_OUTER
 	local d = vector_distance( pos, vector.new( goal_pos.x, pos.y, goal_pos.z ) ) -- distance from player to projected point on horizontal plane
 	local y1 = math_sqrt( R1*R1 - d*d ) -- absolue value of distance to outer sphere
 
