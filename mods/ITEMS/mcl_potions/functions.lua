@@ -300,8 +300,10 @@ mcl_potions.register_effect({
 	get_tt = function(factor)
 		return S("limitless breathing under water")
 	end,
+	res_condition = function(object)
+		return (not object:is_player()) -- TODO add support for breath setting for mobs
+	end,
 	on_step = function(dtime, object, factor, duration)
-		if not object:is_player() then return end
 		if object:get_breath() then
 			hb.hide_hudbar(object, "breath")
 			if object:get_breath() < 10 then object:set_breath(10) end
@@ -316,6 +318,9 @@ mcl_potions.register_effect({
 	description = S("Dolphin's Grace"),
 	get_tt = function(factor)
 		return S("swimming gracefully")
+	end,
+	res_condition = function(object)
+		return (not object:is_player()) -- TODO needs mob physics factor API
 	end,
 	on_hit_timer = function(object, factor, duration)
 		local node = minetest.get_node_or_nil(object:get_pos())
@@ -340,7 +345,7 @@ mcl_potions.register_effect({
 		return S("-@1% jumping power", math.floor(-factor*100))
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob physics factor API
 	end,
 	on_start = function(object, factor)
 		playerphysics.add_physics_factor(object, "jump", "mcl_potions:leaping", 1+factor)
@@ -361,7 +366,7 @@ mcl_potions.register_effect({
 		return S("decreases gravity effects")
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob physics factor API
 	end,
 	on_start = function(object, factor)
 		playerphysics.add_physics_factor(object, "gravity", "mcl_potions:slow_falling", 0.5)
@@ -383,7 +388,7 @@ mcl_potions.register_effect({
 		return S("+@1% running speed", math.floor(factor*100))
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob physics factor API
 	end,
 	on_start = function(object, factor)
 		playerphysics.add_physics_factor(object, "speed", "mcl_potions:swiftness", 1+factor)
@@ -404,7 +409,7 @@ mcl_potions.register_effect({
 		return S("-@1% running speed", math.floor(factor*100))
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob physics factor API
 	end,
 	on_start = function(object, factor)
 		playerphysics.add_physics_factor(object, "speed", "mcl_potions:slowness", 1-factor)
@@ -441,7 +446,7 @@ mcl_potions.register_effect({
 		return S("improved vision during the night")
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_start = function(object, factor)
 		object:get_meta():set_int("night_vision", 1)
@@ -466,7 +471,7 @@ mcl_potions.register_effect({
 		return S("surrounded by darkness").."\n"..S("not seeing anything beyond @1 nodes", factor)
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_start = function(object, factor)
 		object:get_meta():set_int("darkness", 1)
@@ -580,7 +585,7 @@ mcl_potions.register_effect({
 		return S("HP increased by @1", factor)
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob HP modifier API?
 	end,
 	on_start = function(object, factor)
 		object:set_properties({hp_max = minetest.PLAYER_MAX_HP_DEFAULT+factor})
@@ -601,7 +606,7 @@ mcl_potions.register_effect({
 		return S("absorbs up to @1 incoming damage", factor)
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO dmg modifiers don't work for mobs
 	end,
 	on_start = function(object, factor)
 		hb.change_hudbar(object, "absorption", factor, (math.floor(factor/20-0.05)+1)*20)
@@ -641,7 +646,7 @@ mcl_potions.register_effect({
 		return S("resistance to fire damage")
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO dmg modifiers don't work for mobs
 	end,
 	particle_color = "#E49A3A",
 	uses_factor = false,
@@ -655,7 +660,7 @@ mcl_potions.register_effect({
 		return S("resist @1% of incoming damage", math.floor(factor*100))
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO dmg modifiers don't work for mobs
 	end,
 	particle_color = "#2552A5",
 	uses_factor = true,
@@ -672,7 +677,7 @@ mcl_potions.register_effect({
 	description = S("Luck"),
 	particle_color = "#7BFF42",
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_start = function(object, factor)
 		mcl_luck.apply_luck_modifier(object:get_player_name(), "mcl_potions:luck", factor)
@@ -691,7 +696,7 @@ mcl_potions.register_effect({
 	description = S("Bad Luck"),
 	particle_color = "#887343",
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_start = function(object, factor)
 		mcl_luck.apply_luck_modifier(object:get_player_name(), "mcl_potions:bad_luck", -factor)
@@ -746,7 +751,7 @@ mcl_potions.register_effect({
 		return S("-1 HP / 1 s, can kill, -@1% running speed", math.floor(factor*100))
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob physics factor API
 	end,
 	on_start = function(object, factor)
 		mcl_burning.extinguish(object)
@@ -799,7 +804,7 @@ mcl_potions.register_effect({
 		return S("impaired sight")
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_start = function(object, factor)
 		EF.blindness[object].vignette = object:hud_add({
@@ -842,7 +847,7 @@ mcl_potions.register_effect({
 		return S("not feeling very well...").."\n"..S("frequency: @1 / 1 s", factor)
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_start = function(object, factor)
 		object:set_lighting({
@@ -891,7 +896,7 @@ mcl_potions.register_effect({
 		return S("exhausts by @1 per second", factor)
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_start = function(object, factor)
 		hb.change_hudbar(object, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
@@ -924,7 +929,7 @@ mcl_potions.register_effect({
 		return S("saturates by @1 per second", factor)
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_step = function(dtime, object, factor, duration)
 		mcl_hunger.set_hunger(object, math.min(mcl_hunger.get_hunger(object)+dtime*factor, 20))
@@ -988,7 +993,7 @@ mcl_potions.register_effect({
 		return S("+@1% mining and attack speed", math.floor(factor*100))
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob API support
 	end,
 	on_start = haste_fatigue_hand_update,
 	after_end = function(object)
@@ -1009,7 +1014,7 @@ mcl_potions.register_effect({
 		return S("-@1% mining and attack speed", math.floor((1-factor)*100))
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob API support
 	end,
 	on_start = haste_fatigue_hand_update,
 	after_end = function(object)
@@ -1030,7 +1035,7 @@ mcl_potions.register_effect({
 		return S("+@1% mining and attack speed in water").."\n"..S("limitless breathing under water", math.floor(factor*100))
 	end,
 	res_condition = function(object)
-		return (not object:is_player())
+		return (not object:is_player()) -- TODO needs mob API support
 	end,
 	on_start = haste_fatigue_hand_update,
 	on_step = function(dtime, object, factor, duration)
@@ -1380,34 +1385,35 @@ function mcl_potions._reset_haste_fatigue_item_meta(player)
 end
 mcl_gamemode.register_on_gamemode_change(mcl_potions._reset_haste_fatigue_item_meta)
 
-function mcl_potions._clear_cached_player_data(player)
+function mcl_potions._clear_cached_effect_data(object)
 	for name, effect in pairs(EF) do
-		effect[player] = nil
+		effect[object] = nil
 	end
-
-	local meta = player:get_meta()
+	if not object:is_player() then return end
+	local meta = object:get_meta()
 	meta:set_int("night_vision", 0)
 end
 
-function mcl_potions._reset_player_effects(player, set_hud)
-	if not player:is_player() then
-		return
+function mcl_potions._reset_effects(object, set_hud)
+	local set_hud = set_hud
+	if not object:is_player() then
+		set_hud = false
 	end
 
 	local removed_effects = {}
 	for name, effect in pairs(registered_effects) do
-		if EF[name][player] and effect.on_end then effect.on_end(player) end
+		if EF[name][object] and effect.on_end then effect.on_end(object) end
 		if effect.after_end then table.insert(removed_effects, effect.after_end) end
 	end
 
-	mcl_potions._clear_cached_player_data(player)
+	mcl_potions._clear_cached_effect_data(object)
 
 	for i=1, #removed_effects do
-		removed_effects[i](player)
+		removed_effects[i](object)
 	end
 
 	if set_hud ~= false then
-		potions_set_hud(player)
+		potions_set_hud(object)
 	end
 end
 
@@ -1566,17 +1572,17 @@ end
 
 minetest.register_on_leaveplayer( function(player)
 	mcl_potions._save_player_effects(player)
-	mcl_potions._clear_cached_player_data(player) -- clear the buffer to prevent looking for a player not there
+	mcl_potions._clear_cached_effect_data(player) -- clear the buffer to prevent looking for a player not there
 	icon_ids[player:get_player_name()] = nil
 end)
 
 minetest.register_on_dieplayer( function(player)
-	mcl_potions._reset_player_effects(player)
+	mcl_potions._reset_effects(player)
 	potions_set_hud(player)
 end)
 
 minetest.register_on_joinplayer( function(player)
-	mcl_potions._reset_player_effects(player, false) -- make sure there are no weird holdover effects
+	mcl_potions._reset_effects(player, false) -- make sure there are no weird holdover effects
 	mcl_potions._load_player_effects(player)
 	mcl_potions._reset_haste_fatigue_item_meta(player)
 	potions_init_icons(player)
@@ -1716,11 +1722,28 @@ end
 -- ██║░░░░░╚██████╔╝██║░╚███║╚█████╔╝░░░██║░░░██║╚█████╔╝██║░╚███║██████╔╝
 -- ╚═╝░░░░░░╚═════╝░╚═╝░░╚══╝░╚════╝░░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝╚═════╝░
 
+local registered_res_predicates = {}
+-- API
+-- This is supposed to add custom resistance functions independent of effects
+-- E.g. some entity could be resistant to all (or some) effects under specific conditions
+-- predicate - function(object, effect_name) - return true if resists effect
+function mcl_potions.register_generic_resistance_predicate(predicate)
+	if type(predicate) == "function" then
+		table.insert(registered_res_predicates, predicate)
+	else
+		error("Attempted to register non-function as a predicate")
+	end
+end
+
 local function target_valid(object, name)
 	if not object or object:get_hp() <= 0 then return false end
 
 	local entity = object:get_luaentity()
 	if entity and entity.is_boss then return false end
+
+	for i=1, #registered_res_predicates do
+		if registered_res_predicates[i](object, name) then return false end
+	end
 
 	if not (registered_effects[name].res_condition
 		and registered_effects[name].res_condition(object)) then return true end

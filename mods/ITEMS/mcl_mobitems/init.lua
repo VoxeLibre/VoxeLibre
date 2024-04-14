@@ -154,7 +154,7 @@ local function drink_milk_delayed(itemstack, player, pointed_thing)
 		) then
 			mcl_hunger.stop_poison(player)
 		end
-		mcl_potions._reset_player_effects(player)
+		mcl_potions._reset_effects(player)
 	end
 
 	-- Wrapper for handling mcl_hunger delayed eating
