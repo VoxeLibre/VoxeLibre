@@ -133,7 +133,7 @@ local function init_hud(player)
 		hud_elem_type = "image",
 		text = "blank.png",
 		position = {x = 0.5, y = 1},
-		scale = {x = 30, y = 30},
+		scale = {x = -25, y = -45},
 		alignment = {x = 0, y = -1},
 		offset = {x = 0, y = -30},
 		z_index = -200,
