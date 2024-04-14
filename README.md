@@ -1,6 +1,6 @@
-# MineClone2
-An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
-Developed by many people. Not developed or endorsed by Mojang AB.
+# VoxeLibre
+A game inspired by Minecraft for Minetest. Forked from MineClone by davedevils.
+Developed by many people, see CREDITS.md for a complete list.
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -67,16 +67,16 @@ an explanation.
 This game requires [Minetest](http://minetest.net) to run (version 5.4.1 or
 later). So you need to install Minetest first. Only stable versions of Minetest
 are officially supported.
-There is no support for running MineClone2 in development versions of Minetest.
+There is no support for running VoxeLibre in development versions of Minetest.
 
-To install MineClone2 (if you haven't already), move this directory into the
+To install VoxeLibre (if you haven't already), move this directory into the
 “games” directory of your Minetest data directory. Consult the help of
 Minetest to learn more.
 
 ## Useful links
-The MineClone2 repository is hosted at Mesehub. To contribute or report issues, head there.
+The VoxeLibre repository is hosted at Mesehub. To contribute or report issues, head there.
 
-* Mesehub: <https://git.minetest.land/MineClone2/MineClone2>
+* Mesehub: <https://git.minetest.land/VoxeLibre/VoxeLibre>
 * Discord: <https://discord.gg/xE4z8EEpDC>
 * YouTube: <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
 * ContentDB: <https://content.minetest.net/packages/wuzzy/mineclone2/>
@@ -104,7 +104,7 @@ well on really low spec computers.
 This game is currently in **beta** stage.
 It is playable, but not yet feature-complete.
 Backwards-compability is not entirely guaranteed, updating your world might cause small bugs.
-If you want to use the development version of MineClone2 in production, the master branch is usually relatively stable.
+If you want to use the development version of VoxeLibre in production, the master branch is usually relatively stable.
 
 The following main features are available:
 
@@ -187,7 +187,7 @@ Technical differences from Minecraft:
 * Different engine (Minetest)
 * Different easter eggs
 
-… and finally, MineClone2 is free software (“free” as in “freedom”)!
+… and finally, VoxeLibre is free software (“free” as in “freedom”)!
 
 ## Other readme files
 

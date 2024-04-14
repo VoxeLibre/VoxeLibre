@@ -1,21 +1,21 @@
-# Contributing to MineClone2
-So you want to contribute to MineClone2?
+# Contributing to VoxeLibre
+So you want to contribute to VoxeLibre?
 Wow, thank you! :-)
 
-MineClone2 is maintained by AncientMariner and Nicu. If you have any 
+VoxeLibre is maintained by AncientMariner and Herowl. If you have any
 problems or questions, contact us on Discord/Matrix (See Links section below).
 
-You can help with MineClone2's development in many different ways,
+You can help with VoxeLibre's development in many different ways,
 whether you're a programmer or not.
 
-## MineClone2's development target is to...
-- Create a stable, peformant, moddable, free/libre game based on Minecraft
+## VoxeLibre's development target is to...
+- Create a stable, peformant, moddable, free/libre game inspired by Minecraft
 using the Minetest engine, usable in both singleplayer and multiplayer. 
 - Currently, a lot of features are already implemented.
 Polishing existing features is always welcome.
 
 ## Links
-* [Mesehub](https://git.minetest.land/MineClone2/MineClone2)
+* [Mesehub](https://git.minetest.land/VoxeLibre/VoxeLibre)
 * [Discord](https://discord.gg/xE4z8EEpDC)
 * [YouTube](https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A)
 * [IRC](https://web.libera.chat/#mineclone2)
@@ -26,23 +26,23 @@ Polishing existing features is always welcome.
 * [OpenCollective](https://opencollective.com/mineclone2)
 
 ## Using git
-MineClone2 is developed using the version control system
+VoxeLibre is developed using the version control system
 [git](https://git-scm.com/). If you want to contribute code to the
 project, it is **highly recommended** that you learn the git basics.
 For non-programmers and people who do not plan to contribute code to
-MineClone2, git is not required. However, git is a tool that will be
+VoxeLibre, git is not required. However, git is a tool that will be
 referenced frequently because of its usefulness. As such, it is valuable
 in learning how git works and its terminology. It can also help you
 keeping your game updated, and easily test pull requests.
 
 Look at our wiki for some concrete guides:
-https://git.minetest.land/MineClone2/MineClone2/wiki/
+https://git.minetest.land/VoxeLibre/VoxeLibre/wiki/
 
 ## How you can help as a non-programmer
 As someone who does not know how to write programs in Lua or does not
 know how to use the Minetest API, you can still help us out a lot. For
 example, by opening an issue in the
-[Issue tracker](https://git.minetest.land/MineClone2/MineClone2/issues),
+[Issue tracker](https://git.minetest.land/VoxeLibre/VoxeLibre/issues),
 you can report a bug or request a feature.
 
 ### Rules about both bugs and feature requests
@@ -75,7 +75,7 @@ in singleplayer, post a screenshot of the message that Minetest showed
 when the crash happened (or copy the message into your issue). If you
 are a server admin, you can find error messages in the log file of the
 server.
-* Tell us which MineClone2 and Minetest versions you are using (from Minetest 5.7 type /ver, for previous versions, check the game.conf or README.md file).
+* Tell us which VoxeLibre and Minetest versions you are using (from Minetest 5.7 type /ver, for previous versions, check the game.conf or README.md file).
 * Tell us how to reproduce the problem: What you were doing to trigger
 the bug, e.g. before the crash happened or what causes the faulty
 behavior.
@@ -84,14 +84,14 @@ behavior.
 * Ensure the requested feature fulfills our development targets and
 goals.
 * Begging or excessive attention seeking does not help us in the
-slightest, and may very well disrupt MineClone2 development. It's better
+slightest, and may very well disrupt VoxeLibre development. It's better
 to put that energy into helping or researching the feature in question.
 After all, we're just volunteers working on our spare time.
-* Ensure the requested feature has not been implemented in MineClone2
+* Ensure the requested feature has not been implemented in VoxeLibre
 latest or development versions.
 
 ### Testing code
-If you want to help us with speeding up MineClone2 development and
+If you want to help us with speeding up VoxeLibre development and
 making the game more stable, a great way to do that is by testing out
 new features from contributors. For most new things that get into the
 game, a pull request is created. A pull request is essentially a
@@ -103,14 +103,16 @@ tell us if the code works as expected without any issues. Ideally, you
 would report issues will pull requests similar to when you were
 reporting bugs that are the mainline (See Reporting bugs section). You
 can find currently open pull requests here:
-<https://git.minetest.land/MineClone2/MineClone2/pulls>. Note that pull
+<https://git.minetest.land/VoxeLibre/VoxeLibre/pulls>. Note that pull
 requests that start with a `WIP:` are not done yet and therefore could
 still undergo substantial change. Testing these is still helpful however
 because that is the reason developers put them up as WIP so other people
-can have a look at the PR.
+can have a look at the PR. The wiki has an article with instructions
+on how to test Pull Requests:
+<https://git.minetest.land/VoxeLibre/VoxeLibre/wiki/Testing-Pull-Requests>.
 
 ### Contributing assets
-Due to license problems, MineClone2 cannot use Minecraft's assets,
+Due to license problems, VoxeLibre cannot use Minecraft's assets,
 therefore we are always looking for asset contributions.
 
 To contribute assets, it can be useful to learn git basics and read
@@ -128,9 +130,9 @@ If you want to make such contributions, join our Discord server. Demands
 for textures will be communicated there.
 
 #### Sounds
-MineClone2 currently does not have a consistent way to handle sounds.
+VoxeLibre currently does not have a consistent way to handle sounds.
 The sounds in the game come from different sources, like the SnowZone
-resource pack or minetest_game. Unfortunately, MineClone2 does not play
+resource pack or minetest_game. Unfortunately, VoxeLibre does not play
 a sound in every situation you would get one in Minecraft. Any help with
 sounds is greatly appreciated, however if you add new sounds you should
 probably work together with a programmer, to write the code to actually
@@ -140,7 +142,7 @@ changes made by the contributor. Use the README files in the mod to
 communicate this information.
 
 #### 3D Models
-Most of the 3D Models in MineClone2 come from
+Many of the 3D Models in VoxeLibre come from
 [22i's repository](https://github.com/22i/minecraft-voxel-blender-models).
 Similar to the textures, we need people that can make 3D Models with
 Blender on demand. Many of the models have to be patched, some new
@@ -154,7 +156,7 @@ also be credited in the Contributors section.
 ### Contributing Translations
 
 #### Workflow
-To add/update support for your language to MineClone2, you should take
+To add/update support for your language to VoxeLibre, you should take
 the steps documented in the section for Programmers, add/update the
 translation files of the mods that you want to update. You can add
 support for all mods, just some of them or only one mod; you can update
@@ -178,7 +180,7 @@ If you have commited the results yourself, you will also be credited in
 the Contributors section.
 
 ### Profiling
-If you own a server, a great way to help us improve MineClone2's code
+If you own a server, a great way to help us improve VoxeLibre's code
 is by giving us profiler results. Profiler results give us detailed
 information about the game's performance and let us know places to
 investigate optimization issues. This way we can make the game faster.
@@ -214,7 +216,7 @@ OpenCollective Funders are credited in their own section in
 they have made their donation Incognito).
 
 ## How you can help as a programmer
-(Almost) all the MineClone2 development is done using pull requests.
+(Almost) all the VoxeLibre development is done using pull requests.
 
 ### Recommended workflow
 * Fork the repository (in case you have not already)
@@ -237,11 +239,11 @@ is no issue on the topic, open one. If there is an issue, tell us that
 you'd like to take care of it, to avoid duplicate work.
 
 ### Don't hesitate to ask for help
-We appreciate any contributing effort to MineClone2. If you are a
+We appreciate any contributing effort to VoxeLibre. If you are a
 relatively new programmer, you can reach us on Discord, Matrix or IRC
-for questions about git, Lua, Minetest API, MineClone2 codebase or
-anything related to MineClone2. We can help you avoid writing code that
-would be deemed inadequate, or help you become familiar with MineClone2
+for questions about git, Lua, Minetest API, VoxeLibre codebase or
+anything related to VoxeLibre. We can help you avoid writing code that
+would be deemed inadequate, or help you become familiar with VoxeLibre
 better, or assist you use development tools.
 
 ### Maintain your own code, even if already got merged
@@ -271,8 +273,8 @@ of the results)
 excessive git bureaucracy commits in master)
 * We use merge to add the commits from a PR/branch to master
 * Submodules should only be used if a) upstream is highly reliable and
-b) it is 100% certain that no mcl2 specific changes to the code will  be
-needed (this has never been the case before, hence mcl2 is submodule free so far)
+b) it is 100% certain that no VL specific changes to the code will  be
+needed (this has never been the case before, hence VL is submodule free so far)
 * Commit messages should be descriptive
 * Try to group your submissions best as you can:
 * Try to keep your PRs small: In some cases things reasonably be can't
@@ -357,14 +359,14 @@ end
 
 ### Developer status
 Active and trusted contributors are often granted write access to the
-MineClone2 repository as a contributor. Those that have demonstrated the right
+VoxeLibre repository as a contributor. Those that have demonstrated the right
 technical skills and behaviours may be granted developer access. These are the 
 most trusted contributors who will contribute to ensure coding standards and 
 processes are followed.
 
 #### Developer responsibilities
 - If you have developer/contributor privileges you can just open a new branch
-in the mcl2 repository (which is preferred). From that you create a pull request.
+in the VL repository (which is preferred). From that you create a pull request.
 This way other people can review your changes and make sure they work
 before they get merged.
 - If you do not (yet) have developer privs you do your work on a branch
@@ -397,7 +399,7 @@ technical guidelines
 #### Release process
 * Run `tools/generate_ingame_credits.lua` to update the ingame credits
 from `CREDITS.md` and commit the result (if anything changed)
-* Launch MineClone2 to make sure it still runs
+* Launch VoxeLibre to make sure it still runs
 * Update the version number in README.md
 * Use `git tag <version number>` to tag the latest commit with the
 version number

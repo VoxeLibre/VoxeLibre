@@ -69,7 +69,7 @@ Note: If you have to do more than 1 hotfix release, can do it on the same releas
 
 ### Release via ContentDB
 
-* Go to MineClone2 page (https://content.minetest.net/packages/Wuzzy/mineclone2/)
+* Go to VoxeLibre page (https://content.minetest.net/packages/Wuzzy/mineclone2/)
 * Click +Release
 * Enter the release tag number in the title and Git reference box. For example (without quotes): "0.82.1"
 * In the minimum minetest version, put the oldest supported version (as of 14/02/2023 it is 5.5), leave the Maximum minetest version blank
