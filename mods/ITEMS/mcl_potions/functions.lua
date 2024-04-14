@@ -1272,8 +1272,12 @@ local function potions_set_icons(player)
 			else
 				player:hud_change(label, "text", "")
 			end
-			local dur = math.round(vals.dur-vals.timer)
-			player:hud_change(timestamp, "text", math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60)))
+			if vals.dur == math.huge then
+				player:hud_change(timestamp, "text", "∞")
+			else
+				local dur = math.round(vals.dur-vals.timer)
+				player:hud_change(timestamp, "text", math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60)))
+			end
 			EF[effect_name][player].hud_index = i
 			i = i + 1
 		end
@@ -1309,7 +1313,7 @@ end
 minetest.register_globalstep(function(dtime)
 	for name, effect in pairs(registered_effects) do
 		for object, vals in pairs(EF[name]) do
-			EF[name][object].timer = vals.timer + dtime
+			if vals.dur ~= math.huge then EF[name][object].timer = vals.timer + dtime end
 
 			if object:get_pos() and not vals.no_particles then mcl_potions._add_spawner(object, effect.particle_color) end
 			if effect.on_step then effect.on_step(dtime, object, vals.factor, vals.dur) end
@@ -1331,9 +1335,14 @@ minetest.register_globalstep(function(dtime)
 					potions_set_hud(object)
 				end
 			elseif object:is_player() then
-				local dur = math.round(vals.dur-vals.timer)
-				object:hud_change(icon_ids[object:get_player_name()][vals.hud_index].timestamp,
-					"text", math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60)))
+				if vals.dur == math.huge then
+					object:hud_change(icon_ids[object:get_player_name()][vals.hud_index].timestamp,
+						"text", "∞")
+				else
+					local dur = math.round(vals.dur-vals.timer)
+					object:hud_change(icon_ids[object:get_player_name()][vals.hud_index].timestamp,
+						"text", math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60)))
+				end
 			end
 		end
 	end
@@ -1727,6 +1736,9 @@ function mcl_potions.give_effect(name, object, factor, duration, no_particles)
 			if edef.timer_uses_factor then vals.step = factor
 			else vals.step = edef.hit_timer_step end
 		end
+		if duration == "INF" then
+			vals.dur = math.huge
+		end
 		EF[name][object] = vals
 		if edef.on_start then edef.on_start(object, factor) end
 	else
@@ -1741,6 +1753,9 @@ function mcl_potions.give_effect(name, object, factor, duration, no_particles)
 					present.factor = factor
 					if edef.timer_uses_factor then present.step = factor end
 					if edef.on_start then edef.on_start(object, factor) end
+				end
+				if duration == "INF" then
+					present.dur = math.huge
 				end
 		else
 			return false
