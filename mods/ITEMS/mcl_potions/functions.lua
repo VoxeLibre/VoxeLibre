@@ -1311,7 +1311,7 @@ minetest.register_globalstep(function(dtime)
 		for object, vals in pairs(EF[name]) do
 			EF[name][object].timer = vals.timer + dtime
 
-			if object:get_pos() then mcl_potions._add_spawner(object, effect.particle_color) end
+			if object:get_pos() and not vals.no_particles then mcl_potions._add_spawner(object, effect.particle_color) end
 			if effect.on_step then effect.on_step(dtime, object, vals.factor, vals.dur) end
 			if effect.on_hit_timer then
 				EF[name][object].hit_timer = (vals.hit_timer or 0) + dtime
@@ -1702,11 +1702,11 @@ local function target_valid(object, name)
 		and registered_effects[name].res_condition(object)) then return true end
 end
 
-function mcl_potions.give_effect(name, object, factor, duration)
+function mcl_potions.give_effect(name, object, factor, duration, no_particles)
 	local edef = registered_effects[name]
 	if not edef or not target_valid(object, name) then return false end
 	if not EF[name][object] then
-		local vals = {dur = duration, timer = 0,}
+		local vals = {dur = duration, timer = 0, no_particles = no_particles}
 		if edef.uses_factor then vals.factor = factor end
 		if edef.on_hit_timer then
 			if edef.timer_uses_factor then vals.step = factor
@@ -1716,6 +1716,7 @@ function mcl_potions.give_effect(name, object, factor, duration)
 		if edef.on_start then edef.on_start(object, factor) end
 	else
 		local present = EF[name][object]
+		present.no_particles = no_particles
 		if not edef.uses_factor or (edef.uses_factor and
 			(not edef.inv_factor and factor >= present.factor
 			or edef.inv_factor and factor <= present.factor)) then
@@ -1736,13 +1737,13 @@ function mcl_potions.give_effect(name, object, factor, duration)
 	return true
 end
 
-function mcl_potions.give_effect_by_level(name, object, level, duration)
+function mcl_potions.give_effect_by_level(name, object, level, duration, no_particles)
 	if level == 0 then return false end
 	if not registered_effects[name].uses_factor then
-		return mcl_potions.give_effect(name, object, 0, duration)
+		return mcl_potions.give_effect(name, object, 0, duration, no_particles)
 	end
 	local factor = registered_effects[name].level_to_factor(level)
-	return mcl_potions.give_effect(name, object, factor, duration)
+	return mcl_potions.give_effect(name, object, factor, duration, no_particles)
 end
 
 function mcl_potions.healing_func(object, hp)
