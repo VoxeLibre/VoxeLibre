@@ -177,7 +177,6 @@ minetest.register_entity("mcl_experience:orb", {
 	delete_timer = 0,
 	radius = 4,
 
-
 	on_activate = function(self, staticdata, dtime_s)
 		self.object:set_velocity(vector.new(
 			math.random(-2,2)*math.random(),
@@ -187,10 +186,14 @@ minetest.register_entity("mcl_experience:orb", {
 		self.object:set_armor_groups({immortal = 1})
 		self.object:set_velocity({x = 0, y = 2, z = 0})
 		self.object:set_acceleration(gravity)
-		local xp = tonumber(staticdata)
+
+		-- Assign 0 xp in case the entity was persisted even though it should not have been (static_save = false)
+		-- This was a minetest bug for a while: https://github.com/minetest/minetest/issues/14420
+		local xp = tonumber(staticdata) or 0
 		self._xp = xp
-	        size = xp_to_size(xp)
-	        self.object:set_properties({
+		size = xp_to_size(xp)
+
+		self.object:set_properties({
 			visual_size = {x = size, y = size},
 			glow = 14,
 		})
