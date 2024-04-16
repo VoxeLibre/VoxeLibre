@@ -248,7 +248,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 		end
 
 		-- Give achievement when player reached a distance of 1000 nodes from the start position
-		if vector.distance(self._start_pos, pos) >= 1000 then
+		if pos and vector.distance(self._start_pos, pos) >= 1000 then
 			awards.unlock(self._driver, "mcl:onARail")
 		end
 	end
