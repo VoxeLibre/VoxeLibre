@@ -713,6 +713,9 @@ mcl_potions.register_effect({
 mcl_potions.register_effect({
 	name = "bad_omen",
 	description = S("Bad Omen"),
+	get_tt = function(factor)
+		return S("danger is imminent")
+	end,
 	particle_color = "#472331",
 })
 

@@ -806,3 +806,22 @@ mcl_potions.register_potion({
 	has_arrow = true,
 })
 
+mcl_potions.register_potion({
+	name = "ominous",
+	desc_prefix = S("Ominous"),
+	_tt = nil,
+	_longdesc = S("Attracts danger."),
+	image = table.concat({
+		"(mcl_potions_potion_overlay.png^[colorize:red:100)",
+		"^mcl_potions_splash_overlay.png^[colorize:black:100",
+		"^mcl_potions_potion_bottle.png",
+	}),
+	_effect_list = {
+		bad_omen = {
+			dur = 6000,
+		},
+	},
+	has_splash = false,
+	has_lingering = false,
+})
+
