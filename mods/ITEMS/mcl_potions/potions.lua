@@ -764,7 +764,7 @@ mcl_potions.register_potion({
 	_longdesc = S("Moves bowels too fast."),
 	color = "#83A061",
 	_effect_list = {
-		food_poisoning = {},
+		food_poisoning = {dur=mcl_potions.DURATION_POISON},
 	},
 	has_arrow = true,
 	-- TODO implement effect stacking?
@@ -777,7 +777,7 @@ mcl_potions.register_potion({
 	_longdesc = S("Satisfies hunger."),
 	color = "#CEAE29",
 	_effect_list = {
-		saturation = {},
+		saturation = {dur=mcl_potions.DURATION_POISON},
 	},
 	has_arrow = true,
 })
@@ -817,9 +817,7 @@ mcl_potions.register_potion({
 		"^mcl_potions_potion_bottle.png",
 	}),
 	_effect_list = {
-		bad_omen = {
-			dur = 6000,
-		},
+		bad_omen = {dur = 6000},
 	},
 	has_splash = false,
 	has_lingering = false,

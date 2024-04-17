@@ -401,18 +401,14 @@ local awkward_table = {
 
 	["mcl_flowers:fourleaf_clover"] = "mcl_potions:luck",
 	["mcl_farming:potato_item_poison"] = "mcl_potions:nausea",
-	-- TODO slow falling
-	-- TODO levitation?
-	-- TODO darkness?
-	-- TODO absorption
-	-- TODO health boost?
-	-- TODO resistance
-	-- TODO turtle master?
-	-- TODO frost
-	-- TODO blindness?
-	-- TODO food poisoning?
-	-- TODO saturation?
-	-- TODO haste
+	["mcl_mobitems:phantom_membrane"] = "mcl_potions:slow_falling", -- TODO add phantom membranes
+	["mcl_core:apple_gold"] = "mcl_potions:resistance",
+
+	-- TODO darkness - sculk?
+	-- TODO absorption - water element?
+	-- TODO turtle master - earth element?
+	-- TODO frost - frost element?
+	-- TODO haste - air element?
 }
 -- API
 -- register a potion recipe brewed from awkward potion
@@ -450,7 +446,10 @@ end
 mcl_potions.register_ingredient_potion("mcl_potions:mundane", mundane_table)
 
 local thick_table = {
-	-- TODO glowing from some shining cave flowers
+	["mcl_crimson:shroomlight"] = "mcl_potions:glowing",
+	["mcl_mobitems:nether_star"] = "mcl_potions:ominous",
+	["mcl_mobitems:ink_sac"] = "mcl_potions:blindness",
+	["mcl_farming:carrot_item_gold"] = "mcl_potions:saturation",
 }
 -- API
 -- register a potion recipe brewed from thick potion
@@ -495,6 +494,9 @@ local inversion_table = {
 	["mcl_potions:poison"] = "mcl_potions:harming",
 	["mcl_potions:luck"] = "mcl_potions:bad_luck",
 	["mcl_potions:haste"] = "mcl_potions:fatigue",
+	["mcl_potions:saturation"] = "mcl_potions:food_poisoning",
+	["mcl_potions:slow_falling"] = "mcl_potions:levitation",
+	["mcl_potions:absorption"] = "mcl_potions:health_boost",
 }
 -- API
 function mcl_potions.register_inversion_recipe(input, output)
@@ -529,9 +531,9 @@ local lingering_table = {}
 for potion, def in pairs(potions) do
 	if def.has_splash then
 		splash_table[potion] = potion.."_splash"
-	end
-	if def.has_lingering then
-		lingering_table[potion.."_splash"] = potion.."_lingering"
+		if def.has_lingering then
+			lingering_table[potion.."_splash"] = potion.."_lingering"
+		end
 	end
 end
 mcl_potions.register_table_modifier("mcl_mobitems:gunpowder", splash_table)
