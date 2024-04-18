@@ -406,7 +406,7 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 	_mcl_silk_touch_drop = true,
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local node = minetest.get_node(pointed_thing.under)
-		spread_nether_plants(pt.under,node)
+		spread_nether_plants(pointed_thing.under,node)
 		return true
 	end,
 })
