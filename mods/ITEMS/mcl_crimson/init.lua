@@ -108,9 +108,9 @@ mcl_flowerpots.register_potted_flower("mcl_crimson:warped_fungus", {
 	desc = S("Warped Fungus"),
 	image = "mcl_crimson_warped_fungus.png",
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
-		local n = has_nylium_neighbor(pt.under)
+		local n = has_nylium_neighbor(pointed_thing.under)
 		if n then
-			minetest.set_node(pt.under,n)
+			minetest.set_node(pointed_thing.under,n)
 		end
 	end,
 })
@@ -405,7 +405,7 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
-		local node = minetest.get_node(pt.under)
+		local node = minetest.get_node(pointed_thing.under)
 		spread_nether_plants(pt.under,node)
 		return true
 	end,
@@ -703,8 +703,8 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
-		local node = minetest.get_node(pt.under)
-		spread_nether_plants(pt.under,node)
+		local node = minetest.get_node(pointed_thing.under)
+		spread_nether_plants(pointed_thing.under,node)
 		return true
 	end,
 })
