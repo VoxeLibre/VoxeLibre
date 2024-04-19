@@ -76,34 +76,39 @@ end
 -- End legacy bone meal API
 
 mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
-	local pos = pointed_thing.under
+	local positions = {pointed_thing.under, pointed_thing.above}
+	for i = 1,2 do
+		local pos = positions[i]
 
-	-- Check protection
-	if mcl_util.check_area_protection(pos, pointed_thing.above, placer) then return false end
+		-- Check protection
+		if mcl_util.check_area_protection(pos, pointed_thing.above, placer) then return false end
 
-	local node = minetest.get_node(pos)
-	local ndef = minetest.registered_nodes[node.name]
-	local success = false
-	local consume
+		local node = minetest.get_node(pos)
+		local ndef = minetest.registered_nodes[node.name]
+		local success = false
+		local consume
 
-	-- If the pointed node can be bonemealed, let it handle the processing.
-	if ndef and ndef._on_bone_meal then
-		success = ndef._on_bone_meal(itemstack, placer, pointed_thing)
-		consume = true
-	else
-		-- Otherwise try the legacy API.
-		success = legacy_apply_bone_meal(pointed_thing, placer)
-		consume = success
-	end
+		-- If the pointed node can be bonemealed, let it handle the processing.
+		if ndef and ndef._on_bone_meal then
+			success = ndef._on_bone_meal(itemstack, placer, {under = pos, above = vector.offset(pos, 0, 1, 0)})
+			consume = true
+		else
+			-- Otherwise try the legacy API.
+			success = legacy_apply_bone_meal(pointed_thing, placer)
+			consume = success
+		end
 
-	-- Particle effects
-	if success then
-		mcl_bone_meal.add_bone_meal_particle(pos)
-	end
+		-- Particle effects
+		if success then
+			mcl_bone_meal.add_bone_meal_particle(pos)
+		end
 
-	-- Take the item
-	if consume and ( not placer or not minetest.is_creative_enabled(placer:get_player_name()) ) then
-		itemstack:take_item()
+		-- Take the item
+		if consume and ( not placer or not minetest.is_creative_enabled(placer:get_player_name()) ) then
+			itemstack:take_item()
+		end
+
+		if success then return itemstack end
 	end
 
 	return itemstack
