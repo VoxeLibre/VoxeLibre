@@ -133,6 +133,26 @@ if minetest.get_modpath("mcl_sounds") then
 	})
 end
 
+local function place_bed(name, placer, pos, dir)
+	local botpos = vector_add(pos, minetest_facedir_to_dir(dir))
+
+	if minetest.is_protected(botpos, placer:get_player_name()) and
+			not minetest.check_player_privs(placer, "protection_bypass") then
+		minetest.record_protection_violation(botpos, placer:get_player_name())
+		return false
+	end
+
+	local botdef = minetest.registered_nodes[minetest_get_node(botpos).name]
+	if not botdef or not botdef.buildable_to then
+		return false
+	end
+
+	minetest.set_node(pos, {name = name .. "_bottom", param2 = dir})
+	minetest.set_node(botpos, {name = name .. "_top", param2 = dir})
+
+	return true
+end
+
 function mcl_beds.register_bed(name, def)
 	local common_box = {
 			type = "fixed",
@@ -197,25 +217,17 @@ function mcl_beds.register_bed(name, def)
 				return itemstack
 			end
 
+			-- Try to place in three directions: inline with the view and rotated to
+			-- the right and left
 			local dir = minetest.dir_to_facedir(placer:get_look_dir())
-			local botpos = vector_add(pos, minetest_facedir_to_dir(dir))
-
-			if minetest.is_protected(botpos, placer:get_player_name()) and
-					not minetest.check_player_privs(placer, "protection_bypass") then
-				minetest.record_protection_violation(botpos, placer:get_player_name())
-				return itemstack
-			end
-
-			local botdef = minetest.registered_nodes[minetest_get_node(botpos).name]
-			if not botdef or not botdef.buildable_to then
-				return itemstack
-			end
-
-			minetest.set_node(pos, {name = name .. "_bottom", param2 = dir})
-			minetest.set_node(botpos, {name = name .. "_top", param2 = dir})
-
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item()
+			if place_bed(name, placer, pos, dir) or
+			   place_bed(name, placer, pos, (dir+1)%4) or
+			   place_bed(name, placer, pos, (dir+3)%4) or
+			   place_bed(name, placer, pos, (dir+2)%4) then
+				-- Bed was places
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
+					itemstack:take_item()
+				end
 			end
 			return itemstack
 		end,
