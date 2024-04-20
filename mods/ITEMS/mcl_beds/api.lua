@@ -87,6 +87,13 @@ local function destruct_bed(pos, oldnode)
 		if node2 and string.sub(node2.name, -4) == "_top" then
 			minetest_remove_node(pos2)
 		end
+
+		-- Drop the bed only when removing the top to prevent duplication
+		local bed_node_def = minetest.registered_nodes[node.name]
+		if bed_node_def and bed_node_def._mcl_beds_drop then
+			local stack = ItemStack(bed_node_def._mcl_beds_drop)
+			minetest.add_item(pos2, stack)
+		end
 	else
 		if node2 and string.sub(node2.name, -7) == "_bottom" then
 			minetest_remove_node(pos2)
@@ -156,7 +163,8 @@ function mcl_beds.register_bed(name, def)
 		sounds = def.sounds or default_sounds,
 		selection_box = common_box,
 		collision_box = common_box,
-		drop = def.recipe and name or "",
+		_mcl_beds_drop = def.recipe and name or "",
+		drop = "",
 		node_placement_prediction = "",
 		
 		on_place = function(itemstack, placer, pointed_thing)
@@ -239,7 +247,7 @@ function mcl_beds.register_bed(name, def)
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or default_sounds,
-		drop = def.recipe and name or "",
+		drop = "",
 		selection_box = common_box,
 		collision_box = common_box,
 		
