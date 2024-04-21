@@ -161,6 +161,8 @@ function mcl_skins.update_player_skin(player)
 	end
 
 	local skin = mcl_skins.player_skins[player]
+	if not skin then return end
+
 	local skinval = mcl_skins.compile_skin(skin)
 
 	if not skin.cape then skin.cape = "blank.png" end
