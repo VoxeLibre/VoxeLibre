@@ -30,6 +30,7 @@ for i=1,4 do
 end
 
 mcl_mobs.register_mob("mobs_mc:glow_squid", {
+	description = S("Glow Squid"),
 	type = "animal",
 	spawn_class = "water_underground",
 	can_despawn = true,

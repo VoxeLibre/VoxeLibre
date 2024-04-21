@@ -30,6 +30,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 --###################
 
 local cod = {
+	description = S("Cod"),
 	type = "animal",
 	spawn_class = "water_ambient",
 	can_despawn = true,

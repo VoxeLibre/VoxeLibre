@@ -1136,6 +1136,86 @@ doc.add_category("craftitems", {
 	end
 })
 
+doc.add_category("mobs", {
+	name = S("Mobs"),
+	description = S("different mobs"),
+	build_formspec = function(data, playername)
+		if data then
+			local datastring = ""
+
+			if data.description then
+				datastring = datastring .. S("Description: @1", data.description)
+				datastring = newline2(datastring)
+			end
+
+			if data.type then
+				datastring = datastring .. S("Type: @1", data.type)
+				datastring = newline2(datastring)
+			end
+			
+			if data.spawn_class then
+				datastring = datastring .. S("spawn class: @1", data.spawn_class)
+				datastring = newline2(datastring)
+			end
+
+			if data.jump then
+				datastring = datastring .. S("Can Jump")
+				datastring = newline2(datastring)
+			end
+
+			if data.fly then
+				datastring = datastring .. S("Can Fly")
+				datastring = newline2(datastring)
+			end
+			
+			if data.drops then
+				count = 0
+				for _,item in ipairs(data.drops) do
+					count = count + 1
+				end
+
+				if count > 0 then
+					datastring = datastring .. S("drops: ")
+					datastring = newline(datastring)
+
+					for _,item in ipairs(data.drops) do
+						local itemDescription = ItemStack(item.name):get_short_description()
+						datastring = datastring .. itemDescription
+						datastring = newline(datastring)
+					end
+
+					datastring = newline2(datastring)
+				end
+			end
+
+			if data.follow then
+				datastring = datastring .. S("follows player when these items are held:")
+				datastring = newline(datastring)
+
+				if type(data.follow) == "string" then
+					datastring = datastring .. data.follow
+					datastring = newline(datastring)
+				else
+					for i=1, #data.follow do
+						local itemstring = data.follow[i]
+						local itemDescription = ItemStack(itemstring):get_short_description()
+						datastring = datastring .. itemDescription
+						datastring = newline(datastring)
+					end
+				end
+				
+				datastring = newline2(datastring)
+			end
+
+			local formstring = doc.widgets.text(datastring, nil, nil, doc.FORMSPEC.ENTRY_WIDTH - 1.2)
+			
+			return formstring
+		else
+			return "label[0,1;NO DATA AVALIABLE!]"
+		end
+	end
+})
+
 -- Register group definition stuff
 -- More (user-)friendly group names to replace the rather technical names
 -- for better understanding

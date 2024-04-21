@@ -1,6 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local axolotl = {
+	description = S("Axolotl"),
 	type = "animal",
 	spawn_class = "axolotl",
 	can_despawn = true,

@@ -343,8 +343,13 @@ mcl_mobs.register_mob("mobs_mc:baby_zombified_piglin", baby_zombified_piglin)
 
 -- Compatibility code. These were removed, and now are called zombie piglins. They don't spawn.
 -- This is only to catch old cases. Maybe could be an alias?
-mcl_mobs.register_mob("mobs_mc:pigman", zombified_piglin)
-mcl_mobs.register_mob("mobs_mc:baby_pigman", baby_zombified_piglin)
+local pigman_unused = table.copy(zombified_piglin)
+pigman_unused.unused = true
+local baby_pigman_unused = table.copy(baby_zombified_piglin)
+baby_pigman_unused.unused = true
+
+mcl_mobs.register_mob("mobs_mc:pigman", pigman_unused)
+mcl_mobs.register_mob("mobs_mc:baby_pigman", baby_pigman_unused)
 
 
 -- Piglin Brute --

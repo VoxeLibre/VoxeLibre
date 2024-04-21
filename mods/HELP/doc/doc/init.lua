@@ -53,7 +53,7 @@ doc.data = {}
 doc.data.categories = {}
 doc.data.aliases = {}
 -- Default order (includes categories of other mods from the Docuentation System modpack)
-doc.data.category_order = {"basics", "nodes", "tools", "craftitems", "advanced"}
+doc.data.category_order = {"basics", "nodes", "tools", "craftitems", "advanced", "mobs"}
 doc.data.category_count = 0
 doc.data.players = {}
 

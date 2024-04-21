@@ -325,12 +325,19 @@ function mcl_mobs.register_mob(name, def)
 
 		_spawner = def._spawner,
 	}
-	minetest.register_entity(name, setmetatable(final_def,mcl_mobs.mob_class_meta))
 
 	if minetest.get_modpath("doc_identifier") ~= nil then
 		doc.sub.identifier.register_object(name, "basics", "mobs")
+
+		if def.unused ~= true then
+			doc.add_entry("mobs", name, {
+				name = def.description or name,
+				data = final_def,
+			})
+		end
 	end
 
+	minetest.register_entity(name, setmetatable(final_def,mcl_mobs.mob_class_meta))
 end -- END mcl_mobs.register_mob function
 
 

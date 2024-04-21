@@ -136,7 +136,7 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 })
 
 mcl_mobs.register_mob("mobs_mc:creeper_charged", {
-	description = S("Creeper"),
+	description = S("Charged Creeper"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,

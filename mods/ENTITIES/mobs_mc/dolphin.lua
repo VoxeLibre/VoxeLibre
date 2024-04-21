@@ -30,6 +30,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 --###################
 
 local dolphin = {
+	description = S("Dolphin"),
 	type = "animal",
 	spawn_class = "water",
 	can_despawn = true,
