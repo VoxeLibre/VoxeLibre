@@ -325,6 +325,7 @@ function mcl_mobs.register_mob(name, def)
 		attack_exception = def.attack_exception or function(p) return false end,
 
 		_spawner = def._spawner,
+		_mcl_potions = {},
 	}
 
 	if minetest.get_modpath("doc_identifier") ~= nil then

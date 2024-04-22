@@ -1339,8 +1339,13 @@ minetest.register_globalstep(function(dtime)
 				if effect.after_end then effect.after_end(object) end
 				if object:is_player() then
 					meta = object:get_meta()
-					meta:set_string("mcl_potions:"..name, minetest.serialize(EF[name][object]))
+					meta:set_string("mcl_potions:_EF_"..name, "")
 					potions_set_hud(object)
+				else
+					local ent = object:get_luaentity()
+					if ent then
+						ent._mcl_potions["_EF_"..name] = nil
+					end
 				end
 			elseif object:is_player() then
 				if vals.dur == math.huge then
@@ -1350,6 +1355,11 @@ minetest.register_globalstep(function(dtime)
 					local dur = math.round(vals.dur-vals.timer)
 					object:hud_change(icon_ids[object:get_player_name()][vals.hud_index].timestamp,
 						"text", math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60)))
+				end
+			else
+				local ent = object:get_luaentity()
+				if ent then
+					ent._mcl_potions["_EF_"..name] = EF[name][object]
 				end
 			end
 		end
@@ -1503,9 +1513,28 @@ function mcl_potions._load_player_effects(player)
 	-- new API effects + on_load for loaded legacy effects
 	for name, effect in pairs(registered_effects) do
 		local loaded = minetest.deserialize(meta:get_string("mcl_potions:_EF_"..name))
-		if loaded then EF[name][player] = loaded end
-		if EF[name][player] and effect.on_load then
-			effect.on_load(player, EF[name][player].factor)
+		if loaded then
+			EF[name][player] = loaded
+			if effect.on_load then
+				effect.on_load(player, EF[name][player].factor)
+			end
+		end
+	end
+end
+
+function mcl_potions._load_entity_effects(entity)
+	if not entity or not entity._mcl_potions or entity._mcl_potions == {} then
+		return
+	end
+	local object = entity.object
+	if not object or not object:get_pos() then return end
+	for name, effect in pairs(registered_effects) do
+		local loaded = entity._mcl_potions["_EF_"..name]
+		if loaded then
+			EF[name][object] = loaded
+			if effect.on_load then
+				effect.on_load(object, EF[name][object].factor)
+			end
 		end
 	end
 end
