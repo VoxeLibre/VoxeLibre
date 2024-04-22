@@ -760,7 +760,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 		_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
-			local stack_id = mcl_util.select_stack(hop_inv, hop_list, inv, "main", null, 1)
+			local stack_id = mcl_util.select_stack(hop_inv, hop_list, inv, "main", nil, 1)
 			if stack_id ~= nil then
 				return inv, "main", stack_id
 			end
@@ -768,7 +768,7 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
 			local meta_other = minetest.get_meta(pos_other)
 			local inv_other = meta_other:get_inventory()
-			stack_id = mcl_util.select_stack(hop_inv, hop_list, inv_other, "main", null, 1)
+			stack_id = mcl_util.select_stack(hop_inv, hop_list, inv_other, "main", nil, 1)
 			return inv_other, "main", stack_id
 		end,
 	})
@@ -955,13 +955,13 @@ local function register_chest(basename, desc, longdesc, usagehelp, tt_help, tile
 			local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
 			local meta_other = minetest.get_meta(pos_other)
 			local inv_other = meta_other:get_inventory()
-			local stack_id = mcl_util.select_stack(hop_inv, hop_list, inv_other, "main", null, 1)
+			local stack_id = mcl_util.select_stack(hop_inv, hop_list, inv_other, "main", nil, 1)
 			if stack_id ~= nil then
 				return inv_other, "main", stack_id
 			end
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
-			stack_id = mcl_util.select_stack(hop_inv, hop_list, inv, "main", null, 1)
+			stack_id = mcl_util.select_stack(hop_inv, hop_list, inv, "main", nil, 1)
 			return inv, "main", stack_id
 		end,
 	})
