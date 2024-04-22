@@ -90,6 +90,9 @@ minetest.register_globalstep(function(dtime)
 							else
 								dur = details.dur
 							end
+							if details.effect_stacks then
+								ef_level = ef_level + mcl_potions.get_effect_level(obj, name)
+							end
 							if mcl_potions.give_effect_by_level(name, obj, ef_level, dur) then
 								applied = true
 							end
@@ -97,7 +100,7 @@ minetest.register_globalstep(function(dtime)
 					end
 
 					if vals.def.custom_effect
-						and vals.def.custom_effect(obj, (vals.potency+1) * mcl_potions.LINGERING_FACTOR) then
+						and vals.def.custom_effect(obj, (vals.potency+1) * mcl_potions.LINGERING_FACTOR, plus) then
 							applied = true
 					end
 

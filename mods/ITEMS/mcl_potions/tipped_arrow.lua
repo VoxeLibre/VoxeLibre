@@ -301,10 +301,14 @@ function mcl_potions.register_arrow(name, desc, color, def)
 										else
 											dur = details.dur
 										end
+										dur = dur * mcl_potions.SPLASH_FACTOR
+										if details.effect_stacks then
+											ef_level = ef_level + mcl_potions.get_effect_level(obj, name)
+										end
 										mcl_potions.give_effect_by_level(name, obj, ef_level, dur)
 									end
 								end
-								if def.custom_effect then def.custom_effect(obj, potency+1) end
+								if def.custom_effect then def.custom_effect(obj, potency+1, plus) end
 							end
 						else
 							obj:punch(self.object, 1.0, {
@@ -329,14 +333,13 @@ function mcl_potions.register_arrow(name, desc, color, def)
 										dur = details.dur
 									end
 									dur = dur * mcl_potions.SPLASH_FACTOR
-									if rad > 0 then
-										mcl_potions.give_effect_by_level(name, obj, ef_level, redux_map[rad]*dur)
-									else
-										mcl_potions.give_effect_by_level(name, obj, ef_level, dur)
+									if details.effect_stacks then
+										ef_level = ef_level + mcl_potions.get_effect_level(obj, name)
 									end
+									mcl_potions.give_effect_by_level(name, obj, ef_level, dur)
 								end
 							end
-							if def.custom_effect then def.custom_effect(obj, potency+1) end
+							if def.custom_effect then def.custom_effect(obj, potency+1, plus) end
 						end
 
 						if is_player then

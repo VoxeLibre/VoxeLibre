@@ -171,6 +171,7 @@ tt.register_snippet(function(itemstring, _, itemstack)
 			if effect.uses_factor then factor = effect.level_to_factor(ef_level) end
 			if effect.get_tt then ef_tt = minetest.colorize("grey", effect.get_tt(factor)) else ef_tt = "" end
 			if ef_tt ~= "" then s = s.. ef_tt.. "\n" end
+			if details.effect_stacks then s = s.. minetest.colorize("grey", S("...stacks")).. "\n" end
 		end
 	end
 	return s:trim()

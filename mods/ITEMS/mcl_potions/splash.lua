@@ -151,6 +151,9 @@ function mcl_potions.register_splash(name, descr, color, def)
 								else
 									dur = details.dur
 								end
+								if details.effect_stacks then
+									ef_level = ef_level + mcl_potions.get_effect_level(obj, name)
+								end
 								if rad > 0 then
 									mcl_potions.give_effect_by_level(name, obj, ef_level, redux_map[rad]*dur)
 								else
@@ -162,9 +165,9 @@ function mcl_potions.register_splash(name, descr, color, def)
 						if def.custom_effect then
 							local power = (potency+1) * mcl_potions.SPLASH_FACTOR
 							if rad > 0 then
-								def.custom_effect(obj, redux_map[rad] * power)
+								def.custom_effect(obj, redux_map[rad] * power, plus)
 							else
-								def.custom_effect(obj, power)
+								def.custom_effect(obj, power, plus)
 							end
 						end
 					end

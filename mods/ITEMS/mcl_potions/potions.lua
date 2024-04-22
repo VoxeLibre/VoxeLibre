@@ -64,7 +64,7 @@ function return_on_use(def, effect, dur)
 
 		--def.on_use(user, effect, dur) -- Will do effect immediately but not reduce item count until eating delay ends which makes it exploitable by deliberately not finishing delay
 
-		-- Wrapper for handling mcl_hunger delayed eating
+		-- Wrapper for handling mcl_hunger delayed eating TODO migrate to the new function
 		local name = user:get_player_name()
 		mcl_hunger.eat_internal[name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
 		mcl_hunger.eat_internal[name]._custom_var = {
@@ -122,11 +122,14 @@ local function generate_on_use(effects, color, on_use, custom_effect)
 			else
 				dur = details.dur
 			end
+			if details.effect_stacks then
+				ef_level = ef_level + mcl_potions.get_effect_level(user, name)
+			end
 			mcl_potions.give_effect_by_level(name, user, ef_level, dur)
 		end
 
 		if on_use then on_use(user, potency+1) end
-		if custom_effect then custom_effect(user, potency+1) end
+		if custom_effect then custom_effect(user, potency+1, plus) end
 
 		itemstack = minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		if itemstack then mcl_potions._use_potion(user, color) end
@@ -162,6 +165,7 @@ end
 -- -- -- dur_variable - bool - whether variants of the potion should have the length of this effect changed -
 -- -- --   - defaults to true
 -- -- --   - if at least one effect has this set to true, the potion has a "plus" variant
+-- -- -- effect_stacks - bool - whether the effect stacks - defaults to false
 -- uses_level - bool - whether the potion should come at different levels -
 --   - defaults to true if uses_level is true for at least one effect, else false
 -- drinkable - bool - defaults to true
@@ -172,7 +176,7 @@ end
 -- default_potent_level - int - potion level used for the default potent variant - defaults to 2
 -- default_extend_level - int - extention level (amount of +) used for the default extended variant - defaults to 1
 -- custom_on_use - function(user, level) - called when the potion is drunk, returns true on success
--- custom_effect - function(object, level) - called when the potion effects are applied, returns true on success
+-- custom_effect - function(object, level, plus) - called when the potion effects are applied, returns true on success
 -- custom_splash_effect - function(pos, level) - called when the splash potion explodes, returns true on success
 -- custom_linger_effect - function(pos, radius, level) - called on the lingering potion step, returns true on success
 function mcl_potions.register_potion(def)
@@ -195,6 +199,9 @@ function mcl_potions.register_potion(def)
 		pdef.description = S("Strange Potion")
 	end
 	pdef._tt_help = def._tt
+	if def._tt and def.effect_stacks then
+		pdef._tt_help = pdef._tt_help .. "\n" .. S("Stacks the effect")
+	end
 	pdef._dynamic_tt = def._dynamic_tt
 	local potion_longdesc = def._longdesc
 	if def._effect_list then
@@ -230,6 +237,7 @@ function mcl_potions.register_potion(def)
 					level_scaling = details.level_scaling or 1,
 					dur = details.dur or mcl_potions.DURATION,
 					dur_variable = durvar,
+					effect_stacks = details.effect_stacks and true or false
 				}
 			else
 				error("Unable to register potion: effect not registered")
@@ -727,10 +735,12 @@ mcl_potions.register_potion({
 	_longdesc = S("Freezes..."),
 	color = "#5B7DAA",
 	_effect_list = {
-		frost = {},
+		frost = {
+			dur = mcl_potions.DURATION_POISON,
+			effect_stacks = true,
+		},
 	},
 	has_arrow = true,
-	-- TODO implement effect stacking?
 })
 
 mcl_potions.register_potion({
@@ -764,10 +774,12 @@ mcl_potions.register_potion({
 	_longdesc = S("Moves bowels too fast."),
 	color = "#83A061",
 	_effect_list = {
-		food_poisoning = {dur=mcl_potions.DURATION_POISON},
+		food_poisoning = {
+			dur = mcl_potions.DURATION_POISON,
+			effect_stacks = true,
+		},
 	},
 	has_arrow = true,
-	-- TODO implement effect stacking?
 })
 
 mcl_potions.register_potion({
