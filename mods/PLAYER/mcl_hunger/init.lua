@@ -57,6 +57,7 @@ end
 
 -- Variables for each player, to handle delayed eating
 mcl_hunger.eat_internal = {}
+mcl_hunger.eat_anim_hud = {}
 
 -- Set per player internal variables for delayed eating
 minetest.register_on_joinplayer(function(player)
@@ -81,6 +82,7 @@ minetest.register_on_joinplayer(function(player)
 		_custom_do_delayed = false, -- If true, then will execute only _custom_wrapper after holding RMB or LMB within a delay specified by mcl_hunger.EATING_DELAY (Use to bypass minetest.do_item_eat entirely)
 	}
 	playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
+	player:hud_set_flags({wielditem = true})
 end)
 
 -- Clear when player leaves
@@ -88,6 +90,7 @@ minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 
 	mcl_hunger.eat_internal[name] = nil
+	mcl_hunger.eat_anim_hud[name] = nil
 end)
 
 dofile(modpath.."/api.lua")
@@ -120,11 +123,21 @@ mcl_hunger.poison_hunger = {} -- food poisoning, increasing hunger
 
 -- HUD
 local function init_hud(player)
+	local name = player:get_player_name()
 	hb.init_hudbar(player, "hunger", mcl_hunger.get_hunger(player))
 	if mcl_hunger.debug then
 		hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
 		hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
 	end
+	mcl_hunger.eat_anim_hud[name] = player:hud_add({
+		hud_elem_type = "image",
+		text = "blank.png",
+		position = {x = 0.5, y = 1},
+		scale = {x = -25, y = -45},
+		alignment = {x = 0, y = -1},
+		offset = {x = 0, y = -30},
+		z_index = -200,
+	})
 end
 
 -- HUD updating functions for Debug Mode. No-op if not in Debug Mode
@@ -195,6 +208,8 @@ local eat_effects_cooldown = {}
 
 local function clear_eat_internal_and_timers(player, player_name)
 	playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
+	player:hud_set_flags({wielditem = true})
+	player:hud_change(mcl_hunger.eat_anim_hud[player_name], "text", "blank.png")
 	mcl_hunger.eat_internal[player_name] = {
 		is_eating = false,
 		is_eating_no_padding = false,
@@ -299,13 +314,20 @@ minetest.register_globalstep(function(dtime)
 
 				playerphysics.add_physics_factor(player, "speed", "mcl_hunger:eating_speed", mcl_hunger.EATING_WALK_SPEED)
 
+				player:hud_set_flags({wielditem = false})
+				local itemstackdef = current_itemstack:get_definition()
+				local wield_image = itemstackdef.wield_image
+				if not wield_image or wield_image == "" then wield_image = itemstackdef.inventory_image end
+				player:hud_change(mcl_hunger.eat_anim_hud[player_name], "text", wield_image)
+				player:hud_change(mcl_hunger.eat_anim_hud[player_name], "offset", {x = 0, y = 50*math.sin(10*eat_tick_timers[player]+math.random())-50})
+
 				if eat_effects_cooldown[player] > 0.2 then
 					eat_effects_cooldown[player] = 0
 
 					if not mcl_hunger.eat_internal[player_name].user then
 						mcl_hunger.eat_internal[player_name].user = player
 					end
-	
+
 					if not mcl_hunger.eat_internal[player_name].itemname then
 						mcl_hunger.eat_internal[player_name].itemname = current_itemstack:get_name()
 					end
@@ -357,6 +379,8 @@ minetest.register_globalstep(function(dtime)
 
 			elseif eat_start_timers[player] and eat_start_timers[player] > 0.2 then
 				playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
+				player:hud_set_flags({wielditem = true})
+				player:hud_change(mcl_hunger.eat_anim_hud[player_name], "text", "blank.png")
 				mcl_hunger.eat_internal[player_name].is_eating_no_padding = false
 
 			elseif eat_start_timers[player] and eat_start_timers[player] > mcl_hunger.EATING_TOUCHSCREEN_DELAY_PADDING then
