@@ -1333,7 +1333,7 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
-			if not EF[name][object] or EF[name][object].timer >= vals.dur then
+			if not object or not EF[name][object] or EF[name][object].timer >= vals.dur or not object:get_pos() then
 				if effect.on_end then effect.on_end(object) end
 				EF[name][object] = nil
 				if effect.after_end then effect.after_end(object) end
