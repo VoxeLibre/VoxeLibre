@@ -38,6 +38,16 @@ local function try_detach_minecart(staticdata)
 	end
 end
 
+local function reverse_direction(staticdata)
+	if staticdata.behind or staticdata.ahead then
+		reverse_train(staticdata)
+		return
+	end
+
+	mod.reverse_cart_direction(staticdata)
+end
+
+
 --[[
 	Array of hooks { {u,v,w}, name }
 	Actual position is pos + u * dir + v * right + w * up
@@ -248,6 +258,13 @@ local function calculate_acceleration(staticdata)
 	local time_active = minetest.get_gametime() - 0.25
 
 	if (ctrl.forward or 0) > time_active then
+		if staticdata.velocity == 0 then
+			local look_dir = minetest.facedir_to_dir(ctrl.look or 0)
+			local dot = vector.dot(staticdata.dir, look_dir)
+			if dot < 0 then
+				reverse_direction(staticdata)
+			end
+		end
 		acceleration = 4
 	elseif (ctrl.brake or 0) > time_active then
 		acceleration = -1.5
@@ -268,15 +285,6 @@ local function calculate_acceleration(staticdata)
 	end
 
 	return acceleration
-end
-
-local function reverse_direction(staticdata)
-	if staticdata.behind or staticdata.ahead then
-		reverse_train(staticdata)
-		return
-	end
-
-	mod.reverse_cart_direction(staticdata)
 end
 
 local function do_movement_step(staticdata, dtime)
@@ -405,7 +413,7 @@ local function do_movement_step(staticdata, dtime)
 
 		-- Update cart direction
 		staticdata.dir = next_dir
-	elseif stops_in_block and v_1 < (FRICTION/5) and a <= 0 then
+	elseif stops_in_block and v_1 < (FRICTION/5) and a <= 0 and staticdata.dir.y > 0 then
 		-- Handle direction flip due to gravity
 		if DEBUG then mcl_debug("Gravity flipped direction") end
 

@@ -21,6 +21,7 @@ assert(handle_cart_enter)
 -- Constants
 local max_step_distance = 0.5
 local MINECART_MAX_HP = 4
+local TWO_OVER_PI = 2 / math.pi
 
 local function detach_driver(self)
 	local staticdata = self._staticdata
@@ -244,6 +245,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 			local controls = {}
 			if ctrl.up then controls.forward = now_time end
 			if ctrl.down then controls.brake = now_time end
+			controls.look = math.round(player:get_look_horizontal() * TWO_OVER_PI) % 4
 			staticdata.controls = controls
 		end
 
