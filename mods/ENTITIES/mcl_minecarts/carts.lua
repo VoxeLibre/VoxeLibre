@@ -53,7 +53,7 @@ local function detach_driver(self)
 		local cart_pos = mod.get_cart_position(staticdata) or self.object:get_pos()
 		local new_pos = vector.offset(cart_pos, -dir.z, 0, dir.x)
 		player:set_detach()
-		print("placing player at "..tostring(new_pos).." from cart at "..tostring(cart_pos)..", old_pos="..tostring(player:get_pos()).."dir="..tostring(dir))
+		--print("placing player at "..tostring(new_pos).." from cart at "..tostring(cart_pos)..", old_pos="..tostring(player:get_pos()).."dir="..tostring(dir))
 
 		-- There needs to be a delay here or the player's position won't update
 		minetest.after(0.1,function(driver_name,new_pos)
@@ -63,8 +63,8 @@ local function detach_driver(self)
 
 		player:set_eye_offset(vector.new(0,0,0),vector.new(0,0,0))
 		mcl_player.player_set_animation(player, "stand" , 30)
-	else
-		print("No player object found for "..driver_name)
+	--else
+		--print("No player object found for "..driver_name)
 	end
 end
 
@@ -188,6 +188,23 @@ function DEFAULT_CART_DEF:get_cart_position()
 		return self.object:get_pos()
 	end
 end
+function DEFAULT_CART_DEF:on_punch(puncher, time_from_last_punch, tool_capabilities, dir, damage)
+	if puncher == self._driver then return end
+
+	local staticdata = self._staticdata
+	local controls = staticdata.controls or {}
+
+	local impulse = vector.multiply(dir, damage * 20)
+
+	local accel = vector.dot(staticdata.dir, impulse)
+	if accel < 0 and staticdata.velocity == 0 then
+		mod.reverse_direction(staticdata)
+	end
+
+	controls.impulse = impulse
+	--print("uuid="..self._uuid..", controls="..dump(controls))
+	staticdata.controls = controls
+end
 function DEFAULT_CART_DEF:on_step(dtime)
 	local staticdata = self._staticdata
 	if not staticdata then
@@ -206,7 +223,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 
 	-- Remove superceded entities
 	if self._seq ~= staticdata.seq then
-		print("removing cart #"..staticdata.uuid.." with sequence number mismatch")
+		--print("removing cart #"..staticdata.uuid.." with sequence number mismatch")
 		self.object:remove()
 		return
 	end

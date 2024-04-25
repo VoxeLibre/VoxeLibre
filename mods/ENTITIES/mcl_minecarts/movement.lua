@@ -46,6 +46,7 @@ local function reverse_direction(staticdata)
 
 	mod.reverse_cart_direction(staticdata)
 end
+mod.reverse_direction = reverse_direction
 
 
 --[[
@@ -268,6 +269,9 @@ local function calculate_acceleration(staticdata)
 		acceleration = 4
 	elseif (ctrl.brake or 0) > time_active then
 		acceleration = -1.5
+	elseif ctrl.impulse then
+		acceleration = vector.dot(staticdata.dir, ctrl.impulse)
+		ctrl.impulse = nil
 	elseif (staticdata.fueltime or 0) > 0 and staticdata.velocity <= 4 then
 		acceleration = 0.6
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or SPEED_MAX ) then
@@ -310,6 +314,7 @@ local function do_movement_step(staticdata, dtime)
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
 		        ",x_0="..tostring(x_0)..
+			",dtime="..tostring(dtime)..
 		        ",timestep="..tostring(timestep)..
 		        ",dir="..tostring(staticdata.dir)..
 			",connected_at="..tostring(staticdata.connected_at)..
