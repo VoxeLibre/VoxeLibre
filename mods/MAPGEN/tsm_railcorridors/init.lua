@@ -1090,12 +1090,11 @@ mcl_structures.register_structure("mineshaft",{
 	y_min = mcl_vars.mg_overworld_min,
 	place_func = function(pos,_,pr,blockseed)
 		local r = pr:next(-50,-10)
-		r = -10
 		local p = vector.offset(pos,0,r,0)
 		if p.y < mcl_vars.mg_overworld_min + 5 then
 			p.y = mcl_vars.mg_overworld_min + 5
 		end
-		--if p.y > -10 then return true end
+		if p.y > -10 then return true end
 		InitRandomizer(blockseed)
 
 		local hook = tsm_railcorridors.on_start
