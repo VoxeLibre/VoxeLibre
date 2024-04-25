@@ -149,19 +149,18 @@ local railuse = S(
 mod.text = mod.text or {}
 mod.text.railuse = railuse
 local BASE_DEF = {
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-8/16, -8/16, -8/16, 8/16, -7/16, 8/15}
-		}
-	},
+	drawtype = "mesh",
+	mesh = "flat_track.obj",
 	paramtype = "light",
 	paramtype2 = "4dir",
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	is_ground_content = true,
 	paramtype = "light",
+	collision_box = {
+		type = "fixed",
+		fixed = { -8/16, -8/16, -8/16, 8/16, -7/16, 8/15 }
+	},
 	selection_box = {
 		type = "fixed",
 		fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
