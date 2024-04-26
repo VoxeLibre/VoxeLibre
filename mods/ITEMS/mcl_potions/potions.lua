@@ -46,51 +46,6 @@ end
 -- ╚═╝░░░░░░╚════╝░░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝╚═════╝░
 
 
-function return_on_use(def, effect, dur)
-	return function (itemstack, user, pointed_thing)
-		if pointed_thing.type == "node" then
-			if user and not user:get_player_control().sneak then
-				-- Use pointed node's on_rightclick function first, if present
-				local node = minetest.get_node(pointed_thing.under)
-				if user and not user:get_player_control().sneak then
-					if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-						return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-					end
-				end
-			end
-		elseif pointed_thing.type == "object" then
-			return itemstack
-		end
-
-		--def.on_use(user, effect, dur) -- Will do effect immediately but not reduce item count until eating delay ends which makes it exploitable by deliberately not finishing delay
-
-		-- Wrapper for handling mcl_hunger delayed eating TODO migrate to the new function
-		local name = user:get_player_name()
-		mcl_hunger.eat_internal[name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
-		mcl_hunger.eat_internal[name]._custom_var = {
-			user = user,
-			effect = effect,
-			dur = dur,
-		}
-		mcl_hunger.eat_internal[name]._custom_func = def.on_use
-		mcl_hunger.eat_internal[name]._custom_wrapper = function(name)
-
-			mcl_hunger.eat_internal[name]._custom_func(
-				mcl_hunger.eat_internal[name]._custom_var.user,
-				mcl_hunger.eat_internal[name]._custom_var.effect,
-				mcl_hunger.eat_internal[name]._custom_var.dur
-			)
-		end
-
-		local old_name, old_count = itemstack:get_name(), itemstack:get_count()
-		itemstack = minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		if old_name ~= itemstack:get_name() or old_count ~= itemstack:get_count() then
-			mcl_potions._use_potion(itemstack, user, def.color)
-		end
-		return itemstack
-	end
-end
-
 local function generate_on_use(effects, color, on_use, custom_effect)
 	return function(itemstack, user, pointed_thing)
 		if pointed_thing.type == "node" then
@@ -104,32 +59,52 @@ local function generate_on_use(effects, color, on_use, custom_effect)
 			return itemstack
 		end
 
-		local potency = itemstack:get_meta():get_int("mcl_potions:potion_potent")
-		local plus = itemstack:get_meta():get_int("mcl_potions:potion_plus")
-		local ef_level
-		local dur
-		for name, details in pairs(effects) do
-			if details.uses_level then
-				ef_level = details.level + details.level_scaling * (potency)
-			else
-				ef_level = details.level
-			end
-			if details.dur_variable then
-				dur = details.dur * math.pow(mcl_potions.PLUS_FACTOR, plus)
-				if potency>0 and details.uses_level then
-					dur = dur / math.pow(mcl_potions.POTENT_FACTOR, potency)
+		-- Wrapper for handling mcl_hunger delayed eating
+		local player_name = user:get_player_name()
+		mcl_hunger.eat_internal[player_name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
+		mcl_hunger.eat_internal[player_name]._custom_var = {
+			user = user,
+			effects = effects,
+			on_use = on_use,
+			custom_effect = custom_effect,
+		}
+		mcl_hunger.eat_internal[player_name]._custom_func = function(itemstack, user, effects, on_use, custom_effect)
+			local potency = itemstack:get_meta():get_int("mcl_potions:potion_potent")
+			local plus = itemstack:get_meta():get_int("mcl_potions:potion_plus")
+			local ef_level
+			local dur
+			for name, details in pairs(effects) do
+				if details.uses_level then
+					ef_level = details.level + details.level_scaling * (potency)
+				else
+					ef_level = details.level
 				end
-			else
-				dur = details.dur
+				if details.dur_variable then
+					dur = details.dur * math.pow(mcl_potions.PLUS_FACTOR, plus)
+					if potency>0 and details.uses_level then
+						dur = dur / math.pow(mcl_potions.POTENT_FACTOR, potency)
+					end
+				else
+					dur = details.dur
+				end
+				if details.effect_stacks then
+					ef_level = ef_level + mcl_potions.get_effect_level(user, name)
+				end
+				mcl_potions.give_effect_by_level(name, user, ef_level, dur)
 			end
-			if details.effect_stacks then
-				ef_level = ef_level + mcl_potions.get_effect_level(user, name)
-			end
-			mcl_potions.give_effect_by_level(name, user, ef_level, dur)
-		end
 
-		if on_use then on_use(user, potency+1) end
-		if custom_effect then custom_effect(user, potency+1, plus) end
+			if on_use then on_use(user, potency+1) end
+			if custom_effect then custom_effect(user, potency+1, plus) end
+		end
+		mcl_hunger.eat_internal[player_name]._custom_wrapper = function(player_name)
+			mcl_hunger.eat_internal[player_name]._custom_func(
+				mcl_hunger.eat_internal[player_name]._custom_itemstack,
+				mcl_hunger.eat_internal[player_name]._custom_var.user,
+				mcl_hunger.eat_internal[player_name]._custom_var.effects,
+				mcl_hunger.eat_internal[player_name]._custom_var.on_use,
+				mcl_hunger.eat_internal[player_name]._custom_var.custom_effect
+			)
+		end
 
 		itemstack = minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		if itemstack then mcl_potions._use_potion(user, color) end
