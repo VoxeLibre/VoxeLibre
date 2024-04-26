@@ -79,7 +79,7 @@ local function bent_hopper_act(pos, node, active_object_count, active_object_cou
 	local dst_name = dst_node.name
 	local dst_def = minetest.registered_nodes[dst_name]
 	if dst_def._mcl_hopper_act then
-		dst_def._mcl_hopper_act( dst_pos, dst_node, active_object_count, active_count_wider )
+		dst_def._mcl_hopper_act( dst_pos, dst_node, active_object_count, active_object_count_wider )
 	end
 	mcl_util.hopper_push(pos, dst_pos)
 
