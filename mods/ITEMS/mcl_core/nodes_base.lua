@@ -12,6 +12,18 @@ else
 	ice_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false
 end
 
+local world_aligned_grass = minetest.settings:get_bool("mcl_world_aligned_grass_texture", false)
+local grass_block_top_texture
+if world_aligned_grass then
+	grass_block_top_texture = {
+		name = "mcl_core_grass_block_top_sheet.png",
+		align_style = "world",
+		scale = 5
+	}
+else
+	grass_block_top_texture = "mcl_core_grass_block_top.png"
+end
+
 mcl_core.fortune_drop_ore = {
 	discrete_uniform_distribution = true,
 	min_count = 2,
@@ -369,8 +381,16 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_doc_items_longdesc = S("A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt."),
 	_doc_items_hidden = false,
 	paramtype2 = "color",
-	tiles = {"mcl_core_grass_block_top.png", { name="default_dirt.png", color="white" }, { name="default_dirt.png^mcl_dirt_grass_shadow.png", color="white" }},
-	overlay_tiles = {"mcl_core_grass_block_top.png", "blank.png", {name="mcl_core_grass_block_side_overlay.png", tileable_vertical=false}},
+	tiles = {
+		grass_block_top_texture,
+		{ name="default_dirt.png", color="white" },
+		{ name="default_dirt.png^mcl_dirt_grass_shadow.png", color="white" }
+	},
+	overlay_tiles = {
+		"blank.png",
+		"blank.png",
+		{name="mcl_core_grass_block_side_overlay.png", tileable_vertical=false}
+	},
 	palette = "mcl_core_palette_grass.png",
 	palette_index = 0,
 	color = "#7CBD6B",
