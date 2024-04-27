@@ -12,7 +12,7 @@ minetest.register_node("mcl_core:glass", {
 	paramtype2 = "glasslikeliquidlevel",
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	groups = {handy=1, glass=1, building_block=1, material_glass=1, crushable=1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "",
 	_mcl_blast_resistance = 0.3,
