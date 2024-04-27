@@ -77,20 +77,28 @@ local function rotate(pos, node, user, mode, new_param2)
 end
 
 
+local creative_dig = {}
 local function destruct_bed(pos, oldnode)
 	local node = oldnode or minetest_get_node_or_nil(pos)
 	if not node then return end
 
 	local pos2, node2, bottom = get_bed_next_node(pos, oldnode)
 
+	-- Check creative dig flags and don't drop an item if the bed was dug by a player in
+	-- creative mode
+	local pos_hash = minetest.hash_node_position(pos)
+	local pos2_hash = minetest.hash_node_position(pos2)
+	local creative_mode = creative_dig[pos_hash] or creative_dig[pos2_hash]
+
 	if bottom then
 		if node2 and string.sub(node2.name, -4) == "_top" then
 			minetest_remove_node(pos2)
 		end
 
-		-- Drop the bed only when removing the top to prevent duplication
+		-- Drop the bed only when removing the top to prevent duplication and only if
+		-- it wasn't dug by a player in creative mode
 		local bed_node_def = minetest.registered_nodes[node.name]
-		if bed_node_def and bed_node_def._mcl_beds_drop then
+		if bed_node_def and bed_node_def._mcl_beds_drop and not creative_mode then
 			local stack = ItemStack(bed_node_def._mcl_beds_drop)
 			minetest.add_item(pos2, stack)
 		end
@@ -99,6 +107,29 @@ local function destruct_bed(pos, oldnode)
 			minetest_remove_node(pos2)
 		end
 	end
+end
+
+local function dig_bed(pos, node, digger)
+	local pos_hash = minetest.hash_node_position(pos)
+
+	if digger then
+		local name = digger:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return
+		end
+
+		-- Set creative dig flags to stop dropping items
+		if minetest.is_creative_enabled(name) then
+			creative_dig[pos_hash] = true
+		end
+	end
+
+	-- Trigger the destruct_bed function
+	minetest.remove_node(pos)
+
+	-- Clean up creative dig flag
+	creative_dig[pos_hash] = nil
 end
 
 local function kick_player_after_destruct(destruct_pos)
@@ -233,6 +264,7 @@ function mcl_beds.register_bed(name, def)
 		end,
 
 		after_destruct = destruct_bed,
+		on_dig = dig_bed,
 
 		on_destruct = kick_player_after_destruct,
 
@@ -270,6 +302,7 @@ function mcl_beds.register_bed(name, def)
 
 		on_rotate = rotate,
 		after_destruct = destruct_bed,
+		on_dig = dig_bed,
 	})
 
 	minetest.register_alias(name, name .. "_bottom")
