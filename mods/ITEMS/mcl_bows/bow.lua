@@ -1,6 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-mcl_bows = {}
 
 -- local arrows = {
 -- 	["mcl_bows:arrow"] = "mcl_bows:arrow_entity",

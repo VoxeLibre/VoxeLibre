@@ -35,6 +35,7 @@ local function random_arrow_positions(positions, placement)
 	end
 	return 0
 end
+mcl_bows.random_arrow_positions = random_arrow_positions
 
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
