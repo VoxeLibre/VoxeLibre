@@ -7,12 +7,18 @@ local eat = minetest.item_eat(6, "mcl_core:bowl") --6 hunger points, player rece
 
 local flower_effect = {
 	[ "mcl_flowers:allium" ] = "fire_resistance",
+	[ "mcl_flowers:azure_bluet" ] = "blindness",
 	[ "mcl_flowers:lily_of_the_valley" ] = "poison",
-	[ "mcl_flowers:blue_orchid" ] = "food_poisoning",
-	[ "mcl_flowers:dandelion" ] = "food_poisoning",
+	[ "mcl_flowers:blue_orchid" ] = "saturation",
+	[ "mcl_flowers:dandelion" ] = "saturation",
 	[ "mcl_flowers:cornflower" ] = "jump",
 	[ "mcl_flowers:oxeye_daisy" ] = "regeneration",
-	[ "mcl_flowers:poppy" ] = "night_vision"
+	[ "mcl_flowers:poppy" ] = "night_vision",
+	[ "mcl_flowers:wither_rose" ] = "withering",
+	[ "mcl_flowers:tulip_orange" ] = "weakness",
+	[ "mcl_flowers:tulip_pink" ] = "weakness",
+	[ "mcl_flowers:tulip_red" ] = "weakness",
+	[ "mcl_flowers:tulip_white" ] = "weakness",
 }
 
 local effects = {
@@ -20,13 +26,19 @@ local effects = {
 		mcl_potions.give_effect("fire_resistance", placer, 1, 4)
 		return eat(itemstack, placer, pointed_thing)
 	end,
+
+	[ "blindness" ] = function(itemstack, placer, pointed_thing)
+		mcl_potions.give_effect("blindness", placer, 1, 8)
+		return eat(itemstack, placer, pointed_thing)
+	end,
+
 	[ "poison" ] = function(itemstack, placer, pointed_thing)
 		mcl_potions.give_effect_by_level("poison", placer, 1, 12)
 		return eat(itemstack, placer, pointed_thing)
 	end,
 
-	[ "food_poisoning" ] = function(itemstack, placer, pointed_thing, player)
-		mcl_potions.give_effect_by_level("food_poisoning", placer, 10, 12)
+	[ "saturation" ] = function(itemstack, placer, pointed_thing, player)
+		mcl_potions.give_effect_by_level("saturation", placer, 1, 0.5)
 		return eat(itemstack, placer, pointed_thing)
 	end,
 
@@ -37,6 +49,16 @@ local effects = {
 
 	["regeneration"] = function(itemstack, placer, pointed_thing)
 		mcl_potions.give_effect_by_level("regeneration", placer, 1, 8)
+		return eat(itemstack, placer, pointed_thing)
+	end,
+
+	["withering"] = function(itemstack, placer, pointed_thing)
+		mcl_potions.give_effect_by_level("withering", placer, 1, 8)
+		return eat(itemstack, placer, pointed_thing)
+	end,
+
+	["weakness"] = function(itemstack, placer, pointed_thing)
+		mcl_potions.give_effect_by_level("weakness", placer, 1, 9)
 		return eat(itemstack, placer, pointed_thing)
 	end,
 
