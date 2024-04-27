@@ -105,11 +105,14 @@ mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	jump = false,
 	view_range = 16,
+	dealt_effect = {
+		name = "fatigue",
+		level = 3,
+		dur = 30,
+	},
 })
 
--- Spawning disabled due to size issues <- what do you mean? -j4i
--- TODO: Re-enable spawning
--- mcl_mobs:spawn_specific("mobs_mc:guardian_elder", { "mcl_core:water_source", "mclx_core:river_water_source" }, { "mcl_core:water_source", "mclx_core:river_water_source" }, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mcl_vars.mg_overworld_min, mobs_mc.water_level-18)
+mcl_mobs:spawn_specific("mobs_mc:guardian_elder", { "mcl_core:water_source", "mclx_core:river_water_source" }, { "mcl_core:water_source", "mclx_core:river_water_source" }, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mcl_vars.mg_overworld_min, mobs_mc.water_level-18)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "#ceccba", "#747693", 0)
