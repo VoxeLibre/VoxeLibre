@@ -386,7 +386,7 @@ mcl_potions.register_potion({
 	name = "thick",
 	desc_prefix = S("Thick"),
 	_tt = S("No effect"),
-	_longdesc = S("Has a bitter taste and is not really useful for brewing potions."),
+	_longdesc = S("Has a bitter taste and may be useful for brewing potions."),
 	color = "#0000FF",
 })
 
@@ -650,20 +650,8 @@ mcl_potions.register_potion({
 })
 
 mcl_potions.register_potion({
-	name = "resistance",
-	desc_suffix = S("of Resistance"),
-	_tt = nil,
-	_longdesc = S("Decreases damage taken."),
-	color = "#2552A5",
-	_effect_list = {
-		resistance = {},
-	},
-	has_arrow = true,
-})
-
-mcl_potions.register_potion({
-	name = "turtle_master",
-	desc_suffix = S("of Turtle Master"),
+	name = "stone_cloak",
+	desc_suffix = S("of Stone Cloak"),
 	_tt = nil,
 	_longdesc = S("Decreases damage taken at the cost of speed."),
 	color = "#255235",

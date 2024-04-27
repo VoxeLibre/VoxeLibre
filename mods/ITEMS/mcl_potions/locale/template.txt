@@ -1,13 +1,274 @@
 # textdomain: mcl_potions
-<effect> <duration> [<factor>]=
+Invisibility=
+body is invisible=
 
-Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 @= 100%)=
+Poison=
+-1 HP / @1 s=
+
+Regeneration=
++1 HP / @1 s=
+
+Strength=
++@1% melee damage=
+
+Weakness=
+-@1% melee damage=
+
+Water Breathing=
+limitless breathing under water=
+
+Dolphin's Grace=
+swimming gracefully=
+
+Leaping=
++@1% jumping power=
+-@1% jumping power=
+
+Slow Falling=
+decreases gravity effects=
+
+Swiftness=
++@1% running speed=
+
+Slowness=
+-@1% running speed=
+
+Levitation=
+moves body upwards at @1 nodes/s=
+
+Night Vision=
+improved vision during the night=
+
+Darkness=
+surrounded by darkness=
+not seeing anything beyond @1 nodes=
+
+Glowing=
+more visible at all times=
+
+Health Boost=
+HP increased by @1=
+
+Absorption=
+absorbs up to @1 incoming damage=
+
+Fire Resistance=
+resistance to fire damage=
+
+Resistance=
+resist @1% of incoming damage=
+
+Luck=
+
+Bad Luck=
+
+Bad Omen=
+danger is imminent=
+
+Hero of the Village=
+
+Withering=
+-1 HP / @1 s, can kill=
+
+Frost=
+-1 HP / 1 s, can kill, -@1% running speed=
+
+Blindness=
+impaired sight=
+
+Nausea=
+not feeling very well...=
+frequency: @1 / 1 s=
+
+Food Poisoning=
+exhausts by @1 per second=
+
+Saturation=
+saturates by @1 per second=
+
+Haste=
++@1% mining and attack speed=
+
+Fatigue=
+-@1% mining and attack speed=
+
+Conduit Power=
++@1% mining and attack speed in water=
+
+
+<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]=
+
+Add a status effect to yourself. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART at the end means no particles will be shown for this effect.=
 
 Missing effect parameter!=
-Missing or invalid duration parameter!=
-Invalid factor parameter!=
+Missing or invalid heal amount parameter!=
+Player @1 healed by @2 HP.=
+Player @1 harmed by @2 HP.=
+Effects cleared for player @1=
+Removed effect @1 from player @2=
 @1 is not an available status effect.=
+Missing or invalid duration parameter!=
+Invalid level parameter!=
+Missing or invalid factor parameter when level is F!=
+
+@1 effect given to player @2 for @3 seconds with factor of @4.=
+@1 effect given to player @2 for @3 seconds.=
+Giving effect @1 to player @2 failed.=
+@1 effect on level @2 given to player @3 for @4 seconds.=
+@1 effect given to player @2 for @3 seconds.=
+Giving effect @1 to player @2 failed.=
+@1 is not an available status effect.=
+
+
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=
+Use the “Punch” key to throw it.=
+
+
+A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.=
+
+
+This particular arrow is tipped and will give an effect when it hits a player or mob.=
+
+
+Use the “Place” key to drink it.=
+Drinking a potion gives you a particular effect or set of effects.=
+
+@1 Potion @2=
+@1 Potion=
+Potion @1=
+Strange Potion=
+
+Stacks the effect=
+
+Splash @1=
+Lingering @1=
+@1 Arrow @2=
+@1 Arrow=
+Arrow @1=
+Strange Tipped Arrow=
+
+Mighty=
+of Trolling=
+
+Dragon's Breath=
+This item is used in brewing and can be combined with splash potions to create lingering potions.=
+
+Awkward=
+No effect=
+Has an awkward taste and is used for brewing potions.=
+
+Mundane=
+Has a terrible taste and is not really useful for brewing potions.=
+
+Thick=
+Has a bitter taste and may be useful for brewing potions.=
+
+of Healing=
++@1 HP=
+Instantly heals.=
+
+of Harming=
+-@1 HP=
+Instantly deals damage.=
+
+of Night Vision=
+Increases the perceived brightness of light under a dark sky.=
+
+of Swiftness=
+Increases walking speed.=
+
+of Slowness=
+Decreases walking speed.=
+
+of Leaping=
+Increases jump strength.=
+
+of Withering=
+Applies the withering effect which deals damage at a regular interval and can kill.=
+
+of Poison=
+Applies the poison effect which deals damage at a regular interval.=
+
+of Regeneration=
+Regenerates health over time.=
+
+of Invisibility=
+Grants invisibility.=
+
+of Water Breathing=
+Grants limitless breath underwater.=
+
+of Fire Resistance=
+Grants immunity to damage from heat sources like fire.=
+
+of Strength=
+Increases attack power.=
+
+of Weakness=
+Decreases attack power.=
+
+of Slow Falling=
+Instead of falling, you descend gracefully.=
+
+of Levitation=
+Floats body slowly upwards.=
+
+of Darkness=
+Surrounds with darkness.=
+
+of Glowing=
+Highlights for others to see.=
+
+of Health Boost=
+Increases health.=
+
+of Absorption=
+Absorbs some incoming damage.=
+
+of Resistance=
+Decreases damage taken.=
+
+of Stone Cloak=
+Decreases damage taken at the cost of speed.=
+
+of Luck=
+Increases luck.=
+
+of Bad Luck=
+Decreases luck.=
+
+of Frost=
+Freezes...=
+
+of Blindness=
+Impairs sight.=
+
+of Nausea=
+Disintegrates senses.=
+
+of Food Poisoning=
+Moves bowels too fast.=
+
+of Saturation=
+Satisfies hunger.=
+
+of Haste=
+Increases digging and attack speed.=
+
+of Fatigue=
+Decreases digging and attack speed.=
+
+Ominous=
+Attracts danger.=
+
+Unknown Potion=
+Right-click to identify=
+Unknown Tipped Arrow=
+
+
 Fermented Spider Eye=
+Try different combinations to create potions.=
+
 Glass Bottle=
 Liquid container=
 
@@ -37,79 +298,3 @@ A throwable water bottle that will shatter on impact, where it creates a cloud o
 Glistering Melon=
 
 This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=
-
-A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect, possibly repeatedly.=
-
-Use the “Punch” key to throw it.=
-Use the “Place” key to drink it.=
-Drinking a potion gives you a particular effect.=
-1 HP/@1s | @2=
-@1 HP=
-@1 Potion=
-Splash @1 Potion=
-Lingering @1 Potion=
-Arrow of @1=
- II=
- IV=
-@1 Potion@2=
-Splash @1@2 Potion=
-Lingering @1@2 Potion=
-Arrow of @1@2=
-@1 + Potion=
-Splash @1 + Potion=
-Lingering @1 + Potion=
-Arrow of @1 +=
-Awkward Potion=
-Awkward Splash Potion=
-Awkward Lingering Potion=
-Has an awkward taste and is used for brewing potions.=
-Mundane Potion=
-Mundane Splash Potion=
-Mundane Lingering Potion=
-Has a terrible taste and is not useful for brewing potions.=
-Thick Potion=
-Thick Splash Potion=
-Thick Lingering Potion=
-Has a bitter taste and is not useful for brewing potions.=
-Dragon's Breath=
-
-This item is used in brewing and can be combined with splash potions to create lingering potions.=
-
-Healing=
-+4 HP=
-+8 HP=
-Instantly heals.=
-Harming=
--6 HP=
--12 HP=
-Instantly deals damage.=
-Night Vision=
-Increases the perceived brightness of light under a dark sky.=
-Swiftness=
-Increases walking speed.=
-Slowness=
-Decreases walking speed.=
-Leaping=
-Increases jump strength.=
-Poison=
-Applies the poison effect which deals damage at a regular interval.=
-Regeneration=
-Regenerates health over time.=
-Invisibility=
-Grants invisibility.=
-Water Breathing=
-Grants limitless breath underwater.=
-Fire Resistance=
-Grants immunity to damage from heat sources like fire.=
-Weakness=
-Weakness +=
-Strength=
-Strength II=
-Strength +=
-Try different combinations to create potions.=
-No effect=
-
-A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.=
-
-This particular arrow is tipped and will give an effect when it hits a player or mob.=
-
