@@ -565,6 +565,9 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 		return
 	end
 
+	assert(min_height)
+	assert(max_height)
+
 	-- chance/spawn number override in minetest.conf for registered mob
 	local numbers = minetest.settings:get(name)
 
