@@ -684,7 +684,7 @@ function mob_class:do_env_damage()
 		self.object:set_velocity({x = 0, y = 0, z = 0})
 	-- wither rose effect
 	elseif self.standing_in == "mcl_flowers:wither_rose" then
-		mcl_potions.withering_func(self.object, 1, 2)
+		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
 
 	local nodef = minetest.registered_nodes[self.standing_in]

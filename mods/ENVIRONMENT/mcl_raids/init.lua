@@ -104,11 +104,11 @@ function mcl_raids.promote_to_raidcaptain(c) -- object
 			mcl_raids.drop_obanner(pos)
 			if cmi_cause and cmi_cause.type == "punch" and cmi_cause.puncher:is_player() then
 				awards.unlock(cmi_cause.puncher:get_player_name(), "mcl:voluntary_exile")
-				local lv = mcl_potions.get_effect(cmi_cause.puncher, "bad_omen")
+				local lv = mcl_potions.get_effect_level(cmi_cause.puncher, "bad_omen")
 				if not lv then lv = 0
 				else lv = lv.factor end
 				lv = math.max(5,lv + 1)
-				mcl_potions.bad_omen_func(cmi_cause.puncher,lv,6000)
+				mcl_potions.give_effect_by_level("bad_omen", cmi_cause.puncher, lv, 6000)
 			end
 		end
 		if old_ondie then return old_ondie(self,pos,cmi_cause) end
@@ -310,7 +310,7 @@ mcl_events.register_event("raid",{
 		self.mobs = {}
 		self.health_max = 1
 		self.health = 0
-		local lv = mcl_potions.get_effect(minetest.get_player_by_name(self.player), "bad_omen")
+		local lv = mcl_potions.get_effect_level(minetest.get_player_by_name(self.player), "bad_omen")
 		if lv and lv.factor and lv.factor > 1 then self.max_stage = 6 end
 	end,
 	cond_progress = function(self)

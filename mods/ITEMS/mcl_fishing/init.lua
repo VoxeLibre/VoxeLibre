@@ -519,7 +519,8 @@ minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
 
 	if itemstack:get_name() == "mcl_fishing:pufferfish_raw" then
-		mcl_potions.poison_func(user, 1/3, 60)
+		mcl_potions.give_effect_by_level("poison", user, 3, 60)
+		mcl_potions.give_effect_by_level("nausea", user, 2, 20)
 	end
 
 end )

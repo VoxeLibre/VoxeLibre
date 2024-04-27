@@ -717,6 +717,7 @@ mcl_potions.register_effect({
 		return S("danger is imminent")
 	end,
 	particle_color = "#472331",
+	uses_factor = true,
 })
 
 mcl_potions.register_effect({
