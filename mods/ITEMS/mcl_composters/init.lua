@@ -238,7 +238,7 @@ minetest.register_node("mcl_composters:composter", {
 	_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		return inv, "src", mcl_util.select_stack(hop_inv, hop_list, inv, "src", hopper_push_condition)
+		return inv, "src", mcl_util.select_stack(hop_inv, hop_list, inv, "src", hopper_push_condition, 1)
 	end,
 	_mcl_hoppers_on_after_push = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -293,7 +293,7 @@ local function register_filled_composter(level)
 		_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
-			return inv, "src", mcl_util.select_stack(hop_inv, hop_list, inv, "src", hopper_push_condition)
+			return inv, "src", mcl_util.select_stack(hop_inv, hop_list, inv, "src", hopper_push_condition, 1)
 		end,
 		_mcl_hoppers_on_after_push = function(pos)
 			local meta = minetest.get_meta(pos)

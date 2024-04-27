@@ -466,9 +466,9 @@ function mcl_furnaces.hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	if math.abs(pos.y - hop_pos.y) > math.abs(pos.x - hop_pos.x) and math.abs(pos.y - hop_pos.y) > math.abs(pos.z - hop_pos.z) then
-		return inv, "src", mcl_util.select_stack(hop_inv, hop_list, inv, "src")
+		return inv, "src", mcl_util.select_stack(hop_inv, hop_list, inv, "src", nil, 1)
 	else
-		return inv, "fuel", mcl_util.select_stack(hop_inv, hop_list, inv, "fuel", mcl_util.is_fuel)
+		return inv, "fuel", mcl_util.select_stack(hop_inv, hop_list, inv, "fuel", mcl_util.is_fuel, 1)
 	end
 end
 

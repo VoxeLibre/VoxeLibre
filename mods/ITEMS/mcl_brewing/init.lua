@@ -379,16 +379,27 @@ end
 local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
-	if math.abs(pos.y - hop_pos.y) > math.abs(pos.x - hop_pos.x) and math.abs(pos.y - hop_pos.y) > math.abs(pos.z - hop_pos.z) then
-		return inv, "input", mcl_util.select_stack(hop_inv, hop_list, inv, "input",
-			function(stack) return minetest.get_item_group(stack:get_name(), "brewitem") == 1 and minetest.get_item_group(stack:get_name(), "bottle") == 0 end)
+
+	if math.abs(pos.y - hop_pos.y) > math.abs(pos.x - hop_pos.x) and math.abs(pos.y - hop_pos.y) > math.abs(pos.z - hop_pos.z)
+	then
+		local function filter(stack)
+			return minetest.get_item_group(stack:get_name(), "brewitem") == 1 and
+			       minetest.get_item_group(stack:get_name(), "bottle") == 0
+		end
+
+		return inv, "input", mcl_util.select_stack(hop_inv, hop_list, inv, "input", filter, 1)
 	else
-		local stack = mcl_util.select_stack(hop_inv, hop_list, inv, "fuel", function(stack) return stack:get_name() == "mcl_mobitems:blaze_powder" end)
+		local filter = function(stack)
+			return stack:get_name() == "mcl_mobitems:blaze_powder"
+		end
+		local stack = mcl_util.select_stack(hop_inv, hop_list, inv, "fuel", filter, 1 )
 		if stack then
 			return inv, "fuel", stack
 		else
-			return inv, "stand", mcl_util.select_stack(hop_inv, hop_list, inv, "stand",
-				function(stack) return minetest.get_item_group(stack:get_name(), "bottle") == 1 end)
+			local function filter(stack)
+				return minetest.get_item_group(stack:get_name(), "bottle") == 1
+			end
+			return inv, "stand", mcl_util.select_stack(hop_inv, hop_list, inv, "stand", filter, 1)
 		end
 	end
 end
