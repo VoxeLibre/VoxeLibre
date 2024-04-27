@@ -1099,3 +1099,23 @@ function mcl_util.is_it_christmas()
 		return false
 	end
 end
+
+-- Get tile (texture) for a block that supports world-alignment
+local world_aligned = minetest.settings:get_bool("mcl_world_aligned_textures", false)
+function mcl_util.get_texture(name, scale)
+	local nscale
+	if scale == nil then
+		nscale = 5
+	else
+		nscale = scale
+	end
+	if world_aligned then
+		return {
+			name = name.."_world.png",
+			align_style = "world",
+			scale = nscale
+		}
+	else
+		return name..".png"
+	end
+end

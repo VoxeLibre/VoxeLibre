@@ -12,17 +12,7 @@ else
 	ice_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false
 end
 
-local world_aligned_grass = minetest.settings:get_bool("mcl_world_aligned_grass_texture", false)
-local grass_block_top_texture
-if world_aligned_grass then
-	grass_block_top_texture = {
-		name = "mcl_core_grass_block_top_sheet.png",
-		align_style = "world",
-		scale = 5
-	}
-else
-	grass_block_top_texture = "mcl_core_grass_block_top.png"
-end
+local get_texture = mcl_util.get_texture
 
 mcl_core.fortune_drop_ore = {
 	discrete_uniform_distribution = true,
@@ -36,7 +26,7 @@ minetest.register_node("mcl_core:stone", {
 	description = S("Stone"),
 	_doc_items_longdesc = S("One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava."),
 	_doc_items_hidden = false,
-	tiles = {"default_stone.png"},
+	tiles = {get_texture("default_stone")},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
@@ -246,7 +236,7 @@ minetest.register_node("mcl_core:stone_with_diamond", {
 minetest.register_node("mcl_core:stonebrick", {
 	description = S("Stone Bricks"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
-	tiles = {"default_stone_brick.png"},
+	tiles = {get_texture("default_stone_brick")},
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -306,7 +296,7 @@ minetest.register_node("mcl_core:stone_smooth", {
 minetest.register_node("mcl_core:granite", {
 	description = S("Granite"),
 	_doc_items_longdesc = S("Granite is an igneous rock."),
-	tiles = {"mcl_core_granite.png"},
+	tiles = {get_texture("mcl_core_granite", 3)},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
@@ -330,7 +320,7 @@ minetest.register_node("mcl_core:granite_smooth", {
 minetest.register_node("mcl_core:andesite", {
 	description = S("Andesite"),
 	_doc_items_longdesc = S("Andesite is an igneous rock."),
-	tiles = {"mcl_core_andesite.png"},
+	tiles = {get_texture("mcl_core_andesite", 3)},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
@@ -354,7 +344,7 @@ minetest.register_node("mcl_core:andesite_smooth", {
 minetest.register_node("mcl_core:diorite", {
 	description = S("Diorite"),
 	_doc_items_longdesc = S("Diorite is an igneous rock."),
-	tiles = {"mcl_core_diorite.png"},
+	tiles = {get_texture("mcl_core_diorite", 3)},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
@@ -382,7 +372,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_doc_items_hidden = false,
 	paramtype2 = "color",
 	tiles = {
-		grass_block_top_texture,
+		get_texture("mcl_core_grass_block_top"),
 		{ name="default_dirt.png", color="white" },
 		{ name="default_dirt.png^mcl_dirt_grass_shadow.png", color="white" }
 	},
@@ -732,7 +722,7 @@ minetest.register_node("mcl_core:brick_block", {
 	-- Original name: “Bricks”
 	description = S("Brick Block"),
 	_doc_items_longdesc = S("Brick blocks are a good building material for building solid houses and can take quite a punch."),
-	tiles = {"default_brick.png"},
+	tiles = {get_texture("default_brick")},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},

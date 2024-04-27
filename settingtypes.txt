@@ -256,12 +256,12 @@ mcl_buckets_use_select_box (Buckets use select box) bool false
 # See also: https://github.com/minetest/minetest/issues/95
 mcl_translucent_ice (Translucent ice) bool false
 
-# Whether the top texture of grass blocks should be world-aligned. If enabled,
-# grass top texture will be a sheet of 5x5 tiles with pre-defined "random"
-# displacement and rotation, spanning across 5 blocks.
+# Whether the textures should be world-aligned for variations. If enabled,
+# some textures will be using sheets of 5x5 varied tiles with pre-defined
+# "random" displacement and rotation, spanning across 5 blocks.
 #
-# This might put some load on the GPU by making it work with a bigger texture.
-mcl_world_aligned_grass_texture (World-aligned grass texture) bool false
+# This might put some load on the GPU by making it work with bigger textures.
+mcl_world_aligned_textures (World-aligned textures) bool false
 
 # Whether to generate fallen logs in some biomes.
 # They might not always look pretty and have strange overhangs.
