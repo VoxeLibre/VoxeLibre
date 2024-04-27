@@ -818,19 +818,38 @@ mcl_potions.register_potion({
 -- COMPAT CODE
 local function replace_legacy_potion(itemstack)
 	local name = itemstack:get_name()
-	local new_name = name:match("^(.+)_plus$")
+	local suffix = ""
+	local bare_name = name:match("^(.+)_splash$")
+	if bare_name then
+		suffix = "_splash"
+	else
+		bare_name = name:match("^(.+)_lingering$")
+		if bare_name then
+			suffix = "_lingering"
+		else
+			bare_name = name:match("^(.+)_arrow$")
+			if bare_name then
+				suffix = "_arrow"
+			else
+				bare_name = name
+			end
+		end
+	end
+	local new_name = bare_name:match("^(.+)_plus$")
 	local new_stack
 	if new_name then
-		new_stack = ItemStack(new_name)
+		new_stack = ItemStack(new_name..suffix)
 		new_stack:get_meta():set_int("mcl_potions:potion_plus",
 			registered_potions[new_name]._default_extend_level)
+		new_stack:set_count(itemstack:get_count())
 		tt.reload_itemstack_description(new_stack)
 	end
-	new_name = name:match("^(.+)_2$")
+	new_name = bare_name:match("^(.+)_2$")
 	if new_name then
-		new_stack = ItemStack(new_name)
+		new_stack = ItemStack(new_name..suffix)
 		new_stack:get_meta():set_int("mcl_potions:potion_potent",
 			registered_potions[new_name]._default_potent_level-1)
+		new_stack:set_count(itemstack:get_count())
 		tt.reload_itemstack_description(new_stack)
 	end
 	return new_stack
@@ -855,7 +874,13 @@ local old_potions_2 = {
 
 for _, name in pairs(old_potions_2) do
 	minetest.register_alias("mcl_potions:" .. name .. "_2", compat)
+	minetest.register_alias("mcl_potions:" .. name .. "_2_splash", compat)
+	minetest.register_alias("mcl_potions:" .. name .. "_2_lingering", compat)
+	minetest.register_alias("mcl_potions:" .. name .. "_2_arrow", compat)
 end
 for _, name in pairs(old_potions_plus) do
 	minetest.register_alias("mcl_potions:" .. name .. "_plus", compat)
+	minetest.register_alias("mcl_potions:" .. name .. "_plus_splash", compat)
+	minetest.register_alias("mcl_potions:" .. name .. "_plus_lingering", compat)
+	minetest.register_alias("mcl_potions:" .. name .. "_plus_arrow", compat)
 end
