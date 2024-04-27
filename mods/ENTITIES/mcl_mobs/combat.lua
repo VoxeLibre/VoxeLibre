@@ -627,6 +627,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			if hitter and is_player then
 				local wielditem = hitter:get_wielded_item()
 				kb = kb + 9 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+				kb = kb + 9 * minetest.get_item_group(wielditem:get_name(), "hammer")
 				-- add player velocity to mob knockback
 				local hv = hitter:get_velocity()
 				local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
