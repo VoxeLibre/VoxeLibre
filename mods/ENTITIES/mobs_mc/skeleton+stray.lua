@@ -113,7 +113,8 @@ local skeleton = {
 				self.object:set_yaw(minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())))
 			end
 			local dmg = math.random(2, 4)
-			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+			local arrow = self.arrow:match("^(.+)_entity$")
+			mcl_bows.shoot_arrow(arrow, pos, dir, self.object:get_yaw(), self.object, nil, dmg)
 		end
 	end,
 	shoot_interval = 2,
@@ -140,10 +141,10 @@ stray.textures = {
 		"mcl_bows_bow_0.png",
 	},
 }
+stray.arrow = "mcl_potions:frost_arrow_entity"
 -- TODO: different sound (w/ echo)
--- TODO: stray's arrow inflicts slowness status
 table.insert(stray.drops, {
-	name = "mcl_potions:slowness_arrow",
+	name = "mcl_potions:frost_arrow",
 	chance = 2,
 	min = 1,
 	max = 1,
