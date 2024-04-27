@@ -63,6 +63,11 @@ local function bent_hopper_act(pos, node, active_object_count, active_object_cou
 	end
 	timer:start(1.0)
 
+	-- Check if we are empty
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	local empty = inv:is_empty("main")
+
 	-- Determine to which side the hopper is facing, get nodes
 	local face = minetest.get_node(pos).param2
 	local dst_pos = {}
@@ -81,7 +86,9 @@ local function bent_hopper_act(pos, node, active_object_count, active_object_cou
 	if dst_def and dst_def._mcl_hopper_act then
 		dst_def._mcl_hopper_act( dst_pos, dst_node, active_object_count, active_object_count_wider )
 	end
-	mcl_util.hopper_push(pos, dst_pos)
+	if not empty then
+		mcl_util.hopper_push(pos, dst_pos)
+	end
 
 	local src_pos = vector.offset(pos, 0, 1, 0)
 	mcl_util.hopper_pull(pos, src_pos)
