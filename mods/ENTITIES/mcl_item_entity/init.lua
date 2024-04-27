@@ -127,6 +127,7 @@ local function try_object_pickup(player, inv, object, checkpos)
 
 	-- Add what we can to the inventory
 	local itemstack = ItemStack(le.itemstring)
+	tt.reload_itemstack_description(itemstack)
 	local leftovers = inv:add_item("main", itemstack )
 
 	check_pickup_achievements(object, player)
