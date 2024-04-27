@@ -97,8 +97,8 @@ end
 -- on_save_effect - function(object - called when the effect is to be serialized for saving (supposed to do cleanup)
 -- particle_color - string - colorstring for particles - defaults to #3000EE
 -- uses_factor - bool - whether factor affects the effect
--- lvl1_factor - integer - factor for lvl1 effect - defaults to 1 if uses_factor
--- lvl2_factor - integer - factor for lvl2 effect - defaults to 2 if uses_factor
+-- lvl1_factor - number - factor for lvl1 effect - defaults to 1 if uses_factor
+-- lvl2_factor - number - factor for lvl2 effect - defaults to 2 if uses_factor
 -- timer_uses_factor - bool - whether hit_timer uses factor (uses_factor must be true) or a constant value (hit_timer_step must be defined)
 -- hit_timer_step - float - interval between hit_timer hits
 -- damage_modifier - string - damage flag of which damage is changed as defined by modifier_func, pass empty string for all damage
