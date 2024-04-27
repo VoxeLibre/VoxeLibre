@@ -77,21 +77,59 @@ local function rotate(pos, node, user, mode, new_param2)
 end
 
 
+local creative_dig = {}
 local function destruct_bed(pos, oldnode)
 	local node = oldnode or minetest_get_node_or_nil(pos)
 	if not node then return end
 
 	local pos2, node2, bottom = get_bed_next_node(pos, oldnode)
 
+	-- Check creative dig flags and don't drop an item if the bed was dug by a player in
+	-- creative mode
+	local pos_hash = minetest.hash_node_position(pos)
+	local pos2_hash = minetest.hash_node_position(pos2)
+	local creative_mode = creative_dig[pos_hash] or creative_dig[pos2_hash]
+
 	if bottom then
 		if node2 and string.sub(node2.name, -4) == "_top" then
 			minetest_remove_node(pos2)
+		end
+
+		-- Drop the bed only when removing the top to prevent duplication and only if
+		-- it wasn't dug by a player in creative mode
+		local bed_node_def = minetest.registered_nodes[node.name]
+		if bed_node_def and bed_node_def._mcl_beds_drop and not creative_mode then
+			local stack = ItemStack(bed_node_def._mcl_beds_drop)
+			minetest.add_item(pos2, stack)
 		end
 	else
 		if node2 and string.sub(node2.name, -7) == "_bottom" then
 			minetest_remove_node(pos2)
 		end
 	end
+end
+
+local function dig_bed(pos, node, digger)
+	local pos_hash = minetest.hash_node_position(pos)
+
+	if digger then
+		local name = digger:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return
+		end
+
+		-- Set creative dig flags to stop dropping items
+		if minetest.is_creative_enabled(name) then
+			creative_dig[pos_hash] = true
+		end
+	end
+
+	-- Trigger the destruct_bed function
+	minetest.remove_node(pos)
+
+	-- Clean up creative dig flag
+	creative_dig[pos_hash] = nil
 end
 
 local function kick_player_after_destruct(destruct_pos)
@@ -126,6 +164,26 @@ if minetest.get_modpath("mcl_sounds") then
 	})
 end
 
+local function place_bed(name, placer, pos, dir)
+	local botpos = vector_add(pos, minetest_facedir_to_dir(dir))
+
+	if minetest.is_protected(botpos, placer:get_player_name()) and
+			not minetest.check_player_privs(placer, "protection_bypass") then
+		minetest.record_protection_violation(botpos, placer:get_player_name())
+		return false
+	end
+
+	local botdef = minetest.registered_nodes[minetest_get_node(botpos).name]
+	if not botdef or not botdef.buildable_to then
+		return false
+	end
+
+	minetest.set_node(pos, {name = name .. "_bottom", param2 = dir})
+	minetest.set_node(botpos, {name = name .. "_top", param2 = dir})
+
+	return true
+end
+
 function mcl_beds.register_bed(name, def)
 	local common_box = {
 			type = "fixed",
@@ -156,7 +214,8 @@ function mcl_beds.register_bed(name, def)
 		sounds = def.sounds or default_sounds,
 		selection_box = common_box,
 		collision_box = common_box,
-		drop = def.recipe and name or "",
+		_mcl_beds_drop = def.recipe and name or "",
+		drop = "",
 		node_placement_prediction = "",
 		
 		on_place = function(itemstack, placer, pointed_thing)
@@ -189,30 +248,23 @@ function mcl_beds.register_bed(name, def)
 				return itemstack
 			end
 
+			-- Try to place in three directions: inline with the view and rotated to
+			-- the right and left
 			local dir = minetest.dir_to_facedir(placer:get_look_dir())
-			local botpos = vector_add(pos, minetest_facedir_to_dir(dir))
-
-			if minetest.is_protected(botpos, placer:get_player_name()) and
-					not minetest.check_player_privs(placer, "protection_bypass") then
-				minetest.record_protection_violation(botpos, placer:get_player_name())
-				return itemstack
-			end
-
-			local botdef = minetest.registered_nodes[minetest_get_node(botpos).name]
-			if not botdef or not botdef.buildable_to then
-				return itemstack
-			end
-
-			minetest.set_node(pos, {name = name .. "_bottom", param2 = dir})
-			minetest.set_node(botpos, {name = name .. "_top", param2 = dir})
-
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item()
+			if place_bed(name, placer, pos, dir) or
+			   place_bed(name, placer, pos, (dir+1)%4) or
+			   place_bed(name, placer, pos, (dir+3)%4) or
+			   place_bed(name, placer, pos, (dir+2)%4) then
+				-- Bed was places
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
+					itemstack:take_item()
+				end
 			end
 			return itemstack
 		end,
 
 		after_destruct = destruct_bed,
+		on_dig = dig_bed,
 
 		on_destruct = kick_player_after_destruct,
 
@@ -239,7 +291,7 @@ function mcl_beds.register_bed(name, def)
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or default_sounds,
-		drop = def.recipe and name or "",
+		drop = "",
 		selection_box = common_box,
 		collision_box = common_box,
 		
@@ -250,6 +302,7 @@ function mcl_beds.register_bed(name, def)
 
 		on_rotate = rotate,
 		after_destruct = destruct_bed,
+		on_dig = dig_bed,
 	})
 
 	minetest.register_alias(name, name .. "_bottom")
