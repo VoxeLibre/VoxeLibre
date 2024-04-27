@@ -21,23 +21,6 @@ local update_cart_orientation = mod.update_cart_orientation
 local get_cart_data = mod.get_cart_data
 local get_cart_position = mod.get_cart_position
 
-local function detach_minecart(staticdata)
-	staticdata.connected_at = nil
-
-	local luaentity = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
-	if luaentity then
-		luaentity.object:set_velocity(staticdata.dir * staticdata.velocity)
-	end
-end
-mod.detach_minecart = detach_minecart
-
-local function try_detach_minecart(staticdata)
-	if not staticdata or not staticdata.connected_at then return end
-	if not mod:is_rail(staticdata.connected_at) then
-		mcl_debug("Detaching minecart #"..tostring(staticdata.uuid))
-		detach_minecart(staticdata)
-	end
-end
 
 local function reverse_direction(staticdata)
 	if staticdata.behind or staticdata.ahead then
@@ -126,6 +109,25 @@ local function handle_cart_node_watches(staticdata, dtime)
 	end
 
 	staticdata.node_watches = new_watches
+end
+
+local function detach_minecart(staticdata)
+	handle_cart_leave(staticdata, staticdata.connected_at, staticdata.dir)
+	staticdata.connected_at = nil
+
+	local luaentity = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
+	if luaentity then
+		luaentity.object:set_velocity(staticdata.dir * staticdata.velocity)
+	end
+end
+mod.detach_minecart = detach_minecart
+
+local function try_detach_minecart(staticdata)
+	if not staticdata or not staticdata.connected_at then return end
+	if not mod:is_rail(staticdata.connected_at) then
+		mcl_debug("Detaching minecart #"..tostring(staticdata.uuid))
+		detach_minecart(staticdata)
+	end
 end
 
 local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
