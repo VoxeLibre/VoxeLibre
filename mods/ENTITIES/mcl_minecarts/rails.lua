@@ -157,6 +157,7 @@ local BASE_DEF = {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	is_ground_content = true,
 	paramtype = "light",
+	use_texture_alpha = "clip",
 	collision_box = {
 		type = "fixed",
 		fixed = { -8/16, -8/16, -8/16, 8/16, -7/16, 8/15 }

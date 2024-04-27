@@ -222,7 +222,7 @@ local function update_rail_connections(pos, opt)
 	local node = minetest.get_node(pos)
 	local nodedef = minetest.registered_nodes[node.name]
 	if not nodedef or not nodedef._mcl_minecarts then
-		minetest.log("warning", "attemting to rail connect to "..node.name)
+		minetest.log("warning", "attempting to rail connect to "..node.name)
 		return
 	end
 
