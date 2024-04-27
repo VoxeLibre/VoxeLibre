@@ -9,6 +9,7 @@ local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "
 --mcl_debug = function(msg) print(msg) end
 
 -- Imports
+local mcl_physics = mcl_physics or false
 local FRICTION = mcl_minecarts.FRICTION
 local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
 local SPEED_MAX = mod.SPEED_MAX
@@ -315,7 +316,6 @@ local function do_movement_step(staticdata, dtime)
 		        ",v_0="..tostring(v_0)..
 		        ",x_0="..tostring(x_0)..
 			",dtime="..tostring(dtime)..
-		        ",timestep="..tostring(timestep)..
 		        ",dir="..tostring(staticdata.dir)..
 			",connected_at="..tostring(staticdata.connected_at)..
 			",distance="..tostring(staticdata.distance)
@@ -347,7 +347,7 @@ local function do_movement_step(staticdata, dtime)
 
 	-- Truncate timestep to prevent v_1 from being larger that speed_max
 	local v_max = SPEED_MAX
-	if (v_0 ~= v_max) and ( v_0 + a * timestep > v_max) then
+	if (v_0 < v_max) and ( v_0 + a * timestep > v_max) then
 		timestep = ( v_max - v_0 ) / a
 	end
 
@@ -519,22 +519,36 @@ local function do_detached_movement(self, dtime)
 	end
 
 	-- Try to reconnect to rail
-	local pos_r = vector.round(self.object:get_pos())
-	local node = minetest.get_node(pos_r)
-	if minetest.get_item_group(node.name, "rail") ~= 0 then
-		staticdata.connected_at = pos_r
-		staticdata.railtype = node.name
+	local pos = self.object:get_pos()
+	local yaw = self.object:get_yaw()
+	local yaw_dir = minetest.yaw_to_dir(yaw)
+	local test_positions = {
+		pos,
+		vector.offset(vector.add(pos, vector.multiply(yaw_dir, 0.5)),0,-0.3,0),
+		vector.offset(vector.add(pos, vector.multiply(yaw_dir,-0.5)),0,-0.3,0),
+	}
 
-		local freebody_velocity = self.object:get_velocity()
-		staticdata.dir = mod:get_rail_direction(pos_r, mod.snap_direction(freebody_velocity))
+	for i=1,#test_positions do
+		test_pos = test_positions[i]
+		local pos_r = vector.round(test_pos)
+		local node = minetest.get_node(pos_r)
+		if minetest.get_item_group(node.name, "rail") ~= 0 then
+			staticdata.connected_at = pos_r
+			staticdata.railtype = node.name
 
-		-- Use vector projection to only keep the velocity in the new direction of movement on the rail
-		-- https://en.wikipedia.org/wiki/Vector_projection
-		staticdata.velocity = vector.dot(staticdata.dir,freebody_velocity)
+			local freebody_velocity = self.object:get_velocity()
+			staticdata.dir = mod:get_rail_direction(pos_r, mod.snap_direction(freebody_velocity))
 
-		-- Clear freebody movement
-		self.object:set_velocity(vector.new(0,0,0))
-		self.object:set_acceleration(vector.new(0,0,0))
+			-- Use vector projection to only keep the velocity in the new direction of movement on the rail
+			-- https://en.wikipedia.org/wiki/Vector_projection
+			staticdata.velocity = vector.dot(staticdata.dir,freebody_velocity)
+			print("Reattached velocity="..tostring(staticdata.velocity)..", freebody_velocity="..tostring(freebody_velocity))
+
+			-- Clear freebody movement
+			self.object:set_velocity(vector.new(0,0,0))
+			self.object:set_acceleration(vector.new(0,0,0))
+			return
+		end
 	end
 end
 

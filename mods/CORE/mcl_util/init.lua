@@ -856,7 +856,7 @@ function mcl_util.assign_uuid(obj)
 	end
 
 	-- Update the cache with this new id
-	aoid = mcl_util.get_active_object_id(obj)
+	local aoid = mcl_util.get_active_object_id(obj)
 	uuid_to_aoid_cache[le._uuid] = aoid
 
 	return le._uuid

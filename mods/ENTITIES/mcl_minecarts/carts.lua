@@ -352,7 +352,7 @@ end
 function mod.create_minecart(entity_id, pos, dir)
 	-- Setup cart data
 	local uuid = mcl_util.gen_uuid()
-	data = make_staticdata( nil, pos, dir )
+	local data = make_staticdata( nil, pos, dir )
 	data.uuid = uuid
 	data.cart_type = entity_id
 	update_cart_data(data)
@@ -390,28 +390,21 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 	-- Create the entity with the staticdata already setup
 	local sd = minetest.serialize({ uuid=uuid, seq=1 })
 	local cart = minetest.add_entity(spawn_pos, entity_id, sd)
+	local staticdata = get_cart_data(uuid)
 
 	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
-	-- Update static data
-	local le = cart:get_luaentity()
-	if le then
-		le._staticdata = data
-	end
-
 	-- Call placer
+	local le = cart:get_luaentity()
 	if le._mcl_minecarts_on_place then
 		le._mcl_minecarts_on_place(le, placer)
 	end
 
 	if railpos then
-		handle_cart_enter(data, railpos)
+		handle_cart_enter(staticdata, railpos)
 	end
 
-	local pname = ""
-	if placer then
-		pname = placer:get_player_name()
-	end
+	local pname = placer and placer:get_player_name() or ""
 	if not minetest.is_creative_enabled(pname) then
 		itemstack:take_item()
 	end
