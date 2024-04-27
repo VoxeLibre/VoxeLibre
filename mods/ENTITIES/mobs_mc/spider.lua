@@ -138,7 +138,7 @@ cave_spider.sounds = table.copy(spider.sounds)
 cave_spider.sounds.base_pitch = 1.25
 cave_spider.dealt_effect = {
 	name = "poison",
-	factor = 2.5,
+	level = 2,
 	dur = 7,
 }
 mcl_mobs.register_mob("mobs_mc:cave_spider", cave_spider)
