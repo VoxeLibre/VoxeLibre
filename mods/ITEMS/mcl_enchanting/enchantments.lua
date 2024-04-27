@@ -285,7 +285,8 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 		local wielditem = hitter:get_wielded_item()
 		--knockback = knockback + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
 		local enchant = mcl_enchanting.get_enchantment(wielditem, "knockback")
-		knockback = knockback + 3.22 * enchant
+		local hammer = minetest.get_item_group(wielditem:get_name(), "hammer")
+		knockback = knockback + 3.22 * enchant + 3.22 * hammer
 		-- add vertical lift to knockback
 		local v = player:get_velocity()
 		local added_v = 0
