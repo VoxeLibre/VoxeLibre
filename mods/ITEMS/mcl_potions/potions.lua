@@ -1,6 +1,8 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_potions.registered_potions = {}
+-- shorthand
+local registered_potions = mcl_potions.registered_potions
 
 local function potion_image(colorstring, opacity)
 	if not opacity then
@@ -810,3 +812,50 @@ mcl_potions.register_potion({
 	has_lingering = false,
 })
 
+
+
+
+-- COMPAT CODE
+local function replace_legacy_potion(itemstack)
+	local name = itemstack:get_name()
+	local new_name = name:match("^(.+)_plus$")
+	local new_stack
+	if new_name then
+		new_stack = ItemStack(new_name)
+		new_stack:get_meta():set_int("mcl_potions:potion_plus",
+			registered_potions[new_name]._default_extend_level)
+		tt.reload_itemstack_description(new_stack)
+	end
+	new_name = name:match("^(.+)_2$")
+	if new_name then
+		new_stack = ItemStack(new_name)
+		new_stack:get_meta():set_int("mcl_potions:potion_potent",
+			registered_potions[new_name]._default_potent_level-1)
+		tt.reload_itemstack_description(new_stack)
+	end
+	return new_stack
+end
+local compat = "mcl_potions:compat_potion"
+minetest.register_craftitem(compat, {
+	description = S("Unknown Potion"),
+	_tt_help = S("Right-click to identify"),
+	image = "mcl_potions_dragon_breath.png",
+	on_secondary_use = replace_legacy_potion,
+	on_place = replace_legacy_potion,
+})
+
+local old_potions_plus = {
+	"fire_resistance", "water_breathing", "invisibility", "regeneration", "poison",
+	"withering", "leaping", "slowness", "swiftness", "night_vision"
+}
+local old_potions_2 = {
+	"healing", "harming", "swiftness", "slowness", "leaping",
+	"withering", "poison", "regeneration"
+}
+
+for _, name in pairs(old_potions_2) do
+	minetest.register_alias("mcl_potions:" .. name .. "_2", compat)
+end
+for _, name in pairs(old_potions_plus) do
+	minetest.register_alias("mcl_potions:" .. name .. "_plus", compat)
+end
