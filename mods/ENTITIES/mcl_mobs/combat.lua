@@ -522,10 +522,11 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local is_player = hitter:is_player()
 	local mob_pos = self.object:get_pos()
 	local player_pos = hitter:get_pos()
+	local weapon = hitter:get_wielded_item()
 
 	if is_player then
 		-- is mob out of reach?
-		if vector.distance(mob_pos, player_pos) > 3 then
+		if vector.distance(mob_pos, player_pos) > (weapon:get_definition().range or 3) then
 			return
 		end
 		-- is mob protected?
@@ -572,7 +573,6 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 
 	-- punch interval
-	local weapon = hitter:get_wielded_item()
 	local punch_interval = 1.4
 
 	-- exhaust attacker
