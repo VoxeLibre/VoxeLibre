@@ -301,9 +301,8 @@ local function is_ahead_slope(pos, dir)
 	local node_name = force_get_node(below).name
 	return minetest.get_item_group(node_name, "rail_slope") ~= 0
 end
-function mcl_minecarts:get_rail_direction(pos_, dir)
-	local pos = vector.round(pos_)
 
+local function get_rail_direction_inner(pos, dir)
 	-- Handle new track types that have track-specific direction handler
 	local node = minetest.get_node(pos)
 	local node_def = minetest.registered_nodes[node.name]
@@ -327,6 +326,42 @@ function mcl_minecarts:get_rail_direction(pos_, dir)
 	end
 
 	return dir
+end
+function mcl_minecarts:get_rail_direction(pos_, dir)
+	local pos = vector.round(pos_)
+
+	-- diagonal direction handling
+	if dir.x ~= 0 and dir.z ~= 0 then
+		-- Check both possible diagonal movements
+		local dir_a = vector.new(dir.x,0,0)
+		local dir_b = vector.new(0,0,dir.z)
+		local new_dir_a = mcl_minecarts:get_rail_direction(pos, dir_a)
+		local new_dir_b = mcl_minecarts:get_rail_direction(pos, dir_b)
+
+		-- If either is the same diagonal direction, continue as you were
+		if vector.equals(dir,new_dir_a) or vector.equals(dir,new_dir_b) then
+			return dir
+
+		-- Otherwise, if either would try to move in the same direction as
+		-- what tried, move that direction
+		elseif vector.equals(dir_a, new_dir_a) then
+			return new_dir_a
+		elseif vector.equals(dir_b, new_dir_b) then
+			return new_dir_b
+		end
+
+		 -- And if none of these were true, fall thru into standard behavior
+	end
+
+	local new_dir = get_rail_direction_inner(pos, dir)
+
+	-- Check four 45 degree movement
+	local next_rails_dir = get_rail_direction_inner(vector.add(pos, new_dir), new_dir)
+	if vector.equals(next_rails_dir, dir) and not vector.equals(new_dir, next_rails_dir) then
+		return vector.add(new_dir, next_rails_dir)
+	else
+		return new_dir
+	end
 end
 function mod.update_cart_orientation(self)
 	local staticdata = self._staticdata

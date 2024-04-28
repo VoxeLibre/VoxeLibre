@@ -531,7 +531,7 @@ local function do_detached_movement(self, dtime)
 	}
 
 	for i=1,#test_positions do
-		test_pos = test_positions[i]
+		local test_pos = test_positions[i]
 		local pos_r = vector.round(test_pos)
 		local node = minetest.get_node(pos_r)
 		if minetest.get_item_group(node.name, "rail") ~= 0 then
