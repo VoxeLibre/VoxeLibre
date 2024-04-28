@@ -1,7 +1,11 @@
+-- Constants
 local size_min, size_max = 20, 59
 local delta_size = size_max - size_min
+local max_orb_age = 300 -- seconds
+local gravity = vector.new(0, -((tonumber(minetest.settings:get("movement_gravity"))) or 9.81), 0)
 
 local size_to_xp = {
+	-- min and max XP amount for a given size
 	{-32768,     2}, --  1
 	{     3,     6}, --  2
 	{     7,    16}, --  3
@@ -25,15 +29,6 @@ local function xp_to_size(xp)
 	return ((i - 1) / (l - 1) * delta_size + size_min) / 100
 end
 
-local max_orb_age = 300 -- seconds
-local gravity = vector.new(0, -((tonumber(minetest.settings:get("movement_gravity"))) or 9.81), 0)
-
-local collector, pos, pos2
-local direction, distance, player_velocity, goal
-local currentvel, acceleration, multiplier, velocity
-local node, vel, def
-local is_moving, is_slippery, slippery, slip_factor
-local size
 local function xp_step(self, dtime)
 	--if item set to be collected then only execute go to player
 	if self.collected == true then
@@ -41,32 +36,32 @@ local function xp_step(self, dtime)
 			self.collected = false
 			return
 		end
-		collector = minetest.get_player_by_name(self.collector)
+		local collector = minetest.get_player_by_name(self.collector)
 		if collector and collector:get_hp() > 0 and vector.distance(self.object:get_pos(),collector:get_pos()) < 7.25 then
 			self.object:set_acceleration(vector.new(0,0,0))
 			self.disable_physics(self)
 			--get the variables
-			pos = self.object:get_pos()
-			pos2 = collector:get_pos()
+			local pos = self.object:get_pos()
+			local pos2 = collector:get_pos()
 
-			player_velocity = collector:get_velocity() or collector:get_player_velocity()
+			local player_velocity = collector:get_velocity() or collector:get_player_velocity()
 
 			pos2.y = pos2.y + 0.8
 
-			direction = vector.direction(pos,pos2)
-			distance = vector.distance(pos2,pos)
-			multiplier = distance
+			local direction = vector.direction(pos,pos2)
+			local distance = vector.distance(pos2,pos)
+			local multiplier = distance
 			if multiplier < 1 then
 				multiplier = 1
 			end
-			goal = vector.multiply(direction,multiplier)
-			currentvel = self.object:get_velocity()
+			local goal = vector.multiply(direction,multiplier)
+			local currentvel = self.object:get_velocity()
 
 			if distance > 1 then
 				multiplier = 20 - distance
-				velocity = vector.multiply(direction,multiplier)
+				local velocity = vector.multiply(direction,multiplier)
 				goal = velocity
-				acceleration = vector.new(goal.x-currentvel.x,goal.y-currentvel.y,goal.z-currentvel.z)
+				local acceleration = vector.new(goal.x-currentvel.x,goal.y-currentvel.y,goal.z-currentvel.z)
 				self.object:add_velocity(vector.add(acceleration,player_velocity))
 			elseif distance < 0.8 then
 				mcl_experience.add_xp(collector, self._xp)
@@ -86,17 +81,14 @@ local function xp_step(self, dtime)
 		return
 	end
 
-	pos = self.object:get_pos()
+	local pos = self.object:get_pos()
+	if not pos then return end
 
-	if pos then
-		node = minetest.get_node_or_nil({
-			x = pos.x,
-			y = pos.y -0.25,
-			z = pos.z
-		})
-	else
-		return
-	end
+	local node = minetest.get_node_or_nil({
+		x = pos.x,
+		y = pos.y -0.25,
+		z = pos.z
+	})
 
 	-- Remove nodes in 'ignore'
 	if node and node.name == "ignore" then
@@ -109,18 +101,18 @@ local function xp_step(self, dtime)
 	end
 
 	-- Slide on slippery nodes
-	vel = self.object:get_velocity()
-	def = node and minetest.registered_nodes[node.name]
-	is_moving = (def and not def.walkable) or
+	local vel = self.object:get_velocity()
+	local def = node and minetest.registered_nodes[node.name]
+	local is_moving = (def and not def.walkable) or
 		vel.x ~= 0 or vel.y ~= 0 or vel.z ~= 0
-	is_slippery = false
+	local is_slippery = false
 
 	if def and def.walkable then
-		slippery = minetest.get_item_group(node.name, "slippery")
+		local slippery = minetest.get_item_group(node.name, "slippery")
 		is_slippery = slippery ~= 0
 		if is_slippery and (math.abs(vel.x) > 0.2 or math.abs(vel.z) > 0.2) then
 			-- Horizontal deceleration
-			slip_factor = 4.0 / (slippery + 4)
+			local slip_factor = 4.0 / (slippery + 4)
 			self.object:set_acceleration({
 				x = -vel.x * slip_factor,
 				y = 0,
@@ -191,7 +183,7 @@ minetest.register_entity("mcl_experience:orb", {
 		-- This was a minetest bug for a while: https://github.com/minetest/minetest/issues/14420
 		local xp = tonumber(staticdata) or 0
 		self._xp = xp
-		size = xp_to_size(xp)
+		local size = xp_to_size(xp)
 
 		self.object:set_properties({
 			visual_size = {x = size, y = size},
