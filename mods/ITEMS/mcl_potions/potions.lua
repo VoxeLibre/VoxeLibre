@@ -176,9 +176,6 @@ function mcl_potions.register_potion(def)
 		pdef.description = S("Strange Potion")
 	end
 	pdef._tt_help = def._tt
-	if def._tt and def.effect_stacks then
-		pdef._tt_help = pdef._tt_help .. "\n" .. S("Stacks the effect")
-	end
 	pdef._dynamic_tt = def._dynamic_tt
 	local potion_longdesc = def._longdesc
 	if def._effect_list then

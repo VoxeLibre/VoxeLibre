@@ -115,9 +115,6 @@ Missing or invalid factor parameter when level is F!=
 @1 effect given to player @2 for @3 seconds.=
 Giving effect @1 to player @2 failed.=
 @1 effect on level @2 given to player @3 for @4 seconds.=
-@1 effect given to player @2 for @3 seconds.=
-Giving effect @1 to player @2 failed.=
-@1 is not an available status effect.=
 
 
 A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=
@@ -137,8 +134,6 @@ Drinking a potion gives you a particular effect or set of effects.=
 @1 Potion=
 Potion @1=
 Strange Potion=
-
-Stacks the effect=
 
 Splash @1=
 Lingering @1=
