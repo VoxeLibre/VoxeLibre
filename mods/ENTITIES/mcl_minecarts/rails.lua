@@ -47,32 +47,42 @@ local function rail_dir_sloped(pos, dir, node)
 end
 local function rail_dir_curve(pos, dir, node)
 	dir = vector.new(dir.x, 0, dir.z)
+	local dir_fourdir = minetest.dir_to_fourdir(dir)
 
+	-- Fourdir
+	-- 0 = north
+	-- 1 = east
+	-- 2 = south
+	-- 3 = west
+
+	local new_fourdir = 0
 	if node.param2 == 0 then -- north
 		-- South and East
-		if vector.equals(dir, south) then return south end
-		if vector.equals(dir, north) then return east end
-		if vector.equals(dir, west) then return south end
-		if vector.equals(dir, east) then return east end
+		if dir_fourdir == 0 then new_fourdir = 1 end
+		if dir_fourdir == 1 then new_fourdir = 1 end
+		if dir_fourdir == 2 then new_fourdir = 2 end
+		if dir_fourdir == 3 then new_fourdir = 2 end
 	elseif node.param2 == 1 then -- east
 		-- South and West
-		if vector.equals(dir, south) then return south end
-		if vector.equals(dir, north) then return west end
-		if vector.equals(dir, west) then return west end
-		if vector.equals(dir, east) then return south end
-	elseif node.param2 == 2 then
+		if dir_fourdir == 1 then new_fourdir = 2 end
+		if dir_fourdir == 2 then new_fourdir = 2 end
+		if dir_fourdir == 3 then new_fourdir = 3 end
+		if dir_fourdir == 0 then new_fourdir = 3 end
+	elseif node.param2 == 2 then -- south
 		-- North and West
-		if vector.equals(dir, south) then return west end
-		if vector.equals(dir, north) then return north end
-		if vector.equals(dir, west) then return west end
-		if vector.equals(dir, east) then return north end
-	elseif node.param2 == 3 then
+		if dir_fourdir == 2 then new_fourdir = 3 end
+		if dir_fourdir == 3 then new_fourdir = 3 end
+		if dir_fourdir == 0 then new_fourdir = 0 end
+		if dir_fourdir == 1 then new_fourdir = 0 end
+	elseif node.param2 == 3 then -- west
 		-- North and East
-		if vector.equals(dir, south) then return east end
-		if vector.equals(dir, north) then return north end
-		if vector.equals(dir, west) then return north end
-		if vector.equals(dir, east) then return east end
+		if dir_fourdir == 3 then new_fourdir = 0 end
+		if dir_fourdir == 0 then new_fourdir = 0 end
+		if dir_fourdir == 1 then new_fourdir = 1 end
+		if dir_fourdir == 2 then new_fourdir = 1 end
 	end
+
+	return minetest.fourdir_to_dir(new_fourdir)
 end
 
 
