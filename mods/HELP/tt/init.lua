@@ -76,6 +76,7 @@ function tt.reload_itemstack_description(itemstack)
 			orig_desc = minetest.colorize(tt.NAME_COLOR, meta:get_string("name"))
 		end
 		local desc = apply_snippets(orig_desc, itemstring, toolcaps or def.tool_capabilities, itemstack)
+		if desc == def.description and meta:get_string("description") == "" then return end
 		meta:set_string("description", desc)
 	end
 end
