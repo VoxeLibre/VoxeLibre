@@ -1,6 +1,7 @@
 -- Constants
-local size_min, size_max = 20, 59
-local delta_size = size_max - size_min
+local size_min = 20 / 100 -- minimum size, prescaled
+local size_max = 59 / 100 -- maximum size, prescaled
+local delta_size = (size_max - size_min) / 10 -- Size change for each XP size level
 local max_orb_age = 300 -- seconds
 local gravity = vector.new(0, -((tonumber(minetest.settings:get("movement_gravity"))) or 9.81), 0)
 
@@ -20,13 +21,18 @@ local size_to_xp = {
 }
 
 local function xp_to_size(xp)
-	local i, l = 1, #size_to_xp
+	xp = xp or 0
 
-	while xp > size_to_xp[i][1] and i < l do
-		i = i + 1
+	-- Find the size for the xp amount
+	for i=1,11 do
+		local bucket = size_to_xp[i]
+		if xp >= bucket[1] and xp <= bucket[2] then
+			return (i - 1) * delta_size + size_min
+		end
 	end
 
-	return ((i - 1) / (l - 1) * delta_size + size_min) / 100
+	-- Fallback is the minimum size
+	return size_min
 end
 
 local function xp_step(self, dtime)
@@ -36,6 +42,7 @@ local function xp_step(self, dtime)
 			self.collected = false
 			return
 		end
+
 		local collector = minetest.get_player_by_name(self.collector)
 		if collector and collector:get_hp() > 0 and vector.distance(self.object:get_pos(),collector:get_pos()) < 7.25 then
 			self.object:set_acceleration(vector.new(0,0,0))
@@ -70,11 +77,11 @@ local function xp_step(self, dtime)
 			return
 		else
 			self.collector = nil
-			self.enable_physics(self)
+			self:enable_physics()
 		end
 	end
 
-
+	-- Age orbs
 	self.age = self.age + dtime
 	if self.age > max_orb_age then
 		self.object:remove()
@@ -152,7 +159,6 @@ minetest.register_entity("mcl_experience:orb", {
 		initial_sprite_basepos = {x = 0, y = 0},
 		is_visible = true,
 		pointable = false,
-		static_save = false,
 	},
 	moving_state = true,
 	slippery_state = false,
@@ -190,6 +196,9 @@ minetest.register_entity("mcl_experience:orb", {
 			glow = 14,
 		})
 		self.object:set_sprite({x=1,y=math.random(1,14)}, 14, 0.05, false)
+	end,
+	get_staticdata = function(self)
+		tostring(self._xp or 0)
 	end,
 
 	enable_physics = function(self)
