@@ -198,7 +198,7 @@ minetest.register_entity("mcl_experience:orb", {
 		self.object:set_sprite({x=1,y=math.random(1,14)}, 14, 0.05, false)
 	end,
 	get_staticdata = function(self)
-		tostring(self._xp or 0)
+		return tostring(self._xp or 0)
 	end,
 
 	enable_physics = function(self)
