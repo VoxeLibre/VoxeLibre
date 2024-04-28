@@ -526,8 +526,8 @@ local function do_detached_movement(self, dtime)
 	local yaw_dir = minetest.yaw_to_dir(yaw)
 	local test_positions = {
 		pos,
-		vector.offset(vector.add(pos, vector.multiply(yaw_dir, 0.5)),0,-0.3,0),
-		vector.offset(vector.add(pos, vector.multiply(yaw_dir,-0.5)),0,-0.3,0),
+		vector.offset(vector.add(pos, vector.multiply(yaw_dir, 0.5)),0,-0.55,0),
+		vector.offset(vector.add(pos, vector.multiply(yaw_dir,-0.5)),0,-0.55,0),
 	}
 
 	for i=1,#test_positions do
