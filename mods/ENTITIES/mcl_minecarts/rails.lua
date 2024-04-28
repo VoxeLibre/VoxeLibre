@@ -45,77 +45,36 @@ local function rail_dir_sloped(pos, dir, node)
 		return downhill
 	end
 end
--- Fourdir
+-- Fourdir to cardinal direction
 -- 0 = north
 -- 1 = east
 -- 2 = south
 -- 3 = west
-local CURVE_RAIL_DIRS = { [0] = 1, 1, 2, 2, }
-local function rail_dir_curve(pos, dir, node)
+
+-- This takes a table `dirs` that has one element for each cardinal direction
+-- and which specifies the direction for a cart to continue in when entering
+-- a rail node in the direction of the cardinal. This function takes node
+-- rotations into account.
+local function rail_dir_from_table(pos, dir, node, dirs)
 	dir = vector.new(dir.x, 0, dir.z)
 	local dir_fourdir = (minetest.dir_to_fourdir(dir) - node.param2 + 4) % 4
-	local new_fourdir = (CURVE_RAIL_DIRS[dir_fourdir] + node.param2) % 4
+	local new_fourdir = (dirs[dir_fourdir] + node.param2) % 4
 	return minetest.fourdir_to_dir(new_fourdir)
 end
 
+local CURVE_RAIL_DIRS = { [0] = 1, 1, 2, 2, }
+local function rail_dir_curve(pos, dir, node)
+	return rail_dir_from_table(pos, dir, node, CURVE_RAIL_DIRS)
+end
 local function rail_dir_tee_off(pos, dir, node)
-	dir = vector.new(dir.x, 0, dir.z)
-
-	if node.param2 == 0 then -- north
-		-- South and East
-		if vector.equals(dir, south) then return south end
-		if vector.equals(dir, north) then return east end
-		if vector.equals(dir, west) then return south end
-		if vector.equals(dir, east) then return east end
-	elseif node.param2 == 1 then -- east
-		-- South and West
-		if vector.equals(dir, south) then return south end
-		if vector.equals(dir, north) then return west end
-		if vector.equals(dir, west) then return west end
-		if vector.equals(dir, east) then return south end
-	elseif node.param2 == 2 then
-		-- North and West
-		if vector.equals(dir, south) then return west end
-		if vector.equals(dir, north) then return north end
-		if vector.equals(dir, west) then return west end
-		if vector.equals(dir, east) then return north end
-	elseif node.param2 == 3 then
-		-- North and East
-		if vector.equals(dir, south) then return east end
-		if vector.equals(dir, north) then return north end
-		if vector.equals(dir, west) then return north end
-		if vector.equals(dir, east) then return east end
-	end
+	return rail_dir_from_table(pos, dir, node, CURVE_RAIL_DIRS)
 end
+
+local TEE_RAIL_ON_DIRS = { [0] = 0, 1, 1, 0 }
 local function rail_dir_tee_on(pos, dir, node)
-	dir = vector.new(dir.x, 0, dir.z)
-
-	if node.param2 == 0 then -- north
-		-- South and East
-		if vector.equals(dir, south) then return east end
-		if vector.equals(dir, north) then return north end
-		if vector.equals(dir, west) then return north end
-		if vector.equals(dir, east) then return east end
-	elseif node.param2 == 1 then -- east
-		-- South and West
-		if vector.equals(dir, south) then return south end
-		if vector.equals(dir, north) then return east end
-		if vector.equals(dir, west) then return south end
-		if vector.equals(dir, east) then return east end
-	elseif node.param2 == 2 then
-		-- North and West
-		if vector.equals(dir, south) then return south end
-		if vector.equals(dir, north) then return west end
-		if vector.equals(dir, west) then return west end
-		if vector.equals(dir, east) then return south end
-	elseif node.param2 == 3 then
-		-- North and East
-		if vector.equals(dir, south) then return west end
-		if vector.equals(dir, north) then return north end
-		if vector.equals(dir, west) then return west end
-		if vector.equals(dir, east) then return north end
-	end
+	return rail_dir_from_table(pos, dir, node, TEE_RAIL_ON_DIRS)
 end
+
 local function rail_dir_cross(pos, dir, node)
 	dir = vector.new(dir.x, 0, dir.z)
 
