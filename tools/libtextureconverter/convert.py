@@ -122,6 +122,9 @@ def convert_textures(make_texture_pack, dry_run, verbose, base_dir, tex_dir, tem
 		description_file.write(description)
 		description_file.close()
 
+		# Create override file
+		shutil.copyfile("override.txt", target_dir("/", make_texture_pack, output_dir, output_dir_name, mineclone2_path) + "/override.txt")
+
 		# Create preview image (screenshot.png)
 		os.system("convert -size 300x200 canvas:transparent "+target_dir("/", make_texture_pack, output_dir, output_dir_name, mineclone2_path) + "/screenshot.png")
 		os.system("composite "+base_dir+"/pack.png "+target_dir("/", make_texture_pack, output_dir, output_dir_name, mineclone2_path) + "/screenshot.png -gravity center "+target_dir("/", make_texture_pack, output_dir, output_dir_name, mineclone2_path) + "/screenshot.png")
