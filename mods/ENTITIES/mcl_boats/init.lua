@@ -168,7 +168,7 @@ end
 
 
 function boat.on_activate(self, staticdata, dtime_s)
-	self.object:set_armor_groups({fleshy = 100})
+	self.object:set_armor_groups({fleshy = 125})
 	local data = minetest.deserialize(staticdata)
 	if type(data) == "table" then
 		self._v = data.v
