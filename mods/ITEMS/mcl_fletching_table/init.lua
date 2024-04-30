@@ -24,3 +24,9 @@ minetest.register_craft({
 		{ "group:wood", "group:wood", "" },
 	}
 })
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mcl_fletching_table:fletching_table",
+	burntime = 15,
+})

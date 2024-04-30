@@ -257,6 +257,12 @@ minetest.register_craft({
 	},
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mcl_smithing_table:table",
+	burntime = 15,
+})
+
 -- this is the exact same as mcl_smithing_table.upgrade_item_netherite , in case something relies on the old function
 function mcl_smithing_table.upgrade_item(itemstack)
 	return mcl_smithing_table.upgrade_item_netherite(itemstack)

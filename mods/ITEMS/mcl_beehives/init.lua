@@ -191,6 +191,18 @@ minetest.register_craft({
 	},
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:bee_nest",
+	burntime = 15,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:beehive",
+	burntime = 15,
+})
+
 -- Temporary ABM to update honey levels
 minetest.register_abm({
 	label = "Update Beehive Honey Levels",

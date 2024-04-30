@@ -135,5 +135,11 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mcl_lectern:lectern",
+	burntime = 15,
+})
+
 -- Base Aliases.
 minetest.register_alias("lectern", "mcl_lectern:lectern")
