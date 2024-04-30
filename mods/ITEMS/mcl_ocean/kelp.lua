@@ -603,7 +603,15 @@ function kelp.register_kelp_surface(surface, surface_deftemplate, surface_docs)
 	sounds.place = kelp.leaf_sounds.place
 
 	surface_deftemplate.tiles = surface_deftemplate.tiles or def_tiles
-	surface_deftemplate.inventory_image = surface_deftemplate.inventory_image or "("..def_tiles[1]..")^mcl_ocean_kelp_item.png"
+	
+	local texturename
+	if type(def_tiles[1]) == "string" then
+		texturename = def_tiles[1]
+	else
+		texturename = def_tiles[1].name
+	end
+	
+	surface_deftemplate.inventory_image = surface_deftemplate.inventory_image or "("..texturename..")^mcl_ocean_kelp_item.png"
 	surface_deftemplate.sounds = surface_deftemplate.sound or sounds
 	local falling_node = mt_get_item_group(nodename, "falling_node")
 	surface_deftemplate.node_dig_prediction = surface_deftemplate.node_dig_prediction or nodename
