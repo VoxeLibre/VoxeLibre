@@ -6,17 +6,17 @@ vl_hollow_logs = {}
 ---@param defs table {name:string, stripped_name>string, desc:string, stripped_desc:string, not_flammable:boolean|nil}
 function vl_hollow_logs.register_hollow_log(defs)
 	if not defs or #defs < 4 then
-		return
+		error("Incomplete definition provided")
 	end
 
 	for i = 1, #defs do
 		if i == 5 then
 			if type(defs[i]) ~= "boolean" and type(defs[i]) ~= "nil" then
-				return
+				error("Invalid arg #5")
 			end
 		else
 			if type(defs[i]) ~= "string" then
-				return
+				error("Invalid arg #".. tostring(i))
 			end
 		end
 	end
