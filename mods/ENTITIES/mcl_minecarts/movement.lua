@@ -9,7 +9,10 @@ local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "
 --mcl_debug = function(msg) print(msg) end
 
 -- Imports
-local mcl_physics = mcl_physics or false
+local env_physics
+if minetest.get_modpath("mcl_physics") then
+	env_physics = mcl_physics
+end
 local FRICTION = mcl_minecarts.FRICTION
 local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
 local SPEED_MAX = mod.SPEED_MAX
@@ -491,8 +494,8 @@ local function do_detached_movement(self, dtime)
 	if not self.object or not self.object:get_pos() then return end
 
 	-- Apply physics
-	if mcl_physics then
-		mcl_physics.apply_entity_environmental_physics(self)
+	if env_physics then
+		env_physics.apply_entity_environmental_physics(self)
 	else
 		-- Simple physics
 		local friction = self.object:get_velocity() or vector.new(0,0,0)
