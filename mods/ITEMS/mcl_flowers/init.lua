@@ -195,6 +195,7 @@ def_clover.tiles = { "mcl_flowers_clover.png" }
 def_clover.inventory_image = "mcl_flowers_clover_inv.png"
 def_clover.wield_image = "mcl_flowers_clover_inv.png"
 def_clover.drop = nil
+def_clover.use_texture_alpha = "clip"
 def_clover.selection_box = {
 	type = "fixed",
 	fixed = { -4/16, -0.5, -4/16, 4/16, 0, 4/16 },
@@ -210,6 +211,7 @@ def_4l_clover.mesh = "mcl_clover_4leaf.obj"
 def_4l_clover.tiles = { "mcl_flowers_fourleaf_clover.png" }
 def_4l_clover.inventory_image = "mcl_flowers_fourleaf_clover_inv.png"
 def_4l_clover.wield_image = "mcl_flowers_fourleaf_clover_inv.png"
+def_4l_clover.use_texture_alpha = "clip"
 
 minetest.register_node("mcl_flowers:fourleaf_clover", def_4l_clover)
 
@@ -268,6 +270,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	end
 	-- Sunflower mesh and tiles
 	local top_drawtype, bottom_drawtype
+	local alpha = nil
 	local bottom_tiles = {}
 	if not mesh then
 		top_drawtype = "plantlike"
@@ -277,6 +280,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		top_drawtype = "airlike"
 		bottom_drawtype = "mesh"
 		bottom_tiles = bottom_img
+		alpha = "clip"
 	end
 	-- Bottom
 	minetest.register_node("mcl_flowers:"..name, {
@@ -298,6 +302,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		_mcl_shears_drop = shears_drop,
 		_mcl_fortune_drop = fortune_drop,
 		node_placement_prediction = "",
+		use_texture_alpha = alpha,
 		selection_box = {
 			type = "fixed",
 			fixed = { -selbox_radius, -0.5, -selbox_radius, selbox_radius, 0.5, selbox_radius },
@@ -397,6 +402,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		palette = palette,
 		walkable = false,
 		buildable_to = false,
+		use_texture_alpha = alpha,
 		selection_box = {
 			type = "fixed",
 			fixed = { -selbox_radius, -0.5, -selbox_radius, selbox_radius, selbox_top_height, selbox_radius },

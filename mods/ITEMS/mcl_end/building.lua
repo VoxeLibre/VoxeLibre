@@ -74,6 +74,7 @@ local end_rod_def = {
 	light_source = minetest.LIGHT_MAX,
 	sunlight_propagates = true,
 	groups = { dig_immediate=3, deco_block=1, destroy_by_lava_flow=1, end_rod=1 },
+	use_texture_alpha = "clip",
 	selection_box = {
 		type = "fixed",
 		fixed = {
@@ -153,6 +154,7 @@ for num, row in ipairs(colored_end_rods) do
 	def.description = desc
 	def._doc_items_longdesc = nil
 	def._doc_items_create_entry = false
+	def.use_texture_alpha = "clip"
 	local side_tex
 	if name == "pink" then
 		def.tiles[1] = def.tiles[1] .. "^(" .. def.tiles[1] .. end_rod_mask .. "^[multiply:" .. name .. "^[hsl:0:300)"
