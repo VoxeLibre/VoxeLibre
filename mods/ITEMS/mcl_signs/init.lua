@@ -256,7 +256,9 @@ function sign_tpl.on_rightclick(pos, node, clicker, itemstack, pointed_thing)
 			itemstack:take_item()
 		end
 	elseif signs_editable then
-		mcl_signs.show_formspec(clicker, pos)
+		if not mcl_util.check_position_protection(pos, clicker) then
+			mcl_signs.show_formspec(clicker, pos)
+		end
 	end
 	return itemstack
 end
@@ -301,7 +303,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if not pos or not pos.x or not pos.y or not pos.z then
 			return
 		end
-		if signs_editable or minetest.get_meta(pos):get_string("text") == "" then
+		if not mcl_util.check_position_protection(pos, player) and (signs_editable or minetest.get_meta(pos):get_string("text") == "") then
 			set_signmeta(pos,{
 				text = fields.text,
 			})
