@@ -9,16 +9,17 @@ function vl_hollow_logs.register_hollow_log(defs)
 		error("Incomplete definition provided")
 	end
 
-	for i = 1, #defs do
-		if i == 5 then
-			if type(defs[i]) ~= "boolean" and type(defs[i]) ~= "nil" then
-				error("Invalid arg #5")
-			end
-		else
-			if type(defs[i]) ~= "string" then
-				error("Invalid arg #".. tostring(i))
-			end
+	for i = 1, 4 do
+		if type(defs[i]) ~= "string" then
+			error("defs["..i.."] must be a string")
 		end
+	end
+	if defs[5] and type(defs[5]) ~= "boolean" then
+		error("defs[5] must be a boolean if present")
+	end
+	if #defs > 5 then
+		minetest.log("warning", "[vl_hollow_logs] unused vars passed, dumping the table")
+		minetest.log("warning", dump(defs))
 	end
 
 	local name = defs[1]
