@@ -87,7 +87,8 @@ function mob_class:check_item_pickup()
 				end
 				if self.pick_up then
 					for k,v in pairs(self.pick_up) do
-						if not player_near(p) and self.on_pick_up and l.itemstring:find(v) then
+						local itemstack = ItemStack(l.itemstring)
+						if not player_near(p) and self.on_pick_up and itemstack:get_name():find(v) then
 							local r =  self.on_pick_up(self,l)
 							if  r and r.is_empty and not r:is_empty() then
 								l.itemstring = r:to_string()
