@@ -17,9 +17,12 @@ function vl_hollow_logs.register_hollow_log(defs)
 	if defs[5] and type(defs[5]) ~= "boolean" then
 		error("defs[5] must be a boolean if present")
 	end
+
+	local modname = minetest.get_current_modname()
+
 	if #defs > 5 then
 		minetest.log("warning", "[vl_hollow_logs] unused vars passed, dumping the table")
-		minetest.log("warning", dump(defs))
+		minetest.log("warning", "from mod " .. modname .. ": " .. dump(defs))
 	end
 
 	local name = defs[1]
@@ -43,7 +46,7 @@ function vl_hollow_logs.register_hollow_log(defs)
 		groups = table.insert(groups, {fire_encouragement = 5, fire_flammability = 5, flammable = 2, hollow_log_burnable = 1})
 	end
 
-	minetest.register_node("vl_hollow_logs:"..name.."_hollow", {
+	minetest.register_node(modname .. ":"..name.."_hollow", {
 		collision_box = collisionbox,
 		description = S(desc),
 		drawtype = "mesh",
@@ -55,13 +58,13 @@ function vl_hollow_logs.register_hollow_log(defs)
 		use_texture_alpha = "clip",
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		sunlight_propagates = true,
-		tiles = {"vl_hollow_logs_"..name..".png"},
+		tiles = {modname .. "_"..name..".png"},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
-		_mcl_stripped_variant = "vl_hollow_logs:stripped_"..name.."_hollow"
+		_mcl_stripped_variant = modname .. ":stripped_"..name.."_hollow"
 	})
 
-	minetest.register_node("vl_hollow_logs:"..stripped_name.."_hollow", {
+	minetest.register_node(modname .. ":"..stripped_name.."_hollow", {
 		collision_box = collisionbox,
 		description = S(stripped_desc),
 		drawtype = "mesh",
@@ -73,7 +76,7 @@ function vl_hollow_logs.register_hollow_log(defs)
 		use_texture_alpha = "clip",
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		sunlight_propagates = true,
-		tiles = {"vl_hollow_logs_stripped_"..name..".png"},
+		tiles = {modname .. "_stripped_"..name..".png"},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2
 	})
