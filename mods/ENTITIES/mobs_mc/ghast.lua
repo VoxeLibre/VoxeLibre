@@ -132,7 +132,7 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 		}, nil)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, true)
 		local ent = mob:get_luaentity()
-		if not ent or ent.health <= 0 then
+		if (not ent or ent.health <= 0) and self._puncher then
 			awards.unlock(self._puncher:get_player_name(), "mcl:fireball_redir_serv")
 		end
 	end,
