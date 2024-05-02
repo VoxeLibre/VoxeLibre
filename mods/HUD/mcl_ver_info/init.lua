@@ -25,7 +25,7 @@ end
 
 -- register normal user access to debug levels 1 and 0.
 minetest.register_chatcommand("ver", {
-	description = S("Display Mineclone 2 game version."),
+	description = S("Display VoxeLibre game version."),
 	func = function(name, params)
 		--[[	get_game_info's table data:
 				{
@@ -46,7 +46,7 @@ minetest.register_chatcommand("ver", {
 		local version = conf:get("version")
 
 		if game_info.title == nil or game_info.title == "" then
-			game_info.title = "Mineclone 2"
+			game_info.title = "VoxeLibre"
 		end
 		-- Notes: "game.conf doesn't support id currently, this is planned in the future" - rubenwardy from the github issue.
 		-- TODO: Remove workaround after minetest.get_game_info().id is implemented.
