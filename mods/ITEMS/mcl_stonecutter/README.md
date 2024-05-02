@@ -18,7 +18,7 @@ Adds the stonecutter block. Used to cut stone like materials into stairs, slabs,
 
 License of code
 ---------------
-See the main MineClone 2 README.md file.
+See the main VoxeLibre README.md file.
 Author: PrairieWind, ChrisPHP, cora, Herowl, AFCMS
 
 License of media

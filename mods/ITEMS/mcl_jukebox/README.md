@@ -1,4 +1,4 @@
-# Jukebox mod for MineClone 2.
+# Jukebox mod for VoxeLibre.
 
 Based on the `jdukebox` mod by Jordach. This adds a jukebox block and
 music disc. Just place a music disc in a jukebox and music starts
@@ -25,7 +25,7 @@ Note: 9 tracks are included. 3 music disc textures are currently unused.
 ### License
 
 Code licenced as GPLv3. Music under individual licenses (see abbreviations
-above). Texture license: See main MineClone 2 README.md file.
+above). Texture license: See main VoxeLibre README.md file.
 
 See here for the full license texts:
 

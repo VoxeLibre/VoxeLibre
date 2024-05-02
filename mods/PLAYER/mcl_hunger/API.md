@@ -3,7 +3,7 @@ This API information is not complete yet.
 The mod API is still pretty much unofficial; this mod is mostly seen
 as standalone for now.
 
-This may change in the future development of MineClone 2. Hopefully.
+This may change in the future development of VoxeLibre. Hopefully.
 
 ## Mod state
 The hunger mechanic is disabled when damage is disabled

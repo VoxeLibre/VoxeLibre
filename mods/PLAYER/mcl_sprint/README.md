@@ -1,4 +1,4 @@
-# Sprint Mod for MineClone 2
+# Sprint Mod for VoxeLibre
 Forked from [sprint] by GunshipPenguin  
 
 ## Description

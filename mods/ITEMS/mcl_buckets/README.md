@@ -1,5 +1,5 @@
-# MineClone2 Bucket (`mcl_bucket`)
-Originally taken from Minetest Game, adapted for MineClone2.
+# VoxeLibre Bucket (`mcl_bucket`)
+Originally taken from Minetest Game, adapted for VoxeLibre.
 
 This mod add buckets to the game, including an API to register your own (see `API.md`).
 

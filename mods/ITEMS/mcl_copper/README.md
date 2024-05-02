@@ -1,4 +1,4 @@
-# MineClone2 Copper
+# VoxeLibre Copper
 
 ### by NO11
 

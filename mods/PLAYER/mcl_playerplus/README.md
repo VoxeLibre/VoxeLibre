@@ -1,4 +1,4 @@
-# PlayerPlus mod for MineClone 2
+# PlayerPlus mod for VoxeLibre
 
 ## Features
 

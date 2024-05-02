@@ -1,6 +1,6 @@
 # `mcl_throwing`
 
-It's a MineClone 2 mod containing throwable items like snowballs.
+It's a VoxeLibre mod containing throwable items like snowballs.
 
 ## License of code
 
@@ -29,4 +29,4 @@ It's a MineClone 2 mod containing throwable items like snowballs.
     - Source: <https://freesound.org/people/kretopi/sounds/406405/>
     - Original title: `Arrow002.wav` (file was edited)
 
-- Everything else: See MineClone 2 license infos
+- Everything else: See VoxeLibre license infos

@@ -1,9 +1,9 @@
-# Mineclone Skins
+# VoxeLibre Skins
 
 This mod allows advanced skin customization.
 Use the /skin command to open the skin configuration screen.
 
-To include custom skins in MineClone2, please download the [mcl_custom_skins](https://codeberg.org/MineClone2/mcl_custom_skins) mod.
+To include custom skins in VoxeLibre, please download the [mcl_custom_skins](https://codeberg.org/MineClone2/mcl_custom_skins) mod.
 
 ## License
 Code under MIT license

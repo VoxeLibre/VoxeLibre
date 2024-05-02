@@ -2,7 +2,7 @@ mcl_loom
 --------
 Looms, by PrairieWind
 
-Adds Looms to MineClone 2/5. Used to add patterns to banners.
+Adds Looms to VoxeLibre. Used to add patterns to banners.
 
 License of source code
 ----------------------

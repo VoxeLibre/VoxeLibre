@@ -1,4 +1,4 @@
-# API for adding MineClone 2 fences
+# API for adding VoxeLibre fences
 This API allows you to add fences and fence gates.
 The recommended function is `mcl_fences.register_fence_and_fence_gate`.
 

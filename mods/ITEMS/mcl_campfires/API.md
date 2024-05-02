@@ -1,4 +1,4 @@
-# MineClone 2 Campfire API
+# VoxeLibre Campfire API
 ## `mcl_campfires.register_campfire`
 Used to register campfires.
 

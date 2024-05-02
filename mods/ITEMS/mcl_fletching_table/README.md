@@ -2,7 +2,7 @@ mcl_fletching_table
 -------------------
 Fletching Tables, by PrairieWind
 
-Adds Fletching Tables to MineClone 2/5.
+Adds Fletching Tables to VoxeLibre.
 
 License of source code
 ----------------------

@@ -1,4 +1,4 @@
-# PlayerInfo mod for MineClone 2
+# PlayerInfo mod for VoxeLibre
 
 This is a helper mod for other mod to query the nodes around the player.
 

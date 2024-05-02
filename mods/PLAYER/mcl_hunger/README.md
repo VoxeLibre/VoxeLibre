@@ -1,4 +1,4 @@
-# Hunger for MineClone 2 [`mcl_hunger`]
+# Hunger for VoxeLibre [`mcl_hunger`]
 
 * Forked from `hbhunger`, version: 0.5.2
 
@@ -39,7 +39,7 @@ This mod is free software.
 
 * License: [LGPL v2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html)
 * Author: by Wuzzy (2015-2016)
-* Forked from `hbhunger` for MineClone 2. `hbhunger` in turn was forked from the “Better HUD
+* Forked from `hbhunger` for VoxeLibre. `hbhunger` in turn was forked from the “Better HUD
   (and hunger)” mod by BlockMen (2013-2015), most code comes from this mod.
 
 ### Textures and sounds

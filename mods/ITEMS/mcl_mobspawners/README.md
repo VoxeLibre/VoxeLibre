@@ -1,8 +1,8 @@
-This mod adds a mob spawner for MineClone 2.
+This mod adds a mob spawner for VoxeLibre.
 Monsters will appear around the mob spawner in semi-regular intervals.
 
 This mod is originally based on the mob spawner from Mobs Redo by TenPlus1
-but has been modified quite a lot to fit the needs of MineClone 2.
+but has been modified quite a lot to fit the needs of VoxeLibre.
 
 Players can get a mob spawner by `giveme` and is initially empty after
 placing.

@@ -1,8 +1,8 @@
 
 ---
-# Mineclone2-Signs
+# VoxeLibre Signs
 ---
-A reworking of MineClone 2's mcl_signs to be colorable and made to glow. Requires Minetest and Mineclone2.
+A reworking of VoxeLibre's mcl_signs to be colorable and made to glow. Requires Minetest and VoxeLibre.
 ---
 
 Created by Michieal (FaerRaven) @ DateTime: 10/14/22 4:05 PM
@@ -23,7 +23,7 @@ License of code and font: MIT License
 Font source: 04.jp.org, some modifications and additions were made (added support for Latin-1 Supplement)
 Original font license text states: “YOU MAY USE THEM AS YOU LIKE” (in about.gif file distributed with the font)
 
-License of textures: See README.md in top directory of MineClone 2, with the exception of the following:
+License of textures: See README.md in top directory of VoxeLibre, with the exception of the following:
 default_sign.png, default_sign_dark.png, default_sign_greyscale.png, mcl_signs_sign_dark.png,
 mcl_signs_sign_greyscale.png are licensed as follows:
 Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) (https://creativecommons.org/licenses/by-sa/4.0/).
@@ -36,7 +36,7 @@ Models author: 22i.
 
 Source: https://github.com/22i/amc
 
-Mineclone 2 source code:
+VoxeLibre source code:
 https://git.minetest.land/MineClone2/MineClone2
 
 ---

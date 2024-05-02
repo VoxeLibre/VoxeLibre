@@ -1,4 +1,4 @@
-This mod adds tools for MineClone 2.
+This mod adds tools for VoxeLibre.
 
 ## Credits
 
@@ -7,4 +7,4 @@ This mod adds tools for MineClone 2.
     * Source: <https://freesound.org/people/SmartWentCody/sounds/179015/>
 
 Other files:
-See main MineClone 2 README.
+See main VoxeLibre README.
