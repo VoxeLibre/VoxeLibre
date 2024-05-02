@@ -58,7 +58,7 @@ function mcl_credits.show(player)
 	}
 	add_hud_element({
 		hud_elem_type = "image",
-		text = "mineclone2_logo.png",
+		text = "voxelibre_logo.png",
 		scale = {x = 1, y = 1},
 	}, huds, 300, 0)
 	add_hud_element({
@@ -89,7 +89,7 @@ function mcl_credits.show(player)
 	end
 	huds.icon = add_hud_element({
 		hud_elem_type = "image",
-		text = "mineclone2_icon.png",
+		text = "voxelibre_icon.png",
 		scale = {x = 1, y = 1},
 	}, huds, y)
 	mcl_credits.players[name] = huds
