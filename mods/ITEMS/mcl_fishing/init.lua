@@ -114,6 +114,8 @@ local fish = function(itemstack, player, pointed_thing)
 										{ itemstring = "mcl_mobitems:saddle", },
 										{ itemstring = "mcl_flowers:waterlily", },
 										{ itemstring = "mcl_mobitems:nautilus_shell", },
+										{ itemstring = "mcl_mobitems:spectre_membrane", },
+										{ itemstring = "mcl_mobitems:crystalline_drop", },
 									},
 									stacks_min = 1,
 									stacks_max = 1,

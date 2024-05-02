@@ -231,6 +231,46 @@ minetest.register_craftitem("mcl_mobitems:string",{
 	groups = { craftitem = 1 },
 })
 
+minetest.register_craftitem("mcl_mobitems:spectre_membrane",{
+	description = S("Spectre Membrane"),
+	_doc_items_longdesc = S("This is a crafting component dropped from dead spectres."),
+	inventory_image = "vl_mobitems_spectre_membrane.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_mobitems:shiny_ice_crystal",{
+	description = S("Shiny Ice Crystal"),
+	_doc_items_longdesc = S("This item is mainly used for crafting."),
+	inventory_image = "vl_mobitems_ice_crystal.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_mobitems:aery_charge",{
+	description = S("Aery Charge"),
+	_doc_items_longdesc = S("This item is mainly used for crafting."), -- TODO shoot?
+	inventory_image = "vl_mobitems_aery_charge.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_mobitems:crystalline_drop",{
+	description = S("Crystalline Drop"),
+	_doc_items_longdesc = S("This item is mainly used for crafting."), -- TODO other uses?
+	inventory_image = "vl_mobitems_crystalline_drop.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_mobitems:earthen_ash",{
+	description = S("Earthen Ash"),
+	_doc_items_longdesc = S("This item is mainly used for crafting."), -- TODO other uses?
+	inventory_image = "vl_mobitems_earthen_ash.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
 minetest.register_craftitem("mcl_mobitems:blaze_rod", {
 	description = S("Blaze Rod"),
 	_doc_items_longdesc = S("This is a crafting component dropped from dead blazes."),

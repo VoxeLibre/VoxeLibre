@@ -153,12 +153,19 @@ table.insert(stray.drops, {
 		local chance = 0.5
 		for i = 1, lvl do
 			if chance > 1 then
-				return 1
+				return 1 -- TODO verify this logic, I think this is not how chance works
 			end
 			chance = chance + (1 - chance) / 2
 		end
 		return chance
 	end,
+})
+table.insert(stray.drops, {
+	name = "mcl_mobitems:shiny_ice_crystal",
+	chance = 3,
+	min = 1,
+	max = 2,
+	looting = "rare",
 })
 
 mcl_mobs.register_mob("mobs_mc:stray", stray)

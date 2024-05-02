@@ -608,6 +608,8 @@ local professions = {
 			{
 			{ { "mcl_nether:nether_wart_item", 22, 22 }, E1 },
 			{ { "mcl_core:emerald", 3, 3 }, { "mcl_experience:bottle", 1, 1 } },
+			{ { "mcl_core:emerald", 15, 15 }, { "mcl_mobitems:aery_charge", 1, 1 } }, -- TODO reconsider
+			{ { "mcl_core:emerald", 15, 15 }, { "mcl_mobitems:earthen_ash", 1, 1 } }, -- TODO reconsider
 			},
 		},
 	},

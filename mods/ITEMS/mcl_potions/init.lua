@@ -401,14 +401,14 @@ local awkward_table = {
 
 	["mcl_flowers:fourleaf_clover"] = "mcl_potions:luck",
 	["mcl_farming:potato_item_poison"] = "mcl_potions:nausea",
-	["mcl_mobitems:phantom_membrane"] = "mcl_potions:slow_falling", -- TODO add phantom membranes
+	["mcl_mobitems:spectre_membrane"] = "mcl_potions:slow_falling",
 	["mcl_core:apple_gold"] = "mcl_potions:resistance",
+	["mcl_mobitems:aery_charge"] = "mcl_potions:haste",
+	["mcl_mobitems:crystalline_drop"] = "mcl_potions:absorption",
+	["mcl_mobitems:earthen_ash"] = "mcl_potions:stone_cloak",
+	["mcl_mobitems:shiny_ice_crystal"] = "mcl_potions:frost",
 
 	-- TODO darkness - sculk?
-	-- TODO absorption - water element?
-	-- TODO turtle master - earth element?
-	-- TODO frost - frost element?
-	-- TODO haste - air element?
 }
 -- API
 -- register a potion recipe brewed from awkward potion
