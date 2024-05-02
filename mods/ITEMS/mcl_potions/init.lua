@@ -497,6 +497,7 @@ local inversion_table = {
 	["mcl_potions:saturation"] = "mcl_potions:food_poisoning",
 	["mcl_potions:slow_falling"] = "mcl_potions:levitation",
 	["mcl_potions:absorption"] = "mcl_potions:health_boost",
+	["mcl_potions:glowing"] = "mcl_potions:darkness", -- TODO remove after adding a direct recipe?
 }
 -- API
 function mcl_potions.register_inversion_recipe(input, output)
