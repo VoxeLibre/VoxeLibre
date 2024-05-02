@@ -16,7 +16,7 @@ information.
 How the mod is used
 ===================
 
-In MineClone 2, all diggable nodes have the hardness set in the custom field
+In VoxeLibre, all diggable nodes have the hardness set in the custom field
 "_mcl_hardness" (0 by default).  These values are used together with digging
 groups by this mod to create the correct digging times for nodes.  Digging
 groups are registered using the following code:

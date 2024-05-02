@@ -1,4 +1,4 @@
-# Crafting Guide (MineClone 2 edition)
+# Crafting Guide (VoxeLibre edition)
 
 #### `mcl_craftguide` is based on, `craftguide` the most comprehensive crafting guide on Minetest.
 #### Consult the [Minetest Wiki](http://wiki.minetest.net/Crafting_guide) for more details.

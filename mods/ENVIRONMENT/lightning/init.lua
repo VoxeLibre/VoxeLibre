@@ -1,7 +1,7 @@
 --[[
 
 Copyright (C) 2016 - Auke Kok <sofar@foo-projects.org>
-Adapted by MineClone2 contributors
+Adapted by VoxeLibre contributors
 
 "lightning" is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as

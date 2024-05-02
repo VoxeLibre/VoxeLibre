@@ -1,6 +1,6 @@
 mcl_bells
 ---------
-Village bells for MineClone2, originally imported from mcl5, heavily modified by cora.
+Village bells for VoxeLibre, originally imported from mcl5, heavily modified by cora.
 
 License of media files
 ----------------------

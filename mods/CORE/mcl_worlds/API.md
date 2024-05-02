@@ -31,7 +31,7 @@ This function return the Minecraft dimension of <pos> ("overworld", "nether" or 
 * pos: position
 
 ## mcl_worlds.layer_to_y(layer, mc_dimension)
-Takes a Minecraft layer and a “dimension” name and returns the corresponding Y coordinate for MineClone 2.
+Takes a Minecraft layer and a “dimension” name and returns the corresponding Y coordinate for VoxeLibre.
 mc_dimension can be "overworld", "nether", "end" (default: "overworld").
 
 * layer: int

@@ -1,5 +1,5 @@
 # Help
-MineClone 2 uses some of the mods found in the Help modpack by Wuzzy.
+VoxeLibre uses some of the mods found in the Help modpack by Wuzzy.
 
 The goal of this modpack is to make using Minetest and mods easier for both
 newcomers and advanced users.
@@ -11,7 +11,7 @@ directly into mods (via `doc_items`).
 
 More information is given in the respective mods.
 
-Overview of the mods used in MineClone 2:
+Overview of the mods used in VoxeLibre:
 
 * `doc`: Documentation System. Core API and user interface. Mods can add arbitrary categories and entries
 * `doc_items`: Item Help. Adds automatically generated help texts for items and an API

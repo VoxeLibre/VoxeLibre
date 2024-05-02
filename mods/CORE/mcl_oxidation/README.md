@@ -1,4 +1,4 @@
-# Oxidization API for MineClone 2
+# Oxidization API for VoxeLibre
 This mods adds the oxidization api, so that modders can easily use the same features that copper uses.
 
 ## API

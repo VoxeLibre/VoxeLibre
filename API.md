@@ -31,7 +31,7 @@ All nodes can have these fields:
 Use the `mcl_sounds` mod for the sounds.
 
 ## APIs
-A lot of things are possible by using one of the APIs in the mods. Many of them are documented in `API.md` files located in the directories of the specific mods. Some use `.txt` files or have some documentation in the comments along the code. Note that not all APIs are documented yet, but it is planned. The following APIs should be more or less stable but keep in mind that MineClone 2 is still unfinished. All directory names are relative to `mods/`
+A lot of things are possible by using one of the APIs in the mods. Many of them are documented in `API.md` files located in the directories of the specific mods. Some use `.txt` files or have some documentation in the comments along the code. Note that not all APIs are documented yet, but it is planned. The following APIs should be more or less stable but keep in mind that VoxeLibre is still unfinished. All directory names are relative to `mods/`
 
 ### Items
 * Doors: `ITEMS/mcl_doors`
@@ -54,7 +54,7 @@ API documnetation is included in `ENTITIES/mcl_mobs/api.txt`.
 This mod includes modificiations from the original Mobs Redo. Some items have been removed or moved to other mods.
 The API is mostly identical, but a few features have been added. Compability is not really a goal,
 but function and attribute names of Mobs Redo 1.41 are kept.
-If you have code for a mod which works fine under Mobs Redo, it should be easy to make it work in MineClone 2,
+If you have code for a mod which works fine under Mobs Redo, it should be easy to make it work in VoxeLibre.
 chances are good that it works out of the box.
 
 ### Help

@@ -1,5 +1,5 @@
 
-Mobs Redo: MineClone 2 Edition
+Mobs Redo: VoxeLibre Edition
 
 Based on Mobs Redo from TenPlus1
 Built from PilzAdam's original Simple Mobs with additional mobs by KrupnoPavel, Zeg9, ExeterDad and AspireMint.

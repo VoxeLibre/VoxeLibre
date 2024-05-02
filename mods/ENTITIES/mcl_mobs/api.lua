@@ -1,7 +1,7 @@
 local mob_class = mcl_mobs.mob_class
 local mob_class_meta = {__index = mcl_mobs.mob_class}
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
--- API for Mobs Redo: MineClone 2 Edition (MRM)
+-- API for Mobs Redo: VoxeLibre Edition
 
 local PATHFINDING = "gowp"
 local CRASH_WARN_FREQUENCY = 60
@@ -473,7 +473,7 @@ local function warn_user_error ()
 
 	if time_since_warning > CRASH_WARN_FREQUENCY then
 		last_crash_warn_time = current_time
-		minetest.log("A game crashing bug was prevented. Please provide debug.log information to MineClone2 dev team for investigation. (Search for: --- Bug report start)")
+		minetest.log("A game crashing bug was prevented. Please provide debug.log information to VoxeLibre dev team for investigation. (Search for: --- Bug report start)")
 	end
 end
 

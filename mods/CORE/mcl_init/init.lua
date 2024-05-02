@@ -183,7 +183,7 @@ mcl_vars.mg_end_exit_portal_pos = vector.new(0, mcl_vars.mg_end_min + 71, 0)
 mcl_vars.mg_realm_barrier_overworld_end_max = mcl_vars.mg_end_max
 mcl_vars.mg_realm_barrier_overworld_end_min = mcl_vars.mg_end_max - 11
 
--- Use MineClone 2-style dungeons
+-- Use VoxeLibre-style dungeons
 mcl_vars.mg_dungeons = true
 
 -- Set default stack sizes

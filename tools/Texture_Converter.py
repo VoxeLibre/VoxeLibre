@@ -11,7 +11,7 @@ from libtextureconverter.common import convert_resource_packs
 
 def main():
     make_texture_pack = True
-    parser = argparse.ArgumentParser(description=f"This is the official MineClone 2 Texture Converter. This will convert textures from Minecraft resource packs to a Minetest texture pack. Supported Minecraft version: {SUPPORTED_MINECRAFT_VERSION} (Java Edition)")
+    parser = argparse.ArgumentParser(description=f"This is the official VoxeLibre Texture Converter. This will convert textures from Minecraft resource packs to a Minetest texture pack. Supported Minecraft version: {SUPPORTED_MINECRAFT_VERSION} (Java Edition)")
     parser.add_argument("-i", "--input", help="Directory of Minecraft resource pack to convert")
     parser.add_argument("-o", "--output", default=working_dir, help="Directory in which to put the resulting Minetest texture pack")
     parser.add_argument("-p", "--pixel-size", type=int, help="Size (in pixels) of the original textures")
