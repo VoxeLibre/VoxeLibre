@@ -8,7 +8,7 @@ local is_sp = minetest.is_singleplayer()
 local weather_mod = minetest.get_modpath("mcl_weather")
 local explosions_mod = minetest.get_modpath("mcl_explosions")
 local spawn_mod = minetest.get_modpath("mcl_spawn")
-local worlds_mod = minetest.get_modpath("mcl_worlds")
+local pos_to_dim = minetest.get_modpath("mcl_worlds") and mcl_worlds.pos_to_dimension or function(pos) return "overworld" end
 
 local function mcl_log (message)
 	mcl_util.mcl_log (message, "[Beds]")
@@ -38,6 +38,16 @@ local function is_night_skip_enabled()
 	return players_in_bed_setting() <= 100
 end
 
+local function players_in_overworld(players)
+	local count = 0
+	for _, player in pairs(players) do
+		if player and pos_to_dim(player:get_pos()) == "overworld" then
+			count = count +1
+		end
+	end
+	return count
+end
+
 local function check_in_beds(players)
 	if not players then
 		players = minetest.get_connected_players()
@@ -45,7 +55,7 @@ local function check_in_beds(players)
 	if player_in_bed <= 0 then
 		return false
 	end
-	return players_in_bed_setting() <= (player_in_bed * 100) / #players
+	return players_in_bed_setting() <= (player_in_bed * 100) / players_in_overworld(players)
 end
 
 -- These monsters do not prevent sleep
@@ -206,10 +216,10 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	return true
 end
 
-local function update_formspecs(finished, ges)
-	local ges = ges or #minetest.get_connected_players()
+local function update_formspecs(finished, players)
+	local ges = players_in_overworld(players or minetest.get_connected_players())
 	local form_n = "size[12,5;true]"
-	local all_in_bed = players_in_bed_setting() <= (player_in_bed * 100) / ges
+	local all_in_bed = ges and players_in_bed_setting() <= (player_in_bed * 100) / ges or 0
 	local night_skip = is_night_skip_enabled()
 	local button_leave = "button_exit[4,3;4,0.75;leave;"..F(S("Leave bed")).."]"
 	local button_abort = "button_exit[4,3;4,0.75;leave;"..F(S("Abort sleep")).."]"
@@ -349,25 +359,36 @@ function mcl_beds.get_bed_bottom (pos)
 	return bed_bottom
 end
 
+local function recheck_in_beds()
+	if check_in_beds() then
+		update_formspecs(is_night_skip_enabled())
+		mcl_beds.sleep()
+	end
+
+	-- check again (a player can change the dimension)
+	if player_in_bed > 0 then
+		update_formspecs(false)
+		minetest.after(5, recheck_in_beds)
+	end
+end
+
 function mcl_beds.on_rightclick(pos, player, is_top)
 	-- Anti-Inception: Don't allow to sleep while you're sleeping
 	if player:get_meta():get_string("mcl_beds:sleeping") == "true" then
 		return
 	end
-	if worlds_mod then
-		local dim = mcl_worlds.pos_to_dimension(pos)
-		if dim == "nether" or dim == "end" then
-			-- Bed goes BOOM in the Nether or End.
-			local node = minetest.get_node(pos)
-			local dir = minetest.facedir_to_dir(node.param2)
+	local dim = pos_to_dim(pos)
+	if dim == "nether" or dim == "end" then
+		-- Bed goes BOOM in the Nether or End.
+		local node = minetest.get_node(pos)
+		local dir = minetest.facedir_to_dir(node.param2)
 
-			minetest.remove_node(pos)
-			minetest.remove_node(string.sub(node.name, -4) == "_top" and vector.subtract(pos, dir) or vector.add(pos, dir))
-			if explosions_mod then
-				mcl_explosions.explode(pos, 5, {drop_chance = 1.0, fire = true})
-			end
-			return
+		minetest.remove_node(pos)
+		minetest.remove_node(string.sub(node.name, -4) == "_top" and vector.subtract(pos, dir) or vector.add(pos, dir))
+		if explosions_mod then
+			mcl_explosions.explode(pos, 5, {drop_chance = 1.0, fire = true})
 		end
+		return
 	end
 	local name = player:get_player_name()
 	local ppos = player:get_pos()
@@ -385,10 +406,13 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 			mcl_title.set(player, "actionbar", {text=message, color="white", stay=60})
 		else -- someone just successfully entered a bed
 			local connected_players = minetest.get_connected_players()
-			local sleep_hud_message = S("@1/@2 players currently in bed.", player_in_bed, math.ceil(players_in_bed_setting() * #connected_players / 100))
+			local ges = players_in_overworld(connected_players)
+			local sleep_hud_message = S("@1/@2 players currently in bed.", player_in_bed, math.ceil(players_in_bed_setting() * ges / 100))
 			for _, player in pairs(connected_players) do
-				if not mcl_beds.player[player:get_player_name()] then -- only send message to players not sleeping.
-					if mcl_title.params_get(player) then mcl_title.clear(player) end -- clear, old message is still being displayed
+				-- only send message to players not sleeping and in the "overworld"
+				if not mcl_beds.player[player:get_player_name()] and pos_to_dim(player:get_pos()) == "overworld" then
+					-- clear, old message is still being displayed
+					if mcl_title.params_get(player) then mcl_title.clear(player) end
 					mcl_title.set(player, "actionbar", {text=sleep_hud_message, color="white", stay=60})
 				end
 			end
@@ -400,13 +424,8 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 	update_formspecs(false)
 
 	-- skip the night and let all players stand up
-	if check_in_beds() then
-		minetest.after(5, function()
-			if check_in_beds() then
-				update_formspecs(is_night_skip_enabled())
-				mcl_beds.sleep()
-			end
-		end)
+	if player_in_bed > 0 then
+		minetest.after(5, recheck_in_beds)
 	end
 end
 
@@ -433,15 +452,10 @@ minetest.register_on_leaveplayer(function(player)
 			break
 		end
 	end
-	if check_in_beds(players) then
-		minetest.after(5, function()
-			if check_in_beds() then
-				update_formspecs(is_night_skip_enabled())
-				mcl_beds.sleep()
-			end
-		end)
+	if player_in_bed > 0 then
+		minetest.after(5, recheck_in_beds)
 	end
-	update_formspecs(false, #players)
+	update_formspecs(false, players)
 end)
 
 local message_rate_limit = tonumber(minetest.settings:get("chat_message_limit_per_10sec")) or 8 --NEVER change this! if this was java, i would've declared it as final
