@@ -160,7 +160,7 @@ By holding down [Z], you can zoom the view at your crosshair. You need the “zo
 • Toggle Cinematic Mode: [F8]=・シネマティックモードの切替：[F8]
 • Zoom: [Z]=・ズーム：[Z]
 Blocks=ブロック
-The world of MineClone 2 is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=MineClone 2のワールドは、すべてがブロック（正確にはボクセル）で構成されています。ブロックは、適切なツールで追加や削除ができます。
+The world of VoxeLibre is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=VoxeLibreのワールドは、すべてがブロック（正確にはボクセル）で構成されています。ブロックは、適切なツールで追加や削除ができます。
 The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=ワールドは、すべてがブロック（正確にはボクセル）で構成されています。ブロックは、適切なツールで追加や削除ができます。
 Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:=ブロックは幅広く多様なプロパティを持つことができ、採掘時間、動作、外観、形状などが定まります。プロパティは次のとおり：
 • Collidable: Collidable blocks can not be passed through; players can walk on them. Non-collidable blocks can be passed through freely=・衝突性：衝突性ブロックは通過できず、プレイヤーはその上を歩ける。非衝突性ブロックは、自由に通り抜けられる
@@ -260,15 +260,15 @@ Throwing away: If you hold an item stack and click with it somewhere outside the
 Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=直送する：炉やチェストなどのインベントリスロットに対しては、プレイヤーインベントリからアイテムスタックを直送できます。この場合対象となるのは、一般的に最も関連性の高いインベントリスロットです。
 • Sneak+Left click: Automatically transfer item stack=・スニークキー + 左クリック：アイテムスタックの自動転送
 Online help=オンラインヘルプ
-You may want to check out these online resources related to MineClone 2.=MineClone 2 に関連するオンライン資料もチェックしてみてください。
-MineClone 2 download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=MineClone 2 のダウンロードと掲示板での意見交換：<https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>
-Here you find the most recent version of MineClone 2 and can discuss it.=ここでは MineClone 2 の最新バージョンを確認し、意見を交換できます。
+You may want to check out these online resources related to VoxeLibre.=VoxeLibre に関連するオンライン資料もチェックしてみてください。
+VoxeLibre download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=VoxeLibre のダウンロードと掲示板での意見交換：<https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>
+Here you find the most recent version of VoxeLibre and can discuss it.=ここでは VoxeLibre の最新バージョンを確認し、意見を交換できます。
 Bug tracker: <https://github.com/Wuzzy2/MineClone2-Bugs>=バグ追跡：<https://github.com/Wuzzy2/MineClone2-Bugs>
 Report bugs here.=バグの報告はこちら。
 Minetest links:=Minetest リンク：
 You may want to check out these online resources related to Minetest:=Minetest に関連するオンライン資料もチェックしてみてください：
 Official homepage of Minetest: <https://minetest.net/>=Minetest の公式ホームページ：<https://minetest.net/>
-The main place to find the most recent version of Minetest, the engine used by MineClone 2.=MineClone 2 で使用されているエンジン、Minetest の最新版を入手できるメインサイトです。
+The main place to find the most recent version of Minetest, the engine used by VoxeLibre.=VoxeLibre で使用されているエンジン、Minetest の最新版を入手できるメインサイトです。
 The main place to find the most recent version of Minetest.=Minetest の最新版を入手できるメインサイトです。
 Community wiki: <https://wiki.minetest.net/>=コミュニティ wiki：<https://wiki.minetest.net/>
 A community-based documentation website for Minetest. Anyone with an account can edit it! It also features a documentation of Minetest Game.=Minetest のための、コミュニティベースの文書サイトです。アカウントがあれば誰でも編集可能です！ また、Minetest Game の資料も掲載されています。
@@ -333,7 +333,7 @@ Online multiplayer:=オンライン マルチプレイヤー
 • Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=・保護：ワールドの各エリアを所有する仕組み。エリア内部のブロックは、所有者のみが変更可能となる
 Technical terms:=技術的な用語：
 • Minetest: This game engine=・Minetest：マインテスト。本ゲームエンジン
-• MineClone 2: What you play right now=・MineClone 2：マインクローン2。今、プレイしているもの
+• VoxeLibre: What you play right now=・VoxeLibre：マインクローン2。今、プレイしているもの
 • Minetest Game: A game for Minetest by the Minetest developers=・Minetest Game：Minetest 開発者による、Minetest のためのゲーム
 • Game: A complete playing experience to be used in Minetest; such as a game or sandbox or similar=・Game：ゲームやサンドボックスなど、Minetest で使用される完全なプレイ体験
 • Mod: A single subsystem which adds or modifies functionality; is the basic building block of games and can be used to further enhance or modify them=・Mod：モッド。機能を追加または変更する１つのサブシステム。ゲームの基本的な構成要素であり、ゲームをさらに強化または変更するために使用できる
@@ -448,7 +448,7 @@ You can view your current position in the debug screen (open with [F5]).=デバ�
 
 # MCL2 extensions
 Creative Mode=クリエイティブモード
-Enabling Creative Mode in MineClone 2 applies the following changes:=MineClone 2 で Creative Mode を有効にすると、以下の変更が適用されます：
+Enabling Creative Mode in VoxeLibre applies the following changes:=VoxeLibre で Creative Mode を有効にすると、以下の変更が適用されます：
 • You keep the things you've placed=・あなたが置いたものを保つ
 • Creative inventory is available to obtain most items easily=・ほとんどのアイテムを簡単に入手できるクリエイティブインベントリが利用可能
 • Hand breaks all default blocks instantly=・すべてのデフォルトブロックを手で即座に壊せる

@@ -83,11 +83,11 @@ Minetest to learn more.
 The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
 
 * **開發目標：我的世界, Java版, 版本 1.12**
-* MineClone2還包括Minetest支持的Optifine功能。
+* VoxeLibre還包括Minetest支持的Optifine功能。
 * 後期Minecraft版本的功能可能會偷偷加入，但它們的優先級較低。
 * 總的來說，Minecraft的目標是在Minetest目前允許的情況下進行克隆。
 * 克隆Minecraft是最優先的。
-* MineClone2將使用不同的圖形和聲音，但風格相似。
+* VoxeLibre將使用不同的圖形和聲音，但風格相似。
 * 克隆界面沒有優先權。只會被粗略地模仿。
 * 在Minetest中發現的局限性將在開發過程中被記錄和報告。
 
@@ -173,7 +173,7 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 * 不同的聲音（各種來源）
 * 不同的引擎（Minetest）
 
-...最後，MineClone2是自由軟件！
+...最後，VoxeLibre是自由軟件！
 
 ## 錯誤報告
 請在此處報告所有錯誤和缺少的功能：
@@ -190,7 +190,7 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 
 * `LICENSE.txt`：GPLv3許可文本
 * `CONTRIBUTING.md`: 為那些想參與貢獻的人提供資訊
-* `MISSING_ENGINE_FEATURES.md`: MineClone2需要改进，Minetest中缺失的功能列表。
+* `MISSING_ENGINE_FEATURES.md`: VoxeLibre需要改进，Minetest中缺失的功能列表。
 * `API.md`: 關於MineClone2的API
 
 ## 參與者
@@ -235,7 +235,7 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 * [kingoscargames](https://github.com/kingoscargames)：現有材質的各種編輯和添加
 * [leorockway](https://github.com/leorockway)：怪物紋理的一些編輯
 * [xMrVizzy](https://minecraft.curseforge.com/members/xMrVizzy)：釉陶（材質以後會被替換）
-* yutyo <tanakinci2002@gmail.com>：MineClone2標志
+* yutyo <tanakinci2002@gmail.com>：VoxeLibre標志
 * 其他：GUI圖片
 
 ### 翻譯
@@ -254,7 +254,7 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 
 ### 特殊感謝
 
-* Wuzzy，感謝他啟動和維護MineClone2多年。
+* Wuzzy，感謝他啟動和維護VoxeLibre多年。
 * celeron55，創建Minetest。
 * Minetest的社區提供了大量的mods選擇，其中一些最終被納入MineClone 2。
 * Jordach，為《Big Freaking Dig》的唱片機音樂合輯而來

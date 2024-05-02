@@ -160,7 +160,7 @@ By holding down [Z], you can zoom the view at your crosshair. You need the “zo
 • Toggle Cinematic Mode: [F8]=• Przełącz tryb kinowy: [F8]
 • Zoom: [Z]=• Przybliż: [Z]
 Blocks=Bloki
-The world of MineClone 2 is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Świat MineClone 2 jest w całości złożony z bloków (a bardziej precyzyjnie voxeli). Bloki mogą być dodawane lub usuwane przy użyciu odpowiednich narzędzi.
+The world of VoxeLibre is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Świat VoxeLibre jest w całości złożony z bloków (a bardziej precyzyjnie voxeli). Bloki mogą być dodawane lub usuwane przy użyciu odpowiednich narzędzi.
 The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Świat jest w całości złożony z bloków (a bardziej precyzyjnie voxeli). Bloki mogą być dodawane lub usuwane przy użyciu odpowiednich narzędzi.
 Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:=Bloki mogą mieć wiele różnych właściwości określających czas kopania, zachowanie, wygląd, kształt i wiele więcej. Te własności to między innymi:
 • Collidable: Collidable blocks can not be passed through; players can walk on them. Non-collidable blocks can be passed through freely=• Zderzalne: Przez bloki z tą własnością nie można przechodzić; gracze mogą po nich chodzić. Przez nie-zderzalne bloki można swobodnie przechodzić.
@@ -260,15 +260,15 @@ Throwing away: If you hold an item stack and click with it somewhere outside the
 Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=Szybki transfer: Możesz szybko przemieszczać grupę przedmiotów z/do ekwipunku gracza do/z ekwipunku innego przedmiotu, takich jak piec, skrzynia czy innego z ekwipunkiem, gdy jego ekwipunek jest otworzony. Docelowy ekwipunek jest najczęściej najbardziej istotnym ekwipunkiem w takim kontekście.
 • Sneak+Left click: Automatically transfer item stack=• Skradanie+Lewy przycisk: Automatycznie przenieś grupę przedmiotów
 Online help=Pomoc online
-You may want to check out these online resources related to MineClone 2.=Możesz chcieć zobaczyć na te zasoby online powiązane z MineClone 2.
-MineClone 2 download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=MineClone 2 pobieranie oraz dyskusja na forum: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>
-Here you find the most recent version of MineClone 2 and can discuss it.=Tutaj możesz znaleźć najnowszą wersję MineClone 2 i porozmawiać o niej
+You may want to check out these online resources related to VoxeLibre.=Możesz chcieć zobaczyć na te zasoby online powiązane z VoxeLibre.
+VoxeLibre download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=VoxeLibre pobieranie oraz dyskusja na forum: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>
+Here you find the most recent version of VoxeLibre and can discuss it.=Tutaj możesz znaleźć najnowszą wersję VoxeLibre i porozmawiać o niej
 Bug tracker: <https://github.com/Wuzzy2/MineClone2-Bugs>=Śledzenie błędów: <https://github.com/Wuzzy2/MineClone2-Bugs>
 Report bugs here.=Zgłaszaj tu zauważone błędy.
 Minetest links:=Linki dotyczące Minetest:
 You may want to check out these online resources related to Minetest:=Możesz chcieć zobaczyć te zasoby online dotyczące Minetest
 Official homepage of Minetest: <https://minetest.net/>=Oficjalna strona Minetest: <https://minetest.net/>
-The main place to find the most recent version of Minetest, the engine used by MineClone 2.=Miejsce gdzie można znaleźć najnowszą wersję Minetesta, silnika wykorzystywanego przez MineClone 2.
+The main place to find the most recent version of Minetest, the engine used by VoxeLibre.=Miejsce gdzie można znaleźć najnowszą wersję Minetesta, silnika wykorzystywanego przez VoxeLibre.
 The main place to find the most recent version of Minetest.=Miejsce gdzie można znaleźć najnowszą wersję Minetesta.
 Community wiki: <https://wiki.minetest.net/>=Wiki społeczności: <https://wiki.minetest.net/>
 A community-based documentation website for Minetest. Anyone with an account can edit it! It also features a documentation of Minetest Game.=Utrzymywana przez społeczność dokumentacja na temat Minetest. Każdy z kontem może ją edytować! Znajduje się na niej również dokumentacja Gry Minetest.
@@ -333,7 +333,7 @@ Online multiplayer:=Gra wieloosobowa w internecie:
 • Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=• Ochrona: Mechanizm pozwalający wejść w posiadanie pewnych części świata, co pozwala tylko właścicielom modyfikować bloki wewnątrz
 Technical terms:=Techniczne terminy:
 • Minetest: This game engine=• Minetest: Ten silnik gier
-• MineClone 2: What you play right now=• MineClone 2: To w co teraz grasz
+• VoxeLibre: What you play right now=• VoxeLibre: To w co teraz grasz
 • Minetest Game: A game for Minetest by the Minetest developers=• Gra Minetest: Gra w Minetest napisana przez jego twórców
 • Game: A complete playing experience to be used in Minetest; such as a game or sandbox or similar=• Gra: Kompletny doświadczenie do wykorzystania w Minetest; takie jak gry, piaskownice i podobne
 • Mod: A single subsystem which adds or modifies functionality; is the basic building block of games and can be used to further enhance or modify them=• Mod: Pojedynczy system, który dodaje, lub modyfikuje funkcjonalność; jest podstawowym blokiem budowalnym gier i może być wykorzystywany do dalszego urozmaicania i modyfikowania ich
@@ -448,7 +448,7 @@ You can view your current position in the debug screen (open with [F5]).=Możesz
 
 # MCL2 extensions
 Creative Mode=Tryb kreatywny
-Enabling Creative Mode in MineClone 2 applies the following changes:=Włączenie trybu kreatywnego w MineClone 2 aplikuje następujące zmiany:
+Enabling Creative Mode in VoxeLibre applies the following changes:=Włączenie trybu kreatywnego w VoxeLibre aplikuje następujące zmiany:
 • You keep the things you've placed=• Nie tracisz postawionych rzeczy
 • Creative inventory is available to obtain most items easily=• Kreatywny ekwipunek jest dostępny, który pozwala łatwo zdobywać przedmioty
 • Hand breaks all default blocks instantly=• Ręka niszczy wszystkie domyślne bloki natychmiastowo

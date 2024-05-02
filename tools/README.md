@@ -1,10 +1,10 @@
-# MineClone 2 Tools
-This directory is for tools and scripts for MineClone 2.
+# VoxeLibre Tools
+This directory is for tools and scripts for VoxeLibre.
 Currently, the only tool is Texture Converter.
 
 ## Texture Converter (EXPERIMENTAL)
 This is a Python script which converts a resource pack for Minecraft to
-a texture pack for Minetest so it can be used with MineClone 2.
+a texture pack for Minetest so it can be used with VoxeLibre.
 
 **WARNING**: This script is currently incomplete, not all textures will be
 converted. Some texture conversions are even buggy!
@@ -14,7 +14,7 @@ will be required afterwards.
 
 Modes of operation:
 - Can create a Minetest texture pack (default)
-- Can update the MineClone 2 textures
+- Can update the VoxeLibre textures
 
 Requirements:
 - Know how to use the console
@@ -29,7 +29,7 @@ Usage:
   any other Minetest texture pack
 
 ## Luacheck Globals Generators
-This is a Python script which list every single global tables in mineclone2 source code.
+This is a Python script which list every single global tables in VoxeLibre source code.
 It outputs a list to be used in luacheck conf files. 
 
 Modes of operation:

@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 doc.add_entry("advanced", "creative", {
 	name = S("Creative Mode"),
 	data = { text =
-S("Enabling Creative Mode in MineClone 2 applies the following changes:").."\n\n"..
+S("Enabling Creative Mode in VoxeLibre applies the following changes:").."\n\n"..
 
 S("• You keep the things you've placed").."\n"..
 S("• Creative inventory is available to obtain most items easily").."\n"..
