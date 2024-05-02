@@ -8,36 +8,60 @@ local S = minetest.get_translator(minetest.get_current_modname())
 -- Function to allow harvesting honey and honeycomb from the beehive and bee nest.
 local honey_harvest = function(pos, node, player, itemstack, pointed_thing)
 	local inv = player:get_inventory()
-	local shears = minetest.get_item_group(player:get_wielded_item():get_name(), "shears") > 0
-	local bottle = player:get_wielded_item():get_name() == "mcl_potions:glass_bottle"
-	local beehive = "mcl_beehives:beehive"
+	local item = player:get_wielded_item()
 	local is_creative = minetest.is_creative_enabled(player:get_player_name())
 
+	-- Determine the node name to replace the beehive with if harvest is successful
+	local beehive = "mcl_beehives:beehive"
 	if node.name == "mcl_beehives:beehive_5" then
 		beehive = "mcl_beehives:beehive"
 	elseif node.name == "mcl_beehives:bee_nest_5" then
 		beehive = "mcl_beehives:bee_nest"
 	end
 
+	-- Check for a campfire within 5 blocks below the beehive
 	local campfire_area = vector.offset(pos, 0, -5, 0)
 	local campfire = minetest.find_nodes_in_area(pos, campfire_area, "group:lit_campfire")
 
-	if bottle then
+	-- Player used a bottle
+	if item:get_name() == "mcl_potions:glass_bottle" then
 		local honey = "mcl_honey:honey_bottle"
 		if inv:room_for_item("main", honey) then
+			-- Replace the beehive with the version without honey or comb
 			node.name = beehive
 			minetest.set_node(pos, node)
+
+			-- Give honey bottle and take the empty bottle if survival mode
 			inv:add_item("main", "mcl_honey:honey_bottle")
 			if not is_creative then
 				itemstack:take_item()
 			end
-			if not campfire[1] then mcl_util.deal_damage(player, 10) else awards.unlock(player:get_player_name(), "mcl:bee_our_guest") end
+
+			-- Hurt the player if there was no campfire, or give award if there was
+			if not campfire[1] then
+				mcl_util.deal_damage(player, 10)
+			else
+				awards.unlock(player:get_player_name(), "mcl:bee_our_guest")
+			end
 		end
-	elseif shears then
+
+	-- Player used shears
+	elseif minetest.get_item_group(item:get_name(), "shears") > 0 then
+		-- Give honeycomb
 		minetest.add_item(pos, "mcl_honey:honeycomb 3")
+
+		-- Replace the beehive with the version without honey or comb
 		node.name = beehive
 		minetest.set_node(pos, node)
+
+		-- Hurt the player if there was no campfire
 		if not campfire[1] then mcl_util.deal_damage(player, 10) end
+
+		-- Add wear to the shears
+		if not is_creative then
+			mcl_util.use_item_durability(item, 1)
+			return item
+		end
 	end
 end
 
