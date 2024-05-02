@@ -1,4 +1,4 @@
-mcl_fire: Fire mod for MineClone 2
+mcl_fire: Fire mod for VoxeLibre
 Based on fire from Minetest Game
 ==================================
 

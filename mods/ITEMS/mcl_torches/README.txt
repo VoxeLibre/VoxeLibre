@@ -20,7 +20,7 @@ nodes. Conversion from the wallmounted style is done through an LBM.
 Torches is meant for minetest-0.4.14, and does not directly support
 older minetest releases. You'll need a recent git, or nightly build.
 
-Changes for MineClone:
+Changes for VoxeLibre:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Torch does not generate light when wielding
 - Torch drops when near water

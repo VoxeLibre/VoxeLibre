@@ -1,6 +1,6 @@
 MCL_Villages:
 ============================
-A fork of Rochambeau's "Settlements" mod converted for use in MineClone2.
+A fork of Rochambeau's "Settlements" mod converted for use in VoxeLibre.
 
 --------------
 Using the mod:
@@ -16,7 +16,7 @@ MCL2 Credits:
 Code forked from: https://github.com/MysticTempest/settlements/tree/mcl_villages
 	Commit: e24b4be
 ================================================================================
-Basic conversion of Settlements mod for compatibility with MineClone2, plus new schematics: MysticTempest
+Basic conversion of Settlements mod for compatibility with VoxeLibre, plus new schematics: MysticTempest
 
 Seed-based Village Generation, multi-threading, bugfixes: kay27
 
@@ -40,6 +40,6 @@ Credits:
 --------------
 This mod is based on "ruins" by BlockMen
 
-Completely new schematics for MineClone2:
+Completely new schematics for VoxeLibre:
 MysticTempest - CC-BY-SA 4.0
 

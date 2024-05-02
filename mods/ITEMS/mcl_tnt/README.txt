@@ -1,5 +1,5 @@
 === TNT mod for Minetest ===
-by PilzAdam. HEAVILY modified for MineClone 2.
+by PilzAdam. HEAVILY modified for VoxeLibre.
 
 Introduction:
 This mod adds TNT. TNT is a tool to help the player in mining.

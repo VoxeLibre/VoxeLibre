@@ -1,7 +1,7 @@
 ===FARMING MOD for MINETEST-C55===
 by PilzAdam
 
-Modified heavily by MineClone 2 Dev Team. 
+Modified heavily by VoxeLibre Dev Team. 
 
 Introduction: 
 This mod adds farming to Minetest.

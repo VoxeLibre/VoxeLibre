@@ -41,4 +41,4 @@ https://git.minetest.land/MineClone2/MineClone2
 
 ---
 NOTE: This MODule requires Glow Squids in order for all features to work 100% correctly. Glow Squids are currently
-in review by the MineClone 2 Team, and should be available soon after this initial release of the new signs.
+in review by the VoxeLibre Team, and should be available soon after this initial release of the new signs.

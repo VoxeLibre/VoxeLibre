@@ -8,4 +8,4 @@ Lever meshes created by Gerold55.
 Jeija and Wuzzy.
 
 ## Textures
-(See main README file of MineClone 2).
+See main README file of VoxeLibre.
