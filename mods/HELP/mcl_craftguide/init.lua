@@ -106,6 +106,31 @@ local item_lists = {
 	"craftpreview",
 }
 
+local function init_data(name)
+	player_data[name] = {
+		filter  = "",
+		pagenum = 1,
+		iX      = sfinv_only and 8 or DEFAULT_SIZE,
+		items   = init_items,
+		items_raw = init_items,
+		lang_code = M.get_player_information(name).lang_code or 'en',
+	}
+end
+local function get_player_data(name)
+	-- If the data alrady exists, use it
+	local data = player_data[name]
+	if data then return data end
+
+	-- Initialize player data if it doesn't exist
+	init_data(name)
+	local player = minetest.get_player_by_name(name)
+	local meta = player:get_meta()
+	local data = player_data[name]
+
+	data.inv_items = deserialize(meta:get_string("inv_items")) or {}
+	return data
+end
+
 local function table_merge(t, t2)
 	t, t2 = t or {}, t2 or {}
 	local c = #t
@@ -624,7 +649,7 @@ local function get_recipe_fs(data, iY)
 end
 
 local function make_formspec(name)
-	local data = player_data[name]
+	local data = get_player_data(name)
 	local iY = sfinv_only and 4 or data.iX - 5
 	local ipp = data.iX * iY
 
@@ -831,17 +856,6 @@ local function get_inv_items(player)
 	return inv_items
 end
 
-local function init_data(name)
-	player_data[name] = {
-		filter  = "",
-		pagenum = 1,
-		iX      = sfinv_only and 8 or DEFAULT_SIZE,
-		items   = init_items,
-		items_raw = init_items,
-		lang_code = M.get_player_information(name).lang_code or 'en',
-	}
-end
-
 local function reset_data(data)
 	data.filter      = ""
 	data.pagenum     = 1
@@ -877,7 +891,7 @@ end
 
 local function on_receive_fields(player, fields)
 	local name = player:get_player_name()
-	local data = player_data[name]
+	local data = get_player_data(name)
 
 	for elem_name, def in pairs(formspec_elements) do
 		if fields[elem_name] and def.action then
@@ -981,7 +995,7 @@ if sfinv_only then
 		on_enter = function(self, player, context)
 			if next(recipe_filters) then
 				local name = player:get_player_name()
-				local data = player_data[name]
+				local data = get_player_data(name)
 
 				data.items_raw = get_filtered_items(player)
 				search(data)
@@ -1005,7 +1019,7 @@ else
 		local name = user:get_player_name()
 
 		if next(recipe_filters) then
-			local data = player_data[name]
+			local data = get_player_data(name)
 			data.items_raw = get_filtered_items(user)
 			search(data)
 		end
@@ -1051,7 +1065,7 @@ if progressive_mode then
 
 	local function progressive_filter(recipes, player)
 		local name = player:get_player_name()
-		local data = player_data[name]
+		local data = get_player_data(name)
 
 		if #data.inv_items == 0 then
 			return {}
@@ -1076,7 +1090,7 @@ if progressive_mode then
 		for i = 1, #players do
 			local player = players[i]
 			local name   = player:get_player_name()
-			local data   = player_data[name]
+			local data   = get_player_data(name)
 			local inv_items = get_inv_items(player)
 			local diff      = table_diff(inv_items, data.inv_items)
 
@@ -1095,12 +1109,7 @@ if progressive_mode then
 	mcl_craftguide.add_recipe_filter("Default progressive filter", progressive_filter)
 
 	M.register_on_joinplayer(function(player)
-		local name = player:get_player_name()
-		init_data(name)
-		local meta = player:get_meta()
-		local data = player_data[name]
-
-		data.inv_items = deserialize(meta:get_string("inv_items")) or {}
+		get_player_data(player:get_player_name())
 	end)
 
 	local function save_meta(player)
@@ -1145,7 +1154,7 @@ end
 function mcl_craftguide.show(name)
 	local player = get_player_by_name(name)
 	if next(recipe_filters) then
-		local data = player_data[name]
+		local data = get_player_data(name)
 		data.items_raw = get_filtered_items(player)
 		search(data)
 	end

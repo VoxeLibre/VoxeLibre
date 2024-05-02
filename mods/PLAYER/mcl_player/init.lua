@@ -38,9 +38,19 @@ local player_sneak = {}
 local player_visible = {}
 mcl_player.player_attached = {}
 
+local function get_player_textures(name)
+	local textures = player_textures[name]
+	if textures then return textures end
+
+	local textures = { "character.png", "blank.png", "blank.png" }
+	player_textures[name] = textures
+	return textures
+
+end
+
 function mcl_player.player_get_animation(player)
 	local name = player:get_player_name()
-	local textures = player_textures[name]
+	local textures = get_player_textures(name)
 
 	if not player_visible[name] then
 		textures = table.copy(textures)
@@ -63,7 +73,7 @@ end
 
 local function update_player_textures(player)
 	local name = player:get_player_name()
-	local textures = player_textures[name]
+	local textures = get_player_textures(name)
 
 	if not player_visible[name] then
 		textures = table.copy(textures)
@@ -125,18 +135,21 @@ end
 
 function mcl_player.player_set_skin(player, texture)
 	local name = player:get_player_name()
-	player_textures[name][1] = texture
+	local textures = get_player_textures(name)
+	textures[1] = texture
 	update_player_textures(player)
 end
 
 function mcl_player.player_get_skin(player)
 	local name = player:get_player_name()
-	return player_textures[name][1]
+	local textures = get_player_textures(name)
+	return textures[1]
 end
 
 function mcl_player.player_set_armor(player, texture)
 	local name = player:get_player_name()
-	player_textures[name][2] = texture
+	local textures = get_player_textures(name)
+	textures[2] = texture
 	update_player_textures(player)
 end
 
@@ -151,7 +164,7 @@ function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
 	local name = player:get_player_name()
 	local model = player_model[name]
 	local anim = models[model].animations[player_anim[name]]
-	local textures = player_textures[name]
+	local textures = get_player_textures(name)
 	if not player_visible[name] then
 		textures = table.copy(textures)
 		textures[1] = "blank.png"
@@ -179,7 +192,7 @@ minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	mcl_player.player_attached[name] = false
 	player_visible[name] = true
-	player_textures[name] = { "character.png", "blank.png", "blank.png" }
+	get_player_textures(name)
 
 	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
 -- 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>

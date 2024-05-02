@@ -59,6 +59,50 @@ mcl_skins = {
 	player_formspecs = {},
 }
 
+local player_skins = mcl_skins.player_skins
+
+local function get_player_skins(player)
+	local player_skins = player_skins[player]
+	if player_skins then return player_skins end
+
+	local skin = player:get_meta():get_string("mcl_skins:skin")
+	if skin then
+		skin = minetest.deserialize(skin)
+	end
+	if skin then
+		if not mcl_skins.texture_to_simple_skin[skin.simple_skins_id] then
+			skin.simple_skins_id = nil
+		end
+
+		mcl_skins.player_skins[player] = skin
+	else
+		if math.random() > 0.5 then
+			skin = table.copy(mcl_skins.template1)
+		else
+			skin = table.copy(mcl_skins.template2)
+		end
+		mcl_skins.player_skins[player] = skin
+	end
+
+	mcl_skins.player_formspecs[player] = {
+		active_tab = "skin",
+		page_num = 1
+	}
+
+	if #mcl_skins.simple_skins > 0 then
+		local skin_id = tonumber(player:get_meta():get_string("mcl_skins:skin_id"))
+		if skin_id and mcl_skins.simple_skins[skin_id] then
+			local texture = mcl_skins.simple_skins[skin_id].texture
+			local player_skins = get_player_skins(player)
+			player_skins.simple_skins_id = texture
+		end
+	end
+	mcl_skins.save(player)
+	mcl_skins.update_player_skin(player)
+
+	return mcl_skins.player_skins[player]
+end
+
 function mcl_skins.register_item(item)
 	assert(mcl_skins[item.type], "Skin item type " .. item.type .. " does not exist.")
 
@@ -160,7 +204,7 @@ function mcl_skins.update_player_skin(player)
 		return
 	end
 
-	local skin = mcl_skins.player_skins[player]
+	local skin = get_player_skins(player)
 	local skinval = mcl_skins.compile_skin(skin)
 
 	if not skin.cape then skin.cape = "blank.png" end
@@ -186,39 +230,7 @@ end
 
 -- Load player skin on join
 minetest.register_on_joinplayer(function(player)
-	local skin = player:get_meta():get_string("mcl_skins:skin")
-	if skin then
-		skin = minetest.deserialize(skin)
-	end
-	if skin then
-		if not mcl_skins.texture_to_simple_skin[skin.simple_skins_id] then
-			skin.simple_skins_id = nil
-		end
-
-		mcl_skins.player_skins[player] = skin
-	else
-		if math.random() > 0.5 then
-			skin = table.copy(mcl_skins.template1)
-		else
-			skin = table.copy(mcl_skins.template2)
-		end
-		mcl_skins.player_skins[player] = skin
-	end
-
-	mcl_skins.player_formspecs[player] = {
-		active_tab = "skin",
-		page_num = 1
-	}
-
-	if #mcl_skins.simple_skins > 0 then
-		local skin_id = tonumber(player:get_meta():get_string("mcl_skins:skin_id"))
-		if skin_id and mcl_skins.simple_skins[skin_id] then
-			local texture = mcl_skins.simple_skins[skin_id].texture
-			mcl_skins.player_skins[player].simple_skins_id = texture
-		end
-	end
-	mcl_skins.save(player)
-	mcl_skins.update_player_skin(player)
+	get_player_skins(player)
 end)
 
 minetest.register_on_leaveplayer(function(player)
@@ -245,7 +257,7 @@ end
 
 function mcl_skins.show_formspec(player, active_tab, page_num)
 	local formspec_data = mcl_skins.player_formspecs[player]
-	local skin = mcl_skins.player_skins[player]
+	local skin = get_player_skins(player)
 	formspec_data.active_tab = active_tab
 
 	local page_count = calculate_page_count(active_tab, player)
@@ -555,7 +567,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_skins.show_formspec(player, active_tab, page_num)
 		return true
 	elseif fields.nocape then
-		mcl_skins.player_skins[player].cape = "blank.png"
+		local player_skins = get_player_skins(player)
+		player_skins.cape = "blank.png"
 		mcl_skins.update_player_skin(player)
 		mcl_armor.update(player) --update elytra cape
 		mcl_skins.show_formspec(player, active_tab, page_num)
@@ -564,7 +577,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		for cape_index = ((page_num - 1) * 5) + 1, math.min(#mcl_skins.cape, page_num * 5) do
 			local cape = mcl_skins.cape[cape_index]
 			if fields[cape.name] then
-				mcl_skins.player_skins[player].cape = cape.mask -- the actual overlay image
+				local player_skins = get_player_skins(player)
+				player_skins.cape = cape.mask -- the actual overlay image
 				mcl_skins.update_player_skin(player)
 				mcl_armor.update(player) --update elytra cape
 				mcl_skins.show_formspec(player, active_tab, page_num)
@@ -580,7 +594,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 	end
 
-	local skin = mcl_skins.player_skins[player]
+	local skin = get_player_skins(player)
 	if not skin then return true end
 
 	if fields.next_page then

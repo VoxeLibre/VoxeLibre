@@ -16,19 +16,31 @@ local function offhand_get_count(player)
 	return mcl_offhand.get_offhand(player):get_count()
 end
 
-minetest.register_on_joinplayer(function(player, last_login)
-	mcl_offhand[player] = {
+local function get_offhand(player)
+	-- Get offhand data if it already exists
+	local offhand = mcl_offhand[player]
+	if offhand then return offhand end
+
+	-- Otherwise initialize it
+	offhand = {
 		hud = {},
 		last_wear = offhand_get_wear(player),
 		last_count = offhand_get_count(player),
 	}
+	mcl_offhand[player] = offhand
+	return offhand
+end
+
+minetest.register_on_joinplayer(function(player, last_login)
+	get_offhand(player)
 end)
 
 local function remove_hud(player, hud)
-	local offhand_hud = mcl_offhand[player].hud[hud]
+	local offhand = get_offhand(player)
+	local offhand_hud = offhand.hud[hud]
 	if offhand_hud then
 		player:hud_remove(offhand_hud)
-		mcl_offhand[player].hud[hud] = nil
+		offhand.hud[hud] = nil
 	end
 end
 
@@ -48,7 +60,8 @@ local function update_wear_bar(player, itemstack)
 	else
 		color = {255, 511 - wear_i, 0}
 	end
-	local wear_bar = mcl_offhand[player].hud.wear_bar
+	local offhand = get_offhand(player)
+	local wear_bar = offhand.hud.wear_bar
 	player:hud_change(wear_bar, "text", "mcl_wear_bar.png^[colorize:#" .. rgb_to_hex(color[1], color[2], color[3]))
 	player:hud_change(wear_bar, "scale", {x = 40 * wear_bar_percent, y = 3})
 	player:hud_change(wear_bar, "offset", {x = -320 - (20 - player:hud_get(wear_bar).scale.x / 2), y = -13})
@@ -58,7 +71,8 @@ minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local itemstack = mcl_offhand.get_offhand(player)
 		local offhand_item = itemstack:get_name()
-		local offhand_hud = mcl_offhand[player].hud
+		local offhand = get_offhand(player)
+		local offhand_hud = offhand.hud
 		local item = minetest.registered_items[offhand_item]
 		if offhand_item ~= "" and item then
 			local item_texture = item.inventory_image .. "^[resize:" .. max_offhand_px .. "x" .. max_offhand_px
@@ -145,7 +159,8 @@ minetest.register_globalstep(function(dtime)
 			end
 
 		elseif offhand_hud.slot then
-			for index, _ in pairs(mcl_offhand[player].hud) do
+			local offhand = get_offhand(player)
+			for index, _ in pairs(offhand.hud) do
 				remove_hud(player, index)
 			end
 		end

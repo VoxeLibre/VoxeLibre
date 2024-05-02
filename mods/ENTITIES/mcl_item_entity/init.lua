@@ -6,9 +6,6 @@ local pool = {}
 
 local tick = false
 
-
-
-
 minetest.register_on_joinplayer(function(player)
 	pool[player:get_player_name()] = 0
 end)
@@ -172,17 +169,17 @@ minetest.register_globalstep(function(_)
 
 			local pos = player:get_pos()
 
-			if tick == true and pool[name] > 0 then
+			if tick == true and (pool[name] or 0) > 0 then
 				minetest.sound_play("item_drop_pickup", {
 					pos = pos,
 					gain = 0.3,
 					max_hear_distance = 16,
 					pitch = math.random(70, 110) / 100
 				})
-				if pool[name] > 6 then
+				if (pool[name] or 0) > 6 then
 					pool[name] = 6
 				else
-					pool[name] = pool[name] - 1
+					pool[name] = (pool[name] or 1) - 1
 				end
 			end
 
