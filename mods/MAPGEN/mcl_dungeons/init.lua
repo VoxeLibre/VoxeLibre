@@ -406,13 +406,16 @@ local function dungeons_nodes(minp, maxp, blockseed)
 	local pr = PseudoRandom(blockseed)
 	for a=1, attempts do
 		local dim = dungeonsizes[pr:next(1, #dungeonsizes)]
-		local x = pr:next(minp.x, maxp.x-dim.x-1)
-		local y = pr:next(ymin  , ymax  -dim.y-1)
-		local z = pr:next(minp.z, maxp.z-dim.z-1)
-		local p1 = {x=x,y=y,z=z}
-		local p2 = {x = x+dim.x+1, y = y+dim.y+1, z = z+dim.z+1}
-		minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
-		emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr})
+
+		if ymin <= ymax - dim.y - 1 then
+			local x = pr:next(minp.x, maxp.x-dim.x-1)
+			local y = pr:next(ymin  , ymax  -dim.y-1)
+			local z = pr:next(minp.z, maxp.z-dim.z-1)
+			local p1 = {x=x,y=y,z=z}
+			local p2 = {x = x+dim.x+1, y = y+dim.y+1, z = z+dim.z+1}
+			minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
+			emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr})
+		end
 	end
 end
 
