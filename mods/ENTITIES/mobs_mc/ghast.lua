@@ -126,13 +126,14 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	end,
 
 	hit_mob = function(self, mob)
+		local name = mob:get_luaentity().name
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 6},
 		}, nil)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, true)
 		local ent = mob:get_luaentity()
-		if not ent or ent.health <= 0 then
+		if (not ent or ent.health <= 0) and self._puncher and name == "mobs_mc:ghast" then
 			awards.unlock(self._puncher:get_player_name(), "mcl:fireball_redir_serv")
 		end
 	end,

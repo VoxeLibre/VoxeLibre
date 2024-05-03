@@ -374,7 +374,7 @@ function mcl_mobs.register_arrow(name, def)
 		rotate = def.rotate,
 		on_punch = def.on_punch or function(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
 			local vel = self.object:get_velocity():length()
-			self.object:set_velocity({x=dir.x * vel, y=dir.y * vel, z=dir.z * vel})
+			self.object:set_velocity(dir * vel)
 			self._puncher = puncher
 		end,
 		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0},
