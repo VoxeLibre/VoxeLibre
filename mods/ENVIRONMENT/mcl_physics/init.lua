@@ -65,19 +65,36 @@ local function apply_node_physics(node, vel, staticdata, entity)
 	local accel = vector.zero()
 
 	-- Friction
-	local friction_scale = node_physics.friction
-	accel = accel + vel * -friction_scale
+	if node.name ~= "air" then
+		local friction_scale = node_physics.friction
+		accel = accel + vel * -friction_scale
+	end
 
 	return vector.zero(), accel
 end
 mod.register_environment_effect(function(pos, vel, staticdata, entity)
+	local a = vector.zero()
+	local v = vector.zero()
+
+	-- Apply node physics for the node we are inside of
 	local pos1_r = vector.round(pos)
-	local v1,a1 = apply_node_physics(minetest.get_node(pos1_r), vel, staticdata, entity)
+	local node1 = minetest.get_node(pos1_r)
+	local v1,a1 = apply_node_physics(node1, vel, staticdata, entity)
+	v = v + v1
+	a = a + a1
 
 	-- TODO: only apply when touching under_node
 	local pos2_r = vector.offset(pos1_r,0,-1,0)
-	local v2,a2 = apply_node_physics(minetest.get_node(pos2_r), vel, staticdata, entity)
+	local node2 = minetest.get_node(pos2_r)
+	local v2,a2 = apply_node_physics(node2, vel, staticdata, entity)
+	v = v + v2
+	a = a + a2
 
-	return (v1 + v2), (a1 + a2)
+	-- Male speeds of less than 1/100 block/second count as zero
+	if vector.length(v) < 0.01 then
+		v = nil
+	end
+
+	return v,a
 end)
 
