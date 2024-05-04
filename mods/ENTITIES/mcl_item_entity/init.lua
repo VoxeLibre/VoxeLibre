@@ -1002,7 +1002,7 @@ minetest.register_entity(":__builtin:item", {
 
 		if push_out_item_stuck_in_solid(self, dtime, p, def, is_in_water) then return end
 
-		mcl_physics.apply_entity_environmental_physics(self)
+		vl_physics.apply_entity_environmental_physics(self)
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
 		local nn = minetest.get_node(vector.offset(p, 0, -0.5, 0)).name

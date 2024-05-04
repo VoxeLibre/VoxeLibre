@@ -1,4 +1,4 @@
-local mod = mcl_physics
+local mod = vl_physics
 
 local registered_environment_effects = {}
 
@@ -35,12 +35,12 @@ local DEFAULT_ENTITY_PHYSICS = {
 function mod.apply_entity_environmental_physics(self, data)
 	data = data or {}
 
-	local physics = self._mcl_physics or DEFAULT_ENTITY_PHYSICS
+	local physics = self._vl_physics or DEFAULT_ENTITY_PHYSICS
 	local mass = physics.mass or DEFAULT_ENTITY_PHYSICS.mass
 
 	local pos = self.object:get_pos()
 	local vel = self.object:get_velocity()
-	local new_velocity,new_acceleration = mcl_physics.get_environment_effect(pos, vel, data, mass, self)
+	local new_velocity,new_acceleration = vl_physics.get_environment_effect(pos, vel, data, mass, self)
 
 	--if new_velocity then print("new_velocity="..tostring(new_velocity)) end
 	--if new_acceleration then print("new_acceleration="..tostring(new_acceleration)) end

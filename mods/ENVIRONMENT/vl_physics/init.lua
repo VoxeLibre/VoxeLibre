@@ -1,7 +1,7 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local mod = {}
-mcl_physics = mod
+vl_physics = mod
 
 dofile(modpath.."/api.lua")
 
@@ -54,7 +54,7 @@ local DEFAULT_NODE_PHYSICS = {
 }
 local function apply_node_physics(node, vel, staticdata, entity)
 	local node_def = minetest.registered_nodes[node.name] or {}
-	local node_physics = node_def._mcl_physics or DEFAULT_NODE_PHYSICS
+	local node_physics = node_def._vl_physics or DEFAULT_NODE_PHYSICS
 
 	local node_physics_effect = node_physics.effect
 	if node_physics_effect then
