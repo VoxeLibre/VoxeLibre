@@ -107,7 +107,7 @@ local function xp_step(self, dtime)
 	end
 
 	-- Slide on slippery nodes
-	mcl_physics.apply_entity_environmental_physics(self)
+	vl_physics.apply_entity_environmental_physics(self)
 end
 
 minetest.register_entity("mcl_experience:orb", {
