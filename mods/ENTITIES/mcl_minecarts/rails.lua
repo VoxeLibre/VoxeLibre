@@ -374,9 +374,12 @@ local CURVY_RAILS_MAP = {
 	["mcl_minecarts:rail"] = "mcl_minecarts:rail_v2",
 }
 for old,new in pairs(CURVY_RAILS_MAP) do
+	nodenames = mcl_util.table_keys(STRAIGHT_RAILS_MAP),
 	minetest.register_node(old, {
-		inventory_image = minetest.registered_nodes[new].inventory_image,
-		groups = { rail = 1 }
+		drawtype = "raillike",
+		inventory_image = new_def.inventory_image,
+		groups = { rail = 1 },
+		tiles = { new_def.tiles[1], new_def.tiles[1], new_def.tiles[1], new_def.tiles[1] },
 	})
 end
 minetest.register_lbm({
@@ -399,9 +402,12 @@ local STRAIGHT_RAILS_MAP ={
 	["mcl_minecarts:detector_rail_on"] = "mcl_minecarts:detector_rail_v2_on",
 }
 for old,new in pairs(STRAIGHT_RAILS_MAP) do
+	local new_def = minetest.registered_nodes[new]
 	minetest.register_node(old, {
-		inventory_image = minetest.registered_nodes[new].inventory_image,
-		groups = { rail = 1 }
+		drawtype = "raillike",
+		inventory_image = new_def.inventory_image,
+		groups = { rail = 1 },
+		tiles = { new_def.tiles[1], new_def.tiles[1], new_def.tiles[1], new_def.tiles[1] },
 	})
 end
 local TRANSLATE_RAILS_MAP = table.copy(STRAIGHT_RAILS_MAP)
@@ -410,6 +416,7 @@ table_merge(TRANSLATE_RAILS_MAP, CURVY_RAILS_MAP)
 minetest.register_lbm({
 	name = "mcl_minecarts:update_legacy_straight_rails",
 	nodenames = mcl_util.table_keys(STRAIGHT_RAILS_MAP),
+	run_at_every_load = true,
 	action = function(pos, node)
 		node.name = STRAIGHT_RAILS_MAP[node.name]
 		if node.name then
