@@ -936,6 +936,9 @@ minetest.register_node("mcl_core:ice", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	_mcl_silk_touch_drop = true,
+	_mcl_physics = {
+		friction = 0.4,
+	},
 })
 
 minetest.register_node("mcl_core:packed_ice", {
@@ -950,6 +953,9 @@ minetest.register_node("mcl_core:packed_ice", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	_mcl_silk_touch_drop = true,
+	_mcl_physics = {
+		friction = 0.15,
+	},
 })
 
 -- Frosted Ice (4 nodes)
