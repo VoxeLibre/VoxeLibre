@@ -61,7 +61,7 @@ local function detach_driver(self)
 			player:moveto(new_pos, false)
 		end, driver_name, new_pos)
 
-		player:set_eye_offset(vector.new(0,0,0),vector.new(0,0,0))
+		player:set_eye_offset(vector.zero(),vector.zero())
 		mcl_player.player_set_animation(player, "stand" , 30)
 	--else
 		--print("No player object found for "..driver_name)

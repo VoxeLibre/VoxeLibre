@@ -11,6 +11,10 @@ mod.RAIL_GROUPS = {
 local table_merge = mcl_util.table_merge
 local check_connection_rules = mod.check_connection_rules
 local update_rail_connections = mod.update_rail_connections
+local minetest_fourdir_to_dir = minetest.fourdir_to_dir
+local minetest_dir_to_fourdir = minetest.dir_to_fourdir
+local vector_offset = vector.offset
+local vector_equals = vector.equals
 local north = mod.north
 local south = mod.south
 local east = mod.east
@@ -18,16 +22,17 @@ local west = mod.west
 
 --- Rail direction Handleres
 local function rail_dir_straight(pos, dir, node)
-	dir = vector.new(dir.x, 0, dir.z)
+	dir = vector.new(dir)
+	dir.y = 0
 
 	if node.param2 == 0 or node.param2 == 2 then
-		if vector.equals(dir, north) then
+		if vector_equals(dir, north) then
 			return north
 		else
 			return south
 		end
 	else
-		if vector.equals(dir,east) then
+		if vector_equals(dir,east) then
 			return east
 		else
 			return west
@@ -35,11 +40,11 @@ local function rail_dir_straight(pos, dir, node)
 	end
 end
 local function rail_dir_sloped(pos, dir, node)
-	local uphill = minetest.fourdir_to_dir(node.param2)
-	local downhill = minetest.fourdir_to_dir((node.param2+2)%4)
-	local up_uphill = vector.offset(uphill,0,1,0)
+	local uphill = minetest_fourdir_to_dir(node.param2)
+	local downhill = minetest_fourdir_to_dir((node.param2+2)%4)
+	local up_uphill = vector_offset(uphill,0,1,0)
 
-	if vector.equals(dir, uphill) or vector.equals(dir, up_uphill) then
+	if vector_equals(dir, uphill) or vector_equals(dir, up_uphill) then
 		return up_uphill
 	else
 		return downhill
@@ -56,10 +61,11 @@ end
 -- a rail node in the direction of the cardinal. This function takes node
 -- rotations into account.
 local function rail_dir_from_table(pos, dir, node, dirs)
-	dir = vector.new(dir.x, 0, dir.z)
-	local dir_fourdir = (minetest.dir_to_fourdir(dir) - node.param2 + 4) % 4
+	dir = vector.new(dir)
+	dir.y = 0
+	local dir_fourdir = (minetest_dir_to_fourdir(dir) - node.param2 + 4) % 4
 	local new_fourdir = (dirs[dir_fourdir] + node.param2) % 4
-	return minetest.fourdir_to_dir(new_fourdir)
+	return minetest_fourdir_to_dir(new_fourdir)
 end
 
 local CURVE_RAIL_DIRS = { [0] = 1, 1, 2, 2, }
@@ -76,7 +82,8 @@ local function rail_dir_tee_on(pos, dir, node)
 end
 
 local function rail_dir_cross(pos, dir, node)
-	dir = vector.new(dir.x, 0, dir.z)
+	dir = vector.new(dir)
+	dir.y = 0
 
 	-- Always continue in the same direction. No direction changes allowed
 	return dir
@@ -212,7 +219,6 @@ function mod.register_straight_rail(base_name, tiles, def)
 
 	-- Sloped variant
 	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(sloped_def),{
-		description = S("Sloped Rail"), -- Temporary name to make debugging easier
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_sloped,
 		},
@@ -268,9 +274,6 @@ function mod.register_curves_rail(base_name, tiles, def)
 	-- Tee variants
 	mod.register_rail(base_name.."_tee_off", table_merge(table.copy(base_def),{
 		tiles = { tiles[3] },
-		groups = {
-			not_in_creative_inventory = 1,
-		},
 		mesecons = {
 			effector = {
 				action_on = function(pos, node)
@@ -340,7 +343,7 @@ function mod.register_rail_sloped(itemstring, def)
 end
 
 -- Redstone rules
-local rail_rules_long =
+mod.rail_rules_long =
 {{x=-1,  y= 0, z= 0, spread=true},
  {x= 1,  y= 0, z= 0, spread=true},
  {x= 0,  y=-1, z= 0, spread=true},
@@ -357,232 +360,10 @@ local rail_rules_long =
  {x= 0, y= 1, z=-1},
  {x= 0, y=-1, z=-1}}
 
-local rail_rules_short = mesecon.rules.pplate
-
--- Normal rail
-mod.register_curves_rail("mcl_minecarts:rail_v2", {
-	"default_rail.png", 
-	"default_rail_curved.png",
-	"default_rail_t_junction.png",
-	"default_rail_t_junction_on.png",
-	"default_rail_crossing.png"
-},{
-	description = S("Rail"),
-	_tt_help = S("Track for minecarts"),
-	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
-	_doc_items_usagehelp = railuse,
-	craft = {
-		output = "mcl_minecarts:rail_v2 16",
-		recipe = {
-			{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
-			{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
-			{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
-		}
-	},
-})
-
--- Powered rail (off = brake mode)
-mod.register_straight_rail("mcl_minecarts:golden_rail_v2",{ "mcl_minecarts_rail_golden.png" },{
-	description = S("Powered Rail"),
-	_tt_help = S("Track for minecarts").."\n"..S("Speed up when powered, slow down when not powered"),
-	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts."),
-	_doc_items_usagehelp = railuse .. "\n" .. S("Without redstone power, the rail will brake minecarts. To make this rail accelerate"..
-		" minecarts, power it with redstone power."),
-	_doc_items_create_entry = false,
-	_rail_acceleration = -3,
-	_max_acceleration_velocity = 8,
-	mesecons = {
-		conductor = {
-			state = mesecon.state.off,
-			offstate = "mcl_minecarts:golden_rail_v2",
-			onstate  = "mcl_minecarts:golden_rail_v2_on",
-			rules = rail_rules_long,
-		},
-	},
-	mesecons_sloped = {
-		conductor = {
-			state = mesecon.state.off,
-			offstate = "mcl_minecarts:golden_rail_v2_sloepd",
-			onstate  = "mcl_minecarts:golden_rail_v2_on_sloped",
-			rules = rail_rules_long,
-		},
-	},
-	drop = "mcl_minecarts:golden_rail_v2",
-	craft = {
-		output = "mcl_minecarts:golden_rail_v2 6",
-		recipe = {
-			{"mcl_core:gold_ingot", "", "mcl_core:gold_ingot"},
-			{"mcl_core:gold_ingot", "mcl_core:stick", "mcl_core:gold_ingot"},
-			{"mcl_core:gold_ingot", "mesecons:redstone", "mcl_core:gold_ingot"},
-		}
-	}
-})
-
--- Powered rail (on = acceleration mode)
-mod.register_straight_rail("mcl_minecarts:golden_rail_v2_on",{ "mcl_minecarts_rail_golden_powered.png" },{
-	_doc_items_create_entry = false,
-	_rail_acceleration = 4,
-	_max_acceleration_velocity = 8,
-	groups = {
-		not_in_creative_inventory = 1,
-	},
-	mesecons = {
-		conductor = {
-			state = mesecon.state.on,
-			offstate = "mcl_minecarts:golden_rail_v2",
-			onstate  = "mcl_minecarts:golden_rail_v2_on",
-			rules = rail_rules_long,
-		},
-	},
-	mesecons_sloped = {
-		conductor = {
-			state = mesecon.state.on,
-			offstate = "mcl_minecarts:golden_rail_v2_sloped",
-			onstate  = "mcl_minecarts:golden_rail_v2_on_sloped",
-			rules = rail_rules_long,
-		},
-	},
-	drop = "mcl_minecarts:golden_rail_v2",
-})
-
--- Activator rail (off)
-mod.register_straight_rail("mcl_minecarts:activator_rail_v2", {"mcl_minecarts_rail_activator.png"},{
-	description = S("Activator Rail"),
-	_tt_help = S("Track for minecarts").."\n"..S("Activates minecarts when powered"),
-	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts."),
-	_doc_items_usagehelp = railuse .. "\n" .. S("To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail."),
-	mesecons = {
-		conductor = {
-			state = mesecon.state.off,
-			offstate = "mcl_minecarts:activator_rail_v2",
-			onstate  = "mcl_minecarts:activator_rail_v2_on",
-			rules = rail_rules_long,
-		},
-	},
-	mesecons_sloped = {
-		conductor = {
-			state = mesecon.state.off,
-			offstate = "mcl_minecarts:activator_rail_v2_sloped",
-			onstate  = "mcl_minecarts:activator_rail_v2_on_sloped",
-			rules = rail_rules_long,
-		},
-	},
-	craft = {
-		output = "mcl_minecarts:activator_rail_v2 6",
-		recipe = {
-			{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
-			{"mcl_core:iron_ingot", "mesecons_torch:mesecon_torch_on", "mcl_core:iron_ingot"},
-			{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
-		}
-	},
-})
-
--- Activator rail (on)
-local function activator_rail_action_on(pos, node)
-	local pos2 = { x = pos.x, y =pos.y + 1, z = pos.z }
-	local objs = minetest.get_objects_inside_radius(pos2, 1)
-	for _, o in pairs(objs) do
-		local l = o:get_luaentity()
-		if l and string.sub(l.name, 1, 14) == "mcl_minecarts:" and l.on_activate_by_rail then
-			l:on_activate_by_rail()
-		end
-	end
-end
-mod.register_straight_rail("mcl_minecarts:activator_rail_v2_on", {"mcl_minecarts_rail_activator_powered.png"},{
-	_doc_items_create_entry = false,
-	groups = {
-		not_in_creative_inventory = 1,
-	},
-	mesecons = {
-		conductor = {
-			state = mesecon.state.on,
-			offstate = "mcl_minecarts:activator_rail_v2",
-			onstate  = "mcl_minecarts:activator_rail_v2_on",
-			rules = rail_rules_long,
-		},
-		effector = {
-			-- Activate minecarts
-			action_on = activator_rail_action_on,
-		},
-
-	},
-	mesecons_sloped = {
-		conductor = {
-			state = mesecon.state.on,
-			offstate = "mcl_minecarts:activator_rail_v2_sloped",
-			onstate  = "mcl_minecarts:activator_rail_v2_on_sloped",
-			rules = rail_rules_long,
-		},
-		effector = {
-			-- Activate minecarts
-			action_on = activator_rail_action_on,
-		},
-
-	},
-	_mcl_minecarts_on_enter = function(pos, cart)
-		if cart.on_activate_by_rail then
-			cart:on_activate_by_rail()
-		end
-	end,
-	drop = "mcl_minecarts:activator_rail_v2",
-})
-
--- Detector rail (off)
-mod.register_straight_rail("mcl_minecarts:detector_rail_v2",{"mcl_minecarts_rail_detector.png"},{
-	description = S("Detector Rail"),
-	_tt_help = S("Track for minecarts").."\n"..S("Emits redstone power when a minecart is detected"),
-	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms."),
-	_doc_items_usagehelp = railuse .. "\n" .. S("To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail."),
-	mesecons = {
-		receptor = {
-			state = mesecon.state.off,
-			rules = rail_rules_short,
-		},
-	},
-	_mcl_minecarts_on_enter = function(pos, cart)
-		local node = minetest.get_node(pos)
-
-		local newnode = {
-			name = "mcl_minecarts:detector_rail_v2_on",
-			param2 = node.param2
-		}
-		minetest.swap_node( pos, newnode )
-		mesecon.receptor_on(pos)
-	end,
-	craft = {
-		output = "mcl_minecarts:detector_rail_v2 6",
-		recipe = {
-			{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
-			{"mcl_core:iron_ingot", "mesecons_pressureplates:pressure_plate_stone_off", "mcl_core:iron_ingot"},
-			{"mcl_core:iron_ingot", "mesecons:redstone", "mcl_core:iron_ingot"},
-		}
-	}
-})
-
--- Detector rail (on)
-mod.register_straight_rail("mcl_minecarts:detector_rail_v2_on",{"mcl_minecarts_rail_detector_powered.png"},{
-	groups = {
-		not_in_creative_inventory = 1,
-	},
-	_doc_items_create_entry = false,
-	mesecons = {
-		receptor = {
-			state = mesecon.state.on,
-			rules = rail_rules_short,
-		},
-	},
-	_mcl_minecarts_on_leave = function(pos, cart)
-		local node = minetest.get_node(pos)
-
-		local newnode = {
-			name = "mcl_minecarts:detector_rail",
-			param2 = node.param2
-		}
-		minetest.swap_node( pos, newnode )
-		mesecon.receptor_off(pos)
-	end,
-	drop = "mcl_minecarts:detector_rail_v2",
-})
+dofile(modpath.."/rails/normal.lua")
+dofile(modpath.."/rails/activator.lua")
+dofile(modpath.."/rails/detector.lua")
+dofile(modpath.."/rails/powered.lua")
 
 -- Aliases
 if minetest.get_modpath("doc") then
@@ -664,3 +445,4 @@ minetest.register_on_joinplayer(function(player)
 		end
 	end
 end)
+

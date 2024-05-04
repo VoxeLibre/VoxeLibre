@@ -164,7 +164,7 @@ mod.register_minecart({
 		-- try to pull from containers into our inventory
 		if not self then return end
 		local inv = mcl_entity_invs.load_inv(self,5)
-		local above_pos = pos + vector.new(0,1,0)
+		local above_pos = vector.offset(pos,0,1,0)
 		mcl_util.hopper_pull_to_inventory(inv, 'main', above_pos, pos)
 
 		staticdata.hopper_delay =  (staticdata.hopper_delay or 0) + (1/20)

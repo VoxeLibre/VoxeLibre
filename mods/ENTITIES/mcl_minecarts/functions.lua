@@ -273,7 +273,7 @@ local function update_rail_connections(pos, opt)
 		for i=1,#CONNECTIONS do
 			local dir = CONNECTIONS[i]
 			local higher_rail_pos = vector.offset(pos,dir.x,1,dir.z)
-			local rev_dir = vector.direction(dir,vector.new(0,0,0))
+			local rev_dir = vector.direction(dir,vector.zero())
 			if mcl_minecarts:is_rail(higher_rail_pos) and is_connection(higher_rail_pos, rev_dir) then
 				make_sloped_if_straight(pos, rev_dir)
 			end

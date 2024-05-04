@@ -12,6 +12,8 @@ local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "
 local env_physics
 if minetest.get_modpath("mcl_physics") then
 	env_physics = mcl_physics
+elseif minetest.get_modpath("vl_physics") then
+	env_physics = vl_physics
 end
 local FRICTION = mcl_minecarts.FRICTION
 local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
@@ -226,7 +228,7 @@ local function direction_away_from_players(staticdata)
 	local diff = vector_away_from_players(nil,staticdata)
 	if not diff then return 0 end
 
-	local length = vector.distance(vector.new(0,0,0),diff)
+	local length = vector.distance(vector.zero(),diff)
 	local vec = diff / length
 	local force = vector.dot( vec, vector.normalize(staticdata.dir) )
 
@@ -498,7 +500,7 @@ local function do_detached_movement(self, dtime)
 		env_physics.apply_entity_environmental_physics(self)
 	else
 		-- Simple physics
-		local friction = self.object:get_velocity() or vector.new(0,0,0)
+		local friction = self.object:get_velocity() or vector.zero()
 		friction.y = 0
 
 		local accel = vector.new(0,-9.81,0) -- gravity
@@ -550,8 +552,8 @@ local function do_detached_movement(self, dtime)
 			print("Reattached velocity="..tostring(staticdata.velocity)..", freebody_velocity="..tostring(freebody_velocity))
 
 			-- Clear freebody movement
-			self.object:set_velocity(vector.new(0,0,0))
-			self.object:set_acceleration(vector.new(0,0,0))
+			self.object:set_velocity(vector.zero())
+			self.object:set_acceleration(vector.zero())
 			return
 		end
 	end
