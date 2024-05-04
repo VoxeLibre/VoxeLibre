@@ -107,42 +107,7 @@ local function xp_step(self, dtime)
 	end
 
 	-- Slide on slippery nodes
-	local vel = self.object:get_velocity()
-	local def = node and minetest.registered_nodes[node.name]
-	local is_moving = (def and not def.walkable) or
-		vel.x ~= 0 or vel.y ~= 0 or vel.z ~= 0
-	local is_slippery = false
-
-	if def and def.walkable then
-		local slippery = minetest.get_item_group(node.name, "slippery")
-		is_slippery = slippery ~= 0
-		if is_slippery and (math.abs(vel.x) > 0.2 or math.abs(vel.z) > 0.2) then
-			-- Horizontal deceleration
-			local slip_factor = 4.0 / (slippery + 4)
-			self.object:set_acceleration({
-				x = -vel.x * slip_factor,
-				y = 0,
-				z = -vel.z * slip_factor
-			})
-		elseif vel.y == 0 then
-			is_moving = false
-		end
-	end
-
-	if self.moving_state == is_moving and self.slippery_state == is_slippery then
-		-- Do not update anything until the moving state changes
-		return
-	end
-
-	self.moving_state = is_moving
-	self.slippery_state = is_slippery
-
-	if is_moving then
-		self.object:set_acceleration(gravity)
-	else
-		self.object:set_acceleration({x = 0, y = 0, z = 0})
-		self.object:set_velocity({x = 0, y = 0, z = 0})
-	end
+	mcl_physics.apply_entity_environmental_physics(self)
 end
 
 minetest.register_entity("mcl_experience:orb", {
