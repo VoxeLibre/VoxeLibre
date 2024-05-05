@@ -20,11 +20,11 @@ https://git.minetest.land/MineClone2/MineClone2/src/branch/master/CODE_OF_CONDUC
 -->
 
 <!--
-What version of MineClone2 are you using? We do not provide support for outdated versions of MineClone2.
+What version of VoxeLibre are you using? We do not provide support for outdated versions of VoxeLibre.
 Current latest version is listed here, at the top:
 https://git.minetest.land/MineClone2/MineClone2/tags
 -->
-MineClone2 version:
+VoxeLibre version:
 
 ### What happened?
 Report about the bug! Please send large log snippets as an attachement file.
