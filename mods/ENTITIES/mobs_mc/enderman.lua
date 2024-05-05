@@ -493,6 +493,14 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 	attack_type = "dogfight",
 })
 
+-- compat
+minetest.register_entity("mobs_mc:enderman", {
+	on_activate = function(self, staticdata, dtime)
+		minetest.add_entity(self.object:get_pos(), "mobs_mc:rover", staticdata)
+		self.object:remove()
+	end,
+})
+
 -- End spawn
 mcl_mobs:spawn_specific(
 "mobs_mc:rover",
@@ -697,3 +705,4 @@ mcl_vars.mg_nether_max)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:rover", S("Rover"), "#252525", "#151515", 0)
+minetest.register_alias("mobs_mc:enderman", "mobs_mc:rover")
