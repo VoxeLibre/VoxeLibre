@@ -109,7 +109,7 @@ local psdefs = {{
 	texture = "mcl_portals_particle"..math.random(1, 5)..".png",
 }}
 
-mcl_mobs.register_mob("mobs_mc:enderman", {
+mcl_mobs.register_mob("mobs_mc:rover", {
 	description = S("Rover"),
 	type = "monster",
 	spawn_class = "passive",
@@ -495,7 +495,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 
 -- End spawn
 mcl_mobs:spawn_specific(
-"mobs_mc:enderman",
+"mobs_mc:rover",
 "end",
 "ground",
 {
@@ -515,7 +515,7 @@ mcl_vars.mg_end_min,
 mcl_vars.mg_end_max)
 -- Overworld spawn
 mcl_mobs:spawn_specific(
-"mobs_mc:enderman",
+"mobs_mc:rover",
 "overworld",
 "ground",
 {
@@ -664,7 +664,7 @@ mcl_vars.mg_overworld_max)
 
 -- Nether spawn (rare)
 mcl_mobs:spawn_specific(
-"mobs_mc:enderman",
+"mobs_mc:rover",
 "nether",
 "ground",
 {
@@ -681,7 +681,7 @@ mcl_vars.mg_nether_max)
 
 -- Warped Forest spawn (common)
 mcl_mobs:spawn_specific(
-"mobs_mc:enderman",
+"mobs_mc:rover",
 "nether",
 "ground",
 {
@@ -696,4 +696,4 @@ mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
 -- spawn eggs
-mcl_mobs.register_egg("mobs_mc:enderman", S("Rover"), "#252525", "#151515", 0)
+mcl_mobs.register_egg("mobs_mc:rover", S("Rover"), "#252525", "#151515", 0)

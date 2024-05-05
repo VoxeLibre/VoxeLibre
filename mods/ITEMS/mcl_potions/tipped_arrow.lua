@@ -266,7 +266,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 
 						-- Punch target object but avoid hurting enderman.
 						if lua then
-							if lua.name ~= "mobs_mc:enderman" then
+							if lua.name ~= "mobs_mc:rover" then
 								obj:punch(self.object, 1.0, {
 									full_punch_interval=1.0,
 									damage_groups={fleshy=self._damage},
