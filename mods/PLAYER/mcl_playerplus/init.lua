@@ -179,6 +179,10 @@ minetest.register_globalstep(function(dtime)
 
 		local c_x, c_y = unpack(player_collision(player))
 
+		-- Apply enviornmental physics effects
+		local v,a = vl_physics.get_environment_effect(player:get_pos(), player_velocity, {}, 1, player)
+		if v then player:add_velocity(v) end
+
 		if player_velocity.x + player_velocity.y < .5 and c_x + c_y > 0 then
 			player:add_velocity({x = c_x, y = 0, z = c_y})
 			player_velocity = player:get_velocity() or player:get_player_velocity()
