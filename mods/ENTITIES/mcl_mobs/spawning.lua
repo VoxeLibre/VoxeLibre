@@ -675,6 +675,14 @@ local function get_next_mob_spawn_pos(pos)
 	y_min = math_round(y_min)
 	y_max = math_round(y_max)
 
+	-- Limit total range of check to 32 nodes (maximum of 3 map blocks)
+	if y_max > goal_pos.y + 16 then
+		y_max = goal_pos.y + 16
+	end
+	if y_min < goal_pos.y - 16 then
+		y_min = goal_pos.y - 16
+	end
+
 	-- Ask engine for valid spawn locations
 	local spawning_position_list = find_nodes_in_area_under_air(
 			{x = goal_pos.x, y = y_min, z = goal_pos.z},
