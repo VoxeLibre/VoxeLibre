@@ -83,7 +83,7 @@ The VoxeLibre repository is hosted at Mesehub. To contribute or report issues, h
 * OpenCollective: <https://opencollective.com/mineclone2>
 * Mastodon: <https://fosstodon.org/@MineClone2>
 * Lemmy: <https://lemmy.world/c/mineclone2>
-* Matrix space: <https://app.element.io/#/room/#mcl2:matrix.org>
+* Matrix space: <https://app.element.io/#/room/#voxelibre:matrix.org>
 * Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
 * Reddit: <https://www.reddit.com/r/MineClone2/>
 * IRC (barely used): <https://web.libera.chat/#mineclone2>

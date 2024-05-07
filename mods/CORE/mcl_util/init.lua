@@ -113,7 +113,7 @@ end
 -- Minetest 5.3.0 or less can only measure the light level. This came in at 5.4
 -- This function has been known to fail in multiple places so the error handling is added increase safety and improve
 -- debugging. See:
--- https://git.minetest.land/MineClone2/MineClone2/issues/1392
+-- https://git.minetest.land/VoxeLibre/VoxeLibre/issues/1392
 function mcl_util.get_natural_light (pos, time)
 	local status, retVal = pcall(minetest.get_natural_light, pos, time)
 	if status then

@@ -37,7 +37,7 @@ Models author: 22i.
 Source: https://github.com/22i/amc
 
 VoxeLibre source code:
-https://git.minetest.land/MineClone2/MineClone2
+https://git.minetest.land/VoxeLibre/VoxeLibre
 
 ---
 NOTE: This MODule requires Glow Squids in order for all features to work 100% correctly. Glow Squids are currently

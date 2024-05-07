@@ -20,10 +20,10 @@ end
 
 -- Resources
 
--- Issue that has a lot of context: https://git.minetest.land/MineClone2/MineClone2/issues/4120
+-- Issue that has a lot of context: https://git.minetest.land/VoxeLibre/VoxeLibre/issues/4120
 -- Minecraft portal mechanics: https://minecraft.fandom.com/wiki/Tutorials/Nether_portals
 -- Flow diagram: https://docs.google.com/drawings/d/1WIl4pVuxgOxI3Ncxk4g6D1pL4Fyll3bQ-fX6L9yyiLw/edit
--- Useful boundaries: https://git.minetest.land/MineClone2/MineClone2/wiki/World-structure%3A-positions%2C-boundaries%2C-blocks%2C-chunks%2C-dimensions%2C-barriers-and-the-void
+-- Useful boundaries: https://git.minetest.land/VoxeLibre/VoxeLibre/wiki/World-structure%3A-positions%2C-boundaries%2C-blocks%2C-chunks%2C-dimensions%2C-barriers-and-the-void
 
 -- Setup
 
