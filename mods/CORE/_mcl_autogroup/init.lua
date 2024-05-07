@@ -309,6 +309,31 @@ function mcl_autogroup.get_wear(toolname, diggroup)
 	return math.ceil(65535 / uses)
 end
 
+local GROUP_MAP = {
+	["choppy"] = "axey",
+	["oddly_breakable_by_hand"] = "handy",
+	["cracky"] = "pickaxey",
+	["crumbly"] = "shovely",
+}
+
+function mcl_autogroup.mod_compatibility(groups, ndef)
+	local grouped = false
+	for name,_ in pairs(groups) do
+		local new_group = GROUP_MAP[name]
+		if new_group then
+			groups[new_group] = 1
+			ndef.groups[new_group] = 1
+		end
+		if mcl_autogroup.registered_diggroups[name] then
+			grouped = true
+		end
+	end
+
+	if not grouped then
+		groups.handy = 1
+	end
+end
+
 local function overwrite()
 	-- Refresh, now that all groups are known.
 	hardness_values = get_hardness_values_for_groups()
@@ -317,8 +342,19 @@ local function overwrite()
 	-- hardness_value.  Used for quick lookup.
 	local hardness_lookup = get_hardness_lookup_for_groups(hardness_values)
 
+	local count = 0
 	for nname, ndef in pairs(minetest.registered_nodes) do
+		count = count + 1
 		local newgroups = table.copy(ndef.groups)
+
+		if not newgroups.indestructable then
+			ndef.diggable = true
+			mcl_autogroup.mod_compatibility(newgroups, ndef)
+			if not ndef._mcl_hardness then
+				ndef._mcl_hardness = 0
+			end
+		end
+
 		if (nname ~= "ignore" and ndef.diggable) then
 			-- Automatically assign the "solid" group for solid nodes
 			if (ndef.walkable == nil or ndef.walkable == true)
@@ -363,6 +399,7 @@ local function overwrite()
 			})
 		end
 	end
+	minetest.log("verbose","Total registered blocks: "..tostring(count))
 
 	for tname, tdef in pairs(minetest.registered_items) do
 		-- Assign groupcaps for digging the registered digging groups

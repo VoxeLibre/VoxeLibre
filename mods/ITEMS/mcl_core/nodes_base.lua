@@ -744,7 +744,7 @@ minetest.register_node("mcl_core:bedrock", {
 		S("In the End dimension, starting a fire on this block will create an eternal fire."),
 	tiles = {"mcl_core_bedrock.png"},
 	stack_max = 64,
-	groups = {creative_breakable=1, building_block=1, material_stone=1},
+	groups = {creative_breakable=1, building_block=1, material_stone=1, indestructable=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	on_blast = function() end,
