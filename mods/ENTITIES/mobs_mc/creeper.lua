@@ -3,9 +3,46 @@
 local S = minetest.get_translator("mobs_mc")
 
 --###################
---################### CREEPER
+--################### STALKER
 --###################
 
+
+local function get_texture(self)
+	local on_name = self.standing_on
+	local texture
+	local texture_suff = ""
+	if on_name ~= "air" then
+		local tiles = minetest.registered_nodes[on_name].tiles
+		if tiles then
+			local tile = tiles[1]
+			local color
+			if type(tile) == "table" then
+				texture = tile.name or tile.image
+				if tile.color then
+					color = minetest.colorspec_to_colorstring(tile.color)
+				end
+			elseif type(tile) == "string" then
+				texture = tile
+			end
+			if not color then
+				color = minetest.colorspec_to_colorstring(minetest.registered_nodes[on_name].color)
+			end
+			if color then
+				texture_suff = "^[multiply:" .. color .. "^[hsl:0:0:20"
+			end
+		end
+	end
+	if not texture then
+		texture = "vl_stalker_default.png"
+	end
+	texture = "([combine:16x24:0,0=" .. texture .. ":0,16=" .. texture .. texture_suff
+	if self.attack then
+		texture = texture .. ")^vl_mobs_stalker_overlay_angry.png"
+	else
+		texture = texture .. ")^vl_mobs_stalker_overlay.png"
+	end
+	return texture
+end
 
 
 
@@ -21,16 +58,16 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
 	pathfinding = 1,
 	visual = "mesh",
-	mesh = "mobs_mc_creeper.b3d",
-	head_swivel = "Head_Control",
+	mesh = "vl_stalker.b3d",
+-- 	head_swivel = "Head_Control",
 	bone_eye_height = 2.35,
 	head_eye_height = 1.8;
 	curiosity = 2,
 	textures = {
-		{"mobs_mc_creeper.png",
+		{"([combine:16x24:0,0=vl_stalker_default.png:0,16=vl_stalker_default.png)^vl_mobs_stalker_overlay.png",
 		"mobs_mc_empty.png"},
 	},
-	visual_size = {x=3, y=3},
+	visual_size = {x=2, y=2},
 	sounds = {
 		attack = "tnt_ignite",
 		death = "mobs_mc_creeper_death",
@@ -86,6 +123,7 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
+		self.object:set_properties({textures={get_texture(self)}})
 	end,
 	on_die = function(self, pos, cmi_cause)
 		-- Drop a random music disc when killed by skeleton or stray
@@ -115,20 +153,16 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 		max = 1,},
 	},
 	animation = {
-		speed_normal = 24,
-		speed_run = 48,
+		speed_normal = 30,
+		speed_run = 60,
 		stand_start = 0,
 		stand_end = 23,
 		walk_start = 24,
 		walk_end = 49,
 		run_start = 24,
 		run_end = 49,
-		hurt_start = 110,
-		hurt_end = 139,
-		death_start = 140,
-		death_end = 189,
-		look_start = 50,
-		look_end = 108,
+		fuse_start = 49,
+		fuse_end = 80,
 	},
 	floats = 1,
 	fear_height = 4,
@@ -146,15 +180,16 @@ mcl_mobs.register_mob("mobs_mc:creeper_charged", {
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
 	pathfinding = 1,
 	visual = "mesh",
-	mesh = "mobs_mc_creeper.b3d",
+	mesh = "vl_stalker.b3d",
 
 	--BOOM
 
 	textures = {
-		{"mobs_mc_creeper.png",
-		"mobs_mc_creeper_charge.png"},
+		{"([combine:16x24:0,0=vl_stalker_default.png:0,16=vl_stalker_default.png)^vl_mobs_stalker_overlay.png",
+		"vl_stalker_charge.png"},
 	},
-	visual_size = {x=3, y=3},
+	use_texture_alpha = true,
+	visual_size = {x=2, y=2},
 	sounds = {
 		attack = "tnt_ignite",
 		death = "mobs_mc_creeper_death",
@@ -208,6 +243,7 @@ mcl_mobs.register_mob("mobs_mc:creeper_charged", {
 				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
+		self.object:set_properties({textures={get_texture(self), "vl_stalker_charge.png"}})
 	end,
 	on_die = function(self, pos, cmi_cause)
 		-- Drop a random music disc when killed by skeleton or stray

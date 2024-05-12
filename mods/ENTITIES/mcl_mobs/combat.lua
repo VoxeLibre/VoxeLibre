@@ -957,6 +957,7 @@ function mob_class:do_states_attack (dtime)
 		if self.v_start then
 			self.timer = self.timer + dtime
 			self.blinktimer = (self.blinktimer or 0) + dtime
+			self:set_animation("fuse")
 
 			if self.blinktimer > 0.2 then
 				self.blinktimer = 0
