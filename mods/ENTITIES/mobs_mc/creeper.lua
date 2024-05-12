@@ -44,6 +44,14 @@ local function get_texture(self)
 	return texture
 end
 
+local AURA = "vl_stalker_charge.png"
+local function get_charged_aura(timer)
+	local frame = math.floor(timer*16)
+	local f = tostring(frame)
+	local nf = tostring(16-f)
+	return "[combine:16x24:-" .. nf ..",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
+end
+
 
 
 mcl_mobs.register_mob("mobs_mc:stalker", {
@@ -243,7 +251,9 @@ mcl_mobs.register_mob("mobs_mc:stalker_charged", {
 				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
-		self.object:set_properties({textures={get_texture(self), "vl_stalker_charge.png"}})
+		if not self._aura_timer or self._aura_timer > 1 then self._aura_timer = 0 end
+		self._aura_timer = self._aura_timer + dtime
+		self.object:set_properties({textures={get_texture(self), get_charged_aura(self._aura_timer)}})
 	end,
 	on_die = function(self, pos, cmi_cause)
 		-- Drop a random music disc when killed by skeleton or stray
@@ -477,3 +487,4 @@ mcl_vars.mg_overworld_max)
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:stalker", S("Stalker"), "#0da70a", "#000000", 0)
 minetest.register_alias("mobs_mc:creeper", "mobs_mc:stalker")
+mcl_mobs.register_egg("mobs_mc:stalker_charged", S("Charged Stalker"), "#00a77a", "#000000", 0)
