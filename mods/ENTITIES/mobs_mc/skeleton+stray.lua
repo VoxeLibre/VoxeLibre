@@ -73,7 +73,7 @@ local skeleton = {
 		looting = "common",},
 
 		-- Head
-		-- TODO: Only drop if killed by charged creeper
+		-- TODO: Only drop if killed by charged stalker
 		{name = "mcl_heads:skeleton",
 		chance = 200, -- 0.5% chance
 		min = 1,

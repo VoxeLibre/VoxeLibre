@@ -46,8 +46,8 @@ end
 
 
 
-mcl_mobs.register_mob("mobs_mc:creeper", {
-	description = S("Creeper"),
+mcl_mobs.register_mob("mobs_mc:stalker", {
+	description = S("Stalker"),
 	type = "monster",
 	spawn_class = "hostile",
 	spawn_in_group = 1,
@@ -93,8 +93,8 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
-	-- Force-ignite creeper with flint and steel and explode after 1.5 seconds.
-	-- TODO: Make creeper flash after doing this as well.
+	-- Force-ignite stalker with flint and steel and explode after 1.5 seconds.
+	-- TODO: Make stalker flash after doing this as well.
 	-- TODO: Test and debug this code.
 	on_rightclick = function(self, clicker)
 		if self._forced_explosion_countdown_timer ~= nil then
@@ -146,8 +146,8 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 		looting = "common",},
 
 		-- Head
-		-- TODO: Only drop if killed by charged creeper
-		{name = "mcl_heads:creeper",
+		-- TODO: Only drop if killed by charged stalker
+		{name = "mcl_heads:stalker",
 		chance = 200, -- 0.5%
 		min = 1,
 		max = 1,},
@@ -169,8 +169,8 @@ mcl_mobs.register_mob("mobs_mc:creeper", {
 	view_range = 16,
 })
 
-mcl_mobs.register_mob("mobs_mc:creeper_charged", {
-	description = S("Charged Creeper"),
+mcl_mobs.register_mob("mobs_mc:stalker_charged", {
+	description = S("Charged Stalker"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -213,8 +213,8 @@ mcl_mobs.register_mob("mobs_mc:creeper_charged", {
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
-	-- Force-ignite creeper with flint and steel and explode after 1.5 seconds.
-	-- TODO: Make creeper flash after doing this as well.
+	-- Force-ignite stalker with flint and steel and explode after 1.5 seconds.
+	-- TODO: Make stalker flash after doing this as well.
 	-- TODO: Test and debug this code.
 	on_rightclick = function(self, clicker)
 		if self._forced_explosion_countdown_timer ~= nil then
@@ -258,7 +258,7 @@ mcl_mobs.register_mob("mobs_mc:creeper_charged", {
 		end
 	end,
 	on_lightning_strike = function(self, pos, pos2, objects)
-		 mcl_util.replace_mob(self.object, "mobs_mc:creeper_charged")
+		 mcl_util.replace_mob(self.object, "mobs_mc:stalker_charged")
 		 return true
 	end,
 	maxdrops = 2,
@@ -270,27 +270,23 @@ mcl_mobs.register_mob("mobs_mc:creeper_charged", {
 		looting = "common",},
 
 		-- Head
-		-- TODO: Only drop if killed by charged creeper
-		{name = "mcl_heads:creeper",
+		-- TODO: Only drop if killed by charged stalker
+		{name = "mcl_heads:stalker",
 		chance = 200, -- 0.5%
 		min = 1,
 		max = 1,},
 	},
 	animation = {
-		speed_normal = 24,
-		speed_run = 48,
+		speed_normal = 30,
+		speed_run = 60,
 		stand_start = 0,
 		stand_end = 23,
 		walk_start = 24,
 		walk_end = 49,
 		run_start = 24,
 		run_end = 49,
-		hurt_start = 110,
-		hurt_end = 139,
-		death_start = 140,
-		death_end = 189,
-		look_start = 50,
-		look_end = 108,
+		fuse_start = 49,
+		fuse_end = 80,
 	},
 	floats = 1,
 	fear_height = 4,
@@ -301,7 +297,7 @@ mcl_mobs.register_mob("mobs_mc:creeper_charged", {
 })
 
 mcl_mobs:spawn_specific(
-"mobs_mc:creeper",
+"mobs_mc:stalker",
 "overworld",
 "ground",
 {
@@ -449,4 +445,4 @@ mcl_vars.mg_overworld_min,
 mcl_vars.mg_overworld_max)
 
 -- spawn eggs
-mcl_mobs.register_egg("mobs_mc:creeper", S("Creeper"), "#0da70a", "#000000", 0)
+mcl_mobs.register_egg("mobs_mc:stalker", S("Stalker"), "#0da70a", "#000000", 0)

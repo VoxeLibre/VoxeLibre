@@ -33,11 +33,11 @@ This mod adds mobs which closely resemble the mobs from the game Minecraft, vers
 * Husk
 * Skeleton
 * Stray
-* Creeper
+* Stalker
 * Slime
 * Spider
 * Cave Spider
-* Enderman
+* Rover
 * Zombie Villager
 * Zombie Piglin
 * Wither Skeleton
