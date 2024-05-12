@@ -11,7 +11,7 @@ local function get_texture(self)
 	local on_name = self.standing_on
 	local texture
 	local texture_suff = ""
-	if on_name ~= "air" then
+	if on_name and on_name ~= "air" then
 		local tiles = minetest.registered_nodes[on_name].tiles
 		if tiles then
 			local tile = tiles[1]
@@ -64,7 +64,7 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	head_eye_height = 1.8;
 	curiosity = 2,
 	textures = {
-		{"([combine:16x24:0,0=vl_stalker_default.png:0,16=vl_stalker_default.png)^vl_mobs_stalker_overlay.png",
+		{get_texture({}),
 		"mobs_mc_empty.png"},
 	},
 	visual_size = {x=2, y=2},
@@ -185,7 +185,7 @@ mcl_mobs.register_mob("mobs_mc:stalker_charged", {
 	--BOOM
 
 	textures = {
-		{"([combine:16x24:0,0=vl_stalker_default.png:0,16=vl_stalker_default.png)^vl_mobs_stalker_overlay.png",
+		{get_texture({}),
 		"vl_stalker_charge.png"},
 	},
 	use_texture_alpha = true,
@@ -294,6 +294,36 @@ mcl_mobs.register_mob("mobs_mc:stalker_charged", {
 	--Having trouble when fire is placed with lightning
 	fire_resistant = true,
 	glow = 3,
+})
+
+-- compat
+minetest.register_entity("mobs_mc:creeper", {
+	on_activate = function(self, staticdata, dtime)
+		local obj = minetest.add_entity(self.object:get_pos(), "mobs_mc:stalker", staticdata)
+		obj:set_properties({
+			visual_size = {x=2, y=2},
+			mesh = "vl_stalker.b3d",
+			textures = {
+				{get_texture({}),
+				"mobs_mc_empty.png"},
+			},
+		})
+		self.object:remove()
+	end,
+})
+minetest.register_entity("mobs_mc:creeper_charged", {
+	on_activate = function(self, staticdata, dtime)
+		local obj = minetest.add_entity(self.object:get_pos(), "mobs_mc:stalker_charged", staticdata)
+		obj:set_properties({
+			visual_size = {x=2, y=2},
+			mesh = "vl_stalker.b3d",
+			textures = {
+				{get_texture({}),
+				"vl_stalker_charge.png"},
+			},
+		})
+		self.object:remove()
+	end,
 })
 
 mcl_mobs:spawn_specific(
@@ -446,3 +476,4 @@ mcl_vars.mg_overworld_max)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:stalker", S("Stalker"), "#0da70a", "#000000", 0)
+minetest.register_alias("mobs_mc:creeper", "mobs_mc:stalker")
