@@ -58,6 +58,7 @@ function mcl_flowers.register_simple_flower(name, def)
 		sunlight_propagates = true,
 		paramtype = "light",
 		walkable = false,
+		buildable_to = true,
 		stack_max = 64,
 		drop = def.drop,
 		groups = {
