@@ -229,11 +229,22 @@ end)
 
 local function initsky(player)
 	if player.set_lighting then
-		player:set_lighting({ shadows = { intensity = tonumber(minetest.settings:get("mcl_default_shadow_intensity") or 0.33) } })
+        player:set_lighting({
+			shadows = { intensity = 0.33 },
+			volumetric_light = { strength = 0.45 },
+			exposure = {
+				luminance_min = -3.5,
+				luminance_max = -2.5,
+				exposure_correction = 0.35,
+				speed_dark_bright = 1500,
+				speed_bright_dark = 700,
+			},
+			saturation = 1.1,
+		})
 	end
 
 	if (skycolor.active) then
-		skycolor.force_update = true
+		mcl_weather.skycolor.force_update = true
 	end
 
 	player:set_clouds(mcl_worlds:get_cloud_parameters() or {height=mcl_worlds.layer_to_y(127), speed={x=-2, z=0}, thickness=4, color="#FFF0FEF"})
