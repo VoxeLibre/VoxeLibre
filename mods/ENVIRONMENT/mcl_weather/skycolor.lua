@@ -408,7 +408,6 @@ local function initsky(player)
 		})
 	end
 
-
 	if (mcl_weather.skycolor.active) then
 		mcl_weather.skycolor.force_update = true
 	end
