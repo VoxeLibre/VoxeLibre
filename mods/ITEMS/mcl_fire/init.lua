@@ -50,6 +50,28 @@ local function has_flammable(pos)
 		end
 	end
 end
+local all_adjacents = {}
+for x = 0,1 do
+	for y = 0,1 do
+		for z = 0,1 do
+			all_adjacents[#all_adjacents+1] = vector.new(x*2-1, y*2-1, z*2-1)
+		end
+	end
+end
+
+local function get_adjacent_fire_age(pos)
+	local lowest_age = nil
+	for k,v in pairs(all_adjacents) do
+		local p = vector.add(pos, v)
+		local node = minetest.get_node_or_nil(p)
+		if node and minetest.get_item_group(node.name, "fire") ~= 0 then
+			if not lowest_age or node.param2 < lowest_age then
+				lowest_age = node.param2
+			end
+		end
+	end
+	return lowest_age
+end
 
 local smoke_pdef = {
 	amount = 0.009,
@@ -91,6 +113,26 @@ else
 end
 
 local function spawn_fire(pos, age)
+	if not age then
+		-- Get adjacent age
+		local adjacent_age = get_adjacent_fire_age(pos)
+
+		-- Don't create new fire if we can't find adjacent fire from this position
+		if not adjacent_age then return end
+
+		age = math.random(1,5) + adjacent_age
+	end
+	if age <= 1 then
+		print("new flash point at "..vector.to_string(pos).." age="..tostring(age))
+		print(debug.traceback())
+	end
+
+	-- Limit fire spread
+	local probability = math.pow(10,-1.176e-2 * age) -- exponential constant is such that at age=255, p=0.1%
+	if math.random(65536)/65536 >= probability then
+		return
+	end
+
 	set_node(pos, {name="mcl_fire:fire", param2 = age})
 	minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
 end
@@ -368,8 +410,21 @@ else -- Fire enabled
 		action = function(pos)
 			local p = get_ignitable(pos)
 			if p then
-				spawn_fire(p)
+				local node = minetest.get_node(pos)
+				local age = node.param2
+
+				-- Spawn new fire with an age based on this node's age
+				spawn_fire(p, age+math.random(3,7))
 				shuffle_table(adjacents)
+
+				-- Age the source fire
+				age = age + math.random(2,5)
+				node.param2 = age
+				if age >= 255 then
+					node.name = "air"
+					node.param2 = 0
+				end
+				minetest.set_node(pos, node)
 			end
 		end
 	})
