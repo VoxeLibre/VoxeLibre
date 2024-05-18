@@ -407,24 +407,24 @@ else -- Fire enabled
 		chance = 12,
 		catch_up = false,
 		action = function(pos)
+			local node = minetest.get_node(pos)
+			local age = node.param2
+
 			local p = get_ignitable(pos)
 			if p then
-				local node = minetest.get_node(pos)
-				local age = node.param2
-
 				-- Spawn new fire with an age based on this node's age
 				spawn_fire(p, age+math.random(3,7))
 				shuffle_table(adjacents)
-
-				-- Age the source fire
-				age = age + math.random(2,5)
-				node.param2 = age
-				if age >= 255 then
-					node.name = "air"
-					node.param2 = 0
-				end
-				minetest.set_node(pos, node)
 			end
+
+			-- Always age the source fire
+			age = age + math.random(2,5)
+			node.param2 = age
+			if age >= 255 then
+				node.name = "air"
+				node.param2 = 0
+			end
+			minetest.set_node(pos, node)
 		end
 	})
 
