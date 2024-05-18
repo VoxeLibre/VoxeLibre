@@ -1,4 +1,4 @@
-Survive, farm, build, explore, play with friends, and do much more. Inspired by a well known block game, pushing beyond.
+Survive, farm, build, explore, play with friends, and do much more. Inspired by a well-known block game, pushing beyond.
 
 How to play:
 
@@ -14,8 +14,10 @@ How to play:
 
 #### Create new world and play
 - Click "Start Game" tab
-- At the bottom click the VoxeLibre icon (the 2 dirt with grass blocks)
+- At the bottom click the VoxeLibre icon (the stone & sandstone ball with the letters VL)
 - Click "New", give your world a name
 - You can leave seed blank or put in a word of your choice
+- Pick a mapgen or leave the default (v7, valleys or carpathian mapgens are recommended)
+- Pick mapgen options on the right (enabling everything is recommended)
 - Select your new world
 - Click "Play Game" and enjoy!
