@@ -123,8 +123,7 @@ local function spawn_fire(pos, age)
 		age = math.random(1,5) + adjacent_age
 	end
 	if age <= 1 then
-		print("new flash point at "..vector.to_string(pos).." age="..tostring(age))
-		print(debug.traceback())
+		minetest.log("warning","new flash point at "..vector.to_string(pos).." age="..tostring(age)..",backtrace = "..debug.traceback())
 	end
 
 	-- Limit fire spread
