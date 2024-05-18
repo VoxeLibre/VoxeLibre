@@ -18,9 +18,8 @@ Polishing existing features is always welcome.
 * [Mesehub](https://git.minetest.land/VoxeLibre/VoxeLibre)
 * [Discord](https://discord.gg/xE4z8EEpDC)
 * [YouTube](https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A)
-* [IRC](https://web.libera.chat/#mineclone2)
-* [Matrix](https://app.element.io/#/room/#mc2:matrix.org)
-* [Reddit](https://www.reddit.com/r/MineClone2/)
+* [Matrix](https://app.element.io/#/room/#voxelibre:matrix.org)
+* [Reddit](https://www.reddit.com/r/VoxeLibre/)
 * [Minetest forums](https://forum.minetest.net/viewtopic.php?f=50&t=16407)
 * [ContentDB](https://content.minetest.net/packages/wuzzy/mineclone2/)
 * [OpenCollective](https://opencollective.com/mineclone2)
@@ -60,8 +59,7 @@ actually an issue with Minetest itself, and if it is, head to the
 [Minetest issue tracker](https://github.com/minetest/minetest/issues)
 instead.
 * If you need any help regarding creating a Mesehub account or opening
-an issue, feel free to ask on the Discord / Matrix server or the IRC
-channel.
+an issue, feel free to ask on the Discord or Matrix space.
 
 The link to the mesehub registration page is: https://git.minetest.land/user/sign_up
 (It appears to sometimes get lost on the page itsself)
@@ -117,8 +115,7 @@ therefore we are always looking for asset contributions.
 
 To contribute assets, it can be useful to learn git basics and read
 the section for Programmers of this document, however this is not required.
-It's also a good idea to join the Discord server
-(or alternatively IRC or Matrix).
+It's also a good idea to join the Discord server and/or Matrix space.
 
 #### Textures
 For textures we prefer original art, but in the absence of that will accept 
@@ -162,7 +159,7 @@ translation files of the mods that you want to update. You can add
 support for all mods, just some of them or only one mod; you can update
 the translation file entirely or only partly; basically any effort is
 valued. If your changes are small, you can also send them to developers
-via E-Mail, Discord, IRC or Matrix - they will credit you appropriately.
+via E-Mail, Discord or Matrix - they will credit you appropriately.
 
 #### Things to note
 You can use the script at `tools/check_translate_files.py` to compare
@@ -205,12 +202,17 @@ decisions. Also, note that a lot of discussion takes place on the
 Discord server, so it's definitely worth checking it out.
 
 ### Funding
-You can help pay for our infrastructure (Mesehub) by donating to our
-OpenCollective link (See Links section).
+You can help pay for our infrastructure (Mesehub) and other unforeseen
+expenses (in the last few years, only payments for Mesehub have been done)
+by donating to our OpenCollective link (See Links section).
 
 ### Crediting
 If you opened or have contributed to an issue, you receive the
 `Community` role on our Discord (after asking for it).
+If you have been an author of a PR that got merged or contributed
+significantly to art that got merged into the game, you receive the
+`Contributor` role on our Discord (after asking for it).
+Please note that what counts as "significant" is decided by Maintainers.
 OpenCollective Funders are credited in their own section in
 `CREDITS.md` and receive a special role "Funder" on our discord (unless
 they have made their donation Incognito).
@@ -240,7 +242,7 @@ you'd like to take care of it, to avoid duplicate work.
 
 ### Don't hesitate to ask for help
 We appreciate any contributing effort to VoxeLibre. If you are a
-relatively new programmer, you can reach us on Discord, Matrix or IRC
+relatively new programmer, you can reach us on Discord or Matrix
 for questions about git, Lua, Minetest API, VoxeLibre codebase or
 anything related to VoxeLibre. We can help you avoid writing code that
 would be deemed inadequate, or help you become familiar with VoxeLibre
@@ -252,40 +254,49 @@ scenarios by testing every time before merging it, but if your merged
 work causes problems, we ask you fix the issues as soon as possible.
 
 ### Changing Gameplay
-Pull Requests that change gameplay have to be properly researched and
-need to state their sources. These PRs also need the maintainer's approval
-before they are merged.
-You can use these sources:
-
-* Testing things inside of Minecraft (Attach screenshots / video footage
-of the results)
-* Looking at [Minestom](https://github.com/Minestom/Minestom) code. An open source Minecraft Server implementation
-* [Official Minecraft Wiki](https://minecraft.fandom.com/wiki/Minecraft_Wiki)
-(Include a link to the specific page you used)
+Pull Requests that change gameplay are always subject to discussion.
+Opinions from the community on such PRs are valued, and Maintainer
+should approve the concept (which is usually granted) as well as
+the implementation (for which changes are often requested for either
+code quality or game design reasons).
 
 ### Guidelines
 
 #### Git Guidelines
-* Pushing to master is disabled - don't even try it.
-* Every change is tracked as a PR.
-* All but the tiniest changes require at least one approval from a Developer
+* Pushing to master is disabled - don't even try it!
+* Every change is tracked as a PR
+* All changes require at least one approval from a Developer
+* Maintainers may merge PRs without formal approval, but should also
+take others' opinions and testing into account
 * To update branches we use rebase not merge (so we don't end up with
 excessive git bureaucracy commits in master)
 * We use merge to add the commits from a PR/branch to master
+* Smaller PRs may be squashed before merging (especially if the commit history
+on them isn't valuable), but when in doubt prefer merging
+* Manual merging may be done by a Maintainer if there are technical problems
+with the branch, with Gitea, or the PR had been merged to from master and
+the author can't fix it for whatever reason
 * Submodules should only be used if a) upstream is highly reliable and
-b) it is 100% certain that no VL specific changes to the code will  be
+b) it is 100% certain that no VL specific changes to the code will be
 needed (this has never been the case before, hence VL is submodule free so far)
+* Subtrees may be used for including outside mods that don't need changes
+in the foreseeable future
 * Commit messages should be descriptive
 * Try to group your submissions best as you can:
-* Try to keep your PRs small: In some cases things reasonably be can't
-split up but in general multiple small PRs are better than a big one.
-* Similarly multiple small commits are better than a giant one. (use git commit -p)
+  * Try to keep your PRs small: In some cases things reasonably be can't
+split up but in general multiple small PRs are better than a big one
+  * Similarly multiple small commits are better than a giant one. (use git commit -p)
 
 #### Code Guidelines
 * Each mod must provide `mod.conf`.
-* Mod names are snake case, and newly added mods start with `mcl_`, e.g.
-`mcl_core`, `mcl_farming`, `mcl_monster_eggs`. Keep in mind Minetest
+* Mod names are snake case, and newly added mods (or substantially changed mods
+that are included from the outside) start with `vl_`, e.g.
+`vl_hollow_logs`,    . Keep in mind Minetest
 does not support capital letters in mod names.
+* In the past mods were prefixed with `mcl_`, e.g.
+`mcl_core`, `mcl_farming`, `mcl_monster_eggs`. New mods should **never** use this prefix.
+* Mods included from outside with no significant changes to the API
+(especially those using git-subtree or such) aren't prefixed.
 * To export functions, store them inside a global table named like the
 mod, e.g.
 
@@ -359,17 +370,21 @@ end
 
 ### Developer status
 Active and trusted contributors are often granted write access to the
-VoxeLibre repository as a contributor. Those that have demonstrated the right
-technical skills and behaviours may be granted developer access. These are the 
-most trusted contributors who will contribute to ensure coding standards and 
-processes are followed.
+VoxeLibre repository as a contributor. This means that they can push
+directly to the branches of our repo (except for `master`).
+Pushing to others' branches without asking is discouraged, open a PR
+targeting that branch instead (PRs can target any branch).
+
+Those that have demonstrated the right technical skills and behaviour
+may be granted developer access. These are the most trusted contributors
+who will contribute to ensure coding standards and processes are followed.
 
 #### Developer responsibilities
 - If you have developer/contributor privileges you can just open a new branch
 in the VL repository (which is preferred). From that you create a pull request.
 This way other people can review your changes and make sure they work
 before they get merged.
-- If you do not (yet) have developer privs you do your work on a branch
+- If you do not (yet) have contributor or developer privs you do your work on a branch
 on your private repository e.g. using the "fork" function on mesehub.
 - Any developer is welcome to review, test and approve PRs. A maintainer may prefer
 to merge the PR especially if it is in a similar area to what has been worked on
@@ -392,9 +407,9 @@ merged.
 - Resolving conflicts and problems within the community
 
 #### Current maintainers
-* AncientMariner - responsible for gameplay review, publishing releases,
+* AncientMariner - responsible for gameplay review, publishing releases
+* Herowl - responsible for gameplay review, publishing releases,
 technical guidelines
-* Nicu - responsible for community related issues
 
 #### Release process
 * Run `tools/generate_ingame_credits.lua` to update the ingame credits
@@ -417,6 +432,5 @@ become part of a free/libre software.
 
 ### Crediting
 Contributors, Developers and Maintainers will be credited in
-`CREDITS.md`. If you make your first time contribution, please add
-yourself to this file. There are also Discord roles for Contributors,
+`CREDITS.md`. There are also Discord roles for Contributors,
 Developers and Maintainers.

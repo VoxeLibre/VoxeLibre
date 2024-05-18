@@ -81,7 +81,7 @@ The VoxeLibre repository is hosted at Mesehub. To contribute or report issues, h
 * YouTube: <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
 * ContentDB: <https://content.minetest.net/packages/wuzzy/mineclone2/>
 * OpenCollective: <https://opencollective.com/mineclone2>
-* Mastodon: <https://fosstodon.org/@MineClone2>
+* Mastodon: <https://fosstodon.org/@VoxeLibre>
 * Lemmy: <https://lemm.ee/c/voxelibre>
 * Matrix space: <https://app.element.io/#/room/#voxelibre:matrix.org>
 * Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
@@ -89,16 +89,10 @@ The VoxeLibre repository is hosted at Mesehub. To contribute or report issues, h
 * IRC (barely used): <https://web.libera.chat/#mineclone2>
 
 ## Target
-- Create a stable, moddable, free/libre game based on Minecraft
-on the Minetest engine with polished features, usable in both
-singleplayer and multiplayer. Currently, a lot of **Minecraft Java
-Edition** features are already implemented and polishing existing
-features are prioritized over new feature requests.
-- Implement features targetting
-**Current Minecraft versions + OptiFine** (OptiFine only as far as supported
-by the Minetest Engine).
-- Create a performant experience that will run relatively
-well on really low spec computers.
+- Create a stable, peformant, moddable, free/libre game inspired by Minecraft
+using the Minetest engine, usable in both singleplayer and multiplayer.
+- Currently, a lot of features are already implemented.
+Polishing existing features is always welcome.
 
 ## Completion status
 This game is currently in **beta** stage.
