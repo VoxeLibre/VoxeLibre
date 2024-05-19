@@ -44,8 +44,8 @@ local function get_texture(self)
 	return texture
 end
 
-local AURA = "vl_stalker_charge.png"
-local function get_charged_aura(timer)
+local AURA = "vl_stalker_overloaded_aura.png"
+local function get_overloaded_aura(timer)
 	local frame = math.floor(timer*16)
 	local f = tostring(frame)
 	local nf = tostring(16-f)
@@ -177,8 +177,8 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	view_range = 16,
 })
 
-mcl_mobs.register_mob("mobs_mc:stalker_charged", {
-	description = S("Charged Stalker"),
+mcl_mobs.register_mob("mobs_mc:stalker_overloaded", {
+	description = S("Overloaded Stalker"),
 	type = "monster",
 	spawn_class = "hostile",
 	hp_min = 20,
@@ -194,7 +194,7 @@ mcl_mobs.register_mob("mobs_mc:stalker_charged", {
 
 	textures = {
 		{get_texture({}),
-		"vl_stalker_charge.png"},
+		AURA},
 	},
 	use_texture_alpha = true,
 	visual_size = {x=2, y=2},
@@ -253,7 +253,7 @@ mcl_mobs.register_mob("mobs_mc:stalker_charged", {
 		end
 		if not self._aura_timer or self._aura_timer > 1 then self._aura_timer = 0 end
 		self._aura_timer = self._aura_timer + dtime
-		self.object:set_properties({textures={get_texture(self), get_charged_aura(self._aura_timer)}})
+		self.object:set_properties({textures={get_texture(self), get_overloaded_aura(self._aura_timer)}})
 	end,
 	on_die = function(self, pos, cmi_cause)
 		-- Drop a random music disc when killed by skeleton or stray
@@ -268,7 +268,7 @@ mcl_mobs.register_mob("mobs_mc:stalker_charged", {
 		end
 	end,
 	on_lightning_strike = function(self, pos, pos2, objects)
-		 mcl_util.replace_mob(self.object, "mobs_mc:stalker_charged")
+		 mcl_util.replace_mob(self.object, "mobs_mc:stalker_overloaded")
 		 return true
 	end,
 	maxdrops = 2,
@@ -280,7 +280,7 @@ mcl_mobs.register_mob("mobs_mc:stalker_charged", {
 		looting = "common",},
 
 		-- Head
-		-- TODO: Only drop if killed by charged stalker
+		-- TODO: Only drop if killed by overloaded stalker
 		{name = "mcl_heads:stalker",
 		chance = 200, -- 0.5%
 		min = 1,
@@ -323,13 +323,13 @@ minetest.register_entity("mobs_mc:creeper", {
 })
 minetest.register_entity("mobs_mc:creeper_charged", {
 	on_activate = function(self, staticdata, dtime)
-		local obj = minetest.add_entity(self.object:get_pos(), "mobs_mc:stalker_charged", staticdata)
+		local obj = minetest.add_entity(self.object:get_pos(), "mobs_mc:stalker_overloaded", staticdata)
 		obj:set_properties({
 			visual_size = {x=2, y=2},
 			mesh = "vl_stalker.b3d",
 			textures = {
 				{get_texture({}),
-				"vl_stalker_charge.png"},
+				AURA},
 			},
 		})
 		self.object:remove()
@@ -487,4 +487,4 @@ mcl_vars.mg_overworld_max)
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:stalker", S("Stalker"), "#0da70a", "#000000", 0)
 minetest.register_alias("mobs_mc:creeper", "mobs_mc:stalker")
-mcl_mobs.register_egg("mobs_mc:stalker_charged", S("Charged Stalker"), "#00a77a", "#000000", 0)
+mcl_mobs.register_egg("mobs_mc:stalker_overloaded", S("Overloaded Stalker"), "#00a77a", "#000000", 0)
