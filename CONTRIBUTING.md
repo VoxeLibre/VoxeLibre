@@ -276,6 +276,9 @@ on them isn't valuable), but when in doubt prefer merging
 * Manual merging may be done by a Maintainer if there are technical problems
 with the branch, with Gitea, or the PR had been merged to from master and
 the author can't fix it for whatever reason
+* PR from a fork (usually the author has no contributor/developer privileges)
+can be retargeted and merged first into a buffer (normal new) branch on the repo
+when adopted by a Developer, and only later into master
 * Submodules should only be used if a) upstream is highly reliable and
 b) it is 100% certain that no VL specific changes to the code will be
 needed (this has never been the case before, hence VL is submodule free so far)
