@@ -44,8 +44,8 @@ shuffle_table(adjacents)
 local function has_flammable(pos)
 	for k,v in pairs(adjacents) do
 		local p=vector.add(pos,v)
-		local n=minetest.get_node_or_nil(p)
-		if n and minetest.get_item_group(n.name, "flammable") ~= 0 then
+		local n=get_node_or_nil(p)
+		if n and get_item_group(n.name, "flammable") ~= 0 then
 			return p
 		end
 	end
@@ -63,8 +63,8 @@ local function get_adjacent_fire_age(pos)
 	local lowest_age = nil
 	for k,v in pairs(all_adjacents) do
 		local p = vector.add(pos, v)
-		local node = minetest.get_node_or_nil(p)
-		if node and minetest.get_item_group(node.name, "fire") ~= 0 then
+		local node = get_node_or_nil(p)
+		if node and get_item_group(node.name, "fire") ~= 0 then
 			if not lowest_age or node.param2 < lowest_age then
 				lowest_age = node.param2
 			end
@@ -112,23 +112,37 @@ else
 	eternal_fire_help = S("Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
 end
 
-local function spawn_fire(pos, age)
+-- exponential constant is such that at age=255, p=0.5%
+local K1 = ( math.log(0.005) / math.log(10) ) / 255
+local function spawn_fire(pos, age, force)
 	if not age then
+		minetest.log("warning","No age specified at "..debug.traceback())
+
 		-- Get adjacent age
 		local adjacent_age = get_adjacent_fire_age(pos)
 
 		-- Don't create new fire if we can't find adjacent fire from this position
 		if not adjacent_age then return end
 
-		age = math.random(1,5) + adjacent_age
+		age = adjacent_age + math.ceil(minetest.get_humidity(pos)/10) + math.random(5)
 	end
 	if age <= 1 then
 		minetest.log("warning","new flash point at "..vector.to_string(pos).." age="..tostring(age)..",backtrace = "..debug.traceback())
 	end
+	if age >= 255 then
+		age = 255
+	end
+
+	local node = get_node(pos)
+	local node_is_flammable = get_item_group(node.name, "flammable")
 
 	-- Limit fire spread
-	local probability = math.pow(10,-1.176e-2 * age) -- exponential constant is such that at age=255, p=0.1%
-	if math.random(65536)/65536 >= probability then
+	local probability_age = age
+	if node_is_flammable then
+		probability_age = probability_age * 0.80
+	end
+	local probability = math.pow(10,K1 * probability_age)
+	if not force and math.random(65536)/65536 >= probability then
 		return
 	end
 
@@ -399,32 +413,47 @@ if not fire_enabled then
 
 else -- Fire enabled
 
+	-- Extinguish parameters
+	local C2 = math.log(1/20) / math.log(10)
+	local K2 = -C2 / 255
+
 	-- Fire Spread
 	minetest.register_abm({
 		label = "Ignite flame",
 		nodenames ={"mcl_fire:fire","mcl_fire:eternal_fire"},
 		interval = 7,
-		chance = 12,
+		chance = 5,
 		catch_up = false,
 		action = function(pos)
-			local node = minetest.get_node(pos)
+			local node = get_node(pos)
 			local age = node.param2
+
+			-- Always age the source fire
+			age = age + math.ceil(minetest.get_humidity(pos)/10) + math.random(5)
+			if age > 255 then age = 255 end
+			node.param2 = age
 
 			local p = get_ignitable(pos)
 			if p then
 				-- Spawn new fire with an age based on this node's age
-				spawn_fire(p, age+math.random(3,7))
+				spawn_fire(p, age + math.ceil(minetest.get_humidity(p)/10) + math.random(5))
 				shuffle_table(adjacents)
 			end
 
-			-- Always age the source fire
-			age = age + math.random(2,5)
-			node.param2 = age
-			if age >= 255 then
-				node.name = "air"
-				node.param2 = 0
+			if node.name ~= "mcl_fire:eternal_fire" then
+				-- Randomly extinguish fires with increasing probability the older they are
+				local extinguish_probability = math.pow(10,K2 * age + C2)
+				if math.random(65536)/65536 <= extinguish_probability then
+					node.name = "air"
+					node.param2 = 0
+
+				-- Extinguish fires not adjacent to flammable materials
+				elseif not has_flammable(pos) then
+					node.name = "air"
+					node.param2 = 0
+				end
 			end
-			minetest.set_node(pos, node)
+			set_node(pos, node)
 		end
 	})
 
@@ -439,26 +468,7 @@ else -- Fire enabled
 		action = function(pos)
 			local p=get_ignitable_by_lava(pos)
 			if p then
-				spawn_fire(p)
-			end
-		end,
-	})
-
-	minetest.register_abm({
-		label = "Remove fires",
-		nodenames = {"mcl_fire:fire"},
-		interval = 7,
-		chance = 3,
-		catch_up = false,
-		action = function(pos)
-			local p=has_flammable(pos)
-			if p then
-				local n=minetest.get_node_or_nil(p)
-				if n and minetest.get_item_group(n.name, "flammable") < 1 then
-					minetest.remove_node(pos)
-				end
-			else
-				minetest.remove_node(pos)
+				spawn_fire(p, 0)
 			end
 		end,
 	})
@@ -477,15 +487,27 @@ else -- Fire enabled
 				return
 			end
 
-			local nn = minetest.get_node(p).name
-			local def = minetest.registered_nodes[nn]
-			local fgroup = minetest.get_item_group(nn, "flammable")
+			local node = get_node(p)
+			local node_name = node.name
+			local def = minetest.registered_nodes[node_name]
+			local fgroup = minetest.get_item_group(node_name, "flammable")
 
 			if def and def._on_burn then
 				def._on_burn(p)
 			elseif fgroup ~= -1 then
-				spawn_fire(p)
+				local source_node = get_node(pos)
+				local age = source_node.param2
+
+				spawn_fire(p, age + math.ceil(minetest.get_humidity(p)/10) + math.random(5), true)
 				minetest.check_for_falling(p)
+
+				if source_node.name == "mcl_fire:fire" then
+					-- Always age the source fire
+					age = age + math.ceil(minetest.get_humidity(pos)/10) + math.random(5)
+					if age > 255 then age = 255 end
+					source_node.param2 = age
+					set_node(pos, source_node)
+				end
 			end
 		end
 	})
@@ -508,17 +530,17 @@ function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 		return
 	end
 
-	local n_pointed = minetest.get_node(pointed_thing.under)
+	local n_pointed = get_node(pointed_thing.under)
 	if allow_on_fire == false and get_item_group(n_pointed.name, "fire") ~= 0 then
 		return
 	end
 
-	local n_fire_pos = minetest.get_node(pointed_thing.above)
+	local n_fire_pos = get_node(pointed_thing.above)
 	if n_fire_pos.name ~= "air" then
 		return
 	end
 
-	local n_below = minetest.get_node(vector.offset(pointed_thing.above, 0, -1, 0))
+	local n_below = get_node(vector.offset(pointed_thing.above, 0, -1, 0))
 	if minetest.get_item_group(n_below.name, "water") ~= 0 then
 		return
 	end
