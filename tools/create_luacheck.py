@@ -2,7 +2,7 @@ import os
 import re
 from pathlib import Path
 
-# Just run this script from mineclone2 directory to get a list of every global vars to use in luacheck configuration files
+# Just run this script from voxelibre directory to get a list of every global vars to use in luacheck configuration files
 
 path =  "./mods/"
 
