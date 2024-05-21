@@ -106,7 +106,7 @@ function mcl_itemframes.tpl_node.on_rightclick(pos, node, clicker, ostack, point
 	local name = clicker:get_player_name()
 	if minetest.is_protected(pos, name) then
 		minetest.record_protection_violation(pos, name)
-		return
+		return ostack
 	end
 	local pstack = ItemStack(ostack)
 	local itemstack = pstack:take_item()
