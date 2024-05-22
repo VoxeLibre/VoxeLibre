@@ -255,7 +255,7 @@ local function factoid_toolcaps(tool_capabilities, check_uses)
 				formstring = formstring .. miningtimesstr
 			end
 			if useslines > 0 then
-				formstring = formstring .. S("Mining durability:") .. "\n"
+				formstring = formstring .. S("Durability:") .. "\n"
 				formstring = formstring .. miningusesstr
 			end
 			if caplines > 0 or useslines > 0 or timelines > 0 then

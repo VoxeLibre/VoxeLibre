@@ -485,6 +485,7 @@ mcl_experience.register_on_add_xp(function(player, xp)
 		end
 
 		stack:set_wear(math.floor(new_wear))
+		tt.reload_itemstack_description(stack) -- update tooltip
 		inv:set_stack(list, index, stack)
 	end
 

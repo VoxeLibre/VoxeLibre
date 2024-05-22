@@ -1,6 +1,7 @@
 --Fishing Rod, Bobber, and Flying Bobber mechanics and Bobber artwork by Rootyjr.
 
 local S = minetest.get_translator(minetest.get_current_modname())
+local FISHING_ROD_DURABILITY = 65
 
 local bobber_ENTITY={
 	physical = false,
@@ -38,7 +39,7 @@ local fish = function(itemstack, player, pointed_thing)
 		local ent = nil
 		local noent = true
 
-		local durability = 65
+		local durability = FISHING_ROD_DURABILITY
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
 			durability = durability * (unbreaking + 1)
@@ -140,6 +141,7 @@ local fish = function(itemstack, player, pointed_thing)
 							if not minetest.is_creative_enabled(player:get_player_name()) then
 								local idef = itemstack:get_definition()
 								itemstack:add_wear(65535/durability) -- 65 uses
+								tt.reload_itemstack_description(itemstack) -- update tooltip
 								if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
 									minetest.sound_play(idef.sound.breaks, {pos=player:get_pos(), gain=0.5}, true)
 								end
@@ -154,6 +156,7 @@ local fish = function(itemstack, player, pointed_thing)
 							if not minetest.is_creative_enabled(player:get_player_name()) then
 								local idef = itemstack:get_definition()
 								itemstack:add_wear((65535/durability)*2) -- if so and not creative then wear double like in MC.
+								tt.reload_itemstack_description(itemstack) -- update tooltip
 								if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
 									minetest.sound_play(idef.sound.breaks, {pos=player:get_pos(), gain=0.5}, true)
 								end

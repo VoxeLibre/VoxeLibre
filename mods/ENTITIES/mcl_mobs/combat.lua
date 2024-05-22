@@ -646,6 +646,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				if def.tool_capabilities and def.tool_capabilities.punch_attack_uses then
 					local wear = math.floor(65535/tool_capabilities.punch_attack_uses)
 					weapon:add_wear(wear)
+					tt.reload_itemstack_description(weapon) -- update tooltip
 					hitter:set_wielded_item(weapon)
 				end
 			end, hitter:get_player_name())

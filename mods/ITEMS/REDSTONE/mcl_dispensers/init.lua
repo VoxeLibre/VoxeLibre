@@ -227,6 +227,7 @@ local dispenserdef = {
 									entity.gotten = true
 									minetest.sound_play("mcl_tools_shears_cut", { pos = pos }, true)
 									stack:add_wear(65535 / stackdef._mcl_diggroups.shearsy.uses)
+									tt.reload_itemstack_description(stack) -- update tooltip
 									inv:set_stack("main", stack_id, stack)
 									break
 								end

@@ -131,6 +131,7 @@ mcl_mobs.register_mob("mobs_mc:snowman", {
 			-- Wear out
 			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:add_wear(mobs_mc.shears_wear)
+				tt.reload_itemstack_description(item) -- update tooltip
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end
 		end

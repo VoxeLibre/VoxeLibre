@@ -186,6 +186,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				local wear = mcl_autogroup.get_wear(toolname, "shovely")
 				if wear then
 					itemstack:add_wear(wear)
+					tt.reload_itemstack_description(itemstack) -- update tooltip
 				end
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
@@ -209,6 +210,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				local wear = mcl_autogroup.get_wear(toolname, "shovely")
 				if wear then
 					itemstack:add_wear(wear)
+					tt.reload_itemstack_description(itemstack) -- update tooltip
 				end
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
@@ -240,6 +242,7 @@ if minetest.get_modpath("mcl_farming") then
 				local wear = mcl_autogroup.get_wear(toolname, "shearsy")
 				if wear then
 					itemstack:add_wear(wear)
+					tt.reload_itemstack_description(itemstack) -- update tooltip
 				end
 
 			end
@@ -420,6 +423,7 @@ local function make_stripped_trunk(itemstack, placer, pointed_thing)
 			local wear = mcl_autogroup.get_wear(toolname, "axey")
 			if wear then
 				itemstack:add_wear(wear)
+				tt.reload_itemstack_description(itemstack) -- update tooltip
 			end
 		end
 	end

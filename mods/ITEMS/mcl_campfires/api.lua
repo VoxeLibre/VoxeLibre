@@ -323,6 +323,7 @@ function mcl_campfires.register_campfire(name, def)
 						local wear = mcl_autogroup.get_wear(toolname, "shovely")
 						if wear then
 							itemstack:add_wear(wear)
+							tt.reload_itemstack_description(itemstack) -- update tooltip
 						end
 					end
 					node.name = name

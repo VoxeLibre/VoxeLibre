@@ -534,6 +534,7 @@ end
 function mcl_util.use_item_durability(itemstack, n)
 	local uses = mcl_util.calculate_durability(itemstack)
 	itemstack:add_wear(65535 / uses * n)
+	tt.reload_itemstack_description(itemstack) -- update tooltip
 end
 
 function mcl_util.deal_damage(target, damage, mcl_reason)

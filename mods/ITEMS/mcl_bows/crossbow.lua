@@ -350,6 +350,7 @@ controls.register_on_press(function(player, key, time)
 				durability = durability / 3
 			end
 			wielditem:add_wear(65535/durability)
+			tt.reload_itemstack_description(wielditem) -- update tooltip
 		end
 		player:set_wielded_item(wielditem)
 		reset_bow_state(player, true)

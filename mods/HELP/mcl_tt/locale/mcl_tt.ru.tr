@@ -42,7 +42,6 @@ Fast=Высокая
 Slow=Низкая
 Very slow=Очень низкая
 Painfully slow=Крайне низкая
-Mining durability: @1=Прочность при добыче: @1
 Block breaking strength: @1=Сила добычи: @1
 @1 uses=@1
 Unlimited uses=не ограничено

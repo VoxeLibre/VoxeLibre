@@ -448,6 +448,7 @@ function minetest.node_dig(pos, node, digger)
 				end
 			end
 		end
+		tt.reload_itemstack_description(wielded) -- update tooltip
 		digger:set_wielded_item(wielded)
 	end
 

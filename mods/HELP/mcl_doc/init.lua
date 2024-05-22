@@ -374,7 +374,7 @@ doc.sub.items.register_factoid("tools", "misc", function(itemstring, def)
 			capstr = capstr .. S("Mining speed: @1", speedstr) .. "\n"
 		end
 		if miningusesstr ~= "" then
-			capstr = capstr .. S("Mining durability: @1", miningusesstr) .. "\n"
+			capstr = capstr .. S("Durability: @1", miningusesstr) .. "\n"
 		end
 
 		-- Only show one group at max

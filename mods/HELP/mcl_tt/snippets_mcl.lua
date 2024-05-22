@@ -25,6 +25,7 @@ tt.register_snippet(function(itemstring)
 	end
 	return s
 end)
+
 tt.register_snippet(function(itemstring, _, itemstack)
 	--local def = minetest.registered_items[itemstring]
 	local s = ""
@@ -34,13 +35,18 @@ tt.register_snippet(function(itemstring, _, itemstack)
 		s = s .. S("Armor points: @1", pts)
 		s = s .. "\n"
 	end
+	local remaining_uses = use
 	if itemstack then
 		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 		if unbreaking > 0 then
 			use = math.floor(use / (0.6 + 0.4 / (unbreaking + 1)))
 		end
+		remaining_uses = math.round(use - (itemstack:get_wear() * use) / 65535)
 	end
 	if use > 0 then
+		if use ~= remaining_uses then
+			use = remaining_uses .. "/" .. use -- implicit conversion from number to string
+		end
 		s = s .. S("Armor durability: @1", use)
 	end
 	if s == "" then
@@ -109,6 +115,9 @@ end)
 
 tt.register_snippet(function(itemstring, _, itemstack)
 	if itemstring:sub(1, 23) == "mcl_fishing:fishing_rod" or itemstring:sub(1, 12) == "mcl_bows:bow" then
-		return S("Durability: @1", S("@1 uses", mcl_util.calculate_durability(itemstack or ItemStack(itemstring))))
+		local stack = itemstack or ItemStack(itemstring)
+		local use = mcl_util.calculate_durability(stack)
+		local remaining_use = math.round(use - (stack:get_wear() * use) / 65535)
+		return S("Durability: @1", S("@1 uses", remaining_use .."/".. use))
 	end
 end)
