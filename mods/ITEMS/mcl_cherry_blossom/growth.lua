@@ -31,11 +31,25 @@ local cherry_particle = {
 	velocity = vector.zero(),
 	acceleration = vector.new(0,-1,0),
 	size = math.random(1.3,2.5),
-	texture = "mcl_cherry_blossom_particle.png",
+	texture = "mcl_cherry_blossom_particle_" .. math.random(1, 12) .. ".png",
+	animation = {
+		type = "vertical_frames",
+		aspect_w = 3,
+		aspect_h = 3,
+		length = 0.8,
+	},
 	collision_removal = false,
 	collisiondetection = false,
 }
 
+local wind_direction -- vector
+local time_changed -- 0 - afternoon; 1 - evening; 2 - morning
+local function change_wind_direction()
+	local east_west = math.random(-0.5,0.5)
+	local north_south = math.random(-0.5,0.5)
+	wind_direction = vector.new(east_west, 0, north_south)
+end
+change_wind_direction()
 
 minetest.register_abm({
 	label = "Cherry Blossom Particles",
@@ -47,6 +61,20 @@ minetest.register_abm({
 			local pt = table.copy(cherry_particle)
 			pt.pos = vector.offset(pos,math.random(-0.5,0.5),-0.51,math.random(-0.5,0.5))
 			pt.expirationtime = math.random(1.2,4.5)
+			pt.texture = "mcl_cherry_blossom_particle_" .. math.random(1, 12) .. ".png"
+			local time = minetest.get_timeofday()
+			if time_changed ~= 0 and time > 0.6 and time < 0.605 then
+				time_changed = 0
+				change_wind_direction()
+			elseif (time_changed ~= 1 and time > 0.8 and time < 0.805) then
+				time_changed = 1
+				change_wind_direction()
+			elseif (time_changed ~= 2 and time > 0.3 and time < 0.305) then
+				time_changed = 2
+				change_wind_direction()
+			end
+			pt.acceleration = pt.acceleration + wind_direction
+
 			minetest.add_particle(pt)
 		end)
 	end
