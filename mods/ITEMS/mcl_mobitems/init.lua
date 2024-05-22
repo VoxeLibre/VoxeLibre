@@ -154,7 +154,7 @@ local function drink_milk_delayed(itemstack, player, pointed_thing)
 		) then
 			mcl_hunger.stop_poison(player)
 		end
-		mcl_potions._reset_player_effects(player)
+		mcl_potions._reset_effects(player)
 	end
 
 	-- Wrapper for handling mcl_hunger delayed eating
@@ -229,6 +229,46 @@ minetest.register_craftitem("mcl_mobitems:string",{
 	inventory_image = "mcl_mobitems_string.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
+})
+
+minetest.register_craftitem("mcl_mobitems:spectre_membrane",{
+	description = S("Spectre Membrane"),
+	_doc_items_longdesc = S("This is a crafting component dropped from dead spectres."),
+	inventory_image = "vl_mobitems_spectre_membrane.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_mobitems:shiny_ice_crystal",{
+	description = S("Shiny Ice Crystal"),
+	_doc_items_longdesc = S("This item is mainly used for crafting."),
+	inventory_image = "vl_mobitems_ice_crystal.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_mobitems:aery_charge",{
+	description = S("Aery Charge"),
+	_doc_items_longdesc = S("This item is mainly used for crafting."), -- TODO shoot?
+	inventory_image = "vl_mobitems_aery_charge.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_mobitems:crystalline_drop",{
+	description = S("Crystalline Drop"),
+	_doc_items_longdesc = S("This item is mainly used for crafting."), -- TODO other uses?
+	inventory_image = "vl_mobitems_crystalline_drop.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_mobitems:earthen_ash",{
+	description = S("Earthen Ash"),
+	_doc_items_longdesc = S("This item is mainly used for crafting."), -- TODO other uses?
+	inventory_image = "vl_mobitems_earthen_ash.png",
+	groups = { craftitem = 1, brewitem = 1 },
+	stack_max = 64,
 })
 
 minetest.register_craftitem("mcl_mobitems:blaze_rod", {
@@ -580,6 +620,6 @@ minetest.register_craft({
 
 minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)	-- poisoning with spider eye
 	if itemstack:get_name() == "mcl_mobitems:spider_eye" then
-		mcl_potions.poison_func(user, 1, 4)
+		mcl_potions.give_effect_by_level("poison", user, 1, 4)
 	end
 end)

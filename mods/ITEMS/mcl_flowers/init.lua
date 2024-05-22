@@ -194,8 +194,8 @@ def_clover.mesh = "mcl_clover_3leaf.obj"
 def_clover.tiles = { "mcl_flowers_clover.png" }
 def_clover.inventory_image = "mcl_flowers_clover_inv.png"
 def_clover.wield_image = "mcl_flowers_clover_inv.png"
-def_clover.drop = nil
 def_clover.use_texture_alpha = "clip"
+def_clover.drop = "mcl_flowers:clover"
 def_clover.selection_box = {
 	type = "fixed",
 	fixed = { -4/16, -0.5, -4/16, 4/16, 0, 4/16 },
@@ -212,6 +212,7 @@ def_4l_clover.tiles = { "mcl_flowers_fourleaf_clover.png" }
 def_4l_clover.inventory_image = "mcl_flowers_fourleaf_clover_inv.png"
 def_4l_clover.wield_image = "mcl_flowers_fourleaf_clover_inv.png"
 def_4l_clover.use_texture_alpha = "clip"
+def_4l_clover.drop = "mcl_flowers:fourleaf_clover"
 
 minetest.register_node("mcl_flowers:fourleaf_clover", def_4l_clover)
 

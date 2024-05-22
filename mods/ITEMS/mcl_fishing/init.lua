@@ -62,8 +62,8 @@ local fish = function(itemstack, player, pointed_thing)
 							local junk_values = {10, 8.1, 6.1, 4.2}
 							local luck_of_the_sea = math.min(mcl_enchanting.get_enchantment(itemstack, "luck_of_the_sea"), 3)
 							local index = luck_of_the_sea + 1
-							local fish_value = fish_values[index]
-							local junk_value = junk_values[index] + fish_value
+							local fish_value = fish_values[index] - mcl_luck.get_luck(ent.player)
+							local junk_value = junk_values[index] + fish_value - mcl_luck.get_luck(ent.player)
 							if r <= fish_value then
 								-- Fish
 								items = mcl_loot.get_loot({
@@ -114,6 +114,8 @@ local fish = function(itemstack, player, pointed_thing)
 										{ itemstring = "mcl_mobitems:saddle", },
 										{ itemstring = "mcl_flowers:waterlily", },
 										{ itemstring = "mcl_mobitems:nautilus_shell", },
+										{ itemstring = "mcl_mobitems:spectre_membrane", },
+										{ itemstring = "mcl_mobitems:crystalline_drop", },
 									},
 									stacks_min = 1,
 									stacks_max = 1,
@@ -519,7 +521,8 @@ minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
 
 	if itemstack:get_name() == "mcl_fishing:pufferfish_raw" then
-		mcl_potions.poison_func(user, 1/3, 60)
+		mcl_potions.give_effect_by_level("poison", user, 3, 60)
+		mcl_potions.give_effect_by_level("nausea", user, 2, 20)
 	end
 
 end )

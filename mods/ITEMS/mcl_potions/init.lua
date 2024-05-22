@@ -8,14 +8,18 @@ mcl_potions = {}
 -- duration effects of glowstone are a time factor of 1/2
 -- splash potion duration effects are reduced by a factor of 3/4
 
-mcl_potions.II_FACTOR = 2
+mcl_potions.POTENT_FACTOR = 2
 mcl_potions.PLUS_FACTOR = 8/3
+mcl_potions.INV_FACTOR = 0.50
 
 mcl_potions.DURATION = 180
-mcl_potions.DURATION_PLUS = mcl_potions.DURATION * mcl_potions.PLUS_FACTOR
-mcl_potions.DURATION_2 = mcl_potions.DURATION / mcl_potions.II_FACTOR
+mcl_potions.DURATION_INV = mcl_potions.DURATION * mcl_potions.INV_FACTOR
+mcl_potions.DURATION_POISON = 45
 
-mcl_potions.INV_FACTOR = 0.50
+mcl_potions.II_FACTOR = mcl_potions.POTENT_FACTOR -- TODO remove at some point
+mcl_potions.DURATION_PLUS = mcl_potions.DURATION * mcl_potions.PLUS_FACTOR -- TODO remove at some point
+mcl_potions.DURATION_2 = mcl_potions.DURATION / mcl_potions.II_FACTOR -- TODO remove at some point
+
 mcl_potions.SPLASH_FACTOR = 0.75
 mcl_potions.LINGERING_FACTOR = 0.25
 
@@ -25,6 +29,7 @@ dofile(modpath .. "/splash.lua")
 dofile(modpath .. "/lingering.lua")
 dofile(modpath .. "/tipped_arrow.lua")
 dofile(modpath .. "/potions.lua")
+local potions = mcl_potions.registered_potions
 
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = S("Fermented Spider Eye"),
@@ -332,9 +337,28 @@ minetest.register_craft({
 })
 
 
+
+local output_table = { }
+
+-- API
+-- registers a potion that can be combined with multiple ingredients for different outcomes
+-- out_table contains the recipes for those outcomes
+function mcl_potions.register_ingredient_potion(input, out_table)
+	if output_table[input] then
+		error("Attempt to register the same ingredient twice!")
+	end
+	if type(input) ~= "string" then
+		error("Invalid argument! input must be a string")
+	end
+	if type(out_table) ~= "table" then
+		error("Invalid argument! out_table must be a table")
+	end
+	output_table[input] = out_table
+end
+
 local water_table = {
 	["mcl_nether:nether_wart_item"] = "mcl_potions:awkward",
-	-- ["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
+	["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
 	["mcl_potions:speckled_melon"] = "mcl_potions:mundane",
 	["mcl_core:sugar"] = "mcl_potions:mundane",
 	["mcl_mobitems:magma_cream"] = "mcl_potions:mundane",
@@ -346,133 +370,269 @@ local water_table = {
 	["mcl_nether:glowstone_dust"] = "mcl_potions:thick",
 	["mcl_mobitems:gunpowder"] = "mcl_potions:water_splash"
 }
+-- API
+-- register a potion recipe brewed from water
+function mcl_potions.register_water_brew(ingr, potion)
+	if water_table[ingr] then
+		error("Attempt to register the same ingredient twice!")
+	end
+	if type(ingr) ~= "string" then
+		error("Invalid argument! ingr must be a string")
+	end
+	if type(potion) ~= "string" then
+		error("Invalid argument! potion must be a string")
+	end
+	water_table[ingr] = potion
+end
+mcl_potions.register_ingredient_potion("mcl_potions:river_water", water_table)
+mcl_potions.register_ingredient_potion("mcl_potions:water", water_table)
 
 local awkward_table = {
 	["mcl_potions:speckled_melon"] = "mcl_potions:healing",
 	["mcl_farming:carrot_item_gold"] = "mcl_potions:night_vision",
 	["mcl_core:sugar"] = "mcl_potions:swiftness",
 	["mcl_mobitems:magma_cream"] = "mcl_potions:fire_resistance",
-	-- ["mcl_mobitems:blaze_powder"] = "mcl_potions:strength",
+	["mcl_mobitems:blaze_powder"] = "mcl_potions:strength",
 	["mcl_fishing:pufferfish_raw"] = "mcl_potions:water_breathing",
 	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration",
 	["mcl_mobitems:spider_eye"] = "mcl_potions:poison",
 	["mcl_flowers:wither_rose"] = "mcl_potions:withering",
 	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping",
+
+	["mcl_flowers:fourleaf_clover"] = "mcl_potions:luck",
+	["mcl_farming:potato_item_poison"] = "mcl_potions:nausea",
+	["mcl_mobitems:spectre_membrane"] = "mcl_potions:slow_falling",
+	["mcl_core:apple_gold"] = "mcl_potions:resistance",
+	["mcl_mobitems:aery_charge"] = "mcl_potions:haste",
+	["mcl_mobitems:crystalline_drop"] = "mcl_potions:absorption",
+	["mcl_mobitems:earthen_ash"] = "mcl_potions:stone_cloak",
+	["mcl_mobitems:shiny_ice_crystal"] = "mcl_potions:frost",
+
+	-- TODO darkness - sculk?
 }
+-- API
+-- register a potion recipe brewed from awkward potion
+function mcl_potions.register_awkward_brew(ingr, potion)
+	if awkward_table[ingr] then
+		error("Attempt to register the same ingredient twice!")
+	end
+	if type(ingr) ~= "string" then
+		error("Invalid argument! ingr must be a string")
+	end
+	if type(potion) ~= "string" then
+		error("Invalid argument! potion must be a string")
+	end
+	awkward_table[ingr] = potion
+end
+mcl_potions.register_ingredient_potion("mcl_potions:awkward", awkward_table)
 
-local output_table = {
-	["mcl_potions:river_water"] = water_table,
-	["mcl_potions:water"] = water_table,
-	["mcl_potions:awkward"] = awkward_table,
+local mundane_table = {
+	["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
 }
-
-
-local enhancement_table = {}
-local extension_table = {}
-local potions = {}
-
-for i, potion in ipairs({"healing","harming","swiftness","slowness",
-	 "leaping","poison","regeneration","invisibility","fire_resistance",
-	 -- "weakness","strength",
-	 "water_breathing","night_vision", "withering"}) do
-
-	table.insert(potions, potion)
-
-	if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" and potion ~= "water_breathing" and potion ~= "fire_resistance" then
-		enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
-		enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
-		table.insert(potions, potion.."_2")
+-- API
+-- register a potion recipe brewed from mundane potion
+function mcl_potions.register_mundane_brew(ingr, potion)
+	if mundane_table[ingr] then
+		error("Attempt to register the same ingredient twice!")
 	end
-
-	if potion ~= "healing" and potion ~= "harming" then
-		extension_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_plus_splash"
-		extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
-		table.insert(potions, potion.."_plus")
+	if type(ingr) ~= "string" then
+		error("Invalid argument! ingr must be a string")
 	end
-
+	if type(potion) ~= "string" then
+		error("Invalid argument! potion must be a string")
+	end
+	mundane_table[ingr] = potion
 end
+mcl_potions.register_ingredient_potion("mcl_potions:mundane", mundane_table)
 
-for i, potion in ipairs({"awkward", "mundane", "thick", "water"}) do
-	table.insert(potions, potion)
+local thick_table = {
+	["mcl_crimson:shroomlight"] = "mcl_potions:glowing",
+	["mcl_mobitems:nether_star"] = "mcl_potions:ominous",
+	["mcl_mobitems:ink_sac"] = "mcl_potions:blindness",
+	["mcl_farming:carrot_item_gold"] = "mcl_potions:saturation",
+}
+-- API
+-- register a potion recipe brewed from thick potion
+function mcl_potions.register_thick_brew(ingr, potion)
+	if thick_table[ingr] then
+		error("Attempt to register the same ingredient twice!")
+	end
+	if type(ingr) ~= "string" then
+		error("Invalid argument! ingr must be a string")
+	end
+	if type(potion) ~= "string" then
+		error("Invalid argument! potion must be a string")
+	end
+	thick_table[ingr] = potion
 end
+mcl_potions.register_ingredient_potion("mcl_potions:thick", thick_table)
 
+
+local mod_table = { }
+
+-- API
+-- registers a brewing recipe altering the potion using a table
+-- this is supposed to substitute one item with another
+function mcl_potions.register_table_modifier(ingr, modifier)
+	if mod_table[ingr] then
+		error("Attempt to register the same ingredient twice!")
+	end
+	if type(ingr) ~= "string" then
+		error("Invalid argument! ingr must be a string")
+	end
+	if type(modifier) ~= "table" then
+		error("Invalid argument! modifier must be a table")
+	end
+	mod_table[ingr] = modifier
+end
 
 local inversion_table = {
 	["mcl_potions:healing"] = "mcl_potions:harming",
-	["mcl_potions:healing_2"] = "mcl_potions:harming_2",
 	["mcl_potions:swiftness"] = "mcl_potions:slowness",
-	["mcl_potions:swiftness_plus"] = "mcl_potions:slowness_plus",
 	["mcl_potions:leaping"] = "mcl_potions:slowness",
-	["mcl_potions:leaping_plus"] = "mcl_potions:slowness_plus",
 	["mcl_potions:night_vision"] = "mcl_potions:invisibility",
-	["mcl_potions:night_vision_plus"] = "mcl_potions:invisibility_plus",
 	["mcl_potions:poison"] = "mcl_potions:harming",
-	["mcl_potions:poison_2"] = "mcl_potions:harming_2",
-	["mcl_potions:healing_splash"] = "mcl_potions:harming_splash",
-	["mcl_potions:healing_2_splash"] = "mcl_potions:harming_2_splash",
-	["mcl_potions:swiftness_splash"] = "mcl_potions:slowness_splash",
-	["mcl_potions:swiftness_plus_splash"] = "mcl_potions:slowness_plus_splash",
-	["mcl_potions:leaping_splash"] = "mcl_potions:slowness_splash",
-	["mcl_potions:leaping_plus_splash"] = "mcl_potions:slowness_plus_splash",
-	["mcl_potions:night_vision_splash"] = "mcl_potions:invisibility_splash",
-	["mcl_potions:night_vision_plus_splash"] = "mcl_potions:invisibility_plus_splash",
-	["mcl_potions:poison_splash"] = "mcl_potions:harming_splash",
-	["mcl_potions:poison_2_splash"] = "mcl_potions:harming_2_splash",
+	["mcl_potions:luck"] = "mcl_potions:bad_luck",
+	["mcl_potions:haste"] = "mcl_potions:fatigue",
+	["mcl_potions:saturation"] = "mcl_potions:food_poisoning",
+	["mcl_potions:slow_falling"] = "mcl_potions:levitation",
+	["mcl_potions:absorption"] = "mcl_potions:health_boost",
+	["mcl_potions:glowing"] = "mcl_potions:darkness", -- TODO remove after adding a direct recipe?
 }
-
+-- API
+function mcl_potions.register_inversion_recipe(input, output)
+	if inversion_table[input] then
+		error("Attempt to register the same input twice!")
+	end
+	if type(input) ~= "string" then
+		error("Invalid argument! input must be a string")
+	end
+	if type(output) ~= "string" then
+		error("Invalid argument! output must be a string")
+	end
+	inversion_table[input] = output
+end
+local function fill_inversion_table() -- autofills with splash and lingering inversion recipes
+	local filling_table = { }
+	for input, output in pairs(inversion_table) do
+		if potions[input].has_splash and potions[output].has_splash then
+			filling_table[input.."_splash"] = output .. "_splash"
+			if potions[input].has_lingering and potions[output].has_lingering then
+				filling_table[input.."_lingering"] = output .. "_lingering"
+			end
+		end
+	end
+	table.update(inversion_table, filling_table)
+	mcl_potions.register_table_modifier("mcl_potions:fermented_spider_eye", inversion_table)
+end
+minetest.register_on_mods_loaded(fill_inversion_table)
 
 local splash_table = {}
 local lingering_table = {}
+for potion, def in pairs(potions) do
+	if def.has_splash then
+		splash_table[potion] = potion.."_splash"
+		if def.has_lingering then
+			lingering_table[potion.."_splash"] = potion.."_lingering"
+		end
+	end
+end
+mcl_potions.register_table_modifier("mcl_mobitems:gunpowder", splash_table)
+mcl_potions.register_table_modifier("mcl_potions:dragon_breath", lingering_table)
 
-for i, potion in ipairs(potions) do
-	splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
-	lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
+
+local meta_mod_table = { }
+
+-- API
+-- registers a brewing recipe altering the potion using a function
+-- this is supposed to be a recipe that changes metadata only
+function mcl_potions.register_meta_modifier(ingr, mod_func)
+	if meta_mod_table[ingr] then
+		error("Attempt to register the same ingredient twice!")
+	end
+	if type(ingr) ~= "string" then
+		error("Invalid argument! ingr must be a string")
+	end
+	if type(mod_func) ~= "function" then
+		error("Invalid argument! mod_func must be a function")
+	end
+	meta_mod_table[ingr] = mod_func
 end
 
+local function extend_dur(potionstack)
+	local def = potions[potionstack:get_name()]
+	if not def then return false end
+	if not def.has_plus then return false end -- bail out if can't be extended
+	local potionstack = ItemStack(potionstack)
+	local meta = potionstack:get_meta()
+	local potent = meta:get_int("mcl_potions:potion_potent")
+	local plus = meta:get_int("mcl_potions:potion_plus")
+	if plus == 0 then
+		if potent ~= 0 then
+			meta:set_int("mcl_potions:potion_potent", 0)
+		end
+		meta:set_int("mcl_potions:potion_plus", def._default_extend_level)
+		tt.reload_itemstack_description(potionstack)
+		return potionstack
+	end
+	return false
+end
+mcl_potions.register_meta_modifier("mesecons:wire_00000000_off", extend_dur)
 
-local mod_table = {
-	["mesecons:wire_00000000_off"] = extension_table,
-	["mcl_potions:fermented_spider_eye"] = inversion_table,
-	["mcl_nether:glowstone_dust"] = enhancement_table,
-	["mcl_mobitems:gunpowder"] = splash_table,
-	["mcl_potions:dragon_breath"] = lingering_table,
-}
+local function enhance_pow(potionstack)
+	local def = potions[potionstack:get_name()]
+	if not def then return false end
+	if not def.has_potent then return false end -- bail out if has no potent variant
+	local potionstack = ItemStack(potionstack)
+	local meta = potionstack:get_meta()
+	local potent = meta:get_int("mcl_potions:potion_potent")
+	local plus = meta:get_int("mcl_potions:potion_plus")
+	if potent == 0 then
+		if plus ~= 0 then
+			meta:set_int("mcl_potions:potion_plus", 0)
+		end
+		meta:set_int("mcl_potions:potion_potent", def._default_potent_level-1)
+		tt.reload_itemstack_description(potionstack)
+		return potionstack
+	end
+	return false
+end
+mcl_potions.register_meta_modifier("mcl_nether:glowstone_dust", enhance_pow)
 
--- Compare two ingredients for compatable alchemy
+
+-- Find an alchemical recipe for given ingredient and potion
+-- returns outcome
 function mcl_potions.get_alchemy(ingr, pot)
-	if output_table[pot] then
+	local brew_selector = output_table[pot:get_name()]
+	if brew_selector and brew_selector[ingr] then
+		local meta = pot:get_meta():to_table()
+		local alchemy = ItemStack(brew_selector[ingr])
+		local metaref = alchemy:get_meta()
+		metaref:from_table(meta)
+		tt.reload_itemstack_description(alchemy)
+		return alchemy
+	end
 
-		local brew_table = output_table[pot]
-
-		if brew_table[ingr] then
-			return brew_table[ingr]
+	brew_selector = mod_table[ingr]
+	if brew_selector then
+		local brew = brew_selector[pot:get_name()]
+		if brew then
+			local meta = pot:get_meta():to_table()
+			local alchemy = ItemStack(brew)
+			local metaref = alchemy:get_meta()
+			metaref:from_table(meta)
+			tt.reload_itemstack_description(alchemy)
+			return alchemy
 		end
 	end
 
-	if mod_table[ingr] then
-
-		local brew_table = mod_table[ingr]
-
-		if brew_table[pot] then
-			return brew_table[pot]
-		end
-
+	if meta_mod_table[ingr] then
+		local brew_func = meta_mod_table[ingr]
+		if brew_func then return brew_func(pot) end
 	end
 
 	return false
 end
-
-mcl_mobs.effect_functions["poison"] = mcl_potions.poison_func
-mcl_mobs.effect_functions["regeneration"] = mcl_potions.regeneration_func
-mcl_mobs.effect_functions["invisibility"] = mcl_potions.invisiblility_func
-mcl_mobs.effect_functions["fire_resistance"] = mcl_potions.fire_resistance_func
-mcl_mobs.effect_functions["night_vision"] = mcl_potions.night_vision_func
-mcl_mobs.effect_functions["water_breathing"] = mcl_potions.water_breathing_func
-mcl_mobs.effect_functions["leaping"] = mcl_potions.leaping_func
-mcl_mobs.effect_functions["swiftness"] = mcl_potions.swiftness_func
-mcl_mobs.effect_functions["heal"] = mcl_potions.healing_func
-mcl_mobs.effect_functions["bad_omen"] = mcl_potions.bad_omen_func
-mcl_mobs.effect_functions["withering"] = mcl_potions.withering_func
 
 -- give withering to players in a wither rose
 local etime = 0
@@ -488,10 +648,6 @@ minetest.register_globalstep(function(dtime)
 end)
 
 mcl_wip.register_wip_item("mcl_potions:night_vision")
-mcl_wip.register_wip_item("mcl_potions:night_vision_plus")
 mcl_wip.register_wip_item("mcl_potions:night_vision_splash")
-mcl_wip.register_wip_item("mcl_potions:night_vision_plus_splash")
 mcl_wip.register_wip_item("mcl_potions:night_vision_lingering")
-mcl_wip.register_wip_item("mcl_potions:night_vision_plus_lingering")
 mcl_wip.register_wip_item("mcl_potions:night_vision_arrow")
-mcl_wip.register_wip_item("mcl_potions:night_vision_plus_arrow")

@@ -105,7 +105,13 @@ minetest.register_on_mods_loaded(function()
 				nonmisc = true
 			end
 			if def.groups.brewitem then
-				table.insert(inventory_lists["brew"], name)
+				local str = name
+				if def.groups._mcl_potion == 1 then
+					local stack = ItemStack(name)
+					tt.reload_itemstack_description(stack)
+					str = stack:to_string()
+				end
+				table.insert(inventory_lists["brew"], str)
 				nonmisc = true
 			end
 			if def.groups.craftitem then
@@ -115,6 +121,23 @@ minetest.register_on_mods_loaded(function()
 			-- Misc. category is for everything which is not in any other category
 			if not nonmisc then
 				table.insert(inventory_lists["misc"], name)
+			end
+
+			if def.groups._mcl_potion == 1 then
+				if def.has_potent then
+					local stack = ItemStack(name)
+					local potency = def._default_potent_level - 1
+					stack:get_meta():set_int("mcl_potions:potion_potent", potency)
+					tt.reload_itemstack_description(stack)
+					table.insert(inventory_lists["brew"], stack:to_string())
+				end
+				if def.has_plus then
+					local stack = ItemStack(name)
+					local extend = def._default_extend_level
+					stack:get_meta():set_int("mcl_potions:potion_plus", extend)
+					tt.reload_itemstack_description(stack)
+					table.insert(inventory_lists["brew"], stack:to_string())
+				end
 			end
 
 			table.insert(inventory_lists["all"], name)

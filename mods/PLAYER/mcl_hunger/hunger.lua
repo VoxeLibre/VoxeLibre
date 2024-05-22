@@ -99,42 +99,6 @@ function mcl_hunger.reset_bars_poison_hunger(player)
 	end
 end
 
--- Poison player
-local function poisonp(tick, time, time_left, damage, exhaustion, name)
-	if not mcl_hunger.active then
-		return
-	end
-	local player = minetest.get_player_by_name(name)
-	-- First check if player is still there
-	if not player then
-		return
-	end
-	-- Abort if food poisonings have been stopped
-	if mcl_hunger.poison_hunger[name] == 0 then
-		return
-	end
-	time_left = time_left + tick
-	if time_left < time then
-		minetest.after(tick, poisonp, tick, time, time_left, damage, exhaustion, name)
-	else
-		if exhaustion > 0 then
-			mcl_hunger.poison_hunger [name] = mcl_hunger.poison_hunger[name] - 1
-		end
-		if mcl_hunger.poison_hunger[name] <= 0 then
-			mcl_hunger.reset_bars_poison_hunger(player)
-		end
-	end
-
-	-- Deal damage and exhaust player
-	-- TODO: Introduce fatal poison at higher difficulties
-	if player:get_hp()-damage > 0 then
-		mcl_util.deal_damage(player, damage, {type = "hunger"})
-	end
-
-	mcl_hunger.exhaust(name, exhaustion)
-
-end
-
 local poisonrandomizer = PseudoRandom(os.time())
 
 function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poison, exhaust, poisonchance, sound)
@@ -186,15 +150,8 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					do_poison = true
 				end
 				if do_poison then
-					-- Set food poison bars
-					if exhaust and exhaust > 0 then
-						hb.change_hudbar(user, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
-						if mcl_hunger.debug then
-							hb.change_hudbar(user, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_foodpoison.png")
-						end
-						mcl_hunger.poison_hunger[name] = mcl_hunger.poison_hunger[name] + 1
-					end
-					poisonp(1, poisontime, 0, poison, exhaust, user:get_player_name())
+					local level = mcl_potions.get_effect_level(user, "food_poisoning")
+					mcl_potions.give_effect_by_level("food_poisoning", user, level+exhaust, poisontime)
 				end
 			end
 

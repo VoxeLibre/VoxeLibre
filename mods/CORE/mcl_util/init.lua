@@ -1,5 +1,7 @@
 mcl_util = {}
 
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/roman_numerals.lua")
+
 -- Updates all values in t using values from to*.
 function table.update(t, ...)
 	for _, to in ipairs {...} do
@@ -436,10 +438,11 @@ function mcl_util.generate_on_place_plant_function(condition)
 		if not def_under or not def_above then
 			return itemstack
 		end
-		if def_under.buildable_to then
+		if def_under.buildable_to and def_under.name ~= itemstack:get_name() then
 			place_pos = pointed_thing.under
-		elseif def_above.buildable_to then
+		elseif def_above.buildable_to and def_above.name ~= itemstack:get_name() then
 			place_pos = pointed_thing.above
+			pointed_thing.under = pointed_thing.above
 		else
 			return itemstack
 		end

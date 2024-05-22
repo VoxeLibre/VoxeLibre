@@ -167,17 +167,17 @@ local function eat_gapple(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	local regen_duration, absorbtion_factor = 5, 1
+	local regen_duration, absorption = 5, 1
 	if itemstack:get_name() == "mcl_core:apple_gold_enchanted" then
-		regen_duration, absorbtion_factor = 20, 4
-		mcl_potions.fire_resistance_func(placer, 1, 300)
-		mcl_potions.leaping_func(placer, 1, 300)
+		regen_duration, absorption = 20, 4
+		mcl_potions.give_effect("fire_resistance", placer, 1, 300)
+		mcl_potions.give_effect_by_level("leaping", placer, 1, 300)
 		if enable_fapples then
-			mcl_potions.swiftness_func(placer, absorbtion_factor, 120)
+			mcl_potions.give_effect_by_level("swiftness", placer, absorption, 120)
 		end
 	end
-	-- TODO: Absorbtion
-	mcl_potions.regeneration_func(placer, 2, regen_duration)
+	mcl_potions.give_effect_by_level("absorption", placer, absorption, 120)
+	mcl_potions.give_effect_by_level("regeneration", placer, 2, regen_duration)
 	return gapple_hunger_restore(itemstack, placer, pointed_thing)
 end
 
@@ -206,17 +206,17 @@ local function eat_gapple_delayed(itemstack, placer, pointed_thing)
 			return itemstack
 		end
 
-		local regen_duration, absorbtion_factor = 5, 1
+		local regen_duration, absorption = 5, 1
 		if itemstack:get_name() == "mcl_core:apple_gold_enchanted" then
-			regen_duration, absorbtion_factor = 20, 4
-			mcl_potions.fire_resistance_func(placer, 1, 300)
-			mcl_potions.leaping_func(placer, 1, 300)
+			regen_duration, absorption = 20, 4
+			mcl_potions.give_effect("fire_resistance", placer, 1, 300)
+			mcl_potions.give_effect_by_level("leaping", placer, 1, 300)
 			if enable_fapples then
-				mcl_potions.swiftness_func(placer, absorbtion_factor, 120)
+				mcl_potions.give_effect_by_level("swiftness", placer, absorption, 120)
 			end
 		end
-		-- TODO: Absorbtion
-		mcl_potions.regeneration_func(placer, 2, regen_duration)
+		mcl_potions.give_effect_by_level("absorption", placer, absorption, 120)
+		mcl_potions.give_effect_by_level("regeneration", placer, 2, regen_duration)
 		--return gapple_hunger_restore(itemstack, placer, pointed_thing)
 	end
 

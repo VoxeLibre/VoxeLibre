@@ -82,7 +82,7 @@ local function brewable(inv)
 
 	for i=1,stand_size do
 
-		bottle = inv:get_stack("stand", i):get_name()
+		bottle = inv:get_stack("stand", i)
 		alchemy = mcl_potions.get_alchemy(ingredient, bottle)
 
 		if alchemy then
