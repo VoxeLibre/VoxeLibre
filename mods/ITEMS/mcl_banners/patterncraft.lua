@@ -36,7 +36,7 @@ local patterns = {
 	["creeper"] = {
 		name = N("@1 Creeper Charge"),
 		type = "shapeless",
-		{ e, "mcl_heads:creeper", d },
+		{ e, "mcl_heads:stalker", d },
 	},
 	["cross"] = {
 		name = N("@1 Saltire"),

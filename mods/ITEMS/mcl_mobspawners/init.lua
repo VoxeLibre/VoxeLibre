@@ -39,7 +39,7 @@ end
 local doll_size_overrides = {
 	["mobs_mc:guardian"] = { x = 0.6, y = 0.6 },
 	["mobs_mc:guardian_elder"] = { x = 0.72, y = 0.72 },
-	["mobs_mc:enderman"] = { x = 0.8, y = 0.8 },
+	["mobs_mc:rover"] = { x = 0.8, y = 0.8 },
 	["mobs_mc:iron_golem"] = { x = 0.9, y = 0.9 },
 	["mobs_mc:ghast"] = { x = 1.05, y = 1.05 },
 	["mobs_mc:wither"] = { x = 1.2, y = 1.2 },

@@ -31,20 +31,9 @@ local place_frequency_min = 235
 local place_frequency_max = 245
 
 minetest.register_entity("mobs_mc:ender_eyes", {
-	visual = "mesh",
-	mesh = "mobs_mc_spider.b3d",
-	visual_size = {x=1.01/3, y=1.01/3},
-	textures = {
-		"mobs_mc_enderman_eyes.png",
-	},
 	on_step = function(self)
-		if self and self.object then
-			if not self.object:get_attach() then
-				self.object:remove()
-			end
-		end
+		self.object:remove()
 	end,
-	glow = 50,
 })
 
 local S = minetest.get_translator("mobs_mc")
@@ -66,142 +55,8 @@ end
 
 local pr = PseudoRandom(os.time()*(-334))
 
--- Texuture overrides for enderman block. Required for cactus because it's original is a nodebox
--- and the textures have tranparent pixels.
-local block_texture_overrides
-do
-	local cbackground = "mobs_mc_enderman_cactus_background.png"
-	local ctiles = minetest.registered_nodes["mcl_core:cactus"].tiles
-
-	local ctable = {}
-	local last
-	for i=1, 6 do
-		if ctiles[i] then
-			last = ctiles[i]
-		end
-		table.insert(ctable, cbackground .. "^" .. last)
-	end
-
-	block_texture_overrides = {
-		["mcl_core:cactus"] = ctable,
-		-- FIXME: replace colorize colors with colors from palette
-		["mcl_core:dirt_with_grass"] =
-		{
-		"mcl_core_grass_block_top.png^[colorize:green:90",
-		"default_dirt.png",
-		"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-		"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-		"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
-		"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)"}
-	}
-end
-
--- Create the textures table for the enderman, depending on which kind of block
--- the enderman holds (if any).
-local create_enderman_textures = function(block_type, itemstring)
-	local base = "mobs_mc_enderman.png^mobs_mc_enderman_eyes.png"
-
-	--[[ Order of the textures in the texture table:
-		Flower, 90 degrees
-		Flower, 45 degrees
-		Held block, backside
-		Held block, bottom
-		Held block, front
-		Held block, left
-		Held block, right
-		Held block, top
-		Enderman texture (base)
-	]]
-	-- Regular cube
-	if block_type == "cube" then
-		local tiles = minetest.registered_nodes[itemstring].tiles
-		local textures = {}
-		local last
-		if block_texture_overrides[itemstring] then
-			-- Texture override available? Use these instead!
-			textures = block_texture_overrides[itemstring]
-		else
-			-- Extract the texture names
-			for i = 1, 6 do
-				if type(tiles[i]) == "string" then
-					last = tiles[i]
-				elseif type(tiles[i]) == "table" then
-					if tiles[i].name then
-						last = tiles[i].name
-					end
-				end
-				table.insert(textures, last)
-			end
-		end
-		return {
-			"blank.png",
-			"blank.png",
-			textures[5],
-			textures[2],
-			textures[6],
-			textures[3],
-			textures[4],
-			textures[1],
-			base, -- Enderman texture
-		}
-	-- Node of plantlike drawtype, 45° (recommended)
-	elseif block_type == "plantlike45" then
-		local textures = minetest.registered_nodes[itemstring].tiles
-		return {
-			"blank.png",
-			textures[1],
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			base,
-		}
-	-- Node of plantlike drawtype, 90°
-	elseif block_type == "plantlike90" then
-		local textures = minetest.registered_nodes[itemstring].tiles
-		return {
-			textures[1],
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			base,
-		}
-	elseif block_type == "unknown" then
-		return {
-			"blank.png",
-			"blank.png",
-			"unknown_node.png",
-			"unknown_node.png",
-			"unknown_node.png",
-			"unknown_node.png",
-			"unknown_node.png",
-			"unknown_node.png",
-			base, -- Enderman texture
-		}
-	-- No block held (for initial texture)
-	elseif block_type == "nothing" or block_type == nil then
-		return {
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			"blank.png",
-			base, -- Enderman texture
-		}
-	end
-end
-
 -- Select a new animation definition.
-local select_enderman_animation = function(animation_type)
+local select_rover_animation = function(animation_type)
 	-- Enderman holds a block
 	if animation_type == "block" then
 		return {
@@ -254,8 +109,8 @@ local psdefs = {{
 	texture = "mcl_portals_particle"..math.random(1, 5)..".png",
 }}
 
-mcl_mobs.register_mob("mobs_mc:enderman", {
-	description = S("Enderman"),
+mcl_mobs.register_mob("mobs_mc:rover", {
+	description = S("Rover"),
 	type = "monster",
 	spawn_class = "passive",
 	can_despawn = true,
@@ -267,23 +122,11 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 	xp_max = 5,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},
 	visual = "mesh",
-	mesh = "mobs_mc_enderman.b3d",
-	textures = create_enderman_textures(),
-	visual_size = {x=3, y=3},
+	mesh = "vl_rover.b3d",
+	textures = { "vl_mobs_rover.png^vl_mobs_rover_face.png" },
+	glow = 100,
+	visual_size = {x=10, y=10},
 	makes_footstep_sound = true,
-	on_spawn = function(self)
-		local spider_eyes=false
-		for n = 1, #self.object:get_children() do
-			local obj = self.object:get_children()[n]
-			if obj:get_luaentity() and self.object:get_luaentity().name == "mobs_mc:ender_eyes" then
-				spider_eyes = true
-			end
-		end
-		if not spider_eyes then
-			minetest.add_entity(self.object:get_pos(), "mobs_mc:ender_eyes"):set_attach(self.object, "head.top", vector.new(0,2.54,-1.99), vector.new(90,0,180))
-			minetest.add_entity(self.object:get_pos(), "mobs_mc:ender_eyes"):set_attach(self.object, "head.top", vector.new(1,2.54,-1.99), vector.new(90,0,180))
-		end
-	end,
 	sounds = {
 		-- TODO: Custom war cry sound
 		war_cry = "mobs_sandmonster",
@@ -292,8 +135,8 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 		random = {name="mobs_mc_enderman_random", gain=0.5},
 		distance = 16,
 	},
-	walk_velocity = 0.2,
-	run_velocity = 3.4,
+	walk_velocity = 2,
+	run_velocity = 4,
 	damage = 7,
 	reach = 2,
 	particlespawners = psdefs,
@@ -304,7 +147,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 		max = 1,
 		looting = "common"},
 	},
-	animation = select_enderman_animation("normal"),
+	animation = select_rover_animation("normal"),
 	_taken_node = "",
 	can_spawn = function(pos)
 		return #minetest.find_nodes_in_area(vector.offset(pos,0,1,0),vector.offset(pos,0,3,0),{"air"}) > 2
@@ -348,6 +191,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 
 		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
 		if self.state == "attack" then
+			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face_angry.png"}})
 			if self.attack then
 				local target = self.attack
 				local pos = target:get_pos()
@@ -358,6 +202,7 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 				end
 			end
 		else --if not attacking try to tp to the dark
+			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face.png"}})
 			if dim == 'overworld' then
 				local light = minetest.get_node_light(enderpos)
 				if light and light > minetest.LIGHT_MAX then
@@ -489,38 +334,17 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 					minetest.remove_node(take_pos)
 					local dug = minetest.get_node_or_nil(take_pos)
 					if dug and dug.name == "air" then
-						self._taken_node = node.name
-						self.persistent = true
-						local def = minetest.registered_nodes[self._taken_node]
-						-- Update animation and texture accordingly (adds visibly carried block)
-						local block_type
-						-- Cube-shaped
-						if def.drawtype == "normal" or
-								def.drawtype == "nodebox" or
-								def.drawtype == "liquid" or
-								def.drawtype == "flowingliquid" or
-								def.drawtype == "glasslike" or
-								def.drawtype == "glasslike_framed" or
-								def.drawtype == "glasslike_framed_optional" or
-								def.drawtype == "allfaces" or
-								def.drawtype == "allfaces_optional" or
-								def.drawtype == nil then
-							block_type = "cube"
-						elseif def.drawtype == "plantlike" then
-							-- Flowers and stuff
-							block_type = "plantlike45"
-						elseif def.drawtype == "airlike" then
-							-- Just air
-							block_type = nil
-						else
-							-- Fallback for complex drawtypes
-							block_type = "unknown"
+						local node_obj = vl_held_item.create_item_entity(take_pos, node.name)
+						if node_obj then
+							node_obj:set_attach(self.object, "held_node")
+							self._node_obj = node_obj
+							self._taken_node = node.name
+							node_obj:set_properties({visual_size={x=0.02, y=0.02}})
 						end
-						self.base_texture = create_enderman_textures(block_type, self._taken_node)
-						self.object:set_properties({ textures = self.base_texture })
-						self.animation = select_enderman_animation("block")
+						local def = minetest.registered_nodes[self._taken_node]
+						self.animation = select_rover_animation("block")
 						self:set_animation(self.animation.current)
-						if def.sounds and def.sounds.dug then
+						if def and def.sounds and def.sounds.dug then
 							minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16}, true)
 						end
 					end
@@ -542,12 +366,14 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 					local def = minetest.registered_nodes[self._taken_node]
 					-- Update animation accordingly (removes visible block)
 					self.persistent = false
-					self.animation = select_enderman_animation("normal")
+					self.animation = select_rover_animation("normal")
 					self:set_animation(self.animation.current)
-					if def.sounds and def.sounds.place then
+					if def and def.sounds and def.sounds.place then
 						minetest.sound_play(def.sounds.place, {pos = place_pos, max_hear_distance = 16}, true)
 					end
-					self._taken_node = ""
+					self._node_obj:remove()
+					self._node_obj = nil
+					self._taken_node = nil
 				end
 			end
 		end
@@ -645,6 +471,21 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 			--end
 		end
 	end,
+	after_activate = function(self, staticdata, def, dtime)
+		if not self._taken_node or self._taken_node == "" then
+			self.animation = select_rover_animation("normal")
+			self:set_animation(self.animation.current)
+			return
+		end
+		self.animation = select_rover_animation("block")
+		self:set_animation(self.animation.current)
+		local node_obj = vl_held_item.create_item_entity(self.object:get_pos(), self._taken_node)
+		if node_obj then
+			node_obj:set_attach(self.object, "held_node")
+			self._node_obj = node_obj
+			node_obj:set_properties({visual_size={x=0.02, y=0.02}})
+		end
+	end,
 	armor = { fleshy = 100, water_vulnerable = 100 },
 	water_damage = 8,
 	view_range = 64,
@@ -652,9 +493,22 @@ mcl_mobs.register_mob("mobs_mc:enderman", {
 	attack_type = "dogfight",
 })
 
+-- compat
+minetest.register_entity("mobs_mc:enderman", {
+	on_activate = function(self, staticdata, dtime)
+		minetest.add_entity(self.object:get_pos(), "mobs_mc:rover", staticdata)
+		obj:set_properties({
+			mesh = "vl_rover.b3d",
+			textures = { "vl_mobs_rover.png^vl_mobs_rover_face.png" },
+			visual_size = {x=10, y=10},
+		})
+		self.object:remove()
+	end,
+})
+
 -- End spawn
 mcl_mobs:spawn_specific(
-"mobs_mc:enderman",
+"mobs_mc:rover",
 "end",
 "ground",
 {
@@ -674,7 +528,7 @@ mcl_vars.mg_end_min,
 mcl_vars.mg_end_max)
 -- Overworld spawn
 mcl_mobs:spawn_specific(
-"mobs_mc:enderman",
+"mobs_mc:rover",
 "overworld",
 "ground",
 {
@@ -823,7 +677,7 @@ mcl_vars.mg_overworld_max)
 
 -- Nether spawn (rare)
 mcl_mobs:spawn_specific(
-"mobs_mc:enderman",
+"mobs_mc:rover",
 "nether",
 "ground",
 {
@@ -840,7 +694,7 @@ mcl_vars.mg_nether_max)
 
 -- Warped Forest spawn (common)
 mcl_mobs:spawn_specific(
-"mobs_mc:enderman",
+"mobs_mc:rover",
 "nether",
 "ground",
 {
@@ -855,4 +709,5 @@ mcl_vars.mg_nether_min,
 mcl_vars.mg_nether_max)
 
 -- spawn eggs
-mcl_mobs.register_egg("mobs_mc:enderman", S("Enderman"), "#252525", "#151515", 0)
+mcl_mobs.register_egg("mobs_mc:rover", S("Rover"), "#252525", "#151515", 0)
+minetest.register_alias("mobs_mc:enderman", "mobs_mc:rover")

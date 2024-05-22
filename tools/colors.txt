@@ -715,9 +715,9 @@ mcl_furnaces:furnace_active 149 139 133
 mcl_grindstone:grindstone 216 216 216
 
 # mcl_heads
-mcl_heads:creeper22_5 94 115 69
-mcl_heads:creeper45 94 115 69
-mcl_heads:creeper67_5 94 115 69
+mcl_heads:stalker22_5 94 115 69
+mcl_heads:stalker45 94 115 69
+mcl_heads:stalker67_5 94 115 69
 mcl_heads:skeleton22_5 126 126 126
 mcl_heads:skeleton45 126 126 126
 mcl_heads:skeleton67_5 126 126 126

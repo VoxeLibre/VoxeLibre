@@ -34,7 +34,7 @@ end, function(minp,maxp,blockseed)
 	table.shuffle(nn)
 	if nn and #nn > 0 then
 		for i=1,pr:next(1,math.min(5,#nn)) do
-			minetest.add_entity(vector.offset(nn[i],0,1,0),"mobs_mc:enderman")
+			minetest.add_entity(vector.offset(nn[i],0,1,0),"mobs_mc:rover")
 		end
 	end
 end, 15, true)

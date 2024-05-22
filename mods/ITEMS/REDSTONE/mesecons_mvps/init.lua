@@ -661,7 +661,7 @@ mesecon.register_mvps_unsticky("mcl_flowers:tulip_red")
 mesecon.register_mvps_unsticky("mcl_flowers:tulip_white")
 mesecon.register_mvps_unsticky("mcl_flowers:waterlily")
 -- Heads
-mesecon.register_mvps_unsticky("mcl_heads:creeper")
+mesecon.register_mvps_unsticky("mcl_heads:stalker")
 mesecon.register_mvps_unsticky("mcl_heads:skeleton")
 mesecon.register_mvps_unsticky("mcl_heads:steve")
 mesecon.register_mvps_unsticky("mcl_heads:wither_skeleton")

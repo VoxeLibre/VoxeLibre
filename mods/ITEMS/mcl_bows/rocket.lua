@@ -470,7 +470,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 					end
 
 					-- Punch target object but avoid hurting enderman.
-					if not lua or lua.name ~= "mobs_mc:enderman" then
+					if not lua or lua.name ~= "mobs_mc:rover" then
 						if self._in_player == false then
 							damage_particles(self.object:get_pos(), self._is_critical)
 						end

@@ -264,11 +264,11 @@ mcl_heads.register_head{
 }
 
 mcl_heads.register_head{
-	name = "creeper",
-	texture = "mcl_heads_creeper.png",
-	description = S("Creeper Head"),
-	longdesc = S("A creeper head is a small decorative block which resembles the head of a creeper. It can also be worn as a helmet, which reduces the detection range of creepers by 50%."),
-	range_mob = "mobs_mc:creeper",
+	name = "stalker",
+	texture = "mcl_heads_stalker.png",
+	description = S("Stalker Head"),
+	longdesc = S("A stalker head is a small decorative block which resembles the head of a stalker. It can also be worn as a helmet, which reduces the detection range of stalkers by 50%."),
+	range_mob = "mobs_mc:stalker",
 	range_factor = 0.5,
 }
 
