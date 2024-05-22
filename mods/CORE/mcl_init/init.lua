@@ -1,6 +1,8 @@
 -- Some global variables (don't overwrite them!)
 mcl_vars = {}
 
+minetest.log("action", "World seed = " .. minetest.get_mapgen_setting("seed"))
+
 mcl_vars.redstone_tick = 0.1
 
 -- GUI / inventory menu settings
