@@ -1,4 +1,4 @@
-# Basic help, MineClone 2 edition [`mcl_doc_basics`]
+# Basic help, VoxeLibre edition [`mcl_doc_basics`]
 Adds basic help texts about Minetest, controls, gameplay and other basics.
 This mod uses the Documentation System [`doc`] as a basis and adds these
 categories:

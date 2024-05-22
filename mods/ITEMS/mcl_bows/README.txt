@@ -1,11 +1,11 @@
-This mod adds bows and arrows for MineClone 2.
+This mod adds bows and arrows for VoxeLibre.
 
 License:
 * Source code: LGPL 3.0
     * Incorporates code from the [bow] mod by Arcelmi.
       https://github.com/Arcelmi/minetest-bows
 
-* Textures: See MineClone 2 license notes.
+* Textures: See VoxeLibre license notes.
 * Sounds:
     * mcl_bows_bow_shoot.ogg: CC0 by Freesound.org user JoeDinesSound
       https://freesound.org/people/JoeDinesSound/sounds/534942/

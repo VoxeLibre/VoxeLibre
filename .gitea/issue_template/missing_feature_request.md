@@ -21,5 +21,5 @@ https://git.minetest.land/MineClone2/MineClone2/src/branch/master/CODE_OF_CONDUC
 ### Current feature in Minecraft
 Tell us about the feature currently in Minecraft! What is it like on Minecraft?
 
-### Current feature in MineClone2
-Tell us about the feature currently in MineClone2! What is different?
+### Current feature in VoxeLibre
+Tell us about the feature currently in VoxeLibre! What is different?

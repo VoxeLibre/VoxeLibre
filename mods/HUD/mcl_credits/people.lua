@@ -5,7 +5,7 @@ return {
 	{S("Creator of MineClone"), 0x0A9400, {
 		"davedevils",
 	}},
-	{S("Creator of MineClone2"), 0xFBF837, {
+	{S("Creator of VoxeLibre"), 0xFBF837, {
 		"Wuzzy",
 	}},
 	{S("Maintainers"), 0xFF51D5, {
@@ -135,8 +135,8 @@ return {
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",
 		"Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube) and Traitor (horizonchris96), which is licensed under https://creativecommons.org/licenses/by-sa/3.0/",
-		"Jester for helping to finely tune MineClone2 (https://www.youtube.com/@Jester-8-bit). Songs: Hailing Forest, Gift, 0dd BL0ck, Flock of One (License CC BY-SA 4.0)",
-		"Exhale & Tim Unwin for some wonderful MineClone2 tracks (https://www.youtube.com/channel/UClFo_JDWoG4NGrPQY0JPD_g). Songs: Valley of Ghosts, Lonely Blossom, Farmer (License CC BY-SA 4.0)",
+		"Jester for helping to finely tune VoxeLibre (https://www.youtube.com/@Jester-8-bit). Songs: Hailing Forest, Gift, 0dd BL0ck, Flock of One (License CC BY-SA 4.0)",
+		"Exhale & Tim Unwin for some wonderful VoxeLibre tracks (https://www.youtube.com/channel/UClFo_JDWoG4NGrPQY0JPD_g). Songs: Valley of Ghosts, Lonely Blossom, Farmer (License CC BY-SA 4.0)",
 		"Diminixed for 3 fantastic tracks and remastering and leveling volumes. Songs: Afternoon Lullaby (pianowtune02), Spooled (ambientwip02), Never Grow Up (License CC BY-SA 4.0)",
 	}},
 	{S("Original Mod Authors"), 0x343434, {

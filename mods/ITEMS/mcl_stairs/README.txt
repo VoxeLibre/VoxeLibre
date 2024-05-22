@@ -1,4 +1,4 @@
-MineClone 2 mod: mcl_stairs
+VoxeLibre mod: mcl_stairs
 =========================
 Forked from stairs mod in Minetest Game 0.4.16.
 See license.txt for license information.

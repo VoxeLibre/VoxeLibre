@@ -1,4 +1,4 @@
-# Mineclone Crimson originally by debiankaios. Modified by MCL2 dev team
+# VoxeLibre Crimson originally by debiankaios. Modified by VoxeLibre dev team
 
 Textures are from PixelPerfection other than:
 

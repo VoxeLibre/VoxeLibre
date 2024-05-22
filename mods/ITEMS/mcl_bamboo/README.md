@@ -1,9 +1,9 @@
 mcl_bamboo
 =========
 
-This mod adds working, familiar bamboo nodes to your Mineclone 2 world.
+This mod adds working, familiar bamboo nodes to your VoxeLibre world.
 
-Code: Michieal. Original (basic, used as inspiration) bamboo code by: Small Joker. Updates to the code: Mineclone Dev Team, Michieal.
+Code: Michieal. Original (basic, used as inspiration) bamboo code by: Small Joker. Updates to the code: VoxeLibre Dev Team, Michieal.
 
 License for code: GPLv3.
 License for images / textures: CC-BY-SA except where noted.

@@ -1,4 +1,4 @@
-MineClone 2 mod: screwdriver
+VoxeLibre mod: screwdriver
 ============================
 See license.txt for license information.
 

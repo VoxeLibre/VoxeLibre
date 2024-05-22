@@ -4,7 +4,7 @@ Adds the campfire and its soul variant.
 
 License of code
 ---------------
-See the main MineClone 2 README.md file.
+See the main VoxeLibre README.md file.
 Authors:
 Gerold55 - Code Start + Models?
 PrairieWind - Improved and Cleaned Up Code, and added the soul campfire and crafting recipes.
@@ -16,7 +16,7 @@ Michieal - Fixed misc. errors.
 
 License of media
 ----------------
-See the main MineClone 2 README.md file for license on most of the textures.
+See the main VoxeLibre README.md file for license on most of the textures.
 
 For the following textures:
 mcl_campfires_campfire_inv.png

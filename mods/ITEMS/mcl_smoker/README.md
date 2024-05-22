@@ -1,5 +1,5 @@
-Smoker for MineClone 2.
-Heavily based on Minetest Game (default/furnace.lua) and the MineClone 2 Furnaces.
+Smoker for VoxeLibre.
+Heavily based on Minetest Game (default/furnace.lua) and the VoxeLibre Furnaces.
 
 License of source code
 ----------------------
@@ -10,4 +10,4 @@ MCl 2 Furances modified by PrairieWind.
 
 License of media
 ----------------
-See the main MineClone 2 README.md file.
+See the main VoxeLibre README.md file.

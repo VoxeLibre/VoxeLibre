@@ -23,7 +23,7 @@ Steel door sounds open & close (CC-BY-3.0) by HazMatt
 
 License/authors of texture files
 --------------------------------------
-Same as media license for MineClone 2 (see root directory).
+Same as media license for VoxeLibre (see root directory).
 
 With modifications by GitHub user kingoscargames:
 - `doors_item_steel.png`

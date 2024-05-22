@@ -1,6 +1,6 @@
-# MineClone2
-An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
-Developed by many people. Not developed or endorsed by Mojang AB.
+# VoxeLibre
+A game inspired by Minecraft for Minetest. Forked from MineClone by davedevils.
+Developed by many people, see CREDITS.md for a complete list.
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -67,44 +67,38 @@ an explanation.
 This game requires [Minetest](http://minetest.net) to run (version 5.4.1 or
 later). So you need to install Minetest first. Only stable versions of Minetest
 are officially supported.
-There is no support for running MineClone2 in development versions of Minetest.
+There is no support for running VoxeLibre in development versions of Minetest.
 
-To install MineClone2 (if you haven't already), move this directory into the
+To install VoxeLibre (if you haven't already), move this directory into the
 “games” directory of your Minetest data directory. Consult the help of
 Minetest to learn more.
 
 ## Useful links
-The MineClone2 repository is hosted at Mesehub. To contribute or report issues, head there.
+The VoxeLibre repository is hosted at Mesehub. To contribute or report issues, head there.
 
-* Mesehub: <https://git.minetest.land/MineClone2/MineClone2>
+* Mesehub: <https://git.minetest.land/VoxeLibre/VoxeLibre>
 * Discord: <https://discord.gg/xE4z8EEpDC>
 * YouTube: <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
 * ContentDB: <https://content.minetest.net/packages/wuzzy/mineclone2/>
 * OpenCollective: <https://opencollective.com/mineclone2>
-* Mastodon: <https://fosstodon.org/@MineClone2>
-* Lemmy: <https://lemmy.world/c/mineclone2>
-* Matrix space: <https://app.element.io/#/room/#mcl2:matrix.org>
+* Mastodon: <https://fosstodon.org/@VoxeLibre>
+* Lemmy: <https://lemm.ee/c/voxelibre>
+* Matrix space: <https://app.element.io/#/room/#voxelibre:matrix.org>
 * Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
-* Reddit: <https://www.reddit.com/r/MineClone2/>
+* Reddit: <https://www.reddit.com/r/VoxeLibre/>
 * IRC (barely used): <https://web.libera.chat/#mineclone2>
 
 ## Target
-- Create a stable, moddable, free/libre game based on Minecraft
-on the Minetest engine with polished features, usable in both
-singleplayer and multiplayer. Currently, a lot of **Minecraft Java
-Edition** features are already implemented and polishing existing
-features are prioritized over new feature requests.
-- Implement features targetting
-**Current Minecraft versions + OptiFine** (OptiFine only as far as supported
-by the Minetest Engine).
-- Create a performant experience that will run relatively
-well on really low spec computers.
+- Create a stable, peformant, moddable, free/libre game inspired by Minecraft
+using the Minetest engine, usable in both singleplayer and multiplayer.
+- Currently, a lot of features are already implemented.
+Polishing existing features is always welcome.
 
 ## Completion status
 This game is currently in **beta** stage.
 It is playable, but not yet feature-complete.
 Backwards-compability is not entirely guaranteed, updating your world might cause small bugs.
-If you want to use the development version of MineClone2 in production, the master branch is usually relatively stable.
+If you want to use the development version of VoxeLibre in production, the master branch is usually relatively stable.
 
 The following main features are available:
 
@@ -187,7 +181,7 @@ Technical differences from Minecraft:
 * Different engine (Minetest)
 * Different easter eggs
 
-… and finally, MineClone2 is free software (“free” as in “freedom”)!
+… and finally, VoxeLibre is free software (“free” as in “freedom”)!
 
 ## Other readme files
 

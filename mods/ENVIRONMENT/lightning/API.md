@@ -1,5 +1,5 @@
 # lightning
-Lightning mod for MineClone2 with the following API:
+Lightning mod for VoxeLibre with the following API:
 
 ## lightning.register_on_strike(function(pos, pos2, objects))
 Custom function called when a lightning strikes.

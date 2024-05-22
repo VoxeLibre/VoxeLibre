@@ -27,4 +27,4 @@ Licensed (CC BY-SA 3.0) by Mito551
 All other sounds licensed CC0 by OpenGameArt.org user artisticdude.
 Source: <https://opengameart.org/content/rpg-sound-pack>
 
-Other media files: See MineClone 2 license.
+Other media files: See VoxeLibre license.

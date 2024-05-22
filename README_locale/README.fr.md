@@ -1,4 +1,4 @@
-# MineClone2
+# VoxeLibre
 Un jeu non-officiel similaire à Minecraft pour Minetest. Forké depuis Mineclone par davedevils. Développé par de nombreuses personnes. Pas développé ni supporté par Mojang AB.
 
 ### Gameplay 
@@ -54,12 +54,12 @@ Utilisez la commande de chat `/giveme` pour les obtenir. Voir l'aide interne au 
 
 ## Installation
 Ce jeu nécessite [Minetest](http://minetest.net) pour fonctionner (version 5.4.1 ou plus). Vous devez donc installer Minetest d'abord. Seules les versions stables de Minetest sont officielement supportées.
-Il n'y a pas de support de MineClone2 dans les versions développement de Minetest.
+Il n'y a pas de support de VoxeLibre dans les versions développement de Minetest.
 
-Pour installer MineClone2 (si ce n'est pas déjà fait), déplacez ce dossier dans le dossier “games” de Minetest. Consultez l'aide de Minetest pour en apprendre plus.
+Pour installer VoxeLibre (si ce n'est pas déjà fait), déplacez ce dossier dans le dossier “games” de Minetest. Consultez l'aide de Minetest pour en apprendre plus.
 
 ## Liens utiles 
-Le dépôt de MineClone2 est hébergé sur Mesehub. Pour contribuer ou signaler des problèmes, allez là-bas.
+Le dépôt de VoxeLibre est hébergé sur Mesehub. Pour contribuer ou signaler des problèmes, allez là-bas.
 
 * Mesehub : <https://git.minetest.land/MineClone2/MineClone2>
 * Discord : <https://discord.gg/xE4z8EEpDC>
@@ -80,7 +80,7 @@ Le dépôt de MineClone2 est hébergé sur Mesehub. Pour contribuer ou signaler 
 Ce jeu est actuellement au stade **beta**.
 Il est jouable mais incomplet en fonctionnalités.
 La rétro-compatibilité n'est pas entièrement garantie, mettre votre monde à jour peut causer de petits bugs.
-Si vous voulez utiliser la version de développement de MineClone2 en production, la branche master est habituellement relativement stable. Les branches de test fusionnent souvent des pull requests expérimentales et doivent être considérées comme moins stable.
+Si vous voulez utiliser la version de développement de VoxeLibre en production, la branche master est habituellement relativement stable. Les branches de test fusionnent souvent des pull requests expérimentales et doivent être considérées comme moins stable.
 
 Les principales fonctionnalités suivantes sont disponibles :
 
@@ -162,7 +162,7 @@ Différences techniques avec Minecraft :
 * Un moteur de jeu différent (Minetest)
 * Des bonus cachés différents
 
-...et enfin MineClone2 est un logiciel libre !
+...et enfin VoxeLibre est un logiciel libre !
 
 ## Autres fichiers readme
 

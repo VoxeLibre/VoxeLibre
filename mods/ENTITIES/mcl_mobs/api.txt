@@ -1,5 +1,5 @@
 
-Mobs Redo: MineClone 2 Edition
+Mobs Redo: VoxeLibre Edition
 API documentation
 ==============================
 
@@ -231,7 +231,7 @@ functions needed for the mob to work properly which contains the following:
 
 
 
-	MineClone 2 extensions:
+	VoxeLibre extensions:
 
 	'spawn_class' 		Classification of mod for the spawning algorithm:
 						"hostile", "passive", "ambient" or "water"
@@ -434,7 +434,7 @@ true the mob will not spawn.
 	'name'	is the name of the animal/monster
 
 
-MineClone 2 extensions
+VoxeLibre extensions
 ----------------------
 
 mcl_mobs:spawn_child(pos, mob_type)
@@ -524,7 +524,7 @@ Does nothing and returns false.
 
 This function is provided for compability with Mobs Redo for an attempt to
 capture a mob.
-Mobs cannot be captured in MineClone 2.
+Mobs cannot be captured in VoxeLibre.
 
 In Mobs Redo, this is generally called inside the on_rightclick section of the mob
 api code, it provides a chance of capturing the mob. See Mobs Redo documentation

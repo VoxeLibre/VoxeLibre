@@ -115,7 +115,7 @@ they get your sign (x3).
 automatically exist as part of the signs' package. You won't have to change any of your code, it'll just be more
 functional. :)
 
-* if you have suggestions, comments, etc., please contact me on MineClone 2's Discord server.
+* if you have suggestions, comments, etc., please contact me on VoxeLibre's Discord server.
 
 And that... is all there is to it!
 

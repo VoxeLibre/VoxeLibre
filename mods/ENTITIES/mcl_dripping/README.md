@@ -1,6 +1,6 @@
 # mcl_dripping
 
-Dripping Mod by kddekadenz, modified for MineClone 2 by Wuzzy, NO11 and AFCM
+Dripping Mod by kddekadenz, modified for VoxeLibre by Wuzzy, NO11 and AFCM
 
 ## Manual
 

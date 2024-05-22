@@ -1,3 +1,3 @@
 # mcl_sus_stew
 
-This Mod adds Suspicious Stews for Mineclone
+This Mod adds Suspicious Stews to VoxeLibre

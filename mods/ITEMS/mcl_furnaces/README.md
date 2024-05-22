@@ -1,4 +1,4 @@
-Furnaces for MineClone 2.
+Furnaces for VoxeLibre.
 Heavily based on Minetest Game (default/furnace.lua).
 
 License of source code
@@ -9,4 +9,4 @@ Modified by Wuzzy.
 
 License of media
 ----------------
-See the main MineClone 2 README.md file.
+See the main VoxeLibre README.md file.

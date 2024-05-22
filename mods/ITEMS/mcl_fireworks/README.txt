@@ -1,4 +1,4 @@
-Firework mod for Mineclone 2
+Firework mod for VoxeLibre
 
 by NO11 and and some parts by j45
 

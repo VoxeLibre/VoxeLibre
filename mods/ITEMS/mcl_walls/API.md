@@ -1,6 +1,6 @@
-# API for MineClone 2 walls
+# API for VoxeLibre walls
 
-This API allows you to add more walls (like the cobblestone wall) to MineClone 2.
+This API allows you to add more walls (like the cobblestone wall) to VoxeLibre.
 
 ## `mcl_walls.register_wall(nodename, description, craft_material, tiles, invtex, groups, sounds, hardness, blast_resistance)`
 

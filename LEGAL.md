@@ -1,14 +1,14 @@
 # Legal information
-This is a fan game, not developed or endorsed by Mojang AB.
+This is a game inspired by Minecraft with unique content.
 
 Copying is an act of love. Please copy and share! <3
 Here's the detailed legalese for those who need it:
 
 ## License of source code
-MineClone 2 (by Lizzy Fleckenstein, Wuzzy, davedevils and countless others)
-is an imitation of Minecraft.
+VoxeLibre (by Lizzy Fleckenstein, Wuzzy, davedevils and countless others)
+is inspired by Minecraft.
 
-MineClone 2 is free software: you can redistribute it and/or modify
+VoxeLibre is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -22,15 +22,15 @@ details.
 In the mods you might find in the read-me or license
 text files a different license. This counts as dual-licensing.
 You can choose which license applies to you: Either the
-license of MineClone 2 (GNU GPLv3) or the mod's license.
+license of VoxeLibre (GNU GPLv3) or the mod's license.
 
-MineClone 2 is a direct continuation of the discontinued MineClone
+VoxeLibre is a direct continuation of the discontinued MineClone
 project by davedevils.
 
 Mod credits:
 See `README.txt` or `README.md` in each mod directory for information about other authors.
 For mods that do not have such a file, the license is the source code license
-of MineClone 2 and the author is Wuzzy.
+of VoxeLibre and the author is Wuzzy.
 
 ## License of media (textures and sounds)
 No non-free licenses are used anywhere.

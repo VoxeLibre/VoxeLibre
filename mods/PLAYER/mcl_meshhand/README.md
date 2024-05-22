@@ -1,4 +1,4 @@
-Mesh hand mod for MineClone 2.
+Mesh hand mod for VoxeLibre.
 
 This mod uses a better-looking mesh for the wieldhand and applies the player skin texture to it.
 

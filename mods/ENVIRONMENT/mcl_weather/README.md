@@ -1,6 +1,6 @@
 `mcl_weather`
 =======================
-Weather mod for MineClone 2. Forked from the `weather_pack` mod by xeranas.
+Weather mod for VoxeLibre. Forked from the `weather_pack` mod by xeranas.
 
 Weathers included
 -----------------------

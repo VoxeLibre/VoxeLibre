@@ -1,10 +1,10 @@
-# MineClone2 Formspec Guide
+# VoxeLibre Formspec Guide
 
-**_This guide will teach you the rules for creating formspecs for the MineClone2 game._**
+**_This guide will teach you the rules for creating formspecs for the VoxeLibre game._**
 
 Formspecs are an important part of game and mod development.
 
-First of all, MineClone2 aims to support ONLY last formspec version. Many utility functions will not work with formspec v1 or v2.
+First of all, VoxeLibre aims to support ONLY last formspec version. Many utility functions will not work with formspec v1 or v2.
 
 The typical width of an 9 slots width inventory formspec is `0.375 + 9 + ((9-1) * 0.25) + 0.375 = 11.75`
 

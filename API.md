@@ -1,10 +1,10 @@
 # API
 ## Groups
-MineClone 2 makes very extensive use of groups. Making sure your items and objects have the correct group memberships is very important.
+VoxeLibre makes very extensive use of groups. Making sure your items and objects have the correct group memberships is very important.
 Groups are explained in `GROUPS.md`.
 
 ## Mod naming convention
-Mods mods in MineClone 2 follow a simple naming convention: Mods with the prefix “`mcl_`” are specific to MineClone 2, although they may be based on an existing standalone. Mods which lack this prefix are *usually* verbatim copies of a standalone mod. Some modifications may still have been applied, but the APIs are held compatible.
+Mods mods in VoxeLibre follow a simple naming convention: Mods with the prefix "`vl_`" and “`mcl_`” are specific to VoxeLibre (formerly known as MineClone2), although they may be based on an existing standalone. Mods which lack this prefix are *usually* verbatim copies of a standalone mod. Some modifications may still have been applied, but the APIs are held compatible.
 
 ## Adding items
 ### Special fields
@@ -31,7 +31,7 @@ All nodes can have these fields:
 Use the `mcl_sounds` mod for the sounds.
 
 ## APIs
-A lot of things are possible by using one of the APIs in the mods. Note that not all APIs are documented yet, but it is planned. The following APIs should be more or less stable but keep in mind that MineClone 2 is still unfinished. All directory names are relative to `mods/`
+A lot of things are possible by using one of the APIs in the mods. Many of them are documented in `API.md` files located in the directories of the specific mods. Some use `.txt` files or have some documentation in the comments along the code. Note that not all APIs are documented yet, but it is planned. The following APIs should be more or less stable but keep in mind that VoxeLibre is still unfinished. All directory names are relative to `mods/`
 
 ### Items
 * Doors: `ITEMS/mcl_doors`
@@ -46,8 +46,7 @@ A lot of things are possible by using one of the APIs in the mods. Note that not
 ### Mobs
 * Mobs: `ENTITIES/mcl_mobs`
 
-MineClone 2 uses its own mobs framework, called “Mobs Redo: MineClone 2 Edition” or “MRM” for short.
-This is a fork of Mobs Redo [`mobs`] by TenPlus1.
+VoxeLibre uses its own mobs framework, which is a fork of Mobs Redo [`mobs`] by TenPlus1.
 
 You can add your own mobs, spawn eggs and spawning rules with this mod.
 API documnetation is included in `ENTITIES/mcl_mobs/api.txt`.
@@ -55,7 +54,7 @@ API documnetation is included in `ENTITIES/mcl_mobs/api.txt`.
 This mod includes modificiations from the original Mobs Redo. Some items have been removed or moved to other mods.
 The API is mostly identical, but a few features have been added. Compability is not really a goal,
 but function and attribute names of Mobs Redo 1.41 are kept.
-If you have code for a mod which works fine under Mobs Redo, it should be easy to make it work in MineClone 2,
+If you have code for a mod which works fine under Mobs Redo, it should be easy to make it work in VoxeLibre.
 chances are good that it works out of the box.
 
 ### Help
@@ -68,6 +67,7 @@ chances are good that it works out of the box.
 
 ### Utility APIs
 * Change player physics: `PLAYER/playerphysics`
+* Change player FOV: `PLAYER/mcl_fovapi`
 * Select random treasures: `CORE/mcl_loot`
 * Get flowing direction of liquids: `CORE/flowlib`
 * `on_walk_over` callback for nodes: `CORE/walkover` 
@@ -77,7 +77,7 @@ chances are good that it works out of the box.
 * Flowers and flower pots
 
 ### Unstable APIs
-The following APIs may be subject to change in future. You could already use these APIs but there will probably be breaking changes in the future, or the API is not as fleshed out as it should be. Use at your own risk!
+The following APIs may be subject to change in the future. You could already use these APIs but there will probably be breaking changes in the future, or the API is not as fleshed out as it should be. Use at your own risk!
 
 * Panes (like glass panes and iron bars): `ITEMS/xpanes`
 * `_on_ignite` callback: `ITEMS/mcl_fire`

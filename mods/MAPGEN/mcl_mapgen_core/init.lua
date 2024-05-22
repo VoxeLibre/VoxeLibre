@@ -358,7 +358,7 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 
 	-- [[ THE NETHER:					mcl_vars.mg_nether_min			       mcl_vars.mg_nether_max							]]
 
-	-- The Air on the Nether roof, https://git.minetest.land/MineClone2/MineClone2/issues/1186
+	-- The Air on the Nether roof, https://git.minetest.land/VoxeLibre/VoxeLibre/issues/1186
 	lvm_used = set_layers(data, area, c_air		 , nil, mcl_vars.mg_nether_max			   +1, mcl_vars.mg_nether_max + 128                 , minp, maxp, lvm_used, pr)
 	-- The Void above the Nether below the End:
 	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_nether_max + 128               +1, mcl_vars.mg_end_min                        -1, minp, maxp, lvm_used, pr)

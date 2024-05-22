@@ -1,5 +1,5 @@
 # Railway corridors [`tsm_railcorridors`]
-MineClone 2 adaption. NO TREASURER SUPPORT!
+VoxeLibre adaption. NO TREASURER SUPPORT!
 
 * Current version 0.14.0
 

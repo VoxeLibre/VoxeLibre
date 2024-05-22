@@ -1,9 +1,9 @@
-# Making Textures In Mineclone2
+# Making Textures In VoxeLibre
 
-Textures are a crucial asset for all items, nodes, and models in mineclone2. This document is for artist who would like to make and modify textures for mineclone2. While no means comprehensive, this document contains the basic important information for beginners to get started with texture curation and optimization.
+Textures are a crucial asset for all items, nodes, and models in VoxeLibre. This document is for artist who would like to make and modify textures for VoxeLibre. While no means comprehensive, this document contains the basic important information for beginners to get started with texture curation and optimization.
 
 ## Minetest Wiki
-For more detailed information on creating and modifing texture packs for Minetest/Mineclone2, please visit the Minetest wiki's page on creating a texture pack. Click [here](https://wiki.minetest.net/Creating_texture_packs) to view the wiki page on creating texture packs.
+For more detailed information on creating and modifing texture packs for Minetest/VoxeLibre, please visit the Minetest wiki's page on creating a texture pack. Click [here](https://wiki.minetest.net/Creating_texture_packs) to view the wiki page on creating texture packs.
 
 ## GIMP Tutorials Pixel Art Guide
 GIMP Tutorials has an excellent guide to making pixel art in GIMP. If you would like further clarification as well as screenshots for what we are about to cover, it is an excellent resource to turn to. Click [here](https://thegimptutorials.com/how-to-make-pixel-art/) to view the guide

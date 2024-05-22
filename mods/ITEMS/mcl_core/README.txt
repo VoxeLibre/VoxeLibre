@@ -1,4 +1,4 @@
-MineClone 2 core mod
+VoxeLibre core mod
 ====================
 Originally forked from Minetest Game's default mod in the distant past.
 

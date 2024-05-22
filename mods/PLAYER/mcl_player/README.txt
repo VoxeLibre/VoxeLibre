@@ -1,4 +1,4 @@
-MineClone 2 mod: mcl_player
+VoxeLibre mod: mcl_player
 ==========================
 Adds the 3D player model, taken from Minetest Game 0.4.16.
 
@@ -21,4 +21,4 @@ Authors of media files
 MirceaKitsune (CC BY-SA 3.0):
   character.b3d
 
-Textures: See main MineClone 2 README.md file.
+Textures: See main VoxeLibre README.md file.

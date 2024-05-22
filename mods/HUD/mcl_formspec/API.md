@@ -1,4 +1,4 @@
-# MineClone2 Formspec API
+# VoxeLibre Formspec API
 
 ## `mcl_formspec.label_color`
 

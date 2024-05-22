@@ -3,7 +3,7 @@
 A faithful Open Source clone of Minecraft=
 Contributors=
 Creator of MineClone=
-Creator of MineClone2=
+Creator of VoxeLibre=
 Developers=
 Past Developers=
 Jump to speed up (additionally sprint)=

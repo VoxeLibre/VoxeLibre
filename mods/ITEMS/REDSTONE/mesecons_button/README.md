@@ -1,5 +1,5 @@
 Mesecons button mod.
-This mod adds the buttons for MineClone 2.
+This mod adds the buttons for VoxeLibre.
 
 MEDIA FILE CREDITS:
 

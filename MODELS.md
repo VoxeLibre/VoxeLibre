@@ -1,10 +1,10 @@
-# Models in Minetest/Mineclone2
+# Models in Minetest/VoxeLibre
 
-Models are an important part of all entities & unique nodes in Mineclone2. They provide a 3 dimensional map of an object for which textures are then applied to. This document is for modders, it quickly highlights some important information for the software needed to open models in Mineclone2.
+Models are an important part of all entities & unique nodes in VoxeLibre. They provide a 3 dimensional map of an object for which textures are then applied to. This document is for modders, it quickly highlights some important information for the software needed to open models in VoxeLibre.
 
 ## Minetest Wiki
 
-For more detailed information on actually using blender to create and modify models for Minetest/Mineclone2, please visit the Minetest wiki's page on using Blender [Here](https://wiki.minetest.net/Using_Blender)
+For more detailed information on actually using blender to create and modify models for Minetest/VoxeLibre, please visit the Minetest wiki's page on using Blender [Here](https://wiki.minetest.net/Using_Blender)
 
 ## Recommended software
 

@@ -2,7 +2,7 @@ mcl_item_id = {
     mod_namespaces = {},
 }
 
-local game = "mineclone"
+local game = "voxelibre"
 
 function mcl_item_id.set_mod_namespace(modname, namespace)
     local namespace = namespace or modname
@@ -42,11 +42,13 @@ tt.register_snippet(function(itemstring)
     local id_string = itemstring:sub(item_split)
     local id_modname = itemstring:sub(1, item_split - 1)
     local new_id = game .. id_string
+    local alt_id = "mineclone" .. id_string
     local mod_namespace = mcl_item_id.get_mod_namespace(id_modname)
     for mod, ids in pairs(same_id) do
         for _, id in pairs(ids) do
             if itemstring == "mcl_" .. mod .. ":" .. id  then
                 new_id = game .. ":" .. id .. "_" .. mod:gsub("s", "")
+                alt_id = "mineclone:" .. id .. "_" .. mod:gsub("s", "")
             end
         end
     end
@@ -55,6 +57,7 @@ tt.register_snippet(function(itemstring)
     end
     if mod_namespace ~= id_modname then
         minetest.register_alias_force(new_id, itemstring)
+        minetest.register_alias_force(alt_id, itemstring)
     end
     if minetest.settings:get_bool("mcl_item_id_debug", false) then
         return new_id, "#555555"
