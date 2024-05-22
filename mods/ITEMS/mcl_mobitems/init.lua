@@ -134,19 +134,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	stack_max = 64,
 })
 
--- Reset food poisoning and status effects
-local function drink_milk(itemstack, player, pointed_thing)
-	local bucket = minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
-	-- Check if we were allowed to drink this (eat delay check)
-	if mcl_hunger.active and (bucket:get_name() ~= "mcl_mobitems:milk_bucket" or minetest.is_creative_enabled(player:get_player_name())) then
-		mcl_hunger.stop_poison(player)
-	end
-	mcl_potions._reset_player_effects(player)
-	return bucket
-end
-
 local function drink_milk_delayed(itemstack, player, pointed_thing)
-
 	if pointed_thing.type == "node" then
 		local node = minetest.get_node(pointed_thing.under)
 		if player and not player:get_player_control().sneak then
@@ -159,35 +147,35 @@ local function drink_milk_delayed(itemstack, player, pointed_thing)
 	end
 
 	local function drink_milk(itemstack, player, pointed_thing)
-		--local bucket = minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
 		-- Check if we were allowed to drink this (eat delay check)
-		--if mcl_hunger.active and (bucket:get_name() ~= "mcl_mobitems:milk_bucket" or minetest.is_creative_enabled(player:get_player_name())) then
-		if mcl_hunger.active and (player:get_inventory():get_stack("main", player:get_wield_index(), itemstack) == "mcl_mobitems:milk_bucket" or minetest.is_creative_enabled(player:get_player_name())) then
+		if mcl_hunger.active and (
+			player:get_inventory():get_stack("main", player:get_wield_index(), itemstack) == "mcl_mobitems:milk_bucket" or
+			minetest.is_creative_enabled(player:get_player_name())
+		) then
 			mcl_hunger.stop_poison(player)
 		end
 		mcl_potions._reset_player_effects(player)
-		return bucket
 	end
 
 	-- Wrapper for handling mcl_hunger delayed eating
 	local name = player:get_player_name()
-	mcl_hunger.eat_internal[name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
-	mcl_hunger.eat_internal[name]._custom_var = {
+	local hunger_internal = mcl_hunger.eat_internal[name]
+	hunger_internal._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
+	hunger_internal._custom_var = {
 		itemstack = itemstack,
 		player = player,
 		pointed_thing = pointed_thing,
 	}
-	mcl_hunger.eat_internal[name]._custom_func = drink_milk
-	mcl_hunger.eat_internal[name]._custom_wrapper = function(name)
-
-		mcl_hunger.eat_internal[name]._custom_func(
-			mcl_hunger.eat_internal[name]._custom_var.itemstack,
-			mcl_hunger.eat_internal[name]._custom_var.player,
-			mcl_hunger.eat_internal[name]._custom_var.pointed_thing
+	hunger_internal._custom_func = drink_milk
+	hunger_internal._custom_wrapper = function(name)
+		local hunger_internal2 = mcl_hunger.eat_internal[name]
+		hunger_internal2._custom_func(
+			hunger_internal2._custom_var.itemstack,
+			hunger_internal2._custom_var.player,
+			hunger_internal2._custom_var.pointed_thing
 		)
 	end
 
-	--mcl_hunger.eat_internal[name]._custom_do_delayed = true -- Only _custom_wrapper will be executed after holding RMB or LMB within a specified delay
 	minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
 end
 
@@ -198,8 +186,6 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	_doc_items_usagehelp = S("Use the placement key to drink the milk."),
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
-	--on_place = drink_milk, -- Will do effect immediately but not reduce item count until eating delay ends which makes it exploitable by deliberately not finishing delay
-	--on_secondary_use = drink_milk,
 	on_place = drink_milk_delayed,
 	on_secondary_use = drink_milk_delayed,
 	stack_max = 1,
