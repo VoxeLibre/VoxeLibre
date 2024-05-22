@@ -23,6 +23,7 @@ local math_ceil      = math.ceil
 local math_cos       = math.cos
 local math_sin       = math.sin
 local math_round     = function(x) return (x > 0) and math_floor(x + 0.5) or math_ceil(x - 0.5) end
+local math_sqrt      = math.sqrt
 
 local vector_distance = vector.distance
 local vector_new      = vector.new
@@ -595,25 +596,119 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	spawn_dictionary[key]["max_height"] = max_height
 	spawn_dictionary[key]["day_toggle"] = day_toggle
 	spawn_dictionary[key]["check_position"] = check_position
-
 end
+
+-- Calculate the inverse of a piecewise linear function f(x). Line segments are represented as two
+-- adjacent points specified as { x, f(x) }. At least 2 points are required. If there are most solutions,
+-- the one with a lower x value will be chosen.
+local function inverse_pwl(fx, f)
+	if fx < f[1][2] then
+		return f[1][1]
+	end
+
+	for i=2,#f do
+		local x0,fx0 = unpack(f[i-1])
+		local x1,fx1 = unpack(f[i  ])
+		if fx < fx1 then
+			return (fx - fx0) * (x1 - x0) / (fx1 - fx0) + x0
+		end
+	end
+
+	return f[#f][1]
+end
+
+local SPAWN_DISTANCE_CDF_PWL = {
+	{0.000,0.00},
+	{0.083,0.40},
+	{0.416,0.75},
+	{1.000,1.00},
+}
 
 local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
-	-- TODO We should consider spawning something a little further away sporadically.
-	-- It would be good for sky farms and variance, rather than all being on the 24 - 32 block away radius
-	local distance = math_random(MOB_SPAWN_ZONE_INNER, MOB_SPAWN_ZONE_MIDDLE)
-	local angle = math_random() * two_pi
+	-- Select a distance such that distances closer to the player are selected much more often than
+	-- those further away from the player.
+	local fx = (math_random(1,10000)-1) / 10000
+	local x = inverse_pwl(fx, SPAWN_DISTANCE_CDF_PWL)
+	distance = x * (MOB_SPAWN_ZONE_OUTER - MOB_SPAWN_ZONE_INNER) + MOB_SPAWN_ZONE_INNER
+	--print("Using spawn distance of "..tostring(distance).."  fx="..tostring(fx)..",x="..tostring(x))
 
 	-- TODO Floor xoff and zoff and add 0.5 so it tries to spawn in the middle of the square. Less failed attempts.
-	local xoff = math_round(distance * math_cos(angle))
-	local zoff = math_round(distance * math_sin(angle))
-	return vector.offset(pos, xoff, 0, zoff)
-end
+	-- Use spherical coordinates https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
+	local theta = math_random() * two_pi
+	local phi = math_random() * two_pi
+	local xoff = math_round(distance * math_sin(theta) * math_cos(phi))
+	local yoff = math_round(distance * math_cos(theta))
+	local zoff = math_round(distance * math_sin(theta) * math_sin(phi))
+	local goal_pos = vector.offset(pos, xoff, yoff, zoff)
 
-local function decypher_limits(posy)
-	posy = math_floor(posy)
-	return posy - MOB_SPAWN_ZONE_MIDDLE, posy + MOB_SPAWN_ZONE_MIDDLE
+	if not ( math.abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math.abs(pos.y) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT ) then
+		mcl_log("Pos outside mapgen limits: " .. minetest.pos_to_string(goal_pos))
+		return nil
+	end
+
+	-- Calculate upper/lower y limits
+	local R1 = MOB_SPAWN_ZONE_OUTER
+	local d = vector_distance( pos, vector.new( goal_pos.x, pos.y, goal_pos.z ) ) -- distance from player to projected point on horizontal plane
+	local y1 = math_sqrt( R1*R1 - d*d ) -- absolue value of distance to outer sphere
+
+	local y_min
+	local y_max
+	if d >= MOB_SPAWN_ZONE_INNER then
+		-- Outer region, y range has both ends on the outer sphere
+		y_min = pos.y - y1
+		y_max = pos.y + y1
+	else
+		-- Inner region, y range spans between inner and outer spheres
+		local R2 = MOB_SPAWN_ZONE_INNER
+		local y2 = math_sqrt( R2*R2 - d*d )
+		if goal_pos.y > pos. y then
+			-- Upper hemisphere
+			y_min = pos.y + y2
+			y_max = pos.y + y1
+		else
+			-- Lower hemisphere
+			y_min = pos.y - y1
+			y_max = pos.y - y2
+		end
+	end
+	y_min = math_round(y_min)
+	y_max = math_round(y_max)
+
+	-- Limit total range of check to 32 nodes (maximum of 3 map blocks)
+	if y_max > goal_pos.y + 16 then
+		y_max = goal_pos.y + 16
+	end
+	if y_min < goal_pos.y - 16 then
+		y_min = goal_pos.y - 16
+	end
+
+	-- Ask engine for valid spawn locations
+	local spawning_position_list = find_nodes_in_area_under_air(
+			{x = goal_pos.x, y = y_min, z = goal_pos.z},
+			{x = goal_pos.x, y = y_max, z = goal_pos.z},
+			{"group:solid", "group:water", "group:lava"}
+	) or {}
+
+	-- Select only the locations at a valid distance
+	local valid_positions = {}
+	for _,check_pos in ipairs(spawning_position_list) do
+		local dist = vector.distance(pos, check_pos)
+		if dist >= MOB_SPAWN_ZONE_INNER and dist <= MOB_SPAWN_ZONE_OUTER then
+			valid_positions[#valid_positions + 1] = check_pos
+		end
+	end
+	spawning_position_list = valid_positions
+
+	-- No valid locations, failed to find a position
+	if #spawning_position_list == 0 then
+		mcl_log("Spawning position isn't good. Do not spawn: " .. minetest.pos_to_string(goal_pos))
+		return nil
+	end
+
+	-- Pick a random valid location
+	mcl_log("Spawning positions available: " .. minetest.pos_to_string(goal_pos))
+	return spawning_position_list[math_random(1, #spawning_position_list)]
 end
 
 --a simple helper function for mob_spawn
@@ -938,42 +1033,16 @@ if mobs_spawn then
 
 	local function find_spawning_position(pos, max_times)
 		local spawning_position
-
-		local max_loops = 1
-		if max_times then max_loops = max_times end
-
-		local y_min, y_max = decypher_limits(pos.y)
+		local max_loops = max_times or 1
 
 		--mcl_log("mapgen_limit: " .. SPAWN_MAPGEN_LIMIT)
-		local i = 0
-		repeat
-			local goal_pos = get_next_mob_spawn_pos(pos)
+		while max_loops > 0 do
+			local spawning_position = get_next_mob_spawn_pos(pos)
+			if spawning_position then return spawning_position end
+			max_loops = max_loops - 1
 
-			if math.abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math.abs(pos.y) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT then
-				local spawning_position_list = find_nodes_in_area_under_air(
-						{x = goal_pos.x, y = y_min, z = goal_pos.z},
-						{x = goal_pos.x, y = y_max, z = goal_pos.z},
-						{"group:solid", "group:water", "group:lava"}
-				)
-				if #spawning_position_list > 0 then
-					mcl_log("Spawning positions available: " .. minetest.pos_to_string(goal_pos))
-					spawning_position = spawning_position_list[math_random(1, #spawning_position_list)]
-				else
-					mcl_log("Spawning position isn't good. Do not spawn: " .. minetest.pos_to_string(goal_pos))
-				end
-
-			else
-				mcl_log("Pos outside mapgen limits: " .. minetest.pos_to_string(goal_pos))
-			end
-
-
-			i = i + 1
-			if i >= max_loops then
-				mcl_log("Cancel finding spawn positions at: " .. max_loops)
-				break
-			end
-		until spawning_position
-		return spawning_position
+		end
+		return nil
 	end
 
 	local cumulative_chance = nil
@@ -1198,7 +1267,6 @@ function mob_class:check_despawn(pos, dtime)
 		end
 	end
 end
-
 
 minetest.register_chatcommand("mobstats",{
 	privs = { debug = true },
