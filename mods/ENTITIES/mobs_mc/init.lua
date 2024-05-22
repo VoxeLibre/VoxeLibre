@@ -124,9 +124,7 @@ dofile(path .. "/witch.lua") -- Mesh and animation by toby109tt  / https://githu
 
 --Monsters
 dofile(path .. "/blaze.lua") -- Animation by daufinsyd
-dofile(path .. "/creeper.lua") -- Mesh by Morn76 Animation by Pavel_S
 dofile(path .. "/ender_dragon.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
-dofile(path .. "/enderman.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/endermite.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/villager_illusioner.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/ghast.lua") -- maikerumine
@@ -134,10 +132,12 @@ dofile(path .. "/guardian.lua") -- maikerumine Mesh and animation by toby109tt  
 dofile(path .. "/guardian_elder.lua") -- maikerumine Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/snowman.lua")
 dofile(path .. "/iron_golem.lua") -- maikerumine Mesh and animation by toby109tt  / https://github.com/22i
+dofile(path .. "/rover.lua") -- Mesh and Animation by Herowl
 dofile(path .. "/shulker.lua") -- maikerumine Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/silverfish.lua") -- maikerumine Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/skeleton+stray.lua") -- Mesh by Morn76 Animation by Pavel_S
 dofile(path .. "/skeleton_wither.lua") -- Mesh by Morn76 Animation by Pavel_S
+dofile(path .. "/stalker.lua") -- Mesh and Animation by Herowl
 dofile(path .. "/zombie.lua") -- Mesh by Morn76 Animation by Pavel_S
 dofile(path .. "/slime+magma_cube.lua") -- Wuzzy
 dofile(path .. "/spider.lua") -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
