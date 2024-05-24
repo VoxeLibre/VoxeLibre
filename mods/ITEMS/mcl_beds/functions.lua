@@ -225,11 +225,9 @@ local function update_formspecs(finished, players)
 	local button_abort = "button_exit[4,3;4,0.75;leave;"..F(S("Abort sleep")).."]"
 	local bg_presleep = "bgcolor[#00000080;true]"
 	local bg_sleep = "bgcolor[#000000FF;true]"
-	local chatbox = "field[0.2,4.5;9,1;chatmessage;"..F(S("Chat:"))..";]"
-	local chatsubmit  = "button[9.2,3.75;1,2;chatsubmit;"..F(S("send!")).."]"
-	local defaultmessagebutton = "button[10.2,3.75;1,2;defaultmessage;zzZzzZ]"
-
-	form_n = form_n .. chatbox .. chatsubmit --because these should be in the formspec in ANY case, they might as well be added here already
+	local chatbox = "field[0.3,4.5;10,1;chatmessage;"..F(S("Chat:"))..";]"
+	local chatsubmit  = "button[10,3.73;2,2;chatsubmit;"..F(S("Send")).."]"
+	local defaultmessagebutton = "button[10.98,2.93;1,2;defaultmessage;zzZ]"
 
 	if finished then
 		for name,_ in pairs(mcl_beds.player) do
@@ -237,6 +235,7 @@ local function update_formspecs(finished, players)
 		end
 		return
 	elseif not is_sp then
+		form_n = form_n .. chatbox .. chatsubmit --because these should be in the formspec in ANY case, they might as well be added here already
 		local text = S("Players in bed: @1/@2", player_in_bed, ges)
 		if not night_skip then
 			text = text .. "\n" .. S("Note: Night skip is disabled.")
