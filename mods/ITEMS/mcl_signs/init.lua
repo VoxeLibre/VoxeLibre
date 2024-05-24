@@ -125,13 +125,24 @@ local function string_to_line_array(str)
 	local linechar_table = {}
 	local current = 1
 	local linechar = 1
+	local cr = false
 	linechar_table[current] = ""
 	for char in str:gmatch(".") do
-		if char == "\n" then
+		local add
+		if char == "\n" or cr then
+			add = cr
+			cr = false
 			current = current + 1
 			linechar_table[current] = ""
 			linechar = 1
+		elseif char == "\r" then
+			cr = true
+			add = false
 		else
+			add = true
+		end
+
+		if add then
 			linechar_table[current] = linechar_table[current] .. char
 			linechar = linechar + 1
 		end
