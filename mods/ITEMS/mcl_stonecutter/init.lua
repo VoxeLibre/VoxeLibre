@@ -66,13 +66,15 @@ function mcl_stonecutter.register_recipe(input, output, count)
 	local fallthrough = mcl_stonecutter.registered_recipes[output]
 	if fallthrough then
 		for o, c in pairs(fallthrough) do
-			mcl_stonecutter.register_recipe(input, o, c * count)
+			if not mcl_stonecutter.registered_recipes[input][o] then
+				mcl_stonecutter.register_recipe(input, o, c * count)
+			end
 		end
 	end
 
 	for i, recipes in pairs(mcl_stonecutter.registered_recipes) do
 		for name, c in pairs(recipes) do
-			if name == input then
+			if name == input and not mcl_stonecutter.registered_recipes[i][output] then
 				mcl_stonecutter.register_recipe(i, output, c * count)
 			end
 		end
