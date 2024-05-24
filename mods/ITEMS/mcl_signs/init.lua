@@ -129,8 +129,8 @@ local function string_to_line_array(str)
 	linechar_table[current] = ""
 	for char in str:gmatch(".") do
 		local add
-		if char == "\n" or cr then
-			add = cr
+		if char == "\n" or cr or linechar > 15 then
+			add = char ~= "\n"
 			cr = false
 			current = current + 1
 			linechar_table[current] = ""
