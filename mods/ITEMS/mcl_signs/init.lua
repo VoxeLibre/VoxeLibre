@@ -125,19 +125,21 @@ local function string_to_line_array(str)
 	local linechar_table = {}
 	local current = 1
 	local linechar = 1
-	local cr = false
+	local cr_last = false
 	linechar_table[current] = ""
 	for char in str:gmatch(".") do
 		local add
-		if char == "\n" or cr or linechar > 15 then
-			add = char ~= "\n"
-			cr = false
+		local is_cr, is_lf = char == "\r", char == "\n"
+
+		if is_cr and not cr_last then
+			cr_last = true
+			add = false
+		elseif is_lf or cr_last or linechar > 15 then
+			cr_last = is_cr
+			add = not (is_cr or is_lf)
 			current = current + 1
 			linechar_table[current] = ""
 			linechar = 1
-		elseif char == "\r" then
-			cr = true
-			add = false
 		else
 			add = true
 		end
