@@ -1,7 +1,8 @@
 # VoxeLibre
-Un jeu non-officiel similaire à Minecraft pour Minetest. Forké depuis Mineclone par davedevils. Développé par de nombreuses personnes. Pas développé ni supporté par Mojang AB.
+Un jeu inspiré de Minecraft pour Minetest. Forké depuis Mineclone par davedevils.
+Développé par de nombreuses personnes, voir CREDITS.md pour une liste complète.
 
-### Gameplay 
+### Gameplay
 Vous atterissez dans un monde fait entièrement de cubes et généré aléatoirement. Vous pouvez explorer le monde, miner et construire presque n'importe quel bloc pour créer de nouvelles structures. Vous pouvez choisir de jouer en "mode survie" dans lequel vous devez combattre des monstres et la faim et progresser lentement dans différents aspects du jeu, comme l'extraction de minerai, l'agriculture, la construction de machines et ainsi de suite. Ou alors vous pouvez jouer en "mode créatif" où vous pouvez construire à peu près n'importe quoi instantanément.
 
 ### Résumé du Gameplay
@@ -21,7 +22,7 @@ Vous atterissez dans un monde fait entièrement de cubes et généré aléatoire
 ### Commencer
 * **Frappez un arbre** jusqu'à ce qu'il casse et donne du bois
 * Placez le **bois dans la grille 2x2** (la "grille de fabrication" de votre menu d'inventaire) et fabriquez 4 planches de bois
-* Placer les 4 planches de bois dans la grille 2x2 et **fabriquez un établi**
+* Placez les 4 planches de bois dans la grille 2x2 et **fabriquez un établi**
 * **Faites un clic droit sur l'établi** (icone livre) pour apprendre toutes les recettes possibles
 * **Fabriquez une pioche de bois** pour miner la pierre
 * Différents outils minent différentes sortes de blocs. Essayez-les !
@@ -30,10 +31,10 @@ Vous atterissez dans un monde fait entièrement de cubes et généré aléatoire
 ### Agriculture
 * Trouvez des graines
 * Fabriquez une houe
-* Faites un clic droit sur la terre ou des blocs similaires avec la houe pour créer des terres agricoles
-* Placer des graines sur des terres agricoles et regardez les pousser
+* Faites un clic droit sur la terre ou un bloc similaire avec la houe pour créer des terres agricoles
+* Placez des graines sur des terres agricoles et regardez les pousser
 * Récoltez les plantes une fois matûres
-* Les terres agricoles proche de l'eau deviennent humides et accélèrent la croissance
+* Les terres agricoles proches de l'eau deviennent humides et accélèrent la croissance
 
 ### Four
 * Fabriquez un four
@@ -46,7 +47,7 @@ Vous atterissez dans un monde fait entièrement de cubes et généré aléatoire
 Plus d'aide à propos du jeu, des blocs, objets et plus encore peuvent être trouvés dans le jeu. Vous pouvez accéder à l'aide depuis le menu inventaire.
 
 ### Objets spéciaux
-Les objets suivants sont intéressants pour le mode Créatif et pour les constructeurs de cartes d'aventure. Ils ne peuvent être obtenus dans le jeu ou dans l'inventaire créatif. 
+Les objets suivants sont intéressants pour le mode Créatif et pour les constructeurs de cartes d'aventure. Ils ne peuvent être obtenus dans le jeu ou dans l'inventaire créatif.
 
 * Barrière : `mcl_core:barrier`
 
@@ -58,29 +59,31 @@ Il n'y a pas de support de VoxeLibre dans les versions développement de Minetes
 
 Pour installer VoxeLibre (si ce n'est pas déjà fait), déplacez ce dossier dans le dossier “games” de Minetest. Consultez l'aide de Minetest pour en apprendre plus.
 
-## Liens utiles 
+## Liens utiles
 Le dépôt de VoxeLibre est hébergé sur Mesehub. Pour contribuer ou signaler des problèmes, allez là-bas.
 
-* Mesehub : <https://git.minetest.land/MineClone2/MineClone2>
+* Mesehub : <https://git.minetest.land/VoxeLibre/VoxeLibre>
 * Discord : <https://discord.gg/xE4z8EEpDC>
 * YouTube : <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
-* IRC : <https://web.libera.chat/#mineclone2>
-* Matrix : <https://app.element.io/#/room/#mc2:matrix.org>
-* Reddit : <https://www.reddit.com/r/MineClone2/>
-* Forums Minetest : <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
 * ContentDB : <https://content.minetest.net/packages/wuzzy/mineclone2/>
 * OpenCollective : <https://opencollective.com/mineclone2>
+* Mastodon : <https://fosstodon.org/@VoxeLibre>
+* Lemmy : <https://lemm.ee/c/voxelibre>
+* Espace Matrix : <https://app.element.io/#/room/#voxelibre:matrix.org>
+* Forums Minetest : <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
+* Reddit : <https://www.reddit.com/r/VoxeLibre/>
+* IRC (peu utilisé) : <https://web.libera.chat/#mineclone2>
 
 ## Objectif
-* Essentiellement, créer un clone de Minecraft stable, moddable, libre et gratuit basé sur le moteur de jeu Minetest avec des fonctionnalités abouties, utilisable à la fois en mode solo et multijoueur. Actuellement, beaucoup des fonctionnalités de **Minecraft Java Edition** sont déjà implémentées et leur amélioration est prioritaire sur les nouvelles demandes.
-* Avec une priorité moindre, implémenter les fonctionnalités des versions **Minecraft + OptiFine** (OptiFine autant que supporté par le moteur Minetest). Cela signifie que les fonctionnalités présentes dans les versions listées sont priorisées.
-* Dans l'idéal, créer une expérience performante qui tourne bien sur des ordinateurs à basse performance. Malheureusement, en raison des mécanismes de Minecraft et des limitations du moteur Minetest ainsi que de la petite taille de la communauté de joueurs sur des ordinateurs à basses performances, les optimisations sont difficiles à explorer.
+* Créer un jeu stable, performant, moddable et libre inspiré de Minecraft en utilisant le moteur de jeu Minetest, utilisable à la fois en mode solo et multijoueur.
+* Actuellement, un grand nombre de fonctionnalités sont déjà implémentées.
+L'amélioration des fonctionnalités existantes est toujours la bienvenue.
 
 ## Statut de complétion
 Ce jeu est actuellement au stade **beta**.
 Il est jouable mais incomplet en fonctionnalités.
 La rétro-compatibilité n'est pas entièrement garantie, mettre votre monde à jour peut causer de petits bugs.
-Si vous voulez utiliser la version de développement de VoxeLibre en production, la branche master est habituellement relativement stable. Les branches de test fusionnent souvent des pull requests expérimentales et doivent être considérées comme moins stable.
+Si vous voulez utiliser la version de développement de VoxeLibre en production, la branche master est habituellement relativement stable.
 
 Les principales fonctionnalités suivantes sont disponibles :
 
@@ -108,12 +111,12 @@ Les principales fonctionnalités suivantes sont disponibles :
 * Horloge
 * Boussole
 * Éponge
-* Bloc de slime 
+* Bloc de slime
 * Petites plantes et pousses
 * Teintures
 * Bannières
 * Blocs de décoration : verre, verre teinté, vitres, barres de fer, terre cuites (et couleurs), têtes et plus
-* Cadres d'objets 
+* Cadres d'objets
 * Juke-boxes
 * Lits
 * Menu d'inventaire
@@ -122,7 +125,7 @@ Les principales fonctionnalités suivantes sont disponibles :
 * Livres pour écrire
 * Commandes
 * Villages
-* L'End 
+* L'End
 * et plus !
 
 Les fonctionnalités suivantes sont incomplètes :
