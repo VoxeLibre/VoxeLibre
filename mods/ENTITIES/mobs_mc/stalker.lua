@@ -32,7 +32,7 @@ local function get_texture(self)
 			end
 		end
 	end
-	if not texture then
+	if not texture or texture == "" then
 		texture = "vl_stalker_default.png"
 	end
 	texture = "([combine:16x24:0,0=" .. texture .. ":0,16=" .. texture .. texture_suff
