@@ -4,7 +4,7 @@
 
 local colors = {
 	["Creator of MineClone"] = "0x0A9400",
-	["Creator of MineClone2"] = "0xFBF837",
+	["Creator of VoxeLibre"] = "0xFBF837",
 	["Maintainers"] = "0xFF51D5",
 	["Developers"] = "0xF84355",
 	["Past Developers"] = "0xF84355",

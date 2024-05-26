@@ -3,7 +3,7 @@
 ## Creator of MineClone
 * davedevils
 
-## Creator of MineClone2
+## Creator of VoxeLibre
 * Wuzzy
 
 ## Maintainers

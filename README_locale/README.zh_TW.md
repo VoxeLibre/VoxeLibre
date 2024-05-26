@@ -1,4 +1,6 @@
-# MineClone 2
+This file is severely out of date. If you can help updating this translation, please reach out to us (contact in README.md - the English version).
+
+# VoxeLibre
 一個非官方的Minetest遊戲，遊玩方式和Minecraft類似。由davedevils從MineClone分拆。
 由許多人開發。並非由Mojang Studios開發。<!-- "Mojang AB"'s Name changed at 2020/05, main README should change too -->
 
