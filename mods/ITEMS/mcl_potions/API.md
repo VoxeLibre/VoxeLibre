@@ -66,6 +66,33 @@ This section describes parts of the API related to defining and managing effects
 
 `mcl_potions.get_effect(object, effect_name)` - returns a table containing values of the effect of the ID `effect_name` on the `object` if the object has the named effect, `false` otherwise.
 
+* table returned by the above function is like this:
+```lua
+    effect = {
+        dur = float -- duration of the effect in seconds, may be infinite
+        timer = float -- how much of the duration (in seconds) has already elapsed
+        no_particles = bool -- if this is true, no particles signifying this effect will appear
+
+        -- player-only fields
+        hud_index = int -- position in the HUD used by this effect (icon, level, timer) - probably meaningless outside mcl_potions
+
+        -- optional fields
+        factor = float -- power of the effect if the effect uses factor; this may mean different things depending on the effect
+        step = float -- how often (in seconds) the on_step() function of the effect is executed, if it exists
+        hit_timer = float -- how much of the step (in seconds) has already elapsed
+
+        -- effect-specific fields
+            -- effects in mcl_potions have their own fields here, for now external effects can't add any here
+        blocked = bool -- used by conduit power
+        high = bool -- used by nausea
+        vignette = int -- handle to the HUD vignette of the effect, used by effects that use one
+        absorb = float -- "HP" of the absorption effect
+        waypoints = table -- used by glowing, indexed by player ObjectRef, contains HUD handles for the glowing waypoints
+        flash = float -- used by darkness, denotes vision range modifier
+        flashdir = bool -- used by darkness, denotes whether vision range is increasing (or decreasing)
+    }
+```
+
 
 `mcl_potions.get_effect_level(object, effect_name)` – returns the level of the effect of the ID `effect_name` on the `object`. If the effect has no levels, returns `1`. If the object doesn't have the effect, returns `0`. If the effect is not registered, returns `nil`.
 
@@ -120,6 +147,7 @@ This section describes parts of the API related to defining and managing effects
 
 #### Internally registered effects
 You can't register effects going by these names, because they are already used:
+
 * `invisibility`
 * `poison`
 * `regeneration`
