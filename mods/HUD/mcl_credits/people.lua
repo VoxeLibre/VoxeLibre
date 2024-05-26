@@ -26,6 +26,8 @@ return {
 		"SmokeyDope",
 		"Faerraven / Michieal",
 		"Codiac",
+		"rudzik8",
+		"teknomunk",
 	}},
 	{S("Past Developers"), 0xF84355, {
 		"jordan4ibanez",
@@ -39,7 +41,6 @@ return {
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"RandomLegoBrick",
-		"rudzik8",
 		"Code-Sploit",
 		"aligator",
 		"Rootyjr",
@@ -131,6 +132,16 @@ return {
 		"Bakawun",
 		"JoseDouglas26",
 		"Zasco",
+		"PrWalterB",
+		"michaljmalinowski",
+		"nixnoxus",
+		"Potiron",
+		"Tuxilio",
+		"Impulse",
+		"Doods",
+		"SOS-Games",
+		"Bram",
+		"qoheniac",
 	}},
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",
