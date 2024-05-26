@@ -90,7 +90,7 @@ end
 ---@param pos Vector Position of the node
 ---@param node node
 ---@param chance integer Value of "compostability" group of inserted item 
-function composter_progress_chance(pos, node, chance)
+local function composter_progress_chance(pos, node, chance)
 	-- calculate leveling up chance
 	local rand = math.random(0,100)
 	if chance >= rand then
