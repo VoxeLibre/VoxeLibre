@@ -372,7 +372,9 @@ mcl_potions.register_effect({
 		playerphysics.add_physics_factor(object, "gravity", "mcl_potions:slow_falling", 0.5)
 	end,
 	on_step = function(dtime, object, factor, duration)
-		local vel = object:get_velocity().y
+		local vel = object:get_velocity()
+		if not vel then return end
+		vel = vel.y
 		if vel < -3 then object:add_velocity(vector.new(0,-3-vel,0)) end
 	end,
 	on_end = function(object)
@@ -430,7 +432,9 @@ mcl_potions.register_effect({
 		return S("moves body upwards at @1 nodes/s", factor)
 	end,
 	on_step = function(dtime, object, factor, duration)
-		local vel = object:get_velocity().y
+		local vel = object:get_velocity()
+		if not vel then return end
+		vel = vel.y
 		if vel<factor then object:add_velocity(vector.new(0,factor,0)) end
 	end,
 	particle_color = "#420E7E",
@@ -457,6 +461,7 @@ mcl_potions.register_effect({
 	end,
 	on_end = function(object)
 		local meta = object:get_meta()
+		if not meta then return end
 		meta:set_int("night_vision", 0)
 		mcl_weather.skycolor.update_sky_color({object})
 	end,
@@ -499,7 +504,9 @@ mcl_potions.register_effect({
 		mcl_weather.skycolor.update_sky_color({object})
 	end,
 	on_end = function(object)
-		object:get_meta():set_int("darkness", 0)
+		local meta = object:get_meta()
+		if not meta then return end
+		meta:set_int("darkness", 0)
 		mcl_weather.skycolor.update_sky_color({object})
 		object:set_sky({fog = {
 			fog_distance = -1,
