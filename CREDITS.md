@@ -24,6 +24,8 @@
 * SmokeyDope
 * Faerraven / Michieal
 * Codiac
+* rudzik8
+* teknomunk
 
 ## Past Developers
 * jordan4ibanez
@@ -37,7 +39,6 @@
 
 ## Contributors
 * RandomLegoBrick
-* rudzik8
 * Code-Sploit
 * aligator
 * Rootyjr
@@ -129,6 +130,16 @@
 * Bakawun
 * JoseDouglas26
 * Zasco
+* PrWalterB
+* michaljmalinowski
+* nixnoxus
+* Potiron
+* Tuxilio
+* Impulse
+* Doods
+* SOS-Games
+* Bram
+* qoheniac
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
