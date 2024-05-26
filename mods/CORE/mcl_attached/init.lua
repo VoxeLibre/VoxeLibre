@@ -94,5 +94,16 @@ function minetest.check_single_for_falling(pos)
 		end
 	end
 
+	if get_item_group(node.name, "supported_node_facedir") ~= 0 then
+		local dir = facedir_to_dir(node.param2)
+		if dir then
+			local def = registered_nodes[get_node(vector.add(pos, dir)).name]
+			if def and def.drawtype == "airlike" then
+				drop_attached_node(pos)
+				return true
+			end
+		end
+	end
+
 	return false
 end

@@ -638,7 +638,7 @@ function mcl_itemframes.create_base_definitions()
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
-		groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 1, attached_node_facedir = 1 },
+		groups = { dig_immediate = 3, deco_block = 1, dig_by_piston = 1, container = 1, supported_node_facedir = 1 },
 		sounds = mcl_sounds.node_sound_defaults(),
 		node_placement_prediction = "",
 
