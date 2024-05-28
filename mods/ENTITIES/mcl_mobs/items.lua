@@ -19,6 +19,47 @@ local function get_armor_texture(armor_name)
 	return "mcl_armor_"..string.sub(armor_name, seperator+1, -1)..".png^"
 end
 
+--[[
+-- Old texture function
+function mob_class:set_armor_texture()
+	if self.armor_list then
+		local chestplate=minetest.registered_items[self.armor_list.chestplate] or {name=""}
+		local boots=minetest.registered_items[self.armor_list.boots] or {name=""}
+		local leggings=minetest.registered_items[self.armor_list.leggings] or {name=""}
+		local helmet=minetest.registered_items[self.armor_list.helmet] or {name=""}
+
+		if helmet.name=="" and chestplate.name=="" and leggings.name=="" and boots.name=="" then
+			helmet={name="blank.png"}
+		end
+		local texture = get_armor_texture(chestplate.name)..get_armor_texture(helmet.name)..get_armor_texture(boots.name)..get_armor_texture(leggings.name)
+		if string.sub(texture, -1,-1) == "^" then
+			texture=string.sub(texture,1,-2)
+		end
+		if self.textures[self.wears_armor] then
+			self.textures[self.wears_armor]=texture
+		end
+		self.object:set_properties({textures=self.textures})
+
+		local armor_
+		if type(self.armor) == "table" then
+			armor_ = table.copy(self.armor)
+			armor_.immortal = 1
+		else
+			armor_ = {immortal=1, fleshy = self.armor}
+		end
+
+		for _,item in pairs(self.armor_list) do
+			if not item then return end
+			if type(minetest.get_item_group(item, "mcl_armor_points")) == "number" then
+				armor_.fleshy=armor_.fleshy-(minetest.get_item_group(item, "mcl_armor_points")*3.5)
+			end
+		end
+		self.object:set_armor_groups(armor_)
+	end
+end
+]]
+
+--new armor texture function
 function mob_class:set_armor_texture()
 	if self.armor_list then
 		local chestplate=minetest.registered_items[self.armor_list.chestplate] or {name=""}
