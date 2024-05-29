@@ -221,7 +221,7 @@ local function apply_effects_to_all_players(pos)
 
 	local power_level = beacon_blockcheck(pos)
 
-	local new_effect_string = EFFECT_CONVERSION[effect_string]
+	local new_effect_string = EFFECT_CONVERSIONS[effect_string]
 	if new_effect_string then
 		effect_string = new_effect_string
 		meta:set_string("effect", effect_string)
