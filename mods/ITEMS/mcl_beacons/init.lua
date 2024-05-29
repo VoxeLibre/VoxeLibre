@@ -253,8 +253,7 @@ minetest.register_node("mcl_beacons:beacon", {
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size("input", 1)
-		local form = formspec_string
-		meta:set_string("formspec", form)
+		meta:set_string("formspec", formspec_string)
 	end,
 	on_destruct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -434,10 +433,18 @@ minetest.register_abm{
         apply_effects_to_all_players(pos)
 	end,
 }
+minetest.register_lbm({
+	label = "Update beacon formspecs (0.87.1)",
+	nodenames = { "mcl_beacons:beacon" },
+	action = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", form)
+	end
+})
 
 minetest.register_craft({
 	output = "mcl_beacons:beacon",
-	recipe = { 
+	recipe = {
 		{"mcl_core:glass", "mcl_core:glass", "mcl_core:glass"},
 		{"mcl_core:glass", "mcl_mobitems:nether_star", "mcl_core:glass"},
 		{"mcl_core:obsidian", "mcl_core:obsidian", "mcl_core:obsidian"}
