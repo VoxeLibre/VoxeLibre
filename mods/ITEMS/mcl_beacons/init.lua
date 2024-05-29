@@ -435,10 +435,11 @@ minetest.register_abm{
 }
 minetest.register_lbm({
 	label = "Update beacon formspecs (0.87.1)",
+	name = "mcl_beacons:update_beacon_formspecs_0_87_1",
 	nodenames = { "mcl_beacons:beacon" },
 	action = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", form)
+		meta:set_string("formspec", formspec_string)
 	end
 })
 
