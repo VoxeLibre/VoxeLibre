@@ -84,6 +84,9 @@ local pallete_order = {
 	pane_magenta_flat   	= 16,
 	pane_magenta			= 16
 }
+local EFFECT_CONVERSIONS = {
+	strenght = "strength"
+}
 
 local function get_beacon_beam(glass_nodename)
 	if glass_nodename == "air" then return 0 end
@@ -218,8 +221,9 @@ local function apply_effects_to_all_players(pos)
 
 	local power_level = beacon_blockcheck(pos)
 
-	if effect_string == "strenght" then
-		effect_string = "strength"
+	local new_effect_string = EFFECT_CONVERSION[effect_string]
+	if new_effect_string then
+		effect_string = new_effect_string
 		meta:set_string("effect", effect_string)
 	end
 
