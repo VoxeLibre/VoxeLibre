@@ -365,7 +365,7 @@ function awards.unlock(name, award)
 			direction = 0,
 			z_index = 102,
 		})
-		minetest.after(3, function(name)
+		minetest.after(notif_delay[1], function(name)
 			local player = minetest.get_player_by_name(name)
 			if not player then
 				return
