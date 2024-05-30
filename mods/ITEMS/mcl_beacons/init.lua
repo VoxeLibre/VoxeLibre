@@ -84,6 +84,9 @@ local pallete_order = {
 	pane_magenta_flat   	= 16,
 	pane_magenta			= 16
 }
+local EFFECT_CONVERSIONS = {
+	strenght = "strength"
+}
 
 local function get_beacon_beam(glass_nodename)
 	if glass_nodename == "air" then return 0 end
@@ -159,7 +162,7 @@ local function remove_beacon_beam(pos)
 				minetest.get_voxel_manip():read_from_map({x=pos.x,y=y,z=pos.z}, {x=pos.x,y=y,z=pos.z})
 				node = minetest.get_node({x=pos.x,y=y,z=pos.z})
 			end
-			
+
 			if node.name == "mcl_beacons:beacon_beam" then
 				minetest.remove_node({x=pos.x,y=y,z=pos.z})
 			end
@@ -212,24 +215,30 @@ local function effect_player(effect,pos,power_level, effect_level,player)
 end
 
 local function apply_effects_to_all_players(pos)
-    local meta = minetest.get_meta(pos)
+	local meta = minetest.get_meta(pos)
 	local effect_string = meta:get_string("effect")
-    local effect_level = meta:get_int("effect_level")
+	local effect_level = meta:get_int("effect_level")
 
-    local power_level = beacon_blockcheck(pos)
+	local power_level = beacon_blockcheck(pos)
 
-	if effect_level == 2 and power_level < 4 then --no need to run loops when beacon is in an invalid setup :P
+	local new_effect_string = EFFECT_CONVERSIONS[effect_string]
+	if new_effect_string then
+		effect_string = new_effect_string
+		meta:set_string("effect", effect_string)
+	end
+
+	if effect_string == "" or ( effect_level == 2 and power_level < 4 ) then --no need to run loops when beacon is in an invalid setup :P
 		return
 	end
 
-    local beacon_distance = (power_level + 1) * 10
+	local beacon_distance = (power_level + 1) * 10
 
 	for _, player in pairs(minetest.get_connected_players()) do
-        if vector.distance(pos, player:get_pos()) <= beacon_distance then
-            if not clear_obstructed_beam(pos) then
-                effect_player(effect_string, pos, power_level, effect_level, player)
-            end
-        end
+		if vector.distance(pos, player:get_pos()) <= beacon_distance then
+			if not clear_obstructed_beam(pos) then
+				effect_player(effect_string, pos, power_level, effect_level, player)
+			end
+		end
 	end
 end
 
@@ -244,8 +253,7 @@ minetest.register_node("mcl_beacons:beacon", {
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size("input", 1)
-		local form = formspec_string
-		meta:set_string("formspec", form)
+		meta:set_string("formspec", formspec_string)
 	end,
 	on_destruct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -271,7 +279,7 @@ minetest.register_node("mcl_beacons:beacon", {
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			local input = inv:get_stack("input",1)
-		
+
 			if input:is_empty() then
 				return
 			end
@@ -353,7 +361,7 @@ minetest.register_node("mcl_beacons:beacon", {
 				awards.unlock(sender:get_player_name(),"mcl:beacon")
 				input:take_item()
 				inv:set_stack("input",1,input)
-				
+
 				local beam_palette_index = 0
 				remove_beacon_beam(pos)
 				for y = pos.y +1, pos.y + 201 do
@@ -362,7 +370,6 @@ minetest.register_node("mcl_beacons:beacon", {
 						minetest.get_voxel_manip():read_from_map({x=pos.x,y=y,z=pos.z}, {x=pos.x,y=y,z=pos.z})
 						node = minetest.get_node({x=pos.x,y=y,z=pos.z})
 					end
-					
 
 					if  minetest.get_item_group(node.name, "glass") ~= 0 or minetest.get_item_group(node.name,"material_glass") ~= 0 then
 						beam_palette_index = get_beacon_beam(node.name)
@@ -426,10 +433,19 @@ minetest.register_abm{
         apply_effects_to_all_players(pos)
 	end,
 }
+minetest.register_lbm({
+	label = "Update beacon formspecs (0.87.1)",
+	name = "mcl_beacons:update_beacon_formspecs_0_87_1",
+	nodenames = { "mcl_beacons:beacon" },
+	action = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", formspec_string)
+	end
+})
 
 minetest.register_craft({
 	output = "mcl_beacons:beacon",
-	recipe = { 
+	recipe = {
 		{"mcl_core:glass", "mcl_core:glass", "mcl_core:glass"},
 		{"mcl_core:glass", "mcl_mobitems:nether_star", "mcl_core:glass"},
 		{"mcl_core:obsidian", "mcl_core:obsidian", "mcl_core:obsidian"}

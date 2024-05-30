@@ -654,7 +654,7 @@ end
 minetest.register_alias("mcl_hoppers:hopper_item", "mcl_hoppers:hopper")
 
 minetest.register_lbm({
-	label = "Update hopper formspecs (0.60.0",
+	label = "Update hopper formspecs (0.60.0)",
 	name = "mcl_hoppers:update_formspec_0_60_0",
 	nodenames = {"group:hopper"},
 	run_at_every_load = false,

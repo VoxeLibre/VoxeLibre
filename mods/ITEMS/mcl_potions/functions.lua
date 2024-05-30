@@ -1832,6 +1832,10 @@ end
 
 function mcl_potions.give_effect_by_level(name, object, level, duration, no_particles)
 	if level == 0 then return false end
+	if not registered_effects[name] then
+		minetest.log("warning", "[mcl_potions] Trying to give unknown effect "..tostring(name))
+		return false
+	end
 	if not registered_effects[name].uses_factor then
 		return mcl_potions.give_effect(name, object, 0, duration, no_particles)
 	end
