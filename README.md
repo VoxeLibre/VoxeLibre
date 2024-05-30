@@ -64,9 +64,12 @@ Use the `/giveme` chat command to obtain them. See the in-game help for
 an explanation.
 
 ## Installation
-This game requires [Minetest](http://minetest.net) to run (version 5.4.1 or
-later). So you need to install Minetest first. Only stable versions of Minetest
-are officially supported.
+To run the game with the best performance and support, we recommend the latest
+stable version of [Minetest](http://minetest.net), be we always make an effort
+to support one version behind the latest stable version. In some cases, older
+versions might still be good enough but you would be missing out on important
+Minetest features that enable important features for our game.
+
 There is no support for running VoxeLibre in development versions of Minetest.
 
 To install VoxeLibre (if you haven't already), move this directory into the
