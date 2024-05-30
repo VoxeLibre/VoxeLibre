@@ -22,6 +22,7 @@ minetest.register_entity("mcl_end:ender_eye", {
 				self._phase = 0
 			end
 		end
+		if not self._luck then self._luck = 0 end
 	end,
 
 	on_step = function(self, dtime)
