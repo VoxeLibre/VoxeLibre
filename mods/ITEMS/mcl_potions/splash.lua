@@ -65,8 +65,8 @@ function mcl_potions.register_splash(name, descr, color, def)
 			obj:set_velocity({x=dropdir.x*velocity,y=dropdir.y*velocity,z=dropdir.z*velocity})
 			obj:set_acceleration({x=dropdir.x*-3, y=-9.8, z=dropdir.z*-3})
 			local ent = obj:get_luaentity()
-			ent._potency = item:get_meta():get_int("mcl_potions:potion_potent")
-			ent._plus = item:get_meta():get_int("mcl_potions:potion_plus")
+			ent._potency = stack:get_meta():get_int("mcl_potions:potion_potent")
+			ent._plus = stack:get_meta():get_int("mcl_potions:potion_plus")
 			ent._effect_list = def._effect_list
 		end
 	})
