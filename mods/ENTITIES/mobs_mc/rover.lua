@@ -491,20 +491,17 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 	view_range = 64,
 	fear_height = 4,
 	attack_type = "dogfight",
-})
-
--- compat
-minetest.register_entity("mobs_mc:enderman", {
-	on_activate = function(self, staticdata, dtime)
-		local obj = minetest.add_entity(self.object:get_pos(), "mobs_mc:rover", staticdata)
+	_on_after_convert = function(obj)
 		obj:set_properties({
 			mesh = "vl_rover.b3d",
 			textures = { "vl_mobs_rover.png^vl_mobs_rover_face.png" },
 			visual_size = {x=10, y=10},
 		})
-		self.object:remove()
-	end,
-})
+	end
+}) -- END mcl_mobs.register_mob("mobs_mc:rover", {
+
+-- compat
+mcl_mobs.register_conversion("mobs_mc:enderman", "mobs_mc:rover")
 
 -- End spawn
 mcl_mobs:spawn_specific(

@@ -342,6 +342,17 @@ function mcl_mobs.register_mob(name, def)
 	minetest.register_entity(name, setmetatable(final_def,mcl_mobs.mob_class_meta))
 end -- END mcl_mobs.register_mob function
 
+function mcl_mobs.register_conversion(old_name, new_name)
+	minetest.register_entity(old_name, {
+		on_activate = function(self, staticdata, dtime)
+			local obj = minetest.add_entity(self.object:get_pos(), new_name, staticdata)
+			local hook = (obj:get_luaentity() or {})._on_after_convert
+			if hook then hook(obj) end
+			self.object:remove()
+		end,
+		_convert_to = new_name,
+	})
+end
 
 function mcl_mobs.get_arrow_damage_func(damage, typ)
 	local typ = mcl_damage.types[typ] and typ or "arrow"

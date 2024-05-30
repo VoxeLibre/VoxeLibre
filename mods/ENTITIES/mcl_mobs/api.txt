@@ -671,6 +671,13 @@ mob will spawn e.g.
 mobs_animal:sheep_chance 11000
 mobs_monster:sand_monster_chance 100
 
+Registering Mob Conversion
+----------------
+
+Sometimes you need to completely replace one mob with a different version. To do this, use:
+
+	mcl_mobs.register_conversion(old_name, new_name)
+
 
 Rideable Horse Example Mob
 --------------------------

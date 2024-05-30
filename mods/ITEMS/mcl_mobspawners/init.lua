@@ -63,8 +63,8 @@ local function set_doll_properties(doll, mob)
 		xs = doll_size_overrides[mob].x
 		ys = doll_size_overrides[mob].y
 	else
-		xs = mobinfo.visual_size.x * 0.33333
-		ys = mobinfo.visual_size.y * 0.33333
+		xs = (mobinfo.visual_size.x or 0) * 0.33333
+		ys = (mobinfo.visual_size.y or 0) * 0.33333
 	end
 	local prop = {
 		mesh = mobinfo.mesh,
@@ -358,6 +358,11 @@ doll_def.on_activate = function(self, staticdata, dtime_s)
 	if mob == "" or mob == nil then
 		mob = default_mob
 	end
+
+	-- Handle conversion of mob spawners
+	local convert_to = (minetest.registered_entities[mob] or {})._convert_to
+	if convert_to then mob = convert_to end
+
 	set_doll_properties(self.object, mob)
 	self.object:set_velocity({x=0, y=0, z=0})
 	self.object:set_acceleration({x=0, y=0, z=0})
@@ -390,3 +395,11 @@ minetest.register_lbm({
 		respawn_doll(pos)
 	end,
 })
+
+minetest.register_on_mods_loaded(function()
+	for name,mobinfo in pairs(minetest.registered_entities) do
+		if ( mobinfo.is_mob or name:find("mobs_mc") ) and not ( mobinfo.visual_size or mobinfo._convert_to ) then
+			minetest.log("warning", "Definition for "..tostring(name).." is missing field 'visual_size', mob spawners will not work properly")
+		end
+	end
+end)
