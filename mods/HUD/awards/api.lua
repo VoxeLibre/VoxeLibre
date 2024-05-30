@@ -18,6 +18,9 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
+-- Tunable parameters
+local notif_delay = vl_tuning.get_server_setting("award_display_time", S("Amount of time award notification are displayed"), 3, "awards_notif_delay", "number", { min = 2, max = 10 })
+
 -- The global award namespace
 awards = {
 	show_mode = "hud",
