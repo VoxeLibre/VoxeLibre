@@ -30,7 +30,7 @@ local tunable_class = {}
 function tunable_class:set(value)
 	local self_type = self.type
 	if type(value) == "string" then
-		self[1] = self_type.from_string(value)
+		self[1] = self_type.from_string(value) or self.default
 	else
 		self[1] = value
 	end
@@ -51,6 +51,7 @@ function mod.get_server_setting(name, description, default, setting, setting_typ
 
 	tunable = {
 		name = name,
+		default = default,
 		setting = setting,
 		description = description,
 		type = tunable_types[setting_type],
