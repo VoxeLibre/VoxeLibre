@@ -1,8 +1,14 @@
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local validate_vector = mcl_util.validate_vector
 
-local ENTITY_CRAMMING_MAX = 24
+local gamerule_maxEntityCramming = vl_tuning.setting("gamerule:maxEntityCramming", "number", {
+	description = S("The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second."),
+	default = 24,
+})
+
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
@@ -782,7 +788,7 @@ function mob_class:check_entity_cramming()
 		local l = o:get_luaentity()
 		if l and l.is_mob and l.health > 0 then table.insert(mobs,l) end
 	end
-	local clear = #mobs < ENTITY_CRAMMING_MAX
+	local clear = #mobs < gamerule_maxEntityCramming[1]
 	local ncram = {}
 	for _,l in pairs(mobs) do
 		if l then
@@ -796,7 +802,7 @@ function mob_class:check_entity_cramming()
 		end
 	end
 	for i,l in pairs(ncram) do
-		if i > ENTITY_CRAMMING_MAX then
+		if i > gamerule_maxEntityCramming[1] then
 			l.cram = true
 		else
 			l.cram = nil
