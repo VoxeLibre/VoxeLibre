@@ -45,7 +45,6 @@ function tunable_class:set(value)
 	end
 end
 function tunable_class:get_string()
-	print(dump(self))
 	return self.type.to_string(self[1])
 end
 
