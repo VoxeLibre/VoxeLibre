@@ -27,22 +27,27 @@ local tunable_types = {
 
 -- Tunable metatable functions
 local tunable_class = {}
-function tunable_class:set(value)
+function tunable_class:set(value, no_hook)
 	local self_type = self.type
 	if type(value) == "string" then
 		local new_value = self_type.from_string(value)
 		if new_value == nil then new_value = self.default end
 
-		minetest.log("action","new_value="..dump(new_value))
 		self[1] = new_value
 	else
 		self[1] = value
 	end
 
-	local setting = self.setting
-	if setting then
-		storage:set_string(setting,self_type.to_string(self[1]))
+	minetest.log("action", "[vl_tuning] Set "..self.setting.." to "..dump(self[1]))
+
+	-- Call on_change hook
+	if not no_hook then
+		local hook = self.on_change
+		if hook then hook(self) end
 	end
+
+	-- Persist value
+	storage:set_string(self.setting,self_type.to_string(self[1]))
 end
 function tunable_class:get_string()
 	return self.type.to_string(self[1])
@@ -63,7 +68,8 @@ function mod.setting(setting, setting_type, def )
 	-- Load the setting value from mod storage
 	local setting_value = storage:get_string(setting)
 	if setting_value and setting_value ~= "" then
-		tunable:set(setting_value)
+		tunable:set(setting_value, true)
+		minetest.log("action", "[vl_tuning] Loading "..setting.." = "..dump(setting_value).." ("..dump(tunable[1])..")")
 	end
 
 	-- Add to the list of all available settings

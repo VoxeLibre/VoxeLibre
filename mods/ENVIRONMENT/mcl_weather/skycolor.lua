@@ -1,6 +1,9 @@
 -- Constants
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
+
+local mods_loaded = false
 local NIGHT_VISION_RATIO = 0.45
 local DEBUG = false
 
@@ -9,6 +12,28 @@ local minimum_update_interval = { 250e3 }
 
 -- Module state
 local mods_loaded = false
+
+-- Daylight cycle handling
+local fixed_time = vl_tuning.setting("fixed_daylight_time", "number", {
+	description = S("Time of day to use when gamerule:doDaylightCycle == false"),
+	default = 0.5
+})
+local gamerule_doDaylightCycle = vl_tuning.setting("gamerule:doDaylightCycle", "bool",{
+	description = S("Whether the daylight cycle and moon phases progress"),
+	default = true,
+	on_change = function(self)
+		if not self[1] then
+			fixed_time:set(minetest.get_timeofday())
+		end
+	end
+})
+local function daylightCycle()
+	if not gamerule_doDaylightCycle[1] and fixed_time[1] then
+		minetest.set_timeofday(fixed_time[1])
+	end
+	minetest.after(1, daylightCycle)
+end
+minetest.after(1, daylightCycle)
 
 function mcl_weather.set_sky_box_clear(player, sky, fog)
 	-- Make sure the player's head isn't in water before changing the skybox
