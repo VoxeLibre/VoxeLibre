@@ -1,6 +1,11 @@
 --lua locals
+local S = minetest.get_translator("mcl_mobs")
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
+
+local gamerule_doMobSpawning = vl_tuning.setting("gamerule:doMobSpawning", "bool", {
+	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."), default = true
+})
 
 local modern_lighting = minetest.settings:get_bool("mcl_mobs_modern_lighting", true)
 local nether_threshold = tonumber(minetest.settings:get("mcl_mobs_nether_threshold")) or 11
@@ -728,8 +733,6 @@ end
 
 mcl_mobs.spawn_group = spawn_group
 
-local S = minetest.get_translator("mcl_mobs")
-
 minetest.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
 	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly_in=air>::var<fly=true>:\n etc."),
@@ -1010,6 +1013,7 @@ if mobs_spawn then
 
 	local timer = 0
 	minetest.register_globalstep(function(dtime)
+		if not gamerule_doMobSpawning[1] then return end
 
 		timer = timer + dtime
 		if timer < WAIT_FOR_SPAWN_ATTEMPT then return end
