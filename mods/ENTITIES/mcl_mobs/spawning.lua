@@ -633,7 +633,7 @@ local function get_next_mob_spawn_pos(pos)
 	-- those further away from the player.
 	local fx = (math_random(1,10000)-1) / 10000
 	local x = inverse_pwl(fx, SPAWN_DISTANCE_CDF_PWL)
-	distance = x * (MOB_SPAWN_ZONE_OUTER - MOB_SPAWN_ZONE_INNER) + MOB_SPAWN_ZONE_INNER
+	local distance = x * (MOB_SPAWN_ZONE_OUTER - MOB_SPAWN_ZONE_INNER) + MOB_SPAWN_ZONE_INNER
 	--print("Using spawn distance of "..tostring(distance).."  fx="..tostring(fx)..",x="..tostring(x))
 
 	-- TODO Floor xoff and zoff and add 0.5 so it tries to spawn in the middle of the square. Less failed attempts.
