@@ -11,6 +11,9 @@ local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
 local S = core.get_translator(modname)
 local has_mcl_portals = core.get_modpath("mcl_portals")
+local gamerule_doFireTick = vl_tuning.setting("gamerule:doFireTick", "bool", {
+	description = S("Whether fire should spread and naturally extinguish"), default = true
+})
 
 -- Localized functions
 local set_node = core.set_node
@@ -425,6 +428,8 @@ else -- Fire enabled
 		chance = 5,
 		catch_up = false,
 		action = function(pos)
+			if not gamerule_doFireTick[1] then return end
+
 			local node = get_node(pos)
 			local age = node.param2
 
@@ -468,6 +473,8 @@ else -- Fire enabled
 		chance = 9,
 		catch_up = false,
 		action = function(pos)
+			if not gamerule_doFireTick[1] then return end
+
 			local p=get_ignitable_by_lava(pos)
 			if p then
 				spawn_fire(p, 0)
@@ -484,6 +491,8 @@ else -- Fire enabled
 		chance = 6,
 		catch_up = false,
 		action = function(pos)
+			if not gamerule_doFireTick[1] then return end
+
 			local p = has_flammable(pos)
 			if not p then return end
 

@@ -1,6 +1,11 @@
 --lua locals
-local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
+local math, vector, core, mcl_mobs = math, vector, core, mcl_mobs
+local S = core.get_translator("mcl_mobs")
 local mob_class = mcl_mobs.mob_class
+
+local gamerule_doMobSpawning = vl_tuning.setting("gamerule:doMobSpawning", "bool", {
+	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."), default = true
+})
 
 local modern_lighting = core.settings:get_bool("mcl_mobs_modern_lighting", true)
 local nether_threshold = tonumber(core.settings:get("mcl_mobs_nether_threshold")) or 11
@@ -792,8 +797,6 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 end
 
 mcl_mobs.spawn_group = spawn_group
-
-local S = core.get_translator("mcl_mobs")
 
 core.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
