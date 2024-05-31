@@ -30,7 +30,11 @@ local tunable_class = {}
 function tunable_class:set(value)
 	local self_type = self.type
 	if type(value) == "string" then
-		self[1] = self_type.from_string(value) or self.default
+		local new_value = self_type.from_string(value)
+		if new_value == nil then new_value = self.default end
+
+		minetest.log("action","new_value="..dump(new_value))
+		self[1] = new_value
 	else
 		self[1] = value
 	end
