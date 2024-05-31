@@ -4,7 +4,7 @@ local storage = minetest.get_mod_storage()
 local mod = {}
 vl_tuning = mod
 
---
+-- All registered tunable parameters
 local tunables = {}
 
 -- Supported variable types
@@ -45,29 +45,28 @@ function tunable_class:get_string()
 	return self.type.to_string(self[1])
 end
 
-function mod.get_server_setting(name, description, default, setting, setting_type, options )
-	local tunable = tunables[name]
+function mod.setting(setting, setting_type, def )
+	-- return the existing setting if it was previously registered. Don't update the definition
+	local tunable = tunables[setting]
 	if tunable then return tunable end
 
-	tunable = {
-		name = name,
-		default = default,
-		setting = setting,
-		description = description,
-		type = tunable_types[setting_type],
-		options = options,
-	}
-	tunable[1] = default
-	print(dump(tunable))
+	-- Setup the tunable data
+	tunable = table.copy(def)
+	tunable.setting = setting
+	tunable.type = tunable_types[setting_type]
+	tunable[1] = tunable.default
 	setmetatable(tunable, {__index=tunable_class})
-	if setting then
-		local setting_value = storage:get_string(setting)
-		if setting_value and setting_value ~= "" then
-			tunable:set(setting_value)
-		end
+
+	-- Load the setting value from mod storage
+	local setting_value = storage:get_string(setting)
+	if setting_value and setting_value ~= "" then
+		tunable:set(setting_value)
 	end
-	print(dump(tunable))
-	tunables[name] = tunable
+
+	-- Add to the list of all available settings
+	tunables[setting] = tunable
+
+	-- Provide it so that the current value in [1] can be accessed without having to call into this API again
 	return tunable
 end
 
@@ -87,13 +86,13 @@ minetest.register_chatcommand("set_setting", {
 		end
 
 		local tunable = tunables[params[1]]
-		if tunable then
-			minetest.log("action", "[vl_tuning] "..name.." set ".. params[1] .." to "..params[2])
-			tunable:set(params[2])
-			return true
-		else
+		if not tunable then
 			return false, S("Setting @1 doesn't exist", params[1])
 		end
+
+		minetest.log("action", "[vl_tuning] "..name.." set ".. params[1] .." to "..params[2])
+		tunable:set(params[2])
+		return true
 	end
 })
 minetest.register_chatcommand("get_setting", {
@@ -106,6 +105,37 @@ minetest.register_chatcommand("get_setting", {
 			return true, tunable:get_string()
 		else
 			return false, S("Setting @1 doesn't exist", param)
+		end
+	end
+})
+
+minetest.register_chatcommand("gamerule", {
+	description = S("Display or set customizable options"),
+	params = S("<rule> [<value>]"),
+	privs = { server = true },
+	func = function(name, params_raw)
+		-- Split apart the params
+		local params = {}
+		for str in string.gmatch(params_raw, "([^ ]+)") do
+			params[#params + 1] = str
+		end
+
+		if #params < 1 or #params > 2 then
+			return false, S("Usage: /gamerule <rule> [<value>]")
+		end
+
+		local tunable = tunables["gamerule:"..params[1]]
+		if not tunable then
+			return false, S("Game rule @1 doesn't exist", params[1])
+		end
+
+		local value = params[2]
+		if value then
+			minetest.log("action", "[vl_tuning] Setting game rule "..params[1].." to "..params[2])
+			tunable:set(params[2])
+			return true
+		else
+			return true, tunable:get_string()
 		end
 	end
 })
