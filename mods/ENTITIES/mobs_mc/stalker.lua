@@ -35,7 +35,8 @@ local function get_texture(self)
 	if not texture or texture == "" then
 		texture = "vl_stalker_default.png"
 	end
-	texture = "([combine:16x24:0,0=" .. texture .. ":0,16=" .. texture .. texture_suff
+	texture = texture:gsub("([\\^:\\[])","\\%1") -- escape texture modifiers
+	texture = "([combine:16x24:0,0=(" .. texture .. "):0,16=(" .. texture ..")".. texture_suff
 	if self.attack then
 		texture = texture .. ")^vl_mobs_stalker_overlay_angry.png"
 	else
@@ -131,7 +132,11 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
-		self.object:set_properties({textures={get_texture(self)}})
+		local new_texture = get_texture(self)
+		if self._stalker_texture ~= new_texture then
+			self.object:set_properties({textures={new_texture, "mobs_mc_empty.png"}})
+			self._stalker_texture = new_texture
+		end
 	end,
 	on_die = function(self, pos, cmi_cause)
 		-- Drop a random music disc when killed by skeleton or stray
