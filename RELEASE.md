@@ -106,7 +106,7 @@ lua tools/generate_ingame_credits.lua
 4. Make a commit for the above:
 ```
 git add game.conf
-git commit -m "Set version for hotifx v0.87.1"
+git commit -m "Set version for hotfix v0.87.1"
 ```
 or, if credits got updated:
 ```
@@ -120,6 +120,7 @@ git commit -m "Updated release credits and set version for hotfix v0.87.1"
 ## 0.87.1 hotfix
 ```
 and describe the changes there
+
 6. Make a commit for the releasenotes changes:
 ```
 git add releasenotes/0_87-the_prismatic_release.md
