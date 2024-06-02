@@ -106,11 +106,6 @@ minetest.register_on_mods_loaded(function()
 			end
 			if def.groups.brewitem then
 				local str = name
-				if def.groups._mcl_potion == 1 then
-					local stack = ItemStack(name)
-					tt.reload_itemstack_description(stack)
-					str = stack:to_string()
-				end
 				table.insert(inventory_lists["brew"], str)
 				nonmisc = true
 			end
@@ -128,19 +123,28 @@ minetest.register_on_mods_loaded(function()
 					local stack = ItemStack(name)
 					local potency = def._default_potent_level - 1
 					stack:get_meta():set_int("mcl_potions:potion_potent", potency)
-					tt.reload_itemstack_description(stack)
 					table.insert(inventory_lists["brew"], stack:to_string())
 				end
 				if def.has_plus then
 					local stack = ItemStack(name)
 					local extend = def._default_extend_level
 					stack:get_meta():set_int("mcl_potions:potion_plus", extend)
-					tt.reload_itemstack_description(stack)
 					table.insert(inventory_lists["brew"], stack:to_string())
 				end
 			end
 
 			table.insert(inventory_lists["all"], name)
+		end
+	end
+
+	-- Itemstack descriptions need to be reloaded separately, because tt invalidates minetest.registered_items iterators, somehow
+	-- (and pairs() uses said iterators internally)
+	-- TODO investigate the iterator invalidation, where does it happen?
+	for name, list in pairs(inventory_lists) do
+		for i=1, #list do
+			local stack = ItemStack(list[i])
+			tt.reload_itemstack_description(stack)
+			list[i] = stack:to_string()
 		end
 	end
 
