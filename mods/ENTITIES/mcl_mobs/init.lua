@@ -149,6 +149,16 @@ function mcl_mobs.register_mob(name, def)
 		head_yaw = def.head_yaw or "y", -- axis to rotate head on
 		horizontal_head_height = def.horizontal_head_height or 0,
 		wears_armor = def.wears_armor, -- a number value used to index texture slot for armor
+		-- use: 																		armor_transforms = {arm_right = {"arm_right_bone_name", pos}}
+		-- or if you need rotation as well:				 	armor_transforms = {arm_right = {"arm_right_bone_name", pos, rot}}
+		armor_transforms = def.armor_transforms or {
+			head = {"Head", vector.zero()},
+			chest = {"Body", vector.zero()},
+			arm_right = {"Arm_Right", vector.zero()},
+			arm_left = {"Arm_Left", vector.zero()},
+			leg_right = {"Leg_Left", vector.zero()},
+			leg_left = {"Leg_right", vector.zero()}
+		},
 		stepheight = def.stepheight or 0.6,
 		name = name,
 		description = def.description,

@@ -201,6 +201,8 @@ end
 function mob_class:set_velocity(v)
 	if not v then return end
 
+	v = 0
+
 	local c_x, c_y = 0, 0
 
 	-- can mob be pushed, if so calculate direction
@@ -310,6 +312,8 @@ end
 -- set and return valid yaw
 function mob_class:set_yaw(yaw, delay, dtime)
 	if self.noyaw then return end
+
+	yaw = 0
 
 	if not self.object:get_yaw() or not self.object:get_pos() then return end
 

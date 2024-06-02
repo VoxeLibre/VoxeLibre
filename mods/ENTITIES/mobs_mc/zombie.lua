@@ -60,6 +60,14 @@ local zombie = {
 	head_pitch_multiplier=-1,
 	breath_max = -1,
 	wears_armor = 1,
+	armor_transforms = {
+		head = {"head", vector.zero()},
+		chest = {"body", vector.zero()},
+		arm_right = {"arm.right", vector.new(0,-0.9,0)},
+		arm_left = {"arm.left", vector.new(0,-0.9,0)},
+		leg_right = {"leg.right", vector.zero()},
+		leg_left = {"leg.left", vector.zero()}
+	},
 	armor = {undead = 90, fleshy = 90},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.8, 0.3},
 	visual = "mesh",

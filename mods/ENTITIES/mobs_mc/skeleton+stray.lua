@@ -96,6 +96,15 @@ local skeleton = {
 		die_speed = 15,
 		die_loop = false,
 	},
+	wears_armor = 1,
+	armor_transforms = { -- scaled down armor becuase of the scaled up skeleton model
+		head = {"head", vector.new(0,-0.2,0), vector.new(0,180,0), vector.new(0.44,0.44,0.44)},
+		chest = {"body", vector.new(0,-0.5,0), vector.new(0,180,0), vector.new(0.44,0.44,0.44)},
+		arm_right = {"arm.right", vector.new(0,-0.5,0), vector.new(0,180,0), vector.new(0.33,0.33,0.33)},
+		arm_left = {"arm.left", vector.new(0,-0.5,0), vector.new(0,180,0), vector.new(0.33,0.33,0.33)},
+		leg_right = {"leg.right", vector.zero(), vector.new(0,180,0), vector.new(0.33,0.33,0.33)},
+		leg_left = {"leg.left", vector.zero(), vector.new(0,180,0), vector.new(0.33,0.33,0.33)}
+	},
 	on_spawn = function(self)
 		if math.random(100) == 1 then
 			self:jock_to("mobs_mc:spider", vector.zero(), vector.zero())
