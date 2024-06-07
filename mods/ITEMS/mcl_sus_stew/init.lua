@@ -223,3 +223,39 @@ minetest.register_craft({
 	output = "mcl_sus_stew:stew",
 	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:poppy"},
 })
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_sus_stew:stew",
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_orange"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_sus_stew:stew",
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_pink"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_sus_stew:stew",
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_red"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_sus_stew:stew",
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_white"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_sus_stew:stew",
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:azure_bluet"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_sus_stew:stew",
+	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:wither_rose"},
+})
