@@ -340,6 +340,7 @@ local function on_put(pos, listname, index, stack, player)
 	local inv = meta:get_inventory()
 	local str = ""
 	local stack
+	local oldparam2 = minetest.get_node(pos).param2
 	for i=1, inv:get_size("stand") do
 		stack = inv:get_stack("stand", i)
 		if not stack:is_empty() then
@@ -347,7 +348,7 @@ local function on_put(pos, listname, index, stack, player)
 		else str = str.."0"
 		end
 	end
-	minetest.swap_node(pos, {name = "mcl_brewing:stand_"..str})
+	minetest.swap_node(pos, {name = "mcl_brewing:stand_"..str, param2 = oldparam2})
 	minetest.get_node_timer(pos):start(1.0)
 	--some code here to enforce only potions getting placed on stands
 end
