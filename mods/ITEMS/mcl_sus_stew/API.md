@@ -17,4 +17,5 @@ Conveniently register a sus stew effect which gives the eater a status effect.
 ## mcl_sus_stew.register_sus_stew(secret_ingredient, effect_name)
 Register a suspicious stew crafted with a bowl, red mushroom, brown mushroom and <secret_ingredient>.
 * secret_ingredient: itemstring of the fourth ingredient
+DON'T use bowl or red/brown mushroom as this will mess up all sus stews
 * effect_name: the name of the sus stew effect to be activated when the sus stew is eaten
