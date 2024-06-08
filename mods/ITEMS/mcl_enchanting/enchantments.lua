@@ -752,3 +752,22 @@ mcl_enchanting.enchantments.unbreaking = {
 	inv_combat_tab = true,
 	inv_tool_tab = true,
 }
+
+-- implemented in mcl_playerplus
+mcl_enchanting.enchantments.swift_sneak = {
+	name = S("Swift Sneak"),
+	max_level = 3,
+	primary = {},
+	secondary = {armor_legs = true},
+	disallow = {non_combat_armor = true},
+	incompatible = {},
+	weight = 1,
+	description = S("Increases movement speed while sneaking."),
+	curse = false,
+	on_enchant = function() end,
+	requires_tool = false,
+	treasure = true,
+	power_range_table = {{25, 75}, {50, 100}, {75, 125}},
+	inv_combat_tab = true,
+	inv_tool_tab = false,
+}
