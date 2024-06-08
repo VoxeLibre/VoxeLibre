@@ -67,8 +67,7 @@ function mcl_cocoas.grow(pos)
 	return true
 end
 
--- only caller was mcl_dye, now these can be local functions.
--- TODO: remove aliases, replace global functions with local functions.
+-- only caller was mcl_dye, consider converting these into local functions.
 local cocoa_place = mcl_cocoas.place
 local cocoa_grow = mcl_cocoas.grow
 

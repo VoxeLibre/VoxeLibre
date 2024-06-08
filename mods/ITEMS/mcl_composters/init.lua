@@ -114,7 +114,9 @@ local function composter_progress_chance(pos, node, chance)
 		-- the block will get updated by the node timer callback set in node reg def
 		if level == 7 then
 			local timer = get_node_timer(pos)
-			timer:start(1)
+			if not timer:is_started() then
+				timer:start(1)
+			end
 		end
 	end
 end
