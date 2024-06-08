@@ -553,6 +553,16 @@ minetest.register_globalstep(function(dtime)
 			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:depth_strider")
 		end
 
+		-- Sneak faster with swift sneak
+		local leggings = player:get_inventory():get_stack("armor", 4)
+		local swift_sneak = mcl_enchanting.get_enchantment(leggings, "swift_sneak")
+		if swift_sneak > 0 then
+			playerphysics.add_physics_factor(player, "speed_crouch", "mcl_playerplus:swift_sneak", (swift_sneak / 2) + 1)
+		else
+			playerphysics.remove_physics_factor(player, "speed_crouch", "mcl_playerplus:swift_sneak")
+		end
+
+
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
 		-- without group disable_suffocation=1)
 		-- if swimming, check the feet node instead, because the head node will be above the player when swimming
