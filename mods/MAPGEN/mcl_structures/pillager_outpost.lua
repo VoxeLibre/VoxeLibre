@@ -42,7 +42,7 @@ mcl_structures.register_structure("pillager_outpost",{
 				{ itemstring = "mcl_mobitems:string", weight = 4, amount_min = 1, amount_max=6 },
 				{ itemstring = "mcl_core:iron_ingot", weight = 3, amount_min = 1, amount_max = 3 },
 				{ itemstring = "mcl_books:book", weight = 1, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_armor:sentry"},
 			}

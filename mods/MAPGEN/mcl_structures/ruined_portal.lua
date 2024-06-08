@@ -61,32 +61,32 @@ local def = {
 				{ itemstring = "mcl_core:apple_gold", weight = 15, },
 
 				{ itemstring = "mcl_tools:axe_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_farming:hoe_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_tools:pick_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_tools:shovel_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_tools:sword_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 
 				{ itemstring = "mcl_armor:helmet_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_armor:chestplate_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_armor:leggings_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_armor:boots_gold", weight = 15, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 
 				{ itemstring = "mcl_potions:speckled_melon", weight = 5, amount_min = 4, amount_max = 12 },

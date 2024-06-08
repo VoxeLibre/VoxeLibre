@@ -101,10 +101,10 @@ local cold = {
 				--{ itemstring = "mcl_maps:treasure_map", weight = 20, }, --FIXME Treasure map
 
 				{ itemstring = "mcl_books:book", weight = 10, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_fishing:fishing_rod_enchanted", weight = 20, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end  },
 				{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 1 },
 				{ itemstring = "mcl_armor:chestplate_leather", weight = 15, amount_min = 1, amount_max = 1 },

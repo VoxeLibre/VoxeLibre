@@ -1537,7 +1537,7 @@ local function init_trades(self, inv)
 			local offered_stack = ItemStack({name = offered_item, count = offered_count})
 			if mcl_enchanting.is_enchanted(offered_item) then
 				if mcl_enchanting.is_book(offered_item) then
-					offered_stack = mcl_enchanting.enchant_uniform_randomly(offered_stack, {"soul_speed"})
+					offered_stack = mcl_enchanting.enchant_uniform_randomly(offered_stack, {"soul_speed", "swift_sneak"})
 				else
 					mcl_enchanting.enchant_randomly(offered_stack, math.random(5, 19), false, false, true)
 					mcl_enchanting.unload_enchantments(offered_stack)

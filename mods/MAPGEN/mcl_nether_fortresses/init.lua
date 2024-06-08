@@ -161,15 +161,15 @@ mcl_structures.register_structure("nether_bulwark",{
 				{ itemstring = "mcl_core:gold_ingot", weight = 1, amount_min = 4, amount_max=9 },
 				{ itemstring = "mcl_core:crying_obsidian", weight = 1, amount_min = 3, amount_max=8 },
 				{ itemstring = "mcl_bows:crossbow", weight = 1, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_core:goldblock", weight = 1, },
 				{ itemstring = "mcl_tools:sword_gold", weight = 1, },
 				{ itemstring = "mcl_tools:axe_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
 				{ itemstring = "mcl_armor:helmet_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
 				{ itemstring = "mcl_armor:chestplate_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
-				{ itemstring = "mcl_armor:leggings_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
-				{ itemstring = "mcl_armor:boots_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_armor:leggings_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"swift_sneak"}, pr) end },
+				{ itemstring = "mcl_armor:boots_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed","swift_sneak"}, pr) end },
 				{ itemstring = "mcl_nether:ancient_debris", weight = 12 }, -- same values as MCLA for now
 				{ itemstring = "mcl_nether:netherite_scrap", weight = 4 }, -- until this is rebalanced
 			}

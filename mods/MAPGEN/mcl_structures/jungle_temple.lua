@@ -32,7 +32,7 @@ mcl_structures.register_structure("jungle_temple",{
 				{ itemstring = "mcl_mobitems:saddle", weight = 3, },
 				{ itemstring = "mcl_core:emerald", weight = 2, amount_min = 1, amount_max = 3 },
 				{ itemstring = "mcl_books:book", weight = 1, func = function(stack, pr)
-					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+					mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 				end },
 				{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 1, },
 				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 1, },
