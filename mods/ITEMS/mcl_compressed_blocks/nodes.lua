@@ -1,7 +1,10 @@
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
+
 --Compressed Cobblestone
 minetest.register_node("mcl_compressed_blocks:compressed_cobblestone", {
-	description = "Compressed Cobblestone",
-	_doc_items_longdesc = ("Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories."),
+	description = S("Compressed Cobblestone"),
+	_doc_items_longdesc = S("Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_compressed_blocks_compressed_cobblestone.png"},
 	is_ground_content = true,
@@ -14,8 +17,8 @@ minetest.register_node("mcl_compressed_blocks:compressed_cobblestone", {
 
 --Double Compressed Cobble
 minetest.register_node("mcl_compressed_blocks:double_compressed_cobblestone", {
-	description = "Double Compressed Cobblestone",
-	_doc_items_longdesc = ("Double Compressed Cobblestone is a decorative block made from 9 Compressed Cobblestone. It is useful for saving space in your inventories."),
+	description = S("Double Compressed Cobblestone"),
+	_doc_items_longdesc = S("Double Compressed Cobblestone is a decorative block made from 9 Compressed Cobblestone. It is useful for saving space in your inventories."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_compressed_blocks_double_compressed_cobblestone.png"},
 	is_ground_content = true,
@@ -28,8 +31,8 @@ minetest.register_node("mcl_compressed_blocks:double_compressed_cobblestone", {
 
 --Triple Compressed Cobble
 minetest.register_node("mcl_compressed_blocks:triple_compressed_cobblestone", {
-	description = "Triple Compressed Cobblestone",
-	_doc_items_longdesc = ("Triple Compressed Cobblestone is a decorative block made from 9 Double Compressed Cobblestone. It is useful for saving space in your inventories."),
+	description = S("Triple Compressed Cobblestone"),
+	_doc_items_longdesc = S("Triple Compressed Cobblestone is a decorative block made from 9 Double Compressed Cobblestone. It is useful for saving space in your inventories."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_compressed_blocks_triple_compressed_cobblestone.png"},
 	is_ground_content = true,
@@ -42,8 +45,8 @@ minetest.register_node("mcl_compressed_blocks:triple_compressed_cobblestone", {
 
 --Quadruple Compressed Cobble
 minetest.register_node("mcl_compressed_blocks:quadruple_compressed_cobblestone", {
-	description = "Quadruple Compressed Cobblestone",
-	_doc_items_longdesc = ("Quadruple Compressed Cobblestone is a decorative block made from 9 Triple Compressed Cobblestone. It is useful for saving space in your inventories."),
+	description = S("Quadruple Compressed Cobblestone"),
+	_doc_items_longdesc = S("Quadruple Compressed Cobblestone is a decorative block made from 9 Triple Compressed Cobblestone. It is useful for saving space in your inventories."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_compressed_blocks_quadruple_compressed_cobblestone.png"},
 	is_ground_content = true,
@@ -56,8 +59,8 @@ minetest.register_node("mcl_compressed_blocks:quadruple_compressed_cobblestone",
 
 --Quintuple Compressed Cobble
 minetest.register_node("mcl_compressed_blocks:quintuple_compressed_cobblestone", {
-	description = "Quintuple Compressed Cobblestone",
-	_doc_items_longdesc = ("Quintuple Compressed Cobblestone is a decorative block made from 9 Quadruple Compressed Cobblestone. It is useful for saving space in your inventories."),
+	description = S("Quintuple Compressed Cobblestone"),
+	_doc_items_longdesc = S("Quintuple Compressed Cobblestone is a decorative block made from 9 Quadruple Compressed Cobblestone. It is useful for saving space in your inventories."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_compressed_blocks_quintuple_compressed_cobblestone.png"},
 	is_ground_content = true,
@@ -70,8 +73,8 @@ minetest.register_node("mcl_compressed_blocks:quintuple_compressed_cobblestone",
 
 --Sextuple Compressed Cobble
 minetest.register_node("mcl_compressed_blocks:sextuple_compressed_cobblestone", {
-	description = "Sextuple Compressed Cobblestone",
-	_doc_items_longdesc = ("Sextuple Compressed Cobblestone is a decorative block made from 9 Quintuple Compressed Cobblestone. It is useful for saving space in your inventories."),
+	description = S("Sextuple Compressed Cobblestone"),
+	_doc_items_longdesc = S("Sextuple Compressed Cobblestone is a decorative block made from 9 Quintuple Compressed Cobblestone. It is useful for saving space in your inventories."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_compressed_blocks_sextuple_compressed_cobblestone.png"},
 	is_ground_content = true,
@@ -84,8 +87,8 @@ minetest.register_node("mcl_compressed_blocks:sextuple_compressed_cobblestone", 
 
 --Septuple Compressed Cobble
 minetest.register_node("mcl_compressed_blocks:septuple_compressed_cobblestone", {
-	description = "Septuple Compressed Cobblestone",
-	_doc_items_longdesc = ("Septuple Compressed Cobblestone is a decorative block made from 9 Sextuple Compressed Cobblestone. It is useful for saving space in your inventories."),
+	description = S("Septuple Compressed Cobblestone"),
+	_doc_items_longdesc = S("Septuple Compressed Cobblestone is a decorative block made from 9 Sextuple Compressed Cobblestone. It is useful for saving space in your inventories."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_compressed_blocks_septuple_compressed_cobblestone.png"},
 	is_ground_content = true,
@@ -98,8 +101,8 @@ minetest.register_node("mcl_compressed_blocks:septuple_compressed_cobblestone", 
 
 --Ocutple Compressed Cobble
 minetest.register_node("mcl_compressed_blocks:octuple_compressed_cobblestone", {
-	description = "Octuple Compressed Cobblestone",
-	_doc_items_longdesc = ("Octuple Compressed Cobblestone is a decorative block made from 9 Septuple Compressed Cobblestone. It is useful for saving space in your inventories."),
+	description = S("Octuple Compressed Cobblestone"),
+	_doc_items_longdesc = S("Octuple Compressed Cobblestone is a decorative block made from 9 Septuple Compressed Cobblestone. It is useful for saving space in your inventories."),
 	_doc_items_hidden = false,
 	tiles = {"mcl_compressed_blocks_octuple_compressed_cobblestone.png"},
 	is_ground_content = true,
