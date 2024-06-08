@@ -89,12 +89,11 @@ end
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() ~= "mcl_sus_stew:stew" then return end
-	for f,e in pairs(ingredient_effect) do
-		for _,it in pairs(old_craft_grid) do
-			if it:get_name() == f then
-				itemstack:get_meta():set_string("effect",e)
-				return itemstack
-			end
+	for _,it in pairs(old_craft_grid) do
+		local effect = ingredient_effect[it:get_name()]
+		if effect ~= nil then
+			itemstack:get_meta():set_string("effect", effect)
+			return itemstack
 		end
 	end
 end)
