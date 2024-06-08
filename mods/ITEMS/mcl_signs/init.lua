@@ -384,7 +384,6 @@ minetest.register_entity("mcl_signs:text", {
 	initial_properties = {
 		pointable = false,
 		visual = "upright_sprite",
-		textures = {},
 		physical = false,
 		collide_with_objects = false,
 	},
