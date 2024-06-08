@@ -1,3 +1,5 @@
+mcl_sus_stew = {}
+
 local S = minetest.get_translator(minetest.get_current_modname())
 
 --                                          ____________________________
@@ -5,68 +7,9 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local eat = minetest.item_eat(6, "mcl_core:bowl") --6 hunger points, player receives mcl_core:bowl after eating
 
-local flower_effect = {
-	[ "mcl_flowers:allium" ] = "fire_resistance",
-	[ "mcl_flowers:azure_bluet" ] = "blindness",
-	[ "mcl_flowers:lily_of_the_valley" ] = "poison",
-	[ "mcl_flowers:blue_orchid" ] = "saturation",
-	[ "mcl_flowers:dandelion" ] = "saturation",
-	[ "mcl_flowers:cornflower" ] = "jump",
-	[ "mcl_flowers:oxeye_daisy" ] = "regeneration",
-	[ "mcl_flowers:poppy" ] = "night_vision",
-	[ "mcl_flowers:wither_rose" ] = "withering",
-	[ "mcl_flowers:tulip_orange" ] = "weakness",
-	[ "mcl_flowers:tulip_pink" ] = "weakness",
-	[ "mcl_flowers:tulip_red" ] = "weakness",
-	[ "mcl_flowers:tulip_white" ] = "weakness",
-}
+local ingredient_effect = {}
+local effects = {}
 
-local effects = {
-	[ "fire_resistance" ] = function(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect("fire_resistance", placer, 1, 4)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-
-	[ "blindness" ] = function(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect("blindness", placer, 1, 8)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-
-	[ "poison" ] = function(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect_by_level("poison", placer, 1, 12)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-
-	[ "saturation" ] = function(itemstack, placer, pointed_thing, player)
-		mcl_potions.give_effect_by_level("saturation", placer, 1, 0.5)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-
-	["jump"] = function(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect_by_level("leaping", placer, 1, 6)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-
-	["regeneration"] = function(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect_by_level("regeneration", placer, 1, 8)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-
-	["withering"] = function(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect_by_level("withering", placer, 1, 8)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-
-	["weakness"] = function(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect_by_level("weakness", placer, 1, 9)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-
-	["night_vision"] = function(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect("night_vision", placer, 1, 5)
-		return eat(itemstack, placer, pointed_thing)
-	end,
-}
 local function get_random_effect()
 	local keys = {}
 	for k in pairs(effects) do
@@ -146,7 +89,7 @@ end
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() ~= "mcl_sus_stew:stew" then return end
-	for f,e in pairs(flower_effect) do
+	for f,e in pairs(ingredient_effect) do
 		for _,it in pairs(old_craft_grid) do
 			if it:get_name() == f then
 				itemstack:get_meta():set_string("effect",e)
@@ -156,8 +99,8 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	end
 end)
 
---										  ________________________
---_________________________________________/	Item Regestration	\_________________
+--											________________________
+--_________________________________________/	Item Registration	\_________________
 minetest.register_craftitem("mcl_sus_stew:stew",{
 	description = S("Suspicious Stew"),
 	inventory_image = "sus_stew.png",
@@ -170,7 +113,7 @@ minetest.register_craftitem("mcl_sus_stew:stew",{
 	_mcl_saturation = 7.2,
 })
 
-mcl_hunger.register_food("mcl_sus_stew:stew",6, "mcl_core:bowl")
+mcl_hunger.register_food("mcl_sus_stew:stew", 6, "mcl_core:bowl")
 
 --compat with old (mcl5) sus_stew
 minetest.register_alias("mcl_sus_stew:poison_stew", "mcl_sus_stew:stew")
@@ -179,83 +122,51 @@ minetest.register_alias("mcl_sus_stew:jump_boost_stew", "mcl_sus_stew:stew")
 minetest.register_alias("mcl_sus_stew:regneration_stew", "mcl_sus_stew:stew")
 minetest.register_alias("mcl_sus_stew:night_vision_stew", "mcl_sus_stew:stew")
 
---										 ______________
---_________________________________________/	Crafts	\________________________________
+--										 	____________
+--_________________________________________/	API		\________________________________
 
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:allium"},
-})
+function mcl_sus_stew.register_sus_stew(secret_ingredient, effect_name)
+	ingredient_effect[secret_ingredient] = effect_name
+	minetest.register_craft({
+		type = "shapeless",
+		output = "mcl_sus_stew:stew",
+		recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", secret_ingredient},
+	})
+end
 
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:lily_of_the_valley"},
-})
+function mcl_sus_stew.register_sus_effect(effect_name, effect_func)
+	effects[effect_name] = effect_func
+end
 
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:blue_orchid"},
-})
+function mcl_sus_stew.register_sus_potion_effect(potion_name, factor, duration, effect_name)
+	if effect_name == nil then effect_name = potion_name end
+	local function on_eat_effect(itemstack, placer, pointed_thing)
+		mcl_potions.give_effect_by_level(potion_name, placer, factor, duration)
+		return eat(itemstack, placer, pointed_thing)
+	end
+	mcl_sus_stew.register_sus_effect(effect_name, on_eat_effect)
+end
 
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:dandelion"} ,
-})
+mcl_sus_stew.register_sus_potion_effect("fire_resistance", 1, 4)
+mcl_sus_stew.register_sus_potion_effect("blindness",       1, 8)
+mcl_sus_stew.register_sus_potion_effect("poison",          1, 12)
+mcl_sus_stew.register_sus_potion_effect("saturation",      1, 0.5)
+mcl_sus_stew.register_sus_potion_effect("leaping",         1, 6, "jump")
+mcl_sus_stew.register_sus_potion_effect("regeneration",    1, 8)
+mcl_sus_stew.register_sus_potion_effect("withering",       1, 8)
+mcl_sus_stew.register_sus_potion_effect("weakness",        1, 9)
+mcl_sus_stew.register_sus_potion_effect("night_vision",    1, 5)
 
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:cornflower"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:oxeye_daisy"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:poppy"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_orange"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_pink"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_red"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:tulip_white"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:azure_bluet"},
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_sus_stew:stew",
-	recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", "mcl_flowers:wither_rose"},
-})
+mcl_sus_stew.register_sus_stew("mcl_flowers:allium",             "fire_resistance")
+mcl_sus_stew.register_sus_stew("mcl_flowers:azure_bluet",        "blindness")
+mcl_sus_stew.register_sus_stew("mcl_flowers:lily_of_the_valley", "poison")
+mcl_sus_stew.register_sus_stew("mcl_flowers:blue_orchid",        "saturation")
+mcl_sus_stew.register_sus_stew("mcl_flowers:dandelion",          "saturation")
+mcl_sus_stew.register_sus_stew("mcl_flowers:cornflower",         "jump")
+mcl_sus_stew.register_sus_stew("mcl_flowers:oxeye_daisy",        "regeneration")
+mcl_sus_stew.register_sus_stew("mcl_flowers:poppy",              "night_vision")
+mcl_sus_stew.register_sus_stew("mcl_flowers:wither_rose",        "withering")
+mcl_sus_stew.register_sus_stew("mcl_flowers:tulip_orange",       "weakness")
+mcl_sus_stew.register_sus_stew("mcl_flowers:tulip_pink",         "weakness")
+mcl_sus_stew.register_sus_stew("mcl_flowers:tulip_red",          "weakness")
+mcl_sus_stew.register_sus_stew("mcl_flowers:tulip_white",        "weakness")
