@@ -68,7 +68,7 @@ local loottable =
 			{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 15 },
 			{ itemstring = "mcl_core:apple_gold", weight = 15 },
 			{ itemstring = "mcl_books:book", weight = 10, func = function(stack, pr)
-				mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr)
+				mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed", "swift_sneak"}, pr)
 			end },
 			{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 10 },
 			{ itemstring = "mcl_mobitems:diamond_horse_armor", weight = 5 },
