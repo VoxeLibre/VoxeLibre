@@ -349,9 +349,8 @@ function mcl_mobs.register_conversion(old_name, new_name)
 			if not old_object then return end
 
 			local pos = old_object:get_pos()
-			old_object:remove() -- Always remove the object if we got this far
-
 			if not pos then return end
+			old_object:remove()
 
 			local new_object = minetest.add_entity(pos, new_name, staticdata)
 			if not new_object then return end
