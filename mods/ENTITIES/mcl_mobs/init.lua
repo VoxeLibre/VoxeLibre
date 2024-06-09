@@ -345,12 +345,19 @@ end -- END mcl_mobs.register_mob function
 function mcl_mobs.register_conversion(old_name, new_name)
 	minetest.register_entity(old_name, {
 		on_activate = function(self, staticdata, dtime)
-			local obj = minetest.add_entity(self.object:get_pos(), new_name, staticdata)
-			if obj then
-				local hook = (obj:get_luaentity() or {})._on_after_convert
-				if hook then hook(obj) end
-			end
-			self.object:remove()
+			local old_object = self.object
+			if not old_object then return end
+
+			local pos = old_object:get_pos()
+			old_object:remove() -- Always remove the object if we got this far
+
+			if not pos then return end
+
+			local new_object = minetest.add_entity(pos, new_name, staticdata)
+			if not new_object then return end
+
+			local hook = (obj:get_luaentity() or {})._on_after_convert
+			if hook then hook(obj) end
 		end,
 		_convert_to = new_name,
 	})
