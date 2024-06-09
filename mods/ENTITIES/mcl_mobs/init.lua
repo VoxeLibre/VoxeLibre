@@ -356,8 +356,8 @@ function mcl_mobs.register_conversion(old_name, new_name)
 			local new_object = minetest.add_entity(pos, new_name, staticdata)
 			if not new_object then return end
 
-			local hook = (obj:get_luaentity() or {})._on_after_convert
-			if hook then hook(obj) end
+			local hook = (new_object:get_luaentity() or {})._on_after_convert
+			if hook then hook(new_object) end
 		end,
 		_convert_to = new_name,
 	})
