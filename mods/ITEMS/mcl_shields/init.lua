@@ -434,9 +434,10 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
+local keep_inventory = vl_tuning.setting("gamerule:keepInventory")
 minetest.register_on_dieplayer(function(player)
 	remove_shield_hud(player)
-	if not minetest.settings:get_bool("mcl_keepInventory") then
+	if not keep_inventory[1] then
 		remove_shield_entity(player, 1)
 		remove_shield_entity(player, 2)
 	end
