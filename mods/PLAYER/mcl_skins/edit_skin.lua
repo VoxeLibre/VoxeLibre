@@ -744,8 +744,10 @@ end
 
 init()
 
-if not minetest.settings:get_bool("mcl_keepInventory", false) then
-	minetest.register_on_respawnplayer(function(player)
+local keep_inventory = vl_tuning.setting("gamerule:keepInventory")
+minetest.register_on_respawnplayer(function(player)
+	if not keep_inventory[1] then
 		mcl_skins.update_player_skin(player) -- ensures players have their cape again after dying with an elytra
-	end)
-end
+	end
+end)
+
