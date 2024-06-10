@@ -126,6 +126,9 @@ S("• I: Show/hide inventory menu").."\n\n"..
 S("Inventory interaction:").."\n"..
 S("See the entry “Basics > Inventory”.").."\n\n"..
 
+S("Hunger/Eating:").."\n"..
+S("• While holding food, hold the right mouse button (PC) or double-tap and hold the second tap (Android) to eat").."\n\n"..
+
 S("Camera:").."\n"..
 S("• Z: Zoom").."\n"..
 S("• F7: Toggle camera mode").."\n\n"..
