@@ -1,4 +1,5 @@
 local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 local storage = minetest.get_mod_storage()
 local mod = {}
@@ -57,6 +58,8 @@ function mod.setting(setting, setting_type, def )
 	-- return the existing setting if it was previously registered. Don't update the definition
 	local tunable = tunables[setting]
 	if tunable then return tunable end
+	assert(setting_type)
+	assert(def)
 
 	-- Setup the tunable data
 	tunable = table.copy(def)
@@ -149,3 +152,4 @@ minetest.register_chatcommand("gamerule", {
 	end
 })
 
+dofile(modpath.."/settings.lua")
