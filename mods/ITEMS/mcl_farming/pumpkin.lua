@@ -175,8 +175,9 @@ if minetest.get_modpath("mcl_armor") then
 			add_pumpkin_hud(player)
 		end
 	end)
+	local keep_inventory = vl_tuning.setting("gamerule:keepInventory")
 	minetest.register_on_dieplayer(function(player)
-		if not minetest.settings:get_bool("mcl_keepInventory") then
+		if not keep_inventory[1] then
 			remove_pumpkin_hud(player)
 		end
 	end)
