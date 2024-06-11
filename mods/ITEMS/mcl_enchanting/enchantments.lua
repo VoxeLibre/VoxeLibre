@@ -205,7 +205,8 @@ walkover.register_global(function(pos, _, player)
 	if frost_walker <= 0 then
 		return
 	end
-	local radius = frost_walker + 2
+	-- 1011 = sqrt(4096000)/2; 4096000 is the max number of nodes for find_nodes_in_area_under_air
+	local radius = math.min(frost_walker + 2, 1011)
 	local minp = {x = pos.x - radius, y = pos.y, z = pos.z - radius}
 	local maxp = {x = pos.x + radius, y = pos.y, z = pos.z + radius}
 	local positions = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:water_source")
