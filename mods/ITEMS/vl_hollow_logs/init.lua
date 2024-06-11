@@ -43,7 +43,7 @@ function vl_hollow_logs.register_hollow_log(defs)
 	local groups = {axey = 1, building_block = 1, handy = 1, hollow_log = 1}
 
 	if not defs[5] then
-		groups = table.insert(groups, {fire_encouragement = 5, fire_flammability = 5, flammable = 2, hollow_log_burnable = 1})
+		table.update(groups, {fire_encouragement = 5, fire_flammability = 5, flammable = 2, hollow_log_burnable = 1})
 	end
 
 	minetest.register_node(modname .. ":"..name.."_hollow", {
