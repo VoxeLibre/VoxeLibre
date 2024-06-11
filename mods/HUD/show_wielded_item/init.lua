@@ -29,7 +29,8 @@ local function set_hud(player)
 		if hudbars_mod then
 			-- Tweak offset if hudbars mod was found
 
-			local rows = math.floor((#hb.get_hudbar_identifiers()-1) / 2) + 1
+			--local rows = math.floor((#hb.get_hudbar_identifiers()-1) / 2) + 1
+			local rows = math.floor((2) / 2) + 1
 			local vmargin = tonumber(minetest.settings:get("hudbars_vmargin")) or 28
 			off.y = -76 - vmargin*rows
 		end

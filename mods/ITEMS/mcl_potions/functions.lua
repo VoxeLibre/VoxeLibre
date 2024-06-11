@@ -307,7 +307,6 @@ mcl_potions.register_effect({
 	end,
 	on_step = function(dtime, object, factor, duration)
 		if object:get_breath() then
-			hb.hide_hudbar(object, "breath")
 			if object:get_breath() < 10 then object:set_breath(10) end
 		end
 	end,
@@ -602,9 +601,15 @@ mcl_potions.register_effect({
 	end,
 	on_start = function(object, factor)
 		object:set_properties({hp_max = minetest.PLAYER_MAX_HP_DEFAULT+factor})
+		vl_hudbars.update_health(object)
+	end,
+	on_load = function(object, factor)
+		object:set_properties({hp_max = minetest.PLAYER_MAX_HP_DEFAULT+factor})
+		vl_hudbars.update_health(object)
 	end,
 	on_end = function(object)
 		object:set_properties({hp_max = minetest.PLAYER_MAX_HP_DEFAULT})
+		vl_hudbars.update_health(object)
 	end,
 	particle_color = "#FF2222",
 	uses_factor = true,
@@ -622,17 +627,19 @@ mcl_potions.register_effect({
 		return (not object:is_player()) -- TODO dmg modifiers don't work for mobs
 	end,
 	on_start = function(object, factor)
-		hb.change_hudbar(object, "absorption", factor, (math.floor(factor/20-0.05)+1)*20)
+		vl_hudbars.change_value(object, "health", factor, factor, "absorption")
 		EF.absorption[object].absorb = factor
 	end,
 	on_load = function(object, factor)
-		minetest.after(0, function() hb.change_hudbar(object, "absorption", nil, (math.floor(factor/20-0.05)+1)*20) end)
+		minetest.after(0, function()
+			vl_hudbars.change_value(object, "health", factor, factor, "absorption")
+		end)
 	end,
 	on_step = function(dtime, object, factor, duration)
-		hb.change_hudbar(object, "absorption", EF.absorption[object].absorb)
+		vl_hudbars.change_value(object, "health", EF.absorption[object].absorb, EF.absorption[object].absorb, "absorption")
 	end,
 	on_end = function(object)
-		hb.change_hudbar(object, "absorption", 0)
+		vl_hudbars.change_value(object, "health", 0, 0, "absorption")
 	end,
 	particle_color = "#B59500",
 	uses_factor = true,
@@ -916,16 +923,10 @@ mcl_potions.register_effect({
 		return (not object:is_player()) -- TODO what should it do for mobs?
 	end,
 	on_start = function(object, factor)
-		hb.change_hudbar(object, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
-		if mcl_hunger.get_debug() then
-			hb.change_hudbar(object, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_foodpoison.png")
-		end
+		vl_hudbars.set_icon(object, "hunger", "mcl_hunger_icon_foodpoison.png")
 	end,
 	on_load = function(object, factor) -- TODO refactor and add hunger bar modifier API
-		hb.change_hudbar(object, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
-		if mcl_hunger.get_debug() then
-			hb.change_hudbar(object, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_foodpoison.png")
-		end
+		vl_hudbars.set_icon(object, "hunger", "mcl_hunger_icon_foodpoison.png")
 	end,
 	on_step = function(dtime, object, factor, duration)
 		mcl_hunger.exhaust(object:get_player_name(), dtime*factor)
@@ -1064,7 +1065,6 @@ mcl_potions.register_effect({
 			and minetest.get_item_group(node.name, "water") ~= 0 then
 				EF.conduit_power[object].blocked = nil
 				if object:get_breath() then
-					hb.hide_hudbar(object, "breath")
 					if object:get_breath() < 10 then object:set_breath(10) end
 				end
 				-- TODO implement improved underwater vision with this effect
@@ -1135,92 +1135,86 @@ end)
 -- ██║░░██║╚██████╔╝██████╦╝
 -- ╚═╝░░╚═╝░╚═════╝░╚═════╝░
 
-hb.register_hudbar("absorption", 0xFFFFFF, S("Absorption"), {bar = "[fill:2x16:#B59500", icon = "mcl_potions_icon_absorb.png"}, 0, 0, 0, false)
-
-local hp_hudbar_modifiers = {}
-
--- API - registers a HP hudbar modifier
--- required parameters in def:
--- predicate - function(player) - returns true if player fulfills the requirements (eg. has the effects) for the hudbar look
--- icon - string - name of the icon to which the modifier should change the HP hudbar heart
--- priority - signed int - lower gets checked first, and first fulfilled predicate applies its modifier
-function mcl_potions.register_hp_hudbar_modifier(def)
-	if type(def.predicate) ~= "function" then error("Predicate must be a function") end
-	if not def.icon then error("No icon provided") end
-	if not def.priority then error("No priority provided") end
-	table.insert(hp_hudbar_modifiers, {
-		predicate = def.predicate,
-		icon = def.icon,
-		priority = def.priority,
-	})
-	table.sort(hp_hudbar_modifiers, function(a, b) return a.priority <= b.priority end)
-end
-
-mcl_potions.register_hp_hudbar_modifier({
+-- Register HP bar icon changes based on potion effects
+vl_hudbars.register_hudbar_modifier{
+	identifier = "health",
+	part = "absorption",
 	predicate = function(player)
-		if EF.withering[player] and EF.regeneration[player] then return true end
+		if mcl_potions.has_effect(player, "withering") and mcl_potions.has_effect(player, "regeneration") then return true end
 	end,
 	icon = "mcl_potions_icon_regen_wither.png",
 	priority = -30,
-})
+}
 
-mcl_potions.register_hp_hudbar_modifier({
+vl_hudbars.register_hudbar_modifier{
+	identifier = "health",
+	part = "absorption",
 	predicate = function(player)
-		if EF.withering[player] then return true end
+		if mcl_potions.has_effect(player, "withering") then return true end
 	end,
 	icon = "mcl_potions_icon_wither.png",
 	priority = -20,
-})
+}
 
-mcl_potions.register_hp_hudbar_modifier({
+vl_hudbars.register_hudbar_modifier{
+	identifier = "health",
+	part = "absorption",
 	predicate = function(player)
-		if EF.poison[player] and EF.regeneration[player] then return true end
+		if mcl_potions.has_effect(player, "poison") and mcl_potions.has_effect(player, "regeneration") then return true end
 	end,
 	icon = "hbhunger_icon_regen_poison.png",
 	priority = -10,
-})
+}
 
-mcl_potions.register_hp_hudbar_modifier({
+vl_hudbars.register_hudbar_modifier{
+	identifier = "health",
+	part = "absorption",
 	predicate = function(player)
-		if EF.poison[player] then return true end
+		if mcl_potions.has_effect(player, "poison") then return true end
 	end,
 	icon = "hbhunger_icon_health_poison.png",
 	priority = 0,
-})
+}
 
-mcl_potions.register_hp_hudbar_modifier({
+vl_hudbars.register_hudbar_modifier{
+	identifier = "health",
+	part = "absorption",
 	predicate = function(player)
-		if EF.frost[player] and EF.regeneration[player] then return true end
+		if mcl_potions.has_effect(player, "frost") and mcl_potions.has_effect(player, "regeneration") then return true end
 	end,
 	icon = "mcl_potions_icon_regen_frost.png",
 	priority = 10,
-})
+}
 
-mcl_potions.register_hp_hudbar_modifier({
+vl_hudbars.register_hudbar_modifier{
+	identifier = "health",
+	part = "absorption",
 	predicate = function(player)
-		if EF.frost[player] then return true end
+		if mcl_potions.has_effect(player, "frost") then return true end
 	end,
 	icon = "mcl_potions_icon_frost.png",
 	priority = 20,
-})
+}
 
-mcl_potions.register_hp_hudbar_modifier({
+vl_hudbars.register_hudbar_modifier{
+	identifier = "health",
+	part = "absorption",
 	predicate = function(player)
-		if EF.regeneration[player] then return true end
+		if mcl_potions.has_effect(player, "regeneration") then return true end
 	end,
 	icon = "hudbars_icon_regenerate.png",
 	priority = 30,
-})
+}
 
-local function potions_set_hudbar(player)
-	for _, mod in pairs(hp_hudbar_modifiers) do
-		if mod.predicate(player) then
-			hb.change_hudbar(player, "health", nil, nil, mod.icon, nil, "hudbars_bar_health.png")
-			return
-		end
-	end
-	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
-end
+vl_hudbars.register_hudbar_modifier{
+	identifier = "health",
+	part = "absorption",
+	predicate = function(player)
+		return true
+	end,
+	icon = "hudbars_icon_health.png",
+	priority = 40,
+}
 
 local icon_ids = {}
 
@@ -1262,11 +1256,6 @@ local function potions_init_icons(player)
 			number = 0xFFFFFF,
 		})
 		table.insert(icon_ids[name], id)
-	end
-
-	-- Absorption bar in damage disabled server is unneccessary
-	if minetest.settings:get_bool("enable_damage") == true then
-		hb.init_hudbar(player, "absorption")
 	end
 end
 
@@ -1319,7 +1308,7 @@ local function potions_set_icons(player)
 end
 
 local function potions_set_hud(player)
-	potions_set_hudbar(player)
+	vl_hudbars.update_hudbar_modifiers(player, "health", "health_main")
 	potions_set_icons(player)
 end
 

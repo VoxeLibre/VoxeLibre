@@ -41,7 +41,7 @@ function mcl_hunger.set_hunger(player, hunger, update_hudbars)
 	hunger = math.min(20, math.max(0, hunger))
 	player:get_meta():set_string("mcl_hunger:hunger", tostring(hunger))
 	if update_hudbars ~= false then
-		hb.change_hudbar(player, "hunger", hunger)
+		vl_hudbars.change_value(player, "hunger", hunger)
 		mcl_hunger.update_saturation_hud(player, nil, hunger)
 	end
 	return true

@@ -91,10 +91,7 @@ end
 -- Reset HUD bars after food poisoning
 
 function mcl_hunger.reset_bars_poison_hunger(player)
-	hb.change_hudbar(player, "hunger", nil, nil, "hbhunger_icon.png", nil, "hbhunger_bar.png")
-	if mcl_hunger.get_debug() then
-		hb.change_hudbar(player, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_exhaustion.png")
-	end
+	vl_hudbars.set_icon(player, "hunger", "hbhunger_icon.png")
 end
 
 local poisonrandomizer = PseudoRandom(os.time())
@@ -134,7 +131,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					mcl_hunger.set_hunger(user, h, false)
 				end
 
-				hb.change_hudbar(user, "hunger", h)
+				vl_hudbars.change_value(user, "hunger", h)
 				mcl_hunger.update_saturation_hud(user, mcl_hunger.get_saturation(user), h)
 			end
 			-- Poison
