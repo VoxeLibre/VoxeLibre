@@ -265,7 +265,7 @@ minetest.register_node("mcl_beacons:beacon", {
 		remove_beacon_beam(pos)
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
-		if fields.swiftness or fields.regeneration or fields.leaping or fields.strenght
+		if fields.swiftness or fields.regeneration or fields.leaping or fields.strength
 		or fields.haste or fields.resistance or fields.absorption or fields.slow_falling then
 			local sender_name = sender:get_player_name()
 			local power_level = beacon_blockcheck(pos)
@@ -329,7 +329,7 @@ minetest.register_node("mcl_beacons:beacon", {
 				end
 				minetest.get_meta(pos):set_string("effect","resistance")
 				successful = true
-			elseif fields.strenght and power_level >= 3 then
+			elseif fields.strength and power_level >= 3 then
 				if power_level == 4 then
 					minetest.get_meta(pos):set_int("effect_level",2)
 				else
