@@ -51,12 +51,40 @@ local function custom_hud(player)
 		else
 			hide = false
 		end
-		hb.init_hudbar(player, "armor", arm_printable(arm), nil, hide)
+		--hb.init_hudbar(player, "armor", arm_printable(arm), nil, hide)
+		vl_hudbars.init_hudbar(player, "armor")
+		if hide then
+			vl_hudbars.hide(player, "armor")
+		else
+			vl_hudbars.change_value(player, "armor", arm_printable(arm))
+			vl_hudbars.show(player, "armor")
+		end
 	end
 end
 
 --register and define armor HUD bar
-hb.register_hudbar("armor", 0xFFFFFF, S("Armor"), { icon = "hbarmor_icon.png", bgicon = "hbarmor_bgicon.png", bar = "hbarmor_bar.png" }, 0, 0, 20, mcl_hbarmor.autohide)
+--hb.register_hudbar("armor", 0xFFFFFF, S("Armor"), { icon = "hbarmor_icon.png", bgicon = "hbarmor_bgicon.png", bar = "hbarmor_bar.png" }, 0, 0, 20, mcl_hbarmor.autohide)
+vl_hudbars.register_hudbar({
+	identifier = "armor",
+	sort_index = 4,
+	on_right = false,
+	direction = 0,
+	layer_gap = 4,
+	scale_y = 1,
+	value_type = "proportional",
+	is_compound = false,
+	take_up_space = true,
+	value_scale = 1,
+	round_to_full_texture = false,
+	z_index = 99,
+	default_max_val = 20,
+	default_value = 0,
+	default_hidden = mcl_hbarmor.autohide,
+	icon = "hbarmor_icon.png",
+	bgicon = "hbarmor_bgicon.png",
+	layers = 1,
+	z_index_step = -1
+})
 
 function mcl_hbarmor.get_armor(player)
 	local name = player:get_player_name()
@@ -85,13 +113,17 @@ local function update_hud(player)
 	if mcl_hbarmor.autohide then
 		-- hide armor bar completely when there is none
 		if must_hide(name, arm) then
-			hb.hide_hudbar(player, "armor")
+			--hb.hide_hudbar(player, "armor")
+			vl_hudbars.hide(player, "armor")
 		else
-			hb.change_hudbar(player, "armor", arm_printable(arm))
-			hb.unhide_hudbar(player, "armor")
+			--hb.change_hudbar(player, "armor", arm_printable(arm))
+			--hb.unhide_hudbar(player, "armor")
+			vl_hudbars.change_value(player, "armor", arm_printable(arm))
+			vl_hudbars.show(player, "armor")
 		end
 	else
-		hb.change_hudbar(player, "armor", arm_printable(arm))
+		--hb.change_hudbar(player, "armor", arm_printable(arm))
+		vl_hudbars.change_value(player, "armor", arm_printable(arm))
 	end
 end
 
