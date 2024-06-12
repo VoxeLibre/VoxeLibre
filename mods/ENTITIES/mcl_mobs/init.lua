@@ -343,7 +343,7 @@ function mcl_mobs.register_mob(name, def)
 end -- END mcl_mobs.register_mob function
 
 
-local STRIP_FIELDS = { "mesh", "base_size", "textures" }
+local STRIP_FIELDS = { "mesh", "base_size", "textures", "base_mesh", "base_texture" }
 function mcl_mobs.register_conversion(old_name, new_name)
 	minetest.register_entity(old_name, {
 		on_activate = function(self, staticdata, dtime)
