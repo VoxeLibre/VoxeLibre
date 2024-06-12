@@ -2,6 +2,13 @@ local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
 local S = core.get_translator(modname)
 
+local max_tick_timer = vl_tuning.setting("health_regen_delay", "number", {
+	default = tonumber(minetest.settings:get("mcl_health_regen_delay")) or 0.5,
+})
+local natural_regeneration = vl_tuning.settings("gamerule:naturalRegeneration", "bool", {
+	default = true,
+})
+
 mcl_hunger = {}
 
 --- If hunger is active.
@@ -319,10 +326,9 @@ local function tick_hunger(player, dtime)
 			-- mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_HUNGER) -- later for hunger status effect
 			mcl_hunger.update_exhaustion_hud(player)
 		end
-		if food_level >= 18 and needs_regen then
+		if natural_regeneration and food_level >= 18 and needs_regen then
 			-- health regeneration
 			player:set_hp(player_health + 1)
-
 			mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
 			mcl_hunger.update_exhaustion_hud(player)
 		elseif food_level == 0 then
@@ -334,7 +340,8 @@ local function tick_hunger(player, dtime)
 				mcl_util.deal_damage(player, 1, { type = "starve" })
 			end
 		end
-	elseif needs_regen and food_tick_timer > max_tick_timer and food_level == 20 and food_saturation_level > 0 then
+	elseif natural_regeneration and needs_regen
+				and food_tick_timer > max_tick_timer and food_level == 20 and food_saturation_level > 0 then
 		-- fast regeneration
 		food_tick_timer = 0
 		player:set_hp(player_health + 1)
