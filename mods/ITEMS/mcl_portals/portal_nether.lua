@@ -86,7 +86,14 @@ local LIM_MIN, LIM_MAX			= mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
 local PLAYER_COOLOFF, MOB_COOLOFF	= 3, 14 -- for this many seconds they won't teleported again
 local TOUCH_CHATTER_TIME		= 1 -- prevent multiple teleportation attempts caused by multiple portal touches, for this number of seconds
 local CHATTER_US			= TOUCH_CHATTER_TIME * 1000000
-local DELAY				= 3 -- seconds before teleporting in Nether portal in Survival mode (4 minus ABM interval time)
+
+local nether_portal_creative_delay = vl_tuning.setting("gamerule:playersNetherPortalCreativeDelay", "number", {
+	default = 0,
+})
+local nether_port_survival_delay = vl_tuning.setting("gamerule:playersNetherPortalDefaultDelay", "number", {
+	default = 4,
+})
+
 -- Speeds up the search by allowing some non-air nodes to be replaced when
 -- looking for acceptable portal locations. Setting this lower means the
 -- algorithm will do more searching. Even at 0, there is no risk of finding
@@ -1412,12 +1419,16 @@ local function teleport(obj, portal_pos)
 
 	if cooloff[obj] then return end
 
+	local delay = math.max(0, nether_portal_survival_delay[1] - 1)
 	if minetest.is_creative_enabled(name) then
-		teleport_no_delay(obj, portal_pos)
-		return
+		delay = math.max(0, nether_portal_creative_delay[1] - 1)
 	end
 
-	minetest.after(DELAY, teleport_no_delay, obj, portal_pos)
+	if delay == 0 then
+		teleport_no_delay(obj, portal_pos)
+	else
+		minetest.after(delay, teleport_no_delay, obj, portal_pos)
+	end
 end
 
 minetest.register_abm({
