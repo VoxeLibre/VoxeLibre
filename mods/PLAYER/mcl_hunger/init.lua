@@ -5,7 +5,7 @@ local S = core.get_translator(modname)
 local max_tick_timer = vl_tuning.setting("health_regen_delay", "number", {
 	default = tonumber(minetest.settings:get("mcl_health_regen_delay")) or 0.5,
 })
-local natural_regeneration = vl_tuning.settings("gamerule:naturalRegeneration", "bool", {
+local natural_regeneration = vl_tuning.setting("gamerule:naturalRegeneration", "bool", {
 	default = true,
 })
 
