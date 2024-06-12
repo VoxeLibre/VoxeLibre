@@ -342,9 +342,18 @@ function mcl_mobs.register_mob(name, def)
 	minetest.register_entity(name, setmetatable(final_def,mcl_mobs.mob_class_meta))
 end -- END mcl_mobs.register_mob function
 
+
+local STRIP_FIELDS = { "mesh", "base_size", "textures" }
 function mcl_mobs.register_conversion(old_name, new_name)
 	minetest.register_entity(old_name, {
 		on_activate = function(self, staticdata, dtime)
+			-- Strip select fields from the staticdata to prevent conversion issues
+			local unpacked_staticdata = minetest.deserialize(staticdata)
+			for i = 1,#STRIP_FIELDS do
+				unpacked_staticdata[STRIP_FIELDS[i]] = nil
+			end
+			staticdata = minetest.serialize(staticdata)
+
 			local old_object = self.object
 			if not old_object then return end
 
