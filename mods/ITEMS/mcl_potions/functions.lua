@@ -1352,7 +1352,7 @@ minetest.register_globalstep(function(dtime)
 					potions_set_hud(object)
 				else
 					local ent = object:get_luaentity()
-					if ent then
+					if ent and ent._mcl_potions then
 						ent._mcl_potions["_EF_"..name] = nil
 					end
 				end
@@ -1367,7 +1367,7 @@ minetest.register_globalstep(function(dtime)
 				end
 			else
 				local ent = object:get_luaentity()
-				if ent then
+				if ent and ent._mcl_potions then
 					ent._mcl_potions["_EF_"..name] = EF[name][object]
 				end
 			end
@@ -1780,9 +1780,14 @@ end
 local function target_valid(object, name)
 	if not object or object:get_hp() <= 0 then return false end
 
+	-- Don't apply effects to anything other than players and entities that have mcl_potions support
+	-- but are not bosses
 	local entity = object:get_luaentity()
-	if entity and entity.is_boss then return false end
+	if not object:is_player() and (not entity or entity.is_boss or not entity._mcl_potions) then
+		return false
+	end
 
+	-- Check resistances
 	for i=1, #registered_res_predicates do
 		if registered_res_predicates[i](object, name) then return false end
 	end
