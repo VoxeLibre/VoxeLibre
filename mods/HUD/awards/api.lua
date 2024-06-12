@@ -23,7 +23,8 @@ local notif_delay = vl_tuning.setting("award_display_time", "number", {
 	description = S("Amount of time award notification are displayed"), default = 3, min = 2, max = 10
 })
 local announce_in_chat = vl_tuning.setting("gamerule:announceAdvancements", "bool", {
-	description = S("Whether advancements should be announced in chat"), default = true,
+	description = S("Whether advancements should be announced in chat"),
+	default = minetest.settings:get_bool("mcl_showAdvancementMessages", true),
 })
 
 -- The global award namespace
@@ -225,7 +226,7 @@ function awards.unlock(name, award)
 
 	-- Get award
 	minetest.log("action", name.." has gotten award "..award)
-	if minetest.settings:get_bool("mcl_showAdvancementMessages", true) or announce_in_chat[1] then
+	if announce_in_chat[1] then
 		minetest.chat_send_all(S("@1 has made the advancement @2", name, minetest.colorize(mcl_colors.GREEN, "[" .. (awdef.title or award) .. "]")))
 	end
 	data.unlocked[award] = award
