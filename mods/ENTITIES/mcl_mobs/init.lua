@@ -352,7 +352,7 @@ function mcl_mobs.register_conversion(old_name, new_name)
 			for i = 1,#STRIP_FIELDS do
 				unpacked_staticdata[STRIP_FIELDS[i]] = nil
 			end
-			staticdata = minetest.serialize(staticdata)
+			staticdata = minetest.serialize(unpacked_staticdata)
 
 			local old_object = self.object
 			if not old_object then return end
