@@ -390,7 +390,8 @@ minetest.register_entity("mcl_signs:text", {
 	on_activate = function(self, staticdata)
 		local pos = self.object:get_pos()
 		mcl_signs.update_sign(pos)
-		local t = self.object:get_properties().textures
+		local props = self.object:get_properties()
+		local t = props and props.textures
 		if type(t) ~= "table" or #t == 0 then self.object:remove() end
 	end,
 })
