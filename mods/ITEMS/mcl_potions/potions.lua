@@ -841,20 +841,22 @@ local function replace_legacy_potion(itemstack)
 end
 local compat = "mcl_potions:compat_potion"
 local compat_arrow = "mcl_potions:compat_arrow"
-minetest.register_craftitem(compat, {
-	description = S("Unknown Potion"),
-	_tt_help = S("Right-click to identify"),
+local compat_def = {
+	description = S("Unknown Potion") .. "\n" .. minetest.colorize("#ff0", S("Right-click to identify")),
 	image = "mcl_potions_potion_overlay.png^[colorize:#00F:127^mcl_potions_potion_bottle.png^vl_unknown.png",
+	groups = {not_in_creative_inventory = 1},
 	on_secondary_use = replace_legacy_potion,
 	on_place = replace_legacy_potion,
-})
-minetest.register_craftitem(compat_arrow, {
-	description = S("Unknown Tipped Arrow"),
-	_tt_help = S("Right-click to identify"),
+}
+local compat_arrow_def = {
+	description = S("Unknown Tipped Arrow") .. "\n" .. minetest.colorize("#ff0", S("Right-click to identify")),
 	image = "mcl_bows_arrow_inv.png^(mcl_potions_arrow_inv.png^[colorize:#FFF:100)^vl_unknown.png",
+	groups = {not_in_creative_inventory = 1},
 	on_secondary_use = replace_legacy_potion,
 	on_place = replace_legacy_potion,
-})
+}
+minetest.register_craftitem(compat, compat_def)
+minetest.register_craftitem(compat_arrow, compat_arrow_def)
 
 local old_potions_plus = {
 	"fire_resistance", "water_breathing", "invisibility", "regeneration", "poison",
@@ -866,14 +868,14 @@ local old_potions_2 = {
 }
 
 for _, name in pairs(old_potions_2) do
-	minetest.register_alias("mcl_potions:" .. name .. "_2", compat)
-	minetest.register_alias("mcl_potions:" .. name .. "_2_splash", compat)
-	minetest.register_alias("mcl_potions:" .. name .. "_2_lingering", compat)
-	minetest.register_alias("mcl_potions:" .. name .. "_2_arrow", compat_arrow)
+	minetest.register_craftitem("mcl_potions:" .. name .. "_2", compat_def)
+	minetest.register_craftitem("mcl_potions:" .. name .. "_2_splash", compat_def)
+	minetest.register_craftitem("mcl_potions:" .. name .. "_2_lingering", compat_def)
+	minetest.register_craftitem("mcl_potions:" .. name .. "_2_arrow", compat_arrow_def)
 end
 for _, name in pairs(old_potions_plus) do
-	minetest.register_alias("mcl_potions:" .. name .. "_plus", compat)
-	minetest.register_alias("mcl_potions:" .. name .. "_plus_splash", compat)
-	minetest.register_alias("mcl_potions:" .. name .. "_plus_lingering", compat)
-	minetest.register_alias("mcl_potions:" .. name .. "_plus_arrow", compat_arrow)
+	minetest.register_craftitem("mcl_potions:" .. name .. "_plus", compat_def)
+	minetest.register_craftitem("mcl_potions:" .. name .. "_plus_splash", compat_def)
+	minetest.register_craftitem("mcl_potions:" .. name .. "_plus_lingering", compat_def)
+	minetest.register_craftitem("mcl_potions:" .. name .. "_plus_arrow", compat_arrow_def)
 end
