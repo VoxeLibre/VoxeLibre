@@ -6,7 +6,7 @@ local dimension_handlers = {}
 mcl_weather.skycolor.dimension_handlers = dimension_handlers
 
 -- Function to work out light modifier at different times
--- Noon is brightest, midnight is darkest, 0600 and 18000 is in the middle of this
+-- Noon is brightest, midnight is darkest, 0600 and 1800 is in the middle of this
 local function get_light_modifier(time)
 	-- 0.1 = 0.2
 	-- 0.4 = 0.8
@@ -33,11 +33,9 @@ function dimension_handlers.overworld(player, sky_data)
 		local biome_name = minetest.get_biome_name(biome_index)
 		local biome = minetest.registered_biomes[biome_name]
 		if biome then
-			--minetest.log("action", string.format("Biome found for number: %s in biome: %s", tostring(biome_index), biome_name))
 			biomesky = biome._mcl_skycolor
 			biomefog = biome._mcl_fogcolor
 		else
-			--minetest.log("action", string.format("No biome for number: %s in biome: %s", tostring(biome_index), biome_name))
 		end
 	end
 
