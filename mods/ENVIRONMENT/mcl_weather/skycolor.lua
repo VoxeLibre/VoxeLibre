@@ -9,8 +9,10 @@ local mods_loaded = false
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 function mcl_weather.set_sky_box_clear(player, sky, fog)
-	local pos = player:get_pos()
-	if minetest.get_item_group( mcl_playerinfo[player:get_player_name()].node_head, "water") ~= 0 then return end
+	-- Make sure the player's head isn't in water before changing the skybox
+	local node_head = mcl_playerinfo[player:get_player_name()].node_head
+	if minetest.get_item_group(node_head, "water") ~= 0 then return end
+
 	local sc = {
 			day_sky = "#7BA4FF",
 			day_horizon = "#C0D8FF",
@@ -39,8 +41,10 @@ function mcl_weather.set_sky_box_clear(player, sky, fog)
 end
 
 function mcl_weather.set_sky_color(player, def)
-	local pos = player:get_pos()
-	if minetest.get_item_group(minetest.get_node(vector.offset(pos, 0, 1.5, 0)).name, "water") ~= 0 then return end
+	-- Make sure the player's head isn't in water before changing the skybox
+	local node_head = mcl_playerinfo[player:get_player_name()].node_head
+	if minetest.get_item_group(node_head, "water") ~= 0 then return end
+
 	player:set_sky({
 		type = def.type,
 		sky_color = def.sky_color,
