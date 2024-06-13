@@ -1,7 +1,6 @@
 -- Constants
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
-local mod = mcl_weather
 local NIGHT_VISION_RATIO = 0.45
 
 -- Module state
@@ -82,27 +81,27 @@ local skycolor_utils = skycolor.utils
 
 -- Add layer to colors table
 function skycolor.add_layer(layer_name, layer_color, instant_update)
-	mcl_weather.skycolor.colors[layer_name] = layer_color
-	table.insert(mcl_weather.skycolor.layer_names, layer_name)
-	mcl_weather.skycolor.force_update = true
+	skycolor.colors[layer_name] = layer_color
+	table.insert(skycolor.layer_names, layer_name)
+	skycolor.force_update = true
 end
 
 function skycolor.current_layer_name()
-	return mcl_weather.skycolor.layer_names[#mcl_weather.skycolor.layer_names]
+	return skycolor.layer_names[#skycolor.layer_names]
 end
 
 -- Retrieve layer from colors table
 function skycolor.retrieve_layer()
-	local last_layer = mcl_weather.skycolor.current_layer_name()
-	return mcl_weather.skycolor.colors[last_layer]
+	local last_layer = skycolor.current_layer_name()
+	return skycolor.colors[last_layer]
 end
 
 -- Remove layer from colors table
 function skycolor.remove_layer(layer_name)
-	for k, name in pairs(mcl_weather.skycolor.layer_names) do
+	for k, name in pairs(skycolor.layer_names) do
 		if name == layer_name then
-			table.remove(mcl_weather.skycolor.layer_names, k)
-			mcl_weather.skycolor.force_update = true
+			table.remove(skycolor.layer_names, k)
+			skycolor.force_update = true
 			return
 		end
 	end
@@ -141,7 +140,7 @@ end
 -- Update sky color. If players not specified update sky for all players.
 function skycolor.update_sky_color(players)
 	-- Override day/night ratio as well
-	players = mcl_weather.skycolor.utils.get_players(players)
+	players = skycolor_utils.get_players(players)
 	local update = skycolor.update_player_sky_color
 	for _, player in ipairs(players) do
 		update(player)
@@ -150,14 +149,16 @@ end
 
 -- Returns current layer color in {r, g, b} format
 function skycolor.get_sky_layer_color(timeofday)
-	if #mcl_weather.skycolor.layer_names == 0 then
+	if #skycolor.layer_names == 0 then
 		return nil
 	end
 
-	-- min timeofday value 0; max timeofday value 1. So sky color gradient range will be between 0 and 1 * mcl_weather.skycolor.max_val.
-	local rounded_time = math.floor(timeofday * mcl_weather.skycolor.max_val)
-	local color = mcl_weather.skycolor.utils.convert_to_rgb(mcl_weather.skycolor.min_val, mcl_weather.skycolor.max_val, rounded_time, mcl_weather.skycolor.retrieve_layer())
-	return color
+	-- min timeofday value 0; max timeofday value 1. So sky color gradient range will be between 0 and 1 * skycolor.max_val
+	local rounded_time = math.floor(timeofday * skycolor.max_val)
+	return skycolor_utils.convert_to_rgb(
+		skycolor.min_val, skycolor.max_val,
+		rounded_time, skycolor.retrieve_layer()
+	)
 end
 
 function skycolor_utils.convert_to_rgb(minval, maxval, current_val, colors)
@@ -200,7 +201,7 @@ end
 
 -- Returns the sky color of the first player, which is done assuming that all players are in same color layout.
 function skycolor_utils.get_current_bg_color()
-	local players = mcl_weather.skycolor.utils.get_players(nil)
+	local players = skycolor_utils.get_players(nil)
 	if players[1] then
 		return players[1]:get_sky(true).sky_color
 	end
@@ -209,33 +210,31 @@ end
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
-	if mcl_weather.skycolor.active ~= true or #minetest.get_connected_players() == 0 then
+	if skycolor.active ~= true or #minetest.get_connected_players() == 0 then
 		return
 	end
 
-	if mcl_weather.skycolor.force_update then
-		mcl_weather.skycolor.update_sky_color()
-		mcl_weather.skycolor.force_update = false
+	if skycolor.force_update then
+		skycolor.update_sky_color()
+		skycolor.force_update = false
 		return
 	end
 
 	-- regular updates based on iterval
 	timer = timer + dtime;
-	if timer >= mcl_weather.skycolor.update_interval then
-		mcl_weather.skycolor.update_sky_color()
+	if timer >= skycolor.update_interval then
+		skycolor.update_sky_color()
 		timer = 0
 	end
-
 end)
 
 local function initsky(player)
-
 	if player.set_lighting then
 		player:set_lighting({ shadows = { intensity = tonumber(minetest.settings:get("mcl_default_shadow_intensity") or 0.33) } })
 	end
 
-	if (mcl_weather.skycolor.active) then
-		mcl_weather.skycolor.force_update = true
+	if (skycolor.active) then
+		skycolor.force_update = true
 	end
 
 	player:set_clouds(mcl_worlds:get_cloud_parameters() or {height=mcl_worlds.layer_to_y(127), speed={x=-2, z=0}, thickness=4, color="#FFF0FEF"})
@@ -245,7 +244,7 @@ minetest.register_on_joinplayer(initsky)
 minetest.register_on_respawnplayer(initsky)
 
 mcl_worlds.register_on_dimension_change(function(player)
-	mcl_weather.skycolor.update_sky_color({player})
+	skycolor.update_sky_color({player})
 end)
 
 minetest.register_on_mods_loaded(function()
