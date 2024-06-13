@@ -5,7 +5,6 @@ local NIGHT_VISION_RATIO = 0.45
 
 -- Module state
 local mods_loaded = false
-local mg_name = minetest.get_mapgen_setting("mg_name")
 
 function mcl_weather.set_sky_box_clear(player, sky, fog)
 	-- Make sure the player's head isn't in water before changing the skybox

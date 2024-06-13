@@ -1,5 +1,6 @@
 
 local DEFAULT_WATER_COLOR = "#3F76E4"
+local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local function water_sky(player, sky_data)
 	local water_color = DEFAULT_WATER_COLOR
@@ -8,9 +9,12 @@ local function water_sky(player, sky_data)
 	if minetest.get_item_group(checkname, "water") == 0 then return end
 
 	local pos = player:get_pos()
-	local biome_index = minetest.get_biome_data(pos).biome
-	local biome_name = minetest.get_biome_name(biome_index)
-	local biome = minetest.registered_biomes[biome_name]
+	local biome = nil
+	if mg_name ~= "v6" and mg_name ~= "singlenode" then
+		local biome_index = minetest.get_biome_data(pos).biome
+		local biome_name = minetest.get_biome_name(biome_index)
+		biome = minetest.registered_biomes[biome_name]
+	end
 	if biome then water_color = biome._mcl_waterfogcolor end
 	if not biome then water_color = DEFAULT_WATER_COLOR end
 

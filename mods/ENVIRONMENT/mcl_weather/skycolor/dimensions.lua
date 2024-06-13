@@ -1,6 +1,7 @@
 local MINIMUM_LIGHT_LEVEL = 0.2
 local VALID_SNOW_WEATHER_STATES = { snow = true, rain = true, thunder = true }
 local VALID_RAIN_WEATHER_STATES = { rain = true, thunder = true }
+local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local dimension_handlers = {}
 mcl_weather.skycolor.dimension_handlers = dimension_handlers
@@ -35,7 +36,6 @@ function dimension_handlers.overworld(player, sky_data)
 		if biome then
 			biomesky = biome._mcl_skycolor
 			biomefog = biome._mcl_fogcolor
-		else
 		end
 	end
 
