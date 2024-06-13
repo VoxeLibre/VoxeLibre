@@ -5,7 +5,7 @@ local function water_sky(player, sky_data)
 	local pos = player:get_pos()
 	local water_color = DEFAULT_WATER_COLOR
 
-	local checkname = minetest.get_node(vector.new(pos.x,pos.y+1.5,pos.z)).name
+	local checkname = mcl_playerinfo[name].node_head
 	if minetest.get_item_group(checkname, "water") == 0 then return end
 
 	local biome_index = minetest.get_biome_data(player:get_pos()).biome
