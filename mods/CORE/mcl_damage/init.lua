@@ -37,6 +37,15 @@ mcl_damage = {
 local damage_enabled = vl_tuning.setting("damage_enabled", "bool",{
 	default = minetest.settings:get_bool("enabled_damage",true)
 })
+local fall_damage_enabled = vl_tuning.setting("gamerule:fallDamage", "bool", {
+	default = true
+})
+local drowning_damage_enabled = vl_tuning.setting("gamerule:drowningDamage", "bool", {
+	default = true
+})
+local fire_damage_enabled = vl_tuning.setting("gamerule:fireDamage", "bool", {
+	default = true
+})
 
 function mcl_damage.register_modifier(func, priority)
 	table.insert(mcl_damage.modifiers, {func = func, priority = priority or 0})
@@ -155,10 +164,16 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 end, true)
 
 minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
+	-- Check if damage is enabled
 	if not damage_enabled[1] then return 0 end
+	local mcl_reason = mcl_damage.from_mt(mt_reason)
+	if not fire_damage_enabled[1] and mcl_reason.type == "fire" then return 0 end
+	if not drowning_damage_enabled[1] and mcl_reason.type == "drown" then return 0 end
+	if not fall_damage_enabled[1] and mcl_reason.type == "fall" then return 0 end
+
 	if player:get_hp() > 0 then
 		if hp_change < 0 then
-			mcl_damage.run_damage_callbacks(player, -hp_change, mcl_damage.from_mt(mt_reason))
+			mcl_damage.run_damage_callbacks(player, -hp_change, mcl_reason)
 		end
 	end
 end, false)
