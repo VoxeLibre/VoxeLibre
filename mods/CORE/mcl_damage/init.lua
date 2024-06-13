@@ -168,8 +168,10 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 	if not damage_enabled[1] then return 0 end
 	local mcl_reason = mcl_damage.from_mt(mt_reason)
 	if not fire_damage_enabled[1] and mcl_reason.type == "fire" then return 0 end
-	if not drowning_damage_enabled[1] and mcl_reason.type == "drown" then return 0 end
-	if not fall_damage_enabled[1] and mcl_reason.type == "fall" then return 0 end
+	--if not drowning_damage_enabled[1] and mcl_reason.type == "drown" then return 0 end
+	--if not fall_damage_enabled[1] and mcl_reason.type == "fall" then return 0 end
+
+	--minetest.log("action", "mcl_reason = "..dump(mcl_reason)..", mt_reason = "..dump(mt_reason))
 
 	if player:get_hp() > 0 then
 		if hp_change < 0 then
