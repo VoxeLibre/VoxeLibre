@@ -2,13 +2,13 @@
 local DEFAULT_WATER_COLOR = "#3F76E4"
 
 local function water_sky(player, sky_data)
-	local pos = player:get_pos()
 	local water_color = DEFAULT_WATER_COLOR
 
-	local checkname = mcl_playerinfo[name].node_head
+	local checkname = mcl_playerinfo[player:get_player_name()].node_head
 	if minetest.get_item_group(checkname, "water") == 0 then return end
 
-	local biome_index = minetest.get_biome_data(player:get_pos()).biome
+	local pos = player:get_pos()
+	local biome_index = minetest.get_biome_data(pos).biome
 	local biome_name = minetest.get_biome_name(biome_index)
 	local biome = minetest.registered_biomes[biome_name]
 	if biome then water_color = biome._mcl_waterfogcolor end
