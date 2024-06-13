@@ -146,7 +146,7 @@ function skycolor.update_sky_color(players)
 	for _, player in ipairs(players) do
 		update(player)
 	end
-end -- END function skycolor.update_sky_color(players)
+end
 
 -- Returns current layer color in {r, g, b} format
 function skycolor.get_sky_layer_color(timeofday)
