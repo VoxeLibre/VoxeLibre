@@ -456,6 +456,10 @@ mcl_potions.register_effect({
 		object:get_meta():set_int("night_vision", 1)
 		mcl_weather.skycolor.update_sky_color({object})
 	end,
+	on_load = function(object, factor)
+		object:get_meta():set_int("night_vision", 1)
+		mcl_weather.skycolor.update_sky_color({object})
+	end,
 	on_step = function(dtime, object, factor, duration)
 		mcl_weather.skycolor.update_sky_color({object})
 	end,
@@ -1525,6 +1529,11 @@ function mcl_potions._load_player_effects(player)
 		local loaded = minetest.deserialize(meta:get_string("mcl_potions:_EF_"..name))
 		if loaded then
 			EF[name][player] = loaded
+		end
+		if EF[name][player] then -- this is needed because of legacy effects loaded separately
+			if effect.uses_factor and type(EF[name][player].factor) ~= "number" then
+				EF[name][player].factor = effect.level_to_factor(1)
+			end
 			if effect.on_load then
 				effect.on_load(player, EF[name][player].factor)
 			end
@@ -1542,6 +1551,9 @@ function mcl_potions._load_entity_effects(entity)
 		local loaded = entity._mcl_potions["_EF_"..name]
 		if loaded then
 			EF[name][object] = loaded
+			if effect.uses_factor and not loaded.factor then
+				EF[name][object].factor = effect.level_to_factor(1)
+			end
 			if effect.on_load then
 				effect.on_load(object, EF[name][object].factor)
 			end
