@@ -175,7 +175,7 @@ function skycolor_utils.convert_to_rgb(minval, maxval, current_val, colors)
 
 	-- Get the second color's values
 	local index2 = math.min(index1 + 1, #colors) -- clamp to maximum color index (will occur if index1 == #colors)
-	local frac2 = 1.0 - fraction1
+	local frac2 = 1.0 - frac1
 	local color2 = colors[index2]
 
 	-- Interpolate between color1 and color2
