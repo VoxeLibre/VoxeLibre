@@ -149,6 +149,11 @@ function mob_class:mob_activate(staticdata, def, dtime)
 
 	local tmp = minetest.deserialize(staticdata)
 
+	-- Patch incorrectly converted mobs
+	if tmp.base_mesh ~= minetest.registered_entities[self.name].mesh then
+		mcl_mobs.strip_staticdata(tmp)
+	end
+
 	if tmp then
 		for _,stat in pairs(tmp) do
 			self[_] = stat
