@@ -83,6 +83,13 @@ local function respawn_doll(pos)
 	local mob = meta:get_string("Mob")
 	local doll
 	if mob and mob ~= "" then
+		-- Handle conversion of mob spawners
+		local convert_to = (minetest.registered_entities[mob] or {})._convert_to
+		if convert_to then
+			mob = convert_to
+			meta:set_string("Mob", mob)
+		end
+
 		doll = find_doll(pos)
 		if not doll then
 			doll = spawn_doll(pos)
@@ -367,7 +374,6 @@ doll_def.on_activate = function(self, staticdata, dtime_s)
 	self.object:set_velocity({x=0, y=0, z=0})
 	self.object:set_acceleration({x=0, y=0, z=0})
 	self.object:set_armor_groups({immortal=1})
-
 end
 
 doll_def.on_step = function(self, dtime)
