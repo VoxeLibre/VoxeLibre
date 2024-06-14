@@ -344,7 +344,7 @@ end -- END mcl_mobs.register_mob function
 
 
 local STRIP_FIELDS = { "mesh", "base_size", "textures", "base_mesh", "base_texture" }
-function mcl_mobs.strip_staticdata(staticdata)
+function mcl_mobs.strip_staticdata(unpacked_staticdata)
 	-- Strip select fields from the staticdata to prevent conversion issues
 	for i = 1,#STRIP_FIELDS do
 		unpacked_staticdata[STRIP_FIELDS[i]] = nil
