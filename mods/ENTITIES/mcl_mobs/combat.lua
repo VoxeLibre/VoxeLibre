@@ -802,34 +802,37 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	end
 
 	-- alert others to the attack
-	local objs = minetest.get_objects_inside_radius(hitter:get_pos(), self.view_range)
-	local obj = nil
+	local alert_pos = hitter:get_pos()
+	if alert_pos then
+		local objs = minetest.get_objects_inside_radius(alert_pos, self.view_range)
+		local obj = nil
 
-	for n = 1, #objs do
+		for n = 1, #objs do
 
-		obj = objs[n]:get_luaentity()
+			obj = objs[n]:get_luaentity()
 
-		if obj then
-			-- only alert members of same mob or friends
-			if obj.group_attack
-			and obj.state ~= "attack"
-			and obj.owner ~= name then
-				if obj.name == self.name then
-					obj:do_attack(hitter)
-				elseif type(obj.group_attack) == "table" then
-					for i=1, #obj.group_attack do
-						if obj.group_attack[i] == self.name then
-							obj._aggro = true
-							obj:do_attack(hitter)
-							break
+			if obj then
+				-- only alert members of same mob or friends
+				if obj.group_attack
+				and obj.state ~= "attack"
+				and obj.owner ~= name then
+					if obj.name == self.name then
+						obj:do_attack(hitter)
+					elseif type(obj.group_attack) == "table" then
+						for i=1, #obj.group_attack do
+							if obj.group_attack[i] == self.name then
+								obj._aggro = true
+								obj:do_attack(hitter)
+								break
+							end
 						end
 					end
 				end
-			end
 
-			-- have owned mobs attack player threat
-			if obj.owner == name and obj.owner_loyal then
-				obj:do_attack(self.object)
+				-- have owned mobs attack player threat
+				if obj.owner == name and obj.owner_loyal then
+					obj:do_attack(self.object)
+				end
 			end
 		end
 	end
