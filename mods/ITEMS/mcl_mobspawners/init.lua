@@ -135,7 +135,6 @@ function mcl_mobspawners.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInAr
 	end
 	set_doll_properties(doll, Mob)
 
-
 	-- Start spawning very soon
 	local t = minetest.get_node_timer(pos)
 	t:start(2)
@@ -171,7 +170,6 @@ local function spawn_mobs(pos, elapsed)
 	local objs = minetest.get_objects_inside_radius(pos, 8)
 	local count = 0
 	local ent
-
 
 	local timer = minetest.get_node_timer(pos)
 

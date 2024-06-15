@@ -592,7 +592,12 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 					--minetest.log("min light: " .. mob_light_lvl[1])
 					--minetest.log("max light: " .. mob_light_lvl[2])
 
-					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name(), mob_light_lvl[1], mob_light_lvl[2])
+					-- Handle egg conversion
+					local mob_name = itemstack:get_name()
+					local convert_to = (minetest.registered_entities[mob_name] or {})._convert_to
+					if convert_to then mob_name = convert_to end
+
+					mcl_mobspawners.setup_spawner(pointed_thing.under, mob_name, mob_light_lvl[1], mob_light_lvl[2])
 					if not minetest.is_creative_enabled(name) then
 						itemstack:take_item()
 					end
