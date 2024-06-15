@@ -653,7 +653,7 @@ function mob_class:do_env_damage()
 		local _, dim = mcl_worlds.y_to_layer(pos.y)
 		if (self.sunlight_damage ~= 0 or self.ignited_by_sunlight) and (sunlight or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
 			if self.armor_list and not self.armor_list.helmet or not self.armor_list or self.armor_list and self.armor_list.helmet and self.armor_list.helmet == "" then
-				if (self.ignited_by_sunlight and (not mcl_weather.rain.raining or not mcl_weather.has_rain(pos))) then
+				if self.ignited_by_sunlight and (not mcl_weather.rain.raining or not mcl_weather.has_rain(pos)) then
 					if (#mcl_burning.get_touching_nodes(self.object, "group:puts_out_fire", self) == 0) then
 						mcl_burning.set_on_fire(self.object, 10)
 					end
@@ -694,9 +694,11 @@ function mob_class:do_env_damage()
 	local nodef3 = minetest.registered_nodes[self.standing_under]
 
 	-- rain
-	if self.rain_damage > 0 and mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
+	if self.rain_damage > 0 and mcl_burning.is_affected_by_rain(self.object) then
 		self.health = self.health - self.rain_damage
-		if self:check_for_death("rain", {type = "environment", pos = pos, node = self.standing_in}) then
+
+		if self:check_for_death("rain", {type = "environment",
+				pos = pos, node = self.standing_in}) then
 			return true
 		end
 	end
