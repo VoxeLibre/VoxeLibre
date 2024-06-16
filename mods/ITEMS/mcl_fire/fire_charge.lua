@@ -27,18 +27,19 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 		end
 
 		-- Ignite/light fire
+		local used = nil
 		local node = get_node(pointed_thing.under)
 		if pointed_thing.type == "node" then
 			local nodedef = minetest.registered_nodes[node.name]
 			if nodedef and nodedef._on_ignite then
 				local overwrite = nodedef._on_ignite(user, pointed_thing)
 				if not overwrite then
-					mcl_fire.set_fire(pointed_thing, user, false)
+					used = mcl_fire.set_fire(pointed_thing, user, false)
 				end
 			else
-				mcl_fire.set_fire(pointed_thing, user, false)
+				used = mcl_fire.set_fire(pointed_thing, user, false)
 			end
-			if not minetest.is_creative_enabled(user:get_player_name()) then
+			if not minetest.is_creative_enabled(user:get_player_name()) and used then
 				itemstack:take_item()
 			end
 		end

@@ -469,7 +469,7 @@ function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 		return
 	end
 
-	add_node(pointed_thing.above, {name="mcl_fire:fire"})
+	return add_node(pointed_thing.above, {name="mcl_fire:fire"})
 end
 
 minetest.register_lbm({
