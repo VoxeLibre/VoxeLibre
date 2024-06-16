@@ -13,16 +13,17 @@ labels:
 Thanks for taking the time to fill out this bug report!
 
 Please follow our contributing guidelines first:
-https://git.minetest.land/MineClone2/MineClone2/src/branch/master/CONTRIBUTING.md#rules-about-both-bugs-and-feature-requests
+https://git.minetest.land/VoxeLibre/VoxeLibre/src/branch/master/CONTRIBUTING.md#rules-about-both-bugs-and-feature-requests
 
 By submitting this issue, you agree to follow our Code of Conduct:
-https://git.minetest.land/MineClone2/MineClone2/src/branch/master/CODE_OF_CONDUCT.md
+https://git.minetest.land/VoxeLibre/VoxeLibre/src/branch/master/CODE_OF_CONDUCT.md
 -->
 
 <!--
 What version of VoxeLibre are you using? We do not provide support for outdated versions of VoxeLibre.
+"/ver" command will output the version you're running.
 Current latest version is listed here, at the top:
-https://git.minetest.land/MineClone2/MineClone2/tags
+https://git.minetest.land/VoxeLibre/VoxeLibre/tags
 -->
 VoxeLibre version:
 
