@@ -227,7 +227,6 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 		_doc_items_longdesc = longdesc,
 		drawtype = "nodebox",
 		tiles = images,
-		paramtype = "light",
 		-- Facedir intentionally left out (see below)
 		is_ground_content = false,
 		groups = groups,
