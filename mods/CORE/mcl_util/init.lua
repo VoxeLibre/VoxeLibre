@@ -2,6 +2,13 @@ mcl_util = {}
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/roman_numerals.lua")
 
+mcl_util.plane_adjacents = {
+	vector.new(1,0,0),
+	vector.new(-1,0,0),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+}
+
 -- Updates all values in t using values from to*.
 function table.update(t, ...)
 	for _, to in ipairs {...} do

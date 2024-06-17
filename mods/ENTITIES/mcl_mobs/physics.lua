@@ -679,11 +679,7 @@ function mob_class:do_env_damage()
 	local pos3 = vector.offset(pos, 0, 1, 0)
 	self.standing_under = node_ok(pos3, "air").name
 
-	-- don't fall when on ignore, just stand still
-	if self.standing_in == "ignore" then
-		self.object:set_velocity({x = 0, y = 0, z = 0})
-	-- wither rose effect
-	elseif self.standing_in == "mcl_flowers:wither_rose" then
+	if self.standing_in == "mcl_flowers:wither_rose" then
 		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
 
@@ -1093,4 +1089,33 @@ function mob_class:check_suspend(player_in_active_range)
 		end
 		return true
 	end
+end
+
+local plane_adjacents = table.copy(mcl_util.plane_adjacents)
+table.insert(plane_adjacents, vector.new(0,-1,0))
+
+local function is_node_loaded(pos)
+	local current_node = minetest.get_node(pos)
+	if current_node.name == "ignore" then
+		return false
+	end
+	return true
+end
+
+function mob_class:check_in_unloaded_area(pos)
+	local unloaded = false
+	if not is_node_loaded(pos) then
+		unloaded = true
+	else
+		for _,v in pairs(plane_adjacents) do
+			if not is_node_loaded(vector.add(pos, v)) then
+				unloaded = true
+			end
+		end
+	end
+	if unloaded then
+		-- do not fall or walk, or think. just stop it. we aren't ready for you yet
+		self.object:set_velocity(vector.zero())
+	end
+	return unloaded
 end
