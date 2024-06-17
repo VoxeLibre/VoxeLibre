@@ -607,16 +607,45 @@ local function get_biome_name(pos)
 	return gotten_biome and mt_get_biome_name(gotten_biome.biome)
 end
 
+local counts = {}
+
 local function spawn_check(pos, spawn_def)
-	if not spawn_def or not pos then return end
+	local function log_fail(reason)
+		local count = (counts[reason] or 0) + 1
+		counts[reason] = count
+		mcl_log("Spawn check failed - "..reason.." ("..count..")")
+		return false
+	end
+
+	if not spawn_def or not pos then return log_fail("missing pos or spawn_def") end
+
+	local gotten_node = get_node(pos).name
+	if not gotten_node then return log_fail("unable to get node") end
+
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
 
+	-- Make sure the mob can spawn at this location
+	if pos.y < spawn_def.min_height or pos.y > spawn_def.max_height then return log_fail("incorrect height") end
+
+	-- Make the dimention is correct
 	local dimension = mcl_worlds.pos_to_dimension(pos)
-	if spawn_def.dimension ~= dimension then return end -- wrong dimension
-	-- find ground node below spawn position
-	local node_name = get_node(pos).name
-	local node_def = registered_nodes[node_name]
-	if node_def and (node_def.groups.solid or 0) == 0 and (node_def.groups.lava or 0) == 0 then -- try node one below instead
+	if spawn_def.dimension ~= dimension then return log_fail("incorrect dimension") end
+
+	-- Make sure the biome is correct
+	local biome_name = get_biome_name(pos)
+	if not biome_name then return end
+	if not biome_check(spawn_def.biomes, biome_name) then return log_fail("incorrect biome") end
+
+	-- Never spawn directly on bedrock
+	if gotten_node == "mcl_core:bedrock" then return log_fail("tried to spawn on bedrock") end
+
+	-- Spawning prohibited in protected areas
+	if spawn_protected and minetest.is_protected(pos, "") then return log_fail("tried to spawn in protected area") end
+
+	-- Ground mobs must spawn on solid nodes that are not leafes
+	local is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
+	if not is_ground then
+		mcl_log("Node "..gotten_node.." not solid, trying one block")
 		pos.y = pos.y - 1
 		node_name = get_node(pos).name
 		node_def = registered_nodes[node_name]
@@ -625,57 +654,67 @@ local function spawn_check(pos, spawn_def)
 	-- do not spawn on bedrock
 	if node_name == "mcl_core:bedrock" then return end
 	pos.y = pos.y + 1
-	-- check spawn height
-	if pos.y < spawn_def.min_height or pos.y > spawn_def.max_height then return end
-	mcl_log("spawn_check#1 position checks passed")
-
-	-- do not spawn ground mobs on leaves
-	if spawn_def.type_of_spawning == "ground" and ((node_def.groups.solid or 0) == 0 or (node_def.groups.leaves or 0) > 0) then return end
-	-- water mobs only on water
-	if spawn_def.type_of_spawning == "water" and (node_def.groups.water or 0) == 0 then return end
-	-- lava mobs only on lava
-	if spawn_def.type_of_spawning == "lava" and (node_def.groups.lava or 0) == 0 then return end
-	-- farm animals on grass only
-	if is_farm_animal(spawn_def.name) and (node_def.groups.grass_block or 0) == 0 then return end
-
-	---- More expensive calls:
-	-- check the biome
-	if spawn_def.biomes and not biome_check(spawn_def.biomes, get_biome_name(pos)) then return end
-	-- check if there is enough room
-	local mob_def = minetest.registered_entities[spawn_def.name]
-	-- additional checks (slime etc.)
-	if spawn_def.check_position and not spawn_def.check_position(pos) then return end
-	if spawn_protected and minetest.is_protected(pos, "") then return end
-	mcl_log("spawn_check#2 advanced checks passed")
-
-	-- check light thresholds
-	local gotten_light = get_node_light(pos)
-	-- old lighting
-	if not modern_lighting then return gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light end
-
-	local sky_light = minetest.get_natural_light(pos)
-	local art_light = minetest.get_artificial_light(get_node(pos).param1)
-	if mob_def.spawn_check then
-		return mob_def.spawn_check(pos, gotten_light, art_light, sky_light)
+	if spawn_def.type_of_spawning == "ground" and (not is_ground or get_item_group(gotten_node, "leaves") ~= 0) then
+		return log_fail("not ground node")
 	end
-	if mob_def.type == "monster" then
-		if dimension == "nether" then
-			if art_light <= nether_threshold then
-				return true
-			end
-		elseif dimension == "end" then
-			if art_light <= end_threshold then
-				return true
-			end
-		elseif dimension == "overworld" then
-			if art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
-				return true
-			end
+
+	-- Water mobs must spawn in water
+	if spawn_def.type_of_spawning == "water" and get_item_group(gotten_node, "water") == 0 then return log_fail("not water node") end
+
+	-- Farm animals must spawn on grass
+	if is_farm_animal(spawn_def.name) and get_item_group(gotten_node, "grass_block") == 0 then return log_fail("not grass block") end
+
+	-- Spawns require enough room for the mob
+	local mob_def = minetest.registered_entities[spawn_def.name]
+	if not has_room(mob_def,pos) then return log_fail("mob doesn't fit here") end
+
+	-- Don't spawn if the spawn definition has a custom check and that fails
+	if spawn_def.check_position and not spawn_def.check_position(pos) then return log_fail("custom position check failed") end
+
+	local gotten_light = get_node_light(pos)
+
+	-- Legacy lighting
+	if not modern_lighting then
+		if gotten_light < spawn_def.min_light or gotten_light > spawn_def.max_light then
+			return log_fail("incorrect light level")
 		end
 		return false
 	end
-	-- passive threshold is apparently the same in all dimensions ...
-	return gotten_light > overworld_passive_threshold
+
+	-- Modern lighting
+	local my_node = get_node(pos)
+	local sky_light = minetest.get_natural_light(pos)
+	local art_light = minetest.get_artificial_light(my_node.param1)
+
+	if mob_def.spawn_check then
+		if not mob_def.spawn_check(pos, gotten_light, art_light, sky_light) then
+			return log_fail("mob_def.spawn_check failed")
+		end
+	elseif mob_def.type == "monster" then
+		if dimension == "nether" then
+			if art_light > nether_threshold then
+				return log_fail("artificial light too high")
+			end
+		elseif dimension == "end" then
+			if art_light > end_threshold then
+				return log_fail("artificial light too high")
+			end
+		elseif dimension == "overworld" then
+			if art_light > overworld_threshold then
+				return log_fail("artificial light too high")
+			end
+			if sky_light > overworld_sky_threshold then
+				return log_fail("sky light too high")
+			end
+		end
+	else
+		-- passive threshold is apparently the same in all dimensions ...
+		if gotten_light < overworld_passive_threshold then
+			return log_fail("light too low")
+		end
+	end
+
+	return true
 end
 
 function mcl_mobs.spawn(pos,id)
@@ -891,6 +930,7 @@ if mobs_spawn then
 		if not mob_library_worker_table then
 			mob_library_worker_table = table_copy(spawn_dictionary)
 		end
+
 		if not cumulative_chance then
 			cumulative_chance = 0
 			for k, v in pairs(mob_library_worker_table) do
@@ -899,8 +939,27 @@ if mobs_spawn then
 		end
 	end
 
-	local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
+	local function select_random_mob_def()
+		local mob_chance_offset = math_random(1, 1e6) / 1e6 * cumulative_chance
 
+		minetest.log("action", "mob_chance_offset = "..tostring(mob_chance_offset).."/"..tostring(cumulative_chance))
+
+		for i = 1,#mob_library_worker_table do
+			local mob_def = mob_library_worker_table[i]
+			local mob_chance = mob_def.chance
+			if mob_chance_offset <= mob_chance then
+				minetest.log(mob_def.name.." "..mob_chance)
+				return mob_def
+			end
+
+			mob_chance_offset = mob_chance_offset - mob_chance
+		end
+
+		assert(not "failed")
+	end
+
+	-- Spawns one mob or one group of mobs
+	local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
 		local spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES)
 		if not spawning_position then
 			minetest.log("action", "[Mobs spawn] Cannot find a valid spawn position after retries: " .. FIND_SPAWN_POS_RETRIES)
@@ -917,104 +976,90 @@ if mobs_spawn then
 		--repeat grabbing a mob to maintain existing spawn rates
 		local spawn_loop_counter = #mob_library_worker_table
 
+		local spawn_check_cache = {}
+		local function inner_loop()
+			local mob_def = select_random_mob_def()
+
+			if not mob_def or not mob_def.name then return end
+			local mob_def_ent = minetest.registered_entities[mob_def.name]
+			if not mob_def_ent then return end
+
+			-- Check capacity
+			local mob_spawn_class = mob_def_ent.spawn_class
+			local cap_space_available = mob_cap_space(spawning_position, mob_spawn_class, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
+			if cap_space_available == 0 then
+				mcl_log("Cap space full")
+				return
+			end
+
+			-- Spawn caps for animals and water creatures fill up rapidly. Need to throttle this somewhat
+			-- for performance and for early game challenge. We don't want to reduce hostiles though.
+			local spawn_hostile = (mob_spawn_class == "hostile")
+			local spawn_passive = (mob_spawn_class ~= "hostile") and math.random(100) < peaceful_percentage_spawned
+			--mcl_log("Spawn_passive: " .. tostring(spawn_passive))
+			--mcl_log("Spawn_hostile: " .. tostring(spawn_hostile))
+
+			-- Make sure we would be spawning a mob
+			if not (spawn_hostile or spawn_passive) then return end
+			if not (spawn_check_cache[mob_def.name] or spawn_check(spawning_position, mob_def)) then
+				mcl_log("Spawn check failed")
+				return
+			end
+			spawn_check_cache[mob_def.name] = true
+
+			-- Water mob special case
+			if mob_def.type_of_spawning == "water" then
+				spawning_position = get_water_spawn(spawning_position)
+				if not spawning_position then
+					minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+					return
+				end
+			end
+
+			if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
+				minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
+				return
+			end
+
+			--everything is correct, spawn mob
+			local spawn_in_group = mob_def_ent.spawn_in_group or 4
+
+			local spawn_group_hostile = (mob_spawn_class == "hostile") and (math.random(100) < hostile_group_percentage_spawned)
+			local spawn_group_passive = (mob_spawn_class ~= "hostile") and (math.random(100) < peaceful_group_percentage_spawned)
+
+			mcl_log("spawn_group_hostile: " .. tostring(spawn_group_hostile))
+			mcl_log("spawn_group_passive: " .. tostring(spawn_group_passive))
+
+			local spawned
+			if spawn_in_group and (spawn_group_hostile or spawn_group_passive) then
+				local group_min = mob_def_ent.spawn_in_group_min or 1
+				if not group_min then group_min = 1 end
+
+				local amount_to_spawn = math.random(group_min, spawn_in_group)
+				mcl_log("Spawning quantity: " .. amount_to_spawn)
+				amount_to_spawn = math.min(amount_to_spawn, cap_space_available)
+				mcl_log("throttled spawning quantity: " .. amount_to_spawn)
+
+				if logging then
+					minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name ..
+						"mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name ..
+						" at " .. minetest.pos_to_string(spawning_position, 1)
+					)
+				end
+				return spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn)
+			else
+				if logging then
+					minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..
+						minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at "..
+						minetest.pos_to_string(spawning_position, 1)
+					)
+				end
+				return mcl_mobs.spawn(spawning_position, mob_def.name)
+			end
+		end
+
 		while spawn_loop_counter > 0 do
-			table.shuffle(mob_library_worker_table)
-			local mob_chance_offset = math_random(1, cumulative_chance)
-			local mob_index = 1
-			local mob_chance = mob_library_worker_table[mob_index].chance
-			local step_chance = mob_chance
-			while step_chance < mob_chance_offset do
-				mob_index = mob_index + 1
-				if mob_index <= #mob_library_worker_table then
-					mob_chance = mob_library_worker_table[mob_index].chance
-					step_chance = step_chance + mob_chance
-				else
-					break
-				end
-			end
-			--minetest.log(mob_def.name.." "..step_chance.. " "..mob_chance)
-
-			local mob_def = mob_library_worker_table[mob_index]
-			if mob_def and mob_def.name and minetest.registered_entities[mob_def.name] then
-
-				local mob_def_ent = minetest.registered_entities[mob_def.name]
-				local mob_spawn_class = mob_def_ent.spawn_class
-
-				local cap_space_available = mob_cap_space (spawning_position, mob_spawn_class, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
-
-				if cap_space_available > 0 then
-					--mcl_log("Cap space available")
-
-					-- Spawn caps for animals and water creatures fill up rapidly. Need to throttle this somewhat
-					-- for performance and for early game challenge. We don't want to reduce hostiles though.
-					local spawn_hostile = (mob_spawn_class == "hostile")
-					local spawn_passive = (mob_spawn_class ~= "hostile") and math.random(100) < peaceful_percentage_spawned
-
-					--mcl_log("Spawn_passive: " .. tostring(spawn_passive))
-					--mcl_log("Spawn_hostile: " .. tostring(spawn_hostile))
-
-					if (spawn_hostile or spawn_passive) and spawn_check(spawning_position,mob_def) then
-						if mob_def.type_of_spawning == "water" then
-							spawning_position = get_water_spawn(spawning_position)
-							if not spawning_position then
-								minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
-								return
-							end
-						end
-						if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
-							minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
-							return
-						end
-
-						--everything is correct, spawn mob
-						local spawn_in_group = mob_def_ent.spawn_in_group or 4
-
-						local spawn_group_hostile = (mob_spawn_class == "hostile") and (math.random(100) < hostile_group_percentage_spawned)
-						local spawn_group_passive = (mob_spawn_class ~= "hostile") and (math.random(100) < peaceful_group_percentage_spawned)
-
-						mcl_log("spawn_group_hostile: " .. tostring(spawn_group_hostile))
-						mcl_log("spawn_group_passive: " .. tostring(spawn_group_passive))
-
-						local spawned
-						if spawn_in_group and (spawn_group_hostile or spawn_group_passive) then
-							local group_min = mob_def_ent.spawn_in_group_min or 1
-							if not group_min then group_min = 1 end
-
-							local amount_to_spawn = math.random(group_min, spawn_in_group)
-							mcl_log("Spawning quantity: " .. amount_to_spawn)
-							amount_to_spawn = math_min(amount_to_spawn, cap_space_available)
-							mcl_log("throttled spawning quantity: " .. amount_to_spawn)
-
-							if logging then
-								minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name .. " mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at " .. minetest.pos_to_string(spawning_position, 1))
-							end
-							spawned = spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn)
-						else
-							if logging then
-								minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at ".. minetest.pos_to_string(spawning_position, 1))
-							end
-							spawned = mcl_mobs.spawn(spawning_position, mob_def.name)
-						end
-
-						if spawned then
-							--mcl_log("We have spawned")
-							mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("spawn_class", pos)
-							local new_spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES_SUCCESS_RESPIN)
-							if new_spawning_position then
-								mcl_log("Setting new spawning position")
-								spawning_position = new_spawning_position
-							else
-								mcl_log("Cannot set new spawning position")
-							end
-						end
-					else
-						--mcl_log("Spawn check failed")
-					end
-				else
-					--mcl_log("Cap space full")
-				end
-
-			end
+			if inner_loop() then return end
 			spawn_loop_counter = spawn_loop_counter - 1
 		end
 	end
@@ -1030,6 +1075,8 @@ if mobs_spawn then
 		initialize_spawn_data()
 		timer = 0
 
+		local start_time_us = minetest.get_us_time()
+
 		local players = get_connected_players()
 		local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
 
@@ -1040,6 +1087,7 @@ if mobs_spawn then
 
 		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
 			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
+			minetest.log("action","[mcl_mobs] took "..(minetest.get_us_time() - start_time_us).." us")
 			return
 		end --mob cap per player
 
@@ -1051,6 +1099,7 @@ if mobs_spawn then
 				spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
 			end
 		end
+		minetest.log("action","[mcl_mobs] took "..(minetest.get_us_time() - start_time_us).." us")
 	end)
 end
 
