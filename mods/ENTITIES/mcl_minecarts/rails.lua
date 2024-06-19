@@ -374,7 +374,7 @@ local CURVY_RAILS_MAP = {
 	["mcl_minecarts:rail"] = "mcl_minecarts:rail_v2",
 }
 for old,new in pairs(CURVY_RAILS_MAP) do
-	nodenames = mcl_util.table_keys(STRAIGHT_RAILS_MAP),
+	local new_def = minetest.registered_nodes[new]
 	minetest.register_node(old, {
 		drawtype = "raillike",
 		inventory_image = new_def.inventory_image,
