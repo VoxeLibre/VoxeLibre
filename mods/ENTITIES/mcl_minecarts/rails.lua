@@ -381,6 +381,7 @@ for old,new in pairs(CURVY_RAILS_MAP) do
 		groups = { rail = 1 },
 		tiles = { new_def.tiles[1], new_def.tiles[1], new_def.tiles[1], new_def.tiles[1] },
 	})
+	vl_legacy.register_item_conversion(old, new)
 end
 minetest.register_lbm({
 	name = "mcl_minecarts:update_legacy_curvy_rails",
@@ -409,6 +410,7 @@ for old,new in pairs(STRAIGHT_RAILS_MAP) do
 		groups = { rail = 1 },
 		tiles = { new_def.tiles[1], new_def.tiles[1], new_def.tiles[1], new_def.tiles[1] },
 	})
+	vl_legacy.register_item_conversion(old, new)
 end
 local TRANSLATE_RAILS_MAP = table.copy(STRAIGHT_RAILS_MAP)
 table_merge(TRANSLATE_RAILS_MAP, CURVY_RAILS_MAP)
