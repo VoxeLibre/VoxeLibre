@@ -4,6 +4,7 @@
 --Nether roof at y -28933
 local S = minetest.get_translator(minetest.get_current_modname())
 --local mod_doc = minetest.get_modpath("doc") -> maybe add documentation ?
+local gamerule_respawnBlocksExplode = vl_tuning.respawn_blocks_explode
 
 for i=0,4 do
 
@@ -12,7 +13,7 @@ for i=0,4 do
 			minetest.set_node(pos, {name="mcl_beds:respawn_anchor_charged_" .. i+1})
 			itemstack:take_item()
 		elseif mcl_worlds.pos_to_dimension(pos) ~= "nether" then
-			if node.name ~= "mcl_beds:respawn_anchor" then --only charged respawn anchors are exploding in the overworld & end in minecraft
+			if gamerule_respawnBlocksExplode[1] and node.name ~= "mcl_beds:respawn_anchor" then --only charged respawn anchors are exploding in the overworld & end in minecraft
 				mcl_explosions.explode(pos, 5, {drop_chance = 0, fire = true})
 			end
 		elseif string.match(node.name, "mcl_beds:respawn_anchor_charged_") then
