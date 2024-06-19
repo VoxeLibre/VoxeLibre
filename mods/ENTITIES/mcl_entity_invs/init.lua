@@ -27,21 +27,19 @@ local inv_callbacks = {
 }
 
 function mcl_entity_invs.load_inv(ent,size)
-	mcl_log("load_inv")
 	if not ent._inv_id then return end
-	mcl_log("load_inv 2")
 	local inv = minetest.get_inventory({type="detached", name=ent._inv_id})
 	if not inv then
-		mcl_log("load_inv 3")
 		inv =  minetest.create_detached_inventory(ent._inv_id, inv_callbacks)
 		inv:set_size("main", size)
 		if ent._mcl_entity_invs_load_items then
-			inv:set_list("main",ent:_mcl_entity_invs_load_items())
+			local lists = ent:_mcl_entity_invs_load_items()
+			vl_legacy.convert_inventory_lists(lists)
+			inv:set_list("main", lists)
 		elseif ent._items then
+			vl_legacy.convert_inventory_lists(ent._items)
 			inv:set_list("main",ent._items)
 		end
-	else
-		mcl_log("load_inv 4")
 	end
 	return inv
 end
