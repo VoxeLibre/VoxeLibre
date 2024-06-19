@@ -3,6 +3,9 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local NIGHT_VISION_RATIO = 0.45
 
+-- Settings
+local minimum_update_interval = { 250e3 }
+
 -- Module state
 local mods_loaded = false
 
@@ -119,8 +122,29 @@ dofile(modpath.."/skycolor/water.lua")
 dofile(modpath.."/skycolor/dimensions.lua")
 dofile(modpath.."/skycolor/effects.lua")
 
+local function get_skycolor_info(player)
+	local player_name = player:get_player_name()
+
+	local info = mcl_playerinfo[player_name] or {}
+
+	local skycolor_data = info.skycolor
+	if not skycolor_data then
+		skycolor_data = {}
+		info.skycolor = skycolor_data
+	end
+
+	return skycolor_data
+end
+
 local water_sky = skycolor.water_sky
 function skycolor.update_player_sky_color(player)
+	-- Don't update more than once every 250 milliseconds
+	local skycolor_data = get_skycolor_info(player)
+	local last_update = skycolor_data.last_update or 0
+	local now_us = minetest.get_us_time()
+	if (now_us - last_update) < minimum_update_interval[1] then return end
+	skycolor_data.last_update = now_us
+
 	local sky_data = {
 		day_night_ratio = player._skycolor_day_night_ratio
 	}
