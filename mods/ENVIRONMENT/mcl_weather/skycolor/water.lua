@@ -33,7 +33,7 @@ local function water_sky(player, sky_data)
 			fog_moon_tint = water_color,
 			fog_tint_type = "custom"
 		},
-		clouds = false,
+		clouds = true,
 	}
 end
 table.insert(mcl_weather.skycolor.filters, water_sky)
