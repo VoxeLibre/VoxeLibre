@@ -21,6 +21,7 @@ function effects_handlers.darkness(player, meta, effect, sky_data)
 		sky_data.day_night_ratio = 0
 	end
 end
+
 function effects_handlers.night_vision(player, meta, effect, sky_data)
 	-- Apply night vision only for dark sky
 	if not (minetest.get_timeofday() > 0.8 or minetest.get_timeofday() < 0.2 or mcl_weather.state ~= "none") then return end
