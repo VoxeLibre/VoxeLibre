@@ -42,7 +42,7 @@ end)
 
 minetest.register_lbm({
 	name = "vl_legacy:convert_container_inventories",
-	nodenames = "group:containers",
+	nodenames = "group:container",
 	run_at_every_load = true,
 	action = function(pos, node)
 		local meta = minetest.get_meta(pos)
