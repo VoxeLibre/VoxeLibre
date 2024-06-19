@@ -420,13 +420,6 @@ minetest.register_globalstep(function(dtime)
 			local old_node_head = plusinfo.old_node_head or ""
 			plusinfo.old_node_head = playerinfo.node_head
 
-			minetest.log(dump({
-				node_head = node_head,
-				old_node_head = old_node_head,
-				new_group = get_item_group(node_head, "water"),
-				old_group = get_item_group(old_node_head, "water"),
-			}))
-
 			-- Update skycolor if moving in or out of water
 			if (get_item_group(node_head, "water") == 0) ~= (get_item_group(old_node_head, "water") == 0) then
 				mcl_weather.skycolor.update_sky_color()
