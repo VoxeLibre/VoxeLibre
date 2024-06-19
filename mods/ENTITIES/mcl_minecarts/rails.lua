@@ -412,8 +412,6 @@ for old,new in pairs(STRAIGHT_RAILS_MAP) do
 	})
 	vl_legacy.register_item_conversion(old, new)
 end
-local TRANSLATE_RAILS_MAP = table.copy(STRAIGHT_RAILS_MAP)
-table_merge(TRANSLATE_RAILS_MAP, CURVY_RAILS_MAP)
 
 minetest.register_lbm({
 	name = "mcl_minecarts:update_legacy_straight_rails",
@@ -439,19 +437,4 @@ minetest.register_lbm({
 		end
 	end
 })
-
--- Convert old rail in the player's inventory to new rail
-minetest.register_on_joinplayer(function(player)
-	local inv = player:get_inventory()
-	local size = inv:get_size("main")
-	for i=1,size do
-		local stack = inv:get_stack("main", i)
-
-		local new_name = TRANSLATE_RAILS_MAP[stack:get_name()]
-		if new_name then
-			stack:set_name(new_name)
-			inv:set_stack("main", i, stack)
-		end
-	end
-end)
 
