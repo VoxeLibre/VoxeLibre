@@ -8,6 +8,10 @@ local gamerule_maxEntityCramming = vl_tuning.setting("gamerule:maxEntityCramming
 	description = S("The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second."),
 	default = 24,
 })
+local gamerule_doMobLoot = vl_tuning.setting("gamerule:doMobLoot", "bool", {
+	description = S("Whether mobs should drop items and experience orbs."),
+	default = true,
+})
 
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
@@ -365,6 +369,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 		-- TODO other env damage shouldn't drop xp
 		-- "rain", "water", "drowning", "suffocation"
 
+		if not gamerule_doMobLoot[1] then return end
+
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
 			self:item_drop(true, 0)
@@ -394,13 +400,10 @@ function mob_class:check_for_death(cause, cmi_cause)
 				end
 			end
 		end
-
-
 	end
 
 	-- execute custom death function
 	if self.on_die then
-
 		local pos = self.object:get_pos()
 		local on_die_exit = self.on_die(self, pos, cmi_cause)
 		if on_die_exit ~= true then
