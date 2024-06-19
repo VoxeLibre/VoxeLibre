@@ -3,8 +3,9 @@ local DIM_ALLOW_NIGHT_VISION = {
 	void = true,
 }
 
+local NIGHT_VISION_RATIO = mcl_weather.skycolor.NIGHT_VISION_RATIO
 local effects_handlers = {}
-local has_mcl_potions = false
+local has_mcl_potions = not not minetest.get_modpath("mcl_potions") -- Coerce to boolean with "not not"
 
 function effects_handlers.darkness(player, meta, effect, sky_data)
 	-- No darkness effect if visited by shepherd
@@ -34,10 +35,7 @@ function effects_handlers.night_vision(player, meta, effect, sky_data)
 end
 
 local function effects(player, sky_data)
-	if not has_mcl_potions then
-		if not minetest.get_modpath("mcl_potions") then return end
-		has_mcl_potions = true
-	end
+	if not has_mcl_potions then return end
 
 	local meta = player:get_meta()
 	for name,effect in pairs(mcl_potions.registered_effects) do

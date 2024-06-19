@@ -73,6 +73,8 @@ local skycolor = {
 	-- number of colors while constructing gradient of user given colors
 	max_val = 1000,
 
+	NIGHT_VISION_RATIO = NIGHT_VISION_RATIO,
+
 	-- Table for tracking layer order
 	layer_names = {},
 
