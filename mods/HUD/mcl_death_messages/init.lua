@@ -2,6 +2,10 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local N = function(s) return s end
 
 local ASSIST_TIMEOUT_SEC = 5
+local gamerule_showDeathMessages = vl_tuning.setting("gamerule:showDeathMessages", "bool", {
+	description = S("Whether death messages are put into chat when a player dies. Also affects whether a message is sent to the pet's owner when the pet dies."),
+	default = minetest.settings:get_bool("mcl_showDeathMessages", true),
+})
 
 mcl_death_messages = {
 	assist = {},
@@ -205,9 +209,7 @@ local function fallback_translator(s)
 end
 
 mcl_damage.register_on_death(function(obj, reason)
-	if not minetest.settings:get_bool("mcl_showDeathMessages", true) then
-		return
-	end
+	if not gamerule_showDeathMessages[1] then return end
 
 	local send_to
 
