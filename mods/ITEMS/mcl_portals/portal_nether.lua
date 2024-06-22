@@ -90,7 +90,7 @@ local CHATTER_US			= TOUCH_CHATTER_TIME * 1000000
 local nether_portal_creative_delay = vl_tuning.setting("gamerule:playersNetherPortalCreativeDelay", "number", {
 	default = 0,
 })
-local nether_port_survival_delay = vl_tuning.setting("gamerule:playersNetherPortalDefaultDelay", "number", {
+local nether_portal_survival_delay = vl_tuning.setting("gamerule:playersNetherPortalDefaultDelay", "number", {
 	default = 4,
 })
 
