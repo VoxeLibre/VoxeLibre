@@ -7,6 +7,7 @@ vl_tuning = mod
 
 -- All registered tunable parameters
 local tunables = {}
+vl_tuning.registered_settings = tunables
 
 -- Supported variable types
 local tunable_types = {
@@ -153,3 +154,4 @@ minetest.register_chatcommand("gamerule", {
 })
 
 dofile(modpath.."/settings.lua")
+dofile(modpath.."/gui.lua")
