@@ -77,7 +77,7 @@ mcl_stairs.register_slab("granite", "mcl_core:granite",
 mcl_stairs.register_stair("diorite", "mcl_core:diorite",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_diorite.png"},
-		S("Granite Stairs"),
+		S("Diorite Stairs"),
 		mcl_sounds.node_sound_stone_defaults(), 0.8, 0.8)
 mcl_stairs.register_slab("diorite", "mcl_core:diorite",
 		{pickaxey=1, material_stone=1},
