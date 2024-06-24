@@ -342,13 +342,33 @@ function mcl_mobs.register_mob(name, def)
 	minetest.register_entity(name, setmetatable(final_def,mcl_mobs.mob_class_meta))
 end -- END mcl_mobs.register_mob function
 
+
+local STRIP_FIELDS = { "mesh", "base_size", "textures", "base_mesh", "base_texture" }
+function mcl_mobs.strip_staticdata(unpacked_staticdata)
+	-- Strip select fields from the staticdata to prevent conversion issues
+	for i = 1,#STRIP_FIELDS do
+		unpacked_staticdata[STRIP_FIELDS[i]] = nil
+	end
+end
 function mcl_mobs.register_conversion(old_name, new_name)
 	minetest.register_entity(old_name, {
 		on_activate = function(self, staticdata, dtime)
-			local obj = minetest.add_entity(self.object:get_pos(), new_name, staticdata)
-			local hook = (obj:get_luaentity() or {})._on_after_convert
-			if hook then hook(obj) end
-			self.object:remove()
+			local unpacked_staticdata = minetest.deserialize(staticdata)
+			mcl_mobs.strip_staticdata(unpacked_staticdata)
+			staticdata = minetest.serialize(unpacked_staticdata)
+
+			local old_object = self.object
+			if not old_object then return end
+
+			local pos = old_object:get_pos()
+			if not pos then return end
+			old_object:remove()
+
+			local new_object = minetest.add_entity(pos, new_name, staticdata)
+			if not new_object then return end
+
+			local hook = (new_object:get_luaentity() or {})._on_after_convert
+			if hook then hook(new_object) end
 		end,
 		_convert_to = new_name,
 	})
@@ -572,7 +592,12 @@ function mcl_mobs.register_egg(mob, desc, background_color, overlay_color, addeg
 					--minetest.log("min light: " .. mob_light_lvl[1])
 					--minetest.log("max light: " .. mob_light_lvl[2])
 
-					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name(), mob_light_lvl[1], mob_light_lvl[2])
+					-- Handle egg conversion
+					local mob_name = itemstack:get_name()
+					local convert_to = (minetest.registered_entities[mob_name] or {})._convert_to
+					if convert_to then mob_name = convert_to end
+
+					mcl_mobspawners.setup_spawner(pointed_thing.under, mob_name, mob_light_lvl[1], mob_light_lvl[2])
 					if not minetest.is_creative_enabled(name) then
 						itemstack:take_item()
 					end
