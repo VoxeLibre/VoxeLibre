@@ -678,6 +678,7 @@ local function make_formspec(name)
 		image_button[2.4,0.12;0.8,0.8;craftguide_search_icon.png;search;]
 		image_button[3.05,0.12;0.8,0.8;craftguide_clear_icon.png;clear;]
 		field_close_on_enter[filter;false]
+		field_enter_after_edit[filter;true]
 	]]
 
 	fs[#fs + 1] = fmt([[ tooltip[search;%s]

@@ -28,6 +28,7 @@ local function get_anvil_formspec(set_name)
 
 		"field[4.125,0.75;7.25,1;name;;" .. F(set_name) .. "]",
 		"field_close_on_enter[name;false]",
+		"field_enter_after_edit[name;true]",
 		"set_focus[name;true]",
 
 		mcl_formspec.get_itemslot_bg_v4(1.625, 2.6, 1, 1),
