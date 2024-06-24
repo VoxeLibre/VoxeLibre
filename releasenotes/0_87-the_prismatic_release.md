@@ -16,6 +16,7 @@
 * SOS-Games
 * Bram
 * qoheniac
+* WillConker
 
 ### Game rename
 Based on months of collecting suggestions, analysis and vetting of possible names, community voting and discussion between developers, the rename of the game has reached its conclusion! The project has been renamed to **VoxeLibre**.
@@ -165,16 +166,34 @@ One of our tools, the Python script allowing conversion of Minecraft resource pa
 * XP orbs related crash – by teknomunk
 * Ghast fireball related crash – by Araca
 * Crash related to server restart while a player is dead – by teknomunk
-* Crashes related to the new effects API - by teknomunk and Herowl
+* Crashes related to the new effects API – by teknomunk and Herowl
 
 ## 0.87.1 hotfix
-* Fixed crash when shooting potions from a dispenser - by teknomunk
-* Fixed crash related to custom mobspawners - by teknomunk
-* Fixed beacon crash - by teknomunk
-* Fixed eye of ender crash - by Herowl
-* Fixed Stalker texture generation - by teknomunk
-* Correctly refresh enchanted tool capabilities - by teknomunk
-* Fixed creative inventory misbehaving - by Herowl
-* Fixed variable definition in mob spawning code - by teknomunk
-* Updated documentation - by Herowl and teknomunk
-* Increased stack size for snowballs and eggs - by JoseDouglas26
+* Fixed crash when shooting potions from a dispenser – by teknomunk
+* Fixed crash related to custom mobspawners – by teknomunk
+* Fixed beacon crash – by teknomunk
+* Fixed eye of ender crash – by Herowl
+* Fixed Stalker texture generation – by teknomunk
+* Correctly refresh enchanted tool capabilities – by teknomunk
+* Fixed creative inventory misbehaving – by Herowl
+* Fixed variable definition in mob spawning code – by teknomunk
+* Updated documentation – by Herowl and teknomunk
+* Increased stack size for snowballs and eggs – by JoseDouglas26
+
+## 0.87.2 hotfix
+* Zombie texture improvements – by SmokeyDope
+* Wrong name of diorite stairs fixed – by qoheniac
+* Fixed flint and steel wearing down when not placing fire – by JoseDouglas26 and WillConker
+* Fixed brewing stands' rotation – by JoseDouglas26 and WillConker
+* Fixed beacon formspec – by teknomunk
+* Made all hollow logs breakable properly – by teknomunk
+* Instructions on how to eat added to the help menu – by teknomunk
+* Potion conversion fixed – by Herowl
+* Fixed some node names – by seventeenthShulker
+* Fixed anvil and craftguide formspecs on mobile – by Herowl
+* Fixed effect loading – by Herowl
+* Fixed crash while fighting wither – by teknomunk
+* Fixed crash when bonemealing sweet berry bushes – by teknomunk
+* Fixed some mob conversion crashes – by teknomunk
+* Fixed crash related to the frost walker enchantment – by WillConker
+* Fixed some mob-related crashes – by Herowl
