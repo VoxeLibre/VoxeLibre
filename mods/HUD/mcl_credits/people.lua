@@ -22,10 +22,8 @@ return {
 		"epCode",
 		"chmodsayshello",
 		"MrRar",
-		"FossFanatic ",
 		"SmokeyDope",
 		"Faerraven / Michieal",
-		"Codiac",
 		"rudzik8",
 		"teknomunk",
 	}},
@@ -38,6 +36,8 @@ return {
 		"NO11",
 		"SumianVoice",
 		"PrairieWind",
+		"FossFanatic",
+		"Codiac",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"RandomLegoBrick",
@@ -142,6 +142,7 @@ return {
 		"SOS-Games",
 		"Bram",
 		"qoheniac",
+		"WillConker",
 	}},
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",

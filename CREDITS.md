@@ -20,10 +20,8 @@
 * epCode
 * chmodsayshello
 * MrRar
-* FossFanatic 
 * SmokeyDope
 * Faerraven / Michieal
-* Codiac
 * rudzik8
 * teknomunk
 
@@ -36,6 +34,8 @@
 * NO11
 * SumianVoice
 * PrairieWind
+* FossFanatic
+* Codiac
 
 ## Contributors
 * RandomLegoBrick
@@ -140,6 +140,7 @@
 * SOS-Games
 * Bram
 * qoheniac
+* WillConker
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
