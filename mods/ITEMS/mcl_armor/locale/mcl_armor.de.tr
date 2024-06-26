@@ -1,26 +1,4 @@
 # textdomain: mcl_armor
-This is a piece of equippable armor which reduces the amount of damage you receive.=Dies ist ein Teil einer tragbaren Rüstung, die die Menge an Schaden, den Sie erleiden, reduziert.
-To equip it, put it on the corresponding armor slot in your inventory menu.=Um es zu tragen, legen Sie es in den passenden Rüstungsplatz in Ihrem Inventarmenü.
-Leather Cap=Lederkappe
-Iron Helmet=Eisenhelm
-Golden Helmet=Goldhelm
-Diamond Helmet=Diamanthelm
-Chain Helmet=Kettenhelm
-Leather Tunic=Ledertunika
-Iron Chestplate=Eisenbrustpanzer
-Golden Chestplate=Goldbrustpanzer
-Diamond Chestplate=Diamantbrustpanzer
-Chain Chestplate=Kettenbrustpanzer
-Leather Pants=Lederhose
-Iron Leggings=Eisenbeinlinge
-Golden Leggings=Goldbeinlinge
-Diamond Leggings=Diamantbeinlinge
-Chain Leggings=Kettenbeinlinge
-Leather Boots=Lederstiefel
-Iron Boots=Eisenstiefel
-Golden Boots=Goldstiefel
-Diamond Boots=Diamantstiefel
-Chain Boots=Kettenstiefel
-
-
+Blast Protection=Explosionsschutz
+Projectile Protection=Projektilschutz
 Smithing Template '@1'=Schmiedevorlage '@1'
