@@ -61,15 +61,13 @@ local function xp_step(self, dtime)
 			if multiplier < 1 then
 				multiplier = 1
 			end
-			local goal = vector.multiply(direction,multiplier)
 			local currentvel = self.object:get_velocity()
 
 			if distance > 1 then
 				multiplier = 20 - distance
-				local velocity = vector.multiply(direction,multiplier)
-				goal = velocity
-				local acceleration = vector.new(goal.x-currentvel.x,goal.y-currentvel.y,goal.z-currentvel.z)
-				self.object:add_velocity(vector.add(acceleration,player_velocity))
+				local velocity = vector.multiply(direction, multiplier)
+				local acceleration = vector.new(velocity.x - currentvel.x, velocity.y - currentvel.y, velocity.z - currentvel.z)
+				self.object:add_velocity(vector.add(acceleration, player_velocity))
 			elseif distance < 0.8 then
 				mcl_experience.add_xp(collector, self._xp)
 				self.object:remove()
@@ -91,9 +89,10 @@ local function xp_step(self, dtime)
 	local pos = self.object:get_pos()
 	if not pos then return end
 
+	-- Get the node directly below the XP orb
 	local node = minetest.get_node_or_nil({
 		x = pos.x,
-		y = pos.y -0.25,
+		y = pos.y - 0.25, -- Orb collision box is +/-0.2, so go a bit below that
 		z = pos.z
 	})
 
