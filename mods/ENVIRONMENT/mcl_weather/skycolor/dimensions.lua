@@ -39,12 +39,29 @@ function dimension_handlers.overworld(player, sky_data)
 		end
 	end
 
+	-- Use overworld defaults
+	local day_color = mcl_weather.skycolor.get_sky_layer_color(0.15)
+	local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.27)
+	local night_color = mcl_weather.skycolor.get_sky_layer_color(0.1)
+	sky_data.sky = {
+		type = "regular",
+		sky_color = {
+			day_sky = day_color,
+			day_horizon = day_color,
+			dawn_sky = dawn_color,
+			dawn_horizon = dawn_color,
+			night_sky = night_color,
+			night_horizon = night_color,
+		},
+		clouds = true,
+	}
+	sky_data.sun = {visible = true, sunrise_visible = true}
+	sky_data.moon = {visible = true}
+	sky_data.stars = {visible = true}
+
 	if mcl_weather.state == "none" then
 		-- Clear weather
 		mcl_weather.set_sky_box_clear(player,biomesky,biomefog)
-		sky_data.sun = {visible = true, sunrise_visible = true}
-		sky_data.moon = {visible = true}
-		sky_data.stars = {visible = true}
 		return
 	end
 
@@ -83,28 +100,7 @@ function dimension_handlers.overworld(player, sky_data)
 			local new_light = math.max(light_factor * light_multiplier, MINIMUM_LIGHT_LEVEL)
 			sky_data.day_night_ratio = new_light
 		end
-		return
 	end
-
-	-- No weather that affects the sky color, use default values
-	local day_color = mcl_weather.skycolor.get_sky_layer_color(0.15)
-	local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.27)
-	local night_color = mcl_weather.skycolor.get_sky_layer_color(0.1)
-	sky_data.sky = {
-		type = "regular",
-		sky_color = {
-			day_sky = day_color,
-			day_horizon = day_color,
-			dawn_sky = dawn_color,
-			dawn_horizon = dawn_color,
-			night_sky = night_color,
-			night_horizon = night_color,
-		},
-		clouds = true,
-	}
-	sky_data.sun = {visible = false, sunrise_visible = false}
-	sky_data.moon = {visible = false}
-	sky_data.stars = {visible = false}
 end
 
 -- This can't be function dimension_handlers.end() due to lua syntax

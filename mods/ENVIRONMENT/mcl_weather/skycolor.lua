@@ -155,7 +155,9 @@ function skycolor.update_player_sky_color(player)
 		skycolor_filters[i](player, sky_data)
 	end
 
-	if sky_data.sky   then player:set_sky(sky_data.sky) end
+	assert(sky_data.sky)
+	player:set_sky(sky_data.sky)
+
 	if sky_data.sun   then player:set_sun(sky_data.sun) end
 	if sky_data.moon  then player:set_moon(sky_data.moon) end
 	if sky_data.stars then player:set_stars(sky_data.stars) end
