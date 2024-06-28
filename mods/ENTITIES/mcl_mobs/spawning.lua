@@ -680,6 +680,7 @@ end
 
 --a simple helper function for mob_spawn
 local function biome_check(biome_list, biome_goal)
+	if not biome_goal then return false end
 	for _, data in pairs(biome_list) do
 		if data == biome_goal then
 			return true
@@ -760,9 +761,6 @@ local function spawn_check(pos, spawn_def)
 	local gotten_node = get_node(pos).name
 	if not gotten_node then return end
 
-	local biome_name = get_biome_name(pos)
-	if not biome_name then return end
-
 	local is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
 	if not is_ground then
 		pos.y = pos.y - 1
@@ -779,7 +777,7 @@ local function spawn_check(pos, spawn_def)
 	if pos.y >= spawn_def.min_height
 			and pos.y <= spawn_def.max_height
 			and spawn_def.dimension == dimension
-			and biome_check(spawn_def.biomes, biome_name) then
+			and biome_check(spawn_def.biomes, get_biome_name(pos)) then
 
 		mcl_log("Spawn level 1 check - Passed")
 		if  (is_ground or spawn_def.type_of_spawning ~= "ground")
