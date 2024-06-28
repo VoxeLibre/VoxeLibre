@@ -57,6 +57,8 @@ This item is dropped by dead squids.  Squid ink can be used to as an ingredient 
 
 String=
 Strings are used in crafting.=
+Spectre Membrane=
+This is a crafting component dropped from dead spectres.=
 Blaze Rod=
 This is a crafting component dropped from dead blazes.=
 Blaze Powder=
