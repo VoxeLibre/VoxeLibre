@@ -266,20 +266,20 @@ mcl_stairs.register_slab("prismarine", "mcl_ocean:prismarine",
 mcl_stairs.register_stair("prismarine_brick", "mcl_ocean:prismarine_brick",
 		{pickaxey=1, material_stone=1},
 		{"mcl_ocean_prismarine_bricks.png"},
-		S("prismarine Brick Stairs"),
+		S("Prismarine Brick Stairs"),
 		mcl_sounds.node_sound_stone_defaults(),	6, 1.5,
 		nil)
 mcl_stairs.register_slab("prismarine_brick", "mcl_ocean:prismarine_brick",
 		{pickaxey=1, material_stone=1},
 		{"mcl_ocean_prismarine_bricks.png"},
-		S("prismarine Brick Slab"),
+		S("Prismarine Brick Slab"),
 		mcl_sounds.node_sound_stone_defaults(),	6, 2,
 		S("Double prismarine_brick Slab"))
 
 mcl_stairs.register_stair("prismarine_dark", "mcl_ocean:prismarine_dark",
 		{pickaxey=1, material_stone=1},
 		{"mcl_ocean_prismarine_dark.png"},
-		S("prismarine Brick Stairs"),
+		S("Prismarine Brick Stairs"),
 		mcl_sounds.node_sound_stone_defaults(),	6, 1.5,
 		nil)
 mcl_stairs.register_slab("prismarine_dark", "mcl_ocean:prismarine_dark",
