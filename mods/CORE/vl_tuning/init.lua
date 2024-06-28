@@ -66,6 +66,7 @@ function mod.setting(setting, setting_type, def )
 	tunable = table.copy(def)
 	tunable.setting = setting
 	tunable.type = tunable_types[setting_type]
+	tunable.setting_type = setting_type
 	tunable[1] = tunable.default
 	setmetatable(tunable, {__index=tunable_class})
 
