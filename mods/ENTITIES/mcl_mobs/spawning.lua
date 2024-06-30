@@ -8,6 +8,7 @@ local end_threshold = tonumber(minetest.settings:get("mcl_mobs_end_threshold")) 
 local overworld_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_threshold")) or 0
 local overworld_sky_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_sky_threshold")) or 7
 local overworld_passive_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_passive_threshold")) or 7
+local debug_time_threshold = tonumber(minetest.settings:get("vl_debug_time_threshold")) or 1000
 
 local get_node                     = minetest.get_node
 local get_node_light               = minetest.get_node_light
@@ -265,8 +266,6 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 local spawn_dictionary = {}
 --this is where all of the spawning information  is kept for mobs that don't naturally spawn
 local non_spawn_dictionary = {}
--- This is a precomputed index of what spawns belong to which spawn groups to accelerate selection of valid mobs for given possitions
-local spawn_dictionary_by_group = {}
 
 function mcl_mobs:spawn_setup(def)
 	if not mobs_spawn then return end
@@ -709,18 +708,23 @@ local function build_state_for_position(pos, parent_state)
 
 	-- Get node and make sure it's loaded and a valid spawn point
 	local node = get_node(pos)
+	local node_name = node.name
 
 	-- Check if it's ground
-	local is_ground = minetest.get_item_group(node.name,"solid") ~= 0
-	if not is_ground then
-		pos.y = pos.y - 1
-		node = get_node(pos)
-		is_ground = minetest.get_item_group(node.name,"solid") ~= 0
+	local is_water = get_item_group(node_name, "water") ~= 0
+	local is_ground = false
+	if not is_water then
+		is_ground = get_item_group(node_name,"solid") ~= 0
+		if not is_ground then
+			pos.y = pos.y - 1
+			node = get_node(pos)
+			is_ground = get_item_group(node_name,"solid") ~= 0
+		end
+		pos.y = pos.y + 1
 	end
-	pos.y = pos.y + 1
 
 	-- Make sure we can spawn here
-	if not node or node.name == "ignore" or node.name == "mcl_core:bedrock" then return end
+	if not node or node_name == "ignore" or node_name == "mcl_core:bedrock" then return end
 
 	-- Build spawn state data
 	local state = {
@@ -732,9 +736,9 @@ local function build_state_for_position(pos, parent_state)
 	state.biome = biome_name
 	state.dimension = dimension
 
-	state.is_ground = is_ground and get_item_group(node.name, "leaves") == 0
-	state.grass = get_item_group(node.name, "grass_block") ~= 0
-	state.water = get_item_group(node.name, "water") ~= 0
+	state.is_ground = is_ground and get_item_group(node_name, "leaves") == 0
+	state.grass = get_item_group(node_name, "grass_block") ~= 0
+	state.water = is_water
 
 	-- Check light level
 	local gotten_light = get_node_light(pos)
@@ -746,7 +750,7 @@ local function build_state_for_position(pos, parent_state)
 		end
 	else
 		-- Modern lighting
-		local light_node = minetest.get_node(pos)
+		local light_node = get_node(pos)
 		local sky_light = minetest.get_natural_light(pos) or 0
 		local art_light = minetest.get_artificial_light(light_node.param1)
 
@@ -777,7 +781,7 @@ local function build_state_for_position(pos, parent_state)
 end
 
 local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
-	local nn= minetest.find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
+	local nn= find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
 	local o
 	table.shuffle(nn)
 	if not nn or #nn < 1 then
@@ -815,17 +819,13 @@ minetest.register_chatcommand("spawn_mob",{
 			table.insert(modifiers, ":"..capture)
 		end
 
-		local mod1 = string.find(param, ":")
-
-
-
 		local mobname = param
+		local mod1 = string.find(param, ":")
 		if mod1 then
 			mobname = string.sub(param, 1, mod1-1)
 		end
 
 		local mob = mcl_mobs.spawn(pos,mobname)
-
 		if mob then
 			for c=1, #modifiers do
 				modifs = modifiers[c]
@@ -935,8 +935,8 @@ if mobs_spawn then
 			local spawning_position = get_next_mob_spawn_pos(pos)
 			if spawning_position then return spawning_position end
 			max_loops = max_loops - 1
-
 		end
+
 		return nil
 	end
 
@@ -1106,12 +1106,9 @@ if mobs_spawn then
 		return mcl_mobs.spawn(spawning_position, mob_def.name)
 	end
 
-
 	--MAIN LOOP
-
 	local timer = 0
 	minetest.register_globalstep(function(dtime)
-
 		timer = timer + dtime
 		if timer < WAIT_FOR_SPAWN_ATTEMPT then return end
 		timer = 0
@@ -1129,7 +1126,7 @@ if mobs_spawn then
 		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
 			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
 			local took = (minetest.get_us_time() - start_time_us)
-			if took > 1000 then
+			if took > debug_time_threshold then
 				minetest.log("action","[mcl_mobs] took "..took.." us")
 			end
 			return
@@ -1145,7 +1142,7 @@ if mobs_spawn then
 		end
 
 		local took = (minetest.get_us_time() - start_time_us)
-		if took > 1000 then
+		if took > debug_time_threshold then
 			minetest.log("action","[mcl_mobs] took "..took.." us")
 		end
 	end)
@@ -1165,7 +1162,6 @@ end
 function mob_class:despawn_allowed()
 	despawn_allowed(self)
 end
-
 
 assert(despawn_allowed({can_despawn=false}) == false, "despawn_allowed - can_despawn false failed")
 assert(despawn_allowed({can_despawn=true}) == true, "despawn_allowed - can_despawn true failed")
