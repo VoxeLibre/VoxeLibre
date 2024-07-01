@@ -267,8 +267,7 @@ function kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flow
 	-- Flowing liquid: Grow 1 step, but also turn the tip node into a liquid source.
 	if downward_flowing then
 		local alt_liq = mt_registered_nodes[node_tip.name].liquid_alternative_source
-		local alt_liq_accessible = mt_get_item_group(node_tip.name,"waterlogged") -- returns 0 if it isn't waterlogged.
-		if alt_liq and not alt_liq_accessible then
+		if alt_liq then
 			mt_set_node(pos_tip, {name=alt_liq})
 		end
 	end
