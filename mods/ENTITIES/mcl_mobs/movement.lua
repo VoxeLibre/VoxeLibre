@@ -12,14 +12,7 @@ local node_snow = "mcl_core:snow"
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
-local atann = math.atan
-local function atan(x)
-	if not x or x ~= x then
-		return 0
-	else
-		return atann(x)
-	end
-end
+local atan2 = math.atan2
 
 local registered_fallback_node = minetest.registered_nodes[mcl_mobs.fallback_node]
 
@@ -64,7 +57,7 @@ function mob_class:is_node_waterhazard(nodename)
 			return true
 		end
 	end
-	if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].drowning and minetest.registered_nodes[nn].drowning > 0 then
+	if minetest.registered_nodes[nn] and (minetest.registered_nodes[nn].drowning or 0) > 0 then
 		if self.breath_max ~= -1 then
 			-- check if the mob is water-breathing _and_ the block is water; only return true if neither is the case
 			-- this will prevent water-breathing mobs to classify water or e.g. sand below them as dangerous
@@ -223,15 +216,19 @@ function mob_class:can_jump_cliff()
 
 	--is there nothing under the block in front? if so jump the gap.
 	local nodLow = node_ok({
-		x = pos.x + dir_x-0.6,
+		x = pos.x + dir_x*0.6,
 		y = pos.y - 0.5,
-		z = pos.z + dir_z-0.6
+		z = pos.z + dir_z*0.6
 	}, "air")
+	-- next is solid, no need to jump
+	if minetest.registered_nodes[nodLow.name] and minetest.registered_nodes[nodLow.name].walkable == true then
+		return false
+	end
 
 	local nodFar = node_ok({
-		x = pos.x + dir_x*2,
+		x = pos.x + dir_x*1.6,
 		y = pos.y - 0.5,
-		z = pos.z + dir_z*2
+		z = pos.z + dir_z*1.6
 	}, "air")
 
 	local nodFar2 = node_ok({
@@ -239,28 +236,23 @@ function mob_class:can_jump_cliff()
 		y = pos.y - 0.5,
 		z = pos.z + dir_z*2.5
 	}, "air")
+	-- TODO: also check there is air above these nodes?
 
-
-	if minetest.registered_nodes[nodLow.name]
-	and minetest.registered_nodes[nodLow.name].walkable ~= true
-
-
-	and (minetest.registered_nodes[nodFar.name]
-	and minetest.registered_nodes[nodFar.name].walkable == true
-
-	or minetest.registered_nodes[nodFar2.name]
-	and minetest.registered_nodes[nodFar2.name].walkable == true)
-
+	-- some place to land on
+	if (minetest.registered_nodes[nodFar.name] and minetest.registered_nodes[nodFar.name].walkable == true)
+		or (minetest.registered_nodes[nodFar2.name] and minetest.registered_nodes[nodFar2.name].walkable == true)
 	then
-		--disable fear heigh while we make our jump
+		--disable fear height while we make our jump
 		self._jumping_cliff = true
-		minetest.after(1, function()
+		-- minetest.log("Jumping cliff: " .. self.name)
+		minetest.after(.01, function()
 			if self and self.object then
 				self._jumping_cliff = false
 			end
 		end)
 		return true
 	else
+		self._jumping_cliff = false
 		return false
 	end
 end
@@ -270,10 +262,12 @@ function mob_class:is_at_cliff_or_danger()
 	if self.fear_height == 0 or self._jumping_cliff or self._can_jump_cliff or not self.object:get_luaentity() then -- 0 for no falling protection!
 		return false
 	end
-
+	if self.fly then -- also avoids checking fish
+		return false
+	end
 	local yaw = self.object:get_yaw()
-	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.25)
+	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.25)
 
 	local pos = self.object:get_pos()
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
@@ -283,19 +277,23 @@ function mob_class:is_at_cliff_or_danger()
 			vector.new(pos.x + dir_x, ypos - self.fear_height, pos.z + dir_z))
 
 	if free_fall then
-		return true
-	else
-		local bnode = minetest.get_node(blocker)
-		local danger = self:is_node_dangerous(bnode.name)
-		if danger then
-			return true
-		else
-			local def = minetest.registered_nodes[bnode.name]
-			if def and def.walkable then
-				return false
-			end
-		end
+		return math.random() < 0.99 -- sometimes mobs make mistakes
 	end
+	-- avoid routes where we cannot get back, be reluctant to drop
+	local height = ypos + 0.5 - blocker.y
+	if height > 1.25 and math.random() < (self.jump_height or 4) / 4 / height / height then
+		-- minetest.log("Avoiding drop of "..height.." chance "..((self.jump_height or 4) / 4 / height))
+		return
+	end
+	local bnode = minetest.get_node(blocker)
+	local danger = self:is_node_dangerous(bnode.name) or self:is_node_waterhazard(bnode.name)
+	if danger then
+		return true
+	end
+	--local def = minetest.registered_nodes[bnode.name]
+	--if def and def.walkable then
+	--	return false
+	--end
 
 	return false
 end
@@ -305,7 +303,10 @@ end
 function mob_class:is_at_water_danger()
 	if self.water_damage == 0 and self.breath_max == -1 then
 		--minetest.log("Do not need a water check for: " .. self.name)
-		return
+		return false
+	end
+	if self.fly then -- also avoids checking fish
+		return false
 	end
 
 	local in_water_danger = self:is_node_waterhazard(self.standing_in) or self:is_node_waterhazard(self.standing_on)
@@ -318,11 +319,11 @@ function mob_class:is_at_water_danger()
 	local pos = self.object:get_pos()
 
 	if not yaw or not pos then
-		return
+		return false
 	end
 
-	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.25)
+	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.25)
 
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
@@ -356,7 +357,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 
 	if self:is_at_water_danger() then
 		--minetest.log("At water danger for mob, stop?: " .. self.name)
-		if math.random(1, 10) <= 7 then
+		if math.random() <= 0.8 then
 			if self.state ~= "stand" then
 				self:set_velocity(0)
 				self.state = "stand"
@@ -684,7 +685,7 @@ function mob_class:check_runaway_from()
 			z = lp.z - s.z
 		}
 
-		local yaw = (atan(vec.z / vec.x) + 3 *math.pi/ 2) - self.rotate
+		local yaw = (atan2(vec.z, vec.x) + 3 *math.pi/ 2) - self.rotate
 
 		if lp.x > s.x then
 			yaw = yaw + math.pi
@@ -752,7 +753,7 @@ function mob_class:check_follow()
 					z = p.z - s.z
 				}
 
-				local yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
+				local yaw = (atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
 				if p.x > s.x then yaw = yaw +math.pi end
 				self:set_yaw( yaw, 2.35)
 
@@ -818,7 +819,7 @@ function mob_class:go_to_pos(b)
 		return true
 	end
 	local v = { x = b.x - s.x, z = b.z - s.z }
-	local yaw = (atann(v.z / v.x) +math.pi/ 2) - self.rotate
+	local yaw = (atan2(v.z, v.x) +math.pi/ 2) - self.rotate
 	if b.x > s.x then yaw = yaw +math.pi end
 	self.object:set_yaw(yaw)
 	self:set_velocity(self.follow_velocity)
@@ -883,8 +884,8 @@ function mob_class:do_states_walk()
 	local is_in_danger = false
 	if lp then
 		-- If mob in or on dangerous block, look for land
-		if (self:is_node_dangerous(self.standing_in) or
-				self:is_node_dangerous(self.standing_on)) or (self:is_node_waterhazard(self.standing_in) or self:is_node_waterhazard(self.standing_on)) and (not self.fly) then
+		if self:is_node_dangerous(self.standing_in) or self:is_node_waterhazard(self.standing_in)
+				or not self.fly and (self:is_node_dangerous(self.standing_on) or self:is_node_waterhazard(self.standing_on)) then
 			is_in_danger = true
 
 			-- If mob in or on dangerous block, look for land
@@ -905,7 +906,7 @@ function mob_class:do_states_walk()
 						z = lp.z - s.z
 					}
 
-					yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
+					yaw = (atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
 
 
 					if lp.x > s.x  then yaw = yaw +math.pi end
@@ -936,10 +937,7 @@ function mob_class:do_states_walk()
 	end
 
 	-- stand for great fall or danger or fence in front
-	local cliff_or_danger = false
-	if is_in_danger then
-		cliff_or_danger = self:is_at_cliff_or_danger()
-	end
+	local cliff_or_danger = is_in_danger or self:is_at_cliff_or_danger()
 	if self.facing_fence == true
 			or cliff_or_danger
 			or math.random(1, 100) <= 30 then
@@ -987,7 +985,7 @@ function mob_class:do_states_stand(player_in_active_range)
 				z = lp.z - s.z
 			}
 
-			yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
+			yaw = (atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
 
 			if lp.x > s.x then yaw = yaw +math.pi end
 		else
@@ -1012,7 +1010,7 @@ function mob_class:do_states_stand(player_in_active_range)
 			if self.walk_chance ~= 0
 					and self.facing_fence ~= true
 					and math.random(1, 100) <= self.walk_chance
-					and self:is_at_cliff_or_danger() == false then
+					and not self:is_at_cliff_or_danger() then
 
 				self:set_velocity(self.walk_velocity)
 				self.state = "walk"
