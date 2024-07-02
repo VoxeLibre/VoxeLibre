@@ -667,6 +667,8 @@ Source path,Source file,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/item,heart_of_the_sea.png,mcl_mobitems_heart_of_the_sea.png,,,,,,,
 /assets/minecraft/textures/item,ink_sac.png,mcl_mobitems_ink_sac.png,,,,,,,
 /assets/minecraft/textures/item,iron_horse_armor.png,mcl_mobitems_iron_horse_armor.png,,,,,,,
+/assets/minecraft/textures/item,leather_horse_armor.png,mcl_mobitems_leather_horse_armor.png,,,,,,,
+/assets/minecraft/textures/item,leather_horse_armor.png,mobs_mc_leather_horse_armor.png,,,,,,,
 /assets/minecraft/textures/item,nautilus_shell.png,mcl_mobitems_nautilus_shell.png,,,,,,,
 /assets/minecraft/textures/item,warped_fungus_on_a_stick.png,mcl_mobitems_warped_fungus_on_a_stick.png,,,,,,,
 /assets/minecraft/textures/item,golden_horse_armor.png,mcl_mobitems_gold_horse_armor.png,,,,,,,
