@@ -331,12 +331,13 @@ function mcl_signs.get_text_entity (pos, force_remove)
 	local text_entity
 	for _, v in pairs(objects) do
 		local ent = v:get_luaentity()
+		local i = 0
 		if ent and ent.name == "mcl_signs:text" then
-			if force_remove ~= nil and force_remove == true then
+			i = i + 1
+			if i > 1 or force_remove == true then
 				v:remove()
 			else
 				text_entity = v
-				break
 			end
 		end
 	end
