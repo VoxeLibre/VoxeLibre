@@ -760,12 +760,11 @@ local function spawn_check(pos, spawn_def)
 	-- find ground node below spawn position
 	local gotten_node = get_node(pos).name
 	if not gotten_node then return end
-	local is_ground = get_item_group(gotten_node,"solid") ~= 0
-	if not is_ground then -- try node one below instead
+	if get_item_group(gotten_node, "air") ~= 0 then -- try node one below instead
 		pos.y = pos.y - 1
 		gotten_node = get_node(pos).name
-		is_ground = get_item_group(gotten_node,"solid") ~= 0
 	end
+	local is_ground = get_item_group(gotten_node,"solid") ~= 0
 	pos.y = pos.y + 1
 	-- check spawn height
 	if pos.y < spawn_def.min_height or pos.y > spawn_def.max_height then return end
@@ -776,11 +775,11 @@ local function spawn_check(pos, spawn_def)
 	-- do not spawn ground mobs on leaves
 	if spawn_def.type_of_spawning == "ground" and (not is_ground or get_item_group(gotten_node, "leaves") ~= 0) then return end
 	-- farm animals on grass only
-	if is_farm_animal(spawn_def.name) and get_item_group(gotten_node, "grass_block") == 0 then return end
+	if is_farm_animal(spawn_def.name) and get_item_group(gotten_node, "grass_block") ~= 0 then return end
 	-- water mobs only on water
-	if spawn_def.type_of_spawning == "water" and get_item_group(gotten_node, "water") == 0 then return end
+	if spawn_def.type_of_spawning == "water" and get_item_group(gotten_node, "water") ~= 0 then return end
 	-- lava mobs only on lava
-	if spawn_def.type_of_spawning == "lava" and get_item_group(gotten_node, "lava") == 0 then return end
+	if spawn_def.type_of_spawning == "lava" and get_item_group(gotten_node, "lava") ~= 0 then return end
 
 	---- More expensive calls:
 	-- check the biome
@@ -820,7 +819,7 @@ local function spawn_check(pos, spawn_def)
 		return false
 	end
 	-- passive threshold is apparently the same in all dimensions ...
-	return gotten_light > overworld_passive_threshold
+	return gotten_light < overworld_passive_threshold
 end
 
 function mcl_mobs.spawn(pos,id)
