@@ -244,7 +244,7 @@ function mob_class:can_jump_cliff()
 	then
 		--disable fear height while we make our jump
 		self._jumping_cliff = true
-		-- minetest.log("Jumping cliff: " .. self.name)
+		-- minetest.log("Jumping cliff: " .. self.name .. " nodes " .. nodLow.name .. " - " .. nodFar.name .. " - " .. nodFar2.name)
 		minetest.after(.01, function()
 			if self and self.object then
 				self._jumping_cliff = false
@@ -277,24 +277,23 @@ function mob_class:is_at_cliff_or_danger()
 			vector.new(pos.x + dir_x, ypos - self.fear_height, pos.z + dir_z))
 
 	if free_fall then
-		return math.random() < 0.99 -- sometimes mobs make mistakes
+		if math.random() < 0.98 then -- sometimes mobs make mistakes
+			return true
+		end
+		-- minetest.log(self.name.." takes a leap of faith.")
+		return false
 	end
 	-- avoid routes where we cannot get back, be reluctant to drop
 	local height = ypos + 0.5 - blocker.y
-	if height > 1.25 and math.random() < (self.jump_height or 4) / 4 / height / height then
-		-- minetest.log("Avoiding drop of "..height.." chance "..((self.jump_height or 4) / 4 / height))
+	if self.runaway_timer == 0 and height > 1.25 and math.random() < (self.jump_height or 4) / 4 / height / height then
+		--minetest.log(self.name.." avoiding drop of "..height.." chance "..((self.jump_height or 4) / 4 / height / height))
 		return
 	end
 	local bnode = minetest.get_node(blocker)
-	local danger = self:is_node_dangerous(bnode.name) or self:is_node_waterhazard(bnode.name)
-	if danger then
-		return true
+	-- minetest.log("At cliff: " .. self.name .. " below " .. bnode.name)
+	if self:is_node_dangerous(bnode.name) or self:is_node_waterhazard(bnode.name) then
+		return bnode.name
 	end
-	--local def = minetest.registered_nodes[bnode.name]
-	--if def and def.walkable then
-	--	return false
-	--end
-
 	return false
 end
 
@@ -344,8 +343,6 @@ function mob_class:is_at_water_danger()
 end
 
 function mob_class:env_danger_movement_checks(player_in_active_range)
-	local yaw = 0
-
 	if not player_in_active_range then return end
 
 	if self.state == PATHFINDING
@@ -363,8 +360,9 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 				self.state = "stand"
 				self:set_animation( "stand")
 			end
-			yaw = yaw + math.random() - 0.5
-			yaw = self:set_yaw( yaw, 8)
+			local yaw = self.object:get_yaw() or 0
+			yaw = yaw + math.random(-0.5, 0.5)
+			self:set_yaw(yaw, 8)
 			return
 		end
 	end
@@ -376,7 +374,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 			self:set_animation( "stand")
 		end
 		local yaw = self.object:get_yaw() or 0
-		yaw = self:set_yaw( yaw + 0.78, 8)
+		self:set_yaw( yaw + 0.78, 8)
 	end--]]
 end
 
@@ -498,7 +496,7 @@ function mob_class:do_jump()
 
 				local yaw = self.object:get_yaw() or 0
 
-				yaw = self:set_yaw( yaw + 1.35, 8)
+				self:set_yaw( yaw + 1.35, 8)
 
 				self.jump_count = 0
 			end
@@ -677,21 +675,9 @@ function mob_class:check_runaway_from()
 	end
 
 	if min_player then
-
 		local lp = player:get_pos()
-		local vec = {
-			x = lp.x - s.x,
-			y = lp.y - s.y,
-			z = lp.z - s.z
-		}
-
-		local yaw = (atan2(vec.z, vec.x) + 3 *math.pi/ 2) - self.rotate
-
-		if lp.x > s.x then
-			yaw = yaw + math.pi
-		end
-
-		yaw = self:set_yaw( yaw, 4)
+		local yaw = atan2(s.x - lp.x, s.z - lp.z) - self.rotate -- away from player
+		self:set_yaw( yaw, 4)
 		self.state = "runaway"
 		self.runaway_timer = 3
 		self.following = nil
@@ -748,14 +734,8 @@ function mob_class:check_follow()
 			if (not self:object_in_range(self.following)) then
 				self.following = nil
 			else
-				local vec = {
-					x = p.x - s.x,
-					z = p.z - s.z
-				}
-
-				local yaw = (atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
-				if p.x > s.x then yaw = yaw +math.pi end
-				self:set_yaw( yaw, 2.35)
+				local yaw = atan2(p.x - s.x, p.z - s.z) - self.rotate
+				self:set_yaw(yaw, 2.35)
 
 				-- anyone but standing npc's can move along
 				if dist > 3 and self.order ~= "stand" then
@@ -818,9 +798,7 @@ function mob_class:go_to_pos(b)
 		--self:set_velocity(0)
 		return true
 	end
-	local v = { x = b.x - s.x, z = b.z - s.z }
-	local yaw = (atan2(v.z, v.x) +math.pi/ 2) - self.rotate
-	if b.x > s.x then yaw = yaw +math.pi end
+	local yaw = atan2(b.x - s.x, b.z - s.z) - self.rotate
 	self.object:set_yaw(yaw)
 	self:set_velocity(self.follow_velocity)
 	self:set_animation("walk")
@@ -897,43 +875,28 @@ function mob_class:do_states_walk()
 						{"group:solid"})
 
 				lp = #lp > 0 and lp[math.random(#lp)]
-
 				-- did we find land?
 				if lp then
-
-					local vec = {
-						x = lp.x - s.x,
-						z = lp.z - s.z
-					}
-
-					yaw = (atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
-
-
-					if lp.x > s.x  then yaw = yaw +math.pi end
-
+					-- minetest.log(self.name .. " heading to land ".. tostring(minetest.get_node(lp).name or nil))
+					yaw = atan2(lp.x - s.x, lp.z - s.z) - self.rotate
 					-- look towards land and move in that direction
-					yaw = self:set_yaw( yaw, 6)
+					self:set_yaw(yaw, 6)
 					self:set_velocity(self.walk_velocity)
-
 				end
 			end
 
 			-- A danger is near but mob is not inside
 		else
-
 			-- Randomly turn
 			if math.random(1, 100) <= 30 then
-				yaw = yaw + math.random() - 0.5
-				yaw = self:set_yaw( yaw, 8)
+				yaw = yaw + math.random(-0.5, 0.5)
+				self:set_yaw(yaw, 8)
 			end
 		end
-
-		yaw = self:set_yaw( yaw, 8)
-
 		-- otherwise randomly turn
 	elseif math.random(1, 100) <= 30 then
 		yaw = yaw + math.random() - 0.5
-		yaw = self:set_yaw( yaw, 8)
+		yaw = self:set_yaw(yaw, 8)
 	end
 
 	-- stand for great fall or danger or fence in front
@@ -942,11 +905,14 @@ function mob_class:do_states_walk()
 			or cliff_or_danger
 			or math.random(1, 100) <= 30 then
 
+		-- if cliff_or_danger then
+		--   minetest.log(self.name .. " turning away from danger "..tostring(self:is_at_cliff_or_danger() or "nil"))
+		-- end
 		self:set_velocity(0)
 		self.state = "stand"
 		self:set_animation( "stand")
-		local yaw = self.object:get_yaw() or 0
-		yaw = self:set_yaw( yaw + 0.78, 8)
+		yaw = yaw + 0.78
+		self:set_yaw( yaw, 8)
 	else
 
 		self:set_velocity(self.walk_velocity)
@@ -979,20 +945,12 @@ function mob_class:do_states_stand(player_in_active_range)
 
 		-- look at any players nearby, otherwise turn randomly
 		if lp and self.look_at_players then
-
-			local vec = {
-				x = lp.x - s.x,
-				z = lp.z - s.z
-			}
-
-			yaw = (atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
-
-			if lp.x > s.x then yaw = yaw +math.pi end
+			yaw = atan2(lp.x - s.x, lp.z - s.z) - self.rotate
 		else
 			yaw = yaw + math.random() - 0.5
 		end
 
-		yaw = self:set_yaw( yaw, 8)
+		self:set_yaw( yaw, 8)
 	end
 	if self.order == "sit" then
 		self:set_animation( "sit")
@@ -1032,8 +990,7 @@ function mob_class:do_states_runaway()
 		self:set_velocity(0)
 		self.state = "stand"
 		self:set_animation( "stand")
-		local yaw = self.object:get_yaw() or 0
-		yaw = self:set_yaw( yaw + 0.78, 8)
+		self:set_yaw( yaw + 0.78, 8)
 	else
 		self:set_velocity( self.run_velocity)
 		self:set_animation( "run")
