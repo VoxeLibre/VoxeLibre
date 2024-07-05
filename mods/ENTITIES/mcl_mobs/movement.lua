@@ -11,8 +11,15 @@ local PATHFINDING = "gowp"
 local node_snow = "mcl_core:snow"
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+local logging = minetest.settings:get_bool("mcl_logging_mobs_movement", true)
 
+local random = math.random
+local sin = math.sin
+local cos = math.cos
 local atan2 = math.atan2
+local abs = math.abs
+local PI = math.pi
+local TWOPI = 2 * math.pi
 
 local registered_fallback_node = minetest.registered_nodes[mcl_mobs.fallback_node]
 
@@ -204,15 +211,15 @@ function mob_class:can_jump_cliff()
 	local pos = self.object:get_pos()
 	local v = self.object:get_velocity()
 
-	local v2 = math.abs(v.x)+math.abs(v.z)*.833
+	local v2 = abs(v.x)+abs(v.z)*.833
 	local jump_c_multiplier = 1
 	if v2/self.walk_velocity/2>1 then
 		jump_c_multiplier = v2/self.walk_velocity/2
 	end
 
 	-- where is front
-	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
-	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+0.6
 
 	--is there nothing under the block in front? if so jump the gap.
 	local nodLow = node_ok({
@@ -266,8 +273,8 @@ function mob_class:is_at_cliff_or_danger()
 		return false
 	end
 	local yaw = self.object:get_yaw()
-	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.25)
-	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.25)
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.25)
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.25)
 
 	local pos = self.object:get_pos()
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
@@ -277,17 +284,21 @@ function mob_class:is_at_cliff_or_danger()
 			vector.new(pos.x + dir_x, ypos - self.fear_height, pos.z + dir_z))
 
 	if free_fall then
-		if math.random() < 0.98 then -- sometimes mobs make mistakes
-			return true
+		if random() < 0.98 then -- sometimes mobs make mistakes
+			return "leap of faith"
 		end
-		-- minetest.log(self.name.." takes a leap of faith.")
+		if logging then
+			minetest.log("action", "[mcl_mobs] "..self.name.." takes a leap of faith.")
+		end
 		return false
 	end
 	-- avoid routes where we cannot get back, be reluctant to drop
 	local height = ypos + 0.5 - blocker.y
-	if self.runaway_timer == 0 and height > 1.25 and math.random() < (self.jump_height or 4) / 4 / height / height then
-		--minetest.log(self.name.." avoiding drop of "..height.." chance "..((self.jump_height or 4) / 4 / height / height))
-		return
+	if self.runaway_timer == 0 and height > 1.25 and random() < (self.jump_height or 4) / 4 / height / height then
+		if logging then
+			minetest.log("action", "[mcl_mobs] "..self.name.." avoiding drop of "..height) --.." chance "..((self.jump_height or 4) / 4 / height / height))
+		end
+		return "drop of "..tostring(height)
 	end
 	local bnode = minetest.get_node(blocker)
 	-- minetest.log("At cliff: " .. self.name .. " below " .. bnode.name)
@@ -321,8 +332,8 @@ function mob_class:is_at_water_danger()
 		return false
 	end
 
-	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.25)
-	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.25)
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.25)
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.25)
 
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
@@ -333,12 +344,10 @@ function mob_class:is_at_water_danger()
 	if not los then
 		local bnode = minetest.get_node(blocker)
 		local waterdanger = self:is_node_waterhazard(bnode.name)
-
-		if waterdanger and not in_water_danger then
-			return true
+		if waterdanger then
+			return bnode.name
 		end
 	end
-
 	return false
 end
 
@@ -352,20 +361,20 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 		return
 	end
 
-	if self:is_at_water_danger() then
+	--[[if self:is_at_water_danger() then
 		--minetest.log("At water danger for mob, stop?: " .. self.name)
-		if math.random() <= 0.8 then
+		if random() <= 0.8 then
 			if self.state ~= "stand" then
 				self:set_velocity(0)
 				self.state = "stand"
 				self:set_animation( "stand")
 			end
 			local yaw = self.object:get_yaw() or 0
-			yaw = yaw + math.random(-0.5, 0.5)
+			yaw = yaw + random() -0.5
 			self:set_yaw(yaw, 8)
 			return
 		end
-	end
+	end]]
 
 	--[[if self:is_at_cliff_or_danger(can_jump_cliff) then
 		if self.state ~= "stand" then
@@ -374,7 +383,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 			self:set_animation( "stand")
 		end
 		local yaw = self.object:get_yaw() or 0
-		self:set_yaw( yaw + 0.78, 8)
+		yaw = self:set_yaw(yaw + 0.78, 8)
 	end--]]
 end
 
@@ -409,7 +418,7 @@ function mob_class:do_jump()
 	end
 
 	local v = self.object:get_velocity()
-	local v2 = math.abs(v.x)+math.abs(v.z)*.833
+	local v2 = abs(v.x)+abs(v.z)*.833
 	local jump_c_multiplier = 1
 	if v2/self.walk_velocity/2>1 then
 		jump_c_multiplier = v2/self.walk_velocity/2
@@ -418,8 +427,8 @@ function mob_class:do_jump()
 	local yaw_dir = minetest.yaw_to_dir(self.object:get_yaw())
 
 	-- where is front
-	local dir_x = -math.sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+yaw_dir.x
-	local dir_z = math.cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+yaw_dir.z
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+yaw_dir.x
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)*jump_c_multiplier+yaw_dir.z
 
 	-- what is in front of mob?
 	nod = node_ok({
@@ -487,17 +496,11 @@ function mob_class:do_jump()
 		end
 
 		-- if we jumped against a block/wall 4 times then turn
-		if self.object:get_velocity().x ~= 0
-		and self.object:get_velocity().z ~= 0 then
-
+		if self.object:get_velocity().x ~= 0 and self.object:get_velocity().z ~= 0 then
 			self.jump_count = (self.jump_count or 0) + 1
-
 			if self.jump_count == 4 then
-
 				local yaw = self.object:get_yaw() or 0
-
-				self:set_yaw( yaw + 1.35, 8)
-
+				yaw = self:set_yaw( yaw + 1.35, 8)
 				self.jump_count = 0
 			end
 		end
@@ -526,9 +529,7 @@ function mob_class:follow_holding(clicker)
 
 	-- multiple items
 	elseif t == "table" then
-
 		for no = 1, #self.follow do
-
 			if self.follow[no] == item:get_name() then
 				return true
 			end
@@ -541,21 +542,18 @@ end
 
 -- find and replace what mob is looking for (grass, wheat etc.)
 function mob_class:replace_node(pos)
-
-
 	if not self.replace_rate
 	or not self.replace_what
 	or self.child == true
 	or self.object:get_velocity().y ~= 0
-	or math.random(1, self.replace_rate) > 1 then
+	or random(1, self.replace_rate) > 1 then
 		return
 	end
 
 	local what, with, y_offset
 
 	if type(self.replace_what[1]) == "table" then
-
-		local num = math.random(#self.replace_what)
+		local num = random(#self.replace_what)
 
 		what = self.replace_what[num][1] or ""
 		with = self.replace_what[num][2] or ""
@@ -676,8 +674,8 @@ function mob_class:check_runaway_from()
 
 	if min_player then
 		local lp = player:get_pos()
-		local yaw = atan2(s.x - lp.x, s.z - lp.z) - self.rotate -- away from player
-		self:set_yaw( yaw, 4)
+		local yaw = -atan2(s.x - lp.x, s.z - lp.z) - self.rotate -- away from player
+		self:set_yaw(yaw, 4)
 		self.state = "runaway"
 		self.runaway_timer = 3
 		self.following = nil
@@ -729,17 +727,15 @@ function mob_class:check_follow()
 		end
 
 		if p then
-			local dist = vector.distance(p, s)
-
 			if (not self:object_in_range(self.following)) then
 				self.following = nil
 			else
-				local yaw = atan2(p.x - s.x, p.z - s.z) - self.rotate
-				self:set_yaw(yaw, 2.35)
+				self:set_yaw(-atan2(p.x - s.x, p.z - s.z) - self.rotate, 2.35)
 
 				-- anyone but standing npc's can move along
+				local dist = vector.distance(p, s)
 				if dist > 3 and self.order ~= "stand" then
- 					self:set_velocity(self.follow_velocity)
+					self:set_velocity(self.follow_velocity)
 					if self.walk_chance ~= 0 then
 						self:set_animation( "run")
 					else
@@ -771,9 +767,9 @@ function mob_class:flop()
 				if self.object:get_velocity().y < 0.1 then
 					self:mob_sound("flop")
 					self.object:set_velocity({
-						x = (math.random()-0.5) * 2 * FLOP_HOR_SPEED,
+						x = (random() * 2 - 1) * FLOP_HOR_SPEED,
 						y = FLOP_HEIGHT,
-						z = (math.random()-0.5) * 2 * FLOP_HOR_SPEED,
+						z = (random() * 2 - 1) * FLOP_HOR_SPEED,
 					})
 				end
 			end
@@ -798,8 +794,7 @@ function mob_class:go_to_pos(b)
 		--self:set_velocity(0)
 		return true
 	end
-	local yaw = atan2(b.x - s.x, b.z - s.z) - self.rotate
-	self.object:set_yaw(yaw)
+	self.object:set_yaw(-atan2(b.x - s.x, b.z - s.z) - self.rotate)
 	self:set_velocity(self.follow_velocity)
 	self:set_animation("walk")
 end
@@ -840,11 +835,20 @@ function mob_class:teleport(target)
 	end
 end
 
+function mob_class:animate_walk_or_fly()
+	if self:flight_check()
+			and self.animation
+			and self.animation.fly_start
+			and self.animation.fly_end then
+		self:set_animation("fly")
+	else
+		self:set_animation("walk")
+	end
+end
+
 function mob_class:do_states_walk()
 	local yaw = self.object:get_yaw() or 0
-
 	local s = self.object:get_pos()
-	local lp = nil
 
 	-- is there something I need to avoid?
 	if (self.water_damage > 0
@@ -874,7 +878,7 @@ function mob_class:do_states_walk()
 						{x = s.x + 5, y = s.y + 1, z = s.z + 5},
 						{"group:solid"})
 
-				lp = #lp > 0 and lp[math.random(#lp)]
+				lp = #lp > 0 and lp[random(#lp)]
 				-- did we find land?
 				if lp then
 					-- minetest.log(self.name .. " heading to land ".. tostring(minetest.get_node(lp).name or nil))
@@ -888,50 +892,61 @@ function mob_class:do_states_walk()
 			-- A danger is near but mob is not inside
 		else
 			-- Randomly turn
-			if math.random(1, 100) <= 30 then
-				yaw = yaw + math.random(-0.5, 0.5)
+			if random(1, 100) <= 30 then
+				yaw = yaw + random() - 0.5
 				self:set_yaw(yaw, 8)
 			end
+			self:set_velocity(0)
+			self.state = "stand"
+			self:set_animation("stand")
+			yaw = self:set_yaw(yaw + 0.78 * (random(0,2) - 1), 8)
+			return
+		elseif logging then
+			minetest.log("action", "[mcl_mobs] "..self.name.." ignores the danger "..tostring(self:is_at_cliff_or_danger() or self:is_at_water_danger()))
 		end
-		-- otherwise randomly turn
-	elseif math.random(1, 100) <= 30 then
-		yaw = yaw + math.random() - 0.5
-		yaw = self:set_yaw(yaw, 8)
+	end
+	-- If mob in or on dangerous block, look for land
+	if self:is_node_dangerous(self.standing_in) or self:is_node_waterhazard(self.standing_in)
+			or not self.fly and (self:is_node_dangerous(self.standing_on) or self:is_node_waterhazard(self.standing_on)) then
+		-- Better way to find shore - copied from upstream
+		local lp = minetest.find_nodes_in_area_under_air(
+				{x = s.x - 5, y = s.y - 0.5, z = s.z - 5},
+				{x = s.x + 5, y = s.y + 1, z = s.z + 5},
+				{"group:solid"})
+
+		lp = #lp > 0 and lp[random(#lp)]
+		-- did we find land?
+		if lp then
+			if logging then
+				minetest.log("action", "[mcl_mobs] "..self.name.." heading to land ".. tostring(minetest.get_node(lp).name or nil))
+			end
+			-- look towards land and move in that direction
+			self:set_yaw(-atan2(lp.x - s.x, lp.z - s.z) - self.rotate, 6)
+			self:set_velocity(self.walk_velocity)
+			self:animate_walk_or_fly()
+			return
+		end
 	end
 
-	-- stand for great fall or danger or fence in front
-	local cliff_or_danger = is_in_danger or self:is_at_cliff_or_danger()
-	if self.facing_fence == true
-			or cliff_or_danger
-			or math.random(1, 100) <= 30 then
-
-		-- if cliff_or_danger then
-		--   minetest.log(self.name .. " turning away from danger "..tostring(self:is_at_cliff_or_danger() or "nil"))
-		-- end
+	-- otherwise randomly turn
+	if random() <= 0.3 then
+		yaw = self:set_yaw(yaw + random() - 0.5, 8)
+	end
+	-- stop at fences or randomly
+	if self.facing_fence == true or random() <= 0.3 then
 		self:set_velocity(0)
 		self.state = "stand"
-		self:set_animation( "stand")
-		yaw = yaw + 0.78
-		self:set_yaw( yaw, 8)
+		self:set_animation("stand")
 	else
-
 		self:set_velocity(self.walk_velocity)
-
-		if self:flight_check()
-				and self.animation
-				and self.animation.fly_start
-				and self.animation.fly_end then
-			self:set_animation( "fly")
-		else
-			self:set_animation( "walk")
-		end
+		self:animate_walk_or_fly()
 	end
 end
 
 function mob_class:do_states_stand(player_in_active_range)
 	local yaw = self.object:get_yaw() or 0
 
-	if math.random(1, 4) == 1 then
+	if random() < 0.25 then
 
 		local s = self.object:get_pos()
 		local objs = minetest.get_objects_inside_radius(s, 3)
@@ -945,12 +960,12 @@ function mob_class:do_states_stand(player_in_active_range)
 
 		-- look at any players nearby, otherwise turn randomly
 		if lp and self.look_at_players then
-			yaw = atan2(lp.x - s.x, lp.z - s.z) - self.rotate
+			yaw = -atan2(lp.x - s.x, lp.z - s.z) - self.rotate
 		else
-			yaw = yaw + math.random() - 0.5
+			yaw = yaw + random() - 0.5
 		end
 
-		self:set_yaw( yaw, 8)
+		yaw = self:set_yaw( yaw, 8)
 	end
 	if self.order == "sit" then
 		self:set_animation( "sit")
@@ -967,7 +982,7 @@ function mob_class:do_states_stand(player_in_active_range)
 		if player_in_active_range then
 			if self.walk_chance ~= 0
 					and self.facing_fence ~= true
-					and math.random(1, 100) <= self.walk_chance
+					and random(1, 100) <= self.walk_chance
 					and not self:is_at_cliff_or_danger() then
 
 				self:set_velocity(self.walk_velocity)
@@ -989,8 +1004,8 @@ function mob_class:do_states_runaway()
 		self.runaway_timer = 0
 		self:set_velocity(0)
 		self.state = "stand"
-		self:set_animation( "stand")
-		self:set_yaw( yaw + 0.78, 8)
+		self:set_animation("stand")
+		yaw = self:set_yaw(yaw + 0.78, 8)
 	else
 		self:set_velocity( self.run_velocity)
 		self:set_animation( "run")
@@ -998,54 +1013,32 @@ function mob_class:do_states_runaway()
 end
 
 
-
-
-
-
 function mob_class:check_smooth_rotation(dtime)
-	-- smooth rotation by ThomasMonroe314
+	-- improved smooth rotation
 	if self._turn_to then
-		self:set_yaw( self._turn_to, .1)
+		self:set_yaw(self._turn_to, .1)
 	end
 
-	if self.delay and self.delay > 0 then
-
+	local delay = self.delay
+	if delay and delay > 0 then
 		local yaw = self.object:get_yaw() or 0
+		local target_yaw = self.target_yaw
 
-		if self.delay == 1 then
-			yaw = self.target_yaw
+		if delay == 1 then
+			yaw = target_yaw
 		else
-			local dif = math.abs(yaw - self.target_yaw)
-
-			if yaw > self.target_yaw then
-
-				if dif > math.pi then
-					dif = 2 * math.pi - dif -- need to add
-					yaw = yaw + dif / self.delay
-				else
-					yaw = yaw - dif / self.delay -- need to subtract
-				end
-
-			elseif yaw < self.target_yaw then
-
-				if dif >math.pi then
-					dif = 2 * math.pi - dif
-					yaw = yaw - dif / self.delay -- need to subtract
-				else
-					yaw = yaw + dif / self.delay -- need to add
-				end
+			local dif = (target_yaw - yaw) % TWOPI
+			if target_yaw > PI then
+				target_yaw = target_yaw - TWOPI
 			end
-
-			if yaw > (math.pi * 2) then yaw = yaw - (math.pi * 2) end
-			if yaw < 0 then yaw = yaw + (math.pi * 2) end
+			yaw = (yaw + dif / delay) % TWOPI
 		end
 
-		self.delay = self.delay - 1
+		self.delay = delay - 1
 		if self.shaking then
-			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
+			yaw = yaw + (random() * 2 - 1) * 5 * dtime
 		end
 		self.object:set_yaw(yaw)
 		--self:update_roll()
 	end
-	-- end rotation
 end

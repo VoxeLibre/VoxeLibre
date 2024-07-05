@@ -6,6 +6,7 @@ local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
+local TWOPI = 2 * math.pi
 
 local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
@@ -317,21 +318,7 @@ function mob_class:set_yaw(yaw, delay, dtime)
 		self._turn_to = yaw
 	end
 
-	--mcl_log("Yaw is: \t\t" .. tostring(math.deg(yaw)))
-	--mcl_log("self.object:get_yaw() is: \t" .. tostring(math.deg(self.object:get_yaw())))
-
-	--clamp our yaw to a 360 range
-	if math.deg(self.object:get_yaw()) > 360 then
-		self.object:set_yaw(math.rad(0))
-	elseif math.deg(self.object:get_yaw()) < 0 then
-		self.object:set_yaw(math.rad(360))
-	end
-
-	if math.deg(yaw) > 360 then
-		yaw=math.rad(math.deg(yaw)%360)
-	elseif math.deg(yaw) < 0 then
-		yaw=math.rad(((360*5)-math.deg(yaw))%360)
-	end
+	yaw = yaw % TWOPI
 
 	--calculate the shortest way to turn to find our target
 	local target_shortest_path = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), yaw, false)

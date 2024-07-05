@@ -291,10 +291,10 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	end
 
 	self.object:set_properties(self)
-	self:set_yaw( (math.random(0, 360) - 180) / 180 * math.pi, 6)
+	self:set_yaw(math.random() * math.pi * 2, 6)
 	self:update_tag()
 	self._current_animation = nil
-	self:set_animation( "stand")
+	self:set_animation("stand")
 
 
 	if self.riden_by_jock then --- Keep this function before self.on_spawn() is run.
