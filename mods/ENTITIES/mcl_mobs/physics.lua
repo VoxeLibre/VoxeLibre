@@ -6,7 +6,8 @@ local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
-local TWOPI = 2 * math.pi
+local PI = math.pi
+local TWOPI = 2 * PI
 
 local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
@@ -265,105 +266,44 @@ function mob_class:update_roll()
 
 end
 
-local function shortest_term_of_yaw_rotation(self, rot_origin, rot_target, nums)
-
-	if not rot_origin or not rot_target then
-		return
-	end
-
-	rot_origin = math.deg(rot_origin)
-	rot_target = math.deg(rot_target)
-
-	if rot_origin < rot_target then
-		if math.abs(rot_origin-rot_target)<180 then
-			if nums then
-				return rot_target-rot_origin
-			else
-				return 1
-			end
-		else
-			if nums then
-				return -(rot_origin-(rot_target-360))
-			else
-				return -1
-			end
-		end
-	else
-		if math.abs(rot_origin-rot_target)<180 then
-			if nums then
-				return rot_target-rot_origin
-			else
-				return -1
-			end
-		else
-			if nums then
-				return (rot_target-(rot_origin-360))
-			else
-				return 1
-			end
-		end
-	end
-
-end
-
-
-
 -- set and return valid yaw
 function mob_class:set_yaw(yaw, delay, dtime)
 	if self.noyaw then return end
-
 	if not self.object:get_yaw() or not self.object:get_pos() then return end
-
-	if self.state ~= PATHFINDING then
-		self._turn_to = yaw
-	end
-
-	yaw = yaw % TWOPI
-
-	--calculate the shortest way to turn to find our target
-	local target_shortest_path = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), yaw, false)
-	local target_shortest_path_nums = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), yaw, true)
-
-	--turn in the shortest path possible toward our target. if we are attacking, don't dance.
-	if (math.abs(target_shortest_path) > 50 and not self._kb_turn) and (self.attack and self.attack:get_pos() or self.following and self.following:get_pos()) then
-		if self.following then
-			target_shortest_path = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), true)
-			target_shortest_path_nums = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.following:get_pos())), false)
-		else
-			target_shortest_path = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())), true)
-			target_shortest_path_nums = shortest_term_of_yaw_rotation(self, self.object:get_yaw(), minetest.dir_to_yaw(vector.direction(self.object:get_pos(), self.attack:get_pos())), false)
-		end
-	end
-
-	local ddtime = 0.05 --set_tick_rate
-
-	if dtime then
-		ddtime = dtime
-	end
-
-	if math.abs(target_shortest_path_nums) > 10 then
-		self.object:set_yaw(self.object:get_yaw()+(target_shortest_path*(3.6*ddtime)))
-		if validate_vector(self.acc) then
-			self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), target_shortest_path*(3.6*ddtime))
-		end
-	end
-
-	delay = delay or 0
-
-	yaw = self.object:get_yaw()
-
-	if delay == 0 then
-		if self.shaking and dtime then
-			yaw = yaw + (math.random() * 2 - 1) * 5 * dtime
-		end
-		--self:update_roll()
-		return yaw
-	end
-
-	self.target_yaw = yaw
-	self.delay = delay
-
+	self.delay = delay or 0
+	self.target_yaw = yaw % TWOPI
 	return self.target_yaw
+end
+
+function mob_class:check_smooth_rotation(dtime)
+	-- improved smooth rotation
+	if self._turn_to then
+		self:set_yaw(self._turn_to, .1)
+		self._turn_to = nil
+	end
+
+	local delay = self.delay
+	if delay and delay > 0 then
+		local yaw = self.object:get_yaw() or 0
+		local target_yaw = self.target_yaw
+		if delay == 1 then
+			yaw = target_yaw
+		else
+			local dif = (target_yaw - yaw + PI) % TWOPI - PI
+			yaw = (yaw + dif / delay) % TWOPI
+		end
+
+		self.delay = delay - 1
+		if self.shaking then
+			yaw = yaw + (random() * 2 - 1) / 72 * dtime
+		end
+		self.object:set_yaw(yaw)
+		-- TODO: needed?
+		--if validate_vector(self.acc) then
+		--	self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), target_shortest_path*(3.6*ddtime))
+		--end
+		--self:update_roll()
+	end
 end
 
 -- global function to set mob yaw
