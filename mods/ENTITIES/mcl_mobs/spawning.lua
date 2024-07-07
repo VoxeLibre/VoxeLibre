@@ -96,6 +96,7 @@ mcl_log("Percentage of hostile spawns are group: " .. hostile_group_percentage_s
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
+local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",false)
 
 -- count how many mobs are in an area
 local function count_mobs(pos,r,mob_type)
@@ -1054,7 +1055,7 @@ if mobs_spawn then
 		if not spawning_position then
 			fail_count = fail_count + 1
 			if fail_count > 16 then
-				minetest.log("action", "[Mobs spawn] Cannot find a valid spawn position after retries: " .. FIND_SPAWN_POS_RETRIES)
+				minetest.log("action", "[Mobs spawn] Cannot find a valid spawn position in last 16 attemtps")
 			end
 			return
 		end
