@@ -787,24 +787,41 @@ local function build_state_for_position(pos, parent_state)
 end
 
 local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
-	local nn= find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)
-	local o
-	table.shuffle(nn)
+	-- Find possible spawn locations and shuffle the list
+	local nn = find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5), vector.offset(p,5,3,5), spawn_on)
 	if not nn or #nn < 1 then
 		nn = {}
 		table.insert(nn,p)
 	end
+	table.shuffle(nn)
+	--minetest.log("Spawn point list: "..dump(nn))
 
-	for i = 1, amount_to_spawn do
-		local sp = vector.offset(nn[math.random(#nn)],0,1,0)
-		local state, node = build_state_for_position(sp, parent_state)
+	-- Use the first amount_to_spawn positions to spawn mobs. If a spawn position is protected,
+	-- it is removed from the list and not counted against the spawn amount. Only one mob will
+	-- spawn in a given spot.
+	local o
+	while amount_to_spawn > 0 and #nn > 0 do
+		-- Select the next spawn position
+		local sp = vector.offset(nn[#nn],0,1,0)
+		nn[#nn] = nil
 
-		if spawn_check(sp, state, node, mob) then
-			if mob.type_of_spawning == "water" then
-				sp = get_water_spawn(sp)
+		-- Spawning prohibited in protected areas
+		if not (spawn_protected and minetest.is_protected(sp, "")) then
+			local state, node = build_state_for_position(sp, parent_state)
+
+			if spawn_check(sp, state, node, mob) then
+				if mob.type_of_spawning == "water" then
+					sp = get_water_spawn(sp)
+				end
+
+				--minetest.log("Using spawn point "..vector.to_string(sp))
+
+				o = mcl_mobs.spawn(sp,mob.name)
+				if o then
+					amount_to_spawn = amount_to_spawn - 1
+					dbg_spawn_succ = dbg_spawn_succ + 1
+				end
 			end
-			o =  mcl_mobs.spawn(sp,mob.name)
-			if o then dbg_spawn_succ = dbg_spawn_succ + 1 end
 		end
 	end
 	return o
