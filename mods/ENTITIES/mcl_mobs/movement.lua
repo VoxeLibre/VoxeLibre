@@ -116,13 +116,13 @@ function mob_class:target_visible(origin)
 	--minetest.log("origin_eye_pos: " .. dump(origin_eye_pos))
 
 	local targ_head_height, targ_feet_height
+	local cbox = self.collisionbox
 	if self.attack:is_player() then
-		local cbox = self.object:get_properties().collisionbox
 		targ_head_height = vector.offset(target_pos, 0, cbox[5], 0)
 		targ_feet_height = target_pos -- Cbox would put feet under ground which interferes with ray
 	else
-		targ_head_height = vector.offset(target_pos, 0, self.collisionbox[5], 0)
-		targ_feet_height = vector.offset(target_pos, 0, self.collisionbox[2], 0)
+		targ_head_height = vector.offset(target_pos, 0, cbox[5], 0)
+		targ_feet_height = vector.offset(target_pos, 0, cbox[2], 0)
 	end
 
 	--minetest.log("start targ_head_height: " .. dump(targ_head_height))
@@ -211,10 +211,11 @@ end
 function mob_class:can_jump_cliff()
 	local yaw = self.object:get_yaw()
 	local pos = self.object:get_pos()
+	local cbox = self.collisionbox
 
 	-- where is front
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z =  cos(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
+	local dir_z =  cos(yaw) * (cbox[4] + 0.5)
 
 	--is there nothing under the block in front? if so jump the gap.
 	local nodLow  = node_ok({ x = pos.x + dir_x*0.6, y = pos.y - 0.5, z = pos.z + dir_z*0.6 }, "air")
@@ -257,11 +258,12 @@ function mob_class:is_at_cliff_or_danger()
 		return false
 	end
 	local yaw = self.object:get_yaw()
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
+	local cbox = self.collisionbox
+	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
+	local dir_z = cos(yaw) * (cbox[4] + 0.5)
 
 	local pos = self.object:get_pos()
-	local ypos = pos.y + self.collisionbox[2] + 0.1 -- just above floor
+	local ypos = pos.y + cbox[2] + 0.1 -- just above floor
 
 	local free_fall, blocker = minetest.line_of_sight(
 			vector.new(pos.x + dir_x, ypos, pos.z + dir_z),
@@ -280,6 +282,9 @@ function mob_class:is_at_cliff_or_danger()
 	end
 	local bnode = minetest.get_node(blocker)
 	-- minetest.log("At cliff: " .. self.name .. " below " .. bnode.name .. " height "..height)
+	if self:is_node_dangerous(self.standing_in) or self:is_node_waterhazard(self.standing_in) then
+		return false -- allow to get out of the immediate danger
+	end
 	if self:is_node_dangerous(bnode.name) or self:is_node_waterhazard(bnode.name) then
 		return bnode.name
 	end
@@ -310,10 +315,11 @@ function mob_class:is_at_water_danger()
 		return false
 	end
 
-	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
-	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
+	local cbox = self.collisionbox
+	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
+	local dir_z =  cos(yaw) * (cbox[4] + 0.5)
 
-	local ypos = pos.y + self.collisionbox[2] + 0.1 -- just above floor
+	local ypos = pos.y + cbox[2] + 0.1 -- just above floor
 
 	local los, blocker = minetest.line_of_sight(
 		vector.new(pos.x + dir_x, ypos, pos.z + dir_z),
