@@ -35,6 +35,7 @@ local vector_floor    = vector.floor
 local table_copy     = table.copy
 local table_remove   = table.remove
 local pairs = pairs
+local check_line_of_sight = mcl_mobs.check_line_of_sight
 
 local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", false)
 local function mcl_log(message, property)
@@ -802,26 +803,35 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 	-- spawn in a given spot.
 	local o
 	while amount_to_spawn > 0 and #nn > 0 do
+		-- Find the next valid group spawn point
+		local sp
+		while #nn > 0 and not sp do
 		-- Select the next spawn position
-		local sp = vector.offset(nn[#nn],0,1,0)
-		nn[#nn] = nil
+			sp = vector.offset(nn[#nn],0,1,0)
+			nn[#nn] = nil
+
+			if spawn_protected and minetest.is_protected(sp, "") then
+				sp = nil
+			elseif not check_line_of_sight(p, sp) then
+				sp = nil
+			end
+		end
+		if not sp then return o end
 
 		-- Spawning prohibited in protected areas
-		if not (spawn_protected and minetest.is_protected(sp, "")) then
-			local state, node = build_state_for_position(sp, parent_state)
+		local state, node = build_state_for_position(sp, parent_state)
 
-			if spawn_check(sp, state, node, mob) then
-				if mob.type_of_spawning == "water" then
-					sp = get_water_spawn(sp)
-				end
+		if spawn_check(sp, state, node, mob) then
+			if mob.type_of_spawning == "water" then
+				sp = get_water_spawn(sp)
+			end
 
-				--minetest.log("Using spawn point "..vector.to_string(sp))
+			--minetest.log("Using spawn point "..vector.to_string(sp))
 
-				o = mcl_mobs.spawn(sp,mob.name)
-				if o then
-					amount_to_spawn = amount_to_spawn - 1
-					dbg_spawn_succ = dbg_spawn_succ + 1
-				end
+			o = mcl_mobs.spawn(sp,mob.name)
+			if o then
+				amount_to_spawn = amount_to_spawn - 1
+				dbg_spawn_succ = dbg_spawn_succ + 1
 			end
 		end
 	end
