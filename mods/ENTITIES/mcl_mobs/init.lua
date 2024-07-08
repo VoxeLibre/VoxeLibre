@@ -18,6 +18,7 @@ local node_ok = function(pos, fallback)
 	return minetest.registered_nodes[fallback]
 end
 mcl_mobs.node_ok = node_ok
+dofile(path .. "/functions.lua")
 
 --api and helpers
 -- effects: sounds and particles mostly
