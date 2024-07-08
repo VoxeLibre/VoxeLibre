@@ -49,9 +49,8 @@ local dbg_spawn_succ = 0
 
 local remove_far = true
 
-local WAIT_FOR_SPAWN_ATTEMPT = 0.25
+local MAX_SPAWN_CYCLE_TIME = 2.5
 local FIND_SPAWN_POS_RETRIES = 1
-local FIND_SPAWN_POS_RETRIES_SUCCESS_RESPIN = 8
 
 local MOB_SPAWN_ZONE_INNER = 24
 local MOB_SPAWN_ZONE_INNER_SQ = MOB_SPAWN_ZONE_INNER^2 -- squared
@@ -1064,7 +1063,7 @@ if mobs_spawn then
 		local spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES)
 		if not spawning_position then
 			fail_count = fail_count + 1
-			if fail_count > 16 then
+			if logging and fail_count > 16 then
 				minetest.log("action", "[Mobs spawn] Cannot find a valid spawn position in last 16 attemtps")
 			end
 			return
@@ -1140,15 +1139,7 @@ if mobs_spawn then
 		return mcl_mobs.spawn(spawning_position, mob_def.name)
 	end
 
-	--MAIN LOOP
-	local timer = 0
-	minetest.register_globalstep(function(dtime)
-		timer = timer + dtime
-		if timer < WAIT_FOR_SPAWN_ATTEMPT then return end
-		timer = 0
-
-		local start_time_us = minetest.get_us_time()
-
+	local function attempt_spawn()
 		local players = get_connected_players()
 		local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
 
@@ -1159,10 +1150,6 @@ if mobs_spawn then
 
 		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
 			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
-			local took = (minetest.get_us_time() - start_time_us)
-			if took > debug_time_threshold then
-				minetest.log("action","[mcl_mobs] took "..took.." us")
-			end
 			return
 		end --mob cap per player
 
@@ -1174,10 +1161,34 @@ if mobs_spawn then
 				spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
 			end
 		end
+	end
 
-		local took = (minetest.get_us_time() - start_time_us)
+	local function fixed_timeslice(timer, dtime, timeslice_us, handler)
+		timer = timer - dtime
+		if timer > 0 then return timer, 0 end
+
+		-- Time the function
+		local start_time_us = minetest.get_us_time()
+		handler()
+		local stop_time_us = minetest.get_us_time()
+
+		-- Measure how long this took and calculate the time until the next call
+		local took = stop_time_us - start_time_us
+		timer = took / timeslice_us
+
+		return timer, took
+	end
+
+	--MAIN LOOP
+	local timer = 0
+	minetest.register_globalstep(function(dtime)
+		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
+		timer = next_spawn
+		if timer > MAX_SPAWN_CYCLE_TIME then timer = MAX_SPAWN_CYCLE_TIME end
+
 		if took > debug_time_threshold then
 			minetest.log("action","[mcl_mobs] took "..took.." us")
+			minetest.log("Next spawn attempt in "..tostring(timer))
 		end
 	end)
 end
