@@ -13,3 +13,6 @@ Ammunition=Munition
 Damage from bow: 1-10=Schaden vom Bogen: 1-10
 Damage from dispenser: 3=Schaden vom Werfer: 3
 Launches arrows=Verschießt Pfeile
+Crossbow=Armbrust
+Crossbows are ranged weapons to shoot arrows at your foes.=
+To use the crossbow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to load an arrow into the chamber, then to shoot press left mouse.=
