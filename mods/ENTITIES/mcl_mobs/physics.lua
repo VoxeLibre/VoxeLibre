@@ -283,27 +283,25 @@ function mob_class:check_smooth_rotation(dtime)
 	end
 
 	local delay = self.delay
-	if delay and delay > 0 then
-		local yaw = self.object:get_yaw() or 0
-		local target_yaw = self.target_yaw
-		if delay == 1 then
-			yaw = target_yaw
-		else
-			local dif = (target_yaw - yaw + PI) % TWOPI - PI
-			yaw = (yaw + dif / delay) % TWOPI
-		end
-
+	local yaw = self.object:get_yaw() or 0
+	local target_yaw = self.target_yaw
+	if delay and delay > 1 then
+		local dif = (target_yaw - yaw + PI) % TWOPI - PI
+		yaw = (yaw + dif / delay) % TWOPI
 		self.delay = delay - 1
-		if self.shaking then
-			yaw = yaw + (random() * 2 - 1) / 72 * dtime
-		end
-		self.object:set_yaw(yaw)
-		-- TODO: needed?
-		--if validate_vector(self.acc) then
-		--	self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), target_shortest_path*(3.6*ddtime))
-		--end
-		--self:update_roll()
+	else
+		yaw = target_yaw
 	end
+
+	if self.shaking then
+		yaw = yaw + (random() * 2 - 1) / 72 * dtime
+	end
+	self.object:set_yaw(yaw)
+	-- TODO: needed?
+	--if validate_vector(self.acc) then
+	--	self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), target_shortest_path*(3.6*ddtime))
+	--end
+	--self:update_roll()
 end
 
 -- global function to set mob yaw

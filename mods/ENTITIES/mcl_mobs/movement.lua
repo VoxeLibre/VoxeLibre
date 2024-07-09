@@ -354,7 +354,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 				self:set_animation("stand")
 			end
 			local yaw = self.object:get_yaw() or 0
-			self:set_yaw(yaw + PIHALF * (random() - 0.5), 6)
+			self:set_yaw(yaw + PIHALF * (random() - 0.5), 10)
 			return
 		end
 	end
@@ -367,7 +367,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 				self:set_animation("stand")
 			end
 			local yaw = self.object:get_yaw() or 0
-			yaw = self:set_yaw(yaw + PIHALF * (random() - 0.5), 6)
+			yaw = self:set_yaw(yaw + PI * (random() - 0.5), 10)
 		end
 	end
 end
@@ -473,7 +473,7 @@ function mob_class:do_jump()
 			self.jump_count = (self.jump_count or 0) + 1
 			if self.jump_count == 4 then
 				local yaw = self.object:get_yaw() or 0
-				yaw = self:set_yaw(yaw + PIHALF * (random() - 0.5), 8)
+				yaw = self:set_yaw(yaw + PI * (random() - 0.5), 8)
 				self.jump_count = 0
 			end
 		end
@@ -924,7 +924,7 @@ function mob_class:do_states_walk()
 		if logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." facing a wall, turning.")
 		end
-		yaw = self:set_yaw(yaw + PIHALF * (random() - 0.5), 6)
+		yaw = self:set_yaw(yaw + PI * (random() - 0.5), 6)
 	-- otherwise randomly turn
 	elseif random() <= 0.3 then
 		yaw = self:set_yaw(yaw + PIHALF * (random() - 0.5), 10)
@@ -973,8 +973,8 @@ function mob_class:do_states_stand(player_in_active_range)
 					and self.facing_fence ~= true
 					and random(1, 100) <= self.walk_chance then
 				if self:is_at_cliff_or_danger() then
-					yaw = yaw + PIHALF * (random() - 0.5)
-					yaw = self:set_yaw(yaw, 8)
+					yaw = yaw + PI * (random() - 0.5)
+					yaw = self:set_yaw(yaw, 10)
 				else
 					self:set_velocity(self.walk_velocity)
 					self.state = "walk"
@@ -997,7 +997,7 @@ function mob_class:do_states_runaway()
 		self:set_velocity(0)
 		self.state = "stand"
 		self:set_animation("stand")
-		yaw = self:set_yaw(yaw + PI * (random() - 0.5), 8)
+		yaw = self:set_yaw(yaw + PI * (random() + 0.5), 8)
 	else
 		self:set_velocity( self.run_velocity)
 		self:set_animation( "run")

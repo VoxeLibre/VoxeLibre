@@ -12,15 +12,7 @@ local enable_pathfinding = true
 
 local TIME_TO_FORGET_TARGET = 15
 
-local atann = math.atan
-local function atan(x)
-	if not x or x ~= x then
-		return 0
-	else
-		return atann(x)
-	end
-end
-
+local atan2 = math.atan2
 
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
@@ -925,10 +917,8 @@ function mob_class:do_states_attack (dtime)
 	if self.attack_type == "explode" then
 
 		if target_line_of_sight then
-			local vec = { x = p.x - s.x, z = p.z - s.z }
-			yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
-			if p.x > s.x then yaw = yaw +math.pi end
-			yaw = self:set_yaw( yaw, 0, dtime)
+			yaw = -atan2(p.x - s.x, p.z - s.z) - self.rotate
+			yaw = self:set_yaw(yaw, 1, dtime)
 		end
 
 		local node_break_radius = self.explosion_radius or 1
@@ -1081,16 +1071,8 @@ function mob_class:do_states_attack (dtime)
 			p = {x = p1.x, y = p1.y, z = p1.z}
 		end
 
-		local vec = {
-			x = p.x - s.x,
-			z = p.z - s.z
-		}
-
-		yaw = (atan(vec.z / vec.x) + math.pi / 2) - self.rotate
-
-		if p.x > s.x then yaw = yaw + math.pi end
-
-		yaw = self:set_yaw( yaw, 0, dtime)
+		yaw = -atan2(p.x - s.x, p.z - s.z) - self.rotate
+		yaw = self:set_yaw(yaw, 1, dtime)
 
 		-- move towards enemy if beyond mob reach
 		if dist > self.reach then
@@ -1171,18 +1153,14 @@ function mob_class:do_states_attack (dtime)
 		p.y = p.y - .5
 		s.y = s.y + .5
 
-		local dist = vector.distance(p, s)
 		local vec = {
 			x = p.x - s.x,
 			y = p.y - s.y,
 			z = p.z - s.z
 		}
-
-		yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
-
-		if p.x > s.x then yaw = yaw +math.pi end
-
-		yaw = self:set_yaw( yaw, 0, dtime)
+		local dist = (vec.x^2 + vec.y^2 + vec.z^2)^0.5
+		yaw = -atan2(vec.x, vec.z) - self.rotate
+		yaw = self:set_yaw(yaw, 1, dtime)
 
 		local stay_away_from_player = vector.zero()
 
@@ -1252,12 +1230,11 @@ function mob_class:do_states_attack (dtime)
 					end
 				end
 
-				local amount = (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z) ^ 0.5
 				-- offset makes shoot aim accurate
 				vec.y = vec.y + self.shoot_offset
-				vec.x = vec.x * (v / amount)
-				vec.y = vec.y * (v / amount)
-				vec.z = vec.z * (v / amount)
+				vec.x = vec.x * (v / dist)
+				vec.y = vec.y * (v / dist)
+				vec.z = vec.z * (v / dist)
 				if self.shoot_arrow then
 					vec = vector.normalize(vec)
 					self:shoot_arrow(p, vec)
