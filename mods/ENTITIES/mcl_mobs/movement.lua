@@ -218,24 +218,24 @@ function mob_class:can_jump_cliff()
 	local dir_z =  cos(yaw) * (cbox[4] + 0.5)
 
 	--is there nothing under the block in front? if so jump the gap.
-	local nodLow  = node_ok({ x = pos.x + dir_x*0.6, y = pos.y - 0.5, z = pos.z + dir_z*0.6 }, "air")
+	local node_low  = node_ok({ x = pos.x + dir_x*0.6, y = pos.y - 0.5, z = pos.z + dir_z*0.6 }, "air")
 	-- next is solid, no need to jump
-	if minetest.registered_nodes[nodLow.name] and minetest.registered_nodes[nodLow.name].walkable == true then
+	if minetest.registered_nodes[node_low.name] and minetest.registered_nodes[node_low.name].walkable == true then
 		self._jumping_cliff = false
 		return false
 	end
 
-	local nodFar  = node_ok({ x = pos.x + dir_x*1.6, y = pos.y - 0.5, z = pos.z + dir_z*1.6 }, "air")
-	local nodFar2 = node_ok({ x = pos.x + dir_x*2.5, y = pos.y - 0.5, z = pos.z + dir_z*2.5 }, "air")
+	local node_far  = node_ok({ x = pos.x + dir_x*1.6, y = pos.y - 0.5, z = pos.z + dir_z*1.6 }, "air")
+	local node_far2 = node_ok({ x = pos.x + dir_x*2.5, y = pos.y - 0.5, z = pos.z + dir_z*2.5 }, "air")
 	-- TODO: also check there is air above these nodes?
 
 	-- some place to land on
-	if (minetest.registered_nodes[nodFar.name] and minetest.registered_nodes[nodFar.name].walkable == true)
-		or (minetest.registered_nodes[nodFar2.name] and minetest.registered_nodes[nodFar2.name].walkable == true)
+	if (minetest.registered_nodes[node_far.name] and minetest.registered_nodes[node_far.name].walkable == true)
+		or (minetest.registered_nodes[node_far2.name] and minetest.registered_nodes[node_far2.name].walkable == true)
 	then
 		--disable fear height while we make our jump
 		self._jumping_cliff = true
-		--minetest.log("Jumping cliff: " .. self.name .. " nodes " .. nodLow.name .. " - " .. nodFar.name .. " - " .. nodFar2.name)
+		--minetest.log("Jumping cliff: " .. self.name .. " nodes " .. node_low.name .. " - " .. node_far.name .. " - " .. node_far2.name)
 		minetest.after(.1, function()
 			if self and self.object then
 				self._jumping_cliff = false
@@ -346,7 +346,9 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 	end
 
 	if self:is_at_water_danger() then
-		minetest.log("action", "[mcl_mobs] "..self.name.." at water danger, stop and rotate?")
+		if logging then
+			minetest.log("action", "[mcl_mobs] "..self.name.." at water danger, stop and rotate?")
+		end
 		if random() <= 0.8 then
 			if self.state ~= "stand" then
 				self:set_velocity(0)
@@ -359,7 +361,9 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 		end
 	end
 	if self:is_at_cliff_or_danger() and not self._can_jump_cliff then
-		minetest.log("action", "[mcl_mobs] "..self.name.." at cliff danger, rotate")
+		if logging then
+			minetest.log("action", "[mcl_mobs] "..self.name.." at cliff danger, rotate")
+		end
 		if random() <= 0.99 then
 			if self.state ~= "stand" then
 				self:set_velocity(0)
