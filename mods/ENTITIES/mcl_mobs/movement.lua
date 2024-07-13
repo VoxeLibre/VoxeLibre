@@ -26,6 +26,13 @@ local PIQUARTER = 0.25 * math.pi
 
 local registered_fallback_node = minetest.registered_nodes[mcl_mobs.fallback_node]
 
+-- Stop movement and stand
+function mob_class:stand()
+	self:set_velocity(0)
+	self.state = "stand"
+	self:set_animation("stand")
+end
+
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
 	local node = minetest.get_node_or_nil(pos)
@@ -351,9 +358,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 		end
 		if random() <= 0.8 then
 			if self.state ~= "stand" then
-				self:set_velocity(0)
-				self.state = "stand"
-				self:set_animation("stand")
+				self:stand()
 			end
 			local yaw = self.object:get_yaw() or 0
 			self:set_yaw(yaw + PIHALF * (random() - 0.5), 10)
@@ -366,9 +371,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 		end
 		if random() <= 0.99 then
 			if self.state ~= "stand" then
-				self:set_velocity(0)
-				self.state = "stand"
-				self:set_animation("stand")
+				self:stand()
 			end
 			local yaw = self.object:get_yaw() or 0
 			yaw = self:set_yaw(yaw + PI * (random() - 0.5), 10)
@@ -871,9 +874,7 @@ function mob_class:do_states_walk()
 				yaw = yaw + random() - 0.5
 				self:set_yaw(yaw, 8)
 			end
-			self:set_velocity(0)
-			self.state = "stand"
-			self:set_animation("stand")
+			self:stand()
 			yaw = self:set_yaw(yaw + PIHALF * (random() - 0.5), 6)
 			return
 		elseif logging then
@@ -905,9 +906,7 @@ function mob_class:do_states_walk()
 	end
 	-- stop at fences or randomly
 	if self.facing_fence == true or random() <= 0.3 then
-		self:set_velocity(0)
-		self.state = "stand"
-		self:set_animation("stand")
+		self:stand()
 		return
 	end
 	-- facing wall? then turn
@@ -998,9 +997,7 @@ function mob_class:do_states_runaway()
 	if self.runaway_timer > 5
 			or self:is_at_cliff_or_danger() then
 		self.runaway_timer = 0
-		self:set_velocity(0)
-		self.state = "stand"
-		self:set_animation("stand")
+		self:stand()
 		yaw = self:set_yaw(yaw + PI * (random() + 0.5), 8)
 	else
 		self:set_velocity( self.run_velocity)
