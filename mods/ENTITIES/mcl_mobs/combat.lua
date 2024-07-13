@@ -11,8 +11,8 @@ local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 local enable_pathfinding = true
 
 local TIME_TO_FORGET_TARGET = 15
-
-local atan2 = math.atan2
+local PI = math.pi
+local random = math.random
 
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
@@ -764,12 +764,15 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	-- if skittish then run away
 	if hitter and is_player and hitter:get_pos() and not die and self.runaway == true and self.state ~= "flop" then
-
-		local yaw = self:set_yaw( minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
+		local hp, sp = hitter:get_pos(), self.object:get_pos()
+		self:turn_in_direction(sp.x - hp.x, sp.z - hp.z, 1)
 		minetest.after(0.2,function()
-			if self and self.object and self.object:get_pos() and hitter and is_player and hitter:get_pos() then
-				yaw = self:set_yaw( minetest.dir_to_yaw(vector.direction(hitter:get_pos(), self.object:get_pos())))
-				self:set_velocity( self.run_velocity)
+			if self and self.object and hitter and is_player then
+				local hp, sp = hitter:get_pos(), self.object:get_pos()
+				if hp and sp then
+					self:turn_in_direction(sp.x - hp.x, sp.z - hp.z, 1)
+					self:set_velocity(self.run_velocity)
+				end
 			end
 		end)
 		self.state = "runaway"
@@ -917,8 +920,7 @@ function mob_class:do_states_attack (dtime)
 	if self.attack_type == "explode" then
 
 		if target_line_of_sight then
-			yaw = -atan2(p.x - s.x, p.z - s.z) - self.rotate
-			yaw = self:set_yaw(yaw, 1, dtime)
+			self:turn_in_direction(p.x - s.x, p.z - s.z, 1, dtime)
 		end
 
 		local node_break_radius = self.explosion_radius or 1
@@ -1071,8 +1073,7 @@ function mob_class:do_states_attack (dtime)
 			p = {x = p1.x, y = p1.y, z = p1.z}
 		end
 
-		yaw = -atan2(p.x - s.x, p.z - s.z) - self.rotate
-		yaw = self:set_yaw(yaw, 1, dtime)
+		self:turn_in_direction(p.x - s.x, p.z - s.z, 1, dtime)
 
 		-- move towards enemy if beyond mob reach
 		if dist > self.reach then
@@ -1082,10 +1083,9 @@ function mob_class:do_states_attack (dtime)
 			end
 
 			if self:is_at_cliff_or_danger() then
-				self:set_velocity( 0)
-				self:set_animation( "stand")
-				local yaw = self.object:get_yaw() or 0
-				yaw = self:set_yaw( yaw + 0.78, 8)
+				self:set_velocity(0)
+				self:set_animation("stand")
+				self:turn_by(PI * (random() - 0.5), 10)
 			else
 				if self.path.stuck then
 					self:set_velocity(self.walk_velocity)
@@ -1159,8 +1159,7 @@ function mob_class:do_states_attack (dtime)
 			z = p.z - s.z
 		}
 		local dist = (vec.x^2 + vec.y^2 + vec.z^2)^0.5
-		yaw = -atan2(vec.x, vec.z) - self.rotate
-		yaw = self:set_yaw(yaw, 1, dtime)
+		self:turn_in_direction(vec.x, vec.z, 1, dtime)
 
 		local stay_away_from_player = vector.zero()
 

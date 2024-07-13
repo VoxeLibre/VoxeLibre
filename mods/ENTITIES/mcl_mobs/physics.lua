@@ -8,6 +8,7 @@ local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
 local PI = math.pi
 local TWOPI = 2 * PI
+local atan2 = math.atan2
 
 local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
@@ -266,8 +267,16 @@ function mob_class:update_roll()
 
 end
 
+-- Relative turn, primarily for random turning
+function mob_class:turn_by(angle, delay, dtime)
+	return self:set_yaw((self.object:get_yaw() or 0) + angle, delay, dtime)
+end
+-- Turn into a direction (e.g., to the player, or away)
+function mob_class:turn_in_direction(dx, dz, delay, dtime)
+	return self:set_yaw(-atan2(dx, dz) - self.rotate, delay, dtime)
+end
 -- set and return valid yaw
-function mob_class:set_yaw(yaw, delay, dtime)
+function mob_class:set_yaw(yaw, delay, dtime) -- FIXME: dtime unused
 	if self.noyaw then return end
 	if not self.object:get_yaw() or not self.object:get_pos() then return end
 	self.delay = delay or 0
@@ -275,8 +284,8 @@ function mob_class:set_yaw(yaw, delay, dtime)
 	return self.target_yaw
 end
 
+-- improved smooth rotation
 function mob_class:check_smooth_rotation(dtime)
-	-- improved smooth rotation
 	if self._turn_to then
 		self:set_yaw(self._turn_to, .1)
 		self._turn_to = nil

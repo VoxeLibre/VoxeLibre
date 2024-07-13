@@ -16,7 +16,6 @@ local logging = minetest.settings:get_bool("mcl_logging_mobs_movement", true)
 local random = math.random
 local sin = math.sin
 local cos = math.cos
-local atan2 = math.atan2
 local abs = math.abs
 local floor = math.floor
 local PI = math.pi
@@ -356,12 +355,9 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 		if logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." at water danger, stop and rotate?")
 		end
-		if random() <= 0.8 then
-			if self.state ~= "stand" then
-				self:stand()
-			end
-			local yaw = self.object:get_yaw() or 0
-			self:set_yaw(yaw + PIHALF * (random() - 0.5), 10)
+		if random() <= 0.9 then
+			if self.state ~= "stand" then self:stand() end
+			self:turn_by(PI * (random() - 0.5), 10)
 			return
 		end
 	end
@@ -370,11 +366,8 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 			minetest.log("action", "[mcl_mobs] "..self.name.." at cliff danger, rotate")
 		end
 		if random() <= 0.99 then
-			if self.state ~= "stand" then
-				self:stand()
-			end
-			local yaw = self.object:get_yaw() or 0
-			yaw = self:set_yaw(yaw + PI * (random() - 0.5), 10)
+			if self.state ~= "stand" then self:stand() end
+			self:turn_by(PI * (random() - 0.5), 10)
 		end
 	end
 end
@@ -479,15 +472,12 @@ function mob_class:do_jump()
 		if self.object:get_velocity().x ~= 0 and self.object:get_velocity().z ~= 0 then
 			self.jump_count = (self.jump_count or 0) + 1
 			if self.jump_count == 4 then
-				local yaw = self.object:get_yaw() or 0
-				yaw = self:set_yaw(yaw + PI * (random() - 0.5), 8)
+				self:turn_by(PI * (random() - 0.5), 8)
 				self.jump_count = 0
 			end
 		end
-
 		return true
 	end
-
 	return false
 end
 
@@ -654,8 +644,7 @@ function mob_class:check_runaway_from()
 
 	if min_player then
 		local lp = player:get_pos()
-		local yaw = -atan2(s.x - lp.x, s.z - lp.z) - self.rotate -- away from player
-		self:set_yaw(yaw, 4)
+		self:turn_in_direction(s.x - lp.x, s.z - lp.z, 4) -- away from player
 		self.state = "runaway"
 		self.runaway_timer = 3
 		self.following = nil
@@ -710,7 +699,7 @@ function mob_class:check_follow()
 			if (not self:object_in_range(self.following)) then
 				self.following = nil
 			else
-				self:set_yaw(-atan2(p.x - s.x, p.z - s.z) - self.rotate, 2.35)
+				self:turn_in_direction(p.x - s.x, p.z - s.z, 2.35)
 
 				-- anyone but standing npc's can move along
 				local dist = vector.distance(p, s)
@@ -772,7 +761,7 @@ function mob_class:go_to_pos(b)
 		--self:set_velocity(0)
 		return true
 	end
-	self.object:set_yaw(-atan2(b.x - s.x, b.z - s.z) - self.rotate)
+	self:turn_in_direction(b.x - s.x, b.z - s.z, 6)
 	self:set_velocity(self.follow_velocity)
 	self:set_animation("walk")
 end
@@ -789,17 +778,11 @@ function mob_class:check_herd(dtime)
 	check_herd_timer = 0
 	for _,o in pairs(minetest.get_objects_inside_radius(pos,self.view_range)) do
 		local l = o:get_luaentity()
-		local p,y
 		if l and l.is_mob and l.name == self.name then
 			if self.horny and l.horny then
-				p = l.object:get_pos()
+				self:go_to_pos(l.object:get_pos())
 			else
-				y = o:get_yaw()
-			end
-			if p then
-				self:go_to_pos(p)
-			elseif y then
-				self:set_yaw(y)
+				self:set_yaw(o:get_yaw(), 8)
 			end
 		end
 	end
@@ -875,7 +858,7 @@ function mob_class:do_states_walk()
 				self:set_yaw(yaw, 8)
 			end
 			self:stand()
-			yaw = self:set_yaw(yaw + PIHALF * (random() - 0.5), 6)
+			self:turn_by(PIHALF * (random() - 0.5), 6)
 			return
 		elseif logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." ignores the danger "..tostring(danger))
@@ -898,7 +881,7 @@ function mob_class:do_states_walk()
 				minetest.log("action", "[mcl_mobs] "..self.name.." heading to land ".. tostring(minetest.get_node(lp).name or nil))
 			end
 			-- look towards land and move in that direction
-			self:set_yaw(-atan2(lp.x - s.x, lp.z - s.z) - self.rotate, 8)
+			self:turn_in_direction(lp.x - s.x, lp.z - s.z, 8)
 			self:set_velocity(self.walk_velocity)
 			self:animate_walk_or_fly()
 			return
@@ -927,10 +910,10 @@ function mob_class:do_states_walk()
 		if logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." facing a wall, turning.")
 		end
-		yaw = self:set_yaw(yaw + PI * (random() - 0.5), 6)
+		self:turn_by(PI * (random() - 0.5), 6)
 	-- otherwise randomly turn
 	elseif random() <= 0.3 then
-		yaw = self:set_yaw(yaw + PIHALF * (random() - 0.5), 10)
+		self:turn_by(PIHALF * (random() - 0.5), 10)
 	end
 	self:set_velocity(self.walk_velocity)
 	self:animate_walk_or_fly()
@@ -953,11 +936,10 @@ function mob_class:do_states_stand(player_in_active_range)
 		end
 		-- look at any players nearby, otherwise turn randomly
 		if lp then
-			yaw = -atan2(lp.x - s.x, lp.z - s.z) - self.rotate
+			self:turn_in_direction(lp.x - s.x, lp.z - s.z, 10)
 		else
-			yaw = yaw + PIHALF * (random() - 0.5)
+			self:turn_by(PIHALF * (random() - 0.5), 10)
 		end
-		yaw = self:set_yaw(yaw, 10)
 	end
 	if self.order == "sit" then
 		self:set_animation( "sit")
@@ -976,8 +958,7 @@ function mob_class:do_states_stand(player_in_active_range)
 					and self.facing_fence ~= true
 					and random(1, 100) <= self.walk_chance then
 				if self:is_at_cliff_or_danger() then
-					yaw = yaw + PI * (random() - 0.5)
-					yaw = self:set_yaw(yaw, 10)
+					self:turn_by(PI * (random() - 0.5), 10)
 				else
 					self:set_velocity(self.walk_velocity)
 					self.state = "walk"
@@ -998,7 +979,7 @@ function mob_class:do_states_runaway()
 			or self:is_at_cliff_or_danger() then
 		self.runaway_timer = 0
 		self:stand()
-		yaw = self:set_yaw(yaw + PI * (random() + 0.5), 8)
+		self:turn_by(PI * (random() + 0.5), 8)
 	else
 		self:set_velocity( self.run_velocity)
 		self:set_animation( "run")
