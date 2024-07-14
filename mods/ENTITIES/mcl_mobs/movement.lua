@@ -361,7 +361,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 			return
 		end
 	end
-	if self:is_at_cliff_or_danger() and not self._can_jump_cliff then
+	if not self._can_jump_cliff and self:is_at_cliff_or_danger() then
 		if logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." at cliff danger, rotate")
 		end
@@ -858,7 +858,7 @@ function mob_class:do_states_walk()
 				self:set_yaw(yaw, 8)
 			end
 			self:stand()
-			self:turn_by(PIHALF * (random() - 0.5), 6)
+			self:turn_by(PI * (random() - 0.5), 6)
 			return
 		elseif logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." ignores the danger "..tostring(danger))
@@ -910,7 +910,7 @@ function mob_class:do_states_walk()
 		if logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." facing a wall, turning.")
 		end
-		self:turn_by(PI * (random() - 0.5), 6)
+		self:turn_by(TWOPI * (random() - 0.5), 6)
 	-- otherwise randomly turn
 	elseif random() <= 0.3 then
 		self:turn_by(PIHALF * (random() - 0.5), 10)
@@ -920,8 +920,6 @@ function mob_class:do_states_walk()
 end
 
 function mob_class:do_states_stand(player_in_active_range)
-	local yaw = self.object:get_yaw() or 0
-
 	if random() < 0.25 then
 		local lp
 		if player_in_active_range and self.look_at_players then
@@ -942,10 +940,10 @@ function mob_class:do_states_stand(player_in_active_range)
 		end
 	end
 	if self.order == "sit" then
-		self:set_animation( "sit")
+		self:set_animation("sit")
 		self:set_velocity(0)
 	else
-		self:set_animation( "stand")
+		self:set_animation("stand")
 		self:set_velocity(0)
 	end
 
@@ -970,10 +968,7 @@ function mob_class:do_states_stand(player_in_active_range)
 end
 
 function mob_class:do_states_runaway()
-	local yaw = self.object:get_yaw() or 0
-
 	self.runaway_timer = self.runaway_timer + 1
-
 	-- stop after 5 seconds or when at cliff
 	if self.runaway_timer > 5
 			or self:is_at_cliff_or_danger() then

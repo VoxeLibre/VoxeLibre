@@ -159,32 +159,29 @@ end
 -- collision function borrowed amended from jordan4ibanez open_ai mod
 function mob_class:collision()
 	local pos = self.object:get_pos()
-	if not pos then return {0,0} end
+	if not pos then return 0,0 end
 	local vel = self.object:get_velocity()
-	local x = 0
-	local z = 0
+	local x, z = 0, 0
 	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
-
 		local ent = object:get_luaentity()
 		if object:is_player() or (ent and ent.is_mob and object ~= self.object) then
-
 			if object:is_player() and mcl_burning.is_burning(self.object) then
 				mcl_burning.set_on_fire(object, 4)
 			end
 
 			local pos2 = object:get_pos()
-			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
-			local force = (width + 0.5) - vector.distance(
-				{x = pos.x, y = 0, z = pos.z},
-				{x = pos2.x, y = 0, z = pos2.z})
-
-			x = x + (vec.x * force)
-			z = z + (vec.z * force)
+			local vx, vz  = pos.x - pos2.x, pos.z - pos2.z
+			local force = width - (vx*vx+vz*vz)^0.5
+			if force > 0 then
+				force = force * force * (object:is_player() and 2 or 1) -- players push more
+				-- minetest.log("mob push force "..force.." "..tostring(self.name).." by "..tostring(ent and ent.name or "player"))
+				x = x + vx * force
+				z = z + vz * force
+			end
 		end
 	end
-
-	return({x,z})
+	return x, z
 end
 
 function mob_class:check_death_and_slow_mob()
@@ -195,44 +192,45 @@ function mob_class:check_death_and_slow_mob()
 	local v = self.object:get_velocity()
 	if v then
 		--diffuse object velocity
-		self.object:set_velocity({x = v.x*d, y = v.y, z = v.z*d})
+		self.object:set_velocity(vector.new(v.x*d, v.y, v.z*d))
 	end
 	return dying
 end
 
 -- move mob in facing direction
 function mob_class:set_velocity(v)
-	if not v then return end
-
-	local c_x, c_y = 0, 0
-
+	local c_x, c_z = 0, 0
 	-- can mob be pushed, if so calculate direction
 	if self.pushable then
-		c_x, c_y = unpack(self:collision())
+		c_x, c_z = self:collision()
 	end
-
-	-- halt mob if it has been ordered to stay
-	if self.order == "stand" or self.order == "sit" then
-		self.acc = vector.zero()
-		return
-	end
-
-	local yaw = (self.object:get_yaw() or 0) + self.rotate
-	local vv = self.object:get_velocity()
-
-	if vv and yaw then
-		self.acc = vector.new(((math.sin(yaw) * -v) + c_x) * .4, 0, ((math.cos(yaw) * v) + c_y) * .4)
+	if v > 0 then
+		local yaw = (self.object:get_yaw() or 0) + self.rotate
+		local x = ((-math.sin(yaw) * v) + c_x) * .4
+		local z = (( math.cos(yaw) * v) + c_z) * .4
+		if not self.acc then
+			self.acc = vector.new(x, 0, z)
+		else
+			self.acc.x = x
+			self.acc.y = 0
+			self.acc.z = z
+		end
+	else -- allow standing mobs to be pushed
+		if not self.acc then
+			self.acc = vector.new(c_x * .2, 0, c_z * .2)
+		else
+			self.acc.x = c_x * .2
+			self.acc.y = 0
+			self.acc.z = c_z * .2
+		end
 	end
 end
 
--- calculate mob velocity
+-- calculate mob velocity (2d)
 function mob_class:get_velocity()
 	local v = self.object:get_velocity()
-	if v then
-		return (v.x * v.x + v.z * v.z) ^ 0.5
-	end
-
-	return 0
+	if not v then return 0 end
+	return (v.x*v.x + v.z*v.z)^0.5
 end
 
 function mob_class:update_roll()
@@ -292,25 +290,26 @@ function mob_class:check_smooth_rotation(dtime)
 	end
 
 	local delay = self.delay
-	local yaw = self.object:get_yaw() or 0
-	local target_yaw = self.target_yaw
+	local initial_yaw = self.object:get_yaw() or 0
+	local yaw -- resulting yaw for this tick
 	if delay and delay > 1 then
-		local dif = (target_yaw - yaw + PI) % TWOPI - PI
-		yaw = (yaw + dif / delay) % TWOPI
+		local dif = (self.target_yaw - initial_yaw + PI) % TWOPI - PI
+		yaw = (initial_yaw + dif / delay) % TWOPI
 		self.delay = delay - 1
 	else
-		yaw = target_yaw
+		yaw = self.target_yaw
 	end
 
 	if self.shaking then
 		yaw = yaw + (random() * 2 - 1) / 72 * dtime
 	end
+	if self.acc then
+		local change = yaw - initial_yaw
+		local si, co = math.sin(change), math.cos(change)
+		self.acc.x, self.acc.y = co * self.acc.x - si * self.acc.y, si * self.acc.x + co * self.acc.y
+	end
 	self.object:set_yaw(yaw)
-	-- TODO: needed?
-	--if validate_vector(self.acc) then
-	--	self.acc=vector.rotate_around_axis(self.acc,vector.new(0,1,0), target_shortest_path*(3.6*ddtime))
-	--end
-	--self:update_roll()
+	self:update_roll()
 end
 
 -- global function to set mob yaw
@@ -596,7 +595,7 @@ function mob_class:do_env_damage()
 
 	-- what is mob standing in?
 	pos.y = pos.y + y_level + 0.25 -- foot level
-	local pos2 = {x=pos.x, y=pos.y-1, z=pos.z}
+	local pos2 = vector.new(pos.x, pos.y-1, pos.z)
 	self.standing_in = node_ok(pos, "air").name
 	self.standing_on = node_ok(pos2, "air").name
 
@@ -605,7 +604,7 @@ function mob_class:do_env_damage()
 
 	-- don't fall when on ignore, just stand still
 	if self.standing_in == "ignore" then
-		self.object:set_velocity({x = 0, y = 0, z = 0})
+		self.object:set_velocity(vector.zero())
 	-- wither rose effect
 	elseif self.standing_in == "mcl_flowers:wither_rose" then
 		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
@@ -885,7 +884,7 @@ function mob_class:falling(pos, moveresult)
 			end
 		else
 			-- stop accelerating once max fall speed hit
-			new_acceleration =vector.zero()
+			new_acceleration = vector.zero()
 		end
 
 		self.object:set_acceleration(new_acceleration)
@@ -949,8 +948,8 @@ function mob_class:check_water_flow()
 			local f = 1.39
 			-- Set new item moving speed into the direciton of the liquid
 			local newv = vector.multiply(vec, f)
-			self.object:set_acceleration({x = 0, y = 0, z = 0})
-			self.object:set_velocity({x = newv.x, y = -0.22, z = newv.z})
+			self.object:set_acceleration(vector.zero())
+			self.object:set_velocity(vector.new(newv.x, -0.22, newv.z))
 
 			self.physical_state = true
 			self._flowing = true
