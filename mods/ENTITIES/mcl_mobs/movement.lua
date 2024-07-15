@@ -392,6 +392,7 @@ function mob_class:do_jump()
 	end
 
 	local pos = self.object:get_pos()
+	local v = self.object:get_velocity()
 	local cbox = self.collisionbox
 
 	local in_water = minetest.get_item_group(node_ok(pos).name, "water") > 0
@@ -406,15 +407,15 @@ function mob_class:do_jump()
 	local yaw = self.object:get_yaw()
 
 	-- where is front
-	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
-	local dir_z =  cos(yaw) * (cbox[4] + 0.5)
+	local dir_x = -sin(yaw) * (cbox[4] + 0.5) + v.x * 0.25
+	local dir_z =  cos(yaw) * (cbox[4] + 0.5) + v.z * 0.25
 
 	-- what is in front of mob?
-	local nod = node_ok({ x = pos.x + dir_x, y = pos.y + 0.5, z = pos.z + dir_z })
+	local nod = node_ok(vector.new(pos.x + dir_x, pos.y + 0.5, pos.z + dir_z))
 
 	-- this is used to detect if there's a block on top of the block in front of the mob.
 	-- If there is, there is no point in jumping as we won't manage.
-	local nodTop = node_ok({ x = pos.x + dir_x, y = pos.y + 1.5, z = pos.z + dir_z }, "air")
+	local nodTop = node_ok(vector.new(pos.x + dir_x, pos.y + 1.5, pos.z + dir_z), "air")
 	-- TODO: also check above the mob itself?
 
 	-- we don't attempt to jump if there's a stack of blocks blocking, unless attacking
@@ -428,57 +429,55 @@ function mob_class:do_jump()
 	end
 
 	local ndef = minetest.registered_nodes[nod.name]
-	if self.walk_chance == 0 or ndef and ndef.walkable or self._can_jump_cliff then
-
-		if minetest.get_item_group(nod.name, "fence") == 0
-		and minetest.get_item_group(nod.name, "fence_gate") == 0
-		and minetest.get_item_group(nod.name, "wall") == 0 then
-
-			local v = self.object:get_velocity()
-
-			v.y = self.jump_height + 0.1 * 3
-
-			if in_water then
-				v=vector.multiply(v, vector.new(1.2,1.5,1.2))
-			elseif self._can_jump_cliff then
-				v=vector.multiply(v, vector.new(2.5,1.1,2.5))
-			end
-
-			self:set_animation( "jump") -- only when defined
-
-			self.object:set_velocity(v)
-
-			-- when in air move forward
-			minetest.after(0.3, function(self, v)
-				if (not self.object) or (not self.object:get_luaentity()) or (self.state == "die") then
-					return
-				end
-				self.object:set_acceleration({
-					x = v.x * 2,
-					y = DEFAULT_FALL_SPEED,
-					z = v.z * 2,
-				})
-			end, self, v)
-
-			if self.jump_sound_cooloff <= 0 then
-				self:mob_sound("jump")
-				self.jump_sound_cooloff = 0.5
-			end
-		else
-			self.facing_fence = true
-		end
-
-		-- if we jumped against a block/wall 4 times then turn
-		if self.object:get_velocity().x ~= 0 and self.object:get_velocity().z ~= 0 then
-			self.jump_count = (self.jump_count or 0) + 1
-			if self.jump_count == 4 then
-				self:turn_by(PI * (random() - 0.5), 8)
-				self.jump_count = 0
-			end
-		end
-		return true
+	if self.walk_chance ~= 0 and not (ndef and ndef.walkable) and not self._can_jump_cliff then
+		return false
 	end
-	return false
+	if minetest.get_item_group(nod.name, "fence") ~= 0
+	or minetest.get_item_group(nod.name, "fence_gate") ~= 0
+	or minetest.get_item_group(nod.name, "wall") ~= 0 then
+		self.facing_fence = true
+		return false
+	end
+
+	v.y = self.jump_height + 0.3
+	if in_water then
+		v=vector.multiply(v, vector.new(1.2,1.5,1.2))
+	elseif self._can_jump_cliff then
+		v=vector.multiply(v, vector.new(2.5,1.1,2.5))
+	end
+
+	self:set_animation("jump") -- only when defined
+	self.object:set_velocity(v)
+
+	-- when in air move forward
+	local forward = function(self, v)
+		if not self.object or not self.object:get_luaentity() or self.state == "die" then
+			return
+		end
+		self.object:set_acceleration(vector.new(v.x * 2, DEFAULT_FALL_SPEED, v.z * 2))
+	end
+	-- trying multiple time helps mobs jump
+	minetest.after(0.1, forward, self, v)
+	minetest.after(0.2, forward, self, v)
+	minetest.after(0.3, forward, self, v)
+
+	if self.jump_sound_cooloff <= 0 then
+		self:mob_sound("jump")
+		self.jump_sound_cooloff = 0.5
+	end
+
+	-- if we jumped against a block/wall 4 times then turn
+	if (v.x * v.x + v.z * v.z) < 0.1 then
+		self._jump_count = (self._jump_count or 0) + 1
+		if self._jump_count == 4 then
+			self:turn_by(TWOPI * (random() - 0.5), 8)
+			self._jump_count = 0
+			return false
+		end
+	else
+		self._jump_count = 0
+	end
+	return true
 end
 
 -- should mob follow what I'm holding ?
@@ -753,15 +752,10 @@ end
 
 function mob_class:go_to_pos(b)
 	if not self then return end
-	local s=self.object:get_pos()
-	if not b then
-		--self.state = "stand"
-		return end
-	if vector.distance(b,s) < 1 then
-		--self:set_velocity(0)
-		return true
-	end
-	self:turn_in_direction(b.x - s.x, b.z - s.z, 6)
+	if not b then return end
+	local s = self.object:get_pos()
+	if vector.distance(b,s) < 1 then return true end
+	self:turn_in_direction(b.x - s.x, b.z - s.z, 4)
 	self:set_velocity(self.follow_velocity)
 	self:set_animation("walk")
 end

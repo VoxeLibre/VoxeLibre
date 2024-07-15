@@ -358,8 +358,8 @@ function mob_class:check_gowp(dtime)
 		self.current_target = nil
 		self.state = "stand"
 		self.order = "stand"
-		self.object:set_velocity({x = 0, y = 0, z = 0})
-		self.object:set_acceleration({x = 0, y = 0, z = 0})
+		self.object:set_velocity(vector.zero())
+		self.object:set_acceleration(vector.zero())
 		if self.callback_arrived then return self.callback_arrived(self) end
 		return true
 	elseif not self.current_target then
@@ -369,13 +369,15 @@ function mob_class:check_gowp(dtime)
 	-- More pathing to be done
 	local distance_to_current_target = 50
 	if self.current_target and self.current_target["pos"] then
-		distance_to_current_target = vector.distance(p,self.current_target["pos"])
+		local dx, dy, dz = self.current_target["pos"].x-p.x, self.current_target["pos"].y-p.y, self.current_target["pos"].z-p.z
+		distance_to_current_target = (dx*dx+dy*dy*0.25+dz*dz)^0.5 -- reduced weight on y
+		--distance_to_current_target = vector.distance(p,self.current_target["pos"])
 	end
 
 	-- 0.6 is working but too sensitive. sends villager back too frequently. 0.7 is quite good, but not with heights
 	-- 0.8 is optimal for 0.025 frequency checks and also 1... Actually. 0.8 is winning
 	-- 0.9 and 1.0 is also good. Stick with unless door open or closing issues
-	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or not self.current_target["pos"] or distance_to_current_target < 0.9 ) then
+	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or not self.current_target["pos"] or distance_to_current_target < 0.8 ) then
 		-- We have waypoints, and are at current_target or have no current target. We need a new current_target.
 		self:do_pathfind_action (self.current_target["action"])
 
@@ -383,6 +385,11 @@ function mob_class:check_gowp(dtime)
 		mcl_log("There after " .. failed_attempts .. " failed attempts. current target:".. minetest.pos_to_string(self.current_target["pos"]) .. ". Distance: " ..  distance_to_current_target)
 
 		self.current_target = table.remove(self.waypoints, 1)
+		-- use smoothing
+		if #self.waypoints > 0 then
+			local curwp, nextwp = self.current_target["pos"], self.waypoints[1]["pos"]
+			self:go_to_pos(vector.new(curwp.x*0.5+nextwp.x*0.5,curwp.y*0.5+nextwp.y*0.5,curwp.z*0.5+nextwp.z*0.5))
+		end
 		self:go_to_pos(self.current_target["pos"])
 		return
 	elseif self.current_target and self.current_target["pos"] then
@@ -397,8 +404,8 @@ function mob_class:check_gowp(dtime)
 			self.waypoints = nil
 			self._target = nil
 			self._pf_last_failed = os.time()
-			self.object:set_velocity({x = 0, y = 0, z = 0})
-			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			self.object:set_velocity(vector.zero())
+			self.object:set_acceleration(vector.zero())
 			return
 		end
 

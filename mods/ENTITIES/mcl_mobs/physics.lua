@@ -303,11 +303,11 @@ function mob_class:check_smooth_rotation(dtime)
 	if self.shaking then
 		yaw = yaw + (random() * 2 - 1) / 72 * dtime
 	end
-	if self.acc then
+	--[[ needed? if self.acc then
 		local change = yaw - initial_yaw
 		local si, co = math.sin(change), math.cos(change)
 		self.acc.x, self.acc.y = co * self.acc.x - si * self.acc.y, si * self.acc.x + co * self.acc.y
-	end
+	end ]]--
 	self.object:set_yaw(yaw)
 	self:update_roll()
 end
@@ -869,7 +869,6 @@ function mob_class:falling(pos, moveresult)
 	local v = self.object:get_velocity()
 	if v then
 		local new_acceleration
-
 		if v.y > 0 then
 			-- apply gravity when moving up
 			new_acceleration = vector.new(0, DEFAULT_FALL_SPEED, 0)
