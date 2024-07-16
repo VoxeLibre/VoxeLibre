@@ -3,7 +3,7 @@ local S                     = minetest.get_translator(minetest.get_current_modna
 
 for _, template_name in pairs(mcl_armor.trims.overlays) do
     minetest.register_craftitem(mod_registername .. template_name, {
-        description      = S("Smithing Template '@1'", template_name),
+        description      = S("Smithing Template '@1'", mcl_armor.trims.translations[template_name]),
         inventory_image  = template_name .. "_armor_trim_smithing_template.png",
     })
     

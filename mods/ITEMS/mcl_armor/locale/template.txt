@@ -1,6 +1,18 @@
 # textdomain: mcl_armor
 This is a piece of equippable armor which reduces the amount of damage you receive.=
 To equip it, put it on the corresponding armor slot in your inventory menu.=
+sentry=
+dune=
+coast=
+wild=
+ward=
+vex=
+rib=
+snout=
+eye=
+spire=
+silence=
+wayfinder=
 Leather Cap=
 Iron Helmet=
 Golden Helmet=
