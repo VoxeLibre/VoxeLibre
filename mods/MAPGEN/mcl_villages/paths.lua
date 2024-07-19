@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- generate paths between buildings
 -------------------------------------------------------------------------------
-function settlements.paths(settlement_info)
+function mcl_villages.paths(settlement_info)
   local starting_point
   local end_point
   local distance
@@ -67,7 +67,7 @@ function settlements.paths(settlement_info)
           distance = dist_east_p_to_end
         end
         -- find surface of new starting point
-        local surface_point, surface_mat = settlements.find_surface(starting_point)
+        local surface_point, surface_mat = mcl_villages.find_surface(starting_point)
         -- replace surface node with mcl_core:grass_path
         if surface_point
         then
