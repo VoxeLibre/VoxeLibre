@@ -271,6 +271,7 @@ function mob_class:turn_by(angle, delay, dtime)
 end
 -- Turn into a direction (e.g., to the player, or away)
 function mob_class:turn_in_direction(dx, dz, delay, dtime)
+	if math.abs(dx) == 0 and math.abs(dz) == 0 then return self.object:get_yaw() + self.rotate end
 	return self:set_yaw(-atan2(dx, dz) - self.rotate, delay, dtime)
 end
 -- set and return valid yaw

@@ -373,6 +373,16 @@ function mob_class:check_gowp(dtime)
 		distance_to_current_target = (dx*dx+dy*dy*0.25+dz*dz)^0.5 -- reduced weight on y
 		--distance_to_current_target = vector.distance(p,self.current_target["pos"])
 	end
+	-- also check next target, maybe we were too fast
+	local next_target = #self.waypoints > 0 and self.waypoints[1]
+	if next_target and next_target["pos"] and distance_to_current_target < 2 then
+		local dx, dy, dz = next_target["pos"].x-p.x, next_target["pos"].y-p.y, next_target["pos"].z-p.z
+		local distance_to_next_target = (dx*dx+dy*dy*0.25+dz*dz)^0.5 -- reduced weight on y
+		if distance_to_next_target < distance_to_current_target then
+			self.current_target = table.remove(self.waypoints, 1) -- pop waypoint already
+			distance_to_current_target = distance_to_next_target
+		end
+	end
 
 	-- 0.6 is working but too sensitive. sends villager back too frequently. 0.7 is quite good, but not with heights
 	-- 0.8 is optimal for 0.025 frequency checks and also 1... Actually. 0.8 is winning
@@ -411,6 +421,7 @@ function mob_class:check_gowp(dtime)
 
 		--mcl_log("Not at pos with failed attempts ".. failed_attempts ..": ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target["pos"]) .. ". Distance: ".. distance_to_current_target)
 		self:go_to_pos(self.current_target["pos"])
+		self:turn_by(2 * (math.random() - 0.5), 2) -- but try turning left or right
 		-- Do i just delete current_target, and return so we can find final path.
 	else
 		-- Not at target, no current waypoints or current_target. Through the door and should be able to path to target.

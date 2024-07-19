@@ -754,8 +754,8 @@ function mob_class:go_to_pos(b)
 	if not self then return end
 	if not b then return end
 	local s = self.object:get_pos()
-	if vector.distance(b,s) < 1 then return true end
-	self:turn_in_direction(b.x - s.x, b.z - s.z, 4)
+	if vector.distance(b,s) < .5 then return true end
+	self:turn_in_direction(b.x - s.x, b.z - s.z, 2)
 	self:set_velocity(self.follow_velocity)
 	self:set_animation("walk")
 end
@@ -863,8 +863,8 @@ function mob_class:do_states_walk()
 			or not self.fly and (self:is_node_dangerous(self.standing_on) or self:is_node_waterhazard(self.standing_on)) then
 		-- Better way to find shore - copied from upstream
 		local lp = minetest.find_nodes_in_area_under_air(
-				{x = s.x - 5, y = s.y - 0.5, z = s.z - 5},
-				{x = s.x + 5, y = s.y + 1, z = s.z + 5},
+				vector.new(s.x - 5, s.y - 0.5, s.z - 5),
+				vector.new(s.x + 5, s.y + 1, s.z + 5),
 				{"group:solid"})
 		-- TODO: use node with smallest change in yaw?
 
@@ -882,7 +882,8 @@ function mob_class:do_states_walk()
 		end
 	end
 	-- stop at fences or randomly
-	if self.facing_fence == true or random() <= 0.3 then
+	-- fences break villager pathfinding! if self.facing_fence == true or random() <= 0.3 then
+	if random() <= 0.3 then
 		self:stand()
 		return
 	end
@@ -907,7 +908,12 @@ function mob_class:do_states_walk()
 		self:turn_by(TWOPI * (random() - 0.5), 6)
 	-- otherwise randomly turn
 	elseif random() <= 0.3 then
-		self:turn_by(PIHALF * (random() - 0.5), 10)
+		local home = self._home or self._bed
+		if home and random() < 0.3 then
+			self:turn_in_direction(home.x - s.x, home.z - s.z, 8)
+		else
+			self:turn_by(PIHALF * (random() - 0.5), 10)
+		end
 	end
 	self:set_velocity(self.walk_velocity)
 	self:animate_walk_or_fly()
@@ -915,9 +921,9 @@ end
 
 function mob_class:do_states_stand(player_in_active_range)
 	if random() < 0.25 then
+		local s = self.object:get_pos()
 		local lp
 		if player_in_active_range and self.look_at_players then
-			local s = self.object:get_pos()
 			local objs = minetest.get_objects_inside_radius(s, 3)
 			for n = 1, #objs do
 				if objs[n]:is_player() then
@@ -930,7 +936,12 @@ function mob_class:do_states_stand(player_in_active_range)
 		if lp then
 			self:turn_in_direction(lp.x - s.x, lp.z - s.z, 10)
 		else
-			self:turn_by(PIHALF * (random() - 0.5), 10)
+			local home = self._home or self._bed
+			if home and random() < 0.3 then
+				self:turn_in_direction(home.x - s.x, home.z - s.z, 8)
+			else
+				self:turn_by(PIHALF * (random() - 0.5), 10)
+			end
 		end
 	end
 	if self.order == "sit" then
