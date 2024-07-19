@@ -66,6 +66,7 @@ mcl_armor = {
 			dune = S("dune"),
 			coast = S("coast"),
 			wild = S("wild"),
+			tide = S("tide"),
 			ward = S("ward"),
 			vex = S("vex"),
 			rib = S("rib"),
