@@ -1,20 +1,16 @@
-settlements = {}
-settlements.modpath = minetest.get_modpath(minetest.get_current_modname())
+mcl_villages = {}
+mcl_villages.modpath = minetest.get_modpath(minetest.get_current_modname())
 
-dofile(settlements.modpath.."/const.lua")
-dofile(settlements.modpath.."/utils.lua")
-dofile(settlements.modpath.."/foundation.lua")
-dofile(settlements.modpath.."/buildings.lua")
-dofile(settlements.modpath.."/paths.lua")
---dofile(settlements.modpath.."/convert_lua_mts.lua")
---
--- load settlements on server
---
-settlements.grundstellungen()
+local village_chance = tonumber(minetest.settings:get("mcl_villages_village_chance")) or 5
+
+dofile(mcl_villages.modpath.."/const.lua")
+dofile(mcl_villages.modpath.."/utils.lua")
+dofile(mcl_villages.modpath.."/foundation.lua")
+dofile(mcl_villages.modpath.."/buildings.lua")
+dofile(mcl_villages.modpath.."/paths.lua")
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local villagegen={}
 --
 -- register block for npc spawn
 --
@@ -32,42 +28,20 @@ minetest.register_node("mcl_villages:stonebrickcarved", {
 
 minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = {not_in_creative_inventory=1},})
 
-
-
---[[ Enable for testing, but use MineClone2's own spawn code if/when merging.
---
--- register inhabitants
---
-if minetest.get_modpath("mobs_mc") then
-  mcl_mobs:register_spawn("mobs_mc:villager", --name
-    {"mcl_core:stonebrickcarved"}, --nodes
-    15, --max_light
-    0, --min_light
-    20, --chance
-    7, --active_object_count
-    31000, --max_height
-    nil) --day_toggle
-end
---]]
-
 --
 -- on map generation, try to build a settlement
 --
 local function build_a_settlement(minp, maxp, blockseed)
-	local pr = PseudoRandom(blockseed)
+	if mcl_villages.village_exists(blockseed) then return end
 
-	-- fill settlement_info with buildings and their data
-	local settlement_info = settlements.create_site_plan(maxp, minp, pr)
+	local pr = PseudoRandom(blockseed)
+	local settlement_info = mcl_villages.create_site_plan(minp, maxp, pr)
 	if not settlement_info then return end
 
-	-- evaluate settlement_info and prepair terrain
-	settlements.terraform(settlement_info, pr)
-
-	-- evaluate settlement_info and build paths between buildings
-	settlements.paths(settlement_info)
-
-	-- evaluate settlement_info and place schematics
-	settlements.place_schematics(settlement_info, pr)
+	mcl_villages.terraform(settlement_info, pr)
+	mcl_villages.place_schematics(settlement_info, pr)
+	mcl_villages.paths(settlement_info)
+	mcl_villages.add_village(blockseed, settlement_info)
 end
 
 local function ecb_village(blockpos, action, calls_remaining, param)
@@ -76,33 +50,24 @@ local function ecb_village(blockpos, action, calls_remaining, param)
 	build_a_settlement(minp, maxp, blockseed)
 end
 
+local villagegen={}
 -- Disable natural generation in singlenode.
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
-		if maxp.y < 0 then return end
-
-		-- randomly try to build settlements
-		if blockseed % 77 ~= 17 then return end
-		--minetest.log("Rng good. Generate attempt")
-
-		-- needed for manual and automated settlement building
-		-- don't build settlements on (too) uneven terrain
+		if maxp.y < 0 or village_chance == 0 then return end
+		local pr = PseudoRandom(blockseed)
+		if pr:next(0, 100) > village_chance then return end
 		local n=minetest.get_node_or_nil(minp)
-		if n and n.name == "mcl_villages:structblock" then return end
-		--minetest.log("No existing village attempt here")
-
-		if villagegen[minetest.pos_to_string(minp)] ~= nil then return end
-
-		--minetest.log("Not in village gen. Put down placeholder: " .. minetest.pos_to_string(minp) .. " || " .. minetest.pos_to_string(maxp))
+		--if n and n.name == "mcl_villages:structblock" then return end
+		if n and n.name ~= "air" then return end
 		minetest.set_node(minp,{name="mcl_villages:structblock"})
 
-		local height_difference = settlements.evaluate_heightmap()
-		if not height_difference or height_difference > max_height_difference then
-			minetest.log("action", "Do not spawn village here as heightmap not good")
-			return
-		end
-		--minetest.log("Build me a village: " .. minetest.pos_to_string(minp) .. " || " .. minetest.pos_to_string(maxp))
+		--[[minetest.emerge_area(
+				minp, maxp, --vector.offset(minp, -16, -16, -16), vector.offset(maxp, 16, 16, 16),
+				ecb_village,
+				{ minp = vector.copy(minp), maxp = vector.copy(maxp), blockseed = blockseed }
+		)]]--
 		villagegen[minetest.pos_to_string(minp)]={minp=vector.new(minp), maxp=vector.new(maxp), blockseed=blockseed}
 	end)
 end
@@ -125,15 +90,15 @@ if minetest.is_creative_enabled("") then
 	minetest.register_craftitem("mcl_villages:tool", {
 		description = S("mcl_villages build tool"),
 		inventory_image = "default_tool_woodshovel.png",
-		-- build ssettlement
+		-- build settlement
 		on_place = function(itemstack, placer, pointed_thing)
 			if not pointed_thing.under then return end
 			if not minetest.check_player_privs(placer, "server") then
 				minetest.chat_send_player(placer:get_player_name(), S("Placement denied. You need the “server” privilege to place villages."))
 				return
 			end
-			local minp = vector.subtract(	pointed_thing.under, half_map_chunk_size)
-		        local maxp = vector.add(	pointed_thing.under, half_map_chunk_size)
+			local minp = vector.subtract(pointed_thing.under, half_map_chunk_size)
+	        local maxp = vector.add(pointed_thing.under, half_map_chunk_size)
 			build_a_settlement(minp, maxp, math.random(0,32767))
 		end
 	})
