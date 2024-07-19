@@ -1,106 +1,105 @@
-local get_node = mcl_vars.get_node
-
 -------------------------------------------------------------------------------
 -- function to copy tables
 -------------------------------------------------------------------------------
-function settlements.shallowCopy(original)
+function mcl_villages.shallowCopy(original)
 	local copy = {}
 	for key, value in pairs(original) do
 		copy[key] = value
 	end
 	return copy
 end
---
---
---
-function settlements.round(num, numDecimalPlaces)
-  local mult = 10^(numDecimalPlaces or 0)
-  return math.floor(num * mult + 0.5) / mult
-end
 
+local function is_above_surface(name)
+	return name == "air" or
+		string.find(name,"grass") or
+		string.find(name,"tree") or
+		string.find(name,"leaves") or
+		string.find(name,"snow") or
+		string.find(name,"fern") or
+		string.find(name,"flower") or
+		string.find(name,"bush")
+end
+local get_node = mcl_vars.get_node
+function mcl_villages.find_surface_down(pos, surface_node)
+	local p6 = vector.new(pos)
+	surface_node = surface_node or get_node(p6) --, true, 1000000)
+	if not surface_node then return end
+	for y = p6.y - 1, math.max(0,p6.y - 120), -1 do
+		p6.y = y
+		local top_node = surface_node
+		surface_node = get_node(p6)
+		if not surface_node then return nil end
+		if is_above_surface(top_node.name) then
+			if mcl_villages.surface_mat[surface_node.name] then
+				-- minetest.log("verbose", "Found "..surface_node.name.." below "..top_node.name)
+				return p6, surface_node.name
+			end
+		else
+			local ndef = minetest.registered_nodes[surface_node.name]
+			if ndef and ndef.walkable then
+				return nil
+			end
+		end
+	end
+end
+function mcl_villages.find_surface_up(pos, surface_node)
+	local p6 = vector.new(pos)
+	surface_node = surface_node or get_node(p6) --, true, 1000000)
+	if not surface_node then return end
+	for y = p6.y + 1, p6.y + 50 do
+		p6.y = y
+		local top_node = get_node(p6)
+		if not top_node then return nil end
+		if is_above_surface(top_node.name) then
+			if mcl_villages.surface_mat[surface_node.name] then
+				-- minetest.log("verbose","Found "..surface_node.name.." below "..top_node.name)
+				p6.y = p6.y - 1
+				return p6, surface_node.name
+			end
+		else
+			local ndef = minetest.registered_nodes[surface_node.name]
+			if ndef and ndef.walkable then
+				return nil
+			end
+		end
+		surface_node = top_node
+	end
+end
 -------------------------------------------------------------------------------
 -- function to find surface block y coordinate
 -- returns surface postion
 -------------------------------------------------------------------------------
-function settlements.find_surface(pos, wait)
+function mcl_villages.find_surface(pos, wait)
 	local p6 = vector.new(pos)
-	local cnt = 0
-	local itter = 1 -- count up or down
-	local cnt_max = 200
-	-- check, in which direction to look for surface
+	if p6.y < 0 then p6.y = 0 end -- start at water level
 	local surface_node
 	if wait then
 		surface_node = get_node(p6, true, 10000000)
 	else
 		surface_node = get_node(p6)
 	end
-	if surface_node.name=="air" or surface_node.name=="ignore" then
-		itter = -1
+	-- downward, if starting position is empty
+	if is_above_surface(surface_node.name) then
+		return mcl_villages.find_surface_down(p6, surface_node)
+	else
+		return mcl_villages.find_surface_up(p6, surface_node)
 	end
-	-- go through nodes an find surface
-	while cnt < cnt_max do
-		-- Check Surface_node and Node above
-		if surface_node and settlements.surface_mat[surface_node.name] then
-			local surface_node_plus_1 = get_node({ x=p6.x, y=p6.y+1, z=p6.z})
-
-			if surface_node_plus_1 then
-
-				local surface_node_minus_1 = get_node({ x=p6.x, y=p6.y-1, z=p6.z})
-				local is_leaf_below  = minetest.get_item_group(surface_node_minus_1, "leaves") ~= 0 or
-						string.find(surface_node_minus_1.name,"leaves")
-
-				if not is_leaf_below and ((string.find(surface_node_plus_1.name,"air") or
-					string.find(surface_node_plus_1.name,"fern") or
-					string.find(surface_node_plus_1.name,"flower") or
-					string.find(surface_node_plus_1.name,"bush") or
-					string.find(surface_node_plus_1.name,"tree") or
-					string.find(surface_node_plus_1.name,"grass")) or
-					string.find(surface_node_plus_1.name,"snow"))
-				then
-					settlements.debug("find_surface success: " ..surface_node.name.. " " .. surface_node_plus_1.name)
-					settlements.debug("node below: " .. tostring(surface_node_minus_1.name))
-					settlements.debug("node below leaves group: " .. tostring(minetest.get_item_group(surface_node_minus_1, "leaves")))
-					return p6, surface_node.name
-				else
-					settlements.debug("find_surface2: wrong surface+1")
-				end
-			else
-				settlements.debug("find_surface8: missing node or plus_1")
-			end
-		else
-			settlements.debug("find_surface3: wrong surface "..surface_node.name.." at pos "..minetest.pos_to_string(p6))
-		end
-
-		p6.y = p6.y + itter
-		if p6.y < 0 then
-			settlements.debug("find_surface4: y<0")
-			return nil
-		end
-		cnt = cnt+1
-		surface_node = get_node(p6)
-	end
-	settlements.debug("find_surface5: cnt_max overflow")
-	return nil
 end
 -------------------------------------------------------------------------------
 -- check distance for new building
 -------------------------------------------------------------------------------
-function settlements.check_distance(settlement_info, building_pos, building_size)
-	local distance
+function mcl_villages.check_distance(settlement_info, building_pos, building_size)
 	for i, built_house in ipairs(settlement_info) do
-		distance = math.sqrt(
-			((building_pos.x - built_house["pos"].x)*(building_pos.x - built_house["pos"].x))+
-			((building_pos.z - built_house["pos"].z)*(building_pos.z - built_house["pos"].z)))
-		if distance < building_size or distance < built_house["hsize"] then
-			return false
-		end
+		local dx, dz = building_pos.x - built_house["pos"].x, building_pos.z - built_house["pos"].z
+		local dsq = dx*dx+dz*dz
+		if dsq < building_size^2 or dsq < built_house["hsize"]^2 then return false end
 	end
 	return true
 end
 -------------------------------------------------------------------------------
 -- fill chests
 -------------------------------------------------------------------------------
-function settlements.fill_chest(pos, pr)
+function mcl_villages.fill_chest(pos, pr)
 	-- initialize chest (mts chests don't have meta)
 	local meta = minetest.get_meta(pos)
 	if meta:get_string("infotext") ~= "Chest" then
@@ -148,123 +147,93 @@ end
 -------------------------------------------------------------------------------
 -- initialize furnace
 -------------------------------------------------------------------------------
-function settlements.initialize_furnace(pos)
-  -- find chests within radius
-  local furnacepos = minetest.find_node_near(pos,
-    7, --radius
-    {"mcl_furnaces:furnace"})
-  -- initialize furnacepos (mts furnacepos don't have meta)
-  if furnacepos
-  then
-    local meta = minetest.get_meta(furnacepos)
-    if meta:get_string("infotext") ~= "furnace"
-    then
-      minetest.registered_nodes["mcl_furnaces:furnace"].on_construct(furnacepos)
-    end
-  end
+function mcl_villages.initialize_furnace(pos)
+	-- find chests within radius
+	local furnacepos = minetest.find_node_near(pos,
+		7, --radius
+		{"mcl_furnaces:furnace"})
+	-- initialize furnacepos (mts furnacepos don't have meta)
+	if furnacepos then
+		local meta = minetest.get_meta(furnacepos)
+		if meta:get_string("infotext") ~= "furnace" then
+			minetest.registered_nodes["mcl_furnaces:furnace"].on_construct(furnacepos)
+		end
+	end
 end
 -------------------------------------------------------------------------------
 -- initialize anvil
 -------------------------------------------------------------------------------
-function settlements.initialize_anvil(pos)
-  -- find chests within radius
-  local anvilpos = minetest.find_node_near(pos,
-    7, --radius
-    {"mcl_anvils:anvil"})
-  -- initialize anvilpos (mts anvilpos don't have meta)
-  if anvilpos
-  then
-    local meta = minetest.get_meta(anvilpos)
-    if meta:get_string("infotext") ~= "anvil"
-    then
-      minetest.registered_nodes["mcl_anvils:anvil"].on_construct(anvilpos)
-    end
-  end
+function mcl_villages.initialize_anvil(pos)
+	-- find chests within radius
+	local anvilpos = minetest.find_node_near(pos,
+		7, --radius
+		{"mcl_anvils:anvil"})
+	-- initialize anvilpos (mts anvilpos don't have meta)
+	if anvilpos then
+		local meta = minetest.get_meta(anvilpos)
+		if meta:get_string("infotext") ~= "anvil" then
+			minetest.registered_nodes["mcl_anvils:anvil"].on_construct(anvilpos)
+		end
+	end
 end
 -------------------------------------------------------------------------------
 -- randomize table
 -------------------------------------------------------------------------------
-function shuffle(tbl, pr)
-	local table = settlements.shallowCopy(tbl)
-	local size = #table
-	for i = size, 1, -1 do
-		local rand = pr:next(1, size)
-		table[i], table[rand] = table[rand], table[i]
+function mcl_villages.shuffle(tbl, pr)
+	local copy = {}
+	for key, value in ipairs(tbl) do
+		table.insert(copy, pr:next(1, #copy + 1), value)
 	end
-	return table
+	return copy
 end
--------------------------------------------------------------------------------
--- evaluate heightmap
--------------------------------------------------------------------------------
-function settlements.evaluate_heightmap()
-	local heightmap = minetest.get_mapgen_object("heightmap")
 
-	if not heightmap then
-		minetest.log("action", "No heightmap. That should not happen")
-		return max_height_difference + 1
-	end
+-- Load a schema and replace nodes in it based on biome
+function mcl_villages.substitute_materials(pos, schem_lua, pr)
+	local modified_schem_lua = schem_lua
+	local biome_data = minetest.get_biome_data(pos)
+	local biome_name = minetest.get_biome_name(biome_data.biome)
 
-	--minetest.log("action", "heightmap size: " .. tostring(#heightmap))
-
-	-- max height and min height, initialize with impossible values for easier first time setting
-	local max_y = -50000
-	local min_y = 50000
-	-- only evaluate the center square of heightmap 40 x 40
-	local square_start = 1621
-	local square_end = 1661
-	for j = 1 , 40, 1 do
-		if square_start >= #heightmap then
-			--minetest.log("action", "Heightmap size reached. Go no further outside")
-			break
+	if mcl_villages.biome_map[biome_name] and mcl_villages.material_substitions[mcl_villages.biome_map[biome_name]] then
+		for _, sub in pairs(mcl_villages.material_substitions[mcl_villages.biome_map[biome_name]]) do
+			modified_schem_lua = modified_schem_lua:gsub(sub[1], sub[2])
 		end
-		for i = square_start, square_end, 1 do
-			--minetest.log("action", "current hm index: " .. tostring(i) .. "current hm entry: " .. tostring(heightmap[i]))
-
-			if i >= #heightmap then
-				--minetest.log("action", "Heightmap size reached. Go no further")
-				break
-			end
-			local current_hm_entry = heightmap[i]
-			if current_hm_entry then
-				-- skip buggy heightmaps, return high value. Converted mcl5 maps can be -31007
-				if current_hm_entry == -31000 or heightmap[i] == 31000 then
-					--minetest.log("action", "incorrect heighmap values. abandon")
-					return max_height_difference + 1
-				end
-				if current_hm_entry < min_y then
-					min_y = current_hm_entry
-				end
-				if current_hm_entry > max_y then
-					max_y = current_hm_entry
-				end
-			else
-				--minetest.log("action", "Failed to get hm index: " .. tostring(i) .. "and ... " .. tostring(#heightmap))
-			end
-		end
-		-- set next line
-		square_start = square_start + 80
-		square_end = square_end + 80
 	end
-	-- return the difference between highest and lowest pos in chunk
-	local height_diff = max_y - min_y
 
-	--minetest.log("action", "height_diff = " .. tostring(height_diff))
-
-	-- filter buggy heightmaps
-	if height_diff <= 1 then
-		return max_height_difference + 1
-	end
-	--minetest.log("action", "return heigh diff = " .. tostring(height_diff))
-	-- debug info
-	settlements.debug("heightdiff ".. height_diff)
-	return height_diff
+	return modified_schem_lua
 end
--------------------------------------------------------------------------------
--- Set array to list
--- https://stackoverflow.com/questions/656199/search-for-an-item-in-a-lua-list
--------------------------------------------------------------------------------
-function settlements.Set (list)
-	local set = {}
-	for _, l in ipairs(list) do set[l] = true end
-	return set
+
+local villages = {}
+local mod_storage = minetest.get_mod_storage()
+
+local function lazy_load_village(name)
+	if not villages[name] then
+		local data = mod_storage:get("mcl_villages." .. name)
+		if data then
+			villages[name] = minetest.deserialize(data)
+		end
+	end
+end
+
+function mcl_villages.get_village(name)
+	lazy_load_village(name)
+	if villages[name] then
+		return table.copy(villages[name])
+	end
+end
+
+function mcl_villages.village_exists(name)
+	lazy_load_village(name)
+	return villages[name] ~= nil
+end
+
+function mcl_villages.add_village(name, data)
+	lazy_load_village(name)
+	if villages[name] then
+		minetest.log("info","Village already exists: " .. name )
+		return false
+	end
+
+	local new_village = {name = name, data = data}
+	mod_storage:set_string("mcl_villages." .. name, minetest.serialize(new_village))
+	return true
 end
