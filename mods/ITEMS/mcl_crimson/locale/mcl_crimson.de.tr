@@ -1,7 +1,7 @@
 # textdomain: mcl_crimson
 
 Warped Fungus Mushroom=Wirrpilz
-Warped fungus is a mushroom found in the nether's warped forest.=
+Warped fungus is a mushroom found in the nether's warped forest.=Wirrpilze wachsen im Wirrwald des Nethers.
 Twisting Vines=Zwirbelranken
 Weeping Vines=Trauerranken
 Nether Sprouts=Nethersprossen
@@ -22,7 +22,7 @@ Warped Hyphae Wood=Wirrhypenholz
 Warped Stair=Wirrholztreppe
 Warped Slab=Wirrholzstufe
 Crimson Fungus=Karmesinpilz
-Crimson fungus is a mushroom found in the nether's crimson forest.=
+Crimson fungus is a mushroom found in the nether's crimson forest.=Karmesinpilze wachsen im Karmesinwald des Nethers.
 Crimson Roots=Karmesinwurzeln
 Crimson Hyphae=Karmesinhyphe
 The stem of a crimson hyphae=
@@ -37,11 +37,11 @@ Crimson Slab=Karmesinstufe
 Double Crimson Slab=Doppelte Karmesinstufe
 Crimson Nylium=Karmesin-Nezel
 Crimson Door=Karmesintür
-Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=
-To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Holztüren sind zwei Block hohe Barrieren, die sowohl von Hand geöffnet und geschlossen werden können, als auch per Redstone-Signal.
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=m eine Holztür zu öffnen oder zu schließen, rechtsklicke auf sie oder lege ein Redstone-Signal an die untere Hälfte an.
 Crimson Trapdoor=Karmesinfalltür
-Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
-To open or close the trapdoor, rightclick it or send a redstone signal to it.=
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Falltüren aus Holz sind horizontale Barrieren, die sowohl von Hand geöffnet und geschlossen werden können, als auch per Redstone-Signal. Sie nehmen die obere oder untere Hälfte eines Blocks ein, je nachdem wo sie platziert wurden. Geöffnete Falltüren können wie Leitern beklettert werden.
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=Um eine Falltür zu öffnen oder zu schließen, rechtsklicke auf sie oder lege ein Redstone-Signal an.
 Crimson Fence=Karmesinzaun
 Crimson Fence Gate=Karmesinzauntor
 Crimson Checknode - only to check!=Karmesin Checkblock - Nur zum checken!
