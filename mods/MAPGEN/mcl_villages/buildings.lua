@@ -1,59 +1,3 @@
---[[
--------------------------------------------------------------------------------
--- build schematic, replace material, rotation
--------------------------------------------------------------------------------
-function mcl_villages.build_schematic(vm, data, va, pos, building, replace_wall, name)
-  -- get building node material for better integration to surrounding
-  local platform_material =  mcl_vars.get_node(pos)
-  if not platform_material or (platform_material.name == "air" or platform_material.name == "ignore")  then
-    return
-  end
-  platform_material = platform_material.name
-  -- pick random material
-  local material = wallmaterial[math.random(1,#wallmaterial)]
-  -- schematic conversion to lua
-  local schem_lua = minetest.serialize_schematic(building,
-    "lua",
-    {lua_use_comments = false, lua_num_indent_spaces = 0}).." return schematic"
-  -- replace material
-  if replace_wall == "y" then
-    schem_lua = schem_lua:gsub("mcl_core:cobble", material)
-  end
-  schem_lua = schem_lua:gsub("mcl_core:dirt_with_grass",
-    platform_material)
-
---  Disable special junglewood for now.
- -- special material for spawning npcs
- -- schem_lua = schem_lua:gsub("mcl_core:junglewood",
- --   "settlements:junglewood")
---
-
-  -- format schematic string
-  local schematic = loadstring(schem_lua)()
-  -- build foundation for the building an make room above
-  local width = schematic["size"]["x"]
-  local depth = schematic["size"]["z"]
-  local height = schematic["size"]["y"]
-  local possible_rotations = {"0", "90", "180", "270"}
-  local rotation = possible_rotations[ math.random( #possible_rotations ) ]
-  mcl_villages.foundation(
-    pos,
-    width,
-    depth,
-    height,
-    rotation)
-  vm:set_data(data)
-  -- place schematic
-
-  minetest.place_schematic_on_vmanip(
-    vm,
-    pos,
-    schematic,
-    rotation,
-    nil,
-    true)
-  vm:write_to_map(true)
-end]]
 -------------------------------------------------------------------------------
 -- initialize settlement_info
 -------------------------------------------------------------------------------
@@ -76,33 +20,33 @@ end
 -------------------------------------------------------------------------------
 -- check ground for a single building
 -------------------------------------------------------------------------------
-local function try_place_building(pos_surface, building_all_info, rotation, settlement_info, pr)
-	local fwidth, fdepth = building_all_info["hwidth"], building_all_info["hdepth"]
+local function try_place_building(minp, maxp, pos_surface, building_all_info, rotation, settlement_info, pr)
+	local fwidth, fdepth = building_all_info["hwidth"] or 5, building_all_info["hdepth"] or 5
 	if rotation == "90" or rotation == "270" then fwidth, fdepth = fdepth, fwidth end
-	local fheight = building_all_info["hheight"]
+	local fheight = building_all_info["hheight"] or 5
 	-- use building centers for better placement
 	pos_surface.x = pos_surface.x - math.ceil(fwidth / 2)
 	pos_surface.z = pos_surface.z - math.ceil(fdepth / 2)
+	-- ensure we have 3 space for terraforming
+	if pos_surface.x - 3 < minp.x or pos_surface.z + 3 < minp.z or pos_surface.x + fwidth + 3 > maxp.x or pos_surface.z + fheight + 3 > maxp.z then return nil end
 	-- to find the y position, also check the corners
 	local ys = {pos_surface.y}
 	local pos_c
-	pos_c = mcl_villages.find_surface_down(vector.new(pos_surface.x-1, pos_surface.y+fheight, pos_surface.z-1))
+	pos_c = mcl_villages.find_surface_down(vector.new(pos_surface.x, pos_surface.y+fheight, pos_surface.z))
 	if pos_c then table.insert(ys, pos_c.y) end
-	pos_c = mcl_villages.find_surface_down(vector.new(pos_surface.x+fwidth+2, pos_surface.y+fheight, pos_surface.z-1))
+	pos_c = mcl_villages.find_surface_down(vector.new(pos_surface.x+fwidth-1, pos_surface.y+fheight, pos_surface.z))
 	if pos_c then table.insert(ys, pos_c.y) end
-	pos_c = mcl_villages.find_surface_down(vector.new(pos_surface.x-1, pos_surface.y+fheight, pos_surface.z+fdepth+2))
+	pos_c = mcl_villages.find_surface_down(vector.new(pos_surface.x, pos_surface.y+fheight, pos_surface.z+fdepth-1))
 	if pos_c then table.insert(ys, pos_c.y) end
-	pos_c = mcl_villages.find_surface_down(vector.new(pos_surface.x+fwidth+2, pos_surface.y+fheight, pos_surface.z+fdepth+2))
+	pos_c = mcl_villages.find_surface_down(vector.new(pos_surface.x+fwidth-1, pos_surface.y+fheight, pos_surface.z+fdepth-1))
 	if pos_c then table.insert(ys, pos_c.y) end
 	table.sort(ys)
 	-- well supported base, not too uneven?
 	if #ys < 5 or ys[#ys]-ys[1] > fheight + 3 then return nil end
 	pos_surface.y = ys[math.ceil(#ys/2)]
 	-- check distance to other buildings
-	if mcl_villages.check_distance(settlement_info, pos_surface, building_all_info["hsize"]) then 
-		return pos_surface
-	end
-	return nil
+	if not mcl_villages.check_distance(settlement_info, pos_surface, math.max(fheight, fdepth)) then return nil end
+	return pos_surface
 end
 -------------------------------------------------------------------------------
 -- fill settlement_info
@@ -132,7 +76,7 @@ function mcl_villages.create_site_plan(minp, maxp, pr)
 					-- already enough buildings of that type?
 					if count_buildings[building_all_info["name"]] < building_all_info["max_num"]*number_of_buildings then
 						local rotation = possible_rotations[pr:next(1, #possible_rotations)]
-						local pos = try_place_building(pos_surface, building_all_info, rotation, settlement_info, pr)
+						local pos = try_place_building(minp, maxp, pos_surface, building_all_info, rotation, settlement_info, pr)
 						if pos then
 							if #settlement_info == 0 then -- town bell
 								center_surface, y = pos, pos.y + max_height_difference
@@ -148,7 +92,7 @@ function mcl_villages.create_site_plan(minp, maxp, pr)
 							table.insert(settlement_info, {
 								pos = pos,
 								name = building_all_info["name"],
-								hsize = building_all_info["hsize"],
+								hsize = math.max(building_all_info["hwidth"], building_all_info["hdepth"]), -- ,building_all_info["hsize"],
 								rotat = rotation,
 								surface_mat = surface_material
 							})
@@ -170,12 +114,12 @@ function mcl_villages.create_site_plan(minp, maxp, pr)
 		if r > 35 then break end -- avoid touching neighboring blocks
 	end
 	mcl_villages.debug("really ".. number_built)
-	if number_built <= 8 then
+	if number_built < 8 then
 		minetest.log("action", "Bad village location, could only place "..number_built.." buildings.")
 		return
 	end
 	minetest.log("action", "Village completed at " .. minetest.pos_to_string(center))
-	minetest.log("Village completed at " .. minetest.pos_to_string(center)) -- for debugging only
+	--minetest.log("Village completed at " .. minetest.pos_to_string(center)) -- for debugging only
 	return settlement_info
 end
 -------------------------------------------------------------------------------
@@ -275,18 +219,28 @@ function mcl_villages.place_schematics(settlement_info, pr)
 		local schem_lua = building_all_info["schem_lua"]
 		if not schem_lua then
 			schem_lua = minetest.serialize_schematic(building_all_info["mts"], "lua", { lua_use_comments = false, lua_num_indent_spaces = 0 }) .. " return schematic"
+			-- MCLA node names to VL for import
+			for _, sub in pairs(mcl_villages.mcla_to_vl) do
+				schem_lua = schem_lua:gsub(sub[1], sub[2])
+			end
+			local schematic = loadstring(schem_lua)()
+			if schematic.size["x"] ~= building_all_info["hwidth"] or schematic.size["y"] ~= building_all_info["hheight"] or schematic.size["z"] ~= building_all_info["hdepth"] then
+				minetest.log(building_all_info["name"].." width "..schematic.size["x"].." height "..schematic.size["y"].." depth "..schematic.size["z"])
+			end
 			building_all_info["schem_lua"] = schem_lua
 		end
 		schem_lua = schem_lua:gsub('"mcl_core:dirt"', '"'..platform_material..'"')
 		schem_lua = schem_lua:gsub('"mcl_core:dirt_with_grass"', '"'..surface_material..'"')
 		local schematic = loadstring(mcl_villages.substitute_materials(pos, schem_lua, pr))()
 
-		local is_belltower = building_all_info["name"] == "belltower"
-
 		-- already built the foundation for the building and made room above
 		local sx, sy, sz = schematic.size.x, schematic.size.y, schematic.size.z
+		if rotation == "90" or rotation == "270" then sx, sz = sz, sx end
 		local p2 = vector.new(pos.x+sx-1,pos.y+sy-1,pos.z+sz-1)
-		lvm:read_from_map(pos, p2)
+		lvm:read_from_map(vector.new(pos.x-3, pos.y-40, pos.z-3), vector.new(pos.x+sx+3, pos.y+sy+40, pos.z+sz+3)) -- safety margins for foundation
+		lvm:get_data()
+		-- TODO: make configurable as in MCLA
+		mcl_villages.foundation(lvm, pos, sx, sy, sz, surface_material, pr)
 		minetest.place_schematic_on_vmanip(
 			lvm,
 			pos,
@@ -297,14 +251,12 @@ function mcl_villages.place_schematics(settlement_info, pr)
 			{ place_center_x = false, place_center_y = false, place_center_z = false }
 		)
 		lvm:write_to_map(true) -- FIXME: postpone
-		if rotation == "90" or rotation == "270" then sx, sz = sz, sx end
 		init_nodes(pos, p2, schematic.size, rotation, pr)
 
-		if is_belltower then
+		if building_all_info["name"] == "belltower" then
 			spawn_iron_golem(pos)
-		else
-			spawn_villagers(pos,p2)
-			fix_village_water(pos,p2)
 		end
+		spawn_villagers(pos,p2)
+		fix_village_water(pos,p2)
 	end
 end
