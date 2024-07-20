@@ -86,13 +86,14 @@ function mcl_villages.find_surface(pos, wait)
 	end
 end
 -------------------------------------------------------------------------------
--- check distance for new building
+-- check distance for new building, use maximum norm
 -------------------------------------------------------------------------------
 function mcl_villages.check_distance(settlement_info, building_pos, building_size)
 	for i, built_house in ipairs(settlement_info) do
 		local dx, dz = building_pos.x - built_house["pos"].x, building_pos.z - built_house["pos"].z
-		local dsq = dx*dx+dz*dz
-		if dsq < building_size^2 or dsq < built_house["hsize"]^2 then return false end
+		--local d = math.sqrt(dx*dx+dz*dz)
+		--if 2 * d < building_size + built_house["hsize"] then return false end
+		if math.max(math.abs(dx), math.abs(dz)) * 2 - 6 <= building_size + built_house["hsize"] then return false end
 	end
 	return true
 end
@@ -193,12 +194,21 @@ function mcl_villages.substitute_materials(pos, schem_lua, pr)
 	local biome_data = minetest.get_biome_data(pos)
 	local biome_name = minetest.get_biome_name(biome_data.biome)
 
+	-- for now, map to MCLA, later back, so we can keep their rules unchanged
+	for _, sub in pairs(mcl_villages.vl_to_mcla) do
+		modified_schem_lua = modified_schem_lua:gsub(sub[1], sub[2])
+	end
+
 	if mcl_villages.biome_map[biome_name] and mcl_villages.material_substitions[mcl_villages.biome_map[biome_name]] then
 		for _, sub in pairs(mcl_villages.material_substitions[mcl_villages.biome_map[biome_name]]) do
 			modified_schem_lua = modified_schem_lua:gsub(sub[1], sub[2])
 		end
 	end
 
+	-- MCLA node names back to VL
+	for _, sub in pairs(mcl_villages.mcla_to_vl) do
+		modified_schem_lua = modified_schem_lua:gsub(sub[1], sub[2])
+	end
 	return modified_schem_lua
 end
 
