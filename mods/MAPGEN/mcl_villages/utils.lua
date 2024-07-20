@@ -93,7 +93,7 @@ function mcl_villages.check_distance(settlement_info, building_pos, building_siz
 		local dx, dz = building_pos.x - built_house["pos"].x, building_pos.z - built_house["pos"].z
 		--local d = math.sqrt(dx*dx+dz*dz)
 		--if 2 * d < building_size + built_house["hsize"] then return false end
-		if math.max(math.abs(dx), math.abs(dz)) * 2 - 6 <= building_size + built_house["hsize"] then return false end
+		if math.max(math.abs(dx), math.abs(dz)) * 2 - 8 <= building_size + built_house["hsize"] then return false end
 	end
 	return true
 end
@@ -105,7 +105,7 @@ function mcl_villages.fill_chest(pos, pr)
 	local meta = minetest.get_meta(pos)
 	if meta:get_string("infotext") ~= "Chest" then
 		-- For MineClone2 0.70 or before
-		-- minetest.registered_nodes["mcl_chests:chest"].on_construct(pos)
+		minetest.registered_nodes["mcl_chests:chest"].on_construct(pos)
 		--
 		-- For MineClone2 after commit 09ab1482b5 (the new entity chests)
 		minetest.registered_nodes["mcl_chests:chest_small"].on_construct(pos)
