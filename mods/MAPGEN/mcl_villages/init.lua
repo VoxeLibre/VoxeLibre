@@ -1,7 +1,7 @@
 mcl_villages = {}
 mcl_villages.modpath = minetest.get_modpath(minetest.get_current_modname())
 
-local village_chance = tonumber(minetest.settings:get("mcl_villages_village_chance")) or 10
+local village_chance = tonumber(minetest.settings:get("mcl_villages_village_chance")) or 5
 
 dofile(mcl_villages.modpath.."/const.lua")
 dofile(mcl_villages.modpath.."/utils.lua")
