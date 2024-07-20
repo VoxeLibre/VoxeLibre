@@ -1,7 +1,7 @@
 mcl_villages = {}
 mcl_villages.modpath = minetest.get_modpath(minetest.get_current_modname())
 
-local village_chance = tonumber(minetest.settings:get("mcl_villages_village_chance")) or 5
+local village_chance = tonumber(minetest.settings:get("mcl_villages_village_chance")) or 10
 
 dofile(mcl_villages.modpath.."/const.lua")
 dofile(mcl_villages.modpath.."/utils.lua")
@@ -38,7 +38,7 @@ local function build_a_settlement(minp, maxp, blockseed)
 	local settlement_info = mcl_villages.create_site_plan(minp, maxp, pr)
 	if not settlement_info then return end
 
-	mcl_villages.terraform(settlement_info, pr)
+	--mcl_villages.terraform(settlement_info, pr)
 	mcl_villages.place_schematics(settlement_info, pr)
 	mcl_villages.paths(settlement_info)
 	mcl_villages.add_village(blockseed, settlement_info)
