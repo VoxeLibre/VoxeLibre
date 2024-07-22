@@ -49,7 +49,7 @@ mcl_disabled_events (Disabled events) string
 vl_plant_growth (Plant growth factor) float 1.0 0 100
 
 # Amount of village to generate
-mcl_villages_village_chance (Amount of villages) int 5 0 100
+mcl_villages_village_probability (Probability of villages) int 5 0 100
 
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal
