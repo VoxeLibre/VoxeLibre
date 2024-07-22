@@ -1,12 +1,12 @@
 local foundation_materials = {}
 foundation_materials["mcl_core:sand"] = "mcl_core:sandstone"
---"mcl_core:sandstonecarved"
+foundation_materials["mcl_core:redsand"] = "mcl_core:redsandstone"
 
 local function is_air(node)
-	return not node or node.name == "air" or node.name == "ignore"
+	return not node or node.name == "air" or node.name == "ignore" or node.name == "mcl_villages:no_paths"
 end
 local function is_solid(node)
-	if not node or node.name == "air" or node.name == "ignore" then return false end
+	if not node or node.name == "air" or node.name == "ignore" or node.name == "mcl_villages:no_paths" then return false end
 	--if string.find(node.name,"leaf") then return false end
 	--if string.find(node.name,"tree") then return false end
 	local ndef = minetest.registered_nodes[node.name]
@@ -14,8 +14,8 @@ local function is_solid(node)
 end
 local function make_solid(lvm, cp, with, except)
 	local cur = lvm:get_node_at(cp)
-	if not is_solid(cur) or (except and cur.name == except) then
-		lvm:set_node_at(cp, {name=with})
+	if not is_solid(cur) or (except and cur.name == except.name) then
+		lvm:set_node_at(cp, with)
 	end
 end
 local function excavate(lvm,xi,yi,zi,pr)
@@ -34,7 +34,7 @@ local function excavate(lvm,xi,yi,zi,pr)
 	-- try to completely remove trees overhead
 	if not string.find(node.name, "leaf") and not string.find(node.name, "tree") then
 		-- stop randomly depending on fill, to narrow down the caves
-		if pr:next(0,31)^2 > c * 100 then return false end
+		if (pr:next(0,1e9)/1e9)^2 > c/9.1 then return false end
 	end
 	lvm:set_node_at(vector.new(xi, yi, zi),{name="air"})
 	return true -- modified
@@ -45,9 +45,9 @@ local function grow_foundation(lvm,xi,yi,zi,pr,surface_mat,platform_mat)
 	pos.y = pos.y+1
 	local cur = lvm:get_node_at(pos)
 	if not is_solid(cur) then return false end -- above is empty, do not fill below
-	if cur and cur.name and cur.name ~= surface_mat then platform_mat = cur.name end
+	if cur and cur.name and cur.name ~= surface_mat.name then platform_mat = cur end
 	if pr:next(1,5) == 5 then -- randomly switch to stone sometimes
-		platform_mat = "mcl_core:stone"
+		platform_mat = { name = "mcl_core:stone" }
 	end
 	-- count solid nodes above otherwise
 	for x = xi-1,xi+1 do
@@ -57,137 +57,144 @@ local function grow_foundation(lvm,xi,yi,zi,pr,surface_mat,platform_mat)
 		end
 	end
 	-- stop randomly depending on fill, to narrow down the foundation
-	if pr:next(0,31)^2 > c * 100 then return false end
-	lvm:set_node_at(vector.new(xi, yi, zi),{name=platform_mat})
+	if (pr:next(0,1e9)/1e9)^2 > c/9.1 then return false end
+	lvm:set_node_at(vector.new(xi, yi, zi), platform_mat)
 	return true -- modified
 end
 -------------------------------------------------------------------------------
 -- function clear space above baseplate
 -------------------------------------------------------------------------------
-function mcl_villages.terraform(settlement_info, pr)
+function mcl_villages.terraform(lvm, settlement, pr)
+	-- TODO: further optimize by using raw data arrays instead of set_node_at. But OK for a first draft.
 	--local lvm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-	local lvm = VoxelManip()
+	--local lvm = VoxelManip()
 
-	for i, built_house in ipairs(settlement_info) do
-		-- pick right schematic_info to current built_house
-		for j, schem in ipairs(mcl_villages.schematic_table) do
-			if settlement_info[i]["name"] == schem["name"] then
-				schematic_data = schem
-			        break
-			end
+	-- we make the foundations 1 node wider than requested, to have one node for path laying
+	for i, building in ipairs(settlement) do
+		--lvm:read_from_map(vector.new(pos.x-2, pos.y-20, pos.z-2), vector.new(pos.x+sx+2, pos.y+sy+20, pos.z+sz+2))
+		--lvm:get_data()
+		if not building.no_clearance then
+			local pos, size = building.pos, building.size
+			pos = vector.offset(pos, -math.floor(size.x/2)-1, 0, -math.floor(size.z/2)-1)
+			mcl_villages.clearance(lvm, pos.x, pos.y, pos.z, size.x+2, size.y, size.z+2, pr)
 		end
-		local pos = settlement_info[i]["pos"]
-		local fwidth, fheight, fdepth = schematic_data["hwidth"], schematic_data["hheight"], schematic_data["hdepth"]
-		local surface_mat = settlement_info[i]["surface_mat"]
-		if settlement_info[i]["rotat"] == "90" or settlement_info[i]["rotat"] == "270" then
-			fwidth, fdepth = fdepth, fwidth
+		--lvm:write_to_map(false)
+	end
+	for i, building in ipairs(settlement) do
+		if not building.no_ground_turnip then
+			local pos, size = building.pos, building.size
+			local surface_mat = building.surface_mat
+			local platform_mat = building.platform_mat or { name = foundation_materials[surface_mat.name] or "mcl_core:dirt" }
+			building.platform_mat = platform_mat -- remember for use in schematic placement
+			pos = vector.offset(pos, -math.floor(size.x/2)-1, 0, -math.floor(size.z/2)-1)
+			mcl_villages.foundation(lvm, pos.x, pos.y, pos.z, size.x+2, -4, size.z+2, surface_mat, platform_mat, pr)
 		end
-		lvm:read_from_map(vector.new(pos.x-2, pos.y-20, pos.z-2), vector.new(pos.x+fwidth+2, pos.y+fheight+20, pos.z+fdepth+2))
-		lvm:get_data()
-		mcl_villages.foundation(lvm, pos, fwidth, fheight, fdepth, surface_mat, pr)
-		lvm:write_to_map(false)
 	end
 end
-function mcl_villages.foundation(lvm, pos, fwidth, fheight, fdepth, surface_mat, pr)
-	-- TODO: further optimize by using raw data arrays instead of set_node_at. But OK for a first draft.
-	local platform_mat = foundation_materials[surface_mat] or "mcl_core:dirt"
-
+local AIR = {name = "air"}
+function mcl_villages.clearance(lvm, px, py, pz, sx, sy, sz, pr)
 	-- excavate the needed volume, some headroom, and add a baseplate
-	local p2 = vector.new(pos)
-	for xi = pos.x,pos.x+fwidth-1 do
-		for zi = pos.z,pos.z+fdepth-1 do
-			lvm:set_node_at(vector.new(xi, pos.y+1, zi),{name="air"})
-			-- pos.y+2 to pos.y+5 are filled larger below!
-			for yi = pos.y+6,pos.y+fheight do
-				lvm:set_node_at(vector.new(xi, yi, zi),{name="air"})
+	for xi = px,px+sx-1 do
+		for zi = pz,pz+sz-1 do
+			lvm:set_node_at(vector.new(xi, py+1, zi),AIR)
+			-- py+2 to py+5 are filled larger below!
+			for yi = py+6,py+sy do
+				lvm:set_node_at(vector.new(xi, yi, zi),AIR)
 			end
-			make_solid(lvm, vector.new(xi, pos.y, zi), surface_mat, platform_mat)
-			make_solid(lvm, vector.new(xi, pos.y - 1, zi), platform_mat)
 		end
 	end
 	-- slightly widen the cave, to make easier to enter for mobs
-	for xi = pos.x-1,pos.x+fwidth do
-		for zi = pos.z-1,pos.z+fdepth do
-			for yi = pos.y+2,pos.y+5 do
-				lvm:set_node_at(vector.new(xi, yi, zi),{name="air"})
+	for xi = px-1,px+sx do
+		for zi = pz-1,pz+sz do
+			for yi = py+2,py+5 do
+				lvm:set_node_at(vector.new(xi, yi, zi),AIR)
 			end
 		end
 	end
 	-- some extra gaps
-	for xi = pos.x-2,pos.x+fwidth+1 do
-		for zi = pos.z-2,pos.z+fdepth+1 do
+	for xi = px-2,px+sx+1 do
+		for zi = pz-2,pz+sz+1 do
 			if pr:next(1,4) == 1 then
-				for yi = pos.y+3,pos.y+5 do
-					lvm:set_node_at(vector.new(xi, yi, zi),{name="air"})
+				for yi = py+3,py+5 do
+					lvm:set_node_at(vector.new(xi, yi, zi),AIR)
 				end
 			end
 		end
 	end
-	-- slightly widen the baseplate, to make easier to enter for mobs
-	for xi = pos.x,pos.x+fwidth-1 do
-		make_solid(lvm, vector.new(xi, pos.y-1, pos.z-1),        surface_mat, platform_mat)
-		make_solid(lvm, vector.new(xi, pos.y-1, pos.z),          platform_mat)
-		make_solid(lvm, vector.new(xi, pos.y-1, pos.z+fdepth-1), platform_mat)
-		make_solid(lvm, vector.new(xi, pos.y-1, pos.z+fdepth),   surface_mat, platform_mat)
+	-- cave some additional area overhead, try to make it interesting though
+	for yi = py+3,py+sy*3 do
+		local active = false
+		for xi = px-2,px+sx+1 do
+			for zi = pz-2,pz+sz+1 do
+				if excavate(lvm,xi,yi,zi,pr) then active = true end
+			end
+		end
+		if not active and yi > py+sy+5 then break end
 	end
-	for zi = pos.z,pos.z+fdepth-1 do
-		make_solid(lvm, vector.new(pos.x-1,        pos.y-1, zi), surface_mat, platform_mat)
-		make_solid(lvm, vector.new(pos.x,          pos.y-1, zi), platform_mat)
-		make_solid(lvm, vector.new(pos.x+fwidth-1, pos.y-1, zi), platform_mat)
-		make_solid(lvm, vector.new(pos.x+fwidth,   pos.y-1, zi), surface_mat, platform_mat)
+end
+function mcl_villages.foundation(lvm, px, py, pz, sx, sy, sz, surface_mat, platform_mat, pr)
+	-- generate a baseplate
+	for xi = px,px+sx-1 do
+		for zi = pz,pz+sz-1 do
+			lvm:set_node_at(vector.new(xi, py, zi), surface_mat)
+			make_solid(lvm, vector.new(xi, py - 1, zi), platform_mat)
+		end
+	end
+	-- slightly widen the baseplate, to make easier to enter for mobs
+	for xi = px,px+sx-1 do
+		make_solid(lvm, vector.new(xi, py-1, pz-1),    surface_mat, platform_mat)
+		make_solid(lvm, vector.new(xi, py-1, pz),      platform_mat)
+		make_solid(lvm, vector.new(xi, py-1, pz+sz-1), platform_mat)
+		make_solid(lvm, vector.new(xi, py-1, pz+sz),   surface_mat, platform_mat)
+	end
+	for zi = pz,pz+sz-1 do
+		make_solid(lvm, vector.new(px-1,    py-1, zi), surface_mat, platform_mat)
+		make_solid(lvm, vector.new(px,      py-1, zi), platform_mat)
+		make_solid(lvm, vector.new(px+sx-1, py-1, zi), platform_mat)
+		make_solid(lvm, vector.new(px+sx,   py-1, zi), surface_mat, platform_mat)
 	end
 	-- make some additional steps, along both x sides
-	for xi = pos.x,pos.x+fwidth-1 do
-		local cp = vector.new(xi, pos.y-3, pos.z-1)
+	for xi = px,px+sx-1 do
+		local cp = vector.new(xi, py-3, pz-1)
 		if is_solid(lvm:get_node_at(cp)) then
-			cp = vector.new(xi, pos.y-2, pos.z-1)
+			cp = vector.new(xi, py-2, pz-1)
 			make_solid(lvm, cp, surface_mat, platform_mat)
-			cp.z = pos.z-2
+			cp.z = pz-2
 			make_solid(lvm, cp, surface_mat, platform_mat)
 		end
-		local cp = vector.new(xi, pos.y-3, pos.z+fdepth)
+		local cp = vector.new(xi, py-3, pz+sz)
 		if is_solid(lvm:get_node_at(cp)) then
-			cp = vector.new(xi, pos.y-2, pos.z+fdepth)
+			cp = vector.new(xi, py-2, pz+sz)
 			make_solid(lvm, cp, surface_mat, platform_mat)
-			cp.z = pos.z + fdepth + 1
+			cp.z = pz + sz + 1
 			make_solid(lvm, cp, surface_mat, platform_mat)
 		end
 	end
 	-- make some additional steps, along both z sides
-	for zi = pos.z,pos.z+fdepth-1 do
-		local cp = vector.new(pos.x-1, pos.y-3, zi)
+	for zi = pz,pz+sz-1 do
+		local cp = vector.new(px-1, py-3, zi)
 		if is_solid(lvm:get_node_at(cp)) then
-			cp = vector.new(pos.x-1, pos.y-2, zi)
+			cp = vector.new(px-1, py-2, zi)
 			make_solid(lvm, cp, surface_mat, platform_mat)
-			cp.x = pos.x-2
+			cp.x = px-2
 			make_solid(lvm, cp, surface_mat, platform_mat)
 		end
-		local cp = vector.new(pos.x+fwidth, pos.y-3, zi)
+		local cp = vector.new(px+sx, py-3, zi)
 		if is_solid(lvm:get_node_at(cp)) then
-			cp = vector.new(pos.x+fwidth, pos.y-2, zi)
+			cp = vector.new(px+sx, py-2, zi)
 			make_solid(lvm, cp, surface_mat, platform_mat)
-			cp.x = pos.x+fwidth+1
+			cp.x = px+sx+1
 			make_solid(lvm, cp, surface_mat, platform_mat)
 		end
-	end
-	-- cave some additional area overhead, try to make it interesting though
-	for yi = pos.y+3,pos.y+fheight*3 do
-		local active = false
-		for xi = pos.x-2,pos.x+fwidth+1 do
-			for zi = pos.z-2,pos.z+fdepth+1 do
-				if excavate(lvm,xi,yi,zi,pr) then active = true end
-			end
-		end
-		if not active and yi > pos.y+fheight+5 then break end
 	end
 	-- construct additional baseplate below, also try to make it interesting
-	for yi = pos.y-2,pos.y-20,-1 do
+	for yi = py-2,py-20,-1 do
 		local active = false
-		for xi = pos.x-1,pos.x+fwidth do
-			for zi = pos.z-1,pos.z+fdepth do
+		for xi = px-1,px+sx do
+			for zi = pz-1,pz+sz do
 				if grow_foundation(lvm,xi,yi,zi,pr,surface_mat,platform_mat) then active = true end
 			end
 		end
-		if not active and yi < pos.y-5 then break end
+		if not active and yi < py + sy then break end
 	end
 end
