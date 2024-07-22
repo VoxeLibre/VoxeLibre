@@ -19,20 +19,19 @@ local function is_above_surface(name)
 		string.find(name,"flower") or
 		string.find(name,"bush")
 end
-local get_node = mcl_vars.get_node
-function mcl_villages.find_surface_down(pos, surface_node)
+function mcl_villages.find_surface_down(lvm, pos, surface_node)
 	local p6 = vector.new(pos)
-	surface_node = surface_node or get_node(p6) --, true, 1000000)
+	surface_node = surface_node or lvm:get_node_at(p6)
 	if not surface_node then return end
 	for y = p6.y - 1, math.max(0,p6.y - 120), -1 do
 		p6.y = y
 		local top_node = surface_node
-		surface_node = get_node(p6)
+		surface_node = lvm:get_node_at(p6)
 		if not surface_node then return nil end
 		if is_above_surface(top_node.name) then
 			if mcl_villages.surface_mat[surface_node.name] then
 				-- minetest.log("verbose", "Found "..surface_node.name.." below "..top_node.name)
-				return p6, surface_node.name
+				return p6, surface_node
 			end
 		else
 			local ndef = minetest.registered_nodes[surface_node.name]
@@ -42,19 +41,19 @@ function mcl_villages.find_surface_down(pos, surface_node)
 		end
 	end
 end
-function mcl_villages.find_surface_up(pos, surface_node)
+function mcl_villages.find_surface_up(lvm, pos, surface_node)
 	local p6 = vector.new(pos)
-	surface_node = surface_node or get_node(p6) --, true, 1000000)
+	surface_node = surface_node or lvm:get_node_at(p6) --, true, 1000000)
 	if not surface_node then return end
 	for y = p6.y + 1, p6.y + 50 do
 		p6.y = y
-		local top_node = get_node(p6)
+		local top_node = lvm:get_node_at(p6)
 		if not top_node then return nil end
 		if is_above_surface(top_node.name) then
 			if mcl_villages.surface_mat[surface_node.name] then
 				-- minetest.log("verbose","Found "..surface_node.name.." below "..top_node.name)
 				p6.y = p6.y - 1
-				return p6, surface_node.name
+				return p6, surface_node
 			end
 		else
 			local ndef = minetest.registered_nodes[surface_node.name]
@@ -69,31 +68,24 @@ end
 -- function to find surface block y coordinate
 -- returns surface postion
 -------------------------------------------------------------------------------
-function mcl_villages.find_surface(pos, wait)
+function mcl_villages.find_surface(lvm, pos)
 	local p6 = vector.new(pos)
 	if p6.y < 0 then p6.y = 0 end -- start at water level
-	local surface_node
-	if wait then
-		surface_node = get_node(p6, true, 10000000)
-	else
-		surface_node = get_node(p6)
-	end
+	local surface_node = lvm:get_node_at(p6)
 	-- downward, if starting position is empty
 	if is_above_surface(surface_node.name) then
-		return mcl_villages.find_surface_down(p6, surface_node)
+		return mcl_villages.find_surface_down(lvm, p6, surface_node)
 	else
-		return mcl_villages.find_surface_up(p6, surface_node)
+		return mcl_villages.find_surface_up(lvm, p6, surface_node)
 	end
 end
--------------------------------------------------------------------------------
--- check distance for new building, use maximum norm
--------------------------------------------------------------------------------
-function mcl_villages.check_distance(settlement_info, building_pos, building_size)
-	for i, built_house in ipairs(settlement_info) do
-		local dx, dz = building_pos.x - built_house["pos"].x, building_pos.z - built_house["pos"].z
-		--local d = math.sqrt(dx*dx+dz*dz)
-		--if 2 * d < building_size + built_house["hsize"] then return false end
-		if math.max(math.abs(dx), math.abs(dz)) * 2 - 8 <= building_size + built_house["hsize"] then return false end
+-- check the minimum distance of two squares, on axes
+function mcl_villages.check_distance(settlement, cpos, sizex, sizez, limit)
+	for i, building in ipairs(settlement) do
+		local opos, osizex, osizez = building.pos, building.size.x, building.size.z
+		local dx = math.abs(cpos.x - opos.x) - (sizex + osizex) * 0.5
+		local dz = math.abs(cpos.z - opos.z) - (sizez + osizez) * 0.5
+		if math.max(dx, dz) < limit then return false end
 	end
 	return true
 end
