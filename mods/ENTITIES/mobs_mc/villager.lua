@@ -2331,6 +2331,16 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 	end,
 })
 
+-- HACK: for compatibility with the new mcl_villages code, but will not allow easy modding yet
+mobs_mc.jobsites = {}
+for _,p in pairs(professions) do
+	if p.jobsite then
+		table.insert(mobs_mc.jobsites, p.jobsite)
+	end
+end
+function villager_employ(v, jobsite_pos)
+	if jobsite_pos then employ(v, jobsite_pos) end
+end
 
 --[[
 Villager spawning in mcl_villages

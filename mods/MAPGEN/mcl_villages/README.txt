@@ -21,7 +21,6 @@ Basic conversion of Settlements mod for compatibility with VoxeLibre, plus new s
 Seed-based Village Generation, multi-threading, bugfixes: kay27
 
 
-
 =========================
 version: 0.1 alpha
 
@@ -43,3 +42,5 @@ This mod is based on "ruins" by BlockMen
 Completely new schematics for VoxeLibre:
 MysticTempest - CC-BY-SA 4.0
 
+
+New schematics and improvements in mineclonia by codiac.
