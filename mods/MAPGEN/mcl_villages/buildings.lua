@@ -106,7 +106,7 @@ local function check_ground(lvm, cpos, size)
 	if pos_c then table.insert(ys, pos_c.y) end
 	table.sort(ys)
 	-- well supported base, not too uneven?
-	if #ys < 5 or ys[#ys]-ys[1] > 6 then return nil, nil end
+	if #ys < 5 or ys[#ys]-ys[1] > 8 then return nil, nil end
 	cpos.y = math.floor(0.5 * (ys[math.floor(#ys/2)] + ys[math.ceil(#ys/2)]) + 0.5) -- median, rounded
 	return cpos, surface_material
 end
@@ -120,13 +120,13 @@ end
 
 local function layout_town(lvm, minp, maxp, pr, input_settlement)
 	local center = vector.new(pr:next(minp.x + 24, maxp.x - 24), maxp.y, pr:next(minp.z + 24, maxp.z - 24))
-	minetest.log("action", "[mcl_villages] sudo make me a village at: " .. minetest.pos_to_string(center))
+	minetest.log("action", "[mcl_villages] sudo make me a village at: " .. minetest.pos_to_string(minp).." - "..minetest.pos_to_string(maxp))
 	local possible_rotations = {"0", "90", "180", "270"}
 	local center_surface
 
 	local settlement = {}
 	-- now some buildings around in a circle, radius = size of town center
-	local x, y, z, r, lastr = center.x, maxp.y, center.z, 0, 99
+	local x, y, z, r, lastr = center.x, center.y, center.z, 0, 99
 	local mindist = 4
 	if #input_settlement >= 12 then mindist = 3 end
 	-- draw j circles around center and increase radius by math.random(2,4)
@@ -152,10 +152,10 @@ local function layout_town(lvm, minp, maxp, pr, input_settlement)
 				if pos and mcl_villages.check_distance(settlement, cpos, size.x, size.z, mindist) then
 					-- use town bell as new reference point for placement height
 					if #settlement == 0 then
-						center_surface, y = cpos, pos.y + mcl_villages.max_height_difference * 0.5 + 1
+						center_surface, y = cpos, math.min(maxp.y, pos.y + mcl_villages.max_height_difference * 0.5 + 1)
 					end
-					-- limit height differences to town center, but gradually
-					if math.abs(pos.y - center_surface.y) <= mcl_villages.max_height_difference * (0.3 + math.min(r/30,0.5)) then
+					-- limit height differences to town center, but gradually allow more
+					if math.abs(pos.y - center_surface.y) <= mcl_villages.max_height_difference * (0.25 + math.min(r/30,0.5)) then
 						local minp = vector.offset(pos, -math.floor(size.x/2), building.yadjust, -math.floor(size.z/2))
 						building.minp = minp
 						building.maxp = vector.offset(minp, size.x, size.y, size.z)
@@ -164,22 +164,23 @@ local function layout_town(lvm, minp, maxp, pr, input_settlement)
 						building.rotation = rotation
 						building.surface_mat = surface_material
 						table.insert(settlement, building)
-						-- minetest.log("verbose", "[mcl_villages] Placing "..schema["name"].." at "..minetest.pos_to_string(pos))
+						-- minetest.log("verbose", "[mcl_villages] Planning "..schema["name"].." at "..minetest.pos_to_string(pos))
 						lastr = r
-					--else
-					--	minetest.log("Height difference "..math.abs(pos.y - center_surface.y))
+					else
+						minetest.log("verbose", "Too large height difference "..math.abs(pos.y - center_surface.y).." at distance "..r)
 					end
 				end
 			end
 		end
 		r = r + pr:next(2,4)
-		if r > lastr + 25 then -- too disconnected
+		if r > lastr + 20 then -- too disconnected
+			minetest.log("verbose", "Disconnected village "..r.." > "..lastr)
 			break
 		end
 	end
 	-- minetest.log("verbose", "Planned "..#input_settlement.." buildings, placed "..#settlement)
 	if #settlement < #input_settlement and #settlement < 6 then
-		minetest.log("action", "[mcl_villages] Bad village location, could only place "..#settlement.." buildings.")
+		minetest.log("action", "[mcl_villages] Bad village location, could only place "..#settlement.." buildings at "..minetest.pos_to_string(center))
 		return
 	end
 	minetest.log("action", "[mcl_villages] village plan completed at " .. minetest.pos_to_string(center))

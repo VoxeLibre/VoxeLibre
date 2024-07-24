@@ -1,7 +1,7 @@
 mcl_villages = {}
 mcl_villages.modpath = minetest.get_modpath(minetest.get_current_modname())
 
-local village_chance = tonumber(minetest.settings:get("mcl_villages_village_probability")) or 5
+local village_chance = tonumber(minetest.settings:get("mcl_villages_village_probability")) or 1
 
 dofile(mcl_villages.modpath.."/const.lua")
 dofile(mcl_villages.modpath.."/utils.lua")
@@ -25,21 +25,16 @@ minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = 
 --
 local function build_a_settlement(minp, maxp, blockseed)
 	if mcl_villages.village_exists(blockseed) then return end
-
-	local pr = PseudoRandom(blockseed)
-	local settlement = mcl_villages.create_site_plan(minp, maxp, pr)
-	if not settlement then return end
-
-	local lvm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-	lvm:get_data()
-
-    -- all foundations first, then all buildings, to avoid damaging very close buildings
-	--mcl_villages.terraform(lvm, settlement, pr)
-	--mcl_villages.place_schematics(lvm, settlement, pr)
-	lvm:write_to_map(false)
-	-- TODO: replace with MCLA code: mcl_villages.paths(settlement)
+	local pr = PcgRandom(blockseed)
+	local lvm = VoxelManip()
+	lvm:read_from_map(minp, maxp)
+	local settlement = mcl_villages.create_site_plan(lvm, minp, maxp, pr)
+	if not settlement then return false, false end
+	-- all foundations first, then all buildings, to avoid damaging very close buildings
+	mcl_villages.terraform(lvm, settlement, pr)
+	mcl_villages.place_schematics(lvm, settlement, blockseed, pr)
 	mcl_villages.add_village(blockseed, settlement)
-
+	--lvm:write_to_map(false)
 	for _, on_village_placed_callback in pairs(mcl_villages.on_village_placed) do
 		on_village_placed_callback(settlement, blockseed)
 	end
@@ -144,9 +139,9 @@ if minetest.is_creative_enabled("") then
 				minetest.chat_send_player(placer:get_player_name(), S("Placement denied. You need the “server” privilege to place villages."))
 				return
 			end
-			local minp = vector.subtract(pointed_thing.under, half_map_chunk_size)
-	        local maxp = vector.add(pointed_thing.under, half_map_chunk_size)
-			--build_a_settlement(minp, maxp, math.random(0,32767))
+			local minp = vector.subtract(pointed_thing.under, mcl_villages.half_map_chunk_size)
+			local maxp = vector.add(pointed_thing.under, mcl_villages.half_map_chunk_size)
+			build_a_settlement(minp, maxp, math.random(0,32767))
 		end
 	})
 	mcl_wip.register_experimental_item("mcl_villages:tool")
