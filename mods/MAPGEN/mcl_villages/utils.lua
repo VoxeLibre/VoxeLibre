@@ -1,43 +1,39 @@
--------------------------------------------------------------------------------
--- function to copy tables
--------------------------------------------------------------------------------
-function mcl_villages.shallowCopy(original)
-	local copy = {}
-	for key, value in pairs(original) do
-		copy[key] = value
-	end
-	return copy
-end
-
 local function is_above_surface(name)
 	return name == "air" or
-		string.find(name,"grass") or
+		-- note: not dirt_with_grass!
 		string.find(name,"tree") or
 		string.find(name,"leaves") or
 		string.find(name,"snow") or
 		string.find(name,"fern") or
-		string.find(name,"flower") or
+		string.find(name,"flower") or -- includes grass decorations
 		string.find(name,"bush")
 end
 function mcl_villages.find_surface_down(lvm, pos, surface_node)
 	local p6 = vector.new(pos)
 	surface_node = surface_node or lvm:get_node_at(p6)
 	if not surface_node then return end
-	for y = p6.y - 1, math.max(0,p6.y - 120), -1 do
+	local has_air = is_above_surface(surface_node.name)
+	for y = p6.y - 1, math.max(0,p6.y - 80), -1 do
 		p6.y = y
 		local top_node = surface_node
 		surface_node = lvm:get_node_at(p6)
-		if not surface_node then return nil end
-		if is_above_surface(top_node.name) then
-			if mcl_villages.surface_mat[surface_node.name] then
-				-- minetest.log("verbose", "Found "..surface_node.name.." below "..top_node.name)
-				return p6, surface_node
-			end
+		if not surface_node or surface_node.name == "ignore" then return nil end
+		if is_above_surface(surface_node.name) then
+			has_air = true
 		else
-			local ndef = minetest.registered_nodes[surface_node.name]
-			if ndef and ndef.walkable then
-				return nil
+			if has_air then
+				if mcl_villages.surface_mat[surface_node.name] then
+					--minetest.log("Found "..surface_node.name.." below "..top_node.name)
+					return p6, surface_node
+				else
+					local ndef = minetest.registered_nodes[surface_node.name]
+					if ndef and ndef.walkable then
+						--minetest.log("Found non-suitable "..surface_node.name.." below "..top_node.name)
+						return nil
+					end
+				end
 			end
+			has_air = false
 		end
 	end
 end
@@ -45,20 +41,21 @@ function mcl_villages.find_surface_up(lvm, pos, surface_node)
 	local p6 = vector.new(pos)
 	surface_node = surface_node or lvm:get_node_at(p6) --, true, 1000000)
 	if not surface_node then return end
-	for y = p6.y + 1, p6.y + 50 do
+	for y = p6.y + 1, p6.y + 80 do
 		p6.y = y
 		local top_node = lvm:get_node_at(p6)
-		if not top_node then return nil end
+		if not top_node or top_node.name == "ignore" then return nil end
 		if is_above_surface(top_node.name) then
 			if mcl_villages.surface_mat[surface_node.name] then
-				-- minetest.log("verbose","Found "..surface_node.name.." below "..top_node.name)
+				-- minetest.log("Found "..surface_node.name.." below "..top_node.name)
 				p6.y = p6.y - 1
 				return p6, surface_node
-			end
-		else
-			local ndef = minetest.registered_nodes[surface_node.name]
-			if ndef and ndef.walkable then
-				return nil
+			else
+				local ndef = minetest.registered_nodes[surface_node.name]
+				if ndef and ndef.walkable then
+					-- minetest.log("Found non-suitable "..surface_node.name.." below "..top_node.name)
+					return nil
+				end
 			end
 		end
 		surface_node = top_node
