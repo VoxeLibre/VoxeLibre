@@ -1,4 +1,5 @@
 local function is_above_surface(name)
+    -- TODO: use groups
 	return name == "air" or
 		-- note: not dirt_with_grass!
 		string.find(name,"tree") or
@@ -6,7 +7,8 @@ local function is_above_surface(name)
 		string.find(name,"snow") or
 		string.find(name,"fern") or
 		string.find(name,"flower") or -- includes grass decorations
-		string.find(name,"bush")
+		string.find(name,"bush") or
+		name == "mcl_bamboo:bamboo" or name == "mcl_core:vine"
 end
 function mcl_villages.find_surface_down(lvm, pos, surface_node)
 	local p6 = vector.new(pos)
