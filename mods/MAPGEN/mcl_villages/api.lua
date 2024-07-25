@@ -46,19 +46,16 @@ local function job_count(schem_lua)
 end
 
 local function load_schema(name, mts)
-	local schem_lua = minetest.serialize_schematic(mts, "lua", { lua_use_comments = false, lua_num_indent_spaces = 0 })
-		.. " return schematic"
+	local schem_lua = minetest.serialize_schematic(mts, "lua", { lua_use_comments = false, lua_num_indent_spaces = 0 }) .. " return schematic"
 	-- MCLA node names to VL for import
-	for _, sub in pairs(mcl_villages.mcla_to_vl) do
-		schem_lua = schem_lua:gsub(sub[1], sub[2])
+	if string.find(mts, "new_villages/") then
+		for _, sub in pairs(mcl_villages.mcla_to_vl) do
+			schem_lua = schem_lua:gsub(sub[1], sub[2])
+		end
 	end
 
 	local schematic = loadstring(schem_lua)()
-	return {
-		name = name,
-		size = schematic.size,
-		schem_lua = schem_lua,
-	}
+	return { name = name, size = schematic.size, schem_lua = schem_lua }
 end
 
 local all_optional = { "yadjust", "no_ground_turnip", "no_clearance" }
