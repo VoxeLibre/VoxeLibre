@@ -110,6 +110,13 @@ mcl_villages.vl_to_mcla = {
 	{ '"mcl_core:([a-z]*)wood"', '"mcl_trees:wood_%1"'},
 	{ '"mcl_stairs:stair_darkwood"', '"mcl_stairs:stair_dark_oak"'},
 	{ '"mcl_stairs:stair_([a-z]*)wood"', '"mcl_stairs:stair_%1"'},
+	{ '"mcl_bamboo:bamboo_fence', '"mcl_fences:bamboo_fence'},
+	{ '"mcl_bamboo:bamboo_plank', '"mcl_core:bamboowood'},
+	{ '"mcl_bamboo:bamboo_block', '"mcl_core:bambootree'},
+	{ '"mcl_stairs:stair_bamboo_plank', '"mcl_stairs:stair_bamboo'},
+	{ '"mcl_bamboo:pressure_plate_bamboo_wood_', '"mesecons_pressureplates:pressure_plate_bamboo_'},
+	{ '"mcl_bamboo:bamboo_trapdoor', '"mcl_doors:trapdoor_bamboo'},
+	{ '"mcl_bamboo:bamboo_door', '"mcl_doors:door_bamboo'},
 }
 mcl_villages.mcla_to_vl = {
 	-- oneway
@@ -147,7 +154,13 @@ mcl_villages.mcla_to_vl = {
 	{ '"mcl_stairs:stair_dark_oak(["_])', '"mcl_stairs:stair_darkwood%1'},
 	{ '"mcl_stairs:stair_jungle(["_])', '"mcl_stairs:stair_junglewood%1'},
 	{ '"mcl_stairs:stair_acacia(["_])', '"mcl_stairs:stair_acaciawood%1'},
-	{ '"mcl_stairs:stair_bamboo(["_])', '"mcl_stairs:stair_bamboowood%1'},
+	{ '"mcl_fences:bamboo_fence', '"mcl_bamboo:bamboo_fence'},
+	{ '"mcl_core:bamboowood', '"mcl_bamboo:bamboo_plank'},
+	{ '"mcl_core:bambootree', '"mcl_bamboo:bamboo_block'},
+	{ '"mcl_stairs:stair_bamboo', '"mcl_stairs:stair_bamboo_plank'},
+	{ '"mesecons_pressureplates:pressure_plate_bamboo_', '"mcl_bamboo:pressure_plate_bamboo_wood_'},
+	{ '"mcl_doors:trapdoor_bamboo', '"mcl_bamboo:bamboo_trapdoor'},
+	{ '"mcl_doors:door_bamboo', '"mcl_bamboo:bamboo_door'},
 }
 mcl_villages.material_substitions = {
 	desert = {
@@ -178,6 +191,7 @@ mcl_villages.material_substitions = {
 		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:birch_fence%1"' },
 		{ '"mcl_stairs:stair_oak_bark([^"]*)"', '"mcl_stairs:stair_sandstonesmooth2%1"' },
 		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_sandstonesmooth2%1"' }, -- divert from MCLA, no version 1?
+		{ '"mcl_core:leaves"', '"air"' }, -- addition to MCLA
 	},
 	spruce = {
 		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_sprucewood%1"' },
@@ -191,6 +205,7 @@ mcl_villages.material_substitions = {
 		{ "mcl_trees:wood_oak", "mcl_trees:wood_spruce" },
 		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:spruce_fence%1"' },
 		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_spruce%1"' },
+		{ '"mcl_core:leaves"', '"mcl_core:spruceleaves"' }, -- addition to MCLA
 	},
 	birch = {
 		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_birchwood%1"' },
@@ -204,6 +219,7 @@ mcl_villages.material_substitions = {
 		{ "mcl_trees:wood_oak", "mcl_trees:wood_birch" },
 		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:birch_fence%1"' },
 		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_birch%1"' },
+		{ '"mcl_core:leaves"', '"mcl_core:birchleaves"' }, -- addition to MCLA
 	},
 	acacia = {
 		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_acaciawood%1"' },
@@ -217,6 +233,7 @@ mcl_villages.material_substitions = {
 		{ "mcl_trees:wood_oak", "mcl_trees:wood_acacia" },
 		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:acacia_fence%1"' },
 		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_acacia%1"' },
+		{ '"mcl_core:leaves"', '"mcl_core:acacialeaves"' }, -- addition to MCLA
 	},
 	dark_oak = {
 		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_darkwood%1"' },
@@ -230,6 +247,7 @@ mcl_villages.material_substitions = {
 		{ "mcl_trees:wood_oak", "mcl_trees:wood_dark_oak" },
 		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:dark_oak_fence%1"' },
 		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_dark_oak%1"' },
+		{ '"mcl_core:leaves"', '"mcl_core:darkleaves"' }, -- addition to MCLA
 	},
 	jungle = {
 		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_junglewood%1"' },
@@ -243,9 +261,10 @@ mcl_villages.material_substitions = {
 		{ "mcl_trees:wood_oak", "mcl_trees:wood_jungle" },
 		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:jungle_fence%1"' },
 		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_jungle%1"' },
+		{ '"mcl_core:leaves"', '"mcl_core:jungleleaves"' }, -- addition to MCLA
 	},
 	bamboo = {
-		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_bamboo_block%1"' },
+		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_bamboo_plank%1"' }, -- divert from MCLA
 		{
 			'"mesecons_pressureplates:pressure_plate_oak_([^"]+)"',
 			'"mesecons_pressureplates:pressure_plate_bamboo_%1"',
@@ -261,6 +280,7 @@ mcl_villages.material_substitions = {
 		{ "mcl_trees:wood_oak", "mcl_trees:wood_bamboo" },
 		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:bamboo_fence%1"' },
 		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_bamboo%1"' },
+		{ '"mcl_core:leaves"', '"air"' }, -- addition to MCLA
 	},
 	cherry = {
 		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_cherry_blossom%1"' },
@@ -274,5 +294,6 @@ mcl_villages.material_substitions = {
 		{ "mcl_trees:wood_oak", "mcl_trees:wood_cherry_blossom" },
 		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:cherry_blossom_fence%1"' },
 		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_cherry_blossom%1"' },
+		{ '"mcl_core:leaves"', '"mcl_core:leaves"' }, -- addition to MCLA
 	},
 }
