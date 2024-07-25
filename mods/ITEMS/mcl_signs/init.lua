@@ -117,7 +117,7 @@ while true do
 		break
 	end
 	local img = chars_file:read("*l")
-	chars_file:read("*l")
+	local _ = chars_file:read("*l")
 	charmap[char] = img
 end
 
@@ -257,16 +257,18 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
-function sign_tpl.on_rightclick(pos, node, clicker, itemstack, pointed_thing)
+function sign_tpl.on_rightclick(pos, _, clicker, itemstack, _)
 	if itemstack:get_name() == "mcl_mobitems:glow_ink_sac" then
 		local data = get_signdata(pos)
-		if data.color == "#000000" then
-			data.color = "#7e7e7e" --black doesn't glow in the dark
-		end
-		set_signmeta(pos,{glow="true",color=data.color})
-		mcl_signs.update_sign(pos)
-		if not minetest.is_creative_enabled(clicker:get_player_name()) then
-			itemstack:take_item()
+		if data then
+			if data.color == "#000000" then
+				data.color = "#7e7e7e" --black doesn't glow in the dark
+			end
+			set_signmeta(pos,{glow="true",color=data.color})
+			mcl_signs.update_sign(pos)
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
+				itemstack:take_item()
+			end
 		end
 	elseif signs_editable then
 		if not mcl_util.check_position_protection(pos, clicker) then
@@ -376,7 +378,7 @@ minetest.register_lbm({
 	name = "mcl_signs:restore_entities",
 	label = "Restore sign text",
 	run_at_every_load = true,
-	action = function(pos, node)
+	action = function(pos)
 		mcl_signs.update_sign(pos)
 	end
 })
@@ -388,7 +390,7 @@ minetest.register_entity("mcl_signs:text", {
 		physical = false,
 		collide_with_objects = false,
 	},
-	on_activate = function(self, staticdata)
+	on_activate = function(self)
 		local pos = self.object:get_pos()
 		mcl_signs.update_sign(pos)
 		local props = self.object:get_properties()
