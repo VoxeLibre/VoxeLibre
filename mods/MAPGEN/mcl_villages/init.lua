@@ -13,7 +13,7 @@ dofile(mcl_villages.modpath.."/api.lua")
 local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_alias("mcl_villages:stonebrickcarved", "mcl_core:stonebrickcarved")
---TODO: minetest.register_alias("mcl_villages:structblock", "air")
+-- In 2025, remove structblock: minetest.register_alias("mcl_villages:structblock", "air")
 minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = {not_in_creative_inventory=1},})
 -- we currently do not support/use these from MCLA:
 --minetest.register_alias("mcl_villages:village_block", "air")
@@ -46,7 +46,6 @@ local function ecb_village(blockpos, action, calls_remaining, param)
 	build_a_settlement(minp, maxp, blockseed)
 end
 
---local villagegen={}
 -- Disable natural generation in singlenode.
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
@@ -112,21 +111,21 @@ minetest.register_node("mcl_villages:village_block", {
 	end,
 })
 
---[[
+-- LEGACY, for spawning "planned" cities in old maps. Remove in 2025?
 minetest.register_lbm({
 	name = "mcl_villages:structblock",
 	run_at_every_load = true,
 	nodenames = {"mcl_villages:structblock"},
 	action = function(pos, node)
 		minetest.set_node(pos, {name = "air"})
-		if not villagegen[minetest.pos_to_string(pos)] then return end
-		local minp=villagegen[minetest.pos_to_string(pos)].minp
-		local maxp=villagegen[minetest.pos_to_string(pos)].maxp
-		minetest.emerge_area(minp, maxp, ecb_village, villagegen[minetest.pos_to_string(minp)])
-		villagegen[minetest.pos_to_string(minp)]=nil
+		local px, py, pz = math.floor(pos.x / 16) * 16, math.floor(pos.y / 16) * 16, math.floor(pos.z / 16) * 16
+		local minp=vector.new(px, py, pz)
+		local maxp=vector.new(px + 80, py + 80, pz + 80)
+		local blockseed = PcgRandom(px * 223 + py * 17 + pz):next()
+		minetest.emerge_area(minp, maxp, ecb_village, {minp=minp, maxp=maxp, blockseed=blockseed})
 	end
 })
-]]--
+
 -- manually place villages
 if minetest.is_creative_enabled("") then
 	minetest.register_craftitem("mcl_villages:tool", {
