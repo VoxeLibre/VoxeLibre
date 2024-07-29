@@ -318,7 +318,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 		if not mcl_util.check_position_protection(pos, player) and (signs_editable or minetest.get_meta(pos):get_string("text") == "") then
 			set_signmeta(pos,{
-				text = fields.text,
+				text = tostring(fields.text):sub(1, 256), --limit saved text to 256 characters (4 lines x 15 chars = 60 so this should be more than is ever needed).
 			})
 			mcl_signs.update_sign(pos)
 		end
