@@ -64,10 +64,10 @@ Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is 
 Premature Pumpkin Stem (Stage @1)=Niedojrzała łodyga dyni (etap @1)
 Mature Pumpkin Stem=Dojrzała łodyga dyni
 A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.=Dojrzała łodyga dyni próbuje postawić dynię na jednym  z czterech sąsiadujących bloków. Dynia może wyrosnąć tylko na polu uprawnym, ziemi lub bloku trawy. Gdy dynia jest obok łodygi dyni, ugina się ona i łączy z dynią. Z połączonej łodygi dyni nie może wyrosnąć kolejna dynia. Jak tylko wszystkie pobliskie dynie są usunięte, traci ona połączenie i może z niej wyrosnąć następna dynia. 
-Pumpkin=Dynia bez twarzy
-A pumpkin is a decorative block. It can be carved with shears to obtain a carved pumpkin and pumpkin seeds.=Dynia bez twarzy jest blokiem dekoracyjnym. Może być pokrojona nożycami aby otrzymać nasiona dyni.
-Carved Pumpkin=Dynia
-A carved pumpkin is a decorative block that can be used to summon snow and iron golems. It can also be worn as a helmet. It is made from shearing a pumpkin.=Dynia może być noszona jak hełm. Dynie rosną z łodygi dyni, która z kolei rośnie z nasion dyni.
+Pumpkin=Dynia
+A pumpkin is a decorative block. It can be carved with shears to obtain a carved pumpkin and pumpkin seeds.=Dynia jest blokiem dekoracyjnym. Może być pokrojona nożycami aby otrzymać wydrążoną dynię i nasiona dyni.
+Carved Pumpkin=Wydrążona dynia
+A carved pumpkin is a decorative block that can be used to summon snow and iron golems. It can also be worn as a helmet. It is made from shearing a pumpkin.=Wydrążona dynia jest blokiem dekoracyjnym, który może być użyty do przywołania śnieżnych i żelaznych golemów. Może być też noszona jak hełm. Jest otrzymywana poprzez wydrążenie zwykłej dyni nożycami.
 Jack o'Lantern=Świecąca dynia
 A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.=Świecąca dynia jest tradycyjną dekoracją Halloween wykonaną z dyni, która jasno świeci.
 Pumpkin Pie=Ciasto z dyni
