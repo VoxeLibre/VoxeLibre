@@ -570,6 +570,7 @@ minetest.register_node("mcl_brewing:stand_100", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
+	_vl_pickblock = "mcl_brewing:stand_000",
 })
 
 minetest.register_node("mcl_brewing:stand_010", {
@@ -650,6 +651,7 @@ minetest.register_node("mcl_brewing:stand_010", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
+	_vl_pickblock = "mcl_brewing:stand_000",
 })
 
 minetest.register_node("mcl_brewing:stand_001", {
@@ -725,6 +727,7 @@ minetest.register_node("mcl_brewing:stand_001", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
+	_vl_pickblock = "mcl_brewing:stand_000",
 })
 
 minetest.register_node("mcl_brewing:stand_110", {
@@ -810,6 +813,7 @@ minetest.register_node("mcl_brewing:stand_110", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
+	_vl_pickblock = "mcl_brewing:stand_000",
 })
 
 minetest.register_node("mcl_brewing:stand_101", {
@@ -891,6 +895,7 @@ minetest.register_node("mcl_brewing:stand_101", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
+	_vl_pickblock = "mcl_brewing:stand_000",
 })
 
 minetest.register_node("mcl_brewing:stand_011", {
@@ -972,6 +977,7 @@ minetest.register_node("mcl_brewing:stand_011", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
+	_vl_pickblock = "mcl_brewing:stand_000",
 })
 
 minetest.register_node("mcl_brewing:stand_111", {
@@ -1060,6 +1066,7 @@ minetest.register_node("mcl_brewing:stand_111", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
+	_vl_pickblock = "mcl_brewing:stand_000",
 })
 
 minetest.register_craft({
