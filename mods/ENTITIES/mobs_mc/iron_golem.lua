@@ -83,8 +83,8 @@ mcl_mobs.register_mob("mobs_mc:iron_golem", {
 		stand_speed = 15, walk_speed = 15, run_speed = 25, punch_speed = 15,
 		stand_start = 0,		stand_end = 0,
 		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
-		punch_start = 40,  punch_end = 50,
+		run_start = 40,		run_end = 80,
+		punch_start = 80,  punch_end = 90,
 	},
 	jump = true,
 	do_custom = function(self, dtime)
