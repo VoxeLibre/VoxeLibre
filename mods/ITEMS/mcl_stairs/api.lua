@@ -325,6 +325,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	topdef._doc_items_usagehelp = nil
 	topdef.drop = lower_slab
 	topdef._mcl_other_slab_half = lower_slab
+	topdef._vl_pickblock = lower_slab
 	function topdef.on_rotate(pos, node, user, mode, param2)
 		-- Flip slab
 		if mode == screwdriver.ROTATE_AXIS then
