@@ -17,12 +17,13 @@ local mt_get_biome_name            = minetest.get_biome_name
 local get_objects_inside_radius    = minetest.get_objects_inside_radius
 local get_connected_players        = minetest.get_connected_players
 
+local math_min       = math.min
+local math_max       = math.max
 local math_random    = math.random
 local math_floor     = math.floor
 local math_ceil      = math.ceil
 local math_cos       = math.cos
 local math_sin       = math.sin
-local math_round     = function(x) return (x > 0) and math_floor(x + 0.5) or math_ceil(x - 0.5) end
 local math_sqrt      = math.sqrt
 
 local vector_distance = vector.distance
@@ -54,8 +55,10 @@ local FIND_SPAWN_POS_RETRIES = 16
 local FIND_SPAWN_POS_RETRIES_SUCCESS_RESPIN = 8
 
 local MOB_SPAWN_ZONE_INNER = 24
+local MOB_SPAWN_ZONE_INNER_SQ = MOB_SPAWN_ZONE_INNER^2 -- squared
 local MOB_SPAWN_ZONE_MIDDLE = 32
 local MOB_SPAWN_ZONE_OUTER = 128
+local MOB_SPAWN_ZONE_OUTER_SQ = MOB_SPAWN_ZONE_OUTER^2 -- squared
 
 -- range for mob count
 local MOB_CAP_INNER_RADIUS = 32
@@ -601,71 +604,40 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	spawn_dictionary[key]["check_position"] = check_position
 end
 
--- Calculate the inverse of a piecewise linear function f(x). Line segments are represented as two
--- adjacent points specified as { x, f(x) }. At least 2 points are required. If there are most solutions,
--- the one with a lower x value will be chosen.
-local function inverse_pwl(fx, f)
-	if fx < f[1][2] then
-		return f[1][1]
-	end
-
-	for i=2,#f do
-		local x0,fx0 = unpack(f[i-1])
-		local x1,fx1 = unpack(f[i  ])
-		if fx < fx1 then
-			return (fx - fx0) * (x1 - x0) / (fx1 - fx0) + x0
-		end
-	end
-
-	return f[#f][1]
-end
-
-local SPAWN_DISTANCE_CDF_PWL = {
-	{0.000,0.00},
-	{0.083,0.40},
-	{0.416,0.75},
-	{1.000,1.00},
-}
-
-local two_pi = 2 * math.pi
 local function get_next_mob_spawn_pos(pos)
 	-- Select a distance such that distances closer to the player are selected much more often than
-	-- those further away from the player.
-	local fx = (math_random(1,10000)-1) / 10000
-	local x = inverse_pwl(fx, SPAWN_DISTANCE_CDF_PWL)
-	local distance = x * (MOB_SPAWN_ZONE_OUTER - MOB_SPAWN_ZONE_INNER) + MOB_SPAWN_ZONE_INNER
+	-- those further away from the player. This does produce a concentration at INNER (24 blocks)
+	local distance = math_random()^2 * (MOB_SPAWN_ZONE_OUTER - MOB_SPAWN_ZONE_INNER) + MOB_SPAWN_ZONE_INNER
 	--print("Using spawn distance of "..tostring(distance).."  fx="..tostring(fx)..",x="..tostring(x))
 
-	-- TODO Floor xoff and zoff and add 0.5 so it tries to spawn in the middle of the square. Less failed attempts.
-	-- Use spherical coordinates https://en.wikipedia.org/wiki/Spherical_coordinate_system#Cartesian_coordinates
-	local theta = math_random() * two_pi
-	local phi = math_random() * two_pi
-	local xoff = math_round(distance * math_sin(theta) * math_cos(phi))
-	local yoff = math_round(distance * math_cos(theta))
-	local zoff = math_round(distance * math_sin(theta) * math_sin(phi))
+	-- Choose a random direction. Rejection sampling is simple and fast (1-2 tries usually)
+	local xoff, yoff, zoff, dd
+	repeat
+		xoff, yoff, zoff = math_random() * 2 - 1, math_random() * 2 - 1, math_random() * 2 - 1
+		dd = xoff*xoff + yoff*yoff + zoff*zoff
+	until (dd <= 1 and dd >= 1e-6) -- outside of uniform ball, retry
+	dd = distance / math_sqrt(dd) -- distance scaling factor
+	xoff, yoff, zoff = xoff * dd, yoff * dd, zoff * dd
 	local goal_pos = vector.offset(pos, xoff, yoff, zoff)
 
-	if not ( math.abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math.abs(pos.y) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT ) then
+	if not ( math.abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.y) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT ) then
 		mcl_log("Pos outside mapgen limits: " .. minetest.pos_to_string(goal_pos))
 		return nil
 	end
 
 	-- Calculate upper/lower y limits
-	local R1 = MOB_SPAWN_ZONE_OUTER
-	local d = vector_distance( pos, vector.new( goal_pos.x, pos.y, goal_pos.z ) ) -- distance from player to projected point on horizontal plane
-	local y1 = math_sqrt( R1*R1 - d*d ) -- absolue value of distance to outer sphere
+	local d2 = xoff*xoff + zoff*zoff -- squared distance in x,z plane only
+	local y1 = math_sqrt( MOB_SPAWN_ZONE_OUTER_SQ - d2 ) -- absolue value of distance to outer sphere
 
-	local y_min
-	local y_max
-	if d >= MOB_SPAWN_ZONE_INNER then
+	local y_min, y_max
+	if d2 >= MOB_SPAWN_ZONE_INNER_SQ then
 		-- Outer region, y range has both ends on the outer sphere
 		y_min = pos.y - y1
 		y_max = pos.y + y1
 	else
 		-- Inner region, y range spans between inner and outer spheres
-		local R2 = MOB_SPAWN_ZONE_INNER
-		local y2 = math_sqrt( R2*R2 - d*d )
-		if goal_pos.y > pos. y then
+		local y2 = math_sqrt( MOB_SPAWN_ZONE_INNER_SQ - d2 )
+		if goal_pos.y > pos.y then
 			-- Upper hemisphere
 			y_min = pos.y + y2
 			y_max = pos.y + y1
@@ -675,16 +647,9 @@ local function get_next_mob_spawn_pos(pos)
 			y_max = pos.y - y2
 		end
 	end
-	y_min = math_round(y_min)
-	y_max = math_round(y_max)
-
 	-- Limit total range of check to 32 nodes (maximum of 3 map blocks)
-	if y_max > goal_pos.y + 16 then
-		y_max = goal_pos.y + 16
-	end
-	if y_min < goal_pos.y - 16 then
-		y_min = goal_pos.y - 16
-	end
+	y_min = math_max(math_floor(y_min), goal_pos.y - 16)
+	y_max = math_min(math_ceil(y_max), goal_pos.y + 16)
 
 	-- Ask engine for valid spawn locations
 	local spawning_position_list = find_nodes_in_area_under_air(
@@ -997,7 +962,7 @@ if mobs_spawn then
 			mob_total_wide = 0
 		end
 
-		local cap_space_wide = math.max(type_cap - mob_total_wide, 0)
+		local cap_space_wide = math_max(type_cap - mob_total_wide, 0)
 
 		mcl_log("mob_type", mob_type)
 		mcl_log("cap_space_wide", cap_space_wide)
@@ -1005,10 +970,10 @@ if mobs_spawn then
 		local cap_space_available = 0
 		if mob_type == "hostile" then
 			mcl_log("cap_space_global", cap_space_hostile)
-			cap_space_available = math.min(cap_space_hostile, cap_space_wide)
+			cap_space_available = math_min(cap_space_hostile, cap_space_wide)
 		else
 			mcl_log("cap_space_global", cap_space_non_hostile)
-			cap_space_available = math.min(cap_space_non_hostile, cap_space_wide)
+			cap_space_available = math_min(cap_space_non_hostile, cap_space_wide)
 		end
 
 		local mob_total_close = mob_counts_close[mob_type]
@@ -1017,8 +982,8 @@ if mobs_spawn then
 			mob_total_close = 0
 		end
 
-		local cap_space_close = math.max(close_zone_cap - mob_total_close, 0)
-		cap_space_available = math.min(cap_space_available, cap_space_close)
+		local cap_space_close = math_max(close_zone_cap - mob_total_close, 0)
+		cap_space_available = math_min(cap_space_available, cap_space_close)
 
 		mcl_log("cap_space_close", cap_space_close)
 		mcl_log("cap_space_available", cap_space_available)
@@ -1145,7 +1110,7 @@ if mobs_spawn then
 
 							local amount_to_spawn = math.random(group_min, spawn_in_group)
 							mcl_log("Spawning quantity: " .. amount_to_spawn)
-							amount_to_spawn = math.min(amount_to_spawn, cap_space_available)
+							amount_to_spawn = math_min(amount_to_spawn, cap_space_available)
 							mcl_log("throttled spawning quantity: " .. amount_to_spawn)
 
 							if logging then
@@ -1196,8 +1161,8 @@ if mobs_spawn then
 		local players = get_connected_players()
 		local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
 
-		local cap_space_hostile = math.max(mob_cap.global_hostile - total_hostile, 0)
-		local cap_space_non_hostile =  math.max(mob_cap.global_non_hostile - total_non_hostile, 0)
+		local cap_space_hostile = math_max(mob_cap.global_hostile - total_hostile, 0)
+		local cap_space_non_hostile =  math_max(mob_cap.global_non_hostile - total_non_hostile, 0)
 		mcl_log("global cap_space_hostile", cap_space_hostile)
 		mcl_log("global cap_space_non_hostile", cap_space_non_hostile)
 
