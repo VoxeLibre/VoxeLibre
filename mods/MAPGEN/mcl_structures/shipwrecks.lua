@@ -116,57 +116,58 @@ mcl_structures.register_structure("shipwreck",{
 	y_offset = function(pr) return pr:next(-4,-2) end,
 	loot = {
 		["mcl_chests:chest_small"] = {
-			stacks_min = 3,
-			stacks_max = 10,
-			items = {
-				{ itemstring = "mcl_sus_stew:stew", weight = 10, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_core:paper", weight = 8, amount_min = 1, amount_max = 12 },
-				{ itemstring = "mcl_farming:wheat_item", weight = 7, amount_min = 8, amount_max = 21 },
-				{ itemstring = "mcl_farming:carrot_item", weight = 7, amount_min = 4, amount_max = 8 },
-				{ itemstring = "mcl_farming:potato_item_poison", weight = 7, amount_min = 2, amount_max = 6 },
-				{ itemstring = "mcl_farming:potato_item", weight = 7, amount_min = 2, amount_max = 6 },
-				--{ itemstring = "TODO:moss_block", weight = 7, amount_min = 1, amount_max = 4 },
-				{ itemstring = "mcl_core:coal_lump", weight = 6, amount_min = 2, amount_max = 8 },
-				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 5, amount_min = 5, amount_max = 24 },
-				{ itemstring = "mcl_farming:potato_item", weight = 3, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3, func = function(stack, pr)
-						mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-				{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3, func = function(stack, pr)
-						mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-				{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3, func = function(stack, pr)
-						mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-				{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3, func = function(stack, pr)
-						mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-				--{ itemstring = "TODO:bamboo", weight = 2, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_farming:pumpkin", weight = 2, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_tnt:tnt", weight = 1, amount_min = 1, amount_max = 2 },
-
+			{
+				stacks_min = 3,
+				stacks_max = 10,
+				items = {
+					{ itemstring = "mcl_sus_stew:stew", weight = 10, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_core:paper", weight = 8, amount_min = 1, amount_max = 12 },
+					{ itemstring = "mcl_farming:wheat_item", weight = 7, amount_min = 8, amount_max = 21 },
+					{ itemstring = "mcl_farming:carrot_item", weight = 7, amount_min = 4, amount_max = 8 },
+					{ itemstring = "mcl_farming:potato_item_poison", weight = 7, amount_min = 2, amount_max = 6 },
+					{ itemstring = "mcl_farming:potato_item", weight = 7, amount_min = 2, amount_max = 6 },
+					--{ itemstring = "TODO:moss_block", weight = 7, amount_min = 1, amount_max = 4 },
+					{ itemstring = "mcl_core:coal_lump", weight = 6, amount_min = 2, amount_max = 8 },
+					{ itemstring = "mcl_mobitems:rotten_flesh", weight = 5, amount_min = 5, amount_max = 24 },
+					{ itemstring = "mcl_farming:potato_item", weight = 3, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3, func = function(stack, pr)
+							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+					{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3, func = function(stack, pr)
+							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+					{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3, func = function(stack, pr)
+							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+					{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3, func = function(stack, pr)
+							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
+					{ itemstring = "mcl_bamboo:bamboo", weight = 2, amount_min = 1, amount_max = 3 },
+					{ itemstring = "mcl_farming:pumpkin", weight = 2, amount_min = 1, amount_max = 3 },
+					{ itemstring = "mcl_tnt:tnt", weight = 1, amount_min = 1, amount_max = 2 },
+				}
 			},
 			{
-			stacks_min = 2,
-			stacks_max = 6,
-			items = {
-				{ itemstring = "mcl_core:iron_ingot", weight = 90, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:iron_nugget", weight = 50, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_core:emerald", weight = 40, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:lapis", weight = 20, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_core:gold_ingot", weight = 10, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 1 },
+				stacks_min = 2,
+				stacks_max = 6,
+				items = {
+					{ itemstring = "mcl_core:iron_ingot", weight = 90, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:iron_nugget", weight = 50, amount_min = 1, amount_max = 10 },
+					{ itemstring = "mcl_core:emerald", weight = 40, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:lapis", weight = 20, amount_min = 1, amount_max = 10 },
+					{ itemstring = "mcl_core:gold_ingot", weight = 10, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 10 },
+					{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 1 },
 				}
 			},{
-			stacks_min = 3,
-			stacks_max = 3,
-			items = {
-				--{ itemstring = "FIXME TREASURE MAP", weight = 8, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:paper", weight = 20, amount_min = 1, amount_max = 10 },
-				{ itemstring = "mcl_mobitems:feather", weight = 10, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_books:book", weight = 5, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_clock:clock", weight = 1, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_compass:compass", weight = 1, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_maps:empty_map", weight = 1, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_armor:coast", weight = 20, amount_min = 2, amount_max = 2},
+				stacks_min = 3,
+				stacks_max = 3,
+				items = {
+					--{ itemstring = "FIXME TREASURE MAP", weight = 8, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:paper", weight = 20, amount_min = 1, amount_max = 10 },
+					{ itemstring = "mcl_mobitems:feather", weight = 10, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_books:book", weight = 5, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_clock:clock", weight = 1, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_compass:compass", weight = 1, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_maps:empty_map", weight = 1, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_armor:coast", weight = 20, amount_min = 2, amount_max = 2},
 				}
 			},
 		}
@@ -207,35 +208,37 @@ mcl_structures.register_structure("ocean_temple",{
 	end,
 	loot = {
 		["mcl_chests:chest_small"] = {
-			stacks_min = 3,
-			stacks_max = 10,
-			items = {
-				{ itemstring = "mcl_sus_stew:stew", weight = 10, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_core:paper", weight = 8, amount_min = 1, amount_max = 12 },
-				{ itemstring = "mcl_fishing:fish_raw", weight = 5, amount_min = 8, amount_max = 21 },
-				{ itemstring = "mcl_fishing:salmon_raw", weight = 7, amount_min = 4, amount_max = 8 },
-				{ itemstring = "mcl_tnt:tnt", weight = 1, amount_min = 1, amount_max = 2 },
-			},
 			{
-			stacks_min = 2,
-			stacks_max = 6,
-			items = {
-				{ itemstring = "mcl_core:iron_ingot", weight = 10, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_core:goldblock", weight = 1, amount_min = 1, amount_max = 2 },
-				{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_fishing:fishing_rod", weight = 1, amount_min = 1, amount_max = 1 },
+				stacks_min = 3,
+				stacks_max = 10,
+				items = {
+					{ itemstring = "mcl_sus_stew:stew", weight = 10, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_core:paper", weight = 8, amount_min = 1, amount_max = 12 },
+					{ itemstring = "mcl_fishing:fish_raw", weight = 5, amount_min = 8, amount_max = 21 },
+					{ itemstring = "mcl_fishing:salmon_raw", weight = 7, amount_min = 4, amount_max = 8 },
+					{ itemstring = "mcl_tnt:tnt", weight = 1, amount_min = 1, amount_max = 2 },
 				}
 			},
 			{
-			stacks_min = 4,
-			stacks_max = 4,
-			items = {
-				--{ itemstring = "FIXME TREASURE MAP", weight = 8, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_books:book", weight = 1, amount_min = 1, amount_max = 5 },
-				{ itemstring = "mcl_clock:clock", weight = 1, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_compass:compass", weight = 1, amount_min = 1, amount_max = 1 },
-				{ itemstring = "mcl_maps:empty_map", weight = 1, amount_min = 1, amount_max = 1 },
+				stacks_min = 2,
+				stacks_max = 6,
+				items = {
+					{ itemstring = "mcl_core:iron_ingot", weight = 10, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_core:goldblock", weight = 1, amount_min = 1, amount_max = 2 },
+					{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_fishing:fishing_rod", weight = 1, amount_min = 1, amount_max = 1 },
+				}
+			},
+			{
+				stacks_min = 4,
+				stacks_max = 4,
+				items = {
+					--{ itemstring = "FIXME TREASURE MAP", weight = 8, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_books:book", weight = 1, amount_min = 1, amount_max = 5 },
+					{ itemstring = "mcl_clock:clock", weight = 1, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_compass:compass", weight = 1, amount_min = 1, amount_max = 1 },
+					{ itemstring = "mcl_maps:empty_map", weight = 1, amount_min = 1, amount_max = 1 },
 				}
 			},
 		}
