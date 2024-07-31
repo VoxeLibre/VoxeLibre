@@ -140,6 +140,7 @@ for s=1, #surfaces do
 		_mcl_shears_drop = { "mcl_ocean:seagrass" },
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
+		_vl_pickblock = surfaces[s][2],
 	})
 	if mod_doc and surfaces[s][1] ~= "dirt" then
 		doc.add_entry_alias("nodes", "mcl_ocean:seagrass_dirt", "nodes", "mcl_ocean:seagrass_"..surfaces[s][1])

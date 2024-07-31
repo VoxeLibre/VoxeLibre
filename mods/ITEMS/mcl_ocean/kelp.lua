@@ -547,7 +547,7 @@ kelp.surface_deftemplate = {
 		},
 	},
 	-- groups.falling_node = is_falling,
-	groups = { dig_immediate = 3, deco_block = 1, plant = 1, kelp = 1, },
+	groups = { dig_immediate = 3, deco_block = 1, plant = 1, kelp = 1, not_in_creative_inventory = 1 },
 	--sounds = sounds,
 	--node_dig_prediction = nodename,
 	on_construct = kelp.surface_on_construct,
@@ -559,6 +559,7 @@ kelp.surface_deftemplate = {
 	--_mcl_falling_node_alternative = is_falling and nodename or nil,
 	_mcl_hardness = 0,
 	_mcl_blast_resistance = 0,
+	--_vl_pickblock = nodename,
 }
 
 -- Commented properties are the ones obtained using register_kelp_surface.
@@ -609,6 +610,7 @@ function kelp.register_kelp_surface(surface, surface_deftemplate, surface_docs)
 	surface_deftemplate.node_dig_prediction = surface_deftemplate.node_dig_prediction or nodename
 	surface_deftemplate.groups.falling_node = surface_deftemplate.groups.falling_node or falling_node
 	surface_deftemplate._mcl_falling_node_alternative = surface_deftemplate._mcl_falling_node_alternative or (falling_node and nodename or nil)
+	surface_deftemplate._vl_pickblock = surface_deftemplate._vl_pickblock or nodename
 
 	minetest.register_node(surfacename, surface_deftemplate)
 end
