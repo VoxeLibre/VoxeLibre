@@ -136,6 +136,7 @@ local function try_object_pickup(player, inv, object, checkpos)
 		-- Destroy entity
 		-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
 		le.target = checkpos
+		le.itemstring = ""
 		le._removed = true
 
 		-- Stop the object
@@ -957,6 +958,7 @@ minetest.register_entity(":__builtin:item", {
 		self.random_velocity = 0
 		self:set_item(own_stack:to_string())
 
+		entity.itemstring = ""
 		entity._removed = true
 		object:remove()
 		return true
