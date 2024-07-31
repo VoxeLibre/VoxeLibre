@@ -4,21 +4,17 @@
 
 local S = minetest.get_translator("mobs_mc")
 
-local BEAM_CHECK_FREQUENCY = 2
+local BEAM_CHECK_FREQUENCY = 1
 local POS_CHECK_FREQUENCY = 15
-local HEAL_AMMOUNT = 37
+local HEAL_INTERVAL = 1
+local HEAL_AMOUNT = 2
 
-local function heal(self)
-	local o = self.object
-	self.health = math.min(self.hp_max,self.health + HEAL_AMMOUNT)
-end
 local function check_beam(self)
 	for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:get_pos(), 80)) do
 		local luaentity = obj:get_luaentity()
 		if luaentity and luaentity.name == "mcl_end:crystal" then
 			if luaentity.beam then
 				if luaentity.beam == self.beam then
-					heal(self)
 					break
 				end
 			else
@@ -106,7 +102,6 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 	},
 	ignores_nametag = true,
 	do_custom = function(self,dtime)
-		mcl_bossbars.update_boss(self.object, "Ender Dragon", "light_purple")
 		if self._pos_timer == nil or self._pos_timer > POS_CHECK_FREQUENCY then
 			self._pos_timer = 0
 			check_pos(self)
@@ -115,8 +110,20 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 			self._beam_timer = 0
 			check_beam(self)
 		end
+
 		self._beam_timer = self._beam_timer + dtime
 		self._pos_timer = self._pos_timer + dtime
+
+		if self.beam ~= nil then
+			-- heal
+			self._heal_timer = (self._heal_timer or 0) + dtime
+			if self._heal_timer > HEAL_INTERVAL then
+				self.health = math.min(self.hp_max,self.health + HEAL_AMOUNT)
+				self._heal_timer = self._heal_timer - HEAL_INTERVAL
+			end
+		end
+
+		mcl_bossbars.update_boss(self.object, "Ender Dragon", "light_purple")
 	end,
 	on_die = function(self, pos, cmi_cause)
 		if self._portal_pos then
