@@ -123,7 +123,7 @@ local function snowball_on_step(self, dtime)
 		self.object:remove()
 		return
 	end
-	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set _lastpos-->Node will be added at last pos outside the node
+	self._lastpos = pos -- Set _lastpos-->Node will be added at last pos outside the node
 end
 
 -- Movement function of egg
@@ -133,47 +133,39 @@ local function egg_on_step(self, dtime)
 	local node = minetest.get_node(pos)
 	local def = minetest.registered_nodes[node.name]
 
-	-- Destroy when hitting a solid node with chance to spawn chicks
-	if self._lastpos.x then
-		if (def and def.walkable) or not def then
-			-- 1/8 chance to spawn a chick
-			-- FIXME: Chicks have a quite good chance to spawn in walls
-			local r = math.random(1,8)
+	-- Destroy when hitting a solid node or entity, with chance to spawn chicks
+	if (def and def.walkable) or not def or check_object_hit(self, pos, 0) then
+		-- If egg has just been thrown, use current position
+		if not self._lastpos.x then
+			self._lastpos = pos
+		end
+		-- 1/8 chance to spawn a chick
+		-- FIXME: Chicks have a quite good chance to spawn in walls
+		if math.random(1,8) == 1 then
+			mcl_mobs.spawn_child(self._lastpos, "mobs_mc:chicken")
 
-			if r == 1 then
-				mcl_mobs.spawn_child(self._lastpos, "mobs_mc:chicken")
-
-				-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
-				local r = math.random(1,32)
-				if r == 1 then
-					local offsets = {
-						{ x=0.7, y=0, z=0 },
-						{ x=-0.7, y=0, z=-0.7 },
-						{ x=-0.7, y=0, z=0.7 },
-					}
-					for o=1, 3 do
-						local pos = vector.add(self._lastpos, offsets[o])
-						mcl_mobs.spawn_child(pos, "mobs_mc:chicken")
-					end
+			-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
+			if math.random(1,32) == 1 then
+				local offsets = {
+					{ x=0.7, y=0, z=0 },
+					{ x=-0.7, y=0, z=-0.7 },
+					{ x=-0.7, y=0, z=0.7 },
+				}
+				for o=1, 3 do
+					local pos = vector.add(self._lastpos, offsets[o])
+					mcl_mobs.spawn_child(pos, "mobs_mc:chicken")
 				end
 			end
-			minetest.sound_play("mcl_throwing_egg_impact", { pos = self.object:get_pos(), max_hear_distance=10, gain=0.5 }, true)
-			self.object:remove()
-			if mod_target and node.name == "mcl_target:target_off" then
-				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
-			end
-			return
 		end
-	end
-
-	-- Destroy when hitting a mob or player (no chick spawning)
-	if check_object_hit(self, pos, 0) then
 		minetest.sound_play("mcl_throwing_egg_impact", { pos = self.object:get_pos(), max_hear_distance=10, gain=0.5 }, true)
 		self.object:remove()
+		if mod_target and node.name == "mcl_target:target_off" then
+			mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
+		end
 		return
 	end
 
-	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set lastpos-->Node will be added at last pos outside the node
+	self._lastpos = pos -- Set lastpos-->Node will be added at last pos outside the node
 end
 
 -- Movement function of ender pearl
@@ -272,7 +264,7 @@ local function pearl_on_step(self, dtime)
 			return
 		end
 	end
-	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set lastpos-->Node will be added at last pos outside the node
+	self._lastpos = pos -- Set lastpos-->Node will be added at last pos outside the node
 end
 
 snowball_ENTITY.on_step = snowball_on_step
