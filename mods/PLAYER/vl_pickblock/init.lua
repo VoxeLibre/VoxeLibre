@@ -1,3 +1,5 @@
+local S = minetest.get_translator("vl_pickblock")
+
 minetest.override_item("", {
 	on_place = function(itemstack, placer, pointed_thing)
 		if minetest.is_creative_enabled(placer:get_player_name()) then
@@ -19,6 +21,16 @@ minetest.override_item("", {
 				end
 			else
 				rnode = node
+			end
+
+			local inv = placer:get_inventory()
+			for i=1,placer:hud_get_hotbar_itemcount() do
+				local stack = inv:get_stack("main", i)
+				if stack:get_name() == rnode.name then
+					local msg = S("@1 is on slot @2", stack:get_short_description(), i)
+					mcl_title.set(placer, "actionbar", {text = msg, stay = 30})
+					return
+				end
 			end
 
 			return rnode
