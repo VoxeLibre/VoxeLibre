@@ -236,6 +236,7 @@ function mcl_doors:register_trapdoor(name, def)
 			}
 		},
 		on_rotate = on_rotate,
+		_vl_pickblock = name,
 	})
 
 	-- Climbable opened
@@ -267,6 +268,7 @@ function mcl_doors:register_trapdoor(name, def)
 			}
 		},
 		on_rotate = on_rotate,
+		_vl_pickblock = name,
 	})
 
 	if minetest.get_modpath("doc") then
