@@ -302,6 +302,7 @@ function mcl_beds.register_bed(name, def)
 		on_rotate = rotate,
 		after_destruct = destruct_bed,
 		on_dig = dig_bed,
+		_vl_pickblock = name .. "_bottom",
 	})
 
 	minetest.register_alias(name, name .. "_bottom")
