@@ -388,7 +388,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		_on_bone_meal = on_bonemealing,
 		groups = bottom_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
-		mesh = mesh
+		mesh = mesh,
 	})
 
 	local top_groups = table.copy(bottom_groups)
@@ -427,6 +427,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		_on_bone_meal = on_bonemealing,
 		groups = top_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		_vl_pickblock = "mcl_flowers:"..name,
 	})
 
 	if minetest.get_modpath("doc") and longdesc then
