@@ -327,6 +327,8 @@ function mcl_doors:register_door(name, def)
 		on_rotate = nil,
 
 		can_dig = check_player_priv,
+
+		_vl_pickblock = name,
 	}
 
 	local _b_1_def = table.copy(template_def)
