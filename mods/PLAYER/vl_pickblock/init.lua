@@ -24,7 +24,7 @@ local function pickblock(itemstack, placer, pointed_thing)
 	for i=1,placer:hud_get_hotbar_itemcount() do
 		local stack = inv:get_stack("main", i)
 		if stack:get_name() == rnode then
-			local msg = S("@1 is on slot @2", stack:get_short_description(), minetest.colorize(mcl_colors.GOLD, i))
+			local msg = S("@1 is on slot @2", stack:get_short_description(), minetest.colorize(mcl_colors.YELLOW, i))
 			mcl_title.set(placer, "actionbar", {text = msg, stay = 30})
 			return
 		end
