@@ -149,3 +149,46 @@ end
 if mod_doc then
 	doc.add_entry_alias("nodes", "mcl_ocean:seagrass_dirt", "craftitems", "mcl_ocean:seagrass")
 end
+
+function mcl_ocean.mapgen.register_seagrass_decoration(grasstype, offset, scale, biomes)
+	local seed, nodes, surfaces, param2, param2_max, y_max
+	if grasstype == "seagrass" then
+		seed = 16
+		surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel", "mcl_core:redsand"}
+		nodes = {"mcl_ocean:seagrass_dirt", "mcl_ocean:seagrass_sand", "mcl_ocean:seagrass_gravel", "mcl_ocean:seagrass_redsand"}
+		y_max = 0
+	elseif grasstype == "kelp" then
+		seed = 32
+		param2 = 16
+		param2_max = 96
+		surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel"}
+		nodes = {"mcl_ocean:kelp_dirt", "mcl_ocean:kelp_sand", "mcl_ocean:kelp_gravel"}
+		y_max = -6
+	end
+	local noise = {
+		offset = offset,
+		scale = scale,
+		spread = {x = 100, y = 100, z = 100},
+		seed = seed,
+		octaves = 3,
+		persist = 0.6,
+	}
+
+	for s = 1, #surfaces do
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {surfaces[s]},
+			sidelen = 16,
+			noise_params = noise,
+			biomes = biomes,
+			y_min = DEEP_OCEAN_MIN,
+			y_max = y_max,
+			decoration = nodes[s],
+			param2 = param2,
+			param2_max = param2_max,
+			place_offset_y = -1,
+			flags = "force_placement",
+		})
+	end
+end
+

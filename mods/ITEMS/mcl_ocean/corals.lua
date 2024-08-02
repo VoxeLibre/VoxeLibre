@@ -1,5 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 local mod_doc = minetest.get_modpath("doc")
+local mod_mcl_structures = minetest.get_modpath("mcl_structures")
 
 local corals = {
 	{ "tube", S("Tube Coral Block"), S("Dead Tube Coral Block"), S("Tube Coral"), S("Dead Tube Coral"), S("Tube Coral Fan"), S("Dead Tube Coral Fan") },
@@ -70,6 +71,7 @@ end
 
 -- Sound for non-block corals
 local sounds_coral_plant = mcl_sounds.node_sound_leaves_defaults({footstep = mcl_sounds.node_sound_dirt_defaults().footstep})
+
 
 for c=1, #corals do
 	local id = corals[c][1]
@@ -316,3 +318,197 @@ minetest.register_abm({
 		end
 	end,
 })
+
+local coral_min = OCEAN_MIN
+local coral_max = -10
+local warm_oceans = {
+	"JungleEdgeM_ocean",
+	"Jungle_deep_ocean",
+	"Savanna_ocean",
+	"MesaPlateauF_ocean",
+	"Swampland_ocean",
+	"Mesa_ocean",
+	"Plains_ocean",
+	"MesaPlateauFM_ocean",
+	"MushroomIsland_ocean",
+	"SavannaM_ocean",
+	"JungleEdge_ocean",
+	"MesaBryce_ocean",
+	"Jungle_ocean",
+	"Desert_ocean",
+	"JungleM_ocean",
+	"MangroveSwamp_ocean"
+}
+local coral_deco_nodes = {}
+local function register_coral_decos(ck)
+	local c = corals[ck][1]
+	local noise = {
+		offset = -0.0085,
+		scale = 0.002,
+		spread = {x = 25, y = 120, z = 25},
+		seed = 235,
+		octaves = 5,
+		persist = 1.8,
+		lacunarity = 3.5,
+		flags = "absvalue"
+	}
+	minetest.register_decoration({
+		--deco_type = "schematic",
+		deco_type = "simple",
+		decoration = "mcl_ocean:deco_"..c.."_coral_schem_1",
+		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		sidelen = 80,
+		noise_params = noise,
+		biomes = warm_oceans,
+		y_min = coral_min,
+		y_max = coral_max,
+		--schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
+		rotation = "random",
+		flags = "all_floors,force_placement",
+	})
+	table.insert(coral_deco_nodes, "mcl_ocean:deco_"..c.."_coral_schem_1")
+	minetest.register_node(":mcl_ocean:deco_"..c.."_coral_schem_1", {
+		paramtype = "light",
+		group = { coral_deco_root = 1, },
+		tiles = { "mcl_ocean_"..c.."_coral_block.png" },
+		schematic = minetest.read_schematic(mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts", {}),
+		after_place = mcl_ocean.fix_kelp_below_structure
+	})
+
+	minetest.register_decoration({
+		--deco_type = "schematic",
+		deco_type = "simple",
+		decoration = "mcl_ocean:deco_"..c.."_coral_schem_2",
+		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		noise_params = noise,
+		sidelen = 80,
+		biomes = warm_oceans,
+		y_min = coral_min,
+		y_max = coral_max,
+		--schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
+		rotation = "random",
+		flags = "all_floors,force_placement",
+	})
+	table.insert(coral_deco_nodes, "mcl_ocean:deco_"..c.."_coral_schem_2")
+	minetest.register_node(":mcl_ocean:deco_"..c.."_coral_schem_2", {
+		paramtype = "light",
+		group = { coral_deco_root = 1, },
+		tiles = { "mcl_ocean_"..c.."_coral_block.png" },
+		schematic = minetest.read_schematic(mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts", {}),
+		after_place = mcl_ocean.fix_kelp_below_structure
+	})
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:" .. c .. "_coral_block"},
+		sidelen = 16,
+		fill_ratio = 3,
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:" .. c .. "_coral",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_ocean:horn_coral_block"},
+		sidelen = 16,
+		fill_ratio = 7,
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:" .. c .. "_coral_fan",
+		biomes = warm_oceans,
+		flags = "force_placement, all_floors",
+		height = 1,
+		height_max = 1,
+	})
+end
+function mcl_ocean.mapgen.register_corals()
+	-- Coral Reefs
+	for k, _ in pairs(corals) do
+		register_coral_decos(k)
+	end
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.0085,
+			scale = 0.002,
+			spread = {x = 25, y = 120, z = 25},
+			seed = 235,
+			octaves = 5,
+			persist = 1.8,
+			lacunarity = 3.5,
+			flags = "absvalue"
+		},
+		y_min = coral_min,
+		y_max = coral_max,
+		decoration = "mcl_ocean:dead_brain_coral_block",
+		biomes = warm_oceans,
+		flags = "force_placement",
+		height = 1,
+		height_max = 1,
+		place_offset_y = -1,
+	})
+	--rare CORAl
+	minetest.register_decoration({
+		deco_type = "simple",
+		decoration = "mcl_ocean:deco_cora_coral_schem",
+		place_on = {"group:sand", "mcl_core:gravel"},
+		fill_ratio = 0.0001,
+		sidelen = 80,
+		biomes = warm_oceans,
+		y_min = coral_min,
+		y_max = coral_max,
+		rotation = "random",
+		flags = "place_center_x,place_center_z, force_placement",
+	})
+	table.insert(coral_deco_nodes, "mcl_ocean:deco_cora_coral_schem")
+	minetest.register_node(":mcl_ocean:deco_cora_coral_schem", {
+		paramtype = "light",
+		group = { coral_deco_root = 1, },
+		tiles = { "mcl_ocean_brain_coral_block.png" },
+		schematic = minetest.read_schematic(mod_mcl_structures .. "/schematics/coral_cora.mts", {}),
+		after_place = mcl_ocean.fix_kelp_below_structure
+	})
+	local SCHEM_DIRECTIONS = {"0", "90", "180", "270"}
+	local function expand_schematic(pos, node)
+		local node_def = minetest.registered_nodes[node.name] or {}
+		local schematic = node_def.schematic
+		if not schematic then return end
+
+		minetest.set_node(pos, {name = "mcl_core:water_source"})
+		local dx = math.max(schematic.size.x, schematic.size.z)
+		local dy = schematic.size.y
+		local dz = dx
+		local minp = vector.offset(pos, -math.floor(dx / 2) - 1,  0, -math.floor(dz / 2) - 1)
+		local maxp = vector.offset(minp, dx + 1, dy - 1, dz + 1)
+		mcl_ocean.kelp.remove_kelp_below_structure(minp, maxp)
+
+		-- Deterministic rotation
+		local prn = minetest.hash_node_position(pos)
+		prn = (prn * math.floor(prn / 1e6)) % 4 + 1
+
+		minetest.place_schematic(pos, schematic, SCHEM_DIRECTIONS[prn], {}, true, "place_center_x,place_center_z")
+	end
+
+	minetest.register_abm({
+		label = "Coral schematic decoration expansion ABM",
+		nodenames = coral_deco_nodes,
+		interval = 0.1,
+		chance = 1,
+		catch_up = false,
+		action = expand_schematic,
+	})
+	minetest.register_lbm({
+		label = "Coral schematic decoration expansion LBM",
+		name = ":mcl_ocean:coral_deco_expansion",
+		nodenames = coral_deco_nodes,
+		run_at_every_load = true,
+		action = expand_schematic,
+	})
+end
+

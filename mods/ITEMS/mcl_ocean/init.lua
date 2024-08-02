@@ -1,16 +1,20 @@
-mcl_ocean = {}
+mcl_ocean = {
+	mapgen = {}
+}
+local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 -- Prismarine (includes sea lantern)
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/prismarine.lua")
+dofile(modpath.."/prismarine.lua")
 
 -- Corals
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/corals.lua")
+dofile(modpath.."/corals.lua")
 
 -- Seagrass
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/seagrass.lua")
+dofile(modpath.."/seagrass.lua")
 
 -- Kelp
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/kelp.lua")
+dofile(modpath.."/kelp.lua")
 
 -- Sea Pickle
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/sea_pickle.lua")
+dofile(modpath.."/sea_pickle.lua")
+
