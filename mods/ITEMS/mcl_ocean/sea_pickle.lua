@@ -134,6 +134,7 @@ for s=1,4 do
 		_mcl_sea_pickle_next = next_on,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
+		_vl_pickblock = canonical,
 	})
 
 	minetest.register_node("mcl_ocean:sea_pickle_"..s.."_off_"..ontop, {
@@ -166,6 +167,7 @@ for s=1,4 do
 		_mcl_sea_pickle_next = next_off,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
+		_vl_pickblock = canonical,
 	})
 
 	if mod_doc then
