@@ -124,6 +124,7 @@ for i = 1, 3 do
 		on_rotate = false,
 		_mcl_blast_resistance = 3,
 		_mcl_hardness = 0.2,
+		_vl_pickblock = "mcl_cocoas:cocoa_beans",
 		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
 			return cocoa_grow(pos)
