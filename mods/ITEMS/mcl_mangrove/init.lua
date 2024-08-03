@@ -134,6 +134,7 @@ minetest.register_node("mcl_mangrove:hanging_propagule_1", {
 	tiles = {"mcl_mangrove_propagule_hanging.png"},
 	inventory_image = "mcl_mangrove_propagule.png",
 	wield_image = "mcl_mangrove_propagule.png",
+	_vl_pickblock = "mcl_mangrove:propagule",
 })
 local propagule_rooted_nodes = {}
 for _,root in pairs(propagule_water_nodes) do
@@ -172,6 +173,7 @@ for _,root in pairs(propagule_water_nodes) do
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
 		_mcl_silk_touch_drop = true,
+		_vl_pickblock = "mcl_mangrove:propagule",
 	})
 
 end
@@ -240,6 +242,7 @@ local wlroots = {
 			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 		end
 	end,
+	_vl_pickblock = "mcl_mangrove:mangrove_roots",
 }
 local rwlroots = table.copy(wlroots)
 -- FIXME luacheck complains that this is a repeated definition of water_tex.
