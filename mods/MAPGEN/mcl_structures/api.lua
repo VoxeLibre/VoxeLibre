@@ -326,15 +326,15 @@ function mcl_structures.place_structure(pos, def, pr, blockseed, rot)
 end
 
 local EMPTY_SCHEMATIC = { size = {x = 0, y = 0, z = 0}, data = { } }
-
 function mcl_structures.register_structure(name,def,nospawn) --nospawn means it will not be placed by mapgen decoration mechanism
 	if mcl_structures.is_disabled(name) then return end
 	local flags = def.flags or "place_center_x, place_center_z, force_placement"
 	def.name = name
 	if not nospawn and def.place_on then
 		minetest.register_on_mods_loaded(function() --make sure all previous decorations and biomes have been registered
-			def.deco = minetest.register_decoration({
-				name = "mcl_structures:deco_"..name,
+			mcl_mapgen_core.register_decoration({
+				name = "mcl_structures:"..name,
+				rank = def.rank or (def.terrain_feature and 900) or 100, -- run before regular decorations
 				deco_type = "schematic",
 				schematic = EMPTY_SCHEMATIC,
 				place_on = def.place_on,
@@ -347,10 +347,13 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 				biomes = def.biomes,
 				y_max = def.y_max,
 				y_min = def.y_min
-			})
-			def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
-			minetest.set_gen_notify({decoration=true}, { def.deco_id })
-			--catching of gennotify happens in mcl_mapgen_core
+				},
+				function()
+					def.deco_id = minetest.get_decoration_id("mcl_structures:"..name)
+					minetest.set_gen_notify({decoration=true}, { def.deco_id })
+					--catching of gennotify happens in mcl_mapgen_core
+				end
+			)
 		end)
 	end
 	mcl_structures.registered_structures[name] = def
