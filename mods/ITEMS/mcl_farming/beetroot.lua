@@ -41,6 +41,7 @@ for i = 0, 2 do
 		},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
+		_vl_pickblock = "mcl_farming:beetroot_seeds",
 		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
 			local n = minetest.get_node(pos)
@@ -102,6 +103,7 @@ minetest.register_node("mcl_farming:beetroot", {
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,beetroot=4},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
+	_vl_pickblock = "mcl_farming:beetroot_seeds",
 })
 
 minetest.register_craftitem("mcl_farming:beetroot_item", {
