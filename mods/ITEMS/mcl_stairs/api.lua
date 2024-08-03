@@ -362,6 +362,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 		drop = lower_slab .. " 2",
 		_mcl_hardness = hardness,
 		_mcl_blast_resistance = blast_resistance,
+		_vl_pickblock = lower_slab,
 	})
 
 	if recipeitem then
