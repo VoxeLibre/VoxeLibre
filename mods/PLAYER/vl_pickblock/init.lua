@@ -20,6 +20,8 @@ local function pickblock(itemstack, placer, pointed_thing)
 		rnode = node.name
 	end
 
+	-- check if the picked node is already on the hotbar
+	-- if so, notify the player
 	local inv = placer:get_inventory()
 	for i=1,placer:hud_get_hotbar_itemcount() do
 		local stack = inv:get_stack("main", i)
@@ -35,12 +37,10 @@ end
 
 minetest.override_item("", {
 	on_place = function(itemstack, placer, pointed_thing)
-		if minetest.is_creative_enabled(placer:get_player_name()) then
-			if mcl_util.call_on_rightclick(itemstack, placer, pointed_thing) then
-				return
-			else
-				return pickblock(itemstack, placer, pointed_thing)
-			end
+		if mcl_util.call_on_rightclick(itemstack, placer, pointed_thing) then
+			return
+		elseif minetest.is_creative_enabled(placer:get_player_name()) then
+			return pickblock(itemstack, placer, pointed_thing)
 		end
 	end
 })
