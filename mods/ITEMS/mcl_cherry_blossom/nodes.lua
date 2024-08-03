@@ -69,7 +69,7 @@ mcl_signs.register_sign_custom("mcl_cherry_blossom", "_cherrywood",
 mcl_fences.register_fence_and_fence_gate(
 	"cherry_fence",
 	S("Cherry Fence"),
-	S("Cherry Gate"),
+	S("Cherry Fence Gate"),
 	"mcl_cherry_blossom_planks.png",
 	{handy=1, axey=1, flammable=2, fence_wood=1, fire_encouragement=5, fire_flammability=20},
 	minetest.registered_nodes["mcl_core:wood"]._mcl_hardness,

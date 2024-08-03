@@ -208,7 +208,7 @@ if minetest.get_modpath("mcl_fences") then
 		wood_groups,
 		minetest.registered_nodes["mcl_core:wood"]._mcl_hardness,
 		minetest.registered_nodes["mcl_core:wood"]._mcl_blast_resistance,
-		node_sound) -- note: about missing params.. will use defaults.
+		node_sound)
 
 	mcl_bamboo.mcl_log(dump(fence_id))
 	mcl_bamboo.mcl_log(dump(gate_id))
