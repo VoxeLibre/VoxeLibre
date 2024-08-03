@@ -129,6 +129,7 @@ for l = 1, 4 do
 		_mcl_hardness = 0.6,
 		drop = "",
 		after_dig_node = dig_hive,
+		_vl_pickblock = "mcl_beehives:beehive",
 	})
 end
 
@@ -148,6 +149,7 @@ minetest.register_node("mcl_beehives:beehive_5", {
 	on_rightclick = honey_harvest,
 	drop = "",
 	after_dig_node = dig_hive,
+	_vl_pickblock = "mcl_beehives:beehive",
 })
 
 -- Bee Nest
@@ -184,6 +186,7 @@ for i = 1, 4 do
 		_mcl_hardness = 0.3,
 		drop = "",
 		after_dig_node = dig_hive,
+		_vl_pickblock = "mcl_beehives:bee_nest",
 	})
 end
 
@@ -203,6 +206,7 @@ minetest.register_node("mcl_beehives:bee_nest_5", {
 	on_rightclick = honey_harvest,
 	drop = "",
 	after_dig_node = dig_hive,
+	_vl_pickblock = "mcl_beehives:bee_nest",
 })
 
 -- Crafting
