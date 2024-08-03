@@ -18,7 +18,7 @@ mcl_mobs.invis = {}
 local remove_far = true
 
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false) -- Shows helpful debug info above each mob
-local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
+local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", false)
 
 local MAPGEN_LIMIT = mcl_vars.mapgen_limit
 local MAPGEN_MOB_LIMIT = MAPGEN_LIMIT - 90

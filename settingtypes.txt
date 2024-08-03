@@ -329,13 +329,13 @@ give_starting_inv (Player Starter Pack) bool false
 mcl_item_id_debug (Item ID Debug) bool false
 
 #Log mob spawning and despawning events
-mcl_logging_mobs_spawn (Log Mob Spawning) bool true
+mcl_logging_mobs_spawn (Log Mob Spawning) bool false
 
 # If enabled mapgen timings will be dumped to log
 mcl_logging_mapgen (Chunk generation logging) bool false
 
 # If enabled generated structures will be logged
-mcl_logging_structures (Structure generation logging) bool true
+mcl_logging_structures (Structure generation logging) bool false
 
 #Complete debug logging for mcl_signs events. Use this if you have issues with signs.
 mcl_logging_mcl_signs (Complete debug logging for mcl_signs) bool false

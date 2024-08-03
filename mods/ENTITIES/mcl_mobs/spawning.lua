@@ -34,9 +34,9 @@ local table_copy     = table.copy
 local table_remove   = table.remove
 local pairs = pairs
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_spawning", false)
+local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", false)
 local function mcl_log (message, property)
-	if LOGGING_ON then
+	if logging then
 		if property then
 			message = message .. ": " .. dump(property)
 		end
@@ -98,7 +98,6 @@ mcl_log("Percentage of hostile spawns are group: " .. hostile_group_percentage_s
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
-local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",true)
 
 -- THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
 -- Also used for missing parameter
