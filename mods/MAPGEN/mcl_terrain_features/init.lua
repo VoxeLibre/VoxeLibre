@@ -134,6 +134,7 @@ local function get_fallen_tree_schematic(pos,pr)
 end
 
 mcl_structures.register_structure("fallen_tree",{
+	rank = 1100, -- after regular trees
 	place_on = {"group:grass_block"},
 	terrain_feature = true,
 	noise_params = {
@@ -151,12 +152,9 @@ mcl_structures.register_structure("fallen_tree",{
 	y_min = minetest.get_mapgen_setting("water_level"),
 	on_place = function(pos,def,pr)
 		local air_p1 = vector.offset(pos,-def.sidelen/2,1,-def.sidelen/2)
-		local air_p2 = vector.offset(pos,def.sidelen/2,1,def.sidelen/2)
+		local air_p2 = vector.offset(air_p1,def.sidelen-1,0,def.sidelen-1)
 		local air = minetest.find_nodes_in_area(air_p1,air_p2,{"air"})
-		if #air < ( def.sidelen * def.sidelen ) / 2 then
-			return false
-		end
-		return true
+		return #air >= (def.sidelen * def.sidelen) / 2
 	end,
 	place_func = function(pos,def,pr)
 		local schem=get_fallen_tree_schematic(pos,pr)
