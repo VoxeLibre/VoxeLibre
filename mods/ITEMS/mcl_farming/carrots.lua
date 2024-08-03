@@ -45,6 +45,7 @@ for i=1, 7 do
 		groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
+		_vl_pickblock = "mcl_farming:carrot_item",
 		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
 			local n = minetest.get_node(pos)
@@ -90,7 +91,8 @@ minetest.register_node("mcl_farming:carrot", {
 		min_count = 2,
 		max_count = 4,
 		cap = 5,
-	}
+	},
+	_vl_pickblock = "mcl_farming:carrot_item",
 })
 
 minetest.register_craftitem("mcl_farming:carrot_item", {

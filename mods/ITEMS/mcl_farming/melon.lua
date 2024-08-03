@@ -109,6 +109,7 @@ for s=1,7 do
 		groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, plant_melon_stem=s},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
+		_vl_pickblock = "mcl_farming:melon_seeds",
 		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
 			local n = minetest.get_node(pos)
@@ -126,6 +127,7 @@ local stem_def = {
 	tiles = {"mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127"},
 	wield_image = "mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127",
 	inventory_image = "mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127",
+	_vl_pickblock = "mcl_farming:melon_seeds",
 }
 
 -- Register stem growth
