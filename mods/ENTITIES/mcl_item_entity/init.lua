@@ -339,7 +339,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 
 		if simple_drop then
-			for _, item in ipairs(simple_drop) do
+			for _, item in pairs(simple_drop) do
 				table.insert(drops, item)
 			end
 		end
