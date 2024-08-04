@@ -321,6 +321,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	if tool and nodedef._mcl_fortune_drop and enchantments.fortune then
 		local fortune_level = enchantments.fortune
 		local fortune_drop = nodedef._mcl_fortune_drop
+		local simple_drop = nodedef._mcl_fortune_drop.drop_without_fortune
 		if fortune_drop.discrete_uniform_distribution then
 			local min_count = fortune_drop.min_count
 			local max_count = fortune_drop.max_count + fortune_level * (fortune_drop.factor or 1)
@@ -335,6 +336,12 @@ function minetest.handle_node_drops(pos, drops, digger)
 			-- Fixed Behavior
 			local drop = get_fortune_drops(fortune_drop, fortune_level)
 			drops = get_drops(drop, tool:get_name(), dug_node.param2, nodedef.paramtype2)
+		end
+
+		if simple_drop then
+			for _, item in ipairs(simple_drop) do
+				table.insert(drops, item)
+			end
 		end
 	end
 
