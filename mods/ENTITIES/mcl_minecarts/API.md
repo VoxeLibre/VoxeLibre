@@ -46,7 +46,7 @@ Where to attach passengers to the minecarts.
 `mcl_minecarts.HORIZONTAL_CURVES_RULES`
 `mcl_minecarts.HORIZONTAL_STANDARD_RULES`
 
-Rail connection rules. Each rule is an table with the following indexes:
+Rail connection rules. Each rule is a table with the following indexes:
 
 1. `node_name_suffix` - The suffix added to a node's `_mcl_minecarts.base_name` to
    get the name of the node to use for this connection.
@@ -167,7 +167,7 @@ Force a minecart to start moving in the opposite direction of its current direct
 
 Returns a valid cart movement direction that has the smallest angle between it and `direction_vector`.
 
-`mcl_minecarts:update_cart_orientation(cart)`
+`mcl_minecarts.update_cart_orientation(cart)`
 
 Updates the rotation of a cart entity to match the cart's data.
 
