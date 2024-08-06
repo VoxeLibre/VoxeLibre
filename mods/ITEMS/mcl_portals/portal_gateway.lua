@@ -4,34 +4,35 @@ local storage = mcl_portals.storage
 local vector = vector
 
 local gateway_positions = {
-	{x = 96, y = -26925, z = 0},
-	{x = 91, y = -26925, z = 29},
-	{x = 77, y = -26925, z = 56},
-	{x = 56, y = -26925, z = 77},
-	{x = 29, y = -26925, z = 91},
-	{x = 0, y = -26925, z = 96},
-	{x = -29, y = -26925, z = 91},
-	{x = -56, y = -26925, z = 77},
-	{x = -77, y = -26925, z = 56},
-	{x = -91, y = -26925, z = 29},
-	{x = -96, y = -26925, z = 0},
-	{x = -91, y = -26925, z = -29},
-	{x = -77, y = -26925, z = -56},
-	{x = -56, y = -26925, z = -77},
-	{x = -29, y = -26925, z = -91},
-	{x = 0, y = -26925, z = -96},
-	{x = 29, y = -26925, z = -91},
-	{x = 56, y = -26925, z = -77},
-	{x = 77, y = -26925, z = -56},
-	{x = 91, y = -26925, z = -29},
+	vector.new(96, -26925, 0),
+	vector.new(91, -26925, 29),
+	vector.new(77, -26925, 56),
+	vector.new(56, -26925, 77),
+	vector.new(29, -26925, 91),
+	vector.new(0, -26925, 96),
+	vector.new(-29, -26925, 91),
+	vector.new(-56, -26925, 77),
+	vector.new(-77, -26925, 56),
+	vector.new(-91, -26925, 29),
+	vector.new(-96, -26925, 0),
+	vector.new(-91, -26925, -29),
+	vector.new(-77, -26925, -56),
+	vector.new(-56, -26925, -77),
+	vector.new(-29, -26925, -91),
+	vector.new(0, -26925, -96),
+	vector.new(29, -26925, -91),
+	vector.new(56, -26925, -77),
+	vector.new(77, -26925, -56),
+	vector.new(91, -26925, -29),
 }
 
 local path_gateway_portal = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_gateway_portal.mts"
 
 local function spawn_gateway_portal(pos, dest_str)
-	return mcl_structures.place_schematic(vector.add(pos, vector.new(-1, -2, -1)), path_gateway_portal, "0", nil, true, nil, dest_str and function()
-		minetest.get_meta(pos):set_string("mcl_portals:gateway_destination", dest_str)
-	end)
+	return mcl_structures.place_schematic(vector.add(pos, vector.new(-1, -2, -1)), 0, nil, nil, path_gateway_portal, "0", nil, true, nil, nil, nil,
+		dest_str and function()
+			minetest.get_meta(pos):set_string("mcl_portals:gateway_destination", dest_str)
+		end)
 end
 
 function mcl_portals.spawn_gateway_portal()

@@ -66,18 +66,17 @@ local function smooth_path(path)
 		local next_y = path[i + 1].y
 		local bump_node = minetest.get_node(path[i])
 
+		-- TODO: replace bamboo underneath with dirt here?
 		if minetest.get_item_group(bump_node.name, "water") ~= 0 then
 			-- ignore in this pass
 		elseif y >= next_y + 2 and y <= prev_y then
-			local under_pos = vector.offset(path[i], 0, -1, 0)
-			minetest.swap_node(under_pos, { name = "air" })
+			minetest.swap_node(vector.offset(path[i], 0, -1, 0), { name = "air" })
 			path[i].y = path[i].y - 1
 		elseif y <= next_y - 2 and y >= prev_y then
 			minetest.swap_node(path[i], { name = "mcl_core:dirt" })
 			path[i].y = path[i].y + 1
 		elseif y >= prev_y + 2 and y <= next_y then
-			local under_pos = vector.offset(path[i], 0, -1, 0)
-			minetest.swap_node(under_pos, { name = "air" })
+			minetest.swap_node(vector.offset(path[i], 0, -1, 0), { name = "air" })
 			path[i].y = path[i].y - 1
 		elseif y <= prev_y - 2 and y >= prev_y then
 			minetest.swap_node(path[i], { name = "mcl_core:dirt" })
@@ -88,8 +87,7 @@ local function smooth_path(path)
 			path[i].y = path[i].y + 1
 		elseif y > prev_y and y > next_y then
 			-- Remove peak to flatten path
-			local under_pos = vector.offset(path[i], 0, -1, 0)
-			minetest.swap_node(under_pos, { name = "air" })
+			minetest.swap_node(vector.offset(path[i], 0, -1, 0), { name = "air" })
 			path[i].y = path[i].y - 1
 		end
 	end
@@ -125,9 +123,8 @@ local function place_path(path, pr, stair, slab)
 		elseif y > prev_y and y > next_y then
 			-- TODO: do not break other path/stairs
 			-- Remove peak to flatten path
-			local under_pos = vector.offset(path[i], 0, -1, 0)
-			minetest.swap_node(under_pos, { name = "air" })
-			path[i] = under_pos
+			minetest.swap_node(vector.offset(path[i], 0, -1, 0), { name = "air" })
+			path[i].y = path[i].y - 1
 		end
 	end
 

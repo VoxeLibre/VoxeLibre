@@ -17,10 +17,9 @@ end
 
 mcl_structures.register_structure("end_shipwreck",{
 	place_on = {"mcl_end:end_stone"},
-	fill_ratio = 0.001,
 	flags = "place_center_x, place_center_z, all_floors",
 	y_offset = function(pr) return pr:next(-50,-20) end,
-	chunk_probability = 800,
+	chunk_probability = 25,
 	--y_max = mcl_vars.mg_end_max,
 	--y_min = mcl_vars.mg_end_min -100,
 	biomes = { "End", "EndHighlands", "EndMidlands", "EndBarrens", "EndSmallIslands" },
