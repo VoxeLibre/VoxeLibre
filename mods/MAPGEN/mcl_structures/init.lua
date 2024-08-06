@@ -5,6 +5,7 @@ local modpath = minetest.get_modpath(modname)
 mcl_structures = {}
 
 dofile(modpath.."/api.lua")
+dofile(modpath.."/foundation.lua")
 dofile(modpath.."/shipwrecks.lua")
 dofile(modpath.."/desert_temple.lua")
 dofile(modpath.."/jungle_temple.lua")
@@ -21,12 +22,11 @@ dofile(modpath.."/end_city.lua")
 
 mcl_structures.register_structure("desert_well",{
 	place_on = {"group:sand"},
-	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
 	not_near = { "desert_temple_new" },
 	solid_ground = true,
 	sidelen = 4,
-	chunk_probability = 600,
+	chunk_probability = 15,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -2,
@@ -36,11 +36,10 @@ mcl_structures.register_structure("desert_well",{
 
 mcl_structures.register_structure("fossil",{
 	place_on = {"group:material_stone","group:sand"},
-	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
 	sidelen = 13,
-	chunk_probability = 1000,
+	chunk_probability = 25,
 	y_offset = function(pr) return ( pr:next(1,16) * -1 ) -16 end,
 	y_max = 15,
 	y_min = mcl_vars.mg_overworld_min + 35,
@@ -102,7 +101,8 @@ minetest.register_chatcommand("spawnstruct", {
 		pos = vector.round(pos)
 		local dir = minetest.yaw_to_dir(player:get_look_horizontal())
 		local rot = dir_to_rotation(dir)
-		local pr = PseudoRandom(pos.x+pos.y+pos.z)
+		local seed = minetest.hash_node_position(pos)
+		local pr = PcgRandom(seed)
 		local errord = false
 		local message = S("Structure placed.")
 		if param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
@@ -113,7 +113,7 @@ minetest.register_chatcommand("spawnstruct", {
 		else
 			for n,d in pairs(mcl_structures.registered_structures) do
 				if n == param then
-					mcl_structures.place_structure(pos,d,pr,math.random(),rot)
+					mcl_structures.place_structure(pos,d,pr,seed,rot)
 					return true,message
 				end
 			end

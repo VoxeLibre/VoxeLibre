@@ -5,7 +5,6 @@ local village_chance = tonumber(minetest.settings:get("mcl_villages_village_prob
 
 dofile(mcl_villages.modpath.."/const.lua")
 dofile(mcl_villages.modpath.."/utils.lua")
-dofile(mcl_villages.modpath.."/foundation.lua")
 dofile(mcl_villages.modpath.."/buildings.lua")
 dofile(mcl_villages.modpath.."/paths.lua")
 dofile(mcl_villages.modpath.."/api.lua")
@@ -13,12 +12,9 @@ dofile(mcl_villages.modpath.."/api.lua")
 local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_alias("mcl_villages:stonebrickcarved", "mcl_core:stonebrickcarved")
--- In 2025, remove structblock: minetest.register_alias("mcl_villages:structblock", "air")
 minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = {not_in_creative_inventory=1},})
 -- we currently do not support/use these from MCLA:
 --minetest.register_alias("mcl_villages:village_block", "air")
---minetest.register_alias("mcl_villages:no_paths", "air")
---minetest.register_alias("mcl_villages:path_endpoint", "air")
 --minetest.register_alias("mcl_villages:building_block", "air")
 --
 -- on map generation, try to build a settlement
@@ -26,15 +22,15 @@ minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = 
 local function build_a_settlement(minp, maxp, blockseed)
 	if mcl_villages.village_exists(blockseed) then return end
 	local pr = PcgRandom(blockseed)
-	local lvm = VoxelManip()
-	lvm:read_from_map(minp, maxp)
+	local lvm = VoxelManip(minp, maxp)
 	local settlement = mcl_villages.create_site_plan(lvm, minp, maxp, pr)
 	if not settlement then return false, false end
 	-- all foundations first, then all buildings, to avoid damaging very close buildings
 	mcl_villages.terraform(lvm, settlement, pr)
 	mcl_villages.place_schematics(lvm, settlement, blockseed, pr)
 	mcl_villages.add_village(blockseed, settlement)
-	--lvm:write_to_map(false)
+	--lvm:write_to_map(true) -- destory paths as of now
+	--mcl_villages.paths(blockseed) -- TODO: biome
 	for _, on_village_placed_callback in pairs(mcl_villages.on_village_placed) do
 		on_village_placed_callback(settlement, blockseed)
 	end
@@ -49,6 +45,17 @@ end
 -- Disable natural generation in singlenode.
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
+	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
+		if maxp.y < 0 then return end
+		if village_chance == 0 then return end
+		local pr = PcgRandom(blockseed)
+		if pr:next(0, 100) > village_chance then return end
+		local big_minp = vector.copy(minp) --vector.offset(minp, -16, -16, -16)
+		local big_maxp = vector.copy(maxp) --vector.offset(maxp, 16, 16, 16)
+		minetest.emerge_area(big_minp, big_maxp, ecb_village,
+			{ minp = vector.copy(minp), maxp = vector.copy(maxp), blockseed = blockseed }
+		)
+	end)
 	--[[ did not work, because later structure generation would make holes in our schematics
 	mcl_mapgen_core.register_generator("villages", function(lvm, data, data2, e1, e2, area, minp, maxp, blockseed)
 		if mcl_villages.village_exists(blockseed) then return false, false end
@@ -74,6 +81,7 @@ if mg_name ~= "singlenode" then
 		end
 	end, 15000)
 	]]--
+	--[[ causes issues when vertically close to the chunk boundary:
 	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
 		if maxp.y < 0 or mcl_villages.village_exists(blockseed) then return end
 		local pr = PcgRandom(blockseed)
@@ -90,6 +98,7 @@ if mg_name ~= "singlenode" then
 		--lvm:write_to_map(true)
 		--mcl_villages.paths(blockseed) -- TODO: biome
 	end, 15000)
+	]]--
 end
 
 -- This is a light source so that lamps don't get placed near it
@@ -111,17 +120,16 @@ minetest.register_node("mcl_villages:village_block", {
 	end,
 })
 
--- LEGACY, for spawning "planned" cities in old maps. Remove in 2025?
+-- struct to cause a village spawn when it can be fully emerged
 minetest.register_lbm({
 	name = "mcl_villages:structblock",
 	run_at_every_load = true,
 	nodenames = {"mcl_villages:structblock"},
 	action = function(pos, node)
 		minetest.set_node(pos, {name = "air"})
-		local px, py, pz = math.floor(pos.x / 16) * 16, math.floor(pos.y / 16) * 16, math.floor(pos.z / 16) * 16
-		local minp=vector.new(px, py, pz)
-		local maxp=vector.new(px + 80, py + 80, pz + 80)
-		local blockseed = PcgRandom(px * 223 + py * 17 + pz):next()
+		local minp=vector.offset(pos, -40, -40, -40)
+		local maxp=vector.offset(pos, 40, 40, 40)
+		local blockseed = PcgRandom(minetest.hash_node_position(pos)):next()
 		minetest.emerge_area(minp, maxp, ecb_village, {minp=minp, maxp=maxp, blockseed=blockseed})
 	end
 })

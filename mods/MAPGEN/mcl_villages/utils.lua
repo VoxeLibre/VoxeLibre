@@ -1,21 +1,17 @@
 local function is_above_surface(name)
-    -- TODO: use groups
-	return name == "air" or
-		-- note: not dirt_with_grass!
-		string.find(name,"tree") or
-		string.find(name,"leaves") or
-		string.find(name,"snow") or
-		string.find(name,"fern") or
-		string.find(name,"flower") or -- includes grass decorations
-		string.find(name,"bush") or
-		name == "mcl_bamboo:bamboo" or name == "mcl_core:vine"
+	if name == "air" or name == "mcl_bamboo:bamboo" or name == "mcl_core:vine" or name == "mcl_core:snow" then
+		return true
+	end
+	local meta = core.registered_items[name]
+	local groups = meta and meta.groups
+	return groups and (groups["deco_block"] or groups["tree"] or groups["leaves"] or groups["plant"])
 end
 function mcl_villages.find_surface_down(lvm, pos, surface_node)
 	local p6 = vector.new(pos)
 	surface_node = surface_node or lvm:get_node_at(p6)
 	if not surface_node then return end
 	local has_air = is_above_surface(surface_node.name)
-	for y = p6.y - 1, math.max(0,p6.y - 80), -1 do
+	for y = p6.y - 1, math.max(0, p6.y - 80), -1 do
 		p6.y = y
 		local top_node = surface_node
 		surface_node = lvm:get_node_at(p6)
@@ -97,7 +93,6 @@ function mcl_villages.fill_chest(pos, pr)
 	if meta:get_string("infotext") ~= "Chest" then
 		-- For MineClone2 0.70 or before
 		minetest.registered_nodes["mcl_chests:chest"].on_construct(pos)
-		--
 		-- For MineClone2 after commit 09ab1482b5 (the new entity chests)
 		minetest.registered_nodes["mcl_chests:chest_small"].on_construct(pos)
 	end

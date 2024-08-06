@@ -7,11 +7,11 @@ local spawnon = {"mcl_deepslate:deepslate","mcl_core:birchwood","mcl_wool:red_ca
 
 mcl_structures.register_structure("woodland_cabin",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
-	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
-	make_foundation = true,
-	chunk_probability = 800,
+	prepare = { padding = 2, corners = 5, foundation = true, clearance = true },
+	force_placement = false,
+	chunk_probability = 20,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "RoofedForest" },

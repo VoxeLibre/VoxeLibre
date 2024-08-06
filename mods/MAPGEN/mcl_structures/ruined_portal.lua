@@ -12,14 +12,13 @@ end
 
 local def = {
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:grass_block","group:sand","group:grass_block_snow","mcl_core:snow"},
-	fill_ratio = 0.006,
 	flags = "place_center_x, place_center_z, all_floors",
 	solid_ground = true,
-	make_foundation = true,
-	chunk_probability = 800,
+	prepare = { padding = 0, corners = 3, tolerance = 10, foundation = true, clearance = true },
+	chunk_probability = 20,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
-	sidelen = 10,
+	sidelen = 12,
 	y_offset = -5,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ruined_portal_1.mts",
