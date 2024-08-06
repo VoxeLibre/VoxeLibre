@@ -7,13 +7,12 @@ local BLAZE_SPAWNER_MAX_LIGHT = 11
 
 mcl_structures.register_structure("nether_outpost",{
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
-	fill_ratio = 0.01,
-	chunk_probability = 900,
+	chunk_probability = 23,
 	flags = "all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
 	sidelen = 24,
 	solid_ground = true,
-	make_foundation = true,
+	prepare = { tolerance=20, padding=2, corners=5, foundation=true, clearance=true },
 	y_min = mcl_vars.mg_lava_nether_max - 1,
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
@@ -31,17 +30,17 @@ local nbridges = {
 		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_4.mts",
 }
 mcl_structures.register_structure("nether_bridge",{
-	place_on = {"mcl_nether:nether_lava_source","mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand","mcl_core:bedrock"},
-	fill_ratio = 0.01,
-	chunk_probability = 500,
-	flags = "all_floors",
+	place_on = {"mcl_nether:nether_lava_source","mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
+	chunk_probability = 5, -- because of the small height allowed, these are quite rare otherwise
+	flags = "all_floors, liquid_surface",
+	prepare = { tolerance=-1, clearance = 6 },
+	force_placement = true,
 	sidelen = 38,
 	solid_ground = false,
-	make_foundation = false,
-	y_min = mcl_vars.mg_nether_min - 4,
-	y_max = mcl_vars.mg_lava_nether_max - 20,
+	y_min = mcl_vars.mg_lava_nether_max - 5,
+	y_max = mcl_vars.mg_lava_nether_max + 15,
 	filenames = nbridges,
-	y_offset = function(pr) return pr:next(15,20) end,
+	y_offset = function(pr) return pr:next(-12, -5) end,
 	after_place = function(pos,def,pr)
 		local p1 = vector.offset(pos,-14,0,-14)
 		local p2 = vector.offset(pos,14,24,14)
@@ -51,35 +50,41 @@ mcl_structures.register_structure("nether_bridge",{
 
 mcl_structures.register_structure("nether_outpost_with_bridges",{
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand","mcl_nether:nether_lava_source"},
-	fill_ratio = 0.01,
-	chunk_probability = 1300,
+	chunk_probability = 33,
 	flags = "all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
 	sidelen = 24,
 	solid_ground = true,
-	make_foundation = true,
+	prepare = { tolerance=30, padding=4, corners=5, foundation=true, clearance=true },
 	y_min = mcl_vars.mg_lava_nether_max - 1,
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
 	daughters = {{
 		files = { nbridges[1] },
-			pos = vector.new(0,-2,-24),
+			pos = vector.new(0,-3,-25),
 			rot = 180,
+			prepare = { tolerance = -1, foundation = false, clearance = 14, padding = -2, corners=2 },
 		},
 		{
 		files = { nbridges[1] },
-			pos = vector.new(0,-2,24),
+			pos = vector.new(0,-3,24),
 			rot = 0,
+			no_level = true,
+			prepare = { tolerance = -1, foundation = false, clearance = 14, padding = -2, corners=2 },
 		},
 		{
 		files = { nbridges[1] },
-			pos = vector.new(-24,-2,0),
+			pos = vector.new(-25,-3,0),
 			rot = 270,
+			no_level = true,
+			prepare = { tolerance = -1, foundation = false, clearance = 14, padding = -2, corners=2 },
 		},
 		{
 		files = { nbridges[1] },
-			pos = vector.new(24,-2,0),
+			pos = vector.new(24,-3,0),
 			rot = 90,
+			no_level = true,
+			prepare = { tolerance = -1, foundation = false, clearance = 14, padding = -2, corners=2 },
 		},
 	},
 	after_place = function(pos,def,pr)
@@ -97,11 +102,10 @@ mcl_structures.register_structure("nether_outpost_with_bridges",{
 		end
 		minetest.bulk_set_node(bricks, {name = "mcl_nether:nether_brick", param2 = 2})
 
-		local p1 = vector.offset(pos,-45,13,-45)
-		local p2 = vector.offset(pos,45,13,45)
+		local p1, p2 = vector.offset(pos,-45,12,-45), vector.offset(pos,45,22,45)
 		mcl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
 	end
-},true)
+})
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:witherskeleton",
@@ -115,13 +119,12 @@ mcl_structures.register_structure_spawn({
 
 mcl_structures.register_structure("nether_bulwark",{
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
-	fill_ratio = 0.01,
-	chunk_probability = 900,
+	chunk_probability = 29,
 	flags = "all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest"},
 	sidelen = 36,
 	solid_ground = true,
-	make_foundation = true,
+	prepare = { tolerance=15, padding=4, corners=4, foundation=true, clearance=true },
 	y_min = mcl_vars.mg_lava_nether_max - 1,
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = {
@@ -137,14 +140,15 @@ mcl_structures.register_structure("nether_bulwark",{
 				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_3.mts",
 				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_4.mts",
 			},
-			pos = vector.new(0,0,0),
+			pos = vector.new(0,1,0),
+			force_place = true,
+			prepare = { tolerance = -1, foundation = false, clearance = false },
 		},
 	},
 	y_offset = 0,
 	construct_nodes = {"group:wall"},
 	after_place = function(pos,def,pr)
-		local p1 = vector.offset(pos,-14,0,-14)
-		local p2 = vector.offset(pos,14,24,14)
+		local p1, p2 = vector.offset(pos,-14,0,-14), vector.offset(pos,14,24,14)
 		mcl_structures.spawn_mobs("mobs_mc:piglin",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr,5)
 		mcl_structures.spawn_mobs("mobs_mc:piglin_brute",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr)
 		mcl_structures.spawn_mobs("mobs_mc:hoglin",{"mcl_blackstone:nether_gold"},p1,p2,pr,4)

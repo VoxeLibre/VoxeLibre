@@ -519,4 +519,7 @@ local function fix_foliage_missed(minp, maxp)
 		end
 	end
 end
-mcl_mapgen_core.register_generator("fix_foliage_missed", nil, fix_foliage_missed)
+
+minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of missed foliage.
+	fix_foliage_missed (minp, maxp)
+end)

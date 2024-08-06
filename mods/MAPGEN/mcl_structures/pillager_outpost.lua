@@ -1,19 +1,16 @@
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
-local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local spawnon = {"mcl_core:stripped_oak","mcl_stairs:slab_birchwood_top"}
 
 mcl_structures.register_structure("pillager_outpost",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:sand"},
-	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
-	make_foundation = true,
-	sidelen = 32,
+	prepare = { padding = 2, corners = 4, foundation = 6, clearance = true },
+	sidelen = 20,
 	y_offset = 0,
-	chunk_probability = 600,
+	chunk_probability = 15,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert", "Plains", "Savanna", "IcePlains", "Taiga" },
@@ -63,17 +60,10 @@ mcl_structures.register_structure("pillager_outpost",{
 		}}
 	},
 	after_place = function(p,def,pr)
-		local p1 = vector.offset(p,-9,0,-9)
-		local p2 = vector.offset(p,9,32,9)
+		local p1, p2 = vector.offset(p,-9,0,-9), vector.offset(p,9,32,9)
 		mcl_structures.spawn_mobs("mobs_mc:pillager",spawnon,p1,p2,pr,5)
 		mcl_structures.spawn_mobs("mobs_mc:parrot",{"mesecons_pressureplates:pressure_plate_stone_off"},p1,p2,pr,3)
 		mcl_structures.spawn_mobs("mobs_mc:iron_golem",{"mesecons_button:button_stone_off"},p1,p2,pr,1)
-		for _,n in pairs(minetest.find_nodes_in_area(p1,p2,{"group:wall"})) do
-			local def = minetest.registered_nodes[minetest.get_node(n).name:gsub("_%d+$","")]
-			if def and def.on_construct then
-				def.on_construct(n)
-			end
-		end
 	end
 })
 

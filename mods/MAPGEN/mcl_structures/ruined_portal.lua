@@ -15,11 +15,11 @@ local def = {
 	fill_ratio = 1.1/80/80, -- aim for 1 per chunk, control via chunk probability
 	flags = "place_center_x, place_center_z, all_floors",
 	solid_ground = true,
-	make_foundation = true,
+	prepare = { padding = 0, corners = 3, tolerance = 10, foundation = true, clearance = true },
 	chunk_probability = 20,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
-	sidelen = 10,
+	sidelen = 12,
 	y_offset = -5,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ruined_portal_1.mts",

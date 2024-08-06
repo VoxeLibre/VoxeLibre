@@ -2,11 +2,13 @@ local min_jobs = tonumber(minetest.settings:get("mcl_villages_min_jobs")) or 1
 local max_jobs = tonumber(minetest.settings:get("mcl_villages_max_jobs")) or 12
 local placement_priority = minetest.settings:get("mcl_villages_placement_priority") or "random"
 
+local foundation_materials = {}
+foundation_materials["mcl_core:sand"] = "mcl_core:sandstone"
+foundation_materials["mcl_core:redsand"] = "mcl_core:redsandstone"
+
 local S = minetest.get_translator(minetest.get_current_modname())
 
--------------------------------------------------------------------------------
 -- initialize settlement_info
--------------------------------------------------------------------------------
 function mcl_villages.initialize_settlement_info(pr)
 	local count_buildings = {
 		number_of_jobs = pr:next(min_jobs, max_jobs),
@@ -51,21 +53,18 @@ local function spawn_cats(pos)
 end
 
 local function init_nodes(p1, p2, pr)
-	--[[for _, n in pairs(minetest.find_nodes_in_area(p1, p2, { "group:wall" })) do
-		mcl_walls.update_wall(n)
-	end]]--
-
-	construct_node(p1, p2, "mcl_itemframes:item_frame")
-	construct_node(p1, p2, "mcl_itemframes:glow_item_frame")
-	construct_node(p1, p2, "mcl_furnaces:furnace")
-	construct_node(p1, p2, "mcl_anvils:anvil")
-
-	construct_node(p1, p2, "mcl_books:bookshelf")
-	construct_node(p1, p2, "mcl_armor_stand:armor_stand")
-	--construct_node(p1, p2, "mcl_smoker:smoker")
-	--construct_node(p1, p2, "mcl_barrels:barrel_closed")
-	--construct_node(p1, p2, "mcl_blast_furnace:blast_furnace")
-	--construct_node(p1, p2, "mcl_brewing:stand_000")
+	mcl_structures.construct_nodes(p1, p2, {
+		"mcl_itemframes:item_frame",
+		"mcl_itemframes:glow_item_frame",
+		"mcl_furnaces:furnace",
+		"mcl_anvils:anvil",
+		"mcl_books:bookshelf",
+		"mcl_armor_stand:armor_stand",
+		-- "mcl_smoker:smoker",
+		-- "mcl_barrels:barrel_closed",
+		-- "mcl_blast_furnace:blast_furnace",
+		-- "mcl_brewing:stand_000",
+	})
 
 	-- Support mods with custom job sites
 	local job_sites = minetest.find_nodes_in_area(p1, p2, mobs_mc.jobsites)
@@ -94,7 +93,7 @@ end
 local function check_ground(lvm, cpos, size)
 	local cpos, surface_material = mcl_villages.find_surface(lvm, cpos)
 	if not cpos then return nil, nil end
-	local pos = vector.offset(cpos, -math.floor(size.x/2), 0, -math.floor(size.z/2))
+	local pos = vector.offset(cpos, -math.floor((size.x-1)/2), 0, -math.floor((size.z-1)/2))
 	local ys = {pos.y}
 	local pos_c = mcl_villages.find_surface_down(lvm, vector.offset(pos, 0,        size.y, 0))
 	if pos_c then table.insert(ys, pos_c.y) end
@@ -139,10 +138,10 @@ local function layout_town(lvm, minp, maxp, pr, input_settlement)
 			local building = table.copy(input_settlement[#settlement + 1])
 			local size = vector.copy(building.size)
 			--local rotation = possible_rotations[pr:next(1, #possible_rotations)]
-			local rotation = math.floor(math.atan2(center.x-cpos.x, center.z-cpos.z) / math.pi * 2+4.5)%4
-			local rotation = possible_rotations[1+rotation]
+			local rotation = math.floor(math.atan2(center.z-cpos.z, center.x-cpos.x) / math.pi * 2+6.5)%4
+			rotation = possible_rotations[1+rotation]
 			if rotation == "90" or rotation == "270" then size.x, size.z = size.z, size.x end
-			local tlpos = vector.offset(cpos, -math.floor(size.x / 2), 0, -math.floor(size.z / 2))
+			local tlpos = vector.offset(cpos, -math.floor((size.x-1)/2), 0, -math.floor((size.z-1)/2))
 
 			-- ensure we have 3 space for terraforming, and avoid problems with VoxelManip
 			if  tlpos.x - 3 >= minp.x and tlpos.x + size.x + 3 <= maxp.x
@@ -155,8 +154,8 @@ local function layout_town(lvm, minp, maxp, pr, input_settlement)
 						center_surface, y = cpos, math.min(maxp.y, pos.y + mcl_villages.max_height_difference * 0.5 + 1)
 					end
 					-- limit height differences to town center, but gradually allow more
-					if math.abs(pos.y - center_surface.y) <= mcl_villages.max_height_difference * (0.25 + math.min(r/30,0.5)) then
-						local minp = vector.offset(pos, -math.floor(size.x/2), building.yadjust, -math.floor(size.z/2))
+					if math.abs(pos.y - center_surface.y) <= mcl_villages.max_height_difference * (0.25 + math.min(r/40,0.5)) then
+						local minp = vector.offset(pos, -math.floor((size.x-1)/2), building.yadjust, -math.floor((size.z-1)/2))
 						building.minp = minp
 						building.maxp = vector.offset(minp, size.x, size.y, size.z)
 						building.pos = pos
@@ -279,8 +278,8 @@ function mcl_villages.place_schematics(lvm, settlement, blockseed, pr)
 		local surface_material = building.surface_mat or {name = "mcl_core:dirt" }
 		local platform_material = building.platform_mat or building.surface_mat or {name = "mcl_core:stone" }
 		local schem_lua = building.schem_lua
-		schem_lua = schem_lua:gsub('"mcl_core:dirt"', '"'..platform_material.name..'"') -- also keeping param2 would be nicer, grass color
-		schem_lua = schem_lua:gsub('"mcl_core:dirt_with_grass"', '"'..surface_material.name..'"')
+		schem_lua = schem_lua:gsub('"mcl_core:dirt"', '"'..platform_material.name..'"')
+		schem_lua = schem_lua:gsub('"mcl_core:dirt_with_grass"', '"'..surface_material.name..'"') -- also keeping param2 would be nicer, grass color
 		schem_lua = mcl_villages.substitute_materials(cpos, schem_lua, pr)
 		local schematic = loadstring(schem_lua)()
 
@@ -436,6 +435,31 @@ function mcl_villages.post_process_village(blockseed)
 			else
 				minetest.log("info", "bed already owned by " .. m:get_string("villager"))
 			end
+		end
+	end
+end
+
+-- Terraform for an entire village
+function mcl_villages.terraform(lvm, settlement, pr)
+	-- TODO: further optimize by using raw data arrays instead of set_node_at. But OK for a first draft.
+	-- we make the foundations 1 node wider than requested, to have one node for path laying
+	for i, building in ipairs(settlement) do
+		if not building.no_clearance then
+			local pos, size = building.pos, building.size
+			pos = vector.offset(pos, -math.floor(size.x/2), 0, -math.floor(size.z/2))
+			mcl_structures.clearance(lvm, pos.x-1, pos.y, pos.z-1, size.x+2, size.y, size.z+2, 2, building.surface_mat, pr)
+		end
+	end
+	for i, building in ipairs(settlement) do
+		if not building.no_ground_turnip then
+			local pos, size = building.pos, building.size
+			local surface_mat = building.surface_mat
+			local platform_mat = building.platform_mat or { name = foundation_materials[surface_mat.name] or "mcl_core:dirt" }
+			local stone_mat = building.stone_mat or { name = "mcl_core:stone" }
+			building.platform_mat = platform_mat -- remember for use in schematic placement
+			building.stone_mat = stone_mat
+			pos = vector.offset(pos, -math.floor((size.x-1)/2), 0, -math.floor((size.z-1)/2))
+			mcl_structures.foundation(lvm, pos.x-2, pos.y, pos.z-2, size.x+4, -4, size.z+4, 2, surface_mat, platform_mat, stone_mat, pr)
 		end
 	end
 end
