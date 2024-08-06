@@ -41,10 +41,10 @@ end
 
 mcl_structures.register_structure("witch_hut",{
 	place_on = {"mcl_core:water_source","mclx_core:river_water_source"},
-	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z, liquid_surface, force_placement",
 	sidelen = 8,
-	chunk_probability = 300,
+	chunk_probability = 8,
+	prepare = { tolerance=-1, clearance="top", foundation=false },
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = -4,
 	y_offset = 0,
