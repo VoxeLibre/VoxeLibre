@@ -241,7 +241,6 @@ function mcl_util.hopper_push(pos, dst_pos)
 end
 
 function mcl_util.hopper_pull_to_inventory(hop_inv, hop_list, src_pos, pos)
-	-- TODO: merge together with hopper_pull after https://git.minetest.land/MineClone2/MineClone2/pulls/4190 is merged
 	-- Get node pos' for item transfer
 	local src = minetest.get_node(src_pos)
 	if not minetest.registered_nodes[src.name] then return end
@@ -271,33 +270,7 @@ end
 ---@param pos Vector
 ---@param src_pos Vector
 function mcl_util.hopper_pull(pos, src_pos)
-	local hop_inv = minetest.get_meta(pos):get_inventory()
-	local hop_list = 'main'
-
-	-- Get node pos' for item transfer
-	local src = minetest.get_node(src_pos)
-	if not minetest.registered_nodes[src.name] then return end
-	local src_type = minetest.get_item_group(src.name, "container")
-	if src_type ~= 2 then return end
-	local src_def = minetest.registered_nodes[src.name]
-
-	local src_list = 'main'
-	local src_inv, stack_id
-
-	if src_def._mcl_hoppers_on_try_pull then
-		src_inv, src_list, stack_id = src_def._mcl_hoppers_on_try_pull(src_pos, pos, hop_inv, hop_list)
-	else
-		local src_meta = minetest.get_meta(src_pos)
-		src_inv = src_meta:get_inventory()
-		stack_id = mcl_util.select_stack(src_inv, src_list, hop_inv, hop_list, nil, 1)
-	end
-
-	if stack_id ~= nil then
-		local ok = mcl_util.move_item(src_inv, src_list, stack_id, hop_inv, hop_list)
-		if src_def._mcl_hoppers_on_after_pull then
-			src_def._mcl_hoppers_on_after_pull(src_pos)
-		end
-	end
+	return mcl_util.hopper_pull_to_inventory(minetest.get_meta(pos):get_inventory(), 'main', src_pos, pos)
 end
 
 local function drop_item_stack(pos, stack)
