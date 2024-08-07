@@ -53,7 +53,13 @@ function mcl_minecarts:velocity_to_dir(v)
 	end
 end
 
-function mcl_minecarts:is_rail(pos, railtype)
+function mcl_minecarts.is_rail(self, pos, railtype)
+	-- Compatibility with mcl_minecarts:is_rail() usage
+	if self ~= mcl_minecarts then
+		railtype = pos
+		pos = self
+	end
+
 	local node_name = force_get_node(pos).name
 
 	if minetest.get_item_group(node_name, "rail") == 0 then
@@ -324,7 +330,13 @@ local function get_rail_direction_inner(pos, dir)
 
 	return dir
 end
-function mcl_minecarts:get_rail_direction(pos_, dir)
+function mcl_minecarts.get_rail_direction(self, pos_, dir)
+	-- Compatibility with mcl_minecarts:get_rail_direction() usage
+	if self ~= mcl_minecarts then
+		dir = pos_
+		pos_ = self
+	end
+
 	local pos = vector.round(pos_)
 
 	-- diagonal direction handling

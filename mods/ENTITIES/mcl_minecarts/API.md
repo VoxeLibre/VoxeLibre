@@ -77,7 +77,7 @@ Calculate the rail adjacency information for rail placement. Arguments are:
   - `ignore_neightbor_connections` - if true, don't check that a cart could leave
     the neighboring node from this direction.
 
-`mcl_minecarts:is_rail(position, railtype)`
+`mcl_minecarts.is_rail(position, railtype)`
 
 Determines if the node at `position` is a rail. If `railtype` is provided,
 determine if the node at `position` is that type of rail.
@@ -101,7 +101,7 @@ Converts the rail at `node_position`, if possible, another variant (curve, etc.)
 and rotates the node as needed so that rails connect together. `options` is
 passed thru to `mcl_minecarts.get_rail_connections()`
 
-`mcl_minecarts:get_rail_direction(rail_position, cart_direction)`
+`mcl_minecarts.get_rail_direction(rail_position, cart_direction)`
 
 Returns the next direction a cart traveling in the direction specified in `cart_direction`
 will travel from the rail located at `rail_position`.
