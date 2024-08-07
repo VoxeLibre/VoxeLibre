@@ -365,6 +365,7 @@ end
 
 local function on_chest_blast(pos)
 	local node = minetest.get_node(pos)
+	local drop_items_chest = mcl_util.drop_items_from_meta_container("main")
 	drop_items_chest(pos, node)
 	minetest.remove_node(pos)
 end
