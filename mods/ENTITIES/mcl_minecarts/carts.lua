@@ -280,7 +280,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 end
 function mod.kill_cart(staticdata, killer)
 	local pos
-	minetest.log("action", "cart #"..staticdata.uuid.." was killed")
+	mcl_log("cart #"..staticdata.uuid.." was killed")
 
 	-- Leave nodes
 	if staticdata.attached_at then
@@ -372,15 +372,15 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 	local cart_dir = vector.new(1,0,0)
 
 	local railpos, node
-	if mcl_minecarts:is_rail(pointed_thing.under) then
+	if mcl_minecarts.is_rail(pointed_thing.under) then
 		railpos = pointed_thing.under
-	elseif mcl_minecarts:is_rail(pointed_thing.above) then
+	elseif mcl_minecarts.is_rail(pointed_thing.above) then
 		railpos = pointed_thing.above
 	end
 	if railpos then
 		spawn_pos = railpos
 		node = minetest.get_node(railpos)
-		cart_dir = mcl_minecarts:get_rail_direction(railpos, vector.new(1,0,0))
+		cart_dir = mcl_minecarts.get_rail_direction(railpos, vector.new(1,0,0))
 	end
 
 	local entity_id = entity_mapping[itemstack:get_name()]

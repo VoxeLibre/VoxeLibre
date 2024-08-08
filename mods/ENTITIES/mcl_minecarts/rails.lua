@@ -386,6 +386,7 @@ end
 minetest.register_lbm({
 	name = "mcl_minecarts:update_legacy_curvy_rails",
 	nodenames = mcl_util.table_keys(CURVY_RAILS_MAP),
+	run_at_every_load = true,
 	action = function(pos, node)
 		node.name = CURVY_RAILS_MAP[node.name]
 		if node.name then

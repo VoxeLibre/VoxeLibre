@@ -270,7 +270,7 @@ end
 ---@param pos Vector
 ---@param src_pos Vector
 function mcl_util.hopper_pull(pos, src_pos)
-	return mcl_util.hopper_pull_to_inventory(minetest.get_meta(pos):get_inventory(), 'main', src_pos, pos)
+	return mcl_util.hopper_pull_to_inventory(minetest.get_meta(pos):get_inventory(), "main", src_pos, pos)
 end
 
 local function drop_item_stack(pos, stack)

@@ -179,7 +179,7 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 	--print("u1="..tostring(u1)..",u2="..tostring(u2))
 	if u2 == 0 and u1 < 4 and train_length(cart1_staticdata) < MAX_TRAIN_LENGTH then
 		link_cart_ahead(cart1_staticdata, cart2_staticdata)
-		cart2_staticdata.dir = mcl_minecarts:get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
+		cart2_staticdata.dir = mcl_minecarts.get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 		cart2_staticdata.velocity = cart1_staticdata.velocity
 		return
 	end
@@ -194,7 +194,7 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 	cart2_staticdata.velocity = v2
 
 	-- Force the other cart to move the same direction this one was
-	cart2_staticdata.dir = mcl_minecarts:get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
+	cart2_staticdata.dir = mcl_minecarts.get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 end
 
 local function vector_away_from_players(cart, staticdata)
@@ -238,7 +238,7 @@ local function direction_away_from_players(staticdata)
 	if force > 0 then
 		dir = -dir
 	end
-	if mcl_minecarts:is_rail( staticdata.connected_at + dir ) then
+	if mcl_minecarts.is_rail( staticdata.connected_at + dir ) then
 		if force > 0.5 then
 			return -length * 4
 		elseif force < -0.5 then
@@ -403,7 +403,7 @@ local function do_movement_step(staticdata, dtime)
 		staticdata.connected_at = pos
 
 		-- Get the next direction
-		local next_dir,_ = mcl_minecarts:get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
+		local next_dir,_ = mcl_minecarts.get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
 		if DEBUG and next_dir ~= staticdata.dir then
 			mcl_debug( "Changing direction from "..tostring(staticdata.dir).." to "..tostring(next_dir))
 		end

@@ -74,7 +74,7 @@ end
 -- Directional constants
 local north = vector.new( 0, 0, 1); local N = 1 -- 4dir = 0
 local east  = vector.new( 1, 0, 0); local E = 4 -- 4dir = 1
-local south = vector.new( 0, 0,-1); local S = 2 -- 4dir = 2 Note: S is overwritten below with the translator
+local south = vector.new( 0, 0,-1); local S = 2 -- 4dir = 2
 local west  = vector.new(-1, 0, 0); local W = 8 -- 4dir = 3
 
 -- Share. Consider moving this to some shared location
@@ -200,7 +200,7 @@ local function get_rail_connections(pos, opt)
 		local nodedef = minetest.registered_nodes[node.name]
 
 		-- Only allow connections to the open ends of rails, as decribed by get_next_dir
-		if mcl_minecarts:is_rail(neighbor) and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
+		if mcl_minecarts.is_rail(neighbor) and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
 			local rev_dir = vector.direction(dir,vector.zero())
 			if ignore_neighbor_connections or is_connection(neighbor, rev_dir) then
 				connections = bit.bor(connections, bit.lshift(1,i - 1))
@@ -211,7 +211,7 @@ local function get_rail_connections(pos, opt)
 		local below_neighbor = vector.offset(neighbor, 0, -1, 0)
 		local node = force_get_node(below_neighbor)
 		local nodedef = minetest.registered_nodes[node.name]
-		if mcl_minecarts:is_rail(below_neighbor) and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
+		if mcl_minecarts.is_rail(below_neighbor) and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
 			local rev_dir = vector.direction(dir, vector.zero())
 			if ignore_neighbor_connections or is_connection(below_neighbor, rev_dir) then
 				connections = bit.bor(connections, bit.lshift(1,i - 1))
@@ -280,7 +280,7 @@ local function update_rail_connections(pos, opt)
 			local dir = CONNECTIONS[i]
 			local higher_rail_pos = vector.offset(pos,dir.x,1,dir.z)
 			local rev_dir = vector.direction(dir,vector.zero())
-			if mcl_minecarts:is_rail(higher_rail_pos) and is_connection(higher_rail_pos, rev_dir) then
+			if mcl_minecarts.is_rail(higher_rail_pos) and is_connection(higher_rail_pos, rev_dir) then
 				make_sloped_if_straight(pos, rev_dir)
 			end
 		end
@@ -296,10 +296,10 @@ local west = vector.new(-1,0,0)
 
 local function is_ahead_slope(pos, dir)
 	local ahead = vector.add(pos,dir)
-	if mcl_minecarts:is_rail(ahead) then return false end
+	if mcl_minecarts.is_rail(ahead) then return false end
 
 	local below = vector.offset(ahead,0,-1,0)
-	if not mcl_minecarts:is_rail(below) then return false end
+	if not mcl_minecarts.is_rail(below) then return false end
 
 	local node_name = force_get_node(below).name
 	return minetest.get_item_group(node_name, "rail_slope") ~= 0
@@ -344,8 +344,8 @@ function mcl_minecarts.get_rail_direction(self, pos_, dir)
 		-- Check both possible diagonal movements
 		local dir_a = vector.new(dir.x,0,0)
 		local dir_b = vector.new(0,0,dir.z)
-		local new_dir_a = mcl_minecarts:get_rail_direction(pos, dir_a)
-		local new_dir_b = mcl_minecarts:get_rail_direction(pos, dir_b)
+		local new_dir_a = mcl_minecarts.get_rail_direction(pos, dir_a)
+		local new_dir_b = mcl_minecarts.get_rail_direction(pos, dir_b)
 
 		-- If either is the same diagonal direction, continue as you were
 		if vector.equals(dir,new_dir_a) or vector.equals(dir,new_dir_b) then
