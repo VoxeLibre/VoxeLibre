@@ -391,6 +391,8 @@ function mod.update_cart_orientation(self)
 
 	-- Check if the rotation is a 180 flip and don't change if so
 	local rot = self.object:get_rotation()
+	if not rot then return end
+
 	local diff = math.abs((rot_y - ( rot.y + pi ) % _2_pi) )
 	if diff < 0.001 or diff > _2_pi - 0.001 then
 		-- Update rotation adjust and recalculate the rotation
@@ -431,6 +433,8 @@ function mod.reverse_cart_direction(staticdata)
 
 	-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
 	local next_dir = -staticdata.dir
+	if not staticdata.connected_at then return end
+
 	staticdata.connected_at = staticdata.connected_at + staticdata.dir
 	staticdata.distance = 1 - (staticdata.distance or 0)
 
