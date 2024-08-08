@@ -54,7 +54,7 @@ local function straight_hopper_act(pos, node, active_object_count, active_count_
 
 	mcl_util.hopper_push(pos, dst_pos)
 	local src_pos = vector.offset(pos, 0, 1, 0)
-	mcl_util.hopper_pull(pos, src_pos)
+	mcl_util.hopper_pull_to_inventory(minetest.get_meta(pos):get_inventory(), "main", src_pos, pos)
 end
 
 local function bent_hopper_act(pos, node, active_object_count, active_object_count_wider)
@@ -93,7 +93,7 @@ local function bent_hopper_act(pos, node, active_object_count, active_object_cou
 	end
 
 	local src_pos = vector.offset(pos, 0, 1, 0)
-	mcl_util.hopper_pull(pos, src_pos)
+	mcl_util.hopper_pull_to_inventory(inv, "main", src_pos, pos)
 end
 
 --[[
