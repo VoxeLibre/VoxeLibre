@@ -270,7 +270,7 @@ local function remove_shield_entity(player, i)
 end
 
 local function is_node_stack(itemstack)
-	return itemstack:get_definition().drawtype -- only node's definition table contains element "drawtype"
+	return (itemstack:get_definition().type == "node")
 end
 
 local function is_rmb_conflicting_node(nodename)
