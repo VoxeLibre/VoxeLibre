@@ -18,15 +18,18 @@ local function activate_tnt_minecart(self, timer)
 	else
 		self._boomtimer = tnt.BOOMTIMER
 	end
-	self.object:set_properties({textures = {
-		"mcl_tnt_blink.png",
-		"mcl_tnt_blink.png",
-		"mcl_tnt_blink.png",
-		"mcl_tnt_blink.png",
-		"mcl_tnt_blink.png",
-		"mcl_tnt_blink.png",
-		"mcl_minecarts_minecart.png",
-	}})
+	self.object:set_properties({
+		textures = {
+			"mcl_tnt_blink.png",
+			"mcl_tnt_blink.png",
+			"mcl_tnt_blink.png",
+			"mcl_tnt_blink.png",
+			"mcl_tnt_blink.png",
+			"mcl_tnt_blink.png",
+			"mcl_minecarts_minecart.png",
+		},
+		glow = 15,
+	})
 	self._blinktimer = tnt.BLINKTIMER
 	minetest.sound_play("tnt_ignite", {pos = self.object:get_pos(), gain = 1.0, max_hear_distance = 15}, true)
 end
@@ -95,7 +98,10 @@ mod.register_minecart({
 				detonate_tnt_minecart(self)
 				return
 			else
-				tnt.smoke_step(pos)
+				local pos = mod.get_cart_position(self._staticdata) or self.object:get_pos()
+				if pos then
+					tnt.smoke_step(pos)
+				end
 			end
 		end
 
