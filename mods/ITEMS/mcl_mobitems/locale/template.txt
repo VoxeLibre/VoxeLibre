@@ -59,6 +59,7 @@ String=
 Strings are used in crafting.=
 Spectre Membrane=
 This is a crafting component dropped from dead spectres.=
+Crystalline Drop=
 Blaze Rod=
 This is a crafting component dropped from dead blazes.=
 Blaze Powder=
