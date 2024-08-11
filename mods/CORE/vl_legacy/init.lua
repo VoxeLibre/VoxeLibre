@@ -35,6 +35,17 @@ function mod.convert_inventory(inv)
 	mod.convert_inventory_lists(lists)
 	inv:set_lists(lists)
 end
+function mod.convert_node(pos, node)
+	local node = node or minetest.get_node(pos)
+	local node_def = minetest.registered_nodes[node.name]
+	local convert = node_def._vl_legacy_convert_node
+	if type(convert) == "function" then
+		convert(pos, node)
+	elseif type(convert) == "string" then
+		node.name = convert
+		minetest.swap_node(pos, node)
+	end
+end
 
 minetest.register_on_joinplayer(function(player)
 	mod.convert_inventory(player:get_inventory())
@@ -49,4 +60,16 @@ minetest.register_lbm({
 		mod.convert_inventory(meta:get_inventory())
 	end
 })
-
+minetest.register_lbm({
+	name = "vl_legacy:convert_nodes",
+	nodenames = "group:legacy",
+	run_at_every_load = true,
+	action = mod.convert_node,
+})
+minetest.register_abm({
+	label = "Convert Legacy Nodes",
+	nodenames = "group:legacy",
+	interval = 5,
+	chance = 1,
+	action = mod.convert_node,
+})

@@ -373,28 +373,24 @@ end
 local CURVY_RAILS_MAP = {
 	["mcl_minecarts:rail"] = "mcl_minecarts:rail_v2",
 }
+local function convert_legacy_curvy_rails(pos, node)
+	node.name = CURVY_RAILS_MAP[node.name]
+	if node.name then
+		minetest.swap_node(pos, node)
+		mod.update_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
+	end
+end
 for old,new in pairs(CURVY_RAILS_MAP) do
 	local new_def = minetest.registered_nodes[new]
 	minetest.register_node(old, {
 		drawtype = "raillike",
 		inventory_image = new_def.inventory_image,
-		groups = { rail = 1 },
+		groups = { rail = 1, legacy = 1 },
 		tiles = { new_def.tiles[1], new_def.tiles[1], new_def.tiles[1], new_def.tiles[1] },
+		_vl_legacy_convert_node = convert_legacy_curvy_rails
 	})
 	vl_legacy.register_item_conversion(old, new)
 end
-minetest.register_lbm({
-	name = "mcl_minecarts:update_legacy_curvy_rails",
-	nodenames = mcl_util.table_keys(CURVY_RAILS_MAP),
-	run_at_every_load = true,
-	action = function(pos, node)
-		node.name = CURVY_RAILS_MAP[node.name]
-		if node.name then
-			minetest.swap_node(pos, node)
-			mod.update_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
-		end
-	end
-})
 local STRAIGHT_RAILS_MAP ={
 	["mcl_minecarts:golden_rail"] = "mcl_minecarts:golden_rail_v2",
 	["mcl_minecarts:golden_rail_on"] = "mcl_minecarts:golden_rail_v2_on",
@@ -403,39 +399,34 @@ local STRAIGHT_RAILS_MAP ={
 	["mcl_minecarts:detector_rail"] = "mcl_minecarts:detector_rail_v2",
 	["mcl_minecarts:detector_rail_on"] = "mcl_minecarts:detector_rail_v2_on",
 }
+local function convert_legacy_straight_rail(pos, node)
+	node.name = STRAIGHT_RAILS_MAP[node.name]
+	if node.name then
+		local connections = mod.get_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
+		if not mod.HORIZONTAL_STANDARD_RULES[connections] then
+			-- Drop an immortal object at this location
+			local item_entity = minetest.add_item(pos, ItemStack(node.name))
+			if item_entity then
+				item_entity:get_luaentity()._immortal = true
+			end
+
+			-- This is a configuration that doesn't exist in the new rail
+			-- Replace with a standard rail
+			node.name = "mcl_minecarts:rail_v2"
+		end
+		minetest.swap_node(pos, node)
+		mod.update_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
+	end
+end
 for old,new in pairs(STRAIGHT_RAILS_MAP) do
 	local new_def = minetest.registered_nodes[new]
 	minetest.register_node(old, {
 		drawtype = "raillike",
 		inventory_image = new_def.inventory_image,
-		groups = { rail = 1 },
+		groups = { rail = 1, legacy = 1 },
 		tiles = { new_def.tiles[1], new_def.tiles[1], new_def.tiles[1], new_def.tiles[1] },
+		_vl_legacy_convert_node = convert_legacy_straight_rail,
 	})
 	vl_legacy.register_item_conversion(old, new)
 end
-
-minetest.register_lbm({
-	name = "mcl_minecarts:update_legacy_straight_rails",
-	nodenames = mcl_util.table_keys(STRAIGHT_RAILS_MAP),
-	run_at_every_load = true,
-	action = function(pos, node)
-		node.name = STRAIGHT_RAILS_MAP[node.name]
-		if node.name then
-			local connections = mod.get_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
-			if not mod.HORIZONTAL_STANDARD_RULES[connections] then
-				-- Drop an immortal object at this location
-				local item_entity = minetest.add_item(pos, ItemStack(node.name))
-				if item_entity then
-					item_entity:get_luaentity()._immortal = true
-				end
-
-				-- This is a configuration that doesn't exist in the new rail
-				-- Replace with a standard rail
-				node.name = "mcl_minecarts:rail_v2"
-			end
-			minetest.swap_node(pos, node)
-			mod.update_rail_connections(pos, { legacy = true, ignore_neighbor_connections = true })
-		end
-	end
-})
 
