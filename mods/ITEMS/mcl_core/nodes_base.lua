@@ -1051,7 +1051,15 @@ for i=1,8 do
 			local itemstring = itemstack:get_name()
 			local itemcount = itemstack:get_count()
 			local fakestack = ItemStack(itemstring.." "..itemcount)
-			fakestack:set_name("mcl_core:snow_"..math.min(8, (i+g)))
+			if i+g < 8 then
+				fakestack:set_name("mcl_core:snow_"..(i+g))
+			else
+				-- To stack `mcl_core:snow_8', just replacing it with `mcl_core:snowblock' Issue#4483
+				if i+g == 9 then
+				   fakestack:set_count(itemcount + 1)
+				end
+				fakestack:set_name("mcl_core:snowblock")
+			end
 			itemstack = minetest.item_place(fakestack, placer, pointed_thing)
 			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = pointed_thing.under}, true)
 			itemstack:set_name(itemstring)
