@@ -269,12 +269,8 @@ local function remove_shield_entity(player, i)
 	end
 end
 
-local function is_node_stack(itemstack)
-	return (itemstack:get_definition().type == "node")
-end
-
 local function is_rmb_conflicting_node(nodename)
-	nodedef = minetest.registered_nodes[nodename]
+	nodedef = minetest.registered_nodes[nodename] or {}
 	return nodedef.on_rightclick
 end
 
@@ -312,7 +308,7 @@ local function handle_blocking(player)
 			local pointed_node = minetest.get_node(pointed_thing.under)
 			if minetest.get_item_group(pointed_node.name, "container") > 1
 			or is_rmb_conflicting_node(pointed_node.name)
-			or is_node_stack(wielded_stack)
+			or wielded_stack:get_definition().type == "node"
 			then
 				return
 			end
