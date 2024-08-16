@@ -798,6 +798,18 @@ minetest.register_node("mcl_core:coalblock", {
 	_mcl_hardness = 5,
 })
 
+minetest.register_node("mcl_core:charcoalblock", {
+	description = S("Block of Charcoal"),
+	_doc_items_longdesc = S("Blocks of charcoal are useful as a compact storage of charcoal and very useful as a furnace fuel. A block of charcoal is as efficient as 10 charcoal."),
+	tiles = {"mcl_core_charcoal_block.png"},
+	is_ground_content = false,
+	stack_max = 64,
+	groups = {pickaxey=1, flammable=1, building_block=1, material_stone=1, fire_encouragement=5, fire_flammability=5},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+})
+
 minetest.register_node("mcl_core:ironblock", {
 	description = S("Block of Iron"),
 	_doc_items_longdesc = S("A block of iron is mostly a decorative block but also useful as a compact storage of iron ingots."),

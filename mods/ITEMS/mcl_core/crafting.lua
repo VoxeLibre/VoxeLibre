@@ -166,6 +166,22 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "mcl_core:charcoalblock",
+	recipe = {
+		{"mcl_core:charcoal_lump", "mcl_core:charcoal_lump", "mcl_core:charcoal_lump"},
+		{"mcl_core:charcoal_lump", "mcl_core:charcoal_lump", "mcl_core:charcoal_lump"},
+		{"mcl_core:charcoal_lump", "mcl_core:charcoal_lump", "mcl_core:charcoal_lump"},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:charcoal_lump 9",
+	recipe = {
+		{"mcl_core:charcoalblock"},
+	}
+})
+
+minetest.register_craft({
 	output = "mcl_core:ironblock",
 	recipe = {
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
@@ -494,6 +510,12 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_core:coalblock",
+	burntime = 800,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mcl_core:charcoalblock",
 	burntime = 800,
 })
 
