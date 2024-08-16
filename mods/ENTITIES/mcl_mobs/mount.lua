@@ -258,6 +258,18 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 		end
 	end
 
+	-- Stop!
+	local s = get_sign(entity.v)
+
+	entity.v = entity.v - 0.02 * s
+
+	if s ~= get_sign(entity.v) then
+
+		entity.object:set_velocity({x = 0, y = 0, z = 0})
+		entity.v = 0
+		return
+	end
+
 	-- if not moving then set animation and return
 	if entity.v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
 
@@ -271,18 +283,6 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	-- set moving animation
 	if moving_anim then
 		mcl_mobs:set_animation(entity, moving_anim)
-	end
-
-	-- Stop!
-	local s = get_sign(entity.v)
-
-	entity.v = entity.v - 0.02 * s
-
-	if s ~= get_sign(entity.v) then
-
-		entity.object:set_velocity({x = 0, y = 0, z = 0})
-		entity.v = 0
-		return
 	end
 
 	-- enforce speed limit forward and reverse
