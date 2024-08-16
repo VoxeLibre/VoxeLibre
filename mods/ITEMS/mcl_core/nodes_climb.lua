@@ -104,9 +104,10 @@ minetest.register_node("mcl_core:ladder", {
 			return itemstack
 		end
 		local idef = itemstack:get_definition()
-		local success = minetest.item_place_node(itemstack, placer, pointed_thing)
+		local itemstack, pos = minetest.item_place_node(itemstack, placer, pointed_thing)
 
-		if success then
+		-- A non-nil pos indicates the node was placed in a valid position.
+		if pos then
 			if idef.sounds and idef.sounds.place then
 				minetest.sound_play(idef.sounds.place, { pos = above, gain = 1 }, true)
 			end
