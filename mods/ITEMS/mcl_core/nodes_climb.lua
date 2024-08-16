@@ -40,7 +40,7 @@ end
 minetest.register_node("mcl_core:ladder", {
 	description = S("Ladder"),
 	_doc_items_longdesc = S(
-		"A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns."),
+		"A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks."),
 	drawtype = "signlike",
 	is_ground_content = false,
 	tiles = { "default_ladder.png" },
@@ -85,9 +85,8 @@ minetest.register_node("mcl_core:ladder", {
 		end
 		local groups = def.groups
 
-		-- Don't allow to place the ladder at particular nodes
-		if (groups and (groups.glass or groups.leaves or groups.slab)) or
-			node.name == "mcl_core:ladder" or node.name == "mcl_core:ice" or node.name == "mcl_nether:glowstone" or node.name == "mcl_ocean:sea_lantern" then
+		-- Don't allow to place the ladder at non-solid nodes
+		if (groups and (not groups.solid)) then
 			return itemstack
 		end
 
