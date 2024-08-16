@@ -4027,7 +4027,7 @@ local function register_decorations()
 		rotation = "random",
 	})
 	minetest.register_decoration({
-		name = "mcl_biomes:mangrove_tree_4",
+		name = "mcl_biomes:mangrove_tree_5",
 		deco_type = "schematic",
 		place_on = {"mcl_mud:mud"},
 		sidelen = 80,
@@ -4040,6 +4040,7 @@ local function register_decorations()
 		rotation = "random",
 	})
 	minetest.register_decoration({
+		name = "mcl_biomes:mangrove_bee_nest",
 		deco_type = "schematic",
 		place_on = {"mcl_mud:mud"},
 		sidelen = 80,
@@ -6099,6 +6100,9 @@ if mg_name ~= "singlenode" then
 		minetest.get_decoration_id("mcl_biomes:mangrove_tree_1"),
 		minetest.get_decoration_id("mcl_biomes:mangrove_tree_2"),
 		minetest.get_decoration_id("mcl_biomes:mangrove_tree_3"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_4"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_tree_5"),
+		minetest.get_decoration_id("mcl_biomes:mangrove_bee_nest"),
 	}
 	for _, f in pairs(deco_ids_fungus) do
 		minetest.set_gen_notify({decoration = true}, {f})
@@ -6158,29 +6162,20 @@ if mg_name ~= "singlenode" then
 
 			if not (maxp.y < mcl_vars.mg_overworld_min or minp.y > mcl_vars.mg_overworld_max) then
 				local biomemap = minetest.get_mapgen_object("biomemap")
-				--minetest.log("mangrove stuff: " .. dump(biomemap))
 				local swamp_biome_id = minetest.get_biome_id("MangroveSwamp")
 				local swamp_shore_id = minetest.get_biome_id("MangroveSwamp_shore")
 				local is_swamp = table.indexof(biomemap, swamp_biome_id) ~= -1
 				local is_swamp_shore = table.indexof(biomemap, swamp_shore_id) ~= -1
-
 				if is_swamp or is_swamp_shore then
-					--minetest.log("Mangrove swamp biomes...")
-					--minetest.log("is_swamp: " .. dump(is_swamp))
-					--minetest.log("is_swamp_shore: " .. dump(is_swamp_shore))
 					mangrove_roots_gen(gennotify, pr)
-				else
-					--minetest.log("is not mangrove swamp biomes...")
 				end
 			end
 
 			if not (maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max) then
-				--minetest.log("chorus stuff")
 				chorus_gen(gennotify, pr)
 			end
 
 			if not (maxp.y < mcl_vars.mg_nether_min or minp.y > mcl_vars.mg_nether_max) then
-				--minetest.log("nether stuff")
 				crimson_warped_gen(gennotify)
 			end
 		end)
