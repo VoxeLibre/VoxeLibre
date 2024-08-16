@@ -1658,14 +1658,13 @@ end
 
 
 -- Obsidian crying
-
 local crobby_particle = {
-	velocity = vector.new(0,0,0),
-	size = math.random(1.3,2.5),
+	velocity = vector.zero(),
+	acceleration = vector.zero(),
 	texture = "mcl_core_crying_obsidian_tear.png",
+	collisiondetection = false,
 	collision_removal = false,
 }
-
 
 minetest.register_abm({
 	label = "Obsidian cries",
@@ -1673,17 +1672,16 @@ minetest.register_abm({
 	interval = 5,
 	chance = 10,
 	action = function(pos, node)
-		minetest.after(math.random(0.1,1.5),function()
+		minetest.after(0.1 + math.random() * 1.4, function()
 			local pt = table.copy(crobby_particle)
-			pt.acceleration = vector.new(0,0,0)
-			pt.collisiondetection = false
-			pt.expirationtime = math.random(0.5,1.5)
-			pt.pos = vector.offset(pos,math.random(-0.5,0.5),-0.51,math.random(-0.5,0.5))
+			pt.size = 1.3 + math.random() * 1.2
+			pt.expirationtime = 0.5 + math.random()
+			pt.pos = vector.offset(pos, math.random() - 0.5, -0.51, math.random() - 0.5)
 			minetest.add_particle(pt)
-			minetest.after(pt.expirationtime,function()
-				pt.acceleration = vector.new(0,-9,0)
+			minetest.after(pt.expirationtime, function()
+				pt.acceleration = vector.new(0, -9, 0)
 				pt.collisiondetection = true
-				pt.expirationtime = math.random(1.2,4.5)
+				pt.expirationtime = 1.2 + math.random() * 3.3
 				minetest.add_particle(pt)
 			end)
 		end)
