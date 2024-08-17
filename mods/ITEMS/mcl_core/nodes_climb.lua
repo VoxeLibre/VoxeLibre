@@ -40,7 +40,7 @@ end
 minetest.register_node("mcl_core:ladder", {
 	description = S("Ladder"),
 	_doc_items_longdesc = S(
-		"A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns."),
+		"A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks."),
 	drawtype = "signlike",
 	is_ground_content = false,
 	tiles = { "default_ladder.png" },
@@ -85,9 +85,8 @@ minetest.register_node("mcl_core:ladder", {
 		end
 		local groups = def.groups
 
-		-- Don't allow to place the ladder at particular nodes
-		if (groups and (groups.glass or groups.leaves or groups.slab)) or
-			node.name == "mcl_core:ladder" or node.name == "mcl_core:ice" or node.name == "mcl_nether:glowstone" or node.name == "mcl_ocean:sea_lantern" then
+		-- Don't allow to place the ladder at non-solid nodes
+		if (groups and (not groups.solid)) then
 			return itemstack
 		end
 
@@ -105,9 +104,10 @@ minetest.register_node("mcl_core:ladder", {
 			return itemstack
 		end
 		local idef = itemstack:get_definition()
-		local success = minetest.item_place_node(itemstack, placer, pointed_thing)
+		local itemstack, pos = minetest.item_place_node(itemstack, placer, pointed_thing)
 
-		if success then
+		-- A non-nil pos indicates the node was placed in a valid position.
+		if pos then
 			if idef.sounds and idef.sounds.place then
 				minetest.sound_play(idef.sounds.place, { pos = above, gain = 1 }, true)
 			end
