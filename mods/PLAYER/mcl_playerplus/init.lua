@@ -512,23 +512,27 @@ minetest.register_globalstep(function(dtime)
 			local boots = player:get_inventory():get_stack("armor", 5)
 			local soul_speed = mcl_enchanting.get_enchantment(boots, "soul_speed")
 			if soul_speed > 0 then
-				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", soul_speed * 0.105 + 1.3)
+				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", soul_speed * 0.105 + 1.3)
 			else
 				if node_stand_below == "mcl_core:ice" or node_stand_below == "mcl_core:packed_ice" or node_stand_below == "mcl_core:slimeblock" or node_stand_below == "mcl_core:water_source" then
-					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.1)
+					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", 0.1)
 				else
-					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.4)
+					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", 0.4)
 				end
 			end
-		elseif get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
+		else
+			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:soul_speed")
+		end
+		if get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
 			local boots = player:get_inventory():get_stack("armor", 5)
 			local depth_strider = mcl_enchanting.get_enchantment(boots, "depth_strider")
-
 			if depth_strider > 0 then
-				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", (depth_strider / 3) + 0.75)
+				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:depth_strider", (depth_strider / 3) + 0.75)
+			else
+				playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:depth_strider")
 			end
 		else
-			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
+			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:depth_strider")
 		end
 
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
@@ -679,6 +683,8 @@ minetest.register_on_joinplayer(function(player)
 		player:respawn()
 		minetest.log("warning", name .. " joined the game with 0 hp and has been forced to respawn")
 	end
+
+	playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
 end)
 
 -- clear when player leaves
