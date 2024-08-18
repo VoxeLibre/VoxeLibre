@@ -115,6 +115,30 @@ mcl_stairs.register_slab("diorite", "mcl_core:diorite",
 		mcl_sounds.node_sound_stone_defaults(), 6, 2,
 		S("Double Diorite Slab"))
 
+mcl_stairs.register_stair_and_slab("cobble", "mcl_core:cobble",
+		{pickaxey=1, material_stone=1},
+		{"default_cobble.png"},
+		S("Cobblestone Stairs"),
+		S("Cobblestone Slab"),
+		mcl_sounds.node_sound_stone_defaults(), nil, nil,
+		S("Double Cobblestone Slab"))
+
+mcl_stairs.register_stair_and_slab("mossycobble", "mcl_core:mossycobble",
+		{pickaxey=1, material_stone=1},
+		{"default_mossycobble.png"},
+		S("Mossy Cobblestone Stairs"),
+		S("Mossy Cobblestone Slab"),
+		mcl_sounds.node_sound_stone_defaults(), nil, nil,
+		S("Double Mossy Cobblestone Slab"))
+
+mcl_stairs.register_stair_and_slab("brick_block", "mcl_core:brick_block",
+		{pickaxey=1, material_stone=1},
+		{"default_brick.png"},
+		S("Brick Stairs"),
+		S("Brick Slab"),
+		mcl_sounds.node_sound_stone_defaults(), nil, nil,
+		S("Double Brick Slab"))
+
 mcl_stairs.register_stair_and_slab("sandstone", "mcl_core:sandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
