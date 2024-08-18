@@ -56,6 +56,11 @@ function mcl_maps.create_map(pos)
 	tt.reload_itemstack_description(itemstack)
 
 	creating_maps[id] = true
+	mcl_maps.draw_map(minp, maxp, id)
+	return itemstack
+end
+
+function mcl_maps.draw_map(minp, maxp, id)
 	minetest.emerge_area(minp, maxp, function(blockpos, action, calls_remaining)
 		if calls_remaining > 0 then
 			return
@@ -144,41 +149,39 @@ function mcl_maps.create_map(pos)
 		tga_encoder.image(pixels):save(map_textures_path .. "mcl_maps_map_texture_" .. id .. ".tga")
 		creating_maps[id] = nil
 	end)
-	return itemstack
 end
 
 function mcl_maps.load_map(id, callback)
 	if id == "" or creating_maps[id] then
 		return false
 	end
-
 	local texture = "mcl_maps_map_texture_" .. id .. ".tga"
 
 	local result = true
 
-	if not loaded_maps[id] then
-		if not minetest.features.dynamic_add_media_table then
-			-- minetest.dynamic_add_media() blocks in
-			-- Minetest 5.3 and 5.4 until media loads
+	-- Attempt to load map texture image
+	if not minetest.features.dynamic_add_media_table then
+		-- minetest.dynamic_add_media() blocks in
+		-- Minetest 5.3 and 5.4 until media loads
+		loaded_maps[id] = true
+		result = dynamic_add_media(map_textures_path .. texture, function()
+		end)
+		if callback then
+			callback(texture)
+		end
+	else
+		-- minetest.dynamic_add_media() never blocks
+		-- in Minetest 5.5, callback runs after load
+		result = dynamic_add_media(map_textures_path .. texture, function()
 			loaded_maps[id] = true
-			result = dynamic_add_media(map_textures_path .. texture, function()
-			end)
 			if callback then
 				callback(texture)
 			end
-		else
-			-- minetest.dynamic_add_media() never blocks
-			-- in Minetest 5.5, callback runs after load
-			result = dynamic_add_media(map_textures_path .. texture, function()
-				loaded_maps[id] = true
-				if callback then
-					callback(texture)
-				end
-			end)
-		end
+		end)
 	end
 
 	if result == false then
+		-- Failed to load image
 		return false
 	end
 
@@ -217,6 +220,26 @@ local function fill_map(itemstack, placer, pointed_thing)
 	end
 end
 
+local function refill_map(itemstack, placer, pointed_thing)
+	local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+	if new_stack then
+		return new_stack
+	end
+	
+	if minetest.settings:get_bool("enable_real_maps", true) then
+		local meta = itemstack:get_meta()
+		local id = meta:get_string("mcl_maps:id")
+		local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
+		local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
+
+		-- Re-draw the area in the map, and load the new image
+		mcl_maps.draw_map(minp, maxp, id)
+		mcl_maps.load_map(id)
+
+		return itemstack
+	end
+end
+
 minetest.register_craftitem("mcl_maps:empty_map", {
 	description = S("Empty Map"),
 	_doc_items_longdesc = S("Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used."),
@@ -233,6 +256,8 @@ local filled_def = {
 	_doc_items_longdesc = S("When created, the map saves the nearby area as an image that can be viewed any time by holding the map."),
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
+	on_place = refill_map,
+	on_secondary_use = refill_map,
 	stack_max = 64,
 	groups = { not_in_creative_inventory = 1, filled_map = 1, tool = 1 },
 }
@@ -370,14 +395,14 @@ minetest.register_globalstep(function(dtime)
 				player:hud_change(hud.map, "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture)
 				maps[player] = texture
 			end
-
+			
 			local pos = vector.round(player:get_pos())
 			local meta = wield:get_meta()
 			local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
 			local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
-
+			
 			local marker = "mcl_maps_player_arrow.png"
-
+			
 			if pos.x < minp.x then
 				marker = "mcl_maps_player_dot.png"
 				pos.x = minp.x
@@ -385,7 +410,7 @@ minetest.register_globalstep(function(dtime)
 				marker = "mcl_maps_player_dot.png"
 				pos.x = maxp.x
 			end
-
+			
 			if pos.z < minp.z then
 				marker = "mcl_maps_player_dot.png"
 				pos.z = minp.z
