@@ -395,14 +395,14 @@ minetest.register_globalstep(function(dtime)
 				player:hud_change(hud.map, "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture)
 				maps[player] = texture
 			end
-			
+
 			local pos = vector.round(player:get_pos())
 			local meta = wield:get_meta()
 			local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
 			local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
-			
+
 			local marker = "mcl_maps_player_arrow.png"
-			
+
 			if pos.x < minp.x then
 				marker = "mcl_maps_player_dot.png"
 				pos.x = minp.x
@@ -410,7 +410,7 @@ minetest.register_globalstep(function(dtime)
 				marker = "mcl_maps_player_dot.png"
 				pos.x = maxp.x
 			end
-			
+
 			if pos.z < minp.z then
 				marker = "mcl_maps_player_dot.png"
 				pos.z = minp.z
