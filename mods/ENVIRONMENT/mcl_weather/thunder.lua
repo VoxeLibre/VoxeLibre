@@ -10,6 +10,10 @@ mcl_weather.thunder = {
 	init_done = false,
 }
 
+lightning.register_on_strike(function(pos, pos2, objects)
+	if not mcl_weather.has_rain(pos) then return nil, true end
+end)
+
 minetest.register_globalstep(function(dtime)
 	if mcl_weather.get_weather() ~= "thunder" then
 		return false
