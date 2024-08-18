@@ -1260,7 +1260,11 @@ local function potions_init_icons(player)
 		})
 		table.insert(icon_ids[name], id)
 	end
-	hb.init_hudbar(player, "absorption")
+
+	-- Absorption bar in damage disabled server is unneccessary
+	if minetest.settings:get_bool("enable_damage") == true then
+		hb.init_hudbar(player, "absorption")
+	end
 end
 
 local function potions_set_icons(player)
