@@ -81,7 +81,8 @@ end
 -- Is this water?
 -- Returns the liquidtype, if indeed water.
 function kelp.is_submerged(node)
-	if mt_get_item_group(node.name, "water") ~= 0 then
+	local g = mt_get_item_group(node.name, "water")
+	if g > 0 and g <= 3  then
 		-- Expected only "source" and "flowing" from water liquids
 		return mt_registered_nodes[node.name].liquidtype
 	end
@@ -267,8 +268,7 @@ function kelp.next_height(pos, node, pos_tip, node_tip, submerged, downward_flow
 	-- Flowing liquid: Grow 1 step, but also turn the tip node into a liquid source.
 	if downward_flowing then
 		local alt_liq = mt_registered_nodes[node_tip.name].liquid_alternative_source
-		local alt_liq_accessible = mt_get_item_group(node_tip.name,"waterlogged") -- returns 0 if it isn't waterlogged.
-		if alt_liq and not alt_liq_accessible then
+		if alt_liq and mt_registered_nodes[alt_liq] then
 			mt_set_node(pos_tip, {name=alt_liq})
 		end
 	end
