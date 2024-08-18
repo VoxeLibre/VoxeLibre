@@ -272,6 +272,12 @@ mcl_heads.register_head{
 	range_factor = 0.5,
 }
 
+-- Alias old creeper heads
+minetest.register_alias("mcl_heads:creeper_wall", "mcl_heads:stalker_wall")
+for i, d in pairs(mcl_heads.FLOOR_DEGREES) do
+	minetest.register_alias("mcl_heads:creeper"..d, "mcl_heads:stalker"..d)
+end
+
 -- Original Minecraft name: “Head”
 mcl_heads.register_head{
 	name = "steve",
