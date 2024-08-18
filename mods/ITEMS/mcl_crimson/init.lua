@@ -191,8 +191,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		"mcl_crimson:twisting_vines",
 		"mcl_crimson:twisting_vines",
 	},
-	_mcl_blast_resistance = 0.2,
-	_mcl_hardness = 0.2,
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_crimson:weeping_vines", {
@@ -281,8 +280,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		"mcl_crimson:weeping_vines",
 		"mcl_crimson:weeping_vines",
 	},
-	_mcl_blast_resistance = 0.2,
-	_mcl_hardness = 0.2,
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_crimson:nether_sprouts", {
@@ -465,6 +463,7 @@ minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 	tiles = {"mcl_crimson_warped_hyphae_wood.png"},
 	groups = {handy = 5,axey = 1, wood=1,building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 2,
 })
 
@@ -662,6 +661,7 @@ minetest.register_node("mcl_crimson:crimson_hyphae_wood", {
 	tiles = {"mcl_crimson_crimson_hyphae_wood.png"},
 	groups = {handy = 5, axey = 1, wood = 1, building_block = 1, material_wood = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 2,
 })
 

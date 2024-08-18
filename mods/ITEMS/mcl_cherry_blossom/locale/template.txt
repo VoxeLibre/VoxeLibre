@@ -19,6 +19,6 @@ Cherry Slab=
 Double Cherry Slab=
 Cherry Sign=
 Cherry Fence=
-Cherry Gate=
+Cherry Fence Gate=
 Cherry Pressure Plate=
 Cherry Button=

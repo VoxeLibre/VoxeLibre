@@ -33,8 +33,8 @@ minetest.register_node("mcl_blackstone:blackstone_gilded", {
 			{items = {"mcl_blackstone:blackstone_gilded"}, rarity = 1},
 		}
 	},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 2,
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 1.5,
 	_mcl_silk_touch_drop = true,
 	_mcl_fortune_drop = {
 		discrete_uniform_distribution = true,
@@ -226,18 +226,7 @@ mcl_stairs.register_stair_and_slab("blackstone_brick_polished", "mcl_blackstone:
 		S("Double Polished Blackstone Brick Slab"), nil)
 
 --Wall
-mcl_walls.register_wall(
-	"mcl_blackstone:wall",
-	S("Blackstone Wall"),
-	"mcl_blackstone:blackstone",
-	{
-		"mcl_blackstone_top.png",
-		"mcl_blackstone_top.png",
-		"mcl_blackstone_side.png"
-	},
-	"",
-	{ cracky=3, pickaxey=1, material_stone=1 }
-)
+mcl_walls.register_wall("mcl_blackstone:wall", S("Blackstone Wall"), "mcl_blackstone:blackstone")
 
 --lavacooling
 
