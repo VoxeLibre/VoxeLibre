@@ -317,13 +317,13 @@ local GROUP_MAP = {
 	["snappy"] = "shearsy",
 }
 
-function mcl_autogroup.mod_compatibility(groups, ndef)
+function mcl_autogroup.group_compatibility(groups, node_def)
 	local grouped = false
 	for name,_ in pairs(groups) do
 		local new_group = GROUP_MAP[name]
 		if new_group then
 			groups[new_group] = 1
-			ndef.groups[new_group] = 1
+			node_def.groups[new_group] = 1
 		end
 		if mcl_autogroup.registered_diggroups[name] then
 			grouped = true
@@ -350,7 +350,7 @@ local function overwrite()
 
 		if not newgroups.indestructable then
 			ndef.diggable = true
-			mcl_autogroup.mod_compatibility(newgroups, ndef)
+			mcl_autogroup.group_compatibility(newgroups, ndef)
 			if not ndef._mcl_hardness then
 				ndef._mcl_hardness = 0
 			end
@@ -400,7 +400,7 @@ local function overwrite()
 			})
 		end
 	end
-	minetest.log("verbose","Total registered blocks: "..tostring(count))
+	minetest.log("verbose","Total registered nodes: "..count)
 
 	for tname, tdef in pairs(minetest.registered_items) do
 		-- Assign groupcaps for digging the registered digging groups
