@@ -155,7 +155,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		end
 
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			return mcl_bone_meal.use_bone_meal(itemstack, clicker, {under=pos})
+			return mcl_bone_meal.use_bone_meal(itemstack, clicker, {under=pos, above=pos})
 		end
 		return itemstack
 	end,
@@ -228,7 +228,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 	},
 	node_placement_prediction = "",
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
-		return grow_vines(pointed_thing.under, math.random(1, 3),"mcl_crimson:weeping_vines")
+		return grow_vines(pointed_thing.under, math.random(1, 3),"mcl_crimson:weeping_vines", -1)
 	end,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		local pn = clicker:get_player_name()
@@ -250,7 +250,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		end
 
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			return mcl_bone_meal.use_bone_meal(itemstack, clicker, {under=pos})
+			return mcl_bone_meal.use_bone_meal(itemstack, clicker, {under=pos, above=pos})
 		end
 		return itemstack
 	end,
