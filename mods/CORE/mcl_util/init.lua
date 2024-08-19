@@ -1103,3 +1103,8 @@ function mcl_util.is_it_christmas()
 		return false
 	end
 end
+
+function mcl_util.to_bool(val)
+	if not val then return false end
+	return true
+end

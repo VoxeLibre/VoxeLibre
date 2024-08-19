@@ -155,6 +155,7 @@ local function drink_milk_delayed(itemstack, player, pointed_thing)
 			mcl_hunger.stop_poison(player)
 		end
 		mcl_potions._reset_effects(player)
+		mcl_weather.skycolor.update_player_sky_color(player)
 	end
 
 	-- Wrapper for handling mcl_hunger delayed eating
