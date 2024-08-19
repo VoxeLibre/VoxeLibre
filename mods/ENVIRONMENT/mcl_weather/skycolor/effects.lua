@@ -8,7 +8,7 @@ local effects_handlers = {}
 local has_mcl_potions = mcl_util.to_bool(minetest.get_modpath("mcl_potions"))
 
 function effects_handlers.darkness(player, meta, effect, sky_data)
-	-- No darkness effect if visited by shepherd
+	-- No darkness effect if is a visited shepherd
 	if meta:get_int("mcl_shepherd:special") == 1 then return end
 
 	-- High stars
