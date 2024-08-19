@@ -314,6 +314,7 @@ local GROUP_MAP = {
 	["oddly_breakable_by_hand"] = "handy",
 	["cracky"] = "pickaxey",
 	["crumbly"] = "shovely",
+	["snappy"] = "shearsy",
 }
 
 function mcl_autogroup.mod_compatibility(groups, ndef)
