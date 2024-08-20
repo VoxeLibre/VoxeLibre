@@ -315,12 +315,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname:find("mcl_signs:set_text_") == 1 then
 		local x, y, z = formname:match("mcl_signs:set_text_(.-)_(.-)_(.*)")
 		local pos = { x = tonumber(x), y = tonumber(y), z = tonumber(z) }
-		if not pos or not pos.x or not pos.y or not pos.z then
+		if not pos or not pos.x or not pos.y or not pos.z or not fields or not fields.text then
 			return
 		end
 		if not mcl_util.check_position_protection(pos, player) and (signs_editable or minetest.get_meta(pos):get_string("text") == "") then
 			set_signmeta(pos,{
-				text = tostring(fields.text or ""):sub(1, 256), --limit saved text to 256 characters (4 lines x 15 chars = 60 so this should be more than is ever needed).
+				text = tostring(fields.text):sub(1, 256), --limit saved text to 256 characters (4 lines x 15 chars = 60 so this should be more than is ever needed).
 			})
 			mcl_signs.update_sign(pos)
 		end
