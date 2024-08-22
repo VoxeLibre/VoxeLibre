@@ -5,6 +5,8 @@ local modpath = minetest.get_modpath(modname)
 -- by debiankaios
 -- adapted for mcl2 by cora
 
+local MAXIMUM_VINE_HEIGHT = 25
+
 local wood_slab_groups = {handy = 1, axey = 1, material_wood = 1, wood_slab = 1}
 local wood_stair_groups = {handy = 1, axey = 1, material_wood = 1, wood_stairs = 1}
 
@@ -16,23 +18,35 @@ function generate_crimson_tree(pos)
 	minetest.place_schematic(pos,modpath.."/schematics/crimson_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
 end
 
-function grow_vines(pos, moreontop ,vine, dir)
+function grow_vines(pos, moreontop, vine, dir)
+	-- Sanity checks
 	if dir == nil then dir = 1 end
-	local n
-	repeat
-		pos = vector.offset(pos,0,dir,0)
-		n = minetest.get_node(pos)
-		if n.name == "air" then
-			for i=0,math.max(moreontop,1) do
-				if minetest.get_node(pos).name == "air" then
-					minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
-				end
-			end
-			return true
-		end
-	until n.name ~= "air" and n.name ~= vine
+	if not moreontop or moreontop < 1 then return false end
 
-	return false
+	local allowed_nodes = {vine}
+
+	-- Find the root, tip and calculate height
+	local root,_,root_node = mcl_util.trace_nodes(pos, -dir, allowed_nodes, MAXIMUM_VINE_HEIGHT)
+	if not root then return false end
+	local tip,height,tip_node = mcl_util.trace_nodes(vector.offset(root, 0, dir, 0), dir, allowed_nodes, MAXIMUM_VINE_HEIGHT)
+	if not tip then return false end
+
+	local res = false
+	for i = 1,moreontop do
+		-- Check if we can grow into this position
+		if height >= MAXIMUM_VINE_HEIGHT then return res end
+		if tip_node.name ~= "air" then return res end
+
+		-- Update world map data
+		minetest.set_node(tip, {name = vine})
+
+		-- Move to the next position and flag that growth has occured
+		tip = vector.offset(tip, 0, dir, 0)
+		tip_node = minetest.get_node(tip)
+		height = height + 1
+		res = true
+	end
+	return res
 end
 
 local nether_plants = {
