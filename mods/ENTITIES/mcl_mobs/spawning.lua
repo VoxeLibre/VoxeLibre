@@ -10,12 +10,12 @@ local overworld_sky_threshold = tonumber(minetest.settings:get("mcl_mobs_overwor
 local overworld_passive_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_passive_threshold")) or 7
 
 local get_node                     = minetest.get_node
-local get_item_group               = minetest.get_item_group
 local get_node_light               = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local mt_get_biome_name            = minetest.get_biome_name
 local get_objects_inside_radius    = minetest.get_objects_inside_radius
 local get_connected_players        = minetest.get_connected_players
+local registered_nodes             = minetest.registered_nodes
 
 local math_min       = math.min
 local math_max       = math.max
@@ -35,14 +35,11 @@ local table_remove   = table.remove
 local pairs = pairs
 
 local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", false)
-local function mcl_log (message, property)
-	if logging then
-		if property then
-			message = message .. ": " .. dump(property)
-		end
-		mcl_util.mcl_log (message, "[Mobs spawn]", true)
-	end
+local function mcl_log(message, property)
+	if property then message = message .. ": " .. dump(property) end
+	mcl_util.mcl_log(message, "[Mobs spawn]", true)
 end
+if not logging then mcl_log = function() end end
 
 local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
@@ -733,22 +730,10 @@ function mcl_mobs.register_custom_biomecheck(custom_biomecheck)
 	mcl_mobs.custom_biomecheck = custom_biomecheck
 end
 
-
 local function get_biome_name(pos)
-	if mcl_mobs.custom_biomecheck then
-		return mcl_mobs.custom_biomecheck (pos)
-	else
-		local gotten_biome = minetest.get_biome_data(pos)
-
-		if not gotten_biome then
-			return
-		end
-
-		gotten_biome = mt_get_biome_name(gotten_biome.biome)
-		--minetest.log ("biome: " .. dump(gotten_biome))
-
-		return gotten_biome
-	end
+	if mcl_mobs.custom_biomecheck then return mcl_mobs.custom_biomecheck(pos) end
+	local gotten_biome = minetest.get_biome_data(pos)
+	return gotten_biome and mt_get_biome_name(gotten_biome.biome)
 end
 
 local function spawn_check(pos, spawn_def)
@@ -758,28 +743,29 @@ local function spawn_check(pos, spawn_def)
 	local dimension = mcl_worlds.pos_to_dimension(pos)
 	if spawn_def.dimension ~= dimension then return end -- wrong dimension
 	-- find ground node below spawn position
-	local gotten_node = get_node(pos).name
-	if not gotten_node then return end
-	if get_item_group(gotten_node, "air") ~= 0 then -- try node one below instead
+	local node_name = get_node(pos).name
+	local node_def = registered_nodes[node_name]
+	if node_def and not node_def.groups.solid then -- try node one below instead
 		pos.y = pos.y - 1
-		gotten_node = get_node(pos).name
+		node_name = get_node(pos).name
+		node_def = registered_nodes[node_name]
 	end
-	local is_ground = get_item_group(gotten_node,"solid") ~= 0
+	if not node_def or not node_def.groups then return end
+	-- do not spawn on bedrock
+	if node_name == "mcl_core:bedrock" then return end
 	pos.y = pos.y + 1
 	-- check spawn height
 	if pos.y < spawn_def.min_height or pos.y > spawn_def.max_height then return end
 	mcl_log("spawn_check#1 position checks passed")
 
-	-- do not spawn on bedrock
-	if gotten_node == "mcl_core:bedrock" then return end
 	-- do not spawn ground mobs on leaves
-	if spawn_def.type_of_spawning == "ground" and (not is_ground or get_item_group(gotten_node, "leaves") ~= 0) then return end
-	-- farm animals on grass only
-	if is_farm_animal(spawn_def.name) and get_item_group(gotten_node, "grass_block") ~= 0 then return end
+	if spawn_def.type_of_spawning == "ground" and (not node_def.groups.solid or node_def.groups.leaves) then return end
 	-- water mobs only on water
-	if spawn_def.type_of_spawning == "water" and get_item_group(gotten_node, "water") ~= 0 then return end
+	if spawn_def.type_of_spawning == "water" and node_def.groups.water then return end
 	-- lava mobs only on lava
-	if spawn_def.type_of_spawning == "lava" and get_item_group(gotten_node, "lava") ~= 0 then return end
+	if spawn_def.type_of_spawning == "lava" and node_def.groups.lava then return end
+	-- farm animals on grass only
+	if is_farm_animal(spawn_def.name) and node_def.groups.grass_block then return end
 
 	---- More expensive calls:
 	-- check the biome
