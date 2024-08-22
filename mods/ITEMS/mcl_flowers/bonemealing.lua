@@ -126,10 +126,11 @@ if not olddef then
 else
 	local oldhandler = olddef._on_bone_meal
 	local newhandler = function(itemstack, placer, pointed_thing)
-		bonemeal_grass(pointed_thing, placer)
+		local res = bonemeal_grass(pointed_thing, placer)
 		if oldhandler then
-			oldhandler(itemstack, placer, pointed_thing)
+			res = oldhandler(itemstack, placer, pointed_thing) or res
 		end
+		return res
 	end
 	minetest.override_item(nodename, {_on_bone_meal = newhandler})
 end
