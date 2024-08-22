@@ -1,4 +1,5 @@
 import os
+import pathlib
 import platform
 
 def get_minetest_directory():
@@ -24,7 +25,7 @@ def get_minetest_directory():
 SUPPORTED_MINECRAFT_VERSION = "1.20"
 
 # Helper vars
-home = os.environ["HOME"]
+home = pathlib.Path.home()
 mineclone2_path = os.path.join(get_minetest_directory(),"games","mineclone2")
 working_dir = os.getcwd()
 appname = "Texture_Converter.py"
