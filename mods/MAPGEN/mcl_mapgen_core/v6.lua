@@ -509,7 +509,7 @@ local function generate_mgv6_structures()
 								local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:snowblock")
 								local surface2 = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:dirt_with_grass_snow")
 								if #surface + #surface2 >= 63 then
-									mcl_structures.call_struct(p, "igloo", nil, pr)
+									vl_structures.call_struct(p, "igloo", nil, pr)
 									chunk_has_igloo = true
 								end
 							end
@@ -528,7 +528,7 @@ local function generate_mgv6_structures()
 								local nodes = minetest.find_nodes_in_area(p1, p2, {"mcl_core:sandstone", "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:dirt", "mcl_core:gravel"})
 
 								if #nodes >= 100 then -- >= 80%
-									mcl_structures.call_struct(p1, "fossil", nil, pr)
+									vl_structures.call_struct(p1, "fossil", nil, pr)
 								end
 							end
 						end
@@ -565,10 +565,7 @@ local function generate_mgv6_structures()
 								if #free_nodes >= ((size.x+1)*(size.y+1)*(size.z+1)) then
 									local place = {x=p.x, y=WITCH_HUT_HEIGHT-1, z=p.z}
 
-									-- FIXME: For some mysterious reason (black magic?) this
-									-- function does sometimes NOT spawn the witch hut. One can only see the
-									-- oak wood nodes in the water, but no hut. :-/
-									mcl_structures.place_structure(place,mcl_structures.registered_structures["witch_hut"],pr)
+									vl_structures.place_structure(place,vl_structures.registered_structures["witch_hut"],pr)
 
 									local function place_tree_if_free(pos, prev_result)
 										local nn = minetest.get_node(pos).name
@@ -637,7 +634,7 @@ local function generate_mgv6_structures()
 								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+2,z=p.z+1}, {x=p.x+4, y=p.y+6, z=p.z+4}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
 								if #surface >= 9 and #spruce_collisions == 0 then
-									mcl_structures.place_structure(p,mcl_structures.registered_structures["ice_spike_large"],pr)
+									vl_structures.place_structure(p,vl_structures.registered_structures["ice_spike_large"],pr)
 								end
 							elseif spike < 100 then
 								-- Check surface
@@ -648,7 +645,7 @@ local function generate_mgv6_structures()
 								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+1,z=p.z+1}, {x=p.x+6, y=p.y+6, z=p.z+6}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
 								if #surface >= 25 and #spruce_collisions == 0 then
-									mcl_structures.place_structure(p,mcl_structures.registered_structures["ice_spike_small"],pr)
+									vl_structures.place_structure(p,vl_structures.registered_structures["ice_spike_small"],pr)
 								end
 							end
 						end

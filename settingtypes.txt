@@ -48,6 +48,9 @@ mcl_disabled_events (Disabled events) string
 # Control the relative plant growth speed (default: 1)
 vl_plant_growth (Plant growth factor) float 1.0 0 100
 
+# Structure frequency multiplier, keep this less than 3 usually
+vl_structures_boost (Structure frequency) float 1.0 0.0 10.0
+
 # Amount of village to generate
 mcl_villages_village_probability (Probability of villages) int 5 0 100
 

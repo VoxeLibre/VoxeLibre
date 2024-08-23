@@ -5,20 +5,18 @@ local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local BLAZE_SPAWNER_MAX_LIGHT = 11
 
-mcl_structures.register_structure("nether_outpost",{
+vl_structures.register_structure("nether_outpost",{
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
 	chunk_probability = 23,
-	flags = "all_floors",
+	flags = "place_center_x, place_center_y, all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
-	sidelen = 24,
-	solid_ground = true,
-	prepare = { tolerance=20, padding=2, corners=5, foundation=true, clearance=true },
+	prepare = { tolerance = 20, padding = 4, corners = 5, foundation = true, clear = true, clear_top = 4 },
 	y_min = mcl_vars.mg_lava_nether_max - 1,
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
 	y_offset = 0,
-	after_place = function(pos)
-		local sp = minetest.find_nodes_in_area(pos,vector.offset(pos,0,20,0),{"mcl_mobspawners:spawner"})
+	after_place = function(pos,def,pr,p1,p2)
+		local sp = minetest.find_nodes_in_area(p1,p2,{"mcl_mobspawners:spawner"})
 		if not sp[1] then return end
 		mcl_mobspawners.setup_spawner(sp[1], "mobs_mc:blaze", 0, BLAZE_SPAWNER_MAX_LIGHT, 10, 8, 0)
 	end
@@ -29,85 +27,101 @@ local nbridges = {
 		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_3.mts",
 		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_4.mts",
 }
-mcl_structures.register_structure("nether_bridge",{
+vl_structures.register_structure("nether_bridge",{
 	place_on = {"mcl_nether:nether_lava_source","mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
-	chunk_probability = 5, -- because of the small height allowed, these are quite rare otherwise
-	flags = "all_floors, liquid_surface",
-	prepare = { tolerance=-1, clearance = 6 },
+	chunk_probability = 8, -- because of the y restriction these are quite rare
+	flags = "place_center_x, place_center_y, all_floors",
+	prepare = { tolerance = 50, padding = -1, corners = 0, clear_bottom = 8, clear_top = 6 }, -- asymmetric padding would be nice to have
 	force_placement = true,
-	sidelen = 38,
-	solid_ground = false,
-	y_min = mcl_vars.mg_lava_nether_max - 5,
-	y_max = mcl_vars.mg_lava_nether_max + 15,
+	y_min = mcl_vars.mg_lava_nether_max,
+	y_max = mcl_vars.mg_lava_nether_max + 25, -- otherwise, we may see some very long legs
 	filenames = nbridges,
-	y_offset = function(pr) return pr:next(-12, -5) end,
-	after_place = function(pos,def,pr)
-		local p1 = vector.offset(pos,-14,0,-14)
-		local p2 = vector.offset(pos,14,24,14)
-		mcl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
+	y_offset = function(pr) return pr:next(-8, -5) end,
+	after_place = function(pos,def,pr,p1,p2)
+		vl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
+		-- p1.y is not a typo, we want to lowest level only
+		local legs = minetest.find_nodes_in_area(vector.new(p1.x,p1.y,p1.z),vector.new(p2.x,p1.y,p2.z), "mcl_nether:nether_brick")
+		local bricks = {}
+		-- TODO: port leg generation to voxel manipulators?
+		for _,leg in pairs(legs) do
+			while true do
+				leg = vector.offset(leg,0,-1,0)
+				local nodename = minetest.get_node(leg).name
+				if nodename == "ignore" then break end
+				if nodename ~= "air" and nodename ~= "mcl_core:lava_source" and minetest.get_item_group(nodename, "solid") ~= 0 then break end
+				table.insert(bricks,leg)
+			end
+		end
+		minetest.bulk_set_node(bricks, {name = "mcl_nether:nether_brick", param2 = 2})
 	end
 })
 
-mcl_structures.register_structure("nether_outpost_with_bridges",{
+vl_structures.register_structure("nether_outpost_with_bridges",{
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand","mcl_nether:nether_lava_source"},
-	chunk_probability = 33,
-	flags = "all_floors",
+	chunk_probability = 10, -- because of the y restriction, it will still be rare
+	flags = "place_center_x, place_center_y, all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
-	sidelen = 24,
-	solid_ground = true,
-	prepare = { tolerance=30, padding=4, corners=5, foundation=true, clearance=true },
+	prepare = { tolerance = 20, padding = 4, corners = 5, foundation = true, clear_top = 3 },
 	y_min = mcl_vars.mg_lava_nether_max - 1,
-	y_max = mcl_vars.mg_nether_max - 30,
+	y_max = mcl_vars.mg_lava_nether_max + 40,
+	-- todo: spawn_by a lot of air?
 	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
-	daughters = {{
-		files = { nbridges[1] },
-			pos = vector.new(0,-3,-25),
-			rot = 180,
-			prepare = { tolerance = -1, foundation = false, clearance = 14, padding = -2, corners=2 },
-		},
+	emerge_padding = { vector.new(-38,-8,-38), vector.new(38,0,38) },
+	daughters = {
 		{
-		files = { nbridges[1] },
+			filenames = { nbridges[1], nbridges[2] },
 			pos = vector.new(0,-3,24),
-			rot = 0,
+			rotation= 0,
 			no_level = true,
-			prepare = { tolerance = -1, foundation = false, clearance = 14, padding = -2, corners=2 },
+			prepare = { tolerance = -1, foundation = false, clear = true, clear_bottom = 16, clear_top = 2, padding = 1, corners = 4 },
 		},
 		{
-		files = { nbridges[1] },
-			pos = vector.new(-25,-3,0),
-			rot = 270,
-			no_level = true,
-			prepare = { tolerance = -1, foundation = false, clearance = 14, padding = -2, corners=2 },
-		},
-		{
-		files = { nbridges[1] },
+			filenames = { nbridges[1], nbridges[2] },
 			pos = vector.new(24,-3,0),
-			rot = 90,
+			rotation = 90,
 			no_level = true,
-			prepare = { tolerance = -1, foundation = false, clearance = 14, padding = -2, corners=2 },
+			prepare = { tolerance = -1, foundation = false, clear = true, clear_bottom = 16, clear_top = 2, padding = 1, corners = 4 },
+		},
+		{
+			filenames = { nbridges[1], nbridges[2] },
+			pos = vector.new(0,-3,-25),
+			rotation = 180,
+			no_level = true,
+			prepare = { tolerance = -1, foundation = false, clear = true, clear_bottom = 16, clear_top = 2, padding = 1, corners = 4 },
+		},
+		{
+			filenames = { nbridges[1], nbridges[2] },
+			pos = vector.new(-25,-3,0),
+			rotation = 270,
+			no_level = true,
+			prepare = { tolerance = -1, foundation = false, clear = true, clear_bottom = 16, clear_top = 2, padding = 1, corners = 4 },
 		},
 	},
-	after_place = function(pos,def,pr)
-		local sp = minetest.find_nodes_in_area(pos,vector.offset(pos,0,20,0),{"mcl_mobspawners:spawner"})
+	after_place = function(pos,def,pr,p1,p2)
+		local sp = minetest.find_nodes_in_area(p1,p2,{"mcl_mobspawners:spawner"})
 		if not sp[1] then return end
 		mcl_mobspawners.setup_spawner(sp[1], "mobs_mc:blaze", 0, BLAZE_SPAWNER_MAX_LIGHT, 10, 8, 0)
-
-		local legs = minetest.find_nodes_in_area(vector.offset(pos,-45,-2,-45),vector.offset(pos,45,0,45), "mcl_nether:nether_brick")
+		-- the -3 offset needs to be carefully aligned with the bridges above
+		local legs = minetest.find_nodes_in_area(vector.offset(pos,-45,-3,-45),vector.offset(pos,45,-3,45), "mcl_nether:nether_brick")
 		local bricks = {}
+		-- TODO: port leg generation to voxel manipulators?
 		for _,leg in pairs(legs) do
-			while minetest.get_item_group(mcl_vars.get_node(vector.offset(leg,0,-1,0), true, 333333).name, "solid") == 0 do
+			while true do
 				leg = vector.offset(leg,0,-1,0)
+				local nodename = minetest.get_node(leg).name
+				if nodename == "ignore" then break end
+				if nodename ~= "air" and nodename ~= "mcl_core:lava_source" and minetest.get_item_group(nodename, "solid") ~= 0 then break end
 				table.insert(bricks,leg)
 			end
 		end
 		minetest.bulk_set_node(bricks, {name = "mcl_nether:nether_brick", param2 = 2})
 
 		local p1, p2 = vector.offset(pos,-45,12,-45), vector.offset(pos,45,22,45)
-		mcl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
+		vl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
 	end
 })
 
-mcl_structures.register_structure_spawn({
+vl_structures.register_structure_spawn({
 	name = "mobs_mc:witherskeleton",
 	y_min = mcl_vars.mg_lava_nether_max,
 	y_max = mcl_vars.mg_nether_max,
@@ -117,14 +131,12 @@ mcl_structures.register_structure_spawn({
 	spawnon = { "mcl_blackstone:blackstone_chiseled_polished" },
 })
 
-mcl_structures.register_structure("nether_bulwark",{
+vl_structures.register_structure("nether_bulwark",{
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
 	chunk_probability = 29,
-	flags = "all_floors",
+	flags = "place_center_x, place_center_y, all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest"},
-	sidelen = 36,
-	solid_ground = true,
-	prepare = { tolerance=15, padding=4, corners=4, foundation=true, clearance=true },
+	prepare = { tolerance=10, padding=4, corners=5, foundation=-5, clear_top=0 },
 	y_min = mcl_vars.mg_lava_nether_max - 1,
 	y_max = mcl_vars.mg_nether_max - 30,
 	filenames = {
@@ -134,24 +146,24 @@ mcl_structures.register_structure("nether_bulwark",{
 		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_4.mts",
 	},
 	daughters = {{
-			files = {
+			filenames = {
 				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_1.mts",
 				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_2.mts",
 				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_3.mts",
 				modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_interior_4.mts",
 			},
 			pos = vector.new(0,1,0),
-			force_place = true,
-			prepare = { tolerance = -1, foundation = false, clearance = false },
+			rotation = "random",
+			force_placement = true,
+			prepare = { tolerance = -1, foundation = false, clear = false },
 		},
 	},
 	y_offset = 0,
 	construct_nodes = {"group:wall"},
-	after_place = function(pos,def,pr)
-		local p1, p2 = vector.offset(pos,-14,0,-14), vector.offset(pos,14,24,14)
-		mcl_structures.spawn_mobs("mobs_mc:piglin",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr,5)
-		mcl_structures.spawn_mobs("mobs_mc:piglin_brute",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr)
-		mcl_structures.spawn_mobs("mobs_mc:hoglin",{"mcl_blackstone:nether_gold"},p1,p2,pr,4)
+	after_place = function(pos,def,pr,p1,p2)
+		vl_structures.spawn_mobs("mobs_mc:piglin",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr,5)
+		vl_structures.spawn_mobs("mobs_mc:piglin_brute",{"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},p1,p2,pr)
+		vl_structures.spawn_mobs("mobs_mc:hoglin",{"mcl_blackstone:nether_gold"},p1,p2,pr,4)
 	end,
 	loot = {
 		["mcl_chests:chest_small" ] ={
@@ -198,22 +210,22 @@ mcl_structures.register_structure("nether_bulwark",{
 	},
 })
 
-mcl_structures.register_structure_spawn({
+vl_structures.register_structure_spawn({
 	name = "mobs_mc:piglin",
 	y_min = mcl_vars.mg_nether_min,
 	y_max = mcl_vars.mg_nether_max,
 	chance = 10,
 	interval = 60,
 	limit = 9,
-	spawnon = {"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},
+	spawnon = {"mcl_blackstone:blackstone_brick_polished", "mcl_stairs:slab_blackstone_polished"},
 })
 
-mcl_structures.register_structure_spawn({
+vl_structures.register_structure_spawn({
 	name = "mobs_mc:piglin_brute",
 	y_min = mcl_vars.mg_nether_min,
 	y_max = mcl_vars.mg_nether_max,
 	chance = 20,
 	interval = 60,
 	limit = 4,
-	spawnon = {"mcl_blackstone:blackstone_brick_polished","mcl_stairs:slab_blackstone_polished"},
+	spawnon = {"mcl_blackstone:blackstone_brick_polished", "mcl_stairs:slab_blackstone_polished"},
 })
