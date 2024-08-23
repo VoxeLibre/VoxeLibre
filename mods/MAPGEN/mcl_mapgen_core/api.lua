@@ -1,10 +1,8 @@
-local registered_generators = {}
-
-local lvm, nodes, param2 = 0, 0, 0
-local lvm_buffer, lvm_buffer2 = {}, {}
-
 local logging = minetest.settings:get_bool("mcl_logging_mapgen", false)
 local log_timing = minetest.settings:get_bool("mcl_logging_mapgen_timing", false) -- detailed, for performance debugging
+
+local registered_generators = {}
+local lvm, nodes, param2 = 0, 0, 0
 
 local function run_generators(minp, maxp, blockseed)
 	if nodes == 0 then return end
@@ -24,8 +22,8 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	if lvm > 0 then
 		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 		local area = VoxelArea(emin, emax)
-		local data = vm:get_data(lvm_buffer)
-		local data2 = param2 > 0 and vm:get_param2_data(lvm_buffer2)
+		local data = vm:get_data()
+		local data2 = param2 > 0 and vm:get_param2_data()
 		if log_timing then
 			minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "get_data", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - t1)*1000))
 		end
@@ -188,7 +186,6 @@ local function sort_decorations()
 	end
 	table.sort(keys)
 	for _, key in ipairs(keys) do
-		-- minetest.log("action", "Deco: "..key) -- dump the resulting order
 		minetest.register_decoration(map[key])
 		if map[key].callback then map[key].callback() end
 	end
