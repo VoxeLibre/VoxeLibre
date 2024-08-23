@@ -75,13 +75,11 @@ local cold = {
 	spawn_by = {"mcl_core:water_source"},
 	num_spawn_by = 2,
 	flags = "place_center_x, place_center_z, force_placement",
-	solid_ground = true,
 	y_offset = -1,
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = -2,
 	biomes = cold_oceans,
 	chunk_probability = 10,
-	sidelen = 20,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_1.mts",
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_2.mts",
@@ -126,5 +124,5 @@ warm.filenames = {
 	modpath.."/schematics/mcl_structures_ocean_ruins_warm_4.mts",
 }
 
-mcl_structures.register_structure("cold_ocean_ruins",cold)
-mcl_structures.register_structure("warm_ocean_ruins",warm)
+vl_structures.register_structure("cold_ocean_ruins",cold)
+vl_structures.register_structure("warm_ocean_ruins",warm)

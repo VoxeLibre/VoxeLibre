@@ -75,7 +75,7 @@ local function makegeode(pos,def,pr)
 	return true
 end
 
-mcl_structures.register_structure("geode",{
+vl_structures.register_structure("geode",{
 	place_on = {"group:material_stone"},
 	noise_params = {
 		offset = 0,

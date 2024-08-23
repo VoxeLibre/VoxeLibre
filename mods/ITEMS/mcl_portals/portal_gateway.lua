@@ -29,7 +29,7 @@ local gateway_positions = {
 local path_gateway_portal = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_gateway_portal.mts"
 
 local function spawn_gateway_portal(pos, dest_str)
-	return mcl_structures.place_schematic(vector.add(pos, vector.new(-1, -2, -1)), 0, nil, nil, path_gateway_portal, "0", nil, true, nil, nil, nil,
+	return vl_structures.place_schematic(vector.offset(pos, -1, -2, -1), 0, nil, nil, path_gateway_portal, "0", nil, true, nil, nil, nil,
 		dest_str and function()
 			minetest.get_meta(pos):set_string("mcl_portals:gateway_destination", dest_str)
 		end)
