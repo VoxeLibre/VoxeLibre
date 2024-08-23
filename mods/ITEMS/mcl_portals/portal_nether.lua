@@ -183,12 +183,12 @@ local dimension_to_teleport = { nether = "overworld", overworld = "nether" }
 
 local limits = {
 	nether = {
-		pmin = {x=LIM_MIN, y = N_Y_MIN, z = LIM_MIN},
-		pmax = {x=LIM_MAX, y = N_Y_MAX, z = LIM_MAX},
+		pmin = vector.new(LIM_MIN, N_Y_MIN, LIM_MIN),
+		pmax = vector.new(LIM_MAX, N_Y_MAX, LIM_MAX),
 	},
 	overworld = {
-		pmin = {x=LIM_MIN, y = O_Y_MIN, z = LIM_MIN},
-		pmax = {x=LIM_MAX, y = O_Y_MAX, z = LIM_MAX},
+		pmin = vector.new(LIM_MIN, O_Y_MIN, LIM_MIN),
+		pmax = vector.new(LIM_MAX, O_Y_MAX, LIM_MAX),
 	},
 }
 
@@ -206,12 +206,10 @@ end
 -- for old portals, so that players don't get surprises. New portals, or portals that lost
 -- node storage due to destruction should use the lookup table.
 local function get_portal_pos(pos)
-	local p1 = vector.offset(pos,-5,-1,-5)
-	local p2 = vector.offset(pos,5,5,5)
-	local nn = find_nodes_in_area(p1,p2,{"mcl_portals:portal"})
+	local nn = find_nodes_in_area(vector.offset(pos,-5,-1,-5), vector.offset(pos,5,5,5), {"mcl_portals:portal"})
 	for _,p in pairs(nn) do
 		local m = minetest.get_meta(p):get_string("target_portal")
-		if m and m ~= "" and mcl_vars.get_node(p).name == "mcl_portals:portal" then
+		if m and m ~= "" and minetest.get_node(p).name == "mcl_portals:portal" then
 			return minetest.get_position_from_hash(m)
 		end
 	end
@@ -229,15 +227,13 @@ end
 local function add_exit(p)
 	local retval = {key=false, new=false}
 
-	if not p or not p.y or not p.z or not p.x then
-		return retval
-	end
+	if not p or not p.y or not p.z or not p.x then return retval end
 	local x, y, z = floor(p.x), floor(p.y), floor(p.z)
-	local p = {x = x, y = y, z = z}
+	local p = vector.new(x, y, z)
 
-	if get_node({x=x,y=y-1,z=z}).name ~= OBSIDIAN
+	if get_node(vector.new(x, y-1, z)).name ~= OBSIDIAN
 		or get_node(p).name ~= PORTAL
-		or get_node({x=x,y=y+1,z=z}).name ~= PORTAL
+		or get_node(vector.new(x, y+1, z)).name ~= PORTAL
 	then
 		return retval
 	end
@@ -301,7 +297,7 @@ local function remove_exit(p)
 	end
 
 	local x, y, z = floor(p.x), floor(p.y), floor(p.z)
-	local p = {x = x, y = y, z = z}
+	local p = vector.new(x, y, z)
 
 	local k = get_exit_key(p)
 	if not exits[k] then
@@ -529,14 +525,14 @@ local function destroy_nether_portal(pos, node)
 	while i <= #nodes do
 		pos = nodes[i]
 		if orientation == 0 then
-			check_remove({x = pos.x - 1, y = pos.y, z = pos.z})
-			check_remove({x = pos.x + 1, y = pos.y, z = pos.z})
+			check_remove(vector.offset(pos, -1, 0, 0))
+			check_remove(vector.offset(pos,  1, 0, 0))
 		else
-			check_remove({x = pos.x, y = pos.y, z = pos.z - 1})
-			check_remove({x = pos.x, y = pos.y, z = pos.z + 1})
+			check_remove(vector.offset(pos, 0, 0, -1))
+			check_remove(vector.offset(pos, 0, 0,  1))
 		end
-		check_remove({x = pos.x, y = pos.y - 1, z = pos.z})
-		check_remove({x = pos.x, y = pos.y + 1, z = pos.z})
+		check_remove(vector.offset(pos, 0, -1, 0))
+		check_remove(vector.offset(pos, 0,  1, 0))
 		remove_exits({pos})
 		i = i + 1
 	end
@@ -624,7 +620,7 @@ local function build_and_light_frame(x1, y1, z1, x2, y2, z2, name)
 				else
 					set_node(pos, {name = PORTAL, param2 = orientation})
 					add_exits({
-						{x=pos.x, y=pos.y-1, z=pos.z}
+						vector.new(pos.x, pos.y-1, pos.z)
 					})
 				end
 			end
@@ -701,8 +697,8 @@ function build_nether_portal(cube_pos1, width, height, orientation, name, clear_
 	-- Build obsidian platform:
 	for x = pos.x - orientation, pos.x + orientation + (width_inner - 1) * (1 - orientation), 1 + orientation do
 		for z = pos.z - 1 + orientation, pos.z + 1 - orientation + (width_inner - 1) * orientation, 2 - orientation do
-			local pp = {x = x, y = pos.y - 1, z = z}
-			local pp_1 = {x = x, y = pos.y - 2, z = z}
+			local pp = vector.new(x, pos.y - 1, z)
+			local pp_1 = vector.new(x, pos.y - 2, z)
 			local nn = get_node(pp).name
 			local nn_1 = get_node(pp_1).name
 			if ((nn=="air" and nn_1 == "air") or not registered_nodes[nn].is_ground_content) and not is_protected(pp, name) then
@@ -823,7 +819,7 @@ local function finalize_teleport(obj, exit)
 	local _, dim = mcl_worlds.y_to_layer(exit.y)
 
 	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
-	objpos = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
+	objpos = vector.new(floor(objpos.x+0.5), ceil(objpos.y), floor(objpos.z+0.5))
 	if get_node(objpos).name ~= PORTAL then
 		log("action", "Entity no longer standing in portal")
 		return
@@ -1085,19 +1081,19 @@ local function search_for_build_location(blockpos, action, calls_remaining, para
 						if nc2 >= (W_MIN*(H_MIN-1)*W_MIN) - ACCEPTABLE_PORTAL_REPLACES then
 							-- We have sorted the candidates by distance, this is the best location.
 							distance = distance0
-							pos0 = {x=node.x, y=node.y, z=node.z}
+							pos0 = vector.new(node.x, node.y, node.z)
 							log("verbose", "Found acceptable location at "..pos_to_string(pos0)..", distance "..distance0..", air nodes "..nc2)
 							break
 						elseif not most_airy_pos or nc2>most_airy_count then
 							-- Remember the cube with the most amount of air as a fallback.
 							most_airy_count = nc2
 							most_airy_distance = distance0
-							most_airy_pos = {x=node.x, y=node.y, z=node.z}
+							most_airy_pos = vector.new(node.x, node.y, node.z)
 							log("verbose", "Found fallback location at "..pos_to_string(most_airy_pos)..", distance "..distance0..", air nodes "..nc2)
 						elseif most_airy_pos and nc2==most_airy_count and distance0<most_airy_distance then
 							-- Use distance as a tiebreaker.
 							most_airy_distance = distance0
-							most_airy_pos = {x=node.x, y=node.y, z=node.z}
+							most_airy_pos = vector.new(node.x, node.y, node.z)
 							log("verbose", "Found fallback location at "..pos_to_string(most_airy_pos)..", distance "..distance0..", air nodes "..nc2)
 						end
 
@@ -1128,7 +1124,7 @@ local function search_for_build_location(blockpos, action, calls_remaining, para
 			log("verbose", "No space found, emerging one chunk below")
 		end
 
-		local new_target = {x=target.x, y=target.y + direction * mcl_vars.chunk_size_in_nodes, z=target.z}
+		local new_target = vector.new(target.x, target.y + direction * mcl_vars.chunk_size_in_nodes, target.z)
 		pos1, pos2 = find_build_limits(new_target, param.target_dim)
 		local diff = add(pos2, mul(pos1, -1))
 
@@ -1202,7 +1198,7 @@ local function create_portal(origin, target, target_dim, name, obj)
 		origin = origin,
 		target = target,
 		target_dim = target_dim,
-		ideal_target = vector.new(target.x, target.y, target.z), -- copy
+		ideal_target = vector.copy(target),
 		pos1 = pos1,
 		pos2 = pos2,
 		name=name,
@@ -1223,13 +1219,12 @@ local function available_for_nether_portal(p)
 end
 
 local function check_and_light_shape(pos, orientation)
-	local stack = {{x = pos.x, y = pos.y, z = pos.z}}
+	local stack = {vector.copy(pos)}
 	local node_list = {}
 	local index_list = {}
 	local node_counter = 0
 	-- Search most low node from the left (pos1) and most right node from the top (pos2)
-	local pos1 = {x = pos.x, y = pos.y, z = pos.z}
-	local pos2 = {x = pos.x, y = pos.y, z = pos.z}
+	local pos1, pos2 = vector.copy(pos), vector.copy(pos)
 
 	local kx, ky, kz = pos.x - 1999, pos.y - 1999, pos.z - 1999
 	while #stack > 0 do
@@ -1247,22 +1242,22 @@ local function check_and_light_shape(pos, orientation)
 					return false
 				end
 				node_counter = node_counter + 1
-				node_list[node_counter] = {x = x, y = y, z = z}
+				node_list[node_counter] = vector.new(x, y, z)
 				index_list[k] = true
 				stack[i].y = y - 1
-				stack[i + 1] = {x = x, y = y + 1, z = z}
+				stack[i + 1] = vector.new(x, y + 1, z)
 				if orientation == 0 then
-					stack[i + 2] = {x = x - 1, y = y, z = z}
-					stack[i + 3] = {x = x + 1, y = y, z = z}
+					stack[i + 2] = vector.new(x - 1, y, z)
+					stack[i + 3] = vector.new(x + 1, y, z)
 				else
-					stack[i + 2] = {x = x, y = y, z = z - 1}
-					stack[i + 3] = {x = x, y = y, z = z + 1}
+					stack[i + 2] = vector.new(x, y, z - 1)
+					stack[i + 3] = vector.new(x, y, z + 1)
 				end
 				if (y < pos1.y) or (y == pos1.y and (x < pos1.x or z < pos1.z)) then
-					pos1 = {x = x, y = y, z = z}
+					pos1 = vector.new(x, y, z)
 				end
 				if (x > pos2.x or z > pos2.z) or (x == pos2.x and z == pos2.z and y > pos2.y) then
-					pos2 = {x = x, y = y, z = z}
+					pos2 = vector.new(x, y, z)
 				end
 			end
 		end
@@ -1344,7 +1339,7 @@ local function check_portal_then_teleport(obj, origin, exit)
 			remove_exits({exit})
 			-- Also remove from structure storage, otherwise ABM will try the same bad exit again.
 			local objpos = obj:get_pos()
-			delete_portal_pos({x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)})
+			delete_portal_pos(vector.new(floor(objpos.x+0.5), ceil(objpos.y), floor(objpos.z+0.5)))
 
 			origin_flush(origin, nil)
 			return
@@ -1367,7 +1362,7 @@ local function teleport_no_delay(obj, portal_pos)
 	local target_dim = dimension_to_teleport[current_dim]
 
 	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
-	origin = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
+	origin = vector.new(floor(objpos.x+0.5), ceil(objpos.y), floor(objpos.z+0.5))
 	if get_node(origin).name ~= PORTAL then return end
 
 	local target = get_target(origin)
@@ -1450,8 +1445,8 @@ local function animation(player, playername)
 		end
 		minetest.add_particlespawner({
 			amount = 1,
-			minpos = {x = pos.x - 0.1, y = pos.y + 1.4, z = pos.z - 0.1},
-			maxpos = {x = pos.x + 0.1, y = pos.y + 1.6, z = pos.z + 0.1},
+			minpos = vector.offset(pos, -0.1, 1.4, -0.1),
+			maxpos = vector.offset(pos,  0.1, 1.6,  0.1),
 			minvel = 0,
 			maxvel = 0,
 			minacc = 0,
@@ -1496,11 +1491,11 @@ minetest.register_abm({
 		local time = random() * 1.9 + 0.5
 		local velocity, acceleration
 		if o == 1 then
-			velocity	= {x = random() * 0.7 + 0.3,	y = random() - 0.5,	z = random() - 0.5}
-			acceleration	= {x = random() * 1.1 + 0.3,	y = random() - 0.5,	z = random() - 0.5}
+			velocity     = vector.new(random() * 0.7 + 0.3, random() - 0.5, random() - 0.5)
+			acceleration = vector.new(random() * 1.1 + 0.3, random() - 0.5, random() - 0.5)
 		else
-			velocity	= {x = random() - 0.5,		y = random() - 0.5,	z = random() * 0.7 + 0.3}
-			acceleration	= {x = random() - 0.5,		y = random() - 0.5,	z = random() * 1.1 + 0.3}
+			velocity     = vector.new(random() - 0.5,       random() - 0.5, random() * 0.7 + 0.3)
+			acceleration = vector.new(random() - 0.5,       random() - 0.5, random() * 1.1 + 0.3)
 		end
 		local distance = add(mul(velocity, time), mul(acceleration, time * time / 2))
 		if d == 1 then
@@ -1566,12 +1561,12 @@ minetest.override_item(OBSIDIAN, {
 		end
 
 		-- check each of 6 sides of it and destroy every portal
-		check_remove({x = pos.x - 1, y = pos.y, z = pos.z})
-		check_remove({x = pos.x + 1, y = pos.y, z = pos.z})
-		check_remove({x = pos.x, y = pos.y, z = pos.z - 1})
-		check_remove({x = pos.x, y = pos.y, z = pos.z + 1})
-		check_remove({x = pos.x, y = pos.y - 1, z = pos.z})
-		check_remove({x = pos.x, y = pos.y + 1, z = pos.z})
+		check_remove(vector.offset(pos, -1,  0,  0))
+		check_remove(vector.offset(pos,  1,  0,  0))
+		check_remove(vector.offset(pos,  0,  0, -1))
+		check_remove(vector.offset(pos,  0,  0,  1))
+		check_remove(vector.offset(pos,  0, -1,  0))
+		check_remove(vector.offset(pos,  0,  1,  0))
 	end,
 
 	_on_ignite = function(user, pointed_thing)
@@ -1579,16 +1574,16 @@ minetest.override_item(OBSIDIAN, {
 		-- Check empty spaces around obsidian and light all frames found.
 		-- Permit igniting of portals that are partly protected to maintain integrity.
 		local portals_placed =
-				mcl_portals.light_nether_portal({x = x - 1, y = y, z = z}) or mcl_portals.light_nether_portal({x = x + 1, y = y, z = z}) or
-				mcl_portals.light_nether_portal({x = x, y = y - 1, z = z}) or mcl_portals.light_nether_portal({x = x, y = y + 1, z = z}) or
-				mcl_portals.light_nether_portal({x = x, y = y, z = z - 1}) or mcl_portals.light_nether_portal({x = x, y = y, z = z + 1})
+				mcl_portals.light_nether_portal(vector.new(x - 1, y, z)) or mcl_portals.light_nether_portal(vector.new(x + 1, y, z)) or
+				mcl_portals.light_nether_portal(vector.new(x, y - 1, z)) or mcl_portals.light_nether_portal(vector.new(x, y + 1, z)) or
+				mcl_portals.light_nether_portal(vector.new(x, y, z - 1)) or mcl_portals.light_nether_portal(vector.new(x, y, z + 1))
 		if portals_placed then
-			log("verbose", "Nether portal activated at "..pos_to_string({x=x,y=y,z=z})..".")
+			log("verbose", "Nether portal activated at "..pos_to_string(vector.new(x, y, z))..".")
 			if minetest.get_modpath("doc") then
 				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", PORTAL)
 
 				-- Achievement for finishing a Nether portal TO the Nether
-				local dim = mcl_worlds.pos_to_dimension({x=x, y=y, z=z})
+				local dim = mcl_worlds.pos_to_dimension(vector.new(x, y, z))
 				if minetest.get_modpath("awards") and dim ~= "nether" and user:is_player() then
 					awards.unlock(user:get_player_name(), "mcl:buildNetherPortal")
 				end
@@ -1600,13 +1595,13 @@ minetest.override_item(OBSIDIAN, {
 	end,
 })
 
-mcl_structures.register_structure("nether_portal",{
+vl_structures.register_structure("nether_portal",{
 	nospawn = true,
 	filenames = {
 		modpath.."/schematics/mcl_portals_nether_portal.mts"
 	}
 })
-mcl_structures.register_structure("nether_portal_open",{
+vl_structures.register_structure("nether_portal_open",{
 	nospawn = true,
 	filenames = {
 		modpath.."/schematics/mcl_portals_nether_portal_open.mts"

@@ -19,112 +19,90 @@ local function spawn_mobs(p1,p2,vi,zv)
 	end
 end
 
-local function generate_igloo_basement(pos, orientation, loot, pr)
-end
-
-local function generate_igloo(pos, def, pr)
-	local path = modpath.."/schematics/mcl_structures_igloo_top.mts"
-	local rotation = tostring(pr:next(0,3)*90)
-	-- TODO: ymin, ymax
-	mcl_structures.place_schematic(pos, -2, nil, nil, path, rotation, nil, true, nil, {padding=0, corners=2}, pr, function(p1, p2)
-		mcl_structures.construct_nodes(p1, p2, {"mcl_furnaces:furnace","mcl_books:bookshelf"})
-		-- Place igloo basement with 50% chance
-		local r = 1--pr:next(1,2)
-		if r == 1 then
-			-- Select basement depth
-			local dim = mcl_worlds.pos_to_dimension(pos)
-			local buffer
-			if dim == "nether" then
-				buffer = pos.y - (mcl_vars.mg_lava_nether_max + 10)
-			elseif dim == "end" then
-				buffer = pos.y - (mcl_vars.mg_end_min + 1)
-			elseif dim == "overworld" then
-				buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
-			else
-				return true
-			end
-			if buffer <= 9 then return true end
-			local depth = pr:next(9, buffer)
-			local bpos = vector.new(pos.x, pos.y-depth, pos.z)
-			-- trapdoor position and orientation
-			local tpos, dir, tdir
-			if rotation == "0" then
-				dir = vector.new(-1, 0, 0)
-				tdir = vector.new(1, 0, 0)
-				tpos = vector.new(pos.x+7, pos.y, pos.z+3)
-			elseif rotation == "90" then
-				dir = vector.new(0, 0, -1)
-				tdir = vector.new(0, 0, -1)
-				tpos = vector.new(pos.x+3, pos.y, pos.z+1)
-			elseif rotation == "180" then
-				dir = vector.new(1, 0, 0)
-				tdir = vector.new(-1, 0, 0)
-				tpos = vector.new(pos.x+1, pos.y, pos.z+3)
-			elseif rotation == "270" then
-				dir = vector.new(0, 0, 1)
-				tdir = vector.new(0, 0, 1)
-				tpos = vector.new(pos.x+3, pos.y, pos.z+7)
-			else
-				minetest.log("bad rotation: "..tostring(rotation))
-				return false
-			end
-			local function set_brick(pos)
-				local c = pr:next(1, 3) -- cracked chance
-				local m = pr:next(1, 10) -- chance for monster egg
-				local brick
-				if m == 1 then
-					brick = (c == 1 and "mcl_monster_eggs:monster_egg_stonebrickcracked") or "mcl_monster_eggs:monster_egg_stonebrick"
-				else
-					brick = (c == 1 and "mcl_core:stonebrickcracked") or "mcl_core:stonebrick"
-				end
-				minetest.set_node(pos, {name=brick})
-			end
-			local real_depth = 0
-			-- Check how deep we can actually dig
-			for y=1, depth-5 do
-				real_depth = real_depth + 1
-				local node = minetest.get_node(vector.new(tpos.x, tpos.y-y, tpos.z))
-				local def = node and minetest.registered_nodes[node.name]
-				if not (def and def.walkable and def.liquidtype == "none" and def.is_ground_content) then
-					bpos.y = tpos.y-y+1
-					break
-				end
-			end
-			if real_depth <= 6 then
-				minetest.log("not deep enough")
-				return false
-			end
-			local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
-			mcl_structures.place_schematic(bpos, 0, nil, nil, path, rotation, nil, true, nil, nil, pr, function(p1, p2)
-				-- Generate ladder to basement
-				local ladder = {name="mcl_core:ladder", param2=minetest.dir_to_wallmounted(tdir)}
-				minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
-				for y=1, real_depth do
-					set_brick(vector.new(tpos.x-1, tpos.y-y, tpos.z  ))
-					set_brick(vector.new(tpos.x+1, tpos.y-y, tpos.z  ))
-					set_brick(vector.new(tpos.x  , tpos.y-y, tpos.z-1))
-					set_brick(vector.new(tpos.x  , tpos.y-y, tpos.z+1))
-					minetest.set_node(vector.new(tpos.x, tpos.y-y, tpos.z), ladder)
-				end
-				mcl_structures.fill_chests(p1,p2,def.loot,pr)
-				mcl_structures.construct_nodes(p1,p2,{"mcl_brewing:stand_000","mcl_books:bookshelf"})
-				spawn_mobs(p1,p2)
-			end)
+local function igloo_callback(cpos,def,pr,p1,p2,size,rotation)
+	vl_structures.construct_nodes(p1, p2, {"mcl_furnaces:furnace","mcl_books:bookshelf"})
+	-- Place igloo basement with 50% chance
+	if pr:next(1,2) == 1 then return end
+	local pos = p1 -- we use top left as reference
+	-- Select basement depth
+	local maxdepth = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+	if maxdepth <= 9 then return true end
+	local depth = pr:next(9, maxdepth)
+	-- trapdoor position and orientation
+	local tpos, dir, tdir
+	if rotation == "0" then
+		dir = vector.new(-1, 0, 0)
+		tdir = vector.new(1, 0, 0)
+		tpos = vector.new(pos.x+7, pos.y, pos.z+3)
+	elseif rotation == "90" then
+		dir = vector.new(0, 0, -1)
+		tdir = vector.new(0, 0, -1)
+		tpos = vector.new(pos.x+3, pos.y, pos.z+1)
+	elseif rotation == "180" then
+		dir = vector.new(1, 0, 0)
+		tdir = vector.new(-1, 0, 0)
+		tpos = vector.new(pos.x+1, pos.y, pos.z+3)
+	elseif rotation == "270" then
+		dir = vector.new(0, 0, 1)
+		tdir = vector.new(0, 0, 1)
+		tpos = vector.new(pos.x+3, pos.y, pos.z+7)
+	else
+		minetest.log("bad rotation: "..tostring(rotation))
+		return false
+	end
+	local function set_brick(pos)
+		local c = pr:next(1, 3) -- cracked chance
+		local m = pr:next(1, 10) -- chance for monster egg
+		local brick
+		if m == 1 then
+			brick = (c == 1 and "mcl_monster_eggs:monster_egg_stonebrickcracked") or "mcl_monster_eggs:monster_egg_stonebrick"
+		else
+			brick = (c == 1 and "mcl_core:stonebrickcracked") or "mcl_core:stonebrick"
 		end
+		minetest.set_node(pos, {name=brick})
+	end
+	local real_depth = 2
+	-- Check how deep we can actually dig
+	for y=pos.y-real_depth, pos.y-depth, -1 do
+		real_depth = real_depth + 1
+		local node = minetest.get_node(vector.new(tpos.x, y, tpos.z))
+		local def = node and minetest.registered_nodes[node.name]
+		if not (def and def.walkable and def.liquidtype == "none" and def.is_ground_content) then break end
+	end
+	local bpos = vector.new(cpos.x, pos.y-real_depth+1, cpos.z)
+	if real_depth <= 6 then
+		minetest.log("action", "Ground not deep enough for igloo basement: "..real_depth)
+		return false
+	end
+	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
+	local prepare = { tolerance = -1, foundation = false, clear = false }
+	vl_structures.place_schematic(bpos, -1, nil, nil, path, rotation, nil, true, nil, prepare, pr, function(p1, p2)
+		-- Generate ladder to basement
+		local ladder = {name="mcl_core:ladder", param2=minetest.dir_to_wallmounted(tdir)}
+		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
+		for y = tpos.y-1, bpos.y+4, -1 do
+			set_brick(vector.new(tpos.x-1, y, tpos.z  ))
+			set_brick(vector.new(tpos.x+1, y, tpos.z  ))
+			set_brick(vector.new(tpos.x  , y, tpos.z-1))
+			set_brick(vector.new(tpos.x  , y, tpos.z+1))
+			minetest.set_node(vector.new(tpos.x, y, tpos.z), ladder)
+		end
+		vl_structures.fill_chests(p1,p2,def.loot,pr)
+		vl_structures.construct_nodes(p1,p2,{"mcl_brewing:stand_000","mcl_books:bookshelf"})
+		spawn_mobs(p1,p2)
 	end)
-	return true
 end
 
-mcl_structures.register_structure("igloo",{
+vl_structures.register_structure("igloo",{
+	filenames = { modpath.."/schematics/mcl_structures_igloo_top.mts" },
 	place_on = {"mcl_core:snowblock","mcl_core:snow","group:grass_block_snow"},
-	sidelen = 16,
 	chunk_probability = 7,
-	solid_ground = true,
+	prepare = { padding = 1, corners = 1, foundation = -6, clear_top=-1 }, 
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 0,
 	y_offset = -2,
 	biomes = { "ColdTaiga", "IcePlainsSpikes", "IcePlains" },
-	place_func = generate_igloo,
+	after_place = igloo_callback,
 	loot = {
 		["mcl_chests:chest_small"] = {{
 			stacks_min = 1,
