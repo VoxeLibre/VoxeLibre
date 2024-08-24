@@ -199,7 +199,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		local above = vector.offset(pos,0,1,0)
 		local abovenode = minetest.get_node(above)
 		minetest.node_dig(pos, node, digger)
-		if abovenode.name == node.name and (not mcl_core.check_vines_supported(above, abovenode)) then
+		if abovenode.name == node.name then
 			minetest.registered_nodes[node.name].on_dig(above, node, digger)
 		end
 	end,
@@ -294,7 +294,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		local below = vector.offset(pos,0,-1,0)
 		local belownode = minetest.get_node(below)
 		minetest.node_dig(pos, node, digger)
-		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
+		if belownode.name == node.name then
 			minetest.registered_nodes[node.name].on_dig(below, node, digger)
 		end
 	end,
