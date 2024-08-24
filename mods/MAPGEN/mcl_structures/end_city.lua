@@ -1,5 +1,4 @@
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 local spawnon = {"mcl_end:purpur_block"}
@@ -8,7 +7,7 @@ local function spawn_shulkers(pos,def,pr,p1,p2)
 	vl_structures.spawn_mobs("mobs_mc:shulker",spawnon,p1,p2,pr,1)
 	local guard = minetest.find_nodes_in_area(p1,p2,{"mcl_itemframes:item_frame"})
 	if #guard > 0 then
-		minetest.add_entity(vector.offset(guard[1],0,-1.5,0),"mobs_mc:shulker")
+		minetest.add_entity(vector.offset(guard[1],0,-1.5,0),"mobs_mc:shulker") -- fixme: MCLA uses -0.5?
 	end
 end
 

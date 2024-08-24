@@ -13,9 +13,11 @@ local function spawn_mobs(p1,p2,vi,zv)
 		elseif zv and vi then
 			return
 		end
-		vi = minetest.add_entity(vector.offset(mc[1],0,1,0),"mobs_mc:villager")
-		zv = minetest.add_entity(vector.offset(mc[2],0,1,0),"mobs_mc:villager_zombie")
-		minetest.after(1,spawn_mobs,p1,p2,vi,zv)
+		vi = minetest.add_entity(vector.offset(vp,0,1,0),"mobs_mc:villager")
+		zv = minetest.add_entity(vector.offset(zp,0,1,0),"mobs_mc:villager_zombie")
+		if vi and vi:get_pos() and zv and zv:get_pos() then
+			minetest.after(1,spawn_mobs,p1,p2,vi,zv)
+		end
 	end
 end
 
@@ -78,7 +80,7 @@ local function igloo_callback(cpos,def,pr,p1,p2,size,rotation)
 	vl_structures.place_schematic(bpos, -1, path, rotation, {
 		force_place = true,
 		prepare = { tolerance = -1, foundation = false, clear = false },
-		after_place = function(p1, p2)
+		after_place = function(_, _, pr, p1, p2)
 			-- Generate ladder to basement
 			local ladder = {name="mcl_core:ladder", param2=minetest.dir_to_wallmounted(tdir)}
 			-- TODO: use voxelmanip?

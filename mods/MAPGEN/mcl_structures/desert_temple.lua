@@ -1,5 +1,4 @@
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 local function temple_placement_callback(pos,def,pr,p1,p2)
@@ -34,7 +33,7 @@ vl_structures.register_structure("desert_temple",{
 	flags = "place_center_x, place_center_z",
 	y_offset = -12,
 	prepare = { padding = 3, corners = 3, foundation = true, clear = false },
-	chunk_probability = 8,
+	chunk_probability = 18,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert" },

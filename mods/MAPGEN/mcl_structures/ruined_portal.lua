@@ -4,7 +4,7 @@ local modpath = minetest.get_modpath(modname)
 local function get_replacements(b,c,pr)
 	local r = {}
 	if not b then return r end
-	for k,v in pairs(b) do
+	for _, v in pairs(b) do
 		if pr:next(1,100) < c then table.insert(r,v) end
 	end
 	return r

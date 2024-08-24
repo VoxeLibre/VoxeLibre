@@ -241,7 +241,7 @@ function mcl_villages.place_schematics(vm, settlement, blockseed, pr)
 			minp,
 			schematic,
 			rotation,
-			nil,
+			{ ["mcl_core:dirt_with_grass"]=schematic.surface_mat or "mcl_core:dirt" },
 			true,
 			{ place_center_x = false, place_center_y = false, place_center_z = false }
 		)
@@ -279,6 +279,10 @@ function mcl_villages.place_schematics(vm, settlement, blockseed, pr)
 	local biome_name = minetest.get_biome_name(biome_data.biome)
 	mcl_villages.paths(blockseed, biome_name)
 
+	for i, building in ipairs(settlement) do
+		init_nodes(building.minp, building.maxp, pr)
+	end
+
 	-- this will run delayed actions, such as spawning mobs
 	minetest.set_node(bell_center_pos, { name = "mcl_villages:village_block" })
 	local meta = minetest.get_meta(bell_center_pos)
@@ -287,13 +291,9 @@ function mcl_villages.place_schematics(vm, settlement, blockseed, pr)
 	meta:set_string("infotext", S("The timer for this @1 has not run yet!", bell_center_node_type))
 	minetest.get_node_timer(bell_center_pos):start(1.0)
 
-	for i, building in ipairs(settlement) do
-		init_nodes(vector.offset(building.minp,-2,-2,-2), vector.offset(building.maxp,2,2,2), pr)
-	end
-
-	-- read back any changes
-	local emin, emax = vm:get_emerged_area()
-	vm:read_from_map(emin, emax)
+	-- read back any changes (fixme: would be better if we would not need this often.
+	--local emin, emax = vm:get_emerged_area()
+	--vm:read_from_map(emin, emax)
 end
 
 function mcl_villages.post_process_village(blockseed)

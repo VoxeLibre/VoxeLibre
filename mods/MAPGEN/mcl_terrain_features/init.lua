@@ -10,19 +10,6 @@ local adjacents = {
 	vector.new(0,-1,0)
 }
 
-local plane_adjacents = {
-	vector.new(1,0,0),
-	vector.new(-1,0,0),
-	vector.new(0,0,1),
-	vector.new(0,0,-1),
-}
-
-local function set_node_no_bedrock(pos,node)
-	local n = minetest.get_node(pos)
-	if n.name == "mcl_core:bedrock" then return end
-	return minetest.set_node(pos,node)
-end
-
 local function airtower(pos,tbl,h)
 	for i=1,h do
 		table.insert(tbl,vector.offset(pos,0,i,0))
@@ -32,7 +19,7 @@ end
 local function makelake(pos,size,liquid,placein,border,pr,noair)
 	local p1, p2 = vector.offset(pos,-size,-1,-size), vector.offset(pos,size,-1,size)
 	local e1, e2 = vector.offset(pos,-size,-2,-size), vector.offset(pos,size,15,size)
-	minetest.emerge_area(e1, e2, function(blockpos, action, calls_remaining, param)
+	minetest.emerge_area(e1, e2, function(_, _, calls_remaining)
 		if calls_remaining ~= 0 then return end
 		local nn = minetest.find_nodes_in_area(p1,p2,placein)
 		if not nn[1] then return end
@@ -165,7 +152,6 @@ vl_structures.register_structure("fallen_tree",{
 		persist = 0.66
 	},
 	flags = "place_center_x, place_center_z",
-	sidelen = 10,
 	solid_ground = true,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
@@ -207,7 +193,7 @@ vl_structures.register_structure("water_lake",{
 	flags = "place_center_x, place_center_z, all_floors",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
-	place_func = function(pos,def,pr)
+	place_func = function(pos,_,pr)
 		return makelake(pos,5,"mcl_core:water_source",{"group:material_stone", "group:sand", "group:dirt","group:grass_block"},"mcl_core:dirt_with_grass",pr)
 	end
 })
@@ -228,7 +214,7 @@ vl_structures.register_structure("water_lake_mangrove_swamp",{
 	flags = "place_center_x, place_center_z, all_floors",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
-	place_func = function(pos,def,pr)
+	place_func = function(pos, _, pr)
 		return makelake(pos,3,"mcl_core:water_source",{"group:material_stone", "group:sand", "group:dirt","group:grass_block","mcl_mud:mud"},"mcl_mud:mud",pr,true)
 	end
 })
@@ -251,7 +237,7 @@ vl_structures.register_structure("basalt_column",{
 	y_max = mcl_vars.mg_nether_max - 20,
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
-	place_func = function(pos,def,pr)
+	place_func = function(pos, _, pr)
 		local nn = minetest.find_nodes_in_area(vector.offset(pos,-5,-1,-5),vector.offset(pos,5,-1,5),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
 		table.sort(nn,function(a, b)
 		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
@@ -293,7 +279,7 @@ vl_structures.register_structure("basalt_pillar",{
 	y_max = mcl_vars.mg_nether_max-40,
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
-	place_func = function(pos,def,pr)
+	place_func = function(pos, _, pr)
 		local nn = minetest.find_nodes_in_area(vector.offset(pos,-2,-1,-2),vector.offset(pos,2,-1,2),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
 		table.sort(nn,function(a, b)
 		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
@@ -337,7 +323,7 @@ vl_structures.register_structure("lavadelta",{
 	y_max = mcl_vars.mg_nether_max,
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
-	place_func = function(pos,def,pr)
+	place_func = function(pos, _, pr)
 		local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-10,-1,-10),vector.offset(pos,10,-2,10),{"mcl_blackstone:basalt","mcl_blackstone:blackstone","mcl_nether:netherrack"})
 		table.sort(nn,function(a, b)
 		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
