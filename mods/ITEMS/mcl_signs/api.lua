@@ -310,7 +310,7 @@ local sign_wall = table_merge(sign_tpl, {
 		type = "wallmounted",
 		wall_side = {-0.5, -7/28, -0.5, -23/56, 7/28, 0.5}
 	},
-	groups = {axey = 1, handy = 2, sign = 1},
+	groups = {axey = 1, handy = 2, sign = 1, deco_block = 1},
 	_mcl_sign_type = "wall",
 })
 
