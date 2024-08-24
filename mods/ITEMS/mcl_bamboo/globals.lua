@@ -44,6 +44,10 @@ mcl_bamboo.bamboo_index = {
 	"mcl_bamboo:bamboo_2",
 	"mcl_bamboo:bamboo_3",
 }
+mcl_bamboo.bamboo_set = {}
+for _,key in pairs(mcl_bamboo.bamboo_index) do
+	mcl_bamboo.bamboo_set[key] = true
+end
 
 function mcl_bamboo.is_bamboo(node_name)
 	local index = table.indexof(mcl_bamboo.bamboo_index, node_name)
@@ -108,7 +112,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 
 	-- Determine the location of soil
 	local soil_pos
-	soil_pos,a,b = mcl_util.trace_nodes(pos, -1, mcl_bamboo.bamboo_index, BAMBOO_MAX_HEIGHT - 1)
+	soil_pos,a,b = mcl_util.trace_nodes(pos, -1, mcl_bamboo.bamboo_set, BAMBOO_MAX_HEIGHT - 1)
 
 	-- No soil found, return false so that bonemeal isn't used
 	if not soil_pos then return false end
@@ -127,7 +131,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	log("Grow bamboo; height: " .. height)
 
 	-- Locate the bamboo tip
-	local bamboo_tip,actual_height,bamboo_tip_node = mcl_util.trace_nodes(first_shoot, 1, mcl_bamboo.bamboo_index, height - 1)
+	local bamboo_tip,actual_height,bamboo_tip_node = mcl_util.trace_nodes(first_shoot, 1, mcl_bamboo.bamboo_set, height - 1)
 	log("Current height: "..tostring(actual_height))
 
 	-- Short circuit growth if the bamboo is already finished growing

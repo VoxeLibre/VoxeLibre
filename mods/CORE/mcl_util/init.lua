@@ -1134,21 +1134,21 @@ end
 
 -- Traces along a line of nodes vertically to find the next possition that isn't an allowed node
 ---@param pos The position to start tracing from
----@param dir The direction to trace in (1 is up, -1 is down)
----@param allowed_nodes A table of node names to trace along
+---@param dir The direction to trace in. 1 is up, -1 is down, all other values are not allowed.
+---@param allowed_nodes A set of node names to trace along.
 ---@param limit The maximum number of steps to make. Defaults to 16 if nil or missing
 ---@return Three return values:
 ---   the position of the next node that isn't allowed or nil if no such node was found,
 ---   the distance from the start where that node was found,
 ---   the node table if a node was found
 function mcl_util.trace_nodes(pos, dir, allowed_nodes, limit)
-	if not dir or dir == 0 or #allowed_nodes == 0 then return nil, 0, nil end
+	if ( dir ~= -1 ) and ( dir ~= 1 ) then return nil, 0, nil end
 	limit = limit or 16
 
 	for i = 1,limit do
 		pos = vector.offset(pos, 0, dir, 0)
 		local node = minetest.get_node(pos)
-		if table.indexof(allowed_nodes, node.name) == -1 then return pos, i, node end
+		if not allowed_nodes[node.name] then return pos, i, node end
 	end
 
 	return nil, limit, nil

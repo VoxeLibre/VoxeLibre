@@ -23,7 +23,8 @@ function grow_vines(pos, moreontop, vine, dir)
 	if dir == nil then dir = 1 end
 	if not moreontop or moreontop < 1 then return false end
 
-	local allowed_nodes = {vine}
+	local allowed_nodes = {}
+	allowed_nodes[vine] = true
 
 	-- Find the root, tip and calculate height
 	local root,_,root_node = mcl_util.trace_nodes(pos, -dir, allowed_nodes, MAXIMUM_VINE_HEIGHT)
