@@ -1,10 +1,9 @@
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 vl_structures.register_structure("end_spawn_obsidian_platform",{
 	static_pos ={mcl_vars.mg_end_platform_pos},
-	place_func = function(pos,def,pr)
+	place_func = function(pos, _, _)
 		local obby = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_end:end_stone"})
 		local air = minetest.find_nodes_in_area(vector.offset(pos,-2,1,-2),vector.offset(pos,2,3,2),{"air","mcl_end:end_stone"})
 		minetest.bulk_set_node(obby,{name="mcl_core:obsidian"})
@@ -41,7 +40,7 @@ vl_structures.register_structure("end_exit_portal_open",{
 	filenames = {
 		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
 	},
-	after_place  = function(pos,def,pr,p1,p2)
+	after_place = function(pos,def,pr,p1,p2)
 		minetest.fix_light(p1,p2)
 	end
 })
@@ -101,7 +100,7 @@ vl_structures.register_structure("end_spike",{
 		local h = d * pr:next(4,6)
 		local p1 = vector.offset(pos, -d / 2, 0, -d / 2)
 		local p2 = vector.offset(pos, d / 2, h + d, d / 2)
-		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
+		minetest.emerge_area(p1, p2, function(_, _, calls_remaining)
 			if calls_remaining ~= 0 then return end
 			local s = make_endspike(pos,d,h)
 			minetest.set_node(vector.offset(s,0,1,0),{name="mcl_core:bedrock"})

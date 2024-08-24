@@ -128,8 +128,8 @@ function vl_structures.place_structure(pos, def, pr, blockseed, rot)
 	end
 end
 
-local EMPTY_SCHEMATIC = { size = {x = 1, y = 1, z = 1}, data = { { name = "ignore" } } }
--- local EMPTY_SCHEMATIC = { size = {x = 0, y = 0, z = 0}, data = { } }
+-- local EMPTY_SCHEMATIC = { size = {x = 1, y = 1, z = 1}, data = { { name = "ignore" } } }
+local EMPTY_SCHEMATIC = { size = {x = 0, y = 0, z = 0}, data = { } }
 
 --- Register a structure
 -- @param name string: Structure name
@@ -142,6 +142,7 @@ function vl_structures.register_structure(name,def)
 	if not def.noise_params and def.chunk_probability and not def.fill_ratio then
 		def.fill_ratio = 1.1/80/80 -- 1 per chunk, controlled by chunk probability only
 	end
+	def.flags = def.flags or vl_structures.DEFAULT_FLAGS
 	if def.filenames then
 		for _, filename in ipairs(def.filenames) do
 			if not mcl_util.file_exists(filename) then
@@ -153,7 +154,7 @@ function vl_structures.register_structure(name,def)
 	if def.place_on then
 		minetest.register_on_mods_loaded(function()
 			def.deco = mcl_mapgen_core.register_decoration({
-				name = "vl_structures:deco_"..name,
+				name = "vl_structures:"..name,
 				rank = def.rank or (def.terrain_feature and 900) or 100, -- run before regular decorations
 				deco_type = "schematic",
 				schematic = EMPTY_SCHEMATIC, -- use gennotify only
@@ -166,29 +167,26 @@ function vl_structures.register_structure(name,def)
 				flags = def.flags,
 				biomes = def.biomes,
 				y_max = def.y_max,
-				y_min = def.y_min
-			}, function() -- callback when mcl_mapgen_core has reordered the decoration calls
-				def.deco_id = minetest.get_decoration_id("vl_structures:deco_"..name)
-				minetest.set_gen_notify({decoration=true}, { def.deco_id })
-			end)
+				y_min = def.y_min,
+				gen_callback = function(t,minp,maxp,blockseed)
+					for _, pos in ipairs(t) do
+						local pr = PcgRandom(minetest.hash_node_position(pos) + worldseed + RANDOM_SEED_OFFSET)
+						if def.chunk_probability == nil or pr:next(0, 1e9) * 1e-9 * def.chunk_probability <= structure_boost then
+							vl_structures.place_structure(vector_offset(pos, 0, 1, 0), def, pr, blockseed)
+							if def.chunk_probability ~= nil then break end -- allow only one per gennotify, e.g., on multiple surfaces
+						end
+					end
+				end
+			})
 		end)
 	end
 end
 
 -- To avoid a cyclic dependency, run this when modules have finished loading
 minetest.register_on_mods_loaded(function()
-mcl_mapgen_core.register_generator("structures", nil, function(minp, maxp, blockseed)
-	local gennotify = minetest.get_mapgen_object("gennotify")
+mcl_mapgen_core.register_generator("static structures", nil, function(minp, maxp, blockseed)
 	for _,struct in pairs(vl_structures.registered_structures) do
-		if struct.deco_id then
-			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
-				local pr = PcgRandom(minetest.hash_node_position(pos) + worldseed + RANDOM_SEED_OFFSET)
-				if struct.chunk_probability == nil or pr:next(0, 1e9) * 1e-9 * struct.chunk_probability <= structure_boost then
-					vl_structures.place_structure(vector_offset(pos, 0, 1, 0), struct, pr, blockseed)
-					if struct.chunk_probability ~= nil then break end -- allow only one per gennotify, e.g., on multiple surfaces
-				end
-			end
-		elseif struct.static_pos then
+		if struct.static_pos then
 			local pr -- initialize only when needed below
 			for _, pos in pairs(struct.static_pos) do
 				if vector.in_area(pos, minp, maxp) then

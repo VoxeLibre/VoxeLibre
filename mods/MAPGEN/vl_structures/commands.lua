@@ -4,7 +4,7 @@ local modpath = minetest.get_modpath(modname)
 
 --- /spawnstruct chat command
 minetest.register_chatcommand("spawnstruct", {
-	params = mcl_dungeons and "dungeon" or "",
+	params = "",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -35,7 +35,7 @@ minetest.register_chatcommand("spawnstruct", {
 	end
 })
 minetest.register_on_mods_loaded(function()
-	local p = minetest.registered_chatcommands["spawnstruct"].params
+	local p = _G["mcl_dungeons"] and "dungeon" or ""
 	for n,_ in pairs(vl_structures.registered_structures) do
 		p = (p ~= "" and (p.." | ") or "")..n
 	end
