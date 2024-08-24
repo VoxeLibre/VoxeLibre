@@ -165,21 +165,26 @@ function vl_terraforming.find_level_vm(vm, cpos, size, tolerance, mode)
 	local find_ground = find_ground_vm
 	if mode == "liquid_surface" or mode == "liquid" then find_ground = find_liquid_surface_vm end
 	if mode == "under_air" then find_ground = find_under_air_vm end
-	local pos, surface_material = find_ground(vm, cpos) -- center
+	-- begin at center, then top-left and clockwise
+	local pos, surface_material = find_ground(vm, cpos)
 	if not pos then return nil, nil end
 	local ys = { pos.y }
-	pos.y = pos.y + 1 -- above ground
+	pos.y = pos.y + 1 -- position above surface
 	if size.x == 1 and size.z == 1 then return pos end
-	pos.x, pos.z = pos.x - floor((size.x-1)/2), pos.z - floor((size.z-1)/2) -- top left
+	-- move to top left corner
+	pos.x, pos.z = pos.x - floor((size.x-1)/2), pos.z - floor((size.z-1)/2)
 	local pos_c = find_ground(vm, pos)
 	if pos_c then table.insert(ys, pos_c.y) end
-	pos.x = pos.x + size.x - 1 --  top right
+	-- move to top right corner
+	pos.x = pos.x + size.x - 1
 	local pos_c = find_ground(vm, pos)
 	if pos_c then table.insert(ys, pos_c.y) end
-	pos.z = pos.z + size.z - 1 -- bottom right
+	-- move to bottom right corner
+	pos.z = pos.z + size.z - 1
 	local pos_c = find_ground(vm, pos)
 	if pos_c then table.insert(ys, pos_c.y) end
-	pos.x = pos.x - (size.x - 1) -- bottom left
+	-- move to bottom left corner
+	pos.x = pos.x - (size.x - 1)
 	local pos_c = find_ground(vm, pos)
 	if pos_c then table.insert(ys, pos_c.y) end
 	table.sort(ys)
@@ -195,11 +200,11 @@ function vl_terraforming.find_level_vm(vm, cpos, size, tolerance, mode)
 	end
 	-- well supported base, not too uneven?
 	if #ys < 4 or min(ys[#ys-1]-ys[1], ys[#ys]-ys[2]) > tolerance then
-		minetest.log("action", "[vl_terraforming] ground too uneven: "..#ys.." positions: "..({dump(ys):gsub("[\n\t ]+", " ")})[1]
-		                     .." tolerance "..tostring(#ys > 2 and min(ys[#ys-1]-ys[1], ys[#ys]-ys[2])).." > "..tolerance)
+		--minetest.log("action", "[vl_terraforming] ground too uneven: "..#ys.." positions: "..({dump(ys):gsub("[\n\t ]+", " ")})[1]
+		--                     .." tolerance "..tostring(#ys > 2 and min(ys[#ys-1]-ys[1], ys[#ys]-ys[2])).." > "..tolerance)
 		return nil, nil
 	end
-	cpos.y = floor(0.5 * (ys[floor(1 + (#ys - 1) * 0.5)] + ys[ceil(1 + (#ys - 1) * 0.5)]) + 0.55) -- median except for largest, rounded, over surface
+	cpos.y = floor(0.5 * (ys[floor(1 + (#ys - 1) * 0.5)] + ys[ceil(1 + (#ys - 1) * 0.5)]) + 1) -- median except for largest, rounded, over surface
 	return cpos, surface_material
 end
 

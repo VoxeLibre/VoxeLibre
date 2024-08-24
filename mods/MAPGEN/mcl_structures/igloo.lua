@@ -75,22 +75,26 @@ local function igloo_callback(cpos,def,pr,p1,p2,size,rotation)
 		return false
 	end
 	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
-	local prepare = { tolerance = -1, foundation = false, clear = false }
-	vl_structures.place_schematic(bpos, -1, nil, nil, path, rotation, nil, true, nil, prepare, pr, function(p1, p2)
-		-- Generate ladder to basement
-		local ladder = {name="mcl_core:ladder", param2=minetest.dir_to_wallmounted(tdir)}
-		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
-		for y = tpos.y-1, bpos.y+4, -1 do
-			set_brick(vector.new(tpos.x-1, y, tpos.z  ))
-			set_brick(vector.new(tpos.x+1, y, tpos.z  ))
-			set_brick(vector.new(tpos.x  , y, tpos.z-1))
-			set_brick(vector.new(tpos.x  , y, tpos.z+1))
-			minetest.set_node(vector.new(tpos.x, y, tpos.z), ladder)
+	vl_structures.place_schematic(bpos, -1, path, rotation, {
+		force_place = true,
+		prepare = { tolerance = -1, foundation = false, clear = false },
+		after_place = function(p1, p2)
+			-- Generate ladder to basement
+			local ladder = {name="mcl_core:ladder", param2=minetest.dir_to_wallmounted(tdir)}
+			-- TODO: use voxelmanip?
+			minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
+			for y = tpos.y-1, bpos.y+4, -1 do
+				set_brick(vector.new(tpos.x-1, y, tpos.z  ))
+				set_brick(vector.new(tpos.x+1, y, tpos.z  ))
+				set_brick(vector.new(tpos.x  , y, tpos.z-1))
+				set_brick(vector.new(tpos.x  , y, tpos.z+1))
+				minetest.set_node(vector.new(tpos.x, y, tpos.z), ladder)
+			end
+			vl_structures.fill_chests(p1,p2,def.loot,pr)
+			vl_structures.construct_nodes(p1,p2,{"mcl_brewing:stand_000","mcl_books:bookshelf"})
+			spawn_mobs(p1,p2)
 		end
-		vl_structures.fill_chests(p1,p2,def.loot,pr)
-		vl_structures.construct_nodes(p1,p2,{"mcl_brewing:stand_000","mcl_books:bookshelf"})
-		spawn_mobs(p1,p2)
-	end)
+	}, pr)
 end
 
 vl_structures.register_structure("igloo",{
