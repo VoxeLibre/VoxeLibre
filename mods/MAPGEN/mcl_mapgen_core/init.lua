@@ -1,6 +1,4 @@
 mcl_mapgen_core = {}
-local registered_generators = {}
-
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
@@ -118,8 +116,6 @@ elseif mg_name == "fractal" then
 	mg_flags.caverns = true
 end
 
-
-
 local mg_flags_str = ""
 for k,v in pairs(mg_flags) do
 	if v == false then
@@ -211,12 +207,12 @@ end
 local function set_layers(data, area, content_id, check, min, max, minp, maxp, pr)
 	if maxp.y < min or minp.y > max then return false end
 	local lvm_used = false
-	if check == nil then
+	if not check then
 		for p_pos in area:iter(minp.x, math.max(min, minp.y), minp.z, maxp.x, math.min(max, maxp.y), maxp.z) do
 			data[p_pos] = content_id
 			lvm_used = true
 		end
-	elseif check and type(check) == "function" then
+	elseif type(check) == "function" then
 		-- slow path, needs vector coordinates (bedrock uses y only)
 		for p_pos in area:iter(minp.x, math.max(min, minp.y), minp.z, maxp.x, math.min(max, maxp.y), maxp.z) do
 			if check(area:position(p_pos), data[p_pos], pr) then
@@ -427,6 +423,7 @@ if mg_name == "v6" then
 	dofile(modpath.."/v6.lua")
 end
 
+--[[
 minetest.register_lbm({
 	label = "Fix grass palette indexes", -- This LBM fixes any incorrect grass palette indexes.
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",
@@ -521,5 +518,5 @@ local function fix_foliage_missed(minp, maxp)
 end
 
 minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of missed foliage.
-	fix_foliage_missed (minp, maxp)
-end)
+	fix_foliage_missed(minp, maxp)
+end)]]

@@ -256,7 +256,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	-- If it failed again, tough luck! We stick with only 1 chest spawned.
 	local lastRandom
 	local secondChance = true -- second chance is still available
-	for i=1, totalChests do
+	for _ = 1, totalChests do
 		local r = pr:next(1, totalChestSlots)
 		if r == lastRandom and secondChance then
 			-- Oops! Same slot selected. Try again.
