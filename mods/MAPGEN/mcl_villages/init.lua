@@ -22,12 +22,12 @@ minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = 
 local function build_a_settlement(minp, maxp, blockseed)
 	if mcl_villages.village_exists(blockseed) then return end
 	local pr = PcgRandom(blockseed)
-	local lvm = VoxelManip(minp, maxp)
-	local settlement = mcl_villages.create_site_plan(lvm, minp, maxp, pr)
+	local vm = VoxelManip(minp, maxp)
+	local settlement = mcl_villages.create_site_plan(vm, minp, maxp, pr)
 	if not settlement then return false, false end
 	-- all foundations first, then all buildings, to avoid damaging very close buildings
-	mcl_villages.terraform(lvm, settlement, pr)
-	mcl_villages.place_schematics(lvm, settlement, blockseed, pr)
+	mcl_villages.terraform(vm, settlement, pr)
+	mcl_villages.place_schematics(vm, settlement, blockseed, pr)
 	mcl_villages.add_village(blockseed, settlement)
 	--lvm:write_to_map(true) -- destory paths as of now
 	--mcl_villages.paths(blockseed) -- TODO: biome
@@ -110,7 +110,7 @@ minetest.register_node("mcl_villages:village_block", {
 	-- Somethings don't work reliably when done in the map building
 	-- so we use a timer to run them later when they work more reliably
 	-- e.g. spawning mobs, running minetest.find_path
-	on_timer = function(pos, elapsed)
+	on_timer = function(pos, _)
 		local meta = minetest.get_meta(pos)
 		local blockseed = meta:get_string("blockseed")
 		local node_type = meta:get_string("node_type")
@@ -283,14 +283,26 @@ mcl_villages.register_building({
 })
 
 mcl_villages.register_building({
-	name = "fletcher",
+	name = "fletcher_tiny",
+	group = "g:fletcher",
 	mts = schem_path .. "bogner.mts",
 	num_others = 8,
+	max_jobs = 6,
 	yadjust = 0,
 })
 
 mcl_villages.register_building({
+	name = "fletcher",
+	group = "g:fletcher",
+	mts = schem_path .. "new_villages/fletcher.mts",
+	num_others = 8,
+	min_jobs = 7,
+	yadjust = 1,
+})
+
+mcl_villages.register_building({
 	name = "library",
+	group = "g:library",
 	mts = schem_path .. "new_villages/library.mts",
 	min_jobs = 12,
 	max_jobs = 99,
@@ -300,6 +312,7 @@ mcl_villages.register_building({
 
 mcl_villages.register_building({
 	name = "librarian",
+	group = "g:library",
 	mts = schem_path .. "schreiber.mts",
 	min_jobs = 1,
 	max_jobs = 11,
@@ -350,6 +363,7 @@ mcl_villages.register_building({
 
 mcl_villages.register_building({
 	name = "chapel",
+	group = "g:church",
 	mts = schem_path .. "new_villages/chapel.mts",
 	num_others = 8,
 	min_jobs = 1,
@@ -358,12 +372,23 @@ mcl_villages.register_building({
 })
 
 mcl_villages.register_building({
-	name = "church",
+	name = "church_european",
+	group = "g:church",
 	mts = schem_path .. "kirche.mts",
 	num_others = 20,
-	min_jobs = 10,
+	min_jobs = 8,
 	max_jobs = 99,
 	yadjust = 0,
+})
+
+mcl_villages.register_building({
+	name = "church",
+	group = "g:church",
+	mts = schem_path .. "new_villages/church.mts",
+	num_others = 20,
+	min_jobs = 8,
+	max_jobs = 99,
+	yadjust = 1,
 })
 
 mcl_villages.register_building({
