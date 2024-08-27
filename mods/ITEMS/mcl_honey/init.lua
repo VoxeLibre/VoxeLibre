@@ -19,6 +19,9 @@ function mcl_honey.wax_block(pos, node, player, itemstack)
 	if def and def._mcl_waxed_variant then
 		node.name = def._mcl_waxed_variant
 	else
+		if def.on_rightclick then
+			return def.on_rightclick(pos, node, player, itemstack)
+		end
 		return
 	end
 
