@@ -15,15 +15,13 @@ function mcl_honey.wax_block(pos, node, player, itemstack)
 	end
 
 	local def = minetest.registered_nodes[node.name]
+	if not def then return end
 
-	if def and def._mcl_waxed_variant then
-		node.name = def._mcl_waxed_variant
-	elseif def and def.on_rightclick then
+	if def.on_rightclick then
 		return def.on_rightclick(pos, node, player, itemstack)
-	else
-		return
 	end
 
+	if not def._mcl_waxed_variant then return end
 	node.name = def._mcl_waxed_variant
 	minetest.set_node(pos, node)
 	awards.unlock(player:get_player_name(), "mcl:wax_on")
