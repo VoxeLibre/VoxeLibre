@@ -61,10 +61,9 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 			local def = minetest.registered_nodes[node.name]
 
 			-- Call on_rightclick if the pointed node defines it
-			if placer and not placer:get_player_control().sneak then
-				if def and def.on_rightclick then
-					return def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-				end
+			local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+			if new_stack and new_stack ~= itemstack then
+				return new_stack
 			end
 
 			-- Try to fill glass bottle with water
