@@ -209,7 +209,7 @@ local function on_place_bucket_empty(itemstack, user, pointed_thing)
 
 	-- Call on_rightclick if the pointed node defines it
 	local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
-	if new_stack then
+	if new_stack and new_stack ~= itemstack then
 		return new_stack
 	end
 
