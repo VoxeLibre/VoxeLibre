@@ -191,12 +191,16 @@ minetest.register_abm({
 	nodenames = {"mcl_core:cactus"},
 	neighbors = {"group:sand"},
 	interval = 25,
-	chance = 10,
+	chance = 40,
 	action = function(pos)
 		mcl_core.grow_cactus(pos)
 	end,
 })
 
+local function is_walkable(pos)
+	local ndef = minetest.registered_nodes[minetest.get_node(pos).name]
+	return ndef and ndef.walkable
+end
 minetest.register_abm({
 	label = "Cactus mechanisms",
 	nodenames = {"mcl_core:cactus"},
@@ -209,18 +213,21 @@ minetest.register_abm({
 				object:remove()
 			end
 		end
-		local posses = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } }
-		for _, p in pairs(posses) do
-			local ndef = minetest.registered_nodes[minetest.get_node(vector.new(pos.x + p[1], pos.y, pos.z + p[2])).name]
-			if ndef and ndef.walkable then
-				local posy = pos.y
-				while minetest.get_node(vector.new(pos.x, posy, pos.z)).name == "mcl_core:cactus" do
-					local pos = vector.new(pos.x, posy, pos.z)
-					minetest.dig_node(pos)
-					-- minetest.add_item(vector.offset(pos, math.random(-0.5, 0.5), 0, math.random(-0.5, 0.5)), "mcl_core:cactus")
-					posy = posy + 1
-				end
-				break
+		if is_walkable(vector.offset(pos,  1, 0,  0))
+		or is_walkable(vector.offset(pos, -1, 0,  0))
+		or is_walkable(vector.offset(pos,  0, 0,  1))
+		or is_walkable(vector.offset(pos,  0, 0, -1)) then
+			local lpos = vector.copy(pos)
+			local dx, dy
+			while true do
+				local node = minetest.get_node(lpos)
+				if not node or node.name ~= "mcl_core:cactus" then break end
+				minetest.dig_node(lpos)
+				dx = dx or ((math.random(0,1)-0.5) * math.sqrt(math.random())) * 1.5
+				dy = dy or ((math.random(0,1)-0.5) * math.sqrt(math.random())) * 1.5
+				local obj = minetest.add_item(vector.offset(lpos, dx, 0.25, dy), "mcl_core:cactus")
+				obj:set_velocity(vector.new(dx, 1, dy))
+				lpos.y = lpos.y + 1
 			end
 		end
 	end,

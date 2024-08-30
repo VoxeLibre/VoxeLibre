@@ -4656,9 +4656,9 @@ local function register_decorations()
 		place_on = {"group:sand"},
 		sidelen = 16,
 		noise_params = {
-			offset = -0.012,
+			offset = -0.01,
 			scale = 0.024,
-			spread = {x = 100, y = 100, z = 100},
+			spread = vector.new(100, 100, 100),
 			seed = 257,
 			octaves = 3,
 			persist = 0.6
@@ -4672,6 +4672,9 @@ local function register_decorations()
 				  "MesaPlateauFM", "MesaPlateauFM_sandlevel"},
 		height = 1,
 		height_max = 3,
+		spawn_by = "air",
+		check_offset = 1,
+		num_spawn_by = 16
 	})
 
 	-- Sugar canes
