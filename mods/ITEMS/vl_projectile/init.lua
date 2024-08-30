@@ -239,7 +239,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, entity)
 	-- Play sounds
 	local sounds = (projectile_def.sounds or {})
 	local sound = sounds.on_entity_collide or sounds.on_collision
-	if type(sound) == "function" then sound = sound(self, entity_def, projectile_def, entity)
+	if type(sound) == "function" then sound = sound(self, entity_def, projectile_def, entity) end
 	if sound then
 		local arg2 = table.copy(sound[2])
 		arg2.pos = pos
