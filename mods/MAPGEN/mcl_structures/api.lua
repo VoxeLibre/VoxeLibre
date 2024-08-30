@@ -1,6 +1,5 @@
 mcl_structures.registered_structures = {}
 
-local place_queue = {}
 local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
@@ -214,17 +213,6 @@ local function foundation(ground_p1,ground_p2,pos,sidelen)
 	end
 	minetest.bulk_set_node(filler,{name=node_filler})
 	minetest.bulk_set_node(stone,{name=node_stone})
-end
-
-local function process_queue()
-	if #place_queue < 1 then return end
-	local s = table.remove(place_queue)
-	mcl_structures.place_schematic(s.pos, s.file, s.rot, nil, true, "place_center_x,place_center_z",function(s)
-		if s.after_place then
-			s.after_place(s.pos,s.def,s.pr)
-		end
-	end,s.pr)
-	minetest.after(0.5,process_queue)
 end
 
 function mcl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n,water)
