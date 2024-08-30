@@ -285,9 +285,19 @@ vl_projectile.register("mcl_bows:arrow_entity", {
 			if not obj:is_player() then
 				mcl_burning.extinguish(self.object)
 				if self._piercing == 0 then
+					self._removed = true
 					self.object:remove()
 				end
 			end
+
+			local item_def = minetest.registered_items[self._arrow_item]
+			local hook = item_def and item_def._on_collide_with_entity
+			if hook then hook(self, pos, obj) end
+
+			-- Because arrows are flagged to survive collisions to allow sticking into blocks, manually remove it now that it
+			-- has collided with an entity
+			self._removed = true
+			self.object:remove()
 		end
 	},
 	on_step = function(self, dtime)
@@ -421,6 +431,7 @@ vl_projectile.register("mcl_bows:arrow_entity", {
 		end
 
 		if data.stuckin_player then
+			self._removed = true
 			self.object:remove()
 		end
 	end,

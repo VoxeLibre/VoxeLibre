@@ -43,7 +43,7 @@ mcl_fovapi.register_modifier({
 })
 
 function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable)
-	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
+	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, "mcl_bows:arrow_entity")
 	if power == nil then
 		power = BOW_MAX_SPEED --19
 	end
@@ -77,6 +77,10 @@ function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage,
 	le._knockback = knockback
 	le._collectable = collectable
 	le._arrow_item = arrow_item
+	local item_def = minetest.registered_items[le._arrow_item]
+	if item_def and item_def._arrow_image then
+		obj:set_properties({ textures = item_def._arrow_image })
+	end
 	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
 	if shooter and shooter:is_player() then
 		if obj:get_luaentity().player == "" then

@@ -5,6 +5,8 @@ local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 local enable_pvp = minetest.settings:get_bool("enable_pvp")
 
 function mod.update_projectile(self, dtime)
+	if self._removed then return end
+
 	local entity_name = self.name
 	local entity_def = minetest.registered_entities[entity_name] or {}
 	local entity_vl_projectile = entity_def._vl_projectile or {}
@@ -77,6 +79,7 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	if not projectile_def.sticks_in_players then return end
 
 	minetest.after(150, function()
+		self._removed = true
 		self.object:remove()
 	end)
 
@@ -174,6 +177,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 
 	-- Normally objects should be removed on collision with solids
 	if not projectile_def.survive_collision then
+		self._removed = true
 		self.object:remove()
 	end
 
@@ -191,7 +195,6 @@ local function handle_entity_collision(self, entity_def, projectile_def, entity)
 	if type(allow_punching) == "function" then
 		allow_punching = allow_punching(self, entity_def, projectile_def, entity)
 	end
-	print("allow_punching="..tostring(allow_punching))
 
 	if allow_punching then
 		-- Get damage
@@ -211,7 +214,6 @@ local function handle_entity_collision(self, entity_def, projectile_def, entity)
 			handle_player_sticking(self, entity_def, projectile_def, entity)
 		elseif entity_lua and (entity_lua.is_mob == true or entity_lua._hittable_by_projectile) and (self_vl_projectile.owner ~= entity) then
 			do_damage = true
-			entity:punch(self.object, 1.0, projectile_def.tool or { full_punch_interval = 1.0, damage_groups = dmg }, dir )
 		end
 
 		if do_damage then
@@ -248,6 +250,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, entity)
 
 	-- Normally objects should be removed on collision with entities
 	if not projectile_def.survive_collision then
+		self._removed = true
 		self.object:remove()
 	end
 
