@@ -70,11 +70,13 @@ local function stuck_arrow_on_step(self, dtime)
 	self._stuckrechecktimer = self._stuckrechecktimer + dtime
 	if self._stucktimer > ARROW_TIMEOUT then
 		mcl_burning.extinguish(self.object)
+		self._removed = true
 		self.object:remove()
 		return
 	end
 
 	local pos = self.object:get_pos()
+	if not pos then return end
 
 	-- Drop arrow as item when it is no longer stuck
 	-- FIXME: Arrows are a bit slow to react and continue to float in mid air for a few seconds.
