@@ -37,6 +37,8 @@ end
 -- Digging capabilities of tool
 tt.register_snippet(function(itemstring, toolcaps, itemstack)
 	local def = minetest.registered_items[itemstring]
+	if not def then return end
+
 	if not toolcaps then
 		return
 	end
@@ -165,6 +167,8 @@ end)]]
 -- Food
 tt.register_snippet(function(itemstring)
 	local def = minetest.registered_items[itemstring]
+	if not def then return end
+
 	local desc
 	if def._tt_food then
 		desc = S("Food item")
@@ -179,6 +183,8 @@ end)
 -- Node info
 tt.register_snippet(function(itemstring)
 	local def = minetest.registered_items[itemstring]
+	if not def then return end
+
 	local desc = ""
 
 	-- Health-related node facts

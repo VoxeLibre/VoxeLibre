@@ -64,6 +64,8 @@ end)
 
 tt.register_snippet(function(itemstring)
 	local def = minetest.registered_items[itemstring]
+	if not def then return end
+
 	local s = ""
 	if def.groups.eatable and def.groups.eatable > 0 then
 		s = s .. S("Hunger points: +@1", def.groups.eatable)
@@ -89,6 +91,8 @@ end)
 
 tt.register_snippet(function(itemstring)
 	local def = minetest.registered_items[itemstring]
+	if not def then return end
+
 	if def.groups.place_flowerlike == 1 then
 		return S("Grows on grass blocks or dirt")
 	elseif def.groups.place_flowerlike == 2 then
@@ -98,6 +102,8 @@ end)
 
 tt.register_snippet(function(itemstring)
 	local def = minetest.registered_items[itemstring]
+	if not def then return end
+
 	if def.groups.flammable then
 		return S("Flammable")
 	end
@@ -127,6 +133,8 @@ end)
 tt.register_snippet(function(itemstring, _, itemstack)
 	if not itemstack then return end
 	local def = itemstack:get_definition()
+	if not def then return end
+
 	if def.groups._mcl_potion ~= 1 then return end
 
 	local s = ""
