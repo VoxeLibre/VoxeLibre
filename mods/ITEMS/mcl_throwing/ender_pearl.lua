@@ -63,7 +63,7 @@ minetest.register_entity("mcl_throwing:ender_pearl_entity",{
 			-- Teleport and hurt player
 
 			-- First determine good teleport position
-			local dir = {x=0, y=0, z=0}
+			local dir = vector.zero()
 
 			local v = self.object:get_velocity()
 			if node_def and node_def.walkable then
