@@ -50,12 +50,14 @@ local function random_hit_positions(positions, placement)
 		return math.random(-4, 4)
 	elseif positions == "y" then
 		return math.random(0, 10)
+	elseif positions == "z" then
+		if placement == "front" then
+			return 3
+		elseif placement == "back" then
+			return -3
+		end
 	end
-	if placement == "front" and positions == "z" then
-		return 3
-	elseif placement == "back" and positions == "z" then
-		return -3
-	end
+
 	return 0
 end
 local function check_hitpoint(hitpoint)
@@ -91,19 +93,11 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	end
 
 	-- Handle when the projectile hits the player
-	local placement
 	self._placement = math.random(1, 2)
-	if self._placement == 1 then
-		placement = "front"
-	else
-		placement = "back"
-	end
+
+	local placement = self._placement == 1 and "front" or "back"
+	self._rotation_station = self.placement == 1 and -90 or 90
 	self._in_player = true
-	if self._placement == 2 then
-		self._rotation_station = 90
-	else
-		self._rotation_station = -90
-	end
 	self._y_position = random_arrow_positions("y", placement)
 	self._x_position = random_arrow_positions("x", placement)
 	if self._y_position > 6 and self._x_position < 2 and self._x_position > -2 then
@@ -147,7 +141,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 		-- Projectile has stopped in one axis, so it probably hit something.
 		-- This detection is a bit clunky, but sadly, MT does not offer a direct collision detection for us. :-(
 		local vel = self.object:get_velocity()
-		if not( (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) ) then
+		if math.abs(vel.x) >= 0.0001 and math.abs(vel.z) >= 0.0001 and math.abs(vel.y) >= 0.0001 then
 			self._last_pos = pos
 			return
 		end
