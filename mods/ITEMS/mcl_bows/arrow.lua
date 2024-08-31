@@ -124,7 +124,7 @@ local arrow_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player",
+		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air",
 	},
 
 	_startpos=nil,
@@ -306,6 +306,12 @@ local arrow_entity = {
 		if not self.object:get_pos() then return end
 
 		self._time_in_air = self._time_in_air + dtime
+
+		-- Give the arrows a maximum flight time
+		if self._time_in_air > ARROW_TIMEOUT then
+			self._removed = true
+			self.object:remove()
+		end
 
 		local pos = self.object:get_pos()
 		--local dpos = vector.round(vector.new(pos)) -- digital pos
