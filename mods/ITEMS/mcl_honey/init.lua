@@ -17,9 +17,9 @@ function mcl_honey.wax_block(pos, node, player, itemstack)
 	local def = minetest.registered_nodes[node.name]
 	if not def then return end
 
-	if def.on_rightclick then
-		return def.on_rightclick(pos, node, player, itemstack)
-	end
+	-- Handle right-clicking nodes
+	local new_stack = mcl_util.call_on_rightclick(itemstack, player, {type = "node", under = pos})
+	if new_stack and new_stack ~= itemstack then return end
 
 	if not def._mcl_waxed_variant then return end
 	node.name = def._mcl_waxed_variant
