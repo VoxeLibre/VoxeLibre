@@ -312,8 +312,6 @@ rocket_entity.on_step = function(self, dtime)
 	arrow_entity.on_step(self, dtime)
 end
 
-minetest.log(dump(rocket_entity))
-
 vl_projectile.register("mcl_bows:rocket_entity", rocket_entity)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
