@@ -158,7 +158,7 @@ local arrow_entity = {
 			return true
 		end,
 		sounds = {
-			on_entity_collision = function(self, _, _, obj)
+			on_entity_collision = function(self, _, _, _, obj)
 				if obj:is_player() then
 					return {{name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter:get_player_name()}, true}
 				end

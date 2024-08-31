@@ -1,0 +1,81 @@
+# Projectiles API
+
+## `vl_projectile.register(entity_name, def)`
+
+Registers a projectile entity.
+
+Arguments:
+
+* `entity_name`: The name the entity will be refered to by the minetest engine
+* `def`: Projectile defintion. Supports all fields that standard minetest entities support.
+         Must include the field `_vl_projectile` for projectile-specific behaviors. These are the supported
+	    fields:
+  * `survive_collision`: if this field is `false` or `nil`, the projectile will be removed after a collision.
+  * `sticks_in_players`: if true, the projectile will stick into players after colliding with them.
+  * `damage_groups`: damage group information to use for `punch()`. May be a function of type `function(projectile, entity_def, projectile_def, obj)`
+                     that returns dynamic damange group information.
+  * `allow_punching`: will the projectile punch entities it collieds with. May be a function of type `function(projectile, entity_def, projectile_def, obj)`.
+  * `behaviors`: a list of behavior callbacks that define the projectile's behavior. This mod provides two
+                 behaviors: `vl_projectiles.collides_with_solids` and `vl_projectiles.collides_with_entities`
+  * `sounds`: sounds for this projectile. All fields take a table with three parameters corresponding to the
+              three parameters for `minetest.play_sound()`. Supported sounds are:
+    * `on_collision`: played when no other more specific sound is defined. May be a function of type `function(projectile, entity_def, projectile_def, type, ...)`
+    * `on_solid_collision`: played when the projectile collides with a solid node. May be a function of type
+        `funciton(projectile, entity_def, projectile_def, type, pos, node, node_def)` with `type = "node"`
+    * `on_entity_collision`: played when the projectile collieds with another entity. May be a function of type
+        `function(projectile, entity_def, projectile_def, type, entity)` with `type = "entity"`
+ * `on_collide_with_solid`: callback of type `function(projectile, pos, node, node_def)` used when the projectile collides with a solid node. Requires
+   `vl_projectile.collides_with_solids` in `behaviors` list.
+ * `on_collide_with_entity`: callback of type `function(projectile, pos, obj)` used when the projectile collides with an entity. Requires
+   `vl_projectile.collides_with_entities` in `behaviors` list.
+
+## `vl_projectile.update_projectile(self, dtime)`
+
+Performs standard projectile update logic and runs projectile behaviors.
+
+Arguments:
+* `self`: The lua entity of the projectile to update
+* `dtime`: The amount of time that has passed since the last update. Nomally the `dtime`
+           parameter of the entity's `on_step(self, dtime)` callback.
+
+## `vl_projectile.raycast_collides_with_entities(self, dtime, entity_def, projectile_def`
+
+Performs collision detection of entities via a racast and then handles the collisions.
+
+Arguments:
+* `self`: The lua entity of the projectile to update
+* `dtime`: The amount of time that has passed since the last update. Nomally the `dtime`
+           parameter of the entity's `on_step(self, dtime)` callback.
+* `entity_def`: The definition from `minetest.registered_entities` for the projectile.
+* `projectile_def`: Same as `entity_def._vl_projectile`
+
+## `vl_projectile.create(entity_id, options)`
+
+Creates a projectile and performs convenience initialization.
+
+Arguments:
+* `entity_id`: The name the entity as passed to `vl_projectile.register()`
+* `options`: A table with optional parameters. Supported fields are:
+  * `dir`: direction the projectile is moving in
+  * `velocity`: scalar velocity amount
+  * `drag`: scalar resistence to velocity
+  * `owner`: passed thru unmodified
+  * `extra`: passed thru unmodified
+
+## Custom Projectile Behaviors
+
+The projectile API supports specifying the behaviors that a projectile will exhibit. There are two
+standard behaviors provided with the API: `vl_projectile.collides_with_solids` and `vl_projectile.collides_with_entities`.
+Custom behaviors can be provided by adding a function with the signature `function(self, dtime, entity_def, projectile_def)`
+to the list of behaviors a projectile supports.
+
+Arguments:
+
+* `self`: The lua entity of the projectile
+* `dtime`: The amount of time that has passed since the last update. Nomally the `dtime`
+           parameter of the entity's `on_step(self, dtime)` callback.
+* `entity_def`: The definition from `minetest.registered_entities` for the projectile.
+* `projectile_def`: Same as `entity_def._vl_projectile`
+
+
+
