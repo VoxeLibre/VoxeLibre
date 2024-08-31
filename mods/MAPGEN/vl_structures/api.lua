@@ -12,7 +12,7 @@ local logging = true or minetest.settings:get_bool("mcl_logging_structures", tru
 -- FIXME: switch to vl_structures_disabled?
 local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 disabled_structures = disabled_structures and disabled_structures:split(",") or {}
-function mcl_structures.is_disabled(structname)
+function vl_structures.is_disabled(structname)
 	return table.indexof(disabled_structures,structname) ~= -1
 end
 
