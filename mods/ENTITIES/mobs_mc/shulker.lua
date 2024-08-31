@@ -113,10 +113,9 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 					for n=1, math.min(64, #nodes) do
 						local r = pr:next(1, #nodes)
 						local nodepos = nodes[r]
-						local tg = vector.offset(nodepos,0,1,0)
+						local tg = vector.offset(nodepos,0,0.5,0)
 						if check_spot(tg) then
 							telepos = tg
-							node_ok = true
 						end
 					end
 					if telepos then
