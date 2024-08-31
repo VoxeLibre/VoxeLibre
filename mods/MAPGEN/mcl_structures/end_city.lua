@@ -7,14 +7,14 @@ local function spawn_shulkers(pos,def,pr,p1,p2)
 	vl_structures.spawn_mobs("mobs_mc:shulker",spawnon,p1,p2,pr,1)
 	local guard = minetest.find_nodes_in_area(p1,p2,{"mcl_itemframes:item_frame"})
 	if #guard > 0 then
-		minetest.add_entity(vector.offset(guard[1],0,-0.5,0),"mobs_mc:shulker") -- fixme: MCLA uses -0.5?
+		minetest.add_entity(vector.offset(guard[1],0,-1.5,0),"mobs_mc:shulker")
 	end
 end
 
 vl_structures.register_structure("end_shipwreck",{
 	place_on = {"mcl_end:end_stone"},
 	flags = "place_center_x, place_center_z, all_floors",
-	y_offset = function(pr) return pr:next(20,50) end,
+	y_offset = function(pr) return pr:next(15,40) end,
 	force_placement = false,
 	prepare = { foundation = false, clear = false },
 	chunk_probability = 25,
@@ -83,7 +83,7 @@ vl_structures.register_structure("end_shipwreck",{
 vl_structures.register_structure("end_boat",{
 	place_on = {"mcl_end:end_stone"},
 	flags = "place_center_x, place_center_z, all_floors",
-	y_offset = function(pr) return pr:next(15,30) end,
+	y_offset = function(pr) return pr:next(10,20) end,
 	force_placement = false,
 	prepare = { foundation = false, clear = false },
 	chunk_probability = 10,
@@ -143,7 +143,7 @@ vl_structures.register_structure("small_end_city",{
 	flags = "place_center_x, place_center_z, all_floors",
 	y_offset = 0,
 	chunk_probability = 30,
-	prepare = { foundation = 2 },
+	prepare = { foundation = -1, tolerance = 15 },
 	biomes = { "End", "EndHighlands", "EndMidlands", "EndBarrens", "EndSmallIslands" },
 	sidelen = 20,
 	filenames = {
