@@ -169,6 +169,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	-- Play sounds
 	local sounds = projectile_def.sounds or {}
 	local sound = sounds.on_solid_collision or sounds.on_collision
+	if type(sound) == "function" then sound = sound(self, entity_def, projectile_def, "node", pos, node, node_def) end
 	if sound then
 		local arg2 = table.copy(sound[2])
 		arg2.pos = pos
@@ -240,8 +241,8 @@ local function handle_entity_collision(self, entity_def, projectile_def, entity)
 
 	-- Play sounds
 	local sounds = (projectile_def.sounds or {})
-	local sound = sounds.on_entity_collide or sounds.on_collision
-	if type(sound) == "function" then sound = sound(self, entity_def, projectile_def, entity) end
+	local sound = sounds.on_entity_collion or sounds.on_collision
+	if type(sound) == "function" then sound = sound(self, entity_def, projectile_def, "entity", entity) end
 	if sound then
 		local arg2 = table.copy(sound[2])
 		arg2.pos = pos
@@ -320,9 +321,6 @@ function mod.create(entity_id, options)
 		owner = options.owner,
 		extra = options.extra,
 	}
-
-	-- Make the update function easy to get to
-	luaentity.update_projectile = mod.update_projectile
 
 	-- And provide the caller with the created object
 	return obj
