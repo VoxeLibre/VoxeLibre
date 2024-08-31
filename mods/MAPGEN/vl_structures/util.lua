@@ -1,5 +1,3 @@
-local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
-
 local floor = math.floor
 local vector_offset = vector.offset
 
@@ -94,39 +92,6 @@ function vl_structures.fill_chests(p1,p2,loot,pr)
 			local inv = meta:get_inventory()
 			mcl_loot.fill_inventory(inv, "main", lootitems, pr)
 		end
-	end
-end
-
---- Spawn mobs for a structure
--- @param mob string: mob to spawn
--- @param spawnon string or table: nodes to spawn on
--- @param p1 vector: Lowest coordinates of range
--- @param p2 vector: Highest coordinates of range
--- @param pr PseudoRandom: random generator
--- @param n number: Number of mobs to spawn
--- @param water boolean: Spawn water mobs
-function vl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n,water)
-	n = n or 1
-	local sp = {}
-	if water then
-		local nn = minetest.find_nodes_in_area(p1,p2,spawnon)
-		for k,v in pairs(nn) do
-			if minetest.get_item_group(minetest.get_node(vector_offset(v,0,1,0)).name,"water") > 0 then
-				table.insert(sp,v)
-			end
-		end
-	else
-		sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
-	end
-	table.shuffle(sp)
-	local count = 0
-	local mob_def = minetest.registered_entities[mob]
-	local enabled = (not peaceful) or (mob_def and mob_spawn_class ~= "hostile")
-	for _, node in pairs(sp) do
-		if enabled and count < n and minetest.add_entity(vector_offset(node, 0, 1, 0), mob) then
-			count = count + 1
-		end
-		minetest.get_meta(node):set_string("spawnblock", "yes") -- note: also in peaceful mode!
 	end
 end
 
