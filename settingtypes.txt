@@ -256,10 +256,6 @@ mcl_buckets_use_select_box (Buckets use select box) bool false
 # See also: https://github.com/minetest/minetest/issues/95
 mcl_translucent_ice (Translucent ice) bool false
 
-# Whether to generate fallen logs in some biomes.
-# They might not always look pretty and have strange overhangs.
-mcl_generate_fallen_logs (Generate fallen logs) bool false
-
 # If enabled, the “flat” map generator generates a Classic Superflat world:
 # Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on
 # top of a final layer of bedrock. No caves, trees or plants.
