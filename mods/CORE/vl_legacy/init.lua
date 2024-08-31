@@ -18,7 +18,7 @@ function mod.convert_inventory_lists(lists)
 	for _,list in pairs(lists) do
 		for i = 1,#list do
 			local itemstack = list[i]
-			local conversion = item_conversions[itemstack:get_name()]
+			local conversion = itemstack and item_conversions[itemstack:get_name()]
 			if conversion then
 				local new_name,func = conversion[1],conversion[2]
 				if func then
