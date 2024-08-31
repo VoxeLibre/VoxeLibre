@@ -110,23 +110,23 @@ end
 function mcl_util.get_double_container_neighbor_pos(pos, param2, side)
 	if side == "right" then
 		if param2 == 0 then
-			return {x = pos.x - 1, y = pos.y, z = pos.z}
+			return vector.offset(pos, -1, 0, 0)
 		elseif param2 == 1 then
-			return {x = pos.x, y = pos.y, z = pos.z + 1}
+			return vector.offset(pos,  0, 0,  1)
 		elseif param2 == 2 then
-			return {x = pos.x + 1, y = pos.y, z = pos.z}
+			return vector.offset(pos,  1, 0,  0)
 		elseif param2 == 3 then
-			return {x = pos.x, y = pos.y, z = pos.z - 1}
+			return vector.offset(pos,  0, 0, -1)
 		end
 	else
 		if param2 == 0 then
-			return {x = pos.x + 1, y = pos.y, z = pos.z}
+			return vector.offset(pos,  1, 0,  0)
 		elseif param2 == 1 then
-			return {x = pos.x, y = pos.y, z = pos.z - 1}
+			return vector.offset(pos,  0, 0, -1)
 		elseif param2 == 2 then
-			return {x = pos.x - 1, y = pos.y, z = pos.z}
+			return vector.offset(pos, -1, 0,  0)
 		elseif param2 == 3 then
-			return {x = pos.x, y = pos.y, z = pos.z + 1}
+			return vector.offset(pos,  0, 0,  1)
 		end
 	end
 end
