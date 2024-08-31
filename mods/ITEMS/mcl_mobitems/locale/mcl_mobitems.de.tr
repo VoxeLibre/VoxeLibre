@@ -25,7 +25,7 @@ Cooked Chicken=Gebratenes Hühnchen
 A cooked chicken is a healthy food item which can be eaten.=Ein gebratenes Hühnchen ist ein gesundes essbares Lebensmittel.
 Raw Porkchop=Rohes Schweinefleisch
 
-A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.=Ein rohes Stück Schweinefleisch kann bedenkenlos gegessen werden. Man kann es braten, um seinen Nährwert stark zu erhöhen.
+A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.=Ein rohes Stück Schweinefleisch kann bedenkenlos gegessen werden.  Man kann es braten, um seinen Nährwert stark zu erhöhen.
 
 Cooked Porkchop=Gebratenes Schweinefleisch
 Cooked porkchop is the cooked flesh of a pig and is used as food.=Ein gebratenes Stück Schweinefleisch ist ein gutes Lebensmittel.
@@ -57,6 +57,9 @@ This item is dropped by dead squids.  Squid ink can be used to as an ingredient 
 
 String=Faden
 Strings are used in crafting.=Fäden sind nützlich in der Fertigung.
+Spectre Membrane=Geistermembrane
+This is a crafting component dropped from dead spectres.=
+Crystalline Drop=Kristallträne
 Blaze Rod=Lohenrute
 This is a crafting component dropped from dead blazes.=Dies ist eine Fertigungskomponente, die von toten Lohen abgeworfen wird.
 Blaze Powder=Lohenstaub
@@ -96,6 +99,17 @@ A carrot on a stick can be used on saddled pigs to ride them.=Eine Karottenrute 
 
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=Platzieren Sie sie auf einem Schwein mit Sattel, um sich aufzusatteln. Sie können nun das Schwein wie ein Pferd reiten. Schweine werden auch auf Sie zugehen, wenn Sie einfach nur die Karottenrute halten.
 
+Warped fungus on a Stick=
+Lets you ride a strider=
+A warped fungus on a stick can be used on saddled striders to ride them.=
+Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=
+
+Nautilus Shell=
+Used to craft a conduit=
+The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=
+Heart of the Sea=
+The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=
+
 Iron Horse Armor=Eisenpferderüstung
 Iron horse armor can be worn by horses to increase their protection from harm a bit.=Eine Eisenpferderüstung kann von Pferden getragen werden, um ihren Schutz vor Schaden etwas zu erhöhen.
 Golden Horse Armor=Goldpferderüstung
@@ -103,3 +117,8 @@ Golden horse armor can be worn by horses to increase their protection from harm.
 Diamond Horse Armor=Diamantpferderüstung
 Diamond horse armor can be worn by horses to greatly increase their protection from harm.=Eine Diamantpferderüstung kann von Pferden getragen werden, um ihren Schutz vor Schaden beträchtlich zu erhöhen.
 Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=Platzieren Sie es auf einem Pferd, um die Pferderüstung aufzusetzen. Esel und Maultiere können keine Pferderüstung tragen.
+
+Glow Ink Sac=
+Use it to craft the Glow Item Frame.=
+Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=
+

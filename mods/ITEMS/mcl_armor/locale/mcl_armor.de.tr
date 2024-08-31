@@ -1,6 +1,21 @@
 # textdomain: mcl_armor
+Blast Protection=Explosionsschutz
+Projectile Protection=Projektilschutz
+Thorns=Dornen
 This is a piece of equippable armor which reduces the amount of damage you receive.=Dies ist ein Teil einer tragbaren Rüstung, die die Menge an Schaden, den Sie erleiden, reduziert.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Um es zu tragen, legen Sie es in den passenden Rüstungsplatz in Ihrem Inventarmenü.
+sentry=
+dune=
+coast=Küste
+wild=
+ward=Bezirk
+vex=
+rib=
+snout=Schnauze
+eye=Auge
+spire=
+silence=
+wayfinder=Pfadfinder
 Leather Cap=Lederkappe
 Iron Helmet=Eisenhelm
 Golden Helmet=Goldhelm
@@ -21,6 +36,4 @@ Iron Boots=Eisenstiefel
 Golden Boots=Goldstiefel
 Diamond Boots=Diamantstiefel
 Chain Boots=Kettenstiefel
-
-
 Smithing Template '@1'=Schmiedevorlage '@1'
