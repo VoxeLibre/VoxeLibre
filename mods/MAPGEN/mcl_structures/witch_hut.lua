@@ -40,7 +40,7 @@ local function hut_placement_callback(pos,def,pr)
 end
 
 mcl_structures.register_structure("witch_hut",{
-	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt"},
+	place_on = {"mcl_core:water_source","mclx_core:river_water_source"},
 	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z, liquid_surface, force_placement",
 	sidelen = 8,
