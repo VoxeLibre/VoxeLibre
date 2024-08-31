@@ -9,15 +9,13 @@ local vector = vector
 
 -- Time in seconds after which a stuck arrow is deleted
 local ARROW_TIMEOUT = 60
+
 -- Time after which stuck arrow is rechecked for being stuck
 local STUCK_RECHECK_TIME = 5
-
---local GRAVITY = 9.81
 
 local YAW_OFFSET = -math.pi/2
 
 local function dir_to_pitch(dir)
-	--local dir2 = vector.normalize(dir)
 	local xz = math.abs(dir.x) + math.abs(dir.z)
 	return -math.atan2(-dir.y, xz)
 end
@@ -114,7 +112,7 @@ local function stuck_arrow_on_step(self, dtime)
 	end
 end
 
-vl_projectile.register("mcl_bows:arrow_entity", {
+local arrow_entity = {
 	physical = true,
 	pointable = false,
 	visual = "mesh",
@@ -290,6 +288,7 @@ vl_projectile.register("mcl_bows:arrow_entity", {
 				end
 			end
 
+			-- Item definition entity collision hook
 			local item_def = minetest.registered_items[self._arrow_item]
 			local hook = item_def and item_def._on_collide_with_entity
 			if hook then hook(self, pos, obj) end
@@ -435,7 +434,12 @@ vl_projectile.register("mcl_bows:arrow_entity", {
 			self.object:remove()
 		end
 	end,
-})
+}
+
+-- Make the arrow entity available to other mods as a template
+mcl_bows.arrow_entity = table.copy(arrow_entity)
+
+vl_projectile.register("mcl_bows:arrow_entity", arrow_entity)
 
 minetest.register_on_respawnplayer(function(player)
 	for _, obj in pairs(player:get_children()) do
@@ -460,4 +464,3 @@ end
 if minetest.get_modpath("doc_identifier") then
 	doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
 end
-

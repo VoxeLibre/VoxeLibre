@@ -1,11 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-mcl_bows = {}
-
--- local arrows = {
--- 	["mcl_bows:arrow"] = "mcl_bows:arrow_entity",
--- }
-
 local GRAVITY = 9.81
 local BOW_DURABILITY = 385
 
