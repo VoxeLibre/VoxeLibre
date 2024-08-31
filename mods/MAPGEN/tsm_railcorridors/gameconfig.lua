@@ -27,7 +27,7 @@ if mg_name == "v6" then
 	}
 else
 	-- This generates dark oak wood in mesa biomes and oak wood everywhere else.
-	function tsm_railcorridors.nodes.corridor_woods_function(pos, node)
+	function tsm_railcorridors.nodes.corridor_woods_function(_, node)
 		if minetest.get_item_group(node.name, "hardened_clay") ~= 0 then
 			return "mcl_core:darkwood", "mcl_fences:dark_oak_fence"
 		else
@@ -36,32 +36,34 @@ else
 	end
 end
 
+tsm_railcorridors.carts = { "mcl_minecarts:chest_minecart" }
 
--- TODO: Use minecart with chest instead of normal minecart
-tsm_railcorridors.carts = { "mcl_minecarts:minecart" }
+-- This is called after a spawner has been placed by the game.
+-- Use this to properly set up the metadata and stuff.
+-- This is needed for games if they include mob spawners.
+-- All spawners spawn cave spiders
+function tsm_railcorridors.on_construct_spawner(pos)
+	mcl_mobspawners.setup_spawner(pos, "mobs_mc:cave_spider", 0, 7)
+end
 
-function tsm_railcorridors.on_construct_cart(pos, cart)
-	-- TODO: Fill cart with treasures
 
-	-- This is it? There's this giant hack announced in
-	-- the other file and I grep for the function and it's
-	-- a stub? :)
-
-	-- The path here using some minetest.after hackery was
-	-- deactivated in init.lua - reactivate when this does
-	-- something the function is called RecheckCartHack.
+-- This is called after a cart has been placed by the game.
+-- Use this to properly set up entity metadata and stuff.
+-- * pos: Position of cart
+-- * cart: Cart entity
+function tsm_railcorridors.on_construct_cart(_, cart, pr_carts)
+	local l = cart:get_luaentity()
+	local inv = mcl_entity_invs.load_inv(l,27)
+	local items = tsm_railcorridors.get_treasures(pr_carts)
+	mcl_loot.fill_inventory(inv, "main", items, pr_carts)
+	mcl_entity_invs.save_inv(l)
 end
 
 -- Fallback function. Returns a random treasure. This function is called for chests
 -- only if the Treasurer mod is not found.
 -- pr: A PseudoRandom object
-function tsm_railcorridors.get_default_treasure(pr)
+function tsm_railcorridors.get_default_treasure(_)
 	-- UNUSED IN MINECLONE 2!
-end
-
--- All spawners spawn cave spiders
-function tsm_railcorridors.on_construct_spawner(pos)
-	mcl_mobspawners.setup_spawner(pos, "mobs_mc:cave_spider", 0, 7)
 end
 
 -- MineClone 2's treasure function. Gets all treasures for a single chest.

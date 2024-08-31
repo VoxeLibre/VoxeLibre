@@ -25,14 +25,14 @@ tsm_railcorridors_probability_chest (Chest probability) float 0.05 0.0 1.0
 #of finding a cart in rail corridors with high rail damage will be lower.
 #NOTE: Due to a bug in Minetest <https://github.com/minetest/minetest/issues/4759>
 #carts often fail to spawn even if they should.
-tsm_railcorridors_probability_cart (Cart probability) float 0.0 0.0 1.0
+tsm_railcorridors_probability_cart (Cart probability) float 0.05 0.0 1.0
 
 #If enabled, cobwebs may be placed in some corridors.
 #Currently, cobwebs are only supported with the Mobs Redo mod.
 tsm_railcorridors_place_cobwebs (Cobwebs) bool true
 
 #Probability (0.0 to 1.0) for a rail corridor system to have damaged/incomplete railways
-tsm_railcorridors_probability_damage (Damaged railway probability) float 1.0 0.0 1.0
+tsm_railcorridors_probability_damage (Damaged railway probability) float 0.55 0.0 1.0
 
 #If enabled, rail corridors continue to generate through obstacles such
 #as other rail corridors (without destroying them, mostly). This may lead

@@ -10,8 +10,7 @@ dofile(minetest.get_modpath(minetest.get_current_modname()).."/gameconfig.lua")
 local setting
 
 -- Probability function
--- TODO: Check if this is correct
-local function P(float)
+local P = function (float)
 	return math.floor(32767 * float)
 end
 
@@ -27,8 +26,8 @@ elseif setting then
 end
 
 -- Minimal and maximal value of path length (forks don't look up this value)
-local way_min = 4;
-local way_max = 7;
+local way_min = 4
+local way_max = 7
 setting = tonumber(minetest.settings:get("tsm_railcorridors_way_min"))
 if setting then
 	way_min = setting
@@ -74,7 +73,7 @@ if setting then
 end
 
 -- Probability for a rail corridor system to be damaged
-local probability_damage = P(1.0)
+local probability_damage = P(0.55)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_damage"))
 if setting then
 	probability_damage = P(setting)
@@ -83,14 +82,14 @@ end
 -- Enable cobwebs
 local place_cobwebs = true
 setting = minetest.settings:get_bool("tsm_railcorridors_place_cobwebs")
-if setting then
+if setting ~= nil then
 	place_cobwebs = setting
 end
 
 -- Enable mob spawners
 local place_mob_spawners = true
 setting = minetest.settings:get_bool("tsm_railcorridors_place_mob_spawners")
-if setting then
+if setting ~= nil then
 	place_mob_spawners = setting
 end
 
@@ -153,17 +152,17 @@ local function SetNodeIfCanBuild(pos, node, check_above, can_replace_rail)
 	if check_above then
 		local abovename = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name
 		local abovedef = minetest.registered_nodes[abovename]
-		if abovename == "unknown" or abovename == "ignore" or
-				(abovedef and abovedef.groups and abovedef.groups.attached_node) or
+		if (not abovedef) or abovename == "unknown" or abovename == "ignore" or
+				(abovedef.groups and abovedef.groups.attached_node) or
 				-- This is done because cobwebs are often fake liquids
-				(abovedef and abovedef.liquidtype ~= "none" and abovename ~= tsm_railcorridors.nodes.cobweb) then
+				(abovedef.liquidtype ~= "none" and abovename ~= tsm_railcorridors.nodes.cobweb) then
 			return false
 		end
 	end
 	local name = minetest.get_node(pos).name
 	local def = minetest.registered_nodes[name]
-	if name ~= "unknown" and name ~= "ignore" and
-			((def and def.is_ground_content and def.liquidtype == "none") or
+	if name ~= "unknown" and name ~= "ignore" and def and
+			((def.is_ground_content and def.liquidtype == "none") or
 			name == tsm_railcorridors.nodes.cobweb or
 			name == tsm_railcorridors.nodes.torch_wall or
 			name == tsm_railcorridors.nodes.torch_floor or
@@ -178,7 +177,7 @@ end
 
 -- Tries to place a rail, taking the damage chance into account
 local function PlaceRail(pos, damage_chance)
-	if damage_chance and damage_chance > 0 then
+	if damage_chance ~= nil and damage_chance > 0 then
 		local x = pr:next(0,100)
 		if x <= damage_chance then
 			return false
@@ -211,7 +210,7 @@ local function NeedsPlatform(pos)
 	local falling = minetest.get_item_group(node.name, "falling_node") == 1
 	return
 		-- Node can be replaced if ground content or rail
-		(node.name ~= "ignore" and node.name ~= "unknown" and nodedef and nodedef.is_ground_content) and
+		(nodedef and node.name ~= "ignore" and node.name ~= "unknown" and nodedef.is_ground_content) and
 		-- Node needs platform if node below is not walkable.
 		-- Unless 2 nodes below there is dirt: This is a special case for the starter cube.
 		((nodedef.walkable == false and node2.name ~= tsm_railcorridors.nodes.dirt) or
@@ -237,7 +236,7 @@ end
 local function Cube(p, radius, node, replace_air_only, wood, post)
 	local y_top = p.y+radius
 	local nodedef = minetest.registered_nodes[node.name]
-	local solid = nodedef.walkable and (nodedef.node_box == nil or nodedef.node_box.type == "regular") and nodedef.liquidtype == "none"
+	local solid = nodedef and nodedef.walkable and (nodedef.node_box == nil or nodedef.node_box.type == "regular") and nodedef.liquidtype == "none"
 	-- Check if all the nodes could be set
 	local built_all = true
 
@@ -253,7 +252,7 @@ local function Cube(p, radius, node, replace_air_only, wood, post)
 					if yi == y_top then
 						local topnode = minetest.get_node({x=xi,y=yi+1,z=zi})
 						local topdef = minetest.registered_nodes[topnode.name]
-						if minetest.get_item_group(topnode.name, "attached_node") ~= 1 and topdef and topdef.liquidtype == "none" then
+						if topdef and minetest.get_item_group(topnode.name, "attached_node") ~= 1 and topdef.liquidtype == "none" then
 							ok = true
 						end
 					elseif column_last_attached and yi == column_last_attached - 1 then
@@ -364,8 +363,7 @@ local function Platform(p, radius, node, node2)
 	if not node2 then
 		node2 = { name = tsm_railcorridors.nodes.dirt }
 	end
-	local n1 = {}
-	local n2 = {}
+	local n1, n2 = {}, {}
 	for zi = p.z-radius, p.z+radius do
 		for xi = p.x-radius, p.x+radius do
 			local np, np2 = NeedsPlatform({x=xi,y=p.y,z=zi})
@@ -394,33 +392,26 @@ local function PlaceChest(pos, param2)
 	end
 end
 
-
 -- This function checks if a cart has ACTUALLY been spawned.
 -- To be calld by minetest.after.
 -- This is a workaround thanks to the fact that minetest.add_entity is unreliable as fuck
 -- See: https://github.com/minetest/minetest/issues/4759
 -- FIXME: Kill this horrible hack with fire as soon you can.
-
--- Why did anyone activate it in the first place? It doesn't
--- have a function seeing as there are no chest minecarts yet.
---[[
 local function RecheckCartHack(params)
 	local pos = params[1]
 	local cart_id = params[2]
 	-- Find cart
-	for _, obj in pairs(minetest.get_objects_inside_radius(pos, 1)) do
-		if obj and obj:get_luaentity().name == cart_id then
+	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+		if obj ~= nil and obj:get_luaentity().name == cart_id then
 			-- Cart found! We can now safely call the callback func.
 			-- (calling it earlier has the danger of failing)
 			minetest.log("info", "[tsm_railcorridors] Cart spawn succeeded: "..minetest.pos_to_string(pos))
-			tsm_railcorridors.on_construct_cart(pos, obj)
+			tsm_railcorridors.on_construct_cart(pos, obj, pr_carts)
 			return
 		end
 	end
 	minetest.log("info", "[tsm_railcorridors] Cart spawn FAILED: "..minetest.pos_to_string(pos))
 end
---]]
-
 
 -- Try to place a cobweb.
 -- pos: Position of cobweb
@@ -627,7 +618,7 @@ local function create_corridor_section(waypoint, axis, sign, up_or_down, up_or_d
 	if sign then
 		segamount = 0-segamount
 	end
-	local vek = {x=0,y=0,z=0};
+	local vek = {x=0,y=0,z=0}
 	local start = table.copy(waypoint)
 	if axis == "x" then
 		vek.x=segamount
@@ -714,7 +705,7 @@ local function create_corridor_section(waypoint, axis, sign, up_or_down, up_or_d
 		end
 
 		if (minetest.get_node({x=p.x,y=p.y-1,z=p.z}).name=="air" and minetest.get_node({x=p.x,y=p.y-3,z=p.z}).name~=tsm_railcorridors.nodes.rail) then
-			p.y = p.y - 1;
+			p.y = p.y - 1
 			if i == chestplace then
 				chestplace = chestplace + 1
 			end
@@ -840,7 +831,7 @@ local function create_corridor_line(waypoint, axis, sign, length, wood, post, da
 	local s = sign
 	local ud = false -- Up or down
 	local udn = false -- Up or down is next
-	local udp -- Up or down was previous
+	local udp = false -- Up or down was previous
 	local up = false -- true if going up
 	local upp = false -- true if was going up previously
 	for i=1,length do
@@ -891,7 +882,7 @@ local function create_corridor_line(waypoint, axis, sign, length, wood, post, da
 		wp, no_spawner = create_corridor_section(wp,a,s, ud, udn, udp, up, wood, post, first_or_final, damage, no_spawner)
 		if wp == false then return end
 		-- Fork in the road? If so, starts 2-3 new corridor lines and terminates the current one.
-		if pr:next() < probability_fork then
+		if wp and pr:next() < probability_fork then
 			-- 75% chance to fork off in 3 directions (making a crossing)
 			-- 25% chance to fork off in 2 directions (making a t-junction)
 			local is_crossing = pr:next(0, 3) < 3
@@ -911,7 +902,7 @@ local function create_corridor_line(waypoint, axis, sign, length, wood, post, da
 				{a2, not s}, -- to the other side
 				{a, s}, -- straight ahead
 			}
-			for f=1, forks do
+			for _= 1, forks do
 				local r = pr:next(1, #fork_dirs)
 				create_corridor_line(wp, fork_dirs[r][1], fork_dirs[r][2], pr:next(way_min,way_max), wood, post, damage, no_spawner)
 				table.remove(fork_dirs, r)
@@ -928,7 +919,7 @@ local function create_corridor_line(waypoint, axis, sign, length, wood, post, da
 			a="z"
 		elseif a=="z" then
 			a="x"
-		end;
+	 	end
 		s = pr:next(1, 2) == 1
 	end
 end
@@ -949,11 +940,8 @@ local function spawn_carts()
 			-- This checks if the cart is actually spawned, it's a giant hack!
 			-- Note that the callback function is also called there.
 			-- TODO: Move callback function to this position when the
-			-- minetest.add_entity bug has been fixed.
-
-			-- minetest.after(3, RecheckCartHack, {cpos, cart_id})
-			-- This whole recheck logic leads to a stub right now
-			-- it can be reenabled when chest carts are a thing.
+			-- minetest.add_entity bug has been fixed (supposedly in 5.9.0?)
+			minetest.after(3, RecheckCartHack, {cpos, cart_id})
 		end
 	end
 	carts_table = {}
@@ -1115,7 +1103,7 @@ mcl_structures.register_structure("mineshaft",{
 	sidelen = 32,
 	y_max = 40,
 	y_min = mcl_vars.mg_overworld_min,
-	place_func = function(pos,def,pr,blockseed)
+	place_func = function(pos,_,pr,blockseed)
 		local r = pr:next(-50,-10)
 		local p = vector.offset(pos,0,r,0)
 		if p.y < mcl_vars.mg_overworld_min + 5 then
@@ -1123,7 +1111,7 @@ mcl_structures.register_structure("mineshaft",{
 		end
 		if p.y > -10 then return true end
 		InitRandomizer(blockseed)
-		create_corridor_system(p, pr)
+		create_corridor_system(p)
 		return true
 	end,
 
