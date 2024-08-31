@@ -57,23 +57,21 @@ function mcl_potions.register_arrow(name, desc, color, def)
 			minetest.log("tipped arrow collision")
 
 			if def._effect_list then
-				local ef_level
-				local dur
 				for name, details in pairs(def._effect_list) do
+					local ef_level = details.level
 					if details.uses_level then
 						ef_level = details.level + details.level_scaling * (potency)
-					else
-						ef_level = details.level
 					end
+
+					local dur = details.dur
 					if details.dur_variable then
 						dur = details.dur * math.pow(mcl_potions.PLUS_FACTOR, plus)
 						if potency>0 and details.uses_level then
 							dur = dur / math.pow(mcl_potions.POTENT_FACTOR, potency)
 						end
-					else
-						dur = details.dur
 					end
 					dur = dur * mcl_potions.SPLASH_FACTOR
+
 					if details.effect_stacks then
 						ef_level = ef_level + mcl_potions.get_effect_level(obj, name)
 					end

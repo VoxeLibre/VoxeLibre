@@ -51,15 +51,9 @@ minetest.register_entity("mcl_throwing:egg_entity",{
 			-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
 			if math.random(1,32) ~= 1 then return end
 
-			local offsets = {
-				{ x=0.7, y=0, z=0 },
-				{ x=-0.7, y=0, z=-0.7 },
-				{ x=-0.7, y=0, z=0.7 },
-			}
-			for o=1, 3 do
-				local pos = vector.add(self._lastpos, offsets[o])
-				mcl_mobs.spawn_child(pos, "mobs_mc:chicken")
-			end
+			mcl_mobs.spawn_child(vector.offset(self._lastpos, 0.7, 0, 0), "mobs_mc:chicken")
+			mcl_mobs.spawn_child(vector.offset(self._lastpos, -0.7, 0, -0.7), "mobs_mc:chicken")
+			mcl_mobs.spawn_child(vector.offset(self._lastpos, -0.7, 0, 0.7), "mobs_mc:chicken")
 		end,
 		sounds = {
 			on_collision = {"mcl_throwing_egg_impact", {max_hear_distance=10, gain=0.5}, true}
