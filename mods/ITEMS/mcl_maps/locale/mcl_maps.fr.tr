@@ -5,4 +5,4 @@ Rightclick to create a filled map (which can't be stacked anymore).=Clic droit p
 Map=Carte
 Shows a map image.=Affiche une carte.
 When created, the map saves the nearby area as an image that can be viewed any time by holding the map.=Lors de sa création, la carte sauvegarde le terrain proche sous forme d'image qui peut être consultée n'importe quand en tenant la carte dans la main.
-Hold the map in your hand. This will display a map on your screen.=Tenez la carte dans votre main. Cela affichera la carte à l'écran.
+Hold the map in your hand. This will display a map on your screen. Rightclick to update the map.=Tenez la carte dans votre main. Cela affichera la carte à l'écran.
