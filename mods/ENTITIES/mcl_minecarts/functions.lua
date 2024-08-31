@@ -11,7 +11,7 @@ local function force_get_node(pos)
 	local node = minetest.get_node(pos)
 	if node.name ~= "ignore" then return node end
 
-	local time_start = minetest.get_us_time()
+	--local time_start = minetest.get_us_time()
 	local vm = minetest.get_voxel_manip()
 	local emin, emax = vm:read_from_map(pos, pos)
 	local area = VoxelArea:new{
@@ -23,7 +23,7 @@ local function force_get_node(pos)
 	local param2_data = vm:get_param2_data()
 
 	local vi = area:indexp(pos)
-	minetest.log("force_get_node() voxel_manip section took "..((minetest.get_us_time()-time_start)*1e-6).." seconds")
+	--minetest.log("force_get_node() voxel_manip section took "..((minetest.get_us_time()-time_start)*1e-6).." seconds")
 	return {
 		name = minetest.get_name_from_content_id(data[vi]),
 		param = param_data[vi],

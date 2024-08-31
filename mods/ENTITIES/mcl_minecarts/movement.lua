@@ -166,7 +166,7 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 	-- Don't collide with the train car in front of you
 	if cart1_staticdata.ahead == cart_uuid then return end
 
-	minetest.log("action","cart #"..cart1_staticdata.uuid.." collided with cart #"..cart_uuid.." at "..tostring(pos))
+	--minetest.log("action","cart #"..cart1_staticdata.uuid.." collided with cart #"..cart_uuid.." at "..tostring(pos))
 
 	-- Standard Collision Handling
 	local cart2_staticdata = get_cart_data(cart_uuid)
@@ -549,7 +549,7 @@ local function do_detached_movement(self, dtime)
 			-- Use vector projection to only keep the velocity in the new direction of movement on the rail
 			-- https://en.wikipedia.org/wiki/Vector_projection
 			staticdata.velocity = vector.dot(staticdata.dir,freebody_velocity)
-			print("Reattached velocity="..tostring(staticdata.velocity)..", freebody_velocity="..tostring(freebody_velocity))
+			--print("Reattached velocity="..tostring(staticdata.velocity)..", freebody_velocity="..tostring(freebody_velocity))
 
 			-- Clear freebody movement
 			self.object:set_velocity(vector.zero())
