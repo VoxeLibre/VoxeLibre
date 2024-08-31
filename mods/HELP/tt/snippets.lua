@@ -3,9 +3,7 @@
 -- Custom text (_tt_help)
 tt.register_snippet(function(itemstring)
 	local def = minetest.registered_items[itemstring]
-	if def._tt_help then
-		return def._tt_help
-	end
+	return def and def._tt_help or nil
 end)
 
 
