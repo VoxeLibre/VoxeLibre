@@ -484,18 +484,14 @@ end
 -- This should be moved to mcl_structures eventually if the dependencies can be sorted out.
 mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blockseed)
 	local gennotify = minetest.get_mapgen_object("gennotify")
-	local has_struct = {}
 	local has = false
 	local poshash = minetest.hash_node_position(minp)
 	for _,struct in pairs(mcl_structures.registered_structures) do
 		local pr = PseudoRandom(blockseed + 42)
 		if struct.deco_id then
 			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
-				local realpos = vector.offset(pos,0,1,0)
-				minetest.remove_node(realpos)
-				minetest.fix_light(vector.offset(pos,-1,-1,-1),vector.offset(pos,1,3,1))
 				if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
-					mcl_structures.place_structure(realpos,struct,pr,blockseed)
+					mcl_structures.place_structure(vector.offset(pos,0,1,0),struct,pr,blockseed)
 					has=true
 				end
 			end
