@@ -222,7 +222,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	end
 
 	-- Remove superceded entities
-	if self._seq ~= staticdata.seq then
+	if staticdata.seq and self._seq < staticdata.seq then
 		--print("removing cart #"..staticdata.uuid.." with sequence number mismatch")
 		self.object:remove()
 		return
