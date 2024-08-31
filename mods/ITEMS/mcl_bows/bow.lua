@@ -37,7 +37,7 @@ mcl_fovapi.register_modifier({
 })
 
 function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable)
-	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, "mcl_bows:arrow_entity")
+	local obj = minetest.add_entity(pos, "mcl_bows:arrow_entity")
 	if power == nil then
 		power = BOW_MAX_SPEED --19
 	end

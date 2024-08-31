@@ -58,7 +58,7 @@ S("Arrows might get stuck on solid blocks and can be retrieved again. They are a
 local function spawn_item(self, pos)
 	if not minetest.is_creative_enabled("") then
 		local item = minetest.add_item(pos, "mcl_bows:arrow")
-		item:set_velocity(vector.new(0, 0, 0))
+		item:set_velocity(vector.zero())
 		item:set_yaw(self.object:get_yaw())
 	end
 	mcl_burning.extinguish(self.object)
@@ -206,8 +206,8 @@ local arrow_entity = {
 			self._stucktimer = 0
 			self._stuckrechecktimer = 0
 
-			self.object:set_velocity(vector.new(0, 0, 0))
-			self.object:set_acceleration(vector.new(0, 0, 0))
+			self.object:set_velocity(vector.zero())
+			self.object:set_acceleration(vector.zero())
 
 			minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
 
@@ -373,7 +373,7 @@ local arrow_entity = {
 		if vel and not self._stuck then
 			local yaw = minetest.dir_to_yaw(vel)+YAW_OFFSET
 			local pitch = dir_to_pitch(vel)
-			self.object:set_rotation({ x = 0, y = yaw, z = pitch })
+			self.object:set_rotation(vector.new(0,yaw,pitch))
 		end
 	end,
 
