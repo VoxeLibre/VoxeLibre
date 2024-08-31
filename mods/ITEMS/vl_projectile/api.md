@@ -16,7 +16,7 @@ Arguments:
                      that returns dynamic damange group information.
   * `allow_punching`: will the projectile punch entities it collieds with. May be a function of type `function(projectile, entity_def, projectile_def, obj)`.
   * `behaviors`: a list of behavior callbacks that define the projectile's behavior. This mod provides two
-                 behaviors: `vl_projectiles.collides_with_solids` and `vl_projectiles.collides_with_entities`
+                 behaviors: `vl_projectiles.collides_with_solids`, `vl_projectiles.collides_with_entities` and `vl_projectiles_raycast_collieds_with_entities`
   * `sounds`: sounds for this projectile. All fields take a table with three parameters corresponding to the
               three parameters for `minetest.play_sound()`. Supported sounds are:
     * `on_collision`: played when no other more specific sound is defined. May be a function of type `function(projectile, entity_def, projectile_def, type, ...)`
@@ -38,17 +38,6 @@ Arguments:
 * `dtime`: The amount of time that has passed since the last update. Nomally the `dtime`
            parameter of the entity's `on_step(self, dtime)` callback.
 
-## `vl_projectile.raycast_collides_with_entities(self, dtime, entity_def, projectile_def`
-
-Performs collision detection of entities via a racast and then handles the collisions.
-
-Arguments:
-* `self`: The lua entity of the projectile to update
-* `dtime`: The amount of time that has passed since the last update. Nomally the `dtime`
-           parameter of the entity's `on_step(self, dtime)` callback.
-* `entity_def`: The definition from `minetest.registered_entities` for the projectile.
-* `projectile_def`: Same as `entity_def._vl_projectile`
-
 ## `vl_projectile.create(entity_id, options)`
 
 Creates a projectile and performs convenience initialization.
@@ -64,8 +53,14 @@ Arguments:
 
 ## Custom Projectile Behaviors
 
-The projectile API supports specifying the behaviors that a projectile will exhibit. There are two
-standard behaviors provided with the API: `vl_projectile.collides_with_solids` and `vl_projectile.collides_with_entities`.
+The projectile API supports specifying the behaviors that a projectile will exhibit. There are several
+standard behaviors provided with the API:
+
+* `vl_projectile.collides_with_solids`: handles collisions between projectiles and solid nodes
+* `vl_projectile.collides_with_entities`: handles collisions between projectiles and entities by checking nearby entities
+* `vl_projectile.raycast_collides_with_entities`: handles collisions between projectils and entities by performing a raycast
+   check along the path of movement.
+
 Custom behaviors can be provided by adding a function with the signature `function(self, dtime, entity_def, projectile_def)`
 to the list of behaviors a projectile supports.
 
