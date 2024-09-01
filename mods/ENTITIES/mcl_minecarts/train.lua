@@ -89,24 +89,14 @@ end
 mod.break_train_at = break_train_at
 
 function mod.update_train(staticdata)
-	--local staticdata = cart._staticdata
-
 	-- Only update from the back
 	if staticdata.behind or not staticdata.ahead then return end
-	--print("\nUpdating train")
 
 	-- Do no special processing if the cart is not part of a train
 	if not staticdata.ahead and not staticdata.behind then return end
 
 	-- Calculate the maximum velocity of all train cars
-	local velocity = 0
-	local count = 0
-	for cart in train_cars(staticdata) do
-		velocity = velocity + (cart.velocity or 0)
-		count = count + 1
-	end
-	velocity = velocity / count
-	--print("Using velocity "..tostring(velocity))
+	local velocity = staticdata.velocity
 
 	-- Set the entire train to the average velocity
 	local behind = nil
@@ -132,7 +122,7 @@ function mod.update_train(staticdata)
 		--[[
 		print(tostring(c.behind).."->"..c.uuid.."->"..tostring(c.ahead).."("..tostring(separation)..")  setting cart #"..
 			c.uuid.." velocity from "..tostring(c.velocity).." to "..tostring(cart_velocity))
-		]]
+		--]]
 		c.velocity = cart_velocity
 
 		behind = c
