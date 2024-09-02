@@ -121,6 +121,7 @@ local function check_hitpoint(hitpoint)
 	if hitpoint.type ~= "object" then return false end
 
 	-- find the closest object that is in the way of the arrow
+	-- TODO: change this check when adding mob projectiles
 	if hitpoint.ref:is_player() and enable_pvp then
 		return true
 	end
@@ -237,7 +238,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	return true
 end
 
-local function handle_entity_collision(self, entity_def, projectile_def, entity)
+local function handle_entity_collision(self, entity_def, projectile_def, object)
 	local pos = self.object:get_pos()
 	local dir = vector.normalize(self.object:get_velocity())
 	local self_vl_projectile = self._vl_projectile
@@ -245,31 +246,31 @@ local function handle_entity_collision(self, entity_def, projectile_def, entity)
 	-- Allow punching
 	local allow_punching = projectile_def.allow_punching or true
 	if type(allow_punching) == "function" then
-		allow_punching = allow_punching(self, entity_def, projectile_def, entity)
+		allow_punching = allow_punching(self, entity_def, projectile_def, object)
 	end
 
 	if allow_punching then
 		-- Get damage
 		local dmg = projectile_def.damage_groups or 0
 		if type(dmg) == "function" then
-			dmg = dmg(self, entity_def, projectile_def, entity)
+			dmg = dmg(self, entity_def, projectile_def, object)
 		end
 
-		local entity_lua = entity:get_luaentity()
+		local object_lua = object:get_luaentity()
 
 		-- Apply damage
 		-- Note: Damage blocking for shields is handled in mcl_shields with an mcl_damage modifier
 		local do_damage = false
-		if entity:is_player() and projectile_def.hits_players and self_vl_projectile.owner ~= hit:get_player_name() then
+		if object:is_player() and projectile_def.hits_players and self_vl_projectile.owner ~= hit:get_player_name() then
 			do_damage = true
 
-			handle_player_sticking(self, entity_def, projectile_def, entity)
-		elseif entity_lua and (entity_lua.is_mob == true or entity_lua._hittable_by_projectile) and (self_vl_projectile.owner ~= entity) then
+			handle_player_sticking(self, entity_def, projectile_def, object)
+		elseif object_lua and (object_lua.is_mob == true or object_lua._hittable_by_projectile) and (self_vl_projectile.owner ~= object) then
 			do_damage = true
 		end
 
 		if do_damage then
-			entity:punch(self.object, 1.0, projectile_def.tool or { full_punch_interval = 1.0, damage_groups = dmg }, dir )
+			object:punch(self.object, 1.0, projectile_def.tool or { full_punch_interval = 1.0, damage_groups = dmg }, dir )
 
 			-- Indicate damage
 			damage_particles(vector.add(pos, vector.multiply(self.object:get_velocity(), 0.1)), self._is_critical)
@@ -282,18 +283,18 @@ local function handle_entity_collision(self, entity_def, projectile_def, entity)
 	end
 
 	-- Call entity collision hook
-	(projectile_def.on_collide_with_entity or no_op)(self, pos, entity)
+	(projectile_def.on_collide_with_entity or no_op)(self, pos, object)
 
 	-- Call reverse entity collision hook
-	local other_entity_def = minetest.registered_entities[entity.name] or {}
-	local other_entity_vl_projectile = other_entity_def._vl_projectile or {}
-	local hook = (other_entity_vl_projectile or {}).on_collide or no_op
-	hook(entity, self)
+	local other_object_def = minetest.registered_entities[object.name] or {}
+	local other_object_vl_projectile = other_object_def._vl_projectile or {}
+	local hook = (other_object_vl_projectile or {}).on_collide or no_op
+	hook(object, self)
 
 	-- Play sounds
 	local sounds = (projectile_def.sounds or {})
 	local sound = sounds.on_entity_collion or sounds.on_collision
-	if type(sound) == "function" then sound = sound(self, entity_def, projectile_def, "entity", entity) end
+	if type(sound) == "function" then sound = sound(self, entity_def, projectile_def, "entity", object) end
 	if sound then
 		local arg2 = table.copy(sound[2])
 		arg2.pos = pos

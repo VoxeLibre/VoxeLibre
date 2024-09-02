@@ -49,7 +49,7 @@ Arguments:
 * `options`: A table with optional parameters. Supported fields are:
   * `dir`: direction the projectile is moving in
   * `velocity`: scalar velocity amount
-  * `drag`: scalar resistence to velocity
+  * `drag`: scalar resistance to velocity
   * `owner`: passed thru unmodified
   * `extra`: passed thru unmodified
 
