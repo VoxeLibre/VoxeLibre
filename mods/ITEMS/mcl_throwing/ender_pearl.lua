@@ -23,7 +23,7 @@ minetest.register_craftitem("mcl_throwing:ender_pearl", {
 mcl_throwing.register_throwable_object("mcl_throwing:ender_pearl", "mcl_throwing:ender_pearl_entity", 22)
 
 -- Ender pearl entity
-minetest.register_entity("mcl_throwing:ender_pearl_entity",{
+vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 	physical = false,
 	timer=0,
 	textures = {"mcl_throwing_ender_pearl.png"},

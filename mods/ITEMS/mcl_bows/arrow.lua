@@ -15,11 +15,6 @@ local STUCK_RECHECK_TIME = 5
 
 local YAW_OFFSET = -math.pi/2
 
-local function dir_to_pitch(dir)
-	local xz = math.abs(dir.x) + math.abs(dir.z)
-	return -math.atan2(-dir.y, xz)
-end
-
 local function random_arrow_positions(positions, placement)
 	if positions == "x" then
 		return math.random(-4, 4)
@@ -123,6 +118,7 @@ local arrow_entity = {
 	textures = {"mcl_bows_arrow.png"},
 	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
 	collide_with_objects = false,
+	liquid_drag = true,
 	_fire_damage_resistant = true,
 
 	_save_fields = {
@@ -348,35 +344,11 @@ local arrow_entity = {
 			self._deflection_cooloff = self._deflection_cooloff - dtime
 		end
 
-		-- TODO: change to use vl_physics
-		-- TODO: move to vl_projectile
-		local def = minetest.registered_nodes[minetest.get_node(pos).name]
-		if def and def.liquidtype ~= "none" then
-			-- Slow down arrow in liquids
-			local v = def.liquid_viscosity or 0
-			self._viscosity = v
-
-			local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
-			local vel = self.object:get_velocity()
-			if math.abs(vel.x) > 0.001 then
-				vel.x = vel.x * vpenalty
-			end
-			if math.abs(vel.z) > 0.001 then
-				vel.z = vel.z * vpenalty
-			end
-			self.object:set_velocity(vel)
-		end
-
 		-- Process as projectile
 		vl_projectile.update_projectile(self, dtime)
 
 		-- Update yaw
 		local vel = self.object:get_velocity()
-		if vel and not self._stuck then
-			local yaw = minetest.dir_to_yaw(vel)+YAW_OFFSET
-			local pitch = dir_to_pitch(vel)
-			self.object:set_rotation(vector.new(0,yaw,pitch))
-		end
 	end,
 
 	-- Force recheck of stuck arrows when punched.
