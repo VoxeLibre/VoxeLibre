@@ -1,8 +1,63 @@
 local mod = {}
 vl_projectile = mod
 
+local vl_physics_path = minetest.get_modpath("vl_physics")
+
+local YAW_OFFSET = -math.pi/2
 local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 local enable_pvp = minetest.settings:get_bool("enable_pvp")
+
+local function dir_to_pitch(dir)
+	local xz = math.abs(dir.x) + math.abs(dir.z)
+	return -math.atan2(-dir.y, xz)
+end
+
+function mod.projectile_physics(obj, entity_def, v, a)
+	local le = obj:get_luaentity()
+	local entity_def = minetest.registered_entities[le.name]
+	local pos = obj:get_pos()
+	if not pos then return end
+
+	if vl_physics_path then
+		v,a = vl_physics.apply_entity_environmental_physics(obj)
+	else
+		-- Simple physics
+		if not v then v = obj:get_velocity() end
+		if not a then a = vector.zero() end
+
+		if not entity_def.ignore_gravity then
+			a = a + vector.new(0,-GRAVITY,0)
+		end
+
+		if entity_def.liquid_drag then
+			local def = minetest.registered_nodes[minetest.get_node(pos).name]
+			if def and def.liquidtype ~= "none" then
+				-- Slow down arrow in liquids
+				local visc = def.liquid_viscosity or 0
+				le._viscosity = visc
+
+				local vpenalty = math.max(0.1, 0.98 - 0.1 * visc)
+				if math.abs(v.x) > 0.001 then
+					v.x = v.x * vpenalty
+				end
+				if math.abs(v.z) > 0.001 then
+					v.z = v.z * vpenalty
+				end
+			end
+		end
+	end
+
+	-- Pass to entity
+	if v then obj:set_velocity(v) end
+	if a then obj:set_acceleration(a) end
+
+	-- Update projectile yaw to match velocity direction
+	if v and le and not le._stuck then
+		local yaw = minetest.dir_to_yaw(v) + YAW_OFFSET
+		local pitch = dir_to_pitch(v)
+		obj:set_rotation(vector.new(0,yaw,pitch))
+	end
+end
 
 function mod.update_projectile(self, dtime)
 	if self._removed then return end
@@ -22,6 +77,8 @@ function mod.update_projectile(self, dtime)
 			return
 		end
 	end
+
+	mod.projectile_physics(self.object, entity_def)
 end
 
 local function no_op()
@@ -300,14 +357,13 @@ function mod.raycast_collides_with_entities(self, dtime, entity_def, projectile_
 end
 
 function mod.create(entity_id, options)
-	local obj = minetest.add_entity(options.pos, entity_id, options.staticdata)
+	local pos = options.pos
+	local obj = minetest.add_entity(pos, entity_id, options.staticdata)
 
-	-- Set initial velocoty and acceleration
-	obj:set_velocity(vector.multiply(options.dir or vector.zero(), options.velocity or 0))
-	obj:set_acceleration(vector.add(
-		vector.multiply(options.dir or vector.zero(), -math.abs(options.drag)),
-		vector.new(0,-GRAVITY,0)
-	))
+	-- Set initial velocity and acceleration
+	local v = vector.multiply(options.dir or vector.zero(), options.velocity or 0)
+	local a = vector.multiply(v, -math.abs(options.drag))
+	mod.projectile_physics(obj, entity_def, v, a)
 
 	-- Update projectile parameters
 	local luaentity = obj:get_luaentity()
