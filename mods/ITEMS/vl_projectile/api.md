@@ -10,19 +10,21 @@ Arguments:
 * `def`: Projectile defintion. Supports all fields that standard minetest entities support.
          Must include the field `_vl_projectile` for projectile-specific behaviors. These are the supported
 	    fields:
+  * `ignore_gravity`: if true, the projectile will not be affected by gravity
+  * `liquid_drag`: if true, apply drag from liquid nodes to the projectile
   * `survive_collision`: if this field is `false` or `nil`, the projectile will be removed after a collision.
   * `sticks_in_players`: if true, the projectile will stick into players after colliding with them.
   * `damage_groups`: damage group information to use for `punch()`. May be a function of type `function(projectile, entity_def, projectile_def, obj)`
                      that returns dynamic damange group information.
-  * `allow_punching`: will the projectile punch entities it collieds with. May be a function of type `function(projectile, entity_def, projectile_def, obj)`.
-  * `behaviors`: a list of behavior callbacks that define the projectile's behavior. This mod provides two
-                 behaviors: `vl_projectiles.collides_with_solids`, `vl_projectiles.collides_with_entities` and `vl_projectiles_raycast_collieds_with_entities`
+  * `allow_punching`: will the projectile punch entities it collides with. May be a function of type `function(projectile, entity_def, projectile_def, obj)`.
+  * `behaviors`: a list of behavior callbacks that define the projectile's behavior. This mod provides the following
+                 behaviors: `vl_projectiles.collides_with_solids`, `vl_projectiles.collides_with_entities` and `vl_projectiles_raycast_collides_with_entities`
   * `sounds`: sounds for this projectile. All fields take a table with three parameters corresponding to the
               three parameters for `minetest.play_sound()`. Supported sounds are:
     * `on_collision`: played when no other more specific sound is defined. May be a function of type `function(projectile, entity_def, projectile_def, type, ...)`
     * `on_solid_collision`: played when the projectile collides with a solid node. May be a function of type
         `funciton(projectile, entity_def, projectile_def, type, pos, node, node_def)` with `type = "node"`
-    * `on_entity_collision`: played when the projectile collieds with another entity. May be a function of type
+    * `on_entity_collision`: played when the projectile collides with another entity. May be a function of type
         `function(projectile, entity_def, projectile_def, type, entity)` with `type = "entity"`
  * `on_collide_with_solid`: callback of type `function(projectile, pos, node, node_def)` used when the projectile collides with a solid node. Requires
    `vl_projectile.collides_with_solids` in `behaviors` list.
