@@ -2,58 +2,7 @@ local min_jobs = tonumber(minetest.settings:get("mcl_villages_min_jobs")) or 1
 local max_jobs = tonumber(minetest.settings:get("mcl_villages_max_jobs")) or 12
 local placement_priority = minetest.settings:get("mcl_villages_placement_priority") or "random"
 
-local foundation_materials = {}
-foundation_materials["mcl_core:sand"] = "mcl_core:sandstone"
-foundation_materials["mcl_core:redsand"] = "mcl_core:redsandstone"
-
 local S = minetest.get_translator(minetest.get_current_modname())
-
--- initialize settlement_info
-function mcl_villages.initialize_settlement_info(pr)
-	local count_buildings = {
-		number_of_jobs = pr:next(min_jobs, max_jobs),
-		num_jobs = 0,
-		num_beds = 0,
-	}
-	return count_buildings
-end
-
--------------------------------------------------------------------------------
--- evaluate settlement_info and place schematics
--------------------------------------------------------------------------------
-local function spawn_cats(pos)
-	local sp=minetest.find_nodes_in_area_under_air(vector.offset(pos,-20,-20,-20),vector.offset(pos,20,20,20),{"group:opaque"})
-	for _ = 1, math.random(3) do
-		local v = minetest.add_entity(vector.offset(sp[math.random(#sp)],0,1,0),"mobs_mc:cat")
-		if v and v:get_luaentity() then v:get_luaentity()._home = pos end
-	end
-end
-
-local function init_nodes(p1, p2, pr)
-	vl_structures.construct_nodes(p1, p2, {
-		"mcl_itemframes:item_frame",
-		"mcl_itemframes:glow_item_frame",
-		"mcl_furnaces:furnace",
-		"mcl_anvils:anvil",
-		"mcl_books:bookshelf",
-		"mcl_armor_stand:armor_stand",
-		-- "mcl_smoker:smoker",
-		-- "mcl_barrels:barrel_closed",
-		-- "mcl_blast_furnace:blast_furnace",
-		-- "mcl_brewing:stand_000",
-	})
-
-	-- Support mods with custom job sites
-	local job_sites = minetest.find_nodes_in_area(p1, p2, mobs_mc.jobsites)
-	for _, v in pairs(job_sites) do
-		vl_structures.init_node_construct(v)
-	end
-
-	local nodes = vl_structures.construct_nodes(p1, p2, {"mcl_chests:chest_small", "mcl_chests:chest" }) or {}
-	for p=1, #nodes do
-		mcl_villages.fill_chest(nodes[p], pr)
-	end
-end
 
 local function add_building(settlement, building, count_buildings)
 	table.insert(settlement, building)
@@ -138,7 +87,7 @@ function mcl_villages.create_site_plan(vm, minp, maxp, pr)
 	local settlement = {}
 
 	-- initialize all settlement_info table
-	local count_buildings = mcl_villages.initialize_settlement_info(pr)
+	local count_buildings = { num_jobs = 0, num_beds = 0, target_jobs = pr:next(min_jobs, max_jobs) }
 
 	-- first building is townhall in the center
 	local bindex = pr:next(1, #mcl_villages.schematic_bells)
@@ -151,13 +100,13 @@ function mcl_villages.create_site_plan(vm, minp, maxp, pr)
 		end
 	end
 
-	while count_buildings.num_jobs < count_buildings.number_of_jobs do
+	while count_buildings.num_jobs < count_buildings.target_jobs do
 		local rindex = pr:next(1, #mcl_villages.schematic_jobs)
 		local building_info = mcl_villages.schematic_jobs[rindex]
 
 		if
-			(building_info.min_jobs == nil or count_buildings.number_of_jobs >= building_info.min_jobs)
-			and (building_info.max_jobs == nil or count_buildings.number_of_jobs <= building_info.max_jobs)
+			(building_info.min_jobs == nil or count_buildings.target_jobs >= building_info.min_jobs)
+			and (building_info.max_jobs == nil or count_buildings.target_jobs <= building_info.max_jobs)
 			and (
 				building_info.num_others == nil
 				or (count_buildings[building_info.group or building_info.name] or 0) == 0
@@ -180,8 +129,8 @@ function mcl_villages.create_site_plan(vm, minp, maxp, pr)
 		local building_info = mcl_villages.schematic_houses[rindex]
 
 		if
-			(building_info.min_jobs == nil or count_buildings.number_of_jobs >= building_info.min_jobs)
-			and (building_info.max_jobs == nil or count_buildings.number_of_jobs <= building_info.max_jobs)
+			(building_info.min_jobs == nil or count_buildings.target_jobs >= building_info.min_jobs)
+			and (building_info.max_jobs == nil or count_buildings.target_jobs <= building_info.max_jobs)
 			and (
 				building_info.num_others == nil
 				or (count_buildings[building_info.group or building_info.name] or 0) == 0
@@ -212,12 +161,32 @@ function mcl_villages.create_site_plan(vm, minp, maxp, pr)
 	return layout_town(vm, minp, maxp, pr, settlement)
 end
 
+local function init_nodes(p1, p2, pr)
+	vl_structures.construct_nodes(p1, p2, {
+		"mcl_itemframes:item_frame",
+		"mcl_itemframes:glow_item_frame",
+		"mcl_furnaces:furnace",
+		"mcl_anvils:anvil",
+		"mcl_books:bookshelf",
+		"mcl_armor_stand:armor_stand",
+		-- jobsite: "mcl_smoker:smoker",
+		-- jobsite: "mcl_barrels:barrel_closed",
+		-- jobsite: "mcl_blast_furnace:blast_furnace",
+		-- jobsite: "mcl_brewing:stand_000",
+	})
 
+	-- Support mods with custom job sites
+	local job_sites = minetest.find_nodes_in_area(p1, p2, mobs_mc.jobsites)
+	for _, v in pairs(job_sites) do vl_structures.init_node_construct(v) end
+
+	local nodes = vl_structures.construct_nodes(p1, p2, {"mcl_chests:chest_small", "mcl_chests:chest" })
+	for _, n in pairs(nodes) do mcl_villages.fill_chest(n, pr) end
+end
+
+-- important: the vm will be written and then is outdated!
 function mcl_villages.place_schematics(vm, settlement, blockseed, pr)
-	-- local vm = VoxelManip()
+	-- first building is always the bell
 	local bell_pos = vector.offset(settlement[1].minp, math.floor(settlement[1].size.x/2), 0, math.floor(settlement[1].size.z/2))
-	local bell_center_pos
-	local bell_center_node_type
 
 	for i, building in ipairs(settlement) do
 		local minp, cpos, maxp, size, rotation = building.minp, building.pos, building.maxp, building.size, building.rotation
@@ -232,87 +201,60 @@ function mcl_villages.place_schematics(vm, settlement, blockseed, pr)
 		local schematic = loadstring(schem_lua)()
 
 		-- the foundation and air space for the building was already built before
-		-- vm:read_from_map(vector.new(minp.x, minp.y, minp.z), vector.new(maxp.x, maxp.y, maxp.z))
-		-- vm:get_data()
-		-- now added in placement code already, pos has the primary height if (building.yadjust or 0) ~= 0 then minp = vector.offset(minp, 0, building.yadjust, 0) end
 		-- minetest.log("debug", "placing schematics for "..building.name.." at "..minetest.pos_to_string(minp).." on "..surface_material)
-		minetest.place_schematic_on_vmanip(
-			vm,
-			minp,
-			schematic,
-			rotation,
-			{ ["mcl_core:dirt_with_grass"]=schematic.surface_mat or "mcl_core:dirt" },
-			true,
-			{ place_center_x = false, place_center_y = false, place_center_z = false }
-		)
-		-- to help pathing, increase the height of no_path areas
-		local p = vector.zero()
-		for z = minp.z,maxp.z do
-			p.z = z
-			for x = minp.x,maxp.x do
-				p.x = x
-				for y = minp.y,maxp.y-1 do
-					p.y = y
-					local n = vm:get_node_at(p)
-					if n and n.name == "mcl_villages:no_paths" then
-						p.y = y+1
-						n = vm:get_node_at(p)
-						if n and n.name == "air" then
-							vm:set_node_at(p, {name="mcl_villages:no_paths"})
-						end
-					end
-				end
-			end
-		end
+		minetest.place_schematic_on_vmanip(vm, minp, schematic, rotation, nil, true, { place_center_x = false, place_center_y = false, place_center_z = false })
 		mcl_villages.store_path_ends(vm, minp, maxp, cpos, blockseed, bell_pos)
-
-		if building.name == "belltower" then -- TODO: allow multiple types?
-			bell_center_pos = cpos
-			local center_node = vm:get_node_at(cpos)
-			bell_center_node_type = center_node.name
-		end
+		mcl_villages.increase_no_paths(vm, minp, maxp) -- help the path finder
 	end
 
 	vm:write_to_map(true) -- for path finder and light
 
-	local biome_data = minetest.get_biome_data(bell_pos)
-	local biome_name = minetest.get_biome_name(biome_data.biome)
-	mcl_villages.paths(blockseed, biome_name)
-
+	-- Path planning and placement
+	mcl_villages.paths(blockseed, minetest.get_biome_name(minetest.get_biome_data(bell_pos).biome))
+	-- Clean up paths and initialize nodes
 	for i, building in ipairs(settlement) do
+		mcl_villages.clean_no_paths(building.minp, building.maxp)
 		init_nodes(building.minp, building.maxp, pr)
 	end
 
-	-- this will run delayed actions, such as spawning mobs
-	minetest.set_node(bell_center_pos, { name = "mcl_villages:village_block" })
-	local meta = minetest.get_meta(bell_center_pos)
+	-- Replace center block with a temporary block, which will be used run delayed actions
+	local block_name = minetest.get_node(bell_pos).name -- to restore the node afterwards
+	minetest.swap_node(bell_pos, { name = "mcl_villages:village_block" })
+	local meta = minetest.get_meta(bell_pos)
+	meta:set_string("node_type", block_name)
 	meta:set_string("blockseed", blockseed)
-	meta:set_string("node_type", bell_center_node_type)
-	meta:set_string("infotext", S("The timer for this @1 has not run yet!", bell_center_node_type))
-	minetest.get_node_timer(bell_center_pos):start(1.0)
-
-	-- read back any changes (fixme: would be better if we would not need this often.
-	--local emin, emax = vm:get_emerged_area()
-	--vm:read_from_map(emin, emax)
+	meta:set_string("infotext", S("The timer for this village has not run yet!"))
+	minetest.get_node_timer(bell_pos):start(1.0)
 end
+
+minetest.register_node("mcl_villages:village_block", {
+	drawtype = "glasslike",
+	groups = { not_in_creative_inventory = 1 },
+	light_source = 14, -- This is a light source so that lamps don't get placed near it
+	-- Somethings don't work reliably when done in the map building
+	-- so we use a timer to run them later when they work more reliably
+	-- e.g. spawning mobs, running minetest.find_path
+	on_timer = function(pos, _)
+		local meta = minetest.get_meta(pos)
+		minetest.swap_node(pos, { name = meta:get_string("node_type") })
+		mcl_villages.post_process_village(meta:get_string("blockseed"))
+		return false
+	end,
+})
 
 function mcl_villages.post_process_village(blockseed)
 	local village_info = mcl_villages.get_village(blockseed)
-	if not village_info then
-		return
-	end
+	if not village_info then return end
 	-- minetest.log("Postprocessing village")
 
 	local settlement_info = village_info.data
-	local jobs = {}
-	local beds = {}
+	local jobs, beds = {}, {}
 
-	local bell_pos = vector.copy(settlement_info[1]["pos"])
-	local bell = vector.offset(bell_pos, 0, 2, 0)
-	local biome_data = minetest.get_biome_data(bell_pos)
-	local biome_name = minetest.get_biome_name(biome_data.biome)
-	--mcl_villages.paths(blockseed, biome_name)
+	local bell_pos = vector.copy(settlement_info[1].pos)
+	local bell = vector.offset(bell_pos, 0, 1, 0)
+	local biome_name = minetest.get_biome_name(minetest.get_biome_data(bell_pos).biome)
 
+	-- Spawn Golem
 	local l = minetest.add_entity(bell, "mobs_mc:iron_golem"):get_luaentity()
 	if l then
 		l._home = bell
@@ -320,45 +262,41 @@ function mcl_villages.post_process_village(blockseed)
 		minetest.log("info", "Could not create a golem!")
 	end
 
-	spawn_cats(bell)
+	-- Spawn cats
+	local sp = minetest.find_nodes_in_area_under_air(vector.offset(bell, -20, -10, -20),vector.offset(bell, 20, 10, 20), { "group:opaque" })
+	for _ = 1, math.random(3) do
+		local v = minetest.add_entity(vector.offset(sp[math.random(#sp)], 0, 1, 0), "mobs_mc:cat")
+		if v and v:get_luaentity() then
+			v:get_luaentity()._home = bell_pos -- help them stay local
+		else
+			minetest.log("info", "Could not spawn a cat")
+			break
+		end
+	end
 
+	-- collect beds and job sites
 	for _, building in pairs(settlement_info) do
-		local has_beds = building["num_beds"] and building["num_beds"] ~= nil
-		local has_jobs = building["num_jobs"] and building["num_jobs"] ~= nil
-
-		local minp, maxp = building["minp"], building["maxp"]
-
-		if has_jobs then
+		local minp, maxp = building.minp, building.maxp
+		if building.num_jobs then
 			local jobsites = minetest.find_nodes_in_area(minp, maxp, mobs_mc.jobsites)
-
-			for _, job_pos in pairs(jobsites) do
-				table.insert(jobs, job_pos)
-			end
+			for _, job_pos in pairs(jobsites) do table.insert(jobs, job_pos) end
 		end
 
-		if has_beds then
+		if building.num_beds then
 			local bld_beds = minetest.find_nodes_in_area(minp, maxp, { "group:bed" })
-
 			for _, bed_pos in pairs(bld_beds) do
-				local bed_node = minetest.get_node(bed_pos)
-				local bed_group = minetest.get_item_group(bed_node.name, "bed")
-
-				-- We only spawn at bed bottoms
-				-- 1 is bottom, 2 is top
-				if bed_group == 1 then
-					table.insert(beds, bed_pos)
-				end
+				local bed_group = minetest.get_item_group(minetest.get_node(bed_pos).name, "bed")
+				-- We only spawn at bed bottoms, 1 is bottom, 2 is top
+				if bed_group == 1 then table.insert(beds, bed_pos) end
 			end
 		end
 	end
+	-- TODO: shuffle jobs?
 
 	-- minetest.log("beds: "..#beds.." jobsites: "..#jobs)
 	if beds then
 		for _, bed_pos in pairs(beds) do
-			local res = minetest.forceload_block(bed_pos, true)
-			if res then
-				mcl_villages.forced_blocks[minetest.pos_to_string(bed_pos)] = minetest.get_us_time()
-			end
+			minetest.forceload_block(bed_pos, true)
 			local m = minetest.get_meta(bed_pos)
 			m:set_string("bell_pos", minetest.pos_to_string(bell_pos))
 			if m:get_string("villager") == "" then
@@ -371,18 +309,13 @@ function mcl_villages.post_process_village(blockseed)
 					m:set_string("infotext", S("A villager sleeps here"))
 
 					local job_pos = table.remove(jobs, 1)
-					if job_pos then
-						villager_employ(l, job_pos) -- HACK: merge more MCLA villager code
-					end
-
-					for _, callback in pairs(mcl_villages.on_villager_placed) do
-						callback(v, blockseed)
-					end
+					if job_pos then villager_employ(l, job_pos) end -- HACK: merge more MCLA villager job code?
+					for _, callback in pairs(mcl_villages.on_villager_placed) do callback(v, blockseed) end
 				else
 					minetest.log("info", "Could not create a villager!")
 				end
 			else
-				minetest.log("info", "bed already owned by " .. m:get_string("villager"))
+				minetest.log("info", "bed already owned by " .. m:get_string("villager")) -- should not happen unless villages overlap
 			end
 		end
 	end
@@ -395,7 +328,8 @@ function mcl_villages.terraform(vm, settlement, pr)
 	for i, building in ipairs(settlement) do
 		if not building.no_clearance then
 			local pos, size = building.pos, building.size
-			pos = vector.offset(pos, -math.floor(size.x/2), 0, -math.floor(size.z/2))
+			pos = vector.offset(pos, -math.floor((size.x-1)/2), 0, -math.floor((size.z-1)/2))
+			-- TODO: allow different clearance for different buildings?
 			vl_terraforming.clearance_vm(vm, pos.x-1, pos.y, pos.z-1, size.x+2, size.y, size.z+2, 2, building.surface_mat, building.dust_mat, pr)
 		end
 	end
@@ -403,8 +337,8 @@ function mcl_villages.terraform(vm, settlement, pr)
 		if not building.no_ground_turnip then
 			local pos, size = building.pos, building.size
 			local surface_mat = building.surface_mat
-			local platform_mat = building.platform_mat or { name = foundation_materials[surface_mat.name] or "mcl_core:dirt" }
-			local stone_mat = building.stone_mat or { name = "mcl_core:stone" }
+			local platform_mat = building.platform_mat or { name = mcl_villages.foundation_materials[surface_mat.name] or "mcl_core:dirt" }
+			local stone_mat = building.stone_mat or { name = mcl_villages.stone_materials[surface_mat.name] or "mcl_core:stone" }
 			local dust_mat = building.dust_mat
 			building.platform_mat = platform_mat -- remember for use in schematic placement
 			building.stone_mat = stone_mat
