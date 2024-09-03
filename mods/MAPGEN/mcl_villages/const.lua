@@ -1,7 +1,8 @@
--- switch for debugging
-function mcl_villages.debug(message)
-	minetest.log("verbose", "[mcl_villages] "..message)
-end
+-- maximum allowed difference in height for building a settlement
+mcl_villages.max_height_difference = 56
+
+-- legacy type in old schematics
+minetest.register_alias("mcl_villages:stonebrickcarved", "mcl_core:stonebrickcarved")
 
 -- possible surfaces where buildings can be built
 mcl_villages.surface_mat = {}
@@ -30,10 +31,15 @@ mcl_villages.surface_mat["mcl_colorblocks:hardened_clay_orange"] = true
 mcl_villages.surface_mat["mcl_colorblocks:hardened_clay_red"] = true
 mcl_villages.surface_mat["mcl_colorblocks:hardened_clay_white"] = true
 
--- maximum allowed difference in height for building a settlement
-mcl_villages.max_height_difference = 56
+-- substitute foundation materials
+mcl_villages.foundation_materials = {}
+mcl_villages.foundation_materials["mcl_core:sand"] = "mcl_core:sandstone"
+mcl_villages.foundation_materials["mcl_core:redsand"] = "mcl_core:redsandstone"
 
-mcl_villages.half_map_chunk_size = 40
+-- substitute stone materials in foundation
+mcl_villages.stone_materials = {}
+
+mcl_villages.default_crop = "mcl_farming:wheat_1"
 
 --
 -- Biome based block substitutions
@@ -119,16 +125,6 @@ mcl_villages.vl_to_mcla = {
 	{ '"mcl_bamboo:bamboo_door', '"mcl_doors:door_bamboo'},
 }
 mcl_villages.mcla_to_vl = {
-	-- oneway
-	--{ '"mcl_villages:no_paths"', '"air"'}, -- TODO: support these
-	--{ '"mcl_villages:path_endpoint"', '"air"'}, -- TODO: support these
-	{ '"mcl_villages:crop_root', '"mcl_farming:potato'}, -- TODO: support biome specific farming
-	{ '"mcl_villages:crop_grain', '"mcl_farming:wheat'}, -- TODO: support biome specific farming
-	{ '"mcl_villages:crop_gourd', '"mcl_farming:pumpkin'}, -- TODO: support biome specific farming
-	{ '"mcl_villages:crop_flower_0"', '"mcl_flowers:tulip_red"'}, -- TODO: support biome specific farming
-	{ '"mcl_villages:crop_flower_1"', '"mcl_flowers:tulip_orange"'}, -- TODO: support biome specific farming
-	{ '"mcl_villages:crop_flower_2"', '"mcl_flowers:tulip_pink"'}, -- TODO: support biome specific farming
-	{ '"mcl_villages:crop_flower_3"', '"mcl_flowers:tulip_white"'}, -- TODO: support biome specific farming
 	-- bidirectional
 	{ '"mcl_trees:tree_oak"', '"mcl_core:tree"'},
 	{ '"mcl_trees:tree_dark_oak"', '"mcl_core:darktree"'},

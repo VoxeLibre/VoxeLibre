@@ -11,35 +11,21 @@ dofile(mcl_villages.modpath.."/api.lua")
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
-minetest.register_alias("mcl_villages:stonebrickcarved", "mcl_core:stonebrickcarved")
-minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = {not_in_creative_inventory=1},})
--- we currently do not support/use these from MCLA:
---minetest.register_alias("mcl_villages:village_block", "air")
---minetest.register_alias("mcl_villages:building_block", "air")
---
--- on map generation, try to build a settlement
---
-local function build_a_settlement(minp, maxp, blockseed)
-	if mcl_villages.village_exists(blockseed) then return end
-	local pr = PcgRandom(blockseed)
-	local vm = VoxelManip(minp, maxp)
-	local settlement = mcl_villages.create_site_plan(vm, minp, maxp, pr)
+local function ecb_village(blockpos, action, calls_remaining, param)
+	if calls_remaining >= 1 then return end
+	if mcl_villages.village_exists(param.blockseed) then return end
+	local pr = PcgRandom(param.blockseed)
+	local vm = VoxelManip(param.minp, param.maxp)
+	local settlement = mcl_villages.create_site_plan(vm, param.minp, param.maxp, pr)
 	if not settlement then return false, false end
 	-- all foundations first, then all buildings, to avoid damaging very close buildings
 	mcl_villages.terraform(vm, settlement, pr)
-	mcl_villages.place_schematics(vm, settlement, blockseed, pr)
-	mcl_villages.add_village(blockseed, settlement)
-	--lvm:write_to_map(true) -- destory paths as of now
-	--mcl_villages.paths(blockseed) -- TODO: biome
+	mcl_villages.place_schematics(vm, settlement, param.blockseed, pr)
+	mcl_villages.add_village(param.blockseed, settlement)
+	--lvm:write_to_map(true) -- destorys paths as of now, as they are placed afterwards
 	for _, on_village_placed_callback in pairs(mcl_villages.on_village_placed) do
-		on_village_placed_callback(settlement, blockseed)
+		on_village_placed_callback(settlement, param.blockseed)
 	end
-end
-
-local function ecb_village(blockpos, action, calls_remaining, param)
-	if calls_remaining >= 1 then return end
-	local minp, maxp, blockseed = param.minp, param.maxp, param.blockseed
-	build_a_settlement(minp, maxp, blockseed)
 end
 
 -- Disable natural generation in singlenode.
@@ -50,87 +36,24 @@ if mg_name ~= "singlenode" then
 		if village_boost == 0 then return end
 		local pr = PcgRandom(blockseed)
 		if pr:next(0,1e9) * 100e-9 >= village_boost then return end
-		local big_minp = vector.copy(minp) --vector.offset(minp, -16, -16, -16)
-		local big_maxp = vector.copy(maxp) --vector.offset(maxp, 16, 16, 16)
-		minetest.emerge_area(big_minp, big_maxp, ecb_village,
-			{ minp = vector.copy(minp), maxp = vector.copy(maxp), blockseed = blockseed }
-		)
-	end)
-	--[[ did not work, because later structure generation would make holes in our schematics
-	mcl_mapgen_core.register_generator("villages", function(lvm, data, data2, e1, e2, area, minp, maxp, blockseed)
-		if mcl_villages.village_exists(blockseed) then return false, false end
-
-		lvm:set_data(data) -- FIXME: ugly hack, better directly manipulate the data array
-		lvm:set_param2_data(data2)
-		local pr = PcgRandom(blockseed)
-		if pr:next(0,1e9) * 100e-9 > village_boost then return end
-		local settlement = mcl_villages.create_site_plan(lvm, minp, maxp, pr)
-		if not settlement then return false, false end
-
-		-- all foundations first, then all buildings, to avoid damaging very close buildings
-		mcl_villages.terraform(lvm, settlement, pr)
-		mcl_villages.place_schematics(lvm, settlement, pr)
-		-- TODO: replace with MCLA code: mcl_villages.paths(settlement)
-		mcl_villages.add_village(blockseed, settlement)
-		lvm:get_data(data) -- FIXME: ugly hack, better directly manipulate the data array
-		lvm:get_param2_data(data2)
-		return true, true
-	end, function(minp, maxp, blockseed)
-		for _, on_village_placed_callback in pairs(mcl_villages.on_village_placed) do
-			on_village_placed_callback(settlement, blockseed)
+		if village_boost < 25 then -- otherwise, this tends to transitively emerge too much
+			minp, maxp = vector.offset(minp, -16, 0, -16), vector.offset(maxp, 16, 0, 16)
 		end
-	end, 15000)
-	]]--
-	--[[ causes issues when vertically close to the chunk boundary:
-	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
-		if maxp.y < 0 or mcl_villages.village_exists(blockseed) then return end
-		local pr = PcgRandom(blockseed)
-		if pr:next(0,1e9) * 10ee-9 > village_boost then return end
-		--local lvm, emin, emax = minetest.get_mapgen_object("voxelmanip") -- did not get the lighting fixed?
-		local lvm = VoxelManip()
-		lvm:read_from_map(minp, maxp)
-		local settlement = mcl_villages.create_site_plan(lvm, minp, maxp, pr)
-		if not settlement then return false, false end
-		-- all foundations first, then all buildings, to avoid damaging very close buildings
-		mcl_villages.terraform(lvm, settlement, pr)
-		mcl_villages.place_schematics(lvm, settlement, blockseed, pr)
-		mcl_villages.add_village(blockseed, settlement)
-		--lvm:write_to_map(true)
-		--mcl_villages.paths(blockseed) -- TODO: biome
-	end, 15000)
-	]]--
+		minetest.emerge_area(minp, maxp, ecb_village, { minp = minp, maxp = maxp, blockseed = blockseed })
+	end)
 end
 
--- This is a light source so that lamps don't get placed near it
-minetest.register_node("mcl_villages:village_block", {
-	drawtype = "airlike",
-	groups = { not_in_creative_inventory = 1 },
-	light_source = 14,
-
-	-- Somethings don't work reliably when done in the map building
-	-- so we use a timer to run them later when they work more reliably
-	-- e.g. spawning mobs, running minetest.find_path
-	on_timer = function(pos, _)
-		local meta = minetest.get_meta(pos)
-		local blockseed = meta:get_string("blockseed")
-		local node_type = meta:get_string("node_type")
-		minetest.set_node(pos, { name = node_type })
-		mcl_villages.post_process_village(blockseed)
-		return false
-	end,
-})
-
--- struct to cause a village spawn when it can be fully emerged
+-- Handle legacy structblocks that are not fully emerged yet.
+minetest.register_node("mcl_villages:structblock", {drawtype="airlike",groups = {not_in_creative_inventory=1}})
 minetest.register_lbm({
 	name = "mcl_villages:structblock",
 	run_at_every_load = true,
 	nodenames = {"mcl_villages:structblock"},
 	action = function(pos, node)
 		minetest.set_node(pos, {name = "air"})
-		local minp=vector.offset(pos, -40, -40, -40)
-		local maxp=vector.offset(pos, 40, 40, 40)
+		local minp, maxp = vector.offset(pos, -40, -40, -40), vector.offset(pos, 40, 40, 40)
 		local blockseed = PcgRandom(minetest.hash_node_position(pos)):next()
-		minetest.emerge_area(minp, maxp, ecb_village, {minp=minp, maxp=maxp, blockseed=blockseed})
+		minetest.emerge_area(minp, maxp, ecb_village, { minp = minp, maxp = maxp, blockseed = blockseed})
 	end
 })
 
@@ -146,24 +69,21 @@ if minetest.is_creative_enabled("") then
 				minetest.chat_send_player(placer:get_player_name(), S("Placement denied. You need the “server” privilege to place villages."))
 				return
 			end
-			local minp = vector.subtract(pointed_thing.under, mcl_villages.half_map_chunk_size)
-			local maxp = vector.add(pointed_thing.under, mcl_villages.half_map_chunk_size)
-			build_a_settlement(minp, maxp, math.random(0,32767))
+			local pos = pointed_thing.under
+			local minp, maxp = vector.offset(pos, -40, -40, -40), vector.offset(pos, 40, 40, 40)
+			local blockseed = PcgRandom(minetest.hash_node_position(pos)):next()
+			minetest.emerge_area(minp, maxp, ecb_village, { minp = minp, maxp = maxp, blockseed = blockseed })
 		end
 	})
 	mcl_wip.register_experimental_item("mcl_villages:tool")
 end
 
 -- This makes the temporary node invisble unless in creative mode
-local drawtype = "airlike"
-if minetest.is_creative_enabled("") then
-	drawtype = "glasslike"
-end
+local drawtype = minetest.is_creative_enabled("") and "glasslike" or "airlike"
 
+-- Special node for schematics editing: no path on this place
 minetest.register_node("mcl_villages:no_paths", {
-	description = S(
-		"Prevent paths from being placed during villager generation. Replaced by air after village path generation"
-	),
+	description = S("Prevent paths from being placed during villager generation. Replaced by air after village path generation"),
 	paramtype = "light",
 	drawtype = drawtype,
 	inventory_image = "mcl_core_barrier.png",
@@ -173,6 +93,7 @@ minetest.register_node("mcl_villages:no_paths", {
 	groups = { creative_breakable = 1, not_solid = 1, not_in_creative_inventory = 1 },
 })
 
+-- Special node for schematics editing: path endpoint
 minetest.register_node("mcl_villages:path_endpoint", {
 	description = S("Mark the node as a good place for paths to connect to"),
 	is_ground_content = false,
@@ -184,12 +105,7 @@ minetest.register_node("mcl_villages:path_endpoint", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{ -8 / 16, -8 / 16, -8 / 16, 8 / 16, -7 / 16, 8 / 16 },
-		},
-	},
+	node_box = { type = "fixed", fixed = { { -0.5, -0.5, -0.5, 0.5, -0.45, 0.5 } } },
 	_mcl_hardness = 0.1,
 	_mcl_blast_resistance = 0.1,
 })
@@ -412,31 +328,6 @@ mcl_villages.register_building({
 	yadjust = 1,
 })
 
-for _, crop_type in pairs(mcl_villages.get_crop_types()) do
-	for count = 1, 8 do
-		local tile = crop_type .. "_" .. count .. ".png"
-		minetest.register_node("mcl_villages:crop_" .. crop_type .. "_" .. count, {
-			description = S("A place to plant @1 crops", crop_type),
-			is_ground_content = false,
-			tiles = { tile },
-			wield_image = tile,
-			wield_scale = { x = 1, y = 1, z = 0.5 },
-			groups = { handy = 1, supported_node = 1, not_in_creative_inventory = 1 },
-			paramtype = "light",
-			sunlight_propagates = true,
-			drawtype = "nodebox",
-			node_box = {
-				type = "fixed",
-				fixed = {
-					{ -8 / 16, -8 / 16, -8 / 16, 8 / 16, -7 / 16, 8 / 16 },
-				},
-			},
-			_mcl_hardness = 0.1,
-			_mcl_blast_resistance = 0.1,
-		})
-	end
-end
-
 mcl_villages.register_crop({
 	type = "grain",
 	node = "mcl_farming:wheat_1",
@@ -512,8 +403,9 @@ mcl_villages.register_crop({
 	},
 })
 
+-- TODO: make flowers biome-specific
 for name, def in pairs(minetest.registered_nodes) do
-	if def.groups["flower"] and not def.groups["double_plant"] and name ~= "mcl_flowers:wither_rose" then
+	if def.groups.flower and not def.groups.double_plant and name ~= "mcl_flowers:wither_rose" then
 		mcl_villages.register_crop({
 			type = "flower",
 			node = name,
@@ -528,3 +420,25 @@ for name, def in pairs(minetest.registered_nodes) do
 		})
 	end
 end
+
+-- Crop placeholder nodes at different growth stages, for designing schematics
+for _, crop_type in ipairs(mcl_villages.get_crop_types()) do
+	for count = 1, 8 do
+		local tile = crop_type .. "_" .. count .. ".png"
+		minetest.register_node("mcl_villages:crop_" .. crop_type .. "_" .. count, {
+			description = S("A place to plant @1 crops", crop_type),
+			is_ground_content = false,
+			tiles = { tile },
+			wield_image = tile,
+			wield_scale = { x = 1, y = 1, z = 0.5 },
+			groups = { handy = 1, supported_node = 1, not_in_creative_inventory = 1 },
+			paramtype = "light",
+			sunlight_propagates = true,
+			drawtype = "nodebox",
+			node_box = { type = "fixed", fixed = { { -0.5, -0.5, -0.5, 0.5, -0.45, 0.5 } } },
+			_mcl_hardness = 0.1,
+			_mcl_blast_resistance = 0.1,
+		})
+	end
+end
+
