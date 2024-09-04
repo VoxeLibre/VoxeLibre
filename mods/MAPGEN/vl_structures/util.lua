@@ -83,6 +83,7 @@ end
 -- @param loot table: Loot table
 -- @param pr PseudoRandom: random generator
 function vl_structures.fill_chests(p1,p2,loot,pr)
+	if not mcl_loot then return end -- optional dependency
 	for it,lt in pairs(loot) do
 		local nodes = minetest.find_nodes_in_area(p1, p2, it)
 		for _,p in pairs(nodes) do

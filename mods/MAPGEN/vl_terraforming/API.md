@@ -1,5 +1,6 @@
 # vl_terraforming
-Terraforming module for VoxeLibre and MineClonia
+
+Terraforming module built with VoxeLibre and MineClonia in mind, but also useful for other games.
 
 This module provides the following key functionalities:
 
@@ -7,7 +8,6 @@ This module provides the following key functionalities:
 - given a position and size, find a balanced height (trimmed median height)
 - build a baseplate for a building
 - clear the area above a building
-
 
 ## Rounded corners support
 
@@ -55,7 +55,7 @@ One of these values may be "extreme", and tolerance specifies the maximum height
 
 The (rounded) median of these values is used, unless tolerance is set to "min" or "max".
 
-The "mode" can be set to "solid" (default), "liquid" (liquid surfaces only), "under_air" (both liquid and solid surfaces).
+The "mode" can be set to "solid" (default), "liquid" (liquid surfaces only), "under_air" (both liquid and solid surfaces), "under_water" (solid below water).
 
 
 ## vl_terraforming.foundation_vm(vm, px, py, pz, sx, sy, sz, corners, surface_mat, platform_mat, stone_mat, dust_mat, pr)
@@ -94,6 +94,6 @@ pr is a PcgRandom random generator
 
 - [ ] add an API that works on VM buffers
 - [ ] add an API version working on the non-VM API
-- [ ] benchmark if VM is actually faster than not using VM (5.9 has some optimizations not in VM)
+- [ ] benchmark if VM is actually faster than not using VM (5.9 has some optimizations not yet in VM)
 - [ ] improve tree removal
 

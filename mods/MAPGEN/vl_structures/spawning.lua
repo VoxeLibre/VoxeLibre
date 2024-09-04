@@ -1,9 +1,53 @@
--- todo: move this mostly to the mcl_mobs module?
+-- TODO: move this to the mcl_mobs module?
 local mob_cap_player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75
 local mob_cap_animal = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local vector_offset = vector.offset
+
+-- check if a node is an air node
+local function is_air(node)
+	return node == "air"
+	-- todo: or: not walkable and not liquid?
+end
+-- check if a node is a water node
+local function is_water(node)
+	return minetest.get_item_group(node.name, "water") ~= 0
+	-- return node.name == "mcl_core:water_source" or node.name ~= "mclx_core:river_water_source"
+end
+
+--- Spawn mobs for a structure
+-- @param mob string: mob to spawn
+-- @param spawnon string or table: nodes to spawn on
+-- @param p1 vector: Lowest coordinates of range
+-- @param p2 vector: Highest coordinates of range
+-- @param pr PseudoRandom: random generator
+-- @param n number: Number of mobs to spawn
+-- @param water boolean: Spawn water mobs
+function vl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n,water)
+	n = n or 1
+	local sp = {}
+	if water then
+		local nn = minetest.find_nodes_in_area(p1,p2,spawnon)
+		for k,v in pairs(nn) do
+			if is_water(minetest.get_node(vector_offset(v,0,1,0))) then
+				table.insert(sp,v)
+			end
+		end
+	else
+		sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
+	end
+	table.shuffle(sp)
+	local count = 0
+	local mob_def = minetest.registered_entities[mob]
+	local enabled = (not peaceful) or (mob_def and mob_spawn_class ~= "hostile")
+	for _, node in pairs(sp) do
+		if enabled and count < n and minetest.add_entity(vector_offset(node, 0, 0.5, 0), mob) then
+			count = count + 1
+		end
+		minetest.get_meta(node):set_string("spawnblock", "yes") -- note: also in peaceful mode!
+	end
+end
 
 local structure_spawns = {}
 --- Structure spawns via ABM
@@ -30,12 +74,8 @@ function vl_structures.register_structure_spawn(def)
 			if active_object_count_wider > limit + mob_cap_animal then return end
 			if active_object_count_wider > mob_cap_player then return end
 			local p = vector_offset(pos, 0, 1, 0)
-			local pname = minetest.get_node(p).name
-			if def.type_of_spawning == "water" then
-				if pname ~= "mcl_core:water_source" and pname ~= "mclx_core:river_water_source" then return end
-			else
-				if pname ~= "air" then return end -- FIXME: allow everything non-walkable, non-water, non-lava?
-			end
+			local pnode = minetest.get_node(p)
+			if not (def.type_of_spawning == "water" and is_water or is_air)(pnode) then return end
 			if minetest.get_meta(pos):get_string("spawnblock") == "" then return end
 			if mg_name ~= "v6" and mg_name ~= "singlenode" and def.biomes then
 				if table.indexof(def.biomes, minetest.get_biome_name(minetest.get_biome_data(p).biome)) == -1 then
@@ -47,38 +87,5 @@ function vl_structures.register_structure_spawn(def)
 			minetest.add_entity(vector_offset(p, 0, -0.5, 0), def.name)
 		end,
 	})
-end
-
---- Spawn mobs for a structure
--- @param mob string: mob to spawn
--- @param spawnon string or table: nodes to spawn on
--- @param p1 vector: Lowest coordinates of range
--- @param p2 vector: Highest coordinates of range
--- @param pr PseudoRandom: random generator
--- @param n number: Number of mobs to spawn
--- @param water boolean: Spawn water mobs
-function vl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n,water)
-	n = n or 1
-	local sp = {}
-	if water then
-		local nn = minetest.find_nodes_in_area(p1,p2,spawnon)
-		for k,v in pairs(nn) do
-			if minetest.get_item_group(minetest.get_node(vector_offset(v,0,1,0)).name,"water") > 0 then
-				table.insert(sp,v)
-			end
-		end
-	else
-		sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
-	end
-	table.shuffle(sp)
-	local count = 0
-	local mob_def = minetest.registered_entities[mob]
-	local enabled = (not peaceful) or (mob_def and mob_spawn_class ~= "hostile")
-	for _, node in pairs(sp) do
-		if enabled and count < n and minetest.add_entity(vector_offset(node, 0, 0.5, 0), mob) then
-			count = count + 1
-		end
-		minetest.get_meta(node):set_string("spawnblock", "yes") -- note: also in peaceful mode!
-	end
 end
 
