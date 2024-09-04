@@ -1,22 +1,14 @@
-local DEFAULT_FLAGS = vl_structures.DEFAULT_FLAGS
-local DEFAULT_PREPARE = vl_structures.DEFAULT_PREPARE
-
 local vector_offset = vector.offset
 local floor = math.floor
 
--- FIXME: switch to vl_structures_logging?
-local logging = true or minetest.settings:get_bool("mcl_logging_structures", true)
-
+local logging = minetest.settings:get_bool("vl_structures_logging", false)
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 -- parse the prepare parameter
 local function parse_prepare(prepare)
-	if prepare == nil or prepare == true then return DEFAULT_PREPARE end
+	if prepare == nil or prepare == true then return vl_structures.DEFAULT_PREPARE end
 	if prepare == false then return {} end
-	if prepare.foundation == true then
-		prepare = table.copy(prepare)
-		prepare.foundation = DEFAULT_PREPARE.foundation
-	end
+	if prepare.foundation == true then prepare.foundation = vl_structures.DEFAULT_PREPARE.foundation end
 	return prepare
 end
 
@@ -68,17 +60,17 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 		local prepare_start = os.clock()
 		-- Get materials from biome (TODO: make this a function + table?):
 		local b = mg_name ~= "v6" and minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
-		local node_top    = b and b.node_top and { name = b.node_top } or surface_mat or { name = "mcl_core:dirt_with_grass" }
-		local node_filler = { name = b and b.node_filler or "mcl_core:dirt" }
-		local node_stone  = { name = b and b.node_stone  or "mcl_core:stone" }
-		local node_dust   = b and b.node_dust and { name = b.node_dust } or nil
+		local node_top    = b and b.node_top    and { name = b.node_top    } or surface_mat or vl_structures.DEFAULT_SURFACE
+		local node_filler = b and b.node_filler and { name = b.node_filler } or vl_structures.DEFAULT_FILLER
+		local node_stone  = b and b.node_stone  and { name = b.node_stone  } or vl_structures.DEFAULT_STONE
+		local node_dust   = b and b.node_dust   and { name = b.node_dust   } or vl_structures.DEFAULT_DUST
 		if node_top.name == "mcl_core:dirt_with_grass" and b then node_top.param2 = b._mcl_grass_palette_index end
 
 		-- Step 2a: clear overhead area
-		local corners, padding, depth = prepare.corners or 1, prepare.padding or 1, (type(prepare.foundation) == "number" and prepare.foundation) or -4
+		local corners, padding = prepare.corners or 1, prepare.padding or 1
 		local gp = vector_offset(pmin, -padding, -yoffset, -padding) -- base level
 		if prepare.clear then
-			local yoff, ymax = prepare.clear_bottom or 0, size.y + yoffset + (prepare.clear_top or DEFAULT_PREPARE.clear_top)
+			local yoff, ymax = prepare.clear_bottom or 0, size.y + yoffset + (prepare.clear_top or vl_structures.DEFAULT_PREPARE.clear_top)
 			if prepare.clear_bottom == "top" or prepare.clear_bottom == "above" then yoff = size.y + yoffset end
 			--minetest.log("action", "[vl_structures] clearing air "..minetest.pos_to_string(gp)..": ".. (size.x + padding * 2)..","..ymax..","..(size.z + padding * 2))
 			vl_terraforming.clearance_vm(vm, gp.x, gp.y + yoff, gp.z,
@@ -91,7 +83,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 				if ddp and ddp.clear then
 					local dsize = vl_structures.size_rotated(ds.size, dr) -- FIXME: rotation of parent
 					local corners, padding, yoffset = ddp.corners or 1, ddp.padding or 1, ddp.yoffset or 0
-					local yoff, ymax = ddp.clear_bottom or 0, dsize.y + yoffset + (ddp.clear_top or DEFAULT_PREPARE.clear_top)
+					local yoff, ymax = ddp.clear_bottom or 0, dsize.y + yoffset + (ddp.clear_top or vl_structures.DEFAULT_PREPARE.clear_top)
 					if ddp.clear_bottom == "top" or ddp.clear_bottom == "above" then yoff = dsize.y + yoffset end
 					local gp = vector_offset(pos, dd.pos.x - floor((dsize.x-1)*0.5) - padding,
 					                              dd.pos.y,
@@ -110,7 +102,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 		-- Step 2b: baseplate underneath
 		if prepare.foundation then
 			-- minetest.log("action", "[vl_structures] fill foundation "..minetest.pos_to_string(gp).." with "..tostring(node_top.name).." "..tostring(node_filler.name))
-			local depth = (type(prepare.foundation) == "number" and prepare.foundation) or DEFAULT_PREPARE.foundation
+			local depth = (type(prepare.foundation) == "number" and prepare.foundation) or vl_structures.DEFAULT_PREPARE.foundation
 			vl_terraforming.foundation_vm(vm, gp.x, gp.y - 1, gp.z,
 				size.x + padding * 2, depth, size.z + padding * 2,
 				corners, node_top, node_filler, node_stone, node_dust, pr)
@@ -121,7 +113,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 				if ddp and ddp.foundation then
 					local dsize = vl_structures.size_rotated(ds.size, dr) -- FIXME: rotation of parent
 					local corners, padding, yoffset = ddp.corners or 1, ddp.padding or 1, ddp.yoffset or 0
-					local depth = (type(ddp.foundation) == "number" and ddp.foundation) or DEFAULT_PREPARE.foundation
+					local depth = (type(ddp.foundation) == "number" and ddp.foundation) or vl_structures.DEFAULT_PREPARE.foundation
 					local gp = vector_offset(pos, dd.pos.x - floor((dsize.x-1)*0.5) - padding,
 					                              dd.pos.y + (yoffset or 0),
 					                              dd.pos.z - floor((dsize.z-1)*0.5) - padding)
@@ -158,16 +150,16 @@ vl_structures.place_schematic = function(pos, yoffset, schematic, rotation, def,
 	if schematic and not schematic.size then schematic = vl_structures.load_schematic(schematic) end -- legacy
 	local rotation = vl_structures.parse_rotation(rotation, pr)
 	local prepare = parse_prepare(def.prepare)
-	local ppos, pmin, pmax, size = vl_structures.get_extends(pos, schematic.size, yoffset, rotation, def.flags or DEFAULT_FLAGS)
+	local ppos, pmin, pmax, size = vl_structures.get_extends(pos, schematic.size, yoffset, rotation, def.flags or vl_structures.DEFAULT_FLAGS)
 	-- area to emerge. Add some margin to allow for finding better suitable ground etc.
-	local tolerance = prepare.tolerance or DEFAULT_PREPARE.tolerance -- may be negative to disable foundations
+	local tolerance = prepare.tolerance or vl_structures.DEFAULT_PREPARE.tolerance -- may be negative to disable foundations
 	if type(tolerance) ~= "number" then tolerance = 10 end -- extra height for emerge only, min/max/liquid_surface
 	local emin, emax = vector_offset(pmin, 0, -math.max(tolerance, 0), 0), vector.offset(pmax, 0, math.max(tolerance, 0), 0)
 	-- if we need to generate a foundation, we need to emerge a larger area:
-	if prepare.foundation or prepare.clear then -- these functions need some extra margins. Must match mcl_foundations!
+	if prepare.foundation or prepare.clear then -- these functions need some extra margins. Must match vl_terraforming!
 		local padding = (prepare.padding or 0) + 3
-		local depth = prepare.foundation and ((type(prepare.foundation) == "number" and prepare.foundation or DEFAULT_PREPARE.foundation) - 3) or 0 -- minimum depth
-		local height = prepare.clear and ((prepare.clear_top or DEFAULT_PREPARE.clear_top)*1.5+0.5*(size.y+yoffset)+2) or 0 -- headroom
+		local depth = prepare.foundation and ((type(prepare.foundation) == "number" and prepare.foundation or vl_structures.DEFAULT_PREPARE.foundation) - 3) or 0 -- minimum depth
+		local height = prepare.clear and ((prepare.clear_top or vl_structures.DEFAULT_PREPARE.clear_top)*1.5+0.5*(size.y+yoffset)+2) or 0 -- headroom
 		emin = vector_offset(emin, -padding, depth, -padding)
 		emax = vector_offset(emax,  padding, height, padding)
 	end
