@@ -82,7 +82,7 @@ vl_structures.register_structure("ocean_temple",{
 	},
 	flags = "force_placement",
 	force_place = true,
-	prepare = { tolerance = -1, clear = false, foundation = false },
+	prepare = { tolerance = 8, clear = false, foundation = 3, mode="water" },
 	biomes = ocean_biomes,
 	y_max = water_level-4,
 	y_min = mcl_vars.mg_overworld_min,
@@ -90,7 +90,7 @@ vl_structures.register_structure("ocean_temple",{
 		modpath .. "/schematics/mcl_structures_ocean_temple.mts",
 		modpath .. "/schematics/mcl_structures_ocean_temple_2.mts",
 	},
-	y_offset = function(pr) return pr:next(-2,0) end,
+	y_offset = -1, --function(pr) return pr:next(-2,-1) end, -- fewer mobs if buried in sand
 	after_place = function(p, _, pr, p1, p2)
 		vl_structures.spawn_mobs("mobs_mc:guardian",spawnon,p1,p2,pr,5,true)
 		vl_structures.spawn_mobs("mobs_mc:guardian_elder",spawnon,p1,p2,pr,1,true)
