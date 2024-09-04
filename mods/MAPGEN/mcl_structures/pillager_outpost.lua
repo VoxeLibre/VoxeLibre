@@ -6,7 +6,7 @@ local spawnon = {"mcl_core:stripped_oak","mcl_stairs:slab_birchwood_top"}
 vl_structures.register_structure("pillager_outpost",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:sand"},
 	flags = "place_center_x, place_center_z",
-	prepare = { padding = 3, corners = 4, foundation = -6, clear = true },
+	prepare = { padding = 3, corners = 4, foundation = -8, clear = true },
 	y_offset = 0,
 	chunk_probability = 15,
 	y_max = mcl_vars.mg_overworld_max,

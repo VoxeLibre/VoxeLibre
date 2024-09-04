@@ -251,7 +251,7 @@ function mcl_villages.post_process_village(blockseed)
 	local jobs, beds = {}, {}
 
 	local bell_pos = vector.copy(settlement_info[1].pos)
-	local bell = vector.offset(bell_pos, 0, 1, 0)
+	local bell = vector.offset(bell_pos, 0, 2, 0)
 	local biome_name = minetest.get_biome_name(minetest.get_biome_data(bell_pos).biome)
 
 	-- Spawn Golem

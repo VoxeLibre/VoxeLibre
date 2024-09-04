@@ -4,7 +4,7 @@ local modpath = minetest.get_modpath(modname)
 vl_structures.register_structure("fossil",{
 	place_on = {"group:material_stone","group:sand"},
 	flags = "place_center_x, place_center_z",
-	prepare = { },
+	prepare = false,
 	chunk_probability = 15, -- was 25, FIXME: needs rebalancing
 	y_offset = function(pr) return pr:next(-32,-16) end,
 	y_max = 15,

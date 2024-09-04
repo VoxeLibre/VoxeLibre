@@ -2,15 +2,6 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local water_level = minetest.get_mapgen_setting("water_level")
 
---schematics by chmodsayshello
-local schems = {
-	modpath.."/schematics/mcl_structures_shipwreck_full_damaged.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_full_normal.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_full_back_damaged.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_half_front.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_half_back.mts",
-}
-
 local ocean_biomes = {
 	"RoofedForest_ocean",
 	"JungleEdgeM_ocean",
@@ -74,44 +65,27 @@ local ocean_biomes = {
 	"JungleM_ocean"
 }
 
-local beach_biomes = {
-	"FlowerForest_beach",
-	"Forest_beach",
-	"StoneBeach",
-	"ColdTaiga_beach_water",
-	"Taiga_beach",
-	"Savanna_beach",
-	"Plains_beach",
-	"ExtremeHills_beach",
-	"ColdTaiga_beach",
-	"Swampland_shore",
-	"MushroomIslandShore",
-	"JungleM_shore",
-	"Jungle_shore"
-}
-
 -- FIXME: integrate treasure maps from MCLA
 
 vl_structures.register_structure("shipwreck",{
 	place_on = {"group:sand","mcl_core:gravel"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 4,
-	noise_params = {
-		offset = 0,
-		scale = 0.000022,
-		spread = {x = 250, y = 250, z = 250},
-		seed = 3,
-		octaves = 3,
-		persist = 0.001,
-		flags = "absvalue",
-	},
-	flags = "force_placement",
+	chunk_probability = 10, -- todo: 15?
 	biomes = ocean_biomes,
-	y_max = water_level-4,
 	y_min = mcl_vars.mg_overworld_min,
-	prepare = { tolerance = -1, clear = false, foundation = false },
-	filenames = schems,
+	y_max = water_level-4,
 	y_offset = function(pr) return pr:next(-4,-2) end,
+	flags = "place_center_x, place_center_z, force_placement",
+	prepare = { tolerance = -1, clear = false, foundation = -2, mode = "water" },
+	filenames = {
+		--schematics by chmodsayshello
+		modpath.."/schematics/mcl_structures_shipwreck_full_damaged.mts",
+		modpath.."/schematics/mcl_structures_shipwreck_full_normal.mts",
+		modpath.."/schematics/mcl_structures_shipwreck_full_back_damaged.mts",
+		modpath.."/schematics/mcl_structures_shipwreck_half_front.mts",
+		modpath.."/schematics/mcl_structures_shipwreck_half_back.mts",
+	},
 	loot = {
 		["mcl_chests:chest_small"] = {
 			{
