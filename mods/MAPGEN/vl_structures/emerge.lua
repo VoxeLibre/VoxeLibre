@@ -140,6 +140,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 	if def.loot then vl_structures.fill_chests(pmin,pmax,def.loot,pr) end
 	if def.construct_nodes then vl_structures.construct_nodes(pmin,pmax,def.construct_nodes) end
 	if def.after_place then def.after_place(pos,def,pr,pmin,pmax,size,param.rotation) end
+	if def.name and not (def.terrain_feature or def.no_registry) then vl_structures.register_structures_spawn(def.name, pos) end
 	if logging and not def.terrain_feature then
 		minetest.log("action", "[vl_structures] "..(def.name or "unnamed").." spawned at "..minetest.pos_to_string(pos).." in "..string.format("%.2fms (main: %.2fms)", (os.clock()-start)*1000, (endmain-startmain)*1000))
 	end

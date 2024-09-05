@@ -423,7 +423,7 @@ if mg_name == "v6" then
 	dofile(modpath.."/v6.lua")
 end
 
---[[
+-- still needed?
 minetest.register_lbm({
 	label = "Fix grass palette indexes", -- This LBM fixes any incorrect grass palette indexes.
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",
@@ -492,6 +492,7 @@ minetest.register_lbm({
 	end
 })
 
+--[[ No longer necessary? Ugly?
 -- We go outside x and y for where trees are placed next to a biome that has already been generated.
 -- We go above maxp.y because trees can often get placed close to the top of a generated area and folliage may not
 -- be coloured correctly.
