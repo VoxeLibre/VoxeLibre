@@ -29,7 +29,7 @@ local function make_drop(pos, liquid, sound, interval, texture)
 		pt.expirationtime = t
 
 		pt.texture = "[combine:2x2:" ..
-			-math.random(1, 16) .. "," .. -math.random(1, 16) .. "=" .. texture
+			math.random(-14, 0) .. "," .. math.random(-14, 0) .. "=" .. texture
 
 		minetest.add_particle(pt)
 
