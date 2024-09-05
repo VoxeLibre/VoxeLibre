@@ -112,6 +112,7 @@ function vl_structures.place_structure(pos, def, pr, blockseed, rot)
 		if log_enabled then
 			minetest.log("action","[vl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
 		end
+		if def.name and not (def.terrain_feature or def.no_registry) then vl_structures.register_structures_spawn(def.name, pos) end
 		return true
 	elseif log_enabled then
 		if def.place_func then
@@ -177,6 +178,38 @@ function vl_structures.register_structure(name,def)
 	end
 end
 
+-- Persistent structure registry
+local mod_storage = minetest.get_mod_storage()
+local vl_structures_spawn_cache = {}
+function vl_structures.register_structures_spawn(name, pos)
+	if not name or not pos then return end
+	local data = vl_structures_spawn_cache[name]
+	if not data then
+		data = mod_storage:get("vl_structures:spawns:"..name)
+		data = data and minetest.deserialize(data) or {}
+	end
+	table.insert(data, pos)
+	mod_storage:set_string("vl_structures:"..name, minetest.serialize(data))
+	vl_structures_spawn_cache[name] = data
+end
+function vl_structures.get_structure_spawns(name)
+	if name == nil then
+		local ret = {}
+		for k, _ in pairs(vl_structures_spawn_cache) do
+			table.insert(ret, k)
+		end
+		return ret
+	end
+	local data = vl_structures_spawn_cache[name]
+	if not data then
+		data = mod_storage:get("vl_structures:spawns:"..name)
+		if not data then return nil end
+		data = minetest.deserialize(data)
+		vl_structures_spawn_cache[name] = data
+	end
+	return table.copy(data)
+end
+
 -- To avoid a cyclic dependency, run this when modules have finished loading
 -- Maybe we can eventually remove this - the end portal should likely go into the mapgen itself.
 minetest.register_on_mods_loaded(function()
@@ -193,6 +226,6 @@ mcl_mapgen_core.register_generator("static structures", nil, function(minp, maxp
 		end
 	end
 	return false, false, false
-end, 100, true)
+end, 100, true) -- light in the end is sensitive to these options
 end)
 
