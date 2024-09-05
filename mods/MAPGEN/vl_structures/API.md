@@ -33,6 +33,7 @@ Structures in this API are defined using the following table:
     loot =,                 -- a table of loot tables for mcl_loot indexed by node names -- ignored for place_func, to be removed
                             -- e.g. { ["mcl_chests:chest_small"] = {loot},... }
     terrain_feature =,      -- affects placement priority and disables logging for uninteresting structures
+    no_registry =,          -- do not register the structure for the /locate command (implied for terrain features)
     daughters =,            -- substructures to spawn, unstable API
 }
 ```

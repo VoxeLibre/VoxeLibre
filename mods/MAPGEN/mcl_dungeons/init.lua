@@ -371,6 +371,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 		end
 
 		set_node(pos, {name="mcl_chests:chest", param2=facedir})
+		vl_structures.construct_nodes(pos, pos, {"mcl_chests:chest"})
 		local meta = get_meta(pos)
 		if logging then
 			minetest.log("action", "[mcl_dungeons] Filling chest " .. tostring(c) .. " at " .. minetest.pos_to_string(pos))

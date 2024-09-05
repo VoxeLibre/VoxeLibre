@@ -391,6 +391,7 @@ end
 -- Chests
 local function PlaceChest(pos, param2)
 	if SetNodeIfCanBuild(pos, {name=tsm_railcorridors.nodes.chest, param2=param2}) then
+		vl_structures.construct_nodes(pos, pos, {tsm_railcorridors.nodes.chest})
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local items = tsm_railcorridors.get_treasures(pr)
