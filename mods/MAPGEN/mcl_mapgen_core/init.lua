@@ -433,7 +433,7 @@ minetest.register_lbm({
 		local grass_palette_index = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
 		if node.param2 ~= grass_palette_index then
 			node.param2 = grass_palette_index
-			minetest.set_node(pos, node)
+			minetest.swap_node(pos, node)
 		end
 	end
 })
@@ -452,14 +452,14 @@ minetest.register_lbm({
 			minetest.place_node(vector.offset(pos, 0, 1, 0), node) -- Offset required, since otherwise the leaves sink one node for some reason.
 		elseif node.param2 ~= foliage_palette_index and node.name ~= "mcl_core:vine" then
 			node.param2 = foliage_palette_index
-			minetest.set_node(pos, node)
+			minetest.swap_node(pos, node)
 		elseif node.name == "mcl_core:vine" then
 			local biome_param2 = foliage_palette_index
 			local rotation_param2 = mcl_util.get_colorwallmounted_rotation(pos)
 			local final_param2 = (biome_param2 * 8) + rotation_param2
 			if node.param2 ~= final_param2 then
 				node.param2 = final_param2
-				minetest.set_node(pos, node)
+				minetest.swap_node(pos, node)
 			end
 		end
 	end
@@ -474,7 +474,7 @@ minetest.register_lbm({
 		local water_palette_index = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index
 		if node.param2 ~= water_palette_index then
 			node.param2 = water_palette_index
-			minetest.set_node(pos, node)
+			minetest.swap_node(pos, node)
 		end
 	end
 })
@@ -487,7 +487,7 @@ minetest.register_lbm({
 	action = function(pos, node)
 		if node.param2 ~= 3 then
 			node.param2 = 3
-			minetest.set_node(pos, node)
+			minetest.swap_node(pos, node)
 		end
 	end
 })
@@ -504,14 +504,14 @@ local function fix_foliage_missed(minp, maxp)
 		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(fpos).foliage_palette_index
 		if fnode.param2 ~= foliage_palette_index and fnode.name ~= "mcl_core:vine" then
 			fnode.param2 = foliage_palette_index
-			minetest.set_node(fpos, fnode)
+			minetest.swap_node(fpos, fnode)
 		elseif fnode.name == "mcl_core:vine" then
 			local biome_param2 = foliage_palette_index
 			local rotation_param2 = mcl_util.get_colorwallmounted_rotation(fpos)
 			local final_param2 = (biome_param2 * 8) + rotation_param2
 			if fnode.param2 ~= final_param2 then
 				fnode.param2 = final_param2
-				minetest.set_node(fpos, fnode)
+				minetest.swap_node(fpos, fnode)
 			end
 		end
 	end

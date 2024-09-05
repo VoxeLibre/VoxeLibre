@@ -50,7 +50,7 @@ vl_structures.register_structure("nether_bridge",{
 				table.insert(bricks,leg)
 			end
 		end
-		minetest.bulk_set_node(bricks, {name = "mcl_nether:nether_brick", param2 = 2})
+		minetest.bulk_swap_node(bricks, {name = "mcl_nether:nether_brick", param2 = 2})
 	end
 })
 
@@ -112,7 +112,7 @@ vl_structures.register_structure("nether_outpost_with_bridges",{
 				table.insert(bricks,leg)
 			end
 		end
-		minetest.bulk_set_node(bricks, {name = "mcl_nether:nether_brick", param2 = 2})
+		minetest.bulk_swap_node(bricks, {name = "mcl_nether:nether_brick", param2 = 2})
 
 		local p1, p2 = vector.offset(pos,-45,12,-45), vector.offset(pos,45,22,45)
 		vl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
