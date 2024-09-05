@@ -303,7 +303,7 @@ local arrow_entity = {
 		-- mcl_burning.tick may remove object immediately
 		if not self.object:get_pos() then return end
 
-		self._time_in_air = self._time_in_air + dtime
+		self._time_in_air = (self._time_in_air or 0) + dtime
 
 		-- Give the arrows a maximum flight time
 		if self._time_in_air > ARROW_TIMEOUT then
