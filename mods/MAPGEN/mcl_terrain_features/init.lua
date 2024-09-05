@@ -173,7 +173,7 @@ vl_structures.register_structure("lavapool",{
 	flags = "place_center_x, place_center_z, all_floors",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
-	place_func = function(pos,def,pr)
+	place_func = function(pos, _, pr)
 		return makelake(pos,5,"mcl_core:lava_source",{"group:material_stone", "group:sand", "group:dirt"},"mcl_core:stone",pr)
 	end
 })
@@ -193,7 +193,7 @@ vl_structures.register_structure("water_lake",{
 	flags = "place_center_x, place_center_z, all_floors",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
-	place_func = function(pos,_,pr)
+	place_func = function(pos, _, pr)
 		return makelake(pos,5,"mcl_core:water_source",{"group:material_stone", "group:sand", "group:dirt","group:grass_block"},"mcl_core:dirt_with_grass",pr)
 	end
 })
