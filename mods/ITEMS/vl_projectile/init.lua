@@ -286,9 +286,9 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	(projectile_def.on_collide_with_entity or no_op)(self, pos, object)
 
 	-- Call reverse entity collision hook
-	local other_object_def = minetest.registered_entities[object.name] or {}
-	local other_object_vl_projectile = other_object_def._vl_projectile or {}
-	local hook = (other_object_vl_projectile or {}).on_collide or no_op
+	local other_entity_def = minetest.registered_entities[object.name] or {}
+	local other_entity_vl_projectile = other_entity_def._vl_projectile or {}
+	local hook = (other_entity_vl_projectile or {}).on_collide or no_op
 	hook(object, self)
 
 	-- Play sounds
