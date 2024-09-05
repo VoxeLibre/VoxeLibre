@@ -33,8 +33,8 @@ local function makelake(pos,size,liquid,placein,border,pr,noair)
 			airtower(nn[i],air,20)
 			table.insert(lq,nn[i])
 		end
-		minetest.bulk_set_node(lq,{name=liquid})
-		minetest.bulk_set_node(air,{name="air"})
+		minetest.bulk_swap_node(lq,{name=liquid})
+		minetest.bulk_swap_node(air,{name="air"})
 		air = {}
 		local br = {}
 		for k,v in pairs(lq) do
@@ -61,8 +61,8 @@ local function makelake(pos,size,liquid,placein,border,pr,noair)
 				end
 			end
 		end
-		minetest.bulk_set_node(br,{name=border})
-		minetest.bulk_set_node(air,{name="air"})
+		minetest.bulk_swap_node(br,{name=border})
+		minetest.bulk_swap_node(air,{name="air"})
 		return true
 	end)
 	return true
@@ -258,8 +258,8 @@ vl_structures.register_structure("basalt_column",{
 				end
 			end
 		end
-		minetest.bulk_set_node(magma,{name="mcl_nether:magma"})
-		minetest.bulk_set_node(basalt,{name="mcl_blackstone:basalt"})
+		minetest.bulk_swap_node(magma,{name="mcl_nether:magma"})
+		minetest.bulk_swap_node(basalt,{name="mcl_blackstone:basalt"})
 		return true
 	end
 })
@@ -299,8 +299,8 @@ vl_structures.register_structure("basalt_pillar",{
 				end
 			end
 		end
-		minetest.bulk_set_node(basalt,{name="mcl_blackstone:basalt"})
-		minetest.bulk_set_node(magma,{name="mcl_nether:magma"})
+		minetest.bulk_swap_node(basalt,{name="mcl_blackstone:basalt"})
+		minetest.bulk_swap_node(magma,{name="mcl_nether:magma"})
 		return true
 	end
 })
@@ -333,7 +333,7 @@ vl_structures.register_structure("lavadelta",{
 		for i=1,pr:next(1,#nn) do
 			table.insert(lava,nn[i])
 		end
-		minetest.bulk_set_node(lava,{name="mcl_nether:nether_lava_source"})
+		minetest.bulk_swap_node(lava,{name="mcl_nether:nether_lava_source"})
 		local basalt = {}
 		local magma = {}
 		for _,v in pairs(lava) do
@@ -348,8 +348,8 @@ vl_structures.register_structure("lavadelta",{
 				table.insert(magma,v)
 			end
 		end
-		minetest.bulk_set_node(basalt,{name="mcl_blackstone:basalt"})
-		minetest.bulk_set_node(magma,{name="mcl_nether:magma"})
+		minetest.bulk_swap_node(basalt,{name="mcl_blackstone:basalt"})
+		minetest.bulk_swap_node(magma,{name="mcl_nether:magma"})
 		return true
 	end
 })

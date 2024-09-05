@@ -3542,11 +3542,11 @@ local function mangrove_root_gennotify(t, minp, maxp, blockseed)
 				if minetest.get_item_group(n, "water") > 0 then
 					local wl = "mcl_mangrove:water_logged_roots"
 					if n:find("river") then wl = "mcl_mangrove:river_water_logged_roots" end
-					minetest.bulk_set_node(minetest.find_nodes_in_area(v, vector.offset(v, 0, -l, 0), {"group:water"}), {name = wl})
+					minetest.bulk_swap_node(minetest.find_nodes_in_area(v, vector.offset(v, 0, -l, 0), {"group:water"}), {name = wl})
 				elseif n == "mcl_mud:mud" then
-					minetest.bulk_set_node(minetest.find_nodes_in_area(v, vector.offset(v, 0, -l, 0), {"mcl_mud:mud"}), {name = "mcl_mangrove:mangrove_mud_roots"})
+					minetest.bulk_swap_node(minetest.find_nodes_in_area(v, vector.offset(v, 0, -l, 0), {"mcl_mud:mud"}), {name = "mcl_mangrove:mangrove_mud_roots"})
 				elseif n == "air" then
-					minetest.bulk_set_node(minetest.find_nodes_in_area(v, vector.offset(v, 0, -l, 0), {"air"}), {name = "mcl_mangrove:mangrove_roots"})
+					minetest.bulk_swap_node(minetest.find_nodes_in_area(v, vector.offset(v, 0, -l, 0), {"air"}), {name = "mcl_mangrove:mangrove_roots"})
 				end
 			end
 		end
