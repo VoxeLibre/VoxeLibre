@@ -570,7 +570,7 @@ local function generate_mgv6_structures()
 									local function place_tree_if_free(pos, prev_result)
 										local nn = minetest.get_node(pos).name
 										if nn == "mcl_flowers:waterlily" or nn == "mcl_core:water_source" or nn == "mcl_core:water_flowing" or nn == "air" then
-											minetest.set_node(pos, {name="mcl_core:tree", param2=0})
+											minetest.swap_node(pos, {name="mcl_core:tree", param2=0})
 											return prev_result
 										else
 											return false
@@ -676,9 +676,9 @@ local function generate_underground_mushrooms(minp, maxp, seed)
 		local l = minetest.get_node_light(bpos, 0.5)
 		if bpos.y >= min and bpos.y <= max and l and l <= 12 and pr_shroom:next(1,1000) < 4 then
 			if pr_shroom:next(1,2) == 1 then
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
+				minetest.swap_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
+				minetest.swap_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
 			end
 		end
 	end
@@ -715,14 +715,14 @@ local function generate_nether_decorations(minp, maxp, seed)
 	special_deco(rack, function(bpos)
 		-- Eternal fire on netherrack
 		if pr_nether:next(1,100) <= 3 then
-			minetest.set_node(bpos, {name = "mcl_fire:eternal_fire"})
+			minetest.swap_node(bpos, {name = "mcl_fire:eternal_fire"})
 		end
 	end)
 
 	-- Eternal fire on magma cubes
 	special_deco(magma, function(bpos)
 		if pr_nether:next(1,150) == 1 then
-			minetest.set_node(bpos, {name = "mcl_fire:eternal_fire"})
+			minetest.swap_node(bpos, {name = "mcl_fire:eternal_fire"})
 		end
 	end)
 
@@ -733,9 +733,9 @@ local function generate_nether_decorations(minp, maxp, seed)
 		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and l and l <= 12 and pr_nether:next(1,1000) <= 4 then
 			-- TODO: Make mushrooms appear in groups, use Perlin noise
 			if pr_nether:next(1,2) == 1 then
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
+				minetest.swap_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
+				minetest.swap_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
 			end
 		end
 	end)
@@ -744,7 +744,7 @@ local function generate_nether_decorations(minp, maxp, seed)
 	-- TODO: Spawn in Nether fortresses
 	special_deco(ssand, function(bpos)
 		if pr_nether:next(1, nether_wart_chance) == 1 then
-			minetest.set_node(bpos, {name = "mcl_nether:nether_wart"})
+			minetest.swap_node(bpos, {name = "mcl_nether:nether_wart"})
 		end
 	end)
 end

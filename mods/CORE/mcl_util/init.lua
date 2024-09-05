@@ -1153,3 +1153,15 @@ function mcl_util.trace_nodes(pos, dir, allowed_nodes, limit)
 
 	return nil, limit, nil
 end
+
+if not minetest.bulk_swap_node then -- maybe in 5.10 https://github.com/minetest/minetest/pull/15043
+	minetest.bulk_swap_node = function(pos_list, node)
+		-- for dense and large sets, we could also try a VManip, but often this enough for now
+		local swap_node = minetest.swap_node
+		for _, pos in ipairs(pos_list) do
+			swap_node(pos, node)
+		end
+	end
+	-- async emerge environment, untested:
+	if minetest.set_node == minetest.swap_node then minetest.bulk_swap_node = minetest.bulk_set_node end
+end
