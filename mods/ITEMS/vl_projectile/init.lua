@@ -379,8 +379,9 @@ end
 
 function mod.register(name, def)
 	assert(def._vl_projectile)
-	for _,behavior in pairs(def._vl_projectile.behaviors) do
-		assert(behavior)
+	local behaviors = def._vl_projectile.behaviors
+	for i = 1,#behaviors do
+		assert(behaviors[i])
 	end
 
 	if not def.on_step then
