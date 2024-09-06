@@ -1,5 +1,6 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local PARTICLE_DENSITY = 4
 local mod_target = minetest.get_modpath("mcl_target")
 
 local function lingering_image(colorstring, opacity)
@@ -53,7 +54,7 @@ minetest.register_globalstep(function(dtime)
 			else
 				texture = "mcl_particles_effect.png"
 			end
-			linger_particles(pos, d, texture, vals.color)
+			linger_particles(pos, PARTICLE_DENSITY, texture, vals.color)
 
 -- 			-- Extinguish fire if water bottle
 -- 			if vals.is_water then
@@ -181,40 +182,47 @@ function mcl_potions.register_lingering(name, descr, color, def)
 
 	local w = 0.7
 
-	minetest.register_entity(id.."_flying",{
+	local particle_texture
+	if name == "water" then
+		particle_texture = "mcl_particles_droplet_bottle.png"
+	else
+		if def.instant then
+			particle_texture = "mcl_particles_instant_effect.png"
+		else
+			particle_texture = "mcl_particles_effect.png"
+		end
+	end
+
+	local function on_collide(self, pos)
+		local potency = self._potency or 0
+		local plus = self._plus or 0
+		add_lingering_effect(pos, color, def, name == "water", potency, plus)
+		linger_particles(pos, PARTICLE_DENSITY, particle_texture, color)
+		if def.on_splash then def.on_splash(pos, potency+1) end
+	end
+	vl_projectile.register(id.."_flying",{
 		textures = {lingering_image(color)},
 		hp_max = 1,
 		visual_size = {x=w/2,y=w/2},
 		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
 		pointable = false,
-		on_step = function(self, dtime)
-			local pos = self.object:get_pos()
-			local node = minetest.get_node(pos)
-			local n = node.name
-			local g = minetest.get_item_group(n, "liquid")
-			local d = 4
-			if mod_target and n == "mcl_target:target_off" then
-				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
-			end
-			if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" and g == 0 or mcl_potions.is_obj_hit(self, pos) then
-				minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
-				local potency = self._potency or 0
-				local plus = self._plus or 0
-				add_lingering_effect(pos, color, def, name == "water", potency, plus)
-				local texture
-				if name == "water" then
-					texture = "mcl_particles_droplet_bottle.png"
-				else
-					if def.instant then
-						texture = "mcl_particles_instant_effect.png"
-					else
-						texture = "mcl_particles_effect.png"
-					end
+		_vl_projectile = {
+			behaviors = {
+				vl_projectile.collides_with_entities,
+				vl_projectile.collides_with_solids,
+			},
+			collides_with = {"group:liquid"},
+			on_collide_with_entity = on_collide,
+			on_collide_with_solid = function(self, pos, node)
+				if mod_target and n == "mcl_target:target_off" then
+					mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
 				end
-				linger_particles(pos, d, texture, color)
-				if def.on_splash then def.on_splash(pos, potency+1) end
-				self.object:remove()
-			end
-		end,
+
+				on_collide(self, pos)
+			end,
+			sounds = {
+				{"mcl_potions_breaking_glass", {max_hear_distance = 16, gain = 1}},
+			},
+		},
 	})
 end
