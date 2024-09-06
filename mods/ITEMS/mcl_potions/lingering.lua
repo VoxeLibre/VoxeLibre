@@ -211,7 +211,6 @@ function mcl_potions.register_lingering(name, descr, color, def)
 				vl_projectile.collides_with_entities,
 				vl_projectile.collides_with_solids,
 			},
-			collides_with = {"group:liquid"},
 			on_collide_with_entity = on_collide,
 			on_collide_with_solid = function(self, pos, node)
 				if mod_target and n == "mcl_target:target_off" then
