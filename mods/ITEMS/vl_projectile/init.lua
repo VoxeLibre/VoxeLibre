@@ -183,6 +183,7 @@ end
 
 function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
+	if not pos then return end
 
 	-- Don't try to do anything on first update
 	if not self._last_pos then
