@@ -21,8 +21,13 @@ mcl_heads.FLOOR_BOX = { -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, }
 
 --- node definition template for floor mod heads
 mcl_heads.deftemplate_floor = {
-	drawtype = "nodebox",
-	node_box = {
+	drawtype = "mesh",
+	mesh = "mcl_heads_floor.obj",
+	selection_box = {
+		type = "fixed",
+		fixed = mcl_heads.FLOOR_BOX,
+	},
+	collision_box = {
 		type = "fixed",
 		fixed = mcl_heads.FLOOR_BOX,
 	},
@@ -38,7 +43,7 @@ mcl_heads.deftemplate_floor = {
 	},
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	paramtype = "light",
-	paramtype2 = "facedir",
+	paramtype2 = "degrotate",
 	stack_max = 64,
 	sunlight_propagates = true,
 	sounds = mcl_sounds.node_sound_defaults{
@@ -53,39 +58,8 @@ mcl_heads.deftemplate_floor = {
 	on_secondary_use = equip_armor,
 }
 
-mcl_heads.deftemplate_floor_angled = {
-	drawtype = "mesh",
-	selection_box = {
-		type = "fixed",
-		fixed = mcl_heads.FLOOR_BOX,
-	},
-	collision_box = {
-		type = "fixed",
-		fixed = mcl_heads.FLOOR_BOX,
-	},
-	groups = {
-		handy = 1,
-		head = 1,
-		deco_block = 1,
-		dig_by_piston = 1,
-		not_in_creative_inventory = 1,
-	},
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
-	paramtype = "light",
-	paramtype2 = "facedir",
-	stack_max = 64,
-	sunlight_propagates = true,
-	sounds = mcl_sounds.node_sound_defaults{
-		footstep = {name="default_hard_footstep", gain=0.3},
-	},
-	is_ground_content = false,
-
-	_doc_items_create_entry = false,
-	_mcl_blast_resistance = 1,
-	_mcl_hardness = 1,
-}
-
 function mcl_heads.deftemplate_floor.on_rotate(pos, node, user, mode, new_param2)
+	if not (user and user:is_player()) then return end
 	if mode == screwdriver.ROTATE_AXIS then
 		node.name = node.name .. "_wall"
 		node.param2 = minetest.dir_to_wallmounted(minetest.facedir_to_dir(node.param2))
@@ -125,19 +99,9 @@ function mcl_heads.deftemplate_floor.on_place(itemstack, placer, pointed_thing)
 
 	-- place floor head node (floor and ceiling)
 	else
-		local fdir = minetest.dir_to_facedir(dir)
-
 		-- determine the head node rotation based on player's yaw (in cw direction from North/Z+)
-		local yaw = placer:get_look_horizontal()
-		yaw = wdir == 1 and math.pi*2 - yaw or yaw
-
-		local rotation_level = math.min(math.max(math.round((yaw / (math.pi*2)) * 16), 0), 15)
-		placestack:set_name(itemstring ..mcl_heads.FLOOR_DEGREES[rotation_level % 4])
-
-		-- determine the head node face direction based on rotation level
-		fdir = math.floor(rotation_level / 4) + (wdir == 1 and 0 or 20)
-
-		itemstack = minetest.item_place(placestack, placer, pointed_thing, fdir)
+		local rotate_level = math.round(placer:get_look_horizontal() * 8/math.pi)
+		itemstack = minetest.item_place(placestack, placer, pointed_thing, rotate_level*15)
 	end
 
 	-- restore item from angled and wall head nodes
@@ -179,6 +143,7 @@ mcl_heads.deftemplate_wall = {
 }
 
 function mcl_heads.deftemplate_wall.on_rotate(pos, node, user, mode, new_param2)
+	if not (user and user:is_player()) then return end
 	if mode == screwdriver.ROTATE_AXIS then
 		node.name = string.sub(node.name, 1, string.len(node.name)-5)
 		node.param2 = minetest.dir_to_facedir(minetest.wallmounted_to_dir(node.param2))
@@ -207,32 +172,12 @@ function mcl_heads.register_head(head_def)
 		description = head_def.description,
 		_doc_items_longdesc = head_def.longdesc,
 
-		-- The head textures are based off the textures of an actual mob.
-		tiles = {
-			-- Note: bottom texture is overlaid over top texture to get rid of possible transparency.
-			-- This is required for skeleton skull and wither skeleton skull.
-			-- Note: -x coords go right per-pixel, -y coords go down per-pixel
-			"[combine:16x16:-36,4="  ..head_def.texture, -- top
-			"([combine:16x16:-36,4=" ..head_def.texture..")^([combine:16x16:-44,4="..head_def.texture..")", -- bottom
-			"[combine:16x16:-28,0=" ..head_def.texture, -- left
-			"[combine:16x16:-44,0=" ..head_def.texture, -- right
-			"[combine:16x16:-52,0=" ..head_def.texture, -- back
-			"[combine:16x16:-36,0="  ..head_def.texture, -- front
-		},
+		tiles = { head_def.texture },
 
 		_mcl_armor_mob_range_mob = head_def.range_mob,
 		_mcl_armor_mob_range_factor = head_def.range_factor,
 		_mcl_armor_texture = head_def.texture
 	}))
-
-	-- register the angled floor head nodes
-	for i, d in ipairs(mcl_heads.FLOOR_DEGREES) do
-		minetest.register_node(name ..d, table.update(table.copy(mcl_heads.deftemplate_floor_angled), {
-			mesh = "mcl_heads_floor" ..d ..".obj",
-			tiles = { head_def.texture },
-			drop = name,
-		}))
-	end
 
 	-- register the wall head node
 	minetest.register_node(name .."_wall", table.update(table.copy(mcl_heads.deftemplate_wall), {
@@ -295,3 +240,45 @@ mcl_heads.register_head{
 	description = S("Wither Skeleton Skull"),
 	longdesc = S("A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection."),
 }
+
+-- Alias old creeper heads
+minetest.register_alias("mcl_heads:creeper_wall", "mcl_heads:stalker_wall")
+minetest.register_alias("mcl_heads:creeper", "mcl_heads:stalker")
+
+-- Register LBM updates for old floor heads
+local old_heads_all = {"mcl_heads:zombie", "mcl_heads:creeper", "mcl_heads:stalker", "mcl_heads:steve", "mcl_heads:skeleton", "mcl_heads:wither_skeleton"}
+local old_heads_angled = {}
+for i=1,#old_heads_all do
+    for j=1,#mcl_heads.FLOOR_DEGREES do
+        old_heads_angled[#old_heads_angled+1] = old_heads_all[i]..mcl_heads.FLOOR_DEGREES[j]
+    end
+end
+
+local facedir_to_degrotate = {0, 180, 120, 60}
+minetest.register_lbm({
+	name = "mcl_heads:heads_update_angled",
+	nodenames = old_heads_all,
+	action = function(pos, node)
+		local degrotate = 0
+
+		if node.name:sub(-4) == "22_5" then
+			node.name = node.name:sub(1, #node.name-4)
+			degrotate = ((4 - node.param2) * 90 - 22.5) / 1.5
+		elseif node.name:sub(-4) == "67_5" then
+			node.name = node.name:sub(1, #node.name-4)
+			degrotate = ((4 - node.param2) * 90 - 67.5) / 1.5
+		elseif node.name:sub(-2) == "45" then
+			node.name = node.name:sub(1, #node.name-2)
+			degrotate = ((4 - node.param2) * 90 - 45) / 1.5
+		else
+			degrotate = facedir_to_degrotate[node.param2+1]
+		end
+
+		if not degrotate then
+			return
+		end
+
+		node.param2 = degrotate
+		minetest.set_node(pos, node)
+	end,
+})
