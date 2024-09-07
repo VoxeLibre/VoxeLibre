@@ -95,8 +95,8 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 		end
 		local pos = self.object:get_pos()
 		minetest.add_particle({
-			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
-			velocity = {x=0, y=math.random(1,1), z=0},
+			pos = {x=pos.x+(math.random()*0.7-0.35)*math.random(),y=pos.y+0.7+math.random()*0.5,z=pos.z+(math.random()*0.7-0.35)*math.random()},
+			velocity = {x=0, y=1, z=0},
 			expirationtime = math.random(),
 			size = math.random(1, 4),
 			collisiondetection = true,
@@ -110,8 +110,8 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 			},
 		})
 		minetest.add_particle({
-			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
-			velocity = {x=0, y=math.random(1,1), z=0},
+			pos = {x=pos.x+(math.random()*0.7-0.35)*math.random(),y=pos.y+0.7+math.random()*0.5,z=pos.z+(math.random()*0.7-0.35)*math.random()},
+			velocity = {x=0, y=1, z=0},
 			expirationtime = math.random(),
 			size = math.random(1, 4),
 			collisiondetection = true,
@@ -125,8 +125,8 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 			},
 		})
 		minetest.add_particle({
-			pos = {x=pos.x+math.random(-0.7,0.7)*math.random()/2,y=pos.y+math.random(0.7,1.2),z=pos.z+math.random(-0.7,0.7)*math.random()/2},
-			velocity = {x=0, y=math.random(1,1), z=0},
+			pos = {x=pos.x+(math.random()*0.7-0.35)*math.random(),y=pos.y+0.7+math.random()*0.5,z=pos.z+(math.random()*0.7-0.35)*math.random()},
+			velocity = {x=0, y=1, z=0},
 			expirationtime = math.random(),
 			size = math.random(1, 4),
 			collisiondetection = true,

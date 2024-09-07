@@ -259,8 +259,7 @@ local function spawn_mobs(pos, elapsed)
 	end
 
 	-- Spawn attempt done. Next spawn attempt much later
-	timer:start(math.random(10, 39.95))
-
+	timer:start(math.random() * 29.95 + 10)
 end
 
 -- The mob spawner node.

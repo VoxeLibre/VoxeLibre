@@ -280,7 +280,7 @@ minetest.register_globalstep(function(dtime)
 							pos = fly_pos,
 							velocity = vector.zero(),
 							acceleration = vector.zero(),
-							expirationtime = math.random(0.3, 0.5),
+							expirationtime = 0.3 + math.random() * 0.2,
 							size = math.random(1, 2),
 							collisiondetection = false,
 							vertical = false,

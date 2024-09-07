@@ -122,7 +122,7 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 		end
 		local mndef = minetest.registered_nodes[minetest.get_node(pos).name]
 		local mother_stuck = mndef and mndef.walkable
-		local angle = math.random(0, math.pi*2)
+		local angle = math.random() * math.pi * 2
 		local children = {}
 		local spawn_count = math.random(2, 4)
 		for i = 1, spawn_count do

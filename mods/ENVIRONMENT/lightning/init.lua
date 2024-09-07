@@ -177,7 +177,7 @@ function lightning.strike_func(pos, pos2, objects)
 				add_entity(pos2, "mobs_mc:skeleton_horse")
 
 				local angle, posadd
-				angle = math.random(0, math.pi*2)
+				angle = math.random() * math.pi * 2
 				for i=1,3 do
 					posadd = { x=math.cos(angle),y=0,z=math.sin(angle) }
 					posadd = vector.normalize(posadd)

@@ -362,7 +362,7 @@ function mob_class:env_danger_movement_checks(player_in_active_range)
 				self.state = "stand"
 				self:set_animation( "stand")
 			end
-			yaw = yaw + math.random(-0.5, 0.5)
+			yaw = yaw + math.random() - 0.5
 			yaw = self:set_yaw( yaw, 8)
 			return
 		end
@@ -788,9 +788,9 @@ function mob_class:flop()
 				if self.object:get_velocity().y < 0.1 then
 					self:mob_sound("flop")
 					self.object:set_velocity({
-						x = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+						x = (math.random()-0.5) * 2 * FLOP_HOR_SPEED,
 						y = FLOP_HEIGHT,
-						z = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+						z = (math.random()-0.5) * 2 * FLOP_HOR_SPEED,
 					})
 				end
 			end
@@ -920,7 +920,7 @@ function mob_class:do_states_walk()
 
 			-- Randomly turn
 			if math.random(1, 100) <= 30 then
-				yaw = yaw + math.random(-0.5, 0.5)
+				yaw = yaw + math.random() - 0.5
 				yaw = self:set_yaw( yaw, 8)
 			end
 		end
@@ -929,7 +929,7 @@ function mob_class:do_states_walk()
 
 		-- otherwise randomly turn
 	elseif math.random(1, 100) <= 30 then
-		yaw = yaw + math.random(-0.5, 0.5)
+		yaw = yaw + math.random() - 0.5
 		yaw = self:set_yaw( yaw, 8)
 	end
 
@@ -989,7 +989,7 @@ function mob_class:do_states_stand(player_in_active_range)
 
 			if lp.x > s.x then yaw = yaw +math.pi end
 		else
-			yaw = yaw + math.random(-0.5, 0.5)
+			yaw = yaw + math.random() - 0.5
 		end
 
 		yaw = self:set_yaw( yaw, 8)
