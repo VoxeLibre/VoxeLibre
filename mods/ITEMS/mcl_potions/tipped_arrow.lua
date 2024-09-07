@@ -54,8 +54,6 @@ function mcl_potions.register_arrow(name, desc, color, def)
 			local potency = self._potency or 0
 			local plus = self._plus or 0
 
-			minetest.log("tipped arrow collision")
-
 			if def._effect_list then
 				for name, details in pairs(def._effect_list) do
 					local ef_level = details.level
@@ -75,7 +73,6 @@ function mcl_potions.register_arrow(name, desc, color, def)
 					if details.effect_stacks then
 						ef_level = ef_level + mcl_potions.get_effect_level(obj, name)
 					end
-					minetest.log("giving effect "..name)
 					mcl_potions.give_effect_by_level(name, obj, ef_level, dur)
 				end
 			end
