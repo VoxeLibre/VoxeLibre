@@ -112,30 +112,13 @@ function mcl_potions.register_splash(name, descr, color, def)
 		})
 	end
 
-	vl_projectile.register(id.."_flying",{
-		textures = {splash_image(color)},
-		hp_max = 1,
-		visual_size = {x=w/2,y=w/2},
-		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
-		_vl_projectile = {
-			behaviors = {
-				vl_projectile.collides_with_entities,
-				vl_projectile.collides_with_solids,
-			},
-			on_collide_with_solid = function(self, pos, node)
-				make_particles(pos)
+	function splash_effects(self, pos, def, range)
+		make_particles(pos)
 
-				if node.name == "mcl_target:target_off" then
-					mcl_target.hit(pos, 0.4) -- 4 redstone ticks
-				end
-			end,
-			on_collide_with_entity = function(self, pos, obj)
-				make_particles(pos)
-
-				-- Make sure the potion can interact with this object
-				local entity = obj:get_luaentity()
-				if not obj:is_player() and not (entity and entity.is_mob) then return end
-
+		for _,obj in pairs(minetest.get_objects_inside_radius(pos, range)) do
+			-- Make sure the potion can interact with this object
+			local entity = obj:get_luaentity()
+			if obj:is_player() or entity and entity.is_mob then
 				local potency = self._potency or 0
 				local plus = self._plus or 0
 
@@ -182,6 +165,29 @@ function mcl_potions.register_splash(name, descr, color, def)
 						def.custom_effect(obj, power, plus)
 					end
 				end
+			end
+		end
+	end
+
+	vl_projectile.register(id.."_flying",{
+		textures = {splash_image(color)},
+		hp_max = 1,
+		visual_size = {x=w/2,y=w/2},
+		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
+		_vl_projectile = {
+			behaviors = {
+				vl_projectile.collides_with_entities,
+				vl_projectile.collides_with_solids,
+			},
+			on_collide_with_solid = function(self, pos, node)
+				splash_effects(self, pos, def, 4)
+
+				if node.name == "mcl_target:target_off" then
+					mcl_target.hit(pos, 0.4) -- 4 redstone ticks
+				end
+			end,
+			on_collide_with_entity = function(self, pos, obj)
+				splash_effects(self, pos, def, 4)
 			end,
 			sounds = {
 				on_collision = {"mcl_potions_breaking_glass", {max_hear_distance = 16, gain = 1}, true},
