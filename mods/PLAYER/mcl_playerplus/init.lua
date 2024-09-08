@@ -560,22 +560,18 @@ minetest.register_globalstep(function(dtime)
 		and (node_head ~= "ignore")
 		-- Check privilege, too
 		and (not check_player_privs(name, {noclip = true})) then
-			if player:get_hp() > 0 then
-				mcl_util.deal_damage(player, 1, {type = "in_wall"})
-			end
+			mcl_util.deal_damage(player, 1, {type = "in_wall"})
 		end
 
 		-- Am I near a cactus?
-		local near = find_node_near(pos, 1, "mcl_core:cactus")
-		if not near then
-			near = find_node_near({x=pos.x, y=pos.y-1, z=pos.z}, 1, "mcl_core:cactus")
-		end
-		if near then
-			-- Am I touching the cactus? If so, it hurts
-			local dist = vector.distance(pos, near)
-			local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
-			if dist < 1.1 or dist_feet < 1.1 then
-				if player:get_hp() > 0 then
+		if node_stand == "mcl_core:cactus" or node_feet == "mcl_core:cactus" or node_head == "mcl_core:cactus" then
+			mcl_util.deal_damage(player, 1, {type = "cactus"})
+		else
+			local near = find_node_near(pos, 1, "mcl_core:cactus")
+			if near then
+				-- Am I touching the cactus? If so, it hurts
+				local dist = vector.distance(pos, near)
+				if dist < 1.1 then
 					mcl_util.deal_damage(player, 1, {type = "cactus"})
 				end
 			end

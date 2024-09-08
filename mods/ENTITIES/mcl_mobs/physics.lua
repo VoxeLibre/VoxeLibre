@@ -692,14 +692,10 @@ function mob_class:do_env_damage()
 	local nodef3 = minetest.registered_nodes[self.standing_under]
 
 	-- rain
-	if self.rain_damage > 0 then
-		if mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
-			self.health = self.health - self.rain_damage
-
-			if self:check_for_death("rain", {type = "environment",
-					pos = pos, node = self.standing_in}) then
-				return true
-			end
+	if self.rain_damage > 0 and mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
+		self.health = self.health - self.rain_damage
+		if self:check_for_death("rain", {type = "environment", pos = pos, node = self.standing_in}) then
+			return true
 		end
 	end
 
@@ -707,14 +703,10 @@ function mob_class:do_env_damage()
 
 	-- water damage
 	if self.water_damage > 0 and nodef.groups.water then
-		if self.water_damage ~= 0 then
-			self.health = self.health - self.water_damage
-			mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png", nil, nil, 1, nil)
-
-			if self:check_for_death("water", {type = "environment",
-					pos = pos, node = self.standing_in}) then
-				return true
-			end
+		self.health = self.health - self.water_damage
+		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png", nil, nil, 1, nil)
+		if self:check_for_death("water", {type = "environment", pos = pos, node = self.standing_in}) then
+			return true
 		end
 	elseif self.lava_damage > 0 and (nodef.groups.lava) then
 		-- lava damage
@@ -730,89 +722,67 @@ function mob_class:do_env_damage()
 		end
 	elseif self.fire_damage > 0 and (nodef2.groups.fire) then
 		-- magma damage
-		if self.fire_damage ~= 0 then
-			self.health = self.health - self.fire_damage
-
-			if self:check_for_death("fire", {type = "environment",
-											 pos = pos, node = self.standing_in}) then
-				return true
-			end
+		self.health = self.health - self.fire_damage
+		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
+			return true
 		end
 	elseif self.fire_damage > 0 and (nodef.groups.fire) then
 		-- fire damage
-		if self.fire_damage ~= 0 then
-			self.health = self.health - self.fire_damage
-			mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
-			mcl_burning.set_on_fire(self.object, 5)
-
-			if self:check_for_death("fire", {type = "environment",
-					pos = pos, node = self.standing_in}) then
-				return true
-			end
+		self.health = self.health - self.fire_damage
+		mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+		mcl_burning.set_on_fire(self.object, 5)
+		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
+			return true
 		end
 	elseif nodef.damage_per_second ~= 0 and not nodef.groups.lava and not nodef.groups.fire then
 		-- damage_per_second node check
 		self.health = self.health - nodef.damage_per_second
 		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
-
-		if self:check_for_death("dps", {type = "environment",
-				pos = pos, node = self.standing_in}) then
+		if self:check_for_death("dps", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
 	end
 
 	-- Cactus damage
-	local near = minetest.find_node_near(pos, 1, "mcl_core:cactus", true)
-	if not near and near ~= nil then
-		near = find_node_near({x=pos.x, y=pos.y-1, z=pos.z}, 1, "mcl_core:cactus", true)
-	end
-	if near then
-		-- is mob touching the cactus?
-		local dist = vector.distance(pos, near)
-		local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
-		local large_mob = false
-		local medium_mob = false
-		if self.name == "mobs_mc:ender_dragon" or
-			self.name == "mobs_mc:ghast" or
-			self.name == "mobs_mc:guardian_elder" or
-			self.name == "mobs_mc:slime_big" or
-			self.name == "mobs_mc:magma_cube_big" or
-			self.name == "mobs_mc:wither" then
-
-			large_mob = true
-		elseif self.name == "mobs_mc:hoglin" or
-			self.name == "mobs_mc:zoglin" or
-			self.name == "mobs_mc:horse" or
-			self.name == "mobs_mc:skeleton_horse" or
-			self.name == "mobs_mc:zombie_horse" or
-			self.name == "mobs_mc:donkey" or
-			self.name == "mobs_mc:mule" or
-			self.name == "mobs_mc:iron_golem" or
-			self.name == "mobs_mc:polar_bear" or
-			self.name == "mobs_mc:spider" or
-			self.name == "mobs_mc:cave_spider" or
-			self.name == "mobs_mc:strider" then
-
-			medium_mob = true
+	if self.standing_on == "mcl_core:cactus" or self.standing_in == "mcl_core:cactus" or self.standing_under == "mcl_core:cactus" then
+		self:damage_mob("cactus", 2)
+		if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
+			return true
 		end
-		if (not large_mob and not medium_mob and (dist < 1.03 or dist_feet < 1.6)) or (medium_mob and (dist < 1.165 or dist_feet < 1.73)) or (large_mob and (dist < 1.25 or dist_feet < 1.9)) then
-			if self.health ~= 0 then
+	else
+		local near = minetest.find_node_near(pos, 1, "mcl_core:cactus")
+		if near then
+			-- is mob touching the cactus?
+			local dist = vector.distance(pos, near)
+			local threshold  = 1.04 -- small mobs
+			-- medium mobs
+			if self.name == "mobs_mc:spider" or
+				self.name == "mobs_mc:iron_golem" or
+				self.name == "mobs_mc:horse" or
+				self.name == "mobs_mc:donkey" or
+				self.name == "mobs_mc:mule" or
+				self.name == "mobs_mc:polar_bear" or
+				self.name == "mobs_mc:cave_spider" or
+				self.name == "mobs_mc:skeleton_horse" or
+				self.name == "mobs_mc:zombie_horse" or
+				self.name == "mobs_mc:strider" or
+				self.name == "mobs_mc:hoglin" or
+				self.name == "mobs_mc:zoglin" then
+				threshold = 1.165
+			elseif self.name == "mobs_mc:slime_big" or
+				self.name == "mobs_mc:magma_cube_big" or
+				self.name == "mobs_mc:ghast" or
+				self.name == "mobs_mc:guardian_elder" or
+				self.name == "mobs_mc:wither" or
+				self.name == "mobs_mc:ender_dragon" then
+				threshold = 1.25
+			end
+			if dist < threshold then
 				self:damage_mob("cactus", 2)
-
-				if self:check_for_death("cactus", {type = "environment",
-						pos = pos, node = self.standing_in}) then
+				if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
 					return true
 				end
 			end
-		end
-	end
-	-- is mob standing on the cactus?
-	if self.standing_on == "mcl_core:cactus" or self.standing_in == "mcl_core:cactus" or self.standing_under == "mcl_core:cactus" then
-		self:damage_mob("cactus", 2)
-
-		if self:check_for_death("cactus", {type = "environment",
-				pos = pos, node = self.standing_in}) then
-			return true
 		end
 	end
 
