@@ -92,7 +92,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 	end
 	particle_texture = particle_texture.."^[colorize:"..color..":127"
 
-	local function make_particles(pos)
+	local function splash_effects(self, pos, def, range)
 		minetest.add_particlespawner({
 			amount = 50,
 			time = 0.1,
@@ -110,10 +110,6 @@ function mcl_potions.register_splash(name, descr, color, def)
 			vertical = false,
 			texture = particle_texture,
 		})
-	end
-
-	function splash_effects(self, pos, def, range)
-		make_particles(pos)
 
 		for _,obj in pairs(minetest.get_objects_inside_radius(pos, range)) do
 			-- Make sure the potion can interact with this object
@@ -160,7 +156,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 				if def.custom_effect then
 					local power = (potency+1) * mcl_potions.SPLASH_FACTOR
 					if rad > 0 then
-						def.custom_effect(obj, redux_map[rad] * power, plus)
+						def.custom_effect(obj, REDUX_MAP[rad] * power, plus)
 					else
 						def.custom_effect(obj, power, plus)
 					end
