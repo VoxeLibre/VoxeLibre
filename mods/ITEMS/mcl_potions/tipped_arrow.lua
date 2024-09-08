@@ -58,7 +58,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				for name, details in pairs(def._effect_list) do
 					local ef_level = details.level
 					if details.uses_level then
-						ef_level = details.level + details.level_scaling * (potency)
+						ef_level = details.level + details.level_scaling * potency
 					end
 
 					local dur = details.dur
