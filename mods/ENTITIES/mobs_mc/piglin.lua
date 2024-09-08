@@ -360,7 +360,7 @@ piglin_brute.xp_min = 20
 piglin_brute.xp_max = 20
 piglin_brute.hp_min = 50
 piglin_brute.hp_max = 50
-piglin_brute.fire_resistant = 1
+piglin_brute.fire_resistant = false
 piglin_brute.do_custom = function()
 	return
 end
@@ -371,8 +371,8 @@ piglin_brute.on_rightclick = function()
 	return
 end
 piglin_brute.attacks_monsters = true
-piglin_brute.lava_damage = 0
-piglin_brute.fire_damage = 0
+piglin_brute.lava_damage = 4
+piglin_brute.fire_damage = 2
 piglin_brute.attack_animals = true
 piglin_brute.mesh = "extra_mobs_sword_piglin.b3d"
 piglin_brute.textures = {"extra_mobs_piglin_brute.png", "default_tool_goldaxe.png", "extra_mobs_trans.png"}
