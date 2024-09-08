@@ -102,6 +102,20 @@ local function damage_particles(pos, is_critical)
 		})
 	end
 end
+local function random_arrow_positions(positions, placement)
+	if positions == "x" then
+		return math.random(-4, 4)
+	elseif positions == "y" then
+		return math.random(0, 10)
+	end
+	if placement == "front" and positions == "z" then
+		return 3
+	elseif placement == "back" and positions == "z" then
+		return -3
+	end
+	return 0
+end
+
 local function random_hit_positions(positions, placement)
 	if positions == "x" then
 		return math.random(-4, 4)
@@ -144,7 +158,7 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	end)
 
 	-- Handle blocking projectiles
-	if mcl_shields.is_blocking(obj) then
+	if mcl_shields.is_blocking(entity) then
 		self._blocked = true
 		self.object:set_velocity(vector.multiply(self.object:get_velocity(), -0.25))
 		return
@@ -175,7 +189,7 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	self._z_rotation = math.random(-30, 30)
 	self._y_rotation = math.random( -30, 30)
 	self.object:set_attach(
-		obj, self._attach_parent,
+		entity, self._attach_parent,
 		vector.new(self._x_position, self._y_position, random_arrow_positions("z", placement)),
 		vector.new(0, self._rotation_station + self._y_rotation, self._z_rotation)
 	)
@@ -262,7 +276,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		-- Apply damage
 		-- Note: Damage blocking for shields is handled in mcl_shields with an mcl_damage modifier
 		local do_damage = false
-		if object:is_player() and projectile_def.hits_players and self_vl_projectile.owner ~= hit:get_player_name() then
+		if object:is_player() and projectile_def.damanges_players and self_vl_projectile.owner ~= object:get_player_name() then
 			do_damage = true
 
 			handle_player_sticking(self, entity_def, projectile_def, object)

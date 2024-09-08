@@ -14,6 +14,7 @@ Arguments:
   * `liquid_drag`: if true, apply drag from liquid nodes to the projectile
   * `survive_collision`: if this field is `false` or `nil`, the projectile will be removed after a collision.
   * `sticks_in_players`: if true, the projectile will stick into players after colliding with them.
+  * `damages_players`: if true, the projectile will deal damage to players.
   * `damage_groups`: damage group information to use for `punch()`. May be a function of type `function(projectile, entity_def, projectile_def, obj)`
                      that returns dynamic damange group information.
   * `allow_punching`: will the projectile punch entities it collides with. May be a function of type `function(projectile, entity_def, projectile_def, obj)`.

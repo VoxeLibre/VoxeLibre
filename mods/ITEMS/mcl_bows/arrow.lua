@@ -15,20 +15,6 @@ local STUCK_RECHECK_TIME = 5
 
 local YAW_OFFSET = -math.pi/2
 
-local function random_arrow_positions(positions, placement)
-	if positions == "x" then
-		return math.random(-4, 4)
-	elseif positions == "y" then
-		return math.random(0, 10)
-	end
-	if placement == "front" and positions == "z" then
-		return 3
-	elseif placement == "back" and positions == "z" then
-		return -3
-	end
-	return 0
-end
-
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
 
@@ -143,6 +129,7 @@ local arrow_entity = {
 	_vl_projectile = {
 		survive_collision = true,
 		sticks_in_players = true,
+		damages_players = true,
 		damage_groups = function(self)
 			return { fleshy = self._damage }
 		end,
