@@ -36,13 +36,15 @@ S("Arrows might get stuck on solid blocks and can be retrieved again. They are a
 })
 
 -- Destroy arrow entity self at pos and drops it as an item
-local function spawn_item(self, pos)
+local function replace_with_item_drop(self, pos)
 	if not minetest.is_creative_enabled("") then
 		local item = minetest.add_item(pos, "mcl_bows:arrow")
 		item:set_velocity(vector.zero())
 		item:set_yaw(self.object:get_yaw())
 	end
+
 	mcl_burning.extinguish(self.object)
+	self._removed = true
 	self.object:remove()
 end
 
@@ -62,13 +64,10 @@ local function stuck_arrow_on_step(self, dtime)
 	-- Drop arrow as item when it is no longer stuck
 	-- FIXME: Arrows are a bit slow to react and continue to float in mid air for a few seconds.
 	if self._stuckrechecktimer > STUCK_RECHECK_TIME then
-		local stuckin_def
-		if self._stuckin then
-			stuckin_def = minetest.registered_nodes[minetest.get_node(self._stuckin).name]
-		end
+		local stuckin_def = self._stuckin and minetest.registered_nodes[minetest.get_node(self._stuckin).name]
 		-- TODO: In MC, arrow just falls down without turning into an item
 		if stuckin_def and stuckin_def.walkable == false then
-			spawn_item(self, pos)
+			replace_with_item_drop(self, pos)
 			return
 		end
 		self._stuckrechecktimer = 0
@@ -153,9 +152,8 @@ local arrow_entity = {
 			end
 		},
 		on_collide_with_solid = function(self, pos, node, node_def)
-			local def = node_def
 			local vel = self.object:get_velocity()
-			local dpos = vector.round(vector.new(pos)) -- digital pos
+			local dpos = vector.round(pos) -- digital pos
 
 			-- Check for the node to which the arrow is pointing
 			local dir
@@ -244,7 +242,7 @@ local arrow_entity = {
 					elseif pointed_thing.type == "node" then
 						local nn = minetest.get_node(minetest.get_pointed_thing_position(pointed_thing)).name
 						local def = minetest.registered_nodes[nn]
-						if (not def) or def.walkable then
+						if not def or def.walkable then
 							-- There's a node in the way. Delete arrow without damage
 							mcl_burning.extinguish(self.object)
 							self.object:remove()
@@ -334,9 +332,6 @@ local arrow_entity = {
 
 		-- Process as projectile
 		vl_projectile.update_projectile(self, dtime)
-
-		-- Update yaw
-		local vel = self.object:get_velocity()
 	end,
 
 	-- Force recheck of stuck arrows when punched.

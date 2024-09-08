@@ -22,8 +22,8 @@ function mod.projectile_physics(obj, entity_def, v, a)
 		v,a = vl_physics.apply_entity_environmental_physics(obj)
 	else
 		-- Simple physics
-		if not v then v = obj:get_velocity() end
-		if not a then a = vector.zero() end
+		v = v or obj:get_velocity()
+		a = a or vector.zero()
 
 		if not entity_def.ignore_gravity then
 			a = a + vector.new(0,-GRAVITY,0)
@@ -72,8 +72,7 @@ function mod.update_projectile(self, dtime)
 	-- Run behaviors
 	local behaviors = entity_vl_projectile.behaviors or {}
 	for i=1,#behaviors do
-		local behavior = behaviors[i]
-		if behavior(self, dtime, entity_def, entity_vl_projectile) then
+		if behaviors[i](self, dtime, entity_def, entity_vl_projectile) then
 			return
 		end
 	end
@@ -81,8 +80,6 @@ function mod.update_projectile(self, dtime)
 	mod.projectile_physics(self.object, entity_def)
 end
 
-local function no_op()
-end
 local function damage_particles(pos, is_critical)
 	if is_critical then
 		minetest.add_particlespawner({
@@ -102,20 +99,6 @@ local function damage_particles(pos, is_critical)
 		})
 	end
 end
-local function random_arrow_positions(positions, placement)
-	if positions == "x" then
-		return math.random(-4, 4)
-	elseif positions == "y" then
-		return math.random(0, 10)
-	end
-	if placement == "front" and positions == "z" then
-		return 3
-	elseif placement == "back" and positions == "z" then
-		return -3
-	end
-	return 0
-end
-
 local function random_hit_positions(positions, placement)
 	if positions == "x" then
 		return math.random(-4, 4)
@@ -170,8 +153,8 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	local placement = self._placement == 1 and "front" or "back"
 	self._rotation_station = self.placement == 1 and -90 or 90
 	self._in_player = true
-	self._y_position = random_arrow_positions("y", placement)
-	self._x_position = random_arrow_positions("x", placement)
+	self._y_position = random_hit_positions("y", placement)
+	self._x_position = random_hit_positions("x", placement)
 	if self._y_position > 6 and self._x_position < 2 and self._x_position > -2 then
 		self._attach_parent = "Head"
 		self._y_position = self._y_position - 6
@@ -187,10 +170,10 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 		self._attach_parent = "Body"
 	end
 	self._z_rotation = math.random(-30, 30)
-	self._y_rotation = math.random( -30, 30)
+	self._y_rotation = math.random(-30, 30)
 	self.object:set_attach(
 		entity, self._attach_parent,
-		vector.new(self._x_position, self._y_position, random_arrow_positions("z", placement)),
+		vector.new(self._x_position, self._y_position, random_hit_positions("z", placement)),
 		vector.new(0, self._rotation_station + self._y_rotation, self._z_rotation)
 	)
 end
@@ -226,12 +209,12 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	end
 
 	-- Call entity collied hook
-	local hook = projectile_def.on_collide_with_solid or no_op
-	hook(self, pos, node, node_def)
+	local hook = projectile_def.on_collide_with_solid
+	if hook then hook(self, pos, node, node_def) end
 
 	-- Call node collided hook
-	local hook = ((node_def and node_def._vl_projectile) or {}).on_collide or no_op
-	hook(self, pos, node, node_def)
+	local hook = node_def and node_def._vl_projectile and node_def._vl_projectile.on_collide
+	if hook then hook(self, pos, node, node_def) end
 
 	-- Play sounds
 	local sounds = projectile_def.sounds or {}
@@ -280,7 +263,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 			do_damage = true
 
 			handle_player_sticking(self, entity_def, projectile_def, object)
-		elseif object_lua and (object_lua.is_mob == true or object_lua._hittable_by_projectile) and (self_vl_projectile.owner ~= object) then
+		elseif object_lua and (object_lua.is_mob or object_lua._hittable_by_projectile) and self_vl_projectile.owner ~= object then
 			do_damage = true
 		end
 
@@ -298,16 +281,17 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	end
 
 	-- Call entity collision hook
-	(projectile_def.on_collide_with_entity or no_op)(self, pos, object)
+	local hook = projectile_def.on_collide_with_entity
+	if hook then hook(self, pos, object) end
 
 	-- Call reverse entity collision hook
 	local other_entity_def = minetest.registered_entities[object.name] or {}
 	local other_entity_vl_projectile = other_entity_def._vl_projectile or {}
-	local hook = (other_entity_vl_projectile or {}).on_collide or no_op
-	hook(object, self)
+	local hook = other_entity_vl_projectile and other_entity_vl_projectile.on_collide
+	if hook then hook(object, self) end
 
 	-- Play sounds
-	local sounds = (projectile_def.sounds or {})
+	local sounds = projectile_def.sounds or {}
 	local sound = sounds.on_entity_collion or sounds.on_collision
 	if type(sound) == "function" then sound = sound(self, entity_def, projectile_def, "entity", object) end
 	if sound then
@@ -339,7 +323,7 @@ function mod.collides_with_entities(self, dtime, entity_def, projectile_def)
 		if entity and entity.name ~= self.object:get_luaentity().name then
 			if object:is_player() and owner ~= object:get_player_name() then
 				return handle_entity_collision(self, entity_def, projectile_def, object)
-			elseif (entity.is_mob == true or entity._hittable_by_projectile) and (owner ~= object) then
+			elseif (entity.is_mob or entity._hittable_by_projectile) and owner ~= object then
 				return handle_entity_collision(self, entity_def, projectile_def, object)
 			end
 		end
@@ -347,8 +331,7 @@ function mod.collides_with_entities(self, dtime, entity_def, projectile_def)
 end
 
 function mod.raycast_collides_with_entities(self, dtime, entity_def, projectile_def)
-	local closest_object
-	local closest_distance
+	local closest_object, closest_distance
 
 	local pos = self.object:get_pos()
 	local arrow_dir = self.object:get_velocity()
@@ -377,8 +360,14 @@ function mod.create(entity_id, options)
 	local obj = minetest.add_entity(pos, entity_id, options.staticdata)
 
 	-- Set initial velocity and acceleration
-	local v = vector.multiply(options.dir or vector.zero(), options.velocity or 0)
-	local a = vector.multiply(v, -math.abs(options.drag))
+	local a, v
+	if options.dir then
+		v = vector.multiply(options.dir, options.velocity or 0)
+		a = vector.multiply(v, -math.abs(options.drag))
+	else
+		a = vector.zero()
+		v = a
+	end
 	mod.projectile_physics(obj, entity_def, v, a)
 
 	-- Update projectile parameters

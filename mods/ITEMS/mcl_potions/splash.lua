@@ -125,14 +125,16 @@ function mcl_potions.register_splash(name, descr, color, def)
 
 				-- Apply effect list
 				if def._effect_list then
-					local ef_level
-					local dur
 					for name, details in pairs(def._effect_list) do
+						local ef_level
+						local dur
+
 						if details.uses_level then
-							ef_level = details.level + details.level_scaling * (potency)
+							ef_level = details.level + details.level_scaling * potency
 						else
 							ef_level = details.level
 						end
+
 						if details.dur_variable then
 							dur = details.dur * math.pow(mcl_potions.PLUS_FACTOR, plus)
 							if potency>0 and details.uses_level then
@@ -142,9 +144,11 @@ function mcl_potions.register_splash(name, descr, color, def)
 						else
 							dur = details.dur
 						end
+
 						if details.effect_stacks then
 							ef_level = ef_level + mcl_potions.get_effect_level(obj, name)
 						end
+
 						if rad > 0 then
 							mcl_potions.give_effect_by_level(name, obj, ef_level, REDUX_MAP[rad]*dur)
 						else
