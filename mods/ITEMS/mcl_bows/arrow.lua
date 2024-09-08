@@ -93,8 +93,9 @@ local function stuck_arrow_on_step(self, dtime)
 	for _,obj in ipairs(objects) do
 		if obj:is_player() then
 			if self._collectable and not minetest.is_creative_enabled(obj:get_player_name()) then
-				if obj:get_inventory():room_for_item("main", "mcl_bows:arrow") then
-					obj:get_inventory():add_item("main", "mcl_bows:arrow")
+				local arrow_item = self._arrow_item
+				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
+					obj:get_inventory():add_item("main", arrow_item)
 					minetest.sound_play("item_drop_pickup", {
 						pos = pos,
 						max_hear_distance = 16,
