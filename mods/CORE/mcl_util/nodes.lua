@@ -50,9 +50,6 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 
 	local above = pointed_thing.above
 	local under = pointed_thing.under
-	local is_x = (above.x ~= under.x)
-	local is_y = (above.y ~= under.y)
-	local is_z = (above.z ~= under.z)
 
 	local anode = minetest.get_node_or_nil(above)
 	if not anode then
@@ -77,11 +74,11 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 	end
 
 	local p2
-	if is_y then
+	if above.y ~= under.y then
 		p2 = 0
-	elseif is_x then
+	elseif above.x ~= under.x then
 		p2 = 12
-	elseif is_z then
+	elseif above.z ~= under.z then
 		p2 = 6
 	end
 	minetest.set_node(pos, {name = wield_name, param2 = p2})
@@ -108,26 +105,16 @@ end
 -- * param2: param2 of that node
 -- * side: Which "half" the investigated node is. "left" or "right"
 function mcl_util.get_double_container_neighbor_pos(pos, param2, side)
-	if side == "right" then
-		if param2 == 0 then
-			return vector.offset(pos, -1, 0, 0)
-		elseif param2 == 1 then
-			return vector.offset(pos,  0, 0,  1)
-		elseif param2 == 2 then
-			return vector.offset(pos,  1, 0,  0)
-		elseif param2 == 3 then
-			return vector.offset(pos,  0, 0, -1)
-		end
-	else
-		if param2 == 0 then
-			return vector.offset(pos,  1, 0,  0)
-		elseif param2 == 1 then
-			return vector.offset(pos,  0, 0, -1)
-		elseif param2 == 2 then
-			return vector.offset(pos, -1, 0,  0)
-		elseif param2 == 3 then
-			return vector.offset(pos,  0, 0,  1)
-		end
+	local sign = (side == "right" and 1 or -1)
+
+	if param2 == 0 then
+		return vector.offset(pos, -sign, 0, 0)
+	elseif param2 == 1 then
+		return vector.offset(pos,  0, 0,  sign)
+	elseif param2 == 2 then
+		return vector.offset(pos,  sign, 0,  0)
+	elseif param2 == 3 then
+		return vector.offset(pos,  0, 0, -sign)
 	end
 end
 
@@ -147,9 +134,11 @@ function mcl_util.generate_on_place_plant_function(condition)
 
 		-- Call on_rightclick if the pointed node defines it
 		local node = minetest.get_node(pointed_thing.under)
+		local node_def = minetest.registered_nodes[node.name]
+
 		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			if node_def and node_def.on_rightclick then
+				return node_def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
 			end
 		end
 
@@ -194,10 +183,6 @@ end
 ---@param func fun(node_name: string): boolean Return `true` if node must not replace the buildable_to node which have `node_name`
 ---@return fun(itemstack: ItemStack, placer: ObjectRef, pointed_thing: pointed_thing, param2: integer): ItemStack?
 function mcl_util.bypass_buildable_to(func)
-	--------------------------
-	-- MINETEST CODE: UTILS --
-	--------------------------
-
 	local function copy_pointed_thing(pointed_thing)
 		return {
 			type  = pointed_thing.type,
@@ -256,16 +241,11 @@ function mcl_util.bypass_buildable_to(func)
 		local p2 = vector.add(p, d)
 		local nn = core.get_node(p2).name
 		local def2 = core.registered_nodes[nn]
-		if def2 and not def2.walkable then
-			return false
-		end
-		return true
+
+		return not def2 or def2.walkable
 	end
 
 	return function(itemstack, placer, pointed_thing, param2)
-		-------------------
-		-- MINETEST CODE --
-		-------------------
 		local def = itemstack:get_definition()
 		if def.type ~= "node" or pointed_thing.type ~= "node" then
 			return itemstack
@@ -284,10 +264,8 @@ function mcl_util.bypass_buildable_to(func)
 			return itemstack
 		end
 
-		local olddef_under = minetest.registered_nodes[oldnode_under.name]
-		olddef_under = olddef_under or minetest.nodedef_default
-		local olddef_above = minetest.registered_nodes[oldnode_above.name]
-		olddef_above = olddef_above or minetest.nodedef_default
+		local olddef_under = minetest.registered_nodes[oldnode_under.name] or minetest.nodedef_default
+		local olddef_above = minetest.registered_nodes[oldnode_above.name] or minetest.nodedef_default
 
 		if not olddef_above.buildable_to and not olddef_under.buildable_to then
 			log("info", playername .. " tried to place"
@@ -295,10 +273,6 @@ function mcl_util.bypass_buildable_to(func)
 				.. ", replacing " .. oldnode_above.name)
 			return itemstack
 		end
-
-		---------------------
-		-- CUSTOMIZED CODE --
-		---------------------
 
 		-- Place above pointed node
 		local place_to = vector.copy(above)
@@ -308,10 +282,6 @@ function mcl_util.bypass_buildable_to(func)
 			log("info", "node under is buildable to")
 			place_to = vector.copy(under)
 		end
-
-		-------------------
-		-- MINETEST CODE --
-		-------------------
 
 		if minetest.is_protected(place_to, playername) then
 			log("action", playername
@@ -330,8 +300,7 @@ function mcl_util.bypass_buildable_to(func)
 			newnode.param2 = def.place_param2
 		elseif (def.paramtype2 == "wallmounted" or
 			def.paramtype2 == "colorwallmounted") and not param2 then
-			local dir = vector.subtract(under, above)
-			newnode.param2 = minetest.dir_to_wallmounted(dir)
+			newnode.param2 = minetest.dir_to_wallmounted(vector.subtract(under, above))
 			-- Calculate the direction for furnaces and chests and stuff
 		elseif (def.paramtype2 == "facedir" or
 			def.paramtype2 == "colorfacedir" or
@@ -339,8 +308,7 @@ function mcl_util.bypass_buildable_to(func)
 			def.paramtype2 == "color4dir") and not param2 then
 			local placer_pos = placer and placer:get_pos()
 			if placer_pos then
-				local dir = vector.subtract(above, placer_pos)
-				newnode.param2 = minetest.dir_to_facedir(dir)
+				newnode.param2 = minetest.dir_to_facedir(vector.subtract(above, placer_pos))
 				log("info", "facedir: " .. newnode.param2)
 			end
 		end
@@ -423,20 +391,20 @@ function mcl_util.bypass_buildable_to(func)
 	end
 end
 
-local palette_indexes = {grass_palette_index = 0, foliage_palette_index = 0, water_palette_index = 0}
+local DEFAULT_PALETTE_INDEXES = {grass_palette_index = 0, foliage_palette_index = 0, water_palette_index = 0}
 function mcl_util.get_palette_indexes_from_pos(pos)
 	local biome_data = minetest.get_biome_data(pos)
 	local biome = biome_data.biome
 	local biome_name = minetest.get_biome_name(biome)
 	local reg_biome = minetest.registered_biomes[biome_name]
 	if reg_biome and reg_biome._mcl_grass_palette_index and reg_biome._mcl_foliage_palette_index and reg_biome._mcl_water_palette_index then
-		local gpi = reg_biome._mcl_grass_palette_index
-		local fpi = reg_biome._mcl_foliage_palette_index
-		local wpi = reg_biome._mcl_water_palette_index
-		local palette_indexes = {grass_palette_index = gpi, foliage_palette_index = fpi, water_palette_index = wpi}
-		return palette_indexes
+		return {
+			grass_palette_index = reg_biome._mcl_grass_palette_index,
+			foliage_palette_index = reg_biome._mcl_foliage_palette_index,
+			water_palette_index = reg_biome._mcl_water_palette_index,
+		}
 	else
-		return palette_indexes
+		return DEFAULT_PALETTE_INDEXES
 	end
 end
 

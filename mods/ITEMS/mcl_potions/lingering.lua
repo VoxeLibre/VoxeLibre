@@ -220,7 +220,7 @@ function mcl_potions.register_lingering(name, descr, color, def)
 				on_collide(self, pos)
 			end,
 			sounds = {
-				{"mcl_potions_breaking_glass", {max_hear_distance = 16, gain = 1}},
+				on_collision = {"mcl_potions_breaking_glass", {max_hear_distance = 16, gain = 1}},
 			},
 		},
 	})

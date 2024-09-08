@@ -67,9 +67,8 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 
 			local v = self.object:get_velocity()
 			if node_def and node_def.walkable then
-				local vc = table.copy(v) -- vector for calculating
+				local vc = vector.normalize(v) -- vector for calculating
 				-- Node is walkable, we have to find a place somewhere outside of that node
-				vc = vector.normalize(vc)
 
 				-- Zero-out the two axes with a lower absolute value than the axis with the strongest force
 				local lv, ld = math.abs(vc.y), "y"
