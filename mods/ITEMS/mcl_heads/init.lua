@@ -253,6 +253,10 @@ for i=1,#old_heads_all do
         old_heads_angled[#old_heads_angled+1] = old_heads_all[i]..mcl_heads.FLOOR_DEGREES[j]
     end
 end
+-- add the angled heads to old_heads_all
+for i=1,#old_heads_angled do
+	old_heads_all[#old_heads_all+1] = old_heads_angled[i]
+end
 
 local facedir_to_degrotate = {0, 180, 120, 60}
 minetest.register_lbm({
