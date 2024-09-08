@@ -216,7 +216,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	hook(self, pos, node, node_def)
 
 	-- Call node collided hook
-	local hook = (node_def._vl_projectile or {}).on_collide or no_op
+	local hook = ((node_def and node_def._vl_projectile) or {}).on_collide or no_op
 	hook(self, pos, node, node_def)
 
 	-- Play sounds
