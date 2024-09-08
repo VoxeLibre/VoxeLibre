@@ -7,11 +7,6 @@ local YAW_OFFSET = -math.pi/2
 local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 local enable_pvp = minetest.settings:get_bool("enable_pvp")
 
-local function dir_to_pitch(dir)
-	local xz = math.abs(dir.x) + math.abs(dir.z)
-	return -math.atan2(-dir.y, xz)
-end
-
 function mod.projectile_physics(obj, entity_def, v, a)
 	local le = obj:get_luaentity()
 	local entity_def = minetest.registered_entities[le.name]
@@ -54,7 +49,7 @@ function mod.projectile_physics(obj, entity_def, v, a)
 	-- Update projectile yaw to match velocity direction
 	if v and le and not le._stuck then
 		local yaw = minetest.dir_to_yaw(v) + YAW_OFFSET
-		local pitch = dir_to_pitch(v)
+		local pitch = math.asin(vector.normalize(dir).y)
 		obj:set_rotation(vector.new(0,yaw,pitch))
 	end
 end
