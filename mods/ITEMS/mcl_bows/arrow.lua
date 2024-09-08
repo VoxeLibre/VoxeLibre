@@ -310,8 +310,8 @@ local arrow_entity = {
 			minetest.add_particlespawner({
 				amount = 20,
 				time = .2,
-				minpos = vector.new(0,0,0),
-				maxpos = vector.new(0,0,0),
+				minpos = vector.zero(),
+				maxpos = vector.zero(),
 				minvel = vector.new(-0.1,-0.1,-0.1),
 				maxvel = vector.new(0.1,0.1,0.1),
 				minexptime = 0.5,
