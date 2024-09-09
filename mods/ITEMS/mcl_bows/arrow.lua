@@ -297,7 +297,7 @@ local arrow_entity = {
 		end
 
 		local pos = self.object:get_pos()
-		if not self._start_pos or pos and vector.distance(self._start_pos, pos) > 1 then
+		if not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5 then
 			self._allow_punch = true
 		end
 
