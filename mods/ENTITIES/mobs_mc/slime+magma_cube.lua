@@ -1,111 +1,30 @@
 --License for code WTFPL and otherwise stated in readmes
 local S = minetest.get_translator("mobs_mc")
 
-local MAPBLOCK_SIZE = 16
-
-local seed = minetest.get_mapgen_setting("seed")
-
-local slime_chunk_match
+local MAPBLOCK_SIZE = 16 -- size for slime chunk logic
+local SEED_OFFSET = 362 -- module specific seed
+local world_seed = (minetest.get_mapgen_setting("seed") + SEED_OFFSET) % 4294967296
+-- slime density, where default N=10 is every 10th chunk
+local slime_ratio = tonumber(minetest.settings:get("slime_ratio")) or 10
+-- use 3D chunking instead of 2d chunks
+local slime_3d_chunks = minetest.settings:get_bool("slime_3d_chunks", false)
+-- maximum light level, for slimes in caves only, not magma/swamps
+local slime_max_light = (tonumber(minetest.settings:get("slime_max_light")) or minetest.LIGHT_MAX) + 1
+-- maximum light level for swamp spawning
+local swamp_light_max = 7
+-- maximum height to spawn in slime chunks
 local slime_chunk_spawn_max = mcl_worlds.layer_to_y(40)
-local x_modifier
-local z_modifier
 
-local function split_by_char (inputstr, sep, limit)
-	if sep == nil then
-		sep = "%d"
-	end
-	local t = {}
-
-	local i = 0
-	for str in string.gmatch(inputstr, "(["..sep.."])") do
-		i = i --+ 1
-		table.insert(t, tonumber(str))
-		if limit and i >= limit then
-			break
-		end
-	end
-	return t
-end
-
---Seed: "16002933932875202103" == random seed
---Seed: "1807191622654296300" == cheese
---Seed: "1" = 1
-local function process_seed (seed)
-	--minetest.log("seed: " .. seed)
-
-	local split_chars = split_by_char(tostring(seed), nil, 10)
-
-	slime_chunk_match = split_chars[1]
-	x_modifier = split_chars[2]
-	z_modifier = split_chars[3]
-
-	--minetest.log("x_modifier: " .. tostring(x_modifier))
-	--minetest.log("z_modifier: " .. tostring(z_modifier))
-	--minetest.log("slime_chunk_match: " .. tostring(slime_chunk_match))
-end
-
-local processed = process_seed (seed)
-
-
-local function convert_to_chunk_value (co_ord, modifier)
-	local converted = math.floor(math.abs(co_ord) / MAPBLOCK_SIZE)
-
-	if modifier then
-		converted = (converted + modifier)
-	end
-	converted = converted % 10
-
-	--minetest.log("co_ord: " .. co_ord)
-	--minetest.log("converted: " .. converted)
-	return converted
-end
-
-assert(convert_to_chunk_value(-16) == 1, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(-15) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(-1) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(0) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(1) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(15) == 0, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(16) == 1, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(31) == 1, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(32) == 2, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(1599) == 9, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(1600) == 0, "Incorrect convert_to_chunk_value result")
-
-assert(convert_to_chunk_value(0,9) == 9, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(16,5) == 6, "Incorrect convert_to_chunk_value result")
-assert(convert_to_chunk_value(1599,4) == 3, "Incorrect convert_to_chunk_value result")
-
-local function calculate_chunk_value (pos, x_mod, z_mod)
-	local chunk_val = math.abs(convert_to_chunk_value(pos.x, x_mod) - convert_to_chunk_value(pos.z, z_mod)) % 10
-	return chunk_val
-end
-
-assert(calculate_chunk_value(vector.new(0,0,0)) == 0, "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(0,0,0), 1, 1) == 0, "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(0,0,0), 2, 1) == 1, "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(64,0,16)) == (4-1), "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(16,0,64)) == (3), "calculate_chunk_value failed")
-assert(calculate_chunk_value(vector.new(-160,0,-160)) == 0, "calculate_chunk_value failed")
+local floor = math.floor
+local max = math.max
 
 local function is_slime_chunk(pos)
-	if not pos then return end
-
-	local chunk_val = calculate_chunk_value (pos, x_modifier, z_modifier)
-	local slime_chunk = chunk_val == slime_chunk_match
-
-	--minetest.log("x: " ..pos.x ..  ", z:" .. pos.z)
-
-	--minetest.log("seed slime_chunk_match: " .. tostring(slime_chunk_match))
-	--minetest.log("chunk_val: " .. tostring(chunk_val))
-	--minetest.log("Is slime chunk: " .. tostring(slime_chunk))
-	return slime_chunk
+	if not pos then return end -- no position given
+	if slime_ratio == 0 then return end -- no slime chunks
+	if slime_ratio <= 1 then return true end -- slime everywhere
+	local bpos = vector.new(floor(pos.x / MAPBLOCK_SIZE), slime_3d_chunks and floor(pos.y / MAPBLOCK_SIZE) or 0, floor(pos.z / MAPBLOCK_SIZE))
+	return PcgRandom(minetest.hash_node_position(bpos) + world_seed):next(0,1e9)/1e9 * slime_ratio < 1
 end
-
-local check_position = function (pos)
-	return is_slime_chunk(pos)
-end
-
 
 -- Returns a function that spawns children in a circle around pos.
 -- To be used as on_die callback.
@@ -116,19 +35,15 @@ end
 -- eject_speed: Initial speed of child mob away from "mother" mob
 local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	return function(self, pos)
-		local posadd, newpos, dir
-		if not eject_speed then
-			eject_speed = 1
-		end
+		eject_speed = eject_speed or 1
 		local mndef = minetest.registered_nodes[minetest.get_node(pos).name]
 		local mother_stuck = mndef and mndef.walkable
 		local angle = math.random() * math.pi * 2
 		local children = {}
 		local spawn_count = math.random(2, 4)
 		for i = 1, spawn_count do
-			dir = vector.new(math.cos(angle), 0, math.sin(angle))
-			posadd = vector.normalize(dir) * spawn_distance
-			newpos = pos + posadd
+			local dir = vector.new(math.cos(angle), 0, math.sin(angle))
+			local newpos = pos + dir * spawn_distance
 			-- If child would end up in a wall, use position of the "mother", unless
 			-- the "mother" was stuck as well
 			if not mother_stuck then
@@ -162,16 +77,12 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	end
 end
 
-local swamp_light_max = 7
-
+-- two different rules, underground slime chunks and regular swamp spawning
 local function slime_spawn_check(pos, environmental_light, artificial_light, sky_light)
-	local maxlight = swamp_light_max
-
 	if pos.y <= slime_chunk_spawn_max and is_slime_chunk(pos) then
-		maxlight = minetest.LIGHT_MAX + 1
+		return max(artificial_light, sky_light) <= slime_max_light
 	end
-
-	return math.max(artificial_light, sky_light) <= maxlight
+	return max(artificial_light, sky_light) <= swamp_light_max
 end
 
 -- Slime
@@ -322,13 +233,13 @@ mcl_mobs:spawn_specific(
 "ground",
 cave_biomes,
 0,
-minetest.LIGHT_MAX+1,
+slime_max_light,
 30,
 1000,
 4,
 cave_min,
 cave_max,
-nil, nil, check_position)
+nil, nil, is_slime_chunk)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_tiny",
@@ -349,13 +260,13 @@ mcl_mobs:spawn_specific(
 "ground",
 cave_biomes,
 0,
-minetest.LIGHT_MAX+1,
+slime_max_light,
 30,
 1000,
 4,
 cave_min,
 cave_max,
-nil, nil, check_position)
+nil, nil, is_slime_chunk)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_small",
@@ -376,13 +287,13 @@ mcl_mobs:spawn_specific(
 "ground",
 cave_biomes,
 0,
-minetest.LIGHT_MAX+1,
+slime_max_light,
 30,
 1000,
 4,
 cave_min,
 cave_max,
-nil, nil, check_position)
+nil, nil, is_slime_chunk)
 
 mcl_mobs:spawn_specific(
 "mobs_mc:slime_big",
@@ -559,3 +470,4 @@ mcl_mobs:non_spawn_specific("mobs_mc:magma_cube_big","overworld",0, minetest.LIG
 mcl_mobs.register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")
 
 -- FIXME: add spawn eggs for small and tiny slimes and magma cubes
+

@@ -221,6 +221,13 @@ mcl_mobs_overworld_threshold (Artificial light threshold to stop monster spawns 
 mcl_mobs_overworld_sky_threshold (Skylight threshold to stop monster spawns in the Overworld) int 7 0 14
 mcl_mobs_overworld_passive_threshold  (Combined light threshold to stop animal and npc spawns in the Overworld) int 7 0 14
 
+# Slime chunk ratio 1:N, default is 1 in 10, 0 to disable cave slime
+slime_ratio (Slime chunk ratio) float 10.0 0.0
+# Use 3d chunking instead of 2d chunking
+slime_3d_chunks (Slime chunk placement in 3d) bool false
+# Slime chunk maximum light for spawning, default is no limit
+slime_max_light (Maximum light level in slime chunks) int 14 0 14
+
 [Audio]
 # Enable flame sound.
 flame_sound (Flame sound) bool true
