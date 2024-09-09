@@ -3,11 +3,8 @@
 mcl_dungeons = {}
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
-
 -- Are dungeons disabled?
-if mcl_vars.mg_dungeons == false or mg_name == "singlenode" then
-	return
-end
+if mcl_vars.mg_dungeons == false or mg_name == "singlenode" then return end
 
 --lua locals
 --minetest
@@ -19,6 +16,7 @@ local get_meta         = minetest.get_meta
 local emerge_area      = minetest.emerge_area
 
 --vector
+local vector_new       = vector.new
 local vector_add       = vector.add
 local vector_subtract  = vector.subtract
 
@@ -43,24 +41,17 @@ local max_y = mcl_vars.mg_overworld_max - 1
 local attempts = math_ceil(((mcl_vars.chunksize * mcl_vars.MAP_BLOCKSIZE) ^ 3) / 8192) -- 63 = 80*80*80/8192
 
 local dungeonsizes = {
-	{ x=5, y=4, z=5},
-	{ x=5, y=4, z=7},
-	{ x=7, y=4, z=5},
-	{ x=7, y=4, z=7},
+	vector_new(5, 4, 5),
+	vector_new(5, 4, 7),
+	vector_new(7, 4, 5),
+	vector_new(7, 4, 7),
 }
 
---[[local dirs = {
-	{ x= 1, y=0, z= 0 },
-	{ x= 0, y=0, z= 1 },
-	{ x=-1, y=0, z= 0 },
-	{ x= 0, y=0, z=-1 },
-}]]
-
 local surround_vectors = {
-	{ x=-1, y=0, z=0 },
-	{ x=1, y=0, z=0 },
-	{ x=0, y=0, z=-1 },
-	{ x=0, y=0, z=1 },
+	vector_new(-1, 0,  0),
+	vector_new( 1, 0,  0),
+	vector_new( 0, 0, -1),
+	vector_new( 0, 0,  1),
 }
 
 local loottable =
@@ -138,8 +129,8 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	if check then
 		for tx = x+1, x+dim.x do
 		for tz = z+1, z+dim.z do
-			local fdef = registered_nodes[get_node({x = tx, y = y_floor  , z = tz}).name]
-			local cdef = registered_nodes[get_node({x = tx, y = y_ceiling, z = tz}).name]
+			local fdef = registered_nodes[get_node(vector_new(tx, y_floor  , tz)).name]
+			local cdef = registered_nodes[get_node(vector_new(tx, y_ceiling, tz)).name]
 			if not fdef or not fdef.walkable or not cdef or not cdef.walkable then return false end
 		end
 		end
@@ -155,25 +146,25 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 
 	local x2,z2 = x+dim.x+1, z+dim.z+1
 
-	if get_node({x=x, y=y+1, z=z}).name == "air" and get_node({x=x, y=y+2, z=z}).name == "air" then
+	if get_node(vector_new(x, y+1, z)).name == "air" and get_node(vector_new(x, y+2, z)).name == "air" then
 		openings_counter = openings_counter + 1
 		if not openings[x] then openings[x]={} end
 		openings[x][z] = true
 		table_insert(corners, {x=x, z=z})
 	end
-	if get_node({x=x2, y=y+1, z=z}).name == "air" and get_node({x=x2, y=y+2, z=z}).name == "air" then
+	if get_node(vector_new(x2, y+1, z)).name == "air" and get_node(vector_new(x2, y+2, z)).name == "air" then
 		openings_counter = openings_counter + 1
 		if not openings[x2] then openings[x2]={} end
 		openings[x2][z] = true
 		table_insert(corners, {x=x2, z=z})
 	end
-	if get_node({x=x, y=y+1, z=z2}).name == "air" and get_node({x=x, y=y+2, z=z2}).name == "air" then
+	if get_node(vector_new(x, y+1, z2)).name == "air" and get_node(vector_new(x, y+2, z2)).name == "air" then
 		openings_counter = openings_counter + 1
 		if not openings[x] then openings[x]={} end
 		openings[x][z2] = true
 		table_insert(corners, {x=x, z=z2})
 	end
-	if get_node({x=x2, y=y+1, z=z2}).name == "air" and get_node({x=x2, y=y+2, z=z2}).name == "air" then
+	if get_node(vector_new(x2, y+1, z2)).name == "air" and get_node(vector_new(x2, y+2, z2)).name == "air" then
 		openings_counter = openings_counter + 1
 		if not openings[x2] then openings[x2]={} end
 		openings[x2][z2] = true
@@ -181,13 +172,13 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	end
 
 	for wx = x+1, x+dim.x do
-		if get_node({x=wx, y=y+1, z=z}).name == "air" and get_node({x=wx, y=y+2, z=z}).name == "air" then
+		if get_node(vector_new(wx, y+1, z)).name == "air" and get_node(vector_new(wx, y+2, z)).name == "air" then
 			openings_counter = openings_counter + 1
 			if check and openings_counter > 5 then return end
 			if not openings[wx] then openings[wx]={} end
 			openings[wx][z] = true
 		end
-		if get_node({x=wx, y=y+1, z=z2}).name == "air" and get_node({x=wx, y=y+2, z=z2}).name == "air" then
+		if get_node(vector_new(wx, y+1, z2)).name == "air" and get_node(vector_new(wx, y+2, z2)).name == "air" then
 			openings_counter = openings_counter + 1
 			if check and openings_counter > 5 then return end
 			if not openings[wx] then openings[wx]={} end
@@ -195,13 +186,13 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 		end
 	end
 	for wz = z+1, z+dim.z do
-		if get_node({x=x, y=y+1, z=wz}).name == "air" and get_node({x=x, y=y+2, z=wz}).name == "air" then
+		if get_node(vector_new(x, y+1, wz)).name == "air" and get_node(vector_new(x, y+2, wz)).name == "air" then
 			openings_counter = openings_counter + 1
 			if check and openings_counter > 5 then return end
 			if not openings[x] then openings[x]={} end
 			openings[x][wz] = true
 		end
-		if get_node({x=x2, y=y+1, z=wz}).name == "air" and get_node({x=x2, y=y+2, z=wz}).name == "air" then
+		if get_node(vector_new(x2, y+1, wz)).name == "air" and get_node(vector_new(x2, y+2, wz)).name == "air" then
 			openings_counter = openings_counter + 1
 			if check and openings_counter > 5 then return end
 			if not openings[x2] then openings[x2]={} end
@@ -243,7 +234,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	-- Check conditions. If okay, start generating
 	if check and (openings_counter < 1 or openings_counter > 5) then return end
 
-	minetest.log("action","[mcl_dungeons] Placing new dungeon at "..minetest.pos_to_string({x=x,y=y,z=z}))
+	minetest.log("action","[mcl_dungeons] Placing new dungeon at "..minetest.pos_to_string(vector_new(x, y, z)))
 	-- Okay! Spawning starts!
 
 	-- Remember spawner chest positions to set metadata later
@@ -276,7 +267,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	local currentChest = 1
 
 	-- Calculate the mob spawner position, to be re-used for later
-	local sp = {x = x + math_ceil(dim.x/2), y = y+1, z = z + math_ceil(dim.z/2)}
+	local sp = vector_new(x + math_ceil(dim.x/2), y+1, z + math_ceil(dim.z/2))
 	local rn = registered_nodes[get_node(sp).name]
 	if rn and rn.is_ground_content then
 		table_insert(spawner_posses, sp)
@@ -288,7 +279,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	for tx = x, maxx do
 	for tz = z, maxz do
 	for ty = y, maxy do
-		local p = {x = tx, y=ty, z=tz}
+		local p = vector_new(tx, ty, tz)
 
 		-- Do not overwrite nodes with is_ground_content == false (e.g. bedrock)
 		-- Exceptions: cobblestone and mossy cobblestone so neighborings dungeons nicely connect to each other
@@ -327,7 +318,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 			else
 				if (ty==y+1) and (tx==x+1 or tx==maxx-1 or tz==z+1 or tz==maxz-1) and (currentChest < totalChests + 1) and (chestSlots[currentChest] == chestSlotCounter) then
 					currentChest = currentChest + 1
-					table_insert(chests, {x=tx, y=ty, z=tz})
+					table_insert(chests, vector_new(tx, ty, tz))
 				else
 					swap_node(p, {name = "air"})
 				end
@@ -337,7 +328,7 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 				-- Place next chest at the wall (if it was its chosen wall slot)
 				if forChest and (currentChest < totalChests + 1) and (chestSlots[currentChest] == chestSlotCounter) then
 					currentChest = currentChest + 1
-					table_insert(chests, {x=tx, y=ty, z=tz})
+					table_insert(chests, vector_new(tx, ty, tz))
 				-- else
 					--swap_node(p, {name = "air"})
 				end
@@ -411,8 +402,8 @@ local function dungeons_nodes(minp, maxp, blockseed)
 			local x = pr:next(minp.x, maxp.x-dim.x-1)
 			local y = pr:next(ymin  , ymax  -dim.y-1)
 			local z = pr:next(minp.z, maxp.z-dim.z-1)
-			local p1 = {x=x,y=y,z=z}
-			local p2 = {x = x+dim.x+1, y = y+dim.y+1, z = z+dim.z+1}
+			local p1 = vector_new(x, y, z)
+			local p2 = vector_new(x+dim.x+1, y+dim.y+1, z+dim.z+1)
 			minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
 			emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr})
 		end
@@ -422,7 +413,7 @@ end
 function mcl_dungeons.spawn_dungeon(p1, _, pr)
 	if not p1 or not pr or not p1.x or not p1.y or not p1.z then return end
 	local dim = dungeonsizes[pr:next(1, #dungeonsizes)]
-	local p2 = {x = p1.x+dim.x+1, y = p1.y+dim.y+1, z = p1.z+dim.z+1}
+	local p2 = vector_new(p1.x+dim.x+1, p1.y+dim.y+1, p1.z+dim.z+1)
 	minetest.log("verbose","[mcl_dungeons] size=" ..minetest.pos_to_string(dim) .. ", emerge from "..minetest.pos_to_string(p1) .. " to " .. minetest.pos_to_string(p2))
 	emerge_area(p1, p2, ecb_spawn_dungeon, {p1=p1, p2=p2, dim=dim, pr=pr, dontcheck=true})
 end
