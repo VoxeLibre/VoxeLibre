@@ -324,7 +324,7 @@ function mod.collides_with_entities(self, dtime, entity_def, projectile_def)
 		local object = objects[i]
 		local entity = object:get_luaentity()
 
-		if entity and entity.name ~= self.object:get_luaentity().name then
+		if object ~= self.object and (not entity or entity.name ~= self.name) then
 			if object:is_player() then
 				return handle_entity_collision(self, entity_def, projectile_def, object)
 			elseif (entity.is_mob or entity._hittable_by_projectile) then
