@@ -136,37 +136,6 @@ if string.len(mg_flags_str) > 0 then
 end
 minetest.set_mapgen_setting("mg_flags", mg_flags_str, true)
 
-local function between(x, y, z) -- x is between y and z (inclusive)
-    return y <= x and x <= z
-end
-
-local function in_cube(tpos,wpos1,wpos2)
-	local xmax=wpos2.x
-	local xmin=wpos1.x
-
-	local ymax=wpos2.y
-	local ymin=wpos1.y
-
-	local zmax=wpos2.z
-	local zmin=wpos1.z
-	if wpos1.x > wpos2.x then
-		xmax=wpos1.x
-		xmin=wpos2.x
-	end
-	if wpos1.y > wpos2.y then
-		ymax=wpos1.y
-		ymin=wpos2.y
-	end
-	if wpos1.z > wpos2.z then
-		zmax=wpos1.z
-		zmin=wpos2.z
-	end
-	if between(tpos.x,xmin,xmax) and between(tpos.y,ymin,ymax) and between(tpos.z,zmin,zmax) then
-		return true
-	end
-	return false
-end
-
 -- Helper function for converting a MC probability to MT, with
 -- regards to MapBlocks.
 -- Some MC generated structures are generated on per-chunk
@@ -497,7 +466,7 @@ mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blocks
 			end
 		elseif struct.static_pos then
 			for _,p in pairs(struct.static_pos) do
-				if in_cube(p,minp,maxp) then
+				if vector.in_area(p,minp,maxp) then
 					mcl_structures.place_structure(p,struct,pr,blockseed)
 				end
 			end

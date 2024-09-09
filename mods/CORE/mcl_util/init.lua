@@ -1108,3 +1108,12 @@ function mcl_util.to_bool(val)
 	if not val then return false end
 	return true
 end
+
+if not vector.in_area then
+	-- backport from minetest 5.8, can be removed when the minimum version is 5.8
+	vector.in_area = function(pos, min, max)
+		return (pos.x >= min.x) and (pos.x <= max.x) and
+		       (pos.y >= min.y) and (pos.y <= max.y) and
+		       (pos.z >= min.z) and (pos.z <= max.z)
+	end
+end
