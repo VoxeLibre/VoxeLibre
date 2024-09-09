@@ -233,54 +233,55 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 end
 
 local function handle_entity_collision(self, entity_def, projectile_def, object)
-	if DEBUG then
-		minetest.log("handle_enity_collision("..dump({
-			self = self,
-			entity_def = entity_def,
-			object = object,
-			luaentity = object:get_luaentity(),
-		})..")")
-	end
 	local pos = self.object:get_pos()
 	local dir = vector.normalize(self.object:get_velocity())
 	local self_vl_projectile = self._vl_projectile
 
-	-- Allow punching
+	-- Check if this is allowed
 	local allow_punching = projectile_def.allow_punching or true
 	if type(allow_punching) == "function" then
 		allow_punching = allow_punching(self, entity_def, projectile_def, object)
 	end
 
-	if allow_punching then
-		-- Get damage
-		local dmg = projectile_def.damage_groups or 0
-		if type(dmg) == "function" then
-			dmg = dmg(self, entity_def, projectile_def, object)
-		end
+	if DEBUG then
+		minetest.log("handle_enity_collision("..dump({
+			self = self,
+			allow_punching = allow_punching,
+			entity_def = entity_def,
+			object = object,
+			luaentity = object:get_luaentity(),
+		})..")")
+	end
 
-		local object_lua = object:get_luaentity()
+	if not allow_punching then return end
+	-- Get damage
+	local dmg = projectile_def.damage_groups or 0
+	if type(dmg) == "function" then
+		dmg = dmg(self, entity_def, projectile_def, object)
+	end
 
-		-- Apply damage
-		-- Note: Damage blocking for shields is handled in mcl_shields with an mcl_damage modifier
-		local do_damage = false
-		if object:is_player() and projectile_def.damages_players then
-			do_damage = true
+	local object_lua = object:get_luaentity()
 
-			handle_player_sticking(self, entity_def, projectile_def, object)
-		elseif object_lua and (object_lua.is_mob or object_lua._hittable_by_projectile) then
-			do_damage = true
-		end
+	-- Apply damage
+	-- Note: Damage blocking for shields is handled in mcl_shields with an mcl_damage modifier
+	local do_damage = false
+	if object:is_player() and projectile_def.damages_players then
+		do_damage = true
 
-		if do_damage then
-			object:punch(self.object, 1.0, projectile_def.tool or { full_punch_interval = 1.0, damage_groups = dmg }, dir )
+		handle_player_sticking(self, entity_def, projectile_def, object)
+	elseif object_lua and (object_lua.is_mob or object_lua._hittable_by_projectile) then
+		do_damage = true
+	end
 
-			-- Indicate damage
-			damage_particles(vector.add(pos, vector.multiply(self.object:get_velocity(), 0.1)), self._is_critical)
+	if do_damage then
+		object:punch(self.object, 1.0, projectile_def.tool or { full_punch_interval = 1.0, damage_groups = dmg }, dir )
 
-			-- Light things on fire
-			if mcl_burning.is_burning(self.object) then
-				mcl_burning.set_on_fire(obj, 5)
-			end
+		-- Indicate damage
+		damage_particles(vector.add(pos, vector.multiply(self.object:get_velocity(), 0.1)), self._is_critical)
+
+		-- Light things on fire
+		if mcl_burning.is_burning(self.object) then
+			mcl_burning.set_on_fire(obj, 5)
 		end
 	end
 
