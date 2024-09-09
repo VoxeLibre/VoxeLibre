@@ -57,44 +57,41 @@ minetest.register_abm({
 --
 -- Papyrus and cactus growing
 --
-
--- Functions
-function mcl_core.grow_cactus(pos, node)
-	pos.y = pos.y-1
-	local name = minetest.get_node(pos).name
-	if minetest.get_item_group(name, "sand") ~= 0 then
-		pos.y = pos.y+1
-		local height = 0
-		while minetest.get_node(pos).name == "mcl_core:cactus" and height < 4 do
-			height = height+1
-			pos.y = pos.y+1
-		end
-		if height < 3 then
-			if minetest.get_node(pos).name == "air" then
-				minetest.set_node(pos, {name="mcl_core:cactus"})
-			end
-		end
+function grow_cactus(pos, node)
+	pos.y = pos.y - 1 -- below
+	if minetest.get_item_group(minetest.get_node(pos).name, "sand") == 0 then return end
+	pos.y = pos.y + 2 -- above
+	local above = minetest.get_node(pos).name
+	if above == "air" then
+		minetest.set_node(pos, {name="mcl_core:cactus"})
+		return
+	end
+	if above ~= "mcl_core:cactus" then return end
+	pos.y = pos.y + 1 -- at max height 3
+	if minetest.get_node(pos).name == "air" then
+		minetest.set_node(pos, {name="mcl_core:cactus"})
 	end
 end
 
-function mcl_core.grow_reeds(pos, node)
-	pos.y = pos.y-1
-	local name = minetest.get_node(pos).name
-	if minetest.get_item_group(name, "soil_sugarcane") ~= 0 then
-		if minetest.find_node_near(pos, 1, {"group:water"}) == nil and minetest.find_node_near(pos, 1, {"group:frosted_ice"}) == nil then
-			return
-		end
-		pos.y = pos.y+1
-		local height = 0
-		while minetest.get_node(pos).name == "mcl_core:reeds" and height < 3 do
-			height = height+1
-			pos.y = pos.y+1
-		end
-		if height < 3 then
-			if minetest.get_node(pos).name == "air" then
-				minetest.set_node(pos, {name="mcl_core:reeds"})
-			end
-		end
+function grow_reeds(pos, node)
+	pos.y = pos.y - 1 -- below
+	if minetest.get_item_group(minetest.get_node(pos).name, "soil_sugarcane") == 0 then return end
+	pos.y = pos.y + 2 -- above
+	local above = minetest.get_node(pos).name
+	if above == "air" then
+		pos.y = pos.y - 1 -- original position, check for water
+		if minetest.find_node_near(pos, 1, {"group:water", "group:frosted_ice"}) == nil then return end
+		pos.y = pos.y + 1 -- above
+		minetest.set_node(pos, {name="mcl_core:reeds"})
+		return
+	end
+	if above ~= "mcl_core:reeds" then return end
+	pos.y = pos.y + 1 -- at max height 3
+	if minetest.get_node(pos).name == "air" then
+		pos.y = pos.y - 2 -- original position, check for water
+		if minetest.find_node_near(pos, 1, {"group:water", "group:frosted_ice"}) == nil then return end
+		pos.y = pos.y + 2 -- above
+		minetest.set_node(pos, {name="mcl_core:reeds"})
 	end
 end
 
@@ -192,9 +189,7 @@ minetest.register_abm({
 	neighbors = {"group:sand"},
 	interval = 25,
 	chance = 40,
-	action = function(pos)
-		mcl_core.grow_cactus(pos)
-	end,
+	action = grow_cactus
 })
 
 local function is_walkable(pos)
@@ -239,10 +234,8 @@ minetest.register_abm({
 	nodenames = {"mcl_core:reeds"},
 	neighbors = {"group:soil_sugarcane"},
 	interval = 25,
-	chance = 10,
-	action = function(pos)
-		mcl_core.grow_reeds(pos)
-	end,
+	chance = 40,
+	action = grow_reeds
 })
 
 --
