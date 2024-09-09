@@ -10,12 +10,12 @@ local overworld_sky_threshold = tonumber(minetest.settings:get("mcl_mobs_overwor
 local overworld_passive_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_passive_threshold")) or 7
 
 local get_node                     = minetest.get_node
-local get_item_group               = minetest.get_item_group
 local get_node_light               = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local mt_get_biome_name            = minetest.get_biome_name
 local get_objects_inside_radius    = minetest.get_objects_inside_radius
 local get_connected_players        = minetest.get_connected_players
+local registered_nodes             = minetest.registered_nodes
 
 local math_min       = math.min
 local math_max       = math.max
@@ -35,14 +35,11 @@ local table_remove   = table.remove
 local pairs = pairs
 
 local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", false)
-local function mcl_log (message, property)
-	if logging then
-		if property then
-			message = message .. ": " .. dump(property)
-		end
-		mcl_util.mcl_log (message, "[Mobs spawn]", true)
-	end
+local function mcl_log(message, property)
+	if property then message = message .. ": " .. dump(property) end
+	mcl_util.mcl_log(message, "[Mobs spawn]", true)
 end
+if not logging then mcl_log = function() end end
 
 local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
@@ -680,6 +677,7 @@ end
 
 --a simple helper function for mob_spawn
 local function biome_check(biome_list, biome_goal)
+	if not biome_goal then return false end
 	for _, data in pairs(biome_list) do
 		if data == biome_goal then
 			return true
@@ -732,103 +730,82 @@ function mcl_mobs.register_custom_biomecheck(custom_biomecheck)
 	mcl_mobs.custom_biomecheck = custom_biomecheck
 end
 
-
 local function get_biome_name(pos)
-	if mcl_mobs.custom_biomecheck then
-		return mcl_mobs.custom_biomecheck (pos)
-	else
-		local gotten_biome = minetest.get_biome_data(pos)
-
-		if not gotten_biome then
-			return
-		end
-
-		gotten_biome = mt_get_biome_name(gotten_biome.biome)
-		--minetest.log ("biome: " .. dump(gotten_biome))
-
-		return gotten_biome
-	end
+	if mcl_mobs.custom_biomecheck then return mcl_mobs.custom_biomecheck(pos) end
+	local gotten_biome = minetest.get_biome_data(pos)
+	return gotten_biome and mt_get_biome_name(gotten_biome.biome)
 end
 
 local function spawn_check(pos, spawn_def)
 	if not spawn_def or not pos then return end
-
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
+
 	local dimension = mcl_worlds.pos_to_dimension(pos)
-	local mob_def = minetest.registered_entities[spawn_def.name]
-	local mob_type = mob_def.type
-	local gotten_node = get_node(pos).name
-	if not gotten_node then return end
-
-	local biome_name = get_biome_name(pos)
-	if not biome_name then return end
-
-	local is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
-	if not is_ground then
+	if spawn_def.dimension ~= dimension then return end -- wrong dimension
+	-- find ground node below spawn position
+	local node_name = get_node(pos).name
+	local node_def = registered_nodes[node_name]
+	if node_def and not node_def.groups.solid then -- try node one below instead
 		pos.y = pos.y - 1
-		gotten_node = get_node(pos).name
-		is_ground = minetest.get_item_group(gotten_node,"solid") ~= 0
+		node_name = get_node(pos).name
+		node_def = registered_nodes[node_name]
 	end
+	if not node_def or not node_def.groups then return end
+	-- do not spawn on bedrock
+	if node_name == "mcl_core:bedrock" then return end
 	pos.y = pos.y + 1
-	local is_water = get_item_group(gotten_node, "water") ~= 0
-	local is_lava  = get_item_group(gotten_node, "lava") ~= 0
-	local is_leaf  = get_item_group(gotten_node, "leaves") ~= 0
-	local is_bedrock  = gotten_node == "mcl_core:bedrock"
-	local is_grass = minetest.get_item_group(gotten_node,"grass_block") ~= 0
+	-- check spawn height
+	if pos.y < spawn_def.min_height or pos.y > spawn_def.max_height then return end
+	mcl_log("spawn_check#1 position checks passed")
 
-	if pos.y >= spawn_def.min_height
-			and pos.y <= spawn_def.max_height
-			and spawn_def.dimension == dimension
-			and biome_check(spawn_def.biomes, biome_name) then
+	-- do not spawn ground mobs on leaves
+	if spawn_def.type_of_spawning == "ground" and (not node_def.groups.solid or node_def.groups.leaves) then return end
+	-- water mobs only on water
+	if spawn_def.type_of_spawning == "water" and node_def.groups.water then return end
+	-- lava mobs only on lava
+	if spawn_def.type_of_spawning == "lava" and node_def.groups.lava then return end
+	-- farm animals on grass only
+	if is_farm_animal(spawn_def.name) and node_def.groups.grass_block then return end
 
-		mcl_log("Spawn level 1 check - Passed")
-		if  (is_ground or spawn_def.type_of_spawning ~= "ground")
-				and (spawn_def.type_of_spawning ~= "ground" or not is_leaf)
-				and (not is_farm_animal(spawn_def.name) or is_grass)
-				and (spawn_def.type_of_spawning ~= "water" or is_water)
-				and not is_bedrock
-				and has_room(mob_def,pos)
-				and (spawn_def.check_position and spawn_def.check_position(pos) or spawn_def.check_position == nil)
-				and ( not spawn_protected or not minetest.is_protected(pos, "") ) then
+	---- More expensive calls:
+	-- check the biome
+	if not biome_check(spawn_def.biomes, get_biome_name(pos)) then return end
+	-- check if there is enough room
+	local mob_def = minetest.registered_entities[spawn_def.name]
+	if not has_room(mob_def,pos) then return end
+	-- additional checks (slime etc.)
+	if spawn_def.check_position and not spawn_def.check_position(pos) then return end
+	if spawn_protected and minetest.is_protected(pos, "") then return end
+	mcl_log("spawn_check#2 advanced checks passed")
 
-			mcl_log("Spawn level 2 check - Passed")
-			local gotten_light = get_node_light(pos)
+	-- check light thresholds
+	local gotten_light = get_node_light(pos)
+	-- old lighting
+	if not modern_lighting then return gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light end
 
-			if modern_lighting then
-				local my_node = get_node(pos)
-				local sky_light = minetest.get_natural_light(pos)
-				local art_light = minetest.get_artificial_light(my_node.param1)
-
-				if mob_def.spawn_check then
-					return mob_def.spawn_check(pos, gotten_light, art_light, sky_light)
-				elseif mob_type == "monster" then
-					if dimension == "nether" then
-						if art_light <= nether_threshold then
-							return true
-						end
-					elseif dimension == "end" then
-						if art_light <= end_threshold then
-							return true
-						end
-					elseif dimension == "overworld" then
-						if art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
-							return true
-						end
-					end
-				else
-					-- passive threshold is apparently the same in all dimensions ...
-					if gotten_light > overworld_passive_threshold then
-						return true
-					end
-				end
-			else
-				if gotten_light >= spawn_def.min_light and gotten_light <= spawn_def.max_light then
-					return true
-				end
+	local sky_light = minetest.get_natural_light(pos)
+	local art_light = minetest.get_artificial_light(get_node(pos).param1)
+	if mob_def.spawn_check then
+		return mob_def.spawn_check(pos, gotten_light, art_light, sky_light)
+	end
+	if mob_def.type == "monster" then
+		if dimension == "nether" then
+			if art_light <= nether_threshold then
+				return true
+			end
+		elseif dimension == "end" then
+			if art_light <= end_threshold then
+				return true
+			end
+		elseif dimension == "overworld" then
+			if art_light <= overworld_threshold and sky_light <= overworld_sky_threshold then
+				return true
 			end
 		end
+		return false
 	end
-	return false
+	-- passive threshold is apparently the same in all dimensions ...
+	return gotten_light < overworld_passive_threshold
 end
 
 function mcl_mobs.spawn(pos,id)
@@ -836,11 +813,7 @@ function mcl_mobs.spawn(pos,id)
 	if not def or (def.can_spawn and not def.can_spawn(pos)) or not def.is_mob then
 		return false
 	end
-	if not dbg_spawn_counts[def.name] then
-		dbg_spawn_counts[def.name] = 1
-	else
-		dbg_spawn_counts[def.name] = dbg_spawn_counts[def.name] + 1
-	end
+	dbg_spawn_counts[def.name] = (dbg_spawn_counts[def.name] or 0) + 1
 	return minetest.add_entity(pos, def.name)
 end
 
