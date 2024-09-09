@@ -137,6 +137,8 @@ local arrow_entity = {
 			vl_projectile.raycast_collides_with_entities,
 		},
 		allow_punching = function(self, entity_def, projectile_def, object)
+			if not self._allow_punch then return false end
+
 			local lua = object:get_luaentity()
 			if lua and lua.name == "mobs_mc:rover" then return false end
 
@@ -145,7 +147,7 @@ local arrow_entity = {
 		sounds = {
 			on_entity_collision = function(self, _, _, _, obj)
 				if obj:is_player() then
-					return {{name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter:get_player_name()}, true}
+					return {{name="mcl_bows_hit_player", gain=0.1}, {to_player=obj:get_player_name()}, true}
 				end
 
 				return {{name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true}
@@ -223,12 +225,8 @@ local arrow_entity = {
 			local lua = obj:get_luaentity()
 
 			-- Make sure collision is valid
-			if obj == self._shooter then
-				if self._time_in_air < 1.02 then return end
-			else
-				if not (is_player or (lua and (lua.is_mob or lua._hittable_by_projectile))) then
-					return
-				end
+			if not (is_player or (lua and (lua.is_mob or lua._hittable_by_projectile))) then
+				return
 			end
 
 			if obj:get_hp() > 0 then
@@ -256,9 +254,10 @@ local arrow_entity = {
 					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
 					-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
 					-- TODO: This achievement should be given for the kill, not just a hit
-					if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
+					local shooter = self._vl_projectile.owner
+					if shooter and shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
 						if mod_awards and (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
-							awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
+							awards.unlock(shooter:get_player_name(), "mcl:snipeSkeleton")
 						end
 					end
 				end
@@ -298,8 +297,9 @@ local arrow_entity = {
 		end
 
 		local pos = self.object:get_pos()
-		--local dpos = vector.round(vector.new(pos)) -- digital pos
-		--local node = minetest.get_node(dpos)
+		if not self._start_pos or pos and vector.distance(self._start_pos, pos) > 1 then
+			self._allow_punch = true
+		end
 
 		if self._stuck then
 			return stuck_arrow_on_step(self, dtime)
@@ -357,9 +357,10 @@ local arrow_entity = {
 			out.stuckstarttime = minetest.get_gametime() - self._stucktimer
 		end
 
-		if self._shooter and self._shooter:is_player() then
-			out.shootername = self._shooter:get_player_name()
+		if self._owner then
+			out._owner = self._owner:get_player_name()
 		end
+
 		return minetest.serialize(out)
 	end,
 	on_activate = function(self, staticdata, dtime_s)
@@ -384,6 +385,11 @@ local arrow_entity = {
 
 		-- Perform a stuck recheck on the next step.
 		self._stuckrechecktimer = STUCK_RECHECK_TIME
+
+		local vl_projectile_data = {}
+		if data._owner then
+			vl_projectile_data.owner = minetest.get_player_by_name(data._owner)
+		end
 
 		if data.shootername then
 			local shooter = minetest.get_player_by_name(data.shootername)
