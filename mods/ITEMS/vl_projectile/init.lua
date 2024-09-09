@@ -3,6 +3,7 @@ vl_projectile = mod
 
 local vl_physics_path = minetest.get_modpath("vl_physics")
 
+local DEBUG = false
 local YAW_OFFSET = -math.pi/2
 local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 local enable_pvp = minetest.settings:get_bool("enable_pvp")
@@ -49,7 +50,7 @@ function mod.projectile_physics(obj, entity_def, v, a)
 	-- Update projectile yaw to match velocity direction
 	if v and le and not le._stuck then
 		local yaw = minetest.dir_to_yaw(v) + YAW_OFFSET
-		local pitch = math.asin(vector.normalize(dir).y)
+		local pitch = math.asin(vector.normalize(v).y)
 		obj:set_rotation(vector.new(0,yaw,pitch))
 	end
 end
@@ -232,6 +233,14 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 end
 
 local function handle_entity_collision(self, entity_def, projectile_def, object)
+	if DEBUG then
+		minetest.log("handle_enity_collision("..dump({
+			self = self,
+			entity_def = entity_def,
+			object = object,
+			luaentity = object:get_luaentity(),
+		})..")")
+	end
 	local pos = self.object:get_pos()
 	local dir = vector.normalize(self.object:get_velocity())
 	local self_vl_projectile = self._vl_projectile
@@ -254,11 +263,11 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		-- Apply damage
 		-- Note: Damage blocking for shields is handled in mcl_shields with an mcl_damage modifier
 		local do_damage = false
-		if object:is_player() and projectile_def.damanges_players and self_vl_projectile.owner ~= object:get_player_name() then
+		if object:is_player() and projectile_def.damages_players then
 			do_damage = true
 
 			handle_player_sticking(self, entity_def, projectile_def, object)
-		elseif object_lua and (object_lua.is_mob or object_lua._hittable_by_projectile) and self_vl_projectile.owner ~= object then
+		elseif object_lua and (object_lua.is_mob or object_lua._hittable_by_projectile) then
 			do_damage = true
 		end
 
@@ -308,7 +317,6 @@ function mod.collides_with_entities(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
 
 	local hit = nil
-	local owner = self._vl_projectile.owner
 
 	local objects = minetest.get_objects_inside_radius(pos, 1.5)
 	for i = 1,#objects do
@@ -316,9 +324,9 @@ function mod.collides_with_entities(self, dtime, entity_def, projectile_def)
 		local entity = object:get_luaentity()
 
 		if entity and entity.name ~= self.object:get_luaentity().name then
-			if object:is_player() and owner ~= object:get_player_name() then
+			if object:is_player() then
 				return handle_entity_collision(self, entity_def, projectile_def, object)
-			elseif (entity.is_mob or entity._hittable_by_projectile) and owner ~= object then
+			elseif (entity.is_mob or entity._hittable_by_projectile) then
 				return handle_entity_collision(self, entity_def, projectile_def, object)
 			end
 		end
@@ -358,7 +366,7 @@ function mod.create(entity_id, options)
 	local a, v
 	if options.dir then
 		v = vector.multiply(options.dir, options.velocity or 0)
-		a = vector.multiply(v, -math.abs(options.drag))
+		a = vector.multiply(v, -math.abs(options.drag or 0))
 	else
 		a = vector.zero()
 		v = a
@@ -367,8 +375,8 @@ function mod.create(entity_id, options)
 
 	-- Update projectile parameters
 	local luaentity = obj:get_luaentity()
+	luaentity._owner = options.owner
 	luaentity._vl_projectile = {
-		owner = options.owner,
 		extra = options.extra,
 	}
 
