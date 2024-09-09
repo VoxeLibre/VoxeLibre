@@ -30,26 +30,21 @@ local function airtower(pos,tbl,h)
 end
 
 local function makelake(pos,size,liquid,placein,border,pr,noair)
-	local node_under = minetest.get_node(vector.offset(pos,0,-1,0))
-	local p1 = vector.offset(pos,-size,-1,-size)
-	local p2 = vector.offset(pos,size,-1,size)
-	minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
+	local p1, p2 = vector.offset(pos,-size,-1,-size), vector.offset(pos,size,-1,size)
+	local e1, e2 = vector.offset(pos,-size,-2,-size), vector.offset(pos,size,15,size)
+	minetest.emerge_area(e1, e2, function(blockpos, action, calls_remaining, param)
 		if calls_remaining ~= 0 then return end
 		local nn = minetest.find_nodes_in_area(p1,p2,placein)
-		table.sort(nn,function(a, b)
-		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
-		end)
 		if not nn[1] then return end
-		local y = pos.y - pr:next(1,2)
-		local lq = {}
-		local air = {}
+		table.sort(nn,function(a, b)
+		   return vector.distance(pos, a) < vector.distance(pos, b)
+		end)
+		local y = pos.y - 1
+		local lq, air = {}, {}
 		local r = pr:next(1,#nn)
-		if r > #nn then return end
 		for i=1,r do
-			if nn[i].y == y then
-				airtower(nn[i],air,55)
-				table.insert(lq,nn[i])
-			end
+			airtower(nn[i],air,20)
+			table.insert(lq,nn[i])
 		end
 		minetest.bulk_set_node(lq,{name=liquid})
 		minetest.bulk_set_node(air,{name="air"})
@@ -59,7 +54,6 @@ local function makelake(pos,size,liquid,placein,border,pr,noair)
 			for kk,vv in pairs(adjacents) do
 				local pp = vector.add(v,vv)
 				local an = minetest.get_node(pp)
-				local un = minetest.get_node(vector.offset(pp,0,1,0))
 				if not border then
 					if minetest.get_item_group(an.name,"solid") > 0 then
 						border = an.name
@@ -72,9 +66,11 @@ local function makelake(pos,size,liquid,placein,border,pr,noair)
 				end
 				if not noair and an.name ~= liquid then
 					table.insert(br,pp)
+					--[[ no need to have air above border:
+					local un = minetest.get_node(vector.offset(pp,0,1,0))
 					if un.name ~= liquid then
-						airtower(pp,air,55)
-					end
+						airtower(pp,air,20)
+					end]]--
 				end
 			end
 		end
@@ -181,7 +177,7 @@ mcl_structures.register_structure("lavapool",{
 		persist = 0.001,
 		flags = "absvalue",
 	},
-	flags = "place_center_x, place_center_z, force_placement",
+	flags = "place_center_x, place_center_z, all_floors",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
 	place_func = function(pos,def,pr)
@@ -201,7 +197,7 @@ mcl_structures.register_structure("water_lake",{
 		persist = 0.001,
 		flags = "absvalue",
 	},
-	flags = "place_center_x, place_center_z, force_placement",
+	flags = "place_center_x, place_center_z, all_floors",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
 	place_func = function(pos,def,pr)
@@ -222,21 +218,13 @@ mcl_structures.register_structure("water_lake_mangrove_swamp",{
 		persist = 0.001,
 		flags = "absvalue",
 	},
-	flags = "place_center_x, place_center_z, force_placement",
+	flags = "place_center_x, place_center_z, all_floors",
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
 	place_func = function(pos,def,pr)
 		return makelake(pos,3,"mcl_core:water_source",{"group:material_stone", "group:sand", "group:dirt","group:grass_block","mcl_mud:mud"},"mcl_mud:mud",pr,true)
 	end
 })
-
-local pool_adjacents = {
-	vector.new(1,0,0),
-	vector.new(-1,0,0),
-	vector.new(0,-1,0),
-	vector.new(0,0,1),
-	vector.new(0,0,-1),
-}
 
 mcl_structures.register_structure("basalt_column",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
