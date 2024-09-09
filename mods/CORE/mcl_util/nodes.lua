@@ -275,12 +275,12 @@ function mcl_util.bypass_buildable_to(func)
 		end
 
 		-- Place above pointed node
-		local place_to = vector.copy(above)
+		local place_to = above
 
 		-- If node under is buildable_to, check for callback result and place into it instead
 		if olddef_under.buildable_to and not func(oldnode_under.name) then
 			log("info", "node under is buildable to")
-			place_to = vector.copy(under)
+			place_to = under
 		end
 
 		if minetest.is_protected(place_to, playername) then
