@@ -1,5 +1,7 @@
 mcl_structures.registered_structures = {}
 
+local RANDOM_SEED_OFFSET = 959 -- random constant that should be unique across each library
+
 local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
@@ -393,4 +395,28 @@ function mcl_structures.register_structure_spawn(def)
 	})
 end
 
-
+-- To avoid a cyclic dependency, run this when modules have finished loading
+minetest.register_on_mods_loaded(function()
+mcl_mapgen_core.register_generator("structures", nil, function(minp, maxp, blockseed)
+	local gennotify = minetest.get_mapgen_object("gennotify")
+	for _,struct in pairs(mcl_structures.registered_structures) do
+		if struct.deco_id then
+			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
+				local pr = PcgRandom(minetest.hash_node_position(pos) + blockseed + RANDOM_SEED_OFFSET)
+				if struct.chunk_probability == nil or pr:next(1, struct.chunk_probability) == 1 then
+					mcl_structures.place_structure(vector.offset(pos,0,1,0),struct,pr,blockseed)
+					if struct.chunk_probability then break end -- one (attempt) per chunk only
+				end
+			end
+		elseif struct.static_pos then
+			local pr = PcgRandom(blockseed + RANDOM_SEED_OFFSET)
+			for _, pos in pairs(struct.static_pos) do
+				if vector.in_area(pos, minp, maxp) then
+					mcl_structures.place_structure(pos, struct, pr, blockseed)
+				end
+			end
+		end
+	end
+	return false, false, false
+end, 100, true)
+end)
