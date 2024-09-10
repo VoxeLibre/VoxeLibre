@@ -386,10 +386,11 @@ function mod.create(entity_id, options)
 end
 
 function mod.register(name, def)
-	assert(def._vl_projectile)
+	assert(def._vl_projectile, "vl_projectile.register() requires definition to define _vl_projectile")
+	assert(def._vl_projectile.behaviors, "vl_projectile.register() requires definition to define _vl_projectile.behaviors")
 	local behaviors = def._vl_projectile.behaviors
 	for i = 1,#behaviors do
-		assert(behaviors[i])
+		assert(behaviors[i] and type(behaviors[i]) == "function", "def._vl_projectile.behaviors["..i.." is malformed")
 	end
 
 	if not def.on_step then
