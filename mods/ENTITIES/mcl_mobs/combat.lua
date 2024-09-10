@@ -1038,11 +1038,14 @@ function mob_class:do_states_attack(dtime)
 					minetest.after(1, function()
 						self.firing = false
 					end)
-					arrow = minetest.add_entity(p, self.arrow)
+
+					arrow = vl_projectile.create(self.arrow, {
+						pos = p,
+						owner = self,
+					})
 					ent = arrow:get_luaentity()
-					v = ent.velocity or v
 					ent.switch = 1
-					ent.owner_id = tostring(self.object) -- add unique owner id to arrow
+					v = ent.velocity or v
 
 					-- important for mcl_shields
 					ent._shooter = self.object
@@ -1053,7 +1056,7 @@ function mob_class:do_states_attack(dtime)
 				end
 
 				-- offset makes shoot aim accurate
-				vec.y = vec.y + self.shoot_offset
+				vec.y = vec.y + self.shoot_offset -- TODO: check if this is breaking the new projectile refactor
 				vec.x, vec.y, vec.z = vec.x * (v / dist), vec.y * (v / dist), vec.z * (v / dist)
 				if self.shoot_arrow then
 					vec = vector.normalize(vec)
