@@ -60,7 +60,7 @@ end
 function mcl_sounds.node_sound_sand_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
-			{name="default_sand_footstep", gain=0.05}
+			{name="default_sand_footstep", gain=0.045}
 	table.dug = table.dug or
 			{name="default_sand_footstep", gain=0.15}
 	table.dig = table.dig or
@@ -74,9 +74,9 @@ end
 function mcl_sounds.node_sound_gravel_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
-			{name="default_gravel_footstep", gain=0.25}
+			{name="default_gravel_footstep", gain=0.1}
 	table.dug = table.dug or
-			{name="default_gravel_dug", gain=1.0}
+			{name="default_gravel_dug", gain=0.75}
 	table.dig = table.dig or
 			{name="default_gravel_dig", gain=0.35}
 	table.place = table.place or
@@ -88,7 +88,7 @@ end
 function mcl_sounds.node_sound_snow_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
-			{name="pedology_snow_soft_footstep", gain=0.5}
+			{name="pedology_snow_soft_footstep", gain=0.4}
 	table.dug = table.dug or
 			{name="pedology_snow_soft_footstep", gain=1.0}
 	table.dig = table.dig or
@@ -102,11 +102,11 @@ end
 function mcl_sounds.node_sound_ice_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
-			{name="default_ice_footstep", gain=0.15}
+			{name="default_ice_footstep", gain=0.075}
 	table.dug = table.dug or
-			{name="default_ice_dug", gain=0.5}
+			{name="default_ice_dug", gain=0.35}
 	table.dig = table.dig or
-			{name="default_ice_dig", gain=0.5}
+			{name="default_ice_dig", gain=0.35}
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end
@@ -126,13 +126,13 @@ end
 function mcl_sounds.node_sound_wool_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
-			{name="mcl_sounds_cloth", gain=0.5}
+			{name="mcl_sounds_cloth", gain=0.2}
 	table.dug = table.dug or
-			{name="mcl_sounds_cloth", gain=1.0}
+			{name="mcl_sounds_cloth", gain=0.8}
 	table.dig = table.dig or
-			{name="mcl_sounds_cloth", gain=0.9}
+			{name="mcl_sounds_cloth", gain=0.8}
 	table.place = table.dig or
-			{name="mcl_sounds_cloth", gain=1.0}
+			{name="mcl_sounds_cloth", gain=0.8}
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end
@@ -154,9 +154,9 @@ end
 function mcl_sounds.node_sound_glass_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
-			{name="default_glass_footstep", gain=0.3}
+			{name="default_glass_footstep", gain=0.25}
 	table.dug = table.dug or
-			{name="default_break_glass", gain=0.7}
+			{name="default_break_glass", gain=0.5}
 	table.dig = table.dig or
 			{name="default_dig_cracky", gain=0.5}
 	mcl_sounds.node_sound_defaults(table)
@@ -166,11 +166,11 @@ end
 function mcl_sounds.node_sound_water_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
-			{name = "default_water_footstep", gain = 0.2}
+			{name = "default_water_footstep", gain = 0.125}
 	table.place = table.place or
-			{name = "mcl_sounds_place_node_water", gain = 1.0}
+			{name = "mcl_sounds_place_node_water", gain = 0.4}
 	table.dug = table.dug or
-			{name = "mcl_sounds_dug_water", gain = 1.0}
+			{name = "mcl_sounds_dug_water", gain = 0.4}
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end
