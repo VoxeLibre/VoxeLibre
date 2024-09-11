@@ -21,7 +21,7 @@ function mod.projectile_physics(obj, entity_def, v, a)
 		v = v or obj:get_velocity()
 		a = a or vector.zero()
 
-		if not entity_def.ignore_gravity then
+		if not entity_def._vl_projectile.ignore_gravity then
 			a = a + vector.new(0,-GRAVITY,0)
 		end
 
@@ -372,6 +372,7 @@ function mod.create(entity_id, options)
 		a = vector.zero()
 		v = a
 	end
+	local entity_def = minetest.registered_entities[entity_id]
 	mod.projectile_physics(obj, entity_def, v, a)
 
 	-- Update projectile parameters
