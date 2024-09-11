@@ -1044,8 +1044,8 @@ function mob_class:do_states_attack(dtime)
 						owner = self,
 					})
 					ent = arrow:get_luaentity()
-					ent.switch = 1
 					v = ent.velocity or v
+					ent.switch = 1
 
 					-- important for mcl_shields
 					ent._shooter = self.object
@@ -1056,7 +1056,7 @@ function mob_class:do_states_attack(dtime)
 				end
 
 				-- offset makes shoot aim accurate
-				vec.y = vec.y + self.shoot_offset -- TODO: check if this is breaking the new projectile refactor
+				vec.y = vec.y + self.shoot_offset
 				vec.x, vec.y, vec.z = vec.x * (v / dist), vec.y * (v / dist), vec.z * (v / dist)
 				if self.shoot_arrow then
 					vec = vector.normalize(vec)
