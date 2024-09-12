@@ -119,7 +119,7 @@ mcl_armor.register_set({
 		end,
 	},
 
-	--this is used to generate automaticaly armor crafts based on each element type folowing the regular minecraft pattern
+	--this is used to generate automaticaly armor crafts based on each element type following the regular minecraft pattern
 	--if set to nil no craft will be added
 	craft_material = "mcl_mobitems:leather",
 

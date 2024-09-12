@@ -5,9 +5,9 @@ animations are achieved by giving each chest node an entity, as Minetest (as of
 5.8.1) doesn't support giving nodes animated meshes, only static ones.
 
 Because of that, a lot of parameters passed through the exposed functions are
-be related to nodes and entities.
+related to nodes and entities.
 
-Please refer to [Minetest documentation](http://api.minetest.net/) and the code
+Please refer to the [Minetest documentation](http://api.minetest.net/) and code
 comments in `api.lua`.
 
 

@@ -6,7 +6,7 @@ WARNING: Not using it inside your mods may cause strange bugs (using the native 
 
 ## Callbacks
 
-To modify the amount of damage made by something:
+To modify the amount of damage dealt by something:
 
 ```lua
 --obj: an ObjectRef

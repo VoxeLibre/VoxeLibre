@@ -1,8 +1,8 @@
 # mcl_autogroup
-This mod emulate digging times from mc.
+This mod emulates digging times from MC.
 
 ## mcl_autogroup.can_harvest(nodename, toolname, player)
-Return true if <nodename> can be dig with <toolname> by <player>.
+Return true if `nodename` can be dig with `toolname` by <player>.
 * nodename: string, valid nodename
 * toolname: (optional) string, valid toolname
 * player: (optinal) ObjectRef, valid player
@@ -14,7 +14,7 @@ WARNING: This function can only be called after mod initialization.
 * efficiency: (optional) integer, the efficiency level the tool is enchanted with (default 0)
 
 ## mcl_autogroup.get_wear(toolname, diggroup)
-Return the max wear of <toolname> with <diggroup>
+Return the max wear of `toolname` with `diggroup`
 WARNING: This function can only be called after mod initialization.
 * toolname: string, name of the tool used
 * diggroup: string, the name of the diggroup the tool is used on

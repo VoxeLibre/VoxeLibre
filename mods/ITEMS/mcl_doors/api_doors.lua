@@ -25,7 +25,7 @@ end
 
 -- Registers a door
 --  name: The name of the door
---  def: a table with the folowing fields:
+--  def: a table with the following fields:
 --    description
 --    inventory_image
 --    groups

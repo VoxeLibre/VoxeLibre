@@ -1,9 +1,13 @@
-## mcl_events
-### Registering Events
-		`mlc_events.register_event("name",def)`
+# mcl_events
 
-#### Event Definition
- {
+## Registering Events
+
+`mcl_events.register_event("name", def)`
+
+### Event Definition
+
+```
+{
 	stage = 0,
 	max_stage = 1,
 	percent = 100,
@@ -22,6 +26,8 @@
 	cond_complete = function(event) end,
 		--return true if event finished successfully
 }
+```
 
-### Debugging
-	* /event_start <event> -- starts the given event at the current player coordinates
+## Debugging
+
+* /event_start `event` -- starts the given event at the current player coordinates

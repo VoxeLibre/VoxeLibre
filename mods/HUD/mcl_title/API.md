@@ -8,7 +8,7 @@ Show a hud message of `type` to player `player` with `data` as params.
 
 The element will stay for the per-player param `stay` or `data.stay` (in gametick which is 1/20 second).
 
-Here is a usage exemple:
+Here is a usage example:
 
 ```lua
 --show a title in the HUD with minecraft color "gold" 
@@ -35,7 +35,7 @@ Basicaly run `mcl_title.remove(player, type)` for every type.
 
 ## mcl_title.params_set(player, params)
 
-Allow mods to set `stay` and upcomming `fadeIn`/`fadeOut` params.
+Allow mods to set `stay` and upcoming `fadeIn`/`fadeOut` params.
 
 ```lua
 mcl_title.params_set(player, {stay = 600}) --elements with no 'data.stay' field will stay during 30s (600/20)
@@ -43,7 +43,7 @@ mcl_title.params_set(player, {stay = 600}) --elements with no 'data.stay' field 
 
 ## mcl_title.params_get(player)
 
-Get `stay` and upcomming `fadeIn` and `fadeOut` params of a player as a table.
+Get `stay` and upcoming `fadeIn` and `fadeOut` params of a player as a table.
 
 ```lua
 mcl_title.params_get(player)
