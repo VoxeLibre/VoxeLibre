@@ -20,7 +20,7 @@ local function find_back(start)
 end
 
 -- Iterate across all the cars in a train
-local function train_cars(staticdata)
+function mod.train_cars(staticdata)
 	assert(staticdata)
 
 	local back = find_back(staticdata)
@@ -38,6 +38,8 @@ local function train_cars(staticdata)
 		return ret
 	end
 end
+local train_cars = mod.train_cars
+
 function mod.train_length(cart)
 	local count = 0
 	for cart in train_cars(cart) do

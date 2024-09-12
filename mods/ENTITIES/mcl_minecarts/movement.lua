@@ -305,8 +305,23 @@ local function do_movement_step(staticdata, dtime)
 	-- Calculate timestep remaiing in this block
 	local x_0 = staticdata.distance or 0
 	local remaining_in_block = 1 - x_0
-	local a = calculate_acceleration(staticdata)
+
+	-- Calculate acceleration
 	local v_0 = staticdata.velocity
+	local a = 0
+	if staticdata.ahead or staticdata.behind then
+		-- Calculate acceleration of the entire train
+		local count = 0
+		for cart in mod.train_cars(staticdata) do
+			count = count + 1
+			if cart.behind then
+				a = a + calculate_acceleration(cart)
+			end
+		end
+		a = a / count
+	else
+		a = calculate_acceleration(staticdata)
+	end
 
 	-- Repel minecarts
 	local away = direction_away_from_players(staticdata)
@@ -370,7 +385,7 @@ local function do_movement_step(staticdata, dtime)
 	end
 
 	-- Calculate x_1
-	local x_1 = x_0 + timestep * v_0 + 0.5 * a * timestep * timestep
+	local x_1 = x_0 + (timestep * v_0 + 0.5 * a * timestep * timestep) / vector.length(staticdata.dir)
 
 	-- Update position and velocity of the minecart
 	staticdata.velocity = v_1
