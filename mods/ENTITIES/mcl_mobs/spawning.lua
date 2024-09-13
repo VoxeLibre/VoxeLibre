@@ -530,7 +530,7 @@ local function get_water_spawn(p)
 		end
 end
 
-local function has_room(self,pos)
+local function has_room(self, pos)
 	local cb = self.spawnbox or self.collisionbox
 	local nodes = {}
 	if self.fly_in then
@@ -543,16 +543,16 @@ local function has_room(self,pos)
 	end
 	table.insert(nodes,"air")
 
-	local p1 = vector.offset(pos,cb[1],cb[2] + 1,cb[3])
-	p1.x = math.floor(p1.x)
-	p1.y = math.floor(p1.y)
-	p1.z = math.floor(p1.z)
-
+	-- Calculate area to check for room
 	local cb_height = cb[5] - cb[2]
-	local p2 = vector.offset(p1,cb[4] - cb[1], cb_height, cb[6] - cb[3])
-	p2.x = math.ceil(p2.x) - 1
-	p2.y = math.ceil(p2.y) - 1
-	p2.z = math.ceil(p2.z) - 1
+	local p1 = vector.new(
+		math.round(pos.x + cb[1]),
+		pos.y,
+		math.round(pos.z + cb[3]))
+	local p2 = vector.new(
+		math.round(pos.x + cb[4]),
+		math.ceil(p1.y + cb_height) - 1,
+		math.round(pos.z + cb[6]))
 
 	-- Check if the entire spawn volume is free
 	local dx = p2.x - p1.x + 1
@@ -560,7 +560,23 @@ local function has_room(self,pos)
 	local dz = p2.z - p1.z + 1
 	local found_nodes = minetest.find_nodes_in_area(p1,p2,nodes) or 0
 	local n = #found_nodes
-	if n == ( dx * dy * dz ) then return true end
+	--[[
+	minetest.log(dump({
+		cb = cb,
+		pos = pos,
+		n = n,
+		dx = dx,
+		dy = dy,
+		dz = dz,
+		p1 = p1,
+		p2 = p2,
+		found_nodes = found_nodes,
+		nodes = nodes,
+	}))
+	]]
+	if n == ( dx * dy * dz ) then
+		return true
+	end
 
 	-- If we don't have an implementation of get_node_boxes, we can't check for sub-node space
 	if not minetest.get_node_boxes then return false end
@@ -699,9 +715,9 @@ function mcl_mobs.spawn(pos,id)
 	if not pos or not id then return false end
 	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
+	if not has_room(def, pos) then return false end
 	return minetest.add_entity(pos, def.name)
 end
-
 
 local function spawn_group(p,mob,spawn_on,amount_to_spawn)
 	local nn= minetest.find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)

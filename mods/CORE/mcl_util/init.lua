@@ -48,6 +48,18 @@ function table.pairs_by_keys(t, f)
 	return iter
 end
 
+local function table.pull_random_items(table)
+	local count = #table
+	return function()
+		local idx = math.random(count)
+		local res = table[idx]
+		table[idx] = table[count]
+		table[count] = nil
+		count = count - 1
+		return res
+	end
+end
+
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
 local LOG_MODULE = "[MCL2]"
 function mcl_util.mcl_log(message, module, bypass_default_logger)
