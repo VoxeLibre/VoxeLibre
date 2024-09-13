@@ -48,7 +48,7 @@ function table.pairs_by_keys(t, f)
 	return iter
 end
 
-local function table.pull_random_items(table)
+function table.pull_random_items(table)
 	local count = #table
 	return function()
 		local idx = math.random(count)

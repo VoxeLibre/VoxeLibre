@@ -230,9 +230,7 @@ local function spawn_mobs(pos, elapsed)
 		local mlig = meta:get_int("MinLight")
 		local xlig = meta:get_int("MaxLight")
 
-		for pos2 = table.pull_random_items(air) do
-			local pos2 = air[air_index]
-
+		for pos2 in table.pull_random_items(air) do
 			-- only if light levels are within range
 			local lig = minetest.get_node_light(pos2) or 0
 			if lig >= mlig and lig <= xlig then
@@ -241,7 +239,6 @@ local function spawn_mobs(pos, elapsed)
 					if num_to_spawn == 0 then break end
 				end
 			end
-			table.remove(air, air_index)
 		end
 	end
 
