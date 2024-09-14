@@ -105,7 +105,7 @@ end
 
 -- Spawn a child
 function mcl_mobs.spawn_child(pos, mob_type)
-	local child = minetest.add_entity(pos, mob_type)
+	local child = mcl_mobs.spawn(pos, mob_type)
 	if not child then
 		return
 	end
@@ -285,6 +285,7 @@ function mob_class:check_breeding()
 					end
 
 					local child = mcl_mobs.spawn_child(pos, parent1.name)
+					if not child then return end
 
 					local ent_c = child:get_luaentity()
 

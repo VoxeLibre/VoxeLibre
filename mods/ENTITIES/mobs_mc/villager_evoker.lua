@@ -55,14 +55,16 @@ mcl_mobs.register_mob("mobs_mc:evoker", {
 		basepos.y = basepos.y + 1
 		for i=1, r do
 			local spawnpos = vector.add(basepos, minetest.yaw_to_dir(pr:next(0,360)))
-			local vex = minetest.add_entity(spawnpos, "mobs_mc:vex")
-			local ent = vex:get_luaentity()
+			local vex = mcl_mobs.spawn(spawnpos, "mobs_mc:vex")
+			if vex then
+				local ent = vex:get_luaentity()
 
-			-- Mark vexes as summoned and start their life clock (they take damage it reaches 0)
-			ent._summoned = true
-			ent._lifetimer = pr:next(33, 108)
+				-- Mark vexes as summoned and start their life clock (they take damage it reaches 0)
+				ent._summoned = true
+				ent._lifetimer = pr:next(33, 108)
 
-			table.insert(spawned_vexes[self],ent)
+				table.insert(spawned_vexes[self],ent)
+			end
 		end
 	end,
 	passive = false,
