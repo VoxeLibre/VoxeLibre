@@ -1,5 +1,4 @@
 --lua locals
-local DEBUG = false
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
@@ -561,20 +560,6 @@ local function has_room(self, pos)
 	local dz = p2.z - p1.z + 1
 	local found_nodes = minetest.find_nodes_in_area(p1,p2,nodes) or 0
 	local n = #found_nodes
-	if DEBUG then
-		minetest.log(dump({
-			cb = cb,
-			pos = pos,
-			n = n,
-			dx = dx,
-			dy = dy,
-			dz = dz,
-			p1 = p1,
-			p2 = p2,
-			found_nodes = found_nodes,
-			nodes = nodes,
-		}))
-	end
 	if n == dx * dy * dz then
 		return true
 	end
