@@ -1053,7 +1053,8 @@ local function summon_golem(self)
 	local p1 = vector.offset(pos, -10, -10, -10)
 	local p2 = vector.offset(pos,  10,  10,  10)
 	local nn = minetest.find_nodes_in_area_under_air(p1, p2,{"group:solid","group:water"})
-	for n in table.pull_random_items(nn) do
+	while #nn > 0 do
+		local n = table.remove_random_element(nn)
 		n.y = n.y + 1
 
 		local summon = mcl_mobs.spawn(n, "mobs_mc:iron_golem")

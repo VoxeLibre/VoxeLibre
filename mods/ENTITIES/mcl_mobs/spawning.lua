@@ -574,7 +574,7 @@ local function has_room(self, pos)
 		nodes = nodes,
 	}))
 	]]
-	if n == ( dx * dy * dz ) then
+	if n == dx * dy * dz then
 		return true
 	end
 
@@ -582,7 +582,7 @@ local function has_room(self, pos)
 	if not minetest.get_node_boxes then return false end
 
 	-- Check if it's possible for a sub-node space check to succeed
-	local needed_in_bottom_section = (dx * dz * ( dy - 1))
+	local needed_in_bottom_section = dx * ( dy - 1) * dz
 	if n < needed_in_bottom_section then return false end
 
 	-- Make sure the entire volume except for the top level is free before checking the top layer

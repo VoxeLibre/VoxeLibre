@@ -48,16 +48,18 @@ function table.pairs_by_keys(t, f)
 	return iter
 end
 
-function table.pull_random_items(table)
+-- Removes one element randomly selected from the array section of the table and
+-- returns it, or nil if there are no elements in the array section of the table
+function table.remove_random_element(table)
 	local count = #table
-	return function()
-		local idx = math.random(count)
-		local res = table[idx]
-		table[idx] = table[count]
-		table[count] = nil
-		count = count - 1
-		return res
-	end
+	if count == 0 then return nil end
+
+	local idx = math.random(count)
+	local res = table[idx]
+	table[idx] = table[count]
+	table[count] = nil
+	count = count - 1
+	return res
 end
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
