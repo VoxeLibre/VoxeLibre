@@ -117,10 +117,6 @@ end
 -- Array of unique hardness values for each group which affects dig time.
 local hardness_values = get_hardness_values_for_groups()
 
--- Map indexed by hardness values which return the index of that value in
--- hardness_value.  Used for quick lookup.
-local hardness_lookup = get_hardness_lookup_for_groups(hardness_values)
-
 --[[local function compute_creativetimes(group)
 	local creativetimes = {}
 
@@ -186,6 +182,7 @@ local function add_groupcaps(toolname, groupcaps, groupcaps_def, efficiency)
 		local mult = capsdef.speed or 1
 		local uses = capsdef.uses
 		local def = mcl_autogroup.registered_diggroups[g]
+		assert(def, toolname .. " has unknown diggroup '" .. dump(g) .. "'")
 		local max_level = def.levels and #def.levels or 1
 
 		assert(capsdef.level, toolname .. ' is missing level for ' .. g)
@@ -313,6 +310,13 @@ function mcl_autogroup.get_wear(toolname, diggroup)
 end
 
 local function overwrite()
+	-- Refresh, now that all groups are known.
+	hardness_values = get_hardness_values_for_groups()
+
+	-- Map indexed by hardness values which return the index of that value in
+	-- hardness_value.  Used for quick lookup.
+	local hardness_lookup = get_hardness_lookup_for_groups(hardness_values)
+
 	for nname, ndef in pairs(minetest.registered_nodes) do
 		local newgroups = table.copy(ndef.groups)
 		if (nname ~= "ignore" and ndef.diggable) then
@@ -374,4 +378,5 @@ local function overwrite()
 	end
 end
 
-overwrite()
+-- Make sure all tools and groups are registered
+minetest.register_on_mods_loaded(overwrite)
