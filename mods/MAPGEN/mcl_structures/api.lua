@@ -229,14 +229,14 @@ function mcl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n,water)
 		sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
 	end
 	table.shuffle(sp)
-	for i,node in pairs(sp) do
-		if not peaceful and i <= n then
-			local pos = vector.offset(node,0,1,0)
-			if pos then
-				minetest.add_entity(pos,mob)
-			end
+	local count = 0
+	local mob_def = minetest.registered_entities[mob]
+	local enabled = (not peaceful) or (mob_def and mob_def.spawn_class ~= "hostile")
+	for _,node in pairs(sp) do
+		if enabled and count < n and minetest.add_entity(vector.offset(node, 0, 1, 0), mob) then
+			count = count + 1
 		end
-		minetest.get_meta(node):set_string("spawnblock","yes")
+		minetest.get_meta(node):set_string("spawnblock", "yes") -- note: also in peaceful mode!
 	end
 end
 
@@ -371,7 +371,12 @@ function mcl_structures.register_structure_spawn(def)
 			if active_object_count_wider > limit + mob_cap_animal then return end
 			if active_object_count_wider > mob_cap_player then return end
 			local p = vector.offset(pos,0,1,0)
-			if minetest.get_node(p).name ~= "air" then return end
+			local pname = minetest.get_node(p).name
+			if def.type_of_spawning == "water" then
+				if pname ~= "mcl_core:water_source" and pname ~= "mclx_core:river_water_source" then return end
+			else
+				if pname ~= "air" then return end
+			end
 			if minetest.get_meta(pos):get_string("spawnblock") == "" then return end
 			if mg_name ~= "v6" and mg_name ~= "singlenode" and def.biomes then
 				if table.indexof(def.biomes,minetest.get_biome_name(minetest.get_biome_data(p).biome)) == -1 then
