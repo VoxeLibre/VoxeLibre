@@ -401,7 +401,7 @@ minetest.register_lbm({
 
 minetest.register_on_mods_loaded(function()
 	for name,mobinfo in pairs(minetest.registered_entities) do
-		if ( mobinfo.is_mob or name:find("mobs_mc") ) and not ( mobinfo.visual_size or mobinfo._convert_to ) then
+		if mobinfo.is_mob and not ( mobinfo.visual_size or mobinfo._convert_to ) then
 			minetest.log("warning", "Definition for "..tostring(name).." is missing field 'visual_size', mob spawners will not work properly")
 		end
 	end
