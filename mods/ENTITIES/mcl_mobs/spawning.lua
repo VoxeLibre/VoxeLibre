@@ -25,6 +25,7 @@ local math_ceil      = math.ceil
 local math_cos       = math.cos
 local math_sin       = math.sin
 local math_sqrt      = math.sqrt
+local math_abs       = math.abs
 
 local vector_distance = vector.distance
 local vector_new      = vector.new
@@ -43,7 +44,6 @@ if not logging then mcl_log = function() end end
 
 local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
-local dbg_spawn_counts = {}
 
 local remove_far = true
 
@@ -96,169 +96,6 @@ mcl_log("Percentage of hostile spawns are group: " .. hostile_group_percentage_s
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 
--- THIS IS THE BIG LIST OF ALL BIOMES - used for programming/updating mobs
--- Also used for missing parameter
--- Please update the list when adding new biomes!
-
-local list_of_all_biomes = {
-
-	-- underground:
-
-	"FlowerForest_underground",
-	"JungleEdge_underground",
-	"ColdTaiga_underground",
-	"IcePlains_underground",
-	"IcePlainsSpikes_underground",
-	"MegaTaiga_underground",
-	"Taiga_underground",
-	"ExtremeHills+_underground",
-	"JungleM_underground",
-	"ExtremeHillsM_underground",
-	"JungleEdgeM_underground",
-	"MangroveSwamp_underground",
-
-	-- ocean:
-
-	"RoofedForest_ocean",
-	"JungleEdgeM_ocean",
-	"BirchForestM_ocean",
-	"BirchForest_ocean",
-	"IcePlains_deep_ocean",
-	"Jungle_deep_ocean",
-	"Savanna_ocean",
-	"MesaPlateauF_ocean",
-	"ExtremeHillsM_deep_ocean",
-	"Savanna_deep_ocean",
-	"SunflowerPlains_ocean",
-	"Swampland_deep_ocean",
-	"Swampland_ocean",
-	"MegaSpruceTaiga_deep_ocean",
-	"ExtremeHillsM_ocean",
-	"JungleEdgeM_deep_ocean",
-	"SunflowerPlains_deep_ocean",
-	"BirchForest_deep_ocean",
-	"IcePlainsSpikes_ocean",
-	"Mesa_ocean",
-	"StoneBeach_ocean",
-	"Plains_deep_ocean",
-	"JungleEdge_deep_ocean",
-	"SavannaM_deep_ocean",
-	"Desert_deep_ocean",
-	"Mesa_deep_ocean",
-	"ColdTaiga_deep_ocean",
-	"Plains_ocean",
-	"MesaPlateauFM_ocean",
-	"Forest_deep_ocean",
-	"JungleM_deep_ocean",
-	"FlowerForest_deep_ocean",
-	"MushroomIsland_ocean",
-	"MegaTaiga_ocean",
-	"StoneBeach_deep_ocean",
-	"IcePlainsSpikes_deep_ocean",
-	"ColdTaiga_ocean",
-	"SavannaM_ocean",
-	"MesaPlateauF_deep_ocean",
-	"MesaBryce_deep_ocean",
-	"ExtremeHills+_deep_ocean",
-	"ExtremeHills_ocean",
-	"MushroomIsland_deep_ocean",
-	"Forest_ocean",
-	"MegaTaiga_deep_ocean",
-	"JungleEdge_ocean",
-	"MesaBryce_ocean",
-	"MegaSpruceTaiga_ocean",
-	"ExtremeHills+_ocean",
-	"Jungle_ocean",
-	"RoofedForest_deep_ocean",
-	"IcePlains_ocean",
-	"FlowerForest_ocean",
-	"ExtremeHills_deep_ocean",
-	"MesaPlateauFM_deep_ocean",
-	"Desert_ocean",
-	"Taiga_ocean",
-	"BirchForestM_deep_ocean",
-	"Taiga_deep_ocean",
-	"JungleM_ocean",
-	"MangroveSwamp_ocean",
-	"MangroveSwamp_deep_ocean",
-
-	-- water or beach?
-
-	"MesaPlateauFM_sandlevel",
-	"MesaPlateauF_sandlevel",
-	"MesaBryce_sandlevel",
-	"Mesa_sandlevel",
-
-	-- beach:
-
-	"FlowerForest_beach",
-	"Forest_beach",
-	"StoneBeach",
-	"ColdTaiga_beach_water",
-	"Taiga_beach",
-	"Savanna_beach",
-	"Plains_beach",
-	"ExtremeHills_beach",
-	"ColdTaiga_beach",
-	"Swampland_shore",
-	"MushroomIslandShore",
-	"JungleM_shore",
-	"Jungle_shore",
-	"BambooJungleM_shore",
-	"BambooJungle_shore",
-	"MangroveSwamp_shore",
-
-	-- dimension biome:
-
-	"Nether",
-	"BasaltDelta",
-	"CrimsonForest",
-	"WarpedForest",
-	"SoulsandValley",
-	"End",
-
-	-- Overworld regular:
-
-	"Mesa",
-	"FlowerForest",
-	"Swampland",
-	"Taiga",
-	"ExtremeHills",
-	"ExtremeHillsM",
-	"ExtremeHills+_snowtop",
-	"Jungle",
-	"Savanna",
-	"BirchForest",
-	"MegaSpruceTaiga",
-	"MegaTaiga",
-	"ExtremeHills+",
-	"Forest",
-	"Plains",
-	"Desert",
-	"ColdTaiga",
-	"MushroomIsland",
-	"IcePlainsSpikes",
-	"SunflowerPlains",
-	"IcePlains",
-	"RoofedForest",
-	"ExtremeHills+_snowtop",
-	"MesaPlateauFM_grasstop",
-	"JungleEdgeM",
-	"JungleM",
-	"BirchForestM",
-	"MesaPlateauF",
-	"MesaPlateauFM",
-	"MesaPlateauF_grasstop",
-	"MesaBryce",
-	"JungleEdge",
-	"SavannaM",
-	"MangroveSwamp",
-	"BambooJungle",
-	"BambooJungleEdge",
-	"BambooJungleEdgeM",
-	"BambooJungleM",
-}
-
 -- count how many mobs are in an area
 local function count_mobs(pos,r,mob_type)
 	local num = 0
@@ -286,11 +123,7 @@ local function count_mobs_total(mob_type)
 end
 
 local function count_mobs_add_entry (mobs_list, mob_cat)
-	if mobs_list[mob_cat] then
-		mobs_list[mob_cat] = mobs_list[mob_cat] + 1
-	else
-		mobs_list[mob_cat] = 1
-	end
+	mobs_list[mob_cat] = (mobs_list[mob_cat] or 0) + 1
 end
 
 --categorise_by can be name or type or spawn_class
@@ -449,7 +282,7 @@ function mcl_mobs:spawn_setup(def)
 
 	local dimension        = def.dimension or "overworld"
 	local type_of_spawning = def.type_of_spawning or "ground"
-	local biomes           = def.biomes or list_of_all_biomes
+	local biomes           = def.biomes or nil
 	local min_light        = def.min_light or 0
 	local max_light        = def.max_light or (minetest.LIGHT_MAX + 1)
 	local chance           = def.chance or 1000
@@ -616,14 +449,14 @@ local function get_next_mob_spawn_pos(pos)
 	xoff, yoff, zoff = xoff * dd, yoff * dd, zoff * dd
 	local goal_pos = vector.offset(pos, xoff, yoff, zoff)
 
-	if not ( math.abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.y) <= SPAWN_MAPGEN_LIMIT and math.abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT ) then
+	if not (math_abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math_abs(goal_pos.y) <= SPAWN_MAPGEN_LIMIT and math_abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT) then
 		mcl_log("Pos outside mapgen limits: " .. minetest.pos_to_string(goal_pos))
 		return nil
 	end
 
 	-- Calculate upper/lower y limits
 	local d2 = xoff*xoff + zoff*zoff -- squared distance in x,z plane only
-	local y1 = math_sqrt( MOB_SPAWN_ZONE_OUTER_SQ - d2 ) -- absolue value of distance to outer sphere
+	local y1 = math_sqrt(MOB_SPAWN_ZONE_OUTER_SQ - d2) -- absolue value of distance to outer sphere
 
 	local y_min, y_max
 	if d2 >= MOB_SPAWN_ZONE_INNER_SQ then
@@ -632,7 +465,7 @@ local function get_next_mob_spawn_pos(pos)
 		y_max = pos.y + y1
 	else
 		-- Inner region, y range spans between inner and outer spheres
-		local y2 = math_sqrt( MOB_SPAWN_ZONE_INNER_SQ - d2 )
+		local y2 = math_sqrt(MOB_SPAWN_ZONE_INNER_SQ - d2)
 		if goal_pos.y > pos.y then
 			-- Upper hemisphere
 			y_min = pos.y + y2
@@ -683,7 +516,6 @@ local function biome_check(biome_list, biome_goal)
 			return true
 		end
 	end
-
 	return false
 end
 
@@ -761,15 +593,15 @@ local function spawn_check(pos, spawn_def)
 	-- do not spawn ground mobs on leaves
 	if spawn_def.type_of_spawning == "ground" and (not node_def.groups.solid or node_def.groups.leaves) then return end
 	-- water mobs only on water
-	if spawn_def.type_of_spawning == "water" and node_def.groups.water then return end
+	if spawn_def.type_of_spawning == "water" and not node_def.groups.water then return end
 	-- lava mobs only on lava
-	if spawn_def.type_of_spawning == "lava" and node_def.groups.lava then return end
+	if spawn_def.type_of_spawning == "lava" and not node_def.groups.lava then return end
 	-- farm animals on grass only
-	if is_farm_animal(spawn_def.name) and node_def.groups.grass_block then return end
+	if is_farm_animal(spawn_def.name) and not node_def.groups.grass_block then return end
 
 	---- More expensive calls:
 	-- check the biome
-	if not biome_check(spawn_def.biomes, get_biome_name(pos)) then return end
+	if spawn_def.biomes and not biome_check(spawn_def.biomes, get_biome_name(pos)) then return end
 	-- check if there is enough room
 	local mob_def = minetest.registered_entities[spawn_def.name]
 	if not has_room(mob_def,pos) then return end
@@ -805,15 +637,13 @@ local function spawn_check(pos, spawn_def)
 		return false
 	end
 	-- passive threshold is apparently the same in all dimensions ...
-	return gotten_light < overworld_passive_threshold
+	return gotten_light > overworld_passive_threshold
 end
 
 function mcl_mobs.spawn(pos,id)
+	if not pos or not id then return false end
 	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
-	if not def or (def.can_spawn and not def.can_spawn(pos)) or not def.is_mob then
-		return false
-	end
-	dbg_spawn_counts[def.name] = (dbg_spawn_counts[def.name] or 0) + 1
+	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
 	return minetest.add_entity(pos, def.name)
 end
 
@@ -1211,7 +1041,6 @@ end
 minetest.register_chatcommand("mobstats",{
 	privs = { debug = true },
 	func = function(n,param)
-		--minetest.chat_send_player(n,dump(dbg_spawn_counts))
 		local pos = minetest.get_player_by_name(n):get_pos()
 		minetest.chat_send_player(n,"mobs: within 32 radius of player/total loaded :"..count_mobs(pos,MOB_CAP_INNER_RADIUS) .. "/" .. count_mobs_total())
 		minetest.chat_send_player(n,"spawning attempts since server start:" .. dbg_spawn_succ .. "/" .. dbg_spawn_attempts)
