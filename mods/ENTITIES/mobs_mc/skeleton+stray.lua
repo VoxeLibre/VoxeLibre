@@ -103,6 +103,7 @@ local skeleton = {
 		return true
 	end,
 	ignited_by_sunlight = true,
+	floats = 0,
 	view_range = 16,
 	fear_height = 4,
 	attack_type = "dogshoot",

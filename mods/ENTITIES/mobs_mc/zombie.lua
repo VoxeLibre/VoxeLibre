@@ -96,6 +96,7 @@ local zombie = {
 	},
 	ignited_by_sunlight = true,
 	sunlight_damage = 2,
+	floats = 0,
 	view_range = 16,
 	attack_type = "dogfight",
 	harmed_by_heal = true,
