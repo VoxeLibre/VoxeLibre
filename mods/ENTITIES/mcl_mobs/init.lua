@@ -482,7 +482,7 @@ function mcl_mobs.register_arrow(name, def)
 			end
 
 			-- does arrow have a tail (fireball)
-			if def.tail and def.tail == 1 and def.tail_texture then
+			if def.tail == 1 and def.tail_texture then
 				minetest.add_particle({
 					pos = pos,
 					velocity = {x = 0, y = 0, z = 0},
