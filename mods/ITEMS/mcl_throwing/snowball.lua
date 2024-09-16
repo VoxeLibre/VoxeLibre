@@ -54,6 +54,10 @@ vl_projectile.register("mcl_throwing:snowball_entity", {
 			vl_projectile.collides_with_solids,
 			vl_projectile.collides_with_entities,
 		},
+		allow_punching = function(self, _, _, object)
+			return object.is_mob or object._hittable_by_projectile or
+			       not object:is_player() or self._owner ~= object:get_player_name()
+		end,
 		on_collide_with_solid = function(self, pos, node)
 			if mod_target and node.name == "mcl_target:target_off" then
 				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
