@@ -380,7 +380,6 @@ end
 
 -- register arrow for shoot attack
 function mcl_mobs.register_arrow(name, def)
-
 	if not name or not def then return end -- errorcheck
 
 	local behaviors = {}
@@ -414,6 +413,7 @@ function mcl_mobs.register_arrow(name, def)
 			ignore_gravity = true,
 			damages_players = true,
 			allow_punching = function(self, entity_def, projectile_def, object)
+				if self.timer > 2 then return true end
 				if self._owner and object == self._owner.object then return false end
 				return true
 			end,
