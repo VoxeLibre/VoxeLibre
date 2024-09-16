@@ -397,11 +397,6 @@ local function overwrite()
 			-- group.
 			newgroups["creative_breakable"] = 1
 
-			minetest.log(dump({
-				groups = ndef.groups,
-				newgroups = newgroups,
-			}))
-
 			minetest.override_item(nname, {
 				groups = newgroups
 			})
