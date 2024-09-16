@@ -16,7 +16,6 @@ minetest.register_craftitem("mcl_throwing:snowball", {
 	on_use = mcl_throwing.get_player_throw_function("mcl_throwing:snowball_entity"),
 	_on_dispense = mcl_throwing.dispense_function,
 })
-mcl_throwing.register_throwable_object("mcl_throwing:snowball", "mcl_throwing:snowball_entity", 22)
 
 -- The snowball entity
 local function snowball_particles(pos, vel)
@@ -72,4 +71,5 @@ vl_projectile.register("mcl_throwing:snowball_entity", {
 		damage_groups = { snowball_vulnerable = 3 },
 	},
 })
+mcl_throwing.register_throwable_object("mcl_throwing:snowball", "mcl_throwing:snowball_entity", 22)
 
