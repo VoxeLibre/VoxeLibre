@@ -40,7 +40,7 @@ function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage,
 	power = power or BOW_MAX_SPEED
 	damage = damage or 3
 
-	local obj = vl_projectile.create("mcl_bows:arrow_entity", {
+	local obj = vl_projectile.create(arrow_item.."_entity", {
 		pos = pos,
 		dir = dir,
 		velocity = power,
