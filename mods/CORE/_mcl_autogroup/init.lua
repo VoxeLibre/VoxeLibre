@@ -355,6 +355,9 @@ local function overwrite()
 			end
 		end
 
+		-- Make sure compatibility groups are present for the below logic
+		ndef.groups = newgroups
+
 		if (nname ~= "ignore" and ndef.diggable) then
 			-- Automatically assign the "solid" group for solid nodes
 			if (ndef.walkable == nil or ndef.walkable == true)
@@ -393,6 +396,11 @@ local function overwrite()
 			-- creative_breakable group if it belongs to any digging
 			-- group.
 			newgroups["creative_breakable"] = 1
+
+			minetest.log(dump({
+				groups = ndef.groups,
+				newgroups = newgroups,
+			}))
 
 			minetest.override_item(nname, {
 				groups = newgroups
