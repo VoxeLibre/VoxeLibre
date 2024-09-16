@@ -818,7 +818,7 @@ local function find_closest_bed (self)
 
 			if (owned_by and owned_by == self._id) then
 				mcl_log("Clear as already owned by me.")
-				bed_meta:set_string("villager", nil)
+				bed_meta:set_string("villager", "")
 				owned_by = nil
 			end
 
@@ -1279,7 +1279,7 @@ local function validate_jobsite(self)
 		mcl_log("Jobsite far, so resettle: " .. tostring(resettle))
 		if resettle then
 			local m = minetest.get_meta(self._jobsite)
-			m:set_string("villager", nil)
+			m:set_string("villager", "")
 			remove_job (self)
 			return false
 		end
@@ -1421,7 +1421,7 @@ local function validate_bed(self)
 	mcl_log("Bed far, so resettle: " .. tostring(resettle))
 	if resettle then
 		mcl_log("Resettled. Ditch bed.")
-		m:set_string("villager", nil)
+		m:set_string("villager", "")
 		self._bed = nil
 		bed_valid = false
 		return false
@@ -1431,7 +1431,7 @@ local function validate_bed(self)
 	mcl_log("Player owner: " .. owned_by_player)
 	if owned_by_player ~= "" then
 		mcl_log("Player owns this. Villager won't take this.")
-		m:set_string("villager", nil)
+		m:set_string("villager", "")
 		self._bed = nil
 		bed_valid = false
 		return false
@@ -2300,13 +2300,13 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 		local bed = self._bed
 		if bed then
 			local bed_meta = minetest.get_meta(bed)
-			bed_meta:set_string("villager", nil)
+			bed_meta:set_string("villager", "")
 			mcl_log("Died, so bye bye bed")
 		end
 		local jobsite = self._jobsite
 		if jobsite then
 			local jobsite_meta = minetest.get_meta(jobsite)
-			jobsite_meta:set_string("villager", nil)
+			jobsite_meta:set_string("villager", "")
 			mcl_log("Died, so bye bye jobsite")
 		end
 

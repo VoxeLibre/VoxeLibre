@@ -279,7 +279,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	for field_name, value in pairs(fields) do
 		if field_name ~= "scroll" then
 			local itemname = fieldname_to_itemname(field_name)
-			player:get_meta():set_string("mcl_stonecutter:selected", itemname)
 			set_selected_item(player, itemname)
 			update_stonecutter_slots(player)
 			mcl_stonecutter.show_stonecutter_form(player)

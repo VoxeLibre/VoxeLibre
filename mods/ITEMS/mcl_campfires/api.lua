@@ -39,9 +39,9 @@ local function drop_items(pos, node, oldmeta)
 				if food_entity:get_luaentity().name == "mcl_campfires:food_entity" then
 					food_entity:remove()
 					for i = 1, 4 do
-						meta:set_string("food_x_"..tostring(i), nil)
-						meta:set_string("food_y_"..tostring(i), nil)
-						meta:set_string("food_z_"..tostring(i), nil)
+						meta:set_string("food_x_"..tostring(i), "")
+						meta:set_string("food_y_"..tostring(i), "")
+						meta:set_string("food_z_"..tostring(i), "")
 					end
 				end
 			end
@@ -135,9 +135,9 @@ function mcl_campfires.cook_item(pos, elapsed)
 				if cooked then
 					if food_entity then
 						food_entity:remove() -- Remove visual food entity
-						meta:set_string("food_x_"..tostring(i), nil)
-						meta:set_string("food_y_"..tostring(i), nil)
-						meta:set_string("food_z_"..tostring(i), nil)
+						meta:set_string("food_x_"..tostring(i), "")
+						meta:set_string("food_y_"..tostring(i), "")
+						meta:set_string("food_z_"..tostring(i), "")
 						minetest.add_item(pos, cooked.item) -- Drop Cooked Item
 						-- Throw some Experience Points because why not?
 						-- Food is cooked, xp is deserved for using this unique cooking method. Take that Minecraft ;)
