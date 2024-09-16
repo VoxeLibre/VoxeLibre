@@ -317,13 +317,12 @@ local GROUP_MAP = {
 	["snappy"] = "shearsy",
 }
 
-function mcl_autogroup.group_compatibility(groups, node_def)
+function mcl_autogroup.group_compatibility(groups)
 	local grouped = false
-	for name,_ in pairs(groups) do
+	for name,old_group_value in pairs(groups) do
 		local new_group = GROUP_MAP[name]
 		if new_group then
-			groups[new_group] = 1
-			node_def.groups[new_group] = 1
+			groups[new_group] = old_group_value
 		end
 		if mcl_autogroup.registered_diggroups[name] then
 			grouped = true
@@ -350,7 +349,7 @@ local function overwrite()
 
 		if not newgroups.unbreakable and not newgroups.indestructible then
 			ndef.diggable = true
-			mcl_autogroup.group_compatibility(newgroups, ndef)
+			mcl_autogroup.group_compatibility(newgroups)
 			if not ndef._mcl_hardness then
 				ndef._mcl_hardness = 0
 			end

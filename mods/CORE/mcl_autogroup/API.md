@@ -2,7 +2,7 @@
 This mod emulates digging times from MC.
 
 ## `mcl_autogroup.can_harvest(nodename, toolname, player)`
-Return true if `nodename` can be dig with `toolname` by `player`.
+Return true if `nodename` can be dug with `toolname` by `player`.
 
 * `nodename`: string, valid nodename
 * `toolname`: (optional) string, valid toolname
