@@ -14,6 +14,8 @@ local velocities = {}
 function mcl_throwing.register_throwable_object(name, entity, velocity)
 	entity_mapping[name] = entity
 	velocities[name] = velocity
+	assert(minetest.registered_entities[entity], entity.." not registered")
+	assert(minetest.registered_entities[entity]._vl_projectile)
 end
 
 function mcl_throwing.throw(throw_item, pos, dir, velocity, thrower)

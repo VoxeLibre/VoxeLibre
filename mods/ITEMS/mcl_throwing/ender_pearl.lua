@@ -20,7 +20,6 @@ minetest.register_craftitem("mcl_throwing:ender_pearl", {
 	on_use = mcl_throwing.get_player_throw_function("mcl_throwing:ender_pearl_entity"),
 	groups = { transport = 1 },
 })
-mcl_throwing.register_throwable_object("mcl_throwing:ender_pearl", "mcl_throwing:ender_pearl_entity", 22)
 
 -- Ender pearl entity
 vl_projectile.register("mcl_throwing:ender_pearl_entity",{
@@ -125,3 +124,5 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 		end
 	},
 })
+mcl_throwing.register_throwable_object("mcl_throwing:ender_pearl", "mcl_throwing:ender_pearl_entity", 22)
+

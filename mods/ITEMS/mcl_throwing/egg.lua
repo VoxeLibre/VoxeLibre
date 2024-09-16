@@ -17,7 +17,6 @@ minetest.register_craftitem("mcl_throwing:egg", {
 	_on_dispense = mcl_throwing.dispense_function,
 	groups = { craftitem = 1 },
 })
-mcl_throwing.register_throwable_object("mcl_throwing:egg", "mcl_throwing:egg_entity", 22)
 
 minetest.register_entity("mcl_throwing:egg_entity",{
 	physical = false,
@@ -60,4 +59,5 @@ minetest.register_entity("mcl_throwing:egg_entity",{
 		},
 	},
 })
+mcl_throwing.register_throwable_object("mcl_throwing:egg", "mcl_throwing:egg_entity", 22)
 
