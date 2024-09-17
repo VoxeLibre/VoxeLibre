@@ -256,7 +256,7 @@ function vl_terraforming.find_level_vm(vm, cpos, size, tolerance, mode)
 		return cpos, surface_material
 	end
 	-- well supported base, not too uneven?
-	if #ys < 4 or min(ys[#ys-1]-ys[1], ys[#ys]-ys[2]) > tolerance then
+	if #ys < 5 or min(ys[#ys-1]-ys[1], ys[#ys]-ys[2]) > tolerance then
 		-- minetest.log("action", "[vl_terraforming] ground too uneven: "..#ys.." positions: "..({dump(ys):gsub("[\n\t ]+", " ")})[1]
 		--                      .." tolerance "..tostring(#ys > 2 and min(ys[#ys-1]-ys[1], ys[#ys]-ys[2])).." > "..tolerance)
 		return nil, nil

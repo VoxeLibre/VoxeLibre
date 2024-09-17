@@ -27,6 +27,7 @@ mcl_structures.register_structure = function(name, def, nospawn)
 	vl_structures.register_structure(name, def)
 end
 
+dofile(modpath.."/campsite.lua")
 dofile(modpath.."/desert_temple.lua")
 dofile(modpath.."/desert_well.lua")
 dofile(modpath.."/end_city.lua")
@@ -40,6 +41,7 @@ dofile(modpath.."/ocean_temple.lua")
 dofile(modpath.."/pillager_outpost.lua")
 dofile(modpath.."/ruined_portal.lua")
 dofile(modpath.."/shipwrecks.lua")
+dofile(modpath.."/spider_cocoon.lua")
 dofile(modpath.."/witch_hut.lua")
 dofile(modpath.."/woodland_mansion.lua")
 

@@ -32,7 +32,7 @@ vl_structures.register_structure("desert_temple",{
 	place_on = {"group:sand"},
 	flags = "place_center_x, place_center_z",
 	y_offset = -12,
-	prepare = { padding = 3, corners = 3, foundation = true, clear = false },
+	prepare = { tolerance = 10, padding = 3, corners = 3, foundation = true, clear = false },
 	chunk_probability = 18,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
