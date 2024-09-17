@@ -530,8 +530,8 @@ local function get_water_spawn(p)
 		end
 end
 
-local function has_room(self,pos)
-	local cb = self.collisionbox
+local function has_room(self, pos)
+	local cb = self.spawnbox or self.collisionbox
 	local nodes = {}
 	if self.fly_in then
 		local t = type(self.fly_in)
@@ -542,18 +542,74 @@ local function has_room(self,pos)
 		end
 	end
 	table.insert(nodes,"air")
-	local x = cb[4] - cb[1]
-	local y = cb[5] - cb[2]
-	local z = cb[6] - cb[3]
-	local r = math.ceil(x * y * z)
-	local p1 = vector.offset(pos,cb[1],cb[2],cb[3])
-	local p2 = vector.offset(pos,cb[4],cb[5],cb[6])
-	local n = #minetest.find_nodes_in_area(p1,p2,nodes) or 0
-	if r > n then
-		minetest.log("warning","[mcl_mobs] No room for mob "..self.name.." at "..minetest.pos_to_string(vector.round(pos)))
-		return false
+
+	-- Calculate area to check for room
+	local cb_height = cb[5] - cb[2]
+	local p1 = vector.new(
+		math.round(pos.x + cb[1]),
+		math.floor(pos.y),
+		math.round(pos.z + cb[3]))
+	local p2 = vector.new(
+		math.round(pos.x + cb[4]),
+		math.ceil(p1.y + cb_height) - 1,
+		math.round(pos.z + cb[6]))
+
+	-- Check if the entire spawn volume is free
+	local dx = p2.x - p1.x + 1
+	local dy = p2.y - p1.y + 1
+	local dz = p2.z - p1.z + 1
+	local found_nodes = minetest.find_nodes_in_area(p1,p2,nodes) or 0
+	local n = #found_nodes
+	if n == dx * dy * dz then
+		return true
 	end
-	return true
+
+	-- If we don't have an implementation of get_node_boxes, we can't check for sub-node space
+	if not minetest.get_node_boxes then return false end
+
+	-- Check if it's possible for a sub-node space check to succeed
+	local needed_in_bottom_section = dx * ( dy - 1) * dz
+	if n < needed_in_bottom_section then return false end
+
+	-- Make sure the entire volume except for the top level is free before checking the top layer
+	if dy > 1 then
+		-- Remove nodes in the top layer from the count
+		for i = 1,#found_nodes do
+			if found_nodes[i].y == p2.y then
+				n = n - 1
+			end
+		end
+
+		-- If the entire volume except the top layer isn't air (or nodes) then we can't spawn this mob here
+		if n < needed_in_bottom_section then return false end
+	end
+
+	-- Check the top layer to see if we have enough space to spawn in
+	local top_layer_height = 1
+	local processed = {}
+	for x = p1.x,p2.x do
+		for z = p1.z,p2.z do
+			local test_pos = vector.new(x,p2.y,z)
+			local node = minetest.get_node(test_pos) or { name = "ignore" }
+			local cache_name = string.format("%s-%d", node.name, node.param2)
+			if not processed[cache_name] then
+				-- Calculate node bounding box and select the lowest y value
+				local boxes = minetest.get_node_boxes("collision_box", test_pos, node)
+				for i = 1,#boxes do
+					local box = boxes[i]
+					local y_test = box[2] + 0.5
+					if y_test < top_layer_height then top_layer_height = y_test end
+
+					local y_test = box[5] + 0.5
+					if y_test < top_layer_height then top_layer_height = y_test end
+				end
+			end
+		end
+	end
+	if top_layer_height + dy - 1 >= cb_height then return true end
+
+	-- We don't have room
+	return false
 end
 
 mcl_mobs.custom_biomecheck = nil
@@ -644,9 +700,9 @@ function mcl_mobs.spawn(pos,id)
 	if not pos or not id then return false end
 	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
+	if not has_room(def, pos) then return false end
 	return minetest.add_entity(pos, def.name)
 end
-
 
 local function spawn_group(p,mob,spawn_on,amount_to_spawn)
 	local nn= minetest.find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5),vector.offset(p,5,3,5),spawn_on)

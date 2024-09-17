@@ -1049,14 +1049,18 @@ local function has_summon_participants(self)
 end
 
 local function summon_golem(self)
-	vector.offset(self.object:get_pos(),-10,-10,-10)
-	local nn = minetest.find_nodes_in_area_under_air(vector.offset(self.object:get_pos(),-10,-10,-10),vector.offset(self.object:get_pos(),10,10,10),{"group:solid","group:water"})
-	table.shuffle(nn)
-	for _,n in pairs(nn) do
-		local up = minetest.find_nodes_in_area(vector.offset(n,0,1,0),vector.offset(n,0,3,0),{"air"})
-		if up and #up >= 3 then
+	local pos = self.object:get_pos()
+	local p1 = vector.offset(pos, -10, -10, -10)
+	local p2 = vector.offset(pos,  10,  10,  10)
+	local nn = minetest.find_nodes_in_area_under_air(p1, p2,{"group:solid","group:water"})
+	while #nn > 0 do
+		local n = table.remove_random_element(nn)
+		n.y = n.y + 1
+
+		local summon = mcl_mobs.spawn(n, "mobs_mc:iron_golem")
+		if summon then
 			minetest.sound_play("mcl_portals_open_end_portal", {pos=n, gain=0.5, max_hear_distance = 16}, true)
-			return minetest.add_entity(vector.offset(n,0,1,0),"mobs_mc:iron_golem")
+			return summon
 		end
 	end
 end
