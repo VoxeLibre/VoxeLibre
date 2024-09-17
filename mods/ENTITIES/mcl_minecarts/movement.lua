@@ -307,7 +307,7 @@ local function do_movement_step(staticdata, dtime)
 	local remaining_in_block = 1 - x_0
 
 	-- Calculate acceleration
-	local v_0 = staticdata.velocity
+	local v_0 = staticdata.velocity or 0
 	local a = 0
 	if staticdata.ahead or staticdata.behind then
 		-- Calculate acceleration of the entire train
