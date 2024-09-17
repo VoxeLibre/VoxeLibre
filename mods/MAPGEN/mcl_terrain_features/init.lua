@@ -70,7 +70,7 @@ end
 
 local mushrooms = {"mcl_mushrooms:mushroom_brown","mcl_mushrooms:mushroom_red"}
 
-local function place_tree(pos,def,pr)
+local function place_fallen_tree(pos,def,pr)
 	local tree = minetest.find_node_near(pos,15,{"group:tree"})
 	if not tree then return end
 	tree = minetest.get_node(tree).name
@@ -113,6 +113,12 @@ local function place_tree(pos,def,pr)
 	if len < minlen then return end
 	-- place the tree
 	minetest.swap_node(pos, {name = tree, param2 = 0})
+	-- some are hollow:
+	if vl_hollow_logs.logs and pr:next(1,20) == 1 then
+		local nam = string.sub(tree, string.find(tree, ":") + 1)
+		nam = "vl_hollow_logs:"..nam.."_hollow"
+		if minetest.registered_nodes[nam] then tree = nam end
+	end
 	for i = 2,len do
 		minetest.swap_node(vector.offset(pos, dx * i, 0, dz * i), {name = tree, param2 = param2})
 		if pr:next(0,255) < vrate then
@@ -155,7 +161,7 @@ vl_structures.register_structure("fallen_tree",{
 	solid_ground = true,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
-	place_func = place_tree
+	place_func = place_fallen_tree
 })
 
 vl_structures.register_structure("lavapool",{
