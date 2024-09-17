@@ -270,7 +270,7 @@ local function remove_shield_entity(player, i)
 end
 
 local function is_rmb_conflicting_node(nodename)
-	nodedef = minetest.registered_nodes[nodename] or {}
+	local nodedef = minetest.registered_nodes[nodename] or {}
 	return nodedef.on_rightclick
 end
 
@@ -282,11 +282,22 @@ local function handle_blocking(player)
 		return
 	end
 
+	local pointed_thing = mcl_util.get_pointed_thing(player, true)
+	local wielded_stack = player:get_wielded_item()
+
 	local shield_in_offhand = mcl_shields.wielding_shield(player, 1)
 	local shield_in_hand = mcl_shields.wielding_shield(player)
 	local not_blocking = player_shield.blocking == 0
 
-	local pos = player:get_pos()
+	if pointed_thing and pointed_thing.type == "node" then
+		local pointed_node = minetest.get_node(pointed_thing.under)
+		if minetest.get_item_group(pointed_node.name, "container") > 1
+				or is_rmb_conflicting_node(pointed_node.name)
+				or wielded_stack:get_definition().type == "node" then
+			return
+		end
+	end
+
 	if shield_in_hand then
 		if not_blocking then
 			minetest.after(0.05, function()
@@ -299,27 +310,15 @@ local function handle_blocking(player)
 			player_shield.blocking = 2
 		end
 	elseif shield_in_offhand then
-		local pointed_thing = mcl_util.get_pointed_thing(player, true)
-		local wielded_stack = player:get_wielded_item()
-		local offhand_can_block = (minetest.get_item_group(wielded_item(player), "bow") ~= 1 
-		and minetest.get_item_group(wielded_item(player), "crossbow") ~= 1)
-
-		if pointed_thing and pointed_thing.type == "node" then
-			local pointed_node = minetest.get_node(pointed_thing.under)
-			if minetest.get_item_group(pointed_node.name, "container") > 1
-			or is_rmb_conflicting_node(pointed_node.name)
-			or wielded_stack:get_definition().type == "node"
-			then
-				return
-			end
-		end
+		local offhand_can_block = minetest.get_item_group(wielded_item(player), "cannot_block") ~= 1
 
 		if not offhand_can_block then
 			return
 		end
 		if not_blocking then
 			minetest.after(0.05, function()
-				if (not_blocking or not shield_in_hand) and shield_in_offhand and rmb  and offhand_can_block then
+				if (not_blocking or not shield_in_hand) and shield_in_offhand
+						and rmb and offhand_can_block then
 					player_shield.blocking = 1
 					set_shield(player, true, 1)
 				end
