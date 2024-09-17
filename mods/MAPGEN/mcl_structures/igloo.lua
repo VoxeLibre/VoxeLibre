@@ -78,7 +78,7 @@ local function igloo_callback(cpos,def,pr,p1,p2,size,rotation)
 	end
 	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
 	vl_structures.place_schematic(bpos, -1, path, rotation, {
-		force_place = true,
+		force_placement = true,
 		prepare = { tolerance = -1, foundation = false, clear = false },
 		after_place = function(_, _, pr, p1, p2)
 			-- Generate ladder to basement
