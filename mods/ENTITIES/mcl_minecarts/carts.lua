@@ -67,6 +67,71 @@ local function detach_driver(self)
 		--print("No player object found for "..driver_name)
 	end
 end
+function mod.kill_cart(staticdata, killer)
+	local pos
+	mcl_log("cart #"..staticdata.uuid.." was killed")
+
+	-- Leave nodes
+	if staticdata.attached_at then
+		handle_cart_leave(self, staticdata.attached_at, staticdata.dir )
+	else
+		--mcl_log("TODO: handle detatched minecart death")
+	end
+
+	-- Handle entity-related items
+	local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
+	if le then
+		pos = le.object:get_pos()
+
+		detach_driver(le)
+
+		-- Detach passenger
+		if le._passenger then
+			local mob = le._passenger.object
+			mob:set_detach()
+		end
+
+		-- Remove the entity
+		le.object:remove()
+	else
+		pos = mod.get_cart_position(staticdata)
+	end
+
+	-- Drop items
+	if not staticdata.dropped then
+		-- Try to drop the cart
+		local entity_def = minetest.registered_entities[staticdata.cart_type]
+		if entity_def then
+			local drop_cart = true
+			if killer and minetest.is_creative_enabled(killer:get_player_name()) then
+				drop_cart = false
+			end
+
+			if drop_cart then
+				local drop = entity_def.drop
+				for d=1, #drop do
+					minetest.add_item(pos, drop[d])
+				end
+			end
+		end
+
+		-- Drop any items in the inventory
+		local inventory = staticdata.inventory
+		if inventory then
+			for i=1,#inventory do
+				minetest.add_item(pos, inventory[i])
+			end
+		end
+
+		-- Prevent item duplication
+		staticdata.dropped = true
+	end
+
+	-- Remove data
+	destroy_cart_data(staticdata.uuid)
+end
+local kill_cart = mod.kill_cart
+
 
 -- Table for item-to-entity mapping. Keys: itemstring, Values: Corresponding entity ID
 local entity_mapping = {}
@@ -192,10 +257,14 @@ function DEFAULT_CART_DEF:on_punch(puncher, time_from_last_punch, tool_capabilit
 	if puncher == self._driver then return end
 
 	local staticdata = self._staticdata
+
+	if puncher:get_player_control().sneak then
+		mod.kill_cart(staticdata, puncher)
+		return
+	end
+
 	local controls = staticdata.controls or {}
-
 	local impulse = vector.multiply(dir, damage * 20)
-
 	local accel = vector.dot(staticdata.dir, impulse)
 	if accel < 0 and staticdata.velocity == 0 then
 		mod.reverse_direction(staticdata)
@@ -278,72 +347,6 @@ function DEFAULT_CART_DEF:on_step(dtime)
 
 	mod.update_cart_orientation(self)
 end
-function mod.kill_cart(staticdata, killer)
-	local pos
-	mcl_log("cart #"..staticdata.uuid.." was killed")
-
-	-- Leave nodes
-	if staticdata.attached_at then
-		handle_cart_leave(self, staticdata.attached_at, staticdata.dir )
-	else
-		--mcl_log("TODO: handle detatched minecart death")
-	end
-
-	-- Handle entity-related items
-	local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
-	if le then
-		pos = le.object:get_pos()
-
-		detach_driver(le)
-
-		-- Detach passenger
-		if le._passenger then
-			local mob = le._passenger.object
-			mob:set_detach()
-		end
-
-		-- Remove the entity
-		le.object:remove()
-	else
-		pos = mod.get_cart_position(staticdata)
-	end
-
-	-- Drop items
-	if not staticdata.dropped then
-
-		-- Try to drop the cart
-		local entity_def = minetest.registered_entities[staticdata.cart_type]
-		if entity_def then
-			local drop_cart = true
-			if killer and minetest.is_creative_enabled(killer:get_player_name()) then
-				drop_cart = false
-			end
-
-			if drop_cart then
-				local drop = entity_def.drop
-				for d=1, #drop do
-					minetest.add_item(pos, drop[d])
-				end
-			end
-		end
-
-		-- Drop any items in the inventory
-		local inventory = staticdata.inventory
-		if inventory then
-			for i=1,#inventory do
-				minetest.add_item(pos, inventory[i])
-			end
-		end
-
-		-- Prevent item duplication
-		staticdata.dropped = true
-	end
-
-	-- Remove data
-	destroy_cart_data(staticdata.uuid)
-end
-local kill_cart = mod.kill_cart
-
 function DEFAULT_CART_DEF:on_death(killer)
 	kill_cart(self._staticdata, killer)
 end
