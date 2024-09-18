@@ -276,6 +276,9 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	if do_damage then
 		object:punch(self.object, 1.0, projectile_def.tool or { full_punch_interval = 1.0, damage_groups = dmg }, dir )
 
+		-- Guard against crashes when projectiles get destroyed in response to what it punched
+		if not self.object:get_pos() then return true end
+
 		-- Indicate damage
 		damage_particles(vector.add(pos, vector.multiply(self.object:get_velocity(), 0.1)), self._is_critical)
 
