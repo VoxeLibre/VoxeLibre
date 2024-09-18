@@ -691,7 +691,7 @@ mcl_enchanting.enchantments.soul_speed = {
 	disallow = {non_combat_armor = true},
 	incompatible = {frost_walker = true},
 	weight = 2,
-	description = S("Increases walking speed on soul sand."),
+	description = S("Increases walking speed on soul sand and soul soil."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,

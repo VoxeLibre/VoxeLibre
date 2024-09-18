@@ -514,21 +514,29 @@ minetest.register_globalstep(function(dtime)
 			return
 		end
 
-		-- Standing on soul sand? If so, walk slower (unless player wears Soul Speed boots)
-		if node_stand == "mcl_nether:soul_sand" then
-			-- TODO: Tweak walk speed
-			-- TODO: Also slow down mobs
-			-- Slow down even more when soul sand is above certain block
-			local boots = player:get_inventory():get_stack("armor", 5)
-			local soul_speed = mcl_enchanting.get_enchantment(boots, "soul_speed")
-			if soul_speed > 0 then
-				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", soul_speed * 0.105 + 1.3)
-			else
-				if node_stand_below == "mcl_core:ice" or node_stand_below == "mcl_core:packed_ice" or node_stand_below == "mcl_core:slimeblock" or node_stand_below == "mcl_core:water_source" then
-					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", 0.1)
+		local boots = player:get_inventory():get_stack("armor", 5)
+		local soul_speed = mcl_enchanting.get_enchantment(boots, "soul_speed")
+
+		-- Standing on a soul block? If so, check for speed bonus / penalty
+		if get_item_group(node_stand, "soul_block") ~= 0 then
+			
+			-- Standing on soul sand? If so, walk slower (unless player wears Soul Speed boots, then apply bonus)
+			if node_stand == "mcl_nether:soul_sand" then
+				-- TODO: Tweak walk speed
+				-- TODO: Also slow down mobs
+				-- Slow down even more when soul sand is above certain block
+				if soul_speed > 0 then
+					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", soul_speed * 0.105 + 1.3)
 				else
-					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", 0.4)
+					if node_stand_below == "mcl_core:ice" or node_stand_below == "mcl_core:packed_ice" or node_stand_below == "mcl_core:slimeblock" or node_stand_below == "mcl_core:water_source" then
+						playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", 0.1)
+					else
+						playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", 0.4)
+					end
 				end
+			elseif soul_speed > 0 then
+				-- Standing on a different soul block? If so, apply Soul Speed bonus unconditionally
+				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", soul_speed * 0.105 + 1.3)
 			end
 		else
 			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:soul_speed")
