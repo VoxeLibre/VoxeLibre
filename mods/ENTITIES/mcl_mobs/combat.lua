@@ -401,10 +401,7 @@ end
 -- dogshoot attack switch and counter function
 function mob_class:dogswitch(dtime)
 	-- switch mode not activated
-	if not self.dogshoot_switch
-	or not dtime then
-		return 0
-	end
+	if not self.dogshoot_switch or not dtime then return 0 end
 
 	self.dogshoot_count = self.dogshoot_count + dtime
 
@@ -604,8 +601,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			end
 		end
 		-- knock back effect (only on full punch)
-		if self.knock_back
-		and tflp >= punch_interval then
+		if self.knock_back and tflp >= punch_interval then
 			-- direction error check
 			dir = dir or vector_zero()
 
@@ -645,7 +641,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				kb = kb + luaentity._knockback * 0.25
 			end
 			self._kb_turn = true
-			self._turn_to=self.object:get_yaw()-1.57
+			self:turn_by(HALFPI, .1) -- knockback turn
 			self.frame_speed_multiplier=2.3
 			if self.animation.run_end then
 				self:set_animation("run")
@@ -770,7 +766,7 @@ local function clear_aggro(self)
 	self.path.way = nil
 end
 
-function mob_class:do_states_attack (dtime)
+function mob_class:do_states_attack(dtime)
 	self.timer = self.timer + dtime
 	if self.timer > 100 then self.timer = 1 end
 
@@ -813,7 +809,7 @@ function mob_class:do_states_attack (dtime)
 
 	if self.attack_type == "explode" then
 		if target_line_of_sight then
-			self:turn_in_direction(p.x - s.x, p.z - s.z, 1, dtime)
+			self:turn_in_direction(p.x - s.x, p.z - s.z, 1)
 		end
 
 		local node_break_radius = self.explosion_radius or 1
@@ -932,7 +928,7 @@ function mob_class:do_states_attack (dtime)
 			p = vector_copy(p1)
 		end
 
-		self:turn_in_direction(p.x - s.x, p.z - s.z, 1, dtime)
+		self:turn_in_direction(p.x - s.x, p.z - s.z, 1)
 
 		-- move towards enemy if beyond mob reach
 		if dist > self.reach then
@@ -1004,7 +1000,7 @@ function mob_class:do_states_attack (dtime)
 			or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and self:dogswitch() == 0) then
 		local vec = vector_new(p.x - s.x, p.y - s.y - 1, p.z - s.z)
 		local dist = (vec.x*vec.x + vec.y*vec.y + vec.z*vec.z)^0.5
-		self:turn_in_direction(vec.x, vec.z, 1, dtime)
+		self:turn_in_direction(vec.x, vec.z, 1)
 
 		if self.strafes then
 			if not self.strafe_direction then self.strafe_direction = HALFPI end

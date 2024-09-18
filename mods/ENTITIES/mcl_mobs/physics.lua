@@ -247,17 +247,21 @@ function mob_class:update_roll()
 end
 
 -- Relative turn, primarily for random turning
+-- @param dtime deprecated: ignored now, because of smooth rotations
 function mob_class:turn_by(angle, delay, dtime)
 	return self:set_yaw((self.object:get_yaw() or 0) + angle, delay, dtime)
 end
 -- Turn into a direction (e.g., to the player, or away)
+-- @param dtime deprecated: ignored now, because of smooth rotations
 function mob_class:turn_in_direction(dx, dz, delay, dtime)
 	if abs(dx) == 0 and abs(dz) == 0 then return self.object:get_yaw() + self.rotate end
 	return self:set_yaw(-atan2(dx, dz) - self.rotate, delay, dtime)
 end
 -- set and return valid yaw
-function mob_class:set_yaw(yaw, delay, dtime) -- FIXME: dtime unused
+-- @param dtime deprecated: ignored now, because of smooth rotations
+function mob_class:set_yaw(yaw, delay, dtime)
 	if self.noyaw then return end
+	if self._kb_turn then return yaw end -- knockback in effect
 	if not self.object:get_yaw() or not self.object:get_pos() then return end
 	self.delay = delay or 0
 	self.target_yaw = yaw % TWOPI
@@ -266,10 +270,6 @@ end
 
 -- improved smooth rotation
 function mob_class:check_smooth_rotation(dtime)
-	if self._turn_to then
-		self:set_yaw(self._turn_to, .1)
-		self._turn_to = nil
-	end
 	if not self.target_yaw then return end
 
 	local delay = self.delay

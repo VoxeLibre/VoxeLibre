@@ -224,12 +224,12 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self._current_animation = nil
 	self:set_animation("stand")
 
-	if self.riden_by_jock then --- Keep this function before self.on_spawn() is run.
+	if self.riden_by_jock then --- Keep this function before self:on_spawn()
 		self.object:remove()
 		return
 	end
 
-	if self.on_spawn and not self.on_spawn_run and self.on_spawn(self) then self.on_spawn_run = true end
+	if self.on_spawn and not self.on_spawn_run and self:on_spawn() then self.on_spawn_run = true end
 
 	if not self.wears_armor and self.armor_list then self.armor_list = nil end
 
