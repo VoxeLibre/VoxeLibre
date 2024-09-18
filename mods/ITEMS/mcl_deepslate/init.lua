@@ -111,7 +111,7 @@ for _, p in pairs(deepslate_ores) do
 end
 
 if copper_mod then
-	register_deepslate_ore("Copper", "mcl_copper:raw_copper", "mcl_copper:copper_ingot", 4, 4)
+	register_deepslate_ore("Copper", "mcl_copper:raw_copper", "mcl_copper:copper_ingot", 3, 4)
 end
 
 local redstone_timer = 68.28
