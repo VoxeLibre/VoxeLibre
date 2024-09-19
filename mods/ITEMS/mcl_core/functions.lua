@@ -161,7 +161,7 @@ minetest.register_abm({
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		liquid_flow_action(pos, "water", function(pos)
 			drop_attached_node(pos)
-			minetest.dig_node(pos)
+			minetest.remove_node(pos)
 		end)
 	end,
 })
@@ -217,7 +217,8 @@ minetest.register_abm({
 			while true do
 				local node = minetest.get_node(lpos)
 				if not node or node.name ~= "mcl_core:cactus" then break end
-				minetest.dig_node(lpos)
+				-- minetest.dig_node ignores protected nodes and causes infinite drop (#4628)
+				minetest.remove_node(lpos)
 				dx = dx or ((math.random(0,1)-0.5) * math.sqrt(math.random())) * 1.5
 				dy = dy or ((math.random(0,1)-0.5) * math.sqrt(math.random())) * 1.5
 				local obj = minetest.add_item(vector.offset(lpos, dx, 0.25, dy), "mcl_core:cactus")
