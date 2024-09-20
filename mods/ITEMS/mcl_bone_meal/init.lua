@@ -99,7 +99,9 @@ mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
 		end
 
 		-- Particle effects
-		mcl_bone_meal.add_bone_meal_particle(pos)
+		if consume then
+			mcl_bone_meal.add_bone_meal_particle(pos)
+		end
 
 		-- Take the item
 		if consume and ( not placer or not minetest.is_creative_enabled(placer:get_player_name()) ) then
@@ -107,6 +109,7 @@ mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
 		end
 
 		if success then return itemstack end
+		if consume then return itemstack end
 	end
 
 	return itemstack
