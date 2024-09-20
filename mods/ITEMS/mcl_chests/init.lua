@@ -39,7 +39,7 @@ dofile(modpath .. "/api.lua")
 dofile(modpath .. "/chests.lua")
 dofile(modpath .. "/ender.lua")
 dofile(modpath .. "/shulkers.lua")
---dofile(modpath .. "/example.lua")
+dofile(modpath .. "/example.lua")
 
 
 

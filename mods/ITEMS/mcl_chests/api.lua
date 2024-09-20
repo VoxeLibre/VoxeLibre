@@ -9,6 +9,8 @@ local table = table
 
 local sf = string.format
 
+local concat = table.concat
+
 -- Recursively merge tables with eachother
 local function table_merge(tbl, ...)
 	local t = table.copy(tbl)
@@ -415,6 +417,56 @@ local function get_chest_inventories(pos, side)
 	return top_inv, bottom_inv
 end
 
+local inv_fs = {}
+
+function inv_fs.small(name, pos)
+	return concat({
+		"formspec_version[4]",
+		"size[11.75,10.425]",
+
+		"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
+		mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+		sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos.x, pos.y, pos.z),
+		"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
+		mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
+		"list[current_player;main;0.375,5.1;9,3;9]",
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
+		"list[current_player;main;0.375,9.05;9,1;]",
+		sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
+		"listring[current_player;main]",
+	})
+end
+
+function inv_fs.double(name, pos, pos_other)
+	return concat({
+		"formspec_version[4]",
+		"size[11.75,14.15]",
+
+		"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
+		mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
+		sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos.x, pos.y, pos.z),
+		mcl_formspec.get_itemslot_bg_v4(0.375, 4.5, 9, 3),
+		sf("list[nodemeta:%s,%s,%s;main;0.375,4.5;9,3;]", pos_other.x, pos_other.y, pos_other.z),
+		"label[0.375,8.45;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
+		mcl_formspec.get_itemslot_bg_v4(0.375, 8.825, 9, 3),
+		"list[current_player;main;0.375,8.825;9,3;9]",
+
+		mcl_formspec.get_itemslot_bg_v4(0.375, 12.775, 9, 1),
+		"list[current_player;main;0.375,12.775;9,1;]",
+
+		--BEGIN OF LISTRING WORKAROUND
+		"listring[current_player;main]",
+		sf("listring[nodemeta:%s,%s,%s;input]", pos.x, pos.y, pos.z),
+		--END OF LISTRING WORKAROUND
+
+		"listring[current_player;main]" ..
+		sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
+		"listring[current_player;main]",
+		sf("listring[nodemeta:%s,%s,%s;main]", pos_other.x, pos_other.y, pos_other.z),
+	})
+end
+
 -- Functions used in double chest registration code
 -- ------------------------------------------------
 -- The `return function` wrapping is necessary to avoid stacking up parameters.
@@ -504,16 +556,76 @@ local function log_inventory_put_double(side) return function(pos, listname, ind
 	-- END OF LISTRING WORKAROUND
 end end
 
+-- Prototype and template tables
+-- -----------------------------
+-- Used in chest registration code, moved here for performance reasons
+
+-- Group templates
+local t_groups_inv = { deco_block = 1 }
+local t_groups_small = {
+	container = 2,
+	deco_block = 1,
+	chest_entity = 1,
+	not_in_creative_inventory = 1
+}
+local t_groups_left = { double_chest = 1 }
+local t_groups_right = {
+	-- In a double chest, the entity is assigned to the left side, but not the right one.
+	chest_entity = 0,
+	double_chest = 2
+}
+
+local t_inv_size = {
+	w = 9,
+	h = 3
+}
+
+local dummy_tiles = { "blank.png^[resize:16x16" }
+
+local nodebox_small = {
+	type = "fixed",
+	fixed = { -0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375 },
+}
+local nodebox_left = {
+	type = "fixed",
+	fixed = { -0.4375, -0.5, -0.4375, 0.5, 0.375, 0.4375 },
+}
+local nodebox_right = {
+	type = "fixed",
+	fixed = { -0.5, -0.5, -0.4375, 0.4375, 0.375, 0.4375 },
+}
+
+local simple_kinds = { "small", "double" }
+
 -- This is a helper function to register regular chests (both small and double variants).
 -- Some parameters here are only utilized by trapped chests.
 function mcl_chests.register_chest(basename, d)
 	-- If this passes without crash, we know for a fact that d = {...}
 	assert((d and type(d) == "table"), "Second argument to mcl_chests.register_chest must be a table")
 
+	if d.double == nil then
+		d.double = true
+	end
+
 	-- Fallback for when there is no `title` field
 	if not d.title then d.title = {} end
 	d.title.small = d.title.small or d.desc
-	d.title.double = d.title.double or ("Large " .. d.title.small)
+	if d.double then d.title.double = d.title.double or ("Large " .. d.title.small) end
+
+	-- Inventory fallbacks
+	if not d.inv then d.inv = {} end
+	if not d.inv.size then
+		d.inv.size = t_inv_size
+	end
+	if not d.inv.fs then d.inv.fs = {} end
+	for i = 1, #simple_kinds do
+		if not d.inv.fs[simple_kinds[i]] then
+			d.inv.fs[simple_kinds[i]] = inv_fs[simple_kinds[i]]
+		end
+	end
+
+	local small_w = d.inv.size.w
+	local small_h = d.inv.size.h
 
 	if not d.drop then
 		d.drop = "mcl_chests:" .. basename
@@ -531,10 +643,6 @@ function mcl_chests.register_chest(basename, d)
 	if not d.on_rightclick_right then
 		d.on_rightclick_right = d.on_rightclick
 	end
-	--[[local on_rightclick_side = {
-		left = d.on_rightclick_left or d.on_rightclick,
-		right = d.on_rightclick_right or d.on_rightclick,
-	}]]
 
 	if not d.sounds or type(d.sounds) ~= "table" then
 		d.sounds = { nil, "default_chest" }
@@ -557,44 +665,34 @@ function mcl_chests.register_chest(basename, d)
 	--  c = canonical
 	--  r = reverse (only for double chests)
 	-- cr = canonical, reverse (only for double chests)
-	local names = {
-		small = {
-			a = "mcl_chests:" .. basename .. "_small",
-			c = "mcl_chests:" .. d.canonical_basename .. "_small",
-		},
-		left = {
-			a = "mcl_chests:" .. basename .. "_left",
-			c = "mcl_chests:" .. d.canonical_basename .. "_left",
-		},
-		right = {
-			a = "mcl_chests:" .. basename .. "_right",
-			c = "mcl_chests:" .. d.canonical_basename .. "_right",
-		},
+	local names = {}
+	names.small = {
+		a = concat({"mcl_chests:", basename, "_small"}),
+		c = concat({"mcl_chests:", d.canonical_basename, "_small"}),
 	}
+	if d.double then
+		names.left = {
+			a = concat({"mcl_chests:", basename, "_left"}),
+			c = concat({"mcl_chests:", d.canonical_basename, "_left"}),
+		}
+		names.right = {
+			a = concat({"mcl_chests:", basename, "_right"}),
+			c = concat({"mcl_chests:", d.canonical_basename, "_right"}),
+		}
 	names.left.r = names.right.a
-	names.right.r = names.left.a
 	names.left.cr = names.right.c
+	names.right.r = names.left.a
 	names.right.cr = names.left.c
+	end
 
 	local small_textures = d.tiles.small
 	local double_textures = d.tiles.double
 
 	-- Construct groups
-	local groups_inv = table_merge({ deco_block = 1 }, d.groups)
-	local groups_small = table_merge(groups_inv, {
-		container = 2,
-		deco_block = 1,
-		chest_entity = 1,
-		not_in_creative_inventory = 1
-	}, d.groups)
-	local groups_left = table_merge(groups_small, {
-		double_chest = 1
-	}, d.groups)
-	local groups_right = table_merge(groups_small, {
-		-- In a double chest, the entity is assigned to the left side, but not the right one.
-		chest_entity = 0,
-		double_chest = 2
-	}, d.groups)
+	local groups_inv = table_merge(t_groups_inv, d.groups)
+	local groups_small = table_merge(groups_inv, t_groups_small)
+	local groups_left = table_merge(groups_small, t_groups_left)
+	local groups_right = table_merge(groups_small, t_groups_right)
 
 
 
@@ -631,12 +729,9 @@ function mcl_chests.register_chest(basename, d)
 		_doc_items_usagehelp = d.usagehelp,
 		_doc_items_hidden = d.hidden,
 		drawtype = "nodebox",
-		node_box = {
-			type = "fixed",
-			fixed = { -0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375 },
-		},
-		tiles = { "blank.png^[resize:16x16" },
-		use_texture_alpha = "clip",
+		node_box = nodebox_small,
+		tiles = dummy_tiles,
+		use_texture_alpha = "blend",
 		_chest_entity_textures = small_textures,
 		_chest_entity_sound = d.sounds[2],
 		_chest_entity_mesh = "mcl_chests_chest",
@@ -663,7 +758,7 @@ function mcl_chests.register_chest(basename, d)
 			-- END OF WORKAROUND --
 
 			local inv = meta:get_inventory()
-			inv:set_size("main", 9 * 3)
+			inv:set_size("main", small_h * small_w)
 
 			--[[ The "input" list is *another* workaround (hahahaha!) around the fact that Minetest
 			does not support listrings to put items into an alternative list if the first one
@@ -677,15 +772,15 @@ function mcl_chests.register_chest(basename, d)
 			-- END OF LISTRING WORKAROUND
 
 			-- Combine into a double chest if neighbouring another small chest
-			if minetest.get_node(get_double_container_neighbor_pos(pos, param2, "right")).name ==
-					names.small.a then
+			if d.double and minetest.get_node(get_double_container_neighbor_pos(pos, param2, "right"))
+					.name == names.small.a then
 				minetest.swap_node(pos, { name = names.right.a, param2 = param2 })
 				local p = get_double_container_neighbor_pos(pos, param2, "right")
 				minetest.swap_node(p, { name = names.left.a, param2 = param2 })
 				create_entity(p, names.left.a, double_textures, param2, true, d.sounds[2],
 					"mcl_chests_chest", "chest")
-			elseif minetest.get_node(get_double_container_neighbor_pos(pos, param2, "left")).name ==
-					names.small.a then
+			elseif d.double and minetest.get_node(get_double_container_neighbor_pos(pos, param2, "left"))
+					.name == names.small.a then
 				minetest.swap_node(pos, { name = names.left.a, param2 = param2 })
 				create_entity(pos, names.left.a, double_textures, param2, true, d.sounds[2],
 					"mcl_chests_chest", "chest")
@@ -726,22 +821,7 @@ function mcl_chests.register_chest(basename, d)
 
 			minetest.show_formspec(clicker:get_player_name(),
 				sf("mcl_chests:%s_%s_%s_%s", d.canonical_basename, pos.x, pos.y, pos.z),
-				table.concat({
-					"formspec_version[4]",
-					"size[11.75,10.425]",
-
-					"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
-					mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
-					sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos.x, pos.y, pos.z),
-					"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
-					mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
-					"list[current_player;main;0.375,5.1;9,3;9]",
-
-					mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
-					"list[current_player;main;0.375,9.05;9,1;]",
-					sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
-					"listring[current_player;main]",
-				})
+				d.inv.fs.small(name, pos)
 			)
 
 			if d.on_rightclick then
@@ -759,14 +839,12 @@ function mcl_chests.register_chest(basename, d)
 		on_rotate = simple_rotate,
 	})
 
+	if d.double then
 	minetest.register_node(names.left.a, {
 		drawtype = "nodebox",
-		node_box = {
-			type = "fixed",
-			fixed = { -0.4375, -0.5, -0.4375, 0.5, 0.375, 0.4375 },
-		},
-		tiles = { "blank.png^[resize:16x16" },
-		use_texture_alpha = "clip",
+		node_box = nodebox_left,
+		tiles = dummy_tiles,
+		use_texture_alpha = "blend",
 		_chest_entity_textures = double_textures,
 		_chest_entity_sound = d.sounds[2],
 		_chest_entity_mesh = "mcl_chests_chest",
@@ -817,32 +895,7 @@ function mcl_chests.register_chest(basename, d)
 
 			minetest.show_formspec(clicker:get_player_name(),
 				sf("mcl_chests:%s_%s_%s_%s", d.canonical_basename, pos.x, pos.y, pos.z),
-				table.concat({
-					"formspec_version[4]",
-					"size[11.75,14.15]",
-
-					"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
-					mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
-					sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos.x, pos.y, pos.z),
-					mcl_formspec.get_itemslot_bg_v4(0.375, 4.5, 9, 3),
-					sf("list[nodemeta:%s,%s,%s;main;0.375,4.5;9,3;]", pos_other.x, pos_other.y, pos_other.z),
-					"label[0.375,8.45;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
-					mcl_formspec.get_itemslot_bg_v4(0.375, 8.825, 9, 3),
-					"list[current_player;main;0.375,8.825;9,3;9]",
-
-					mcl_formspec.get_itemslot_bg_v4(0.375, 12.775, 9, 1),
-					"list[current_player;main;0.375,12.775;9,1;]",
-
-					--BEGIN OF LISTRING WORKAROUND
-					"listring[current_player;main]",
-					sf("listring[nodemeta:%s,%s,%s;input]", pos.x, pos.y, pos.z),
-					--END OF LISTRING WORKAROUND
-
-					"listring[current_player;main]" ..
-					sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
-					"listring[current_player;main]",
-					sf("listring[nodemeta:%s,%s,%s;main]", pos_other.x, pos_other.y, pos_other.z),
-				})
+				d.inv.fs.double(name, pos, pos_other)
 			)
 
 			if d.on_rightclick_left then
@@ -862,12 +915,9 @@ function mcl_chests.register_chest(basename, d)
 		drawtype = "nodebox",
 		paramtype = "light",
 		paramtype2 = "facedir",
-		node_box = {
-			type = "fixed",
-			fixed = { -0.5, -0.5, -0.4375, 0.4375, 0.375, 0.4375 },
-		},
-		tiles = { "blank.png^[resize:16x16" },
-		use_texture_alpha = "clip",
+		node_box = nodebox_right,
+		tiles = dummy_tiles,
+		use_texture_alpha = "blend",
 		groups = groups_right,
 		drop = d.drop,
 		is_ground_content = false,
@@ -912,40 +962,15 @@ function mcl_chests.register_chest(basename, d)
 
 			minetest.show_formspec(clicker:get_player_name(),
 				sf("mcl_chests:%s_%s_%s_%s", d.canonical_basename, pos.x, pos.y, pos.z),
-				table.concat({
-					"formspec_version[4]",
-					"size[11.75,14.15]",
-
-					"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, name)) .. "]",
-					mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
-					sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos_other.x, pos_other.y, pos_other.z),
-					mcl_formspec.get_itemslot_bg_v4(0.375, 4.5, 9, 3),
-					sf("list[nodemeta:%s,%s,%s;main;0.375,4.5;9,3;]", pos.x, pos.y, pos.z),
-					"label[0.375,8.45;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
-					mcl_formspec.get_itemslot_bg_v4(0.375, 8.825, 9, 3),
-					"list[current_player;main;0.375,8.825;9,3;9]",
-
-					mcl_formspec.get_itemslot_bg_v4(0.375, 12.775, 9, 1),
-					"list[current_player;main;0.375,12.775;9,1;]",
-
-					--BEGIN OF LISTRING WORKAROUND
-					"listring[current_player;main]",
-					sf("listring[nodemeta:%s,%s,%s;input]", pos.x, pos.y, pos.z),
-					--END OF LISTRING WORKAROUND
-
-					"listring[current_player;main]" ..
-					sf("listring[nodemeta:%s,%s,%s;main]", pos_other.x, pos_other.y, pos_other.z),
-					"listring[current_player;main]",
-					sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
-				})
+				d.inv.fs.double(name, pos_other, pos)
 			)
 
 			if d.on_rightclick_right then
 				d.on_rightclick_right(pos, node, clicker)
 			end
 
-			player_chest_open(clicker, pos_other, names.left.a, double_textures, node.param2, true, d.sounds[2],
-				"mcl_chests_chest")
+			player_chest_open(clicker, pos_other, names.left.a, double_textures, node.param2, true,
+				d.sounds[2], "mcl_chests_chest")
 		end,
 		mesecons = d.mesecons,
 		on_rotate = no_rotate,
@@ -956,6 +981,7 @@ function mcl_chests.register_chest(basename, d)
 	if doc then
 		doc.add_entry_alias("nodes", names.small.a, "nodes", names.left.a)
 		doc.add_entry_alias("nodes", names.small.a, "nodes", names.right.a)
+	end
 	end
 end
 

@@ -34,6 +34,7 @@ mcl_chests.register_chest("stone_chest", {
 	},
 	hardness = 4.0,
 	hidden = false,
+	double = false,
 	-- It bites!
 	on_rightclick = function(pos, node, clicker)
 		mcl_util.deal_damage(clicker, 2)
