@@ -962,6 +962,7 @@ end
 -- pos: Position
 -- node: Node table of the node at this position, from minetest.get_node
 -- Returns true on success and false on failure
+-- TODO: replace this with a proper tree API
 function mcl_core.grow_sapling(pos, node)
 	if node.name == "mcl_core:sapling" then
 		grow_oak(pos)
@@ -975,6 +976,8 @@ function mcl_core.grow_sapling(pos, node)
 		grow_spruce(pos)
 	elseif node.name == "mcl_core:birchsapling" then
 		grow_birch(pos)
+	elseif node.name == "mcl_cherry_blossom:cherrysapling" then
+		return mcl_cherry_blossom.generate_cherry_tree(pos)
 	else
 		return false
 	end
