@@ -1142,7 +1142,7 @@ end
 ---   the distance from the start where that node was found,
 ---   the node table if a node was found
 function mcl_util.trace_nodes(pos, dir, allowed_nodes, limit)
-	if ( dir ~= -1 ) and ( dir ~= 1 ) then return nil, 0, nil end
+	if (dir ~= -1) and (dir ~= 1) then return nil, 0, nil end
 	limit = limit or 16
 
 	for i = 1,limit do

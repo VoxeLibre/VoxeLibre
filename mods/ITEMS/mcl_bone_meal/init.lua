@@ -13,7 +13,7 @@ local usagehelp = S(
 
 mcl_bone_meal = {}
 
--- Bone meal particle api:
+-- Bone meal particle API:
 
 --- Spawns bone meal particles.
 -- pos: where the particles spawn
@@ -21,9 +21,7 @@ mcl_bone_meal = {}
 --	details on these parameters.
 --
 function mcl_bone_meal.add_bone_meal_particle(pos, def)
-	if not def then
-		def = {}
-	end
+	def = def or {}
 	minetest.add_particlespawner({
 		amount = def.amount or 10,
 		time = def.time or 0.1,
@@ -65,8 +63,9 @@ end
 --
 local function legacy_apply_bone_meal(pointed_thing, placer)
 	-- Legacy API support
-	for _, func in pairs(mcl_bone_meal.bone_meal_callbacks) do
-		if func(pointed_thing, placer) then
+	local callbacks = mcl_bone_meal.bone_meal_callbacks
+	for i = 1,#callbacks do
+		if callbacks[i](pointed_thing, placer) then
 			return true
 		end
 	end
@@ -75,7 +74,7 @@ local function legacy_apply_bone_meal(pointed_thing, placer)
 end
 -- End legacy bone meal API
 
-mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
+function mcl_bone_meal.use_bone_meal(itemstack, placer, pointed_thing)
 	local positions = {pointed_thing.under, pointed_thing.above}
 	for i = 1,2 do
 		local pos = positions[i]
@@ -98,18 +97,19 @@ mcl_bone_meal.use_bone_meal = function(itemstack, placer, pointed_thing)
 			consume = success
 		end
 
-		-- Particle effects
-		if consume then
-			mcl_bone_meal.add_bone_meal_particle(pos)
-		end
-
 		-- Take the item
-		if consume and ( not placer or not minetest.is_creative_enabled(placer:get_player_name()) ) then
-			itemstack:take_item()
+		if consume then
+			-- Particle effects
+			mcl_bone_meal.add_bone_meal_particle(pos)
+
+			if not placer or not minetest.is_creative_enabled(placer:get_player_name()) then
+				itemstack:take_item()
+			end
+
+			return itemstack
 		end
 
 		if success then return itemstack end
-		if consume then return itemstack end
 	end
 
 	return itemstack
@@ -130,7 +130,8 @@ minetest.register_craftitem("mcl_bone_meal:bone_meal", {
 		-- Use pointed node's on_rightclick function first, if present.
 		if placer and not placer:get_player_control().sneak then
 			if ndef and ndef.on_rightclick then
-				return ndef.on_rightclick(pos, node, placer, itemstack, pointed_thing) or itemstack
+				local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+				if new_stack and new_stack ~= itemstack then return new_stack end
 			end
 		end
 
