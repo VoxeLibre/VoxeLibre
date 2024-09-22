@@ -1,5 +1,4 @@
 local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
 local mod_target = minetest.get_modpath("mcl_target")

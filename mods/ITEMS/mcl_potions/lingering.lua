@@ -213,7 +213,7 @@ function mcl_potions.register_lingering(name, descr, color, def)
 			},
 			on_collide_with_entity = on_collide,
 			on_collide_with_solid = function(self, pos, node)
-				if mod_target and n == "mcl_target:target_off" then
+				if mod_target and node.name == "mcl_target:target_off" then
 					mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
 				end
 

@@ -388,6 +388,7 @@ local arrow_entity = {
 		if data._owner then
 			vl_projectile_data.owner = minetest.get_player_by_name(data._owner)
 		end
+		self._vl_projectile = vl_projectile_data
 
 		if data.shootername then
 			local shooter = minetest.get_player_by_name(data.shootername)

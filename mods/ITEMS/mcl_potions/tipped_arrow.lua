@@ -1,7 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local mod_target = minetest.get_modpath("mcl_target")
-
 local math = math
 
 local YAW_OFFSET = -math.pi/2
@@ -14,10 +12,6 @@ local function arrow_image(colorstring, opacity)
 end
 
 local how_to_shoot = minetest.registered_items["mcl_bows:arrow"]._doc_items_usagehelp
-
-local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
-local mod_button = minetest.get_modpath("mesecons_button")
-local enable_pvp = minetest.settings:get_bool("enable_pvp")
 
 local arrow_longdesc = minetest.registered_items["mcl_bows:arrow"]._doc_items_longdesc or ""
 local arrow_tt = minetest.registered_items["mcl_bows:arrow"]._tt_help or ""

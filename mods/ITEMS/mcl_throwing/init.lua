@@ -6,8 +6,6 @@ local modpath = minetest.get_modpath(minetest.get_current_modname())
 -- Snowballs and other throwable items
 --
 
-local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
-
 local entity_mapping = {}
 local velocities = {}
 

@@ -1,6 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local GRAVITY = 9.81
 local BOW_DURABILITY = 385
 
 -- Charging time in microseconds

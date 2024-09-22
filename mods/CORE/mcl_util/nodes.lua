@@ -45,7 +45,6 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 			itemstack, pointed_thing)
 		return
 	end
-	local fdir = minetest.dir_to_facedir(placer:get_look_dir())
 	local wield_name = itemstack:get_name()
 
 	local above = pointed_thing.above

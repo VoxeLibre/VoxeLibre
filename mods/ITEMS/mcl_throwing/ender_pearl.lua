@@ -65,6 +65,7 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 			local dir = vector.zero()
 
 			local v = self.object:get_velocity()
+			local node_def = minetest.registered_nodes[node.name]
 			if node_def and node_def.walkable then
 				local vc = vector.normalize(v) -- vector for calculating
 				-- Node is walkable, we have to find a place somewhere outside of that node

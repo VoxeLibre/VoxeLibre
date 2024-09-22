@@ -6,9 +6,6 @@ local vector = vector
 -- Time in seconds after which a stuck arrow is deleted
 local ROCKET_TIMEOUT = 1
 
--- Time after which stuck arrow is rechecked for being stuck
-local STUCK_RECHECK_TIME = 0.1
-
 local YAW_OFFSET = -math.pi/2
 
 local function damage_explosion(self, damagemulitplier)
@@ -248,39 +245,6 @@ minetest.register_craftitem("mcl_bows:rocket", {
 		end
 	end,
 })
-
--- Destroy arrow entity self at pos and drops it as an item
-local function spawn_item(self, pos)
-	if not minetest.is_creative_enabled("") then
-		local item = minetest.add_item(pos, "mcl_bows:rocket")
-		item:set_velocity({x=0, y=0, z=0})
-		item:set_yaw(self.object:get_yaw())
-	end
-	mcl_burning.extinguish(self.object)
-	self.object:remove()
-end
-
-local function damage_particles(pos, is_critical)
-	if is_critical then
-		minetest.add_particlespawner({
-			amount = 15,
-			time = 0.1,
-			minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
-			maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
-			minvel = {x=-0.1, y=-0.1, z=-0.1},
-			maxvel = {x=0.1, y=0.1, z=0.1},
-			minacc = {x=0, y=0, z=0},
-			maxacc = {x=0, y=0, z=0},
-			minexptime = 1,
-			maxexptime = 2,
-			minsize = 1.5,
-			maxsize = 1.5,
-			collisiondetection = false,
-			vertical = false,
-			texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
-		})
-	end
-end
 
 local arrow_entity = mcl_bows.arrow_entity
 local rocket_entity = table.copy(arrow_entity)

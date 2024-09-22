@@ -6,7 +6,6 @@ mcl_bows_s = {}
 -- 	["mcl_bows:arrow"] = "mcl_bows:arrow_entity",
 -- }
 
-local GRAVITY = 9.81
 local BOW_DURABILITY = 385
 
 -- Charging time in microseconds
