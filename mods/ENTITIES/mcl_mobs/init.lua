@@ -402,7 +402,7 @@ function mcl_mobs.register_arrow(name, def)
 		hit_object = def.hit_object,
 		homing = def.homing,
 		drop = def.drop or false, -- drops arrow as registered item when true
-		collisionbox = {0, 0, 0, 0, 0, 0}, -- remove box around arrows
+		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0}, -- remove box around arrows
 		timer = 0,
 		switch = 0,
 		_lifetime = def._lifetime or 7,
