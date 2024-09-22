@@ -466,6 +466,9 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 	rotate = 90,
 	_lifetime = 15,
 	on_punch = function(self) end,
+	allow_punching = function(self, _, _, object)
+		return object:get_luaentity().name ~= "mobs_mc:wither"
+	end,
 
 	-- direct hit
 	hit_player = function(self, player)
@@ -519,6 +522,9 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 	rotate = 90,
 	_lifetime = 25,
 	on_punch = function(self) end,
+	allow_punching = function(self, _, _, object)
+		return object:get_luaentity().name ~= "mobs_mc:wither"
+	end,
 
 	-- direct hit
 	hit_player = function(self, player)
