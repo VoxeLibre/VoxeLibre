@@ -461,7 +461,6 @@ function mcl_mobs.register_arrow(name, def)
 			self.object:set_velocity(dir * vel)
 			self._puncher = puncher
 		end,
-		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0},
 		automatic_face_movement_dir = def.rotate
 			and (def.rotate - (math.pi / 180)) or false,
 
