@@ -58,6 +58,18 @@ end
 function mod.update_projectile(self, dtime)
 	if self._removed then return end
 
+	-- Workaround for randomly occurring velocity change between projectile creation
+	-- and the first time step
+	if self._starting_velocity then
+		local curr_velocity = self.object:get_velocity()
+		local distance = vector.distance(curr_velocity, self._starting_velocity)
+		local length = vector.length(self._starting_velocity)
+		if length / distance > 1 then
+			self.object:set_velocity(self._starting_velocity)
+		end
+		self._starting_velocity = nil
+	end
+
 	local entity_name = self.name
 	local entity_def = minetest.registered_entities[entity_name] or {}
 	local entity_vl_projectile = entity_def._vl_projectile or {}
@@ -379,6 +391,7 @@ function mod.create(entity_id, options)
 	-- Update projectile parameters
 	local luaentity = obj:get_luaentity()
 	luaentity._owner = options.owner
+	luaentity._starting_velocity = obj:get_velocity()
 	luaentity._vl_projectile = {
 		extra = options.extra,
 	}
