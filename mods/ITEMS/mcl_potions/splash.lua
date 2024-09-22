@@ -182,7 +182,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 			on_collide_with_solid = function(self, pos, node)
 				splash_effects(self, pos, def, 4)
 
-				if node.name == "mcl_target:target_off" then
+				if mod_target and node.name == "mcl_target:target_off" then
 					mcl_target.hit(pos, 0.4) -- 4 redstone ticks
 				end
 			end,
