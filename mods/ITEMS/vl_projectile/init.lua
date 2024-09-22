@@ -284,7 +284,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 
 		-- Light things on fire
 		if mcl_burning.is_burning(self.object) then
-			mcl_burning.set_on_fire(obj, 5)
+			mcl_burning.set_on_fire(self.object, 5)
 		end
 	end
 
@@ -319,8 +319,6 @@ end
 
 function mod.collides_with_entities(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
-
-	local hit = nil
 
 	local objects = minetest.get_objects_inside_radius(pos, 1.5)
 	for i = 1,#objects do
