@@ -284,7 +284,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 
 		-- Light things on fire
 		if mcl_burning.is_burning(self.object) then
-			mcl_burning.set_on_fire(self.object, 5)
+			mcl_burning.set_on_fire(object, 5)
 		end
 	end
 
