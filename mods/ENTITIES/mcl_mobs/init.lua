@@ -413,8 +413,10 @@ function mcl_mobs.register_arrow(name, def)
 			ignore_gravity = true,
 			damages_players = true,
 			allow_punching = function(self, entity_def, projectile_def, object)
+				if def.allow_punching and not def.allow_punching(self, entity_def, projectile_def, object) then return false end
 				if self.timer > 2 then return true end
 				if self._owner and object == self._owner.object then return false end
+
 				return true
 			end,
 			on_collide_with_solid = function(self, pos, node, nodedef)
