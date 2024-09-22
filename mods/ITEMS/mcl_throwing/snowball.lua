@@ -1,6 +1,7 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 
+local mod_target = minetest.get_modpath("mcl_target")
 local how_to_throw = S("Use the punch key to throw.")
 
 -- Snowball
@@ -54,8 +55,11 @@ vl_projectile.register("mcl_throwing:snowball_entity", {
 			vl_projectile.collides_with_entities,
 		},
 		allow_punching = function(self, _, _, object)
-			return object.is_mob or object._hittable_by_projectile or
-			       not object:is_player() or self._owner ~= object:get_player_name()
+			if self._owner == object:get_player_name() then
+				return self.timer > 1
+			end
+
+			return object.is_mob or object._hittable_by_projectile or object:is_player()
 		end,
 		on_collide_with_solid = function(self, pos, node)
 			if mod_target and node.name == "mcl_target:target_off" then
