@@ -30,4 +30,4 @@ function bonemeal:add_deco(list)
 	end
 end
 
-minetest.register_alias("mcl_mobitems:bone", "bonemeal:bone")
+minetest.register_alias("bonemeal:bone", "mcl_mobitems:bone")
