@@ -167,6 +167,12 @@ minetest.register_node("mcl_smithing_table:table", {
 	end,
 
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		end
+
 		local stackname = stack:get_name()
 		local def = stack:get_definition()
 		if 			
