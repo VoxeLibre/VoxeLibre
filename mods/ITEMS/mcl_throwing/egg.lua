@@ -35,7 +35,7 @@ local function egg_spawn_chicks(pos)
 	mcl_mobs.spawn_child(vector.offset(pos, -0.7, 0,  0.7), "mobs_mc:chicken")
 end
 
-minetest.register_entity("mcl_throwing:egg_entity",{
+vl_projectile.register("mcl_throwing:egg_entity",{
 	physical = false,
 	timer=0,
 	textures = {"mcl_throwing_egg.png"},

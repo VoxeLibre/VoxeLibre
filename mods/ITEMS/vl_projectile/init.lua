@@ -205,13 +205,18 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 		-- Projectile has stopped in one axis, so it probably hit something.
 		-- This detection is a bit clunky, but sadly, MT does not offer a direct collision detection for us. :-(
 		local vel = self.object:get_velocity()
-		if math.abs(vel.x) >= 0.0001 and math.abs(vel.z) >= 0.0001 and math.abs(vel.y) >= 0.0001 then
-			self._last_pos = pos
+		if not self._last_velocity then
+			self._last_velocity = vel
 			return
 		end
+
+		local delta_v = (vel - self._last_velocity) / vector.length(vel)
+		if math.abs(delta_v.x) <= 0.1 and math.abs(delta_v.z) <= 0.1 and math.abs(delta_v.y) <= 0.2 then
+			return
+		end
+		self._last_velocity = vel
 	else
 		if node_def and not node_def.walkable and (not collides_with or not mcl_util.match_node_to_filter(node.name, collides_with)) then
-			self._last_pos = pos
 			return
 		end
 	end
@@ -364,7 +369,6 @@ function mod.raycast_collides_with_entities(self, dtime, entity_def, projectile_
 				closest_distance = dist
 			end
 		end
-
 	end
 
 	if closest_object then
