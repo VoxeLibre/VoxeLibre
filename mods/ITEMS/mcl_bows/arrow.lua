@@ -297,7 +297,7 @@ local arrow_entity = {
 		end
 
 		local pos = self.object:get_pos()
-		self._allow_punch = self._allow_punch or not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5
+		self._allow_punch = self._allow_punch or not self._owner or not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5
 
 		if self._stuck then
 			return stuck_arrow_on_step(self, dtime)
