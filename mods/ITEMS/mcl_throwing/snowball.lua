@@ -11,7 +11,7 @@ minetest.register_craftitem("mcl_throwing:snowball", {
 	_doc_items_longdesc = S("Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing."),
 	_doc_items_usagehelp = how_to_throw,
 	inventory_image = "mcl_throwing_snowball.png",
-	stack_max = 16,
+	stack_max = 64,
 	groups = { weapon_ranged = 1 },
 	on_use = mcl_throwing.get_player_throw_function("mcl_throwing:snowball_entity"),
 	_on_dispense = mcl_throwing.dispense_function,
