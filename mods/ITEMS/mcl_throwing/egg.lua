@@ -21,11 +21,7 @@ local function egg_spawn_chicks(pos)
 	-- 1/8 chance to spawn a chick
 	if math.random(1,8) ~= 1 then return end
 
-	pos.y = math.ceil(pos.y)
-
-	if not mcl_mobs.spawn_child(pos, "mobs_mc:chicken") then
-		minetest.log("unable to spawn chick at "..vector.to_string(pos))
-	end
+	mcl_mobs.spawn_child(pos, "mobs_mc:chicken")
 
 	-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
 	if math.random(1,32) ~= 1 then return end
@@ -64,9 +60,15 @@ vl_projectile.register("mcl_throwing:egg_entity",{
 				mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
 			end
 
+			local vel = self.object:get_velocity()
+			pos = vector.round(pos + vector.normalize(vel) * -0.35)
+
 			egg_spawn_chicks(pos)
 		end,
 		on_collide_with_entity = function(self, pos, obj)
+			local vel = self.object:get_velocity()
+			pos = vector.round(pos + vector.normalize(vel) * -0.35)
+
 			egg_spawn_chicks(pos)
 		end,
 		sounds = {
