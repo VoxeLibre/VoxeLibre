@@ -256,7 +256,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	end
 
 	if DEBUG then
-		minetest.log("handle_enity_collision("..dump({
+		minetest.log("handle_entity_collision("..dump({
 			self = self,
 			allow_punching = allow_punching,
 			entity_def = entity_def,
