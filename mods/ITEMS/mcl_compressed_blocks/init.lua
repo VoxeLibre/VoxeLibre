@@ -26,7 +26,7 @@ local NODE_NAMES = {
 	"septuple_compressed_",
 	"octuple_compressed_",
 }
-local BLAST_RESISTENCE = {
+local BLAST_RESISTANCE = {
 	11, 19, 33, 58, 102, 179, 313, 548,
 }
 local HARDNESS = {
@@ -54,7 +54,7 @@ function mod.register_block_compression(base_block, block_name, max_levels, fina
 			stack_max = 64,
 			groups = {pickaxey=1, stone=1, building_block=1},
 			sounds = base_nodedef.sounds,
-			_mcl_blast_resistance = BLAST_RESISTENCE[i],
+			_mcl_blast_resistance = BLAST_RESISTANCE[i],
 			_mcl_hardness = HARDNESS[i],
 		})
 
@@ -89,7 +89,7 @@ function mod.register_block_compression(base_block, block_name, max_levels, fina
 		groups = {pickaxey=1, stone=1, building_block=1},
 		drop = final_drops,
 		sounds = base_nodedef.sounds,
-		_mcl_blast_resistance = BLAST_RESISTENCE[max_levels],
+		_mcl_blast_resistance = BLAST_RESISTANCE[max_levels],
 		_mcl_hardness = HARDNESS[max_levels],
 		_mcl_silk_touch_drop = true,
 	})
