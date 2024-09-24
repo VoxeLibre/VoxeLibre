@@ -240,7 +240,11 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	end
 
 	-- Normally objects should be removed on collision with solids
-	if not projectile_def.survive_collision then
+	local survive_collision = projectile_def.survive_collision
+	if type(survive_collision) == "function" then
+		survive_collision = survive_collision(self, entity_def, projectile_def, "node", node, node_def)
+	end
+	if not survive_collision then
 		self._removed = true
 		self.object:remove()
 	end
@@ -326,7 +330,11 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	end
 
 	-- Normally objects should be removed on collision with entities
-	if not projectile_def.survive_collision then
+	local survive_collision = projectile_def.survive_collision
+	if type(survive_collision) == "function" then
+		survive_collision = survive_collision(self, entity_def, projectile_def, "entity", object)
+	end
+	if not survive_collision then
 		self._removed = true
 		self.object:remove()
 	end
