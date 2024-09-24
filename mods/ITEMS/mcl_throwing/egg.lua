@@ -11,7 +11,7 @@ minetest.register_craftitem("mcl_throwing:egg", {
 	_doc_items_longdesc = S("Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chicks will pop out of the egg."),
 	_doc_items_usagehelp = how_to_throw,
 	inventory_image = "mcl_throwing_egg.png",
-	stack_max = 16,
+	stack_max = 64,
 	on_use = mcl_throwing.get_player_throw_function("mcl_throwing:egg_entity"),
 	_on_dispense = mcl_throwing.dispense_function,
 	groups = { craftitem = 1 },
