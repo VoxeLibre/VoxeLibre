@@ -566,8 +566,10 @@ function mcl_inventory.set_creative_formspec(player)
 			bg_img = "crafting_creative_inactive" .. button_bg_postfix[this_tab] .. ".png"
 		end
 		return table.concat({
-			"style[" .. this_tab .. ";border=false;bgimg=;bgimg_pressed=;noclip=true]",
-			"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]",
+			"style[" .. this_tab ..       ";border=false;noclip=true;bgimg=;bgimg_pressed=]",
+			"style[" .. this_tab .. "_outer;border=false;noclip=true;bgimg=" .. bg_img ..
+				";bgimg_pressed=" .. bg_img .. "]",
+			"button[" .. offset[this_tab] .. ";1.5,1.44;" .. this_tab .. "_outer;]",
 			"item_image_button[" .. boffset[this_tab] .. ";1,1;" .. tab_icon[this_tab] .. ";" .. this_tab .. ";]",
 		})
 	end
@@ -580,8 +582,6 @@ function mcl_inventory.set_creative_formspec(player)
 	local formspec = table.concat({
 		"formspec_version[6]",
 		"size[13,8.75]",
-
-		"style_type[image;noclip=true]",
 
 		-- Hotbar
 		mcl_formspec.get_itemslot_bg_v4(0.375, 7.375, 9, 1),
@@ -655,54 +655,54 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	local name = player:get_player_name()
 
-	if fields.blocks then
+	if fields.blocks or fields.blocks_outer then
 		if players[name].page == "blocks" then return end
 		set_inv_page("blocks", player)
 		page = "blocks"
-	elseif fields.deco then
+	elseif fields.deco or fields.deco_outer then
 		if players[name].page == "deco" then return end
 		set_inv_page("deco", player)
 		page = "deco"
-	elseif fields.redstone then
+	elseif fields.redstone or fields.redstone_outer then
 		if players[name].page == "redstone" then return end
 		set_inv_page("redstone", player)
 		page = "redstone"
-	elseif fields.rail then
+	elseif fields.rail or fields.rail_outer then
 		if players[name].page == "rail" then return end
 		set_inv_page("rail", player)
 		page = "rail"
-	elseif fields.misc then
+	elseif fields.misc or fields.misc_outer then
 		if players[name].page == "misc" then return end
 		set_inv_page("misc", player)
 		page = "misc"
-	elseif fields.nix then
+	elseif fields.nix or fields.nix_outer then
 		set_inv_page("all", player)
 		page = "nix"
-	elseif fields.food then
+	elseif fields.food or fields.food_outer then
 		if players[name].page == "food" then return end
 		set_inv_page("food", player)
 		page = "food"
-	elseif fields.tools then
+	elseif fields.tools or fields.tools_outer then
 		if players[name].page == "tools" then return end
 		set_inv_page("tools", player)
 		page = "tools"
-	elseif fields.combat then
+	elseif fields.combat or fields.combat_outer then
 		if players[name].page == "combat" then return end
 		set_inv_page("combat", player)
 		page = "combat"
-	elseif fields.mobs then
+	elseif fields.mobs or fields.mobs_outer then
 		if players[name].page == "mobs" then return end
 		set_inv_page("mobs", player)
 		page = "mobs"
-	elseif fields.brew then
+	elseif fields.brew or fields.brew_outer then
 		if players[name].page == "brew" then return end
 		set_inv_page("brew", player)
 		page = "brew"
-	elseif fields.matr then
+	elseif fields.matr or fields.matr_outer  then
 		if players[name].page == "matr" then return end
 		set_inv_page("matr", player)
 		page = "matr"
-	elseif fields.inv then
+	elseif fields.inv or fields.inv_outer then
 		if players[name].page == "inv" then return end
 		page = "inv"
 	elseif fields.search == "" and not fields.creative_next and not fields.creative_prev then
