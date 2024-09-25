@@ -419,6 +419,18 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 ---@param player mt.PlayerObjectRef
+local function is_touch_enabled(playername)
+	-- Minetest < 5.7.0 support
+	if not minetest.get_player_window_information then
+		return false
+	end
+	local window = minetest.get_player_window_information(playername)
+	-- Always return a boolean (not nil) to avoid false-negatives when
+	-- comparing to a boolean later.
+	return window and window.touch_controls or false
+end
+
+---@param player mt.PlayerObjectRef
 function mcl_inventory.set_creative_formspec(player)
 	local playername = player:get_player_name()
 	if not players[playername] then return end
@@ -579,11 +591,17 @@ function mcl_inventory.set_creative_formspec(player)
 		caption = "label[0.375,0.375;" .. F(C(mcl_formspec.label_color, filtername[name])) .. "]"
 	end
 
+	local touch_enabled = is_touch_enabled(playername)
+	players[playername].last_touch_enabled = touch_enabled
+
 	local formspec = table.concat({
 		"formspec_version[6]",
 		-- Original formspec height was 8.75, increased to include tab buttons.
 		-- This avoids tab buttons going off-screen with high scaling values.
 		"size[13,11.43]",
+		-- Use as much space as possible on mobile - the tab buttons are a lot
+		-- of padding already.
+		touch_enabled and "padding[-0.015,-0.015]" or "",
 
 		"no_prepend[]", mcl_vars.gui_nonbg, mcl_vars.gui_bg_color,
 		"background9[0,1.34;13,8.75;mcl_base_textures_background9.png;;7]",
@@ -823,5 +841,19 @@ minetest.register_on_player_inventory_action(function(player, action, inventory,
 		local stack = inventory_info.stack
 		stack:set_count(stack:get_stack_max())
 		player:get_inventory():set_stack("main", inventory_info.index, stack)
+	end
+end)
+
+-- This is necessary because get_player_window_information may return nil in
+-- on_joinplayer.
+-- (Also, Minetest plans to add support for toggling touchscreen mode in-game.)
+mcl_player.register_globalstep_slow(function(player)
+	local name = player:get_player_name()
+
+	if minetest.is_creative_enabled(name) then
+		local touch_enabled = is_touch_enabled(name)
+		if touch_enabled ~= players[name].last_touch_enabled then
+			mcl_inventory.set_creative_formspec(player)
+		end
 	end
 end)
