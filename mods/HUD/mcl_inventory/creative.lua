@@ -566,8 +566,8 @@ function mcl_inventory.set_creative_formspec(player)
 			bg_img = "crafting_creative_inactive" .. button_bg_postfix[this_tab] .. ".png"
 		end
 		return table.concat({
-			"style[" .. this_tab ..       ";border=false;noclip=true;bgimg=;bgimg_pressed=]",
-			"style[" .. this_tab .. "_outer;border=false;noclip=true;bgimg=" .. bg_img ..
+			"style[" .. this_tab ..       ";border=false;bgimg=;bgimg_pressed=]",
+			"style[" .. this_tab .. "_outer;border=false;bgimg=" .. bg_img ..
 				";bgimg_pressed=" .. bg_img .. "]",
 			"button[" .. offset[this_tab] .. ";1.5,1.44;" .. this_tab .. "_outer;]",
 			"item_image_button[" .. boffset[this_tab] .. ";1,1;" .. tab_icon[this_tab] .. ";" .. this_tab .. ";]",
@@ -581,7 +581,13 @@ function mcl_inventory.set_creative_formspec(player)
 
 	local formspec = table.concat({
 		"formspec_version[6]",
-		"size[13,8.75]",
+		-- Original formspec height was 8.75, increased to include tab buttons.
+		-- This avoids tab buttons going off-screen with high scaling values.
+		"size[13,11.43]",
+
+		"no_prepend[]", mcl_vars.gui_nonbg, mcl_vars.gui_bg_color,
+		"background9[0,1.34;13,8.75;mcl_base_textures_background9.png;;7]",
+		"container[0,1.34]",
 
 		-- Hotbar
 		mcl_formspec.get_itemslot_bg_v4(0.375, 7.375, 9, 1),
@@ -638,6 +644,7 @@ function mcl_inventory.set_creative_formspec(player)
 			"set_focus[search;true]",
 		})
 	end
+	formspec = formspec .. "container_end[]"
 	if pagenum then formspec = formspec .. "p" .. tostring(pagenum) end
 	player:set_inventory_formspec(formspec)
 end
