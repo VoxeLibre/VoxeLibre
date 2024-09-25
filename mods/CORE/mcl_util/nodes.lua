@@ -182,6 +182,8 @@ end
 ---@param func fun(node_name: string): boolean Return `true` if node must not replace the buildable_to node which have `node_name`
 ---@return fun(itemstack: ItemStack, placer: ObjectRef, pointed_thing: pointed_thing, param2: integer): ItemStack?
 function mcl_util.bypass_buildable_to(func)
+	-- Copied from minetest builtin
+	-- https://github.com/minetest/minetest/blob/526a2f7b8c45504088e194a83d54a19045227bbd/builtin/game/item.lua#L5-L12
 	local function copy_pointed_thing(pointed_thing)
 		return {
 			type  = pointed_thing.type,
@@ -191,15 +193,20 @@ function mcl_util.bypass_buildable_to(func)
 		}
 	end
 
+	-- Copied from minetest builtin
+	-- https://github.com/minetest/minetest/blob/526a2f7b8c45504088e194a83d54a19045227bbd/builtin/game/item.lua#L137-L139
 	local function user_name(user)
 		return user and user:get_player_name() or ""
 	end
 
-	-- Returns a logging function. For empty names, does not log.
+	-- Returns a logging function. For empty names, does not log. Copied from minetest builtin
+	-- https://github.com/minetest/minetest/blob/526a2f7b8c45504088e194a83d54a19045227bbd/builtin/game/item.lua#L142-L144
 	local function make_log(name)
 		return name ~= "" and minetest.log or function() end
 	end
 
+	-- Copied from minetest builtin
+	-- https://github.com/minetest/minetest/blob/526a2f7b8c45504088e194a83d54a19045227bbd/builtin/game/falling.lua#L503-L547
 	local function check_attached_node(p, n, group_rating)
 		local def = core.registered_nodes[n.name]
 		local d = vector.zero()
@@ -244,6 +251,8 @@ function mcl_util.bypass_buildable_to(func)
 		return not def2 or def2.walkable
 	end
 
+	-- Copied from minetest builtin
+	-- https://github.com/minetest/minetest/blob/e7dd9737bd5deb573c9fef7b3ff2ead29b2cfe31/builtin/game/item.lua#L146-L294
 	return function(itemstack, placer, pointed_thing, param2)
 		local def = itemstack:get_definition()
 		if def.type ~= "node" or pointed_thing.type ~= "node" then
@@ -277,6 +286,7 @@ function mcl_util.bypass_buildable_to(func)
 		local place_to = above
 
 		-- If node under is buildable_to, check for callback result and place into it instead
+		-- This line was modified from minetest code to allow overriding builtable_to
 		if olddef_under.buildable_to and not func(oldnode_under.name) then
 			log("info", "node under is buildable to")
 			place_to = under
