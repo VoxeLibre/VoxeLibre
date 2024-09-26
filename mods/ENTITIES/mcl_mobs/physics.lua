@@ -295,11 +295,6 @@ function mob_class:check_smooth_rotation(dtime)
 	self:update_roll()
 end
 
--- global function to set mob yaw
-function mcl_mobs.yaw(self, yaw, delay, dtime)
-	return mob_class.set_yaw(self, yaw, delay, dtime)
-end
-
 -- are we flying in what we are suppose to? (taikedz)
 function mob_class:flight_check()
 

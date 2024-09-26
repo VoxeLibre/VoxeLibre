@@ -142,10 +142,10 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
 	-- if not moving then set animation and return
 	if v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
-		if stand_anim then mcl_mobs:set_animation(entity, stand_anim) end
+		entity:set_animation(stand_anim)
 		return
 	else
-		if moving_anim then mcl_mobs:set_animation(entity, moving_anim) end
+		entity:set_animation(moving_anim)
 	end
 
 	-- enforce speed limit forward and reverse
@@ -254,9 +254,9 @@ function mcl_mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_an
 
 	-- change animation if stopped
 	if velo.x == 0 and velo.y == 0 and velo.z == 0 then
-		if stand_anim then mcl_mobs:set_animation(entity, stand_anim) end
+		entity:set_animation(stand_anim)
 	else
-		if moving_anim then mcl_mobs:set_animation(entity, moving_anim) end
+		entity:set_animation(moving_anim)
 	end
 end
 

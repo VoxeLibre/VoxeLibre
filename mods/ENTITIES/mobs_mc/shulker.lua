@@ -83,7 +83,6 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		local pos = self.object:get_pos()
 		if math.floor(self.object:get_yaw()) ~=0 then
 			self.object:set_yaw(0)
-			mcl_mobs:yaw(self, 0, 0, dtime)
 		end
 		if self.state == "attack" then
 			self:set_animation("run")
