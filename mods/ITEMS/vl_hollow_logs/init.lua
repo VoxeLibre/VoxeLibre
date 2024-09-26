@@ -46,7 +46,7 @@ function vl_hollow_logs.register_hollow_log(defs)
 		table.update(groups, {fire_encouragement = 5, fire_flammability = 5, flammable = 2, hollow_log_burnable = 1})
 	end
 
-	minetest.register_node(modname .. ":"..name.."_hollow", {
+	local hollow_log_def = {
 		collision_box = collisionbox,
 		description = desc,
 		drawtype = "mesh",
@@ -62,24 +62,16 @@ function vl_hollow_logs.register_hollow_log(defs)
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
 		_mcl_stripped_variant = modname .. ":"..stripped_name.."_hollow"
-	})
+	}
 
-	minetest.register_node(modname .. ":"..stripped_name.."_hollow", {
-		collision_box = collisionbox,
-		description = stripped_desc,
-		drawtype = "mesh",
-		groups = groups,
-		mesh = "vl_hollow_logs_log.obj",
-		on_place = mcl_util.rotate_axis,
-		paramtype = "light",
-		paramtype2 = "facedir",
-		use_texture_alpha = "clip",
-		sounds = mcl_sounds.node_sound_wood_defaults(),
-		sunlight_propagates = true,
-		tiles = {modname .. "_stripped_"..name..".png"},
-		_mcl_blast_resistance = 2,
-		_mcl_hardness = 2
-	})
+	local stripped_hollow_log_def = table.copy(hollow_log_def)
+	stripped_hollow_log_def.description = stripped_desc
+	stripped_hollow_log_def.tiles = {modname .. "_stripped_"..name..".png"}
+	stripped_hollow_log_def._mcl_stripped_variant = nil
+
+	minetest.register_node(modname .. ":"..name.."_hollow", hollow_log_def)
+
+	minetest.register_node(modname .. ":"..stripped_name.."_hollow", stripped_hollow_log_def)
 end
 
 vl_hollow_logs.logs = {
