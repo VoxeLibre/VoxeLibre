@@ -58,6 +58,7 @@ function vl_hollow_logs.register_hollow_log(defs)
 		use_texture_alpha = "clip",
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		sunlight_propagates = true,
+		climbable = true,
 		tiles = {modname .. "_"..name..".png"},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
