@@ -8,10 +8,10 @@ local ROCKET_TIMEOUT = 1
 
 local YAW_OFFSET = -math.pi/2
 
-local function damage_explosion(self, damagemulitplier)
+local function damage_explosion(self, damagemulitplier, pos)
 	if self._harmless then return end
 
-	local p = self.object:get_pos()
+	local p = pos or self.object:get_pos()
 	if not p then return end
 	mcl_explosions.explode(p, 3, {})
 	local objects = minetest.get_objects_inside_radius(p, 8)
@@ -27,7 +27,8 @@ local function damage_explosion(self, damagemulitplier)
 	end
 end
 
-local function particle_explosion(self)
+local function particle_explosion(pos)
+	if pos.object then pos = pos.object:get_pos() end
 	local particle_pattern = math.random(1, 3)
 	local fpitch
 	local type = math.random(1, 2)
@@ -45,14 +46,14 @@ local function particle_explosion(self)
 
 	if type == 1 then
 		minetest.sound_play("mcl_bows_firework", {
-			pos = self.object:get_pos(),
+			pos = pos,
 			max_hear_distance = 100,
 			gain = 3.0,
 			pitch = fpitch/100
 		}, true)
 	else
 		minetest.sound_play("mcl_bows_firework_soft", {
-			pos = self.object:get_pos(),
+			pos = pos,
 			max_hear_distance = 100,
 			gain = 4.0,
 			pitch = fpitch/100
@@ -63,8 +64,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 400 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-7 * size,-7 * size,-7 * size),
 				maxvel = vector.new(7 * size,7 * size,7 * size),
 				minexptime = .6 * size / 2,
@@ -79,8 +80,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 400 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-2 * size,-2 * size,-2 * size),
 				maxvel = vector.new(2 * size,2 * size,2 * size),
 				minexptime = .6 * size / 2,
@@ -95,8 +96,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 100 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-14 * size,-14 * size,-14 * size),
 				maxvel = vector.new(14 * size,14 * size,14 * size),
 				minexptime = .6 * size / 2,
@@ -113,8 +114,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 240 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-5 * size,-5 * size,-5 * size),
 				maxvel = vector.new(5 * size,5 * size,5 * size),
 				minexptime = .6 * size / 2,
@@ -129,8 +130,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 500 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-2 * size,-2 * size,-2 * size),
 				maxvel = vector.new(2 * size,2 * size,2 * size),
 				minexptime = .6 * size / 2,
@@ -145,8 +146,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 350 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-3 * size,-3 * size,-3 * size),
 				maxvel = vector.new(3 * size,3 * size,3 * size),
 				minexptime = .6 * size / 2,
@@ -163,8 +164,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 400 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-6 * size,-4 * size,-6 * size),
 				maxvel = vector.new(6 * size,4 * size,6 * size),
 				minexptime = .6 * size,
@@ -179,8 +180,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 120 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-8 * size,6 * size,-8 * size),
 				maxvel = vector.new(8 * size,6 * size,8 * size),
 				minexptime = .6 * size,
@@ -195,8 +196,8 @@ local function particle_explosion(self)
 		minetest.add_particlespawner({
 				amount = 130 * size,
 				time = 0.0001,
-				minpos = self.object:get_pos(),
-				maxpos = self.object:get_pos(),
+				minpos = pos,
+				maxpos = pos,
 				minvel = vector.new(-3 * size,3 * size,-3 * size),
 				maxvel = vector.new(3 * size,3 * size,3 * size),
 				minexptime = .6 * size,
@@ -231,17 +232,16 @@ minetest.register_craftitem("mcl_bows:rocket", {
 	end,
 	_on_collide_with_entity = function(self, pos, obj)
 		if self._in_player == false then
+			pos = self.object:get_pos()
 			obj:punch(self.object, 1.0, {
 				full_punch_interval=1.0,
 				damage_groups={fleshy=self._damage},
 			}, self.object:get_velocity())
 
-			if obj:is_player() then
-				local eploded_particle = particle_explosion(self)
-				damage_explosion(self, eploded_particle * 17)
-				mcl_burning.extinguish(self.object)
-				self.object:remove()
-			end
+			local eploded_particle = particle_explosion(pos)
+			damage_explosion(self, eploded_particle * 17, pos)
+			mcl_burning.extinguish(self.object)
+			self.object:remove()
 		end
 	end,
 })

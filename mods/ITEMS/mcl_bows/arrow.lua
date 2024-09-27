@@ -263,18 +263,15 @@ local arrow_entity = {
 				end
 			end
 
-			if not obj:is_player() then
-				mcl_burning.extinguish(self.object)
-				if self._piercing == 0 then
-					self._removed = true
-					self.object:remove()
-				end
-			end
-
 			-- Item definition entity collision hook
 			local item_def = minetest.registered_items[self._arrow_item]
 			local hook = item_def and item_def._on_collide_with_entity
 			if hook then hook(self, pos, obj) end
+
+			if self._piercing > 0 then
+				self._piercing = self._piercing - 1
+				return
+			end
 
 			-- Because arrows are flagged to survive collisions to allow sticking into blocks, manually remove it now that it
 			-- has collided with an entity
