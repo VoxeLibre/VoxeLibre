@@ -457,13 +457,12 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 	textures = {
 		"mobs_mc_wither_projectile.png^[verticalframe:6:0", -- top
 		"mobs_mc_wither_projectile.png^[verticalframe:6:1", -- bottom
-		"mobs_mc_wither_projectile.png^[verticalframe:6:2", -- left
-		"mobs_mc_wither_projectile.png^[verticalframe:6:3", -- right
 		"mobs_mc_wither_projectile.png^[verticalframe:6:4", -- back
 		"mobs_mc_wither_projectile.png^[verticalframe:6:5", -- front
+		"mobs_mc_wither_projectile.png^[verticalframe:6:3", -- right
+		"mobs_mc_wither_projectile.png^[verticalframe:6:2", -- left
 	},
 	velocity = 7,
-	rotate = 90,
 	_lifetime = 15,
 	on_punch = function(self) end,
 	allow_punching = function(self, _, _, object)
@@ -514,13 +513,12 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 	textures = {
 		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:0", -- top
 		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:1", -- bottom
-		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:2", -- left
-		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:3", -- right
 		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:4", -- back
 		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:5", -- front
+		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:3", -- right
+		"mobs_mc_wither_projectile_strong.png^[verticalframe:6:2", -- left
 	},
 	velocity = 4,
-	rotate = 90,
 	_lifetime = 25,
 	on_punch = function(self) end,
 	allow_punching = function(self, _, _, object)
