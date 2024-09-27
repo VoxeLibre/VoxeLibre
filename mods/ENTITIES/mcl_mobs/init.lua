@@ -407,7 +407,6 @@ function mcl_mobs.register_arrow(name, def)
 		switch = 0,
 		_lifetime = def._lifetime or 7,
 		owner_id = def.owner_id,
-		rotate = def.rotate,
 		_vl_projectile = {
 			behaviors = behaviors,
 			ignore_gravity = true,
