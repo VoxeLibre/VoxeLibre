@@ -58,6 +58,7 @@ functions needed for the mob to work properly which contains the following:
 					that are not liquids
 	'runaway'		if true causes animals to turn and run away when hit.
 	'view_range'	how many nodes in distance the mob can see a player.
+	'see_through_opaque'	override whether the mob can see through opaque nodes
 	'damage'		how many health points the mob does to a player or another
 					mob when melee attacking.
 	'knock_back'	when true has mobs falling backwards when hit, the greater

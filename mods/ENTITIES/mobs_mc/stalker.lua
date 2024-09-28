@@ -104,6 +104,7 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	explosion_damage_radius = 3.5,
 	explosiontimer_reset_radius = 3,
 	reach = 3,
+	see_through_opaque = false,
 	explosion_timer = 1.5,
 	allow_fuse_reset = true,
 	stop_to_explode = true,
