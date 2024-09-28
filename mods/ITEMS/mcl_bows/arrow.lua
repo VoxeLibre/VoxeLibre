@@ -268,7 +268,7 @@ local arrow_entity = {
 			local hook = item_def and item_def._on_collide_with_entity
 			if hook then hook(self, pos, obj) end
 
-			if self._piercing > 0 then
+			if (self._piercing or 0) > 0 then
 				self._piercing = self._piercing - 1
 				return
 			end
