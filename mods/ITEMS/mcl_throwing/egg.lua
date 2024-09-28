@@ -56,7 +56,7 @@ vl_projectile.register("mcl_throwing:egg_entity",{
 			end
 
 			local le = object:get_luaentity()
-			return le and le.is_mob or le._hittable_by_projectile or object:is_player()
+			return le and (le.is_mob or le._hittable_by_projectile) or object:is_player()
 		end,
 		on_collide_with_solid = function(self, pos, node)
 			if mod_target and node.name == "mcl_target:target_off" then
