@@ -9,7 +9,7 @@ mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core
 
 -- used by the libaries below.
 -- get node but use fallback for nil or unknown
-local node_ok = function(pos, fallback)
+local function node_ok(pos, fallback)
 	fallback = fallback or mcl_mobs.fallback_node
 	local node = minetest.get_node_or_nil(pos)
 	if node and minetest.registered_nodes[node.name] then
@@ -19,6 +19,26 @@ local node_ok = function(pos, fallback)
 end
 mcl_mobs.node_ok = node_ok
 dofile(path .. "/functions.lua")
+
+local function line_of_sight(origin, target, see_through_opaque, liquids)
+	local raycast = minetest.raycast(origin, target, false, liquids or false)
+	for hitpoint in raycast do
+		if hitpoint.type == "node" then
+			local node = minetest.get_node(minetest.get_pointed_thing_position(hitpoint))
+			if node.name ~= "air" then
+				local nodef = minetest.registered_nodes[node.name]
+				if nodef and nodef.walkable and not (see_through_opaque and not nodef.groups.opaque) then
+					return false
+				end
+			end
+		end
+		--TODO type object could block vision, for example chests
+	end
+	return true
+end
+mcl_mobs.line_of_sight = line_of_sight
+
+local NODE_IGNORE = { name = "ignore", groups = {} } -- fallback for unknown nodes
 
 --api and helpers
 -- effects: sounds and particles mostly
@@ -239,7 +259,6 @@ function mcl_mobs.register_mob(name, def)
 		health = 0,
 		frame_speed_multiplier = 1,
 		reach = def.reach or 3,
-		htimer = 0,
 		texture_list = def.textures,
 		child_texture = def.child_texture,
 		docile_by_day = def.docile_by_day or false,

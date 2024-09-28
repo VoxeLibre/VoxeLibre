@@ -54,10 +54,6 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 		if self.health < self.hp_max and not consume_food then
 			consume_food = true
 			self.health = math.min(self.health + 4, self.hp_max)
-
-			if self.htimer < 1 then
-				self.htimer = 5
-			end
 			self.object:set_hp(self.health)
 		end
 

@@ -18,51 +18,31 @@ if player_transfer_distance == 0 then player_transfer_distance = math.huge end
 
 -- custom particle effects
 function mcl_mobs.effect(pos, amount, texture, min_size, max_size, radius, gravity, glow, go_down)
-
 	radius = radius or 2
-	min_size = min_size or 0.5
-	max_size = max_size or 1
-	gravity = gravity or DEFAULT_FALL_SPEED
-	glow = glow or 0
-	go_down = go_down or false
-
-	local ym
-	if go_down then
-		ym = 0
-	else
-		ym = -radius
-	end
-
 	minetest.add_particlespawner({
 		amount = amount,
 		time = 0.25,
 		minpos = pos,
 		maxpos = pos,
-		minvel = {x = -radius, y = ym, z = -radius},
-		maxvel = {x = radius, y = radius, z = radius},
-		minacc = {x = 0, y = gravity, z = 0},
-		maxacc = {x = 0, y = gravity, z = 0},
+		minvel = vector.new(-radius, go_down and 0 or -radius, -radius),
+		maxvel = vector.new(radius, radius, radius),
+		minacc = vector.new(0, gravity or DEFAULT_FALL_SPEED, 0),
+		maxacc = vector.new(0, gravity or DEFAULT_FALL_SPEED, 0),
 		minexptime = 0.1,
 		maxexptime = 1,
-		minsize = min_size,
-		maxsize = max_size,
+		minsize = min_size or 0.5,
+		maxsize = max_size or 1,
 		texture = texture,
-		glow = glow,
+		glow = glow or 0,
 	})
 end
 
 function mcl_mobs.death_effect(pos, yaw, collisionbox, rotate)
-	local min, max
-	if collisionbox then
-		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
-		max = {x=collisionbox[4], y=collisionbox[5], z=collisionbox[6]}
-	else
-		min = { x = -0.5, y = 0, z = -0.5 }
-		max = { x = 0.5, y = 0.5, z = 0.5 }
-	end
+	local min = collisionbox and vector.new(collisionbox[1], collisionbox[2], collisionbox[3]) or vector.new(-0.5, 0, -0.5)
+	local max = collisionbox and vector.new(collisionbox[4], collisionbox[5], collisionbox[6]) or vector.new(0.5, 0.5, 0.5)
 	if rotate then
-		min = vector.rotate(min, {x=0, y=yaw, z=math.pi/2})
-		max = vector.rotate(max, {x=0, y=yaw, z=math.pi/2})
+		min = vector.rotate(min, vector.new(0, yaw, math.pi/2))
+		max = vector.rotate(max, vector.new(0, yaw, math.pi/2))
 		min, max = vector.sort(min, max)
 		min = vector.multiply(min, 0.5)
 		max = vector.multiply(max, 0.5)
@@ -94,57 +74,35 @@ end
 
 -- play sound
 function mob_class:mob_sound(soundname, is_opinion, fixed_pitch)
-
-	local soundinfo
-	if self.sounds_child and self.child then
-		soundinfo = self.sounds_child
-	elseif self.sounds then
-		soundinfo = self.sounds
-	end
-	if not soundinfo then
-		return
-	end
+	local soundinfo = self.child and self.sounds_child or self.sounds
+	if not soundinfo then return end
 	local sound = soundinfo[soundname]
-	if sound then
-		if is_opinion and self.opinion_sound_cooloff > 0 then
-			return
-		end
-		local pitch
-		if not fixed_pitch then
-			local base_pitch = soundinfo.base_pitch
-			if not base_pitch then
-				base_pitch = 1
-			end
-			if self.child and (not self.sounds_child) then
-				-- Children have higher pitch
-				pitch = base_pitch * 1.5
-			else
-				pitch = base_pitch
-			end
-			-- randomize the pitch a bit
-			pitch = pitch + math.random(-10, 10) * 0.005
-		end
-		-- Should be 0.1 to 0.2 for mobs. Cow and zombie farms loud. At least have cool down.
-		minetest.sound_play(sound, {
-			object = self.object,
-			gain = 1.0,
-			max_hear_distance = self.sounds.distance,
-			pitch = pitch,
-		}, true)
-		self.opinion_sound_cooloff = 1
+	if not sound then return end
+	if is_opinion and self.opinion_sound_cooloff > 0 then return end
+	local pitch = fixed_pitch
+	if not fixed_pitch then
+		pitch = soundinfo.base_pitch or 1
+		if self.child and not self.sounds_child then pitch = pitch * 1.5 end
+		pitch = pitch + (math.random() - 0.5) * 0.2
 	end
+	-- Should be 0.1 to 0.2 for mobs. Cow and zombie farms loud. At least have cool down.
+	minetest.sound_play(sound, {
+		object = self.object,
+		gain = 1.0,
+		max_hear_distance = self.sounds.distance,
+		pitch = pitch,
+	}, true)
+	self.opinion_sound_cooloff = 1
 end
 
 function mob_class:step_opinion_sound(dtime)
-	if self.state ~= "attack" and self.state ~= PATHFINDING then
-
-		if self.opinion_sound_cooloff > 0 then
-			self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
-		end
-		-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
-		if math.random(1, 70) == 1 then
-			self:mob_sound("random", true)
-		end
+	if self.state == "attack" or self.state == PATHFINDING then return end
+	if self.opinion_sound_cooloff > 0 then
+		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
+	end
+	-- mob plays random sound at times. Should be 120. Zombie and mob farms are ridiculous
+	if math.random(1, 70) == 1 then
+		self:mob_sound("random", true)
 	end
 end
 
@@ -181,26 +139,22 @@ function mob_class:remove_texture_mod(mod)
 end
 
 function mob_class:damage_effect(damage)
-	-- damage particles
-	if (not disable_blood) and damage > 0 then
+	if disable_blood or damage <= 0 then return end
+	local amount_large = math.floor(damage / 2)
+	local amount_small = damage % 2
 
-		local amount_large = math.floor(damage / 2)
-		local amount_small = damage % 2
+	local pos = self.object:get_pos()
+	pos.y = pos.y + (self.collisionbox[5] - self.collisionbox[2]) * .5
 
-		local pos = self.object:get_pos()
-
-		pos.y = pos.y + (self.collisionbox[5] - self.collisionbox[2]) * .5
-
-		local texture = "mobs_blood.png"
-		-- full heart damage (one particle for each 2 HP damage)
-		if amount_large > 0 then
-			mcl_mobs.effect(pos, amount_large, texture, 2, 2, 1.75, 0, nil, true)
-		end
-		-- half heart damage (one additional particle if damage is an odd number)
-		if amount_small > 0 then
-			-- TODO: Use "half heart"
-			mcl_mobs.effect(pos, amount_small, texture, 1, 1, 1.75, 0, nil, true)
-		end
+	local texture = "mobs_blood.png"
+	-- full heart damage (one particle for each 2 HP damage)
+	if amount_large > 0 then
+		mcl_mobs.effect(pos, amount_large, texture, 2, 2, 1.75, 0, nil, true)
+	end
+	-- half heart damage (one additional particle if damage is an odd number)
+	if amount_small > 0 then
+		-- TODO: Use "half heart"
+		mcl_mobs.effect(pos, amount_small, texture, 1, 1, 1.75, 0, nil, true)
 	end
 end
 
@@ -397,23 +351,20 @@ end
 
 
 function mob_class:set_animation_speed()
-	local v = self.object:get_velocity()
-	if v then
+	local v = self:get_velocity()
+	if v > 0 then
 		if self.frame_speed_multiplier then
-			local v2 = math.abs(v.x)+math.abs(v.z)*.833
-			if not self.animation.walk_speed then
-				self.animation.walk_speed = 25
-			end
-			if math.abs(v.x)+math.abs(v.z) > 0.5 then
-				self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
+			self.animation.walk_speed = self.animation.walk_speed or 25 -- TODO: move to initialization
+			if v > 0.5 then
+				self.object:set_animation_frame_speed((v/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
 			else
 				self.object:set_animation_frame_speed(25)
 			end
 		end
 		--set_speed
-		if validate_vector(self.acc) then
-			self.object:add_velocity(self.acc)
-		end
+		--if validate_vector(self.acc) then
+		--	self.object:add_velocity(self.acc)
+		--end
 	end
 end
 

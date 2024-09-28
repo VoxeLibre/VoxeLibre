@@ -203,8 +203,12 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.collisionbox = colbox
 	self.selectionbox = selbox
 	self.visual_size = vis_size
-	self.standing_in = "ignore"
-	self.standing_on = "ignore"
+	self.standing_in = NODE_IGNORE
+	self.standing_on = NODE_IGNORE
+	self.standing_under = NODE_IGNORE
+	self.standing_body = NODE_IGNORE
+	self.standing_depth = 0
+	self.state = self.state or "stand"
 	self.jump_sound_cooloff = 0 -- used to prevent jump sound from being played too often in short time
 	self.opinion_sound_cooloff = 0 -- used to prevent sound spam of particular sound types
 
@@ -284,13 +288,10 @@ function mob_class:outside_limits()
 		if posx > MAPGEN_LIMIT or posy > MAPGEN_LIMIT or posz > MAPGEN_LIMIT then
 			minetest.log("action", "Warning mob past limits of worldgen: " .. minetest.pos_to_string(pos))
 		else
-			if self.state ~= "stand" then
-				minetest.log("action", "Warning mob close to limits of worldgen: " .. minetest.pos_to_string(pos))
-				self.state = "stand"
-				self:set_animation("stand")
-				self.object:set_acceleration(vector.zero())
-				self.object:set_velocity(vector.zero())
-			end
+			self:turn_in_direction(-posx, -posz, 1) -- turn to world spawn
+			self.state = "walk"
+			self:set_animation("walk")
+			self:set_velocity(self.walk_velocity)
 		end
 		return true
 	end
@@ -302,25 +303,19 @@ local function on_step_work(self, dtime, moveresult)
 	if self:check_despawn(pos, dtime) then return true end
 	if self:outside_limits() then return end
 
-	-- Start: Death/damage processing
-	-- All damage needs to be undertaken at the start. We need to exit processing if the mob dies.
-	if self:check_death_and_slow_mob() then
-		--minetest.log("action", "Mob is dying: ".. tostring(self.name))
-		-- Do we abandon out of here now?
-	end
-
-	if self:falling(pos, moveresult) then return end
+	-- Update what we know of the mobs environment for physics and movement
+	self:update_standing()
+	local player_in_active_range = self:player_in_active_range()
+	-- The following functions return true when the mob died and we should stop processing
+	if self:check_suspend(player_in_active_range) then return end
+	if self:gravity_and_floating(pos, dtime, moveresult) then return end
 	if self:step_damage(dtime, pos) then return end
+	self:check_water_flow()
 
 	if self.state == "die" then return end
-	-- End: Death/damage processing
-
-	local player_in_active_range = self:player_in_active_range()
-	self:check_suspend(player_in_active_range)
-	self:check_water_flow()
 	self._can_jump_cliff = not self._jumping_cliff and self:can_jump_cliff()
-	self:flop()
-	self:check_smooth_rotation(dtime)
+	--self:flop()
+	self:smooth_rotation(dtime)
 
 	if player_in_active_range then
 		self:set_animation_speed() -- set animation speed relative to velocity
@@ -350,8 +345,11 @@ local function on_step_work(self, dtime, moveresult)
 
 	self:check_aggro(dtime)
 	self:check_particlespawners(dtime)
-	if self.do_custom and self.do_custom(self, dtime) == false then return end
+	if self.do_custom and self:do_custom(dtime) == false then return end
 	if self:do_states(dtime, player_in_active_range) then return end
+	self:smooth_acceleration(dtime)
+	local cx, cz = self:collision()
+	self.object:add_velocity(vector.new(cx, 0, cz))
 	if mobs_debug then self:update_tag() end
 	if not self.object:get_luaentity() then return false end
 end

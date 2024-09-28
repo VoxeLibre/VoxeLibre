@@ -21,6 +21,7 @@ local abs = math.abs
 local cos = math.cos
 local sin = math.sin
 local atan2 = math.atan2
+local sqrt = math.sqrt
 local vector_offset = vector.offset
 local vector_new = vector.new
 local vector_copy = vector.copy
@@ -88,7 +89,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 	self.path.lastpos = vector_copy(s)
 
 	local use_pathfind = false
-	local has_lineofsight = minetest.line_of_sight(vector_offset(s, 0, .5, 0), vector_offset(target_pos, 0, 1.5, 0), .2)
+	local has_lineofsight = self:line_of_sight(vector_offset(s, 0, .5, 0), vector_offset(target_pos, 0, 1.5, 0), self.see_through_opaque or mobs_see_through, false)
 
 	-- im stuck, search for path
 	if not has_lineofsight then
@@ -177,9 +178,8 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 				if s.y < p1.y then
 					-- build upwards
 					if not minetest.is_protected(s, "") then
-						local ndef1 = minetest.registered_nodes[self.standing_in]
-						if ndef1 and (ndef1.buildable_to or ndef1.groups.liquid) then
-								minetest.set_node(s, {name = mcl_mobs.fallback_node})
+						if self.standing_in.buildable_to or self.standing_in.groups.liquid then
+							minetest.set_node(s, {name = mcl_mobs.fallback_node})
 						end
 					end
 
@@ -632,9 +632,9 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				kb = kb + 9 * minetest.get_item_group(wielditem:get_name(), "hammer")
 				-- add player velocity to mob knockback
 				local hv = hitter:get_velocity()
-				local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
-				local player_mag = ((hv.x * hv.x) + (hv.z * hv.z))^0.5
-				local mob_mag = ((v.x * v.x) + (v.z * v.z))^0.5
+				local dir_dot = hv.x * dir.x + hv.z * dir.z
+				local player_mag = sqrt(hv.x * hv.x + hv.z * hv.z)
+				local mob_mag = sqrt(v.x * v.x + v.z * v.z)
 				if dir_dot > 0 and mob_mag <= player_mag * 0.625 then
 					kb = kb + (abs(hv.x) + abs(hv.z)) * r
 				end
@@ -1002,7 +1002,7 @@ function mob_class:do_states_attack(dtime)
 			or (self.attack_type == "dogshoot" and self:dogswitch(dtime) == 1)
 			or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and self:dogswitch() == 0) then
 		local vec = vector_new(p.x - s.x, p.y - s.y - 1, p.z - s.z)
-		local dist = (vec.x*vec.x + vec.y*vec.y + vec.z*vec.z)^0.5
+		local dist = sqrt(vec.x*vec.x + vec.y*vec.y + vec.z*vec.z)
 		self:turn_in_direction(vec.x, vec.z, 10)
 
 		if self.strafes then
@@ -1010,11 +1010,11 @@ function mob_class:do_states_attack(dtime)
 			if random(40) == 1 then self.strafe_direction = self.strafe_direction * -1 end
 
 			local dir = -atan2(p.x - s.x, p.z - s.z)
-			self.acc = vector_new(-sin(dir + self.strafe_direction) * 0.8, 0, cos(dir + self.strafe_direction) * 0.8)
+			self.object:add_velocity(vector_new(-sin(dir + self.strafe_direction) * 0.8, 0, cos(dir + self.strafe_direction) * 0.8))
 			--stay away from player so as to shoot them
 			if self.avoid_distance and dist < self.avoid_distance and self.shooter_avoid_enemy then
 				local f = 0.3 * (self.avoid_distance - dist) / self.avoid_distance
-				self.acc.x, self.acc.z = self.acc.x - sin(dir) * f, self.acc.z + cos(dir) * f
+				self.object:add_velocity(-sin(dir) * f, 0, cos(dir) * f)
 			end
 		else
 			self:set_velocity(0)
