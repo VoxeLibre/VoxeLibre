@@ -48,24 +48,19 @@ end
 
 -- Returns true is node can deal damage to self
 function mob_class:is_node_dangerous(nodename)
-	local nn = nodename
-	if self.lava_damage > 0 and minetest.get_item_group(nn, "lava") ~= 0 then return true end
-	if self.fire_damage > 0 and minetest.get_item_group(nn, "fire") ~= 0 then return true end
-	if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].damage_per_second and minetest.registered_nodes[nn].damage_per_second > 0 then return true end
-	return false
+	local ndef = minetest.registered_nodes[nodename]
+	return ndef and (
+          (self.lava_damage > 0 and ndef.groups.lava)
+	   or (self.fire_damage > 0 and ndef.groups.fire)
+	   or ((ndef.damage_per_second or 0) > 0))
 end
-
 
 -- Returns true if node is a water hazard
 function mob_class:is_node_waterhazard(nodename)
-	local nn = nodename
-	if self.water_damage > 0 and minetest.get_item_group(nn, "water") ~= 0 then return true end
-	if minetest.registered_nodes[nn] and (minetest.registered_nodes[nn].drowning or 0) > 0
-	and self.breath_max ~= -1
-	-- check if the mob is water-breathing _and_ the block is water; only return true if neither is the case
-	-- this will prevent water-breathing mobs to classify water or e.g. sand below them as dangerous
-	and not self.breathes_in_water and minetest.get_item_group(nn, "water") ~= 0 then return true end
-	return false
+	local ndef = minetest.registered_nodes[nodename]
+	return ndef	and ndef.groups.water and (
+          (self.water_damage > 0)
+	   or (not self.breathes_in_water and self.breath_max ~= -1 and (ndef.drowning or 0) > 0))
 end
 
 
@@ -712,64 +707,15 @@ function mob_class:do_states_walk()
 	local yaw = self.object:get_yaw() or 0
 	local s = self.object:get_pos()
 
-	-- is there something I need to avoid?
-	if (self.water_damage > 0
-			and self.lava_damage > 0)
-			or self.breath_max ~= -1 then
-		lp = minetest.find_node_near(s, 1, {"group:water", "group:lava"})
-	elseif self.water_damage > 0 then
-		lp = minetest.find_node_near(s, 1, {"group:water"})
-	elseif self.lava_damage > 0 then
-		lp = minetest.find_node_near(s, 1, {"group:lava"})
-	elseif self.fire_damage > 0 then
-		lp = minetest.find_node_near(s, 1, {"group:fire"})
-	end
-
-	local is_in_danger = false
-	if lp then
-		-- If mob in or on dangerous block, look for land
-		if self:is_node_dangerous(self.standing_in) or self:is_node_waterhazard(self.standing_in)
-				or not self.fly and (self:is_node_dangerous(self.standing_on) or self:is_node_waterhazard(self.standing_on)) then
-			is_in_danger = true
-
-			-- If mob in or on dangerous block, look for land
-			if is_in_danger then
-				-- Better way to find shore - copied from upstream
-				lp = minetest.find_nodes_in_area_under_air(
-						{x = s.x - 5, y = s.y - 0.5, z = s.z - 5},
-						{x = s.x + 5, y = s.y + 1, z = s.z + 5},
-						{"group:solid"})
-
-				lp = #lp > 0 and lp[random(#lp)]
-				-- did we find land?
-				if lp then
-					-- minetest.log(self.name .. " heading to land ".. tostring(minetest.get_node(lp).name or nil))
-					yaw = atan2(lp.x - s.x, lp.z - s.z) - self.rotate
-					-- look towards land and move in that direction
-					self:set_yaw(yaw, 6)
-					self:set_velocity(self.walk_velocity)
-				end
-			end
-
-			-- A danger is near but mob is not inside
-		else
-			-- Randomly turn
-			if random(1, 100) <= 30 then
-				yaw = yaw + random() - 0.5
-				self:set_yaw(yaw, 8)
-			end
-			self:stand()
-			self:turn_by(PI * (random() - 0.5), 6)
-			return
-		end
-	end
 	-- If mob in or on dangerous block, look for land
 	if self:is_node_dangerous(self.standing_in) or self:is_node_waterhazard(self.standing_in)
 			or not self.fly and (self:is_node_dangerous(self.standing_on) or self:is_node_waterhazard(self.standing_on)) then
 		-- Better way to find shore - copied from upstream
 		local lp = minetest.find_nodes_in_area_under_air(vector_offset(s, -5, -0.5, -5), vector_offset(s, 5, 1, 5), {"group:solid"})
-		-- TODO: use node with smallest change in yaw?
-
+		if #lp == 0 then
+			local lp = minetest.find_nodes_in_area_under_air(vector_offset(s, -10, -0.5, -10), vector_offset(s, 10, 1, 10), {"group:solid"})
+		end
+		-- TODO: use node with smallest change in yaw instead of random?
 		lp = #lp > 0 and lp[random(#lp)]
 		-- did we find land?
 		if lp then
