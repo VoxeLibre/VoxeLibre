@@ -130,7 +130,7 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 			end
 
 			local le = object:get_luaentity()
-			return le and le.is_mob or le._hittable_by_projectile or object:is_player()
+			return le and (le.is_mob or le._hittable_by_projectile) or object:is_player()
 		end,
 		on_collide_with_entity = function(self, pos, entity)
 			on_collide(self, pos, minetest.get_node(pos))
