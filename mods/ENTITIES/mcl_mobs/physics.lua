@@ -216,34 +216,25 @@ end
 
 function mob_class:update_roll()
 	local is_Fleckenstein = self.nametag == "Fleckenstein"
-	local was_Fleckenstein = false
+	if not is_Fleckenstein and not self.is_Fleckenstein then return end
 
 	local rot = self.object:get_rotation()
-	rot.z = is_Fleckenstein and pi or 0
+	rot.z = is_Fleckenstein and PI or 0
 	self.object:set_rotation(rot)
 
-	local cbox = table.copy(self.collisionbox)
-	local acbox = self.object:get_properties().collisionbox
-
-	if abs(cbox[2] - acbox[2]) > 0.1 then
-		was_Fleckenstein = true
-	end
-
-	if is_Fleckenstein ~= was_Fleckenstein then
+	if is_Fleckenstein ~= self.is_Fleckenstein then
 		local pos = self.object:get_pos()
-		pos.y = pos.y + (acbox[2] + acbox[5])
+		local cbox = is_Fleckenstein and table.copy(self.collisionbox) or self.object:get_properties().collisionbox
+		pos.y = pos.y + (cbox[2] + cbox[5])
+		cbox[2], cbox[5] = -cbox[5], -cbox[2]
+		-- This leads to child mobs having the wrong collisionbox
+		-- and seeing as it seems to be nothing but an easter egg
+		-- i've put it inside the if. Which just makes it be upside
+		-- down lol.
+		self.object:set_properties({collisionbox = cbox})
 		self.object:set_pos(pos)
 	end
-
-	if is_Fleckenstein then
-		cbox[2], cbox[5] = -cbox[5], -cbox[2]
-		self.object:set_properties({collisionbox = cbox})
-	-- This leads to child mobs having the wrong collisionbox
-	-- and seeing as it seems to be nothing but an easter egg
-	-- i've put it inside the if. Which just makes it be upside
-	-- down lol.
-	end
-
+	self.is_Fleckenstein = is_Fleckenstein
 end
 
 -- Relative turn, primarily for random turning
