@@ -196,7 +196,7 @@ function kelp.find_unsubmerged(pos, node, height)
 	for i=1,height do
 		walk_pos.y = y + i
 		local walk_node = mt_get_node(walk_pos)
-		if not kelp.is_submerged(walk_node) then
+		if walk_node.name ~= "ignore" and not kelp.is_submerged(walk_node) then
 			return walk_pos, walk_node, height, i
 		end
 	end

@@ -74,7 +74,7 @@ function mcl_bamboo.break_orphaned(pos)
 	local node_name = node_below.name
 
 	-- short circuit checks.
-	if mcl_bamboo.is_dirt(node_name) or mcl_bamboo.is_bamboo(node_name) or mcl_bamboo.is_bamboo(minetest.get_node(pos).name) == false then
+	if node_name == "ignore" or mcl_bamboo.is_dirt(node_name) or mcl_bamboo.is_bamboo(node_name) or mcl_bamboo.is_bamboo(minetest.get_node(pos).name) == false then
 		return
 	end
 
