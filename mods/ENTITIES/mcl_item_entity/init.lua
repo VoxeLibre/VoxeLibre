@@ -318,6 +318,12 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 	end
 
+	-- Special node drops (crushing) when digging with a hammer
+	local hammer = tooldef.groups.hammer
+	if hammer and hammer > 0 and nodedef._vl_crushing_drop then
+		drops = nodedef._vl_crushing_drop
+	end
+
 	if tool and nodedef._mcl_fortune_drop and enchantments.fortune then
 		local fortune_level = enchantments.fortune
 		local fortune_drop = nodedef._mcl_fortune_drop
