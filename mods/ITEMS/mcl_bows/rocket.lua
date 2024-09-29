@@ -230,7 +230,7 @@ minetest.register_craftitem("mcl_bows:rocket", {
 		local yaw = math.atan2(dropdir.z, dropdir.x) + YAW_OFFSET
 		mcl_bows.shoot_arrow(itemstack:get_name(), shootpos, dropdir, yaw, nil, 19, 3)
 	end,
-	_on_collide_with_entity = function(self, pos, obj)
+	_on_collide_with_entity = function(self, _, obj)
 		if self._in_player == false then
 			pos = self.object:get_pos()
 			obj:punch(self.object, 1.0, {
