@@ -1,5 +1,5 @@
-local mod = {}
-vl_projectile = mod
+vl_projectile = {}
+local mod = vl_projectile
 
 local vl_physics_path = minetest.get_modpath("vl_physics")
 
@@ -256,7 +256,6 @@ end
 local function handle_entity_collision(self, entity_def, projectile_def, object)
 	local pos = self.object:get_pos()
 	local dir = vector.normalize(self.object:get_velocity())
-	local self_vl_projectile = self._vl_projectile
 
 	-- Check if this is allowed
 	local allow_punching = projectile_def.allow_punching or true
