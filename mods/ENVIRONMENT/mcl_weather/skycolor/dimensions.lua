@@ -52,6 +52,9 @@ function dimension_handlers.overworld(player, sky_data)
 			dawn_horizon = dawn_color,
 			night_sky = night_color,
 			night_horizon = night_color,
+			fog_sun_tint = "#ff5f33",
+			fog_moon_tint = nil,
+			fog_tint_type = "custom",
 		},
 		clouds = true,
 	}

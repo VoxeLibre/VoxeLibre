@@ -75,13 +75,15 @@ function mcl_weather.has_snow(pos)
 end
 
 function mcl_weather.snow.set_sky_box()
-	mcl_weather.skycolor.add_layer(
-		"weather-pack-snow-sky",
-		{{r=0, g=0, b=0},
-		{r=85, g=86, b=86},
-		{r=135, g=135, b=135},
-		{r=85, g=86, b=86},
-		{r=0, g=0, b=0}})
+	if mcl_weather.skycolor.current_layer_name() ~= "weather-pack-snow-sky" then
+		mcl_weather.skycolor.add_layer(
+			"weather-pack-snow-sky",
+			{{r=0, g=0, b=0},
+			{r=85, g=86, b=86},
+			{r=135, g=135, b=135},
+			{r=85, g=86, b=86},
+			{r=0, g=0, b=0}})
+	end
 	mcl_weather.skycolor.active = true
 	for _, player in pairs(get_connected_players()) do
 		player:set_clouds({color="#ADADADE8"})
