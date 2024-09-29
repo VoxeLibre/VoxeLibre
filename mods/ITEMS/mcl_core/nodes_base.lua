@@ -772,6 +772,7 @@ minetest.register_node("mcl_core:cobble", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
+	_vl_crushing_drop = { "mcl_core:gravel" }
 })
 
 minetest.register_node("mcl_core:mossycobble", {
