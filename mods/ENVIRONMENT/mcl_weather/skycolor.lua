@@ -190,8 +190,8 @@ end
 
 function skycolor_utils.convert_to_rgb(minval, maxval, current_val, colors)
 	-- Clamp current_val to valid range
-	current_val = math.min(minval, current_val)
-	current_val = math.max(maxval, current_val)
+	current_val = math.max(minval, current_val)
+	current_val = math.min(maxval, current_val)
 
 	-- Rescale current_val from a number between minval and maxval to a number between 1 and #colors
 	local scaled_value = (current_val - minval) / (maxval - minval) * (#colors - 1) + 1.0
