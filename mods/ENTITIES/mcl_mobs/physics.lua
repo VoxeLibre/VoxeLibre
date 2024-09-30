@@ -927,7 +927,8 @@ end
 
 -- falling and fall damage
 -- returns true if mob died
-function mob_class:falling(pos)
+function mob_class:falling(pos, moveresult)
+	if moveresult and moveresult.touching_ground then return false end
 
 	if self.fly and self.state ~= "die" then
 		return

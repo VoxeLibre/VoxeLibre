@@ -388,7 +388,7 @@ end
 
 
 
-local function on_step_work (self, dtime)
+local function on_step_work(self, dtime, moveresult)
 	local pos = self.object:get_pos()
 	if not pos then return end
 
@@ -402,7 +402,7 @@ local function on_step_work (self, dtime)
 		-- Do we abandon out of here now?
 	end
 
-	if self:falling(pos) then return end
+	if self:falling(pos, moveresult) then return end
 	if self:step_damage (dtime, pos) then return end
 
 	if self.state == "die" then return end
@@ -502,11 +502,11 @@ end
 
 
 -- main mob function
-function mob_class:on_step(dtime)
+function mob_class:on_step(dtime, moveresult)
 	if not DEVELOPMENT then
 		-- Removed as bundled Lua (5.1 doesn't support xpcall)
 		--local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
-		local status, retVal = pcall(on_step_work, self, dtime)
+		local status, retVal = pcall(on_step_work, self, dtime, moveresult)
 		if status then
 			return retVal
 		else
@@ -521,7 +521,7 @@ function mob_class:on_step(dtime)
 			log_error (dump(retVal), dump(pos), dump(self))
 		end
 	else
-		return on_step_work (self, dtime)
+		return on_step_work (self, dtime, moveresult)
 	end
 end
 
