@@ -615,7 +615,7 @@ function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, ad
 
 				pos.y = pos.y - 1
 				local mob = mcl_mobs.spawn(pos, mob_name)
-				if not object then
+				if not mob then
 					pos.y = pos.y + 1
 					mob = mcl_mobs.spawn(pos, mob_name)
 					if not mob then return end
