@@ -77,7 +77,7 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 	damage = 10,
 	knock_back = false,
 	jump = true,
-	jump_height = 14,
+	jump_height = 10,
 	fly = true,
 	makes_footstep_sound = false,
 	dogshoot_switch = 1,

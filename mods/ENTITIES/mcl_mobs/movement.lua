@@ -1,7 +1,7 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local DEFAULT_FALL_SPEED = -9.81*1.5
-local FLOP_HEIGHT = 6
+local FLOP_VEL = math.sqrt(1.5 * 20) -- 1.5 blocks
 local FLOP_HOR_SPEED = 1.5
 
 local CHECK_HERD_FREQUENCY = 4
@@ -12,7 +12,6 @@ local node_snow = "mcl_core:snow"
 
 local logging = minetest.settings:get_bool("mcl_logging_mobs_movement", true)
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing", true)
-local mobs_see_through_opaque = minetest.settings:get_bool("mobs_see_through_opaque", false)
 
 local random = math.random
 local sin = math.sin
@@ -32,7 +31,8 @@ local vector_distance = vector.distance
 local raycast_line_of_sight = mcl_mobs.check_line_of_sight
 
 local node_ok = mcl_mobs.node_ok
-local see_through_opaque = mcl_mobs.see_through_opaque
+local mobs_see_through_opaque = mcl_mobs.see_through_opaque
+local line_of_sight = mcl_mobs.line_of_sight
 
 -- Stop movement and stand
 function mob_class:stand()
@@ -87,12 +87,12 @@ function mob_class:target_visible(origin)
 	local cbox = self.collisionbox
 	-- TODO also worth testing midway between feet and head?
 	-- to top of entity
-	if line_of_sight(origin_eye_pos, vector_offset(target_pos, 0, cbox[5], 0), mobs_see_through_opaque, true) then return true end
+	if line_of_sight(origin_eye_pos, vector_offset(target_pos, 0, cbox[5], 0), self.see_through_opaque or mobs_see_through_opaque, true) then return true end
 	-- to feed of entity
 	if self.attack:is_player() then
-		if line_of_sight(origin_eye_pos, target_pos, mobs_see_through_opaque, true) then return true end -- Cbox would put feet under ground which interferes with ray
+		if line_of_sight(origin_eye_pos, target_pos, self.see_through_opaque or mobs_see_through_opaque, true) then return true end -- Cbox would put feet under ground which interferes with ray
 	else
-		if line_of_sight(origin_eye_pos, vector_offset(target_pos, 0, cbox[2], 0), mobs_see_through_opaque, true) then return true end
+		if line_of_sight(origin_eye_pos, vector_offset(target_pos, 0, cbox[2], 0), self.see_through_opaque or mobs_see_through_opaque, true) then return true end
 	end
 
 	--minetest.log("start targ_head_height: " .. dump(targ_head_height))
@@ -112,7 +112,7 @@ end
 
 -- check line of sight
 function mob_class:line_of_sight(pos1, pos2, stepsize)
-	return line_of_sight(pos1, pos2, mobs_see_through_opaque, true)
+	return line_of_sight(pos1, pos2, self.see_through_opaque or mobs_see_through_opaque, true)
 end
 
 function mob_class:can_jump_cliff()
@@ -170,7 +170,7 @@ function mob_class:is_at_cliff_or_danger()
 		return "free fall"
 	end
 	local height = ypos + 0.4 - blocker.y
-	local chance = (self.jump_height or 4) * 0.25 / (height * height)
+	local chance = self.jump_height / (height * height)
 	if height >= self.fear_height and random() < chance then
 		if logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." avoiding drop of "..height) --.." chance "..chance)
@@ -305,17 +305,12 @@ function mob_class:do_jump()
 		return false
 	end
 
-	v.y = math.min(v.y, 0) + self.jump_height -- + 0.3
-	--if in_water then
-	--	v.x, v.y, v.z = v.x * 1.2, v.y + self.jump_height * 0.5, v.z * 1.2
-	--elseif self._can_jump_cliff then
-	--	v.x, v.y, v.z = v.x * 2.5, v.y + self.jump_height * 0.1, v.z * 2.5
-	--end
-	if in_water or self._cam_jump_cliff then v.y = v.y + self.jump_height * 0.25 end
-
+	v.y = math.min(v.y, 0) + math.sqrt(self.jump_height * 20) + (in_water or self._can_jump_cliff and 0.5 or 0)
 	v.y = math.min(-self.fall_speed, math.max(v.y, self.fall_speed))
-	self:set_animation("jump") -- only when defined
 	self.object:set_velocity(v)
+	self:set_animation("run")
+	self:set_animation("jump") -- only when defined
+	self:set_velocity(self.run_velocity)
 
 	if self.jump_sound_cooloff <= 0 then
 		self:mob_sound("jump")
@@ -455,7 +450,7 @@ function mob_class:check_runaway_from()
 			sp = s
 			dist = vector_distance(p, s)
 			-- choose closest player/mpb to runaway from
-			if dist < min_dist and line_of_sight(vector_offset(sp, 0, 1, 0), vector_offset(p, 0, 1, 0), mobs_see_through_opaque, false) then
+			if dist < min_dist and line_of_sight(vector_offset(sp, 0, 1, 0), vector_offset(p, 0, 1, 0), self.see_through_opaque or mobs_see_through_opaque, false) then
 				-- aim higher to make looking up hills more realistic
 				min_dist = dist
 				min_player = player
@@ -532,29 +527,25 @@ function mob_class:check_follow()
 	end
 end
 
+-- swimmers flop when out of their element, and swim again when back in
 function mob_class:flop()
-	-- swimmers flop when out of their element, and swim again when back in
-	if self.fly then
-		local s = self.object:get_pos()
-
-		if self:flight_check(s) == false then
-			self.state = "flop"
-			self.object:set_acceleration(vector_new(0, DEFAULT_FALL_SPEED, 0))
-
-			local p = self.object:get_pos()
-			local sdef = minetest.registered_nodes[node_ok(vector_offset(p, 0, self.collisionbox[2] - 0.2, 0)).name]
-			-- Flop on ground
-			if sdef and sdef.walkable then
-				if self.object:get_velocity().y < 0.1 then
-					self:mob_sound("flop")
-					self.object:set_velocity(vector_new((random() * 2 - 1) * FLOP_HOR_SPEED, FLOP_HEIGHT, (random() * 2 - 1) * FLOP_HOR_SPEED))
-				end
+	if not self.fly then return end
+	if not self:flight_check() then
+		self.state = "flop"
+		self.acceleration.y = DEFAULT_FALL_SPEED
+		local sdef = self.standing_on
+		if sdef and sdef.walkable then -- flop on ground
+			if self.object:get_velocity().y == 0 then
+				self:mob_sound("flop")
+				self.object:add_velocity(vector_new(0, FLOP_VEL, 0))
+				self:turn_by(TWOPI * random(), 8)
+				self:set_velocity(FLOP_HOR_SPEED)
 			end
-
-			self:set_animation("stand", true)
-		elseif self.state == "flop" then
-			self:stand()
 		end
+		self:set_animation("stand", true)
+	elseif self.state == "flop" then
+		--self:stand()
+		self.acceleration.y = 0
 	end
 end
 
@@ -626,28 +617,33 @@ function mob_class:do_states_walk()
 	end
 	-- facing wall? then turn
 	local facing_wall = false
-	local cbox = self.collisionbox
-	local dir_x, dir_z = -sin(yaw - QUARTERPI) * (cbox[4] + 0.5), cos(yaw - QUARTERPI) * (cbox[4] + 0.5)
-	local nodface = minetest.registered_nodes[minetest.get_node(vector_offset(s,  dir_x, cbox[5] - cbox[2], dir_z)).name]
-	if nodface and nodface.walkable then
-		dir_x, dir_z = -sin(yaw + QUARTERPI) * (cbox[4] + 0.5), cos(yaw + QUARTERPI) * (cbox[4] + 0.5)
-		nodface = minetest.registered_nodes[minetest.get_node(vector_offset(s, dir_x, cbox[5] - cbox[2], dir_z)).name]
+	-- todo: use moveresult collision info here?
+	if self:get_velocity_xyz() < 0.1 then
+		facing_wall = true
+	elseif not facing_wall then
+		local cbox = self.collisionbox
+		local dir_x, dir_z = -sin(yaw - QUARTERPI) * (cbox[4] + 0.5), cos(yaw - QUARTERPI) * (cbox[4] + 0.5)
+		local nodface = minetest.registered_nodes[minetest.get_node(vector_offset(s, dir_x, (cbox[5] - cbox[2]) * 0.5, dir_z)).name]
 		if nodface and nodface.walkable then
-			facing_wall = true
+			dir_x, dir_z = -sin(yaw + QUARTERPI) * (cbox[4] + 0.5), cos(yaw + QUARTERPI) * (cbox[4] + 0.5)
+			nodface = minetest.registered_nodes[minetest.get_node(vector_offset(s, dir_x, (cbox[5] - cbox[2]) * 0.5, dir_z)).name]
+			if nodface and nodface.walkable then
+				facing_wall = true
+			end
 		end
 	end
 	if facing_wall then
 		if logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." facing a wall, turning.")
 		end
-		self:turn_by(TWOPI * (random() - 0.5), 6)
+		self:turn_by(TWOPI * (random() - 0.5), 10)
 	-- otherwise randomly turn
 	elseif random() <= 0.3 then
 		local home = self._home or self._bed
 		if home and random() < 0.1 then
 			self:turn_in_direction(home.x - s.x, home.z - s.z, 8)
 		else
-			self:turn_by(QUARTERPI * (random() - 0.5), 10)
+			self:turn_by(QUARTERPI * (random() - 0.5), 20)
 		end
 	end
 	self:set_velocity(self.walk_velocity)
@@ -688,9 +684,7 @@ function mob_class:do_states_stand(player_in_active_range)
 	end
 
 	-- npc's ordered to stand stay standing
-	if self.order == "stand" or self.order == "sleep" or self.order == "work" then
-
-	else
+	if self.order ~= "stand" and self.order ~= "sleep" and self.order ~= "work" then
 		if player_in_active_range then
 			if self.walk_chance ~= 0
 					and self.facing_fence ~= true
@@ -710,8 +704,7 @@ end
 function mob_class:do_states_runaway()
 	self.runaway_timer = self.runaway_timer + 1
 	-- stop after 5 seconds or when at cliff
-	if self.runaway_timer > 5
-			or self:is_at_cliff_or_danger() then
+	if self.runaway_timer > 5 or self:is_at_cliff_or_danger() then
 		self.runaway_timer = 0
 		self:stand()
 		self:turn_by(PI * (random() + 0.5), 8)

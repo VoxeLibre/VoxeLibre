@@ -2,6 +2,8 @@ local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local validate_vector = mcl_util.validate_vector
 
+local MAX_DTIME = 0.25 -- todo: make user configurable?
+local ACCELERATION_MIX = 1.0 -- how much of acceleration to handle in Lua instead of MTE todo: make user configurable
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
@@ -17,6 +19,7 @@ local abs = math.abs
 local atan2 = math.atan2
 local sin = math.sin
 local cos = math.cos
+local sqrt = math.sqrt
 local node_ok = mcl_mobs.node_ok
 
 local PATHFINDING = "gowp"
@@ -48,13 +51,25 @@ end
 -- standing_on: node below
 -- standing_under: node above
 -- these may be "nil" (= ignore) and are otherwise already resolved via minetest.registered_nodes
-function mob_class:update_standing()
-	local pos = self.object:get_pos()
+function mob_class:update_standing(pos, moveresult)
 	local temp_pos = vector.offset(pos, 0, self.collisionbox[2] + 0.5, 0) -- foot level
 	self.standing_in = minetest.registered_nodes[minetest.get_node(temp_pos).name] or NODE_IGNORE
 	temp_pos.y = temp_pos.y - 1.5 -- below
-	self.standing_on = minetest.registered_nodes[minetest.get_node(temp_pos).name] or NODE_IGNORE
-	self.standing_height = pos.y - math.ceil(temp_pos.y + 0.5) + self.head_eye_height * 0.75
+	self.standing_on_node = minetest.get_node(temp_pos) -- to allow access to param2 in, e.g., stalker
+	self.standing_on = standing_on or minetest.registered_nodes[self.standing_on_node.name] or NODE_IGNORE
+	-- sometimes, we may be colliding with a node *not* below us, effectively standing on it instead (e.g., a corner)
+	if not self.standing_on.walkable and moveresult and moveresult.collisions then
+		-- to inspect: minetest.log("action", dump(moveresult):gsub(" *\n\\s*",""))
+		for _, c in ipairs(moveresult.collisions) do
+			if c.axis == "y" and c.type == "node" and c.old_velocity.y < 0 then
+				self.standing_on_node = minetest.get_node(c.node_pos)
+				self.standing_on = minetest.registered_nodes[self.standing_on_node.name]
+				break
+			end
+		end
+	end
+	-- approximate height of head over ground:
+	self.standing_height = pos.y - math.floor(temp_pos.y + 0.5) - 0.5 + self.head_eye_height * 0.9
 	temp_pos.y = temp_pos.y + 2 -- at +1 = above
 	self.standing_under = minetest.registered_nodes[minetest.get_node(temp_pos).name] or NODE_IGNORE
 end
@@ -77,28 +92,20 @@ function mob_class:object_in_range(object)
 		factor = factors and factors[self.name]
 	end
 	-- Distance check
-	local dist
-	if factor and factor == 0 then
-		return false
-	elseif factor then
-		dist = self.view_range * factor
-	else
-		dist = self.view_range
+	local dist = self.view_range
+	if factor then
+		if factor == 0 then return false end
+		dist = dist * factor
 	end
-
 	local p1, p2 = self.object:get_pos(), object:get_pos()
 	return p1 and p2 and (vector.distance(p1, p2) <= dist)
 end
 
 function mob_class:item_drop(cooked, looting_level)
-
 	if not mobs_drop_items then return end
-
 	looting_level = looting_level or 0
 
-	if (self.child and self.type ~= "monster") then
-		return
-	end
+	if (self.child and self.type ~= "monster") then return end
 
 	local obj, item, num
 	local pos = self.object:get_pos()
@@ -160,7 +167,6 @@ end
 function mob_class:collision()
 	local pos = self.object:get_pos()
 	if not pos then return 0,0 end
-	local vel = self.object:get_velocity()
 	local x, z = 0, 0
 	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
@@ -172,7 +178,7 @@ function mob_class:collision()
 
 			local pos2 = object:get_pos()
 			local vx, vz  = pos.x - pos2.x, pos.z - pos2.z
-			local force = width - (vx*vx+vz*vz)^0.5
+			local force = width - sqrt(vx*vx+vz*vz)
 			if force > 0 then
 				force = force * force * (object:is_player() and 2 or 1) -- players push more
 				-- minetest.log("mob push force "..force.." "..tostring(self.name).." by "..tostring(ent and ent.name or "player"))
@@ -202,23 +208,31 @@ function mob_class:set_velocity(v)
 	self.target_vel = v
 end
 
+-- calculate mob velocity (3d)
+function mob_class:get_velocity_xyz()
+	local v = self.object:get_velocity()
+	if not v then return 0 end
+	local x, y, z = v.x, v.y, v.z
+	return sqrt(x*x + y*y + z*z)
+end
 -- calculate mob velocity (2d)
 function mob_class:get_velocity_xz()
 	local v = self.object:get_velocity()
 	if not v then return 0 end
-	return (v.x*v.x + v.z*v.z)^0.5
+	local x, z = v.x, v.z
+	return sqrt(x*x + z*z)
 end
 -- legacy API
 mob_class.get_velocity = mob_class.get_velocity_xz
 
 -- Relative turn, primarily for random turning
 -- @param angle number: realative angle, in radians
--- @param dtime deprecated: ignored now, because of smooth rotations
+-- @param delay number: time needed to turn
 -- @param dtime deprecated: ignored now, because of smooth rotations
 -- @return target angle
 function mob_class:turn_by(angle, delay, dtime)
 	if self.noyaw then return end
-	return self:set_yaw((self.object:get_yaw() or 0) + angle, delay, dtime)
+	return self:set_yaw((self.object:get_yaw() or 0) + (self.rotate or 0) + angle, delay, dtime)
 end
 -- Turn into a direction (e.g., to the player, or away)
 -- @param dx number: delta in x axis to target
@@ -277,7 +291,7 @@ function mob_class:smooth_rotation(dtime)
 	if not self.target_yaw then return end
 
 	local delay = self.delay
-	local initial_yaw = self.object:get_yaw() or 0
+	local initial_yaw = (self.object:get_yaw() or 0) + self.rotate
 	local yaw -- resulting yaw for this tick
 	if delay and delay > 1 then
 		local dif = (self.target_yaw - initial_yaw + PI) % TWOPI - PI
@@ -290,13 +304,13 @@ function mob_class:smooth_rotation(dtime)
 	if self.shaking then
 		yaw = yaw + (random() * 2 - 1) / 72 * dtime
 	end
-	if yaw ~= initial_yaw then self.object:set_yaw(yaw) end
+	if yaw ~= initial_yaw then self.object:set_yaw(yaw - self.rotate) end
 	--update_roll() -- Fleckenstein easter egg
 end
 
 -- Handling of intentional acceleration by the mob
 -- its best to place environmental effects afterwards
--- TODO: have mobs that act faster and that act slower?
+-- TODO: have mobs that acccelerate faster and that accelerate slower?
 -- FIXME: what about shulkers, that move without rotating?
 -- @param dtime number: timestep length
 function mob_class:smooth_acceleration(dtime)
@@ -307,16 +321,16 @@ function mob_class:smooth_acceleration(dtime)
 	local vel = self.target_vel or 0
 	local x, z = -sin(yaw) * vel, cos(yaw) * vel
 	local v = self.object:get_velocity()
-	local w = min(1, dtime * 10)
+	local w = min(dtime * 5, 1)
 	v.x, v.z = v.x + w * (x - v.x), v.z + w * (z - v.z)
 	self.object:set_velocity(v)
 end
 
 -- are we flying in what we are suppose to?
 function mob_class:flight_check()
-	if not self.standing_in or not self.standing_on then return true end -- nil check
-	if nod == "ignore" then return true end
-	return not not self.fly_in[nod] -- force boolean
+	if not self.standing_in or self.standing_in.name == "ignore" then return true end -- unknown?
+	if not self.fly_in then return false end
+	return not not self.fly_in[self.standing_in.name] -- force boolean
 end
 
 -- check if mob is dead or only hurt
@@ -720,10 +734,9 @@ end
 function mob_class:check_entity_cramming()
 	local p = self.object:get_pos()
 	if not p then return end
-	local oo = minetest.get_objects_inside_radius(p,1)
 	local mobs = {}
-	for i = 1,#oo do
-		local l = oo[i]:get_luaentity()
+	for o in minetest.objects_inside_radius(p, 0.5) do
+		local l = o:get_luaentity()
 		if l and l.is_mob and l.health > 0 then table.insert(mobs,l) end
 	end
 	local clear = #mobs < ENTITY_CRAMMING_MAX
@@ -751,34 +764,44 @@ end
 -- @param moveresult table: minetest engine movement result (collisions)
 -- @return true if mob died
 function mob_class:gravity_and_floating(pos, dtime, moveresult)
+	if self._just_portaled then
+		self.start_fall_y = nil -- reset fall damage
+	end
 	if self.fly and self.state ~= "die" then return end
-	if not self.fall_speed then self.fall_speed = DEFAULT_FALL_SPEED end -- TODO: move to initialization code only?
 	if self.standing_in == NODE_IGNORE then -- not emerged yet, do not fall
 		self.object:set_velocity(vector.zero())
 		return false
 	end
-	self.object:set_properties({ nametag = "on: "..self.standing_on.name.."\nin: "..self.standing_in.name.."\n "..tostring(self.standing_height) })
+	-- self.object:set_properties({ nametag = "on: "..self.standing_on.name.."\nin: "..self.standing_in.name.."\n "..tostring(self.standing_height) })
 
 	-- Gravity
-	--local acc_y = self.fall_speed
-	local acc_y = moveresult and moveresult.touching_ground and 0 or self.fall_speed
-	local visc = 1
+	local acc = vector.new(0, not self.fly and moveresult and moveresult.touching_ground and 0 or self.fall_speed, 0)
+	self.visc = 1
 	local vel = self.object:get_velocity() or vector.zero()
 	local standbody = self.standing_in
 	if standbody.groups.water then
-		visc = 0.8
+		self.visc = 0.4
 		if self.floats > 0 then --and minetest.registered_nodes[node_ok(vector.offset(pos, 0, self.collisionbox[5] - 0.25, 0)).name].groups.water then
-			local w = self.standing_under.groups.water and 0 or self.standing_height -- 0 is submerged, 1 is out
-			acc_y = self.fall_speed * max(-1, min(1, 2 * w - 1)) -- -1 to +1
-			--self.object:set_acceleration(vector.new(0, -self.fall_speed * 0.5, 0))
+			local w = (self.standing_under.groups.water and 0 or self.standing_height) -- <1 is submerged, >1 is out
+			if w > 0.95 and w < 1.05 then
+				acc.y = 0 -- stabilize floating
+			else
+				acc.y = self.fall_speed * max(-1, min(1, w - 1)) -- -1 to +1
+			end
 		end
+		self.start_fall_y = nil -- otherwise might receive fall damage on the next jump?
 	elseif standbody.groups.lava then
-		visc = 0.7
+		self.visc = 0.5
 		if self.floats_on_lava > 0 then
 			local w = self.standing_under.groups.water and 0 or self.standing_height -- 0 is submerged, 1 is out
-			acc_y = self.fall_speed * max(-1, min(1, 2 * w - 1)) -- -1 to +1
-			--self.object:set_acceleration(vector.new(0, -self.fall_speed * 0.5, 0))
+			-- todo: relative to body height?
+			if w > 0.95 and w < 1.05 then
+				acc.y = 0
+			else
+				acc.y = self.fall_speed * max(-1, min(1, w - 1)) -- -1 to +1
+			end
 		end
+		self.start_fall_y = nil -- otherwise might receive fall damage on the next jump?
 	else
 		-- fall damage onto solid ground (bouncy ground will yield vel.y > 0)
 		if self.fall_damage == 1 and vel.y == 0 then
@@ -801,50 +824,112 @@ function mob_class:gravity_and_floating(pos, dtime, moveresult)
 			end
 		end
 	end
-	--vel.x, vel.y, vel.z = vel.x * visc, (vel.y + acc_y * dtime) * visc, vel.z * visc
+	self.acceleration = acc
+end
+
+--- Limit the velocity and acceleration of a mob applied by MTE
+-- This is an attempt to solve mobs trampolining on water.
+-- The problem is when a large timestep occurs, acceleration and velocity is applied
+-- by the minetest engine (MTE) for a long timestep. If a mob enters or leaves water
+-- during this time (or a similar transition occurs), this can become wildly inaccurate.
+-- A mob slightly above water will fall deep into water, or may fly high into
+-- the air because of updrift.
+function mob_class:limit_vel_acc_for_large_dtime(pos, dtime, moveresult)
+	-- hack not in use:
+	if ACCELERATION_MIX == 0 and dtime < MAX_DTIME then return pos end
+	local edtime, rdtime = dtime, 0 -- effective dtime and reverted dtime
+	if dtime >= MAX_DTIME then
+		edtime, rdtime = MAX_DTIME, dtime - MAX_DTIME
+	end
+
+	local vel = self.object:get_velocity()
+	local acc = self.object:get_acceleration()
+	-- revert excess movement and acceleration from MTE
+	if rdtime > 0 and not (moveresult and moveresult.collides) then
+		vel = vel - acc * rdtime
+		pos = pos - (vel - acc * rdtime * 0.5) * rdtime -- at average velocity during excess
+	end
+	-- apply the missing lua part of acceleration:
+	if ACCELERATION_MIX > 0 and self.acceleration then
+		local dx, dy, dz = self.acceleration.x, self.acceleration.y, self.acceleration.z
+		-- use collision information:
+		if moveresult and moveresult.collisions then
+			for _, c in ipairs(moveresult.collisions) do
+				if c.axis == "y" then
+					if c.old_velocity.y < 0 and dy < 0 then dy = 0 end
+					if c.old_velocity.y > 0 and dy > 0 then dy = 0 end
+				elseif c.axis == "x" then
+					if c.old_velocity.x < 0 and dx < 0 then dx = 0 end
+					if c.old_velocity.x > 0 and dx > 0 then dx = 0 end
+				elseif c.axis == "z" then
+					if c.old_velocity.z < 0 and dz < 0 then dz = 0 end
+					if c.old_velocity.z > 0 and dz > 0 then dz = 0 end
+				end
+			end
+		end
+		vel.x = vel.x + dx * edtime * ACCELERATION_MIX
+		vel.y = vel.y + dy * edtime * ACCELERATION_MIX
+		vel.z = vel.z + dz * edtime * ACCELERATION_MIX
+		-- because we cannot check for collission, we simply allow the extra acceleration to lag a timestep:
+		-- pos = pos + self.acceleration * edtime * 0.5 * rdtime
+	end
+	self.object:set_velocity(vel)
+	self.object:set_pos(pos)
+	return pos
+end
+
+--- Update velocity and acceleration at the end of our movement logic
+-- 
+function mob_class:update_vel_acc(dtime)
+	local vel = self.object:get_velocity()
+	--vel.x, vel.y, vel.z = vel.x * visc, (vel.y + acc.y * dtime) * visc, vel.z * visc
 	vel.y = max(min(vel.y, -self.fall_speed), self.fall_speed)
 
 	-- Cap dtime to reduce bopping on water (hence we also do not use minetest acceleration)
 	-- but the minetest engine already applied the current velocity on the full timestep
-	dtime = min(dtime, 0.01)
-	-- ideally, we could use: self.object:set_acceleration(vector.new(0, acc_y * visc, 0))
-	vel.y = vel.y + acc_y * dtime -- apply acceleration in LUA, with limited dtime
+	dtime = min(dtime, MAX_DTIME)
 
-	vel.y = vel.y * visc
+	-- Slowdown in liquids:
+	if self.visc then
+		-- TODO: only on y, or also apply to vel.x, vel.z, acceleration?
+		vel.y = vel.y * self.visc^(dtime*10)
+		-- vel = vel * self.visc^(dtime*10)
+	end
+
+	-- acceleration:
+	if self.acceleration and ACCELERATION_MIX < 1 then
+		self.object:set_acceleration(self.acceleration * (1 - ACCELERATION_MIX))
+		-- the remaining part is applied after the dtime step
+	end
+
 	self.object:set_velocity(vel)
 end
 
-function mob_class:check_water_flow()
-	-- Add water flowing for mobs from mcl_item_entity
-	local p = self.object:get_pos()
-	local node = minetest.get_node_or_nil(p)
-	local def = node and minetest.registered_nodes[node.name]
-
+-- Add water flowing for mobs from mcl_item_entity
+function mob_class:check_water_flow(dtime, pos)
+	local def = self.standing_in
 	-- Move item around on flowing liquids
 	if def and def.liquidtype == "flowing" then
 
 		--[[ Get flowing direction (function call from flowlib), if there's a liquid.
 		NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
 		Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
-		local vec = flowlib.quick_flow(p, node)
+		local vec = flowlib.quick_flow(pos, minetest.get_node(pos))
 		-- Just to make sure we don't manipulate the speed for no reason
 		if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
 			-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
-			local f = 1.39
+			local f = 8 -- but we have acceleration ehre, not velocity. Was: 1.39
 			-- Set new item moving speed into the direciton of the liquid
-			local newv = vector.multiply(vec, f)
-			--self.object:set_acceleration(vector.zero())
-			self.object:add_velocity(vector.new(newv.x, -0.22, newv.z))
-
-			self.physical_state = true
-			self._flowing = true
-			self.object:set_properties({ physical = true })
+			self.acceleration = self.acceleration + vector.new(vec.x * f, -0.22, vec.z * f)
+			--self.physical_state = true
+			--self._flowing = true
+			--self.object:set_properties({ physical = true })
 			return
 		end
-	elseif self._flowing == true then
-		-- Disable flowing physics if not on/in flowing liquid
-		self._flowing = false
-		return
+	--elseif self._flowing == true then
+	--	-- Disable flowing physics if not on/in flowing liquid
+	--	self._flowing = false
+	--	return
 	end
 end
 

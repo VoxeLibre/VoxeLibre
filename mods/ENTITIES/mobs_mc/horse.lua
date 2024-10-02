@@ -158,7 +158,7 @@ local horse = {
 	floats = 1,
 	makes_footstep_sound = true,
 	jump = true,
-	jump_height = 5.75, -- can clear 2.5 blocks
+	jump_height = 2.5, -- can clear 2.5 blocks
 	drops = {
 		{name = "mcl_mobitems:leather",
 		chance = 1,
@@ -560,7 +560,7 @@ donkey.collisionbox = {
 	horse.collisionbox[6] * d,
 }
 donkey.jump = true
-donkey.jump_height = 3.75 -- can clear 1 block height
+donkey.jump_height = 1 -- can clear 1 block height
 
 
 mcl_mobs.register_mob("mobs_mc:donkey", donkey)

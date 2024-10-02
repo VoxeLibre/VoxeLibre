@@ -2,9 +2,27 @@
 
 local S = minetest.get_translator("mobs_mc")
 
---###################
---################### STALKER
---###################
+-- foliage and grass palettes, loaded from mcl_maps
+local palettes = {}
+
+local function load_json_file(name)
+	local file = assert(io.open(name, "r"))
+	local data = minetest.parse_json(file:read("*all"))
+	file:close()
+	return data
+end
+local mapmodpath = minetest.get_modpath("mcl_maps")
+if mapmodpath then
+	for k,v in pairs(load_json_file(mapmodpath .. "/palettes_grass.json")) do
+		palettes[k] = v
+	end
+	for k,v in pairs(load_json_file(mapmodpath .. "/palettes_foliage.json")) do
+		palettes[k] = v
+	end
+	for k,v in pairs(load_json_file(mapmodpath .. "/palettes_water.json")) do
+		palettes[k] = v
+	end
+end
 
 
 local function get_texture(self, prev)
@@ -28,8 +46,29 @@ local function get_texture(self, prev)
 			if not color then
 				color = minetest.colorspec_to_colorstring(standing_on.color)
 			end
+			-- handle param2
+			if standing_on.palette and self.standing_on_node then
+				local param2
+				if standing_on.paramtype2 == "color" then
+					param2 = self.standing_on_node.param2
+				elseif standing_on.paramtype2 == "colorfacedir" then
+					param2 = math.floor(self.standing_on_node.param2 / 8)
+				elseif standing_on.paramtype2 == "colorwallmounted" then
+					param2 = math.floor(self.standing_on_node.param2 / 32)
+				elseif standing_on.paramtype2 == "color4dir" then
+					param2 = math.floor(self.standing_on_node.param2 / 64)
+				elseif standing_on.paramtype2 == "colordegrotate" then
+					param2 = math.floor(self.standing_on_node.param2 / 8)
+				end
+				local palette = palettes[standing_on.palette]
+				local oldcol = color
+				if param2 and palette then
+					local c = palette[param2 + 1]
+					if c then color = minetest.rgba(c[1], c[2], c[3], c[4]) end
+				end
+			end
 			if color then
-				texture_suff = "^[multiply:" .. color .. "^[hsl:0:0:20"
+				texture_suff = "^[multiply:" .. color .. "^[contrast:20:10" --"^[hsl:0:0:20"
 			end
 		end
 	end
@@ -39,6 +78,7 @@ local function get_texture(self, prev)
 			return prev
 		end
 		texture = "vl_stalker_default.png"
+		if texture_suff then texture = texture .. texture_suff end
 	else
 		texture = texture:gsub("([\\^:\\[])", "\\%1") -- escape texture modifiers
 		texture = "(vl_stalker_default.png^[combine:16x24:0,0=(" .. texture .. "):0,16=(" .. texture .. ")" .. texture_suff .. ")"

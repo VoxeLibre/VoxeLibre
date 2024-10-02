@@ -79,7 +79,7 @@ function mob_class:mob_sound(soundname, is_opinion, fixed_pitch)
 	local sound = soundinfo[soundname]
 	if not sound then return end
 	if is_opinion and self.opinion_sound_cooloff > 0 then return end
-	local pitch = fixed_pitch
+	local pitch
 	if not fixed_pitch then
 		pitch = soundinfo.base_pitch or 1
 		if self.child and not self.sounds_child then pitch = pitch * 1.5 end

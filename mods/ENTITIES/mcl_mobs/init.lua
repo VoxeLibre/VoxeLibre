@@ -6,6 +6,7 @@ local modname = minetest.get_current_modname()
 local path = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
+mcl_mobs.see_through_opaque = minetest.settings:get_bool("mobs_see_through_opaque", false)
 
 -- used by the libaries below.
 -- get node but use fallback for nil or unknown
@@ -192,7 +193,7 @@ function mcl_mobs.register_mob(name, def)
 		spawn_small_alternative = def.spawn_small_alternative,
 		do_custom = def.do_custom,
 		detach_child = def.detach_child,
-		jump_height = def.jump_height or 4, -- was 6
+		jump_height = def.jump_height or 1,
 		rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
 		lifetimer = def.lifetimer or 57.73,
 		hp_min = scale_difficulty(def.hp_min, 5, 1),
@@ -495,8 +496,8 @@ function mcl_mobs.register_arrow(name, def)
 			self.object:set_velocity(dir * vel)
 			self._owner = mcl_util.get_entity_id(puncher)
 		end,
-		automatic_face_movement_dir = def.rotate
-			and (def.rotate - (math.pi / 180)) or false,
+		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0},
+		automatic_face_movement_dir = def.rotate and (def.rotate - (math.pi / 180)) or false,
 
 		on_activate = def.on_activate,
 
@@ -549,30 +550,20 @@ end
 -- * spawn_egg=1: Spawn egg (generic mob, no metadata)
 -- * spawn_egg=2: Spawn egg (captured/tamed mob, metadata)
 function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, addegg, no_creative)
-
-	local grp = {spawn_egg = 1}
-
-	-- do NOT add this egg to creative inventory (e.g. dungeon master)
-	if no_creative == true then
-		grp.not_in_creative_inventory = 1
-	end
+	local grp = { spawn_egg = 1 }
+	if no_creative == true then grp.not_in_creative_inventory = 1 end
 
 	local invimg = "(spawn_egg.png^[multiply:" .. background_color ..")^(spawn_egg_overlay.png^[multiply:" .. overlay_color .. ")"
 	if old_spawn_icons then
-		local mobname = mob_id:gsub("mobs_mc:","")
-		local fn = "mobs_mc_spawn_icon_"..mobname..".png"
-		if mcl_util.file_exists(minetest.get_modpath("mobs_mc").."/textures/"..fn) then
-			invimg = fn
-		end
+		local fn = "mobs_mc_spawn_icon_" .. mob_id:gsub("mobs_mc:","") .. ".png"
+		if mcl_util.file_exists(minetest.get_modpath("mobs_mc").."/textures/"..fn) then invimg = fn end
 	end
 	if addegg == 1 then
-		invimg = "mobs_chicken_egg.png^(" .. invimg ..
-			"^[mask:mobs_chicken_egg_overlay.png)"
+		invimg = "mobs_chicken_egg.png^(" .. invimg ..  "^[mask:mobs_chicken_egg_overlay.png)"
 	end
 
 	-- register old stackable mob egg
 	minetest.register_craftitem(mob_id, {
-
 		description = desc,
 		inventory_image = invimg,
 		groups = grp,
@@ -609,9 +600,6 @@ function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, ad
 					local dim = mcl_worlds.pos_to_dimension(placer:get_pos())
 					local mob_light_lvl = {mcl_mobs:mob_light_lvl(itemstack:get_name(),dim)}
 
-					--minetest.log("min light: " .. mob_light_lvl[1])
-					--minetest.log("max light: " .. mob_light_lvl[2])
-
 					-- Handle egg conversion
 					local convert_to = (minetest.registered_entities[mob_name] or {})._convert_to
 					if convert_to then mob_name = convert_to end
@@ -623,9 +611,7 @@ function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, ad
 					return itemstack
 				end
 
-				if not minetest.registered_entities[mob_name] then
-					return itemstack
-				end
+				if not minetest.registered_entities[mob_name] then return itemstack end
 
 				if minetest.settings:get_bool("only_peaceful_mobs", false)
 						and minetest.registered_entities[mob_name].type == "monster" then

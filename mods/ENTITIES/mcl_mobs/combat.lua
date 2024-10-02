@@ -3,6 +3,7 @@ local mob_class = mcl_mobs.mob_class
 
 local damage_enabled = minetest.settings:get_bool("enable_damage")
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+local mobs_see_through_opaque = mcl_mobs.see_through_opaque
 
 -- pathfinding settings
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
@@ -89,7 +90,8 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 	self.path.lastpos = vector_copy(s)
 
 	local use_pathfind = false
-	local has_lineofsight = self:line_of_sight(vector_offset(s, 0, .5, 0), vector_offset(target_pos, 0, 1.5, 0), self.see_through_opaque or mobs_see_through, false)
+	local has_lineofsight = self:line_of_sight(vector_offset(s, 0, .5, 0), vector_offset(target_pos, 0, 1.5, 0),
+		self.see_through_opaque or mobs_see_through_opaque, false)
 
 	-- im stuck, search for path
 	if not has_lineofsight then
@@ -157,12 +159,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 
 		local dropheight = 12
 		if self.fear_height ~= 0 then dropheight = self.fear_height end
-		local jumpheight = 0
-		if self.jump and self.jump_height >= 4 then
-			jumpheight = min(ceil(self.jump_height * 0.25), 4)
-		elseif self.stepheight > 0.5 then
-			jumpheight = 1
-		end
+		local jumpheight = self.jump and floor(self.jump_height + 0.1) or 0
 		self.path.way = minetest.find_path(s, p1, 16, jumpheight, dropheight, "A*_noprefetch")
 
 		self.state = ""
