@@ -126,7 +126,7 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 			-- jump
 			if ctrl.jump then
 				if velo.y == 0 then
-					velo.y = velo.y + entity.jump_height
+					velo.y = velo.y + sqrt(entity.jump_height * 20)
 					acce_y = acce_y + 1
 				end
 			end

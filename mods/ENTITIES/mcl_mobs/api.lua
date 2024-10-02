@@ -28,6 +28,16 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
+function mob_class:safe_remove()
+	self.removed = true
+	minetest.after(0,function(obj)
+		if obj and obj:get_pos() then
+			mcl_burning.extinguish(obj)
+			obj:remove()
+		end
+	end,self.object)
+end
+
 function mob_class:update_tag() --update nametag and/or the debug box
 	local tag
 	if mobs_debug then
@@ -206,7 +216,6 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.standing_in = NODE_IGNORE
 	self.standing_on = NODE_IGNORE
 	self.standing_under = NODE_IGNORE
-	self.standing_body = NODE_IGNORE
 	self.standing_depth = 0
 	self.state = self.state or "stand"
 	self.jump_sound_cooloff = 0 -- used to prevent jump sound from being played too often in short time
@@ -219,6 +228,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.timer = 0
 	self.blinktimer = 0
 	self.blinkstatus = false
+
+	self.acceleration = vector.zero()
 
 	self.nametag = self.nametag or def.nametag
 
@@ -299,22 +310,22 @@ end
 
 local function on_step_work(self, dtime, moveresult)
 	local pos = self.object:get_pos()
-	if not pos then return end
-	if self:check_despawn(pos, dtime) then return true end
+	if not pos or self.removed then return end
+	if self:check_despawn(pos, dtime) then return end
 	if self:outside_limits() then return end
 
-	-- Update what we know of the mobs environment for physics and movement
-	self:update_standing()
+	pos = self:limit_vel_acc_for_large_dtime(pos, dtime, moveresult) -- limit maximum movement to reduce lag effects
+	self:update_standing(pos, moveresult) -- update what we know of the mobs environment for physics and movement
 	local player_in_active_range = self:player_in_active_range()
 	-- The following functions return true when the mob died and we should stop processing
 	if self:check_suspend(player_in_active_range) then return end
 	if self:gravity_and_floating(pos, dtime, moveresult) then return end
 	if self:step_damage(dtime, pos) then return end
-	self:check_water_flow()
+	self:check_water_flow(dtime, pos)
 
 	if self.state == "die" then return end
 	self._can_jump_cliff = not self._jumping_cliff and self:can_jump_cliff()
-	--self:flop()
+	self:flop()
 	self:smooth_rotation(dtime)
 
 	if player_in_active_range then
@@ -350,6 +361,7 @@ local function on_step_work(self, dtime, moveresult)
 	self:smooth_acceleration(dtime)
 	local cx, cz = self:collision()
 	self.object:add_velocity(vector.new(cx, 0, cz))
+	self:update_vel_acc(dtime)
 	if mobs_debug then self:update_tag() end
 	if not self.object:get_luaentity() then return false end
 end
@@ -416,9 +428,7 @@ local function update_lifetimer(dtime)
 	timer = 0
 end
 
-minetest.register_globalstep(function(dtime)
-	update_lifetimer(dtime)
-end)
+minetest.register_globalstep(update_lifetimer)
 
 minetest.register_chatcommand("clearmobs", {
 	privs = { maphack = true },

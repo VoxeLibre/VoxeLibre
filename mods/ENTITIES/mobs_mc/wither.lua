@@ -13,14 +13,6 @@ local anti_troll = minetest.settings:get_bool("wither_anti_troll_measures", fals
 local WITHER_INIT_BOOM = 7
 local WITHER_MELEE_COOLDOWN = 3
 
-local function atan(x)
-	if not x or x ~= x then
-		return 0
-	else
-		return math.atan(x)
-	end
-end
-
 --###################
 --################### WITHER
 --###################
@@ -96,7 +88,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 		distance = 60,
 	},
 	jump = true,
-	jump_height = 10,
+	jump_height = 5,
 	fly = true,
 	makes_footstep_sound = false,
 	dogshoot_switch = 1, -- unused
@@ -260,7 +252,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 			z = p.z - s.z
 		}
 
-		local yaw = (atan(vec.z / vec.x) +math.pi/ 2) - self.rotate
+		local yaw = (atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
 		if p.x > s.x then yaw = yaw +math.pi end
 		yaw = self:set_yaw( yaw, 0, dtime)
 

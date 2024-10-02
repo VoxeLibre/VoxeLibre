@@ -83,7 +83,7 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 	shoot_offset = 1.0,
 	passive = false,
 	jump = true,
-	jump_height = 4,
+	jump_height = 1,
 	fly = true,
 	makes_footstep_sound = false,
 	fear_height = 0,

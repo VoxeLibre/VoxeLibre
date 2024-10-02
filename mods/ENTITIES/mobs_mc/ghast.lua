@@ -59,7 +59,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	dogshoot_count_max =1,
 	passive = false,
 	jump = true,
-	jump_height = 4,
+	jump_height = 1,
 	floats=1,
 	fly = true,
 	makes_footstep_sound = false,
