@@ -28,8 +28,9 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
+-- not used yet
 function mob_class:safe_remove()
-	self.removed = true
+	self._removed = true
 	minetest.after(0,function(obj)
 		if obj and obj:get_pos() then
 			mcl_burning.extinguish(obj)
@@ -121,14 +122,11 @@ end
 
 function mob_class:mob_activate(staticdata, def, dtime)
 	if not self.object:get_pos() or staticdata == "remove" then
-		mcl_burning.extinguish(self.object)
-		mcl_util.remove_entity(self)
+		self:safe_remove()
 		return
 	end
-	if self.type == "monster"
-	and minetest.settings:get_bool("only_peaceful_mobs", false) then
-		mcl_burning.extinguish(self.object)
-		mcl_util.remove_entity(self)
+	if self.type == "monster" and minetest.settings:get_bool("only_peaceful_mobs", false) then
+		self:safe_remove()
 		return
 	end
 
@@ -310,16 +308,17 @@ end
 
 local function on_step_work(self, dtime, moveresult)
 	local pos = self.object:get_pos()
-	if not pos or self.removed then return end
-	if self:check_despawn(pos, dtime) then return end
+	if not pos or self._removed then return end
 	if self:outside_limits() then return end
+	if self:check_despawn(pos, dtime) then return end
 
 	pos = self:limit_vel_acc_for_large_dtime(pos, dtime, moveresult) -- limit maximum movement to reduce lag effects
 	self:update_standing(pos, moveresult) -- update what we know of the mobs environment for physics and movement
 	local player_in_active_range = self:player_in_active_range()
 	-- The following functions return true when the mob died and we should stop processing
 	if self:check_suspend(player_in_active_range) then return end
-	if self:gravity_and_floating(pos, dtime, moveresult) then return end
+	if self:gravity_and_floating(pos, dtime, moveresult) then return end -- keep early, for gravity!
+	if self:check_dying() then return end
 	if self:step_damage(dtime, pos) then return end
 	self:check_water_flow(dtime, pos)
 

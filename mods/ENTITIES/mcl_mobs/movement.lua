@@ -305,7 +305,7 @@ function mob_class:do_jump()
 		return false
 	end
 
-	v.y = math.min(v.y, 0) + math.sqrt(self.jump_height * 20) + (in_water or self._can_jump_cliff and 0.5 or 0)
+	v.y = math.min(v.y, 0) + math.sqrt(self.jump_height * 20 + (in_water or self._can_jump_cliff and 10 or 0))
 	v.y = math.min(-self.fall_speed, math.max(v.y, self.fall_speed))
 	self.object:set_velocity(v)
 	self:set_animation("run")
@@ -618,9 +618,9 @@ function mob_class:do_states_walk()
 	-- facing wall? then turn
 	local facing_wall = false
 	-- todo: use moveresult collision info here?
-	if self:get_velocity_xyz() < 0.1 then
+	if moveresult and moveresult.collides and self:get_velocity_xyz() < 0.1 then
 		facing_wall = true
-	elseif not facing_wall then
+	else --if not facing_wall then
 		local cbox = self.collisionbox
 		local dir_x, dir_z = -sin(yaw - QUARTERPI) * (cbox[4] + 0.5), cos(yaw - QUARTERPI) * (cbox[4] + 0.5)
 		local nodface = minetest.registered_nodes[minetest.get_node(vector_offset(s, dir_x, (cbox[5] - cbox[2]) * 0.5, dir_z)).name]

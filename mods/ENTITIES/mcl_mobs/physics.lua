@@ -168,7 +168,7 @@ function mob_class:collision()
 	local pos = self.object:get_pos()
 	if not pos then return 0,0 end
 	local x, z = 0, 0
-	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
+	local width = -self.collisionbox[1] + self.collisionbox[4]
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
 		local ent = object:get_luaentity()
 		if object:is_player() or (ent and ent.is_mob and object ~= self.object) then
@@ -188,19 +188,6 @@ function mob_class:collision()
 		end
 	end
 	return x, z
-end
-
-function mob_class:check_death_and_slow_mob()
-	local d = 0.7
-	local dying = self:check_dying()
-	if dying then d = 0.92 end
-
-	local v = self.object:get_velocity()
-	if v then
-		--diffuse object velocity
-		self.object:set_velocity(vector.new(v.x*d, v.y, v.z*d))
-	end
-	return dying
 end
 
 -- move mob in facing direction
@@ -873,6 +860,7 @@ function mob_class:limit_vel_acc_for_large_dtime(pos, dtime, moveresult)
 		-- because we cannot check for collission, we simply allow the extra acceleration to lag a timestep:
 		-- pos = pos + self.acceleration * edtime * 0.5 * rdtime
 	end
+	vel.x, vel.z = vel.x * 0.9, vel.z * 0.9 -- general slowdown factor
 	self.object:set_velocity(vel)
 	self.object:set_pos(pos)
 	return pos
@@ -934,8 +922,9 @@ function mob_class:check_water_flow(dtime, pos)
 end
 
 function mob_class:check_dying()
-	if ((self.state and self.state=="die") or self:check_for_death()) and not self.animation.die_end then
+	if (self.state and self.state == "die" or self:check_for_death()) and not self.animation.die_end then
 		local rot = self.object:get_rotation()
+		self:set_velocity(0) -- intentional movements stop
 		if rot then
 			rot.z = ((HALFPI - rot.z) * .2) + rot.z
 			self.object:set_rotation(rot)
@@ -950,6 +939,7 @@ function mob_class:check_suspend(player_in_active_range)
 		self:set_animation("stand", true)
 		if self.object:get_velocity() then
 			self.object:set_velocity(vector.zero())
+			self.object:set_acceleration(vector.zero())
 		end
 		return true
 	end

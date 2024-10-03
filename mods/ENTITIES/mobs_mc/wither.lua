@@ -117,6 +117,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 	},
 	harmed_by_heal = true,
 	is_boss = true,
+	see_through_opaque = false,
 	extra_hostile = true,
 	attack_exception = function(p)
 		local ent = p:get_luaentity()
@@ -252,7 +253,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 			z = p.z - s.z
 		}
 
-		local yaw = (atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
+		local yaw = (math.atan2(vec.z, vec.x) +math.pi/ 2) - self.rotate
 		if p.x > s.x then yaw = yaw +math.pi end
 		yaw = self:set_yaw( yaw, 0, dtime)
 

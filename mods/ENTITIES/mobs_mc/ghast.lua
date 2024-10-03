@@ -52,6 +52,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	fall_damage = 0,
 	view_range = 64,
 	attack_type = "dogshoot",
+	see_through_opaque = false,
 	arrow = "mobs_mc:fireball",
 	shoot_interval = 5,
 	shoot_offset = -0.5,

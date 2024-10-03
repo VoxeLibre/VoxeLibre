@@ -654,7 +654,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 					self._kb_turn = false
 				end
 			end)
-			self.object:add_velocity(vector_new(dir.x * kb, up*2, dir.z * kb ))
+			self.object:add_velocity(vector_new(dir.x * kb, up, dir.z * kb ))
 
 			self.pause_timer = 0.25
 		end
@@ -1007,11 +1007,14 @@ function mob_class:do_states_attack(dtime)
 			if random(40) == 1 then self.strafe_direction = self.strafe_direction * -1 end
 
 			local dir = -atan2(p.x - s.x, p.z - s.z)
-			self.object:add_velocity(vector_new(-sin(dir + self.strafe_direction) * 0.8, 0, cos(dir + self.strafe_direction) * 0.8))
+			self.acceleration.x = self.acceleration.x - sin(dir + self.strafe_direction) * 8
+			self.acceleration.z = self.acceleration.z + cos(dir + self.strafe_direction) * 8
 			--stay away from player so as to shoot them
 			if self.avoid_distance and dist < self.avoid_distance and self.shooter_avoid_enemy then
-				local f = 0.3 * (self.avoid_distance - dist) / self.avoid_distance
-				self.object:add_velocity(-sin(dir) * f, 0, cos(dir) * f)
+				local f = (self.avoid_distance - dist) / self.avoid_distance
+				--self:set_velocity(f * self.walk_velocity) --self.object:add_velocity(vector_new(-sin(dir) * f, 0, cos(dir) * f))
+				self.acceleration.x = self.acceleration.x - sin(dir) * f * 8
+				self.acceleration.z = self.acceleration.z + cos(dir) * f * 8
 			end
 		else
 			self:set_velocity(0)
@@ -1024,7 +1027,7 @@ function mob_class:do_states_attack(dtime)
 		if self.shoot_interval and self.timer > self.shoot_interval and random(1, 100) <= 60
 				and not minetest.raycast(vector_offset(p, 0, self.shoot_offset, 0), vector_offset(self.attack:get_pos(), 0, 1.5, 0), false, false):next() then
 			self.timer = 0
-			self:set_animation( "shoot")
+			self:set_animation("shoot")
 
 			-- play shoot attack sound
 			self:mob_sound("shoot_attack")
