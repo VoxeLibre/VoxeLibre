@@ -40,7 +40,7 @@ function dimension_handlers.overworld(player, sky_data)
 	end
 
 	-- Use overworld defaults
-	local day_color = mcl_weather.skycolor.get_sky_layer_color(0.15)
+	local day_color = mcl_weather.skycolor.get_sky_layer_color(0.5)
 	local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.27)
 	local night_color = mcl_weather.skycolor.get_sky_layer_color(0.1)
 	sky_data.sky = {
