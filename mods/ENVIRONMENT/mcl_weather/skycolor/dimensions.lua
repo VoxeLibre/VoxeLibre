@@ -85,6 +85,7 @@ function dimension_handlers.overworld(player, sky_data)
 			dawn_horizon = dawn_color or "#C0D8FF",
 			night_sky = night_color or "000000",
 			night_horizon = night_color or "4A6790",
+			fog_tint_type = "default",
 		})
 		sky_data.sun = {visible = false, sunrise_visible = false}
 		sky_data.moon = {visible = false}
