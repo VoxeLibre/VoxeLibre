@@ -78,18 +78,14 @@ function dimension_handlers.overworld(player, sky_data)
 		local day_color = mcl_weather.skycolor.get_sky_layer_color(0.5)
 		local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.75)
 		local night_color = mcl_weather.skycolor.get_sky_layer_color(0)
-		sky_data.sky = {
-			type = "regular",
-			sky_color = {
-				day_sky = day_color or "#7BA4FF",
-				day_horizon = day_color or "#C0D8FF",
-				dawn_sky = dawn_color or "7BA4FF",
-				dawn_horizon = dawn_color or "#C0D8FF",
-				night_sky = night_color or "000000",
-				night_horizon = night_color or "4A6790",
-			},
-			clouds = true,
-		}
+		table.update(sky_data.sky.sky_color,{
+			day_sky = day_color or "#7BA4FF",
+			day_horizon = day_color or "#C0D8FF",
+			dawn_sky = dawn_color or "7BA4FF",
+			dawn_horizon = dawn_color or "#C0D8FF",
+			night_sky = night_color or "000000",
+			night_horizon = night_color or "4A6790",
+		})
 		sky_data.sun = {visible = false, sunrise_visible = false}
 		sky_data.moon = {visible = false}
 		sky_data.stars = {visible = false}
