@@ -1,4 +1,4 @@
-local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
+local minetest, mcl_mobs = minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 --- Item and armor management
 

@@ -1,6 +1,6 @@
 local math, tonumber, vector, minetest, mcl_mobs = math, tonumber, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
-local validate_vector = mcl_util.validate_vector
+--local validate_vector = mcl_util.validate_vector
 
 local active_particlespawners = {}
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
@@ -132,7 +132,7 @@ function mob_class:remove_texture_mod(mod)
 			table.insert(remove, i)
 		end
 	end
-	for i=#remove, 1 do
+	for i=#remove, 1, -1 do
 		table.remove(self.texture_mods, remove[i])
 	end
 	self.object:set_texture_mod(full_mod)
@@ -211,7 +211,7 @@ function mob_class:set_animation(anim, fixed_frame)
 	elseif not self.object:get_attach() then
 		self.jockey = nil
 	end
-	
+
 	if self.state == "die" and anim ~= "die" and anim ~= "stand" then return end
 
 	if self.fly and self:flight_check() and anim == "walk" then anim = "fly" end
@@ -279,7 +279,8 @@ function mob_class:check_head_swivel(dtime)
 
 	who_are_you_looking_at(self, dtime)
 
-	local newr, oldp, oldr = vector.zero(), nil, nil
+	local newr = vector.zero()
+	local oldp, oldr
 	if self.object.get_bone_override then -- minetest >= 5.9
 		local ov = self.object:get_bone_override(self.head_swivel)
 		oldp, oldr = ov.position.vec, ov.rotation.vec

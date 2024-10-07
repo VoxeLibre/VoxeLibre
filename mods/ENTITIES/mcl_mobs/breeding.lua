@@ -5,7 +5,7 @@ local HORNY_TIME = 30
 local HORNY_AGAIN_TIME = 30 -- was 300 or 15*20
 local CHILD_GROW_TIME = 60
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager",false)
+local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_villager", false)
 
 local LOG_MODULE = "[mcl_mobs]"
 local function mcl_log (message)
@@ -29,18 +29,13 @@ end
 
 -- feeding, taming and breeding (thanks blert2112)
 function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
-	if not self.follow then
-		return false
-	end
-	if clicker:get_wielded_item():get_definition()._mcl_not_consumable then
-		return false
-	end
+	if not self.follow then return false end
+	if clicker:get_wielded_item():get_definition()._mcl_not_consumable then return false end
 	-- can eat/tame with item in hand
 	if self.nofollow or self:follow_holding(clicker) then
 		local consume_food = false
 
 		-- tame if not still a baby
-
 		if tame and not self.child then
 			if not self.owner or self.owner == "" then
 				self.tamed = true
@@ -50,7 +45,6 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 		end
 
 		-- increase health
-
 		if self.health < self.hp_max and not consume_food then
 			consume_food = true
 			self.health = math.min(self.health + 4, self.hp_max)
@@ -58,7 +52,6 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 		end
 
 		-- make children grow quicker
-
 		if not consume_food and self.child then
 			consume_food = true
 			-- deduct 10% of the time to adulthood
@@ -66,7 +59,6 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 		end
 
 		--  breed animals
-
 		if breed and not consume_food and self.hornytimer == 0 and not self.horny then
 			self.food = (self.food or 0) + 1
 			consume_food = true
@@ -102,24 +94,15 @@ end
 -- Spawn a child
 function mcl_mobs.spawn_child(pos, mob_type)
 	local child = minetest.add_entity(pos, mob_type)
-	if not child then
-		return
-	end
+	if not child then return end
 
 	local ent = child:get_luaentity()
-	mcl_mobs.effect(pos, 15, "mcl_particles_smoke.png", 1, 2, 2, 15, 5)
-
 	ent.child = true
-
-	local textures
-	-- using specific child texture (if found)
-	if ent.child_texture then
-		textures = ent.child_texture[1]
-	end
+	mcl_mobs.effect(pos, 15, "mcl_particles_smoke.png", 1, 2, 2, 15, 5)
 
 	-- and resize to half height
 	child:set_properties({
-		textures = textures,
+		textures = ent.child_texture and ent.child_texture[1],
 		visual_size = {
 			x = ent.base_size.x * .5,
 			y = ent.base_size.y * .5,
@@ -151,16 +134,12 @@ end
 
 -- find two animals of same type and breed if nearby and horny
 function mob_class:check_breeding()
-
 	--mcl_log("In breed function")
 	-- child takes a long time before growing into adult
 	if self.child then
-
 		-- When a child, hornytimer is used to count age until adulthood
 		self.hornytimer = self.hornytimer + 1
-
 		if self.hornytimer >= CHILD_GROW_TIME then
-
 			self.child = false
 			self.hornytimer = 0
 
@@ -177,11 +156,7 @@ function mob_class:check_breeding()
 				self.on_grown(self)
 			else
 				-- jump when fully grown so as not to fall into ground
-				self.object:set_velocity({
-					x = 0,
-					y = self.jump_height,
-					z = 0
-				})
+				self.object:set_velocity(vector.new(0, self.jump_height, 0))
 			end
 
 			self.animation = nil
@@ -189,121 +164,79 @@ function mob_class:check_breeding()
 			self._current_animation = nil -- Mobs Redo does nothing otherwise
 			self:set_animation(anim)
 		end
-
 		return
-	else
-		-- horny animal can mate for HORNY_TIME seconds,
-		-- afterwards horny animal cannot mate again for HORNY_AGAIN_TIME seconds
-		if self.horny == true then
-			self.hornytimer = self.hornytimer + 1
+	end
+	-- horny animal can mate for HORNY_TIME seconds,
+	-- afterwards horny animal cannot mate again for HORNY_AGAIN_TIME seconds
+	if self.horny == true then
+		self.hornytimer = self.hornytimer + 1
 
-			if self.hornytimer >= HORNY_TIME + HORNY_AGAIN_TIME then
-				self.hornytimer = 0
-				self.horny = false
-			end
+		if self.hornytimer >= HORNY_TIME + HORNY_AGAIN_TIME then
+			self.hornytimer = 0
+			self.horny = false
 		end
 	end
 
 	-- find another same animal who is also horny and mate if nearby
-	if self.horny == true
-	and self.hornytimer <= HORNY_TIME then
-
+	if self.horny and self.hornytimer <= HORNY_TIME then
 		mcl_log("In breed function. All good. Do the magic.")
-
 		local pos = self.object:get_pos()
-
-		mcl_mobs.effect({x = pos.x, y = pos.y + 1, z = pos.z}, 8, "heart.png", 3, 4, 1, 0.1)
+		mcl_mobs.effect(vector.new(pos.x, pos.y + 1, pos.z), 8, "heart.png", 3, 4, 1, 0.1)
 
 		local objs = minetest.get_objects_inside_radius(pos, 3)
 		local num = 0
-		local ent = nil
 
 		for n = 1, #objs do
-
-			ent = objs[n]:get_luaentity()
+			local ent = objs[n]:get_luaentity()
 
 			-- check for same animal with different colour
 			local canmate = false
-
 			if ent then
-
 				if ent.name == self.name then
 					canmate = true
 				else
 					local entname = string.split(ent.name,":")
 					local selfname = string.split(self.name,":")
-
 					if entname[1] == selfname[1] then
 						entname = string.split(entname[2],"_")
 						selfname = string.split(selfname[2],"_")
 
-						if entname[1] == selfname[1] then
-							canmate = true
-						end
+						if entname[1] == selfname[1] then canmate = true end
 					end
 				end
 			end
 
 			if canmate then mcl_log("In breed function. Can mate.") end
-
-			if ent
-			and canmate == true
-			and ent.horny == true
-			and ent.hornytimer <= HORNY_TIME then
+			if ent and canmate and ent.horny and ent.hornytimer <= HORNY_TIME then
 				num = num + 1
 			end
 
 			-- found your mate? then have a baby
 			if num > 1 then
-
 				self.hornytimer = HORNY_TIME + 1
 				ent.hornytimer = HORNY_TIME + 1
 
 				-- spawn baby
-
-
 				minetest.after(5, function(parent1, parent2, pos)
-					if not parent1.object:get_luaentity() then
-						return
-					end
-					if not parent2.object:get_luaentity() then
-						return
-					end
+					if not parent1.object:get_luaentity() then return end
+					if not parent2.object:get_luaentity() then return end
 
 					mcl_experience.throw_xp(pos, math.random(1, 7) + (parent1._luck or 0) + (parent2._luck or 0))
 
-					-- custom breed function
-					if parent1.on_breed then
-						-- when false, skip going any further
-						if parent1.on_breed(parent1, parent2) == false then
-							return
-						end
-					end
-
+					if parent1.on_breed and not parent1.on_breed(parent1, parent2) then return end
+					pos = vector.round(pos)
 					local child = mcl_mobs.spawn_child(pos, parent1.name)
 					if not child then return end
 
 					local ent_c = child:get_luaentity()
-
-
 					-- Use texture of one of the parents
-					local p = math.random(1, 2)
-					if p == 1 then
-						ent_c.base_texture = parent1.base_texture
-					else
-						ent_c.base_texture = parent2.base_texture
-					end
-					child:set_properties({
-						textures = ent_c.base_texture
-					})
+					ent_c.base_texture = math.random(1, 2) == 1 and parent1.base_texture or parent2.base_texture
+					child:set_properties({ textures = ent_c.base_texture })
 
 					-- tamed and owned by parents' owner
 					ent_c.tamed = true
 					ent_c.owner = parent1.owner
 				end, self, ent, pos)
-
-				num = 0
-
 				break
 			end
 		end
@@ -311,9 +244,7 @@ function mob_class:check_breeding()
 end
 
 function mob_class:toggle_sit(clicker,p)
-	if not self.tamed or self.child  or self.owner ~= clicker:get_player_name() then
-		return
-	end
+	if not self.tamed or self.child  or self.owner ~= clicker:get_player_name() then return end
 	local pos = self.object:get_pos()
 	local particle
 	if not self.order or self.order == "" or self.order == "sit" then
@@ -341,7 +272,7 @@ function mob_class:toggle_sit(clicker,p)
 	-- Display icon to show current order (sit or roam)
 	minetest.add_particle({
 		pos = vector.add(pos, pp),
-		velocity = {x=0,y=0.2,z=0},
+		velocity = vector.new(0, 0.2, 0),
 		expirationtime = 1,
 		size = 4,
 		texture = particle,
