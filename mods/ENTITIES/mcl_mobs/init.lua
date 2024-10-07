@@ -39,7 +39,7 @@ local function line_of_sight(origin, target, see_through_opaque, liquids)
 end
 mcl_mobs.line_of_sight = line_of_sight
 
-local NODE_IGNORE = { name = "ignore", groups = {} } -- fallback for unknown nodes
+mcl_mobs.NODE_IGNORE = { name = "ignore", groups = {} } -- fallback for unknown nodes
 
 --api and helpers
 -- effects: sounds and particles mostly

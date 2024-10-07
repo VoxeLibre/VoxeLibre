@@ -27,10 +27,12 @@ local vector_offset = vector.offset
 local vector_new = vector.new
 local vector_copy = vector.copy
 local vector_distance = vector.distance
+local vector_zero = vector.zero
+local node_ok = mcl_mobs.node_ok -- TODO: remove
 
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
-	return self.docile_by_day == true and self.time_of_day > 0.2 and self.time_of_day < 0.8
+	return self.docile_by_day and self.time_of_day > 0.2 and self.time_of_day < 0.8
 end
 
 -- get this mob to attack the object
@@ -60,7 +62,7 @@ local function entity_physics(pos, radius)
 		if dist < 1 then dist = 1 end
 
 		local damage = floor((4 / dist) * radius)
-		local ent = objs[n]:get_luaentity()
+		--local ent = objs[n]:get_luaentity()
 
 		-- punches work on entities AND players
 		objs[n]:punch(objs[n], 1.0, {
@@ -143,7 +145,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 	if use_pathfind then
 		-- lets try find a path, first take care of positions
 		-- since pathfinder is very sensitive
-		local sheight = self.collisionbox[5] - self.collisionbox[2]
+		--local sheight = self.collisionbox[5] - self.collisionbox[2]
 
 		-- round position to center of node to avoid stuck in walls
 		-- also adjust height for player models!
@@ -381,7 +383,7 @@ function mob_class:npc_attack()
 			p.y = p.y + 1
 			sp.y = sp.y + 1
 
-			if dist < min_dist and self:line_of_sight( sp, p, 2) == true then
+			if dist < min_dist and self:line_of_sight(sp, p, 2) == true then
 				min_dist = dist
 				min_player = obj.object
 			end
@@ -607,7 +609,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			local v = self.object:get_velocity()
 			if not v then return end
 			local r = 1.4 - min(punch_interval, 1.4)
-			local kb = r * (abs(v.x)+abs(v.z))
+			local kb = r * sqrt(v.x*v.x+v.z*v.z)
 			local up = 2.625
 
 			if die then kb = kb * 1.25 end
@@ -636,7 +638,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 					kb = kb + (abs(hv.x) + abs(hv.z)) * r
 				end
 			elseif luaentity and luaentity._knockback and die == false then
-				kb = kb + luaentity._knockback
+				kb = kb + luaentity._knockback * 0.25
 			elseif luaentity and luaentity._knockback and die == true then
 				kb = kb + luaentity._knockback * 0.25
 			end
@@ -698,11 +700,8 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local alert_pos = hitter:get_pos()
 	if alert_pos then
 		local objs = minetest.get_objects_inside_radius(alert_pos, self.view_range)
-		local obj = nil
-
 		for n = 1, #objs do
-			obj = objs[n]:get_luaentity()
-
+			local obj = objs[n]:get_luaentity()
 			if obj then
 				-- only alert members of same mob or friends
 				if obj.group_attack
@@ -771,17 +770,16 @@ function mob_class:do_states_attack(dtime)
 	if self.timer > 100 then self.timer = 1 end
 
 	local s = self.object:get_pos()
-	if not s then return end
+	local p = self.attack:get_pos()
+	if not s or not p then return end
 
-	local p = self.attack:get_pos() or s
-	local yaw = self.object:get_yaw() or 0
 
 	-- stop attacking if player invisible or out of range
 	if not self.attack
 			or not self.attack:get_pos()
 			or not self:object_in_range(self.attack)
 			or self.attack:get_hp() <= 0
-			or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ]) then
+			or (self.attack:is_player() and mcl_mobs.invis[self.attack:get_player_name()]) then
 
 		clear_aggro(self)
 		return
@@ -958,7 +956,7 @@ function mob_class:do_states_attack(dtime)
 			self.path.stuck_timer = 0
 			self.path.following = false -- not stuck anymore
 
-			self:set_velocity( 0)
+			self:set_velocity(0)
 
 			local attack_frequency = self.attack_frequency or 1
 
@@ -1003,18 +1001,19 @@ function mob_class:do_states_attack(dtime)
 		self:turn_in_direction(vec.x, vec.z, 10)
 
 		if self.strafes then
-			if not self.strafe_direction then self.strafe_direction = HALFPI end
-			if random(40) == 1 then self.strafe_direction = self.strafe_direction * -1 end
+			if not self.strafe_direction then self.strafe_direction = math.random(0, 1) * 2 - 1 end
+			if random(50) == 1 then self.strafe_direction = -self.strafe_direction end
 
-			local dir = -atan2(p.x - s.x, p.z - s.z)
-			self.acceleration.x = self.acceleration.x - sin(dir + self.strafe_direction) * 8
-			self.acceleration.z = self.acceleration.z + cos(dir + self.strafe_direction) * 8
 			--stay away from player so as to shoot them
-			if self.avoid_distance and dist < self.avoid_distance and self.shooter_avoid_enemy then
-				local f = (self.avoid_distance - dist) / self.avoid_distance
-				--self:set_velocity(f * self.walk_velocity) --self.object:add_velocity(vector_new(-sin(dir) * f, 0, cos(dir) * f))
-				self.acceleration.x = self.acceleration.x - sin(dir) * f * 8
-				self.acceleration.z = self.acceleration.z + cos(dir) * f * 8
+			if self.avoid_distance and self.shooter_avoid_enemy then
+				local f = (dist - self.avoid_distance) / self.avoid_distance
+				f = math.max(-1, math.min(1, f))
+				f = f * math.abs(f)
+				self:set_velocity(f * self.walk_velocity, (1 - math.abs(f)) * self.strafe_direction * self.walk_velocity * 1.5)
+			elseif dist > 1 then
+				self:set_velocity(self.walk_velocity)
+			else
+				self:set_velocity(0)
 			end
 		else
 			self:set_velocity(0)

@@ -1,5 +1,4 @@
 local mob_class = mcl_mobs.mob_class
-local mob_class_meta = {__index = mcl_mobs.mob_class}
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 
 local PATHFINDING = "gowp"
@@ -152,19 +151,17 @@ function mob_class:mob_activate(staticdata, def, dtime)
 
 	self.base_selbox = self.base_selbox or self.selectionbox or self.base_colbox
 
-	local textures = self.base_texture
-	local mesh = self.base_mesh
-	local vis_size = self.base_size
-	local colbox = self.base_colbox
-	local selbox = self.base_selbox
+	self.textures = self.gotten and def.gotten_texture or self.base_texture
+	self.mesh = self.gotten and def.gotten_mesh or self.base_mesh
+	self.visual_size = self.base_size
+	self.collisionbox = self.base_colbox
+	self.selectionbox = self.base_selbox
 
-	if self.gotten and def.gotten_texture then textures = def.gotten_texture end
-	if self.gotten and def.gotten_mesh then mesh = def.gotten_mesh end
 	if self.child then
-		vis_size = { x = self.base_size.x * .5, y = self.base_size.y * .5 }
-		if def.child_texture then textures = def.child_texture[1] end
+		self.visual_size = { x = self.base_size.x * .5, y = self.base_size.y * .5 }
+		self.textures = def.child_texture and def.child_texture[1] or self.textures
 
-		colbox = {
+		self.collisionbox = {
 			self.base_colbox[1] * .5,
 			self.base_colbox[2] * .5,
 			self.base_colbox[3] * .5,
@@ -172,7 +169,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 			self.base_colbox[5] * .5,
 			self.base_colbox[6] * .5
 		}
-		selbox = {
+		self.selectionbox = {
 			self.base_selbox[1] * .5,
 			self.base_selbox[2] * .5,
 			self.base_selbox[3] * .5,
@@ -182,8 +179,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		}
 	end
 
-	if self.health == 0 then self.health = math.random(self.hp_min, self.hp_max) end
-	if self.breath == nil then self.breath = self.breath_max end
+	self.health = (self.health and self.health > 0 and self.health) or math.random(self.hp_min, self.hp_max)
+	self.breath = self.breath or self.breath_max
 
 	self.path = {}
 	self.path.way = {} -- path to follow, table of positions
@@ -206,14 +203,9 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.old_y = self.object:get_pos().y
 	self.old_health = self.health
 	self.sounds.distance = self.sounds.distance or 10
-	self.textures = textures
-	self.mesh = mesh
-	self.collisionbox = colbox
-	self.selectionbox = selbox
-	self.visual_size = vis_size
-	self.standing_in = NODE_IGNORE
-	self.standing_on = NODE_IGNORE
-	self.standing_under = NODE_IGNORE
+	self.standing_in = mcl_mobs.NODE_IGNORE
+	self.standing_on = mcl_mobs.NODE_IGNORE
+	self.standing_under = mcl_mobs.NODE_IGNORE
 	self.standing_depth = 0
 	self.state = self.state or "stand"
 	self.jump_sound_cooloff = 0 -- used to prevent jump sound from being played too often in short time
@@ -317,6 +309,7 @@ local function on_step_work(self, dtime, moveresult)
 	local player_in_active_range = self:player_in_active_range()
 	-- The following functions return true when the mob died and we should stop processing
 	if self:check_suspend(player_in_active_range) then return end
+	-- initializes self.acceleration:
 	if self:gravity_and_floating(pos, dtime, moveresult) then return end -- keep early, for gravity!
 	if self:check_dying() then return end
 	if self:step_damage(dtime, pos) then return end
@@ -360,7 +353,7 @@ local function on_step_work(self, dtime, moveresult)
 	self:smooth_acceleration(dtime)
 	local cx, cz = self:collision()
 	self.object:add_velocity(vector.new(cx, 0, cz))
-	self:update_vel_acc(dtime)
+	self:update_vel_acc(dtime) -- applies self.acceleration
 	if mobs_debug then self:update_tag() end
 	if not self.object:get_luaentity() then return false end
 end
@@ -398,8 +391,12 @@ function mob_class:on_step(dtime, moveresult)
 	-- allow crash in development mode
 	if DEVELOPMENT then return on_step_work(self, dtime, moveresult) end
 	-- Removed as bundled Lua (5.1 doesn't support xpcall)
-	--local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
-	local status, retVal = pcall(on_step_work, self, dtime, moveresult)
+	local status, retVal
+	if xpcall then
+		status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime, moveresult)
+	else
+		status, retVal = pcall(on_step_work, self, dtime, moveresult)
+	end
 	if status then return retVal end
 	warn_user_error()
 	local pos = self.object:get_pos()
@@ -488,16 +485,16 @@ minetest.register_chatcommand("clearmobs", {
 					elseif mob_type == "passive" and o.type ~= "monster" and o.type ~= "npc" then
 						--minetest.log("Match - passive")
 						mob_match = true
-					else
-						--minetest.log("No match for type.")
+					--else
+					--	minetest.log("No match for type.")
 					end
 				elseif mob_name and (o.name == mob_name or string.find(o.name, mob_name)) then
 					--minetest.log("Match - mob_name = ".. tostring(o.name))
 					mob_match = true
-				else
-					--minetest.log("No match - o.type = ".. tostring(o.type))
-					--minetest.log("No match - mob_name = ".. tostring(o.name))
-					--minetest.log("No match - mob_type = ".. tostring(mob_name))
+				--else
+				--	minetest.log("No match - o.type = ".. tostring(o.type))
+				--	minetest.log("No match - mob_name = ".. tostring(o.name))
+				--	minetest.log("No match - mob_type = ".. tostring(mob_name))
 				end
 
 				if mob_match then

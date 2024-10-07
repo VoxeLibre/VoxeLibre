@@ -1,6 +1,6 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
-local validate_vector = mcl_util.validate_vector
+--local validate_vector = mcl_util.validate_vector
 
 local MAX_DTIME = 0.25 -- todo: make user configurable?
 local ACCELERATION_MIX = 1.0 -- how much of acceleration to handle in Lua instead of MTE todo: make user configurable
@@ -20,9 +20,10 @@ local atan2 = math.atan2
 local sin = math.sin
 local cos = math.cos
 local sqrt = math.sqrt
-local node_ok = mcl_mobs.node_ok
+--local node_ok = mcl_mobs.node_ok
+local NODE_IGNORE = mcl_mobs.NODE_IGNORE
 
-local PATHFINDING = "gowp"
+--local PATHFINDING = "gowp"
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mob_active_range = tonumber(minetest.settings:get("mcl_mob_active_range")) or 48
 
@@ -53,10 +54,11 @@ end
 -- these may be "nil" (= ignore) and are otherwise already resolved via minetest.registered_nodes
 function mob_class:update_standing(pos, moveresult)
 	local temp_pos = vector.offset(pos, 0, self.collisionbox[2] + 0.5, 0) -- foot level
+	self.collides = moveresult and moveresult.collides
 	self.standing_in = minetest.registered_nodes[minetest.get_node(temp_pos).name] or NODE_IGNORE
 	temp_pos.y = temp_pos.y - 1.5 -- below
 	self.standing_on_node = minetest.get_node(temp_pos) -- to allow access to param2 in, e.g., stalker
-	self.standing_on = standing_on or minetest.registered_nodes[self.standing_on_node.name] or NODE_IGNORE
+	self.standing_on = self.standing_on_node and minetest.registered_nodes[self.standing_on_node.name] or NODE_IGNORE
 	-- sometimes, we may be colliding with a node *not* below us, effectively standing on it instead (e.g., a corner)
 	if not self.standing_on.walkable and moveresult and moveresult.collisions then
 		-- to inspect: minetest.log("action", dump(moveresult):gsub(" *\n\\s*",""))
@@ -103,13 +105,10 @@ end
 
 function mob_class:item_drop(cooked, looting_level)
 	if not mobs_drop_items then return end
+	if self.child and self.type ~= "monster" then return end
 	looting_level = looting_level or 0
 
-	if (self.child and self.type ~= "monster") then return end
-
-	local obj, item, num
 	local pos = self.object:get_pos()
-
 	self.drops = self.drops or {}
 
 	for n = 1, #self.drops do
@@ -139,7 +138,7 @@ function mob_class:item_drop(cooked, looting_level)
 		end
 
 		if num > 0 then
-			item = dropdef.name
+			local item = dropdef.name
 
 			if cooked then
 				local output = minetest.get_craft_result({method = "cooking", width = 1, items = {item}})
@@ -149,8 +148,7 @@ function mob_class:item_drop(cooked, looting_level)
 			end
 
 			for x = 1, num do
-				obj = minetest.add_item(pos, ItemStack(item .. " 1"))
-
+				local obj = minetest.add_item(pos, ItemStack(item .. " 1"))
 				if obj and obj:get_luaentity() then
 					obj:set_velocity(vector.new((random() - 0.5) * 1.5, 6, (random() - 0.5) * 1.5))
 				elseif obj then
@@ -191,8 +189,11 @@ function mob_class:collision()
 end
 
 -- move mob in facing direction
-function mob_class:set_velocity(v)
+-- @param v number: Velocity in direction the mob is facing
+-- @param o number, optional: Orthogonal velocity, for strafing
+function mob_class:set_velocity(v, o)
 	self.target_vel = v
+	self.target_orth = o
 end
 
 -- calculate mob velocity (3d)
@@ -248,7 +249,7 @@ function mob_class:set_yaw(yaw, delay, dtime)
 end
 
 -- name tag easter egg, test engine capabilities for rolling
-local function update_roll()
+--[[local function update_roll(self)
 	local is_Fleckenstein = self.nametag == "Fleckenstein"
 	if not is_Fleckenstein and not self.is_Fleckenstein then return end
 
@@ -269,7 +270,7 @@ local function update_roll()
 		self.object:set_pos(pos)
 	end
 	self.is_Fleckenstein = is_Fleckenstein
-end
+end]]
 
 -- Improved smooth rotation
 -- @param dtime number: timestep length
@@ -292,7 +293,7 @@ function mob_class:smooth_rotation(dtime)
 		yaw = yaw + (random() * 2 - 1) / 72 * dtime
 	end
 	if yaw ~= initial_yaw then self.object:set_yaw(yaw - self.rotate) end
-	--update_roll() -- Fleckenstein easter egg
+	--update_roll(self) -- Fleckenstein easter egg
 end
 
 -- Handling of intentional acceleration by the mob
@@ -304,11 +305,13 @@ function mob_class:smooth_acceleration(dtime)
 	if self.noyaw then -- no rotational smoothing
 		return
 	end
-	local yaw = self.target_yaw or (self.object:get_yaw() or 0) + (self.rotate or 0)
-	local vel = self.target_vel or 0
-	local x, z = -sin(yaw) * vel, cos(yaw) * vel
+	local yaw = self.move_yaw or self.target_yaw or (self.object:get_yaw() or 0) + (self.rotate or 0)
+	local vel = self.target_vel or 0 -- can also stop
+	local x, z = -sin(yaw), cos(yaw)
+	local orth = self.target_orth or 0 -- strafing
+	x, z = x * vel + z * orth, z * vel + x * orth
 	local v = self.object:get_velocity()
-	local w = min(dtime * 5, 1)
+	local w = 10 * min(dtime, 0.1) -- 0.1 time to fully change direction / accelerate
 	v.x, v.z = v.x + w * (x - v.x), v.z + w * (z - v.z)
 	self.object:set_velocity(v)
 end
@@ -867,7 +870,6 @@ function mob_class:limit_vel_acc_for_large_dtime(pos, dtime, moveresult)
 end
 
 --- Update velocity and acceleration at the end of our movement logic
--- 
 function mob_class:update_vel_acc(dtime)
 	local vel = self.object:get_velocity()
 	--vel.x, vel.y, vel.z = vel.x * visc, (vel.y + acc.y * dtime) * visc, vel.z * visc
@@ -906,7 +908,7 @@ function mob_class:check_water_flow(dtime, pos)
 		-- Just to make sure we don't manipulate the speed for no reason
 		if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
 			-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
-			local f = 8 -- but we have acceleration ehre, not velocity. Was: 1.39
+			local f = 10 -- but we have acceleration here, not velocity. Was: 1.39
 			-- Set new item moving speed into the direciton of the liquid
 			self.acceleration = self.acceleration + vector.new(vec.x * f, -0.22, vec.z * f)
 			--self.physical_state = true

@@ -8,7 +8,7 @@ local CHECK_HERD_FREQUENCY = 4
 
 local PATHFINDING = "gowp"
 
-local node_snow = "mcl_core:snow"
+local NODE_SNOW = "mcl_core:snow"
 
 local logging = minetest.settings:get_bool("mcl_logging_mobs_movement", true)
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing", true)
@@ -16,7 +16,6 @@ local mobs_griefing = minetest.settings:get_bool("mobs_griefing", true)
 local random = math.random
 local sin = math.sin
 local cos = math.cos
-local abs = math.abs
 local floor = math.floor
 local PI = math.pi
 local TWOPI = 2 * math.pi
@@ -24,13 +23,10 @@ local HALFPI = 0.5 * math.pi
 local QUARTERPI = 0.25 * math.pi
 
 local vector_new = vector.new
-local vector_zero = vector.zero
-local vector_copy = vector.copy
 local vector_offset = vector.offset
 local vector_distance = vector.distance
 local raycast_line_of_sight = mcl_mobs.check_line_of_sight
 
-local node_ok = mcl_mobs.node_ok
 local mobs_see_through_opaque = mcl_mobs.see_through_opaque
 local line_of_sight = mcl_mobs.line_of_sight
 
@@ -287,23 +283,24 @@ function mob_class:do_jump()
 	local nod = minetest.get_node(vector_offset(pos, dir_x, 0.5, dir_z)).name
 	local ndef = minetest.registered_nodes[nod.name]
 	-- thin blocks that do not need to be jumped
-	if nod.name == node_snow or (ndef and ndef.groups.carpet or 0) > 0 then return false end
-
-	-- this is used to detect if there's a block on top of the block in front of the mob.
-	-- If there is, there is no point in jumping as we won't manage.
-	local node_top = minetest.get_node(vector_offset(pos, dir_x, 1.5, dir_z)).name
-	-- TODO: also check above the mob itself?
-
-	-- we don't attempt to jump if there's a stack of blocks blocking, unless attacking
-	local ntdef = minetest.registered_nodes[node_top]
-	if ntdef and ntdef.walkable == true and not (self.attack and self.state == "attack") then return false end
-
+	if nod.name == NODE_SNOW or (ndef and ndef.groups.carpet or 0) > 0 then return false end
+	-- nothing to jump on?
 	if self.walk_chance ~= 0 and not (ndef and ndef.walkable) and not self._can_jump_cliff then return false end
-
+	-- facing a fence? jumping will not help (FIXME: consider jump height)
 	if (ndef.groups.fence or 0) ~= 0 or (ndef.groups.fence_gate or 0) ~= 0 or (ndef.groups.wall or 0) ~= 0 then
 		self.facing_fence = true
 		return false
 	end
+
+	-- this is used to detect if there's a block on top of the block in front of the mob.
+	-- If there is, there is no point in jumping as we won't manage.
+	local node_top = minetest.get_node(vector_offset(pos, dir_x, 1.5, dir_z)).name
+	-- TODO: also check above the mob itself, and check the full mob height?
+
+	-- we don't attempt to jump if there's a stack of blocks blocking, unless attacking
+	local ntdef = minetest.registered_nodes[node_top]
+	-- TODO: snow, carpet?
+	if ntdef and ntdef.walkable == true --[[and not (self.attack and self.state == "attack")]] then return false end
 
 	v.y = math.min(v.y, 0) + math.sqrt(self.jump_height * 20 + (in_water or self._can_jump_cliff and 10 or 0))
 	v.y = math.min(-self.fall_speed, math.max(v.y, self.fall_speed))
@@ -386,7 +383,6 @@ function mob_class:replace_node(pos)
 			on_replace_return = self.on_replace(self, pos, oldnode, newnode)
 		end
 
-
 		if on_replace_return ~= false then
 			if mobs_griefing then
 				minetest.after(self.replace_delay, function()
@@ -417,40 +413,32 @@ function mob_class:check_runaway_from()
 	if not self.runaway_from and self.state ~= "flop" then return end
 
 	local s = self.object:get_pos()
-	local p, sp, dist
-	local player, obj, min_player
-	local type, name = "", ""
-	local min_dist = self.view_range + 1
+	local min_dist, min_player = self.view_range + 1, nil
 	local objs = minetest.get_objects_inside_radius(s, self.view_range)
 
 	for n = 1, #objs do
+		local name, player = "", nil
 		if objs[n]:is_player() then
-			if mcl_mobs.invis[ objs[n]:get_player_name() ]
-			or self.owner == objs[n]:get_player_name()
-			or (not self:object_in_range(objs[n])) then
-				type = ""
+			if mcl_mobs.invis[objs[n]:get_player_name()] or self.owner == objs[n]:get_player_name() or not self:object_in_range(objs[n]) then
+				name = ""
 			else
 				player = objs[n]
-				type = "player"
 				name = "player"
 			end
 		else
-			obj = objs[n]:get_luaentity()
+			local obj = objs[n]:get_luaentity()
 			if obj then
 				player = obj.object
-				type = obj.type
 				name = obj.name or ""
 			end
 		end
 
 		-- find specific mob to runaway from
-		if name ~= "" and name ~= self.name
-		and specific_runaway(self.runaway_from, name) then
-			p = player:get_pos()
-			sp = s
-			dist = vector_distance(p, s)
+		if name ~= "" and name ~= self.name and specific_runaway(self.runaway_from, name) then
+			local p = player:get_pos()
+			local dist = vector_distance(p, s)
 			-- choose closest player/mpb to runaway from
-			if dist < min_dist and line_of_sight(vector_offset(sp, 0, 1, 0), vector_offset(p, 0, 1, 0), self.see_through_opaque or mobs_see_through_opaque, false) then
+			if dist < min_dist and line_of_sight(vector_offset(s, 0, 1, 0), vector_offset(p, 0, 1, 0), self.see_through_opaque or mobs_see_through_opaque, false) then
 				-- aim higher to make looking up hills more realistic
 				min_dist = dist
 				min_player = player
@@ -459,7 +447,7 @@ function mob_class:check_runaway_from()
 	end
 
 	if min_player then
-		local lp = player:get_pos()
+		local lp = min_player:get_pos()
 		self:turn_in_direction(s.x - lp.x, s.z - lp.z, 4) -- away from player
 		self.state = "runaway"
 		self.runaway_timer = 3
@@ -475,10 +463,9 @@ function mob_class:check_follow()
 	and self.state ~= "attack"
 	and self.order ~= "sit"
 	and self.state ~= "runaway" then
-		local s = self.object:get_pos()
 		local players = minetest.get_connected_players()
 		for n = 1, #players do
-			if (self:object_in_range(players[n])) and not mcl_mobs.invis[ players[n]:get_player_name() ] then
+			if self:object_in_range(players[n]) and not mcl_mobs.invis[players[n]:get_player_name()] then
 				self.following = players[n]
 				break
 			end
@@ -593,7 +580,7 @@ function mob_class:do_states_walk()
 		-- Better way to find shore - copied from upstream
 		local lp = minetest.find_nodes_in_area_under_air(vector_offset(s, -5, -0.5, -5), vector_offset(s, 5, 1, 5), {"group:solid"})
 		if #lp == 0 then
-			local lp = minetest.find_nodes_in_area_under_air(vector_offset(s, -10, -0.5, -10), vector_offset(s, 10, 1, 10), {"group:solid"})
+			lp = minetest.find_nodes_in_area_under_air(vector_offset(s, -10, -0.5, -10), vector_offset(s, 10, 1, 10), {"group:solid"})
 		end
 		-- TODO: use node with smallest change in yaw instead of random?
 		lp = #lp > 0 and lp[random(#lp)]
@@ -618,7 +605,7 @@ function mob_class:do_states_walk()
 	-- facing wall? then turn
 	local facing_wall = false
 	-- todo: use moveresult collision info here?
-	if moveresult and moveresult.collides and self:get_velocity_xyz() < 0.1 then
+	if self.collides and self:get_velocity_xyz() < 0.1 then
 		facing_wall = true
 	else --if not facing_wall then
 		local cbox = self.collisionbox
