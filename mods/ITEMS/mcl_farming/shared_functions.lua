@@ -89,7 +89,7 @@ function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light, low
 	stages = stages or 1
 	local plant_info = plant_lists[identifier]
 	local intervals_counter = get_intervals_counter(pos, plant_info.interval, plant_info.chance)
-	if stages > 0 then intervals_counters = intervals_counter - 1 end
+	if stages > 0 then intervals_counter = intervals_counter - 1 end
 	if low_speed then -- 10% speed approximately
 		if intervals_counter < 1.01 and math.random(0, 9) > 0 then return false end
 		intervals_counter = intervals_counter / 10
@@ -163,34 +163,6 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		connected_stem_basename .. "_t",
 		connected_stem_basename .. "_b" }
 
-	-- Connect the stem at stempos to the first neighboring gourd block.
-	-- No-op if not a stem or no gourd block found
-	local function try_connect_stem(stempos)
-		local stem = minetest.get_node(stempos)
-		if stem.name ~= full_unconnected_stem then return false end
-		-- four directions, but avoid table allocation
-		local neighbor = vector.offset(stempos, 1, 0, 0)
-		if minetest.get_node(neighbor).name == gourd_itemstring then
-			minetest.swap_node(stempos, { name = connected_stem_names[1] })
-			return true
-		end
-		local neighbor = vector.offset(stempos, -1, 0, 0)
-		if minetest.get_node(neighbor).name == gourd_itemstring then
-			minetest.swap_node(stempos, { name = connected_stem_names[2] })
-			return true
-		end
-		local neighbor = vector.offset(stempos, 0, 0, 1)
-		if minetest.get_node(neighbor).name == gourd_itemstring then
-			minetest.swap_node(stempos, { name = connected_stem_names[3] })
-			return true
-		end
-		local neighbor = vector.offset(stempos, 0, 0, -1)
-		if minetest.get_node(neighbor).name == gourd_itemstring then
-			minetest.swap_node(stempos, { name = connected_stem_names[4] })
-			return true
-		end
-	end
-
 	-- Register gourd
 	if not gourd_def.after_destruct then
 		gourd_def.after_destruct = function(blockpos, oldnode)
@@ -200,32 +172,19 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			local stempos = vector.offset(blockpos, -1, 0, 0)
 			if minetest.get_node(stempos).name == connected_stem_names[1] then
 				minetest.swap_node(stempos, { name = full_unconnected_stem })
-				try_connect_stem(stempos)
 			end
 			local stempos = vector.offset(blockpos, 1, 0, 0)
 			if minetest.get_node(stempos).name == connected_stem_names[2] then
 				minetest.swap_node(stempos, { name = full_unconnected_stem })
-				try_connect_stem(stempos)
 			end
 			local stempos = vector.offset(blockpos, 0, 0, -1)
 			if minetest.get_node(stempos).name == connected_stem_names[3] then
 				minetest.swap_node(stempos, { name = full_unconnected_stem })
-				try_connect_stem(stempos)
 			end
 			local stempos = vector.offset(blockpos, 0, 0, 1)
 			if minetest.get_node(stempos).name == connected_stem_names[4] then
 				minetest.swap_node(stempos, { name = full_unconnected_stem })
-				try_connect_stem(stempos)
 			end
-		end
-	end
-	if not gourd_def.on_construct then
-		function gourd_def.on_construct(blockpos)
-			-- Connect all unconnected stems at full size
-			try_connect_stem(vector.offset(blockpos, 1, 0, 0))
-			try_connect_stem(vector.offset(blockpos, -1, 0, 0))
-			try_connect_stem(vector.offset(blockpos, 0, 0, 1))
-			try_connect_stem(vector.offset(blockpos, 0, 0, -1))
 		end
 	end
 	minetest.register_node(gourd_itemstring, gourd_def)
@@ -243,7 +202,6 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	stem_def.drop = stem_def.drop or stem_drop
 	stem_def.groups = stem_def.groups or { dig_immediate = 3, not_in_creative_inventory = 1, plant = 1, attached_node = 1, dig_by_water = 1, destroy_by_lava_flow = 1 }
 	stem_def.sounds = stem_def.sounds or mcl_sounds.node_sound_leaves_defaults()
-	stem_def.on_construct = stem_def.on_construct or try_connect_stem
 	minetest.register_node(stem_itemstring, stem_def)
 
 	-- Register connected stems
@@ -313,16 +271,6 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		end
 	end
 
-	-- Check for a suitable spot to grow
-	local function check_neighbor_soil(blockpos)
-		if minetest.get_node(blockpos).name ~= "air" then return false end
-		local floorpos = vector.offset(blockpos, 0, -1, 0)
-		local floorname = minetest.get_node(floorpos).name
-		if floorname == "mcl_core:dirt" then return true end
-		local floordef = minetest.registered_nodes[floorname]
-		return floordef.groups.grass_block or floordef.groups.dirt or (floordef.groups.soil or 0) >= 2
-	end
-
 	minetest.register_abm({
 		label = "Grow gourd stem to gourd (" .. full_unconnected_stem .. " → " .. gourd_itemstring .. ")",
 		nodenames = { full_unconnected_stem },
@@ -332,37 +280,21 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		action = function(stempos)
 			local light = minetest.get_node_light(stempos)
 			if not light or light <= 10 then return end
-			-- Check the four neighbors and filter out neighbors where gourds can't grow
-			local neighbor, dir, nchance = nil, -1, 1 -- reservoir sampling
-			if nchance == 1 or math.random(1, nchance) == 1 then
-				local blockpos = vector.offset(stempos, 1, 0, 0)
-				if check_neighbor_soil(blockpos) then
-					neighbor, dir, nchance = blockpos, 1, nchance + 1
-				end
-			end
-			if nchance == 1 or math.random(1, nchance) == 1 then
-				local blockpos = vector.offset(stempos, -1, 0, 0)
-				if check_neighbor_soil(blockpos) then
-					neighbor, dir, nchance = blockpos, 2, nchance + 1
-				end
-			end
-			if nchance == 1 or math.random(1, nchance) == 1 then
-				local blockpos = vector.offset(stempos, 0, 0, 1)
-				if check_neighbor_soil(blockpos) then
-					neighbor, dir, nchance = blockpos, 3, nchance + 1
-				end
-			end
-			if nchance == 1 or math.random(1, nchance) == 1 then
-				local blockpos = vector.offset(stempos, 0, 0, -1)
-				if check_neighbor_soil(blockpos) then
-					neighbor, dir, nchance = blockpos, 4, nchance + 1
-				end
-			end
+			-- Pick one neighbor and check if it can be used to grow
+			local dir = math.random(1, 4) -- pick direction at random
+			local neighbor = (dir == 1 and vector.offset(stempos, 1, 0, 0))
+				or (dir == 2 and vector.offset(stempos, -1, 0, 0))
+				or (dir == 3 and vector.offset(stempos, 0, 0, 1))
+				or  vector.offset(stempos, 0, 0, -1)
+			if minetest.get_node(neighbor).name ~= "air" then return end -- occupied
+			-- check for suitable floor: grass, dirt, or soil
+			local floorpos = vector.offset(neighbor, 0, -1, 0)
+			local floorname = minetest.get_node(floorpos).name
+			local floordef = minetest.registered_nodes[floorname]
+			if not floordef then return end
+			if (floordef.groups.grass_block or 0) == 0 and (floordef.groups.dirt or 0) == 0 and (floordef.groups.soil or 0) < 2 then return end -- not suitable for growing
 
-			-- Gourd needs at least 1 free neighbor to grow
-			if not neighbor then return end
 			minetest.swap_node(stempos, { name = connected_stem_names[dir] })
-			-- Place the gourd
 			if gourd_def.paramtype2 == "facedir" then
 				local p2 = (dir == 1 and 3) or (dir == 2 and 1) or (dir == 3 and 2) or 0
 				minetest.add_node(neighbor, { name = gourd_itemstring, param2 = p2 })
@@ -371,8 +303,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			end
 
 			-- Reset farmland, etc. to dirt when the gourd grows on top
-			local floorpos = vector.offset(neighbor, 0, -1, 0)
-			if minetest.get_item_group(minetest.get_node(floorpos).name, "dirtifies_below_solid") == 1 then
+			if (floordef.groups.dirtifies_below_solid or 0) > 0 then
 				minetest.set_node(floorpos, { name = "mcl_core:dirt" })
 			end
 		end,
