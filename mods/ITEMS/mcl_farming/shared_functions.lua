@@ -5,6 +5,8 @@
 --
 local math = math
 local vector = vector
+local random = math.random
+local floor = math.floor
 
 local plant_lists = {}
 mcl_farming.plant_lists = plant_lists -- export
@@ -123,12 +125,13 @@ function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light_wate
 	-- number of missed interval ticks, for catch-up in block loading
 	local plant_info = plant_lists[identifier]
 	if plant_info then
-		stages = stages + math.floor(get_intervals_counter(pos, plant_info.interval, plant_info.chance))
+		stages = stages + floor(get_intervals_counter(pos, plant_info.interval, plant_info.chance))
 	end
 	if not ignore_light_water then
-		local odds = math.floor(25 / (get_moisture_level(pos) * get_moisture_penalty(pos))) + 1
+		local odds = floor(25 / (get_moisture_level(pos) * get_moisture_penalty(pos))) + 1
 		for i = 1,stages do
-			if math.random(1, odds) ~= 1 then stages = stages - 1 end
+			-- we double the odds, and rather call the ABM less often
+			if random() * odds >= 2 then stages = stages - 1 end
 		end
 	end
 
@@ -307,7 +310,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			local light = minetest.get_node_light(stempos)
 			if not light or light < 9 then return end
 			-- Pick one neighbor and check if it can be used to grow
-			local dir = math.random(1, 4) -- pick direction at random
+			local dir = random(1, 4) -- pick direction at random
 			local neighbor = (dir == 1 and vector.offset(stempos, 1, 0, 0))
 				or (dir == 2 and vector.offset(stempos, -1, 0, 0))
 				or (dir == 3 and vector.offset(stempos, 0, 0, 1))
@@ -322,7 +325,8 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 
 			-- check moisture level
 			local moisture = get_moisture_level(stempos) * get_moisture_penalty(stempos)
-			if math.random(1, math.floor(25 / moisture) + 1) ~= 1 then return end
+			-- we double the odds, and rather call the ABM less often
+			if random() * (math.floor(25 / moisture) + 1) >= 2 then return end
 
 			minetest.swap_node(stempos, { name = connected_stem_names[dir] })
 			if gourd_def.paramtype2 == "facedir" then

@@ -172,7 +172,7 @@ minetest.register_craft({
 })
 
 -- beetroots grow 1/3rd of the default speed
-mcl_farming:add_plant("plant_beetroot", "mcl_farming:beetroot", {"mcl_farming:beetroot_0", "mcl_farming:beetroot_1", "mcl_farming:beetroot_2"}, 13.512, 15)
+mcl_farming:add_plant("plant_beetroot", "mcl_farming:beetroot", {"mcl_farming:beetroot_0", "mcl_farming:beetroot_1", "mcl_farming:beetroot_2"}, 16.2012, 25)
 
 if minetest.get_modpath("doc") then
 	for i = 1, 2 do
