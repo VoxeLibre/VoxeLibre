@@ -45,6 +45,9 @@ mcl_disabled_structures (Disabled structures) string
 # Comma separated list of disabled event names
 mcl_disabled_events (Disabled events) string
 
+# Control the relative plant growth speed (default: 1)
+vl_plant_growth (Plant growth factor) float 1.0 0 100
+
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.

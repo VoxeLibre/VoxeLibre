@@ -8,7 +8,10 @@ local vector = vector
 
 local plant_lists = {}
 mcl_farming.plant_lists = plant_lists -- export
-local plant_nodename_to_id_list = {}
+local plant_nodename_to_id_list = {} -- map nodes to plants
+local plant_step_from_name = {} -- map nodes to growth steps
+
+local growth_factor = tonumber(minetest.settings:get("vl_plant_growth")) or 1.0
 
 local time_speed = tonumber(minetest.settings:get("time_speed")) or 72
 local time_multiplier = time_speed > 0 and (86400 / time_speed) or 0
@@ -28,26 +31,6 @@ local function get_intervals_counter(pos, interval, chance)
 	end
 	meta:set_float("last_gametime", current_game_time)
 	return (current_game_time - last_game_time) / approx_interval
-end
-
-local function get_avg_light_level(pos)
-	local meta = minetest.get_meta(pos)
-	-- EWMA would use a single variable:
-	-- local avg = meta:get_float("avg_light")
-	-- avg = avg + (node_light - avg) * 0.985
-	-- meta.set_float("avg_light", avg)
-	local summary = meta:get_int("avg_light_summary")
-	local counter = meta:get_int("avg_light_count")
-	if counter > 99 then
-		summary, counter = math.ceil(summary * 0.5), 50
-	end
-	local node_light = minetest.get_node_light(pos)
-	if node_light ~= nil then
-		summary, counter = summary + node_light, counter + 1
-		meta:set_int("avg_light_summary", summary)
-		meta:set_int("avg_light_count", counter)
-	end
-	return math.ceil(summary / counter)
 end
 
 local function get_moisture_level(pos)
@@ -100,6 +83,7 @@ local function get_moisture_penalty(pos)
 end
 
 function mcl_farming:add_plant(identifier, full_grown, names, interval, chance)
+	interval = growth_factor > 0 and (interval / growth_factor) or 0
 	local plant_info = {}
 	plant_info.full_grown = full_grown
 	plant_info.names = names
@@ -108,11 +92,11 @@ function mcl_farming:add_plant(identifier, full_grown, names, interval, chance)
 	for _, nodename in pairs(names) do
 		plant_nodename_to_id_list[nodename] = identifier
 	end
-	plant_info.step_from_name = {}
 	for i, name in ipairs(names) do
-		plant_info.step_from_name[name] = i
+		plant_step_from_name[name] = i
 	end
 	plant_lists[identifier] = plant_info
+	if interval == 0 then return end -- growth disabled
 	minetest.register_abm({
 		label = string.format("Farming plant growth (%s)", identifier),
 		nodenames = names,
@@ -129,45 +113,32 @@ end
 -- pos: Position
 -- node: Node table
 -- stages: Number of stages to advance (optional, defaults to 1)
--- ignore_light: if true, ignore light requirements for growing
--- low_speed: grow more slowly (not wet), default false -- OBSOLETE
+-- ignore_light_water: if true, ignore light and water requirements for growing
 -- Returns true if plant has been grown by 1 or more stages.
 -- Returns false if nothing changed.
-function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light, low_speed)
-	stages = stages or 1
+function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light_water)
+	stages = stages or 1 -- 0 when run from block loading
+	-- check light
+	if not ignore_light_water and (minetest.get_node_light(pos) or 0) < 0 then return false end
+	-- number of missed interval ticks, for catch-up in block loading
 	local plant_info = plant_lists[identifier]
-	local intervals_counter = get_intervals_counter(pos, plant_info.interval, plant_info.chance)
-	if stages > 0 then intervals_counter = intervals_counter - 1 end
-	if low_speed then -- 10% speed approximately
-		if intervals_counter < 1.01 and math.random(0, 9) > 0 then return false end
-		intervals_counter = intervals_counter / 10
+	if plant_info then
+		stages = stages + math.floor(get_intervals_counter(pos, plant_info.interval, plant_info.chance))
 	end
-	if not ignore_light and intervals_counter < 1.5 then
-		local light = minetest.get_node_light(pos)
-		if not light or light < 9 then return false end
-	end
-
-	if intervals_counter >= 1.5 then
-		local average_light_level = get_avg_light_level(pos)
-		if average_light_level < 0.1 then return false end
-		if average_light_level < 9 then
-			intervals_counter = intervals_counter * average_light_level / 10
+	if not ignore_light_water then
+		local odds = math.floor(25 / (get_moisture_level(pos) * get_moisture_penalty(pos))) + 1
+		for i = 1,stages do
+			if math.random(1, odds) ~= 1 then stages = stages - 1 end
 		end
 	end
 
-	if low_speed == nil then
-		local moisture = get_moisture_level(pos) * get_moisture_penalty(pos)
-		if math.random(1, math.floor(25 / moisture) + 1) ~= 1 then return end
-	end
-
-	local step = plant_info.step_from_name[node.name]
-	if step == nil then return false end
-	stages = stages + math.floor(intervals_counter)
 	if stages == 0 then return false end
-	local new_node = { name = plant_info.names[step + stages] or plant_info.full_grown }
-	new_node.param = node.param
-	new_node.param2 = node.param2
-	minetest.set_node(pos, new_node)
+	local step = plant_step_from_name[node.name]
+	if step == nil then return false end
+	minetest.set_node(pos, {
+		name = plant_info.names[step + stages] or plant_info.full_grown,
+		param = node.param, param2 = node.param2,
+	})
 	return true
 end
 
@@ -210,6 +181,7 @@ end
 
 
 function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stem_itemstring, stem_def, stem_drop, gourd_itemstring, gourd_def, grow_interval, grow_chance, connected_stem_texture)
+	grow_interval = growth_factor > 0 and (grow_interval / growth_factor) or 0
 	local connected_stem_names = {
 		connected_stem_basename .. "_r",
 		connected_stem_basename .. "_l",
@@ -324,6 +296,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		end
 	end
 
+	if grow_interval == 0 then return end
 	minetest.register_abm({
 		label = "Grow gourd stem to gourd (" .. full_unconnected_stem .. " → " .. gourd_itemstring .. ")",
 		nodenames = { full_unconnected_stem },
@@ -400,6 +373,19 @@ minetest.register_lbm({
 		local identifier = plant_nodename_to_id_list[node.name]
 		if not identifier then return end
 		mcl_farming:grow_plant(identifier, pos, node, 0, false)
+	end,
+})
+
+-- The average light levels were unreliable
+minetest.register_lbm({
+	label = "Drop legacy average lighting data",
+	name = "mcl_farming:drop_average_light_meta",
+	nodenames = { "group:plant" },
+	run_at_every_load = false, -- only convert once
+	action = function(pos, node, dtime_s)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("avg_light_summary", "") -- drop
+		meta:set_string("avg_light_count", "") -- drop
 	end,
 })
 
