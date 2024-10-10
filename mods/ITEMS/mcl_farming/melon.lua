@@ -123,10 +123,10 @@ local stem_def = {
 }
 
 -- Register stem growth
-mcl_farming:add_plant("plant_melon_stem", "mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2", "mcl_farming:melontige_3", "mcl_farming:melontige_4", "mcl_farming:melontige_5", "mcl_farming:melontige_6", "mcl_farming:melontige_7"}, 30, 5)
+mcl_farming:add_plant("plant_melon_stem", "mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2", "mcl_farming:melontige_3", "mcl_farming:melontige_4", "mcl_farming:melontige_5", "mcl_farming:melontige_6", "mcl_farming:melontige_7"}, 13.514, 5)
 
 -- Register actual melon, connected stems and stem-to-melon growth
-mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", "mcl_farming:melontige_unconnect", stem_def, stem_drop, "mcl_farming:melon", melon_base_def, 25, 15, "mcl_farming_melon_stem_connected.png^[colorize:#FFA800:127")
+mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", "mcl_farming:melontige_unconnect", stem_def, stem_drop, "mcl_farming:melon", melon_base_def, 13.515, 5, "mcl_farming_melon_stem_connected.png^[colorize:#FFA800:127")
 
 -- Items and crafting
 minetest.register_craftitem("mcl_farming:melon_item", {

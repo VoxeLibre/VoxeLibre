@@ -118,7 +118,7 @@ minetest.register_craft({
 	}
 })
 
-mcl_farming:add_plant("plant_carrot", "mcl_farming:carrot", {"mcl_farming:carrot_1", "mcl_farming:carrot_2", "mcl_farming:carrot_3", "mcl_farming:carrot_4", "mcl_farming:carrot_5", "mcl_farming:carrot_6", "mcl_farming:carrot_7"}, 25, 20)
+mcl_farming:add_plant("plant_carrot", "mcl_farming:carrot", {"mcl_farming:carrot_1", "mcl_farming:carrot_2", "mcl_farming:carrot_3", "mcl_farming:carrot_4", "mcl_farming:carrot_5", "mcl_farming:carrot_6", "mcl_farming:carrot_7"}, 13.513, 5)
 
 if minetest.get_modpath("doc") then
 	for i=2,7 do
