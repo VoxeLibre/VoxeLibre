@@ -303,21 +303,6 @@ controls.register_on_press(function(player, key, time)
 		if wielditem:get_name()=="mcl_bows:crossbow_loaded" or wielditem:get_name()=="mcl_bows:crossbow_loaded_enchanted" then
 		local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
 		local speed, damage
-		local p_load = bow_load[player:get_player_name()]
-		local charge
-		-- Type sanity check
-		if type(p_load) == "number" then
-			charge = minetest.get_us_time() - p_load
-		else
-			-- In case something goes wrong ...
-			-- Just assume minimum charge.
-			charge = 0
-			minetest.log("warning", "[mcl_bows] Player "..player:get_player_name().." fires arrow with non-numeric bow_load!")
-		end
-		charge = math.max(math.min(charge, BOW_CHARGE_TIME_FULL), 0)
-
-		local charge_ratio = charge / BOW_CHARGE_TIME_FULL
-		charge_ratio = math.max(math.min(charge_ratio, 1), 0)
 
 		-- Calculate damage and speed
 		-- Fully charged
