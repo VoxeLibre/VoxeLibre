@@ -2,6 +2,7 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local NIGHT_VISION_RATIO = 0.45
+local DEBUG = false
 
 -- Settings
 local minimum_update_interval = { 250e3 }
@@ -190,8 +191,8 @@ end
 
 function skycolor_utils.convert_to_rgb(minval, maxval, current_val, colors)
 	-- Clamp current_val to valid range
-	current_val = math.min(minval, current_val)
-	current_val = math.max(maxval, current_val)
+	current_val = math.max(minval, current_val)
+	current_val = math.min(maxval, current_val)
 
 	-- Rescale current_val from a number between minval and maxval to a number between 1 and #colors
 	local scaled_value = (current_val - minval) / (maxval - minval) * (#colors - 1) + 1.0
@@ -199,7 +200,7 @@ function skycolor_utils.convert_to_rgb(minval, maxval, current_val, colors)
 	-- Get the first color's values
 	local index1 = math.floor(scaled_value)
 	local color1 = colors[index1]
-	local frac1 = scaled_value - index1
+	local frac1 = 1.0 - (scaled_value - index1)
 
 	-- Get the second color's values
 	local index2 = math.min(index1 + 1, #colors) -- clamp to maximum color index (will occur if index1 == #colors)
@@ -207,11 +208,32 @@ function skycolor_utils.convert_to_rgb(minval, maxval, current_val, colors)
 	local color2 = colors[index2]
 
 	-- Interpolate between color1 and color2
-	return {
+	local res = {
 		r = math.floor(frac1 * color1.r + frac2 * color2.r),
 		g = math.floor(frac1 * color1.g + frac2 * color2.g),
 		b = math.floor(frac1 * color1.b + frac2 * color2.b),
 	}
+
+	if DEBUG then
+		minetest.log(dump({
+			minval = minval,
+			maxval = maxval,
+			current_val = current_val,
+			colors = colors,
+			res = res,
+			scaled_value = scaled_value,
+
+			frac1 = frac1,
+			index1 = index1,
+			color1 = color1,
+
+			frac2 = frac2,
+			index2 = index2,
+			color2 = color2,
+		}))
+	end
+
+	return res
 end
 
 -- Simple getter. Either returns user given players list or get all connected players if none provided

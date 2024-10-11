@@ -157,6 +157,7 @@ function mcl_weather.rain.clear()
 		mcl_weather.rain.remove_sound(player)
 		mcl_weather.rain.remove_player(player)
 		mcl_weather.remove_spawners_player(player)
+		player:set_clouds({color="#FFF0EF"})
 	end
 end
 

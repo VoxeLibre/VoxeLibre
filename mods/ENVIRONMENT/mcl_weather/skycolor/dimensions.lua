@@ -40,18 +40,21 @@ function dimension_handlers.overworld(player, sky_data)
 	end
 
 	-- Use overworld defaults
-	local day_color = mcl_weather.skycolor.get_sky_layer_color(0.15)
+	local day_color = mcl_weather.skycolor.get_sky_layer_color(0.5)
 	local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.27)
 	local night_color = mcl_weather.skycolor.get_sky_layer_color(0.1)
 	sky_data.sky = {
 		type = "regular",
 		sky_color = {
-			day_sky = day_color,
-			day_horizon = day_color,
-			dawn_sky = dawn_color,
-			dawn_horizon = dawn_color,
-			night_sky = night_color,
-			night_horizon = night_color,
+			day_sky = day_color or "#7BA4FF",
+			day_horizon = day_color or "#C0D8FF",
+			dawn_sky = dawn_color or "7BA4FF",
+			dawn_horizon = dawn_color or "#C0D8FF",
+			night_sky = night_color or "000000",
+			night_horizon = night_color or "4A6790",
+			fog_sun_tint = "#ff5f33",
+			fog_moon_tint = nil,
+			fog_tint_type = "custom",
 		},
 		clouds = true,
 	}
@@ -75,18 +78,15 @@ function dimension_handlers.overworld(player, sky_data)
 		local day_color = mcl_weather.skycolor.get_sky_layer_color(0.5)
 		local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.75)
 		local night_color = mcl_weather.skycolor.get_sky_layer_color(0)
-		sky_data.sky = {
-			type = "regular",
-			sky_color = {
-				day_sky = day_color,
-				day_horizon = day_color,
-				dawn_sky = dawn_color,
-				dawn_horizon = dawn_color,
-				night_sky = night_color,
-				night_horizon = night_color,
-			},
-			clouds = true,
-		}
+		table.update(sky_data.sky.sky_color,{
+			day_sky = day_color or "#7BA4FF",
+			day_horizon = day_color or "#C0D8FF",
+			dawn_sky = dawn_color or "7BA4FF",
+			dawn_horizon = dawn_color or "#C0D8FF",
+			night_sky = night_color or "000000",
+			night_horizon = night_color or "4A6790",
+			fog_tint_type = "default",
+		})
 		sky_data.sun = {visible = false, sunrise_visible = false}
 		sky_data.moon = {visible = false}
 		sky_data.stars = {visible = false}
@@ -164,7 +164,8 @@ function dimension_handlers.nether(player, sky_data)
 end
 
 function dimension_handlers.void(player, sky_data)
-	sky_data.sky = { type = "plain",
+	sky_data.sky = {
+		type = "plain",
 		base_color = "#000000",
 		clouds = false,
 	}
