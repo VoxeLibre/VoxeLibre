@@ -113,7 +113,11 @@ function mcl_entity_invs.show_inv_form(ent,player,text)
 
 	local playername = player:get_player_name()
 
-	minetest.show_formspec(playername, ent._inv_id, load_default_formspec (ent, text))
+	-- Workaround: wait at least 50ms to ensure that the detached inventory exists before
+	-- the formspec attempts to use it. (See https://git.minetest.land/VoxeLibre/VoxeLibre/issues/4670#issuecomment-84875)
+	minetest.after(0.05, function()
+		minetest.show_formspec(playername, ent._inv_id, load_default_formspec (ent, text))
+	end)
 end
 
 local function drop_inv(ent)
