@@ -127,13 +127,25 @@ local BASE_DEF = {
 	_doc_items_usagehelp = railuse,
 	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
 	on_place = function(itemstack, placer, pointed_thing)
-		local node_name = minetest.get_node(pointed_thing.under).name
+		local node = minetest.get_node(pointed_thing.under)
+		local node_name = node.name
+
 		-- Don't allow placing rail above rail
-		if minetest.get_item_group(node_name,"rail") == 0 then
-			return minetest.item_place_node(itemstack, placer, pointed_thing)
-		else
+		if minetest.get_item_group(node_name,"rail") ~= 0 then
 			return itemstack
 		end
+
+		-- Handle right-clicking nodes with right-click handlers
+		if placer and not placer:get_player_control().sneak then
+			local node_def = minetest.registered_nodes[node_name] or {}
+			local on_rightclick = node_def and node_def.on_rightclick
+			if on_rightclick then
+				return on_rightclick(pointed_thing.under, node, placer, itemstack, pointed_thing) or itemstack
+			end
+		end
+
+		-- Place the rail
+		return minetest.item_place_node(itemstack, placer, pointed_thing)
 	end,
 	after_place_node = function(pos, placer, itemstack, pointed_thing)
 		update_rail_connections(pos)
