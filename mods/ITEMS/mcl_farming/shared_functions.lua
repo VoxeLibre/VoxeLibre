@@ -45,7 +45,7 @@ local function get_moisture_level(pos)
 			local ndef = minetest.registered_nodes[minetest.get_node(n).name]
 			local soil = ndef and ndef.groups.soil
 			if soil and soil >= 2 then
-				local m = (soil > 2 or soil == 2 and (minetest.get_meta(n):get_int("wet") or 0) > 0) and 3 or 1
+				local m = (soil > 2 or (soil == 2 and minetest.get_meta(n):get_int("wet") > 0)) and 3 or 1
 				-- corners have less weight
 				if x ~= 0 and z ~= 0 then m = m * 0.25 end
 				totalm = totalm + m
@@ -63,7 +63,7 @@ end
 local function get_same_crop_penalty(pos)
 	local name = minetest.get_node(pos).name
 	local plant = plant_nodename_to_id[name]
-	if not plant then return "unregistered plant" end
+	if not plant then return end
 	local n = vector.copy(pos)
 	-- check adjacent positions, avoid vector allocations and reduce node accesses
 	n.x = pos.x - 1
@@ -135,7 +135,7 @@ function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light_wate
 	if not ignore_light_water then
 		local odds = floor(25 / (get_moisture_level(pos) * get_same_crop_penalty(pos))) + 1
 		for i = 1,stages do
-			-- compared to MC, our ABM runs half as often, hence we use double the chance
+			-- compared to info from the MC wiki, our ABM runs half as often, hence we use double the chance
 			if random() * odds >= 2 then stages = stages - 1 end
 		end
 	end
@@ -145,7 +145,8 @@ function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light_wate
 	if step == nil then return false end
 	minetest.set_node(pos, {
 		name = plant_info.names[step + stages] or plant_info.full_grown,
-		param = node.param, param2 = node.param2,
+		param = node.param,
+		param2 = node.param2,
 	})
 	return true
 end

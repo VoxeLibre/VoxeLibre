@@ -91,10 +91,8 @@ minetest.register_abm({
 		end
 		-- Revert to dirt if wetness is 0, and no plant above
 		local nn = minetest.get_node_or_nil(vector.offset(pos, 0, 1, 0))
-		local nn_def = nn and minetest.registered_nodes[nn.name] or nil
-		if nn_def and (nn_def.groups.plant or 0) > 0 then
-			return
-		end
+		local nn_def = nn and minetest.registered_nodes[nn.name]
+		if nn_def and (nn_def.groups.plant or 0) > 0 then return end
 		node.name = "mcl_core:dirt"
 		minetest.set_node(pos, node) -- also removes "wet" metadata
 	end,
