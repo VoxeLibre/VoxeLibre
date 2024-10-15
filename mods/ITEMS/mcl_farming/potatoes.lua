@@ -135,7 +135,7 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
-mcl_farming:add_plant("plant_potato", "mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2", "mcl_farming:potato_3", "mcl_farming:potato_4", "mcl_farming:potato_5", "mcl_farming:potato_6", "mcl_farming:potato_7"}, 5.4016, 25)
+mcl_farming:add_plant("plant_potato", "mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2", "mcl_farming:potato_3", "mcl_farming:potato_4", "mcl_farming:potato_5", "mcl_farming:potato_6", "mcl_farming:potato_7"}, 5.8016, 35)
 
 minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
 
