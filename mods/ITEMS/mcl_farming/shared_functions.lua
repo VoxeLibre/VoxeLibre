@@ -15,14 +15,13 @@ local plant_step_from_name = {} -- map nodes to growth steps
 
 local growth_factor = tonumber(minetest.settings:get("vl_plant_growth")) or 1.0
 
+-- note: does not support /set time_speed!
 local time_speed = tonumber(minetest.settings:get("time_speed")) or 72
 local time_multiplier = time_speed > 0 and (86400 / time_speed) or 0
 
 local function get_intervals_counter(pos, interval, chance)
-	if time_multiplier == 0 then return 0 end
-	-- "wall clock time", so plants continue to grow while sleeping
+	-- in-game days, so plants continue to grow while sleeping, and we try to catch up
 	local current_game_time = (minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier
-
 	local meta = minetest.get_meta(pos)
 	local last_game_time = meta:get_float("last_gametime")
 	meta:set_float("last_gametime", current_game_time)
@@ -33,8 +32,8 @@ end
 -- wetness of the surroundings
 -- dry farmland = 1 point
 -- wet farmland = 3 points
--- diagonal neighbors only 25%
--- center point gives + 1 point
+-- center point gives + 1 point, so 2 resp. 4
+-- neighbors only 25%
 local function get_moisture_level(pos)
 	local n = vector.offset(pos, 0, -1, 0)
 	local totalm = 1
@@ -47,7 +46,7 @@ local function get_moisture_level(pos)
 			if soil and soil >= 2 then
 				local m = (soil > 2 or (soil == 2 and minetest.get_meta(n):get_int("wet") > 0)) and 3 or 1
 				-- corners have less weight
-				if x ~= 0 and z ~= 0 then m = m * 0.25 end
+				if x ~= 0 or z ~= 0 then m = m * 0.25 end
 				totalm = totalm + m
 			end
 		end
@@ -63,7 +62,7 @@ end
 local function get_same_crop_penalty(pos)
 	local name = minetest.get_node(pos).name
 	local plant = plant_nodename_to_id[name]
-	if not plant then return end
+	if not plant then return 1 end
 	local n = vector.copy(pos)
 	-- check adjacent positions, avoid vector allocations and reduce node accesses
 	n.x = pos.x - 1
@@ -97,6 +96,7 @@ function mcl_farming:add_plant(identifier, full_grown, names, interval, chance)
 	plant_info.names = names
 	plant_info.interval = interval
 	plant_info.chance = chance
+	plant_nodename_to_id[full_grown] = identifier
 	for _, nodename in pairs(names) do
 		plant_nodename_to_id[nodename] = identifier
 	end
@@ -131,12 +131,12 @@ function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light_wate
 	-- number of missed interval ticks, for catch-up in block loading
 	local plant_info = plant_lists[identifier]
 	if not plant_info then return end
-	stages = stages + floor(get_intervals_counter(pos, plant_info.interval, plant_info.chance))
+	stages = floor(stages + get_intervals_counter(pos, plant_info.interval, plant_info.chance) - 0.45)
 	if not ignore_light_water then
 		local odds = floor(25 / (get_moisture_level(pos) * get_same_crop_penalty(pos))) + 1
 		for i = 1,stages do
-			-- compared to info from the MC wiki, our ABM runs half as often, hence we use double the chance
-			if random() * odds >= 2 then stages = stages - 1 end
+			-- compared to info from the MC wiki, our ABM runs a third as often, hence we use triple the chance
+			if random() * odds >= 3 then stages = stages - 1 end
 		end
 	end
 
@@ -237,6 +237,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	stem_def.groups = stem_def.groups or { dig_immediate = 3, not_in_creative_inventory = 1, plant = 1, attached_node = 1, dig_by_water = 1, destroy_by_lava_flow = 1 }
 	stem_def.sounds = stem_def.sounds or mcl_sounds.node_sound_leaves_defaults()
 	minetest.register_node(stem_itemstring, stem_def)
+	plant_nodename_to_id[stem_itemstring] = stem_itemstring
 
 	-- Register connected stems
 
@@ -299,6 +300,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			sounds = mcl_sounds.node_sound_leaves_defaults(),
 			_mcl_blast_resistance = 0,
 		})
+		plant_nodename_to_id[connected_stem_names[i]] = stem_itemstring
 
 		if minetest.get_modpath("doc") then
 			doc.add_entry_alias("nodes", full_unconnected_stem, "nodes", connected_stem_names[i])
@@ -331,8 +333,8 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 
 			-- check moisture level
 			local odds = floor(25 / (get_moisture_level(stempos) * get_same_crop_penalty(stempos))) + 1
-			-- we double the odds, and rather call the ABM less often
-			if random() * odds >= 2 then return end
+			-- we triple the odds, and rather call the ABM less often
+			if random() * odds >= 3 then return end
 
 			minetest.swap_node(stempos, { name = connected_stem_names[dir] })
 			if gourd_def.paramtype2 == "facedir" then
