@@ -15,20 +15,6 @@ local plant_step_from_name = {} -- map nodes to growth steps
 
 local growth_factor = tonumber(minetest.settings:get("vl_plant_growth")) or 1.0
 
--- note: does not support /set time_speed!
-local time_speed = tonumber(minetest.settings:get("time_speed")) or 72
-local time_multiplier = time_speed > 0 and (86400 / time_speed) or 0
-
-local function get_intervals_counter(pos, interval, chance)
-	-- in-game days, so plants continue to grow while sleeping, and we try to catch up
-	local current_game_time = (minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier
-	local meta = minetest.get_meta(pos)
-	local last_game_time = meta:get_float("last_gametime")
-	meta:set_float("last_gametime", current_game_time)
-	if last_game_time < 1 then return 0 end
-	return (current_game_time - last_game_time) / (interval * chance)
-end
-
 -- wetness of the surroundings
 -- dry farmland = 1 point
 -- wet farmland = 3 points
@@ -125,14 +111,11 @@ end
 -- Returns true if plant has been grown by 1 or more stages.
 -- Returns false if nothing changed.
 function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light_water)
-	stages = stages or 1 -- 0 when run from block loading
-	-- check light
-	if not ignore_light_water and (minetest.get_node_light(pos, 0.5) or 0) < 0 then return false end
 	-- number of missed interval ticks, for catch-up in block loading
 	local plant_info = plant_lists[identifier]
 	if not plant_info then return end
-	stages = floor(stages + get_intervals_counter(pos, plant_info.interval, plant_info.chance) - 0.45)
 	if not ignore_light_water then
+		if (minetest.get_node_light(pos, 0.5) or 0) < 0 then return false end -- day light
 		local odds = floor(25 / (get_moisture_level(pos) * get_same_crop_penalty(pos))) + 1
 		for i = 1,stages do
 			-- compared to info from the MC wiki, our ABM runs a third as often, hence we use triple the chance
@@ -384,21 +367,19 @@ minetest.register_lbm({
 	action = function(pos, node, dtime_s)
 		local identifier = plant_nodename_to_id[node.name]
 		if not identifier then return end
-		mcl_farming:grow_plant(identifier, pos, node, 0, false)
-	end,
-})
 
--- The average light levels were unreliable
--- LBM added in fall 2024
-minetest.register_lbm({
-	label = "Drop legacy average lighting data",
-	name = "mcl_farming:drop_average_light_meta",
-	nodenames = { "group:plant" },
-	run_at_every_load = false, -- only convert once
-	action = function(pos, node, dtime_s)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("avg_light_summary", "") -- drop
-		meta:set_string("avg_light_count", "") -- drop
+		local plant_info = plant_lists[identifier]
+		if not plant_info then return end
+		local rolls = floor(dtime_s / plant_info.interval)
+		if rolls <= 0 then return end
+		-- simulate how often the block will be ticked
+		local stages = 0
+		for i = 1,rolls do
+			if random(1, plant_info.chance) == 1 then stages = stages + 1 end
+		end
+		if stages > 0 then
+			mcl_farming:grow_plant(identifier, pos, node, stages, false)
+		end
 	end,
 })
 
