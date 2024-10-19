@@ -71,13 +71,13 @@ vl_structures.register_structure("shipwreck",{
 	place_on = {"group:sand","mcl_core:gravel"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 4,
-	chunk_probability = 10, -- todo: 15?
+	chunk_probability = 15,
 	biomes = ocean_biomes,
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = water_level-4,
-	y_offset = function(pr) return pr:next(-4,-2) end,
+	y_offset = function(pr) return pr:next(-3,-1) end,
 	flags = "place_center_x, place_center_z, force_placement",
-	prepare = { tolerance = -1, clear = false, foundation = -2, mode = "water" },
+	prepare = { tolerance = -1, clear = false, foundation = false, mode = "water" },
 	filenames = {
 		--schematics by chmodsayshello
 		modpath.."/schematics/mcl_structures_shipwreck_full_damaged.mts",
