@@ -1,6 +1,7 @@
 local min_jobs = tonumber(minetest.settings:get("vl_villages_min_jobs")) or 2
 local max_jobs = tonumber(minetest.settings:get("vl_villages_max_jobs")) or 14
 local placement_priority = minetest.settings:get("vl_villages_placement_priority") or "houses" -- houses is safer for villagers at night
+local max_height_difference = 40 -- at distance 40. In the center, half as much
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
@@ -62,10 +63,10 @@ local function layout_town(vm, minp, maxp, pr, input_settlement)
 				if pos and mcl_villages.surface_mat[surface_material.name] and mcl_villages.check_distance(settlement, cpos, size.x, size.z, mindist) then
 					-- use town bell as new reference point for placement height
 					if #settlement == 0 then
-						center_surface, y = cpos, math.min(maxp.y, pos.y + mcl_villages.max_height_difference * 0.5 + 1)
+						center_surface, y = cpos, math.min(maxp.y, pos.y + max_height_difference + 1)
 					end
 					-- limit height differences to town center, but gradually allow more
-					if math.abs(pos.y - center_surface.y) <= mcl_villages.max_height_difference * (0.25 + math.min(r/40,0.5)) then
+					if math.abs(pos.y - center_surface.y) <= max_height_difference * (0.5 + r/80) then
 						local minp = vector.offset(pos, -math.floor((size.x-1)/2), building.yadjust, -math.floor((size.z-1)/2))
 						building.minp = minp
 						building.maxp = vector.offset(minp, size.x, size.y, size.z)
