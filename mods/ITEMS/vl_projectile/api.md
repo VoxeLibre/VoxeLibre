@@ -62,9 +62,11 @@ Arguments:
 The projectile API supports specifying the behaviors that a projectile will exhibit. There are several
 standard behaviors provided with the API:
 
-* `vl_projectile.burns`: Projectiles can be set on fire
+* `vl_projectile.burns`: projectile can be set on fire
 * `vl_projectile.collides_with_solids`: handles collisions between projectiles and solid nodes
 * `vl_projectile.collides_with_entities`: handles collisions between projectiles and entities by checking nearby entities
+* `vl_projectile.has_tracer`: projectile will have a tracer trail when thrown/shot. Projectile can define
+   `_vl_projectile.hide_tracer = function(self)` to conditionally hide the tracer.
 * `vl_projectile.raycast_collides_with_entities`: handles collisions between projectils and entities by performing a raycast
    check along the path of movement.
 
