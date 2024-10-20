@@ -10,6 +10,8 @@ local enable_pvp = minetest.settings:get_bool("enable_pvp")
 
 function mod.projectile_physics(obj, entity_def, v, a)
 	local le = obj:get_luaentity()
+	if not le then return end
+
 	local entity_def = minetest.registered_entities[le.name]
 	local pos = obj:get_pos()
 	if not pos then return end
@@ -203,6 +205,30 @@ function mod.burns(self, dtime, entity_def, projectile_def)
 	end
 end
 
+function mod.has_tracer(self, dtime, entity_def, projectile_def)
+	local hide_tracer = projectile_def.hide_tracer
+	if hide_tracer and hide_tracer(self) then return end
+
+	-- Add tracer
+	minetest.add_particlespawner({
+		amount = 20,
+		time = .2,
+		minpos = vector.zero(),
+		maxpos = vector.zero(),
+		minvel = vector.new(-0.1,-0.1,-0.1),
+		maxvel = vector.new(0.1,0.1,0.1),
+		minexptime = 0.5,
+		maxexptime = 0.5,
+		minsize = 2,
+		maxsize = 2,
+		attached = self.object,
+		collisiondetection = false,
+		vertical = false,
+		texture = projectile_def.tracer_texture or "mobs_mc_arrow_particle.png",
+		glow = 1,
+	})
+end
+
 function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
 	if not pos then return end
@@ -380,6 +406,8 @@ function mod.raycast_collides_with_entities(self, dtime, entity_def, projectile_
 	local closest_object, closest_distance
 
 	local pos = self.object:get_pos()
+	if not pos then return end
+
 	local arrow_dir = self.object:get_velocity()
 
 	--create a raycast from the arrow based on the velocity of the arrow to deal with lag
