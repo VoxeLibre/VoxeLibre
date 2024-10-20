@@ -47,7 +47,7 @@ local function load_schema(name, mts)
 	return { name = name, size = schematic.size, schem_lua = schem_lua }
 end
 
-local all_optional = { "yadjust", "no_ground_turnip", "no_clearance" }
+local all_optional = { "yadjust", "no_ground_turnip", "no_clearance", "rotation_offset" }
 
 local function set_all_optional(record, data)
 	for _, field in ipairs(all_optional) do
