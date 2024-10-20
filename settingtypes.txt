@@ -51,8 +51,17 @@ vl_plant_growth (Plant growth factor) float 1.0 0 100
 # Structure frequency multiplier, keep this less than 3 usually
 vl_structures_boost (Structure frequency multiplier) float 1.0 0.0 10.0
 
-# Village frequency multiplier, keep this less than 3 usually
-vl_villages_boost (Village frequency multiplier) float 1.0 0.0 10.0
+# Minimum number of job sites for villages to plan (generation may have less)
+vl_villages_min_jobs (Small village job sites) int 2 0 20
+
+# Maximum number of job sites for villages to plan (generation may have less)
+vl_villages_max_jobs (Large villages job sites) int 14 0 20
+
+# Placement strategy for buildings: jobs, houses, or random
+vl_villages_placement_priority (Village building placement) enum houses houses,jobs,random
+
+# Village frequency multiplier, keep this less than 3 usually to avoid excessive map emerges
+vl_villages_boost (Village frequency multiplier) float 1.0 0.0 5.0
 
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal
