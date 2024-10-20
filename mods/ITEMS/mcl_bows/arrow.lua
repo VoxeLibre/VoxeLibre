@@ -36,65 +36,6 @@ S("Arrows might get stuck on solid blocks and can be retrieved again. They are a
 })
 
 -- Destroy arrow entity self at pos and drops it as an item
-local function replace_with_item_drop(self, pos)
-	if not minetest.is_creative_enabled("") then
-		local item = minetest.add_item(pos, "mcl_bows:arrow")
-		item:set_velocity(vector.zero())
-		item:set_yaw(self.object:get_yaw())
-	end
-
-	mcl_burning.extinguish(self.object)
-	self._removed = true
-	self.object:remove()
-end
-
-local function stuck_arrow_on_step(self, dtime)
-	self._stucktimer = self._stucktimer + dtime
-	self._stuckrechecktimer = self._stuckrechecktimer + dtime
-	if self._stucktimer > ARROW_TIMEOUT then
-		mcl_burning.extinguish(self.object)
-		self._removed = true
-		self.object:remove()
-		return
-	end
-
-	local pos = self.object:get_pos()
-	if not pos then return end
-
-	-- Drop arrow as item when it is no longer stuck
-	-- FIXME: Arrows are a bit slow to react and continue to float in mid air for a few seconds.
-	if self._stuckrechecktimer > STUCK_RECHECK_TIME then
-		local stuckin_def = self._stuckin and minetest.registered_nodes[minetest.get_node(self._stuckin).name]
-		-- TODO: In MC, arrow just falls down without turning into an item
-		if stuckin_def and stuckin_def.walkable == false then
-			replace_with_item_drop(self, pos)
-			return
-		end
-		self._stuckrechecktimer = 0
-	end
-
-	-- Pickup arrow if player is nearby (not in Creative Mode)
-	local objects = minetest.get_objects_inside_radius(pos, 1)
-	for _,obj in ipairs(objects) do
-		if obj:is_player() then
-			if self._collectable and not minetest.is_creative_enabled(obj:get_player_name()) then
-				local arrow_item = self._arrow_item
-				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
-					obj:get_inventory():add_item("main", arrow_item)
-					minetest.sound_play("item_drop_pickup", {
-						pos = pos,
-						max_hear_distance = 16,
-						gain = 1.0,
-					}, true)
-				end
-			end
-			mcl_burning.extinguish(self.object)
-			self.object:remove()
-			return
-		end
-	end
-end
-
 local arrow_entity = {
 	physical = true,
 	pointable = false,
@@ -137,17 +78,12 @@ local arrow_entity = {
 		end,
 		tracer_texture = "mobs_mc_arrow_particle.png",
 		behaviors = {
+			vl_projectile.sticks,
 			vl_projectile.burns,
 			vl_projectile.has_tracer,
 
 			-- Custom arrow behaviors
 			function(self, dtime)
-				-- Stuck handling
-				if self._stuck then
-					stuck_arrow_on_step(self, dtime)
-					return
-				end
-
 				local pos = self.object:get_pos()
 				self._allow_punch = self._allow_punch or not self._owner or not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5
 
@@ -184,57 +120,6 @@ local arrow_entity = {
 				return {{name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true}
 			end
 		},
-		on_collide_with_solid = function(self, pos, node, node_def)
-			local vel = self.object:get_velocity()
-			local dpos = vector.round(pos) -- digital pos
-
-			-- Check for the node to which the arrow is pointing
-			local dir
-			if math.abs(vel.y) < 0.00001 then
-				if self._last_pos.y < pos.y then
-					dir = vector.new(0, 1, 0)
-				else
-					dir = vector.new(0, -1, 0)
-				end
-			else
-				dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
-			end
-			self._stuckin = vector.add(dpos, dir)
-
-			local snode = minetest.get_node(self._stuckin)
-			local sdef = minetest.registered_nodes[snode.name]
-
-			-- If node is non-walkable, unknown or ignore, don't make arrow stuck.
-			-- This causes a deflection in the engine.
-			if not sdef or sdef.walkable == false or snode.name == "ignore" then
-				self._stuckin = nil
-				if self._deflection_cooloff <= 0 then
-					-- Lose 1/3 of velocity on deflection
-					local newvel = vector.multiply(vel, 0.6667)
-
-					self.object:set_velocity(newvel)
-					-- Reset deflection cooloff timer to prevent many deflections happening in quick succession
-					self._deflection_cooloff = 1.0
-				end
-				return
-			end
-
-			-- Node was walkable, make arrow stuck
-			self._stuck = true
-			self._stucktimer = 0
-			self._stuckrechecktimer = 0
-
-			self.object:set_velocity(vector.zero())
-			self.object:set_acceleration(vector.zero())
-
-			minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
-
-			-- Temporary handler here to test moving this to node definitions.
-			-- TODO: move to vl_projectile when the stuck logic gets moved there and before merging
-			-- Trigger hits on the node the projectile hit
-			local hook = sdef._vl_projectile and sdef._vl_projectile.on_collide
-			if hook then hook(self, self._stuckin, snode, sdef) end
-		end,
 		on_collide_with_entity = function(self, pos, obj)
 			local is_player = obj:is_player()
 			local lua = obj:get_luaentity()
