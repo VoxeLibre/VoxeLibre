@@ -132,8 +132,13 @@ local arrow_entity = {
 		damage_groups = function(self)
 			return { fleshy = self._damage }
 		end,
+		hide_tracer = function(self)
+			return self._stuck or self._damage < 9 or self._in_player
+		end,
+		tracer_texture = "mobs_mc_arrow_particle.png",
 		behaviors = {
 			vl_projectile.burns,
+			vl_projectile.has_tracer,
 
 			-- Custom arrow behaviors
 			function(self, dtime)
@@ -145,27 +150,6 @@ local arrow_entity = {
 
 				local pos = self.object:get_pos()
 				self._allow_punch = self._allow_punch or not self._owner or not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5
-
-				-- Add tracer
-				if self._damage >= 9 and self._in_player == false then
-					minetest.add_particlespawner({
-						amount = 20,
-						time = .2,
-						minpos = vector.zero(),
-						maxpos = vector.zero(),
-						minvel = vector.new(-0.1,-0.1,-0.1),
-						maxvel = vector.new(0.1,0.1,0.1),
-						minexptime = 0.5,
-						maxexptime = 0.5,
-						minsize = 2,
-						maxsize = 2,
-						attached = self.object,
-						collisiondetection = false,
-						vertical = false,
-						texture = "mobs_mc_arrow_particle.png",
-						glow = 1,
-					})
-				end
 
 				-- Give the arrows a maximum flight time
 				self._time_in_air = (self._time_in_air or 0) + dtime
