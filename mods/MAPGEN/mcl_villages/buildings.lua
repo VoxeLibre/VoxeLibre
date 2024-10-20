@@ -1,12 +1,16 @@
-local min_jobs = tonumber(minetest.settings:get("mcl_villages_min_jobs")) or 1
-local max_jobs = tonumber(minetest.settings:get("mcl_villages_max_jobs")) or 12
-local placement_priority = minetest.settings:get("mcl_villages_placement_priority") or "random"
+local min_jobs = tonumber(minetest.settings:get("vl_villages_min_jobs")) or 2
+local max_jobs = tonumber(minetest.settings:get("vl_villages_max_jobs")) or 14
+local placement_priority = minetest.settings:get("vl_villages_placement_priority") or "houses" -- houses is safer for villagers at night
 local max_height_difference = 40 -- at distance 40. In the center, half as much
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local function add_building(settlement, building, count_buildings)
-	table.insert(settlement, building)
+	if placement_priority == "jobs" then
+		table.insert(settlement, building)
+	else
+		table.insert(settlement, 1, building) -- insert "backwards" - todo: add table.reverse
+	end
 	count_buildings[building.name] = (count_buildings[building.name] or 0) + 1
 	count_buildings.num_jobs = count_buildings.num_jobs + (building.num_jobs or 0)
 	count_buildings.num_beds = count_buildings.num_beds + (building.num_beds or 0)
@@ -36,15 +40,25 @@ local function layout_town(vm, minp, maxp, pr, input_settlement)
 			local building = table.copy(input_settlement[#settlement + 1])
 			local size = vector.copy(building.size)
 			--local rotation = possible_rotations[pr:next(1, #possible_rotations)]
-			local rotation = math.floor(math.atan2(center.z-cpos.z, center.x-cpos.x) / math.pi * 2+6.5)%4
-			rotation = possible_rotations[1+rotation]
+			-- instead of random rotations, rotating doors to the center makes the village
+			-- more defensive and hence safer for the poor villagers, even though less random
+			-- case distinction is simpler and faster than trigonometry here:
+			local rotation = building.rotation_offset or 0
+			if math.abs(cpos.z-center.z) > math.abs(cpos.x-center.x) then
+				rotation = rotation + (cpos.z <= center.z and 0 or 2) -- zero indexed for modulo below
+			else
+				rotation = rotation + (cpos.x <= center.x and 1 or 3) -- zero indexed for modulo below
+			end
+			rotation = possible_rotations[rotation % 4 + 1]
+			--minetest.log("action", building.name.." at "..minetest.pos_to_string(cpos).." rotation: "..rotation.." to "..minetest.pos_to_string(center).." "..minetest.pos_to_string(center-cpos))
 			if rotation == "90" or rotation == "270" then size.x, size.z = size.z, size.x end
 			local tlpos = vector.offset(cpos, -math.floor((size.x-1)/2), 0, -math.floor((size.z-1)/2))
 
 			-- ensure we have 3 space for terraforming, and avoid problems with VoxelManip
 			if  tlpos.x - 3 >= minp.x and tlpos.x + size.x + 3 <= maxp.x
 			and tlpos.z + 3 >= minp.z and tlpos.z + size.y + 3 <= maxp.z then
-				local pos, surface_material = vl_terraforming.find_level_vm(vm, cpos, size)
+				local pos, surface_material = vl_terraforming.find_level_vm(vm, cpos, size, 6)
+				if pos and pos.y + size.y > maxp.y then pos = nil end
 				-- check distance to other buildings. Note that we still want to add baseplates etc.
 				if pos and mcl_villages.surface_mat[surface_material.name] and mcl_villages.check_distance(settlement, cpos, size.x, size.z, mindist) then
 					-- use town bell as new reference point for placement height
@@ -150,15 +164,11 @@ function mcl_villages.create_site_plan(vm, minp, maxp, pr)
 		table.insert(settlement, pr:next(1, #settlement), cur_schem)
 	end
 
-	if placement_priority == "jobs" then
-		-- keep ordered as is
-	elseif placement_priority == "houses" then
-		table.reverse(settlement)
-	else
+	if placement_priority == "randomg" then
 		settlement = mcl_villages.shuffle(settlement, pr)
 	end
-
 	table.insert(settlement, 1, bell_info)
+
 	return layout_town(vm, minp, maxp, pr, settlement)
 end
 
@@ -202,19 +212,20 @@ function mcl_villages.place_schematics(vm, settlement, blockseed, pr)
 		local schematic = loadstring(schem_lua)()
 
 		-- the foundation and air space for the building was already built before
-		-- minetest.log("debug", "placing schematics for "..building.name.." at "..minetest.pos_to_string(minp).." on "..surface_material)
+		-- minetest.log("action", "placing schematics for "..building.name.." at "..minetest.pos_to_string(minp).." on "..surface_material.name)
 		minetest.place_schematic_on_vmanip(vm, minp, schematic, rotation, nil, true, { place_center_x = false, place_center_y = false, place_center_z = false })
 		mcl_villages.store_path_ends(vm, minp, maxp, cpos, blockseed, bell_pos)
 		mcl_villages.increase_no_paths(vm, minp, maxp) -- help the path finder
 	end
 
+	local minp, maxp = vm:get_emerged_area() -- safe area for further processing
 	vm:write_to_map(true) -- for path finder and light
 
 	-- Path planning and placement
-	mcl_villages.paths(blockseed, minetest.get_biome_name(minetest.get_biome_data(bell_pos).biome))
+	mcl_villages.paths(blockseed, minetest.get_biome_name(minetest.get_biome_data(bell_pos).biome), minp, maxp)
+	mcl_villages.clean_no_paths(minp, maxp)
 	-- Clean up paths and initialize nodes
 	for i, building in ipairs(settlement) do
-		mcl_villages.clean_no_paths(building.minp, building.maxp)
 		init_nodes(building.minp, building.maxp, pr)
 	end
 
@@ -237,8 +248,9 @@ minetest.register_node("mcl_villages:village_block", {
 	-- e.g. spawning mobs, running minetest.find_path
 	on_timer = function(pos, _)
 		local meta = minetest.get_meta(pos)
-		minetest.swap_node(pos, { name = meta:get_string("node_type") })
 		mcl_villages.post_process_village(meta:get_string("blockseed"))
+		-- not swap_node, to clear metadata afterwards
+		minetest.set_node(pos, { name = meta:get_string("node_type") })
 		return false
 	end,
 })
