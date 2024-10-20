@@ -1,6 +1,3 @@
--- maximum allowed difference in height for building a settlement
-mcl_villages.max_height_difference = 56
-
 -- legacy type in old schematics
 minetest.register_alias("mcl_villages:stonebrickcarved", "mcl_core:stonebrickcarved")
 
