@@ -169,6 +169,7 @@ local arrow_entity = {
 				dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
 			end
 			self._stuckin = vector.add(dpos, dir)
+
 			local snode = minetest.get_node(self._stuckin)
 			local sdef = minetest.registered_nodes[snode.name]
 
@@ -231,24 +232,6 @@ local arrow_entity = {
 
 			if obj:get_hp() > 0 then
 				-- Check if there is no solid node between arrow and object
-				-- TODO: remove. this code should never occur if vl_projectile is working correctly
-				local ray = minetest.raycast(self.object:get_pos(), obj:get_pos(), true)
-				for pointed_thing in ray do
-					if pointed_thing.type == "object" and pointed_thing.ref == obj then
-						-- Target reached! We can proceed now.
-						break
-					elseif pointed_thing.type == "node" then
-						local nn = minetest.get_node(minetest.get_pointed_thing_position(pointed_thing)).name
-						local def = minetest.registered_nodes[nn]
-						if not def or def.walkable then
-							-- There's a node in the way. Delete arrow without damage
-							mcl_burning.extinguish(self.object)
-							self.object:remove()
-							return
-						end
-					end
-				end
-
 				if lua then
 					local entity_name = lua.name
 					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
