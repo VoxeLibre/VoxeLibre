@@ -26,6 +26,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 	local startmain = os.clock()
 	local pos, size, yoffset, def, pr = param.pos, param.size, param.yoffset or 0, param.def, param.pr
 	local prepare, surface_mat = parse_prepare(param.prepare or def.prepare), param.surface_mat
+	local dust_mat = nil
 
 	-- Step 0: pick random daughter schematics + rotations
 	local daughters = {}
@@ -37,6 +38,10 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 		local rotation = vl_structures.parse_rotation(d.rotation, pr)
 		table.insert(daughters, {d, ds, rotation})
 	end
+
+	-- hack to get dust nodes more often, in case the mapgen messed with biomes
+	local n = vm:get_node_at(vector_offset(param.opos, 0, 1, 0))
+	if n.name == "mcl_core:snow" then dust_mat = n end
 
 	-- Step 1: adjust ground to a more level position
 	-- todo: also support checking ground of daughter schematics, but not used by current schematics
@@ -59,11 +64,13 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 	if prepare and (prepare.clear or prepare.foundation) then
 		local prepare_start = os.clock()
 		-- Get materials from biome (TODO: make this a function + table?):
-		local b = mg_name ~= "v6" and minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
+		-- use original position to not get a different biome than expected for the structure
+		local b = mg_name ~= "v6" and minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(vector_offset(param.pos,0,1,0)).biome)]
+		--minetest.log("action", tostring(def.name or param.schematic.name).." in biome: "..dump(b,""):gsub("\n",""))
 		local node_top    = b and b.node_top    and { name = b.node_top    } or surface_mat or vl_structures.DEFAULT_SURFACE
 		local node_filler = b and b.node_filler and { name = b.node_filler } or vl_structures.DEFAULT_FILLER
 		local node_stone  = b and b.node_stone  and { name = b.node_stone  } or vl_structures.DEFAULT_STONE
-		local node_dust   = b and b.node_dust   and { name = b.node_dust   } or vl_structures.DEFAULT_DUST
+		local node_dust   = b and b.node_dust   and { name = b.node_dust   } or dust_mat or vl_structures.DEFAULT_DUST
 		if node_top.name == "mcl_core:dirt_with_grass" and b then node_top.param2 = b._mcl_grass_palette_index end
 
 		-- Step 2a: clear overhead area
@@ -101,7 +108,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 
 		-- Step 2b: baseplate underneath
 		if prepare.foundation then
-			-- minetest.log("action", "[vl_structures] fill foundation "..minetest.pos_to_string(gp).." with "..tostring(node_top.name).." "..tostring(node_filler.name))
+			-- minetest.log("action", "[vl_structures] "..tostring(def.name or param.schematic.name).." fill foundation "..minetest.pos_to_string(gp).." with "..tostring(node_top.name).." "..tostring(node_filler.name).." "..tostring(node_dust and node_dust.name))
 			local depth = (type(prepare.foundation) == "number" and prepare.foundation) or vl_structures.DEFAULT_PREPARE.foundation
 			vl_terraforming.foundation_vm(vm, gp.x, gp.y - 1, gp.z,
 				size.x + padding * 2, depth, size.z + padding * 2,
@@ -135,6 +142,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 		-- todo: allow after_place callbacks for daughter schematics?
 	end
 	local endmain = os.clock()
+	-- TODO: step 4: sprinkle extra dust on top.
 	vm:write_to_map(true)
 	-- Note: deliberately pos, p1 and p2 from the parent, as these are calls to the parent script
 	if def.loot then vl_structures.fill_chests(pmin,pmax,def.loot,pr) end
@@ -172,7 +180,7 @@ vl_structures.place_schematic = function(pos, yoffset, schematic, rotation, def,
 	-- if logging and not def.terrain_feature then minetest.log("action", "[vl_structures] "..def.name.." needs emerge "..minetest.pos_to_string(emin).."-"..minetest.pos_to_string(emax)) end
 	minetest.emerge_area(emin, emax, emerge_schematics, { name = def.name,
 		emin=emin, emax=emax, def=def, schematic=schematic,
-		pos=ppos, yoffset=yoffset, size=size, rotation=rotation,
+		pos=ppos, opos=pos, yoffset=yoffset, size=size, rotation=rotation,
 		pr=pr
 	})
 end

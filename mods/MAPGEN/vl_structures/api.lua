@@ -167,7 +167,7 @@ function vl_structures.register_structure(name,def)
 					for _, pos in ipairs(t) do
 						local pr = PcgRandom(minetest.hash_node_position(pos) + worldseed + RANDOM_SEED_OFFSET)
 						if def.chunk_probability == nil or pr:next(0, 1e9) * 1e-9 * def.chunk_probability <= structure_boost then
-							vl_structures.place_structure(vector_offset(pos, 0, 1, 0), def, pr, blockseed)
+							vl_structures.place_structure(pos, def, pr, blockseed)
 							if def.chunk_probability ~= nil then break end -- allow only one per gennotify, e.g., on multiple surfaces
 						end
 					end
