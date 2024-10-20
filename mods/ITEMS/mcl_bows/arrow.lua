@@ -133,6 +133,53 @@ local arrow_entity = {
 			return { fleshy = self._damage }
 		end,
 		behaviors = {
+			vl_projectile.burns,
+
+			-- Custom arrow behaviors
+			function(self, dtime)
+				-- Stuck handling
+				if self._stuck then
+					stuck_arrow_on_step(self, dtime)
+					return
+				end
+
+				local pos = self.object:get_pos()
+				self._allow_punch = self._allow_punch or not self._owner or not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5
+
+				-- Add tracer
+				if self._damage >= 9 and self._in_player == false then
+					minetest.add_particlespawner({
+						amount = 20,
+						time = .2,
+						minpos = vector.zero(),
+						maxpos = vector.zero(),
+						minvel = vector.new(-0.1,-0.1,-0.1),
+						maxvel = vector.new(0.1,0.1,0.1),
+						minexptime = 0.5,
+						maxexptime = 0.5,
+						minsize = 2,
+						maxsize = 2,
+						attached = self.object,
+						collisiondetection = false,
+						vertical = false,
+						texture = "mobs_mc_arrow_particle.png",
+						glow = 1,
+					})
+				end
+
+				-- Give the arrows a maximum flight time
+				self._time_in_air = (self._time_in_air or 0) + dtime
+				if self._time_in_air > ARROW_TIMEOUT then
+					self._removed = true
+					self.object:remove()
+					return true
+				end
+
+				if self._deflection_cooloff > 0 then
+					self._deflection_cooloff = self._deflection_cooloff - dtime
+				end
+			end,
+
 			vl_projectile.collides_with_solids,
 			vl_projectile.raycast_collides_with_entities,
 		},
@@ -214,7 +261,6 @@ local arrow_entity = {
 			end
 
 			if obj:get_hp() > 0 then
-				-- Check if there is no solid node between arrow and object
 				if lua then
 					local entity_name = lua.name
 					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
@@ -245,55 +291,6 @@ local arrow_entity = {
 			self.object:remove()
 		end
 	},
-	on_step = function(self, dtime)
-		mcl_burning.tick(self.object, dtime, self)
-
-		-- mcl_burning.tick may remove object immediately
-		if not self.object:get_pos() then return end
-
-		self._time_in_air = (self._time_in_air or 0) + dtime
-
-		-- Give the arrows a maximum flight time
-		if self._time_in_air > ARROW_TIMEOUT then
-			self._removed = true
-			self.object:remove()
-		end
-
-		local pos = self.object:get_pos()
-		self._allow_punch = self._allow_punch or not self._owner or not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5
-
-		if self._stuck then
-			return stuck_arrow_on_step(self, dtime)
-		end
-
-		-- Add tracer
-		if self._damage >= 9 and self._in_player == false then
-			minetest.add_particlespawner({
-				amount = 20,
-				time = .2,
-				minpos = vector.zero(),
-				maxpos = vector.zero(),
-				minvel = vector.new(-0.1,-0.1,-0.1),
-				maxvel = vector.new(0.1,0.1,0.1),
-				minexptime = 0.5,
-				maxexptime = 0.5,
-				minsize = 2,
-				maxsize = 2,
-				attached = self.object,
-				collisiondetection = false,
-				vertical = false,
-				texture = "mobs_mc_arrow_particle.png",
-				glow = 1,
-			})
-		end
-
-		if self._deflection_cooloff > 0 then
-			self._deflection_cooloff = self._deflection_cooloff - dtime
-		end
-
-		-- Process as projectile
-		vl_projectile.update_projectile(self, dtime)
-	end,
 
 	-- Force recheck of stuck arrows when punched.
 	-- Otherwise, punching has no effect.

@@ -186,6 +186,23 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	)
 end
 
+function mod.burns(self, dtime, entity_def, projectile_def)
+	mcl_burning.tick(self.object, dtime, self)
+
+	-- mcl_burning.tick may remove object immediately
+	local pos = self.object:get_pos()
+	if not pos then return true end
+
+	-- Handle getting set on fire
+	local node = minetest.get_node(vector.round(pos))
+	if not node or node.name == "ignore" then return end
+
+	local set_on_fire = minetest.get_item_group(node.name, "set_on_fire")
+	if set_on_fire ~= 0 then
+		mcl_burning.set_on_fire(self.object, set_on_fire)
+	end
+end
+
 function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
 	if not pos then return end
