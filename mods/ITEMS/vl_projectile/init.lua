@@ -6,6 +6,8 @@ local vl_physics_path = minetest.get_modpath("vl_physics")
 local DEBUG = false
 local YAW_OFFSET = -math.pi/2
 local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
+local STUCK_TIMEOUT = 60
+local STUCK_RECHECK_TIME = 0.25
 local enable_pvp = minetest.settings:get_bool("enable_pvp")
 
 function mod.projectile_physics(obj, entity_def, v, a)
@@ -87,7 +89,9 @@ function mod.update_projectile(self, dtime)
 		end
 	end
 
-	mod.projectile_physics(self.object, entity_def)
+	if not self._stuck then
+		mod.projectile_physics(self.object, entity_def)
+	end
 end
 
 local function damage_particles(pos, is_critical)
@@ -229,6 +233,85 @@ function mod.has_tracer(self, dtime, entity_def, projectile_def)
 	})
 end
 
+function mod.replace_with_item_drop(self, pos, entity_def, projectile_def)
+	local item = self._arrow_item or projectile_def.item
+
+	if self._collectable and not minetest.is_creative_enabled("") then
+		local item = minetest.add_item(pos, item)
+		item:set_velocity(vector.zero())
+		item:set_yaw(self.object:get_yaw())
+	end
+
+	mcl_burning.extinguish(self.object)
+	self._removed = true
+	self.object:remove()
+end
+
+local function stuck_on_step(self, dtime, entity_def, projectile_def)
+	-- Don't process objects that have been removed
+	local pos = self.object:get_pos()
+	if not pos then return true end
+
+	self._stucktimer = self._stucktimer + dtime
+	if self._stucktimer > STUCK_TIMEOUT then
+		mcl_burning.extinguish(self.object)
+		self._removed = true
+		self.object:remove()
+		return true
+	end
+
+	-- Drop arrow as item when it is no longer stuck
+	-- TODO: revist after observer rework
+	self._stuckrechecktimer = self._stuckrechecktimer + dtime
+	if self._stuckrechecktimer > 1 then
+		self._stuckrechecktimer = 0
+		if self._stuckin then
+			local node = minetest.get_node(self._stuckin)
+			local node_def = minetest.registered_nodes[node.name]
+			if node_def and node_def.walkable == false then
+				mod.replace_with_item_drop(self, pos, entity_def, projectile_def)
+				return
+			end
+		end
+	end
+
+	-- Pickup arrow if player is nearby (not in Creative Mode)
+	local objects = minetest.get_objects_inside_radius(pos, 1)
+	for i = 1,#objects do
+		obj = objects[i]
+		if obj:is_player() then
+			if self._collectable and not minetest.is_creative_enabled(obj:get_player_name()) then
+				local arrow_item = self._arrow_item
+				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
+					obj:get_inventory():add_item("main", arrow_item)
+
+					minetest.sound_play("item_drop_pickup", {
+						pos = pos,
+						max_hear_distance = 16,
+						gain = 1.0,
+					}, true)
+				end
+			end
+			mcl_burning.extinguish(self.object)
+			self.object:remove()
+			return
+		end
+
+		return true
+	end
+end
+
+function mod.sticks(self, dtime, entity_def, projectile_def)
+	-- Force the projectile to survive collisions (Otherwise, the projectile can't stick in nodes)
+	projectile_def.survive_collision = true
+	projectile_def.sticks_in_nodes = true
+
+	-- Stuck handling
+	if self._stuck then
+		return stuck_on_step(self, dtime, entity_def, projectile_def)
+	end
+end
+
 function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
 	if not pos then return end
@@ -262,6 +345,55 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 		if node_def and not node_def.walkable and (not collides_with or not mcl_util.match_node_to_filter(node.name, collides_with)) then
 			return
 		end
+	end
+
+	-- Handle sticking in nodes
+	if projectile_def.sticks_in_nodes then
+		local vel = self.object:get_velocity()
+		local dpos = vector.round(pos) -- digital pos
+
+		-- Check for the node to which the arrow is pointing
+		local dir
+		if math.abs(vel.y) < 0.00001 then
+			if self._last_pos.y < pos.y then
+				dir = vector.new(0, 1, 0)
+			else
+				dir = vector.new(0, -1, 0)
+			end
+		else
+			dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
+		end
+		self._stuckin = vector.add(dpos, dir)
+
+		local snode = minetest.get_node(self._stuckin)
+		local sdef = minetest.registered_nodes[snode.name]
+
+		-- If node is non-walkable, unknown or ignore, don't make arrow stuck.
+		-- This causes a deflection in the engine.
+		if not sdef or sdef.walkable == false or snode.name == "ignore" then
+			self._stuckin = nil
+			if self._deflection_cooloff <= 0 then
+				-- Lose 1/3 of velocity on deflection
+				local newvel = vector.multiply(vel, 0.6667)
+
+				self.object:set_velocity(newvel)
+				-- Reset deflection cooloff timer to prevent many deflections happening in quick succession
+				self._deflection_cooloff = 1.0
+			end
+			return
+		end
+
+		-- Node was walkable, make arrow stuck
+		self._stuck = true
+		self._stucktimer = 0
+		self._stuckrechecktimer = 0
+
+		self.object:set_velocity(vector.zero())
+		self.object:set_acceleration(vector.zero())
+
+		-- Trigger hits on the node the projectile hit
+		local hook = sdef._vl_projectile and sdef._vl_projectile.on_collide
+		if hook then hook(self, self._stuckin, snode, sdef) end
 	end
 
 	-- Call entity collied hook
