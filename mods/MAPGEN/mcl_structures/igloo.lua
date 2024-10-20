@@ -102,11 +102,11 @@ end
 vl_structures.register_structure("igloo",{
 	filenames = { modpath.."/schematics/mcl_structures_igloo_top.mts" },
 	place_on = {"mcl_core:snowblock","mcl_core:snow","group:grass_block_snow"},
-	chunk_probability = 7,
-	prepare = { padding = 1, corners = 1, foundation = -6, clear_top=-1 }, 
+	chunk_probability = 15,
+	prepare = { tolerance = 3, padding = 1, corners = 1, foundation = -6, clear_top = -1 },
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 0,
-	y_offset = -2,
+	y_offset = -1,
 	biomes = { "ColdTaiga", "IcePlainsSpikes", "IcePlains" },
 	after_place = igloo_callback,
 	loot = {
