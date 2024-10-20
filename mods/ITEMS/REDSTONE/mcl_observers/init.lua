@@ -291,7 +291,6 @@ if realtime then
 	-- Override basic functions for observing:
 	mcl_observers.add_node =	minetest.add_node
 	mcl_observers.set_node =	minetest.set_node
-	mcl_observers.swap_node =	minetest.swap_node
 	mcl_observers.remove_node =	minetest.remove_node
 	mcl_observers.bulk_set_node =	minetest.bulk_set_node
 
@@ -324,33 +323,6 @@ if realtime then
 	end
 	function minetest.set_node(pos,node)
 		mcl_observers.set_node(pos,node)
-		local n = get_node({x=pos.x+1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==-1 then
-			mcl_observers.observer_activate({x=pos.x+1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x-1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
-			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z+1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z-1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
-		end
-		n = get_node({x=pos.x,y=pos.y-1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_u" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y-1,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y+1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_d" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y+1,z=pos.z})
-		end
-	end
-	function minetest.swap_node(pos,node)
-		mcl_observers.swap_node(pos,node)
 		local n = get_node({x=pos.x+1,y=pos.y,z=pos.z})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==-1 then
 			mcl_observers.observer_activate({x=pos.x+1,y=pos.y,z=pos.z})
