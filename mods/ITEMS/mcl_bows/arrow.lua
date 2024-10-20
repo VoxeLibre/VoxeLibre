@@ -198,28 +198,11 @@ local arrow_entity = {
 
 			minetest.sound_play({name="mcl_bows_hit_other", gain=0.3}, {pos=self.object:get_pos(), max_hear_distance=16}, true)
 
-			if mcl_burning.is_burning(self.object) and snode.name == "mcl_tnt:tnt" then
-				tnt.ignite(self._stuckin)
-			end
-
-			-- Ignite Campfires
-			if mod_campfire and mcl_burning.is_burning(self.object) and minetest.get_item_group(snode.name, "campfire") ~= 0 then
-				mcl_campfires.light_campfire(self._stuckin)
-			end
-
-			-- Activate target
-			if mod_target and snode.name == "mcl_target:target_off" then
-				mcl_target.hit(self._stuckin, 1) --10 redstone ticks
-			end
-
-			-- Push the button! Push, push, push the button!
-			if mod_button and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
-				local bdir = minetest.wallmounted_to_dir(node.param2)
-				-- Check the button orientation
-				if vector.equals(vector.add(dpos, bdir), self._stuckin) then
-					mesecon.push_button(dpos, node)
-				end
-			end
+			-- Temporary handler here to test moving this to node definitions.
+			-- TODO: move to vl_projectile when the stuck logic gets moved there and before merging
+			-- Trigger hits on the node the projectile hit
+			local hook = sdef._vl_projectile and sdef._vl_projectile.on_collide
+			if hook then hook(self, self._stuckin, snode, sdef) end
 		end,
 		on_collide_with_entity = function(self, pos, obj)
 			local is_player = obj:is_player()

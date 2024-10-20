@@ -261,6 +261,14 @@ function mcl_campfires.register_campfire(name, def)
 		},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
+		_vl_projectile = {
+			on_collide = function(projectile, pos, node, node_def)
+				-- Ignite Campfires
+				if mcl_burning.is_burning(projectile) then
+					mcl_campfires.light_campfire(pos)
+				end
+			end
+		},
 		after_dig_node = function(pos, node, oldmeta, digger)
 			campfire_drops(pos, digger, def.drops, name.."_lit")
 		end,
