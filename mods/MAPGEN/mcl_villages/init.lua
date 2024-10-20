@@ -118,6 +118,7 @@ mcl_villages.register_well({
 	name = "well",
 	mts = schem_path .. "new_villages/well.mts",
 	yadjust = -1,
+	rotation_offset = 3, -- lamp is east
 })
 
 for i = 1, 6 do
@@ -160,6 +161,7 @@ mcl_villages.register_building({
 	min_jobs = 2,
 	max_jobs = 99,
 	yadjust = 1,
+	rotation_offset = 1, -- entrance is west
 })
 
 mcl_villages.register_building({
@@ -175,6 +177,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/blacksmith.mts",
 	num_others = 8,
 	yadjust = 1,
+	rotation_offset = 1, -- entrance is west
 })
 
 mcl_villages.register_building({
@@ -182,6 +185,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/butcher.mts",
 	num_others = 8,
 	yadjust = 1,
+	rotation_offset = 0, -- entrance is north
 })
 
 mcl_villages.register_building({
@@ -189,6 +193,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/farm.mts",
 	num_others = 3,
 	yadjust = 1,
+	rotation_offset = 3, -- composters are east
 })
 
 mcl_villages.register_building({
@@ -196,6 +201,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/fishery.mts",
 	num_others = 8,
 	yadjust = -2,
+	rotation_offset = 2, -- entrances are east and west
 })
 
 mcl_villages.register_building({
@@ -205,6 +211,7 @@ mcl_villages.register_building({
 	num_others = 8,
 	max_jobs = 6,
 	yadjust = 0,
+	rotation_offset = 1, -- entrance is west
 })
 
 mcl_villages.register_building({
@@ -214,6 +221,7 @@ mcl_villages.register_building({
 	num_others = 8,
 	min_jobs = 7,
 	yadjust = 1,
+	rotation_offset = 3, -- entrance is east
 })
 
 mcl_villages.register_building({
@@ -233,6 +241,7 @@ mcl_villages.register_building({
 	min_jobs = 1,
 	max_jobs = 11,
 	yadjust = 0,
+	rotation_offset = 1, -- entrance is west
 })
 
 mcl_villages.register_building({
@@ -240,6 +249,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/cartographer.mts",
 	num_others = 15,
 	yadjust = 1,
+	rotation_offset = 1, -- entrance is west
 })
 
 mcl_villages.register_building({
@@ -247,6 +257,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/mason.mts",
 	num_others = 8,
 	yadjust = 1,
+	rotation_offset = 1, -- entrance is west
 })
 
 mcl_villages.register_building({
@@ -261,6 +272,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/leather_worker.mts",
 	num_others = 8,
 	yadjust = 1,
+	rotation_offset = 1, -- entrance is west
 })
 
 mcl_villages.register_building({
@@ -268,6 +280,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/toolsmith.mts",
 	num_others = 8,
 	yadjust = 1,
+	rotation_offset = 1, -- entrance is west
 })
 
 mcl_villages.register_building({
@@ -275,6 +288,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/weaponsmith.mts",
 	num_others = 8,
 	yadjust = 1,
+	rotation_offset = 0, -- entrance is north
 })
 
 mcl_villages.register_building({
@@ -295,6 +309,7 @@ mcl_villages.register_building({
 	min_jobs = 8,
 	max_jobs = 99,
 	yadjust = 0,
+	rotation_offset = 2, -- entrance is west, but tower is south
 })
 
 mcl_villages.register_building({
@@ -312,6 +327,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/farm_small_1.mts",
 	num_others = 3,
 	yadjust = 1,
+	rotation_offset = 3, -- composters are south west?
 })
 
 mcl_villages.register_building({
@@ -319,6 +335,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/farm_small_2.mts",
 	num_others = 3,
 	yadjust = 1,
+	rotation_offset = 3, -- composters are south west?
 })
 
 mcl_villages.register_building({
@@ -326,6 +343,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/farm_large_1.mts",
 	num_others = 6,
 	yadjust = 1,
+	rotation_offset = 3, -- composters are east
 })
 
 mcl_villages.register_crop({

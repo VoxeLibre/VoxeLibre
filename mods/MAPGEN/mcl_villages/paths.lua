@@ -46,13 +46,8 @@ function mcl_villages.store_path_ends(vm, minp, maxp, pos, blockseed, bell_pos)
 	-- We store by distance because we create paths far away from the bell first
 	local dist = vector.distance(bell_pos, pos)
 	local id = "block_" .. blockseed -- cannot use integers as keys
-	local tab = path_ends[id]
-	if not tab then
-		tab = {}
-		path_ends[id] = tab
-	end
-	if tab[dist] == nil then tab[dist] = {} end
-	-- TODO: use LVM data instead of nodes? But we only process a subset of the area
+	-- TODO: benchmark best way
+	local tab = {}
 	local v = vector.zero()
 	for zi = minp.z, maxp.z do
 		v.z = zi
@@ -62,12 +57,14 @@ function mcl_villages.store_path_ends(vm, minp, maxp, pos, blockseed, bell_pos)
 				v.x = xi
 				local n = vm:get_node_at(v)
 				if n and n.name == "mcl_villages:path_endpoint" then
-					table.insert(tab[dist], minetest.pos_to_string(v))
+					table.insert(tab, vector.copy(v))
 					vm:set_node_at(v, { name = "air" })
 				end
 			end
 		end
 	end
+	if not path_ends[id] then path_ends[id] = {} end
+	table.insert(path_ends[id], {dist, minetest.pos_to_string(pos), tab})
 end
 
 local function place_lamp(pos, pr)
@@ -84,74 +81,103 @@ local function place_lamp(pos, pr)
 end
 
 -- TODO: port this to lvm.
-local function smooth_path(path)
-	-- Smooth out bumps in path or stairs can look naf
-	for pass = 1, 3 do
+local function smooth_path(path, passes, minp, maxp)
+	-- bridge over water/laver
 	for i = 2, #path - 1 do
-		local prev_y = path[i - 1].y
-		local y = path[i].y
-		local next_y = path[i + 1].y
-		local bump = minetest.get_node(path[i]).name
-
-		-- TODO: also replace bamboo underneath with dirt here?
-		if minetest.get_item_group(bump, "water") ~= 0 then
-			-- ignore in this pass
-		elseif y >= next_y + 2 and y <= prev_y then
-			minetest.swap_node(vector.offset(path[i], 0, -1, 0), { name = "air" })
-			path[i].y = path[i].y - 1
-		elseif y <= next_y - 2 and y >= prev_y then
-			minetest.swap_node(path[i], { name = "mcl_core:dirt" })
-			path[i].y = path[i].y + 1
-		elseif y >= prev_y + 2 and y <= next_y then
-			minetest.swap_node(vector.offset(path[i], 0, -1, 0), { name = "air" })
-			path[i].y = path[i].y - 1
-		elseif y <= prev_y - 2 and y >= prev_y then
-			minetest.swap_node(path[i], { name = "mcl_core:dirt" })
-			path[i].y = path[i].y + 1
-		elseif y < prev_y and y < next_y then
-			-- Fill in dip to flatten path
-			minetest.swap_node(path[i], { name = "mcl_core:dirt" })
-			path[i].y = path[i].y + 1
-		elseif y > prev_y and y > next_y then
-			-- Remove peak to flatten path
-			minetest.swap_node(vector.offset(path[i], 0, -1, 0), { name = "air" })
-			path[i].y = path[i].y - 1
+		while true do
+			local cur = path[i]
+			local node = minetest.get_node(cur).name
+			if node == "air" and vector.in_area(cur, minp, maxp) then
+				local under = minetest.get_node(vector.offset(path[i], 0, -1, 0)).name
+				local udef = minetest.registered_nodes[under]
+				-- do not build paths over leaves
+				if udef and udef.groups.leaves then
+					minetest.swap_node(path[i], {name="mcl_villages:no_paths"})
+					return -- bad path
+				end
+				break
+			else
+				local ndef = minetest.registered_nodes[node]
+				if not ndef then break end -- ignore
+				if (ndef.groups.water or 0) > 0 or (ndef.groups.lava or 0) > 0 then
+					cur.y = cur.y + 1
+				else
+					break
+				end
+			end
 		end
 	end
+	-- Smooth out bumps in path to reduce weird stairs
+	local any_changed = false
+	for pass = 1, passes do
+		local changed = false
+		for i = 2, #path - 1 do
+			local prev_y = path[i - 1].y
+			local y = path[i].y
+			local next_y = path[i + 1].y
+			local bump = minetest.get_node(path[i]).name
+			local bdef = minetest.registered_nodes[bump]
+
+			-- TODO: also replace bamboo underneath with dirt here?
+			if bdef and ((bdef.groups.water or 0) > 0 or (bdef.groups.lava or 0) > 0) then
+				-- ignore in this pass
+			elseif (y > next_y + 1 and y <= prev_y) -- large step
+			    or (y > prev_y + 1 and y <= next_y) -- large step
+			    or (y > prev_y and y > next_y) then
+				-- Remove peaks to flatten path
+				path[i].y = math.max(prev_y, next_y)
+				minetest.swap_node(path[i], { name = "air" })
+				changed = true
+			elseif (y < next_y - 1 and y >= prev_y) -- large step
+			    or (y < prev_y - 1 and y >= next_y) -- large step
+			    or (y < prev_y and y < next_y) then
+				-- Fill in dips to flatten path
+				path[i].y = math.min(prev_y, next_y) - 1 -- to replace below first
+				minetest.swap_node(path[i], { name = "mcl_core:dirt" }) -- todo: use sand/sandstone in desert?, use slabs?
+				path[i].y = path[i].y + 1 -- above dirt
+				changed = true
+			end
+		end
+		if changed then any_changed = true else break end
 	end
+	-- by delaying this, we allow making bridges over deep dips:
+	--[[
+	if any_changed then
+		-- we may not yet have filled a gap
+		for i = 2, #path - 1 do
+			local below = vector.offset(path[y], 0, -1, 0)
+			local bdef = minetest.registered_nodes[minetest.get_node(path[i]).name]
+			if bdef and not bdef.walkable then
+				minetest.swap_node(path[i], { name = "mcl_core:dirt" }) -- todo: use sand/sandstone in desert?, use slabs?
+			end
+		end
+	end]]
+	return path
 end
 
 -- TODO: port this to lvm.
 local function place_path(path, pr, stair, slab)
-	-- Smooth out bumps in path or stairs can look naf
+	-- find water/lava below
 	for i = 2, #path - 1 do
 		local prev_y = path[i - 1].y
 		local y = path[i].y
 		local next_y = path[i + 1].y
 		local bump = minetest.get_node(path[i]).name
+		local bdef = minetest.registered_nodes[bump]
 
-		if minetest.get_item_group(bump, "water") ~= 0 then
+		if bdef and ((bdef.groups.water or 0) > 0 or (bdef.groups.lava or 0) > 0) then
 			-- Find air
 			local up_pos = vector.copy(path[i])
 			while true do
 				up_pos.y = up_pos.y + 1
 				local up_node = minetest.get_node(up_pos).name
-				if minetest.get_item_group(up_node, "water") == 0 then
+				local udef = minetest.registered_nodes[up_node]
+				if udef and (udef.groups.water or 0) == 0 and (udef.groups.lava or 0) == 0 then
 					minetest.swap_node(up_pos, { name = "air" })
 					path[i] = up_pos
 					break
-				end
+				elseif not udef then break end -- ignore node encountered
 			end
-		elseif y < prev_y and y < next_y then
-			-- Fill in dip to flatten path
-			-- TODO: do not break other path/stairs
-			minetest.swap_node(path[i], { name = "mcl_core:dirt" })
-			path[i] = vector.offset(path[i], 0, 1, 0)
-		elseif y > prev_y and y > next_y then
-			-- TODO: do not break other path/stairs
-			-- Remove peak to flatten path
-			minetest.swap_node(vector.offset(path[i], 0, -1, 0), { name = "air" })
-			path[i].y = path[i].y - 1
 		end
 	end
 
@@ -208,6 +234,8 @@ local function place_path(path, pr, stair, slab)
 		if not done then
 			if groups.water then
 				minetest.add_node(under_pos, { name = slab })
+			elseif groups.lava then
+				minetest.add_node(under_pos, { name = "mcl_stairs:slab_stone" })
 			elseif groups.sand then
 				minetest.swap_node(under_pos, { name = "mcl_core:sandstonesmooth2" })
 			elseif groups.soil and not groups.dirtifies_below_solid then
@@ -269,7 +297,7 @@ end
 
 -- Work out which end points should be connected
 -- works from the outside of the village in
-function mcl_villages.paths(blockseed, biome_name)
+function mcl_villages.paths(blockseed, biome_name, minp, maxp)
 	local pr = PcgRandom(blockseed)
 	local pathends = path_ends["block_" .. blockseed]
 	if pathends == nil then
@@ -279,61 +307,65 @@ function mcl_villages.paths(blockseed, biome_name)
 
 	-- Stair and slab style of the village
 	local stair, slab = get_biome_stair_slab(biome_name)
-	-- Keep track of connections
-	local connected = {}
 
-	-- get a list of reverse sorted keys, which are distances
-	local dist_keys = {}
-	for k in pairs(pathends) do table.insert(dist_keys, k) end
-	table.sort(dist_keys, function(a, b) return a > b end)
-	--minetest.log("Planning paths with "..#dist_keys.." nodes")
-
-	for i, from in ipairs(dist_keys) do
+	table.sort(pathends, function(a, b) return a[1] > b[1] end)
+	--minetest.log("action", "path ends: "..dump(pathends,""))
+	-- find ways to connect
+	local connected, to_place = {}, {}
+	for _, tmp in ipairs(pathends) do
+		local from, from_eps = tmp[2], tmp[3]
 		-- ep == end_point
-		for _, from_ep in ipairs(pathends[from]) do
-			local from_ep_pos = minetest.string_to_pos(from_ep)
-			local closest_pos, closest_bld, best = nil, nil, 10000000
-
-			-- Most buildings only do other buildings that are closer to the bell
-			-- for the bell do any end points that don't have paths near them
-			local j = from == 0 and 1 or (i + 1)
-			for j = j, #dist_keys do
-				local to = dist_keys[j]
-				if from ~= to and connected[from .. "-" .. to] == nil and connected[to .. "-" .. from] == nil then
-					for _, to_ep in ipairs(pathends[to]) do
-						local to_ep_pos = minetest.string_to_pos(to_ep)
+		for _, from_ep_pos in ipairs(from_eps) do
+			-- TODO: add back some logic as before that ensures some longer paths, too?
+			local cand = {}
+			for _, tmp in ipairs(pathends) do
+				local to, to_eps = tmp[2], tmp[3]
+				if from ~= to and not connected[from .. "-" .. to] and not connected[to .. "-" .. from] then
+					for _, to_ep_pos in ipairs(to_eps) do
 						local dist = vector.distance(from_ep_pos, to_ep_pos)
-						if dist < best then
-							best = dist
-							closest_pos = to_ep_pos
-							closest_bld = to
-						end
+						table.insert(cand, {dist, from, from_ep_pos, to, to_ep_pos})
 					end
 				end
 			end
-
-			if closest_pos then
-				local path = minetest.find_path(from_ep_pos, closest_pos, 64, 2, 2)
-				if path then smooth_path(path) end
-				if not path then
-					path = minetest.find_path(from_ep_pos, closest_pos, 64, 3, 3)
-					if path then smooth_path(path) end
-				end
-				path = minetest.find_path(from_ep_pos, closest_pos, 64, 1, 1)
-				if path and #path > 0 then
-					place_path(path, pr, stair, slab)
-					connected[from .. "-" .. closest_bld] = 1
-				else
-					minetest.log("warning",
-						string.format(
-							"[mcl_villages] No good path from %s to %s, distance %d",
-							minetest.pos_to_string(from_ep_pos),
-							minetest.pos_to_string(closest_pos),
-							vector.distance(from_ep_pos, closest_pos)
-						)
-					)
+			table.sort(cand, function(a,b) return a[1] < b[1] end)
+			--minetest.log("action", "candidates: "..dump(cand,""))
+			for _, pair in ipairs(cand) do
+				local dist, from, from_ep_pos, to, to_ep_pos = unpack(pair)
+				local path = minetest.find_path(from_ep_pos, to_ep_pos, 10, 4, 4)
+				if path then smooth_path(path, 3, minp, maxp) end
+				path = minetest.find_path(from_ep_pos, to_ep_pos, 10, 2, 2)
+				if path then smooth_path(path, 1, minp, maxp) end
+				path = minetest.find_path(from_ep_pos, to_ep_pos, 12, 1, 1)
+				if path then
+					--minetest.log("path "..from.." to "..to.." len "..tostring(#path))
+					path = smooth_path(path, 1, minp, maxp)
+					if path then
+						connected[from .. "-" .. to] = 1
+						table.insert(to_place, pair)
+						goto continue -- add only one path per building
+					end
 				end
 			end
+		end
+		::continue::
+	end
+
+	--minetest.log("action", "to_place: "..dump(to_place,""))
+	-- now lay the actual paths
+	for _, cand in ipairs(to_place) do
+		local dist, from, from_ep_pos, to, to_ep_pos = unpack(cand)
+		local path = minetest.find_path(from_ep_pos, to_ep_pos, 12, 1, 1)
+		if path then
+			path = place_path(path, pr, stair, slab)
+		else
+			minetest.log("warning",
+				string.format(
+					"[mcl_villages] No good path from %s to %s, distance %d",
+					minetest.pos_to_string(from_ep_pos),
+					minetest.pos_to_string(to_ep_pos),
+					dist
+				)
+			)
 		end
 	end
 
