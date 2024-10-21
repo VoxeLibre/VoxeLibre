@@ -57,6 +57,18 @@ Arguments:
   * `owner`: passed thru unmodified
   * `extra`: passed thru unmodified
 
+## `vl_projectile.replace_with_item_drop(projectile_lua_entity, pos, projectile_def)`
+
+Removes the projectile and replaces it with an item entity based on either the entity's `_arrow_item` field or
+the value `self._vl_projectile.item`.
+
+Arguments:
+
+* `projectile_lua_entity`: the lua entity of the projectile to be replaced.
+* `pos`: the position to create the item entity
+* `projectile_def`: The projectile's `_vl_projectile` field. If not provided, it will be
+   extracted from the projectile's lua entity.
+
 ## Custom Projectile Behaviors
 
 The projectile API supports specifying the behaviors that a projectile will exhibit. There are several
