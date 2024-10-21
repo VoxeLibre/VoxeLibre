@@ -78,8 +78,14 @@ function mod.update_projectile(self, dtime)
 	local entity_def = minetest.registered_entities[entity_name] or {}
 	local entity_vl_projectile = entity_def._vl_projectile or {}
 
-	-- Update entity timer
+	-- Update entity timer and remove expired projectiles
 	self.timer = (self.timer or 0) + dtime
+	local maximum_flight_time = entity_vl_projectile.maximum_time
+	if self.timer > maximum_flight_time then
+		self.removed = true
+		self.object:remove()
+		return
+	end
 
 	-- Run behaviors
 	local behaviors = entity_vl_projectile.behaviors or {}
@@ -259,7 +265,7 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
 	if not pos then return true end
 
-	self._stucktimer = self._stucktimer + dtime
+	self._stucktimer = (self._stucktimer or 0) + dtime
 	if self._stucktimer > STUCK_TIMEOUT then
 		mcl_burning.extinguish(self.object)
 		self._removed = true
@@ -269,7 +275,7 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 
 	-- Drop arrow as item when it is no longer stuck
 	-- TODO: revist after observer rework
-	self._stuckrechecktimer = self._stuckrechecktimer + dtime
+	self._stuckrechecktimer = (self._stuckrechecktimer or 0) + dtime
 	if self._stuckrechecktimer > 1 then
 		self._stuckrechecktimer = 0
 		if self._stuckin then
