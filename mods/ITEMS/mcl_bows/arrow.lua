@@ -7,12 +7,6 @@ local enable_pvp = minetest.settings:get_bool("enable_pvp")
 local math = math
 local vector = vector
 
--- Time in seconds after which a stuck arrow is deleted
-local ARROW_TIMEOUT = 60
-
--- Time after which stuck arrow is rechecked for being stuck
-local STUCK_RECHECK_TIME = 5
-
 local YAW_OFFSET = -math.pi/2
 
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
@@ -70,6 +64,7 @@ local arrow_entity = {
 		survive_collision = true,
 		sticks_in_players = true,
 		damages_players = true,
+		maximum_time = 60,
 		damage_groups = function(self)
 			return { fleshy = self._damage }
 		end,
@@ -86,14 +81,6 @@ local arrow_entity = {
 			function(self, dtime)
 				local pos = self.object:get_pos()
 				self._allow_punch = self._allow_punch or not self._owner or not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5
-
-				-- Give the arrows a maximum flight time
-				self._time_in_air = (self._time_in_air or 0) + dtime
-				if self._time_in_air > ARROW_TIMEOUT then
-					self._removed = true
-					self.object:remove()
-					return true
-				end
 
 				if self._deflection_cooloff > 0 then
 					self._deflection_cooloff = self._deflection_cooloff - dtime
@@ -165,7 +152,7 @@ local arrow_entity = {
 	-- Otherwise, punching has no effect.
 	on_punch = function(self)
 		if self._stuck then
-			self._stuckrechecktimer = STUCK_RECHECK_TIME
+			self._stuckrechecktimer = 5
 		end
 	end,
 	get_staticdata = function(self)
@@ -174,14 +161,6 @@ local arrow_entity = {
 		for i = 1,#save_fields do
 			local field = save_fields[i]
 			out[field] = self["_"..field]
-		end
-
-		if self._stuck then
-			-- If _stucktimer is missing for some reason, assume the maximum
-			if not self._stucktimer then
-				self._stucktimer = ARROW_TIMEOUT
-			end
-			out.stuckstarttime = minetest.get_gametime() - self._stucktimer
 		end
 
 		if self._owner then
@@ -203,15 +182,6 @@ local arrow_entity = {
 			local field = save_fields[i]
 			self["_"..field] = data[field]
 		end
-
-		if data.stuckstarttime then
-			-- First, check if the stuck arrow is aleady past its life timer.
-			-- If yes, delete it.
-			self._stucktimer = minetest.get_gametime() - data.stuckstarttime
-		end
-
-		-- Perform a stuck recheck on the next step.
-		self._stuckrechecktimer = STUCK_RECHECK_TIME
 
 		local vl_projectile_data = {}
 		if data._owner then
