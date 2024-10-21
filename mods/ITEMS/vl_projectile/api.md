@@ -23,6 +23,7 @@ Arguments:
     * If `type` is "entity" then the additional parameter `objet` will be provided.
   * `behaviors`: a list of behavior callbacks that define the projectile's behavior. This mod provides the following
                  behaviors: `vl_projectiles.collides_with_solids`, `vl_projectiles.collides_with_entities` and `vl_projectiles.raycast_collides_with_entities`
+  * `maximum_time`: number of seconds until projectiles are removed.
   * `sounds`: sounds for this projectile. All fields take a table with three parameters corresponding to the
               three parameters for `minetest.play_sound()`. Supported sounds are:
     * `on_collision`: played when no other more specific sound is defined. May be a function of type `function(projectile, entity_def, projectile_def, type, ...)`
