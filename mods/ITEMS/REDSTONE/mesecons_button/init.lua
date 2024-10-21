@@ -157,10 +157,6 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 
 				-- Push the button! Push, push, push the button!
 				if node_def.groups.button_push_by_arrow == 1 then
-					minetest.log("hit"..dump({
-						pos = pos,
-						node = node,
-					}))
 					mesecon.push_button(pos, node)
 				end
 			end
