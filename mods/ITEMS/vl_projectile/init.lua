@@ -233,8 +233,15 @@ function mod.has_tracer(self, dtime, entity_def, projectile_def)
 	})
 end
 
-function mod.replace_with_item_drop(self, pos, entity_def, projectile_def)
-	local item = self._arrow_item or projectile_def.item
+function mod.replace_with_item_drop(self, pos, projectile_def)
+	local item = self._arrow_item
+
+	if not item then
+		projectile_def = projectile_def or self._vl_projectile
+		if not projectile_def then return end
+
+		item = projectile_def.item
+	end
 
 	if self._collectable and not minetest.is_creative_enabled("") then
 		local item = minetest.add_item(pos, item)
@@ -269,7 +276,7 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 			local node = minetest.get_node(self._stuckin)
 			local node_def = minetest.registered_nodes[node.name]
 			if node_def and node_def.walkable == false then
-				mod.replace_with_item_drop(self, pos, entity_def, projectile_def)
+				mod.replace_with_item_drop(self, pos, projectile_def)
 				return
 			end
 		end
