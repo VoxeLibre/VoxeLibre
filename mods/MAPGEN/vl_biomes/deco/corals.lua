@@ -2,7 +2,9 @@
 local mod_mcl_structures = minetest.get_modpath("mcl_structures")
 local coral_min = vl_biomes.OCEAN_MIN
 local coral_max = -10
-local warm_oceans = vl_biomes.by_water_temp.warm
+local warm_oceans = table.copy(vl_biomes.by_water_temp.warm)
+for _, v in ipairs(vl_biomes.by_water_temp.lukewarm) do table.insert(warm_oceans, v) end
+--minetest.log("action", "Warm oceans: "..dump(warm_oceans,""))
 
 -- Coral Reefs
 for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
@@ -27,6 +29,9 @@ for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
 		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
+		spawn_by = "mcl_core:water_source",
+		check_offset = 1,
+		num_spawn_by = 12,
 	})
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
@@ -39,6 +44,9 @@ for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
 		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
+		spawn_by = "mcl_core:water_source",
+		check_offset = 1,
+		num_spawn_by = 12,
 	})
 
 	mcl_mapgen_core.register_decoration({
@@ -52,20 +60,9 @@ for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
 		biomes = warm_oceans,
 		flags = "force_placement, all_floors",
 		height = 1,
-		height_max = 1,
-	})
-	mcl_mapgen_core.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_ocean:horn_coral_block"},
-		sidelen = 16,
-		fill_ratio = 7,
-		y_min = coral_min,
-		y_max = coral_max,
-		decoration = "mcl_ocean:" .. c .. "_coral_fan",
-		biomes = warm_oceans,
-		flags = "force_placement, all_floors",
-		height = 1,
-		height_max = 1,
+		spawn_by = "mcl_core:water_source",
+		check_offset = 1,
+		num_spawn_by = 12,
 	})
 end
 
@@ -149,7 +146,7 @@ mcl_mapgen_core.register_decoration({
 	height_max = 1,
 	place_offset_y = -1,
 })
---rare CORAl easter egg
+--rare CORAl easter egg (multicolored coral)
 mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"group:sand", "mcl_core:gravel"},
@@ -161,5 +158,8 @@ mcl_mapgen_core.register_decoration({
 	schematic = mod_mcl_structures .. "/schematics/coral_cora.mts",
 	rotation = "random",
 	flags = "all_floors,force_placement",
+	spawn_by = "mcl_core:water_source",
+	check_offset = 1,
+	num_spawn_by = 12,
 })
 
