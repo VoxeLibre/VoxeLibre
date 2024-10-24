@@ -125,7 +125,7 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 			"group:plant", "group:mushroom",
 		},
 		allow_punching = function(self, _, _, object)
-			if self._owner == object:get_player_name() then
+			if self._owner == mcl_util.get_entity_id(object) then
 				return self.timer > 1
 			end
 
