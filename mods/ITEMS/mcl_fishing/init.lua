@@ -329,19 +329,19 @@ vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 		},
 		collides_with = { "group:liquid" },
 		on_collide_with_solid = function(self, pos, node)
-			if not self._last_pos then return end
-
-			local last_pos = self._last_pos
 			local player = self._owner
 
 			self._remove = true
 			self.object:remove()
 
+			-- Make sure the player field is valid for when we create the floating bobber
+			if not player then return end
+
 			local def = minetest.registered_nodes[node.name]
 			if not def then return end
 
 			if def.walkable or def.liquidtype == "flowing" or def.liquidtype == "source" then
-				local ent = minetest.add_entity(last_pos, "mcl_fishing:bobber_entity"):get_luaentity()
+				local ent = minetest.add_entity(pos, "mcl_fishing:bobber_entity"):get_luaentity()
 				ent.player = player
 				ent.child = true
 			end

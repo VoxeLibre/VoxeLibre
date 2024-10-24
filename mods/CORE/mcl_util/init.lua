@@ -706,3 +706,26 @@ function mcl_util.trace_nodes(pos, dir, allowed_nodes, limit)
 
 	return nil, limit, nil
 end
+function mcl_util.gen_uuid()
+	-- Generate a random 128-bit ID that can be assumed to be unique
+	-- To have a 1% chance of a collision, there would have to be 1.6x10^76 IDs generated
+	-- https://en.wikipedia.org/wiki/Birthday_problem#Probability_table
+	local u = {}
+	for i = 1,16 do
+		u[#u + 1] = string.format("%02X",math.random(1,255))
+	end
+	return table.concat(u)
+end
+function mcl_util.get_entity_id(entity)
+	if entity:is_player() then
+		return entity:get_player_name()
+	else
+		local le = entity:get_luaentity()
+		local id = le._uuid
+		if not id then
+			id = mcl_util.gen_uuid()
+			le._uuid = id
+		end
+		return id
+	end
+end

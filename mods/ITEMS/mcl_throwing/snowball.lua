@@ -55,7 +55,7 @@ vl_projectile.register("mcl_throwing:snowball_entity", {
 			vl_projectile.collides_with_entities,
 		},
 		allow_punching = function(self, _, _, object)
-			if self._owner == object:get_player_name() then
+			if self._owner == mcl_util.get_entity_id(object) then
 				return self.timer > 1
 			end
 

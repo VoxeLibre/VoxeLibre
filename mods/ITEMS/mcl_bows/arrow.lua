@@ -43,7 +43,7 @@ local arrow_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air",
+		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "vl_projectile",
 	},
 
 	_startpos=nil,
@@ -163,10 +163,6 @@ local arrow_entity = {
 			out[field] = self["_"..field]
 		end
 
-		if self._owner then
-			out._owner = self._owner:get_player_name()
-		end
-
 		return minetest.serialize(out)
 	end,
 	on_activate = function(self, staticdata, dtime_s)
@@ -183,11 +179,9 @@ local arrow_entity = {
 			self["_"..field] = data[field]
 		end
 
-		local vl_projectile_data = {}
-		if data._owner then
-			vl_projectile_data.owner = minetest.get_player_by_name(data._owner)
+		if not self._vl_projectile then
+			self._vl_projetile = {}
 		end
-		self._vl_projectile = vl_projectile_data
 
 		if data.shootername then
 			local shooter = minetest.get_player_by_name(data.shootername)
