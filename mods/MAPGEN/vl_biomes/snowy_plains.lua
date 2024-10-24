@@ -51,6 +51,7 @@ mcl_mapgen_core.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_mcl_foliage_palette_index = 2,
 })
 
 -- Rare spruce in Ice Plains
@@ -71,6 +72,7 @@ mcl_mapgen_core.register_decoration({
 	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_5.mts",
 	flags = "place_center_x, place_center_z",
+	-- not supported by spruce leaves _mcl_foliage_palette_index = 2,
 })
 
 -- Place tall grass on snow in Ice Plains
@@ -93,9 +95,10 @@ mcl_mapgen_core.register_decoration({
 	schematic = {
 		size = vector.new(1, 2, 1),
 		data = {
-			{name = "mcl_core:dirt_with_grass", force_place = true, },
+			{name = "mcl_core:dirt_with_grass", force_place = true, param2 = 10 },
 			{name = "mcl_flowers:tallgrass", param2 = 10},
 		},
 	},
+	place_y_offset = -1,
 })
 

@@ -54,6 +54,7 @@ mcl_mapgen_core.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_swamp.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_mcl_foliage_palette_index = 5,
 })
 
 -- Lily pad
@@ -75,7 +76,7 @@ for d = 1, lilydepth do
 		deco_type = "schematic",
 		schematic = {
 			size = vector.new(1, height, 1),
-			data = lily_schem,
+			data = table.copy(lily_schem),
 		},
 		place_on = "mcl_core:dirt",
 		sidelen = 16,

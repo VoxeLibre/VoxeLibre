@@ -34,6 +34,36 @@ local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superfl
 
 -- Biomes by water temperature, for decorations and structures
 vl_biomes.by_water_temp = {}
+vl_biomes.overworld_biomes = {}
+-- TODO: also add a list of nether and end biomes
+
+-- Fix the grass color via decoration mechanism,
+-- by replacing node_top with node_top and param2 set
+-- TODO: this can be removed when param2 support to biomes is added
+-- <https://github.com/minetest/minetest/issues/15319>
+vl_biomes.fix_grass_color = function(def)
+	if (def._mcl_grass_palette_index or 0) == 0 then return end -- not necessary
+	-- for now, only support node_top.
+	local name = def.node_top
+	local ndef = minetest.registered_nodes[name]
+	if ndef and (ndef.groups.grass_palette or 0) ~= 0 and ndef.paramtype2 == "color" then -- no mixed types
+		local param2 = def._mcl_grass_palette_index
+		mcl_mapgen_core.register_decoration({
+			name = "Set "..name.." param2 in "..def.name,
+			rank = 10, -- run early to not modify other decorations
+			deco_type = "simple",
+			place_on = {name},
+			biomes = { def.name },
+			y_min = def.y_min or vl_biomes.overworld_min,
+			y_max = def.y_max or vl_biomes.overworld_max,
+			fill_ratio = 10, -- everything
+			decoration = name,
+			param2 = param2,
+			flags = "force_placement",
+			place_offset_y = -1, -- replace the node itself
+		})
+	end
+end
 
 -- Register a biome
 -- This API has a few extensions over minetest.register_biome:
@@ -121,10 +151,16 @@ vl_biomes.register_biome = function(def)
 		end
 	end
 	minetest.register_biome(def)
+	if is_overworld and def.y_max > 0 then table.insert(vl_biomes.overworld_biomes, def.name) end
+	vl_biomes.fix_grass_color(def)
 	-- minetest.log("action", "registering biome "..tostring(def.name))
 	for _, sdef in ipairs(subbiomes) do
 		-- minetest.log("action", "registering subbiome "..tostring(sdef.name))
 		minetest.register_biome(sdef)
+		if is_overworld and sdef.y_max > 0 then -- omit _ocean
+			table.insert(vl_biomes.overworld_biomes, sdef.name)
+		end
+		vl_biomes.fix_grass_color(sdef) -- usually a no-op
 	end
 end
 
@@ -148,6 +184,7 @@ function vl_biomes.register_spruce_decoration(seed, offset, sprucename, biomes, 
 		y_max = vl_biomes.overworld_max,
 		schematic = mod_mcl_core .. "/schematics/" .. sprucename,
 		flags = "place_center_x, place_center_z",
+		-- not supported by spruceleaves: _mcl_foliage_palette_index = foliage_color,
 	})
 end
 
