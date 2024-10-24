@@ -414,7 +414,7 @@ function mcl_mobs.register_arrow(name, def)
 			allow_punching = function(self, entity_def, projectile_def, object)
 				if def.allow_punching and not def.allow_punching(self, entity_def, projectile_def, object) then return false end
 				if self.timer > 2 then return true end
-				if self._owner and object == self._owner.object then return false end
+				if self._owner and mcl_util.get_entity_id(object) == self._owner then return false end
 
 				return true
 			end,
@@ -460,7 +460,7 @@ function mcl_mobs.register_arrow(name, def)
 		on_punch = def.on_punch or function(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
 			local vel = self.object:get_velocity():length()
 			self.object:set_velocity(dir * vel)
-			self._puncher = puncher
+			self._owner = mcl_util.get_entity_id(puncher)
 		end,
 		automatic_face_movement_dir = def.rotate
 			and (def.rotate - (math.pi / 180)) or false,
