@@ -87,6 +87,7 @@ vl_biomes.register_biome = function(def)
 		if def._ocean then
 			local odef = def._ocean
 			if odef._mcl_skycolor == nil then odef._mcl_skycolor = vl_biomes.ocean_skycolor end
+			if odef._mcl_water_temp == nil and def._mcl_water_temp then odef._mcl_water_temp = def._mcl_water_temp end
 			if odef._mcl_water_temp == nil or odef._mcl_water_temp == "default" then odef._mcl_water_temp = "ocean" end
 			if odef._mcl_waterfogcolor == nil then odef._mcl_waterfogcolor = waterfogcolor[odef._mcl_water_temp] end
 			if odef.y_min == nil and not odef.min_pos then odef.y_min = vl_biomes.OCEAN_MIN end
@@ -146,7 +147,7 @@ vl_biomes.register_biome = function(def)
 		-- build a biome map based on water temperature
 		if k == "_ocean" and sdef._mcl_water_temp then
 			local temp = sdef._mcl_water_temp
-			if not vl_biomes.by_water_temp[temp] then vl_biomes.by_water_temp[temp] = {} end
+			if vl_biomes.by_water_temp[temp] == nil then vl_biomes.by_water_temp[temp] = {} end
 			table.insert(vl_biomes.by_water_temp[temp], sdef.name)
 		end
 	end
@@ -326,10 +327,11 @@ elseif mg_name ~= "v6" then
 	dofile(modpath.."/deco/corals.lua")
 	dofile(modpath.."/deco/fern.lua")
 	dofile(modpath.."/deco/flowers.lua")
+	dofile(modpath.."/deco/kelp.lua")
 	dofile(modpath.."/deco/mushrooms.lua")
 	dofile(modpath.."/deco/pumpkin.lua")
 	dofile(modpath.."/deco/reeds.lua")
-	dofile(modpath.."/deco/seagrass_kelp.lua")
+	dofile(modpath.."/deco/seagrass.lua")
 	dofile(modpath.."/deco/snowy_dirt.lua")
 	dofile(modpath.."/deco/sweet_berry.lua")
 	dofile(modpath.."/deco/tallgrass.lua")
