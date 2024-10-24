@@ -54,6 +54,7 @@ mcl_mapgen_core.register_decoration({
 	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_lollipop.mts",
 	flags = "place_center_x, place_center_z",
+	-- not supported by spruce leaves _mcl_foliage_palette_index = 10,
 })
 
 -- Matchstick spruce: Very few leaves, tall trunk
@@ -74,6 +75,7 @@ mcl_mapgen_core.register_decoration({
 	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_matchstick.mts",
 	flags = "place_center_x, place_center_z",
+	-- not supported by spruce leaves _mcl_foliage_palette_index = 10,
 })
 
 -- Common spruce

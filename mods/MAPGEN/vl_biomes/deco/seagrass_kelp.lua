@@ -1,41 +1,30 @@
--- TODO: move to mcl_ocean?
-local function register_seagrass_decoration(grasstype, offset, scale, biomes)
-	local seed, nodes, surfaces, param2, param2_max, y_max
-	if grasstype == "seagrass" then
-		seed = 16
-		surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel", "mcl_core:redsand"}
-		nodes = {"mcl_ocean:seagrass_dirt", "mcl_ocean:seagrass_sand", "mcl_ocean:seagrass_gravel", "mcl_ocean:seagrass_redsand"}
-		y_max = 0
-	elseif grasstype == "kelp" then
-		seed = 32
-		param2 = 16
-		param2_max = 96
-		surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel"}
-		nodes = {"mcl_ocean:kelp_dirt", "mcl_ocean:kelp_sand", "mcl_ocean:kelp_gravel"}
-		y_max = -6
-	end
-	local noise = {
-		offset = offset,
-		scale = scale,
-		spread = vector.new(100, 100, 100),
-		seed = seed,
-		octaves = 3,
-		persist = 0.6,
-	}
+-- TODO: move to mcl_ocean with a late registration (when biomes are registered)?
+local function register_seagrass_decoration(offset, scale, biomes)
+	local surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel", "mcl_core:redsand"}
+	local nodes = {"mcl_ocean:seagrass_dirt", "mcl_ocean:seagrass_sand", "mcl_ocean:seagrass_gravel", "mcl_ocean:seagrass_redsand"}
 
 	for s = 1, #surfaces do
 		mcl_mapgen_core.register_decoration({
+			name = "Seagrass on "..surfaces[s],
 			deco_type = "simple",
 			rank = 1500,
 			place_on = {surfaces[s]},
 			sidelen = 16,
-			noise_params = noise,
+			noise_params = {
+				offset = offset,
+				scale = scale,
+				spread = vector.new(100, 100, 100),
+				seed = 16,
+				octaves = 3,
+				persist = 0.6,
+			},
 			biomes = biomes,
 			y_min = vl_biomes.DEEP_OCEAN_MIN,
-			y_max = y_max,
+			y_max = 0,
 			decoration = nodes[s],
-			param2 = param2,
-			param2_max = param2_max,
+			--param2 = 3, -- always use meshoption 3
+			param2 = 0,
+			param2_max = 3,
 			place_offset_y = -1,
 			flags = "force_placement",
 		})
@@ -44,7 +33,7 @@ end
 
 -- TODO: use temperature classes, rather than hardcoding biome lists here?
 -- Also would allow for more/less seagrass depending on temperature class
-register_seagrass_decoration("seagrass", 0, 0.5, {
+register_seagrass_decoration(0, 0.5, {
 	"ColdTaiga_ocean",
 	"ExtremeHills_ocean",
 	"ExtremeHillsM_ocean",
@@ -116,7 +105,37 @@ register_seagrass_decoration("seagrass", 0, 0.5, {
 	"ExtremeHills_beach",
 })
 
-register_seagrass_decoration("kelp", -0.5, 1, {
+local function register_kelp_decoration(offset, scale, biomes)
+	local surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel"}
+	local nodes = {"mcl_ocean:kelp_dirt", "mcl_ocean:kelp_sand", "mcl_ocean:kelp_gravel"}
+	for s = 1, #surfaces do
+		mcl_mapgen_core.register_decoration({
+			name = "Kelp on "..surfaces[s],
+			deco_type = "simple",
+			rank = 1500,
+			place_on = {surfaces[s]},
+			sidelen = 16,
+			noise_params = {
+				offset = offset,
+				scale = scale,
+				spread = vector.new(100, 100, 100),
+				seed = 32,
+				octaves = 3,
+				persist = 0.6,
+			},
+			biomes = biomes,
+			y_min = vl_biomes.DEEP_OCEAN_MIN,
+			y_max = -6,
+			decoration = nodes[s],
+			param2 = 16,
+			param2_max = 96, -- height * 16
+			place_offset_y = -1,
+			flags = "force_placement",
+		})
+	end
+end
+
+register_kelp_decoration(-0.5, 1, {
 	"ExtremeHillsM_ocean",
 	"ExtremeHills+_ocean",
 	"MegaTaiga_ocean",
