@@ -23,7 +23,7 @@ function mcl_throwing.throw(throw_item, pos, dir, velocity, thrower)
 	local itemstring = ItemStack(throw_item):get_name()
 	local obj = vl_projectile.create(entity_mapping[itemstring], {
 		pos = pos,
-		owner = thrower,
+		owner_id = thrower,
 		dir = dir,
 		velocity = velocity,
 		drag = 3,
