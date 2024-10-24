@@ -231,9 +231,15 @@ local function sort_decorations()
 		if not deco_id then
 			error("Failed to register decoration "..tostring(def.name).." - name not unique?")
 		end
-		if def.gen_callback then
-			minetest.set_gen_notify({decoration = true}, {deco_id})
-			gennotify_map["decoration#" .. deco_id] = def
+		if def.name then
+			deco_id = minetest.get_decoration_id(def.name)
+			if not deco_id then
+				error("Failed to register decoration "..tostring(def.name).." - name not unique?")
+			end
+			if def.gen_callback then
+				minetest.set_gen_notify({decoration = true}, {deco_id})
+				gennotify_map["decoration#" .. deco_id] = def
+			end
 		end
 	end
 	pending_decorations = nil -- as we will not run again
