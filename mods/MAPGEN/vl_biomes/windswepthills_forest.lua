@@ -58,6 +58,7 @@ for i = 1, 4 do
 		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_" .. i .. ".mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
+		_mcl_foliage_palette_index = 11,
 	})
 end
 
@@ -80,6 +81,7 @@ mcl_mapgen_core.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_mcl_foliage_palette_index = 11,
 })
 
 mcl_mapgen_core.register_decoration({
@@ -100,6 +102,7 @@ mcl_mapgen_core.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_mcl_foliage_palette_index = 11,
 })
 
 -- Spruce
@@ -128,7 +131,7 @@ mcl_mapgen_core.register_decoration({
 	schematic = {
 		size = vector.new(1, 2, 1),
 		data = {
-			{name = "mcl_core:dirt_with_grass", force_place = true, },
+			{name = "mcl_core:dirt_with_grass", force_place = true, param2 = 8 },
 			{name = "mcl_flowers:tallgrass", param2 = 8},
 		},
 	},

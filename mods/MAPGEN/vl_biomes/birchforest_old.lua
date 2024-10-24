@@ -43,6 +43,7 @@ mcl_mapgen_core.register_decoration({
 	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_birch_tall.mts",
 	flags = "place_center_x, place_center_z",
+	_mcl_foliage_palette_index = 8,
 })
 
 mcl_mapgen_core.register_decoration({
@@ -66,4 +67,5 @@ mcl_mapgen_core.register_decoration({
 	rotation = "random",
 	spawn_by = "group:flower",
 	rank = 1550,
+	_mcl_foliage_palette_index = 8,
 })
