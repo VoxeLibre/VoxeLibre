@@ -80,8 +80,8 @@ function mod.update_projectile(self, dtime)
 
 	-- Update entity timer and remove expired projectiles
 	self.timer = (self.timer or 0) + dtime
-	local maximum_flight_time = entity_vl_projectile.maximum_time
-	if self.timer > maximum_flight_time then
+	local maximum_flight_time = entity_vl_projectile.maximum_time or 300
+	if (self.timer or 0) > maximum_flight_time then
 		self.removed = true
 		self.object:remove()
 		return
@@ -591,7 +591,11 @@ function mod.create(entity_id, options)
 
 	-- Update projectile parameters
 	local luaentity = obj:get_luaentity()
-	luaentity._owner = options.owner
+	if options.owner_id then
+		luaentity._owner = options.owner_id
+	else
+		luaentity._owner = mcl_util.get_entity_id(options.owner)
+	end
 	luaentity._starting_velocity = obj:get_velocity()
 	luaentity._vl_projectile = {
 		extra = options.extra,

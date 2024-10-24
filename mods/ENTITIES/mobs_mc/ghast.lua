@@ -133,8 +133,8 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 		}, nil)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, true)
 		local ent = mob:get_luaentity()
-		if (not ent or ent.health <= 0) and self._puncher and name == "mobs_mc:ghast" then
-			awards.unlock(self._puncher:get_player_name(), "mcl:fireball_redir_serv")
+		if (not ent or ent.health <= 0) and self._owner and minetest.get_player_by_name(self._owner) and name == "mobs_mc:ghast" then
+			awards.unlock(self._owner, "mcl:fireball_redir_serv")
 		end
 	end,
 
