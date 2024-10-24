@@ -1,28 +1,62 @@
 -- Large flowers
 local function register_large_flower(name, biomes, seed, offset)
-	mcl_mapgen_core.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = vector.new(1, 2, 1),
-			data = {
-				{name = "mcl_flowers:" .. name },
-				{name = "mcl_flowers:" .. name .. "_top" },
+	local ndef = minetest.registered_nodes["mcl_flowers:"..name]
+	local has_param2 = ndef and ndef.groups.grass_palette
+	local tdef = minetest.registered_nodes["mcl_flowers:"..name]
+	local thas_param2 = tdef and tdef.groups.grass_palette
+	if has_param2 then
+		for b = 1, #biomes do
+			local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index
+			local tparam2 = thas_param2 and param2 or nil
+			mcl_mapgen_core.register_decoration({
+				deco_type = "schematic",
+				schematic = {
+					size = vector.new(1, 2, 1),
+					data = {
+						{name = "mcl_flowers:" .. name, param2 = param2 },
+						{name = "mcl_flowers:" .. name .. "_top", param2 = tparam2 },
+					},
+				},
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+				sidelen = 16,
+				noise_params = {
+					offset = offset,
+					scale = 0.01,
+					spread = vector.new(300, 300, 300),
+					seed = seed,
+					octaves = 5,
+					persist = 0.62,
+				},
+				y_min = 1,
+				y_max = vl_biomes.overworld_max,
+				biomes = {biomes[b]},
+			})
+		end
+	else
+		mcl_mapgen_core.register_decoration({
+			deco_type = "schematic",
+			schematic = {
+				size = vector.new(1, 2, 1),
+				data = {
+					{name = "mcl_flowers:" .. name },
+					{name = "mcl_flowers:" .. name .. "_top" },
+				},
 			},
-		},
-		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-		sidelen = 16,
-		noise_params = {
-			offset = offset,
-			scale = 0.01,
-			spread = vector.new(300, 300, 300),
-			seed = seed,
-			octaves = 5,
-			persist = 0.62,
-		},
-		y_min = 1,
-		y_max = vl_biomes.overworld_max,
-		biomes = biomes,
-	})
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+			sidelen = 16,
+			noise_params = {
+				offset = offset,
+				scale = 0.01,
+				spread = vector.new(300, 300, 300),
+				seed = seed,
+				octaves = 5,
+				persist = 0.62,
+			},
+			y_min = 1,
+			y_max = vl_biomes.overworld_max,
+			biomes = biomes,
+		})
+	end
 end
 
 register_large_flower("rose_bush", {"Forest"}, 9350, -0.008)
@@ -34,23 +68,49 @@ register_large_flower("lilac", {"FlowerForest"}, 10600, 0.003)
 register_large_flower("sunflower", {"SunflowerPlains"}, 2940, 0.01)
 
 local function register_flower(name, biomes, seed, offset)
-	mcl_mapgen_core.register_decoration({
-		deco_type = "simple",
-		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-		sidelen = 16,
-		noise_params = {
-			offset = offset,
-			scale = 0.006,
-			spread = vector.new(100, 100, 100),
-			seed = seed,
-			octaves = 3,
-			persist = 0.6
-		},
-		y_min = 1,
-		y_max = vl_biomes.overworld_max,
-		biomes = biomes,
-		decoration = "mcl_flowers:" .. name,
-	})
+	local ndef = minetest.registered_nodes["mcl_flowers:"..name]
+	local has_param2 = ndef and ndef.groups.grass_palette
+	if has_param2 then
+		for b = 1, #biomes do
+			local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index
+			mcl_mapgen_core.register_decoration({
+				deco_type = "simple",
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+				sidelen = 16,
+				noise_params = {
+					offset = offset,
+					scale = 0.006,
+					spread = vector.new(100, 100, 100),
+					seed = seed,
+					octaves = 3,
+					persist = 0.6
+				},
+				y_min = 1,
+				y_max = vl_biomes.overworld_max,
+				biomes = {biomes[b]},
+				decoration = "mcl_flowers:" .. name,
+				param2 = param2
+			})
+		end
+	else
+		mcl_mapgen_core.register_decoration({
+			deco_type = "simple",
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+			sidelen = 16,
+			noise_params = {
+				offset = offset,
+				scale = 0.006,
+				spread = vector.new(100, 100, 100),
+				seed = seed,
+				octaves = 3,
+				persist = 0.6
+			},
+			y_min = 1,
+			y_max = vl_biomes.overworld_max,
+			biomes = biomes,
+			decoration = "mcl_flowers:" .. name,
+		})
+	end
 end
 
 local flower_biomes1 = {"Plains", "SunflowerPlains", "RoofedForest", "Forest", "BirchForest", "BirchForestM", "Taiga", "ColdTaiga", "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Savanna", "SavannaM", "ExtremeHills", "ExtremeHillsM", "ExtremeHills+", "ExtremeHills+_snowtop"}

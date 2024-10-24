@@ -47,6 +47,7 @@ mcl_mapgen_core.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_2.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_mcl_foliage_palette_index = 12,
 })
 mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
@@ -65,6 +66,7 @@ mcl_mapgen_core.register_decoration({
 	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
 	flags = "place_center_x, place_center_z",
+	_mcl_foliage_palette_index = 12,
 })
 -- Melon
 mcl_mapgen_core.register_decoration({

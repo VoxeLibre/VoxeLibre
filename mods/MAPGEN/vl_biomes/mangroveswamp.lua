@@ -71,6 +71,7 @@ mcl_mapgen_core.register_decoration({
 	flags = "place_center_x, place_center_z, force_placement",
 	rotation = "random",
 	gen_callback = mangrove_root_gennotify,
+	_mcl_foliage_palette_index = 6,
 })
 mcl_mapgen_core.register_decoration({
 	name = "mcl_biomes:mangrove_tree_2",
@@ -85,6 +86,7 @@ mcl_mapgen_core.register_decoration({
 	flags = "place_center_x, place_center_z, force_placement",
 	rotation = "random",
 	gen_callback = mangrove_root_gennotify,
+	_mcl_foliage_palette_index = 6,
 })
 mcl_mapgen_core.register_decoration({
 	name = "mcl_biomes:mangrove_tree_3",
@@ -99,6 +101,7 @@ mcl_mapgen_core.register_decoration({
 	flags = "place_center_x, place_center_z, force_placement",
 	rotation = "random",
 	gen_callback = mangrove_root_gennotify,
+	_mcl_foliage_palette_index = 6,
 })
 mcl_mapgen_core.register_decoration({
 	name = "mcl_biomes:mangrove_tree_4",
@@ -113,6 +116,7 @@ mcl_mapgen_core.register_decoration({
 	flags = "place_center_x, place_center_z, force_placement",
 	rotation = "random",
 	gen_callback = mangrove_root_gennotify,
+	_mcl_foliage_palette_index = 6,
 })
 mcl_mapgen_core.register_decoration({
 	name = "mcl_biomes:mangrove_tree_5",
@@ -127,6 +131,7 @@ mcl_mapgen_core.register_decoration({
 	flags = "place_center_x, place_center_z, force_placement",
 	rotation = "random",
 	gen_callback = mangrove_root_gennotify,
+	_mcl_foliage_palette_index = 6,
 })
 mcl_mapgen_core.register_decoration({
 	name = "mcl_biomes:mangrove_bee_nest",
@@ -151,6 +156,7 @@ mcl_mapgen_core.register_decoration({
 	spawn_by = "group:flower",
 	rank = 1550,
 	gen_callback = mangrove_root_gennotify,
+	_mcl_foliage_palette_index = 6,
 })
 mcl_mapgen_core.register_decoration({
 	deco_type = "simple",

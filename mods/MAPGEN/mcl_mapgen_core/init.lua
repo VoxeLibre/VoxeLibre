@@ -285,6 +285,7 @@ local function set_water_palette(minp,maxp,data2,area,nodes)
 	local biomemap = minetest.get_mapgen_object("biomemap")
 	if not biomemap then return end
 	local aream = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
+	-- FIXME: this relies on the voxelmanip already being written.
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
 	local lvm_used = false
 	for n=1, #nodes do
@@ -303,6 +304,7 @@ local function set_water_palette(minp,maxp,data2,area,nodes)
 	return lvm_used
 end
 
+--[[
 local function set_seagrass_param2(minp,maxp,data2,area,nodes)
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
 	local lvm_used = false
@@ -313,6 +315,7 @@ local function set_seagrass_param2(minp,maxp,data2,area,nodes)
 	end
 	return lvm_used
 end
+]]
 
 -- Below the bedrock, generate air/void
 local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
@@ -367,17 +370,19 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 	return lvm_used, lvm_used, deco, ores
 end
 
+--[[ replaced with decoration hack to replace grass nodes
 local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 (=color) of nodes which use the grass colour palette.
 	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
 		set_grass_palette(minp,maxp,data2,area,{"group:grass_palette"})
-end
+end]]
 
+--[[ replaced with schematic specialization per biome
 local function block_fixes_foliage(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 (=color) of nodes which use the foliage colour palette.
 	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
 		set_foliage_palette(minp,maxp,data2,area,{"group:foliage_palette", "group:foliage_palette_wallmounted"})
-end
+end]]
 
 local function block_fixes_water(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 (=color) of nodes which use the water colour palette.
@@ -385,11 +390,13 @@ local function block_fixes_water(vm, data, data2, emin, emax, area, minp, maxp, 
 		set_water_palette(minp,maxp,data2,area,{"group:water_palette"})
 end
 
+--[[ no longer necessary, we generate them with param2=3
 local function block_fixes_seagrass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 of seagrass to 3.
 	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
 		set_seagrass_param2(minp, maxp, data2, area, {"group:seagrass"})
 end
+]]
 
 -- End block fixes:
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
@@ -413,10 +420,10 @@ mcl_mapgen_core.register_generator("world_structure", world_structure, nil, 1, t
 mcl_mapgen_core.register_generator("end_fixes", end_basic, nil, 9999, true)
 
 if mg_name ~= "v6" and mg_name ~= "singlenode" then
-	mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
-	mcl_mapgen_core.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
+-- replaced with decoration hack: mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
+-- replaced with schema specialization: mcl_mapgen_core.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_water", block_fixes_water, nil, 9999, true)
-	mcl_mapgen_core.register_generator("block_fixes_seagrass", block_fixes_seagrass, nil, 9999, true)
+-- replaced with using param2=3 during generation mcl_mapgen_core.register_generator("block_fixes_seagrass", block_fixes_seagrass, nil, 9999, true)
 end
 
 if mg_name == "v6" then
@@ -424,6 +431,7 @@ if mg_name == "v6" then
 end
 
 -- still needed?
+--[[
 minetest.register_lbm({
 	label = "Fix grass palette indexes", -- This LBM fixes any incorrect grass palette indexes.
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",
@@ -436,8 +444,9 @@ minetest.register_lbm({
 			minetest.swap_node(pos, node)
 		end
 	end
-})
+})]]
 
+--[[ FIXME: not yet replaced
 minetest.register_lbm({
 	label = "Fix foliage palette indexes", -- Set correct palette indexes of foliage in old mapblocks.
 	name = "mcl_mapgen_core:fix_foliage_palette_indexes",
@@ -491,8 +500,10 @@ minetest.register_lbm({
 		end
 	end
 })
+]]--
 
---[[ No longer necessary? Ugly?
+-- Can we get rid of this ugly hack?
+--[[
 -- We go outside x and y for where trees are placed next to a biome that has already been generated.
 -- We go above maxp.y because trees can often get placed close to the top of a generated area and folliage may not
 -- be coloured correctly.

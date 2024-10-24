@@ -107,5 +107,6 @@ mcl_mapgen_core.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_mcl_foliage_palette_index = 4,
 })
 

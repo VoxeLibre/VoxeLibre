@@ -40,6 +40,7 @@ for a = 1, 7 do
 		schematic = mod_mcl_core .. "/schematics/mcl_core_acacia_" .. a .. ".mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
+		_mcl_foliage_palette_index = 3,
 	})
 end
 
