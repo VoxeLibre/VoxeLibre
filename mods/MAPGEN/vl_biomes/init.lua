@@ -268,6 +268,7 @@ elseif mg_name ~= "v6" then
 
 	dofile(modpath.."/plains.lua")
 	dofile(modpath.."/plains_sunflower.lua")
+	dofile(modpath.."/cherrygrove.lua")
 	dofile(modpath.."/savanna.lua")
 	dofile(modpath.."/savanna_windswept.lua")
 	dofile(modpath.."/desert.lua")
