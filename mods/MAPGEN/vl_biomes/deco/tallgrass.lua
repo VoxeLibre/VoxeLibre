@@ -35,7 +35,7 @@ end
 
 local grass_forest = {"Plains", "Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Swampland", }
 local grass_mpf = {"MesaPlateauF_grasstop"}
-local grass_plains = {"Plains", "SunflowerPlains", "JungleEdge", "JungleEdgeM", "MangroveSwamp"}
+local grass_plains = {"Plains", "SunflowerPlains", "CherryGrove", "JungleEdge", "JungleEdgeM", "MangroveSwamp"}
 local grass_savanna = {"Savanna", "SavannaM"}
 local grass_sparse = {"ExtremeHills", "ExtremeHills+", "ExtremeHills+_snowtop", "ExtremeHillsM", "Jungle"}
 local grass_mpfm = {"MesaPlateauFM_grasstop"}
@@ -96,14 +96,14 @@ local function register_doubletall_grass(offset, scale, biomes)
 			},
 			y_min = 1,
 			y_max = vl_biomes.overworld_max,
-			biomes = biomes,
+			biomes = bs,
 		})
 	end
 end
 
 register_doubletall_grass(-0.0005, -0.3, {"BambooJungle", "BambooJungleM", "BambooJungleEdge"})
 register_doubletall_grass(-0.01, 0.03, {"Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Taiga"})
-register_doubletall_grass(-0.002, 0.03, {"Plains", "SunflowerPlains"})
+register_doubletall_grass(-0.002, 0.03, {"Plains", "SunflowerPlains", "CherryGrove"})
 register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"})
 
 mcl_mapgen_core.register_decoration({
