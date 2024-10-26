@@ -1,7 +1,16 @@
 -- Template to register a grass decoration
 local function register_grass_decoration(offset, scale, biomes)
+	local bmap = {}
 	for b = 1, #biomes do
-		local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index
+		if minetest.registered_biomes[biomes[b]] then -- ignore missing biomes
+			local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index or 0
+			if not bmap[param2] then bmap[param2] = {} end
+			table.insert(bmap[param2], biomes[b])
+		else
+			minetest.log("warning", "Biome not found: "..biomes[b])
+		end
+	end
+	for param2, bs in pairs(bmap) do
 		mcl_mapgen_core.register_decoration({
 			deco_type = "simple",
 			rank = 1500,
@@ -15,7 +24,7 @@ local function register_grass_decoration(offset, scale, biomes)
 				octaves = 3,
 				persist = 0.6
 			},
-			biomes = { biomes[b] },
+			biomes = bs,
 			y_min = 1,
 			y_max = vl_biomes.overworld_max,
 			decoration = "mcl_flowers:tallgrass",
@@ -53,8 +62,17 @@ register_grass_decoration(-0.03, 1, {"BambooJungle", "BambooJungleM", "BambooJun
 
 -- Doubletall grass registration helper
 local function register_doubletall_grass(offset, scale, biomes)
+	local bmap = {}
 	for b = 1, #biomes do
-		local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index
+		if minetest.registered_biomes[biomes[b]] then -- ignore missing biomes
+			local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index or 0
+			if not bmap[param2] then bmap[param2] = {} end
+			table.insert(bmap[param2], biomes[b])
+		else
+			minetest.log("warning", "Biome not found: "..biomes[b])
+		end
+	end
+	for param2, bs in pairs(bmap) do
 		mcl_mapgen_core.register_decoration({
 			deco_type = "schematic",
 			rank = 1500,
