@@ -72,18 +72,24 @@ local axolotl = {
 	fly = true,
 	fly_in = { "mcl_core:water_source", "mclx_core:river_water_source" },
 	breathes_in_water = true,
-	jump = true,
+	jump = false, -- would get them out of the water too often
 	damage = 2,
 	reach = 2,
 	attack_type = "dogfight",
 	attack_animals = true,
 	specific_attack = {
-		"extra_mobs_cod",
-		"extra_mobs_glow_squid",
-		"extra_mobs_salmon",
-		"extra_mobs_tropical_fish",
-		"mobs_mc_squid"
-		 },
+		"mobs_mc:cod",
+		"mobs_mc:glow_squid",
+		"mobs_mc:salmon",
+		"mobs_mc:tropical_fish",
+		"mobs_mc:squid",
+		"mobs_mc:zombie", -- todo: only drowned?
+		"mobs_mc:baby_zombie",
+		"mobs_mc:husk",
+		"mobs_mc:baby_husk",
+		"mobs_mc:guardian_elder",
+		"mobs_mc:guardian",
+	},
 	runaway = true,
 }
 
