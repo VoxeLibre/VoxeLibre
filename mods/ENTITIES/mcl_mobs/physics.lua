@@ -59,9 +59,7 @@ end
 
 -- Return true if object is in view_range
 function mob_class:object_in_range(object)
-	if not object then
-		return false
-	end
+	if not object then return false end
 	local factor
 	-- Apply view range reduction for special player armor
 	if object:is_player() then
@@ -141,12 +139,7 @@ function mob_class:item_drop(cooked, looting_level)
 			end
 
 			if obj and obj:get_luaentity() then
-
-				obj:set_velocity({
-					x = math.random(-10, 10) / 9,
-					y = 6,
-					z = math.random(-10, 10) / 9,
-				})
+				obj:set_velocity(vector.new((math.random() - 0.5) * 1.5, 6, (math.random() - 0.5) * 1.5))
 			elseif obj then
 				obj:remove() -- item does not exist
 			end
@@ -854,10 +847,7 @@ end
 -- falling and fall damage
 -- returns true if mob died
 function mob_class:falling(pos, moveresult)
-	if self.fly and self.state ~= "die" then
-		return
-	end
-
+	if self.fly and self.state ~= "die" then return end
 	if not self.fall_speed then self.fall_speed = DEFAULT_FALL_SPEED end
 
 	if mcl_portals ~= nil then
@@ -870,10 +860,10 @@ function mob_class:falling(pos, moveresult)
 	local v = self.object:get_velocity()
 	if v then
 		local new_acceleration
-		if v.y > 0 then
-			-- apply gravity when moving up
-			new_acceleration = vector.new(0, DEFAULT_FALL_SPEED, 0)
-		elseif v.y <= 0 and v.y > self.fall_speed then
+		if v.y > 0 and v.y < -0.5 * DEFAULT_FALL_SPEED then
+			-- when moving up, always use gravity
+			new_acceleration = vector.new(0, 0.5 * DEFAULT_FALL_SPEED, 0)
+		elseif v.y <= 0 and v.y > 0.5 * self.fall_speed then
 			-- fall downwards at set speed
 			if moveresult and moveresult.touching_ground then
 				-- when touching ground, retain a minimal gravity to keep the touching_ground flag
@@ -886,7 +876,6 @@ function mob_class:falling(pos, moveresult)
 			-- stop accelerating once max fall speed hit
 			new_acceleration = vector.zero()
 		end
-
 		self.object:set_acceleration(new_acceleration)
 	end
 
@@ -896,14 +885,14 @@ function mob_class:falling(pos, moveresult)
 
 	if registered_node.groups.lava then
 		if acc and self.floats_on_lava == 1 then
-			self.object:set_acceleration(vector.new(0, -self.fall_speed / (math.max(1, v.y) ^ 2), 0))
+			self.object:set_acceleration(vector.new(0, -self.fall_speed / math.max(1, v.y^2), 0))
 		end
 	end
 
 	-- in water then float up
 	if registered_node.groups.water then
 		if acc and self.floats == 1 and minetest.registered_nodes[node_ok(vector.offset(pos,0,self.collisionbox[5] -0.25,0)).name].groups.water then
-			self.object:set_acceleration(vector.new(0, -self.fall_speed / (math.max(1, v.y) ^ 2), 0))
+			self.object:set_acceleration(vector.new(0, -self.fall_speed / math.max(1, v.y^2), 0))
 		end
 	else
 		-- fall damage onto solid ground
@@ -927,13 +916,9 @@ end
 
 function mob_class:check_water_flow()
 	-- Add water flowing for mobs from mcl_item_entity
-	local p, node, nn, def
-	p = self.object:get_pos()
-	node = minetest.get_node_or_nil(p)
-	if node then
-		nn = node.name
-		def = minetest.registered_nodes[nn]
-	end
+	local p = self.object:get_pos()
+	local node = minetest.get_node_or_nil(p)
+	local def = node and minetest.registered_nodes[node.name]
 
 	-- Move item around on flowing liquids
 	if def and def.liquidtype == "flowing" then
@@ -953,9 +938,7 @@ function mob_class:check_water_flow()
 
 			self.physical_state = true
 			self._flowing = true
-			self.object:set_properties({
-				physical = true
-			})
+			self.object:set_properties({ physical = true })
 			return
 		end
 	elseif self._flowing == true then

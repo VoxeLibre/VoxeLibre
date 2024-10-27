@@ -413,11 +413,7 @@ local function on_step_work(self, dtime, moveresult)
 
 	self:check_water_flow()
 
-	if not self._jumping_cliff then
-		self._can_jump_cliff = self:can_jump_cliff()
-	else
-		self._can_jump_cliff = false
-	end
+	self._can_jump_cliff = not self._jumping_cliff and self:can_jump_cliff()
 
 	self:flop()
 
@@ -503,26 +499,24 @@ end
 
 -- main mob function
 function mob_class:on_step(dtime, moveresult)
-	if not DEVELOPMENT then
-		-- Removed as bundled Lua (5.1 doesn't support xpcall)
-		--local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
-		local status, retVal = pcall(on_step_work, self, dtime, moveresult)
-		if status then
-			return retVal
-		else
-			warn_user_error ()
-			local pos = self.object:get_pos()
-			if pos then
-				local node = minetest.get_node(pos)
-				if node and node.name == "ignore" then
-					minetest.log("warning", "Pos is ignored: " .. dump(pos))
-				end
-			end
-			log_error (dump(retVal), dump(pos), dump(self))
-		end
-	else
-		return on_step_work (self, dtime, moveresult)
+	if DEVELOPMENT then
+		return on_step_work(self, dtime, moveresult)
 	end
+	-- Removed as bundled Lua (5.1 doesn't support xpcall)
+	--local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
+	local status, retVal = pcall(on_step_work, self, dtime, moveresult)
+	if status then
+		return retVal
+	end
+	warn_user_error ()
+	local pos = self.object:get_pos()
+	if pos then
+		local node = minetest.get_node(pos)
+		if node and node.name == "ignore" then
+			minetest.log("warning", "Pos is ignored: " .. dump(pos))
+		end
+	end
+	log_error (dump(retVal), dump(pos), dump(self))
 end
 
 local timer = 0

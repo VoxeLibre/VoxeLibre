@@ -755,8 +755,9 @@ function mob_class:go_to_pos(b)
 	if not b then return end
 	local s = self.object:get_pos()
 	if vector.distance(b,s) < .5 then return true end
+	if b.y > s.y then self:do_jump() end
 	self:turn_in_direction(b.x - s.x, b.z - s.z, 2)
-	self:set_velocity(self.follow_velocity)
+	self:set_velocity(self.walk_velocity)
 	self:set_animation("walk")
 end
 
@@ -909,10 +910,10 @@ function mob_class:do_states_walk()
 	-- otherwise randomly turn
 	elseif random() <= 0.3 then
 		local home = self._home or self._bed
-		if home and random() < 0.3 then
+		if home and random() < 0.1 then
 			self:turn_in_direction(home.x - s.x, home.z - s.z, 8)
 		else
-			self:turn_by(PIHALF * (random() - 0.5), 10)
+			self:turn_by(PIQUARTER * (random() - 0.5), 10)
 		end
 	end
 	self:set_velocity(self.walk_velocity)
