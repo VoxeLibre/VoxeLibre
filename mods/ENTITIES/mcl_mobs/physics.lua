@@ -7,28 +7,23 @@ local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
 local PI = math.pi
-local TWOPI = 2 * PI
+local HALFPI = 0.5 * PI
+local TWOPI = 2 * PI -- aka tau, but not very common
+local random = math.random
+local min = math.min
+local max = math.max
+local floor = math.floor
+local abs = math.abs
 local atan2 = math.atan2
+local sin = math.sin
+local cos = math.cos
+local node_ok = mcl_mobs.node_ok
 
 local PATHFINDING = "gowp"
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mob_active_range = tonumber(minetest.settings:get("mcl_mob_active_range")) or 48
 local show_health = false
-
--- get node but use fallback for nil or unknown
-local node_ok = function(pos, fallback)
-
-	fallback = fallback or mcl_mobs.fallback_node
-
-	local node = minetest.get_node_or_nil(pos)
-
-	if node and minetest.registered_nodes[node.name] then
-		return node
-	end
-
-	return minetest.registered_nodes[fallback]
-end
 
 -- check if within physical map limits (-30911 to 30927)
 local function within_limits(pos, radius)
@@ -111,24 +106,21 @@ function mob_class:item_drop(cooked, looting_level)
 
 		local num = 0
 		local do_common_looting = (looting_level > 0 and looting_type == "common")
-		if math.random() < chance then
-			num = math.random(dropdef.min or 1, dropdef.max or 1)
+		if random() < chance then
+			num = random(dropdef.min or 1, dropdef.max or 1)
 		elseif not dropdef.looting_ignore_chance then
 			do_common_looting = false
 		end
 
 		if do_common_looting then
-			num = num + math.floor(math.random(0, looting_level) + 0.5)
+			num = num + floor(random(0, looting_level) + 0.5)
 		end
 
 		if num > 0 then
 			item = dropdef.name
 
 			if cooked then
-
-				local output = minetest.get_craft_result({
-					method = "cooking", width = 1, items = {item}})
-
+				local output = minetest.get_craft_result({method = "cooking", width = 1, items = {item}})
 				if output and output.item and not output.item:is_empty() then
 					item = output.item:get_name()
 				end
@@ -136,12 +128,12 @@ function mob_class:item_drop(cooked, looting_level)
 
 			for x = 1, num do
 				obj = minetest.add_item(pos, ItemStack(item .. " " .. 1))
-			end
 
-			if obj and obj:get_luaentity() then
-				obj:set_velocity(vector.new((math.random() - 0.5) * 1.5, 6, (math.random() - 0.5) * 1.5))
-			elseif obj then
-				obj:remove() -- item does not exist
+				if obj and obj:get_luaentity() then
+					obj:set_velocity(vector.new((random() - 0.5) * 1.5, 6, (random() - 0.5) * 1.5))
+				elseif obj then
+					obj:remove() -- item does not exist
+				end
 			end
 		end
 	end
@@ -199,22 +191,18 @@ function mob_class:set_velocity(v)
 	end
 	if v > 0 then
 		local yaw = (self.object:get_yaw() or 0) + self.rotate
-		local x = ((-math.sin(yaw) * v) + c_x) * .4
-		local z = (( math.cos(yaw) * v) + c_z) * .4
+		local x = ((-sin(yaw) * v) + c_x) * .4
+		local z = (( cos(yaw) * v) + c_z) * .4
 		if not self.acc then
 			self.acc = vector.new(x, 0, z)
 		else
-			self.acc.x = x
-			self.acc.y = 0
-			self.acc.z = z
+			self.acc.x, self.acc.y, self.acc.z = x, 0, z
 		end
 	else -- allow standing mobs to be pushed
 		if not self.acc then
 			self.acc = vector.new(c_x * .2, 0, c_z * .2)
 		else
-			self.acc.x = c_x * .2
-			self.acc.y = 0
-			self.acc.z = c_z * .2
+			self.acc.x, self.acc.y, self.acc.z = c_x * .2, 0, c_z * .2
 		end
 	end
 end
@@ -237,7 +225,7 @@ function mob_class:update_roll()
 	local cbox = table.copy(self.collisionbox)
 	local acbox = self.object:get_properties().collisionbox
 
-	if math.abs(cbox[2] - acbox[2]) > 0.1 then
+	if abs(cbox[2] - acbox[2]) > 0.1 then
 		was_Fleckenstein = true
 	end
 
@@ -264,7 +252,7 @@ function mob_class:turn_by(angle, delay, dtime)
 end
 -- Turn into a direction (e.g., to the player, or away)
 function mob_class:turn_in_direction(dx, dz, delay, dtime)
-	if math.abs(dx) == 0 and math.abs(dz) == 0 then return self.object:get_yaw() + self.rotate end
+	if abs(dx) == 0 and abs(dz) == 0 then return self.object:get_yaw() + self.rotate end
 	return self:set_yaw(-atan2(dx, dz) - self.rotate, delay, dtime)
 end
 -- set and return valid yaw
@@ -282,6 +270,7 @@ function mob_class:check_smooth_rotation(dtime)
 		self:set_yaw(self._turn_to, .1)
 		self._turn_to = nil
 	end
+	if not self.target_yaw then return end
 
 	local delay = self.delay
 	local initial_yaw = self.object:get_yaw() or 0
@@ -299,7 +288,7 @@ function mob_class:check_smooth_rotation(dtime)
 	end
 	--[[ needed? if self.acc then
 		local change = yaw - initial_yaw
-		local si, co = math.sin(change), math.cos(change)
+		local si, co = sin(change), cos(change)
 		self.acc.x, self.acc.y = co * self.acc.x - si * self.acc.y, si * self.acc.x + co * self.acc.y
 	end ]]--
 	self.object:set_yaw(yaw)
@@ -416,7 +405,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 
 			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
 				local pos = self.object:get_pos()
-				local xp_amount = math.random(self.xp_min, self.xp_max)
+				local xp_amount = random(self.xp_min, self.xp_max)
 
 				if not mcl_sculk.handle_death(pos, xp_amount) then
 					--minetest.log("Xp not thrown")
@@ -489,7 +478,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 	elseif self.animation and self.animation.die_start and self.animation.die_end then
 		local frames = self.animation.die_end - self.animation.die_start
 		local speed = self.animation.die_speed or 15
-		length = math.max(frames / speed, 0) + DEATH_DELAY
+		length = max(frames / speed, 0) + DEATH_DELAY
 		self:set_animation( "die")
 	else
 		length = 1 + DEATH_DELAY
@@ -718,7 +707,7 @@ function mob_class:do_env_damage()
 		end
 
 		if drowning then
-			self.breath = math.max(0, self.breath - 1)
+			self.breath = max(0, self.breath - 1)
 			mcl_mobs.effect(pos, 2, "bubble.png", nil, nil, 1, nil)
 			if self.breath <= 0 then
 				local dmg
@@ -735,7 +724,7 @@ function mob_class:do_env_damage()
 				return true
 			end
 		else
-			self.breath = math.min(self.breath_max, self.breath + 1)
+			self.breath = min(self.breath_max, self.breath + 1)
 		end
 	end
 
@@ -801,7 +790,7 @@ end
 
 function mob_class:damage_mob(reason,damage)
 	if not self.health then return end
-	damage = math.floor(damage)
+	damage = floor(damage)
 	if damage > 0 then
 		self.health = self.health - damage
 
@@ -850,49 +839,42 @@ function mob_class:falling(pos, moveresult)
 	if self.fly and self.state ~= "die" then return end
 	if not self.fall_speed then self.fall_speed = DEFAULT_FALL_SPEED end
 
+	-- Gravity
+	local v = self.object:get_velocity()
+	if v then
+		if v.y > 0 or (v.y <= 0 and v.y > self.fall_speed) then
+			-- fall downwards at set speed
+			if moveresult and moveresult.touching_ground then
+				-- when touching ground, retain a minimal gravity to keep the touching_ground flag
+				-- but also to not get upwards acceleration with large dtime when on bouncy ground
+				self.object:set_acceleration(vector.new(0, self.fall_speed * 0.01, 0))
+			else
+				self.object:set_acceleration(vector.new(0, self.fall_speed, 0))
+			end
+		else
+			-- stop accelerating once max fall speed hit
+			self.object:set_acceleration(vector.zero())
+		end
+	end
+
 	if mcl_portals ~= nil then
 		if mcl_portals.nether_portal_cooloff(self.object) then
 			return false -- mob has teleported through Nether portal - it's 99% not falling
 		end
 	end
 
-	-- floating in water (or falling)
-	local v = self.object:get_velocity()
-	if v then
-		local new_acceleration
-		if v.y > 0 and v.y < -0.5 * DEFAULT_FALL_SPEED then
-			-- when moving up, always use gravity
-			new_acceleration = vector.new(0, 0.5 * DEFAULT_FALL_SPEED, 0)
-		elseif v.y <= 0 and v.y > 0.5 * self.fall_speed then
-			-- fall downwards at set speed
-			if moveresult and moveresult.touching_ground then
-				-- when touching ground, retain a minimal gravity to keep the touching_ground flag
-				-- but also to not get upwards acceleration with large dtime when on bouncy ground
-				new_acceleration = vector.new(0, self.fall_speed * 0.01, 0)
-			else
-				new_acceleration = vector.new(0, self.fall_speed, 0)
-			end
-		else
-			-- stop accelerating once max fall speed hit
-			new_acceleration = vector.zero()
-		end
-		self.object:set_acceleration(new_acceleration)
-	end
-
-	local acc = self.object:get_acceleration()
-
 	local registered_node = minetest.registered_nodes[node_ok(pos).name]
 
 	if registered_node.groups.lava then
-		if acc and self.floats_on_lava == 1 then
-			self.object:set_acceleration(vector.new(0, -self.fall_speed / math.max(1, v.y^2), 0))
+		if self.floats_on_lava == 1 then
+			self.object:set_acceleration(vector.new(0, -self.fall_speed / max(1, v.y^2), 0))
 		end
 	end
 
 	-- in water then float up
 	if registered_node.groups.water then
-		if acc and self.floats == 1 and minetest.registered_nodes[node_ok(vector.offset(pos,0,self.collisionbox[5] -0.25,0)).name].groups.water then
-			self.object:set_acceleration(vector.new(0, -self.fall_speed / math.max(1, v.y^2), 0))
+		if self.floats == 1 and minetest.registered_nodes[node_ok(vector.offset(pos,0,self.collisionbox[5] -0.25,0)).name].groups.water then
+			self.object:set_acceleration(vector.new(0, -self.fall_speed / max(1, v.y^2), 0))
 		end
 	else
 		-- fall damage onto solid ground
@@ -952,7 +934,7 @@ function mob_class:check_dying()
 	if ((self.state and self.state=="die") or self:check_for_death()) and not self.animation.die_end then
 		local rot = self.object:get_rotation()
 		if rot then
-			rot.z = ((math.pi/2-rot.z)*.2)+rot.z
+			rot.z = ((HALFPI - rot.z) * .2) + rot.z
 			self.object:set_rotation(rot)
 		end
 		return true

@@ -12,30 +12,29 @@ local enable_pathfinding = true
 
 local TIME_TO_FORGET_TARGET = 15
 local PI = math.pi
+local HALFPI = PI * 0.5
 local random = math.random
+local min = math.min
+local floor = math.floor
+local ceil = math.ceil
+local abs = math.abs
+local cos = math.cos
+local sin = math.sin
+local atan2 = math.atan2
+local vector_offset = vector.offset
+local vector_new = vector.new
+local vector_copy = vector.copy
+local vector_distance = vector.distance
 
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
-	if self.docile_by_day == false then
-		return false
-	elseif self.docile_by_day == true
-	and self.time_of_day > 0.2
-	and self.time_of_day < 0.8 then
-		return true
-	end
+	return self.docile_by_day == true and self.time_of_day > 0.2 and self.time_of_day < 0.8
 end
 
 -- get this mob to attack the object
 function mob_class:do_attack(object)
-
-	if self.state == "attack" or self.state == "die" then
-		return
-	end
-
-
-	if object:is_player() and not minetest.settings:get_bool("enable_damage") then
-		return
-	end
+	if self.state == "attack" or self.state == "die" then return end
+	if object:is_player() and not minetest.settings:get_bool("enable_damage") then return end
 
 	self.attack = object
 	self.state = "attack"
@@ -47,21 +46,18 @@ function mob_class:do_attack(object)
 end
 
 -- blast damage to entities nearby
-local function entity_physics(pos,radius)
-
+local function entity_physics(pos, radius)
 	radius = radius * 2
 
 	local objs = minetest.get_objects_inside_radius(pos, radius)
 	local obj_pos, dist
-
 	for n = 1, #objs do
-
 		obj_pos = objs[n]:get_pos()
 
-		dist = vector.distance(pos, obj_pos)
+		dist = vector_distance(pos, obj_pos)
 		if dist < 1 then dist = 1 end
 
-		local damage = math.floor((4 / dist) * radius)
+		local damage = floor((4 / dist) * radius)
 		local ent = objs[n]:get_luaentity()
 
 		-- punches work on entities AND players
@@ -79,75 +75,57 @@ local height_switcher = false
 
 -- path finding and smart mob routine by rnd, line_of_sight and other edits by Elkien3
 function mob_class:smart_mobs(s, p, dist, dtime)
-
 	local s1 = self.path.lastpos
-
 	local target_pos = self.attack:get_pos()
 
 	-- is it becoming stuck?
-	if math.abs(s1.x - s.x) + math.abs(s1.z - s.z) < .5 then
+	if abs(s1.x - s.x) + abs(s1.z - s.z) < .5 then
 		self.path.stuck_timer = self.path.stuck_timer + dtime
 	else
 		self.path.stuck_timer = 0
 	end
 
-	self.path.lastpos = {x = s.x, y = s.y, z = s.z}
+	self.path.lastpos = vector_copy(s)
 
 	local use_pathfind = false
-	local has_lineofsight = minetest.line_of_sight(
-		{x = s.x, y = (s.y) + .5, z = s.z},
-		{x = target_pos.x, y = (target_pos.y) + 1.5, z = target_pos.z}, .2)
+	local has_lineofsight = minetest.line_of_sight(vector_offset(s, 0, .5, 0), vector_offset(target_pos, 0, 1.5, 0), .2)
 
 	-- im stuck, search for path
 	if not has_lineofsight then
-
 		if los_switcher == true then
 			use_pathfind = true
 			los_switcher = false
 		end -- cannot see target!
 	else
 		if los_switcher == false then
-
 			los_switcher = true
 			use_pathfind = false
-
 			minetest.after(1, function(self)
-				if not self.object:get_luaentity() then
-					return
-				end
+				if not self.object:get_luaentity() then return end
 				if has_lineofsight then self.path.following = false end
 			end, self)
 		end -- can see target!
 	end
 
 	if (self.path.stuck_timer > stuck_timeout and not self.path.following) then
-
 		use_pathfind = true
 		self.path.stuck_timer = 0
-
 		minetest.after(1, function(self)
-			if not self.object:get_luaentity() then
-				return
-			end
+			if not self.object:get_luaentity() then return end
 			if has_lineofsight then self.path.following = false end
 		end, self)
 	end
 
 	if (self.path.stuck_timer > stuck_path_timeout and self.path.following) then
-
 		use_pathfind = true
 		self.path.stuck_timer = 0
-
 		minetest.after(1, function(self)
-			if not self.object:get_luaentity() then
-				return
-			end
+			if not self.object:get_luaentity() then return end
 			if has_lineofsight then self.path.following = false end
 		end, self)
 	end
 
-	if math.abs(vector.subtract(s,target_pos).y) > self.stepheight then
-
+	if abs(s.y - target_pos.y) > self.stepheight then
 		if height_switcher then
 			use_pathfind = true
 			height_switcher = false
@@ -166,28 +144,21 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 
 		-- round position to center of node to avoid stuck in walls
 		-- also adjust height for player models!
-		s.x = math.floor(s.x + 0.5)
-		s.z = math.floor(s.z + 0.5)
+		s.x, s.z = floor(s.x + 0.5), floor(s.z + 0.5)
 
-		local ssight, sground = minetest.line_of_sight(s, {
-			x = s.x, y = s.y - 4, z = s.z}, 1)
+		local ssight, sground = minetest.line_of_sight(s, vector_offset(s, 0, -4, 0), 1)
 
 		-- determine node above ground
-		if not ssight then
-			s.y = sground.y + 1
-		end
+		if not ssight then s.y = sground.y + 1 end
 
 		local p1 = self.attack:get_pos()
-
-		p1.x = math.floor(p1.x + 0.5)
-		p1.y = math.floor(p1.y + 0.5)
-		p1.z = math.floor(p1.z + 0.5)
+		p1 = vector_new(floor(p1.x + 0.5), floor(p1.y + 0.5), floor(p1.z + 0.5))
 
 		local dropheight = 12
 		if self.fear_height ~= 0 then dropheight = self.fear_height end
 		local jumpheight = 0
 		if self.jump and self.jump_height >= 4 then
-			jumpheight = math.min(math.ceil(self.jump_height / 4), 4)
+			jumpheight = min(ceil(self.jump_height * 0.25), 4)
 		elseif self.stepheight > 0.5 then
 			jumpheight = 1
 		end
@@ -198,34 +169,27 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 
 		-- no path found, try something else
 		if not self.path.way then
-
 			self.path.following = false
 
 			 -- lets make way by digging/building if not accessible
 			if self.pathfinding == 2 and mobs_griefing then
-
 				-- is player higher than mob?
 				if s.y < p1.y then
-
 					-- build upwards
 					if not minetest.is_protected(s, "") then
-
 						local ndef1 = minetest.registered_nodes[self.standing_in]
-
 						if ndef1 and (ndef1.buildable_to or ndef1.groups.liquid) then
-
 								minetest.set_node(s, {name = mcl_mobs.fallback_node})
 						end
 					end
 
-					local sheight = math.ceil(self.collisionbox[5]) + 1
+					local sheight = ceil(self.collisionbox[5]) + 1
 
 					-- assume mob is 2 blocks high so it digs above its head
 					s.y = s.y + sheight
 
 					-- remove one block above to make room to jump
 					if not minetest.is_protected(s, "") then
-
 						local node1 = node_ok(s, "air").name
 						local ndef1 = minetest.registered_nodes[node1]
 
@@ -235,32 +199,21 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 						and not ndef1.groups.level
 						and not ndef1.groups.unbreakable
 						and not ndef1.groups.liquid then
-
 							minetest.set_node(s, {name = "air"})
 							minetest.add_item(s, ItemStack(node1))
-
 						end
 					end
 
 					s.y = s.y - sheight
-					self.object:set_pos({x = s.x, y = s.y + 2, z = s.z})
-
+					self.object:set_pos(vector_offset(s, 0, 2, 0))
 				else -- dig 2 blocks to make door toward player direction
-
-					local yaw1 = self.object:get_yaw() + math.pi / 2
-					local p1 = {
-						x = s.x + math.cos(yaw1),
-						y = s.y,
-						z = s.z + math.sin(yaw1)
-					}
+					local yaw1 = self.object:get_yaw() + HALFPI
+					local p1 = vector_offset(s, cos(yaw1), 0, sin(yaw1))
 
 					if not minetest.is_protected(p1, "") then
-
 						local node1 = node_ok(p1, "air").name
 						local ndef1 = minetest.registered_nodes[node1]
-
-						if node1 ~= "air"
-							and node1 ~= "ignore"
+						if node1 ~= "air" and node1 ~= "ignore"
 							and ndef1
 							and not ndef1.groups.level
 							and not ndef1.groups.unbreakable
@@ -274,8 +227,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 						node1 = node_ok(p1, "air").name
 						ndef1 = minetest.registered_nodes[node1]
 
-						if node1 ~= "air"
-						and node1 ~= "ignore"
+						if node1 ~= "air" and node1 ~= "ignore"
 						and ndef1
 						and not ndef1.groups.level
 						and not ndef1.groups.unbreakable
@@ -309,28 +261,19 @@ end
 
 -- specific attacks
 local specific_attack = function(list, what)
-
 	-- no list so attack default (player, animals etc.)
-	if list == nil then
-		return true
-	end
+	if list == nil then return true end
 
 	-- found entity on list to attack?
 	for no = 1, #list do
-
-		if list[no] == what then
-			return true
-		end
+		if list[no] == what then return true end
 	end
-
 	return false
 end
 
 -- find someone to attack
 function mob_class:monster_attack()
-	if not damage_enabled or self.passive ~= false or self.state == "attack" or self:day_docile() then
-		return
-	end
+	if not damage_enabled or self.passive ~= false or self.state == "attack" or self:day_docile() then return end
 
 	local s = self.object:get_pos()
 	local p, sp, dist
@@ -384,7 +327,7 @@ function mob_class:monster_attack()
 			p = player:get_pos()
 			sp = s
 
-			dist = vector.distance(p, s)
+			dist = vector_distance(p, s)
 
 			-- aim higher to make looking up hills more realistic
 			p.y = p.y + 1
@@ -406,7 +349,7 @@ function mob_class:monster_attack()
 		end
 	end
 	if not min_player and #blacklist_attack > 0 then
-		min_player=blacklist_attack[math.random(#blacklist_attack)]
+		min_player=blacklist_attack[random(#blacklist_attack)]
 	end
 	-- attack player
 	if min_player then
@@ -417,7 +360,6 @@ end
 
 -- npc, find closest monster to attack
 function mob_class:npc_attack()
-
 	if self.type ~= "npc"
 	or not self.attacks_monsters
 	or self.state == "attack" then
@@ -436,7 +378,7 @@ function mob_class:npc_attack()
 			p = obj.object:get_pos()
 			sp = s
 
-			local dist = vector.distance(p, s)
+			local dist = vector_distance(p, s)
 
 			-- aim higher to make looking up hills more realistic
 			p.y = p.y + 1
@@ -458,7 +400,6 @@ end
 
 -- dogshoot attack switch and counter function
 function mob_class:dogswitch(dtime)
-
 	-- switch mode not activated
 	if not self.dogshoot_switch
 	or not dtime then
@@ -467,10 +408,8 @@ function mob_class:dogswitch(dtime)
 
 	self.dogshoot_count = self.dogshoot_count + dtime
 
-	if (self.dogshoot_switch == 1
-	and self.dogshoot_count > self.dogshoot_count_max)
-	or (self.dogshoot_switch == 2
-	and self.dogshoot_count > self.dogshoot_count2_max) then
+	if (self.dogshoot_switch == 1 and self.dogshoot_count > self.dogshoot_count_max)
+	or (self.dogshoot_switch == 2 and self.dogshoot_count > self.dogshoot_count2_max) then
 
 		self.dogshoot_count = 0
 
@@ -517,13 +456,9 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	if is_player then
 		-- is mob out of reach?
-		if vector.distance(mob_pos, player_pos) > 3 then
-			return
-		end
+		if vector_distance(mob_pos, player_pos) > 3 then return end
 		-- is mob protected?
-		if self.protected and minetest.is_protected(mob_pos, hitter:get_player_name()) then
-			return
-		end
+		if self.protected and minetest.is_protected(mob_pos, hitter:get_player_name()) then return end
 
 		mcl_potions.update_haste_and_fatigue(hitter)
 	end
@@ -532,13 +467,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local time_diff = time_now - self.invul_timestamp
 
 	-- check for invulnerability time in microseconds (0.5 second)
-	if time_diff <= 500000 and time_diff >= 0 then
-		return
-	end
+	if time_diff <= 500000 and time_diff >= 0 then return end
 
 	-- custom punch function
 	if self.do_punch then
-
 		-- when false skip going any further
 		if self.do_punch(self, hitter, tflp, tool_capabilities, dir) == false then
 			return
@@ -554,14 +486,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local time_now = minetest.get_us_time()
 
 	if is_player then
-		if minetest.is_creative_enabled(hitter:get_player_name()) then
-			self.health = 0
-		end
-
+		if minetest.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
 		-- set/update 'drop xp' timestamp if hitted by player
 		self.xp_timestamp = time_now
 	end
-
 
 	-- punch interval
 	local weapon = hitter:get_wielded_item()
@@ -583,18 +511,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	end
 
 
-	for group,_ in pairs( (tool_capabilities.damage_groups or {}) ) do
-
+	for group,_ in pairs((tool_capabilities.damage_groups or {}) ) do
 		tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
-
-		if tmp < 0 then
-			tmp = 0.0
-		elseif tmp > 1 then
-			tmp = 1.0
-		end
-
-		damage = damage + (tool_capabilities.damage_groups[group] or 0)
-			* tmp * ((armor[group] or 0) / 100.0)
+		tmp = tmp < 0 and 0 or (tmp > 1 and 1 or tmp)
+		damage = damage + (tool_capabilities.damage_groups[group] or 0) * tmp * ((armor[group] or 0) / 100.0)
 	end
 
 	-- strength and weakness effects
@@ -613,9 +533,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	-- check for tool immunity or special damage
 	for n = 1, #self.immune_to do
-
 		if self.immune_to[n][1] == weapon:get_name() then
-
 			damage = self.immune_to[n][2] or 0
 			break
 		end
@@ -623,7 +541,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	-- healing
 	if damage <= -1 then
-		self.health = self.health - math.floor(damage)
+		self.health = self.health - floor(damage)
 		return
 	end
 
@@ -643,7 +561,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				local weapon = hitter:get_wielded_item(player)
 				local def = weapon:get_definition()
 				if def.tool_capabilities and def.tool_capabilities.punch_attack_uses then
-					local wear = math.floor(65535/tool_capabilities.punch_attack_uses)
+					local wear = floor(65535/tool_capabilities.punch_attack_uses)
 					weapon:add_wear(wear)
 					tt.reload_itemstack_description(weapon) -- update tooltip
 					hitter:set_wielded_item(weapon)
@@ -654,14 +572,12 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	local die = false
 
-
 	if damage >= 0 then
 		-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
 		if damage >= 0.1 then
 			-- weapon sounds
 			if weapon:get_definition().sounds ~= nil then
-
-				local s = math.random(0, #weapon:get_definition().sounds)
+				local s = random(0, #weapon:get_definition().sounds)
 
 				minetest.sound_play(weapon:get_definition().sounds[s], {
 					object = self.object, --hitter,
@@ -691,24 +607,18 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		if self.knock_back
 		and tflp >= punch_interval then
 			-- direction error check
-			dir = dir or {x = 0, y = 0, z = 0}
+			dir = dir or vector_zero()
 
 			local v = self.object:get_velocity()
 			if not v then return end
-			local r = 1.4 - math.min(punch_interval, 1.4)
-			local kb = r * (math.abs(v.x)+math.abs(v.z))
+			local r = 1.4 - min(punch_interval, 1.4)
+			local kb = r * (abs(v.x)+abs(v.z))
 			local up = 2.625
 
-			if die==true then
-				kb=kb*1.25
-			end
+			if die then kb = kb * 1.25 end
 
 			-- if already in air then dont go up anymore when hit
-			if math.abs(v.y) > 0.1
-			or self.fly then
-				up = 0
-			end
-
+			if abs(v.y) > 0.1 or self.fly then up = 0 end
 
 			-- check if tool already has specific knockback value
 			if tool_capabilities.damage_groups["knockback"] then
@@ -717,21 +627,17 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				kb = kb * 1.25
 			end
 
-
-			local luaentity
-			if hitter then
-				luaentity = hitter:get_luaentity()
-			end
+			local luaentity = hitter and hitter:get_luaentity()
 			if hitter and is_player then
 				local wielditem = hitter:get_wielded_item()
 				kb = kb + 9 * mcl_enchanting.get_enchantment(wielditem, "knockback")
 				-- add player velocity to mob knockback
 				local hv = hitter:get_velocity()
 				local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
-				local player_mag = math.sqrt((hv.x * hv.x) + (hv.z * hv.z))
-				local mob_mag = math.sqrt((v.x * v.x) + (v.z * v.z))
+				local player_mag = ((hv.x * hv.x) + (hv.z * hv.z))^0.5
+				local mob_mag = ((v.x * v.x) + (v.z * v.z))^0.5
 				if dir_dot > 0 and mob_mag <= player_mag * 0.625 then
-					kb = kb + ((math.abs(hv.x) + math.abs(hv.z)) * r)
+					kb = kb + (abs(hv.x) + abs(hv.z)) * r
 				end
 			elseif luaentity and luaentity._knockback and die == false then
 				kb = kb + luaentity._knockback
@@ -742,9 +648,9 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			self._turn_to=self.object:get_yaw()-1.57
 			self.frame_speed_multiplier=2.3
 			if self.animation.run_end then
-				self:set_animation( "run")
+				self:set_animation("run")
 			elseif self.animation.walk_end then
-				self:set_animation( "walk")
+				self:set_animation("walk")
 			end
 			minetest.after(0.2, function()
 				if self and self.object then
@@ -752,11 +658,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 					self._kb_turn = false
 				end
 			end)
-			self.object:add_velocity({
-				x = dir.x * kb,
-				y = up*2,
-				z = dir.z * kb
-			})
+			self.object:add_velocity(vector_new(dir.x * kb, up*2, dir.z * kb ))
 
 			self.pause_timer = 0.25
 		end
@@ -803,7 +705,6 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		local obj = nil
 
 		for n = 1, #objs do
-
 			obj = objs[n]:get_luaentity()
 
 			if obj then
@@ -835,11 +736,7 @@ end
 
 function mob_class:check_aggro(dtime)
 	if not self._aggro or not self.attack then return end
-
-	if not self._check_aggro_timer then
-		self._check_aggro_timer = 0
-	end
-
+	if not self._check_aggro_timer then self._check_aggro_timer = 0 end
 	if self._check_aggro_timer > 5 then
 		self._check_aggro_timer = 0
 
@@ -847,7 +744,7 @@ function mob_class:check_aggro(dtime)
 			-- TODO consider removing this in favour of what is done in do_states_attack
 			-- Attack is dropped in do_states_attack if out of range, so won't even trigger here
 			-- I do not think this code does anything. Are mobs still loaded in at 128?
-			if not self.attack:get_pos() or vector.distance(self.attack:get_pos(),self.object:get_pos()) > 128 then
+			if not self.attack:get_pos() or vector_distance(self.attack:get_pos(),self.object:get_pos()) > 128 then
 				self._aggro = nil
 				self.attack = nil
 				self.state = "stand"
@@ -875,15 +772,12 @@ end
 
 function mob_class:do_states_attack (dtime)
 	self.timer = self.timer + dtime
-	if self.timer > 100 then
-		self.timer = 1
-	end
+	if self.timer > 100 then self.timer = 1 end
 
 	local s = self.object:get_pos()
 	if not s then return end
 
 	local p = self.attack:get_pos() or s
-
 	local yaw = self.object:get_yaw() or 0
 
 	-- stop attacking if player invisible or out of range
@@ -915,17 +809,15 @@ function mob_class:do_states_attack (dtime)
 	end
 
 	-- calculate distance from mob and enemy
-	local dist = vector.distance(p, s)
+	local dist = vector_distance(p, s)
 
 	if self.attack_type == "explode" then
-
 		if target_line_of_sight then
 			self:turn_in_direction(p.x - s.x, p.z - s.z, 1, dtime)
 		end
 
 		local node_break_radius = self.explosion_radius or 1
-		local entity_damage_radius = self.explosion_damage_radius
-				or (node_break_radius * 2)
+		local entity_damage_radius = self.explosion_damage_radius or (node_break_radius * 2)
 
 		-- start timer when in reach and line of sight
 		if not self.v_start and dist <= self.reach and target_line_of_sight then
@@ -952,9 +844,9 @@ function mob_class:do_states_attack (dtime)
 		end
 
 		if self.animation and self.animation.run_start then
-			self:set_animation( "run")
+			self:set_animation("run")
 		else
-			self:set_animation( "walk")
+			self:set_animation("walk")
 		end
 
 		if self.v_start then
@@ -997,80 +889,47 @@ function mob_class:do_states_attack (dtime)
 			or (self.attack_type == "dogshoot" and self:dogswitch(dtime) == 2) and (dist >= self.avoid_distance or not self.shooter_avoid_enemy)
 			or (self.attack_type == "dogshoot" and dist <= self.reach and self:dogswitch() == 0) then
 
-		if self.fly
-				and dist > self.reach then
-
-			local p1 = s
-			local me_y = math.floor(p1.y)
-			local p2 = p
-			local p_y = math.floor(p2.y + 1)
+		if self.fly and dist > self.reach then
+			local p1, p2 = s, p
+			local me_y, p_y = floor(p1.y), floor(p2.y + 1)
 			local v = self.object:get_velocity()
 
 			if self:flight_check( s) then
-
 				if me_y < p_y then
-
-					self.object:set_velocity({
-						x = v.x,
-						y = 1 * self.walk_velocity,
-						z = v.z
-					})
-
+					self.object:set_velocity(vector_new(v.x,  1 * self.walk_velocity, v.z))
 				elseif me_y > p_y then
-
-					self.object:set_velocity({
-						x = v.x,
-						y = -1 * self.walk_velocity,
-						z = v.z
-					})
+					self.object:set_velocity(vector_new(v.x, -1 * self.walk_velocity, v.z))
 				end
 			else
 				if me_y < p_y then
-
-					self.object:set_velocity({
-						x = v.x,
-						y = 0.01,
-						z = v.z
-					})
-
+					self.object:set_velocity(vector_new(v.x,  0.01, v.z))
 				elseif me_y > p_y then
-
-					self.object:set_velocity({
-						x = v.x,
-						y = -0.01,
-						z = v.z
-					})
+					self.object:set_velocity(vector_new(v.x, -0.01, v.z))
 				end
 			end
-
 		end
 
 		-- rnd: new movement direction
-		if self.path.following
-				and self.path.way
-				and self.attack_type ~= "dogshoot" then
-
+		if self.path.following and self.path.way and self.attack_type ~= "dogshoot" then
 			-- no paths longer than 50
-			if #self.path.way > 50
-					or dist < self.reach then
+			if #self.path.way > 50 or dist < self.reach then
 				self.path.following = false
 				return
 			end
 
 			local p1 = self.path.way[1]
-
 			if not p1 then
 				self.path.following = false
 				return
 			end
 
-			if math.abs(p1.x-s.x) + math.abs(p1.z - s.z) < 0.6 then
+			if abs(p1.x - s.x) + abs(p1.z - s.z) < 0.6 then
 				-- reached waypoint, remove it from queue
 				table.remove(self.path.way, 1)
 			end
 
 			-- set new temporary target
-			p = {x = p1.x, y = p1.y, z = p1.z}
+			p = vector_copy(p1)
 		end
 
 		self:turn_in_direction(p.x - s.x, p.z - s.z, 1, dtime)
@@ -1111,19 +970,13 @@ function mob_class:do_states_attack (dtime)
 				self.timer = 0
 
 				if not self.custom_attack then
-					if self.double_melee_attack and math.random(1, 2) == 1 then
+					if self.double_melee_attack and random(1, 2) == 1 then
 						self:set_animation("punch2")
 					else
 						self:set_animation("punch")
 					end
 
-					local p2 = p
-					local s2 = s
-
-					p2.y = p2.y + .5
-					s2.y = s2.y + .5
-
-					if self:line_of_sight( p2, s2) == true then
+					if self:line_of_sight(vector_offset(p, 0, .5, 0), vector_offset(s, 0, .5, 0)) == true then
 						self:mob_sound("attack")
 
 						-- punch player (or what player is attached to)
@@ -1149,54 +1002,30 @@ function mob_class:do_states_attack (dtime)
 	elseif self.attack_type == "shoot"
 			or (self.attack_type == "dogshoot" and self:dogswitch(dtime) == 1)
 			or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and self:dogswitch() == 0) then
-
-		p.y = p.y - .5
-		s.y = s.y + .5
-
-		local vec = {
-			x = p.x - s.x,
-			y = p.y - s.y,
-			z = p.z - s.z
-		}
-		local dist = (vec.x^2 + vec.y^2 + vec.z^2)^0.5
+		local vec = vector_new(p.x - s.x, p.y - s.y - 1, p.z - s.z)
+		local dist = (vec.x*vec.x + vec.y*vec.y + vec.z*vec.z)^0.5
 		self:turn_in_direction(vec.x, vec.z, 1, dtime)
 
-		local stay_away_from_player = vector.zero()
-
-		--strafe back and fourth
-
-		--stay away from player so as to shoot them
-		if dist < self.avoid_distance and self.shooter_avoid_enemy then
-			self:set_animation( "shoot")
-			stay_away_from_player=vector.multiply(vector.direction(p, s), 0.33)
-		end
-
 		if self.strafes then
-			if not self.strafe_direction then
-				self.strafe_direction = 1.57
-			end
-			if math.random(40) == 1 then
-				self.strafe_direction = self.strafe_direction*-1
-			end
+			if not self.strafe_direction then self.strafe_direction = HALFPI end
+			if random(40) == 1 then self.strafe_direction = self.strafe_direction * -1 end
 
-			local dir = vector.rotate_around_axis(vector.direction(s, p), vector.new(0,1,0), self.strafe_direction)
-			local dir2 = vector.multiply(dir, 0.3 * self.walk_velocity)
-
-			if dir2 and stay_away_from_player then
-				self.acc = vector.add(dir2, stay_away_from_player)
+			local dir = -atan2(p.x - s.x, p.z - s.z)
+			self.acc = vector_new(-sin(dir + self.strafe_direction) * 0.8, 0, cos(dir + self.strafe_direction) * 0.8)
+			--stay away from player so as to shoot them
+			if self.avoid_distance and dist < self.avoid_distance and self.shooter_avoid_enemy then
+				local f = 0.3 * (self.avoid_distance - dist) / self.avoid_distance
+				self.acc.x, self.acc.z = self.acc.x - sin(dir) * f, self.acc.z + cos(dir) * f
 			end
 		else
-			self:set_velocity( 0)
+			self:set_velocity(0)
 		end
 
 		local p = self.object:get_pos()
-		p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
+		p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) * 0.5
 
-		if self.shoot_interval
-				and self.timer > self.shoot_interval
-				and not minetest.raycast(vector.add(p, vector.new(0,self.shoot_offset,0)), vector.add(self.attack:get_pos(), vector.new(0,1.5,0)), false, false):next()
-				and math.random(1, 100) <= 60 then
-
+		if self.shoot_interval and self.timer > self.shoot_interval and random(1, 100) <= 60
+				and not minetest.raycast(vector_offset(p, 0, self.shoot_offset, 0), vector_offset(self.attack:get_pos(), 0, 1.5, 0), false, false):next() then
 			self.timer = 0
 			self:set_animation( "shoot")
 
@@ -1205,7 +1034,6 @@ function mob_class:do_states_attack (dtime)
 
 			-- Shoot arrow
 			if minetest.registered_entities[self.arrow] then
-
 				local arrow, ent
 				local v = 1
 				if not self.shoot_arrow then
@@ -1215,9 +1043,7 @@ function mob_class:do_states_attack (dtime)
 					end)
 					arrow = minetest.add_entity(p, self.arrow)
 					ent = arrow:get_luaentity()
-					if ent.velocity then
-						v = ent.velocity
-					end
+					v = ent.velocity or v
 					ent.switch = 1
 					ent.owner_id = tostring(self.object) -- add unique owner id to arrow
 
@@ -1231,9 +1057,7 @@ function mob_class:do_states_attack (dtime)
 
 				-- offset makes shoot aim accurate
 				vec.y = vec.y + self.shoot_offset
-				vec.x = vec.x * (v / dist)
-				vec.y = vec.y * (v / dist)
-				vec.z = vec.z * (v / dist)
+				vec.x, vec.y, vec.z = vec.x * (v / dist), vec.y * (v / dist), vec.z * (v / dist)
 				if self.shoot_arrow then
 					vec = vector.normalize(vec)
 					self:shoot_arrow(p, vec)
@@ -1242,13 +1066,9 @@ function mob_class:do_states_attack (dtime)
 				end
 			end
 		end
-
 	elseif self.attack_type == "custom" and self.attack_state then
 		self.attack_state(self, dtime)
 	end
 
-	if self.on_attack then
-		self.on_attack(self, dtime)
-	end
-
+	if self.on_attack then self.on_attack(self, dtime) end
 end
