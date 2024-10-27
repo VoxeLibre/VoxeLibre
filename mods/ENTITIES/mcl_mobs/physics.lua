@@ -928,8 +928,6 @@ end
 -- falling and fall damage
 -- returns true if mob died
 function mob_class:falling(pos, moveresult)
-	if moveresult and moveresult.touching_ground then return false end
-
 	if self.fly and self.state ~= "die" then
 		return
 	end
@@ -952,7 +950,13 @@ function mob_class:falling(pos, moveresult)
 			new_acceleration = vector.new(0, DEFAULT_FALL_SPEED, 0)
 		elseif v.y <= 0 and v.y > self.fall_speed then
 			-- fall downwards at set speed
-			new_acceleration = vector.new(0, self.fall_speed, 0)
+			if moveresult and moveresult.touching_ground then
+				-- when touching ground, retain a minimal gravity to keep the touching_ground flag
+				-- but also to not get upwards acceleration with large dtime when on bouncy ground
+				new_acceleration = vector.new(0, self.fall_speed * 0.01, 0)
+			else
+				new_acceleration = vector.new(0, self.fall_speed, 0)
+			end
 		else
 			-- stop accelerating once max fall speed hit
 			new_acceleration =vector.zero()
