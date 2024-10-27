@@ -7,8 +7,6 @@
 
 -- LOCALS
 local modname = minetest.get_current_modname()
--- Used everywhere. Often this is just the name, but it makes sense to me as BAMBOO, because that's how I think of it...
--- "BAMBOO" goes here.
 local BAMBOO = "mcl_bamboo:bamboo"
 
 mcl_bamboo = {}

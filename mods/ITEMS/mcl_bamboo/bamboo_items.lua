@@ -9,8 +9,6 @@ local SIDE_SCAFFOLDING = false
 local SIDE_SCAFFOLD_NAME = "mcl_bamboo:scaffolding_horizontal"
 -- ---------------------------------------------------------------------------
 local SCAFFOLDING_NAME = "mcl_bamboo:scaffolding"
--- Used everywhere. Often this is just the name, but it makes sense to me as BAMBOO, because that's how I think of it...
--- "BAMBOO" goes here.
 local BAMBOO = "mcl_bamboo:bamboo"
 local BAMBOO_PLANK = BAMBOO .. "_plank"
 

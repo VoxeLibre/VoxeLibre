@@ -5,9 +5,6 @@
 --- Copyright (C) 2022 - 2023, Michieal. See License.txt
 
 -- CONSTS
-local DOUBLE_DROP_CHANCE = 8
--- Used everywhere. Often this is just the name, but it makes sense to me as BAMBOO, because that's how I think of it...
--- "BAMBOO" goes here.
 local BAMBOO = "mcl_bamboo:bamboo"
 local BAMBOO_ENDCAP_NAME = "mcl_bamboo:bamboo_endcap"
 local BAMBOO_PLANK = BAMBOO .. "_plank"
@@ -16,7 +13,7 @@ local BAMBOO_PLANK = BAMBOO .. "_plank"
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local node_sound = mcl_sounds.node_sound_wood_defaults()
-local pr = PseudoRandom((os.time() + 15766) * 12) -- switched from math.random() to PseudoRandom because the random wasn't very random.
+local pr = PseudoRandom((os.time() + 15766) * 12)
 
 local on_rotate
 if minetest.get_modpath("screwdriver") then
@@ -31,33 +28,7 @@ local bamboo_def = {
 	paramtype = "light",
 	groups = {handy = 1, axey = 1, choppy = 1, dig_by_piston = 1, plant = 1, non_mycelium_plant = 1, flammable = 3},
 	sounds = node_sound,
-
-	drop = {
-		max_items = 1,
-		-- From the API:
-		-- max_items: Maximum number of item lists to drop.
-		-- The entries in 'items' are processed in order. For each:
-		-- Item filtering is applied, chance of drop is applied, if both are
-		-- successful the entire item list is dropped.
-		-- Entry processing continues until the number of dropped item lists
-		-- equals 'max_items'.
-		-- Therefore, entries should progress from low to high drop chance.
-		items = {
-			-- Examples:
-			{
-				-- 1 in DOUBLE_DROP_CHANCE chance of dropping.
-				-- Default rarity is '1'.
-				rarity = DOUBLE_DROP_CHANCE,
-				items = {BAMBOO .. " 2"},
-			},
-			{
-				-- 1 in 1 chance of dropping. (Note: this means that it will drop 100% of the time.)
-				-- Default rarity is '1'.
-				rarity = 1,
-				items = {BAMBOO},
-			},
-		},
-	},
+	drop = BAMBOO,
 
 	inventory_image = "mcl_bamboo_bamboo_shoot.png",
 	wield_image = "mcl_bamboo_bamboo_shoot.png",
@@ -86,7 +57,6 @@ local bamboo_def = {
 	on_rotate = on_rotate,
 
 	on_place = function(itemstack, placer, pointed_thing)
-
 		if not pointed_thing then
 			return itemstack
 		end
@@ -241,9 +211,6 @@ local bamboo_def = {
 		if node_above and ((bamboo_node and bamboo_node > 0) or node_above.name == BAMBOO_ENDCAP_NAME) then
 			minetest.remove_node(new_pos)
 			minetest.sound_play(node_sound.dug, sound_params, true)
-			if pr:next(1, DOUBLE_DROP_CHANCE) == 1 then
-				minetest.add_item(new_pos, istack)
-			end
 			minetest.add_item(new_pos, istack)
 		end
 	end,
