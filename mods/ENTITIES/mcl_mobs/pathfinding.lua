@@ -69,38 +69,27 @@ end
 -- an action, such as to open or close a door where we know that pos requires that action
 local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_door_pos)
 	local wp_out = {}
-
-	-- TODO  Just pass in door position and the index before is open, the index after is close
-	local current_door_index = -1
-
 	for i, cur_pos in pairs(wp_in) do
 		local action = nil
 
-		local cur_pos_to_add -- = vector.add(cur_pos, one_down)
-		if door_open_pos and vector.equals (cur_pos, door_open_pos) then
+		if door_open_pos and vector.equals(cur_pos, door_open_pos) then
 			mcl_log ("Door open match")
 			action = {type = "door", action = "open", target = cur_door_pos}
-			cur_pos_to_add = vector.add(cur_pos, one_down)
 		elseif door_close_pos and vector.equals(cur_pos, door_close_pos) then
 			mcl_log ("Door close match")
 			action = {type = "door", action = "close", target = cur_door_pos}
-			cur_pos_to_add = vector.add(cur_pos, one_down)
 		elseif cur_door_pos and vector.equals(cur_pos, cur_door_pos) then
 			mcl_log("Current door pos")
 			action = {type = "door", action = "open", target = cur_door_pos}
-			cur_pos_to_add = vector.add(cur_pos, one_down)
-		else
-			cur_pos_to_add = cur_pos
-			--mcl_log ("Pos doesn't match")
 		end
 
 		if visualize then
-			core.add_particle({pos = cur_pos_to_add, expirationtime=5+i/4, size=3+2/i, velocity=vector.new(0,-0.01,0),
+			core.add_particle({pos = cur_pos, expirationtime=5+i/4, size=3+2/i, velocity=vector.new(0,-0.01,0),
 				texture="mcl_copper_anti_oxidation_particle.png"}) -- white stars
 		end
 
 		wp_out[i] = {}
-		wp_out[i]["pos"] = cur_pos_to_add
+		wp_out[i]["pos"] = cur_pos
 		wp_out[i]["failed_attempts"] = 0
 		wp_out[i]["action"] = action
 
@@ -207,7 +196,8 @@ local function is_solid(pos)
 end
 
 local function find_open_node(pos, radius)
-	if not is_solid(pos) then return pos end
+	local r = vector.round(pos)
+	if not is_solid(r) then return r end
 	local above = vector.offset(pos, 0, 1, 0)
 	if not is_solid(above) then return above, true end -- additional return: drop last
 	local n = minetest.find_node_near(pos, radius or 1, {"air"})
@@ -225,7 +215,7 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 
 	-- maybe feet are buried in solid?
 	local start = self.object:get_pos()
-	local p = find_open_node(vector.round(start), 1)
+	local p = find_open_node(start, 1)
 	if not p then -- buried?
 		minetest.log("action", "Cannot path from "..minetest.pos_to_string(start).." because it is solid. Nodetype: "..minetest.get_node(start).name)
 		return
@@ -297,6 +287,53 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 		-- If cannot path, don't immediately try again
 	end
 
+	-- todo: we would also need to avoid overhangs, but minetest.find_path cannot help us there
+	-- we really need a better pathfinder overall.
+
+	-- try to find a way around fences and walls. This is very barebones, but at least it should
+	-- help path around very simple fences *IF* there is a detour that does not require jumping or gates.
+	if wp and #wp > 0 then
+		local i = 1
+		while i < #wp do
+			-- fence or wall underneath?
+			local bdef = minetest.registered_nodes[minetest.get_node(vector.offset(wp[i].pos, 0, -1, 0)).name]
+			if not bdef then minetest.log("warning", "There must not be unknown nodes on path") end
+			-- plan opening fence gates
+			if bdef and (bdef.groups.fence_gate or 0) > 0 then
+				wp[i].pos = vector.offset(wp[i].pos, 0, -1, 0)
+				wp[math.max(1,i-1)].action = {type = "door", action = "open", target = wp[i].pos}
+				if i+1 < #wp then
+					wp[i+1].action = {type = "door", action = "close", target = wp[i].pos}
+				end
+			-- do not jump on fences and walls, but try to walk around
+			elseif bdef and i > 1 and ((bdef.groups.fence or 0) > 0 or (bdef.groups.wall or 0) > 0) and wp[i].pos.y > wp[i-1].pos.y then
+				-- find end of wall(s)
+				local j = i + 1
+				while j <= #wp do
+					local below = vector.offset(wp[j].pos, 0, -1, 0)
+					local bdef = minetest.registered_nodes[minetest.get_node(below).name]
+					if not bdef or ((bdef.groups.fence or 0) == 0 and (bdef.groups.wall or 0) == 0) then
+						break
+					end
+					j = j + 1
+				end
+				minetest.log("warning", bdef.name .. " at "..tostring(i).." end at "..(j <= #wp and tostring(j) or "nil"))
+				if j <= #wp and wp[i-1].pos.y == wp[j].pos.y then
+					local swp = minetest.find_path(wp[i-1].pos, wp[j].pos, PATHFINDING_SEARCH_DISTANCE, 0, 0)
+					-- TODO: if we do not find a path here, consider pathing through a fence gate!
+					if swp and #swp > 0 then
+						for k = j-1,i,-1 do table.remove(wp, k) end
+						for k = 2, #swp-1 do table.insert(wp, i-2+k, {pos = swp[k], failed_attempts = 0}) end
+						minetest.log("warning", "Monkey patch pathfinding around "..bdef.name.." successful.")
+						i = i + #swp - 4
+					else
+						minetest.log("warning", "Monkey patch pathfinding around "..bdef.name.." failed.")
+					end
+				end
+			end
+			i = i + 1
+		end
+	end
 	if wp and #wp > 0 then
 		--output_table(wp)
 		if drop_last_wp and #wp > 1 then table.remove(wp, #wp) end
@@ -337,9 +374,19 @@ function mob_class:interact_with_door(action, target)
 			if closed and action == "open" and def.on_rightclick then
 				mcl_log("Open door")
 				def.on_rightclick(target,n,self)
-			end
-			if not closed and action == "close" and def.on_rightclick then
+			elseif not closed and action == "close" and def.on_rightclick then
 				mcl_log("Close door")
+				def.on_rightclick(target,n,self)
+			end
+		elseif n.name:find("_gate") then
+			local def = minetest.registered_nodes[n.name]
+			local meta = minetest.get_meta(target)
+			local closed = meta:get_int("state") == 0
+			if closed and action == "open" and def.on_rightclick then
+				mcl_log("Open gate")
+				def.on_rightclick(target,n,self)
+			elseif not closed and action == "close" and def.on_rightclick then
+				mcl_log("Close gate")
 				def.on_rightclick(target,n,self)
 			end
 		else
