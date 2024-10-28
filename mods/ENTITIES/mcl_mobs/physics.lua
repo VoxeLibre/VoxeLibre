@@ -246,7 +246,7 @@ end
 -- @param dtime deprecated: ignored now, because of smooth rotations
 function mob_class:turn_in_direction(dx, dz, delay, dtime)
 	if abs(dx) == 0 and abs(dz) == 0 then return self.object:get_yaw() + self.rotate end
-	return self:set_yaw(-atan2(dx, dz) - self.rotate, delay, dtime)
+	return self:set_yaw(-atan2(dx, dz) - self.rotate, delay, dtime) + self.rotate
 end
 -- set and return valid yaw
 -- @param dtime deprecated: ignored now, because of smooth rotations

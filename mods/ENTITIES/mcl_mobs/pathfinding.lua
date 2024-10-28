@@ -1,11 +1,11 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local PATHFINDING_FAIL_THRESHOLD = 100 -- no. of ticks to fail before giving up. 20p/s. 5s helps them get through door
+local PATHFINDING_FAIL_THRESHOLD = 200 -- no. of ticks to fail before giving up. 20p/s. 5s helps them get through door
 local PATHFINDING_FAIL_WAIT = 30 -- how long to wait before trying to path again
 local PATHING_START_DELAY = 4 -- When doing non-prioritised pathing, how long to wait until last mob pathed
 
-local PATHFINDING_SEARCH_DISTANCE = 50 -- How big the square is that pathfinding will look
+local PATHFINDING_SEARCH_DISTANCE = 25 -- How big the square is that pathfinding will look
 
 local PATHFINDING = "gowp"
 
@@ -20,6 +20,7 @@ local plane_adjacents = {
 }
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_mobs_pathfinding",false)
+local visualize = minetest.settings:get_bool("mcl_mobs_pathfinding_visualize",false)
 
 local LOG_MODULE = "[Mobs Pathfinding]"
 local function mcl_log (message)
@@ -75,7 +76,7 @@ local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_
 	for i, cur_pos in pairs(wp_in) do
 		local action = nil
 
-		local cur_pos_to_add = vector.add(cur_pos, one_down)
+		local cur_pos_to_add -- = vector.add(cur_pos, one_down)
 		if door_open_pos and vector.equals (cur_pos, door_open_pos) then
 			mcl_log ("Door open match")
 			action = {type = "door", action = "open", target = cur_door_pos}
@@ -91,6 +92,11 @@ local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_
 		else
 			cur_pos_to_add = cur_pos
 			--mcl_log ("Pos doesn't match")
+		end
+
+		if visualize then
+			core.add_particle({pos = cur_pos_to_add, expirationtime=5+i/4, size=3+2/i, velocity=vector.new(0,-0.01,0),
+				texture="mcl_copper_anti_oxidation_particle.png"}) -- white stars
 		end
 
 		wp_out[i] = {}
@@ -204,8 +210,8 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 
 	self.order = nil
 
-	local p = self.object:get_pos()
-	local t = vector.offset(target,0,1,0)
+	local p = vector.round(self.object:get_pos())
+	local t = vector.round(vector.offset(target,0,1,0))
 
 	--Check direct route
 	local wp = minetest.find_path(p, t, PATHFINDING_SEARCH_DISTANCE, 1, 4)
@@ -231,7 +237,7 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 
 					local pos_after_door_entry = path_through_closest_door[#path_through_closest_door]
 					if pos_after_door_entry then
-						local pos_after_door = vector.add(pos_after_door_entry["pos"], one_up)
+						local pos_after_door = pos_after_door_entry["pos"]
 						mcl_log("pos_after_door: " .. minetest.pos_to_string(pos_after_door))
 						local path_after_door = calculate_path_through_door(pos_after_door, door_near_target, t)
 						if path_after_door and #path_after_door > 1 then
@@ -268,15 +274,22 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 		self._target = t
 		self.callback_arrived = callback_arrived
 		self.current_target = table.remove(wp,1)
-		self.waypoints = wp
-		self.state = PATHFINDING
-		return true
-	else
-		self.state = "walk"
-		self.waypoints = nil
-		self.current_target = nil
-		--	minetest.log("no path found")
+		while self.current_target and self.current_target.pos and vector.distance(p, self.current_target.pos) < 0.5 do
+			--mcl_log("Skipping close initial waypoint")
+			self.current_target = table.remove(wp,1)
+		end
+		if self.current_target and self.current_target.pos then
+			self:turn_in_direction(self.current_target.pos.x - p.x, self.current_target.pos.z - p.z, 2)
+			self.waypoints = wp
+			self.state = PATHFINDING
+			return true
+		end
 	end
+	self:turn_in_direction(target.x - p.x, target.z - p.z, 4)
+	self.state = "walk"
+	self.waypoints = nil
+	self.current_target = nil
+	--minetest.log("no path found")
 end
 
 function mob_class:interact_with_door(action, target)
@@ -355,53 +368,55 @@ function mob_class:check_gowp(dtime)
 
 	-- More pathing to be done
 	local distance_to_current_target = 50
-	if self.current_target and self.current_target["pos"] then
-		local dx, dy, dz = self.current_target["pos"].x-p.x, self.current_target["pos"].y-p.y, self.current_target["pos"].z-p.z
-		distance_to_current_target = (dx*dx+dy*dy*0.25+dz*dz)^0.5 -- reduced weight on y
-		--distance_to_current_target = vector.distance(p,self.current_target["pos"])
+	if self.current_target and self.current_target.pos then
+		local dx, dy, dz = self.current_target.pos.x-p.x, self.current_target.pos.y-p.y, self.current_target.pos.z-p.z
+		distance_to_current_target = (dx*dx+dy*dy*0.5+dz*dz)^0.5 -- reduced weight on y
+		--distance_to_current_target = vector.distance(p,self.current_target.pos)
 	end
 	-- also check next target, maybe we were too fast
 	local next_target = #self.waypoints > 1 and self.waypoints[1]
-	if not self.current_target["action"] and next_target and next_target["pos"] and distance_to_current_target < 1.5 then
-		local dx, dy, dz = next_target["pos"].x-p.x, next_target["pos"].y-p.y, next_target["pos"].z-p.z
-		local distance_to_next_target = (dx*dx+dy*dy*0.25+dz*dz)^0.5 -- reduced weight on y
+	if not self.current_target["action"] and next_target and next_target.pos and distance_to_current_target < 1.5 then
+		local dx, dy, dz = next_target.pos.x-p.x, next_target.pos.y-p.y, next_target.pos.z-p.z
+		local distance_to_next_target = (dx*dx+dy*dy*0.5+dz*dz)^0.5 -- reduced weight on y
 		if distance_to_next_target < distance_to_current_target then
 			mcl_log("Skipped one waypoint.")
 			self.current_target = table.remove(self.waypoints, 1) -- pop waypoint already
 			distance_to_current_target = distance_to_next_target
 		end
 	end
+	-- debugging tool
+	if visualize and self.current_target and self.current_target.pos then
+		core.add_particle({pos = self.current_target.pos, expirationtime=.1, size=3, velocity=vector.new(0,-0.2,0), texture="mcl_particles_flame.png"})
+	end
 
 	-- 0.6 is working but too sensitive. sends villager back too frequently. 0.7 is quite good, but not with heights
 	-- 0.8 is optimal for 0.025 frequency checks and also 1... Actually. 0.8 is winning
 	-- 0.9 and 1.0 is also good. Stick with unless door open or closing issues
-	local threshold = self.current_target["action"] and 0.8 or 1.2
-	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or not self.current_target["pos"] or distance_to_current_target < threshold ) then
+	local threshold = self.current_target["action"] and 0.7 or 0.9
+	if self.waypoints and #self.waypoints > 0 and ( not self.current_target or not self.current_target.pos or distance_to_current_target < threshold ) then
 		-- We have waypoints, and are at current_target or have no current target. We need a new current_target.
 		self:do_pathfind_action (self.current_target["action"])
 
 		local failed_attempts = self.current_target["failed_attempts"]
-		mcl_log("There after " .. failed_attempts .. " failed attempts. current target:".. minetest.pos_to_string(self.current_target["pos"]) .. ". Distance: " ..  distance_to_current_target)
+		mcl_log("There after " .. failed_attempts .. " failed attempts. current target:".. minetest.pos_to_string(self.current_target.pos) .. ". Distance: " ..  distance_to_current_target)
 
 		self.current_target = table.remove(self.waypoints, 1)
-		-- use smoothing
-		--[[if #self.waypoints > 0 and not self.current_target["action"] then
-			local curwp, nextwp = self.current_target["pos"], self.waypoints[1]["pos"]
+		-- use smoothing -- TODO: check for blockers before cutting corners?
+		if #self.waypoints > 0 and not self.current_target["action"] then
+			local curwp, nextwp = self.current_target.pos, self.waypoints[1].pos
 			self:go_to_pos(vector.new(curwp.x*0.7+nextwp.x*0.3,curwp.y,curwp.z*0.7+nextwp.z*0.3))
 			return
-		end]]--
-		self:go_to_pos(self.current_target["pos"])
-		if self.current_target["action"] then
-			self:set_velocity(self.walk_velocity * 0.25)
 		end
+		self:go_to_pos(self.current_target.pos)
+		--if self.current_target["action"] then self:set_velocity(self.walk_velocity * 0.5) end
 		return
-	elseif self.current_target and self.current_target["pos"] then
+	elseif self.current_target and self.current_target.pos then
 		-- No waypoints left, but have current target and not close enough. Potentially last waypoint to go to.
 
 		self.current_target["failed_attempts"] = self.current_target["failed_attempts"] + 1
 		local failed_attempts = self.current_target["failed_attempts"]
 		if failed_attempts >= PATHFINDING_FAIL_THRESHOLD then
-			mcl_log("Failed to reach position " .. minetest.pos_to_string(self.current_target["pos"]) .. " too many times. At: "..minetest.pos_to_string(p).." Abandon route. Times tried: " .. failed_attempts .. " current distance "..distance_to_current_target)
+			mcl_log("Failed to reach position " .. minetest.pos_to_string(self.current_target.pos) .. " too many times. At: "..minetest.pos_to_string(p).." Abandon route. Times tried: " .. failed_attempts .. " current distance "..distance_to_current_target)
 			self.state = "stand"
 			self.current_target = nil
 			self.waypoints = nil
@@ -412,9 +427,8 @@ function mob_class:check_gowp(dtime)
 			return
 		end
 
-		--mcl_log("Not at pos with failed attempts ".. failed_attempts ..": ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target["pos"]) .. ". Distance: ".. distance_to_current_target)
+		--mcl_log("Not at pos with failed attempts ".. failed_attempts ..": ".. minetest.pos_to_string(p) .. "self.current_target: ".. minetest.pos_to_string(self.current_target.pos) .. ". Distance: ".. distance_to_current_target)
 		self:go_to_pos(self.current_target["pos"])
-		self:turn_by((math.random() - 0.5), 2) -- but try turning left or right
 		-- Do i just delete current_target, and return so we can find final path.
 	else
 		-- Not at target, no current waypoints or current_target. Through the door and should be able to path to target.
@@ -447,6 +461,7 @@ function mob_class:check_gowp(dtime)
 
 	-- I don't think we need the following anymore, but test first.
 	-- Maybe just need something to path to target if no waypoints left
+	--[[ ok, let's try
 	if self.current_target and self.current_target["pos"] and (self.waypoints and #self.waypoints == 0) then
 		local updated_p = self.object:get_pos()
 		local distance_to_cur_targ = vector.distance(updated_p,self.current_target["pos"])
@@ -465,4 +480,5 @@ function mob_class:check_gowp(dtime)
 		end
 		return
 	end
+	--]]--
 end

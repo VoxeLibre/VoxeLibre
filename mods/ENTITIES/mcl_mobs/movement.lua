@@ -18,7 +18,6 @@ local sin = math.sin
 local cos = math.cos
 local abs = math.abs
 local floor = math.floor
-local atan2 = math.atan2
 local PI = math.pi
 local TWOPI = 2 * math.pi
 local HALFPI = 0.5 * math.pi
@@ -662,8 +661,8 @@ function mob_class:go_to_pos(b)
 	if not self then return end
 	if not b then return end
 	local s = self.object:get_pos()
-	if vector_distance(b,s) < .5 then return true end
-	if b.y > s.y then self:do_jump() end
+	if vector_distance(b,s) < .4 then return true end
+	if b.y > s.y + 0.2 then self:do_jump() end
 	self:turn_in_direction(b.x - s.x, b.z - s.z, 2)
 	self:set_velocity(self.walk_velocity)
 	self:set_animation("walk")
