@@ -200,7 +200,20 @@ local function calculate_path_through_door (p, cur_door_pos, t)
 	return enriched_path
 end
 
+-- we treat ignore as solid, as we cannot path there
+local function is_solid(pos)
+	local ndef = minetest.registered_nodes[minetest.get_node(pos).name]
+	return (not ndef) or ndef.walkable
+end
 
+local function find_open_node(pos, radius)
+	if not is_solid(pos) then return pos end
+	local above = vector.offset(pos, 0, 1, 0)
+	if not is_solid(above) then return above, true end -- additional return: drop last
+	local n = minetest.find_node_near(pos, radius or 1, {"air"})
+	if n then return n end
+	return nil
+end
 
 function mob_class:gopath(target, callback_arrived, prioritised)
 	if self.state == PATHFINDING then mcl_log("Already pathfinding, don't set another until done.") return end
@@ -210,8 +223,19 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 
 	self.order = nil
 
-	local p = vector.round(self.object:get_pos())
-	local t = vector.round(vector.offset(target,0,1,0))
+	-- maybe feet are buried in solid?
+	local start = self.object:get_pos()
+	local p = find_open_node(vector.round(start), 1)
+	if not p then -- buried?
+		minetest.log("action", "Cannot path from "..minetest.pos_to_string(start).." because it is solid. Nodetype: "..minetest.get_node(start).name)
+		return
+	end
+	-- target might be a job-site that is solid
+	local t, drop_last_wp = find_open_node(target, 1)
+	if not t then
+		minetest.log("action", "Cannot path to "..minetest.pos_to_string(target).." because it is solid. Nodetype: "..minetest.get_node(target).name)
+		return
+	end
 
 	--Check direct route
 	local wp = minetest.find_path(p, t, PATHFINDING_SEARCH_DISTANCE, 1, 4)
@@ -219,11 +243,15 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 	if not wp then
 		mcl_log("### No direct path. Path through door closest to target.")
 		local door_near_target = minetest.find_node_near(target, 16, {"group:door"})
+		local below = vector.offset(door_near_target, 0, -1, 0)
+		if minetest.get_item_group(minetest.get_node(below), "door") > 0 then door_near_target = below end
 		wp = calculate_path_through_door(p, door_near_target, t)
 
 		if not wp then
 			mcl_log("### No path though door closest to target. Try door closest to origin.")
 			local door_closest = minetest.find_node_near(p, 16, {"group:door"})
+			local below = vector.offset(door_closest, 0, -1, 0)
+			if minetest.get_item_group(minetest.get_node(below), "door") > 0 then door_closest = below end
 			wp = calculate_path_through_door(p, door_closest, t)
 
 			-- Path through 2 doors
@@ -271,6 +299,7 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 
 	if wp and #wp > 0 then
 		--output_table(wp)
+		if drop_last_wp and #wp > 1 then table.remove(wp, #wp) end
 		self._target = t
 		self.callback_arrived = callback_arrived
 		self.current_target = table.remove(wp,1)
