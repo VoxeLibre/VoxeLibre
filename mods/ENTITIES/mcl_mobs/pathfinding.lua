@@ -9,9 +9,6 @@ local PATHFINDING_SEARCH_DISTANCE = 25 -- How big the square is that pathfinding
 
 local PATHFINDING = "gowp"
 
-local one_down = vector.new(0,-1,0)
-local one_up = vector.new(0,1,0)
-
 local plane_adjacents = {
 	vector.new(1,0,0),
 	vector.new(-1,0,0),
@@ -83,11 +80,6 @@ local function generate_enriched_path(wp_in, door_open_pos, door_close_pos, cur_
 			action = {type = "door", action = "open", target = cur_door_pos}
 		end
 
-		if visualize then
-			core.add_particle({pos = cur_pos, expirationtime=5+i/4, size=3+2/i, velocity=vector.new(0,-0.01,0),
-				texture="mcl_copper_anti_oxidation_particle.png"}) -- white stars
-		end
-
 		wp_out[i] = {}
 		wp_out[i]["pos"] = cur_pos
 		wp_out[i]["failed_attempts"] = 0
@@ -119,74 +111,49 @@ end
 
 -- This function is used to see if we can path. We could use to check a route, rather than making people move.
 local function calculate_path_through_door (p, cur_door_pos, t)
+	if not cur_door_pos then return end
 	if t then
-		mcl_log("Plot route through door from pos: " .. minetest.pos_to_string(p) .. ", to target: " .. minetest.pos_to_string(t))
+		mcl_log("Plot route through door from pos: " .. minetest.pos_to_string(p) .. " through " .. minetest.pos_to_string(cur_door_pos) .. ", to target: " .. minetest.pos_to_string(t))
 	else
-		mcl_log("Plot route through door from pos: " .. minetest.pos_to_string(p))
+		mcl_log("Plot route through door from pos: " .. minetest.pos_to_string(p) .. " through " .. minetest.pos_to_string(cur_door_pos))
 	end
 
-	local enriched_path = nil
-	local wp, prospective_wp
+	for _,v in pairs(plane_adjacents) do
+		local pos_closest_to_door = vector.add(cur_door_pos,v)
+		local n = minetest.get_node(pos_closest_to_door)
+		if not n.walkable then
+			mcl_log("We have open space next to door at: " .. minetest.pos_to_string(pos_closest_to_door))
 
-	local pos_closest_to_door = nil
-	local other_side_of_door = nil
+			local prospective_wp = minetest.find_path(p, pos_closest_to_door, PATHFINDING_SEARCH_DISTANCE, 1, 4)
 
-	if cur_door_pos then
-		mcl_log("Found a door near: " .. minetest.pos_to_string(cur_door_pos))
+			if prospective_wp then
+				local other_side_of_door = vector.add(cur_door_pos,-v)
+				mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
+				mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
 
-		for _,v in pairs(plane_adjacents) do
-			pos_closest_to_door = vector.add(cur_door_pos,v)
-			other_side_of_door = vector.add(cur_door_pos,-v)
+				table.insert(prospective_wp, cur_door_pos)
 
-			local n = minetest.get_node(pos_closest_to_door)
+				if t then
+					mcl_log("We have t, lets go from door to target")
+					local wp_otherside_door_to_target = minetest.find_path(other_side_of_door, t, PATHFINDING_SEARCH_DISTANCE, 1, 4)
 
-			if n.name == "air" then
-				mcl_log("We have air space next to door at: " .. minetest.pos_to_string(pos_closest_to_door))
-
-				prospective_wp = minetest.find_path(p, pos_closest_to_door, PATHFINDING_SEARCH_DISTANCE, 1, 4)
-
-				if prospective_wp then
-					mcl_log("Found a path to next to door".. minetest.pos_to_string(pos_closest_to_door))
-					mcl_log("Opposite is: ".. minetest.pos_to_string(other_side_of_door))
-
-					table.insert(prospective_wp, cur_door_pos)
-
-					if t then
-						mcl_log("We have t, lets go from door to target")
-						local wp_otherside_door_to_target = minetest.find_path(other_side_of_door, t, PATHFINDING_SEARCH_DISTANCE, 1, 4)
-
-						if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
-							append_paths (prospective_wp, wp_otherside_door_to_target)
-
-							wp = prospective_wp
-							mcl_log("We have a path from outside door to target")
-						else
-							mcl_log("We cannot path from outside door to target")
-						end
+					if wp_otherside_door_to_target and #wp_otherside_door_to_target > 0 then
+						append_paths (prospective_wp, wp_otherside_door_to_target)
+						mcl_log("We have a path from outside door to target")
+						return generate_enriched_path(prospective_wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
 					else
-						mcl_log("No t, just add other side of door")
-						table.insert(prospective_wp, other_side_of_door)
-						wp = prospective_wp
-					end
-
-					if wp then
-						enriched_path = generate_enriched_path(wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
-						break
+						mcl_log("We cannot path from outside door to target")
 					end
 				else
-					mcl_log("Cannot path to this air block next to door.")
+					mcl_log("No t, just add other side of door")
+					table.insert(prospective_wp, other_side_of_door)
+					return generate_enriched_path(prospective_wp, pos_closest_to_door, other_side_of_door, cur_door_pos)
 				end
+			else
+				mcl_log("Cannot path to this air block next to door.")
 			end
 		end
-	else
-		mcl_log("No door found")
 	end
-
-	if wp and not enriched_path then
-		mcl_log("Wp but not enriched")
-		enriched_path = generate_enriched_path(wp)
-	end
-	return enriched_path
 end
 
 -- we treat ignore as solid, as we cannot path there
@@ -198,7 +165,7 @@ end
 local function find_open_node(pos, radius)
 	local r = vector.round(pos)
 	if not is_solid(r) then return r end
-	local above = vector.offset(pos, 0, 1, 0)
+	local above = vector.offset(r, 0, 1, 0)
 	if not is_solid(above) then return above, true end -- additional return: drop last
 	local n = minetest.find_node_near(pos, radius or 1, {"air"})
 	if n then return n end
@@ -233,15 +200,15 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 	if not wp then
 		mcl_log("### No direct path. Path through door closest to target.")
 		local door_near_target = minetest.find_node_near(target, 16, {"group:door"})
-		local below = vector.offset(door_near_target, 0, -1, 0)
-		if minetest.get_item_group(minetest.get_node(below), "door") > 0 then door_near_target = below end
+		local below = door_near_target and vector.offset(door_near_target, 0, -1, 0)
+		if below and minetest.get_item_group(minetest.get_node(below), "door") > 0 then door_near_target = below end
 		wp = calculate_path_through_door(p, door_near_target, t)
 
 		if not wp then
 			mcl_log("### No path though door closest to target. Try door closest to origin.")
 			local door_closest = minetest.find_node_near(p, 16, {"group:door"})
-			local below = vector.offset(door_closest, 0, -1, 0)
-			if minetest.get_item_group(minetest.get_node(below), "door") > 0 then door_closest = below end
+			local below = door_closest and vector.offset(door_closest, 0, -1, 0)
+			if below and minetest.get_item_group(minetest.get_node(below), "door") > 0 then door_closest = below end
 			wp = calculate_path_through_door(p, door_closest, t)
 
 			-- Path through 2 doors
@@ -298,8 +265,18 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 			-- fence or wall underneath?
 			local bdef = minetest.registered_nodes[minetest.get_node(vector.offset(wp[i].pos, 0, -1, 0)).name]
 			if not bdef then minetest.log("warning", "There must not be unknown nodes on path") end
+			-- carpets are fine
+			if bdef and (bdef.groups.carpet or 0) > 0 then
+				wp[i].pos = vector.offset(wp[i].pos, 0, -1, 0)
+			-- target bottom of door
+			elseif bdef and (bdef.groups.door or 0) > 0 then
+				wp[i].pos = vector.offset(wp[i].pos, 0, -1, 0)
+			-- not walkable?
+			elseif bdef and not bdef.walkable then
+				wp[i].pos = vector.offset(wp[i].pos, 0, -1, 0)
+				i = i - 1
 			-- plan opening fence gates
-			if bdef and (bdef.groups.fence_gate or 0) > 0 then
+			elseif bdef and (bdef.groups.fence_gate or 0) > 0 then
 				wp[i].pos = vector.offset(wp[i].pos, 0, -1, 0)
 				wp[math.max(1,i-1)].action = {type = "door", action = "open", target = wp[i].pos}
 				if i+1 < #wp then
@@ -317,26 +294,33 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 					end
 					j = j + 1
 				end
-				minetest.log("warning", bdef.name .. " at "..tostring(i).." end at "..(j <= #wp and tostring(j) or "nil"))
+				-- minetest.log("warning", bdef.name .. " at "..tostring(i).." end at "..(j <= #wp and tostring(j) or "nil"))
 				if j <= #wp and wp[i-1].pos.y == wp[j].pos.y then
 					local swp = minetest.find_path(wp[i-1].pos, wp[j].pos, PATHFINDING_SEARCH_DISTANCE, 0, 0)
 					-- TODO: if we do not find a path here, consider pathing through a fence gate!
 					if swp and #swp > 0 then
 						for k = j-1,i,-1 do table.remove(wp, k) end
 						for k = 2, #swp-1 do table.insert(wp, i-2+k, {pos = swp[k], failed_attempts = 0}) end
-						minetest.log("warning", "Monkey patch pathfinding around "..bdef.name.." successful.")
+						--minetest.log("warning", "Monkey patch pathfinding around "..bdef.name.." successful.")
 						i = i + #swp - 4
 					else
-						minetest.log("warning", "Monkey patch pathfinding around "..bdef.name.." failed.")
+						--minetest.log("warning", "Monkey patch pathfinding around "..bdef.name.." failed.")
 					end
 				end
 			end
 			i = i + 1
 		end
 	end
+	if wp and drop_last_wp and vector.equals(wp[#wp], t) then table.remove(wp, #wp) end
 	if wp and #wp > 0 then
+		if visualize then
+			for i = 1,#wp do
+				core.add_particle({pos = wp[i].pos, expirationtime=3+i/3, size=3+2/i, velocity=vector.new(0,-0.02,0),
+					texture="mcl_copper_anti_oxidation_particle.png"}) -- white stars
+			end
+		end
+
 		--output_table(wp)
-		if drop_last_wp and #wp > 1 then table.remove(wp, #wp) end
 		self._target = t
 		self.callback_arrived = callback_arrived
 		self.current_target = table.remove(wp,1)

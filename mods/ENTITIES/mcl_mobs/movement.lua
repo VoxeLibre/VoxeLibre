@@ -368,6 +368,10 @@ function mob_class:do_jump()
 
 	-- what is in front of mob?
 	local nod = node_ok(vector_offset(pos, dir_x, 0.5, dir_z))
+	local ndef = minetest.registered_nodes[nod.name]
+
+	-- thin blocks that do not need to be jumped
+	if nod.name == node_snow or (ndef and ndef.groups.carpet or 0) > 0 then return false end
 
 	-- this is used to detect if there's a block on top of the block in front of the mob.
 	-- If there is, there is no point in jumping as we won't manage.
@@ -378,15 +382,9 @@ function mob_class:do_jump()
 	local ntdef = minetest.registered_nodes[node_top.name]
 	if ntdef and ntdef.walkable == true and not (self.attack and self.state == "attack") then return false end
 
-	-- thin blocks that do not need to be jumped
-	if nod.name == node_snow then return false end
-
-	local ndef = minetest.registered_nodes[nod.name]
 	if self.walk_chance ~= 0 and not (ndef and ndef.walkable) and not self._can_jump_cliff then return false end
 
-	if minetest.get_item_group(nod.name, "fence") ~= 0
-	or minetest.get_item_group(nod.name, "fence_gate") ~= 0
-	or minetest.get_item_group(nod.name, "wall") ~= 0 then
+	if (ndef.groups.fence or 0) ~= 0 or (ndef.groups.fence_gate or 0) ~= 0 or (ndef.groups.wall or 0) ~= 0 then
 		self.facing_fence = true
 		return false
 	end
