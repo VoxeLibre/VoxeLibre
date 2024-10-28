@@ -657,15 +657,16 @@ function mob_class:flop()
 	end
 end
 
-function mob_class:go_to_pos(b)
+function mob_class:go_to_pos(b, speed)
 	if not self then return end
 	if not b then return end
 	local s = self.object:get_pos()
 	if vector_distance(b,s) < .4 then return true end
 	if b.y > s.y + 0.2 then self:do_jump() end
 	self:turn_in_direction(b.x - s.x, b.z - s.z, 2)
-	self:set_velocity(self.walk_velocity)
-	self:set_animation("walk")
+	speed = speed or self.walk_velocity
+	self:set_velocity(speed)
+	self:set_animation(speed <= self.walk_velocity and "walk" or "run")
 end
 
 local check_herd_timer = 0
