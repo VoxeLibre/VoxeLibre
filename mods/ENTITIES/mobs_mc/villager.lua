@@ -1492,10 +1492,7 @@ local function do_activity (self)
 	end
 
 	-- Only check in day or during thunderstorm but wandered_too_far code won't work
-	local wandered_too_far = false
-	if check_bed (self) then
-		wandered_too_far = vector.distance(self.object:get_pos(),self._bed) > 50
-	end
+	local wandered_too_far = check_bed(self) and (vector.distance(self.object:get_pos(),self._bed) > 24)
 
 	if wandered_too_far  then
 		--mcl_log("Wandered too far! Return home ")
@@ -1506,7 +1503,7 @@ local function do_activity (self)
 		do_work(self)
 	elseif get_activity() == GATHERING then
 		go_to_town_bell(self)
-	else
+	elseif self.order then
 		mcl_log("No order, so remove it.")
 		self.order = nil
 	end
