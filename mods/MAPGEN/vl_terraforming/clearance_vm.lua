@@ -5,8 +5,6 @@ local floor = math.floor
 local vector_new = vector.new
 local is_solid_not_tree = vl_terraforming._is_solid_not_tree
 local is_tree_not_leaves = vl_terraforming._is_tree_not_leaves
-local get_node = core.get_node
-local swap_node = core.swap_node
 
 --- Clear an area for a structure
 --
@@ -17,6 +15,7 @@ local swap_node = core.swap_node
 -- The ellipse condition dx^2/a^2+dz^2/b^2 <= 1 then yields dx^2/(sx^2*0.5) + dz^2/(sz^2*0.5) <= 1
 -- We use wx2=sx^-2*2, wz2=sz^-2*2 and then dx^2*wx2+dz^2*wz2 <= 1
 --
+-- @param vm VoxelManip: Lua voxel manipulator
 -- @param px number: lowest x
 -- @param py number: lowest y
 -- @param pz number: lowest z
@@ -27,8 +26,10 @@ local swap_node = core.swap_node
 -- @param surface_mat Node: surface node material
 -- @param dust_mat Node: surface dust material
 -- @param pr PcgRandom: random generator
-function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat, dust_mat, pr)
+function vl_terraforming.clearance_vm(vm, px, py, pz, sx, sy, sz, corners, surface_mat, dust_mat, pr)
 	if sx <= 0 or sy <= 0 or sz <= 0 then return end
+	local get_node_at = vm.get_node_at
+	local set_node_at = vm.set_node_at
 	corners = corners or 0
 	local wx2, wz2 = max(sx - corners, 1)^-2 * 2, max(sz - corners, 1)^-2 * 2
 	local cx, cz = px + sx * 0.5 - 0.5, pz + sz * 0.5 - 0.5
@@ -47,33 +48,33 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 			vec.z = zi
 			if xi >= px and xi < px+sx and zi >= pz and zi < pz+sz and dx2+dz2 <= 1 then
 				vec.y = py
-				if get_node(vec).name ~= "mcl_core:bedrock" then swap_node(vec, AIR) end
+				if get_node_at(vm, vec).name ~= "mcl_core:bedrock" then set_node_at(vm, vec, AIR) end
 				vec.y = py - 1
-				local n = get_node(vec)
+				local n = get_node_at(vm, vec)
 				if n and n.name ~= surface_mat.name and is_solid_not_tree(n) then
-					swap_node(vec, surface_mat)
+					set_node_at(vm, vec, surface_mat)
 				end
 				for yi = py+1,min_clear do -- full height for inner area
 					vec.y = yi
-					if get_node(vec).name ~= "mcl_core:bedrock" then swap_node(vec, AIR) end
+					if get_node_at(vm, vec).name ~= "mcl_core:bedrock" then set_node_at(vm, vec, AIR) end
 				end
 			elseif dx21+dz21 <= 1 then
 				-- widen the cave above by 1, to make easier to enter for mobs
 				-- todo: make configurable?
 				vec.y = py + 1
-				local name = get_node(vec).name
+				local name = get_node_at(vm, vec).name
 				if name ~= "mcl_core:bedrock" then
 					local mat = AIR
 					if dust_mat then
 						vec.y = py
-						if get_node(vec).name == surface_mat.name then mat = dust_mat end
+						if get_node_at(vm, vec).name == surface_mat.name then mat = dust_mat end
 						vec.y = py + 1
 					end
-					swap_node(vec, mat)
+					set_node_at(vm, vec, mat)
 				end
 				for yi = py+2,min_clear-1 do
 					vec.y = yi
-					if get_node(vec).name ~= "mcl_core:bedrock" then swap_node(vec, AIR) end
+					if get_node_at(vm, vec).name ~= "mcl_core:bedrock" then set_node_at(vm, vec, AIR) end
 					if yi > py+4 then
 						local p = (yi-py) / (max_clear-py)
 						--minetest.log(tostring(p).."^2 "..tostring(p*p).." rand: "..pr:next(0,1e9)/1e9)
@@ -83,19 +84,19 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 				-- remove some tree parts and fix surfaces down
 				for yi = py,py-1,-1 do
 					vec.y = yi
-					local n = get_node(vec)
+					local n = get_node_at(vm, vec)
 					if is_tree_not_leaves(n) then
-						swap_node(vec, surface_mat)
+						set_node_at(vm, vec, surface_mat)
 						if dust_mat and yi == py then
 							vec.y = yi + 1
-							if get_node(vec).name == "air" then swap_node(vec, dust_mat) end
+							if get_node_at(vm, vec).name == "air" then set_node_at(vm, vec, dust_mat) end
 						end
 					else
 						if n and n.name ~= surface_mat.name and is_solid_not_tree(n) then
-							swap_node(vec, surface_mat)
+							set_node_at(vm, vec, surface_mat)
 							if dust_mat then
 								vec.y = yi + 1
-								if get_node(vec).name == "air" then swap_node(vec, dust_mat) end
+								if get_node_at(vm, vec).name == "air" then set_node_at(vm, vec, dust_mat) end
 							end
 						end
 						break
@@ -118,16 +119,16 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 				if py+4 < sy then
 					for yi = py+2,py+4 do
 						vec = vector_new(xi, yi, zi)
-						if get_node(vec).name ~= "mcl_core:bedrock" then swap_node(vec, v) end
+						if get_node_at(vm, vec).name ~= "mcl_core:bedrock" then set_node_at(vm, vec, v) end
 					end
 				end
 				for yi = py+1,py-1,-1 do
-					local n = get_node(vector_new(xi, yi, zi))
+					local n = get_node_at(vm, vector_new(xi, yi, zi))
 					if is_tree_bot_leaves(n) and n.name ~= "mcl_core:bedrock" then
-						swap_node(vector_new(xi, yi, zi), AIR)
+						set_node_at(vm, vector_new(xi, yi, zi), AIR)
 					else
 						if n and n.name ~= surface_mat.name and is_solid_not_tree(n) then
-							swap_node(vector_new(xi, yi, zi), surface_mat)
+							set_node_at(vm, vector_new(xi, yi, zi), surface_mat)
 						end
 						break
 					end
@@ -147,7 +148,7 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 				local keep_trees = (xi<px or xi>=px+sx) or (zi<pz or zi>=pz+sz) -- TODO make parameter?
 				if dx22+dy2+dz22 <= 1 then
 					vec.x, vec.y, vec.z = xi, yi, zi
-					local name = get_node(vec).name
+					local name = get_node_at(vm, vec).name
 					-- don't break bedrock or air
 					if name == "air" or name == "ignore" or name == "mcl_core:bedrock" or name == "mcl_villages:no_paths" then goto continue end
 					local meta = minetest.registered_items[name]
@@ -156,13 +157,13 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 					if keep_trees and is_tree then goto continue end
 					vec.y = yi-1
 					-- do not clear above solid
-					local name_below = get_node(vec).name
+					local name_below = get_node_at(vm, vec).name
 					if name_below ~= "air" and name_below ~= "ignore" and name_below ~= "mcl_core:bedrock" then goto continue end
 					-- try to completely remove trees overhead
 					-- stop randomly depending on fill, to narrow down the caves
 					if not keep_trees and not is_tree and (pr:next(0,1e9)/1e9)^0.5 > 1-(dx22+dy2+dz22-0.1) then goto continue end
 					vec.x, vec.y, vec.z = xi, yi, zi
-					swap_node(vec, AIR)
+					set_node_at(vm, vec, AIR)
 					active = true
 					::continue::
 				end

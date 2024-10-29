@@ -1,3 +1,6 @@
+local get_node = core.get_node
+local swap_node = core.swap_node
+
 --- fairly strict: air, ignore, or no_paths marker
 -- @param node string or Node: node or node name
 -- @return true for air and ignore nodes
@@ -20,7 +23,7 @@ function vl_terraforming._is_solid_not_tree(node)
 	-- is walkable if name == "mcl_core:snowblock" then return true end
 	local meta = minetest.registered_items[name]
 	local groups = meta and meta.groups
-	return meta and meta.walkable and not (groups and (groups.deco_block or groups.tree or groups.leaves or groups.plant))
+	return meta and meta.walkable and not (groups and ((groups.deco_block or 0) > 0 or (groups.tree or 0) > 0 or (groups.leaves or 0) > 0 or (groups.plant or 0) > 0))
 end
 local is_solid_not_tree = vl_terraforming._is_solid_not_tree
 
@@ -34,7 +37,7 @@ function vl_terraforming._is_tree_not_leaves(node)
 	-- if name == "mcl_crimson:warped_wart_block" then return true end -- warped forest, treat as tree
 	-- if name == "mcl_crimson:shroomlight" then return true end -- crimson forest, treat as tree
 	local meta = minetest.registered_items[name]
-	return meta and meta.groups and meta.groups.tree
+	return meta and meta.groups and (meta.groups.tree or 0) > 0
 end
 
 --- check if a node is liquid
@@ -45,7 +48,20 @@ function vl_terraforming._is_liquid(node)
 	if name == "air" or name == "ignore" or name == "mcl_villages:no_paths" then return false end
 	local meta = minetest.registered_items[name]
 	local groups = meta and meta.groups
-	return groups and groups.liquid
+	return groups and (groups.liquid or 0) > 0
+end
+
+--- replace a non-solid node, optionally also "additional"
+-- @param pos position
+-- @param with replacement Lua node (not just name)
+-- @param always additional node to awlays replace even when solid
+function vl_terraforming._make_solid(pos, with, always)
+	local cur = get_node(pos)
+	if cur.name == "ignore" or cur.name == "mcl_core:bedrock" then return end
+	if cur.name == always or not is_solid_not_tree(cur) then
+		swap_node(pos, with)
+		return true
+	end
 end
 
 --- replace a non-solid node, optionally also "additional"
