@@ -3,6 +3,9 @@
 -------------------------------------------------------------------------------
 local light_threshold = tonumber(minetest.settings:get("mcl_villages_light_threshold")) or 5
 
+local get_node = core.get_node
+local swap_node = core.swap_node
+
 -- This ends up being a nested table.
 -- 1st level is the blockseed which is the village
 -- 2nd is the distance of the building from the bell
@@ -20,7 +23,7 @@ end
 
 -- this can still run in LVM
 -- simple function to increase "no_paths" walls
-function mcl_villages.increase_no_paths(vm, minp, maxp)
+function mcl_villages.increase_no_paths(minp, maxp)
 	local p = vector.zero()
 	for z = minp.z, maxp.z do
 		p.z = z
@@ -28,12 +31,12 @@ function mcl_villages.increase_no_paths(vm, minp, maxp)
 			p.x = x
 			for y = minp.y, maxp.y - 1 do
 				p.y = y
-				local n = vm:get_node_at(p)
+				local n = get_node(p)
 				if n and n.name == "mcl_villages:no_paths" then
 					p.y = y + 1
-					n = vm:get_node_at(p)
+					n = get_node(p)
 					if n and n.name == "air" then
-						vm:set_node_at(p, {name = "mcl_villages:no_paths" })
+						swap_node(p, {name = "mcl_villages:no_paths" })
 					end
 				end
 			end
@@ -42,7 +45,7 @@ function mcl_villages.increase_no_paths(vm, minp, maxp)
 end
 
 -- Insert end points in to the nested tables
-function mcl_villages.store_path_ends(vm, minp, maxp, pos, blockseed, bell_pos)
+function mcl_villages.store_path_ends(minp, maxp, pos, blockseed, bell_pos)
 	-- We store by distance because we create paths far away from the bell first
 	local dist = vector.distance(bell_pos, pos)
 	local id = "block_" .. blockseed -- cannot use integers as keys
@@ -55,10 +58,10 @@ function mcl_villages.store_path_ends(vm, minp, maxp, pos, blockseed, bell_pos)
 			v.y = yi
 			for xi = minp.x, maxp.x do
 				v.x = xi
-				local n = vm:get_node_at(v)
+				local n = get_node(v)
 				if n and n.name == "mcl_villages:path_endpoint" then
 					table.insert(tab, vector.copy(v))
-					vm:set_node_at(v, { name = "air" })
+					swap_node(v, { name = "air" })
 				end
 			end
 		end
@@ -80,19 +83,18 @@ local function place_lamp(pos, pr)
 	)
 end
 
--- TODO: port this to lvm.
 local function smooth_path(path, passes, minp, maxp)
 	-- bridge over water/laver
 	for i = 2, #path - 1 do
 		while true do
 			local cur = path[i]
-			local node = minetest.get_node(cur).name
+			local node = get_node(cur).name
 			if node == "air" and vector.in_area(cur, minp, maxp) then
-				local under = minetest.get_node(vector.offset(path[i], 0, -1, 0)).name
+				local under = get_node(vector.offset(path[i], 0, -1, 0)).name
 				local udef = minetest.registered_nodes[under]
 				-- do not build paths over leaves
-				if udef and udef.groups.leaves then
-					minetest.swap_node(path[i], {name="mcl_villages:no_paths"})
+				if udef and (udef.groups.leaves or 0) > 0 then
+					swap_node(path[i], {name="mcl_villages:no_paths"})
 					return -- bad path
 				end
 				break
@@ -115,7 +117,7 @@ local function smooth_path(path, passes, minp, maxp)
 			local prev_y = path[i - 1].y
 			local y = path[i].y
 			local next_y = path[i + 1].y
-			local bump = minetest.get_node(path[i]).name
+			local bump = get_node(path[i]).name
 			local bdef = minetest.registered_nodes[bump]
 
 			-- TODO: also replace bamboo underneath with dirt here?
@@ -126,14 +128,14 @@ local function smooth_path(path, passes, minp, maxp)
 			    or (y > prev_y and y > next_y) then
 				-- Remove peaks to flatten path
 				path[i].y = math.max(prev_y, next_y)
-				minetest.swap_node(path[i], { name = "air" })
+				swap_node(path[i], { name = "air" })
 				changed = true
 			elseif (y < next_y - 1 and y >= prev_y) -- large step
 			    or (y < prev_y - 1 and y >= next_y) -- large step
 			    or (y < prev_y and y < next_y) then
 				-- Fill in dips to flatten path
 				path[i].y = math.min(prev_y, next_y) - 1 -- to replace below first
-				minetest.swap_node(path[i], { name = "mcl_core:dirt" }) -- todo: use sand/sandstone in desert?, use slabs?
+				swap_node(path[i], { name = "mcl_core:dirt" }) -- todo: use sand/sandstone in desert?, use slabs?
 				path[i].y = path[i].y + 1 -- above dirt
 				changed = true
 			end
@@ -146,23 +148,22 @@ local function smooth_path(path, passes, minp, maxp)
 		-- we may not yet have filled a gap
 		for i = 2, #path - 1 do
 			local below = vector.offset(path[y], 0, -1, 0)
-			local bdef = minetest.registered_nodes[minetest.get_node(path[i]).name]
+			local bdef = minetest.registered_nodes[get_node(path[i]).name]
 			if bdef and not bdef.walkable then
-				minetest.swap_node(path[i], { name = "mcl_core:dirt" }) -- todo: use sand/sandstone in desert?, use slabs?
+				swap_node(path[i], { name = "mcl_core:dirt" }) -- todo: use sand/sandstone in desert?, use slabs?
 			end
 		end
 	end]]
 	return path
 end
 
--- TODO: port this to lvm.
 local function place_path(path, pr, stair, slab)
 	-- find water/lava below
 	for i = 2, #path - 1 do
 		local prev_y = path[i - 1].y
 		local y = path[i].y
 		local next_y = path[i + 1].y
-		local bump = minetest.get_node(path[i]).name
+		local bump = get_node(path[i]).name
 		local bdef = minetest.registered_nodes[bump]
 
 		if bdef and ((bdef.groups.water or 0) > 0 or (bdef.groups.lava or 0) > 0) then
@@ -170,10 +171,10 @@ local function place_path(path, pr, stair, slab)
 			local up_pos = vector.copy(path[i])
 			while true do
 				up_pos.y = up_pos.y + 1
-				local up_node = minetest.get_node(up_pos).name
+				local up_node = get_node(up_pos).name
 				local udef = minetest.registered_nodes[up_node]
 				if udef and (udef.groups.water or 0) == 0 and (udef.groups.lava or 0) == 0 then
-					minetest.swap_node(up_pos, { name = "air" })
+					swap_node(up_pos, { name = "air" })
 					path[i] = up_pos
 					break
 				elseif not udef then break end -- ignore node encountered
@@ -182,31 +183,31 @@ local function place_path(path, pr, stair, slab)
 	end
 
 	for i, pos in ipairs(path) do
-		local n0 = minetest.get_node(pos).name
-		if n0 ~= "air" then minetest.swap_node(pos, { name = "air" }) end
+		local n0 = get_node(pos).name
+		if n0 ~= "air" then swap_node(pos, { name = "air" }) end
 
 		local under_pos = vector.offset(pos, 0, -1, 0)
-		local n = minetest.get_node(under_pos).name
+		local n = get_node(under_pos).name
 		local ndef = minetest.registered_nodes[n]
 		local groups = ndef and ndef.groups or {}
 		local done = false
 		if i > 1 and pos.y > path[i - 1].y then
 			-- stairs up
-			if not groups.stair then
+			if (groups.stair or 0) == 0 then
 				done = true
 				local param2 = minetest.dir_to_facedir(vector.subtract(pos, path[i - 1]))
-				minetest.swap_node(under_pos, { name = stair, param2 = param2 })
+				swap_node(under_pos, { name = stair, param2 = param2 })
 			end
 		elseif i < #path-1 and pos.y > path[i + 1].y then
 			-- stairs down
-			if not groups.stair then
+			if (groups.stair or 0) == 0 then
 				done = true
 				local param2 = minetest.dir_to_facedir(vector.subtract(pos, path[i + 1]))
-				minetest.swap_node(under_pos, { name = stair, param2 = param2 })
+				swap_node(under_pos, { name = stair, param2 = param2 })
 			end
-		elseif not groups.stair and i > 1 and pos.y < path[i - 1].y then
+		elseif (groups.stair or 0) == 0 and i > 1 and pos.y < path[i - 1].y then
 			-- stairs down
-			local n2 = minetest.get_node(vector.offset(path[i - 1], 0, -1, 0)).name
+			local n2 = get_node(vector.offset(path[i - 1], 0, -1, 0)).name
 			if not minetest.get_item_group(n2, "stair") then
 				done = true
 				local param2 = minetest.dir_to_facedir(vector.subtract(path[i - 1], pos))
@@ -216,38 +217,38 @@ local function place_path(path, pr, stair, slab)
 				minetest.add_node(pos, { name = stair, param2 = param2 })
 				pos.y = pos.y + 1
 			end
-		elseif not groups.stair and i < #path-1 and pos.y < path[i + 1].y then
+		elseif (groups.stair or 0) == 0 and i < #path-1 and pos.y < path[i + 1].y then
 			-- stairs up
-			local n2 = minetest.get_node(vector.offset(path[i + 1], 0, -1, 0)).name
+			local n2 = get_node(vector.offset(path[i + 1], 0, -1, 0)).name
 			if not minetest.get_item_group(n2, "stair") then
 				done = true
 				local param2 = minetest.dir_to_facedir(vector.subtract(path[i + 1], pos))
 				if i > 1 then -- uglier, but easier to walk up?
 					param2 = minetest.dir_to_facedir(vector.subtract(pos, path[i - 1]))
 				end
-				minetest.add_node(pos, { name = stair, param2 = param2 })
+				swap_node(pos, { name = stair, param2 = param2 })
 				pos.y = pos.y + 1
 			end
 		end
 
 		-- flat
 		if not done then
-			if groups.water then
-				minetest.add_node(under_pos, { name = slab })
-			elseif groups.lava then
-				minetest.add_node(under_pos, { name = "mcl_stairs:slab_stone" })
-			elseif groups.sand then
-				minetest.swap_node(under_pos, { name = "mcl_core:sandstonesmooth2" })
-			elseif groups.soil and not groups.dirtifies_below_solid then
-				minetest.swap_node(under_pos, { name = "mcl_core:grass_path" })
+			if (groups.water or 0) > 0 then
+				swap_node(under_pos, { name = slab })
+			elseif (groups.lava or 0) > 0 then
+				swap_node(under_pos, { name = "mcl_stairs:slab_stone" })
+			elseif (groups.sand or 0) > 0 then
+				swap_node(under_pos, { name = "mcl_core:sandstonesmooth2" })
+			elseif (groups.soil or 0) > 0 and (groups.dirtifies_below_solid or 0) == 0 then
+				swap_node(under_pos, { name = "mcl_core:grass_path" })
 			end
 		end
 
 		-- Clear space for villagers to walk
 		for j = 1, 2 do
 			local over_pos = vector.offset(pos, 0, j, 0)
-			if minetest.get_node(over_pos).name ~= "air" then
-				minetest.swap_node(over_pos, { name = "air" })
+			if get_node(over_pos).name ~= "air" then
+				swap_node(over_pos, { name = "air" })
 			end
 		end
 	end
@@ -260,7 +261,7 @@ local function place_path(path, pr, stair, slab)
 			)
 			-- todo: shuffle nn?
 			for _, npos in ipairs(nn) do
-				local node = minetest.get_node(npos).name
+				local node = get_node(npos).name
 				if node ~= "mcl_core:grass_path" and minetest.get_item_group(node, "stair") == 0 then
 					if minetest.get_item_group(node, "wood_slab") ~= 0 then
 						minetest.add_node(vector.offset(npos, 0, 1, 0), { name = "mcl_torches:torch", param2 = 1 })
