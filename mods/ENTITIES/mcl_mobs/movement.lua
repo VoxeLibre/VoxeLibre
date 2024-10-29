@@ -79,7 +79,6 @@ function mob_class:target_visible(origin)
 	--minetest.log("origin: " .. dump(origin))
 	--minetest.log("origin_eye_pos: " .. dump(origin_eye_pos))
 
-	local targ_head_height, targ_feet_height
 	local cbox = self.collisionbox
 	-- TODO also worth testing midway between feet and head?
 	-- to top of entity
@@ -91,22 +90,13 @@ function mob_class:target_visible(origin)
 		if line_of_sight(origin_eye_pos, vector_offset(target_pos, 0, cbox[2], 0), self.see_through_opaque or mobs_see_through_opaque, true) then return true end
 	end
 
-	--minetest.log("start targ_head_height: " .. dump(targ_head_height))
-	if raycast_line_of_sight (origin_eye_pos, targ_head_height) then
-		return true
-	end
-
-	--minetest.log("Start targ_feet_height: " .. dump(targ_feet_height))
-	if raycast_line_of_sight (origin_eye_pos, targ_feet_height) then
-		return true
-	end
-
 	-- TODO mid way between feet and head
 
 	return false
 end
 
 -- check line of sight
+-- @param stepsize is ignored now
 function mob_class:line_of_sight(pos1, pos2, stepsize)
 	return line_of_sight(pos1, pos2, self.see_through_opaque or mobs_see_through_opaque, true)
 end
@@ -138,10 +128,9 @@ function mob_class:can_jump_cliff()
 		--minetest.log("Jumping cliff: " .. self.name .. " nodes " .. node_low.name .. " - " .. node_far.name .. " - " .. node_far2.name)
 		minetest.after(.1, function() if self and self.object then self._jumping_cliff = false end end)
 		return true
-	else
-		self._jumping_cliff = false
-		return false
 	end
+	self._jumping_cliff = false
+	return false
 end
 
 -- is mob facing a cliff or danger
@@ -153,8 +142,7 @@ function mob_class:is_at_cliff_or_danger()
 	if self.fly then return false end -- also avoids checking fish
 	local pos, yaw = self.object:get_pos(), self.object:get_yaw()
 	local cbox = self.collisionbox
-	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
-	local dir_z = cos(yaw) * (cbox[4] + 0.5)
+	local dir_x, dir_z = -sin(yaw) * (cbox[4] + 0.5), cos(yaw) * (cbox[4] + 0.5)
 
 	local ypos = pos.y + cbox[2] + 0.1 -- just above floor
 
@@ -162,9 +150,7 @@ function mob_class:is_at_cliff_or_danger()
 			vector_new(pos.x + dir_x, ypos, pos.z + dir_z),
 			vector_new(pos.x + dir_x, floor(ypos - self.fear_height), pos.z + dir_z))
 
-	if free_fall then
-		return "free fall"
-	end
+	if free_fall then return "free fall" end
 	local height = ypos + 0.4 - blocker.y
 	local chance = self.jump_height / (height * height)
 	if height >= self.fear_height and random() < chance then
@@ -178,22 +164,15 @@ function mob_class:is_at_cliff_or_danger()
 	if self:is_node_dangerous(self.standing_in.name) or self:is_node_waterhazard(self.standing_in.name) then
 		return false -- allow to get out of the immediate danger
 	end
-	if self:is_node_dangerous(bnode.name) or self:is_node_waterhazard(bnode.name) then
-		return bnode.name
-	end
+	if self:is_node_dangerous(bnode.name) or self:is_node_waterhazard(bnode.name) then return bnode.name end
 	return false
 end
 
 
 -- copy the 'mob facing cliff_or_danger check' from above, and rework to avoid water
 function mob_class:is_at_water_danger()
-	if self.water_damage == 0 and self.breath_max == -1 then
-		--minetest.log("Do not need a water check for: " .. self.name)
-		return false
-	end
-	if self.fly then -- also avoids checking fish
-		return false
-	end
+	if self.water_damage == 0 and self.breath_max == -1 then return false end
+	if self.fly then return false end -- also avoids checking fish
 
 	local in_water_danger = self:is_node_waterhazard(self.standing_in.name) or self:is_node_waterhazard(self.standing_on.name)
 	if in_water_danger then return false end -- If you're in trouble, do not stop
@@ -202,8 +181,7 @@ function mob_class:is_at_water_danger()
 
 	local pos, yaw = self.object:get_pos(), self.object:get_yaw()
 	local cbox = self.collisionbox
-	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
-	local dir_z =  cos(yaw) * (cbox[4] + 0.5)
+	local dir_x, dir_z = -sin(yaw) * (cbox[4] + 0.5), cos(yaw) * (cbox[4] + 0.5)
 
 	local ypos = pos.y + cbox[2] + 0.1 -- just above floor
 
@@ -213,10 +191,7 @@ function mob_class:is_at_water_danger()
 
 	if not los then
 		local bnode = minetest.get_node(blocker)
-		local waterdanger = self:is_node_waterhazard(bnode.name)
-		if waterdanger then
-			return bnode.name
-		end
+		if self:is_node_waterhazard(bnode.name) then return bnode.name end
 	end
 	return false
 end
@@ -280,7 +255,7 @@ function mob_class:do_jump()
 	local dir_z =  cos(yaw) * (cbox[4] + 0.5) + v.z * 0.25
 
 	-- what is in front of mob?
-	local nod = minetest.get_node(vector_offset(pos, dir_x, 0.5, dir_z)).name
+	local nod = minetest.get_node(vector_offset(pos, dir_x, 0.5, dir_z))
 	local ndef = minetest.registered_nodes[nod.name]
 	-- thin blocks that do not need to be jumped
 	if nod.name == NODE_SNOW or (ndef and ndef.groups.carpet or 0) > 0 then return false end
@@ -315,7 +290,7 @@ function mob_class:do_jump()
 	end
 
 	-- if we jumped against a block/wall 4 times then turn
-	if (v.x * v.x + v.z * v.z) < 0.1 then
+	if v.x * v.x + v.z * v.z < 0.1 then
 		self._jump_count = (self._jump_count or 0) + 1
 		if self._jump_count == 4 then
 			self:turn_by(TWOPI * (random() - 0.5), 8)

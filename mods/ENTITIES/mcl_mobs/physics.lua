@@ -28,22 +28,15 @@ local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mob_active_range = tonumber(minetest.settings:get("mcl_mob_active_range")) or 48
 
 -- check if within physical map limits (-30911 to 30927)
-local function within_limits(pos, radius)
-	local wmin, wmax = -30912, 30928
-	if mcl_vars then
-		if mcl_vars.mapgen_edge_min and mcl_vars.mapgen_edge_max then
-			wmin, wmax = mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
-		end
-	end
-	if radius then
-		wmin = wmin - radius
-		wmax = wmax + radius
-	end
-	if not pos then return true end
-	for _,v in pairs(pos) do
-		if v < wmin or v > wmax then return false end
-	end
-	return true
+local map_min, map_max = -30912, 30928
+if mcl_vars and mcl_vars.mapgen_edge_min and mcl_vars.mapgen_edge_max then
+	map_min, map_max = mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
+end
+local function within_limits(pos)
+	return pos
+	and pos.x >= map_min and pos.x <= map_max
+	and pos.y >= map_min and pos.y <= map_max
+	and pos.z >= map_min and pos.z <= map_max
 end
 
 -- Function that update some helpful variables on the mobs position:
@@ -325,26 +318,15 @@ end
 
 -- check if mob is dead or only hurt
 function mob_class:check_for_death(cause, cmi_cause)
-
-	if self.state == "die" then
-		return true
-	end
-
-	-- has health actually changed?
-	if self.health == self.old_health and self.health > 0 then
-		return false
-	end
+	if self.state == "die" then return true end
+	-- skip effects if unchanged
+	if self.health == self.old_health and self.health > 0 then return false end
 
 	local damaged = self.health < self.old_health
 	self.old_health = self.health
 
-	-- still got some health?
 	if self.health > 0 then
-
-		-- make sure health isn't higher than max
-		if self.health > self.hp_max then
-			self.health = self.hp_max
-		end
+		if self.health > self.hp_max then self.health = self.hp_max end
 
 		-- play damage sound if health was reduced and make mob flash red.
 		if damaged then
@@ -362,73 +344,42 @@ function mob_class:check_for_death(cause, cmi_cause)
 	self:mob_sound("death")
 
 	local function death_handle(self)
-		if cmi_cause and cmi_cause["type"] then
-			--minetest.log("cmi_cause: " .. tostring(cmi_cause["type"]))
-		end
-		--minetest.log("cause: " .. tostring(cause))
-
-		-- TODO other env damage shouldn't drop xp
-		-- "rain", "water", "drowning", "suffocation"
-
-		-- dropped cooked item if mob died in fire or lava
+		-- dropped cooked item if mob died in fire or lava, no XP
 		if cause == "lava" or cause == "fire" then
 			self:item_drop(true, 0)
-		else
-			local wielditem = ItemStack()
-			if cause == "hit" then
-				local puncher = cmi_cause.puncher
-				if puncher then
-					wielditem = puncher:get_wielded_item()
-				end
-			end
-			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
-			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
-			self:item_drop(cooked, looting)
+			return
+		end
+		if cause == "rain" or cause == "water" or cause == "drowning" or cause == "suffocation" then
+			self:item_drop(false, 0)
+			return
+		end
+		local wielditem = cause == "hit" and cmi_cause.puncher and cmi_cause.puncher:get_wielded_item()
+		local cooked = mcl_burning.is_burning(self.object) or (wielditem and mcl_enchanting.has_enchantment(wielditem, "fire_aspect"))
+		local looting = wielditem and mcl_enchanting.get_enchantment(wielditem, "looting")
+		self:item_drop(cooked, looting)
 
-			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
-				local pos = self.object:get_pos()
-				local xp_amount = random(self.xp_min, self.xp_max)
-
-				if not mcl_sculk.handle_death(pos, xp_amount) then
-					--minetest.log("Xp not thrown")
-					if minetest.is_creative_enabled("") ~= true then
-						mcl_experience.throw_xp(pos, xp_amount)
-					end
-				else
-					--minetest.log("xp thrown")
+		if (not self.child or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
+			local pos = self.object:get_pos()
+			local xp_amount = random(self.xp_min, self.xp_max)
+			if not mcl_sculk.handle_death(pos, xp_amount) then
+				if minetest.is_creative_enabled("") ~= true then
+					mcl_experience.throw_xp(pos, xp_amount)
 				end
 			end
 		end
-
-
 	end
 
 	-- execute custom death function
-	if self.on_die then
-
-		local pos = self.object:get_pos()
-		local on_die_exit = self.on_die(self, pos, cmi_cause)
-		if on_die_exit ~= true then
-			death_handle(self)
-		end
-
-		if on_die_exit == true then
-			self.state = "die"
-			mcl_burning.extinguish(self.object)
-			mcl_util.remove_entity(self)
-			return true
-		end
+	if self.on_die and self.on_die(self, self.object:get_pos(), cmi_cause) then
+		self.state = "die"
+		mcl_burning.extinguish(self.object)
+		mcl_util.remove_entity(self)
+		return true
 	end
 
 	if self.jockey or self.riden_by_jock then
 		self.riden_by_jock = nil
 		self.jockey = nil
-	end
-
-
-	local collisionbox
-	if self.collisionbox then
-		collisionbox = table.copy(self.collisionbox)
 	end
 
 	self.state = "die"
@@ -455,18 +406,15 @@ function mob_class:check_for_death(cause, cmi_cause)
 		local frames = self.animation.die_end - self.animation.die_start
 		local speed = self.animation.die_speed or 15
 		length = max(frames / speed, 0) + DEATH_DELAY
-		self:set_animation( "die")
+		self:set_animation("die")
 	else
 		length = 1 + DEATH_DELAY
-		self:set_animation( "stand", true)
+		self:set_animation("stand", true)
 	end
-
 
 	-- Remove body after a few seconds and drop stuff
 	local kill = function(self)
-		if not self.object:get_luaentity() then
-			return
-		end
+		if not self.object:get_luaentity() then return end
 		death_handle(self)
 		local dpos = self.object:get_pos()
 		local cbox = self.collisionbox
@@ -481,7 +429,6 @@ function mob_class:check_for_death(cause, cmi_cause)
 	else
 		minetest.after(length, kill, self)
 	end
-
 	return true
 end
 
@@ -496,15 +443,12 @@ end
 
 -- Deal light damage to mob, returns true if mob died
 function mob_class:deal_light_damage(pos, damage)
-	if not ((mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
-		self.health = self.health - damage
+	-- not during rain or snow
+	if (mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos) then return false end
 
-		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
-
-		if self:check_for_death("light", {type = "light"}) then
-			return true
-		end
-	end
+	self.health = self.health - damage
+	mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
+	return self:check_for_death("light", {type = "light"})
 end
 
 -- environmental damage (water, lava, fire, light etc.)
@@ -513,10 +457,8 @@ function mob_class:do_env_damage()
 	local pos = self.object:get_pos()
 	if not pos then return end
 
-	self.time_of_day = minetest.get_timeofday()
-
 	-- remove mob if beyond map limits
-	if not within_limits(pos, 0) then
+	if not within_limits(pos) then
 		mcl_burning.extinguish(self.object)
 		mcl_util.remove_entity(self)
 		return true
@@ -537,15 +479,11 @@ function mob_class:do_env_damage()
 					mcl_burning.set_on_fire(self.object, 10)
 				end
 			else
-				self:deal_light_damage(pos, self.sunlight_damage)
+				if self:deal_light_damage(pos, self.sunlight_damage) then
+					return true
+				end
 			end
 		end
-	end
-
-	local y_level = self.collisionbox[2]
-
-	if self.child then
-		y_level = self.collisionbox[2] * 0.5
 	end
 
 	local standin = self.standing_in
@@ -553,10 +491,6 @@ function mob_class:do_env_damage()
 	if standin.name == "mcl_flowers:wither_rose" then
 		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
-
-	local nodef = minetest.registered_nodes[self.standing_in]
-	local nodef2 = minetest.registered_nodes[self.standing_on]
-	local nodef3 = minetest.registered_nodes[self.standing_under]
 
 	-- rain
 	if self.rain_damage > 0 and mcl_burning.is_affected_by_rain(self.object) then
@@ -647,7 +581,6 @@ function mob_class:do_env_damage()
 	-- Drowning damage
 	if self.breath_max ~= -1 then
 		local drowning = false
-
 		if self.breathes_in_water then
 			if not standin.groups.water then drowning = true end
 		elseif standin.drowning > 0 and self.standing_under.drowning > 0 then
@@ -681,7 +614,7 @@ function mob_class:do_env_damage()
 		-- Short grace period before starting to take suffocation damage.
 		-- This is different from players, who take damage instantly.
 		-- This has been done because mobs might briefly be inside solid nodes
-		-- when e.g. climbing up stairs.
+		-- when, e.g., climbing up stairs.
 		-- This is a bit hacky because it assumes that do_env_damage
 		-- is called roughly every second only.
 		self.suffocation_timer = self.suffocation_timer + 1
@@ -701,7 +634,7 @@ function mob_class:do_env_damage()
 	return self:check_for_death("unknown", {type = "unknown"})
 end
 
-function mob_class:step_damage (dtime, pos)
+function mob_class:step_damage(dtime, pos)
 	if not self.fire_resistant then
 		mcl_burning.tick(self.object, dtime, self)
 		if not self.object:get_pos() then return true end -- mcl_burning.tick may remove object immediately
@@ -900,7 +833,6 @@ function mob_class:check_water_flow(dtime, pos)
 	local def = self.standing_in
 	-- Move item around on flowing liquids
 	if def and def.liquidtype == "flowing" then
-
 		--[[ Get flowing direction (function call from flowlib), if there's a liquid.
 		NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
 		Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
