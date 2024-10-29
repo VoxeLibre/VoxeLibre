@@ -67,6 +67,8 @@ local function detach_driver(self)
 		--print("No player object found for "..driver_name)
 	end
 end
+mod.detach_driver = detach_driver
+
 function mod.kill_cart(staticdata, killer)
 	local pos
 	mcl_log("cart #"..staticdata.uuid.." was killed")

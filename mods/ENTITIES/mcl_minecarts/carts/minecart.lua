@@ -7,7 +7,7 @@ local mod = mcl_minecarts
 local PASSENGER_ATTACH_POSITION = mod.PASSENGER_ATTACH_POSITION
 
 local function activate_normal_minecart(self)
-	detach_driver(self)
+	mod.detach_driver(self)
 
 	-- Detach passenger
 	if self._passenger then
