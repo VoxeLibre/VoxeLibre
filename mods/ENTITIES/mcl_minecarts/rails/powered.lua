@@ -43,7 +43,21 @@ mod.register_straight_rail("mcl_minecarts:golden_rail_v2",{ "mcl_minecarts_rail_
 -- Powered rail (on = acceleration mode)
 mod.register_straight_rail("mcl_minecarts:golden_rail_v2_on",{ "mcl_minecarts_rail_golden_powered.png" },{
 	_doc_items_create_entry = false,
-	_rail_acceleration = 4,
+	_rail_acceleration = function(pos, staticdata)
+		local dir = mod.get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
+		local node_a = minetest.get_node(vector.add(pos, dir))
+		local node_b = minetest.get_node(vector.add(pos, -dir))
+		local has_adjacent_solid = minetest.get_item_group(node_a.name, "solid") ~= 0 or
+		                           minetest.get_item_group(node_b.name, "solid") ~= 0 or
+		                           minetest.get_item_group(node_a.name, "stair") ~= 0 or
+		                           minetest.get_item_group(node_b.name, "stair") ~= 0
+
+		if has_adjacent_solid then
+			return 4
+		else
+			return 0
+		end
+	end,
 	_max_acceleration_velocity = 8,
 	groups = {
 		not_in_creative_inventory = 1,

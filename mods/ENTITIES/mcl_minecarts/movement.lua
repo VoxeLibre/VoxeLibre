@@ -287,7 +287,12 @@ local function calculate_acceleration(staticdata)
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or SPEED_MAX ) then
 		-- Standard friction
 	elseif node_def and node_def._rail_acceleration then
-		acceleration = node_def._rail_acceleration * 4
+		local rail_accel = node_def._rail_acceleration
+		if type(rail_accel) == "function" then
+			acceleration = (rail_accel(pos, staticdata) or 0) * 4
+		else
+			acceleration = rail_accel * 4
+		end
 	end
 
 	-- Factor in gravity after everything else
