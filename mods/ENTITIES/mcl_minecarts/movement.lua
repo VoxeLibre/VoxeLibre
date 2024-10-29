@@ -572,6 +572,12 @@ local function do_detached_movement(self, dtime)
 			return
 		end
 	end
+
+	-- Reset pitch if still not attached
+	local rot = self.object:get_rotation()
+	minetest.log(vector.to_string(rot))
+	rot.x = 0
+	self.object:set_rotation(rot)
 end
 
 --return do_movement, do_detatched_movement

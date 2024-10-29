@@ -341,11 +341,12 @@ function DEFAULT_CART_DEF:on_step(dtime)
 		end
 	end
 
+
 	if not staticdata.connected_at then
 		do_detached_movement(self, dtime)
+	else
+		mod.update_cart_orientation(self)
 	end
-
-	mod.update_cart_orientation(self)
 end
 function DEFAULT_CART_DEF:on_death(killer)
 	kill_cart(self._staticdata, killer)
