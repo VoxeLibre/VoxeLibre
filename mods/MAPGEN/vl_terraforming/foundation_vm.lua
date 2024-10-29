@@ -3,11 +3,10 @@ local max = math.max
 local vector_new = vector.new
 
 local is_solid_not_tree = vl_terraforming._is_solid_not_tree
-local make_solid = vl_terraforming._make_solid
-local get_node = core.get_node
-local swap_node = core.swap_node
+local make_solid_vm = vl_terraforming._make_solid_vm
 
 --- Grow the foundation downwards
+-- @param vm VoxelManip: Lua Voxel Manipulator
 -- @param xi number: x coordinate
 -- @param yi number: y coordinate
 -- @param zi number: z coordinate
@@ -15,11 +14,12 @@ local swap_node = core.swap_node
 -- @param surface_mat Node: surface material node
 -- @param platform_mat Node: platform material node
 -- @param stone_mat Node: stone material node
-local function grow_foundation(xi,yi,zi,pr,surface_mat,platform_mat,stone_mat)
+local function grow_foundation_vm(vm,xi,yi,zi,pr,surface_mat,platform_mat,stone_mat)
+	local get_node_at = vm.get_node_at
 	local pos, n, c = vector_new(xi,yi,zi), nil, 0
-	if is_solid_not_tree(get_node(pos)) then return false end -- already solid, nothing to do
+	if is_solid_not_tree(get_node_at(vm, pos)) then return false end -- already solid, nothing to do
 	pos.y = pos.y + 1
-	local cur = get_node(pos)
+	local cur = get_node_at(vm, pos)
 	if not is_solid_not_tree(cur) then return false end -- above is empty, do not fill below
 	if cur and cur.name and cur.name ~= surface_mat.name then platform_mat = cur end
 	if pr:next(1,4) == 1 then platform_mat = stone_mat end -- randomly switch to stone sometimes
@@ -27,15 +27,15 @@ local function grow_foundation(xi,yi,zi,pr,surface_mat,platform_mat,stone_mat)
 	for x = xi-1,xi+1 do
 		for z = zi-1,zi+1 do
 			pos.x, pos.z = x, z
-			if is_solid_not_tree(get_node(pos)) then c = c + 1 end
+			if is_solid_not_tree(get_node_at(vm, pos)) then c = c + 1 end
 		end
 	end
 	-- stop randomly depending on fill, to narrow down the foundation
 	-- TODO: allow controlling the random depth with an additional parameter?
 	if (pr:next(0,1e9)/1e9)^2 > c/9.1 then return false end
 	pos.x, pos.y, pos.z = xi, yi, zi
-	if get_node(pos).name == "mcl_core:bedrock" then return false end
-	swap_node(pos, platform_mat)
+	if get_node_at(vm, pos).name == "mcl_core:bedrock" then return false end
+	vm:set_node_at(pos, platform_mat)
 	return true
 end
 --- Generate a foundation from px,py,pz with size sx,sy,sz (sy < 0) plus some margin
@@ -48,6 +48,7 @@ end
 -- The ellipse condition dx^2/a^2+dz^2/b^2 <= 1 then yields dx^2/(sx^2*0.5) + dz^2/(sz^2*0.5) <= 1
 -- We use wx2=sx^-2*2, wz2=sz^-2*2 and then dx^2*wx2+dz^2*wz2 <= 1
 --
+-- @param vm VoxelManip: Lua Voxel Manipulator
 -- @param px number: lowest x
 -- @param py number: lowest y
 -- @param pz number: lowest z
@@ -60,8 +61,10 @@ end
 -- @param stone_mat Node: stone material node
 -- @param dust_mat Node: dust material, optional
 -- @param pr PcgRandom: random generator
-function vl_terraforming.foundation(px, py, pz, sx, sy, sz, corners, surface_mat, platform_mat, stone_mat, dust_mat, pr)
+function vl_terraforming.foundation_vm(vm, px, py, pz, sx, sy, sz, corners, surface_mat, platform_mat, stone_mat, dust_mat, pr)
 	if sx <= 0 or sy >= 0 or sz <= 0 then return end
+	local get_node_at = vm.get_node_at
+	local set_node_at = vm.set_node_at
 	corners = corners or 0
 	local wx2, wz2 = max(sx - corners, 1)^-2 * 2, max(sz - corners, 1)^-2 * 2
 	local cx, cz = px + sx * 0.5 - 0.5, pz + sz * 0.5 - 0.5
@@ -77,22 +80,22 @@ function vl_terraforming.foundation(px, py, pz, sx, sy, sz, corners, surface_mat
 			pos.z = zi
 			if xi >= px and xi < px+sx and zi >= pz and zi < pz+sz and dx2+dz2 <= 1 then
 				pos.y = py
-				if get_node(pos).name ~= "mcl_core:bedrock" then
-					swap_node(pos, surface_mat)
+				if get_node_at(vm, pos).name ~= "mcl_core:bedrock" then
+					set_node_at(vm, pos, surface_mat)
 					if dust_mat then
 						pos.y = py + 1
-						if get_node(pos).name == "air" then swap_node(pos, dust_mat) end
+						if get_node_at(vm, pos).name == "air" then set_node_at(vm, pos, dust_mat) end
 					end
 					pos.y = py - 1
-					make_solid(pos, platform_mat)
+					make_solid_vm(vm, pos, platform_mat)
 				end
 			elseif dx21+dz21 <= 1 then -- and pr:next(1,4) < 4 then -- TODO: make randomness configurable.
 				-- slightly widen the baseplate below, to make easier to enter for mobs
 				pos.y = py - 1
-				make_solid(pos, surface_mat)
+				make_solid_vm(vm, pos, surface_mat)
 				if dust_mat then
 					pos.y = py
-					if get_node(pos).name == "air" then swap_node(pos, dust_mat) end
+					if get_node_at(vm, pos).name == "air" then set_node_at(vm, pos, dust_mat) end
 				end
 			end
 		end
@@ -105,7 +108,7 @@ function vl_terraforming.foundation(px, py, pz, sx, sy, sz, corners, surface_mat
 			local dx22 = max(abs(cx-xi)-1.49,0)^2*wx2
 			for zi = pz-1,pz+sz do
 				local dz22 = max(abs(cz-zi)-1.49,0)^2*wz2
-				if dx22+dy2+dz22 <= 1 and grow_foundation(xi,yi,zi,pr,surface_mat,platform_mat,stone_mat) then active = true end
+				if dx22+dy2+dz22 <= 1 and grow_foundation_vm(vm,xi,yi,zi,pr,surface_mat,platform_mat,stone_mat) then active = true end
 			end
 		end
 		if not active and yi < py + sy then break end
