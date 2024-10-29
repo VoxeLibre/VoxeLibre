@@ -13,10 +13,10 @@ local save_cart_data = mod.save_cart_data
 local update_cart_data = mod.update_cart_data
 local destroy_cart_data = mod.destroy_cart_data
 local find_carts_by_block_map = mod.find_carts_by_block_map
-local do_movement,do_detached_movement,handle_cart_enter = dofile(modpath.."/movement.lua")
-assert(do_movement)
-assert(do_detached_movement)
-assert(handle_cart_enter)
+local movement = dofile(modpath.."/movement.lua")
+assert(movement.do_movement)
+assert(movement.do_detached_movement)
+assert(movement.handle_cart_enter)
 
 -- Constants
 local max_step_distance = 0.5
@@ -345,7 +345,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 
 
 	if not staticdata.connected_at then
-		do_detached_movement(self, dtime)
+		movement.do_detached_movement(self, dtime)
 	else
 		mod.update_cart_orientation(self)
 	end
@@ -407,7 +407,7 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 	end
 
 	if railpos then
-		handle_cart_enter(staticdata, railpos)
+		movement.handle_cart_enter(staticdata, railpos)
 	end
 
 	local pname = placer and placer:get_player_name() or ""
@@ -619,7 +619,7 @@ minetest.register_globalstep(function(dtime)
 
 		--- Non-entity code
 		if staticdata.connected_at then
-			do_movement(staticdata, dtime)
+			movement.do_movement(staticdata, dtime)
 		end
 	end
 

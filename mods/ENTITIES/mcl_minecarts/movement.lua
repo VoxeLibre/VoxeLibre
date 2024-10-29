@@ -2,6 +2,7 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
+local submod = {}
 
 -- Constants
 local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
@@ -92,6 +93,7 @@ local function handle_cart_enter(staticdata, pos, next_dir)
 	set_metadata_cart_status(pos, staticdata.uuid, 1)
 	handle_cart_enter_exit(staticdata, pos, next_dir, "on_enter" )
 end
+submod.handle_cart_enter = handle_cart_enter
 local function handle_cart_leave(staticdata, pos, next_dir)
 	--print("leaving "..tostring(pos))
 	set_metadata_cart_status(pos, staticdata.uuid, nil)
@@ -476,7 +478,7 @@ local function do_movement_step(staticdata, dtime)
 	return dtime - timestep
 end
 
-local function do_movement( staticdata, dtime )
+function submod.do_movement( staticdata, dtime )
 	assert(staticdata)
 
 	-- Allow the carts to be delay for the rest of the world to react before moving again
@@ -504,7 +506,7 @@ local function do_movement( staticdata, dtime )
 	end
 end
 
-local function do_detached_movement(self, dtime)
+function submod.do_detached_movement(self, dtime)
 	local staticdata = self._staticdata
 
 	-- Make sure the object is still valid before trying to move it
@@ -575,11 +577,10 @@ local function do_detached_movement(self, dtime)
 
 	-- Reset pitch if still not attached
 	local rot = self.object:get_rotation()
-	minetest.log(vector.to_string(rot))
 	rot.x = 0
 	self.object:set_rotation(rot)
 end
 
 --return do_movement, do_detatched_movement
-return do_movement,do_detached_movement,handle_cart_enter
+return submod
 
