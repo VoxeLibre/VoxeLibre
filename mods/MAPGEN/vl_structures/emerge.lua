@@ -1,8 +1,10 @@
 local vector_offset = vector.offset
 local floor = math.floor
+local get_node = core.get_node
 
 local logging = minetest.settings:get_bool("vl_structures_logging", false)
 local mg_name = minetest.get_mapgen_setting("mg_name")
+
 
 -- parse the prepare parameter
 local function parse_prepare(prepare)
@@ -21,8 +23,6 @@ end
 local function emerge_schematics(blockpos, action, calls_remaining, param)
 	if calls_remaining >= 1 then return end
 	local start = os.clock()
-	local vm = VoxelManip()
-	vm:read_from_map(param.emin, param.emax)
 	local startmain = os.clock()
 	local pos, size, yoffset, def, pr = param.pos, param.size, param.yoffset or 0, param.def, param.pr
 	local prepare, surface_mat = parse_prepare(param.prepare or def.prepare), param.surface_mat
@@ -40,13 +40,13 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 	end
 
 	-- hack to get dust nodes more often, in case the mapgen messed with biomes
-	local n = vm:get_node_at(vector_offset(param.opos, 0, 1, 0))
+	local n = get_node(vector_offset(param.opos, 0, 1, 0))
 	if n.name == "mcl_core:snow" then dust_mat = n end
 
 	-- Step 1: adjust ground to a more level position
 	-- todo: also support checking ground of daughter schematics, but not used by current schematics
 	if pos and size and prepare and tolerance_enabled(prepare.tolerance, prepare.mode) then
-		pos, surface_mat = vl_terraforming.find_level_vm(vm, pos, size, prepare.tolerance, prepare.mode)
+		pos, surface_mat = vl_terraforming.find_level(pos, size, prepare.tolerance, prepare.mode)
 		if not pos then
 			minetest.log("warning", "[vl_structures] Not spawning "..tostring(def.name or param.schematic.name).." at "..minetest.pos_to_string(param.pos).." because ground is too uneven.")
 			return
@@ -80,7 +80,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 			local yoff, ymax = prepare.clear_bottom or 0, size.y + yoffset + (prepare.clear_top or vl_structures.DEFAULT_PREPARE.clear_top)
 			if prepare.clear_bottom == "top" or prepare.clear_bottom == "above" then yoff = size.y + yoffset end
 			--minetest.log("action", "[vl_structures] clearing air "..minetest.pos_to_string(gp)..": ".. (size.x + padding * 2)..","..ymax..","..(size.z + padding * 2))
-			vl_terraforming.clearance_vm(vm, gp.x, gp.y + yoff, gp.z,
+			vl_terraforming.clearance(gp.x, gp.y + yoff, gp.z,
 				size.x + padding * 2, ymax - yoff, size.z + padding * 2,
 				corners, node_top, node_dust, pr)
 			-- clear for daughters
@@ -98,7 +98,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 					local sy = ymax - yoff
 					--minetest.log("action", "[vl_structures] clearing air "..minetest.pos_to_string(gp)..": ".. (dsize.x + padding * 2)..","..sy..","..(dsize.z + padding * 2))
 					if sy > 0 then
-						vl_terraforming.clearance_vm(vm, gp.x, gp.y + yoff, gp.z,
+						vl_terraforming.clearance(gp.x, gp.y + yoff, gp.z,
 							dsize.x + padding * 2, ymax - yoff, dsize.z + padding * 2,
 							corners, node_top, node_dust, pr)
 					end
@@ -110,7 +110,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 		if prepare.foundation then
 			-- minetest.log("action", "[vl_structures] "..tostring(def.name or param.schematic.name).." fill foundation "..minetest.pos_to_string(gp).." with "..tostring(node_top.name).." "..tostring(node_filler.name).." "..tostring(node_dust and node_dust.name))
 			local depth = (type(prepare.foundation) == "number" and prepare.foundation) or vl_structures.DEFAULT_PREPARE.foundation
-			vl_terraforming.foundation_vm(vm, gp.x, gp.y - 1, gp.z,
+			vl_terraforming.foundation(gp.x, gp.y - 1, gp.z,
 				size.x + padding * 2, depth, size.z + padding * 2,
 				corners, node_top, node_filler, node_stone, node_dust, pr)
 			-- foundation for daughters
@@ -124,7 +124,7 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 					local gp = vector_offset(pos, dd.pos.x - floor((dsize.x-1)*0.5) - padding,
 					                              dd.pos.y + (yoffset or 0),
 					                              dd.pos.z - floor((dsize.z-1)*0.5) - padding)
-					vl_terraforming.foundation_vm(vm, gp.x, gp.y - 1, gp.z,
+					vl_terraforming.foundation(gp.x, gp.y - 1, gp.z,
 						dsize.x + padding * 2, depth, dsize.z + padding * 2,
 						corners, node_top, node_filler, node_stone, node_dust, pr)
 				end
@@ -133,17 +133,16 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 	end
 
 	-- Step 3: place schematic on center position
-	minetest.place_schematic_on_vmanip(vm, pmin, param.schematic, param.rotation, param.replacements, param.force_placement, "")
+	minetest.place_schematic(pmin, param.schematic, param.rotation, param.replacements, param.force_placement, "")
 	-- Step 3: place daughter schematics
 	for _,tmp in ipairs(daughters) do
 		local d, ds, rot = tmp[1], tmp[2], tmp[3]
 		local p = vector_offset(pos, d.pos.x, d.pos.y + (yoffset or 0), d.pos.z)
-		minetest.place_schematic_on_vmanip(vm, p, ds, rot, d.replacements, d.force_placement, "place_center_x,place_center_z")
+		minetest.place_schematic(p, ds, rot, d.replacements, d.force_placement, "place_center_x,place_center_z")
 		-- todo: allow after_place callbacks for daughter schematics?
 	end
 	local endmain = os.clock()
 	-- TODO: step 4: sprinkle extra dust on top.
-	vm:write_to_map(true)
 	-- Note: deliberately pos, p1 and p2 from the parent, as these are calls to the parent script
 	if def.loot then vl_structures.fill_chests(pmin,pmax,def.loot,pr) end
 	if def.construct_nodes then vl_structures.construct_nodes(pmin,pmax,def.construct_nodes) end
