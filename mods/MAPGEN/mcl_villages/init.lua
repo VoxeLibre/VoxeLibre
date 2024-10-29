@@ -15,14 +15,12 @@ local function ecb_village(blockpos, action, calls_remaining, param)
 	if calls_remaining >= 1 then return end
 	if mcl_villages.village_exists(param.blockseed) then return end
 	local pr = PcgRandom(param.blockseed)
-	local vm = VoxelManip(param.minp, param.maxp)
-	local settlement = mcl_villages.create_site_plan(vm, param.minp, param.maxp, pr)
+	local settlement = mcl_villages.create_site_plan(param.minp, param.maxp, pr)
 	if not settlement then return false, false end
 	-- all foundations first, then all buildings, to avoid damaging very close buildings
-	mcl_villages.terraform(vm, settlement, pr)
-	mcl_villages.place_schematics(vm, settlement, param.blockseed, pr)
+	mcl_villages.terraform(settlement, pr)
+	mcl_villages.place_schematics(param.minp, param.maxp, settlement, param.blockseed, pr)
 	mcl_villages.add_village(param.blockseed, settlement)
-	--lvm:write_to_map(true) -- destorys paths as of now, as they are placed afterwards
 	for _, on_village_placed_callback in pairs(mcl_villages.on_village_placed) do
 		on_village_placed_callback(settlement, param.blockseed)
 	end

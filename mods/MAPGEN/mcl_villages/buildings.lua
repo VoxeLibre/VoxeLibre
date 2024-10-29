@@ -19,7 +19,7 @@ local function add_building(settlement, building, count_buildings)
 	end
 end
 
-local function layout_town(vm, minp, maxp, pr, input_settlement)
+local function layout_town(minp, maxp, pr, input_settlement)
 	local center = vector.new(pr:next(minp.x + 24, maxp.x - 24), maxp.y, pr:next(minp.z + 24, maxp.z - 24))
 	minetest.log("action", "[mcl_villages] sudo make me a village at: " .. minetest.pos_to_string(minp).." - "..minetest.pos_to_string(maxp))
 	local possible_rotations = {"0", "90", "180", "270"}
@@ -57,7 +57,7 @@ local function layout_town(vm, minp, maxp, pr, input_settlement)
 			-- ensure we have 3 space for terraforming, and avoid problems with VoxelManip
 			if  tlpos.x - 3 >= minp.x and tlpos.x + size.x + 3 <= maxp.x
 			and tlpos.z + 3 >= minp.z and tlpos.z + size.y + 3 <= maxp.z then
-				local pos, surface_material = vl_terraforming.find_level_vm(vm, cpos, size, 6)
+				local pos, surface_material = vl_terraforming.find_level(cpos, size, 6)
 				if pos and pos.y + size.y > maxp.y then pos = nil end
 				-- check distance to other buildings. Note that we still want to add baseplates etc.
 				if pos and mcl_villages.surface_mat[surface_material.name] and mcl_villages.check_distance(settlement, cpos, size.x, size.z, mindist) then
@@ -98,7 +98,7 @@ local function layout_town(vm, minp, maxp, pr, input_settlement)
 	return settlement
 end
 
-function mcl_villages.create_site_plan(vm, minp, maxp, pr)
+function mcl_villages.create_site_plan(minp, maxp, pr)
 	local settlement = {}
 
 	-- initialize all settlement_info table
@@ -169,7 +169,7 @@ function mcl_villages.create_site_plan(vm, minp, maxp, pr)
 	end
 	table.insert(settlement, 1, bell_info)
 
-	return layout_town(vm, minp, maxp, pr, settlement)
+	return layout_town(minp, maxp, pr, settlement)
 end
 
 local function init_nodes(p1, p2, pr)
@@ -194,8 +194,7 @@ local function init_nodes(p1, p2, pr)
 	for _, n in pairs(nodes) do mcl_villages.fill_chest(n, pr) end
 end
 
--- important: the vm will be written and then is outdated!
-function mcl_villages.place_schematics(vm, settlement, blockseed, pr)
+function mcl_villages.place_schematics(sminp, smaxp, settlement, blockseed, pr)
 	-- first building is always the bell
 	local bell_pos = vector.offset(settlement[1].minp, math.floor(settlement[1].size.x/2), 0, math.floor(settlement[1].size.z/2))
 
@@ -213,17 +212,14 @@ function mcl_villages.place_schematics(vm, settlement, blockseed, pr)
 
 		-- the foundation and air space for the building was already built before
 		-- minetest.log("action", "placing schematics for "..building.name.." at "..minetest.pos_to_string(minp).." on "..surface_material.name)
-		minetest.place_schematic_on_vmanip(vm, minp, schematic, rotation, nil, true, { place_center_x = false, place_center_y = false, place_center_z = false })
-		mcl_villages.store_path_ends(vm, minp, maxp, cpos, blockseed, bell_pos)
-		mcl_villages.increase_no_paths(vm, minp, maxp) -- help the path finder
+		minetest.place_schematic(minp, schematic, rotation, nil, true, { place_center_x = false, place_center_y = false, place_center_z = false })
+		mcl_villages.store_path_ends(minp, maxp, cpos, blockseed, bell_pos)
+		mcl_villages.increase_no_paths(minp, maxp) -- help the path finder
 	end
 
-	local minp, maxp = vm:get_emerged_area() -- safe area for further processing
-	vm:write_to_map(true) -- for path finder and light
-
 	-- Path planning and placement
-	mcl_villages.paths(blockseed, minetest.get_biome_name(minetest.get_biome_data(bell_pos).biome), minp, maxp)
-	mcl_villages.clean_no_paths(minp, maxp)
+	mcl_villages.paths(blockseed, minetest.get_biome_name(minetest.get_biome_data(bell_pos).biome), sminp, smaxp)
+	mcl_villages.clean_no_paths(sminp, smaxp)
 	-- Clean up paths and initialize nodes
 	for i, building in ipairs(settlement) do
 		init_nodes(building.minp, building.maxp, pr)
@@ -335,7 +331,7 @@ function mcl_villages.post_process_village(blockseed)
 end
 
 -- Terraform for an entire village
-function mcl_villages.terraform(vm, settlement, pr)
+function mcl_villages.terraform(settlement, pr)
 	-- TODO: sort top-down, then bottom-up, or opposite?
 	-- we make the foundations 2 node wider than necessary, to have one node for path laying
 	for i, building in ipairs(settlement) do
@@ -343,7 +339,7 @@ function mcl_villages.terraform(vm, settlement, pr)
 			local pos, size = building.pos, building.size
 			pos = vector.offset(pos, -math.floor((size.x-1)/2), 0, -math.floor((size.z-1)/2))
 			-- TODO: allow different clearance for different buildings?
-			vl_terraforming.clearance_vm(vm, pos.x-1, pos.y, pos.z-1, size.x+2, size.y, size.z+2, 2, building.surface_mat, building.dust_mat, pr)
+			vl_terraforming.clearance(pos.x-1, pos.y, pos.z-1, size.x+2, size.y, size.z+2, 2, building.surface_mat, building.dust_mat, pr)
 		end
 	end
 	for i, building in ipairs(settlement) do
@@ -356,7 +352,7 @@ function mcl_villages.terraform(vm, settlement, pr)
 			building.platform_mat = platform_mat -- remember for use in schematic placement
 			building.stone_mat = stone_mat
 			pos = vector.offset(pos, -math.floor((size.x-1)/2), 0, -math.floor((size.z-1)/2))
-			vl_terraforming.foundation_vm(vm, pos.x-2, pos.y, pos.z-2, size.x+4, -5, size.z+4, 2, surface_mat, platform_mat, stone_mat, dust_mat, pr)
+			vl_terraforming.foundation(pos.x-2, pos.y, pos.z-2, size.x+4, -5, size.z+4, 2, surface_mat, platform_mat, stone_mat, dust_mat, pr)
 		end
 	end
 end
