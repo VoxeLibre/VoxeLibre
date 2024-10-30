@@ -7,7 +7,7 @@ local submod = {}
 -- Constants
 local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
 --DEBUG = false
---mcl_debug = function(msg) print(msg) end
+--mcl_debug,DEBUG = function(msg) print(msg) end,true
 
 -- Imports
 local env_physics
@@ -362,6 +362,9 @@ local function do_movement_step(staticdata, dtime)
 		-- Would stop or reverse direction inside this block, calculate time to v_1 = 0
 		timestep = -v_0 / a
 		stops_in_block = true
+		if timestep <= 0.01 then
+			reverse_direction(staticdata)
+		end
 	elseif a ~= 0 then
 		-- Setting x_1 = x_0 + remaining_in_block, and solving for t gives:
 		timestep = ( math.sqrt( v_0 * v_0 + 2 * a * remaining_in_block) - v_0 ) / a
@@ -387,7 +390,7 @@ local function do_movement_step(staticdata, dtime)
 	local v_1 = v_0 + a * timestep
 	if v_1 > v_max then
 		v_1 = v_max
-	elseif v_1 < FRICTION / 5 then
+	elseif v_1 < 0.025 then
 		v_1 = 0
 	end
 
@@ -398,7 +401,7 @@ local function do_movement_step(staticdata, dtime)
 	staticdata.velocity = v_1
 	staticdata.distance = x_1
 
-	if DEBUG and (1==0) and ( v_0 > 0 or a ~= 0 ) then
+	if DEBUG and ( v_0 > 0 or a ~= 0 ) then
 		mcl_debug( "-   cart #"..tostring(staticdata.uuid)..
 		       ": a="..tostring(a)..
 		        ",v_0="..tostring(v_0)..
