@@ -6,7 +6,7 @@ local spawnon = {"mcl_core:stripped_oak","mcl_stairs:slab_birchwood_top"}
 vl_structures.register_structure("pillager_outpost",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:sand"},
 	flags = "place_center_x, place_center_z",
-	prepare = { padding = 3, corners = 4, foundation = -8, clear = true },
+	prepare = { tolerance = 4, padding = 3, corners = 4, foundation = -8, clear = true },
 	y_offset = 0,
 	chunk_probability = 15,
 	y_max = mcl_vars.mg_overworld_max,
@@ -58,6 +58,9 @@ vl_structures.register_structure("pillager_outpost",{
 		}}
 	},
 	after_place = function(p,_,pr,p1,p2)
+		for _,n in pairs(minetest.find_nodes_in_area(p1,p2,{"group:wall"})) do
+			mcl_walls.update_wall(n)
+		end
 		vl_structures.spawn_mobs("mobs_mc:pillager",spawnon,p1,p2,pr,5)
 		vl_structures.spawn_mobs("mobs_mc:parrot",{"mesecons_pressureplates:pressure_plate_stone_off"},p1,p2,pr,3)
 		vl_structures.spawn_mobs("mobs_mc:iron_golem",{"mesecons_button:button_stone_off"},p1,p2,pr,1)
