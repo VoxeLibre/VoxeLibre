@@ -8,6 +8,7 @@ vl_structures.register_structure("campsite",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	prepare = { tolerance = 1, foundation = -2, clear_top = 1, padding = 1, corners = 1 }, -- low tolerance, perform little terraforming
+	biomes = { "Forest", "FlowerForest", "Plains", "SunflowerPlains", "Savanna", "SavannaM", "Taiga", "ColdTaiga" },
 	filenames = {
 		modpath.."/schematics/campsite_1.mts"
 	},
@@ -67,5 +68,6 @@ vl_structures.register_structure("campsite",{
 			},
 		}
 	}
+	-- TODO: spawn a band of pillagers?
 })
 
