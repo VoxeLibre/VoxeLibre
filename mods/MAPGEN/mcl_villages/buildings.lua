@@ -219,9 +219,10 @@ function mcl_villages.place_schematics(sminp, smaxp, settlement, blockseed, pr)
 
 	-- Path planning and placement
 	mcl_villages.paths(blockseed, minetest.get_biome_name(minetest.get_biome_data(bell_pos).biome), sminp, smaxp)
-	mcl_villages.clean_no_paths(sminp, smaxp)
 	-- Clean up paths and initialize nodes
+	mcl_villages.clean_no_paths(sminp, smaxp) -- sometimes does not work?
 	for i, building in ipairs(settlement) do
+		mcl_villages.clean_no_paths(building.minp, building.maxp)
 		init_nodes(building.minp, building.maxp, pr)
 	end
 

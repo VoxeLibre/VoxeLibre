@@ -12,7 +12,6 @@ local swap_node = core.swap_node
 -- 3rd is the pos of the end points
 local path_ends = {}
 
--- note: not using LVM here, as this runs after the pathfinder
 -- simple function to increase "no_paths" walls
 function mcl_villages.clean_no_paths(minp, maxp)
 	local no_paths_nodes = minetest.find_nodes_in_area(minp, maxp, { "mcl_villages:no_paths" })
@@ -21,7 +20,6 @@ function mcl_villages.clean_no_paths(minp, maxp)
 	end
 end
 
--- this can still run in LVM
 -- simple function to increase "no_paths" walls
 function mcl_villages.increase_no_paths(minp, maxp)
 	local p = vector.zero()
