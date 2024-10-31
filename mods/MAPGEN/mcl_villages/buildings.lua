@@ -3,6 +3,9 @@ local max_jobs = tonumber(minetest.settings:get("vl_villages_max_jobs")) or 14
 local placement_priority = minetest.settings:get("vl_villages_placement_priority") or "houses" -- houses is safer for villagers at night
 local max_height_difference = 40 -- at distance 40. In the center, half as much
 
+local prepare = { tolerance = 4, surface = "solid", mode = "median", depth = -5, corners = 2, padding = 2 }
+local buildsep = 2 -- minimum building separation
+
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local function add_building(settlement, building, count_buildings)
@@ -23,13 +26,12 @@ local function layout_town(minp, maxp, pr, input_settlement)
 	local center = vector.new(pr:next(minp.x + 24, maxp.x - 24), maxp.y, pr:next(minp.z + 24, maxp.z - 24))
 	minetest.log("action", "[mcl_villages] sudo make me a village at: " .. minetest.pos_to_string(minp).." - "..minetest.pos_to_string(maxp))
 	local possible_rotations = {"0", "90", "180", "270"}
-	local center_surface
+	local center_surface = center
 
 	local settlement = {}
 	-- now some buildings around in a circle, radius = size of town center
 	local x, y, z, r, lastr = center.x, center.y, center.z, 0, 99
-	local mindist = 3
-	if #input_settlement >= 12 then mindist = 2 end
+	local mindist = #input_settlement >= 12 and buildsep or (buildsep + 1)
 	-- draw j circles around center and increase radius by math.random(2,4)
 	for j = 1,20 do
 		local steps = math.min(math.floor(math.pi * 2 * r / 2), 30) -- try up to 30 angles
@@ -44,7 +46,7 @@ local function layout_town(minp, maxp, pr, input_settlement)
 			-- more defensive and hence safer for the poor villagers, even though less random
 			-- case distinction is simpler and faster than trigonometry here:
 			local rotation = building.rotation_offset or 0
-			if math.abs(cpos.z-center.z) > math.abs(cpos.x-center.x) then
+			if math.abs(cpos.z-center_surface.z) > math.abs(cpos.x-center_surface.x) then
 				rotation = rotation + (cpos.z <= center.z and 0 or 2) -- zero indexed for modulo below
 			else
 				rotation = rotation + (cpos.x <= center.x and 1 or 3) -- zero indexed for modulo below
@@ -57,10 +59,10 @@ local function layout_town(minp, maxp, pr, input_settlement)
 			-- ensure we have 3 space for terraforming, and avoid problems with VoxelManip
 			if  tlpos.x - 3 >= minp.x and tlpos.x + size.x + 3 <= maxp.x
 			and tlpos.z + 3 >= minp.z and tlpos.z + size.y + 3 <= maxp.z then
-				local pos, surface_material = vl_terraforming.find_level(cpos, size, 6)
+				local pos, surface_material = vl_terraforming.find_level(cpos, size, prepare.tolerance, prepare.surface, prepare.mode)
 				if pos and pos.y + size.y > maxp.y then pos = nil end
 				-- check distance to other buildings. Note that we still want to add baseplates etc.
-				if pos and mcl_villages.surface_mat[surface_material.name] and mcl_villages.check_distance(settlement, cpos, size.x, size.z, mindist) then
+				if pos and mcl_villages.surface_mat[surface_material.name] and mcl_villages.check_distance(settlement, pos, size.x, size.z, mindist) then
 					-- use town bell as new reference point for placement height
 					if #settlement == 0 then
 						center_surface, y = cpos, math.min(maxp.y, pos.y + max_height_difference + 1)
@@ -75,7 +77,7 @@ local function layout_town(minp, maxp, pr, input_settlement)
 						building.rotation = rotation
 						building.surface_mat = surface_material
 						table.insert(settlement, building)
-						-- minetest.log("verbose", "[mcl_villages] Planning "..schema["name"].." at "..minetest.pos_to_string(pos))
+						-- minetest.log("verbose", "[mcl_villages] Planning "..building.name.." at "..minetest.pos_to_string(pos))
 						lastr = r
 					else
 						minetest.log("verbose", "Too large height difference "..math.abs(pos.y - center_surface.y).." at distance "..r)
@@ -353,7 +355,9 @@ function mcl_villages.terraform(settlement, pr)
 			building.platform_mat = platform_mat -- remember for use in schematic placement
 			building.stone_mat = stone_mat
 			pos = vector.offset(pos, -math.floor((size.x-1)/2), 0, -math.floor((size.z-1)/2))
-			vl_terraforming.foundation(pos.x-2, pos.y, pos.z-2, size.x+4, -5, size.z+4, 2, surface_mat, platform_mat, stone_mat, dust_mat, pr)
+			vl_terraforming.foundation(pos.x - prepare.padding, pos.y, pos.z - prepare.padding,
+				size.x + prepare.padding * 2, prepare.depth, size.z + prepare.padding * 2,
+				prepare.corners, surface_mat, platform_mat, stone_mat, dust_mat, pr)
 		end
 	end
 end
