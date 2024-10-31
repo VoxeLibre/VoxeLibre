@@ -238,21 +238,23 @@ function vl_terraforming.find_level(cpos, size, tolerance, surface, mode)
 	local pos_c = _find_ground(pos)
 	if pos_c then table.insert(ys, pos_c.y) end
 	table.sort(ys)
+	if #ys < 5 then return nil, nil end -- not fully supported
 
-	tolerance = tolerance or 8
-	-- well supported base, not too uneven?
-	if #ys < 5 or min(ys[#ys-1]-ys[1], ys[#ys]-ys[2]) > tolerance then
-		-- minetest.log("action", "[vl_terraforming] ground too uneven: "..#ys.." positions: "..({dump(ys):gsub("[\n\t ]+", " ")})[1]
-		--                      .." tolerance "..tostring(#ys > 2 and min(ys[#ys-1]-ys[1], ys[#ys]-ys[2])).." > "..tolerance)
-		return nil, nil
+	tolerance = tolerance or 6 -- default value
+	if mode == "min" then -- ignore the largest when using min
+		if ys[#ys-1]-ys[1] > tolerance then return nil, nil end
+		cpos.y = ys[1]
+	elseif mode == "max" then -- ignore the smallest when using max
+		if ys[#ys]-ys[2] > tolerance then return nil, nil end
+		cpos.y = ys[#ys]
+	else -- median
+		if min(ys[#ys-1]-ys[1], ys[#ys]-ys[2]) > tolerance then
+			-- minetest.log("action", "[vl_terraforming] ground too uneven: "..#ys.." positions: "..({dump(ys):gsub("[\n\t ]+", " ")})[1]
+			--                      .." tolerance "..tostring(#ys > 2 and min(ys[#ys-1]-ys[1], ys[#ys]-ys[2])).." > "..tolerance)
+			return nil, nil
+		end
+		cpos.y = floor(0.5 * (ys[floor(1 + (#ys - 1) * 0.5)] + ys[ceil(1 + (#ys - 1) * 0.5)])) -- rounded
 	end
-	if mode == "min" then
-		pos.y = ys[1]
-	elseif mode == "max" then
-		pos.y = ys[#ys]
-	else -- median except for largest
-		pos.y = floor(0.5 * (ys[floor(1 + (#ys - 1) * 0.5)] + ys[ceil(1 + (#ys - 1) * 0.5)])) -- rounded
-	end
-	return pos, surface_material
+	return cpos, surface_material
 end
 

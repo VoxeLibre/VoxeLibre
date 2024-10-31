@@ -59,6 +59,7 @@ register_grass_decoration(0.18, -0.03, grass_savanna)
 register_grass_decoration(0.05, -0.03, grass_sparse)
 register_grass_decoration(0.05, 0.05, grass_mpfm)
 register_grass_decoration(-0.03, 1, {"BambooJungle", "BambooJungleM", "BambooJungleEdge"})
+register_grass_decoration(0.18, 0.03, {"Swampland"})
 
 -- Doubletall grass registration helper
 local function register_doubletall_grass(offset, scale, biomes)
