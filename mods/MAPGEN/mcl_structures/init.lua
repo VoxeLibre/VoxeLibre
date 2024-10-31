@@ -31,8 +31,6 @@ dofile(modpath.."/desert_temple.lua")
 dofile(modpath.."/desert_well.lua")
 dofile(modpath.."/end_city.lua")
 dofile(modpath.."/end_spawn.lua")
-dofile(modpath.."/fossil.lua")
-dofile(modpath.."/geode.lua")
 dofile(modpath.."/igloo.lua")
 dofile(modpath.."/jungle_temple.lua")
 dofile(modpath.."/ocean_ruins.lua")
@@ -42,25 +40,4 @@ dofile(modpath.."/ruined_portal.lua")
 dofile(modpath.."/shipwrecks.lua")
 dofile(modpath.."/witch_hut.lua")
 dofile(modpath.."/woodland_mansion.lua")
-
-vl_structures.register_structure("boulder",{
-	-- as they have no place_on, they will not be spawned by this mechanism. this is just for /spawnstruct
-	filenames = {
-		-- small boulder 3x as likely
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder.mts",
-	},
-})
-
-vl_structures.register_structure("ice_spike_small",{
-	-- as they have no place_on, they will not be spawned by this mechanism. this is just for /spawnstruct
-	filenames = { modpath.."/schematics/mcl_structures_ice_spike_small.mts" },
-})
-
-vl_structures.register_structure("ice_spike_large",{
-	-- as they have no place_on, they will not be spawned by this mechanism. this is just for /spawnstruct
-	filenames = { modpath.."/schematics/mcl_structures_ice_spike_large.mts" },
-})
 

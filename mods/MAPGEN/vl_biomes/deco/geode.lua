@@ -75,12 +75,12 @@ local function makegeode(pos, _, pr)
 	return true
 end
 
-vl_structures.register_structure("geode",{
-	place_on = {"group:material_stone"},
+vl_structures.register_structure("geode", {
+	place_on = { "group:material_stone" },
 	noise_params = {
 		offset = 0,
 		scale = 0.00022,
-		spread = {x = 250, y = 250, z = 250},
+		spread = vector.new(250, 250, 250),
 		seed = 7894353,
 		octaves = 3,
 		persist = 0.001,

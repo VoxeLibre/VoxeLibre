@@ -1,5 +1,7 @@
--- TODO: use priorities, and move this to the module where coral blocks are defined?
-local mod_mcl_structures = minetest.get_modpath("mcl_structures")
+-- TODO: move this to the mcl_ocean module?
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
+
 local coral_min = vl_biomes.OCEAN_MIN
 local coral_max = -10
 local warm_oceans = table.copy(vl_biomes.by_water_temp.warm)
@@ -21,12 +23,13 @@ for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
 		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		terrain_feature = true,
 		sidelen = 80,
 		noise_params = noise,
 		biomes = warm_oceans,
 		y_min = coral_min,
 		y_max = coral_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
+		schematic = modpath .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
 		spawn_by = "mcl_core:water_source",
@@ -36,12 +39,13 @@ for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
 		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		terrain_feature = true,
 		noise_params = noise,
 		sidelen = 80,
 		biomes = warm_oceans,
 		y_min = coral_min,
 		y_max = coral_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
+		schematic = modpath .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
 		spawn_by = "mcl_core:water_source",
@@ -52,6 +56,7 @@ for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_ocean:" .. c .. "_coral_block"},
+		terrain_feature = true,
 		sidelen = 16,
 		fill_ratio = 3,
 		y_min = coral_min,
@@ -69,6 +74,7 @@ end
 mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+	terrain_feature = true,
 	sidelen = 16,
 	noise_params = {
 		offset = -0.0085,
@@ -93,6 +99,7 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	place_on = {"mcl_ocean:dead_brain_coral_block"},
+	terrain_feature = true,
 	sidelen = 16,
 	fill_ratio = 3,
 	y_min = coral_min,
@@ -107,6 +114,7 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	place_on = {"mcl_ocean:dead_brain_coral_block"},
+	terrain_feature = true,
 	sidelen = 16,
 	fill_ratio = 3,
 	y_min = coral_min,
@@ -121,6 +129,7 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	place_on = {"mcl_ocean:dead_brain_coral_block"},
+	terrain_feature = true,
 	sidelen = 16,
 	fill_ratio = 2,
 	y_min = coral_min,
@@ -135,6 +144,7 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	place_on = {"mcl_ocean:dead_brain_coral_block"},
+	terrain_feature = true,
 	sidelen = 16,
 	fill_ratio = 2,
 	y_min = coral_min,
@@ -150,12 +160,13 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"group:sand", "mcl_core:gravel"},
+	terrain_feature = true,
 	fill_ratio = 0.0001,
 	sidelen = 80,
 	biomes = warm_oceans,
 	y_min = coral_min,
 	y_max = coral_max,
-	schematic = mod_mcl_structures .. "/schematics/coral_cora.mts",
+	schematic = modpath .. "/schematics/coral_cora.mts",
 	rotation = "random",
 	flags = "all_floors,force_placement",
 	spawn_by = "mcl_core:water_source",
