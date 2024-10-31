@@ -1,4 +1,5 @@
-local mod_mcl_structures = minetest.get_modpath("mcl_structures")
+local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
 
 -- Ice Plains Spikes (rare) aka Ice Spikes
 vl_biomes.register_biome({
@@ -36,6 +37,7 @@ vl_biomes.register_biome({
 mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
+	terrain_feature = true,
 	sidelen = 80,
 	noise_params = {
 		offset = 0.00040,
@@ -48,7 +50,7 @@ mcl_mapgen_core.register_decoration({
 	biomes = {"IcePlainsSpikes"},
 	y_min = 4,
 	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_structures .. "/schematics/mcl_structures_ice_spike_large.mts",
+	schematic = modpath .. "/schematics/mcl_structures_ice_spike_large.mts",
 	rotation = "random",
 	flags = "place_center_x, place_center_z",
 })
@@ -57,6 +59,7 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
+	terrain_feature = true,
 	sidelen = 80,
 	noise_params = {
 		offset = 0.005,
@@ -69,7 +72,18 @@ mcl_mapgen_core.register_decoration({
 	biomes = {"IcePlainsSpikes"},
 	y_min = 4,
 	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_structures .. "/schematics/mcl_structures_ice_spike_small.mts",
+	schematic = modpath .. "/schematics/mcl_structures_ice_spike_small.mts",
 	rotation = "random",
 	flags = "place_center_x, place_center_z",
 })
+
+vl_structures.register_structure("ice_spike_small", {
+	-- as they have no place_on, they will not be spawned by this mechanism. this is just for /spawnstruct
+	filenames = { modpath.."/schematics/mcl_structures_ice_spike_small.mts" },
+})
+
+vl_structures.register_structure("ice_spike_large", {
+	-- as they have no place_on, they will not be spawned by this mechanism. this is just for /spawnstruct
+	filenames = { modpath.."/schematics/mcl_structures_ice_spike_large.mts" },
+})
+
