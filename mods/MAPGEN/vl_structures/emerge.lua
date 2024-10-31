@@ -15,8 +15,8 @@ local function parse_prepare(prepare)
 end
 
 -- check "enabled" tolerances
-local function tolerance_enabled(tolerance, mode)
-	return mode ~= "off" and tolerance and (tolerance == "max" or tolerance == "min" or tolerance >= 0) and true
+local function tolerance_enabled(tolerance, surface, mode)
+	return tolerance ~= "off" and (tolerance or surface or mode) and true
 end
 
 --- Main palcement step, when the area has been emerged
@@ -45,12 +45,13 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 
 	-- Step 1: adjust ground to a more level position
 	-- todo: also support checking ground of daughter schematics, but not used by current schematics
-	if pos and size and prepare and tolerance_enabled(prepare.tolerance, prepare.mode) then
-		pos, surface_mat = vl_terraforming.find_level(pos, size, prepare.tolerance, prepare.mode)
+	if pos and size and prepare and tolerance_enabled(prepare.tolerance, prepare.surface, prepare.mode) then
+		pos, surface_mat = vl_terraforming.find_level(pos, size, prepare.tolerance, prepare.surface, prepare.mode)
 		if not pos then
 			minetest.log("warning", "[vl_structures] Not spawning "..tostring(def.name or param.schematic.name).." at "..minetest.pos_to_string(param.pos).." because ground is too uneven.")
 			return
 		end
+		pos.y = pos.y + 1 -- above surface
 		-- obey height restrictions, to not violate nether roof
 		if def.y_max and pos.y - yoffset > def.y_max then pos.y = def.y_max - yoffset end
 		if def.y_min and pos.y - yoffset < def.y_min then pos.y = def.y_min - yoffset end

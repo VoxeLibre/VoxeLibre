@@ -1,4 +1,4 @@
-# vl_terraforming
+# `vl_terraforming` -- Terraforming module
 
 Terraforming module built with VoxeLibre and MineClonia in mind, but also useful for other games.
 
@@ -8,6 +8,8 @@ This module provides the following key functionalities:
 - given a position and size, find a balanced height (trimmed median height)
 - build a baseplate for a building
 - clear the area above a building
+
+All methods have a `_vm` version to work with Lua Voxel Manipulators
 
 ## Rounded corners support
 
@@ -23,77 +25,91 @@ The ellipse condition $dx^2/a^2+dz^2/b^2 \leq 1$ then yields $dx^2/(0.5 sx^2) + 
 We use $wx2=2 sx^-2$, $wz2=2 sz^-2$ and then $dx^2 wx2 + dz^2 wz2 \leq 1$.
 
 
-## vl_terraforming.find_ground_vm(vm, pos)
+## `vl_terraforming.find_ground(pos)`
 
 Find ground starting at the given position. When in a solid area, moves up; otherwise searches downwards.
 
 This will ignore trees, mushrooms, and similar surface decorations.
 
 
-## vl_terraforming.find_under_air_vm(vm, pos)
+## `vl_terraforming.find_under_air(pos)`
 
 Find ground or liquid surface, starting at the given position. When in a solid or liquid area, moves up; otherwise searches downwards.
 
 This will ignore trees, mushrooms, and similar surface decorations.
 
 
-## vl_terraforming.find_liquid_surface_vm(vm, pos)
+## `vl_terraforming.find_liquid_surface(pos)`
 
 Find a liquid surface starting at the given position. When in a solid or liquid area, moves up; otherwise searches downwards.
 
 This will ignore trees, mushrooms, and similar surface decorations.
 
 
+## `vl_terraforming.find_under_water_surface(pos)`
 
-## vl_terraforming.find_level_vm(vm, cpos, size, tolerance, mode)
+Find a solid surface covered by water starting at the given position. When in a solid area, moves up; otherwise searches downwards.
 
-Find "level" ground for a building, centered at the given position, and of the given size.
+This will ignore trees, mushrooms, and similar surface decorations.
+
+
+## `vl_terraforming.find_level(cpos, size, tolerance, surface, mode)`
+
+Find "level" (sufficiently even) ground for a structure, centered at the given position, and of the given size.
 
 For this, five samples are taken: center, top left, top right, bottom left, and bottom right.
 
 One of these values may be "extreme", and tolerance specifies the maximum height difference of the remaining four values.
 
-The (rounded) median of these values is used, unless tolerance is set to "min" or "max".
+The `surface` can be set to:
+- `"solid"` (default, i.e., solid under air)
+- `"liquid"` (liquid under air)
+- `"under_air"` (both liquid and solid surfaces)
+- `"under_water"` (solid under water)
 
-The "mode" can be set to "solid" (default), "liquid" (liquid surfaces only), "under_air" (both liquid and solid surfaces), "under_water" (solid below water).
+The `mode` can be set to:
+- `"median"` (default, use the median height, rounded)
+- `"min"` (use the lowest support coordinate)
+- `"max"` (use the highest support coordinate)
 
 
-## vl_terraforming.foundation_vm(vm, px, py, pz, sx, sy, sz, corners, surface_mat, platform_mat, stone_mat, dust_mat, pr)
+## `vl_terraforming.foundation(px, py, pz, sx, sy, sz, corners, surface_mat, platform_mat, stone_mat, dust_mat, pr)`
 
-The position (px, py, pz) and the size (sx, sy, sz) give the volume of the main base plate,
-where sy < 0, so that you can later place the structure at (px, py, pz).
+The position `(px, py, pz)` and the size `(sx, sy, sz)` give the volume of the main base plate,
+where `sy < 0`, so that you can later place the structure at `(px, py, pz)`.
 
 The baseplate will be grown by 1 in the level below, to allow mobs to enter, then randomly fade away below.
--sy can be used to control a minimum depth.
+The negative depth `sy` can be used to control a minimum depth.
 
 Corners specifies how much to cut the corners, use 0 for a square baseplate.
 
-The materials specified (as lua nodes, to have param2 support) are used a follows:
+The materials specified (as lua nodes, to have `param2` coloring support) are used a follows:
 
-- surface_mat for surface nodes
-- platform_mat below surface nodes
-- stone_mat randomly used below platform_mat
-- dust_mat on top of surface nodes (snow cover, optional)
+- `surface_mat` for surface nodes
+- `platform_mat` below surface nodes
+- `stone_mat` randomly used below `platform_mat`
+- `dust_mat` on top of surface nodes (snow cover, optional)
 
-pr is a PcgRandom random generator
+`pr` is a PcgRandom random generator
 
 
-## vl_terraforming.clearance_vm(vm, px, py, pz, sx, sy, sz, corners, surface_mat, dust_mat, pr)
+## `vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat, dust_mat, pr)`
 
-The position (px, py, pz) and the size (sx, sy, sz) give the volume overhead to clear.
+The position `(px, py, pz)` and the size `(sx, sy, sz)` give the volume overhead to clear.
 
-The area will be grown by 1 above, to allow mobs to enter, then randomly fade away as height increases beyond sy.
+The area will be grown by 1 above, to allow mobs to enter, then randomly fade away as height increases beyond `sy`.
 
-Corners specifies how much to cut the corners, use 0 for a square area.
+`corners` specifies how much to cut the corners, use 0 for a square area.
 
-The surface_mat will be used to turn nodes into surface nodes when widening the area.
+`surface_mat` is the node used to turn nodes into surface nodes when widening the area. If set, the `dust_mat` will be sprinkled on top.
 
-pr is a PcgRandom random generator
+`pr` is a PcgRandom random generator
+
 
 ## TODO
 
+- [ ] make even more configurable
+- [ ] add ceiling placement
 - [ ] add an API that works on VM buffers
-- [ ] add an API version working on the non-VM API
-- [ ] benchmark if VM is actually faster than not using VM (5.9 has some optimizations not yet in VM)
+- [ ] benchmark when VM is faster than not using VM (5.9 has some optimizations not yet in VM)
 - [ ] improve tree removal
-
