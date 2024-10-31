@@ -8,7 +8,7 @@ vl_structures.register_structure("obelisk_sand",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -3,
-	prepare = { tolerance=3, padding = 0, clear=false },
+	prepare = { tolerance = 3, padding = 0, clear = false },
 	biomes = { "Desert" },
 	filenames = {
 		modpath.."/schematics/obelisk_sand_1.mts",
@@ -23,7 +23,7 @@ vl_structures.register_structure("obelisk_light",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -2,
-	prepare = { tolerance=2, padding = 0, clear=false },
+	prepare = { tolerance = 2, padding = 0, clear = false },
 	biomes = { "Desert" },
 	filenames = {
 		modpath.."/schematics/obelisk_fire.mts",
@@ -42,7 +42,7 @@ vl_structures.register_structure("obelisk_cobble",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -2,
-	prepare = { tolerance=2, padding=0, clear=false },
+	prepare = { tolerance = 2, padding = 0, clear = false },
 	biomes = { "Plains", "SunflowerPlains", "Forest", "FlowerForest", "BrichForest", "Taiga", "RoofedForest", "MegaTaiga", "MegaSpruceTaiga", },
 	filenames = {
 		modpath.."/schematics/obelisk_cobble.mts",

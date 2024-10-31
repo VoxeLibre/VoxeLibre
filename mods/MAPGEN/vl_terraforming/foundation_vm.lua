@@ -2,7 +2,9 @@ local abs = math.abs
 local max = math.max
 local vector_new = vector.new
 
+local is_air = vl_terraforming._is_air
 local is_solid_not_tree = vl_terraforming._is_solid_not_tree
+local immutable = vl_terraforming._immutable
 local make_solid_vm = vl_terraforming._make_solid_vm
 
 --- Grow the foundation downwards
@@ -15,11 +17,12 @@ local make_solid_vm = vl_terraforming._make_solid_vm
 -- @param platform_mat Node: platform material node
 -- @param stone_mat Node: stone material node
 local function grow_foundation_vm(vm,xi,yi,zi,pr,surface_mat,platform_mat,stone_mat)
-	local get_node_at = vm.get_node_at
+	local get_node = vm.get_node_at
+	local swap_node = vm.set_node_at
 	local pos, n, c = vector_new(xi,yi,zi), nil, 0
-	if is_solid_not_tree(get_node_at(vm, pos)) then return false end -- already solid, nothing to do
+	if is_solid_not_tree(get_node(vm, pos)) then return false end -- already solid, nothing to do
 	pos.y = pos.y + 1
-	local cur = get_node_at(vm, pos)
+	local cur = get_node(vm, pos)
 	if not is_solid_not_tree(cur) then return false end -- above is empty, do not fill below
 	if cur and cur.name and cur.name ~= surface_mat.name then platform_mat = cur end
 	if pr:next(1,4) == 1 then platform_mat = stone_mat end -- randomly switch to stone sometimes
@@ -27,15 +30,15 @@ local function grow_foundation_vm(vm,xi,yi,zi,pr,surface_mat,platform_mat,stone_
 	for x = xi-1,xi+1 do
 		for z = zi-1,zi+1 do
 			pos.x, pos.z = x, z
-			if is_solid_not_tree(get_node_at(vm, pos)) then c = c + 1 end
+			if is_solid_not_tree(get_node(vm, pos)) then c = c + 1 end
 		end
 	end
 	-- stop randomly depending on fill, to narrow down the foundation
 	-- TODO: allow controlling the random depth with an additional parameter?
 	if (pr:next(0,1e9)/1e9)^2 > c/9.1 then return false end
 	pos.x, pos.y, pos.z = xi, yi, zi
-	if get_node_at(vm, pos).name == "mcl_core:bedrock" then return false end
-	vm:set_node_at(pos, platform_mat)
+	if immutable(get_node(vm, pos)) then return false end
+	swap_node(vm, pos, platform_mat)
 	return true
 end
 --- Generate a foundation from px,py,pz with size sx,sy,sz (sy < 0) plus some margin
@@ -63,8 +66,8 @@ end
 -- @param pr PcgRandom: random generator
 function vl_terraforming.foundation_vm(vm, px, py, pz, sx, sy, sz, corners, surface_mat, platform_mat, stone_mat, dust_mat, pr)
 	if sx <= 0 or sy >= 0 or sz <= 0 then return end
-	local get_node_at = vm.get_node_at
-	local set_node_at = vm.set_node_at
+	local get_node = vm.get_node_at
+	local swap_node = vm.set_node_at
 	corners = corners or 0
 	local wx2, wz2 = max(sx - corners, 1)^-2 * 2, max(sz - corners, 1)^-2 * 2
 	local cx, cz = px + sx * 0.5 - 0.5, pz + sz * 0.5 - 0.5
@@ -80,11 +83,11 @@ function vl_terraforming.foundation_vm(vm, px, py, pz, sx, sy, sz, corners, surf
 			pos.z = zi
 			if xi >= px and xi < px+sx and zi >= pz and zi < pz+sz and dx2+dz2 <= 1 then
 				pos.y = py
-				if get_node_at(vm, pos).name ~= "mcl_core:bedrock" then
-					set_node_at(vm, pos, surface_mat)
+				if not immutable(get_node(vm, pos)) then
+					swap_node(vm, pos, surface_mat)
 					if dust_mat then
 						pos.y = py + 1
-						if get_node_at(vm, pos).name == "air" then set_node_at(vm, pos, dust_mat) end
+						if is_air(get_node(vm, pos)) then swap_node(vm, pos, dust_mat) end
 					end
 					pos.y = py - 1
 					make_solid_vm(vm, pos, platform_mat)
@@ -95,7 +98,7 @@ function vl_terraforming.foundation_vm(vm, px, py, pz, sx, sy, sz, corners, surf
 				make_solid_vm(vm, pos, surface_mat)
 				if dust_mat then
 					pos.y = py
-					if get_node_at(vm, pos).name == "air" then set_node_at(vm, pos, dust_mat) end
+					if is_air(get_node(vm, pos)) then swap_node(vm, pos, dust_mat) end
 				end
 			end
 		end

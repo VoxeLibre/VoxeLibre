@@ -1,12 +1,16 @@
-local AIR = {name = "air"}
+local AIR = vl_terraforming._AIR
 local abs = math.abs
 local max = math.max
 local floor = math.floor
 local vector_new = vector.new
-local is_solid_not_tree = vl_terraforming._is_solid_not_tree
-local is_tree_not_leaves = vl_terraforming._is_tree_not_leaves
 local get_node = core.get_node
 local swap_node = core.swap_node
+
+local is_air = vl_terraforming._is_air
+local immutable = vl_terraforming._immutable
+local is_solid_not_tree = vl_terraforming._is_solid_not_tree
+local is_tree_not_leaves = vl_terraforming._is_tree_not_leaves
+local is_tree_or_leaves = vl_terraforming._is_tree_or_leaves
 
 --- Clear an area for a structure
 --
@@ -47,7 +51,7 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 			vec.z = zi
 			if xi >= px and xi < px+sx and zi >= pz and zi < pz+sz and dx2+dz2 <= 1 then
 				vec.y = py
-				if get_node(vec).name ~= "mcl_core:bedrock" then swap_node(vec, AIR) end
+				if not immutable(get_node(vec)) then swap_node(vec, AIR) end
 				vec.y = py - 1
 				local n = get_node(vec)
 				if n and n.name ~= surface_mat.name and is_solid_not_tree(n) then
@@ -55,14 +59,13 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 				end
 				for yi = py+1,min_clear do -- full height for inner area
 					vec.y = yi
-					if get_node(vec).name ~= "mcl_core:bedrock" then swap_node(vec, AIR) end
+					if not immutable(get_node(vec)) then swap_node(vec, AIR) end
 				end
 			elseif dx21+dz21 <= 1 then
 				-- widen the cave above by 1, to make easier to enter for mobs
 				-- todo: make configurable?
 				vec.y = py + 1
-				local name = get_node(vec).name
-				if name ~= "mcl_core:bedrock" then
+				if not immutable(get_node(vec)) then
 					local mat = AIR
 					if dust_mat then
 						vec.y = py
@@ -73,7 +76,7 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 				end
 				for yi = py+2,min_clear-1 do
 					vec.y = yi
-					if get_node(vec).name ~= "mcl_core:bedrock" then swap_node(vec, AIR) end
+					if not immutable(get_node(vec)) then swap_node(vec, AIR) end
 					if yi > py+4 then
 						local p = (yi-py) / (max_clear-py)
 						--minetest.log(tostring(p).."^2 "..tostring(p*p).." rand: "..pr:next(0,1e9)/1e9)
@@ -88,14 +91,14 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 						swap_node(vec, surface_mat)
 						if dust_mat and yi == py then
 							vec.y = yi + 1
-							if get_node(vec).name == "air" then swap_node(vec, dust_mat) end
+							if is_air(get_node(vec)) then swap_node(vec, dust_mat) end
 						end
 					else
 						if n and n.name ~= surface_mat.name and is_solid_not_tree(n) then
 							swap_node(vec, surface_mat)
 							if dust_mat then
 								vec.y = yi + 1
-								if get_node(vec).name == "air" then swap_node(vec, dust_mat) end
+								if is_air(get_node(vec)) then swap_node(vec, dust_mat) end
 							end
 						end
 						break
@@ -118,12 +121,12 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 				if py+4 < sy then
 					for yi = py+2,py+4 do
 						vec = vector_new(xi, yi, zi)
-						if get_node(vec).name ~= "mcl_core:bedrock" then swap_node(vec, v) end
+						if not immutable(get_node(vec)) then swap_node(vec, v) end
 					end
 				end
 				for yi = py+1,py-1,-1 do
 					local n = get_node(vector_new(xi, yi, zi))
-					if is_tree_bot_leaves(n) and n.name ~= "mcl_core:bedrock" then
+					if is_tree_not_leaves(n) and not immutable(n) then
 						swap_node(vector_new(xi, yi, zi), AIR)
 					else
 						if n and n.name ~= surface_mat.name and is_solid_not_tree(n) then
@@ -147,17 +150,15 @@ function vl_terraforming.clearance(px, py, pz, sx, sy, sz, corners, surface_mat,
 				local keep_trees = (xi<px or xi>=px+sx) or (zi<pz or zi>=pz+sz) -- TODO make parameter?
 				if dx22+dy2+dz22 <= 1 then
 					vec.x, vec.y, vec.z = xi, yi, zi
-					local name = get_node(vec).name
+					local nod = get_node(vec)
 					-- don't break bedrock or air
-					if name == "air" or name == "ignore" or name == "mcl_core:bedrock" or name == "mcl_villages:no_paths" then goto continue end
-					local meta = minetest.registered_items[name]
-					local groups = meta and meta.groups
-					local is_tree = groups.leaves or groups.tree or (groups.compostability or 0 > 50)
+					if is_air(nod) or immutable(nod) then goto continue end
+					local is_tree = is_tree_or_leaves(nod)
 					if keep_trees and is_tree then goto continue end
 					vec.y = yi-1
 					-- do not clear above solid
-					local name_below = get_node(vec).name
-					if name_below ~= "air" and name_below ~= "ignore" and name_below ~= "mcl_core:bedrock" then goto continue end
+					local nod_below = get_node(vec)
+					if not is_air(nod_below) and not immutable(nod_below) then goto continue end
 					-- try to completely remove trees overhead
 					-- stop randomly depending on fill, to narrow down the caves
 					if not keep_trees and not is_tree and (pr:next(0,1e9)/1e9)^0.5 > 1-(dx22+dy2+dz22-0.1) then goto continue end
