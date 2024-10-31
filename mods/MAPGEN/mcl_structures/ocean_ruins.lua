@@ -80,7 +80,7 @@ local cold = {
 	y_max = water_level - 6,
 	y_offset = -1,
 	flags = "place_center_x, place_center_z, force_placement",
-	prepare = { foundation = -2, clear = false, surface = "water" },
+	prepare = { foundation = -3, clear = false, surface = "water", mode = "min" },
 	filenames = {
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_1.mts",
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_2.mts",

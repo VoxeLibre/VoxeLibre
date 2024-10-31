@@ -5,7 +5,7 @@ local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local function spawn_witch(p1,p2)
-	local c = minetest.find_node_near(p1,15,{"mcl_cauldrons:cauldron"})
+	local c = minetest.find_node_near(p1,15,{"group:cauldron"})
 	if not c then return end
 	local nn = minetest.find_nodes_in_area_under_air(vector.new(p1.x,c.y-1,p1.z),vector.new(p2.x,c.y-1,p2.z),{"mcl_core:sprucewood"})
 	local witchobj = not peaceful and minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:witch")
@@ -48,10 +48,10 @@ vl_structures.register_structure("witch_hut",{
 	num_spawn_by = 3,
 	flags = "place_center_x, place_center_z, all_surfaces",
 	chunk_probability = 8,
-	prepare = { surface = "under_air", tolerance = 4, clear_bottom = 3, padding = 0, corners = 1, foundation = false },
+	prepare = { surface = "under_air", tolerance = 3, clear_bottom = 3, padding = 0, corners = 1, foundation = false, mode = "max" },
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = -5,
-	y_offset = 0,
+	y_offset = -1,
 	biomes = { "Swampland", "Swampland_ocean", "Swampland_shore" },
 	filenames = { modpath.."/schematics/mcl_structures_witch_hut.mts" },
 	after_place = hut_placement_callback,
