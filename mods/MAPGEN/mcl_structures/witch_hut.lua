@@ -6,23 +6,21 @@ local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local function spawn_witch(p1,p2)
 	local c = minetest.find_node_near(p1,15,{"mcl_cauldrons:cauldron"})
-	if c then
-		local nn = minetest.find_nodes_in_area_under_air(vector.new(p1.x,c.y-1,p1.z),vector.new(p2.x,c.y-1,p2.z),{"mcl_core:sprucewood"})
-		local witch
-		if not peaceful then
-			witch = minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:witch"):get_luaentity()
-			witch._home = c
-			witch.can_despawn = false
-		end
-		local catobject = minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:cat")
-		if catobject and catobject:get_pos() then
-			local cat=catobject:get_luaentity()
-			cat.object:set_properties({textures = {"mobs_mc_cat_black.png"}})
-			cat.owner = "!witch!" --so it's not claimable by player
-			cat._home = c
-			cat.can_despawn = false
-		end
-		return
+	if not c then return end
+	local nn = minetest.find_nodes_in_area_under_air(vector.new(p1.x,c.y-1,p1.z),vector.new(p2.x,c.y-1,p2.z),{"mcl_core:sprucewood"})
+	local witchobj = not peaceful and minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:witch")
+	if witchobj then
+		local witch = witchobj:get_luaentity()
+		witch._home = c
+		witch.can_despawn = false
+	end
+	local catobj = minetest.add_entity(vector.offset(nn[math.random(#nn)],0,1,0),"mobs_mc:cat")
+	if catobj then
+		local cat=catobj:get_luaentity()
+		cat.object:set_properties({textures = {"mobs_mc_cat_black.png"}})
+		cat.owner = "!witch!" --so it's not claimable by player
+		cat._home = c
+		cat.can_despawn = false
 	end
 end
 
@@ -30,7 +28,6 @@ local function hut_placement_callback(pos,def,pr,p1,p2)
 	-- p1.y is the bottom slice only, not a typo, we look for the hut legs
 	local legs = minetest.find_nodes_in_area(p1,vector.new(p2.x,p1.y,p2.z), "mcl_core:tree")
 	local tree = {}
-	-- TODO: port leg generation to VoxelManip?
 	for _,leg in pairs(legs) do
 		while true do
 			local name = minetest.get_node(vector.offset(leg,0,-1,0)).name

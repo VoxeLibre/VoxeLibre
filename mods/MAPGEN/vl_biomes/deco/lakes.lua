@@ -1,0 +1,142 @@
+-- TODO: overall, these pools tend to be very circular, can we make them more interesting?
+-- TODO: use the terraforming from vl_terraforming instead of the airtower?
+
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
+local adjacents = {
+	vector.new(1,0,0),
+	vector.new(1,0,1),
+	vector.new(1,0,-1),
+	vector.new(-1,0,0),
+	vector.new(-1,0,1),
+	vector.new(-1,0,-1),
+	vector.new(0,0,1),
+	vector.new(0,0,-1),
+	vector.new(0,-1,0)
+}
+
+local function makelake(pos, size, liquid, placein, border, pr, noair)
+	local p1, p2 = vector.offset(pos,-size,-1,-size), vector.offset(pos,size,-1,size)
+	local e1, e2 = vector.offset(pos,-size,-2,-size), vector.offset(pos,size,15,size)
+	minetest.emerge_area(e1, e2, function(_, _, calls_remaining)
+		if calls_remaining ~= 0 then return end
+		local nn = minetest.find_nodes_in_area(p1, p2, placein)
+		if not nn[1] then return end
+		table.sort(nn, function(a, b)
+		   return vector.distance(pos, a) < vector.distance(pos, b)
+		end)
+		local y = pos.y - 1
+		local lq, air = {}, {}
+		local r = pr:next(1,#nn)
+		for i=1,r do
+			for j = 1, 20 do
+				table.insert(air, vector.offset(nn[i], 0, j, 0))
+			end
+			table.insert(lq, nn[i])
+		end
+		minetest.bulk_swap_node(lq, { name = liquid })
+		minetest.bulk_swap_node(air, { name = "air" })
+		air = {}
+		local br = {}
+		for k,v in pairs(lq) do
+			for kk,vv in pairs(adjacents) do
+				local pp = vector.add(v,vv)
+				local an = minetest.get_node(pp)
+				-- if not border and minetest.get_item_group(an.name, "solid") > 0 then border = an end
+				if not noair and an.name ~= liquid then
+					table.insert(br,pp)
+				end
+			end
+		end
+		--[[ unused:
+		if not border then
+			if minetest.get_item_group(minetest.get_node(nn[1]).name, "solid") > 0 then
+				border = minetest.get_node_or_nil(nn[1])
+			else
+				border = { name = "mcl_core:stone" }
+			end
+		end
+		if border == nil or border.name == "mcl_core:dirt" then
+			local biome = mg_name ~= "v6" and minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(nn[1]).biome)]
+			local p2 = biome and biome._mcl_grass_palette_index and biome._mcl_grass_palette_index or nil
+			border = { name = "mcl_core:dirt_with_grass", param2 = p2 }
+		end ]]
+		if border.name == "mcl_core:dirt_with_grass" and not border.param2 then
+			local biome = mg_name ~= "v6" and minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(nn[1]).biome)]
+			local p2 = biome and biome._mcl_grass_palette_index and biome._mcl_grass_palette_index or nil
+			border = { name = "mcl_core:dirt_with_grass", param2 = p2 }
+		end
+		minetest.bulk_swap_node(br, border)
+		minetest.bulk_swap_node(air, { name = "air" })
+		return true
+	end)
+	return true
+end
+
+vl_structures.register_structure("lavapool", {
+	place_on = { "group:sand", "group:dirt", "group:stone" },
+	terrain_feature = true,
+	noise_params = {
+		offset = 0,
+		scale = 0.0000022,
+		spread = vector.new(250, 250, 250),
+		seed = 78375213,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
+	flags = "place_center_x, place_center_z, all_floors",
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = minetest.get_mapgen_setting("water_level"),
+	place_func = function(pos, _, pr)
+		return makelake(pos, 5, "mcl_core:lava_source",
+			{ "group:material_stone", "group:sand", "group:dirt" },
+			{ name = "mcl_core:stone" }, pr)
+	end
+})
+
+vl_structures.register_structure("water_lake", {
+	place_on = { "group:dirt", "group:stone" },
+	terrain_feature = true,
+	noise_params = {
+		offset = 0,
+		scale = 0.000032,
+		spread = vector.new(250, 250, 250),
+		seed = 756641353,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
+	flags = "place_center_x, place_center_z, all_floors",
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = minetest.get_mapgen_setting("water_level"),
+	place_func = function(pos, _, pr)
+		return makelake(pos, 5, "mcl_core:water_source",
+			{ "group:material_stone", "group:sand", "group:dirt", "group:grass_block"},
+			{ name = "mcl_core:dirt_with_grass" }, pr)
+	end
+})
+
+vl_structures.register_structure("water_lake_mangrove_swamp", {
+	place_on = { "mcl_mud:mud" },
+	biomes = { "MangroveSwamp" },
+	terrain_feature = true,
+	noise_params = {
+		offset = 0,
+		scale = 0.0032,
+		spread = vector.new(250, 250, 250),
+		seed = 6343241353,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
+	flags = "place_center_x, place_center_z, all_floors",
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = minetest.get_mapgen_setting("water_level"),
+	place_func = function(pos, _, pr)
+		return makelake(pos, 3, "mcl_core:water_source",
+			{ "group:material_stone", "group:sand", "group:dirt", "group:grass_block", "mcl_mud:mud"},
+			{ name = "mcl_mud:mud" }, pr, true)
+	end
+})
+
