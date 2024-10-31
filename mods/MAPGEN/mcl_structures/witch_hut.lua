@@ -48,7 +48,7 @@ vl_structures.register_structure("witch_hut",{
 	num_spawn_by = 3,
 	flags = "place_center_x, place_center_z, all_surfaces",
 	chunk_probability = 8,
-	prepare = { mode="under_air", tolerance=4, clear_bottom=3, padding=0, corners=1, foundation=false },
+	prepare = { surface = "under_air", tolerance = 4, clear_bottom = 3, padding = 0, corners = 1, foundation = false },
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = -5,
 	y_offset = 0,

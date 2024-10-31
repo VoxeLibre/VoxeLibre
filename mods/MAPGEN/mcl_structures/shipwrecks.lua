@@ -77,7 +77,7 @@ vl_structures.register_structure("shipwreck",{
 	y_max = water_level-5,
 	y_offset = function(pr) return pr:next(-3,-1) end,
 	flags = "place_center_x, place_center_z, force_placement",
-	prepare = { tolerance = -1, clear = false, foundation = false, mode = "water" },
+	prepare = { tolerance = 99, clear = false, foundation = false, surface = "water", mode = "min" },
 	filenames = {
 		--schematics by chmodsayshello
 		modpath.."/schematics/mcl_structures_shipwreck_full_damaged.mts",
