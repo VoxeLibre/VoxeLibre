@@ -1,5 +1,16 @@
 -- Sugar canes
-for _, biome in ipairs(vl_biomes.overworld_biomes) do
+local biomes = vl_biomes.overworld_biomes
+local bmap = {}
+for b = 1, #biomes do
+	if minetest.registered_biomes[biomes[b]] then -- ignore missing biomes
+		local param2 = minetest.registered_biomes[biomes[b]]._mcl_grass_palette_index or 0
+		if not bmap[param2] then bmap[param2] = {} end
+		table.insert(bmap[param2], biomes[b])
+	else
+		minetest.log("warning", "Biome not found: "..biomes[b])
+	end
+end
+for param2, bs in pairs(bmap) do
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
@@ -19,8 +30,8 @@ for _, biome in ipairs(vl_biomes.overworld_biomes) do
 		height_max = 3,
 		spawn_by = {"mcl_core:water_source", "mclx_core:river_water_source", "group:frosted_ice"},
 		num_spawn_by = 1,
-		biomes = {biome},
-		param2 = biome._mcl_foliage_palette_index
+		biomes = bs,
+		param2 = param2
 	})
 end
 
@@ -30,10 +41,10 @@ mcl_mapgen_core.register_decoration({
 	place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 	sidelen = 16,
 	noise_params = {
-		offset = 0.0,
+		offset = 0.1,
 		scale = 0.5,
-		spread = vector.new(200, 200, 200),
-		seed = 2,
+		spread = vector.new(100, 100, 100),
+		seed = 3,
 		octaves = 3,
 		persist = 0.7,
 	},
@@ -45,6 +56,6 @@ mcl_mapgen_core.register_decoration({
 	height_max = 3,
 	spawn_by = {"mcl_core:water_source", "group:frosted_ice"},
 	num_spawn_by = 1,
-	param2 = 5 -- Swampland foliage palette index
+	param2 = 28 -- Swampland grass palette index
 })
 

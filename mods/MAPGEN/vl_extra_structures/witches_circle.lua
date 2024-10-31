@@ -5,7 +5,7 @@ local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local function spawn_witch(pos,def,pr,p1,p2)
-	local c = minetest.find_node_near(p1,15,{"mcl_cauldrons:cauldron"})
+	local c = minetest.find_node_near(p1,15,{"group:cauldron"})
 	if not c then return end
 	local nn = minetest.find_nodes_in_area_under_air(vector.new(p1.x,c.y-1,p1.z),vector.new(p2.x,c.y-1,p2.z),{"group:stone"})
 	if #nn == 0 then return end
