@@ -65,14 +65,15 @@ local lily_schem = {
 
 -- Spawn them in shallow water at ocean level in Swampland.
 -- Tweak lilydepth to change the maximum water depth
-local lilydepth = 2
+local lilydepth = 3
 
 for d = 1, lilydepth do
 	local height = d + 2
 	local y = 1 - d
-	table.insert(lily_schem, 1, {name = "air", prob = 0})
+	table.insert(lily_schem, 1, {name = "ignore", prob = 0})
 
 	mcl_mapgen_core.register_decoration({
+		name = "lily:"..tostring(d),
 		deco_type = "schematic",
 		schematic = {
 			size = vector.new(1, height, 1),
@@ -81,7 +82,7 @@ for d = 1, lilydepth do
 		place_on = "mcl_core:dirt",
 		sidelen = 16,
 		noise_params = {
-			offset = 0,
+			offset = 0.3 - 0.2 * d, -- more when shallow
 			scale = 0.3,
 			spread = vector.new(100, 100, 100),
 			seed = 503,
