@@ -1,5 +1,3 @@
-local mod_mcl_structures = minetest.get_modpath("mcl_structures")
-
 -- Mega Pine Taiga aka Old Growth Pine Taiga
 vl_biomes.register_biome({
 	name = "MegaTaiga",
@@ -40,47 +38,6 @@ minetest.register_ore({
 	noise_threshold = 0.2,
 	noise_params = {offset = 0, scale = 15, spread = vector.new(130, 130, 130), seed = 24, octaves = 3, persist = 0.70},
 	biomes = {"MegaTaiga"},
-})
--- Mossy cobblestone boulder (3x3)
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
-	sidelen = 80,
-	noise_params = {
-		offset = 0.00015,
-		scale = 0.001,
-		spread = vector.new(300, 300, 300),
-		seed = 775703,
-		octaves = 4,
-		persist = 0.63,
-	},
-	biomes = {"MegaTaiga"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_structures .. "/schematics/mcl_structures_boulder.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
-})
-
--- Small mossy cobblestone boulder (2x2)
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
-	sidelen = 80,
-	noise_params = {
-		offset = 0.001,
-		scale = 0.001,
-		spread = vector.new(300, 300, 300),
-		seed = 775704,
-		octaves = 4,
-		persist = 0.63,
-	},
-	biomes = {"MegaTaiga"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_structures .. "/schematics/mcl_structures_boulder_small.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
 })
 
 -- Huge spruce

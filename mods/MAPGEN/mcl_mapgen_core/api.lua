@@ -223,16 +223,16 @@ local function sort_decorations()
 	for _, key in ipairs(keys) do
 		local def = map[key]
 		if def.name and minetest.get_decoration_id(def.name) then
-			minetest.log("warning", "Decoration ID not unique: "..def.name)
+			minetest.log("warning", "Decoration ID not unique: "..tostring(def.name or key))
 		end
 		local deco_id = minetest.register_decoration(def)
 		if not deco_id then
-			error("Failed to register decoration "..tostring(def.name).." - name not unique?")
+			error("Failed to register decoration "..tostring(def.name or key).." - name not unique or schematic not found?")
 		end
 		if def.name then
 			deco_id = minetest.get_decoration_id(def.name)
 			if not deco_id then
-				error("Failed to register decoration "..tostring(def.name).." - name not unique?")
+				error("Failed to register decoration "..tostring(def.name or key).." - name not unique?")
 			end
 			if def.gen_callback then
 				minetest.set_gen_notify({decoration = true}, {deco_id})
