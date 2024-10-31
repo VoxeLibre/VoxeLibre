@@ -219,7 +219,7 @@ mcl_villages.register_building({
 	num_others = 8,
 	min_jobs = 7,
 	yadjust = 1,
-	rotation_offset = 3, -- entrance is east
+	rotation_offset = 0, -- entrance is north
 })
 
 mcl_villages.register_building({
@@ -247,7 +247,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/cartographer.mts",
 	num_others = 15,
 	yadjust = 1,
-	rotation_offset = 1, -- entrance is west
+	rotation_offset = 0, -- entrance is north
 })
 
 mcl_villages.register_building({
@@ -263,6 +263,7 @@ mcl_villages.register_building({
 	mts = schem_path .. "new_villages/mill.mts",
 	num_others = 8,
 	yadjust = 1,
+	rotation_offset = 3, -- entrance is east
 })
 
 mcl_villages.register_building({

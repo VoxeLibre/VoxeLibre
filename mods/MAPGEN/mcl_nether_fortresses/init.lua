@@ -34,13 +34,12 @@ vl_structures.register_structure("nether_bridge",{
 	y_min = mcl_vars.mg_lava_nether_max,
 	y_max = mcl_vars.mg_lava_nether_max + 25, -- otherwise, we may see some very long legs
 	filenames = nbridges,
-	y_offset = function(pr) return pr:next(-8, -5) end,
+	y_offset = function(pr) return pr:next(-12, -8) end,
 	after_place = function(pos,def,pr,p1,p2)
 		vl_structures.spawn_mobs("mobs_mc:witherskeleton",{"mcl_blackstone:blackstone_chiseled_polished"},p1,p2,pr,5)
 		-- p1.y is not a typo, we want to lowest level only
 		local legs = minetest.find_nodes_in_area(vector.new(p1.x,p1.y,p1.z),vector.new(p2.x,p1.y,p2.z), "mcl_nether:nether_brick")
 		local bricks = {}
-		-- TODO: port leg generation to voxel manipulators?
 		for _,leg in pairs(legs) do
 			while true do
 				leg = vector.offset(leg,0,-1,0)
