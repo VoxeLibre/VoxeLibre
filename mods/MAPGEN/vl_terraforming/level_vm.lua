@@ -11,8 +11,9 @@ local is_solid_not_tree = vl_terraforming._is_solid_not_tree
 -- @return position and material of surface
 function vl_terraforming.find_ground_vm(vm, pos)
 	if not pos then return nil, nil end
+	local get_node = vm.get_node_at
 	pos = vector_copy(pos)
-	local cur = vm:get_node_at(pos)
+	local cur = get_node(vm, pos)
 	if cur.name == "ignore" then
 		local e1, e2 = vm:get_emerged_area()
 		minetest.log("warning", "find_ground with invalid position (outside of emerged area?) at "..minetest.pos_to_string(pos)
@@ -23,7 +24,7 @@ function vl_terraforming.find_ground_vm(vm, pos)
 		local prev = cur
 		while true do
 			pos.y = pos.y + 1
-			local cur = vm:get_node_at(pos)
+			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." over "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
@@ -38,7 +39,7 @@ function vl_terraforming.find_ground_vm(vm, pos)
 		while true do
 			pos.y = pos.y - 1
 			local prev = cur
-			local cur = vm:get_node_at(pos)
+			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." below "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
@@ -60,8 +61,9 @@ local find_ground_vm = vl_terraforming.find_ground_vm
 -- @return position and material of surface
 function vl_terraforming.find_under_air_vm(vm, pos)
 	if not pos then return nil, nil end
+	local get_node = vm.get_node_at
 	pos = vector_copy(pos)
-	local cur = vm:get_node_at(pos)
+	local cur = get_node(vm, pos)
 	if cur.name == "ignore" then
 		local e1, e2 = vm:get_emerged_area()
 		minetest.log("warning", "find_under_air with invalid position (outside of emerged area?) at "..minetest.pos_to_string(pos)
@@ -72,7 +74,7 @@ function vl_terraforming.find_under_air_vm(vm, pos)
 		local prev = cur
 		while true do
 			pos.y = pos.y + 1
-			local cur = vm:get_node_at(pos)
+			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." over "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
@@ -88,7 +90,7 @@ function vl_terraforming.find_under_air_vm(vm, pos)
 		while true do
 			pos.y = pos.y - 1
 			local prev = cur
-			local cur = vm:get_node_at(pos)
+			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." below "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
@@ -108,8 +110,9 @@ local find_under_air_vm = vl_terraforming.find_under_air_vm
 -- @return position and material of surface
 function vl_terraforming.find_liquid_surface_vm(vm, pos)
 	if not pos then return nil, nil end
+	local get_node = vm.get_node_at
 	pos = vector_copy(pos)
-	local cur = vm:get_node_at(pos)
+	local cur = get_node(vm, pos)
 	if cur.name == "ignore" then
 		local e1, e2 = vm:get_emerged_area()
 		minetest.log("warning", "find_liquid_surface with invalid position (outside of emerged area?) at "..minetest.pos_to_string(pos)
@@ -120,7 +123,7 @@ function vl_terraforming.find_liquid_surface_vm(vm, pos)
 		local prev = cur
 		while true do
 			pos.y = pos.y + 1
-			local cur = vm:get_node_at(pos)
+			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." over "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
@@ -136,7 +139,7 @@ function vl_terraforming.find_liquid_surface_vm(vm, pos)
 		while true do
 			pos.y = pos.y - 1
 			local prev = cur
-			local cur = vm:get_node_at(pos)
+			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." below "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
@@ -160,8 +163,9 @@ local find_liquid_surface_vm = vl_terraforming.find_liquid_surface_vm
 -- @return position and material of surface
 function vl_terraforming.find_under_water_surface_vm(vm, pos)
 	if not pos then return nil, nil end
+	local get_node = vm.get_node_at
 	pos = vector_copy(pos)
-	local cur = vm:get_node_at(pos)
+	local cur = get_node(vm, pos)
 	if cur.name == "ignore" then
 		local e1, e2 = vm:get_emerged_area()
 		minetest.log("warning", "find_under_water_surface with invalid position (outside of emerged area?) at "..minetest.pos_to_string(pos)
@@ -172,7 +176,7 @@ function vl_terraforming.find_under_water_surface_vm(vm, pos)
 		local prev = cur
 		while true do
 			pos.y = pos.y + 1
-			local cur = vm:get_node_at(pos)
+			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." over "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
@@ -188,7 +192,7 @@ function vl_terraforming.find_under_water_surface_vm(vm, pos)
 		while true do
 			pos.y = pos.y - 1
 			local prev = cur
-			local cur = vm:get_node_at(pos)
+			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." below "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
@@ -211,18 +215,19 @@ local find_under_water_surface_vm = vl_terraforming.find_under_water_surface_vm
 -- @param vm VoxelManip: to read data
 -- @param cpos vector: center
 -- @param size vector: area size
--- @param tolerance number or string: maximum height difference allowed, default 8.
--- @param mode string: "solid" (default), "liquid_surface", "under_air"
+-- @param tolerance number or string: maximum height difference allowed, default 8,
+-- @param surface string: "solid" (default), "liquid_surface", "under_air"
+-- @param mode string: "median" (default), "min" and "max"
 -- @return position over surface, surface material  (or nil, nil)
-function vl_terraforming.find_level_vm(vm, cpos, size, tolerance, mode)
-	local find_ground = find_ground_vm
-	if mode == "liquid_surface" or mode == "liquid" then find_ground = find_liquid_surface_vm end
-	if mode == "under_water" or mode == "water" then find_ground = find_under_water_surface_vm end
-	if mode == "under_air" then find_ground = find_under_air_vm end
+function vl_terraforming.find_level_vm(vm, cpos, size, tolerance, surface, mode)
+	local _find_ground = find_ground_vm
+	if surface == "liquid_surface" or surface == "liquid" then _find_ground = find_liquid_surface_vm end
+	if surface == "under_water" or surface == "water" then _find_ground = find_under_water_surface_vm end
+	if surface == "under_air" then _find_ground = find_under_air_vm end
 	-- begin at center, then top-left and clockwise
-	local pos, surface_material = find_ground(vm, cpos)
+	local pos, surface_material = _find_ground(vm, cpos)
 	if not pos then
-		-- minetest.log("action", "[vl_terraforming] no ground at starting position "..minetest.pos_to_string(cpos).." mode "..tostring(mode or "default"))
+		-- minetest.log("action", "[vl_terraforming] no ground at starting position "..minetest.pos_to_string(cpos).." surface "..tostring(surface or "default"))
 		return nil, nil
 	end
 	local ys = { pos.y }
@@ -230,38 +235,36 @@ function vl_terraforming.find_level_vm(vm, cpos, size, tolerance, mode)
 	if size.x == 1 and size.z == 1 then return pos end
 	-- move to top left corner
 	pos.x, pos.z = pos.x - floor((size.x-1)/2), pos.z - floor((size.z-1)/2)
-	local pos_c = find_ground(vm, pos)
+	local pos_c = _find_ground(vm, pos)
 	if pos_c then table.insert(ys, pos_c.y) end
 	-- move to top right corner
 	pos.x = pos.x + size.x - 1
-	local pos_c = find_ground(vm, pos)
+	local pos_c = _find_ground(vm, pos)
 	if pos_c then table.insert(ys, pos_c.y) end
 	-- move to bottom right corner
 	pos.z = pos.z + size.z - 1
-	local pos_c = find_ground(vm, pos)
+	local pos_c = _find_ground(vm, pos)
 	if pos_c then table.insert(ys, pos_c.y) end
 	-- move to bottom left corner
 	pos.x = pos.x - (size.x - 1)
-	local pos_c = find_ground(vm, pos)
+	local pos_c = _find_ground(vm, pos)
 	if pos_c then table.insert(ys, pos_c.y) end
 	table.sort(ys)
 
 	tolerance = tolerance or 8
-	if tolerance == "min" then
-		cpos.y = ys[1] + 1
-		return cpos, surface_material
-	end
-	if tolerance == "max" then
-		cpos.y = ys[#ys] + 1
-		return cpos, surface_material
-	end
 	-- well supported base, not too uneven?
 	if #ys < 5 or min(ys[#ys-1]-ys[1], ys[#ys]-ys[2]) > tolerance then
 		-- minetest.log("action", "[vl_terraforming] ground too uneven: "..#ys.." positions: "..({dump(ys):gsub("[\n\t ]+", " ")})[1]
 		--                      .." tolerance "..tostring(#ys > 2 and min(ys[#ys-1]-ys[1], ys[#ys]-ys[2])).." > "..tolerance)
 		return nil, nil
 	end
-	cpos.y = floor(0.5 * (ys[floor(1 + (#ys - 1) * 0.5)] + ys[ceil(1 + (#ys - 1) * 0.5)]) + 1) -- median except for largest, rounded, over surface
-	return cpos, surface_material
+	if mode == "min" then
+		pos.y = ys[1]
+	elseif mode == "max" then
+		pos.y = ys[#ys]
+	else -- median except for largest
+		pos.y = floor(0.5 * (ys[floor(1 + (#ys - 1) * 0.5)] + ys[ceil(1 + (#ys - 1) * 0.5)])) -- rounded
+	end
+	return pos, surface_material
 end
 

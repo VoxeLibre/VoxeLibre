@@ -1,11 +1,13 @@
 local abs = math.abs
 local max = math.max
 local vector_new = vector.new
-
-local is_solid_not_tree = vl_terraforming._is_solid_not_tree
-local make_solid = vl_terraforming._make_solid
 local get_node = core.get_node
 local swap_node = core.swap_node
+
+local is_air = vl_terraforming._is_air
+local is_solid_not_tree = vl_terraforming._is_solid_not_tree
+local immutable = vl_terraforming._immutable
+local make_solid = vl_terraforming._make_solid
 
 --- Grow the foundation downwards
 -- @param xi number: x coordinate
@@ -34,7 +36,7 @@ local function grow_foundation(xi,yi,zi,pr,surface_mat,platform_mat,stone_mat)
 	-- TODO: allow controlling the random depth with an additional parameter?
 	if (pr:next(0,1e9)/1e9)^2 > c/9.1 then return false end
 	pos.x, pos.y, pos.z = xi, yi, zi
-	if get_node(pos).name == "mcl_core:bedrock" then return false end
+	if immutable(get_node(pos)) then return false end
 	swap_node(pos, platform_mat)
 	return true
 end
@@ -77,11 +79,11 @@ function vl_terraforming.foundation(px, py, pz, sx, sy, sz, corners, surface_mat
 			pos.z = zi
 			if xi >= px and xi < px+sx and zi >= pz and zi < pz+sz and dx2+dz2 <= 1 then
 				pos.y = py
-				if get_node(pos).name ~= "mcl_core:bedrock" then
+				if not immutable(get_node(pos)) then
 					swap_node(pos, surface_mat)
 					if dust_mat then
 						pos.y = py + 1
-						if get_node(pos).name == "air" then swap_node(pos, dust_mat) end
+						if is_air(get_node(pos)) then swap_node(pos, dust_mat) end
 					end
 					pos.y = py - 1
 					make_solid(pos, platform_mat)
@@ -92,7 +94,7 @@ function vl_terraforming.foundation(px, py, pz, sx, sy, sz, corners, surface_mat
 				make_solid(pos, surface_mat)
 				if dust_mat then
 					pos.y = py
-					if get_node(pos).name == "air" then swap_node(pos, dust_mat) end
+					if is_air(get_node(pos)) then swap_node(pos, dust_mat) end
 				end
 			end
 		end

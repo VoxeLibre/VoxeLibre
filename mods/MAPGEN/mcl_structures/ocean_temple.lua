@@ -82,7 +82,7 @@ vl_structures.register_structure("ocean_temple",{
 	},
 	flags = "force_placement",
 	force_placement = true,
-	prepare = { tolerance = 8, clear = false, foundation = 3, mode="water" },
+	prepare = { tolerance = 8, clear = false, foundation = 3, surface = "water" },
 	biomes = ocean_biomes,
 	y_max = water_level-4,
 	y_min = mcl_vars.mg_overworld_min,
