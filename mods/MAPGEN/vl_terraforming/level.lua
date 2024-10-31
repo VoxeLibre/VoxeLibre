@@ -203,18 +203,19 @@ local find_under_water_surface = vl_terraforming.find_under_water_surface
 --- find suitable height for a structure of this size
 -- @param cpos vector: center
 -- @param size vector: area size
--- @param tolerance number or string: maximum height difference allowed, default 8.
--- @param mode string: "solid" (default), "liquid_surface", "under_air"
+-- @param tolerance number or string: maximum height difference allowed, default 8,
+-- @param surface string: "solid" (default), "liquid_surface", "under_air"
+-- @param mode string: "median" (default), "min" and "max"
 -- @return position over surface, surface material  (or nil, nil)
-function vl_terraforming.find_level(cpos, size, tolerance, mode)
+function vl_terraforming.find_level(cpos, size, tolerance, surface, mode)
 	local _find_ground = find_ground
-	if mode == "liquid_surface" or mode == "liquid" then _find_ground = find_liquid_surface end
-	if mode == "under_water" or mode == "water" then _find_ground = find_under_water_surface end
-	if mode == "under_air" then _find_ground = find_under_air end
+	if surface == "liquid_surface" or surface == "liquid" then _find_ground = find_liquid_surface end
+	if surface == "under_water" or surface == "water" then _find_ground = find_under_water_surface end
+	if surface == "under_air" then _find_ground = find_under_air end
 	-- begin at center, then top-left and clockwise
 	local pos, surface_material = _find_ground(cpos)
 	if not pos then
-		-- minetest.log("action", "[vl_terraforming] no ground at starting position "..minetest.pos_to_string(cpos).." mode "..tostring(mode or "default"))
+		-- minetest.log("action", "[vl_terraforming] no ground at starting position "..minetest.pos_to_string(cpos).." surface "..tostring(surface or "default"))
 		return nil, nil
 	end
 	local ys = { pos.y }
@@ -239,21 +240,19 @@ function vl_terraforming.find_level(cpos, size, tolerance, mode)
 	table.sort(ys)
 
 	tolerance = tolerance or 8
-	if tolerance == "min" then
-		cpos.y = ys[1] + 1
-		return cpos, surface_material
-	end
-	if tolerance == "max" then
-		cpos.y = ys[#ys] + 1
-		return cpos, surface_material
-	end
 	-- well supported base, not too uneven?
 	if #ys < 5 or min(ys[#ys-1]-ys[1], ys[#ys]-ys[2]) > tolerance then
 		-- minetest.log("action", "[vl_terraforming] ground too uneven: "..#ys.." positions: "..({dump(ys):gsub("[\n\t ]+", " ")})[1]
 		--                      .." tolerance "..tostring(#ys > 2 and min(ys[#ys-1]-ys[1], ys[#ys]-ys[2])).." > "..tolerance)
 		return nil, nil
 	end
-	cpos.y = floor(0.5 * (ys[floor(1 + (#ys - 1) * 0.5)] + ys[ceil(1 + (#ys - 1) * 0.5)]) + 1) -- median except for largest, rounded, over surface
-	return cpos, surface_material
+	if mode == "min" then
+		pos.y = ys[1]
+	elseif mode == "max" then
+		pos.y = ys[#ys]
+	else -- median except for largest
+		pos.y = floor(0.5 * (ys[floor(1 + (#ys - 1) * 0.5)] + ys[ceil(1 + (#ys - 1) * 0.5)])) -- rounded
+	end
+	return pos, surface_material
 end
 
