@@ -40,6 +40,7 @@ vl_biomes.overworld_biomes = {}
 -- Fix the grass color via decoration mechanism,
 -- by replacing node_top with node_top and param2 set
 -- TODO: this can be removed when param2 support to biomes is added
+-- TODO: one per param2, instead of one per biome?
 -- <https://github.com/minetest/minetest/issues/15319>
 vl_biomes.fix_grass_color = function(def)
 	if (def._mcl_grass_palette_index or 0) == 0 then return end -- not necessary
@@ -59,7 +60,7 @@ vl_biomes.fix_grass_color = function(def)
 			fill_ratio = 10, -- everything
 			decoration = name,
 			param2 = param2,
-			flags = "force_placement",
+			flags = "all_floors, force_placement", -- all_floors, or cavegen holes may have wrong grass
 			place_offset_y = -1, -- replace the node itself
 		})
 	end
