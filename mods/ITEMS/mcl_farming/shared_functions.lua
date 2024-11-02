@@ -307,12 +307,11 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 				or (dir == 3 and vector.offset(stempos, 0, 0, 1))
 				or  vector.offset(stempos, 0, 0, -1)
 			if minetest.get_node(neighbor).name ~= "air" then return end -- occupied
-			-- check for suitable floor: grass, dirt, or soil
+			-- check for suitable floor -- in contrast to MC, we think everything solid is fine
 			local floorpos = vector.offset(neighbor, 0, -1, 0)
 			local floorname = minetest.get_node(floorpos).name
 			local floordef = minetest.registered_nodes[floorname]
-			if not floordef then return end
-			if (floordef.groups.grass_block or 0) == 0 and (floordef.groups.dirt or 0) == 0 and (floordef.groups.soil or 0) < 2 then return end -- not suitable for growing
+			if not floordef or not floordef.walkable then return end
 
 			-- check moisture level
 			local odds = floor(25 / (get_moisture_level(stempos) * get_same_crop_penalty(stempos))) + 1

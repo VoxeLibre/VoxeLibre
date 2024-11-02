@@ -72,6 +72,7 @@ minetest.register_abm({
 				node.name = "mcl_farming:soil_wet"
 				minetest.set_node(pos, node) -- resets wetness
 				meta:set_int("wet", 7)
+				meta:mark_as_private("wet")
 			elseif wet < 7 then
 				meta:set_int("wet", 7)
 			end
@@ -85,8 +86,11 @@ minetest.register_abm({
 			if node.name == "mcl_farming:soil_wet" then -- change visual appearance to dry
 				node.name = "mcl_farming:soil"
 				minetest.set_node(pos, node)
+				meta:set_int("wet", wet - 1)
+				meta:mark_as_private("wet") -- after set_int
+			else
+				meta:set_int("wet", wet - 1)
 			end
-			meta:set_int("wet", wet - 1)
 			return
 		end
 		-- Revert to dirt if wetness is 0, and no plant above
