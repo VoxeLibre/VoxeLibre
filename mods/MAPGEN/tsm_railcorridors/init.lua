@@ -946,7 +946,7 @@ local function spawn_carts()
 			-- TODO: Move callback function to this position when the
 			-- minetest.add_entity bug has been fixed (supposedly in 5.9.0?)
 			if RecheckCartHack then
-				minetest.after(3, RecheckCartHack, {cpos, cart_id})
+				minetest.after(1, RecheckCartHack, {cpos, cart_id})
 			else
 				tsm_railcorridors.on_construct_cart(cpos, obj, pr_carts)
 			end
