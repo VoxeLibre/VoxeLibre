@@ -30,7 +30,7 @@ local function get_moisture_level(pos)
 			local ndef = minetest.registered_nodes[minetest.get_node(n).name]
 			local soil = ndef and ndef.groups.soil
 			if soil and soil >= 2 then
-				local m = (soil > 2 or (soil == 2 and minetest.get_meta(n):get_int("wet") > 0)) and 3 or 1
+				local m = soil > 2 and 3 or 1
 				-- corners have less weight
 				if x ~= 0 or z ~= 0 then m = m * 0.25 end
 				totalm = totalm + m

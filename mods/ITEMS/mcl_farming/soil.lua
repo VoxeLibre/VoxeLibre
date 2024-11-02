@@ -50,55 +50,48 @@ minetest.register_abm({
 		local above_node = minetest.get_node_or_nil(vector.offset(pos, 0, 1, 0))
 		if above_node and minetest.get_item_group(above_node.name, "solid") ~= 0 then
 			node.name = "mcl_core:dirt"
-			minetest.set_node(pos, node) -- also removes "wet" metadata
+			minetest.set_node(pos, node)
 			return
 		end
 
-		local raining = mcl_weather and mcl_weather.rain.raining and mcl_weather.is_outdoor(pos)
-		local has_water, fully_loaded = false, true
-		if not raining then
-			-- Check an area of 9×2×9 around the node for nodename (9×9 on same level and 9×9 above)
-			-- include "ignore" to detect unloaded blocks
-			local nodes, counts = minetest.find_nodes_in_area(vector.offset(pos, -4, 0, -4), vector.offset(pos, 4, 1, 4), {"group:water", "ignore"})
-			local ignore = counts.ignore or 0
-			has_water, fully_loaded = #nodes - ignore > 0, ignore == 0
-		end
-
-		local meta = minetest.get_meta(pos)
-		local wet = meta:get_int("wet") or (node.name == "mcl_farming:soil" and 0 or 7)
-		-- Hydrate by rain or water
-		if raining or has_water then
+		-- in rain, become wet, do not decay
+		if mcl_weather and mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
 			if node.name == "mcl_farming:soil" then
 				node.name = "mcl_farming:soil_wet"
-				minetest.set_node(pos, node) -- resets wetness
-				meta:set_int("wet", 7)
-				meta:mark_as_private("wet")
-			elseif wet < 7 then
-				meta:set_int("wet", 7)
+				minetest.set_node(pos, node)
+			end
+			return
+		end
+
+		-- Check an area of 9x2x9 around the node for nodename (9x9 on same level and 9x9 above)
+		-- include "ignore" to detect unloaded blocks
+		local nodes, counts = minetest.find_nodes_in_area(vector.offset(pos, -4, 0, -4), vector.offset(pos, 4, 1, 4), {"group:water", "ignore"})
+		local ignore = counts.ignore or 0
+		local has_water, fully_loaded = #nodes > ignore, ignore == 0
+
+		-- Hydrate by rain or water, do not decay
+		if has_water then
+			if node.name == "mcl_farming:soil" then
+				node.name = "mcl_farming:soil_wet"
+				minetest.set_node(pos, node)
 			end
 			return
 		end
 		-- No decay near unloaded areas (ignore) since these might include water.
 		if not fully_loaded then return end
 
-		-- Decay: make farmland dry or turn back to dirt
-		if wet > 1 then
-			if node.name == "mcl_farming:soil_wet" then -- change visual appearance to dry
-				node.name = "mcl_farming:soil"
-				minetest.set_node(pos, node)
-				meta:set_int("wet", wet - 1)
-				meta:mark_as_private("wet") -- after set_int
-			else
-				meta:set_int("wet", wet - 1)
-			end
+		-- Decay: make wet farmland dry up
+		if node.name == "mcl_farming:soil_wet" then
+			node.name = "mcl_farming:soil"
+			minetest.set_node(pos, node)
 			return
 		end
 		-- Revert to dirt if wetness is 0, and no plant above
-		local nn = minetest.get_node_or_nil(vector.offset(pos, 0, 1, 0))
-		local nn_def = nn and minetest.registered_nodes[nn.name]
-		if nn_def and (nn_def.groups.plant or 0) > 0 then return end
-		node.name = "mcl_core:dirt"
-		minetest.set_node(pos, node) -- also removes "wet" metadata
+		local above = minetest.get_node_or_nil(vector.offset(pos, 0, 1, 0))
+		if minetest.get_item_group(above.name, "plant") == 0 then
+			node.name = "mcl_core:dirt"
+			minetest.set_node(pos, node)
+		end
 	end,
 })
 
