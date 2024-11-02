@@ -220,10 +220,12 @@ minetest.register_node(BAMBOO, bamboo_def)
 local bamboo_top = table.copy(bamboo_def)
 bamboo_top.groups = {not_in_creative_inventory = 1, handy = 1, axey = 1, choppy = 1, dig_by_piston = 1, plant = 1, non_mycelium_plant = 1, flammable = 3}
 bamboo_top.tiles = {"mcl_bamboo_endcap.png"}
-bamboo_top.drawtype = "plantlike_rooted" --"plantlike"
---bamboo_top.paramtype2 = "meshoptions"
---bamboo_top.param2 = 2
--- bamboo_top.waving = 2
+
+-- bamboo_top.drawtype = "plantlike_rooted" --"plantlike"
+bamboo_top.drawtype = "plantlike"
+bamboo_top.paramtype2 = "meshoptions"
+bamboo_top.param2 = 2
+bamboo_top.waving = 2
 bamboo_top.special_tiles = {{name = "mcl_bamboo_endcap.png"}}
 bamboo_top.nodebox = nil
 bamboo_top.selection_box = nil
