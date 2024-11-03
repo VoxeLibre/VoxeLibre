@@ -539,6 +539,11 @@ function submod.do_detached_movement(self, dtime)
 		self.object:set_acceleration(accel)
 	end
 
+	-- Reset pitch
+	local rot = self.object:get_rotation()
+	rot.y = 0
+	self.object:set_rotation(rot)
+
 	local away = vector_away_from_players(self, staticdata)
 	if away then
 		local v = self.object:get_velocity()

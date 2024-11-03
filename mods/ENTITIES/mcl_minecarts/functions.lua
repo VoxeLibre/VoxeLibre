@@ -2,7 +2,7 @@ local vector = vector
 local mod = mcl_minecarts
 local table_merge = mcl_util.table_merge
 
-function get_path(base, first, ...)
+local function get_path(base, first, ...)
 	if not first then return base end
 	if not base then return end
 	return get_path(base[first], ...)
@@ -311,11 +311,10 @@ end
 local function get_rail_direction_inner(pos, dir)
 	-- Handle new track types that have track-specific direction handler
 	local node = minetest.get_node(pos)
-	local node_def = minetest.registered_nodes[node.name]
-	local get_next_dir = get_path(node_def,"_mcl_minecarts","get_next_dir")
+	local get_next_dir = get_path(minetest.registered_nodes,node.name,"_mcl_minecarts","get_next_dir")
 	if not get_next_dir then return dir end
 
-	dir = node_def._mcl_minecarts.get_next_dir(pos, dir, node)
+	dir = get_next_dir(pos, dir, node)
 
 	-- Handle reversing if there is a solid block in the next position
 	local next_pos = vector.add(pos, dir)
@@ -367,13 +366,15 @@ function mcl_minecarts.get_rail_direction(self, pos_, dir)
 
 	local new_dir = get_rail_direction_inner(pos, dir)
 
+	if new_dir.y ~= 0 then return new_dir end
+
 	-- Check four 45 degree movement
 	local next_rails_dir = get_rail_direction_inner(vector.add(pos, new_dir), new_dir)
-	if vector.equals(next_rails_dir, dir) and not vector.equals(new_dir, next_rails_dir) then
+	if dir.y == 0 and vector.equals(next_rails_dir, dir) and not vector.equals(new_dir, next_rails_dir) then
 		return vector.add(new_dir, next_rails_dir)
-	else
-		return new_dir
 	end
+
+	return new_dir
 end
 function mod.update_cart_orientation(self)
 	local staticdata = self._staticdata
