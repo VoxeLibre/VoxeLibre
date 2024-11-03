@@ -370,7 +370,7 @@ function mcl_minecarts.get_rail_direction(self, pos_, dir)
 
 	-- Check four 45 degree movement
 	local next_rails_dir = get_rail_direction_inner(vector.add(pos, new_dir), new_dir)
-	if dir.y == 0 and vector.equals(next_rails_dir, dir) and not vector.equals(new_dir, next_rails_dir) then
+	if next_rails_dir.y == 0 and vector.equals(next_rails_dir, dir) and not vector.equals(new_dir, next_rails_dir) then
 		return vector.add(new_dir, next_rails_dir)
 	end
 
