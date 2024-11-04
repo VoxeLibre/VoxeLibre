@@ -1,11 +1,3 @@
-local function get_tile(tiles, n)
-	local tile = tiles[n]
-	if type(tile) == 'table' then
-		return tile.name or tile.image
-	end
-	return tile
-end
-
 local function pairs_s(dict)
 	local keys = {}
 	for k in pairs(dict) do
@@ -44,16 +36,20 @@ minetest.register_chatcommand("dumpnodes", {
 				if tiles == nil or nd.drawtype == 'airlike' then
 					print("ignored(2): " .. nn)
 				else
-					local tex = get_tile(tiles, 1)
-					tex = (tex .. '^'):match('%(*(.-)%)*^') -- strip modifiers
-					if tex:find("[combine", 1, true) then
-						tex = tex:match('.-=([^:]-)') -- extract first texture
+					local tex, opts = nil, ""
+					for i = 1, #tiles do
+						local tile = tiles[i]
+						tex = type(tile) == 'table' and (tile.name or tile.image) or tile
+						if tex ~= "blank.png" then break end
 					end
-					local opts = ""
-					if nd.paramtype2 and nd.paramtype2:sub(1,5) == "color" and nd.palette ~= "" then
-						opts = " " .. nd.paramtype2 .. " " .. nd.palette
+					if tex then
+						if nd.paramtype2 and nd.paramtype2:sub(1,5) == "color" and nd.palette ~= "" then
+							opts = " " .. nd.paramtype2 .. " " .. nd.palette
+						elseif nd.color and nd.color ~= "" then
+							opts = " " .. nd.color
+						end
+						out:write(nn .. ' ' .. tex .. opts .. '\n')
 					end
-					out:write(nn .. ' ' .. tex .. opts .. '\n')
 					n = n + 1
 				end
 			end

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-import sys
-import os.path
-import getopt
-import re
+import sys, os.path, getopt, re, json
 from math import sqrt
 try:
-	from PIL import Image
+	from pyparsing import CharsNotIn, Suppress, infix_notation, opAssoc, ZeroOrMore
+except:
+	print("Could not load pyparser library, install 'pyparsing'!", file=sys.stderr)
+	exit(1)
+try:
+	from PIL import Image, ImageColor, ImageChops, ImageEnhance, ImageMath
 except:
 	print("Could not load image routines, install PIL ('pillow' on pypi)!", file=sys.stderr)
 	exit(1)
@@ -18,8 +20,11 @@ except:
 # 3) Run this script and poin it to the installation path of the game using -g,
 #    the path(s) where mods are stored using -m and the nodes.txt in your world folder.
 #    Example command line:
-#      ./util/generate_colorstxt.py --game /usr/share/minetest/games/minetest_game \
-#        -m ~/.minetest/mods ~/.minetest/worlds/my_world/nodes.txt
+#      ./util/generate_colorstxt.py \
+#        --game /usr/share/minetest/games/minetest_game \
+#        --mods ~/.minetest/mods \
+#        --mods /usr/share/minetest/textures \
+#        ~/.minetest/worlds/my_world/nodes.txt
 # 4) Copy the resulting colors.txt file to your world folder or to any other places
 #    and use it with minetestmapper's --colors option.
 ###########
@@ -58,8 +63,7 @@ def collect_files(path):
 			if not f in textures:
 				textures[f] = os.path.join(dirpath, f)
 
-def average_color(filename, color2):
-	inp = Image.open(filename).convert('RGBA')
+def average_color(name, inp, color2):
 	data = inp.load()
 
 	c, w = [0, 0, 0], 0
@@ -74,8 +78,8 @@ def average_color(filename, color2):
 			w = w + a
 
 	if w == 0:
-		print(f"didn't find color for '{os.path.basename(filename)}'", file=sys.stderr)
-		return "0 0 0"
+		print(f"didn't find color for '{name}'", file=sys.stderr)
+		return None
 	c0, c1, c2 = c[0] / w, c[1] / w, c[2] / w
 	if color2: # param2 blending
 		c0, c1, c2 = c0 * color2[0] / 255., c1 * color2[1] / 255., c2 * color2[2] / 255.
@@ -92,16 +96,30 @@ def average_color(filename, color2):
 			a = max(a, a2)
 
 	if a > 0 and a < 190:
-		return "%d %d %d %d" % (c0, c1, c2, a)
-	return "%d %d %d" % (c0, c1, c2)
+		return tuple(int(round(x)) for x in (c0, c1, c2, a))
+	return tuple(int(round(x)) for x in (c0, c1, c2))
+
+_param2_cache = dict()
+def get_param2_colors(filename):
+	if not filename: return None
+	cols = _param2_cache.get(filename)
+	if not cols and filename in textures:
+		inp = Image.open(textures[filename]).convert('RGBA')
+		data = inp.load()
+		cols = []
+		for y in range(inp.size[1]):
+			for x in range(inp.size[0]):
+				col = data[x, y]
+				if col[3] == 0: break
+				assert len(cols) == x + y * inp.size[0]
+				cols.append((col[0], col[1], col[2])) # copy
+		_param2_cache[filename] = cols
+	return cols
 
 def get_param2_color(filename, param2):
 	if not filename: return None
-	inp = Image.open(filename).convert('RGBA')
-	data = inp.load()
-	x, y = param2 % inp.size[0], param2 // inp.size[0]
-	col = data[y, x]
-	return col[0], col[1], col[2] # copy
+	cols = get_param2_colors(filename)
+	return cols[param2] if cols else None
 
 def apply_sed(line, exprs):
 	for expr in exprs:
@@ -118,6 +136,170 @@ def apply_sed(line, exprs):
 	return line
 #
 
+# global texture cache
+textures = {}
+
+##### Texture parser
+
+# Pure image load
+class Filename:
+	def __init__(self, tokens):
+		self.fn = tokens[0]
+	
+	def gen(self, prev=None):
+		if not self.fn in textures:
+			raise FileNotFoundError(self.fn)
+		im = Image.open(textures[self.fn]).convert('RGBA')
+		if not prev: return im
+		prev.alpha_composite(im)
+		return prev
+
+	def pprint(self):
+		print("Load " + self.fn)
+
+# Filter operations - todo: split them in the parser already?
+class Filter:
+	_combinere = re.compile(r"(-?\d+),(-?\d+)=(.*)")
+
+	def __init__(self, tokens):
+		self.fname = tokens[0]
+		self.opts = tokens[1:]
+
+	def gen(self, prev=None):
+		# complex image loading filter, the most important one
+		if self.fname in ["combine"]:
+			assert prev is None
+			#print(self.fname, self.opts)
+			w, h = map(int, self.opts[0].split("x"))
+			im = Image.new("RGBA", (w,h), (255,255,0,0))
+			for blit in self.opts[1:]:
+				blit = Filter._combinere.match(blit).groups()
+				x, y, bfn = int(blit[0]), int(blit[1]), blit[2]
+				if not bfn in textures:
+					print("Skipping missing texture:", bfn, file=sys.stderr)
+					return im
+				t = Image.open(textures[bfn]).convert('RGBA')
+				im.alpha_composite(t, dest=(x,y))
+			return im
+		elif self.fname == "transformFX":
+			return prev.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+		elif self.fname == "transformFY":
+			return prev.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
+		elif self.fname == "transformR90":
+			return prev.transpose(Image.Transpose.ROTATE_90)
+		elif self.fname == "transformR180":
+			return prev.transpose(Image.Transpose.ROTATE_180)
+		elif self.fname == "transformR270":
+			return prev.transpose(Image.Transpose.ROTATE_270)
+		elif self.fname == "opacity":
+			#print(self.fname, self.opts)
+			f = int(self.opts[0]) / 255.
+			bands = prev.split()
+			bands[3].point(lambda x: x * f)
+			return Image.merge('RGBA', bands)
+		elif self.fname == "noalpha":
+			prev.putalpha(255)
+			return prev
+		elif self.fname == "multiply":
+			#print(self.fname, self.opts)
+			col = ImageColor.getrgb(self.opts[0])
+			im = Image.new("RGB", prev.size, col)
+			bands = prev.split()
+			im = ImageChops.multiply(im, Image.merge('RGB', bands[:3]))
+			im.putalpha(bands[3])
+			return im
+		elif self.fname == "brighten":
+			im = Image.new("RGB", prev.size, (255,255,255))
+			bands = prev.split()
+			im = Image.blend(im, Image.merge('RGB', bands[:3]), 0.5)
+			im.putalpha(bands[3])
+			return im
+		elif self.fname == "hsl":
+			#print(self.fname, self.opts)
+			assert self.opts[0] == "0", "Color shifts are currently not implemented." ## TODO
+			assert len(self.opts) == 2, "Only saturation is currently supported." ## TODO
+			f = int(self.opts[1])
+			return ImageEnhance.Color(prev).enhance(f/100. + 1)
+		elif self.fname == "colorize":
+			# Needs testing.
+			# print(self.fname, self.opts, prev.size)
+			col = ImageColor.getrgb(self.opts[0])
+			if len(self.opts) == 1:
+				im = Image.new("RGB", prev.size, col)
+				mask = prev.getchannel("A")
+				mask.point(lambda x: 255 if x > 0 else 0)
+				im.putalpha(mask)
+				return im
+			elif self.opts[1] == "alpha":
+				im = Image.new("RGB", prev.size, col)
+				im.putalpha(prev.getchannel("A"))
+				return im
+			else:
+				f = int(self.opts[1]) / 255.
+				im = Image.new("RGBA", prev.size, col)
+				mask = prev.getchannel("A")
+				mask.point(lambda x: 255 if x > 0 else 0)
+				im = Image.blend(prev, im, f)
+				im.putalpha(mask)
+				assert im.has_transparency_data
+				return im
+		elif self.fname in ["resize"]:
+			#print(self.fname, self.opts)
+			w, h = map(int, self.opts[0].split("x"))
+			return prev.resize((w,h))
+		elif self.fname in ["mask"]:
+			#print(self.fname, self.opts)
+			# bitwise AND, very odd operation
+			mfn = self.opts[0]
+			if not mfn in textures:
+				print("Skipping missing texture:", mfn, file=sys.stderr)
+				return prev
+			m = Image.open(textures[mfn]).convert('RGBA')
+			return Image.merge('RGBA', [ImageMath.unsafe_eval("a&b", a=a, b=b).convert("L") for a,b in zip(prev.split(), m.split())])
+		elif self.fname in ["lowpart"]:
+			#print(self.fname, self.opts)
+			f = int(self.opts[0]) / 100
+			t = int(prev.size[1] * f)
+			return prev.crop((0, t, prev.size[0], prev.size[1]))
+		elif self.fname in ["verticalframe"]:
+			#print(self.fname, self.opts)
+			vdiv, idx = int(self.opts[0]), int(self.opts[1])
+			h = prev.size[1] // vdiv
+			return prev.crop((0, h * idx, prev.size[0], h * (idx + 1)))
+		print("Texture filter", self.fname, *self.opts, "not implemented yet.", file=sys.stderr)
+
+	def pprint(self):
+		print(self.fname, *self.opts)
+
+class Overlay:
+	def __init__(self, tokens):
+		self.overlays = tokens[0]
+	
+	def gen(self, prev=None):
+		cur = prev
+		for o in self.overlays:
+			cur = o.gen(cur)
+		return cur
+
+	def pprint(self):
+		for o in self.overlays:
+			o.pprint()
+
+
+# not sure how we would define escapes for filenames with ^ : or backslash
+filt = (Suppress("[") + CharsNotIn("^[():")("name") + ZeroOrMore(Suppress(":") + CharsNotIn("^[():")("opt*")))("filter*")
+filt.set_parse_action(Filter)
+fname = CharsNotIn("^():\\")("filename*")
+fname.set_parse_action(Filename)
+parser = infix_notation(filt ^ fname, lpar=Suppress('('), rpar=Suppress(')'),
+	op_list=[(Suppress("^"), 2, opAssoc.LEFT, Overlay)])
+
+#e = expr.parse_string("([combine:16x16:0,14=mcl_farming_pumpkin_stem_disconnected.png^[test)^[colorize:#2E9D2E:127^foobar.png", parse_all=None)
+#print(e)
+#e[0].pprint()
+
+#sys.exit(1)
+
 try:
 	opts, args = getopt.getopt(sys.argv[1:], "hg:m:", ["help", "game=", "mods=", "replace="])
 except getopt.GetoptError as e:
@@ -129,6 +311,7 @@ if ('-h', '') in opts or ('--help', '') in opts:
 
 input_file = "./nodes.txt"
 output_file = "./colors.txt"
+json_file = "./colors.json"
 texturepaths = []
 
 try:
@@ -170,41 +353,68 @@ if not os.path.exists(input_file) or os.path.isdir(input_file):
 	print(f"Input file '{input_file}' does not exist.", file=sys.stderr)
 	exit(1)
 
-#
-
+# Find textures
 print(f"Collecting textures from {len(texturepaths)} path(s)... ", end="", flush=True)
-textures = {}
 for path in texturepaths:
 	collect_files(path)
 print("done", len(textures), "files")
 
 print("Processing nodes...")
+cmap = dict()
 fin = open(input_file, 'r')
-fout = open(output_file, 'w')
-n = 0
 for line in fin:
 	line = line.rstrip('\r\n')
 	if not line or line[0] == '#':
-		fout.write(line + '\n')
+		#fout.write(line + '\n')
 		continue
 	line = line.split(" ")
 	node, tex = line[0], line[1]
 	if not tex or tex == "blank.png":
 		continue
-	if tex not in textures:
+	im = None
+	if "^" in tex or "[" in tex:
+		#print(node, tex)
+		im = parser.parse_string(tex)[0].gen()
+		#assert not "/" in node
+		#im.save(os.path.join("/tmp/test",node+".png"))
+	elif tex not in textures:
 		print(f"skip {node} texture {tex} not found")
 		continue
+	else:
+		im = Image.open(textures[tex]).convert("RGBA")
 	# TODO: full param2 support
 	color2 = None
-	if len(line) > 3 and line[2].startswith("color"):
-		color2 = get_param2_color(textures.get(line[3]), 0)
-	color = average_color(textures[tex], color2)
+	if len(line) == 3 and line[2].startswith("#"):
+		color2 = ImageColor.getrgb(line[2])
+	elif len(line) > 3 and line[2].startswith("color"): # FIXME: colorwallmounted etc.
+		tints = get_param2_colors(line[3])
+		if tints:
+			cmap[node] = [average_color(node+" "+tex, im, v) for v in tints]
+			continue
+		print("Unsupported:", *line)
+	elif len(line) > 2:
+		print("Unsupported:", *line[2:])
+	color = average_color(node+" "+tex, im, color2)
+	cmap[node] = color
+fin.close()
+
+n = 0
+fout = open(output_file, 'w')
+prefix = ""
+for node, color in sorted(cmap.items()):
+	if not prefix or not node.startswith(prefix):
+		prefix = node.split(":")[0] + ":"
+		fout.write("\n# " + prefix[:-1] + "\n")
+	if not color: # Try stripping off last _postfix
+		color = cmap.get(node.rsplit("_", 1)[0])
+	if not color: continue
+	if isinstance(color, list) and not isinstance(color[0], int): color = color[0] # needs minetestmapper support first
+	color = " ".join(str(x) for x in color)
 	line = f"{node} {color}"
-	#print(f"ok {node}")
 	line = apply_sed(line, REPLACEMENTS)
 	if line:
 		fout.write(line + '\n')
 		n += 1
-fin.close()
 fout.close()
+json.dump(cmap, open(json_file, "w"))
 print(f"Done, {n} entries written.")

@@ -1,105 +1,108 @@
-## VoxeLibre colors.txt file for minetestmapper
-## by kno10 using modified tools based on minetestmapper
 
 # mcl_amethyst
 mcl_amethyst:amethyst_block 139 84 172
-mcl_amethyst:amethyst_cluster 161 111 190 155
-mcl_amethyst:budding_amethyst_block 134 77 167
+mcl_amethyst:amethyst_cluster 161 111 191 155
+mcl_amethyst:budding_amethyst_block 134 78 168
 mcl_amethyst:calcite 189 193 207
-mcl_amethyst:large_amethyst_bud 173 127 201 139
-mcl_amethyst:medium_amethyst_bud 184 140 209 93
-mcl_amethyst:small_amethyst_bud 176 131 203 61
+mcl_amethyst:large_amethyst_bud 174 128 201 139
+mcl_amethyst:medium_amethyst_bud 184 140 210 94
+mcl_amethyst:small_amethyst_bud 177 131 204 62
 mcl_amethyst:tinted_glass 125 67 160 134
 
 # mcl_anvils
 mcl_anvils:anvil 52 52 52
-mcl_anvils:anvil_damage_1 50 50 50
-mcl_anvils:anvil_damage_2 48 48 48
+mcl_anvils:anvil_damage_1 51 51 51
+mcl_anvils:anvil_damage_2 49 49 49
 
 # mcl_armor_stand
 mcl_armor_stand:armor_stand 113 87 67
 
 # mcl_bamboo
-mcl_bamboo:bamboo 106 110 80
-mcl_bamboo:bamboo_1 106 110 80
-mcl_bamboo:bamboo_2 106 110 80
-mcl_bamboo:bamboo_3 106 110 80
-mcl_bamboo:bamboo_block 106 110 80
+mcl_bamboo:bamboo 106 111 80
+mcl_bamboo:bamboo_1 106 111 80
+mcl_bamboo:bamboo_2 106 111 80
+mcl_bamboo:bamboo_3 106 111 80
+mcl_bamboo:bamboo_block 106 111 80
 mcl_bamboo:bamboo_block_stripped 204 179 102
-mcl_bamboo:bamboo_door_t_1 195 168 109 95
-mcl_bamboo:bamboo_door_t_2 195 168 109 95
-mcl_bamboo:bamboo_door_t_3 195 168 109 95
-mcl_bamboo:bamboo_door_t_4 195 168 109 95
-mcl_bamboo:bamboo_endcap 54 125 0 159
-mcl_bamboo:bamboo_fence 192 167 105
-mcl_bamboo:bamboo_fence_gate 192 167 105
-mcl_bamboo:bamboo_fence_gate_open 192 167 105
-mcl_bamboo:bamboo_mosaic 243 220 171
-mcl_bamboo:bamboo_plank 242 219 170
-mcl_bamboo:bamboo_trapdoor 228 206 159
-mcl_bamboo:bamboo_trapdoor_ladder 228 206 159
-mcl_bamboo:bamboo_trapdoor_open 228 206 159
-mcl_bamboo:pressure_plate_bamboo_wood_off 242 219 170
-mcl_bamboo:pressure_plate_bamboo_wood_on 242 219 170
-mcl_bamboo:scaffolding 198 173 115
+mcl_bamboo:bamboo_door_b_1 220 193 120 96
+mcl_bamboo:bamboo_door_b_2 220 193 120 96
+mcl_bamboo:bamboo_door_b_3 201 174 110
+mcl_bamboo:bamboo_door_b_4 220 193 120 96
+mcl_bamboo:bamboo_door_t_1 196 169 109 96
+mcl_bamboo:bamboo_door_t_2 196 169 109 96
+mcl_bamboo:bamboo_door_t_3 196 169 109 96
+mcl_bamboo:bamboo_door_t_4 196 169 109 96
+mcl_bamboo:bamboo_endcap 54 126 0 159
+mcl_bamboo:bamboo_fence 193 167 106
+mcl_bamboo:bamboo_fence_gate 193 167 106
+mcl_bamboo:bamboo_fence_gate_open 193 167 106
+mcl_bamboo:bamboo_mosaic 244 221 171
+mcl_bamboo:bamboo_plank 243 220 170
+mcl_bamboo:bamboo_trapdoor 228 207 159
+mcl_bamboo:bamboo_trapdoor_ladder 228 207 159
+mcl_bamboo:bamboo_trapdoor_open 228 207 159
+mcl_bamboo:pressure_plate_bamboo_wood_off 243 220 170
+mcl_bamboo:pressure_plate_bamboo_wood_on 243 220 170
+mcl_bamboo:scaffolding 199 174 115
 
 # mcl_banners
 mcl_banners:hanging_banner 102 88 74
 mcl_banners:standing_banner 102 88 74
 
 # mcl_barrels
-mcl_barrels:barrel_closed 79 61 48
-mcl_barrels:barrel_open 58 43 35
+mcl_barrels:barrel_closed 80 62 49
+mcl_barrels:barrel_open 58 44 35
 
 # mcl_beacons
-mcl_beacons:beacon 99 140 172 143
+mcl_beacons:beacon 100 140 173 143
+mcl_beacons:beacon_beam 167 166 165
 
 # mcl_beds
-mcl_beds:bed_black_bottom 97 79 68
-mcl_beds:bed_black_top 97 79 68
-mcl_beds:bed_blue_bottom 95 91 101
-mcl_beds:bed_blue_top 95 91 101
-mcl_beds:bed_brown_bottom 116 87 71
-mcl_beds:bed_brown_top 116 87 71
-mcl_beds:bed_cyan_bottom 96 101 96
-mcl_beds:bed_cyan_top 96 101 96
-mcl_beds:bed_green_bottom 97 98 71
-mcl_beds:bed_green_top 97 98 71
-mcl_beds:bed_grey_bottom 113 94 84
-mcl_beds:bed_grey_top 113 94 84
-mcl_beds:bed_light_blue_bottom 113 113 121
-mcl_beds:bed_light_blue_top 113 113 121
-mcl_beds:bed_lime_bottom 117 117 81
-mcl_beds:bed_lime_top 117 117 81
+mcl_beds:bed_black_bottom 97 80 69
+mcl_beds:bed_black_top 97 80 69
+mcl_beds:bed_blue_bottom 96 92 101
+mcl_beds:bed_blue_top 96 92 101
+mcl_beds:bed_brown_bottom 117 87 71
+mcl_beds:bed_brown_top 117 87 71
+mcl_beds:bed_cyan_bottom 96 102 97
+mcl_beds:bed_cyan_top 96 102 97
+mcl_beds:bed_green_bottom 98 98 71
+mcl_beds:bed_green_top 98 98 71
+mcl_beds:bed_grey_bottom 113 95 84
+mcl_beds:bed_grey_top 113 95 84
+mcl_beds:bed_light_blue_bottom 113 113 122
+mcl_beds:bed_light_blue_top 113 113 122
+mcl_beds:bed_lime_bottom 118 117 82
+mcl_beds:bed_lime_top 118 117 82
 mcl_beds:bed_magenta_bottom 133 96 105
 mcl_beds:bed_magenta_top 133 96 105
-mcl_beds:bed_orange_bottom 147 102 74
-mcl_beds:bed_orange_top 147 102 74
-mcl_beds:bed_pink_bottom 147 106 100
-mcl_beds:bed_pink_top 147 106 100
-mcl_beds:bed_purple_bottom 114 87 96
-mcl_beds:bed_purple_top 114 87 96
-mcl_beds:bed_red_bottom 132 80 70
-mcl_beds:bed_red_top 132 80 70
+mcl_beds:bed_orange_bottom 147 103 75
+mcl_beds:bed_orange_top 147 103 75
+mcl_beds:bed_pink_bottom 147 107 100
+mcl_beds:bed_pink_top 147 107 100
+mcl_beds:bed_purple_bottom 114 87 97
+mcl_beds:bed_purple_top 114 87 97
+mcl_beds:bed_red_bottom 133 81 71
+mcl_beds:bed_red_top 133 81 71
 mcl_beds:bed_silver_bottom 133 113 102
 mcl_beds:bed_silver_top 133 113 102
-mcl_beds:bed_white_bottom 161 140 122
-mcl_beds:bed_white_top 161 140 122
-mcl_beds:bed_yellow_bottom 154 126 81
-mcl_beds:bed_yellow_top 154 126 81
-mcl_beds:respawn_anchor 80 61 74
-mcl_beds:respawn_anchor_charged_1 95 62 136
-mcl_beds:respawn_anchor_charged_2 95 62 136
-mcl_beds:respawn_anchor_charged_3 95 62 136
-mcl_beds:respawn_anchor_charged_4 95 62 136
+mcl_beds:bed_white_bottom 162 141 123
+mcl_beds:bed_white_top 162 141 123
+mcl_beds:bed_yellow_bottom 154 127 81
+mcl_beds:bed_yellow_top 154 127 81
+mcl_beds:respawn_anchor 81 61 74
+mcl_beds:respawn_anchor_charged_1 96 62 136
+mcl_beds:respawn_anchor_charged_2 96 62 136
+mcl_beds:respawn_anchor_charged_3 96 62 136
+mcl_beds:respawn_anchor_charged_4 96 62 136
 
 # mcl_beehives
-mcl_beehives:bee_nest 212 175 98
-mcl_beehives:bee_nest_1 212 175 98
-mcl_beehives:bee_nest_2 212 175 98
-mcl_beehives:bee_nest_3 212 175 98
-mcl_beehives:bee_nest_4 212 175 98
-mcl_beehives:bee_nest_5 212 175 98
+mcl_beehives:bee_nest 212 176 98
+mcl_beehives:bee_nest_1 212 176 98
+mcl_beehives:bee_nest_2 212 176 98
+mcl_beehives:bee_nest_3 212 176 98
+mcl_beehives:bee_nest_4 212 176 98
+mcl_beehives:bee_nest_5 212 176 98
 mcl_beehives:beehive 133 99 75
 mcl_beehives:beehive_1 133 99 75
 mcl_beehives:beehive_2 133 99 75
@@ -108,42 +111,42 @@ mcl_beehives:beehive_4 133 99 75
 mcl_beehives:beehive_5 133 99 75
 
 # mcl_bells
-mcl_bells:bell 207 203 82
+mcl_bells:bell 207 204 82
 
 # mcl_blackstone
-mcl_blackstone:basalt 68 68 68
-mcl_blackstone:basalt_polished 77 76 76
-mcl_blackstone:basalt_smooth 87 86 86
-mcl_blackstone:blackstone 30 29 31
-mcl_blackstone:blackstone_brick_polished 41 38 43
-mcl_blackstone:blackstone_chiseled_polished 40 38 43
-mcl_blackstone:blackstone_gilded 62 51 33
-mcl_blackstone:blackstone_polished 43 41 46
-mcl_blackstone:nether_gold 141 70 41
-mcl_blackstone:quartz_brick 189 184 181
-mcl_blackstone:soul_fire 75 161 161 175
-mcl_blackstone:soul_soil 91 71 52
-mcl_blackstone:soul_torch 68 73 70 43
-mcl_blackstone:soul_torch_wall 68 73 70 43
-mcl_blackstone:wall 30 29 31
-mcl_blackstone:wall_0 30 29 31
-mcl_blackstone:wall_1 30 29 31
-mcl_blackstone:wall_10 30 29 31
-mcl_blackstone:wall_11 30 29 31
-mcl_blackstone:wall_12 30 29 31
-mcl_blackstone:wall_13 30 29 31
-mcl_blackstone:wall_14 30 29 31
-mcl_blackstone:wall_15 30 29 31
-mcl_blackstone:wall_16 30 29 31
-mcl_blackstone:wall_2 30 29 31
-mcl_blackstone:wall_21 30 29 31
-mcl_blackstone:wall_3 30 29 31
-mcl_blackstone:wall_4 30 29 31
-mcl_blackstone:wall_5 30 29 31
-mcl_blackstone:wall_6 30 29 31
-mcl_blackstone:wall_7 30 29 31
-mcl_blackstone:wall_8 30 29 31
-mcl_blackstone:wall_9 30 29 31
+mcl_blackstone:basalt 68 68 69
+mcl_blackstone:basalt_polished 78 77 77
+mcl_blackstone:basalt_smooth 87 87 87
+mcl_blackstone:blackstone 30 29 32
+mcl_blackstone:blackstone_brick_polished 41 39 44
+mcl_blackstone:blackstone_chiseled_polished 41 38 43
+mcl_blackstone:blackstone_gilded 62 52 34
+mcl_blackstone:blackstone_polished 44 41 46
+mcl_blackstone:nether_gold 142 71 42
+mcl_blackstone:quartz_brick 190 185 182
+mcl_blackstone:soul_fire 75 162 162 175
+mcl_blackstone:soul_soil 92 71 52
+mcl_blackstone:soul_torch 68 73 70 44
+mcl_blackstone:soul_torch_wall 68 73 70 44
+mcl_blackstone:wall 30 29 32
+mcl_blackstone:wall_0 30 29 32
+mcl_blackstone:wall_1 30 29 32
+mcl_blackstone:wall_10 30 29 32
+mcl_blackstone:wall_11 30 29 32
+mcl_blackstone:wall_12 30 29 32
+mcl_blackstone:wall_13 30 29 32
+mcl_blackstone:wall_14 30 29 32
+mcl_blackstone:wall_15 30 29 32
+mcl_blackstone:wall_16 30 29 32
+mcl_blackstone:wall_2 30 29 32
+mcl_blackstone:wall_21 30 29 32
+mcl_blackstone:wall_3 30 29 32
+mcl_blackstone:wall_4 30 29 32
+mcl_blackstone:wall_5 30 29 32
+mcl_blackstone:wall_6 30 29 32
+mcl_blackstone:wall_7 30 29 32
+mcl_blackstone:wall_8 30 29 32
+mcl_blackstone:wall_9 30 29 32
 
 # mcl_blast_furnace
 mcl_blast_furnace:blast_furnace 126 115 110
@@ -153,458 +156,497 @@ mcl_blast_furnace:blast_furnace_active 126 115 110
 mcl_books:bookshelf 109 84 65
 
 # mcl_brewing
-mcl_brewing:stand_000 139 130 126 151
-mcl_brewing:stand_001 139 130 126 151
-mcl_brewing:stand_010 139 130 126 151
-mcl_brewing:stand_011 139 130 126 151
-mcl_brewing:stand_100 139 130 126 151
-mcl_brewing:stand_101 139 130 126 151
-mcl_brewing:stand_110 139 130 126 151
-mcl_brewing:stand_111 139 130 126 151
+mcl_brewing:stand_000 139 131 127 151
+mcl_brewing:stand_001 139 131 127 151
+mcl_brewing:stand_010 139 131 127 151
+mcl_brewing:stand_011 139 131 127 151
+mcl_brewing:stand_100 139 131 127 151
+mcl_brewing:stand_101 139 131 127 151
+mcl_brewing:stand_110 139 131 127 151
+mcl_brewing:stand_111 139 131 127 151
 
 # mcl_cake
-mcl_cake:cake 241 228 226
-mcl_cake:cake_1 241 228 226
-mcl_cake:cake_2 241 228 226
-mcl_cake:cake_3 241 228 226
-mcl_cake:cake_4 241 228 226
-mcl_cake:cake_5 241 228 226
-mcl_cake:cake_6 241 228 226
+mcl_cake:cake 242 228 226
+mcl_cake:cake_1 242 228 226
+mcl_cake:cake_2 242 228 226
+mcl_cake:cake_3 242 228 226
+mcl_cake:cake_4 242 228 226
+mcl_cake:cake_5 242 228 226
+mcl_cake:cake_6 242 228 226
 
 # mcl_campfires
 mcl_campfires:campfire 77 67 65
-mcl_campfires:campfire_lit 207 100 34 147
+mcl_campfires:campfire_lit 207 101 35 147
 mcl_campfires:soul_campfire 77 67 65
-mcl_campfires:soul_campfire_lit 19 186 191 147
+mcl_campfires:soul_campfire_lit 19 186 192 147
 
 # mcl_cartography_table
-mcl_cartography_table:cartography_table 111 95 80
+mcl_cartography_table:cartography_table 112 95 80
 
 # mcl_cauldrons
-mcl_cauldrons:cauldron 24 24 24
-mcl_cauldrons:cauldron_1 143 143 143 185
-mcl_cauldrons:cauldron_1_lava 180 45 17
-mcl_cauldrons:cauldron_1r 143 143 143 185
-mcl_cauldrons:cauldron_2 143 143 143 185
-mcl_cauldrons:cauldron_2_lava 180 45 17
-mcl_cauldrons:cauldron_2r 143 143 143 185
-mcl_cauldrons:cauldron_3 143 143 143 185
-mcl_cauldrons:cauldron_3_lava 180 45 17
-mcl_cauldrons:cauldron_3r 143 143 143 185
+mcl_cauldrons:cauldron 40 40 40
+mcl_cauldrons:cauldron_1 45 60 90
+mcl_cauldrons:cauldron_1_lava 125 50 33
+mcl_cauldrons:cauldron_1r 28 64 97
+mcl_cauldrons:cauldron_2 45 60 90
+mcl_cauldrons:cauldron_2_lava 125 50 33
+mcl_cauldrons:cauldron_2r 28 64 97
+mcl_cauldrons:cauldron_3 45 60 90
+mcl_cauldrons:cauldron_3_lava 125 50 33
+mcl_cauldrons:cauldron_3r 28 64 97
 
 # mcl_cherry_blossom
-mcl_cherry_blossom:cherry_door_t_1 215 140 131 95
-mcl_cherry_blossom:cherry_door_t_2 215 140 131 95
-mcl_cherry_blossom:cherry_door_t_3 215 140 131 95
-mcl_cherry_blossom:cherry_door_t_4 215 140 131 95
-mcl_cherry_blossom:cherry_fence 216 144 136
-mcl_cherry_blossom:cherry_fence_gate 216 144 136
-mcl_cherry_blossom:cherry_fence_gate_open 216 144 136
-mcl_cherry_blossom:cherry_trapdoor 210 129 122 167
-mcl_cherry_blossom:cherry_trapdoor_ladder 223 137 127
-mcl_cherry_blossom:cherry_trapdoor_open 223 137 127
+mcl_cherry_blossom:cherry_door_b_1 216 136 127 96
+mcl_cherry_blossom:cherry_door_b_2 216 136 127 96
+mcl_cherry_blossom:cherry_door_b_3 220 131 123
+mcl_cherry_blossom:cherry_door_b_4 216 136 127 96
+mcl_cherry_blossom:cherry_door_t_1 216 140 131 96
+mcl_cherry_blossom:cherry_door_t_2 216 140 131 96
+mcl_cherry_blossom:cherry_door_t_3 216 140 131 96
+mcl_cherry_blossom:cherry_door_t_4 216 140 131 96
+mcl_cherry_blossom:cherry_fence 217 144 136
+mcl_cherry_blossom:cherry_fence_gate 217 144 136
+mcl_cherry_blossom:cherry_fence_gate_open 217 144 136
+mcl_cherry_blossom:cherry_trapdoor 210 130 122 167
+mcl_cherry_blossom:cherry_trapdoor_ladder 223 138 128
+mcl_cherry_blossom:cherry_trapdoor_open 223 138 128
 mcl_cherry_blossom:cherryleaves 213 154 155
 mcl_cherry_blossom:cherryleaves_orphan 213 154 155
-mcl_cherry_blossom:cherrysapling 150 81 121 161
-mcl_cherry_blossom:cherrytree 193 96 86
-mcl_cherry_blossom:cherrytree_bark 189 87 76
-mcl_cherry_blossom:cherrywood 216 144 136
-mcl_cherry_blossom:pressure_plate_cherrywood_off 216 144 136
-mcl_cherry_blossom:pressure_plate_cherrywood_on 216 144 136
-mcl_cherry_blossom:stripped_cherrytree 206 113 103
-mcl_cherry_blossom:stripped_cherrytree_bark 208 121 112
+mcl_cherry_blossom:cherrysapling 151 81 121 161
+mcl_cherry_blossom:cherrytree 194 97 86
+mcl_cherry_blossom:cherrytree_bark 190 87 77
+mcl_cherry_blossom:cherrywood 217 144 136
+mcl_cherry_blossom:pink_petals 245 181 199 84
+mcl_cherry_blossom:pressure_plate_cherrywood_off 217 144 136
+mcl_cherry_blossom:pressure_plate_cherrywood_on 217 144 136
+mcl_cherry_blossom:stripped_cherrytree 206 114 104
+mcl_cherry_blossom:stripped_cherrytree_bark 209 122 112
 
 # mcl_chests
-mcl_chests:black_shulker_box 78 75 76
-mcl_chests:blue_shulker_box 89 100 126
-mcl_chests:brown_shulker_box 94 81 70
+mcl_chests:black_shulker_box 79 76 77
+mcl_chests:black_shulker_box_small 79 76 77
+mcl_chests:blue_shulker_box 89 101 127
+mcl_chests:blue_shulker_box_small 89 101 127
+mcl_chests:brown_shulker_box 94 81 71
+mcl_chests:brown_shulker_box_small 94 81 71
 mcl_chests:chest 95 76 61
-mcl_chests:cyan_shulker_box 89 114 128
-mcl_chests:dark_green_shulker_box 89 122 84
+mcl_chests:chest_left 95 76 61
+mcl_chests:chest_right 95 76 61
+mcl_chests:chest_small 95 76 61
+mcl_chests:cyan_shulker_box 89 115 129
+mcl_chests:cyan_shulker_box_small 89 115 129
+mcl_chests:dark_green_shulker_box 89 123 85
+mcl_chests:dark_green_shulker_box_small 89 123 85
 mcl_chests:dark_grey_shulker_box 106 104 109
+mcl_chests:dark_grey_shulker_box_small 106 104 109
 mcl_chests:ender_chest 70 62 58
-mcl_chests:green_shulker_box 106 132 88
-mcl_chests:grey_shulker_box 140 138 143
-mcl_chests:lightblue_shulker_box 114 140 158
-mcl_chests:magenta_shulker_box 143 97 130
-mcl_chests:orange_shulker_box 156 90 67
-mcl_chests:pink_shulker_box 173 127 160
-mcl_chests:red_shulker_box 146 77 71
+mcl_chests:ender_chest_small 70 62 58
+mcl_chests:green_shulker_box 107 133 89
+mcl_chests:green_shulker_box_small 107 133 89
+mcl_chests:grey_shulker_box 141 139 144
+mcl_chests:grey_shulker_box_small 141 139 144
+mcl_chests:lightblue_shulker_box 114 140 159
+mcl_chests:lightblue_shulker_box_small 114 140 159
+mcl_chests:magenta_shulker_box 143 97 131
+mcl_chests:magenta_shulker_box_small 143 97 131
+mcl_chests:orange_shulker_box 156 91 67
+mcl_chests:orange_shulker_box_small 156 91 67
+mcl_chests:pink_shulker_box 174 128 161
+mcl_chests:pink_shulker_box_small 174 128 161
+mcl_chests:red_shulker_box 146 77 72
+mcl_chests:red_shulker_box_small 146 77 72
 mcl_chests:trapped_chest 95 76 61
+mcl_chests:trapped_chest_left 95 76 61
 mcl_chests:trapped_chest_on 95 76 61
-mcl_chests:violet_shulker_box 135 87 99
-mcl_chests:white_shulker_box 184 181 186
-mcl_chests:yellow_shulker_box 175 128 69
+mcl_chests:trapped_chest_on_left 95 76 61
+mcl_chests:trapped_chest_on_right 95 76 61
+mcl_chests:trapped_chest_on_small 95 76 61
+mcl_chests:trapped_chest_right 95 76 61
+mcl_chests:trapped_chest_small 95 76 61
+mcl_chests:violet_shulker_box 135 88 100
+mcl_chests:violet_shulker_box_small 135 88 100
+mcl_chests:white_shulker_box 184 182 186
+mcl_chests:white_shulker_box_small 184 182 186
+mcl_chests:yellow_shulker_box 176 128 69
+mcl_chests:yellow_shulker_box_small 176 128 69
 
 # mcl_cocoas
-mcl_cocoas:cocoa_1 65 76 39 51
-mcl_cocoas:cocoa_2 172 121 69 101
-mcl_cocoas:cocoa_3 134 67 51 165
+mcl_cocoas:cocoa_1 65 77 39 52
+mcl_cocoas:cocoa_2 173 122 69 102
+mcl_cocoas:cocoa_3 135 68 52 165
 
 # mcl_colorblocks
-mcl_colorblocks:concrete_black 8 10 15
-mcl_colorblocks:concrete_blue 46 48 147
-mcl_colorblocks:concrete_brown 98 60 32
-mcl_colorblocks:concrete_cyan 21 123 140
+mcl_colorblocks:concrete_black 8 10 16
+mcl_colorblocks:concrete_blue 46 49 148
+mcl_colorblocks:concrete_brown 99 61 32
+mcl_colorblocks:concrete_cyan 22 123 140
 mcl_colorblocks:concrete_green 75 94 37
-mcl_colorblocks:concrete_grey 56 59 64
-mcl_colorblocks:concrete_light_blue 37 140 200
-mcl_colorblocks:concrete_lime 96 171 25
-mcl_colorblocks:concrete_magenta 171 49 162
+mcl_colorblocks:concrete_grey 57 60 64
+mcl_colorblocks:concrete_light_blue 37 141 201
+mcl_colorblocks:concrete_lime 97 172 25
+mcl_colorblocks:concrete_magenta 172 50 162
 mcl_colorblocks:concrete_orange 226 101 1
-mcl_colorblocks:concrete_pink 213 103 144
-mcl_colorblocks:concrete_powder_black 22 26 30
-mcl_colorblocks:concrete_powder_blue 72 75 169
-mcl_colorblocks:concrete_powder_brown 128 86 54
-mcl_colorblocks:concrete_powder_cyan 38 150 159
-mcl_colorblocks:concrete_powder_green 104 127 45
-mcl_colorblocks:concrete_powder_grey 91 98 103
-mcl_colorblocks:concrete_powder_light_blue 75 181 212
-mcl_colorblocks:concrete_powder_lime 125 186 42
-mcl_colorblocks:concrete_powder_magenta 196 94 189
-mcl_colorblocks:concrete_powder_orange 227 141 38
-mcl_colorblocks:concrete_powder_pink 224 148 176
-mcl_colorblocks:concrete_powder_purple 138 58 180
-mcl_colorblocks:concrete_powder_red 172 57 52
-mcl_colorblocks:concrete_powder_silver 160 160 155
-mcl_colorblocks:concrete_powder_white 224 225 225
+mcl_colorblocks:concrete_pink 213 103 145
+mcl_colorblocks:concrete_powder_black 23 26 31
+mcl_colorblocks:concrete_powder_blue 73 76 169
+mcl_colorblocks:concrete_powder_brown 128 87 54
+mcl_colorblocks:concrete_powder_cyan 38 151 160
+mcl_colorblocks:concrete_powder_green 104 127 46
+mcl_colorblocks:concrete_powder_grey 91 99 103
+mcl_colorblocks:concrete_powder_light_blue 76 182 212
+mcl_colorblocks:concrete_powder_lime 126 186 42
+mcl_colorblocks:concrete_powder_magenta 197 94 189
+mcl_colorblocks:concrete_powder_orange 228 141 38
+mcl_colorblocks:concrete_powder_pink 224 149 176
+mcl_colorblocks:concrete_powder_purple 139 59 180
+mcl_colorblocks:concrete_powder_red 173 58 52
+mcl_colorblocks:concrete_powder_silver 161 161 155
+mcl_colorblocks:concrete_powder_white 225 226 226
 mcl_colorblocks:concrete_powder_yellow 230 198 54
-mcl_colorblocks:concrete_purple 103 32 159
-mcl_colorblocks:concrete_red 146 34 34
-mcl_colorblocks:concrete_silver 128 129 118
-mcl_colorblocks:concrete_white 208 214 215
-mcl_colorblocks:concrete_yellow 241 177 21
-mcl_colorblocks:glazed_terracotta_black 38 22 22
-mcl_colorblocks:glazed_terracotta_blue 34 65 117
-mcl_colorblocks:glazed_terracotta_brown 108 88 64
-mcl_colorblocks:glazed_terracotta_cyan 94 148 154
-mcl_colorblocks:glazed_terracotta_green 111 135 50
-mcl_colorblocks:glazed_terracotta_grey 90 90 90
-mcl_colorblocks:glazed_terracotta_light_blue 99 162 204
-mcl_colorblocks:glazed_terracotta_lime 152 211 72
-mcl_colorblocks:glazed_terracotta_magenta 209 104 217
-mcl_colorblocks:glazed_terracotta_orange 170 146 81
-mcl_colorblocks:glazed_terracotta_pillar_black 38 19 19
-mcl_colorblocks:glazed_terracotta_pillar_blue 40 77 149
-mcl_colorblocks:glazed_terracotta_pillar_brown 106 98 78
-mcl_colorblocks:glazed_terracotta_pillar_cyan 48 118 127
-mcl_colorblocks:glazed_terracotta_pillar_green 107 135 43
-mcl_colorblocks:glazed_terracotta_pillar_grey 95 95 95
-mcl_colorblocks:glazed_terracotta_pillar_light_blue 102 169 204
-mcl_colorblocks:glazed_terracotta_pillar_lime 164 214 72
+mcl_colorblocks:concrete_purple 103 33 159
+mcl_colorblocks:concrete_red 147 34 34
+mcl_colorblocks:concrete_silver 129 129 119
+mcl_colorblocks:concrete_white 209 214 215
+mcl_colorblocks:concrete_yellow 241 178 22
+mcl_colorblocks:glazed_terracotta_black 39 22 22
+mcl_colorblocks:glazed_terracotta_blue 35 65 117
+mcl_colorblocks:glazed_terracotta_brown 109 88 64
+mcl_colorblocks:glazed_terracotta_cyan 95 148 155
+mcl_colorblocks:glazed_terracotta_green 111 136 50
+mcl_colorblocks:glazed_terracotta_grey 91 91 91
+mcl_colorblocks:glazed_terracotta_light_blue 100 162 205
+mcl_colorblocks:glazed_terracotta_lime 153 212 73
+mcl_colorblocks:glazed_terracotta_magenta 210 104 218
+mcl_colorblocks:glazed_terracotta_orange 171 147 81
+mcl_colorblocks:glazed_terracotta_pillar_black 38 20 20
+mcl_colorblocks:glazed_terracotta_pillar_blue 40 78 149
+mcl_colorblocks:glazed_terracotta_pillar_brown 106 99 79
+mcl_colorblocks:glazed_terracotta_pillar_cyan 48 119 128
+mcl_colorblocks:glazed_terracotta_pillar_green 108 136 44
+mcl_colorblocks:glazed_terracotta_pillar_grey 96 96 96
+mcl_colorblocks:glazed_terracotta_pillar_light_blue 102 170 204
+mcl_colorblocks:glazed_terracotta_pillar_lime 165 215 73
 mcl_colorblocks:glazed_terracotta_pillar_magenta 209 114 216
 mcl_colorblocks:glazed_terracotta_pillar_orange 167 157 94
 mcl_colorblocks:glazed_terracotta_pillar_pink 249 131 164
-mcl_colorblocks:glazed_terracotta_pillar_purple 107 43 147
-mcl_colorblocks:glazed_terracotta_pillar_red 183 67 55
-mcl_colorblocks:glazed_terracotta_pillar_silver 110 143 143
-mcl_colorblocks:glazed_terracotta_pillar_white 200 217 185
-mcl_colorblocks:glazed_terracotta_pillar_yellow 240 205 88
+mcl_colorblocks:glazed_terracotta_pillar_purple 107 44 148
+mcl_colorblocks:glazed_terracotta_pillar_red 183 68 56
+mcl_colorblocks:glazed_terracotta_pillar_silver 110 144 144
+mcl_colorblocks:glazed_terracotta_pillar_white 201 218 186
+mcl_colorblocks:glazed_terracotta_pillar_yellow 240 206 89
 mcl_colorblocks:glazed_terracotta_pink 251 138 170
-mcl_colorblocks:glazed_terracotta_purple 112 49 152
-mcl_colorblocks:glazed_terracotta_red 184 67 53
-mcl_colorblocks:glazed_terracotta_silver 127 148 148
-mcl_colorblocks:glazed_terracotta_white 188 211 202
-mcl_colorblocks:glazed_terracotta_yellow 232 199 99
-mcl_colorblocks:hardened_clay 143 104 87
-mcl_colorblocks:hardened_clay_black 69 52 46
-mcl_colorblocks:hardened_clay_blue 68 91 143
+mcl_colorblocks:glazed_terracotta_purple 112 49 153
+mcl_colorblocks:glazed_terracotta_red 185 68 53
+mcl_colorblocks:glazed_terracotta_silver 128 149 149
+mcl_colorblocks:glazed_terracotta_white 188 212 203
+mcl_colorblocks:glazed_terracotta_yellow 233 200 100
+mcl_colorblocks:hardened_clay 144 104 88
+mcl_colorblocks:hardened_clay_black 70 53 46
+mcl_colorblocks:hardened_clay_blue 69 91 143
 mcl_colorblocks:hardened_clay_brown 96 69 61
-mcl_colorblocks:hardened_clay_cyan 71 107 123
-mcl_colorblocks:hardened_clay_green 74 101 63
+mcl_colorblocks:hardened_clay_cyan 71 108 124
+mcl_colorblocks:hardened_clay_green 75 102 64
 mcl_colorblocks:hardened_clay_grey 110 92 85
-mcl_colorblocks:hardened_clay_light_blue 91 128 171
-mcl_colorblocks:hardened_clay_lime 105 134 73
-mcl_colorblocks:hardened_clay_magenta 150 80 85
-mcl_colorblocks:hardened_clay_orange 156 95 69
-mcl_colorblocks:hardened_clay_pink 164 79 76
-mcl_colorblocks:hardened_clay_purple 81 71 123
-mcl_colorblocks:hardened_clay_red 159 81 66
-mcl_colorblocks:hardened_clay_silver 149 129 117
+mcl_colorblocks:hardened_clay_light_blue 91 128 172
+mcl_colorblocks:hardened_clay_lime 106 135 74
+mcl_colorblocks:hardened_clay_magenta 150 80 86
+mcl_colorblocks:hardened_clay_orange 157 95 70
+mcl_colorblocks:hardened_clay_pink 165 80 77
+mcl_colorblocks:hardened_clay_purple 82 72 124
+mcl_colorblocks:hardened_clay_red 160 82 67
+mcl_colorblocks:hardened_clay_silver 150 129 117
 mcl_colorblocks:hardened_clay_white 213 197 184
-mcl_colorblocks:hardened_clay_yellow 177 128 51
+mcl_colorblocks:hardened_clay_yellow 177 128 52
 
 # mcl_comparators
-mcl_comparators:comparator_off_comp 113 102 98
-mcl_comparators:comparator_off_sub 113 102 98
-mcl_comparators:comparator_on_comp 116 102 98
-mcl_comparators:comparator_on_sub 116 102 98
+mcl_comparators:comparator_off_comp 113 101 97
+mcl_comparators:comparator_off_sub 114 101 97
+mcl_comparators:comparator_on_comp 116 101 98
+mcl_comparators:comparator_on_sub 117 102 98
 
 # mcl_compass
-mcl_compass:lodestone 78 69 66
+mcl_compass:lodestone 78 70 66
 
 # mcl_composters
-mcl_composters:composter 141 111 87
-mcl_composters:composter_1 75 76 41 143
-mcl_composters:composter_2 75 76 41 143
-mcl_composters:composter_3 75 76 41 143
-mcl_composters:composter_4 75 76 41 143
-mcl_composters:composter_5 75 76 41 143
-mcl_composters:composter_6 75 76 41 143
-mcl_composters:composter_7 75 76 41 143
-mcl_composters:composter_ready 109 107 74 143
+mcl_composters:composter 142 111 87
+mcl_composters:composter_1 111 100 69
+mcl_composters:composter_2 111 100 69
+mcl_composters:composter_3 111 100 69
+mcl_composters:composter_4 111 100 69
+mcl_composters:composter_5 111 100 69
+mcl_composters:composter_6 111 100 69
+mcl_composters:composter_7 111 100 69
+mcl_composters:composter_ready 130 117 87
 
 # mcl_compressed_blocks
-mcl_compressed_blocks:compressed_cobblestone 106 101 98
-mcl_compressed_blocks:double_compressed_cobblestone 100 95 93
-mcl_compressed_blocks:octuple_compressed_cobblestone 48 49 51
-mcl_compressed_blocks:quadruple_compressed_cobblestone 84 79 79
-mcl_compressed_blocks:quintuple_compressed_cobblestone 77 73 73
-mcl_compressed_blocks:septuple_compressed_cobblestone 56 54 54
-mcl_compressed_blocks:sextuple_compressed_cobblestone 67 65 64
-mcl_compressed_blocks:triple_compressed_cobblestone 93 88 87
+mcl_compressed_blocks:compressed_cobblestone 107 101 99
+mcl_compressed_blocks:double_compressed_cobblestone 101 95 93
+mcl_compressed_blocks:octuple_compressed_cobblestone 48 50 52
+mcl_compressed_blocks:quadruple_compressed_cobblestone 84 80 79
+mcl_compressed_blocks:quintuple_compressed_cobblestone 77 74 73
+mcl_compressed_blocks:septuple_compressed_cobblestone 57 55 55
+mcl_compressed_blocks:sextuple_compressed_cobblestone 68 65 65
+mcl_compressed_blocks:triple_compressed_cobblestone 94 89 87
 
 # mcl_copper
-mcl_copper:block 147 77 56
-mcl_copper:block_cut 148 77 57
-mcl_copper:block_exposed 128 92 83
-mcl_copper:block_exposed_cut 129 92 82
-mcl_copper:block_oxidized 90 108 110
-mcl_copper:block_oxidized_cut 91 110 110
-mcl_copper:block_raw 168 90 68
-mcl_copper:block_weathered 103 102 100
-mcl_copper:block_weathered_cut 107 103 100
-mcl_copper:stone_with_copper 130 122 118
-mcl_copper:waxed_block 147 77 56
-mcl_copper:waxed_block_cut 148 77 57
-mcl_copper:waxed_block_exposed 128 92 83
-mcl_copper:waxed_block_exposed_cut 129 92 82
-mcl_copper:waxed_block_oxidized 90 108 110
-mcl_copper:waxed_block_oxidized_cut 91 110 110
-mcl_copper:waxed_block_weathered 103 102 100
-mcl_copper:waxed_block_weathered_cut 107 103 100
+mcl_copper:block 148 77 57
+mcl_copper:block_cut 148 78 57
+mcl_copper:block_exposed 128 93 84
+mcl_copper:block_exposed_cut 130 93 83
+mcl_copper:block_oxidized 90 109 110
+mcl_copper:block_oxidized_cut 91 110 111
+mcl_copper:block_raw 169 90 68
+mcl_copper:block_weathered 104 103 101
+mcl_copper:block_weathered_cut 107 103 101
+mcl_copper:stone_with_copper 130 110 103
+mcl_copper:waxed_block 148 77 57
+mcl_copper:waxed_block_cut 148 78 57
+mcl_copper:waxed_block_exposed 128 93 84
+mcl_copper:waxed_block_exposed_cut 130 93 83
+mcl_copper:waxed_block_oxidized 90 109 110
+mcl_copper:waxed_block_oxidized_cut 91 110 111
+mcl_copper:waxed_block_weathered 104 103 101
+mcl_copper:waxed_block_weathered_cut 107 103 101
 
 # mcl_core
-mcl_core:acacialeaves 38 72 33
-mcl_core:acacialeaves_orphan 38 72 33
-mcl_core:acaciasapling 109 92 59 62
+mcl_core:acacialeaves 39 72 34
+mcl_core:acacialeaves_orphan 39 72 34
+mcl_core:acaciasapling 109 93 60 63
 mcl_core:acaciatree 130 84 55
-mcl_core:acaciatree_bark 105 91 74
+mcl_core:acaciatree_bark 105 91 75
 mcl_core:acaciawood 152 100 69
-mcl_core:andesite 104 110 107
-mcl_core:andesite_smooth 107 113 109
-mcl_core:bedrock 91 77 66
-mcl_core:birchleaves 176 122 63
-mcl_core:birchleaves_orphan 176 122 63
-mcl_core:birchsapling 78 110 74 94
-mcl_core:birchtree 155 130 112
-mcl_core:birchtree_bark 194 184 174
-mcl_core:birchwood 145 113 89
-mcl_core:bone_block 220 201 170
-mcl_core:brick_block 139 87 75
-mcl_core:cactus 77 99 49
-mcl_core:charcoalblock 45 39 36
-mcl_core:clay 124 124 124
-mcl_core:coalblock 51 49 51
-mcl_core:coarse_dirt 117 92 76
-mcl_core:cobble 113 106 104
-mcl_core:cobweb 202 189 167 94
-mcl_core:crying_obsidian 13 9 25
-mcl_core:darkleaves 17 54 26
-mcl_core:darkleaves_orphan 17 54 26
-mcl_core:darksapling 69 92 80 110
-mcl_core:darktree 83 70 62
+mcl_core:andesite 104 111 107
+mcl_core:andesite_smooth 107 114 110
+mcl_core:bedrock 92 78 67
+mcl_core:birchleaves 88 80 21
+mcl_core:birchleaves_orphan 88 80 21
+mcl_core:birchsapling 78 110 74 95
+mcl_core:birchtree 155 131 112
+mcl_core:birchtree_bark 195 185 175
+mcl_core:birchwood 146 114 89
+mcl_core:bone_block 221 202 170
+mcl_core:brick_block 140 88 76
+mcl_core:cactus 77 100 50
+mcl_core:charcoalblock 45 39 37
+mcl_core:clay 125 125 125
+mcl_core:coalblock 52 50 51
+mcl_core:coarse_dirt 117 92 77
+mcl_core:cobble 113 107 104
+mcl_core:cobweb 203 190 167 95
+mcl_core:crying_obsidian 28 9 52
+mcl_core:darkleaves 18 54 26
+mcl_core:darkleaves_orphan 18 54 26
+mcl_core:darksapling 69 92 81 111
+mcl_core:darktree 83 71 63
 mcl_core:darktree_bark 74 62 55
-mcl_core:darkwood 87 74 62
-mcl_core:deadbush 118 88 69 119
-mcl_core:diamondblock 92 160 200
-mcl_core:diorite 153 149 146
-mcl_core:diorite_smooth 157 154 152
-mcl_core:dirt 108 83 70
-mcl_core:dirt_with_grass 60 100 52
-mcl_core:dirt_with_grass_snow 221 229 234
-mcl_core:emeraldblock 44 138 39
-mcl_core:frosted_ice_0 140 193 224
-mcl_core:frosted_ice_1 147 198 227
+mcl_core:darkwood 88 75 62
+mcl_core:deadbush 119 89 69 120
+mcl_core:diamondblock 93 161 200
+mcl_core:diorite 153 150 147
+mcl_core:diorite_smooth 158 154 152
+mcl_core:dirt 109 84 70
+mcl_core:dirt_with_grass 61 100 52
+mcl_core:dirt_with_grass_snow 221 230 235
+mcl_core:emeraldblock 44 139 39
+mcl_core:frosted_ice_0 141 194 225
+mcl_core:frosted_ice_1 148 198 227
 mcl_core:frosted_ice_2 153 202 229
-mcl_core:frosted_ice_3 165 209 233
-mcl_core:glass 213 223 235 64 16
-mcl_core:glass_black 24 24 24 64 16
-mcl_core:glass_blue 50 75 178 64 16
-mcl_core:glass_brown 101 75 50 64 16
-mcl_core:glass_cyan 75 126 153 64 16
-mcl_core:glass_gray 75 75 75 64 16
-mcl_core:glass_green 101 126 50 64 16
-mcl_core:glass_light_blue 101 153 215 64 16
-mcl_core:glass_lime 126 203 24 64 16
-mcl_core:glass_magenta 178 75 215 64 16
-mcl_core:glass_orange 215 126 50 64 16
-mcl_core:glass_pink 241 126 164 64 16
-mcl_core:glass_purple 126 62 178 64 16
-mcl_core:glass_red 153 50 50 64 16
+mcl_core:frosted_ice_3 165 210 233
+mcl_core:glass 213 224 235 64 16
+mcl_core:glass_black 25 25 25 64 16
+mcl_core:glass_blue 51 76 178 64 16
+mcl_core:glass_brown 102 76 51 64 16
+mcl_core:glass_cyan 76 127 153 64 16
+mcl_core:glass_gray 76 76 76 64 16
+mcl_core:glass_green 102 127 51 64 16
+mcl_core:glass_light_blue 102 153 216 64 16
+mcl_core:glass_lime 127 204 25 64 16
+mcl_core:glass_magenta 178 76 216 64 16
+mcl_core:glass_orange 216 127 51 64 16
+mcl_core:glass_pink 242 127 165 64 16
+mcl_core:glass_purple 127 63 178 64 16
+mcl_core:glass_red 153 51 51 64 16
 mcl_core:glass_silver 153 153 153 64 16
-mcl_core:glass_white 254 254 254 64 16
-mcl_core:glass_yellow 228 228 50 64 16
+mcl_core:glass_white 255 255 255 64 16
+mcl_core:glass_yellow 229 229 51 64 16
 mcl_core:goldblock 192 147 59
-mcl_core:granite 153 121 110
+mcl_core:granite 154 122 111
 mcl_core:granite_smooth 150 121 110
 mcl_core:grass_path 125 101 50
-mcl_core:gravel 112 105 99
-mcl_core:ice 145 197 226
+mcl_core:gravel 112 106 100
+mcl_core:ice 145 198 227
 mcl_core:ironblock 159 151 151
-mcl_core:jungleleaves 49 87 53
-mcl_core:jungleleaves_orphan 49 87 53
-mcl_core:junglesapling 64 88 39 93
-mcl_core:jungletree 125 87 67
-mcl_core:jungletree_bark 86 58 45
-mcl_core:junglewood 113 78 59
-mcl_core:ladder 83 64 50 111
-mcl_core:lapisblock 50 92 162
+mcl_core:jungleleaves 50 88 54
+mcl_core:jungleleaves_orphan 50 88 54
+mcl_core:junglesapling 64 88 39 94
+mcl_core:jungletree 125 88 68
+mcl_core:jungletree_bark 87 58 45
+mcl_core:junglewood 113 79 59
+mcl_core:ladder 83 65 51 112
+mcl_core:lapisblock 51 93 163
 mcl_core:lava_flowing 230 90 0
 mcl_core:lava_source 230 90 0
-mcl_core:leaves 47 83 51
-mcl_core:leaves_orphan 47 83 51
-mcl_core:mossycobble 100 105 94
-mcl_core:mycelium 108 89 117
-mcl_core:mycelium_snow 221 229 234
-mcl_core:obsidian 13 9 25
-mcl_core:packed_ice 165 211 231
-mcl_core:podzol 85 63 42
-mcl_core:podzol_snow 221 229 234
-mcl_core:redsand 224 137 111
-mcl_core:redsandstone 212 126 108
-mcl_core:redsandstonecarved 212 126 108
-mcl_core:redsandstonesmooth 212 126 108
-mcl_core:redsandstonesmooth2 212 126 108
+mcl_core:leaves 47 83 52
+mcl_core:leaves_orphan 47 83 52
+mcl_core:mossycobble 100 106 95
+mcl_core:mycelium 108 89 118
+mcl_core:mycelium_snow 221 230 235
+mcl_core:obsidian 13 10 26
+mcl_core:packed_ice 166 212 232
+mcl_core:podzol 86 64 43
+mcl_core:podzol_snow 221 230 235
+mcl_core:redsand 225 137 111
+mcl_core:redsandstone 212 126 109
+mcl_core:redsandstonecarved 212 126 109
+mcl_core:redsandstonesmooth 212 126 109
+mcl_core:redsandstonesmooth2 212 126 109
 mcl_core:reeds 45 81 48 132
-mcl_core:sand 220 170 127
-mcl_core:sandstone 201 154 121
-mcl_core:sandstonecarved 201 154 121
-mcl_core:sandstonesmooth 201 154 121
-mcl_core:sandstonesmooth2 201 154 121
-mcl_core:sapling 62 90 45 145
-mcl_core:slimeblock 93 157 86 140
-mcl_core:snow 221 229 234 223 31
-mcl_core:snow_2 221 229 234 223 63
-mcl_core:snow_3 221 229 234 223 95
-mcl_core:snow_4 221 229 234 223 127
-mcl_core:snow_5 221 229 234 223 159
-mcl_core:snow_6 221 229 234 223 191
-mcl_core:snow_7 221 229 234 223 223
-mcl_core:snow_8 221 229 234 223 255
-mcl_core:snowblock 221 229 234
-mcl_core:spruceleaves 84 124 97
-mcl_core:spruceleaves_orphan 84 124 97
-mcl_core:sprucesapling 55 72 53 68
-mcl_core:sprucetree 97 71 57
-mcl_core:sprucetree_bark 66 51 44
-mcl_core:sprucewood 81 65 54
-mcl_core:stone 130 122 118
-mcl_core:stone_smooth 127 118 114
-mcl_core:stone_with_coal 109 101 99
-mcl_core:stone_with_diamond 122 124 126
-mcl_core:stone_with_emerald 115 122 103
-mcl_core:stone_with_gold 132 119 103
+mcl_core:sand 221 171 127
+mcl_core:sandstone 202 155 121
+mcl_core:sandstonecarved 202 155 121
+mcl_core:sandstonesmooth 202 155 121
+mcl_core:sandstonesmooth2 202 155 121
+mcl_core:sapling 63 90 45 145
+mcl_core:slimeblock 94 157 87 140
+mcl_core:snow 221 230 235 223 31
+mcl_core:snow_2 221 230 235
+mcl_core:snow_3 221 230 235
+mcl_core:snow_4 221 230 235
+mcl_core:snow_5 221 230 235
+mcl_core:snow_6 221 230 235
+mcl_core:snow_7 221 230 235
+mcl_core:snow_8 221 230 235
+mcl_core:snowblock 221 230 235
+mcl_core:spruceleaves 32 75 37
+mcl_core:spruceleaves_orphan 32 75 37
+mcl_core:sprucesapling 56 73 53 69
+mcl_core:sprucetree 98 71 57
+mcl_core:sprucetree_bark 67 51 44
+mcl_core:sprucewood 81 66 54
+mcl_core:stone 131 123 118
+mcl_core:stone_smooth 127 119 115
+mcl_core:stone_with_coal 109 102 99
+mcl_core:stone_with_diamond 122 125 127
+mcl_core:stone_with_emerald 116 122 104
+mcl_core:stone_with_gold 133 119 104
 mcl_core:stone_with_iron 134 123 117
-mcl_core:stone_with_lapis 111 113 125
-mcl_core:stone_with_redstone 128 91 88
-mcl_core:stone_with_redstone_lit 128 91 88
-mcl_core:stonebrick 97 89 86
-mcl_core:stonebrickcarved 97 90 85
-mcl_core:stonebrickcracked 94 87 83
-mcl_core:stonebrickmossy 81 101 76
-mcl_core:stripped_acacia 157 98 62
-mcl_core:stripped_acacia_bark 151 90 57
-mcl_core:stripped_birch 170 135 108
-mcl_core:stripped_birch_bark 179 143 115
-mcl_core:stripped_dark_oak 90 78 68
-mcl_core:stripped_dark_oak_bark 91 78 70
-mcl_core:stripped_jungle 170 113 83
-mcl_core:stripped_jungle_bark 175 117 86
-mcl_core:stripped_oak 153 115 80
+mcl_core:stone_with_lapis 112 114 125
+mcl_core:stone_with_redstone 129 92 89
+mcl_core:stone_with_redstone_lit 129 92 89
+mcl_core:stonebrick 97 90 86
+mcl_core:stonebrickcarved 98 90 86
+mcl_core:stonebrickcracked 95 87 83
+mcl_core:stonebrickmossy 81 102 76
+mcl_core:stripped_acacia 157 98 63
+mcl_core:stripped_acacia_bark 152 91 57
+mcl_core:stripped_birch 170 136 108
+mcl_core:stripped_birch_bark 180 144 115
+mcl_core:stripped_dark_oak 91 78 69
+mcl_core:stripped_dark_oak_bark 91 79 70
+mcl_core:stripped_jungle 170 113 84
+mcl_core:stripped_jungle_bark 176 117 87
+mcl_core:stripped_oak 153 116 80
 mcl_core:stripped_oak_bark 162 122 84
-mcl_core:stripped_spruce 107 79 64
-mcl_core:stripped_spruce_bark 109 81 67
-mcl_core:tree 135 104 74
-mcl_core:tree_bark 95 75 57
-mcl_core:vine 108 101 87 145
+mcl_core:stripped_spruce 108 80 65
+mcl_core:stripped_spruce_bark 109 82 67
+mcl_core:tree 135 104 75
+mcl_core:tree_bark 96 76 58
+mcl_core:vine 109 101 88 145
 mcl_core:water_flowing 35 66 128 224 128
 mcl_core:water_source 35 66 128 224 128
 mcl_core:wood 113 87 67
 
 # mcl_crafting_table
-mcl_crafting_table:crafting_table 152 121 93
+mcl_crafting_table:crafting_table 153 121 94
 
 # mcl_crimson
-mcl_crimson:crimson_door_t_1 103 40 49 95
-mcl_crimson:crimson_door_t_2 103 40 49 95
-mcl_crimson:crimson_door_t_3 103 40 49 95
-mcl_crimson:crimson_door_t_4 103 40 49 95
-mcl_crimson:crimson_fence 105 40 48
-mcl_crimson:crimson_fence_gate 105 40 48
-mcl_crimson:crimson_fence_gate_open 105 40 48
-mcl_crimson:crimson_fungus 184 72 35 65
-mcl_crimson:crimson_hyphae 164 79 68
-mcl_crimson:crimson_hyphae_bark 97 57 58
-mcl_crimson:crimson_hyphae_wood 115 23 15
+mcl_crimson:crimson_door_b_1 104 41 49 96
+mcl_crimson:crimson_door_b_2 104 41 49 96
+mcl_crimson:crimson_door_b_3 89 40 47
+mcl_crimson:crimson_door_b_4 104 41 49 96
+mcl_crimson:crimson_door_t_1 103 41 49 96
+mcl_crimson:crimson_door_t_2 103 41 49 96
+mcl_crimson:crimson_door_t_3 103 41 49 96
+mcl_crimson:crimson_door_t_4 103 41 49 96
+mcl_crimson:crimson_fence 106 40 49
+mcl_crimson:crimson_fence_gate 106 40 49
+mcl_crimson:crimson_fence_gate_open 106 40 49
+mcl_crimson:crimson_fungus 185 72 36 66
+mcl_crimson:crimson_hyphae 165 79 69
+mcl_crimson:crimson_hyphae_bark 98 58 58
+mcl_crimson:crimson_hyphae_wood 116 24 15
 mcl_crimson:crimson_nylium 132 31 35
 mcl_crimson:crimson_roots 124 36 38 147
-mcl_crimson:crimson_trapdoor 86 40 47
-mcl_crimson:crimson_trapdoor_ladder 84 40 47 95
-mcl_crimson:crimson_trapdoor_open 84 40 47 95
-mcl_crimson:nether_sprouts 112 88 152 133
-mcl_crimson:shroomlight 252 185 123
-mcl_crimson:stripped_crimson_hyphae 172 70 66
-mcl_crimson:stripped_crimson_hyphae_bark 116 40 48
-mcl_crimson:stripped_warped_hyphae 11 92 80
-mcl_crimson:stripped_warped_hyphae_bark 66 64 92
-mcl_crimson:twisting_vines 98 80 129 94
-mcl_crimson:warped_door_t_1 67 55 90 95
-mcl_crimson:warped_door_t_2 67 55 90 95
-mcl_crimson:warped_door_t_3 67 55 90 95
-mcl_crimson:warped_door_t_4 67 55 90 95
-mcl_crimson:warped_fence 33 69 60
-mcl_crimson:warped_fence_gate 33 69 60
-mcl_crimson:warped_fence_gate_open 33 69 60
+mcl_crimson:crimson_trapdoor 87 41 47
+mcl_crimson:crimson_trapdoor_ladder 85 41 48 96
+mcl_crimson:crimson_trapdoor_open 85 41 48 96
+mcl_crimson:nether_sprouts 113 89 152 133
+mcl_crimson:shroomlight 253 186 124
+mcl_crimson:stripped_crimson_hyphae 173 70 66
+mcl_crimson:stripped_crimson_hyphae_bark 117 40 49
+mcl_crimson:stripped_warped_hyphae 12 92 81
+mcl_crimson:stripped_warped_hyphae_bark 67 65 93
+mcl_crimson:twisting_vines 99 80 130 95
+mcl_crimson:warped_door_b_1 64 53 85 96
+mcl_crimson:warped_door_b_2 64 53 85 96
+mcl_crimson:warped_door_b_3 63 53 82
+mcl_crimson:warped_door_b_4 64 53 85 96
+mcl_crimson:warped_door_t_1 67 56 91 96
+mcl_crimson:warped_door_t_2 67 56 91 96
+mcl_crimson:warped_door_t_3 67 56 91 96
+mcl_crimson:warped_door_t_4 67 56 91 96
+mcl_crimson:warped_fence 34 69 61
+mcl_crimson:warped_fence_gate 34 69 61
+mcl_crimson:warped_fence_gate_open 34 69 61
 mcl_crimson:warped_fungus 94 56 178 139
 mcl_crimson:warped_hyphae 80 75 104
-mcl_crimson:warped_hyphae_bark 48 53 73
+mcl_crimson:warped_hyphae_bark 48 53 74
 mcl_crimson:warped_hyphae_wood 79 56 120
-mcl_crimson:warped_nylium 85 72 115
-mcl_crimson:warped_roots 94 77 124 147
+mcl_crimson:warped_nylium 86 72 115
+mcl_crimson:warped_roots 94 78 125 147
 mcl_crimson:warped_trapdoor 64 51 93
-mcl_crimson:warped_trapdoor_ladder 65 51 95 95
-mcl_crimson:warped_trapdoor_open 65 51 95 95
-mcl_crimson:warped_wart_block 68 55 94
-mcl_crimson:weeping_vines 142 40 36 145
+mcl_crimson:warped_trapdoor_ladder 66 52 96 96
+mcl_crimson:warped_trapdoor_open 66 52 96 96
+mcl_crimson:warped_wart_block 68 56 94
+mcl_crimson:weeping_vines 143 41 36 145
 
 # mcl_deepslate
 mcl_deepslate:deepslate 75 73 72
-mcl_deepslate:deepslate_bricks 62 61 60
-mcl_deepslate:deepslate_bricks_cracked 60 58 58
-mcl_deepslate:deepslate_chiseled 44 43 43
+mcl_deepslate:deepslate_bricks 63 61 61
+mcl_deepslate:deepslate_bricks_cracked 60 59 58
+mcl_deepslate:deepslate_chiseled 45 44 44
 mcl_deepslate:deepslate_cobbled 78 76 75
-mcl_deepslate:deepslate_polished 68 66 66
-mcl_deepslate:deepslate_tiles 49 47 47
+mcl_deepslate:deepslate_polished 68 67 66
+mcl_deepslate:deepslate_tiles 49 48 48
 mcl_deepslate:deepslate_tiles_cracked 47 46 46
 mcl_deepslate:deepslate_with_coal 63 60 59
-mcl_deepslate:deepslate_with_copper 82 70 67
-mcl_deepslate:deepslate_with_diamond 74 92 100
-mcl_deepslate:deepslate_with_emerald 63 81 71
-mcl_deepslate:deepslate_with_gold 87 78 64
-mcl_deepslate:deepslate_with_iron 88 82 79
-mcl_deepslate:deepslate_with_lapis 63 74 90
-mcl_deepslate:deepslate_with_redstone 89 61 60
-mcl_deepslate:deepslate_with_redstone_lit 89 61 60
-mcl_deepslate:deepslatebrickswall 62 61 60
-mcl_deepslate:deepslatebrickswall_0 62 61 60
-mcl_deepslate:deepslatebrickswall_1 62 61 60
-mcl_deepslate:deepslatebrickswall_10 62 61 60
-mcl_deepslate:deepslatebrickswall_11 62 61 60
-mcl_deepslate:deepslatebrickswall_12 62 61 60
-mcl_deepslate:deepslatebrickswall_13 62 61 60
-mcl_deepslate:deepslatebrickswall_14 62 61 60
-mcl_deepslate:deepslatebrickswall_15 62 61 60
-mcl_deepslate:deepslatebrickswall_16 62 61 60
-mcl_deepslate:deepslatebrickswall_2 62 61 60
-mcl_deepslate:deepslatebrickswall_21 62 61 60
-mcl_deepslate:deepslatebrickswall_3 62 61 60
-mcl_deepslate:deepslatebrickswall_4 62 61 60
-mcl_deepslate:deepslatebrickswall_5 62 61 60
-mcl_deepslate:deepslatebrickswall_6 62 61 60
-mcl_deepslate:deepslatebrickswall_7 62 61 60
-mcl_deepslate:deepslatebrickswall_8 62 61 60
-mcl_deepslate:deepslatebrickswall_9 62 61 60
+mcl_deepslate:deepslate_with_copper 83 71 67
+mcl_deepslate:deepslate_with_diamond 75 93 101
+mcl_deepslate:deepslate_with_emerald 64 82 72
+mcl_deepslate:deepslate_with_gold 87 78 65
+mcl_deepslate:deepslate_with_iron 88 83 80
+mcl_deepslate:deepslate_with_lapis 63 75 91
+mcl_deepslate:deepslate_with_redstone 90 61 60
+mcl_deepslate:deepslate_with_redstone_lit 90 61 60
+mcl_deepslate:deepslatebrickswall 63 61 61
+mcl_deepslate:deepslatebrickswall_0 63 61 61
+mcl_deepslate:deepslatebrickswall_1 63 61 61
+mcl_deepslate:deepslatebrickswall_10 63 61 61
+mcl_deepslate:deepslatebrickswall_11 63 61 61
+mcl_deepslate:deepslatebrickswall_12 63 61 61
+mcl_deepslate:deepslatebrickswall_13 63 61 61
+mcl_deepslate:deepslatebrickswall_14 63 61 61
+mcl_deepslate:deepslatebrickswall_15 63 61 61
+mcl_deepslate:deepslatebrickswall_16 63 61 61
+mcl_deepslate:deepslatebrickswall_2 63 61 61
+mcl_deepslate:deepslatebrickswall_21 63 61 61
+mcl_deepslate:deepslatebrickswall_3 63 61 61
+mcl_deepslate:deepslatebrickswall_4 63 61 61
+mcl_deepslate:deepslatebrickswall_5 63 61 61
+mcl_deepslate:deepslatebrickswall_6 63 61 61
+mcl_deepslate:deepslatebrickswall_7 63 61 61
+mcl_deepslate:deepslatebrickswall_8 63 61 61
+mcl_deepslate:deepslatebrickswall_9 63 61 61
 mcl_deepslate:deepslatecobbledwall 78 76 75
 mcl_deepslate:deepslatecobbledwall_0 78 76 75
 mcl_deepslate:deepslatecobbledwall_1 78 76 75
@@ -624,180 +666,230 @@ mcl_deepslate:deepslatecobbledwall_6 78 76 75
 mcl_deepslate:deepslatecobbledwall_7 78 76 75
 mcl_deepslate:deepslatecobbledwall_8 78 76 75
 mcl_deepslate:deepslatecobbledwall_9 78 76 75
-mcl_deepslate:deepslatepolishedwall 68 66 66
-mcl_deepslate:deepslatepolishedwall_0 68 66 66
-mcl_deepslate:deepslatepolishedwall_1 68 66 66
-mcl_deepslate:deepslatepolishedwall_10 68 66 66
-mcl_deepslate:deepslatepolishedwall_11 68 66 66
-mcl_deepslate:deepslatepolishedwall_12 68 66 66
-mcl_deepslate:deepslatepolishedwall_13 68 66 66
-mcl_deepslate:deepslatepolishedwall_14 68 66 66
-mcl_deepslate:deepslatepolishedwall_15 68 66 66
-mcl_deepslate:deepslatepolishedwall_16 68 66 66
-mcl_deepslate:deepslatepolishedwall_2 68 66 66
-mcl_deepslate:deepslatepolishedwall_21 68 66 66
-mcl_deepslate:deepslatepolishedwall_3 68 66 66
-mcl_deepslate:deepslatepolishedwall_4 68 66 66
-mcl_deepslate:deepslatepolishedwall_5 68 66 66
-mcl_deepslate:deepslatepolishedwall_6 68 66 66
-mcl_deepslate:deepslatepolishedwall_7 68 66 66
-mcl_deepslate:deepslatepolishedwall_8 68 66 66
-mcl_deepslate:deepslatepolishedwall_9 68 66 66
-mcl_deepslate:deepslatetileswall 49 47 47
-mcl_deepslate:deepslatetileswall_0 49 47 47
-mcl_deepslate:deepslatetileswall_1 49 47 47
-mcl_deepslate:deepslatetileswall_10 49 47 47
-mcl_deepslate:deepslatetileswall_11 49 47 47
-mcl_deepslate:deepslatetileswall_12 49 47 47
-mcl_deepslate:deepslatetileswall_13 49 47 47
-mcl_deepslate:deepslatetileswall_14 49 47 47
-mcl_deepslate:deepslatetileswall_15 49 47 47
-mcl_deepslate:deepslatetileswall_16 49 47 47
-mcl_deepslate:deepslatetileswall_2 49 47 47
-mcl_deepslate:deepslatetileswall_21 49 47 47
-mcl_deepslate:deepslatetileswall_3 49 47 47
-mcl_deepslate:deepslatetileswall_4 49 47 47
-mcl_deepslate:deepslatetileswall_5 49 47 47
-mcl_deepslate:deepslatetileswall_6 49 47 47
-mcl_deepslate:deepslatetileswall_7 49 47 47
-mcl_deepslate:deepslatetileswall_8 49 47 47
-mcl_deepslate:deepslatetileswall_9 49 47 47
+mcl_deepslate:deepslatepolishedwall 68 67 66
+mcl_deepslate:deepslatepolishedwall_0 68 67 66
+mcl_deepslate:deepslatepolishedwall_1 68 67 66
+mcl_deepslate:deepslatepolishedwall_10 68 67 66
+mcl_deepslate:deepslatepolishedwall_11 68 67 66
+mcl_deepslate:deepslatepolishedwall_12 68 67 66
+mcl_deepslate:deepslatepolishedwall_13 68 67 66
+mcl_deepslate:deepslatepolishedwall_14 68 67 66
+mcl_deepslate:deepslatepolishedwall_15 68 67 66
+mcl_deepslate:deepslatepolishedwall_16 68 67 66
+mcl_deepslate:deepslatepolishedwall_2 68 67 66
+mcl_deepslate:deepslatepolishedwall_21 68 67 66
+mcl_deepslate:deepslatepolishedwall_3 68 67 66
+mcl_deepslate:deepslatepolishedwall_4 68 67 66
+mcl_deepslate:deepslatepolishedwall_5 68 67 66
+mcl_deepslate:deepslatepolishedwall_6 68 67 66
+mcl_deepslate:deepslatepolishedwall_7 68 67 66
+mcl_deepslate:deepslatepolishedwall_8 68 67 66
+mcl_deepslate:deepslatepolishedwall_9 68 67 66
+mcl_deepslate:deepslatetileswall 49 48 48
+mcl_deepslate:deepslatetileswall_0 49 48 48
+mcl_deepslate:deepslatetileswall_1 49 48 48
+mcl_deepslate:deepslatetileswall_10 49 48 48
+mcl_deepslate:deepslatetileswall_11 49 48 48
+mcl_deepslate:deepslatetileswall_12 49 48 48
+mcl_deepslate:deepslatetileswall_13 49 48 48
+mcl_deepslate:deepslatetileswall_14 49 48 48
+mcl_deepslate:deepslatetileswall_15 49 48 48
+mcl_deepslate:deepslatetileswall_16 49 48 48
+mcl_deepslate:deepslatetileswall_2 49 48 48
+mcl_deepslate:deepslatetileswall_21 49 48 48
+mcl_deepslate:deepslatetileswall_3 49 48 48
+mcl_deepslate:deepslatetileswall_4 49 48 48
+mcl_deepslate:deepslatetileswall_5 49 48 48
+mcl_deepslate:deepslatetileswall_6 49 48 48
+mcl_deepslate:deepslatetileswall_7 49 48 48
+mcl_deepslate:deepslatetileswall_8 49 48 48
+mcl_deepslate:deepslatetileswall_9 49 48 48
 mcl_deepslate:infested_deepslate 75 73 72
-mcl_deepslate:tuff 98 81 69
+mcl_deepslate:tuff 99 81 69
 
 # mcl_dispensers
 mcl_dispensers:dispenser 148 138 133
 mcl_dispensers:dispenser_down 148 138 133
-mcl_dispensers:dispenser_up 115 104 99
+mcl_dispensers:dispenser_up 115 104 100
 
 # mcl_doors
-mcl_doors:acacia_door_t_1 168 118 84 95
-mcl_doors:acacia_door_t_2 168 118 84 95
-mcl_doors:acacia_door_t_3 168 118 84 95
-mcl_doors:acacia_door_t_4 168 118 84 95
-mcl_doors:acacia_trapdoor 148 96 66
-mcl_doors:acacia_trapdoor_ladder 154 102 71
-mcl_doors:acacia_trapdoor_open 154 102 71
-mcl_doors:birch_door_t_1 144 124 109 95
-mcl_doors:birch_door_t_2 144 124 109 95
-mcl_doors:birch_door_t_3 144 124 109 95
-mcl_doors:birch_door_t_4 144 124 109 95
+mcl_doors:acacia_door_b_1 161 110 77 96
+mcl_doors:acacia_door_b_2 161 110 77 96
+mcl_doors:acacia_door_b_3 159 108 75
+mcl_doors:acacia_door_b_4 161 110 77 96
+mcl_doors:acacia_door_t_1 169 119 84 96
+mcl_doors:acacia_door_t_2 169 119 84 96
+mcl_doors:acacia_door_t_3 169 119 84 96
+mcl_doors:acacia_door_t_4 169 119 84 96
+mcl_doors:acacia_trapdoor 148 97 66
+mcl_doors:acacia_trapdoor_ladder 155 103 71
+mcl_doors:acacia_trapdoor_open 155 103 71
+mcl_doors:birch_door_b_1 133 109 91 96
+mcl_doors:birch_door_b_2 133 109 91 96
+mcl_doors:birch_door_b_3 159 140 123
+mcl_doors:birch_door_b_4 133 109 91 96
+mcl_doors:birch_door_t_1 144 125 110 96
+mcl_doors:birch_door_t_2 144 125 110 96
+mcl_doors:birch_door_t_3 144 125 110 96
+mcl_doors:birch_door_t_4 144 125 110 96
 mcl_doors:birch_trapdoor 173 151 132
-mcl_doors:birch_trapdoor_ladder 147 116 89
-mcl_doors:birch_trapdoor_open 147 116 89
-mcl_doors:dark_oak_door_t_1 86 71 60 95
-mcl_doors:dark_oak_door_t_2 86 71 60 95
-mcl_doors:dark_oak_door_t_3 86 71 60 95
-mcl_doors:dark_oak_door_t_4 86 71 60 95
-mcl_doors:dark_oak_trapdoor 81 68 56
-mcl_doors:dark_oak_trapdoor_ladder 85 72 60
-mcl_doors:dark_oak_trapdoor_open 85 72 60
-mcl_doors:iron_door_t_1 206 206 206 95
-mcl_doors:iron_door_t_2 206 206 206 95
-mcl_doors:iron_door_t_3 206 206 206 95
-mcl_doors:iron_door_t_4 206 206 206 95
+mcl_doors:birch_trapdoor_ladder 147 116 90
+mcl_doors:birch_trapdoor_open 147 116 90
+mcl_doors:dark_oak_door_b_1 85 70 60 96
+mcl_doors:dark_oak_door_b_2 85 70 60 96
+mcl_doors:dark_oak_door_b_3 83 69 59
+mcl_doors:dark_oak_door_b_4 85 70 60 96
+mcl_doors:dark_oak_door_t_1 87 72 60 96
+mcl_doors:dark_oak_door_t_2 87 72 60 96
+mcl_doors:dark_oak_door_t_3 87 72 60 96
+mcl_doors:dark_oak_door_t_4 87 72 60 96
+mcl_doors:dark_oak_trapdoor 81 69 57
+mcl_doors:dark_oak_trapdoor_ladder 85 73 60
+mcl_doors:dark_oak_trapdoor_open 85 73 60
+mcl_doors:iron_door_b_1 204 204 204 96
+mcl_doors:iron_door_b_2 204 204 204 96
+mcl_doors:iron_door_b_3 210 210 210
+mcl_doors:iron_door_b_4 204 204 204 96
+mcl_doors:iron_door_t_1 206 206 206 96
+mcl_doors:iron_door_t_2 206 206 206 96
+mcl_doors:iron_door_t_3 206 206 206 96
+mcl_doors:iron_door_t_4 206 206 206 96
 mcl_doors:iron_trapdoor 149 140 140
-mcl_doors:iron_trapdoor_ladder 149 140 140
-mcl_doors:iron_trapdoor_open 149 140 140
-mcl_doors:jungle_door_t_1 120 81 57 95
-mcl_doors:jungle_door_t_2 120 81 57 95
-mcl_doors:jungle_door_t_3 120 81 57 95
-mcl_doors:jungle_door_t_4 120 81 57 95
-mcl_doors:jungle_trapdoor 103 70 52
-mcl_doors:jungle_trapdoor_ladder 121 87 62
-mcl_doors:jungle_trapdoor_open 121 87 62
-mcl_doors:spruce_door_t_1 80 58 45 95
-mcl_doors:spruce_door_t_2 80 58 45 95
-mcl_doors:spruce_door_t_3 80 58 45 95
-mcl_doors:spruce_door_t_4 80 58 45 95
-mcl_doors:spruce_trapdoor 71 57 46
-mcl_doors:spruce_trapdoor_ladder 73 59 47
-mcl_doors:spruce_trapdoor_open 73 59 47
+mcl_doors:iron_trapdoor_ladder 150 140 140
+mcl_doors:iron_trapdoor_open 150 140 140
+mcl_doors:jungle_door_b_1 115 79 58 96
+mcl_doors:jungle_door_b_2 115 79 58 96
+mcl_doors:jungle_door_b_3 122 82 58
+mcl_doors:jungle_door_b_4 115 79 58 96
+mcl_doors:jungle_door_t_1 121 81 58 96
+mcl_doors:jungle_door_t_2 121 81 58 96
+mcl_doors:jungle_door_t_3 121 81 58 96
+mcl_doors:jungle_door_t_4 121 81 58 96
+mcl_doors:jungle_trapdoor 104 71 52
+mcl_doors:jungle_trapdoor_ladder 122 87 62
+mcl_doors:jungle_trapdoor_open 122 87 62
+mcl_doors:spruce_door_b_1 80 59 46 96
+mcl_doors:spruce_door_b_2 80 59 46 96
+mcl_doors:spruce_door_b_3 74 55 44
+mcl_doors:spruce_door_b_4 80 59 46 96
+mcl_doors:spruce_door_t_1 80 59 46 96
+mcl_doors:spruce_door_t_2 80 59 46 96
+mcl_doors:spruce_door_t_3 80 59 46 96
+mcl_doors:spruce_door_t_4 80 59 46 96
+mcl_doors:spruce_trapdoor 71 57 47
+mcl_doors:spruce_trapdoor_ladder 74 59 48
+mcl_doors:spruce_trapdoor_open 74 59 48
 mcl_doors:trapdoor 98 75 59
 mcl_doors:trapdoor_ladder 113 86 67
 mcl_doors:trapdoor_open 113 86 67
-mcl_doors:wooden_door_t_1 98 74 56 95
-mcl_doors:wooden_door_t_2 98 74 56 95
-mcl_doors:wooden_door_t_3 98 74 56 95
-mcl_doors:wooden_door_t_4 98 74 56 95
+mcl_doors:wooden_door_b_1 98 74 57 96
+mcl_doors:wooden_door_b_2 98 74 57 96
+mcl_doors:wooden_door_b_3 100 76 58
+mcl_doors:wooden_door_b_4 98 74 57 96
+mcl_doors:wooden_door_t_1 98 74 57 96
+mcl_doors:wooden_door_t_2 98 74 57 96
+mcl_doors:wooden_door_t_3 98 74 57 96
+mcl_doors:wooden_door_t_4 98 74 57 96
 
 # mcl_droppers
 mcl_droppers:dropper 148 138 133
 mcl_droppers:dropper_down 148 138 133
-mcl_droppers:dropper_up 118 108 103
+mcl_droppers:dropper_up 119 109 104
 
 # mcl_enchanting
-mcl_enchanting:table 88 86 84
+mcl_enchanting:table 89 86 84
 
 # mcl_end
-mcl_end:chorus_flower 92 92 125
-mcl_end:chorus_flower_dead 82 79 118
-mcl_end:chorus_plant 78 73 115
-mcl_end:dragon_egg 55 34 32
-mcl_end:end_bricks 194 187 123
+mcl_end:chorus_flower 92 92 126
+mcl_end:chorus_flower_dead 83 79 119
+mcl_end:chorus_plant 79 73 115
+mcl_end:dragon_egg 55 34 33
+mcl_end:end_bricks 194 188 123
 mcl_end:end_rod 216 174 160
-mcl_end:end_rod_black 216 174 160
-mcl_end:end_rod_blue 216 174 160
-mcl_end:end_rod_brown 216 174 160
-mcl_end:end_rod_cyan 216 174 160
-mcl_end:end_rod_green 216 174 160
-mcl_end:end_rod_grey 216 174 160
-mcl_end:end_rod_lightblue 216 174 160
-mcl_end:end_rod_lime 216 174 160
-mcl_end:end_rod_magenta 216 174 160
-mcl_end:end_rod_orange 216 174 160
-mcl_end:end_rod_pink 216 174 160
-mcl_end:end_rod_purple 216 174 160
-mcl_end:end_rod_red 216 174 160
-mcl_end:end_rod_silver 216 174 160
-mcl_end:end_rod_white 216 174 160
-mcl_end:end_rod_yellow 216 174 160
+mcl_end:end_rod_black 0 0 0
+mcl_end:end_rod_blue 0 0 255
+mcl_end:end_rod_brown 255 0 0
+mcl_end:end_rod_cyan 0 255 255
+mcl_end:end_rod_green 0 235 0
+mcl_end:end_rod_grey 109 109 109
+mcl_end:end_rod_lightblue 155 191 138
+mcl_end:end_rod_lime 0 255 0
+mcl_end:end_rod_magenta 255 0 255
+mcl_end:end_rod_orange 255 79 0
+mcl_end:end_rod_pink 255 80 29
+mcl_end:end_rod_purple 255 0 221
+mcl_end:end_rod_red 255 0 0
+mcl_end:end_rod_silver 164 164 164
+mcl_end:end_rod_white 219 219 219
+mcl_end:end_rod_yellow 255 238 0
 mcl_end:end_stone 221 214 130
-mcl_end:purpur_block 161 111 175
-mcl_end:purpur_pillar 159 110 173
+mcl_end:purpur_block 161 112 175
+mcl_end:purpur_pillar 160 111 174
 
 # mcl_farming
-mcl_farming:beetroot 73 105 71 167
-mcl_farming:beetroot_0 56 122 75 31
-mcl_farming:beetroot_1 54 118 72 87
-mcl_farming:beetroot_2 54 119 73 117
-mcl_farming:carrot 93 105 58 145
-mcl_farming:carrot_1 75 112 61 33
-mcl_farming:carrot_2 75 112 61 33
-mcl_farming:carrot_3 72 108 58 61
-mcl_farming:carrot_4 72 108 58 61
-mcl_farming:carrot_5 70 107 57 103
-mcl_farming:carrot_6 70 107 57 103
-mcl_farming:carrot_7 70 107 57 103
-mcl_farming:hay_block 154 116 81
-mcl_farming:melon 58 80 33
-mcl_farming:melontige_unconnect 96 96 96 55
+mcl_farming:beetroot 73 105 72 167
+mcl_farming:beetroot_0 56 122 76 32
+mcl_farming:beetroot_1 54 119 73 88
+mcl_farming:beetroot_2 55 120 74 118
+mcl_farming:carrot 94 105 58 145
+mcl_farming:carrot_1 75 112 61 34
+mcl_farming:carrot_2 75 112 61 34
+mcl_farming:carrot_3 72 109 58 62
+mcl_farming:carrot_4 72 109 58 62
+mcl_farming:carrot_5 71 108 58 104
+mcl_farming:carrot_6 71 108 58 104
+mcl_farming:carrot_7 71 108 58 104
+mcl_farming:hay_block 154 116 82
+mcl_farming:melon 59 80 34
+mcl_farming:melontige_1 80 134 80 4
+mcl_farming:melontige_2 89 130 71 12
+mcl_farming:melontige_3 106 133 70 20
+mcl_farming:melontige_4 120 133 65 34
+mcl_farming:melontige_5 134 133 62 44
+mcl_farming:melontige_6 149 134 58 48
+mcl_farming:melontige_7 162 132 53 54
+mcl_farming:melontige_linked_b 174 131 47 54
+mcl_farming:melontige_linked_l 174 131 47 88
+mcl_farming:melontige_linked_r 174 131 47 54
+mcl_farming:melontige_linked_t 174 131 47 88
+mcl_farming:melontige_unconnect 175 132 48 56
 mcl_farming:potato 82 106 57 163
-mcl_farming:potato_1 73 119 65 37
-mcl_farming:potato_2 73 119 65 37
-mcl_farming:potato_3 69 113 61 71
-mcl_farming:potato_4 69 113 61 71
-mcl_farming:potato_5 72 116 62 115
-mcl_farming:potato_6 72 116 62 115
-mcl_farming:potato_7 72 116 62 115
-mcl_farming:pumpkin 172 87 40
-mcl_farming:pumpkin_face 172 87 40
-mcl_farming:pumpkin_face_light 172 87 40
-mcl_farming:pumpkintige_unconnect 96 96 96 55
-mcl_farming:soil 101 80 68
-mcl_farming:soil_wet 69 55 46
-mcl_farming:sweet_berry_bush_0 42 83 38 149
+mcl_farming:potato_1 74 119 65 38
+mcl_farming:potato_2 74 119 65 38
+mcl_farming:potato_3 70 113 62 72
+mcl_farming:potato_4 70 113 62 72
+mcl_farming:potato_5 72 117 63 116
+mcl_farming:potato_6 72 117 63 116
+mcl_farming:potato_7 72 117 63 116
+mcl_farming:pumpkin 172 87 41
+mcl_farming:pumpkin_1 80 134 80 4
+mcl_farming:pumpkin_2 89 130 71 12
+mcl_farming:pumpkin_3 106 133 70 20
+mcl_farming:pumpkin_4 120 133 65 34
+mcl_farming:pumpkin_5 134 133 62 44
+mcl_farming:pumpkin_6 149 134 58 48
+mcl_farming:pumpkin_7 162 132 53 54
+mcl_farming:pumpkin_face 172 87 41
+mcl_farming:pumpkin_face_light 172 87 41
+mcl_farming:pumpkintige_linked_b 174 131 47 54
+mcl_farming:pumpkintige_linked_l 174 131 47 88
+mcl_farming:pumpkintige_linked_r 174 131 47 54
+mcl_farming:pumpkintige_linked_t 174 131 47 88
+mcl_farming:pumpkintige_unconnect 175 132 48 56
+mcl_farming:soil 102 80 68
+mcl_farming:soil_wet 70 55 47
+mcl_farming:sweet_berry_bush_0 42 84 38 149
 mcl_farming:sweet_berry_bush_1 41 84 37 175
-mcl_farming:sweet_berry_bush_2 71 79 39
-mcl_farming:sweet_berry_bush_3 87 75 40
-mcl_farming:wheat 165 116 75 143
-mcl_farming:wheat_1 53 101 46 53
-mcl_farming:wheat_2 49 97 45 77
-mcl_farming:wheat_3 49 97 45 93
-mcl_farming:wheat_4 64 113 52 105
-mcl_farming:wheat_5 86 129 65 115
-mcl_farming:wheat_6 101 142 66 129
-mcl_farming:wheat_7 145 145 69 133
+mcl_farming:sweet_berry_bush_2 71 80 40
+mcl_farming:sweet_berry_bush_3 88 76 41
+mcl_farming:wheat 165 117 76 143
+mcl_farming:wheat_1 53 102 47 54
+mcl_farming:wheat_2 50 98 45 78
+mcl_farming:wheat_3 50 97 45 94
+mcl_farming:wheat_4 65 114 52 106
+mcl_farming:wheat_5 86 129 65 116
+mcl_farming:wheat_6 101 143 66 129
+mcl_farming:wheat_7 146 146 69 133
 
 # mcl_fences
 mcl_fences:acacia_fence 152 99 68
@@ -806,98 +898,132 @@ mcl_fences:acacia_fence_gate_open 152 99 68
 mcl_fences:birch_fence 151 119 93
 mcl_fences:birch_fence_gate 151 119 93
 mcl_fences:birch_fence_gate_open 151 119 93
-mcl_fences:dark_oak_fence 83 71 59
-mcl_fences:dark_oak_fence_gate 83 71 59
-mcl_fences:dark_oak_fence_gate_open 83 71 59
-mcl_fences:fence 108 83 64
-mcl_fences:fence_gate 108 83 64
-mcl_fences:fence_gate_open 108 83 64
-mcl_fences:jungle_fence 115 80 60
-mcl_fences:jungle_fence_gate 115 80 60
-mcl_fences:jungle_fence_gate_open 115 80 60
-mcl_fences:nether_brick_fence 49 24 24
-mcl_fences:spruce_fence 84 67 54
-mcl_fences:spruce_fence_gate 84 67 54
-mcl_fences:spruce_fence_gate_open 84 67 54
+mcl_fences:dark_oak_fence 84 72 59
+mcl_fences:dark_oak_fence_gate 84 72 59
+mcl_fences:dark_oak_fence_gate_open 84 72 59
+mcl_fences:fence 108 83 65
+mcl_fences:fence_gate 108 83 65
+mcl_fences:fence_gate_open 108 83 65
+mcl_fences:jungle_fence 115 81 60
+mcl_fences:jungle_fence_gate 115 81 60
+mcl_fences:jungle_fence_gate_open 115 81 60
+mcl_fences:nether_brick_fence 49 24 25
+mcl_fences:spruce_fence 85 68 55
+mcl_fences:spruce_fence_gate 85 68 55
+mcl_fences:spruce_fence_gate_open 85 68 55
 
 # mcl_fire
-mcl_fire:eternal_fire 206 98 34 175
-mcl_fire:fire 206 98 34 175
+mcl_fire:eternal_fire 206 98 35 175
+mcl_fire:fire 206 98 35 175
 
 # mcl_fletching_table
-mcl_fletching_table:fletching_table 172 109 63
+mcl_fletching_table:fletching_table 173 110 63
 
 # mcl_flowerpots
-mcl_flowerpots:flower_pot 120 55 47 159
-mcl_flowerpots:flower_pot_bamboo_plant 97 77 43
-mcl_flowerpots:flower_pot_cactus 109 83 52
+mcl_flowerpots:flower_pot 120 56 48 160
+mcl_flowerpots:flower_pot_acaciasapling 118 63 50 160
+mcl_flowerpots:flower_pot_allium 120 64 61 160
+mcl_flowerpots:flower_pot_azure_bluet 116 67 57 160
+mcl_flowerpots:flower_pot_bamboo_plant 98 78 43
+mcl_flowerpots:flower_pot_birchsapling 109 71 55 160
+mcl_flowerpots:flower_pot_blue_orchid 101 65 58 160
+mcl_flowerpots:flower_pot_cactus 110 84 52
+mcl_flowerpots:flower_pot_cherrysapling 130 64 71 160
+mcl_flowerpots:flower_pot_cornflower 104 63 61 160
+mcl_flowerpots:flower_pot_crimson_fungus 134 59 45 160
+mcl_flowerpots:flower_pot_crimson_roots 121 50 45 160
+mcl_flowerpots:flower_pot_dandelion 119 64 49 160
+mcl_flowerpots:flower_pot_darksapling 104 67 58 160
+mcl_flowerpots:flower_pot_deadbush 120 63 52 160
+mcl_flowerpots:flower_pot_fern 91 68 44 173
+mcl_flowerpots:flower_pot_junglesapling 105 65 45 160
+mcl_flowerpots:flower_pot_lily_of_the_valley 120 65 56 160
+mcl_flowerpots:flower_pot_mushroom_brown 120 59 49 160
+mcl_flowerpots:flower_pot_mushroom_red 126 56 49 160
+mcl_flowerpots:flower_pot_oxeye_daisy 122 70 58 160
+mcl_flowerpots:flower_pot_poppy 116 57 47 160
+mcl_flowerpots:flower_pot_propagule 114 63 47 160
+mcl_flowerpots:flower_pot_sapling 100 68 47 160
+mcl_flowerpots:flower_pot_sprucesapling 106 60 49 160
+mcl_flowerpots:flower_pot_tulip_orange 118 60 48 160
+mcl_flowerpots:flower_pot_tulip_pink 117 63 54 160
+mcl_flowerpots:flower_pot_tulip_red 113 56 47 160
+mcl_flowerpots:flower_pot_tulip_white 119 64 53 160
+mcl_flowerpots:flower_pot_warped_fungus 111 56 92 160
+mcl_flowerpots:flower_pot_warped_roots 112 62 71 160
+mcl_flowerpots:flower_pot_wither_rose 107 56 46 160
 
 # mcl_flowers
-mcl_flowers:allium 120 116 144 39
-mcl_flowers:azure_bluet 97 114 98 115
-mcl_flowers:blue_orchid 46 91 86 115
-mcl_flowers:clover 60 101 53 53
-mcl_flowers:cornflower 46 87 109 101
-mcl_flowers:dandelion 111 111 55 83
-mcl_flowers:double_fern 60 100 52 117
-mcl_flowers:double_fern_top 63 106 54 151
-mcl_flowers:double_grass 64 108 55
-mcl_flowers:double_grass_top 66 111 57 143
+mcl_flowers:allium 120 117 145 40
+mcl_flowers:azure_bluet 97 114 99 116
+mcl_flowers:blue_orchid 46 91 86 116
+mcl_flowers:clover 61 102 53 54
+mcl_flowers:cornflower 47 88 109 102
+mcl_flowers:dandelion 112 112 56 84
+mcl_flowers:double_fern 60 100 52 118
+mcl_flowers:double_fern_top 64 106 55 151
+mcl_flowers:double_grass 65 108 56
+mcl_flowers:double_grass_top 67 112 58 143
 mcl_flowers:fern 61 102 53
-mcl_flowers:fourleaf_clover 63 106 55 155
-mcl_flowers:lilac 63 77 60 137
-mcl_flowers:lilac_top 95 90 98 123
-mcl_flowers:lily_of_the_valley 116 134 115 55
-mcl_flowers:oxeye_daisy 130 139 110 79
-mcl_flowers:peony 82 83 73 141
-mcl_flowers:peony_top 90 84 81 139
-mcl_flowers:poppy 96 59 43 91
-mcl_flowers:rose_bush 78 63 41 147
-mcl_flowers:rose_bush_top 81 69 45 61
-mcl_flowers:sunflower 45 76 40 99
-mcl_flowers:tallgrass 64 108 56 175
-mcl_flowers:tulip_orange 106 84 51 59
-mcl_flowers:tulip_pink 100 99 90 53
-mcl_flowers:tulip_red 82 57 43 57
-mcl_flowers:tulip_white 106 122 95 59
-mcl_flowers:waterlily 145 135 117 83
-mcl_flowers:wither_rose 40 57 38 51
+mcl_flowers:fourleaf_clover 64 107 56 155
+mcl_flowers:lilac 64 78 61 137
+mcl_flowers:lilac_top 95 91 99 124
+mcl_flowers:lily_of_the_valley 116 134 115 56
+mcl_flowers:oxeye_daisy 130 139 111 80
+mcl_flowers:peony 83 83 73 141
+mcl_flowers:peony_top 91 85 81 139
+mcl_flowers:poppy 97 60 43 92
+mcl_flowers:rose_bush 79 64 42 147
+mcl_flowers:rose_bush_top 81 69 46 62
+mcl_flowers:sunflower 46 76 40 100
+mcl_flowers:tallgrass 65 109 56 175
+mcl_flowers:tulip_orange 106 85 51 60
+mcl_flowers:tulip_pink 100 100 90 54
+mcl_flowers:tulip_red 83 58 44 58
+mcl_flowers:tulip_white 107 123 96 60
+mcl_flowers:waterlily 18 68 22 84
+mcl_flowers:wither_rose 40 57 38 52
 
 # mcl_furnaces
 mcl_furnaces:furnace 148 138 133
 mcl_furnaces:furnace_active 148 138 133
 
 # mcl_grindstone
-mcl_grindstone:grindstone 210 208 207
+mcl_grindstone:grindstone 210 209 208
 
 # mcl_heads
 mcl_heads:skeleton 125 125 125
-mcl_heads:stalker 180 195 168
-mcl_heads:steve 108 76 59
+mcl_heads:skeleton_wall 128 128 128 175
+mcl_heads:stalker 181 195 168
+mcl_heads:stalker_wall 177 199 177
+mcl_heads:steve 108 76 60
+mcl_heads:steve_wall 108 77 60
 mcl_heads:wither_skeleton 50 50 50
-mcl_heads:zombie 68 106 70
+mcl_heads:wither_skeleton_wall 51 51 51 175
+mcl_heads:zombie 68 106 71
+mcl_heads:zombie_wall 71 109 73
 
 # mcl_honey
-mcl_honey:honey_block 220 138 15 189
-mcl_honey:honeycomb_block 224 137 17
+mcl_honey:honey_block 220 138 16 189
+mcl_honey:honeycomb_block 225 138 17
 
 # mcl_hoppers
-mcl_hoppers:hopper 50 50 50
-mcl_hoppers:hopper_disabled 50 50 50
-mcl_hoppers:hopper_side 50 50 50
-mcl_hoppers:hopper_side_disabled 50 50 50
+mcl_hoppers:hopper 49 49 49
+mcl_hoppers:hopper_disabled 49 49 49
+mcl_hoppers:hopper_side 49 49 49
+mcl_hoppers:hopper_side_disabled 49 49 49
 
 # mcl_itemframes
-mcl_itemframes:glow_item_frame 176 125 76
+mcl_itemframes:glow_item_frame 176 126 76
 mcl_itemframes:item_frame 123 90 63
 
 # mcl_jukebox
 mcl_jukebox:jukebox 72 56 44
 
 # mcl_lanterns
-mcl_lanterns:chain 40 40 40 55
-mcl_lanterns:lantern_ceiling 72 59 48 105
-mcl_lanterns:lantern_floor 72 59 48 105
+mcl_lanterns:chain 41 41 41 56
+mcl_lanterns:lantern_ceiling 73 59 48 105
+mcl_lanterns:lantern_floor 73 59 48 105
 mcl_lanterns:soul_lantern_ceiling 50 67 68 105
 mcl_lanterns:soul_lantern_floor 50 67 68 105
 
@@ -905,101 +1031,105 @@ mcl_lanterns:soul_lantern_floor 50 67 68 105
 mcl_lectern:lectern 124 86 60
 
 # mcl_lightning_rods
-mcl_lightning_rods:rod 127 67 49 39
-mcl_lightning_rods:rod_powered 127 67 49 39
+mcl_lightning_rods:rod 128 67 49 40
+mcl_lightning_rods:rod_powered 191 161 152 40
 
 # mcl_loom
 mcl_loom:loom 110 93 85
 
 # mcl_mangrove
-mcl_mangrove:hanging_propagule_1 77 97 47 53
-mcl_mangrove:mangrove_door_t_1 129 52 47 95
-mcl_mangrove:mangrove_door_t_2 129 52 47 95
-mcl_mangrove:mangrove_door_t_3 129 52 47 95
-mcl_mangrove:mangrove_door_t_4 129 52 47 95
-mcl_mangrove:mangrove_mud_roots 66 61 58
-mcl_mangrove:mangrove_roots 96 74 49 179
+mcl_mangrove:hanging_propagule_1 77 97 47 54
+mcl_mangrove:mangrove_door_b_1 130 50 46 96
+mcl_mangrove:mangrove_door_b_2 130 50 46 96
+mcl_mangrove:mangrove_door_b_3 134 51 46
+mcl_mangrove:mangrove_door_b_4 130 50 46 96
+mcl_mangrove:mangrove_door_t_1 130 53 48 96
+mcl_mangrove:mangrove_door_t_2 130 53 48 96
+mcl_mangrove:mangrove_door_t_3 130 53 48 96
+mcl_mangrove:mangrove_door_t_4 130 53 48 96
+mcl_mangrove:mangrove_mud_roots 87 71 52
+mcl_mangrove:mangrove_roots 97 75 49 179
 mcl_mangrove:mangrove_stripped 126 62 56
-mcl_mangrove:mangrove_stripped_bark 140 68 57
-mcl_mangrove:mangrove_trapdoor 121 60 55
-mcl_mangrove:mangrove_trapdoor_ladder 122 60 54 95
-mcl_mangrove:mangrove_trapdoor_open 122 60 54 95
-mcl_mangrove:mangrove_tree 122 66 54
-mcl_mangrove:mangrove_tree_bark 87 67 46
-mcl_mangrove:mangrove_wood 123 60 54
-mcl_mangrove:mangrove_wood_fence 123 60 54
-mcl_mangrove:mangrove_wood_fence_gate 123 60 54
-mcl_mangrove:mangrove_wood_fence_gate_open 123 60 54
-mcl_mangrove:mangroveleaves 48 83 50
-mcl_mangrove:mangroveleaves_orphan 48 83 50
-mcl_mangrove:propagule 70 113 46 31
-mcl_mangrove:propagule_clay 124 124 124
-mcl_mangrove:propagule_coarse_dirt 117 92 76
-mcl_mangrove:propagule_dirt 108 83 70
-mcl_mangrove:propagule_mud 66 61 58
-mcl_mangrove:river_water_logged_roots 143 143 143 185
+mcl_mangrove:mangrove_stripped_bark 141 68 57
+mcl_mangrove:mangrove_trapdoor 122 60 55
+mcl_mangrove:mangrove_trapdoor_ladder 122 60 55 96
+mcl_mangrove:mangrove_trapdoor_open 122 60 55 96
+mcl_mangrove:mangrove_tree 123 66 55
+mcl_mangrove:mangrove_tree_bark 87 68 47
+mcl_mangrove:mangrove_wood 124 61 55
+mcl_mangrove:mangrove_wood_fence 124 61 55
+mcl_mangrove:mangrove_wood_fence_gate 124 61 55
+mcl_mangrove:mangrove_wood_fence_gate_open 124 61 55
+mcl_mangrove:mangroveleaves 48 84 50
+mcl_mangrove:mangroveleaves_orphan 48 84 50
+mcl_mangrove:propagule 70 113 46 32
+mcl_mangrove:propagule_clay 125 125 125
+mcl_mangrove:propagule_coarse_dirt 117 92 77
+mcl_mangrove:propagule_dirt 109 84 70
+mcl_mangrove:propagule_mud 66 62 58
+mcl_mangrove:river_water_logged_roots 72 74 74
 mcl_mangrove:water_logged_roots 143 143 143 185
 
 # mcl_maps
-mcl_maps:filled_map_character_male_crea 115 70 58
-mcl_maps:filled_map_character_male_surv 115 70 58
-mcl_maps:filled_map_mcl_skins_base_18D471DFF_female_crea 0 0 0
-mcl_maps:filled_map_mcl_skins_base_18D471DFF_female_surv 0 0 0
-mcl_maps:filled_map_mcl_skins_base_18D471DFF_male_crea 0 0 0
-mcl_maps:filled_map_mcl_skins_base_18D471DFF_male_surv 0 0 0
-mcl_maps:filled_map_mcl_skins_base_1B47A57FF_female_crea 0 0 0
-mcl_maps:filled_map_mcl_skins_base_1B47A57FF_female_surv 0 0 0
-mcl_maps:filled_map_mcl_skins_base_1B47A57FF_male_crea 0 0 0
-mcl_maps:filled_map_mcl_skins_base_1B47A57FF_male_surv 0 0 0
-mcl_maps:filled_map_mcl_skins_base_1EEB592FF_female_crea 0 0 0
-mcl_maps:filled_map_mcl_skins_base_1EEB592FF_female_surv 0 0 0
-mcl_maps:filled_map_mcl_skins_base_1EEB592FF_male_crea 0 0 0
-mcl_maps:filled_map_mcl_skins_base_1EEB592FF_male_surv 0 0 0
-mcl_maps:filled_map_mcl_skins_character_1_female_crea 93 90 77
-mcl_maps:filled_map_mcl_skins_character_1_female_surv 93 90 77
+mcl_maps:filled_map_character_male_crea 116 71 58
+mcl_maps:filled_map_character_male_surv 116 71 58
+mcl_maps:filled_map_mcl_skins_base_18D471DFF_female_crea 135 68 28
+mcl_maps:filled_map_mcl_skins_base_18D471DFF_female_surv 135 68 28
+mcl_maps:filled_map_mcl_skins_base_18D471DFF_male_crea 135 68 28
+mcl_maps:filled_map_mcl_skins_base_18D471DFF_male_surv 135 68 28
+mcl_maps:filled_map_mcl_skins_base_1B47A57FF_female_crea 173 117 84
+mcl_maps:filled_map_mcl_skins_base_1B47A57FF_female_surv 173 117 84
+mcl_maps:filled_map_mcl_skins_base_1B47A57FF_male_crea 173 117 84
+mcl_maps:filled_map_mcl_skins_base_1B47A57FF_male_surv 173 117 84
+mcl_maps:filled_map_mcl_skins_base_1EEB592FF_female_crea 228 174 140
+mcl_maps:filled_map_mcl_skins_base_1EEB592FF_female_surv 228 174 140
+mcl_maps:filled_map_mcl_skins_base_1EEB592FF_male_crea 228 174 140
+mcl_maps:filled_map_mcl_skins_base_1EEB592FF_male_surv 228 174 140
+mcl_maps:filled_map_mcl_skins_character_1_female_crea 93 91 78
+mcl_maps:filled_map_mcl_skins_character_1_female_surv 93 91 78
 
 # mcl_meshhand
-mcl_meshhand:character_male_crea 115 70 58
-mcl_meshhand:character_male_surv 115 70 58
-mcl_meshhand:mcl_skins_base_18D471DFF_female_crea 0 0 0
-mcl_meshhand:mcl_skins_base_18D471DFF_female_surv 0 0 0
-mcl_meshhand:mcl_skins_base_18D471DFF_male_crea 0 0 0
-mcl_meshhand:mcl_skins_base_18D471DFF_male_surv 0 0 0
-mcl_meshhand:mcl_skins_base_1B47A57FF_female_crea 0 0 0
-mcl_meshhand:mcl_skins_base_1B47A57FF_female_surv 0 0 0
-mcl_meshhand:mcl_skins_base_1B47A57FF_male_crea 0 0 0
-mcl_meshhand:mcl_skins_base_1B47A57FF_male_surv 0 0 0
-mcl_meshhand:mcl_skins_base_1EEB592FF_female_crea 0 0 0
-mcl_meshhand:mcl_skins_base_1EEB592FF_female_surv 0 0 0
-mcl_meshhand:mcl_skins_base_1EEB592FF_male_crea 0 0 0
-mcl_meshhand:mcl_skins_base_1EEB592FF_male_surv 0 0 0
-mcl_meshhand:mcl_skins_character_1_female_crea 93 90 77
-mcl_meshhand:mcl_skins_character_1_female_surv 93 90 77
+mcl_meshhand:character_male_crea 116 71 58
+mcl_meshhand:character_male_surv 116 71 58
+mcl_meshhand:mcl_skins_base_18D471DFF_female_crea 135 68 28
+mcl_meshhand:mcl_skins_base_18D471DFF_female_surv 135 68 28
+mcl_meshhand:mcl_skins_base_18D471DFF_male_crea 135 68 28
+mcl_meshhand:mcl_skins_base_18D471DFF_male_surv 135 68 28
+mcl_meshhand:mcl_skins_base_1B47A57FF_female_crea 173 117 84
+mcl_meshhand:mcl_skins_base_1B47A57FF_female_surv 173 117 84
+mcl_meshhand:mcl_skins_base_1B47A57FF_male_crea 173 117 84
+mcl_meshhand:mcl_skins_base_1B47A57FF_male_surv 173 117 84
+mcl_meshhand:mcl_skins_base_1EEB592FF_female_crea 228 174 140
+mcl_meshhand:mcl_skins_base_1EEB592FF_female_surv 228 174 140
+mcl_meshhand:mcl_skins_base_1EEB592FF_male_crea 228 174 140
+mcl_meshhand:mcl_skins_base_1EEB592FF_male_surv 228 174 140
+mcl_meshhand:mcl_skins_character_1_female_crea 93 91 78
+mcl_meshhand:mcl_skins_character_1_female_surv 93 91 78
 
 # mcl_minecarts
-mcl_minecarts:activator_rail 78 64 56 149
-mcl_minecarts:activator_rail_on 86 62 54 149
-mcl_minecarts:detector_rail 85 74 67 167
-mcl_minecarts:detector_rail_on 87 74 67 167
-mcl_minecarts:golden_rail 92 77 60 148
-mcl_minecarts:golden_rail_on 94 77 60 148
-mcl_minecarts:rail 83 70 61 123
+mcl_minecarts:activator_rail 79 64 56 149
+mcl_minecarts:activator_rail_on 87 63 55 149
+mcl_minecarts:detector_rail 86 75 68 167
+mcl_minecarts:detector_rail_on 88 74 67 167
+mcl_minecarts:golden_rail 92 78 61 148
+mcl_minecarts:golden_rail_on 95 78 60 148
+mcl_minecarts:rail 84 71 61 124
 
 # mcl_mobspawners
 mcl_mobspawners:spawner 40 40 40 167
 
 # mcl_monster_eggs
-mcl_monster_eggs:monster_egg_cobble 113 106 104
-mcl_monster_eggs:monster_egg_stone 130 122 118
-mcl_monster_eggs:monster_egg_stonebrick 97 89 86
-mcl_monster_eggs:monster_egg_stonebrickcarved 97 90 85
-mcl_monster_eggs:monster_egg_stonebrickcracked 94 87 83
-mcl_monster_eggs:monster_egg_stonebrickmossy 81 101 76
+mcl_monster_eggs:monster_egg_cobble 113 107 104
+mcl_monster_eggs:monster_egg_stone 131 123 118
+mcl_monster_eggs:monster_egg_stonebrick 97 90 86
+mcl_monster_eggs:monster_egg_stonebrickcarved 98 90 86
+mcl_monster_eggs:monster_egg_stonebrickcracked 95 87 83
+mcl_monster_eggs:monster_egg_stonebrickmossy 81 102 76
 
 # mcl_mud
-mcl_mud:mud 66 61 58
-mcl_mud:mud_bricks 108 95 86
-mcl_mud:packed_mud 102 90 83
+mcl_mud:mud 66 62 58
+mcl_mud:mud_bricks 109 96 87
+mcl_mud:packed_mud 103 90 83
 
 # mcl_mushrooms
 mcl_mushrooms:brown_mushroom_block_cap_000000 218 175 136
@@ -1034,42 +1164,42 @@ mcl_mushrooms:brown_mushroom_block_cap_011100 218 175 136
 mcl_mushrooms:brown_mushroom_block_cap_011101 218 175 136
 mcl_mushrooms:brown_mushroom_block_cap_011110 218 175 136
 mcl_mushrooms:brown_mushroom_block_cap_011111 218 175 136
-mcl_mushrooms:brown_mushroom_block_cap_100000 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_100001 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_100010 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_100011 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_100100 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_100101 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_100110 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_100111 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_101000 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_101001 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_101010 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_101011 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_101100 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_101101 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_101110 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_101111 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_110000 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_110001 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_110010 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_110011 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_110100 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_110101 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_110110 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_110111 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_111000 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_111001 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_111010 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_111011 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_111100 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_111101 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_111110 131 86 68
-mcl_mushrooms:brown_mushroom_block_cap_111111 131 86 68
+mcl_mushrooms:brown_mushroom_block_cap_100000 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_100001 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_100010 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_100011 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_100100 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_100101 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_100110 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_100111 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_101000 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_101001 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_101010 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_101011 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_101100 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_101101 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_101110 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_101111 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_110000 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_110001 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_110010 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_110011 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_110100 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_110101 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_110110 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_110111 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_111000 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_111001 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_111010 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_111011 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_111100 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_111101 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_111110 132 87 68
+mcl_mushrooms:brown_mushroom_block_cap_111111 132 87 68
 mcl_mushrooms:brown_mushroom_block_stem 218 175 136
-mcl_mushrooms:brown_mushroom_block_stem_full 204 183 149
-mcl_mushrooms:mushroom_brown 121 81 59 55
-mcl_mushrooms:mushroom_red 169 59 58 67
+mcl_mushrooms:brown_mushroom_block_stem_full 205 183 149
+mcl_mushrooms:mushroom_brown 122 81 60 56
+mcl_mushrooms:mushroom_red 170 59 59 68
 mcl_mushrooms:red_mushroom_block_cap_000000 218 175 136
 mcl_mushrooms:red_mushroom_block_cap_000001 218 175 136
 mcl_mushrooms:red_mushroom_block_cap_000010 218 175 136
@@ -1102,903 +1232,904 @@ mcl_mushrooms:red_mushroom_block_cap_011100 218 175 136
 mcl_mushrooms:red_mushroom_block_cap_011101 218 175 136
 mcl_mushrooms:red_mushroom_block_cap_011110 218 175 136
 mcl_mushrooms:red_mushroom_block_cap_011111 218 175 136
-mcl_mushrooms:red_mushroom_block_cap_100000 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_100001 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_100010 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_100011 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_100100 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_100101 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_100110 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_100111 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_101000 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_101001 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_101010 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_101011 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_101100 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_101101 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_101110 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_101111 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_110000 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_110001 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_110010 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_110011 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_110100 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_110101 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_110110 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_110111 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_111000 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_111001 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_111010 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_111011 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_111100 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_111101 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_111110 137 39 25
-mcl_mushrooms:red_mushroom_block_cap_111111 137 39 25
+mcl_mushrooms:red_mushroom_block_cap_100000 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_100001 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_100010 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_100011 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_100100 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_100101 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_100110 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_100111 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_101000 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_101001 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_101010 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_101011 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_101100 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_101101 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_101110 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_101111 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_110000 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_110001 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_110010 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_110011 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_110100 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_110101 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_110110 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_110111 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_111000 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_111001 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_111010 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_111011 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_111100 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_111101 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_111110 138 40 26
+mcl_mushrooms:red_mushroom_block_cap_111111 138 40 26
 mcl_mushrooms:red_mushroom_block_stem 218 175 136
-mcl_mushrooms:red_mushroom_block_stem_full 204 183 149
+mcl_mushrooms:red_mushroom_block_stem_full 205 183 149
 
 # mcl_nether
-mcl_nether:ancient_debris 57 52 47
-mcl_nether:glowstone 202 154 96
-mcl_nether:magma 85 33 27
-mcl_nether:nether_brick 49 23 24
+mcl_nether:ancient_debris 57 52 48
+mcl_nether:glowstone 203 154 97
+mcl_nether:magma 86 34 27
+mcl_nether:nether_brick 49 24 25
 mcl_nether:nether_lava_flowing 177 42 16
 mcl_nether:nether_lava_source 180 45 17
-mcl_nether:nether_wart 106 57 53 147
-mcl_nether:nether_wart_0 53 41 38 69
-mcl_nether:nether_wart_1 86 54 51 115
-mcl_nether:nether_wart_2 86 54 51 115
+mcl_nether:nether_wart 107 57 53 147
+mcl_nether:nether_wart_0 54 41 38 70
+mcl_nether:nether_wart_1 86 55 51 116
+mcl_nether:nether_wart_2 86 55 51 116
 mcl_nether:nether_wart_block 175 76 73
-mcl_nether:netheriteblock 35 33 31
-mcl_nether:netherrack 130 50 39
-mcl_nether:quartz_block 198 190 187
-mcl_nether:quartz_chiseled 197 189 186
-mcl_nether:quartz_ore 133 64 53
-mcl_nether:quartz_pillar 195 188 185
-mcl_nether:quartz_smooth 198 191 187
-mcl_nether:red_nether_brick 69 17 5
-mcl_nether:soul_sand 90 70 51
+mcl_nether:netheriteblock 36 33 32
+mcl_nether:netherrack 130 51 39
+mcl_nether:quartz_block 198 191 187
+mcl_nether:quartz_chiseled 197 190 187
+mcl_nether:quartz_ore 133 64 54
+mcl_nether:quartz_pillar 195 188 186
+mcl_nether:quartz_smooth 199 191 188
+mcl_nether:red_nether_brick 70 17 5
+mcl_nether:soul_sand 91 70 51
 
 # mcl_observers
-mcl_observers:observer_down_off 72 67 64
-mcl_observers:observer_down_on 75 67 65
-mcl_observers:observer_off 139 128 123
-mcl_observers:observer_on 139 128 123
-mcl_observers:observer_up_off 95 80 84
-mcl_observers:observer_up_on 95 80 84
+mcl_observers:observer_down_off 73 67 65
+mcl_observers:observer_down_on 76 67 65
+mcl_observers:observer_off 139 128 124
+mcl_observers:observer_on 139 128 124
+mcl_observers:observer_up_off 96 80 84
+mcl_observers:observer_up_on 96 80 84
 
 # mcl_ocean
-mcl_ocean:brain_coral 200 85 148
-mcl_ocean:brain_coral_block 200 85 148
-mcl_ocean:brain_coral_fan 200 85 148
-mcl_ocean:bubble_coral 143 76 195
-mcl_ocean:bubble_coral_block 143 76 195
-mcl_ocean:bubble_coral_fan 143 76 195
-mcl_ocean:dead_brain_coral 130 114 123
-mcl_ocean:dead_brain_coral_block 130 114 123
-mcl_ocean:dead_brain_coral_fan 130 114 123
-mcl_ocean:dead_bubble_coral 114 105 122
-mcl_ocean:dead_bubble_coral_block 114 105 122
-mcl_ocean:dead_bubble_coral_fan 114 105 122
+mcl_ocean:brain_coral 201 85 148
+mcl_ocean:brain_coral_block 201 85 148
+mcl_ocean:brain_coral_fan 201 85 148
+mcl_ocean:bubble_coral 144 77 195
+mcl_ocean:bubble_coral_block 144 77 195
+mcl_ocean:bubble_coral_fan 144 77 195
+mcl_ocean:dead_brain_coral 131 114 123
+mcl_ocean:dead_brain_coral_block 131 114 123
+mcl_ocean:dead_brain_coral_fan 131 114 123
+mcl_ocean:dead_bubble_coral 115 106 122
+mcl_ocean:dead_bubble_coral_block 115 106 122
+mcl_ocean:dead_bubble_coral_fan 115 106 122
 mcl_ocean:dead_fire_coral 127 102 100
 mcl_ocean:dead_fire_coral_block 127 102 100
 mcl_ocean:dead_fire_coral_fan 127 102 100
-mcl_ocean:dead_horn_coral 152 146 125
-mcl_ocean:dead_horn_coral_block 152 146 125
-mcl_ocean:dead_horn_coral_fan 152 146 125
-mcl_ocean:dead_tube_coral 99 104 127
-mcl_ocean:dead_tube_coral_block 99 104 127
-mcl_ocean:dead_tube_coral_fan 99 104 127
-mcl_ocean:dried_kelp_block 56 71 57
-mcl_ocean:fire_coral 198 74 62
-mcl_ocean:fire_coral_block 198 74 62
-mcl_ocean:fire_coral_fan 198 74 62
-mcl_ocean:horn_coral 232 193 69
-mcl_ocean:horn_coral_block 232 193 69
-mcl_ocean:horn_coral_fan 232 193 69
-mcl_ocean:kelp_dirt 108 83 70
-mcl_ocean:kelp_gravel 112 105 99
-mcl_ocean:kelp_redsand 224 137 111
-mcl_ocean:kelp_sand 220 170 127
-mcl_ocean:prismarine 104 123 122
-mcl_ocean:prismarine_brick 104 112 115
+mcl_ocean:dead_horn_coral 153 146 126
+mcl_ocean:dead_horn_coral_block 153 146 126
+mcl_ocean:dead_horn_coral_fan 153 146 126
+mcl_ocean:dead_tube_coral 99 105 128
+mcl_ocean:dead_tube_coral_block 99 105 128
+mcl_ocean:dead_tube_coral_fan 99 105 128
+mcl_ocean:dried_kelp_block 56 71 58
+mcl_ocean:fire_coral 199 74 63
+mcl_ocean:fire_coral_block 199 74 63
+mcl_ocean:fire_coral_fan 199 74 63
+mcl_ocean:horn_coral 232 194 69
+mcl_ocean:horn_coral_block 232 194 69
+mcl_ocean:horn_coral_fan 232 194 69
+mcl_ocean:kelp_dirt 109 84 70
+mcl_ocean:kelp_gravel 112 106 100
+mcl_ocean:kelp_redsand 225 137 111
+mcl_ocean:kelp_sand 221 171 127
+mcl_ocean:prismarine 104 124 123
+mcl_ocean:prismarine_brick 104 112 116
 mcl_ocean:prismarine_dark 77 89 97
-mcl_ocean:sea_lantern 133 144 145
-mcl_ocean:sea_pickle_1_dead_brain_coral_block 130 114 123
-mcl_ocean:sea_pickle_1_off_dead_brain_coral_block 130 114 123
-mcl_ocean:sea_pickle_2_dead_brain_coral_block 130 114 123
-mcl_ocean:sea_pickle_2_off_dead_brain_coral_block 130 114 123
-mcl_ocean:sea_pickle_3_dead_brain_coral_block 130 114 123
-mcl_ocean:sea_pickle_3_off_dead_brain_coral_block 130 114 123
-mcl_ocean:sea_pickle_4_dead_brain_coral_block 130 114 123
-mcl_ocean:sea_pickle_4_off_dead_brain_coral_block 130 114 123
-mcl_ocean:seagrass_dirt 108 83 70
-mcl_ocean:seagrass_gravel 112 105 99
-mcl_ocean:seagrass_redsand 224 137 111
-mcl_ocean:seagrass_sand 220 170 127
-mcl_ocean:tube_coral 58 88 207
-mcl_ocean:tube_coral_block 58 88 207
-mcl_ocean:tube_coral_fan 58 88 207
+mcl_ocean:sea_lantern 134 145 146
+mcl_ocean:sea_pickle_1_dead_brain_coral_block 131 114 123
+mcl_ocean:sea_pickle_1_off_dead_brain_coral_block 131 114 123
+mcl_ocean:sea_pickle_2_dead_brain_coral_block 131 114 123
+mcl_ocean:sea_pickle_2_off_dead_brain_coral_block 131 114 123
+mcl_ocean:sea_pickle_3_dead_brain_coral_block 131 114 123
+mcl_ocean:sea_pickle_3_off_dead_brain_coral_block 131 114 123
+mcl_ocean:sea_pickle_4_dead_brain_coral_block 131 114 123
+mcl_ocean:sea_pickle_4_off_dead_brain_coral_block 131 114 123
+mcl_ocean:seagrass_dirt 109 84 70
+mcl_ocean:seagrass_gravel 112 106 100
+mcl_ocean:seagrass_redsand 225 137 111
+mcl_ocean:seagrass_sand 221 171 127
+mcl_ocean:tube_coral 58 88 208
+mcl_ocean:tube_coral_block 58 88 208
+mcl_ocean:tube_coral_fan 58 88 208
 
 # mcl_portals
-mcl_portals:end_portal_frame 95 85 74
-mcl_portals:end_portal_frame_eye 95 85 74
-mcl_portals:portal_end 14 14 14
-mcl_portals:portal_gateway 14 14 14
+mcl_portals:end_portal_frame 96 85 74
+mcl_portals:end_portal_frame_eye 113 103 90
+mcl_portals:portal 74 25 172 179
+mcl_portals:portal_end 15 15 15
+mcl_portals:portal_gateway 15 15 15
 
 # mcl_potions
-mcl_potions:absorption_arrow_box 133 116 108 71
-mcl_potions:bad_luck_arrow_box 133 116 108 71
-mcl_potions:blindness_arrow_box 133 116 108 71
-mcl_potions:darkness_arrow_box 133 116 108 71
-mcl_potions:fatigue_arrow_box 133 116 108 71
-mcl_potions:fire_resistance_arrow_box 133 116 108 71
-mcl_potions:food_poisoning_arrow_box 133 116 108 71
-mcl_potions:frost_arrow_box 133 116 108 71
-mcl_potions:harming_arrow_box 133 116 108 71
-mcl_potions:haste_arrow_box 133 116 108 71
-mcl_potions:healing_arrow_box 133 116 108 71
-mcl_potions:health_boost_arrow_box 133 116 108 71
-mcl_potions:invisibility_arrow_box 133 116 108 71
-mcl_potions:leaping_arrow_box 133 116 108 71
-mcl_potions:levitation_arrow_box 133 116 108 71
-mcl_potions:luck_arrow_box 133 116 108 71
-mcl_potions:nausea_arrow_box 133 116 108 71
-mcl_potions:night_vision_arrow_box 133 116 108 71
-mcl_potions:poison_arrow_box 133 116 108 71
-mcl_potions:regeneration_arrow_box 133 116 108 71
-mcl_potions:resistance_arrow_box 133 116 108 71
-mcl_potions:saturation_arrow_box 133 116 108 71
-mcl_potions:slow_falling_arrow_box 133 116 108 71
-mcl_potions:slowness_arrow_box 133 116 108 71
-mcl_potions:stone_cloak_arrow_box 133 116 108 71
-mcl_potions:strength_arrow_box 133 116 108 71
-mcl_potions:swiftness_arrow_box 133 116 108 71
-mcl_potions:trolling_arrow_box 133 116 108 71
-mcl_potions:water_breathing_arrow_box 133 116 108 71
-mcl_potions:weakness_arrow_box 133 116 108 71
-mcl_potions:withering_arrow_box 133 116 108 71
+mcl_potions:absorption_arrow_box 152 128 65 72
+mcl_potions:bad_luck_arrow_box 134 115 92 72
+mcl_potions:blindness_arrow_box 115 111 106 72
+mcl_potions:darkness_arrow_box 81 70 65 72
+mcl_potions:fatigue_arrow_box 120 109 89 72
+mcl_potions:fire_resistance_arrow_box 170 130 88 72
+mcl_potions:food_poisoning_arrow_box 132 133 104 72
+mcl_potions:frost_arrow_box 116 119 132 72
+mcl_potions:harming_arrow_box 107 74 69 72
+mcl_potions:haste_arrow_box 181 170 65 72
+mcl_potions:healing_arrow_box 178 84 79 72
+mcl_potions:health_boost_arrow_box 155 80 75 72
+mcl_potions:invisibility_arrow_box 131 121 123 72
+mcl_potions:leaping_arrow_box 94 170 95 72
+mcl_potions:levitation_arrow_box 107 76 115 72
+mcl_potions:luck_arrow_box 129 170 91 72
+mcl_potions:nausea_arrow_box 125 106 115 72
+mcl_potions:night_vision_arrow_box 93 82 129 72
+mcl_potions:poison_arrow_box 111 128 85 72
+mcl_potions:regeneration_arrow_box 161 106 133 72
+mcl_potions:resistance_arrow_box 95 102 130 72
+mcl_potions:saturation_arrow_box 162 138 82 72
+mcl_potions:slow_falling_arrow_box 148 150 165 72
+mcl_potions:slowness_arrow_box 116 112 116 72
+mcl_potions:stone_cloak_arrow_box 95 102 86 72
+mcl_potions:strength_arrow_box 138 84 79 72
+mcl_potions:swiftness_arrow_box 129 139 143 72
+mcl_potions:trolling_arrow_box 81 137 65 72
+mcl_potions:water_breathing_arrow_box 99 102 125 72
+mcl_potions:weakness_arrow_box 109 100 94 72
+mcl_potions:withering_arrow_box 97 86 82 72
 
 # mcl_raw_ores
-mcl_raw_ores:raw_gold_block 208 166 77
-mcl_raw_ores:raw_iron_block 194 172 156
+mcl_raw_ores:raw_gold_block 208 167 77
+mcl_raw_ores:raw_iron_block 194 173 156
 
 # mcl_sculk
-mcl_sculk:catalyst 4 15 20
-mcl_sculk:sculk 4 15 20
-mcl_sculk:vein 6 17 24 159
+mcl_sculk:catalyst 5 15 21
+mcl_sculk:sculk 5 15 21
+mcl_sculk:vein 6 18 24 159
 
 # mcl_signs
-mcl_signs:standing_sign 114 89 69
-mcl_signs:standing_sign22_5 114 89 69
-mcl_signs:standing_sign22_5_acaciawood 114 89 69
-mcl_signs:standing_sign22_5_bamboo 217 199 150
-mcl_signs:standing_sign22_5_birchwood 127 127 127
-mcl_signs:standing_sign22_5_cherrywood 212 130 122
-mcl_signs:standing_sign22_5_crimson_hyphae_wood 127 127 127
-mcl_signs:standing_sign22_5_darkwood 127 127 127
-mcl_signs:standing_sign22_5_junglewood 114 89 69
-mcl_signs:standing_sign22_5_mangrove_wood 114 89 69
-mcl_signs:standing_sign22_5_sprucewood 82 59 34
-mcl_signs:standing_sign22_5_warped_hyphae_wood 127 127 127
-mcl_signs:standing_sign45 114 89 69
-mcl_signs:standing_sign45_acaciawood 114 89 69
-mcl_signs:standing_sign45_bamboo 217 199 150
-mcl_signs:standing_sign45_birchwood 127 127 127
-mcl_signs:standing_sign45_cherrywood 212 130 122
-mcl_signs:standing_sign45_crimson_hyphae_wood 127 127 127
-mcl_signs:standing_sign45_darkwood 127 127 127
-mcl_signs:standing_sign45_junglewood 114 89 69
-mcl_signs:standing_sign45_mangrove_wood 114 89 69
-mcl_signs:standing_sign45_sprucewood 82 59 34
-mcl_signs:standing_sign45_warped_hyphae_wood 127 127 127
-mcl_signs:standing_sign67_5 114 89 69
-mcl_signs:standing_sign67_5_acaciawood 114 89 69
-mcl_signs:standing_sign67_5_bamboo 217 199 150
-mcl_signs:standing_sign67_5_birchwood 127 127 127
-mcl_signs:standing_sign67_5_cherrywood 212 130 122
-mcl_signs:standing_sign67_5_crimson_hyphae_wood 127 127 127
-mcl_signs:standing_sign67_5_darkwood 127 127 127
-mcl_signs:standing_sign67_5_junglewood 114 89 69
-mcl_signs:standing_sign67_5_mangrove_wood 114 89 69
-mcl_signs:standing_sign67_5_sprucewood 82 59 34
-mcl_signs:standing_sign67_5_warped_hyphae_wood 127 127 127
-mcl_signs:standing_sign_acaciawood 114 89 69
-mcl_signs:standing_sign_bamboo 217 199 150
-mcl_signs:standing_sign_birchwood 127 127 127
-mcl_signs:standing_sign_cherrywood 212 130 122
-mcl_signs:standing_sign_crimson_hyphae_wood 127 127 127
-mcl_signs:standing_sign_darkwood 127 127 127
-mcl_signs:standing_sign_junglewood 114 89 69
-mcl_signs:standing_sign_mangrove_wood 114 89 69
-mcl_signs:standing_sign_sprucewood 82 59 34
-mcl_signs:standing_sign_warped_hyphae_wood 127 127 127
-mcl_signs:wall_sign 114 89 69
-mcl_signs:wall_sign_acaciawood 114 89 69
-mcl_signs:wall_sign_bamboo 217 199 150
-mcl_signs:wall_sign_birchwood 127 127 127
-mcl_signs:wall_sign_cherrywood 212 130 122
-mcl_signs:wall_sign_crimson_hyphae_wood 127 127 127
-mcl_signs:wall_sign_darkwood 127 127 127
-mcl_signs:wall_sign_junglewood 114 89 69
-mcl_signs:wall_sign_mangrove_wood 114 89 69
-mcl_signs:wall_sign_sprucewood 82 59 34
-mcl_signs:wall_sign_warped_hyphae_wood 127 127 127
+mcl_signs:standing_sign 114 90 69
+mcl_signs:standing_sign22_5 114 90 69
+mcl_signs:standing_sign22_5_acaciawood 105 40 33
+mcl_signs:standing_sign22_5_bamboo 218 200 151
+mcl_signs:standing_sign22_5_birchwood 127 109 83
+mcl_signs:standing_sign22_5_cherrywood 212 131 122
+mcl_signs:standing_sign22_5_crimson_hyphae_wood 97 47 40
+mcl_signs:standing_sign22_5_darkwood 66 49 33
+mcl_signs:standing_sign22_5_junglewood 60 34 19
+mcl_signs:standing_sign22_5_mangrove_wood 82 36 16
+mcl_signs:standing_sign22_5_sprucewood 82 60 35
+mcl_signs:standing_sign22_5_warped_hyphae_wood 79 62 103
+mcl_signs:standing_sign45 114 90 69
+mcl_signs:standing_sign45_acaciawood 105 40 33
+mcl_signs:standing_sign45_bamboo 218 200 151
+mcl_signs:standing_sign45_birchwood 127 109 83
+mcl_signs:standing_sign45_cherrywood 212 131 122
+mcl_signs:standing_sign45_crimson_hyphae_wood 97 47 40
+mcl_signs:standing_sign45_darkwood 66 49 33
+mcl_signs:standing_sign45_junglewood 60 34 19
+mcl_signs:standing_sign45_mangrove_wood 82 36 16
+mcl_signs:standing_sign45_sprucewood 82 60 35
+mcl_signs:standing_sign45_warped_hyphae_wood 79 62 103
+mcl_signs:standing_sign67_5 114 90 69
+mcl_signs:standing_sign67_5_acaciawood 105 40 33
+mcl_signs:standing_sign67_5_bamboo 218 200 151
+mcl_signs:standing_sign67_5_birchwood 127 109 83
+mcl_signs:standing_sign67_5_cherrywood 212 131 122
+mcl_signs:standing_sign67_5_crimson_hyphae_wood 97 47 40
+mcl_signs:standing_sign67_5_darkwood 66 49 33
+mcl_signs:standing_sign67_5_junglewood 60 34 19
+mcl_signs:standing_sign67_5_mangrove_wood 82 36 16
+mcl_signs:standing_sign67_5_sprucewood 82 60 35
+mcl_signs:standing_sign67_5_warped_hyphae_wood 79 62 103
+mcl_signs:standing_sign_acaciawood 105 40 33
+mcl_signs:standing_sign_bamboo 218 200 151
+mcl_signs:standing_sign_birchwood 127 109 83
+mcl_signs:standing_sign_cherrywood 212 131 122
+mcl_signs:standing_sign_crimson_hyphae_wood 97 47 40
+mcl_signs:standing_sign_darkwood 66 49 33
+mcl_signs:standing_sign_junglewood 60 34 19
+mcl_signs:standing_sign_mangrove_wood 82 36 16
+mcl_signs:standing_sign_sprucewood 82 60 35
+mcl_signs:standing_sign_warped_hyphae_wood 79 62 103
+mcl_signs:wall_sign 114 90 69
+mcl_signs:wall_sign_acaciawood 105 40 33
+mcl_signs:wall_sign_bamboo 218 200 151
+mcl_signs:wall_sign_birchwood 127 109 83
+mcl_signs:wall_sign_cherrywood 212 131 122
+mcl_signs:wall_sign_crimson_hyphae_wood 97 47 40
+mcl_signs:wall_sign_darkwood 66 49 33
+mcl_signs:wall_sign_junglewood 60 34 19
+mcl_signs:wall_sign_mangrove_wood 82 36 16
+mcl_signs:wall_sign_sprucewood 82 60 35
+mcl_signs:wall_sign_warped_hyphae_wood 79 62 103
 
 # mcl_smithing_table
 mcl_smithing_table:table 48 46 44
 
 # mcl_smoker
-mcl_smoker:smoker 110 99 95
-mcl_smoker:smoker_active 110 99 95
+mcl_smoker:smoker 111 99 95
+mcl_smoker:smoker_active 111 99 95
 
 # mcl_sponges
-mcl_sponges:sponge 210 177 118
-mcl_sponges:sponge_wet 156 134 92
-mcl_sponges:sponge_wet_river_water 157 141 104
+mcl_sponges:sponge 211 178 119
+mcl_sponges:sponge_wet 157 135 93
+mcl_sponges:sponge_wet_river_water 158 142 104
 
 # mcl_stairs
-mcl_stairs:slab_acaciatree_bark 105 91 74
-mcl_stairs:slab_acaciatree_bark_double 105 91 74
-mcl_stairs:slab_acaciatree_bark_top 105 91 74
+mcl_stairs:slab_acaciatree_bark 105 91 75
+mcl_stairs:slab_acaciatree_bark_double 105 91 75
+mcl_stairs:slab_acaciatree_bark_top 105 91 75
 mcl_stairs:slab_acaciawood 152 100 69
 mcl_stairs:slab_acaciawood_double 152 100 69
 mcl_stairs:slab_acaciawood_top 152 100 69
-mcl_stairs:slab_andesite 104 110 107
-mcl_stairs:slab_andesite_double 104 110 107
-mcl_stairs:slab_andesite_smooth 107 113 109
-mcl_stairs:slab_andesite_smooth_double 107 113 109
-mcl_stairs:slab_andesite_smooth_top 107 113 109
-mcl_stairs:slab_andesite_top 104 110 107
-mcl_stairs:slab_bamboo_block 106 110 80
-mcl_stairs:slab_bamboo_block_double 106 110 80
-mcl_stairs:slab_bamboo_block_top 106 110 80
-mcl_stairs:slab_bamboo_mosaic 243 220 171
-mcl_stairs:slab_bamboo_mosaic_double 243 220 171
-mcl_stairs:slab_bamboo_mosaic_top 243 220 171
-mcl_stairs:slab_bamboo_plank 242 219 170
-mcl_stairs:slab_bamboo_plank_double 242 219 170
-mcl_stairs:slab_bamboo_plank_top 242 219 170
+mcl_stairs:slab_andesite 104 111 107
+mcl_stairs:slab_andesite_double 104 111 107
+mcl_stairs:slab_andesite_smooth 107 114 110
+mcl_stairs:slab_andesite_smooth_double 107 114 110
+mcl_stairs:slab_andesite_smooth_top 107 114 110
+mcl_stairs:slab_andesite_top 104 111 107
+mcl_stairs:slab_bamboo_block 106 111 80
+mcl_stairs:slab_bamboo_block_double 106 111 80
+mcl_stairs:slab_bamboo_block_top 106 111 80
+mcl_stairs:slab_bamboo_mosaic 244 221 171
+mcl_stairs:slab_bamboo_mosaic_double 244 221 171
+mcl_stairs:slab_bamboo_mosaic_top 244 221 171
+mcl_stairs:slab_bamboo_plank 243 220 170
+mcl_stairs:slab_bamboo_plank_double 243 220 170
+mcl_stairs:slab_bamboo_plank_top 243 220 170
 mcl_stairs:slab_bamboo_stripped 204 179 102
 mcl_stairs:slab_bamboo_stripped_double 204 179 102
 mcl_stairs:slab_bamboo_stripped_top 204 179 102
-mcl_stairs:slab_birchtree_bark 194 184 174
-mcl_stairs:slab_birchtree_bark_double 194 184 174
-mcl_stairs:slab_birchtree_bark_top 194 184 174
-mcl_stairs:slab_birchwood 145 113 89
-mcl_stairs:slab_birchwood_double 145 113 89
-mcl_stairs:slab_birchwood_top 145 113 89
-mcl_stairs:slab_blackstone 30 29 31
-mcl_stairs:slab_blackstone_brick_polished 41 38 43
-mcl_stairs:slab_blackstone_brick_polished_double 41 38 43
-mcl_stairs:slab_blackstone_brick_polished_top 41 38 43
-mcl_stairs:slab_blackstone_chiseled_polished 40 38 43
-mcl_stairs:slab_blackstone_chiseled_polished_double 40 38 43
-mcl_stairs:slab_blackstone_chiseled_polished_top 40 38 43
-mcl_stairs:slab_blackstone_double 30 29 31
-mcl_stairs:slab_blackstone_polished 43 41 46
-mcl_stairs:slab_blackstone_polished_double 43 41 46
-mcl_stairs:slab_blackstone_polished_top 43 41 46
-mcl_stairs:slab_blackstone_top 30 29 31
-mcl_stairs:slab_brick_block 139 87 75
-mcl_stairs:slab_brick_block_double 139 87 75
-mcl_stairs:slab_brick_block_top 139 87 75
-mcl_stairs:slab_cherrywood 216 144 136
-mcl_stairs:slab_cherrywood_double 216 144 136
-mcl_stairs:slab_cherrywood_top 216 144 136
-mcl_stairs:slab_cobble 113 106 104
-mcl_stairs:slab_cobble_double 113 106 104
-mcl_stairs:slab_cobble_top 113 106 104
-mcl_stairs:slab_concrete_black 8 10 15
-mcl_stairs:slab_concrete_black_double 8 10 15
-mcl_stairs:slab_concrete_black_top 8 10 15
-mcl_stairs:slab_concrete_blue 46 48 147
-mcl_stairs:slab_concrete_blue_double 46 48 147
-mcl_stairs:slab_concrete_blue_top 46 48 147
-mcl_stairs:slab_concrete_brown 98 60 32
-mcl_stairs:slab_concrete_brown_double 98 60 32
-mcl_stairs:slab_concrete_brown_top 98 60 32
-mcl_stairs:slab_concrete_cyan 21 123 140
-mcl_stairs:slab_concrete_cyan_double 21 123 140
-mcl_stairs:slab_concrete_cyan_top 21 123 140
+mcl_stairs:slab_birchtree_bark 195 185 175
+mcl_stairs:slab_birchtree_bark_double 195 185 175
+mcl_stairs:slab_birchtree_bark_top 195 185 175
+mcl_stairs:slab_birchwood 146 114 89
+mcl_stairs:slab_birchwood_double 146 114 89
+mcl_stairs:slab_birchwood_top 146 114 89
+mcl_stairs:slab_blackstone 30 29 32
+mcl_stairs:slab_blackstone_brick_polished 41 39 44
+mcl_stairs:slab_blackstone_brick_polished_double 41 39 44
+mcl_stairs:slab_blackstone_brick_polished_top 41 39 44
+mcl_stairs:slab_blackstone_chiseled_polished 41 38 43
+mcl_stairs:slab_blackstone_chiseled_polished_double 41 38 43
+mcl_stairs:slab_blackstone_chiseled_polished_top 41 38 43
+mcl_stairs:slab_blackstone_double 30 29 32
+mcl_stairs:slab_blackstone_polished 44 41 46
+mcl_stairs:slab_blackstone_polished_double 44 41 46
+mcl_stairs:slab_blackstone_polished_top 44 41 46
+mcl_stairs:slab_blackstone_top 30 29 32
+mcl_stairs:slab_brick_block 140 88 76
+mcl_stairs:slab_brick_block_double 140 88 76
+mcl_stairs:slab_brick_block_top 140 88 76
+mcl_stairs:slab_cherrywood 217 144 136
+mcl_stairs:slab_cherrywood_double 217 144 136
+mcl_stairs:slab_cherrywood_top 217 144 136
+mcl_stairs:slab_cobble 113 107 104
+mcl_stairs:slab_cobble_double 113 107 104
+mcl_stairs:slab_cobble_top 113 107 104
+mcl_stairs:slab_concrete_black 8 10 16
+mcl_stairs:slab_concrete_black_double 8 10 16
+mcl_stairs:slab_concrete_black_top 8 10 16
+mcl_stairs:slab_concrete_blue 46 49 148
+mcl_stairs:slab_concrete_blue_double 46 49 148
+mcl_stairs:slab_concrete_blue_top 46 49 148
+mcl_stairs:slab_concrete_brown 99 61 32
+mcl_stairs:slab_concrete_brown_double 99 61 32
+mcl_stairs:slab_concrete_brown_top 99 61 32
+mcl_stairs:slab_concrete_cyan 22 123 140
+mcl_stairs:slab_concrete_cyan_double 22 123 140
+mcl_stairs:slab_concrete_cyan_top 22 123 140
 mcl_stairs:slab_concrete_green 75 94 37
 mcl_stairs:slab_concrete_green_double 75 94 37
 mcl_stairs:slab_concrete_green_top 75 94 37
-mcl_stairs:slab_concrete_grey 56 59 64
-mcl_stairs:slab_concrete_grey_double 56 59 64
-mcl_stairs:slab_concrete_grey_top 56 59 64
-mcl_stairs:slab_concrete_light_blue 37 140 200
-mcl_stairs:slab_concrete_light_blue_double 37 140 200
-mcl_stairs:slab_concrete_light_blue_top 37 140 200
-mcl_stairs:slab_concrete_lime 96 171 25
-mcl_stairs:slab_concrete_lime_double 96 171 25
-mcl_stairs:slab_concrete_lime_top 96 171 25
-mcl_stairs:slab_concrete_magenta 171 49 162
-mcl_stairs:slab_concrete_magenta_double 171 49 162
-mcl_stairs:slab_concrete_magenta_top 171 49 162
+mcl_stairs:slab_concrete_grey 57 60 64
+mcl_stairs:slab_concrete_grey_double 57 60 64
+mcl_stairs:slab_concrete_grey_top 57 60 64
+mcl_stairs:slab_concrete_light_blue 37 141 201
+mcl_stairs:slab_concrete_light_blue_double 37 141 201
+mcl_stairs:slab_concrete_light_blue_top 37 141 201
+mcl_stairs:slab_concrete_lime 97 172 25
+mcl_stairs:slab_concrete_lime_double 97 172 25
+mcl_stairs:slab_concrete_lime_top 97 172 25
+mcl_stairs:slab_concrete_magenta 172 50 162
+mcl_stairs:slab_concrete_magenta_double 172 50 162
+mcl_stairs:slab_concrete_magenta_top 172 50 162
 mcl_stairs:slab_concrete_orange 226 101 1
 mcl_stairs:slab_concrete_orange_double 226 101 1
 mcl_stairs:slab_concrete_orange_top 226 101 1
-mcl_stairs:slab_concrete_pink 213 103 144
-mcl_stairs:slab_concrete_pink_double 213 103 144
-mcl_stairs:slab_concrete_pink_top 213 103 144
-mcl_stairs:slab_concrete_purple 103 32 159
-mcl_stairs:slab_concrete_purple_double 103 32 159
-mcl_stairs:slab_concrete_purple_top 103 32 159
-mcl_stairs:slab_concrete_red 146 34 34
-mcl_stairs:slab_concrete_red_double 146 34 34
-mcl_stairs:slab_concrete_red_top 146 34 34
-mcl_stairs:slab_concrete_silver 128 129 118
-mcl_stairs:slab_concrete_silver_double 128 129 118
-mcl_stairs:slab_concrete_silver_top 128 129 118
-mcl_stairs:slab_concrete_white 208 214 215
-mcl_stairs:slab_concrete_white_double 208 214 215
-mcl_stairs:slab_concrete_white_top 208 214 215
-mcl_stairs:slab_concrete_yellow 241 177 21
-mcl_stairs:slab_concrete_yellow_double 241 177 21
-mcl_stairs:slab_concrete_yellow_top 241 177 21
-mcl_stairs:slab_copper_cut 148 77 57
-mcl_stairs:slab_copper_cut_double 148 77 57
-mcl_stairs:slab_copper_cut_top 148 77 57
-mcl_stairs:slab_copper_exposed_cut 129 92 82
-mcl_stairs:slab_copper_exposed_cut_double 129 92 82
-mcl_stairs:slab_copper_exposed_cut_top 129 92 82
-mcl_stairs:slab_copper_oxidized_cut 91 110 110
-mcl_stairs:slab_copper_oxidized_cut_double 91 110 110
-mcl_stairs:slab_copper_oxidized_cut_top 91 110 110
-mcl_stairs:slab_copper_weathered_cut 107 103 100
-mcl_stairs:slab_copper_weathered_cut_double 107 103 100
-mcl_stairs:slab_copper_weathered_cut_top 107 103 100
-mcl_stairs:slab_crimson_hyphae_wood 115 23 15
-mcl_stairs:slab_crimson_hyphae_wood_double 115 23 15
-mcl_stairs:slab_crimson_hyphae_wood_top 115 23 15
+mcl_stairs:slab_concrete_pink 213 103 145
+mcl_stairs:slab_concrete_pink_double 213 103 145
+mcl_stairs:slab_concrete_pink_top 213 103 145
+mcl_stairs:slab_concrete_purple 103 33 159
+mcl_stairs:slab_concrete_purple_double 103 33 159
+mcl_stairs:slab_concrete_purple_top 103 33 159
+mcl_stairs:slab_concrete_red 147 34 34
+mcl_stairs:slab_concrete_red_double 147 34 34
+mcl_stairs:slab_concrete_red_top 147 34 34
+mcl_stairs:slab_concrete_silver 129 129 119
+mcl_stairs:slab_concrete_silver_double 129 129 119
+mcl_stairs:slab_concrete_silver_top 129 129 119
+mcl_stairs:slab_concrete_white 209 214 215
+mcl_stairs:slab_concrete_white_double 209 214 215
+mcl_stairs:slab_concrete_white_top 209 214 215
+mcl_stairs:slab_concrete_yellow 241 178 22
+mcl_stairs:slab_concrete_yellow_double 241 178 22
+mcl_stairs:slab_concrete_yellow_top 241 178 22
+mcl_stairs:slab_copper_cut 148 78 57
+mcl_stairs:slab_copper_cut_double 148 78 57
+mcl_stairs:slab_copper_cut_top 148 78 57
+mcl_stairs:slab_copper_exposed_cut 130 93 83
+mcl_stairs:slab_copper_exposed_cut_double 130 93 83
+mcl_stairs:slab_copper_exposed_cut_top 130 93 83
+mcl_stairs:slab_copper_oxidized_cut 91 110 111
+mcl_stairs:slab_copper_oxidized_cut_double 91 110 111
+mcl_stairs:slab_copper_oxidized_cut_top 91 110 111
+mcl_stairs:slab_copper_weathered_cut 107 103 101
+mcl_stairs:slab_copper_weathered_cut_double 107 103 101
+mcl_stairs:slab_copper_weathered_cut_top 107 103 101
+mcl_stairs:slab_crimson_hyphae_wood 116 24 15
+mcl_stairs:slab_crimson_hyphae_wood_double 116 24 15
+mcl_stairs:slab_crimson_hyphae_wood_top 116 24 15
 mcl_stairs:slab_darktree_bark 74 62 55
 mcl_stairs:slab_darktree_bark_double 74 62 55
 mcl_stairs:slab_darktree_bark_top 74 62 55
-mcl_stairs:slab_darkwood 87 74 62
-mcl_stairs:slab_darkwood_double 87 74 62
-mcl_stairs:slab_darkwood_top 87 74 62
-mcl_stairs:slab_deepslate_bricks 62 61 60
-mcl_stairs:slab_deepslate_bricks_double 62 61 60
-mcl_stairs:slab_deepslate_bricks_top 62 61 60
+mcl_stairs:slab_darkwood 88 75 62
+mcl_stairs:slab_darkwood_double 88 75 62
+mcl_stairs:slab_darkwood_top 88 75 62
+mcl_stairs:slab_deepslate_bricks 63 61 61
+mcl_stairs:slab_deepslate_bricks_double 63 61 61
+mcl_stairs:slab_deepslate_bricks_top 63 61 61
 mcl_stairs:slab_deepslate_cobbled 78 76 75
 mcl_stairs:slab_deepslate_cobbled_double 78 76 75
 mcl_stairs:slab_deepslate_cobbled_top 78 76 75
-mcl_stairs:slab_deepslate_polished 68 66 66
-mcl_stairs:slab_deepslate_polished_double 68 66 66
-mcl_stairs:slab_deepslate_polished_top 68 66 66
-mcl_stairs:slab_deepslate_tiles 49 47 47
-mcl_stairs:slab_deepslate_tiles_double 49 47 47
-mcl_stairs:slab_deepslate_tiles_top 49 47 47
-mcl_stairs:slab_diorite 153 149 146
-mcl_stairs:slab_diorite_double 153 149 146
-mcl_stairs:slab_diorite_smooth 157 154 152
-mcl_stairs:slab_diorite_smooth_double 157 154 152
-mcl_stairs:slab_diorite_smooth_top 157 154 152
-mcl_stairs:slab_diorite_top 153 149 146
-mcl_stairs:slab_end_bricks 194 187 123
-mcl_stairs:slab_end_bricks_double 194 187 123
-mcl_stairs:slab_end_bricks_top 194 187 123
+mcl_stairs:slab_deepslate_polished 68 67 66
+mcl_stairs:slab_deepslate_polished_double 68 67 66
+mcl_stairs:slab_deepslate_polished_top 68 67 66
+mcl_stairs:slab_deepslate_tiles 49 48 48
+mcl_stairs:slab_deepslate_tiles_double 49 48 48
+mcl_stairs:slab_deepslate_tiles_top 49 48 48
+mcl_stairs:slab_diorite 153 150 147
+mcl_stairs:slab_diorite_double 153 150 147
+mcl_stairs:slab_diorite_smooth 158 154 152
+mcl_stairs:slab_diorite_smooth_double 158 154 152
+mcl_stairs:slab_diorite_smooth_top 158 154 152
+mcl_stairs:slab_diorite_top 153 150 147
+mcl_stairs:slab_end_bricks 194 188 123
+mcl_stairs:slab_end_bricks_double 194 188 123
+mcl_stairs:slab_end_bricks_top 194 188 123
 mcl_stairs:slab_goldblock 192 147 59
 mcl_stairs:slab_goldblock_double 192 147 59
 mcl_stairs:slab_goldblock_top 192 147 59
-mcl_stairs:slab_granite 153 121 110
-mcl_stairs:slab_granite_double 153 121 110
+mcl_stairs:slab_granite 154 122 111
+mcl_stairs:slab_granite_double 154 122 111
 mcl_stairs:slab_granite_smooth 150 121 110
 mcl_stairs:slab_granite_smooth_double 150 121 110
 mcl_stairs:slab_granite_smooth_top 150 121 110
-mcl_stairs:slab_granite_top 153 121 110
+mcl_stairs:slab_granite_top 154 122 111
 mcl_stairs:slab_ironblock 159 151 151
 mcl_stairs:slab_ironblock_double 159 151 151
 mcl_stairs:slab_ironblock_top 159 151 151
-mcl_stairs:slab_jungletree_bark 86 58 45
-mcl_stairs:slab_jungletree_bark_double 86 58 45
-mcl_stairs:slab_jungletree_bark_top 86 58 45
-mcl_stairs:slab_junglewood 113 78 59
-mcl_stairs:slab_junglewood_double 113 78 59
-mcl_stairs:slab_junglewood_top 113 78 59
-mcl_stairs:slab_lapisblock 50 92 162
-mcl_stairs:slab_lapisblock_double 50 92 162
-mcl_stairs:slab_lapisblock_top 50 92 162
-mcl_stairs:slab_mangrove_wood 123 60 54
-mcl_stairs:slab_mangrove_wood_double 123 60 54
-mcl_stairs:slab_mangrove_wood_top 123 60 54
-mcl_stairs:slab_mossycobble 100 105 94
-mcl_stairs:slab_mossycobble_double 100 105 94
-mcl_stairs:slab_mossycobble_top 100 105 94
-mcl_stairs:slab_mud_brick 108 95 86
-mcl_stairs:slab_mud_brick_double 108 95 86
-mcl_stairs:slab_mud_brick_top 108 95 86
-mcl_stairs:slab_nether_brick 49 23 24
-mcl_stairs:slab_nether_brick_double 49 23 24
-mcl_stairs:slab_nether_brick_top 49 23 24
-mcl_stairs:slab_prismarine 104 123 122
-mcl_stairs:slab_prismarine_brick 104 112 115
-mcl_stairs:slab_prismarine_brick_double 104 112 115
-mcl_stairs:slab_prismarine_brick_top 104 112 115
+mcl_stairs:slab_jungletree_bark 87 58 45
+mcl_stairs:slab_jungletree_bark_double 87 58 45
+mcl_stairs:slab_jungletree_bark_top 87 58 45
+mcl_stairs:slab_junglewood 113 79 59
+mcl_stairs:slab_junglewood_double 113 79 59
+mcl_stairs:slab_junglewood_top 113 79 59
+mcl_stairs:slab_lapisblock 51 93 163
+mcl_stairs:slab_lapisblock_double 51 93 163
+mcl_stairs:slab_lapisblock_top 51 93 163
+mcl_stairs:slab_mangrove_wood 124 61 55
+mcl_stairs:slab_mangrove_wood_double 124 61 55
+mcl_stairs:slab_mangrove_wood_top 124 61 55
+mcl_stairs:slab_mossycobble 100 106 95
+mcl_stairs:slab_mossycobble_double 100 106 95
+mcl_stairs:slab_mossycobble_top 100 106 95
+mcl_stairs:slab_mud_brick 109 96 87
+mcl_stairs:slab_mud_brick_double 109 96 87
+mcl_stairs:slab_mud_brick_top 109 96 87
+mcl_stairs:slab_nether_brick 49 24 25
+mcl_stairs:slab_nether_brick_double 49 24 25
+mcl_stairs:slab_nether_brick_top 49 24 25
+mcl_stairs:slab_prismarine 104 124 123
+mcl_stairs:slab_prismarine_brick 104 112 116
+mcl_stairs:slab_prismarine_brick_double 104 112 116
+mcl_stairs:slab_prismarine_brick_top 104 112 116
 mcl_stairs:slab_prismarine_dark 77 89 97
 mcl_stairs:slab_prismarine_dark_double 77 89 97
 mcl_stairs:slab_prismarine_dark_top 77 89 97
-mcl_stairs:slab_prismarine_double 104 123 122
-mcl_stairs:slab_prismarine_top 104 123 122
-mcl_stairs:slab_purpur_block 161 111 175
-mcl_stairs:slab_purpur_block_double 161 111 175
-mcl_stairs:slab_purpur_block_top 161 111 175
-mcl_stairs:slab_quartz_smooth 198 191 187
-mcl_stairs:slab_quartz_smooth_double 198 191 187
-mcl_stairs:slab_quartz_smooth_top 198 191 187
-mcl_stairs:slab_quartzblock 198 190 187
-mcl_stairs:slab_quartzblock_double 198 190 187
-mcl_stairs:slab_quartzblock_top 198 190 187
-mcl_stairs:slab_red_nether_brick 69 17 5
-mcl_stairs:slab_red_nether_brick_double 69 17 5
-mcl_stairs:slab_red_nether_brick_top 69 17 5
-mcl_stairs:slab_redsandstone 212 126 108
-mcl_stairs:slab_redsandstone_double 212 126 108
-mcl_stairs:slab_redsandstone_top 212 126 108
-mcl_stairs:slab_redsandstonesmooth2 212 126 108
-mcl_stairs:slab_redsandstonesmooth2_double 212 126 108
-mcl_stairs:slab_redsandstonesmooth2_top 212 126 108
-mcl_stairs:slab_sandstone 201 154 121
-mcl_stairs:slab_sandstone_double 201 154 121
-mcl_stairs:slab_sandstone_top 201 154 121
-mcl_stairs:slab_sandstonesmooth2 201 154 121
-mcl_stairs:slab_sandstonesmooth2_double 201 154 121
-mcl_stairs:slab_sandstonesmooth2_top 201 154 121
-mcl_stairs:slab_sprucetree_bark 66 51 44
-mcl_stairs:slab_sprucetree_bark_double 66 51 44
-mcl_stairs:slab_sprucetree_bark_top 66 51 44
-mcl_stairs:slab_sprucewood 81 65 54
-mcl_stairs:slab_sprucewood_double 81 65 54
-mcl_stairs:slab_sprucewood_top 81 65 54
-mcl_stairs:slab_stone 127 118 114
-mcl_stairs:slab_stone_double 127 118 114
-mcl_stairs:slab_stone_rough 130 122 118
-mcl_stairs:slab_stone_rough_double 130 122 118
-mcl_stairs:slab_stone_rough_top 130 122 118
-mcl_stairs:slab_stone_top 127 118 114
-mcl_stairs:slab_stonebrick 97 89 86
-mcl_stairs:slab_stonebrick_double 97 89 86
-mcl_stairs:slab_stonebrick_top 97 89 86
-mcl_stairs:slab_stonebrickcracked 94 87 83
-mcl_stairs:slab_stonebrickcracked_double 94 87 83
-mcl_stairs:slab_stonebrickcracked_top 94 87 83
-mcl_stairs:slab_stonebrickmossy 81 101 76
-mcl_stairs:slab_stonebrickmossy_double 81 101 76
-mcl_stairs:slab_stonebrickmossy_top 81 101 76
-mcl_stairs:slab_tree_bark 95 75 57
-mcl_stairs:slab_tree_bark_double 95 75 57
-mcl_stairs:slab_tree_bark_top 95 75 57
+mcl_stairs:slab_prismarine_double 104 124 123
+mcl_stairs:slab_prismarine_top 104 124 123
+mcl_stairs:slab_purpur_block 161 112 175
+mcl_stairs:slab_purpur_block_double 161 112 175
+mcl_stairs:slab_purpur_block_top 161 112 175
+mcl_stairs:slab_quartz_smooth 199 191 188
+mcl_stairs:slab_quartz_smooth_double 199 191 188
+mcl_stairs:slab_quartz_smooth_top 199 191 188
+mcl_stairs:slab_quartzblock 198 191 187
+mcl_stairs:slab_quartzblock_double 198 191 187
+mcl_stairs:slab_quartzblock_top 198 191 187
+mcl_stairs:slab_red_nether_brick 70 17 5
+mcl_stairs:slab_red_nether_brick_double 70 17 5
+mcl_stairs:slab_red_nether_brick_top 70 17 5
+mcl_stairs:slab_redsandstone 212 126 109
+mcl_stairs:slab_redsandstone_double 212 126 109
+mcl_stairs:slab_redsandstone_top 212 126 109
+mcl_stairs:slab_redsandstonesmooth2 212 126 109
+mcl_stairs:slab_redsandstonesmooth2_double 212 126 109
+mcl_stairs:slab_redsandstonesmooth2_top 212 126 109
+mcl_stairs:slab_sandstone 202 155 121
+mcl_stairs:slab_sandstone_double 202 155 121
+mcl_stairs:slab_sandstone_top 202 155 121
+mcl_stairs:slab_sandstonesmooth2 202 155 121
+mcl_stairs:slab_sandstonesmooth2_double 202 155 121
+mcl_stairs:slab_sandstonesmooth2_top 202 155 121
+mcl_stairs:slab_sprucetree_bark 67 51 44
+mcl_stairs:slab_sprucetree_bark_double 67 51 44
+mcl_stairs:slab_sprucetree_bark_top 67 51 44
+mcl_stairs:slab_sprucewood 81 66 54
+mcl_stairs:slab_sprucewood_double 81 66 54
+mcl_stairs:slab_sprucewood_top 81 66 54
+mcl_stairs:slab_stone 127 119 115
+mcl_stairs:slab_stone_double 127 119 115
+mcl_stairs:slab_stone_rough 131 123 118
+mcl_stairs:slab_stone_rough_double 131 123 118
+mcl_stairs:slab_stone_rough_top 131 123 118
+mcl_stairs:slab_stone_top 127 119 115
+mcl_stairs:slab_stonebrick 97 90 86
+mcl_stairs:slab_stonebrick_double 97 90 86
+mcl_stairs:slab_stonebrick_top 97 90 86
+mcl_stairs:slab_stonebrickcracked 95 87 83
+mcl_stairs:slab_stonebrickcracked_double 95 87 83
+mcl_stairs:slab_stonebrickcracked_top 95 87 83
+mcl_stairs:slab_stonebrickmossy 81 102 76
+mcl_stairs:slab_stonebrickmossy_double 81 102 76
+mcl_stairs:slab_stonebrickmossy_top 81 102 76
+mcl_stairs:slab_tree_bark 96 76 58
+mcl_stairs:slab_tree_bark_double 96 76 58
+mcl_stairs:slab_tree_bark_top 96 76 58
 mcl_stairs:slab_warped_hyphae_wood 79 56 120
 mcl_stairs:slab_warped_hyphae_wood_double 79 56 120
 mcl_stairs:slab_warped_hyphae_wood_top 79 56 120
-mcl_stairs:slab_waxed_copper_cut 148 77 57
-mcl_stairs:slab_waxed_copper_cut_double 148 77 57
-mcl_stairs:slab_waxed_copper_cut_top 148 77 57
-mcl_stairs:slab_waxed_copper_exposed_cut 129 92 82
-mcl_stairs:slab_waxed_copper_exposed_cut_double 129 92 82
-mcl_stairs:slab_waxed_copper_exposed_cut_top 129 92 82
-mcl_stairs:slab_waxed_copper_oxidized_cut 91 110 110
-mcl_stairs:slab_waxed_copper_oxidized_cut_double 91 110 110
-mcl_stairs:slab_waxed_copper_oxidized_cut_top 91 110 110
-mcl_stairs:slab_waxed_copper_weathered_cut 107 103 100
-mcl_stairs:slab_waxed_copper_weathered_cut_double 107 103 100
-mcl_stairs:slab_waxed_copper_weathered_cut_top 107 103 100
+mcl_stairs:slab_waxed_copper_cut 148 78 57
+mcl_stairs:slab_waxed_copper_cut_double 148 78 57
+mcl_stairs:slab_waxed_copper_cut_top 148 78 57
+mcl_stairs:slab_waxed_copper_exposed_cut 130 93 83
+mcl_stairs:slab_waxed_copper_exposed_cut_double 130 93 83
+mcl_stairs:slab_waxed_copper_exposed_cut_top 130 93 83
+mcl_stairs:slab_waxed_copper_oxidized_cut 91 110 111
+mcl_stairs:slab_waxed_copper_oxidized_cut_double 91 110 111
+mcl_stairs:slab_waxed_copper_oxidized_cut_top 91 110 111
+mcl_stairs:slab_waxed_copper_weathered_cut 107 103 101
+mcl_stairs:slab_waxed_copper_weathered_cut_double 107 103 101
+mcl_stairs:slab_waxed_copper_weathered_cut_top 107 103 101
 mcl_stairs:slab_wood 113 87 67
 mcl_stairs:slab_wood_double 113 87 67
 mcl_stairs:slab_wood_top 113 87 67
-mcl_stairs:stair_acaciatree_bark 105 91 74
-mcl_stairs:stair_acaciatree_bark_inner 105 91 74
-mcl_stairs:stair_acaciatree_bark_outer 105 91 74
+mcl_stairs:stair_acaciatree_bark 105 91 75
+mcl_stairs:stair_acaciatree_bark_inner 105 91 75
+mcl_stairs:stair_acaciatree_bark_outer 105 91 75
 mcl_stairs:stair_acaciawood 152 100 69
 mcl_stairs:stair_acaciawood_inner 152 100 69
 mcl_stairs:stair_acaciawood_outer 152 100 69
-mcl_stairs:stair_andesite 104 110 107
-mcl_stairs:stair_andesite_inner 104 110 107
-mcl_stairs:stair_andesite_outer 104 110 107
-mcl_stairs:stair_andesite_smooth 106 113 108
-mcl_stairs:stair_andesite_smooth_inner 106 113 108
-mcl_stairs:stair_andesite_smooth_outer 106 113 108
-mcl_stairs:stair_bamboo_block 106 110 80
-mcl_stairs:stair_bamboo_block_inner 106 110 80
-mcl_stairs:stair_bamboo_block_outer 106 110 80
-mcl_stairs:stair_bamboo_mosaic 243 220 171
-mcl_stairs:stair_bamboo_mosaic_inner 243 220 171
-mcl_stairs:stair_bamboo_mosaic_outer 243 220 171
-mcl_stairs:stair_bamboo_plank 242 219 170
-mcl_stairs:stair_bamboo_plank_inner 242 219 170
-mcl_stairs:stair_bamboo_plank_outer 242 219 170
+mcl_stairs:stair_andesite 104 111 107
+mcl_stairs:stair_andesite_inner 104 111 107
+mcl_stairs:stair_andesite_outer 104 111 107
+mcl_stairs:stair_andesite_smooth 107 113 109
+mcl_stairs:stair_andesite_smooth_inner 107 113 109
+mcl_stairs:stair_andesite_smooth_outer 107 113 109
+mcl_stairs:stair_bamboo_block 106 111 80
+mcl_stairs:stair_bamboo_block_inner 106 111 80
+mcl_stairs:stair_bamboo_block_outer 106 111 80
+mcl_stairs:stair_bamboo_mosaic 244 221 171
+mcl_stairs:stair_bamboo_mosaic_inner 244 221 171
+mcl_stairs:stair_bamboo_mosaic_outer 244 221 171
+mcl_stairs:stair_bamboo_plank 243 220 170
+mcl_stairs:stair_bamboo_plank_inner 243 220 170
+mcl_stairs:stair_bamboo_plank_outer 243 220 170
 mcl_stairs:stair_bamboo_stripped 204 179 102
 mcl_stairs:stair_bamboo_stripped_inner 204 179 102
 mcl_stairs:stair_bamboo_stripped_outer 204 179 102
-mcl_stairs:stair_birchtree_bark 194 184 174
-mcl_stairs:stair_birchtree_bark_inner 194 184 174
-mcl_stairs:stair_birchtree_bark_outer 194 184 174
-mcl_stairs:stair_birchwood 145 113 89
-mcl_stairs:stair_birchwood_inner 145 113 89
-mcl_stairs:stair_birchwood_outer 145 113 89
-mcl_stairs:stair_blackstone 30 29 31
-mcl_stairs:stair_blackstone_brick_polished 41 38 43
-mcl_stairs:stair_blackstone_brick_polished_inner 41 38 43
-mcl_stairs:stair_blackstone_brick_polished_outer 41 38 43
-mcl_stairs:stair_blackstone_chiseled_polished 40 38 43
-mcl_stairs:stair_blackstone_chiseled_polished_inner 40 38 43
-mcl_stairs:stair_blackstone_chiseled_polished_outer 40 38 43
-mcl_stairs:stair_blackstone_inner 30 29 31
-mcl_stairs:stair_blackstone_outer 30 29 31
-mcl_stairs:stair_blackstone_polished 43 41 46
-mcl_stairs:stair_blackstone_polished_inner 43 41 46
-mcl_stairs:stair_blackstone_polished_outer 43 41 46
-mcl_stairs:stair_brick_block 139 87 75
-mcl_stairs:stair_brick_block_inner 139 87 75
-mcl_stairs:stair_brick_block_outer 139 87 75
-mcl_stairs:stair_cherrywood 216 144 136
-mcl_stairs:stair_cherrywood_inner 216 144 136
-mcl_stairs:stair_cherrywood_outer 216 144 136
-mcl_stairs:stair_cobble 113 106 104
-mcl_stairs:stair_cobble_inner 113 106 104
-mcl_stairs:stair_cobble_outer 113 106 104
-mcl_stairs:stair_concrete_black 8 10 15
-mcl_stairs:stair_concrete_black_inner 8 10 15
-mcl_stairs:stair_concrete_black_outer 8 10 15
-mcl_stairs:stair_concrete_blue 46 48 147
-mcl_stairs:stair_concrete_blue_inner 46 48 147
-mcl_stairs:stair_concrete_blue_outer 46 48 147
-mcl_stairs:stair_concrete_brown 98 60 32
-mcl_stairs:stair_concrete_brown_inner 98 60 32
-mcl_stairs:stair_concrete_brown_outer 98 60 32
-mcl_stairs:stair_concrete_cyan 21 123 140
-mcl_stairs:stair_concrete_cyan_inner 21 123 140
-mcl_stairs:stair_concrete_cyan_outer 21 123 140
+mcl_stairs:stair_birchtree_bark 195 185 175
+mcl_stairs:stair_birchtree_bark_inner 195 185 175
+mcl_stairs:stair_birchtree_bark_outer 195 185 175
+mcl_stairs:stair_birchwood 146 114 89
+mcl_stairs:stair_birchwood_inner 146 114 89
+mcl_stairs:stair_birchwood_outer 146 114 89
+mcl_stairs:stair_blackstone 30 29 32
+mcl_stairs:stair_blackstone_brick_polished 41 39 44
+mcl_stairs:stair_blackstone_brick_polished_inner 41 39 44
+mcl_stairs:stair_blackstone_brick_polished_outer 41 39 44
+mcl_stairs:stair_blackstone_chiseled_polished 41 38 43
+mcl_stairs:stair_blackstone_chiseled_polished_inner 41 38 43
+mcl_stairs:stair_blackstone_chiseled_polished_outer 41 38 43
+mcl_stairs:stair_blackstone_inner 30 29 32
+mcl_stairs:stair_blackstone_outer 30 29 32
+mcl_stairs:stair_blackstone_polished 44 41 46
+mcl_stairs:stair_blackstone_polished_inner 44 41 46
+mcl_stairs:stair_blackstone_polished_outer 44 41 46
+mcl_stairs:stair_brick_block 140 88 76
+mcl_stairs:stair_brick_block_inner 140 88 76
+mcl_stairs:stair_brick_block_outer 140 88 76
+mcl_stairs:stair_cherrywood 217 144 136
+mcl_stairs:stair_cherrywood_inner 217 144 136
+mcl_stairs:stair_cherrywood_outer 217 144 136
+mcl_stairs:stair_cobble 113 107 104
+mcl_stairs:stair_cobble_inner 113 107 104
+mcl_stairs:stair_cobble_outer 113 107 104
+mcl_stairs:stair_concrete_black 8 10 16
+mcl_stairs:stair_concrete_black_inner 8 10 16
+mcl_stairs:stair_concrete_black_outer 8 10 16
+mcl_stairs:stair_concrete_blue 46 49 148
+mcl_stairs:stair_concrete_blue_inner 46 49 148
+mcl_stairs:stair_concrete_blue_outer 46 49 148
+mcl_stairs:stair_concrete_brown 99 61 32
+mcl_stairs:stair_concrete_brown_inner 99 61 32
+mcl_stairs:stair_concrete_brown_outer 99 61 32
+mcl_stairs:stair_concrete_cyan 22 123 140
+mcl_stairs:stair_concrete_cyan_inner 22 123 140
+mcl_stairs:stair_concrete_cyan_outer 22 123 140
 mcl_stairs:stair_concrete_green 75 94 37
 mcl_stairs:stair_concrete_green_inner 75 94 37
 mcl_stairs:stair_concrete_green_outer 75 94 37
-mcl_stairs:stair_concrete_grey 56 59 64
-mcl_stairs:stair_concrete_grey_inner 56 59 64
-mcl_stairs:stair_concrete_grey_outer 56 59 64
-mcl_stairs:stair_concrete_light_blue 37 140 200
-mcl_stairs:stair_concrete_light_blue_inner 37 140 200
-mcl_stairs:stair_concrete_light_blue_outer 37 140 200
-mcl_stairs:stair_concrete_lime 96 171 25
-mcl_stairs:stair_concrete_lime_inner 96 171 25
-mcl_stairs:stair_concrete_lime_outer 96 171 25
-mcl_stairs:stair_concrete_magenta 171 49 162
-mcl_stairs:stair_concrete_magenta_inner 171 49 162
-mcl_stairs:stair_concrete_magenta_outer 171 49 162
+mcl_stairs:stair_concrete_grey 57 60 64
+mcl_stairs:stair_concrete_grey_inner 57 60 64
+mcl_stairs:stair_concrete_grey_outer 57 60 64
+mcl_stairs:stair_concrete_light_blue 37 141 201
+mcl_stairs:stair_concrete_light_blue_inner 37 141 201
+mcl_stairs:stair_concrete_light_blue_outer 37 141 201
+mcl_stairs:stair_concrete_lime 97 172 25
+mcl_stairs:stair_concrete_lime_inner 97 172 25
+mcl_stairs:stair_concrete_lime_outer 97 172 25
+mcl_stairs:stair_concrete_magenta 172 50 162
+mcl_stairs:stair_concrete_magenta_inner 172 50 162
+mcl_stairs:stair_concrete_magenta_outer 172 50 162
 mcl_stairs:stair_concrete_orange 226 101 1
 mcl_stairs:stair_concrete_orange_inner 226 101 1
 mcl_stairs:stair_concrete_orange_outer 226 101 1
-mcl_stairs:stair_concrete_pink 213 103 144
-mcl_stairs:stair_concrete_pink_inner 213 103 144
-mcl_stairs:stair_concrete_pink_outer 213 103 144
-mcl_stairs:stair_concrete_purple 103 32 159
-mcl_stairs:stair_concrete_purple_inner 103 32 159
-mcl_stairs:stair_concrete_purple_outer 103 32 159
-mcl_stairs:stair_concrete_red 146 34 34
-mcl_stairs:stair_concrete_red_inner 146 34 34
-mcl_stairs:stair_concrete_red_outer 146 34 34
-mcl_stairs:stair_concrete_silver 128 129 118
-mcl_stairs:stair_concrete_silver_inner 128 129 118
-mcl_stairs:stair_concrete_silver_outer 128 129 118
-mcl_stairs:stair_concrete_white 208 214 215
-mcl_stairs:stair_concrete_white_inner 208 214 215
-mcl_stairs:stair_concrete_white_outer 208 214 215
-mcl_stairs:stair_concrete_yellow 241 177 21
-mcl_stairs:stair_concrete_yellow_inner 241 177 21
-mcl_stairs:stair_concrete_yellow_outer 241 177 21
-mcl_stairs:stair_copper_cut 148 77 57
-mcl_stairs:stair_copper_cut_inner 148 77 57
-mcl_stairs:stair_copper_cut_outer 148 77 57
-mcl_stairs:stair_copper_exposed_cut 129 92 82
-mcl_stairs:stair_copper_exposed_cut_inner 129 92 82
-mcl_stairs:stair_copper_exposed_cut_outer 129 92 82
-mcl_stairs:stair_copper_oxidized_cut 91 110 110
-mcl_stairs:stair_copper_oxidized_cut_inner 91 110 110
-mcl_stairs:stair_copper_oxidized_cut_outer 91 110 110
-mcl_stairs:stair_copper_weathered_cut 107 103 100
-mcl_stairs:stair_copper_weathered_cut_inner 107 103 100
-mcl_stairs:stair_copper_weathered_cut_outer 107 103 100
-mcl_stairs:stair_crimson_hyphae_wood 115 23 15
-mcl_stairs:stair_crimson_hyphae_wood_inner 115 23 15
-mcl_stairs:stair_crimson_hyphae_wood_outer 115 23 15
+mcl_stairs:stair_concrete_pink 213 103 145
+mcl_stairs:stair_concrete_pink_inner 213 103 145
+mcl_stairs:stair_concrete_pink_outer 213 103 145
+mcl_stairs:stair_concrete_purple 103 33 159
+mcl_stairs:stair_concrete_purple_inner 103 33 159
+mcl_stairs:stair_concrete_purple_outer 103 33 159
+mcl_stairs:stair_concrete_red 147 34 34
+mcl_stairs:stair_concrete_red_inner 147 34 34
+mcl_stairs:stair_concrete_red_outer 147 34 34
+mcl_stairs:stair_concrete_silver 129 129 119
+mcl_stairs:stair_concrete_silver_inner 129 129 119
+mcl_stairs:stair_concrete_silver_outer 129 129 119
+mcl_stairs:stair_concrete_white 209 214 215
+mcl_stairs:stair_concrete_white_inner 209 214 215
+mcl_stairs:stair_concrete_white_outer 209 214 215
+mcl_stairs:stair_concrete_yellow 241 178 22
+mcl_stairs:stair_concrete_yellow_inner 241 178 22
+mcl_stairs:stair_concrete_yellow_outer 241 178 22
+mcl_stairs:stair_copper_cut 148 78 57
+mcl_stairs:stair_copper_cut_inner 148 78 57
+mcl_stairs:stair_copper_cut_outer 148 78 57
+mcl_stairs:stair_copper_exposed_cut 130 93 83
+mcl_stairs:stair_copper_exposed_cut_inner 130 93 83
+mcl_stairs:stair_copper_exposed_cut_outer 130 93 83
+mcl_stairs:stair_copper_oxidized_cut 91 110 111
+mcl_stairs:stair_copper_oxidized_cut_inner 91 110 111
+mcl_stairs:stair_copper_oxidized_cut_outer 91 110 111
+mcl_stairs:stair_copper_weathered_cut 107 103 101
+mcl_stairs:stair_copper_weathered_cut_inner 107 103 101
+mcl_stairs:stair_copper_weathered_cut_outer 107 103 101
+mcl_stairs:stair_crimson_hyphae_wood 116 24 15
+mcl_stairs:stair_crimson_hyphae_wood_inner 116 24 15
+mcl_stairs:stair_crimson_hyphae_wood_outer 116 24 15
 mcl_stairs:stair_darktree_bark 74 62 55
 mcl_stairs:stair_darktree_bark_inner 74 62 55
 mcl_stairs:stair_darktree_bark_outer 74 62 55
-mcl_stairs:stair_darkwood 87 74 62
-mcl_stairs:stair_darkwood_inner 87 74 62
-mcl_stairs:stair_darkwood_outer 87 74 62
-mcl_stairs:stair_deepslate_bricks 62 61 60
-mcl_stairs:stair_deepslate_bricks_inner 62 61 60
-mcl_stairs:stair_deepslate_bricks_outer 62 61 60
+mcl_stairs:stair_darkwood 88 75 62
+mcl_stairs:stair_darkwood_inner 88 75 62
+mcl_stairs:stair_darkwood_outer 88 75 62
+mcl_stairs:stair_deepslate_bricks 63 61 61
+mcl_stairs:stair_deepslate_bricks_inner 63 61 61
+mcl_stairs:stair_deepslate_bricks_outer 63 61 61
 mcl_stairs:stair_deepslate_cobbled 78 76 75
 mcl_stairs:stair_deepslate_cobbled_inner 78 76 75
 mcl_stairs:stair_deepslate_cobbled_outer 78 76 75
-mcl_stairs:stair_deepslate_polished 68 66 66
-mcl_stairs:stair_deepslate_polished_inner 68 66 66
-mcl_stairs:stair_deepslate_polished_outer 68 66 66
-mcl_stairs:stair_deepslate_tiles 49 47 47
-mcl_stairs:stair_deepslate_tiles_inner 49 47 47
-mcl_stairs:stair_deepslate_tiles_outer 49 47 47
-mcl_stairs:stair_diorite 153 149 146
-mcl_stairs:stair_diorite_inner 153 149 146
-mcl_stairs:stair_diorite_outer 153 149 146
-mcl_stairs:stair_diorite_smooth 156 153 151
-mcl_stairs:stair_diorite_smooth_inner 156 153 151
-mcl_stairs:stair_diorite_smooth_outer 156 153 151
-mcl_stairs:stair_end_bricks 194 187 123
-mcl_stairs:stair_end_bricks_inner 194 187 123
-mcl_stairs:stair_end_bricks_outer 194 187 123
-mcl_stairs:stair_goldblock 191 146 56
-mcl_stairs:stair_goldblock_inner 191 146 56
-mcl_stairs:stair_goldblock_outer 191 146 56
-mcl_stairs:stair_granite 153 121 110
-mcl_stairs:stair_granite_inner 153 121 110
-mcl_stairs:stair_granite_outer 153 121 110
-mcl_stairs:stair_granite_smooth 150 121 109
-mcl_stairs:stair_granite_smooth_inner 150 121 109
-mcl_stairs:stair_granite_smooth_outer 150 121 109
+mcl_stairs:stair_deepslate_polished 68 67 66
+mcl_stairs:stair_deepslate_polished_inner 68 67 66
+mcl_stairs:stair_deepslate_polished_outer 68 67 66
+mcl_stairs:stair_deepslate_tiles 49 48 48
+mcl_stairs:stair_deepslate_tiles_inner 49 48 48
+mcl_stairs:stair_deepslate_tiles_outer 49 48 48
+mcl_stairs:stair_diorite 153 150 147
+mcl_stairs:stair_diorite_inner 153 150 147
+mcl_stairs:stair_diorite_outer 153 150 147
+mcl_stairs:stair_diorite_smooth 157 154 151
+mcl_stairs:stair_diorite_smooth_inner 157 154 151
+mcl_stairs:stair_diorite_smooth_outer 157 154 151
+mcl_stairs:stair_end_bricks 194 188 123
+mcl_stairs:stair_end_bricks_inner 194 188 123
+mcl_stairs:stair_end_bricks_outer 194 188 123
+mcl_stairs:stair_goldblock 192 147 57
+mcl_stairs:stair_goldblock_inner 192 147 57
+mcl_stairs:stair_goldblock_outer 192 147 57
+mcl_stairs:stair_granite 154 122 111
+mcl_stairs:stair_granite_inner 154 122 111
+mcl_stairs:stair_granite_outer 154 122 111
+mcl_stairs:stair_granite_smooth 151 121 110
+mcl_stairs:stair_granite_smooth_inner 151 121 110
+mcl_stairs:stair_granite_smooth_outer 151 121 110
 mcl_stairs:stair_ironblock 166 159 159
 mcl_stairs:stair_ironblock_inner 166 159 159
 mcl_stairs:stair_ironblock_outer 166 159 159
-mcl_stairs:stair_jungletree_bark 86 58 45
-mcl_stairs:stair_jungletree_bark_inner 86 58 45
-mcl_stairs:stair_jungletree_bark_outer 86 58 45
-mcl_stairs:stair_junglewood 113 78 59
-mcl_stairs:stair_junglewood_inner 113 78 59
-mcl_stairs:stair_junglewood_outer 113 78 59
-mcl_stairs:stair_lapisblock 49 89 158
-mcl_stairs:stair_lapisblock_inner 49 89 158
-mcl_stairs:stair_lapisblock_outer 49 89 158
-mcl_stairs:stair_mangrove_wood 123 60 54
-mcl_stairs:stair_mangrove_wood_inner 123 60 54
-mcl_stairs:stair_mangrove_wood_outer 123 60 54
-mcl_stairs:stair_mossycobble 100 105 94
-mcl_stairs:stair_mossycobble_inner 100 105 94
-mcl_stairs:stair_mossycobble_outer 100 105 94
-mcl_stairs:stair_mud_brick 108 95 86
-mcl_stairs:stair_mud_brick_inner 108 95 86
-mcl_stairs:stair_mud_brick_outer 108 95 86
-mcl_stairs:stair_nether_brick 49 23 24
-mcl_stairs:stair_nether_brick_inner 49 23 24
-mcl_stairs:stair_nether_brick_outer 49 23 24
-mcl_stairs:stair_prismarine 104 123 122
-mcl_stairs:stair_prismarine_brick 104 112 115
-mcl_stairs:stair_prismarine_brick_inner 104 112 115
-mcl_stairs:stair_prismarine_brick_outer 104 112 115
+mcl_stairs:stair_jungletree_bark 87 58 45
+mcl_stairs:stair_jungletree_bark_inner 87 58 45
+mcl_stairs:stair_jungletree_bark_outer 87 58 45
+mcl_stairs:stair_junglewood 113 79 59
+mcl_stairs:stair_junglewood_inner 113 79 59
+mcl_stairs:stair_junglewood_outer 113 79 59
+mcl_stairs:stair_lapisblock 50 90 158
+mcl_stairs:stair_lapisblock_inner 50 90 158
+mcl_stairs:stair_lapisblock_outer 50 90 158
+mcl_stairs:stair_mangrove_wood 124 61 55
+mcl_stairs:stair_mangrove_wood_inner 124 61 55
+mcl_stairs:stair_mangrove_wood_outer 124 61 55
+mcl_stairs:stair_mossycobble 100 106 95
+mcl_stairs:stair_mossycobble_inner 100 106 95
+mcl_stairs:stair_mossycobble_outer 100 106 95
+mcl_stairs:stair_mud_brick 109 96 87
+mcl_stairs:stair_mud_brick_inner 109 96 87
+mcl_stairs:stair_mud_brick_outer 109 96 87
+mcl_stairs:stair_nether_brick 49 24 25
+mcl_stairs:stair_nether_brick_inner 49 24 25
+mcl_stairs:stair_nether_brick_outer 49 24 25
+mcl_stairs:stair_prismarine 104 124 123
+mcl_stairs:stair_prismarine_brick 104 112 116
+mcl_stairs:stair_prismarine_brick_inner 104 112 116
+mcl_stairs:stair_prismarine_brick_outer 104 112 116
 mcl_stairs:stair_prismarine_dark 77 89 97
 mcl_stairs:stair_prismarine_dark_inner 77 89 97
 mcl_stairs:stair_prismarine_dark_outer 77 89 97
-mcl_stairs:stair_prismarine_inner 104 123 122
-mcl_stairs:stair_prismarine_outer 104 123 122
-mcl_stairs:stair_purpur_block 161 111 175
-mcl_stairs:stair_purpur_block_inner 161 111 175
-mcl_stairs:stair_purpur_block_outer 161 111 175
-mcl_stairs:stair_quartz_smooth 198 191 187
-mcl_stairs:stair_quartz_smooth_inner 198 191 187
-mcl_stairs:stair_quartz_smooth_outer 198 191 187
-mcl_stairs:stair_quartzblock 198 190 187
-mcl_stairs:stair_quartzblock_inner 198 190 187
-mcl_stairs:stair_quartzblock_outer 198 190 187
-mcl_stairs:stair_red_nether_brick 69 17 5
-mcl_stairs:stair_red_nether_brick_inner 69 17 5
-mcl_stairs:stair_red_nether_brick_outer 69 17 5
-mcl_stairs:stair_redsandstone 212 126 108
-mcl_stairs:stair_redsandstone_inner 212 126 108
-mcl_stairs:stair_redsandstone_outer 212 126 108
-mcl_stairs:stair_redsandstonesmooth2 212 126 108
-mcl_stairs:stair_redsandstonesmooth2_inner 212 126 108
-mcl_stairs:stair_redsandstonesmooth2_outer 212 126 108
-mcl_stairs:stair_sandstone 201 154 121
-mcl_stairs:stair_sandstone_inner 201 154 121
-mcl_stairs:stair_sandstone_outer 201 154 121
-mcl_stairs:stair_sandstonesmooth2 201 154 121
-mcl_stairs:stair_sandstonesmooth2_inner 201 154 121
-mcl_stairs:stair_sandstonesmooth2_outer 201 154 121
-mcl_stairs:stair_sprucetree_bark 66 51 44
-mcl_stairs:stair_sprucetree_bark_inner 66 51 44
-mcl_stairs:stair_sprucetree_bark_outer 66 51 44
-mcl_stairs:stair_sprucewood 81 65 54
-mcl_stairs:stair_sprucewood_inner 81 65 54
-mcl_stairs:stair_sprucewood_outer 81 65 54
-mcl_stairs:stair_stone_rough 130 122 118
-mcl_stairs:stair_stone_rough_inner 130 122 118
-mcl_stairs:stair_stone_rough_outer 130 122 118
-mcl_stairs:stair_stonebrick 97 89 86
-mcl_stairs:stair_stonebrick_inner 97 89 86
-mcl_stairs:stair_stonebrick_outer 97 89 86
-mcl_stairs:stair_stonebrickcracked 94 87 83
-mcl_stairs:stair_stonebrickcracked_inner 94 87 83
-mcl_stairs:stair_stonebrickcracked_outer 94 87 83
-mcl_stairs:stair_stonebrickmossy 81 101 76
-mcl_stairs:stair_stonebrickmossy_inner 81 101 76
-mcl_stairs:stair_stonebrickmossy_outer 81 101 76
-mcl_stairs:stair_tree_bark 95 75 57
-mcl_stairs:stair_tree_bark_inner 95 75 57
-mcl_stairs:stair_tree_bark_outer 95 75 57
+mcl_stairs:stair_prismarine_inner 104 124 123
+mcl_stairs:stair_prismarine_outer 104 124 123
+mcl_stairs:stair_purpur_block 161 112 175
+mcl_stairs:stair_purpur_block_inner 161 112 175
+mcl_stairs:stair_purpur_block_outer 161 112 175
+mcl_stairs:stair_quartz_smooth 199 191 188
+mcl_stairs:stair_quartz_smooth_inner 199 191 188
+mcl_stairs:stair_quartz_smooth_outer 199 191 188
+mcl_stairs:stair_quartzblock 198 191 187
+mcl_stairs:stair_quartzblock_inner 198 191 187
+mcl_stairs:stair_quartzblock_outer 198 191 187
+mcl_stairs:stair_red_nether_brick 70 17 5
+mcl_stairs:stair_red_nether_brick_inner 70 17 5
+mcl_stairs:stair_red_nether_brick_outer 70 17 5
+mcl_stairs:stair_redsandstone 212 126 109
+mcl_stairs:stair_redsandstone_inner 212 126 109
+mcl_stairs:stair_redsandstone_outer 212 126 109
+mcl_stairs:stair_redsandstonesmooth2 212 126 109
+mcl_stairs:stair_redsandstonesmooth2_inner 212 126 109
+mcl_stairs:stair_redsandstonesmooth2_outer 212 126 109
+mcl_stairs:stair_sandstone 202 155 121
+mcl_stairs:stair_sandstone_inner 202 155 121
+mcl_stairs:stair_sandstone_outer 202 155 121
+mcl_stairs:stair_sandstonesmooth2 202 155 121
+mcl_stairs:stair_sandstonesmooth2_inner 202 155 121
+mcl_stairs:stair_sandstonesmooth2_outer 202 155 121
+mcl_stairs:stair_sprucetree_bark 67 51 44
+mcl_stairs:stair_sprucetree_bark_inner 67 51 44
+mcl_stairs:stair_sprucetree_bark_outer 67 51 44
+mcl_stairs:stair_sprucewood 81 66 54
+mcl_stairs:stair_sprucewood_inner 81 66 54
+mcl_stairs:stair_sprucewood_outer 81 66 54
+mcl_stairs:stair_stone_rough 131 123 118
+mcl_stairs:stair_stone_rough_inner 131 123 118
+mcl_stairs:stair_stone_rough_outer 131 123 118
+mcl_stairs:stair_stonebrick 97 90 86
+mcl_stairs:stair_stonebrick_inner 97 90 86
+mcl_stairs:stair_stonebrick_outer 97 90 86
+mcl_stairs:stair_stonebrickcracked 95 87 83
+mcl_stairs:stair_stonebrickcracked_inner 95 87 83
+mcl_stairs:stair_stonebrickcracked_outer 95 87 83
+mcl_stairs:stair_stonebrickmossy 81 102 76
+mcl_stairs:stair_stonebrickmossy_inner 81 102 76
+mcl_stairs:stair_stonebrickmossy_outer 81 102 76
+mcl_stairs:stair_tree_bark 96 76 58
+mcl_stairs:stair_tree_bark_inner 96 76 58
+mcl_stairs:stair_tree_bark_outer 96 76 58
 mcl_stairs:stair_warped_hyphae_wood 79 56 120
 mcl_stairs:stair_warped_hyphae_wood_inner 79 56 120
 mcl_stairs:stair_warped_hyphae_wood_outer 79 56 120
-mcl_stairs:stair_waxed_copper_cut 148 77 57
-mcl_stairs:stair_waxed_copper_cut_inner 148 77 57
-mcl_stairs:stair_waxed_copper_cut_outer 148 77 57
-mcl_stairs:stair_waxed_copper_exposed_cut 129 92 82
-mcl_stairs:stair_waxed_copper_exposed_cut_inner 129 92 82
-mcl_stairs:stair_waxed_copper_exposed_cut_outer 129 92 82
-mcl_stairs:stair_waxed_copper_oxidized_cut 91 110 110
-mcl_stairs:stair_waxed_copper_oxidized_cut_inner 91 110 110
-mcl_stairs:stair_waxed_copper_oxidized_cut_outer 91 110 110
-mcl_stairs:stair_waxed_copper_weathered_cut 107 103 100
-mcl_stairs:stair_waxed_copper_weathered_cut_inner 107 103 100
-mcl_stairs:stair_waxed_copper_weathered_cut_outer 107 103 100
+mcl_stairs:stair_waxed_copper_cut 148 78 57
+mcl_stairs:stair_waxed_copper_cut_inner 148 78 57
+mcl_stairs:stair_waxed_copper_cut_outer 148 78 57
+mcl_stairs:stair_waxed_copper_exposed_cut 130 93 83
+mcl_stairs:stair_waxed_copper_exposed_cut_inner 130 93 83
+mcl_stairs:stair_waxed_copper_exposed_cut_outer 130 93 83
+mcl_stairs:stair_waxed_copper_oxidized_cut 91 110 111
+mcl_stairs:stair_waxed_copper_oxidized_cut_inner 91 110 111
+mcl_stairs:stair_waxed_copper_oxidized_cut_outer 91 110 111
+mcl_stairs:stair_waxed_copper_weathered_cut 107 103 101
+mcl_stairs:stair_waxed_copper_weathered_cut_inner 107 103 101
+mcl_stairs:stair_waxed_copper_weathered_cut_outer 107 103 101
 mcl_stairs:stair_wood 113 87 67
 mcl_stairs:stair_wood_inner 113 87 67
 mcl_stairs:stair_wood_outer 113 87 67
 
 # mcl_stonecutter
-mcl_stonecutter:stonecutter 85 79 76
+mcl_stonecutter:stonecutter 85 79 77
 
 # mcl_target
-mcl_target:target_off 177 117 94
-mcl_target:target_on 177 117 94
+mcl_target:target_off 178 118 94
+mcl_target:target_on 178 118 94
 
 # mcl_tnt
-mcl_tnt:tnt 125 54 57
+mcl_tnt:tnt 126 55 57
 
 # mcl_torches
-mcl_torches:torch 80 65 55 43
-mcl_torches:torch_wall 80 65 55 43
+mcl_torches:torch 80 66 56 44
+mcl_torches:torch_wall 80 66 56 44
 
 # mcl_villages
-mcl_villages:crop_flower_1 192 177 157
-mcl_villages:crop_flower_2 158 89 97
-mcl_villages:crop_flower_3 126 49 46
+mcl_villages:crop_flower_1 193 177 158
+mcl_villages:crop_flower_2 159 89 98
+mcl_villages:crop_flower_3 127 50 47
 mcl_villages:crop_flower_4 56 49 43
 mcl_villages:crop_flower_5 89 61 44
-mcl_villages:crop_flower_6 135 124 118
-mcl_villages:crop_flower_7 94 121 156
-mcl_villages:crop_flower_8 105 137 71
-mcl_villages:crop_gourd_1 204 172 145
-mcl_villages:crop_gourd_2 172 91 91
-mcl_villages:crop_gourd_3 143 55 44
+mcl_villages:crop_flower_6 136 124 119
+mcl_villages:crop_flower_7 94 121 157
+mcl_villages:crop_flower_8 106 138 71
+mcl_villages:crop_gourd_1 204 172 146
+mcl_villages:crop_gourd_2 173 92 92
+mcl_villages:crop_gourd_3 144 56 45
 mcl_villages:crop_gourd_4 79 55 41
-mcl_villages:crop_gourd_5 109 66 42
-mcl_villages:crop_gourd_6 151 123 109
+mcl_villages:crop_gourd_5 110 66 43
+mcl_villages:crop_gourd_6 152 123 110
 mcl_villages:crop_gourd_7 114 120 145
-mcl_villages:crop_gourd_8 123 135 67
-mcl_villages:crop_grain_1 190 161 133
-mcl_villages:crop_grain_2 167 102 93
-mcl_villages:crop_grain_3 146 75 58
-mcl_villages:crop_grain_4 99 75 56
-mcl_villages:crop_grain_5 121 83 57
-mcl_villages:crop_grain_6 152 125 107
-mcl_villages:crop_grain_7 124 123 133
-mcl_villages:crop_grain_8 132 134 75
+mcl_villages:crop_gourd_8 124 136 67
+mcl_villages:crop_grain_1 191 161 134
+mcl_villages:crop_grain_2 168 102 93
+mcl_villages:crop_grain_3 146 76 59
+mcl_villages:crop_grain_4 99 75 57
+mcl_villages:crop_grain_5 121 83 58
+mcl_villages:crop_grain_6 152 126 107
+mcl_villages:crop_grain_7 124 124 133
+mcl_villages:crop_grain_8 132 135 76
 mcl_villages:crop_root_1 198 178 156
-mcl_villages:crop_root_2 165 93 98
+mcl_villages:crop_root_2 165 93 99
 mcl_villages:crop_root_3 134 55 49
-mcl_villages:crop_root_4 66 54 45
+mcl_villages:crop_root_4 66 55 46
 mcl_villages:crop_root_5 98 66 47
-mcl_villages:crop_root_6 142 126 118
-mcl_villages:crop_root_7 102 123 155
-mcl_villages:crop_root_8 113 139 73
-mcl_villages:no_paths 138 46 38 117
-mcl_villages:path_endpoint 212 199 182
+mcl_villages:crop_root_6 143 127 118
+mcl_villages:crop_root_7 103 124 156
+mcl_villages:crop_root_8 113 140 73
+mcl_villages:no_paths 138 46 39 118
+mcl_villages:path_endpoint 213 199 183
 
 # mcl_walls
-mcl_walls:andesite 104 110 107
-mcl_walls:andesite_0 104 110 107
-mcl_walls:andesite_1 104 110 107
-mcl_walls:andesite_10 104 110 107
-mcl_walls:andesite_11 104 110 107
-mcl_walls:andesite_12 104 110 107
-mcl_walls:andesite_13 104 110 107
-mcl_walls:andesite_14 104 110 107
-mcl_walls:andesite_15 104 110 107
-mcl_walls:andesite_16 104 110 107
-mcl_walls:andesite_2 104 110 107
-mcl_walls:andesite_21 104 110 107
-mcl_walls:andesite_3 104 110 107
-mcl_walls:andesite_4 104 110 107
-mcl_walls:andesite_5 104 110 107
-mcl_walls:andesite_6 104 110 107
-mcl_walls:andesite_7 104 110 107
-mcl_walls:andesite_8 104 110 107
-mcl_walls:andesite_9 104 110 107
-mcl_walls:brick 139 87 75
-mcl_walls:brick_0 139 87 75
-mcl_walls:brick_1 139 87 75
-mcl_walls:brick_10 139 87 75
-mcl_walls:brick_11 139 87 75
-mcl_walls:brick_12 139 87 75
-mcl_walls:brick_13 139 87 75
-mcl_walls:brick_14 139 87 75
-mcl_walls:brick_15 139 87 75
-mcl_walls:brick_16 139 87 75
-mcl_walls:brick_2 139 87 75
-mcl_walls:brick_21 139 87 75
-mcl_walls:brick_3 139 87 75
-mcl_walls:brick_4 139 87 75
-mcl_walls:brick_5 139 87 75
-mcl_walls:brick_6 139 87 75
-mcl_walls:brick_7 139 87 75
-mcl_walls:brick_8 139 87 75
-mcl_walls:brick_9 139 87 75
-mcl_walls:cobble 120 114 112
-mcl_walls:cobble_0 120 114 112
-mcl_walls:cobble_1 120 114 112
-mcl_walls:cobble_10 120 114 112
-mcl_walls:cobble_11 120 114 112
-mcl_walls:cobble_12 120 114 112
-mcl_walls:cobble_13 120 114 112
-mcl_walls:cobble_14 120 114 112
-mcl_walls:cobble_15 120 114 112
-mcl_walls:cobble_16 120 114 112
-mcl_walls:cobble_2 120 114 112
-mcl_walls:cobble_21 120 114 112
-mcl_walls:cobble_3 120 114 112
-mcl_walls:cobble_4 120 114 112
-mcl_walls:cobble_5 120 114 112
-mcl_walls:cobble_6 120 114 112
-mcl_walls:cobble_7 120 114 112
-mcl_walls:cobble_8 120 114 112
-mcl_walls:cobble_9 120 114 112
-mcl_walls:diorite 153 149 146
-mcl_walls:diorite_0 153 149 146
-mcl_walls:diorite_1 153 149 146
-mcl_walls:diorite_10 153 149 146
-mcl_walls:diorite_11 153 149 146
-mcl_walls:diorite_12 153 149 146
-mcl_walls:diorite_13 153 149 146
-mcl_walls:diorite_14 153 149 146
-mcl_walls:diorite_15 153 149 146
-mcl_walls:diorite_16 153 149 146
-mcl_walls:diorite_2 153 149 146
-mcl_walls:diorite_21 153 149 146
-mcl_walls:diorite_3 153 149 146
-mcl_walls:diorite_4 153 149 146
-mcl_walls:diorite_5 153 149 146
-mcl_walls:diorite_6 153 149 146
-mcl_walls:diorite_7 153 149 146
-mcl_walls:diorite_8 153 149 146
-mcl_walls:diorite_9 153 149 146
-mcl_walls:endbricks 194 187 123
-mcl_walls:endbricks_0 194 187 123
-mcl_walls:endbricks_1 194 187 123
-mcl_walls:endbricks_10 194 187 123
-mcl_walls:endbricks_11 194 187 123
-mcl_walls:endbricks_12 194 187 123
-mcl_walls:endbricks_13 194 187 123
-mcl_walls:endbricks_14 194 187 123
-mcl_walls:endbricks_15 194 187 123
-mcl_walls:endbricks_16 194 187 123
-mcl_walls:endbricks_2 194 187 123
-mcl_walls:endbricks_21 194 187 123
-mcl_walls:endbricks_3 194 187 123
-mcl_walls:endbricks_4 194 187 123
-mcl_walls:endbricks_5 194 187 123
-mcl_walls:endbricks_6 194 187 123
-mcl_walls:endbricks_7 194 187 123
-mcl_walls:endbricks_8 194 187 123
-mcl_walls:endbricks_9 194 187 123
-mcl_walls:granite 153 121 110
-mcl_walls:granite_0 153 121 110
-mcl_walls:granite_1 153 121 110
-mcl_walls:granite_10 153 121 110
-mcl_walls:granite_11 153 121 110
-mcl_walls:granite_12 153 121 110
-mcl_walls:granite_13 153 121 110
-mcl_walls:granite_14 153 121 110
-mcl_walls:granite_15 153 121 110
-mcl_walls:granite_16 153 121 110
-mcl_walls:granite_2 153 121 110
-mcl_walls:granite_21 153 121 110
-mcl_walls:granite_3 153 121 110
-mcl_walls:granite_4 153 121 110
-mcl_walls:granite_5 153 121 110
-mcl_walls:granite_6 153 121 110
-mcl_walls:granite_7 153 121 110
-mcl_walls:granite_8 153 121 110
-mcl_walls:granite_9 153 121 110
+mcl_walls:andesite 104 111 107
+mcl_walls:andesite_0 104 111 107
+mcl_walls:andesite_1 104 111 107
+mcl_walls:andesite_10 104 111 107
+mcl_walls:andesite_11 104 111 107
+mcl_walls:andesite_12 104 111 107
+mcl_walls:andesite_13 104 111 107
+mcl_walls:andesite_14 104 111 107
+mcl_walls:andesite_15 104 111 107
+mcl_walls:andesite_16 104 111 107
+mcl_walls:andesite_2 104 111 107
+mcl_walls:andesite_21 104 111 107
+mcl_walls:andesite_3 104 111 107
+mcl_walls:andesite_4 104 111 107
+mcl_walls:andesite_5 104 111 107
+mcl_walls:andesite_6 104 111 107
+mcl_walls:andesite_7 104 111 107
+mcl_walls:andesite_8 104 111 107
+mcl_walls:andesite_9 104 111 107
+mcl_walls:brick 140 88 76
+mcl_walls:brick_0 140 88 76
+mcl_walls:brick_1 140 88 76
+mcl_walls:brick_10 140 88 76
+mcl_walls:brick_11 140 88 76
+mcl_walls:brick_12 140 88 76
+mcl_walls:brick_13 140 88 76
+mcl_walls:brick_14 140 88 76
+mcl_walls:brick_15 140 88 76
+mcl_walls:brick_16 140 88 76
+mcl_walls:brick_2 140 88 76
+mcl_walls:brick_21 140 88 76
+mcl_walls:brick_3 140 88 76
+mcl_walls:brick_4 140 88 76
+mcl_walls:brick_5 140 88 76
+mcl_walls:brick_6 140 88 76
+mcl_walls:brick_7 140 88 76
+mcl_walls:brick_8 140 88 76
+mcl_walls:brick_9 140 88 76
+mcl_walls:cobble 120 115 112
+mcl_walls:cobble_0 120 115 112
+mcl_walls:cobble_1 120 115 112
+mcl_walls:cobble_10 120 115 112
+mcl_walls:cobble_11 120 115 112
+mcl_walls:cobble_12 120 115 112
+mcl_walls:cobble_13 120 115 112
+mcl_walls:cobble_14 120 115 112
+mcl_walls:cobble_15 120 115 112
+mcl_walls:cobble_16 120 115 112
+mcl_walls:cobble_2 120 115 112
+mcl_walls:cobble_21 120 115 112
+mcl_walls:cobble_3 120 115 112
+mcl_walls:cobble_4 120 115 112
+mcl_walls:cobble_5 120 115 112
+mcl_walls:cobble_6 120 115 112
+mcl_walls:cobble_7 120 115 112
+mcl_walls:cobble_8 120 115 112
+mcl_walls:cobble_9 120 115 112
+mcl_walls:diorite 153 150 147
+mcl_walls:diorite_0 153 150 147
+mcl_walls:diorite_1 153 150 147
+mcl_walls:diorite_10 153 150 147
+mcl_walls:diorite_11 153 150 147
+mcl_walls:diorite_12 153 150 147
+mcl_walls:diorite_13 153 150 147
+mcl_walls:diorite_14 153 150 147
+mcl_walls:diorite_15 153 150 147
+mcl_walls:diorite_16 153 150 147
+mcl_walls:diorite_2 153 150 147
+mcl_walls:diorite_21 153 150 147
+mcl_walls:diorite_3 153 150 147
+mcl_walls:diorite_4 153 150 147
+mcl_walls:diorite_5 153 150 147
+mcl_walls:diorite_6 153 150 147
+mcl_walls:diorite_7 153 150 147
+mcl_walls:diorite_8 153 150 147
+mcl_walls:diorite_9 153 150 147
+mcl_walls:endbricks 194 188 123
+mcl_walls:endbricks_0 194 188 123
+mcl_walls:endbricks_1 194 188 123
+mcl_walls:endbricks_10 194 188 123
+mcl_walls:endbricks_11 194 188 123
+mcl_walls:endbricks_12 194 188 123
+mcl_walls:endbricks_13 194 188 123
+mcl_walls:endbricks_14 194 188 123
+mcl_walls:endbricks_15 194 188 123
+mcl_walls:endbricks_16 194 188 123
+mcl_walls:endbricks_2 194 188 123
+mcl_walls:endbricks_21 194 188 123
+mcl_walls:endbricks_3 194 188 123
+mcl_walls:endbricks_4 194 188 123
+mcl_walls:endbricks_5 194 188 123
+mcl_walls:endbricks_6 194 188 123
+mcl_walls:endbricks_7 194 188 123
+mcl_walls:endbricks_8 194 188 123
+mcl_walls:endbricks_9 194 188 123
+mcl_walls:granite 154 122 111
+mcl_walls:granite_0 154 122 111
+mcl_walls:granite_1 154 122 111
+mcl_walls:granite_10 154 122 111
+mcl_walls:granite_11 154 122 111
+mcl_walls:granite_12 154 122 111
+mcl_walls:granite_13 154 122 111
+mcl_walls:granite_14 154 122 111
+mcl_walls:granite_15 154 122 111
+mcl_walls:granite_16 154 122 111
+mcl_walls:granite_2 154 122 111
+mcl_walls:granite_21 154 122 111
+mcl_walls:granite_3 154 122 111
+mcl_walls:granite_4 154 122 111
+mcl_walls:granite_5 154 122 111
+mcl_walls:granite_6 154 122 111
+mcl_walls:granite_7 154 122 111
+mcl_walls:granite_8 154 122 111
+mcl_walls:granite_9 154 122 111
 mcl_walls:mossycobble 53 97 61
 mcl_walls:mossycobble_0 53 97 61
 mcl_walls:mossycobble_1 53 97 61
@@ -2018,391 +2149,391 @@ mcl_walls:mossycobble_6 53 97 61
 mcl_walls:mossycobble_7 53 97 61
 mcl_walls:mossycobble_8 53 97 61
 mcl_walls:mossycobble_9 53 97 61
-mcl_walls:mudbrick 108 95 86
-mcl_walls:mudbrick_0 108 95 86
-mcl_walls:mudbrick_1 108 95 86
-mcl_walls:mudbrick_10 108 95 86
-mcl_walls:mudbrick_11 108 95 86
-mcl_walls:mudbrick_12 108 95 86
-mcl_walls:mudbrick_13 108 95 86
-mcl_walls:mudbrick_14 108 95 86
-mcl_walls:mudbrick_15 108 95 86
-mcl_walls:mudbrick_16 108 95 86
-mcl_walls:mudbrick_2 108 95 86
-mcl_walls:mudbrick_21 108 95 86
-mcl_walls:mudbrick_3 108 95 86
-mcl_walls:mudbrick_4 108 95 86
-mcl_walls:mudbrick_5 108 95 86
-mcl_walls:mudbrick_6 108 95 86
-mcl_walls:mudbrick_7 108 95 86
-mcl_walls:mudbrick_8 108 95 86
-mcl_walls:mudbrick_9 108 95 86
-mcl_walls:netherbrick 49 23 24
-mcl_walls:netherbrick_0 49 23 24
-mcl_walls:netherbrick_1 49 23 24
-mcl_walls:netherbrick_10 49 23 24
-mcl_walls:netherbrick_11 49 23 24
-mcl_walls:netherbrick_12 49 23 24
-mcl_walls:netherbrick_13 49 23 24
-mcl_walls:netherbrick_14 49 23 24
-mcl_walls:netherbrick_15 49 23 24
-mcl_walls:netherbrick_16 49 23 24
-mcl_walls:netherbrick_2 49 23 24
-mcl_walls:netherbrick_21 49 23 24
-mcl_walls:netherbrick_3 49 23 24
-mcl_walls:netherbrick_4 49 23 24
-mcl_walls:netherbrick_5 49 23 24
-mcl_walls:netherbrick_6 49 23 24
-mcl_walls:netherbrick_7 49 23 24
-mcl_walls:netherbrick_8 49 23 24
-mcl_walls:netherbrick_9 49 23 24
-mcl_walls:prismarine 104 123 122
-mcl_walls:prismarine_0 104 123 122
-mcl_walls:prismarine_1 104 123 122
-mcl_walls:prismarine_10 104 123 122
-mcl_walls:prismarine_11 104 123 122
-mcl_walls:prismarine_12 104 123 122
-mcl_walls:prismarine_13 104 123 122
-mcl_walls:prismarine_14 104 123 122
-mcl_walls:prismarine_15 104 123 122
-mcl_walls:prismarine_16 104 123 122
-mcl_walls:prismarine_2 104 123 122
-mcl_walls:prismarine_21 104 123 122
-mcl_walls:prismarine_3 104 123 122
-mcl_walls:prismarine_4 104 123 122
-mcl_walls:prismarine_5 104 123 122
-mcl_walls:prismarine_6 104 123 122
-mcl_walls:prismarine_7 104 123 122
-mcl_walls:prismarine_8 104 123 122
-mcl_walls:prismarine_9 104 123 122
-mcl_walls:rednetherbrick 69 17 5
-mcl_walls:rednetherbrick_0 69 17 5
-mcl_walls:rednetherbrick_1 69 17 5
-mcl_walls:rednetherbrick_10 69 17 5
-mcl_walls:rednetherbrick_11 69 17 5
-mcl_walls:rednetherbrick_12 69 17 5
-mcl_walls:rednetherbrick_13 69 17 5
-mcl_walls:rednetherbrick_14 69 17 5
-mcl_walls:rednetherbrick_15 69 17 5
-mcl_walls:rednetherbrick_16 69 17 5
-mcl_walls:rednetherbrick_2 69 17 5
-mcl_walls:rednetherbrick_21 69 17 5
-mcl_walls:rednetherbrick_3 69 17 5
-mcl_walls:rednetherbrick_4 69 17 5
-mcl_walls:rednetherbrick_5 69 17 5
-mcl_walls:rednetherbrick_6 69 17 5
-mcl_walls:rednetherbrick_7 69 17 5
-mcl_walls:rednetherbrick_8 69 17 5
-mcl_walls:rednetherbrick_9 69 17 5
-mcl_walls:redsandstone 212 126 108
-mcl_walls:redsandstone_0 212 126 108
-mcl_walls:redsandstone_1 212 126 108
-mcl_walls:redsandstone_10 212 126 108
-mcl_walls:redsandstone_11 212 126 108
-mcl_walls:redsandstone_12 212 126 108
-mcl_walls:redsandstone_13 212 126 108
-mcl_walls:redsandstone_14 212 126 108
-mcl_walls:redsandstone_15 212 126 108
-mcl_walls:redsandstone_16 212 126 108
-mcl_walls:redsandstone_2 212 126 108
-mcl_walls:redsandstone_21 212 126 108
-mcl_walls:redsandstone_3 212 126 108
-mcl_walls:redsandstone_4 212 126 108
-mcl_walls:redsandstone_5 212 126 108
-mcl_walls:redsandstone_6 212 126 108
-mcl_walls:redsandstone_7 212 126 108
-mcl_walls:redsandstone_8 212 126 108
-mcl_walls:redsandstone_9 212 126 108
-mcl_walls:sandstone 201 154 121
-mcl_walls:sandstone_0 201 154 121
-mcl_walls:sandstone_1 201 154 121
-mcl_walls:sandstone_10 201 154 121
-mcl_walls:sandstone_11 201 154 121
-mcl_walls:sandstone_12 201 154 121
-mcl_walls:sandstone_13 201 154 121
-mcl_walls:sandstone_14 201 154 121
-mcl_walls:sandstone_15 201 154 121
-mcl_walls:sandstone_16 201 154 121
-mcl_walls:sandstone_2 201 154 121
-mcl_walls:sandstone_21 201 154 121
-mcl_walls:sandstone_3 201 154 121
-mcl_walls:sandstone_4 201 154 121
-mcl_walls:sandstone_5 201 154 121
-mcl_walls:sandstone_6 201 154 121
-mcl_walls:sandstone_7 201 154 121
-mcl_walls:sandstone_8 201 154 121
-mcl_walls:sandstone_9 201 154 121
-mcl_walls:stonebrick 97 89 86
-mcl_walls:stonebrick_0 97 89 86
-mcl_walls:stonebrick_1 97 89 86
-mcl_walls:stonebrick_10 97 89 86
-mcl_walls:stonebrick_11 97 89 86
-mcl_walls:stonebrick_12 97 89 86
-mcl_walls:stonebrick_13 97 89 86
-mcl_walls:stonebrick_14 97 89 86
-mcl_walls:stonebrick_15 97 89 86
-mcl_walls:stonebrick_16 97 89 86
-mcl_walls:stonebrick_2 97 89 86
-mcl_walls:stonebrick_21 97 89 86
-mcl_walls:stonebrick_3 97 89 86
-mcl_walls:stonebrick_4 97 89 86
-mcl_walls:stonebrick_5 97 89 86
-mcl_walls:stonebrick_6 97 89 86
-mcl_walls:stonebrick_7 97 89 86
-mcl_walls:stonebrick_8 97 89 86
-mcl_walls:stonebrick_9 97 89 86
-mcl_walls:stonebrickmossy 81 101 76
-mcl_walls:stonebrickmossy_0 81 101 76
-mcl_walls:stonebrickmossy_1 81 101 76
-mcl_walls:stonebrickmossy_10 81 101 76
-mcl_walls:stonebrickmossy_11 81 101 76
-mcl_walls:stonebrickmossy_12 81 101 76
-mcl_walls:stonebrickmossy_13 81 101 76
-mcl_walls:stonebrickmossy_14 81 101 76
-mcl_walls:stonebrickmossy_15 81 101 76
-mcl_walls:stonebrickmossy_16 81 101 76
-mcl_walls:stonebrickmossy_2 81 101 76
-mcl_walls:stonebrickmossy_21 81 101 76
-mcl_walls:stonebrickmossy_3 81 101 76
-mcl_walls:stonebrickmossy_4 81 101 76
-mcl_walls:stonebrickmossy_5 81 101 76
-mcl_walls:stonebrickmossy_6 81 101 76
-mcl_walls:stonebrickmossy_7 81 101 76
-mcl_walls:stonebrickmossy_8 81 101 76
-mcl_walls:stonebrickmossy_9 81 101 76
+mcl_walls:mudbrick 109 96 87
+mcl_walls:mudbrick_0 109 96 87
+mcl_walls:mudbrick_1 109 96 87
+mcl_walls:mudbrick_10 109 96 87
+mcl_walls:mudbrick_11 109 96 87
+mcl_walls:mudbrick_12 109 96 87
+mcl_walls:mudbrick_13 109 96 87
+mcl_walls:mudbrick_14 109 96 87
+mcl_walls:mudbrick_15 109 96 87
+mcl_walls:mudbrick_16 109 96 87
+mcl_walls:mudbrick_2 109 96 87
+mcl_walls:mudbrick_21 109 96 87
+mcl_walls:mudbrick_3 109 96 87
+mcl_walls:mudbrick_4 109 96 87
+mcl_walls:mudbrick_5 109 96 87
+mcl_walls:mudbrick_6 109 96 87
+mcl_walls:mudbrick_7 109 96 87
+mcl_walls:mudbrick_8 109 96 87
+mcl_walls:mudbrick_9 109 96 87
+mcl_walls:netherbrick 49 24 25
+mcl_walls:netherbrick_0 49 24 25
+mcl_walls:netherbrick_1 49 24 25
+mcl_walls:netherbrick_10 49 24 25
+mcl_walls:netherbrick_11 49 24 25
+mcl_walls:netherbrick_12 49 24 25
+mcl_walls:netherbrick_13 49 24 25
+mcl_walls:netherbrick_14 49 24 25
+mcl_walls:netherbrick_15 49 24 25
+mcl_walls:netherbrick_16 49 24 25
+mcl_walls:netherbrick_2 49 24 25
+mcl_walls:netherbrick_21 49 24 25
+mcl_walls:netherbrick_3 49 24 25
+mcl_walls:netherbrick_4 49 24 25
+mcl_walls:netherbrick_5 49 24 25
+mcl_walls:netherbrick_6 49 24 25
+mcl_walls:netherbrick_7 49 24 25
+mcl_walls:netherbrick_8 49 24 25
+mcl_walls:netherbrick_9 49 24 25
+mcl_walls:prismarine 104 124 123
+mcl_walls:prismarine_0 104 124 123
+mcl_walls:prismarine_1 104 124 123
+mcl_walls:prismarine_10 104 124 123
+mcl_walls:prismarine_11 104 124 123
+mcl_walls:prismarine_12 104 124 123
+mcl_walls:prismarine_13 104 124 123
+mcl_walls:prismarine_14 104 124 123
+mcl_walls:prismarine_15 104 124 123
+mcl_walls:prismarine_16 104 124 123
+mcl_walls:prismarine_2 104 124 123
+mcl_walls:prismarine_21 104 124 123
+mcl_walls:prismarine_3 104 124 123
+mcl_walls:prismarine_4 104 124 123
+mcl_walls:prismarine_5 104 124 123
+mcl_walls:prismarine_6 104 124 123
+mcl_walls:prismarine_7 104 124 123
+mcl_walls:prismarine_8 104 124 123
+mcl_walls:prismarine_9 104 124 123
+mcl_walls:rednetherbrick 70 17 5
+mcl_walls:rednetherbrick_0 70 17 5
+mcl_walls:rednetherbrick_1 70 17 5
+mcl_walls:rednetherbrick_10 70 17 5
+mcl_walls:rednetherbrick_11 70 17 5
+mcl_walls:rednetherbrick_12 70 17 5
+mcl_walls:rednetherbrick_13 70 17 5
+mcl_walls:rednetherbrick_14 70 17 5
+mcl_walls:rednetherbrick_15 70 17 5
+mcl_walls:rednetherbrick_16 70 17 5
+mcl_walls:rednetherbrick_2 70 17 5
+mcl_walls:rednetherbrick_21 70 17 5
+mcl_walls:rednetherbrick_3 70 17 5
+mcl_walls:rednetherbrick_4 70 17 5
+mcl_walls:rednetherbrick_5 70 17 5
+mcl_walls:rednetherbrick_6 70 17 5
+mcl_walls:rednetherbrick_7 70 17 5
+mcl_walls:rednetherbrick_8 70 17 5
+mcl_walls:rednetherbrick_9 70 17 5
+mcl_walls:redsandstone 212 126 109
+mcl_walls:redsandstone_0 212 126 109
+mcl_walls:redsandstone_1 212 126 109
+mcl_walls:redsandstone_10 212 126 109
+mcl_walls:redsandstone_11 212 126 109
+mcl_walls:redsandstone_12 212 126 109
+mcl_walls:redsandstone_13 212 126 109
+mcl_walls:redsandstone_14 212 126 109
+mcl_walls:redsandstone_15 212 126 109
+mcl_walls:redsandstone_16 212 126 109
+mcl_walls:redsandstone_2 212 126 109
+mcl_walls:redsandstone_21 212 126 109
+mcl_walls:redsandstone_3 212 126 109
+mcl_walls:redsandstone_4 212 126 109
+mcl_walls:redsandstone_5 212 126 109
+mcl_walls:redsandstone_6 212 126 109
+mcl_walls:redsandstone_7 212 126 109
+mcl_walls:redsandstone_8 212 126 109
+mcl_walls:redsandstone_9 212 126 109
+mcl_walls:sandstone 202 155 121
+mcl_walls:sandstone_0 202 155 121
+mcl_walls:sandstone_1 202 155 121
+mcl_walls:sandstone_10 202 155 121
+mcl_walls:sandstone_11 202 155 121
+mcl_walls:sandstone_12 202 155 121
+mcl_walls:sandstone_13 202 155 121
+mcl_walls:sandstone_14 202 155 121
+mcl_walls:sandstone_15 202 155 121
+mcl_walls:sandstone_16 202 155 121
+mcl_walls:sandstone_2 202 155 121
+mcl_walls:sandstone_21 202 155 121
+mcl_walls:sandstone_3 202 155 121
+mcl_walls:sandstone_4 202 155 121
+mcl_walls:sandstone_5 202 155 121
+mcl_walls:sandstone_6 202 155 121
+mcl_walls:sandstone_7 202 155 121
+mcl_walls:sandstone_8 202 155 121
+mcl_walls:sandstone_9 202 155 121
+mcl_walls:stonebrick 97 90 86
+mcl_walls:stonebrick_0 97 90 86
+mcl_walls:stonebrick_1 97 90 86
+mcl_walls:stonebrick_10 97 90 86
+mcl_walls:stonebrick_11 97 90 86
+mcl_walls:stonebrick_12 97 90 86
+mcl_walls:stonebrick_13 97 90 86
+mcl_walls:stonebrick_14 97 90 86
+mcl_walls:stonebrick_15 97 90 86
+mcl_walls:stonebrick_16 97 90 86
+mcl_walls:stonebrick_2 97 90 86
+mcl_walls:stonebrick_21 97 90 86
+mcl_walls:stonebrick_3 97 90 86
+mcl_walls:stonebrick_4 97 90 86
+mcl_walls:stonebrick_5 97 90 86
+mcl_walls:stonebrick_6 97 90 86
+mcl_walls:stonebrick_7 97 90 86
+mcl_walls:stonebrick_8 97 90 86
+mcl_walls:stonebrick_9 97 90 86
+mcl_walls:stonebrickmossy 81 102 76
+mcl_walls:stonebrickmossy_0 81 102 76
+mcl_walls:stonebrickmossy_1 81 102 76
+mcl_walls:stonebrickmossy_10 81 102 76
+mcl_walls:stonebrickmossy_11 81 102 76
+mcl_walls:stonebrickmossy_12 81 102 76
+mcl_walls:stonebrickmossy_13 81 102 76
+mcl_walls:stonebrickmossy_14 81 102 76
+mcl_walls:stonebrickmossy_15 81 102 76
+mcl_walls:stonebrickmossy_16 81 102 76
+mcl_walls:stonebrickmossy_2 81 102 76
+mcl_walls:stonebrickmossy_21 81 102 76
+mcl_walls:stonebrickmossy_3 81 102 76
+mcl_walls:stonebrickmossy_4 81 102 76
+mcl_walls:stonebrickmossy_5 81 102 76
+mcl_walls:stonebrickmossy_6 81 102 76
+mcl_walls:stonebrickmossy_7 81 102 76
+mcl_walls:stonebrickmossy_8 81 102 76
+mcl_walls:stonebrickmossy_9 81 102 76
 
 # mcl_wool
-mcl_wool:black 45 42 42
-mcl_wool:black_carpet 45 42 42
-mcl_wool:blue 43 73 125
-mcl_wool:blue_carpet 43 73 125
+mcl_wool:black 46 42 42
+mcl_wool:black_carpet 46 42 42
+mcl_wool:blue 43 73 126
+mcl_wool:blue_carpet 43 73 126
 mcl_wool:brown 86 57 43
 mcl_wool:brown_carpet 86 57 43
 mcl_wool:cyan 30 94 113
 mcl_wool:cyan_carpet 30 94 113
 mcl_wool:green 53 91 51
 mcl_wool:green_carpet 53 91 51
-mcl_wool:grey 96 87 87
-mcl_wool:grey_carpet 96 87 87
-mcl_wool:light_blue 91 130 180
-mcl_wool:light_blue_carpet 91 130 180
-mcl_wool:lime 107 151 76
-mcl_wool:lime_carpet 107 151 76
-mcl_wool:magenta 140 85 125
-mcl_wool:magenta_carpet 140 85 125
-mcl_wool:orange 188 106 45
-mcl_wool:orange_carpet 188 106 45
-mcl_wool:pink 171 91 108
-mcl_wool:pink_carpet 171 91 108
-mcl_wool:purple 77 57 102
-mcl_wool:purple_carpet 77 57 102
-mcl_wool:red 132 42 45
-mcl_wool:red_carpet 132 42 45
-mcl_wool:silver 143 134 134
-mcl_wool:silver_carpet 143 134 134
-mcl_wool:white 212 199 182
-mcl_wool:white_carpet 212 199 182
-mcl_wool:yellow 201 163 69
-mcl_wool:yellow_carpet 201 163 69
+mcl_wool:grey 96 87 88
+mcl_wool:grey_carpet 96 87 88
+mcl_wool:light_blue 92 131 181
+mcl_wool:light_blue_carpet 92 131 181
+mcl_wool:lime 108 151 77
+mcl_wool:lime_carpet 108 151 77
+mcl_wool:magenta 141 86 126
+mcl_wool:magenta_carpet 141 86 126
+mcl_wool:orange 189 106 46
+mcl_wool:orange_carpet 189 106 46
+mcl_wool:pink 171 92 108
+mcl_wool:pink_carpet 171 92 108
+mcl_wool:purple 78 57 102
+mcl_wool:purple_carpet 78 57 102
+mcl_wool:red 132 42 46
+mcl_wool:red_carpet 132 42 46
+mcl_wool:silver 143 134 135
+mcl_wool:silver_carpet 143 134 135
+mcl_wool:white 213 199 183
+mcl_wool:white_carpet 213 199 183
+mcl_wool:yellow 202 163 70
+mcl_wool:yellow_carpet 202 163 70
 
 # mclx_core
 mclx_core:river_water_flowing 35 66 128 224 128
 mclx_core:river_water_source 35 66 128 224 128
 
 # mclx_fences
-mclx_fences:nether_brick_fence_gate 50 25 26
-mclx_fences:nether_brick_fence_gate_open 50 25 26
+mclx_fences:nether_brick_fence_gate 51 25 26
+mclx_fences:nether_brick_fence_gate_open 51 25 26
 mclx_fences:red_nether_brick_fence 68 17 0
-mclx_fences:red_nether_brick_fence_gate 64 15 0
-mclx_fences:red_nether_brick_fence_gate_open 64 15 0
+mclx_fences:red_nether_brick_fence_gate 65 16 0
+mclx_fences:red_nether_brick_fence_gate_open 65 16 0
 
 # mesecons
-mesecons:wire_00000000_off 168 168 168 19
-mesecons:wire_00000000_on 168 168 168 19
-mesecons:wire_00010000_off 168 168 168 19
-mesecons:wire_00010000_on 168 168 168 19
-mesecons:wire_00010001_off 168 168 168 19
-mesecons:wire_00010001_on 168 168 168 19
-mesecons:wire_00100000_off 168 168 168 19
-mesecons:wire_00100000_on 168 168 168 19
-mesecons:wire_00100010_off 168 168 168 19
-mesecons:wire_00100010_on 168 168 168 19
-mesecons:wire_00110000_off 168 168 168 19
-mesecons:wire_00110000_on 168 168 168 19
-mesecons:wire_00110001_off 168 168 168 19
-mesecons:wire_00110001_on 168 168 168 19
-mesecons:wire_00110010_off 168 168 168 19
-mesecons:wire_00110010_on 168 168 168 19
-mesecons:wire_00110011_off 168 168 168 19
-mesecons:wire_00110011_on 168 168 168 19
-mesecons:wire_01000000_off 168 168 168 19
-mesecons:wire_01000000_on 168 168 168 19
-mesecons:wire_01000100_off 168 168 168 19
-mesecons:wire_01000100_on 168 168 168 19
-mesecons:wire_01010000_off 168 168 168 19
-mesecons:wire_01010000_on 168 168 168 19
-mesecons:wire_01010001_off 168 168 168 19
-mesecons:wire_01010001_on 168 168 168 19
-mesecons:wire_01010100_off 168 168 168 19
-mesecons:wire_01010100_on 168 168 168 19
-mesecons:wire_01010101_off 168 168 168 19
-mesecons:wire_01010101_on 168 168 168 19
-mesecons:wire_01100000_off 168 168 168 19
-mesecons:wire_01100000_on 168 168 168 19
-mesecons:wire_01100010_off 168 168 168 19
-mesecons:wire_01100010_on 168 168 168 19
-mesecons:wire_01100100_off 168 168 168 19
-mesecons:wire_01100100_on 168 168 168 19
-mesecons:wire_01100110_off 168 168 168 19
-mesecons:wire_01100110_on 168 168 168 19
-mesecons:wire_01110000_off 168 168 168 19
-mesecons:wire_01110000_on 168 168 168 19
-mesecons:wire_01110001_off 168 168 168 19
-mesecons:wire_01110001_on 168 168 168 19
-mesecons:wire_01110010_off 168 168 168 19
-mesecons:wire_01110010_on 168 168 168 19
-mesecons:wire_01110011_off 168 168 168 19
-mesecons:wire_01110011_on 168 168 168 19
-mesecons:wire_01110100_off 168 168 168 19
-mesecons:wire_01110100_on 168 168 168 19
-mesecons:wire_01110101_off 168 168 168 19
-mesecons:wire_01110101_on 168 168 168 19
-mesecons:wire_01110110_off 168 168 168 19
-mesecons:wire_01110110_on 168 168 168 19
-mesecons:wire_01110111_off 168 168 168 19
-mesecons:wire_01110111_on 168 168 168 19
-mesecons:wire_10000000_off 168 168 168 19
-mesecons:wire_10000000_on 168 168 168 19
-mesecons:wire_10001000_off 168 168 168 19
-mesecons:wire_10001000_on 168 168 168 19
-mesecons:wire_10010000_off 168 168 168 19
-mesecons:wire_10010000_on 168 168 168 19
-mesecons:wire_10010001_off 168 168 168 19
-mesecons:wire_10010001_on 168 168 168 19
-mesecons:wire_10011000_off 168 168 168 19
-mesecons:wire_10011000_on 168 168 168 19
-mesecons:wire_10011001_off 168 168 168 19
-mesecons:wire_10011001_on 168 168 168 19
-mesecons:wire_10100000_off 168 168 168 19
-mesecons:wire_10100000_on 168 168 168 19
-mesecons:wire_10100010_off 168 168 168 19
-mesecons:wire_10100010_on 168 168 168 19
-mesecons:wire_10101000_off 168 168 168 19
-mesecons:wire_10101000_on 168 168 168 19
-mesecons:wire_10101010_off 168 168 168 19
-mesecons:wire_10101010_on 168 168 168 19
-mesecons:wire_10110000_off 168 168 168 19
-mesecons:wire_10110000_on 168 168 168 19
-mesecons:wire_10110001_off 168 168 168 19
-mesecons:wire_10110001_on 168 168 168 19
-mesecons:wire_10110010_off 168 168 168 19
-mesecons:wire_10110010_on 168 168 168 19
-mesecons:wire_10110011_off 168 168 168 19
-mesecons:wire_10110011_on 168 168 168 19
-mesecons:wire_10111000_off 168 168 168 19
-mesecons:wire_10111000_on 168 168 168 19
-mesecons:wire_10111001_off 168 168 168 19
-mesecons:wire_10111001_on 168 168 168 19
-mesecons:wire_10111010_off 168 168 168 19
-mesecons:wire_10111010_on 168 168 168 19
-mesecons:wire_10111011_off 168 168 168 19
-mesecons:wire_10111011_on 168 168 168 19
-mesecons:wire_11000000_off 168 168 168 19
-mesecons:wire_11000000_on 168 168 168 19
-mesecons:wire_11000100_off 168 168 168 19
-mesecons:wire_11000100_on 168 168 168 19
-mesecons:wire_11001000_off 168 168 168 19
-mesecons:wire_11001000_on 168 168 168 19
-mesecons:wire_11001100_off 168 168 168 19
-mesecons:wire_11001100_on 168 168 168 19
-mesecons:wire_11010000_off 168 168 168 19
-mesecons:wire_11010000_on 168 168 168 19
-mesecons:wire_11010001_off 168 168 168 19
-mesecons:wire_11010001_on 168 168 168 19
-mesecons:wire_11010100_off 168 168 168 19
-mesecons:wire_11010100_on 168 168 168 19
-mesecons:wire_11010101_off 168 168 168 19
-mesecons:wire_11010101_on 168 168 168 19
-mesecons:wire_11011000_off 168 168 168 19
-mesecons:wire_11011000_on 168 168 168 19
-mesecons:wire_11011001_off 168 168 168 19
-mesecons:wire_11011001_on 168 168 168 19
-mesecons:wire_11011100_off 168 168 168 19
-mesecons:wire_11011100_on 168 168 168 19
-mesecons:wire_11011101_off 168 168 168 19
-mesecons:wire_11011101_on 168 168 168 19
-mesecons:wire_11100000_off 168 168 168 19
-mesecons:wire_11100000_on 168 168 168 19
-mesecons:wire_11100010_off 168 168 168 19
-mesecons:wire_11100010_on 168 168 168 19
-mesecons:wire_11100100_off 168 168 168 19
-mesecons:wire_11100100_on 168 168 168 19
-mesecons:wire_11100110_off 168 168 168 19
-mesecons:wire_11100110_on 168 168 168 19
-mesecons:wire_11101000_off 168 168 168 19
-mesecons:wire_11101000_on 168 168 168 19
-mesecons:wire_11101010_off 168 168 168 19
-mesecons:wire_11101010_on 168 168 168 19
-mesecons:wire_11101100_off 168 168 168 19
-mesecons:wire_11101100_on 168 168 168 19
-mesecons:wire_11101110_off 168 168 168 19
-mesecons:wire_11101110_on 168 168 168 19
-mesecons:wire_11110000_off 168 168 168 19
-mesecons:wire_11110000_on 168 168 168 19
-mesecons:wire_11110001_off 168 168 168 19
-mesecons:wire_11110001_on 168 168 168 19
-mesecons:wire_11110010_off 168 168 168 19
-mesecons:wire_11110010_on 168 168 168 19
-mesecons:wire_11110011_off 168 168 168 19
-mesecons:wire_11110011_on 168 168 168 19
-mesecons:wire_11110100_off 168 168 168 19
-mesecons:wire_11110100_on 168 168 168 19
-mesecons:wire_11110101_off 168 168 168 19
-mesecons:wire_11110101_on 168 168 168 19
-mesecons:wire_11110110_off 168 168 168 19
-mesecons:wire_11110110_on 168 168 168 19
-mesecons:wire_11110111_off 168 168 168 19
-mesecons:wire_11110111_on 168 168 168 19
-mesecons:wire_11111000_off 168 168 168 19
-mesecons:wire_11111000_on 168 168 168 19
-mesecons:wire_11111001_off 168 168 168 19
-mesecons:wire_11111001_on 168 168 168 19
-mesecons:wire_11111010_off 168 168 168 19
-mesecons:wire_11111010_on 168 168 168 19
-mesecons:wire_11111011_off 168 168 168 19
-mesecons:wire_11111011_on 168 168 168 19
-mesecons:wire_11111100_off 168 168 168 19
-mesecons:wire_11111100_on 168 168 168 19
-mesecons:wire_11111101_off 168 168 168 19
-mesecons:wire_11111101_on 168 168 168 19
-mesecons:wire_11111110_off 168 168 168 19
-mesecons:wire_11111110_on 168 168 168 19
-mesecons:wire_11111111_off 168 168 168 19
-mesecons:wire_11111111_on 168 168 168 19
+mesecons:wire_00000000_off 212 84 84 20
+mesecons:wire_00000000_on 233 41 41 20
+mesecons:wire_00010000_off 212 84 84 50
+mesecons:wire_00010000_on 233 41 41 50
+mesecons:wire_00010001_off 212 84 84 50
+mesecons:wire_00010001_on 233 41 41 50
+mesecons:wire_00100000_off 212 84 84 50
+mesecons:wire_00100000_on 233 41 41 50
+mesecons:wire_00100010_off 212 84 84 50
+mesecons:wire_00100010_on 233 41 41 50
+mesecons:wire_00110000_off 212 84 84 50
+mesecons:wire_00110000_on 233 41 41 50
+mesecons:wire_00110001_off 212 84 84 50
+mesecons:wire_00110001_on 233 41 41 50
+mesecons:wire_00110010_off 212 84 84 50
+mesecons:wire_00110010_on 233 41 41 50
+mesecons:wire_00110011_off 212 84 84 50
+mesecons:wire_00110011_on 233 41 41 50
+mesecons:wire_01000000_off 212 84 84 50
+mesecons:wire_01000000_on 233 41 41 50
+mesecons:wire_01000100_off 212 84 84 50
+mesecons:wire_01000100_on 233 41 41 50
+mesecons:wire_01010000_off 212 84 84 50
+mesecons:wire_01010000_on 233 41 41 50
+mesecons:wire_01010001_off 212 84 84 50
+mesecons:wire_01010001_on 233 41 41 50
+mesecons:wire_01010100_off 212 84 84 50
+mesecons:wire_01010100_on 233 41 41 50
+mesecons:wire_01010101_off 212 84 84 50
+mesecons:wire_01010101_on 233 41 41 50
+mesecons:wire_01100000_off 212 84 84 50
+mesecons:wire_01100000_on 233 41 41 50
+mesecons:wire_01100010_off 212 84 84 50
+mesecons:wire_01100010_on 233 41 41 50
+mesecons:wire_01100100_off 212 84 84 50
+mesecons:wire_01100100_on 233 41 41 50
+mesecons:wire_01100110_off 212 84 84 50
+mesecons:wire_01100110_on 233 41 41 50
+mesecons:wire_01110000_off 212 84 84 50
+mesecons:wire_01110000_on 233 41 41 50
+mesecons:wire_01110001_off 212 84 84 50
+mesecons:wire_01110001_on 233 41 41 50
+mesecons:wire_01110010_off 212 84 84 50
+mesecons:wire_01110010_on 233 41 41 50
+mesecons:wire_01110011_off 212 84 84 50
+mesecons:wire_01110011_on 233 41 41 50
+mesecons:wire_01110100_off 212 84 84 50
+mesecons:wire_01110100_on 233 41 41 50
+mesecons:wire_01110101_off 212 84 84 50
+mesecons:wire_01110101_on 233 41 41 50
+mesecons:wire_01110110_off 212 84 84 50
+mesecons:wire_01110110_on 233 41 41 50
+mesecons:wire_01110111_off 212 84 84 50
+mesecons:wire_01110111_on 233 41 41 50
+mesecons:wire_10000000_off 212 84 84 50
+mesecons:wire_10000000_on 233 41 41 50
+mesecons:wire_10001000_off 212 84 84 50
+mesecons:wire_10001000_on 233 41 41 50
+mesecons:wire_10010000_off 212 84 84 50
+mesecons:wire_10010000_on 233 41 41 50
+mesecons:wire_10010001_off 212 84 84 50
+mesecons:wire_10010001_on 233 41 41 50
+mesecons:wire_10011000_off 212 84 84 50
+mesecons:wire_10011000_on 233 41 41 50
+mesecons:wire_10011001_off 212 84 84 50
+mesecons:wire_10011001_on 233 41 41 50
+mesecons:wire_10100000_off 212 84 84 50
+mesecons:wire_10100000_on 233 41 41 50
+mesecons:wire_10100010_off 212 84 84 50
+mesecons:wire_10100010_on 233 41 41 50
+mesecons:wire_10101000_off 212 84 84 50
+mesecons:wire_10101000_on 233 41 41 50
+mesecons:wire_10101010_off 212 84 84 50
+mesecons:wire_10101010_on 233 41 41 50
+mesecons:wire_10110000_off 212 84 84 50
+mesecons:wire_10110000_on 233 41 41 50
+mesecons:wire_10110001_off 212 84 84 50
+mesecons:wire_10110001_on 233 41 41 50
+mesecons:wire_10110010_off 212 84 84 50
+mesecons:wire_10110010_on 233 41 41 50
+mesecons:wire_10110011_off 212 84 84 50
+mesecons:wire_10110011_on 233 41 41 50
+mesecons:wire_10111000_off 212 84 84 50
+mesecons:wire_10111000_on 233 41 41 50
+mesecons:wire_10111001_off 212 84 84 50
+mesecons:wire_10111001_on 233 41 41 50
+mesecons:wire_10111010_off 212 84 84 50
+mesecons:wire_10111010_on 233 41 41 50
+mesecons:wire_10111011_off 212 84 84 50
+mesecons:wire_10111011_on 233 41 41 50
+mesecons:wire_11000000_off 212 84 84 50
+mesecons:wire_11000000_on 233 41 41 50
+mesecons:wire_11000100_off 212 84 84 50
+mesecons:wire_11000100_on 233 41 41 50
+mesecons:wire_11001000_off 212 84 84 50
+mesecons:wire_11001000_on 233 41 41 50
+mesecons:wire_11001100_off 212 84 84 50
+mesecons:wire_11001100_on 233 41 41 50
+mesecons:wire_11010000_off 212 84 84 50
+mesecons:wire_11010000_on 233 41 41 50
+mesecons:wire_11010001_off 212 84 84 50
+mesecons:wire_11010001_on 233 41 41 50
+mesecons:wire_11010100_off 212 84 84 50
+mesecons:wire_11010100_on 233 41 41 50
+mesecons:wire_11010101_off 212 84 84 50
+mesecons:wire_11010101_on 233 41 41 50
+mesecons:wire_11011000_off 212 84 84 50
+mesecons:wire_11011000_on 233 41 41 50
+mesecons:wire_11011001_off 212 84 84 50
+mesecons:wire_11011001_on 233 41 41 50
+mesecons:wire_11011100_off 212 84 84 50
+mesecons:wire_11011100_on 233 41 41 50
+mesecons:wire_11011101_off 212 84 84 50
+mesecons:wire_11011101_on 233 41 41 50
+mesecons:wire_11100000_off 212 84 84 50
+mesecons:wire_11100000_on 233 41 41 50
+mesecons:wire_11100010_off 212 84 84 50
+mesecons:wire_11100010_on 233 41 41 50
+mesecons:wire_11100100_off 212 84 84 50
+mesecons:wire_11100100_on 233 41 41 50
+mesecons:wire_11100110_off 212 84 84 50
+mesecons:wire_11100110_on 233 41 41 50
+mesecons:wire_11101000_off 212 84 84 50
+mesecons:wire_11101000_on 233 41 41 50
+mesecons:wire_11101010_off 212 84 84 50
+mesecons:wire_11101010_on 233 41 41 50
+mesecons:wire_11101100_off 212 84 84 50
+mesecons:wire_11101100_on 233 41 41 50
+mesecons:wire_11101110_off 212 84 84 50
+mesecons:wire_11101110_on 233 41 41 50
+mesecons:wire_11110000_off 212 84 84 50
+mesecons:wire_11110000_on 233 41 41 50
+mesecons:wire_11110001_off 212 84 84 50
+mesecons:wire_11110001_on 233 41 41 50
+mesecons:wire_11110010_off 212 84 84 50
+mesecons:wire_11110010_on 233 41 41 50
+mesecons:wire_11110011_off 212 84 84 50
+mesecons:wire_11110011_on 233 41 41 50
+mesecons:wire_11110100_off 212 84 84 50
+mesecons:wire_11110100_on 233 41 41 50
+mesecons:wire_11110101_off 212 84 84 50
+mesecons:wire_11110101_on 233 41 41 50
+mesecons:wire_11110110_off 212 84 84 50
+mesecons:wire_11110110_on 233 41 41 50
+mesecons:wire_11110111_off 212 84 84 50
+mesecons:wire_11110111_on 233 41 41 50
+mesecons:wire_11111000_off 212 84 84 50
+mesecons:wire_11111000_on 233 41 41 50
+mesecons:wire_11111001_off 212 84 84 50
+mesecons:wire_11111001_on 233 41 41 50
+mesecons:wire_11111010_off 212 84 84 50
+mesecons:wire_11111010_on 233 41 41 50
+mesecons:wire_11111011_off 212 84 84 50
+mesecons:wire_11111011_on 233 41 41 50
+mesecons:wire_11111100_off 212 84 84 50
+mesecons:wire_11111100_on 233 41 41 50
+mesecons:wire_11111101_off 212 84 84 50
+mesecons:wire_11111101_on 233 41 41 50
+mesecons:wire_11111110_off 212 84 84 50
+mesecons:wire_11111110_on 233 41 41 50
+mesecons:wire_11111111_off 212 84 84 50
+mesecons:wire_11111111_on 233 41 41 50
 
 # mesecons_button
 mesecons_button:button_acaciawood_off 152 100 69
 mesecons_button:button_acaciawood_on 152 100 69
-mesecons_button:button_bamboo_off 242 219 170
-mesecons_button:button_bamboo_on 242 219 170
-mesecons_button:button_birchwood_off 145 113 89
-mesecons_button:button_birchwood_on 145 113 89
-mesecons_button:button_cherrywood_off 216 144 136
-mesecons_button:button_cherrywood_on 216 144 136
-mesecons_button:button_crimson_hyphae_wood_off 115 23 15
-mesecons_button:button_crimson_hyphae_wood_on 115 23 15
-mesecons_button:button_darkwood_off 87 74 62
-mesecons_button:button_darkwood_on 87 74 62
-mesecons_button:button_junglewood_off 113 78 59
-mesecons_button:button_junglewood_on 113 78 59
-mesecons_button:button_mangrove_wood_off 123 60 54
-mesecons_button:button_mangrove_wood_on 123 60 54
-mesecons_button:button_polished_blackstone_off 43 41 46
-mesecons_button:button_polished_blackstone_on 43 41 46
-mesecons_button:button_sprucewood_off 81 65 54
-mesecons_button:button_sprucewood_on 81 65 54
-mesecons_button:button_stone_off 130 122 118
-mesecons_button:button_stone_on 130 122 118
+mesecons_button:button_bamboo_off 243 220 170
+mesecons_button:button_bamboo_on 243 220 170
+mesecons_button:button_birchwood_off 146 114 89
+mesecons_button:button_birchwood_on 146 114 89
+mesecons_button:button_cherrywood_off 217 144 136
+mesecons_button:button_cherrywood_on 217 144 136
+mesecons_button:button_crimson_hyphae_wood_off 116 24 15
+mesecons_button:button_crimson_hyphae_wood_on 116 24 15
+mesecons_button:button_darkwood_off 88 75 62
+mesecons_button:button_darkwood_on 88 75 62
+mesecons_button:button_junglewood_off 113 79 59
+mesecons_button:button_junglewood_on 113 79 59
+mesecons_button:button_mangrove_wood_off 124 61 55
+mesecons_button:button_mangrove_wood_on 124 61 55
+mesecons_button:button_polished_blackstone_off 44 41 46
+mesecons_button:button_polished_blackstone_on 44 41 46
+mesecons_button:button_sprucewood_off 81 66 54
+mesecons_button:button_sprucewood_on 81 66 54
+mesecons_button:button_stone_off 131 123 118
+mesecons_button:button_stone_on 131 123 118
 mesecons_button:button_warped_hyphae_wood_off 79 56 120
 mesecons_button:button_warped_hyphae_wood_on 79 56 120
 mesecons_button:button_wood_off 113 87 67
@@ -2413,11 +2544,11 @@ mesecons_commandblock:commandblock_off 110 99 96
 mesecons_commandblock:commandblock_on 110 99 96
 
 # mesecons_delayer
-mesecons_delayer:delayer_off_1 112 100 96
-mesecons_delayer:delayer_off_2 112 100 96
-mesecons_delayer:delayer_off_3 112 100 96
-mesecons_delayer:delayer_off_4 112 100 96
-mesecons_delayer:delayer_off_locked 110 99 95
+mesecons_delayer:delayer_off_1 112 101 97
+mesecons_delayer:delayer_off_2 112 101 97
+mesecons_delayer:delayer_off_3 112 101 97
+mesecons_delayer:delayer_off_4 112 101 97
+mesecons_delayer:delayer_off_locked 111 100 95
 mesecons_delayer:delayer_on_1 116 101 97
 mesecons_delayer:delayer_on_2 116 101 97
 mesecons_delayer:delayer_on_3 116 101 97
@@ -2425,128 +2556,128 @@ mesecons_delayer:delayer_on_4 116 101 97
 mesecons_delayer:delayer_on_locked 114 100 95
 
 # mesecons_lightstone
-mesecons_lightstone:lightstone_off 64 49 43
-mesecons_lightstone:lightstone_off_black 64 49 43
-mesecons_lightstone:lightstone_off_blue 64 49 43
-mesecons_lightstone:lightstone_off_brown 64 49 43
-mesecons_lightstone:lightstone_off_cyan 64 49 43
-mesecons_lightstone:lightstone_off_green 64 49 43
-mesecons_lightstone:lightstone_off_grey 64 49 43
-mesecons_lightstone:lightstone_off_lightblue 64 49 43
-mesecons_lightstone:lightstone_off_lime 64 49 43
-mesecons_lightstone:lightstone_off_magenta 64 49 43
-mesecons_lightstone:lightstone_off_orange 64 49 43
-mesecons_lightstone:lightstone_off_pink 64 49 43
-mesecons_lightstone:lightstone_off_purple 64 49 43
-mesecons_lightstone:lightstone_off_red 64 49 43
-mesecons_lightstone:lightstone_off_silver 64 49 43
-mesecons_lightstone:lightstone_off_white 64 49 43
-mesecons_lightstone:lightstone_off_yellow 64 49 43
-mesecons_lightstone:lightstone_on 97 56 37
-mesecons_lightstone:lightstone_on_black 97 56 37
-mesecons_lightstone:lightstone_on_blue 97 56 37
-mesecons_lightstone:lightstone_on_brown 97 56 37
-mesecons_lightstone:lightstone_on_cyan 97 56 37
-mesecons_lightstone:lightstone_on_green 97 56 37
-mesecons_lightstone:lightstone_on_grey 97 56 37
-mesecons_lightstone:lightstone_on_lightblue 97 56 37
-mesecons_lightstone:lightstone_on_lime 97 56 37
-mesecons_lightstone:lightstone_on_magenta 97 56 37
-mesecons_lightstone:lightstone_on_orange 97 56 37
-mesecons_lightstone:lightstone_on_pink 97 56 37
-mesecons_lightstone:lightstone_on_purple 97 56 37
-mesecons_lightstone:lightstone_on_red 97 56 37
-mesecons_lightstone:lightstone_on_silver 97 56 37
-mesecons_lightstone:lightstone_on_white 97 56 37
-mesecons_lightstone:lightstone_on_yellow 97 56 37
+mesecons_lightstone:lightstone_off 65 49 43
+mesecons_lightstone:lightstone_off_black 0 0 0
+mesecons_lightstone:lightstone_off_blue 0 0 127
+mesecons_lightstone:lightstone_off_brown 82 21 21
+mesecons_lightstone:lightstone_off_cyan 0 127 127
+mesecons_lightstone:lightstone_off_green 0 63 0
+mesecons_lightstone:lightstone_off_grey 63 63 63
+mesecons_lightstone:lightstone_off_lightblue 53 118 128
+mesecons_lightstone:lightstone_off_lime 0 127 0
+mesecons_lightstone:lightstone_off_magenta 127 0 127
+mesecons_lightstone:lightstone_off_orange 127 82 0
+mesecons_lightstone:lightstone_off_pink 127 95 100
+mesecons_lightstone:lightstone_off_purple 63 0 63
+mesecons_lightstone:lightstone_off_red 127 0 0
+mesecons_lightstone:lightstone_off_silver 95 95 95
+mesecons_lightstone:lightstone_off_white 127 127 127
+mesecons_lightstone:lightstone_off_yellow 127 127 0
+mesecons_lightstone:lightstone_on 97 56 38
+mesecons_lightstone:lightstone_on_black 0 0 0
+mesecons_lightstone:lightstone_on_blue 0 0 127
+mesecons_lightstone:lightstone_on_brown 82 21 21
+mesecons_lightstone:lightstone_on_cyan 0 127 127
+mesecons_lightstone:lightstone_on_green 0 63 0
+mesecons_lightstone:lightstone_on_grey 63 63 63
+mesecons_lightstone:lightstone_on_lightblue 53 118 128
+mesecons_lightstone:lightstone_on_lime 0 127 0
+mesecons_lightstone:lightstone_on_magenta 127 0 127
+mesecons_lightstone:lightstone_on_orange 127 82 0
+mesecons_lightstone:lightstone_on_pink 127 95 100
+mesecons_lightstone:lightstone_on_purple 63 0 63
+mesecons_lightstone:lightstone_on_red 127 0 0
+mesecons_lightstone:lightstone_on_silver 95 95 95
+mesecons_lightstone:lightstone_on_white 127 127 127
+mesecons_lightstone:lightstone_on_yellow 127 127 0
 
 # mesecons_noteblock
-mesecons_noteblock:noteblock 104 81 63
+mesecons_noteblock:noteblock 105 82 64
 
 # mesecons_pistons
-mesecons_pistons:piston_down_normal_off 110 101 98
-mesecons_pistons:piston_down_normal_on 110 101 98
+mesecons_pistons:piston_down_normal_off 110 102 98
+mesecons_pistons:piston_down_normal_on 110 102 98
 mesecons_pistons:piston_down_pusher_normal 106 83 65
 mesecons_pistons:piston_down_pusher_sticky 106 83 65
-mesecons_pistons:piston_down_sticky_off 110 101 98
-mesecons_pistons:piston_down_sticky_on 110 101 98
-mesecons_pistons:piston_normal_off 120 107 100
-mesecons_pistons:piston_normal_on 120 107 100
+mesecons_pistons:piston_down_sticky_off 110 102 98
+mesecons_pistons:piston_down_sticky_on 110 102 98
+mesecons_pistons:piston_normal_off 121 108 100
+mesecons_pistons:piston_normal_on 121 108 100
 mesecons_pistons:piston_pusher_normal 106 83 65
 mesecons_pistons:piston_pusher_sticky 106 83 65
-mesecons_pistons:piston_sticky_off 120 107 100
-mesecons_pistons:piston_sticky_on 120 107 100
+mesecons_pistons:piston_sticky_off 121 108 100
+mesecons_pistons:piston_sticky_on 121 108 100
 mesecons_pistons:piston_up_normal_off 106 83 65
-mesecons_pistons:piston_up_normal_on 111 101 98
+mesecons_pistons:piston_up_normal_on 112 102 99
 mesecons_pistons:piston_up_pusher_normal 106 83 65
-mesecons_pistons:piston_up_pusher_sticky 97 81 63
-mesecons_pistons:piston_up_sticky_off 97 81 63
-mesecons_pistons:piston_up_sticky_on 111 101 98
+mesecons_pistons:piston_up_pusher_sticky 97 81 64
+mesecons_pistons:piston_up_sticky_off 97 81 64
+mesecons_pistons:piston_up_sticky_on 112 102 99
 
 # mesecons_pressureplates
 mesecons_pressureplates:pressure_plate_acaciawood_off 152 100 69
 mesecons_pressureplates:pressure_plate_acaciawood_on 152 100 69
-mesecons_pressureplates:pressure_plate_birchwood_off 145 113 89
-mesecons_pressureplates:pressure_plate_birchwood_on 145 113 89
-mesecons_pressureplates:pressure_plate_crimson_hyphae_wood_off 115 23 15
-mesecons_pressureplates:pressure_plate_crimson_hyphae_wood_on 115 23 15
-mesecons_pressureplates:pressure_plate_darkwood_off 87 74 62
-mesecons_pressureplates:pressure_plate_darkwood_on 87 74 62
-mesecons_pressureplates:pressure_plate_junglewood_off 113 78 59
-mesecons_pressureplates:pressure_plate_junglewood_on 113 78 59
-mesecons_pressureplates:pressure_plate_mangrove_wood_off 123 60 54
-mesecons_pressureplates:pressure_plate_mangrove_wood_on 123 60 54
-mesecons_pressureplates:pressure_plate_polished_blackstone_off 43 41 46
-mesecons_pressureplates:pressure_plate_polished_blackstone_on 43 41 46
-mesecons_pressureplates:pressure_plate_sprucewood_off 81 65 54
-mesecons_pressureplates:pressure_plate_sprucewood_on 81 65 54
-mesecons_pressureplates:pressure_plate_stone_off 130 122 118
-mesecons_pressureplates:pressure_plate_stone_on 130 122 118
+mesecons_pressureplates:pressure_plate_birchwood_off 146 114 89
+mesecons_pressureplates:pressure_plate_birchwood_on 146 114 89
+mesecons_pressureplates:pressure_plate_crimson_hyphae_wood_off 116 24 15
+mesecons_pressureplates:pressure_plate_crimson_hyphae_wood_on 116 24 15
+mesecons_pressureplates:pressure_plate_darkwood_off 88 75 62
+mesecons_pressureplates:pressure_plate_darkwood_on 88 75 62
+mesecons_pressureplates:pressure_plate_junglewood_off 113 79 59
+mesecons_pressureplates:pressure_plate_junglewood_on 113 79 59
+mesecons_pressureplates:pressure_plate_mangrove_wood_off 124 61 55
+mesecons_pressureplates:pressure_plate_mangrove_wood_on 124 61 55
+mesecons_pressureplates:pressure_plate_polished_blackstone_off 44 41 46
+mesecons_pressureplates:pressure_plate_polished_blackstone_on 44 41 46
+mesecons_pressureplates:pressure_plate_sprucewood_off 81 66 54
+mesecons_pressureplates:pressure_plate_sprucewood_on 81 66 54
+mesecons_pressureplates:pressure_plate_stone_off 131 123 118
+mesecons_pressureplates:pressure_plate_stone_on 131 123 118
 mesecons_pressureplates:pressure_plate_warped_hyphae_wood_off 79 56 120
 mesecons_pressureplates:pressure_plate_warped_hyphae_wood_on 79 56 120
 mesecons_pressureplates:pressure_plate_wood_off 113 87 67
 mesecons_pressureplates:pressure_plate_wood_on 113 87 67
 
 # mesecons_solarpanel
-mesecons_solarpanel:solar_panel_inverted_off 100 107 117
-mesecons_solarpanel:solar_panel_inverted_on 100 107 117
-mesecons_solarpanel:solar_panel_off 124 113 101
-mesecons_solarpanel:solar_panel_on 124 113 101
+mesecons_solarpanel:solar_panel_inverted_off 100 108 118
+mesecons_solarpanel:solar_panel_inverted_on 100 108 118
+mesecons_solarpanel:solar_panel_off 125 113 102
+mesecons_solarpanel:solar_panel_on 125 113 102
 
 # mesecons_torch
-mesecons_torch:mesecon_torch_off 71 58 52 39
-mesecons_torch:mesecon_torch_off_wall 71 58 52 39
-mesecons_torch:mesecon_torch_on 79 60 54 39
-mesecons_torch:mesecon_torch_on_wall 79 60 54 39
-mesecons_torch:mesecon_torch_overheated 71 58 52 39
-mesecons_torch:mesecon_torch_overheated_wall 71 58 52 39
-mesecons_torch:redstoneblock 128 8 9
+mesecons_torch:mesecon_torch_off 72 59 53 40
+mesecons_torch:mesecon_torch_off_wall 72 59 53 40
+mesecons_torch:mesecon_torch_on 80 60 54 40
+mesecons_torch:mesecon_torch_on_wall 80 60 54 40
+mesecons_torch:mesecon_torch_overheated 72 59 53 40
+mesecons_torch:mesecon_torch_overheated_wall 72 59 53 40
+mesecons_torch:redstoneblock 129 9 10
 
 # mesecons_walllever
-mesecons_walllever:wall_lever_off 107 96 90
-mesecons_walllever:wall_lever_on 107 96 90
+mesecons_walllever:wall_lever_off 108 97 91
+mesecons_walllever:wall_lever_on 108 97 91
 
 # vl_hollow_logs
-vl_hollow_logs:acaciatree_hollow 121 87 63
-vl_hollow_logs:birchtree_hollow 183 163 145
-vl_hollow_logs:cherrytree_hollow 194 97 87
+vl_hollow_logs:acaciatree_hollow 121 87 64
+vl_hollow_logs:birchtree_hollow 183 163 146
+vl_hollow_logs:cherrytree_hollow 195 98 87
 vl_hollow_logs:crimson_hyphae_hollow 116 57 57
-vl_hollow_logs:darktree_hollow 79 67 59
-vl_hollow_logs:jungletree_hollow 120 81 61
-vl_hollow_logs:mangrove_stripped_hollow 135 65 56
-vl_hollow_logs:mangrove_tree_hollow 109 67 51
+vl_hollow_logs:darktree_hollow 80 67 60
+vl_hollow_logs:jungletree_hollow 121 82 62
+vl_hollow_logs:mangrove_stripped_hollow 135 66 57
+vl_hollow_logs:mangrove_tree_hollow 110 67 51
 vl_hollow_logs:sprucetree_hollow 85 64 53
-vl_hollow_logs:stripped_acacia_hollow 153 92 58
-vl_hollow_logs:stripped_birch_hollow 178 142 114
-vl_hollow_logs:stripped_cherrytree_hollow 207 119 109
-vl_hollow_logs:stripped_crimson_hyphae_hollow 130 46 52
-vl_hollow_logs:stripped_dark_oak_hollow 90 77 69
-vl_hollow_logs:stripped_jungle_hollow 175 116 85
-vl_hollow_logs:stripped_oak_hollow 160 120 83
-vl_hollow_logs:stripped_spruce_hollow 109 81 66
-vl_hollow_logs:stripped_warped_hyphae_hollow 72 66 98
-vl_hollow_logs:tree_hollow 122 94 68
-vl_hollow_logs:warped_hyphae_hollow 58 61 82
+vl_hollow_logs:stripped_acacia_hollow 154 92 58
+vl_hollow_logs:stripped_birch_hollow 178 143 114
+vl_hollow_logs:stripped_cherrytree_hollow 208 119 110
+vl_hollow_logs:stripped_crimson_hyphae_hollow 131 47 52
+vl_hollow_logs:stripped_dark_oak_hollow 90 78 69
+vl_hollow_logs:stripped_jungle_hollow 175 117 86
+vl_hollow_logs:stripped_oak_hollow 160 121 83
+vl_hollow_logs:stripped_spruce_hollow 109 82 67
+vl_hollow_logs:stripped_warped_hyphae_hollow 72 67 99
+vl_hollow_logs:tree_hollow 122 95 69
+vl_hollow_logs:warped_hyphae_hollow 59 62 82
 
 # xpanes
 xpanes:bar 155 146 146 64 16
@@ -2567,14 +2698,14 @@ xpanes:pane_light_blue 102 153 216 64 16
 xpanes:pane_light_blue_flat 102 153 216 64 16
 xpanes:pane_lime 127 204 25 64 16
 xpanes:pane_lime_flat 127 204 25 64 16
-xpanes:pane_magenta 178 75 215 64 16
-xpanes:pane_magenta_flat 178 75 215 64 16
-xpanes:pane_natural 222 222 239 64 16
-xpanes:pane_natural_flat 222 222 239 64 16
+xpanes:pane_magenta 178 76 216 64 16
+xpanes:pane_magenta_flat 178 76 216 64 16
+xpanes:pane_natural 223 223 240 64 16
+xpanes:pane_natural_flat 223 223 240 64 16
 xpanes:pane_orange 216 127 51 64 16
 xpanes:pane_orange_flat 216 127 51 64 16
-xpanes:pane_pink 241 126 164 64 16
-xpanes:pane_pink_flat 241 126 164 64 16
+xpanes:pane_pink 242 127 165 64 16
+xpanes:pane_pink_flat 242 127 165 64 16
 xpanes:pane_purple 127 63 178 64 16
 xpanes:pane_purple_flat 127 63 178 64 16
 xpanes:pane_red 153 51 51 64 16
@@ -2585,4 +2716,3 @@ xpanes:pane_white 255 255 255 64 16
 xpanes:pane_white_flat 255 255 255 64 16
 xpanes:pane_yellow 229 229 51 64 16
 xpanes:pane_yellow_flat 229 229 51 64 16
-
