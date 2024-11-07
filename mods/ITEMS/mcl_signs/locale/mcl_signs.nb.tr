@@ -1,0 +1,19 @@
+# textdomain: mcl_signs
+Sign=Skilt
+Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Skilt kan skrives på og kommer i to varianter: Veggskilt og skilt på stolpe. Skilt kan plasseres på toppen og sidene av andre blokker, men ikke under dem.
+After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow.=Etter å ha plassert skiltet kan du skrive noe på det. Du har 4 linjer med tekst og opptil 15 tegn for hver linje; alt utover disse grensene går tapt. Ikke alle tegn støttes. Teksten kan ikke endres når den først er skrevet; du må knuse og plassere skiltet på nytt. Kan farges og tilføres en glød.
+Enter sign text:=Skriv inn skilttekst
+Maximum line length: 15=Maks tegn per linje: 15
+Maximum lines: 4=Maks linjer: 4
+Done=Ferdig
+Can be written=Kan skrives på
+Oak Sign=Eikeskilt
+Birch Sign=Bjørkeskilt
+Spruce Sign=Granskilt
+Dark Oak Sign=Mørkeikskilt
+Jungle Sign=Jungelskilt
+Acacia Sign=Akasieskilt
+Mangrove Sign=Mangroveskilt
+Warped Hyphae Sign=Forvridd hyfeskilt
+Crimson Hyphae Sign=Karmosinhyfeskilt
+Bamboo Sign=Bambusskilt

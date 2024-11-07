@@ -1,0 +1,8 @@
+# textdomain: mcl_experience
+[[<player>] <xp>]=[[<spiller>] <ep>]
+Gives a player some XP=Gir en spiller litt EP
+Error: Too many parameters!=Feil: for mange parameter!
+Error: Incorrect value of XP=Feil: ugyldig verdi for EP
+Error: Player not found=Feil: Spiller ikke funnet
+Added @1 XP to @2, total: @3, experience level: @4=La til @1 EP til @2, totalt: @3, erfaringsnivå: @4=
+Bottle o' Enchanting=Fortryllelsesflaske
