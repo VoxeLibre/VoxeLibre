@@ -1,0 +1,144 @@
+# textdomain: mcl_enchanting
+
+
+### enchantments.lua ###
+
+Arrows passes through multiple objects.=Piler passerer gjennom flere objekter.
+Arrows set target on fire.=Piler setter målet på fyr.
+Bane of Arthropods=Leddyrets skrekk
+Channeling=Lynleder
+
+Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Kanaliserer et lyn mot et mål. Fungerer kun under tordenvær og hvis målet er uhindret av ugjennomsiktige blokker.
+
+Curse of Vanishing=Forsvinnelsesforbannelse
+Decreases crossbow charging time.=Minsker omladningshastigheten til armbrøst.
+Decreases time until rod catches something.=Forkorter tiden det tar før fiskestangen fanger noe.
+Depth Strider=Vannløper
+Efficiency=Effektivitet
+Extends underwater breathing time.=Utvider lungekapasiteten under vann.
+Fire Aspect=Ildaspekt
+Flame=Flamme
+Fortune=Formue
+Frost Walker=Frostvandrer
+Impaling=Spidding
+Increases arrow damage.=Øker pilskade.
+Increases arrow knockback.=Øker tilbakeslag for piler.
+Increases certain block drops.=Øker visse blokkers slipprate.
+
+Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Øker skade og kaster Treghet IV på leddyrmobber (edderkopper, huledderkopper, sølvkre og endermidd).
+
+Increases damage to undead mobs.=Økt skade mot vandøde skapninger.
+Increases damage.=Øker skade.
+Increases item durability.=Øker gjenstandsvarighet.
+Increases knockback.=Økter tilbakeslag.
+Increases mining speed.=Øker arbeidshastighet.
+Increases mob loot.=Øker monsterslipp.
+Increases rate of good loot (enchanting books, etc.)=Øker frekvensen av gode gjenstandsslipp(fortryllende bøker, o.l.)
+Increases sweeping attack damage.=Øker sveipeskade.
+Increases underwater movement speed.=Øker undervannshastighet.
+Increases walking speed on soul sand.=Øker ganghastighet på sjelesand-
+Infinity=Evig
+Item destroyed on death.=Gjenstand ødelegges ved dødsfall.
+Knockback=Tilbakeslag
+Looting=Plyndring
+Loyalty=Lojalitet
+Luck of the Sea=Havets hell
+Lure=Agn
+Mending=Veling
+Mined blocks drop themselves.=Utvinnede blokker slipper seg selv.
+Multishot=Flerskudd
+Piercing=Spiddende
+Power=Kraft
+Punch=Slag
+Quick Charge=Rask ladning
+Repair the item while gaining XP orbs.=Reparer gjenstanden når du plukker opp erfaringskuler
+Respiration=Respirasjon
+Riptide=Tidevannstrøm
+Sets target on fire.=Setter fyr på målet.
+Sharpness=Skarphet
+Shoot 3 arrows at the cost of one.=Skyter 3 piler men forbruker bare 1.
+Shooting consumes no regular arrows.=Å skyte forbruker ingen vanlige piler.
+Silk Touch=Silkeberøring
+Smite=Vanndødes skrekk
+Soul Speed=Sjelefart
+Sweeping Edge=Sveipende knivsegg
+Trident deals additional damage to ocean mobs.=Trefork deler ytterligre skade til havskapninger.
+
+Trident launches player with itself when thrown. Works only in water or rain.=Treforken slenger spilleren med seg selv når den kastes. Virker bare i vannet eller i regn.
+
+Trident returns after being thrown. Higher levels reduce return time.=Treforken kommer tilbake etter et kast. Høyere nivå reduserer tilbakekallingstiden.
+
+Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Gjør om vann under spillere til frostet is, og forhindrer skade fra magmablokker.
+
+Unbreaking=Uknuselig
+
+### engine.lua ###
+
+@1 Enchantment Levels=@1 fortryllelsesnivåer
+@1 Lapis Lazuli=@1 Lasurstein
+Inventory=Inventar
+Level requirement: @1=Nivåkrav: @1
+
+### init.lua ###
+
+'@1' is not a valid number='@1' er ikke et gyldig tall
+'@1' is not a valid number.='@1' er ikke et gyldig tall.
+<player> <enchantment> [<level>]=<player> <enchantment> [<level>]
+@1 can't be combined with @2.=@1 kan ikke kombineres med @2.
+
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Etter endelig å ha valgt fortryllelsen din; venstreklikk på resultatet, og du vil se både lasurstein og erfaringsnivåene dine bli konsumert. Og en fortryllet gjenstand tar deres plass.
+
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=etter å ha plassert gjenstandene dine i feltene, vil fortryllingsalternativene vises. Hold markøren over alternativene for å lese hva som er tilgjengelig for deg.
+
+Enchant=Fortryll
+Enchant an item=Fortryll en gjenstand
+Enchanted Book=Fortryllet bok
+Enchanting Table=Trolldomsbord
+
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Trolldomsbord lar deg fortrylle rustninger, verktøy, våpen og bøker med ulike evner. Men på bekostning av litt erfaringspoeng og lasurstein.
+
+Enchanting succeded.=Fortrylling vellykket
+Forcefully enchant an item=Påtving en gjenstand en fortryllelse
+
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Plasser et verktøy, rustning, våpen eller en bok i det øvre venstre feltet, og plasser deretter 1-3 lasurstein i feltet til høyre.
+
+Player '@1' cannot be found.=Spiller '@1' ble ikke funnet.
+Rightclick the Enchanting Table to open the enchanting menu.=Høyreklikk på trolldomsbordet for å åpne fortryllingsmenyen-
+Spend experience, and lapis to enchant various items.=Bruk erfaringspoeng og lasurstein for å fortrylle ulike gjenstander.
+
+The number you have entered (@1) is too big, it must be at most @2.=Tallet du har tastet inn (@1) er for stort, det kan være maks @2.
+
+The number you have entered (@1) is too small, it must be at least @2.=Tallet du har tastet inn (@1) er for lite, det må være minst @2.
+
+The selected enchantment can't be added to the target item.=Den valgte fortryllelsen kan ikke legges til mågjenstanden.
+The target doesn't hold an item.=Målet holder ikke en gjenstand.
+The target item is not enchantable.=Målgjenstanden kan ikke fortrylles
+There is no such enchantment '@1'.=Det finnes ikke en slik fortryllelse '@1'
+
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Disse alternativene er tilfeldige, og avhengig av erfaringsnivå; men fortryllelsesstyrken kan økes.
+
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=For å øke fortryllelsesstyrken, plasser bokhyller rundt trolldomsbordet. Du må imidlertid ha 1 luftblokk mellom bordet og bokhyllene for å styrke trolldomsbordet.
+
+Usage: /enchant <player> <enchantment> [<level>]=Bruk: /enchant <spiller> <fortryllelse> [<nivå>]
+Usage: /forceenchant <player> <enchantment> [<level>]=Bruk: /forceenchant <spiller> <fortryllelse> [<nivå>]=
+
+
+##### not used anymore #####
+
+# textdomain: mcl_enchanting
+Aqua Affinity=
+Increases underwater mining speed.=
+Blast Protection=
+Reduces explosion damage and knockback.=
+Curse of Binding=
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+Feather Falling=
+Reduces fall damage.=
+Fire Protection=
+Reduces fire damage.=
+Projectile Protection=
+Reduces projectile damage.=
+Protection=
+Reduces most types of damage by 4% for each level.=
+Thorns=
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=

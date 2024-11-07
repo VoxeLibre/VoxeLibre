@@ -1,0 +1,22 @@
+# textdomain: mcl_inventory
+Recipe book=Oppskriftsbok
+Help=Hjelp
+Select player skin=Velg spillerutseende
+Advancements=Fremskritt
+Building Blocks=Byggeblokker
+Decoration Blocks=Dekorasjonsblokker
+Redstone=Rødstein
+Transportation=Transpor
+Brewing=Brygging
+Miscellaneous=Diverse
+Search Items=Søk gjenstander
+Foodstuffs=Matgreier
+Tools=Verktøy
+Combat=Kamp
+Mobs=Skapninger
+Materials=Materialer
+Survival Inventory=Overlevelsesinventar
+Crafting=Håndverk
+Inventory=Inventar
+@1/@2=@1/@2
+Switch stack size=Bytt stabelstørrelse

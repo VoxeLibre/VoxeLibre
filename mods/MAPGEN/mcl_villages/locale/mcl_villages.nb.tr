@@ -1,0 +1,4 @@
+# textdomain: mcl_villages
+Chiseled Stone Village Bricks=Uthugget steinmur landsby
+mcl_villages build tool=mcl_villages byggeverktøy
+Placement denied. You need the “server” privilege to place villages.=Plassering avvist. Du trenger “server”-privilegiet for å plassere landsbyer.

@@ -1,0 +1,46 @@
+# textdomain: mcl_bamboo
+
+### bamboo_base.lua ###
+
+Bamboo=Bambus
+Bamboo Mosaic Plank=Bambusmosaikk
+Bamboo Plank=Bambusplanker
+Stripped Bamboo Block=Slindet bambusblokk
+Bamboo Block=Bambusblokk
+
+### bamboo_items.lua ###
+
+A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=En bambusknapp er en rødsteinskomponent laget av bambus som kan skyves for å gi rødsteinskraft. Når den trykkes, driver den tilstøtende rødsteinskomponenter i 1 sekund.
+
+A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=En bambustrykkplate er en rødsteinskomponent som forsyner de omkringliggende blokkene med rødsteinskraft mens enhver bevegelig gjenstand (inkludert gjenstander som faller ned, spillere og skapninger) hviler på den.
+
+Bamboo=Bambus
+Bamboo Button=Bambusknapp
+Bamboo Door=Bambusdør
+Bamboo Fence=Bambusgjerde
+Bamboo Fence Gate=Bambusport
+Bamboo Mosaic Slab=Bambusmosaikkhelle
+Bamboo Mosaic Stair=Bambusmosaikktrapp
+Bamboo Plank Slab=Bambusplankehelle
+Bamboo Plank Stair=Bambusplanketrapp
+Bamboo Pressure Plate=Bambustrykkplate
+Bamboo Sign=Bambusskilt
+Bamboo Slab=Bambushelle
+Bamboo Stair=Bambustrapp
+Bamboo Trapdoor=Bambusfallem
+Double Bamboo Mosaic Slab=Dobbel bambusmosaikkhelle
+Double Bamboo Plank Slab= Dobbel bambusplankehelle
+Double Bamboo Slab=Dobbel bambushelle
+Double Stripped Bamboo Slab=Dobbel slindet bambushelle
+Scaffolding=Stilas
+Scaffolding (horizontal)=Stilas (horisontal)
+Scaffolding block used to climb up or out across areas.=
+Stripped Bamboo Slab=Slindet bambushelle
+Stripped Bamboo Stair=Slidet bambustrapp
+
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å åpne eller lukke fallemmen, høyreklikk på den eller send et rødsteinssignal til den.
+
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Trefallemmer er horisontale barrierer som kan åpnes og lukkes for hånd eller via et rødsteinssignal. De opptar den øvre eller nedre delen av en blokk, avhengig av hvordan de har blitt plassert. Når de er åpne, kan de klatres i som en stige.
+
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokker høye barrierer som kan åpnes eller lukkes for hånd eller med et rødsteinssignal.
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å åpne eller lukke en tredør, høyreklikk på den eller forsyn den nedre halvdelen med et rødsteinssignal

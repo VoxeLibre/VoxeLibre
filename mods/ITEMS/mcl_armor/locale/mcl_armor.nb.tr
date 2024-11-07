@@ -1,0 +1,51 @@
+# textdomain: mcl_armor
+This is a piece of equippable armor which reduces the amount of damage you receive.=Dette er et stykke rustning som reduserer mengden skade du mottar.
+To equip it, put it on the corresponding armor slot in your inventory menu.=For å utstyre den, plasser den i det tilsvarende rustningsfeltet i inventarmenyen.
+Leather Cap=Lærhatt
+Iron Helmet=Jernhjelm
+Golden Helmet=Gullhjelm
+Diamond Helmet=Diamanthjelm
+Chain Helmet=Brynjehette
+Netherite Helmet=Netheritthjelm
+Leather Tunic=Lærtrøye
+Iron Chestplate=Jernbrystplate
+Golden Chestplate=Gullbrystplate
+Diamond Chestplate=Diamantbrystplate
+Chain Chestplate=Ringbrynje
+Netherite Chestplate=Netherittbrystplate
+Leather Pants=Lærbukser
+Iron Leggings=Jernbenplater
+Golden Leggings=Gullbenplater
+Diamond Leggings=Diamantbenplater
+Chain Leggings=Brynjehose
+Netherite Leggings=Netherittbenplate
+Leather Boots=Lærstøvler
+Iron Boots=Jernstøvler
+Golden Boots=Gullstøvler
+Diamond Boots=Diamantstøvler
+Chain Boots=Brynjestøvler
+Netherite Boots=Netherittstøvler
+Elytra=Elytra
+
+#Translations of enchantements
+Increases underwater mining speed.=Øker arbeidshastighet under vann.
+Blast Protection=Eksplosjonsbeskyttelse
+Reduces explosion damage and knockback.=Reduserer eksplosjonsskade og tilbakeslag.
+Curse of Binding=Bindelsesforbannelse
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+Feather Falling=Fjærfall
+Reduces fall damage.=Reduserer fallskade
+Fire Protection=Ildbeskyttelse
+Reduces fire damage.=Reduserer ildskade
+Shooting consumes no regular arrows.=Å skyte forbruker ingen vanlige piler
+Shoot 3 arrows at the cost of one.=Skyt tre piler på bekostning av én.
+Projectile Protection=Prosjektilbeskyttelse
+Reduces projectile damage.=Reduserer prosjektilskade
+Protection=Beskyttelse
+Reduces most types of damage by 4% for each level.=Reduserer fleste typer skade med 4% for hvert nivå.
+Thorns=Torner
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Gjenspeiler noe av skaden som ble tatt når truffet, på bekostning av redusert holdbarhet per aktivering.
+Aqua Affinity=Vannarbeider
+
+#Translations for armor trims
+Smithing Template '@1'=Smimal '@1'
