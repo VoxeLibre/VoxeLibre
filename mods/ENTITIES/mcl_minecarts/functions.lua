@@ -225,30 +225,7 @@ local function get_rail_connections(pos, opt)
 end
 mod.get_rail_connections = get_rail_connections
 
-local function update_rail_connections(pos, opt)
-	local ignore_neighbor_connections = opt and opt.ignore_neighbor_connections
-
-	local node = minetest.get_node(pos)
-	local nodedef = minetest.registered_nodes[node.name]
-	if not nodedef or not nodedef._mcl_minecarts then return end
-
-	-- Get the mappings to use
-	local rules = HORIZONTAL_RULES_BY_RAIL_GROUP[nodedef.groups.rail]
-	if nodedef._mcl_minecarts and nodedef._mcl_minecarts.connection_rules then -- Custom connection rules
-		rules = nodedef._mcl_minecarts.connection_rules
-	end
-	if not rules then return end
-
-	-- Horizontal rules, Check for rails on each neighbor
-	local connections = get_rail_connections(pos, opt)
-
-	-- Check for rasing rails to slopes
-	for i = 1,#CONNECTIONS do
-		local dir = CONNECTIONS[i]
-		local neighbor = vector.add(pos, dir)
-		make_sloped_if_straight( vector.offset(neighbor, 0, -1, 0), dir )
-	end
-
+local function apply_connection_rules(node, nodedef, pos, rules, connections)
 	-- Select the best allowed connection
 	local rule = nil
 	local score = 0
@@ -276,6 +253,90 @@ local function update_rail_connections(pos, opt)
 			rule.after(rule, pos, connections)
 		end
 	end
+end
+
+local function is_rail_end_connected(pos, dir)
+	-- Handle new track types that have track-specific direction handler
+	local node = force_get_node(pos)
+	local get_next_dir = get_path(minetest.registered_nodes,node.name,"_mcl_minecarts","get_next_dir")
+	if not get_next_dir then return false end
+
+	return get_next_dir(pos, dir, node) == dir
+end
+
+local function bend_straight_rail(pos, towards)
+	dir = CONNECTIONS[i]
+	local node = force_get_node(pos)
+	local nodedef = minetest.registered_nodes[node.name]
+
+	-- Only bend rails
+	local rail_type = minetest.get_item_group(node.name, "rail")
+	if rail_type == 0 then return end
+
+	-- Only bend unbent rails
+	if node.name ~= nodedef._mcl_minecarts.base_name then return end
+
+	-- only bend rails that have at least one free end
+	local dir1 = minetest.fourdir_to_dir(node.param2)
+	local dir2 = minetest.fourdir_to_dir((node.param2+2)%4)
+	local dir1_connected = is_rail_end_connected(pos + dir1, dir2)
+	local dir2_connected = is_rail_end_connected(pos + dir2, dir1)
+	if dir1_connected and dir2_connected then return end
+
+	-- TODO: bend the rail
+	local connections = {
+		vector.direction(pos, towards),
+	}
+	if dir1_connected then
+		connections[#connections+1] = dir1
+	end
+	if dir2_connected then
+		connections[#connections+1] = dir2
+	end
+	local connections_mask = 0
+	for i = 1,#CONNECTIONS do
+		for j = 1,#connections do
+			if CONNECTIONS[i] == connections[j] then
+				connections_mask = bit.bor(connections_mask, bit.lshift(1, i -1))
+			end
+		end
+	end
+
+	local rules = HORIZONTAL_RULES_BY_RAIL_GROUP[nodedef.groups.rail]
+	apply_connection_rules(node, nodedef, pos, rules, connections_mask)
+end
+
+local function update_rail_connections(pos, opt)
+	local ignore_neighbor_connections = opt and opt.ignore_neighbor_connections
+
+	local node = minetest.get_node(pos)
+	local nodedef = minetest.registered_nodes[node.name]
+	if not nodedef or not nodedef._mcl_minecarts then return end
+
+	-- Get the mappings to use
+	local rules = HORIZONTAL_RULES_BY_RAIL_GROUP[nodedef.groups.rail]
+	if nodedef._mcl_minecarts and nodedef._mcl_minecarts.connection_rules then -- Custom connection rules
+		rules = nodedef._mcl_minecarts.connection_rules
+	end
+	if not rules then return end
+
+	if not (opt and opt.no_bend_straights) then
+		for i = 1,#CONNECTIONS do
+			bend_straight_rail(vector.add(pos, CONNECTIONS[i]), pos)
+		end
+	end
+
+	-- Horizontal rules, Check for rails on each neighbor
+	local connections = get_rail_connections(pos, opt)
+
+	-- Check for rasing rails to slopes
+	for i = 1,#CONNECTIONS do
+		local dir = CONNECTIONS[i]
+		local neighbor = vector.add(pos, dir)
+		make_sloped_if_straight( vector.offset(neighbor, 0, -1, 0), dir )
+	end
+
+	apply_connection_rules(node, nodedef, pos, rules, connections)
 
 	local node_def = minetest.registered_nodes[node.name]
 	if get_path(node_def, "_mcl_minecarts", "can_slope") then
