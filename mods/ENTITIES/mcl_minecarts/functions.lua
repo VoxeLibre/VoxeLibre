@@ -274,6 +274,7 @@ local function bend_straight_rail(pos, towards)
 	if rail_type == 0 then return end
 
 	-- Only bend unbent rails
+	if not nodedef._mcl_minecarts then return end
 	if node.name ~= nodedef._mcl_minecarts.base_name then return end
 
 	-- only bend rails that have at least one free end
