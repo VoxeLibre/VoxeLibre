@@ -19,12 +19,8 @@ mod.register_straight_rail("mcl_minecarts:detector_rail_v2",{"mcl_minecarts_rail
 	},
 	_mcl_minecarts_on_enter = function(pos, cart)
 		local node = minetest.get_node(pos)
-
-		local newnode = {
-			name = "mcl_minecarts:detector_rail_v2_on",
-			param2 = node.param2
-		}
-		minetest.swap_node( pos, newnode )
+		node.name = "mcl_minecarts:detector_rail_v2_on"
+		minetest.set_node( pos, node )
 		mesecon.receptor_on(pos)
 	end,
 	craft = {
@@ -51,12 +47,8 @@ mod.register_straight_rail("mcl_minecarts:detector_rail_v2_on",{"mcl_minecarts_r
 	},
 	_mcl_minecarts_on_leave = function(pos, cart)
 		local node = minetest.get_node(pos)
-
-		local newnode = {
-			name = "mcl_minecarts:detector_rail",
-			param2 = node.param2
-		}
-		minetest.swap_node( pos, newnode )
+		node.name = "mcl_minecarts:detector_rail_v2"
+		minetest.set_node( pos, node )
 		mesecon.receptor_off(pos)
 	end,
 	drop = "mcl_minecarts:detector_rail_v2",

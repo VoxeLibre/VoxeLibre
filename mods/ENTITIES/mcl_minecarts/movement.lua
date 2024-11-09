@@ -276,7 +276,7 @@ local function calculate_acceleration(staticdata)
 
 	if (ctrl.forward or 0) > time_active then
 		if staticdata.velocity == 0 then
-			local look_dir = look_directions[ctrl.look or 0]
+			local look_dir = look_directions[ctrl.look or 0] or mod.north
 			local dot = vector.dot(staticdata.dir, look_dir)
 			if dot < 0 then
 				reverse_direction(staticdata)
