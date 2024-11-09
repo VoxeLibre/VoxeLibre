@@ -250,6 +250,12 @@ local function direction_away_from_players(staticdata)
 	return 0
 end
 
+local look_directions = {
+	mod.north,
+	mod.west,
+	mod.south,
+	mod.east,
+}
 local function calculate_acceleration(staticdata)
 	local acceleration = 0
 
@@ -270,7 +276,7 @@ local function calculate_acceleration(staticdata)
 
 	if (ctrl.forward or 0) > time_active then
 		if staticdata.velocity == 0 then
-			local look_dir = minetest.facedir_to_dir(ctrl.look or 0)
+			local look_dir = look_directions[ctrl.look or 0]
 			local dot = vector.dot(staticdata.dir, look_dir)
 			if dot < 0 then
 				reverse_direction(staticdata)
