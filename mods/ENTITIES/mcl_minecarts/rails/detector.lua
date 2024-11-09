@@ -6,7 +6,13 @@ local S = minetest.get_translator(modname)
 local rail_rules_short = mesecon.rules.pplate
 
 -- Detector rail (off)
-mod.register_straight_rail("mcl_minecarts:detector_rail_v2",{"mcl_minecarts_rail_detector.png"},{
+mod.register_curves_rail("mcl_minecarts:detector_rail_v2",{
+	"mcl_minecarts_rail_detector.png",
+	"mcl_minecarts_rail_detector_curved.png",
+	"mcl_minecarts_rail_detector_t_junction.png",
+	"mcl_minecarts_rail_detector_t_junction.png",
+	"mcl_minecarts_rail_detector_crossing.png"
+},{
 	description = S("Detector Rail"),
 	_tt_help = S("Track for minecarts").."\n"..S("Emits redstone power when a minecart is detected"),
 	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms."),
@@ -19,7 +25,8 @@ mod.register_straight_rail("mcl_minecarts:detector_rail_v2",{"mcl_minecarts_rail
 	},
 	_mcl_minecarts_on_enter = function(pos, cart)
 		local node = minetest.get_node(pos)
-		node.name = "mcl_minecarts:detector_rail_v2_on"
+		local node_def = minetest.registered_nodes[node.name]
+		node.name = "mcl_minecarts:detector_rail_v2_on"..node_def._mcl_minecarts.suffix
 		minetest.set_node( pos, node )
 		mesecon.receptor_on(pos)
 	end,
@@ -34,7 +41,13 @@ mod.register_straight_rail("mcl_minecarts:detector_rail_v2",{"mcl_minecarts_rail
 })
 
 -- Detector rail (on)
-mod.register_straight_rail("mcl_minecarts:detector_rail_v2_on",{"mcl_minecarts_rail_detector_powered.png"},{
+mod.register_curves_rail("mcl_minecarts:detector_rail_v2_on",{
+	"mcl_minecarts_rail_detector_powered.png",
+	"mcl_minecarts_rail_detector_curved_powered.png",
+	"mcl_minecarts_rail_detector_t_junction_powered.png",
+	"mcl_minecarts_rail_detector_t_junction_powered.png",
+	"mcl_minecarts_rail_detector_crossing_powered.png"
+},{
 	groups = {
 		not_in_creative_inventory = 1,
 	},
@@ -47,7 +60,8 @@ mod.register_straight_rail("mcl_minecarts:detector_rail_v2_on",{"mcl_minecarts_r
 	},
 	_mcl_minecarts_on_leave = function(pos, cart)
 		local node = minetest.get_node(pos)
-		node.name = "mcl_minecarts:detector_rail_v2"
+		local node_def = minetest.registered_nodes[node.name]
+		node.name = "mcl_minecarts:detector_rail_v2"..node_def._mcl_minecarts.suffix
 		minetest.set_node( pos, node )
 		mesecon.receptor_off(pos)
 	end,

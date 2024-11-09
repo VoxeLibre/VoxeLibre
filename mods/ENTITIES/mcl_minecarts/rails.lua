@@ -202,6 +202,57 @@ function mod.register_rail(itemstring, ndef)
 	if craft then minetest.register_craft(craft) end
 end
 
+local function make_mesecons(base_name, suffix, base_mesecons)
+	if not base_mesecons then
+		if suffix == "_tee_off" or suffix == "_tee_on" then
+			base_mesecons = {}
+		else
+			return
+		end
+	end
+
+	local mesecons = table.copy(base_mesecons)
+
+	if suffix == "_tee_off" then
+		mesecons.effector = base_mesecons.effector and table.copy(base_mesecons.effector) or {}
+
+		local old_action_on = base_mesecons.effector and base_mesecons.effector.action_on
+		mesecons.effector.action_on = function(pos, node)
+			if old_action_on then old_action_on(pos, node) end
+
+			node.name = base_name.."_tee_on"
+			minetest.set_node(pos, node)
+		end
+		mesecons.effector.rules = mesecons.effector.rules or mesecon.rules.alldirs
+	elseif suffix == "_tee_on" then
+		mesecons.effector = base_mesecons.effector and table.copy(base_mesecons.effector) or {}
+
+		local old_action_off = base_mesecons.effector and base_mesecons.effector.action_off
+		mesecons.effector.action_off = function(pos, node)
+			if old_action_off then old_action_off(pos, node) end
+
+			node.name = base_name.."_tee_off"
+			minetest.set_node(pos, node)
+		end
+		mesecons.effector.rules = mesecons.effector.rules or mesecon.rules.alldirs
+	end
+
+	if mesecons.conductor then
+		mesecons.conductor = table.copy(base_mesecons.conductor)
+
+		if mesecons.conductor.onstate then
+			mesecons.conductor.onstate = base_mesecons.conductor.onstate..suffix
+		end
+		if base_mesecons.conductor.offstate then
+			mesecons.conductor.offstate = base_mesecons.conductor.offstate..suffix
+		end
+	end
+
+	minetest.log("mesecons for "..base_name..suffix.." is "..dump(mesecons))
+	return mesecons
+end
+
+
 function mod.register_straight_rail(base_name, tiles, def)
 	def = def or {}
 	local base_def = table.copy(BASE_DEF)
@@ -226,6 +277,7 @@ function mod.register_straight_rail(base_name, tiles, def)
 	table_merge(base_def,{
 		_mcl_minecarts = {
 			railtype = "straight",
+			suffix = "",
 		},
 	})
 
@@ -233,8 +285,9 @@ function mod.register_straight_rail(base_name, tiles, def)
 	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(sloped_def),{
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_sloped,
+			suffix = "_sloped",
 		},
-		mesecons = def.mesecons_sloped,
+		mesecons = make_mesecons(base_name, "_sloped", def.mesecons),
 		tiles = { tiles[1] },
 		_mcl_minecarts = {
 			railtype = "sloped",
@@ -263,6 +316,7 @@ function mod.register_curves_rail(base_name, tiles, def)
 			get_next_dir = rail_dir_straight,
 			railtype = "straight",
 			can_slope = true,
+			suffix = "",
 		},
 	}))
 
@@ -280,24 +334,19 @@ function mod.register_curves_rail(base_name, tiles, def)
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_curve,
 			railtype = "corner",
+			suffix = "_corner",
 		},
+		mesecons = make_mesecons(base_name, "_corner", def.mesecons),
 	}))
 
 	-- Tee variants
 	mod.register_rail(base_name.."_tee_off", table_merge(table.copy(base_def),{
 		tiles = { tiles[3] },
-		mesecons = {
-			effector = {
-				action_on = function(pos, node)
-					local new_node = {name = base_name.."_tee_on", param2 = node.param2}
-					minetest.swap_node(pos, new_node)
-				end,
-				rules = mesecon.rules.alldirs,
-			}
-		},
+		mesecons = make_mesecons(base_name, "_tee_off", def.mesecons),
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_tee_off,
 			railtype = "tee",
+			suffix = "_tee_off",
 		},
 	}))
 	mod.register_rail(base_name.."_tee_on", table_merge(table.copy(base_def),{
@@ -305,16 +354,9 @@ function mod.register_curves_rail(base_name, tiles, def)
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_tee_on,
 			railtype = "tee",
+			suffix = "_tee_on",
 		},
-		mesecons = {
-			effector = {
-				action_off = function(pos, node)
-					local new_node = {name = base_name.."_tee_off", param2 = node.param2}
-					minetest.swap_node(pos, new_node)
-				end,
-				rules = mesecon.rules.alldirs,
-			}
-		}
+		mesecons = make_mesecons(base_name, "_tee_on", def.mesecons),
 	}))
 
 	-- Sloped variant
@@ -323,7 +365,9 @@ function mod.register_curves_rail(base_name, tiles, def)
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_sloped,
 			railtype = "tee",
+			suffix = "_sloped",
 		},
+		mesecons = make_mesecons(base_name, "_sloped", def.mesecons),
 		tiles = { tiles[1] },
 	}))
 
@@ -333,7 +377,9 @@ function mod.register_curves_rail(base_name, tiles, def)
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_cross,
 			railtype = "cross",
+			suffix = "_cross",
 		},
+		mesecons = make_mesecons(base_name, "_cross", def.mesecons),
 	}))
 end
 

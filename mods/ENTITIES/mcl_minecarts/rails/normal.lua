@@ -5,7 +5,7 @@ local S = minetest.get_translator(modname)
 
 -- Normal rail
 mod.register_curves_rail("mcl_minecarts:rail_v2", {
-	"default_rail.png", 
+	"default_rail.png",
 	"default_rail_curved.png",
 	"default_rail_t_junction.png",
 	"default_rail_t_junction_on.png",
