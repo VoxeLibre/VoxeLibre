@@ -63,7 +63,7 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 
 		-- make children grow quicker
 
-		if not consume_food and self.child == true then
+		if not consume_food and self.child then
 			consume_food = true
 			-- deduct 10% of the time to adulthood
 			self.hornytimer = self.hornytimer + ((CHILD_GROW_TIME - self.hornytimer) * 0.1)
@@ -158,7 +158,7 @@ function mob_class:check_breeding()
 
 	--mcl_log("In breed function")
 	-- child takes a long time before growing into adult
-	if self.child == true then
+	if self.child then
 
 		-- When a child, hornytimer is used to count age until adulthood
 		self.hornytimer = self.hornytimer + 1

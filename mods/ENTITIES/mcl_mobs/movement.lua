@@ -452,7 +452,7 @@ end
 function mob_class:replace_node(pos)
 	if not self.replace_rate
 	or not self.replace_what
-	or self.child == true
+	or self.child
 	or self.object:get_velocity().y ~= 0
 	or random(1, self.replace_rate) > 1 then
 		return

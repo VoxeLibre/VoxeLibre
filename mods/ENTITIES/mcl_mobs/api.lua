@@ -150,9 +150,9 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	local colbox = self.base_colbox
 	local selbox = self.base_selbox
 
-	if self.gotten == true and def.gotten_texture then textures = def.gotten_texture end
-	if self.gotten == true and def.gotten_mesh then mesh = def.gotten_mesh end
-	if self.child == true then
+	if self.gotten and def.gotten_texture then textures = def.gotten_texture end
+	if self.gotten and def.gotten_mesh then mesh = def.gotten_mesh end
+	if self.child then
 		vis_size = { x = self.base_size.x * .5, y = self.base_size.y * .5 }
 		if def.child_texture then textures = def.child_texture[1] end
 
