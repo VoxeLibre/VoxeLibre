@@ -438,38 +438,45 @@ function mcl_minecarts.get_rail_direction(self, pos_, dir)
 
 	return new_dir
 end
+
+local _2_pi = math.pi * 2
+local _half_pi = math.pi * 0.5
+local _quart_pi = math.pi * 0.5
+local pi = math.pi
+local rot_debug = {}
 function mod.update_cart_orientation(self)
 	local staticdata = self._staticdata
-
-	-- constants
-	local _2_pi = math.pi * 2
-	local pi = math.pi
 	local dir = staticdata.dir
 
 	-- Calculate an angle from the x,z direction components
-	local rot_y = math.atan2( dir.x, dir.z ) + ( staticdata.rot_adjust or 0 )
+	local rot_y = math.atan2( dir.z, dir.x ) + ( staticdata.rot_adjust or 0 )
 	if rot_y < 0 then
 		rot_y = rot_y + _2_pi
 	end
 
 	-- Check if the rotation is a 180 flip and don't change if so
 	local rot = self.object:get_rotation()
+	local old_rot = vector.new(rot)
+	rot.y = (rot.y - _half_pi + _2_pi) % _2_pi
 	if not rot then return end
 
 	local diff = math.abs((rot_y - ( rot.y + pi ) % _2_pi) )
+	local flipped = false
 	if diff < 0.001 or diff > _2_pi - 0.001 then
 		-- Update rotation adjust and recalculate the rotation
 		staticdata.rot_adjust = ( ( staticdata.rot_adjust or 0 ) + pi ) % _2_pi
-		rot.y = math.atan2( dir.x, dir.z ) + ( staticdata.rot_adjust or 0 )
+		local new_rot_y = math.atan2( dir.z, dir.x ) + ( staticdata.rot_adjust or 0 )
+		assert((math.abs(rot.y -new_rot_y) % _2_pi) < 0.001, "math is wrong: "..tostring(new_rot_y).." ~= "..tostring(rot.y))
+		flipped = true
 	else
 		rot.y = rot_y
 	end
 
 	-- Forward/backwards tilt (pitch)
 	if dir.y < 0 then
-		rot.x = -0.25 * pi
+		rot.x = -_quart_pi
 	elseif dir.y > 0 then
-		rot.x = 0.25 * pi
+		rot.x = _quart_pi
 	else
 		rot.x = 0
 	end
@@ -481,6 +488,7 @@ function mod.update_cart_orientation(self)
 		rot.x = -rot.x
 	end
 
+	rot.y = (rot.y + _half_pi) % _2_pi
 	self.object:set_rotation(rot)
 end
 
