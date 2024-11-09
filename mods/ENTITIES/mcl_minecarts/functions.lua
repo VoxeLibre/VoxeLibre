@@ -461,13 +461,9 @@ function mod.update_cart_orientation(self)
 	if not rot then return end
 
 	local diff = math.abs((rot_y - ( rot.y + pi ) % _2_pi) )
-	local flipped = false
 	if diff < 0.001 or diff > _2_pi - 0.001 then
-		-- Update rotation adjust and recalculate the rotation
+		-- Update rotation adjust
 		staticdata.rot_adjust = ( ( staticdata.rot_adjust or 0 ) + pi ) % _2_pi
-		local new_rot_y = math.atan2( dir.z, dir.x ) + ( staticdata.rot_adjust or 0 )
-		assert((math.abs(rot.y -new_rot_y) % _2_pi) < 0.001, "math is wrong: "..tostring(new_rot_y).." ~= "..tostring(rot.y))
-		flipped = true
 	else
 		rot.y = rot_y
 	end
