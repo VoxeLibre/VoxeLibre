@@ -44,6 +44,10 @@ mod.register_straight_rail("mcl_minecarts:golden_rail_v2",{ "mcl_minecarts_rail_
 mod.register_straight_rail("mcl_minecarts:golden_rail_v2_on",{ "mcl_minecarts_rail_golden_powered.png" },{
 	_doc_items_create_entry = false,
 	_rail_acceleration = function(pos, staticdata)
+		if staticdata.velocity ~= 0 then
+			return 4
+		end
+
 		local dir = mod.get_rail_direction(pos, staticdata.dir, nil, nil, staticdata.railtype)
 		local node_a = minetest.get_node(vector.add(pos, dir))
 		local node_b = minetest.get_node(vector.add(pos, -dir))
