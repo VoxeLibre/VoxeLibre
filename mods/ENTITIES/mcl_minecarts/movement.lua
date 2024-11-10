@@ -121,6 +121,7 @@ end
 local function detach_minecart(staticdata)
 	handle_cart_leave(staticdata, staticdata.connected_at, staticdata.dir)
 	staticdata.connected_at = nil
+	mod.break_train_at(staticdata)
 
 	local luaentity = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
 	if luaentity then
