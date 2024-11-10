@@ -7,12 +7,13 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 
-local function get_texture(self)
-	local on_name = self.standing_on
+local function get_texture(self, prev)
+	local standing_on = minetest.registered_nodes[self.standing_on]
+	-- TODO: we do not have access to param2 here (color palette index) yet
 	local texture
 	local texture_suff = ""
-	if on_name and on_name ~= "air" then
-		local tiles = minetest.registered_nodes[on_name].tiles
+	if standing_on and (standing_on.walkable or standing_on.groups.liquid) then
+		local tiles = standing_on.tiles
 		if tiles then
 			local tile = tiles[1]
 			local color
@@ -25,7 +26,7 @@ local function get_texture(self)
 				texture = tile
 			end
 			if not color then
-				color = minetest.colorspec_to_colorstring(minetest.registered_nodes[on_name].color)
+				color = minetest.colorspec_to_colorstring(standing_on.color)
 			end
 			if color then
 				texture_suff = "^[multiply:" .. color .. "^[hsl:0:0:20"
@@ -33,14 +34,19 @@ local function get_texture(self)
 		end
 	end
 	if not texture or texture == "" then
+		-- try to keep last texture when, e.g., falling
+		if prev and (not (not self.attack)) == (string.find(prev, "vl_mobs_stalker_overlay_angry.png") ~= nil) then
+			return prev
+		end
 		texture = "vl_stalker_default.png"
-	end
-	texture = texture:gsub("([\\^:\\[])","\\%1") -- escape texture modifiers
-	texture = "([combine:16x24:0,0=(" .. texture .. "):0,16=(" .. texture ..")".. texture_suff
-	if self.attack then
-		texture = texture .. ")^vl_mobs_stalker_overlay_angry.png"
 	else
-		texture = texture .. ")^vl_mobs_stalker_overlay.png"
+		texture = texture:gsub("([\\^:\\[])", "\\%1") -- escape texture modifiers
+		texture = "(vl_stalker_default.png^[combine:16x24:0,0=(" .. texture .. "):0,16=(" .. texture .. ")" .. texture_suff .. ")"
+	end
+	if self.attack then
+		texture = texture .. "^vl_mobs_stalker_overlay_angry.png"
+	else
+		texture = texture .. "^vl_mobs_stalker_overlay.png"
 	end
 	return texture
 end
@@ -132,7 +138,7 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
 			end
 		end
-		local new_texture = get_texture(self)
+		local new_texture = get_texture(self, self._stalker_texture)
 		if self._stalker_texture ~= new_texture then
 			self.object:set_properties({textures={new_texture, "mobs_mc_empty.png"}})
 			self._stalker_texture = new_texture
