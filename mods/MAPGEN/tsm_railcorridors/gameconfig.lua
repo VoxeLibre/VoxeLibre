@@ -36,7 +36,11 @@ else
 	end
 end
 
-tsm_railcorridors.carts = { "mcl_minecarts:chest_minecart" }
+tsm_railcorridors.carts = {
+	"mcl_minecarts:minecart", "mcl_minecarts:minecart",
+	"mcl_minecarts:chest_minecart", "mcl_minecarts:chest_minecart",
+	"mcl_minecarts:tnt_minecart"
+}
 
 -- This is called after a spawner has been placed by the game.
 -- Use this to properly set up the metadata and stuff.
@@ -54,9 +58,11 @@ end
 function tsm_railcorridors.on_construct_cart(_, cart, pr_carts)
 	local l = cart:get_luaentity()
 	local inv = mcl_entity_invs.load_inv(l,27)
-	local items = tsm_railcorridors.get_treasures(pr_carts)
-	mcl_loot.fill_inventory(inv, "main", items, pr_carts)
-	mcl_entity_invs.save_inv(l)
+	if inv then -- otherwise probably not a chest minecart
+		local items = tsm_railcorridors.get_treasures(pr_carts)
+		mcl_loot.fill_inventory(inv, "main", items, pr_carts)
+		mcl_entity_invs.save_inv(l)
+	end
 end
 
 -- Fallback function. Returns a random treasure. This function is called for chests
