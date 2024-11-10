@@ -928,7 +928,7 @@ function mob_class:do_states_attack(dtime)
 			p = vector_copy(p1)
 		end
 
-		self:turn_in_direction(p.x - s.x, p.z - s.z, 1)
+		self:turn_in_direction(p.x - s.x, p.z - s.z, 10)
 
 		-- move towards enemy if beyond mob reach
 		if dist > self.reach then
@@ -940,7 +940,7 @@ function mob_class:do_states_attack(dtime)
 			if self:is_at_cliff_or_danger() then
 				self:set_velocity(0)
 				self:set_animation("stand")
-				self:turn_by(PI * (random() - 0.5), 10)
+				--self:turn_by(PI * (random() - 0.5), 10)
 			else
 				if self.path.stuck then
 					self:set_velocity(self.walk_velocity)
@@ -1000,7 +1000,7 @@ function mob_class:do_states_attack(dtime)
 			or (self.attack_type == "dogshoot" and (dist > self.reach or dist < self.avoid_distance and self.shooter_avoid_enemy) and self:dogswitch() == 0) then
 		local vec = vector_new(p.x - s.x, p.y - s.y - 1, p.z - s.z)
 		local dist = (vec.x*vec.x + vec.y*vec.y + vec.z*vec.z)^0.5
-		self:turn_in_direction(vec.x, vec.z, 1)
+		self:turn_in_direction(vec.x, vec.z, 10)
 
 		if self.strafes then
 			if not self.strafe_direction then self.strafe_direction = HALFPI end
@@ -1015,6 +1015,7 @@ function mob_class:do_states_attack(dtime)
 			end
 		else
 			self:set_velocity(0)
+			self:set_animation("stand")
 		end
 
 		local p = self.object:get_pos()
