@@ -141,7 +141,7 @@ function mcl_mobs.register_mob(name, def)
 	local final_def = {
 		use_texture_alpha = def.use_texture_alpha,
 		head_swivel = def.head_swivel or nil, -- bool to activate this function
-		head_yaw_offset = def.head_yaw_offset or 0, -- for wonkey model bones
+		head_yaw_offset = math.rad(def.head_yaw_offset or 0), -- for wonkey model bones
 		head_pitch_multiplier = def.head_pitch_multiplier or 1, --for inverted pitch
 		bone_eye_height = def.bone_eye_height or 1.4, -- head bone offset
 		head_eye_height = def.head_eye_height or def.bone_eye_height or 0, -- how hight aproximatly the mobs head is fromm the ground to tell the mob how high to look up at the player

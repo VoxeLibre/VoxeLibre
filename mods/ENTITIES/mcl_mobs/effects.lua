@@ -5,6 +5,7 @@ local validate_vector = mcl_util.validate_vector
 local active_particlespawners = {}
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local DEFAULT_FALL_SPEED = -9.81*1.5
+local PI_THIRD = math.pi / 3 -- 60 degrees
 
 local PATHFINDING = "gowp"
 
@@ -294,86 +295,66 @@ function mcl_mobs:set_animation(self, anim)
 	self:set_animation(anim)
 end
 
-local function dir_to_pitch(dir)
-	--local dir2 = vector.normalize(dir)
-	local xz = math.abs(dir.x) + math.abs(dir.z)
-	return -math.atan2(-dir.y, xz)
-end
-
 local function who_are_you_looking_at (self, dtime)
-	local pos = self.object:get_pos()
+	if self.order == "sleep" then
+		self._locked_object = nil
+		return
+	end
 
-	local stop_look_at_player_chance = math.random(833/self.curiosity)
 	-- was 10000 - div by 12 for avg entities as outside loop
-
-	local stop_look_at_player = stop_look_at_player_chance == 1
+	local stop_look_at_player = math.random() * 833 <= self.curiosity
 
 	if self.attack then
-		if not self.target_time_lost then
-			self._locked_object = self.attack
-		else
-			self._locked_object = nil
-		end
+		self._locked_object = not self.target_time_lost and self.attack or nil
 	elseif self.following then
 		self._locked_object = self.following
 	elseif self._locked_object then
-		if stop_look_at_player then
-			--minetest.log("Stop look: ".. self.name)
-			self._locked_object = nil
-		end
+		if stop_look_at_player then self._locked_object = nil end
 	elseif not self._locked_object then
 		if mcl_util.check_dtime_timer(self, dtime, "step_look_for_someone", 0.2) then
-			--minetest.log("Change look check: ".. self.name)
-
-			-- For the wither this was 20/60=0.33, so probably need to rebalance and divide rates.
-			-- but frequency of check isn't good as it is costly. Making others too infrequent requires testing
-			local chance = 150/self.curiosity
-
-			if chance < 1 then chance = 1 end
-			local look_at_player_chance = math.random(chance)
-
-			-- was 5000 but called in loop based on entities. so div by 12 as estimate avg of entities found,
-			-- then div by 20 as less freq lookup
-
-			local look_at_player = look_at_player_chance == 1
-
+			local pos = self.object:get_pos()
 			for _, obj in pairs(minetest.get_objects_inside_radius(pos, 8)) do
-				if obj:is_player() and vector.distance(pos,obj:get_pos()) < 4 then
-					--minetest.log("Change look to player: ".. self.name)
+				if obj:is_player() and vector.distance(pos, obj:get_pos()) < 4 then
 					self._locked_object = obj
 					break
-				elseif obj:is_player() or (obj:get_luaentity() and obj:get_luaentity().name == self.name and self ~= obj:get_luaentity()) then
-					if look_at_player then
-						--minetest.log("Change look to mob: ".. self.name)
+				elseif obj:is_player() or (obj:get_luaentity() and self ~= obj:get_luaentity() and obj:get_luaentity().name == self.name) then
+					-- For the wither this was 20/60=0.33, so probably need to rebalance and divide rates.
+					-- but frequency of check isn't good as it is costly. Making others too infrequent requires testing
+					-- was 5000 but called in loop based on entities. so div by 12 as estimate avg of entities found,
+					-- then div by 20 as less freq lookup
+					if math.random() * 150 <= self.curiosity then
 						self._locked_object = obj
 						break
 					end
 				end
 			end
 		end
-
 	end
 end
 
 function mob_class:check_head_swivel(dtime)
 	if not self.head_swivel or type(self.head_swivel) ~= "string" then return end
 
+	who_are_you_looking_at(self, dtime)
 
-	who_are_you_looking_at (self, dtime)
+	local newr, oldp, oldr = vector.zero(), nil, nil
+	if self.object.get_bone_override then -- minetest >= 5.9
+		local ov = self.object:get_bone_override(self.head_swivel)
+		oldp, oldr = ov.position.vec, ov.rotation.vec
+	else -- minetest < 5.9
+		oldp, oldr = self.object:get_bone_position(self.head_swivel)
+		oldr = vector.apply(oldr, math.rad) -- old API uses radians
+	end
 
-	local final_rotation = vector.zero()
-	local oldp,oldr = self.object:get_bone_position(self.head_swivel)
-
-	if self._locked_object and (self._locked_object:is_player() or self._locked_object:get_luaentity()) and self._locked_object:get_hp() > 0 then
+	local locked_object = self._locked_object
+	if locked_object and (locked_object:is_player() or locked_object:get_luaentity()) and locked_object:get_hp() > 0 then
 		local _locked_object_eye_height = 1.5
-		if self._locked_object:get_luaentity() then
-			_locked_object_eye_height = self._locked_object:get_luaentity().head_eye_height
-		end
-		if self._locked_object:is_player() then
-			_locked_object_eye_height = self._locked_object:get_properties().eye_height
+		if locked_object:is_player() then
+			_locked_object_eye_height = locked_object:get_properties().eye_height
+		elseif locked_object:get_luaentity() then
+			_locked_object_eye_height = locked_object:get_luaentity().head_eye_height
 		end
 		if _locked_object_eye_height then
-
 			local self_rot = self.object:get_rotation()
 			-- If a mob is attached, should we really be messing with what they are looking at?
 			-- Should this be excluded?
@@ -381,38 +362,46 @@ function mob_class:check_head_swivel(dtime)
 				self_rot = self.object:get_attach():get_rotation()
 			end
 
-			local player_pos = self._locked_object:get_pos()
-			local direction_player = vector.direction(vector.add(self.object:get_pos(), vector.new(0, self.head_eye_height*.7, 0)), vector.add(player_pos, vector.new(0, _locked_object_eye_height, 0)))
-			local mob_yaw = math.deg(-(-(self_rot.y)-(-minetest.dir_to_yaw(direction_player))))+self.head_yaw_offset
-			local mob_pitch = math.deg(-dir_to_pitch(direction_player))*self.head_pitch_multiplier
+			local ps = self.object:get_pos()
+			ps.y = ps.y + self.head_eye_height * .7
+			local pt = locked_object:get_pos()
+			pt.y = pt.y + _locked_object_eye_height
+			local dir = vector.direction(ps, pt)
+			local mob_yaw = self_rot.y + math.atan2(dir.x, dir.z) + self.head_yaw_offset
+			local mob_pitch = math.asin(-dir.y) * self.head_pitch_multiplier
 
-			if (mob_yaw < -60 or mob_yaw > 60) and not (self.attack and self.state == "attack" and not self.runaway) then
-				final_rotation = vector.multiply(oldr, 0.9)
+			if (mob_yaw < -PI_THIRD or mob_yaw > PI_THIRD) and not (self.attack and self.state == "attack" and not self.runaway) then
+				newr = vector.multiply(oldr, 0.9)
 			elseif self.attack and self.state == "attack" and not self.runaway then
 				if self.head_yaw == "y" then
-					final_rotation = vector.new(mob_pitch, mob_yaw, 0)
+					newr = vector.new(mob_pitch, mob_yaw, 0)
 				elseif self.head_yaw == "z" then
-					final_rotation = vector.new(mob_pitch, 0, -mob_yaw)
+					newr = vector.new(mob_pitch, 0, -mob_yaw)
 				end
-
 			else
-
 				if self.head_yaw == "y" then
-					final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, ((mob_yaw-oldr.y)*.3)+oldr.y, 0)
+					newr = vector.new((mob_pitch-oldr.x)*.3+oldr.x, (mob_yaw-oldr.y)*.3+oldr.y, 0)
 				elseif self.head_yaw == "z" then
-					final_rotation = vector.new(((mob_pitch-oldr.x)*.3)+oldr.x, 0, -(((mob_yaw-oldr.y)*.3)+oldr.y)*3)
+					newr = vector.new((mob_pitch-oldr.x)*.3+oldr.x, 0, ((mob_yaw-oldr.y)*.3+oldr.y)*-3)
 				end
 			end
 		end
-	elseif not self._locked_object and math.abs(oldr.y) > 3 and math.abs(oldr.x) < 3 then
-		final_rotation = vector.multiply(oldr, 0.9)
-	else
-		--final_rotation = vector.new(0,0,0)
+	elseif not locked_object and math.abs(oldr.y) > 0.05 and math.abs(oldr.x) < 0.05 then
+		newr = vector.multiply(oldr, 0.9)
 	end
-
-	mcl_util.set_bone_position(self.object,self.head_swivel, vector.new(0,self.bone_eye_height,self.horizontal_head_height), final_rotation)
+	
+	-- 0.02 is about 1.14 degrees tolerance, to update less often
+	local newp = vector.new(0, self.bone_eye_height, self.horizontal_head_height)
+	if math.abs(oldr.x-newr.x) + math.abs(oldr.y-newr.y) + math.abs(oldr.z-newr.z) < 0.02 and vector.equals(oldp, newp) then return end
+	if self.object.get_bone_override then -- minetest >= 5.9
+		self.object:set_bone_override(self.head_swivel, {
+			position = { vec = newp, absolute = true },
+			rotation = { vec = newr, absolute = true } })
+	else -- minetest < 5.9
+		-- old API uses degrees not radians
+		self.object:set_bone_position(self.head_swivel, newp, vector.apply(newr, math.deg))
+	end
 end
-
 
 
 function mob_class:set_animation_speed()
