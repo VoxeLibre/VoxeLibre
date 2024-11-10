@@ -286,9 +286,6 @@ local function calculate_acceleration(staticdata)
 		acceleration = 4
 	elseif (ctrl.brake or 0) > time_active then
 		acceleration = -1.5
-	elseif ctrl.impulse then
-		acceleration = vector.dot(staticdata.dir, ctrl.impulse)
-		ctrl.impulse = nil
 	elseif (staticdata.fueltime or 0) > 0 and staticdata.velocity <= 4 then
 		acceleration = 0.6
 	elseif staticdata.velocity >= ( node_def._max_acceleration_velocity or SPEED_MAX ) then
@@ -320,8 +317,24 @@ local function do_movement_step(staticdata, dtime)
 	local x_0 = staticdata.distance or 0
 	local remaining_in_block = 1 - x_0
 
-	-- Calculate acceleration
+	-- Apply velocity impulse
 	local v_0 = staticdata.velocity or 0
+	local ctrl = staticdata.controls or {}
+	if ctrl.impulse then
+		local impulse = ctrl.impulse
+		ctrl.impulse = nil
+
+		local old_v_0 = v_0
+		local new_v_0 = v_0 + impulse
+		if new_v_0 > SPEED_MAX then
+			new_v_0 = SPEED_MAX
+		elseif new_v_0 < 0.025 then
+			new_v_0 = 0
+		end
+		v_0 = new_v_0
+	end
+
+	-- Calculate acceleration
 	local a = 0
 	if staticdata.ahead or staticdata.behind then
 		-- Calculate acceleration of the entire train
@@ -385,18 +398,17 @@ local function do_movement_step(staticdata, dtime)
 	end
 
 	-- Truncate timestep to prevent v_1 from being larger that speed_max
-	local v_max = SPEED_MAX
-	if (v_0 < v_max) and ( v_0 + a * timestep > v_max) then
-		timestep = ( v_max - v_0 ) / a
+	if (v_0 < SPEED_MAX) and ( v_0 + a * timestep > SPEED_MAX) then
+		timestep = ( SPEED_MAX - v_0 ) / a
 	end
 
 	-- Prevent infinite loops
 	if timestep <= 0 then return 0 end
 
-	-- Calculate v_1 taking v_max into account
+	-- Calculate v_1 taking SPEED_MAX into account
 	local v_1 = v_0 + a * timestep
-	if v_1 > v_max then
-		v_1 = v_max
+	if v_1 > SPEED_MAX then
+		v_1 = SPEED_MAX
 	elseif v_1 < 0.025 then
 		v_1 = 0
 	end
@@ -495,15 +507,6 @@ end
 
 function submod.do_movement( staticdata, dtime )
 	assert(staticdata)
-
-	-- Allow the carts to be delay for the rest of the world to react before moving again
-	--[[
-	if ( staticdata.delay or 0 ) > dtime then
-		staticdata.delay = staticdata.delay - dtime
-		return
-	else
-		staticdata.delay = 0
-	end]]
 
 	-- Break long movements at block boundaries to make it
 	-- it impossible to jump across gaps due to server lag

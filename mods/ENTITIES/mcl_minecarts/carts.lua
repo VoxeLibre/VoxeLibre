@@ -266,14 +266,21 @@ function DEFAULT_CART_DEF:on_punch(puncher, time_from_last_punch, tool_capabilit
 	end
 
 	local controls = staticdata.controls or {}
-	local impulse = vector.multiply(dir, damage * 20)
-	local accel = vector.dot(staticdata.dir, impulse)
-	if accel < 0 and staticdata.velocity == 0 then
+	dir.y = 0
+	dir = vector.normalize(dir)
+	local impulse = vector.dot(staticdata.dir, vector.multiply(dir, damage * 4))
+	minetest.log(dump({
+		dir = dir,
+		dir_len = vector.length(dir),
+		damage = damage,
+		impulse = impulse,
+	}))
+	if impulse < 0 and staticdata.velocity == 0 then
 		mod.reverse_direction(staticdata)
+		impulse = -impulse
 	end
 
 	controls.impulse = impulse
-	--print("uuid="..self._uuid..", controls="..dump(controls))
 	staticdata.controls = controls
 end
 function DEFAULT_CART_DEF:on_step(dtime)
