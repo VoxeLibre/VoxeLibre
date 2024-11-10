@@ -162,6 +162,18 @@ local def_tallgrass = {
 	_mcl_fortune_drop = fortune_wheat_seed_drop,
 	node_placement_prediction = "",
 	on_place = on_place_flower,
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		local n = minetest.get_node(pos)
+		-- Grow into double tallgrass
+		local toppos = vector.offset(pos, 0, 1, 0)
+		local topnode = minetest.get_node(toppos)
+		if minetest.registered_nodes[topnode.name].buildable_to then
+			minetest.set_node(pos, { name = "mcl_flowers:double_grass", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top", param2 = n.param2 })
+			return true
+		end
+	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 }
@@ -180,6 +192,18 @@ def_fern.selection_box = {
 	fixed = { -6/16, -0.5, -6/16, 6/16, 5/16, 6/16 },
 }
 def_fern.groups.compostability = 65
+def_fern._on_bone_meal = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		local n = minetest.get_node(pos)
+		-- Grow into double fern.
+		local toppos = vector.offset(pos, 0, 1, 0)
+		local topnode = minetest.get_node(toppos)
+		if minetest.registered_nodes[topnode.name].buildable_to then
+			minetest.set_node(pos, { name = "mcl_flowers:double_fern", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_top", param2 = n.param2 })
+			return true
+		end
+	end
 
 minetest.register_node("mcl_flowers:fern", def_fern)
 
@@ -243,10 +267,16 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if name == "double_grass" then
 		bottom_groups.compostability = 50
 	end
+	local on_bonemealing
 	if is_flower then
 		bottom_groups.flower = 1
 		bottom_groups.place_flowerlike = 1
 		bottom_groups.dig_immediate = 3
+		on_bonemealing = function(itemstack, placer, pointed_thing)
+			local pos = pointed_thing.under
+			minetest.add_item(pos, "mcl_flowers:"..name)
+			return true
+		end
 	else
 		bottom_groups.place_flowerlike = 2
 		bottom_groups.handy = 1
@@ -381,6 +411,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(top)
 			end
 		end,
+		_on_bone_meal = on_bonemealing,
 		groups = bottom_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		mesh = mesh
@@ -419,6 +450,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(bottom)
 			end
 		end,
+		_on_bone_meal = on_bonemealing,
 		groups = top_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
@@ -572,3 +604,6 @@ if mod_mcimport and mg_name == "singlenode" and fix_doubleplants == true then
 end
 
 dofile(modpath.."/register.lua")
+
+-- Bonemealing handler and override for "mcl_core:dirt_with_grass":
+dofile(modpath.."/bonemealing.lua")

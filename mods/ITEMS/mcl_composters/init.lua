@@ -11,7 +11,7 @@ local composter_description = S(
 	"Composter"
 )
 local composter_longdesc = S(
-	"Composters can convert various organic items into bonemeal."
+	"Composters can convert various organic items into bone meal."
 )
 local composter_usagehelp = S(
 	"Use organic items on the composter to fill it with layers of compost. " ..
@@ -47,6 +47,41 @@ local add_item = minetest.add_item
 local vector_offset = vector.offset
 local is_protected = minetest.is_protected
 local record_protection_violation = minetest.record_protection_violation
+
+--- Math and node swap during compost progression
+---@param pos Vector Position of the node
+---@param node node
+---@param chance integer Value of "compostability" group of inserted item
+local function composter_progress_chance(pos, node, chance)
+	-- calculate leveling up chance
+	local rand = math.random(0,100)
+	if chance >= rand then
+		-- get current compost level
+		local level = registered_nodes[node.name]["_mcl_compost_level"]
+		-- spawn green particles above new layer
+		mcl_bone_meal.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
+		-- update composter block
+		if level < 7 then
+			level = level + 1
+		else
+			level = "ready"
+		end
+		swap_node(pos, {name = "mcl_composters:composter_" .. level})
+		minetest.sound_play({name="default_grass_footstep", gain=0.4}, {
+			pos = pos,
+			gain= 0.4,
+			max_hear_distance = 16,
+		}, true)
+		-- a full composter becomes ready for harvest after one second
+		-- the block will get updated by the node timer callback set in node reg def
+		if level == 7 then
+			local timer = get_node_timer(pos)
+			if not timer:is_started() then
+				timer:start(1)
+			end
+		end
+	end
+end
 
 --- Fill the composter when rightclicked.
 --
@@ -84,41 +119,6 @@ local function composter_add_item(pos, node, player, itemstack, pointed_thing)
 		composter_progress_chance(pos, node, chance)
 	end
 	return itemstack
-end
-
---- Math and node swap during compost progression
----@param pos Vector Position of the node
----@param node node
----@param chance integer Value of "compostability" group of inserted item 
-function composter_progress_chance(pos, node, chance)
-	-- calculate leveling up chance
-	local rand = math.random(0,100)
-	if chance >= rand then
-		-- get current compost level
-		local level = registered_nodes[node.name]["_mcl_compost_level"]
-		-- spawn green particles above new layer
-		mcl_dye.add_bone_meal_particle(vector_offset(pos, 0, level/8, 0))
-		-- update composter block
-		if level < 7 then
-			level = level + 1
-		else
-			level = "ready"
-		end
-		swap_node(pos, {name = "mcl_composters:composter_" .. level})
-		minetest.sound_play({name="default_grass_footstep", gain=0.4}, {
-			pos = pos,
-			gain= 0.4,
-			max_hear_distance = 16,
-		}, true)
-		-- a full composter becomes ready for harvest after one second
-		-- the block will get updated by the node timer callback set in node reg def
-		if level == 7 then
-			local timer = get_node_timer(pos)
-			if not timer:is_started() then
-				timer:start(1)
-			end
-		end
-	end
 end
 
 --- Update a full composter block to ready for harvesting.
@@ -203,7 +203,7 @@ end
 --
 minetest.register_node("mcl_composters:composter", {
 	description = composter_description,
-	_tt_help = S("Converts organic items into bonemeal"),
+	_tt_help = S("Converts organic items into bone meal"),
 	_doc_items_longdesc = composter_longdesc,
 	_doc_items_usagehelp = composter_usagehelp,
 	paramtype = "light",

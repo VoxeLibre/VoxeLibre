@@ -5,6 +5,8 @@ local modpath = minetest.get_modpath(modname)
 -- by debiankaios
 -- adapted for mcl2 by cora
 
+local MAXIMUM_VINE_HEIGHT = 25
+
 local wood_slab_groups = {handy = 1, axey = 1, material_wood = 1, wood_slab = 1}
 local wood_stair_groups = {handy = 1, axey = 1, material_wood = 1, wood_stairs = 1}
 
@@ -16,21 +18,36 @@ function generate_crimson_tree(pos)
 	minetest.place_schematic(pos,modpath.."/schematics/crimson_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
 end
 
-function grow_vines(pos, moreontop ,vine, dir)
+function grow_vines(pos, moreontop, vine, dir)
+	-- Sanity checks
 	if dir == nil then dir = 1 end
-	local n
-	repeat
-		pos = vector.offset(pos,0,dir,0)
-		n = minetest.get_node(pos)
-		if n.name == "air" then
-			for i=0,math.max(moreontop,1) do
-				if minetest.get_node(pos).name == "air" then
-					minetest.set_node(vector.offset(pos,0,i*dir,0),{name=vine})
-				end
-			end
-			break
-		end
-	until n.name ~= "air" and n.name ~= vine
+	if not moreontop or moreontop < 1 then return false end
+
+	local allowed_nodes = {}
+	allowed_nodes[vine] = true
+
+	-- Find the root, tip and calculate height
+	local root,_,root_node = mcl_util.trace_nodes(pos, -dir, allowed_nodes, MAXIMUM_VINE_HEIGHT)
+	if not root then return false end
+	local tip,height,tip_node = mcl_util.trace_nodes(vector.offset(root, 0, dir, 0), dir, allowed_nodes, MAXIMUM_VINE_HEIGHT)
+	if not tip then return false end
+
+	local res = false
+	for i = 1,moreontop do
+		-- Check if we can grow into this position
+		if height >= MAXIMUM_VINE_HEIGHT then return res end
+		if tip_node.name ~= "air" then return res end
+
+		-- Update world map data
+		minetest.set_node(tip, {name = vine})
+
+		-- Move to the next position and flag that growth has occured
+		tip = vector.offset(tip, 0, dir, 0)
+		tip_node = minetest.get_node(tip)
+		height = height + 1
+		res = true
+	end
+	return res
 end
 
 local nether_plants = {
@@ -83,17 +100,20 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	light_source = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
-	on_rightclick = function(pos, node, pointed_thing, player, itemstack)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			local nodepos = minetest.get_node({x = pos.x, y = pos.y - 1, z = pos.z})
-			if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
-				local random = math.random(1, 5)
-				if random == 1 then
-					minetest.remove_node(pos)
-					generate_warped_tree(pos)
-				end
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
+
+		if nodepos.name == "mcl_crimson:warped_nylium" or nodepos.name == "mcl_nether:netherrack" then
+			local random = math.random(1, 5)
+			if random == 1 then
+				minetest.remove_node(pos)
+				generate_warped_tree(pos)
+				return true
 			end
 		end
+
+		return false
 	end,
 	_mcl_blast_resistance = 0,
 })
@@ -102,6 +122,12 @@ mcl_flowerpots.register_potted_flower("mcl_crimson:warped_fungus", {
 	name = "warped_fungus",
 	desc = S("Warped Fungus"),
 	image = "mcl_crimson_warped_fungus.png",
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		local n = has_nylium_neighbor(pointed_thing.under)
+		if n then
+			minetest.set_node(pointed_thing.under,n)
+		end
+	end,
 })
 
 minetest.register_node("mcl_crimson:twisting_vines", {
@@ -121,6 +147,9 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		return grow_vines(pointed_thing.under, math.random(1, 3),"mcl_crimson:twisting_vines")
+	end,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		local pn = clicker:get_player_name()
 		if clicker:is_player() and minetest.is_protected(vector.offset(pos,0,1,0), pn or "") then
@@ -141,26 +170,28 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		end
 
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				itemstack:take_item()
-			end
-			grow_vines(pos, math.random(1, 3),"mcl_crimson:twisting_vines")
+			return mcl_bone_meal.use_bone_meal(itemstack, clicker, {under=pos, above=pos})
 		end
 		return itemstack
 	end,
 	on_place = function(itemstack, placer, pointed_thing)
 		local under = pointed_thing.under
-		local above = pointed_thing.above
 		local unode = minetest.get_node(under)
+		local unode_def = minetest.registered_nodes[unode.name]
+
+		local above = pointed_thing.above
+		local anode = minetest.get_node(above)
+		local anode_def = minetest.registered_nodes[anode.name]
+
 		if under.y < above.y then
 			minetest.set_node(above, {name = "mcl_crimson:twisting_vines"})
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item()
 			end
-		else
-			if unode.name == "mcl_crimson:twisting_vines" then
-				return minetest.registered_nodes[unode.name].on_rightclick(under, unode, placer, itemstack, pointed_thing)
-			end
+		elseif unode_def and unode_def.on_rightclick then
+			return unode_def.on_rightclick(under, unode, placer, itemstack, pointed_thing)
+		elseif anode_def and anode_def.on_rightclick then
+			return unode_def.on_rightclick(above, anode, placer, itemstack, pointed_thing)
 		end
 		return itemstack
 	end,
@@ -168,7 +199,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		local above = vector.offset(pos,0,1,0)
 		local abovenode = minetest.get_node(above)
 		minetest.node_dig(pos, node, digger)
-		if abovenode.name == node.name and (not mcl_core.check_vines_supported(above, abovenode)) then
+		if abovenode.name == node.name then
 			minetest.registered_nodes[node.name].on_dig(above, node, digger)
 		end
 	end,
@@ -211,6 +242,9 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, 0.5, 3/16 },
 	},
 	node_placement_prediction = "",
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		return grow_vines(pointed_thing.under, math.random(1, 3),"mcl_crimson:weeping_vines", -1)
+	end,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		local pn = clicker:get_player_name()
 		if clicker:is_player() and minetest.is_protected(vector.offset(pos,0,1,0), pn or "") then
@@ -231,26 +265,28 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		end
 
 		elseif clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				itemstack:take_item()
-			end
-			grow_vines(pos, math.random(1, 3),"mcl_crimson:weeping_vines", -1)
+			return mcl_bone_meal.use_bone_meal(itemstack, clicker, {under=pos, above=pos})
 		end
 		return itemstack
 	end,
 	on_place = function(itemstack, placer, pointed_thing)
 		local under = pointed_thing.under
-		local above = pointed_thing.above
 		local unode = minetest.get_node(under)
+		local unode_def = minetest.registered_nodes[unode.name]
+
+		local above = pointed_thing.above
+		local anode = minetest.get_node(above)
+		local anode_def = minetest.registered_nodes[anode.name]
+
 		if under.y > above.y then
 			minetest.set_node(above, {name = "mcl_crimson:weeping_vines"})
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item()
 			end
-		else
-			if unode.name == "mcl_crimson:weeping_vines" then
-				return minetest.registered_nodes[unode.name].on_rightclick(under, unode, placer, itemstack, pointed_thing)
-			end
+		elseif unode_def and unode_def.on_rightclick then
+			return unode_def.on_rightclick(under, unode, placer, itemstack, pointed_thing)
+		elseif anode_def and anode_def.on_rightclick then
+			return unode_def.on_rightclick(above, anode, placer, itemstack, pointed_thing)
 		end
 		return itemstack
 	end,
@@ -258,7 +294,7 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		local below = vector.offset(pos,0,-1,0)
 		local belownode = minetest.get_node(below)
 		minetest.node_dig(pos, node, digger)
-		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
+		if belownode.name == node.name then
 			minetest.registered_nodes[node.name].on_dig(below, node, digger)
 		end
 	end,
@@ -393,6 +429,11 @@ minetest.register_node("mcl_crimson:warped_nylium", {
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		local node = minetest.get_node(pointed_thing.under)
+		spread_nether_plants(pointed_thing.under,node)
+		return true
+	end,
 })
 
 --Stem bark, stripped stem and bark
@@ -525,17 +566,21 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
 	},
 	node_placement_prediction = "",
-	on_rightclick = function(pos, node, pointed_thing, player)
-		if pointed_thing:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-			local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
-			if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
-				local random = math.random(1, 5)
-				if random == 1 then
-					minetest.remove_node(pos)
-					generate_crimson_tree(pos)
-				end
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.under
+		local nodepos = minetest.get_node(vector.offset(pos, 0, -1, 0))
+		if nodepos.name == "mcl_crimson:crimson_nylium" or nodepos.name == "mcl_nether:netherrack" then
+			local random = math.random(1, 5)
+			if random == 1 then
+				minetest.remove_node(pos)
+				generate_crimson_tree(pos)
+
+				return true
 			end
 		end
+
+		-- Failed to spread nylium
+		return false
 	end,
 	_mcl_blast_resistance = 0,
 })
@@ -682,6 +727,11 @@ minetest.register_node("mcl_crimson:crimson_nylium", {
 	_mcl_hardness = 0.4,
 	_mcl_blast_resistance = 0.4,
 	_mcl_silk_touch_drop = true,
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		local node = minetest.get_node(pointed_thing.under)
+		spread_nether_plants(pointed_thing.under,node)
+		return true
+	end,
 })
 
 minetest.register_craft({
@@ -722,19 +772,6 @@ minetest.register_craft({
 
 mcl_stairs.register_stair("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_stair_groups, false, S("Crimson Stair"))
 mcl_stairs.register_slab("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_slab_groups, false, S("Crimson Slab"))
-
-mcl_dye.register_on_bone_meal_apply(function(pt,user)
-	if not pt.type == "node" then return end
-	local node = minetest.get_node(pt.under)
-	if node.name == "mcl_nether:netherrack" then
-		local n = has_nylium_neighbor(pt.under)
-		if n then
-			minetest.set_node(pt.under,n)
-		end
-	elseif node.name == "mcl_crimson:warped_nylium" or node.name == "mcl_crimson:crimson_nylium" then
-		spread_nether_plants(pt.under,node)
-	end
-end)
 
 minetest.register_abm({
 	label = "Turn Crimson Nylium and Warped Nylium below solid block into Netherrack",

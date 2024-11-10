@@ -12,6 +12,25 @@ for i=0, 3 do
 	local drop_berries = (i >= 2)
 	local berries_to_drop = drop_berries and {i - 1, i} or nil
 
+	local on_bonemealing = nil
+	local function do_berry_drop(pos)
+		for j=1, berries_to_drop[math.random(2)] do
+			minetest.add_item(pos, "mcl_farming:sweet_berry")
+		end
+		minetest.swap_node(pos, {name = "mcl_farming:sweet_berry_bush_1"})
+	end
+	if i ~= 3 then
+		on_bonemealing = function(itemstack, placer, pointed_thing)
+			local pos = pointed_thing.under
+			local node = minetest.get_node(pos)
+			return mcl_farming:grow_plant("plant_sweet_berry_bush", pos, node, 0, true)
+		end
+	else
+		on_bonemealing = function(itemstack, placer, pointed_thing)
+			do_berry_drop(pointed_thing.under)
+		end
+	end
+
 	minetest.register_node(node_name, {
 		drawtype = "plantlike",
 		tiles = {texture},
@@ -45,6 +64,7 @@ for i=0, 3 do
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 		_mcl_hardness = 0,
+		_on_bone_meal = on_bonemealing,
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 			local pn = clicker:get_player_name()
 			if clicker:is_player() and minetest.is_protected(pos, pn) then
@@ -60,11 +80,13 @@ for i=0, 3 do
 				return
 			end
 
-			if drop_berries then
-				for j=1, berries_to_drop[math.random(2)] do
-					minetest.add_item(pos, "mcl_farming:sweet_berry")
+			if i >= 2 then
+				do_berry_drop(pos)
+			else
+				-- Use bonemeal
+				if mcl_bone_meal and clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
+					return mcl_bone_meal.use_bone_meal(itemstack, clicker, pointed_thing)
 				end
-				minetest.swap_node(pos, {name = "mcl_farming:sweet_berry_bush_1"})
 			end
 			return itemstack
 		end,

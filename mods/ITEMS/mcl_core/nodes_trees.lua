@@ -280,6 +280,14 @@ function mcl_core.register_sapling(subname, description, longdesc, tt_help, text
 					nn == "mcl_core:podzol" or nn == "mcl_core:podzol_snow" or
 					nn == "mcl_core:dirt" or nn == "mcl_core:mycelium" or nn == "mcl_core:coarse_dirt"
 		end),
+		_on_bone_meal = function(itemstack, placer, pointed_thing)
+			local pos = pointed_thing.under
+			local n = minetest.get_node(pos)
+			-- Saplings: 45% chance to advance growth stage
+			if math.random(1,100) <= 45 then
+				return mcl_core.grow_sapling(pos, n)
+			end
+		end,
 		node_placement_prediction = "",
 		_mcl_blast_resistance = 0,
 		_mcl_hardness = 0,
