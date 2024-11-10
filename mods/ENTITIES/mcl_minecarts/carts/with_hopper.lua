@@ -3,9 +3,9 @@ local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_minecarts", false)
+local LOGGING_ON = {minetest.settings:get_bool("mcl_logging_minecarts", false)}
 local function mcl_log(message)
-	if LOGGING_ON then
+	if LOGGING_ON[1] then
 		mcl_util.mcl_log(message, "[Minecarts]", true)
 	end
 end

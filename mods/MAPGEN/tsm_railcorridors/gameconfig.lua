@@ -61,6 +61,7 @@ tsm_railcorridors.carts = {
 	"mcl_minecarts:minecart", "mcl_minecarts:minecart",
 	"mcl_minecarts:chest_minecart", "mcl_minecarts:chest_minecart",
 	"mcl_minecarts:tnt_minecart"
+}
 local has_loot = {
 	["mcl_minecarts:chest_minecart"] = true,
 	["mcl_minecarts:hopper_minceart"] = true,

@@ -441,7 +441,7 @@ end
 
 local _2_pi = math.pi * 2
 local _half_pi = math.pi * 0.5
-local _quart_pi = math.pi * 0.5
+local _quart_pi = math.pi * 0.25
 local pi = math.pi
 local rot_debug = {}
 function mod.update_cart_orientation(self)
@@ -469,9 +469,9 @@ function mod.update_cart_orientation(self)
 	end
 
 	-- Forward/backwards tilt (pitch)
-	if dir.y < 0 then
+	if dir.y > 0 then
 		rot.x = -_quart_pi
-	elseif dir.y > 0 then
+	elseif dir.y < 0 then
 		rot.x = _quart_pi
 	else
 		rot.x = 0

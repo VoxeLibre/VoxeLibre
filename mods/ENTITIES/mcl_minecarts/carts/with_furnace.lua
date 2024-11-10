@@ -1,6 +1,8 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 
+local FURNACE_CART_SPEED = {tonumber(minetest.settings:get("mcl_minecarts_furnace_speed") or 4)}
+
 -- Minecart with Furnace
 mcl_minecarts.register_minecart({
 	itemstring = "mcl_minecarts:furnace_minecart",
@@ -73,8 +75,10 @@ mcl_minecarts.register_minecart({
 
 		-- Update furnace stuff
 		if (staticdata.fueltime or 0) > 0 then
-			if staticdata.velocity < 0.25 then
-				staticdata.velocity = 0.25
+			for car in mcl_minecarts.train_cars(staticdata) do
+				if car.velocity < FURNACE_CART_SPEED[1] - 0.1 then -- Slightly less to allow train cars to maintain spacing
+					car.velocity = FURNACE_CART_SPEED[1]
+				end
 			end
 
 			staticdata.fueltime = (staticdata.fueltime or dtime) - dtime
