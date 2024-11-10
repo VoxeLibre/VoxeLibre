@@ -30,17 +30,5 @@ for _, action in pairs({"grant", "revoke"}) do
 		if priv == "fly" then
 			meta:set_int("mcl_privs:fly_changed", 1)
 		end
-
-		--[[
-			so e.g. hackers who have been revoked of the interact privilege
-			will not automatically get the interact privilege through the mcl shields code back
-		]]
-		if priv == "interact" then
-			if action == "revoke" then
-				meta:set_int("mcl_privs:interact_revoked", 1)
-			else
-				meta:set_int("mcl_privs:interact_revoked", 0)
-			end
-		end
 	end)
 end

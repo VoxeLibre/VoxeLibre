@@ -211,16 +211,37 @@ local function set_interact(player, interact)
 		return
 	end
 	local meta = player:get_meta()
-	if meta:get_int("mcl_privs:interact_revoked") ~= 1 then
-		privs.interact = interact
-		minetest.set_player_privs(player_name, privs)
-		meta:set_int("mcl_privs:interact_revoked",0)
+
+	if interact and meta:get_int("mcl_shields:interact_revoked") ~= 0 then
+		meta:set_int("mcl_shields:interact_revoked", 0)
+		privs.interact = true
+	elseif not interact then
+		meta:set_int("mcl_shields:interact_revoked", privs.interact and 1 or 0)
+		privs.interact = nil
 	end
+
+	minetest.set_player_privs(player_name, privs)
 end
+
+-- Prevent player from being able to circumvent interact privilage removal by
+-- using shield.
+minetest.register_on_priv_revoke(function(name, revoker, priv)
+	if priv == "interact" and revoker then
+		local player = minetest.get_player_by_name(name)
+		if not player then
+			return
+		end
+		local meta = player:get_meta()
+		meta:set_int("mcl_shields:interact_revoked", 0)
+	end
+end)
 
 local shield_hud = {}
 
 local function remove_shield_hud(player)
+	set_interact(player, true)
+	playerphysics.remove_physics_factor(player, "speed", "shield_speed")
+
 	if not shield_hud[player] then return end --this function takes a long time. only run it when necessary
 	player:hud_remove(shield_hud[player])
 	shield_hud[player] = nil
@@ -231,9 +252,6 @@ local function remove_shield_hud(player)
 	if not hf.wielditem then
 		player:hud_set_flags({wielditem = true})
 	end
-
-	playerphysics.remove_physics_factor(player, "speed", "shield_speed")
-	set_interact(player, true)
 end
 
 local function add_shield_entity(player, i)
@@ -251,6 +269,11 @@ local function remove_shield_entity(player, i)
 	end
 end
 
+local function is_rmb_conflicting_node(nodename)
+	local nodedef = minetest.registered_nodes[nodename] or {}
+	return nodedef.on_rightclick
+end
+
 local function handle_blocking(player)
 	local player_shield = mcl_shields.players[player]
 	local rmb = player:get_player_control().RMB
@@ -259,14 +282,25 @@ local function handle_blocking(player)
 		return
 	end
 
+	local pointed_thing = mcl_util.get_pointed_thing(player, true)
+	local wielded_stack = player:get_wielded_item()
+
 	local shield_in_offhand = mcl_shields.wielding_shield(player, 1)
 	local shield_in_hand = mcl_shields.wielding_shield(player)
 	local not_blocking = player_shield.blocking == 0
 
-	local pos = player:get_pos()
+	if pointed_thing and pointed_thing.type == "node" then
+		local pointed_node = minetest.get_node(pointed_thing.under)
+		if minetest.get_item_group(pointed_node.name, "container") > 1
+				or is_rmb_conflicting_node(pointed_node.name)
+				or wielded_stack:get_definition().type == "node" then
+			return
+		end
+	end
+
 	if shield_in_hand then
 		if not_blocking then
-			minetest.after(0.25, function()
+			minetest.after(0.05, function()
 				if (not_blocking or not shield_in_offhand) and shield_in_hand and rmb then
 					player_shield.blocking = 2
 					set_shield(player, true, 2)
@@ -276,22 +310,15 @@ local function handle_blocking(player)
 			player_shield.blocking = 2
 		end
 	elseif shield_in_offhand then
-		local pointed_thing = mcl_util.get_pointed_thing(player, true)
-		local offhand_can_block = (wielded_item(player) == "" or not pointed_thing)
-		and (minetest.get_item_group(wielded_item(player), "bow") ~= 1 and minetest.get_item_group(wielded_item(player), "crossbow") ~= 1)
-
-		if pointed_thing and pointed_thing.type == "node" then
-			if minetest.get_item_group(minetest.get_node(pointed_thing.under).name, "container") > 1 then
-				return
-			end
-		end
+		local offhand_can_block = minetest.get_item_group(wielded_item(player), "cannot_block") ~= 1
 
 		if not offhand_can_block then
 			return
 		end
 		if not_blocking then
-			minetest.after(0.25, function()
-				if (not_blocking or not shield_in_hand) and shield_in_offhand and rmb  and offhand_can_block then
+			minetest.after(0.05, function()
+				if (not_blocking or not shield_in_hand) and shield_in_offhand
+						and rmb and offhand_can_block then
 					player_shield.blocking = 1
 					set_shield(player, true, 1)
 				end
@@ -344,7 +371,7 @@ local function add_shield_hud(shieldstack, player, blocking)
 		z_index = -200,
 	})
 	playerphysics.add_physics_factor(player, "speed", "shield_speed", 0.5)
-	set_interact(player, nil)
+	set_interact(player, false)
 end
 
 local function update_shield_hud(player, blocking, shieldstack)
