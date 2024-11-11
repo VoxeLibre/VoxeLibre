@@ -54,8 +54,8 @@ local zombie = {
 	xp_min = 5,
 	xp_max = 5,
 	head_swivel = "head.control",
-	bone_eye_height = 6.3,
-	head_eye_height = 2.2,
+	head_eye_height = 1.4,
+	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8
 	curiosity = 7,
 	head_pitch_multiplier=-1,
 	breath_max = -1,
@@ -110,6 +110,7 @@ mcl_mobs.register_mob("mobs_mc:zombie", zombie)
 
 local baby_zombie = table.copy(zombie)
 baby_zombie.description = S("Baby Zombie")
+baby_zombie.head_eye_height = 0.8
 baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.98, 0.25}
 baby_zombie.xp_min = 12
 baby_zombie.xp_max = 12

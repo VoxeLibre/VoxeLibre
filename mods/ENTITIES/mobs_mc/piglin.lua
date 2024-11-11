@@ -252,7 +252,7 @@ local zombified_piglin = {
 	damage = 9,
 	reach = 2,
 	head_swivel = "head.control",
-	bone_eye_height = 2.4,
+	head_bone_position = vector.new( 0, 2.4, 0 ), -- for minetest <= 5.8
 	head_eye_height = 1.4,
 	curiosity = 15,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3}, -- same
@@ -325,6 +325,7 @@ mcl_mobs.register_mob("mobs_mc:zombified_piglin", zombified_piglin)
 local baby_zombified_piglin = table.copy(zombified_piglin)
 baby_zombified_piglin.description = S("Baby Zombie Piglin")
 baby_zombified_piglin.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_zombified_piglin.head_eye_height = 0.8
 baby_zombified_piglin.xp_min = 13
 baby_zombified_piglin.xp_max = 13
 baby_zombified_piglin.textures = {

@@ -136,8 +136,7 @@ mcl_mobs.register_mob("mobs_mc:parrot", {
 	xp_min = 1,
 	xp_max = 3,
 	head_swivel = "head.control",
-	bone_eye_height = 1.1,
-	horizontal_head_height=0,
+	head_bone_position = vector.new( 0, 1.1, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.89, 0.25},
 	visual = "mesh",

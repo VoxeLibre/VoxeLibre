@@ -143,11 +143,12 @@ function mcl_mobs.register_mob(name, def)
 		head_swivel = def.head_swivel or nil, -- bool to activate this function
 		head_yaw_offset = math.rad(def.head_yaw_offset or 0), -- for wonkey model bones
 		head_pitch_multiplier = def.head_pitch_multiplier or 1, --for inverted pitch
-		bone_eye_height = def.bone_eye_height or 1.4, -- head bone offset
-		head_eye_height = def.head_eye_height or def.bone_eye_height or 0, -- how hight aproximatly the mobs head is fromm the ground to tell the mob how high to look up at the player
+		head_eye_height = def.head_eye_height or 1, -- how high approximately the mobs eyes are from the ground to tell the mob how high to look up at the player
+		head_max_yaw = def.head_max_yaw, -- how far the mob may turn the head
+		head_max_pitch = def.head_max_pitch, -- how far up and down the mob may pitch the head
+		head_bone_position = def.head_bone_position or { 0, def.bone_eye_height or 1.4, def.horizontal_head_height or 0},
 		curiosity = def.curiosity or 1, -- how often mob will look at player on idle
 		head_yaw = def.head_yaw or "y", -- axis to rotate head on
-		horizontal_head_height = def.horizontal_head_height or 0,
 		wears_armor = def.wears_armor, -- a number value used to index texture slot for armor
 		stepheight = def.stepheight or 0.6,
 		name = name,

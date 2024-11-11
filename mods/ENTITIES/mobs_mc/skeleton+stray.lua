@@ -26,7 +26,8 @@ local skeleton = {
 	pathfinding = 1,
 	group_attack = true,
 	head_swivel = "Head_Control",
-	bone_eye_height = 2.38,
+	head_eye_height = 1.5,
+	head_bone_position = vector.new( 0, 2.38, 0 ), -- for minetest <= 5.8
 	curiosity = 6,
 	visual = "mesh",
 	mesh = "mobs_mc_skeleton.b3d",

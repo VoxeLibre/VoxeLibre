@@ -26,14 +26,14 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 	xp_min = 10,
 	xp_max = 10,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},
-	rotate = -180,
+	rotate = 180,
+	head_yaw_offset = 180,
 	visual = "mesh",
 	mesh = "mobs_mc_blaze.b3d",
 	head_swivel = "head.control",
-	bone_eye_height = 4,
-	head_eye_height = 3.5,
+	head_eye_height = 1.4,
+	head_bone_position = vector.new( 0, 4, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
-	head_yaw_offset = 180,
 	head_pitch_multiplier=-1,
 	textures = {
 		{"mobs_mc_blaze.png"},

@@ -60,11 +60,10 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 	spawn_in_group = 4, -- was 6 nerfed until we can cap them properly locally. this is a group size, not a per spawn attempt
 
 	head_swivel = "head.control",
-	bone_eye_height = 11,
-	head_eye_height = 3,
-	horizontal_head_height=0,
-	curiosity = 60,
+	head_eye_height = 1.5,
 	head_yaw = "z",
+	head_bone_position = vector.new( 0, 11, 0 ), -- for minetest <= 5.8
+	curiosity = 60,
 
 	hp_min = 15,
 	hp_max = 30,

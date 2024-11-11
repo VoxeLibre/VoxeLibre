@@ -25,7 +25,8 @@ mcl_mobs.register_mob("mobs_mc:iron_golem", {
 	visual = "mesh",
 	mesh = "mobs_mc_iron_golem.b3d",
 	head_swivel = "head.control",
-	bone_eye_height = 3.38,
+	head_eye_height = 2.5,
+	head_bone_position = vector.new( 0, 3.38, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	textures = {
 		{"mobs_mc_iron_golem.png"},

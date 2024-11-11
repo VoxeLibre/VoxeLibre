@@ -12,9 +12,8 @@ local axolotl = {
 	xp_max = 7,
 
 	head_swivel = "head.control",
-	bone_eye_height = -1,
-	head_eye_height = -0.5,
-	horizontal_head_height = 0,
+	head_eye_height = 0.5,
+	head_bone_position = vector.new( 0, -1, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	head_yaw="z",
 

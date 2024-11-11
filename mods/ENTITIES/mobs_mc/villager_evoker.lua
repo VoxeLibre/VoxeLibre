@@ -25,8 +25,8 @@ mcl_mobs.register_mob("mobs_mc:evoker", {
 	xp_min = 10,
 	xp_max = 10,
 	head_swivel = "head.control",
-	bone_eye_height = 6.3,
-	head_eye_height = 2.2,
+	head_eye_height = 1.5,
+	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.95, 0.4},
 	visual = "mesh",
