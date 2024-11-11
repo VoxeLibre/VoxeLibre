@@ -159,6 +159,7 @@ S("The speed and damage of the arrow increases the longer you charge. The regula
 		return itemstack
 	end,
 	groups = {weapon=1,weapon_ranged=1,crossbow=1,cannot_block=1,enchantability=1},
+	touch_interaction = "short_dig_long_place",
 	_mcl_uses = 326,
 })
 
@@ -194,6 +195,7 @@ S("The speed and damage of the arrow increases the longer you charge. The regula
 		return itemstack
 	end,
 	groups = {weapon=1,weapon_ranged=1,crossbow=1,cannot_block=1,enchantability=1,not_in_creative_inventory=1},
+	touch_interaction = "short_dig_long_place",
 	_mcl_uses = 326,
 })
 
@@ -257,6 +259,7 @@ for level=0, 2 do
 		on_place = function(itemstack)
 			return itemstack
 		end,
+		touch_interaction = "short_dig_long_place",
 		_mcl_uses = 385,
 	})
 end
