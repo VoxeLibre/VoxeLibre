@@ -2,8 +2,8 @@ local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 --local validate_vector = mcl_util.validate_vector
 
-local MAX_DTIME = 0.25 -- todo: make user configurable?
-local ACCELERATION_MIX = 1.0 -- how much of acceleration to handle in Lua instead of MTE todo: make user configurable
+local MAX_DTIME = 0.5 -- todo: make user configurable?
+local ACCELERATION_MIX = 0.2 -- how much of acceleration to handle in Lua instead of MTE todo: make user configurable
 local ENTITY_CRAMMING_MAX = 24
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
@@ -49,9 +49,7 @@ function mob_class:update_standing(pos, moveresult)
 	local temp_pos = vector.offset(pos, 0, self.collisionbox[2] + 0.5, 0) -- foot level
 	self.collides = moveresult and moveresult.collides
 	self.standing_in = minetest.registered_nodes[minetest.get_node(temp_pos).name] or NODE_IGNORE
-	temp_pos.y = temp_pos.y - 1.5 -- below
-	self.standing_on_node = minetest.get_node(temp_pos) -- to allow access to param2 in, e.g., stalker
-	self.standing_on = self.standing_on_node and minetest.registered_nodes[self.standing_on_node.name] or NODE_IGNORE
+	temp_pos.y = temp_pos.y - 1 -- below
 	-- sometimes, we may be colliding with a node *not* below us, effectively standing on it instead (e.g., a corner)
 	if not self.standing_on.walkable and moveresult and moveresult.collisions then
 		-- to inspect: minetest.log("action", dump(moveresult):gsub(" *\n\\s*",""))
@@ -59,10 +57,14 @@ function mob_class:update_standing(pos, moveresult)
 			if c.axis == "y" and c.type == "node" and c.old_velocity.y < 0 then
 				self.standing_on_node = minetest.get_node(c.node_pos)
 				self.standing_on = minetest.registered_nodes[self.standing_on_node.name]
-				break
+				goto standing_on_updated
 			end
 		end
 	end
+	-- fallback
+	self.standing_on_node = minetest.get_node(temp_pos) -- to allow access to param2 in, e.g., stalker
+	self.standing_on = self.standing_on_node and minetest.registered_nodes[self.standing_on_node.name] or NODE_IGNORE
+	::standing_on_updated::
 	-- approximate height of head over ground:
 	self.standing_height = pos.y - math.floor(temp_pos.y + 0.5) - 0.5 + self.head_eye_height * 0.9
 	temp_pos.y = temp_pos.y + 2 -- at +1 = above
