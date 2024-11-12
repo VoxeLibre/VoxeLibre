@@ -16,7 +16,8 @@ if minetest.get_modpath("mcl_physics") then
 elseif minetest.get_modpath("vl_physics") then
 	env_physics = vl_physics
 end
-local FRICTION = mcl_minecarts.FRICTION
+local FRICTION = mod.FRICTION
+local OFF_RAIL_FRICTION = mod.OFF_RAIL_FRICTION
 local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
 local SPEED_MAX = mod.SPEED_MAX
 local train_length = mod.train_length
@@ -524,18 +525,20 @@ function submod.do_movement( staticdata, dtime )
 	end
 end
 
+local _half_pi = math.pi * 0.5
 function submod.do_detached_movement(self, dtime)
 	local staticdata = self._staticdata
 
 	-- Make sure the object is still valid before trying to move it
-	if not self.object or not self.object:get_pos() then return end
+	local velocity = self.object:get_velocity()
+	if not self.object or not velocity then return end
 
 	-- Apply physics
 	if env_physics then
 		env_physics.apply_entity_environmental_physics(self)
 	else
 		-- Simple physics
-		local friction = self.object:get_velocity() or vector.zero()
+		local friction = velocity or vector.zero()
 		friction.y = 0
 
 		local accel = vector.new(0,-9.81,0) -- gravity
@@ -543,15 +546,17 @@ function submod.do_detached_movement(self, dtime)
 		-- Don't apply friction in the air
 		local pos_rounded = vector.round(self.object:get_pos())
 		if minetest.get_node(vector.offset(pos_rounded,0,-1,0)).name ~= "air" then
-			accel = vector.add(accel, vector.multiply(friction,-0.9))
+			accel = vector.add(accel, vector.multiply(friction,-OFF_RAIL_FRICTION))
 		end
 
 		self.object:set_acceleration(accel)
 	end
 
-	-- Reset pitch
+	-- Shake the cart (also resets pitch)
 	local rot = self.object:get_rotation()
-	rot.y = 0
+	local shake_amount = 0.05 * vector.length(velocity)
+	rot.x = (math.random() - 0.5) * shake_amount
+	rot.z = (math.random() - 0.5) * shake_amount
 	self.object:set_rotation(rot)
 
 	local away = vector_away_from_players(self, staticdata)
