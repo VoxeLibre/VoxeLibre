@@ -84,7 +84,7 @@ local fox = {
 		--die_start = 0, die_end = 0, die_speed = 0,--die_loop = 0,
 	},
 	jump = true,
-	jump_height = 4, -- TODO: when attacking, allow to jump higher
+	jump_height = 1.3, -- TODO: when attacking, allow to jump higher
 	attacks_monsters = true,
 	attack_animals = true,
 	specific_attack = {
