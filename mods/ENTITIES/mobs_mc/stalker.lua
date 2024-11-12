@@ -3,33 +3,23 @@
 local S = minetest.get_translator("mobs_mc")
 
 -- foliage and grass palettes, loaded from mcl_maps
-local palettes = {}
+local colors = {}
 
-local function load_json_file(name)
-	local file = assert(io.open(name, "r"))
-	local data = minetest.parse_json(file:read("*all"))
-	file:close()
-	return data
-end
 local mapmodpath = minetest.get_modpath("mcl_maps")
 if mapmodpath then
-	for k,v in pairs(load_json_file(mapmodpath .. "/palettes_grass.json")) do
-		palettes[k] = v
-	end
-	for k,v in pairs(load_json_file(mapmodpath .. "/palettes_foliage.json")) do
-		palettes[k] = v
-	end
-	for k,v in pairs(load_json_file(mapmodpath .. "/palettes_water.json")) do
-		palettes[k] = v
+	local file = assert(io.open(mapmodpath .. "/colors.json", "r"))
+	local data = minetest.parse_json(file:read("*all"))
+	file:close()
+	for k,v in pairs(data) do
+		colors[k] = v
 	end
 end
 
 
 local function get_texture(self, prev)
-	local standing_on = minetest.registered_nodes[self.standing_on]
-	-- TODO: we do not have access to param2 here (color palette index) yet
+	local standing_on = self.standing_on
 	local texture
-	local texture_suff = ""
+	local tex_mod = ""
 	if standing_on and (standing_on.walkable or standing_on.groups.liquid) then
 		local tiles = standing_on.tiles
 		if tiles then
@@ -37,17 +27,14 @@ local function get_texture(self, prev)
 			local color
 			if type(tile) == "table" then
 				texture = tile.name or tile.image
-				if tile.color then
-					color = minetest.colorspec_to_colorstring(tile.color)
-				end
+				color = tile.color and minetest.colorspec_to_colorstring(tile.color)
 			elseif type(tile) == "string" then
 				texture = tile
 			end
-			if not color then
-				color = minetest.colorspec_to_colorstring(standing_on.color)
-			end
-			-- handle param2
-			if standing_on.palette and self.standing_on_node then
+			color = color or minetest.colorspec_to_colorstring(standing_on.color)
+			-- get colors from mcl_maps data where possible, including param2
+			local cols = colors[standing_on.name]
+			if cols and type(cols[1]) == "table" and self.standing_on_node then
 				local param2
 				if standing_on.paramtype2 == "color" then
 					param2 = self.standing_on_node.param2
@@ -60,16 +47,13 @@ local function get_texture(self, prev)
 				elseif standing_on.paramtype2 == "colordegrotate" then
 					param2 = math.floor(self.standing_on_node.param2 / 8)
 				end
-				local palette = palettes[standing_on.palette]
-				local oldcol = color
-				if param2 and palette then
-					local c = palette[param2 + 1]
-					if c then color = minetest.rgba(c[1], c[2], c[3], c[4]) end
-				end
+				color = cols[param2 + 1] or color
 			end
 			if color then
-				texture_suff = "^[multiply:" .. color .. "^[contrast:20:10" --"^[hsl:0:0:20"
+				if type(color) == "table" then color = minetest.rgba(color[1], color[2], color[3], color[4]) end
+				tex_mod = "^[multiply:" .. color
 			end
+			tex_mod = tex_mod .. "^[hsl:0:20:20"
 		end
 	end
 	if not texture or texture == "" then
@@ -78,10 +62,10 @@ local function get_texture(self, prev)
 			return prev
 		end
 		texture = "vl_stalker_default.png"
-		if texture_suff then texture = texture .. texture_suff end
+		if tex_mod then texture = texture .. tex_mod end
 	else
 		texture = texture:gsub("([\\^:\\[])", "\\%1") -- escape texture modifiers
-		texture = "(vl_stalker_default.png^[combine:16x24:0,0=(" .. texture .. "):0,16=(" .. texture .. ")" .. texture_suff .. ")"
+		texture = "(vl_stalker_default.png^[combine:16x24:0,0=(" .. texture .. "):0,16=(" .. texture .. ")" .. tex_mod .. ")"
 	end
 	if self.attack then
 		texture = texture .. "^vl_mobs_stalker_overlay_angry.png"
