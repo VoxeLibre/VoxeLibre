@@ -46,7 +46,6 @@ local arrow_entity = {
 		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "vl_projectile",
 	},
 
-	_startpos=nil,
 	_damage=1,	-- Damage on impact
 	_is_critical=false, -- Whether this arrow would deal critical damage
 	_stuck=false,   -- Whether arrow is stuck
@@ -76,12 +75,10 @@ local arrow_entity = {
 			vl_projectile.sticks,
 			vl_projectile.burns,
 			vl_projectile.has_tracer,
+			vl_projectile.has_owner_grace_distance,
 
 			-- Custom arrow behaviors
 			function(self, dtime)
-				local pos = self.object:get_pos()
-				self._allow_punch = self._allow_punch or not self._owner or not self._startpos or pos and vector.distance(self._startpos, pos) > 1.5
-
 				if self._deflection_cooloff > 0 then
 					self._deflection_cooloff = self._deflection_cooloff - dtime
 				end
@@ -91,8 +88,6 @@ local arrow_entity = {
 			vl_projectile.raycast_collides_with_entities,
 		},
 		allow_punching = function(self, entity_def, projectile_def, object)
-			if not self._allow_punch then return false end
-
 			local lua = object:get_luaentity()
 			if lua and lua.name == "mobs_mc:rover" then return false end
 

@@ -382,7 +382,9 @@ end
 function mcl_mobs.register_arrow(name, def)
 	if not name or not def then return end -- errorcheck
 
-	local behaviors = {}
+	local behaviors = {
+		vl_projectile.has_owner_grace_distance
+	}
 	if def.hit_node then
 		table.insert(behaviors, vl_projectile.collides_with_solids)
 	end

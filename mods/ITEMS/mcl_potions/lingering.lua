@@ -208,6 +208,7 @@ function mcl_potions.register_lingering(name, descr, color, def)
 		pointable = false,
 		_vl_projectile = {
 			behaviors = {
+				vl_projectile.has_owner_grace_distance,
 				vl_projectile.collides_with_entities,
 				vl_projectile.collides_with_solids,
 			},

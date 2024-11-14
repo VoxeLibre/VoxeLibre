@@ -215,6 +215,13 @@ function mod.burns(self, dtime, entity_def, projectile_def)
 	end
 end
 
+function mod.has_owner_grace_distance(self, dtime, entity_def, projectile_def)
+	local pos = self.object:get_pos()
+
+	self._allow_punch = self._allow_punch or
+		not self._owner or not self._startpos or
+		pos and vector.distance(self._startpos, pos) > ( projectile_def.grace_distance or 1.5 )
+end
 function mod.has_tracer(self, dtime, entity_def, projectile_def)
 	local hide_tracer = projectile_def.hide_tracer
 	if hide_tracer and hide_tracer(self) then return end
@@ -593,10 +600,11 @@ function mod.create(entity_id, options)
 	local luaentity = obj:get_luaentity()
 	if options.owner_id then
 		luaentity._owner = options.owner_id
-	else
+	elseif options.owner then
 		luaentity._owner = mcl_util.get_entity_id(options.owner)
 	end
 	luaentity._starting_velocity = obj:get_velocity()
+	luaentity._startpos = pos
 	luaentity._vl_projectile = {
 		extra = options.extra,
 	}
@@ -606,11 +614,29 @@ function mod.create(entity_id, options)
 end
 
 function mod.register(name, def)
-	assert(def._vl_projectile, "vl_projectile.register() requires definition to define _vl_projectile")
-	assert(def._vl_projectile.behaviors, "vl_projectile.register() requires definition to define _vl_projectile.behaviors")
-	local behaviors = def._vl_projectile.behaviors
+	def_vl_projectile = def._vl_projectile
+	assert(def_vl_projectile, "vl_projectile.register() requires definition to define _vl_projectile")
+	local behaviors = def_vl_projectile.behaviors
+
+	assert(behaviors, "vl_projectile.register() requires definition to define _vl_projectile.behaviors")
 	for i = 1,#behaviors do
 		assert(behaviors[i] and type(behaviors[i]) == "function", "def._vl_projectile.behaviors["..i.." is malformed")
+		if behaviors[i] == vl_projectile.has_owner_grace_distance then
+			local old_allow_punching = def_vl_projectile.allow_punching
+			if old_allow_punching then
+				def_vl_projectile.allow_punching = function(self, ...)
+					if not self._allow_punch then return false end
+
+					return old_allow_punching(self, ...)
+				end
+			else
+				def_vl_projectile.allow_punching = function(self, ...)
+					if not self._allow_punch then return false end
+
+					return true
+				end
+			end
+		end
 	end
 
 	if not def.on_step then

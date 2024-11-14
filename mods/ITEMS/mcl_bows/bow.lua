@@ -65,7 +65,6 @@ function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage,
 	le._source_object = shooter
 	le._damage = damage
 	le._is_critical = is_critical
-	le._startpos = pos
 	le._knockback = knockback
 	le._collectable = collectable
 	le._arrow_item = arrow_item

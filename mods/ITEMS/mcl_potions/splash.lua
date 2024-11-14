@@ -176,6 +176,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
 		_vl_projectile = {
 			behaviors = {
+				vl_projectile.has_owner_grace_distance,
 				vl_projectile.collides_with_entities,
 				vl_projectile.collides_with_solids,
 			},

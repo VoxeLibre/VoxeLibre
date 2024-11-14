@@ -717,6 +717,8 @@ function mcl_util.gen_uuid()
 	return table.concat(u)
 end
 function mcl_util.get_entity_id(entity)
+	if entity.object then entity = entity.object end
+
 	if entity:is_player() then
 		return entity:get_player_name()
 	else
