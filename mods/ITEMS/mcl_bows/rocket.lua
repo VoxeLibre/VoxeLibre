@@ -272,8 +272,8 @@ rocket_entity.on_step = function(self, dtime)
 		return
 	end
 
-	-- Perform normal arrow behaviors
-	arrow_entity.on_step(self, dtime)
+	-- Perform normal projectile behaviors
+	vl_projectile.update_projectile(self, dtime)
 end
 
 vl_projectile.register("mcl_bows:rocket_entity", rocket_entity)
