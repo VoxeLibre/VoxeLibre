@@ -248,7 +248,6 @@ local function make_mesecons(base_name, suffix, base_mesecons)
 		end
 	end
 
-	minetest.log("mesecons for "..base_name..suffix.." is "..dump(mesecons))
 	return mesecons
 end
 
