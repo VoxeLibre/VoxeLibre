@@ -111,12 +111,11 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
 	_lifetime = 10,
 	_is_fireball = true,
+	_vl_projectile = {
+		damage_groups = {fleshy = 6}
+	},
 
 	hit_player = function(self, player)
-		player:punch(self.object, 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 6},
-		}, nil)
 		local p = self.object:get_pos()
 		if p then
 			mcl_mobs.mob_class.boom(self,p, 1, true)
@@ -127,10 +126,6 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 
 	hit_mob = function(self, mob)
 		local name = mob:get_luaentity().name
-		mob:punch(self.object, 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 6},
-		}, nil)
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, true)
 		local ent = mob:get_luaentity()
 		if (not ent or ent.health <= 0) and self._owner and minetest.get_player_by_name(self._owner) and name == "mobs_mc:ghast" then

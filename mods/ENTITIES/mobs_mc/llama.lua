@@ -258,11 +258,10 @@ mcl_mobs.register_arrow("mobs_mc:llamaspit", {
 	visual_size = {x = 0.10, y = 0.10},
 	textures = {"mobs_mc_llama_spit.png"},
 	velocity = 5,
+	_vl_projectile = {
+		damage_groups = {fleshy = 1}
+	},
 	hit_player = function(self, player)
-		player:punch(self.object, 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 1},
-		}, nil)
 	end,
 
 	hit_mob = function(self, mob)

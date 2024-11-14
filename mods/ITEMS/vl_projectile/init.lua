@@ -464,16 +464,12 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 			allow_punching = allow_punching,
 			entity_def = entity_def,
 			object = object,
+			object_id = mcl_util.get_entity_id(object),
 			luaentity = object:get_luaentity(),
 		})..")")
 	end
 
 	if not allow_punching then return end
-	-- Get damage
-	local dmg = projectile_def.damage_groups or 0
-	if type(dmg) == "function" then
-		dmg = dmg(self, entity_def, projectile_def, object)
-	end
 
 	local object_lua = object:get_luaentity()
 
@@ -489,6 +485,12 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	end
 
 	if do_damage then
+		-- Get damage
+		local dmg = projectile_def.damage_groups or 0
+		if type(dmg) == "function" then
+			dmg = dmg(self, entity_def, projectile_def, object)
+		end
+
 		object:punch(self.object, 1.0, projectile_def.tool or { full_punch_interval = 1.0, damage_groups = dmg }, dir )
 
 		-- Guard against crashes when projectiles get destroyed in response to what it punched

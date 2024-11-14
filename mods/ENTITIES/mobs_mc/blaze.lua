@@ -163,22 +163,17 @@ mcl_mobs.register_arrow("mobs_mc:blaze_fireball", {
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 15,
 	_is_fireball = true,
+	_vl_projectile = {
+		damage_groups = {fleshy = 5}
+	},
 
 	-- Direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
 		mcl_burning.set_on_fire(player, 5)
-		player:punch(self.object, 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 5},
-		}, nil)
 	end,
 
 	hit_mob = function(self, mob)
 		mcl_burning.set_on_fire(mob, 5)
-		mob:punch(self.object, 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 5},
-		}, nil)
 	end,
 
 	hit_object = function(self, object)

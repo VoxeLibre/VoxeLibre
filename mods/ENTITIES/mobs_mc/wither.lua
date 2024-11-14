@@ -464,6 +464,9 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 	},
 	velocity = 7,
 	_lifetime = 15,
+	_vl_projectile = {
+		damage_groups = {fleshy = 8},
+	},
 	on_punch = function(self) end,
 	allow_punching = function(self, _, _, object)
 		local le = object and object:get_luaentity()
@@ -474,10 +477,6 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 	hit_player = function(self, player)
 		local pos = vector.new(self.object:get_pos())
 		mcl_potions.give_effect("withering", player, 2, 10)
-		player:punch(self.object, 1.0, {
-			full_punch_interval = 0.5,
-			damage_groups = {fleshy = 8},
-		}, nil)
 		mcl_mobs.mob_class.boom(self, pos, 1)
 		if player:get_hp() <= 0 then
 			local shooter = self._shooter:get_luaentity()
@@ -489,10 +488,6 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 	hit_mob = function(self, mob)
 		local pos = vector.new(self.object:get_pos())
 		mcl_potions.give_effect("withering", mob, 2, 10)
-		mob:punch(self.object, 1.0, {
-			full_punch_interval = 0.5,
-			damage_groups = {fleshy = 8},
-		}, nil)
 		mcl_mobs.mob_class.boom(self, pos, 1)
 		local l = mob:get_luaentity()
 		if l and l.health - 8 <= 0 then

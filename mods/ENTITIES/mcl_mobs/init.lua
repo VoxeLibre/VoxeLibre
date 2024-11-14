@@ -409,7 +409,7 @@ function mcl_mobs.register_arrow(name, def)
 		switch = 0,
 		_lifetime = def._lifetime or 7,
 		owner_id = def.owner_id,
-		_vl_projectile = {
+		_vl_projectile = table.update(def._vl_projectile or {},{
 			behaviors = behaviors,
 			ignore_gravity = true,
 			damages_players = true,
@@ -458,7 +458,7 @@ function mcl_mobs.register_arrow(name, def)
 					return
 				end
 			end
-		},
+		}),
 		on_punch = def.on_punch or function(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
 			local vel = self.object:get_velocity():length()
 			self.object:set_velocity(dir * vel)
