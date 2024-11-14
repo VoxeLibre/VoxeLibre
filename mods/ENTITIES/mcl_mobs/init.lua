@@ -421,7 +421,7 @@ function mcl_mobs.register_arrow(name, def)
 				return true
 			end,
 			on_collide_with_solid = function(self, pos, node, nodedef)
-				if nodedef or not nodedef.walkable then return end
+				if not nodedef or not nodedef.walkable then return end
 
 				self.hit_node(self, pos, node)
 				if self.drop == true then
