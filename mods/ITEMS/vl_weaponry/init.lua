@@ -439,7 +439,27 @@ function SPEAR_ENTITY.on_activate(self, staticdata, dtime_s)
 	self.object:set_armor_groups({ immortal = 1 })
 end
 
-minetest.register_entity("vl_weaponry:spear_entity", SPEAR_ENTITY)
+local spear_entity = table.copy(mcl_bows.arrow_entity)
+table.update(spear_entity,{
+	visual = "item",
+	visual_size = {x=-0.5, y=-0.5},
+	textures = {"vl_weaponry:spear_wood"},
+})
+table.update(spear_entity._vl_projectile,{
+	behaviors = {
+		vl_projectile.sticks,
+		vl_projectile.burns,
+		vl_projectile.has_tracer,
+		vl_projectile.has_owner_grace_distance,
+		vl_projectile.collides_with_solids,
+		vl_projectile.raycast_collides_with_entities,
+	},
+	pitch_offset = math.pi / 4,
+})
+
+vl_projectile.register("vl_weaponry:spear_entity", spear_entity)
+
+--minetest.register_entity("vl_weaponry:spear_entity", SPEAR_ENTITY)
 
 local spear_throw_power = 25
 
@@ -464,10 +484,12 @@ local spear_on_place = function(wear_divisor)
 		pos.y = pos.y + 1.5
 		local dir = user:get_look_dir()
 		local yaw = user:get_look_horizontal()
-		local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, "vl_weaponry:spear_entity")
-		obj:set_velocity({x=dir.x*spear_throw_power, y=dir.y*spear_throw_power, z=dir.z*spear_throw_power})
-		obj:set_acceleration({x=0, y=-GRAVITY, z=0})
-		obj:set_yaw(yaw-math.pi/2)
+		local obj = vl_projectile.create("vl_weaponry:spear_entity",{
+			pos = pos,
+			dir = dir,
+			owner = user,
+			velocity = spear_throw_power,
+		})
 		obj:set_properties({textures = {itemstack:get_name()}})
 		local le = obj:get_luaentity()
 		le._shooter = user
@@ -476,7 +498,7 @@ local spear_on_place = function(wear_divisor)
 		le._is_critical = false
 		le._startpos = pos
 		le._collectable = true
-		le._itemstack = itemstack
+		le._arrow_item = itemstack:get_name()
 		minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
 		if user and user:is_player() then
 			if obj:get_luaentity().player == "" then
