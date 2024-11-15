@@ -46,9 +46,12 @@ function mcl_potions.register_splash(name, descr, color, def)
 			local dir = placer:get_look_dir();
 			local pos = placer:get_pos();
 			minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
-			local obj = minetest.add_entity({x=pos.x+dir.x,y=pos.y+2+dir.y,z=pos.z+dir.z}, id.."_flying")
-			obj:set_velocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
-			obj:set_acceleration({x=dir.x*-3, y=-9.8, z=dir.z*-3})
+			local obj = vl_projectile.create(id.."_flying",{
+				pos = vector.offset(pos, dir.x, dir.y + 1.64, dir.z),
+				owner = placer,
+				dir = dir,
+				velocity = velocity,
+			})
 			local ent = obj:get_luaentity()
 			ent._thrower = placer:get_player_name()
 			ent._potency = item:get_meta():get_int("mcl_potions:potion_potent")
@@ -180,6 +183,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 				vl_projectile.collides_with_entities,
 				vl_projectile.collides_with_solids,
 			},
+			grace_distance = 3.34, -- 1.5 active region + 1.64 height offset + 0.1 safety
 			on_collide_with_solid = function(self, pos, node)
 				splash_effects(self, pos, def, 4)
 
