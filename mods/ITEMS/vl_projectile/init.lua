@@ -53,8 +53,8 @@ function mod.projectile_physics(obj, entity_def, v, a)
 
 	-- Update projectile yaw to match velocity direction
 	if v and le and not le._stuck then
-		local yaw = minetest.dir_to_yaw(v) + YAW_OFFSET
-		local pitch = math.asin(vector.normalize(v).y)
+		local yaw = minetest.dir_to_yaw(v) + YAW_OFFSET + (entity_def._vl_projectile.yaw_offset or 0)
+		local pitch = math.asin(vector.normalize(v).y) + (entity_def._vl_projectile.pitch_offset or 0)
 		obj:set_rotation(vector.new(0,yaw,pitch))
 	end
 end
@@ -301,7 +301,8 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 		obj = objects[i]
 		if obj:is_player() then
 			if self._collectable and not minetest.is_creative_enabled(obj:get_player_name()) then
-				local arrow_item = self._arrow_item
+				local arrow_item = self._itemstring or self._arrow_item
+				minetest.log("Trying to pick up "..tostring(arrow_item))
 				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
 					obj:get_inventory():add_item("main", arrow_item)
 
