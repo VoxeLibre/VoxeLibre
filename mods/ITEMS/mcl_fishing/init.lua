@@ -331,8 +331,7 @@ vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 		on_collide_with_solid = function(self, pos, node)
 			local player = self._owner
 
-			self._remove = true
-			self.object:remove()
+			mcl_util.remove_entity(self)
 
 			-- Make sure the player field is valid for when we create the floating bobber
 			if not player then return end
