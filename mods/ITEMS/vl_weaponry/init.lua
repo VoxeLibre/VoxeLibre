@@ -121,6 +121,13 @@ local uses = {
 	diamond = 1562,
 	netherite = 2031,
 }
+local materials = {
+	wood = "group:wood",
+	stone = "group:cobble",
+	iron = "mcl_core:iron_ingot",
+	gold = "mcl_core:gold_ingot",
+	diamond = "mcl_core:diamond",
+}
 
 local SPEAR_RANGE = 4.5
 
@@ -260,6 +267,18 @@ minetest.register_tool("vl_weaponry:hammer_netherite", {
 		shovely = { speed = 6, level = 6, uses = uses.netherite }
 	},
 })
+local s = "mcl_core:stick"
+local b = ""
+for t,m in pairs(materials) do
+	minetest.register_craft({
+		output = "vl_weaponry:hammer_"..t,
+		recipe = {
+			{ m, b, m },
+			{ m, s, m },
+			{ b, s, b },
+		}
+	})
+end
 
 --Spears
 minetest.register_tool("vl_weaponry:spear_wood", {
