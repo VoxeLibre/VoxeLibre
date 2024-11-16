@@ -18,6 +18,10 @@ table.update(spear_entity,{
 	visual_size = {x=-0.5, y=-0.5},
 	textures = {"vl_weaponry:spear_wood"},
 	_on_remove = function(self)
+		-- Prevent item duplication
+		if self._picked_up then return end
+		self._picked_up = true
+
 		vl_projectile.replace_with_item_drop(self, self.object:get_pos())
 	end,
 })
@@ -29,6 +33,30 @@ table.update(spear_entity._vl_projectile,{
 		vl_projectile.has_owner_grace_distance,
 		vl_projectile.collides_with_solids,
 		vl_projectile.raycast_collides_with_entities,
+
+		-- Drop spears that are sliding
+		function(self, dtime)
+			if not self._last_pos then return end
+
+			local pos = self.object:get_pos()
+			local y_diff = math.abs(self._last_pos.y - pos.y)
+			minetest.log(dump({
+				y_diff = y_diff,
+				flat_time = self._flat_time,
+			}))
+			if y_diff > 0.0001 then
+				self._flat_time = 0
+				return
+			end
+
+			local flat_time = (self._flat_time or 0) + dtime
+			self._flat_time = flat_time
+
+			if flat_time < 0.25 then return end
+
+			mcl_util.remove_entity(self)
+			return true
+		end,
 	},
 	pitch_offset = math.pi / 4,
 })
