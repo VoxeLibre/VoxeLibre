@@ -82,8 +82,7 @@ function mod.update_projectile(self, dtime)
 	self.timer = (self.timer or 0) + dtime
 	local maximum_flight_time = entity_vl_projectile.maximum_time or 300
 	if (self.timer or 0) > maximum_flight_time then
-		self.removed = true
-		self.object:remove()
+		mcl_util.remove_entity(self)
 		return
 	end
 
@@ -155,10 +154,7 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	if self._in_player or self._blocked then return end
 	if not projectile_def.sticks_in_players then return end
 
-	minetest.after(150, function()
-		self._removed = true
-		self.object:remove()
-	end)
+	minetest.after(150, function() mcl_util.remove_entity(self) end)
 
 	-- Handle blocking projectiles
 	if mcl_shields.is_blocking(entity) then
@@ -256,15 +252,14 @@ function mod.replace_with_item_drop(self, pos, projectile_def)
 		item = projectile_def.item
 	end
 
-	if self._collectable and not minetest.is_creative_enabled("") then
+	if item and self._collectable and not minetest.is_creative_enabled("") then
 		local item = minetest.add_item(pos, item)
 		item:set_velocity(vector.zero())
 		item:set_yaw(self.object:get_yaw())
 	end
 
 	mcl_burning.extinguish(self.object)
-	self._removed = true
-	self.object:remove()
+	mcl_util.remove_entity(self)
 end
 
 local function stuck_on_step(self, dtime, entity_def, projectile_def)
@@ -275,8 +270,7 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	self._stucktimer = (self._stucktimer or 0) + dtime
 	if self._stucktimer > STUCK_TIMEOUT then
 		mcl_burning.extinguish(self.object)
-		self._removed = true
-		self.object:remove()
+		mcl_util.remove_entity(self)
 		return true
 	end
 
@@ -314,7 +308,7 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 				end
 			end
 			mcl_burning.extinguish(self.object)
-			self.object:remove()
+			mcl_util.remove_entity(self)
 			return
 		end
 
@@ -441,8 +435,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 		survive_collision = survive_collision(self, entity_def, projectile_def, "node", node, node_def)
 	end
 	if not survive_collision then
-		self._removed = true
-		self.object:remove()
+		mcl_util.remove_entity(self)
 	end
 
 	-- Done with behaviors
@@ -532,8 +525,8 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		survive_collision = survive_collision(self, entity_def, projectile_def, "entity", object)
 	end
 	if not survive_collision then
-		self._removed = true
-		self.object:remove()
+		minetest.log("removing projectile that collided with entity")
+		mcl_util.remove_entity(self)
 	end
 
 	return true
