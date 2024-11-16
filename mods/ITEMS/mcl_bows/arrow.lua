@@ -201,7 +201,7 @@ minetest.register_on_respawnplayer(function(player)
 	for _, obj in pairs(player:get_children()) do
 		local ent = obj:get_luaentity()
 		if ent and ent.name and string.find(ent.name, "mcl_bows:arrow_entity") then
-			mcl_util.remove_entity(self)
+			mcl_util.remove_entity(ent)
 		end
 	end
 end)
