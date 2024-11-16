@@ -82,6 +82,10 @@ local spear_on_place = function(wear_divisor)
 			return itemstack
 		end
 
+		if not minetest.is_creative_enabled(user:get_player_name()) then
+			mcl_util.use_item_durability(itemstack, 1)
+		end
+
 		local pos = user:get_pos()
 		pos.y = pos.y + 1.5
 		local dir = user:get_look_dir()
@@ -100,7 +104,7 @@ local spear_on_place = function(wear_divisor)
 		le._is_critical = false
 		le._startpos = pos
 		le._collectable = true
-		le._arrow_item = itemstack:get_name()
+		le._arrow_item = itemstack:to_string()
 		minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
 		if user and user:is_player() then
 			if obj:get_luaentity().player == "" then
@@ -267,18 +271,6 @@ minetest.register_tool("vl_weaponry:hammer_netherite", {
 		shovely = { speed = 6, level = 6, uses = uses.netherite }
 	},
 })
-local s = "mcl_core:stick"
-local b = ""
-for t,m in pairs(materials) do
-	minetest.register_craft({
-		output = "vl_weaponry:hammer_"..t,
-		recipe = {
-			{ m, b, m },
-			{ m, s, m },
-			{ b, s, b },
-		}
-	})
-end
 
 --Spears
 minetest.register_tool("vl_weaponry:spear_wood", {
@@ -440,3 +432,25 @@ minetest.register_tool("vl_weaponry:spear_netherite", {
 	},
 	_mcl_spear_thrown_damage = 12,
 })
+
+-- Crafting recipes
+local s = "mcl_core:stick"
+local b = ""
+for t,m in pairs(materials) do
+	minetest.register_craft({
+		output = "vl_weaponry:hammer_"..t,
+		recipe = {
+			{ m, b, m },
+			{ m, s, m },
+			{ b, s, b },
+		}
+	})
+	minetest.register_craft({
+		output = "vl_weaponry:spear_"..t,
+		recipe = {
+			{ m, b, b },
+			{ b, s, b },
+			{ b, b, s },
+		}
+	})
+end
