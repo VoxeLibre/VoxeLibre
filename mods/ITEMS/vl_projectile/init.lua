@@ -61,6 +61,8 @@ end
 
 function mod.update_projectile(self, dtime)
 	if self._removed then return end
+	local pos = self.object:get_pos()
+	if not pos then return end
 
 	-- Workaround for randomly occurring velocity change between projectile creation
 	-- and the first time step
@@ -89,7 +91,7 @@ function mod.update_projectile(self, dtime)
 	-- Run behaviors
 	local behaviors = entity_vl_projectile.behaviors or {}
 	for i=1,#behaviors do
-		if behaviors[i](self, dtime, entity_def, entity_vl_projectile) then
+		if behaviors[i](self, dtime, entity_def, entity_vl_projectile) or self._removed then
 			return
 		end
 	end
@@ -97,6 +99,9 @@ function mod.update_projectile(self, dtime)
 	if not self._stuck then
 		mod.projectile_physics(self.object, entity_def)
 	end
+
+	-- Update last position
+	self._last_pos = pos
 end
 
 local function damage_particles(pos, is_critical)
@@ -293,15 +298,19 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	if self._in_player then return true end
 
 	-- Pickup arrow if player is nearby (not in Creative Mode)
+	if not self._collectable or self._removed then return end
+
 	local objects = minetest.get_objects_inside_radius(pos, 1)
 	for i = 1,#objects do
-		obj = objects[i]
+		local obj = objects[i]
 		if obj:is_player() then
 			local player_name = obj:get_player_name()
-			if self._collectable and not minetest.is_creative_enabled(player_name) then
+			if not minetest.is_creative_enabled(player_name) then
 				local arrow_item = self._itemstring or self._arrow_item
 				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
+					minetest.log("inventory add: "..dump(arrow_item))
 					obj:get_inventory():add_item("main", arrow_item)
+					self._picked_up = true
 
 					minetest.sound_play("item_drop_pickup", {
 						pos = pos,
@@ -309,13 +318,12 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 						gain = 1.0,
 					}, true)
 				end
-			end
-			mcl_burning.extinguish(self.object)
-			mcl_util.remove_entity(self)
-			return
-		end
 
-		return true
+				mcl_burning.extinguish(self.object)
+				mcl_util.remove_entity(self)
+				return
+			end
+		end
 	end
 end
 
@@ -332,13 +340,9 @@ end
 
 function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
-	if not pos then return end
 
 	-- Don't try to do anything on first update
-	if not self._last_pos then
-		self._last_pos = pos
-		return
-	end
+	if not self._last_pos then return end
 
 	-- Check if the object can collide with this node
 	local node = minetest.get_node(pos)
