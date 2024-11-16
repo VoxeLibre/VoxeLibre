@@ -289,14 +289,17 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 		end
 	end
 
+	-- Don't allow players to pick up arrows stuck in them or other players
+	if self._in_player then return true end
+
 	-- Pickup arrow if player is nearby (not in Creative Mode)
 	local objects = minetest.get_objects_inside_radius(pos, 1)
 	for i = 1,#objects do
 		obj = objects[i]
 		if obj:is_player() then
-			if self._collectable and not minetest.is_creative_enabled(obj:get_player_name()) then
+			local player_name = obj:get_player_name()
+			if self._collectable and not minetest.is_creative_enabled(player_name) then
 				local arrow_item = self._itemstring or self._arrow_item
-				minetest.log("Trying to pick up "..tostring(arrow_item))
 				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
 					obj:get_inventory():add_item("main", arrow_item)
 
@@ -467,6 +470,9 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 
 	local object_lua = object:get_luaentity()
 
+	-- Normally objects should be removed on collision with entities
+	local survive_collision = projectile_def.survive_collision
+
 	-- Apply damage
 	-- Note: Damage blocking for shields is handled in mcl_shields with an mcl_damage modifier
 	local do_damage = false
@@ -474,6 +480,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		do_damage = true
 
 		handle_player_sticking(self, entity_def, projectile_def, object)
+		survive_collision = true
 	elseif object_lua and (object_lua.is_mob or object_lua._hittable_by_projectile) then
 		do_damage = true
 	end
@@ -519,13 +526,11 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		minetest.sound_play(sound[1], arg2, sound[3])
 	end
 
-	-- Normally objects should be removed on collision with entities
-	local survive_collision = projectile_def.survive_collision
+	-- Remove the projectile if it didn't survive
 	if type(survive_collision) == "function" then
 		survive_collision = survive_collision(self, entity_def, projectile_def, "entity", object)
 	end
 	if not survive_collision then
-		minetest.log("removing projectile that collided with entity")
 		mcl_util.remove_entity(self)
 	end
 
