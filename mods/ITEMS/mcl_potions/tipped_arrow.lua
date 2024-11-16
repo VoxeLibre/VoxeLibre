@@ -81,7 +81,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 		mcl_bows.arrow_entity.on_activate(self, staticdata, dtime_s)
 		self._arrow_item = arrow_item
 	end
-	minetest.register_entity("mcl_potions:"..name.."_arrow_entity", arrow_entity)
+	vl_projectile.register("mcl_potions:"..name.."_arrow_entity", arrow_entity)
 
 	if minetest.get_modpath("mcl_bows") then
 		minetest.register_craft({
