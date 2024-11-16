@@ -138,7 +138,9 @@ local arrow_entity = {
 
 			-- Because arrows are flagged to survive collisions to allow sticking into blocks, manually remove it now that it
 			-- has collided with an entity
-			mcl_util.remove_entity(self)
+			if not is_player then
+				mcl_util.remove_entity(self)
+			end
 		end
 	},
 
