@@ -308,7 +308,6 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 			if not minetest.is_creative_enabled(player_name) then
 				local arrow_item = self._itemstring or self._arrow_item
 				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
-					minetest.log("inventory add: "..dump(arrow_item))
 					obj:get_inventory():add_item("main", arrow_item)
 					self._picked_up = true
 
@@ -457,17 +456,6 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	local allow_punching = projectile_def.allow_punching or true
 	if type(allow_punching) == "function" then
 		allow_punching = allow_punching(self, entity_def, projectile_def, object)
-	end
-
-	if DEBUG then
-		minetest.log("handle_entity_collision("..dump({
-			self = self,
-			allow_punching = allow_punching,
-			entity_def = entity_def,
-			object = object,
-			object_id = mcl_util.get_entity_id(object),
-			luaentity = object:get_luaentity(),
-		})..")")
 	end
 
 	if not allow_punching then return end
