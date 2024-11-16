@@ -201,8 +201,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 					self._death_timer = self._death_timer + self.health - self._health_old
 					if self.health == self._health_old then self._death_timer = self._death_timer + dtime end
 					if self._death_timer > 100 then
-						self._removed = true
-						self.object:remove()
+						mcl_util.remove_entity(self)
 						return false
 					end
 					self._health_old = self.health
