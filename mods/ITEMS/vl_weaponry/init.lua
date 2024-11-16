@@ -18,7 +18,6 @@ table.update(spear_entity,{
 	visual_size = {x=-0.5, y=-0.5},
 	textures = {"vl_weaponry:spear_wood"},
 	_on_remove = function(self)
-		minetest.log('spear._on_remove')
 		vl_projectile.replace_with_item_drop(self, self.object:get_pos())
 	end,
 })
@@ -35,8 +34,6 @@ table.update(spear_entity._vl_projectile,{
 })
 
 vl_projectile.register("vl_weaponry:spear_entity", spear_entity)
-
---minetest.register_entity("vl_weaponry:spear_entity", SPEAR_ENTITY)
 
 local spear_throw_power = 25
 
@@ -113,14 +110,14 @@ minetest.register_tool("vl_weaponry:hammer_wood", {
 		full_punch_interval = 1.2,
 		max_drop_level=1,
 		damage_groups = {fleshy=4},
-		punch_attack_uses = 60,
+		punch_attack_uses = uses.wood,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 1, level = 1, uses = 60 },
-		shovely = { speed = 1, level = 2, uses = 60 }
+		pickaxey = { speed = 1, level = 1, uses = uses.wood },
+		shovely = { speed = 1, level = 2, uses = uses.wood }
 	},
 })
 minetest.register_tool("vl_weaponry:hammer_stone", {
@@ -135,14 +132,14 @@ minetest.register_tool("vl_weaponry:hammer_stone", {
 		full_punch_interval = 1.3,
 		max_drop_level=3,
 		damage_groups = {fleshy=5},
-		punch_attack_uses = 132,
+		punch_attack_uses = uses.stone,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 2, level = 3, uses = 132 },
-		shovely = { speed = 2, level = 3, uses = 132 }
+		pickaxey = { speed = 2, level = 3, uses = uses.stone },
+		shovely = { speed = 2, level = 3, uses = uses.stone }
 	},
 })
 minetest.register_tool("vl_weaponry:hammer_iron", {
@@ -157,14 +154,14 @@ minetest.register_tool("vl_weaponry:hammer_iron", {
 		full_punch_interval = 1.2,
 		max_drop_level=4,
 		damage_groups = {fleshy=6},
-		punch_attack_uses = 251,
+		punch_attack_uses = uses.iron,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 3, level = 4, uses = 251 },
-		shovely = { speed = 3, level = 4, uses = 251 }
+		pickaxey = { speed = 3, level = 4, uses = uses.iron },
+		shovely = { speed = 3, level = 4, uses = uses.iron }
 	},
 })
 minetest.register_tool("vl_weaponry:hammer_gold", {
@@ -179,14 +176,14 @@ minetest.register_tool("vl_weaponry:hammer_gold", {
 		full_punch_interval = 1.0,
 		max_drop_level=2,
 		damage_groups = {fleshy=5},
-		punch_attack_uses = 33,
+		punch_attack_uses = uses.gold,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 8, level = 4, uses = 33 },
-		shovely = { speed = 8, level = 4, uses = 33 }
+		pickaxey = { speed = 8, level = 4, uses = uses.gold },
+		shovely = { speed = 8, level = 4, uses = uses.gold }
 	},
 })
 minetest.register_tool("vl_weaponry:hammer_diamond", {
@@ -201,14 +198,14 @@ minetest.register_tool("vl_weaponry:hammer_diamond", {
 		full_punch_interval = 1.0,
 		max_drop_level=5,
 		damage_groups = {fleshy=7},
-		punch_attack_uses = 1562,
+		punch_attack_uses = uses.diamond,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 4, level = 5, uses = 1562 },
-		pickaxey = { speed = 4, level = 5, uses = 1562 }
+		pickaxey = { speed = 4, level = 5, uses = uses.diamond },
+		pickaxey = { speed = 4, level = 5, uses = uses.diamond }
 	},
 	_mcl_upgradable = true,
 	_mcl_upgrade_item = "vl_weaponry:hammer_netherite"
@@ -225,14 +222,14 @@ minetest.register_tool("vl_weaponry:hammer_netherite", {
 		full_punch_interval = 1.0,
 		max_drop_level=5,
 		damage_groups = {fleshy=9},
-		punch_attack_uses = 2031,
+		punch_attack_uses = uses.netherite,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 6, level = 6, uses = 2031 },
-		shovely = { speed = 6, level = 6, uses = 2031 }
+		pickaxey = { speed = 6, level = 6, uses = uses.netherite },
+		shovely = { speed = 6, level = 6, uses = uses.netherite }
 	},
 })
 
@@ -253,14 +250,14 @@ minetest.register_tool("vl_weaponry:spear_wood", {
 		full_punch_interval = 0.75,
 		max_drop_level=1,
 		damage_groups = {fleshy=3},
-		punch_attack_uses = 60,
+		punch_attack_uses = uses.wood,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:wood",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = 60 },
-		swordy_cobweb = { speed = 2, level = 1, uses = 60 }
+		swordy = { speed = 2, level = 1, uses = uses.wood },
+		swordy_cobweb = { speed = 2, level = 1, uses = uses.wood }
 	},
 	_mcl_spear_thrown_damage = 5,
 })
@@ -279,14 +276,14 @@ minetest.register_tool("vl_weaponry:spear_stone", {
 		full_punch_interval = 0.75,
 		max_drop_level=3,
 		damage_groups = {fleshy=4},
-		punch_attack_uses = 132,
+		punch_attack_uses = uses.stone,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = 132 },
-		swordy_cobweb = { speed = 2, level = 1, uses = 132 }
+		swordy = { speed = 2, level = 1, uses = uses.stone },
+		swordy_cobweb = { speed = 2, level = 1, uses = uses.stone }
 	},
 	_mcl_spear_thrown_damage = 6,
 })
@@ -305,14 +302,14 @@ minetest.register_tool("vl_weaponry:spear_iron", {
 		full_punch_interval = 0.75,
 		max_drop_level=4,
 		damage_groups = {fleshy=5},
-		punch_attack_uses = 251,
+		punch_attack_uses = uses.iron,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:iron_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = 251 },
-		swordy_cobweb = { speed = 2, level = 1, uses = 251 }
+		swordy = { speed = 2, level = 1, uses = uses.iron },
+		swordy_cobweb = { speed = 2, level = 1, uses = uses.iron }
 	},
 	_mcl_spear_thrown_damage = 7,
 })
@@ -331,14 +328,14 @@ minetest.register_tool("vl_weaponry:spear_gold", {
 		full_punch_interval = 0.75,
 		max_drop_level=2,
 		damage_groups = {fleshy=3},
-		punch_attack_uses = 33,
+		punch_attack_uses = uses.gold,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:gold_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = 33 },
-		swordy_cobweb = { speed = 2, level = 1, uses = 33 }
+		swordy = { speed = 2, level = 1, uses = uses.gold },
+		swordy_cobweb = { speed = 2, level = 1, uses = uses.gold }
 	},
 	_mcl_spear_thrown_damage = 5,
 })
@@ -357,14 +354,14 @@ minetest.register_tool("vl_weaponry:spear_diamond", {
 		full_punch_interval = 0.75,
 		max_drop_level=5,
 		damage_groups = {fleshy=6},
-		punch_attack_uses = 1562,
+		punch_attack_uses = uses.diamond,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_core:diamond",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = 1562 },
-		swordy_cobweb = { speed = 2, level = 1, uses = 1562 }
+		swordy = { speed = 2, level = 1, uses = uses.diamond },
+		swordy_cobweb = { speed = 2, level = 1, uses = uses.diamond }
 	},
 	_mcl_spear_thrown_damage = 8,
 	_mcl_upgradable = true,
@@ -385,14 +382,14 @@ minetest.register_tool("vl_weaponry:spear_netherite", {
 		full_punch_interval = 0.75,
 		max_drop_level=5,
 		damage_groups = {fleshy=8},
-		punch_attack_uses = 2031,
+		punch_attack_uses = uses.netherite,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "mcl_nether:netherite_ingot",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = 2031 },
-		swordy_cobweb = { speed = 2, level = 1, uses = 2031 }
+		swordy = { speed = 2, level = 1, uses = uses.netherite },
+		swordy_cobweb = { speed = 2, level = 1, uses = uses.netherite }
 	},
 	_mcl_spear_thrown_damage = 12,
 })
