@@ -731,3 +731,12 @@ function mcl_util.get_entity_id(entity)
 		return id
 	end
 end
+function mcl_util.remove_entity(luaentity)
+	if luaentity._removed then return end
+	luaentity._removed = true
+
+	local hook = luaentity._on_remove
+	if hook then hook(luaentity) end
+
+	luaentity.object:remove()
+end

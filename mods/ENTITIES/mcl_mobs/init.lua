@@ -431,14 +431,12 @@ function mcl_mobs.register_arrow(name, def)
 					minetest.add_item(self.lastpos, self.object:get_luaentity().name)
 				end
 
-				self._removed = true
-				self.object:remove();
+				mcl_util.remove_entity(self)
 			end,
 			on_collide_with_entity = function(self, pos, object)
 				if self.hit_player and object:is_player() then
 					self.hit_player(self, object)
-					self._removed = true
-					self.object:remove()
+					mcl_util.remove_entity(self)
 					return
 				end
 
@@ -448,13 +446,11 @@ function mcl_mobs.register_arrow(name, def)
 
 				if self.hit_mob and entity.is_mob == true then
 					self.hit_mob(self, object)
-					self._removed = true
-					self.object:remove()
+					mcl_util.remove_entity(self)
 					return
 				elseif self.hit_object then
 					self.hit_object(self, object)
-					self._removed = true
-					self.object:remove()
+					mcl_util.remove_entity(self)
 					return
 				end
 			end
@@ -478,8 +474,7 @@ function mcl_mobs.register_arrow(name, def)
 
 			if self.switch == 0 or self.timer > self._lifetime or not within_limits(pos, 0) then
 				mcl_burning.extinguish(self.object)
-				self._removed = true
-				self.object:remove();
+				mcl_util.remove_entity(self)
 				return
 			end
 

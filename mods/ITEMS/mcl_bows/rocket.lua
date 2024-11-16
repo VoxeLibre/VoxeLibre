@@ -241,7 +241,7 @@ minetest.register_craftitem("mcl_bows:rocket", {
 			local eploded_particle = particle_explosion(pos)
 			damage_explosion(self, eploded_particle * 17, pos)
 			mcl_burning.extinguish(self.object)
-			self.object:remove()
+			mcl_util.remove_entity(self)
 		end
 	end,
 })
@@ -268,7 +268,7 @@ rocket_entity.on_step = function(self, dtime)
 		local eploded_particle = particle_explosion(self)
 		damage_explosion(self, eploded_particle * 17)
 		mcl_burning.extinguish(self.object)
-		self.object:remove()
+		mcl_util.remove_entity(self)
 		return
 	end
 

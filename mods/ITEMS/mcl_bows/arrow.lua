@@ -138,8 +138,7 @@ local arrow_entity = {
 
 			-- Because arrows are flagged to survive collisions to allow sticking into blocks, manually remove it now that it
 			-- has collided with an entity
-			self._removed = true
-			self.object:remove()
+			mcl_util.remove_entity(self)
 		end
 	},
 
@@ -186,8 +185,7 @@ local arrow_entity = {
 		end
 
 		if data.stuckin_player then
-			self._removed = true
-			self.object:remove()
+			mcl_util.remove_entity(self)
 		end
 	end,
 }
@@ -201,7 +199,7 @@ minetest.register_on_respawnplayer(function(player)
 	for _, obj in pairs(player:get_children()) do
 		local ent = obj:get_luaentity()
 		if ent and ent.name and string.find(ent.name, "mcl_bows:arrow_entity") then
-			obj:remove()
+			mcl_util.remove_entity(self)
 		end
 	end
 end)
