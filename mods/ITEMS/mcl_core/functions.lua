@@ -1000,9 +1000,12 @@ end
 ---------------------
 -- Vine generating --
 ---------------------
-local do_vines_spread = vl_tuning.setting("gamerule:doVinesSpread", "bool", {
+local do_vines_spread = true
+vl_tuning.setting("gamerule:doVinesSpread", "bool", {
 	description = S("Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected."),
 	default = true,
+	set = function(val) do_vines_spread = val end,
+	get = function() return do_vines_spread end,
 })
 minetest.register_abm({
 	label = "Vine growth",
@@ -1010,10 +1013,9 @@ minetest.register_abm({
 	interval = 47,
 	chance = 4,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		-- First of all, check if we are even supported, otherwise, decay.
-		if not do_vines_spread[1] then return end
+		if not do_vines_spread then return end
 
-		-- First of all, check if we are even supported, otherwise, let's die!
+		-- First of all, check if we are even supported, otherwise, decay.
 		if not mcl_core.check_vines_supported(pos, node) then
 			minetest.remove_node(pos)
 			vinedecay_particles(pos, node)
