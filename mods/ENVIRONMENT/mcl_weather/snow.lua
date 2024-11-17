@@ -7,9 +7,12 @@ mcl_weather.snow = {}
 local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 100
 mcl_weather.snow.init_done = false
 local mgname = minetest.get_mapgen_setting("mg_name")
-local gamerule_snowAccumulationHeight = vl_tuning.setting("gamerule:snowAccumulationHeight", "number", {
+local gamerule_snowAccumulationHeight = 1
+vl_tuning.setting("gamerule:snowAccumulationHeight", "number", {
 	description = S("The maximum number of snow layers that can be accumulated on each block"),
-	default = 1, min = 0, max = 8
+	default = 1, min = 0, max = 8,
+	set = function(val) gamerule_snowAccumulationHeight = val end,
+	get = function() return gamerule_snowAccumulationHeight end,
 })
 
 local snow_biomes = {
@@ -169,7 +172,7 @@ minetest.register_abm({
 			if node.name:find("snow") then
 				local l = node.name:sub(-1)
 				l = tonumber(l)
-				if l < gamerule_snowAccumulationHeight[1] then
+				if l < gamerule_snowAccumulationHeight then
 					if node.name == "mcl_core:snow" then
 						nn={name = "mcl_core:snow_2"}
 					elseif l and l < 7 then

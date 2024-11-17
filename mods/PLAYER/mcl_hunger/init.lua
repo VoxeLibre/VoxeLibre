@@ -2,11 +2,17 @@ local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
 local S = core.get_translator(modname)
 
-local max_tick_timer = vl_tuning.setting("health_regen_delay", "number", {
+local max_tick_timer
+vl_tuning.setting("health_regen_delay", "number", {
 	default = tonumber(minetest.settings:get("mcl_health_regen_delay")) or 0.5,
+	set = function(val) max_tick_timer = val end,
+	get = function() return max_tick_timer end,
 })
-local natural_regeneration = vl_tuning.setting("gamerule:naturalRegeneration", "bool", {
+local natural_regeneration = true
+vl_tuning.setting("gamerule:naturalRegeneration", "bool", {
 	default = true,
+	set = function(val) natural_regeneration = val end,
+	get = function() return natural_regeneration end,
 })
 
 mcl_hunger = {}
@@ -334,7 +340,6 @@ local function tick_hunger(player, dtime)
 		elseif food_level == 0 then
 			-- the amount of health at which a player will stop to get harmed by starvation
 			local maximum_starvation = 1
-
 			-- TODO: implement Minecraft-like difficulty modes and the update maximumStarvation here
 			if player_health > maximum_starvation then
 				mcl_util.deal_damage(player, 1, { type = "starve" })

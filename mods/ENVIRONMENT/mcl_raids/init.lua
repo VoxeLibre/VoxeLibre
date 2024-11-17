@@ -2,8 +2,11 @@
 mcl_raids = {}
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local gamerule_disableRaids = vl_tuning.setting("gamerule:disableRaids", "bool", {
+local gamerule_disableRaids = false
+vl_tuning.setting("gamerule:disableRaids", "bool", {
 	description = S("Whether raids are disabled"), default = false,
+	set = function(val) gamerule_disableRaids = val end,
+	get = function() return gamerule_disableRaids end,
 })
 
 -- Define the amount of illagers to spawn each wave.
@@ -295,7 +298,7 @@ mcl_events.register_event("raid",{
 	exclusive_to_area = 128,
 	enable_bossbar = true,
 	cond_start  = function(self)
-		if gamerule_disableRaids[1] then return false end
+		if gamerule_disableRaids then return false end
 
 		--minetest.log("Cond start raid")
 		local r = {}
