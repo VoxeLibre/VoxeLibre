@@ -148,7 +148,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 		local node = minetest.get_node(dpos)
 
 		if self._stuck then
-			self._stucktimer = self._stucktimer + dtime
+			self._stucktimer = self._stucktimer or 0 + dtime
 			self._stuckrechecktimer = self._stuckrechecktimer + dtime
 			if self._stucktimer > ARROW_TIMEOUT then
 				self.object:remove()
