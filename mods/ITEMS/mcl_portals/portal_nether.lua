@@ -87,11 +87,17 @@ local PLAYER_COOLOFF, MOB_COOLOFF	= 3, 14 -- for this many seconds they won't te
 local TOUCH_CHATTER_TIME		= 1 -- prevent multiple teleportation attempts caused by multiple portal touches, for this number of seconds
 local CHATTER_US			= TOUCH_CHATTER_TIME * 1000000
 
-local nether_portal_creative_delay = vl_tuning.setting("gamerule:playersNetherPortalCreativeDelay", "number", {
+local nether_portal_creative_delay = 0
+vl_tuning.setting("gamerule:playersNetherPortalCreativeDelay", "number", {
 	default = 0,
+	set = function(val) nether_portal_creative_delay = val end,
+	get = function() return nether_portal_creative_delay end,
 })
-local nether_portal_survival_delay = vl_tuning.setting("gamerule:playersNetherPortalDefaultDelay", "number", {
+local nether_portal_survival_delay = 4
+vl_tuning.setting("gamerule:playersNetherPortalDefaultDelay", "number", {
 	default = 4,
+	set = function(val) nether_portal_survival_delay = val end,
+	get = function() return nether_portal_survive_delay end,
 })
 
 -- Speeds up the search by allowing some non-air nodes to be replaced when
@@ -1419,9 +1425,9 @@ local function teleport(obj, portal_pos)
 
 	if cooloff[obj] then return end
 
-	local delay = math.max(0, nether_portal_survival_delay[1] - 1)
+	local delay = math.max(0, nether_portal_survival_delay - 1)
 	if minetest.is_creative_enabled(name) then
-		delay = math.max(0, nether_portal_creative_delay[1] - 1)
+		delay = math.max(0, nether_portal_creative_delay - 1)
 	end
 
 	if delay == 0 then
