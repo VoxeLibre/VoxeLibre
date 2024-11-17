@@ -4,13 +4,19 @@ local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local validate_vector = mcl_util.validate_vector
 
-local gamerule_maxEntityCramming = vl_tuning.setting("gamerule:maxEntityCramming", "number", {
+local gamerule_maxEntityCramming = 24
+vl_tuning.setting("gamerule:maxEntityCramming", "number", {
 	description = S("The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second."),
 	default = 24,
+	set = function(val) gamerule_maxEntityCramming = val end,
+	get = function() return gamerule_maxEntityCramming end,
 })
-local gamerule_doMobLoot = vl_tuning.setting("gamerule:doMobLoot", "bool", {
+local gamerule_doMobLoot
+vl_tuning.setting("gamerule:doMobLoot", "bool", {
 	description = S("Whether mobs should drop items and experience orbs."),
 	default = true,
+	set = function(val) gamerule_doMobLoot = val end,
+	get = function() return gamerule_doMobLoot end,
 })
 
 local CRAMMING_DAMAGE = 3
@@ -369,7 +375,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		-- TODO other env damage shouldn't drop xp
 		-- "rain", "water", "drowning", "suffocation"
 
-		if not gamerule_doMobLoot[1] then return end
+		if not gamerule_doMobLoot then return end
 
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
@@ -791,7 +797,7 @@ function mob_class:check_entity_cramming()
 		local l = o:get_luaentity()
 		if l and l.is_mob and l.health > 0 then table.insert(mobs,l) end
 	end
-	local clear = #mobs < gamerule_maxEntityCramming[1]
+	local clear = #mobs < gamerule_maxEntityCramming
 	local ncram = {}
 	for _,l in pairs(mobs) do
 		if l then
@@ -805,7 +811,7 @@ function mob_class:check_entity_cramming()
 		end
 	end
 	for i,l in pairs(ncram) do
-		if i > gamerule_maxEntityCramming[1] then
+		if i > gamerule_maxEntityCramming then
 			l.cram = true
 		else
 			l.cram = nil
