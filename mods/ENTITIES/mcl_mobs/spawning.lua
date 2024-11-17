@@ -3,8 +3,11 @@ local math, vector, core, mcl_mobs = math, vector, core, mcl_mobs
 local S = core.get_translator("mcl_mobs")
 local mob_class = mcl_mobs.mob_class
 
-local gamerule_doMobSpawning = vl_tuning.setting("gamerule:doMobSpawning", "bool", {
-	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."), default = true
+local gamerule_doMobSpawning = true
+vl_tuning.setting("gamerule:doMobSpawning", "bool", {
+	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."), default = true,
+	set = function(val) gamerule_doMobSpawning = val end,
+	get = function() return gamerule_doMobSpawning end,
 })
 
 local modern_lighting = core.settings:get_bool("mcl_mobs_modern_lighting", true)

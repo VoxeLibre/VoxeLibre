@@ -3,11 +3,17 @@ local modpath = minetest.get_modpath(modname)
 
 local S = minetest.get_translator(modname)
 
-local max_tick_timer = vl_tuning.setting("health_regen_delay", "number", {
+local max_tick_timer
+vl_tuning.setting("health_regen_delay", "number", {
 	default = tonumber(minetest.settings:get("mcl_health_regen_delay")) or 0.5,
+	set = function(val) max_tick_timer = val end,
+	get = function() return max_tick_timer end,
 })
-local natural_regeneration = vl_tuning.setting("gamerule:naturalRegeneration", "bool", {
+local natural_regeneration = true
+vl_tuning.setting("gamerule:naturalRegeneration", "bool", {
 	default = true,
+	set = function(val) natural_regeneration = val end,
+	get = function() return natural_regeneration end,
 })
 
 mcl_hunger = {}
@@ -259,7 +265,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			if food_level >= 18 then -- slow regeneration
-				if natural_regeneration[1] and player_health > 0 and player_health < player:get_properties().hp_max then
+				if natural_regeneration and player_health > 0 and player_health < player:get_properties().hp_max then
 					player:set_hp(player_health+1)
 					mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
 					mcl_hunger.update_exhaustion_hud(player)
@@ -275,8 +281,8 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
-		elseif food_tick_timer > max_tick_timer[1] and food_level == 20 and food_saturation_level > 0 then -- fast regeneration
-			if natural_regeneration[1] and player_health > 0 and player_health < player:get_properties().hp_max then
+		elseif food_tick_timer > max_tick_timer and food_level == 20 and food_saturation_level > 0 then -- fast regeneration
+			if natural_regeneration and player_health > 0 and player_health < player:get_properties().hp_max then
 				food_tick_timer = 0
 				player:set_hp(player_health+1)
 				mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
