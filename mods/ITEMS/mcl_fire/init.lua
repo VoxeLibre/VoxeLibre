@@ -7,8 +7,11 @@ local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
 local has_mcl_portals = minetest.get_modpath("mcl_portals")
-local gamerule_doFireTick = vl_tuning.setting("gamerule:doFireTick", "bool", {
-	description = S("Whether fire should spread and naturally extinguish"), default = true
+local gamerule_doFireTick = true
+vl_tuning.setting("gamerule:doFireTick", "bool", {
+	description = S("Whether fire should spread and naturally extinguish"), default = true,
+	set = function(val) gamerule_doFireTick = val end,
+	get = function() return gamerule_doFireTick end,
 })
 
 local set_node = minetest.set_node
@@ -369,7 +372,7 @@ else -- Fire enabled
 		chance = 12,
 		catch_up = false,
 		action = function(pos)
-			if not gamerule_doFireTick[1] then return end
+			if not gamerule_doFireTick then return end
 
 			local p = get_ignitable(pos)
 			if p then
@@ -388,7 +391,7 @@ else -- Fire enabled
 		chance = 9,
 		catch_up = false,
 		action = function(pos)
-			if not gamerule_doFireTick[1] then return end
+			if not gamerule_doFireTick then return end
 
 			local p=get_ignitable_by_lava(pos)
 			if p then
@@ -404,7 +407,7 @@ else -- Fire enabled
 		chance = 3,
 		catch_up = false,
 		action = function(pos)
-			if not gamerule_doFireTick[1] then return end
+			if not gamerule_doFireTick then return end
 
 			local p=has_flammable(pos)
 			if p then
@@ -427,7 +430,7 @@ else -- Fire enabled
 		chance = 18,
 		catch_up = false,
 		action = function(pos)
-			if not gamerule_doFireTick[1] then return end
+			if not gamerule_doFireTick then return end
 
 			local p = has_flammable(pos)
 			if not p then

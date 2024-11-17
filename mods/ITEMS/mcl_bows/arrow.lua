@@ -126,7 +126,7 @@ function ARROW_ENTITY.on_step(self, dtime)
 	local node = minetest.get_node(dpos)
 
 	if self._stuck then
-		self._stucktimer = self._stucktimer + dtime
+		self._stucktimer = self._stucktimer or 0 + dtime
 		self._stuckrechecktimer = self._stuckrechecktimer + dtime
 		if self._stucktimer > ARROW_TIMEOUT then
 			mcl_burning.extinguish(self.object)

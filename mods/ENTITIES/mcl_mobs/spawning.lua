@@ -3,8 +3,11 @@ local S = minetest.get_translator("mcl_mobs")
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local gamerule_doMobSpawning = vl_tuning.setting("gamerule:doMobSpawning", "bool", {
-	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."), default = true
+local gamerule_doMobSpawning = true
+vl_tuning.setting("gamerule:doMobSpawning", "bool", {
+	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."), default = true,
+	set = function(val) gamerule_doMobSpawning = val end,
+	get = function() return gamerule_doMobSpawning end,
 })
 
 local modern_lighting = minetest.settings:get_bool("mcl_mobs_modern_lighting", true)
@@ -1013,7 +1016,7 @@ if mobs_spawn then
 
 	local timer = 0
 	minetest.register_globalstep(function(dtime)
-		if not gamerule_doMobSpawning[1] then return end
+		if not gamerule_doMobSpawning then return end
 
 		timer = timer + dtime
 		if timer < WAIT_FOR_SPAWN_ATTEMPT then return end
