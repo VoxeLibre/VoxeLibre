@@ -2,8 +2,11 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local math = math
 
-local gamerule_doWeatherCycle = vl_tuning.setting("gamerule:doWeatherCycle", "bool", {
-	description = S("Whether the weather can change naturally. The /weather command can still change weather."), default = true
+local gamerule_doWeatherCycle = true
+vl_tuning.setting("gamerule:doWeatherCycle", "bool", {
+	description = S("Whether the weather can change naturally. The /weather command can still change weather."), default = true,
+	set = function(val) gamerule_doWeatherCycle = val end,
+	get = function() return gamerule_doWeatherCycle end,
 })
 
 -- weather states, 'none' is default, other states depends from active mods
@@ -130,7 +133,7 @@ end
 local t, wci = 0, mcl_weather.check_interval
 
 minetest.register_globalstep(function(dtime)
-	if not gamerule_doWeatherCycle[1] then return end
+	if not gamerule_doWeatherCycle then return end
 
 	t = t + dtime
 	if t < wci then return end
