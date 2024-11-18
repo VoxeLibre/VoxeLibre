@@ -333,7 +333,8 @@ function mod.sticks(self, dtime, entity_def, projectile_def)
 
 	-- Stuck handling
 	if self._stuck then
-		return stuck_on_step(self, dtime, entity_def, projectile_def)
+		stuck_on_step(self, dtime, entity_def, projectile_def)
+		return true
 	end
 end
 
