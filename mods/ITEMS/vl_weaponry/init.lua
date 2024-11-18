@@ -40,10 +40,6 @@ table.update(spear_entity._vl_projectile,{
 
 			local pos = self.object:get_pos()
 			local y_diff = math.abs(self._last_pos.y - pos.y)
-			minetest.log(dump({
-				y_diff = y_diff,
-				flat_time = self._flat_time,
-			}))
 			if y_diff > 0.0001 then
 				self._flat_time = 0
 				return
