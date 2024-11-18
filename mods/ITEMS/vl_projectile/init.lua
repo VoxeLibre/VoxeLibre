@@ -317,11 +317,11 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 						gain = 1.0,
 					}, true)
 				end
-
-				mcl_burning.extinguish(self.object)
-				mcl_util.remove_entity(self)
-				return
 			end
+
+			mcl_burning.extinguish(self.object)
+			mcl_util.remove_entity(self)
+			return true
 		end
 	end
 end
