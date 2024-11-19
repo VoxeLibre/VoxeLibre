@@ -252,7 +252,7 @@ local zombified_piglin = {
 	damage = 9,
 	reach = 2,
 	head_swivel = "head.control",
-	head_bone_position = vector.new( 0, 2.4, 0 ), -- for minetest <= 5.8
+	head_bone_position = vector.new( 0, 2.417, 0 ), -- for minetest <= 5.8
 	head_eye_height = 1.4,
 	curiosity = 15,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3}, -- same

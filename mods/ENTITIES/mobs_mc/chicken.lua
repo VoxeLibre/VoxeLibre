@@ -22,7 +22,7 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 	floats = 1,
 	head_swivel = "head.control",
 	head_eye_height = 0.5,
-	head_bone_position = vector.new(0, 4, -.3), -- for minetest <= 5.8
+	head_bone_position = vector.new(0, 3.72, -.472), -- for minetest <= 5.8
 	curiosity = 10,
 	head_yaw="z",
 	visual_size = {x=1,y=1},

@@ -399,7 +399,7 @@ function mob_class:check_head_swivel(dtime)
 	end
 
 	-- 0.02 is about 1.14 degrees tolerance, to update less often
-	if math.abs(oldr.x-newr.x) + math.abs(oldr.y-newr.y) + math.abs(oldr.z-newr.z) < 0.02 and vector.equals(oldp, vector.zero()) then return end
+	if math.abs(oldr.x-newr.x) + math.abs(oldr.y-newr.y) + math.abs(oldr.z-newr.z) < 0.02 then return end
 
 	if self.object.get_bone_override then -- minetest >= 5.9
 		self.object:set_bone_override(self.head_swivel, {

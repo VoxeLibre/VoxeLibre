@@ -32,7 +32,7 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 	mesh = "mobs_mc_blaze.b3d",
 	head_swivel = "head.control",
 	head_eye_height = 1.4,
-	head_bone_position = vector.new( 0, 4, 0 ), -- for minetest <= 5.8
+	head_bone_position = vector.new( 0, 3.9, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	head_pitch_multiplier=-1,
 	textures = {

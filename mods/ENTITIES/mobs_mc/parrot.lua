@@ -136,7 +136,7 @@ mcl_mobs.register_mob("mobs_mc:parrot", {
 	xp_min = 1,
 	xp_max = 3,
 	head_swivel = "head.control",
-	head_bone_position = vector.new( 0, 1.1, 0 ), -- for minetest <= 5.8
+	head_bone_position = vector.new( 0, 1.211, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.89, 0.25},
 	visual = "mesh",
@@ -165,8 +165,8 @@ mcl_mobs.register_mob("mobs_mc:parrot", {
 		fly_speed = 50,
 		stand_start = 0,
 		stand_end = 0,
-		fly_start = 30,
-		fly_end = 45,
+		fly_start = 60,
+		fly_end = 120,
 		walk_start = 0,
 		walk_end = 20,
 		-- TODO: actual walk animation

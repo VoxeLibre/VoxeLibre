@@ -701,7 +701,19 @@ function mcl_mobs.spawn(pos,id)
 	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
 	if not has_room(def, pos) then return false end
-	return minetest.add_entity(pos, def.name)
+	local obj = minetest.add_entity(pos, def.name)
+	-- initialize head bone
+	if def.head_swivel and def.head_bone_position then
+		if obj and obj.get_bone_override then -- minetest >= 5.9
+			obj:set_bone_override(def.head_swivel, {
+				position = { vec = def.head_bone_position, absolute = true },
+				rotation = { vec = vector.zero(), absolute = true }
+			})
+		else -- minetest < 5.9
+			self.object:set_bone_position(def.head_swivel, def.head_bone_position, vector.zero)
+		end
+	end
+	return obj
 end
 
 local function spawn_group(p,mob,spawn_on,amount_to_spawn)

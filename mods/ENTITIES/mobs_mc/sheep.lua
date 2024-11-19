@@ -66,7 +66,7 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
 	head_swivel = "head.control",
 	head_eye_height = 1.0,
-	head_bone_position = vector.new( 0, 3.3, -.7 ), -- for minetest <= 5.8
+	head_bone_position = vector.new( 0, 3.7, -.9 ), -- for minetest <= 5.8
 	curiosity = 6,
 	head_yaw="z",
 	visual = "mesh",

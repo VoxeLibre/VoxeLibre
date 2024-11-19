@@ -62,7 +62,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 	head_swivel = "head.control",
 	head_eye_height = 1.5,
 	head_yaw = "z",
-	head_bone_position = vector.new( 0, 11, 0 ), -- for minetest <= 5.8
+	head_bone_position = vector.new( 0, 10.62, 0 ), -- for minetest <= 5.8
 	curiosity = 60,
 
 	hp_min = 15,

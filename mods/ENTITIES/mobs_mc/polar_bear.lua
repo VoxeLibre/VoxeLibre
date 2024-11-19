@@ -26,7 +26,7 @@ mcl_mobs.register_mob("mobs_mc:polar_bear", {
 	},
 	head_swivel = "head.control",
 	head_eye_height = 1,
-	head_bone_position = vector.new( 0, 2.6, 0 ), -- for minetest <= 5.8
+	head_bone_position = vector.new( 0, 2.396, 0 ), -- for minetest <= 5.8
 	curiosity = 20,
 	head_yaw="z",
 	visual_size = {x=3.0, y=3.0},
