@@ -50,26 +50,33 @@ local function has_flammable(pos)
 		end
 	end
 end
-local all_adjacents = {}
-for x = 0,1 do
-	for y = 0,1 do
-		for z = 0,1 do
-			all_adjacents[#all_adjacents+1] = vector.new(x*2-1, y*2-1, z*2-1)
-		end
-	end
+
+local function min_neighbor_fire_age(lowest, pos)
+	local node = get_node_or_nil(pos)
+	if not node then return lowest end
+	if get_item_group(node.name, "fire") == 0 then return lowest end
+	if not lowest or lowest > node.param2 then return node.param2 end
+	return lowest
 end
 
 local function get_adjacent_fire_age(pos)
 	local lowest_age = nil
-	for k,v in pairs(all_adjacents) do
-		local p = vector.add(pos, v)
-		local node = get_node_or_nil(p)
-		if node and get_item_group(node.name, "fire") ~= 0 then
-			if not lowest_age or node.param2 < lowest_age then
-				lowest_age = node.param2
-			end
-		end
-	end
+	-- Unrolled loop to find minimum age (param2) among adjacent fire nodes
+	pos.x = pos.x - 1
+	lowest_age = min_neighbor_fire_age(lowest_age, pos)
+	pos.x = pos.x + 2
+	lowest_age = min_neighbor_fire_age(lowest_age, pos)
+	pos.x = pos.x - 1
+	pos.y = pos.y - 1
+	lowest_age = min_neighbor_fire_age(lowest_age, pos)
+	pos.y = pos.y + 2
+	lowest_age = min_neighbor_fire_age(lowest_age, pos)
+	pos.y = pos.y - 1
+	pos.z = pos.z - 1
+	lowest_age = min_neighbor_fire_age(lowest_age, pos)
+	pos.z = pos.z + 2
+	lowest_age = min_neighbor_fire_age(lowest_age, pos)
+	pos.z = pos.z - 1
 	return lowest_age
 end
 
@@ -142,7 +149,7 @@ local function spawn_fire(pos, age, force)
 		probability_age = probability_age * 0.80
 	end
 	local probability = math.pow(10,K1 * probability_age)
-	if not force and math.random(65536)/65536 >= probability then
+	if not force and math.random() >= probability then
 		return
 	end
 
@@ -443,7 +450,7 @@ else -- Fire enabled
 			if node.name ~= "mcl_fire:eternal_fire" then
 				-- Randomly extinguish fires with increasing probability the older they are
 				local extinguish_probability = math.pow(10,K2 * age + C2)
-				if math.random(65536)/65536 <= extinguish_probability then
+				if math.random() <= extinguish_probability then
 					node.name = "air"
 					node.param2 = 0
 
@@ -487,10 +494,8 @@ else -- Fire enabled
 				return
 			end
 
-			local node = get_node(p)
-			local node_name = node.name
-			local def = minetest.registered_nodes[node_name]
-			local fgroup = minetest.get_item_group(node_name, "flammable")
+			local def = minetest.registered_nodes[get_node(p).name]
+			local fgroup = def and def.groups.flammable or 0
 
 			if def and def._on_burn then
 				def._on_burn(p)
@@ -530,9 +535,9 @@ function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 		return
 	end
 
-	local n_pointed = get_node(pointed_thing.under)
-	if allow_on_fire == false and get_item_group(n_pointed.name, "fire") ~= 0 then
-		return
+	if allow_on_fire == false then
+		local n_pointed = get_node(pointed_thing.under)
+		if get_item_group(n_pointed.name, "fire") ~= 0 then return end
 	end
 
 	local n_fire_pos = get_node(pointed_thing.above)
