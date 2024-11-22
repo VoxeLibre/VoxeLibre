@@ -1,0 +1,1 @@
+`misc_helpers.lua` was copied from [Luanti 5.10.0](https://github.com/minetest/minetest/blob/568f7a8e8fb457c7b7bcfd3211c7f3f0481ed2e7/builtin/common/misc_helpers.lua), available under the GNU Lesser Public License (see https://github.com/minetest/minetest/blob/568f7a8e8fb457c7b7bcfd3211c7f3f0481ed2e7/LICENSE.txt)
