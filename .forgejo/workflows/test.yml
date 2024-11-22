@@ -1,0 +1,9 @@
+on: [push]
+jobs:
+  test:
+    runs-on: docker
+    container:
+      image: 127.0.0.1:5000/voxelibre-test:latest
+    steps:
+      - run: cd /VoxeLibre && git pull && git checkout ${{ github.sha }}
+      - run: cd /VoxeLibre && sh test.sh
