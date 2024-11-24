@@ -298,14 +298,15 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	if self._in_player then return true end
 
 	-- Pickup arrow if player is nearby (not in Creative Mode)
-	if not self._collectable or self._removed then return end
+	if self._removed then return end
 
 	local objects = minetest.get_objects_inside_radius(pos, 1)
 	for i = 1,#objects do
 		local obj = objects[i]
 		if obj:is_player() then
 			local player_name = obj:get_player_name()
-			if not minetest.is_creative_enabled(player_name) then
+			local creative = minetest.is_creative_enabled(player_name)
+			if self._collectable and not creative then
 				local arrow_item = self._itemstring or self._arrow_item
 				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
 					obj:get_inventory():add_item("main", arrow_item)
