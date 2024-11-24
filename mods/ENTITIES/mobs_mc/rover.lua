@@ -161,7 +161,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			--rain hurts enderman
 			self.object:punch(self.object, 1.0, {
 				full_punch_interval=1.0,
-				damage_groups={fleshy=self._damage},
+				damage_groups={fleshy=self.rain_damage},
 			}, nil)
 			--randomly teleport hopefully under something.
 			self:teleport(nil)
@@ -466,6 +466,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 	end,
 	armor = { fleshy = 100, water_vulnerable = 100 },
 	water_damage = 8,
+	rain_damage = 2,
 	view_range = 64,
 	fear_height = 4,
 	attack_type = "dogfight",
