@@ -43,7 +43,7 @@ local arrow_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "vl_projectile", "collectable"
+		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "vl_projectile", "collectable", "arrow_item",
 	},
 
 	_damage=1,	-- Damage on impact
