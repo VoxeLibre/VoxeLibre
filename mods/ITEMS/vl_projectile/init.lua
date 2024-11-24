@@ -458,6 +458,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	if type(allow_punching) == "function" then
 		allow_punching = allow_punching(self, entity_def, projectile_def, object)
 	end
+	if self._in_player then allow_punching = false end
 
 	if not allow_punching then return end
 
