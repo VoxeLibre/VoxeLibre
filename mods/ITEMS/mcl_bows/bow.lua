@@ -108,6 +108,7 @@ local function player_shoot_arrow(itemstack, player, power, damage, is_critical)
 		else
 			arrow_itemstring = "mcl_bows:arrow"
 		end
+		infinity_used = true
 	else
 		if not arrow_stack then
 			return false
