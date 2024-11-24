@@ -450,18 +450,18 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 end
 
 local function handle_entity_collision(self, entity_def, projectile_def, object)
-	local pos = self.object:get_pos()
-	local dir = vector.normalize(self.object:get_velocity())
+	-- Arrows stuck in players can't collide with entities
+	if self._in_player then return end
 
 	-- Check if this is allowed
 	local allow_punching = projectile_def.allow_punching or true
 	if type(allow_punching) == "function" then
 		allow_punching = allow_punching(self, entity_def, projectile_def, object)
 	end
-	if self._in_player then allow_punching = false end
-
 	if not allow_punching then return end
 
+	local pos = self.object:get_pos()
+	local dir = vector.normalize(self.object:get_velocity())
 	local object_lua = object:get_luaentity()
 
 	-- Normally objects should be removed on collision with entities
