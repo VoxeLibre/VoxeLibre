@@ -310,14 +310,14 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
 					obj:get_inventory():add_item("main", arrow_item)
 					self._picked_up = true
-
-					minetest.sound_play("item_drop_pickup", {
-						pos = pos,
-						max_hear_distance = 16,
-						gain = 1.0,
-					}, true)
 				end
 			end
+
+			minetest.sound_play("item_drop_pickup", {
+				pos = pos,
+				max_hear_distance = 16,
+				gain = 1.0,
+			}, true)
 
 			mcl_burning.extinguish(self.object)
 			mcl_util.remove_entity(self)
