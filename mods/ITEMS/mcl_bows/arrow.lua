@@ -43,7 +43,7 @@ local arrow_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "vl_projectile",
+		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "vl_projectile", "collectable"
 	},
 
 	_damage=1,	-- Damage on impact
@@ -159,6 +159,9 @@ local arrow_entity = {
 			out[field] = self["_"..field]
 		end
 
+		-- Preserve entity properties
+		out.properties = self.object:get_properties()
+
 		return minetest.serialize(out)
 	end,
 	on_activate = function(self, staticdata, dtime_s)
@@ -167,6 +170,12 @@ local arrow_entity = {
 		self._time_in_air = 1.0
 		local data = minetest.deserialize(staticdata)
 		if not data then return end
+
+		-- Restore entity properties
+		if data.properties then
+			self.object:set_properties(data.properties)
+			data.properties = nil
+		end
 
 		-- Restore arrow state
 		local save_fields = self._save_fields
