@@ -144,11 +144,13 @@ local function globalstep(dtime)
 	-- Launch asynchronous tasks that may be issued any time (background-async)
 	local next_background_async_task = run_queue[3]
 	local last_background_async_task = next_background_async_task and next_background_async_task.last
-	while next_background_async_task and (core.get_us_time() - start) < BUDGET do
+	local now = core.get_us_time()
+	while next_background_async_task and (now - start) < BUDGET do
 		next_background_async_task:func()
 		local task = next_background_async_task
 		next_background_async_task = next_background_async_task.next
 		free_task(task)
+		now = core.get_us_time()
 	end
 	if next_background_async_task then
 		next_background_async_task.last = last_background_async_task
@@ -158,11 +160,13 @@ local function globalstep(dtime)
 	-- Run tasks that may be run on any timestep (background-main)
 	local next_background_task = run_queue[4]
 	local last_background_task = next_background_task and next_background_task.last
-	while next_background_task and (core.get_us_time() - start) < BUDGET do
+	local now = core.get_us_time()
+	while next_background_task and (now - start) < BUDGET do
 		next_background_task:func()
 		local task = next_background_task
 		next_background_task = next_background_task.next
 		free_task(task)
+		now = core.get_us_time()
 	end
 	if next_background_task then
 		next_background_task.last = last_background_task
@@ -191,6 +195,7 @@ local function queue_task(when, priority, task)
 		task.next = nil
 		if queue then
 			queue.last.next = task
+			queue.last = task
 		else
 			task.last = task
 			run_queue[priority] = task
@@ -215,15 +220,20 @@ local function queue_task(when, priority, task)
 end
 vl_scheduler.queue_task = queue_task
 
--- Hijack core.after and redirect to this scheduler
-function core.after(time, func, ...)
+local function vl_scheduler_after(time, priority, func, ...)
 	local task = new_task()
 	task.args = {...}
 	task.next = nil
 	task.real_func = func
 	task.func = function(task) task.real_func(unpack(task.args)) end
 	local timesteps = math.round(time / 0.05)
-	queue_task(timesteps, 2, task)
+	queue_task(timesteps, priority, task)
+end
+vl_scheduler.after = vl_scheduler_after
+
+-- Hijack core.after and redirect to this scheduler
+function core.after(time, func, ...)
+	vl_scheduler_after(time, 2, func, ...)
 end
 
 return vl_scheduler
