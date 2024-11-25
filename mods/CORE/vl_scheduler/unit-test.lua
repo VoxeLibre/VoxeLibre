@@ -1,6 +1,8 @@
 local posix = require 'posix'
 
 _G.core = {}
+_G.dump = dump
+dofile("../../../tests/lib/misc_helpers.lua")
 local mod_paths = {
 	vl_scheduler = "./",
 }
@@ -8,6 +10,11 @@ local mod_paths = {
 local on_mods_loaded
 local globalsteps = 0
 local last_fake_globalstep_dtime
+local time_offset = 0
+
+local function fastforward(amount)
+	time_offset = time_offset + amount
+end
 
 local function init_core()
 	return {
@@ -22,7 +29,7 @@ local function init_core()
 		register_on_mods_loaded = function(func) on_mods_loaded = func end,
 		get_us_time = function()
 			local sec, nsec = posix.clock_gettime(0)
-			return sec * 1e6 + nsec // 1000
+			return sec * 1e6 + nsec // 1000 + time_offset
 		end,
 	}
 end
@@ -120,6 +127,68 @@ describe('vl_scheduler',function()
 		end
 		call_globalstep(0.05)
 		assert.is_same(20, num_run)
+	end)
+	it('will not run background tasks if over budget with priority = 3',function()
+		local num_run = 0
+		local vl_scheduler = _G.vl_scheduler
+		vl_scheduler.after(0, 2, function()
+			fastforward(40000)
+		end)
+		for i = 1,50 do
+			vl_scheduler.after(0, 3, function()
+				fastforward(1000)
+				num_run = num_run + 1
+			end)
+		end
+		call_globalstep(0.05)
+		assert.is_same(10, num_run)
+		while(num_run < 50) do
+			call_globalstep(0.05)
+		end
+	end)
+	it('will not run background tasks if over budget with priority = 4',function()
+		local num_run = 0
+		local vl_scheduler = _G.vl_scheduler
+		vl_scheduler.after(0, 2, function()
+			fastforward(40000)
+		end)
+		for i = 1,50 do
+			vl_scheduler.after(0, 4, function()
+				fastforward(1000)
+				num_run = num_run + 1
+			end)
+		end
+		call_globalstep(0.05)
+		assert.is_same(10, num_run)
+		while(num_run < 50) do
+			call_globalstep(0.05)
+		end
+	end)
+	it('will not run background tasks if over budget with mixed priority',function()
+		local num_3_run = 0
+		local num_4_run = 0
+		local vl_scheduler = _G.vl_scheduler
+		vl_scheduler.after(0, 2, function()
+			fastforward(40000)
+		end)
+		for i = 1,10 do
+			vl_scheduler.after(0, 3, function()
+				fastforward(500)
+				num_3_run = num_3_run + 1
+			end)
+		end
+		for i = 1,20 do
+			vl_scheduler.after(0, 4, function()
+				fastforward(500)
+				num_4_run = num_4_run + 1
+			end)
+		end
+		call_globalstep(0.05)
+		assert.is_same(10, num_3_run)
+		assert.is_same(10, num_4_run)
+		while(num_4_run < 20) do
+			call_globalstep(0.05)
+		end
 	end)
 end)
 
