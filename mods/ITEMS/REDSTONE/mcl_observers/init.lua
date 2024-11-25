@@ -6,12 +6,6 @@ local string = string
 
 local get_node = minetest.get_node
 
--- Warning! TODO: Remove this message.
--- 'realtime' is experimental feature! It can slow down the everything!
--- Please set it to false and restart the game if something's wrong:
-local realtime = true
---local realtime = false
-
 local rules_flat = {
 	{ x = 0, y = 0, z = -1, spread = true },
 }
@@ -26,68 +20,16 @@ end
 local rules_down = {{ x = 0, y = 1, z = 0, spread = true }}
 local rules_up = {{ x = 0, y = -1, z = 0, spread = true }}
 
-function mcl_observers.observer_activate(pos)
-	minetest.after(mcl_vars.redstone_tick, function(pos)
-		local node = get_node(pos)
-		if not node then
-			return
-		end
-		local nn = node.name
-		if nn == "mcl_observers:observer_off" then
-			minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
-			mesecon.receptor_on(pos, get_rules_flat(node))
-		elseif nn == "mcl_observers:observer_down_off" then
-			minetest.set_node(pos, {name = "mcl_observers:observer_down_on"})
-			mesecon.receptor_on(pos, rules_down)
-		elseif nn == "mcl_observers:observer_up_off" then
-			minetest.set_node(pos, {name = "mcl_observers:observer_up_on"})
-			mesecon.receptor_on(pos, rules_up)
-		end
-	end, {x=pos.x, y=pos.y, z=pos.z})
-end
+local function observer_look_position(pos, node)
+	local node = node or get_node(pos)
 
--- Scan the node in front of the observer
--- and update the observer state if needed.
--- TODO: Also scan metadata changes.
--- TODO: Ignore some node changes.
-local function observer_scan(pos, initialize)
-	local node = get_node(pos)
-	local front
 	if node.name == "mcl_observers:observer_up_off" or node.name == "mcl_observers:observer_up_on" then
-		front = vector.add(pos, {x=0, y=1, z=0})
+		return vector.add(pos, {x=0, y=1, z=0})
 	elseif node.name == "mcl_observers:observer_down_off" or node.name == "mcl_observers:observer_down_on" then
-		front = vector.add(pos, {x=0, y=-1, z=0})
+		return vector.add(pos, {x=0, y=-1, z=0})
 	else
-		front = vector.add(pos, minetest.facedir_to_dir(node.param2))
+		return vector.add(pos, minetest.facedir_to_dir(node.param2))
 	end
-	local frontnode = get_node(front)
-	local meta = minetest.get_meta(pos)
-	local oldnode = meta:get_string("node_name")
-	local oldparam2 = meta:get_string("node_param2")
-	local meta_needs_updating = false
-	if oldnode ~= "" and not initialize then
-		if not (frontnode.name == oldnode and tostring(frontnode.param2) == oldparam2) then
-			-- Node state changed! Activate observer
-			if node.name == "mcl_observers:observer_off" then
-				minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
-				mesecon.receptor_on(pos, get_rules_flat(node))
-			elseif node.name == "mcl_observers:observer_down_off" then
-				minetest.set_node(pos, {name = "mcl_observers:observer_down_on"})
-				mesecon.receptor_on(pos, rules_down)
-			elseif node.name == "mcl_observers:observer_up_off" then
-				minetest.set_node(pos, {name = "mcl_observers:observer_up_on"})
-				mesecon.receptor_on(pos, rules_up)
-			end
-			meta_needs_updating = true
-		end
-	else
-		meta_needs_updating = true
-	end
-	if meta_needs_updating then
-		meta:set_string("node_name", frontnode.name)
-		meta:set_string("node_param2", tostring(frontnode.param2))
-	end
-	return frontnode
 end
 
 -- Vertical orientation (CURRENTLY DISABLED)
@@ -108,6 +50,49 @@ local function observer_orientate(pos, placer)
 	end
 end
 
+local function update_observer(pos, node, def)
+	core.log("[mcl_observers] update_observer()")
+
+	local front = observer_look_position(pos, node)
+	local frontnode = get_node(front)
+
+	-- Ignore loading map blocks
+	if frontnode.name == "ignore" then return end
+
+	local meta = minetest.get_meta(pos)
+	local oldnode = meta:get_string("node_name")
+	if not initialize and old_node == "" then
+		meta:set_string("node_name", frontnode.name)
+		meta:set_string("node_param2", tostring(frontnode.param2))
+		return
+	end
+
+	local oldparam2 = meta:get_string("node_param2")
+
+	-- Check if the observed node has changed
+	local frontnode_def = core.registered_nodes[frontnode.name]
+	local ignore_param2 = frontnode_def and frontnode_def.groups.observers_ignore_param2 or 0 ~= 0
+	if frontnode.name == oldnode and (ignore_param2 or tostring(frontnode.param2) == oldparam2) then
+		return
+	end
+
+	-- Node state changed! Activate observer
+	if node.name == "mcl_observers:observer_off" then
+		minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
+		mesecon.receptor_on(pos, get_rules_flat(node))
+	elseif node.name == "mcl_observers:observer_down_off" then
+		minetest.set_node(pos, {name = "mcl_observers:observer_down_on"})
+		mesecon.receptor_on(pos, rules_down)
+	elseif node.name == "mcl_observers:observer_up_off" then
+		minetest.set_node(pos, {name = "mcl_observers:observer_up_on"})
+		mesecon.receptor_on(pos, rules_up)
+	end
+
+	meta:set_string("node_name", frontnode.name)
+	meta:set_string("node_param2", tostring(frontnode.param2))
+	return frontnode
+end
+
 mesecon.register_node("mcl_observers:observer", {
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -115,6 +100,7 @@ mesecon.register_node("mcl_observers:observer", {
 		on_rotate = false,
 		_mcl_blast_resistance = 3,
 		_mcl_hardness = 3,
+		vl_block_update = update_observer,
 	}, {
 		description = S("Observer"),
 		_tt_help = S("Emits redstone pulse when block in front changes"),
@@ -133,11 +119,6 @@ mesecon.register_node("mcl_observers:observer", {
 				rules = get_rules_flat,
 			},
 		},
-		on_construct = function(pos)
-			if not realtime then
-				observer_scan(pos, true)
-			end
-		end,
 		after_place_node = observer_orientate,
 	}, {
 		_doc_items_create_entry = false,
@@ -175,6 +156,7 @@ mesecon.register_node("mcl_observers:observer_down", {
 		_mcl_blast_resistance = 3,
 		_mcl_hardness = 3,
 		drop = "mcl_observers:observer_off",
+		vl_block_update = update_observer,
 	}, {
 		tiles = {
 			"mcl_observers_observer_back.png", "mcl_observers_observer_front.png",
@@ -187,11 +169,6 @@ mesecon.register_node("mcl_observers:observer_down", {
 				rules = rules_down,
 			},
 		},
-		on_construct = function(pos)
-			if not realtime then
-				observer_scan(pos, true)
-			end
-		end,
 	}, {
 		_doc_items_create_entry = false,
 		tiles = {
@@ -227,6 +204,7 @@ mesecon.register_node("mcl_observers:observer_up", {
 		_mcl_blast_resistance = 3,
 		_mcl_hardness = 3,
 		drop = "mcl_observers:observer_off",
+		vl_block_update = update_observer,
 	}, {
 		tiles = {
 			"mcl_observers_observer_front.png", "mcl_observers_observer_back.png",
@@ -239,11 +217,6 @@ mesecon.register_node("mcl_observers:observer_up", {
 				rules = rules_up,
 			},
 		},
-		on_construct = function(pos)
-			if not realtime then
-				observer_scan(pos, true)
-			end
-		end,
 	}, {
 		_doc_items_create_entry = false,
 		tiles = {
@@ -287,184 +260,3 @@ minetest.register_craft({
 	},
 })
 
-if realtime then
-	-- Override basic functions for observing:
-	mcl_observers.add_node =	minetest.add_node
-	mcl_observers.set_node =	minetest.set_node
-	mcl_observers.swap_node =	minetest.swap_node
-	mcl_observers.remove_node =	minetest.remove_node
-	mcl_observers.bulk_set_node =	minetest.bulk_set_node
-
-	function minetest.add_node(pos,node)
-		mcl_observers.add_node(pos,node)
-		local n = get_node({x=pos.x+1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==-1 then
-			mcl_observers.observer_activate({x=pos.x+1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x-1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
-			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z+1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z-1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
-		end
-		n = get_node({x=pos.x,y=pos.y-1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_u" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y-1,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y+1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_d" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y+1,z=pos.z})
-		end
-	end
-	function minetest.set_node(pos,node)
-		mcl_observers.set_node(pos,node)
-		local n = get_node({x=pos.x+1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==-1 then
-			mcl_observers.observer_activate({x=pos.x+1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x-1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
-			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z+1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z-1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
-		end
-		n = get_node({x=pos.x,y=pos.y-1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_u" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y-1,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y+1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_d" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y+1,z=pos.z})
-		end
-	end
-	function minetest.swap_node(pos,node)
-		mcl_observers.swap_node(pos,node)
-		local n = get_node({x=pos.x+1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==-1 then
-			mcl_observers.observer_activate({x=pos.x+1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x-1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
-			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z+1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z-1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
-		end
-		n = get_node({x=pos.x,y=pos.y-1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_u" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y-1,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y+1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_d" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y+1,z=pos.z})
-		end
-	end
-	function minetest.remove_node(pos)
-		mcl_observers.remove_node(pos)
-		local n = get_node({x=pos.x+1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==-1 then
-			mcl_observers.observer_activate({x=pos.x+1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x-1,y=pos.y,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
-			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z+1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
-		end
-		n = get_node({x=pos.x,y=pos.y,z=pos.z-1})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
-		end
-		n = get_node({x=pos.x,y=pos.y-1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_u" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y-1,z=pos.z})
-		end
-		n = get_node({x=pos.x,y=pos.y+1,z=pos.z})
-		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_d" then
-			mcl_observers.observer_activate({x=pos.x,y=pos.y+1,z=pos.z})
-		end
-	end
-	function minetest.bulk_set_node(lst, node)
-		mcl_observers.bulk_set_node(lst, node)
-		for _, pos in pairs(lst) do
-			local n = get_node({x=pos.x+1,y=pos.y,z=pos.z})
-			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==-1 then
-				mcl_observers.observer_activate({x=pos.x+1,y=pos.y,z=pos.z})
-			end
-			n = get_node({x=pos.x-1,y=pos.y,z=pos.z})
-			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
-				mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
-			end
-			n = get_node({x=pos.x,y=pos.y,z=pos.z+1})
-			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
-				mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
-			end
-			n = get_node({x=pos.x,y=pos.y,z=pos.z-1})
-			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
-				mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
-			end
-			n = get_node({x=pos.x,y=pos.y-1,z=pos.z})
-			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_u" then
-				mcl_observers.observer_activate({x=pos.x,y=pos.y-1,z=pos.z})
-			end
-			n = get_node({x=pos.x,y=pos.y+1,z=pos.z})
-			if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_d" then
-				mcl_observers.observer_activate({x=pos.x,y=pos.y+1,z=pos.z})
-			end
-		end
-	end
-
-else 	-- if realtime then ^^^ else:
-	minetest.register_abm({
-		label = "Observer node check",
-		nodenames = {"mcl_observers:observer_off", "mcl_observers:observer_down_off", "mcl_observers:observer_up_off"},
-		interval = 1,
-		chance = 1,
-		action = function(pos, node)
-			observer_scan(pos)
-		end,
-	})
-end
---[[
-	With the following code the observer will detect loading of areas where it is placed.
-	We need to restore signal generated by it before the area was unloaded.
-
-	Observer movement and atomic clock (one observer watches another) fails without this often.
-
-	But it WILL cause wrong single signal for all other cases, and I hope it's nothing.
-	After all, why it can't detect the loading of areas, if we haven't a better solution...
-]]
-minetest.register_lbm({
-	name = "mcl_observers:activate_lbm",
-	nodenames = {
-		"mcl_observers:observer_off",
-		"mcl_observers:observer_down_off",
-		"mcl_observers:observer_up_off",
-		"mcl_observers:observer_on",
-		"mcl_observers:observer_down_on",
-		"mcl_observers:observer_up_on",
-	},
-	run_at_every_load = true,
-	action = function(pos)
-		minetest.after(1, mcl_observers.observer_activate, {x=pos.x, y=pos.y, z=pos.z})
-	end,
-})
