@@ -7,7 +7,7 @@ local vector_offset = vector.offset
 
 -- check if a node is an air node
 local function is_air(node)
-	return node == "air"
+	return node.name == "air"
 	-- todo: or: not walkable and not liquid?
 end
 -- check if a node is a water node
@@ -36,6 +36,9 @@ function vl_structures.spawn_mobs(mob,spawnon,p1,p2,pr,n,water)
 		end
 	else
 		sp = minetest.find_nodes_in_area_under_air(p1,p2,spawnon)
+	end
+	if not sp or #sp == 0 then
+		minetest.log("warning", "No spawn nodes for mob "..mob.." found: "..dump(spawnon,""))
 	end
 	table.shuffle(sp)
 	local count = 0
