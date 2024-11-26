@@ -59,24 +59,28 @@ local function min_neighbor_fire_age(lowest, pos)
 	return lowest
 end
 
-local function get_adjacent_fire_age(pos)
+local function get_adjacent_fire_age(orig_pos)
 	local lowest_age = nil
-	-- Unrolled loop to find minimum age (param2) among adjacent fire nodes
-	pos.x = pos.x - 1
+
+	-- find minimum age (param2) among adjacent fire nodes
+	local pos = vector.offset(orig_pos, 1, 0, 0)
 	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-	pos.x = pos.x + 2
+
+	pos.x = orig_pos.x + 1
 	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-	pos.x = pos.x - 1
-	pos.y = pos.y - 1
+
+	pos.x, pos.y = orig_pos.x, orig_pos.y - 1
 	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-	pos.y = pos.y + 2
+
+	pos.y = orig_pos.y + 1
 	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-	pos.y = pos.y - 1
-	pos.z = pos.z - 1
+
+	pos.y, pos.z = orig_pos.y, orig_pox.z - 1
 	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-	pos.z = pos.z + 2
+
+	pos.z = orig_pos.z + 1
 	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-	pos.z = pos.z - 1
+
 	return lowest_age
 end
 
@@ -136,9 +140,7 @@ local function spawn_fire(pos, age, force)
 	if age <= 1 then
 		minetest.log("warning","new flash point at "..vector.to_string(pos).." age="..tostring(age)..",backtrace = "..debug.traceback())
 	end
-	if age >= 255 then
-		age = 255
-	end
+	if age >= 255 then age = 255 end
 
 	local node = get_node(pos)
 	local node_is_flammable = get_item_group(node.name, "flammable")
@@ -154,7 +156,7 @@ local function spawn_fire(pos, age, force)
 	end
 
 	set_node(pos, {name="mcl_fire:fire", param2 = age})
-	minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
+	minetest.check_single_for_falling(vector.offset(pos,0,1,0))
 end
 
 minetest.register_node("mcl_fire:fire", {
@@ -377,7 +379,7 @@ end
 
 -- [...] a fire block can turn any air block that is adjacent to a flammable block into a fire block. This can happen at a distance of up to one block downward, one block sideways (including diagonals), and four blocks upward of the original fire block (not the block the fire is on/next to).
 local function get_ignitable(pos)
-	return check_aircube(vector.add(pos,vector.new(-1,-1,-1)),vector.add(pos,vector.new(1,4,1)))
+	return check_aircube(vector.offset(pos, -1, -1, -1), vector.offset(pos, 1, 4, 1))
 end
 -- Fire spreads from a still lava block similarly: any air block one above and up to one block sideways (including diagonals) or two above and two blocks sideways (including diagonals) that is adjacent to a flammable block may be turned into a fire block.
 local function get_ignitable_by_lava(pos)
