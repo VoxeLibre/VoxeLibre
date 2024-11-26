@@ -1,14 +1,7 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-mcl_observers = {}
-
-local string = string
-
 local get_node = minetest.get_node
 
-local rules_flat = {
-	{ x = 0, y = 0, z = -1, spread = true },
-}
 local function get_rules_flat(node)
 	local rule = core.facedir_to_dir((node.param2+2)%4)
 	rule.spread = true
@@ -147,6 +140,7 @@ mesecon.register_node("mcl_observers:observer", {
 		_mcl_observer_off_name = "mcl_observers:observer_off",
 		on_construct = decay_on_observer,
 		_onload = decay_on_observer,
+		_onmove = update_observer,
 	}
 )
 
@@ -188,6 +182,7 @@ mesecon.register_node("mcl_observers:observer_down", {
 		_mcl_observer_off_name = "mcl_observers:observer_down_off",
 		on_construct = decay_on_observer,
 		_onload = decay_on_observer,
+		_onmove = update_observer,
 	}
 )
 
@@ -229,6 +224,7 @@ mesecon.register_node("mcl_observers:observer_up", {
 		_mcl_observer_off_name = "mcl_observers:observer_up_off",
 		on_construct = decay_on_observer,
 		_onload = decay_on_observer,
+		_onmove = update_observer,
 	}
 )
 
