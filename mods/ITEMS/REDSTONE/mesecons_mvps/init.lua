@@ -326,10 +326,8 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 		if n.node_timer then
 			minetest.get_node_timer(np):set(unpack(n.node_timer))
 		end
-		if string.find(n.node.name, "mcl_observers:observer") then
-			-- It also counts as a block update when the observer itself is moved by a piston (Wiki):
-			mcl_observers.observer_activate(np)
-		end
+		local def = core.registered_nodes[n.node.name]
+		if def and def._onmove then def._onmove(np, n.node, def) end
 	end
 
 	local moved_nodes = {}
