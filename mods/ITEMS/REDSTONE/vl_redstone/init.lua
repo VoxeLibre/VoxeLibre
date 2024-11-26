@@ -4,6 +4,5 @@ local modpath = core.get_modpath(modname)
 vl_redstone = {}
 
 dofile(modpath.."/wire.lua")
-dofile(modpath.."/circuit.lua")
 dofile(modpath.."/compat.lua")
 
