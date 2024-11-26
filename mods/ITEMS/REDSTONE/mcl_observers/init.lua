@@ -10,11 +10,9 @@ local rules_flat = {
 	{ x = 0, y = 0, z = -1, spread = true },
 }
 local function get_rules_flat(node)
-	local rules = rules_flat
-	for i=1, node.param2 do
-		rules = mesecon.rotate_rules_left(rules)
-	end
-	return rules
+	local rule = core.facedir_to_dir((node.param2+2)%4)
+	rule.spread = true
+	return {rule}
 end
 
 local rules_down = {{ x = 0, y = 1, z = 0, spread = true }}
@@ -51,8 +49,6 @@ local function observer_orientate(pos, placer)
 end
 
 local function update_observer(pos, node, def)
-	core.log("[mcl_observers] update_observer()")
-
 	local front = observer_look_position(pos, node)
 	local frontnode = get_node(front)
 
@@ -61,7 +57,7 @@ local function update_observer(pos, node, def)
 
 	local meta = minetest.get_meta(pos)
 	local oldnode = meta:get_string("node_name")
-	if not initialize and old_node == "" then
+	if oldnode == "" then
 		meta:set_string("node_name", frontnode.name)
 		meta:set_string("node_param2", tostring(frontnode.param2))
 		return
@@ -91,6 +87,20 @@ local function update_observer(pos, node, def)
 	meta:set_string("node_name", frontnode.name)
 	meta:set_string("node_param2", tostring(frontnode.param2))
 	return frontnode
+end
+
+local function decay_on_observer(pos)
+	core.after(mcl_vars.redstone_tick,function()
+		local node = get_node(pos)
+		local def = core.registered_nodes[node.name]
+
+		local old_meta = minetest.get_meta(pos):to_table()
+		node.name = def._mcl_observer_off_name
+		minetest.set_node(pos, node)
+
+		mesecon.receptor_off(pos, get_rules_flat(node))
+		minetest.get_meta(pos):from_table(old_meta)
+	end)
 end
 
 mesecon.register_node("mcl_observers:observer", {
@@ -134,17 +144,9 @@ mesecon.register_node("mcl_observers:observer", {
 				rules = get_rules_flat,
 			}
 		},
-
-		-- VERY quickly disable observer after construction
-		on_construct = function(pos)
-			local timer = minetest.get_node_timer(pos)
-			timer:start(mcl_vars.redstone_tick)
-		end,
-		on_timer = function(pos, elapsed)
-			local node = get_node(pos)
-			minetest.set_node(pos, {name = "mcl_observers:observer_off", param2 = node.param2})
-			mesecon.receptor_off(pos, get_rules_flat(node))
-		end,
+		_mcl_observer_off_name = "mcl_observers:observer_off",
+		on_construct = decay_on_observer,
+		_onload = decay_on_observer,
 	}
 )
 
@@ -156,13 +158,13 @@ mesecon.register_node("mcl_observers:observer_down", {
 		_mcl_blast_resistance = 3,
 		_mcl_hardness = 3,
 		drop = "mcl_observers:observer_off",
-		vl_block_update = update_observer,
 	}, {
 		tiles = {
 			"mcl_observers_observer_back.png", "mcl_observers_observer_front.png",
 			"mcl_observers_observer_side.png^[transformR90", "mcl_observers_observer_side.png^[transformR90",
 			"mcl_observers_observer_top.png", "mcl_observers_observer_top.png",
 		},
+		vl_block_update = update_observer,
 		mesecons = {
 			receptor = {
 				state = mesecon.state.off,
@@ -183,16 +185,9 @@ mesecon.register_node("mcl_observers:observer_down", {
 			},
 		},
 
-		-- VERY quickly disable observer after construction
-		on_construct = function(pos)
-			local timer = minetest.get_node_timer(pos)
-			timer:start(mcl_vars.redstone_tick)
-		end,
-		on_timer = function(pos, elapsed)
-			local node = get_node(pos)
-			minetest.set_node(pos, {name = "mcl_observers:observer_down_off", param2 = node.param2})
-			mesecon.receptor_off(pos, rules_down)
-		end,
+		_mcl_observer_off_name = "mcl_observers:observer_down_off",
+		on_construct = decay_on_observer,
+		_onload = decay_on_observer,
 	}
 )
 
@@ -231,15 +226,9 @@ mesecon.register_node("mcl_observers:observer_up", {
 			},
 		},
 
-		-- VERY quickly disable observer after construction
-		on_construct = function(pos)
-			local timer = minetest.get_node_timer(pos)
-			timer:start(mcl_vars.redstone_tick)
-		end,
-		on_timer = function(pos, elapsed)
-			minetest.set_node(pos, {name = "mcl_observers:observer_up_off"})
-			mesecon.receptor_off(pos, rules_up)
-		end,
+		_mcl_observer_off_name = "mcl_observers:observer_up_off",
+		on_construct = decay_on_observer,
+		_onload = decay_on_observer,
 	}
 )
 
