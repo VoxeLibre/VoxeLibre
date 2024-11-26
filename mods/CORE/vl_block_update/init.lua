@@ -1,4 +1,3 @@
-
 local pending_block_updates = {}
 local block_update_pattern = {
 	-- Distance 1 (6 positions)
@@ -69,7 +68,10 @@ function core.bulk_set_node(lst, node)
 end
 
 core.register_globalstep(function(dtime)
-	for hash,_ in pairs(pending_block_updates) do
+	local updates = pending_block_updates
+	pending_block_updates = {}
+
+	for hash,_ in pairs(updates) do
 		local pos = core.get_position_from_hash(hash)
 		local node = core.get_node(pos)
 		local def = core.registered_nodes[node.name]
@@ -77,6 +79,23 @@ core.register_globalstep(function(dtime)
 			def.vl_block_update(pos, node, def)
 		end
 	end
+end)
 
-	pending_block_updates = {}
+core.register_lbm({
+	label = "Call _onload() when blocks load",
+	name = "vl_block_update:handle_onload",
+	nodenames = {"group:has_onload"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		core.registered_nodes[node.name]._onload(pos)
+	end
+})
+core.register_on_mods_loaded(function()
+	for name,def in pairs(core.registered_nodes) do
+		if def._onload then
+			local new_groups = table.copy(def.groups)
+			new_groups.has_onload = 1
+			core.override_item(name, {groups = new_groups})
+		end
+	end
 end)
