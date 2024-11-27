@@ -41,28 +41,30 @@ local function observer_orientate(pos, placer)
 	end
 end
 
-local function update_observer(pos, node, def)
+local function update_observer(pos, node, def, force_activate)
 	local front = observer_look_position(pos, node)
 	local frontnode = get_node(front)
-
-	-- Ignore loading map blocks
-	if frontnode.name == "ignore" then return end
-
 	local meta = minetest.get_meta(pos)
-	local oldnode = meta:get_string("node_name")
-	if oldnode == "" then
-		meta:set_string("node_name", frontnode.name)
-		meta:set_string("node_param2", tostring(frontnode.param2))
-		return
-	end
 
-	local oldparam2 = meta:get_string("node_param2")
+	if not force_activate then
+		-- Ignore loading map blocks
+		if frontnode.name == "ignore" then return end
 
-	-- Check if the observed node has changed
-	local frontnode_def = core.registered_nodes[frontnode.name]
-	local ignore_param2 = frontnode_def and frontnode_def.groups.observers_ignore_param2 or 0 ~= 0
-	if frontnode.name == oldnode and (ignore_param2 or tostring(frontnode.param2) == oldparam2) then
-		return
+		local oldnode = meta:get_string("node_name")
+		if oldnode == "" then
+			meta:set_string("node_name", frontnode.name)
+			meta:set_string("node_param2", tostring(frontnode.param2))
+			return
+		end
+
+		local oldparam2 = meta:get_string("node_param2")
+
+		-- Check if the observed node has changed
+		local frontnode_def = core.registered_nodes[frontnode.name]
+		local ignore_param2 = frontnode_def and frontnode_def.groups.observers_ignore_param2 or 0 ~= 0
+		if frontnode.name == oldnode and (ignore_param2 or tostring(frontnode.param2) == oldparam2) then
+			return
+		end
 	end
 
 	-- Node state changed! Activate observer
@@ -80,6 +82,9 @@ local function update_observer(pos, node, def)
 	meta:set_string("node_name", frontnode.name)
 	meta:set_string("node_param2", tostring(frontnode.param2))
 	return frontnode
+end
+local function activate_observer(pos, node, def)
+	update_observer(pos, node, def, true)
 end
 
 local function decay_on_observer(pos)
@@ -123,6 +128,7 @@ mesecon.register_node("mcl_observers:observer", {
 			},
 		},
 		after_place_node = observer_orientate,
+		_onmove = activate_observer,
 	}, {
 		_doc_items_create_entry = false,
 		groups = {pickaxey=1, material_stone=1, not_opaque=1, not_in_creative_inventory=1 },
@@ -140,7 +146,6 @@ mesecon.register_node("mcl_observers:observer", {
 		_mcl_observer_off_name = "mcl_observers:observer_off",
 		on_construct = decay_on_observer,
 		_onload = decay_on_observer,
-		_onmove = update_observer,
 	}
 )
 
@@ -165,6 +170,8 @@ mesecon.register_node("mcl_observers:observer_down", {
 				rules = rules_down,
 			},
 		},
+
+		_onmove = activate_observer,
 	}, {
 		_doc_items_create_entry = false,
 		tiles = {
@@ -182,7 +189,6 @@ mesecon.register_node("mcl_observers:observer_down", {
 		_mcl_observer_off_name = "mcl_observers:observer_down_off",
 		on_construct = decay_on_observer,
 		_onload = decay_on_observer,
-		_onmove = update_observer,
 	}
 )
 
@@ -207,6 +213,8 @@ mesecon.register_node("mcl_observers:observer_up", {
 				rules = rules_up,
 			},
 		},
+
+		_onmove = activate_observer,
 	}, {
 		_doc_items_create_entry = false,
 		tiles = {
@@ -224,7 +232,6 @@ mesecon.register_node("mcl_observers:observer_up", {
 		_mcl_observer_off_name = "mcl_observers:observer_up_off",
 		on_construct = decay_on_observer,
 		_onload = decay_on_observer,
-		_onmove = update_observer,
 	}
 )
 
