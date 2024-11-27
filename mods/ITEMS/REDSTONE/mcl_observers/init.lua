@@ -88,10 +88,12 @@ local function activate_observer(pos, node, def)
 end
 
 local function decay_on_observer(pos)
+	local original_name = get_node(pos).name
 	core.after(mcl_vars.redstone_tick,function()
 		local node = get_node(pos)
-		local def = core.registered_nodes[node.name]
+		if node.name ~= original_name then return end
 
+		local def = core.registered_nodes[node.name]
 		local old_meta = minetest.get_meta(pos):to_table()
 		node.name = def._mcl_observer_off_name
 		minetest.set_node(pos, node)
