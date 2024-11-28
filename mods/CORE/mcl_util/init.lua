@@ -1153,3 +1153,12 @@ function mcl_util.trace_nodes(pos, dir, allowed_nodes, limit)
 
 	return nil, limit, nil
 end
+
+function dofile_codegen(path, debug)
+	local contents = io.open(path):read("a*")
+	contents = contents:gsub("<<<","]]"):gsub(">>>","code=code..[[")
+	contents = "local code = \"\"\ncode = code .. [[\n"..contents.."]]\nreturn code"
+	local code = loadstring(contents)()
+	if debug then print(code) end
+	loadstring(code)()
+end
