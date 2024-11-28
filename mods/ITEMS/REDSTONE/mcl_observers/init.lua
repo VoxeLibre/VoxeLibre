@@ -46,16 +46,18 @@ local function update_observer(pos, node, def, force_activate)
 	end
 
 	-- Node state changed! Activate observer
-	if node.name == "mcl_observers:observer_off" then
-		core.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
-		mesecon.receptor_on(pos, get_rules_flat(node))
-	elseif node.name == "mcl_observers:observer_down_off" then
-		core.set_node(pos, {name = "mcl_observers:observer_down_on"})
-		mesecon.receptor_on(pos, rules_down)
-	elseif node.name == "mcl_observers:observer_up_off" then
-		core.set_node(pos, {name = "mcl_observers:observer_up_on"})
-		mesecon.receptor_on(pos, rules_up)
-	end
+	core.after(0,function()
+		if node.name == "mcl_observers:observer_off" then
+			core.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
+			mesecon.receptor_on(pos, get_rules_flat(node))
+		elseif node.name == "mcl_observers:observer_down_off" then
+			core.set_node(pos, {name = "mcl_observers:observer_down_on"})
+			mesecon.receptor_on(pos, rules_down)
+		elseif node.name == "mcl_observers:observer_up_off" then
+			core.set_node(pos, {name = "mcl_observers:observer_up_on"})
+			mesecon.receptor_on(pos, rules_up)
+		end
+	end)
 end
 local function activate_observer(pos, node, def)
 	update_observer(pos, node, def, true)
