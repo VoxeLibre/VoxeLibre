@@ -1,3 +1,8 @@
+local mod = {
+	updated = {},
+}
+vl_block_update = mod
+
 local block_update_pattern = {
 	vector.new( 1, 0, 0), vector.new(-1, 0, 0), vector.new( 0, 1, 0),
 	vector.new( 0,-1, 0), vector.new( 0, 0, 1), vector.new( 0, 0,-1),
@@ -19,7 +24,9 @@ if type(core.hash_node_position(vector.zero())) == "number" then
 		local code = [[
 			local pending_block_updates = {}
 			local function queue_block_updates(pos)
+				pos = vector.round(pos)
 				local pos_hash = core.hash_node_position(pos)
+				vl_block_update.updated[pos_hash] = true
 		]]
 			for i = 1,#block_update_pattern do
 				local hash_diff = core.hash_node_position(block_update_pattern[i]) - core.hash_node_position(vector.zero())
@@ -32,6 +39,7 @@ if type(core.hash_node_position(vector.zero())) == "number" then
 		code = code..[[
 		end
 		core.register_globalstep(function(dtime)
+			local start = core.get_us_time()
 			local updates = pending_block_updates
 			pending_block_updates = {}
 
@@ -43,11 +51,11 @@ if type(core.hash_node_position(vector.zero())) == "number" then
 					def.vl_block_update(pos, node, def)
 				end
 			end
+			vl_block_update.updated = {}
 		end)
 		return queue_block_updates
 		]]
-		print("code = "..code)
-		return loadstring(code)(pending)
+		return loadstring(code)()
 	end
 	queue_block_updates = codegen_queue_block_updates()
 else
@@ -55,12 +63,15 @@ else
 	local pending_block_updates = {}
 
 	queue_block_updates = function(pos)
+		pos = vector.round(pos)
+		vl_block_update.updated[core.hash_node_position(pos)] = true
 		for i = 1,#block_update_pattern do
 			local offset = block_update_pattern[i]
 			pending_block_updates[core.hash_node_position(pos + offset)] = true
 		end
 	end
 	core.register_globalstep(function(dtime)
+		local start = core.get_us_time()
 		local updates = pending_block_updates
 		pending_block_updates = {}
 
@@ -72,35 +83,45 @@ else
 				def.vl_block_update(pos, node, def)
 			end
 		end
+		mod.updated = {}
 	end)
+end
+
+local node_change_callbacks = {queue_block_updates}
+function mod.register_node_change(callback)
+	node_change_callbacks[#node_change_callbacks + 1] = callback
+end
+local function node_changed(pos)
+	for i = 1,#node_change_callbacks do
+		node_change_callbacks[i](pos)
+	end
 end
 
 local old_add_node = core.add_node
 function core.add_node(pos, node)
 	old_add_node(pos, node)
-	queue_block_updates(pos)
+	node_changed(pos)
 end
 
 local old_set_node = core.set_node
 function core.set_node(pos, node)
 	old_set_node(pos, node)
-	queue_block_updates(pos)
+	node_changed(pos)
 end
 
 local old_remove_node = core.remove_node
 function core.remove_node(pos)
 	old_remove_node(pos)
-	queue_block_updates(pos)
+	node_changed(pos)
 end
 
 local old_bulk_set_node = core.bulk_set_node
 function core.bulk_set_node(lst, node)
 	old_bulk_set_node(lst, node)
 	for i=1,#lst do
-		queue_block_updates(lst[i])
+		node_changed(lst[i])
 	end
 end
-
 
 core.register_lbm({
 	label = "Call _onload() when blocks load",
