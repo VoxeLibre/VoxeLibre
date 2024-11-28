@@ -33,6 +33,7 @@ local function queue_block_updates(pos)
 		}
 
 		if type(core.hash_node_position(vector.zero())) == "number" then
+			local offset = core.hash_node_position(vector.zero())
 			for i = 1,#block_update_pattern do
 				local hash_diff = core.hash_node_position(block_update_pattern[i]) - core.hash_node_position(vector.zero())
 				if hash_diff < 0 then
@@ -46,7 +47,7 @@ local function queue_block_updates(pos)
 			code = code .. "\tlocal np = vector.offset(pos,"..p.x..","..p.y..","..p.z..")\n"
 			code = code .. "\tpending_block_updates[core.hash_node_position(np)]=true\n"
 			for i = 2,#block_update_pattern do
-				p = block_update_pattern[i]
+				local p = block_update_pattern[i]
 				code = code .. "\tnp.x = pos.x+("..p.x..")\n"
 				code = code .. "\tnp.y = pos.y+("..p.x..")\n"
 				code = code .. "\tnp.z = pos.z+("..p.x..")\n"
