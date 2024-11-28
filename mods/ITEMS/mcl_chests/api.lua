@@ -24,7 +24,7 @@ end
 
 -- Chest Entity
 -- ------------
--- This is necessary to show the chest as an animated mesh, as Minetest doesn't support assigning animated meshes to
+-- This is necessary to show the chest as an animated mesh, as Luanti doesn't support assigning animated meshes to
 -- nodes directly. We're bypassing this limitation by giving each chest its own entity, and making the chest node
 -- itself fully transparent.
 local animated_chests = (minetest.settings:get_bool("animated_chests") ~= false)
@@ -651,7 +651,7 @@ function mcl_chests.register_chest(basename, d)
 			local param2 = minetest.get_node(pos).param2
 			local meta = minetest.get_meta(pos)
 
-			--[[ This is a workaround for Minetest issue 5894
+			--[[ This is a workaround for Luanti issue 5894
 			<https://github.com/minetest/minetest/issues/5894>.
 			Apparently if we don't do this, large chests initially don't work when
 			placed at chunk borders, and some chests randomly don't work after
@@ -665,13 +665,13 @@ function mcl_chests.register_chest(basename, d)
 			local inv = meta:get_inventory()
 			inv:set_size("main", 9 * 3)
 
-			--[[ The "input" list is *another* workaround (hahahaha!) around the fact that Minetest
+			--[[ The "input" list is *another* workaround (hahahaha!) around the fact that Luanti
 			does not support listrings to put items into an alternative list if the first one
 			happens to be full. See <https://github.com/minetest/minetest/issues/5343>.
 			This list is a hidden input-only list and immediately puts items into the appropriate chest.
 			It is only used for listrings and hoppers. This workaround is not that bad because it only
 			requires a simple “inventory allows” check for large chests.]]
-			-- FIXME: Refactor the listrings as soon Minetest supports alternative listrings
+			-- FIXME: Refactor the listrings as soon Luanti supports alternative listrings
 			-- BEGIN OF LISTRING WORKAROUND
 			inv:set_size("input", 1)
 			-- END OF LISTRING WORKAROUND

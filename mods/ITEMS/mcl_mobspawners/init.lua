@@ -192,7 +192,7 @@ local function spawn_mobs(pos, elapsed)
 	The doll may not stay spawned if the mob spawner is placed far away from
 	players, so we will check for its existance periodically when a player is nearby.
 	This would happen almost always when the mob spawner is placed by the mapgen.
-	This is probably caused by a Minetest bug:
+	This is probably caused by a Luanti bug:
 	https://github.com/minetest/minetest/issues/4759
 	FIXME: Fix this horrible hack.
 	]]

@@ -2,7 +2,7 @@
 ---
 # VoxeLibre Signs
 ---
-A reworking of VoxeLibre's mcl_signs to be colorable and made to glow. Requires Minetest and VoxeLibre.
+A reworking of VoxeLibre's mcl_signs to be colorable and made to glow. Requires Luanti and VoxeLibre.
 ---
 
 Created by Michieal (FaerRaven) @ DateTime: 10/14/22 4:05 PM
@@ -16,7 +16,7 @@ A special thanks to Cora for pointing me in the right direction (as always).
 
 The original Mod, MCL_SIGNS is based on reworked signs mod by PilzAdam:
 
-https://forum.minetest.net/viewtopic.php?t=3289
+https://forum.luanti.org/viewtopic.php?t=3289
 
 License of code and font: MIT License
 

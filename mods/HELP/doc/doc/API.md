@@ -39,9 +39,9 @@ exception of the alias functions themselves, for functions demanding an
 This section shows some possible use cases to give you a rough idea what
 this mod is capable of and how these use cases could be implemented.
 
-### Simple use case: Minetest basics
+### Simple use case: Luanti basics
 Let's say you want to write in free form short help texts about the basic
-concepts of Minetest or your game. First you could define a category
+concepts of Luanti or your game. First you could define a category
 called “Basics”, the data for each of its entry is just a free form text.
 The template function simply creates a formspec where this free form
 text is displayed.

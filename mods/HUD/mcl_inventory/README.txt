@@ -1,4 +1,4 @@
-Minetest mod "Crafting"
+Luanti mod "Crafting"
 =======================
 Version: 2.0.1
 

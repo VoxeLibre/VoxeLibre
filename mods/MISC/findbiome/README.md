@@ -1,7 +1,7 @@
-# Minetest mod: findbiome
+# Luanti mod: findbiome
 
 ## Description
-This is a mod to help with mod/game development for Minetest.
+This is a mod to help with mod/game development for Luanti.
 It adds a command (“findbiome”) to find a biome nearby and teleport you to it
 and another command (“listbiomes”) to list biomes.
 

@@ -1,7 +1,7 @@
 # HUD bars
 
 ## Description
-This mod changes the HUD of Minetest. It replaces the default health and breath
+This mod changes the HUD of Luanti. It replaces the default health and breath
 symbols by horizontal colored bars with text showing the number.
 
 Furthermore, it enables other mods to add their own custom bars to the HUD,
@@ -12,14 +12,14 @@ position should be displayed correctly on every screen size.
 
 ## Current version
 The current version is 2.3.2.
-It works for Minetest 5.3.0.
+It works for Luanti 5.3.0.
 
 This software uses [semantic versioning](http://semver.org), as defined by version 2.0.0 of the SemVer
 standard.
 
 ## Settings
 This mod can be configured quite a bit. You can change HUD bar appearance, offsets, ordering, and more.
-Use the advanced settings menu in Minetest for detailed configuration.
+Use the advanced settings menu in Luanti for detailed configuration.
 
 ## API
 The API is used to add your own custom HUD bars.

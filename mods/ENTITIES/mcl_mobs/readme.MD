@@ -8,7 +8,7 @@ Built from PilzAdam's original Simple Mobs with additional mobs by KrupnoPavel, 
 This mod contains the API only for adding your own mobs into the world, so please use the additional modpacks to add animals, monsters etc.
 
 
-https://forum.minetest.net/viewtopic.php?f=11&t=9917
+https://forum.luanti.org/viewtopic.php?f=11&t=9917
 
 ------------
 Credits:
@@ -21,10 +21,10 @@ mcl_mobs_mob_poof.ogg:
 
 Changelog from original Mobs Redo mod:
 - 1.41- Mob pathfinding has been updated thanks to Elkien3
-- 1.40- Updated to use newer functions, requires Minetest 0.4.16+ to work.
+- 1.40- Updated to use newer functions, requires Luanti 0.4.16+ to work.
 - 1.39- Added 'on_breed', 'on_grown' and 'do_punch' custom functions per mob
 - 1.38- Better entity checking, nametag setting and on_spawn function added to mob registry, tweaked light damage
-- 1.37- Added support for Raymoo's CMI (common mob interface) mod: https://forum.minetest.net/viewtopic.php?f=9&t=15448
+- 1.37- Added support for Raymoo's CMI (common mob interface) mod: https://forum.luanti.org/viewtopic.php?f=9&t=15448
 - 1.36- Death check added, if mob dies in fire/lava/with lava pick then drops are cooked
 - 1.35- Added owner_loyal flag for owned mobs to attack player enemies, also fixed group_attack
 - 1.34- Added function to fly mob using directional movement (thanks D00Med for flying code)

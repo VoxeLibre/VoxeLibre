@@ -11,5 +11,5 @@ tools.
 
 See init.lua for more infos.
 
-The leading underscore in the name “_mcl_autogroup” was added to force Minetest to load this mod as late as possible.
-As of 0.4.16, Minetest loads mods in reverse alphabetical order.
+The leading underscore in the name “_mcl_autogroup” was added to force Luanti to load this mod as late as possible.
+As of 0.4.16, Luanti loads mods in reverse alphabetical order.

@@ -13,7 +13,7 @@
 # Codezeilen und schreibe das auch nicht dran.
 
 # This script takes a minetest log with at least INFO log level and
-# outputs the MINETEST network protocol packet count per second.
+# outputs the Luanti network protocol packet count per second.
 
 # To collect such a log file of minetest running for 10 minutes, run:
 # timeout 600 minetest --info >log.txt 2>&1 >/dev/null

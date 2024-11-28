@@ -1,5 +1,5 @@
 --[[
-Sprint mod for Minetest by GunshipPenguin
+Sprint mod for Luanti by GunshipPenguin
 
 To the extent possible under law, the author(s)
 have dedicated all copyright and related and neighboring rights

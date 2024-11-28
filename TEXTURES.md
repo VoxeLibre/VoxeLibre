@@ -2,8 +2,8 @@
 
 Textures are a crucial asset for all items, nodes, and models in VoxeLibre. This document is for artist who would like to make and modify textures for VoxeLibre. While no means comprehensive, this document contains the basic important information for beginners to get started with texture curation and optimization.
 
-## Minetest Wiki
-For more detailed information on creating and modifing texture packs for Minetest/VoxeLibre, please visit the Minetest wiki's page on creating a texture pack. Click [here](https://wiki.minetest.net/Creating_texture_packs) to view the wiki page on creating texture packs.
+## Luanti Wiki
+For more detailed information on creating and modifing texture packs for Luanti/VoxeLibre, please visit the Luanti wiki's page on creating a texture pack. Click [here](https://wiki.luanti.org/Creating_texture_packs) to view the wiki page on creating texture packs.
 
 ## GIMP Tutorials Pixel Art Guide
 GIMP Tutorials has an excellent guide to making pixel art in GIMP. If you would like further clarification as well as screenshots for what we are about to cover, it is an excellent resource to turn to. Click [here](https://thegimptutorials.com/how-to-make-pixel-art/) to view the guide
@@ -12,7 +12,7 @@ GIMP Tutorials has an excellent guide to making pixel art in GIMP. If you would 
 
 ### GIMP
 
-GIMP (GNU Image Manipulation Program) is a very popular and free image editing software supported on Windows, MacOS, and most Linux distributions. It is recommended to use GIMP to create and modify textures within the minetest engine. 
+GIMP (GNU Image Manipulation Program) is a very popular and free image editing software supported on Windows, MacOS, and most Linux distributions. It is recommended to use GIMP to create and modify textures within the minetest engine.
 
 Download GIMP [here](http://gimp.org/)
 

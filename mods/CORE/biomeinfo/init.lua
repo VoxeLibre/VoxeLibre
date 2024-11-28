@@ -19,7 +19,7 @@ local seed = tonumber(minetest.get_mapgen_setting("seed")) or 0
 
 local mgv6_perlin_biome, mgv6_perlin_humidity, mgv6_np_biome
 
--- v6 default noiseparams are hardcoded here because Minetest doesn't give us those
+-- v6 default noiseparams are hardcoded here because Luanti doesn't give us those
 local mgv6_np_biome_default = {
 	offset = 0,
 	scale = 1,

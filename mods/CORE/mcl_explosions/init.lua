@@ -1,7 +1,7 @@
 --[[
-Explosion API mod for Minetest (adapted to VoxeLibre)
+Explosion API mod for Luanti (adapted to VoxeLibre)
 
-This mod is based on the Minetest explosion API mod, but has been changed
+This mod is based on the Luanti explosion API mod, but has been changed
 to have the same explosion mechanics as Minecraft and work with VoxeLibre
 The computation-intensive parts of the mod has been optimized to allow for
 larger explosions and faster world updating.

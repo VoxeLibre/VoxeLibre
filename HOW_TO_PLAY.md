@@ -2,8 +2,8 @@ Survive, farm, build, explore, play with friends, and do much more. Inspired by 
 
 How to play:
 
-#### Download Minetest
-- Navigate to https://www.minetest.net/ to download the client.
+#### Download Luanti
+- Navigate to https://www.luanti.org/ to download the client.
 - Once installed, open and select the "Content" tab
 
 #### Install VoxeLibre from ContentDB

@@ -384,7 +384,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	end
 end
 
--- the following code is pulled from Minetest builtin without changes except for the call order being changed,
+-- the following code is pulled from Luanti builtin without changes except for the call order being changed,
 -- until a comment saying explicitly it's the end of such code
 -- TODO if this gets a fix in the engine, remove the block of code
 local function user_name(user)
@@ -498,7 +498,7 @@ function minetest.node_dig(pos, node, digger)
 
 	return true
 end
--- end of code pulled from Minetest
+-- end of code pulled from Luanti
 
 -- Drop single items by default
 function minetest.item_drop(itemstack, dropper, pos)

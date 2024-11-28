@@ -1,13 +1,13 @@
 # `mcl_chests` API
 
 When reading through this documentation, please keep in mind that the chest
-animations are achieved by giving each chest node an entity, as Minetest (as of
+animations are achieved by giving each chest node an entity, as Luanti (as of
 5.8.1) doesn't support giving nodes animated meshes, only static ones.
 
 Because of that, a lot of parameters passed through the exposed functions are
 related to nodes and entities.
 
-Please refer to the [Minetest documentation](http://api.minetest.net/) and code
+Please refer to the [Luanti documentation](http://api.minetest.net/) and code
 comments in `api.lua`.
 
 

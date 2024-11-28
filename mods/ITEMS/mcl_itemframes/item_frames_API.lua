@@ -116,7 +116,7 @@ local function update_map_texture (self, staticdata)
 	local result = true
 	result = mcl_maps.load_map(self.id, function(texture)
 		-- will not crash even if self.object is invalid by now
-		-- update... quite possibly will screw up with each version of Minetest. >.<
+		-- update... quite possibly will screw up with each version of Luanti. >.<
 		if not texture then
 			minetest.log("error", "Failed to load the map texture using mcl_maps.")
 		end

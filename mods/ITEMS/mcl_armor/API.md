@@ -112,7 +112,7 @@ mcl_armor.register_set({
 
 	--this callback table allow you to define functions that will be called then an armor piece break
 	--the functions accept one arguments: obj
-	--the itemstack isn't sended due to how minetest handle items which have a zero durability
+	--the itemstack isn't sended due to how Luanti handle items which have a zero durability
 	on_break_callbacks = {
 		head = function(obj)
 			--do stuff
@@ -149,18 +149,18 @@ minetest.register_tool("dummy_mod:random_armor", {
 	_doc_items_longdesc = mcl_armor.longdesc,
 	_doc_items_usagehelp = mcl_armor.usage,
 
-	--this field is similar to any item definition in minetest
+	--this field is similar to any item definition in Luanti
 	--it just set the image shown then the armor is dropped as an item or inside an inventory
 	inventory_image = "mcl_armor_inv_elytra.png",
 
-	--this field is used by minetest internally and also by some helper functions
+	--this field is used by Luanti internally and also by some helper functions
 	--in order for the tool to be shown is the right creative inventory tab, the right groups should be added
 	--"mcl_armor_uses" is required to give your armor a durability
 	--in that case, the armor can be worn by 10 points before breaking
 	--if you want the armor to be enchantable, you should also add the "enchantability" group, with the highest number the better enchants you can apply
 	groups = {armor = 1, non_combat_armor = 1, armor_torso = 1, non_combat_torso = 1, mcl_armor_uses = 10},
 
-	--this table is used by minetest for seraching item specific sounds
+	--this table is used by Luanti for seraching item specific sounds
 	--the _mcl_armor_equip and _mcl_armor_unequip are used by the armor implementation to play sounds on equip and unequip
 	--note that you don't need to provide any file extention
 	sounds = {

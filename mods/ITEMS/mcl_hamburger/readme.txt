@@ -27,7 +27,7 @@ suggestions are always welcome!
 The images contained within have been altered to be more legible within the game and not rendered with weird
 antialiasing by Michieal. All extraneous information in the images have been removed to decrease file size.
 
-This mod is licensed under CC-BY-SA 3, with the intent of it being used by the VoxeLibre game for Minetest.
+This mod is licensed under CC-BY-SA 3, with the intent of it being used by the VoxeLibre game for Luanti.
 This code was written by Michieal, with additions included by Cora.
 
 The achievement "Burger Time!" is an homage to the classic coin-op arcade game BurgerTime, by Data East (1982) and

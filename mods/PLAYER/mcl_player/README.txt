@@ -7,7 +7,7 @@ Programmers: See `game_api.txt` for the API definition.
 Authors of source code
 ----------------------
 Originally by celeron55, Perttu Ahola <celeron55@gmail.com> (LGPL 2.1)
-Various Minetest developers and contributors (LGPL 2.1)
+Various Luanti developers and contributors (LGPL 2.1)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

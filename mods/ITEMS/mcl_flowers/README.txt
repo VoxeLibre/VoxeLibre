@@ -1,4 +1,4 @@
-Minetest 0.4 mod: flowers
+Luanti 0.4 mod: flowers
 =========================
 
 License of source code:

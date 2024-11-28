@@ -126,7 +126,7 @@ function mcl_util.validate_vector (vect)
 	return false
 end
 
--- Minetest 5.3.0 or less can only measure the light level. This came in at 5.4
+-- Luanti 5.3.0 or less can only measure the light level. This came in at 5.4
 -- This function has been known to fail in multiple places so the error handling is added increase safety and improve
 -- debugging. See:
 -- https://git.minetest.land/VoxeLibre/VoxeLibre/issues/1392
@@ -167,7 +167,7 @@ field is false or omitted (else, the itemstack is not changed).
   orientation on wall
 
 This function is a simplified version of minetest.rotate_and_place.
-The Minetest function is seen as inappropriate because this includes mirror
+The Luanti function is seen as inappropriate because this includes mirror
 images of possible orientations, causing problems with pillar shadings.
 ]]
 function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infinitestacks, invert_wall)
@@ -759,7 +759,7 @@ end
 ---@return fun(itemstack: ItemStack, placer: ObjectRef, pointed_thing: pointed_thing, param2: integer): ItemStack?
 function mcl_util.bypass_buildable_to(func)
 	--------------------------
-	-- MINETEST CODE: UTILS --
+	-- LUANTI CODE: UTILS ----
 	--------------------------
 
 	local function copy_pointed_thing(pointed_thing)
@@ -828,7 +828,7 @@ function mcl_util.bypass_buildable_to(func)
 
 	return function(itemstack, placer, pointed_thing, param2)
 		-------------------
-		-- MINETEST CODE --
+		-- LUANTI CODE ----
 		-------------------
 		local def = itemstack:get_definition()
 		if def.type ~= "node" or pointed_thing.type ~= "node" then
@@ -874,7 +874,7 @@ function mcl_util.bypass_buildable_to(func)
 		end
 
 		-------------------
-		-- MINETEST CODE --
+		-- LUANTI CODE ----
 		-------------------
 
 		if minetest.is_protected(place_to, playername) then

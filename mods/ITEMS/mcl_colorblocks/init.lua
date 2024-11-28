@@ -238,7 +238,7 @@ minetest.register_abm({
 	neighbors = {"group:water"},
 	action = function(pos, node)
 		local harden_to = minetest.registered_nodes[node.name]._mcl_colorblocks_harden_to
-               -- It should be impossible for harden_to to be nil, but a Minetest bug might call
+               -- It should be impossible for harden_to to be nil, but a Luanti bug might call
                -- the ABM on the new concrete node, which isn't part of this ABM!
         if harden_to then
             node.name = harden_to

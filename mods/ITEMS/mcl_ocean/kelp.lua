@@ -100,7 +100,7 @@ function kelp.is_downward_flowing(pos, node, pos_above, node_above, __is_above__
 	if not (result or __is_above__) then
 		-- If not, also check node above.
 		-- (this is needed due a weird quirk in the definition of "downwards flowing"
-		-- liquids in Minetest)
+		-- liquids in Luanti)
 		local pos_above = pos_above or {x=pos.x,y=pos.y+1,z=pos.z}
 		local node_above = node_above or mt_get_node(pos_above)
 		result = kelp.is_submerged(node_above)

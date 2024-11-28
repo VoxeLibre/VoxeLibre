@@ -3,7 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 --[[
   mcl_clock, renew of the renew of the mcl_clock mod
 
-  Original from Echo, here: http://forum.minetest.net/viewtopic.php?id=3795
+  Original from Echo, here: http://forum.luanti.org/viewtopic.php?id=3795
 ]]--
 
 mcl_clock = {}

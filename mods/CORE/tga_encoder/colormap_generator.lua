@@ -1,6 +1,6 @@
 dofile("init.lua")
 
--- This generates images necessary to colorize 16 Minetest nodes in 4096 colors.
+-- This generates images necessary to colorize 16 Luanti nodes in 4096 colors.
 -- It serves as a demonstration of what you can achieve using colormapped nodes.
 -- It is be useful for grass or beam or glass nodes that need to blend smoothly.
 

@@ -1,4 +1,4 @@
-Minetest 0.4 mod: wool
+Luanti 0.4 mod: wool
 ======================
 
 Mostly backward-compatible with jordach's 16-color wool mod.

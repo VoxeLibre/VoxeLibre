@@ -3,7 +3,7 @@ A TGA Encoder written in Lua without the use of external Libraries.
 
 Created by fleckenstein for VoxeLibre, then improved by erlehmann.
 
-May be used as a Minetest mod.
+May be used as a Luanti mod.
 
 See `examples.lua` for example code and usage hints.
 
@@ -19,13 +19,13 @@ No checksums need to be updated on any kind of in-place texture editing.
 
 **Tip**: When storing an editable image in item meta, use zlib compression.
 
-### Legacy Minetest Texture Encoding
+### Legacy Luanti Texture Encoding
 
-Minetest 5.4 did not include `minetest.encode_png()` (or any equvivalent).
+Luanti 5.4 did not include `minetest.encode_png()` (or any equvivalent).
 
 Since `tga_encoder` is written in pure Lua, it does not need engine support.
 
-**Tip:** Look at `examples.lua` and the Minetest mod `mcl_maps` for guidance.
+**Tip:** Look at `examples.lua` and the Luanti mod `mcl_maps` for guidance.
 
 ### Advanced Texture Format Control
 

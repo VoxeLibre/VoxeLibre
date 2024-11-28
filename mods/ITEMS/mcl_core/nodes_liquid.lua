@@ -145,7 +145,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 	buildable_to = true,
 	drop = "",
 	--[[ Drowning in Minecraft deals 2 damage per second.
-	In Minetest, drowning damage is dealt every 2 seconds so this
+	In Luanti, drowning damage is dealt every 2 seconds so this
 	translates to 4 drowning damage ]]
 	drowning = 4,
 	liquidtype = "flowing",

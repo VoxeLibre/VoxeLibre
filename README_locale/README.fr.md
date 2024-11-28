@@ -1,5 +1,5 @@
 # VoxeLibre
-Un jeu inspiré de Minecraft pour Minetest. Forké depuis Mineclone par davedevils.
+Un jeu inspiré de Minecraft pour Luanti. Forké depuis Mineclone par davedevils.
 Développé par de nombreuses personnes, voir CREDITS.md pour une liste complète.
 
 ### Gameplay
@@ -54,10 +54,10 @@ Les objets suivants sont intéressants pour le mode Créatif et pour les constru
 Utilisez la commande de chat `/giveme` pour les obtenir. Voir l'aide interne au jeu pour une explication.
 
 ## Installation
-Ce jeu nécessite [Minetest](http://minetest.net) pour fonctionner (version 5.4.1 ou plus). Vous devez donc installer Minetest d'abord. Seules les versions stables de Minetest sont officielement supportées.
-Il n'y a pas de support de VoxeLibre dans les versions développement de Minetest.
+Ce jeu nécessite [Luanti](https://www.luanti.org) pour fonctionner (version 5.4.1 ou plus). Vous devez donc installer Luanti d'abord. Seules les versions stables de Luanti sont officielement supportées.
+Il n'y a pas de support de VoxeLibre dans les versions développement de Luanti.
 
-Pour installer VoxeLibre (si ce n'est pas déjà fait), déplacez ce dossier dans le dossier “games” de Minetest. Consultez l'aide de Minetest pour en apprendre plus.
+Pour installer VoxeLibre (si ce n'est pas déjà fait), déplacez ce dossier dans le dossier “games” de Luanti. Consultez l'aide de Luanti pour en apprendre plus.
 
 ## Liens utiles
 Le dépôt de VoxeLibre est hébergé sur Mesehub. Pour contribuer ou signaler des problèmes, allez là-bas.
@@ -65,17 +65,17 @@ Le dépôt de VoxeLibre est hébergé sur Mesehub. Pour contribuer ou signaler d
 * Mesehub : <https://git.minetest.land/VoxeLibre/VoxeLibre>
 * Discord : <https://discord.gg/xE4z8EEpDC>
 * YouTube : <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
-* ContentDB : <https://content.minetest.net/packages/wuzzy/mineclone2/>
+* ContentDB : <https://content.luanti.org/packages/wuzzy/mineclone2/>
 * OpenCollective : <https://opencollective.com/mineclone2>
 * Mastodon : <https://fosstodon.org/@VoxeLibre>
 * Lemmy : <https://lemm.ee/c/voxelibre>
 * Espace Matrix : <https://app.element.io/#/room/#voxelibre:matrix.org>
-* Forums Minetest : <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
+* Forums Luanti : <https://forum.luanti.org/viewtopic.php?f=50&t=16407>
 * Reddit : <https://www.reddit.com/r/VoxeLibre/>
 * IRC (peu utilisé) : <https://web.libera.chat/#mineclone2>
 
 ## Objectif
-* Créer un jeu stable, performant, moddable et libre inspiré de Minecraft en utilisant le moteur de jeu Minetest, utilisable à la fois en mode solo et multijoueur.
+* Créer un jeu stable, performant, moddable et libre inspiré de Minecraft en utilisant le moteur de jeu Luanti, utilisable à la fois en mode solo et multijoueur.
 * Actuellement, un grand nombre de fonctionnalités sont déjà implémentées.
 L'amélioration des fonctionnalités existantes est toujours la bienvenue.
 
@@ -140,8 +140,8 @@ Fonctionnalités bonus (absentes de Minecraft) :
 * Guide d'artisanat intégré au jeu qui montre les recettes d'artisanat et de cuisson
 * Système d'aide intégré au jeu contenant des informations à propos des techniques de base, blocs, objets et plus
 * Recettes d'artisanat temporaires. Elles existent uniquement pour rendre des objets accessibles qui ne le seraient pas autrement sauf en mode créatif. Elles seront retirées au cours de l'avancement du développement et de l'ajout de nouvelles fonctionnalités.
-* Pousses dans les coffres en [mapgen v6](https://wiki.minetest.net/Map_generator#v6)
-* Entièrement moddable (grâce la puissante API Lua de Minetest)
+* Pousses dans les coffres en [mapgen v6](https://wiki.luanti.org/Map_generator#v6)
+* Entièrement moddable (grâce la puissante API Lua de Luanti)
 * Nouveaux blocs et objets :
     * Outil de recherche, montre l'aide de ce qu'il touche
     * Plus de dalles et d'escaliers
@@ -162,7 +162,7 @@ Différences techniques avec Minecraft :
 * Des musiques différentes pour le juke-boxe
 * Des textures différentes (Pixel Perfection)
 * Des sons différents (sources diverses)
-* Un moteur de jeu différent (Minetest)
+* Un moteur de jeu différent (Luanti)
 * Des bonus cachés différents
 
 ...et enfin VoxeLibre est un logiciel libre !
@@ -171,6 +171,6 @@ Différences techniques avec Minecraft :
 
 * `LICENSE.txt` : Le texte de la licence GPLv3
 * `CONTRIBUTING.md` : Information pour ceux qui veulent contribuer
-* `API.md` : Pour les modders Minetest qui veulent modder ce jeu
+* `API.md` : Pour les modders Luanti qui veulent modder ce jeu
 * `LEGAL.md` : Information légale
 * `CREDITS.md` : Liste de toutes les personnes qui ont contribué

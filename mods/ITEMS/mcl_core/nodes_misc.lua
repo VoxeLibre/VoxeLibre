@@ -223,7 +223,7 @@ minetest.register_node("mcl_core:barrier", {
 
 -- Same as barrier, but non-pointable. This node is only to be used internally to separate realms.
 -- It must NOT be used for anything else.
--- This node only exists because Minetest does not have support for “dimensions” yet and needs to
+-- This node only exists because Luanti does not have support for “dimensions” yet and needs to
 -- be removed when support for this is implemented.
 minetest.register_node("mcl_core:realm_barrier", {
 	description = S("Realm Barrier"),

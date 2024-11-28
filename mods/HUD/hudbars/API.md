@@ -51,7 +51,7 @@ and unhidden on a per-player basis.
 Note this does not yet display the HUD bar.
 
 The HUD bars will be displayed in a “first come, first serve” order. This API does not allow fow a custom order or a way to set it
-manually in a reliable way. However, you can use the setting `hudbars_sorting` for this. See the advanced setting menu in Minetest
+manually in a reliable way. However, you can use the setting `hudbars_sorting` for this. See the advanced setting menu in Luanti
 for more information.
 
 
@@ -131,7 +131,7 @@ for players.
 `nil`; if one of them is `nil`, that means the value is unchanged. If all those values are `nil`, this
 function is a no-op.
 
-This function tries to minimize the amount of calls to `hud_change` of the Minetest Lua API
+This function tries to minimize the amount of calls to `hud_change` of the Luanti Lua API
 (and thus, network traffic), when you only change the value and/or  maximum value. In this case,
 `hud_change` is only called if it is actually needed, e.g. when the actual length of the bar
 or the displayed string changed, so you do not have to worry about it. There is, however, no

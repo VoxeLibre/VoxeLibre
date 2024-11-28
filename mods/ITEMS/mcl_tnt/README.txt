@@ -1,4 +1,4 @@
-=== TNT mod for Minetest ===
+=== TNT mod for Luanti ===
 by PilzAdam. HEAVILY modified for VoxeLibre.
 
 Introduction:

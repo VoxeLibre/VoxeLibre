@@ -3,7 +3,7 @@ Mobs Redo: VoxeLibre Edition
 API documentation
 ==============================
 
-Welcome to the world of mobs in Minetest and hopefully an easy guide to defining
+Welcome to the world of mobs in Luanti and hopefully an easy guide to defining
 your own mobs and having them appear in your worlds.
 
 

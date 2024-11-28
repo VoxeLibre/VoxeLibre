@@ -122,9 +122,9 @@ Minimal style guide: Use complete sentences.
 The usage help should only be set for items which are in some way special
 in their usage. Standard tools and weapons should never have an usage help.
 
-The rule of thumb is this: If a new player who already knows the Minetest
+The rule of thumb is this: If a new player who already knows the Luanti
 basics, but not this item, will not directly know how to use this item,
-then the usage help should be added. If basic Minetest knowledge or
+then the usage help should be added. If basic Luanti knowledge or
 existing factoids are completely sufficient, usage help should not be added.
 
 The recommendations for what not to put into the usage help is the same
@@ -222,7 +222,7 @@ Add a custom factoid (see above) for the specified category.
 
 #### `factoid_generator(itemstring, def)`
 `itemstring` is the itemstring of the item to be documented, and `def` is the
-complete item definition table (from Minetest).
+complete item definition table (from Luanti).
 
 This function must return a helpful string which turns a part of the item's
 definition into an useful sentence or text. The text can contain newlines,
@@ -272,7 +272,7 @@ entry then.
 #### Background
 Normally, the core factoids are written in a very general-purpose style, so this function might
 not be needed at all. But it might be useful for games and mods which radically break with
-some of the underlying core assumptions in Minetest. For example, if your mod completely changes
+some of the underlying core assumptions in Luanti. For example, if your mod completely changes
 the digging system, the help texts provided by `doc_items` are probably incorrect, so you can
 disable `node_mining` and register a custom factoid as a replacement.
 
@@ -291,9 +291,9 @@ the values are the group names which will be actually shown in the
 Documentation System.
 
 ***Note***: This function is mostly there to work around a problem in
-Minetest as it does not support “friendly” group names, which means exposing
+Luanti as it does not support “friendly” group names, which means exposing
 groups to an interface is not pretty. Therefore, this function may be
-deprecated when Minetest supports such a thing.
+deprecated when Luanti supports such a thing.
 
 ### `doc.sub.items.get_group_name(internal_group_name)`
 Returns the group name of the specified group as displayed by this mod.

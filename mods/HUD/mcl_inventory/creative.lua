@@ -420,7 +420,7 @@ end)
 
 ---@param player mt.PlayerObjectRef
 local function is_touch_enabled(playername)
-	-- Minetest < 5.7.0 support
+	-- Luanti < 5.7.0 support
 	if not minetest.get_player_window_information then
 		return false
 	end
@@ -550,7 +550,7 @@ function mcl_inventory.set_creative_formspec(player)
 			mcl_formspec.get_itemslot_bg_v4(0.375, 0.875, 9, 5),
 
 			-- Basic code to replace buttons by scrollbar
-			-- Require Minetest 5.8
+			-- Require Luanti 5.8
 			--
 			--"scroll_container[0.375,0.875;11.575,6;scroll;vertical;1.25]",
 			--"list[detached:creative_" .. playername .. ";main;0,0;9," .. nb_lines .. ";]",
@@ -846,7 +846,7 @@ end)
 
 -- This is necessary because get_player_window_information may return nil in
 -- on_joinplayer.
--- (Also, Minetest plans to add support for toggling touchscreen mode in-game.)
+-- (Also, Luanti plans to add support for toggling touchscreen mode in-game.)
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()

@@ -52,7 +52,7 @@ local melon_base_def = {
 local stem_drop = {
 	max_items = 1,
 	-- The probabilities are slightly off from the original.
-	-- Update this drop list when the Minetest drop probability system
+	-- Update this drop list when the Luanti drop probability system
 	-- is more powerful.
 	items = {
 		-- 1 seed: Approximation to 20/125 chance

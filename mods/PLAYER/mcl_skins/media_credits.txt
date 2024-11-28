@@ -84,7 +84,7 @@ Source: http://minetest.fensta.bplaced.net/#id=464
 mcl_skins_top_8.png
 Name: Hoodie Enderman
 Author: Kpenguin. Adapted for mcl_skins by MrRar.
-License: CC BY-SA 3.0  
+License: CC BY-SA 3.0
 Source: http://minetest.fensta.bplaced.net/#id=962
 
 mcl_skins_hair_9.png

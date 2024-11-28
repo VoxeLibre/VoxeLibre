@@ -1,7 +1,7 @@
 local string = string
 local sf = string.format
 
--- Minetest 0.4 mod: player
+-- Luanti 0.4 mod: player
 -- See README.txt for licensing and other information.
 mcl_player = {}
 

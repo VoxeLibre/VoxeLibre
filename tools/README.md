@@ -4,7 +4,7 @@ Currently, the only tool is Texture Converter.
 
 ## Texture Converter (EXPERIMENTAL)
 This is a Python script which converts a resource pack for Minecraft to
-a texture pack for Minetest so it can be used with VoxeLibre.
+a texture pack for Luanti so it can be used with VoxeLibre.
 
 **WARNING**: This script is currently incomplete, not all textures will be
 converted. Some texture conversions are even buggy!
@@ -13,7 +13,7 @@ For a 100% complete texture pack, a bit of manual work on the textures
 will be required afterwards.
 
 Modes of operation:
-- Can create a Minetest texture pack (default)
+- Can create a Luanti texture pack (default)
 - Can update the VoxeLibre textures
 
 Requirements:
@@ -25,12 +25,12 @@ Usage:
 - Make sure the file “`Conversion_Table.csv`” is in the same directory as the script
 - In the console, run `./Texture_Converter.py -h` to learn the available options
 - Convert the textures
-- Put the new texture directory in the Minetest texture pack directory, just like
-  any other Minetest texture pack
+- Put the new texture directory in the Luanti texture pack directory, just like
+  any other Luanti texture pack
 
 ## Luacheck Globals Generators
 This is a Python script which list every single global tables in VoxeLibre source code.
-It outputs a list to be used in luacheck conf files. 
+It outputs a list to be used in luacheck conf files.
 
 Modes of operation:
 - List global tables

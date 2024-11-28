@@ -1,7 +1,7 @@
 # Help
 VoxeLibre uses some of the mods found in the Help modpack by Wuzzy.
 
-The goal of this modpack is to make using Minetest and mods easier for both
+The goal of this modpack is to make using Luanti and mods easier for both
 newcomers and advanced users.
 It makes it easier for newcomers by making help more accessible.
 It makes life easier for advanced user by making it more convenient to use, by

@@ -9,7 +9,7 @@ Cobwebs are added if the `mobs_monster` mod is found.
 
 Use the advanced settings to finetune the railway corridors.
 
-* Forum thread: https://forum.minetest.net/viewtopic.php?t=10339
+* Forum thread: https://forum.luanti.org/viewtopic.php?t=10339
 * License: MIT License (see `LICENSE.txt`).
 
 ## Info for game makers

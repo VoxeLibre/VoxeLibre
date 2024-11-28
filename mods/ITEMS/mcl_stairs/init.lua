@@ -1,4 +1,4 @@
--- Minetest 0.4 mod: mcl_stairs
+-- Luanti 0.4 mod: mcl_stairs
 -- See README.txt for licensing and other information.
 
 -- Global namespace for functions

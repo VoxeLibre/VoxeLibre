@@ -243,7 +243,7 @@ Origin of those models:
 * [ebcrosby](https://freesound.org/people/ebcrosby/)
     * `mobs_mc_ocelot_hurt.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/ebcrosby/sounds/332979/>
-* Hybrid Dog (forum.minetest.net)
+* Hybrid Dog (forum.luanti.org)
     * `mobs_mc_wolf_hurt.*.ogg` (CC0)
     * `mobs_mc_wolf_bark.*.ogg` (CC0)
     * `mobs_mc_wolf_death.*.ogg` (CC0)
@@ -253,11 +253,11 @@ Origin of those models:
 * [cliftoncarlson](https://freesound.org/people/cliftonmcarlson/)
     * `mobs_mc_wolf_take_bone.ogg` (CC0)
         * Source: <https://freesound.org/people/cliftonmcarlson/sounds/392883/>
-* [Inocodum](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3115)
+* [Inocodum](https://forum.luanti.org/memberlist.php?mode=viewprofile&u=3115)
     * `mobs_mc_silverfish_hurt.ogg` (CC BY-SA 4.0)
     * `mobs_mc_silverfish_death.ogg` (CC BY-SA 4.0)
     * `mobs_mc_silverfish_idle.ogg` (CC BY-SA 4.0)
-        * Source: <https://forum.minetest.net/viewtopic.php?f=17&t=10013>
+        * Source: <https://forum.luanti.org/viewtopic.php?f=17&t=10013>
 * [LukeIRL](https://freesound.org/people/LukeIRL/)
     * `mobs_mc_magma_cube_small.ogg` (CC BY 4.0)
         * Derived from: <https://freesound.org/people/LukeIRL/sounds/176123/>

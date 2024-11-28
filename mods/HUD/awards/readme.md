@@ -2,7 +2,7 @@
 
 by Andrew "Rubenwardy" Ward, LGPL 2.1 or later.
 
-This mod adds achievements to Minetest.
+This mod adds achievements to Luanti.
 
 Majority of awards are back ported from Calinou's
 old fork in Carbone, under same license.

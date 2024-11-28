@@ -244,6 +244,6 @@
 * Cora
 
 ## Special thanks
-* The Minetest team for making and supporting an engine, and distribution infrastructure that makes this all possible
+* The Luanti team for making and supporting an engine, and distribution infrastructure that makes this all possible
 * The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game
 * Notch and Jeb for being the major forces behind Minecraft

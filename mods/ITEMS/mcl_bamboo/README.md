@@ -21,6 +21,6 @@ Special thanks to Nicu for help with a ton of things from testing, to encouragem
 Nicu - You Rock!
 
 Small Joker's bamboo forum topic:
-Forum topic: https://forum.minetest.net/viewtopic.php?id=8289
+Forum topic: https://forum.luanti/viewtopic.php?id=8289
 
 Scaffold inspiration: Cora, because she said that it couldn't be done.

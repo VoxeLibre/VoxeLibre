@@ -1,10 +1,8 @@
 This file is severely out of date. If you can help updating this translation, please reach out to us (contact in README.md - the English version).
 
 # VoxeLibre
-一個非官方的Minetest遊戲，遊玩方式和Minecraft類似。由davedevils從MineClone分拆。
+一個非官方的Luanti遊戲，遊玩方式和Minecraft類似。由davedevils從MineClone分拆。
 由許多人開發。並非由Mojang Studios開發。<!-- "Mojang AB"'s Name changed at 2020/05, main README should change too -->
-
-版本：0.71.0
 
 ### 遊玩
 你開始在一個完全由方塊隨機生成的世界裡。你可以探索這個世界，挖掘和建造世界上幾乎所有的方塊，以創造新的結構。你可以選擇在「生存模式」中進行遊戲，在這個模式中，你必須與怪物戰鬥，飢餓求生，並在遊戲的其他各個環節中慢慢進步，如採礦、養殖、建造機器等等。
@@ -72,26 +70,24 @@ These items do not work yet, but you can get them with `/giveme` for testing:
 * Minecart with Command Block: `mcl_minecarts:command_block_minecart`
 
 ## Installation
-This game requires [Minetest](http://minetest.net) to run (version 5.0.0 or
-later). So you need to install Minetest first. Only stable versions of Minetest
+This game requires [Luanti](https://www.luanti.org) to run (version 5.0.0 or
+later). So you need to install Luanti first. Only stable versions of Luanti
 are officially supported.
-There is no support for running MineClone 2 in development versions of Minetest.
+There is no support for running VoxeLibre in development versions of Luanti.
 
-To install MineClone 2 (if you haven't already), move this directory into the
-“games” directory of your Minetest data directory. Consult the help of
-Minetest to learn more.
+To install VoxeLibre (if you haven't already), move this directory into the
+“games” directory of your Luanti data directory. Consult the help of
+Luanti to learn more.
 
 ## Project description
-The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
-
 * **開發目標：我的世界, Java版, 版本 1.12**
-* VoxeLibre還包括Minetest支持的Optifine功能。
+* VoxeLibre還包括Luanti支持的Optifine功能。
 * 後期Minecraft版本的功能可能會偷偷加入，但它們的優先級較低。
-* 總的來說，Minecraft的目標是在Minetest目前允許的情況下進行克隆。
+* 總的來說，Minecraft的目標是在Luanti目前允許的情況下進行克隆。
 * 克隆Minecraft是最優先的。
 * VoxeLibre將使用不同的圖形和聲音，但風格相似。
 * 克隆界面沒有優先權。只會被粗略地模仿。
-* 在Minetest中發現的局限性將在開發過程中被記錄和報告。
+* 在Luanti中發現的局限性將在開發過程中被記錄和報告。
 
 ## 完成程度
 該遊戲目前處於**alpha**階段。
@@ -155,7 +151,7 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 * 遊戲中的幫助系統包含了大量關於遊戲基礎知識、方塊、物品等方面的幫助。
 * 臨時製作配方。它們的存在只是為了在你不在創造模式下時，提供一些其他無法獲得的物品。這些配方將隨著開發的進行和更多功能的出現而被移除。
 * v6地圖生成器中箱子裡的樹苗。
-* 完全可修改（得益於Minetest強大的Lua API）。
+* 完全可修改（得益於Luanti強大的Lua API）。
 * 新的方塊和物品：
     * 查找工具，顯示觸及事物的幫助
     * 更多的半磚和樓梯
@@ -173,14 +169,14 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 * 唱片機的音樂不同
 * 不同的材質（像素完美）
 * 不同的聲音（各種來源）
-* 不同的引擎（Minetest）
+* 不同的引擎（Luanti）
 
 ...最後，VoxeLibre是自由軟件！
 
 ## 錯誤報告
 請在此處報告所有錯誤和缺少的功能：
 
-<https://git.minetest.land/MineClone2/MineClone2/issues>
+<https://git.minetest.land/VoxeLibre/VoxeLibre/issues>
 
 ## Chating with the community
 我們有Discord交流羣：
@@ -192,15 +188,15 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 
 * `LICENSE.txt`：GPLv3許可文本
 * `CONTRIBUTING.md`: 為那些想參與貢獻的人提供資訊
-* `MISSING_ENGINE_FEATURES.md`: VoxeLibre需要改进，Minetest中缺失的功能列表。
+* `MISSING_ENGINE_FEATURES.md`: VoxeLibre需要改进，Luanti中缺失的功能列表。
 * `API.md`: 關於MineClone2的API
 
 ## 參與者
 有這麼多人要列出（抱歉）。詳情請查看各mod目錄。本節只是粗略地介紹了本遊戲的核心作者。
 
 ### 程式碼
-* [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082)：大多數mod的主要程序員（已退休）
-* davedevils：MineClone 2的原型——「MineClone」的創造者
+* [Wuzzy](https://forum.luanti.org/memberlist.php?mode=viewprofile&u=3082)：大多數mod的主要程序員（已退休）
+* davedevils：VoxeLibre的原型——「MineClone」的創造者
 * [ex-bart](https://github.com/ex-bart)：紅石比較器
 * [Rootyjr](https://github.com/Rootyjr)：釣竿和錯誤修復
 * [aligator](https://github.com/aligator)：改進門
@@ -221,8 +217,8 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 * `drippingwater`: kddekadenz
 * `mobs_mc`: maikerumine, 22i and others
 * `awards`: rubenwardy
-* `screwdriver`: RealBadAngel, Maciej Kastakin, Minetest contributors
-* `xpanes`: Minetest contributors
+* `screwdriver`: RealBadAngel, Maciej Kastakin, Luanti contributors
+* `xpanes`: Luanti contributors
 * `mesecons` mods: Jeija and contributors
 * `wieldview`: Stuart Jones
 * `mcl_meshhand`: Based on `newhand` by jordan4ibanez
@@ -233,7 +229,7 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 
 ### 圖形
 * [XSSheep](http://www.minecraftforum.net/members/XSSheep)：主要作者；Minecraft 1.11的Pixel Perfection资源包的制作者
-* [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082)：主菜單圖像和各種編輯和添加的材質包
+* [Wuzzy](https://forum.luanti.org/memberlist.php?mode=viewprofile&u=3082)：主菜單圖像和各種編輯和添加的材質包
 * [kingoscargames](https://github.com/kingoscargames)：現有材質的各種編輯和添加
 * [leorockway](https://github.com/leorockway)：怪物紋理的一些編輯
 * [xMrVizzy](https://minecraft.curseforge.com/members/xMrVizzy)：釉陶（材質以後會被替換）
@@ -257,8 +253,8 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 ### 特殊感謝
 
 * Wuzzy，感謝他啟動和維護VoxeLibre多年。
-* celeron55，創建Minetest。
-* Minetest的社區提供了大量的mods選擇，其中一些最終被納入MineClone 2。
+* celeron55，創建Luanti。
+* Luanti的社區提供了大量的mods選擇，其中一些最終被納入VoxeLibre。
 * Jordach，為《Big Freaking Dig》的唱片機音樂合輯而來
 * 花了太多時間為Minecraft Wiki寫作的工作狂。它是創建這個遊戲的寶貴資源。
 * Notch和Jeb是Minecraft背后的主要力量
@@ -277,10 +273,10 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 
 ### License of source code
 ```
-MineClone 2 (by kay27, EliasFleckenstein, Wuzzy, davedevils and countless others)
+VoxeLibre (by kay27, EliasFleckenstein, Wuzzy, davedevils and countless others)
 is an imitation of Minecraft.
 
-MineClone 2 is free software: you can redistribute it and/or modify
+VoxeLibre is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -294,15 +290,15 @@ details.
 In the mods you might find in the read-me or license
 text files a different license. This counts as dual-licensing.
 You can choose which license applies to you: Either the
-license of MineClone 2 (GNU GPLv3) or the mod's license.
+license of VoxeLibre (GNU GPLv3) or the mod's license.
 
-MineClone 2 is a direct continuation of the discontinued MineClone
+VoxeLibre is a direct continuation of the discontinued MineClone
 project by davedevils.
 
 Mod credits:
 See `README.txt` or `README.md` in each mod directory for information about other authors.
 For mods that do not have such a file, the license is the source code license
-of MineClone 2 and the author is Wuzzy.
+of VoxeLibre and the author is Wuzzy.
 ```
 
 ### License of media (textures and sounds)

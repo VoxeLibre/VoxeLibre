@@ -119,7 +119,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		end
 
 		-- No sleeping while moving. Slightly different behaviour than in MC.
-		-- FIXME: Velocity threshold should be 0.01 but Minetest 5.3.0
+		-- FIXME: Velocity threshold should be 0.01 but Luanti 5.3.0
 		-- sometimes reports incorrect Y speed. A velocity threshold
 		-- of 0.125 still seems good enough.
 		if vector.length(player:get_velocity() or player:get_player_velocity()) > 0.125 then

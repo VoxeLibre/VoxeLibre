@@ -91,7 +91,7 @@ minetest.register_entity(":__builtin:falling_node", {
 	get_staticdata = function(self)
 		local meta = self.meta
 		-- Workaround: Save inventory seperately from metadata.
-		-- Because Minetest crashes when a node with inventory gets deactivated
+		-- Because Luanti crashes when a node with inventory gets deactivated
 		-- (GitHub issue #7020).
 		-- FIXME: Remove the _inv workaround when it is no longer needed
 		local inv

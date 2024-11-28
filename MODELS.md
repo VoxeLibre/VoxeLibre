@@ -1,22 +1,22 @@
-# Models in Minetest/VoxeLibre
+# Models in Luanti/VoxeLibre
 
 Models are an important part of all entities & unique nodes in VoxeLibre. They provide a 3 dimensional map of an object for which textures are then applied to. This document is for modders, it quickly highlights some important information for the software needed to open models in VoxeLibre.
 
-## Minetest Wiki
+## Luanti Wiki
 
-For more detailed information on actually using blender to create and modify models for Minetest/VoxeLibre, please visit the Minetest wiki's page on using Blender [Here](https://wiki.minetest.net/Using_Blender)
+For more detailed information on actually using blender to create and modify models for Luanti/VoxeLibre, please visit the Luanti wiki's page on using Blender [Here](https://wiki.luanti.org/Using_Blender)
 
 ## Recommended software
 
 ### Blender
 
-Blender is a very popular and free modeling software supported on Windows, MacOS, and most Linux distributions. It is recommended to use Blender to create and modify 3D models within the minetest engine. 
+Blender is a very popular and free modeling software supported on Windows, MacOS, and most Linux distributions. It is recommended to use Blender to create and modify 3D models within the Luanti engine.
 
 Download blender [Here](https://www.blender.org/download/)
 
 ### .b3d addon for blender
 
-Blitz 3D (.b3d) Is one of the main animated model formats used for entities in the minetest engine. It cannot be imported to blender without a plugin called "Import-Export:Bitz 3D format (.b3d)".
+Blitz 3D (.b3d) Is one of the main animated model formats used for entities in the Luanti engine. It cannot be imported to blender without a plugin called "Import-Export:Bitz 3D format (.b3d)".
 
 The most up to date version of this Blender plugin can be downloaded [Here](https://github.com/GreenXenith/io_scene_b3d/releases/tag/f189786)
 
@@ -34,7 +34,7 @@ The most up to date version of this Blender plugin can be downloaded [Here](http
 
 Note: The sometimes accompanying .mtl files are not supported and can safely be deleted.
 
-Note: Do not use .b3d and .x files for static meshes at the moment, Minetest currently spawns animated mesh scene nodes for these, which may result in reduced performance.
+Note: Do not use .b3d and .x files for static meshes at the moment, Luanti currently spawns animated mesh scene nodes for these, which may result in reduced performance.
 
 ### Supported texture formats
 
@@ -42,9 +42,9 @@ Note: Do not use .b3d and .x files for static meshes at the moment, Minetest cur
 
 * .jpg
 
-* .bmp (depreciated, please use .png or .jpg)
+* .bmp (deprecated, please use .png or .jpg)
 
-* .tga (depreciated, please use .png or .jpg)
+* .tga (deprecated, please use .png or .jpg)
 
 Note: Any formats not mentioned above but known to work in the past were removed in 5.5.0 and aren't supported anymore.
 

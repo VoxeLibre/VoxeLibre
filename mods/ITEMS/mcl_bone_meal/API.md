@@ -27,7 +27,7 @@ The `_on_bone_meal` callback handler is a
 Its arguments are:
 * `itemstack`: the stack of bonem eal being applied
 * `placer`: ObjectRef of the player who aplied the bone meal, can be nil!
-* `pointed_thing`: exact pointing location (see Minetest API), where the
+* `pointed_thing`: exact pointing location (see Luanti API), where the
 	bone meal is applied
 
 The return value of the handler function indicates if the bonemealing had
@@ -50,7 +50,7 @@ For use in on_rightclick handlers that need support bone meal processing in addi
 to other behaviors. Before calling, verify that the player is wielding bone meal.
 * `itemstack`: The stack of bone meal being used
 * `placer`: ObjectRef of the player who aplied the bone meal, can be nil!
-* `pointed_thing`: exact pointing location (see Minetest API), where the
+* `pointed_thing`: exact pointing location (see Luanti API), where the
 	bone meal is applied
 
 Returns itemstack with one bone meal consumed if not in creative mode.
@@ -62,7 +62,7 @@ newer bonemealing API.
 
 ## mcl_bone_meal.register_on_bone_meal_apply(function(pointed_thing, placer))
 Called when the bone meal is applied anywhere.
-* `pointed_thing`: exact pointing location (see Minetest API), where the
+* `pointed_thing`: exact pointing location (see Luanti API), where the
 	bone meal is applied
 * `placer`: ObjectRef of the player who aplied the bone meal, can be nil!
 This function is deprecated and will be removed at some time in the future.

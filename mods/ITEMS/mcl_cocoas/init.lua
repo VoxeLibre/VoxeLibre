@@ -114,7 +114,7 @@ for i = 1, 3 do
 			type = "fixed",
 			fixed = {
 				podinfo[i].n_box, -- Pod
-				-- FIXME: This has a thickness of 0. Is this OK in Minetest?
+				-- FIXME: This has a thickness of 0. Is this OK in Luanti?
 				{ 0, 0.25, 0.25, 0, 0.5, 0.5 }, }, -- Stem
 		},
 		collision_box = {

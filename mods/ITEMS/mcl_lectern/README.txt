@@ -2,7 +2,7 @@
 ---
 # VoxeLibre-Lectern
 ---
-A ground up creation of a lectern to be used in VoxeLibre. Requires Minetest and VoxeLibre.
+A ground up creation of a lectern to be used in VoxeLibre. Requires Luanti and VoxeLibre.
 ---
 
 Created by Michieal (FaerRaven) @ DateTime: 01/07/2023 (07JAN2023)

@@ -1,5 +1,5 @@
 # VoxeLibre
-A game inspired by Minecraft for Minetest. Forked from MineClone by davedevils.
+A game inspired by Minecraft for Luanti. Forked from MineClone by davedevils.
 Developed by many people, see CREDITS.md for a complete list.
 
 ### Gameplay
@@ -65,16 +65,16 @@ an explanation.
 
 ## Installation
 To run the game with the best performance and support, we recommend the latest
-stable version of [Minetest](http://minetest.net), be we always make an effort
+stable version of [Luanti](https://www.luanti.org/), but we always make an effort
 to support one version behind the latest stable version. In some cases, older
 versions might still be good enough but you would be missing out on important
-Minetest features that enable important features for our game.
+Luanti features that enable important features for our game.
 
-There is no support for running VoxeLibre in development versions of Minetest.
+There is no support for running VoxeLibre in development versions of Luanti.
 
 To install VoxeLibre (if you haven't already), move this directory into the
-“games” directory of your Minetest data directory. Consult the help of
-Minetest to learn more.
+“games” directory of your Luanti data directory. Consult the help of
+Luanti to learn more.
 
 ## Useful links
 The VoxeLibre repository is hosted at Mesehub. To contribute or report issues, head there.
@@ -82,18 +82,18 @@ The VoxeLibre repository is hosted at Mesehub. To contribute or report issues, h
 * Mesehub: <https://git.minetest.land/VoxeLibre/VoxeLibre>
 * Discord: <https://discord.gg/xE4z8EEpDC>
 * YouTube: <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
-* ContentDB: <https://content.minetest.net/packages/wuzzy/mineclone2/>
+* ContentDB: <https://content.luanti.org/packages/wuzzy/mineclone2/>
 * OpenCollective: <https://opencollective.com/voxelibre>
 * Mastodon: <https://fosstodon.org/@VoxeLibre>
 * Lemmy: <https://lemm.ee/c/voxelibre>
 * Matrix space: <https://app.element.io/#/room/#voxelibre:matrix.org>
-* Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
+* Luanti forums: <https://forum.luanti.org/viewtopic.php?f=50&t=16407>
 * Reddit: <https://www.reddit.com/r/VoxeLibre/>
 * IRC (barely used): <https://web.libera.chat/#mineclone2>
 
 ## Target
 - Create a stable, peformant, moddable, free/libre game inspired by Minecraft
-using the Minetest engine, usable in both singleplayer and multiplayer.
+using the Luanti engine, usable in both singleplayer and multiplayer.
 - Currently, a lot of features are already implemented.
 Polishing existing features is always welcome.
 
@@ -159,8 +159,8 @@ Bonus features (not found in Minecraft):
 * Built-in crafting guide which shows you crafting and smelting recipes
 * In-game help system containing extensive help about gameplay basics, blocks, items and more
 * Temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
-* Saplings in chests in [mapgen v6](https://wiki.minetest.net/Map_generator#v6)
-* Fully moddable (thanks to Minetest's powerful Lua API)
+* Saplings in chests in [mapgen v6](https://wiki.luanti.org/Map_generator#v6)
+* Fully moddable (thanks to Luanti's powerful Lua API)
 * New blocks and items:
     * Lookup tool, shows you the help for whatever it touches
     * More slabs and stairs
@@ -181,7 +181,7 @@ Technical differences from Minecraft:
 * Different music for jukebox
 * Different textures (Pixel Perfection)
 * Different sounds (various sources)
-* Different engine (Minetest)
+* Different engine (Luanti)
 * Different easter eggs
 
 … and finally, VoxeLibre is free software (“free” as in “freedom”)!
@@ -190,6 +190,6 @@ Technical differences from Minecraft:
 
 * `LICENSE.txt`: The GPLv3 license text
 * `CONTRIBUTING.md`: Information for those who want to contribute
-* `API.md`: For Minetest modders who want to mod this game
+* `API.md`: For Luanti modders who want to mod this game
 * `LEGAL.md`: Legal information
 * `CREDITS.md`: List of everyone who contributed

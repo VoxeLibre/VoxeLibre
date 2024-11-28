@@ -14,7 +14,7 @@ tsm_railcorridors_probability_torches_in_segment (Torch probability) float 0.5 0
 tsm_railcorridors_probability_up_or_down (Stairway probability) float 0.2 0.0 1.0
 
 #Probability (0.0 to 1.0) for every part of a rail corridor to fork.
-#Caution! Too high values may cause Minetest to hang.
+#Caution! Too high values may cause Luanti to hang.
 tsm_railcorridors_probability_fork (Fork probability) float 0.04 0.0 1.0
 
 #Probability (0.0 to 1.0) for every part of a rail corridor to contain a treasure chest.

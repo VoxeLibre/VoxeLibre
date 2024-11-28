@@ -686,7 +686,7 @@ minetest.register_on_joinplayer(function(player)
 	}
 	mcl_playerplus.elytra[player] = {active = false, rocketing = 0, speed = 0}
 
-	-- Minetest bug: get_bone_position() returns all zeros vectors.
+	-- Luanti bug: get_bone_position() returns all zeros vectors.
 	-- Workaround: call set_bone_position() one time first.
 	player:set_bone_position("Head_Control", vector.new(0, 6.75, 0))
 	player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0))

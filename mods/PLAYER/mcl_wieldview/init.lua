@@ -21,14 +21,14 @@ local function update_wieldview_entity(player)
 		local item = player:get_wielded_item():get_name()
 
 		if item == luaentity._item then return end
-		
+
 		luaentity._item = item
-			
+
 		local def = player:get_wielded_item():get_definition()
 		if def and def._mcl_wieldview_item then
 			item = def._mcl_wieldview_item
 		end
-			
+
 		local item_def = minetest.registered_items[item]
 		luaentity.object:set_properties({
 			glow = item_def and item_def.light_source or 0,
@@ -40,7 +40,7 @@ local function update_wieldview_entity(player)
 		-- the wieldview entity will sometimes get unloaded.
 		-- This code path is also used to initalize the wieldview.
 		-- Creating entites from minetest.register_on_joinplayer
-		-- is unreliable as of Minetest 5.6
+		-- is unreliable as of Luanti 5.6
 		local obj_ref = minetest.add_entity(player:get_pos(), "mcl_wieldview:wieldview")
 		if not obj_ref then return end
 		obj_ref:set_attach(player, "Wield_Item")

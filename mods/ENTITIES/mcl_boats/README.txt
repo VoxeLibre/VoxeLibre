@@ -17,7 +17,7 @@ Code based on Minetest Game, licensed under the MIT License (MIT).
 
 Authors include:
 * PilzAdam (2012-2016)
-* Various Minetest / Minetest Game developers and contributors (2012-2016)
+* Various Luanti / Minetest Game developers and contributors (2012-2016)
 * maikerumine (2017)
 * Wuzzy (2017)
 * Fleckenstein (2020-2021)

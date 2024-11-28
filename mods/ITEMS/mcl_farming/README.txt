@@ -1,10 +1,10 @@
-===FARMING MOD for MINETEST-C55===
+===FARMING MOD for Luanti===
 by PilzAdam
 
 Modified heavily by VoxeLibre Dev Team. 
 
 Introduction: 
-This mod adds farming to Minetest.
+This mod adds farming to Luanti.
 
 How to install see:
 http://wiki.minetest.com/wiki/Installing_Mods

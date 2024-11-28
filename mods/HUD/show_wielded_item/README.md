@@ -1,5 +1,5 @@
 # Show Wielded Item [`show_wielded_item`]
-This Minetest mod displays the name of the wielded item above the hotbar and
+This Luanti mod displays the name of the wielded item above the hotbar and
 statbars.
 
 This mod is compatible with the HUD Bars [`hudbars`] mod.

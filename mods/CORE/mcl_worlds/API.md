@@ -13,7 +13,7 @@ Params:
 * pos: position
 
 ## mcl_worlds.y_to_layer(y)
-This function is used to calculate the Minetest y layer and dimension of the given y Minecraft layer.
+This function is used to calculate the Luanti y layer and dimension of the given y Minecraft layer.
 Mainly used for ore generation.
 Takes a Y coordinate as input and returns:
 

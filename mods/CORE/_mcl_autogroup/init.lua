@@ -1,6 +1,6 @@
 --[[
 This mod implements a HACK to make 100% sure the digging times of all tools
-match Minecraft's perfectly.  The digging times system of Minetest is very
+match Minecraft's perfectly.  The digging times system of Luanti is very
 different, so this weird group trickery has to be used.  In Minecraft, each
 block has a hardness and the actual Minecraft digging time is determined by
 this:
@@ -62,8 +62,8 @@ Information about the mod
 The mod is split up into two parts, mcl_autogroup and _mcl_autogroup.
 mcl_autogroup contains the API functions used to register custom digging groups.
 _mcl_autogroup contains most of the code.  The leading underscore in the name
-"_mcl_autogroup" is used to force Minetest to load that part of the mod as late
-as possible.  Minetest loads mods in reverse alphabetical order.
+"_mcl_autogroup" is used to force Luanti to load that part of the mod as late
+as possible.  Luanti loads mods in reverse alphabetical order.
 
 This also means that it is very important that no mod adds _mcl_autogroup as a
 dependency.

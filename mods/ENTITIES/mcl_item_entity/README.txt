@@ -1,8 +1,8 @@
-===ITEM_DROP MOD for MINETEST-C55===
+===ITEM_DROP MOD for Luanti===
 by PilzAdam
 
 Introduction:
-This mod adds Minecraft like drop/pick up of items to Minetest.
+This mod adds Minecraft like drop/pick up of items to Luanti.
 
 This mod has been forked from item_drop in the VoxBox game.
 
@@ -11,7 +11,7 @@ Sourcecode: WTFPL (see below)
 Sound: WTFPL (see below)
 
 See also:
-http://minetest.net/
+https://www.luanti.org/
 
          DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
                     Version 2, December 2004

@@ -10,7 +10,7 @@ whether you're a programmer or not.
 
 ## VoxeLibre's development target is to...
 - Create a stable, peformant, moddable, free/libre game inspired by Minecraft
-using the Minetest engine, usable in both singleplayer and multiplayer. 
+using the Luanti engine, usable in both singleplayer and multiplayer.
 - Currently, a lot of features are already implemented.
 Polishing existing features is always welcome.
 
@@ -20,8 +20,8 @@ Polishing existing features is always welcome.
 * [YouTube](https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A)
 * [Matrix](https://app.element.io/#/room/#voxelibre:matrix.org)
 * [Reddit](https://www.reddit.com/r/VoxeLibre/)
-* [Minetest forums](https://forum.minetest.net/viewtopic.php?f=50&t=16407)
-* [ContentDB](https://content.minetest.net/packages/wuzzy/mineclone2/)
+* [Luanti forums](https://forum.luanti.org/viewtopic.php?f=50&t=16407)
+* [ContentDB](https://content.luanti.org/packages/wuzzy/mineclone2/)
 * [OpenCollective](https://opencollective.com/mineclone2)
 
 ## Using git
@@ -39,7 +39,7 @@ https://git.minetest.land/VoxeLibre/VoxeLibre/wiki/
 
 ## How you can help as a non-programmer
 As someone who does not know how to write programs in Lua or does not
-know how to use the Minetest API, you can still help us out a lot. For
+know how to use the Luanti API, you can still help us out a lot. For
 example, by opening an issue in the
 [Issue tracker](https://git.minetest.land/VoxeLibre/VoxeLibre/issues),
 you can report a bug or request a feature.
@@ -53,10 +53,10 @@ discussion.
 Try not to report bugs that have already been reported or request features
 that already have been requested. This can often be ambiguous though.
 If in doubt open an issue!
-* If you know about Minetest's inner workings, please think about
+* If you know about Luanti's inner workings, please think about
 whether the bug / the feature that you are reporting / requesting is
-actually an issue with Minetest itself, and if it is, head to the
-[Minetest issue tracker](https://github.com/minetest/minetest/issues)
+actually an issue with Luanti itself, and if it is, head to the
+[Luanti issue tracker](https://github.com/minetest/minetest/issues)
 instead.
 * If you need any help regarding creating a Mesehub account or opening
 an issue, feel free to ask on the Discord or Matrix space.
@@ -69,11 +69,11 @@ The link to the mesehub registration page is: https://git.minetest.land/user/sig
 However, it is not a bug if you believe something is missing in the
 game. In this case, please read "Requesting features"
 * If you report a crash, always include the error message. If you play
-in singleplayer, post a screenshot of the message that Minetest showed
+in singleplayer, post a screenshot of the message that Luanti showed
 when the crash happened (or copy the message into your issue). If you
 are a server admin, you can find error messages in the log file of the
 server.
-* Tell us which VoxeLibre and Minetest versions you are using (from Minetest 5.7 type /ver, for previous versions, check the game.conf or README.md file).
+* Tell us which VoxeLibre and Luanti versions you are using (from Luanti 5.7 type /ver, for previous versions, check the game.conf or README.md file).
 * Tell us how to reproduce the problem: What you were doing to trigger
 the bug, e.g. before the crash happened or what causes the faulty
 behavior.
@@ -182,13 +182,13 @@ is by giving us profiler results. Profiler results give us detailed
 information about the game's performance and let us know places to
 investigate optimization issues. This way we can make the game faster.
 
-#### Using Minetest's profiler
+#### Using Luanti's profiler
 We frequently will use profiling to optimise our code. We recommend use of
 the JIT profiler (RIP Jude) to fully understand performance impact:
 
-https://content.minetest.net/packages/jwmhjwmh/jitprofiler/
+https://content.luanti.org/packages/jwmhjwmh/jitprofiler/
 
-Minetest also has a built in profiler. Simply set `profiler.load = true` in
+Luanti also has a built in profiler. Simply set `profiler.load = true` in
 your configuration file and restart the server. After running the server
 for some time, just run `/profiler save` in chat - then you will find a
 file in the world directory containing the results. Open a new issue and
@@ -243,7 +243,7 @@ you'd like to take care of it, to avoid duplicate work.
 ### Don't hesitate to ask for help
 We appreciate any contributing effort to VoxeLibre. If you are a
 relatively new programmer, you can reach us on Discord or Matrix
-for questions about git, Lua, Minetest API, VoxeLibre codebase or
+for questions about git, Lua, Luanti API, VoxeLibre codebase or
 anything related to VoxeLibre. We can help you avoid writing code that
 would be deemed inadequate, or help you become familiar with VoxeLibre
 better, or assist you use development tools.
@@ -294,7 +294,7 @@ split up but in general multiple small PRs are better than a big one
 * Each mod must provide `mod.conf`.
 * Mod names are snake case, and newly added mods (or substantially changed mods
 that are included from the outside) start with `vl_`, e.g.
-`vl_hollow_logs`,    . Keep in mind Minetest
+`vl_hollow_logs`,    . Keep in mind Luanti
 does not support capital letters in mod names.
 * In the past mods were prefixed with `mcl_`, e.g.
 `mcl_core`, `mcl_farming`, `mcl_monster_eggs`. New mods should **never** use this prefix.
@@ -325,7 +325,7 @@ function mcl_example.do_something()
 end
 ```
 
-* Use modern Minetest API, e.g. no usage of `minetest.env`
+* Use modern Luanti API, e.g. no usage of `minetest.env`
 * Tabs should be used for indent, spaces for alignment, e.g.
 
 ```lua
@@ -423,7 +423,7 @@ from `CREDITS.md` and commit the result (if anything changed)
 version number
 * Push to repository (don't forget `--tags`!)
 * Update ContentDB
-(https://content.minetest.net/packages/Wuzzy/mineclone2/)
+(https://content.luanti.org/packages/Wuzzy/mineclone2/)
 * Update first post in forum thread
 (https://forum.minetest.net/viewtopic.php?f=50&t=16407)
 * Post release announcement and changelog in forums

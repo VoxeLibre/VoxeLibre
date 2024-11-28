@@ -81,7 +81,7 @@ function mcl_stonecutter.register_recipe(input, output, count)
 	end
 end
 
----Minetest currently (5.7) doesn't prevent using `:` characters in field names
+---Luanti currently (5.7) doesn't prevent using `:` characters in field names
 ---But using them prevent the buttons from beeing styled with `style[]` elements
 ---https://github.com/minetest/minetest/issues/14013
 

@@ -1,7 +1,7 @@
 # Crafting Guide (VoxeLibre edition)
 
-#### `mcl_craftguide` is based on, `craftguide` the most comprehensive crafting guide on Minetest.
-#### Consult the [Minetest Wiki](http://wiki.minetest.net/Crafting_guide) for more details.
+#### `mcl_craftguide` is based on, `craftguide` the most comprehensive crafting guide on Luanti.
+#### Consult the [Luanti Wiki](http://wiki.luanti.org/Crafting_guide) for more details.
 
 This crafting guide can be accessed from the invenotory menu (book icon).
 

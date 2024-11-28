@@ -586,7 +586,7 @@ function mcl_core.generate_dark_oak_tree(pos)
 	minetest.place_schematic(vector_offset(pos, -3, -1, -4), modpath.."/schematics/mcl_core_dark_oak.mts", "random", nil, false)
 end
 
--- Helper function for jungle tree, form Minetest Game 0.4.15
+-- Helper function for jungle tree, from Minetest Game 0.4.15
 local function add_trunk_and_leaves(data, a, pos, tree_cid, leaves_cid, height, size, iters)
 	local x, y, z = pos.x, pos.y, pos.z
 	local c_air = minetest.CONTENT_AIR
@@ -1275,7 +1275,7 @@ minetest.register_abm({
 
 -- Remove vines which are not supported by anything, similar to leaf decay.
 --[[ TODO: Vines are supposed to die immediately when they supporting block is destroyed.
-But doing this in Minetest would be too complicated / hacky. This vines decay is a simple
+But doing this in Luanti would be too complicated / hacky. This vines decay is a simple
 way to make sure that all floating vines are destroyed eventually. ]]
 minetest.register_abm({
 	label = "Vines decay",
