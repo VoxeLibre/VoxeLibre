@@ -18,6 +18,17 @@ function mcl_burning.is_affected_by_rain(obj)
 	return mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) and mcl_weather.has_rain(pos)
 end
 
+function mcl_burning.is_affected_by_sunlight(obj, threshold)
+	threshold = threshold or core.LIGHT_MAX
+
+	local pos = obj:get_pos()
+	local _,dim = mcl_worlds.y_to_layer(pos.y)
+	if dim ~= "overworld" then return false end
+
+	local sunlight = mcl_util.get_natural_light(pos, core.get_timeofday()) or 0
+	if sunlight > threshold then return true end
+end
+
 function mcl_burning.get_collisionbox(obj, smaller, storage)
 	local cache = storage.collisionbox_cache
 	if cache then
