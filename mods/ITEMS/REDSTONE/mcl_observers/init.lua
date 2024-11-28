@@ -2,28 +2,27 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local get_node = minetest.get_node
 
+local rules_down = {{ x = 0, y = 1, z = 0, spread = true }}
+local rules_up = {{ x = 0, y = -1, z = 0, spread = true }}
 local function get_rules_flat(node)
 	local rule = core.facedir_to_dir((node.param2+2)%4)
 	rule.spread = true
 	return {rule}
 end
 
-local rules_down = {{ x = 0, y = 1, z = 0, spread = true }}
-local rules_up = {{ x = 0, y = -1, z = 0, spread = true }}
-
 local function observer_look_position(pos, node)
 	local node = node or get_node(pos)
 
 	if node.name == "mcl_observers:observer_up_off" or node.name == "mcl_observers:observer_up_on" then
-		return vector.add(pos, {x=0, y=1, z=0})
+		return vector.offset(pos, 0, 1, 0)
 	elseif node.name == "mcl_observers:observer_down_off" or node.name == "mcl_observers:observer_down_on" then
-		return vector.add(pos, {x=0, y=-1, z=0})
+		return vector.offset(pos, 0, -1, 0)
 	else
 		return vector.add(pos, minetest.facedir_to_dir(node.param2))
 	end
 end
 
--- Vertical orientation (CURRENTLY DISABLED)
+-- Vertical orientation
 local function observer_orientate(pos, placer)
 	-- Not placed by player
 	if not placer then return end
