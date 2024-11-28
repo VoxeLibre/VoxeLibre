@@ -769,3 +769,11 @@ function mcl_util.metadata_last_act(meta, name, delay)
 	return true
 end
 
+function dofile_codegen(path, debug)
+	local contents = io.open(path):read("a*")
+	contents = contents:gsub("<<<","]]"):gsub(">>>","code=code..[[")
+	contents = "local code = \"\"\ncode = code .. [[\n"..contents.."]]\nreturn code"
+	local code = loadstring(contents)()
+	if debug then print(code) end
+	loadstring(code)()
+end
