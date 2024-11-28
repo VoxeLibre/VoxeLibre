@@ -1,44 +1,78 @@
-local pending_block_updates = {}
 local block_update_pattern = {
-	-- Distance 1 (6 positions)
-	vector.new( 1, 0, 0),
-	vector.new(-1, 0, 0),
-	vector.new( 0, 1, 0),
-	vector.new( 0,-1, 0),
-	vector.new( 0, 0, 1),
-	vector.new( 0, 0,-1),
-
-	-- Distance 2 (18 positions)
-	vector.new( 2, 0, 0),
-	vector.new(-2, 0, 0),
-	vector.new( 0, 2, 0),
-	vector.new( 0,-2, 0),
-	vector.new( 0, 0, 2),
-	vector.new( 0, 0,-2),
-
-	vector.new( 1, 1, 0),
-	vector.new( 1,-1, 0),
-	vector.new(-1, 1, 0),
-	vector.new(-1,-1, 0),
-
-	vector.new( 1, 0, 1),
-	vector.new(-1, 0, 1),
-	vector.new( 1, 0,-1),
-	vector.new(-1, 0,-1),
-
-	vector.new( 0, 1, 1),
-	vector.new( 0,-1, 1),
-	vector.new( 0, 1,-1),
-	vector.new( 0,-1,-1),
+	vector.new( 1, 0, 0), vector.new(-1, 0, 0), vector.new( 0, 1, 0),
+	vector.new( 0,-1, 0), vector.new( 0, 0, 1), vector.new( 0, 0,-1),
+	vector.new( 2, 0, 0), vector.new(-2, 0, 0), vector.new( 0, 2, 0),
+	vector.new( 0,-2, 0), vector.new( 0, 0, 2), vector.new( 0, 0,-2),
+	vector.new( 1, 1, 0), vector.new( 1,-1, 0), vector.new(-1, 1, 0),
+	vector.new(-1,-1, 0), vector.new( 1, 0, 1), vector.new(-1, 0, 1),
+	vector.new( 1, 0,-1), vector.new(-1, 0,-1), vector.new( 0, 1, 1),
+	vector.new( 0,-1, 1), vector.new( 0, 1,-1), vector.new( 0,-1,-1),
 }
 
 -- Block updates are processed on the next timestep
 -- This is written to consolidate multiple updates to the same position
-local function queue_block_updates(pos)
-	for i = 1,#block_update_pattern do
-		local offset = block_update_pattern[i]
-		pending_block_updates[core.hash_node_position(pos + offset)] = true
+local queue_block_updates
+if type(core.hash_node_position(vector.zero())) == "number" then
+	-- core.hash_node_position() returns a number, we can perform some optimizations based on this that will make the
+	-- JIT compiler generate better code
+	local function codegen_queue_block_updates()
+		local code = [[
+			local pending_block_updates = {}
+			local function queue_block_updates(pos)
+				local pos_hash = core.hash_node_position(pos)
+		]]
+			for i = 1,#block_update_pattern do
+				local hash_diff = core.hash_node_position(block_update_pattern[i]) - core.hash_node_position(vector.zero())
+				if hash_diff < 0 then
+					code = code.. "\tpending_block_updates[pos_hash-"..tostring(-hash_diff).."]=true\n"
+				else
+					code = code.. "\tpending_block_updates[pos_hash+"..tostring(hash_diff).."]=true\n"
+				end
+			end
+		code = code..[[
+		end
+		core.register_globalstep(function(dtime)
+			local updates = pending_block_updates
+			pending_block_updates = {}
+
+			for hash,_ in pairs(updates) do
+				local pos = core.get_position_from_hash(hash)
+				local node = core.get_node(pos)
+				local def = core.registered_nodes[node.name]
+				if def and def.vl_block_update then
+					def.vl_block_update(pos, node, def)
+				end
+			end
+		end)
+		return queue_block_updates
+		]]
+		print("code = "..code)
+		return loadstring(code)(pending)
 	end
+	queue_block_updates = codegen_queue_block_updates()
+else
+	-- Use fallback that makes no assumptions about the result from core.hash_node_position()
+	local pending_block_updates = {}
+
+	queue_block_updates = function(pos)
+		for i = 1,#block_update_pattern do
+			local offset = block_update_pattern[i]
+			pending_block_updates[core.hash_node_position(pos + offset)] = true
+		end
+	end
+	core.register_globalstep(function(dtime)
+		local updates = pending_block_updates
+		pending_block_updates = {}
+
+		for hash,_ in pairs(updates) do
+			local pos = core.get_position_from_hash(hash)
+			local node = core.get_node(pos)
+			local def = core.registered_nodes[node.name]
+			if def and def.vl_block_update then
+				def.vl_block_update(pos, node, def)
+			end
+		end
+	end)
 end
 
 local old_add_node = core.add_node
@@ -67,19 +101,6 @@ function core.bulk_set_node(lst, node)
 	end
 end
 
-core.register_globalstep(function(dtime)
-	local updates = pending_block_updates
-	pending_block_updates = {}
-
-	for hash,_ in pairs(updates) do
-		local pos = core.get_position_from_hash(hash)
-		local node = core.get_node(pos)
-		local def = core.registered_nodes[node.name]
-		if def and def.vl_block_update then
-			def.vl_block_update(pos, node, def)
-		end
-	end
-end)
 
 core.register_lbm({
 	label = "Call _onload() when blocks load",
