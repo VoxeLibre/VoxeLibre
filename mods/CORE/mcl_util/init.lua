@@ -798,3 +798,11 @@ function mcl_util.caller_from_traceback(traceback)
 	return "mods"..DIR_DELIM..parts[1]..":"..parts[2]
 end
 
+function dofile_codegen(path, debug)
+	local contents = io.open(path):read("a*")
+	contents = contents:gsub("<<<","]]"):gsub(">>>","code=code..[[")
+	contents = "local code = \"\"\ncode = code .. [[\n"..contents.."]]\nreturn code"
+	local code = loadstring(contents)()
+	if debug then print(code) end
+	loadstring(code)()
+end
