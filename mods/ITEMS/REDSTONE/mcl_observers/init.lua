@@ -1,6 +1,6 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
-local get_node = minetest.get_node
+local core_get_node = core.get_node
 
 local rules_down = {{ x = 0, y = 1, z = 0, spread = true }}
 local rules_up = {{ x = 0, y = -1, z = 0, spread = true }}
@@ -11,14 +11,14 @@ local function get_rules_flat(node)
 end
 
 local function observer_look_position(pos, node)
-	local node = node or get_node(pos)
+	local node = node or core_get_node(pos)
 
 	if node.name == "mcl_observers:observer_up_off" or node.name == "mcl_observers:observer_up_on" then
 		return vector.offset(pos, 0, 1, 0)
 	elseif node.name == "mcl_observers:observer_down_off" or node.name == "mcl_observers:observer_down_on" then
 		return vector.offset(pos, 0, -1, 0)
 	else
-		return vector.add(pos, minetest.facedir_to_dir(node.param2))
+		return vector.add(pos, core.facedir_to_dir(node.param2))
 	end
 end
 
@@ -30,75 +30,50 @@ local function observer_orientate(pos, placer)
 	-- Placer pitch in degrees
 	local pitch = placer:get_look_vertical() * (180 / math.pi)
 
-	--local node = get_node(pos)
 	if pitch > 55 then -- player looking upwards
 		-- Observer looking downwards
-		minetest.set_node(pos, {name="mcl_observers:observer_down_off"})
+		core.set_node(pos, {name="mcl_observers:observer_down_off"})
 	elseif pitch < -55 then -- player looking downwards
 		-- Observer looking upwards
-		minetest.set_node(pos, {name="mcl_observers:observer_up_off"})
+		core.set_node(pos, {name="mcl_observers:observer_up_off"})
 	end
 end
 
 local function update_observer(pos, node, def, force_activate)
 	local front = observer_look_position(pos, node)
-	local frontnode = get_node(front)
-	local meta = minetest.get_meta(pos)
-
-	if not force_activate then
-		-- Ignore loading map blocks
-		if frontnode.name == "ignore" then return end
-
-		local oldnode = meta:get_string("node_name")
-		if oldnode == "" then
-			meta:set_string("node_name", frontnode.name)
-			meta:set_string("node_param2", tostring(frontnode.param2))
-			return
-		end
-
-		local oldparam2 = meta:get_string("node_param2")
-
-		-- Check if the observed node has changed
-		local frontnode_def = core.registered_nodes[frontnode.name]
-		local ignore_param2 = frontnode_def and frontnode_def.groups.observers_ignore_param2 or 0 ~= 0
-		if frontnode.name == oldnode and (ignore_param2 or tostring(frontnode.param2) == oldparam2) then
-			return
-		end
+	if not force_activate and not vl_block_update.updated[core.hash_node_position(front)] then
+		return
 	end
 
 	-- Node state changed! Activate observer
 	if node.name == "mcl_observers:observer_off" then
-		minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
+		core.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
 		mesecon.receptor_on(pos, get_rules_flat(node))
 	elseif node.name == "mcl_observers:observer_down_off" then
-		minetest.set_node(pos, {name = "mcl_observers:observer_down_on"})
+		core.set_node(pos, {name = "mcl_observers:observer_down_on"})
 		mesecon.receptor_on(pos, rules_down)
 	elseif node.name == "mcl_observers:observer_up_off" then
-		minetest.set_node(pos, {name = "mcl_observers:observer_up_on"})
+		core.set_node(pos, {name = "mcl_observers:observer_up_on"})
 		mesecon.receptor_on(pos, rules_up)
 	end
-
-	meta:set_string("node_name", frontnode.name)
-	meta:set_string("node_param2", tostring(frontnode.param2))
-	return frontnode
 end
 local function activate_observer(pos, node, def)
 	update_observer(pos, node, def, true)
 end
-
+local function on_load(pos)
+	local node = core_get_node(pos)
+	update_observer(pos, node, core.registered_nodes[node.name], true)
+end
 local function decay_on_observer(pos)
-	local original_name = get_node(pos).name
-	core.after(mcl_vars.redstone_tick,function()
-		local node = get_node(pos)
+	local original_name = core_get_node(pos).name
+	core.after(mcl_vars.redstone_tick + 0.05,function()
+		local node = core_get_node(pos)
 		if node.name ~= original_name then return end
 
 		local def = core.registered_nodes[node.name]
-		local old_meta = minetest.get_meta(pos):to_table()
 		node.name = def._mcl_observer_off_name
-		minetest.set_node(pos, node)
-
+		core.set_node(pos, node)
 		mesecon.receptor_off(pos, get_rules_flat(node))
-		minetest.get_meta(pos):from_table(old_meta)
 	end)
 end
 
@@ -130,6 +105,7 @@ mesecon.register_node("mcl_observers:observer", {
 		},
 		after_place_node = observer_orientate,
 		_onmove = activate_observer,
+		_onload = on_load,
 	}, {
 		_doc_items_create_entry = false,
 		groups = {pickaxey=1, material_stone=1, not_opaque=1, not_in_creative_inventory=1 },
@@ -173,6 +149,7 @@ mesecon.register_node("mcl_observers:observer_down", {
 		},
 
 		_onmove = activate_observer,
+		_onload = on_load,
 	}, {
 		_doc_items_create_entry = false,
 		tiles = {
@@ -216,6 +193,7 @@ mesecon.register_node("mcl_observers:observer_up", {
 		},
 
 		_onmove = activate_observer,
+		_onload = on_load,
 	}, {
 		_doc_items_create_entry = false,
 		tiles = {
@@ -236,7 +214,7 @@ mesecon.register_node("mcl_observers:observer_up", {
 	}
 )
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_observers:observer_off",
 	recipe = {
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
@@ -244,7 +222,7 @@ minetest.register_craft({
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
 	},
 })
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_observers:observer_off",
 	recipe = {
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
@@ -252,4 +230,3 @@ minetest.register_craft({
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
 	},
 })
-
