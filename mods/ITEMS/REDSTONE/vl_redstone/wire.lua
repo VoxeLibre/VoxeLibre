@@ -166,7 +166,7 @@ local function update_redstone_wire(orig, update_neighbor)
 		local pos = vector.offset(orig, part[1], part[2], part[3])
 		local node = core.get_node(pos)
 		local def = core.registered_nodes[node.name]
-		if def.groups.redstone or 0 ~= 0 then
+		if def and def.groups.redstone or 0 ~= 0 then
 			mask = mask + part[4]
 			if update_neighbor and def.groups.redstone_wire or 0 ~= 0 then
 				update_redstone_wire(pos)
