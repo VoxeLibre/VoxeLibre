@@ -201,5 +201,18 @@ describe('vl_scheduler',function()
 			call_globalstep(0.05)
 		end)
 	end)
+	it('can provide cancellable jobs from core.after()',function()
+		local after = _G.core.after
+		local ran = false
+		local job = after(1,function()
+			ran = true
+		end)
+		call_globalstep(0.5)
+		assert.no_error(function()
+			job:cancel()
+		end)
+		for i = 1,10 do call_globalstep(0.5) end
+		assert.is_false(ran)
+	end)
 end)
 
