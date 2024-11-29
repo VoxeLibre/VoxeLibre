@@ -132,6 +132,7 @@ local function globalstep(dtime)
 	-- Run tasks that must be run this timestep (now-main)
 	every_globalstep(dtime)
 	local next_main_task = run_queue[2]
+	run_queue[2] = nil
 	while next_main_task do
 		local task = next_main_task
 		next_main_task = task.next
@@ -139,7 +140,6 @@ local function globalstep(dtime)
 		task:func(dtime)
 		free_task(task)
 	end
-	run_queue[2] = nil
 
 	-- Launch asynchronous tasks that may be issued any time (background-async)
 	local next_background_async_task = run_queue[3]
