@@ -187,9 +187,10 @@ local function update_redstone_wire(orig, update_neighbor)
 		connections = {"vl_redstone:dust", 0}
 	end
 	local node = core.get_node(orig)
-	if node.name ~= connections[1] then
+	local power = math.floor(node.param2 / 4)
+	if node.name ~= connections[1] or node.param2 ~= connections[2] + power * 16 then
 		node.name = connections[1]
-		node.param2 = connections[2]
+		node.param2 = connections[2] + power * 4
 		core.set_node(orig, node)
 	end
 end
@@ -200,6 +201,7 @@ local base_def = {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "color4dir",
+	palette = "redstone-palette.png",
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -219,6 +221,41 @@ local base_def = {
 
 	is_ground_content = false,
 	sunlight_propogate = true,
+
+	mesecons = {
+		conductor = {
+			rules = {
+				{x=-1,  y= 0, z= 0, spread=true},
+				{x= 1,  y= 0, z= 0, spread=true},
+				{x= 0,  y=-1, z= 0, spread=true},
+				{x= 0,  y= 1, z= 0, spread=true},
+				{x= 0,  y= 0, z=-1, spread=true},
+				{x= 0,  y= 0, z= 1, spread=true},
+
+				{x= 1, y= 1, z= 0},
+				{x= 1, y=-1, z= 0},
+				{x=-1, y= 1, z= 0},
+				{x=-1, y=-1, z= 0},
+				{x= 0, y= 1, z= 1},
+				{x= 0, y=-1, z= 1},
+				{x= 0, y= 1, z=-1},
+				{x= 0, y=-1, z=-1}
+			},
+			state = function(node)
+				if node.param2 >= 4 then
+					return mesecon.state.on
+				else
+					return mesecon.state.off
+				end
+			end,
+			onstate = function(pos, node)
+				return {node.name, node.param2 % 4 + 60}
+			end,
+			offstate = function(pos, node)
+				return {node.name, node.param2 % 4}
+			end,
+		}
+	},
 
 	groups = {
 		dig_by_piston = 1,
