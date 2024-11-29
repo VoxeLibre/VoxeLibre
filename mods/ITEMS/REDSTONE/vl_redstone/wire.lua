@@ -1,5 +1,5 @@
 local use_texture_alpha = core.features.use_texture_alpha_string_modes and "clip" or true
-
+local DEBUG = false
 local box_center = {-1/16, -.5, -1/16, 1/16, -.5+1/64, 1/16}
 local nodebox_parts = {
 	[0] = {1/16, -.5, -1/16, 8/16, -.5+1/64, 1/16}, -- x positive
@@ -15,7 +15,6 @@ local nodebox_parts = {
 local dust = "redstone_redstone_dust_dot.png"
 local flat = "(redstone_redstone_dust_dot.png^redstone_redstone_dust_line0.png^(redstone_redstone_dust_line1.png^[transformR90))"
 local line = "redstone_redstone_dust_line0.png"
-
 local connection_table = {
 	[  0] = {"vl_redstone:dust",      0},	[  1] = {"vl_redstone:trail_0",   0},
 	[  2] = {"vl_redstone:trail_0",   3},	[  3] = {"vl_redstone:corner_00", 0},
@@ -146,12 +145,6 @@ local connection_table = {
 	[252] = {"vl_redstone:cross_1111",0},	[253] = {"vl_redstone:cross_1111",0},
 	[254] = {"vl_redstone:cross_1111",0},	[255] = {"vl_redstone:cross_1111",0},
 }
-local nodes = {
-	[0] = "_", [1] = "d", [2] = "S", [3] = "L",
-}
-local function get_node_for(a,b)
-	return nodes[a+2*b]
-end
 local parts = {
 	[1] = { 1, 0, 0,   1},
 	[2] = { 0, 0, 1,   2},
@@ -201,7 +194,7 @@ local base_def = {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "color4dir",
-	palette = "redstone-palette.png",
+	palette = DEBUG and "vl_redstone_palette_debug.png" or "vl_redstone_palette.png",
 	node_box = {
 		type = "fixed",
 		fixed = {
