@@ -159,19 +159,31 @@ local parts = {
 	[11]= {-1,-1, 0,   4},
 	[12]= { 0,-1,-1,   8},
 }
+local function can_connect_dust(from, to)
+	local node = core.get_node(to)
+	local def = core.registered_nodes[node.name]
+	if not def then return false end
+
+	-- We can always connect into a redstone wire
+	if def.groups.redstone_wire == 1 then return true end
+
+	-- Support connecting to mesecons devices
+	if def.mesecons then
+		local rules = mesecon.flattenrules(mesecon.get_any_rules(node))
+		for i = 1,#rules do
+			if vector.equals(vector.add(to, rules[i]), from) then return true end
+		end
+	end
+
+	return false
+end
+
 local function update_redstone_wire(orig, update_neighbor)
 	local mask = 0
 	for i = 1,12 do
 		local part = parts[i]
 		local pos = vector.offset(orig, part[1], part[2], part[3])
-		local node = core.get_node(pos)
-		local def = core.registered_nodes[node.name]
-		if def and def.groups.redstone or 0 ~= 0 then
-			mask = mask + part[4]
-			if update_neighbor and def.groups.redstone_wire or 0 ~= 0 then
-				update_redstone_wire(pos)
-			end
-		end
+		if can_connect_dust(orig, pos) then mask = mask + part[4] end
 	end
 
 	local connections = connection_table[mask]
