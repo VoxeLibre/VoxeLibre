@@ -190,5 +190,16 @@ describe('vl_scheduler',function()
 			call_globalstep(0.05)
 		end
 	end)
+	it('can schedule new tasks recursively and they run on the next timestep',function()
+		local vl_scheduler = _G.vl_scheduler
+		vl_scheduler.after(0, 2, function() end)
+		vl_scheduler.after(0, 2, function()
+			vl_scheduler.after(0, 2, function() end)
+			vl_scheduler.after(0, 2, function() end)
+		end)
+		assert.no_error(function()
+			call_globalstep(0.05)
+		end)
+	end)
 end)
 
