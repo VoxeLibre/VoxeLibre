@@ -220,20 +220,34 @@ local function queue_task(when, priority, task)
 end
 vl_scheduler.queue_task = queue_task
 
+local task_metatable = {
+	__index = {
+		cancel = function(self)
+			self.real_func = function() end
+		end,
+		func = function(self)
+			self.real_func(unpack(self.args))
+		end,
+	}
+}
+
 local function vl_scheduler_after(time, priority, func, ...)
 	local task = new_task()
 	task.args = {...}
 	task.next = nil
 	task.real_func = func
-	task.func = function(task) task.real_func(unpack(task.args)) end
+	setmetatable(task, task_metatable)
 	local timesteps = math.round(time / 0.05)
 	queue_task(timesteps, priority, task)
+
+	-- Return a job handle that can cancel
+	return task
 end
 vl_scheduler.after = vl_scheduler_after
 
 -- Hijack core.after and redirect to this scheduler
 function core.after(time, func, ...)
-	vl_scheduler_after(time, 2, func, ...)
+	return vl_scheduler_after(time, 2, func, ...)
 end
 
 return vl_scheduler
