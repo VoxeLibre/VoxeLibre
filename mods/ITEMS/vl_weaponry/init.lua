@@ -449,4 +449,12 @@ for t,m in pairs(materials) do
 			{ b, b, s },
 		}
 	})
+	minetest.register_craft({
+		output = "vl_weaponry:spear_"..t,
+		recipe = {
+			{ b, b, m },
+			{ b, s, b },
+			{ s, b, b },
+		}
+	})
 end
