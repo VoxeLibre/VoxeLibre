@@ -1,4 +1,4 @@
-local use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true
+local use_texture_alpha = core.features.use_texture_alpha_string_modes and "clip" or true
 
 local box_center = {-1/16, -.5, -1/16, 1/16, -.5+1/64, 1/16}
 local nodebox_parts = {
@@ -152,19 +152,6 @@ local nodes = {
 local function get_node_for(a,b)
 	return nodes[a+2*b]
 end
-for i = 0,255 do
-	if not connection_table[i] then
-		local E = get_node_for(math.floor(i /  1) % 2, math.floor(i / 16) % 2)
-		local N = get_node_for(math.floor(i /  2) % 2, math.floor(i / 32) % 2)
-		local W = get_node_for(math.floor(i /  4) % 2, math.floor(i / 64) % 2)
-		local S = get_node_for(math.floor(i /  8) % 2, math.floor(i /128) % 2)
-
-		print("Missing "..i)
-		print(" "..N)
-		print(W.." "..E)
-		print(" "..S)
-	end
-end
 local parts = {
 	[1] = { 1, 0, 0,   1},
 	[2] = { 0, 0, 1,   2},
@@ -199,11 +186,12 @@ local function update_redstone_wire(orig, update_neighbor)
 		core.log("missing connections for "..mask)
 		connections = {"vl_redstone:dust", 0}
 	end
-	local node = {
-		name   = connections[1],
-		param2 = connections[2],
-	}
-	core.set_node(orig, node)
+	local node = core.get_node(orig)
+	if node.name ~= connections[1] then
+		node.name = connections[1]
+		node.param2 = connections[2]
+		core.set_node(orig, node)
+	end
 end
 
 local base_def = {
@@ -236,7 +224,7 @@ local base_def = {
 		dig_by_piston = 1,
 		dig_immediate = 3,
 		creative_breakable = 1,
-		attached_node = 1,
+		attached_node = 3,
 		craftitem = 1,
 		destroy_by_lava_flow = 1,
 		dig_by_water = 1,
@@ -244,24 +232,10 @@ local base_def = {
 		redstone_wire = 1,
 	},
 
-	vl_block_update = update_restone_wire,
-
-	after_place_node = function(pos, placer, itemstack, pointed_thing)
-		update_redstone_wire(pos, true)
-	end,
-	after_dig_node = function(orig, oldnode, oldmetadata, digger)
-		for i = 1,12 do
-			local part = parts[i]
-			local pos = vector.offset(orig, part[1], part[2], part[3])
-			local node = core.get_node(pos)
-			if core.get_item_group(node.name, "redstone_wire") ~= 0 then
-				update_redstone_wire(pos)
-			end
-		end
-	end
+	vl_block_update = update_redstone_wire,
 }
 
-minetest.register_node("vl_redstone:dust", base_def)
+core.register_node("vl_redstone:dust", base_def)
 
 base_def = table.copy(base_def)
 base_def.tiles = {flat, flat, line, line, line, line}
@@ -275,7 +249,7 @@ for a=0,1 do
 	if a==1 then table.insert(fixed, nodebox_parts[4]) end
 
 	def.node_box.fixed = fixed
-	minetest.register_node("vl_redstone:trail_"..a, def)
+	core.register_node("vl_redstone:trail_"..a, def)
 end
 
 for a=0,1 do
@@ -290,7 +264,7 @@ for b=0,1 do
 	if b==1 then table.insert(fixed, nodebox_parts[5]) end
 
 	def.node_box.fixed = fixed
-	minetest.register_node("vl_redstone:corner_"..a..b, def)
+	core.register_node("vl_redstone:corner_"..a..b, def)
 end
 end
 
@@ -307,7 +281,7 @@ for i = 1,3 do
 	if b==1 then table.insert(fixed, nodebox_parts[6]) end
 
 	def.node_box.fixed = fixed
-	minetest.register_node("vl_redstone:line_"..a..b, def)
+	core.register_node("vl_redstone:line_"..a..b, def)
 end
 
 for a=0,1 do
@@ -325,7 +299,7 @@ for c=0,1 do
 	if c==1 then table.insert(fixed, nodebox_parts[6]) end
 
 	def.node_box.fixed = fixed
-	minetest.register_node("vl_redstone:tee_"..a..b..c, def)
+	core.register_node("vl_redstone:tee_"..a..b..c, def)
 end
 end
 end
@@ -347,5 +321,5 @@ for i = 1,6 do
 	if d==1 then table.insert(fixed, nodebox_parts[7]) end
 
 	def.node_box.fixed = fixed
-	minetest.register_node("vl_redstone:cross_"..a..b..c..d, def)
+	core.register_node("vl_redstone:cross_"..a..b..c..d, def)
 end
