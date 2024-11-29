@@ -342,6 +342,7 @@ function mesecon.vm_commit()
 		if tbl.dirty then
 			local vm = tbl.vm
 			vm:set_data(tbl.data)
+			vm:set_param2_data(tbl.param2)
 			vm:write_to_map()
 			vm:update_map()
 		end
@@ -387,10 +388,13 @@ end
 -- Sets a node’s name during a VoxelManipulator-based transaction.
 --
 -- Existing param1, param2, and metadata are left alone.
-function mesecon.vm_swap_node(pos, name)
+function mesecon.vm_swap_node(pos, name, param2)
 	local tbl = vm_get_or_create_entry(pos)
 	local index = tbl.va:indexp(pos)
 	tbl.data[index] = minetest.get_content_id(name)
+	if param2 then
+		tbl.param2[index] = param2
+	end
 	tbl.dirty = true
 end
 
@@ -426,14 +430,15 @@ end
 --
 -- This function can only be used to change the node’s name, not its parameters
 -- or metadata.
-function mesecon.swap_node_force(pos, name)
+function mesecon.swap_node_force(pos, name, param2)
 	if vm_cache then
-		return mesecon.vm_swap_node(pos, name)
+		return mesecon.vm_swap_node(pos, name, param2)
 	else
 		-- This serves to both ensure the mapblock is loaded and also hand us
 		-- the old node table so we can preserve param2.
 		local node = mesecon.get_node_force(pos)
 		node.name = name
+		node.param2 = param2 or node.param2
 		minetest.swap_node(pos, node)
 	end
 end
