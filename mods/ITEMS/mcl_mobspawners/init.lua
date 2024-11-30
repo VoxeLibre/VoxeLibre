@@ -278,7 +278,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	_tt_help = S("Makes mobs appear"),
 	_doc_items_longdesc = S("A mob spawner regularily causes mobs to appear around it while a player is nearby. Some mob spawners are disabled while in light."),
 	_doc_items_usagehelp = S("If you have a spawn egg, you can use it to change the mob to spawn. Just place the item on the mob spawner. Player-set mob spawners always spawn mobs regardless of the light level."),
-	groups = {pickaxey=1, material_stone=1, deco_block=1},
+	groups = {pickaxey=1, material_stone=1, deco_block=1, torch=1},
 	is_ground_content = false,
 	drop = "",
 
