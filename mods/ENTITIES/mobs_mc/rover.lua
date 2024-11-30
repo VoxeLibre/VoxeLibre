@@ -158,7 +158,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		local dim = mcl_worlds.pos_to_dimension(enderpos)
 		if dim == "overworld" and mcl_burning.is_affected_by_rain(self.object) then
 			self.state = ""
-			--rain hurts enderman
+			--rain hurts rovers
 			self.object:punch(self.object, 1.0, {
 				full_punch_interval=1.0,
 				damage_groups={fleshy=self.rain_damage},

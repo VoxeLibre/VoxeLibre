@@ -15,6 +15,7 @@ end
 
 function mcl_burning.is_affected_by_rain(obj)
 	local pos = obj:get_pos()
+	if not pos then return false end
 	return mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) and mcl_weather.has_rain(pos)
 end
 
@@ -22,6 +23,7 @@ function mcl_burning.is_affected_by_sunlight(obj, threshold)
 	threshold = threshold or core.LIGHT_MAX
 
 	local pos = obj:get_pos()
+	if not pos then return false end
 	local _,dim = mcl_worlds.y_to_layer(pos.y)
 	if dim ~= "overworld" then return false end
 

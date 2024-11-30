@@ -635,7 +635,7 @@ function mob_class:do_env_damage()
 	end
 
 	-- Simple light damage
-	if self.light_damage or 0 > 0 and mcl_burning.is_affected_by_sunlight(self.object, 12) then
+	if (self.light_damage or 0) > 0 and mcl_burning.is_affected_by_sunlight(self.object, 12) then
 		if self:deal_light_damage(pos, self.light_damage) then
 			return true
 		end
