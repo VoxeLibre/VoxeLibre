@@ -24,17 +24,17 @@ mcl_mobs.register_mob("mobs_mc:vindicator", {
 	visual = "mesh",
 	mesh = "mobs_mc_vindicator.b3d",
 	head_swivel = "head.control",
-	bone_eye_height = 2.2,
-	head_eye_height = 2.2,
+	head_eye_height = 1.5,
+	head_bone_position = vector.new( 0, 2.2, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
-  textures = {
-      {
-          "mobs_mc_vindicator.png",
-          "blank.png", --no hat
-          "default_tool_steelaxe.png",
-          -- TODO: Glow when attacking (mobs_mc_vindicator.png)
-      },
-  },
+	textures = {
+		{
+			"mobs_mc_vindicator.png",
+			"blank.png", --no hat
+			"default_tool_steelaxe.png",
+			-- TODO: Glow when attacking (mobs_mc_vindicator.png)
+		},
+	},
 	visual_size = {x=2.75, y=2.75},
 	makes_footstep_sound = true,
 	damage = 13,

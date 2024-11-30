@@ -22,9 +22,8 @@ local cow_def = {
 		"blank.png",
 	}, },
 	head_swivel = "head.control",
-	bone_eye_height = 10,
 	head_eye_height = 1.1,
-	horizontal_head_height=-1.8,
+	head_bone_position = vector.new( 0, 10.07, -1.744 ), -- for minetest <= 5.8
 	curiosity = 2,
 	head_yaw="z",
 	makes_footstep_sound = true,

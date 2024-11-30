@@ -27,8 +27,8 @@ local wolf = {
 	},
 	makes_footstep_sound = true,
 	head_swivel = "head.control",
-	bone_eye_height = 3.5,
-	head_eye_height = 1.1,
+	head_eye_height = 0.5,
+	head_bone_position = vector.new( 0, 3.5, 0 ), -- for minetest <= 5.8
 	horizontal_head_height=0,
 	curiosity = 3,
 	head_yaw="z",

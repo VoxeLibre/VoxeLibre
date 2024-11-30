@@ -34,8 +34,8 @@ mcl_mobs.register_mob("mobs_mc:illusioner", {
 		"mcl_bows_bow.png",
 	}, },
 	head_swivel = "head.control",
-	bone_eye_height = 2.2,
-	head_eye_height = 2.2,
+	head_eye_height = 1.5,
+	head_bone_position = vector.new( 0, 2.2, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	sounds = {
 		-- TODO: more sounds

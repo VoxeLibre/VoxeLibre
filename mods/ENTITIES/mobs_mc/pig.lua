@@ -20,9 +20,8 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 		"blank.png", -- saddle
 	}},
 	head_swivel = "head.control",
-	bone_eye_height = 7.5,
-	head_eye_height = 0.8,
-	horizontal_head_height=-1,
+	head_eye_height = 0.7,
+	head_bone_position = vector.new( 0, 7.23, -1.03 ), -- for minetest <= 5.8
 	curiosity = 3,
 	head_yaw="z",
 	makes_footstep_sound = true,

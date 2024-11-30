@@ -25,7 +25,8 @@ mcl_mobs.register_mob("mobs_mc:witherskeleton", {
 	visual = "mesh",
 	mesh = "mobs_mc_witherskeleton.b3d",
 	head_swivel = "head.control",
-	bone_eye_height = 2.38,
+	head_eye_height = 1.5,
+	head_bone_position = vector.new( 0, 2.38, 0 ), -- for minetest <= 5.8
 	curiosity = 60,
 	textures = {
 		{

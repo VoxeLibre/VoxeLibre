@@ -2110,8 +2110,8 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 	hp_min = 20,
 	hp_max = 20,
 	head_swivel = "head.control",
-	bone_eye_height = 6.3,
-	head_eye_height = 2.2,
+	head_eye_height = 1.5,
+	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	runaway = true,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},

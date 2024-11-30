@@ -21,9 +21,8 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.69, 0.2},
 	floats = 1,
 	head_swivel = "head.control",
-	bone_eye_height = 4,
-	head_eye_height = 1.5,
-	horizontal_head_height = -.3,
+	head_eye_height = 0.5,
+	head_bone_position = vector.new(0, 3.72, -.472), -- for minetest <= 5.8
 	curiosity = 10,
 	head_yaw="z",
 	visual_size = {x=1,y=1},

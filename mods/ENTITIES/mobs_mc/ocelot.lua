@@ -37,9 +37,8 @@ local ocelot = {
 	xp_min = 1,
 	xp_max = 3,
 	head_swivel = "head.control",
-	bone_eye_height = 6.2,
 	head_eye_height = 0.4,
-	horizontal_head_height=-0,
+	head_bone_position = vector.new( 0, 6.44, -0.42 ), -- for minetest <= 5.8
 	head_yaw="z",
 	curiosity = 4,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 0.69, 0.3},

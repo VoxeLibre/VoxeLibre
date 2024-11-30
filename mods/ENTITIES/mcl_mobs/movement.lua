@@ -761,6 +761,8 @@ function mob_class:check_follow()
  					self:set_velocity(self.follow_velocity)
 					if self.walk_chance ~= 0 then
 						self:set_animation( "run")
+					else
+						self:set_animation( "stand")
 					end
 				else
 					self:set_velocity(0)
