@@ -144,7 +144,7 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	light_source = 9,
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {pickaxey=4, not_in_creative_inventory=1, material_stone=1, xp=7, blast_furnace_smeltable=1, torch=1},
+	groups = {pickaxey=4, not_in_creative_inventory=1, material_stone=1, xp=7, blast_furnace_smeltable=1, support_attach=1},
 	drop = {
 		items = {
 			max_items = 1,
@@ -938,7 +938,7 @@ minetest.register_node("mcl_core:ice", {
 	paramtype = "light",
 	use_texture_alpha = ice_texture_alpha,
 	stack_max = 64,
-	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1, torch=1},
+	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1, support_attach=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_ice_defaults(),
 	node_dig_prediction = "mcl_core:water_source",
