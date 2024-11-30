@@ -97,40 +97,57 @@ end
 
 -- Check if placement at given node is allowed
 local function check_placement_allowed(node, wdir)
-	-- Torch placement rules: Disallow placement on some nodes. General rule: Solid, opaque, full cube collision box nodes are allowed.
-	-- Special allowed nodes:
+	local def = minetest.registered_nodes[node.name]
+	if not def then return false end
+
+	-- No ceiling torches
+	if wdir == 0 then return false end
+
+	if def.buildable_to then return true end
+
+	-- Forbid torches on pistons
+	if (def.groups.piston or 0) >= 1 then return false end
+
+	-- Special allowed nodes (has groups.torch = 1):
 	-- * soul sand
 	-- * mob spawner
 	-- * chorus flower
 	-- * glass, barrier, ice
+	local torch_group = def.groups.torch or 0
+	if torch_group == 1 then return true end
+
+	-- Allow solid, opaque, full cube collision box nodes are allowed.
+	if def.groups.solid and def.groups.opaque then return true end
+
+	-- Only allow top placement on these nodes
+	if wdir ~= 1 then return false end
+
+	-- Special allowed nodes - top only (has groups.torch = 2)
 	-- * Fence, wall, end portal frame with ender eye: Only on top
 	-- * Slab, stairs: Only on top if upside down
+	if torch_group == 2 then return true end
+	if def.groups.stair == 1 and math.floor(node.param2 / 4) == 5 then return true end
 
-	-- Special forbidden nodes:
-	-- * Piston, sticky piston
-	local def = minetest.registered_nodes[node.name]
-	if not def then
-		return false
-	-- No ceiling torches
-	elseif wdir == 0 then
-		return false
-	elseif not def.buildable_to then
-		if node.name ~= "mcl_core:ice" and node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_mobspawners:spawner" and node.name ~= "mcl_core:barrier" and node.name ~= "mcl_end:chorus_flower" and node.name ~= "mcl_end:chorus_flower_dead" and (not def.groups.glass) and
-				((not def.groups.solid) or (not def.groups.opaque)) then
-			-- Only allow top placement on these nodes
-			if node.name == "mcl_end:dragon_egg" or node.name == "mcl_portals:end_portal_frame_eye" or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 or def.groups.anvil or def.groups.pane or (def.groups.stair == 1 and minetest.facedir_to_dir(node.param2).y ~= 0) then
-				if wdir ~= 1 then
-					return false
-				end
-			else
-				return false
-			end
-		elseif minetest.get_item_group(node.name, "piston") >= 1 then
-			return false
+	return false
+end
+mcl_torches.check_placement_allowed = check_placement_allowed
+
+core.register_on_mods_loaded(function()
+	for name,def in pairs(core.registered_nodes) do
+		local torch_group
+		if def.groups.glass then torch_group = 1 end
+		if def.groups.fence == 1 then torch_group = 2 end
+		if def.groups.wall then torch_group = 2 end
+		if def.groups.slab_top then torch_group = 2 end
+		if def.groups.anvil then torch_group = 2 end
+		if def.groups.pane then torch_group = 2 end
+		if torch_group then
+			local groups = table.copy(def.groups)
+			groups.torch = torch_group
+			core.override_item(name, {groups = groups})
 		end
 	end
-	return true
-end
+end)
 
 function mcl_torches.register_torch(def)
 	local itemstring = minetest.get_current_modname() .. ":" .. def.name

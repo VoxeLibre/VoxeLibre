@@ -85,8 +85,12 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 			groups = def.groups
 		end
 
-		-- Only allow placement on full-cube solid opaque nodes
-		if (not groups) or (not groups.solid) or (not groups.opaque) or (def.node_box and def.node_box.type ~= "regular") then
+		-- Allow placement everywhere that torches can be placed except on top of upside stairs and slabs
+		if not groups then return itemstack end
+		if groups.stair or groups.slab_top then return itemstack end
+		local above = pointed_thing.above
+		local wdir = minetest.dir_to_wallmounted({x = under.x - above.x, y = under.y - above.y, z = under.z - above.z})
+		if not mcl_torches.check_placement_allowed(node, wdir) then
 			return itemstack
 		end
 
