@@ -96,7 +96,7 @@ end
 --
 
 -- Check if placement at given node is allowed
-local function check_placement_allowed(node, wdir)
+local function check_placement_allowed(node, wdir, type)
 	local def = minetest.registered_nodes[node.name]
 	if not def then return false end
 
@@ -105,16 +105,19 @@ local function check_placement_allowed(node, wdir)
 
 	if def.buildable_to then return true end
 
+	-- Allow nodes to define attachable device types that can't attach
+	if def.allow_attach and not def.allow_attach[type] then return false end
+
 	-- Forbid torches on pistons
 	if (def.groups.piston or 0) >= 1 then return false end
 
-	-- Special allowed nodes (has groups.torch = 1):
+	-- Special allowed nodes (has groups.support_attach = 1 - attach all sides):
 	-- * soul sand
 	-- * mob spawner
 	-- * chorus flower
 	-- * glass, barrier, ice
-	local torch_group = def.groups.torch or 0
-	if torch_group == 1 then return true end
+	local support_attach = def.groups.support_attach or 0
+	if support_attach == 1 then return true end
 
 	-- Allow solid, opaque, full cube collision box nodes are allowed.
 	if def.groups.solid and def.groups.opaque then return true end
@@ -122,10 +125,10 @@ local function check_placement_allowed(node, wdir)
 	-- Only allow top placement on these nodes
 	if wdir ~= 1 then return false end
 
-	-- Special allowed nodes - top only (has groups.torch = 2)
+	-- Special allowed nodes - top only (has groups.support_attach = 2 - only attach to top surface)
 	-- * Fence, wall, end portal frame with ender eye: Only on top
 	-- * Slab, stairs: Only on top if upside down
-	if torch_group == 2 then return true end
+	if support_attach == 2 then return true end
 	if def.groups.stair == 1 and math.floor(node.param2 / 4) == 5 then return true end
 
 	return false
@@ -134,17 +137,21 @@ mcl_torches.check_placement_allowed = check_placement_allowed
 
 core.register_on_mods_loaded(function()
 	for name,def in pairs(core.registered_nodes) do
-		local torch_group
-		if def.groups.glass then torch_group = 1 end
-		if def.groups.fence == 1 then torch_group = 2 end
-		if def.groups.wall then torch_group = 2 end
-		if def.groups.slab_top then torch_group = 2 end
-		if def.groups.anvil then torch_group = 2 end
-		if def.groups.pane then torch_group = 2 end
-		if torch_group then
+		local support_attach
+		if def.groups.glass then support_attach = 1 end
+		if def.groups.fence == 1 then support_attach = 2 end
+		if def.groups.wall then support_attach = 2 end
+		if def.groups.slab_top then support_attach = 2 end
+		if def.groups.anvil then support_attach = 2 end
+		if def.groups.pane then support_attach = 2 end
+		if support_attach then
 			local groups = table.copy(def.groups)
-			groups.torch = torch_group
-			core.override_item(name, {groups = groups})
+			groups.support_attach = support_attach
+
+			local allow_attach = def.allow_attach and table.copy(def.allow_attach) or {}
+			allow_attach.torch = true
+
+			core.override_item(name, {groups = groups, allow_attach = allow_attach})
 		end
 	end
 end)
@@ -216,7 +223,7 @@ function mcl_torches.register_torch(def)
 			local above = pointed_thing.above
 			local wdir = minetest.dir_to_wallmounted({x = under.x - above.x, y = under.y - above.y, z = under.z - above.z})
 
-			if check_placement_allowed(node, wdir) == false then
+			if check_placement_allowed(node, wdir, "torch") == false then
 				return itemstack
 			end
 
