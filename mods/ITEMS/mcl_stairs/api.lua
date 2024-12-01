@@ -70,6 +70,10 @@ end
 -- Register stairs.
 -- Node will be called mcl_stairs:stair_<subname>
 
+local function allow_attach(node, wdir)
+	return wdir == 1 and math.floor(node.param2 / 4) == 5
+end
+
 function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, blast_resistance, hardness, corner_stair_texture_override)
 
 	if recipeitem then
@@ -115,6 +119,11 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 				{-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 				{-0.5, 0, 0, 0.5, 0.5, 0.5},
 			},
+		},
+		_vl_allow_attach = {
+			torch = allow_attach,
+			button = allow_attach,
+			lever = false,
 		},
 		selection_box = {
 			type = "fixed",
