@@ -726,7 +726,9 @@ mcl_enchanting.enchantments.unbreaking = {
 	max_level = 3,
 	primary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true, pickaxe = true, shovel = true, axe = true, hoe = true, sword = true, fishing_rod = true, bow = true},
 	secondary = {tool = true},
-	disallow = {non_combat_armor = true},
+	-- Commented to allow elytra to be enchanted
+	--disallow = {non_combat_armor = true},
+	disallow = {},
 	incompatible = {},
 	weight = 5,
 	description = S("Increases item durability."),
