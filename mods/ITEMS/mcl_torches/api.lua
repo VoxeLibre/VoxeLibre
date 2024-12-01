@@ -91,80 +91,26 @@ local function remove_flames(pos)
 	mcl_particles.delete_node_particlespawners(pos)
 end
 
---
--- 3d torch part
---
+vl_attach.register_autogroup(function(allow_attach, name, def)
+	local groups = def.groups or {}
 
--- Check if placement at given node is allowed
-local function check_placement_allowed(node, wdir, attach_type)
-	local def = minetest.registered_nodes[node.name]
-	if not def then return false end
+	-- Never modify existing torch settings
+	if allow_attach.torch ~= nil then return end
 
-	-- No ceiling torches
-	if wdir == 0 then return false end
-
-	-- Allow solid, opaque, full cube collision box nodes are allowed.
-	if def.groups.solid and def.groups.opaque then return true end
-
-	-- Allow nodes to define attachable device type handling
-	if not def._vl_allow_attach then return false end
-	local vl_allow_attach = def._vl_allow_attach
-
-	-- find allow/deny/callback for specified attach_type, and use "all" as a fallback
-	local allow_attach
-	if vl_allow_attach.all ~= nil then allow_attach = vl_allow_attach.all end
-	if vl_allow_attach[attach_type] ~= nil then allow_attach = vl_allow_attach[attach_type] end
-
-	-- Dispatch callbacks
-	if type(allow_attach) == "function" then
-		allow_attach = allow_attach(node, wdir, attach_type)
+	-- Always allow attaching torches to glass
+	if groups.glass then
+		allow_attach.torch = true
 	end
 
-	return allow_attach
-end
-mcl_torches.check_placement_allowed = check_placement_allowed
-
-core.register_on_mods_loaded(function()
-	for name,def in pairs(core.registered_nodes) do
-		if not def._vl_allow_attach then
-			local groups = def.groups
-			local allow_attach = {}
-
-			-- Allow placing attachables over top buildable_to nodes
-			if def.buildable_to then
-				allow_attach.all = true
-			end
-
-			-- Forbid attaching directly to pistons
-			if (groups.piston or 0) >= 1 then
-				allow_attach.all = false
-			end
-
-			-- Always allow attaching torches to glass
-			if groups.glass then
-				allow_attach.torch = true
-			end
-
-			-- Allow attaching torches to the tops of these node types
-			if groups.fence == 1 or groups.wall or groups.slab_top or groups.anvil or groups.pane then
-				allow_attach.torch = function(node, wdir) return wdir == 1 end
-			end
-
-			-- Only allow attaching torches to the tops of upside-down stairs
-			if groups.stair == 1 then
-				allow_attach.torch = function(node, wdir)
-					return wdir == 1 and math.floor(node.param2 / 4) == 5
-				end
-			end
-
-			-- Override if needed
-			if allow_attach.all ~= nil or allow_attach.torch ~= nil then
-				core.override_item(name, {_vl_allow_attach = allow_attach})
-			end
-		end
+	-- Allow attaching torches to the tops of these node types
+	if groups.fence == 1 or groups.wall or groups.slab_top or groups.anvil or groups.pane then
+		allow_attach.torch = function(node, wdir) return wdir == 1 end
 	end
 end)
 
+--
+-- 3d torch part
+--
 function mcl_torches.register_torch(def)
 	local itemstring = minetest.get_current_modname() .. ":" .. def.name
 	local itemstring_wall = itemstring .. "_wall"
@@ -232,7 +178,7 @@ function mcl_torches.register_torch(def)
 			local above = pointed_thing.above
 			local wdir = minetest.dir_to_wallmounted(under - above)
 
-			if check_placement_allowed(node, wdir, "torch") == false then
+			if vl_attach.check_allowed(node, wdir, "torch") == false then
 				return itemstack
 			end
 
