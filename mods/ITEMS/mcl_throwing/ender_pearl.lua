@@ -125,9 +125,7 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 			"group:plant", "group:mushroom",
 		},
 		allow_punching = function(self, _, _, object)
-			if self._owner == mcl_util.get_entity_id(object) then
-				return self.timer > 1
-			end
+			if self.timer < 1 and self._owner == mcl_util.get_entity_id(object) then return false end
 
 			local le = object:get_luaentity()
 			return le and (le.is_mob or le._hittable_by_projectile) or object:is_player()
