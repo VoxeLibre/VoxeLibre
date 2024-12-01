@@ -126,37 +126,42 @@ mcl_torches.check_placement_allowed = check_placement_allowed
 
 core.register_on_mods_loaded(function()
 	for name,def in pairs(core.registered_nodes) do
-		local groups = def.groups
-		local allow_attach = def._vl_allow_attach and table.copy(def._vl_allow_attach) or {}
+		if not def._vl_allow_attach then
+			local groups = def.groups
+			local allow_attach = {}
 
-		-- Allow placing attachables over top buildable_to nodes
-		if def.buildable_to then
-			allow_attach.all = true
-		end
+			-- Allow placing attachables over top buildable_to nodes
+			if def.buildable_to then
+				allow_attach.all = true
+			end
 
-		-- Forbid attaching directly to pistons
-		if (groups.piston or 0) >= 1 then
-			allow_attach.all = false
-		end
+			-- Forbid attaching directly to pistons
+			if (groups.piston or 0) >= 1 then
+				allow_attach.all = false
+			end
 
-		-- Always allow attaching torches to glass
-		if groups.glass then
-			allow_attach.torch = true
-		end
+			-- Always allow attaching torches to glass
+			if groups.glass then
+				allow_attach.torch = true
+			end
 
-		-- Allow attaching torches to the tops of these node types
-		if groups.fence == 1 or groups.wall or groups.slab_top or groups.anvil or groups.pane then
-			allow_attach.torch = function(node, wdir) return wdir == 1 end
-		end
+			-- Allow attaching torches to the tops of these node types
+			if groups.fence == 1 or groups.wall or groups.slab_top or groups.anvil or groups.pane then
+				allow_attach.torch = function(node, wdir) return wdir == 1 end
+			end
 
-		-- Only allow attaching torches to the tops of upside-down stairs
-		if groups.stair == 1 then
-			allow_attach.torch = function(node, wdir)
-				return wdir == 1 and math.floor(node.param2 / 4) == 5
+			-- Only allow attaching torches to the tops of upside-down stairs
+			if groups.stair == 1 then
+				allow_attach.torch = function(node, wdir)
+					return wdir == 1 and math.floor(node.param2 / 4) == 5
+				end
+			end
+
+			-- Override if needed
+			if allow_attach.all ~= nil or allow_attach.torch ~= nil then
+				core.override_item(name, {_vl_allow_attach = allow_attach})
 			end
 		end
-
-		core.override_item(name, {_vl_allow_attach = allow_attach})
 	end
 end)
 
