@@ -37,6 +37,24 @@ function mesecon.push_button(pos, node)
 	timer:start(def._mcl_button_timer)
 end
 
+vl_attach.register_autogroup(function(allow_attach, name, def)
+	local groups = def.groups
+	if not groups then return end
+
+	-- Never modify existing button settings
+	if allow_attach.button ~= nil then return end
+
+	-- Only allow full-solid blocks to have buttons attached
+	if groups.solid and groups.opaque and (def.node_box and def.node_box.type ~= "regular") then
+		allow_attach.button = true
+	end
+
+	-- Exception: allow placing on top of top-slabs
+	if groups.slab_top then
+		allow_attach.button = true
+	end
+end)
+
 local function on_button_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" then
 		-- no interaction possible with entities
@@ -67,7 +85,8 @@ local function on_button_place(itemstack, placer, pointed_thing)
 	end
 
 	-- Only allow placement on full-cube solid opaque nodes
-	if (not groups) or (not groups.solid) or (not groups.opaque) or (def.node_box and def.node_box.type ~= "regular") then
+	local wdir = core.dir_to_wallmounted(pointed_thing.under - pointed_thing.above)
+	if not vl_attach.check_allowed(node, wdir, "button") then
 		return itemstack
 	end
 
