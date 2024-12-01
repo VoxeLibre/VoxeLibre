@@ -415,8 +415,7 @@ function mcl_mobs.register_arrow(name, def)
 			damages_players = true,
 			allow_punching = function(self, entity_def, projectile_def, object)
 				if def.allow_punching and not def.allow_punching(self, entity_def, projectile_def, object) then return false end
-				if self.timer > 2 then return true end
-				if self._owner and mcl_util.get_entity_id(object) == self._owner then return false end
+				if self.timer < 2 and self._owner and mcl_util.get_entity_id(object) == self._owner then return false end
 
 				return true
 			end,
@@ -442,7 +441,7 @@ function mcl_mobs.register_arrow(name, def)
 
 				local entity = object:get_luaentity()
 				if not entity or entity.name == self.object:get_luaentity().name then return end
-				if self.timer <= 2 then return end
+				if self.timer < 2 and self._owner and mcl_util.get_entity_id(object) == self._owner then return end
 
 				if self.hit_mob and entity.is_mob == true then
 					self.hit_mob(self, object)
