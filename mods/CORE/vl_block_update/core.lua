@@ -6,6 +6,7 @@ vl_block_update = mod
 local PROFILE = false
 local lookaside_cache = {}
 local pending_block_updates = {}
+local has_block_updates = false
 
 -- Block updates are processed on the next timestep
 -- This is written to consolidate multiple updates to the same position
@@ -13,6 +14,7 @@ local function queue_block_updates(pos)
 	pos = vector.round(pos)
 	local pos_hash = core.hash_node_position(pos)
 	vl_block_update.updated[pos_hash] = true
+	has_block_updates = true
 	lookaside_cache[pos_hash] = nil
 	<<<
 		local block_update_pattern = {
@@ -52,9 +54,12 @@ local function queue_block_updates(pos)
 end
 
 core.register_globalstep(function(dtime)
+	if not has_block_updates then return end
+
 	local start = core.get_us_time()
 	local updates = pending_block_updates
 	pending_block_updates = {}
+	has_block_updates = false
 
 	for hash,_ in pairs(updates) do
 		local lookaside = lookaside_cache[hash]
