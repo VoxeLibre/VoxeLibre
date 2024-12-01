@@ -103,7 +103,7 @@ vl_attach.register_autogroup(function(allow_attach, name, def)
 	end
 
 	-- Allow attaching torches to the tops of these node types
-	if groups.fence == 1 or groups.wall or groups.slab_top or groups.anvil or groups.pane then
+	if groups.fence == 1 or groups.wall or groups.anvil or groups.pane then
 		allow_attach.torch = function(node, wdir) return wdir == 1 end
 	end
 end)
