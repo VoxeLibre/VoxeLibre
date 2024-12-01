@@ -6,6 +6,19 @@ local modname = minetest.get_current_modname()
 local path = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
+
+-- used by the libaries below.
+-- get node but use fallback for nil or unknown
+local node_ok = function(pos, fallback)
+	fallback = fallback or mcl_mobs.fallback_node
+	local node = minetest.get_node_or_nil(pos)
+	if node and minetest.registered_nodes[node.name] then
+		return node
+	end
+	return minetest.registered_nodes[fallback]
+end
+mcl_mobs.node_ok = node_ok
+
 --api and helpers
 -- effects: sounds and particles mostly
 dofile(path .. "/effects.lua")
@@ -19,9 +32,8 @@ dofile(path .. "/items.lua")
 dofile(path .. "/pathfinding.lua")
 -- combat: attack logic
 dofile(path .. "/combat.lua")
--- the enity functions themselves
+-- the entity functions themselves
 dofile(path .. "/api.lua")
-
 
 --utility functions
 dofile(path .. "/breeding.lua")
@@ -36,16 +48,6 @@ local MAX_MOB_NAME_LENGTH = 30
 local old_spawn_icons = minetest.settings:get_bool("mcl_old_spawn_icons",false)
 local extended_pet_control = minetest.settings:get_bool("mcl_extended_pet_control",true)
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
-
--- get node but use fallback for nil or unknown
-local node_ok = function(pos, fallback)
-	fallback = fallback or mcl_mobs.fallback_node
-	local node = minetest.get_node_or_nil(pos)
-	if node and minetest.registered_nodes[node.name] then
-		return node
-	end
-	return minetest.registered_nodes[fallback]
-end
 
 --#### REGISTER FUNCS
 
@@ -114,14 +116,8 @@ function mcl_mobs.register_mob(name, def)
 	mcl_mobs.spawning_mobs[name] = true
 	mcl_mobs.registered_mobs[name] = def
 
-	local can_despawn
-	if def.can_despawn ~= nil then
-		can_despawn = def.can_despawn
-	elseif def.spawn_class == "passive" then
-		can_despawn = false
-	else
-		can_despawn = true
-	end
+	local can_despawn = def.can_despawn
+	if def.can_despawn == nil then can_despawn = def.spawn_class ~= "passive" end
 
 	local function scale_difficulty(value, default, min, special)
 		if (not value) or (value == default) or (value == special) then

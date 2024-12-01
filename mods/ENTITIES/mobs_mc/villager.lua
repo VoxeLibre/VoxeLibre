@@ -952,6 +952,9 @@ local function go_home(entity, sleep)
 			entity.order = nil
 			return
 		end
+		-- in case pathfinding fails, turn into the right direction anyways
+		local p = entity.object:get_pos()
+		entity:turn_in_direction(b.x - p.x, b.z - p.z, 8)
 
 		entity:gopath(b,function(entity,b)
 			local b = entity._bed
@@ -1331,7 +1334,7 @@ local function do_work (self)
 					--mcl_log("Jobsite not valid")
 					return false
 				end
-				if vector.distance(self.object:get_pos(),self._jobsite) < 2 then
+				if vector.distance(self.object:get_pos(),self._jobsite) < 1.5 then
 					--mcl_log("Made it to work ok callback!")
 					return true
 				else

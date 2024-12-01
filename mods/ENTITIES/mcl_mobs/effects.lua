@@ -250,9 +250,7 @@ end
 
 -- set defined animation
 function mob_class:set_animation(anim, fixed_frame)
-	if not self.animation or not anim then
-		return
-	end
+	if not self.animation or not anim then return end
 
 	if self.jockey and self.object:get_attach() then
 		anim = "jockey"
@@ -260,11 +258,7 @@ function mob_class:set_animation(anim, fixed_frame)
 		self.jockey = nil
 	end
 	
-	if self.state == "die" and anim ~= "die" and anim ~= "stand" then
-		return
-	end
-
-
+	if self.state == "die" and anim ~= "die" and anim ~= "stand" then return end
 
 	if self.fly and self:flight_check() and anim == "walk" then anim = "fly" end
 
@@ -279,12 +273,7 @@ function mob_class:set_animation(anim, fixed_frame)
 	self._current_animation = anim
 
 	local a_start = self.animation[anim .. "_start"]
-	local a_end
-	if fixed_frame then
-		a_end = a_start
-	else
-		a_end = self.animation[anim .. "_end"]
-	end
+	local a_end = fixed_frame and a_start or self.animation[anim .. "_end"]
 	if a_start and a_end then
 		self.object:set_animation({
 			x = a_start,
@@ -292,11 +281,6 @@ function mob_class:set_animation(anim, fixed_frame)
 			self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
 			0, self.animation[anim .. "_loop"] ~= false)
 		end
-end
-
--- above function exported for mount.lua
-function mcl_mobs:set_animation(self, anim)
-	self:set_animation(anim)
 end
 
 local function who_are_you_looking_at (self, dtime)

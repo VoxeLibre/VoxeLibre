@@ -1,16 +1,15 @@
 local mob_class = mcl_mobs.mob_class
 local mob_class_meta = {__index = mcl_mobs.mob_class}
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
--- API for Mobs Redo: VoxeLibre Edition
 
 local PATHFINDING = "gowp"
 local CRASH_WARN_FREQUENCY = 60
 local LIFETIMER_DISTANCE = 47
+local MAPGEN_LIMIT = mcl_vars.mapgen_limit
+local MAPGEN_MOB_LIMIT = MAPGEN_LIMIT - 90
+-- 30927 seems to be the edge of the world, so could be closer, but this is safer
 
--- Localize
 local S = minetest.get_translator("mcl_mobs")
-
-local DEVELOPMENT = minetest.settings:get_bool("mcl_development",false)
 
 -- Invisibility mod check
 mcl_mobs.invis = {}
@@ -18,12 +17,8 @@ mcl_mobs.invis = {}
 local remove_far = true
 
 local mobs_debug = minetest.settings:get_bool("mobs_debug", false) -- Shows helpful debug info above each mob
-local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", false)
-
-local MAPGEN_LIMIT = mcl_vars.mapgen_limit
-local MAPGEN_MOB_LIMIT = MAPGEN_LIMIT - 90
--- 30927 seems to be the edge of the world, so could be closer, but this is safer
-
+local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", true)
+local DEVELOPMENT = minetest.settings:get_bool("mcl_development", false)
 
 -- Peaceful mode message so players will know there are no monsters
 if minetest.settings:get_bool("only_peaceful_mobs", false) then
@@ -36,10 +31,7 @@ end
 function mob_class:update_tag() --update nametag and/or the debug box
 	local tag
 	if mobs_debug then
-		local name = self.name
-		if self.nametag and self.nametag ~= "" then
-			name = self.nametag
-		end
+		local name = self.nametag ~= "" and self.nametag or self.name
 		tag = "name = '"..tostring(name).."'\n"..
 		"state = '"..tostring(self.state).."'\n"..
 		"order = '"..tostring(self.order).."'\n"..
@@ -56,9 +48,7 @@ function mob_class:update_tag() --update nametag and/or the debug box
 	else
 		tag = self.nametag
 	end
-	self.object:set_properties({
-		nametag = tag,
-	})
+	self.object:set_properties({ nametag = tag })
 end
 
 function mob_class:jock_to(mob, reletive_pos, rot)
@@ -74,19 +64,15 @@ function mob_class:jock_to(mob, reletive_pos, rot)
 end
 
 function mob_class:get_staticdata()
-
 	for _,p in pairs(minetest.get_connected_players()) do
 		self:remove_particlespawners(p:get_player_name())
 	end
 
 	-- remove mob when out of range unless tamed
-	if remove_far
-	and self:despawn_allowed()
-	and self.lifetimer <= 20 then
+	if remove_far and self:despawn_allowed() and self.lifetimer <= 20 then
 		if spawn_logging then
 			minetest.log("action", "[mcl_mobs] Mob "..tostring(self.name).." despawns at "..minetest.pos_to_string(vector.round(self.object:get_pos())) .. " - out of range")
 		end
-
 		return "remove"-- nil
 	end
 
@@ -95,17 +81,9 @@ function mob_class:get_staticdata()
 	self.state = "stand"
 
 	local tmp = {}
-
 	for tag, stat in pairs(self) do
-
 		local t = type(stat)
-
-		if  t ~= "function"
-		and t ~= "nil"
-		and t ~= "userdata"
-		and tag ~= "_cmi_components" then
-			tmp[tag] = self[tag]
-		end
+		if  t ~= "function" and t ~= "nil" and t ~= "userdata" and tag ~= "_cmi_components" then tmp[tag] = self[tag] end
 	end
 
 	tmp._mcl_potions = self._mcl_potions
@@ -120,10 +98,7 @@ function mob_class:get_staticdata()
 end
 
 local function valid_texture(self, def_textures)
-	if not self.base_texture then
-		return false
-	end
-
+	if not self.base_texture then return false end
 	if self.texture_selected then
 		if #def_textures < self.texture_selected then
 			self.texture_selected = nil
@@ -148,32 +123,18 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	end
 
 	local tmp = minetest.deserialize(staticdata)
-
 	if tmp then
 		-- Patch incorrectly converted mobs
-		if tmp.base_mesh ~= minetest.registered_entities[self.name].mesh then
-			mcl_mobs.strip_staticdata(tmp)
-		end
-
-		for _,stat in pairs(tmp) do
-			self[_] = stat
-		end
+		if tmp.base_mesh ~= minetest.registered_entities[self.name].mesh then mcl_mobs.strip_staticdata(tmp) end
+		for _, stat in pairs(tmp) do self[_] = stat end
 	end
 
 	--If textures in definition change, reload textures
 	if not valid_texture(self, def.textures) then
-
 		-- compatiblity with old simple mobs textures
-		if type(def.textures[1]) == "string" then
-			def.textures = {def.textures}
-		end
+		if type(def.textures[1]) == "string" then def.textures = {def.textures} end
 
-		if not self.texture_selected then
-			local c = 1
-			if #def.textures > c then c = #def.textures end
-			self.texture_selected = math.random(c)
-		end
-
+		self.texture_selected = self.texture_selected or math.random(#def.textures)
 		self.base_texture = def.textures[self.texture_selected]
 		self.base_mesh = def.mesh
 		self.base_size = self.visual_size
@@ -181,9 +142,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self.base_selbox = self.selectionbox
 	end
 
-	if not self.base_selbox then
-		self.base_selbox = self.selectionbox or self.base_colbox
-	end
+	self.base_selbox = self.base_selbox or self.selectionbox or self.base_colbox
 
 	local textures = self.base_texture
 	local mesh = self.base_mesh
@@ -191,26 +150,11 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	local colbox = self.base_colbox
 	local selbox = self.base_selbox
 
-	if self.gotten == true
-	and def.gotten_texture then
-		textures = def.gotten_texture
-	end
-
-	if self.gotten == true
-	and def.gotten_mesh then
-		mesh = def.gotten_mesh
-	end
-
-	if self.child == true then
-
-		vis_size = {
-			x = self.base_size.x * .5,
-			y = self.base_size.y * .5,
-		}
-
-		if def.child_texture then
-			textures = def.child_texture[1]
-		end
+	if self.gotten and def.gotten_texture then textures = def.gotten_texture end
+	if self.gotten and def.gotten_mesh then mesh = def.gotten_mesh end
+	if self.child then
+		vis_size = { x = self.base_size.x * .5, y = self.base_size.y * .5 }
+		if def.child_texture then textures = def.child_texture[1] end
 
 		colbox = {
 			self.base_colbox[1] * .5,
@@ -230,16 +174,12 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		}
 	end
 
-	if self.health == 0 then
-		self.health = math.random (self.hp_min, self.hp_max)
-	end
-	if self.breath == nil then
-		self.breath = self.breath_max
-	end
+	if self.health == 0 then self.health = math.random(self.hp_min, self.hp_max) end
+	if self.breath == nil then self.breath = self.breath_max end
 
 	self.path = {}
 	self.path.way = {} -- path to follow, table of positions
-	self.path.lastpos = {x = 0, y = 0, z = 0}
+	self.path.lastpos = vector.zero()
 	self.path.stuck = false
 	self.path.following = false -- currently following path?
 	self.path.stuck_timer = 0 -- if stuck for too long search for path
@@ -276,42 +216,22 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.blinktimer = 0
 	self.blinkstatus = false
 
-	if not self.nametag then
-		self.nametag = def.nametag
-	end
-	if not self.custom_visual_size then
-		self.visual_size = nil
-		self.base_size = self.visual_size
-		if self.child then
-			self.visual_size = {
-				x = self.visual_size.x * 0.5,
-				y = self.visual_size.y * 0.5,
-			}
-		end
-	end
+	self.nametag = self.nametag or def.nametag
 
 	self.object:set_properties(self)
-	self:set_yaw( (math.random(0, 360) - 180) / 180 * math.pi, 6)
+	self:set_yaw(math.random() * math.pi * 2, 6)
 	self:update_tag()
 	self._current_animation = nil
-	self:set_animation( "stand")
+	self:set_animation("stand")
 
-
-	if self.riden_by_jock then --- Keep this function before self.on_spawn() is run.
+	if self.riden_by_jock then --- Keep this function before self:on_spawn()
 		self.object:remove()
 		return
 	end
 
+	if self.on_spawn and not self.on_spawn_run and self:on_spawn() then self.on_spawn_run = true end
 
-	if self.on_spawn and not self.on_spawn_run then
-		if self.on_spawn(self) then
-			self.on_spawn_run = true
-		end
-	end
-
-	if not self.wears_armor and self.armor_list then
-		self.armor_list = nil
-	end
+	if not self.wears_armor and self.armor_list then self.armor_list = nil end
 
 	if not self._run_armor_init and self.wears_armor then
 		self.armor_list={helmet="",chestplate="",boots="",leggings=""}
@@ -319,15 +239,10 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self._run_armor_init = true
 	end
 
-	if not self._mcl_potions then
-		self._mcl_potions = {}
-	end
+	if not self._mcl_potions then self._mcl_potions = {} end
 	mcl_potions._load_entity_effects(self)
 
-
-	if def.after_activate then
-		def.after_activate(self, staticdata, def, dtime)
-	end
+	if def.after_activate then def.after_activate(self, staticdata, def, dtime) end
 end
 
 -- execute current state (stand, walk, run, attacks)
@@ -346,9 +261,7 @@ function mob_class:do_states(dtime, player_in_active_range)
 	if self.state == PATHFINDING then
 		self:check_gowp(dtime)
 	elseif self.state == "attack" then
-		if self:do_states_attack(dtime) then
-			return true
-		end
+		if self:do_states_attack(dtime) then return true end
 	else
 		if mcl_util.check_dtime_timer(self, dtime, "onstep_dostates", 1) then
 			if self.state == "stand" then
@@ -364,34 +277,28 @@ end
 
 function mob_class:outside_limits()
 	local pos = self.object:get_pos()
-	if pos then
-		local posx = math.abs(pos.x)
-		local posy = math.abs(pos.y)
-		local posz = math.abs(pos.z)
-		if posx > MAPGEN_MOB_LIMIT or posy > MAPGEN_MOB_LIMIT or posz > MAPGEN_MOB_LIMIT then
-			--minetest.log("action", "Getting close to limits of worldgen: " .. minetest.pos_to_string(pos))
-			if posx > MAPGEN_LIMIT or posy > MAPGEN_LIMIT or posz > MAPGEN_LIMIT then
-				minetest.log("action", "Warning mob past limits of worldgen: " .. minetest.pos_to_string(pos))
-			else
-				if self.state ~= "stand" then
-					minetest.log("action", "Warning mob close to limits of worldgen: " .. minetest.pos_to_string(pos))
-					self.state = "stand"
-					self:set_animation("stand")
-					self.object:set_acceleration(vector.zero())
-					self.object:set_velocity(vector.zero())
-				end
+	if not pos then return end
+	local posx, posy, posz = math.abs(pos.x), math.abs(pos.y), math.abs(pos.z)
+	if posx > MAPGEN_MOB_LIMIT or posy > MAPGEN_MOB_LIMIT or posz > MAPGEN_MOB_LIMIT then
+		--minetest.log("action", "Getting close to limits of worldgen: " .. minetest.pos_to_string(pos))
+		if posx > MAPGEN_LIMIT or posy > MAPGEN_LIMIT or posz > MAPGEN_LIMIT then
+			minetest.log("action", "Warning mob past limits of worldgen: " .. minetest.pos_to_string(pos))
+		else
+			if self.state ~= "stand" then
+				minetest.log("action", "Warning mob close to limits of worldgen: " .. minetest.pos_to_string(pos))
+				self.state = "stand"
+				self:set_animation("stand")
+				self.object:set_acceleration(vector.zero())
+				self.object:set_velocity(vector.zero())
 			end
-			return true
 		end
+		return true
 	end
 end
-
-
 
 local function on_step_work(self, dtime, moveresult)
 	local pos = self.object:get_pos()
 	if not pos then return end
-
 	if self:check_despawn(pos, dtime) then return true end
 	if self:outside_limits() then return end
 
@@ -403,29 +310,20 @@ local function on_step_work(self, dtime, moveresult)
 	end
 
 	if self:falling(pos, moveresult) then return end
-	if self:step_damage (dtime, pos) then return end
+	if self:step_damage(dtime, pos) then return end
 
 	if self.state == "die" then return end
 	-- End: Death/damage processing
 
 	local player_in_active_range = self:player_in_active_range()
 	self:check_suspend(player_in_active_range)
-
 	self:check_water_flow()
-
-	if not self._jumping_cliff then
-		self._can_jump_cliff = self:can_jump_cliff()
-	else
-		self._can_jump_cliff = false
-	end
-
+	self._can_jump_cliff = not self._jumping_cliff and self:can_jump_cliff()
 	self:flop()
-
 	self:check_smooth_rotation(dtime)
 
 	if player_in_active_range then
 		self:set_animation_speed() -- set animation speed relative to velocity
-
 		self:check_head_swivel(dtime)
 
 		if mcl_util.check_dtime_timer(self, dtime, "onstep_engage", 0.2) then
@@ -442,91 +340,68 @@ local function on_step_work(self, dtime, moveresult)
 	end
 
 	if mcl_util.check_dtime_timer(self, dtime, "onstep_occassional", 1) then
-
 		if player_in_active_range then
 			self:check_item_pickup()
 			self:set_armor_texture()
 			self:step_opinion_sound(dtime)
 		end
-
 		self:check_breeding()
 	end
 
 	self:check_aggro(dtime)
-
 	self:check_particlespawners(dtime)
-
 	if self.do_custom and self.do_custom(self, dtime) == false then return end
-
 	if self:do_states(dtime, player_in_active_range) then return end
-
 	if mobs_debug then self:update_tag() end
-
-	if not self.object:get_luaentity() then
-		return false
-	end
+	if not self.object:get_luaentity() then return false end
 end
 
 local last_crash_warn_time = 0
 
-local function log_error (stack_trace, info, info2)
+local function log_error(stack_trace, info, info2)
 	minetest.log("action", "--- Bug report start (please provide a few lines before this also for context) ---")
 	minetest.log("action", "Error: " .. stack_trace)
 	minetest.log("action", "Bug info: " .. info)
-	if info2 then
-		minetest.log("action", "Bug info additional: " .. info2)
-	end
+	if info2 then minetest.log("action", "Bug info additional: " .. info2) end
 	minetest.log("action", "--- Bug report end ---")
 end
 
 local function warn_user_error ()
 	local current_time = os.time()
 	local time_since_warning = current_time - last_crash_warn_time
-
 	--minetest.log("previous_crash_time: " .. current_time)
 	--minetest.log("last_crash_time: " .. last_crash_warn_time)
 	--minetest.log("time_since_warning: " .. time_since_warning)
-
 	if time_since_warning > CRASH_WARN_FREQUENCY then
 		last_crash_warn_time = current_time
 		minetest.log("A game crashing bug was prevented. Please provide debug.log information to VoxeLibre dev team for investigation. (Search for: --- Bug report start)")
 	end
 end
 
-local on_step_error_handler = function ()
-	warn_user_error ()
+local on_step_error_handler = function()
+	warn_user_error()
 	local info = debug.getinfo(1, "SnlufL")
 	log_error(tostring(debug.traceback()), dump(info))
 end
 
-
-
 -- main mob function
 function mob_class:on_step(dtime, moveresult)
-	if not DEVELOPMENT then
-		-- Removed as bundled Lua (5.1 doesn't support xpcall)
-		--local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
-		local status, retVal = pcall(on_step_work, self, dtime, moveresult)
-		if status then
-			return retVal
-		else
-			warn_user_error ()
-			local pos = self.object:get_pos()
-			if pos then
-				local node = minetest.get_node(pos)
-				if node and node.name == "ignore" then
-					minetest.log("warning", "Pos is ignored: " .. dump(pos))
-				end
-			end
-			log_error (dump(retVal), dump(pos), dump(self))
-		end
-	else
-		return on_step_work (self, dtime, moveresult)
+	-- allow crash in development mode
+	if DEVELOPMENT then return on_step_work(self, dtime, moveresult) end
+	-- Removed as bundled Lua (5.1 doesn't support xpcall)
+	--local status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime)
+	local status, retVal = pcall(on_step_work, self, dtime, moveresult)
+	if status then return retVal end
+	warn_user_error()
+	local pos = self.object:get_pos()
+	if pos then
+		local node = minetest.get_node(pos)
+		if node and node.name == "ignore" then minetest.log("warning", "Pos is ignored: " .. dump(pos)) end
 	end
+	log_error(dump(retVal), dump(pos), dump(self))
 end
 
 local timer = 0
-
 local function update_lifetimer(dtime)
 	timer = timer + dtime
 	if timer < 1 then return end
@@ -547,7 +422,6 @@ minetest.register_globalstep(function(dtime)
 	update_lifetimer(dtime)
 end)
 
-
 minetest.register_chatcommand("clearmobs", {
 	privs = { maphack = true },
 	params = "[all|monster|passive|<mob name> [<range>|nametagged|tamed]]",
@@ -560,11 +434,7 @@ minetest.register_chatcommand("clearmobs", {
 					S("Default usage. Clearing hostile mobs. For more options please type: /help clearmobs"))
 		end
 		local mob, unsafe = param:match("^([%w]+)[ ]?([%w%d]*)$")
-
-		local all = false
-		local nametagged = false
-		local tamed = false
-
+		local all, nametagged, tamed = false, false, false
 		local mob_name, mob_type, range
 
 		-- Param 1 resolve
@@ -578,12 +448,7 @@ minetest.register_chatcommand("clearmobs", {
 			end
 			--minetest.log ("mob: [" .. mob .. "]")
 		else
-			--minetest.log("No valid first param")
-			if default then
-				--minetest.log("Use default")
-				mob_type = "monster"
-			end
-			--return
+			if default then mob_type = "monster" end
 		end
 
 		-- Param 2 resolve
@@ -600,7 +465,6 @@ minetest.register_chatcommand("clearmobs", {
 		end
 
 		local p = minetest.get_player_by_name(player)
-
 		for _,o in pairs(minetest.luaentities) do
 			if o and o.is_mob then
 				local mob_match = false
@@ -609,7 +473,6 @@ minetest.register_chatcommand("clearmobs", {
 					--minetest.log("Match - All mobs specified")
 					mob_match = true
 				elseif mob_type then
-
 					--minetest.log("Match - o.type: ".. tostring(o.type))
 					--minetest.log("mob_type: ".. tostring(mob_type))
 					if mob_type == "monster" and o.type == mob_type then
@@ -621,7 +484,6 @@ minetest.register_chatcommand("clearmobs", {
 					else
 						--minetest.log("No match for type.")
 					end
-
 				elseif mob_name and (o.name == mob_name or string.find(o.name, mob_name)) then
 					--minetest.log("Match - mob_name = ".. tostring(o.name))
 					mob_match = true
@@ -632,35 +494,16 @@ minetest.register_chatcommand("clearmobs", {
 				end
 
 				if mob_match then
-					local in_range = true
-					if (not range or range <= 0 ) then
-						in_range = true
-					else
-						if ( vector.distance(p:get_pos(),o.object:get_pos()) <= range ) then
-							in_range = true
-						else
-							--minetest.log("Out of range")
-							in_range = false
-						end
-					end
-
-					--minetest.log("o.nametag: ".. tostring(o.nametag))
-
+					local in_range = (not range or range <= 0) or vector.distance(p:get_pos(), o.object:get_pos()) <= range
 					if nametagged then
-						if o.nametag then
-							--minetest.log("Namedtagged and it has a name tag. Kill it")
-							o.object:remove()
-						end
+						if o.nametag then o.object:remove() end
 					elseif tamed then
-						if o.tamed then
-							--minetest.log("Tamed. Kill it")
-							o.object:remove()
-						end
+						if o.tamed then o.object:remove() end
 					elseif in_range and (not o.nametag or o.nametag == "") and not o.tamed then
-						--minetest.log("No nametag or tamed. Kill it")
 						o.object:remove()
 					end
 				end
 			end
 		end
-end})
+	end
+})
