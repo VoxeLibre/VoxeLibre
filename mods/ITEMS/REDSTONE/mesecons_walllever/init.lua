@@ -89,7 +89,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		if not groups then return itemstack end
 		if groups.stair or groups.slab_top then return itemstack end
 		local above = pointed_thing.above
-		local wdir = minetest.dir_to_wallmounted({x = under.x - above.x, y = under.y - above.y, z = under.z - above.z})
+		local wdir = minetest.dir_to_wallmounted(under - above)
 		if not mcl_torches.check_placement_allowed(node, wdir, "lever") then
 			return itemstack
 		end
