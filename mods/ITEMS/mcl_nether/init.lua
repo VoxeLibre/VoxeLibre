@@ -158,8 +158,8 @@ minetest.register_node("mcl_nether:soul_sand", {
 	stack_max = 64,
 	tiles = {"mcl_nether_soul_sand.png"},
 	is_ground_content = true,
-	groups = {handy = 1, shovely = 1, building_block = 1, soil_nether_wart = 1, material_sand = 1, soul_block = 1, support_attach = 1 },
-	_vl_allow_attach = { torch = true },
+	groups = {handy = 1, shovely = 1, building_block = 1, soil_nether_wart = 1, material_sand = 1, soul_block = 1},
+	_vl_allow_attach = {all = true},
 	collision_box = {
 		type = "fixed",
 		fixed = { -0.5, -0.5, -0.5, 0.5, 0.5 - 2/16, 0.5 },
