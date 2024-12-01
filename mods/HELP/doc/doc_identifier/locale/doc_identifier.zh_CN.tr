@@ -1,0 +1,18 @@
+# textdomain:doc_identifier
+Error: This node, item or object is undefined. This is always an error.=错误：此节点、物品或对象未定义。这始终是一个错误。
+This can happen for the following reasons:=出现这种情况可能有以下原因：
+• The mod which is required for it is not enabled=• 其所需的模组未启用
+• The author of the game or a mod has made a mistake=• 游戏或模组的作者犯了错误
+It appears to originate from the mod “@1”, which is enabled.=它似乎源自已启用的“@1”模组。
+It appears to originate from the mod “@1”, which is not enabled!=它似乎源自未启用的“@1”模组！
+Its identifier is “@1”.=它的标识符是“@1”。
+Lookup Tool=查找工具
+No help entry for this block could be found.=未找到关于此方块的帮助条目。
+No help entry for this item could be found.=未找到关于此物品的帮助条目。
+No help entry for this object could be found.=未找到关于此对象的帮助条目。
+OK=确定
+Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case.=击打你想进一步了解的任何方块、物品或其他东西，这将打开相应的帮助条目。该工具有两种模式，可通过使用来切换。在液体模式下，此工具也会指向液体，而在固体模式下则不会这样。
+This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.=此方块无法识别，因为此刻世界尚未实例化。几秒钟后再试一次。
+This is a player.=这是一名玩家。
+This useful little helper can be used to quickly learn more about about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used.=这个实用的小帮手可用于快速了解周围环境的更多信息。它能识别并分析方块、物品及其他事物，而且会显示所作用事物的详细信息。
+Show help for pointed thing=显示所指向事物的帮助信息。 

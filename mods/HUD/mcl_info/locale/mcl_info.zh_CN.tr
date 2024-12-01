@@ -1,0 +1,4 @@
+# textdomain: mcl_info
+Set debug bit mask: 0 @= disable, 1 @= biome name, 2 @= coordinates, 3 @= all=设置调试位掩码：0 @= 禁用，1 @= 生物群系名称，2 @= 坐标，3 @= 全部
+Error! Possible values are integer numbers from @1 to @2=错误！可能的值是从@1到@2的整数
+Debug bit mask set to @1=调试位掩码已设置为@1
