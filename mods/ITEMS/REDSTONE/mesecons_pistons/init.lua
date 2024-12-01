@@ -903,3 +903,12 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_down_pusher_sticky")
 end
 
+vl_attach.register_autogroup(function(allow_attach, name, def)
+	-- Never override existing settings
+	if allow_attach.all ~= nil then return end
+
+	-- Forbid attaching directly to pistons
+	if (def.groups and def.groups.piston or 0) >= 1 then
+		allow_attach.all = false
+	end
+end)
