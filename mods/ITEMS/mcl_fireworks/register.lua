@@ -3,7 +3,123 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local tt_help = S("Flight Duration:")
 local description = S("Firework Rocket")
 
+local function explode(self, pos)
+	-- temp code
+	mcl_mobs.mob_class.boom(self, pos, 1)
+end
+
+local firework_entity = {
+	physical = true,
+	pointable = false,
+	visual = "mesh",
+	mesh = "mcl_bows_arrow.obj",
+	visual_size = {x=-1, y=1},
+	textures = {"mcl_fireworks_rocket.png"},
+	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
+	collide_with_objects = false,
+	liquid_drag = true,
+	_fire_damage_resistant = true,
+
+	_save_fields = {
+		"last_pos", "startpos", "damage", "is_critical", "time_in_air", "vl_projectile", "arrow_item"--[[???]], "itemstring"
+	},
+
+	_damage=1,	-- Damage on impact
+	_is_critical=false, -- Whether this arrow would deal critical damage
+	_blocked = false,
+	_viscosity=0,   -- Viscosity of node the arrow is currently in
+	_deflection_cooloff=0, -- Cooloff timer after an arrow deflection, to prevent many deflections in quick succession
+
+	_vl_projectile = {
+		ignore_gravity = true,
+		survive_collision = true,
+		damages_players = true,
+		maximum_time = 60,
+		damage_groups = function(self)
+			return { fleshy = self.object:get_velocity() }
+		end,
+		tracer_texture = "mobs_mc_arrow_particle.png",
+		behaviors = {
+			vl_projectile.burns,
+			vl_projectile.has_tracer,
+
+			function(self, dtime)
+				self.object:add_velocity(vector.new(0, dtime, 0))
+			end,
+
+			vl_projectile.collides_with_solids,
+			vl_projectile.raycast_collides_with_entities,
+		},
+		allow_punching = function(self, entity_def, projectile_def, object)
+			local lua = object:get_luaentity()
+			if lua and lua.name == "mobs_mc:rover" then return false end
+			--if (self.object:get_velocity() + object:get_velocity()).length() < 5 then return end
+
+			minetest.log("allow punching")
+
+			return true
+		end,
+		on_collide_with_entity = function(self, pos, obj)
+			if self.object == obj then return end
+			--if (self.object:get_velocity() + obj:get_velocity()).lenght() < 5 then return end
+
+			minetest.log("entity collision")
+
+			explode(self, pos)
+
+			mcl_util.remove_entity(self)
+		end,
+		on_collide_with_solid = function(self, pos, node)
+			explode(self, pos)
+
+			minetest.log("solid collision")
+
+			mcl_util.remove_entity(self)
+		end
+	},
+
+	get_staticdata = function(self)
+		local out = {}
+		local save_fields = self._save_fields
+		for i = 1,#save_fields do
+			local field = save_fields[i]
+			out[field] = self["_"..field]
+		end
+
+		-- Preserve entity properties
+		out.properties = self.object:get_properties()
+
+		return minetest.serialize(out)
+	end,
+	on_activate = function(self, staticdata, dtime_s)
+		self.object:set_armor_groups({ immortal = 1 })
+
+		self._time_in_air = 1.0
+		local data = minetest.deserialize(staticdata)
+		if not data then return end
+
+		-- Restore entity properties
+		if data.properties then
+			self.object:set_properties(data.properties)
+			data.properties = nil
+		end
+
+		-- Restore arrow state
+		local save_fields = self._save_fields
+		for i = 1,#save_fields do
+			local field = save_fields[i]
+			self["_"..field] = data[field]
+		end
+
+		if not self._vl_projectile then
+			self._vl_projetile = {}
+		end
+	end,
+}
+
 local function register_rocket(n, duration, force)
+	def = table.copy(firework_entity)
+	vl_projectile.register("mcl_fireworks:rocket_" .. n, def)
 	minetest.register_craftitem("mcl_fireworks:rocket_" .. n, {
 		description = description,
 		_tt_help = tt_help .. " " .. duration,
@@ -19,6 +135,14 @@ local function register_rocket(n, duration, force)
 				minetest.sound_play("mcl_fireworks_rocket", {pos = user:get_pos()})
 			end
 			return itemstack
+		end,
+		on_place = function(itemstack, user, pointed_thing)
+			local pos = pointed_thing.above
+			pos.y = pos.y + 1
+			vl_projectile.create("mcl_fireworks:rocket_" .. n, {
+				pos=pos,
+				velocity=vector.new(0,1,0)
+			})
 		end,
 	})
 end
