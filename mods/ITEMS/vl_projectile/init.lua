@@ -359,11 +359,13 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 			return
 		end
 
-		local delta_v = (vel - self._last_velocity) / vector.length(vel)
+		local delta_v = (vel - self._last_velocity)
+		local vel_length = vector.length(vel)
+		if vel_length > 1 then delta_v = delta_v / vel_length end
+		self._last_velocity = vel
 		if math.abs(delta_v.x) <= 0.1 and math.abs(delta_v.z) <= 0.1 and math.abs(delta_v.y) <= 0.2 then
 			return
 		end
-		self._last_velocity = vel
 	else
 		if node_def and not node_def.walkable and (not collides_with or not mcl_util.match_node_to_filter(node.name, collides_with)) then
 			return
