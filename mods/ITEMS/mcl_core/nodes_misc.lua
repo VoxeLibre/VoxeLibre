@@ -182,7 +182,7 @@ minetest.register_node("mcl_core:barrier", {
 	sunlight_propagates = true,
 	is_ground_content = false,
 	groups = {creative_breakable = 1, not_in_creative_inventory = 1, not_solid = 1, support_attach = 1},
-	allow_attach = { torch = true },
+	_vl_allow_attach = { torch = true },
 	on_blast = function(pos, intensity) end,
 	drop = "",
 	_mcl_blast_resistance = 36000008,
