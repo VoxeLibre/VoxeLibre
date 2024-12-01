@@ -1,6 +1,6 @@
 # textdomain: mcl_experience
 [[<player>] <xp>]=[[<Spieler>] <EP>]
-Gives a player some XP=Gibt einen Spieler ein paar EP
+Gives a player some XP=Gibt einem Spieler ein paar EP
 Error: Too many parameters!=Fehler: Zu viele Parameter!
 Error: Incorrect value of XP=Fehler: Ungültiger EP-Wert
 Error: Player not found=Fehler: Spieler nicht gefunden
