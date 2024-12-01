@@ -103,33 +103,32 @@ local function check_placement_allowed(node, wdir, type)
 	-- No ceiling torches
 	if wdir == 0 then return false end
 
-	if def.buildable_to then return true end
-
-	-- Allow nodes to define attachable device types that can't attach
-	if def.allow_attach and not def.allow_attach[type] then return false end
-
-	-- Forbid torches on pistons
-	if (def.groups.piston or 0) >= 1 then return false end
-
-	-- Special allowed nodes (has groups.support_attach = 1 - attach all sides):
-	-- * soul sand
-	-- * mob spawner
-	-- * chorus flower
-	-- * glass, barrier, ice
-	local support_attach = def.groups.support_attach or 0
-	if support_attach == 1 then return true end
-
 	-- Allow solid, opaque, full cube collision box nodes are allowed.
 	if def.groups.solid and def.groups.opaque then return true end
 
-	-- Only allow top placement on these nodes
-	if wdir ~= 1 then return false end
+	-- Allow buildable_to nodes to be replaced
+	if def.buildable_to then return true end
 
-	-- Special allowed nodes - top only (has groups.support_attach = 2 - only attach to top surface)
-	-- * Fence, wall, end portal frame with ender eye: Only on top
-	-- * Slab, stairs: Only on top if upside down
-	if support_attach == 2 then return true end
-	if def.groups.stair == 1 and math.floor(node.param2 / 4) == 5 then return true end
+	-- Allow nodes to define attachable device types that can't attach
+	if def._vl_allow_attach and def._vl_allow_attach[type] then return true end
+
+	-- Forbid attaching directly to pistons
+	if (def.groups.piston or 0) >= 1 then return false end
+
+	-- Special allowed nodes (has groups.support_attach = 1 - attach all sides):
+	-- * soul sand, mob spawner, chorus flower, glass, barrier, ice
+	local support_attach = def.groups.support_attach or 0
+	if support_attach == 1 then return true end
+
+	-- Only allow top placement on these nodes
+	if wdir == 1 then
+		-- Special allowed nodes - top only (has groups.support_attach = 2 - only attach to top surface)
+		-- * Fence, wall, end portal frame with ender eye: Only on top
+		if support_attach == 2 then return true end
+
+		-- * Slab, stairs: Only on top if upside down
+		if def.groups.stair == 1 and math.floor(node.param2 / 4) == 5 then return true end
+	end
 
 	return false
 end
@@ -137,13 +136,13 @@ mcl_torches.check_placement_allowed = check_placement_allowed
 
 core.register_on_mods_loaded(function()
 	for name,def in pairs(core.registered_nodes) do
+		local groups = def.groups
 		local support_attach
-		if def.groups.glass then support_attach = 1 end
-		if def.groups.fence == 1 then support_attach = 2 end
-		if def.groups.wall then support_attach = 2 end
-		if def.groups.slab_top then support_attach = 2 end
-		if def.groups.anvil then support_attach = 2 end
-		if def.groups.pane then support_attach = 2 end
+		if groups.glass then support_attach = 1 end
+
+		if groups.fence == 1 or groups.wall or groups.slab_top or groups.anvil or groups.pane then
+			support_attach = 2
+		end
 		if support_attach then
 			local groups = table.copy(def.groups)
 			groups.support_attach = support_attach
@@ -221,7 +220,7 @@ function mcl_torches.register_torch(def)
 			end
 
 			local above = pointed_thing.above
-			local wdir = minetest.dir_to_wallmounted({x = under.x - above.x, y = under.y - above.y, z = under.z - above.z})
+			local wdir = minetest.dir_to_wallmounted(under - above)
 
 			if check_placement_allowed(node, wdir, "torch") == false then
 				return itemstack
