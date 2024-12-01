@@ -123,7 +123,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 		_vl_allow_attach = {
 			torch = allow_attach,
 			button = allow_attach,
-			lever = false,
+			lever = allow_attach,
 		},
 		selection_box = {
 			type = "fixed",
@@ -328,6 +328,11 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	topdef.groups.slab_top = 1
 	topdef.groups.not_in_creative_inventory = 1
 	topdef.groups.not_in_craft_guide = 1
+	topdef._vl_allow_attach = {
+		torch = allow_attach,
+		button = allow_attach,
+		lever = allow_attach,
+	}
 	topdef.description = S("Upper @1", description)
 	topdef._doc_items_create_entry = false
 	topdef._doc_items_longdesc = nil
