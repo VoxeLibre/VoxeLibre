@@ -204,7 +204,8 @@ minetest.register_node("mcl_end:dragon_egg", {
 	selection_box = {
 		type = "regular",
 	},
-	groups = {handy = 1, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1, dig_by_piston = 1, support_attach = 2 },
+	groups = {handy = 1, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1, dig_by_piston = 1},
+	_vl_allow_attach = {torch = function(node,wdir) return wdir == 1 end},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 9,
 	_mcl_hardness = 3,

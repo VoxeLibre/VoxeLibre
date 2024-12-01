@@ -96,7 +96,7 @@ end
 --
 
 -- Check if placement at given node is allowed
-local function check_placement_allowed(node, wdir, type)
+local function check_placement_allowed(node, wdir, attach_type)
 	local def = minetest.registered_nodes[node.name]
 	if not def then return false end
 
@@ -106,52 +106,57 @@ local function check_placement_allowed(node, wdir, type)
 	-- Allow solid, opaque, full cube collision box nodes are allowed.
 	if def.groups.solid and def.groups.opaque then return true end
 
-	-- Allow buildable_to nodes to be replaced
-	if def.buildable_to then return true end
+	-- Allow nodes to define attachable device type handling
+	if not def._vl_allow_attach then return false end
+	local vl_allow_attach = def._vl_allow_attach
 
-	-- Allow nodes to define attachable device types that can't attach
-	if def._vl_allow_attach and def._vl_allow_attach[type] then return true end
+	-- find allow/deny/callback for specified attach_type, and use "all" as a fallback
+	local allow_attach
+	if vl_allow_attach.all ~= nil then allow_attach = vl_allow_attach.all end
+	if vl_allow_attach[attach_type] ~= nil then allow_attach = vl_allow_attach[attach_type] end
 
-	-- Forbid attaching directly to pistons
-	if (def.groups.piston or 0) >= 1 then return false end
-
-	-- Special allowed nodes (has groups.support_attach = 1 - attach all sides):
-	-- * soul sand, mob spawner, chorus flower, glass, barrier, ice
-	local support_attach = def.groups.support_attach or 0
-	if support_attach == 1 then return true end
-
-	-- Only allow top placement on these nodes
-	if wdir == 1 then
-		-- Special allowed nodes - top only (has groups.support_attach = 2 - only attach to top surface)
-		-- * Fence, wall, end portal frame with ender eye: Only on top
-		if support_attach == 2 then return true end
-
-		-- * Slab, stairs: Only on top if upside down
-		if def.groups.stair == 1 and math.floor(node.param2 / 4) == 5 then return true end
+	-- Dispatch callbacks
+	if type(allow_attach) == "function" then
+		allow_attach = allow_attach(node, wdir, attach_type)
 	end
 
-	return false
+	return allow_attach
 end
 mcl_torches.check_placement_allowed = check_placement_allowed
 
 core.register_on_mods_loaded(function()
 	for name,def in pairs(core.registered_nodes) do
 		local groups = def.groups
-		local support_attach
-		if groups.glass then support_attach = 1 end
+		local allow_attach = def._vl_allow_attach and table.copy(def._vl_allow_attach) or {}
 
-		if groups.fence == 1 or groups.wall or groups.slab_top or groups.anvil or groups.pane then
-			support_attach = 2
+		-- Allow placing attachables over top buildable_to nodes
+		if def.buildable_to then
+			allow_attach.all = true
 		end
-		if support_attach then
-			local groups = table.copy(def.groups)
-			groups.support_attach = support_attach
 
-			local allow_attach = def.allow_attach and table.copy(def.allow_attach) or {}
+		-- Forbid attaching directly to pistons
+		if (groups.piston or 0) >= 1 then
+			allow_attach.all = false
+		end
+
+		-- Always allow attaching torches to glass
+		if groups.glass then
 			allow_attach.torch = true
-
-			core.override_item(name, {groups = groups, allow_attach = allow_attach})
 		end
+
+		-- Allow attaching torches to the tops of these node types
+		if groups.fence == 1 or groups.wall or groups.slab_top or groups.anvil or groups.pane then
+			allow_attach.torch = function(node, wdir) return wdir == 1 end
+		end
+
+		-- Only allow attaching torches to the tops of upside-down stairs
+		if groups.stair == 1 then
+			allow_attach.torch = function(node, wdir)
+				return wdir == 1 and math.floor(node.param2 / 4) == 5
+			end
+		end
+
+		core.override_item(name, {_vl_allow_attach = allow_attach})
 	end
 end)
 
