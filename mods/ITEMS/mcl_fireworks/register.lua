@@ -36,7 +36,7 @@ local firework_entity = {
 		damages_players = true,
 		maximum_time = 60,
 		damage_groups = function(self)
-			return { fleshy = self.object:get_velocity() }
+			return { fleshy = vector.length(self.object:get_velocity()) }
 		end,
 		tracer_texture = "mobs_mc_arrow_particle.png",
 		behaviors = {
