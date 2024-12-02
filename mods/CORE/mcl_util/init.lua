@@ -1,6 +1,7 @@
 mcl_util = {}
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/roman_numerals.lua")
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/compat.lua")
 
 -- Updates all values in t using values from to*.
 function table.update(t, ...)
