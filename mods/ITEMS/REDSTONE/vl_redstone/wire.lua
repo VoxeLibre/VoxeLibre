@@ -193,7 +193,7 @@ local function update_redstone_wire(orig, update_neighbor)
 	end
 	local node = core.get_node(orig)
 	local power = math.floor(node.param2 / 4)
-	if node.name ~= connections[1] or node.param2 ~= connections[2] + power * 16 then
+	if node.name ~= connections[1] or node.param2 ~= connections[2] + power * 4 then
 		node.name = connections[1]
 		node.param2 = connections[2] + power * 4
 		core.set_node(orig, node)
