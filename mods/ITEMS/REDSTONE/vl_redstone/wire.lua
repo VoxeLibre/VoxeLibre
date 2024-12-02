@@ -233,6 +233,12 @@ local base_def = {
 	is_ground_content = false,
 	sunlight_propogate = true,
 
+	_vl_redstone = {
+		on_change = function(pos, node, old_power, new_power)
+			node.param2 = node.param2 % 4 + new_power * 4
+			core.set_node(pos, node)
+		end,
+	},
 	mesecons = {
 		conductor = {
 			rules = mesecon_rules,
