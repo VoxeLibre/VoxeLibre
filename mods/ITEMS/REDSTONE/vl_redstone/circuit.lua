@@ -8,7 +8,7 @@ local pending_netlist_source_map_lookups = {}
 local power_cache = {}
 
 function mod.get_power_level_from_hash(pos_hash)
-	return power_cache[pos] or 0
+	return power_cache[pos_hash] or 0
 end
 function mod.get_power_level(pos)
 	return mod.get_power_level_from_hash(core.hash_node_position(pos))
@@ -79,7 +79,7 @@ local function compute_source_map(netlist, netlist_id, edges)
 			local p,dist = item[1],item[2]
 
 			local p_hash = core.hash_node_position(p)
-			if dist < 15 and (map[p_hash] or 16) > dist then
+			if dist <= 15 and (map[p_hash] or 16) > dist then
 				map[p_hash] = dist
 
 				for _,edge in pairs(edges) do
@@ -232,7 +232,7 @@ function mod.build_netlist(pos)
 	local netlist_id = core.sha256(netlist_data)
 
 	if netlist_id ~= old_netlist_id then
-		core.log("netlist change detected: "..tostring(old_netlist_id).." -> "..netlist_id)
+		--core.log("netlist change detected: "..tostring(old_netlist_id).." -> "..netlist_id)
 		if old_netlist_id then
 			storage:set_string("netlist-"..old_netlist_id,"")
 			storage:set_string("source-map-"..old_netlist_id,"")
@@ -240,7 +240,7 @@ function mod.build_netlist(pos)
 		storage:set_string("netlist-"..netlist_id, core.encode_base64(netlist_data))
 
 		-- Compute source->sink and source->wire distances, using async processing where available
-		core.log(netlist_id.." => "..dump(netlist))
+		--core.log(netlist_id.." => "..dump(netlist))
 		core.handle_async(compute_source_map, source_map_finished, netlist, netlist_id, edges)
 
 		for _,pos in pairs(netlist.wires) do
@@ -286,7 +286,7 @@ local function set_power_level(pos, rules, power_level)
 	local netlists = {}
 	local seen = {}
 	local pos_hash = core.hash_node_position(pos)
-	core.log("pos="..vector.to_string(pos)..", pos_hash="..pos_hash)
+	--core.log("pos="..vector.to_string(pos)..", pos_hash="..pos_hash)
 
 	for _,rule in pairs(rules) do
 		local p = vector.add(pos, rule)
@@ -299,33 +299,36 @@ local function set_power_level(pos, rules, power_level)
 
 	for _,netlist_id in pairs(netlists) do
 		mod.get_netlist_source_map(netlist_id, function(source_map)
-			core.log("Using source_map = "..dump(source_map))
-			core.log("Setting "..netlist_id.." to power level "..power_level.." from "..vector.to_string(pos).." hash="..pos_hash)
-			local s_map = source_map.sources[pos_hash]
-			if s_map then
-				for dst_hash,dist in pairs(s_map) do
-					local old_power = mod.get_power_level_from_hash(dst_hash)
-					local new_power = power_level - dist
-					if new_power < 0 then new_power = 0 end
+			--core.log("Using source_map = "..dump(source_map))
+			--core.log("Setting "..netlist_id.." to power level "..power_level.." from "..vector.to_string(pos).." hash="..pos_hash)
+			local s_map = source_map.sources[pos_hash] or {}
+			for dst_hash,dist in pairs(s_map) do
+				local old_power = mod.get_power_level_from_hash(dst_hash)
+				local new_power = power_level - dist
+				if new_power < 0 then new_power = 0 end
 
-					-- Recompute this position from all sources to make sure it is accurate
-					if new_power < old_power then
-						for src_hash,dist in pairs(source_map.wires[dst_hash]) do
+				-- Recompute this position from all sources to make sure it is accurate
+				if new_power < old_power then
+					local wires_map = source_map.wires[dst_hash] or {}
+					for src_hash,dist in pairs(wires_map) do
+						if src_hash ~= -1 and src_hash ~= pos_hash then
 							local candidate_power = mod.get_power_level_from_hash(src_hash) - dist
+
 							-- Ignore source count (-1)
-							if src_hash ~= -1 and candidate_power > new_power then
+							if candidate_power > new_power then
 								new_power = candidate_power
 							end
 						end
 					end
+				end
 
-					if new_power ~= old_power then
-						power_cache[dst_hash] = new_power
-						local dst = core.get_position_from_hash(dst_hash)
-						dispatch_power_changed(dst, old_power, new_power)
+				local dst = core.get_position_from_hash(dst_hash)
 
-						core.log("update power: "..vector.to_string(core.get_position_from_hash(dst_hash)).." => "..new_power)
-					end
+				if new_power ~= old_power then
+					power_cache[dst_hash] = new_power
+					dispatch_power_changed(dst, old_power, new_power)
+
+					--core.log("update power: "..vector.to_string(dst).." => "..new_power)
 				end
 			end
 		end)
@@ -335,8 +338,8 @@ end
 
 -- Override mesecon.receptor_* functions
 function mesecon.receptor_on(pos, rules)
-	core.log("receptor_on( "..vector.to_string(pos)..", ...) from"..dump(debug.traceback()))
-	core.after(0, set_power_level, pos, rules, 15)
+	--core.log("receptor_on( "..vector.to_string(pos)..", ...) from"..dump(debug.traceback()))
+	core.after(0, set_power_level, pos, rules, 16)
 end
 function mesecon.receptor_off(pos, rules)
 	core.after(0, set_power_level, pos, rules, 0)
