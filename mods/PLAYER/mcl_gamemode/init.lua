@@ -44,7 +44,14 @@ function mcl_gamemode.get_gamemode(player)
 	if mt_is_creative_enabled(player:get_player_name()) then
 		return "creative"
 	end
-	return player:get_meta():get_string("gamemode")
+
+	local gm = player:get_meta():get_string("gamemode")
+	if gm == "" then
+		return "survival"
+	else
+		---@diagnostic disable-next-line: return-type-mismatch
+		return gm
+	end
 end
 
 function minetest.is_creative_enabled(name)
