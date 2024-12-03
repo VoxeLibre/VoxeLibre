@@ -1,5 +1,5 @@
 # textdomain: mcl_credits
-A faithful Open Source clone of Minecraft=Ein treuer Open-Source-Klon von Minecraft
+An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=
 Sneak to skip=Schleichen, um zu überspringen
 Jump to speed up (additionally sprint)=Springen, um zu beschleunigen (zusätzlich sprinten)
 ##[ people.lua ]##
@@ -21,4 +21,4 @@ Special thanks=
 
 ##### not used anymore #####
 
-MineClone5=MineClone5
+A faithful Open Source clone of Minecraft=Ein treuer Open-Source-Klon von Minecraft

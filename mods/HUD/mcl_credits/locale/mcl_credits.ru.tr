@@ -1,5 +1,5 @@
 # textdomain: mcl_credits
-A faithful Open Source clone of Minecraft=Верный открытый клон Minecraft
+An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=
 Sneak to skip=[Красться] для пропуска
 Jump to speed up (additionally sprint)=[Прыжок] или [Спринт] для промотки вперед
 ##[ people.lua ]##
@@ -21,4 +21,5 @@ Special thanks=Особая благодарность
 
 ##### not used anymore #####
 
+A faithful Open Source clone of Minecraft=Верный открытый клон Minecraft
 MineClone5=MineClone5

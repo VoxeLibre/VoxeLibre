@@ -27,7 +27,7 @@ Show who is logged on=Mostrar quién ha iniciado sesión
 <sound> <target>=
 Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
 Sound name is invalid!=
-Target is invalid!!=
+Target is invalid!=
 ##[ alias.lua ]##
 List bans=Lista de prohibiciones
 Ban list: @1=Lista de baneados: @1
