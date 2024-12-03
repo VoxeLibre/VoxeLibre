@@ -62,7 +62,7 @@ S("Minetest is a free software game engine for games based on voxel gameplay, in
 
 S("The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest can, however, be much more complex than this.").."\n\n"..
 
-S("A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorational blocks or be very complex by e.g. introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.").."\n\n"..
+S("A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorative blocks or be very complex by, e.g., introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.").."\n\n"..
 
 S("Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.").."\n\n"..
 
@@ -242,7 +242,7 @@ S("“Pointing” means looking at something in range with the crosshair. Pointi
 
 S("To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.").."\n\n"..
 
-S("A few things can not be pointed. Most blocks are pointable. A few blocks, like air, can never be pointed. Other blocks, like liquids can only be pointed by special items."),
+S("A few things cannot be pointed. Most blocks are pointable. A few blocks, like air, can never be pointed. Other blocks, like liquids can only be pointed by special items."),
 		images = {{ image = "doc_basics_pointing.png" }},
 }})
 
@@ -273,7 +273,7 @@ S("The world is made entirely out of blocks (voxels, to be precise). Blocks can 
 
 S("Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:").."\n\n"..
 
-S("• Collidable: Collidable blocks can not be passed through; players can walk on them. Non-collidable blocks can be passed through freely").."\n"..
+S("• Collidable: Collidable blocks cannot be passed through; players can walk on them. Non-collidable blocks can be passed through freely").."\n"..
 S("• Pointable: Pointable blocks show a wireframe or a halo box when pointed. But you will just point through non-pointable blocks. Liquids are usually non-pointable but they can be pointed at by some special tools").."\n"..
 S("• Mining properties: By which tools it can be mined, how fast and how much it wears off tools").."\n"..
 S("• Climbable: While you are at a climbable block, you won't fall and you can move up and down with the jump and sneak keys").."\n"..
@@ -290,7 +290,7 @@ doc.add_entry("basics", "mine", {
 -- Text changed for MCL2
 S("Mining (or digging) is the process of breaking blocks to remove them. To mine a block, point it and hold down the left mouse button until it breaks.").."\n\n"..
 
-S("Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks can not be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.") .. "\n\n"..
+S("Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks cannot be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.") .. "\n\n"..
 
 S("After mining, a block may leave a “drop” behind. This is a number of items you get after mining. Most commonly, you will get the block itself. There are other possibilities for a drop which depends on the block type. The following drops are possible:").."\n"..
 S("• Always drops itself (the usual case)").."\n"..
@@ -323,7 +323,7 @@ S("Liquids are special dynamic blocks. Liquids like to spread and flow to their 
 
 S("Liquids usually come in two forms: In source form (S) and in flowing form (F).").."\n"..
 S("Liquid sources have the shape of a full cube. A liquid source will generate flowing liquids around it from time to time, and, if the liquid is renewable, it also generates liquid sources. A liquid source can sustain itself. As long it is left alone, a liquid source will normally keep its place and does not drain out.").."\n"..
-S("Flowing liquids take a sloped form. Flowing liquids spread around the world until they drain. A flowing liquid can not sustain itself and always comes from a liquid source, either directly or indirectly. Without a liquid source, a flowing liquid will eventually drain out and disappear.").."\n"..
+S("Flowing liquids take a sloped form. Flowing liquids spread around the world until they drain. A flowing liquid cannot sustain itself and always comes from a liquid source, either directly or indirectly. Without a liquid source, a flowing liquid will eventually drain out and disappear.").."\n"..
 
 S("All liquids share the following properties:").."\n"..
 S("• All properties of blocks (including drowning damage)").."\n"..
@@ -368,9 +368,9 @@ doc.add_entry("basics", "craft", {
 		text =
 S("Crafting is the task of combining several items to form a new item.").."\n\n"..
 
-S("To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you placed items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limits the possible recipes you can craft.").."\n\n"..
+S("To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.").."\n\n"..
 
-S("To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and creates a new item. It is not possible to place items into the output slot.").."\n\n"..
+S("To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.").."\n\n"..
 
 S("A description on how to craft an item is called a “crafting recipe”. You need this knowledge to craft. There are multiple ways to learn crafting recipes. One way is by using a crafting guide, which contains a list of available crafting recipes. Some games provide crafting guides. There are also some mods which you can download online for installing a crafting guide. Another way is by reading the online manual of the game (if one is available).").."\n\n"..
 
@@ -386,7 +386,7 @@ S("• Repairing (image 5): Place two damaged tools into the crafting grid anywh
 
 S("In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.").."\n\n"..
 
-S("Rarely, crafting recipes have replacements. This means, whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item."),
+S("Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item."),
 		images = {
 			{image="doc_basics_craft_grid.png"}, {image="doc_basics_craft_shaped.png"},
 			{image="doc_basics_craft_shapeless_1.png"}, {image="doc_basics_craft_shapeless_2.png"}, {image="doc_basics_craft_repair.png"},
@@ -398,11 +398,11 @@ doc.add_entry("basics", "cook", {
 	name = S("Cooking"),
 	data = {
 		text =
-S("Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), an cookable item, a fuel item and time in order to yield a new item.").."\n\n"..
+S("Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), a cookable item, a fuel item and time in order to yield a new item.").."\n\n"..
 
 S("Each fuel item has a burning time. This is the time a single item of the fuel keeps a furnace burning.").."\n\n"..
 
-S("Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the whole cooking time to actually yield the result.")
+S("Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.")
 }})
 
 doc.add_entry("basics", "hotbar", {
@@ -621,7 +621,7 @@ S("With [F10] you can open and close the console. The main use of the console is
 S("Using the chat or server command key also opens the console, but it is smaller and will be closed after you sent a message.").."\n\n"..
 
 S("Use the chat to communicate with other players. This requires you to have the “shout” privilege.").."\n"..
-S("Just type in the message and hit [Enter]. Public chat messages can not begin with “/”.").."\n\n"..
+S("Just type in the message and hit [Enter]. Public chat messages cannot begin with “/”.").."\n\n"..
 
 S("You can send private messages: Say “/msg <player> <message>” in chat to send “<message>” which can only be seen by <player>.").."\n\n"..
 

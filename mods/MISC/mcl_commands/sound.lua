@@ -20,7 +20,7 @@ minetest.register_chatcommand("playsound",{
 		if P[2] == tostring(P[2]) and minetest.player_exists(P[2]) then
 			params.target = P[2]
 		else
-			return false, S("Target is invalid!!")
+			return false, S("Target is invalid!")
 		end
 		-- if P[3] then
 			-- params.pos = nil --TODO:position

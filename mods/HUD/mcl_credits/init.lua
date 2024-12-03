@@ -3,7 +3,7 @@ local S = minetest.get_translator(modname)
 
 mcl_credits = {
 	players = {},
-	description = S("A faithful Open Source clone of Minecraft"),
+	description = S("An open-source survival sandbox game in the spirit of Infiniminer and Minecraft"),
 	people = dofile(minetest.get_modpath(modname) .. "/people.lua"),
 }
 
