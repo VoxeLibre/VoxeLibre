@@ -45,13 +45,13 @@ function mcl_gamemode.get_gamemode(player)
 		return "creative"
 	end
 
-	local gm = player:get_meta():get_string("gamemode")
-	if gm == "" then
-		player:get_meta():set_string("gamemode", "survival")
-		return "survival"
-	else
+	local gm = player:get_meta():get("gamemode")
+	if gm then
 		---@diagnostic disable-next-line: return-type-mismatch
 		return gm
+	else
+		player:get_meta():set_string("gamemode", "survival")
+		return "survival"
 	end
 end
 
