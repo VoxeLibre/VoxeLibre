@@ -13,6 +13,13 @@ from sys import argv as _argv
 from sys import stderr as _stderr
 from collections import defaultdict
 
+# Optional jellyfish for fuzzy matching
+has_jellyfish = False
+try:
+	import jellyfish
+	has_jellyfish = True
+except: pass
+
 # Running params
 params = {"recursive": False,
 	"help": False,
@@ -23,6 +30,7 @@ params = {"recursive": False,
 	"print-source": False,
 	"truncate-unused": False,
 	"dofile-order": False,
+	"jellyfish": False,
 }
 # Available CLI options
 options = {"recursive": ['--recursive', '-r'],
@@ -32,7 +40,8 @@ options = {"recursive": ['--recursive', '-r'],
 	"break-long-lines": ['--break-long-lines', '-b'],
 	"print-source": ['--print-source', '-p'],
 	"truncate-unused": ['--truncate-unused', '-t'],
-	"dofile-order": ['--dofile-order', '-d']
+	"dofile-order": ['--dofile-order', '-d'],
+	"jellyfish": ['--jellyfish', '-j'],
 }
 
 # Strings longer than this will have extra space added between
@@ -89,6 +98,8 @@ DESCRIPTION
 		delete unused strings from files
 	{', '.join(options["dofile-order"])}
 		try to order files by their order from init.lua (not recursive)
+	{', '.join(options["jellyfish"])}
+		use jellyfish library for fuzzy matching
 ''')
 
 def main():
@@ -223,6 +234,18 @@ def get_existing_tr_files(folder):
 				out.append(name)
 	return out
 
+def fuzzy_match(s, candidates):
+	import math
+	if not has_jellyfish: raise "The jellyfish library is not installed."
+	if len(candidates) == 0 or len(s) < 5: return None
+	scores = sorted((jellyfish.damerau_levenshtein_distance(s, c) / max(len(s), len(c)), c) for c in candidates)
+	thresh = 0.2 if len(s) >= 16 else 0.8 / math.sqrt(len(s))
+	if scores[0][0] > thresh: return None
+	if len(scores) > 1 and scores[1][0] <= thresh:
+		print("Ambiguous fuzzy match:", s, "<=>", scores[0][1], "<=>", scores[1][1])
+		return None # ambiguous
+	return scores[0][1]
+
 # Converts the template dictionary to a text to be written as a file
 # dGroupedKeyStrings is a dictionary of source file sets to localized strings
 # dOld is a dictionary of existing translations and comments from
@@ -240,6 +263,9 @@ def strings_to_text(dGroupedKeyStrings, dOld, mod_name, header_comments, textdom
 	if header_comments is not None:
 		lOut.append(header_comments)
 
+	dOldStrings = set(dOld.keys())
+	usedFuzzy = set()
+
 	for source, localizedStrings in dGroupedKeyStrings.items():
 		if params["print-source"] and len(source) > 0:
 			lOut.append(symbol_source_prefix + " ".join(x.replace("r\\","/") for x in source) + symbol_source_suffix)
@@ -251,6 +277,21 @@ def strings_to_text(dGroupedKeyStrings, dOld, mod_name, header_comments, textdom
 			if templ:
 				templ_val = templ[0].get(localizedString, {})
 				templ_comment = templ_val.get("comment")
+
+			# fuzzy matching:
+			if translation == "" and params["jellyfish"] and localizedString not in dOldStrings:
+				cand = fuzzy_match(localizedString, dOldStrings)
+				if cand and cand in dOld:
+					val = dOld.get(cand)
+					translation = val.get("translation", "")
+					if translation != "":
+						usedFuzzy.add(cand)
+						comment = val.get("comment")
+						if not comment or comment == "":
+							comment = "##TODO: fuzzy matched - verify and remove the comment"
+						else:
+							comment = comment + " ##TODO: fuzzy matched - verify and remove the comment"
+
 			if params["break-long-lines"] and len(localizedString) > doublespace_threshold and not lOut[-1] == "":
 				lOut.append("")
 			if templ_comment != None and templ_comment != "" and (comment is None or comment == "" or not comment.startswith(templ_comment)):
@@ -267,7 +308,7 @@ def strings_to_text(dGroupedKeyStrings, dOld, mod_name, header_comments, textdom
 	unusedExist = False
 	if not params["truncate-unused"]:
 		for key in dOld:
-			if key not in dkeyStrings:
+			if key not in dkeyStrings and not key in usedFuzzy:
 				val = dOld[key]
 				translation = val.get("translation")
 				comment = val.get("comment")
