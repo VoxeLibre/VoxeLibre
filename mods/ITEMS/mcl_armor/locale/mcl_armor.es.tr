@@ -1,6 +1,45 @@
 # textdomain: mcl_armor
 This is a piece of equippable armor which reduces the amount of damage you receive.=Esta es una pieza de armadura que se puede equipar, la cual reduce la cantidad de daño que recives.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Para equiparla, colocala en la ranura de armadura en el menú de tu inventario.
+sentry=
+dune=
+coast=
+wild=
+tide=
+ward=
+vex=
+rib=
+snout=
+eye=
+spire=
+silence=
+wayfinder=
+##[ register.lua ]##
+Projectile Protection=Protección contra proyectiles
+Reduces projectile damage.=Reduce el daño de proyectiles.
+Blast Protection=Protección contra explosiones
+Reduces explosion damage and knockback.=Reduce el daño de explosiones y su empuje.
+Fire Protection=Protección contra el fuego
+Reduces fire damage.=Reduce el daño causado por fuego.
+Protection=Protección
+Reduces most types of damage by 4% for each level.=Reduce la mayoría de tipos de daño por 4% por cada nivel.
+Feather Falling=Caída de plumas
+Reduces fall damage.=Reduce el daño por caída.
+Aqua Affinity=Afinidad acuática
+#Translations of enchantements
+Increases underwater mining speed.=Aumenta la velocidad de minado bajo el agua.
+Curse of Binding=Maldicón de ligamiento
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=El objeto no puede ser removido de las ranuras de inventario excepto al morir, al romperse, o en Modo Creativo.
+Thorns=Espinas
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Refleja una parte del daño infligido, a costa de reducir la durabilidad con cada activación.
+Elytra=Élitros
+##[ trims.lua ]##
+#Translations for armor trims
+Smithing Template '@1'=
+
+
+##### not used anymore #####
+
 Leather Cap=Sombrero de cuero
 Iron Helmet=Casco de hierro
 Golden Helmet=Casco de oro
@@ -25,24 +64,5 @@ Golden Boots=Botas de oro
 Diamond Boots=Botas de diamante
 Chain Boots=Botas de cota de mallas
 Netherite Boots=Botas de netherita
-Elytra=Élitros
-
-#Translations of enchantements
-Increases underwater mining speed.=Aumenta la velocidad de minado bajo el agua.
-Blast Protection=Protección contra explosiones
-Reduces explosion damage and knockback.=Reduce el daño de explosiones y su empuje.
-Curse of Binding=Maldicón de ligamiento
-Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=El objeto no puede ser removido de las ranuras de inventario excepto al morir, al romperse, o en Modo Creativo.
-Feather Falling=Caída de plumas
-Reduces fall damage.=Reduce el daño por caída.
-Fire Protection=Protección contra el fuego
-Reduces fire damage.=Reduce el daño causado por fuego.
 Shooting consumes no regular arrows.=Disparar no consume flechas normales.
 Shoot 3 arrows at the cost of one.=Dispara 3 flechas por el costo de una.
-Projectile Protection=Protección contra proyectiles
-Reduces projectile damage.=Reduce el daño de proyectiles.
-Protection=Protección
-Reduces most types of damage by 4% for each level.=Reduce la mayoría de tipos de daño por 4% por cada nivel.
-Thorns=Espinas
-Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Refleja una parte del daño infligido, a costa de reducir la durabilidad con cada activación.
-Aqua Affinity=Afinidad acuática

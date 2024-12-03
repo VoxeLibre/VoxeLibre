@@ -1,39 +1,49 @@
 # textdomain: mcl_banners
 White Banner=Biały sztandar
-White=Biały 
 Grey Banner=Szary sztandar
-Grey=Szary 
 Light Grey Banner=Jasnoszary sztandar
-Light Grey=Jasnoszary 
 Black Banner=Czarny sztandar
-Black=Czarny 
 Red Banner=Czerwony sztandar
-Red=Czerwony 
 Yellow Banner=Żółty sztandar
-Yellow=Żółty 
 Green Banner=Zielony sztandar
-Green=Zielony 
 Cyan Banner=Błękitny sztandar
-Cyan=Błękitny 
 Blue Banner=Niebieski sztandar
-Blue=Niebieski 
 Magenta Banner=Karmazynowy sztandar
-Magenta=Karmazynowy 
 Orange Banner=Pomarańczowy sztandar
-Orange=Pomarańczowy 
 Purple Banner=Fioletowy sztandar
-Violet=Fioletowy 
 Brown Banner=Brązowy sztandar
-Brown=Brązowy
 Pink Banner=Różowy sztandar
-Pink=Różowy
 Lime Banner=Jasnozielony sztandar
-Lime=Jasnozielony 
 Light Blue Banner=Jasnoniebieski sztandar
-Light Blue=Jasnoniebieski 
+Banner=
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Sztandary są kolorowymi dekoracyjnymi blokami. Mogą być postawione na ziemi i na ścianach. Sztandary mogą być upiększone różnymi wzorami przy użyciu sporej ilości farby podczas wytwarzania.
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Użyj wytwarzania aby narysować wzór na górze sztandaru. Upiększone sztandary mogą być upiększone ponownie by połączyć kilka wzorów. Możesz narysować do 12 warstw na sztandarze w ten sposób. Jeśli baner zawiera gradient tylko 3 warstwy są możliwe.
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Możesz skopiować wzór sztandaru kładąc dwa sztandary tego samego koloru w siatce wytwarzania. Jeden z nich musi być upiększony, drugi czysty. Możesz również użyć sztandar na kociołku z wodą aby zmyć górną warstwę.
+Preview Banner=
+Paintable decoration=Dekoracja do malowania
+##[ patterncraft.lua ]##
+And one additional layer=I jedna dodatkowa warstwa
+And @1 additional layers=I @1 dodatkowych warstw
+
+
+##### not used anymore #####
+
+White=Biały 
+Grey=Szary 
+Light Grey=Jasnoszary 
+Black=Czarny 
+Red=Czerwony 
+Yellow=Żółty 
+Green=Zielony 
+Cyan=Błękitny 
+Blue=Niebieski 
+Magenta=Karmazynowy 
+Orange=Pomarańczowy 
+Violet=Fioletowy 
+Brown=Brązowy
+Pink=Różowy
+Lime=Jasnozielony 
+Light Blue=Jasnoniebieski 
 @1 Bordure=@1 z obramowaniem
 @1 Bricks=@1 murowany
 @1 Roundel=@1 krąg
@@ -72,6 +82,3 @@ You can copy the pattern of a banner by placing two banners of the same color in
 @1 Chevron Inverted=@1 górny trójkąt
 @1 Base Indented=@1 ząbkowany dolny
 @1 Chief Indented=@1 ząbkowany górny
-And one additional layer=I jedna dodatkowa warstwa
-And @1 additional layers=I @1 dodatkowych warstw
-Paintable decoration=Dekoracja do malowania

@@ -1,4 +1,8 @@
 # textdomain: mcl_smithing_table
-Inventory=Inventário
 Upgrade Gear=Atualizar Equipamento
 Smithing table=Mesa de Ferraria
+
+
+##### not used anymore #####
+
+Inventory=Inventário

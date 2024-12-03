@@ -2,9 +2,9 @@
 Find and teleport to biome=
 <biome>=
 No player.=
-Biome does not exist!=
+Not supported. The “biomeinfo” mod is required for v6 mapgen support!=
 Biome found at @1.=
 No biome found!=
+Biome does not exist!=
 List all biomes=
 No biomes.=
-Not supported. The “biomeinfo” mod is required for v6 mapgen support!=

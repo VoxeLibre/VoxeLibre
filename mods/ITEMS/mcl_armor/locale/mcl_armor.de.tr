@@ -1,13 +1,11 @@
 # textdomain: mcl_armor
-Blast Protection=Explosionsschutz
-Projectile Protection=Projektilschutz
-Thorns=Dornen
 This is a piece of equippable armor which reduces the amount of damage you receive.=Dies ist ein Teil einer tragbaren Rüstung, die die Menge an Schaden, den Sie erleiden, reduziert.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Um es zu tragen, legen Sie es in den passenden Rüstungsplatz in Ihrem Inventarmenü.
 sentry=
 dune=
 coast=Küste
 wild=
+tide=
 ward=Bezirk
 vex=
 rib=
@@ -16,6 +14,32 @@ eye=Auge
 spire=
 silence=
 wayfinder=Pfadfinder
+##[ register.lua ]##
+Projectile Protection=Projektilschutz
+Reduces projectile damage.=
+Blast Protection=Explosionsschutz
+Reduces explosion damage and knockback.=
+Fire Protection=
+Reduces fire damage.=
+Protection=
+Reduces most types of damage by 4% for each level.=
+Feather Falling=
+Reduces fall damage.=
+Aqua Affinity=
+#Translations of enchantements
+Increases underwater mining speed.=
+Curse of Binding=
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+Thorns=Dornen
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
+Elytra=
+##[ trims.lua ]##
+#Translations for armor trims
+Smithing Template '@1'=Schmiedevorlage '@1'
+
+
+##### not used anymore #####
+
 Leather Cap=Lederkappe
 Iron Helmet=Eisenhelm
 Golden Helmet=Goldhelm
@@ -36,4 +60,3 @@ Iron Boots=Eisenstiefel
 Golden Boots=Goldstiefel
 Diamond Boots=Diamantstiefel
 Chain Boots=Kettenstiefel
-Smithing Template '@1'=Schmiedevorlage '@1'

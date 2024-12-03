@@ -1,4 +1,5 @@
 # textdomain: mesecons_wires
+Transmits redstone power, powers mechanisms=
 Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail.=Redstone es un mineral conductor versátil que transmite el poder de redstone. Se puede colocar en el suelo como un sendero.
 A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.=Un sendero de redstone puede estar en dos estados: alimentado o no alimentado. Un rastro de redstone alimentado alimentará (y por lo tanto activará) los componentes adyacentes de redstone.
 Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.=El poder de Redstone se puede recibir de varios componentes de redstone, como un bloque de redstone o un botón. El poder de Redstone se utiliza para activar numerosos mecanismos, como las lámparas de redstone o los pistones.

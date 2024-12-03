@@ -1,10 +1,16 @@
 # textdomain: mcl_itemframes
-Item Frame=物品展示框
-Item frames are decorative blocks in which items can be placed.=物品展示框是一种装饰性方块，可在其中放置物品。
-Just place any item on the item frame. Use the item frame again to retrieve the item.=只需将任意物品放置在物品展示框上。再次使用物品展示框可取回物品。
 Can hold an item.=可放置一个物品。
-Glowing Item Frame=发光物品展示框
-Glowing item frames are decorative blocks in which items can be placed.=发光物品展示框是一种装饰性方块，可在其中放置物品。
+Item Frame=物品展示框
 Can hold an item and glows.=可放置一个物品且会发光。
+Glowing Item Frame=发光物品展示框
+##[ item_frames_API.lua ]##
 Glow and Behold!=发光吧，瞧一瞧！
 Craft a glow item frame.=制作一个发光物品展示框。 
+Item frames are decorative blocks in which items can be placed.=物品展示框是一种装饰性方块，可在其中放置物品。
+Just place any item on the item frame. Use the item frame again to retrieve the item.=只需将任意物品放置在物品展示框上。再次使用物品展示框可取回物品。
+Glowing item frames are decorative blocks in which items can be placed and made to glow.=
+
+
+##### not used anymore #####
+
+Glowing item frames are decorative blocks in which items can be placed.=发光物品展示框是一种装饰性方块，可在其中放置物品。

@@ -7,6 +7,6 @@ The side inputs are only powered by normal redstone power. The redstone comparat
 Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=Режим передачи:@nПередний индикатор погашен. На выходе появляется сигнал редстоуна, только если он подаётся на основной вход. Состояние боковых входов при этом игнорируются.
 Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=Режим ВЫЧИТАНИЯ:@nПередний индикатор светится. На выходе есть сигнал только в том случае, если сигнал есть на основной входе, но при этом его нет ни на одном из боковых входов.
 Redstone Comparator=Компаратор
-Redstone Comparator (Subtract)=Компаратор (вычитание)
 Redstone Comparator (Powered)=Компаратор (подключён)
+Redstone Comparator (Subtract)=Компаратор (вычитание)
 Redstone Comparator (Subtract, Powered)=Компаратор (вычитание, подключён)

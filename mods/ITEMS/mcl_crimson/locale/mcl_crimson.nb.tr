@@ -1,5 +1,4 @@
 # textdomain: mcl_crimson
-
 Warped Fungus=Forvridd sopp
 Warped fungus is a mushroom found in the nether's warped forest.=Forvridd sopp er en sopp som finnes i nethers forvridde skoger.
 Twisting Vines=Vridvin
@@ -10,14 +9,13 @@ Warped Wart Block=Forvridd vorteblokk
 Shroomlight=Lampinjong
 Warped Hyphae=Forvridd hyfe
 The stem of a warped hyphae=Stammen til en forvridd hyfe
+Warped Nylium=Forvridd nylium
 Warped Hyphae Bark=Forvridd hyfebark
 This is a decorative block surrounded by the bark of an hyphae.=Dette er en dekorativ blokk omgitt av barken til en hyfe.
 Stripped Warped Hyphae=Slindet forvridd hyfe
 The stripped hyphae of a warped fungus=Den avbarkede hyfen til en forvridd sopp
 Stripped Warped Hyphae Bark=Slindet forvridd hyfebark
 The stripped hyphae bark of a warped fungus=Den avbarkede hyfebarken til en forvridd sopp
-Warped Nylium=Forvridd nylium
-Warped Checknode - only to check!=Forvridd kontrollnode - kun for å sjekke!
 Warped Hyphae Wood=Forvridde hyfeplanker
 Warped Stair=Forvidd trapp
 Warped Slab=Forvridd helle
@@ -32,10 +30,9 @@ The stripped stem of a crimson hyphae=Den avbarkede stammen til en karmosinhyfe
 Stripped Crimson Hyphae Bark=Slindet karmosinhyfebark
 The stripped wood of a crimson hyphae=Det avbarkede trevirket til en karmosinhyfe
 Crimson Hyphae Wood=Karmosinhyfeplanker
+Crimson Nylium=Karmosinnylium
 Crimson Stair=Karmosintrapp
 Crimson Slab=Karmosinhelle
-Double Crimson Slab=Dobbel karmosinhelle
-Crimson Nylium=Karmosinnylium
 Crimson Door=Karmosindør
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokker høye barrierer som kan åpnes eller lukkes for hånd og med et rødsteinssignal.
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å åpne eller lukke en tredør, høyreklikk på den eller forsyn den nedre halvdelen med et rødsteinssignal.
@@ -44,8 +41,14 @@ Wooden trapdoors are horizontal barriers which can be opened and closed by hand 
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å åpne eller lukke fallemen, høyreklikk på den eller send et rødsteinssignal til den.
 Crimson Fence=Karmosingjerde
 Crimson Fence Gate=Karmosinport
-Crimson Checknode - only to check!=Karmosin kontrollnode - kun for å sjekke!
 Warped Door=Forvridd dør
 Warped Trapdoor=Forvridd fallem
 Warped Fence=Forvridd gjerde
 Warped Fence Gate=Forvridd port
+
+
+##### not used anymore #####
+
+Warped Checknode - only to check!=Forvridd kontrollnode - kun for å sjekke!
+Double Crimson Slab=Dobbel karmosinhelle
+Crimson Checknode - only to check!=Karmosin kontrollnode - kun for å sjekke!

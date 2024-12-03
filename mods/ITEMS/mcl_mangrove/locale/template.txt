@@ -1,14 +1,13 @@
 # textdomain: mcl_mangrove
 Mangrove Wood=
-The trunk of a Mangrove tree.=
 Mangrove Bark=
-The bark of a Mangrove tree.=
+The trunk of a Mangrove tree.=
 Mangrove Wood Planks=
 Mangrove Leaves=
 Mangrove leaves are grown from mangrove trees.=
 Stripped Mangrove Log=
-The stripped wood of a Mangrove tree=
 Stripped Mangrove Wood=
+The stripped wood of a Mangrove tree=
 The stripped bark of a Mangrove tree=
 Mangrove Roots=
 Mangrove roots are decorative blocks that form as part of mangrove trees.=

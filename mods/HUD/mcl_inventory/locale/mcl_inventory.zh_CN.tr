@@ -1,22 +1,30 @@
 # textdomain: mcl_inventory
-Recipe book=合成配方书
-Help=帮助
-Select player skin=选择玩家皮肤
-Achievements=成就
+##[ creative.lua ]##
 Building Blocks=建筑方块
 Decoration Blocks=装饰方块
 Redstone=红石
 Transportation=交通
-Brewing=酿造
 Miscellaneous=杂项
 Search Items=搜索物品
 Foodstuffs=食物
 Tools=工具
 Combat=战斗
 Mobs=生物
+Brewing=酿造
 Materials=材料
 Survival Inventory=生存物品栏
+Recipe book=合成配方书
+Help=帮助
+Advancements=
+Switch stack size=切换堆叠数量
+Select player skin=选择玩家皮肤
+@1 / @2=
+##[ survival.lua ]##
 Crafting=制作
+Achievements=成就
+
+
+##### not used anymore #####
+
 Inventory=物品栏
 @1/@2=@1/@2
-Switch stack size=切换堆叠数量

@@ -1,5 +1,5 @@
 # textdomain: mcl_skins
-Skins=
+##[ edit_skin.lua ]##
 Templates=
 Arm size=
 Bases=
@@ -10,6 +10,8 @@ Bottoms=
 Tops=
 Hairs=
 Headwears=
+Skins=
+Capes=
 Open skin configuration screen.= 
 Select=
-Capes=
+(None)=

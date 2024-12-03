@@ -1,4 +1,5 @@
 # textdomain: mcl_compressed_blocks
+##[ nodes.lua ]##
 Compressed Cobblestone=压缩圆石
 Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=压缩圆石是一种由9个圆石合成的装饰性方块，它有助于节省你的物品栏空间。
 Double Compressed Cobblestone=双重压缩圆石

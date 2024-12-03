@@ -1,4 +1,37 @@
 # textdomain: mcl_tt
+##[ snippets_base.lua ]##
+Painfully slow=苦痛レベルで遅い
+Very slow=とても遅い
+Slow=遅い
+Fast=速い
+Very fast=とても速い
+Extremely fast=とてつもなく速い
+Instantaneous=
+@1 uses=@1 使用
+Unlimited uses=無限に使用可能
+Mining speed: @1=採掘速度：@1
+Durability: @1=耐久度：@1
+Block breaking strength: @1=ブロック破壊力：@1
+Damage: @1=ダメージ：@1
+Healing: @1=回復：@1
+Full punch interval: @1s=全力攻撃の間隔：@1秒
+Food item=
++@1 food points=
+Contact damage: @1 per second=接触ダメージ：@1/秒
+Contact healing: @1 per second=接触回復：@1/秒
+Drowning damage: @1=窒息ダメージ：@1
+Fall damage: +@1%=落下ダメージ：+@1%
+No fall damage=落下ダメージなし
+Fall damage: @1%=落下ダメージ：@1%
+No jumping=ジャンプ不可
+No swimming upwards=上方への水泳不可
+No rising=上昇不可
+Climbable (only downwards)=よじ登れる（下方のみ）
+Climbable=よじ登れる
+Slippery=滑りやすい
+Bouncy (@1%)=弾力性 (@1%)
+Luminance: @1=発光：@1
+##[ snippets_mcl.lua ]##
 Head armor=頭具
 Torso armor=胴衣
 Legs armor=脚具
@@ -14,34 +47,12 @@ Grows on grass blocks, podzol, dirt or coarse dirt=草原、ポドゾル、土�
 Flammable=可燃性
 Zombie view range: -50%=ゾンビに見つかる距離：-50%
 Skeleton view range: -50%=スケルトンに見つかる距離：-50%
+Stalker view range: -50%=
+...stacks=
+
+
+##### not used anymore #####
+
 Creeper view range: -50%=クリーパーに見つかる距離：-50%
-Damage: @1=ダメージ：@1
 Damage (@1): @2=ダメージ (@1)：@2
-Healing: @1=回復：@1
 Healing (@1): @2=回復 (@1)：@2
-Full punch interval: @1s=全力攻撃の間隔：@1秒
-Contact damage: @1 per second=接触ダメージ：@1/秒
-Contact healing: @1 per second=接触回復：@1/秒
-Drowning damage: @1=窒息ダメージ：@1
-Bouncy (@1%)=弾力性 (@1%)
-Luminance: @1=発光：@1
-Slippery=滑りやすい
-Climbable=よじ登れる
-Climbable (only downwards)=よじ登れる（下方のみ）
-No jumping=ジャンプ不可
-No swimming upwards=上方への水泳不可
-No rising=上昇不可
-Fall damage: @1%=落下ダメージ：@1%
-Fall damage: +@1%=落下ダメージ：+@1%
-No fall damage=落下ダメージなし
-Mining speed: @1=採掘速度：@1
-Very fast=とても速い
-Extremely fast=とてつもなく速い
-Fast=速い
-Slow=遅い
-Very slow=とても遅い
-Painfully slow=苦痛レベルで遅い
-Block breaking strength: @1=ブロック破壊力：@1
-@1 uses=@1 使用
-Unlimited uses=無限に使用可能
-Durability: @1=耐久度：@1

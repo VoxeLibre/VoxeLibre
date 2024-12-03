@@ -1,4 +1,20 @@
 # textdomain: mesecons_lightstone
 Redstone Lamp=Лампа
-Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.=Лампа это простой компонент редстоуна, который ярко светится (уровень света @1) при подаче на него сигнала редстоуна.
 Glows when powered by redstone power=Светится при подаче сигнала редстоуна
+Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.=Лампа это простой компонент редстоуна, который ярко светится (уровень света @1) при подаче на него сигнала редстоуна.
+White Redstone Lamp=
+Grey Redstone Lamp=
+Light Grey Redstone Lamp=
+Black Redstone Lamp=
+Red Redstone Lamp=
+Yellow Redstone Lamp=
+Green Redstone Lamp=
+Cyan Redstone Lamp=
+Blue Redstone Lamp=
+Magenta Redstone Lamp=
+Orange Redstone Lamp=
+Purple Redstone Lamp=
+Brown Redstone Lamp=
+Pink Redstone Lamp=
+Lime Redstone Lamp=
+Light Blue Redstone Lamp=

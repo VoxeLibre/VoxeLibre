@@ -1,5 +1,6 @@
 # textdomain: mcl_fishing
 Fishing Rod=
+Catches fish in water=
 Fishing rods can be used to catch fish.=
 Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?=
 Raw Fish=
@@ -13,6 +14,5 @@ This is a healthy food item which can be eaten.=
 Clownfish=
 Clownfish may be obtained by fishing (and luck) and is a food item which can be eaten safely.=
 Pufferfish=
-Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=
-Catches fish in water=
 Very poisonous=
+Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=

@@ -1,5 +1,8 @@
 # textdomain: mcl_furnaces
 Furnace=Four
+Inventory=Inventaire
+Recipe book=Livre de Recette
+Uses fuel to smelt or cook items=Utilise du carburant pour fondre ou cuire des articles
 Furnaces cook or smelt several items, using a furnace fuel, into something else.=Les fours cuisent ou fondent plusieurs articles, en utilisant un combustible de four, dans quelque chose d'autre.
 Use the furnace to open the furnace menu.=Utilisez le four pour ouvrir le menu du four.
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Placez un combustible de four dans la fente inférieure et le matériau source dans la fente supérieure.
@@ -7,6 +10,3 @@ The furnace will slowly use its fuel to smelt the item.=Le four utilisera lentem
 The result will be placed into the output slot at the right side.=Le résultat sera placé dans la fente de sortie du côté droit.
 Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn.=Utilisez le livre de recettes pour voir ce que vous pouvez cuire, ce que vous pouvez utiliser comme carburant et combien de temps il brûlera.
 Burning Furnace=Four Allumé
-Recipe book=Livre de Recette
-Inventory=Inventaire
-Uses fuel to smelt or cook items=Utilise du carburant pour fondre ou cuire des articles

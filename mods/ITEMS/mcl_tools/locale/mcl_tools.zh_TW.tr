@@ -1,7 +1,4 @@
 # textdomain: mcl_tools
-You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=只要你不揮舞任何物品，你就用你的手。用你的手可以開採大多數塊狀物，但這是最慢的方法，只有最弱的方塊才會產生有用的掉落物。手還可以通過打拳造成輕微的傷害。使用手往往是最後的手段，因為適當的採礦工具和武器要好得多。
-When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=當你揮舞一個不是採礦工具或武器的物品時開始採礦或打拳時，它的行為就像手一樣。
-In Creative Mode, the hand is able to break all blocks instantly.=在創造模式式下，手能夠立即打破所有方塊。
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=鎬是開採硬方塊的工具，如石頭。鎬也可以作為武器使用，但它的效率很低。
 An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=斧頭是您砍伐樹木，木質方塊等的首選工具。斧頭也造成很多傷害，但是速度很慢。
 Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=劍在近戰中非常好，因為它們速度快，傷害高，可以經受無數次的戰鬥。劍也可以用來開採一些特殊的方塊，如蜘蛛網。
@@ -14,19 +11,30 @@ Stone Pickaxe=石鎬
 Iron Pickaxe=鐵鎬
 Golden Pickaxe=金鎬
 Diamond Pickaxe=鑽石鎬
+Netherite Pickaxe=
 Wooden Shovel=木鏟
 Stone Shovel=石鏟
 Iron Shovel=鐵鏟
 Golden Shovel=金鏟
 Diamond Shovel=鑽石鏟
+Netherite Shovel=
 Wooden Axe=木斧
 Stone Axe=石斧
 Iron Axe=鐵斧
 Golden Axe=金斧
 Diamond Axe=鑽石斧
+Netherite Axe=
 Wooden Sword=木劍
 Stone Sword=石劍
 Iron Sword=鐵劍
 Golden Sword=金劍
 Diamond Sword=鑽石劍
+Netherite Sword=
 Shears=剪刀
+
+
+##### not used anymore #####
+
+You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=只要你不揮舞任何物品，你就用你的手。用你的手可以開採大多數塊狀物，但這是最慢的方法，只有最弱的方塊才會產生有用的掉落物。手還可以通過打拳造成輕微的傷害。使用手往往是最後的手段，因為適當的採礦工具和武器要好得多。
+When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=當你揮舞一個不是採礦工具或武器的物品時開始採礦或打拳時，它的行為就像手一樣。
+In Creative Mode, the hand is able to break all blocks instantly.=在創造模式式下，手能夠立即打破所有方塊。

@@ -1,5 +1,9 @@
 # textdomain: mcl_hoppers
 Hopper=ホッパー
+Inventory=インベントリ
+5 inventory slots=5つのインベントリースロット
+Collects items from above, moves items to container below=上からのアイテムを集め、下のコンテナに移動
+Can be disabled with redstone power=レッドストーン動力で無効化可能
 Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.=ホッパーは、5つのインベントリースロットを持つコンテナです。それらは上から落ちてくるアイテムを集めたり、上のコンテナからアイテムを取ったり、そのアイテムを隣のコンテナに入れようとします。ホッパーは下方向にも横方向にも移送することができます。ホッパーはチェスト、ドロッパー、ディスペンサー、シュルカーボックス、かまど、ホッパーと相互作用します。
 Hoppers interact with containers the following way:=ホッパーはコンテナ類と次のように相互作用：
 • Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers that point to the furnace put items into the fuel slot=かまど： 上方のホッパーは、アイテムを供給スロットに投入します。下方のホッパーは、出力スロットからアイテムを取り出します。また、燃料として使用できないアイテムは燃料スロットから取り出します。かまどの方を向いている横向きのホッパーは、燃料スロットにアイテムを投入します
@@ -10,7 +14,3 @@ To place a hopper vertically, place it on the floor or a ceiling. To place it si
 Disabled Hopper=無効化されたホッパー
 Side Hopper=サイドホッパー
 Disabled Side Hopper=無効化されたサイドホッパー
-Inventory=インベントリ
-5 inventory slots=5つのインベントリースロット
-Collects items from above, moves items to container below=上からのアイテムを集め、下のコンテナに移動
-Can be disabled with redstone power=レッドストーン動力で無効化可能

@@ -1,22 +1,30 @@
 # textdomain: mcl_inventory
-Recipe book=Книга рецептов
-Help=Справка
-Select player skin=Выбор скина
-Advancements=Достижения
+##[ creative.lua ]##
 Building Blocks=Строительные блоки
 Decoration Blocks=Декоративные блоки
 Redstone=Механизмы
 Transportation=Транспорт
-Brewing=Зельеварение
 Miscellaneous=Разное
 Search Items=Поиск предметов
 Foodstuffs=Пища
 Tools=Инструменты
 Combat=Оружие и броня
 Mobs=Сущности
+Brewing=Зельеварение
 Materials=Материалы
 Survival Inventory=Инвентарь выживания
+Recipe book=Книга рецептов
+Help=Справка
+Advancements=Достижения
+Switch stack size=Изменить размер стака
+Select player skin=Выбор скина
+@1 / @2=
+##[ survival.lua ]##
 Crafting=Создание
+Achievements=
+
+
+##### not used anymore #####
+
 Inventory=Инвентарь
 @1/@2=@1/@2
-Switch stack size=Изменить размер стака

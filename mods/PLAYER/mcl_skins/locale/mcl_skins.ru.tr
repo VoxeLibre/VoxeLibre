@@ -1,5 +1,5 @@
 # textdomain: mcl_skins
-Skins=Скины
+##[ edit_skin.lua ]##
 Templates=Шаблоны
 Arm size=Толщина рук
 Bases=Цвета кожи
@@ -10,5 +10,8 @@ Bottoms=Ноги
 Tops=Туловища
 Hairs=Причёски
 Headwears=Головные уборы
+Skins=Скины
+Capes=
 Open skin configuration screen.=Открыть настройки скина.
 Select=Выбрать
+(None)=

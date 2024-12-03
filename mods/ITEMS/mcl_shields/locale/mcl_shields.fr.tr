@@ -1,6 +1,10 @@
 # textdomain: mcl_shields
 Shield=Bouclier
 A shield is a tool used for protecting the player against attacks.=Un bouclier est un outil utilisé pour protéger le joueur contre les attaques.
+
+
+##### not used anymore #####
+
 White Shield=Bouclier Blanc
 Grey Shield=Bouclier Gris
 Light Grey Shield=Bouclier Gris Clair

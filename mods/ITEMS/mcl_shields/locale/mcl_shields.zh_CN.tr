@@ -1,6 +1,10 @@
 # textdomain: mcl_shields
 Shield=盾牌
 A shield is a tool used for protecting the player against attacks.=盾牌是一种用于保护玩家免受攻击的工具。
+
+
+##### not used anymore #####
+
 White Shield=白色盾牌
 Grey Shield=灰色盾牌
 Light Grey Shield=浅灰色盾牌

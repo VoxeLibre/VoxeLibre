@@ -1,7 +1,6 @@
 # textdomain: mcl_anvils
-Set Name=Дать имя
 Repair and Name=Починить и дать имя
-Inventory=Инвентарь
+Repair and rename items=Ремонтирует и переименовывает предметы
 Anvil=Наковальня
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=Наковальня позволяет ремонтировать инструменты и броню, а также давать имена предметам. Но она имеет ограниченную прочность. Не дайте ей упасть вам на голову, это может быть больно!
 To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.=Чтобы воспользоваться наковальней, кликните по ней правой кнопкой. Наковальня имеет два входных слота (слева) и один выходной.
@@ -13,4 +12,9 @@ Armor counts as a tool. It is possible to repair and rename a tool in a single s
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=Наковальня имеет ограниченный прочность и 3 уровня износа: новая, немного изношенная, сильно повреждённая. Каждый раз, ремонтируя или переименовывая что-либо, вы имеете 12-процентный шанс повредить наковальню. Наковальни также могут повреждаться, когда они падают с высоты более 1 блока. Если повреждённая наковальня повреждается снова, то она уничтожается.
 Slightly Damaged Anvil=Повреждённая наковальня
 Very Damaged Anvil=Сильно повреждённая наковальня
-Repair and rename items=Ремонтирует и переименовывает предметы
+
+
+##### not used anymore #####
+
+Set Name=Дать имя
+Inventory=Инвентарь

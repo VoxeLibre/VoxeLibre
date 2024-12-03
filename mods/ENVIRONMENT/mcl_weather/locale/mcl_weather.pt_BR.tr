@@ -1,4 +1,5 @@
 # textdomain: mcl_weather
+##[ weather_core.lua ]##
 Gives ability to control weather=Dá a habilidade de controlar o clima
 Changes the weather to the specified parameter.=Muda o clima para o parâmetro especificado.
 Error: No weather specified.=Erro: Nenhum clima especificado.

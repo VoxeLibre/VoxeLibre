@@ -1,6 +1,45 @@
 # textdomain: mcl_armor
 This is a piece of equippable armor which reduces the amount of damage you receive.=Jest to część możliwej do założenia zbroi, która zmniejsza otrzymywane obrażenia.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Aby ją założyć, upuść ją na odpowiadającym miejscu na zbroję na ekranie ekwipunku.
+sentry=
+dune=
+coast=
+wild=
+tide=
+ward=
+vex=
+rib=
+snout=
+eye=
+spire=
+silence=
+wayfinder=
+##[ register.lua ]##
+Projectile Protection=
+Reduces projectile damage.=
+Blast Protection=
+Reduces explosion damage and knockback.=
+Fire Protection=
+Reduces fire damage.=
+Protection=
+Reduces most types of damage by 4% for each level.=
+Feather Falling=
+Reduces fall damage.=
+Aqua Affinity=
+#Translations of enchantements
+Increases underwater mining speed.=
+Curse of Binding=
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+Thorns=
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
+Elytra=
+##[ trims.lua ]##
+#Translations for armor trims
+Smithing Template '@1'=
+
+
+##### not used anymore #####
+
 Leather Cap=Skórzana czapka
 Iron Helmet=Żelazny hełm
 Golden Helmet=Złoty hełm

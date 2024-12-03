@@ -1,4 +1,5 @@
 # textdomain: mcl_monster_eggs
+Hides a silverfish=Escondem uma traça
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Um bloco infestado é um bloco ao qual uma traça irá sair quando quebrá-lo. Parece idêntico a sua contraparte normal.
 Infested Stone=Pedra Infestada
 Infested Cobblestone=Pedregulho Infestado
@@ -6,4 +7,3 @@ Infested Stone Bricks=Tijolos de Pedra Infestados
 Infested Cracked Stone Bricks=Tijolos de Pedra Rachados Infestados
 Infested Mossy Stone Bricks=Tijolos de Pedra Musgosos Infestados
 Infested Chiseled Stone Bricks=Tijolos de Pedra Talhados Infestados
-Hides a silverfish=Escondem uma traça

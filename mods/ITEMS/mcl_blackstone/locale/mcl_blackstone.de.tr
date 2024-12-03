@@ -1,33 +1,36 @@
 # textdomain: mcl_blackstone
 Blackstone=Schwarzstein
+Gilded Blackstone=Vergoldeter Schwarzstein
+Nether Gold Ore=Nethergolderz
+Polished Basalt=Polierter Basalt
+Basalt=Basalt
+Smooth Basalt=Glatter Basalt
 Polished Blackstone=Polierter Schwarzstein
 Chiseled Polished Blackstone=Gemeißelter polierter Schwarzstein
 Polished Blackstone Bricks=Polierter Schwarzsteinziegel
-Basalt=Basalt
-Polished Basalt=Polierter Basalt
-Blackstone Slab=Schwarzsteinstufe
-Polished Blackstone Slab=Polierte Schwarzsteinstufe
-Chiseled Polished Blackstone Slab=Gemeißelte polierte Schwarzsteinstufe
-Polished Blackstone Brick Slab=Polierte Schwarzsteinziegelstufe
-Blackstone Stair=Schwarzsteintreppe
-Polished Blackstone Stair=Polierte Schwarzsteintreppe
-Chiseled Polished Blackstone Stair=Gemeißelte polierte Schwarzsteintreppe
-Polished Blackstone Brick Stair=Polierte Schwarzsteinziegeltreppe
 Quartz Bricks=Quarzziegel
-Soul Torch=Seelenfakel
-Torches are light sources which can be placed at the side or on the top of most blocks.=
-Soul Lantern=Seelenlaterne
 Soul Soil=Seelenerde
 Eternal Soul Fire=Seelenfeuer
-Gilded Blackstone=Vergoldeter Schwarzstein
-Nether Gold Ore=Nethergolderz
-Smooth Basalt=Glatter Basalt
-Blackstone Wall=Schwarzsteinmauer
+Blackstone Stair=Schwarzsteintreppe
+Blackstone Slab=Schwarzsteinstufe
 Double Blackstone Slab=
-Polished Double Blackstone Slab=
+Polished Blackstone Stair=Polierte Schwarzsteintreppe
+Polished Blackstone Slab=Polierte Schwarzsteinstufe
+Double Polished Blackstone Slab=
+Chiseled Polished Blackstone Stair=Gemeißelte polierte Schwarzsteintreppe
+Chiseled Polished Blackstone Slab=Gemeißelte polierte Schwarzsteinstufe
 Double Chiseled Polished Blackstone Slab=
+Polished Blackstone Brick Stair=Polierte Schwarzsteinziegeltreppe
+Polished Blackstone Brick Slab=Polierte Schwarzsteinziegelstufe
 Double Polished Blackstone Brick Slab=
+Blackstone Wall=Schwarzsteinmauer
+Soul Torch=Seelenfakel
+Torches are light sources which can be placed at the side or on the top of most blocks.=
 
+
+##### not used anymore #####
+
+Soul Lantern=Seelenlaterne
 @1 has been cooked crisp.=@1 wurde knusprig gebraten.
 @1 felt the burn.=@1 ist völlig verbrannt.
 @1 died in the flames.=@1 starb in den Flammen.

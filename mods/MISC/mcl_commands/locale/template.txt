@@ -1,23 +1,38 @@
 # textdomain: mcl_commands
+##[ kill.lua ]##
 Players can't be killed right now, damage has been disabled.=
 Player @1 does not exist.=
 You are already dead=
 @1 is already dead=
-@1 committed suicide.=
-@1 was killed by @2.=
 [<name>]=
 Kill player or yourself=
-Can use /say=
-<message>=
-Send a message to every player=
-Invalid usage, see /help say.=
+##[ setblock.lua ]##
 <X>,<Y>,<Z> <NodeString>=
 Set node at given position=
 Invalid node=
 @1 spawned.=
 Invalid parameters (see /help setblock)=
+##[ seed.lua ]##
+Displays the world seed=
+##[ summon.lua ]##
+Only peaceful mobs allowed!=
+##[ say.lua ]##
+Can use /say=
+<message>=
+Send a message to every player=
+Invalid usage, see /help say.=
+##[ list.lua ]##
+Show who is logged on=
+##[ sound.lua ]##
+<sound> <target>=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
+Sound name is invalid!=
+Target is invalid!!=
+##[ alias.lua ]##
 List bans=
 Ban list: @1=
-Show who is logged on=
-Displays the world seed=
-Only peaceful mobs allowed!=
+List clear commands=
+To clear inventory use /clearinv or /clearinventory=
+To clear mobs use /clearmobs=
+To clear the weather use /weather clear=
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=

@@ -1,9 +1,11 @@
 # textdomain: mcl_stairs
+##[ api.lua ]##
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=階段は、その上を歩いて高いところに行くのに便利なものです（ジャンプは不要）。階段を隅に配置すると、隅階段になります。天井やブロックの側面の上半分に階段を設置すると、逆さまに設置されます。
 Double @1=２重 @1
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=スラブは、高さがフルブロックの半分で、配置によってブロックの下部または上部を占めます。スラブはジャンプすることなく簡単に登れます。スラブの上に同種のスラブを置くと、２重スラブになります。
 Upper @1=上部 @1
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=２重スラブとは、同種のスラブを2枚重ねて作るフルブロックのことです。
+##[ register.lua ]##
 Oak Wood Stairs=オーク材の階段
 Oak Wood Slab=オーク材のスラブ
 Double Oak Wood Slab=オーク材２重スラブ
@@ -22,9 +24,9 @@ Double Birch Wood Slab=シラカバ材の２重スラブ
 Dark Oak Wood Stairs=ダークオーク材の階段
 Dark Oak Wood Slab=ダークオーク材のスラブ
 Double Dark Oak Wood Slab=ダークオーク材の２重スラブ
-Stone Stairs=石の階段
 Stone Slab=石のスラブ
 Double Stone Slab=石の２重スラブ
+Stone Stairs=石の階段
 Polished Stone Slab=研がれた石のスラブ
 Double Polished Stone Slab=研がれた石の２重スラブ
 Andesite Stairs=安山岩の階段
@@ -48,12 +50,18 @@ Double Brick Slab=レンガの２重スラブ
 Sandstone Stairs=砂岩の階段
 Sandstone Slab=砂岩のスラブ
 Double Sandstone Slab=砂岩の２重スラブ
+Cut Sandstone Stairs=
+Cut Sandstone Slab=
+Double Cut Sandstone Slab=
 Smooth Sandstone Stairs=滑らかな砂岩の階段
 Smooth Sandstone Slab=滑らかな砂岩のスラブ
 Double Smooth Sandstone Slab=滑らかな砂岩の２重スラブ
 Red Sandstone Stairs=赤い砂岩の階段
 Red Sandstone Slab=赤い砂岩のスラブ
 Double Red Sandstone Slab=赤い砂岩の２重スラブ
+Cut Red Sandstone Stairs=
+Cut Red Sandstone Slab=
+Double Cut Red Sandstone Slab=
 Smooth Red Sandstone Stairs=滑らかな赤い砂岩の階段
 Smooth Red Sandstone Slab=滑らかな赤い砂岩のスラブ
 Double Smooth Red Sandstone Slab=滑らかな赤い砂岩の２重スラブ
@@ -83,10 +91,12 @@ Prismarine Slab=プリズマリンのスラブ
 Double Prismarine Slab=プリズマリンの２重スラブ
 Prismarine Brick Stairs=プリズマリンレンガの階段
 Prismarine Brick Slab=プリズマリンレンガのスラブ
-Double Prismarine Brick Slab=プリズマリンレンガの２重スラブ
-Dark Prismarine Stairs=暗色プリズマリンの階段
+Double prismarine_brick Slab=
 Dark Prismarine Slab=暗色プリズマリンのスラブ
 Double Dark Prismarine Slab=暗色プリズマリンの２重スラブ
+Mud Brick Stairs=
+Mud Brick Slab=泥レンガのスラブ
+Double Mud Brick Slab=泥レンガの２重スラブ
 Polished Andesite Slab=研がれた安山岩のスラブ
 Double Polished Andesite Slab=研がれた安山岩の２重スラブ
 Polished Andesite Stairs=研がれた安山岩の階段
@@ -99,6 +109,10 @@ Polished Diorite Stairs=研がれた閃緑岩の階段
 Mossy Stone Brick Stairs=苔むした石レンガの階段
 Mossy Stone Brick Slab=苔むした石レンガのスラブ
 Double Mossy Stone Brick Slab=苔むした石レンガの２重スラブ
+
+
+##### not used anymore #####
+
+Double Prismarine Brick Slab=プリズマリンレンガの２重スラブ
+Dark Prismarine Stairs=暗色プリズマリンの階段
 Mud Brick Stair=泥レンガの階段
-Mud Brick Slab=泥レンガのスラブ
-Double Mud Brick Slab=泥レンガの２重スラブ

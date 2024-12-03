@@ -1,6 +1,7 @@
 # textdomain: mcl_lanterns
-Lantern=Lykt
-Soul Lantern=Sjelelykt
-Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Lykter er lyskilder som kan plasseres på toppen eller bunnen av de fleste blokker.
 Chain=Kjetting
 Chains are metallic decoration blocks.=Kjetting er dekorasjonsblokker av metall.
+##[ register.lua ]##
+Lantern=Lykt
+Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Lykter er lyskilder som kan plasseres på toppen eller bunnen av de fleste blokker.
+Soul Lantern=Sjelelykt

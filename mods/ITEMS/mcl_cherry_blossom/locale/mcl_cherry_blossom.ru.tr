@@ -1,11 +1,11 @@
 # textdomain: mcl_cherry_blossom
+##[ nodes.lua ]##
 Cherry Log=Вишнёвая древесина
+Cherry Bark=Вишнёвая кора
 The trunk of a cherry blossom tree.=Ствол цветущего вишнёвого дерева.
 Stripped Cherry Log=Обтёсанная вишнёвая древесина
-The stripped trunk of a cherry blossom tree.=Обтёсанный ствол цветущей вишни.
-Cherry Bark=Вишнёвая кора
-This is a decorative block surrounded by the bark of a tree trunk.=Это декоративный блок, окруженный корой ствола дерева.
 Stripped Cherry Wood=Обтёсанная вишнёвая кора
+The stripped trunk of a cherry blossom tree.=Обтёсанный ствол цветущей вишни.
 The stripped wood of a cherry blossom tree.=Обтёсанная древесина цветущей вишни.
 Cherry Wood Planks=Вишнёвые доски
 Cherry Leaves=Вишнёвые листья
@@ -22,3 +22,8 @@ Cherry Fence=Вишнёвый забор
 Cherry Fence Gate=Вишнёвая калитка
 Cherry Pressure Plate=Вишнёвая нажимная плита
 Cherry Button=Вишнёвая кнопка
+
+
+##### not used anymore #####
+
+This is a decorative block surrounded by the bark of a tree trunk.=Это декоративный блок, окруженный корой ствола дерева.

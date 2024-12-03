@@ -1,4 +1,5 @@
 # textdomain: mcl_weather
+##[ weather_core.lua ]##
 Gives ability to control weather=Gør en i stand til at styre vejret
 Changes the weather to the specified parameter.=Ændrer vejret til det angivne.
 Error: No weather specified.=Fejl: Intet vejr angivet.

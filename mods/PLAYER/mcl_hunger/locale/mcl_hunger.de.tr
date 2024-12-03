@@ -1,8 +1,12 @@
 # textdomain: mcl_hunger
-@1 succumbed to the poison.=@1 erlag dem Gift.
 Food=Nahrung
 Saturation=Sättigung
-%s: %.1f/%d=%s: %.1f
 Exhaust.=Erschöpf.
+
+
+##### not used anymore #####
+
+@1 succumbed to the poison.=@1 erlag dem Gift.
+%s: %.1f/%d=%s: %.1f
 %s: %d/%d=%s: %d/%d
 @1 starved to death.=@1 verhungerte.

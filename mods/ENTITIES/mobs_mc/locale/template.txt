@@ -1,83 +1,127 @@
 # textdomain: mobs_mc
-Agent=
+##[ axolotl.lua ]##
 Axolotl=
+##[ bat.lua ]##
 Bat=
-Blaze=
+##[ rabbit.lua ]##
+Rabbit=
+Killer Bunny=
+##[ chicken.lua ]##
 Chicken=
+##[ cow+mooshroom.lua ]##
 Cow=
 Mooshroom=
-Stalker=
-Ender Dragon=
-Enderman=
-Endermite=
-Ghast=
-Elder Guardian=
-Guardian=
+##[ horse.lua ]##
 Horse=
 Skeleton Horse=
 Zombie Horse=
 Donkey=
 Mule=
-Iron Golem=
+##[ llama.lua ]##
 Llama=
+##[ ocelot.lua ]##
 Ocelot=
 Cat=
+##[ parrot.lua ]##
 Parrot=
+##[ pig.lua ]##
 Pig=
+##[ polar_bear.lua ]##
 Polar Bear=
-Rabbit=
-Killer Bunny=
+##[ sheep.lua ]##
 Sheep=
+##[ wolf.lua ]##
+Wolf=
+Dog=
+##[ squid.lua ]##
+Squid=
+##[ villager.lua ]##
+Master=
+Villager=
+##[ pillager.lua ]##
+Pillager=
+##[ villager_evoker.lua ]##
+Evoker=
+##[ villager_vindicator.lua ]##
+Vindicator=
+##[ villager_zombie.lua ]##
+Zombie Villager=
+##[ witch.lua ]##
+Witch=
+##[ blaze.lua ]##
+Blaze=
+##[ ender_dragon.lua ]##
+Ender Dragon=
+##[ endermite.lua ]##
+Endermite=
+##[ villager_illusioner.lua ]##
+Illusioner=
+##[ ghast.lua ]##
+Ghast=
+##[ guardian.lua ]##
+Guardian=
+##[ guardian_elder.lua ]##
+Elder Guardian=
+##[ snowman.lua ]##
+Snow Golem=
+##[ iron_golem.lua ]##
+Iron Golem=
+##[ rover.lua ]##
+Rover=
+##[ shulker.lua ]##
 Shulker=
+##[ silverfish.lua ]##
 Silverfish=
+##[ skeleton+stray.lua ]##
 Skeleton=
 Stray=
+##[ skeleton_wither.lua ]##
 Wither Skeleton=
-Magma Cube=
-Slime=
-Snow Golem=
-Spider=
-Cave Spider=
-Squid=
-Vex=
-Evoker=
-Illusioner=
-Villager=
-Vindicator=
-Zombie Villager=
-Witch=
-Wither=
-Wolf=
-Husk=
-Baby Husk=
+##[ stalker.lua ]##
+Stalker=
+Overloaded Stalker=
+##[ zombie.lua ]##
 Zombie=
 Baby Zombie=
+Husk=
+Baby Husk=
+##[ slime+magma_cube.lua ]##
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=
+Slime=
+##[ spider.lua ]##
+Spider=
+Cave Spider=
+##[ vex.lua ]##
+Vex=
+##[ wither.lua ]##
+Wither=
+##[ cod.lua ]##
+Cod=
+##[ salmon.lua ]##
+Salmon=
+##[ tropical_fish.lua ]##
+Tropical Fish=
+Tropical fish=
+##[ dolphin.lua ]##
+Dolphin=
+##[ glow_squid.lua ]##
+Glow Squid=
+##[ piglin.lua ]##
 Piglin=
-Baby Piglin=
+Sword Piglin=
 Zombie Piglin=
 Baby Zombie Piglin=
-Sword Piglin=
 Piglin Brute=
-Farmer=
-Fisherman=
-Fletcher=
-Shepherd=
-Librarian=
-Cartographer=
-Armorer=
-Leatherworker=
-Butcher=
-Weapon Smith=
-Tool Smith=
-Cleric=
-Nitwit=
-Cod=
-Salmon=
-Dolphin=
-Pillager=
-Tropical fish=
+##[ hoglin+zoglin.lua ]##
 Hoglin=
-Baby hoglin=
 Zoglin=
+Baby hoglin=
+##[ strider.lua ]##
 Strider=
-Glow Squid=
+Baby Strider=

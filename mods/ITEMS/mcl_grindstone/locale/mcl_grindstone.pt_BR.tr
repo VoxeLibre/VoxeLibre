@@ -1,6 +1,6 @@
 # textdomain: mcl_grindstone
-Inventory=Inventário
 Repair & Disenchant=Reparar & Desencantar
+Inventory=Inventário
 Grindstone=Rebolo
 Used to disenchant/fix tools=Usado para desencantar/consertar ferramentas
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Rebolos desencantam ferramentas e armaduras exceto as maldições, e consertam dois itens do mesmo tipo e ainda é a estação de trabalho do armeiro.

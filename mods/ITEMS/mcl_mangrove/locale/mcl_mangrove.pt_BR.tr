@@ -1,14 +1,13 @@
 # textdomain: mcl_mangrove
 Mangrove Wood=Madeira de Mangue
-The trunk of a Mangrove tree.=O tronco de uma árvore de mangue.
 Mangrove Bark=Casca de Mangue
-The bark of a Mangrove tree.=A casca de uma árvore de mangue.
+The trunk of a Mangrove tree.=O tronco de uma árvore de mangue.
 Mangrove Wood Planks=Tábuas de Mangue
 Mangrove Leaves=Folhas de Mangue
 Mangrove leaves are grown from mangrove trees.=Folhas de mangue crescem em árvores de mangue.
 Stripped Mangrove Log=Tronco de Mangue Descascado
-The stripped wood of a Mangrove tree=A madeira descascada de uma árvore de mangue.
 Stripped Mangrove Wood=Madeira de Mangue Descascada
+The stripped wood of a Mangrove tree=A madeira descascada de uma árvore de mangue.
 The stripped bark of a Mangrove tree=A casca descascada de uma árvore de mangue.
 Mangrove Roots=Raízes de Mangue
 Mangrove roots are decorative blocks that form as part of mangrove trees.=Raízes de mangue são blocos decorativos que se formam como parte das árvores de mangue.
@@ -34,3 +33,8 @@ Mangrove Wood Fence Gate=Portão de Mangue
 Mangrove Wood Stairs=Escadas de Mangue
 Mangrove Wood Slab=Laje de Mangue
 Double Mangrove Wood Slab=Laje Dupla de Mangue
+
+
+##### not used anymore #####
+
+The bark of a Mangrove tree.=A casca de uma árvore de mangue.

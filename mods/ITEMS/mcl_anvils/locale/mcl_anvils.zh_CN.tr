@@ -1,7 +1,6 @@
 # textdomain: mcl_anvils
-Set Name=设置名称
 Repair and Name=修复与命名
-Inventory=背包
+Repair and rename items=修复与命名物品 
 Anvil=铁砧
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=铁砧能让你修理工具和盔甲，还可以给物品命名。不过，它的耐久度是有限的。可别让它砸到你头上，那会相当疼的！
 To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.=要使用铁砧，右键点击它就行。一个铁砧有两个输入槽（在左边）以及一个输出槽。
@@ -13,4 +12,9 @@ Armor counts as a tool. It is possible to repair and rename a tool in a single s
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=铁砧的耐久度有限，有3个损坏等级：未损坏、轻微损坏和严重损坏。每次你修复或重命名物品时，铁砧都有12%的概率会受损，铁砧从超过1格的高度掉落时也有受损的可能，如果一个严重损坏的铁砧再次受损，它就会被摧毁。
 Slightly Damaged Anvil=轻微损坏的铁砧
 Very Damaged Anvil=严重损坏的铁砧
-Repair and rename items=修复与命名物品 
+
+
+##### not used anymore #####
+
+Set Name=设置名称
+Inventory=背包

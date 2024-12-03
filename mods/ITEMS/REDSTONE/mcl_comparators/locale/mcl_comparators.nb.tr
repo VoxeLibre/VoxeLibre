@@ -7,6 +7,6 @@ The side inputs are only powered by normal redstone power. The redstone comparat
 Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=Overføringsmodus:@nFrontfaklen er slukket og senket. Utgangen er aktivert hvis, og bare hvis, hovedinngangen er aktivert. De to sideinngangene ignoreres.
 Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=Subtraksjonsmodus:@nFrontfaklen er tent. Utgangen er aktivert hvis, og bare hvis, hovedinngangen er aktivert og ingen av sideinngangene er aktivert.
 Redstone Comparator=Rødsteinssammenligner
-Redstone Comparator (Subtract)=Rødsteinssammenligner (Subtraksjon)
 Redstone Comparator (Powered)=Rødsteinssammenligner (Aktivert)
+Redstone Comparator (Subtract)=Rødsteinssammenligner (Subtraksjon)
 Redstone Comparator (Subtract, Powered)=Rødsteinssammenligner (Subtraksjon, Aktivert)

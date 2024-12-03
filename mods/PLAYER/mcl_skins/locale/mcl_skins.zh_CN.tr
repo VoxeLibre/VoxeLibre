@@ -1,5 +1,5 @@
 # textdomain: mcl_skins
-Skins=皮肤
+##[ edit_skin.lua ]##
 Templates=模板
 Arm size=手臂尺寸
 Bases=肤色
@@ -10,6 +10,8 @@ Bottoms=裤子
 Tops=上衣
 Hairs=发型
 Headwears=头饰
+Skins=皮肤
+Capes=披风 
 Open skin configuration screen.=打开皮肤配置界面。
 Select=选择
-Capes=披风 
+(None)=

@@ -1,4 +1,5 @@
 # textdomain: mcl_compressed_blocks
+##[ nodes.lua ]##
 Compressed Cobblestone=
 Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=
 Double Compressed Cobblestone=

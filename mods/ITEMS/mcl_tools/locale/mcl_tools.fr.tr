@@ -1,7 +1,4 @@
 # textdomain: mcl_tools
-You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Vous utilisez votre main nue lorsque vous ne portez aucun objet. Avec votre main, vous pouvez miner la plupart des blocs, mais c'est la méthode la plus lente et seuls les blocs les plus faibles donneront des éléments utiles. La main inflige également des dégâts mineurs en frappant. L'utilisation de la main est souvent un dernier recours, car les outils et les armes d'extraction appropriées sont bien meilleures.
-When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Lorsque vous maniez un objet qui n'est ni un outil d'extraction ni une arme, il se comportera comme s'il s'agissait de la main lorsque vous commencez à extraire ou à frapper.
-In Creative Mode, the hand is able to break all blocks instantly.=En mode créatif, la main est capable de briser tous les blocs instantanément.
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Les pioches sont des outils d'extraction pour extraire des blocs durs, comme la pierre. Une pioche peut également être utilisée comme arme, mais elle est plutôt inefficace.
 An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=Une hache est votre outil de choix pour abattre des arbres, des blocs à base de bois et d'autres blocs. Les haches infligent également beaucoup de dégâts, mais elles sont plutôt lentes.
 Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=Les épées sont excellentes en combat de mêlée, car elles sont rapides, infligent des dégâts élevés et peuvent supporter d'innombrables batailles. Les épées peuvent également être utilisées pour couper quelques blocs particuliers, tels que les toiles d'araignées.
@@ -34,3 +31,10 @@ Golden Sword=Épée en or
 Diamond Sword=Épée en diamant
 Netherite Sword=Épée en netherite
 Shears=Cisailles
+
+
+##### not used anymore #####
+
+You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Vous utilisez votre main nue lorsque vous ne portez aucun objet. Avec votre main, vous pouvez miner la plupart des blocs, mais c'est la méthode la plus lente et seuls les blocs les plus faibles donneront des éléments utiles. La main inflige également des dégâts mineurs en frappant. L'utilisation de la main est souvent un dernier recours, car les outils et les armes d'extraction appropriées sont bien meilleures.
+When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Lorsque vous maniez un objet qui n'est ni un outil d'extraction ni une arme, il se comportera comme s'il s'agissait de la main lorsque vous commencez à extraire ou à frapper.
+In Creative Mode, the hand is able to break all blocks instantly.=En mode créatif, la main est capable de briser tous les blocs instantanément.

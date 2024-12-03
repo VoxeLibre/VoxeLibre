@@ -1,7 +1,6 @@
 # textdomain: mcl_anvils
-Set Name=Définir le nom
 Repair and Name=Réparer et nommer
-Inventory=Inventaire
+Repair and rename items=Réparer et renommer des objets
 Anvil=Enclume
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=L'enclume vous permet de réparer des outils et des armures, et de donner des noms à des objets. Elle a cependant une durabilité limitée. Ne la laissez pas tomber sur votre tête, cela pourrait être assez douloureux !
 To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.=Pour utiliser une enclume, faites un clic droit dessus. Une enclume a 2 emplacements d'entrée (à gauche) et un emplacement de sortie.
@@ -13,4 +12,9 @@ Armor counts as a tool. It is possible to repair and rename a tool in a single s
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=L'enclume a une durabilité limitée et 3 niveaux de dommages : en bon état, légèrement endommagée et très endommagée. Chaque fois que vous réparez ou renommez quelque chose, il y a 12% de chances que l'enclume soit endommagée. Les enclumes ont également une chance d'être endommagées lorsqu'elles tombent de plus d'un bloc. Si une enclume très endommagée est à nouveau endommagée, elle est détruite.
 Slightly Damaged Anvil=Enclume légèrement endommagée
 Very Damaged Anvil=Enclume très endommagée
-Repair and rename items=Réparer et renommer des objets
+
+
+##### not used anymore #####
+
+Set Name=Définir le nom
+Inventory=Inventaire

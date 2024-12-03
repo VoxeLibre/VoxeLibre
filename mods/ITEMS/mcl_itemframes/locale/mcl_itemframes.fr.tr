@@ -1,10 +1,16 @@
 # textdomain: mcl_itemframes
-Item Frame=Cadre de l'article
-Item frames are decorative blocks in which items can be placed.=Les cadres d'objets sont des blocs décoratifs dans lesquels des objets peuvent être placés.
-Just place any item on the item frame. Use the item frame again to retrieve the item.=Placez simplement n'importe quel élément sur le cadre de l'élément. Utilisez à nouveau le cadre de l'objet pour récupérer l'objet.
 Can hold an item.=Peut contenir un objet
-Glowing Item Frame=Cadre d'objet lumineux
-Glowing item frames are decorative blocks in which items can be placed.=Les cadres d'objets lumineux sont des blocs décoratifs dans lesquels des objets peuvent être placés.
+Item Frame=Cadre de l'article
 Can hold an item and glows.=Peut contenir un objet et brille
+Glowing Item Frame=Cadre d'objet lumineux
+##[ item_frames_API.lua ]##
 Glow and Behold!=Une idée brillante !
 Craft a glow item frame.=Fabriquez un cadre brillant.
+Item frames are decorative blocks in which items can be placed.=Les cadres d'objets sont des blocs décoratifs dans lesquels des objets peuvent être placés.
+Just place any item on the item frame. Use the item frame again to retrieve the item.=Placez simplement n'importe quel élément sur le cadre de l'élément. Utilisez à nouveau le cadre de l'objet pour récupérer l'objet.
+Glowing item frames are decorative blocks in which items can be placed and made to glow.=
+
+
+##### not used anymore #####
+
+Glowing item frames are decorative blocks in which items can be placed.=Les cadres d'objets lumineux sont des blocs décoratifs dans lesquels des objets peuvent être placés.

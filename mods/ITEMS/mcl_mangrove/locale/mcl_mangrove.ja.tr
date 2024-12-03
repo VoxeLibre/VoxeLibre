@@ -1,14 +1,13 @@
 # textdomain: mcl_mangrove
 Mangrove Wood=マングローブの木
-The trunk of a Mangrove tree.=マングローブの樹幹部分です。
 Mangrove Bark=マングローブの樹皮
-The bark of a Mangrove tree.=マングローブの木の樹皮です。
+The trunk of a Mangrove tree.=マングローブの樹幹部分です。
 Mangrove Wood Planks=マングローブの板材
 Mangrove Leaves=マングローブの葉
 Mangrove leaves are grown from mangrove trees.=マングローブの葉は、マングローブの木から育ちます。
 Stripped Mangrove Log=樹皮を剥いだマングローブの木
-The stripped wood of a Mangrove tree=剥き身となったマングローブの木
 Stripped Mangrove Wood=剥がされたマングローブの樹皮
+The stripped wood of a Mangrove tree=剥き身となったマングローブの木
 The stripped bark of a Mangrove tree=マングローブの木から剥がされた樹皮
 Mangrove Roots=マングローブの根
 Mangrove roots are decorative blocks that form as part of mangrove trees.=マングローブの根は、マングローブの木の一部として形成される装飾ブロックです。
@@ -34,3 +33,8 @@ Mangrove Wood Fence Gate=マングローブのフェンスゲート
 Mangrove Wood Stairs=マングローブの階段
 Mangrove Wood Slab=マングローブのスラブ
 Double Mangrove Wood Slab=マングローブの２重スラブ
+
+
+##### not used anymore #####
+
+The bark of a Mangrove tree.=マングローブの木の樹皮です。

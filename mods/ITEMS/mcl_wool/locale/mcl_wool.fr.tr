@@ -1,6 +1,4 @@
 # textdomain: mcl_wool
-Wool=Laine
-Carpet=Tapis
 White Wool=Laine blanche
 White Carpet=Tapis blanc
 Grey Wool=Laine grise
@@ -35,3 +33,5 @@ Light Blue Wool=Laine bleu clair
 Light Blue Carpet=Tapis bleu clair
 Wool is a decorative block which comes in many different colors.=La laine est un bloc décoratif disponible en différentes couleurs.
 Carpets are thin floor covers which come in many different colors.=Les tapis sont des revêtements de sol minces qui viennent dans de nombreuses couleurs différentes.
+Wool=Laine
+Carpet=Tapis

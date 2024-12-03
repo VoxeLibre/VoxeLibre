@@ -1,7 +1,4 @@
 # textdomain: mcl_tools
-You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Du bruker bare hånden når du ikke holder noe. Med hånden din kan du knuse de fleste blokker. Men dette er den tregeste metoden, og bare de svakeste blokkene vil gi fra seg noe nyttig. Hånden gjør også mindre skade når du slår. Å bruke hånden er ofte en siste utvei, ettersom riktige verktøy og våpen er mye bedre.
-When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Når du bruker en gjenstand som ikke er et verktøy eller et våpen, vil det oppføre seg som om det var hånden når du begynner å grave eller slå.
-In Creative Mode, the hand is able to break all blocks instantly.=I kreativ modus er hånden i stand til å knuse alle blokker umiddelbart.
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Hakker er verktøy for å utvinne harde blokker, for eksempel stein. En hakke kan også brukes som våpen, men det er ganske ueffektivt.
 An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=En øks er ditt foretrukne verktøy for å hugge ned trær, trebaserte blokker og andre blokker. Økser gjør mye skade også, men de er ganske trege.
 Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=Sverd er gode i nærkamp, siden de er raske, gjør stor skade og tåler utallige kamper. Sverd kan også brukes til å kutte ned noen få bestemte blokker, for eksempel spindelvev.
@@ -34,3 +31,10 @@ Golden Sword=Gullsverd
 Diamond Sword=Diamantsverd
 Netherite Sword=Netherittsverd
 Shears=Saks
+
+
+##### not used anymore #####
+
+You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Du bruker bare hånden når du ikke holder noe. Med hånden din kan du knuse de fleste blokker. Men dette er den tregeste metoden, og bare de svakeste blokkene vil gi fra seg noe nyttig. Hånden gjør også mindre skade når du slår. Å bruke hånden er ofte en siste utvei, ettersom riktige verktøy og våpen er mye bedre.
+When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Når du bruker en gjenstand som ikke er et verktøy eller et våpen, vil det oppføre seg som om det var hånden når du begynner å grave eller slå.
+In Creative Mode, the hand is able to break all blocks instantly.=I kreativ modus er hånden i stand til å knuse alle blokker umiddelbart.

@@ -1,4 +1,5 @@
 # textdomain: mesecons_commandblock
+Command blocks are not enabled on this server=Les blocks de commandes ne sont pas activés sur ce serveur
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Erreur: la commande "@1" n'existe pas; votre bloc de commande n'a pas été modifié. Utilisez la commande de discussion "help" pour obtenir la liste des commandes disponibles.
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Erreur: la commande "@1" n'existe pas; votre bloc de commande n'a pas été modifié. Utilisez la commande de discussion "help" pour obtenir la liste des commandes disponibles. Astuce: essayez de supprimer la barre oblique principale.
 Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Erreur: vous ne disposez pas de privilèges suffisants pour utiliser la commande "@1" (privilège manquant: @2)! Le bloc de commandes n'a pas été modifié.
@@ -10,6 +11,7 @@ Commands:=Commandes:
 Help=Aide
 Placement denied. You need the “maphack” privilege to place command blocks.=Placement refusé. Vous avez besoin du privilège "maphack" pour placer des blocs de commande.
 Command Block=Bloc de Commande
+Executes server commands when powered by redstone power=Exécute les commandes du serveur lorsqu'il est alimenté par l'alimentation Redstone
 Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power.=Les blocs de commande sont des composants redstone puissants qui sont capables de modifier la réalité elle-même. En d'autres termes, ils obligent le serveur à exécuter des commandes serveur lorsqu'ils sont alimentés en redstone.
 Everyone can activate a command block and look at its commands, but not everyone can edit and place them.=Tout le monde peut activer un bloc de commandes et consulter ses commandes, mais tout le monde ne peut pas les modifier et les placer.
 To view the commands in a command block, use it. To activate the command block, just supply it with redstone power. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.=Pour afficher les commandes dans un bloc de commandes, utilisez-le. Pour activer le bloc de commande, il suffit de l'alimenter en redstone. Cela exécutera les commandes une fois. Pour exécuter à nouveau les commandes, éteignez puis rallumez le Redstone.
@@ -26,5 +28,3 @@ Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=Exe
 Access denied. You need the “maphack” privilege to edit command blocks.=Accès refusé. Vous avez besoin du privilège "maphack" pour modifier les blocs de commande.
 Editing the command block has failed! You can only change the command block in Creative Mode!=La modification du bloc de commandes a échoué! Vous ne pouvez modifier le bloc de commandes qu'en mode créatif!
 Editing the command block has failed! The command block is gone.=La modification du bloc de commandes a échoué! Le bloc de commande a disparu.
-Executes server commands when powered by redstone power=Exécute les commandes du serveur lorsqu'il est alimenté par l'alimentation Redstone
-Command blocks are not enabled on this server=Les blocks de commandes ne sont pas activés sur ce serveur

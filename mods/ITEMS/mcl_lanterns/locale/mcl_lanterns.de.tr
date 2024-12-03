@@ -1,4 +1,7 @@
 # textdomain: mcl_lanterns
-Lantern=Laterne
-Soul Lantern=Seelenlaterne
 Chain=Kette
+Chains are metallic decoration blocks.=
+##[ register.lua ]##
+Lantern=Laterne
+Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
+Soul Lantern=Seelenlaterne

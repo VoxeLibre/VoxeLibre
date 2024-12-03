@@ -1,63 +1,137 @@
 # textdomain: mobs_mc
-Agent=Agent
+##[ axolotl.lua ]##
 Axolotl=Axolotl
+##[ bat.lua ]##
 Bat=Chauve-souris
-Blaze=Blaze
+##[ rabbit.lua ]##
+Rabbit=Lapin
+Killer Bunny=Lapin tueur
+##[ chicken.lua ]##
 Chicken=Poulet
+##[ cow+mooshroom.lua ]##
 Cow=Vache
 Mooshroom=Champimeuh
-Stalker=Stalker
-Ender Dragon=Ender Dragon
-Enderman=Enderman
-Endermite=Endermite
-Ghast=Ghast
-Elder Guardian=Gardien de l'Elder
-Guardian=Gardien
+##[ horse.lua ]##
 Horse=Cheval
 Skeleton Horse=Cheval-squelette
 Zombie Horse=Cheval-zombie
 Donkey=Âne
 Mule=Mule
-Iron Golem=Golem de fer
+##[ llama.lua ]##
 Llama=Lama
+##[ ocelot.lua ]##
 Ocelot=Ocelot
 Cat=Chat
+##[ parrot.lua ]##
 Parrot=Perroquet
+##[ pig.lua ]##
 Pig=Cochon
+##[ polar_bear.lua ]##
 Polar Bear=Ours blanc
-Rabbit=Lapin
-Killer Bunny=Lapin tueur
+##[ sheep.lua ]##
 Sheep=Mouton
+##[ wolf.lua ]##
+Wolf=Loup
+Dog=
+##[ squid.lua ]##
+Squid=Poulpe
+##[ villager.lua ]##
+Master=
+Villager=Villageois
+##[ pillager.lua ]##
+Pillager=Pilleur
+##[ villager_evoker.lua ]##
+Evoker=Invocateur
+##[ villager_vindicator.lua ]##
+Vindicator=Vindicateur
+##[ villager_zombie.lua ]##
+Zombie Villager=Zombie Villageois
+##[ witch.lua ]##
+Witch=Sorcière
+##[ blaze.lua ]##
+Blaze=Blaze
+##[ ender_dragon.lua ]##
+Ender Dragon=Ender Dragon
+##[ endermite.lua ]##
+Endermite=Endermite
+##[ villager_illusioner.lua ]##
+Illusioner=Illusionniste
+##[ ghast.lua ]##
+Ghast=Ghast
+##[ guardian.lua ]##
+Guardian=Gardien
+##[ guardian_elder.lua ]##
+Elder Guardian=Gardien de l'Elder
+##[ snowman.lua ]##
+Snow Golem=Golem de neige
+##[ iron_golem.lua ]##
+Iron Golem=Golem de fer
+##[ rover.lua ]##
+Rover=
+##[ shulker.lua ]##
 Shulker=Shulker
+##[ silverfish.lua ]##
 Silverfish=Poisson d'argent
+##[ skeleton+stray.lua ]##
 Skeleton=Squelette
 Stray=Vagabond
+##[ skeleton_wither.lua ]##
 Wither Skeleton=Wither squelette
-Magma Cube=Cube de magma
-Slime=Slime
-Snow Golem=Golem de neige
-Spider=Araignée
-Cave Spider=Araignée venimeuse
-Squid=Poulpe
-Vex=Vex
-Evoker=Invocateur
-Illusioner=Illusionniste
-Villager=Villageois
-Vindicator=Vindicateur
-Zombie Villager=Zombie Villageois
-Witch=Sorcière
-Wither=Wither
-Wolf=Loup
-Husk=Zombie Momifié
-Baby Husk=Bébé Zombie Momifié
+##[ stalker.lua ]##
+Stalker=Stalker
+Overloaded Stalker=
+##[ zombie.lua ]##
 Zombie=Zombie
 Baby Zombie=Bébé Zombie
+Husk=Zombie Momifié
+Baby Husk=Bébé Zombie Momifié
+##[ slime+magma_cube.lua ]##
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=Cube de magma
+Slime=Slime
+##[ spider.lua ]##
+Spider=Araignée
+Cave Spider=Araignée venimeuse
+##[ vex.lua ]##
+Vex=Vex
+##[ wither.lua ]##
+Wither=Wither
+##[ cod.lua ]##
+Cod=Morue
+##[ salmon.lua ]##
+Salmon=Saumon
+##[ tropical_fish.lua ]##
+Tropical Fish=
+Tropical fish=Poisson tropical
+##[ dolphin.lua ]##
+Dolphin=Dauphin
+##[ glow_squid.lua ]##
+Glow Squid=Poulpe Brillant
+##[ piglin.lua ]##
 Piglin=Piglin
-Baby Piglin=Bébé Piglin
+Sword Piglin=Piglin avec une épée
 Zombie Piglin=Piglin Zombie
 Baby Zombie Piglin=Bébé Piglin Zombie
-Sword Piglin=Piglin avec une épée
 Piglin Brute=Piglin Barbare
+##[ hoglin+zoglin.lua ]##
+Hoglin=Hoglin
+Zoglin=Zoglin
+Baby hoglin=Bébé Hoglin
+##[ strider.lua ]##
+Strider=Arpenteur
+Baby Strider=
+
+
+##### not used anymore #####
+
+Agent=Agent
+Enderman=Enderman
+Baby Piglin=Bébé Piglin
 Farmer=Fermier
 Fisherman=Pêcheur
 Fletcher=Archer
@@ -71,13 +145,3 @@ Weapon Smith=Fabriquant d'arme
 Tool Smith=Fabriquant d'outil
 Cleric=Clerc
 Nitwit=Crétin
-Cod=Morue
-Salmon=Saumon
-Dolphin=Dauphin
-Pillager=Pilleur
-Tropical fish=Poisson tropical
-Hoglin=Hoglin
-Baby hoglin=Bébé Hoglin
-Zoglin=Zoglin
-Strider=Arpenteur
-Glow Squid=Poulpe Brillant

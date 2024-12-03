@@ -7,6 +7,6 @@ The side inputs are only powered by normal redstone power. The redstone comparat
 Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=送信モード：@n前面のトーチは非点灯で降りています。出力が動力を供給するのは、メイン入力に動力が来ている場合のみです。2つのサイド入力は無視されます。
 Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=減算モード：@n前面のトーチは点灯しています。出力が動力を供給するのは、メイン入力に動力が来ており、且つサイド入力のいずれにも動力が来ていない場合のみです。
 Redstone Comparator=レッドストーンコンパレータ
-Redstone Comparator (Subtract)=レッドストーンコンパレータ（減算）
 Redstone Comparator (Powered)=レッドストーンコンパレータ（稼動）
+Redstone Comparator (Subtract)=レッドストーンコンパレータ（減算）
 Redstone Comparator (Subtract, Powered)=レッドストーンコンパレータ（減算・稼動）

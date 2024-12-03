@@ -1,5 +1,19 @@
 # textdomain: mcl_mushrooms
+##[ small.lua ]##
+Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=茶色キノコは、暗闇の中で成長し広がる菌類ですが、光に弱いという特徴があります。食用には適しませんが、食品に加工することはできます。
+Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=赤色キノコは、暗闇で中で成長し広がる菌類ですが、光に弱いという特徴があります。食用には適しませんが、食品に加工することはできます。
+A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.=この種のキノコは、キノコの周囲の3×3×3キューブ内にある光度12以下のランダムな不透明固体ブロックに向かって、時間経過と共にゆっくりと広がっていきます。キノコの周囲9×3×9ブロックの範囲に同じ種のキノコが5個以上あると、拡散を止めます。
+Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.=キノコは、光量が12以上になると根こそぎになります。菌糸体やポドゾルの上では、どのような光量でも生き残り、広がっていきます。
+Grows on podzol, mycelium and other blocks=ポドゾル、菌糸体、その他のブロックに生育
+Spreads in darkness=暗闇の中で拡散
+This mushroom can be placed on mycelium and podzol at any light level. It can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.=このキノコは、どんな光量でも菌糸体やポドゾルの上に置けます。また、昼間の光量が12以下であれば、固体や不透明なブロックの上にも置くことができます。
+Brown Mushroom=茶色キノコ
+Red Mushroom=赤色キノコ
+Mushroom Stew=キノコシチュー
+Mushroom stew is a healthy soup which can be consumed to restore some hunger points.=キノコシチューは、満腹度を満たすために食べられるヘルシースープです。
+##[ huge.lua ]##
 This decorative block is like a huge mushroom stem, but with the stem texture on all sides.=巨大なキノコの柄のような装飾ブロックですが、四方に柄のテクスチャが施されています。
+By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.=同種の巨大なキノコのブロックを隣り合わせに置くことで、接した面が永久に孔口になります。
 Huge red mushroom blocks are the cap parts of huge red mushrooms. It consists of a red skin and can have pores on each of its sides.=巨大な赤色キノコのブロックは、巨大な赤色キノコのキャップ部分です。赤色の皮からなり、各面に孔口を持つこともあります。
 The stem part of a huge red mushroom.=巨大な赤色キノコの柄の部分。
 Huge Red Mushroom Block=巨大な赤色キノコのブロック
@@ -10,15 +24,3 @@ The stem part of a huge brown mushroom.=巨大な茶色キノコの柄の部分�
 Huge Brown Mushroom Block=巨大な茶色キノコのブロック
 Huge Brown Mushroom Stem=巨大な茶色キノコの柄
 Huge Brown Mushroom All-Faces Stem=巨大な茶色キノコの柄（全面）
-Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=茶色キノコは、暗闇の中で成長し広がる菌類ですが、光に弱いという特徴があります。食用には適しませんが、食品に加工することはできます。
-Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=赤色キノコは、暗闇で中で成長し広がる菌類ですが、光に弱いという特徴があります。食用には適しませんが、食品に加工することはできます。
-A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.=この種のキノコは、キノコの周囲の3×3×3キューブ内にある光度12以下のランダムな不透明固体ブロックに向かって、時間経過と共にゆっくりと広がっていきます。キノコの周囲9×3×9ブロックの範囲に同じ種のキノコが5個以上あると、拡散を止めます。
-Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.=キノコは、光量が12以上になると根こそぎになります。菌糸体やポドゾルの上では、どのような光量でも生き残り、広がっていきます。
-This mushroom can be placed on mycelium and podzol at any light level. It can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.=このキノコは、どんな光量でも菌糸体やポドゾルの上に置けます。また、昼間の光量が12以下であれば、固体や不透明なブロックの上にも置くことができます。
-Brown Mushroom=茶色キノコ
-Red Mushroom=赤色キノコ
-Mushroom Stew=キノコシチュー
-Mushroom stew is a healthy soup which can be consumed to restore some hunger points.=キノコシチューは、満腹度を満たすために食べられるヘルシースープです。
-By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.=同種の巨大なキノコのブロックを隣り合わせに置くことで、接した面が永久に孔口になります。
-Grows on podzol, mycelium and other blocks=ポドゾル、菌糸体、その他のブロックに生育
-Spreads in darkness=暗闇の中で拡散

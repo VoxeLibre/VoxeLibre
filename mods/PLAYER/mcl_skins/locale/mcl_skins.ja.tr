@@ -1,5 +1,5 @@
 # textdomain: mcl_skins
-Skins=スキン
+##[ edit_skin.lua ]##
 Templates=テンプレート
 Arm size=腕の大きさ
 Bases=ベース
@@ -10,5 +10,8 @@ Bottoms=下衣
 Tops=上衣
 Hairs=髪
 Headwears=帽子
+Skins=スキン
+Capes=
 Open skin configuration screen.=スキン設定画面を開きます。
 Select=選択
+(None)=

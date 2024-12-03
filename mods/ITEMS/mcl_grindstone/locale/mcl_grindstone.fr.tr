@@ -1,6 +1,6 @@
 # textdomain: mcl_grindstone
-Inventory=Inventaire
 Repair & Disenchant=Répare & Désenchante
+Inventory=Inventaire
 Grindstone=Meule
 Used to disenchant/fix tools=Utilisée pour désenchanter/réparer
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Les meules désenchantent les outils et armures sauf si elles sont maudites, et répare deux objets du même type, c'est aussi le poste de travail du forgeron d'armes.

@@ -1,5 +1,6 @@
 # textdomain: mcl_fishing
 Fishing Rod=釣竿
+Catches fish in water=水中の魚を捕獲
 Fishing rods can be used to catch fish.=釣竿で魚が釣れます。
 Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?=右クリックで釣り糸を飛ばします。沈んだらまた右クリックで巻き上げ。何が釣れるかはお楽しみ。
 Raw Fish=生鱈
@@ -13,6 +14,5 @@ This is a healthy food item which can be eaten.=これは食べられるヘル�
 Clownfish=クマノミ
 Clownfish may be obtained by fishing (and luck) and is a food item which can be eaten safely.=クマノミは釣り（と運）で手に入れることができ、安全に食べられる食材です。
 Pufferfish=フグ
-Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=フグは一般的な魚の一種で、釣りでゲットできます。技術的には食べることができますが、人間にとっては最悪のものです。フグを食べると空腹感が1ポイントしか回復せず、過酷な毒（死なない程度にヘルスを消耗）と、深刻な食中毒（空腹感の増加）を引き起こすことになります。
-Catches fish in water=水中の魚を捕獲
 Very poisonous=猛毒
+Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=フグは一般的な魚の一種で、釣りでゲットできます。技術的には食べることができますが、人間にとっては最悪のものです。フグを食べると空腹感が1ポイントしか回復せず、過酷な毒（死なない程度にヘルスを消耗）と、深刻な食中毒（空腹感の増加）を引き起こすことになります。

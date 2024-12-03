@@ -1,5 +1,4 @@
 # textdomain: mcl_crimson
-
 Warped Fungus=
 Warped fungus is a mushroom found in the nether's warped forest.=
 Twisting Vines=
@@ -10,18 +9,16 @@ Warped Wart Block=
 Shroomlight=
 Warped Hyphae=
 The stem of a warped hyphae=
+Warped Nylium=
 Warped Hyphae Bark=
 This is a decorative block surrounded by the bark of an hyphae.=
 Stripped Warped Hyphae=
 The stripped hyphae of a warped fungus=
 Stripped Warped Hyphae Bark=
 The stripped hyphae bark of a warped fungus=
-Warped Nylium=
-Warped Checknode - only to check!=
 Warped Hyphae Wood=
 Warped Stair=
 Warped Slab=
-Double Warped Slab=
 Crimson Fungus=
 Crimson fungus is a mushroom found in the nether's crimson forest.=
 Crimson Roots=
@@ -31,11 +28,11 @@ Crimson Hyphae Bark=
 Stripped Crimson Hyphae=
 The stripped stem of a crimson hyphae=
 Stripped Crimson Hyphae Bark=
+The stripped wood of a crimson hyphae=
 Crimson Hyphae Wood=
+Crimson Nylium=
 Crimson Stair=
 Crimson Slab=
-Double Crimson Slab=
-Crimson Nylium=
 Crimson Door=
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=
@@ -44,7 +41,6 @@ Wooden trapdoors are horizontal barriers which can be opened and closed by hand 
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=
 Crimson Fence=
 Crimson Fence Gate=
-Crimson Checknode - only to check!=
 Warped Door=
 Warped Trapdoor=
 Warped Fence=

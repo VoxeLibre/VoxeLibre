@@ -1,6 +1,4 @@
 # textdomain: mcl_wool
-Wool=Ull
-Carpet=Teppe
 White Wool=Hvit ull
 White Carpet=Hvitt teppe
 Grey Wool=Grå ull
@@ -35,3 +33,5 @@ Light Blue Wool=Lyseblå ull
 Light Blue Carpet=Lyseblått teppe
 Wool is a decorative block which comes in many different colors.=Ull er en dekorativ blokk som finnes i mange forskjellige farger.
 Carpets are thin floor covers which come in many different colors.=Tepper er tynne gulvdekke som finnes i mange forskjellige farger.
+Wool=Ull
+Carpet=Teppe

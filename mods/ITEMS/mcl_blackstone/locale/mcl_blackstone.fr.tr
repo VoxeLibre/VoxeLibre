@@ -1,29 +1,34 @@
 # textdomain: mcl_blackstone
 Blackstone=Roche noire
+Gilded Blackstone=Roche noire dorée
+Nether Gold Ore=Minerai d'or du Nether
+Polished Basalt=Basalte taillé
+Basalt=Basalte
+Smooth Basalt=Basalte lisse
 Polished Blackstone=Pierre noire
 Chiseled Polished Blackstone=Pierre noire sculptée
 Polished Blackstone Bricks=Briques de pierre noire
-Basalt=Basalte
-Polished Basalt=Basalte taillé
-Blackstone Slab=Dalle de roche noire
-Polished Blackstone Slab=Dalle de pierre noire
-Chiseled Polished Blackstone Slab=Dalle de pierre noire sculptée
-Polished Blackstone Brick Slab=Dalle de briques de pierre noire
-Blackstone Stair=Escalier de roche noire
-Polished Blackstone Stair=Escalier de pierre noire
-Chiseled Polished Blackstone Stair=Escalier de pierre noire sculptée
-Polished Blackstone Brick Stair=Escalier de briques de pierre noire
 Quartz Bricks=Briques de quartz
-Soul Torch=Torche des âmes
-Torches are light sources which can be placed at the side or on the top of most blocks.=Les torches sont des sources lumineuses qui peuvent être placées sur le côté ou sur le dessus de la plupart des blocs.
-Soul Lantern=Lanterne des âmes
 Soul Soil=Terre des âmes
 Eternal Soul Fire=Feu éternel des âmes
-Gilded Blackstone=Roche noire dorée
-Nether Gold Ore=Minerai d'or du Nether
-Smooth Basalt=Basalte lisse
-Blackstone Wall=Muret de roche noire
+Blackstone Stair=Escalier de roche noire
+Blackstone Slab=Dalle de roche noire
 Double Blackstone Slab=Double dalle de roche noire
-Polished Double Blackstone Slab=Double dalle de pierre noire
+Polished Blackstone Stair=Escalier de pierre noire
+Polished Blackstone Slab=Dalle de pierre noire
+Double Polished Blackstone Slab=
+Chiseled Polished Blackstone Stair=Escalier de pierre noire sculptée
+Chiseled Polished Blackstone Slab=Dalle de pierre noire sculptée
 Double Chiseled Polished Blackstone Slab=Double dalle de pierre noire sculptée
+Polished Blackstone Brick Stair=Escalier de briques de pierre noire
+Polished Blackstone Brick Slab=Dalle de briques de pierre noire
 Double Polished Blackstone Brick Slab=Double dalle de briques de pierre noire
+Blackstone Wall=Muret de roche noire
+Soul Torch=Torche des âmes
+Torches are light sources which can be placed at the side or on the top of most blocks.=Les torches sont des sources lumineuses qui peuvent être placées sur le côté ou sur le dessus de la plupart des blocs.
+
+
+##### not used anymore #####
+
+Soul Lantern=Lanterne des âmes
+Polished Double Blackstone Slab=Double dalle de pierre noire

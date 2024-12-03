@@ -1,5 +1,6 @@
 # textdomain: mcl_fishing
 Fishing Rod=釣竿
+Catches fish in water=在水中取得魚
 Fishing rods can be used to catch fish.=釣竿是用來取得魚的工具。
 Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?=右鍵單擊以啟動浮標。當它下沉時，再次點擊右鍵來釣起一個物品。誰知道你會抓到什麼？
 Raw Fish=生鱈魚
@@ -13,6 +14,5 @@ This is a healthy food item which can be eaten.=這是一種健康的可食用�
 Clownfish=熱帶魚
 Clownfish may be obtained by fishing (and luck) and is a food item which can be eaten safely.=熱帶魚可以通過釣魚（和運氣）獲得，是一種可以安全食用的食物。
 Pufferfish=河豚
-Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=河豚是一種常見的魚種，可以通過釣魚獲得。嚴格來說，它們可以被吃掉，但對人類非常不利。吃了河豚只能恢復1點飢餓感，而且會讓你中毒非常嚴重（非致命性地消耗你的健康），並導致嚴重的食物中毒（會增加你的飢餓感）。
-Catches fish in water=在水中取得魚
 Very poisonous=有劇毒
+Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=河豚是一種常見的魚種，可以通過釣魚獲得。嚴格來說，它們可以被吃掉，但對人類非常不利。吃了河豚只能恢復1點飢餓感，而且會讓你中毒非常嚴重（非致命性地消耗你的健康），並導致嚴重的食物中毒（會增加你的飢餓感）。

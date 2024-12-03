@@ -5,6 +5,7 @@ sentry=
 dune=
 coast=
 wild=
+tide=
 ward=
 vex=
 rib=
@@ -13,51 +14,25 @@ eye=
 spire=
 silence=
 wayfinder=
-Leather Cap=
-Iron Helmet=
-Golden Helmet=
-Diamond Helmet=
-Chain Helmet=
-Netherite Helmet=
-Leather Tunic=
-Iron Chestplate=
-Golden Chestplate=
-Diamond Chestplate=
-Chain Chestplate=
-Netherite Chestplate=
-Leather Pants=
-Iron Leggings=
-Golden Leggings=
-Diamond Leggings=
-Chain Leggings=
-Netherite Leggings=
-Leather Boots=
-Iron Boots=
-Golden Boots=
-Diamond Boots=
-Chain Boots=
-Netherite Boots=
-Elytra=
-
-#Translations of enchantements
-Increases underwater mining speed.=
-Blast Protection=
-Reduces explosion damage and knockback.=
-Curse of Binding=
-Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
-Feather Falling=
-Reduces fall damage.=
-Fire Protection=
-Reduces fire damage.=
-Shooting consumes no regular arrows.=
-Shoot 3 arrows at the cost of one.=
+##[ register.lua ]##
 Projectile Protection=
 Reduces projectile damage.=
+Blast Protection=
+Reduces explosion damage and knockback.=
+Fire Protection=
+Reduces fire damage.=
 Protection=
 Reduces most types of damage by 4% for each level.=
+Feather Falling=
+Reduces fall damage.=
+Aqua Affinity=
+#Translations of enchantements
+Increases underwater mining speed.=
+Curse of Binding=
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
 Thorns=
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
-Aqua Affinity=
-
+Elytra=
+##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=

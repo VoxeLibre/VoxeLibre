@@ -1,7 +1,6 @@
 # textdomain: mcl_anvils
-Set Name=Velg navn
 Repair and Name=Reparer og navngi
-Inventory=Inventar
+Repair and rename items=Reparer og navngi gjenstander
 Anvil=Ambolt
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=Ambolten lar deg reparere verktøy og rustninger, og gi navn til gjenstander. Den har imidlertid begrenset holdbarhet. Ikke la det falle i hodet ditt, det kan være ganske smertefullt!
 To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.=For å bruke en ambolt, høyreklikk på den. En ambolt har 2 inngangsfelt (til venstre) og ett utgangsfelt.
@@ -13,4 +12,9 @@ Armor counts as a tool. It is possible to repair and rename a tool in a single s
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=Ambolten har begrenset holdbarhet og 3 skadenivåer: uskadet, lett skadet og svært skadet. Hver gang du reparerer eller gir nytt navn, er det 12 % sjanse for at ambolten blir skadet. Ambolter har også en sjanse for å bli skadet når de faller med mer enn 1 blokk. Hvis en svært skadet ambolt skades igjen, blir den ødelagt.
 Slightly Damaged Anvil=Lett skadet ambolt
 Very Damaged Anvil=Svært skadet ambolt
-Repair and rename items=Reparer og navngi gjenstander
+
+
+##### not used anymore #####
+
+Set Name=Velg navn
+Inventory=Inventar
