@@ -1,5 +1,5 @@
 # textdomain: mcl_credits
-A faithful Open Source clone of Minecraft=《我的世界》（Minecraft）的忠实开源克隆版本
+An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=
 Sneak to skip=潜行来跳过
 Jump to speed up (additionally sprint)=跳跃来加速（另外还可疾跑）
 ##[ people.lua ]##
@@ -21,4 +21,5 @@ Special thanks=特别感谢
 
 ##### not used anymore #####
 
+A faithful Open Source clone of Minecraft=《我的世界》（Minecraft）的忠实开源克隆版本
 MineClone5=《我的世界克隆版5》（MineClone5）

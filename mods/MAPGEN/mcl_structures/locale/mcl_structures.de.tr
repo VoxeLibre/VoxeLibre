@@ -3,4 +3,4 @@ Generate a pre-defined structure near your position.=Erzeugt ein vordefiniertes 
 Structure placed.=Gebäude platziert.
 Error: No structure type given. Please use “/spawnstruct <type>”.=Fehler: Kein Gebäudetyp angegeben. Bitte benutzen Sie „/spawnstruct <Typ>“.
 Error: Unknown structure type. Please use “/spawnstruct <type>”.=Fehler: Unbekannter Gebäudetyp. Bitte benutzen Sie „/spawnstruct <Typ>“.
-Use /help spawnstruct to see a list of avaiable types.=Benutzen Sie „/help spawnstruct“, um eine Liste der verfügbaren Typen zu sehen.
+Use /help spawnstruct to see a list of available types.=Benutzen Sie „/help spawnstruct“, um eine Liste der verfügbaren Typen zu sehen.

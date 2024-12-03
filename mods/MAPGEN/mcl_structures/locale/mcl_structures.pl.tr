@@ -3,7 +3,7 @@ Generate a pre-defined structure near your position.=Wygeneruj predefiniowaną s
 Structure placed.=Struktura postawiona.
 Error: No structure type given. Please use “/spawnstruct <type>”.=Błąd: Nie podano typu struktury. Użyj "/spawnstruct <typ>".
 Error: Unknown structure type. Please use “/spawnstruct <type>”.=Błąd: Nieznany typ struktury. Użyj "/spawnstruct <typ>".
-Use /help spawnstruct to see a list of avaiable types.=Użyj /help spawnstruct aby zobaczyć listę dostępnych typów.
+Use /help spawnstruct to see a list of available types.=Użyj /help spawnstruct aby zobaczyć listę dostępnych typów.
 
 
 ##### not used anymore #####

@@ -27,7 +27,7 @@ Show who is logged on=誰がログオンしているかを表示
 <sound> <target>=
 Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
 Sound name is invalid!=
-Target is invalid!!=
+Target is invalid!=
 ##[ alias.lua ]##
 List bans=BANのリスト
 Ban list: @1=BANリスト： @1

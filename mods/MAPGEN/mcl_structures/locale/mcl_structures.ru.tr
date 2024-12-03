@@ -3,7 +3,7 @@ Generate a pre-defined structure near your position.=Генерирует поб
 Structure placed.=Структура размещена.
 Error: No structure type given. Please use “/spawnstruct <type>”.=Ошибка: Не задан тип структуры. Пожалуйста, используйте “/spawnstruct <тип>”.
 Error: Unknown structure type. Please use “/spawnstruct <type>”.=Ошибка: Неизвестный тип структуы. Пожалуйста, используйте “/spawnstruct <тип>”.
-Use /help spawnstruct to see a list of avaiable types.=Используйте /help spawnstruct, чтобы увидеть список доступных типов.
+Use /help spawnstruct to see a list of available types.=Используйте /help spawnstruct, чтобы увидеть список доступных типов.
 
 
 ##### not used anymore #####

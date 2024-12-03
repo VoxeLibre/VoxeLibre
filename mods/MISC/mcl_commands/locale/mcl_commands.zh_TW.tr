@@ -27,7 +27,7 @@ Show who is logged on=列出在線玩家
 <sound> <target>=
 Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
 Sound name is invalid!=
-Target is invalid!!=
+Target is invalid!=
 ##[ alias.lua ]##
 List bans=查看封鎖列表
 Ban list: @1=封鎖列表：@1

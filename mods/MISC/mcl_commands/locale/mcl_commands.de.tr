@@ -27,7 +27,7 @@ Show who is logged on=Anzeigen, wer eingeloggt ist
 <sound> <target>=
 Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
 Sound name is invalid!=
-Target is invalid!!=
+Target is invalid!=
 ##[ alias.lua ]##
 List bans=Bannliste anzeigen
 Ban list: @1=Bannliste: @1
