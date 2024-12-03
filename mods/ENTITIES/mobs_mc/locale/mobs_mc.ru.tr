@@ -1,63 +1,137 @@
 # textdomain: mobs_mc
-Agent=Агент
+##[ axolotl.lua ]##
 Axolotl=Аксолотль
+##[ bat.lua ]##
 Bat=Летучая мышь
-Blaze=Ифрит
+##[ rabbit.lua ]##
+Rabbit=Кролик
+Killer Bunny=Кролик-убийца
+##[ chicken.lua ]##
 Chicken=Курица
+##[ cow+mooshroom.lua ]##
 Cow=Корова
 Mooshroom=Грибная корова
-Stalker=Сталкер
-Ender Dragon=Дракон Края
-Enderman=Эндермен
-Endermite=Эндермит
-Ghast=Гаст
-Elder Guardian=Древний страж
-Guardian=Страж
+##[ horse.lua ]##
 Horse=Лошадь
 Skeleton Horse=Лошадь-скелет
 Zombie Horse=Лошадь-зомби
 Donkey=Ослик
 Mule=Мул
-Iron Golem=Железный голем
+##[ llama.lua ]##
 Llama=Лама
+##[ ocelot.lua ]##
 Ocelot=Оцелот
 Cat=Кошка
+##[ parrot.lua ]##
 Parrot=Попугай
+##[ pig.lua ]##
 Pig=Свинья
+##[ polar_bear.lua ]##
 Polar Bear=Полярный медведь
-Rabbit=Кролик
-Killer Bunny=Кролик-убийца
+##[ sheep.lua ]##
 Sheep=Овца
+##[ wolf.lua ]##
+Wolf=Волк
+Dog=
+##[ squid.lua ]##
+Squid=Спрут
+##[ villager.lua ]##
+Master=
+Villager=Житель
+##[ pillager.lua ]##
+Pillager=Разбойник
+##[ villager_evoker.lua ]##
+Evoker=Вызыватель
+##[ villager_vindicator.lua ]##
+Vindicator=Поборник
+##[ villager_zombie.lua ]##
+Zombie Villager=Зомби-житель
+##[ witch.lua ]##
+Witch=Ведьма
+##[ blaze.lua ]##
+Blaze=Ифрит
+##[ ender_dragon.lua ]##
+Ender Dragon=Дракон Края
+##[ endermite.lua ]##
+Endermite=Эндермит
+##[ villager_illusioner.lua ]##
+Illusioner=Иллюзор
+##[ ghast.lua ]##
+Ghast=Гаст
+##[ guardian.lua ]##
+Guardian=Страж
+##[ guardian_elder.lua ]##
+Elder Guardian=Древний страж
+##[ snowman.lua ]##
+Snow Golem=Снежный голем
+##[ iron_golem.lua ]##
+Iron Golem=Железный голем
+##[ rover.lua ]##
+Rover=
+##[ shulker.lua ]##
 Shulker=Шалкер
+##[ silverfish.lua ]##
 Silverfish=Чешуйница
+##[ skeleton+stray.lua ]##
 Skeleton=Скелет
 Stray=Странник
+##[ skeleton_wither.lua ]##
 Wither Skeleton=Скелет-иссушитель
-Magma Cube=Лавовый куб
-Slime=Слизень
-Snow Golem=Снежный голем
-Spider=Паук
-Cave Spider=Пещерный паук
-Squid=Спрут
-Vex=Досаждатель
-Evoker=Вызыватель
-Illusioner=Иллюзор
-Villager=Житель
-Vindicator=Поборник
-Zombie Villager=Зомби-житель
-Witch=Ведьма
-Wither=Иссушитель
-Wolf=Волк
-Husk=Кадавр
-Baby Husk=Кадавр-ребёнок
+##[ stalker.lua ]##
+Stalker=Сталкер
+Overloaded Stalker=
+##[ zombie.lua ]##
 Zombie=Зомби
 Baby Zombie=Зомби-ребёнок
+Husk=Кадавр
+Baby Husk=Кадавр-ребёнок
+##[ slime+magma_cube.lua ]##
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=Лавовый куб
+Slime=Слизень
+##[ spider.lua ]##
+Spider=Паук
+Cave Spider=Пещерный паук
+##[ vex.lua ]##
+Vex=Досаждатель
+##[ wither.lua ]##
+Wither=Иссушитель
+##[ cod.lua ]##
+Cod=Треска
+##[ salmon.lua ]##
+Salmon=Лосось
+##[ tropical_fish.lua ]##
+Tropical Fish=
+Tropical fish=Тропическая рыба
+##[ dolphin.lua ]##
+Dolphin=Дельфин
+##[ glow_squid.lua ]##
+Glow Squid=Светящийся спрут
+##[ piglin.lua ]##
 Piglin=Пиглин
-Baby Piglin=Пиглин-ребёнок
+Sword Piglin=Пиглин-мечник
 Zombie Piglin=Зомби-пиглин
 Baby Zombie Piglin=Зомби-пиглин-ребёнок
-Sword Piglin=Пиглин-мечник
 Piglin Brute=Жестокий пиглин
+##[ hoglin+zoglin.lua ]##
+Hoglin=Хоглин
+Zoglin=Зоглин
+Baby hoglin=Детёныш хоглина
+##[ strider.lua ]##
+Strider=Страйдер
+Baby Strider=
+
+
+##### not used anymore #####
+
+Agent=Агент
+Enderman=Эндермен
+Baby Piglin=Пиглин-ребёнок
 Farmer=Фермер
 Fisherman=Рыбак
 Fletcher=Лучник
@@ -71,13 +145,3 @@ Weapon Smith=Оружейник
 Tool Smith=Инструментальщик
 Cleric=Церковник
 Nitwit=Нищий
-Cod=Треска
-Salmon=Лосось
-Dolphin=Дельфин
-Pillager=Разбойник
-Tropical fish=Тропическая рыба
-Hoglin=Хоглин
-Baby hoglin=Детёныш хоглина
-Zoglin=Зоглин
-Strider=Страйдер
-Glow Squid=Светящийся спрут

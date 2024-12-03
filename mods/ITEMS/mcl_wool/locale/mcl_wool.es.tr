@@ -1,6 +1,4 @@
 # textdomain: mcl_wool
-Wool=Lana
-Carpet=Alfombra
 White Wool=Lana blanca
 White Carpet=Alfombra blanca
 Grey Wool=Lana gris
@@ -35,3 +33,5 @@ Light Blue Wool=Lana azul claro
 Light Blue Carpet=Alfombra azul claro
 Wool is a decorative block which comes in many different colors.=WLa lana es un bloque decorativo que viene en muchos colores diferentes.
 Carpets are thin floor covers which come in many different colors.=Las alfombras son finas cubiertas para el suelo que vienen en muchos colores diferentes.
+Wool=Lana
+Carpet=Alfombra

@@ -1,3 +1,4 @@
 # textdomain: mcl_fireworks
-Firework Rocket=
+##[ register.lua ]##
 Flight Duration:=
+Firework Rocket=

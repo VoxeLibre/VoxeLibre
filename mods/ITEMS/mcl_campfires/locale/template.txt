@@ -1,5 +1,7 @@
 # textdomain: mcl_campfires
-Campfire=
-Soul Campfire=
+##[ api.lua ]##
 Cooks food and keeps bees happy.=
 Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap.=
+##[ register.lua ]##
+Campfire=
+Soul Campfire=

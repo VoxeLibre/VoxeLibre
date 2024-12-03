@@ -1,5 +1,4 @@
 # textdomain: mcl_crimson
-
 Warped Fungus=Champignon tordu
 Warped fungus is a mushroom found in the nether's warped forest.=Les champignons tordus se trouvent dans la forêt tordue du nether.
 Twisting Vines=Liane tordue
@@ -10,14 +9,13 @@ Warped Wart Block=Bloc de verrues tordu
 Shroomlight=Champilampe
 Warped Hyphae=Tige tordue
 The stem of a warped hyphae=La tige d'un champignon géant tordu
+Warped Nylium=Nylium tordu
 Warped Hyphae Bark=Hyphe tordue
 This is a decorative block surrounded by the bark of an hyphae.=Ceci est un bloc décoratif entouré de l'écorce d'une tige
 Stripped Warped Hyphae=Tige tordue dénudée
 The stripped hyphae of a warped fungus=La tige dénudée d'un champignon géant tordu
 Stripped Warped Hyphae Bark=Hyphe tordue dénudée
 The stripped hyphae bark of a warped fungus=La tige dénudée d'un champignon géant tordu
-Warped Nylium=Nylium tordu
-Warped Checknode - only to check!=Bloc de vérification tordu - seulement pour vérifier !
 Warped Hyphae Wood=Planches tordues
 Warped Stair=Escalier tordu
 Warped Slab=Dalle tordue
@@ -32,10 +30,9 @@ The stripped stem of a crimson hyphae=La tige dénudée d'un champignon géant �
 Stripped Crimson Hyphae Bark=Hyphe écarlate dénudée
 The stripped wood of a crimson hyphae=La tige dénudée d'un champignon géant écarlate
 Crimson Hyphae Wood=Planches écarlates
+Crimson Nylium=Nylium écarlate
 Crimson Stair=Escalier écarlate
 Crimson Slab=Dalle écarlate
-Double Crimson Slab=Dalle double écarlate
-Crimson Nylium=Nylium écarlate
 Crimson Door=Porte écarlate
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Les portes en bois sont des barrières hautes à 2 blocs qui peuvent être ouvertes ou fermées à la main et par un signal redstone.
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Pour ouvrir ou fermer une porte en bois, faites un clic droit dessus ou fournissez à sa moitié inférieure un signal redstone.
@@ -44,8 +41,14 @@ Wooden trapdoors are horizontal barriers which can be opened and closed by hand 
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Pour ouvrir ou fermer la trappe, faites un clic droit dessus ou envoyez-lui un signal redstone.
 Crimson Fence=Barrière écarlate
 Crimson Fence Gate=Portillon écarlate
-Crimson Checknode - only to check!=Bloc de vérification écarlate - seulement pour vérifier !
 Warped Door=Porte tordue
 Warped Trapdoor=Trappe tordue
 Warped Fence=Barrière tordue
 Warped Fence Gate=Portillon tordu
+
+
+##### not used anymore #####
+
+Warped Checknode - only to check!=Bloc de vérification tordu - seulement pour vérifier !
+Double Crimson Slab=Dalle double écarlate
+Crimson Checknode - only to check!=Bloc de vérification écarlate - seulement pour vérifier !

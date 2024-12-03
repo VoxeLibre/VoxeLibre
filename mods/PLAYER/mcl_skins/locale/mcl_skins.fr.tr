@@ -1,5 +1,5 @@
 # textdomain: mcl_skins
-Skins=Costumes
+##[ edit_skin.lua ]##
 Templates=Modèles
 Arm size=Taille des bras
 Bases=Teints
@@ -10,5 +10,8 @@ Bottoms=Bas
 Tops=Hauts
 Hairs=Cheveux
 Headwears=Coiffes
+Skins=Costumes
+Capes=
 Open skin configuration screen.=Ouvrir l'écran de configuration du costume.
 Select=Sélectionner
+(None)=

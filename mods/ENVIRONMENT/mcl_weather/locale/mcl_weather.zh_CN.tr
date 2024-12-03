@@ -1,4 +1,5 @@
 # textdomain: mcl_weather
+##[ weather_core.lua ]##
 Gives ability to control weather=赋予控制天气的能力
 Changes the weather to the specified parameter.=将天气更改为指定的参数。
 Error: No weather specified.=错误：没有指定天气。

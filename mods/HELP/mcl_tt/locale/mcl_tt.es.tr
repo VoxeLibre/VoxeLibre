@@ -1,4 +1,37 @@
 # textdomain: mcl_tt
+##[ snippets_base.lua ]##
+Painfully slow=Dolorosamente lento
+Very slow=Muy lento
+Slow=Lento
+Fast=Rápido
+Very fast=Muy rápido
+Extremely fast=Extremadamente rápido
+Instantaneous=
+@1 uses=@1 usos
+Unlimited uses=Usos ilimitados
+Mining speed: @1=Velocidad de minado: @1
+Durability: @1=Durabilidad: @1
+Block breaking strength: @1=Fuerza para romper bloques: @1
+Damage: @1=Daño: @1
+Healing: @1=Curación: @1
+Full punch interval: @1s=Intervalo de golpe completo: @1s
+Food item=
++@1 food points=
+Contact damage: @1 per second=Daño por contacto: @1 por segundo
+Contact healing: @1 per second=Curación por contacto: @1 por segundo
+Drowning damage: @1=Dañor por ahogamiento: @1
+Fall damage: +@1%=Daño por caída: @1%
+No fall damage=Sin daño por caída
+Fall damage: @1%=Daño por caída: @1% 
+No jumping=No saltar
+No swimming upwards=No nadar hacia arriba
+No rising=No levantar
+Climbable (only downwards)=Escalable (solo hacia abajo)
+Climbable=Escalable
+Slippery=Resbaladizo
+Bouncy (@1%)=Rebota (@1%)
+Luminance: @1=Luminancia: @1
+##[ snippets_mcl.lua ]##
 Head armor=Armadura para la cabeza
 Torso armor=Armadura para el torso
 Legs armor=Armadura para las piernas
@@ -15,33 +48,10 @@ Flammable=Inflamable
 Zombie view range: -50%=Rango de visión zombie: -50%
 Skeleton view range: -50%=Rango de visión de esqueleto: -50%
 Stalker view range: -50%=Rango de visión de stalker: -50%
-Damage: @1=Daño: @1
+...stacks=
+
+
+##### not used anymore #####
+
 Damage (@1): @2=Daño (@1): @2
-Healing: @1=Curación: @1
 Healing (@1): @2=Curación (@1): @2
-Full punch interval: @1s=Intervalo de golpe completo: @1s
-Contact damage: @1 per second=Daño por contacto: @1 por segundo
-Contact healing: @1 per second=Curación por contacto: @1 por segundo
-Drowning damage: @1=Dañor por ahogamiento: @1
-Bouncy (@1%)=Rebota (@1%)
-Luminance: @1=Luminancia: @1
-Slippery=Resbaladizo
-Climbable=Escalable
-Climbable (only downwards)=Escalable (solo hacia abajo)
-No jumping=No saltar
-No swimming upwards=No nadar hacia arriba
-No rising=No levantar
-Fall damage: @1%=Daño por caída: @1% 
-Fall damage: +@1%=Daño por caída: @1%
-No fall damage=Sin daño por caída
-Mining speed: @1=Velocidad de minado: @1
-Very fast=Muy rápido
-Extremely fast=Extremadamente rápido
-Fast=Rápido
-Slow=Lento
-Very slow=Muy lento
-Painfully slow=Dolorosamente lento
-Block breaking strength: @1=Fuerza para romper bloques: @1
-@1 uses=@1 usos
-Unlimited uses=Usos ilimitados
-Durability: @1=Durabilidad: @1

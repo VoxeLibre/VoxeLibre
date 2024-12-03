@@ -1,6 +1,6 @@
 # textdomain: mcl_grindstone
-Inventory=物品栏
 Repair & Disenchant=修复与祛魔
+Inventory=物品栏
 Grindstone=砂轮
 Used to disenchant/fix tools=用于祛除工具的附魔及修复工具
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=砂轮可祛除工具和盔甲上的附魔（诅咒附魔除外），还能修复两个相同类型的物品，它也是武器匠村民的工作台。

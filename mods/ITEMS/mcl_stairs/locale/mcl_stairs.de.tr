@@ -1,9 +1,11 @@
 # textdomain: mcl_stairs
+##[ api.lua ]##
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=Treppen sind nützlich, um auf höheres Gelände nur mit Gehen zu kommen, man muss nicht springen. Wenn Treppen in einem Eckmuster platziert werden, werden Ecktreppen erzeugt. Treppen, die an die Decke oder der oberen Hälfte eines Blocks platziert werden, werden verkehrt herum platziert.
 Double @1=@1 (doppelt)
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=Eine Platte ist halb so hoch wie ihr Vollblock-Gegenstück und belegt entweder den unteren oder unteren Teil eines Blocks, je nach dem, wie er platziert wurde. Platten können leicht betreten werden, ohne springen zu müssen. Wird eine Platte auf einer anderen gleichen Platte platziert, ergibt das eine Doppelplatte.
 Upper @1=@1 (oben)
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=Doppelplatten sind ganze Blöcke, die entstehen, wenn zwei gleiche Platten aufeinander gestapelt werden.
+##[ register.lua ]##
 Oak Wood Stairs=Eichenholztreppe
 Oak Wood Slab=Eichenholzplatte
 Double Oak Wood Slab=Doppeleichenholzplatte
@@ -22,9 +24,9 @@ Double Birch Wood Slab=Doppelbirkenholzplatte
 Dark Oak Wood Stairs=Schwarzeichenholzstreppe
 Dark Oak Wood Slab=Schwarzeichenholzplatte
 Double Dark Oak Wood Slab=Doppelschwarzeichenholzplatte
-Stone Stairs=Steintreppe
 Stone Slab=Steinplatte
 Double Stone Slab=Doppelsteinplatte
+Stone Stairs=Steintreppe
 Polished Stone Slab=Polierte Steinplatte
 Double Polished Stone Slab=Doppelte polierte Steinplatte
 Andesite Stairs=Andesittreppe
@@ -48,12 +50,18 @@ Double Brick Slab=Doppelziegelplatte
 Sandstone Stairs=Sandsteintreppe
 Sandstone Slab=Sandsteinplatte
 Double Sandstone Slab=Doppelsandsteinplatte
+Cut Sandstone Stairs=
+Cut Sandstone Slab=
+Double Cut Sandstone Slab=
 Smooth Sandstone Stairs=Glatte Sandsteintreppe
 Smooth Sandstone Slab=Glatte Sandsteinplatte
 Double Smooth Sandstone Slab=Doppelte glatte Sandsteinplatte
 Red Sandstone Stairs=Rote Sandsteintreppe
 Red Sandstone Slab=Rote Sandsteinplatte
 Double Red Sandstone Slab=Doppelte rote Sandsteinplatte
+Cut Red Sandstone Stairs=
+Cut Red Sandstone Slab=
+Double Cut Red Sandstone Slab=
 Smooth Red Sandstone Stairs=Glatte rote Sandsteintreppe
 Smooth Red Sandstone Slab=Glatte rote Sandsteinplatte
 Double Smooth Red Sandstone Slab=Doppelte glatte rote Sandsteinplatte
@@ -83,10 +91,12 @@ Prismarine Slab=Prismarinplatte
 Double Prismarine Slab=Doppelte Prismarinplatte
 Prismarine Brick Stairs=Prismarinziegeltreppe
 Prismarine Brick Slab=Prismarinziegelplatte
-Double Prismarine Brick Slab=Doppelte Prismarinziegelplatte
-Dark Prismarine Stairs=Dunkelprismarintreppe
+Double prismarine_brick Slab=
 Dark Prismarine Slab=Dunkelprismarinplatte
 Double Dark Prismarine Slab=Doppeldunkelprismarinplatte
+Mud Brick Stairs=
+Mud Brick Slab=
+Double Mud Brick Slab=
 Polished Andesite Slab=Polierte Andesitplatte
 Double Polished Andesite Slab=Doppelte polierte Andesitplatte
 Polished Andesite Stairs=Polierte Andesittreppe
@@ -99,6 +109,9 @@ Polished Diorite Stairs=Polierte Diorittreppe
 Mossy Stone Brick Stairs=Moosige Steinziegeltreppe
 Mossy Stone Brick Slab=Moosige Steinziegelplatte
 Double Mossy Stone Brick Slab=Doppelte moosige Steinziegelplatte
-Mud Brick Stair=
-Mud Brick Slab=
-Double Mud Brick Slab=
+
+
+##### not used anymore #####
+
+Double Prismarine Brick Slab=Doppelte Prismarinziegelplatte
+Dark Prismarine Stairs=Dunkelprismarintreppe

@@ -1,5 +1,18 @@
 # textdomain: mcl_deepslate
+Deepslate=Tiefenschiefer
+Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=Tiefenschiefer ist eine Gesteinsart. Er kann als dekorativer Block verwendet und in viele Varianten weiterverarbeitet werden.
+Infested Deepslate=Befallener Tiefenschiefer
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Ein befallener Block ist ein Block, aus dem ein Silberfisch herausspringt, wenn er abgebaut wird. Er sieht genauso aus wie sein normales Gegenstück.
+Hides a silverfish=Versteckt einen Silberfisch
+Tuff=Tuffstein
+Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=
+Deepslate Redstone Ore=Tiefenschiefer-Redstone-Erz
+Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Redstone-Erz ist eine Variante von Redstone-Erz, die in Tiefenschiefer und Tuff generiert werden kann.
+Lit Deepslate Redstone Ore=Leuchtendes Tiefschiefer-Redstone-Erz
+
+
+##### not used anymore #####
+
 Chiseled deepslate is the chiseled version of deepslate.=Gemeißelter Tiefenschiefer ist die behauene Version von Tiefenschiefer.
 Chiseled Deepslate=Gemeißelter Tiefenschiefer
 Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone.=Bruchtiefenschiefer funktioniert ähnlich wie Bruchstein, hat jedoch eine längere Abbauzeit.
@@ -26,28 +39,20 @@ Deepslate gold ore is a variant of gold ore that can generate in deepslate and t
 Deepslate Gold Ore=Tiefenschiefer-Golderz
 Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Eisenerz ist eine Variante von Eisenerz, die in Tiefenschiefer und Tuff generiert werden kann.
 Deepslate Iron Ore=Tiefenschiefer-Eisenerz
-Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=Tiefenschiefer ist eine Gesteinsart. Er kann als dekorativer Block verwendet und in viele Varianten weiterverarbeitet werden.
 Deepslate Lapis Lazuli Ore=Tiefenschiefer-Lapislazulierz
 Deepslate lapis ore is a variant of lapis ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Lapislazulierz ist eine Variante von Lapislazulierz, die in Tiefenschiefer und Tuff generiert werden kann.
-Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Redstone-Erz ist eine Variante von Redstone-Erz, die in Tiefenschiefer und Tuff generiert werden kann.
-Deepslate Redstone Ore=Tiefenschiefer-Redstone-Erz
 Deepslate tiles are a decorative variant of deepslate.=Tiefenschieferfliesen ist eine Variante des Tiefenschiefers. Der Block kann als dekorativer Block verwendet werden.
 Deepslate Tiles Slab=Tiefenschieferfliesenstufe
 Deepslate Tiles Stairs=Tiefenschieferfliesentreppe
 Deepslate Tiles Wall=Tiefenschieferfliesenmauer
 Deepslate Tiles=Tiefenschieferfliesen
-Deepslate=Tiefenschiefer
 Double Cobbled Deepslate Slab=Doppelte Bruchtiefenschieferstufe
 Double Deepslate Bricks Slab=Doppelte Tiefenschieferziegelstufe
 Double Deepslate Tiles Slab=Doppelte Tiefenschieferfliesenstufe
 Double Polished Deepslate Slab=Doppelte Polierte Tiefenschieferstufe
-Hides a silverfish=Versteckt einen Silberfisch
-Infested Deepslate=Befallener Tiefenschiefer
-Lit Deepslate Redstone Ore=Leuchtendes Tiefschiefer-Redstone-Erz
 Polished deepslate is the stone-like polished version of deepslate.=Polierter Tiefenschiefer ist eine Variante des Tiefenschiefers. Er kann als dekorativer Block verwendet werden.
 Polished Deepslate Slab=Polierte Tiefenschieferstufe
 Polished Deepslate Stairs=Polierte Tiefenschiefertreppe
 Polished Deepslate Wall=Polierte Tiefenschiefermauer
 Polished Deepslate=Polierter Tiefenschiefer
-Tuff=Tuffstein
 Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y=16.=Der Tuffstein ist ein grauer, vulkanischer Block.

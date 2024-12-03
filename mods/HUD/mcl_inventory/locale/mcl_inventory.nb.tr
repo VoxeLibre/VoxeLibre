@@ -1,22 +1,30 @@
 # textdomain: mcl_inventory
-Recipe book=Oppskriftsbok
-Help=Hjelp
-Select player skin=Velg spillerutseende
-Advancements=Fremskritt
+##[ creative.lua ]##
 Building Blocks=Byggeblokker
 Decoration Blocks=Dekorasjonsblokker
 Redstone=Rødstein
 Transportation=Transpor
-Brewing=Brygging
 Miscellaneous=Diverse
 Search Items=Søk gjenstander
 Foodstuffs=Matgreier
 Tools=Verktøy
 Combat=Kamp
 Mobs=Skapninger
+Brewing=Brygging
 Materials=Materialer
 Survival Inventory=Overlevelsesinventar
+Recipe book=Oppskriftsbok
+Help=Hjelp
+Advancements=Fremskritt
+Switch stack size=Bytt stabelstørrelse
+Select player skin=Velg spillerutseende
+@1 / @2=
+##[ survival.lua ]##
 Crafting=Håndverk
+Achievements=
+
+
+##### not used anymore #####
+
 Inventory=Inventar
 @1/@2=@1/@2
-Switch stack size=Bytt stabelstørrelse

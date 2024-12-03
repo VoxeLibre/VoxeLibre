@@ -1,29 +1,34 @@
 # textdomain: mcl_blackstone
 Blackstone=Чернокамень
+Gilded Blackstone=Позолоченный чернокамень
+Nether Gold Ore=Золотая руда Незера
+Polished Basalt=Полированный базальт
+Basalt=Базальт
+Smooth Basalt=Гладкий базальт
 Polished Blackstone=Полированный чернокамень
 Chiseled Polished Blackstone=Резной полированный чернокамень
 Polished Blackstone Bricks=Полированные чернокаменные кирпичи
-Basalt=Базальт
-Polished Basalt=Полированный базальт
-Blackstone Slab=Чернокаменная плита
-Polished Blackstone Slab=Полированная чернокаменная плита
-Chiseled Polished Blackstone Slab=Плита из резного полированного чернокамня
-Polished Blackstone Brick Slab=Плита из полированных чернокаменных кирпичей
-Blackstone Stair=Чернокаменные ступени
-Polished Blackstone Stair=Полированные чернокаменные ступени
-Chiseled Polished Blackstone Stair=Резные полированные чернокаменные ступени
-Polished Blackstone Brick Stair=Ступени из полированных чернокаменных кирпичей
 Quartz Bricks=Кварцевые кирпичи
-Soul Torch=Факел душ
-Torches are light sources which can be placed at the side or on the top of most blocks.=Факелы это источники света, которые могут быть размещены сбоку или сверху большинства блоков.
-Soul Lantern=Лампа душ
 Soul Soil=Песок душ
 Eternal Soul Fire=Вечный огонь душ
-Gilded Blackstone=Позолоченный чернокамень
-Nether Gold Ore=Золотая руда Незера
-Smooth Basalt=Гладкий базальт
-Blackstone Wall=Стена из чернокамня
+Blackstone Stair=Чернокаменные ступени
+Blackstone Slab=Чернокаменная плита
 Double Blackstone Slab=Двойная чернокаменная плита
-Polished Double Blackstone Slab=Полированная двойная чернокаменная плита
+Polished Blackstone Stair=Полированные чернокаменные ступени
+Polished Blackstone Slab=Полированная чернокаменная плита
+Double Polished Blackstone Slab=
+Chiseled Polished Blackstone Stair=Резные полированные чернокаменные ступени
+Chiseled Polished Blackstone Slab=Плита из резного полированного чернокамня
 Double Chiseled Polished Blackstone Slab=Двойная резная полированная чернокаменная плита
+Polished Blackstone Brick Stair=Ступени из полированных чернокаменных кирпичей
+Polished Blackstone Brick Slab=Плита из полированных чернокаменных кирпичей
 Double Polished Blackstone Brick Slab=Двойная плита из полированных чернокаменных кирпичей
+Blackstone Wall=Стена из чернокамня
+Soul Torch=Факел душ
+Torches are light sources which can be placed at the side or on the top of most blocks.=Факелы это источники света, которые могут быть размещены сбоку или сверху большинства блоков.
+
+
+##### not used anymore #####
+
+Soul Lantern=Лампа душ
+Polished Double Blackstone Slab=Полированная двойная чернокаменная плита

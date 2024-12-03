@@ -17,6 +17,10 @@ Magenta Dye=品红色染料
 Pink Dye=粉红色染料
 This item is a dye which is used for dyeing and crafting.=这个物品是一种用于染色及合成的染料。
 Rightclick on a sheep to dye its wool. Other things are dyed by crafting.=右键点击绵羊来给它的羊毛染色。其他物品通过合成来染色。
+
+
+##### not used anymore #####
+
 Bone meal is a white dye and also useful as a fertilizer to speed up the growth of many plants.=骨粉是一种白色染料，同时可用作肥料来加速许多植物的生长。
 Rightclick a sheep to turn its wool white. Rightclick a plant to speed up its growth. Note that not all plants can be fertilized like this. When you rightclick a grass block, tall grass and flowers will grow all over the place.=右键点击一只羊，使其羊毛变白。右键点击一株植物以加速其生长速度。注意，并非所有植物都能像这样被施肥。当你右键点击一个草方块时，高草和花朵会到处生长。
 Cocoa beans are a brown dye and can be used to plant cocoas.=可可豆是一种棕色染料，也可用于种植可可。

@@ -1,7 +1,4 @@
 # textdomain: mcl_tools
-You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Вы используете руку, если не держите в ней никакого предмета. Пустой рукой вы можете добывать большинство блоков, но это самый медленный метод, который позволит добыть что-то полезное только из самых слабых блоков. Рука также наносит небольшой урон при ударе. Использование руки часто является последним средством, поскольку гораздо предпочтительнее использовать правильные подобранные инструменты и оружие.
-When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Когда вы держите предмет, не являющийся инструментом добычи или оружием, то при добыче или ударах он будет вести себя так, как если бы это была пустая рука.
-In Creative Mode, the hand is able to break all blocks instantly.=В творческом режиме рука мгновенно ломает любой блок.
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Кирка это инструмент для добычи твёрдых блоков - камней и т. п. Кирка также может использоваться в качестве оружия, но не особо эффективного.
 An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=Топор это лучший выбор для рубки деревьев, деревянных и подобных блоков. Топор также причиняет высокий урон, но бьёт довольно медленно.
 Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=Меч это оружие ближнего боя, он быстр, наносит высокий урон и может выдержать множество сражений. Меч также можно использовать для разрубания специфических блоков, например, паутины.
@@ -34,3 +31,10 @@ Golden Sword=Золотой меч
 Diamond Sword=Алмазный меч
 Netherite Sword=Незеритовый меч
 Shears=Ножницы
+
+
+##### not used anymore #####
+
+You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Вы используете руку, если не держите в ней никакого предмета. Пустой рукой вы можете добывать большинство блоков, но это самый медленный метод, который позволит добыть что-то полезное только из самых слабых блоков. Рука также наносит небольшой урон при ударе. Использование руки часто является последним средством, поскольку гораздо предпочтительнее использовать правильные подобранные инструменты и оружие.
+When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Когда вы держите предмет, не являющийся инструментом добычи или оружием, то при добыче или ударах он будет вести себя так, как если бы это была пустая рука.
+In Creative Mode, the hand is able to break all blocks instantly.=В творческом режиме рука мгновенно ломает любой блок.

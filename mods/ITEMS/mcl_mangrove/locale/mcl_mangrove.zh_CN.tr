@@ -1,14 +1,13 @@
 # textdomain: mcl_mangrove
 Mangrove Wood=红树林木材
-The trunk of a Mangrove tree.=红树林树木的树干。
 Mangrove Bark=红树林树皮
-The bark of a Mangrove tree.=红树林树木的树皮。
+The trunk of a Mangrove tree.=红树林树木的树干。
 Mangrove Wood Planks=红树林木板
 Mangrove Leaves=红树林树叶
 Mangrove leaves are grown from mangrove trees.=红树林树叶生长在红树林树上。
 Stripped Mangrove Log=去皮红树林原木
-The stripped wood of a Mangrove tree=红树林树木的去皮木材。
 Stripped Mangrove Wood=去皮红树林树皮
+The stripped wood of a Mangrove tree=红树林树木的去皮木材。
 The stripped bark of a Mangrove tree=红树林树木的去皮树皮。
 Mangrove Roots=红树林树根
 Mangrove roots are decorative blocks that form as part of mangrove trees.=红树林树根是作为红树林树木一部分形成的装饰性方块。
@@ -34,3 +33,8 @@ Mangrove Wood Fence Gate=红树林栅栏门
 Mangrove Wood Stairs=红树林木楼梯
 Mangrove Wood Slab=红树林木板
 Double Mangrove Wood Slab=双层红树林木板 
+
+
+##### not used anymore #####
+
+The bark of a Mangrove tree.=红树林树木的树皮。

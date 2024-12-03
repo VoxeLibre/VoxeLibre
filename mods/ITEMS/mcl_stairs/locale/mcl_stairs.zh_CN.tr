@@ -1,9 +1,11 @@
 # textdomain: mcl_stairs
-楼梯可用于行走以到达更高的地方，无需跳跃。将楼梯按角落样式摆放会形成转角楼梯。放置在天花板或方块侧面上半部分的楼梯会上下颠倒放置。=楼梯有助于人们通过行走到达更高处，不需要跳跃就能上去。把楼梯按角落样式放置能造出转角楼梯，安放在天花板或者方块侧面上半部分的楼梯会呈现倒置状态。
+##[ api.lua ]##
+Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=
 Double @1=双层@1
-半砖的高度是其对应完整方块的一半，根据放置方式的不同，它们会占据方块的下半部分或上半部分。无需跳跃就能轻松踏上半砖。当一块半砖放置在同类型的另一块半砖上时，就会形成双层半砖。=板砖的高度是其对应完整方块的一半，依据放置情况，它们会占据方块的下部或者上部。不用跳跃就能轻松站上去，当一块板砖放在同类型的另一块板砖上时，就会形成双层板砖。
+Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=
 Upper @1=上层@1
-双层半砖是完整的方块，由两块相同类型的半砖相互叠放而成。=双层板砖是完整的方块，由两块相同种类的板砖相互叠放而形成。
+Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=
+##[ register.lua ]##
 Oak Wood Stairs=橡木楼梯
 Oak Wood Slab=橡木半砖
 Double Oak Wood Slab=双层橡木半砖
@@ -22,9 +24,9 @@ Double Birch Wood Slab=双层白桦木半砖
 Dark Oak Wood Stairs=深色橡木楼梯
 Dark Oak Wood Slab=深色橡木半砖
 Double Dark Oak Wood Slab=双层深色橡木半砖
-Stone Stairs=石质楼梯
 Stone Slab=石质半砖
 Double Stone Slab=双层石质半砖
+Stone Stairs=石质楼梯
 Polished Stone Slab=磨制石质半砖
 Double Polished Stone Slab=双层磨制石质半砖
 Andesite Stairs=安山岩楼梯
@@ -48,12 +50,18 @@ Double Brick Slab=双层砖块半砖
 Sandstone Stairs=砂岩楼梯
 Sandstone Slab=砂岩半砖
 Double Sandstone Slab=双层砂岩半砖
+Cut Sandstone Stairs=
+Cut Sandstone Slab=
+Double Cut Sandstone Slab=
 Smooth Sandstone Stairs=平滑砂岩楼梯
 Smooth Sandstone Slab=平滑砂岩半砖
 Double Smooth Sandstone Slab=双层平滑砂岩半砖
 Red Sandstone Stairs=红砂岩楼梯
 Red Sandstone Slab=红砂岩半砖
 Double Red Sandstone Slab=双层红砂岩半砖
+Cut Red Sandstone Stairs=
+Cut Red Sandstone Slab=
+Double Cut Red Sandstone Slab=
 Smooth Red Sandstone Stairs=平滑红砂岩楼梯
 Smooth Red Sandstone Slab=平滑红砂岩半砖
 Double Smooth Red Sandstone Slab=双层平滑红砂岩半砖
@@ -81,12 +89,14 @@ Double Purpur Slab=双层紫珀半砖
 Prismarine Stairs=海晶石楼梯
 Prismarine Slab=海晶石半砖
 Double Prismarine Slab=双层海晶石半砖
-prismarine Brick Stairs=海晶石砖楼梯
-prismarine Brick Slab=海晶石砖半砖
-Double Prismarine Brick Slab=双层海晶石砖半砖
-Dark Prismarine Stairs=暗海晶石楼梯
+Prismarine Brick Stairs=
+Prismarine Brick Slab=
+Double prismarine_brick Slab=
 Dark Prismarine Slab=暗海晶石半砖
 Double Dark Prismarine Slab=双层暗海晶石半砖
+Mud Brick Stairs=泥砖楼梯
+Mud Brick Slab=泥砖半砖
+Double Mud Brick Slab=双层泥砖半砖 
 Polished Andesite Slab=磨制安山岩半砖
 Double Polished Andesite Slab=双层磨制安山岩半砖
 Polished Andesite Stairs=磨制安山岩楼梯
@@ -99,6 +109,14 @@ Polished Diorite Stairs=磨制闪长岩楼梯
 Mossy Stone Brick Stairs=苔石砖楼梯
 Mossy Stone Brick Slab=苔石砖半砖
 Double Mossy Stone Brick Slab=双层苔石砖半砖
-Mud Brick Stairs=泥砖楼梯
-Mud Brick Slab=泥砖半砖
-Double Mud Brick Slab=双层泥砖半砖 
+
+
+##### not used anymore #####
+
+楼梯可用于行走以到达更高的地方，无需跳跃。将楼梯按角落样式摆放会形成转角楼梯。放置在天花板或方块侧面上半部分的楼梯会上下颠倒放置。=楼梯有助于人们通过行走到达更高处，不需要跳跃就能上去。把楼梯按角落样式放置能造出转角楼梯，安放在天花板或者方块侧面上半部分的楼梯会呈现倒置状态。
+半砖的高度是其对应完整方块的一半，根据放置方式的不同，它们会占据方块的下半部分或上半部分。无需跳跃就能轻松踏上半砖。当一块半砖放置在同类型的另一块半砖上时，就会形成双层半砖。=板砖的高度是其对应完整方块的一半，依据放置情况，它们会占据方块的下部或者上部。不用跳跃就能轻松站上去，当一块板砖放在同类型的另一块板砖上时，就会形成双层板砖。
+双层半砖是完整的方块，由两块相同类型的半砖相互叠放而成。=双层板砖是完整的方块，由两块相同种类的板砖相互叠放而形成。
+prismarine Brick Stairs=海晶石砖楼梯
+prismarine Brick Slab=海晶石砖半砖
+Double Prismarine Brick Slab=双层海晶石砖半砖
+Dark Prismarine Stairs=暗海晶石楼梯

@@ -1,29 +1,34 @@
 # textdomain: mcl_blackstone
 Blackstone=Svartstein
+Gilded Blackstone=Forgyllet svartstein
+Nether Gold Ore=Nethergullmalm
+Polished Basalt=Finslipt basalt
+Basalt=Basalt
+Smooth Basalt=Jenv basalt
 Polished Blackstone=Finslipt svartstein
 Chiseled Polished Blackstone=Uthugget svartstein
 Polished Blackstone Bricks=Finslipt svartsteinsmur
-Basalt=Basalt
-Polished Basalt=Finslipt basalt
-Blackstone Slab=Svartsteinhelle
-Polished Blackstone Slab=Finslipt svartsteinhelle
-Chiseled Polished Blackstone Slab=Uthugget finslipt svartsteinhelle
-Polished Blackstone Brick Slab=Helle av finslipt svartsteinmur
-Blackstone Stair=Svartsteintrapp
-Polished Blackstone Stair=Finslipt svartsteintrapp
-Chiseled Polished Blackstone Stair=Uthugget finslipt svartsteintrapp
-Polished Blackstone Brick Stair=Trapp av finslipt svartsteinmur
 Quartz Bricks=Kvarts
-Soul Torch=Sjelefakkel
-Torches are light sources which can be placed at the side or on the top of most blocks.=
-Soul Lantern=Sjelelykt
 Soul Soil=Sjelejord
 Eternal Soul Fire=Evig sjeleflamme
-Gilded Blackstone=Forgyllet svartstein
-Nether Gold Ore=Nethergullmalm
-Smooth Basalt=Jenv basalt
-Blackstone Wall=Mur av svartstein
+Blackstone Stair=Svartsteintrapp
+Blackstone Slab=Svartsteinhelle
 Double Blackstone Slab=Dobbel svartsteinhelle
-Polished Double Blackstone Slab=Dobbel finslipt svartsteinhelle
+Polished Blackstone Stair=Finslipt svartsteintrapp
+Polished Blackstone Slab=Finslipt svartsteinhelle
+Double Polished Blackstone Slab=
+Chiseled Polished Blackstone Stair=Uthugget finslipt svartsteintrapp
+Chiseled Polished Blackstone Slab=Uthugget finslipt svartsteinhelle
 Double Chiseled Polished Blackstone Slab=Dobbel uthugget finslipt svartsteinhelle
+Polished Blackstone Brick Stair=Trapp av finslipt svartsteinmur
+Polished Blackstone Brick Slab=Helle av finslipt svartsteinmur
 Double Polished Blackstone Brick Slab=Dobbel finslipt helle av svartsteinmur
+Blackstone Wall=Mur av svartstein
+Soul Torch=Sjelefakkel
+Torches are light sources which can be placed at the side or on the top of most blocks.=
+
+
+##### not used anymore #####
+
+Soul Lantern=Sjelelykt
+Polished Double Blackstone Slab=Dobbel finslipt svartsteinhelle

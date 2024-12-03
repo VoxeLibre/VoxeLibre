@@ -1,4 +1,37 @@
 # textdomain: mcl_tt
+##[ snippets_base.lua ]##
+Painfully slow=Boleśnie wolne
+Very slow=Bardzo wolne
+Slow=Wolne
+Fast=Szybkie
+Very fast=Bardzo szybkie
+Extremely fast=Ekstremalnie szybkie
+Instantaneous=
+@1 uses=@1 użyć
+Unlimited uses=Nielimitowane użycia
+Mining speed: @1=Szybkość kopania: @1
+Durability: @1=Wytrzymałość: @1
+Block breaking strength: @1=Siła niszczenia bloku: @1
+Damage: @1=Obrażenia: @1
+Healing: @1=Leczenie: @1
+Full punch interval: @1s=Pełny okres uderzenia: @1s
+Food item=
++@1 food points=
+Contact damage: @1 per second=Obrażenia kontaktowe: @1 na sekundę
+Contact healing: @1 per second=Leczenie kontaktowe: @1 na sekundę
+Drowning damage: @1=Obrażenia od topienia: @1
+Fall damage: +@1%=Obrażenia od upadku +@1%
+No fall damage=Brak obrażeń od upadku
+Fall damage: @1%=Obrażenia od upadku @1%
+No jumping=Nie można skakać
+No swimming upwards=Nie można płynąć pod górę
+No rising=Nie wolno wstawać
+Climbable (only downwards)=Wspinaczkowe (tylko w dół)
+Climbable=Wspinaczkowe
+Slippery=Śliskość
+Bouncy (@1%)=Sprężystość (@1%)
+Luminance: @1=Luminancja: @1
+##[ snippets_mcl.lua ]##
 Head armor=Zbroja na głowę
 Torso armor=Zbroja na pierś
 Legs armor=Zbroja na nogi
@@ -15,34 +48,10 @@ Flammable=Łatwopalne
 Zombie view range: -50%=Zasięg widzenia zombie: -50%
 Skeleton view range: -50%=Zasięg widzenia szkieleta: -50%
 Stalker view range: -50%=Zasięg widzenia stalkera: -50%
-Damage: @1=Obrażenia: @1
-Damage (@1): @2=Obrażenia (@1): @2
-Healing: @1=Leczenie: @1
-Healing (@1): @2=Leczenie (@1): @2
-Full punch interval: @1s=Pełny okres uderzenia: @1s
-Contact damage: @1 per second=Obrażenia kontaktowe: @1 na sekundę
-Contact healing: @1 per second=Leczenie kontaktowe: @1 na sekundę
-Drowning damage: @1=Obrażenia od topienia: @1
-Bouncy (@1%)=Sprężystość (@1%)
-Luminance: @1=Luminancja: @1
-Slippery=Śliskość
-Climbable=Wspinaczkowe
-Climbable (only downwards)=Wspinaczkowe (tylko w dół)
-No jumping=Nie można skakać
-No swimming upwards=Nie można płynąć pod górę
-No rising=Nie wolno wstawać
-Fall damage: @1%=Obrażenia od upadku @1%
-Fall damage: +@1%=Obrażenia od upadku +@1%
-No fall damage=Brak obrażeń od upadku
-Mining speed: @1=Szybkość kopania: @1
-Very fast=Bardzo szybkie
-Extremely fast=Ekstremalnie szybkie
-Fast=Szybkie
-Slow=Wolne
-Very slow=Bardzo wolne
-Painfully slow=Boleśnie wolne
-Durability: @1=Wytrzymałość: @1
-Block breaking strength: @1=Siła niszczenia bloku: @1
-@1 uses=@1 użyć
-Unlimited uses=Nielimitowane użycia
 ...stacks=...kumuluje się
+
+
+##### not used anymore #####
+
+Damage (@1): @2=Obrażenia (@1): @2
+Healing (@1): @2=Leczenie (@1): @2

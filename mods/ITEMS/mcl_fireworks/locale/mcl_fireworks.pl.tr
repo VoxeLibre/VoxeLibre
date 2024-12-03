@@ -1,4 +1,4 @@
 # textdomain: mcl_fireworks
-Firework Rocket=Fajerwerkowa rakieta
+##[ register.lua ]##
 Flight Duration:=Czas lotu:
-
+Firework Rocket=Fajerwerkowa rakieta

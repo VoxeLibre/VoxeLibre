@@ -1,70 +1,137 @@
 # textdomain: mobs_mc
-Agent=Agent
+##[ axolotl.lua ]##
 Axolotl=Axolotl
+##[ bat.lua ]##
 Bat=Flaggermus
-Blaze=Flammeskrømt
+##[ rabbit.lua ]##
+Rabbit=Kanin
+Killer Bunny=Morderkanin
+##[ chicken.lua ]##
 Chicken=Kylling
+##[ cow+mooshroom.lua ]##
 Cow=Ku
 Mooshroom=Soppku
-Stalker=Sniker
-Overloaded Stalker=Overbelastet sniker
-Ender Dragon=Enderdrage
-Rover=Drifter
-Endermite=Endermidd
-Ghast=Gast
-Elder Guardian=Urvokter
-Guardian=Vokter
+##[ horse.lua ]##
 Horse=Hest
 Skeleton Horse=Skjeletthest
 Zombie Horse=Vandød hest
 Donkey=Esel
 Mule=Mulldyr
-Iron Golem=Jernkjempe
+##[ llama.lua ]##
 Llama=Lama
+##[ ocelot.lua ]##
 Ocelot=Ocelot
 Cat=Katt
+##[ parrot.lua ]##
 Parrot=Papegøye
+##[ pig.lua ]##
 Pig=Gris
+##[ polar_bear.lua ]##
 Polar Bear=Isbjørn
-Rabbit=Kanin
-Killer Bunny=Morderkanin
+##[ sheep.lua ]##
 Sheep=Sau
+##[ wolf.lua ]##
+Wolf=Ulv
+Dog=Hund
+##[ squid.lua ]##
+Squid=Blekksprut
+##[ villager.lua ]##
+Master=Mester
+Villager=Landsbyboer
+##[ pillager.lua ]##
+Pillager=Plyndrer
+##[ villager_evoker.lua ]##
+Evoker=Åndemaner
+##[ villager_vindicator.lua ]##
+Vindicator=Forsvarer
+##[ villager_zombie.lua ]##
+Zombie Villager=Vandød landsbyboer
+##[ witch.lua ]##
+Witch=Heks
+##[ blaze.lua ]##
+Blaze=Flammeskrømt
+##[ ender_dragon.lua ]##
+Ender Dragon=Enderdrage
+##[ endermite.lua ]##
+Endermite=Endermidd
+##[ villager_illusioner.lua ]##
+Illusioner=Illusjonist
+##[ ghast.lua ]##
+Ghast=Gast
+##[ guardian.lua ]##
+Guardian=Vokter
+##[ guardian_elder.lua ]##
+Elder Guardian=Urvokter
+##[ snowman.lua ]##
+Snow Golem=Snømann
+##[ iron_golem.lua ]##
+Iron Golem=Jernkjempe
+##[ rover.lua ]##
+Rover=Drifter
+##[ shulker.lua ]##
 Shulker=Shulker
+##[ silverfish.lua ]##
 Silverfish=Sølvkre
+##[ skeleton+stray.lua ]##
 Skeleton=Skjelett
+Stray=Streifer
+##[ skeleton_wither.lua ]##
 Wither Skeleton=Visningskjelett
-Magma Cube=Magmakube
-Magma Cube - big=Magmakube - stor
-Magma Cube - small=Magmakube - liten
-Magma Cube - tiny=Magmakube - knøttliten
-Slime=Slim
+##[ stalker.lua ]##
+Stalker=Sniker
+Overloaded Stalker=Overbelastet sniker
+##[ zombie.lua ]##
+Zombie=Vandød
+Baby Zombie=Babyvandød
+Husk=Ørkenvandød
+Baby Husk=Baby ørkenvandød
+##[ slime+magma_cube.lua ]##
 Slime - big=Slim - stor
 Slime - small=Slim - liten
 Slime - tiny=Slim - knøttliten
-Snow Golem=Snømann
+Magma Cube - big=Magmakube - stor
+Magma Cube - small=Magmakube - liten
+Magma Cube - tiny=Magmakube - knøttliten
+Magma Cube=Magmakube
+Slime=Slim
+##[ spider.lua ]##
 Spider=Edderkopp
 Cave Spider=Huleedderkopp
-Squid=Blekksprut
+##[ vex.lua ]##
 Vex=Plageånd
-Evoker=Åndemaner
-Illusioner=Illusjonist
-Villager=Landsbyboer
-Vindicator=Forsvarer
-Zombie Villager=Vandød landsbyboer
-Witch=Heks
+##[ wither.lua ]##
 Wither=Forvitrer
-Wither spawning=Forvitrer fremmanes
-Wolf=Ulv
-Husk=Ørkenvandød
-Baby Husk=Baby ørkenvandød
-Zombie=Vandød
-Baby Zombie=Babyvandød
+##[ cod.lua ]##
+Cod=Torsk
+##[ salmon.lua ]##
+Salmon=Laks
+##[ tropical_fish.lua ]##
+Tropical Fish=Tropisk Fisk
+Tropical fish=Tropisk fisk
+##[ dolphin.lua ]##
+Dolphin=Delfin
+##[ glow_squid.lua ]##
+Glow Squid=Glødeblekksprut
+##[ piglin.lua ]##
 Piglin=Grisling
-Baby Piglin=Babygrisling
+Sword Piglin=Sverdgrisling
 Zombie Piglin=Vandød grisling
 Baby Zombie Piglin=Babyvandød grisling
-Sword Piglin=Sverdgrisling
 Piglin Brute=Grislingbølle
+##[ hoglin+zoglin.lua ]##
+Hoglin=Hoglin
+Zoglin=Voglin
+Baby hoglin=Babyhoglin
+##[ strider.lua ]##
+Strider=Lavavandrer
+Baby Strider=Babylavavandrer
+
+
+##### not used anymore #####
+
+Agent=Agent
+Wither spawning=Forvitrer fremmanes
+Baby Piglin=Babygrisling
 Farmer=Bonde
 Fisherman=Fisker
 Fletcher=Pilmaker
@@ -78,24 +145,7 @@ Weapon Smith=Våpensmed
 Tool Smith=Verktøysmed
 Cleric=Geistlig
 Nitwit=Tomskalle
-Cod=Torsk
-Salmon=Laks
-Dolphin=Delfin
-Pillager=Plyndrer
-Tropical fish=Tropisk fisk
-Hoglin=Hoglin
-Baby hoglin=Babyhoglin
-Zoglin=Voglin
-Strider=Lavavandrer
-Baby Strider=Babylavavandrer
-Glow Squid=Glødeblekksprut
-Stalker=Sniker
-Overloaded Stalker=Overbelastet sniker
-Stray=Streifer
-Dog=Hund
-Tropical Fish=Tropisk Fisk
 Novice=Nybegynner
 Apprentice=Lærling
 Journeyman=Håndverker
 Expert=Ekspert
-Master=Mester

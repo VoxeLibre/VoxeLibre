@@ -1,6 +1,6 @@
 # textdomain: mcl_grindstone
-Inventory=インベントリ
 Repair & Disenchant=修理とエンチャント解除
+Inventory=インベントリ
 Grindstone=砥石
 Used to disenchant/fix tools=道具のエンチャント解除／修復に使用
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=砥石は、ツールやアーマーからエンチャントを解除（呪い以外）したり、同種の２つのアイテムで修理したりできます。これは、武器鍛冶の職場でもあります。

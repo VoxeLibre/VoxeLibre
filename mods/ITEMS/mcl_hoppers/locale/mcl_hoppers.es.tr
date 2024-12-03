@@ -1,5 +1,9 @@
 # textdomain: mcl_hoppers
 Hopper=Tolva
+Inventory=Inventario
+5 inventory slots=
+Collects items from above, moves items to container below=
+Can be disabled with redstone power=
 Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.=Las tolvas son contenedores con 5 ranuras de inventario. Recogen los artículos que se cayeron desde arriba, toman los artículos de un contenedor de arriba e intentan colocarlos en un contenedor adyacente. Las tolvas pueden ir hacia abajo o hacia los lados. Las tolvas interactúan con cofres, goteros, dispensadores, cajas de shulker, hornos y tolvas.
 Hoppers interact with containers the following way:=Las tolvas interactúan con los contenedores de la siguiente manera:
 • Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers that point to the furnace put items into the fuel slot=• Hornos: las tolvas de arriba colocarán elementos en la ranura de origen. Las tolvas de abajo toman artículos de la ranura de salida. También toman artículos de la ranura de combustible cuando no se pueden usar como combustible. Las tolvas laterales que apuntan al horno colocan elementos en la ranura de combustible
@@ -10,4 +14,3 @@ To place a hopper vertically, place it on the floor or a ceiling. To place it si
 Disabled Hopper=Tolva desactivada
 Side Hopper=Tolva lateral
 Disabled Side Hopper=Tolva lateral desactivada
-Inventory=Inventario

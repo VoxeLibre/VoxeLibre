@@ -1,5 +1,18 @@
 # textdomain: mcl_deepslate
+Deepslate=深板岩
+Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=深板岩是一种在主世界地下深处发现的石头类型，其功能与普通石头类似，但比普通石头更坚硬。
+Infested Deepslate=被虫蚀的深板岩
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=被虫蚀的方块是一种在被破坏时会有蠹虫冒出来的方块，它看上去和其正常形态的方块一模一样。
+Hides a silverfish=藏有蠹虫
+Tuff=凝灰岩
+Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=凝灰岩是一种由火山灰形成的观赏性岩石，出现在Y坐标值低于16的地下团块中。 
+Deepslate Redstone Ore=深板岩红石矿石
+Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=深板岩红石矿石是红石矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+Lit Deepslate Redstone Ore=发光的深板岩红石矿石
+
+
+##### not used anymore #####
+
 Chiseled deepslate is the chiseled version of deepslate.=錾制深板岩是深板岩的錾制版本。
 Chiseled Deepslate=錾制深板岩
 Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone.=圆石深板岩是一种石头变种，其功能与圆石或黑石类似。
@@ -26,28 +39,19 @@ Deepslate gold ore is a variant of gold ore that can generate in deepslate and t
 Deepslate Gold Ore=深板岩金矿石
 Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=深板岩铁矿石是铁矿石的一种变种，能在深板岩和凝灰岩团块中生成。
 Deepslate Iron Ore=深板岩铁矿石
-Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=深板岩是一种在主世界地下深处发现的石头类型，其功能与普通石头类似，但比普通石头更坚硬。
 Deepslate Lapis Lazuli Ore=深板岩青金石矿石
 Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=深板岩青金石矿石是青金石矿石的一种变种，能在深板岩和凝灰岩团块中生成。
-Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=深板岩红石矿石是红石矿石的一种变种，能在深板岩和凝灰岩团块中生成。
-Deepslate Redstone Ore=深板岩红石矿石
 Deepslate tiles are a decorative variant of deepslate.=深板岩瓦是深板岩的一种装饰性变种。
 Deepslate Tiles Slab=深板岩瓦台阶
 Deepslate Tiles Stairs=深板岩瓦楼梯
 Deepslate Tiles Wall=深板岩瓦墙
 Deepslate Tiles=深板岩瓦
-Deepslate=深板岩
 Double Cobbled Deepslate Slab=双层圆石深板岩台阶
 Double Deepslate Bricks Slab=双层深板岩砖台阶
 Double Deepslate Tiles Slab=双层深板岩瓦台阶
 Double Polished Deepslate Slab=双层抛光深板岩台阶
-Hides a silverfish=藏有蠹虫
-Infested Deepslate=被虫蚀的深板岩
-Lit Deepslate Redstone Ore=发光的深板岩红石矿石
 Polished deepslate is the stone-like polished version of deepslate.=抛光深板岩是类似石头的深板岩抛光版本。
 Polished Deepslate Slab=抛光深板岩台阶
 Polished Deepslate Stairs=抛光深板岩楼梯
 Polished Deepslate Wall=抛光深板岩墙
 Polished Deepslate=抛光深板岩
-Tuff=凝灰岩
-Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=凝灰岩是一种由火山灰形成的观赏性岩石，出现在Y坐标值低于16的地下团块中。 

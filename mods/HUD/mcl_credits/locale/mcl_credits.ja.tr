@@ -1,14 +1,24 @@
 # textdomain: mcl_credits
-3D Models=3Dモデル
 A faithful Open Source clone of Minecraft=オープンソースによるマインクラフトの忠実なクローン
-Contributors=投稿者
+Sneak to skip=スニークでスキップ
+Jump to speed up (additionally sprint)=ジャンプでスピードアップ（追加で疾走）
+##[ people.lua ]##
 Creator of MineClone=MineClone の創始者
 Creator of VoxeLibre=VoxeLibre の創始者
-Developers=開発者
-Jump to speed up (additionally sprint)=ジャンプでスピードアップ（追加で疾走）
 Maintainers=メンテナンス
-MineClone5=MineClone5
+Previous Maintainers=
+Developers=開発者
+Past Developers=
+Contributors=投稿者
+Music=
 Original Mod Authors=オリジナルMODの作者
-Sneak to skip=スニークでスキップ
+3D Models=3Dモデル
 Textures=テクスチャ
 Translations=翻訳
+Funders=
+Special thanks=
+
+
+##### not used anymore #####
+
+MineClone5=MineClone5

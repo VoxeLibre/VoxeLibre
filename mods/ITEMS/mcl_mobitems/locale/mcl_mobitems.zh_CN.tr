@@ -1,79 +1,58 @@
 # textdomain: mcl_mobitems
 Rotten Flesh=腐肉
 80% chance of food poisoning=80%的食物中毒几率
-
 Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it to restore a few hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.=呸！这块肉显然已经不新鲜了。如果你实在饿极了，可以吃它来恢复几点饥饿值，但有80%的几率会导致食物中毒，这会让你在一段时间内饥饿感更强。
-
 Raw Mutton=生羊肉
-
 Raw mutton is the flesh from a sheep and can be eaten safely. Cooking it will greatly increase its nutritional value.=生羊肉是来自羊身上的肉，可以安全食用。烹饪后会大大提高其营养价值。
-
 Cooked Mutton=熟羊肉
 Cooked mutton is the cooked flesh from a sheep and is used as food.=熟羊肉是经过烹饪的羊肉，可作为食物。
 Raw Beef=生牛肉
-
 Raw beef is the flesh from cows and can be eaten safely. Cooking it will greatly increase its nutritional value.=生牛肉是来自牛身上的肉，可以安全食用。烹饪后会大大提高其营养价值。
-
 Steak=牛排
 Steak is cooked beef from cows and can be eaten.=牛排是经过烹饪的牛肉，可以食用。
 Raw Chicken=生鸡肉
 30% chance of food poisoning=30%的食物中毒几率
-
 Raw chicken is a food item which is not safe to consume. You can eat it to restore a few hunger points, but there's a 30% chance to suffer from food poisoning, which increases your hunger rate for a while. Cooking raw chicken will make it safe to eat and increases its nutritional value.=生鸡肉是一种食用不安全的食物。你可以吃它来恢复几点饥饿值，但有30%的几率会患上食物中毒，这会使你的饥饿速度在一段时间内加快。烹饪生鸡肉会使其变得可以安全食用，并提高其营养价值。
-
 Cooked Chicken=熟鸡肉
 A cooked chicken is a healthy food item which can be eaten.=熟鸡肉是一种可以食用的健康食物。
 Raw Porkchop=生猪排
-
 A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.=生猪排是来自猪身上的肉，可以安全食用。烹饪后会大大提高其营养价值。
-
 Cooked Porkchop=熟猪排
 Cooked porkchop is the cooked flesh of a pig and is used as food.=熟猪排是经过烹饪的猪肉，可作为食物。
 Raw Rabbit=生兔肉
-
 Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it will increase its nutritional value.=生兔肉是来自死去兔子的一种食物，可以安全食用。烹饪后会提高其营养价值。
-
 Cooked Rabbit=熟兔肉
 This is a food item which can be eaten.=熟兔肉是一种可以食用的食物。
 Milk=牛奶
 Removes all status effects=清除所有状态效果
-
 Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=牛奶非常清爽，可以通过用桶对着奶牛获取。饮用它能清除所有状态效果，但不会恢复饥饿值。
-
 Use the placement key to drink the milk.=使用放置键来喝牛奶。
 Spider Eye=蜘蛛眼
 Poisonous=有毒的
-
 Spider eyes are used mainly in crafting. If you're really desperate, you can eat a spider eye, but it will poison you briefly.=蜘蛛眼主要用于制作。如果你实在走投无路了，可以吃蜘蛛眼，但它会让你短暂中毒。
-
 Bone=骨头
-
 Bones can be used to tame wolves so they will protect you. They are also useful as a crafting ingredient.=骨头可用来驯服狼，让它们保护你。它们也是一种有用的制作材料。
-
 Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it.=拿着骨头靠近狼来吸引它们，在狼身上使用“放置”键给它骨头并驯服它，之后你可以通过在已驯服的狼身上使用“放置”键来下达指令。
-
 Squid Ink Sac=墨囊
-This item is dropped by dead squids.  Squid ink can be used to as an ingredient to craft book and quill or black dye.=这个物品由死去的鱿鱼掉落，鱿鱼墨可作为制作书与笔或者黑色染料的材料。
-
+This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye.=
 String=线
 Strings are used in crafting.=线用于制作。
+Spectre Membrane=幽灵薄膜
+This is a crafting component dropped from dead spectres.=
+Shiny Ice Crystal=闪亮冰晶
+This item is mainly used for crafting.=烈焰粉主要用于制作，也是熔炉的燃料。
+Aery Charge=空灵电荷
+Crystalline Drop=晶状水滴
+Earthen Ash=土灰
 Blaze Rod=烈焰棒
 This is a crafting component dropped from dead blazes.=这是从死去的烈焰人身上掉落的制作材料。
 Blaze Powder=烈焰粉
-This item is mainly used for crafting.=烈焰粉主要用于制作，也是熔炉的燃料。
 Magma Cream=岩浆膏
 Magma cream is a crafting component.=岩浆膏是一种制作材料。
 Ghast Tear=恶魂之泪
 Place this item in an item frame as decoration.=把这个物品放在物品展示框里当作装饰。
 Nether Star=下界之星
-Aery Charge=空灵电荷
-Crystalline Drop=晶状水滴
-Earthen Ash=土灰
-Shiny Ice Crystal=闪亮冰晶
-Spectre Membrane=幽灵薄膜
-
 A nether star is dropped when the Wither dies. Place it in an item frame to show the world how hardcore you are! Or just as decoration.=下界之星在凋零死亡时掉落，把它放在物品展示框里向世界展示你有多厉害！或者仅当作装饰也行。
-
 Leather=皮革
 Leather is a versatile crafting component.=皮革是一种用途广泛的制作材料。
 Feather=羽毛
@@ -85,9 +64,7 @@ Must be your lucky day! Place this item in an item frame for decoration.=今天�
 Saddle=鞍
 Can be placed on animals to ride them=可以放在动物身上骑着它们
 Saddles can be put on some animals in order to mount them.=鞍可以放在一些动物身上以便骑乘它们。
-
 Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again.=手里拿着鞍，使用放置键尝试给动物装上鞍，鞍适用于马、骡、驴和猪。马、骡和驴需要先被驯服，否则它们会拒绝装鞍，给动物装上鞍后，可以再次使用放置键骑乘它们。
-
 Rabbit Stew=兔肉煲
 Rabbit stew is a very nutricious food item.=兔肉煲是一种很有营养的食物。
 Shulker Shell=潜影壳
@@ -98,31 +75,28 @@ Gunpowder=火药
 Carrot on a Stick=胡萝卜钓竿
 Lets you ride a saddled pig=让你可以骑着装上鞍的猪
 A carrot on a stick can be used on saddled pigs to ride them.=胡萝卜钓竿可以用在装上鞍的猪身上来骑着它们。
-
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=把它放在装上鞍的猪身上来骑乘它，现在你可以像骑马一样骑猪了。当你只是拿着胡萝卜钓竿时，猪也会朝你走来。
-
 Warped fungus on a Stick=诡异菌钓竿
 Lets you ride a strider=让你可以骑着炽足兽
 A warped fungus on a stick can be used on saddled striders to ride them.=诡异菌钓竿可以用在装上鞍的炽足兽身上来骑着它们。
-
 Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=把它放在装上鞍的炽足兽身上来骑乘它，现在你可以像骑马一样骑炽足兽了。当你只是拿着诡异菌钓竿时，炽足兽也会朝你走来。
-
 Nautilus Shell=鹦鹉螺壳
 Used to craft a conduit=用于制作潮涌核心
 The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=鹦鹉螺壳用于制作潮涌核心，可通过钓鱼或者杀死拿着鹦鹉螺壳的溺尸获得。
-
 Heart of the Sea=海洋之心
 The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=海洋之心用于制作潮涌核心，可通过在埋藏的宝箱中找到它们获得。
-
+Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=把它放在马身上来给马穿上马铠，驴和骡不能穿戴马铠。
 Iron Horse Armor=铁马铠
 Iron horse armor can be worn by horses to increase their protection from harm a bit.=铁马铠可以给马穿戴，稍微增加它们免受伤害的保护能力。
 Golden Horse Armor=金马铠
 Golden horse armor can be worn by horses to increase their protection from harm.=金马铠可以给马穿戴，增加它们免受伤害的保护能力。
 Diamond Horse Armor=钻石马铠
 Diamond horse armor can be worn by horses to greatly increase their protection from harm.=钻石马铠可以给马穿戴，极大地增加它们免受伤害的保护能力。
-
-Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=把它放在马身上来给马穿上马铠，驴和骡不能穿戴马铠。
-
 Glow Ink Sac=荧光墨囊
 Use it to craft the Glow Item Frame.=用于制作荧光物品展示框。
 Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=使用荧光墨囊和普通物品展示框来制作荧光物品展示框。 
+
+
+##### not used anymore #####
+
+This item is dropped by dead squids.  Squid ink can be used to as an ingredient to craft book and quill or black dye.=这个物品由死去的鱿鱼掉落，鱿鱼墨可作为制作书与笔或者黑色染料的材料。

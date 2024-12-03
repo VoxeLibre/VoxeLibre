@@ -1,6 +1,4 @@
 # textdomain: mcl_wool
-Wool=羊毛
-Carpet=カーペット
 White Wool=白色の羊毛
 White Carpet=白色のカーペット
 Grey Wool=灰色の羊毛
@@ -35,3 +33,5 @@ Light Blue Wool=空色の羊毛
 Light Blue Carpet=空色のカーペット
 Wool is a decorative block which comes in many different colors.=羊毛は、多彩なカラーバリエーションを持つ装飾ブロックです。
 Carpets are thin floor covers which come in many different colors.=カーペットは、多彩なカラーバリエーションを持つ薄い敷物です。
+Wool=羊毛
+Carpet=カーペット

@@ -1,23 +1,44 @@
 # textdomain: mcl_commands
+##[ kill.lua ]##
 Players can't be killed right now, damage has been disabled.=Les joueurs ne peuvent pas être tués pour le moment, les dégâts ont été désactivés.
 Player @1 does not exist.=Le joueur @1 n'existe pas.
 You are already dead=Tu es déjà mort
 @1 is already dead=@1 est déjà mort
-@1 committed suicide.=@1 s'est suicidé.
-@1 was killed by @2.=@1 a été tué par @2.
 [<name>]=[<nom>]
 Kill player or yourself=Tuez un joueur ou vous-même
-Can use /say=Peut utiliser /say
-<message>=<message>
-Send a message to every player=Envoyez un message à chaque joueur
-Invalid usage, see /help say.=Utilisation non valide, voir /help say.
+##[ setblock.lua ]##
 <X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <NodeString>
 Set node at given position=Placer le noeud à une position donnée
 Invalid node=Noeud non valide
 @1 spawned.=@1 est apparu.
 Invalid parameters (see /help setblock)=Paramètres invalides (voir /help setblock)
+##[ seed.lua ]##
+Displays the world seed=Affiche la graine du monde
+##[ summon.lua ]##
+Only peaceful mobs allowed!=Seuls les mobs pacifiques sont autorisées!
+##[ say.lua ]##
+Can use /say=Peut utiliser /say
+<message>=<message>
+Send a message to every player=Envoyez un message à chaque joueur
+Invalid usage, see /help say.=Utilisation non valide, voir /help say.
+##[ list.lua ]##
+Show who is logged on=Afficher qui est connecté
+##[ sound.lua ]##
+<sound> <target>=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
+Sound name is invalid!=
+Target is invalid!!=
+##[ alias.lua ]##
 List bans=Liste des interdictions
 Ban list: @1=Liste d'interdiction: @1
-Show who is logged on=Afficher qui est connecté
-Displays the world seed=Affiche la graine du monde
-Only peaceful mobs allowed!=Seuls les mobs pacifiques sont autorisées!
+List clear commands=
+To clear inventory use /clearinv or /clearinventory=
+To clear mobs use /clearmobs=
+To clear the weather use /weather clear=
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+
+
+##### not used anymore #####
+
+@1 committed suicide.=@1 s'est suicidé.
+@1 was killed by @2.=@1 a été tué par @2.

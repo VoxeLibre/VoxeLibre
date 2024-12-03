@@ -7,6 +7,6 @@ The side inputs are only powered by normal redstone power. The redstone comparat
 Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=传输模式：@n前面的红石火把熄灭且降下。当且仅当主输入口通电时，输出口才会通电，两个侧输入口会被忽略。
 Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=减法模式：@n前面的红石火把点亮。当且仅当主输入口通电且侧输入口中没有任何一个通电时，输出口才会通电。
 Redstone Comparator=红石比较器
-Redstone Comparator (Subtract)=红石比较器（减法）
 Redstone Comparator (Powered)=红石比较器（通电）
+Redstone Comparator (Subtract)=红石比较器（减法）
 Redstone Comparator (Subtract, Powered)=红石比较器（减法，通电） 

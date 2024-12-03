@@ -1,8 +1,10 @@
 # textdomain: mcl_hunger
-@1 succumbed to the poison.=@1 は毒にやられました。
 Food=食料
 Saturation=満腹状態
-%s: %.1f/%d=
 Exhaust.=尽きた。
-%s: %d/%d=
+
+
+##### not used anymore #####
+
+@1 succumbed to the poison.=@1 は毒にやられました。
 @1 starved to death.=@1 は餓死しました。

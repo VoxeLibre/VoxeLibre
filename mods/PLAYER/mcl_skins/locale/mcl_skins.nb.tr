@@ -1,5 +1,5 @@
 # textdomain: mcl_skins
-Skins=Utseender
+##[ edit_skin.lua ]##
 Templates=Maler
 Arm size=Armstørrelse
 Bases=Baser
@@ -10,6 +10,8 @@ Bottoms=Benplagg
 Tops=Topper
 Hairs=Hår
 Headwears=Hodeplagg
+Skins=Utseender
+Capes=Kapper
 Open skin configuration screen.=Åpne skjermen for utseendeendring
 Select=Velg
-Capes=Kapper
+(None)=

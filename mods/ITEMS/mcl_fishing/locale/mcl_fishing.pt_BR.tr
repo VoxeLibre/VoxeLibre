@@ -1,5 +1,6 @@
 # textdomain: mcl_fishing
 Fishing Rod=Vara de Pesca
+Catches fish in water=Coleta peixes na água.
 Fishing rods can be used to catch fish.=Varas de pesca podem ser usadas para coletar peixes.
 Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?=Clique com o botão direito para lançar a boia de pesca. Quando esta afundar clique com o botão direito novamente para enrola-la como um item. Quem sabe o que você está prestes a coletar?
 Raw Fish=Peixe Cru
@@ -13,6 +14,5 @@ This is a healthy food item which can be eaten.=Esse é um item de comida saudá
 Clownfish=Peixe-Palhaço
 Clownfish may be obtained by fishing (and luck) and is a food item which can be eaten safely.=Peixes-Palhaço podem ser obtidos com pesca (e sorte) e são um item de comida ao qual pode ser comido em segurança.
 Pufferfish=Baiacu
-Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=Baiacus são uma espécie comum de peixe e podem ser obtidos através da pesca. Tecnicamente eles podem ser comidos, mas eles são muito ruins para humanos. Comer um baiacu restaura apenas 1 ponto de fome e irá lhe envenenar muito (o que drenará sua saúde de forma não-fatal) e causará uma séria intoxicação alimentar (o que aumentará sua fome).
-Catches fish in water=Coleta peixes na água.
 Very poisonous=Muito venenoso
+Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=Baiacus são uma espécie comum de peixe e podem ser obtidos através da pesca. Tecnicamente eles podem ser comidos, mas eles são muito ruins para humanos. Comer um baiacu restaura apenas 1 ponto de fome e irá lhe envenenar muito (o que drenará sua saúde de forma não-fatal) e causará uma séria intoxicação alimentar (o que aumentará sua fome).

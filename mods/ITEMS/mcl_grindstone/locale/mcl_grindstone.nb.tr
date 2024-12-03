@@ -1,6 +1,6 @@
 # textdomain: mcl_grindstone
-Inventory=Inventar
 Repair & Disenchant=Reparer og avfortryll
+Inventory=Inventar
 Grindstone=Slipestein
 Used to disenchant/fix tools=Brukes for å avfortrylle/reparere verktøy
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Slipestein avfortryller verktøy og rustningsdeler bortsett fra forbannelser, og reparerer to gjenstander av samme type. Den er også våpensmedens arbeidsstasjon.

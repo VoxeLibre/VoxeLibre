@@ -1,22 +1,24 @@
 # textdomain: mcl_inventory
-Recipe book=
-Help=
-Select player skin=
-Advancements=
+##[ creative.lua ]##
 Building Blocks=
 Decoration Blocks=
 Redstone=
 Transportation=
-Brewing=
 Miscellaneous=
 Search Items=
 Foodstuffs=
 Tools=
 Combat=
 Mobs=
+Brewing=
 Materials=
 Survival Inventory=
-Crafting=
-Inventory=
-@1/@2=
+Recipe book=
+Help=
+Advancements=
 Switch stack size=
+Select player skin=
+@1 / @2=
+##[ survival.lua ]##
+Crafting=
+Achievements=

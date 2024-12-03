@@ -1,23 +1,44 @@
 # textdomain: mcl_commands
+##[ kill.lua ]##
 Players can't be killed right now, damage has been disabled.=玩家现在无法被杀死，伤害已被禁用。
 Player @1 does not exist.=玩家@1不存在。
 You are already dead=你已经死了。
 @1 is already dead=@1已经死了。
-@1 committed suicide.=@1自杀了。
-@1 was killed by @2.=@1被@2杀死了。
 [<name>]=[<名字>]
 Kill player or yourself=杀死玩家或自己。
-Can use /say=可以使用 /say。
-<message>=<信息>
-Send a message to every player=向每位玩家发送一条消息。
-Invalid usage, see /help say.=用法无效，查看 /help say。
+##[ setblock.lua ]##
 <X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <方块名称>
 Set node at given position=在指定位置设置指定方块。
 Invalid node=无效方块。
 @1 spawned.=@1已生成。
 Invalid parameters (see /help setblock)=无效参数（查看 /help setblock）。
+##[ seed.lua ]##
+Displays the world seed=显示世界种子。
+##[ summon.lua ]##
+Only peaceful mobs allowed!=只允许和平生物！ 
+##[ say.lua ]##
+Can use /say=可以使用 /say。
+<message>=<信息>
+Send a message to every player=向每位玩家发送一条消息。
+Invalid usage, see /help say.=用法无效，查看 /help say。
+##[ list.lua ]##
+Show who is logged on=显示已登录的玩家。
+##[ sound.lua ]##
+<sound> <target>=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
+Sound name is invalid!=
+Target is invalid!!=
+##[ alias.lua ]##
 List bans=列出封禁名单。
 Ban list: @1=封禁名单：@1。
-Show who is logged on=显示已登录的玩家。
-Displays the world seed=显示世界种子。
-Only peaceful mobs allowed!=只允许和平生物！ 
+List clear commands=
+To clear inventory use /clearinv or /clearinventory=
+To clear mobs use /clearmobs=
+To clear the weather use /weather clear=
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+
+
+##### not used anymore #####
+
+@1 committed suicide.=@1自杀了。
+@1 was killed by @2.=@1被@2杀死了。

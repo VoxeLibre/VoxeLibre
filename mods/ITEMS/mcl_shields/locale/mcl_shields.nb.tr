@@ -1,6 +1,10 @@
 # textdomain: mcl_shields
 Shield=Skjold
 A shield is a tool used for protecting the player against attacks.=Et skjold er et verktøy som brukes for å beskytte spilleren mot angrep.
+
+
+##### not used anymore #####
+
 White Shield=Hvitt skjold
 Grey Shield=Grått skjold
 Light Grey Shield=Lysegrått skjold

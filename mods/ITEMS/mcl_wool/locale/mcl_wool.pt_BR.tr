@@ -1,6 +1,4 @@
 # textdomain: mcl_wool
-Wool=Lã
-Carpet=Carpete
 White Wool=Lã Branco
 White Carpet=Carpete Branco
 Grey Wool=Lã Cinza
@@ -35,3 +33,5 @@ Light Blue Wool=Lã Azul Claro
 Light Blue Carpet=Carpete Azul Claro
 Wool is a decorative block which comes in many different colors.=Lã é um bloco decorativo ao qual vêm em várias cores diferentes.
 Carpets are thin floor covers which come in many different colors.=Carpetes são coberturas finas para o piso aos quais vêm em diferentes cores.
+Wool=Lã
+Carpet=Carpete

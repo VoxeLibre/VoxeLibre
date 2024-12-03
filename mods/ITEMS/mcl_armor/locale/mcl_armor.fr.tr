@@ -1,6 +1,45 @@
 # textdomain: mcl_armor
 This is a piece of equippable armor which reduces the amount of damage you receive.=Il s'agit d'un morceau d'armure équipable qui réduit la quantité de dégâts que vous recevez.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Pour l'équiper, placez-le sur l'emplacement d'armure correspondant dans votre menu d'inventaire.
+sentry=
+dune=
+coast=
+wild=
+tide=
+ward=
+vex=
+rib=
+snout=
+eye=
+spire=
+silence=
+wayfinder=
+##[ register.lua ]##
+Projectile Protection=Protection contre les projectiles
+Reduces projectile damage.=Réduit les dégâts causés par les projectiles.
+Blast Protection=Protection contre les explosions
+Reduces explosion damage and knockback.=Réduit les dégâts d'explosion et de recul.
+Fire Protection=Protection contre le feu
+Reduces fire damage.=Réduit les dégats de feu.
+Protection=Protection
+Reduces most types of damage by 4% for each level.=Réduit la plupart des types de dégâts de 4% pour chaque niveau.
+Feather Falling=Chute amortie
+Reduces fall damage.=Réduit les dégats de chute.
+Aqua Affinity=Affinité aquatique
+#Translations of enchantements
+Increases underwater mining speed.=Augmente la vitesse de minage sous-marine.
+Curse of Binding=Malédiction du lien éternel
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=L'objet ne peut pas être retiré des emplacements d'armure sauf en cas de mort, de rupture ou en mode créatif.
+Thorns=Épines
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflète une partie des dégâts subis lors de la frappe, au prix d'une réduction de la durabilité à chaque déclenchement.
+Elytra=Élytres
+##[ trims.lua ]##
+#Translations for armor trims
+Smithing Template '@1'=Modèle à forger '@1'
+
+
+##### not used anymore #####
+
 Leather Cap=Casquette en cuir
 Iron Helmet=Casque de fer
 Golden Helmet=Casque d'or
@@ -25,27 +64,5 @@ Golden Boots=Bottes d'or
 Diamond Boots=Bottes de diamant
 Chain Boots=Bottes de mailles
 Netherite Boots=Bottes de netherite
-Elytra=Élytres
-
-#Translations of enchantements
-Increases underwater mining speed.=Augmente la vitesse de minage sous-marine.
-Blast Protection=Protection contre les explosions
-Reduces explosion damage and knockback.=Réduit les dégâts d'explosion et de recul.
-Curse of Binding=Malédiction du lien éternel
-Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=L'objet ne peut pas être retiré des emplacements d'armure sauf en cas de mort, de rupture ou en mode créatif.
-Feather Falling=Chute amortie
-Reduces fall damage.=Réduit les dégats de chute.
-Fire Protection=Protection contre le feu
-Reduces fire damage.=Réduit les dégats de feu.
 Shooting consumes no regular arrows.=Le tir ne consomme pas de flèches standard.
 Shoot 3 arrows at the cost of one.=Tirez 3 flèches pour le prix d'une.
-Projectile Protection=Protection contre les projectiles
-Reduces projectile damage.=Réduit les dégâts causés par les projectiles.
-Protection=Protection
-Reduces most types of damage by 4% for each level.=Réduit la plupart des types de dégâts de 4% pour chaque niveau.
-Thorns=Épines
-Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflète une partie des dégâts subis lors de la frappe, au prix d'une réduction de la durabilité à chaque déclenchement.
-Aqua Affinity=Affinité aquatique
-
-#Translations for armor trims
-Smithing Template '@1'=Modèle à forger '@1'

@@ -1,131 +1,105 @@
 # textdomain: mcl_enchanting
-
-
 ### enchantments.lua ###
-
-Arrows passes through multiple objects.=Flechas atravessam múltiplos objetos.
-Arrows set target on fire.=Flechas colocam fogo no alvo.
-Bane of Arthropods=Ruína dos Artrópodes
-Channeling=Condutividade
-
-Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Canaliza um relâmpago em direção ao alvo. Funciona apenas durante tempestades e se o alvo estiver desobistruido por blocos opacos.
-
-Curse of Vanishing=Maldição do Desaparecimento
-Decreases crossbow charging time.=Diminui o tempo de recarga da besta.
-Decreases time until rod catches something.=Diminui o tempo para a vara coletar alguma coisa.
-Depth Strider=Passos Profundos
-Efficiency=Eficiência
-Extends underwater breathing time.=Extende o tempo de respiração em baixo da água.
-Fire Aspect=Aspecto Flamejante
-Flame=Chama
-Fortune=Fortuna
-Frost Walker=Passos Gelados
-Impaling=Penetração
-Increases arrow damage.=Aumenta o dano das flechas.
-Increases arrow knockback.=Aumenta a repulsão das flechas.
-Increases certain block drops.=Aumenta o drop de certos blocos.
-
-Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Aumenta o dano e aplica Lentidão IV para mobs artrópodes (aranhas, aranhas de cavernas, traças e endermites).
-
-Increases damage to undead mobs.=Aumenta o dano para mobs mortos-vivos.
-Increases damage.=Aumenta o dano
-Increases item durability.=Aumenta a durabilidade do item.
-Increases knockback.=Aumenta a repulsão.
-Increases mining speed.=Aumenta a velocidade de mineração.
-Increases mob loot.=Aumenta o saque de mobs.
-Increases rate of good loot (enchanting books, etc.)=Aumenta a taxa de bons saques (livros encantados, etc.)
-Increases sweeping attack damage.=
-Increases underwater movement speed.=Aumenta a velocidade de movimento embaixo da água.
-Increases walking speed on soul sand.=Aumenta a velocidade de caminhada na areia das almas.
-Infinity=Infinidade
-Item destroyed on death.=Item é destruído na morte.
-Knockback=Repulsão
-Looting=Saque
-Loyalty=Lealdade
-Luck of the Sea=Sorte do Mar
-Lure=Isca
-Mending=Remendo
-Mined blocks drop themselves.=Blocos minerados dropam a si mesmos.
-Multishot=Rajada
-Piercing=Perfuração
-Power=Força
-Punch=Impacto
-Quick Charge=Recarga Rápida
-Repair the item while gaining XP orbs.=Repara o item enquanto ganha orbes de XP.
-Respiration=Respiração
-Riptide=Correnteza
-Sets target on fire.=Coloca fogo no alvo.
-Sharpness=Afiação
-Shoot 3 arrows at the cost of one.=Atira 3 flechas ao custo de uma.
-Shooting consumes no regular arrows.=Atirar não consome flechas normais.
-Silk Touch=Toque Suave
-Smite=Julgamento
-Soul Speed=Velocidade das Almas
-Sweeping Edge=Alcance
-Trident deals additional damage to ocean mobs.=Tridente dá dano adicional em mobs oceanicos.
-
-Trident launches player with itself when thrown. Works only in water or rain.=Tridente lança o jogador junto de si mesmo quando lançado.
-
-Trident returns after being thrown. Higher levels reduce return time.=Tridente retorna depois de ser arremessado. Níveis altos reduzem o tempo de retorno.
-
-Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Transforma a água abaixo do jogador em gelo e previne o dano dos blocos de magma.
-
-Unbreaking=Inquebrável
-
-### engine.lua ###
-
-@1 Enchantment Levels=@1 Níveis de Encantamento
-@1 Lapis Lazuli=@1 Lápis Lazuli
-Inventory=Inventário
-Level requirement: @1=Nível requerido: @1
-
-### init.lua ###
-
-'@1' is not a valid number='@1' não é um número válido
-'@1' is not a valid number.='@1' não é um número válido.
-<player> <enchantment> [<level>]=<jogador> <encantament> [<nível>]
-@1 can't be combined with @2.=@1 não pode ser combinado com @2.
-
-After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Depois de finalmente selecionar seu encantamento; clique com o botão esquerdo na seleção, e você irá ver ambos os lápis lazuli e seus níveis de experiência serem consumidos. E, um item encantado deixado em seu lugar.
-
-After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Depois de posicionar seus itens nos slots, as opções de encantamentos serão mostradas. Passe o mouse sobre as opções para ler o que está disponível para você.
-
-Enchant=Encantar
 Enchant an item=Encantar um item
-Enchanted Book=Livro Encantado
-Enchanting Table=Mesa de Encantamento
-
-Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=A mesa de encantamentos permitem a você encantar armaduras, ferramentas, armas, e livros com várias habilidades. Mas, ao custo de alguma experiência, e lápis lazuli.
-
+<player> <enchantment> [<level>]=<jogador> <encantament> [<nível>]
+Usage: /enchant <player> <enchantment> [<level>]=Uso: /enchant <Jogador> <encantamento> [<nível>]
+Player '@1' cannot be found.=Jogador '@1' não pôde ser encontrado.
+There is no such enchantment '@1'.=Não existe um encantamento '@1'.
+The target doesn't hold an item.=O alvo não está segurando um item.
+The selected enchantment can't be added to the target item.=O encantamento selecionado não pode ser adicionado ao item alvo.
+### init.lua ###
+'@1' is not a valid number='@1' não é um número válido
+The number you have entered (@1) is too big, it must be at most @2.=O número que você inseriu (@1) é muito grande, deve ser no máximo @2.
+The number you have entered (@1) is too small, it must be at least @2.=O número que você inseriu (@1) é muito pequeno, deve ser no mínimo @2.
+@1 can't be combined with @2.=@1 não pode ser combinado com @2.
 Enchanting succeded.=Encantamento sucessido.
 Forcefully enchant an item=Encantamento forçado em um item.
-
-Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Posicione uma ferramenta, armadura, arma ou livro no slot superior esquerdo, e então posicione 1-3 lápis lazuli no slot da direita.
-
-Player '@1' cannot be found.=Jogador '@1' não pôde ser encontrado.
-Rightclick the Enchanting Table to open the enchanting menu.=Clique com o botão direito na mesa de encantamentos para abrir o menu de encantamentos.
-Spend experience, and lapis to enchant various items.=Invista experiência, e lápis para encantar vários itens.
-
-The number you have entered (@1) is too big, it must be at most @2.=O número que você inseriu (@1) é muito grande, deve ser no máximo @2.
-
-The number you have entered (@1) is too small, it must be at least @2.=O número que você inseriu (@1) é muito pequeno, deve ser no mínimo @2.
-
-The selected enchantment can't be added to the target item.=O encantamento selecionado não pode ser adicionado ao item alvo.
-The target doesn't hold an item.=O alvo não está segurando um item.
-The target item is not enchantable.=O item alvo não é encantável.
-There is no such enchantment '@1'.=Não existe um encantamento '@1'.
-
-These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Essas opções são aleatorias, e dependentes do nível de experiência; mas a força do encantamento pode ser aumentado.
-
-To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar a força do encantamento, posicione estantes de livros em volta da mesa de encantamentos. Porém, você precisará manter 1 bloco de ar entre a mesa e as estantes para potencializar a mesa de encantamentos.
-
-Usage: /enchant <player> <enchantment> [<level>]=Uso: /enchant <Jogador> <encantamento> [<nível>]
 Usage: /forceenchant <player> <enchantment> [<level>]=Uso: /forceenchant <jogador> <encantamento> [<nível>]
+The target item is not enchantable.=O item alvo não é encantável.
+'@1' is not a valid number.='@1' não é um número válido.
+Enchanted Book=Livro Encantado
+Enchanting Table=Mesa de Encantamento
+Spend experience, and lapis to enchant various items.=Invista experiência, e lápis para encantar vários itens.
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=A mesa de encantamentos permitem a você encantar armaduras, ferramentas, armas, e livros com várias habilidades. Mas, ao custo de alguma experiência, e lápis lazuli.
+Rightclick the Enchanting Table to open the enchanting menu.=Clique com o botão direito na mesa de encantamentos para abrir o menu de encantamentos.
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Posicione uma ferramenta, armadura, arma ou livro no slot superior esquerdo, e então posicione 1-3 lápis lazuli no slot da direita.
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Depois de posicionar seus itens nos slots, as opções de encantamentos serão mostradas. Passe o mouse sobre as opções para ler o que está disponível para você.
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Essas opções são aleatorias, e dependentes do nível de experiência; mas a força do encantamento pode ser aumentado.
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar a força do encantamento, posicione estantes de livros em volta da mesa de encantamentos. Porém, você precisará manter 1 bloco de ar entre a mesa e as estantes para potencializar a mesa de encantamentos.
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Depois de finalmente selecionar seu encantamento; clique com o botão esquerdo na seleção, e você irá ver ambos os lápis lazuli e seus níveis de experiência serem consumidos. E, um item encantado deixado em seu lugar.
+Enchant=Encantar
+##[ engine.lua ]##
+Inventory=Inventário
+@1 Lapis Lazuli=@1 Lápis Lazuli
+### engine.lua ###
+@1 Enchantment Levels=@1 Níveis de Encantamento
+Level requirement: @1=Nível requerido: @1
+##[ enchantments.lua ]##
+Bane of Arthropods=Ruína dos Artrópodes
+Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Aumenta o dano e aplica Lentidão IV para mobs artrópodes (aranhas, aranhas de cavernas, traças e endermites).
+Channeling=Condutividade
+Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Canaliza um relâmpago em direção ao alvo. Funciona apenas durante tempestades e se o alvo estiver desobistruido por blocos opacos.
+Curse of Vanishing=Maldição do Desaparecimento
+Item destroyed on death.=Item é destruído na morte.
+Depth Strider=Passos Profundos
+Increases underwater movement speed.=Aumenta a velocidade de movimento embaixo da água.
+Efficiency=Eficiência
+Increases mining speed.=Aumenta a velocidade de mineração.
+Fire Aspect=Aspecto Flamejante
+Sets target on fire.=Coloca fogo no alvo.
+Flame=Chama
+Arrows set target on fire.=Flechas colocam fogo no alvo.
+Fortune=Fortuna
+Increases certain block drops.=Aumenta o drop de certos blocos.
+Frost Walker=Passos Gelados
+Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Transforma a água abaixo do jogador em gelo e previne o dano dos blocos de magma.
+Impaling=Penetração
+Trident deals additional damage to ocean mobs.=Tridente dá dano adicional em mobs oceanicos.
+Infinity=Infinidade
+Shooting consumes no regular arrows.=Atirar não consome flechas normais.
+Knockback=Repulsão
+Increases knockback.=Aumenta a repulsão.
+Looting=Saque
+Increases mob loot.=Aumenta o saque de mobs.
+Loyalty=Lealdade
+Trident returns after being thrown. Higher levels reduce return time.=Tridente retorna depois de ser arremessado. Níveis altos reduzem o tempo de retorno.
+Luck of the Sea=Sorte do Mar
+Increases rate of good loot (enchanting books, etc.)=Aumenta a taxa de bons saques (livros encantados, etc.)
+Lure=Isca
+Decreases time until rod catches something.=Diminui o tempo para a vara coletar alguma coisa.
+Mending=Remendo
+Repair the item while gaining XP orbs.=Repara o item enquanto ganha orbes de XP.
+Multishot=Rajada
+Shoot 3 arrows at the cost of one.=Atira 3 flechas ao custo de uma.
+Piercing=Perfuração
+Arrows passes through multiple objects.=Flechas atravessam múltiplos objetos.
+Power=Força
+Increases arrow damage.=Aumenta o dano das flechas.
+Punch=Impacto
+Increases arrow knockback.=Aumenta a repulsão das flechas.
+Quick Charge=Recarga Rápida
+Decreases crossbow charging time.=Diminui o tempo de recarga da besta.
+Respiration=Respiração
+Extends underwater breathing time.=Extende o tempo de respiração em baixo da água.
+Riptide=Correnteza
+Trident launches player with itself when thrown. Works only in water or rain.=Tridente lança o jogador junto de si mesmo quando lançado.
+Sharpness=Afiação
+Increases damage.=Aumenta o dano
+Silk Touch=Toque Suave
+Mined blocks drop themselves.=Blocos minerados dropam a si mesmos.
+Smite=Julgamento
+Increases damage to undead mobs.=Aumenta o dano para mobs mortos-vivos.
+Soul Speed=Velocidade das Almas
+Increases walking speed on soul sand and soul soil.=
+Sweeping Edge=Alcance
+Increases sweeping attack damage.=
+Unbreaking=Inquebrável
+Increases item durability.=Aumenta a durabilidade do item.
 
 
 ##### not used anymore #####
 
-# textdomain: mcl_enchanting
+Increases walking speed on soul sand.=Aumenta a velocidade de caminhada na areia das almas.
 Aqua Affinity=Afinidade Aquática
 Increases underwater mining speed.=Aumenta a velocidade de mineração em baixo da água.
 Blast Protection=Proteção Contra Explosões

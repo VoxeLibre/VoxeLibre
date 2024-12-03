@@ -1,8 +1,12 @@
 # textdomain: mcl_hunger
-@1 succumbed to the poison.=@1 bukket under for giften.
 Food=Mat
 Saturation=Sultpoeng
-%s: %.1f/%d=%s: %.1f/%d
 Exhaust.=Utmattelse.
+
+
+##### not used anymore #####
+
+@1 succumbed to the poison.=@1 bukket under for giften.
+%s: %.1f/%d=%s: %.1f/%d
 %s: %d/%d=%s: %d/%d
 @1 starved to death.=@1 sultet i hjel.
