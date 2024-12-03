@@ -36,8 +36,8 @@ doc.add_entry("basics", "animals", {
 S("Animals are peaceful beings which roam the world aimlessly. You can feed, tame and breed them.").."\n\n"..
 
 S("Feeding:").."\n"..
-S("Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and rightclick the animal.").."\n"..
-S("Animals are attraced to the food they like and follow you as long you hold the food item in hand.").."\n"..
+S("Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and right-click the animal.").."\n"..
+S("Animals are attracted to the food they like and follow you as long you hold the food item in hand.").."\n"..
 S("Feeding an animal has three uses: Taming, healing and breeding.").."\n"..
 S("Feeding heals animals instantly, depending on the quality of the food item.").."\n\n"..
 
@@ -49,7 +49,7 @@ S("When you have fed an animal up to its maximum health, then feed it again, you
 S("Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.").."\n\n"..
 
 S("Baby animals:").."\n"..
-S("Baby animals are just like their adult couterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.")
+S("Baby animals are just like their adult counterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.")
 
 }})
 
@@ -91,7 +91,7 @@ S("• Swimming").."\n"..
 S("• Jumping").."\n"..
 S("• Mining a block").."\n\n"..
 
-S("Other actions, like walking, do not exaust you.")
+S("Other actions, like walking, do not exhaust you.")
 
 }})
 
