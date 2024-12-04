@@ -90,7 +90,7 @@ end
 function mesecon.mvps_process_stack(stack)
 	-- update mesecons for placed nodes ( has to be done after all nodes have been added )
 	for _, n in ipairs(stack) do
-		mesecon.on_placenode(n.pos, minetest.get_node(n.pos))
+		--mesecon.on_placenode(n.pos, minetest.get_node(n.pos))
 	end
 end
 
@@ -318,7 +318,7 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 		if first_dropper and id >= first_dropper then
 			break
 		end
-		mesecon.on_dignode(n.pos, n.node)
+		--mesecon.on_dignode(n.pos, n.node)
 	end
 
 	-- add nodes
@@ -951,7 +951,7 @@ mesecon.register_on_mvps_move(function(moved_nodes)
 	for i = 1, #moved_nodes do
 		local moved_node = moved_nodes[i]
 		-- Check for falling after moving node
-		mesecon.on_placenode(moved_node.pos, moved_node.node)
+		--mesecon.on_placenode(moved_node.pos, moved_node.node)
 		minetest.after(0, function()
 			minetest.check_for_falling(moved_node.oldpos)
 			minetest.check_for_falling(moved_node.pos)
