@@ -155,7 +155,7 @@ local function get_connected_nodes(pos, node, def, edges, sources, sinks)
 					end
 					edges[#edges + 1] = {pos, p}
 
-					if p_def.mesecons.effector then
+					if p_def.mesecons and p_def.mesecons.effector then
 						sinks[#sinks + 1] = p
 					end
 				end
@@ -172,7 +172,7 @@ local function get_connected_nodes(pos, node, def, edges, sources, sinks)
 					end
 					edges[#edges + 1] = {p, pos}
 
-					if p_def.mesecons.receptor then
+					if p_def.mesecons and p_def.mesecons.receptor then
 						sources[#sources + 1] = p
 					end
 				end
@@ -236,6 +236,20 @@ function mod.build_netlist(pos)
 		if old_netlist_id then
 			storage:set_string("netlist-"..old_netlist_id,"")
 			storage:set_string("source-map-"..old_netlist_id,"")
+
+			-- Unset every position for the old netlist
+			local old_netlist = netlist_cache[old_netlist_id]
+			if old_netlist then
+				for _,pos in pairs(old_netlist.wires) do
+					pos_to_netlist_id_cache[core.hash_node_position(pos)] = nil
+				end
+				for _,pos in pairs(old_netlist.sinks) do
+					pos_to_netlist_id_cache[core.hash_node_position(pos)] = nil
+				end
+				for _,pos in pairs(old_netlist.sources) do
+					pos_to_netlist_id_cache[core.hash_node_position(pos)] = nil
+				end
+			end
 		end
 		storage:set_string("netlist-"..netlist_id, core.encode_base64(netlist_data))
 
@@ -252,6 +266,8 @@ function mod.build_netlist(pos)
 		for _,pos in pairs(netlist.sources) do
 			pos_to_netlist_id_cache[core.hash_node_position(pos)] = netlist_id
 		end
+
+		-- TODO: recompute current power levels for the new netlist
 	end
 end
 
