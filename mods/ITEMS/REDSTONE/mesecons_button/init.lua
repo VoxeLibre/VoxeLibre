@@ -37,13 +37,13 @@ function mesecon.push_button(pos, node)
 	timer:start(def._mcl_button_timer)
 end
 
-vl_attach.defaults.button = function(node, def, wdir)
+vl_attach.set_default("button",function(node, def, wdir)
 	-- No ceiling buttons
 	if wdir == 0 then return false end
 
 	-- Allow solid, opaque, full cube collision box nodes are allowed.
 	if def.groups.solid and def.groups.opaque then return true end
-end
+end)
 vl_attach.register_autogroup(function(allow_attach, name, def)
 	local groups = def.groups
 	if not groups then return end
