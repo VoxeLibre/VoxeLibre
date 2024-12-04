@@ -73,7 +73,7 @@ functions needed for the mob to work properly which contains the following:
 					in lava (default: 8).
 	'fire_damage'	holds the damage per second inflicted to mobs when standing
 					in fire (default: 1).
-	'light_damage'holds the damage per second inflicted to mobs when it's too
+	'light_damage'	holds the damage per second inflicted to mobs when it's too
 					bright (above 13 light).
 	'suffocation'	when true causes mobs to suffocate inside solid blocks (2 damage per second).
 	'floats'		when set to 1 mob will float in water, 0 has them sink.

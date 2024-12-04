@@ -234,7 +234,7 @@ function mob_class:set_animation(anim, fixed_frame)
 			y = a_end},
 			self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
 			0, self.animation[anim .. "_loop"] ~= false)
-		end
+	end
 end
 
 local function who_are_you_looking_at (self, dtime)

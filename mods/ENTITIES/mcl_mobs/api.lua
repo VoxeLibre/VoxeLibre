@@ -27,7 +27,6 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
--- not used yet
 function mob_class:safe_remove()
 	self._removed = true
 	minetest.after(0,function(obj)
