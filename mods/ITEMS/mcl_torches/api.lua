@@ -91,6 +91,13 @@ local function remove_flames(pos)
 	mcl_particles.delete_node_particlespawners(pos)
 end
 
+vl_attach.defaults.torch = function(node, def, wdir)
+	-- No ceiling torches
+	if wdir == 0 then return false end
+
+	-- Allow solid, opaque, full cube collision box nodes are allowed.
+	if def.groups.solid and def.groups.opaque then return true end
+end
 vl_attach.register_autogroup(function(allow_attach, name, def)
 	local groups = def.groups or {}
 
