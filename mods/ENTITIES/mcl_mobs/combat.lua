@@ -773,7 +773,6 @@ function mob_class:do_states_attack(dtime)
 	local p = self.attack:get_pos()
 	if not s or not p then return end
 
-
 	-- stop attacking if player invisible or out of range
 	if not self.attack
 			or not self.attack:get_pos()
