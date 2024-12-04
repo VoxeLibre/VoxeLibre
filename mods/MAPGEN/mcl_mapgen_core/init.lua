@@ -1,10 +1,6 @@
 mcl_mapgen_core = {}
 local registered_generators = {}
 
-local lvm, nodes, param2 = 0, 0, 0
-local lvm_used = false
-local lvm_buffer = {}
-
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
@@ -210,39 +206,42 @@ end
 --	If function(pos_to_check, content_id_at_this_pos), will set node only if returns true.
 -- min, max: Minimum and maximum Y levels of the layers to set
 -- minp, maxp: minp, maxp of the on_generated
--- lvm_used: Set to true if any node in this on_generated has been set before.
 --
--- returns true if any node was set and lvm_used otherwise
-local function set_layers(data, area, content_id, check, min, max, minp, maxp, lvm_used, pr)
-	if (maxp.y >= min and minp.y <= max) then
-		for y = math.max(min, minp.y), math.min(max, maxp.y) do
-			for x = minp.x, maxp.x do
-				for z = minp.z, maxp.z do
-					local p_pos = area:index(x, y, z)
-					if check then
-						if type(check) == "function" and check({x=x,y=y,z=z}, data[p_pos], pr) then
-							data[p_pos] = content_id
-							lvm_used = true
-						elseif check == data[p_pos] then
-							data[p_pos] = content_id
-							lvm_used = true
-						end
-					else
-						data[p_pos] = content_id
-						lvm_used = true
-					end
-				end
+-- returns true if any node was set
+local function set_layers(data, area, content_id, check, min, max, minp, maxp, pr)
+	if maxp.y < min or minp.y > max then return false end
+	local lvm_used = false
+	if check == nil then
+		for p_pos in area:iter(minp.x, math.max(min, minp.y), minp.z, maxp.x, math.min(max, maxp.y), maxp.z) do
+			data[p_pos] = content_id
+			lvm_used = true
+		end
+	elseif check and type(check) == "function" then
+		-- slow path, needs vector coordinates (bedrock uses y only)
+		for p_pos in area:iter(minp.x, math.max(min, minp.y), minp.z, maxp.x, math.min(max, maxp.y), maxp.z) do
+			if check(area:position(p_pos), data[p_pos], pr) then
+				data[p_pos] = content_id
+				lvm_used = true
+			end
+		end
+	else
+		for p_pos in area:iter(minp.x, math.max(min, minp.y), minp.z, maxp.x, math.min(max, maxp.y), maxp.z) do
+			if check == data[p_pos] then
+				data[p_pos] = content_id
+				lvm_used = true
 			end
 		end
 	end
 	return lvm_used
 end
 
-local function set_grass_palette(minp,maxp,data2,area,biomemap,nodes)
+local function set_grass_palette(minp,maxp,data2,area,nodes)
 	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+	local biomemap = minetest.get_mapgen_object("biomemap")
 	if not biomemap then return end
-	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
+	local aream = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
+	local lvm_used = false
 	for n=1, #nodes do
 		local n = nodes[n]
 		local p_pos = area:index(n.x, n.y, n.z)
@@ -259,11 +258,13 @@ local function set_grass_palette(minp,maxp,data2,area,biomemap,nodes)
 	return lvm_used
 end
 
-local function set_foliage_palette(minp,maxp,data2,area,biomemap,nodes)
+local function set_foliage_palette(minp,maxp,data2,area,nodes)
 	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+	local biomemap = minetest.get_mapgen_object("biomemap")
 	if not biomemap then return end
-	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
+	local aream = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
+	local lvm_used = false
 	for n=1, #nodes do
 		local n = nodes[n]
 		local p_pos = area:index(n.x, n.y, n.z)
@@ -283,11 +284,13 @@ local function set_foliage_palette(minp,maxp,data2,area,biomemap,nodes)
 	return lvm_used
 end
 
-local function set_water_palette(minp,maxp,data2,area,biomemap,nodes)
+local function set_water_palette(minp,maxp,data2,area,nodes)
 	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
+	local biomemap = minetest.get_mapgen_object("biomemap")
 	if not biomemap then return end
-	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
+	local aream = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
+	local lvm_used = false
 	for n=1, #nodes do
 		local n = nodes[n]
 		local p_pos = area:index(n.x, n.y, n.z)
@@ -305,12 +308,11 @@ local function set_water_palette(minp,maxp,data2,area,biomemap,nodes)
 end
 
 local function set_seagrass_param2(minp,maxp,data2,area,nodes)
-	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
 	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
+	local lvm_used = false
 	for n=1, #nodes do
 		local n = nodes[n]
-		local p_pos = area:index(n.x, n.y, n.z)
-		data2[p_pos] = 3
+		data2[area:index(n.x, n.y, n.z)] = 3
 		lvm_used = true
 	end
 	return lvm_used
@@ -318,49 +320,47 @@ end
 
 -- Below the bedrock, generate air/void
 local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap --ymin, ymax
-	local lvm_used = false
 	local pr = PseudoRandom(blockseed)
+	local lvm_used = false
 
 	-- The Void below the Nether:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mapgen_edge_min                     , mcl_vars.mg_nether_min                     -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mapgen_edge_min                     , mcl_vars.mg_nether_min                     -1, minp, maxp, pr) or lvm_used
 
 	-- [[ THE NETHER:					mcl_vars.mg_nether_min			       mcl_vars.mg_nether_max							]]
 
 	-- The Air on the Nether roof, https://git.minetest.land/VoxeLibre/VoxeLibre/issues/1186
-	lvm_used = set_layers(data, area, c_air		 , nil, mcl_vars.mg_nether_max			   +1, mcl_vars.mg_nether_max + 128                 , minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_air		 , nil, mcl_vars.mg_nether_max			   +1, mcl_vars.mg_nether_max + 128                 , minp, maxp, pr) or lvm_used
 	-- The Void above the Nether below the End:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_nether_max + 128               +1, mcl_vars.mg_end_min                        -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_nether_max + 128               +1, mcl_vars.mg_end_min                        -1, minp, maxp, pr) or lvm_used
 
 	-- [[ THE END:						mcl_vars.mg_end_min			       mcl_vars.mg_end_max							]]
 
 	-- The Void above the End below the Realm barrier:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_end_max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_end_max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, pr) or lvm_used
 	-- Realm barrier between the Overworld void and the End
-	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, pr) or lvm_used
 	-- The Void above Realm barrier below the Overworld:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_vars.mg_overworld_min                  -1, minp, maxp, lvm_used, pr)
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_vars.mg_overworld_min                  -1, minp, maxp, pr) or lvm_used
 
 
 	if mg_name ~= "singlenode" then
 		-- Bedrock
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_overworld_min, mcl_vars.mg_bedrock_overworld_max, minp, maxp, lvm_used, pr)
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_bottom_max, minp, maxp, lvm_used, pr)
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_top_min, mcl_vars.mg_bedrock_nether_top_max, minp, maxp, lvm_used, pr)
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_overworld_min, mcl_vars.mg_bedrock_overworld_max, minp, maxp, pr) or lvm_used
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_bottom_max, minp, maxp, pr) or lvm_used
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_top_min, mcl_vars.mg_bedrock_nether_top_max, minp, maxp, pr) or lvm_used
 
 		-- Flat Nether
 		if mg_name == "flat" then
-			lvm_used = set_layers(data, area, c_air, nil, mcl_vars.mg_flat_nether_floor, mcl_vars.mg_flat_nether_ceiling, minp, maxp, lvm_used, pr)
+			lvm_used = set_layers(data, area, c_air, nil, mcl_vars.mg_flat_nether_floor, mcl_vars.mg_flat_nether_ceiling, minp, maxp, pr) or lvm_used
 		end
 
 		-- Big lava seas by replacing air below a certain height
 		if mcl_vars.mg_lava then
-			lvm_used = set_layers(data, area, c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, minp, maxp, lvm_used, pr)
-			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used, pr)
+			lvm_used = set_layers(data, area, c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, minp, maxp, pr) or lvm_used
+			lvm_used = set_layers(data, area, c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, pr) or lvm_used
 		end
 	end
-	local deco = false
-	local ores = false
+	local deco, ores = false, false
 	if minp.y >  mcl_vars.mg_nether_deco_max - 64 and maxp.y <  mcl_vars.mg_nether_max + 128 then
 		deco = {min=mcl_vars.mg_nether_deco_max,max=mcl_vars.mg_nether_max}
 	end
@@ -372,57 +372,35 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 end
 
 local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap = minetest.get_mapgen_object("biomemap")
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 (=color) of nodes which use the grass colour palette.
-		lvm_used = set_grass_palette(minp,maxp,data2,area,biomemap,{"group:grass_palette"})
-	end
-	return lvm_used
+	-- Set param2 (=color) of nodes which use the grass colour palette.
+	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
+		set_grass_palette(minp,maxp,data2,area,{"group:grass_palette"})
 end
 
 local function block_fixes_foliage(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap = minetest.get_mapgen_object("biomemap")
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 (=color) of nodes which use the foliage colour palette.
-		lvm_used = set_foliage_palette(minp,maxp,data2,area,biomemap,{"group:foliage_palette", "group:foliage_palette_wallmounted"})
-	end
-	return lvm_used
+	-- Set param2 (=color) of nodes which use the foliage colour palette.
+	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
+		set_foliage_palette(minp,maxp,data2,area,{"group:foliage_palette", "group:foliage_palette_wallmounted"})
 end
 
 local function block_fixes_water(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local biomemap = minetest.get_mapgen_object("biomemap")
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 (=color) of nodes which use the water colour palette.
-		lvm_used = set_water_palette(minp,maxp,data2,area,biomemap,{"group:water_palette"})
-	end
-	return lvm_used
+	-- Set param2 (=color) of nodes which use the water colour palette.
+	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
+		set_water_palette(minp,maxp,data2,area,{"group:water_palette"})
 end
 
 local function block_fixes_seagrass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
-		-- Set param2 of seagrass to 3.
-		lvm_used = set_seagrass_param2(minp, maxp, data2, area, {"group:seagrass"})
-	end
-	return lvm_used
+	-- Set param2 of seagrass to 3.
+	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
+		set_seagrass_param2(minp, maxp, data2, area, {"group:seagrass"})
 end
 
 -- End block fixes:
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
-	local biomemap --ymin, ymax
 	local lvm_used = false
-	local pr = PseudoRandom(blockseed)
-	local nodes
 	if mg_name ~= "v6" then
-		nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
+		local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
 		if #nodes > 0 then
 			lvm_used = true
 			for _,n in pairs(nodes) do
@@ -430,14 +408,13 @@ local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blocksee
 			end
 		end
 	end
-	return true, false
+	vm:set_lighting({day=15,night=0})
+	lvm_used = true -- light is broken otherwise
+	return lvm_used, false
 end
 
-
 mcl_mapgen_core.register_generator("world_structure", world_structure, nil, 1, true)
-mcl_mapgen_core.register_generator("end_fixes", end_basic, function(minp,maxp)
-	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
-end, 9999, true)
+mcl_mapgen_core.register_generator("end_fixes", end_basic, nil, 9999, true)
 
 if mg_name ~= "v6" and mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
@@ -546,7 +523,8 @@ minetest.register_lbm({
 -- We go outside x and y for where trees are placed next to a biome that has already been generated.
 -- We go above maxp.y because trees can often get placed close to the top of a generated area and folliage may not
 -- be coloured correctly.
-local function fix_folliage_missed (minp, maxp)
+local function fix_foliage_missed(minp, maxp)
+	if maxp.y < 0 then return end
 	local pos1, pos2 = vector.offset(minp, -6, 0, -6), vector.offset(maxp, 6, 14, 6)
 	local foliage = minetest.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
 	for _, fpos in pairs(foliage) do
@@ -566,10 +544,4 @@ local function fix_folliage_missed (minp, maxp)
 		end
 	end
 end
-
-minetest.register_on_generated(function(minp, maxp, blockseed) -- Set correct palette indexes of missed foliage.
-	if maxp.y < 0 then
-		return
-	end
-	fix_folliage_missed (minp, maxp)
-end)
+mcl_mapgen_core.register_generator("fix_foliage_missed", nil, fix_foliage_missed)
