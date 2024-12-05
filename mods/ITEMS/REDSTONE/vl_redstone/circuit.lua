@@ -3,8 +3,8 @@ local mod = vl_redstone
 
 local pos_to_netlist_id_cache = {}
 local netlist_cache = {}
-local netlist_source_map_cache = {}
-local pending_netlist_source_map_lookups = {}
+local netlist_map_cache = {}
+local pending_netlist_map_lookups = {}
 local power_cache = {}
 
 function mod.get_power_level_from_hash(pos_hash)
@@ -45,31 +45,57 @@ function mod.get_netlist(pos)
 
 	return netlist
 end
-function mod.get_netlist_source_map(netlist_id, callback)
-	local source_map = netlist_source_map_cache[netlist_id]
-	if source_map then return callback(source_map) end
+function mod.get_netlist_map(netlist_id, callback)
+	local netlist_map = netlist_map_cache[netlist_id]
+	if netlist_map then return callback(netlist_map) end
 
 	-- Try to load from mod storage
-	local mod_data = storage:get_string("source-map-"..netlist_id)
+	local mod_data = storage:get_string("netlist-map-"..netlist_id)
 	if mod_data and mod_data ~= "" then
 		local data = core.deserialize(core.decompress(core.decode_base64(mod_data)))
-		netlist_source_map_cache[netlist_id] = data
+		netlist_map_cache[netlist_id] = data
 		return callback(data)
 	end
 
 	-- Queue for when this data becomes available
-	local pending = pending_netlist_source_map_lookups[netlist_id] or {}
+	local pending = pending_netlist_map_lookups[netlist_id] or {}
 	pending[#pending + 1] = callback
-	pending_netlist_source_map_lookups[netlist_id] = pending
+	pending_netlist_map_lookups[netlist_id] = pending
 end
 
 -- Can be run in Async Environment, can't use globals or local upvalues
-local function compute_source_map(netlist, netlist_id, edges)
-	local source_map = {}
+local function compute_netlist_map(netlist, netlist_id, edges)
+	core.log(dump{netlist})
+	local distance_map = {}
 
-	-- Create the source->(wire/sink) map
+	-- Create the pos-to-type map
+	local pos_type = {}
+	for _,pos in pairs(netlist.sources) do
+		pos_type[core.hash_node_position(pos)] = "source"
+	end
+	for _,pos in pairs(netlist.sinks) do
+		pos_type[core.hash_node_position(pos)] = "sink"
+	end
+	for _,pos in pairs(netlist.wires) do
+		pos_type[core.hash_node_position(pos)] = "wire"
+	end
+
+	-- Create the source->(wire/sink) distance maps and  the forward maps (source->sink and source->wire)
+	local forward = {
+		source = {},
+		wire = {},
+		sink = {},
+	}
+	local reverse = {
+		source = {},
+		wire = {},
+		sink = {},
+	}
 	for _,source_pos in pairs(netlist.sources) do
+		local source_hash = core.hash_node_position(source_pos)
 		local map = {}
+		distance_map[source_hash] = map
+
 		local queue = { {source_pos,0} }
 		local processed = {}
 
@@ -79,9 +105,23 @@ local function compute_source_map(netlist, netlist_id, edges)
 			local p,dist = item[1],item[2]
 
 			local p_hash = core.hash_node_position(p)
+			core.log("  processing "..vector.to_string(p).." => "..pos_type[p_hash])
 			if dist <= 15 and (map[p_hash] or 16) > dist then
 				map[p_hash] = dist
 
+				local p_type = pos_type[p_hash]
+
+				-- Forward map
+				local fwd_map = forward[p_type][source_hash] or {}
+				forward[p_type][source_hash] = fwd_map
+				fwd_map[p_hash] = dist
+
+				-- Reverse map
+				local rev_map = reverse[p_type][p_hash] or {}
+				reverse[p_type][p_hash] = rev_map
+				rev_map[source_hash] = dist
+
+				-- Add adjacent nodes to processing queue
 				for _,edge in pairs(edges) do
 					if vector.equals(edge[1],p) then
 						queue[#queue + 1] = {edge[2], dist + 1}
@@ -89,50 +129,39 @@ local function compute_source_map(netlist, netlist_id, edges)
 				end
 			end
 		end
-
-		source_map[core.hash_node_position(source_pos)] = map
 	end
 
-	-- Create the wire->source map
-	local function is_wire(pos)
-		for _,p in pairs(netlist.wires) do
-			if p == pos then return true end
-		end
-		return false
-	end
-	local wire_map = {}
-	for source_pos_hash,list in pairs(source_map) do
-		for dst_pos_hash,dist in pairs(list) do
-			if is_wire(core.get_position_from_hash(dst_pos_hash)) then
-				local map = wire_map[dst_pos_hash] or {[-1] = 0}
-				map[source_pos_hash] = dist
-				map[-1] = map[-1] + 1
-				wire_map[dst_pos_hash] = map
-			end
-		end
-	end
+	-- Drop identity data (source->source)
+	forward.source = nil
+	reverse.source = nil
 
+	-- Build the actual netlist map
 	local netlist_map = {
-		sources = source_map,
-		wires = wire_map,
+		forward = forward,
+		reverse = reverse,
 	}
 
+	-- Serialize and compress data in async thread
 	local netlist_map_compressed = core.encode_base64(core.compress(core.serialize(netlist_map)))
 
 	return netlist_id, netlist_map, netlist_map_compressed
 end
-local function source_map_finished(netlist_id, source_map, source_map_compressed)
-	storage:set_string("source-map-"..netlist_id, source_map_compressed)
-	netlist_source_map_cache[netlist_id] = source_map
+local function netlist_map_finished(netlist_id, netlist_map, netlist_map_compressed)
+	core.log(dump{
+		netlist_id = netlist_id,
+		netlist_map = netlist_map,
+	})
+	storage:set_string("netlist-map-"..netlist_id, netlist_map_compressed)
+	netlist_map_cache[netlist_id] = netlist_map
 
 	-- Dispatch pending requests
-	local pending = pending_netlist_source_map_lookups[netlist_id]
+	local pending = pending_netlist_map_lookups[netlist_id]
 	if pending then
 		for i=1,#pending do
-			pending[i](source_map)
+			pending[i](netlist_map)
 		end
 	end
-	pending_netlist_source_map_lookups[netlist_id] = nil
+	pending_netlist_map_lookups[netlist_id] = nil
 end
 
 local function get_connected_nodes(pos, node, def, edges, sources, sinks)
@@ -235,7 +264,7 @@ function mod.build_netlist(pos)
 		--core.log("netlist change detected: "..tostring(old_netlist_id).." -> "..netlist_id)
 		if old_netlist_id then
 			storage:set_string("netlist-"..old_netlist_id,"")
-			storage:set_string("source-map-"..old_netlist_id,"")
+			storage:set_string("netlist-map-"..old_netlist_id,"")
 
 			-- Unset every position for the old netlist
 			local old_netlist = netlist_cache[old_netlist_id]
@@ -255,7 +284,7 @@ function mod.build_netlist(pos)
 
 		-- Compute source->sink and source->wire distances, using async processing where available
 		--core.log(netlist_id.." => "..dump(netlist))
-		core.handle_async(compute_source_map, source_map_finished, netlist, netlist_id, edges)
+		core.handle_async(compute_netlist_map, netlist_map_finished, netlist, netlist_id, edges)
 
 		for _,pos in pairs(netlist.wires) do
 			pos_to_netlist_id_cache[core.hash_node_position(pos)] = netlist_id
@@ -291,9 +320,48 @@ local function dispatch_power_changed(pos, old_power, new_power)
 				local action_on = effector.action_on
 				if action_on then action_on(pos, node) end
 			elseif new_power == 0 and old_power ~= 0 then
+				core.log(dump{
+					node_name = node.name,
+					pos = vector.to_string(pos),
+					new_power = new_power,
+					old_power = old_power,
+				})
 				local action_off = effector.action_off
 				if action_off then action_off(pos, node) end
 			end
+		end
+	end
+end
+
+local function update_list_power_levels(power_level, pos_hash, forward_list, reverse_list)
+	for dst_hash,dist in pairs(forward_list) do
+		local old_power = mod.get_power_level_from_hash(dst_hash)
+		local new_power = power_level - dist
+		if new_power < 0 then new_power = 0 end
+
+		-- Recompute this position from all sources to make sure it is accurate
+		-- Doesn't work for sinks
+		if new_power < old_power then
+			local wires_map = reverse_list[dst_hash] or {}
+			for src_hash,dist in pairs(wires_map) do
+				if src_hash ~= pos_hash then
+					local candidate_power = mod.get_power_level_from_hash(src_hash) - dist
+
+					-- Ignore source count (-1)
+					if candidate_power > new_power then
+						new_power = candidate_power
+					end
+				end
+			end
+		end
+
+		local dst = core.get_position_from_hash(dst_hash)
+
+		if new_power ~= old_power then
+			power_cache[dst_hash] = new_power
+			dispatch_power_changed(dst, old_power, new_power)
+
+			--core.log("update power: "..vector.to_string(dst).." => "..new_power)
 		end
 	end
 end
@@ -314,39 +382,14 @@ local function set_power_level(pos, rules, power_level)
 	end
 
 	for _,netlist_id in pairs(netlists) do
-		mod.get_netlist_source_map(netlist_id, function(source_map)
-			--core.log("Using source_map = "..dump(source_map))
-			--core.log("Setting "..netlist_id.." to power level "..power_level.." from "..vector.to_string(pos).." hash="..pos_hash)
-			local s_map = source_map.sources[pos_hash] or {}
-			for dst_hash,dist in pairs(s_map) do
-				local old_power = mod.get_power_level_from_hash(dst_hash)
-				local new_power = power_level - dist
-				if new_power < 0 then new_power = 0 end
+		mod.get_netlist_map(netlist_id, function(netlist_map)
+			core.log("Using netlist_map = "..dump(netlist_map))
+			core.log("Setting "..netlist_id.." to power level "..power_level.." from "..vector.to_string(pos).." hash="..pos_hash)
 
-				-- Recompute this position from all sources to make sure it is accurate
-				if new_power < old_power then
-					local wires_map = source_map.wires[dst_hash] or {}
-					for src_hash,dist in pairs(wires_map) do
-						if src_hash ~= -1 and src_hash ~= pos_hash then
-							local candidate_power = mod.get_power_level_from_hash(src_hash) - dist
-
-							-- Ignore source count (-1)
-							if candidate_power > new_power then
-								new_power = candidate_power
-							end
-						end
-					end
-				end
-
-				local dst = core.get_position_from_hash(dst_hash)
-
-				if new_power ~= old_power then
-					power_cache[dst_hash] = new_power
-					dispatch_power_changed(dst, old_power, new_power)
-
-					--core.log("update power: "..vector.to_string(dst).." => "..new_power)
-				end
-			end
+			-- TODO: separate out wires from sinks
+			update_list_power_levels(power_level, pos_hash,
+				netlist_map.forward.sink[pos_hash] or {},
+				netlist_map.reverse.sink[pos_hash] or {})
 		end)
 	end
 end
