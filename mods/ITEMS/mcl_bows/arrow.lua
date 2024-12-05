@@ -108,12 +108,14 @@ local arrow_entity = {
 			if obj:get_hp() > 0 then
 				if lua then
 					local entity_name = lua.name
-					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
+					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50
+					-- meters away
 					-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
 					-- TODO: This achievement should be given for the kill, not just a hit
 					local shooter = self._vl_projectile.owner
 					if shooter and shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
-						if mod_awards and (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
+						if mod_awards and (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray"
+						or entity_name == "mobs_mc:witherskeleton") then
 							awards.unlock(shooter:get_player_name(), "mcl:snipeSkeleton")
 						end
 					end
@@ -130,8 +132,8 @@ local arrow_entity = {
 				return
 			end
 
-			-- Because arrows are flagged to survive collisions to allow sticking into blocks, manually remove it now that it
-			-- has collided with an entity
+			-- Because arrows are flagged to survive collisions to allow sticking into blocks, manually remove it
+			-- now that it has collided with an entity
 			if not is_player then
 				mcl_util.remove_entity(self)
 			end

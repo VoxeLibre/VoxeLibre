@@ -179,7 +179,8 @@ end
 ---Allow to bypass the `buildable_to` node field in a `on_place` callback.
 ---
 ---You have to make sure that the nodes you return true for have `buildable_to = true`.
----@param func fun(node_name: string): boolean Return `true` if node must not replace the buildable_to node which have `node_name`
+---@param func fun(node_name: string): boolean Return `true` if node must not replace the buildable_to node
+---                                            which have `node_name`
 ---@return fun(itemstack: ItemStack, placer: ObjectRef, pointed_thing: pointed_thing, param2: integer): ItemStack?
 function mcl_util.bypass_buildable_to(func)
 	-- Copied from minetest builtin
@@ -406,7 +407,8 @@ function mcl_util.get_palette_indexes_from_pos(pos)
 	local biome = biome_data.biome
 	local biome_name = core.get_biome_name(biome)
 	local reg_biome = core.registered_biomes[biome_name]
-	if reg_biome and reg_biome._mcl_grass_palette_index and reg_biome._mcl_foliage_palette_index and reg_biome._mcl_water_palette_index then
+	if reg_biome and reg_biome._mcl_grass_palette_index and reg_biome._mcl_foliage_palette_index
+	and reg_biome._mcl_water_palette_index then
 		return {
 			grass_palette_index = reg_biome._mcl_grass_palette_index,
 			foliage_palette_index = reg_biome._mcl_foliage_palette_index,
@@ -432,7 +434,9 @@ function mcl_util.match_node_to_filter(node_name, filters)
 		local filter = filters[i]
 		if node_name == filter then return true end
 
-		if string.sub(filter,1,6) == "group:" and core.get_item_group(node_name, string.sub(filter,7)) ~= 0 then return true end
+		if string.sub(filter,1,6) == "group:" and core.get_item_group(node_name, string.sub(filter,7)) ~= 0 then
+			return true
+		end
 	end
 
 	return false
