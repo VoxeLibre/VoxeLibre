@@ -9,31 +9,37 @@ Arguments:
 * `entity_name`: The name the entity will be refered to by the Luanti engine
 * `def`: Projectile defintion. Supports all fields that standard Luanti entities support.
          Must include the field `_vl_projectile` for projectile-specific behaviors. These are the supported
-	    fields:
+         fields:
   * `ignore_gravity`: if true, the projectile will not be affected by gravity
   * `liquid_drag`: if true, apply drag from liquid nodes to the projectile
   * `survive_collision`: if this field is `false` or `nil`, the projectile will be removed after a collision.
   * `sticks_in_players`: if true, the projectile will stick into players after colliding with them.
   * `damages_players`: if true, the projectile will deal damage to players.
-  * `damage_groups`: damage group information to use for `punch()`. May be a function of type `function(projectile, entity_def, projectile_def, obj)`
-                     that returns dynamic damange group information.
-  * `allow_punching`: will the projectile punch entities it collides with. May be either a boolean or a function of type `function(projectile, entity_def, projectile_def, obj)`.
-  * `survive_collision`: will the projectile surive collisions. May be either a boolean or a fnction of type `function(projectile, entity_def, projectile_def, type, ...)`.
+  * `damage_groups`: damage group information to use for `punch()`. May be a function of type `function(projectile,
+                     entity_def, projectile_def, obj)` that returns dynamic damange group information.
+  * `allow_punching`: will the projectile punch entities it collides with. May be either a boolean or a function
+                      of type `function(projectile, entity_def, projectile_def, obj)`.
+  * `survive_collision`: will the projectile surive collisions. May be either a boolean or a function of type
+                         `function(projectile, entity_def, projectile_def, type, ...)`.
     * If `type` is "node" then the additional parameters `node, node_def` will be provided.
     * If `type` is "entity" then the additional parameter `objet` will be provided.
   * `behaviors`: a list of behavior callbacks that define the projectile's behavior. This mod provides the following
-                 behaviors: `vl_projectiles.collides_with_solids`, `vl_projectiles.collides_with_entities` and `vl_projectiles.raycast_collides_with_entities`
+                 behaviors: `vl_projectiles.collides_with_solids`, `vl_projectiles.collides_with_entities`
+                            and `vl_projectiles.raycast_collides_with_entities`
   * `maximum_time`: number of seconds until projectiles are removed.
   * `sounds`: sounds for this projectile. All fields take a table with three parameters corresponding to the
               three parameters for `core.play_sound()`. Supported sounds are:
-    * `on_collision`: played when no other more specific sound is defined. May be a function of type `function(projectile, entity_def, projectile_def, type, ...)`
+    * `on_collision`: played when no other more specific sound is defined. May be a function of type
+                      `function(projectile, entity_def, projectile_def, type, ...)`
     * `on_solid_collision`: played when the projectile collides with a solid node. May be a function of type
         `funciton(projectile, entity_def, projectile_def, type, pos, node, node_def)` with `type = "node"`
     * `on_entity_collision`: played when the projectile collides with another entity. May be a function of type
         `function(projectile, entity_def, projectile_def, type, entity)` with `type = "entity"`
- * `on_collide_with_solid`: callback of type `function(projectile, pos, node, node_def)` used when the projectile collides with a solid node. Requires
+ * `on_collide_with_solid`: callback of type `function(projectile, pos, node, node_def)` used when the projectile
+                            collides with a solid node. Requires
    `vl_projectile.collides_with_solids` in `behaviors` list.
- * `on_collide_with_entity`: callback of type `function(projectile, pos, obj)` used when the projectile collides with an entity. Requires
+ * `on_collide_with_entity`: callback of type `function(projectile, pos, obj)` used when the projectile collides
+                             with an entity. Requires
    `vl_projectile.collides_with_entities` in `behaviors` list.
 
 ## `vl_projectile.update_projectile(self, dtime)`
