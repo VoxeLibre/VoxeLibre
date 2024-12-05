@@ -1,5 +1,5 @@
-# MineClone2
-Un gioco Minecraft-like non ufficiale per Minetest. Derivato da MineClone di davedevilis.
+# VoxeLibre
+Un gioco Minecraft-like non ufficiale per Luanti. Derivato da MineClone di davedevilis.
 Sviluppato da molte persone. Non sviluppato o sponsorizzato da Mojang AB.
 
 ### Gameplay
@@ -68,46 +68,48 @@ Usa il comando `/giveme` nella per ottenerli. Vedi gli aiuti in gioco per ottene
 una spiegazione
 
 ## Installazione
-Questo gioco richiede [Minetest](http://minetest.net) per avviarsi (versione 5.4.1 e superiori).
-Quindi come prima cosa installa Minetest. Solo le versioni stable di Minetest
+Per eseguire il gioco con le migliori prestazioni e supporto, consigliamo l'ultima
+versione stabile di [Luanti](https://www.luanti.org/), ma ci impegniamo sempre a
+supportare una versione dietro l'ultima versione stabile.
+Quindi come prima cosa installa Luanti. Solo le versioni stable di Luanti
 sono ufficialmente supportate.
-Non è supportato l'avvio di MineClone2 su versioni da sviluppatore di Minetest.
+Non è supportato l'avvio di VoxeLibre su versioni da sviluppatore di Luanti.
 
-Per installare MineClone2 (se non lo hai già fatto), sposta questa cartella dentro
-la cartella "games" nella tua cartella dei dati di Minetest. Consulta la wiki di 
-Minetest per saperne di più.
+Per installare VoxeLibre (se non lo hai già fatto), sposta questa cartella dentro
+la cartella "games" nella tua cartella dei dati di Luanti. Consulta la wiki di 
+Luanti per saperne di più.
 
 ## Link utili
-La repo di MineClone2 è su Mesehub. Per contribuire o comunicare dei problemi, procedi là.
+La repo di VoxeLibre è su Mesehub. Per contribuire o comunicare dei problemi, procedi là.
 
-* Mesehub: <https://git.minetest.land/MineClone2/MineClone2>
+* Mesehub: <https://git.minetest.land/VoxeLibre/VoxeLibre>
 * Discord: <https://discord.gg/xE4z8EEpDC>
 * YouTube: <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
-* ContentDB: <https://content.minetest.net/packages/wuzzy/mineclone2/>
-* OpenCollective: <https://opencollective.com/mineclone2>
-* Mastodon: <https://fosstodon.org/@MineClone2>
-* Lemmy: <https://lemmy.world/c/mineclone2>
-* Matrix space: <https://app.element.io/#/room/#mcl2:matrix.org>
-* Minetest forums: <https://forum.minetest.net/viewtopic.php?f=50&t=16407>
-* Reddit: <https://www.reddit.com/r/MineClone2/>
+* ContentDB: <https://content.luanti.org/packages/wuzzy/mineclone2/>
+* OpenCollective: <https://opencollective.com/voxelibre>
+* Mastodon: <https://fosstodon.org/@VoxeLibre>
+* Lemmy: <https://lemm.ee/c/voxelibre>
+* Matrix space: <https://app.element.io/#/room/#voxelibre:matrix.org>
+* Luanti forums: <https://forum.luanti.org/viewtopic.php?f=50&t=16407>
+* Reddit: <https://www.reddit.com/r/VoxeLibre/>
 * IRC (barely used): <https://web.libera.chat/#mineclone2>
 
 ## Obiettivi
-- Creare un gioco basato su Minecraft, sul motore di gioco di Minetest
+- Creare un gioco basato su Minecraft, sul motore di gioco di Luanti
 che sia libero, stabile e moddabile, con funzioni perfezionate, usabile sia in 
 giocatore singolo che in multigiocatore. Al momento, molte funzionalità della versione
 Java di Minecraft sono state implementate e il perfezionamento di quelle già esistenti
 è prioritario rispetto all'aggiungta di nuove funzionalità.
 - Implementare funzionalità comprese nella versione corrente di Minecraft + OptiFine
-(OptiFine solo come supportato dal motore di gioco di Minetest).
+(OptiFine solo come supportato dal motore di gioco di Luanti).
 - Creare un'esperienza performante che giri relativamente su computer poco prestanti.
 
 ## Stato dello sviluppo
 Questo gioco è in fase di **beta** al momento.
 È giocabile, ma non ancora completo per quanto riguarda le funzionalità.
-Compatibilità con versioni precedenti di Minetest non è garantita, aggiornare il tuo mondo
+Compatibilità con versioni precedenti di Luanti non è garantita, aggiornare il tuo mondo
 potrebbe causare dei piccoli bug.
-Se desideri usare le versioni da sviluppatore di MineClone2 in produzione, il branch master è solitamente relativamente stabile.
+Se desideri usare le versioni da sviluppatore di VoxeLibre in produzione, il branch master è solitamente relativamente stabile.
 
 Le seguenti funzionalità principali sono disponibili:
 
@@ -165,8 +167,8 @@ Funzionalità bonus (non incluse in Minecraft):
 * Guida da fabbricazione inclusa che mostra ricette di fabbricazione e di forgiatura
 * Sistema di aiuti in gioco contenente informazioni estese su basi del gameplay, blocchi, oggetti e altro
 * Ricette di fabbricazione temporanee. Esistono solamente per rendere disponibili oggetti altrimenti non ottenibili quando non sei in modalità creativa. Queste ricette verranno rimosse man mano che lo sviluppo avanza e più funzionalità vengono implementate.
-* Alberelli nei bauli con [mapgen v6](https://wiki.minetest.net/Map_generator#v6)
-* Completamente moddabile (grazie alla potente API Lua di Minetest)
+* Alberelli nei bauli con [mapgen v6](https://wiki.luanti.org/Map_generator#v6)
+* Completamente moddabile (grazie alla potente API Lua di Luanti)
 * Nuovi blocchi e oggetti:
     * Strumento informativo, ti mostra l'aiuto per ciò che colpisci
     * Più lastre e scale
@@ -187,15 +189,15 @@ Differenze tecniche da Minecraft:
 * Diverse musiche per il jukebox
 * Diverse texture (Pixel Perfection)
 * Diversi suoni (varie fonti)
-* Diverso motore di gioco (Minetest)
+* Diverso motore di gioco (Luanti)
 * Diversi easter eggs
 
-… e infine, MineClone2 è software libero!
+… e infine, VoxeLibre è software libero!
 
 ## Altri file readme
 
 * `LICENSE.txt`: Il testo della licenza GPLv3
 * `CONTRIBUTING.md`: Informazioni per coloro che vogliono contribuire
-* `API.md`: Per i modder di Minetest che vogliono moddare questo gioco
+* `API.md`: Per i modder di Luanti che vogliono moddare questo gioco
 * `LEGAL.md`: Informazioni legali
 * `CREDITS.md`: List di tutti coloro che hanno contribuito
