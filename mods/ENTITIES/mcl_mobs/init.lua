@@ -286,6 +286,7 @@ function mcl_mobs.register_mob(name, def)
 		noyaw = def.noyaw or false,
 		particlespawners = def.particlespawners,
 		spawn_check = def.spawn_check,
+		_vl_projectile = def._vl_projectile,
 		-- End of MCL2 extensions
 		on_spawn = def.on_spawn,
 		on_blast = def.on_blast or function(self,damage)

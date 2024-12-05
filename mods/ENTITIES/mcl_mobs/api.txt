@@ -265,6 +265,8 @@ functions needed for the mob to work properly which contains the following:
     'attack_frequency'  Attack frequency in seconds. If unset, this defaults to 1. Implemented for melee only atm.
 
 	mobs:gopath(self,target,callback_arrived)		pathfind a way to target and run callback on arrival
+	'_vl_projectile'	Table with Projectile API behaviors. Current members are:
+		'can_punch(self, projectile_luaentity)' return 'false' from this function to prevent the provided projectile from colliding with the mob
 
 
 
