@@ -87,12 +87,6 @@ local arrow_entity = {
 			vl_projectile.collides_with_solids,
 			vl_projectile.raycast_collides_with_entities,
 		},
-		allow_punching = function(self, entity_def, projectile_def, object)
-			local lua = object:get_luaentity()
-			if lua and lua.name == "mobs_mc:rover" then return false end
-
-			return true
-		end,
 		sounds = {
 			on_entity_collision = function(self, _, _, _, obj)
 				if obj:is_player() then
