@@ -327,7 +327,7 @@ vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 		behaviors = {
 			vl_projectile.collides_with_solids,
 		},
-		collides_with = { "group:liquid" },
+		collides_with = {"group:liquid"},
 		on_collide_with_solid = function(self, pos, node)
 			local player = self._owner
 

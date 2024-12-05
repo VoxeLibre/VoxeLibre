@@ -12,7 +12,7 @@ core.register_craftitem("mcl_throwing:snowball", {
 	_doc_items_usagehelp = how_to_throw,
 	inventory_image = "mcl_throwing_snowball.png",
 	stack_max = 64,
-	groups = { weapon_ranged = 1 },
+	groups = {weapon_ranged = 1},
 	on_use = mcl_throwing.get_player_throw_function("mcl_throwing:snowball_entity"),
 	_on_dispense = mcl_throwing.dispense_function,
 })
@@ -71,10 +71,10 @@ vl_projectile.register("mcl_throwing:snowball_entity", {
 			snowball_particles(self._last_pos or pos, self.object:get_velocity())
 		end,
 		sounds = {
-			on_solid_collision = {"mcl_throwing_snowball_impact_hard", { max_hear_distance=16, gain=0.7 }, true},
-			on_entity_collision = {"mcl_throwing_snowball_impact_soft", { max_hear_distance=16, gain=0.7 }, true}
+			on_solid_collision = {"mcl_throwing_snowball_impact_hard", {max_hear_distance=16, gain=0.7}, true},
+			on_entity_collision = {"mcl_throwing_snowball_impact_soft", {max_hear_distance=16, gain=0.7}, true}
 		},
-		damage_groups = { snowball_vulnerable = 3 },
+		damage_groups = {snowball_vulnerable = 3},
 	},
 })
 mcl_throwing.register_throwable_object("mcl_throwing:snowball", "mcl_throwing:snowball_entity", 22)

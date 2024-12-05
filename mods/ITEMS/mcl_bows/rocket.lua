@@ -223,7 +223,7 @@ core.register_craftitem("mcl_bows:rocket", {
 		S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),
 	_doc_items_usagehelp = S("To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it."),
 	inventory_image = "mcl_bows_rocket.png",
-	groups = { ammo=1, ammo_crossbow=1, ammo_bow_regular=1 },
+	groups = {ammo=1, ammo_crossbow=1, ammo_bow_regular=1},
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
 		-- Shoot arrow
 		local shootpos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
