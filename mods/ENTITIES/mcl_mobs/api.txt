@@ -484,6 +484,7 @@ This function registers a arrow for mobs with the attack type shoot.
 		'rotate'		integer value in degrees to rotate arrow
 		'on_step'	is a custom function when arrow is active, nil for
 					default.
+		'_vl_projectile'	table with Projectile API properties. Refer to mods/ITEMS/vl_projectile/api.md for documentation.
 
 
 Spawn Eggs
