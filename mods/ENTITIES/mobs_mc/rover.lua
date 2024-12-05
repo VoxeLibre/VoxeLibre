@@ -147,6 +147,9 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		max = 1,
 		looting = "common"},
 	},
+	_vl_projectile = {
+		can_punch = function() return false end
+	},
 	animation = select_rover_animation("normal"),
 	_taken_node = "",
 	can_spawn = function(pos)
