@@ -14,7 +14,7 @@ core.register_craftitem("mcl_throwing:egg", {
 	stack_max = 64,
 	on_use = mcl_throwing.get_player_throw_function("mcl_throwing:egg_entity"),
 	_on_dispense = mcl_throwing.dispense_function,
-	groups = { craftitem = 1 },
+	groups = {craftitem = 1},
 })
 
 local function egg_spawn_chicks(pos)

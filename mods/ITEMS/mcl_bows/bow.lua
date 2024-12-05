@@ -70,7 +70,7 @@ function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage,
 	le._arrow_item = arrow_item
 	local item_def = core.registered_items[le._arrow_item]
 	if item_def and item_def._arrow_image then
-		obj:set_properties({ textures = item_def._arrow_image })
+		obj:set_properties({textures = item_def._arrow_image})
 	end
 	core.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
 	if shooter and shooter:is_player() then
