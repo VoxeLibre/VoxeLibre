@@ -65,7 +65,7 @@ end
 
 -- Can be run in Async Environment, can't use globals or local upvalues
 local function compute_netlist_map(netlist, netlist_id, edges)
-	core.log(dump{netlist})
+	--core.log(dump{netlist})
 	local distance_map = {}
 
 	-- Create the pos-to-type map
@@ -105,7 +105,7 @@ local function compute_netlist_map(netlist, netlist_id, edges)
 			local p,dist = item[1],item[2]
 
 			local p_hash = core.hash_node_position(p)
-			core.log("  processing "..vector.to_string(p).." => "..pos_type[p_hash])
+			--core.log("  processing "..vector.to_string(p).." => "..pos_type[p_hash])
 			if dist <= 15 and (map[p_hash] or 16) > dist then
 				map[p_hash] = dist
 
@@ -147,10 +147,11 @@ local function compute_netlist_map(netlist, netlist_id, edges)
 	return netlist_id, netlist_map, netlist_map_compressed
 end
 local function netlist_map_finished(netlist_id, netlist_map, netlist_map_compressed)
+	--[[
 	core.log(dump{
 		netlist_id = netlist_id,
 		netlist_map = netlist_map,
-	})
+	})--]]
 	storage:set_string("netlist-map-"..netlist_id, netlist_map_compressed)
 	netlist_map_cache[netlist_id] = netlist_map
 
@@ -320,12 +321,13 @@ local function dispatch_power_changed(pos, old_power, new_power)
 				local action_on = effector.action_on
 				if action_on then action_on(pos, node) end
 			elseif new_power == 0 and old_power ~= 0 then
+				--[[
 				core.log(dump{
 					node_name = node.name,
 					pos = vector.to_string(pos),
 					new_power = new_power,
 					old_power = old_power,
-				})
+				})--]]
 				local action_off = effector.action_off
 				if action_off then action_off(pos, node) end
 			end
@@ -334,6 +336,10 @@ local function dispatch_power_changed(pos, old_power, new_power)
 end
 
 local function update_list_power_levels(power_level, pos_hash, forward_list, reverse_list)
+	--[[
+	core.log(dump{
+		power_cache = power_cache,
+	})--]]
 	for dst_hash,dist in pairs(forward_list) do
 		local old_power = mod.get_power_level_from_hash(dst_hash)
 		local new_power = power_level - dist
@@ -342,10 +348,12 @@ local function update_list_power_levels(power_level, pos_hash, forward_list, rev
 		-- Recompute this position from all sources to make sure it is accurate
 		-- Doesn't work for sinks
 		if new_power < old_power then
-			local wires_map = reverse_list[dst_hash] or {}
-			for src_hash,dist in pairs(wires_map) do
+			local rev_map = reverse_list[dst_hash] or {}
+			--core.log("rev_map = "..dump(rev_map))
+			for src_hash,dist in pairs(rev_map) do
 				if src_hash ~= pos_hash then
-					local candidate_power = mod.get_power_level_from_hash(src_hash) - dist
+					local power = mod.get_power_level_from_hash(src_hash)
+					local candidate_power = power - dist
 
 					-- Ignore source count (-1)
 					if candidate_power > new_power then
@@ -361,7 +369,7 @@ local function update_list_power_levels(power_level, pos_hash, forward_list, rev
 			power_cache[dst_hash] = new_power
 			dispatch_power_changed(dst, old_power, new_power)
 
-			--core.log("update power: "..vector.to_string(dst).." => "..new_power)
+			--core.log("update power: "..vector.to_string(dst).."  "..old_power.." => "..new_power)
 		end
 	end
 end
@@ -370,6 +378,7 @@ local function set_power_level(pos, rules, power_level)
 	local netlists = {}
 	local seen = {}
 	local pos_hash = core.hash_node_position(pos)
+	power_cache[pos_hash] = power_level
 	--core.log("pos="..vector.to_string(pos)..", pos_hash="..pos_hash)
 
 	for _,rule in pairs(rules) do
@@ -383,13 +392,13 @@ local function set_power_level(pos, rules, power_level)
 
 	for _,netlist_id in pairs(netlists) do
 		mod.get_netlist_map(netlist_id, function(netlist_map)
-			core.log("Using netlist_map = "..dump(netlist_map))
-			core.log("Setting "..netlist_id.." to power level "..power_level.." from "..vector.to_string(pos).." hash="..pos_hash)
+			--core.log("Using netlist_map = "..dump(netlist_map))
+			--core.log("Setting "..netlist_id.." to power level "..power_level.." from "..vector.to_string(pos).." hash="..pos_hash)
 
 			-- TODO: separate out wires from sinks
 			update_list_power_levels(power_level, pos_hash,
 				netlist_map.forward.sink[pos_hash] or {},
-				netlist_map.reverse.sink[pos_hash] or {})
+				netlist_map.reverse.sink or {})
 		end)
 	end
 end
