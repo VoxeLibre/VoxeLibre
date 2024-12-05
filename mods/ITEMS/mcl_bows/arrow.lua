@@ -65,7 +65,7 @@ local arrow_entity = {
 		damages_players = true,
 		maximum_time = 60,
 		damage_groups = function(self)
-			return { fleshy = self._damage }
+			return {fleshy = self._damage}
 		end,
 		hide_tracer = function(self)
 			return self._stuck or self._damage < 9 or self._in_player
@@ -165,7 +165,7 @@ local arrow_entity = {
 		return core.serialize(out)
 	end,
 	on_activate = function(self, staticdata, dtime_s)
-		self.object:set_armor_groups({ immortal = 1 })
+		self.object:set_armor_groups({immortal = 1})
 
 		self._time_in_air = 1.0
 		local data = core.deserialize(staticdata)

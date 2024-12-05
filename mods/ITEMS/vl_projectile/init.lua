@@ -491,7 +491,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 			dmg = dmg(self, entity_def, projectile_def, object)
 		end
 
-		object:punch(self.object, 1.0, projectile_def.tool or { full_punch_interval = 1.0, damage_groups = dmg }, dir )
+		object:punch(self.object, 1.0, projectile_def.tool or {full_punch_interval = 1.0, damage_groups = dmg}, dir )
 
 		-- Guard against crashes when projectiles get destroyed in response to what it punched
 		if not self.object:get_pos() then return true end
