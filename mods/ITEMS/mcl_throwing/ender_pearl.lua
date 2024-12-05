@@ -17,7 +17,7 @@ core.register_craftitem("mcl_throwing:ender_pearl", {
 	inventory_image = "mcl_throwing_ender_pearl.png",
 	stack_max = 16,
 	on_use = mcl_throwing.get_player_throw_function("mcl_throwing:ender_pearl_entity"),
-	groups = { transport = 1 },
+	groups = {transport = 1},
 })
 
 function on_collide(self, pos, node)
@@ -91,7 +91,7 @@ function on_collide(self, pos, node)
 	local oldpos = player:get_pos()
 	-- Teleport and hurt player
 	player:set_pos(telepos)
-	player:set_hp(player:get_hp() - 5, { type = "fall", from = "mod" })
+	player:set_hp(player:get_hp() - 5, {type = "fall", from = "mod"})
 
 	-- 5% chance to spawn endermite at the player's origin
 	if math.random(1,20) == 1 then
