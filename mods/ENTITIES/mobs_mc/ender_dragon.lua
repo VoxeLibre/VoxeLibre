@@ -163,7 +163,7 @@ mcl_mobs.register_arrow("mobs_mc:dragon_fireball", {
 	end,
 
 	hit_mob = function(self, mob)
-		minetest.sound_play("tnt_explode", {pos = mob:get_pos(), gain = 1.5, max_hear_distance = 2*64}, true)
+		core.sound_play("tnt_explode", {pos = mob:get_pos(), gain = 1.5, max_hear_distance = 2*64}, true)
 	end,
 
 	-- node hit, explode

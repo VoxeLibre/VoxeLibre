@@ -1,12 +1,13 @@
 mcl_bows = {}
+local modpath = core.get_modpath("mcl_bows")
 
 --Bow
-dofile(minetest.get_modpath("mcl_bows") .. "/arrow.lua")
-dofile(minetest.get_modpath("mcl_bows") .. "/bow.lua")
-dofile(minetest.get_modpath("mcl_bows") .. "/rocket.lua")
+dofile(modpath.."/arrow.lua")
+dofile(modpath.."/bow.lua")
+dofile(modpath.."/rocket.lua")
 
 --Crossbow
-dofile(minetest.get_modpath("mcl_bows") .. "/crossbow.lua")
+dofile(modpath.."/crossbow.lua")
 
 --Compatiblility with older MineClone worlds
 minetest.register_alias("mcl_throwing:bow", "mcl_bows:bow")

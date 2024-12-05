@@ -66,7 +66,7 @@ function mcl_bows_s.shoot_arrow_crossbow(arrow_item, pos, dir, yaw, shooter, pow
 	le._knockback = knockback
 	le._collectable = collectable
 	le._arrow_item = arrow_item
-	minetest.sound_play("mcl_bows_crossbow_shoot", {pos=pos, max_hear_distance=16}, true)
+	core.sound_play("mcl_bows_crossbow_shoot", {pos=pos, max_hear_distance=16}, true)
 	if shooter and shooter:is_player() then
 		if obj:get_luaentity().player == "" then
 			obj:get_luaentity().player = shooter

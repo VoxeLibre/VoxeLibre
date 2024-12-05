@@ -6,8 +6,8 @@ Registers a projectile entity.
 
 Arguments:
 
-* `entity_name`: The name the entity will be refered to by the minetest engine
-* `def`: Projectile defintion. Supports all fields that standard minetest entities support.
+* `entity_name`: The name the entity will be refered to by the Luanti engine
+* `def`: Projectile defintion. Supports all fields that standard Luanti entities support.
          Must include the field `_vl_projectile` for projectile-specific behaviors. These are the supported
 	    fields:
   * `ignore_gravity`: if true, the projectile will not be affected by gravity
@@ -25,7 +25,7 @@ Arguments:
                  behaviors: `vl_projectiles.collides_with_solids`, `vl_projectiles.collides_with_entities` and `vl_projectiles.raycast_collides_with_entities`
   * `maximum_time`: number of seconds until projectiles are removed.
   * `sounds`: sounds for this projectile. All fields take a table with three parameters corresponding to the
-              three parameters for `minetest.play_sound()`. Supported sounds are:
+              three parameters for `core.play_sound()`. Supported sounds are:
     * `on_collision`: played when no other more specific sound is defined. May be a function of type `function(projectile, entity_def, projectile_def, type, ...)`
     * `on_solid_collision`: played when the projectile collides with a solid node. May be a function of type
         `funciton(projectile, entity_def, projectile_def, type, pos, node, node_def)` with `type = "node"`
@@ -93,7 +93,7 @@ Arguments:
 * `self`: The lua entity of the projectile
 * `dtime`: The amount of time that has passed since the last update. Nomally the `dtime`
            parameter of the entity's `on_step(self, dtime)` callback.
-* `entity_def`: The definition from `minetest.registered_entities` for the projectile.
+* `entity_def`: The definition from `core.registered_entities` for the projectile.
 * `projectile_def`: Same as `entity_def._vl_projectile`
 
 

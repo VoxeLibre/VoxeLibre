@@ -427,7 +427,7 @@ function mcl_mobs.register_arrow(name, def)
 					pos.y = pos.y + 1
 					self.lastpos = self.lastpos or pos
 
-					minetest.add_item(self.lastpos, self.object:get_luaentity().name)
+					core.add_item(self.lastpos, self.object:get_luaentity().name)
 				end
 
 				mcl_util.remove_entity(self)
@@ -479,7 +479,7 @@ function mcl_mobs.register_arrow(name, def)
 
 			-- does arrow have a tail (fireball)
 			if def.tail == 1 and def.tail_texture then
-				minetest.add_particle({
+				core.add_particle({
 					pos = pos,
 					velocity = {x = 0, y = 0, z = 0},
 					acceleration = {x = 0, y = 0, z = 0},

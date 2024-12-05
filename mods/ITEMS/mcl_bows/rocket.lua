@@ -14,7 +14,7 @@ local function damage_explosion(self, damagemulitplier, pos)
 	local p = pos or self.object:get_pos()
 	if not p then return end
 	mcl_explosions.explode(p, 3, {})
-	local objects = minetest.get_objects_inside_radius(p, 8)
+	local objects = core.get_objects_inside_radius(p, 8)
 	for _,obj in pairs(objects) do
 		if obj:is_player() then
 			mcl_util.deal_damage(obj, damagemulitplier - vector.distance(p, obj:get_pos()), {type = "explosion"})
@@ -45,14 +45,14 @@ local function particle_explosion(pos)
 	end
 
 	if type == 1 then
-		minetest.sound_play("mcl_bows_firework", {
+		core.sound_play("mcl_bows_firework", {
 			pos = pos,
 			max_hear_distance = 100,
 			gain = 3.0,
 			pitch = fpitch/100
 		}, true)
 	else
-		minetest.sound_play("mcl_bows_firework_soft", {
+		core.sound_play("mcl_bows_firework_soft", {
 			pos = pos,
 			max_hear_distance = 100,
 			gain = 4.0,
@@ -61,7 +61,7 @@ local function particle_explosion(pos)
 	end
 
 	if particle_pattern == 1 then
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 400 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -77,7 +77,7 @@ local function particle_explosion(pos)
 				texture = "mcl_bows_firework_"..this_colors[1]..".png",
 				glow = 14,
 		})
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 400 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -93,7 +93,7 @@ local function particle_explosion(pos)
 				texture = "mcl_bows_firework_"..this_colors[2]..".png",
 				glow = 14,
 		})
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 100 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -111,7 +111,7 @@ local function particle_explosion(pos)
 		})
 	elseif particle_pattern == 2 then
 
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 240 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -127,7 +127,7 @@ local function particle_explosion(pos)
 				texture = "mcl_bows_firework_"..this_colors[1]..".png",
 				glow = 14,
 		})
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 500 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -143,7 +143,7 @@ local function particle_explosion(pos)
 				texture = "mcl_bows_firework_"..this_colors[2]..".png",
 				glow = 14,
 		})
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 350 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -161,7 +161,7 @@ local function particle_explosion(pos)
 		})
 	elseif particle_pattern == 3 then
 
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 400 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -177,7 +177,7 @@ local function particle_explosion(pos)
 				texture = "mcl_bows_firework_"..this_colors[1]..".png",
 				glow = 14,
 		})
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 120 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -193,7 +193,7 @@ local function particle_explosion(pos)
 				texture = "mcl_bows_firework_"..this_colors[2]..".png",
 				glow = 14,
 		})
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 				amount = 130 * size,
 				time = 0.0001,
 				minpos = pos,
@@ -215,7 +215,7 @@ local function particle_explosion(pos)
 
 end
 
-minetest.register_craftitem("mcl_bows:rocket", {
+core.register_craftitem("mcl_bows:rocket", {
 	description = S("Arrow"),
 	_tt_help = S("Ammunition").."\n"..S("Damage from bow: 1-10").."\n"..S("Damage from dispenser: 3"),
 	_doc_items_longdesc = S("Arrows are ammunition for bows and dispensers.").."\n"..
@@ -278,8 +278,8 @@ end
 
 vl_projectile.register("mcl_bows:rocket_entity", rocket_entity)
 
-if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
-	minetest.register_craft({
+if core.get_modpath("mcl_core") and core.get_modpath("mcl_mobitems") then
+	core.register_craft({
 		output = "mcl_bows:rocket 1",
 		recipe = {
 			{"mcl_core:paper"},

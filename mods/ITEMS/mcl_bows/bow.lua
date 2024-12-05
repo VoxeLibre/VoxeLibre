@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local BOW_DURABILITY = 385
 
@@ -68,11 +68,11 @@ function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage,
 	le._knockback = knockback
 	le._collectable = collectable
 	le._arrow_item = arrow_item
-	local item_def = minetest.registered_items[le._arrow_item]
+	local item_def = core.registered_items[le._arrow_item]
 	if item_def and item_def._arrow_image then
 		obj:set_properties({ textures = item_def._arrow_image })
 	end
-	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
+	core.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
 	if shooter and shooter:is_player() then
 		if le.player == "" then
 			le.player = shooter

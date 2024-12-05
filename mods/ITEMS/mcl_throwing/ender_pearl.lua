@@ -1,16 +1,16 @@
-local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local S = core.get_translator(modname)
 
 local math = math
 local vector = vector
 
-local mod_target = minetest.get_modpath("mcl_target")
+local mod_target = core.get_modpath("mcl_target")
 local how_to_throw = S("Use the punch key to throw.")
 
 -- Ender Pearl
-minetest.register_craftitem("mcl_throwing:ender_pearl", {
+core.register_craftitem("mcl_throwing:ender_pearl", {
 	description = S("Ender Pearl"),
-	_tt_help = S("Throwable").."\n"..minetest.colorize(mcl_colors.YELLOW, S("Teleports you on impact for cost of 5 HP")),
+	_tt_help = S("Throwable").."\n"..core.colorize(mcl_colors.YELLOW, S("Teleports you on impact for cost of 5 HP")),
 	_doc_items_longdesc = S("An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block or a plant. Each teleportation hurts the user by 5 hit points."),
 	_doc_items_usagehelp = how_to_throw,
 	wield_image = "mcl_throwing_ender_pearl.png",
@@ -31,7 +31,7 @@ function on_collide(self, pos, node)
 	end
 
 	-- Make sure we have a reference to the player
-	local player = self._thrower and minetest.get_player_by_name(self._thrower)
+	local player = self._thrower and core.get_player_by_name(self._thrower)
 	if not player then return end
 
 	-- Teleport and hurt player
@@ -40,7 +40,7 @@ function on_collide(self, pos, node)
 	local dir = vector.zero()
 
 	local v = self.object:get_velocity()
-	local node_def = minetest.registered_nodes[node.name]
+	local node_def = core.registered_nodes[node.name]
 	if node_def and node_def.walkable then
 		local vc = vector.normalize(v) -- vector for calculating
 		-- Node is walkable, we have to find a place somewhere outside of that node
@@ -75,12 +75,12 @@ function on_collide(self, pos, node)
 
 	-- Final teleportation position
 	local telepos = vector.add(pos, dir)
-	local telenode = minetest.get_node(telepos)
+	local telenode = core.get_node(telepos)
 
 	--[[ It may be possible that telepos is walkable due to the algorithm.
 	Especially when the ender pearl is faster horizontally than vertical.
 	This applies final fixing, just to be sure we're not in a walkable node ]]
-	if not minetest.registered_nodes[telenode.name] or minetest.registered_nodes[telenode.name].walkable then
+	if not core.registered_nodes[telenode.name] or core.registered_nodes[telenode.name].walkable then
 		if v.y < 0 then
 			telepos.y = telepos.y + 0.5
 		else
@@ -95,7 +95,7 @@ function on_collide(self, pos, node)
 
 	-- 5% chance to spawn endermite at the player's origin
 	if math.random(1,20) == 1 then
-		minetest.add_entity(oldpos, "mobs_mc:endermite")
+		core.add_entity(oldpos, "mobs_mc:endermite")
 	end
 end
 
@@ -131,7 +131,7 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 			return le and (le.is_mob or le._hittable_by_projectile) or object:is_player()
 		end,
 		on_collide_with_entity = function(self, pos, entity)
-			on_collide(self, pos, minetest.get_node(pos))
+			on_collide(self, pos, core.get_node(pos))
 		end,
 		on_collide_with_solid = on_collide,
 	},

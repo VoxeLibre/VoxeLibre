@@ -1,11 +1,11 @@
-local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local S = core.get_translator(modname)
 
-local mod_target = minetest.get_modpath("mcl_target")
+local mod_target = core.get_modpath("mcl_target")
 local how_to_throw = S("Use the punch key to throw.")
 
 -- Snowball
-minetest.register_craftitem("mcl_throwing:snowball", {
+core.register_craftitem("mcl_throwing:snowball", {
 	description = S("Snowball"),
 	_tt_help = S("Throwable"),
 	_doc_items_longdesc = S("Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing."),
@@ -20,7 +20,7 @@ minetest.register_craftitem("mcl_throwing:snowball", {
 -- The snowball entity
 local function snowball_particles(pos, vel)
 	local vel = vector.normalize(vector.multiply(vel, -1))
-	minetest.add_particlespawner({
+	core.add_particlespawner({
 		amount = 20,
 		time = 0.001,
 		minpos = pos,
