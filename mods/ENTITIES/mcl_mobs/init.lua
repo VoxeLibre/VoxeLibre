@@ -471,7 +471,7 @@ function mcl_mobs.register_arrow(name, def)
 			local pos = self.object:get_pos()
 			if not pos then return end
 
-			if self.switch == 0 or self.timer > self._lifetime or not within_limits(pos, 0) then
+			if self.switch == 0 or self.timer > self._lifetime or not within_limits(pos) then
 				mcl_burning.extinguish(self.object)
 				mcl_util.remove_entity(self)
 				return
