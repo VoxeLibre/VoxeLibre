@@ -123,6 +123,7 @@ local function damage_particles(pos, is_critical)
 		})
 	end
 end
+
 local function random_hit_positions(positions, placement)
 	if positions == "x" then
 		return math.random(-4, 4)
@@ -138,6 +139,7 @@ local function random_hit_positions(positions, placement)
 
 	return 0
 end
+
 local function check_hitpoint(hitpoint)
 	if hitpoint.type ~= "object" then return false end
 
@@ -157,6 +159,7 @@ local function check_hitpoint(hitpoint)
 
 	return false
 end
+
 local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	if self._in_player or self._blocked then return end
 	if not projectile_def.sticks_in_players then return end
@@ -225,6 +228,7 @@ function mod.has_owner_grace_distance(self, dtime, entity_def, projectile_def)
 		not self._owner or not self._startpos or
 		pos and vector.distance(self._startpos, pos) > ( projectile_def.grace_distance or 1.5 )
 end
+
 function mod.has_tracer(self, dtime, entity_def, projectile_def)
 	local hide_tracer = projectile_def.hide_tracer
 	if hide_tracer and hide_tracer(self) then return end
@@ -310,7 +314,8 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 			local creative = core.is_creative_enabled(player_name)
 			if self._collectable and not creative then
 				local arrow_item = self._itemstring or self._arrow_item
-				if arrow_item and core.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
+				if arrow_item and core.registered_items[arrow_item]
+				and obj:get_inventory():room_for_item("main", arrow_item) then
 					obj:get_inventory():add_item("main", arrow_item)
 					self._picked_up = true
 				end
@@ -655,4 +660,3 @@ function mod.register(name, def)
 
 	core.register_entity(name, def)
 end
-
