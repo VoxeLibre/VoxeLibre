@@ -310,7 +310,7 @@ end
 
 bobber_ENTITY.on_step = bobber_on_step
 
-minetest.register_entity("mcl_fishing:bobber_entity", bobber_ENTITY)
+core.register_entity("mcl_fishing:bobber_entity", bobber_ENTITY)
 
 vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 	physical = false,
@@ -336,11 +336,11 @@ vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 			-- Make sure the player field is valid for when we create the floating bobber
 			if not player then return end
 
-			local def = minetest.registered_nodes[node.name]
+			local def = core.registered_nodes[node.name]
 			if not def then return end
 
 			if def.walkable or def.liquidtype == "flowing" or def.liquidtype == "source" then
-				local ent = minetest.add_entity(pos, "mcl_fishing:bobber_entity"):get_luaentity()
+				local ent = core.add_entity(pos, "mcl_fishing:bobber_entity"):get_luaentity()
 				ent.player = player
 				ent.child = true
 			end

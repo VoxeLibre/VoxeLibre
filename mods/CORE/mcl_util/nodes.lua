@@ -5,20 +5,20 @@
 -- debugging. See:
 -- https://git.minetest.land/VoxeLibre/VoxeLibre/issues/1392
 function mcl_util.get_natural_light (pos, time)
-	local status, retVal = pcall(minetest.get_natural_light, pos, time)
+	local status, retVal = pcall(core.get_natural_light, pos, time)
 	if status then
 		return retVal
 	else
-		minetest.log("warning", "Failed to get natural light at pos: " .. dump(pos) .. ", time: " .. dump(time))
+		core.log("warning", "Failed to get natural light at pos: " .. dump(pos) .. ", time: " .. dump(time))
 		if (pos) then
-			local node = minetest.get_node(pos)
-			minetest.log("warning", "Node at pos: " .. dump(node.name))
+			local node = core.get_node(pos)
+			core.log("warning", "Node at pos: " .. dump(node.name))
 		end
 	end
 	return 0
 end
 
--- Based on minetest.rotate_and_place
+-- Based on core.rotate_and_place
 
 --[[
 Attempt to predict the desired orientation of the pillar-like node
@@ -30,16 +30,16 @@ field is false or omitted (else, the itemstack is not changed).
 * `invert_wall`: if `true`, place wall-orientation on the ground and ground-
   orientation on wall
 
-This function is a simplified version of minetest.rotate_and_place.
+This function is a simplified version of core.rotate_and_place.
 The Luanti function is seen as inappropriate because this includes mirror
 images of possible orientations, causing problems with pillar shadings.
 ]]
 function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infinitestacks, invert_wall)
-	local unode = minetest.get_node_or_nil(pointed_thing.under)
+	local unode = core.get_node_or_nil(pointed_thing.under)
 	if not unode then
 		return
 	end
-	local undef = minetest.registered_nodes[unode.name]
+	local undef = core.registered_nodes[unode.name]
 	if undef and undef.on_rightclick and not invert_wall then
 		undef.on_rightclick(pointed_thing.under, unode, placer,
 			itemstack, pointed_thing)
@@ -50,7 +50,7 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 	local above = pointed_thing.above
 	local under = pointed_thing.under
 
-	local anode = minetest.get_node_or_nil(above)
+	local anode = core.get_node_or_nil(above)
 	if not anode then
 		return
 	end
@@ -62,12 +62,12 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 		node = unode
 	end
 
-	if minetest.is_protected(pos, placer:get_player_name()) then
-		minetest.record_protection_violation(pos, placer:get_player_name())
+	if core.is_protected(pos, placer:get_player_name()) then
+		core.record_protection_violation(pos, placer:get_player_name())
 		return
 	end
 
-	local ndef = minetest.registered_nodes[node.name]
+	local ndef = core.registered_nodes[node.name]
 	if not ndef or not ndef.buildable_to then
 		return
 	end
@@ -80,7 +80,7 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 	elseif above.z ~= under.z then
 		p2 = 6
 	end
-	minetest.set_node(pos, {name = wield_name, param2 = p2})
+	core.set_node(pos, {name = wield_name, param2 = p2})
 
 	if not infinitestacks then
 		itemstack:take_item()
@@ -89,10 +89,10 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 end
 
 -- Wrapper of above function for use as `on_place` callback (Recommended).
--- Similar to minetest.rotate_node.
+-- Similar to core.rotate_node.
 function mcl_util.rotate_axis(itemstack, placer, pointed_thing)
 	mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing,
-		minetest.is_creative_enabled(placer:get_player_name()),
+		core.is_creative_enabled(placer:get_player_name()),
 		placer:get_player_control().sneak)
 	return itemstack
 end
@@ -132,8 +132,8 @@ function mcl_util.generate_on_place_plant_function(condition)
 		end
 
 		-- Call on_rightclick if the pointed node defines it
-		local node = minetest.get_node(pointed_thing.under)
-		local node_def = minetest.registered_nodes[node.name]
+		local node = core.get_node(pointed_thing.under)
+		local node_def = core.registered_nodes[node.name]
 
 		if placer and not placer:get_player_control().sneak then
 			if node_def and node_def.on_rightclick then
@@ -142,8 +142,8 @@ function mcl_util.generate_on_place_plant_function(condition)
 		end
 
 		local place_pos
-		local def_under = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
-		local def_above = minetest.registered_nodes[minetest.get_node(pointed_thing.above).name]
+		local def_under = core.registered_nodes[core.get_node(pointed_thing.under).name]
+		local def_above = core.registered_nodes[core.get_node(pointed_thing.above).name]
 		if not def_under or not def_above then
 			return itemstack
 		end
@@ -160,11 +160,11 @@ function mcl_util.generate_on_place_plant_function(condition)
 		local result, param2 = condition(place_pos, node, itemstack)
 		if result == true then
 			local idef = itemstack:get_definition()
-			local new_itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing, param2)
+			local new_itemstack, success = core.item_place_node(itemstack, placer, pointed_thing, param2)
 
 			if success then
 				if idef.sounds and idef.sounds.place then
-					minetest.sound_play(idef.sounds.place, {pos = pointed_thing.above, gain = 1}, true)
+					core.sound_play(idef.sounds.place, {pos = pointed_thing.above, gain = 1}, true)
 				end
 			end
 			itemstack = new_itemstack
@@ -202,7 +202,7 @@ function mcl_util.bypass_buildable_to(func)
 	-- Returns a logging function. For empty names, does not log. Copied from minetest builtin
 	-- https://github.com/minetest/minetest/blob/526a2f7b8c45504088e194a83d54a19045227bbd/builtin/game/item.lua#L142-L144
 	local function make_log(name)
-		return name ~= "" and minetest.log or function() end
+		return name ~= "" and core.log or function() end
 	end
 
 	-- Copied from minetest builtin
@@ -260,24 +260,24 @@ function mcl_util.bypass_buildable_to(func)
 		end
 
 		local under = pointed_thing.under
-		local oldnode_under = minetest.get_node_or_nil(under)
+		local oldnode_under = core.get_node_or_nil(under)
 		local above = pointed_thing.above
-		local oldnode_above = minetest.get_node_or_nil(above)
+		local oldnode_above = core.get_node_or_nil(above)
 		local playername = user_name(placer)
 		local log = make_log(playername)
 
 		if not oldnode_under or not oldnode_above then
 			log("info", playername .. " tried to place"
-				.. " node in unloaded position " .. minetest.pos_to_string(above))
+				.. " node in unloaded position " .. core.pos_to_string(above))
 			return itemstack
 		end
 
-		local olddef_under = minetest.registered_nodes[oldnode_under.name] or minetest.nodedef_default
-		local olddef_above = minetest.registered_nodes[oldnode_above.name] or minetest.nodedef_default
+		local olddef_under = core.registered_nodes[oldnode_under.name] or core.nodedef_default
+		local olddef_above = core.registered_nodes[oldnode_above.name] or core.nodedef_default
 
 		if not olddef_above.buildable_to and not olddef_under.buildable_to then
 			log("info", playername .. " tried to place"
-				.. " node in invalid position " .. minetest.pos_to_string(above)
+				.. " node in invalid position " .. core.pos_to_string(above)
 				.. ", replacing " .. oldnode_above.name)
 			return itemstack
 		end
@@ -292,16 +292,16 @@ function mcl_util.bypass_buildable_to(func)
 			place_to = under
 		end
 
-		if minetest.is_protected(place_to, playername) then
+		if core.is_protected(place_to, playername) then
 			log("action", playername
 				.. " tried to place " .. def.name
 				.. " at protected position "
-				.. minetest.pos_to_string(place_to))
-			minetest.record_protection_violation(place_to, playername)
+				.. core.pos_to_string(place_to))
+			core.record_protection_violation(place_to, playername)
 			return itemstack
 		end
 
-		local oldnode = minetest.get_node(place_to)
+		local oldnode = core.get_node(place_to)
 		local newnode = {name = def.name, param1 = 0, param2 = param2 or 0}
 
 		-- Calculate direction for wall mounted stuff like torches and signs
@@ -309,7 +309,7 @@ function mcl_util.bypass_buildable_to(func)
 			newnode.param2 = def.place_param2
 		elseif (def.paramtype2 == "wallmounted" or
 			def.paramtype2 == "colorwallmounted") and not param2 then
-			newnode.param2 = minetest.dir_to_wallmounted(vector.subtract(under, above))
+			newnode.param2 = core.dir_to_wallmounted(vector.subtract(under, above))
 			-- Calculate the direction for furnaces and chests and stuff
 		elseif (def.paramtype2 == "facedir" or
 			def.paramtype2 == "colorfacedir" or
@@ -317,7 +317,7 @@ function mcl_util.bypass_buildable_to(func)
 			def.paramtype2 == "color4dir") and not param2 then
 			local placer_pos = placer and placer:get_pos()
 			if placer_pos then
-				newnode.param2 = minetest.dir_to_facedir(vector.subtract(above, placer_pos))
+				newnode.param2 = core.dir_to_facedir(vector.subtract(above, placer_pos))
 				log("info", "facedir: " .. newnode.param2)
 			end
 		end
@@ -346,23 +346,23 @@ function mcl_util.bypass_buildable_to(func)
 		end
 
 		-- Check if the node is attached and if it can be placed there
-		local an = minetest.get_item_group(def.name, "attached_node")
+		local an = core.get_item_group(def.name, "attached_node")
 		if an ~= 0 and
 			not check_attached_node(place_to, newnode, an) then
 			log("action", "attached node " .. def.name ..
-				" cannot be placed at " .. minetest.pos_to_string(place_to))
+				" cannot be placed at " .. core.pos_to_string(place_to))
 			return itemstack
 		end
 
 		log("action", playername .. " places node "
-			.. def.name .. " at " .. minetest.pos_to_string(place_to))
+			.. def.name .. " at " .. core.pos_to_string(place_to))
 
 		-- Add node and update
-		minetest.add_node(place_to, newnode)
+		core.add_node(place_to, newnode)
 
 		-- Play sound if it was done by a player
 		if playername ~= "" and def.sounds and def.sounds.place then
-			minetest.sound_play(def.sounds.place, {
+			core.sound_play(def.sounds.place, {
 				pos = place_to,
 				exclude_player = playername,
 			}, true)
@@ -382,7 +382,7 @@ function mcl_util.bypass_buildable_to(func)
 		end
 
 		-- Run script hook
-		for _, callback in ipairs(minetest.registered_on_placenodes) do
+		for _, callback in ipairs(core.registered_on_placenodes) do
 			-- Deepcopy pos, node and pointed_thing because callback can modify them
 			local place_to_copy = vector.copy(place_to)
 			local newnode_copy = {name = newnode.name, param1 = newnode.param1, param2 = newnode.param2}
@@ -402,10 +402,10 @@ end
 
 local DEFAULT_PALETTE_INDEXES = {grass_palette_index = 0, foliage_palette_index = 0, water_palette_index = 0}
 function mcl_util.get_palette_indexes_from_pos(pos)
-	local biome_data = minetest.get_biome_data(pos)
+	local biome_data = core.get_biome_data(pos)
 	local biome = biome_data.biome
-	local biome_name = minetest.get_biome_name(biome)
-	local reg_biome = minetest.registered_biomes[biome_name]
+	local biome_name = core.get_biome_name(biome)
+	local reg_biome = core.registered_biomes[biome_name]
 	if reg_biome and reg_biome._mcl_grass_palette_index and reg_biome._mcl_foliage_palette_index and reg_biome._mcl_water_palette_index then
 		return {
 			grass_palette_index = reg_biome._mcl_grass_palette_index,
@@ -418,7 +418,7 @@ function mcl_util.get_palette_indexes_from_pos(pos)
 end
 
 function mcl_util.get_colorwallmounted_rotation(pos)
-	local colorwallmounted_node = minetest.get_node(pos)
+	local colorwallmounted_node = core.get_node(pos)
 	for i = 0, 32, 1 do
 		local colorwallmounted_rotation = colorwallmounted_node.param2 - (i * 8)
 		if colorwallmounted_rotation < 6 then
@@ -432,7 +432,7 @@ function mcl_util.match_node_to_filter(node_name, filters)
 		local filter = filters[i]
 		if node_name == filter then return true end
 
-		if string.sub(filter,1,6) == "group:" and minetest.get_item_group(node_name, string.sub(filter,7)) ~= 0 then return true end
+		if string.sub(filter,1,6) == "group:" and core.get_item_group(node_name, string.sub(filter,7)) ~= 0 then return true end
 	end
 
 	return false

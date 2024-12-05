@@ -1,11 +1,11 @@
-local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local S = core.get_translator(modname)
 
-local mod_target = minetest.get_modpath("mcl_target")
+local mod_target = core.get_modpath("mcl_target")
 local how_to_throw = S("Use the punch key to throw.")
 
 -- Egg
-minetest.register_craftitem("mcl_throwing:egg", {
+core.register_craftitem("mcl_throwing:egg", {
 	description = S("Egg"),
 	_tt_help = S("Throwable").."\n"..S("Chance to hatch chicks when broken"),
 	_doc_items_longdesc = S("Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chicks will pop out of the egg."),

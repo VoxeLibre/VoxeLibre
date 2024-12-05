@@ -1,6 +1,6 @@
 mcl_throwing = {}
 
-local modpath = minetest.get_modpath(minetest.get_current_modname())
+local modpath = core.get_modpath(core.get_current_modname())
 
 --
 -- Snowballs and other throwable items
@@ -12,13 +12,13 @@ local velocities = {}
 function mcl_throwing.register_throwable_object(name, entity, velocity)
 	entity_mapping[name] = entity
 	velocities[name] = velocity
-	assert(minetest.registered_entities[entity], entity.." not registered")
-	assert(minetest.registered_entities[entity]._vl_projectile)
+	assert(core.registered_entities[entity], entity.." not registered")
+	assert(core.registered_entities[entity]._vl_projectile)
 end
 
 function mcl_throwing.throw(throw_item, pos, dir, velocity, thrower)
 	velocity = velocity or velocities[throw_item] or 22
-	minetest.sound_play("mcl_throwing_throw", {pos=pos, gain=0.4, max_hear_distance=16}, true)
+	core.sound_play("mcl_throwing_throw", {pos=pos, gain=0.4, max_hear_distance=16}, true)
 
 	local itemstring = ItemStack(throw_item):get_name()
 	local obj = vl_projectile.create(entity_mapping[itemstring], {
@@ -67,7 +67,7 @@ function mcl_throwing.get_staticdata(self)
 end
 
 function mcl_throwing.on_activate(self, staticdata, dtime_s)
-	local data = minetest.deserialize(staticdata)
+	local data = core.deserialize(staticdata)
 	self._staticdata = data
 	if data then
 		self._lastpos = data._lastpos

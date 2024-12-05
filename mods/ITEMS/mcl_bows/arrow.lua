@@ -127,7 +127,7 @@ local arrow_entity = {
 			end
 
 			-- Item definition entity collision hook
-			local item_def = minetest.registered_items[self._arrow_item]
+			local item_def = core.registered_items[self._arrow_item]
 			local hook = item_def and item_def._on_collide_with_entity
 			if hook then hook(self, pos, obj) end
 
@@ -162,13 +162,13 @@ local arrow_entity = {
 		-- Preserve entity properties
 		out.properties = self.object:get_properties()
 
-		return minetest.serialize(out)
+		return core.serialize(out)
 	end,
 	on_activate = function(self, staticdata, dtime_s)
 		self.object:set_armor_groups({ immortal = 1 })
 
 		self._time_in_air = 1.0
-		local data = minetest.deserialize(staticdata)
+		local data = core.deserialize(staticdata)
 		if not data then return end
 
 		-- Restore entity properties
@@ -189,7 +189,7 @@ local arrow_entity = {
 		end
 
 		if data.shootername then
-			local shooter = minetest.get_player_by_name(data.shootername)
+			local shooter = core.get_player_by_name(data.shootername)
 			if shooter and shooter:is_player() then
 				self._shooter = shooter
 			end
@@ -206,7 +206,7 @@ mcl_bows.arrow_entity = table.copy(arrow_entity)
 
 vl_projectile.register("mcl_bows:arrow_entity", arrow_entity)
 
-minetest.register_on_respawnplayer(function(player)
+core.register_on_respawnplayer(function(player)
 	for _, obj in pairs(player:get_children()) do
 		local ent = obj:get_luaentity()
 		if ent and ent.name and string.find(ent.name, "mcl_bows:arrow_entity") then
@@ -215,8 +215,8 @@ minetest.register_on_respawnplayer(function(player)
 	end
 end)
 
-if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
-	minetest.register_craft({
+if core.get_modpath("mcl_core") and core.get_modpath("mcl_mobitems") then
+	core.register_craft({
 		output = "mcl_bows:arrow 4",
 		recipe = {
 			{"mcl_core:flint"},
