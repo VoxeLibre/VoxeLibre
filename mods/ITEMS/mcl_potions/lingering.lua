@@ -1,7 +1,7 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local PARTICLE_DENSITY = 4
-local mod_target = minetest.get_modpath("mcl_target")
+local mod_target = core.get_modpath("mcl_target")
 
 local function lingering_image(colorstring, opacity)
 	if not opacity then
@@ -37,7 +37,7 @@ local function linger_particles(pos, d, texture, color)
 end
 
 local lingering_timer = 0
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 
 	lingering_timer = lingering_timer + dtime
 	if lingering_timer >= 1 then
@@ -150,7 +150,7 @@ function mcl_potions.register_lingering(name, descr, color, def)
 			local velocity = 10
 			local dir = placer:get_look_dir();
 			local pos = placer:getpos();
-			minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
+			core.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
 			local obj = vl_projectile.create(id.."_flying",{
 				pos = vector.offset(pos, dir.x, dir.y + 1.64, dir.z),
 				owner = placer,

@@ -1,5 +1,5 @@
-local S = minetest.get_translator(minetest.get_current_modname())
-local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
+local S = core.get_translator(core.get_current_modname())
+local GRAVITY = tonumber(core.settings:get("movement_gravity"))
 local REDUX_MAP = {7/8,0.5,0.25}
 local PARTICLE_DIAMETER = 0.1
 local PARTICLE_MIN_VELOCITY = vector.new(-2, 0, -2)
@@ -26,7 +26,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 	local groups = {brewitem=1, bottle=1, splash_potion=1, _mcl_potion=1}
 	if def.nocreative then groups.not_in_creative_inventory = 1 end
 
-	minetest.register_craftitem(id, {
+	core.register_craftitem(id, {
 		description = descr,
 		_tt_help = def._tt,
 		_dynamic_tt = def._dynamic_tt,
@@ -96,7 +96,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 	particle_texture = particle_texture.."^[colorize:"..color..":127"
 
 	local function splash_effects(self, pos, def, range)
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 			amount = 50,
 			time = 0.1,
 			minpos = vector.offset(pos, -PARTICLE_DIAMETER, 0.5, -PARTICLE_DIAMETER),
@@ -114,7 +114,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 			texture = particle_texture,
 		})
 
-		for _,obj in pairs(minetest.get_objects_inside_radius(pos, range)) do
+		for _,obj in pairs(core.get_objects_inside_radius(pos, range)) do
 			-- Make sure the potion can interact with this object
 			local entity = obj:get_luaentity()
 			if obj:is_player() or entity and entity.is_mob then

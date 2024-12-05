@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local math = math
 
@@ -11,10 +11,10 @@ local function arrow_image(colorstring, opacity)
 	return {"mcl_bows_arrow.png^(mcl_bows_arrow_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")"}
 end
 
-local how_to_shoot = minetest.registered_items["mcl_bows:arrow"]._doc_items_usagehelp
+local how_to_shoot = core.registered_items["mcl_bows:arrow"]._doc_items_usagehelp
 
-local arrow_longdesc = minetest.registered_items["mcl_bows:arrow"]._doc_items_longdesc or ""
-local arrow_tt = minetest.registered_items["mcl_bows:arrow"]._tt_help or ""
+local arrow_longdesc = core.registered_items["mcl_bows:arrow"]._doc_items_longdesc or ""
+local arrow_tt = core.registered_items["mcl_bows:arrow"]._tt_help or ""
 
 function mcl_potions.register_arrow(name, desc, color, def)
 	local longdesc = def._longdesc or ""
@@ -22,7 +22,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 	local groups = {ammo=1, ammo_bow=1, brewitem=1, _mcl_potion=1}
 	if def.nocreative then groups.not_in_creative_inventory = 1 end
 	local arrow_item = "mcl_potions:"..name.."_arrow"
-	minetest.register_craftitem(arrow_item, {
+	core.register_craftitem(arrow_item, {
 		description = desc,
 		_tt_help = arrow_tt .. "\n" .. tt,
 		_dynamic_tt = def._dynamic_tt,
@@ -83,8 +83,8 @@ function mcl_potions.register_arrow(name, desc, color, def)
 	end
 	vl_projectile.register("mcl_potions:"..name.."_arrow_entity", arrow_entity)
 
-	if minetest.get_modpath("mcl_bows") then
-		minetest.register_craft({
+	if core.get_modpath("mcl_bows") then
+		core.register_craft({
 			output = "mcl_potions:"..name.."_arrow 8",
 			recipe = {
 				{"mcl_bows:arrow","mcl_bows:arrow","mcl_bows:arrow"},
@@ -94,7 +94,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 		})
 	end
 
-	if minetest.get_modpath("doc_identifier") then
+	if core.get_modpath("doc_identifier") then
 		doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
 	end
 end
