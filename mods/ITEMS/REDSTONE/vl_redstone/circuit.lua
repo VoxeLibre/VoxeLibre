@@ -85,11 +85,13 @@ local function compute_netlist_map(netlist, netlist_id, edges)
 		source = {},
 		wire = {},
 		sink = {},
+		air = {},
 	}
 	local reverse = {
 		source = {},
 		wire = {},
 		sink = {},
+		air = {}
 	}
 	for _,source_pos in pairs(netlist.sources) do
 		local source_hash = core.hash_node_position(source_pos)
@@ -109,7 +111,7 @@ local function compute_netlist_map(netlist, netlist_id, edges)
 			if dist <= 15 and (map[p_hash] or 16) > dist then
 				map[p_hash] = dist
 
-				local p_type = pos_type[p_hash]
+				local p_type = pos_type[p_hash] or "air"
 
 				-- Forward map
 				local fwd_map = forward[p_type][source_hash] or {}
@@ -134,6 +136,8 @@ local function compute_netlist_map(netlist, netlist_id, edges)
 	-- Drop identity data (source->source)
 	forward.source = nil
 	reverse.source = nil
+	forward.air = nil
+	reverse.air = nil
 
 	-- Build the actual netlist map
 	local netlist_map = {
@@ -216,6 +220,67 @@ local function sort_position_hashes(a,b)
 	return core.hash_node_position(a) < core.hash_node_position(b)
 end
 
+local function dispatch_power_changed(pos, old_power, new_power)
+	local node = core.get_node(pos)
+	local def = core.registered_nodes[node.name]
+
+	local vl_redstone = def and def._vl_redstone
+	if vl_redstone and vl_redstone.on_change then
+		return vl_redstone.on_change(pos, node, old_power or 0, new_power)
+	end
+
+	local effector = def and def.mesecons and def.mesecons.effector
+	if effector then
+		local action_change = effector.action_change
+
+		if action_change then
+			action_change(pos, node)
+		else
+			if (not old_power or old_power == 0) and new_power ~= 0 then
+				local action_on = effector.action_on
+				if action_on then action_on(pos, node) end
+			elseif new_power == 0 and (not old_power or old_power ~= 0) then
+				--[[
+				core.log(dump{
+					node_name = node.name,
+					pos = vector.to_string(pos),
+					new_power = new_power,
+					old_power = old_power,
+				})--]]
+				local action_off = effector.action_off
+				if action_off then action_off(pos, node) end
+			end
+		end
+	end
+end
+
+local function update_list_power_levels(reverse_list)
+	for dst_hash,rev_map in pairs(reverse_list) do
+		local new_power = 0
+		for src_hash,dist in pairs(rev_map) do
+			local src_power = mod.get_power_level_from_hash(src_hash) - dist
+			if src_power > new_power then
+				new_power = src_power
+			end
+		end
+
+		-- Update power
+		local old_power = power_cache[dst_hash]
+		power_cache[dst_hash] = new_power
+
+		-- Dispatch power change
+		local dst = core.get_position_from_hash(dst_hash)
+		dispatch_power_changed(dst, old_power, new_power)
+		--core.log("update power: "..vector.to_string(dst).."  "..tostring(old_power).." => "..new_power)
+	end
+end
+
+local function full_recompute_node_power_level(pos, pos_hash)
+	-- TODO: account for a sink being powered from two separate netlist
+	dispatch_power_changed(core.get_position_from_hash(pos_hash),power_cache[pos_hash], 0)
+	power_cache[pos_hash] = nil
+end
+
 function mod.build_netlist(pos)
 	local old_netlist_id = mod.get_netlist_id(pos)
 
@@ -261,6 +326,8 @@ function mod.build_netlist(pos)
 	local netlist_data = core.compress("{ wires = "..dump(netlist.wires)..", sources = "..dump(netlist.sources)..", sinks = "..dump(netlist.sinks).."}")
 	local netlist_id = core.sha256(netlist_data)
 
+	local recompute_list = {}
+
 	if netlist_id ~= old_netlist_id then
 		--core.log("netlist change detected: "..tostring(old_netlist_id).." -> "..netlist_id)
 		if old_netlist_id then
@@ -271,13 +338,19 @@ function mod.build_netlist(pos)
 			local old_netlist = netlist_cache[old_netlist_id]
 			if old_netlist then
 				for _,pos in pairs(old_netlist.wires) do
-					pos_to_netlist_id_cache[core.hash_node_position(pos)] = nil
+					local pos_hash = core.hash_node_position(pos)
+					recompute_list[pos_hash] = old_netlist_id
+					pos_to_netlist_id_cache[pos_hash] = nil
 				end
 				for _,pos in pairs(old_netlist.sinks) do
-					pos_to_netlist_id_cache[core.hash_node_position(pos)] = nil
+					local pos_hash = core.hash_node_position(pos)
+					recompute_list[pos_hash] = old_netlist_id
+					pos_to_netlist_id_cache[pos_hash] = nil
 				end
 				for _,pos in pairs(old_netlist.sources) do
-					pos_to_netlist_id_cache[core.hash_node_position(pos)] = nil
+					local pos_hash = core.hash_node_position(pos)
+					recompute_list[pos_hash] = old_netlist_id
+					pos_to_netlist_id_cache[pos_hash] = nil
 				end
 			end
 		end
@@ -288,88 +361,32 @@ function mod.build_netlist(pos)
 		core.handle_async(compute_netlist_map, netlist_map_finished, netlist, netlist_id, edges)
 
 		for _,pos in pairs(netlist.wires) do
-			pos_to_netlist_id_cache[core.hash_node_position(pos)] = netlist_id
+			local pos_hash = core.hash_node_position(pos)
+			recompute_list[pos_hash] = netlist_id
+			pos_to_netlist_id_cache[pos_hash] = netlist_id
 		end
 		for _,pos in pairs(netlist.sinks) do
-			pos_to_netlist_id_cache[core.hash_node_position(pos)] = netlist_id
+			local pos_hash = core.hash_node_position(pos)
+			recompute_list[pos_hash] = netlist_id
+			pos_to_netlist_id_cache[pos_hash] = netlist_id
 		end
 		for _,pos in pairs(netlist.sources) do
-			pos_to_netlist_id_cache[core.hash_node_position(pos)] = netlist_id
+			local pos_hash = core.hash_node_position(pos)
+			recompute_list[pos_hash] = netlist_id
+			pos_to_netlist_id_cache[pos_hash] = netlist_id
 		end
 
-		-- TODO: recompute current power levels for the new netlist
-	end
-end
+		-- Recompute current power levels for all nodes that need it
+		mod.get_netlist_map(netlist_id, function(netlist_map)
+			update_list_power_levels(netlist_map.reverse.sink or {})
+			update_list_power_levels(netlist_map.reverse.wire or {})
+		end)
 
-local function dispatch_power_changed(pos, old_power, new_power)
-	local node = core.get_node(pos)
-	local def = core.registered_nodes[node.name]
-
-	local vl_redstone = def and def._vl_redstone
-	if vl_redstone and vl_redstone.on_change then
-		return vl_redstone.on_change(pos, node, old_power, new_power)
-	end
-
-	local effector = def and def.mesecons and def.mesecons.effector
-	if effector then
-		local action_change = effector.action_change
-
-		if action_change then
-			action_change(pos, node)
-		else
-			if old_power == 0 and new_power ~= 0 then
-				local action_on = effector.action_on
-				if action_on then action_on(pos, node) end
-			elseif new_power == 0 and old_power ~= 0 then
-				--[[
-				core.log(dump{
-					node_name = node.name,
-					pos = vector.to_string(pos),
-					new_power = new_power,
-					old_power = old_power,
-				})--]]
-				local action_off = effector.action_off
-				if action_off then action_off(pos, node) end
+		-- unpower nodes that were in the old netlist but not the new netlist
+		for pos_hash,nid in pairs(recompute_list) do
+			if nid == old_netlist_id then
+				full_recompute_node_power_level(core.get_position_from_hash(pos_hash), pos_hash)
 			end
-		end
-	end
-end
-
-local function update_list_power_levels(power_level, pos_hash, forward_list, reverse_list)
-	--[[
-	core.log(dump{
-		power_cache = power_cache,
-	})--]]
-	for dst_hash,dist in pairs(forward_list) do
-		local old_power = mod.get_power_level_from_hash(dst_hash)
-		local new_power = power_level - dist
-		if new_power < 0 then new_power = 0 end
-
-		-- Recompute this position from all sources to make sure it is accurate
-		-- Doesn't work for sinks
-		if new_power < old_power then
-			local rev_map = reverse_list[dst_hash] or {}
-			--core.log("rev_map = "..dump(rev_map))
-			for src_hash,dist in pairs(rev_map) do
-				if src_hash ~= pos_hash then
-					local power = mod.get_power_level_from_hash(src_hash)
-					local candidate_power = power - dist
-
-					-- Ignore source count (-1)
-					if candidate_power > new_power then
-						new_power = candidate_power
-					end
-				end
-			end
-		end
-
-		local dst = core.get_position_from_hash(dst_hash)
-
-		if new_power ~= old_power then
-			power_cache[dst_hash] = new_power
-			dispatch_power_changed(dst, old_power, new_power)
-
-			--core.log("update power: "..vector.to_string(dst).."  "..old_power.." => "..new_power)
 		end
 	end
 end
@@ -395,10 +412,13 @@ local function set_power_level(pos, rules, power_level)
 			--core.log("Using netlist_map = "..dump(netlist_map))
 			--core.log("Setting "..netlist_id.." to power level "..power_level.." from "..vector.to_string(pos).." hash="..pos_hash)
 
-			-- TODO: separate out wires from sinks
-			update_list_power_levels(power_level, pos_hash,
-				netlist_map.forward.sink[pos_hash] or {},
-				netlist_map.reverse.sink or {})
+			-- Update sink nodes now
+			update_list_power_levels(netlist_map.reverse.sink or {})
+
+			-- Update wire nodes in the background when there's time
+			vl_scheduler.after(0, 4, function(reverse_map)
+				update_list_power_levels(reverse_map)
+			end, netlist_map.reverse.wire or {})
 		end)
 	end
 end
