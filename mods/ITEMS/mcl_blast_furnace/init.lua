@@ -34,10 +34,9 @@ local function active_formspec(fuel_percent, item_percent)
 		mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
 		"list[current_player;main;0.375,9.05;9,1;]",
 
-		-- Craft guide button temporarily removed due to Luanti bug.
-		-- TODO: Add it back when the Luanti bug is fixed.
-		--"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
-		--"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
+		--Crafting guide button
+		"image_button[0.325,1.95;1.1,1.1;craftguide_book.png;__mcl_craftguide;]",
+		"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]",
 
 		"listring[context;dst]",
 		"listring[current_player;main]",
@@ -72,10 +71,9 @@ local inactive_formspec = table.concat({
 	mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
 	"list[current_player;main;0.375,9.05;9,1;]",
 
-	-- Craft guide button temporarily removed due to Luanti bug.
-	-- TODO: Add it back when the Luanti bug is fixed.
-	--"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
-	--"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
+	--Crafting guide button
+	"image_button[0.325,1.95;1.1,1.1;craftguide_book.png;__mcl_craftguide;]",
+	"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]",
 
 	"listring[context;dst]",
 	"listring[current_player;main]",
@@ -87,7 +85,7 @@ local inactive_formspec = table.concat({
 
 
 local receive_fields = function(pos, formname, fields, sender)
-	if fields.craftguide then
+	if fields.__mcl_craftguide then
 		mcl_craftguide.show(sender:get_player_name())
 	end
 end
