@@ -1,5 +1,5 @@
 local use_texture_alpha = core.features.use_texture_alpha_string_modes and "clip" or true
-local DEBUG = false
+local DEBUG = false or true
 local box_center = {-1/16, -.5, -1/16, 1/16, -.5+1/64, 1/16}
 local nodebox_parts = {
 	[0] = {1/16, -.5, -1/16, 8/16, -.5+1/64, 1/16}, -- x positive
