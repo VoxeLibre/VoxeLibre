@@ -1,20 +1,20 @@
 vl_projectile = {}
 local mod = vl_projectile
 
-local vl_physics_path = minetest.get_modpath("vl_physics")
+local vl_physics_path = core.get_modpath("vl_physics")
 
 local DEBUG = false
 local YAW_OFFSET = -math.pi/2
-local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
+local GRAVITY = tonumber(core.settings:get("movement_gravity"))
 local STUCK_TIMEOUT = 60
 local STUCK_RECHECK_TIME = 0.25
-local enable_pvp = minetest.settings:get_bool("enable_pvp")
+local enable_pvp = core.settings:get_bool("enable_pvp")
 
 function mod.projectile_physics(obj, entity_def, v, a)
 	local le = obj:get_luaentity()
 	if not le then return end
 
-	local entity_def = minetest.registered_entities[le.name]
+	local entity_def = core.registered_entities[le.name]
 	local pos = obj:get_pos()
 	if not pos then return end
 
@@ -30,7 +30,7 @@ function mod.projectile_physics(obj, entity_def, v, a)
 		end
 
 		if entity_def.liquid_drag then
-			local def = minetest.registered_nodes[minetest.get_node(pos).name]
+			local def = core.registered_nodes[core.get_node(pos).name]
 			if def and def.liquidtype ~= "none" then
 				-- Slow down arrow in liquids
 				local visc = def.liquid_viscosity or 0
@@ -53,7 +53,7 @@ function mod.projectile_physics(obj, entity_def, v, a)
 
 	-- Update projectile yaw to match velocity direction
 	if v and le and not le._stuck then
-		local yaw = minetest.dir_to_yaw(v) + YAW_OFFSET + (entity_def._vl_projectile.yaw_offset or 0)
+		local yaw = core.dir_to_yaw(v) + YAW_OFFSET + (entity_def._vl_projectile.yaw_offset or 0)
 		local pitch = math.asin(vector.normalize(v).y) + (entity_def._vl_projectile.pitch_offset or 0)
 		obj:set_rotation(vector.new(0,yaw,pitch))
 	end
@@ -77,7 +77,7 @@ function mod.update_projectile(self, dtime)
 	end
 
 	local entity_name = self.name
-	local entity_def = minetest.registered_entities[entity_name] or {}
+	local entity_def = core.registered_entities[entity_name] or {}
 	local entity_vl_projectile = entity_def._vl_projectile or {}
 
 	-- Update entity timer and remove expired projectiles
@@ -106,7 +106,7 @@ end
 
 local function damage_particles(pos, is_critical)
 	if is_critical then
-		minetest.add_particlespawner({
+		core.add_particlespawner({
 			amount = 15,
 			time = 0.1,
 			minpos = vector.offset(pos, -0.5, -0.5, -0.5),
@@ -147,8 +147,10 @@ local function check_hitpoint(hitpoint)
 		return true
 	end
 
-	if not hitpoint.ref:is_player() and hitpoint.ref:get_luaentity() then
-		if (hitpoint.ref:get_luaentity().is_mob or hitpoint.ref:get_luaentity()._hittable_by_projectile) then
+	local obj = hitpoint.ref
+	local le = obj:get_luaentity()
+	if not obj:is_player() and le then
+		if (le.is_mob or le._hittable_by_projectile) then
 			return true
 		end
 	end
@@ -159,7 +161,7 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 	if self._in_player or self._blocked then return end
 	if not projectile_def.sticks_in_players then return end
 
-	minetest.after(150, function() mcl_util.remove_entity(self) end)
+	core.after(150, function() mcl_util.remove_entity(self) end)
 
 	-- Handle blocking projectiles
 	if mcl_shields.is_blocking(entity) then
@@ -207,10 +209,10 @@ function mod.burns(self, dtime, entity_def, projectile_def)
 	if not pos then return true end
 
 	-- Handle getting set on fire
-	local node = minetest.get_node(vector.round(pos))
+	local node = core.get_node(vector.round(pos))
 	if not node or node.name == "ignore" then return end
 
-	local set_on_fire = minetest.get_item_group(node.name, "set_on_fire")
+	local set_on_fire = core.get_item_group(node.name, "set_on_fire")
 	if set_on_fire ~= 0 then
 		mcl_burning.set_on_fire(self.object, set_on_fire)
 	end
@@ -228,7 +230,7 @@ function mod.has_tracer(self, dtime, entity_def, projectile_def)
 	if hide_tracer and hide_tracer(self) then return end
 
 	-- Add tracer
-	minetest.add_particlespawner({
+	core.add_particlespawner({
 		amount = 20,
 		time = .2,
 		minpos = vector.zero(),
@@ -257,8 +259,8 @@ function mod.replace_with_item_drop(self, pos, projectile_def)
 		item = projectile_def.item
 	end
 
-	if item and self._collectable and not minetest.is_creative_enabled("") then
-		local item = minetest.add_item(pos, item)
+	if item and self._collectable and not core.is_creative_enabled("") then
+		local item = core.add_item(pos, item)
 		item:set_velocity(vector.zero())
 		item:set_yaw(self.object:get_yaw())
 	end
@@ -285,8 +287,8 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	if self._stuckrechecktimer > 1 then
 		self._stuckrechecktimer = 0
 		if self._stuckin then
-			local node = minetest.get_node(self._stuckin)
-			local node_def = minetest.registered_nodes[node.name]
+			local node = core.get_node(self._stuckin)
+			local node_def = core.registered_nodes[node.name]
 			if node_def and node_def.walkable == false then
 				mod.replace_with_item_drop(self, pos, projectile_def)
 				return
@@ -300,21 +302,21 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	-- Pickup arrow if player is nearby (not in Creative Mode)
 	if self._removed then return end
 
-	local objects = minetest.get_objects_inside_radius(pos, 1)
+	local objects = core.get_objects_inside_radius(pos, 1)
 	for i = 1,#objects do
 		local obj = objects[i]
 		if obj:is_player() then
 			local player_name = obj:get_player_name()
-			local creative = minetest.is_creative_enabled(player_name)
+			local creative = core.is_creative_enabled(player_name)
 			if self._collectable and not creative then
 				local arrow_item = self._itemstring or self._arrow_item
-				if arrow_item and minetest.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
+				if arrow_item and core.registered_items[arrow_item] and obj:get_inventory():room_for_item("main", arrow_item) then
 					obj:get_inventory():add_item("main", arrow_item)
 					self._picked_up = true
 				end
 			end
 
-			minetest.sound_play("item_drop_pickup", {
+			core.sound_play("item_drop_pickup", {
 				pos = pos,
 				max_hear_distance = 16,
 				gain = 1.0,
@@ -346,8 +348,8 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	if not self._last_pos then return end
 
 	-- Check if the object can collide with this node
-	local node = minetest.get_node(pos)
-	local node_def = minetest.registered_nodes[node.name]
+	local node = core.get_node(pos)
+	local node_def = core.registered_nodes[node.name]
 	local collides_with = projectile_def.collides_with
 
 	if entity_def.physical then
@@ -386,12 +388,12 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 				dir = vector.new(0, -1, 0)
 			end
 		else
-			dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
+			dir = core.facedir_to_dir(core.dir_to_facedir(core.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
 		end
 		self._stuckin = vector.add(dpos, dir)
 
-		local snode = minetest.get_node(self._stuckin)
-		local sdef = minetest.registered_nodes[snode.name]
+		local snode = core.get_node(self._stuckin)
+		local sdef = core.registered_nodes[snode.name]
 
 		-- If node is non-walkable, unknown or ignore, don't make arrow stuck.
 		-- This causes a deflection in the engine.
@@ -436,7 +438,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	if sound then
 		local arg2 = table.copy(sound[2])
 		arg2.pos = pos
-		minetest.sound_play(sound[1], arg2, sound[3])
+		core.sound_play(sound[1], arg2, sound[3])
 	end
 
 	-- Normally objects should be removed on collision with solids
@@ -508,7 +510,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	if hook then hook(self, pos, object) end
 
 	-- Call reverse entity collision hook
-	local other_entity_def = minetest.registered_entities[object.name] or {}
+	local other_entity_def = core.registered_entities[object.name] or {}
 	local other_entity_vl_projectile = other_entity_def._vl_projectile or {}
 	local hook = other_entity_vl_projectile and other_entity_vl_projectile.on_collide
 	if hook then hook(object, self) end
@@ -520,7 +522,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	if sound then
 		local arg2 = table.copy(sound[2])
 		arg2.pos = pos
-		minetest.sound_play(sound[1], arg2, sound[3])
+		core.sound_play(sound[1], arg2, sound[3])
 	end
 
 	-- Remove the projectile if it didn't survive
@@ -537,7 +539,7 @@ end
 function mod.collides_with_entities(self, dtime, entity_def, projectile_def)
 	local pos = self.object:get_pos()
 
-	local objects = minetest.get_objects_inside_radius(pos, 1.5)
+	local objects = core.get_objects_inside_radius(pos, 1.5)
 	for i = 1,#objects do
 		local object = objects[i]
 		local entity = object:get_luaentity()
@@ -561,7 +563,7 @@ function mod.raycast_collides_with_entities(self, dtime, entity_def, projectile_
 	local arrow_dir = self.object:get_velocity()
 
 	--create a raycast from the arrow based on the velocity of the arrow to deal with lag
-	local raycast = minetest.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 0.1)), true, false)
+	local raycast = core.raycast(pos, vector.add(pos, vector.multiply(arrow_dir, 0.1)), true, false)
 	for hitpoint in raycast do
 		if check_hitpoint(hitpoint) then
 			local hitpoint_ref = hitpoint.ref
@@ -580,7 +582,7 @@ end
 
 function mod.create(entity_id, options)
 	local pos = options.pos
-	local obj = minetest.add_entity(pos, entity_id, options.staticdata)
+	local obj = core.add_entity(pos, entity_id, options.staticdata)
 
 	-- Set initial velocity and acceleration
 	local a, v
@@ -591,7 +593,7 @@ function mod.create(entity_id, options)
 		a = vector.zero()
 		v = a
 	end
-	local entity_def = minetest.registered_entities[entity_id]
+	local entity_def = core.registered_entities[entity_id]
 	mod.projectile_physics(obj, entity_def, v, a)
 
 	-- Update projectile parameters
@@ -645,6 +647,6 @@ function mod.register(name, def)
 	def._shooter = nil
 	def._last_pos = nil
 
-	minetest.register_entity(name, def)
+	core.register_entity(name, def)
 end
 
