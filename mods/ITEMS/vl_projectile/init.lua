@@ -469,6 +469,12 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	local dir = vector.normalize(self.object:get_velocity())
 	local object_lua = object:get_luaentity()
 
+	-- Allow entities to selectively prevent being hit
+	local entity_hook = object_lua and object_lua._vl_projectile and object_lua._vl_projectile.can_punch
+	if entity_hook and entity_hook(object_lua, self) == false then
+		return
+	end
+
 	-- Normally objects should be removed on collision with entities
 	local survive_collision = projectile_def.survive_collision
 
