@@ -329,7 +329,7 @@ local EMPTY_SCHEMATIC = { size = {x = 0, y = 0, z = 0}, data = { } }
 
 function mcl_structures.register_structure(name,def,nospawn) --nospawn means it will not be placed by mapgen decoration mechanism
 	if mcl_structures.is_disabled(name) then return end
-	flags = def.flags or "place_center_x, place_center_z, force_placement"
+	local flags = def.flags or "place_center_x, place_center_z, force_placement"
 	def.name = name
 	if not nospawn and def.place_on then
 		minetest.register_on_mods_loaded(function() --make sure all previous decorations and biomes have been registered
