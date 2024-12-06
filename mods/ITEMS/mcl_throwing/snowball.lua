@@ -77,5 +77,5 @@ vl_projectile.register("mcl_throwing:snowball_entity", {
 		damage_groups = {snowball_vulnerable = 3},
 	},
 })
-mcl_throwing.register_throwable_object("mcl_throwing:snowball", "mcl_throwing:snowball_entity", 22)
+mcl_throwing.register_throwable_object("mcl_throwing:snowball", "mcl_throwing:snowball_entity", mcl_throwing.default_velocity)
 

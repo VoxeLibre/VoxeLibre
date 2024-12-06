@@ -1,6 +1,8 @@
 local S = core.get_translator(core.get_current_modname())
 local GRAVITY = tonumber(core.settings:get("movement_gravity"))
 local REDUX_MAP = {7/8,0.5,0.25}
+local PLAYER_HEIGHT_OFFSET = 1.64
+local ACTIVE_REGION = 1.5
 local PARTICLE_DIAMETER = 0.1
 local PARTICLE_MIN_VELOCITY = vector.new(-2, 0, -2)
 local PARTICLE_MAX_VELOCITY = vector.new( 2, 2,  2)
@@ -47,7 +49,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 			local pos = placer:get_pos();
 			minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
 			local obj = vl_projectile.create(id.."_flying",{
-				pos = vector.offset(pos, dir.x, dir.y + 1.64, dir.z),
+				pos = vector.offset(pos, dir.x, dir.y + PLAYER_HEIGHT_OFFSET, dir.z),
 				owner = placer,
 				dir = dir,
 				velocity = velocity,
@@ -183,7 +185,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 				vl_projectile.collides_with_entities,
 				vl_projectile.collides_with_solids,
 			},
-			grace_distance = 3.34, -- 1.5 active region + 1.64 height offset + 0.1 safety
+			grace_distance = ACTIVE_REGION + PLAYER_HEIGHT_OFFSET + 0.1, -- safety margin
 			on_collide_with_solid = function(self, pos, node)
 				splash_effects(self, pos, def, 4)
 

@@ -77,5 +77,5 @@ vl_projectile.register("mcl_throwing:egg_entity",{
 		},
 	},
 })
-mcl_throwing.register_throwable_object("mcl_throwing:egg", "mcl_throwing:egg_entity", 22)
+mcl_throwing.register_throwable_object("mcl_throwing:egg", "mcl_throwing:egg_entity", mcl_throwing.default_velocity)
 

@@ -8,6 +8,7 @@ local math = math
 local vector = vector
 
 local YAW_OFFSET = -math.pi/2
+local TRACER_THRESHOLD = 9
 
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
@@ -68,7 +69,7 @@ local arrow_entity = {
 			return {fleshy = self._damage}
 		end,
 		hide_tracer = function(self)
-			return self._stuck or self._damage < 9 or self._in_player
+			return self._stuck or self._damage < TRACER_THRESHOLD or self._in_player
 		end,
 		tracer_texture = "mobs_mc_arrow_particle.png",
 		behaviors = {
