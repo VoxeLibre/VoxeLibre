@@ -199,7 +199,7 @@ local arrow_entity = {
 }
 
 -- Make the arrow entity available to other mods as a template
-mcl_bows.arrow_entity = table.copy(arrow_entity)
+mcl_bows.arrow_entity = arrow_entity
 
 vl_projectile.register("mcl_bows:arrow_entity", arrow_entity)
 
