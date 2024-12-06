@@ -334,8 +334,11 @@ function mod.build_netlist(pos)
 			storage:set_string("netlist-"..old_netlist_id,"")
 			storage:set_string("netlist-map-"..old_netlist_id,"")
 
+			--core.log("netlist_cache = "..dump(netlist_cache))
+
 			-- Unset every position for the old netlist
 			local old_netlist = netlist_cache[old_netlist_id]
+			--core.log("clearing netlist "..old_netlist_id.." old_netlist="..dump(old_netlist))
 			if old_netlist then
 				for _,pos in pairs(old_netlist.wires) do
 					local pos_hash = core.hash_node_position(pos)
@@ -353,8 +356,13 @@ function mod.build_netlist(pos)
 					pos_to_netlist_id_cache[pos_hash] = nil
 				end
 			end
+			netlist_cache[old_netlist_id] = nil
+			netlist_map_cache[old_netlist_id] = nil
 		end
+
+		-- Store new netlist information
 		storage:set_string("netlist-"..netlist_id, core.encode_base64(netlist_data))
+		netlist_cache[netlist_id] = netlist
 
 		-- Compute source->sink and source->wire distances, using async processing where available
 		--core.log(netlist_id.." => "..dump(netlist))
@@ -385,7 +393,9 @@ function mod.build_netlist(pos)
 		-- unpower nodes that were in the old netlist but not the new netlist
 		for pos_hash,nid in pairs(recompute_list) do
 			if nid == old_netlist_id then
-				full_recompute_node_power_level(core.get_position_from_hash(pos_hash), pos_hash)
+				local pos = core.get_position_from_hash(pos_hash)
+				--core.log("recompute power for "..pos_hash.." "..vector.to_string(pos))
+				full_recompute_node_power_level(pos, pos_hash)
 			end
 		end
 	end
