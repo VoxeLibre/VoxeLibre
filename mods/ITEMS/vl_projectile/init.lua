@@ -625,7 +625,7 @@ function mod.create(entity_id, options)
 end
 
 function mod.register(name, def)
-	def_vl_projectile = def._vl_projectile
+	local def_vl_projectile = def._vl_projectile
 	assert(def_vl_projectile, "vl_projectile.register() requires definition to define _vl_projectile")
 	local behaviors = def_vl_projectile.behaviors
 

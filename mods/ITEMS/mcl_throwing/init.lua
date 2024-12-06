@@ -1,4 +1,6 @@
-mcl_throwing = {}
+mcl_throwing = {
+	default_velocity = 22,
+}
 
 local modpath = core.get_modpath(core.get_current_modname())
 
@@ -17,7 +19,7 @@ function mcl_throwing.register_throwable_object(name, entity, velocity)
 end
 
 function mcl_throwing.throw(throw_item, pos, dir, velocity, thrower)
-	velocity = velocity or velocities[throw_item] or 22
+	velocity = velocity or velocities[throw_item] or mcl_throwing.default_velocity
 	core.sound_play("mcl_throwing_throw", {pos=pos, gain=0.4, max_hear_distance=16}, true)
 
 	local itemstring = ItemStack(throw_item):get_name()

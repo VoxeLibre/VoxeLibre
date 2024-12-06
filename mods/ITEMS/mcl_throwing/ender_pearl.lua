@@ -136,5 +136,5 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 		on_collide_with_solid = on_collide,
 	},
 })
-mcl_throwing.register_throwable_object("mcl_throwing:ender_pearl", "mcl_throwing:ender_pearl_entity", 22)
+mcl_throwing.register_throwable_object("mcl_throwing:ender_pearl", "mcl_throwing:ender_pearl_entity", mcl_throwing.default_velocity)
 
