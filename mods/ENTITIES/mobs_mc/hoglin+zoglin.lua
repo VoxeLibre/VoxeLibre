@@ -41,12 +41,10 @@ local hoglin = {
 	walk_velocity = 1,
 	run_velocity = 2.8,
 	drops = {
-		{name = "mobs_mcitems:leather",
+		{name = "mcl_mobitems:leather",
 		chance = 1,
 		min = 0,
 		max = 1,},
-	},
-	drops = {
 		{name = "mcl_mobitems:porkchop",
 		chance = 1,
 		min = 2,
