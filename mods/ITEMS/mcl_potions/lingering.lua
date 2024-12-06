@@ -1,6 +1,8 @@
 local S = core.get_translator(core.get_current_modname())
 
 local PARTICLE_DENSITY = 4
+local PLAYER_HEIGHT_OFFSET = 1.64
+local ACTIVE_REGION = 1.5
 local mod_target = core.get_modpath("mcl_target")
 
 local function lingering_image(colorstring, opacity)
@@ -215,7 +217,7 @@ function mcl_potions.register_lingering(name, descr, color, def)
 				vl_projectile.collides_with_entities,
 				vl_projectile.collides_with_solids,
 			},
-			grace_distance = 3.34, -- 1.5 active region + 1.64 height offset + 0.1 safety
+			grace_distance = ACTIVE_REGION + PLAYER_HEIGHT_OFFSET + 0.1, -- safety margin
 			on_collide_with_entity = on_collide,
 			on_collide_with_solid = function(self, pos, node)
 				if mod_target and node.name == "mcl_target:target_off" then
