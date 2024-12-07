@@ -103,18 +103,6 @@ local function compute_netlist_map(netlist, netlist_id, edges)
 	--core.log(dump{netlist})
 	local distance_map = {}
 
-	-- Create the pos-to-type map
-	local pos_type = {}
-	for _,pos in pairs(netlist.sources) do
-		pos_type[core.hash_node_position(pos)] = "source"
-	end
-	for _,pos in pairs(netlist.sinks) do
-		pos_type[core.hash_node_position(pos)] = "sink"
-	end
-	for _,pos in pairs(netlist.wires) do
-		pos_type[core.hash_node_position(pos)] = "wire"
-	end
-
 	-- Create the source->(wire/sink) distance maps and  the forward maps (source->sink and source->wire)
 	local forward = {
 		source = {},
@@ -128,6 +116,26 @@ local function compute_netlist_map(netlist, netlist_id, edges)
 		sink = {},
 		air = {}
 	}
+
+	-- Create the pos-to-type map
+	local pos_type = {}
+	for _,pos in pairs(netlist.sources) do
+		local pos_hash = core.hash_node_position(pos)
+		pos_type[pos_hash] = "source"
+		forward.source[pos_hash] = {}
+	end
+	for _,pos in pairs(netlist.sinks) do
+		local pos_hash = core.hash_node_position(pos)
+		pos_type[pos_hash] = "sink"
+		reverse.sink[pos_hash] = {}
+	end
+	for _,pos in pairs(netlist.wires) do
+		local pos_hash = core.hash_node_position(pos)
+		pos_type[pos_hash] = "wire"
+		reverse.wire[pos_hash] = {}
+	end
+
+	-- Walk edges from sources and build distance map
 	for _,source_pos in pairs(netlist.sources) do
 		local source_hash = core.hash_node_position(source_pos)
 		local map = {}
@@ -155,7 +163,6 @@ local function compute_netlist_map(netlist, netlist_id, edges)
 
 				-- Reverse map
 				local rev_map = reverse[p_type][p_hash] or {}
-				reverse[p_type][p_hash] = rev_map
 				rev_map[source_hash] = dist
 
 				-- Add adjacent nodes to processing queue
