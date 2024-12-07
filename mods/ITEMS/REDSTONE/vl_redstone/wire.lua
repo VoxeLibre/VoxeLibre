@@ -1,5 +1,5 @@
 local use_texture_alpha = core.features.use_texture_alpha_string_modes and "clip" or true
-local DEBUG = false or true
+local DEBUG = false
 local box_center = {-1/16, -.5, -1/16, 1/16, -.5+1/64, 1/16}
 local nodebox_parts = {
 	[0] = {1/16, -.5, -1/16, 8/16, -.5+1/64, 1/16}, -- x positive
@@ -161,7 +161,7 @@ local parts = {
 }
 local mesecon_rules = {}
 for i = 1,12 do
-	mesecon_rules[#mesecon_rules + 1] = {x = parts[i][1], y = parts[i][2], z = parts[i][3], spread = true}
+	mesecon_rules[#mesecon_rules + 1] = {x = parts[i][1], y = parts[i][2], z = parts[i][3], spread = true, weak = (parts[i][2] == 0)}
 end
 local function can_connect_dust(from, to)
 	local node = core.get_node(to)
