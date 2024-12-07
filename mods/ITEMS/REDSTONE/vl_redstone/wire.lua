@@ -202,8 +202,6 @@ local function update_redstone_wire(orig, update_neighbor)
 		node.param2 = connections[2] + power * 4
 		core.set_node(orig, node)
 	end
-
-	mod.build_netlist(orig)
 end
 
 local base_def = {
