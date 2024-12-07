@@ -137,7 +137,7 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 	if not supported then
 		return false, "item not supported"
 	end
-	if not level then
+	if not level or level < 0 then
 		return false, "level invalid"
 	end
 	if level > enchantment_def.max_level then
