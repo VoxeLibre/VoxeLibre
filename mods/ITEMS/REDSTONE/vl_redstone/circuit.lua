@@ -204,7 +204,11 @@ local function netlist_map_finished(netlist_id, netlist_map, netlist_map_compres
 	pending_netlist_map_lookups[netlist_id] = nil
 end
 
-local function get_connected_nodes(pos, node, def, edges, sources, sinks)
+local function get_connected_nodes(pos, node, def, netlist)
+	local edges = netlist.edges
+	local sources = netlist.sources
+	local sinks = netlist.sinks
+	local strongly_powered = netlist.strongly_powered
 	local res = {}
 
 	local outputs = mesecon.flattenrules(mesecon.get_any_outputrules(node))
@@ -213,6 +217,8 @@ local function get_connected_nodes(pos, node, def, edges, sources, sinks)
 		local p = vector.add(pos, rule)
 		local p_node = core.get_node(p)
 		local p_def = core.registered_nodes[p_node.name]
+		local is_sink = false
+		local is_source = false
 
 		local input_rules = mesecon.get_any_inputrules(p_node)
 		if input_rules then
@@ -226,9 +232,16 @@ local function get_connected_nodes(pos, node, def, edges, sources, sinks)
 
 					if p_def.mesecons and p_def.mesecons.effector then
 						sinks[#sinks + 1] = p
+						is_sink = true
 					end
 				end
 			end
+		end
+
+		-- Opaque blocks weakly power (these nodes won't have input rules)
+		if rule.weak and not is_sink and p_def.groups.opaque then
+			edges[#edges + 1] = {pos, p}
+			sinks[#sinks + 1] = p
 		end
 
 		local output_rules = mesecon.get_any_outputrules(p_node)
@@ -240,11 +253,30 @@ local function get_connected_nodes(pos, node, def, edges, sources, sinks)
 						res[#res + 1] = p
 					end
 					edges[#edges + 1] = {p, pos}
+					if p_rule.strong then
+						strongly_powered[#strongly_powered + 1] = p
+					end
 
 					if p_def.mesecons and p_def.mesecons.receptor then
 						sources[#sources + 1] = p
+						is_source = true
 					end
 				end
+			end
+		end
+
+		-- Add strongly-powered opaque blocks to sources list (these nodes won't have output rules)
+		if not is_source and p_def.groups.opaque then
+			local is_strongly_powered = false
+			for _,p in pairs(strongly_powered) do
+				if vector.equals(p, pos) then
+					is_strongly_powered = true
+					break
+				end
+			end
+			if is_strongly_powered then
+				edges[#edges + 1] = {pos, p}
+				sources[#sources + 1] = p
 			end
 		end
 	end
@@ -327,6 +359,8 @@ function mod.build_netlist(pos)
 		wires = wires,
 		sources = sources,
 		sinks = sinks,
+		strongly_powered = {},
+		edges = edges,
 	}
 
 	local processed = {}
@@ -346,7 +380,7 @@ function mod.build_netlist(pos)
 				wires[#wires + 1] = p
 
 				-- check neighbors for connections
-				local connections = get_connected_nodes(p, node, def, edges, sources, sinks)
+				local connections = get_connected_nodes(p, node, def, netlist)
 				for i = 1,#connections do
 					queue[#queue + 1] = connections[i]
 				end
@@ -358,8 +392,32 @@ function mod.build_netlist(pos)
 	table.sort(netlist.wires, sort_position_hashes)
 	table.sort(netlist.sources, sort_position_hashes)
 	table.sort(netlist.sinks, sort_position_hashes)
-	local netlist_data = core.compress("{ wires = "..dump(netlist.wires)..", sources = "..dump(netlist.sources)..", sinks = "..dump(netlist.sinks).."}")
+	local raw_netlist_data =  "{wires={"
+	for i,p in ipairs(netlist.wires) do
+		if i ~= 1 then
+			raw_netlist_data = raw_netlist_data .. ","
+		end
+		raw_netlist_data = raw_netlist_data .. "{x="..p.x..",y="..p.y..",z="..p.z.."}"
+	end
+	raw_netlist_data = raw_netlist_data .. "},sources={"
+	for i,p in ipairs(netlist.sources) do
+		if i ~= 1 then
+			raw_netlist_data = raw_netlist_data .. ","
+		end
+		raw_netlist_data = raw_netlist_data .. "{x="..p.x..",y="..p.y..",z="..p.z.."}"
+	end
+	raw_netlist_data = raw_netlist_data .. "},sink={"
+	for i,p in ipairs(netlist.sinks) do
+		if i ~= 1 then
+			raw_netlist_data = raw_netlist_data .. ","
+		end
+		raw_netlist_data = raw_netlist_data .. "{x="..p.x..",y="..p.y..",z="..p.z.."}"
+	end
+	raw_netlist_data = raw_netlist_data .. "}}"
+	local netlist_data = core.compress(raw_netlist_data)
 	local netlist_id = core.sha256(netlist_data)
+	--core.log(netlist_id.." = "..dump(netlist))
+	--core.log(netlist_id.." => "..raw_netlist_data)
 
 	local recompute_list = {}
 
