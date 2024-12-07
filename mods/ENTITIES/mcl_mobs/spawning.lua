@@ -710,7 +710,7 @@ function mcl_mobs.spawn(pos,id)
 				rotation = { vec = vector.zero(), absolute = true }
 			})
 		else -- minetest < 5.9
-			self.object:set_bone_position(def.head_swivel, def.head_bone_position, vector.zero)
+			obj:set_bone_position(def.head_swivel, def.head_bone_position, vector.zero())
 		end
 	end
 	return obj
