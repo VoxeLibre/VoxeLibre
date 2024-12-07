@@ -320,6 +320,12 @@ fix_doubleplants (Mcimport double plant fixes) bool true
 # Allow players to create Minecraft-like maps.
 enable_real_maps (Enable Real Maps) bool true
 
+# Make maps in the Nether show not only the bedrock.
+vl_maps_allow_nether (Make maps in the Nether useful) bool true
+
+# Allow maps to overlap 50% per level
+vl_maps_allow_overlap (Allow overlapping maps by 50%) bool true
+
 # Enable workarounds for faulty mob navigation.
 # Hack 1: teleport golems home if they are very far from home
 mcl_mob_allow_nav_hacks (Mob navigation hacks) bool false

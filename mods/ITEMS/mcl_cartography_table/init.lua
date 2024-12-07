@@ -1,8 +1,18 @@
-local S = minetest.get_translator(minetest.get_current_modname())
-local C = minetest.colorize
-local F = minetest.formspec_escape
+local S = core.get_translator(core.get_current_modname())
+local C = core.colorize
+local F = core.formspec_escape
 
-local function refresh_cartography(pos, player)
+local formspec_name = "mcl_cartography_table:cartography_table"
+
+-- Crafting patterns supported:
+-- 1. Filled map + paper = zoomed out map, but only ONCE for now (too slow)
+-- 2. Filled map + empty map = two copies of the map
+-- 3. Filled map + glass pane = locked filled map
+-- TODO: allow refreshing a map using the table?
+
+local function update_cartography_table(player)
+	if not player or not player:is_player() then return end
+
 	local formspec = table.concat({
 		"formspec_version[4]",
 		"size[11.75,10.425]",
@@ -10,21 +20,21 @@ local function refresh_cartography(pos, player)
 
 		-- First input slot
 		mcl_formspec.get_itemslot_bg_v4(1, 0.75, 1, 1),
-		"list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";input;1,0.75;1,1;1]",
+		"list[current_player;cartography_table_input;1,0.75;1,1;0]",
 
 		-- Cross icon
 		"image[1,2;1,1;mcl_anvils_inventory_cross.png]",
 
 		-- Second input slot
 		mcl_formspec.get_itemslot_bg_v4(1, 3.25, 1, 1),
-		"list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";input;1,3.25;1,1;]",
+		"list[current_player;cartography_table_input;1,3.25;1,1;1]",
 
 		-- Arrow
 		"image[2.7,2;2,1;mcl_anvils_inventory_arrow.png]",
 
 		-- Output slot
 		mcl_formspec.get_itemslot_bg_v4(9.75, 2, 1, 1, 0.2),
-		"list[nodemeta:" .. pos.x .. "," .. pos.y .. "," .. pos.z .. ";output;9.75,2;1,1;]",
+		"list[current_player;cartography_table_output;9.75,2;1,1;]",
 
 		-- Player inventory
 		"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
@@ -35,12 +45,27 @@ local function refresh_cartography(pos, player)
 		"list[current_player;main;0.375,9.05;9,1;]",
 	})
 
-	local inv = minetest.get_meta(pos):get_inventory()
-	local map = inv:get_stack("input", 2)
-	local texture = mcl_maps.load_map_item(map)
-	local marker = inv:get_stack("input", 1):get_name()
+	local inv = player:get_inventory()
+	local map = inv:get_stack("cartography_table_input", 1)
+	local texture = not map:is_empty() and mcl_maps.load_map_item(map)
+	local addon = inv:get_stack("cartography_table_input", 2)
+	inv:set_stack("cartography_table_output", 1, nil)
 
-	if marker == "mcl_maps:empty_map" then
+	if not map:is_empty() and addon:get_name() == "mcl_core:paper"
+			and map:get_meta():get_int("mcl_maps:zoom") < mcl_maps.max_zoom
+			and map:get_meta():get_int("mcl_maps:locked") ~= 1 then
+		---- Zoom a map
+		formspec = formspec .. "image[5.125,0.5;4,4;mcl_maps_map_background.png]"
+		-- TODO: show half size in appropriate position?
+		if texture then formspec = formspec .. "image[6.25,1.625;1.75,1.75;" .. texture .. "]" end
+		-- zoom will be really applied when taking from the stack
+		-- to not cause unnecessary map generation. But the tooltip should be right already:
+		map:get_meta():set_int("mcl_maps:zoom", map:get_meta():get_int("mcl_maps:zoom") + 1)
+		tt.reload_itemstack_description(map)
+		inv:set_stack("cartography_table_output", 1, map)
+
+	elseif not map:is_empty() and addon:get_name() == "mcl_maps:empty_map" then
+		---- Copy a map
 		if texture then
 			formspec = formspec .. table.concat({
 				"image[6.125,0.5;3,3;mcl_maps_map_background.png]",
@@ -54,41 +79,128 @@ local function refresh_cartography(pos, player)
 				"image[5.125,1.5;3,3;mcl_maps_map_background.png]"
 			})
 		end
-		if not map:is_empty() then
-			map:set_count(2)
-			inv:set_stack("output", 1, map)
+		map:set_count(2)
+		inv:set_stack("cartography_table_output", 1, map)
+
+	elseif addon:get_name() == "xpanes:pane_natural_flat" and not map:is_empty() then
+		---- Lock a map
+		formspec = formspec .. "image[5.125,0.5;4,4;mcl_maps_map_background.png]"
+		if texture then formspec = formspec .. "image[5.375,0.75;3.5,3.5;" .. texture .. "]" end
+		if map:get_meta():get_int("mcl_maps:locked") == 1 then
+			formspec = formspec .. table.concat({
+				"image[3.2,2;1,1;mcl_core_barrier.png]",
+				"image[8.375,3.75;0.5,0.5;mcl_core_barrier.png]"
+			})
+		else
+			formspec = formspec .. "image[8.375,3.75;0.5,0.5;mcl_core_barrier.png]"
+			map:get_meta():set_int("mcl_maps:locked", 1)
+			inv:set_stack("cartography_table_output", 1, map)
 		end
 	else
+		---- Not supported
 		formspec = formspec .. "image[5.125,0.5;4,4;mcl_maps_map_background.png]"
-		--formspec = formspec .. "box[5.125,0.5;4,4;#FFFFFF]"
 		if texture then formspec = formspec .. "image[5.375,0.75;3.5,3.5;" .. texture .. "]" end
-		if marker == "xpanes:pane_natural_flat" and not map:is_empty() then
-			if map:get_meta():get_int("locked") == 1 then
-				formspec = formspec .. table.concat({
-					"image[3.2,2;1,1;mcl_core_barrier.png]",
-					"image[8.375,3.75;0.5,0.5;mcl_core_barrier.png]"
-				})
-			else
-				formspec = formspec .. "image[8.375,3.75;0.5,0.5;mcl_core_barrier.png]"
-				map:get_meta():set_int("locked", 1)
-				inv:set_stack("output", 1, map)
-			end
+	end
+
+	core.show_formspec(player:get_player_name(), formspec_name, formspec)
+end
+
+core.register_on_joinplayer(function(player)
+	local inv = player:get_inventory()
+
+	inv:set_size("cartography_table_input", 2)
+	inv:set_size("cartography_table_output", 1)
+
+	--The player might have items remaining in the slots from the previous join; this is likely
+	--when the server has been shutdown and the server didn't clean up the player inventories.
+	mcl_util.move_player_list(player, "cartography_table_input")
+	player:get_inventory():set_list("cartography_table_output", {})
+end)
+
+core.register_on_leaveplayer(function(player)
+	mcl_util.move_player_list(player, "cartography_table_input")
+	player:get_inventory():set_list("cartography_table_output", {})
+end)
+
+function remove_from_input(player, inventory, count)
+	local meta = player:get_meta()
+	local astack = inventory:get_stack("cartography_table_input", 1)
+	if astack then
+		astack:set_count(math.max(0, astack:get_count() - count))
+		inventory:set_stack("cartography_table_input", 1, astack)
+	end
+	local bstack = inventory:get_stack("cartography_table_input", 2)
+	if bstack then
+		bstack:set_count(math.max(0, bstack:get_count() - count))
+		inventory:set_stack("cartography_table_input", 2, bstack)
+	end
+end
+
+core.register_allow_player_inventory_action(function(player, action, inventory, inventory_info)
+	-- Generate zoomed map
+	if (action == "move" or action == "take") and inventory_info.from_list == "cartography_table_output" and inventory_info.from_index == 1 then
+		local stack = inventory:get_stack("cartography_table_output", 1)
+		local addon = inventory:get_stack("cartography_table_input", 2)
+		if stack:get_name():find("mcl_maps:filled_map") and addon:get_name() == "mcl_core:paper" then
+			local pname = player:get_player_name()
+			core.chat_send_player(pname, S("Zooming a map may take several seconds to generate the world, please wait."))
+			local callback = function(id, filename) core.chat_send_player(pname, S("The zoomed map is now ready.")) end
+			mcl_maps.regenerate_map(stack, callback) -- new zoom level
+			inventory:set_stack("cartography_table_output", 1, stack)
 		end
 	end
 
-	minetest.show_formspec(player:get_player_name(), "mcl_cartography_table", formspec)
-end
+	-- TODO: also allow map texture refresh?
+	if action == "move" or action == "put" then
+		if inventory_info.to_list == "cartography_table_output" then return false end
+		if inventory_info.to_list == "cartograhy_table_input" then
+			local index = inventory_info.to_index
+			local stack = inventory:get_stack("cartography_table_input", index)
+			if index == 1 and stack:get_name() == "mcl_maps:empty_map" then return inventory_info.count end
+			if index == 1 and stack:get_name():find("mcl_maps:filled_map") then return inventory_info.count end
+			if index == 1 and stack:get_name() == "mcl_core:paper" then return inventory_info.count end
+			if index == 2 and stack:get_name() == "mcl_maps:empty_map" then return inventory_info.count end
+			if index == 2 and stack:get_name() == "xpanes:pane_natural_flat" then return inventory_info.count end
+			return false
+		end
+		if inventory_info.from_list == "cartography_table_output" and inventory_info.from_index == 1 then
+			return inventory_info.count
+		end
+	end
+end)
 
-local allowed_to_put = {
-	--["mcl_core:paper"] = true, Requires missing features with increasing map size
-	["mcl_maps:empty_map"] = true,
-	["xpanes:pane_natural_flat"] = true
-}
+core.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
+	if action == "move" then
+		if inventory_info.from_list == "cartography_table_output" then
+			remove_from_input(player, inventory, inventory_info.count)
+		end
+		if inventory_info.to_list == "cartography_table_input" or inventory_info.from_list == "cartography_table_input" then
+			update_cartography_table(player)
+		end
+	elseif action == "put" then
+		if inventory_info.listname == "cartography_table_input" then
+			update_cartography_table(player)
+		end
+	elseif action == "take" then
+		if inventory_info.listname == "cartography_table_output" then
+			remove_from_input(player, inventory, inventory_info.stack:get_count())
+		end
+	end
+end)
 
-minetest.register_node("mcl_cartography_table:cartography_table", {
+core.register_on_player_receive_fields(function(player, formname, fields)
+	if formname ~= formspec_name then return end
+	if fields.quit then
+		mcl_util.move_player_list(player, "cartography_table_input")
+		player:get_inventory():set_list("cartography_table_output", {})
+		return
+	end
+end)
+
+core.register_node("mcl_cartography_table:cartography_table", {
 	description = S("Cartography Table"),
-	_tt_help = S("Used to create or copy maps"),
-	_doc_items_longdesc = S("Is used to create or copy maps for use."),
+	_tt_help = S("Used to copy, lock, and zoom maps"),
+	_doc_items_longdesc = S("A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and maps may only be zoomed out once right now."),
 	tiles = {
 		"mcl_cartography_table_top.png", "mcl_cartography_table_side3.png",
 		"mcl_cartography_table_side3.png", "mcl_cartography_table_side2.png",
@@ -99,60 +211,12 @@ minetest.register_node("mcl_cartography_table:cartography_table", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
-	on_construct = function(pos)
-		local inv = minetest.get_meta(pos):get_inventory()
-		inv:set_size("input", 2)
-		inv:set_size("output", 1)
-	end,
-	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if minetest.is_protected(pos, player:get_player_name()) or listname == "output" then
-			return 0
-		else
-			if index == 2 and not stack:get_name():find("filled_map") then return 0 end
-			if index == 1 and not allowed_to_put[stack:get_name()] then return 0 end
-			return stack:get_count()
-		end
-	end,
-	on_metadata_inventory_put = function(pos, _, _, _, player)
-		refresh_cartography(pos, player)
-	end,
-	on_metadata_inventory_take = function(pos, listname, _, _, player)
-		local inv = minetest.get_meta(pos):get_inventory()
-		if listname == "output" then
-			local first = inv:get_stack("input", 2); first:take_item(); inv:set_stack("input", 2, first)
-			local second = inv:get_stack("input", 1); second:take_item(); inv:set_stack("input", 1, second)
-		else
-			inv:set_stack("output", 1, "")
-		end
-		refresh_cartography(pos, player)
-	end,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
-		return 0 and minetest.is_protected(pos, player:get_player_name()) or stack:get_count()
-	end,
 	on_rightclick = function(pos, node, player, itemstack)
-		if not player:get_player_control().sneak then refresh_cartography(pos, player) end
-	end,
-	after_dig_node = function(pos, _, oldmetadata, _)
-		local meta = minetest.get_meta(pos)
-		local meta2 = meta:to_table()
-		meta:from_table(oldmetadata)
-		local inv = meta:get_inventory()
-		for i = 1, inv:get_size("input") do
-			local stack = inv:get_stack("input", i)
-			if not stack:is_empty() then
-				minetest.add_item(vector.offset(pos,
-					math.random(0, 10) / 10 - 0.5,
-					0,
-					math.random(0, 10) / 10 - 0.5
-				), stack)
-			end
-		end
-		meta:from_table(meta2)
+		if player and player:is_player() and not player:get_player_control().sneak then update_cartography_table(player) end
 	end,
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_cartography_table:cartography_table",
 	recipe = {
 		{ "mcl_core:paper", "mcl_core:paper", "" },
@@ -161,7 +225,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "fuel",
 	recipe = "mcl_cartography_table:cartography_table",
 	burntime = 15,
