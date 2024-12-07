@@ -206,8 +206,6 @@ local function update_redstone_wire(orig, update_neighbor)
 		-- Update netlist because it has changed
 		mod.build_netlist(orig)
 	end
-
-	mod.build_netlist(orig)
 end
 
 local base_def = {
