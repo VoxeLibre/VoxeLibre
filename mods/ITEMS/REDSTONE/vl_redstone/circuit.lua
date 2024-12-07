@@ -204,7 +204,9 @@ local function netlist_map_finished(netlist_id, netlist_map, netlist_map_compres
 	pending_netlist_map_lookups[netlist_id] = nil
 end
 
+local DEFAULT_NODE_OPTIONS = {}
 local function get_connected_nodes(pos, node, def, netlist)
+	local options = pos.options or DEFAULT_NODE_OPTIONS
 	local edges = netlist.edges
 	local sources = netlist.sources
 	local sinks = netlist.sinks
@@ -220,63 +222,75 @@ local function get_connected_nodes(pos, node, def, netlist)
 		local is_sink = false
 		local is_source = false
 
-		local input_rules = mesecon.get_any_inputrules(p_node)
-		if input_rules then
-			local inputs = mesecon.flattenrules(input_rules)
-			for _,p_rule in pairs(inputs) do
-				if vector.equals(p_rule, neg_rule) then
-					if (p_def.groups.redstone_wire or 0) >= 1 then
-						res[#res + 1] = p
-					end
-					edges[#edges + 1] = {pos, p}
+		local connect = true
 
-					if p_def.mesecons and p_def.mesecons.effector then
-						sinks[#sinks + 1] = p
-						is_sink = true
+		if options.weak and p_def.groups.redstone_wire then
+			connect = false
+		end
+
+		if connect then
+			local input_rules = mesecon.get_any_inputrules(p_node)
+			if input_rules then
+				local inputs = mesecon.flattenrules(input_rules)
+				for _,p_rule in pairs(inputs) do
+					if vector.equals(p_rule, neg_rule) then
+						if (p_def.groups.redstone_wire or 0) >= 1 then
+							res[#res + 1] = p
+						end
+						edges[#edges + 1] = {pos, p}
+
+						if p_def.mesecons and p_def.mesecons.effector then
+							sinks[#sinks + 1] = p
+							is_sink = true
+						end
 					end
 				end
 			end
-		end
 
-		-- Opaque blocks weakly power (these nodes won't have input rules)
-		if rule.weak and not is_sink and p_def.groups.opaque then
-			edges[#edges + 1] = {pos, p}
-			sinks[#sinks + 1] = p
-		end
-
-		local output_rules = mesecon.get_any_outputrules(p_node)
-		if output_rules then
-			local outputs = mesecon.flattenrules(output_rules)
-			for _,p_rule in pairs(outputs) do
-				if vector.equals(p_rule, neg_rule) then
-					if (p_def.groups.redstone_wire or 0) >= 1 then
-						res[#res + 1] = p
-					end
-					edges[#edges + 1] = {p, pos}
-					if p_rule.strong then
-						strongly_powered[#strongly_powered + 1] = p
-					end
-
-					if p_def.mesecons and p_def.mesecons.receptor then
-						sources[#sources + 1] = p
-						is_source = true
-					end
-				end
-			end
-		end
-
-		-- Add strongly-powered opaque blocks to sources list (these nodes won't have output rules)
-		if not is_source and p_def.groups.opaque then
-			local is_strongly_powered = false
-			for _,p in pairs(strongly_powered) do
-				if vector.equals(p, pos) then
-					is_strongly_powered = true
-					break
-				end
-			end
-			if is_strongly_powered then
+			-- Opaque blocks weakly power (these nodes won't have input rules)
+			if rule.weak and not is_sink and p_def.groups.opaque then
 				edges[#edges + 1] = {pos, p}
-				sources[#sources + 1] = p
+				sinks[#sinks + 1] = p
+				p.options = {weak=true}
+				res[#res + 1] = p
+			end
+
+			local output_rules = mesecon.get_any_outputrules(p_node)
+			if output_rules then
+				local outputs = mesecon.flattenrules(output_rules)
+				for _,p_rule in pairs(outputs) do
+					if vector.equals(p_rule, neg_rule) then
+						if (p_def.groups.redstone_wire or 0) >= 1 then
+							res[#res + 1] = p
+						end
+						edges[#edges + 1] = {p, pos}
+						if p_rule.strong then
+							strongly_powered[#strongly_powered + 1] = p
+						end
+
+						if p_def.mesecons and p_def.mesecons.receptor then
+							sources[#sources + 1] = p
+							is_source = true
+						end
+					end
+				end
+			end
+
+			-- Add strongly-powered opaque blocks to sources list (these nodes won't have output rules)
+			if not is_source and p_def.groups.opaque then
+				local is_strongly_powered = false
+				for _,p in pairs(strongly_powered) do
+					if vector.equals(p, pos) then
+						is_strongly_powered = true
+						break
+					end
+				end
+				if is_strongly_powered then
+					edges[#edges + 1] = {pos, p}
+					sources[#sources + 1] = p
+					p.options = {strong=true}
+					res[#res + 1] = p
+				end
 			end
 		end
 	end
@@ -374,9 +388,10 @@ function mod.build_netlist(pos)
 
 			local node = core.get_node(p)
 			local def = core.registered_nodes[node.name]
+			local options = p.options or {}
 
-			-- Only trace along wires
-			if def and def.groups.redstone_wire then
+			-- Only trace along wires, weakly and strongly powered nodes
+			if def and def.groups.redstone_wire or options.weak or options.strong then
 				wires[#wires + 1] = p
 
 				-- check neighbors for connections
