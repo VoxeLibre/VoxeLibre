@@ -6,9 +6,44 @@ local netlist_cache = {}
 local netlist_map_cache = {}
 local pending_netlist_map_lookups = {}
 local power_cache = {}
+local power_source_cache = {}
+
+-- Clear cache
+vl_block_update.register_node_change(function(pos)
+	local pos_hash = core.hash_node_position(pos)
+	if power_source_cache[pos_hash] then
+		--core.log("Reset power source cache for "..vector.to_string(pos))
+		power_source_cache[pos_hash] = nil
+	end
+end)
+
+local function get_node_power_source_level(pos_hash)
+	local cache = power_source_cache[pos_hash]
+	if cache then return cache end
+
+	local power_source_level = 0
+	local pos = core.get_position_from_hash(pos_hash)
+	local node = core.get_node(pos)
+	local def = core.registered_nodes[node.name] or core.default_nodedef
+	local receptor = def.mesecons and def.mesecons.receptor
+	if receptor and receptor.state == mesecon.state.on then
+		power_source_cache[pos_hash] = 16
+		--core.log("Power source lv16 at "..vector.to_string(pos))
+		return 16
+	elseif def._vl_redstone then
+		local power_source_level = def._vl_redstone.power_source_level
+		if power_source_level then
+			power_source_cache[pos_hash] = power_source_level
+			--core.log("Power source lv"..power_source_level.." at "..vector.to_string(pos))
+			return power_source_level
+		end
+	end
+
+	return 0
+end
 
 function mod.get_power_level_from_hash(pos_hash)
-	return power_cache[pos_hash] or 0
+	return math.max(power_cache[pos_hash] or 0, get_node_power_source_level(pos_hash))
 end
 function mod.get_power_level(pos)
 	return mod.get_power_level_from_hash(core.hash_node_position(pos))
@@ -405,6 +440,7 @@ local function set_power_level(pos, rules, power_level)
 	local netlists = {}
 	local seen = {}
 	local pos_hash = core.hash_node_position(pos)
+	power_source_cache[pos_hash] = nil
 	power_cache[pos_hash] = power_level
 	--core.log("pos="..vector.to_string(pos)..", pos_hash="..pos_hash)
 
