@@ -1,4 +1,7 @@
 # textdomain: mcl_cartography_table
 Cartography Table=製図台
-Used to create or copy maps=地図の作成やコピーに使用
-Is used to create or copy maps for use..=地図の作成やコピーに使用します。
+Inventory=
+Zooming a map may take several seconds to generate the world, please wait.=
+The zoomed map is now ready.=
+Used to copy, lock, and zoom maps=
+A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and the maximum zoom level may be restricted by server settings to limit the performance impact.=
