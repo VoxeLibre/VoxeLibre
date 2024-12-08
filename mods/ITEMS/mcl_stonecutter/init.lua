@@ -143,7 +143,7 @@ local function build_stonecutter_formspec(player, items)
 		"list[current_player;stonecutter_input;1.625,2;1,1;]",
 
 		-- Container background
-		"image[4.075,0.7;3.6,3.6;mcl_inventory_background9.png;2]",
+		"image[4.075,0.7;3.6,3.6;mcl_inventory_stonecutter.png;2]",
 
 		-- Style for item image buttons
 		"style_type[item_image_button;noclip=false;content_offset=0]",
