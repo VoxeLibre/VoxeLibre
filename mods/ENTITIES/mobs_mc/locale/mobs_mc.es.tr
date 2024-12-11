@@ -1,63 +1,84 @@
 # textdomain: mobs_mc
-##[ axolotl.lua ]##
-Axolotl=
-##[ bat.lua ]##
+Agent=Agente
+Axolotl=Ajolote
 Bat=Murciélago
 ##[ rabbit.lua ]##
 Rabbit=Conejo
 Killer Bunny=Conejo asesino
 ##[ chicken.lua ]##
 Chicken=Pollo
-##[ cow+mooshroom.lua ]##
 Cow=Vaca
 Mooshroom=Champivaca
-##[ horse.lua ]##
+Stalker=Stalker
+Ender Dragon=Dragón del Ender
+Enderman=Enderman
+Endermite=Endermite
+Ghast=Ghast
+Elder Guardian=Guardián anciano
+Guardian=Guardián
 Horse=Caballo
 Skeleton Horse=Caballo esqueleto
 Zombie Horse=Caballo zombi
 Donkey=Burro
 Mule=Mula
-##[ llama.lua ]##
+Iron Golem=Gólem de hierro
 Llama=Llama
-##[ ocelot.lua ]##
 Ocelot=Ocelote
 Cat=Gato
-##[ parrot.lua ]##
 Parrot=Loro
 ##[ pig.lua ]##
 Pig=Cerdo
 ##[ polar_bear.lua ]##
 Polar Bear=Oso polar
-##[ sheep.lua ]##
+Rabbit=Conejo
+Killer Bunny=Conejo asesino
 Sheep=Oveja
-##[ wolf.lua ]##
-Wolf=Lobo
-Dog=
-##[ squid.lua ]##
+Shulker=Shulker
+Silverfish=Lepisma
+Skeleton=Esqueleto
+Stray=Errante
+Wither Skeleton=Esqueleto del Wither
+Magma Cube=Cubo de magma
+Slime=Slime
+Snow Golem=Gólem de nieve
+Spider=Araña
+Cave Spider=Araña de cueva
 Squid=Calamar
-##[ villager.lua ]##
-Novice=
-Apprentice=
-Journeyman=
-Expert=
-Master=Maestro
-Unemployed=
-Farmer=
-Fisherman=
-Fletcher=
-Shepherd=
-Librarian=
+Vex=Vex
+Evoker=Evocador
+Illusioner=Illusionista
+Villager=Aldeano
+Vindicator=Vindicador
+Zombie Villager=Aldeano zombi
+Witch=Bruja
+Wither=Wither
+Wolf=Lobo
+Husk=Disecado
+Baby Husk=Disecado bebé
+Zombie=Zombi
+Baby Zombie=Zombi bebé
+Piglin=Piglin
+Baby Piglin=Piglin bebé
+Zombie Piglin=Piglin zombi
+Baby Zombie Piglin=Piglin zombi bebé
+Sword Piglin=Piglin espadachín
+Piglin Brute=Piglin bruto
+Farmer=Granjero
+Fisherman=Pescador
+Fletcher=Flechero
+Shepherd=Pastor
+Librarian=Bibliotecario
 Cartographer=Cartógrafo
-Armorer=Escudero
+Armorer=Herrero de armaduras
 Leatherworker=Peletero
 Butcher=Carnicero
-Weapon Smith=Armero
-Tool Smith=Herrero
+Weapon Smith=Herrero de armas
+Tool Smith=Herrero de herramientas
 Cleric=Clérigo
-Mason=
-Nitwit=Holgazán
-Villager=Aldeano
-##[ pillager.lua ]##
+Nitwit=Simplón
+Cod=Bacalao
+Salmon=Salmón
+Dolphin=Delfín
 Pillager=Saqueador
 ##[ villager_evoker.lua ]##
 Evoker=Invocador
@@ -126,25 +147,8 @@ Cod=Bacalao
 Salmon=Salmón
 ##[ tropical_fish.lua ]##
 Tropical fish=Pez tropical
-##[ dolphin.lua ]##
-Dolphin=Delfín
-##[ glow_squid.lua ]##
-Glow Squid=Calamar luminoso
-##[ piglin.lua ]##
-Piglin=
-Sword Piglin=
-Zombie Piglin=Hombrecerdo Zombi
-Baby Zombie Piglin=Bebé Hombrecerdo Zombi
-Piglin Brute=
-##[ hoglin+zoglin.lua ]##
 Hoglin=Hoglin
-Zoglin=
-Baby hoglin=
-##[ strider.lua ]##
+Baby hoglin=Hoglin bebé
+Zoglin=Zoglin
 Strider=Lavagante
-Baby Strider=
-
-
-##### not used anymore #####
-
-Enderman=Enderman
+Glow Squid=Calamar luminoso
