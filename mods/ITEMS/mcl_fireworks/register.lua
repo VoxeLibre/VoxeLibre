@@ -12,10 +12,11 @@ local firework_entity = {
 	physical = true,
 	pointable = false,
 	visual = "mesh",
-	mesh = "mcl_bows_arrow.obj",
-	visual_size = {x=-1, y=1},
-	textures = {"mcl_fireworks_rocket.png"},
-	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
+	visual_size = {x=1, y=2}, -- TODO adjust
+	mesh = "mcl_fireworks_rocket.obj",
+	textures = {"mcl_fireworks_entity.png"},
+	backface_culling = false,
+	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19}, -- TODO verify
 	collide_with_objects = false,
 	liquid_drag = true,
 	_fire_damage_resistant = true,
@@ -44,7 +45,7 @@ local firework_entity = {
 			vl_projectile.has_tracer,
 
 			function(self, dtime)
-				self.object:add_velocity(vector.new(0, dtime, 0))
+				self.object:add_velocity(vector.new(0, dtime, 0)) -- TODO timeout
 			end,
 
 			vl_projectile.collides_with_solids,
@@ -119,8 +120,8 @@ local firework_entity = {
 
 local function register_rocket(n, duration, force)
 	def = table.copy(firework_entity)
-	vl_projectile.register("mcl_fireworks:rocket_" .. n, def)
-	minetest.register_craftitem("mcl_fireworks:rocket_" .. n, {
+	vl_projectile.register("mcl_fireworks:rocket_" .. n, def) -- TODO one entity
+	minetest.register_craftitem("mcl_fireworks:rocket_" .. n, { -- TODO one item, use metadata
 		description = description,
 		_tt_help = tt_help .. " " .. duration,
 		inventory_image = "mcl_fireworks_rocket.png",
@@ -138,7 +139,7 @@ local function register_rocket(n, duration, force)
 		end,
 		on_place = function(itemstack, user, pointed_thing)
 			local pos = pointed_thing.above
-			pos.y = pos.y + 1
+-- 			pos.y = pos.y + 1
 			vl_projectile.create("mcl_fireworks:rocket_" .. n, {
 				pos=pos,
 				velocity=vector.new(0,1,0)
