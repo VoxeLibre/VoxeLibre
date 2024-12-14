@@ -4,7 +4,7 @@ local modpath = minetest.get_modpath(modname)
 vl_structures.register_structure("obelisk_sand",{
 	place_on = {"group:sand"},
 	flags = "place_center_x, place_center_z",
-	chunk_probability = 12,
+	chunk_probability = 20,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -3,
@@ -38,7 +38,7 @@ vl_structures.register_structure("obelisk_light",{
 vl_structures.register_structure("obelisk_cobble",{
 	place_on = {"group:grass_block", "group:dirt"},
 	flags = "place_center_x, place_center_z",
-	chunk_probability = 25,
+	chunk_probability = 35,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -2,

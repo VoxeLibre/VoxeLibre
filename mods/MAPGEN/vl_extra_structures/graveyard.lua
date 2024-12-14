@@ -2,12 +2,13 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
+-- TODO: the schematics could use ignore/air to ensure a nice headroom and open entranceway, then we could reduce terraforming?
 vl_structures.register_structure("graveyard",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
 	flags = "place_center_x, place_center_z",
-	prepare = { tolerance = 3, clear_bottom = 1, clear_top = 0, padding = 0, corners = 1, foundation = -2 },
-	y_offset = function(pr) return -(pr:next(3,3)) end,
+	prepare = { tolerance = 2, clear_bottom = 0, clear_top = -2, padding = 1, corners = 2, foundation = -2 },
 	chunk_probability = 40,
+	y_offset = -3,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "BirchForest", "Forest", "Plains", "Taiga" },
@@ -37,8 +38,9 @@ vl_structures.register_structure("graveyard",{
 		for _,n in pairs(minetest.find_nodes_in_area(p1,p2,{"group:wall"})) do
 			mcl_walls.update_wall(n)
 		end
-		local sp = minetest.find_nodes_in_area(pos,vector.offset(pos,0,3,0),{"mcl_mobspawners:spawner"})
-		if not sp[1] then return end
-		mcl_mobspawners.setup_spawner(sp[1], "mobs_mc:zombie", 0, minetest.LIGHT_MAX+1, 10, 3, -1)
+		local sp = minetest.find_nodes_in_area(p1,p2,{"mcl_mobspawners:spawner"})
+		if #sp > 0 then
+			mcl_mobspawners.setup_spawner(sp[1], "mobs_mc:zombie", 0, 10, 10, 10, 2)
+		end
 	end
 })
