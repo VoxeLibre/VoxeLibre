@@ -495,6 +495,8 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		do_damage = true
 	end
 
+	local object_alive = true
+
 	if do_damage then
 		-- Get damage
 		local dmg = projectile_def.damage_groups or 0
@@ -508,13 +510,13 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		if self._removed or not self.object:get_pos() then return true end
 
 		-- Guard against crashes when the object the projectile collided with was destroyed
-		if object_lua._removed or not object:get_pos() then return true end
+		if (object_lua and object_lua._removed) or not object:get_pos() then object_alive = false end
 
 		-- Indicate damage
 		damage_particles(vector.add(pos, vector.multiply(self.object:get_velocity(), 0.1)), self._is_critical)
 
 		-- Light things on fire
-		if mcl_burning.is_burning(self.object) then
+		if object_alive and mcl_burning.is_burning(self.object) then
 			mcl_burning.set_on_fire(object, 5)
 		end
 	end
