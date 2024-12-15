@@ -1094,7 +1094,7 @@ function mob_class:check_despawn(pos, dtime)
 				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns at "..minetest.pos_to_string(pos, 1) .. " lifetimer ran out")
 			end
 			mcl_burning.extinguish(self.object)
-			self.object:remove()
+			mcl_util.remove_entity(self)
 			return true
 		elseif self.lifetimer <= 10 then
 			if math.random(10) < 4 then

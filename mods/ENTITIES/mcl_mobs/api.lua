@@ -112,13 +112,13 @@ end
 function mob_class:mob_activate(staticdata, def, dtime)
 	if not self.object:get_pos() or staticdata == "remove" then
 		mcl_burning.extinguish(self.object)
-		self.object:remove()
+		mcl_util.remove_entity(self)
 		return
 	end
 	if self.type == "monster"
 	and minetest.settings:get_bool("only_peaceful_mobs", false) then
 		mcl_burning.extinguish(self.object)
-		self.object:remove()
+		mcl_util.remove_entity(self)
 		return
 	end
 
