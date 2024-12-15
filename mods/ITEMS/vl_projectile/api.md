@@ -27,6 +27,8 @@ Arguments:
                  behaviors: `vl_projectiles.collides_with_solids`, `vl_projectiles.collides_with_entities`
                             and `vl_projectiles.raycast_collides_with_entities`
   * `maximum_time`: number of seconds until projectiles are removed.
+  * `pitch_offset`: a fixed offset to add to the projectile's rotational pitch.
+  * `yaw_offset`: a fixed offset to add to the projectile's rotational pitch.
   * `sounds`: sounds for this projectile. All fields take a table with three parameters corresponding to the
               three parameters for `core.play_sound()`. Supported sounds are:
     * `on_collision`: played when no other more specific sound is defined. May be a function of type
@@ -36,11 +38,9 @@ Arguments:
     * `on_entity_collision`: played when the projectile collides with another entity. May be a function of type
         `function(projectile, entity_def, projectile_def, type, entity)` with `type = "entity"`
  * `on_collide_with_solid`: callback of type `function(projectile, pos, node, node_def)` used when the projectile
-                            collides with a solid node. Requires
-   `vl_projectile.collides_with_solids` in `behaviors` list.
+                            collides with a solid node. Requires `vl_projectile.collides_with_solids` in `behaviors` list.
  * `on_collide_with_entity`: callback of type `function(projectile, pos, obj)` used when the projectile collides
-                             with an entity. Requires
-   `vl_projectile.collides_with_entities` in `behaviors` list.
+                             with an entity. Requires `vl_projectile.collides_with_entities` in `behaviors` list.
 
 ## `vl_projectile.update_projectile(self, dtime)`
 
