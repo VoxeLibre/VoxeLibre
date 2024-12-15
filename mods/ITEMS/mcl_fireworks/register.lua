@@ -36,6 +36,7 @@ local firework_entity = {
 		survive_collision = true,
 		damages_players = true,
 		maximum_time = 60,
+		pitch_offset = -math.pi / 2,
 		damage_groups = function(self)
 			return { fleshy = vector.length(self.object:get_velocity()) }
 		end,
