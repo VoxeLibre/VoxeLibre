@@ -442,7 +442,7 @@ function mob_class:boom(pos, strength, fire)
 	end
 
 	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
-	self.object:remove()
+	mcl_util.remove_entity(self)
 end
 
 -- deal damage and effects when mob punched
@@ -875,7 +875,7 @@ function mob_class:do_states_attack(dtime)
 					mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
 				end
 				mcl_burning.extinguish(self.object)
-				self.object:remove()
+				mcl_util.remove_entity(self)
 
 				return true
 			end
