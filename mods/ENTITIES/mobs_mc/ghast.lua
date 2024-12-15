@@ -88,10 +88,12 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 			fireball = le and le.name == "mobs_mc:fireball",
 			owner = le and le._owner,
 		}
+
+		return true -- Force punch to continue with default behavior
 	end,
 	on_die = function(self)
 		local last_hit = self._last_hit or {}
-		if last_hit.fireball and last_hit.owner then
+		if last_hit.fireball and last_hit.owner and core.get_player_by_name(last_hit.owner) then
 			awards.unlock(last_hit.owner, "mcl:fireball_redir_serv")
 		end
 	end,

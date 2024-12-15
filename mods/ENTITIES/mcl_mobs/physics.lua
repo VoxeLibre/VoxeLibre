@@ -419,7 +419,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		if on_die_exit == true then
 			self.state = "die"
 			mcl_burning.extinguish(self.object)
-			mcl_util.remove(self)
+			mcl_util.remove_entity(self)
 			return true
 		end
 	end
