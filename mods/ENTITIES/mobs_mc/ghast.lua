@@ -82,6 +82,19 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 			self.object:set_properties({textures=self.base_texture})
 		end
 	end,
+	do_punch = function(self, hitter)
+		local le = hitter:get_luaentity()
+		self._last_hit = {
+			fireball = le and le.name == "mobs_mc:fireball",
+			owner = le and le._owner,
+		}
+	end,
+	on_die = function(self)
+		local last_hit = self._last_hit or {}
+		if last_hit.fireball and last_hit.owner then
+			awards.unlock(last_hit.owner, "mcl:fireball_redir_serv")
+		end
+	end,
 })
 
 
@@ -127,19 +140,12 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	hit_mob = function(self, mob)
 		local name = mob:get_luaentity().name
 		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, true)
-		local ent = mob:get_luaentity()
-		if (not ent or ent.health <= 0) and self._owner and core.get_player_by_name(self._owner)
-		and name == "mobs_mc:ghast" then
-			awards.unlock(self._owner, "mcl:fireball_redir_serv")
-		end
 	end,
 
 	hit_node = function(self, pos, node)
 		mcl_mobs.mob_class.boom(self,pos, 1, true)
 	end
 })
-
-
 
 mcl_mobs:non_spawn_specific("mobs_mc:ghast","overworld","0","7")
 -- spawn eggs
