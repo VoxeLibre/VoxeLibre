@@ -1,0 +1,22 @@
+# textdomain: mcl_inventory
+Recipe book=Receptolibro
+Help=Helpo
+Select player skin=Elektu ludantoŝajno.
+Advancements=Atingoj
+Building Blocks=Konstruaj blokoj
+Decoration Blocks=Dekoraciaj blokoj
+Redstone=Ruĝŝtono
+Transportation=Transportado
+Brewing=
+Miscellaneous=Diversaĵoj
+Search Items=Serĉi aferojn
+Foodstuffs=Manĝaĵoj
+Tools=Iloj
+Combat=Batalado
+Mobs=Estaĵoj
+Materials=Materialoj
+Survival Inventory=Postvivada inventaro
+Crafting=Kreado
+Inventory=Inventaro
+@1/@2=@1/@2
+Switch stack size=Ŝanĝi stakgrandecon
