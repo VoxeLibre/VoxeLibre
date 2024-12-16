@@ -1,0 +1,57 @@
+# textdomain: mcl_tt
+##[ snippets_base.lua ]##
+Painfully slow=极其缓慢
+Very slow=很慢
+Slow=慢
+Fast=快
+Very fast=非常快
+Extremely fast=极快
+Instantaneous=
+@1 uses=@1次使用次数
+Unlimited uses=无限次使用
+Mining speed: @1=挖掘速度：@1
+Durability: @1=耐久度：@1
+Block breaking strength: @1=方块破坏强度：@1
+Damage: @1=伤害：@1
+Healing: @1=治疗量：@1
+Full punch interval: @1s=完整攻击间隔：@1秒
+Food item=
++@1 food points=
+Contact damage: @1 per second=接触伤害：每秒@1
+Contact healing: @1 per second=接触治疗：每秒@1
+Drowning damage: @1=溺水伤害：@1
+Fall damage: +@1%=坠落伤害：+@1%
+No fall damage=无坠落伤害
+Fall damage: @1%=坠落伤害：@1%
+No jumping=无法跳跃
+No swimming upwards=无法向上游动
+No rising=无法上升
+Climbable (only downwards)=可攀爬（仅向下）
+Climbable=可攀爬的
+Slippery=滑的
+Bouncy (@1%)=有弹性（@1%）
+Luminance: @1=亮度：@1
+##[ snippets_mcl.lua ]##
+Head armor=头盔
+Torso armor=胸甲
+Legs armor=护腿
+Feet armor=靴子
+Armor points: @1=护甲点数：@1
+Armor durability: @1=护甲耐久度：@1
+Protection: @1%=防护：@1%
+Hunger points: +@1=饥饿值：+@1
+Saturation points: +@1=饱和度点数：+@1
+Deals damage when falling=在掉落时造成伤害
+Grows on grass blocks or dirt=生长在草方块或泥土上
+Grows on grass blocks, podzol, dirt or coarse dirt=生长在草方块、灰化土、泥土或砂土上
+Flammable=可燃的
+Zombie view range: -50%=僵尸视野范围：-50%
+Skeleton view range: -50%=骷髅视野范围：-50%
+Stalker view range: -50%=潜影贝视野范围：-50%
+...stacks=可堆叠 
+
+
+##### not used anymore #####
+
+Damage (@1): @2=伤害（@1情况）：@2
+Healing (@1): @2=治疗量（@1情况）：@2

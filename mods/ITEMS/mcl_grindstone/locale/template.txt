@@ -1,6 +1,6 @@
 # textdomain: mcl_grindstone
-Inventory=
 Repair & Disenchant=
+Inventory=
 Grindstone=
 Used to disenchant/fix tools=
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=

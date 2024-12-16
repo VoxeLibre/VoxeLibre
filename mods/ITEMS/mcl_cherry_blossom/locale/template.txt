@@ -1,11 +1,11 @@
 # textdomain: mcl_cherry_blossom
+##[ nodes.lua ]##
 Cherry Log=
+Cherry Bark=
 The trunk of a cherry blossom tree.=
 Stripped Cherry Log=
-The stripped trunk of a cherry blossom tree.=
-Cherry Bark=
-This is a decorative block surrounded by the bark of a tree trunk.=
 Stripped Cherry Wood=
+The stripped trunk of a cherry blossom tree.=
 The stripped wood of a cherry blossom tree.=
 Cherry Wood Planks=
 Cherry Leaves=

@@ -1,0 +1,4 @@
+# textdomain: mcl_villages
+Chiseled Stone Village Bricks=雕纹石质村庄砖块
+mcl_villages build tool=村庄建造工具
+Placement denied. You need the “server” privilege to place villages.=放置被拒绝。你需要“服务器”权限才能放置村庄。 

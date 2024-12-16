@@ -1,23 +1,44 @@
 # textdomain: mcl_commands
+##[ kill.lua ]##
 Players can't be killed right now, damage has been disabled.=今、プレイヤーを殺ることはできません。ダメージは無効になっています。
 Player @1 does not exist.=プレイヤー @1 は存在しません。
 You are already dead=あなたはもう死んでいる
 @1 is already dead=@1 はもう死んでいる
-@1 committed suicide.=@1 は自害しました。
-@1 was killed by @2.=@1 は @2 に殺られました。
 [<name>]=[<名前>]
 Kill player or yourself=プレイヤーまたは自分自身を殺害
-Can use /say= /say を使用可能
-<message>=<メッセージ>
-Send a message to every player=全プレイヤーにメッセージを送信
-Invalid usage, see /help say.=無効な使用方法です、 /help say を参照してください。
+##[ setblock.lua ]##
 <X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <ノード文字列>
 Set node at given position=指定された位置にノードを設定
 Invalid node=無効なノード
 @1 spawned.=@1 がスポーンしました。
 Invalid parameters (see /help setblock)=無効なパラメータ ( /help setblock を参照の事)
+##[ seed.lua ]##
+Displays the world seed=ワールドのシードを表示
+##[ summon.lua ]##
+Only peaceful mobs allowed!=平和的なモブのみ許されます！
+##[ say.lua ]##
+Can use /say= /say を使用可能
+<message>=<メッセージ>
+Send a message to every player=全プレイヤーにメッセージを送信
+Invalid usage, see /help say.=無効な使用方法です、 /help say を参照してください。
+##[ list.lua ]##
+Show who is logged on=誰がログオンしているかを表示
+##[ sound.lua ]##
+<sound> <target>=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
+Sound name is invalid!=
+Target is invalid!=
+##[ alias.lua ]##
 List bans=BANのリスト
 Ban list: @1=BANリスト： @1
-Show who is logged on=誰がログオンしているかを表示
-Displays the world seed=ワールドのシードを表示
-Only peaceful mobs allowed!=平和的なモブのみ許されます！
+List clear commands=
+To clear inventory use /clearinv or /clearinventory=
+To clear mobs use /clearmobs=
+To clear the weather use /weather clear=
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+
+
+##### not used anymore #####
+
+@1 committed suicide.=@1 は自害しました。
+@1 was killed by @2.=@1 は @2 に殺られました。

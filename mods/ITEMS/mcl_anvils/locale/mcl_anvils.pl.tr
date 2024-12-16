@@ -1,7 +1,6 @@
 # textdomain: mcl_anvils
-Set Name=Ustaw nazwę
 Repair and Name=Napraw i nazwij
-Inventory=Ekwipunek
+Repair and rename items=Napraw i przemianuj przedmioty
 Anvil=Kowadło
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=Kowadło pozwala naprawiać przedmioty i zbroje, a także nazywać przedmioty. Ma jednak ograniczoną wytrzymałość. Nie pozwól by spadło ci na głowę, bo będzie bardzo boleśnie!
 To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.=Aby użyć kowadła, kliknij je prawym przyciskiem. Kowadło ma dwa miejsca wejściowe (po lewej) i jedno miejsce wyjściowe.
@@ -13,4 +12,9 @@ Armor counts as a tool. It is possible to repair and rename a tool in a single s
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=Kowadło ma ograniczoną wytrzymałość i trzy poziomu uszkodzenia: nieuszkodzone, lekko uszkodzone i bardzo uszkodzone. Za każdym razem gdy naprawiasz lub przemianowujesz coś jest 12% szans, że kowadło się uszkodzi. Kowadła mogą się również uszkodzić gdy spadają z wysokości większej niż jeden blok. Jeśli bardzo uszkodzone kowadło zostanie uszkodzone jeszcze raz, zostanie zniszczone.
 Slightly Damaged Anvil=Lekko uszkodzone kowadło
 Very Damaged Anvil=Bardzo uszkodzone kowadło
-Repair and rename items=Napraw i przemianuj przedmioty
+
+
+##### not used anymore #####
+
+Set Name=Ustaw nazwę
+Inventory=Ekwipunek

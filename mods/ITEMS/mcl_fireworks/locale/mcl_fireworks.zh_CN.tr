@@ -1,0 +1,9 @@
+# textdomain: mcl_fireworks
+##[ register.lua ]##
+Flight Duration:=
+Firework Rocket=烟花火箭
+
+
+##### not used anymore #####
+
+Flight Duration=飞行时长

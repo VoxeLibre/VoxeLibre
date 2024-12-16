@@ -1,10 +1,11 @@
 # textdomain: mcl_itemframes
-Item Frame=
-Item frames are decorative blocks in which items can be placed.=
-Just place any item on the item frame. Use the item frame again to retrieve the item.=
 Can hold an item.=
-Glowing Item Frame=
-Glowing item frames are decorative blocks in which items can be placed.=
+Item Frame=
 Can hold an item and glows.=
+Glowing Item Frame=
+##[ item_frames_API.lua ]##
 Glow and Behold!=
 Craft a glow item frame.=
+Item frames are decorative blocks in which items can be placed.=
+Just place any item on the item frame. Use the item frame again to retrieve the item.=
+Glowing item frames are decorative blocks in which items can be placed and made to glow.=

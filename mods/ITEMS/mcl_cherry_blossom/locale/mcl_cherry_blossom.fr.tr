@@ -1,11 +1,11 @@
 # textdomain: mcl_cherry_blossom
+##[ nodes.lua ]##
 Cherry Log=Bûche de cerisier
+Cherry Bark=Bois de cerisier
 The trunk of a cherry blossom tree.=Le tronc d'un cerisier.
 Stripped Cherry Log=Bûche de cerisier écorcée
-The stripped trunk of a cherry blossom tree.=Le tronc écorcé d'un cerisier.
-Cherry Bark=Bois de cerisier
-This is a decorative block surrounded by the bark of a tree trunk.=Ceci est un bloc décoratif entouré de bois de cerisier
 Stripped Cherry Wood=Bois de cerisier écorcé
+The stripped trunk of a cherry blossom tree.=Le tronc écorcé d'un cerisier.
 The stripped wood of a cherry blossom tree.=Le bois écorcé d'un cerisier
 Cherry Wood Planks=Planches de cerisier
 Cherry Leaves=Feuilles de cerisier
@@ -22,3 +22,8 @@ Cherry Fence=Barrière en cerisier
 Cherry Fence Gate=Portillion en cerisier
 Cherry Pressure Plate=Plaque de pression en cerisier
 Cherry Button=Bouton de Cerisier
+
+
+##### not used anymore #####
+
+This is a decorative block surrounded by the bark of a tree trunk.=Ceci est un bloc décoratif entouré de bois de cerisier

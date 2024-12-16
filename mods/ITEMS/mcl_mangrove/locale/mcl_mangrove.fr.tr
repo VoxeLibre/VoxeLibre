@@ -1,14 +1,13 @@
 # textdomain: mcl_mangrove
 Mangrove Wood=Bûche de palétuvier
-The trunk of a Mangrove tree.=Le tronc d'un palétuvier.
 Mangrove Bark=Bois de palétuvier
-The bark of a Mangrove tree.=L'écorce d'un palétuvier.
+The trunk of a Mangrove tree.=Le tronc d'un palétuvier.
 Mangrove Wood Planks=Planches de palétuvier
 Mangrove Leaves=Feuilles de palétuvier
 Mangrove leaves are grown from mangrove trees.=les feuilles de palétuvier poussent sur les palétuviers.
 Stripped Mangrove Log=Bûche de palétuvier écorcée
-The stripped wood of a Mangrove tree=La bûche écorcée d'un palétuvier
 Stripped Mangrove Wood=Bois de palétuvier écorcé
+The stripped wood of a Mangrove tree=La bûche écorcée d'un palétuvier
 The stripped bark of a Mangrove tree=Le bois écorcé d'un palétuvier
 Mangrove Roots=Racines de palétuvier
 Mangrove roots are decorative blocks that form as part of mangrove trees.=Les racines de palétuvier sont des blocs décoratifs qui font partie des palétuviers.
@@ -34,3 +33,8 @@ Mangrove Wood Fence Gate=Portillon de palétuvier
 Mangrove Wood Stairs=Escalier en bois de palétuvier
 Mangrove Wood Slab=Dalle en bois de palétuvier
 Double Mangrove Wood Slab=Double Dalle en bois de palétuvier
+
+
+##### not used anymore #####
+
+The bark of a Mangrove tree.=L'écorce d'un palétuvier.

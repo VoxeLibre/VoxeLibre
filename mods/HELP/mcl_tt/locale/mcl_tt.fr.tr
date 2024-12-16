@@ -1,4 +1,37 @@
 # textdomain: mcl_tt
+##[ snippets_base.lua ]##
+Painfully slow=Péniblement lent
+Very slow=Très lent
+Slow=Lent
+Fast=Rapide
+Very fast=Très rapide
+Extremely fast=Extremement rapide
+Instantaneous=
+@1 uses=@1 utilisations
+Unlimited uses=Utilisations illimitées
+Mining speed: @1=Vitesse de minage : @1
+Durability: @1=Durabilité : @1
+Block breaking strength: @1=Résistance à la rupture : @1
+Damage: @1=Dégâts : @1
+Healing: @1=Guérison : @1
+Full punch interval: @1s=Intervalle de coup : @1s
+Food item=
++@1 food points=
+Contact damage: @1 per second=Dégâts de contact : @1 par seconde
+Contact healing: @1 per second=Guérison de contact : @1 par seconde
+Drowning damage: @1=Dégâts de noyade : @1
+Fall damage: +@1%=Dégâts de chute : +@1%
+No fall damage=Pas de dégâts de chute
+Fall damage: @1%=Dégâts de chute : @1%
+No jumping=Ne pas sauter
+No swimming upwards=Ne pas nager vers le haut
+No rising=Pas de montée
+Climbable (only downwards)=Grimpable (uniquement vers le bas)
+Climbable=Grimpable
+Slippery=Glissant
+Bouncy (@1%)=Rebondissant (@1%)
+Luminance: @1=Luminance : @1
+##[ snippets_mcl.lua ]##
 Head armor=Armure de tête
 Torso armor=Armure de torse
 Legs armor=Armure de jambes
@@ -15,33 +48,10 @@ Flammable=Inflammable
 Zombie view range: -50%=Distance de vue de Zombie : -50%
 Skeleton view range: -50%=Distance de vue de Squelette : -50%
 Stalker view range: -50%=Distance de vue de Stalker : -50%
-Damage: @1=Dégâts : @1
+...stacks=
+
+
+##### not used anymore #####
+
 Damage (@1): @2=Dégâts (@1) : @2
-Healing: @1=Guérison : @1
 Healing (@1): @2=Guérison (@1) : @2
-Full punch interval: @1s=Intervalle de coup : @1s
-Contact damage: @1 per second=Dégâts de contact : @1 par seconde
-Contact healing: @1 per second=Guérison de contact : @1 par seconde
-Drowning damage: @1=Dégâts de noyade : @1
-Bouncy (@1%)=Rebondissant (@1%)
-Luminance: @1=Luminance : @1
-Slippery=Glissant
-Climbable=Grimpable
-Climbable (only downwards)=Grimpable (uniquement vers le bas)
-No jumping=Ne pas sauter
-No swimming upwards=Ne pas nager vers le haut
-No rising=Pas de montée
-Fall damage: @1%=Dégâts de chute : @1%
-Fall damage: +@1%=Dégâts de chute : +@1%
-No fall damage=Pas de dégâts de chute
-Mining speed: @1=Vitesse de minage : @1
-Very fast=Très rapide
-Extremely fast=Extremement rapide
-Fast=Rapide
-Slow=Lent
-Very slow=Très lent
-Painfully slow=Péniblement lent
-Block breaking strength: @1=Résistance à la rupture : @1
-@1 uses=@1 utilisations
-Unlimited uses=Utilisations illimitées
-Durability: @1=Durabilité : @1

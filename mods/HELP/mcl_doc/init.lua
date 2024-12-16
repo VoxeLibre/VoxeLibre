@@ -100,25 +100,25 @@ doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
 	local s = ""
 	if def.groups.eatable and not def._doc_items_usagehelp then
 		if def.groups.food == 2 then
-			s = s .. S("To eat it, wield it, then rightclick.")
+			s = s .. S("To eat it, wield it, then right-click.")
 			if def.groups.can_eat_when_full == 1 then
 				s = s .. "\n" .. S("You can eat this even when your hunger bar is full.")
 			else
 				s = s .. "\n" .. S("You cannot eat this when your hunger bar is full.")
 			end
 		elseif def.groups.food == 3 then
-			s = s .. S("To drink it, wield it, then rightclick.")
+			s = s .. S("To drink it, wield it, then right-click.")
 			if def.groups.can_eat_when_full ~= 1 then
 				s = s .. "\n" .. S("You cannot drink this when your hunger bar is full.")
 			end
 		else
-			s = s .. S("To consume it, wield it, then rightclick.")
+			s = s .. S("To consume it, wield it, then right-click.")
 			if def.groups.can_eat_when_full ~= 1 then
 				s = s .. "\n" .. S("You cannot consume this when your hunger bar is full.")
 			end
 		end
 		if def.groups.no_eat_delay ~= 1 then
-			s = s .. "\n" .. S("You have to wait for about 2 seconds before you can eat or drink again.")
+			s = s .. "\n" .. S("You have to wait for around 2 seconds before you can eat or drink again.")
 		end
 	end
 	return s
@@ -226,7 +226,7 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	local groups = def.groups
 	if groups then
 		if groups.dig_immediate == 3 then
-			datastring = datastring .. S("This block can be mined by any tool instantly.") .. "\n"
+			datastring = datastring .. S("This block can be mined instantly by any tool.") .. "\n"
 		else
 			local tool_minable = false
 
@@ -308,7 +308,7 @@ doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
 			end
 			table.insert(drops, text)
 		end
-		local ret = S("This blocks drops the following when mined by shears: @1", table.concat(drops, S(", ")))
+		local ret = S("This block drops the following when mined by shears: @1", table.concat(drops, S(", ")))
 		return ret
 	end
 	return ""
@@ -408,7 +408,7 @@ doc.sub.items.register_factoid("tools", "misc", function(itemstring, def)
 	-- Weapon data
 	local damage_groups = tool_capabilities.damage_groups
 	if damage_groups and damage_groups.fleshy then
-		formstring = formstring .. S("This is a melee weapon which deals damage by punching.") .. "\n"
+		formstring = formstring .. S("This is a melee weapon that deals damage by punching.") .. "\n"
 
 		-- Damage groups
 		local dmg = damage_groups.fleshy

@@ -1,6 +1,6 @@
 # textdomain: mcl_grindstone
-Inventory=Инвентарь
 Repair & Disenchant=Починить и снять зачарования
+Inventory=Инвентарь
 Grindstone=Точило
 Used to disenchant/fix tools=Используется для снятия зачарований и для починки инструментов
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Точило снимает все зачарования с инструментов и брони кроме проклятий, чинит два предмета одного типа, а также служит рабочим местом жителя оружейника.

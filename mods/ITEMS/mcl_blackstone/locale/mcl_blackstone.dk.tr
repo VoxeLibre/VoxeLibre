@@ -1,28 +1,34 @@
 # textdomain: mcl_blackstone
 Blackstone=Sortsten
+Gilded Blackstone=Forgyldt sortsten
+Nether Gold Ore=Nether guldmalm
+Polished Basalt=Poleret basalt
+Basalt=Basalt
+Smooth Basalt=Glat basalt
 Polished Blackstone=Poleret sortsten
 Chiseled Polished Blackstone=Majslet poleret sortsten
 Polished Blackstone Bricks=Poleret sortsten-mursten
-Basalt=Basalt
-Polished Basalt=Poleret basalt
-Blackstone Slab=Sortstensflise
-Polished Blackstone Slab=Poleret sortstensflise
-Chiseled Polished Blackstone Slab=Majslet poleret sortstensflise
-Polished Blackstone Brick Slab=Poleret sortstens-murstensflise
-Blackstone Stair=Sortstenstrappe
-Polished Blackstone Stair=Poleret sortstenstrappe
-Chiseled Polished Blackstone Stair=Majslet poleret sortstenstrappe
-Polished Blackstone Brick Stair=Poleret sortstens-murstenstrappe
 Quartz Bricks=Qvarts-mursten
-Soul Torch=Sjæleildsfakkel
-Soul Lantern=Sjældeildslaterne
 Soul Soil=Sjælejord
 Eternal Soul Fire=Evig sjæleild
-Gilded Blackstone=Forgyldt sortsten
-Nether Gold Ore=Nether guldmalm
-Smooth Basalt=Glat basalt
-Blackstone Wall=Sorstensmur
+Blackstone Stair=Sortstenstrappe
+Blackstone Slab=Sortstensflise
 Double Blackstone Slab=Dobbelt sortstensflise
-Polished Double Blackstone Slab=Poleret dobbelt sortstensflise
+Polished Blackstone Stair=Poleret sortstenstrappe
+Polished Blackstone Slab=Poleret sortstensflise
+Double Polished Blackstone Slab=
+Chiseled Polished Blackstone Stair=Majslet poleret sortstenstrappe
+Chiseled Polished Blackstone Slab=Majslet poleret sortstensflise
 Double Chiseled Polished Blackstone Slab=Dobbelt majslet poleret sortstensflise
+Polished Blackstone Brick Stair=Poleret sortstens-murstenstrappe
+Polished Blackstone Brick Slab=Poleret sortstens-murstensflise
 Double Polished Blackstone Brick Slab=Dobbelt poleret sortstens-murstensflise
+Blackstone Wall=Sorstensmur
+Soul Torch=Sjæleildsfakkel
+Torches are light sources which can be placed at the side or on the top of most blocks.=
+
+
+##### not used anymore #####
+
+Soul Lantern=Sjældeildslaterne
+Polished Double Blackstone Slab=Poleret dobbelt sortstensflise

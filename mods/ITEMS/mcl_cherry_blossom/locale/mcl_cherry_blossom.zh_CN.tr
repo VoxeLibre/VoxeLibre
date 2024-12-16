@@ -1,0 +1,30 @@
+# textdomain: mcl_cherry_blossom
+##[ nodes.lua ]##
+Cherry Log=樱桃原木
+Cherry Bark=樱桃树皮
+The trunk of a cherry blossom tree.=樱花树的树干。
+Stripped Cherry Log=去皮樱桃原木
+Stripped Cherry Wood=去皮樱桃木
+The stripped trunk of a cherry blossom tree.=樱花树的去皮树干。
+The stripped wood of a cherry blossom tree.=樱花树的去皮木材。
+Cherry Wood Planks=樱桃木板
+Cherry Leaves=樱桃树叶
+Cherry blossom leaves are grown from cherry blossom trees.=樱花树叶从樱花树上生长出来。
+Cherry Sapling=樱桃树苗
+Cherry blossom sapling can be planted to grow cherry trees.=樱桃树苗可以种下用来培育樱桃树。
+Cherry Door=樱桃门
+Cherry Trapdoor=樱桃活板门
+Cherry Stairs=樱桃楼梯
+Cherry Slab=樱桃台阶
+Double Cherry Slab=双层樱桃台阶
+Cherry Sign=樱桃标识牌
+Cherry Fence=樱桃栅栏
+Cherry Fence Gate=
+Cherry Pressure Plate=樱桃压力板
+Cherry Button=樱桃按钮
+
+
+##### not used anymore #####
+
+This is a decorative block surrounded by the bark of a tree trunk.=这是一种被树干树皮环绕的装饰性方块。
+Cherry Gate=樱桃栅栏门

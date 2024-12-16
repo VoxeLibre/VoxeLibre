@@ -1,5 +1,6 @@
 # textdomain: mcl_fishing
 Fishing Rod=Удочка
+Catches fish in water=Ловит рыбу в воде
 Fishing rods can be used to catch fish.=Удочка используется для ловли рыбы.
 Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?=Кликните правой кнопкой мыши чтобы закинуть поплавок. Когда он потонет, кликните снова, чтобы вытащить ваш улов. Кто знает что вам может попасться?
 Raw Fish=Сырая треска
@@ -13,6 +14,5 @@ This is a healthy food item which can be eaten.=Это съедобный про
 Clownfish=Тропическая рыба
 Clownfish may be obtained by fishing (and luck) and is a food item which can be eaten safely.=Тропическая рыба добывается при помощи удочки (и удачи) и это съедобный продукт.
 Pufferfish=Иглобрюх
-Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=Иглобрюх - распространенный вид рыбы, который может быть пойман на удочку. Технически их можно есть, но они очень ядовиты. Употребление иглобрюха в пищу восстанавливает всего 1 очко голода, но сильно отравит вас (несмертельно уменьшит ваше здоровье) и даст сильное пищевое отравление (которое увеличивает голод).
-Catches fish in water=Ловит рыбу в воде
 Very poisonous=Очень ядовит
+Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=Иглобрюх - распространенный вид рыбы, который может быть пойман на удочку. Технически их можно есть, но они очень ядовиты. Употребление иглобрюха в пищу восстанавливает всего 1 очко голода, но сильно отравит вас (несмертельно уменьшит ваше здоровье) и даст сильное пищевое отравление (которое увеличивает голод).

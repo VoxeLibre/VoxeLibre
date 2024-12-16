@@ -1,8 +1,4 @@
 # textdomain: mcl_hunger
-@1 succumbed to the poison.=
 Food=
 Saturation=
-%s: %.1f/%d=
 Exhaust.=
-%s: %d/%d=
-@1 starved to death.=

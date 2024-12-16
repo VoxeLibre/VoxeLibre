@@ -1,51 +1,215 @@
 # textdomain: mcl_potions
-<effect> <duration> [<factor>]=<Effekt> <Dauer> [<Faktor>]
-
-Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 @= 100%)=Ihnen einen Statuseffekt geben. Parameter: <Effekt>: Name des Statuseffekts, z.B. „poison“. <Dauer>: Dauer in Sekunden. <Faktor>: Effektstärkenmultiplikator (1 @= 100%)
-
-Missing effect parameter!=Fehlender Effektparameter!
-Missing or invalid duration parameter!=Fehlender oder ungültiger Dauerparameter!
-Invalid factor parameter!=Ungültiger Faktorparameter!
-@1 is not an available status effect.=@1 ist kein verfügbarer Statuseffekt.
 Fermented Spider Eye=Fermentiertes Spinnenauge
+Try different combinations to create potions.=Probieren Sie Kombinationen aus, um Tränke herzustellen.
 Glass Bottle=Glasflasche
 Liquid container=Flüssigkeitsbehälter
-
 A glass bottle is used as a container for liquids and can be used to collect water directly.=Eine Glasflasche wird als Behälter von Flüssigkeiten benutzt und kann Wasser direkt aufsammeln.
-
 To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Um Wasser aufzusammeln, benutzen Sie sie an einem Kessel mit Wasser (was etwas Wasser entfernt) oder einer Wasserquelle (was kein Wasser entfernt).
-
 Water Bottle=Wasserflasche
+No effect=Keine Wirkung
 Water bottles can be used to fill cauldrons. Drinking water has no effect.=Wasserflaschen können benutzt werden, um Kessel aufzufüllen. Trinken hat keine Wirkung.
-
 Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Benutzen Sie die „Platzieren“-Taste zum Trinken. Platzieren Sie diesen Gegenstand auf einen Kessel, um das Wasser in den Kessel zu schütten.
-
 River Water Bottle=Flusswasserflasche
 River water bottles can be used to fill cauldrons. Drinking it has no effect.=Flusswasserflaschen können benutzt werden, um Kessel aufzufüllen. Trinken hat keine Wirkung.
-
 Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Benutzen Sie die „Platzieren“-Taste zum Trinken. Platzieren Sie diesen Gegenstand auf einen Kessel, um das Flusswasser in den Kessel zu schütten.
-
 Splash Water Bottle=Wurfwasserflasche
 Extinguishes fire and hurts some mobs=Löscht Feuer und verletzt einige Mobs
-
 A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Eine werfbare Wasserflasche, die beim Einschlag zerbrechen wird und nahes Feuer löschen und einige wasserempfindliche Mobs verletzen wird.
-
 Lingering Water Bottle=Verweilwasserflasche
-
 A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Eine werfbare Wasserflasche, die beim Einschlag zerbrechen und eine Wolke aus Wasserdunst erzeugen wird, welche Feuer löscht und wasserempfindliche Mobs verletzt.
-
 Glistering Melon=Glitzermelone
-
 This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Diese glänzende Melone ist voller winziger Goldnuggets und sähe ganz nett in einem Rahmen aus. Er ist nicht essbar und auch sonst zu nichts zu gebrauchen.
-
-A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect, possibly repeatedly.=Ein werfbarer Trank, der bei Kollision zerbrechen wird, wo er eine magische Wolke erzeugt, die für eine gewisse Zeit verweilen wird. Jeder Spieler und jede Mob in der Wolke wird die Trankwirkung erhalten, möglicherweise mehrmals.
-
+##[ functions.lua ]##
+Invisiblity=
+body is invisible=
+Poison=Vergiftung
+-1 HP / @1 s=
+Regeneration=Regenerierung
++1 HP / @1 s=
+Strength=Stärke
++@1% melee damage=
+Weakness=Schwäche
+-@1% melee damage=
+Water Breathing=Wasseratmung
+limitless breathing under water=
+Dolphin's Grace=
+swimming gracefully=
+Leaping=Sprungkraft
++@1% jumping power=
+-@1% jumping power=
+Slow Falling=
+decreases gravity effects=
+Swiftness=Schnelligkeit
++@1% running speed=
+Slowness=Langsamkeit
+-@1% running speed=
+Levitation=
+moves body upwards at @1 nodes/s=
+Night Vision=Nachtsicht
+improved vision during the night=
+Darkness=
+surrounded by darkness=
+not seeing anything beyond @1 nodes=
+Glowing=
+more visible at all times=
+Health Boost=
+HP increased by @1=
+Absorption=
+absorbs up to @1 incoming damage=
+Fire Resistance=Feuerresistenz
+resistance to fire damage=
+Resistance=
+resist @1% of incoming damage=
+Luck=
+Bad Luck=
+Bad Omen=
+danger is imminent=
+Hero of the Village=
+Withering=
+-1 HP / @1 s, can kill=
+Frost=
+-1 HP / 1 s, can kill, -@1% running speed=
+impaired sight=
+Nausea=
+not feeling very well...=
+frequency: @1 / 1 s=
+Food Poisoning=
+exhausts by @1 per second=
+Saturation=
+saturates by @1 per second=
+Haste=
++@1% mining and attack speed=
+Fatigue=
+-@1% mining and attack speed=
+Conduit Power=
++@1% mining and attack speed in water=
+##[ commands.lua ]##
+<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]=
+Add a status effect to yourself. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART at the end means no particles will be shown for this effect.=
+Missing effect parameter!=Fehlender Effektparameter!
+Missing or invalid heal amount parameter!=
+Player @1 healed by @2 HP.=
+Player @1 harmed by @2 HP.=
+Effects cleared for player @1=
+Removed effect @1 from player @2=
+@1 is not an available status effect.=@1 ist kein verfügbarer Statuseffekt.
+Missing or invalid duration parameter!=Fehlender oder ungültiger Dauerparameter!
+Invalid level parameter!=
+Missing or invalid factor parameter when level is F!=
+@1 effect given to player @2 for @3 seconds with factor of @4.=
+@1 effect given to player @2 for @3 seconds.=
+Giving effect @1 to player @2 failed.=
+@1 effect on level @2 given to player @3 for @4 seconds.=
+##[ splash.lua ]##
 Use the “Punch” key to throw it.=Benutzen Sie die „Schlagen“-Taste zum Werfen.
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=
+##[ lingering.lua ]##
+A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.=
+##[ tipped_arrow.lua ]##
+This particular arrow is tipped and will give an effect when it hits a player or mob.=Diese Pfeilspitze dieses Pfeils in einem Trank getränkt und gibt einen Effekt, wenn er einen Spieler oder einen Mob trifft.
+##[ potions.lua ]##
 Use the “Place” key to drink it.=Benutzen Sie die „Platzieren“-Taste zum Trinken.
+Drinking a potion gives you a particular effect or set of effects.=
+@1 Potion @2=
+@1 Potion=Trank der @1
+Potion @1=
+Strange Potion=
+Splash @1=
+Lingering @1=
+@1 Arrow @2=
+@1 Arrow=
+Arrow @1=
+Strange Tipped Arrow=
+Mighty=
+of Trolling=
+Dragon's Breath=Drachenatem
+This item is used in brewing and can be combined with splash potions to create lingering potions.=Dieser Objekt wird für die Trankherstellung benutzt und kann mit Wurftränken kombiniert werden, um Verweiltränke herzustellen.
+Awkward=
+Has an awkward taste and is used for brewing potions.=Hat einen seltsamen Geschmack und wird in der Trankherstellung benutzt.
+Mundane=
+Has a terrible taste and is not really useful for brewing potions.=
+Thick=
+Has a bitter taste and may be useful for brewing potions.=
+of Healing=
++@1 HP=
+Instantly heals.=Heilt sofort.
+of Harming=
+-@1 HP=
+Instantly deals damage.=Richtet sofort Schaden an.
+of Night Vision=
+Increases the perceived brightness of light under a dark sky.=Erhöht die wahrgenommene Helligkeit des Lichts unter einem dunklem Himmel.
+of Swiftness=
+Increases walking speed.=Erhöht Gehgeschwindigkeit.
+of Slowness=
+Decreases walking speed.=Verringert Gehgeschwindigkeit.
+of Leaping=
+Increases jump strength.=Erhöht Sprungstärke.
+of Withering=
+Applies the withering effect which deals damage at a regular interval and can kill.=
+of Poison=
+Applies the poison effect which deals damage at a regular interval.=Gibt den Gifteffekt, der Schaden in regelmäßigen Abständen anrichtet.
+of Regeneration=
+Regenerates health over time.=Regeneriert Gesundheit mit der Zeit.
+of Invisibility=
+Grants invisibility.=Gibt Unsichtbarkeit.
+of Water Breathing=
+Grants limitless breath underwater.=Gibt unbegrenzten Atem im Wasser.
+of Fire Resistance=
+Grants immunity to damage from heat sources like fire.=Gibt Immunität gegenüber Schaden von Hitzequellen wie Feuer.
+of Strength=
+Increases attack power.=
+of Weakness=
+Decreases attack power.=
+of Slow Falling=
+Instead of falling, you descend gracefully.=
+of Levitation=
+Floats body slowly upwards.=
+of Darkness=
+Surrounds with darkness.=
+of Glowing=
+Highlights for others to see.=
+of Health Boost=
+Increases health.=
+of Absorption=
+Absorbs some incoming damage.=
+of Resistance=
+Decreases damage taken.=
+of Stone Cloak=
+Decreases damage taken at the cost of speed.=
+of Luck=
+Increases luck.=
+of Bad Luck=
+Decreases luck.=
+of Frost=
+Freezes...=
+of Blindness=
+Impairs sight.=
+of Nausea=
+Disintegrates senses.=
+of Food Poisoning=
+Moves bowels too fast.=
+of Saturation=
+Satisfies hunger.=
+of Haste=
+Increases digging and attack speed.=
+of Fatigue=
+Decreases digging and attack speed.=
+Ominous=
+Attracts danger.=
+Unknown Potion=
+Right-click to identify=
+Unknown Tipped Arrow=
+
+
+##### not used anymore #####
+
+<effect> <duration> [<factor>]=<Effekt> <Dauer> [<Faktor>]
+Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 @= 100%)=Ihnen einen Statuseffekt geben. Parameter: <Effekt>: Name des Statuseffekts, z.B. „poison“. <Dauer>: Dauer in Sekunden. <Faktor>: Effektstärkenmultiplikator (1 @= 100%)
+Invalid factor parameter!=Ungültiger Faktorparameter!
+A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect, possibly repeatedly.=Ein werfbarer Trank, der bei Kollision zerbrechen wird, wo er eine magische Wolke erzeugt, die für eine gewisse Zeit verweilen wird. Jeder Spieler und jede Mob in der Wolke wird die Trankwirkung erhalten, möglicherweise mehrmals.
 Drinking a potion gives you a particular effect.=Das Trinken eines Tranks gibt Ihnen einen bestimmten Effekt.
 1 HP/@1s | @2=1 TP/@1s | @2
 @1 HP=@1 TP
-@1 Potion=Trank der @1
 Splash @1 Potion=Wurftrank der @1
 Lingering @1 Potion=Verweiltrank der @1
 Arrow of @1=Pfeil der @1
@@ -62,7 +226,6 @@ Arrow of @1 +=Pfeil der @1
 Awkward Potion=Seltsamer Trank
 Awkward Splash Potion=Seltsamer Wurftrank
 Awkward Lingering Potion=Seltsamer Verweiltrank
-Has an awkward taste and is used for brewing potions.=Hat einen seltsamen Geschmack und wird in der Trankherstellung benutzt.
 Mundane Potion=Klarer Trank
 Mundane Splash Potion=Klarer Wurftrank
 Mundane Lingering Potion=Klarer Verweiltrank
@@ -71,44 +234,14 @@ Thick Potion=Bitterer Trank
 Thick Splash Potion=Bitterer Wurftrank
 Thick Lingering Potion=Bitterer Verweiltrank
 Has a bitter taste and is not useful for brewing potions.=Hat einen bitteren Geschmack und ist nicht für die Trankherstellung brauchbar.
-Dragon's Breath=Drachenatem
-
-This item is used in brewing and can be combined with splash potions to create lingering potions.=Dieser Objekt wird für die Trankherstellung benutzt und kann mit Wurftränken kombiniert werden, um Verweiltränke herzustellen.
-
 Healing=Heilung
 +4 HP=+4 TP
 +8 HP=+8 TP
-Instantly heals.=Heilt sofort.
 Harming=Verletzung
 -6 HP=-6 TP
 -12 HP=-12 TP
-Instantly deals damage.=Richtet sofort Schaden an.
-Night Vision=Nachtsicht
-Increases the perceived brightness of light under a dark sky.=Erhöht die wahrgenommene Helligkeit des Lichts unter einem dunklem Himmel.
-Swiftness=Schnelligkeit
-Increases walking speed.=Erhöht Gehgeschwindigkeit.
-Slowness=Langsamkeit
-Decreases walking speed.=Verringert Gehgeschwindigkeit.
-Leaping=Sprungkraft
-Increases jump strength.=Erhöht Sprungstärke.
-Poison=Vergiftung
-Applies the poison effect which deals damage at a regular interval.=Gibt den Gifteffekt, der Schaden in regelmäßigen Abständen anrichtet.
-Regeneration=Regenerierung
-Regenerates health over time.=Regeneriert Gesundheit mit der Zeit.
 Invisibility=Unsichtbarkeit
-Grants invisibility.=Gibt Unsichtbarkeit.
-Water Breathing=Wasseratmung
-Grants limitless breath underwater.=Gibt unbegrenzten Atem im Wasser.
-Fire Resistance=Feuerresistenz
-Grants immunity to damage from heat sources like fire.=Gibt Immunität gegenüber Schaden von Hitzequellen wie Feuer.
-Weakness=Schwäche
 Weakness +=Schwäche +
-Strength=Stärke
 Strength II=Stärke II
 Strength +=Stärke +
-Try different combinations to create potions.=Probieren Sie Kombinationen aus, um Tränke herzustellen.
-No effect=Keine Wirkung
-
 A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.=Ein werfbarer Trank, der bei Kollision zerbrechen wird, wo er allen nahen Spielern und Mobs einen Statuseffekt geben wird.
-
-This particular arrow is tipped and will give an effect when it hits a player or mob.=Diese Pfeilspitze dieses Pfeils in einem Trank getränkt und gibt einen Effekt, wenn er einen Spieler oder einen Mob trifft.

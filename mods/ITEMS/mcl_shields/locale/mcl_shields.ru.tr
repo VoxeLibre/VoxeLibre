@@ -1,6 +1,10 @@
 # textdomain: mcl_shields
 Shield=Щит
 A shield is a tool used for protecting the player against attacks.=Щит это инструмент, используемый для защиты игрока от атак.
+
+
+##### not used anymore #####
+
 White Shield=Белый щит
 Grey Shield=Серый щит
 Light Grey Shield=Светло-серый щит

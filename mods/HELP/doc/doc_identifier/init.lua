@@ -169,7 +169,7 @@ end
 minetest.register_tool("doc_identifier:identifier_solid", {
 	description = S("Lookup Tool"),
 	_tt_help = S("Show help for pointed thing"),
-	_doc_items_longdesc = S("This useful little helper can be used to quickly learn more about about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used."),
+	_doc_items_longdesc = S("This useful little helper can be used to quickly learn more about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used."),
 	_doc_items_usagehelp = S("Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case."),
 	_doc_items_hidden = false,
 	tool_capabilities = {},

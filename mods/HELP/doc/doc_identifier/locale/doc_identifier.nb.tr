@@ -1,0 +1,18 @@
+# textdomain:doc_identifier
+No help entry for this item could be found.=Ingen hjelpetekst for denne gjenstanden kunne bli funnet.
+No help entry for this block could be found.=Ingen hjelpetekst for denne blokken kunne bli funnet.
+Error: This node, item or object is undefined. This is always an error.=Feil: Denne noden, gjenstanden eller objektet er udefinert. Dette er alltid en feil.
+This can happen for the following reasons:=Dette kan skje av følgende grunner:
+• The mod which is required for it is not enabled=• Modifikasjonen som kreves for dette er ikke aktivert
+• The author of the game or a mod has made a mistake=• Skaperen av spillet eller en modifikasjon har gjort en feil
+It appears to originate from the mod “@1”, which is enabled.=Det ser ut til å stamme fra modifikasjonen “@1”, som er aktivert.
+It appears to originate from the mod “@1”, which is not enabled!=Det ser ut til å stamme fra modifikasjonen “@1”, som ikke er aktivert!
+Its identifier is “@1”.=Dens identifikator er “@1”.
+This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.=Denne blokken kan ikke identifiseres fordi verden ikke har materialisert seg ennå. Prøv igjen om noen sekunder.
+No help entry for this object could be found.=Ingen hjelpetekst for dette objektet kunne bli funnet.
+This is a player.=Dette er en spiller.
+OK=OK
+Lookup Tool=Oppslagsverktøy
+Show help for pointed thing=Vis hjelp for påpekt objekt
+This useful little helper can be used to quickly learn more about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used.=Denne nyttige lille hjelperen kan brukes til raskt å lære mer om ens nære omgivelser. Den identifiserer og analyserer blokker, gjenstander og andre ting og viser omfattende informasjon om det den brukes på.
+Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case.=Slå på en hvilken som helst blokk, gjenstand eller annet du ønsker å lære mer om. Dette vil åpne riktig hjelpetekst. Verktøyet har to moduser som kan endres ved bruk. I væskemodus peker dette verktøyet også mot væsker, mens i faststoffmodus gjør det ikke det.

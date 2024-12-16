@@ -1,0 +1,17 @@
+# textdomain: mcl_skins
+##[ edit_skin.lua ]##
+Templates=Maler
+Arm size=Armstørrelse
+Bases=Baser
+Footwears=Fottøy
+Eyes=Øyne
+Mouths=Munner
+Bottoms=Benplagg
+Tops=Topper
+Hairs=Hår
+Headwears=Hodeplagg
+Skins=Utseender
+Capes=Kapper
+Open skin configuration screen.=Åpne skjermen for utseendeendring
+Select=Velg
+(None)=

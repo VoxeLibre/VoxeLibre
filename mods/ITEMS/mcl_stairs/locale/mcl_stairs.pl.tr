@@ -1,9 +1,11 @@
 # textdomain: mcl_stairs
+##[ api.lua ]##
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=Schody są użyteczne by wspiąć się do wyższych miejsc poprzez chodzenie po nich. Nie trzeba na nich skakać. Umieszczenie schodów w rogu schodów dopasuje schodu do rogu. Schody postawione na suficie lub na górnej części bloku będą postawione do góry nogami.
 Double @1=Podwójna @1
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=Płyty są wysokości połowy odpowiadającego im bloku i zajmują górną lub dolną część bloku w zależności od tego jak są postawione. Na płyty można łatwo wejść bez konieczności skakania. Gdy płyta jest postawiona na innej płycie tego samego typu, podwójna płyta jest tworzona.
 Upper @1=Górna @1
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=Podwójne płyty są pełnymi blokami tworzonymi przez położenie dwóch płyt tego samego typu jedna na drugiej.
+##[ register.lua ]##
 Oak Wood Stairs=Dębowe schody
 Oak Wood Slab=Dębowa płyta
 Double Oak Wood Slab=Podwójna dębowa płyta
@@ -22,9 +24,9 @@ Double Birch Wood Slab=Podwójna brzozowa płyta
 Dark Oak Wood Stairs=Ciemno-dębowe schody
 Dark Oak Wood Slab=Ciemno-dębowa płyta
 Double Dark Oak Wood Slab=Podwójna ciemno-dębowa płyta
-Stone Stairs=Kamienne schody
 Stone Slab=Kamienna płyta
 Double Stone Slab=Podwójna kamienna płyta
+Stone Stairs=Kamienne schody
 Polished Stone Slab=Polerowana kamienna płyta
 Double Polished Stone Slab=Podwójna polerowana kamienna płyta
 Andesite Stairs=Andezytowe schody
@@ -48,12 +50,18 @@ Double Brick Slab=Podwójna ceglana płyta
 Sandstone Stairs=Piaskowcowe schody
 Sandstone Slab=Piaskowcowa płyta
 Double Sandstone Slab=Podwójna piaskowcowa płyta
+Cut Sandstone Stairs=
+Cut Sandstone Slab=
+Double Cut Sandstone Slab=
 Smooth Sandstone Stairs=Polerowane piaskowcowe schody
 Smooth Sandstone Slab=Polerowana piaskowcowa płyta
 Double Smooth Sandstone Slab=Podwójna polerowana piaskowcowa płyta
 Red Sandstone Stairs=Czerwone piaskowcowe schody
 Red Sandstone Slab=Czerwona piaskowcowa płyta
 Double Red Sandstone Slab=Podwójna czerwona piaskowcowa płyta
+Cut Red Sandstone Stairs=
+Cut Red Sandstone Slab=
+Double Cut Red Sandstone Slab=
 Smooth Red Sandstone Stairs=Polerowane czerwone piaskowcowe schody
 Smooth Red Sandstone Slab=Polerowana czerwona piaskowcowa płyta
 Double Smooth Red Sandstone Slab=Podwójna polerowana czerwona piaskowcowa płyta
@@ -83,10 +91,12 @@ Prismarine Slab=Pryzmarynowa płyta
 Double Prismarine Slab=Podwójna pryzmarynowa płyta
 Prismarine Brick Stairs=Pryzmarynowe ceglane schody
 Prismarine Brick Slab=Pryzmarynowa ceglana płyta
-Double Prismarine Brick Slab=Podwójna pryzmarynowa ceglana płyta
-Dark Prismarine Stairs=Ciemne pryzmarynowe schody
+Double prismarine_brick Slab=
 Dark Prismarine Slab=Ciemna pryzmarynowa płyta
 Double Dark Prismarine Slab=Podwójna ciemna pryzmarynowa płyta
+Mud Brick Stairs=
+Mud Brick Slab=
+Double Mud Brick Slab=
 Polished Andesite Slab=Polerowana andezytowa płyta
 Double Polished Andesite Slab=Podwójna polerowana andezytowa płyta
 Polished Andesite Stairs=Polerowane andezytowe schody
@@ -99,3 +109,9 @@ Polished Diorite Stairs=Polerowane diorytowe schody
 Mossy Stone Brick Stairs=Zamszone kamienne ceglane schody
 Mossy Stone Brick Slab=Zamszona kamienna ceglana płyta
 Double Mossy Stone Brick Slab=Podwójna zamszona kamienna ceglana płyta
+
+
+##### not used anymore #####
+
+Double Prismarine Brick Slab=Podwójna pryzmarynowa ceglana płyta
+Dark Prismarine Stairs=Ciemne pryzmarynowe schody

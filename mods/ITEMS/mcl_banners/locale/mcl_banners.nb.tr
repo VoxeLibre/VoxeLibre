@@ -1,0 +1,50 @@
+# textdomain: mcl_banners
+White Banner=Hvitt banner
+Grey Banner=Grått banner
+Light Grey Banner=Lysegrått banner
+Black Banner=Svart banner
+Red Banner=Rødt banner
+Yellow Banner=Gult banner
+Green Banner=Grønt banner
+Cyan Banner=Turkist banner
+Blue Banner=Blått banner
+Magenta Banner=Lyselilla banner
+Orange Banner=Oransje banner
+Purple Banner=Lilla banner
+Brown Banner=Brunt banner
+Pink Banner=Rosa banner
+Lime Banner=Limegrønt banner
+Light Blue Banner=Lyseblått banner
+Banner=Banner
+Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Bannere er høye fargerike dekorative blokker. De kan plasseres på gulv og vegger. Bannere kan utsmykkes med en rekke mønstre ved å bruke mye fargestoff i håndverksmenyen.
+Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Bruk håndverksmenyen til å tegne et mønster på banneret. Utsmykkede bannere kan utsmykkes igjen for å kombinere ulike mønstre. Du kan tegne opptil 12 lag på et banner på denne måten. Hvis banneret inneholder en gradientfarge, er bare 3 lag mulig.
+You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Du kan kopiere mønsteret til et banner ved å plassere to bannere med samme grunnfarge i håndverksrutenettet – det ene må være utsmykket, det andre må være rent. Du kan også bruke et banner på en gryte med vann for å vaske av det øverste laget.
+Preview Banner=Forhåndsvis banner
+Paintable decoration=Malbar dekorasjon
+##[ patterncraft.lua ]##
+And one additional layer=Og ett ekstra lag
+And @1 additional layers=Og @1 ekstra lag
+
+
+##### not used anymore #####
+
+White=Hvit
+Grey=Grå
+Light Grey=Lysegrå
+Black=Svart
+Red=Rød
+Yellow=Gul
+Green=Grønn
+Cyan=Turkis
+Blue=Blå
+Magenta=Lyselilla
+Orange=Oransje
+Violet=Fiolett
+Brown=Brun
+Pink=Rosa
+Lime=Limegrønn
+Light Blue=Lyseblå
+@1 Bricks=Murtegl
+@1 Gradient=Gradient
+@1 Base Gradient=Grunngradient
+@1 Cross=Kors

@@ -1,19 +1,25 @@
 # textdomain: mcl_credits
-3D Models=Modèles 3D
-A faithful Open Source clone of Minecraft=Un clone open source de Minecraft
-Contributors=Contributeurs
+An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=
+Sneak to skip=Shift pour passer
+Jump to speed up (additionally sprint)=Saut pour accélérer (peut être combiné avec sprint)
+##[ people.lua ]##
 Creator of MineClone=Créateur de MineClone
 Creator of VoxeLibre=Créateur de VoxeLibre
-Developers=Développeurs
-Past Developers=Anciens Développeurs
-Jump to speed up (additionally sprint)=Saut pour accélérer (peut être combiné avec sprint)
 Maintainers=Mainteneurs
 Previous Maintainers=Anciens Mainteneurs
-MineClone5=MineClone5
+Developers=Développeurs
+Past Developers=Anciens Développeurs
+Contributors=Contributeurs
+Music=Musique
 Original Mod Authors=Auteurs des mods originaux
-Sneak to skip=Shift pour passer
+3D Models=Modèles 3D
 Textures=Textures
 Translations=Traductions
-Music=Musique
 Funders=Fondateurs
 Special thanks=Remerciements spéciaux
+
+
+##### not used anymore #####
+
+A faithful Open Source clone of Minecraft=Un clone open source de Minecraft
+MineClone5=MineClone5

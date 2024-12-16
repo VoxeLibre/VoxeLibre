@@ -1,23 +1,44 @@
 # textdomain: mcl_commands
+##[ kill.lua ]##
 Players can't be killed right now, damage has been disabled.=Игроки не могут быть убиты прямо сейчас, урон отключён.
 Player @1 does not exist.=Игрока @1 не существует.
 You are already dead=Вы уже мертвы
 @1 is already dead=@1 уже мертв(а)
-@1 committed suicide.=@1 совершил(а) самоубийство.
-@1 was killed by @2.=@1 был(а) убит(а) @2.
 [<name>]=[<имя>]
 Kill player or yourself=Убить игрока или себя
-Can use /say=Можно использовать /say
-<message>=<сообщение>
-Send a message to every player=Отправляет сообщение всем игрокам
-Invalid usage, see /help say.=Недопустимое использование, см. /help say.
+##[ setblock.lua ]##
 <X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <ИмяБлока>
 Set node at given position=Устанавливает блок в заданном месте
 Invalid node=Неправильный блок
 @1 spawned.=@1 возродился(ась).
 Invalid parameters (see /help setblock)=Недопустимые параметры (см. /help setblock)
+##[ seed.lua ]##
+Displays the world seed=Показать значение зерна мира
+##[ summon.lua ]##
+Only peaceful mobs allowed!=Разрешены только мирные сущности!
+##[ say.lua ]##
+Can use /say=Можно использовать /say
+<message>=<сообщение>
+Send a message to every player=Отправляет сообщение всем игрокам
+Invalid usage, see /help say.=Недопустимое использование, см. /help say.
+##[ list.lua ]##
+Show who is logged on=Показывает игроков в сети
+##[ sound.lua ]##
+<sound> <target>=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
+Sound name is invalid!=
+Target is invalid!=
+##[ alias.lua ]##
 List bans=Список банов
 Ban list: @1=Список банов: @1
-Show who is logged on=Показывает игроков в сети
-Displays the world seed=Показать значение зерна мира
-Only peaceful mobs allowed!=Разрешены только мирные сущности!
+List clear commands=
+To clear inventory use /clearinv or /clearinventory=
+To clear mobs use /clearmobs=
+To clear the weather use /weather clear=
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+
+
+##### not used anymore #####
+
+@1 committed suicide.=@1 совершил(а) самоубийство.
+@1 was killed by @2.=@1 был(а) убит(а) @2.

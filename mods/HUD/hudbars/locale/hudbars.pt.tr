@@ -2,5 +2,8 @@
 Health=Saude
 Breath=Folego
 
+
+##### not used anymore #####
+
 # Formato de string padrão para progresso bar-style de barras do HUD, por exemplo “Saude 5/20”
 @1: @2/@3=@1: @2/@3

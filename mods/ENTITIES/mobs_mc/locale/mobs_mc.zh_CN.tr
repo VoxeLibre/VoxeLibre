@@ -1,0 +1,147 @@
+# textdomain: mobs_mc
+##[ axolotl.lua ]##
+Axolotl=美西螈
+##[ bat.lua ]##
+Bat=蝙蝠
+##[ rabbit.lua ]##
+Rabbit=兔子
+Killer Bunny=杀手兔
+##[ chicken.lua ]##
+Chicken=鸡
+##[ cow+mooshroom.lua ]##
+Cow=牛
+Mooshroom=哞菇
+##[ horse.lua ]##
+Horse=马
+Skeleton Horse=骷髅马
+Zombie Horse=僵尸马
+Donkey=驴
+Mule=骡
+##[ llama.lua ]##
+Llama=羊驼
+##[ ocelot.lua ]##
+Ocelot=豹猫
+Cat=猫
+##[ parrot.lua ]##
+Parrot=鹦鹉
+##[ pig.lua ]##
+Pig=猪
+##[ polar_bear.lua ]##
+Polar Bear=北极熊
+##[ sheep.lua ]##
+Sheep=羊
+##[ wolf.lua ]##
+Wolf=狼
+Dog=
+##[ squid.lua ]##
+Squid=鱿鱼
+##[ villager.lua ]##
+Master=
+Villager=村民
+##[ pillager.lua ]##
+Pillager=掠夺者
+##[ villager_evoker.lua ]##
+Evoker=唤魔者
+##[ villager_vindicator.lua ]##
+Vindicator=卫道士
+##[ villager_zombie.lua ]##
+Zombie Villager=僵尸村民
+##[ witch.lua ]##
+Witch=女巫
+##[ blaze.lua ]##
+Blaze=烈焰人
+##[ ender_dragon.lua ]##
+Ender Dragon=末影龙
+##[ endermite.lua ]##
+Endermite=末影螨
+##[ villager_illusioner.lua ]##
+Illusioner=幻术师
+##[ ghast.lua ]##
+Ghast=恶魂
+##[ guardian.lua ]##
+Guardian=守卫者
+##[ guardian_elder.lua ]##
+Elder Guardian=远古守卫者
+##[ snowman.lua ]##
+Snow Golem=雪傀儡
+##[ iron_golem.lua ]##
+Iron Golem=铁傀儡
+##[ rover.lua ]##
+Rover=漫游者
+##[ shulker.lua ]##
+Shulker=潜影贝
+##[ silverfish.lua ]##
+Silverfish=蠹虫
+##[ skeleton+stray.lua ]##
+Skeleton=骷髅
+Stray=流浪者
+##[ skeleton_wither.lua ]##
+Wither Skeleton=凋零骷髅
+##[ stalker.lua ]##
+Stalker=潜影贝
+Overloaded Stalker=过载潜行者
+##[ zombie.lua ]##
+Zombie=僵尸
+Baby Zombie=小僵尸
+Husk=尸壳
+Baby Husk=小尸壳
+##[ slime+magma_cube.lua ]##
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=岩浆怪
+Slime=史莱姆
+##[ spider.lua ]##
+Spider=蜘蛛
+Cave Spider=洞穴蜘蛛
+##[ vex.lua ]##
+Vex=恼鬼
+##[ wither.lua ]##
+Wither=凋零
+##[ cod.lua ]##
+Cod=鳕鱼
+##[ salmon.lua ]##
+Salmon=三文鱼
+##[ tropical_fish.lua ]##
+Tropical Fish=
+Tropical fish=热带鱼
+##[ dolphin.lua ]##
+Dolphin=海豚
+##[ glow_squid.lua ]##
+Glow Squid=发光鱿鱼
+##[ piglin.lua ]##
+Piglin=猪灵
+Sword Piglin=持剑猪灵
+Zombie Piglin=僵尸猪灵
+Baby Zombie Piglin=小僵尸猪灵
+Piglin Brute=猪灵蛮兵
+##[ hoglin+zoglin.lua ]##
+Hoglin=疣猪兽
+Zoglin=僵尸疣猪兽
+Baby hoglin=小疣猪兽
+##[ strider.lua ]##
+Strider=炽足兽
+Baby Strider=
+
+
+##### not used anymore #####
+
+Agent=智能体
+Enderman=末影人
+Baby Piglin=小猪灵
+Farmer=农民
+Fisherman=渔夫
+Fletcher=制箭师
+Shepherd=牧羊人
+Librarian=图书管理员
+Cartographer=制图师
+Armorer=盔甲匠
+Leatherworker=皮革匠
+Butcher=屠夫
+Weapon Smith=武器匠
+Tool Smith=工具匠
+Cleric=牧师
+Nitwit=傻子

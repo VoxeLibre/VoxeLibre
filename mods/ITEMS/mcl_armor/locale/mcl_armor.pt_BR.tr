@@ -1,6 +1,45 @@
 # textdomain: mcl_armor
 This is a piece of equippable armor which reduces the amount of damage you receive.=
 To equip it, put it on the corresponding armor slot in your inventory menu.=
+sentry=
+dune=
+coast=
+wild=
+tide=
+ward=
+vex=
+rib=
+snout=
+eye=
+spire=
+silence=
+wayfinder=
+##[ register.lua ]##
+Projectile Protection=Proteção Contra Projéteis
+Reduces projectile damage.=Reduz o dano causado por projéteis.
+Blast Protection=Proteção Contra Explosão
+Reduces explosion damage and knockback.=Reduz o dano e recúo de explosões.
+Fire Protection=Proteçao Contra Fogo
+Reduces fire damage.=Reduz o dano causado por fogo.
+Protection=Proteção
+Reduces most types of damage by 4% for each level.=Reduz a maioria dos tipos de dano por 4% para cada nível.
+Feather Falling=Pena Caindo
+Reduces fall damage.=Reduz o dano de quedas.
+Aqua Affinity=Afinidade Aqua
+#Translations of enchantements
+Increases underwater mining speed.=Aumenta a velocidade de mineração subaquática.
+Curse of Binding=Maldição do Vínculo
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Item não pode ser removido do espaço de armadura, exceto devido à morte, quebra ou no Modo Criativo.
+Thorns=Espinhos
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflete parte do dano tomado aos custos de reduzir a durabilidade com cada uso.
+Elytra=Elytra
+##[ trims.lua ]##
+#Translations for armor trims
+Smithing Template '@1'=Molde de Ferraria '@1'
+
+
+##### not used anymore #####
+
 Leather Cap=Chapéu de Couro
 Iron Helmet=Capacete de Ferro
 Golden Helmet=Capacete de Ouro
@@ -25,27 +64,5 @@ Golden Boots=Botas de Ouro
 Diamond Boots=Botas de Diamante
 Chain Boots=Botas de Cota de Malha
 Netherite Boots=Botas de Netherite
-Elytra=Elytra
-
-#Translations of enchantements
-Increases underwater mining speed.=Aumenta a velocidade de mineração subaquática.
-Blast Protection=Proteção Contra Explosão
-Reduces explosion damage and knockback.=Reduz o dano e recúo de explosões.
-Curse of Binding=Maldição do Vínculo
-Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Item não pode ser removido do espaço de armadura, exceto devido à morte, quebra ou no Modo Criativo.
-Feather Falling=Pena Caindo
-Reduces fall damage.=Reduz o dano de quedas.
-Fire Protection=Proteçao Contra Fogo
-Reduces fire damage.=Reduz o dano causado por fogo.
 Shooting consumes no regular arrows.=Disparar não consome flechas normais.
 Shoot 3 arrows at the cost of one.=Dispare 3 flechas ao custo de uma.
-Projectile Protection=Proteção Contra Projéteis
-Reduces projectile damage.=Reduz o dano causado por projéteis.
-Protection=Proteção
-Reduces most types of damage by 4% for each level.=Reduz a maioria dos tipos de dano por 4% para cada nível.
-Thorns=Espinhos
-Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflete parte do dano tomado aos custos de reduzir a durabilidade com cada uso.
-Aqua Affinity=Afinidade Aqua
-
-#Translations for armor trims
-Smithing Template '@1'=Molde de Ferraria '@1'

@@ -1,0 +1,20 @@
+# textdomain: mesecons_lightstone
+Redstone Lamp=红石灯
+Glows when powered by redstone power=在被红石能量激活时发光
+Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.=红石灯是简单的红石元件，当接收到红石能量时会发出明亮的光（亮度等级为@1）。
+White Redstone Lamp=白色红石灯
+Grey Redstone Lamp=灰色红石灯
+Light Grey Redstone Lamp=淡灰色红石灯
+Black Redstone Lamp=黑色红石灯
+Red Redstone Lamp=红色红石灯
+Yellow Redstone Lamp=黄色红石灯
+Green Redstone Lamp=绿色红石灯
+Cyan Redstone Lamp=青色红石灯
+Blue Redstone Lamp=蓝色红石灯
+Magenta Redstone Lamp=品红色红石灯
+Orange Redstone Lamp=橙色红石灯
+Purple Redstone Lamp=紫色红石灯
+Brown Redstone Lamp=棕色红石灯
+Pink Redstone Lamp=粉色红石灯
+Lime Redstone Lamp=黄绿色红石灯
+Light Blue Redstone Lamp=淡蓝色红石灯

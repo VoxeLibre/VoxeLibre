@@ -1,23 +1,45 @@
 # textdomain: mcl_commands
+##[ kill.lua ]##
 Players can't be killed right now, damage has been disabled.=Los jugadores no pueden ser asesinados en este momento, el daño ha sido desactivado.
 Player @1 does not exist.=El jugador @1 no existe.
 You are already dead=Ya estas muerto
 @1 is already dead=@1 ya esta muerto
-@1 committed suicide.=@1 se suicidó.
-@1 was killed by @2.=@1 fue asesinado por @2.
 [<name>]=[<Nombre>]
 Kill player or yourself=Mata al jugador o a ti mismo
-Can use /say=Puedes usar /say
-<message>=<Mensaje>
-Send a message to every player=Envía un mensaje a todos los jugadores
-Invalid usage, see /help=Uso no válido,  (Revisa el comando "/help say")
+##[ setblock.lua ]##
 <X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <ID nodo>
 Set node at given position=Establecer nodo en la posición dada
 Invalid node=Nodo no válido
 @1 spawned.=@1 generado.
 Invalid parameters (see /help setblock)=Parámetros no válidos (Revisa el comando "/help setblock")
+##[ seed.lua ]##
+Displays the world seed=Muestra la semilla del mundo
+##[ summon.lua ]##
+Only peaceful mobs allowed!=¡Solo se permiten animales pacíficos!
+##[ say.lua ]##
+Can use /say=Puedes usar /say
+<message>=<Mensaje>
+Send a message to every player=Envía un mensaje a todos los jugadores
+Invalid usage, see /help say.=
+##[ list.lua ]##
+Show who is logged on=Mostrar quién ha iniciado sesión
+##[ sound.lua ]##
+<sound> <target>=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
+Sound name is invalid!=
+Target is invalid!=
+##[ alias.lua ]##
 List bans=Lista de prohibiciones
 Ban list: @1=Lista de baneados: @1
-Show who is logged on=Mostrar quién ha iniciado sesión
-Displays the world seed=Muestra la semilla del mundo
-Only peaceful mobs allowed!=¡Solo se permiten animales pacíficos!
+List clear commands=
+To clear inventory use /clearinv or /clearinventory=
+To clear mobs use /clearmobs=
+To clear the weather use /weather clear=
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+
+
+##### not used anymore #####
+
+@1 committed suicide.=@1 se suicidó.
+@1 was killed by @2.=@1 fue asesinado por @2.
+Invalid usage, see /help=Uso no válido,  (Revisa el comando "/help say")

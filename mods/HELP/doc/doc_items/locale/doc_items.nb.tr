@@ -1,0 +1,157 @@
+# textdomain:doc_items
+This is a decorative block.=Dette er en dekorativ blokk.
+This block is a building block for creating various buildings.=Denne blokken er en byggeblokk for å lage ulike bygninger.
+This item is primarily used for crafting other items.=Denne gjenstanden brukes primært til å lage andre gjenstander.
+Hold it in your hand, then left-click to eat it.=Hold den i hånden, og venstreklikk for å spise den.
+Hold it in your hand, then left-click to eat it. But why would you want to do this?=Hold den i hånden, og venstreklikk for å spise den. Men hvorfor skulle du ønske å gjøre dette?
+This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=Rotasjonen til denne blokken påvirkes av hvordan du plasserer den: Plasser den på gulvet eller taket for en vertikal orientering; plasser den på siden for en horisontal orientering. Å snike seg mens du plasserer den fører til en vinkelrett orientering i stedet.
+Hand=Hånd
+Air=Luft
+Yes=Ja
+No=Nei
+# List separator (e.g. “one, two, three”)
+, =,
+Unknown item (@1)=Ukjent gjenstand (@1)
+unknown=ukjent
+1 second=1 sekund
+@1 seconds=@1 sekunder
+• @1: @2=• @1: @2
+• @1, rating @2: @3 s - @4 s=• @1, rangering @2: @3 s - @4 s
+• @1, rating @2: @3 s=• @1, rangering @2: @3 s
+• @1, level @2: @3 uses=• @1, nivå @2: @3 bruk
+• @1, level @2: Unlimited=• @1, nivå @2: Ubegrenset
+This tool is capable of mining.=Dette verktøyet kan brukes til gruvedrift.
+Maximum toughness levels:=Maksimale hardhetsnivåer:
+Mining times:=Gruvetider:
+Durability:=
+This is a melee weapon which deals damage by punching.=Dette er et nærkampvåpen som gir skade ved slag.
+Maximum damage per hit:=Maksimal skade per slag:
+• @1: @2 HP=• @1: @2 HP
+Full punch interval: @1 s=Fullt slagintervall: @1 s
+This block can be mined by any mining tool in half a second.=Denne blokken kan graves opp av hvilket som helst gruveverktøy på et halvt sekund.
+This block can be mined by any mining tool immediately.=Denne blokken kan graves opp umiddelbart av hvilket som helst gruveverktøy.
+This block cannot be mined by ordinary mining tools.=Denne blokken kan ikke graves opp av vanlige gruveverktøy.
+This block can be destroyed by any mining tool in half a second.=Denne blokken kan ødelegges av hvilket som helst gruveverktøy på et halvt sekund.
+This block can be destroyed by any mining tool immediately.=Denne blokken kan ødelegges umiddelbart av hvilket som helst gruveverktøy.
+This block cannot be destroyed by ordinary mining tools.=Denne blokken kan ikke ødelegges av vanlige gruveverktøy.
+This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Denne blokken kan graves opp av gruveverktøy som samsvarer med en av de følgende gruverangeringene og blokkas hardhetsnivå.
+Mining ratings:=Gruverangeringer:
+Toughness level: @1=Hardhetsnivå: @1
+# Range: <Hand> (<Range>)
+Range: @1=Rekkevidde: @1
+Range: 4=Rekkevidde: 4
+# Range: <Hand> (<Range>)
+Range: @1 (@2)=Rekkevidde: @1 (@2)
+This tool can serve as a smelting fuel with a burning time of @1.=Dette verktøyet kan brukes som smeltebrensel med en forbrenningstid på @1.
+This block can serve as a smelting fuel with a burning time of @1.=Denne blokken kan brukes som smeltebrensel med en forbrenningstid på @1.
+This item can serve as a smelting fuel with a burning time of @1.=Denne gjenstanden kan brukes som smeltebrensel med en forbrenningstid på @1.
+ Using it as fuel turns it into: @1.=
+Itemstring: "@1"=Gjenstandsstreng: "@1"
+Description: @1=Beskrivelse: @1
+Usage help: @1=Brukshjelp: @1
+Maximum stack size: @1=Maksimal stabbelstørrelse: @1
+This block points to liquids.=Denne blokken peker mot væsker.
+This tool points to liquids.=Dette verktøyet peker mot væsker.
+This item points to liquids.=Denne gjenstanden peker mot væsker.
+Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Slag med denne blokken fungerer ikke som vanlig; nærkamp og gruvedrift er enten ikke mulig eller fungerer annerledes.
+Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Slag med dette verktøyet fungerer ikke som vanlig; nærkamp og gruvedrift er enten ikke mulig eller fungerer annerledes.
+Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Slag med denne gjenstanden fungerer ikke som vanlig; nærkamp og gruvedrift er enten ikke mulig eller fungerer annerledes.
+This block belongs to the @1 group.=Denne blokken tilhører @1-gruppen.
+This tool belongs to the @1 group.=Dette verktøyet tilhører @1-gruppen.
+This item belongs to the @1 group.=Denne gjenstanden tilhører @1-gruppen.
+This block belongs to these groups: @1.=Denne blokken tilhører disse gruppene: @1.
+This tool belongs to these groups: @1.=Dette verktøyet tilhører disse gruppene: @1.
+This item belongs to these groups: @1.=Denne gjenstanden tilhører disse gruppene: @1.
+Blocks=Blokker
+Item reference of blocks and other things which are capable of occupying space=Vareoversikt over blokker og andre ting som kan oppta plass
+Collidable: @1=Sammenstøtbar: @1
+Pointable: Yes=Pekerbar: Ja
+Pointable: Only by special items=Pekerbar: Kun av spesielle gjenstander
+Pointable: No=Pekerbar: Nei
+This block is a liquid with these properties:=Denne blokken er en væske med disse egenskapene:
+• Renewable=• Fornybar
+• Not renewable=• Ikke fornybar
+• No flowing=• Ingen flyt
+• Flowing range: @1=• Flytende rekkevidde: @1
+• Viscosity: @1=• Viskositet: @1
+This block causes a damage of @1 hit points per second.=Denne blokken gir en skade på @1 livspoeng per sekund.
+This block causes a damage of @1 hit point per second.=Denne blokken gir en skade på @1 livspoeng per sekund.
+This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=Denne blokken reduserer pusten din og gir en drukningsskade på @1 livspoeng hvert 2. sekund.
+This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=Denne blokken reduserer pusten din og gir en drukningsskade på @1 livspoeng hvert 2. sekund.
+The fall damage on this block is increased by @1%.=Fallskaden på denne blokken økes med @1%.
+This block cancels any fall damage.=Denne blokken eliminerer all fallskade.
+The fall damage on this block is reduced by @1%.=Fallskaden på denne blokken reduseres med @1%.
+You cannot jump while standing on this block.=Du kan ikke hoppe mens du står på denne blokken.
+This block can be climbed.=Denne blokken kan klatres på.
+This block will make you bounce off with an elasticity of @1%.=Denne blokken vil få deg til å sprette av med en elastisitet på @1%.
+This block is slippery.=Denne blokken er glatt.
+This block is completely silent when walked on, mined or built.=Denne blokken er helt stille når den gås på, graves opp eller bygges.
+This block is completely silent when mined or built.=Denne blokken er helt stille når den graves opp eller bygges.
+Walking on this block is completely silent.=Å gå på denne blokken er helt stille.
+Mining this block is completely silent.=Å grave denne blokken er helt stille.
+Building this block is completely silent.=Å bygge denne blokken er helt stille.
+This block is affected by gravity and can fall.=Denne blokken påvirkes av tyngdekraften og kan falle.
+Building another block at this block will place it inside and replace it.=Å bygge en annen blokk her vil plassere den inne i og erstatte den.
+Falling blocks can go through this block; they destroy it when doing so.=Fallende blokker kan gå gjennom denne blokken; de ødelegger den samtidig.
+This block will drop as an item when a falling block ends up inside it.=Denne blokken vil falle som en gjenstand når en fallende blokk havner inni den.
+This block is destroyed when a falling block ends up inside it.=Denne blokken blir ødelagt når en fallende blokk havner inni den.
+This block will drop as an item when it is not attached to a surrounding block.=Denne blokken vil falle som en gjenstand når den ikke er festet til en omkringliggende blokk.
+This block will drop as an item when no collidable block is below it.=Denne blokken vil falle som en gjenstand når det ikke er noen sammenstøtbar blokk under den.
+Liquids can flow into this block and destroy it.=Væsker kan strømme inn i denne blokken og ødelegge den.
+This block is a light source with a light level of @1.=Denne blokken er en lyskilde med et lysnivå på @1.
+This block glows faintly with a light level of @1.=Denne blokken gløder svakt med et lysnivå på @1.
+This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly.=Denne blokken lar lys spre seg med et lite tap av lysstyrke, og sollys kan til og med gå gjennom uten tap.
+This block allows light to propagate with a small loss of brightness.=Denne blokken lar lys spre seg med et lite tap av lysstyrke.
+This block allows sunlight to propagate without loss in brightness.=Denne blokken lar sollys spre seg uten tap av lysstyrke.
+Unknown Node=Ukjent knutepunkt
+This block connects to this block: @1.=Denne blokken kobles til denne blokken: @1.
+This block connects to these blocks: @1.=Denne blokken kobles til disse blokkene: @1.
+This block connects to blocks of the @1 group.=Denne blokken kobles til blokker i @1-gruppen.
+This block connects to blocks of the following groups: @1.=Denne blokken kobles til blokker i følgende grupper: @1.
+This block won't drop anything when mined.=Denne blokken vil ikke gi noe når den graves opp.
+This block will drop the following when mined: @1×@2.=Denne blokken vil gi fra seg følgende når den graves opp: @1×@2.
+This block will drop the following when mined: @1.=Denne blokken vil gi fra seg følgende når den graves opp: @1.
+# Final list separator (e.g. “One, two and three”)
+ and = og
+# Item count times item name
+@1×@2=@1×@2
+# Itemname (<0.5%)
+@1 (<0.5%)=@1 (<0,5%)
+# Itemname (ca. 25%)
+@1 (ca. @2%)=@1 (ca. @2%)
+# Itemname (25%)
+@1 (@2%)=@1 (@2%)
+Tools and weapons=Verktøy og våpen
+Item reference of all wieldable tools and weapons=Vareoversikt over alle brukbare verktøy og våpen
+Durability: @1 uses=Holdbarhet: @1 bruk
+Durability: @1=Holdbarhet: @1
+Miscellaneous items=Div. gjenstander
+Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=Vareoversikt over ting som verken er blokker, verktøy eller våpen (spesielt håndverksgjenstander)
+Mobs=
+different mobs=
+Type: @1=
+spawn class: @1=
+Can Jump=
+Can Fly=
+drops: =
+follows player when these items are held:=
+A transparent block, basically empty space. It is usually left behind after digging something.=En gjennomsiktig blokk, egentlig tomt rom. Den blir vanligvis igjen etter at noe graves opp.
+Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Når du ikke holder noe, bruker du hånden som fungerer som et verktøy med sine egne evner. Når du holder en gjenstand som ikke er et gruveverktøy eller et våpen, vil den oppføre seg som om det var hånden.
+
+
+##### not used anymore #####
+
+Using it as fuel turns it into: @1.=Å bruke det som brensel gjør det om til: @1.
+Mining level: @1=Gruvenivå: @1
+# Rating used for digging times
+Rating @1=Rangering @1
+# @1 is minimal rating, @2 is maximum rating
+Rating @1-@2=Rangering @1-@2
+This block will drop the following items when mined: @1.=Denne blokken vil gi fra seg følgende gjenstander når den graves opp: @1.
+This block will randomly drop one of the following when mined: @1.=Denne blokken vil tilfeldig gi fra seg én av følgende når den graves opp: @1.
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Denne blokken vil tilfeldig gi opptil @1 dråper av følgende mulige dråper når den graves opp: @2.
+any level=ethvert nivå
+level 0=nivå 0
+level 0-@1=nivå 0-@1
+• @1: @2, @3=• @1: @2, @3
+Mining durability:=Graveholdbarhet:

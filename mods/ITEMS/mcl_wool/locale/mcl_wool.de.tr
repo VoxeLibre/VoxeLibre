@@ -1,6 +1,4 @@
 # textdomain: mcl_wool
-Wool=Wolle
-Carpet=Teppich
 White Wool=Weiße Wolle
 White Carpet=Weißer Teppich
 Grey Wool=Graue Wolle
@@ -35,3 +33,5 @@ Light Blue Wool=Hellblaue Wolle
 Light Blue Carpet=Hellblauer Teppich
 Wool is a decorative block which comes in many different colors.=Wolle ist ein dekorativer Block, den es in vielen verschiedenen Farben gibt.
 Carpets are thin floor covers which come in many different colors.=Teppiche sind dünne Bodenbeläge, die es in vielen verschiedenen Farben gibt.
+Wool=Wolle
+Carpet=Teppich

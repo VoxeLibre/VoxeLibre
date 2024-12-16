@@ -1,19 +1,6 @@
 # textdomain: mcl_flowers
 This is a small flower. Small flowers are mainly used for dye production and can also be potted.=
 It can only be placed on a block on which it would also survive.=
-Poppy=
-Dandelion=
-Oxeye Daisy=
-Orange Tulip=
-Pink Tulip=
-Red Tulip=
-White Tulip=
-Allium=
-Azure Bluet=
-Blue Orchid=
-Wither Rose=
-Lily of the Valley=
-Cornflower=
 Tall Grass=
 Tall grass is a small plant which often occurs on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.=
 Fern=
@@ -36,3 +23,17 @@ Double Tallgrass=
 Large Fern=
 Lily Pad=
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=
+##[ register.lua ]##
+Poppy=
+Dandelion=
+Oxeye Daisy=
+Orange Tulip=
+Pink Tulip=
+Red Tulip=
+White Tulip=
+Allium=
+Azure Bluet=
+Blue Orchid=
+Wither Rose=
+Lily of the Valley=
+Cornflower=

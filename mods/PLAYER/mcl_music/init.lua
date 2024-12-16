@@ -167,7 +167,7 @@ end
 
 minetest.register_chatcommand("music", {
 	params = "[on|off|invert [<player name>]]",
-	description = S("Turns music for yourself or another player on or off."),
+	description = S("Turn music for yourself or another player on or off."),
 	func = function(sender_name, params)
 		local argtable = {}
 		for str in string.gmatch(params, "([^%s]+)") do
@@ -186,14 +186,14 @@ minetest.register_chatcommand("music", {
 			target_player = sender
 			playername =sender_name
 		elseif not minetest.check_player_privs(sender, "debug") then -- Self-use handled above
-			minetest.chat_send_player(sender_name, S("You need the debug privilege in order to turn ingame music on or off for somebody else!"))
+			minetest.chat_send_player(sender_name, S("You need the debug privilege in order to turn in-game music on or off for somebody else!"))
 			return
 		else -- Admin
 			target_player = minetest.get_player_by_name(playername)
 		end
 
 		if not target_player then
-			minetest.chat_send_player(sender_name, S("Couldn't find player @1!", playername))
+			minetest.chat_send_player(sender_name, S("Could not find player @1!", playername))
 			return
 		end
 

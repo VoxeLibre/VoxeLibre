@@ -1,11 +1,11 @@
 # textdomain: mcl_cherry_blossom
+##[ nodes.lua ]##
 Cherry Log=Kirschbaumsetzling
+Cherry Bark=Kirschbaumsetzling
 The trunk of a cherry blossom tree.=
 Stripped Cherry Log=
-The stripped trunk of a cherry blossom tree.=
-Cherry Bark=Kirschbaumsetzling
-This is a decorative block surrounded by the bark of a tree trunk.=
 Stripped Cherry Wood=
+The stripped trunk of a cherry blossom tree.=
 The stripped wood of a cherry blossom tree.=
 Cherry Wood Planks=Kirschbaumsetzling
 Cherry Leaves=
@@ -19,6 +19,11 @@ Cherry Slab=Kirschholzstufe
 Double Cherry Slab= Doppelte Kirschholzstufe
 Cherry Sign=Kirschholzschild
 Cherry Fence=Kirschholzzaun
-Cherry Gate=Kirschholzzauntor
+Cherry Fence Gate=
 Cherry Pressure Plate=Kirschholzdruckplatte
 Cherry Button=Kirschholzknopf
+
+
+##### not used anymore #####
+
+Cherry Gate=Kirschholzzauntor

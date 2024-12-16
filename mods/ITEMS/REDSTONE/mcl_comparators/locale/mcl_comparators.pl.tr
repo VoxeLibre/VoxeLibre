@@ -7,7 +7,6 @@ The side inputs are only powered by normal redstone power. The redstone comparat
 Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=Tryb przekazywania:@nPrzednia pochodnia jest niezaświecona i obniżona. Wyjście jest zasilane wtedy i tylko wtedy gdy wejście główne jest zasilane. Wejścia boczne są ignorowane.
 Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=Tryb odejmowania:@nPrzednia pochodnia jest zaświecona. Wyjście jest zasilane wtedy i tylko gdy zasilane jest główne wejście, a wejścia boczne nie są.
 Redstone Comparator=Komparator
-Redstone Comparator (Subtract)=Komparator (odejmowanie)
 Redstone Comparator (Powered)=Komparator (zasilony)
+Redstone Comparator (Subtract)=Komparator (odejmowanie)
 Redstone Comparator (Subtract, Powered)=Komparator (odejmowanie, zasilony)
-

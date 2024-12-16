@@ -1,11 +1,11 @@
 # textdomain: mcl_cherry_blossom
+##[ nodes.lua ]##
 Cherry Log=Tronco de Cerejeira
+Cherry Bark=Casca de Cerejeira
 The trunk of a cherry blossom tree.=O tronco de uma árvore de cerejeira.
 Stripped Cherry Log=Tronco de Cerejeira Descascado
-The stripped trunk of a cherry blossom tree.=O tronco descascado de uma árvore de cerejeira.
-Cherry Bark=Casca de Cerejeira
-This is a decorative block surrounded by the bark of a tree trunk.=Esse é um bloco decorativo rodeado pela casca do tronco de uma árvore.
 Stripped Cherry Wood=Madeira de Cerejeira Descascada
+The stripped trunk of a cherry blossom tree.=O tronco descascado de uma árvore de cerejeira.
 The stripped wood of a cherry blossom tree.=A madeira descascada da árvore de cerejeira.
 Cherry Wood Planks=Tábuas de Cerejeira
 Cherry Leaves=Folhas de Cerejeira
@@ -22,3 +22,8 @@ Cherry Fence=Cerca de Cerejeira
 Cherry Fence Gate=Portão de Cerejeira
 Cherry Pressure Plate=Placa de Pressão de Cerejeira
 Cherry Button=Botão de Cerejeira
+
+
+##### not used anymore #####
+
+This is a decorative block surrounded by the bark of a tree trunk.=Esse é um bloco decorativo rodeado pela casca do tronco de uma árvore.

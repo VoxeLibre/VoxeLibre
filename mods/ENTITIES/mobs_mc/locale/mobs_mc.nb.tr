@@ -1,0 +1,151 @@
+# textdomain: mobs_mc
+##[ axolotl.lua ]##
+Axolotl=Axolotl
+##[ bat.lua ]##
+Bat=Flaggermus
+##[ rabbit.lua ]##
+Rabbit=Kanin
+Killer Bunny=Morderkanin
+##[ chicken.lua ]##
+Chicken=Kylling
+##[ cow+mooshroom.lua ]##
+Cow=Ku
+Mooshroom=Soppku
+##[ horse.lua ]##
+Horse=Hest
+Skeleton Horse=Skjeletthest
+Zombie Horse=Vandød hest
+Donkey=Esel
+Mule=Mulldyr
+##[ llama.lua ]##
+Llama=Lama
+##[ ocelot.lua ]##
+Ocelot=Ocelot
+Cat=Katt
+##[ parrot.lua ]##
+Parrot=Papegøye
+##[ pig.lua ]##
+Pig=Gris
+##[ polar_bear.lua ]##
+Polar Bear=Isbjørn
+##[ sheep.lua ]##
+Sheep=Sau
+##[ wolf.lua ]##
+Wolf=Ulv
+Dog=Hund
+##[ squid.lua ]##
+Squid=Blekksprut
+##[ villager.lua ]##
+Master=Mester
+Villager=Landsbyboer
+##[ pillager.lua ]##
+Pillager=Plyndrer
+##[ villager_evoker.lua ]##
+Evoker=Åndemaner
+##[ villager_vindicator.lua ]##
+Vindicator=Forsvarer
+##[ villager_zombie.lua ]##
+Zombie Villager=Vandød landsbyboer
+##[ witch.lua ]##
+Witch=Heks
+##[ blaze.lua ]##
+Blaze=Flammeskrømt
+##[ ender_dragon.lua ]##
+Ender Dragon=Enderdrage
+##[ endermite.lua ]##
+Endermite=Endermidd
+##[ villager_illusioner.lua ]##
+Illusioner=Illusjonist
+##[ ghast.lua ]##
+Ghast=Gast
+##[ guardian.lua ]##
+Guardian=Vokter
+##[ guardian_elder.lua ]##
+Elder Guardian=Urvokter
+##[ snowman.lua ]##
+Snow Golem=Snømann
+##[ iron_golem.lua ]##
+Iron Golem=Jernkjempe
+##[ rover.lua ]##
+Rover=Drifter
+##[ shulker.lua ]##
+Shulker=Shulker
+##[ silverfish.lua ]##
+Silverfish=Sølvkre
+##[ skeleton+stray.lua ]##
+Skeleton=Skjelett
+Stray=Streifer
+##[ skeleton_wither.lua ]##
+Wither Skeleton=Visningskjelett
+##[ stalker.lua ]##
+Stalker=Sniker
+Overloaded Stalker=Overbelastet sniker
+##[ zombie.lua ]##
+Zombie=Vandød
+Baby Zombie=Babyvandød
+Husk=Ørkenvandød
+Baby Husk=Baby ørkenvandød
+##[ slime+magma_cube.lua ]##
+Slime - big=Slim - stor
+Slime - small=Slim - liten
+Slime - tiny=Slim - knøttliten
+Magma Cube - big=Magmakube - stor
+Magma Cube - small=Magmakube - liten
+Magma Cube - tiny=Magmakube - knøttliten
+Magma Cube=Magmakube
+Slime=Slim
+##[ spider.lua ]##
+Spider=Edderkopp
+Cave Spider=Huleedderkopp
+##[ vex.lua ]##
+Vex=Plageånd
+##[ wither.lua ]##
+Wither=Forvitrer
+##[ cod.lua ]##
+Cod=Torsk
+##[ salmon.lua ]##
+Salmon=Laks
+##[ tropical_fish.lua ]##
+Tropical Fish=Tropisk Fisk
+Tropical fish=Tropisk fisk
+##[ dolphin.lua ]##
+Dolphin=Delfin
+##[ glow_squid.lua ]##
+Glow Squid=Glødeblekksprut
+##[ piglin.lua ]##
+Piglin=Grisling
+Sword Piglin=Sverdgrisling
+Zombie Piglin=Vandød grisling
+Baby Zombie Piglin=Babyvandød grisling
+Piglin Brute=Grislingbølle
+##[ hoglin+zoglin.lua ]##
+Hoglin=Hoglin
+Zoglin=Voglin
+Baby hoglin=Babyhoglin
+##[ strider.lua ]##
+Strider=Lavavandrer
+Baby Strider=Babylavavandrer
+
+
+##### not used anymore #####
+
+Agent=Agent
+Wither spawning=Forvitrer fremmanes
+Baby Piglin=Babygrisling
+Farmer=Bonde
+Fisherman=Fisker
+Fletcher=Pilmaker
+Shepherd=Sauebonde
+Librarian=Bibliotekar
+Cartographer=Kartograf
+Armorer=Rustningsmed
+Leatherworker=Lærarbeider
+Butcher=Slakter
+Weapon Smith=Våpensmed
+Tool Smith=Verktøysmed
+Cleric=Geistlig
+Nitwit=Tomskalle
+Novice=Nybegynner
+Apprentice=Lærling
+Journeyman=Håndverker
+Expert=Ekspert

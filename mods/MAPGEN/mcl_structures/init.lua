@@ -122,7 +122,7 @@ minetest.register_chatcommand("spawnstruct", {
 		end
 		minetest.chat_send_player(name, message)
 		if errord then
-			minetest.chat_send_player(name, S("Use /help spawnstruct to see a list of avaiable types."))
+			minetest.chat_send_player(name, S("Use /help spawnstruct to see a list of available types."))
 		end
 	end
 })

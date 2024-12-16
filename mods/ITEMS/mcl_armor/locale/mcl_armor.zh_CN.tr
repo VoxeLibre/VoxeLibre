@@ -1,0 +1,68 @@
+# textdomain: mcl_armor
+This is a piece of equippable armor which reduces the amount of damage you receive.=这是一件可穿戴的盔甲，能减少你所受到的伤害量。
+To equip it, put it on the corresponding armor slot in your inventory menu.=要装备它，将其放置在物品栏菜单中对应的盔甲栏位上。
+sentry=
+dune=
+coast=
+wild=
+tide=
+ward=
+vex=
+rib=
+snout=
+eye=
+spire=
+silence=
+wayfinder=
+##[ register.lua ]##
+Projectile Protection=弹射物保护
+Reduces projectile damage.=减少弹射物伤害。
+Blast Protection=爆炸保护
+Reduces explosion damage and knockback.=减少爆炸伤害和击退效果。
+Fire Protection=火焰保护
+Reduces fire damage.=减少火焰伤害。
+Protection=保护
+Reduces most types of damage by 4% for each level.=每级可将大多数类型的伤害减少4%。
+Feather Falling=摔落保护
+Reduces fall damage.=减少坠落伤害。
+Aqua Affinity=水下速掘
+#Translations of enchantements
+Increases underwater mining speed.=增加水下挖掘速度。
+Curse of Binding=绑定诅咒
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=除了死亡、物品损坏或处于创造模式外，该物品无法从盔甲栏位上移除。
+Thorns=荆棘
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=受到攻击时能反弹部分伤害，但每次触发会消耗自身耐久度。
+Elytra=鞘翅
+##[ trims.lua ]##
+#Translations for armor trims
+Smithing Template '@1'=锻造模板“@1” 
+
+
+##### not used anymore #####
+
+Leather Cap=皮革帽子
+Iron Helmet=铁头盔
+Golden Helmet=金头盔
+Diamond Helmet=钻石头盔
+Chain Helmet=锁链头盔
+Netherite Helmet=下界合金头盔
+Leather Tunic=皮革外套
+Iron Chestplate=铁胸甲
+Golden Chestplate=金胸甲
+Diamond Chestplate=钻石胸甲
+Chain Chestplate=锁链胸甲
+Netherite Chestplate=下界合金胸甲
+Leather Pants=皮革裤子
+Iron Leggings=铁护腿
+Golden Leggings=金护腿
+Diamond Leggings=钻石护腿
+Chain Leggings=锁链护腿
+Netherite Leggings=下界合金护腿
+Leather Boots=皮革靴子
+Iron Boots=铁靴子
+Golden Boots=金靴子
+Diamond Boots=钻石靴子
+Chain Boots=锁链靴子
+Netherite Boots=下界合金靴子
+Shooting consumes no regular arrows.=射击时不消耗普通箭矢。
+Shoot 3 arrows at the cost of one.=以消耗1支箭的代价射出3支箭。

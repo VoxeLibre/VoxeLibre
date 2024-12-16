@@ -1,0 +1,9 @@
+# textdomain: mcl_weather
+##[ weather_core.lua ]##
+Gives ability to control weather=Gir evnen til å kontrollere været
+Changes the weather to the specified parameter.=Endrer været til det gitte parameteret.
+Error: No weather specified.=Feil: Intent vær spesifisert.
+Error: Invalid parameters.=Feil: Ugyldig parameter.
+Error: Duration can't be less than 1 second.=Feil:Feil: Varighet kan ikke være mindre enn 1 sekund.
+Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.=Feil: Ugyldig vær spesifisert. Bruk "clear", "rain", "snow", eller "thunder"
+Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=Veksler mellom opplett og vær med nedbør (tilfeldig regn, storm eller snø)
