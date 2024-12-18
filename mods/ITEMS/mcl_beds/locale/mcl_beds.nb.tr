@@ -15,6 +15,8 @@ Send=
 Players in bed: @1/@2=Spillere i seng: @1/@2
 Note: Night skip is disabled.=Merk: Å sove over natten er avslått.
 You're sleeping.=Du sover
+You will fall asleep when all players are in bed.=Du sovner når alle spillere er i seng.
+You will fall asleep when @1% of all players are in bed.=Du sovner når @1% av alle spillere er i seng.
 You're in bed.=Du er i seng.
 @1/@2 players currently in bed.=@1/@2 spillere i seng akkurat nå.
 You exceeded the maximum number of messages per 10 seconds!=Du har overskredet maksimalt antall meldinger per 10 sekunder!
@@ -54,6 +56,4 @@ Respawn Anchor=Livsanker
 ##### not used anymore #####
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Ny startposisjon satt! Men du kan bare sove om natten eller under tordenvær
-You will fall asleep when all players are in bed.=Du sovner når alle spillere er i seng.
-You will fall asleep when @1% of all players are in bed.=Du sovner når @1% av alle spillere er i seng.
 send!=send!

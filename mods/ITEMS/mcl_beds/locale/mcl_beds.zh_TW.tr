@@ -15,6 +15,8 @@ Send=
 Players in bed: @1/@2=@2位玩家中的@1位在床上
 Note: Night skip is disabled.=注意：睡覺以跳過夜晚被停用
 You're sleeping.=你睡着了。
+You will fall asleep when all players are in bed.=你會在所有玩家在床上時睡着
+You will fall asleep when @1% of all players are in bed.=
 You're in bed.=你在床上。
 @1/@2 players currently in bed.=
 You exceeded the maximum number of messages per 10 seconds!=
@@ -54,4 +56,3 @@ Respawn Anchor=
 ##### not used anymore #####
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=你設定了重生點，但你只能在晚上或雷雨時才能睡覺。
-You will fall asleep when all players are in bed.=你會在所有玩家在床上時睡着

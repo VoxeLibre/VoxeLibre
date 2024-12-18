@@ -15,6 +15,8 @@ Send=
 Players in bed: @1/@2=Joueurs au lit : @1/@2
 Note: Night skip is disabled.=Remarque : Le saut de nuit est désactivé.
 You're sleeping.=Tu dors.
+You will fall asleep when all players are in bed.=Vous vous endormirez lorsque tous les joueurs seront au lit.
+You will fall asleep when @1% of all players are in bed.=Vous vous endormirez lorsque @1% de tous les joueurs seront au lit.
 You're in bed.=Tu es au lit.
 @1/@2 players currently in bed.=
 You exceeded the maximum number of messages per 10 seconds!=Vous avez dépassé le nombre maximal de message par 10 secondes !
@@ -54,6 +56,4 @@ Respawn Anchor=Ancre de réapparition
 ##### not used anymore #####
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Nouvelle position de réapparition définie ! Mais vous ne pouvez dormir que la nuit ou pendant un orage.
-You will fall asleep when all players are in bed.=Vous vous endormirez lorsque tous les joueurs seront au lit.
-You will fall asleep when @1% of all players are in bed.=Vous vous endormirez lorsque @1% de tous les joueurs seront au lit.
 send!=envoyé !
