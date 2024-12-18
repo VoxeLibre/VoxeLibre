@@ -91,10 +91,10 @@ Prismarine Slab=Prismarinhelle
 Double Prismarine Slab=Dobbel prismarinhelle
 Prismarine Brick Stairs=Prismarinmurtrapp
 Prismarine Brick Slab=Prismarinmurhelle
-Double prismarine_brick Slab=
+Double Prismarine Brick Slab=Dobbel prismarinmurhelle
 Dark Prismarine Slab=Mørk prismarinhelle
 Double Dark Prismarine Slab=Dobbel mørk prismarinhelle
-Mud Brick Stairs=
+Mud Brick Stair=Gjørmetegltrapp
 Mud Brick Slab=Gjørmeteglhelle
 Double Mud Brick Slab=Dobbel gjørmeteglhelle
 Polished Andesite Slab=Finslipt andesitthelle
@@ -113,6 +113,4 @@ Double Mossy Stone Brick Slab=Dobbel mosete steinmurshelle
 
 ##### not used anymore #####
 
-Double Prismarine Brick Slab=Dobbel prismarinmurhelle
 Dark Prismarine Stairs=Mørk prismarintrapp
-Mud Brick Stair=Gjørmetegltrapp

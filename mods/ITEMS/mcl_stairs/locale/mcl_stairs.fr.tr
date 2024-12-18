@@ -91,10 +91,10 @@ Prismarine Slab=Dalle en prismarine
 Double Prismarine Slab=Double dalle en prismarine
 Prismarine Brick Stairs=Escalier en brique prismarine
 Prismarine Brick Slab=Dalle en brique prismarine
-Double prismarine_brick Slab=
+Double Prismarine Brick Slab=Double dalle en brique prismarine
 Dark Prismarine Slab=Dalle en prismarine sombre
 Double Dark Prismarine Slab=Double dalle en prismarine sombre
-Mud Brick Stairs=
+Mud Brick Stairs=Escalier en briques de boue
 Mud Brick Slab=Dalle en briques de boue
 Double Mud Brick Slab=Double dalle en briques de boue
 Polished Andesite Slab=Dalle en andésite polie
@@ -113,6 +113,4 @@ Double Mossy Stone Brick Slab=Double dalle en pierre taillée moussue
 
 ##### not used anymore #####
 
-Double Prismarine Brick Slab=Double dalle en brique prismarine
 Dark Prismarine Stairs=Escalier en prismarine sombre 
-Mud Brick Stair=Escalier en briques de boue

@@ -274,7 +274,7 @@ mcl_stairs.register_slab("prismarine_brick", "mcl_ocean:prismarine_brick",
 		{"mcl_ocean_prismarine_bricks.png"},
 		S("Prismarine Brick Slab"),
 		mcl_sounds.node_sound_stone_defaults(),	6, 2,
-		S("Double prismarine_brick Slab"))
+		S("Double Prismarine Brick Slab"))
 
 mcl_stairs.register_stair("prismarine_dark", "mcl_ocean:prismarine_dark",
 		{pickaxey=1, material_stone=1},

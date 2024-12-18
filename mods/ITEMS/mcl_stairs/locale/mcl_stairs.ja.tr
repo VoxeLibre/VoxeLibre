@@ -91,10 +91,10 @@ Prismarine Slab=プリズマリンのスラブ
 Double Prismarine Slab=プリズマリンの２重スラブ
 Prismarine Brick Stairs=プリズマリンレンガの階段
 Prismarine Brick Slab=プリズマリンレンガのスラブ
-Double prismarine_brick Slab=
+Double Prismarine Brick Slab=プリズマリンレンガの２重スラブ
 Dark Prismarine Slab=暗色プリズマリンのスラブ
 Double Dark Prismarine Slab=暗色プリズマリンの２重スラブ
-Mud Brick Stairs=
+Mud Brick Stairs=泥レンガの階段
 Mud Brick Slab=泥レンガのスラブ
 Double Mud Brick Slab=泥レンガの２重スラブ
 Polished Andesite Slab=研がれた安山岩のスラブ
@@ -113,6 +113,4 @@ Double Mossy Stone Brick Slab=苔むした石レンガの２重スラブ
 
 ##### not used anymore #####
 
-Double Prismarine Brick Slab=プリズマリンレンガの２重スラブ
 Dark Prismarine Stairs=暗色プリズマリンの階段
-Mud Brick Stair=泥レンガの階段

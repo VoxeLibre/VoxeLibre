@@ -91,10 +91,10 @@ Prismarine Slab=Призмариновая плита
 Double Prismarine Slab=Двойная призмариновая плита
 Prismarine Brick Stairs=Ступени из призмаринового кирпича
 Prismarine Brick Slab=Плита из призмаринового кирпича
-Double prismarine_brick Slab=
+Double Prismarine Brick Slab=Двойная плита из призмаринового кирпича
 Dark Prismarine Slab=Плита из тёмного призмарина
 Double Dark Prismarine Slab=Двойная плита из тёмного призмарина
-Mud Brick Stairs=
+Mud Brick Stairs=Саманные ступени
 Mud Brick Slab=Саманная плита
 Double Mud Brick Slab=Двойная саманная плита
 Polished Andesite Slab=Плита из полированного андезита
@@ -113,6 +113,4 @@ Double Mossy Stone Brick Slab=Двойная плита из замшелых к
 
 ##### not used anymore #####
 
-Double Prismarine Brick Slab=Двойная плита из призмаринового кирпича
 Dark Prismarine Stairs=Ступени из тёмного призмарина
-Mud Brick Stair=Саманные ступени
