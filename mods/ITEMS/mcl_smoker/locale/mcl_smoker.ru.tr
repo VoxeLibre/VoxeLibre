@@ -6,7 +6,13 @@ Cooks food faster than furnace=Готовит еду быстрее чем об�
 Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace.=Коптильня готовит некоторые предметы, в основном сырую еду в приготовленную, но в два раза быстрее чем обычная печь.
 Use the smoker to open the furnace menu.=Используйте коптильню, чтобы открыть меню печи.
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Положите топливо в нижний слот и материал в верхний.
-The smoker will slowly use its fuel to smelt the item.=Коптильня будет медленно использовать топливо для переплавки предмета.
+The smoker will slowly use its fuel to cook the item.=
 The result will be placed into the output slot at the right side.=Результат будет помещен в выходной слот с правой стороны.
-Use the recipe book to see what foods you can smelt, what you can use as fuel and how long it will burn.=Используйте книгу рецептов, чтобы увидеть какие еду можно приготовить, что можно использовать как топливо и как долго оно будет гореть.
+Use the recipe book to see what foods you can cook, what you can use as fuel and how long it will burn.=
 Burning Smoker=Горящая коптильня
+
+
+##### not used anymore #####
+
+The smoker will slowly use its fuel to smelt the item.=Коптильня будет медленно использовать топливо для переплавки предмета.
+Use the recipe book to see what foods you can smelt, what you can use as fuel and how long it will burn.=Используйте книгу рецептов, чтобы увидеть какие еду можно приготовить, что можно использовать как топливо и как долго оно будет гореть.

@@ -5,8 +5,8 @@ local S = minetest.get_translator(modname)
 
 minetest.register_tool("mcl_shepherd:shepherd_staff", {
 	description = S("Shepherd Staff"),
-	_doc_items_longdesc = S(""),
-	_doc_items_usagehelp = S(""),
+	_doc_items_longdesc = "", -- TODO
+	_doc_items_usagehelp = "", -- TODO
 	inventory_image = "mcl_tool_shepherd_staff.png",
 	wield_scale = 1.3*mcl_vars.tool_wield_scale,
 	stack_max = 1,

@@ -5,11 +5,11 @@ Player @1 does not exist.=Spieler @1 existiert nicht.
 You are already dead=Sie sind schon tot
 @1 is already dead=@1 ist schon tot
 [<name>]=[<Name>]
-Kill player or yourself=Spieler oder sich selbst töten
+Kill player or yourself=Spieler oder dich selbst töten
 ##[ setblock.lua ]##
 <X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <Node-Bezeichner>
 Set node at given position=Node (Block) an der gegebenen Position platzieren
-Invalid node=Unültiger Node
+Invalid node=Ungültiger Node
 @1 spawned.=@1 gespawnt.
 Invalid parameters (see /help setblock)=Ungültige Parameter (siehe „/help setblock”)
 ##[ seed.lua ]##
@@ -20,25 +20,20 @@ Only peaceful mobs allowed!=Nur friedliche Mobs erlaubt!
 Can use /say=Kann „/say“ benutzen
 <message>=<Nachricht>
 Send a message to every player=Nachricht an alle Spieler senden
-Invalid usage, see /help say.=Falsche Benutzung, siehe „/help say“.
+Invalid usage, see /help say.=Falsche Verwendung, siehe „/help say“.
 ##[ list.lua ]##
-Show who is logged on=Anzeigen, wer eingeloggt ist
+Show who is logged on=Zeige, wer eingeloggt ist
 ##[ sound.lua ]##
 <sound> <target>=
-Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
-Sound name is invalid!=
-Target is invalid!=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Ziel.=
+Sound name is invalid!=Ungültiger Soundname!
+Target is invalid!=Ungültiges Ziel!
 ##[ alias.lua ]##
 List bans=Bannliste anzeigen
 Ban list: @1=Bannliste: @1
-List clear commands=
-To clear inventory use /clearinv or /clearinventory=
-To clear mobs use /clearmobs=
-To clear the weather use /weather clear=
-Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+List clear commands=Liste der Bereinigungsbefehle
+To clear inventory use /clearinv or /clearinventory=Um das Inventar zu leeren, benutze /clearinv oder /clearinventory
+To clear mobs use /clearmobs=Um Mobs zu löschen, benutze /clearmobs
+To clear the weather use /weather clear=Um das Wetter zu löschen, benutze /weather clear
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=Das Löschen des Chats ist nicht möglich. Du kannst den Chat mit der „Chat-Log umschalten“-Taste (Standard F2) auf dem PC oder dem Chat-Symbol in der mobilen Version ausblenden.
 
-
-##### not used anymore #####
-
-@1 committed suicide.=@1 beging Selbstmord.
-@1 was killed by @2.=@1 wurde von @2 getötet.

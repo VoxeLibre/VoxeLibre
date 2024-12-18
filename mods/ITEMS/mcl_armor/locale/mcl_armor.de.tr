@@ -1,38 +1,38 @@
 # textdomain: mcl_armor
 This is a piece of equippable armor which reduces the amount of damage you receive.=Dies ist ein Teil einer tragbaren Rüstung, die die Menge an Schaden, den Sie erleiden, reduziert.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Um es zu tragen, legen Sie es in den passenden Rüstungsplatz in Ihrem Inventarmenü.
-sentry=
-dune=
+sentry=Wachen
+dune=Dünen
 coast=Küste
-wild=
-tide=
+wild=Wildnis
+tide=Flut
 ward=Bezirk
-vex=
-rib=
+vex=Plagegeist
+rib=Rippen
 snout=Schnauze
 eye=Auge
-spire=
-silence=
-wayfinder=Pfadfinder
+spire=Turmspitzen
+silence=Stille
+wayfinder=Wegfinder
 ##[ register.lua ]##
 Projectile Protection=Projektilschutz
-Reduces projectile damage.=
+Reduces projectile damage.=Reduziert den Schaden von Projektilen.
 Blast Protection=Explosionsschutz
-Reduces explosion damage and knockback.=
-Fire Protection=
-Reduces fire damage.=
-Protection=
-Reduces most types of damage by 4% for each level.=
-Feather Falling=
-Reduces fall damage.=
-Aqua Affinity=
+Reduces explosion damage and knockback.=Reduziert Schaden und Rückstoß durch Explosionen.
+Fire Protection=Feuerschutz
+Reduces fire damage.=Reduziert den Schaden durch Feuer.
+Protection=Schutz
+Reduces most types of damage by 4% for each level.=Reduziert die meisten Arten von Schaden um 4% pro Stufe.
+Feather Falling=Federfall
+Reduces fall damage.=Reduziert Fallschaden.
+Aqua Affinity=Wasseranziehung
 #Translations of enchantements
-Increases underwater mining speed.=
-Curse of Binding=
-Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+Increases underwater mining speed.=Erhöht die Geschwindigkeit beim Abbau unter Wasser.
+Curse of Binding=Fluch der Bindung
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Der Gegenstand kann nicht aus dem Rüstungsslot entfernt werden, außer durch Sterben, Zerbrechen, oder im Kreativmodus.
 Thorns=Dornen
-Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
-Elytra=
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflektiert einen Teil des erlittenen Schadens, verbraucht dabei Haltbarkeit.
+Elytra=Elytren
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=Schmiedevorlage '@1'

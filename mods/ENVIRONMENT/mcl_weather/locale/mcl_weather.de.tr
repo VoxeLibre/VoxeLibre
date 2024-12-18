@@ -1,7 +1,7 @@
 # textdomain: mcl_weather
 ##[ weather_core.lua ]##
-Gives ability to control weather=Fähigkeit, das Wetter zu beeinflussen
-Changes the weather to the specified parameter.=Ändert das Wetter.
+Gives ability to control weather=Verleiht die Fähigkeit, das Wetter zu beeinflussen
+Changes the weather to the specified parameter.=Ändert das Wetter auf den angegebenen Parameter.
 Error: No weather specified.=Fehler: Kein Wetter angegeben.
 Error: Invalid parameters.=Fehler: Ungültige Parameter.
 Error: Duration can't be less than 1 second.=Fehler: Dauer darf nicht weniger als 1 Sekunde sein.

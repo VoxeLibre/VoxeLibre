@@ -5,8 +5,3 @@ TNT=TNT
 Ignited by tools, explosions, fire, lava, redstone power=Anzündbar von Werkzeugen, Explosionen, Feuer, Redstoneeergie
 Explosion radius: @1=Explosionsradius: @1
 Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds.=Platizeren sie das TNT und zünden Sie es mit einer der obigen Methoden an. Begeben Sie sich rasch in eine sichere Entfernung. Das TNT wird anfangen, von der Schwerkraft beeinflusst zu sein und explodiert in 4 Sekunden.
-
-
-##### not used anymore #####
-
-@1 was caught in an explosion.=@1 wurde Opfer einer Explosion.

@@ -1,25 +1,25 @@
 # textdomain: mcl_cherry_blossom
 ##[ nodes.lua ]##
 Cherry Log=Kirschbaumsetzling
-Cherry Bark=Kirschbaumsetzling
-The trunk of a cherry blossom tree.=
-Stripped Cherry Log=
-Stripped Cherry Wood=
-The stripped trunk of a cherry blossom tree.=
-The stripped wood of a cherry blossom tree.=
+Cherry Bark=Kirschbaumrinde
+The trunk of a cherry blossom tree.=Der Stamm eines Kirschbaums.
+Stripped Cherry Log=Entrindeter Kirschbaumstamm
+Stripped Cherry Wood=Entrindetes Kirschholz
+The stripped trunk of a cherry blossom tree.=Der entrindete Stamm eines Kirschbaums.
+The stripped wood of a cherry blossom tree.=Das entrindete Holz eines Kirschbaums.
 Cherry Wood Planks=Kirschbaumsetzling
-Cherry Leaves=
-Cherry blossom leaves are grown from cherry blossom trees.=
+Cherry Leaves=Kirschblütenblätter
+Cherry blossom leaves are grown from cherry blossom trees.=Kirschblütenblätter wachsen an Kirschblütenbäumen.
 Cherry Sapling=Kirschbaumsetzling
-Cherry blossom sapling can be planted to grow cherry trees.=
+Cherry blossom sapling can be planted to grow cherry trees.=Man kann Kirschbaumsetzlinge pflanzen, um Kirschbäume wachsen zu lassen.
 Cherry Door=Kirschholztür
 Cherry Trapdoor=Kirschholzfalltür
 Cherry Stairs=Kirschholztreppe
-Cherry Slab=Kirschholzstufe
-Double Cherry Slab= Doppelte Kirschholzstufe
+Cherry Slab=Kirschholzplatte
+Double Cherry Slab= Doppelte Kirschholzplatte
 Cherry Sign=Kirschholzschild
 Cherry Fence=Kirschholzzaun
-Cherry Fence Gate=
+Cherry Fence Gate=Kirschholzzauntor
 Cherry Pressure Plate=Kirschholzdruckplatte
 Cherry Button=Kirschholzknopf
 

@@ -158,7 +158,7 @@ end
 minetest.register_craftitem("mcl_cocoas:cocoa_beans", {
 	inventory_image = "mcl_cocoa_beans.png",
 	_tt_help = S("Grows at the side of jungle trees"),
-	_doc_items_longdesc = S("Cocoa beans can be used to plant cocoa, bake cookies or cract brown dye."),
+	_doc_items_longdesc = S("Cocoa beans can be used to plant cocoa, bake cookies or craft brown dye."),
 	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa."),
 	description = S("Cocoa Beans"),
 	stack_max = 64,

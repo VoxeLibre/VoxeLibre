@@ -1,6 +1,6 @@
 # textdomain: mobs_mc
 ##[ axolotl.lua ]##
-Axolotl=
+Axolotl=Axolotl
 ##[ bat.lua ]##
 Bat=Fledermaus
 ##[ rabbit.lua ]##
@@ -21,7 +21,7 @@ Mule=Maultier
 Llama=Lama
 ##[ ocelot.lua ]##
 Ocelot=Ozelot
-Cat=
+Cat=Katze
 ##[ parrot.lua ]##
 Parrot=Papagei
 ##[ pig.lua ]##
@@ -32,14 +32,14 @@ Polar Bear=Eisbär
 Sheep=Schaf
 ##[ wolf.lua ]##
 Wolf=Wolf
-Dog=
+Dog=Hund
 ##[ squid.lua ]##
 Squid=Tintenfisch
 ##[ villager.lua ]##
-Master=
+Master=Herr
 Villager=Dorfbewohner
 ##[ pillager.lua ]##
-Pillager=
+Pillager=Plünderer
 ##[ villager_evoker.lua ]##
 Evoker=Magier
 ##[ villager_vindicator.lua ]##
@@ -67,7 +67,7 @@ Snow Golem=Schneegolem
 ##[ iron_golem.lua ]##
 Iron Golem=Eisengolem
 ##[ rover.lua ]##
-Rover=
+Rover=Rover
 ##[ shulker.lua ]##
 Shulker=Shulker
 ##[ silverfish.lua ]##
@@ -79,19 +79,20 @@ Stray=Eiswanderer
 Wither Skeleton=Witherskelett
 ##[ stalker.lua ]##
 Stalker=Stalker
-Overloaded Stalker=
+Overloaded Stalker=Geladener Stalker
 ##[ zombie.lua ]##
 Zombie=Zombie
-Baby Zombie=
+Baby Zombie=Babiezombie
 Husk=Wüstenzombie
-Baby Husk=
+Baby Husk=Baby-Wüstenzombie
 ##[ slime+magma_cube.lua ]##
-Slime - big=
-Slime - small=
-Slime - tiny=
-Magma Cube - big=
-Magma Cube - small=
-Magma Cube - tiny=
+Slime - big=Slime - groß
+Slime - small=Slime - klein
+Slime - tiny=Slime - winzig
+Magma Cube - big=Magmawürfel – groß
+Magma Cube - small=Magmawürfel – klein
+Magma Cube - tiny=Magmawürfel - winzig
+# choose one below
 Magma Cube=Magmakubus
 Slime=Schleim
 ##[ spider.lua ]##
@@ -102,29 +103,28 @@ Vex=Plagegeist
 ##[ wither.lua ]##
 Wither=Wither
 ##[ cod.lua ]##
-Cod=
+Cod=Kabeljau
 ##[ salmon.lua ]##
-Salmon=
+Salmon=Lachs
 ##[ tropical_fish.lua ]##
-Tropical Fish=
-Tropical fish=
+Tropical Fish=Tropischer Fisch
 ##[ dolphin.lua ]##
-Dolphin=
+Dolphin=Delfin
 ##[ glow_squid.lua ]##
-Glow Squid=
+Glow Squid=Leuchttintenfisch
 ##[ piglin.lua ]##
-Piglin=
-Sword Piglin=
+Piglin=Piglin
+Sword Piglin=Schwert-Piglin
 Zombie Piglin=Schweinezombie
-Baby Zombie Piglin=
-Piglin Brute=
+Baby Zombie Piglin=Baby-Schweinezombie
+Piglin Brute=Piglin-Grobian
 ##[ hoglin+zoglin.lua ]##
-Hoglin=
-Zoglin=
-Baby hoglin=
+Hoglin=Hoglin
+Zoglin=Zoglin
+Baby hoglin=Baby-Hoglin
 ##[ strider.lua ]##
-Strider=
-Baby Strider=
+Strider=Strider
+Baby Strider=Baby-Strider
 
 
 ##### not used anymore #####

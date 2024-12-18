@@ -57,8 +57,8 @@ Dried Kelp Block=Getrockneter Seetangblock
 A decorative block that serves as a great furnace fuel.=Ein dekorativer Block, der sich gut als Ofenbrennstoff eignet.
 ##[ sea_pickle.lua ]##
 Sea Pickle=Meeresgurke
-Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=
-It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=
+Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Meeresgurken wachsen auf toten Gehirnkorallenblöcken und spenden Licht, wenn sie unter Wasser sind. Sie gibt es in 4 Größen, die sich in der Helligkeit unterscheiden.
+It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Es kann nur auf toten Gehirnkorallensteinen platziert werden. Wenn man eine Meeresgurke auf eine andere Meeresgurke legt, wächst sie und wird heller.
 Glows in the water=Leuchtet im Wasser
 4 possible sizes=4 mögliche Größen
 Grows on dead brain coral block=Wächst auf totem Hirnkorallenblock

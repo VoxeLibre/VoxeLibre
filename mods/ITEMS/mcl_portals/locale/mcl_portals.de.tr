@@ -21,7 +21,7 @@ Place an eye of ender into each block. The end portal appears in the middle afte
 Once placed, an eye of ender can not be taken back.=Sobald platziert, kann ein Enderauge nicht mehr zurück genommen werden.
 End Portal Frame with Eye of Ender=Endportalrahmen mit Enderauge
 ##[ portal_gateway.lua ]##
-End Gateway Portal=
-Used to construct end gateway portals=
+End Gateway Portal=Endtransitportal
+Used to construct end gateway portals=Wird zum Bau von End-Portalen verwendet
 An End gateway portal teleports creatures and objects to the outer End (and back!).=
-Throw an ender pearl into the portal to teleport. Entering an Gateway portal near the Overworld teleports you to the outer End. At this destination another gateway portal will be constructed, which you can use to get back.=
+Throw an ender pearl into the portal to teleport. Entering an Gateway portal near the Overworld teleports you to the outer End. At this destination another gateway portal will be constructed, which you can use to get back.=Wirf einen Enderperle in das Portal, um dich zu teleportieren. Das Betreten eines Portals in der Nähe der Oberwelt teleportiert dich in das äußere End. An diesem Ziel wird ein anderes Transitportal errichtet, das du verwenden kannst, um zurückzukehren.
