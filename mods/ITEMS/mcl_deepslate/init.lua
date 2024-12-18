@@ -54,18 +54,11 @@ minetest.register_node("mcl_deepslate:tuff", {
 	_mcl_silk_touch_drop = true,
 })
 
-local function register_deepslate_ore(desc, drop, cooked, pick, xp)
-	local item = desc:lower()
-	local item_string
-	if item == "lapis lazuli" then
-		item_string = "lapis"
-	else
-		item_string = item
-	end
+local function register_deepslate_ore(item_string, drop, cooked, pick, xp, orename, oredesc)
 	local nodename = "mcl_deepslate:deepslate_with_"..item_string
 	minetest.register_node(nodename, {
-		description = S("Deepslate "..desc.." Ore"),
-		_doc_items_longdesc = S("Deepslate "..item.." ore is a variant of "..item.." ore that can generate in deepslate and tuff blobs."),
+		description = orename,
+		_doc_items_longdesc = oredesc,
 		_doc_items_hidden = false,
 		tiles = { "mcl_deepslate_"..item_string.."_ore.png" },
 		is_ground_content = true,
@@ -98,20 +91,27 @@ local lapis_drops = {
 }
 
 local deepslate_ores = {
-	{ "Coal", "mcl_core:coal_lump", "mcl_core:coal_lump", 1, 1 },
-	{ "Iron", "mcl_raw_ores:raw_iron", "mcl_core:iron_ingot", 3, 0 },
-	{ "Gold", "mcl_raw_ores:raw_gold", "mcl_core:gold_ingot", 4, 0 },
-	{ "Emerald", "mcl_core:emerald", "mcl_core:emerald", 4, 6 },
-	{ "Diamond", "mcl_core:diamond", "mcl_core:diamond", 4, 4 },
-	{ "Lapis Lazuli", lapis_drops, "mcl_core:lapis", 3, 6 },
+	{ "coal", "mcl_core:coal_lump", "mcl_core:coal_lump", 1, 1,
+		S("Deepslate Coal Ore"), S("Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.") },
+	{ "iron", "mcl_raw_ores:raw_iron", "mcl_core:iron_ingot", 3, 0,
+		S("Deepslate Iron Ore"), S("Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.") },
+	{ "gold", "mcl_raw_ores:raw_gold", "mcl_core:gold_ingot", 4, 0,
+		S("Deepslate Gold Ore"), S("Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.") },
+	{ "emerald", "mcl_core:emerald", "mcl_core:emerald", 4, 6,
+		S("Deepslate Emerald Ore"), S("Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.") },
+	{ "diamond", "mcl_core:diamond", "mcl_core:diamond", 4, 4,
+		S("Deepslate Diamond Ore"), S("Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.") },
+	{ "lapis", lapis_drops, "mcl_core:lapis", 3, 6,
+		S("Deepslate Lapis Lazuli Ore"), S("Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.") },
 }
 
 for _, p in pairs(deepslate_ores) do
-	register_deepslate_ore(p[1], p[2], p[3], p[4], p[5])
+	register_deepslate_ore(p[1], p[2], p[3], p[4], p[5], p[6], p[7])
 end
 
 if copper_mod then
-	register_deepslate_ore("Copper", "mcl_copper:raw_copper", "mcl_copper:copper_ingot", 3, 4)
+	register_deepslate_ore("copper", "mcl_copper:raw_copper", "mcl_copper:copper_ingot", 3, 4,
+		S("Deepslate Copper Ore"), S("Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs."))
 end
 
 local redstone_timer = 68.28
@@ -192,11 +192,10 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 	},
 })
 
-local function register_deepslate_variant(item, desc, longdesc)
-	local texture = desc:lower():gsub("% ", "_")
+local function register_deepslate_variant(item, texture, desc, longdesc, stair, slab, dslab, wall)
 	local def = {
-		description = S(desc),
-		_doc_items_longdesc = S(longdesc),
+		description = desc,
+		_doc_items_longdesc = longdesc,
 		_doc_items_hidden = false,
 		tiles = { "mcl_"..texture..".png" },
 		groups = { pickaxey = 1, building_block = 1, material_stone = 1 },
@@ -210,28 +209,47 @@ local function register_deepslate_variant(item, desc, longdesc)
 	end
 	minetest.register_node("mcl_deepslate:deepslate_"..item, table.copy(def))
 
-	if item == "bricks" or item == "tiles" then
-		def.description = S("Cracked "..desc)
-		def._doc_items_longdesc = S("Cracked "..desc:lower().." are a cracked variant.")
-		def.tiles = { "mcl_cracked_"..texture..".png" }
-		minetest.register_node("mcl_deepslate:deepslate_"..item.."_cracked", def)
+	if stair and slab and dslab then
+		mcl_stairs.register_stair_and_slab_simple("deepslate_"..item, "mcl_deepslate:deepslate_"..item, stair, slab, dslab)
 	end
-	if item ~= "chiseled" then
-		mcl_stairs.register_stair_and_slab_simple("deepslate_"..item, "mcl_deepslate:deepslate_"..item, S(desc.." Stairs"), S(desc.." Slab"), S("Double "..desc.." Slab"))
-		mcl_walls.register_wall("mcl_deepslate:deepslate"..item.."wall", S(desc.." Wall"), "mcl_deepslate:deepslate_"..item)
+	if wall then
+		mcl_walls.register_wall("mcl_deepslate:deepslate"..item.."wall", wall, "mcl_deepslate:deepslate_"..item)
 	end
 end
 
 local deepslate_variants = {
-	{ "cobbled", "Cobbled Deepslate", "Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone." },
-	{ "polished", "Polished Deepslate", "Polished deepslate is the stone-like polished version of deepslate." },
-	{ "bricks", "Deepslate Bricks", "Deepslate bricks are the brick version of deepslate." },
-	{ "tiles", "Deepslate Tiles", "Deepslate tiles are a decorative variant of deepslate." },
-	{ "chiseled", "Chiseled Deepslate", "Chiseled deepslate is the chiseled version of deepslate." },
+	{ "cobbled", "cobbled_deepslate",
+		S("Cobbled Deepslate"), S("Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone."),
+		S("Cobbled Deepslate Stairs"), S("Cobbled Deepslate Slab"), S("Double Cobbled Deepslate Slab"), S("Cobbled Deepslate Wall"),
+	},
+	{ "polished", "polished_deepslate",
+		S("Polished Deepslate"), S("Polished deepslate is the stone-like polished version of deepslate."),
+		S("Polished Deepslate Stairs"), S("Polished Deepslate Slab"), S("Double Polished Deepslate Slab"), S("Polished Deepslate Wall"),
+	},
+	{ "bricks", "deepslate_bricks",
+		S("Deepslate Bricks"), S("Deepslate bricks are the brick version of deepslate."),
+		S("Deepslate Bricks Stairs"), S("Deepslate Bricks Slab"), S("Double Deepslate Bricks Slab"), S("Deepslate Bricks Wall"),
+	},
+	{ "bricks_cracked", "cracked_deepslate_bricks",
+		S("Cracked Deepslate Bricks"), S("Cracked deepslate bricks are a cracked brick version of deepslate."),
+		nil, nil, nil, nil,
+	},
+	{ "tiles", "deepslate_tiles",
+		S("Deepslate Tiles"), S("Deepslate tiles are a decorative variant of deepslate."),
+		S("Deepslate Tiles Stairs"), S("Deepslate Tiles Slab"), S("Double Deepslate Tiles Slab"), S("Deepslate Tiles Wall"),
+	},
+	{ "tiles_cracked", "cracked_deepslate_tiles",
+		S("Cracked Deepslate Tiles"), S("Cracked deepslate tiles are a cracked decorative variant of deepslate."),
+		nil, nil, nil, nil,
+	},
+	{ "chiseled", "chiseled_deepslate",
+		S("Chiseled Deepslate"), S("Chiseled deepslate is the chiseled version of deepslate."),
+		nil, nil, nil, nil,
+	},
 }
 
 for _, dv in pairs(deepslate_variants) do
-	register_deepslate_variant(dv[1], dv[2], dv[3])
+	register_deepslate_variant(dv[1], dv[2], dv[3], dv[4], dv[5], dv[6], dv[7], dv[8])
 end
 
 for i = 1, 3 do
