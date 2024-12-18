@@ -125,7 +125,6 @@ Cod=
 ##[ salmon.lua ]##
 Salmon=
 ##[ tropical_fish.lua ]##
-Tropical Fish=
 Tropical fish=
 ##[ dolphin.lua ]##
 Dolphin=

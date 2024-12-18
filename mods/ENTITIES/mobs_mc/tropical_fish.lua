@@ -58,7 +58,7 @@ local function set_textures(self)
 end
 
 local tropical_fish = {
-	description = S("Tropical Fish"),
+	description = S("Tropical fish"),
 	type = "animal",
 	spawn_class = "water_ambient",
 	can_despawn = true,
