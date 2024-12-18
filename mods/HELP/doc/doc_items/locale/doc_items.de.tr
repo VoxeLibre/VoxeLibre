@@ -110,6 +110,9 @@ This block connects to blocks of the following groups: @1.=Dieser Block verbinde
 This block won't drop anything when mined.=Dieser Block wird beim Abbauen nichts abwerfen.
 This block will drop the following when mined: @1×@2.=Dieser Block wird nach dem Abbauen folgendes abwerfen: @1×@2.
 This block will drop the following when mined: @1.=Dieser Block wird nach dem Abbauen folgendes abwerfen: @1.
+This block will drop the following items when mined: @1.=Dieser Block wird nach dem Abbauen die folgenden Gegenstände abwerfen: @1.
+This block will randomly drop one of the following when mined: @1.=Dieser Block wird beim Abbauen zufällig eines der folgenden Dinge abwerfen: @1.
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Dieser Block wird beim Abbauen zufällig bis zu @1 Abwürfe der folgenden möglichen Gegenstände abwerfen: @2.
 # Final list separator (e.g. “One, two and three”)
  and = und 
 # Item count times item name
@@ -144,9 +147,6 @@ Mining level: @1=Grabestufe: @1
 # Rating used for digging times
 Rating @1=Wertung @1
 Rating @1-@2=Wertung @1-@2
-This block will drop the following items when mined: @1.=Dieser Block wird nach dem Abbauen die folgenden Gegenstände abwerfen: @1.
-This block will randomly drop one of the following when mined: @1.=Dieser Block wird beim Abbauen zufällig eines der folgenden Dinge abwerfen: @1.
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Dieser Block wird beim Abbauen zufällig bis zu @1 Abwürfe der folgenden möglichen Gegenstände abwerfen: @2.
 any level=beliebige Stufe
 level 0=Stufe 0
 level 0-@1=Stufen 0-@1

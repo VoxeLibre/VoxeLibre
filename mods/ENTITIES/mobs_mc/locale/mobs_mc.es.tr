@@ -36,7 +36,26 @@ Dog=
 ##[ squid.lua ]##
 Squid=Calamar
 ##[ villager.lua ]##
+Novice=
+Apprentice=
+Journeyman=
+Expert=
 Master=Maestro
+Unemployed=
+Farmer=
+Fisherman=
+Fletcher=
+Shepherd=
+Librarian=
+Cartographer=Cartógrafo
+Armorer=Escudero
+Leatherworker=Peletero
+Butcher=Carnicero
+Weapon Smith=Armero
+Tool Smith=Herrero
+Cleric=Clérigo
+Mason=
+Nitwit=Holgazán
 Villager=Aldeano
 ##[ pillager.lua ]##
 Pillager=Saqueador
@@ -130,11 +149,3 @@ Baby Strider=
 ##### not used anymore #####
 
 Enderman=Enderman
-Cartographer=Cartógrafo
-Armorer=Escudero
-Leatherworker=Peletero
-Butcher=Carnicero
-Weapon Smith=Armero
-Tool Smith=Herrero
-Cleric=Clérigo
-Nitwit=Holgazán

@@ -110,6 +110,9 @@ This block connects to blocks of the following groups: @1.=このブロックは
 This block won't drop anything when mined.=このブロックは、掘っても何もドロップしません。
 This block will drop the following when mined: @1×@2.=このブロックを掘ると、次のものをドロップします：@1×@2
 This block will drop the following when mined: @1.=このブロックを掘ると、次のものをドロップします：@1
+This block will drop the following items when mined: @1.=このブロックを掘ると、次のアイテムをドロップします：@1
+This block will randomly drop one of the following when mined: @1.=このブロックを掘ると、次のいずれかがランダムにドロップされます：@1
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=このブロックを掘ると、次の可能なドロップのうち、最大@1個をランダムにドロップします：@2
 # Final list separator (e.g. “One, two and three”)
  and =＆
 # Item count times item name
@@ -146,9 +149,6 @@ Mining level: @1=採掘レベル：@1
 Rating @1=レート@1
 # @1 is minimal rating, @2 is maximum rating
 Rating @1-@2=レート@1-@2
-This block will drop the following items when mined: @1.=このブロックを掘ると、次のアイテムをドロップします：@1
-This block will randomly drop one of the following when mined: @1.=このブロックを掘ると、次のいずれかがランダムにドロップされます：@1
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=このブロックを掘ると、次の可能なドロップのうち、最大@1個をランダムにドロップします：@2
 any level=任意のレベル
 level 0=レベル 0
 level 0-@1=レベル 0-@1

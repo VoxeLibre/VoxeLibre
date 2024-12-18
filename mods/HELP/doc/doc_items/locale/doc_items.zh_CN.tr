@@ -110,6 +110,11 @@ This block connects to blocks of the following groups: @1.=
 This block won't drop anything when mined.=
 This block will drop the following when mined: @1×@2.=
 This block will drop the following when mined: @1.=
+This block will drop the following items when mined: @1.=
+##TODO: fuzzy matched - verify and remove the comment
+This block will randomly drop one of the following when mined: @1.= 挖掘这个方块时，会随机掉落以下物品中的一个：@1。
+##TODO: fuzzy matched - verify and remove the comment
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.= 挖掘这个方块时，会随机掉落多达@1个以下可能掉落的物品：@2。
 # Final list separator (e.g. “One, two and three”)
  and = 和
 # Item count times item name
@@ -231,8 +236,6 @@ This block will drop the following items when mined: @1. = 挖掘这个方块时
 This block will drop the following when mined: @1×@2. = 挖掘这个方块时，会掉落以下物品：@1×@2。
 This block will drop the following when mined: @1. = 挖掘这个方块时，会掉落以下物品：@1。
 This block will make you bounce off with an elasticity of @1%. = 这个方块会让你以@1%的弹性弹起。
-This block will randomly drop one of the following when mined: @1. = 挖掘这个方块时，会随机掉落以下物品中的一个：@1。
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2. = 挖掘这个方块时，会随机掉落多达@1个以下可能掉落的物品：@2。
 This block won't drop anything when mined. = 挖掘这个方块时不会掉落任何东西。
 This is a decorative block. = 这是一个装饰性方块。
 This is a melee weapon which deals damage by punching. = 这是一种通过击打造成伤害的近战武器。

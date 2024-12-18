@@ -111,6 +111,9 @@ This block connects to blocks of the following groups: @1.=Denne blokken kobles 
 This block won't drop anything when mined.=Denne blokken vil ikke gi noe når den graves opp.
 This block will drop the following when mined: @1×@2.=Denne blokken vil gi fra seg følgende når den graves opp: @1×@2.
 This block will drop the following when mined: @1.=Denne blokken vil gi fra seg følgende når den graves opp: @1.
+This block will drop the following items when mined: @1.=Denne blokken vil gi fra seg følgende gjenstander når den graves opp: @1.
+This block will randomly drop one of the following when mined: @1.=Denne blokken vil tilfeldig gi fra seg én av følgende når den graves opp: @1.
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Denne blokken vil tilfeldig gi opptil @1 dråper av følgende mulige dråper når den graves opp: @2.
 # Final list separator (e.g. “One, two and three”)
  and = og
 # Item count times item name
@@ -147,9 +150,6 @@ Mining level: @1=Gruvenivå: @1
 Rating @1=Rangering @1
 # @1 is minimal rating, @2 is maximum rating
 Rating @1-@2=Rangering @1-@2
-This block will drop the following items when mined: @1.=Denne blokken vil gi fra seg følgende gjenstander når den graves opp: @1.
-This block will randomly drop one of the following when mined: @1.=Denne blokken vil tilfeldig gi fra seg én av følgende når den graves opp: @1.
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Denne blokken vil tilfeldig gi opptil @1 dråper av følgende mulige dråper når den graves opp: @2.
 any level=ethvert nivå
 level 0=nivå 0
 level 0-@1=nivå 0-@1

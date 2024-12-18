@@ -110,6 +110,9 @@ This block connects to blocks of the following groups: @1.=
 This block won't drop anything when mined.=
 This block will drop the following when mined: @1×@2.=
 This block will drop the following when mined: @1.=
+This block will drop the following items when mined: @1.=
+This block will randomly drop one of the following when mined: @1.=
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=
 # Final list separator (e.g. “One, two and three”)
  and =
 # Item count times item name

@@ -36,7 +36,26 @@ Dog=Hund
 ##[ squid.lua ]##
 Squid=Tintenfisch
 ##[ villager.lua ]##
-Master=Herr
+Novice=Anfänger
+Apprentice=Lehrling
+Journeyman=Geselle
+Expert=Experte
+Master=Meister
+Unemployed=Arbeitslos
+Farmer=Bauer
+Fisherman=Fischer
+Fletcher=Pfeilmacher
+Shepherd=Schäfer
+Librarian=Bibliothekar
+Cartographer=Kartograph
+Armorer=Rüstungsschmied
+Leatherworker=Lederarbeiter
+Butcher=Metzger
+Weapon Smith=Waffenschmied
+Tool Smith=Werkzeugschmied
+Cleric=Priester
+Mason=Maurer
+Nitwit=Dorftrottel
 Villager=Dorfbewohner
 ##[ pillager.lua ]##
 Pillager=Plünderer
@@ -132,16 +151,3 @@ Baby Strider=Baby-Strider
 
 Agent=Akteur
 Enderman=Enderman
-Farmer=Bauer
-Fisherman=Fischer
-Fletcher=Pfeilmacher
-Shepherd=Schäfer
-Librarian=Bibliothekar
-Cartographer=Kartograph
-Armorer=Rüstungsschmied
-Leatherworker=Lederarbeiter
-Butcher=Metzger
-Weapon Smith=Waffenschmied
-Tool Smith=Werkzeugschmied
-Cleric=Priester
-Nitwit=Dorftrottel

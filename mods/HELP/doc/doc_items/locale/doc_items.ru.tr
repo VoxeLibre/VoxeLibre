@@ -110,6 +110,9 @@ This block connects to blocks of the following groups: @1.=Этот блок с�
 This block won't drop anything when mined.=При добыче из этого блока не выпадет ничего.
 This block will drop the following when mined: @1×@2.=При добыче из этого блока выпадет следующее: @1×@2.
 This block will drop the following when mined: @1.=При добыче из этого блока выпадет следующее: @1.
+This block will drop the following items when mined: @1.=При добыче из этого блока выпадут следующие предметы: @1.
+This block will randomly drop one of the following when mined: @1.=При добыче из этого блока случайным образом выпадает что-то одно из списка: @1.
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=При добыче из этого блока случайным образом выпадает до @1 из следующих возможных выдач: @2.
 # Final list separator (e.g. “One, two and three”)
  and = и 
 # Item count times item name
@@ -146,9 +149,6 @@ Mining level: @1=Уровень добывания: @1
 Rating @1=Скорость добывания @1
 # @1 is minimal rating, @2 is maximum rating
 Rating @1-@2=Скорость добывания @1-@2=
-This block will drop the following items when mined: @1.=При добыче из этого блока выпадут следующие предметы: @1.
-This block will randomly drop one of the following when mined: @1.=При добыче из этого блока случайным образом выпадает что-то одно из списка: @1.
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=При добыче из этого блока случайным образом выпадает до @1 из следующих возможных выдач: @2.
 any level=любой уровень
 level 0=уровень 0
 level 0-@1=уровень 0-@1

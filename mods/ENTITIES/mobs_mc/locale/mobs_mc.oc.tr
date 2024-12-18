@@ -36,7 +36,26 @@ Dog=
 ##[ squid.lua ]##
 Squid=Pofre
 ##[ villager.lua ]##
+Novice=
+Apprentice=
+Journeyman=
+Expert=
 Master=
+Unemployed=
+Farmer=Boriaire
+Fisherman=Peschaire
+Fletcher=Archèir
+Shepherd=Bergèir
+Librarian=Bibliotecaire
+Cartographer=Cartografe
+Armorer=Armurèir
+Leatherworker=Tanaire
+Butcher=Maselèir
+Weapon Smith=Farjaire d'Armas
+Tool Smith=Farjaire d'Otilhs
+Cleric=Clerc
+Mason=
+Nitwit=Simple
 Villager=Vialatgés
 ##[ pillager.lua ]##
 Pillager=Pilhard
@@ -131,16 +150,3 @@ Baby Strider=
 
 Agent=Agent
 Enderman=Finuèairi
-Farmer=Boriaire
-Fisherman=Peschaire
-Fletcher=Archèir
-Shepherd=Bergèir
-Librarian=Bibliotecaire
-Cartographer=Cartografe
-Armorer=Armurèir
-Leatherworker=Tanaire
-Butcher=Maselèir
-Weapon Smith=Farjaire d'Armas
-Tool Smith=Farjaire d'Otilhs
-Cleric=Clerc
-Nitwit=Simple

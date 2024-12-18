@@ -110,6 +110,11 @@ This block connects to blocks of the following groups: @1.=Esse bloco se conecta
 This block won't drop anything when mined.=Esse bloco não vai deixar cair nada quando extraído.
 This block will drop the following when mined: @1×@2.=Esse bloco irá deixar cair o seguinte quando extraído: @1×@2.
 This block will drop the following when mined: @1.=Esse bloco irá deixar cair o seguinte quando extraído: @1.
+This block will drop the following items when mined: @1.=
+##TODO: fuzzy matched - verify and remove the comment
+This block will randomly drop one of the following when mined: @1.=Esse bloco irá deixar cair aleatoriamente um dos seguintes quando extraído: %s.
+##TODO: fuzzy matched - verify and remove the comment
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Esse bloco irá cair aleatoriamente %d vezes das seguintes possíveis formas quando extraído: %s.
 # Final list separator (e.g. “One, two and three”)
  and = e
 # Item count times item name
@@ -149,8 +154,6 @@ Rating @1=Classificação @1
 Rating @1-@2=Classificação @1-@2
 This block will drop the following items when mined: %s.=Esse bloco soltará os seguintes itens quando minerados: %s.
 This block will drop the following when mined: %s.=Esse bloco irá deixar cair o seguinte quando extraído: %s.
-This block will randomly drop one of the following when mined: %s.=Esse bloco irá deixar cair aleatoriamente um dos seguintes quando extraído: %s.
-This block will randomly drop up to %d drops of the following possible drops when mined: %s.=Esse bloco irá cair aleatoriamente %d vezes das seguintes possíveis formas quando extraído: %s.
 any level=qualquer nível
 level 0=nível 0
 level 0-@1=nivel 0-@1

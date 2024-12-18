@@ -36,7 +36,26 @@ Dog=
 ##[ squid.lua ]##
 Squid=
 ##[ villager.lua ]##
+Novice=
+Apprentice=
+Journeyman=
+Expert=
 Master=
+Unemployed=
+Farmer=
+Fisherman=
+Fletcher=
+Shepherd=
+Librarian=
+Cartographer=
+Armorer=
+Leatherworker=
+Butcher=
+Weapon Smith=
+Tool Smith=
+Cleric=
+Mason=
+Nitwit=
 Villager=
 ##[ pillager.lua ]##
 Pillager=

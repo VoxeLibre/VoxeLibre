@@ -71,11 +71,11 @@ if minetest.get_mapgen_setting("mg_name") == "v6" then
 end
 
 local tiernames = {
-	"Novice",
-	"Apprentice",
-	"Journeyman",
-	"Expert",
-	"Master",
+	N("Novice"),
+	N("Apprentice"),
+	N("Journeyman"),
+	N("Expert"),
+	N("Master"),
 }
 
 local badges = {
@@ -1657,11 +1657,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 		.."tooltip[3,1;0.8,0.8;"..F(wanted2:get_description()).."]"
 	end
 	local tiername = tiernames[trader._max_trade_tier]
-	if tiername then
-		tiername = S(tiername)
-	else
-		tiername = S("Master")
-	end
+	tiername = S(tiername or "Master")
 	local formspec =
 	"size[9,8.75]"
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
