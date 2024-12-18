@@ -112,10 +112,10 @@ end
 
 -- Filled cauldrons (3 levels)
 for i=1,3 do
-	register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"))
-	register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"),"lava")
+	register_filled_cauldron(i, S("Cauldron (@1/3 Water)", i))
+	register_filled_cauldron(i, S("Cauldron (@1/3 Lava)", i), "lava")
 	if minetest.get_modpath("mclx_core") then
-		register_filled_cauldron(i, S("Cauldron (" ..i .. "/3 Water)"),"river_water")
+		register_filled_cauldron(i, S("Cauldron (@1/3 River Water)", i), "river_water")
 	end
 end
 

@@ -441,9 +441,9 @@ minetest.register_node("mcl_smoker:smoker", {
 	_doc_items_usagehelp =
 		S("Use the smoker to open the furnace menu.") .. "\n" ..
 		S("Place a furnace fuel in the lower slot and the source material in the upper slot.") .. "\n" ..
-		S("The smoker will slowly use its fuel to smelt the item.") .. "\n" ..
+		S("The smoker will slowly use its fuel to cook the item.") .. "\n" ..
 		S("The result will be placed into the output slot at the right side.") .. "\n" ..
-		S("Use the recipe book to see what foods you can smelt, what you can use as fuel and how long it will burn."),
+		S("Use the recipe book to see what foods you can cook, what you can use as fuel and how long it will burn."),
 	_doc_items_hidden = false,
 	tiles = {
 		"smoker_top.png", "smoker_bottom.png",
