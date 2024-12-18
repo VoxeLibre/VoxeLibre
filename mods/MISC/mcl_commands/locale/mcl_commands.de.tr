@@ -24,8 +24,8 @@ Invalid usage, see /help say.=Falsche Verwendung, siehe „/help say“.
 ##[ list.lua ]##
 Show who is logged on=Zeige, wer eingeloggt ist
 ##[ sound.lua ]##
-<sound> <target>=
-Play a sound. Arguments: <sound>: name of the sound. <target>: Ziel.=
+<sound> <target>=<sound> <ziel>
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=Spiele einen Sound. Parameter: <sound>: Name des Sounds. <ziel>: Ziel.
 Sound name is invalid!=Ungültiger Soundname!
 Target is invalid!=Ungültiges Ziel!
 ##[ alias.lua ]##
@@ -36,4 +36,3 @@ To clear inventory use /clearinv or /clearinventory=Um das Inventar zu leeren, b
 To clear mobs use /clearmobs=Um Mobs zu löschen, benutze /clearmobs
 To clear the weather use /weather clear=Um das Wetter zu löschen, benutze /weather clear
 Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=Das Löschen des Chats ist nicht möglich. Du kannst den Chat mit der „Chat-Log umschalten“-Taste (Standard F2) auf dem PC oder dem Chat-Symbol in der mobilen Version ausblenden.
-
