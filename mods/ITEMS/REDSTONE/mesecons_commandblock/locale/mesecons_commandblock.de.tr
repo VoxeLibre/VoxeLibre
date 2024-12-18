@@ -1,5 +1,5 @@
 # textdomain: mesecons_commandblock
-Command blocks are not enabled on this server=
+Command blocks are not enabled on this server=Befehlsblöcke sind auf diesem Server nicht aktiviert
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Fehler: Der Befehl „@1“ existiert nicht; Ihr Befehlsblock bleibt unverändert. Benutzen Sie den Chatbefehl „help“ für eine Liste der verfügbaren Befehle.
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Fehler: Der Befehl „@1“ existiert nicht; Ihr Befehlsblock bleibt unverändert. Benutzen Sie den Chatbefehl „help“ für eine Liste der verfügbaren Befehle. Tipp: Versuchen Sie, den Schrägstrich am Anfang zu entfernen.
 Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Fehler: Sie haben nicht die ausreichenden Privilegien, um den Befehl „@1“ zu benutzen (fehlendes Privileg: @2)! Der Befehlsblock bleibt unverändert.

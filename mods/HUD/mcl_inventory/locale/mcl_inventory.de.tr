@@ -15,10 +15,10 @@ Materials=Materialien
 Survival Inventory=Überlebensinventar
 Recipe book=Fertigungsbuch
 Help=Hilfe
-Advancements=
-Switch stack size=
+Advancements=Fortschritte
+Switch stack size=Stapelgröße ändern
 Select player skin=Spieleraussehen ändern
-@1 / @2=
+@1 / @2=@1 / @2
 ##[ survival.lua ]##
 Crafting=Fertigen
 Achievements=Errungenschaften

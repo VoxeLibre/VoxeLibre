@@ -6,7 +6,7 @@ Slow=Langsam
 Fast=Schnell
 Very fast=Sehr schnell
 Extremely fast=Extrem schnell
-Instantaneous=
+Instantaneous=Instantan
 @1 uses=@1 Verwendungen
 Unlimited uses=Unbegrenzte Verwendungen
 Mining speed: @1=Grabegeschwindigkeit: @1
@@ -15,8 +15,8 @@ Block breaking strength: @1=Blockbruchstärke: @1
 Damage: @1=Schaden: @1
 Healing: @1=Heilung: @1
 Full punch interval: @1s=Zeit zum Ausholen: @1s
-Food item=
-+@1 food points=
+Food item=Nahrung
++@1 food points=+@1 Nahrungspunkte
 Contact damage: @1 per second=Kontaktschaden: @1 pro Sekunde
 Contact healing: @1 per second=Kontaktheilung: @1 pro Sekunde
 Drowning damage: @1=Ertrinkensschaden: @1
@@ -48,7 +48,7 @@ Flammable=Entzündlich
 Zombie view range: -50%=Zombiesichtweite: -50%
 Skeleton view range: -50%=Skelettsichtweite: -50%
 Stalker view range: -50%=Stalkersichtweite: -50%
-...stacks=
+...stacks=... Stapel
 
 
 ##### not used anymore #####

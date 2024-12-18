@@ -36,15 +36,10 @@ Grey Shulker Box=Graue Schulkerkiste
 Black Shulker Box=Schwarze Schulkerkiste
 Shulker Box=Schulkerkiste
 A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.=Eine Schulkerkiste ist ein tragbarer Behälter, der 27 Inventarplätze für alle Gegenstände außer Schulkerkisten bietet. Schulkerkisten behalten ihr Inventar, wenn sie abgebaut werden, also können Schulkerkisten so wie ihr Inhalt als einzelne Gegenstände mitgenommen werden. Schulkerkisten gibt es in vielen verschiedenen Farben.
-To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.=
+To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.=Um auf das Inventar einer Schulkerkiste zuzugreifen, platzieren Sie sie und Klicken Sie mit der rechten Maustaste darauf. Um eine Schulkerkiste und ihren Inhalt mitzunehmen, bauen Sie sie einfach ab und sammeln Sie sie auf, der Inhalt wird nicht hinausfallen.
 Can be carried around with its contents=Kann mitsamt Inhalt transportiert werden
 ##[ example.lua ]##
-Stone Chest=
-Large Stone Chest=
-Stone Chests are containers which provide 27 inventory slots. Stone Chests can be turned intolarge stone chests with double the capacity by placing two stone chests next to each other.=
-Can be combined to a large stone chest=
-
-
-##### not used anymore #####
-
-To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out.=Um auf das Inventar einer Schulkerkiste zuzugreifen, platzieren Sie sie und rechtsklicken sie auf ihr. Um eine Schulkerkiste und ihren Inhalt mitzunehmen, bauen Sie sie einfach ab und sammeln Sie sie auf, der Inhalt will nicht hinausfallen.
+Stone Chest=Steintruhe
+Large Stone Chest=Große Steintruhe
+Stone Chests are containers which provide 27 inventory slots. Stone Chests can be turned intolarge stone chests with double the capacity by placing two stone chests next to each other.=Steintruhen sind Behälter, die 27 Inventarplätze bieten. Steintruhen können zu großen Steintruhen mit doppelter Kapazität umgewandelt werden, indem man zwei Steintruhen nebeneinander platziert.
+Can be combined to a large stone chest=Kann zu einer großen Steintruhe kombiniert werden.
