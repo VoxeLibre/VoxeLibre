@@ -110,6 +110,9 @@ This block connects to blocks of the following groups: @1.=Ce bloc se connecte a
 This block won't drop anything when mined.=Ce bloc ne donnera rien lorsque miné.
 This block will drop the following when mined: @1×@2.=Ce bloc donnera les objets suivant lorsque miné : @1×@2.
 This block will drop the following when mined: @1.=Ce bloc donnera les objets suivant lorsque miné : @1.
+This block will drop the following items when mined: @1.=Ce bloc donnera les objets suivant lorsque miné : @1.
+This block will randomly drop one of the following when mined: @1.=Ce bloc laissera tomber de manière aléatoire un des éléments suivants lorsque miné : @1.
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Ce bloc laissera tomber de manière aléatoire jusqu'à @1 des éléments suivants lorque miné : @2.
 # Final list separator (e.g. “One, two and three”)
  and = et 
 # Item count times item name
@@ -146,9 +149,6 @@ Mining level: @1=Niveau de minage : @1
 Rating @1=Note @1
 # @1 is minimal rating, @2 is maximum rating
 Rating @1-@2=Note @1-@2
-This block will drop the following items when mined: @1.=Ce bloc donnera les objets suivant lorsque miné : @1.
-This block will randomly drop one of the following when mined: @1.=Ce bloc laissera tomber de manière aléatoire un des éléments suivants lorsque miné : @1.
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Ce bloc laissera tomber de manière aléatoire jusqu'à @1 des éléments suivants lorque miné : @2.
 any level=Tous les niveaux
 level 0=Niveau 0
 level 0-@1=Niveau 0-@1

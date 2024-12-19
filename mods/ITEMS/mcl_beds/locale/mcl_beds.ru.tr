@@ -15,6 +15,8 @@ Send=
 Players in bed: @1/@2=Игроков в кроватях: @1/@2
 Note: Night skip is disabled.=Предупреждение: Пропуск ночи отключен.
 You're sleeping.=Вы засыпаете...
+You will fall asleep when all players are in bed.=Вы уснёте когда все игроки лягут в кровати.
+You will fall asleep when @1% of all players are in bed.=Вы уснёте когда @1% игроков лягут в кровати.
 You're in bed.=Вы в кровати.
 @1/@2 players currently in bed.=
 You exceeded the maximum number of messages per 10 seconds!=Вы превысили максимальный лимит сообщений в 10 секунд!
@@ -54,6 +56,4 @@ Respawn Anchor=Якорь возрождения
 ##### not used anymore #####
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Новая точка возрождения успешно задана! Но спать вы можете только ночью или во время грозы.
-You will fall asleep when all players are in bed.=Вы уснёте когда все игроки лягут в кровати.
-You will fall asleep when @1% of all players are in bed.=Вы уснёте когда @1% игроков лягут в кровати.
 send!=Отправить

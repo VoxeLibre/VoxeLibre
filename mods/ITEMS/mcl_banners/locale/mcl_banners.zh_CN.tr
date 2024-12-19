@@ -1,20 +1,36 @@
 # textdomain: mcl_banners
 White Banner=白色旗帜
+White=白色
 Grey Banner=灰色旗帜
+Grey=灰色
 Light Grey Banner=浅灰色旗帜
+Light Grey=浅灰色
 Black Banner=黑色旗帜
+Black=黑色
 Red Banner=红色旗帜
+Red=红色
 Yellow Banner=黄色旗帜
+Yellow=黄色
 Green Banner=绿色旗帜
+Green=绿色
 Cyan Banner=青色旗帜
+Cyan=青色
 Blue Banner=蓝色旗帜
+Blue=蓝色
 Magenta Banner=品红色旗帜
+Magenta=品红色
 Orange Banner=橙色旗帜
-Purple Banner=紫色旗帜
+Orange=橙色
+Violet Banner=
+Violet=紫色
 Brown Banner=棕色旗帜
+Brown=棕色
 Pink Banner=粉色旗帜
+Pink=粉色
 Lime Banner=酸橙绿旗帜
+Lime=酸橙绿
 Light Blue Banner=浅蓝色旗帜
+Light Blue=浅蓝色
 Banner=旗帜
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=旗帜是高大的彩色装饰方块。它们可以放置在地面和墙壁上。旗帜可以通过在工艺中使用大量染料来绘制各种图案。
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=使用工艺在旗帜上方绘制图案。已绘制的旗帜可以再次绘制，以组合各种图案。通过这种方式，您可以在一个旗帜上绘制多达12层。如果旗帜包含渐变效果，则只能绘制3层。
@@ -22,28 +38,6 @@ You can copy the pattern of a banner by placing two banners of the same color in
 Preview Banner=旗帜预览
 Paintable decoration=可绘制的装饰
 ##[ patterncraft.lua ]##
-And one additional layer=和一层额外图案
-And @1 additional layers=和@1层额外图案
-
-
-##### not used anymore #####
-
-White=白色
-Grey=灰色
-Light Grey=浅灰色
-Black=黑色
-Red=红色
-Yellow=黄色
-Green=绿色
-Cyan=青色
-Blue=蓝色
-Magenta=品红色
-Orange=橙色
-Violet=紫色
-Brown=棕色
-Pink=粉色
-Lime=酸橙绿
-Light Blue=浅蓝色
 @1 Bordure=@1 简单边框
 @1 Bricks=@1 砖纹背景
 @1 Roundel=@1 中心圆
@@ -82,3 +76,10 @@ Light Blue=浅蓝色
 @1 Chevron Inverted=@1 上方三角形
 @1 Base Indented=@1 下方锯齿
 @1 Chief Indented=@1 上方锯齿
+And one additional layer=和一层额外图案
+And @1 additional layers=和@1层额外图案
+
+
+##### not used anymore #####
+
+Purple Banner=紫色旗帜

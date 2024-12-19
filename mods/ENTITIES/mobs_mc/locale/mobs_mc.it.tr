@@ -36,7 +36,26 @@ Dog=
 ##[ squid.lua ]##
 Squid=Calamaro
 ##[ villager.lua ]##
+Novice=
+Apprentice=
+Journeyman=
+Expert=
 Master=
+Unemployed=
+Farmer=Agricoltore
+Fisherman=Pescatore
+Fletcher=Fabbricante di freccie
+Shepherd=Pastore
+Librarian=Bibliotecario
+Cartographer=Cartografo
+Armorer=Corazzaio
+Leatherworker=Cuoiaio
+Butcher=Macellaio
+Weapon Smith=Armaiolo
+Tool Smith=Fabbro di attrezzi
+Cleric=Chierico
+Mason=
+Nitwit=Fesso
 Villager=Villico
 ##[ pillager.lua ]##
 Pillager=Predone
@@ -106,7 +125,6 @@ Cod=Merluzzo
 ##[ salmon.lua ]##
 Salmon=Salmone
 ##[ tropical_fish.lua ]##
-Tropical Fish=
 Tropical fish=Pesce pagliaccio
 ##[ dolphin.lua ]##
 Dolphin=Delfino
@@ -133,16 +151,3 @@ Agent=Agente
 Creeper=Creeper
 Enderman=Enderman
 Baby Piglin=Piglin Bambino
-Farmer=Agricoltore
-Fisherman=Pescatore
-Fletcher=Fabbricante di freccie
-Shepherd=Pastore
-Librarian=Bibliotecario
-Cartographer=Cartografo
-Armorer=Corazzaio
-Leatherworker=Cuoiaio
-Butcher=Macellaio
-Weapon Smith=Armaiolo
-Tool Smith=Fabbro di attrezzi
-Cleric=Chierico
-Nitwit=Fesso

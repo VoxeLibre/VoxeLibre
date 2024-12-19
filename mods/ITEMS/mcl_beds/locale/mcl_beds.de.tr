@@ -15,6 +15,8 @@ Send=Senden
 Players in bed: @1/@2=Spieler im Bett: @1/@2
 Note: Night skip is disabled.=Anmerkung: Überspringen der Nacht deaktiviert.
 You're sleeping.=Sie schlafen.
+You will fall asleep when all players are in bed.=Sie werden einschlafen, wenn alle Spieler im Bett sind.
+You will fall asleep when @1% of all players are in bed.=Sie werden einschlafen, wenn @1% der Spieler im Bett sind.
 You're in bed.=Sie sind im Bett.
 @1/@2 players currently in bed.=@1/@2 Spieler aktuell im Bett.
 You exceeded the maximum number of messages per 10 seconds!=Sie haben die maximale Anzahl an Chatnachrichten pro 10 Sekunden überschritten!
@@ -54,5 +56,3 @@ Respawn Anchor=Seelenanker
 ##### not used anymore #####
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Neue Wiedereinstiegsposition gesetzt! Aber Sie können nur nachts oder während eines Gewittersturms schlafen.
-You will fall asleep when all players are in bed.=Sie werden einschlafen, wenn alle Spieler im Bett sind.
-You will fall asleep when @1% of all players are in bed.=Sie werden einschlafen, wenn @1% der Spieler im Bett sind.

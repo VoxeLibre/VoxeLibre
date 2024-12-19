@@ -140,7 +140,7 @@ def compile_func_call_pattern(argument_pattern):
 		# Look for beginning of file or anything that isn't a function identifier
 		r'(?:^|[\.=,{\(\s])' +
 		# Matches S, FS, NS, or NFS function call
-		r'N?F?S\s*' +
+		r'(?:S|FS|NS|NFS|N)\s*' +
 		# The pattern to match argument
 		argument_pattern,
 		re.DOTALL)

@@ -1,10 +1,6 @@
 # textdomain: mcl_shields
 Shield=Escudo
 A shield is a tool used for protecting the player against attacks.=Um escudo é uma ferramenta usada para a proteção do jogador contra ataques.
-
-
-##### not used anymore #####
-
 White Shield=Escudo Branco
 Grey Shield=Escudo Cinza
 Light Grey Shield=Escudo Cinza Claro

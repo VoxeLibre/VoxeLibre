@@ -15,6 +15,8 @@ Send=
 Players in bed: @1/@2=就寝中のプレイヤー：@1/@2
 Note: Night skip is disabled.=注：夜間スキップは無効です。
 You're sleeping.=睡眠中…
+You will fall asleep when all players are in bed.=プレイヤー全員がベッドに入ると、眠りにつきます。
+You will fall asleep when @1% of all players are in bed.=全プレイヤー（@1%）がベッドに入ると、眠りにつきます。
 You're in bed.=ベッドにいます。
 @1/@2 players currently in bed.=
 You exceeded the maximum number of messages per 10 seconds!=
@@ -55,5 +57,3 @@ Respawn Anchor=リスポーンアンカー
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=新たなリスポーン地点を設定しました！ただし、眠れるのは夜間か雷雨のときだけです。
 Leave Bed=ベッドから起きる
-You will fall asleep when all players are in bed.=プレイヤー全員がベッドに入ると、眠りにつきます。
-You will fall asleep when @1% of all players are in bed.=全プレイヤー（@1%）がベッドに入ると、眠りにつきます。

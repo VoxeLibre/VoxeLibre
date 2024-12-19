@@ -36,7 +36,26 @@ Dog=
 ##[ squid.lua ]##
 Squid=鱿鱼
 ##[ villager.lua ]##
+Novice=
+Apprentice=
+Journeyman=
+Expert=
 Master=
+Unemployed=
+Farmer=农民
+Fisherman=渔夫
+Fletcher=制箭师
+Shepherd=牧羊人
+Librarian=图书管理员
+Cartographer=制图师
+Armorer=盔甲匠
+Leatherworker=皮革匠
+Butcher=屠夫
+Weapon Smith=武器匠
+Tool Smith=工具匠
+Cleric=牧师
+Mason=
+Nitwit=傻子
 Villager=村民
 ##[ pillager.lua ]##
 Pillager=掠夺者
@@ -106,7 +125,6 @@ Cod=鳕鱼
 ##[ salmon.lua ]##
 Salmon=三文鱼
 ##[ tropical_fish.lua ]##
-Tropical Fish=
 Tropical fish=热带鱼
 ##[ dolphin.lua ]##
 Dolphin=海豚
@@ -132,16 +150,3 @@ Baby Strider=
 Agent=智能体
 Enderman=末影人
 Baby Piglin=小猪灵
-Farmer=农民
-Fisherman=渔夫
-Fletcher=制箭师
-Shepherd=牧羊人
-Librarian=图书管理员
-Cartographer=制图师
-Armorer=盔甲匠
-Leatherworker=皮革匠
-Butcher=屠夫
-Weapon Smith=武器匠
-Tool Smith=工具匠
-Cleric=牧师
-Nitwit=傻子

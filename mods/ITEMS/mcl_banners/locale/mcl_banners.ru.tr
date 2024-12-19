@@ -1,20 +1,36 @@
 # textdomain: mcl_banners
 White Banner=Белый флаг
+White=Белый
 Grey Banner=Серый флаг
+Grey=Серый
 Light Grey Banner=Светло-серый флаг
+Light Grey=Светло-серый
 Black Banner=Чёрный флаг
+Black=Чёрный
 Red Banner=Красный флаг
+Red=Красный
 Yellow Banner=Жёлтый флаг
+Yellow=Жёлтый
 Green Banner=Зелёный флаг
+Green=Зелёный
 Cyan Banner=Бирюзовый флаг
+Cyan=Голубой
 Blue Banner=Синий флаг
+Blue=Синий
 Magenta Banner=Сиреневый флаг
+Magenta=Сиреневый
 Orange Banner=Оранжевый флаг
-Purple Banner=Фиолетовый флаг
+Orange=Оранжевый
+Violet Banner=
+Violet=Фиолетовый
 Brown Banner=Коричневый флаг
+Brown=Коричневый
 Pink Banner=Розовый флаг
+Pink=Розовый
 Lime Banner=Лаймовый флаг
+Lime=Зелёный лаймовый
 Light Blue Banner=Голубой флаг
+Light Blue=Голубой
 Banner=Флаг
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Флаги - высокие цветные декоративные блоки. Их можно размещать на полу и на стенах. Флаги можно украшать разнообразными узорами при помощью красителей во время создания.
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Используйте сетку крафта, чтобы нарисовать узор поверх флага. Украшенные флаги можно украсить повторно, чтобы сочетать разные узоры. Таким способом вы можете нарисовать до 12 слоев на одном флаге. Если флаг содержит градиент, возможно только 3 слоя.
@@ -22,28 +38,6 @@ You can copy the pattern of a banner by placing two banners of the same color in
 Preview Banner=Предпросмотр баннера
 Paintable decoration=Раскрашиваемая декорация
 ##[ patterncraft.lua ]##
-And one additional layer=И один дополнительный слой
-And @1 additional layers=И @1 дополнительных слоёв
-
-
-##### not used anymore #####
-
-White=Белый
-Grey=Серый
-Light Grey=Светло-серый
-Black=Чёрный
-Red=Красный
-Yellow=Жёлтый
-Green=Зелёный
-Cyan=Голубой
-Blue=Синий
-Magenta=Сиреневый
-Orange=Оранжевый
-Violet=Фиолетовый
-Brown=Коричневый
-Pink=Розовый
-Lime=Зелёный лаймовый
-Light Blue=Голубой
 @1 Bordure=@1 простая кайма
 @1 Bricks=@1 кирпичный фон
 @1 Roundel=@1 круг в центре
@@ -82,3 +76,10 @@ Light Blue=Голубой
 @1 Chevron Inverted=@1 треугольник сверху
 @1 Base Indented=@1 гребешки снизу
 @1 Chief Indented=@1 гребешки сверху
+And one additional layer=И один дополнительный слой
+And @1 additional layers=И @1 дополнительных слоёв
+
+
+##### not used anymore #####
+
+Purple Banner=Фиолетовый флаг

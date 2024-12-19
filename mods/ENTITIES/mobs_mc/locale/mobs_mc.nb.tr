@@ -36,7 +36,26 @@ Dog=Hund
 ##[ squid.lua ]##
 Squid=Blekksprut
 ##[ villager.lua ]##
+Novice=Nybegynner
+Apprentice=Lærling
+Journeyman=Håndverker
+Expert=Ekspert
 Master=Mester
+Unemployed=
+Farmer=Bonde
+Fisherman=Fisker
+Fletcher=Pilmaker
+Shepherd=Sauebonde
+Librarian=Bibliotekar
+Cartographer=Kartograf
+Armorer=Rustningsmed
+Leatherworker=Lærarbeider
+Butcher=Slakter
+Weapon Smith=Våpensmed
+Tool Smith=Verktøysmed
+Cleric=Geistlig
+Mason=
+Nitwit=Tomskalle
 Villager=Landsbyboer
 ##[ pillager.lua ]##
 Pillager=Plyndrer
@@ -106,7 +125,6 @@ Cod=Torsk
 ##[ salmon.lua ]##
 Salmon=Laks
 ##[ tropical_fish.lua ]##
-Tropical Fish=Tropisk Fisk
 Tropical fish=Tropisk fisk
 ##[ dolphin.lua ]##
 Dolphin=Delfin
@@ -132,20 +150,3 @@ Baby Strider=Babylavavandrer
 Agent=Agent
 Wither spawning=Forvitrer fremmanes
 Baby Piglin=Babygrisling
-Farmer=Bonde
-Fisherman=Fisker
-Fletcher=Pilmaker
-Shepherd=Sauebonde
-Librarian=Bibliotekar
-Cartographer=Kartograf
-Armorer=Rustningsmed
-Leatherworker=Lærarbeider
-Butcher=Slakter
-Weapon Smith=Våpensmed
-Tool Smith=Verktøysmed
-Cleric=Geistlig
-Nitwit=Tomskalle
-Novice=Nybegynner
-Apprentice=Lærling
-Journeyman=Håndverker
-Expert=Ekspert

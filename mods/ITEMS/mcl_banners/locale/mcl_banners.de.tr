@@ -1,20 +1,36 @@
 # textdomain: mcl_banners
 White Banner=Weißes Banner
+White=weiß
 Grey Banner=Graues Banner
+Grey=grau
 Light Grey Banner=Hellgraues Banner
+Light Grey=hellgrau
 Black Banner=Schwarzes Banner
+Black=schwarz
 Red Banner=Rotes Banner
+Red=rot
 Yellow Banner=Gelbes Banner
+Yellow=gelb
 Green Banner=Grünes Banner
+Green=grün
 Cyan Banner=Türkises Banner
+Cyan=türkis
 Blue Banner=Blaues Banner
+Blue=blau
 Magenta Banner=Magenta Banner
+Magenta=magenta
 Orange Banner=Orange Banner
-Purple Banner=Violettes Banner
+Orange=orange
+Violet Banner=Violettes Banner
+Violet=violett
 Brown Banner=Braunes Banner
+Brown=braun
 Pink Banner=Rosa Banner
+Pink=rosa
 Lime Banner=Lindgrünes Banner
+Lime=lindgrün
 Light Blue Banner=Hellblaues Banner
+Light Blue=hellblau
 Banner=Banner
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Banner sind hohe farbige dekorative Blöcke. Sie können auf dem Boden und an Wände platziert werden. Banner können mit einer Vielzahl von Mustern mit Hilfe von Farbstoffen in der Fertigung bemalt werden.
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Benutzen Sie die Fertigung, um ein Muster auf einem Banner zu malen. Bemalte Banner können erneut bemalt werden, um verschiedene Muster zu ergeben. Sie können bis zu 12 Schichten auf einen Banner malen. Wenn ein Banner einen Farbverlauf hat, sind nur 3 Schichten möglich.
@@ -22,28 +38,6 @@ You can copy the pattern of a banner by placing two banners of the same color in
 Preview Banner=Bannervorschau
 Paintable decoration=Bemalbare Dekoration
 ##[ patterncraft.lua ]##
-And one additional layer=Und eine zusätzliche Schicht
-And @1 additional layers=Und @1 zusätzliche Schichten
-
-
-##### not used anymore #####
-
-White=weiß
-Grey=grau
-Light Grey=hellgrau
-Black=schwarz
-Red=rot
-Yellow=gelb
-Green=grün
-Cyan=türkis
-Blue=blau
-Magenta=magenta
-Orange=orange
-Violet=violett
-Brown=braun
-Pink=rosa
-Lime=lindgrün
-Light Blue=hellblau
 @1 Bordure=Bord (@1)
 @1 Bricks=Ziegel (@1)
 @1 Roundel=Kugel (@1)
@@ -82,3 +76,5 @@ Light Blue=hellblau
 @1 Chevron Inverted=Gegensparren (@1)
 @1 Base Indented=Gezackter Fuß (@1)
 @1 Chief Indented=Gezacktes Haupt (@1)
+And one additional layer=Und eine zusätzliche Schicht
+And @1 additional layers=Und @1 zusätzliche Schichten

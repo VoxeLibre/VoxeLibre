@@ -36,7 +36,26 @@ Dog=
 ##[ squid.lua ]##
 Squid=Спрут
 ##[ villager.lua ]##
+Novice=
+Apprentice=
+Journeyman=
+Expert=
 Master=
+Unemployed=
+Farmer=Фермер
+Fisherman=Рыбак
+Fletcher=Лучник
+Shepherd=Пастух
+Librarian=Библиотекарь
+Cartographer=Картограф
+Armorer=Бронник
+Leatherworker=Кожевник
+Butcher=Мясник
+Weapon Smith=Оружейник
+Tool Smith=Инструментальщик
+Cleric=Церковник
+Mason=
+Nitwit=Нищий
 Villager=Житель
 ##[ pillager.lua ]##
 Pillager=Разбойник
@@ -106,7 +125,6 @@ Cod=Треска
 ##[ salmon.lua ]##
 Salmon=Лосось
 ##[ tropical_fish.lua ]##
-Tropical Fish=
 Tropical fish=Тропическая рыба
 ##[ dolphin.lua ]##
 Dolphin=Дельфин
@@ -132,16 +150,3 @@ Baby Strider=
 Agent=Агент
 Enderman=Эндермен
 Baby Piglin=Пиглин-ребёнок
-Farmer=Фермер
-Fisherman=Рыбак
-Fletcher=Лучник
-Shepherd=Пастух
-Librarian=Библиотекарь
-Cartographer=Картограф
-Armorer=Бронник
-Leatherworker=Кожевник
-Butcher=Мясник
-Weapon Smith=Оружейник
-Tool Smith=Инструментальщик
-Cleric=Церковник
-Nitwit=Нищий

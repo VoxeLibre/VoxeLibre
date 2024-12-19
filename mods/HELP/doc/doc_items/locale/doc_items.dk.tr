@@ -110,6 +110,9 @@ This block connects to blocks of the following groups: @1.=Denne blok forbindes 
 This block won't drop anything when mined.=Denne blok dropper ikke noget når den udvindes.
 This block will drop the following when mined: @1×@2.=Denne blok dropper følgende når den udvindes: @1x@2.
 This block will drop the following when mined: @1.=Denne blok dropper følgende når den udvindes: @1.
+This block will drop the following items when mined: @1.=Denne blok dropper følgende genstande når den udvindes: @1.
+This block will randomly drop one of the following when mined: @1.=Denne blok dropper en vilkårlig af følgende genstande når den udvindes: @1.
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Denne blok dropper et vilkårligt antal op til @1 af følgende mulige ting når den udvindes: @2.
 # Final list separator (e.g. “One, two and three”)
  and = and
 # Item count times item name
@@ -146,9 +149,6 @@ Mining level: @1=Udvindingsevneevne: @1
 Rating @1=Vurdering: @1
 # @1 is minimal rating, @2 is maximum rating
 Rating @1-@2=Vurdering @1-@2
-This block will drop the following items when mined: @1.=Denne blok dropper følgende genstande når den udvindes: @1.
-This block will randomly drop one of the following when mined: @1.=Denne blok dropper en vilkårlig af følgende genstande når den udvindes: @1. 
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Denne blok dropper et vilkårligt antal op til @1 af følgende mulige ting når den udvindes: @2.
 any level=hvilketsomhelst level
 level 0=level 0
 level 0-@1=level 0-@1
