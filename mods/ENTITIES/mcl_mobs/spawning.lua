@@ -532,16 +532,14 @@ end
 
 local function has_room(self, pos)
 	local cb = self.spawnbox or self.collisionbox
-	local nodes = {}
-	if self.fly_in then
-		local t = type(self.fly_in)
-		if t == "table" then
-			nodes = table.copy(self.fly_in)
-		elseif t == "string" then
-			table.insert(nodes,self.fly_in)
+	local nodes = self.fly_in or { "air" }
+	local airlike = false
+	for i=1,#nodes do
+		if nodes[i] == "air" then
+			airlike = true
+			break
 		end
 	end
-	table.insert(nodes,"air")
 
 	-- Calculate area to check for room
 	local cb_height = cb[5] - cb[2]
@@ -555,61 +553,41 @@ local function has_room(self, pos)
 		math.round(pos.z + cb[6]))
 
 	-- Check if the entire spawn volume is free
-	local dx = p2.x - p1.x + 1
-	local dy = p2.y - p1.y + 1
-	local dz = p2.z - p1.z + 1
-	local found_nodes = minetest.find_nodes_in_area(p1,p2,nodes) or 0
-	local n = #found_nodes
-	if n == dx * dy * dz then
-		return true
-	end
-
-	-- If we don't have an implementation of get_node_boxes, we can't check for sub-node space
-	if not minetest.get_node_boxes then return false end
-
-	-- Check if it's possible for a sub-node space check to succeed
-	local needed_in_bottom_section = dx * ( dy - 1) * dz
-	if n < needed_in_bottom_section then return false end
-
-	-- Make sure the entire volume except for the top level is free before checking the top layer
-	if dy > 1 then
-		-- Remove nodes in the top layer from the count
-		for i = 1,#found_nodes do
-			if found_nodes[i].y == p2.y then
-				n = n - 1
-			end
-		end
-
-		-- If the entire volume except the top layer isn't air (or nodes) then we can't spawn this mob here
-		if n < needed_in_bottom_section then return false end
-	end
-
-	-- Check the top layer to see if we have enough space to spawn in
-	local top_layer_height = 1
-	local processed = {}
-	for x = p1.x,p2.x do
+	local p = vector.copy(p1)
+	local headroom = cb_height - (p2.y - p1.y) -- headroom needed in top layer
+	for y = p1.y,p2.y do
+		p.y = y
+		local check_headroom = headroom < 1 and y == p2.y and minetest.get_node_boxes
 		for z = p1.z,p2.z do
-			local test_pos = vector.new(x,p2.y,z)
-			local node = minetest.get_node(test_pos) or { name = "ignore" }
-			local cache_name = string.format("%s-%d", node.name, node.param2)
-			if not processed[cache_name] then
-				-- Calculate node bounding box and select the lowest y value
-				local boxes = minetest.get_node_boxes("collision_box", test_pos, node)
+			p.z = z
+			for x = p1.x,p2.x do
+				p.x = x
+				local node = get_node(p)
+				local nam = node.name
+				if nam == "ignore" then goto continue end
+				if nam == "air" and airlike then goto continue end
+				if airlike then
+					local n_def = registered_nodes[nam]
+					if not n_def then goto continue end
+					if not n_def.walkable and n_def.liquidtype == "none" then goto continue end
+				end
+				for i = 1,#nodes do
+					-- todo: support groups, too?
+					if nam == nodes[i] then goto continue end
+				end
+				if not check_headroom then return false end
+				-- perform sub-node checks in top layer
+				local boxes = minetest.get_node_boxes("collision_box", p, node)
 				for i = 1,#boxes do
 					local box = boxes[i]
-					local y_test = box[2] + 0.5
-					if y_test < top_layer_height then top_layer_height = y_test end
-
-					local y_test = box[5] + 0.5
-					if y_test < top_layer_height then top_layer_height = y_test end
+					if box[2] + 0.5 < headroom then return false end
+					if box[5] + 0.5 < headroom then return false end
 				end
+				::continue::
 			end
 		end
 	end
-	if top_layer_height + dy - 1 >= cb_height then return true end
-
-	-- We don't have room
-	return false
+	return true
 end
 
 mcl_mobs.custom_biomecheck = nil
@@ -701,6 +679,9 @@ function mcl_mobs.spawn(pos,id)
 	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
 	if not has_room(def, pos) then return false end
+	if math.round(pos.y) == pos.y then -- node spawn
+		pos.y = pos.y - 0.5 - def.collisionbox[2] -- spawn just above ground below
+	end
 	local obj = minetest.add_entity(pos, def.name)
 	-- initialize head bone
 	if def.head_swivel and def.head_bone_position then
