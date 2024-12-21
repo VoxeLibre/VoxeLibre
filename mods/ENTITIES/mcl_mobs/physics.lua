@@ -297,17 +297,11 @@ function mob_class:flight_check()
 
 	if not def then return false end -- nil check
 
-	local fly_in
-	if type(self.fly_in) == "string" then
-		fly_in = { self.fly_in }
-	elseif type(self.fly_in) == "table" then
-		fly_in = self.fly_in
-	else
-		return false
-	end
-
-	for _,checknode in pairs(fly_in) do
+	for _,checknode in pairs(self.fly_in or {"air"}) do
 		if nod == checknode or nod == "ignore" then
+			return true
+		end
+		if checknode == "air" and def.drawtype == "airlike" then
 			return true
 		end
 	end
