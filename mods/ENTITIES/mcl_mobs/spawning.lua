@@ -548,7 +548,7 @@ local function has_room(self, pos)
 		math.round(pos.z + cb[6]))
 
 	-- Check if the entire spawn volume is free
-	local p = vector.copy(p1)
+	local p = vector.copy(pos)
 	local headroom = cb_height - (p2.y - p1.y) -- headroom needed in top layer
 	for y = p1.y,p2.y do
 		p.y = y
@@ -636,7 +636,7 @@ local function spawn_check(pos, spawn_def)
 	if spawn_def.biomes and not biome_check(spawn_def.biomes, get_biome_name(pos)) then return end
 	-- check if there is enough room
 	local mob_def = minetest.registered_entities[spawn_def.name]
-	if not has_room(mob_def,pos) then return end
+	-- checked again later! if not has_room(mob_def,pos) then return end
 	-- additional checks (slime etc.)
 	if spawn_def.check_position and not spawn_def.check_position(pos) then return end
 	if spawn_protected and minetest.is_protected(pos, "") then return end
@@ -676,7 +676,24 @@ function mcl_mobs.spawn(pos,id)
 	if not pos or not id then return false end
 	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
-	if not has_room(def, pos) then return false end
+	if not has_room(def, pos) then
+		local cb = def.spawnbox or def.collisionbox
+		-- simple position adjustment for 2x2 mobs until we add something better for asymmetric cases
+		-- e.g., when spawning next to a fence on one side, the 0.5 offset may not be optimal.
+		local wx, wz = cb[4] - cb[1], cb[6] - cb[3]
+		local retry = false
+		if (wx > 1 and wx <= 2) then
+			pos.x = pos.x + math.random(0,1) - 0.5
+			retry = true
+		end
+		if (wz > 1 and wz <= 2) then
+			pos.z = pos.z + math.random(0,1) - 0.5
+			retry = true
+		end
+		if not retry or not has_room(def, pos) then
+			return false
+		end
+	end
 	if math.round(pos.y) == pos.y then -- node spawn
 		pos.y = pos.y - 0.495 - def.collisionbox[2] -- spawn just above ground below
 	end

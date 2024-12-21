@@ -618,13 +618,8 @@ function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, ad
 					return itemstack
 				end
 
-				pos.y = pos.y - 1
 				local mob = mcl_mobs.spawn(pos, mob_name)
-				if not mob then
-					pos.y = pos.y + 1
-					mob = mcl_mobs.spawn(pos, mob_name)
-					if not mob then return end
-				end
+				if not mob then return end
 
 				local entityname = itemstack:get_name()
 				minetest.log("action", "Player " ..name.." spawned "..entityname.." at "..minetest.pos_to_string(pos))
