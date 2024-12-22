@@ -20,7 +20,6 @@ local atan2 = math.atan2
 local sin = math.sin
 local cos = math.cos
 local sqrt = math.sqrt
---local node_ok = mcl_mobs.node_ok
 local NODE_IGNORE = mcl_mobs.NODE_IGNORE
 
 --local PATHFINDING = "gowp"
@@ -706,7 +705,7 @@ function mob_class:gravity_and_floating(pos, dtime, moveresult)
 	local standbody = self.standing_in
 	if standbody.groups.water then
 		self.visc = 0.4
-		if self.floats > 0 then --and minetest.registered_nodes[node_ok(vector.offset(pos, 0, self.collisionbox[5] - 0.25, 0)).name].groups.water then
+		if self.floats > 0 then --and minetest.registered_nodes[get_node(vector.offset(pos, 0, self.collisionbox[5] - 0.25, 0)).name].groups.water then
 			local w = (self.standing_under.groups.water and 0 or self.standing_height) -- <1 is submerged, >1 is out
 			if w > 0.95 and w < 1.05 then
 				acc.y = 0 -- stabilize floating

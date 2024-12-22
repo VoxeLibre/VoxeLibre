@@ -8,19 +8,6 @@ local S = minetest.get_translator(modname)
 mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 mcl_mobs.see_through_opaque = minetest.settings:get_bool("mobs_see_through_opaque", false)
 
--- used by the libaries below.
--- get node but use fallback for nil or unknown
-local function node_ok(pos, fallback)
-	fallback = fallback or mcl_mobs.fallback_node
-	local node = minetest.get_node_or_nil(pos)
-	if node and minetest.registered_nodes[node.name] then
-		return node
-	end
-	return minetest.registered_nodes[fallback]
-end
-mcl_mobs.node_ok = node_ok
-dofile(path .. "/functions.lua")
-
 local function line_of_sight(origin, target, see_through_opaque, liquids)
 	local raycast = minetest.raycast(origin, target, false, liquids or false)
 	for hitpoint in raycast do
@@ -40,6 +27,8 @@ end
 mcl_mobs.line_of_sight = line_of_sight
 
 mcl_mobs.NODE_IGNORE = { name = "ignore", groups = {} } -- fallback for unknown nodes
+
+dofile(path .. "/functions.lua")
 
 --api and helpers
 -- effects: sounds and particles mostly

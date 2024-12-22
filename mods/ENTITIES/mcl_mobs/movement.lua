@@ -152,7 +152,7 @@ function mob_class:is_at_cliff_or_danger()
 
 	if free_fall then return "free fall" end
 	local height = ypos + 0.4 - blocker.y
-	local chance = self.jump_height / (height * height)
+	local chance = self.jump_height / height
 	if height >= self.fear_height and random() < chance then
 		if logging then
 			minetest.log("action", "[mcl_mobs] "..self.name.." avoiding drop of "..height) --.." chance "..chance)
