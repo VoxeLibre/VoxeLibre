@@ -83,7 +83,7 @@ local dolphin = {
 	attack_type = "dogfight",
 	--[[ this is supposed to make them jump out the water but doesn't appear to work very well
 	do_custom = function(self,dtime)
-		mcl_util.set_bone_position(self.object, "body", vector.new(0,1,0), vector.new(degrees(dir_to_pitch(self.object:get_velocity())) * -1 + 90,0,0))
+		mcl_util.set_bone_position(self.object, "body", vector.new(0,1,0), vector.new(dir_to_pitch(self.object:get_velocity()) * -1 + math.pi/2,0,0))
 		if minetest.get_item_group(self.standing_in, "water") ~= 0 then
 			if self.object:get_velocity().y < 5 then
 				self.object:add_velocity({ x = 0 , y = math.random()*.014-.007, z = 0 })
