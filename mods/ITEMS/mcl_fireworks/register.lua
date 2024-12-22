@@ -12,11 +12,11 @@ local firework_entity = {
 	physical = true,
 	pointable = false,
 	visual = "mesh",
-	visual_size = {x=1, y=2}, -- TODO adjust
+	visual_size = {x=3, y=3},
 	mesh = "mcl_fireworks_rocket.obj",
 	textures = {"mcl_fireworks_entity.png"},
 	backface_culling = false,
-	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19}, -- TODO verify
+	collisionbox = {-0.1, 0, -0.1, 0.1, 0.5, 0.1},
 	collide_with_objects = false,
 	liquid_drag = true,
 	_fire_damage_resistant = true,
@@ -46,7 +46,7 @@ local firework_entity = {
 			vl_projectile.has_tracer,
 
 			function(self, dtime)
-				self.object:add_velocity(vector.new(0, dtime, 0)) -- TODO timeout
+				self.object:add_velocity(vector.new(0, dtime, 0)) -- TODO timeout TODO var. accel. TODO max speed?
 			end,
 
 			vl_projectile.collides_with_solids,
