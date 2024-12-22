@@ -202,6 +202,8 @@ local function handle_player_sticking(self, entity_def, projectile_def, entity)
 		vector.new(self._x_position, self._y_position, random_hit_positions("z", placement)),
 		vector.new(0, self._rotation_station + self._y_rotation, self._z_rotation)
 	)
+
+	return true
 end
 
 function mod.burns(self, dtime, entity_def, projectile_def)
@@ -489,8 +491,10 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	if object:is_player() and projectile_def.damages_players then
 		do_damage = true
 
-		handle_player_sticking(self, entity_def, projectile_def, object)
-		survive_collision = true
+		if handle_player_sticking(self, entity_def, projectile_def, object) then
+			-- Force the projectile to survive if it stuck in a player
+			survive_collision = true
+		end
 	elseif object_lua and (object_lua.is_mob or object_lua._hittable_by_projectile) then
 		do_damage = true
 	end
