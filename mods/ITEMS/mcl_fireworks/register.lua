@@ -22,20 +22,18 @@ local firework_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "damage", "is_critical", "time_in_air", "vl_projectile", "arrow_item"--[[???]], "itemstring"
+		"last_pos", "startpos", "damage", "time_in_air", "vl_projectile", "arrow_item"--[[???]], "itemstring"
 	},
 
 	_damage=1,	-- Damage on impact
-	_is_critical=false, -- Whether this arrow would deal critical damage
 	_blocked = false,
 	_viscosity=0,   -- Viscosity of node the arrow is currently in
-	_deflection_cooloff=0, -- Cooloff timer after an arrow deflection, to prevent many deflections in quick succession
 
 	_vl_projectile = {
 		ignore_gravity = true,
-		survive_collision = true,
+		survive_collision = false,
 		damages_players = true,
-		maximum_time = 60,
+		maximum_time = 3,
 		pitch_offset = -math.pi / 2,
 		damage_groups = function(self)
 			return { fleshy = vector.length(self.object:get_velocity()) }
@@ -46,7 +44,7 @@ local firework_entity = {
 			vl_projectile.has_tracer,
 
 			function(self, dtime)
-				self.object:add_velocity(vector.new(0, dtime, 0)) -- TODO timeout TODO var. accel. TODO max speed?
+				self.object:add_velocity(vector.new(0, 2*dtime, 0)) -- TODO var. accel. TODO max speed?
 			end,
 
 			vl_projectile.collides_with_solids,
@@ -61,23 +59,6 @@ local firework_entity = {
 
 			return true
 		end,
-		on_collide_with_entity = function(self, pos, obj)
-			if self.object == obj then return end
-			--if (self.object:get_velocity() + obj:get_velocity()).lenght() < 5 then return end
-
-			minetest.log("entity collision")
-
-			explode(self, pos)
-
-			mcl_util.remove_entity(self)
-		end,
-		on_collide_with_solid = function(self, pos, node)
-			explode(self, pos)
-
-			minetest.log("solid collision")
-
-			mcl_util.remove_entity(self)
-		end
 	},
 
 	get_staticdata = function(self)
@@ -116,6 +97,10 @@ local firework_entity = {
 		if not self._vl_projectile then
 			self._vl_projetile = {}
 		end
+	end,
+
+	_on_remove = function(self)
+		explode(self, self.object:get_pos())
 	end,
 }
 
