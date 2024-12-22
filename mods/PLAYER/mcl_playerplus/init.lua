@@ -138,13 +138,9 @@ local is_swimming
 local set_bone_pos = mcl_util.set_bone_position
 local set_properties = mcl_util.set_properties
 
-local function get_overall_velocity(vector)
-	local v = math.sqrt(vector.x^2 + vector.y^2 + vector.z^2)
-	return v
-end
 local function anglediff(a1, a2)
 	local a = a1 - a2
- 	return math.abs((a + math.pi) % (math.pi*2) - math.pi)
+	return math.abs((a + math.pi) % (math.pi*2) - math.pi)
 end
 local function clamp(num, min, max)
 	return math.min(max, math.max(num, min))
@@ -686,12 +682,12 @@ minetest.register_on_joinplayer(function(player)
 	}
 	mcl_playerplus.elytra[player] = {active = false, rocketing = 0, speed = 0}
 
-	-- Luanti bug: get_bone_position() returns all zeros vectors.
+	-- Luanti limitation: get_bone_position() returns all zeros vectors, because models are client-side not server-side
 	-- Workaround: call set_bone_position() one time first.
-	player:set_bone_position("Head_Control", vector.new(0, 6.75, 0))
-	player:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0))
-	player:set_bone_position("Arm_Left_Pitch_Control", vector.new(3, 5.785, 0))
-	player:set_bone_position("Body_Control", vector.new(0, 6.75, 0))
+	set_bone_pos(player, "Head_Control", vector.new(0, 6.75, 0))
+	set_bone_pos(player, "Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0))
+	set_bone_pos(player, "Arm_Left_Pitch_Control", vector.new(3, 5.785, 0))
+	set_bone_pos(player, "Body_Control", vector.new(0, 6.75, 0))
 	-- Respawn dead players on joining
 	if hp <= 0 then
 		player:respawn()
