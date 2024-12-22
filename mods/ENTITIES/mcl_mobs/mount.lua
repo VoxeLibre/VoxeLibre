@@ -6,11 +6,10 @@ local enable_crash = false
 local crash_threshold = 6.5 -- ignored if enable_crash=false
 local GRAVITY = -9.8
 
-local node_ok = mcl_mobs.node_ok
 local sign = math.sign -- minetest extension
 
 local function node_is(pos)
-	local node = node_ok(pos)
+	local node = minetest.get_node(pos)
 	if node.name == "air" then return "air" end
 	local ndef = minetest.registered_nodes[node.name]
 	if not ndef then return "other" end -- unknown/ignore
