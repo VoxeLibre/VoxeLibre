@@ -5,6 +5,7 @@ local description = S("Firework Rocket")
 
 local function explode(self, pos)
 	-- temp code
+	mcl_fireworks.particle_explosion(pos)
 	mcl_mobs.mob_class.boom(self, pos, 1)
 end
 
@@ -44,7 +45,7 @@ local firework_entity = {
 			vl_projectile.has_tracer,
 
 			function(self, dtime)
-				self.object:add_velocity(vector.new(0, 2*dtime, 0)) -- TODO var. accel. TODO max speed?
+				self.object:add_velocity(vector.new(0, 5*dtime, 0)) -- TODO var. accel. TODO max speed?
 			end,
 
 			vl_projectile.collides_with_solids,
