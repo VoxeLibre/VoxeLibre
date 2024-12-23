@@ -633,12 +633,12 @@ local function spawn_check(pos, spawn_def)
 	-- find ground node below spawn position
 	local node_name = get_node(pos).name
 	local node_def = registered_nodes[node_name]
-	if node_def and not node_def.groups.solid then -- try node one below instead
+	if node_def and (node_def.groups.solid or 0) == 0 and (node_def.groups.lava or 0) == 0 then -- try node one below instead
 		pos.y = pos.y - 1
 		node_name = get_node(pos).name
 		node_def = registered_nodes[node_name]
 	end
-	if not node_def or not node_def.groups then return end
+	if not node_def then return end
 	-- do not spawn on bedrock
 	if node_name == "mcl_core:bedrock" then return end
 	pos.y = pos.y + 1
@@ -647,13 +647,13 @@ local function spawn_check(pos, spawn_def)
 	mcl_log("spawn_check#1 position checks passed")
 
 	-- do not spawn ground mobs on leaves
-	if spawn_def.type_of_spawning == "ground" and (not node_def.groups.solid or node_def.groups.leaves) then return end
+	if spawn_def.type_of_spawning == "ground" and ((node_def.groups.solid or 0) == 0 or (node_def.groups.leaves or 0) > 0) then return end
 	-- water mobs only on water
-	if spawn_def.type_of_spawning == "water" and not node_def.groups.water then return end
+	if spawn_def.type_of_spawning == "water" and (node_def.groups.water or 0) == 0 then return end
 	-- lava mobs only on lava
-	if spawn_def.type_of_spawning == "lava" and not node_def.groups.lava then return end
+	if spawn_def.type_of_spawning == "lava" and (node_def.groups.lava or 0) == 0 then return end
 	-- farm animals on grass only
-	if is_farm_animal(spawn_def.name) and not node_def.groups.grass_block then return end
+	if is_farm_animal(spawn_def.name) and (node_def.groups.grass_block or 0) == 0 then return end
 
 	---- More expensive calls:
 	-- check the biome
