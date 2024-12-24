@@ -6,7 +6,7 @@ local description = S("Firework Rocket")
 local function explode(self, pos)
 	-- temp code
 	vl_fireworks.generic_particle_explosion(pos)
-	mcl_mobs.mob_class.boom(self, pos, 1)
+	mcl_mobs.mob_class.safe_boom(self, pos, 1)
 end
 
 local firework_entity = {
@@ -127,6 +127,12 @@ local function register_rocket(n, duration, force)
 		on_place = function(itemstack, user, pointed_thing)
 			local pos = pointed_thing.above
 -- 			pos.y = pos.y + 1
+			vl_projectile.create("vl_fireworks:rocket_" .. n, {
+				pos=pos,
+				velocity=vector.new(0,1,0)
+			})
+		end,
+		_on_dispense = function(dropitem, pos, droppos, dropnode, dropdir)
 			vl_projectile.create("vl_fireworks:rocket_" .. n, {
 				pos=pos,
 				velocity=vector.new(0,1,0)
