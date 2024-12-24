@@ -1,8 +1,8 @@
-local path = minetest.get_modpath("mcl_fireworks")
+local path = minetest.get_modpath("vl_fireworks")
 
-mcl_fireworks = {}
+vl_fireworks = {}
 
-function mcl_fireworks.particle_explosion(pos)
+function vl_fireworks.generic_particle_explosion(pos)
 	if pos.object then pos = pos.object:get_pos() end
 	local particle_pattern = math.random(1, 3)
 	local fpitch

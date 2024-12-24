@@ -5,7 +5,7 @@ local description = S("Firework Rocket")
 
 local function explode(self, pos)
 	-- temp code
-	mcl_fireworks.particle_explosion(pos)
+	vl_fireworks.generic_particle_explosion(pos)
 	mcl_mobs.mob_class.boom(self, pos, 1)
 end
 
@@ -14,8 +14,8 @@ local firework_entity = {
 	pointable = false,
 	visual = "mesh",
 	visual_size = {x=3, y=3},
-	mesh = "mcl_fireworks_rocket.obj",
-	textures = {"mcl_fireworks_entity.png"},
+	mesh = "vl_fireworks_rocket.obj",
+	textures = {"vl_fireworks_entity.png"},
 	backface_culling = false,
 	collisionbox = {-0.1, 0, -0.1, 0.1, 0.5, 0.1},
 	collide_with_objects = false,
@@ -107,11 +107,11 @@ local firework_entity = {
 
 local function register_rocket(n, duration, force)
 	def = table.copy(firework_entity)
-	vl_projectile.register("mcl_fireworks:rocket_" .. n, def) -- TODO one entity
-	minetest.register_craftitem("mcl_fireworks:rocket_" .. n, { -- TODO one item, use metadata
+	vl_projectile.register("vl_fireworks:rocket_" .. n, def) -- TODO one entity
+	minetest.register_craftitem("vl_fireworks:rocket_" .. n, { -- TODO one item, use metadata
 		description = description,
 		_tt_help = tt_help .. " " .. duration,
-		inventory_image = "mcl_fireworks_rocket.png",
+		inventory_image = "vl_fireworks_rocket.png",
 		stack_max = 64,
 		on_use = function(itemstack, user, pointed_thing)
 			local elytra = mcl_playerplus.elytra[user]
@@ -120,14 +120,14 @@ local function register_rocket(n, duration, force)
 				if not minetest.is_creative_enabled(user:get_player_name()) then
 					itemstack:take_item()
 				end
-				minetest.sound_play("mcl_fireworks_rocket", {pos = user:get_pos()})
+				minetest.sound_play("vl_fireworks_rocket", {pos = user:get_pos()})
 			end
 			return itemstack
 		end,
 		on_place = function(itemstack, user, pointed_thing)
 			local pos = pointed_thing.above
 -- 			pos.y = pos.y + 1
-			vl_projectile.create("mcl_fireworks:rocket_" .. n, {
+			vl_projectile.create("vl_fireworks:rocket_" .. n, {
 				pos=pos,
 				velocity=vector.new(0,1,0)
 			})
