@@ -105,9 +105,9 @@ local firework_entity = {
 	end,
 }
 
+vl_projectile.register("vl_fireworks:rocket", firework_entity)
+
 local function register_rocket(n, duration, force)
-	def = table.copy(firework_entity)
-	vl_projectile.register("vl_fireworks:rocket_" .. n, def) -- TODO one entity
 	minetest.register_craftitem("vl_fireworks:rocket_" .. n, { -- TODO one item, use metadata
 		description = description,
 		_tt_help = tt_help .. " " .. duration,
@@ -127,13 +127,13 @@ local function register_rocket(n, duration, force)
 		on_place = function(itemstack, user, pointed_thing)
 			local pos = pointed_thing.above
 -- 			pos.y = pos.y + 1
-			vl_projectile.create("vl_fireworks:rocket_" .. n, {
+			vl_projectile.create("vl_fireworks:rocket", {
 				pos=pos,
 				velocity=vector.new(0,1,0)
 			})
 		end,
 		_on_dispense = function(dropitem, pos, droppos, dropnode, dropdir)
-			vl_projectile.create("vl_fireworks:rocket_" .. n, {
+			vl_projectile.create("vl_fireworks:rocket", {
 				pos=pos,
 				velocity=vector.new(0,1,0)
 			})
