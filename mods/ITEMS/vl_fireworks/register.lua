@@ -107,40 +107,40 @@ local firework_entity = {
 
 vl_projectile.register("vl_fireworks:rocket", firework_entity)
 
-local function register_rocket(n, duration, force)
-	minetest.register_craftitem("vl_fireworks:rocket_" .. n, { -- TODO one item, use metadata
-		description = description,
-		_tt_help = tt_help .. " " .. duration,
-		inventory_image = "vl_fireworks_rocket.png",
-		stack_max = 64,
-		on_use = function(itemstack, user, pointed_thing)
-			local elytra = mcl_playerplus.elytra[user]
-			if elytra.active and elytra.rocketing <= 0 then
-				elytra.rocketing = duration
-				if not minetest.is_creative_enabled(user:get_player_name()) then
-					itemstack:take_item()
-				end
-				minetest.sound_play("vl_fireworks_rocket", {pos = user:get_pos()})
+-- local function register_rocket(n, duration, force)
+minetest.register_craftitem("vl_fireworks:rocket", { -- TODO use metadata
+	description = description,
+-- 	_tt_help = tt_help .. " " .. duration,
+	inventory_image = "vl_fireworks_rocket.png",
+	stack_max = 64,
+	on_use = function(itemstack, user, pointed_thing)
+		local elytra = mcl_playerplus.elytra[user]
+		if elytra.active and elytra.rocketing <= 0 then
+			elytra.rocketing = 5 -- duration
+			if not minetest.is_creative_enabled(user:get_player_name()) then
+				itemstack:take_item()
 			end
-			return itemstack
-		end,
-		on_place = function(itemstack, user, pointed_thing)
-			local pos = pointed_thing.above
+			minetest.sound_play("vl_fireworks_rocket", {pos = user:get_pos()})
+		end
+		return itemstack
+	end,
+	on_place = function(itemstack, user, pointed_thing)
+		local pos = pointed_thing.above
 -- 			pos.y = pos.y + 1
-			vl_projectile.create("vl_fireworks:rocket", {
-				pos=pos,
-				velocity=vector.new(0,1,0)
-			})
-		end,
-		_on_dispense = function(dropitem, pos, droppos, dropnode, dropdir)
-			vl_projectile.create("vl_fireworks:rocket", {
-				pos=pos,
-				velocity=vector.new(0,1,0)
-			})
-		end,
-	})
-end
+		vl_projectile.create("vl_fireworks:rocket", {
+			pos=pos,
+			velocity=vector.new(0,1,0)
+		})
+	end,
+	_on_dispense = function(dropitem, pos, droppos, dropnode, dropdir)
+		vl_projectile.create("vl_fireworks:rocket", {
+			pos=pos,
+			velocity=vector.new(0,1,0)
+		})
+	end,
+})
+-- end
 
-register_rocket(1, 2.2, 10)
-register_rocket(2, 4.5, 20)
-register_rocket(3, 6, 30)
+-- register_rocket(1, 2.2, 10)
+-- register_rocket(2, 4.5, 20)
+-- register_rocket(3, 6, 30)
