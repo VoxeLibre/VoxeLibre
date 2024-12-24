@@ -474,6 +474,7 @@ mcl_experience.register_on_add_xp(function(player, xp)
 		local can = final_candidates[math.random(#final_candidates)]
 		local stack, list, index, wear = can.stack, can.list, can.index, can.wear
 		local uses = mcl_util.calculate_durability(stack)
+		    / (mcl_enchanting.get_enchantment(stack, "unbreaking") + 1)
 		local multiplier = 2 * 65535 / uses
 		local repair = xp * multiplier
 		local new_wear = wear - repair
