@@ -8,7 +8,7 @@ local ROCKET_TIMEOUT = 1
 
 local YAW_OFFSET = -math.pi/2
 
-local particle_explosion = mcl_fireworks.particle_explosion
+local particle_explosion = vl_fireworks.particle_explosion
 
 local function damage_explosion(self, damagemulitplier, pos)
 	if self._harmless then return end
@@ -97,7 +97,7 @@ if core.get_modpath("mcl_core") and core.get_modpath("mcl_mobitems") then
 		output = "mcl_bows:rocket 1",
 		recipe = {
 			{"mcl_core:paper"},
-			{"mcl_fireworks:rocket_2"},
+			{"vl_fireworks:rocket_2"},
 			{"mcl_bows:arrow"},
 		}
 	})
