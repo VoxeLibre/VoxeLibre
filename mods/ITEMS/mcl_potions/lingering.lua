@@ -123,7 +123,7 @@ end)
 
 
 function mcl_potions.register_lingering(name, descr, color, def)
-	local id = "mcl_potions:"..name.."_lingering"
+	local id = minetest.get_current_modname()..":"..name.."_lingering"
 	local longdesc = def._longdesc
 	if not def.no_effect then
 		longdesc = S("A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.")

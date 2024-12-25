@@ -21,7 +21,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 	local tt = def._tt or ""
 	local groups = {ammo=1, ammo_bow=1, brewitem=1, _mcl_potion=1}
 	if def.nocreative then groups.not_in_creative_inventory = 1 end
-	local arrow_item = "mcl_potions:"..name.."_arrow"
+	local arrow_item = minetest.get_current_modname()..":"..name.."_arrow"
 	core.register_craftitem(arrow_item, {
 		description = desc,
 		_tt_help = arrow_tt .. "\n" .. tt,
@@ -81,14 +81,14 @@ function mcl_potions.register_arrow(name, desc, color, def)
 		mcl_bows.arrow_entity.on_activate(self, staticdata, dtime_s)
 		self._arrow_item = arrow_item
 	end
-	vl_projectile.register("mcl_potions:"..name.."_arrow_entity", arrow_entity)
+	vl_projectile.register(arrow_item.."_entity", arrow_entity)
 
 	if core.get_modpath("mcl_bows") then
 		core.register_craft({
-			output = "mcl_potions:"..name.."_arrow 8",
+			output = arrow_item.." 8",
 			recipe = {
 				{"mcl_bows:arrow","mcl_bows:arrow","mcl_bows:arrow"},
-				{"mcl_bows:arrow","mcl_potions:"..name.."_lingering","mcl_bows:arrow"},
+				{"mcl_bows:arrow",minetest.get_current_modname()..":"..name.."_lingering","mcl_bows:arrow"},
 				{"mcl_bows:arrow","mcl_bows:arrow","mcl_bows:arrow"}
 			}
 		})

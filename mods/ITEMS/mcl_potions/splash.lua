@@ -17,7 +17,7 @@ local function splash_image(colorstring, opacity)
 end
 
 function mcl_potions.register_splash(name, descr, color, def)
-	local id = "mcl_potions:"..name.."_splash"
+	local id = minetest.get_current_modname()..":"..name.."_splash"
 	local longdesc = def._longdesc
 	if not def.no_effect then
 		longdesc = S("A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.")
