@@ -753,12 +753,3 @@ function mcl_util.remove_entity(luaentity)
 
 	luaentity.object:remove()
 end
-function mcl_util.remove_entity(luaentity)
-	if luaentity._removed then return end
-	luaentity._removed = true
-
-	local hook = luaentity._on_remove
-	if hook then hook(luaentity) end
-
-	luaentity.object:remove()
-end
