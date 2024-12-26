@@ -25,7 +25,7 @@ function mcl_throwing.throw(throw_item, pos, dir, velocity, thrower)
 	local itemstring = ItemStack(throw_item):get_name()
 	local obj = vl_projectile.create(entity_mapping[itemstring], {
 		pos = pos,
-		owner_id = thrower,
+		owner = thrower,
 		dir = dir,
 		velocity = velocity,
 		drag = 3,
@@ -39,7 +39,7 @@ function mcl_throwing.get_player_throw_function(entity_name, velocity)
 	local function func(item, player, pointed_thing)
 		local playerpos = player:get_pos()
 		local dir = player:get_look_dir()
-		mcl_throwing.throw(item, {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, velocity, player:get_player_name())
+		mcl_throwing.throw(item, {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, velocity, player)
 		if not minetest.is_creative_enabled(player:get_player_name()) then
 			item:take_item()
 		end
