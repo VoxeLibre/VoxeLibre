@@ -82,7 +82,7 @@ function mod.update_projectile(self, dtime)
 
 	-- Update entity timer and remove expired projectiles
 	self.timer = (self.timer or 0) + dtime
-	local maximum_flight_time = entity_vl_projectile.maximum_time or 300
+	local maximum_flight_time = self._vl_projectile.maximum_time or 300
 	if (self.timer or 0) > maximum_flight_time then
 		mcl_util.remove_entity(self)
 		return
