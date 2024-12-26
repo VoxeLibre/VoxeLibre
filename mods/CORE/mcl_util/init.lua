@@ -810,16 +810,6 @@ end
 function mcl_util.get_luaentity_from_uuid(uuid)
 	return minetest.luaentities[ mcl_util.get_active_object_id_from_uuid(uuid) ]
 end
-function mcl_util.gen_uuid()
-	-- Generate a random 128-bit ID that can be assumed to be unique
-	-- To have a 1% chance of a collision, there would have to be 1.6x10^76 IDs generated
-	-- https://en.wikipedia.org/wiki/Birthday_problem#Probability_table
-	local u = {}
-	for i = 1,16 do
-		u[#u + 1] = string.format("%02X",math.random(1,255))
-	end
-	return table.concat(u)
-end
 function mcl_util.assign_uuid(obj)
 	assert(obj)
 
