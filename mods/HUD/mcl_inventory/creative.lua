@@ -113,6 +113,16 @@ minetest.register_on_mods_loaded(function()
 				table.insert(inventory_lists["matr"], name)
 				nonmisc = true
 			end
+			if def._vl_fireworks_std_durs_forces then
+				for i, tbl in ipairs(def._vl_fireworks_std_durs_forces) do
+					local stack = ItemStack(name)
+					local meta = stack:get_meta()
+					meta:set_float("vl_fireworks:duration", tbl[1])
+					meta:set_int("vl_fireworks:force", tbl[2])
+					table.insert(inventory_lists["misc"], stack:to_string())
+				end
+				nonmisc = true
+			end
 			-- Misc. category is for everything which is not in any other category
 			if not nonmisc then
 				table.insert(inventory_lists["misc"], name)

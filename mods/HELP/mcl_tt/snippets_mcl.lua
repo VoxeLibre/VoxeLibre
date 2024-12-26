@@ -184,3 +184,19 @@ tt.register_snippet(function(itemstring, _, itemstack)
 	end
 	return s:trim()
 end)
+
+
+-- Fireworks info
+tt.register_snippet(function(itemstring, _, itemstack)
+	if not itemstack then return end
+	local def = itemstack:get_definition()
+	if not def then return end
+
+	if not def._vl_fireworks_tt then return end
+
+	local s = ""
+	local meta = itemstack:get_meta()
+	s = s .. def._vl_fireworks_tt(meta:get_float("vl_fireworks:duration"))
+
+	return s:trim()
+end)

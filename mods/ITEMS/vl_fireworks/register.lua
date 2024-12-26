@@ -23,7 +23,7 @@ local firework_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "damage", "time_in_air", "vl_projectile", "arrow_item"--[[???]], "itemstring"
+		"last_pos", "startpos", "time_in_air", "vl_projectile", "arrow_item"--[[???]], "itemstring", "duration"
 	},
 
 	_damage=1,	-- Damage on impact
@@ -46,6 +46,10 @@ local firework_entity = {
 
 			function(self, dtime)
 				self.object:add_velocity(vector.new(0, 5*dtime, 0)) -- TODO var. accel. TODO max speed?
+				if self._vl_projectile.extra then
+					self._vl_projectile.maximum_time = self._vl_projectile.extra
+					self._vl_projectile.extra = nil
+				end
 			end,
 
 			vl_projectile.collides_with_solids,
@@ -107,16 +111,14 @@ local firework_entity = {
 
 vl_projectile.register("vl_fireworks:rocket", firework_entity)
 
--- local function register_rocket(n, duration, force)
 minetest.register_craftitem("vl_fireworks:rocket", { -- TODO use metadata
 	description = description,
--- 	_tt_help = tt_help .. " " .. duration,
 	inventory_image = "vl_fireworks_rocket.png",
 	stack_max = 64,
 	on_use = function(itemstack, user, pointed_thing)
 		local elytra = mcl_playerplus.elytra[user]
 		if elytra.active and elytra.rocketing <= 0 then
-			elytra.rocketing = 5 -- duration
+			elytra.rocketing = meta:get_float("vl_fireworks:duration")
 			if not minetest.is_creative_enabled(user:get_player_name()) then
 				itemstack:take_item()
 			end
@@ -126,21 +128,26 @@ minetest.register_craftitem("vl_fireworks:rocket", { -- TODO use metadata
 	end,
 	on_place = function(itemstack, user, pointed_thing)
 		local pos = pointed_thing.above
+		local meta = itemstack:get_meta()
 -- 			pos.y = pos.y + 1
 		vl_projectile.create("vl_fireworks:rocket", {
-			pos=pos,
-			velocity=vector.new(0,1,0)
+			pos = pos,
+			dir = vector.new(0,1,0),
+			velocity = 1 + meta:get_int("vl_fireworks:force")/10,
+			extra = meta:get_float("vl_fireworks:duration")
 		})
 	end,
 	_on_dispense = function(dropitem, pos, droppos, dropnode, dropdir)
+		local meta = itemstack:get_meta()
 		vl_projectile.create("vl_fireworks:rocket", {
-			pos=pos,
-			velocity=vector.new(0,1,0)
+			pos = pos,
+			dir = vector.new(0,1,0),
+			velocity = 1 + meta:get_int("vl_fireworks:force")/10,
+			extra = meta:get_float("vl_fireworks:duration")
 		})
 	end,
+	_vl_fireworks_std_durs_forces = { {2.2, 10}, {4.5, 20}, {6, 30} },
+	_vl_fireworks_tt = function(duration)
+		return S("Duration:") .. " " .. duration
+	end,
 })
--- end
-
--- register_rocket(1, 2.2, 10)
--- register_rocket(2, 4.5, 20)
--- register_rocket(3, 6, 30)
