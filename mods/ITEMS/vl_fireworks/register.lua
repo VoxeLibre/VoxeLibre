@@ -3,6 +3,8 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local tt_help = S("Flight Duration:")
 local description = S("Firework Rocket")
 
+local TAU = 2*math.pi
+
 local function explode(self, pos)
 	-- temp code
 	vl_fireworks.generic_particle_explosion(pos)
@@ -45,11 +47,18 @@ local firework_entity = {
 			vl_projectile.has_tracer,
 
 			function(self, dtime)
-				self.object:add_velocity(vector.new(0, 5*dtime, 0)) -- TODO var. accel. TODO max speed?
 				if self._vl_projectile.extra then
-					self._vl_projectile.maximum_time = self._vl_projectile.extra
+					local e = self._vl_projectile.extra
+					self._force = e.force/10 + 5
+					self._vl_projectile.maximum_time = e.dur
+					self._rot_axis = e.rot_axis
+					self._dir = self.object:get_velocity():normalize()
 					self._vl_projectile.extra = nil
 				end
+				if not self._dir then return end
+				self._dir = self._dir:rotate_around_axis(self._rot_axis, dtime/3)
+				local obj = self.object
+				obj:set_velocity((obj:get_velocity():length() + self._force*dtime) * self._dir)
 			end,
 
 			vl_projectile.collides_with_solids,
@@ -111,6 +120,22 @@ local firework_entity = {
 
 vl_projectile.register("vl_fireworks:rocket", firework_entity)
 
+function vl_fireworks.shoot_firework(itemstack, pos)
+	local meta = itemstack:get_meta()
+	local rot_axis = vector.new(1,0,0)
+	rot_axis = rot_axis:rotate_around_axis(vector.new(0,1,0), math.random()*TAU)
+	vl_projectile.create("vl_fireworks:rocket", {
+		pos = pos,
+		dir = vector.new(0,1,0),
+		velocity = 1 + meta:get_int("vl_fireworks:force")/10,
+		extra = {
+			dur = meta:get_float("vl_fireworks:duration"),
+			force = meta:get_float("vl_fireworks:force"),
+			rot_axis = rot_axis
+		}
+	})
+end
+
 minetest.register_craftitem("vl_fireworks:rocket", { -- TODO use metadata
 	description = description,
 	inventory_image = "vl_fireworks_rocket.png",
@@ -128,23 +153,10 @@ minetest.register_craftitem("vl_fireworks:rocket", { -- TODO use metadata
 	end,
 	on_place = function(itemstack, user, pointed_thing)
 		local pos = pointed_thing.above
-		local meta = itemstack:get_meta()
--- 			pos.y = pos.y + 1
-		vl_projectile.create("vl_fireworks:rocket", {
-			pos = pos,
-			dir = vector.new(0,1,0),
-			velocity = 1 + meta:get_int("vl_fireworks:force")/10,
-			extra = meta:get_float("vl_fireworks:duration")
-		})
+		vl_fireworks.shoot_firework(itemstack, pos)
 	end,
 	_on_dispense = function(dropitem, pos, droppos, dropnode, dropdir)
-		local meta = itemstack:get_meta()
-		vl_projectile.create("vl_fireworks:rocket", {
-			pos = pos,
-			dir = vector.new(0,1,0),
-			velocity = 1 + meta:get_int("vl_fireworks:force")/10,
-			extra = meta:get_float("vl_fireworks:duration")
-		})
+		vl_fireworks.shoot_firework(dropitem, pos)
 	end,
 	_vl_fireworks_std_durs_forces = { {2.2, 10}, {4.5, 20}, {6, 30} },
 	_vl_fireworks_tt = function(duration)
