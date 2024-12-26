@@ -120,13 +120,13 @@ local firework_entity = {
 
 vl_projectile.register("vl_fireworks:rocket", firework_entity)
 
-function vl_fireworks.shoot_firework(itemstack, pos)
+function vl_fireworks.shoot_firework(itemstack, pos, dir)
 	local meta = itemstack:get_meta()
 	local rot_axis = vector.new(1,0,0)
 	rot_axis = rot_axis:rotate_around_axis(vector.new(0,1,0), math.random()*TAU)
 	vl_projectile.create("vl_fireworks:rocket", {
 		pos = pos,
-		dir = vector.new(0,1,0),
+		dir = dir or vector.new(0,1,0),
 		velocity = 1 + meta:get_int("vl_fireworks:force")/10,
 		extra = {
 			dur = meta:get_float("vl_fireworks:duration"),
@@ -156,7 +156,7 @@ local firework_def = {
 		vl_fireworks.shoot_firework(itemstack, pos)
 	end,
 	_on_dispense = function(dropitem, pos, droppos, dropnode, dropdir)
-		vl_fireworks.shoot_firework(dropitem, pos)
+		vl_fireworks.shoot_firework(dropitem, pos, dropdir)
 	end,
 	_vl_fireworks_std_durs_forces = { {2.2, 10}, {4.5, 20}, {6, 30} },
 	_vl_fireworks_tt = function(duration)
