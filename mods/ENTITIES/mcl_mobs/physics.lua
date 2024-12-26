@@ -419,7 +419,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		if on_die_exit == true then
 			self.state = "die"
 			mcl_burning.extinguish(self.object)
-			self.object:remove()
+			mcl_util.remove_entity(self)
 			return true
 		end
 	end
@@ -482,7 +482,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		local cbox = self.collisionbox
 		local yaw = self.object:get_rotation().y
 		mcl_burning.extinguish(self.object)
-		self.object:remove()
+		mcl_util.remove_entity(self)
 		mcl_mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
 	end
 
@@ -532,7 +532,7 @@ function mob_class:do_env_damage()
 	-- remove mob if beyond map limits
 	if not within_limits(pos, 0) then
 		mcl_burning.extinguish(self.object)
-		self.object:remove()
+		mcl_util.remove_entity(self)
 		return true
 	end
 

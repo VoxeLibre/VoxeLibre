@@ -1,12 +1,5 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
-mcl_bows = {}
-
--- local arrows = {
--- 	["mcl_bows:arrow"] = "mcl_bows:arrow_entity",
--- }
-
-local GRAVITY = 9.81
 local BOW_DURABILITY = 385
 
 -- Charging time in microseconds
@@ -43,13 +36,16 @@ mcl_fovapi.register_modifier({
 })
 
 function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack, collectable)
-	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
-	if power == nil then
-		power = BOW_MAX_SPEED --19
-	end
-	if damage == nil then
-		damage = 3
-	end
+	power = power or BOW_MAX_SPEED
+	damage = damage or 3
+
+	local obj = vl_projectile.create(arrow_item.."_entity", {
+		pos = pos,
+		dir = dir,
+		velocity = power,
+		owner = shooter,
+	})
+
 	local knockback
 	if bow_stack then
 		local enchantments = mcl_enchanting.get_enchantments(bow_stack)
@@ -65,23 +61,23 @@ function mcl_bows.shoot_arrow(arrow_item, pos, dir, yaw, shooter, power, damage,
 			mcl_burning.set_on_fire(obj, math.huge)
 		end
 	end
-	obj:set_velocity({x=dir.x*power, y=dir.y*power, z=dir.z*power})
-	obj:set_acceleration({x=0, y=-GRAVITY, z=0})
-	obj:set_yaw(yaw-math.pi/2)
 	local le = obj:get_luaentity()
-	le._shooter = shooter
 	le._source_object = shooter
 	le._damage = damage
 	le._is_critical = is_critical
-	le._startpos = pos
 	le._knockback = knockback
 	le._collectable = collectable
-	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
+	le._arrow_item = arrow_item
+	local item_def = core.registered_items[le._arrow_item]
+	if item_def and item_def._arrow_image then
+		obj:set_properties({textures = item_def._arrow_image})
+	end
+	core.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
 	if shooter and shooter:is_player() then
-		if obj:get_luaentity().player == "" then
-			obj:get_luaentity().player = shooter
+		if le.player == "" then
+			le.player = shooter
 		end
-		obj:get_luaentity().node = shooter:get_inventory():get_stack("main", 1):get_name()
+		le.node = shooter:get_inventory():get_stack("main", 1):get_name()
 	end
 	return obj
 end
@@ -112,6 +108,7 @@ local function player_shoot_arrow(itemstack, player, power, damage, is_critical)
 		else
 			arrow_itemstring = "mcl_bows:arrow"
 		end
+		infinity_used = true
 	else
 		if not arrow_stack then
 			return false

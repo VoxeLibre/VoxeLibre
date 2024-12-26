@@ -310,9 +310,9 @@ end
 
 bobber_ENTITY.on_step = bobber_on_step
 
-minetest.register_entity("mcl_fishing:bobber_entity", bobber_ENTITY)
+core.register_entity("mcl_fishing:bobber_entity", bobber_ENTITY)
 
-local flying_bobber_ENTITY={
+vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 	physical = false,
 	timer=0,
 	textures = {"mcl_fishing_bobber.png"}, --FIXME: Replace with correct texture.
@@ -323,35 +323,34 @@ local flying_bobber_ENTITY={
 	get_staticdata = mcl_throwing.get_staticdata,
 	on_activate = mcl_throwing.on_activate,
 
+	_vl_projectile = {
+		behaviors = {
+			vl_projectile.collides_with_solids,
+		},
+		collides_with = {"group:liquid"},
+		on_collide_with_solid = function(self, pos, node)
+			local player = self._owner
+
+			mcl_util.remove_entity(self)
+
+			-- Make sure the player field is valid for when we create the floating bobber
+			if not player then return end
+
+			local def = core.registered_nodes[node.name]
+			if not def then return end
+
+			if def.walkable or def.liquidtype == "flowing" or def.liquidtype == "source" then
+				local ent = core.add_entity(pos, "mcl_fishing:bobber_entity"):get_luaentity()
+				ent.player = player
+				ent.child = true
+			end
+		end
+	},
+
 	_lastpos={},
 	_thrower = nil,
 	objtype="fishing",
-}
-
--- Movement function of flying bobber
-local function flying_bobber_on_step(self, dtime)
-	self.timer=self.timer+dtime
-	local pos = self.object:get_pos()
-	local node = minetest.get_node(pos)
-	local def = minetest.registered_nodes[node.name]
-	--local player = minetest.get_player_by_name(self._thrower)
-
-	-- Destroy when hitting a solid node
-	if self._lastpos.x~=nil then
-		if (def and (def.walkable or def.liquidtype == "flowing" or def.liquidtype == "source")) or not def then
-			local ent = minetest.add_entity(self._lastpos, "mcl_fishing:bobber_entity"):get_luaentity()
-			ent.player = self._thrower
-			ent.child = true
-			self.object:remove()
-			return
-		end
-	end
-	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set lastpos-->Node will be added at last pos outside the node
-end
-
-flying_bobber_ENTITY.on_step = flying_bobber_on_step
-
-minetest.register_entity("mcl_fishing:flying_bobber_entity", flying_bobber_ENTITY)
+})
 
 mcl_throwing.register_throwable_object("mcl_fishing:flying_bobber", "mcl_fishing:flying_bobber_entity", 5)
 

@@ -265,6 +265,9 @@ functions needed for the mob to work properly which contains the following:
     'attack_frequency'  Attack frequency in seconds. If unset, this defaults to 1. Implemented for melee only atm.
 
 	mobs:gopath(self,target,callback_arrived)		pathfind a way to target and run callback on arrival
+	'_vl_projectile'	Table with Projectile API behaviors. Current members are:
+		'can_punch(self, projectile_luaentity)'	return 'false' from this function to prevent the provided projectile
+										from colliding with the mob
 
 
 
@@ -484,6 +487,8 @@ This function registers a arrow for mobs with the attack type shoot.
 		'rotate'		integer value in degrees to rotate arrow
 		'on_step'	is a custom function when arrow is active, nil for
 					default.
+		'_vl_projectile'	table with Projectile API properties. Refer to mods/ITEMS/vl_projectile/api.md
+						for documentation.
 
 
 Spawn Eggs

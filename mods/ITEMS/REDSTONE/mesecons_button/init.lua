@@ -151,6 +151,16 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		}},
 		_mcl_button_basename = basename,
 		_mcl_button_timer = button_timer,
+		_vl_projectile = {
+			on_collide = function(projectile, pos, node, node_def)
+				pos = vector.round(pos)
+
+				-- Push the button! Push, push, push the button!
+				if node_def.groups.button_push_by_arrow == 1 then
+					mesecon.push_button(pos, node)
+				end
+			end
+		},
 
 		_mcl_blast_resistance = 0.5,
 		_mcl_hardness = 0.5,

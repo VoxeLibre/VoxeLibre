@@ -286,6 +286,7 @@ function mcl_mobs.register_mob(name, def)
 		noyaw = def.noyaw or false,
 		particlespawners = def.particlespawners,
 		spawn_check = def.spawn_check,
+		_vl_projectile = def._vl_projectile,
 		-- End of MCL2 extensions
 		on_spawn = def.on_spawn,
 		on_blast = def.on_blast or function(self,damage)
@@ -380,11 +381,19 @@ end
 
 -- register arrow for shoot attack
 function mcl_mobs.register_arrow(name, def)
-
 	if not name or not def then return end -- errorcheck
 
-	minetest.register_entity(name, {
+	local behaviors = {
+		vl_projectile.has_owner_grace_distance
+	}
+	if def.hit_node then
+		table.insert(behaviors, vl_projectile.collides_with_solids)
+	end
+	if def.hit_player or def.hit_mob or def.hit_object then
+		table.insert(behaviors, vl_projectile.collides_with_entities)
+	end
 
+	vl_projectile.register(name, {
 		physical = false,
 		visual = def.visual,
 		visual_size = def.visual_size,
@@ -396,44 +405,85 @@ function mcl_mobs.register_arrow(name, def)
 		hit_object = def.hit_object,
 		homing = def.homing,
 		drop = def.drop or false, -- drops arrow as registered item when true
-		collisionbox = {0, 0, 0, 0, 0, 0}, -- remove box around arrows
+		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0}, -- remove box around arrows
 		timer = 0,
 		switch = 0,
 		_lifetime = def._lifetime or 7,
 		owner_id = def.owner_id,
-		rotate = def.rotate,
+		_vl_projectile = table.update(def._vl_projectile or {},{
+			behaviors = behaviors,
+			ignore_gravity = true,
+			damages_players = true,
+			allow_punching = function(self, entity_def, projectile_def, object)
+				if def.allow_punching and not def.allow_punching(self, entity_def, projectile_def, object) then
+					return false
+				elseif self.timer < 2 and self._owner and mcl_util.get_entity_id(object) == self._owner then
+					return false
+				end
+
+				return true
+			end,
+			on_collide_with_solid = function(self, pos, node, nodedef)
+				if not nodedef or not nodedef.walkable then return end
+
+				self.hit_node(self, pos, node)
+				if self.drop == true then
+					pos.y = pos.y + 1
+					self.lastpos = self.lastpos or pos
+
+					core.add_item(self.lastpos, self.object:get_luaentity().name)
+				end
+
+				mcl_util.remove_entity(self)
+			end,
+			on_collide_with_entity = function(self, pos, object)
+				if self.hit_player and object:is_player() then
+					self.hit_player(self, object)
+					mcl_util.remove_entity(self)
+					return
+				end
+
+				local entity = object:get_luaentity()
+				if not entity or entity.name == self.object:get_luaentity().name then return end
+				if self.timer < 2 and self._owner and mcl_util.get_entity_id(object) == self._owner then return end
+
+				if self.hit_mob and entity.is_mob == true then
+					self.hit_mob(self, object)
+					mcl_util.remove_entity(self)
+					return
+				elseif self.hit_object then
+					self.hit_object(self, object)
+					mcl_util.remove_entity(self)
+					return
+				end
+			end
+		}),
 		on_punch = def.on_punch or function(self, puncher, time_from_last_punch, tool_capabilities, dir, damage)
 			local vel = self.object:get_velocity():length()
 			self.object:set_velocity(dir * vel)
-			self._puncher = puncher
+			self._owner = mcl_util.get_entity_id(puncher)
 		end,
-		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0},
 		automatic_face_movement_dir = def.rotate
 			and (def.rotate - (math.pi / 180)) or false,
 
 		on_activate = def.on_activate,
 
 		on_step = def.on_step or function(self, dtime)
-
-			self.timer = self.timer + dtime
+			-- Projectile behavior processing
+			vl_projectile.update_projectile(self, dtime)
 
 			local pos = self.object:get_pos()
+			if not pos then return end
 
-			if self.switch == 0
-			or self.timer > self._lifetime
-			or not within_limits(pos, 0) then
+			if self.switch == 0 or self.timer > self._lifetime or not within_limits(pos) then
 				mcl_burning.extinguish(self.object)
-				self.object:remove();
-
+				mcl_util.remove_entity(self)
 				return
 			end
 
 			-- does arrow have a tail (fireball)
-			if def.tail
-			and def.tail == 1
-			and def.tail_texture then
-
-				minetest.add_particle({
+			if def.tail == 1 and def.tail_texture then
+				core.add_particle({
 					pos = pos,
 					velocity = {x = 0, y = 0, z = 0},
 					acceleration = {x = 0, y = 0, z = 0},
@@ -445,29 +495,6 @@ function mcl_mobs.register_arrow(name, def)
 				})
 			end
 
-			if self.hit_node then
-
-				local node = node_ok(pos).name
-
-				if minetest.registered_nodes[node].walkable then
-
-					self.hit_node(self, pos, node)
-
-					if self.drop == true then
-
-						pos.y = pos.y + 1
-
-						self.lastpos = (self.lastpos or pos)
-
-						minetest.add_item(self.lastpos, self.object:get_luaentity().name)
-					end
-
-					self.object:remove();
-
-					return
-				end
-			end
-
 			if self.homing and self._target then
 				local p = self._target:get_pos()
 				if p then
@@ -476,42 +503,6 @@ function mcl_mobs.register_arrow(name, def)
 					end
 				else
 					self._target = nil
-				end
-			end
-
-			if self.hit_player or self.hit_mob or self.hit_object then
-
-				for _,object in pairs(minetest.get_objects_inside_radius(pos, 1.5)) do
-
-					if self.hit_player
-					and object:is_player() then
-
-						self.hit_player(self, object)
-						self.object:remove();
-						return
-					end
-
-					local entity = object:get_luaentity()
-
-					if entity
-					and self.hit_mob
-					and entity.is_mob == true
-					and (tostring(object) ~= self.owner_id or self.timer > 2)
-					and entity.name ~= self.object:get_luaentity().name then
-						self.hit_mob(self, object)
-						self.object:remove();
-						return
-					end
-
-					if entity
-					and self.hit_object
-					and (not entity.is_mob)
-					and (tostring(object) ~= self.owner_id or self.timer > 2)
-					and entity.name ~= self.object:get_luaentity().name then
-						self.hit_object(self, object)
-						self.object:remove();
-						return
-					end
 				end
 			end
 

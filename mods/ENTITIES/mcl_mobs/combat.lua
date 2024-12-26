@@ -442,7 +442,7 @@ function mob_class:boom(pos, strength, fire)
 	end
 
 	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
-	self.object:remove()
+	mcl_util.remove_entity(self)
 end
 
 -- deal damage and effects when mob punched
@@ -875,7 +875,7 @@ function mob_class:do_states_attack(dtime)
 					mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
 				end
 				mcl_burning.extinguish(self.object)
-				self.object:remove()
+				mcl_util.remove_entity(self)
 
 				return true
 			end
@@ -1038,11 +1038,14 @@ function mob_class:do_states_attack(dtime)
 					minetest.after(1, function()
 						self.firing = false
 					end)
-					arrow = minetest.add_entity(p, self.arrow)
+
+					arrow = vl_projectile.create(self.arrow, {
+						pos = p,
+						owner = self,
+					})
 					ent = arrow:get_luaentity()
 					v = ent.velocity or v
 					ent.switch = 1
-					ent.owner_id = tostring(self.object) -- add unique owner id to arrow
 
 					-- important for mcl_shields
 					ent._shooter = self.object
