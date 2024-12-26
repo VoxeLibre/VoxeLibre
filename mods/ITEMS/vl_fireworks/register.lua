@@ -136,7 +136,7 @@ function vl_fireworks.shoot_firework(itemstack, pos)
 	})
 end
 
-minetest.register_craftitem("vl_fireworks:rocket", { -- TODO use metadata
+local firework_def = {
 	description = description,
 	inventory_image = "vl_fireworks_rocket.png",
 	stack_max = 64,
@@ -162,4 +162,7 @@ minetest.register_craftitem("vl_fireworks:rocket", { -- TODO use metadata
 	_vl_fireworks_tt = function(duration)
 		return S("Duration:") .. " " .. duration
 	end,
-})
+}
+vl_fireworks.firework_def = table.copy(firework_def)
+
+minetest.register_craftitem("vl_fireworks:rocket", firework_def)
