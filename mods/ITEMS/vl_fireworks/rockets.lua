@@ -1,14 +1,19 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local tt_help = S("Flight Duration:")
 local description = S("Firework Rocket")
 
 local TAU = 2*math.pi
 
-local function explode(self, pos)
-	-- temp code
-	vl_fireworks.generic_particle_explosion(pos)
+local function explode(self, pos, stars)
 	mcl_mobs.mob_class.safe_boom(self, pos, 1)
+	if not stars then return end
+	for _, effect in pairs(stars) do
+		if effect.fn == "generic" then
+			vl_fireworks.generic_particle_explosion(pos)
+		end
+		-- TODO implement other handlers
+	end
 end
 
 local firework_entity = {
@@ -25,7 +30,7 @@ local firework_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "vl_projectile", "dir", "rot_axis", "force"
+		"last_pos", "vl_projectile", "dir", "rot_axis", "force", "stars"
 	},
 
 	_vector_save_fields = {
@@ -57,6 +62,7 @@ local firework_entity = {
 					self._vl_projectile.maximum_time = e.dur
 					self._rot_axis = e.rot_axis
 					self._dir = self.object:get_velocity():normalize()
+					self._stars = e.stars
 					self._vl_projectile.extra = nil
 				end
 				if not self._dir then return end
@@ -76,7 +82,7 @@ local firework_entity = {
 			if lua and lua.name == "mobs_mc:rover" then return false end
 			--if (self.object:get_velocity() + object:get_velocity()).length() < 5 then return end
 
-			minetest.log("allow punching")
+			core.log("allow punching")
 
 			return true
 		end,
@@ -94,13 +100,13 @@ local firework_entity = {
 		-- Preserve entity properties
 		out.properties = self.object:get_properties()
 
-		return minetest.serialize(out)
+		return core.serialize(out)
 	end,
 	on_activate = function(self, staticdata, dtime_s)
 		self.object:set_armor_groups({ immortal = 1 })
 
 		self._time_in_air = 1.0
-		local data = minetest.deserialize(staticdata)
+		local data = core.deserialize(staticdata)
 		if not data then return end
 
 		-- Restore entity properties
@@ -128,7 +134,7 @@ local firework_entity = {
 	end,
 
 	_on_remove = function(self)
-		explode(self, self.object:get_pos())
+		explode(self, self.object:get_pos(), self._stars)
 	end,
 }
 
@@ -138,6 +144,7 @@ function vl_fireworks.shoot_firework(itemstack, pos, dir)
 	local meta = itemstack:get_meta()
 	local rot_axis = vector.new(1,0,0)
 	rot_axis = rot_axis:rotate_around_axis(vector.new(0,1,0), math.random()*TAU)
+	local stars = meta:get("vl_fireworks:stars") or core.serialize({})
 	vl_projectile.create("vl_fireworks:rocket", {
 		pos = pos,
 		dir = dir or vector.new(0,1,0),
@@ -145,7 +152,8 @@ function vl_fireworks.shoot_firework(itemstack, pos, dir)
 		extra = {
 			dur = meta:get_float("vl_fireworks:duration"),
 			force = meta:get_float("vl_fireworks:force"),
-			rot_axis = rot_axis
+			rot_axis = rot_axis,
+			stars = core.deserialize(stars)
 		}
 	})
 end
@@ -158,10 +166,10 @@ local firework_def = {
 		local elytra = mcl_playerplus.elytra[user]
 		if elytra.active and elytra.rocketing <= 0 then
 			elytra.rocketing = meta:get_float("vl_fireworks:duration")
-			if not minetest.is_creative_enabled(user:get_player_name()) then
+			if not core.is_creative_enabled(user:get_player_name()) then
 				itemstack:take_item()
 			end
-			minetest.sound_play("vl_fireworks_rocket", {pos = user:get_pos()})
+			core.sound_play("vl_fireworks_rocket", {pos = user:get_pos()})
 		end
 		return itemstack
 	end,
@@ -173,10 +181,19 @@ local firework_def = {
 		vl_fireworks.shoot_firework(dropitem, pos, dropdir)
 	end,
 	_vl_fireworks_std_durs_forces = { {2.2, 10}, {4.5, 20}, {6, 30} },
-	_vl_fireworks_tt = function(duration)
-		return S("Duration:") .. " " .. duration
+	_vl_fireworks_tt = function(duration, stars)
+		local retval = S("Duration:") .. " " .. duration
+
+		for _, effect in pairs(stars) do
+			retval = retval .. "\n\n"
+			if effect.fn == "generic" then
+				retval = retval .. S("Generic Firework Star")
+			end
+		end
+
+		return retval
 	end,
 }
 vl_fireworks.firework_def = table.copy(firework_def)
 
-minetest.register_craftitem("vl_fireworks:rocket", firework_def)
+core.register_craftitem("vl_fireworks:rocket", firework_def)

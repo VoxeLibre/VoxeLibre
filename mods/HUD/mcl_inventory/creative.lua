@@ -116,11 +116,15 @@ minetest.register_on_mods_loaded(function()
 				nonmisc = true
 			end
 			if def._vl_fireworks_std_durs_forces then
+				local generic = core.serialize({{fn="generic"}})
 				for i, tbl in ipairs(def._vl_fireworks_std_durs_forces) do
 					local stack = ItemStack(name)
 					local meta = stack:get_meta()
 					meta:set_float("vl_fireworks:duration", tbl[1])
 					meta:set_int("vl_fireworks:force", tbl[2])
+					table.insert(inventory_lists["misc"], stack:to_string())
+					table.insert(inventory_lists["all"], stack:to_string())
+					meta:set_string("vl_fireworks:stars", generic)
 					table.insert(inventory_lists["misc"], stack:to_string())
 					table.insert(inventory_lists["all"], stack:to_string())
 				end

@@ -313,8 +313,7 @@ minetest.register_craftitem("mcl_mobitems:nether_star", {
 	_doc_items_longdesc = S("A nether star is dropped when the Wither dies. Place it in an item frame to show the world how hardcore you are! Or just as decoration."),
 	wield_image = "mcl_mobitems_nether_star.png",
 	inventory_image = "mcl_mobitems_nether_star.png",
-	-- TODO: Reveal item when it's useful
-	groups = { craftitem = 1, not_in_creative_inventory = 1 },
+	groups = { craftitem = 1 },
 	stack_max = 64,
 })
 

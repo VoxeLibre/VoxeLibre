@@ -196,7 +196,9 @@ tt.register_snippet(function(itemstring, _, itemstack)
 
 	local s = ""
 	local meta = itemstack:get_meta()
-	s = s .. def._vl_fireworks_tt(meta:get_float("vl_fireworks:duration"))
+	local stars = meta:get("vl_fireworks:stars") or core.serialize({})
+	s = s .. def._vl_fireworks_tt(meta:get_float("vl_fireworks:duration"),
+								  core.deserialize(stars))
 
 	return s:trim()
 end)
