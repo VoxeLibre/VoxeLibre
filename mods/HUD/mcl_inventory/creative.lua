@@ -124,16 +124,19 @@ minetest.register_on_mods_loaded(function()
 					local potency = def._default_potent_level - 1
 					stack:get_meta():set_int("mcl_potions:potion_potent", potency)
 					table.insert(inventory_lists["brew"], stack:to_string())
+					table.insert(inventory_lists["all"], stack:to_string())
 				end
 				if def.has_plus then
 					local stack = ItemStack(name)
 					local extend = def._default_extend_level
 					stack:get_meta():set_int("mcl_potions:potion_plus", extend)
 					table.insert(inventory_lists["brew"], stack:to_string())
+					table.insert(inventory_lists["all"], stack:to_string())
 				end
+			else
+				table.insert(inventory_lists["all"], name)
 			end
 
-			table.insert(inventory_lists["all"], name)
 		end
 	end
 
