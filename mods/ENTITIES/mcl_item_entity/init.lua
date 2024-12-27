@@ -322,9 +322,8 @@ function minetest.handle_node_drops(pos, drops, digger)
 	local hammer = tooldef.groups.hammer
 	if hammer and hammer > 0 and nodedef._vl_crushing_drop then
 		drops = nodedef._vl_crushing_drop
-	end
-
-	if tool and nodedef._mcl_fortune_drop and enchantments.fortune then
+	-- Fortune drops
+	else if tool and nodedef._mcl_fortune_drop and enchantments.fortune then
 		local fortune_level = enchantments.fortune
 		local fortune_drop = nodedef._mcl_fortune_drop
 		local simple_drop = nodedef._mcl_fortune_drop.drop_without_fortune
