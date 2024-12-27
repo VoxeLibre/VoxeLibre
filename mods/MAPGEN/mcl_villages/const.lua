@@ -276,17 +276,17 @@ mcl_villages.material_substitions = {
 		{ '"mcl_core:leaves"', '"air"' }, -- addition to MCLA
 	},
 	cherry = {
-		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_cherry_blossom%1"' },
+		{ '"mcl_stairs:slab_oak([^"]*)"', '"mcl_stairs:slab_cherrywood%1"' },
 		{
 			'"mesecons_pressureplates:pressure_plate_oak_([^"]+)"',
-			'"mesecons_pressureplates:pressure_plate_cherry_blossom_%1"',
+			'"mcl_cherry_blossom:pressure_plate_cherrywood_%1"',
 		},
-		{ '"mcl_doors:trapdoor_oak([^"]*)"', '"mcl_doors:trapdoor_cherry_blossom%1"' },
-		{ '"mcl_doors:door_oak([^"]*)"', '"mcl_doors:door_cherry_blossom%1"' },
-		{ "mcl_trees:tree_oak", "mcl_trees:tree_cherry_blossom" },
-		{ "mcl_trees:wood_oak", "mcl_trees:wood_cherry_blossom" },
-		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_fences:cherry_blossom_fence%1"' },
-		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_cherry_blossom%1"' },
-		{ '"mcl_core:leaves"', '"mcl_core:leaves"' }, -- addition to MCLA
+		{ '"mcl_doors:trapdoor_oak([^"]*)"', '"mcl_cherry_blossom:cherry_trapdoor%1"' },
+		{ '"mcl_doors:door_oak([^"]*)"', '"mcl_cherry_blossom:cherry_door%1"' },
+		{ "mcl_trees:tree_oak", "mcl_cherry_blossom:cherrytree" },
+		{ "mcl_trees:wood_oak", "mcl_cherry_blossom:cherrywood" },
+		{ '"mcl_fences:oak_fence([^"]*)"', '"mcl_cherry_blossom:cherry_fence%1"' },
+		{ '"mcl_stairs:stair_oak([^"]*)"', '"mcl_stairs:stair_cherrywood%1"' },
+		{ '"mcl_core:leaves"', '"mcl_cherry_blossom:cherryleaves"' }, -- addition to MCLA
 	},
 }
