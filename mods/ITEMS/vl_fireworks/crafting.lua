@@ -21,8 +21,14 @@ local function craft_star(itemstack, player, old_grid)
 
 	-- analyze the recipe used
 	for _, item in pairs(old_grid) do
-		if item:get_name() == "mcl_fire:fire_charge" then size = 2 end
-		if item:get_name() == "mcl_end:crystal" then size = 3 end
+		if item:get_name() == "mcl_fire:fire_charge" then
+			size = 2
+			break
+		end
+		if item:get_name() == "mcl_end:crystal" then
+			size = 3
+			break
+		end
 	end
 
 	local effect = {

@@ -81,9 +81,8 @@ local firework_entity = {
 		allow_punching = function(self, entity_def, projectile_def, object)
 			local lua = object:get_luaentity()
 			if lua and lua.name == "mobs_mc:rover" then return false end
+			-- TODO at some point make it so impact depends on collision speed? (see next line)
 			--if (self.object:get_velocity() + object:get_velocity()).length() < 5 then return end
-
-			core.log("allow punching")
 
 			return true
 		end,
@@ -183,7 +182,7 @@ local firework_def = {
 	end,
 	_vl_fireworks_std_durs_forces = { {2.2, 10}, {4.5, 20}, {6, 30} },
 	_vl_fireworks_tt = function(duration, stars)
-		local retval = S("Duration:") .. " " .. duration
+		local retval = tt_help .. " " .. duration
 
 		for _, effect in pairs(stars) do
 			if type(effect) == "string" then effect = core.deserialize(effect) end

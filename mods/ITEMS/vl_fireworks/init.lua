@@ -2,13 +2,15 @@ local path = minetest.get_modpath("vl_fireworks")
 
 vl_fireworks = {}
 
+local colors = {"red", "yellow", "blue", "green", "white"}
+
+
 function vl_fireworks.generic_particle_explosion(pos, size)
 	if pos.object then pos = pos.object:get_pos() end
 	local particle_pattern = math.random(1, 3)
 	local fpitch
 	local type = math.random(1, 2)
 	local size = size or math.random(1, 3)
-	local colors = {"red", "yellow", "blue", "green", "white"}
 	local this_colors = {colors[math.random(#colors)], colors[math.random(#colors)], colors[math.random(#colors)]}
 
 	if size == 1 then

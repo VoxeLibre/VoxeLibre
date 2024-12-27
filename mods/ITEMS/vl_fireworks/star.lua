@@ -5,10 +5,8 @@ minetest.register_craftitem("vl_fireworks:firework_star", {
 	_doc_items_longdesc = S("A firework star is the key component of a firework rocket which is responsible for the visible explosion."),
 	wield_image = "vl_fireworks_star.png",
 	inventory_image = "vl_fireworks_star.png",
-	groups = { craftitem = 1 },
+	groups = { craftitem = 1, _vl_fireworks_star = 1 },
 	stack_max = 64,
-
-	_vl_fireworks_star = true
 })
 
 function vl_fireworks.star_tt(effect)
@@ -17,7 +15,7 @@ function vl_fireworks.star_tt(effect)
 		s = S("Generic Firework Star")
 	end
 	if effect.size then
-		s = s .. "\nSize: " .. effect.size
+		s = s .. "\n" .. S("Size:") .. " " .. effect.size
 	end
 	return s:trim()
 end
