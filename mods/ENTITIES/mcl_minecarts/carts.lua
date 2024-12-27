@@ -294,7 +294,10 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	end
 
 	-- Remove superceded entities
-	if staticdata.seq and self._seq < staticdata.seq then
+	if staticdata.seq and (self._seq or -1) < staticdata.seq then
+		if not self._seq then
+			core.log("warning", "Removing minecart entity missing sequence number")
+		end
 		--print("removing cart #"..staticdata.uuid.." with sequence number mismatch")
 		self.object:remove()
 		self._removed = true
