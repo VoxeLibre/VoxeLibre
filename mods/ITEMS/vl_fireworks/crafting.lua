@@ -4,6 +4,37 @@ core.register_craft({ -- temporary
 	output = "vl_fireworks:firework_star",
 	recipe = {"mcl_mobitems:gunpowder", "mcl_core:clay_lump"}
 })
+core.register_craft({ -- temporary
+	type = "shapeless",
+	output = "vl_fireworks:firework_star",
+	recipe = {"mcl_mobitems:gunpowder", "mcl_core:clay_lump", "mcl_fire:fire_charge"}
+})
+core.register_craft({ -- temporary
+	type = "shapeless",
+	output = "vl_fireworks:firework_star",
+	recipe = {"mcl_mobitems:gunpowder", "mcl_core:clay_lump", "mcl_end:crystal"}
+})
+
+local function craft_star(itemstack, player, old_grid)
+	if itemstack:get_name() ~= "vl_fireworks:firework_star" then return end
+	local size = 1
+
+	-- analyze the recipe used
+	for _, item in pairs(old_grid) do
+		if item:get_name() == "mcl_fire:fire_charge" then size = 2 end
+		if item:get_name() == "mcl_end:crystal" then size = 3 end
+	end
+
+	local effect = {
+		fn = "generic",
+		size = size
+	}
+	itemstack:get_meta():set_string("vl_fireworks:star_effect", core.serialize(effect))
+	tt.reload_itemstack_description(itemstack)
+	return itemstack
+end
+core.register_craft_predict(craft_star)
+core.register_on_craft(craft_star)
 
 -- Firework Rocket
 local function register_firework_crafts()

@@ -9,8 +9,9 @@ local function explode(self, pos, stars)
 	mcl_mobs.mob_class.safe_boom(self, pos, 1)
 	if not stars then return end
 	for _, effect in pairs(stars) do
+		if type(effect) == "string" then effect = core.deserialize(effect) end
 		if effect.fn == "generic" then
-			vl_fireworks.generic_particle_explosion(pos)
+			vl_fireworks.generic_particle_explosion(pos, effect.size or 1)
 		end
 		-- TODO implement other handlers
 	end
@@ -185,10 +186,8 @@ local firework_def = {
 		local retval = S("Duration:") .. " " .. duration
 
 		for _, effect in pairs(stars) do
-			retval = retval .. "\n\n"
-			if effect.fn == "generic" then
-				retval = retval .. S("Generic Firework Star")
-			end
+			if type(effect) == "string" then effect = core.deserialize(effect) end
+			retval = retval .. "\n\n" .. vl_fireworks.star_tt(effect)
 		end
 
 		return retval
