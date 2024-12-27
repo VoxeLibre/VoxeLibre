@@ -110,16 +110,16 @@ local piglin = {
 			return
 		elseif self.trading == true then
 			self.state = "trading"
-			self.object:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(20,-20,18))
-			self.object:set_bone_position("Head", vector.new(0,6.3,0), vector.new(-40,0,0))
+			mcl_util.set_bone_position(self.object, "Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(0.35,-0.35,0.315))
+			mcl_util.set_bone_position(self.object, "Head", vector.new(0,6.3,0), vector.new(-0.7,0,0))
 			self.base_texture[2] = "default_gold_ingot.png"
 			self.object:set_properties({textures = self.base_texture})
 		else
-			self.object:set_bone_position("Wield_Item", vector.new(.5,4.5,-1.6), vector.new(90,0,20))
+			mcl_util.set_bone_position(self.object, "Wield_Item", vector.new(.5,4.5,-1.6), vector.new(1.57,0,0.35))
 			self.base_texture[2] = self.weapon
 			self.object:set_properties({textures = self.base_texture})
-			self.object:set_bone_position("Head", vector.new(0,6.3,0), vector.new(0,0,0))
-			self.object:set_bone_position("Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(0,0,0))
+			mcl_util.set_bone_position(self.object, "Head", vector.new(0,6.3,0), vector.new(0,0,0))
+			mcl_util.set_bone_position(self.object, "Arm_Right_Pitch_Control", vector.new(-3,5.785,0), vector.new(0,0,0))
 		end
 
 		if self.state ~= "attack" then
@@ -139,7 +139,7 @@ local piglin = {
 			self.object:set_animation({x=0,y=79})
 			self.trading = true
 			self.gold_items = self.gold_items + 1
-			self.object:set_bone_position("Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(135,0,90))
+			mcl_util.set_bone_position(self.object, "Wield_Item", vector.new(-1.5,4.9,1.8), vector.new(2.36,0,1.57))
 			minetest.after(5, function()
 				self.gold_items = self.gold_items - 1
 				if self.gold_items == 0 then
@@ -202,7 +202,7 @@ sword_piglin.textures = {"extra_mobs_piglin.png", "default_tool_goldsword.png"}
 sword_piglin.on_spawn = function(self)
 	self.gold_items = 0
 	self.weapon = self.base_texture[2]
-	self.object:set_bone_position("Wield_Item", vector.new(0,3.9,1.3), vector.new(90,0,0))
+	mcl_util.set_bone_position(self.object, "Wield_Item", vector.new(0,3.9,1.3), vector.new(1.57,0,0))
 end
 sword_piglin.drops = {
 	{name = "mcl_tools:sword_gold",
