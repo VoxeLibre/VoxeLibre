@@ -265,7 +265,6 @@ local function is_rail_end_connected(pos, dir)
 end
 
 local function bend_straight_rail(pos, towards)
-	dir = CONNECTIONS[i]
 	local node = force_get_node(pos)
 	local nodedef = minetest.registered_nodes[node.name]
 
