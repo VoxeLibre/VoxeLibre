@@ -25,7 +25,11 @@ local firework_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "time_in_air", "vl_projectile", "arrow_item"--[[???]], "itemstring", "duration"
+		"last_pos", "vl_projectile", "dir", "rot_axis", "force"
+	},
+
+	_vector_save_fields = {
+		last_pos = true, dir = true, rot_axis = true, force = true
 	},
 
 	_damage=1,	-- Damage on impact
@@ -85,6 +89,7 @@ local firework_entity = {
 			local field = save_fields[i]
 			out[field] = self["_"..field]
 		end
+		out.timer = self.timer
 
 		-- Preserve entity properties
 		out.properties = self.object:get_properties()
@@ -103,12 +108,18 @@ local firework_entity = {
 			self.object:set_properties(data.properties)
 			data.properties = nil
 		end
+		self.timer = data.timer
 
-		-- Restore arrow state
+		-- Restore rocket state
 		local save_fields = self._save_fields
+		local vecs = self._vector_save_fields
 		for i = 1,#save_fields do
 			local field = save_fields[i]
-			self["_"..field] = data[field]
+			local d = data[field]
+			if type(d) == "table" and vecs[field] then
+				d = vector.new(d.x, d.y, d.z)
+			end
+			self["_"..field] = d
 		end
 
 		if not self._vl_projectile then
