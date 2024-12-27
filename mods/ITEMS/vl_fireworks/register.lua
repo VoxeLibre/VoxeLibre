@@ -56,6 +56,9 @@ local firework_entity = {
 					self._vl_projectile.extra = nil
 				end
 				if not self._dir then return end
+				if self._last_pos and (self._last_pos - self.object:get_pos()):length() < (10*dtime) then
+					self._rot_axis = -self._rot_axis
+				end
 				self._dir = self._dir:rotate_around_axis(self._rot_axis, dtime/3)
 				local obj = self.object
 				obj:set_velocity((obj:get_velocity():length() + self._force*dtime) * self._dir)
