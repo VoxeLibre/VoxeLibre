@@ -3,6 +3,27 @@ mcl_vars = {}
 
 minetest.log("action", "World seed = " .. minetest.get_mapgen_setting("seed"))
 
+-- Get a version number for map generation.
+local map_version = tonumber(core.get_mapgen_setting("vl_world_version") or "")
+if not map_version then
+	-- Try to read gametime *before* initialization
+	-- Primarily to detect when an old world is loaded.
+	local start_time = tonumber(Settings(core.get_worldpath() .. "/env_meta.txt"):get("game_time")) or 0
+	if start_time > 0 then -- old world, assume "0.87 or earlier"
+		map_version = 0.87 -- starting in 0.88, the version should be stored.
+	else
+		local game_version = Settings(core.get_game_info().path .. "/game.conf"):get("version")
+		map_version = game_version and tostring(game_version:match("(%d+%.%d+)"))
+		if not map_version then
+			core.log("warning", "Could not obtain a game version. Fallback to 0.87. "..dump(game_version))
+			map_version = 0.87
+		end
+	end
+	core.set_mapgen_setting("vl_world_version", map_version, true)
+end
+mcl_vars.map_version = map_version -- make available
+core.log("action", "Voxelibre mapgen version = "..map_version)
+
 mcl_vars.redstone_tick = 0.1
 
 -- GUI / inventory menu settings
