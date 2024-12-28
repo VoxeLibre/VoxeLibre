@@ -176,6 +176,10 @@ local firework_def = {
 	on_place = function(itemstack, user, pointed_thing)
 		local pos = pointed_thing.above
 		vl_fireworks.shoot_firework(itemstack, pos)
+		if mcl_gamemode.get_gamemode(user) ~= "creative" then
+			itemstack:take_item()
+			return itemstack
+		end
 	end,
 	_on_dispense = function(dropitem, pos, droppos, dropnode, dropdir)
 		vl_fireworks.shoot_firework(dropitem, pos, dropdir)
