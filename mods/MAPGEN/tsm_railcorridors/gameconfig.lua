@@ -88,15 +88,25 @@ function tsm_railcorridors.create_cart_staticdata(entity_id, pos, pr)
 	if cartdata and has_loot[entity_id] then
 		local items = tsm_railcorridors.get_treasures(pr)
 
-		-- TODO: determine if we should convert to use mcl_loot
-		-- mcl_loot.fill_inventory(inv, "main", items, pr_carts)
-		-- Convert from ItemStack to itemstrings
-		for k,item in pairs(items) do
-			items[k] = item:to_string()
-		end
-		cartdata.inventory = items
+		local size = core.registered_entities[entity_id]._inv_size
+		local inventory = {}
+		for i = 1,size do inventory[i] = "" end
+		cartdata.inventory = inventory
 
-		print("cartdata = "..dump(cartdata))
+		-- Fill a fake inventory using mcl_loot
+		local fake_inv = {
+			get_size = function(self)
+				return size
+			end,
+			get_stack = function(self, _, i)
+				return ItemStack(inventory[i])
+			end,
+			set_stack = function(self, _, i, stack)
+				inventory[i] = stack:to_string()
+			end,
+		}
+		mcl_loot.fill_inventory(fake_inv, "main", items, pr_carts)
+
 		save_cart_data(uuid)
 	end
 
