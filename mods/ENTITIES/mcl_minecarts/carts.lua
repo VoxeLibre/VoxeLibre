@@ -178,6 +178,13 @@ function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
 	local data = minetest.deserialize(staticdata) or {}
 	if not data.uuid then
 		data.uuid  = mcl_util.assign_uuid(self.object)
+
+		if data._items then
+			data.inventory = data._items
+			data._items = nil
+			data._inv_id = nil
+			data._inv_size = nil
+		end
 	end
 	self._seq = data.seq or 1
 
@@ -282,6 +289,9 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	if not staticdata then
 		staticdata = make_staticdata()
 		self._staticdata = staticdata
+	end
+	if self._items then
+		self._items = nil
 	end
 
 	-- Update entity position
