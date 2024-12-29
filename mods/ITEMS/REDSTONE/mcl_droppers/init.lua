@@ -125,6 +125,9 @@ local dropperdef = {
 			local dropnode = minetest.get_node(droppos)
 			-- Do not drop into solid nodes, unless they are containers
 			local dropnodedef = minetest.registered_nodes[dropnode.name]
+			if not dropnodedef then
+				dropnodedef = minetest.registered_nodes["mapgen_stone"]
+			end
 			if dropnodedef.groups.container == 2 then
 				-- If they are containers - double down as hopper
 				mcl_util.hopper_push(pos, droppos)
@@ -143,6 +146,11 @@ local dropperdef = {
 				local r = math.random(1, #stacks)
 				local stack = stacks[r].stack
 				local dropitem = ItemStack(stack)
+				local stackdef = core.registered_items[stack:get_name()]
+				if not stackdef then
+					return
+				end
+
 				dropitem:set_count(1)
 				local stack_id = stacks[r].stackpos
 				local pos_variation = 100

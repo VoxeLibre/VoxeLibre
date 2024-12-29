@@ -127,6 +127,9 @@ local dispenserdef = {
 				end
 				local dropnode = minetest.get_node(droppos)
 				local dropnodedef = minetest.registered_nodes[dropnode.name]
+				if not dropnodedef then
+					dropnodedef = minetest.registered_nodes["mapgen_stone"]
+				end
 				local stacks = {}
 				for i = 1, inv:get_size("main") do
 					local stack = inv:get_stack("main", i)
@@ -140,7 +143,7 @@ local dispenserdef = {
 					local dropitem = ItemStack(stack)
 					dropitem:set_count(1)
 					local stack_id = stacks[r].stackpos
-					local stackdef = stack:get_definition()
+					local stackdef = core.registered_items[stack:get_name()]
 
 					if not stackdef then
 						return
