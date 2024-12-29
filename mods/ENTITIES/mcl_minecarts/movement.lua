@@ -3,6 +3,7 @@ local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 local submod = {}
+local ENABLE_TRAINS = core.settings:get_bool("mcl_minecarts_experimental_trains",false)
 
 -- Constants
 local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
@@ -181,7 +182,7 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 	local m2 = cart2_staticdata.mass
 
 	--print("u1="..tostring(u1)..",u2="..tostring(u2))
-	if u2 == 0 and u1 < 4 and train_length(cart1_staticdata) < MAX_TRAIN_LENGTH then
+	if ENABLE_TRAINS and u2 == 0 and u1 < 4 and train_length(cart1_staticdata) < MAX_TRAIN_LENGTH then
 		link_cart_ahead(cart1_staticdata, cart2_staticdata)
 		cart2_staticdata.dir = mcl_minecarts.get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 		cart2_staticdata.velocity = cart1_staticdata.velocity
