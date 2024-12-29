@@ -20,7 +20,7 @@ local south = mod.south
 local east = mod.east
 local west = mod.west
 
---- Rail direction Handleres
+--- Rail direction Handlers
 local function rail_dir_straight(pos, dir, node)
 	dir = vector.new(dir)
 	dir.y = 0

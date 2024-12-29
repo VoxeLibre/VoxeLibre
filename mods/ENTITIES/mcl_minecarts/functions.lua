@@ -283,7 +283,6 @@ local function bend_straight_rail(pos, towards)
 	local dir2_connected = is_rail_end_connected(pos + dir2, dir1)
 	if dir1_connected and dir2_connected then return end
 
-	-- TODO: bend the rail
 	local connections = {
 		vector.direction(pos, towards),
 	}
@@ -307,8 +306,6 @@ local function bend_straight_rail(pos, towards)
 end
 
 local function update_rail_connections(pos, opt)
-	local ignore_neighbor_connections = opt and opt.ignore_neighbor_connections
-
 	local node = minetest.get_node(pos)
 	local nodedef = minetest.registered_nodes[node.name]
 	if not nodedef or not nodedef._mcl_minecarts then return end
@@ -333,7 +330,7 @@ local function update_rail_connections(pos, opt)
 	for i = 1,#CONNECTIONS do
 		local dir = CONNECTIONS[i]
 		local neighbor = vector.add(pos, dir)
-		make_sloped_if_straight( vector.offset(neighbor, 0, -1, 0), dir )
+		make_sloped_if_straight(vector.offset(neighbor, 0, -1, 0), dir)
 	end
 
 	apply_connection_rules(node, nodedef, pos, rules, connections)
@@ -350,6 +347,20 @@ local function update_rail_connections(pos, opt)
 		end
 	end
 
+	-- Check if the open end of this rail runs into a corner or a tee and convert that node into a tee or a cross
+	local neighbors = {}
+	for i=1,#CONNECTIONS do
+		local dir = CONNECTIONS[i]
+		if is_connection(pos, dir) then
+			local other_pos = pos - dir
+			local other_node = core.get_node(other_pos)
+			local other_node_def = core.registered_nodes[other_node.name]
+			local railtype = get_path(other_node_def, "_mcl_minecarts","railtype")
+			if (not opt or opt.convert_neighbors ~= false) and railtype == "corner" or railtype == "tee" then
+				update_rail_connections(other_pos, {convert_neighbors = false})
+			end
+		end
+	end
 end
 mod.update_rail_connections = update_rail_connections
 
