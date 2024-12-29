@@ -573,7 +573,9 @@ function submod.do_detached_movement(self, dtime)
 		-- Boost the minecart vertically a bit to get over the edge of rails and things like carpets
 		local boost = vector.offset(vector.multiply(vector.normalize(away), 0.1), 0, 0.07, 0) -- 1/16th + 0.0075
 		local pos = self.object:get_pos()
-		self.object:set_pos(vector.add(pos,boost))
+		if pos.y - math.floor(pos.y) < boost.y then
+			self.object:set_pos(vector.add(pos,boost))
+		end
 	end
 
 	-- Try to reconnect to rail
