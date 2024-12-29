@@ -429,6 +429,12 @@ end
 
 local CURVY_RAILS_MAP = {
 	["mcl_minecarts:rail"] = "mcl_minecarts:rail_v2",
+	["mcl_minecarts:golden_rail"] = "mcl_minecarts:golden_rail_v2",
+	["mcl_minecarts:golden_rail_on"] = "mcl_minecarts:golden_rail_v2_on",
+	["mcl_minecarts:activator_rail"] = "mcl_minecarts:activator_rail_v2",
+	["mcl_minecarts:activator_rail_on"] = "mcl_minecarts:activator_rail_v2_on",
+	["mcl_minecarts:detector_rail"] = "mcl_minecarts:detector_rail_v2",
+	["mcl_minecarts:detector_rail_on"] = "mcl_minecarts:detector_rail_v2_on",
 }
 local function convert_legacy_curvy_rails(pos, node)
 	node.name = CURVY_RAILS_MAP[node.name]
@@ -449,12 +455,6 @@ for old,new in pairs(CURVY_RAILS_MAP) do
 	vl_legacy.register_item_conversion(old, new)
 end
 local STRAIGHT_RAILS_MAP ={
-	["mcl_minecarts:golden_rail"] = "mcl_minecarts:golden_rail_v2",
-	["mcl_minecarts:golden_rail_on"] = "mcl_minecarts:golden_rail_v2_on",
-	["mcl_minecarts:activator_rail"] = "mcl_minecarts:activator_rail_v2",
-	["mcl_minecarts:activator_rail_on"] = "mcl_minecarts:activator_rail_v2_on",
-	["mcl_minecarts:detector_rail"] = "mcl_minecarts:detector_rail_v2",
-	["mcl_minecarts:detector_rail_on"] = "mcl_minecarts:detector_rail_v2_on",
 }
 local function convert_legacy_straight_rail(pos, node)
 	node.name = STRAIGHT_RAILS_MAP[node.name]
