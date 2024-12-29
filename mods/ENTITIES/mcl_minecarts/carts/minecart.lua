@@ -13,6 +13,7 @@ local function activate_normal_minecart(self)
 	if self._passenger then
 		local mob = self._passenger.object
 		mob:set_detach()
+		self._passenger = nil
 	end
 end
 
