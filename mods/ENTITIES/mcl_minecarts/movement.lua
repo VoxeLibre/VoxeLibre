@@ -181,12 +181,20 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 	local m1 = cart1_staticdata.mass
 	local m2 = cart2_staticdata.mass
 
-	--print("u1="..tostring(u1)..",u2="..tostring(u2))
 	if ENABLE_TRAINS and u2 == 0 and u1 < 4 and train_length(cart1_staticdata) < MAX_TRAIN_LENGTH then
 		link_cart_ahead(cart1_staticdata, cart2_staticdata)
 		cart2_staticdata.dir = mcl_minecarts.get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 		cart2_staticdata.velocity = cart1_staticdata.velocity
 		return
+	end
+
+	-- Reverse direction of the second cart if it is pointing in the wrong direction for this collision
+	local rel = vector.direction(cart1_staticdata.connected_at, cart2_staticdata.connected_at)
+	local dir2 = cart2_staticdata.dir
+	local col_dir = vector.dot(rel, dir2)
+	if col_dir < 0 then
+		cart2_staticdata.dir = -dir2
+		u2 = -u2
 	end
 
 	-- Calculate new velocities according to https://en.wikipedia.org/wiki/Elastic_collision#One-dimensional_Newtonian
@@ -197,9 +205,6 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 
 	cart1_staticdata.velocity = v1
 	cart2_staticdata.velocity = v2
-
-	-- Force the other cart to move the same direction this one was
-	cart2_staticdata.dir = mcl_minecarts.get_rail_direction(cart2_staticdata.connected_at, cart1_staticdata.dir)
 end
 
 local function vector_away_from_players(cart, staticdata)
