@@ -180,6 +180,7 @@ local function reset_bows(player)
 	for place, stack in pairs(list) do
 		if stack:get_name() == "mcl_bows:bow" or stack:get_name() == "mcl_bows:bow_enchanted" then
 			stack:get_meta():set_string("active", "")
+			stack:get_meta():set_string("inventory_image", "")
 		elseif stack:get_name()=="mcl_bows:bow_0" or stack:get_name()=="mcl_bows:bow_1" or stack:get_name()=="mcl_bows:bow_2" then
 			stack:set_name("mcl_bows:bow")
 			stack:get_meta():set_string("active", "")
@@ -290,12 +291,6 @@ controls.register_on_release(function(player, key, time)
 
 		local has_shot = player_shoot_arrow(wielditem, player, speed, damage, is_critical)
 
-		if enchanted then
-			meta:set_string("inventory_image", "mcl_bows_bow.png"..mcl_enchanting.overlay)
-		else
-			meta:set_string("inventory_image", "mcl_bows_bow.png")
-		end
-
 		if has_shot and not minetest.is_creative_enabled(player:get_player_name()) then
 			local durability = BOW_DURABILITY
 			local unbreaking = mcl_enchanting.get_enchantment(wielditem, "unbreaking")
@@ -333,14 +328,13 @@ controls.register_on_hold(function(player, key, time)
 			bow_load[name] = minetest.get_us_time()
 			bow_load_level[name] = 0
 			bow_index[name] = player:get_wield_index()
-			core.chat_send_all("init")
 
 			-- begin Bow Zoom.
 			mcl_fovapi.apply_modifier(player, "bowcomplete")
 	else
 		if player:get_wield_index() == bow_index[name] then
-			local level = 0
 			if type(bow_load[name]) == "number" then
+				local level = 0
 				if minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_FULL then
 					if bow_load_level[name] == 2 then return end
 					level = 2
@@ -350,18 +344,17 @@ controls.register_on_hold(function(player, key, time)
 					level = 1
 					bow_load_level[name] = 1
 				else return end
+				local im_string = "mcl_bows_bow_"..level..".png"
+				if wielditem:get_name() == "mcl_bows:bow_enchanted" then
+					im_string = im_string .. mcl_enchanting.overlay
+				end
+				meta:set_string("inventory_image", im_string)
 			else
-				level = -1
+				meta:set_string("inventory_image", "")
 				bow_load_level[name] = nil
 			end
-			local im_string = level == -1 and "mcl_bows_bow.png" or "mcl_bows_bow_"..level..".png"
-			if wielditem:get_name() == "mcl_bows:bow_enchanted" then
-				im_string = im_string .. mcl_enchanting.overlay
-			end
-			meta:set_string("inventory_image", im_string)
-			core.chat_send_all(im_string)
 			player:set_wielded_item(wielditem)
-		else
+		elseif bow_load[name] then
 			reset_bow_state(player, true)
 		end
 	end
