@@ -469,17 +469,14 @@ function mod.update_cart_orientation(self)
 
 	-- Forward/backwards tilt (pitch)
 	if dir.y > 0 then
-		rot.x = -_quart_pi
-	elseif dir.y < 0 then
 		rot.x = _quart_pi
+	elseif dir.y < 0 then
+		rot.x = -_quart_pi
 	else
 		rot.x = 0
 	end
 
 	if ( staticdata.rot_adjust or 0 ) < 0.01 then
-		rot.x = -rot.x
-	end
-	if dir.z ~= 0 then
 		rot.x = -rot.x
 	end
 
