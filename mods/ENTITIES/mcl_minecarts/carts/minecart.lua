@@ -22,8 +22,12 @@ function mod.attach_driver(cart, player)
 	-- Make sure we have a player
 	if not player or not player:is_player() then return end
 
+	-- Prevent more than one player getting in the cart
 	local player_name = player:get_player_name()
 	if cart._driver or player:get_player_control().sneak then return end
+
+	-- Prevent getting into a cart that already has a passenger
+	if cart._passenger then return end
 
 	-- Update cart information
 	cart._driver = player_name
@@ -82,7 +86,7 @@ mod.register_minecart({
 			local mobsnear = minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)
 			for n=1, #mobsnear do
 				local mob = mobsnear[n]
-				if mob then
+				if mob and not mob:get_attach() then
 					local entity = mob:get_luaentity()
 					if entity and entity.is_mob then
 						self._passenger = entity
