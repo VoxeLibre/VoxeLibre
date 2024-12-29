@@ -295,6 +295,8 @@ local def_hopper = {
 			" takes stuff from mcl_hoppers at " .. minetest.pos_to_string(pos))
 	end,
 	_mcl_minecarts_on_enter_below = function(pos, cart, next_dir)
+		-- Hopper is below minecart
+
 		-- Only pull to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
@@ -302,6 +304,8 @@ local def_hopper = {
 		end
 	end,
 	_mcl_minecarts_on_enter_above = function(pos, cart, next_dir)
+		-- Hopper is above minecart
+
 		-- Only push to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
@@ -540,6 +544,8 @@ local def_hopper_side = {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
 	_mcl_minecarts_on_enter_below = function(pos, cart, next_dir)
+		-- Hopper is below minecart
+
 		-- Only push to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
@@ -552,6 +558,8 @@ local def_hopper_side = {
 		cart:remove_node_watch(pos)
 	end,
 	_mcl_minecarts_on_enter_side = function(pos, cart, next_dir, rail_pos)
+		-- Hopper is to the side of the minecart
+
 		if not cart then return end
 
 		-- Only try to push to minecarts when the spout position is pointed at the rail
