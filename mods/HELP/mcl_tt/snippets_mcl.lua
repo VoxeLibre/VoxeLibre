@@ -184,3 +184,37 @@ tt.register_snippet(function(itemstring, _, itemstack)
 	end
 	return s:trim()
 end)
+
+
+-- Fireworks info
+tt.register_snippet(function(itemstring, _, itemstack)
+	if not itemstack then return end
+	local def = itemstack:get_definition()
+	if not def then return end
+
+	if not def._vl_fireworks_tt then return end
+
+	local s = ""
+	local meta = itemstack:get_meta()
+	local stars = meta:get("vl_fireworks:stars") or core.serialize({})
+	s = s .. def._vl_fireworks_tt(meta:get_float("vl_fireworks:duration"),
+								  core.deserialize(stars))
+
+	return s:trim()
+end)
+tt.register_snippet(function(itemstring, _, itemstack)
+	if not itemstack then return end
+	local def = itemstack:get_definition()
+	if not def then return end
+
+	if not def.groups.firework_star or def.groups.firework_star == 0 then return end
+
+	local s = ""
+	local meta = itemstack:get_meta()
+	local effect = meta:get("vl_fireworks:star_effect") or core.serialize({fn="generic"})
+	if effect then
+		s = vl_fireworks.star_tt(core.deserialize(effect))
+	end
+
+	return s
+end)

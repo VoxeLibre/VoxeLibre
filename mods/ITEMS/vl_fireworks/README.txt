@@ -1,6 +1,6 @@
 Firework mod for VoxeLibre
 
-by NO11 and and some parts by j45
+by Herowl and teknomunk, based on the old version by NO11 and j45
 
 Sound credits:
 

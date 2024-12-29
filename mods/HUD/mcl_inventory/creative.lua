@@ -72,6 +72,8 @@ minetest.register_on_mods_loaded(function()
 
 			-- Is set to true if it was added in any category besides misc
 			local nonmisc = false
+			-- Is set to true if it has already been added to the "all" category (special handler)
+			local all_handled = false
 			if def.groups.building_block then
 				table.insert(inventory_lists["blocks"], name)
 				nonmisc = true
@@ -113,6 +115,22 @@ minetest.register_on_mods_loaded(function()
 				table.insert(inventory_lists["matr"], name)
 				nonmisc = true
 			end
+			if def._vl_fireworks_std_durs_forces then
+				local generic = core.serialize({{fn="generic"}})
+				for i, tbl in ipairs(def._vl_fireworks_std_durs_forces) do
+					local stack = ItemStack(name)
+					local meta = stack:get_meta()
+					meta:set_float("vl_fireworks:duration", tbl[1])
+					meta:set_int("vl_fireworks:force", tbl[2])
+					table.insert(inventory_lists["misc"], stack:to_string())
+					table.insert(inventory_lists["all"], stack:to_string())
+					meta:set_string("vl_fireworks:stars", generic)
+					table.insert(inventory_lists["misc"], stack:to_string())
+					table.insert(inventory_lists["all"], stack:to_string())
+				end
+				nonmisc = true
+				all_handled = true
+			end
 			-- Misc. category is for everything which is not in any other category
 			if not nonmisc then
 				table.insert(inventory_lists["misc"], name)
@@ -133,7 +151,9 @@ minetest.register_on_mods_loaded(function()
 					table.insert(inventory_lists["brew"], stack:to_string())
 					table.insert(inventory_lists["all"], stack:to_string())
 				end
-			else
+			end
+
+			if not all_handled then
 				table.insert(inventory_lists["all"], name)
 			end
 
@@ -190,12 +210,11 @@ local function set_inv_search(filter, player)
 	local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. playername })
 	local creative_list = {}
 	local lang = minetest.get_player_information(playername).lang_code
-	for name, def in pairs(minetest.registered_items) do
-		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and
-			def.description ~= "" then
-			if filter_item(string.lower(def.name), def.description, lang, filter) then
-				table.insert(creative_list, name)
-			end
+	for _, str in pairs(inventory_lists["all"]) do
+		local stack = ItemStack(str)
+		if filter_item(stack:get_name(), minetest.strip_colors(stack:get_description()), lang, filter)
+				and stack:get_name() ~= "mcl_enchanting:book_enchanted" then
+			table.insert(creative_list, stack:to_string())
 		end
 	end
 	for ench, def in pairs(mcl_enchanting.enchantments) do
