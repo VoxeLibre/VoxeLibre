@@ -65,7 +65,7 @@ local hoe_usagehelp = S("Use the hoe on a cultivatable block (by rightclicking i
 
 minetest.register_tool("mcl_farming:hoe_wood", {
 	description = S("Wood Hoe"),
-	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.wood),
+	_tt_help = hoe_tt,
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	_doc_items_hidden = false,
@@ -109,7 +109,7 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_stone", {
 	description = S("Stone Hoe"),
-	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.stone),
+	_tt_help = hoe_tt,
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_stonehoe.png",
@@ -147,7 +147,7 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_iron", {
 	description = S("Iron Hoe"),
-	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.iron),
+	_tt_help = hoe_tt,
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_steelhoe.png",
@@ -193,7 +193,7 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_gold", {
 	description = S("Golden Hoe"),
-	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.gold),
+	_tt_help = hoe_tt,
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_goldhoe.png",
@@ -240,7 +240,7 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_diamond", {
 	description = S("Diamond Hoe"),
-	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.diamond),
+	_tt_help = hoe_tt,
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_diamondhoe.png",
@@ -280,7 +280,7 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_netherite", {
 	description = S("Netherite Hoe"),
-	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.netherite),
+	_tt_help = hoe_tt,
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_netheritehoe.png",

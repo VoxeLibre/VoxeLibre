@@ -875,7 +875,7 @@ minetest.register_globalstep(function(dtime)
 
 		if minetest.is_creative_enabled(name) then
 			local touch_enabled = is_touch_enabled(name)
-			if touch_enabled ~= players[name].last_touch_enabled then
+			if not players[name] or touch_enabled ~= players[name].last_touch_enabled then
 				mcl_inventory.set_creative_formspec(player)
 			end
 		end

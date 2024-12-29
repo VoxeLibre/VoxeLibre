@@ -726,9 +726,10 @@ end, -200)
 minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
 	-- attack reach limit
 	if hitter and hitter:is_player() then
+		local weapon = hitter:get_wielded_item()
 		local player_pos = player:get_pos()
 		local hitter_pos = hitter:get_pos()
-		if vector.distance(player_pos, hitter_pos) > 3 then
+		if vector.distance(player_pos, hitter_pos) > (weapon:get_definition().range or 3) then
 			damage = 0
 			return damage
 		end

@@ -450,10 +450,13 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local is_player = hitter:is_player()
 	local mob_pos = self.object:get_pos()
 	local player_pos = hitter:get_pos()
+	local weapon = hitter:get_wielded_item()
 
 	if is_player then
 		-- is mob out of reach?
-		if vector_distance(mob_pos, player_pos) > 3 then return end
+		if vector.distance(mob_pos, player_pos) > (weapon:get_definition().range or 3) then
+			return
+		end
 		-- is mob protected?
 		if self.protected and minetest.is_protected(mob_pos, hitter:get_player_name()) then return end
 
@@ -489,7 +492,6 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	end
 
 	-- punch interval
-	local weapon = hitter:get_wielded_item()
 	local punch_interval = 1.4
 
 	-- exhaust attacker
@@ -627,6 +629,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			if hitter and is_player then
 				local wielditem = hitter:get_wielded_item()
 				kb = kb + 9 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+				kb = kb + 9 * minetest.get_item_group(wielditem:get_name(), "hammer")
 				-- add player velocity to mob knockback
 				local hv = hitter:get_velocity()
 				local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)

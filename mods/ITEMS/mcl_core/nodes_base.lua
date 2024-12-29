@@ -563,6 +563,20 @@ minetest.register_node("mcl_core:gravel", {
 		},
 		[3] = "mcl_core:flint",
 	},
+	_vl_crushing_drops = { "mcl_core:greysand" },
+})
+
+minetest.register_node("mcl_core:greysand", {
+	description = S("Grey Sand"),
+	_doc_items_longdesc = S("Grey sand is found where stone erosion takes place."),
+	_doc_items_hidden = false,
+	tiles = {"mcl_core_grey_sand.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {handy=1,shovely=1, falling_node=1, sand=1, soil_sugarcane=1, enderman_takable=1, building_block=1, material_sand=1},
+	sounds = mcl_sounds.node_sound_sand_defaults(),
+	_mcl_blast_resistance = 0.5,
+	_mcl_hardness = 0.5,
 })
 
 -- sandstone --
@@ -590,6 +604,7 @@ minetest.register_node("mcl_core:sandstone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
+	_vl_crushing_drops = { "mcl_core:sand" },
 })
 
 minetest.register_node("mcl_core:sandstonesmooth", {
@@ -653,6 +668,7 @@ minetest.register_node("mcl_core:redsandstone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
+	_vl_crushing_drops = { "mcl_core:redsand" },
 })
 
 minetest.register_node("mcl_core:redsandstonesmooth", {
@@ -772,6 +788,7 @@ minetest.register_node("mcl_core:cobble", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
+	_vl_crushing_drop = { "mcl_core:gravel" }
 })
 
 minetest.register_node("mcl_core:mossycobble", {
