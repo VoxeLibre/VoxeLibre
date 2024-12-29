@@ -381,6 +381,16 @@ local function do_movement_step(staticdata, dtime)
 	-- Not moving
 	if a == 0 and v_0 == 0 then return 0 end
 
+	-- Prevent movement into solid blocks
+	if staticdata.distance == 0 then
+		local next_node = core.get_node(staticdata.connected_at + staticdata.dir)
+		local next_node_def = core.registered_nodes[next_node.name]
+		if next_node_def and next_node_def.groups and (next_node_def.groups.solid or next_node_def.groups.stair) then
+			reverse_direction(staticdata)
+			return 0
+		end
+	end
+
 	-- Movement equation with acceleration: x_1 = x_0 + v_0 * t + 0.5 * a * t*t
 	local timestep
 	local stops_in_block = false
