@@ -207,7 +207,7 @@ tt.register_snippet(function(itemstring, _, itemstack)
 	local def = itemstack:get_definition()
 	if not def then return end
 
-	if not def.groups._vl_fireworks_star or def.groups._vl_fireworks_star == 0 then return end
+	if not def.groups.firework_star or def.groups.firework_star == 0 then return end
 
 	local s = ""
 	local meta = itemstack:get_meta()
