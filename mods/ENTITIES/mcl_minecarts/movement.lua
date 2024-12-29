@@ -567,7 +567,7 @@ function submod.do_detached_movement(self, dtime)
 
 	local away = vector_away_from_players(self, staticdata)
 	if away then
-		local v = self.object:get_velocity()
+		local v = self.object:get_velocity() * 0.25
 		self.object:set_velocity(v - away)
 
 		-- Boost the minecart vertically a bit to get over the edge of rails and things like carpets
