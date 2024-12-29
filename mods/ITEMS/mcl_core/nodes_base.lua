@@ -563,7 +563,7 @@ minetest.register_node("mcl_core:gravel", {
 		},
 		[3] = "mcl_core:flint",
 	},
-	_vl_crushing_drops = { "mcl_core:greysand" },
+	_vl_crushing_drop = { "mcl_core:greysand" },
 })
 
 minetest.register_node("mcl_core:greysand", {
@@ -604,7 +604,7 @@ minetest.register_node("mcl_core:sandstone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
-	_vl_crushing_drops = { "mcl_core:sand" },
+	_vl_crushing_drop = { "mcl_core:sand" },
 })
 
 minetest.register_node("mcl_core:sandstonesmooth", {
@@ -668,7 +668,7 @@ minetest.register_node("mcl_core:redsandstone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
-	_vl_crushing_drops = { "mcl_core:redsand" },
+	_vl_crushing_drop = { "mcl_core:redsand" },
 })
 
 minetest.register_node("mcl_core:redsandstonesmooth", {
