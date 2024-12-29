@@ -245,6 +245,7 @@ end
 -- Turn into a direction (e.g., to the player, or away)
 -- @param dtime deprecated: ignored now, because of smooth rotations
 function mob_class:turn_in_direction(dx, dz, delay, dtime)
+	if not self.rotate then self.rotate = 0 end
 	if abs(dx) == 0 and abs(dz) == 0 then return self.object:get_yaw() + self.rotate end
 	return self:set_yaw(-atan2(dx, dz) - self.rotate, delay, dtime) + self.rotate
 end
