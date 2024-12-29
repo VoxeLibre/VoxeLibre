@@ -385,7 +385,7 @@ local function do_movement_step(staticdata, dtime)
 	if staticdata.distance == 0 then
 		local next_node = core.get_node(staticdata.connected_at + staticdata.dir)
 		local next_node_def = core.registered_nodes[next_node.name]
-		if next_node_def and next_node_def.groups and (next_node_def.groups.solid or next_node_def.groups.stair) then
+		if not next_node_def or next_node_def.groups and (next_node_def.groups.solid or next_node_def.groups.stair) then
 			reverse_direction(staticdata)
 			return 0
 		end
