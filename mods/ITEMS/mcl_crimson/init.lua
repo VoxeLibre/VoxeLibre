@@ -11,11 +11,11 @@ local wood_slab_groups = {handy = 1, axey = 1, material_wood = 1, wood_slab = 1}
 local wood_stair_groups = {handy = 1, axey = 1, material_wood = 1, wood_stairs = 1}
 
 local function generate_warped_tree(pos)
-	minetest.place_schematic(pos,modpath.."/schematics/warped_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
+	minetest.place_schematic(pos,modpath.."/schematics/warped_fungus_"..math.random(1,3)..".mts","random",nil,false,"place_center_x,place_center_z")
 end
 
-function generate_crimson_tree(pos)
-	minetest.place_schematic(pos,modpath.."/schematics/crimson_fungus_1.mts","random",nil,false,"place_center_x,place_center_z")
+local function generate_crimson_tree(pos)
+	minetest.place_schematic(pos,modpath.."/schematics/crimson_fungus_"..math.random(1,3)..".mts","random",nil,false,"place_center_x,place_center_z")
 end
 
 function grow_vines(pos, moreontop, vine, dir)
