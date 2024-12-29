@@ -298,14 +298,14 @@ local def_hopper = {
 		-- Only pull to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
-			hopper_push_to_mc(cart, pos, 5)
+			hopper_pull_from_mc(cart, pos, 5)
 		end
 	end,
 	_mcl_minecarts_on_enter_above = function(pos, cart, next_dir)
 		-- Only push to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
-			hopper_pull_from_mc(cart, pos, 5)
+			hopper_push_to_mc(cart, pos, 5)
 		end
 	end,
 	_mcl_minecarts_on_leave_above = function(pos, cart, next_dir)
