@@ -504,6 +504,10 @@ function mod.get_cart_position(cart_staticdata)
 end
 
 function mod.reverse_cart_direction(staticdata)
+	if staticdata.distance == 0 then
+		staticdata.dir = -staticdata.dir
+		return
+	end
 
 	-- Complete moving thru this block into the next, reverse direction, and put us back at the same position we were at
 	local next_dir = -staticdata.dir
