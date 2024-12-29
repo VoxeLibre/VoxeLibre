@@ -401,8 +401,19 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 	if railpos then
 		spawn_pos = railpos
 		node = minetest.get_node(railpos)
-		cart_dir = mcl_minecarts.get_rail_direction(railpos, vector.new(1,0,0))
+
+		-- Try two orientations, and select the second if the first is at an angle
+		cart_dir1 = mcl_minecarts.get_rail_direction(railpos, vector.new( 1,0,0))
+		cart_dir2 = mcl_minecarts.get_rail_direction(railpos, vector.new(-1,0,0))
+		if vector.length(cart_dir1) <= 1 then
+			cart_dir = cart_dir1
+		else
+			cart_dir = cart_dir2
+		end
 	end
+
+	-- Make sure to always go down slopes
+	if cart_dir.y > 0 then cart_dir = -cart_dir end
 
 	local entity_id = entity_mapping[itemstack:get_name()]
 
