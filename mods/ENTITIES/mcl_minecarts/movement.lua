@@ -3,7 +3,7 @@ local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 local submod = {}
-local ENABLE_TRAINS = core.settings:get_bool("mcl_minecarts_experimental_trains",false)
+local ENABLE_TRAINS = core.settings:get_bool("mcl_minecarts_enable_trains",true)
 
 -- Constants
 local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
