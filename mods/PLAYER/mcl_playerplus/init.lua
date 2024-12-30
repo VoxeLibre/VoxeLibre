@@ -314,6 +314,10 @@ minetest.register_globalstep(function(dtime)
 			local left_arm_rot = vector.new(pitch + 1.57, 0.75, pitch * .35)
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, left_arm_rot)
+		-- controls arm for spear throwing
+		elseif core.get_item_group(wielded:get_name(), "spear") > 0 and control.RMB then
+			local right_arm_rot = vector.new(pitch + 1.57, 0, pitch * -1 * .35)
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
 		-- controls right and left arms pitch when loading a crossbow
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_") then
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(0.786, -0.35, 0.47))
