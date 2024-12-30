@@ -80,7 +80,7 @@ end
 -- * entity_id - type of cart to create
 -- * pos: Position of cart
 -- * pr: pseudorandom
-function tsm_railcorridors.create_cart_staticdata(entity_id, pos, pr)
+function tsm_railcorridors.create_cart_staticdata(entity_id, pos, pr, pr_carts)
 	local uuid = create_minecart(entity_id, pos, vector.new(1,0,0))
 
 	-- Fill the cart with loot

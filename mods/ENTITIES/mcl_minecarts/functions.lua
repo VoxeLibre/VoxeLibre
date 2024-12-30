@@ -197,7 +197,7 @@ local function get_rail_connections(pos, opt)
 
 	local connections = 0
 	for i = 1,#CONNECTIONS do
-		dir = CONNECTIONS[i]
+		local dir = CONNECTIONS[i]
 		local neighbor = vector.add(pos, dir)
 		local node = force_get_node(neighbor)
 		local nodedef = minetest.registered_nodes[node.name]
@@ -347,6 +347,9 @@ local function update_rail_connections(pos, opt)
 		end
 	end
 
+	-- Recursion guard
+	if opt and opt.convert_neighbors == false then return end
+
 	-- Check if the open end of this rail runs into a corner or a tee and convert that node into a tee or a cross
 	local neighbors = {}
 	for i=1,#CONNECTIONS do
@@ -356,7 +359,7 @@ local function update_rail_connections(pos, opt)
 			local other_node = core.get_node(other_pos)
 			local other_node_def = core.registered_nodes[other_node.name]
 			local railtype = get_path(other_node_def, "_mcl_minecarts","railtype")
-			if (not opt or opt.convert_neighbors ~= false) and railtype == "corner" or railtype == "tee" then
+			if railtype == "corner" or railtype == "tee" then
 				update_rail_connections(other_pos, {convert_neighbors = false})
 			end
 		end
