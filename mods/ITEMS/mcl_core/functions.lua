@@ -1495,6 +1495,13 @@ minetest.register_abm({
 	interval = 5,
 	chance = 10,
 	action = function(pos, node)
+		local below = minetest.get_node(vector.offset(pos, 0, -1, 0))
+		local ndef = minetest.registered_nodes[below.name]
+		if not ndef then return end -- ignore, most likely not loaded
+		if ndef.walkable and (ndef.node_box == nil or ndef.node_box.type == "regular")
+			         and (ndef.collision_box == nil or ndef.collision_box.type == "regular") then
+			return -- completely solid block
+		end
 		minetest.after(0.1 + random() * 1.4, function()
 			local pt = table.copy(crobby_particle)
 			pt.size = 1.3 + random() * 1.2
