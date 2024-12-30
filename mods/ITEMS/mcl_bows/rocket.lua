@@ -8,7 +8,7 @@ local ROCKET_TIMEOUT = 1
 
 local YAW_OFFSET = -math.pi/2
 
-local particle_explosion = vl_fireworks.particle_explosion
+local particle_explosion = vl_fireworks.generic_particle_explosion
 
 local function damage_explosion(self, damagemulitplier, pos)
 	if self._harmless then return end
@@ -52,8 +52,10 @@ core.register_craftitem("mcl_bows:rocket", {
 				damage_groups={fleshy=self._damage},
 			}, self.object:get_velocity())
 
-			local eploded_particle = particle_explosion(pos)
-			damage_explosion(self, eploded_particle * 17, pos)
+			if particle_explosion then
+				local eploded_particle = particle_explosion(pos)
+				damage_explosion(self, eploded_particle * 17, pos)
+			end
 			mcl_burning.extinguish(self.object)
 			mcl_util.remove_entity(self)
 		end
@@ -79,8 +81,10 @@ rocket_entity.on_step = function(self, dtime)
 		self._stuck = true
 	end
 	if self._stuck and self._fuse > ROCKET_TIMEOUT then
-		local eploded_particle = particle_explosion(self)
-		damage_explosion(self, eploded_particle * 17)
+		if particle_explosion then
+			local eploded_particle = particle_explosion(self)
+			damage_explosion(self, eploded_particle * 17)
+		end
 		mcl_burning.extinguish(self.object)
 		mcl_util.remove_entity(self)
 		return
@@ -92,7 +96,7 @@ end
 
 vl_projectile.register("mcl_bows:rocket_entity", rocket_entity)
 
-if core.get_modpath("mcl_core") and core.get_modpath("mcl_mobitems") then
+if core.get_modpath("mcl_core") and core.get_modpath("mcl_mobitems") and core.get_modpath("vl_fireworks") then
 	core.register_craft({
 		output = "mcl_bows:rocket 1",
 		recipe = {
