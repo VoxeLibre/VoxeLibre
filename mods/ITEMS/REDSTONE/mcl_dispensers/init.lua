@@ -258,7 +258,9 @@ local dispenserdef = {
 						end
 
 						-- Generalized dispension
-					elseif (not dropnodedef.walkable or stackdef._dispense_into_walkable) then
+					else
+						-- was: if (not dropnodedef.walkable or stackdef._dispense_into_walkable) then
+						-- but MC dispenses even into solids, and this is used for, e.g., chicken farms.
 						--[[ _on_dispense(stack, pos, droppos, dropnode, dropdir)
 							* stack: Itemstack which is dispense
 							* pos: Position of dispenser
@@ -280,16 +282,11 @@ local dispenserdef = {
 								elseif inv:room_for_item("main", od_ret) then
 									inv:add_item("main", od_ret)
 								else
-									local pos_variation = 100
-									droppos = {
-										x = droppos.x + math.random(-pos_variation, pos_variation) / 1000,
-										y = droppos.y + math.random(-pos_variation, pos_variation) / 1000,
-										z = droppos.z + math.random(-pos_variation, pos_variation) / 1000,
-									}
+									droppos.x = droppos.x + math.random() * 0.2 - 0.1
+									droppos.y = droppos.y + math.random() * 0.2 - 0.1
+									droppos.z = droppos.z + math.random() * 0.2 - 0.1
 									local item_entity = minetest.add_item(droppos, dropitem)
-									local drop_vel = vector.subtract(droppos, pos)
-									local speed = 3
-									item_entity:set_velocity(vector.multiply(drop_vel, speed))
+									item_entity:set_velocity(vector.subtract(droppos, pos) * 3)
 								end
 							else
 								stack:take_item()
@@ -297,16 +294,11 @@ local dispenserdef = {
 							end
 						else
 							-- Drop item otherwise
-							local pos_variation = 100
-							droppos = {
-								x = droppos.x + math.random(-pos_variation, pos_variation) / 1000,
-								y = droppos.y + math.random(-pos_variation, pos_variation) / 1000,
-								z = droppos.z + math.random(-pos_variation, pos_variation) / 1000,
-							}
+							droppos.x = droppos.x + math.random() * 0.2 - 0.1
+							droppos.y = droppos.y + math.random() * 0.2 - 0.1
+							droppos.z = droppos.z + math.random() * 0.2 - 0.1
 							local item_entity = minetest.add_item(droppos, dropitem)
-							local drop_vel = vector.subtract(droppos, pos)
-							local speed = 3
-							item_entity:set_velocity(vector.multiply(drop_vel, speed))
+							item_entity:set_velocity(vector.subtract(droppos, pos) * 3)
 							stack:take_item()
 							inv:set_stack("main", stack_id, stack)
 						end
