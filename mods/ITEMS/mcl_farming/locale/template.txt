@@ -11,7 +11,6 @@ Turns block into farmland=
 Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=
 Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=
 Wood Hoe=
-Uses: @1=
 Stone Hoe=
 Iron Hoe=
 Golden Hoe=

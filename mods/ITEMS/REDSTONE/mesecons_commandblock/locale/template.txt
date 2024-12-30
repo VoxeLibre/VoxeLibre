@@ -1,14 +1,5 @@
 # textdomain: mesecons_commandblock
 Command blocks are not enabled on this server=
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=
-Error: No commander! Block must be replaced.=
-Commander: @1=
-Submit=
-No commands.=
-Commands:=
-Help=
 Placement denied. You need the “maphack” privilege to place command blocks.=
 Command Block=
 Executes server commands when powered by redstone power=
@@ -25,6 +16,16 @@ Command blocks support placeholders, insert one of these placeholders and they w
 • “@@@@”: literal “@@” sign=
 Example 1:@n    time 12000@nSets the game clock to 12:00=
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=
+##[ api.lua ]##
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=
+Error: No commander! Block must be replaced.=
+Commander: @1=
+Submit=
+No commands.=
+Commands:=
+Help=
 Access denied. You need the “maphack” privilege to edit command blocks.=
 Editing the command block has failed! You can only change the command block in Creative Mode!=
 Editing the command block has failed! The command block is gone.=

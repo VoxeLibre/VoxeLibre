@@ -1,14 +1,5 @@
 # textdomain: mesecons_commandblock
 Command blocks are not enabled on this server=このサーバーではコマンドブロックが有効になっていない
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=エラー：コマンド「@1」は存在しません：コマンドブロックは変更されていません。使用可能なコマンドのリストについては、チャットコマンドの "help" を使用してください。
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=エラー：コマンド「@1」は存在しません：コマンドブロックは変更されていません。使用可能なコマンドのリストについては、チャットコマンドの "help" を使用してください。 ヒント：先頭のスラッシュを削除してみてください。
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=エラー：コマンド "@1" を使用するには権限不足です！（足りない権限: @2） コマンドブロックは変更されていません。
-Error: No commander! Block must be replaced.=エラー：コマンダーがいません！ ブロックは交換しなければなりません。
-Commander: @1=コマンダー： @1
-Submit=提出
-No commands.=コマンドはありません。
-Commands:=コマンド：
-Help=ヘルプ
 Placement denied. You need the “maphack” privilege to place command blocks.=配置が拒否されました。コマンドブロックを配置するには "maphack" 権限が必要です。
 Command Block=コマンドブロック
 Executes server commands when powered by redstone power=レッドストーン動力が来るとサーバーコマンドを実行
@@ -25,6 +16,16 @@ Command blocks support placeholders, insert one of these placeholders and they w
 • “@@@@”: literal “@@” sign=• "@@@@"：文字通りの「@@」記号
 Example 1:@n    time 12000@nSets the game clock to 12:00=例1：@n    time 12000@nゲームクロックを12:00に設定
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=例2：@n    give @@n mcl_core:apple 5@n最も近いプレイヤーにリンゴを５個与える
+##[ api.lua ]##
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=エラー：コマンド「@1」は存在しません：コマンドブロックは変更されていません。使用可能なコマンドのリストについては、チャットコマンドの "help" を使用してください。
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=エラー：コマンド「@1」は存在しません：コマンドブロックは変更されていません。使用可能なコマンドのリストについては、チャットコマンドの "help" を使用してください。 ヒント：先頭のスラッシュを削除してみてください。
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=エラー：コマンド "@1" を使用するには権限不足です！（足りない権限: @2） コマンドブロックは変更されていません。
+Error: No commander! Block must be replaced.=エラー：コマンダーがいません！ ブロックは交換しなければなりません。
+Commander: @1=コマンダー： @1
+Submit=提出
+No commands.=コマンドはありません。
+Commands:=コマンド：
+Help=ヘルプ
 Access denied. You need the “maphack” privilege to edit command blocks.=アクセスが拒否されました。コマンドブロックの編集には "maphack" 権限が必要です。
 Editing the command block has failed! You can only change the command block in Creative Mode!=コマンドブロックの編集に失敗しました！ コマンドブロックの変更ができるのは、クリエイティブモードでのみ！です。
 Editing the command block has failed! The command block is gone.=コマンドブロックの編集に失敗しました！ コマンドブロックがどこかいきました。

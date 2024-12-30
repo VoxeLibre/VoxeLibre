@@ -11,7 +11,6 @@ Turns block into farmland=Macht Block zu Ackerboden
 Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Harken sind unerlässliche Werkzeuge für die Zucht von Feldpflanzen. Sie können benutzt werden, um einen Ackerboden zu machen, auf dem Samen gepflanzt werden können. Harken können zur Not auch als sehr schwache Waffen benutzt werden.
 Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Benutzen Sie die Harke auf einen beackerbaren Block (indem Sie ihn rechtsklicken), um ihn zu Ackerboden in verwandeln. Erde, Grasblöcke und Graspfade können beackert werden. Grobe Erde wird zu Erde.
 Wood Hoe=Holzharke
-Uses: @1=Verwendungen: @1
 Stone Hoe=Steinharke
 Iron Hoe=Eisenharke
 Golden Hoe=Goldharke
@@ -113,6 +112,7 @@ Sweet Berry=Süßbeere
 
 ##### not used anymore #####
 
+Uses: @1=Verwendungen: @1
 Premature Beetroot Plant (Stage 1)=Junge Rote Beete (1. Stufe)
 Premature Beetroot Plant (Stage 2)=Junge Rote Beete (2. Stufe)
 Premature Beetroot Plant (Stage 3)=Junge Rote Beete (3. Stufe)

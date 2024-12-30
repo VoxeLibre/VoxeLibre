@@ -1,22 +1,30 @@
 # textdomain: mcl_inventory
-Recipe book=Receptolibro
-Help=Helpo
-Select player skin=Elektu ludantoŝajno.
-Advancements=Atingoj
+##[ creative.lua ]##
 Building Blocks=Konstruaj blokoj
 Decoration Blocks=Dekoraciaj blokoj
 Redstone=Ruĝŝtono
 Transportation=Transportado
-Brewing=
 Miscellaneous=Diversaĵoj
 Search Items=Serĉi aferojn
 Foodstuffs=Manĝaĵoj
 Tools=Iloj
 Combat=Batalado
 Mobs=Estaĵoj
+Brewing=
 Materials=Materialoj
 Survival Inventory=Postvivada inventaro
-Crafting=Kreado
-Inventory=Inventaro
-@1/@2=@1/@2
+Recipe book=Receptolibro
+Help=Helpo
+Advancements=Atingoj
 Switch stack size=Ŝanĝi stakgrandecon
+Select player skin=Elektu ludantoŝajno.
+##TODO: fuzzy matched - verify and remove the comment
+@1 / @2=@1/@2
+##[ survival.lua ]##
+Crafting=Kreado
+Achievements=
+
+
+##### not used anymore #####
+
+Inventory=Inventaro

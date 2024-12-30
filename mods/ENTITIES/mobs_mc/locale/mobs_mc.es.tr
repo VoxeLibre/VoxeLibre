@@ -1,68 +1,47 @@
 # textdomain: mobs_mc
-Agent=Agente
+##[ axolotl.lua ]##
 Axolotl=Ajolote
+##[ bat.lua ]##
 Bat=Murciélago
 ##[ rabbit.lua ]##
 Rabbit=Conejo
 Killer Bunny=Conejo asesino
 ##[ chicken.lua ]##
 Chicken=Pollo
+##[ cow+mooshroom.lua ]##
 Cow=Vaca
 Mooshroom=Champivaca
-Stalker=Stalker
-Ender Dragon=Dragón del Ender
-Enderman=Enderman
-Endermite=Endermite
-Ghast=Ghast
-Elder Guardian=Guardián anciano
-Guardian=Guardián
+##[ horse.lua ]##
 Horse=Caballo
 Skeleton Horse=Caballo esqueleto
 Zombie Horse=Caballo zombi
 Donkey=Burro
 Mule=Mula
-Iron Golem=Gólem de hierro
+##[ llama.lua ]##
 Llama=Llama
+##[ ocelot.lua ]##
 Ocelot=Ocelote
 Cat=Gato
+##[ parrot.lua ]##
 Parrot=Loro
 ##[ pig.lua ]##
 Pig=Cerdo
 ##[ polar_bear.lua ]##
 Polar Bear=Oso polar
-Rabbit=Conejo
-Killer Bunny=Conejo asesino
+##[ sheep.lua ]##
 Sheep=Oveja
-Shulker=Shulker
-Silverfish=Lepisma
-Skeleton=Esqueleto
-Stray=Errante
-Wither Skeleton=Esqueleto del Wither
-Magma Cube=Cubo de magma
-Slime=Slime
-Snow Golem=Gólem de nieve
-Spider=Araña
-Cave Spider=Araña de cueva
-Squid=Calamar
-Vex=Vex
-Evoker=Evocador
-Illusioner=Illusionista
-Villager=Aldeano
-Vindicator=Vindicador
-Zombie Villager=Aldeano zombi
-Witch=Bruja
-Wither=Wither
+##[ wolf.lua ]##
 Wolf=Lobo
-Husk=Disecado
-Baby Husk=Disecado bebé
-Zombie=Zombi
-Baby Zombie=Zombi bebé
-Piglin=Piglin
-Baby Piglin=Piglin bebé
-Zombie Piglin=Piglin zombi
-Baby Zombie Piglin=Piglin zombi bebé
-Sword Piglin=Piglin espadachín
-Piglin Brute=Piglin bruto
+Dog=
+##[ squid.lua ]##
+Squid=Calamar
+##[ villager.lua ]##
+Novice=
+Apprentice=
+Journeyman=
+Expert=
+Master=
+Unemployed=
 Farmer=Granjero
 Fisherman=Pescador
 Fletcher=Flechero
@@ -75,10 +54,10 @@ Butcher=Carnicero
 Weapon Smith=Herrero de armas
 Tool Smith=Herrero de herramientas
 Cleric=Clérigo
+Mason=
 Nitwit=Simplón
-Cod=Bacalao
-Salmon=Salmón
-Dolphin=Delfín
+Villager=Aldeano
+##[ pillager.lua ]##
 Pillager=Saqueador
 ##[ villager_evoker.lua ]##
 Evoker=Invocador
@@ -147,8 +126,27 @@ Cod=Bacalao
 Salmon=Salmón
 ##[ tropical_fish.lua ]##
 Tropical fish=Pez tropical
-Hoglin=Hoglin
-Baby hoglin=Hoglin bebé
-Zoglin=Zoglin
-Strider=Lavagante
+##[ dolphin.lua ]##
+Dolphin=Delfín
+##[ glow_squid.lua ]##
 Glow Squid=Calamar luminoso
+##[ piglin.lua ]##
+Piglin=Piglin
+Sword Piglin=Piglin espadachín
+Zombie Piglin=Piglin zombi
+Baby Zombie Piglin=Piglin zombi bebé
+Piglin Brute=Piglin bruto
+##[ hoglin+zoglin.lua ]##
+Hoglin=Hoglin
+Zoglin=Zoglin
+Baby hoglin=Hoglin bebé
+##[ strider.lua ]##
+Strider=Lavagante
+Baby Strider=
+
+
+##### not used anymore #####
+
+Agent=Agente
+Enderman=Enderman
+Baby Piglin=Piglin bebé

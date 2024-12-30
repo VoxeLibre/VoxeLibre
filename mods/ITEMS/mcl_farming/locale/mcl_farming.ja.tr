@@ -11,7 +11,6 @@ Turns block into farmland=ブロックを耕地にする
 Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=クワは農作物を育てるのに欠かせない道具です。種を植えるための耕地を作るのに使います。また、いざというときには、非常に弱い武器としても使えます。
 Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=耕せるブロックに（右クリックで）クワを使うと耕地になります。土、草原、オフロードは耕せるブロックです。粗い土にクワを使うと、土になります。
 Wood Hoe=木製のクワ
-Uses: @1=使用：@1
 Stone Hoe=石のクワ
 Iron Hoe=鉄のクワ
 Golden Hoe=金のクワ
@@ -113,6 +112,7 @@ Sweet Berry=
 
 ##### not used anymore #####
 
+Uses: @1=使用：@1
 Premature Beetroot Plant (Stage 1)=未成熟なビートルートの苗（1段階目）
 Premature Beetroot Plant (Stage 2)=未成熟なビートルートの苗（2段階目）
 Premature Beetroot Plant (Stage 3)=未成熟なビートルートの苗（3段階目）

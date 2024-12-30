@@ -11,7 +11,6 @@ Turns block into farmland=Zamienia blok w pole uprawne
 Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Motyki są niezbędnymi narzędziami do uprawiania roślin. Są używane do tworzenia pól uprawnych na których można sadzić nasiona. Motyki mogą być również użyte jako bardzo słabe bronie w razie konieczności.
 Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Użyj motyki na bloku który można zaorać (klikając go prawym przyciskiem), aby zamienić go w pole uprawne. Ziemia, bloki trawy i ścieżki trawy są blokami, które można zaorać. Korzystanie z motyki na twardej ziemi zamienia ją w ziemię.
 Wood Hoe=Drewniana motyka
-Uses: @1=Wykorzystuje: @1
 Stone Hoe=Kamienna motyka
 Iron Hoe=Żelazna motyka
 Golden Hoe=Złota motyka
@@ -113,6 +112,7 @@ Sweet Berry=
 
 ##### not used anymore #####
 
+Uses: @1=Wykorzystuje: @1
 Premature Beetroot Plant (Stage 1)=Niedojrzała roślina buraka (etap 1)
 Premature Beetroot Plant (Stage 2)=Niedojrzała roślina buraka (etap 2)
 Premature Beetroot Plant (Stage 3)=Niedojrzała roślina buraka (etap 3)

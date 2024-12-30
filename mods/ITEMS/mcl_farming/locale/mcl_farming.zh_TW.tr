@@ -11,7 +11,6 @@ Turns block into farmland=把方塊變成農田
 Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=鋤頭是種植農作物的基本工具。它們被用來開闢農田，以便在上面種植種子。在緊要關頭，鋤頭也可以作為非常薄弱的​​武器使用。
 Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=在可耕地塊上使用鋤頭（通過右鍵點擊），將其變成農田。泥土、草塊和草路都是可耕地塊。在粗泥上使用鋤頭可以將其變成泥土。
 Wood Hoe=木鋤
-Uses: @1=使用：@1
 Stone Hoe=石鋤
 Iron Hoe=鐵鋤
 Golden Hoe=金鋤
@@ -113,6 +112,7 @@ Sweet Berry=
 
 ##### not used anymore #####
 
+Uses: @1=使用：@1
 Premature Beetroot Plant (Stage 1)=未熟的甜菜植物（第1階段）
 Premature Beetroot Plant (Stage 2)=未熟的甜菜（第2階段）
 Premature Beetroot Plant (Stage 3)=未熟的甜菜（第3階段）

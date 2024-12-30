@@ -1,14 +1,5 @@
 # textdomain: mesecons_commandblock
 Command blocks are not enabled on this server=Командные блоки отключены на этом сервере
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Ошибка: Команда “@1” не существует; ваш командный блок не был изменён. Используйте чат-команду “help” для получения списка доступных команд.
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Ошибка: Команда “@1” не существует; ваш командный блок не был изменён. Используйте чат-команду “help” для получения списка доступных команд. Подсказка: Попробуйте убрать ведущий слэш.
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Ошибка: Вы не имеете привилегий для использования команды “@1” (отсутствует привилегия: @2)! Командный блок не был изменён.
-Error: No commander! Block must be replaced.=Ошибка: Нет командующего! Блок следует заменить.
-Commander: @1=Командующий: @1
-Submit=Принять
-No commands.=Нет команд.
-Commands:=Команды:
-Help=Помощь
 Placement denied. You need the “maphack” privilege to place command blocks.=Установка запрещена. Для установки командных блоков нужно иметь привилегию “maphack”.
 Command Block=Командный блок
 Executes server commands when powered by redstone power=При подаче сигнала редстоуна выполняет серверные команды
@@ -25,6 +16,16 @@ Command blocks support placeholders, insert one of these placeholders and they w
 • “@@@@”: literal “@@” sign=• “@@@@”: если нужно использовать символ “@@” сам по себе
 Example 1:@n    time 12000@nSets the game clock to 12:00=Пример 1:@n    time 12000@nУстанавливает игровое время на 12:00
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=Пример 2:@n    give @@n mcl_core:apple 5@nДаёт ближайшему игроку 5 яблок
+##[ api.lua ]##
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Ошибка: Команда “@1” не существует; ваш командный блок не был изменён. Используйте чат-команду “help” для получения списка доступных команд.
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Ошибка: Команда “@1” не существует; ваш командный блок не был изменён. Используйте чат-команду “help” для получения списка доступных команд. Подсказка: Попробуйте убрать ведущий слэш.
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Ошибка: Вы не имеете привилегий для использования команды “@1” (отсутствует привилегия: @2)! Командный блок не был изменён.
+Error: No commander! Block must be replaced.=Ошибка: Нет командующего! Блок следует заменить.
+Commander: @1=Командующий: @1
+Submit=Принять
+No commands.=Нет команд.
+Commands:=Команды:
+Help=Помощь
 Access denied. You need the “maphack” privilege to edit command blocks.=Доступ запрещён. Вам нужно иметь привилегию “maphack”, чтобы редактировать командные блоки.
 Editing the command block has failed! You can only change the command block in Creative Mode!=Попытка редактирования командного блока неудалась. Вы можете изменять командные блоки только в творческом режиме!
 Editing the command block has failed! The command block is gone.=Попытка редактирования командного блока неудалась. Командный блок исчез.
