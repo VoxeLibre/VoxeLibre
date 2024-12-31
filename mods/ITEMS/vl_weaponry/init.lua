@@ -371,7 +371,7 @@ core.register_tool("vl_weaponry:spear_wood", {
 	wield_scale = wield_scale,
 	on_place = spear_on_place,
 	on_secondary_use = spear_on_place,
-	groups = { weapon=1, spear=1, dig_speed_class=2, enchantability=15 },
+	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=15 },
 	range = SPEAR_RANGE,
 	tool_capabilities = {
 		full_punch_interval = 0.75,
@@ -386,6 +386,7 @@ core.register_tool("vl_weaponry:spear_wood", {
 		swordy = { speed = 2, level = 1, uses = uses.wood },
 		swordy_cobweb = { speed = 2, level = 1, uses = uses.wood }
 	},
+	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 5,
 })
 core.register_tool("vl_weaponry:spear_stone", {
@@ -397,7 +398,7 @@ core.register_tool("vl_weaponry:spear_stone", {
 	wield_scale = wield_scale,
 	on_place = spear_on_place,
 	on_secondary_use = spear_on_place,
-	groups = { weapon=1, spear=1, dig_speed_class=2, enchantability=5 },
+	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=5 },
 	range = SPEAR_RANGE,
 	tool_capabilities = {
 		full_punch_interval = 0.75,
@@ -412,6 +413,7 @@ core.register_tool("vl_weaponry:spear_stone", {
 		swordy = { speed = 2, level = 1, uses = uses.stone },
 		swordy_cobweb = { speed = 2, level = 1, uses = uses.stone }
 	},
+	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 6,
 })
 core.register_tool("vl_weaponry:spear_iron", {
@@ -423,7 +425,7 @@ core.register_tool("vl_weaponry:spear_iron", {
 	wield_scale = wield_scale,
 	on_place = spear_on_place,
 	on_secondary_use = spear_on_place,
-	groups = { weapon=1, spear=1, dig_speed_class=2, enchantability=14 },
+	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=14 },
 	range = SPEAR_RANGE,
 	tool_capabilities = {
 		full_punch_interval = 0.75,
@@ -438,6 +440,7 @@ core.register_tool("vl_weaponry:spear_iron", {
 		swordy = { speed = 2, level = 1, uses = uses.iron },
 		swordy_cobweb = { speed = 2, level = 1, uses = uses.iron }
 	},
+	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 7,
 })
 core.register_tool("vl_weaponry:spear_gold", {
@@ -449,7 +452,7 @@ core.register_tool("vl_weaponry:spear_gold", {
 	wield_scale = wield_scale,
 	on_place = spear_on_place,
 	on_secondary_use = spear_on_place,
-	groups = { weapon=1, spear=1, dig_speed_class=2, enchantability=22 },
+	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=22 },
 	range = SPEAR_RANGE,
 	tool_capabilities = {
 		full_punch_interval = 0.75,
@@ -464,6 +467,7 @@ core.register_tool("vl_weaponry:spear_gold", {
 		swordy = { speed = 2, level = 1, uses = uses.gold },
 		swordy_cobweb = { speed = 2, level = 1, uses = uses.gold }
 	},
+	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 5,
 })
 core.register_tool("vl_weaponry:spear_diamond", {
@@ -475,7 +479,7 @@ core.register_tool("vl_weaponry:spear_diamond", {
 	wield_scale = wield_scale,
 	on_place = spear_on_place,
 	on_secondary_use = spear_on_place,
-	groups = { weapon=1, spear=1, dig_speed_class=2, enchantability=10 },
+	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=10 },
 	range = SPEAR_RANGE,
 	tool_capabilities = {
 		full_punch_interval = 0.75,
@@ -490,6 +494,7 @@ core.register_tool("vl_weaponry:spear_diamond", {
 		swordy = { speed = 2, level = 1, uses = uses.diamond },
 		swordy_cobweb = { speed = 2, level = 1, uses = uses.diamond }
 	},
+	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 8,
 	_mcl_upgradable = true,
 	_mcl_upgrade_item = "vl_weaponry:spear_netherite"
@@ -503,7 +508,7 @@ core.register_tool("vl_weaponry:spear_netherite", {
 	wield_scale = wield_scale,
 	on_place = spear_on_place,
 	on_secondary_use = spear_on_place,
-	groups = { weapon=1, spear=1, dig_speed_class=2, enchantability=10, fire_immune=1 },
+	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=10, fire_immune=1 },
 	range = SPEAR_RANGE,
 	tool_capabilities = {
 		full_punch_interval = 0.75,
@@ -518,6 +523,7 @@ core.register_tool("vl_weaponry:spear_netherite", {
 		swordy = { speed = 2, level = 1, uses = uses.netherite },
 		swordy_cobweb = { speed = 2, level = 1, uses = uses.netherite }
 	},
+	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 12,
 })
 
