@@ -9,6 +9,8 @@ local function mcl_log(message)
 	end
 end
 
+mcl_hoppers = {}
+
 --[[ BEGIN OF NODE DEFINITIONS ]]
 
 local mcl_hoppers_formspec = table.concat({
@@ -52,7 +54,7 @@ local function straight_hopper_act(pos, node, active_object_count, active_count_
 
 	mcl_util.hopper_push(pos, dst_pos)
 	local src_pos = vector.offset(pos, 0, 1, 0)
-	mcl_util.hopper_pull(pos, src_pos)
+	mcl_util.hopper_pull_to_inventory(minetest.get_meta(pos):get_inventory(), "main", src_pos, pos)
 end
 
 local function bent_hopper_act(pos, node, active_object_count, active_object_count_wider)
@@ -91,8 +93,101 @@ local function bent_hopper_act(pos, node, active_object_count, active_object_cou
 	end
 
 	local src_pos = vector.offset(pos, 0, 1, 0)
-	mcl_util.hopper_pull(pos, src_pos)
+	mcl_util.hopper_pull_to_inventory(inv, "main", src_pos, pos)
 end
+
+--[[
+  Returns true if an item was pushed to the minecart
+]]
+local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
+	if not mcl_util.metadata_last_act(minetest.get_meta(dest_pos), "hopper_push_timer", 1) then return false end
+
+	local dest_inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
+	if not dest_inv then
+		mcl_log("No inv")
+		return false
+	end
+
+	local meta = minetest.get_meta(dest_pos)
+	local inv = meta:get_inventory()
+	if not inv then
+		mcl_log("No dest inv")
+		return
+	end
+
+	mcl_log("inv. size: " .. mc_ent._inv_size)
+	for i = 1, mc_ent._inv_size, 1 do
+		local stack = inv:get_stack("main", i)
+
+		mcl_log("i: " .. tostring(i))
+		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
+		mcl_log("Count: " .. tostring(stack:get_count()))
+		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+
+		if not stack:get_name() or stack:get_name() ~= "" then
+			if dest_inv:room_for_item("main", stack:peek_item()) then
+				mcl_log("Room so unload")
+				dest_inv:add_item("main", stack:take_item())
+				inv:set_stack("main", i, stack)
+
+				-- Take one item and stop until next time
+				return
+			else
+				mcl_log("no Room")
+			end
+
+		else
+			mcl_log("nothing there")
+		end
+	end
+end
+--[[
+  Returns true if an item was pulled from the minecart
+]]
+local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
+	if not mcl_util.metadata_last_act(minetest.get_meta(dest_pos), "hopper_pull_timer", 1) then return false end
+
+	local inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
+	if not inv then
+		mcl_log("No inv")
+		return false
+	end
+
+	local dest_meta = minetest.get_meta(dest_pos)
+	local dest_inv = dest_meta:get_inventory()
+	if not dest_inv then
+		mcl_log("No dest inv")
+		return false
+	end
+
+	mcl_log("inv. size: " .. mc_ent._inv_size)
+	for i = 1, mc_ent._inv_size, 1 do
+		local stack = inv:get_stack("main", i)
+
+		mcl_log("i: " .. tostring(i))
+		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
+		mcl_log("Count: " .. tostring(stack:get_count()))
+		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
+
+		if not stack:get_name() or stack:get_name() ~= "" then
+			if dest_inv:room_for_item("main", stack:peek_item()) then
+				mcl_log("Room so unload")
+				dest_inv:add_item("main", stack:take_item())
+				inv:set_stack("main", i, stack)
+
+				-- Take one item and stop until next time, report that we took something
+				return true
+			else
+				mcl_log("no Room")
+			end
+
+		else
+			mcl_log("nothing there")
+		end
+	end
+end
+mcl_hoppers.pull_from_minecart = hopper_pull_from_mc
+
 
 -- Downwards hopper (base definition)
 
@@ -198,6 +293,50 @@ local def_hopper = {
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name() ..
 			" takes stuff from mcl_hoppers at " .. minetest.pos_to_string(pos))
+	end,
+	_mcl_minecarts_on_enter_below = function(pos, cart, next_dir)
+		-- Hopper is below minecart
+
+		-- Only pull to containers
+		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
+			cart:add_node_watch(pos)
+			hopper_pull_from_mc(cart, pos, 5)
+		end
+	end,
+	_mcl_minecarts_on_enter_above = function(pos, cart, next_dir)
+		-- Hopper is above minecart
+
+		-- Only push to containers
+		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
+			cart:add_node_watch(pos)
+			hopper_push_to_mc(cart, pos, 5)
+		end
+	end,
+	_mcl_minecarts_on_leave_above = function(pos, cart, next_dir)
+		if not cart then return end
+
+		cart:remove_node_watch(pos)
+	end,
+	_mcl_minecarts_node_on_step = function(pos, cart, dtime, cartdata)
+		if not cart then
+			minetest.log("warning", "trying to process hopper-to-minecart movement without luaentity")
+			return
+		end
+
+		local cart_pos = mcl_minecarts.get_cart_position(cartdata)
+		if not cart_pos then return false end
+		if vector.distance(cart_pos, pos) > 1.5 then
+			cart:remove_node_watch(pos)
+			return
+		end
+		if vector.direction(pos,cart_pos).y > 0 then
+			-- The cart is above us, pull from minecart
+			hopper_pull_from_mc(cart, pos, 5)
+		else
+			hopper_push_to_mc(cart, pos, 5)
+		end
+
+		return true
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
@@ -404,6 +543,70 @@ local def_hopper_side = {
 	on_rotate = on_rotate,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
+	_mcl_minecarts_on_enter_below = function(pos, cart, next_dir)
+		-- Hopper is below minecart
+
+		-- Only push to containers
+		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
+			cart:add_node_watch(pos)
+			hopper_pull_from_mc(cart, pos, 5)
+		end
+	end,
+	_mcl_minecarts_on_leave_below = function(pos, cart, next_dir)
+		if not cart then return end
+
+		cart:remove_node_watch(pos)
+	end,
+	_mcl_minecarts_on_enter_side = function(pos, cart, next_dir, rail_pos)
+		-- Hopper is to the side of the minecart
+
+		if not cart then return end
+
+		-- Only try to push to minecarts when the spout position is pointed at the rail
+		local face = minetest.get_node(pos).param2
+		local dst_pos = {}
+		if face == 0 then
+			dst_pos = vector.offset(pos, -1, 0, 0)
+		elseif face == 1 then
+			dst_pos = vector.offset(pos, 0, 0, 1)
+		elseif face == 2 then
+			dst_pos = vector.offset(pos, 1, 0, 0)
+		elseif face == 3 then
+			dst_pos = vector.offset(pos, 0, 0, -1)
+		end
+		if dst_pos ~= rail_pos then return end
+
+		-- Only push to containers
+		if cart.groups and (cart.groups.container or 0) ~= 0 then
+			cart:add_node_watch(pos)
+		end
+
+		hopper_push_to_mc(cart, pos, 5)
+	end,
+	_mcl_minecarts_on_leave_side = function(pos, cart, next_dir)
+		if not cart then return end
+
+		cart:remove_node_watch(pos)
+	end,
+	_mcl_minecarts_node_on_step = function(pos, cart, dtime, cartdata)
+		if not cart then return end
+
+		local cart_pos = mcl_minecarts.get_cart_position(cartdata)
+		if not cart_pos then return false end
+		if vector.distance(cart_pos, pos) > 1.5 then
+			cart:remove_node_watch(pos)
+			return false
+		end
+
+		if cart_pos.y == pos.y then
+			hopper_push_to_mc(cart, pos, 5)
+		elseif cart_pos.y > pos.y then
+			hopper_pull_from_mc(cart, pos, 5)
+		end
+
+		return true
+	end,
+
 	_mcl_blast_resistance = 4.8,
 	_mcl_hardness = 3,
 }
@@ -435,87 +638,6 @@ minetest.register_node("mcl_hoppers:hopper_side_disabled", def_hopper_side_disab
 
 --[[ END OF NODE DEFINITIONS ]]
 
-local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
-	local inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
-	if not inv then
-		mcl_log("No inv")
-		return false
-	end
-
-	local dest_meta = minetest.get_meta(dest_pos)
-	local dest_inv = dest_meta:get_inventory()
-	if not dest_inv then
-		mcl_log("No dest inv")
-		return
-	end
-
-	mcl_log("inv. size: " .. mc_ent._inv_size)
-	for i = 1, mc_ent._inv_size, 1 do
-		local stack = inv:get_stack("main", i)
-
-		mcl_log("i: " .. tostring(i))
-		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
-		mcl_log("Count: " .. tostring(stack:get_count()))
-		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
-
-		if not stack:get_name() or stack:get_name() ~= "" then
-			if dest_inv:room_for_item("main", stack:peek_item()) then
-				mcl_log("Room so unload")
-				dest_inv:add_item("main", stack:take_item())
-				inv:set_stack("main", i, stack)
-
-				-- Take one item and stop until next time
-				return
-			else
-				mcl_log("no Room")
-			end
-
-		else
-			mcl_log("nothing there")
-		end
-	end
-end
-
-local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
-	local dest_inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
-	if not dest_inv then
-		mcl_log("No inv")
-		return false
-	end
-
-	local meta = minetest.get_meta(dest_pos)
-	local inv = meta:get_inventory()
-	if not inv then
-		mcl_log("No dest inv")
-		return
-	end
-
-	mcl_log("inv. size: " .. mc_ent._inv_size)
-	for i = 1, mc_ent._inv_size, 1 do
-		local stack = inv:get_stack("main", i)
-
-		mcl_log("i: " .. tostring(i))
-		mcl_log("Name: [" .. tostring(stack:get_name()) .. "]")
-		mcl_log("Count: " .. tostring(stack:get_count()))
-		mcl_log("stack max: " .. tostring(stack:get_stack_max()))
-
-		if not stack:get_name() or stack:get_name() ~= "" then
-			if dest_inv:room_for_item("main", stack:peek_item()) then
-				mcl_log("Room so unload")
-				dest_inv:add_item("main", stack:take_item())
-				inv:set_stack("main", i, stack)
-
-				-- Take one item and stop until next time
-				return
-			else
-				mcl_log("no Room")
-			end
-
-		else
-			mcl_log("nothing there")
-		end
-	end
-end
 
 --[[ BEGIN OF ABM DEFINITONS ]]
 
@@ -555,7 +677,7 @@ minetest.register_abm({
 							and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
 							mcl_log("Minecart close enough")
 							if entity.name == "mcl_minecarts:hopper_minecart" then
-								hopper_pull_from_mc(entity, pos, 5)
+								--hopper_pull_from_mc(entity, pos, 5)
 							elseif entity.name == "mcl_minecarts:chest_minecart" or entity.name == "mcl_boats:chest_boat" then
 								hopper_pull_from_mc(entity, pos, 27)
 							end
@@ -564,7 +686,7 @@ minetest.register_abm({
 							and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
 							mcl_log("Minecart close enough")
 							if entity.name == "mcl_minecarts:hopper_minecart" then
-								hopper_push_to_mc(entity, pos, 5)
+								--hopper_push_to_mc(entity, pos, 5)
 							elseif entity.name == "mcl_minecarts:chest_minecart" or entity.name == "mcl_boats:chest_boat" then
 								hopper_push_to_mc(entity, pos, 27)
 							end

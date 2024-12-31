@@ -76,6 +76,15 @@ function mcl_util.mcl_log(message, module, bypass_default_logger)
 		minetest.log(selected_module .. " " .. message)
 	end
 end
+function mcl_util.make_mcl_logger(label, option)
+	-- Return dummy function if debug option isn't set
+	if not minetest.settings:get_bool(option,false) then return function() end, false end
+
+	local label_text = "["..tostring(label).."]"
+	return function(message)
+		mcl_util.mcl_log(message, label_text, true)
+	end, true
+end
 
 local player_timers = {}
 
@@ -231,13 +240,7 @@ function mcl_util.hopper_push(pos, dst_pos)
 	return ok
 end
 
--- Try pulling from source inventory to hopper inventory
----@param pos Vector
----@param src_pos Vector
-function mcl_util.hopper_pull(pos, src_pos)
-	local hop_inv = minetest.get_meta(pos):get_inventory()
-	local hop_list = 'main'
-
+function mcl_util.hopper_pull_to_inventory(hop_inv, hop_list, src_pos, pos)
 	-- Get node pos' for item transfer
 	local src = minetest.get_node(src_pos)
 	if not minetest.registered_nodes[src.name] then return end
@@ -253,7 +256,7 @@ function mcl_util.hopper_pull(pos, src_pos)
 	else
 		local src_meta = minetest.get_meta(src_pos)
 		src_inv = src_meta:get_inventory()
-		stack_id = mcl_util.select_stack(src_inv, src_list, hop_inv, hop_list, nil, 1)
+		stack_id = mcl_util.select_stack(src_inv, src_list, hop_inv, hop_list)
 	end
 
 	if stack_id ~= nil then
@@ -262,6 +265,12 @@ function mcl_util.hopper_pull(pos, src_pos)
 			src_def._mcl_hoppers_on_after_pull(src_pos)
 		end
 	end
+end
+-- Try pulling from source inventory to hopper inventory
+---@param pos Vector
+---@param src_pos Vector
+function mcl_util.hopper_pull(pos, src_pos)
+	return mcl_util.hopper_pull_to_inventory(minetest.get_meta(pos):get_inventory(), "main", src_pos, pos)
 end
 
 local function drop_item_stack(pos, stack)
@@ -753,3 +762,78 @@ function mcl_util.remove_entity(luaentity)
 
 	luaentity.object:remove()
 end
+local function table_merge(base, overlay)
+	for k,v in pairs(overlay) do
+		if type(base[k]) == "table" and type(v) == "table" then
+			table_merge(base[k], v)
+		else
+			base[k] = v
+		end
+	end
+	return base
+end
+mcl_util.table_merge = table_merge
+
+function mcl_util.table_keys(t)
+	local keys = {}
+	for k,_ in pairs(t) do
+		keys[#keys + 1] = k
+	end
+	return keys
+end
+
+local uuid_to_aoid_cache = {}
+local function scan_active_objects()
+	-- Update active object ids for all active objects
+	for active_object_id,o in pairs(minetest.luaentities) do
+		o._active_object_id = active_object_id
+		if o._uuid then
+			uuid_to_aoid_cache[o._uuid] = active_object_id
+		end
+	end
+end
+function mcl_util.get_active_object_id(obj)
+	local le = obj:get_luaentity()
+
+	-- If the active object id in the lua entity is correct, return that
+	if le._active_object_id and minetest.luaentities[le._active_object_id] == le then
+		return le._active_object_id
+	end
+
+	scan_active_objects()
+
+	return le._active_object_id
+end
+function mcl_util.get_active_object_id_from_uuid(uuid)
+	return uuid_to_aoid_cache[uuid] or scan_active_objects() or uuid_to_aoid_cache[uuid]
+end
+function mcl_util.get_luaentity_from_uuid(uuid)
+	return minetest.luaentities[ mcl_util.get_active_object_id_from_uuid(uuid) ]
+end
+function mcl_util.assign_uuid(obj)
+	assert(obj)
+
+	local le = obj:get_luaentity()
+	if not le._uuid then
+		le._uuid = mcl_util.gen_uuid()
+	end
+
+	-- Update the cache with this new id
+	local aoid = mcl_util.get_active_object_id(obj)
+	uuid_to_aoid_cache[le._uuid] = aoid
+
+	return le._uuid
+end
+function mcl_util.metadata_last_act(meta, name, delay)
+	local last_act = meta:get_float(name)
+	local now = minetest.get_us_time() * 1e-6
+	if last_act > now + 0.5 then
+		-- Last action was in the future, clock went backwards, so reset
+	elseif last_act >= now - delay then
+		return false
+	end
+
+	meta:set_float(name, now)
+	return true
+end
+

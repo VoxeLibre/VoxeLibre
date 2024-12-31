@@ -27,28 +27,33 @@ local inv_callbacks = {
 }
 
 function mcl_entity_invs.load_inv(ent,size)
-	mcl_log("load_inv")
 	if not ent._inv_id then return end
-	mcl_log("load_inv 2")
 	local inv = minetest.get_inventory({type="detached", name=ent._inv_id})
 	if not inv then
-		mcl_log("load_inv 3")
 		inv =  minetest.create_detached_inventory(ent._inv_id, inv_callbacks)
 		inv:set_size("main", size)
-		if ent._items then
+		if ent._mcl_entity_invs_load_items then
+			local lists = ent:_mcl_entity_invs_load_items()
+			vl_legacy.convert_inventory_lists(lists)
+			inv:set_list("main", lists)
+		elseif ent._items then
+			vl_legacy.convert_inventory_lists(ent._items)
 			inv:set_list("main",ent._items)
 		end
-	else
-		mcl_log("load_inv 4")
 	end
 	return inv
 end
 
 function mcl_entity_invs.save_inv(ent)
 	if ent._inv then
-		ent._items = {}
+		local items = {}
 		for i,it in ipairs(ent._inv:get_list("main")) do
-			ent._items[i] = it:to_string()
+			items[i] = it:to_string()
+		end
+		if ent._mcl_entity_invs_save_items then
+			ent:_mcl_entity_invs_save_items(items)
+		else
+			ent._items = items
 		end
 		minetest.remove_detached_inventory(ent._inv_id)
 		ent._inv = nil
@@ -108,7 +113,11 @@ function mcl_entity_invs.show_inv_form(ent,player,text)
 
 	local playername = player:get_player_name()
 
-	minetest.show_formspec(playername, ent._inv_id, load_default_formspec (ent, text))
+	-- Workaround: wait at least 50ms to ensure that the detached inventory exists before
+	-- the formspec attempts to use it. (See https://git.minetest.land/VoxeLibre/VoxeLibre/issues/4670#issuecomment-84875)
+	minetest.after(0.05, function()
+		minetest.show_formspec(playername, ent._inv_id, load_default_formspec (ent, text))
+	end)
 end
 
 local function drop_inv(ent)

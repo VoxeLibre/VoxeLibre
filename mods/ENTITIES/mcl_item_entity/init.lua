@@ -845,6 +845,7 @@ minetest.register_entity(":__builtin:item", {
 			_insta_collect = self._insta_collect,
 			_flowing = self._flowing,
 			_removed = self._removed,
+			_immortal = self._immortal,
 		})
 		-- sfan5 guessed that the biggest serializable item
 		-- entity would have a size of 65530 bytes. This has
@@ -897,6 +898,7 @@ minetest.register_entity(":__builtin:item", {
 				self._insta_collect = data._insta_collect
 				self._flowing = data._flowing
 				self._removed = data._removed
+				self._immortal = data._immortal
 			end
 		else
 			self.itemstring = staticdata
@@ -990,7 +992,7 @@ minetest.register_entity(":__builtin:item", {
 		if self._collector_timer then
 			self._collector_timer = self._collector_timer + dtime
 		end
-		if time_to_live > 0 and self.age > time_to_live then
+		if time_to_live > 0 and ( self.age > time_to_live and not self._immortal ) then
 			self._removed = true
 			self.object:remove()
 			return
