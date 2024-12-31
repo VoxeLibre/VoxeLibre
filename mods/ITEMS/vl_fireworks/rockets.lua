@@ -199,3 +199,16 @@ local firework_def = {
 vl_fireworks.firework_def = table.copy(firework_def)
 
 core.register_craftitem("vl_fireworks:rocket", firework_def)
+
+-- legacy
+for i=1, 3 do
+	vl_legacy.register_item_conversion("mcl_fireworks:rocket_"..i, nil, function(itemstack)
+		itemstack:set_name("vl_fireworks:rocket")
+		local meta = itemstack:get_meta()
+		local tbl = vl_fireworks.firework_def._vl_fireworks_std_durs_forces[i]
+		meta:set_float("vl_fireworks:duration", tbl[1])
+		meta:set_int("vl_fireworks:force", tbl[2])
+		tt.reload_itemstack_description(itemstack)
+	end)
+end
+
