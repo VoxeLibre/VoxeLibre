@@ -24,6 +24,7 @@
 * Faerraven / Michieal
 * rudzik8
 * teknomunk
+* kno10
 
 ## Past Developers
 * jordan4ibanez
@@ -141,6 +142,17 @@
 * Bram
 * qoheniac
 * WillConker
+* 0ldude
+* tacotexmex
+* Pixel-Peter
+* OgelGames
+* blitzdoughnuts
+* goodspeed
+* Bloodaxe
+* ClementMR
+* THE-NERD2
+* ethan
+* villager8472
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -193,6 +205,7 @@
 * Faerraven / Michieal
 * SumianVoice
 * thunder1035
+* Herowl
 
 ## Textures
 * XSSheep
@@ -237,6 +250,14 @@
 * ADLON
 * Sab Pyrope
 * JoseDouglas26
+* 0ldude
+* Bloodaxe
+* ethan
+* Herowl
+* kno10
+* Pixel-Peter
+* Laudrin
+* chmodsayshello
 
 ## Funders
 * 40W
