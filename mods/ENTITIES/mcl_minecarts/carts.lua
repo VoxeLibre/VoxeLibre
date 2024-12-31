@@ -391,7 +391,7 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 
 	local look_4dir = math.round(placer:get_look_horizontal() * TWO_OVER_PI) % 4
 	local look_dir = core.fourdir_to_dir(look_4dir)
-	look_dir.x = -look_dir.x
+	look_dir = vector.new(-look_dir.x,0,look_dir.z)
 
 	local spawn_pos = pointed_thing.above
 	local cart_dir = look_dir
