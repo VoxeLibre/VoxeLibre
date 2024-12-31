@@ -51,6 +51,7 @@ mod.register_curves_rail("mcl_minecarts:activator_rail_v2_on", {
 	"mcl_minecarts_rail_activator_t_junction_powered.png",
 	"mcl_minecarts_rail_activator_crossing_powered.png"
 },{
+	description = S("Activator Rail"),
 	_doc_items_create_entry = false,
 	groups = {
 		not_in_creative_inventory = 1,

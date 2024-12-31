@@ -122,7 +122,6 @@ local BASE_DEF = {
 		dig_by_water=0,destroy_by_lava_flow=0,
 		transport=1
 	},
-	description = S("New Rail"), -- Temporary name to make debugging easier
 	_tt_help = S("Track for minecarts"),
 	_doc_items_usagehelp = railuse,
 	_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
@@ -186,6 +185,7 @@ table_merge(SLOPED_RAIL_DEF,{
 
 function mod.register_rail(itemstring, ndef)
 	assert(ndef.tiles)
+	assert(ndef.description)
 
 	-- Extract out the craft recipe
 	local craft = ndef.craft

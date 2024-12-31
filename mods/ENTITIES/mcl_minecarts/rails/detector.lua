@@ -48,6 +48,7 @@ mod.register_curves_rail("mcl_minecarts:detector_rail_v2_on",{
 	"mcl_minecarts_rail_detector_t_junction_powered.png",
 	"mcl_minecarts_rail_detector_crossing_powered.png"
 },{
+	description = S("Detector Rail"),
 	groups = {
 		not_in_creative_inventory = 1,
 	},

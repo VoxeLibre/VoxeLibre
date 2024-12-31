@@ -46,6 +46,7 @@ mod.register_curves_rail("mcl_minecarts:golden_rail_v2_on",{
 	"mcl_minecarts_rail_golden_t_junction_powered.png",
 	"mcl_minecarts_rail_golden_crossing_powered.png",
 },{
+	description = S("Powered Rail"),
 	_doc_items_create_entry = false,
 	_rail_acceleration = function(pos, staticdata)
 		if staticdata.velocity ~= 0 then
