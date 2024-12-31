@@ -389,8 +389,12 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 		return
 	end
 
+	local look_4dir = math.round(placer:get_look_horizontal() * TWO_OVER_PI) % 4
+	local look_dir = core.fourdir_to_dir(look_4dir)
+	look_dir.x = -look_dir.x
+
 	local spawn_pos = pointed_thing.above
-	local cart_dir = vector.new(1,0,0)
+	local cart_dir = look_dir
 
 	local railpos, node
 	if mcl_minecarts.is_rail(pointed_thing.under) then
@@ -403,8 +407,8 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 		node = minetest.get_node(railpos)
 
 		-- Try two orientations, and select the second if the first is at an angle
-		cart_dir1 = mcl_minecarts.get_rail_direction(railpos, vector.new( 1,0,0))
-		cart_dir2 = mcl_minecarts.get_rail_direction(railpos, vector.new(-1,0,0))
+		cart_dir1 = mcl_minecarts.get_rail_direction(railpos,  look_dir)
+		cart_dir2 = mcl_minecarts.get_rail_direction(railpos, -look_dir)
 		if vector.length(cart_dir1) <= 1 then
 			cart_dir = cart_dir1
 		else
