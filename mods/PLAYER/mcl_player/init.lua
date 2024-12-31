@@ -14,6 +14,7 @@ local function get_mouse_button(player)
 	local get_wielded_item_name = player:get_wielded_item():get_name()
 	if controls.RMB and not string.find(get_wielded_item_name, "mcl_bows:bow") and
 		not string.find(get_wielded_item_name, "mcl_bows:crossbow") and
+		core.get_item_group(get_wielded_item_name, "spear") == 0 and
 		not mcl_shields.wielding_shield(player, 1) and not mcl_shields.wielding_shield(player, 2) or controls.LMB then
 		return true
 	else
@@ -263,7 +264,8 @@ minetest.register_globalstep(function(dtime)
 				local wielded_itemname = player:get_wielded_item():get_name()
 				local no_arm_moving = string.find(wielded_itemname, "mcl_bows:bow") or
 					mcl_shields.wielding_shield(player, 1) or
-					mcl_shields.wielding_shield(player, 2)
+					mcl_shields.wielding_shield(player, 2) or
+					core.get_item_group(wielded_itemname, "spear") > 0
 				if player_sneak[name] ~= controls.sneak then
 					player_anim[name] = nil
 					player_sneak[name] = controls.sneak

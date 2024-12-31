@@ -284,7 +284,9 @@ minetest.register_globalstep(function(dtime)
 			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
 		end
 
-		if wielded_def and wielded_def._mcl_toollike_wield then
+		if control.RMB and core.get_item_group(wielded:get_name(), "spear") > 0 then
+			set_bone_pos(player, "Wield_Item", vector.new(0, 5.2, 1.2), vector.new(-1.57, 5.7, 1.57))
+		elseif wielded_def and wielded_def._mcl_toollike_wield then
 			set_bone_pos(player, "Wield_Item", vector.new(0, 4.7, 3.1), vector.new(-1.57, 3.93, 1.57))
 		elseif string.find(wielded:get_name(), "mcl_bows:bow") then
 			set_bone_pos(player, "Wield_Item", vector.new(1, 4, 0), vector.new(1.57, 2.27, 2.01))
@@ -316,7 +318,7 @@ minetest.register_globalstep(function(dtime)
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, left_arm_rot)
 		-- controls arm for spear throwing
 		elseif core.get_item_group(wielded:get_name(), "spear") > 0 and control.RMB then
-			local right_arm_rot = vector.new(pitch + 1.57, 0, pitch * -1 * .35)
+			local right_arm_rot = vector.new(pitch + 1.8, 0, pitch * -1 * .35)
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
 		-- controls right and left arms pitch when loading a crossbow
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_") then
