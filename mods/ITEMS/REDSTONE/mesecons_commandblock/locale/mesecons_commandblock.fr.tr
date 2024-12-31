@@ -1,14 +1,5 @@
 # textdomain: mesecons_commandblock
 Command blocks are not enabled on this server=Les blocks de commandes ne sont pas activés sur ce serveur
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Erreur: la commande "@1" n'existe pas; votre bloc de commande n'a pas été modifié. Utilisez la commande de discussion "help" pour obtenir la liste des commandes disponibles.
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Erreur: la commande "@1" n'existe pas; votre bloc de commande n'a pas été modifié. Utilisez la commande de discussion "help" pour obtenir la liste des commandes disponibles. Astuce: essayez de supprimer la barre oblique principale.
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Erreur: vous ne disposez pas de privilèges suffisants pour utiliser la commande "@1" (privilège manquant: @2)! Le bloc de commandes n'a pas été modifié.
-Error: No commander! Block must be replaced.=Erreur: pas de commandant! Le bloc doit être remplacé.
-Commander: @1=Commandant: @1
-Submit=Soumettre
-No commands.=Aucune commande.
-Commands:=Commandes:
-Help=Aide
 Placement denied. You need the “maphack” privilege to place command blocks.=Placement refusé. Vous avez besoin du privilège "maphack" pour placer des blocs de commande.
 Command Block=Bloc de Commande
 Executes server commands when powered by redstone power=Exécute les commandes du serveur lorsqu'il est alimenté par l'alimentation Redstone
@@ -25,6 +16,16 @@ Command blocks support placeholders, insert one of these placeholders and they w
 • “@@@@”: literal “@@” sign= • “@@@@”: literalement le symbole “@@”
 Example 1:@n    time 12000@nSets the game clock to 12:00=Exemple 1:@n    time 12000@nRègle l'horloge du jeu sur 12:00
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=Exemple 2:@n    give @@n mcl_core:apple 5@nDonne au joueur le plus proche 5 pommes
+##[ api.lua ]##
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Erreur: la commande "@1" n'existe pas; votre bloc de commande n'a pas été modifié. Utilisez la commande de discussion "help" pour obtenir la liste des commandes disponibles.
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Erreur: la commande "@1" n'existe pas; votre bloc de commande n'a pas été modifié. Utilisez la commande de discussion "help" pour obtenir la liste des commandes disponibles. Astuce: essayez de supprimer la barre oblique principale.
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Erreur: vous ne disposez pas de privilèges suffisants pour utiliser la commande "@1" (privilège manquant: @2)! Le bloc de commandes n'a pas été modifié.
+Error: No commander! Block must be replaced.=Erreur: pas de commandant! Le bloc doit être remplacé.
+Commander: @1=Commandant: @1
+Submit=Soumettre
+No commands.=Aucune commande.
+Commands:=Commandes:
+Help=Aide
 Access denied. You need the “maphack” privilege to edit command blocks.=Accès refusé. Vous avez besoin du privilège "maphack" pour modifier les blocs de commande.
 Editing the command block has failed! You can only change the command block in Creative Mode!=La modification du bloc de commandes a échoué! Vous ne pouvez modifier le bloc de commandes qu'en mode créatif!
 Editing the command block has failed! The command block is gone.=La modification du bloc de commandes a échoué! Le bloc de commande a disparu.

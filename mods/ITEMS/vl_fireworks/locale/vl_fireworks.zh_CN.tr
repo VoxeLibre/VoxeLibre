@@ -1,5 +1,10 @@
 # textdomain: mcl_fireworks
-##[ register.lua ]##
+##[ star.lua ]##
+Firework Star=
+A firework star is the key component of a firework rocket which is responsible for the visible explosion.=
+Generic Firework Star=
+Size:=
+##[ rockets.lua ]##
 Flight Duration:=
 Firework Rocket=烟花火箭
 

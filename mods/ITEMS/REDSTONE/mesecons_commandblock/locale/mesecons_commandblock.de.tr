@@ -1,14 +1,5 @@
 # textdomain: mesecons_commandblock
 Command blocks are not enabled on this server=Befehlsblöcke sind auf diesem Server nicht aktiviert
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Fehler: Der Befehl „@1“ existiert nicht; Ihr Befehlsblock bleibt unverändert. Benutzen Sie den Chatbefehl „help“ für eine Liste der verfügbaren Befehle.
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Fehler: Der Befehl „@1“ existiert nicht; Ihr Befehlsblock bleibt unverändert. Benutzen Sie den Chatbefehl „help“ für eine Liste der verfügbaren Befehle. Tipp: Versuchen Sie, den Schrägstrich am Anfang zu entfernen.
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Fehler: Sie haben nicht die ausreichenden Privilegien, um den Befehl „@1“ zu benutzen (fehlendes Privileg: @2)! Der Befehlsblock bleibt unverändert.
-Error: No commander! Block must be replaced.=Fehler: Kein Kommandant! Block muss ersetzt werden.
-Commander: @1=Kommandant: @1
-Submit=OK
-No commands.=Keine Befehle.
-Commands:=Befehle:
-Help=Hilfe
 Placement denied. You need the “maphack” privilege to place command blocks.=Platzierung fehlgeschlagen. Sie brauchen das „maphack“-Privileg, um Befehlsblöcke platzieren zu können.
 Command Block=Befehlsblock
 Executes server commands when powered by redstone power=Führt Serverbefehle aus, wenn mit Redstoneenergie versorgt
@@ -25,6 +16,16 @@ Command blocks support placeholders, insert one of these placeholders and they w
 • “@@@@”: literal “@@” sign=• „@@@@“: Nur das „@@“-Zeichen
 Example 1:@n    time 12000@nSets the game clock to 12:00=1. Beispiel:@n    time 12000@nSetzt die Spieluhr auf 12:00 Uhr
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=2. Beispiel:@n    give @@n mcl_core:apple 5@nGibt dem nächsten Spieler 5 Äpfel
+##[ api.lua ]##
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Fehler: Der Befehl „@1“ existiert nicht; Ihr Befehlsblock bleibt unverändert. Benutzen Sie den Chatbefehl „help“ für eine Liste der verfügbaren Befehle.
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Fehler: Der Befehl „@1“ existiert nicht; Ihr Befehlsblock bleibt unverändert. Benutzen Sie den Chatbefehl „help“ für eine Liste der verfügbaren Befehle. Tipp: Versuchen Sie, den Schrägstrich am Anfang zu entfernen.
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Fehler: Sie haben nicht die ausreichenden Privilegien, um den Befehl „@1“ zu benutzen (fehlendes Privileg: @2)! Der Befehlsblock bleibt unverändert.
+Error: No commander! Block must be replaced.=Fehler: Kein Kommandant! Block muss ersetzt werden.
+Commander: @1=Kommandant: @1
+Submit=OK
+No commands.=Keine Befehle.
+Commands:=Befehle:
+Help=Hilfe
 Access denied. You need the “maphack” privilege to edit command blocks.=Zugriff verweigert. Sie brauchen das „maphack“-Privileg, um Befehlsblöcke zu bearbeiten.
 Editing the command block has failed! You can only change the command block in Creative Mode!=Bearbeitung des Befehlsblocks fehlgeschlagen! Sie können den Befehlsblock nur im Kreativmodus ändern!
 Editing the command block has failed! The command block is gone.=Bearbeiten des Befehlsblocks fehlgeschlagen! Der Befehlsblock ist verschwunden.

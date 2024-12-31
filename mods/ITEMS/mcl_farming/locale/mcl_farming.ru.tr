@@ -11,7 +11,6 @@ Turns block into farmland=Делает из блока грядку
 Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Мотыга это инструмент, необходимый для выращивания урожая. Она используется для создания грядок, на которые потом можно высадить семена. В случае необходимости мотыгу можно использовать и в качестве слабого оружия.
 Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Примените мотыгу к культивируемому блоку (кликнув правой кнопкой мыши по нему), чтобы превратить его в грядку. Земля, дёрн и тропинки это культивируемые блоки. Разрыхлив мотыгой каменистую землю, вы получите из неё обычную землю.
 Wood Hoe=Деревянная мотыга
-Uses: @1=Использований: @1
 Stone Hoe=Каменная мотыга
 Iron Hoe=Железная мотыга
 Golden Hoe=Золотая мотыга
@@ -113,6 +112,7 @@ Sweet Berry=Сладкая ягода
 
 ##### not used anymore #####
 
+Uses: @1=Использований: @1
 Premature Beetroot Plant (Stage 1)=Рассада молодой свёклы (стадия 1)
 Premature Beetroot Plant (Stage 2)=Рассада молодой свёклы (стадия 2)
 Premature Beetroot Plant (Stage 3)=Рассада молодой свёклы (стадия 3)

@@ -1,14 +1,5 @@
 # textdomain: mesecons_commandblock
 Command blocks are not enabled on this server=此服务器上未启用命令方块
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=错误：命令“@1”不存在；您的命令方块未被更改。使用“help”聊天命令来获取可用命令列表。
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=错误：命令“@1”不存在；您的命令方块未被更改。使用“help”聊天命令来获取可用命令列表。提示：尝试去掉开头的斜杠。
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=错误：您没有足够权限使用命令“@1”（缺少权限：@2）！命令方块未被更改。
-Error: No commander! Block must be replaced.=错误：无指挥官！必须替换该方块。
-Commander: @1=指挥官：@1
-Submit=提交
-No commands.=无命令。
-Commands:=命令：
-Help=帮助
 Placement denied. You need the “maphack” privilege to place command blocks.=放置被拒绝。您需要“地图作弊”权限才能放置命令方块。
 Command Block=命令方块
 Executes server commands when powered by redstone power=在由红石能量驱动时执行服务器命令
@@ -25,6 +16,16 @@ Command blocks support placeholders, insert one of these placeholders and they w
 • “@@@@”: literal “@@” sign=• “@@@@”：字面意义的“@@”符号
 Example 1:@n    time 12000@nSets the game clock to 12:00=示例1：@n    time 12000@n将游戏内时间设置为12:00
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=示例2：@n    give @@n mcl_core:apple 5@n给距离最近的玩家5个苹果
+##[ api.lua ]##
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=错误：命令“@1”不存在；您的命令方块未被更改。使用“help”聊天命令来获取可用命令列表。
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=错误：命令“@1”不存在；您的命令方块未被更改。使用“help”聊天命令来获取可用命令列表。提示：尝试去掉开头的斜杠。
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=错误：您没有足够权限使用命令“@1”（缺少权限：@2）！命令方块未被更改。
+Error: No commander! Block must be replaced.=错误：无指挥官！必须替换该方块。
+Commander: @1=指挥官：@1
+Submit=提交
+No commands.=无命令。
+Commands:=命令：
+Help=帮助
 Access denied. You need the “maphack” privilege to edit command blocks.=访问被拒绝。您需要“地图作弊”权限来编辑命令方块。
 Editing the command block has failed! You can only change the command block in Creative Mode!=编辑命令方块失败！您只能在创造模式下更改命令方块！
 Editing the command block has failed! The command block is gone.=编辑命令方块失败！命令方块不见了。

@@ -1,0 +1,76 @@
+# textdomain:awards
+##[ api.lua ]##
+@1 has made the advancement @2=
+Secret Advancement Made:=
+Goal Completed:=Celo plenumita:
+Challenge Completed:=Defio finita:
+Advancement Made:=Atingo farita:
+Secret Advancement Made: @1=
+Goal Completed: @1=Celo plenumita: @1
+Challenge Completed: @1=Defio finita: @1
+Advancement Made: @1=
+Secret Advancement Made!=
+Goal Completed!=Celo plenumita!
+Challenge Completed!=Defio finita!
+Advancement Made!=Atingo farita!
+Error: No awards available.=Eraro. Nedisponeblaj premioj.
+OK=Bone
+(Secret Advancement)=
+Make this advancement to find out what it is.=
+@1 (got)=@1 (ricevis)
+You've disabled awards. Type /awards enable to reenable.=
+You have not gotten any awards.=Vi ne ricevis ian ajn premiojn.
+@1’s awards:=@1’s premiojn:
+@1: @2=@1: @2
+##[ chat_commands.lua ]##
+[c|clear|disable|enable]=
+Show, clear, disable or enable your advancements.=
+You have enabled your advancements.=
+Awards are disabled, enable them first by using /awards enable!=
+All your awards and statistics have been cleared. You can now start again.=Ĉiuj viaj premioj kaj statistikoj estas forigitaj. Vi nun povas rekomenci.
+You have disabled your advancements.=
+Can give advancements to any player=
+(grant <player> (<advancement> | all)) | list=
+Give advancement to player or list all advancements=
+@1 (@2)=@1 (@2)
+Invalid syntax.=Nevalida sintakso.
+Invalid action.=Nevalida ago.
+Player is not online.=Ludanto ne enreta.
+Done.=Preta.
+Advancement “@1” does not exist.=
+##[ sfinv.lua ]##
+Awards=Premioj
+##[ triggers.lua ]##
+@1/@2 dug=
+Mine blocks: @1×@2=
+Mine a block: @1=
+Mine @1 block(s).=
+@1/@2 placed=
+Place blocks: @1×@2=
+Place a block: @1=
+Place @1 block(s).=
+@1/@2 eaten=@1/@2 manĝis
+Eat: @1×@2=Manĝi: @1×@2
+Eat: @1=Manĝi: @1
+Eat @1 item(s).=
+@1/@2 deaths=@1/@2 mortoj
+Die @1 times.=mortis @1 fojojn.
+Die.=mortas.
+@1/@2 chat messages=
+Write @1 chat messages.=
+Write something in chat.=Skribu ion en la babilejo.
+@1/@2 game joins=
+Join the game @1 times.=Aliĝis al la ludo @1 fojoj.
+Join the game.=Aliĝis al la ludo.
+@1/@2 crafted=
+Craft: @1×@2=Kreinto: @1×@2
+Craft: @1=Kreinto: @1
+Craft @1 item(s).=
+
+
+##### not used anymore #####
+
+<achievement ID>=<atingo ID>
+<name>=<nomo>
+Advancement: @1=Atingo: @1
+Achievement not found.=Atingo ne trovita.

@@ -1,6 +1,6 @@
 # textdomain: mobs_mc
 ##[ axolotl.lua ]##
-Axolotl=
+Axolotl=Ajolote
 ##[ bat.lua ]##
 Bat=Murciélago
 ##[ rabbit.lua ]##
@@ -40,22 +40,22 @@ Novice=
 Apprentice=
 Journeyman=
 Expert=
-Master=Maestro
+Master=
 Unemployed=
-Farmer=
-Fisherman=
-Fletcher=
-Shepherd=
-Librarian=
+Farmer=Granjero
+Fisherman=Pescador
+Fletcher=Flechero
+Shepherd=Pastor
+Librarian=Bibliotecario
 Cartographer=Cartógrafo
-Armorer=Escudero
+Armorer=Herrero de armaduras
 Leatherworker=Peletero
 Butcher=Carnicero
-Weapon Smith=Armero
-Tool Smith=Herrero
+Weapon Smith=Herrero de armas
+Tool Smith=Herrero de herramientas
 Cleric=Clérigo
 Mason=
-Nitwit=Holgazán
+Nitwit=Simplón
 Villager=Aldeano
 ##[ pillager.lua ]##
 Pillager=Saqueador
@@ -131,15 +131,15 @@ Dolphin=Delfín
 ##[ glow_squid.lua ]##
 Glow Squid=Calamar luminoso
 ##[ piglin.lua ]##
-Piglin=
-Sword Piglin=
-Zombie Piglin=Hombrecerdo Zombi
-Baby Zombie Piglin=Bebé Hombrecerdo Zombi
-Piglin Brute=
+Piglin=Piglin
+Sword Piglin=Piglin espadachín
+Zombie Piglin=Piglin zombi
+Baby Zombie Piglin=Piglin zombi bebé
+Piglin Brute=Piglin bruto
 ##[ hoglin+zoglin.lua ]##
 Hoglin=Hoglin
-Zoglin=
-Baby hoglin=
+Zoglin=Zoglin
+Baby hoglin=Hoglin bebé
 ##[ strider.lua ]##
 Strider=Lavagante
 Baby Strider=
@@ -147,4 +147,6 @@ Baby Strider=
 
 ##### not used anymore #####
 
+Agent=Agente
 Enderman=Enderman
+Baby Piglin=Piglin bebé
