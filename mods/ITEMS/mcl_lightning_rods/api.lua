@@ -27,7 +27,7 @@ local function load_index(x,y,z)
 	local idx_str = storage:get_string(idx_key)
 	if idx_str and idx_str ~= "" then
 		local idx = minetest.deserialize(idx_str)
-		return idx
+		return idx or {}
 	end
 
 	return {}
@@ -156,7 +156,7 @@ function mod.index_block(pos)
 	local idx = {}
 
 	-- Setup voxel manipulator
-	local vm,data,area = read_voxel_area()
+	local _,data,area = read_voxel_area()
 
 	-- Indexes to speed things up
 	local cid_attractors = {}
