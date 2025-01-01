@@ -4,7 +4,7 @@ vl_attach = {}
 local defaults = {}
 
 ---@class core.NodeDef
----@field _vl_allow_attach? {[string]: boolean|fun(def : core.NodeDef, wdir : number, attach_type : string)}?
+---@field _vl_allow_attach? {[string]: boolean|fun(def : core.Node, wdir : number, attach_type : string)}?
 
 ---@param attach_type string
 ---@param allow_attach boolean|fun(node : core.Node, def : core.NodeDef, wdir : number, attach_type : string): boolean?
@@ -45,12 +45,16 @@ function vl_attach.check_allowed(node, wdir, attach_type)
 	return allow_attach or false
 end
 
----@type table<number, boolean|fun(allow_attach : {[string]: boolean|fun(node : core.Node, wdir : number, attach_type : string):boolean}, name : string, def : core.NodeDef)>
-local autogroup_callbacks = {}
+---@class vl_attach.AutogrouperDef
+---@field callback fun(allow_attach : {[string]: boolean|fun(node : core.Node, wdir : number, attach_type : string):boolean}, name : string, def : core.NodeDef)
+---@field skip_existing? table<number, string>
 
----@param callback fun(allow_attach : {[string]: boolean|fun(node : core.Node, wdir : number, attach_type : string):boolean}, name : string, def : core.NodeDef)
-function vl_attach.register_autogroup(callback)
-	autogroup_callbacks[#autogroup_callbacks + 1] = callback
+---@type table<number, vl_attach.AutogrouperDef>
+local autogroupers = {}
+
+---@param def vl_attach.AutogrouperDef
+function vl_attach.register_autogroup(def)
+	autogroupers[#autogroupers + 1] = def
 end
 
 local function table_modified(orig, new)
@@ -78,8 +82,19 @@ core.register_on_mods_loaded(function()
 		end
 
 		-- Run all autogroup callbacks to build allow_attach
-		for i = 1,#autogroup_callbacks do
-			autogroup_callbacks[i](allow_attach, name, def)
+		for i = 1,#autogroupers do
+			local autogrouper = autogroupers[i]
+			local run = true
+			for j = 1,#autogrouper.skip_existing do
+				if allow_attach[autogrouper.skip_existing[j]] ~= nil then
+					run = false
+					break
+				end
+			end
+
+			if run then
+				autogrouper.callback[i](allow_attach, name, def)
+			end
 		end
 
 		-- Update node definition of changes to allow_attach were made

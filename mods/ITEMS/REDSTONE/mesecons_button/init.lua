@@ -44,23 +44,23 @@ vl_attach.set_default("button",function(node, def, wdir)
 	-- Allow solid, opaque, full cube collision box nodes are allowed.
 	if def.groups.solid and def.groups.opaque then return true end
 end)
-vl_attach.register_autogroup(function(allow_attach, name, def)
-	local groups = def.groups
-	if not groups then return end
+vl_attach.register_autogroup({
+	skip_existing = {"button"},
+	callback = function(allow_attach, _, def)
+		local groups = def.groups
+		if not groups then return end
 
-	-- Never modify existing button settings
-	if allow_attach.button ~= nil then return end
+		-- Only allow full-solid blocks to have buttons attached
+		if groups.solid and groups.opaque and (def.node_box and def.node_box.type ~= "regular") then
+			allow_attach.button = true
+		end
 
-	-- Only allow full-solid blocks to have buttons attached
-	if groups.solid and groups.opaque and (def.node_box and def.node_box.type ~= "regular") then
-		allow_attach.button = true
+		-- Exception: allow placing on top of top-slabs
+		if groups.slab_top then
+			allow_attach.button = true
+		end
 	end
-
-	-- Exception: allow placing on top of top-slabs
-	if groups.slab_top then
-		allow_attach.button = true
-	end
-end)
+})
 
 local function on_button_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" then
