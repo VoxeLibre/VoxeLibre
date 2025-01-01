@@ -1,19 +1,31 @@
 vl_scheduler = {}
 
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
+local amt_queue = dofile(modpath.."/queue.lua")
 
 local DEBUG = false
 local BUDGET = 5e4 --  50,000 microseconds = 1/20 second
 
-local amt_queue = dofile(modpath.."/queue.lua")
-local globalsteps
-local run_queue = {} -- 4 priority levels: now-async, now-main, background-async, background-main
+---@class vl_scheduler.Task
+---@field next vl_scheduler.Task?
+---@field last vl_scheduler.Task?
+---@field func fun(task : vl_scheduler.Task, dtime : number)
+
 local every_globalstep
-local free_task_count = 0 -- freelist to reduce memory allocation/garbage collection pressure
+
+local globalsteps
+
+---@type vl_scheduler.Task[]
+local run_queue = {} -- 4 priority levels: now-async, now-main, background-async, background-main
+
+--@type vl_scheduler.Task?
 local free_tasks = nil
+local free_task_count = 0 -- freelist to reduce memory allocation/garbage collection pressure
 local MAX_FREE_TASKS = 200
+
 -- Tasks scheduled in the future that will run in the next 32 timesteps
+---@type table<number, vl_scheduler.Task[]>
 local task_ring = {}
 local task_pos = 1
 local long_queue = amt_queue.new()
@@ -40,7 +52,8 @@ function vl_scheduler.set_debug(value)
 end
 
 local function new_task()
-	if free_task_count == 0 then return {} end
+	if not free_tasks then return {} end
+
 	local res = free_tasks
 	free_tasks = free_tasks.next
 	free_task_count = free_task_count - 1
@@ -80,7 +93,7 @@ local function build_every_globalstep()
 end
 local function globalstep(dtime)
 	if dtime > 0.1 then
-		minetest.log("warning", "Long timestep of "..dtime.." seconds. This may be a sign of an overloaded server or performance issues.")
+		core.log("warning", "Long timestep of "..dtime.." seconds. This may be a sign of an overloaded server or performance issues.")
 	end
 	local start = core.get_us_time()
 
@@ -122,7 +135,7 @@ local function globalstep(dtime)
 	-- Launch asynchronous tasks that must be issued now (now-async)
 	local next_async_task = run_queue[1]
 	while next_async_task do
-		next_async_task:func()
+		next_async_task:func(0)
 		local task = next_async_task
 		next_async_task = next_async_task.next
 		free_task(task)
@@ -146,7 +159,7 @@ local function globalstep(dtime)
 	local last_background_async_task = next_background_async_task and next_background_async_task.last
 	local now = core.get_us_time()
 	while next_background_async_task and (now - start) < BUDGET do
-		next_background_async_task:func()
+		next_background_async_task:func(0)
 		local task = next_background_async_task
 		next_background_async_task = next_background_async_task.next
 		free_task(task)
@@ -160,9 +173,9 @@ local function globalstep(dtime)
 	-- Run tasks that may be run on any timestep (background-main)
 	local next_background_task = run_queue[4]
 	local last_background_task = next_background_task and next_background_task.last
-	local now = core.get_us_time()
+	now = core.get_us_time()
 	while next_background_task and (now - start) < BUDGET do
-		next_background_task:func()
+		next_background_task:func(0)
 		local task = next_background_task
 		next_background_task = next_background_task.next
 		free_task(task)
@@ -246,6 +259,7 @@ end
 vl_scheduler.after = vl_scheduler_after
 
 -- Hijack core.after and redirect to this scheduler
+---@diagnostic disable-next-line:duplicate-set-field
 function core.after(time, func, ...)
 	return vl_scheduler_after(time, 2, func, ...)
 end
