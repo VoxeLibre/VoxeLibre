@@ -5,9 +5,12 @@ local S = minetest.get_translator("mcl_lightning_rods")
 mcl_lightning_rods = {}
 local mod = mcl_lightning_rods
 
+---@class core.NodeDef
+---@field _on_lightning_strike? fun(pos : vector.Vector, node : core.Node)
+
 dofile(modpath.."/api.lua")
 
----@type nodebox
+---@type core.NodeBox
 local cbox = {
 	type = "fixed",
 	fixed = {
@@ -16,7 +19,7 @@ local cbox = {
 	},
 }
 
----@type node_definition
+---@type core.NodeDef
 local rod_def = {
 	description = S("Lightning Rod"),
 	_doc_items_longdesc = S("A block that attracts lightning"),
@@ -66,10 +69,10 @@ local rod_def = {
 
 		return minetest.item_place(itemstack, placer, pointed_thing, param2)
 	end,
-	after_place_node = function(pos, placer, itemstack, pointed_thing)
+	after_place_node = function(pos)
 		mod.register_lightning_attractor(pos)
 	end,
-	after_destruct = function(pos, oldnode)
+	after_destruct = function(pos)
 		mod.unregister_lightning_attractor(pos)
 	end,
 	_on_lightning_strike = function(pos, node)
@@ -97,7 +100,7 @@ rod_def_a.mesecons = {
 	},
 }
 
-rod_def_a.on_timer = function(pos, elapsed)
+rod_def_a.on_timer = function(pos)
 	local node = minetest.get_node(pos)
 
 	if node.name == "mcl_lightning_rods:rod_powered" then --has not been dug
@@ -110,7 +113,7 @@ end
 
 minetest.register_node("mcl_lightning_rods:rod_powered", rod_def_a)
 
-lightning.register_on_strike(function(pos, pos2, objects)
+lightning.register_on_strike(function(pos)
 	local lr = mod.find_closest_attractor(pos, 64)
 	if not lr then return end
 
@@ -138,7 +141,7 @@ minetest.register_craft({
 minetest.register_lbm({
 	name = "mcl_lightning_rods:index_rods",
 	nodenames = {"mcl_lightning_rods:rod","mcl_lightning_rods:rod_powered"},
-	action = function(pos, node)
+	action = function(pos)
 		mod.register_lightning_attractor(pos)
 	end
 })

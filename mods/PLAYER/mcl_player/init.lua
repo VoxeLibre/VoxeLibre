@@ -214,11 +214,6 @@ local player_attached = mcl_player.player_attached
 
 -- Check each player and apply animations
 minetest.register_globalstep(function(dtime)
-	-- Track server lag greater than 110ms
-	if dtime > 0.11 then
-		minetest.log("warning", "Timestep greater than 110ms("..tostring(math.floor(dtime*1000)).." ms), server lag detected")
-	end
-
 	for _, player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 		local model_name = player_model[name]
