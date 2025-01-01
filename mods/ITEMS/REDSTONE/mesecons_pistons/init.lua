@@ -140,10 +140,10 @@ end
 local function piston_orientate(pos, placer)
 	-- not placed by player
 	if not placer then return end
-	
+
 	-- placer pitch in degrees
 	local pitch = placer:get_look_vertical() * (180 / math.pi)
-	
+
 	local node = minetest.get_node(pos)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 	if pitch > 55 then
@@ -903,7 +903,7 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_down_pusher_sticky")
 end
 
-vl_attach.register_autogroup(function(allow_attach, name, def)
+vl_attach.register_autogroup(function(allow_attach, _, def)
 	-- Never override existing settings
 	if allow_attach.all ~= nil then return end
 
