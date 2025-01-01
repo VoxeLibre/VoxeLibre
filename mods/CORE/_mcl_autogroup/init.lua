@@ -143,7 +143,7 @@ local function get_digtimes(group, can_harvest, speed, efficiency)
 
 	local digtimes = {}
 
-	for index, hardness in pairs(hardness_values[group]) do
+	for _, hardness in pairs(hardness_values[group]) do
 		local digtime = (hardness or 0) / speed
 		if can_harvest then
 			digtime = digtime * 1.5
@@ -231,7 +231,7 @@ function mcl_autogroup.can_harvest(nodename, toolname, player)
 	-- Check if it can be dug by hand
 	if not player or not player:is_player() then return false end
 	local name = player:get_inventory():get_stack("hand", 1):get_name()
-	local tdef = minetest.registered_items[name]
+	tdef = minetest.registered_items[name]
 	if tdef then
 		for g, gdef in pairs(tdef._mcl_diggroups) do
 			if ndef.groups[g] then
