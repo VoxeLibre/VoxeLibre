@@ -1,8 +1,8 @@
 local modname = "vl_tuning"
-local modpath = minetest.get_modpath(modname)
-local S = minetest.get_translator(modname)
-local F = function(f) return minetest.formspec_escape(S(f)) end
-local FE = minetest.formspec_escape
+local modpath = core.get_modpath(modname)
+local S = core.get_translator(modname)
+local F = function(f) return core.formspec_escape(S(f)) end
+local FE = core.formspec_escape
 local mod = vl_tuning
 
 local function bool_to_string(value)
@@ -18,12 +18,12 @@ local function formspec_for_setting(y, name)
 
 	local fs = {}
 	table.insert(fs, "label[0,"..(y+0.15)..";"..FE(name).."]")
-	table.insert(fs, "hypertext[0.15,"..(y+0.25)..";14.85,0.65;;"..FE("<style color=black>"..(setting.description or "").."</style>").."]")
+	table.insert(fs, "hypertext[0.15,"..(y+0.25)..";14.85,0.65;;"..FE("<style color=black>"..setting.description.."</style>").."]")
 
 	if setting_type == "bool" then
-		table.insert(fs, "checkbox[17,"..(y+0.15)..";"..FE(name)..";;"..bool_to_string(setting[1]).."]")
+		table.insert(fs, "checkbox[17,"..(y+0.15)..";"..FE(name)..";;"..bool_to_string(setting.getter()).."]")
 	elseif setting_type == "number" then
-		table.insert(fs, "field[15,"..y..";2.5,0.75;"..FE(name)..";;"..string.format("%.4g", setting[1]).."]")
+		table.insert(fs, "field[15,"..y..";2.5,0.75;"..FE(name)..";;"..string.format("%.4g", setting.getter()).."]")
 		table.insert(fs, "field_close_on_enter["..FE(name)..";false]")
 	elseif setting_type == "string" then
 	end
@@ -66,12 +66,12 @@ function vl_tuning.show_formspec(player_name, tab)
 		"scrollbar[18.75,0.75;0.75,9.25;vertical;settings;0]",
 		})
 
-	minetest.show_formspec(player_name, "vl_tuning:settings", formspec)
+	core.show_formspec(player_name, "vl_tuning:settings", formspec)
 end
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "vl_tuning:settings" then return end
 
-	minetest.log("action",dump({
+	core.log("action",dump({
 		player = player,
 		fields = fields,
 		formname = formname,
@@ -86,12 +86,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if fields.quit or (not fields.tab or fields.old_tab == fields.tab) then return end
 
-	minetest.log("Seting settings formspec")
 	mod.show_formspec(player:get_player_name(), fields.tab)
 end)
 
-minetest.register_chatcommand("settings",{
-	func = function(player_name, param)
+core.register_chatcommand("settings",{
+	func = function(player_name, _)
 		dofile(modpath.."/gui.lua")
 		mod.show_formspec(player_name)
 	end
