@@ -1,5 +1,6 @@
 # textdomain: mcl_minecarts
 ##[ carts/minecart.lua ]##
+The maximum speed a minecart may reach.=
 Sneak to dismount=
 Minecart=
 Vehicle for fast travel on rails=
