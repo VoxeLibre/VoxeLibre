@@ -1,7 +1,7 @@
 FROM alpine
 
 RUN apk add --no-cache --virtual=build-dependencies build-base lua5.3-dev luajit-dev && \
-    apk add --no-cache luajit luarocks5.3 git && \
+    apk add --no-cache luajit luarocks5.3 git lua-language-server && \
     luarocks-5.3 install busted && \
     luarocks-5.3 install luacov && \
     luarocks-5.3 install luacheck && \
