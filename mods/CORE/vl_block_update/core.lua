@@ -3,6 +3,10 @@ local mod = {
 }
 vl_block_update = mod
 
+---@class core.NodeDef
+---@field vl_block_update? fun(pos : vector.Vector, node : core.Node, def : core.NodeDef)
+---@field _onload? fun(pos : vector.Vector)
+
 local PROFILE = false
 local lookaside_cache = {}
 local pending_block_updates = {}
@@ -29,7 +33,6 @@ local function queue_block_updates(pos)
 		}
 
 		if type(core.hash_node_position(vector.zero())) == "number" then
-			local offset = core.hash_node_position(vector.zero())
 			for i = 1,#block_update_pattern do
 				local hash_diff = core.hash_node_position(block_update_pattern[i]) - core.hash_node_position(vector.zero())
 				if hash_diff < 0 then
@@ -43,7 +46,7 @@ local function queue_block_updates(pos)
 			code = code .. "\tlocal np = vector.offset(pos,"..p.x..","..p.y..","..p.z..")\n"
 			code = code .. "\tpending_block_updates[core.hash_node_position(np)]=true\n"
 			for i = 2,#block_update_pattern do
-				local p = block_update_pattern[i]
+				p = block_update_pattern[i]
 				code = code .. "\tnp.x = pos.x+("..p.x..")\n"
 				code = code .. "\tnp.y = pos.y+("..p.x..")\n"
 				code = code .. "\tnp.z = pos.z+("..p.x..")\n"
@@ -53,7 +56,7 @@ local function queue_block_updates(pos)
 	>>>
 end
 
-core.register_globalstep(function(dtime)
+core.register_globalstep(function()
 	if not has_block_updates then return end
 
 	local start = core.get_us_time()
@@ -92,24 +95,28 @@ local function node_changed(pos)
 end
 
 local old_add_node = core.add_node
+---@diagnostic disable-next-line:duplicate-set-field
 function core.add_node(pos, node)
 	old_add_node(pos, node)
 	node_changed(pos)
 end
 
 local old_set_node = core.set_node
+---@diagnostic disable-next-line:duplicate-set-field
 function core.set_node(pos, node)
 	old_set_node(pos, node)
 	node_changed(pos)
 end
 
 local old_remove_node = core.remove_node
+---@diagnostic disable-next-line:duplicate-set-field
 function core.remove_node(pos)
 	old_remove_node(pos)
 	node_changed(pos)
 end
 
 local old_bulk_set_node = core.bulk_set_node
+---@diagnostic disable-next-line:duplicate-set-field
 function core.bulk_set_node(lst, node)
 	 old_bulk_set_node(lst, node)
 	for i=1,#lst do
