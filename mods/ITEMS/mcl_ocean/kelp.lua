@@ -549,7 +549,7 @@ kelp.surface_deftemplate = {
 	on_destruct = kelp.surface_on_destruct,
 	on_dig = kelp.surface_on_dig,
 	after_dig_node = kelp.surface_after_dig_node,
-	mesecon = { on_mvps_move = kelp.surface_on_mvps_move, },
+	mesecons = { on_mvps_move = kelp.surface_on_mvps_move, },
 	drop = "", -- drops are handled in on_dig
 	--_mcl_falling_node_alternative = is_falling and nodename or nil,
 	_mcl_hardness = 0,
