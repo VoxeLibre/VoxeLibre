@@ -3,7 +3,6 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
-local mods_loaded = false
 local NIGHT_VISION_RATIO = 0.45
 local DEBUG = false
 
