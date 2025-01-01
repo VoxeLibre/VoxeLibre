@@ -1,6 +1,12 @@
 local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 local table = table
 
+---@class mesecons.BaseDef
+---@field on_mvps_move? fun(pos : vector.Vector, node : core.Node, oldpos : vector.Vector, meta)
+
+---@class core.NodeDef
+---@field mesecons mesecons.BaseDef?
+
 --register stoppers for movestones/pistons
 
 mesecon.mvps_stoppers = {}
@@ -148,7 +154,7 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 			if not node_replaceable(nn.name) then
 				table.insert(nodes, {node = nn, pos = {x=np.x, y=np.y, z=np.z}})
 				if #nodes > maximum then return nil, nil, false, true end
-				
+
 				-- add connected nodes to frontiers, connected is a vector list
 				-- the vectors must be absolute positions
 				local connected = {}
@@ -160,7 +166,7 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 					end
 				end
 				table.insert(connected, vector.add(np, dir))
-				
+
 				-- Make sure there are no duplicates in frontiers / nodes before
 				-- adding nodes in "connected" to frontiers
 				for _, cp in ipairs(connected) do
@@ -326,8 +332,6 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name,
 		if n.node_timer then
 			minetest.get_node_timer(np):set(unpack(n.node_timer))
 		end
-		local def = core.registered_nodes[n.node.name]
-		if def and def._onmove then def._onmove(np, n.node, def) end
 	end
 
 	local moved_nodes = {}
@@ -955,8 +959,8 @@ mesecon.register_on_mvps_move(function(moved_nodes)
 
 		-- Callback for on_mvps_move stored in nodedef
 		local node_def = minetest.registered_nodes[moved_node.node.name]
-		if node_def and node_def.mesecon and node_def.mesecon.on_mvps_move then
-			node_def.mesecon.on_mvps_move(moved_node.pos, moved_node.node,
+		if node_def and node_def.mesecons and node_def.mesecons.on_mvps_move then
+			node_def.mesecons.on_mvps_move(moved_node.pos, moved_node.node,
 					moved_node.oldpos, moved_node.meta)
 		end
 	end
