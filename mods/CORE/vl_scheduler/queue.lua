@@ -1,3 +1,10 @@
+---@class amt_queue.Queue
+---@field mask number
+---@field size number
+
+---@class amt_queue.Item
+---@field next amt_queue.Item?
+---@field last amt_queue.Item?
 
 local one_over_log2 = 1.0 / math.log(2)
 function bit.lsb(v)
@@ -8,6 +15,10 @@ end
 local math_floor = math.floor
 
 local dummy = {rotate = 0, mask = 0}
+---@param self amt_queue.Queue
+---@param size number
+---@param offset number
+---@return number
 local get_absolute_offset = function(self, size, offset)
 	local block_rotate_size = 1
 	local block_start_offset = 0
@@ -23,12 +34,15 @@ local get_absolute_offset = function(self, size, offset)
 		block_rotate_size = block_rotate_size * size
 		block_start_offset = block_start_offset + block_rotate_size
 	end
+	error("Unable to get abolute offset for relative offset "..tostring(offset))
 end
 
 amt_queue = {}
 local metatable = { __index = amt_queue }
 local zero_schedule = {0}
 
+---@param size number
+---@return amt_queue.Queue
 function amt_queue.new(size)
 	size = size or 30
 	assert(size <= 30, tostring(size).." exceeds maximum amt_queue size of 30")
@@ -37,6 +51,8 @@ function amt_queue.new(size)
 	return pc
 end
 
+---@param self amt_queue.Queue
+---@param item amt_queue.Item
 function amt_queue.insert(self, item, offset)
 	local size = self.size
 	offset = get_absolute_offset(self, size, offset)
@@ -83,6 +99,8 @@ function amt_queue.insert(self, item, offset)
 	section[s] = item
 end
 
+---@param self amt_queue.Queue
+---@param level number
 local function pop_from_level(self, level)
 	local level_table = self[level] or {rotate = 0, mask = 0}
 
