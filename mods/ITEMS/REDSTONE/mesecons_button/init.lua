@@ -72,7 +72,6 @@ local function on_button_place(itemstack, placer, pointed_thing)
 	local node = minetest.get_node(under)
 	local def = minetest.registered_nodes[node.name]
 	if not def then return end
-	local groups = def.groups
 
 	-- Check special rightclick action of pointed node
 	if def and def.on_rightclick then
@@ -88,7 +87,6 @@ local function on_button_place(itemstack, placer, pointed_thing)
 		local actual = vector.subtract(under, dir)
 		local actualnode = minetest.get_node(actual)
 		def = minetest.registered_nodes[actualnode.name]
-		groups = def.groups
 	end
 
 	-- Only allow placement on full-cube solid opaque nodes
