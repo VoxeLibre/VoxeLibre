@@ -74,7 +74,27 @@ minetest.register_tool("mcl_tools:pick_stone", {
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 4, level = 3, uses = 132 }
+		pickaxey = { speed = 3.75, level = 3, uses = 125 }
+	},
+})
+minetest.register_tool("mcl_tools:pick_deepslate", {
+	description = S("Deepslate Pickaxe"),
+	_doc_items_longdesc = pickaxe_longdesc,
+	inventory_image = "default_tool_deepslatepick.png",
+	wield_scale = wield_scale,
+	groups = { tool=1, pickaxe=1, dig_speed_class=3, enchantability=5 },
+	tool_capabilities = {
+		-- 1/1.2
+		full_punch_interval = 0.83333333,
+		max_drop_level=3,
+		damage_groups = {fleshy=3},
+		punch_attack_uses = 66,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_deepslate:deepslate",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		pickaxey = { speed = 4.25, level = 3, uses = 150 }
 	},
 })
 minetest.register_tool("mcl_tools:pick_iron", {
@@ -302,9 +322,31 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		shovely = { speed = 4, level = 3, uses = 132 }
+		shovely = { speed = 3.75, level = 3, uses = 125 }
 	},
 })
+minetest.register_tool("mcl_tools:shovel_deepslate", {
+	description = S("Deepslate Shovel"),
+	_doc_items_longdesc = shovel_longdesc,
+	_doc_items_usagehelp = shovel_use,
+	inventory_image = "default_tool_deepslateshovel.png",
+	wield_scale = wield_scale,
+	groups = { tool=1, shovel=1, dig_speed_class=3, enchantability=5 },
+	tool_capabilities = {
+		full_punch_interval = 1,
+		max_drop_level=3,
+		damage_groups = {fleshy=3},
+		punch_attack_uses = 66,
+	},
+	on_place = make_grass_path,
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_deepslate:deepslate",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		shovely = { speed = 4.25, level = 3, uses = 150 }
+	},
+})
+
 minetest.register_tool("mcl_tools:shovel_iron", {
 	description = S("Iron Shovel"),
 	_doc_items_longdesc = shovel_longdesc,
@@ -473,7 +515,27 @@ minetest.register_tool("mcl_tools:axe_stone", {
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		axey = { speed = 4, level = 3, uses = 132 }
+		axey = { speed = 3.75, level = 3, uses = 125 }
+	},
+})
+minetest.register_tool("mcl_tools:axe_deepslate", {
+	description = S("Deepslate Axe"),
+	_doc_items_longdesc = axe_longdesc,
+	inventory_image = "default_tool_deepslateaxe.png",
+	wield_scale = wield_scale,
+	groups = { tool=1, axe=1, dig_speed_class=3, enchantability=5 },
+	tool_capabilities = {
+		full_punch_interval = 1.25,
+		max_drop_level=3,
+		damage_groups = {fleshy=9},
+		punch_attack_uses = 66,
+	},
+	on_place = make_stripped_trunk,
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_deepslate:deepslate",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		axey = { speed = 4.25, level = 3, uses = 150 }
 	},
 })
 minetest.register_tool("mcl_tools:axe_iron", {
@@ -599,8 +661,28 @@ minetest.register_tool("mcl_tools:sword_stone", {
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 4, level = 3, uses = 132 },
-		swordy_cobweb = { speed = 4, level = 3, uses = 132 }
+		swordy = { speed = 3.75, level = 3, uses = 125 },
+		swordy_cobweb = { speed = 3.75, level = 3, uses = 125 }
+	},
+})
+minetest.register_tool("mcl_tools:sword_deepslate", {
+	description = S("Deepslate Sword"),
+	_doc_items_longdesc = sword_longdesc,
+	inventory_image = "default_tool_deepslatesword.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, sword=1, dig_speed_class=3, enchantability=5 },
+	tool_capabilities = {
+		full_punch_interval = 0.625,
+		max_drop_level=3,
+		damage_groups = {fleshy=5},
+		punch_attack_uses = 132,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_deepslate:deepslate",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 4.25, level = 3, uses = 150 },
+		swordy_cobweb = { speed = 4.25, level = 3, uses = 150 }
 	},
 })
 minetest.register_tool("mcl_tools:sword_iron", {
@@ -708,7 +790,6 @@ minetest.register_tool("mcl_tools:shears", {
 		shearsy_cobweb = { speed = 15, level = 1, uses = 238 }
 	},
 })
-
 
 dofile(modpath.."/crafting.lua")
 dofile(modpath.."/aliases.lua")
