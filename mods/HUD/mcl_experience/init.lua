@@ -238,8 +238,9 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 local keep_inventory = vl_tuning.setting("gamerule:keepInventory")
+assert(keep_inventory)
 minetest.register_on_dieplayer(function(player)
-	if not keep_inventory[1] then
+	if not keep_inventory:getter() then
 		mcl_experience.throw_xp(player:get_pos(), mcl_experience.get_xp(player))
 		mcl_experience.set_xp(player, 0)
 	end

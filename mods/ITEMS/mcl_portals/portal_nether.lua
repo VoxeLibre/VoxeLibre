@@ -97,7 +97,7 @@ local nether_portal_survival_delay = 4
 vl_tuning.setting("gamerule:playersNetherPortalDefaultDelay", "number", {
 	default = 4,
 	set = function(val) nether_portal_survival_delay = val end,
-	get = function() return nether_portal_survive_delay end,
+	get = function() return nether_portal_survival_delay end,
 })
 
 -- Speeds up the search by allowing some non-air nodes to be replaced when

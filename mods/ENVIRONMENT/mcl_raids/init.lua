@@ -297,7 +297,7 @@ mcl_events.register_event("raid",{
 	health_max = 1,
 	exclusive_to_area = 128,
 	enable_bossbar = true,
-	cond_start  = function(self)
+	cond_start  = function(_)
 		if gamerule_disableRaids then return false end
 
 		--minetest.log("Cond start raid")
