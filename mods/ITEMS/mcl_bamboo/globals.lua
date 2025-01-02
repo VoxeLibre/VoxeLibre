@@ -111,8 +111,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	end
 
 	-- Determine the location of soil
-	local soil_pos
-	soil_pos,a,b = mcl_util.trace_nodes(pos, -1, mcl_bamboo.bamboo_set, BAMBOO_MAX_HEIGHT - 1)
+	local soil_pos = mcl_util.trace_nodes(pos, -1, mcl_bamboo.bamboo_set, BAMBOO_MAX_HEIGHT - 1)
 
 	-- No soil found, return false so that bonemeal isn't used
 	if not soil_pos then return false end
@@ -147,7 +146,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	local grow_amount = 1
 	if bonemeal_applied then
 		local rng = PcgRandom(minetest.hash_node_position(pos) + minetest.get_us_time())
-		if rng:next(1, GROW_DOUBLE_CHANGE) == 1 then
+		if rng:next(1, GROW_DOUBLE_CHANCE) == 1 then
 			grow_amount = 2
 		end
 	end
