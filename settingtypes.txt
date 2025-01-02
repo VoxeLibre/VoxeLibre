@@ -351,3 +351,6 @@ mcl_logging_mcl_signs (Complete debug logging for mcl_signs) bool false
 
 #Debug logging for mcl_events.
 mcl_logging_event_api (Debug logging for mcl_events) bool false
+
+#Log mob movement events
+mcl_logging_mobs_movement (Log Mob Movement) bool false
