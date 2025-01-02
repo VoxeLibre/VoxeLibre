@@ -123,17 +123,10 @@ minetest.register_craftitem("mcl_bone_meal:bone_meal", {
 	inventory_image = "mcl_bone_meal.png",
 	groups = {craftitem=1},
 	on_place = function(itemstack, placer, pointed_thing)
-		local pos = pointed_thing.under
-		local node = minetest.get_node(pos)
-		local ndef = minetest.registered_nodes[node.name]
-
 		-- Use pointed node's on_rightclick function first, if present.
-		if placer and not placer:get_player_control().sneak then
-			if ndef and ndef.on_rightclick then
-				local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
-				if new_stack and new_stack ~= itemstack then return new_stack end
-			end
-		end
+		local called
+		itemstack, called = mcl_util.handle_node_rightclick(itemstack, placer, pointed_thing)
+		if called then return itemstack end
 
 		return mcl_bone_meal.use_bone_meal(itemstack, placer, pointed_thing)
 	end,

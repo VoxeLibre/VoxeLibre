@@ -14,19 +14,21 @@ for i=0, 3 do
 
 	local on_bonemealing = nil
 	local function do_berry_drop(pos)
-		for j=1, berries_to_drop[math.random(2)] do
+		if not berries_to_drop then return end
+
+		for _=1, berries_to_drop[math.random(2)] do
 			minetest.add_item(pos, "mcl_farming:sweet_berry")
 		end
 		minetest.swap_node(pos, {name = "mcl_farming:sweet_berry_bush_1"})
 	end
 	if i ~= 3 then
-		on_bonemealing = function(itemstack, placer, pointed_thing)
+		on_bonemealing = function(_, _, pointed_thing)
 			local pos = pointed_thing.under
 			local node = minetest.get_node(pos)
-			return mcl_farming:grow_plant("plant_sweet_berry_bush", pos, node, 0, true)
+			return mcl_farming:grow_plant("plant_sweet_berry_bush", pos, node, 1, true)
 		end
 	else
-		on_bonemealing = function(itemstack, placer, pointed_thing)
+		on_bonemealing = function(_, _, pointed_thing)
 			do_berry_drop(pointed_thing.under)
 		end
 	end
@@ -65,19 +67,11 @@ for i=0, 3 do
 		_mcl_blast_resistance = 0,
 		_mcl_hardness = 0,
 		_on_bone_meal = on_bonemealing,
-		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		on_rightclick = function(pos, _, clicker, itemstack, pointed_thing)
 			local pn = clicker:get_player_name()
 			if clicker:is_player() and minetest.is_protected(pos, pn) then
 				minetest.record_protection_violation(pos, pn)
 				return itemstack
-			end
-			if 3 ~= i and mcl_dye and
-					clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-				mcl_dye.apply_bone_meal({under=pos, above=vector.offset(pos,0,1,0)},clicker)
-				if not minetest.is_creative_enabled(pn) then
-					itemstack:take_item()
-				end
-				return
 			end
 
 			if i >= 2 then
