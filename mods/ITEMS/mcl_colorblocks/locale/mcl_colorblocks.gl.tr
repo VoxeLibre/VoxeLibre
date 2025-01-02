@@ -1,7 +1,7 @@
 # textdomain: mcl_colorblocks
 White Terracotta=Terracota branca
 White Glazed Terracotta=Terracota cristalizada branca
-White Glazed Terracotta Pillar=Piar de terracota cristalizado branca=
+White Glazed Terracotta Pillar=
 White Concrete Powder=cemento branco
 White Concrete=Formigón branco
 Grey Terracotta=Terracota gris
@@ -84,6 +84,7 @@ Glazed terracotta is a decorative block with a complex pattern. It can be rotate
 Glazed terracotta pillar is a decorative block with a complex pattern. It can be used with Glazed terracotta to make uneven patterns.=O piar de terracota esmaltada é un bloque decorativo cun patrón complexo. Pódese usar con terracota esmaltada para facer patróns irregulares.
 Concrete powder is used for creating concrete, but it can also be used as decoration itself. It comes in different colors. Concrete powder turns into concrete of the same color when it comes in contact with water.=O Cemento usase para crear Formigón, pero tambén se pode usar como decoración en sí. Ven en diferentes cores. O Cemento convirtese en Formigón da mesma cor cando entra en contacto ca auga.
 Concrete is a decorative block which comes in many different colors. It is notable for having a very strong and clean color.=O Formigón e un bloque decorativo que ven en moitos cores diferentes. Destaca por ter un cor moi forte e limpo.
+Turns into concrete on water contact=Transfórmase en formigón ao contacto coa auga
 Terracotta=Terracota
 Terracotta is a basic building material which comes in many different colors. This particular block is uncolored.=A terracota e un material de construcción básico que ven en moitas cores diferentes. Este bloque en particular non ten cor.
 Colored Terracotta=Terracota coloreada
@@ -91,4 +92,3 @@ Glazed Terracotta=Terracota vidriada
 Glazed Terracotta Pillar=Piar de terracota cristalizado
 Concrete Powder=Cemento
 Concrete=Formigón
-Turns into concrete on water contact=Transfórmase en formigón ao contacto coa auga

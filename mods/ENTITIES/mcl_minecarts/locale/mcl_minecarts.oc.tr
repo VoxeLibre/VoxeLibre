@@ -27,7 +27,6 @@ Place it on rails. Punch it to move it. The TNT is ignited with a flint and stee
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=Per obtenèr le vagonet e la TNT, tustatz z-o embei la tocha sneak enfonçada. Podètz pas faire quo si la TNT z-es atubada.
 ##[ rails.lua ]##
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Plaçatz z-o per sòu per construrre vostre chamin de fèrre, los ralhs se conectaron entre ilhs e faron de las corbas, de las junccions en T, en traversadas et en pentas au besonh.
-New Rail=
 Track for minecarts=Pista per vagonets
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=Los ralhs pòdon èsser utilizats per construrre los chamins de transpòrt per los vagonets. Los ralhs normaus ralentissons gentament los vagonet per causa de friccion.
 Sloped Rail=

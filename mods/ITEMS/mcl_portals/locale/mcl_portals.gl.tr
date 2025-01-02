@@ -1,4 +1,14 @@
 # textdomain: mcl_portals
+##[ portal_nether.lua ]##
+Dump all portal keys=
+Dump coordinates of registered nether portal exits=
+Nether Portal=Portal do Nether
+A Nether portal teleports creatures and objects to the hot and dangerous Nether dimension (and back!). Enter at your own risk!=Un portal Nether teletransporta criaturas e obxectos á quente e perigosa dimensión Nether (¡e de volta!). ¡Entra baixo o teu risco!
+Stand in the portal for a moment to activate the teleportation. Entering a Nether portal for the first time will also create a new portal in the other dimension. If a Nether portal has been built in the Nether, it will lead to the Overworld. A Nether portal is destroyed if the any of the obsidian which surrounds it is destroyed, or if it was caught in an explosion.=Párate un momento no portal para activar a teletransportación. Ao entrar nun portal Nether por primeira vez, tamén se creará un novo portal na outra dimensión. Se se construíu un portal Nether no Nether, conducirá ao Overworld. Un portal Nether destrúese se a obsidiana que o rodea é destruída ou se quedou atrapado nunha explosión.
+Spawn a new nether portal at pointed thing, or at [x],[y],[z]. The portal will either face the player, or use the passed [orientation]. Orientation 0 means alongside X axis.=
+Obsidian is also used as the frame of Nether portals.=A obsidiana tamén se usa como marco dos portais Nether.
+To open a Nether portal, place an upright frame of obsidian with a width of at least 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether.=Para abrir un portal Nether, coloque un marco vertical de obsidiana cun ancho de polo menos 4 bloques e unha altura de 5 bloques, deixando só aire no centro. Despois de colocar este marco, prender lume no marco de obsidiana. Os portais Nether só funcionan no Overworld e no Nether.
+##[ portal_end.lua ]##
 End Portal=Portal final
 Used to construct end portals=Usado para construír portais finais
 An End portal teleports creatures and objects to the mysterious End dimension (and back!).=Un portal Final teletransporta criaturas e obxectos á misteriosa dimensión End (e de volta!).
@@ -10,12 +20,8 @@ To create an End portal, you need 12 end portal frames and 12 eyes of ender. The
 Place an eye of ender into each block. The end portal appears in the middle after placing the final eye.=Coloque un ollo de ender en cada bloque. O portal final aparece no medio despois de colocar o ollo final.
 Once placed, an eye of ender can not be taken back.=Unha vez colocado, non se pode quitar un ollo de ender.
 End Portal Frame with Eye of Ender=Marco de portal fina cun ollo de ender
+##[ portal_gateway.lua ]##
 End Gateway Portal=Porta Portal final
 Used to construct end gateway portals=Usado para construír portais de pasarela final
 An End gateway portal teleports creatures and objects to the outer End (and back!).=Un portal de pasarela do extremo teletransporta criaturas e obxectos ao extremo exterior (¡e de volta!).
 Throw an ender pearl into the portal to teleport. Entering an Gateway portal near the Overworld teleports you to the outer End. At this destination another gateway portal will be constructed, which you can use to get back.=Lanza unha perla de ender ao portal para teletransportarse. Entrar nun portal de pasarela preto do Overworld teletransportate ao extremo exterior. Neste destino construirase outro portal de pasarela, que podes usar para volver
-Nether Portal=Portal do Nether
-A Nether portal teleports creatures and objects to the hot and dangerous Nether dimension (and back!). Enter at your own risk!=Un portal Nether teletransporta criaturas e obxectos á quente e perigosa dimensión Nether (¡e de volta!). ¡Entra baixo o teu risco!
-Stand in the portal for a moment to activate the teleportation. Entering a Nether portal for the first time will also create a new portal in the other dimension. If a Nether portal has been built in the Nether, it will lead to the Overworld. A Nether portal is destroyed if the any of the obsidian which surrounds it is destroyed, or if it was caught in an explosion.=Párate un momento no portal para activar a teletransportación. Ao entrar nun portal Nether por primeira vez, tamén se creará un novo portal na outra dimensión. Se se construíu un portal Nether no Nether, conducirá ao Overworld. Un portal Nether destrúese se a obsidiana que o rodea é destruída ou se quedou atrapado nunha explosión.
-Obsidian is also used as the frame of Nether portals.=A obsidiana tamén se usa como marco dos portais Nether.
-To open a Nether portal, place an upright frame of obsidian with a width of at least 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether.=Para abrir un portal Nether, coloque un marco vertical de obsidiana cun ancho de polo menos 4 bloques e unha altura de 5 bloques, deixando só aire no centro. Despois de colocar este marco, prender lume no marco de obsidiana. Os portais Nether só funcionan no Overworld e no Nether.

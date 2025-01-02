@@ -1,5 +1,5 @@
 # textdomain: mcl_skins
-Skins=Aspectos
+##[ edit_skin.lua ]##
 Templates=Modelos
 Arm size=Tamaño dos brazos
 Bases=Bases
@@ -10,6 +10,8 @@ Bottoms=Parte inferior
 Tops=Parte superior
 Hairs=Cabelos
 Headwears=Accesorios para a cabeza
+Skins=Aspectos
+Capes=Capas
 Open skin configuration screen.=Abrir pantalla de configuración de aspectos
 Select=Escoller
-Capes=Capas
+(None)=

@@ -27,7 +27,6 @@ Place it on rails. Punch it to move it. The TNT is ignited with a flint and stee
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=要获得矿车和TNT，按住潜行键击打它们。如果炸药被点燃了，你就不能这么做。
 ##[ rails.lua ]##
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=把它们放在地上来建造你的铁路，铁轨会自动连接起来，并根据需要变成曲线、T形路口、交叉路口和斜坡。
-New Rail=
 Track for minecarts=矿车的轨道
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=铁轨可以用来建造矿车的运输轨道。正常轨道由于摩擦会使矿车稍微减速。
 Sloped Rail=

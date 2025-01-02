@@ -1,4 +1,23 @@
 # textdomain: mcl_flowerpots
+Flower Pot=Maceta
+Can hold a small flower or plant=Pode albergar unha pequena flor ou planta
+Flower pots are decorative blocks in which flowers and other small plants can be placed.=As macetas son bloques decorativos nos que se poden colocar flores e outras pequenas plantas.
+Just place a plant on the flower pot. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.=Simplemente coloque unha planta na maceta. As macetas poden albergar pequenas flores (non superiores a 1 bloque), mudas, fentos, arbustos mortos, cogomelos e cactos. Fai clic co botón dereito nunha planta en maceta para recuperar a planta
+Cactus=
+Brown Mushroom=
+Red Mushroom=
+Oak Sapling=
+Acacia Sapling=
+Jungle Sapling=
+Dark Oak Sapling=
+Spruce Sapling=
+Birch Sapling=
+Dead Bush=
+Cherry Sapling=
+
+
+##### not used anymore #####
+
 Dandelion Flower Pot=Maceta de dente de león
 Poppy Flower Pot=Maceta de amapola
 Blue Orchid Flower Pot=Maceta de orquídea azul
@@ -20,8 +39,4 @@ Birch Sapling Flower Pot=Maceta de gromos de bidueiro
 Dead Bush Flower Pot=Maceta con arbusto morto
 Fern Flower Pot=Maceta con fieto
 Cactus Flower Pot=Maceta con cacto
-Flower Pot=Maceta
-Flower pots are decorative blocks in which flowers and other small plants can be placed.=As macetas son bloques decorativos nos que se poden colocar flores e outras pequenas plantas.
-Just place a plant on the flower pot. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.=Simplemente coloque unha planta na maceta. As macetas poden albergar pequenas flores (non superiores a 1 bloque), mudas, fentos, arbustos mortos, cogomelos e cactos. Fai clic co botón dereito nunha planta en maceta para recuperar a planta
-Can hold a small flower or plant=Pode albergar unha pequena flor ou planta
 Cherry Sapling Flower Pot=Maceta gromos de cereixa

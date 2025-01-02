@@ -1,29 +1,34 @@
 # textdomain: mcl_blackstone
 Blackstone=Pedra negra
+Gilded Blackstone=Pedra negra Dourada
+Nether Gold Ore=Mineral de Ouro do Nether
+Polished Basalt=Basalto Pulido
+Basalt=Basalto
+Smooth Basalt=Basalto Liso
 Polished Blackstone=Pedra negra Pulida
 Chiseled Polished Blackstone=Pedra negra Pulida cincelada
 Polished Blackstone Bricks=Ladrillos de Pedra negra Pulida
-Basalt=Basalto
-Polished Basalt=Basalto Pulido
-Blackstone Slab=Lousa de Pedra negra
-Polished Blackstone Slab=Lousa de Pedra negra Pulida
-Chiseled Polished Blackstone Slab=Lousa de Pedra negra Pulida Cincelada
-Polished Blackstone Brick Slab=Lousa de Ladrillo de Pedra-negra Polida
-Blackstone Stair=Escada de Pedra negra
-Polished Blackstone Stair=Escada de Pedra negra Pulida
-Chiseled Polished Blackstone Stair=Escada de Pedra negra Pulida cincelada
-Polished Blackstone Brick Stair=Escada de Ladrillo de Pedra negra Pulida
 Quartz Bricks=Ladrillos de Cuarzo
-Soul Torch=Facho de Alma
-Torches are light sources which can be placed at the side or on the top of most blocks.=Os fachos son fontes de luz que se poden colocar ao lado ou na parte superior da maioría dos bloques.
-Soul Lantern=Lanterna de Alma
 Soul Soil=Terra de Alma
 Eternal Soul Fire=Eterno lume de Alma
-Gilded Blackstone=Pedra negra Dourada
-Nether Gold Ore=Mineral de Ouro do Nether
-Smooth Basalt=Basalto Liso
-Blackstone Wall=Muro de Pedra negra
+Blackstone Stair=Escada de Pedra negra
+Blackstone Slab=Lousa de Pedra negra
 Double Blackstone Slab=Dobre Lousa de Pedra negra
-Polished Double Blackstone Slab=Dobre Lousa de Pedra negra Polida
+Polished Blackstone Stair=Escada de Pedra negra Pulida
+Polished Blackstone Slab=Lousa de Pedra negra Pulida
+Double Polished Blackstone Slab=
+Chiseled Polished Blackstone Stair=Escada de Pedra negra Pulida cincelada
+Chiseled Polished Blackstone Slab=Lousa de Pedra negra Pulida Cincelada
 Double Chiseled Polished Blackstone Slab=Dobre Lousa de Pedra negra Polida cincelada
+Polished Blackstone Brick Stair=Escada de Ladrillo de Pedra negra Pulida
+Polished Blackstone Brick Slab=Lousa de Ladrillo de Pedra-negra Polida
 Double Polished Blackstone Brick Slab=Dobre Lousa de Ladrillo de Pedra negra Polida
+Blackstone Wall=Muro de Pedra negra
+Soul Torch=Facho de Alma
+Torches are light sources which can be placed at the side or on the top of most blocks.=Os fachos son fontes de luz que se poden colocar ao lado ou na parte superior da maioría dos bloques.
+
+
+##### not used anymore #####
+
+Soul Lantern=Lanterna de Alma
+Polished Double Blackstone Slab=Dobre Lousa de Pedra negra Polida

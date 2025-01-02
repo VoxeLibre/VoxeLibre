@@ -1,6 +1,4 @@
 # textdomain: mcl_wool
-Wool=La
-Carpet=Alfombra
 White Wool=La branca
 White Carpet=Alfombra branca
 Grey Wool=La gris
@@ -35,3 +33,5 @@ Light Blue Wool=La azul claro
 Light Blue Carpet=Alfombra azul claro
 Wool is a decorative block which comes in many different colors.=A la é un bloque decorativo que vén en moitas cores diferentes.
 Carpets are thin floor covers which come in many different colors.=As alfombras son finas cubertas para o chan que veñen en moitas cores diferentes.
+Wool=La
+Carpet=Alfombra

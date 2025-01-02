@@ -1,11 +1,11 @@
 # textdomain: mcl_cherry_blossom
+##[ nodes.lua ]##
 Cherry Log=Tronco de Cerdeira
+Cherry Bark=Cortiza de Cerdeira
 The trunk of a cherry blossom tree.=O tronco dunha cerdeira en flor.
 Stripped Cherry Log=Tronco de cereixeira descascado
-The stripped trunk of a cherry blossom tree.=O tronco descascado dunha cerdeira en flor.
-Cherry Bark=Cortiza de Cerdeira
-This is a decorative block surrounded by the bark of a tree trunk.=Esto e un bloque decorativo rodeado pola cortiza dun tronco de árbore.
 Stripped Cherry Wood=Madeira de Cerdeira Descascada
+The stripped trunk of a cherry blossom tree.=O tronco descascado dunha cerdeira en flor.
 The stripped wood of a cherry blossom tree.=A madeira descascada dunha cerdeira en flor.
 Cherry Wood Planks="Táboas de madeira de cerdeira"
 Cherry Leaves=Follas de Cerdeira
@@ -19,6 +19,12 @@ Cherry Slab=Lousa de cerdeira
 Double Cherry Slab=Lousa de Cerdeira Dobre
 Cherry Sign="Sinal de cerdeira"
 Cherry Fence=Cerca de Cerdeira
-Cherry Gate=Porta de Cerdeira
+Cherry Fence Gate=
 Cherry Pressure Plate=Placa de presión de cerdeira
 Cherry Button=Botón de Cerdeira
+
+
+##### not used anymore #####
+
+This is a decorative block surrounded by the bark of a tree trunk.=Esto e un bloque decorativo rodeado pola cortiza dun tronco de árbore.
+Cherry Gate=Porta de Cerdeira
