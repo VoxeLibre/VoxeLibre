@@ -11,7 +11,7 @@ local PATHFINDING = "gowp"
 local node_snow = "mcl_core:snow"
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
-local logging = minetest.settings:get_bool("mcl_logging_mobs_movement", true)
+local logging = minetest.settings:get_bool("mcl_logging_mobs_movement", false)
 
 local random = math.random
 local sin = math.sin
