@@ -51,7 +51,7 @@ local function detach_driver(self)
 	if player then
 		local dir = staticdata.dir or vector.new(1,0,0)
 		local cart_pos = mod.get_cart_position(staticdata) or self.object:get_pos()
-		local new_pos = vector.offset(cart_pos, -dir.z, 0, dir.x)
+		local new_pos = cart_pos - dir
 		player:set_detach()
 		--print("placing player at "..tostring(new_pos).." from cart at "..tostring(cart_pos)..", old_pos="..tostring(player:get_pos()).."dir="..tostring(dir))
 
