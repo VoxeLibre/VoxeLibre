@@ -188,7 +188,7 @@ local fish = function(itemstack, player, pointed_thing)
 		if noent == true then
 			local playerpos = player:get_pos()
 			local dir = player:get_look_dir()
-			mcl_throwing.throw("mcl_fishing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
+			mcl_throwing.throw("mcl_fishing:flying_bobber", vector.offset(playerpos, 0, 1.5, 0), dir, 15, player)
 		end
 end
 
