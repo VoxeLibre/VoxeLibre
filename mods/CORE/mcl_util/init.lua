@@ -344,6 +344,23 @@ function mcl_util.call_on_rightclick(itemstack, player, pointed_thing)
 	end
 end
 
+--- TODO: replace with global right-click handler patched in with core.on_register_mods_loaded()
+function mcl_util.handle_node_rightclick(itemstack, player, pointed_thing)
+	-- Call on_rightclick if the pointed node defines it
+	if pointed_thing and pointed_thing.type == "node" then
+		local pos = pointed_thing.under
+		local node = minetest.get_node(pos)
+		if player and not player:get_player_control().sneak then
+			local nodedef = minetest.registered_nodes[node.name]
+			local on_rightclick = nodedef and nodedef.on_rightclick
+			if on_rightclick then
+				return on_rightclick(pos, node, player, itemstack, pointed_thing) or itemstack, true
+			end
+		end
+	end
+	return itemstack, false
+end
+
 function mcl_util.calculate_durability(itemstack)
 	local unbreaking_level = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
 	local armor_uses = minetest.get_item_group(itemstack:get_name(), "mcl_armor_uses")
