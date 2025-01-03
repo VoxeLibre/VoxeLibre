@@ -512,7 +512,5 @@ function mod.reverse_cart_direction(staticdata)
 	staticdata.distance = 1 - (staticdata.distance or 0)
 
 	-- recalculate direction
-	next_dir = mod:get_rail_direction(staticdata.connected_at, next_dir)
-	staticdata.dir = next_dir
+	staticdata.dir = mod:get_rail_direction(staticdata.connected_at, next_dir)
 end
-

@@ -634,7 +634,7 @@ minetest.register_globalstep(function(dtime)
 		--[[
 		local pos = mod.get_cart_position(staticdata)
 		local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
-		print("cart# "..uuid..
+		print("cart# "..staticdata.uuid..
 			",velocity="..tostring(staticdata.velocity)..
 			",pos="..tostring(pos)..
 			",le="..tostring(le)..
