@@ -1,0 +1,45 @@
+# textdomain: mcl_commands
+##[ kill.lua ]##
+Players can't be killed right now, damage has been disabled.=Os xogadores non se poden matar agora mesmo, o dano desactivouse.
+Player @1 does not exist.=O xogador @1 non existe.
+You are already dead=Xa estás morto
+@1 is already dead=@1 xa está morto
+[<name>]=[<Nome>]
+Kill player or yourself=Mata ao xogador ou a ti mesmo
+##[ setblock.lua ]##
+<X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <ID nodo>
+Set node at given position=tablecer nodo nunha posición determinada
+Invalid node=Nodo non válido
+@1 spawned.=@1 xerou.
+Invalid parameters (see /help setblock)=Parámetros non válidos (consulte /help setblock)
+##[ seed.lua ]##
+Displays the world seed=Mostra a semente mundial
+##[ summon.lua ]##
+Only peaceful mobs allowed!=¡Só se permiten mobs pacíficos!
+##[ say.lua ]##
+Can use /say=Pode usar /say
+<message>=<Mensaxe>
+Send a message to every player=Enviar unha mensaxe a cada xogador
+##TODO: fuzzy matched - verify and remove the comment
+Invalid usage, see /help say.=Uso non válido, consulte /help say.
+##[ list.lua ]##
+Show who is logged on=Mostrar quen está conectado
+##[ sound.lua ]##
+<sound> <target>=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
+Sound name is invalid!=
+Target is invalid!=
+##[ alias.lua ]##
+List bans=Lista de prohibicións
+Ban list: @1=Lista de baneados: @1
+List clear commands=
+To clear inventory use /clearinv or /clearinventory=
+To clear mobs use /clearmobs=
+To clear the weather use /weather clear=
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+
+
+##### not used anymore #####
+
+@1 committed suicide.=@1 suicidouse.
+@1 was killed by @2.=@1 foi asasinado por @2.

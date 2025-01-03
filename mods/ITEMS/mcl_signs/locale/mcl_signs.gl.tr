@@ -1,0 +1,24 @@
+# textdomain: mcl_signs
+Sign=Letreiro
+Birch Sign=Letreiro de bidueiro
+Spruce Sign=Letreiro de abeto
+Dark Oak Sign=Letreiro de carballo escuro
+Jungle Sign=Letreiro da xungla
+Acacia Sign=Letreiro de acacia
+Mangrove Sign=Letreiro de mangle
+Warped Hyphae Sign=Letreiro de hifas deformadas
+Crimson Hyphae Sign=Letreiro de hifas carmesí
+##[ signs_api.lua ]##
+Can be written=Os lLetreiros podense escribir
+Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Os letreiros pódense escribir e presentarse en dúas variantes: sinal de parede e sinal nun poste de sinalización. Pódense colocar sinais na parte superior e nos laterais doutros bloques, pero non debaixo deles.
+After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow.=Despois de colocar o sinal, podes escribir algo nel. Tes 4 liñas de texto con ata 15 caracteres por cada liña; todo alén destes límites pérdese. Non todos os caracteres son compatibles. O texto non se pode cambiar unha vez escrito; tes que romper e volver colocar o cartel. Pódese colorear e facer brillar.
+Enter sign text:=Introduza o texto do letreiro:
+Maximum line length: 15=Lonxitude máxima da liña: 15
+Maximum lines: 4=Liñas máximas: 4
+Done=Feito
+
+
+##### not used anymore #####
+
+Oak Sign=Letreiro de carballo
+Bamboo Sign=Letreiro de bambú 

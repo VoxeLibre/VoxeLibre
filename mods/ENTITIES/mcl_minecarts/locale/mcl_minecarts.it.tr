@@ -27,7 +27,6 @@ Place it on rails. Punch it to move it. The TNT is ignited with a flint and stee
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=Per ottenere il carrello da miniera e la TNT, colpiscili tenendo premuto il tasto per accovacciarti. Non puoi farlo se la TNT è stata accesa.
 ##[ rails.lua ]##
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Piazzali sul terreno per costruire la tua ferrovia, i binari si collegheranno automaticamente tra di loro, cambiando in curve, incroci a T, incroci e pendenze quando necessario.
-New Rail=
 Track for minecarts=Tracciato per carrelli da miniera
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=I binari possono essere usati per costruire percorsi per i carrelli da miniera. I binari semplici rallentano leggermente i carrelli da miniera per via dell'attrito.
 Sloped Rail=

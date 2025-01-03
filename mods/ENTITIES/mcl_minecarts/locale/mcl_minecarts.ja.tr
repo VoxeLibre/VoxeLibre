@@ -27,7 +27,6 @@ Place it on rails. Punch it to move it. The TNT is ignited with a flint and stee
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=トロッコとTNTを入手するには、スニークキーを押しながらパンチしてください。TNTに火が着いていた場合は、無理です。
 ##[ rails.lua ]##
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=地面に置いて線路を作ると、レール同士が自動的につながり、必要に応じてカーブや丁字路、踏切、坂道などに変化します。
-New Rail=
 Track for minecarts=トロッコ用の線路
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=レールを利用して、トロッコの輸送路が敷けます。普通のレールは、摩擦の関係でトロッコが少しずつ減速していきます。
 Sloped Rail=
