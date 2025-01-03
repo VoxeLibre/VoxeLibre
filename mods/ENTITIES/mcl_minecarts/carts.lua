@@ -1,7 +1,6 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
-local S = minetest.get_translator(modname)
 
 local mcl_log,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
 
@@ -17,9 +16,9 @@ local movement = dofile(modpath.."/movement.lua")
 assert(movement.do_movement)
 assert(movement.do_detached_movement)
 assert(movement.handle_cart_enter)
+assert(movement.handle_cart_leave)
 
 -- Constants
-local max_step_distance = 0.5
 local MINECART_MAX_HP = 4
 local TWO_OVER_PI = 2 / math.pi
 
@@ -40,7 +39,7 @@ local function detach_driver(self)
 
 	minetest.log("action", driver_name.." left a minecart")
 
-	-- Update cart informatino
+	-- Update cart information
 	self._driver = nil
 	self._start_pos = nil
 	local player_meta = mcl_playerinfo.get_mod_meta(driver_name, modname)
@@ -75,8 +74,8 @@ function mod.kill_cart(staticdata, killer)
 
 	-- Leave nodes
 	if staticdata.attached_at then
-		handle_cart_leave(self, staticdata.attached_at, staticdata.dir )
-	else
+		movement.handle_cart_leave(staticdata, staticdata.attached_at, staticdata.dir )
+	--else
 		--mcl_log("TODO: handle detatched minecart death")
 	end
 
@@ -332,11 +331,10 @@ function DEFAULT_CART_DEF:on_step(dtime)
 	end
 
 	-- Controls
-	local ctrl, player = nil, nil
 	if self._driver then
-		player = minetest.get_player_by_name(self._driver)
+		local player = minetest.get_player_by_name(self._driver)
 		if player then
-			ctrl = player:get_player_control()
+			local ctrl = player:get_player_control()
 			-- player detach
 			if ctrl.sneak then
 				detach_driver(self)
@@ -385,9 +383,7 @@ local create_minecart = mod.create_minecart
 
 -- Place a minecart at pointed_thing
 function mod.place_minecart(itemstack, pointed_thing, placer)
-	if not pointed_thing.type == "node" then
-		return
-	end
+	if pointed_thing.type ~= "node" then return end
 
 	local look_4dir = math.round(placer:get_look_horizontal() * TWO_OVER_PI) % 4
 	local look_dir = core.fourdir_to_dir(look_4dir)
@@ -396,7 +392,7 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 	local spawn_pos = pointed_thing.above
 	local cart_dir = look_dir
 
-	local railpos, node
+	local railpos
 	if mcl_minecarts.is_rail(pointed_thing.under) then
 		railpos = pointed_thing.under
 	elseif mcl_minecarts.is_rail(pointed_thing.above) then
@@ -404,11 +400,10 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 	end
 	if railpos then
 		spawn_pos = railpos
-		node = minetest.get_node(railpos)
 
 		-- Try two orientations, and select the second if the first is at an angle
-		cart_dir1 = mcl_minecarts.get_rail_direction(railpos,  look_dir)
-		cart_dir2 = mcl_minecarts.get_rail_direction(railpos, -look_dir)
+		local cart_dir1 = mcl_minecarts.get_rail_direction(railpos,  look_dir)
+		local cart_dir2 = mcl_minecarts.get_rail_direction(railpos, -look_dir)
 		if vector.length(cart_dir1) <= 1 then
 			cart_dir = cart_dir1
 		else
@@ -548,7 +543,6 @@ function mod.register_minecart(def)
 		minetest.register_craft(craft)
 	end
 end
-local register_minecart = mod.register_minecart
 
 dofile(modpath.."/carts/minecart.lua")
 dofile(modpath.."/carts/with_chest.lua")
@@ -636,9 +630,9 @@ minetest.register_globalstep(function(dtime)
 	local start_time
 	if DEBUG then start_time = minetest.get_us_time() end
 
-	for uuid,staticdata in mod.carts() do
-		local pos = mod.get_cart_position(staticdata)
+	for _,staticdata in mod.carts() do
 		--[[
+		local pos = mod.get_cart_position(staticdata)
 		local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
 		print("cart# "..uuid..
 			",velocity="..tostring(staticdata.velocity)..
@@ -692,4 +686,3 @@ minetest.register_on_joinplayer(function(player)
 		end, player_name, cart_uuid)
 	end
 end)
-

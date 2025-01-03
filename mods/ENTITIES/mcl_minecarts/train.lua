@@ -1,5 +1,3 @@
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 
 -- Imports
@@ -42,7 +40,7 @@ local train_cars = mod.train_cars
 
 function mod.train_length(cart)
 	local count = 0
-	for cart in train_cars(cart) do
+	for _ in train_cars(cart) do
 		count = count + 1
 	end
 	return count
@@ -103,14 +101,12 @@ function mod.update_train(staticdata)
 	-- Set the entire train to the average velocity
 	local behind = nil
 	for c in train_cars(staticdata) do
-		local e = 0
 		local separation
 		local cart_velocity = velocity
 		if not c.connected_at then
 			break_train_at(c)
 		elseif behind then
 			separation = distance_between_cars(behind, c)
-			local e = 0
 			if not separation then
 				break_train_at(c)
 			elseif separation > 1.6 then
@@ -144,4 +140,3 @@ function mod.reverse_train(cart)
 		c.behind,c.ahead = c.ahead,c.behind
 	end
 end
-
