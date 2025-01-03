@@ -140,6 +140,8 @@ class Filename:
 		self.fn = tokens[0]
 	
 	def gen(self, prev=None):
+		if self.fn == "blank.png":
+			return Image.new("RGBA", (1,1), (0, 0, 0, 0))
 		if not self.fn in textures:
 			raise FileNotFoundError(self.fn)
 		im = Image.open(textures[self.fn]).convert('RGBA')
