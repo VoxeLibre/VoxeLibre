@@ -89,9 +89,9 @@ function render_frame(A, B)
                    zbuffer[yp][xp] = ooz
                    local luminance = math.max( math.ceil( L * 180 ), 0 )
                    -- luminance is now in the range 0 to 255
-                   r = math.ceil( (luminance + xp) / 2 )
-                   g = math.ceil( (luminance + yp) / 2 )
-                   b = math.ceil( (luminance + xp + yp) / 3 )
+                   local r = math.ceil( (luminance + xp) / 2 )
+                   local g = math.ceil( (luminance + yp) / 2 )
+                   local b = math.ceil( (luminance + xp + yp) / 3 )
                    output[yp][xp] = { r, g, b }
             end
          end

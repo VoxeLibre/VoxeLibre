@@ -371,7 +371,7 @@ minetest.register_globalstep(function(dtime)
 
 						mcl_hunger.eat_internal[player_name]._custom_wrapper(player_name)
 
-						player:get_inventory():set_stack("main", player:get_wield_index(), itemstack)
+						--player:get_inventory():set_stack("main", player:get_wield_index(), itemstack)
 					end
 
 					clear_eat_internal_and_timers(player, player_name)

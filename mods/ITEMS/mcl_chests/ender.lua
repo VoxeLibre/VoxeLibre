@@ -30,7 +30,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 	end,
 })
 
-local formspec_ender_chest = table.concat({
+mcl_chests.formspec_ender_chest = table.concat({
 	"formspec_version[4]",
 	"size[11.75,10.425]",
 
@@ -84,7 +84,7 @@ minetest.register_node("mcl_chests:ender_chest_small", {
 			return false
 		end
 		minetest.show_formspec(clicker:get_player_name(), "mcl_chests:ender_chest_" .. clicker:get_player_name(),
-			formspec_ender_chest)
+			mcl_chests.formspec_ender_chest)
 		mcl_chests.player_chest_open(clicker, pos, "mcl_chests:ender_chest_small",
 			mcl_chests.tiles.ender_chest_texture, node.param2, false, "mcl_chests_enderchest",
 			"mcl_chests_chest")

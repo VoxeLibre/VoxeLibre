@@ -150,7 +150,7 @@ local function update_grindstone_slots(meta)
 				local new_item = create_new_item(name, meta, wear)
 				new_output = transfer_curse(input1, new_item)
 			elseif input1:get_name() == "mcl_enchanting:book_enchanted" then
-				new_item = create_new_item("mcl_books:book", meta, nil)
+				local new_item = create_new_item("mcl_books:book", meta, nil)
 				new_output = transfer_curse(input1, new_item)
 			else
 				new_output = ""
@@ -164,7 +164,7 @@ local function update_grindstone_slots(meta)
 				local new_item = create_new_item(name, meta, wear)
 				new_output = transfer_curse(input2, new_item)
 			elseif input2:get_name() == "mcl_enchanting:book_enchanted" then
-				new_item = create_new_item("mcl_books:book", meta, nil)
+				local new_item = create_new_item("mcl_books:book", meta, nil)
 				new_output = transfer_curse(input2, new_item)
 			else
 				new_output = ""

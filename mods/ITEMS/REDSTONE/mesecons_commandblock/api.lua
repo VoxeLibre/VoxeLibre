@@ -118,7 +118,7 @@ end
 
 local formspec_metas = {}
 
-mod.handle_rightclick = function(meta, player)
+mod.handle_rightclick = function(meta, player, pos)
 	local can_edit = true
 	-- Only allow write access in Creative Mode
 	if not minetest.is_creative_enabled(player:get_player_name()) then

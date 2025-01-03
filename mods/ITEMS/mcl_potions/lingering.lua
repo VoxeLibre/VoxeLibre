@@ -103,7 +103,7 @@ core.register_globalstep(function(dtime)
 					end
 
 					if vals.def.custom_effect
-						and vals.def.custom_effect(obj, (vals.potency+1) * mcl_potions.LINGERING_FACTOR, plus) then
+						and vals.def.custom_effect(obj, (vals.potency+1) * mcl_potions.LINGERING_FACTOR, vals.plus) then
 							applied = true
 					end
 

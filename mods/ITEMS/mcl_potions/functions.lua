@@ -1355,7 +1355,7 @@ minetest.register_globalstep(function(dtime)
 				EF[name][object] = nil
 				if effect.after_end then effect.after_end(object) end
 				if object:is_player() then
-					meta = object:get_meta()
+					local meta = object:get_meta()
 					meta:set_string("mcl_potions:_EF_"..name, "")
 					potions_set_hud(object)
 				else
@@ -1500,7 +1500,7 @@ function mcl_potions._load_player_effects(player)
 		meta:set_string("_is_weak", "")
 	end
 	if legacy_water_breathing then
-		EF.water_breathing[player] = legacy_water_breating
+		EF.water_breathing[player] = legacy_water_breathing
 		meta:set_string("_is_water_breating", "")
 	end
 	if legacy_leaping then

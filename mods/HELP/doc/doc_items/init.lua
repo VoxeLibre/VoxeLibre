@@ -1169,7 +1169,7 @@ doc.add_category("mobs", {
 			end
 			
 			if data.drops then
-				count = 0
+				local count = 0
 				for _,item in ipairs(data.drops) do
 					count = count + 1
 				end
