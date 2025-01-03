@@ -463,7 +463,7 @@ local function register_minecart_craftitem(itemstring, def)
 		stack_max = 1,
 		_mcl_dropper_on_drop = dropper_place_minecart,
 		on_place = function(itemstack, placer, pointed_thing)
-			if not pointed_thing.type == "node" then
+			if pointed_thing.type ~= "node" then
 				return
 			end
 
