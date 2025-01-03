@@ -313,11 +313,12 @@ bobber_ENTITY.on_step = bobber_on_step
 core.register_entity("mcl_fishing:bobber_entity", bobber_ENTITY)
 
 vl_projectile.register("mcl_fishing:flying_bobber_entity", {
-	physical = false,
+	physical = true,
+	collide_with_objects = false,
 	timer=0,
 	textures = {"mcl_fishing_bobber.png"}, --FIXME: Replace with correct texture.
 	visual_size = {x=0.5, y=0.5},
-	collisionbox = {0,0,0,0,0,0},
+	collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
 	pointable = false,
 
 	get_staticdata = mcl_throwing.get_staticdata,
