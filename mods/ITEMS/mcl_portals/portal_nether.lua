@@ -326,7 +326,7 @@ local function remove_exits(positions)
 	local keys_to_write = {}
 
 	for _, p in ipairs(positions) do
-		r = remove_exit(p)
+		local r = remove_exit(p)
 		if r ~= false then
 			keys_to_write[#keys_to_write+1] = r
 			log("verbose", "Exit removed from " .. pos_to_string(p))
@@ -400,13 +400,13 @@ minetest.register_chatcommand("dumpportalkeys", {
 		for k, _ in pairs(exits) do
 			keys[#keys+1] = k
 		end
-		output = string.format("Nether portal exits keys: %s", table.concat(keys, ", "))
+		local output = string.format("Nether portal exits keys: %s", table.concat(keys, ", "))
 		return true, output
 	end,
 })
 
 local function dump_key(key)
-	output = string.format("[%d] => ", tonumber(key))
+	local output = string.format("[%d] => ", tonumber(key))
 	for _,p in pairs(exits[tonumber(key)]) do
 		output = output .. minetest.pos_to_string(p) .. " "
 	end
@@ -420,6 +420,7 @@ minetest.register_chatcommand("dumpportalexits", {
 	params = "[key]",
 	func = function(name, param)
 		local key = param
+		local output
 
 		if not key or key == "" then
 			output = "Nether portal exit locations (all dimensions):\n"
@@ -768,13 +769,13 @@ minetest.register_chatcommand("spawnportal", {
 			-- Portal node will appear above the pointed node. The pointed node will turn into obsidian.
 			exit = mcl_portals.spawn_nether_portal(add(pos, vector.new(-1,0,-1)), orientation, nil, name)
 		elseif #params==3 or #params==4 then
-			pos = {
+			local pos = {
 				x=tonumber(params[1]),
 				y=tonumber(params[2]),
 				z=tonumber(params[3])
 			}
 
-			local orientation = 0
+			local orientation = "0"
 			if #params==4 then
 				if tonumber(params[4])==1 then orientation = "90" else orientation = "0" end
 			end
@@ -865,7 +866,7 @@ local function is_origin_queued(origin)
 	end
 end
 
-local function is_entity_queued()
+local function is_entity_queued(obj)
 	for _, q in pairs(origin_queue) do
 		if q[obj] then
 			return true
@@ -951,8 +952,8 @@ local function find_build_limits(pos, target_dim)
 	)
 
 	-- Start with chunk limits
-	pos1 = vector.new(chunk_limit1.x, chunk_limit1.y, chunk_limit1.z)
-	pos2 = vector.new(chunk_limit2.x, chunk_limit2.y, chunk_limit2.z)
+	local pos1 = vector.new(chunk_limit1.x, chunk_limit1.y, chunk_limit1.z)
+	local pos2 = vector.new(chunk_limit2.x, chunk_limit2.y, chunk_limit2.z)
 
 	-- Make sure the portal is not built beyond chunk boundary
 	-- (we will be searching for the node with lowest X, Y and Z)
@@ -1118,6 +1119,7 @@ local function search_for_build_location(blockpos, action, calls_remaining, para
 	-- space. Since our Y map distance is quite short due to the flatness of
 	-- the non-lava nether, falling back like this should cover entire Y range.
 	if param.chunk_counter==1 then
+		local direction
 		if limits[param.target_dim].pmax.y-target.y > target.y-limits[param.target_dim].pmin.y then
 			-- Look up
 			direction = 1
@@ -1145,7 +1147,7 @@ local function search_for_build_location(blockpos, action, calls_remaining, para
 			minetest.emerge_area(pos1, pos2, search_for_build_location, {
 				origin=param.origin,
 				target = new_target,
-				target_dim = target_dim,
+				target_dim = param.target_dim,
 				ideal_target = param.ideal_target,
 				pos1 = pos1,
 				pos2 = pos2,
@@ -1367,7 +1369,7 @@ local function teleport_no_delay(obj, portal_pos)
 	local target_dim = dimension_to_teleport[current_dim]
 
 	-- If player stands, player is at ca. something+0.5 which might cause precision problems, so we used ceil for objpos.y
-	origin = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
+	local origin = {x = floor(objpos.x+0.5), y = ceil(objpos.y), z = floor(objpos.z+0.5)}
 	if get_node(origin).name ~= PORTAL then return end
 
 	local target = get_target(origin)
