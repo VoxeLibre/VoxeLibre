@@ -9,18 +9,18 @@ for i=0, 3 do
 	if i > 0 then
 		groups.sweet_berry_thorny = 1
 	end
-	local drop_berries = (i >= 2)
-	local berries_to_drop = drop_berries and {i - 1, i} or nil
-
-	local on_bonemealing = nil
+	local berries_to_drop = (i >= 2) and {i - 1, i} or nil
 	local function do_berry_drop(pos)
-		if not berries_to_drop then return end
+		if not berries_to_drop then return false end
 
 		for _=1, berries_to_drop[math.random(2)] do
 			minetest.add_item(pos, "mcl_farming:sweet_berry")
 		end
 		minetest.swap_node(pos, {name = "mcl_farming:sweet_berry_bush_1"})
+		return true
 	end
+
+	local on_bonemealing = nil
 	if i ~= 3 then
 		on_bonemealing = function(_, _, pointed_thing)
 			local pos = pointed_thing.under
@@ -49,13 +49,13 @@ for i=0, 3 do
 		liquid_range = 0,
 		walkable = false,
 		-- Dont even create a table if no berries are dropped.
-		drop = not drop_berries and "" or {
+		drop = berries_to_drop and {
 			max_items = 1,
 			items = {
 				{ items = {"mcl_farming:sweet_berry " .. berries_to_drop[1] }, rarity = 2 },
 				{ items = {"mcl_farming:sweet_berry " .. berries_to_drop[2] } }
 			}
-		},
+		} or "",
 		selection_box = {
 			type = "fixed",
 			fixed = {-6 / 16, -0.5, -6 / 16, 6 / 16, (-0.30 + (i*0.25)), 6 / 16},
@@ -74,13 +74,11 @@ for i=0, 3 do
 				return itemstack
 			end
 
-			if i >= 2 then
-				do_berry_drop(pos)
-			else
-				-- Use bonemeal
-				if mcl_bone_meal and clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
-					return mcl_bone_meal.use_bone_meal(itemstack, clicker, pointed_thing)
-				end
+			if do_berry_drop(pos) then return itemstack end
+
+			-- Use bonemeal
+			if mcl_bone_meal and clicker:get_wielded_item():get_name() == "mcl_bone_meal:bone_meal" then
+				return mcl_bone_meal.use_bone_meal(itemstack, clicker, pointed_thing)
 			end
 			return itemstack
 		end,
