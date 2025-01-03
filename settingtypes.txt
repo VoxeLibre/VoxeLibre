@@ -340,6 +340,9 @@ mcl_item_id_debug (Item ID Debug) bool false
 #Log mob spawning and despawning events
 mcl_logging_mobs_spawn (Log Mob Spawning) bool false
 
+#Log mob movement events
+mcl_logging_mobs_movement (Log Mob Movement) bool false
+
 # If enabled mapgen timings will be dumped to log
 mcl_logging_mapgen (Chunk generation logging) bool false
 
