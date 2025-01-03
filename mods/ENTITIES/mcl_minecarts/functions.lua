@@ -456,7 +456,6 @@ local _2_pi = math.pi * 2
 local _half_pi = math.pi * 0.5
 local _quart_pi = math.pi * 0.25
 local pi = math.pi
-local rot_debug = {}
 function mod.update_cart_orientation(self)
 	local staticdata = self._staticdata
 	local dir = staticdata.dir
@@ -469,9 +468,8 @@ function mod.update_cart_orientation(self)
 
 	-- Check if the rotation is a 180 flip and don't change if so
 	local rot = self.object:get_rotation()
-	local old_rot = vector.new(rot)
-	rot.y = (rot.y - _half_pi + _2_pi) % _2_pi
 	if not rot then return end
+	rot.y = (rot.y - _half_pi + _2_pi) % _2_pi
 
 	local diff = math.abs((rot_y - ( rot.y + pi ) % _2_pi) )
 	if diff < 0.001 or diff > _2_pi - 0.001 then
