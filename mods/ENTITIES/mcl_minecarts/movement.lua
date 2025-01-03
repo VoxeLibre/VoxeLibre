@@ -74,7 +74,7 @@ local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 	if luaentity then
 		local hook = luaentity["_mcl_minecarts_"..event]
 		if hook then hook(luaentity, pos, staticdata) end
-	else
+	--else
 		--minetest.log("warning", "TODO: change _mcl_minecarts_"..event.." calling so it is not dependent on the existence of a luaentity")
 	end
 end
@@ -145,7 +145,7 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 	local carts = minetest.deserialize(meta:get_string("_mcl_minecarts_carts")) or {}
 	local cart_uuid = nil
 	local dirty = false
-	for uuid,v in pairs(carts) do
+	for uuid,_ in pairs(carts) do
 		-- Clean up dead carts
 		local data = get_cart_data(uuid)
 		if not data or not data.connected_at then
@@ -160,7 +160,6 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 		meta:set_string("_mcl_minecarts_carts",minetest.serialize(carts))
 	end
 
-	meta = minetest.get_meta(vector.add(pos,next_dir))
 	if not cart_uuid then return end
 
 	-- Don't collide with the train car in front of you
