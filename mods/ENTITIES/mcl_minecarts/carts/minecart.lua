@@ -1,6 +1,5 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
-local mcl_log = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
 local mod = mcl_minecarts
 
 -- Imports
@@ -40,7 +39,6 @@ function mod.attach_driver(cart, player)
 	staticdata.last_player = player_name
 
 	-- Update player information
-	local uuid = staticdata.uuid
 	mcl_player.player_attached[player_name] = true
 	--minetest.log("action", player_name.." entered minecart #"..tostring(uuid).." at "..tostring(cart._start_pos))
 

@@ -9,7 +9,6 @@ mod.RAIL_GROUPS = {
 
 -- Inport functions and constants from elsewhere
 local table_merge = mcl_util.table_merge
-local check_connection_rules = mod.check_connection_rules
 local update_rail_connections = mod.update_rail_connections
 local minetest_fourdir_to_dir = minetest.fourdir_to_dir
 local minetest_dir_to_fourdir = minetest.dir_to_fourdir
@@ -104,7 +103,6 @@ local BASE_DEF = {
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	is_ground_content = true,
-	paramtype = "light",
 	use_texture_alpha = "clip",
 	collision_box = {
 		type = "fixed",
@@ -284,13 +282,11 @@ function mod.register_straight_rail(base_name, tiles, def)
 	mod.register_rail_sloped(base_name.."_sloped", table_merge(table.copy(sloped_def),{
 		_mcl_minecarts = {
 			get_next_dir = rail_dir_sloped,
+			railtype = "sloped",
 			suffix = "_sloped",
 		},
 		mesecons = make_mesecons(base_name, "_sloped", def.mesecons),
 		tiles = { tiles[1] },
-		_mcl_minecarts = {
-			railtype = "sloped",
-		},
 	}))
 end
 
