@@ -343,6 +343,8 @@ function mcl_util.call_on_rightclick(itemstack, player, pointed_thing)
 		end
 	end
 end
+
+--- TODO: replace with global right-click handler patched in with core.on_register_mods_loaded()
 function mcl_util.handle_node_rightclick(itemstack, player, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing and pointed_thing.type == "node" then
