@@ -165,6 +165,7 @@ local firework_def = {
 	on_use = function(itemstack, user, pointed_thing)
 		local elytra = mcl_playerplus.elytra[user]
 		if elytra.active and elytra.rocketing <= 0 then
+			local meta = itemstack:get_meta()
 			elytra.rocketing = meta:get_float("vl_fireworks:duration")
 			if not core.is_creative_enabled(user:get_player_name()) then
 				itemstack:take_item()
