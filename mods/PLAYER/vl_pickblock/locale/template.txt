@@ -1,2 +1,0 @@
-# textdomain: vl_pickblock
-@1 is on slot @2=
