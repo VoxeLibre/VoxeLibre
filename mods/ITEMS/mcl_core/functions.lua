@@ -984,23 +984,13 @@ function mcl_core.grow_sapling(pos, node)
 	return true
 end
 
--- TODO: Use better tree models for everything
--- TODO: Support 2x2 saplings
-
 -- Oak tree
 minetest.register_abm({
 	label = "Oak tree growth",
 	nodenames = {"mcl_core:sapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 25,
-	chance = 2,
-	action = grow_oak
-})
-minetest.register_lbm({
-	label = "Add growth for unloaded oak tree",
-	name = "mcl_core:lbm_oak",
-	nodenames = {"mcl_core:sapling"},
-	run_at_every_load = true,
+	interval = 35,
+	chance = 5,
 	action = grow_oak
 })
 
@@ -1009,15 +999,8 @@ minetest.register_abm({
 	label = "Dark oak tree growth",
 	nodenames = {"mcl_core:darksapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 25,
-	chance = 2,
-	action = grow_dark_oak
-})
-minetest.register_lbm({
-	label = "Add growth for unloaded dark oak tree",
-	name = "mcl_core:lbm_dark_oak",
-	nodenames = {"mcl_core:darksapling"},
-	run_at_every_load = true,
+	interval = 35,
+	chance = 5,
 	action = grow_dark_oak
 })
 
@@ -1026,15 +1009,8 @@ minetest.register_abm({
 	label = "Jungle tree growth",
 	nodenames = {"mcl_core:junglesapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 25,
-	chance = 2,
-	action = grow_jungle_tree
-})
-minetest.register_lbm({
-	label = "Add growth for unloaded jungle tree",
-	name = "mcl_core:lbm_jungle_tree",
-	nodenames = {"mcl_core:junglesapling"},
-	run_at_every_load = true,
+	interval = 35,
+	chance = 5,
 	action = grow_jungle_tree
 })
 
@@ -1043,15 +1019,8 @@ minetest.register_abm({
 	label = "Spruce tree growth",
 	nodenames = {"mcl_core:sprucesapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 25,
-	chance = 2,
-	action = grow_spruce
-})
-minetest.register_lbm({
-	label = "Add growth for unloaded spruce tree",
-	name = "mcl_core:lbm_spruce",
-	nodenames = {"mcl_core:sprucesapling"},
-	run_at_every_load = true,
+	interval = 35,
+	chance = 5,
 	action = grow_spruce
 })
 
@@ -1060,15 +1029,8 @@ minetest.register_abm({
 	label = "Birch tree growth",
 	nodenames = {"mcl_core:birchsapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 25,
-	chance = 2,
-	action = grow_birch
-})
-minetest.register_lbm({
-	label = "Add growth for unloaded birch tree",
-	name = "mcl_core:lbm_birch",
-	nodenames = {"mcl_core:birchsapling"},
-	run_at_every_load = true,
+	interval = 35,
+	chance = 5,
 	action = grow_birch
 })
 
@@ -1077,15 +1039,8 @@ minetest.register_abm({
 	label = "Acacia tree growth",
 	nodenames = {"mcl_core:acaciasapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 20,
-	chance = 2,
-	action = grow_acacia
-})
-minetest.register_lbm({
-	label = "Add growth for unloaded acacia tree",
-	name = "mcl_core:lbm_acacia",
-	nodenames = {"mcl_core:acaciasapling"},
-	run_at_every_load = true,
+	interval = 35,
+	chance = 5,
 	action = grow_acacia
 })
 
