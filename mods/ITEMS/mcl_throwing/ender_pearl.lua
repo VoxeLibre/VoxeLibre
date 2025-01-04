@@ -101,11 +101,11 @@ end
 
 -- Ender pearl entity
 vl_projectile.register("mcl_throwing:ender_pearl_entity",{
-	physical = false,
+	physical = true,
 	timer=0,
 	textures = {"mcl_throwing_ender_pearl.png"},
 	visual_size = {x=0.9, y=0.9},
-	collisionbox = {0,0,0,0,0,0},
+	collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
 	pointable = false,
 
 	get_staticdata = mcl_throwing.get_staticdata,

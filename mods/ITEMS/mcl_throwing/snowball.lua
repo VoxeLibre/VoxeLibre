@@ -40,11 +40,11 @@ local function snowball_particles(pos, vel)
 	})
 end
 vl_projectile.register("mcl_throwing:snowball_entity", {
-	physical = false,
+	physical = true,
 	timer=0,
 	textures = {"mcl_throwing_snowball.png"},
 	visual_size = {x=0.5, y=0.5},
-	collisionbox = {0,0,0,0,0,0},
+	collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
 	pointable = false,
 
 	get_staticdata = mcl_throwing.get_staticdata,
