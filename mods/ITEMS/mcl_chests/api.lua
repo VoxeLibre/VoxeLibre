@@ -576,6 +576,8 @@ function mcl_chests.register_chest(basename, d)
 	names.left.cr = names.right.c
 	names.right.cr = names.left.c
 
+	local pickblock = "mcl_chests:" .. d.canonical_basename
+
 	local small_textures = d.tiles.small
 	local double_textures = d.tiles.double
 
@@ -710,6 +712,7 @@ function mcl_chests.register_chest(basename, d)
 		on_metadata_inventory_take = log_inventory_take,
 		_mcl_blast_resistance = d.hardness,
 		_mcl_hardness = d.hardness,
+		_vl_pickblock = pickblock,
 
 		on_rightclick = function(pos, node, clicker)
 			local topnode = minetest.get_node({ x = pos.x, y = pos.y + 1, z = pos.z })
@@ -792,6 +795,7 @@ function mcl_chests.register_chest(basename, d)
 		on_metadata_inventory_take = log_inventory_take,
 		_mcl_blast_resistance = d.hardness,
 		_mcl_hardness = d.hardness,
+		_vl_pickblock = pickblock,
 
 		on_rightclick = function(pos, node, clicker)
 			local pos_other = get_double_container_neighbor_pos(pos, node.param2, "left")
@@ -887,6 +891,7 @@ function mcl_chests.register_chest(basename, d)
 		on_metadata_inventory_take = log_inventory_take,
 		_mcl_blast_resistance = d.hardness,
 		_mcl_hardness = d.hardness,
+		_vl_pickblock = pickblock,
 
 		on_rightclick = function(pos, node, clicker)
 			local pos_other = get_double_container_neighbor_pos(pos, node.param2, "right")
