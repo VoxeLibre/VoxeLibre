@@ -113,4 +113,9 @@ minetest.override_item("", {
 			return vl_pickblock.pickblock(itemstack, placer, pointed_thing)
 		end
 	end,
+	on_secondary_use = function(itemstack, placer, pointed_thing)
+		if minetest.is_creative_enabled(placer:get_player_name()) then
+			return vl_pickblock.pickmob(itemstack, placer, pointed_thing)
+		end
+	end,
 })
