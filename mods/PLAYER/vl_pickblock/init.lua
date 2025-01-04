@@ -1,5 +1,8 @@
 vl_pickblock = {}
 
+-- The main Pickblock handler function.
+-- To be called in hand's `on_place`
+-- (assumes that pointed_thing.type == "node")
 function vl_pickblock.pickblock(itemstack, placer, pointed_thing)
 	local pos = pointed_thing.under
 	local node = minetest.get_node_or_nil(pointed_thing.under)
@@ -36,4 +39,34 @@ function vl_pickblock.pickblock(itemstack, placer, pointed_thing)
 	end
 
 	return rnode
+end
+
+-- Pickblock handler for mobs.
+-- To be called in hand's `on_secondary_use`
+-- (assumes that pointed_thing.type ~= "node")
+function vl_pickblock.pickmob(itemstack, clicker, pointed_thing)
+	if pointed_thing.type ~= "object"
+			-- only pick mobs when crouching
+			or (not clicker:get_player_control().sneak) then
+		return
+	end
+
+	local le = pointed_thing.ref:get_luaentity()
+	if not (le and le.is_mob) then return end
+
+	local def = minetest.registered_craftitems[le.name]
+	if not def then return end
+
+	-- check if the picked mob egg is already on the hotbar
+	-- if so, remove it!
+	local inv = clicker:get_inventory()
+	for i = 1, clicker:hud_get_hotbar_itemcount() do
+		local stack = inv:get_stack("main", i)
+		if stack:get_name() == le.name then
+			inv:set_stack("main", i, ItemStack())
+			break -- only remove one
+		end
+	end
+
+	return le.name
 end
