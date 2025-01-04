@@ -8,6 +8,6 @@ You select them with the build key (right-click) as compared to with middle-clic
 ## License
 
 Copyright (C) 2022 ROllerozxa\
-Copyright (C) 2024 Mikita 'rudzik8' Wiśniewski
+Copyright (C) 2024-2025 Mikita 'rudzik8' Wiśniewski
 
 MIT (see `LICENSE` file)
