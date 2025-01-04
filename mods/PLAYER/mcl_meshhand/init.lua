@@ -102,6 +102,8 @@ else
 	minetest.register_on_joinplayer(mcl_meshhand.update_player)
 end
 
+local hand_def = minetest.registered_items[""]
+local _on_place = hand_def.on_place
 minetest.override_item("", {
 	-- This is needed to deal damage when punching mobs
 	-- with random items in hand in survival mode
@@ -109,6 +111,7 @@ minetest.override_item("", {
 
 	-- Creative mode Pickblock mechanics
 	on_place = function(itemstack, placer, pointed_thing)
+		_on_place(itemstack, placer, pointed_thing)
 		if minetest.is_creative_enabled(placer:get_player_name()) then
 			return vl_pickblock.pickblock(itemstack, placer, pointed_thing)
 		end
