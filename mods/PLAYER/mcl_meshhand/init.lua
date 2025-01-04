@@ -102,8 +102,15 @@ else
 	minetest.register_on_joinplayer(mcl_meshhand.update_player)
 end
 
--- This is needed to deal damage when punching mobs
--- with random items in hand in survival mode
 minetest.override_item("", {
-	tool_capabilities = mcl_meshhand.survival_hand_tool_caps
+	-- This is needed to deal damage when punching mobs
+	-- with random items in hand in survival mode
+	tool_capabilities = mcl_meshhand.survival_hand_tool_caps,
+
+	-- Creative mode Pickblock mechanics
+	on_place = function(itemstack, placer, pointed_thing)
+		if minetest.is_creative_enabled(placer:get_player_name()) then
+			return vl_pickblock.pickblock(itemstack, placer, pointed_thing)
+		end
+	end,
 })
