@@ -1,9 +1,16 @@
-local function pickblock(_, placer, pointed_thing)
+vl_pickblock = {}
+
+function vl_pickblock.pickblock(itemstack, placer, pointed_thing)
+	local pos = pointed_thing.under
 	local node = minetest.get_node_or_nil(pointed_thing.under)
 	if not node then return end
 
 	local def = minetest.registered_nodes[node.name]
 	if not def then return end
+
+	if def.on_rightclick and not placer:get_player_control().sneak then
+		return def.on_rightclick(pos, node, placer, itemstack, pointed_thing)
+	end
 
 	local illegal = (def.groups.not_in_creative_inventory and def.groups.not_in_creative_inventory ~= 0)
 
@@ -30,13 +37,3 @@ local function pickblock(_, placer, pointed_thing)
 
 	return rnode
 end
-
-local old_on_place = minetest.registered_items[""].on_place
-minetest.override_item("", {
-	on_place = function(itemstack, placer, pointed_thing)
-		old_on_place(itemstack, placer, pointed_thing)
-		if minetest.is_creative_enabled(placer:get_player_name()) then
-			return pickblock(itemstack, placer, pointed_thing)
-		end
-	end
-})
