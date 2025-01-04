@@ -297,6 +297,7 @@ for color, desc in pairs(boxtypes) do
 		on_rotate = mcl_chests.simple_rotate,
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
+		_vl_pickblock = normal_name,
 		_mcl_hoppers_on_try_push = function(pos, hop_pos, hop_inv, hop_list)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
