@@ -173,15 +173,12 @@ local fish = function(itemstack, player, pointed_thing)
 			end
 		end
 		--Check for flying bobber.
+		local player_name = player:get_player_name()
 		for n = 1, #objs do
 			ent = objs[n]:get_luaentity()
-			if ent then
-				if ent._thrower and ent.objtype=="fishing" then
-					if player:get_player_name() == ent._thrower then
-						noent = false
-						break
-					end
-				end
+			if ent and ent._owner == player_name and ent.objtype=="fishing" then
+				noent = false
+				break
 			end
 		end
 		--If no bobber or flying_bobber exists then throw bobber.
@@ -349,7 +346,6 @@ vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 	},
 
 	_lastpos={},
-	_thrower = nil,
 	objtype="fishing",
 })
 
@@ -365,7 +361,7 @@ minetest.register_on_leaveplayer(function(player)
 		if ent then
 			if ent.player and ent.objtype=="fishing" then
 				ent.object:remove()
-			elseif ent._thrower and ent.objtype=="fishing" then
+			elseif ent._owner and ent.objtype=="fishing" then
 				ent.object:remove()
 			end
 		end
@@ -384,7 +380,7 @@ minetest.register_on_dieplayer(function(player)
 		if ent then
 			if ent.player and ent.objtype=="fishing" then
 				ent.object:remove()
-			elseif ent._thrower and ent.objtype=="fishing" then
+			elseif ent._owner and ent.objtype=="fishing" then
 				ent.object:remove()
 			end
 		end
