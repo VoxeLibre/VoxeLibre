@@ -212,8 +212,8 @@ local function get_rail_connections(pos, opt)
 
 		-- Check for sloped rail one block down
 		local below_neighbor = vector.offset(neighbor, 0, -1, 0)
-		local node = force_get_node(below_neighbor)
-		local nodedef = minetest.registered_nodes[node.name]
+		node = force_get_node(below_neighbor)
+		nodedef = minetest.registered_nodes[node.name]
 		if mcl_minecarts.is_rail(below_neighbor) and ( legacy or get_path(nodedef, "_mcl_minecarts", "get_next_dir" ) ) then
 			local rev_dir = vector.direction(dir, vector.zero())
 			if ignore_neighbor_connections or is_connection(below_neighbor, rev_dir) then
@@ -229,7 +229,7 @@ local function apply_connection_rules(node, nodedef, pos, rules, connections)
 	-- Select the best allowed connection
 	local rule = nil
 	local score = 0
-	for k,r in pairs(rules) do
+	for _,r in pairs(rules) do
 		if check_connection_rule(pos, connections, r) then
 			if r.score > score then
 				--print("Best rule so far is "..dump(r))
@@ -351,7 +351,6 @@ local function update_rail_connections(pos, opt)
 	if opt and opt.convert_neighbors == false then return end
 
 	-- Check if the open end of this rail runs into a corner or a tee and convert that node into a tee or a cross
-	local neighbors = {}
 	for i=1,#CONNECTIONS do
 		local dir = CONNECTIONS[i]
 		if is_connection(pos, dir) then
@@ -366,11 +365,6 @@ local function update_rail_connections(pos, opt)
 	end
 end
 mod.update_rail_connections = update_rail_connections
-
-local north = vector.new(0,0,1)
-local south = vector.new(0,0,-1)
-local east  = vector.new(1,0,0)
-local west = vector.new(-1,0,0)
 
 local function is_ahead_slope(pos, dir)
 	local ahead = vector.add(pos,dir)
@@ -518,7 +512,5 @@ function mod.reverse_cart_direction(staticdata)
 	staticdata.distance = 1 - (staticdata.distance or 0)
 
 	-- recalculate direction
-	local next_dir,_ = mod:get_rail_direction(staticdata.connected_at, next_dir)
-	staticdata.dir = next_dir
+	staticdata.dir = mod:get_rail_direction(staticdata.connected_at, next_dir)
 end
-

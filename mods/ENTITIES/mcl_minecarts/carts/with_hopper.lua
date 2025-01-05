@@ -1,5 +1,4 @@
 local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 
@@ -30,7 +29,7 @@ local function hopper_take_item(self, dtime)
 	if objs then
 		mcl_log("there is an itemstring. Number of objs: ".. #objs)
 
-		for k, v in pairs(objs) do
+		for _, v in pairs(objs) do
 			local ent = v:get_luaentity()
 
 			if ent and not ent._removed and ent.itemstring and ent.itemstring ~= "" then
@@ -88,7 +87,6 @@ local function hopper_take_item(self, dtime)
 								mcl_log("We have more than enough space. Now holds: " .. new_stack_size)
 
 								inv:set_stack("main", i, stack)
-								items_remaining = 0
 
 								ent.object:get_luaentity().itemstring = ""
 								ent.object:remove()

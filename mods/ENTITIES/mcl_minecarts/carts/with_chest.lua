@@ -1,6 +1,4 @@
 local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
-local mod = mcl_minecarts
 local S = minetest.get_translator(modname)
 
 -- Minecart with Chest

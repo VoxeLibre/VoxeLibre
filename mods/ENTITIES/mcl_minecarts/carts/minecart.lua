@@ -40,9 +40,8 @@ function mod.attach_driver(cart, player)
 	staticdata.last_player = player_name
 
 	-- Update player information
-	local uuid = staticdata.uuid
 	mcl_player.player_attached[player_name] = true
-	--minetest.log("action", player_name.." entered minecart #"..tostring(uuid).." at "..tostring(cart._start_pos))
+	mcl_log(player_name.." entered minecart #"..tostring(staticdata.uuid).." at "..tostring(cart._start_pos))
 
 	-- Attach the player object to the minecart
 	player:set_attach(cart.object, "", vector.new(1,-1.75,-2), vector.new(0,0,0))

@@ -1,13 +1,10 @@
 local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
 local mod = mcl_minecarts
-local S = minetest.get_translator(modname)
 local submod = {}
 local ENABLE_TRAINS = core.settings:get_bool("mcl_minecarts_enable_trains",true)
 
 -- Constants
 local mcl_debug,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecart_debug", "Minecart Debug")
---DEBUG = false
 --mcl_debug,DEBUG = function(msg) print(msg) end,true
 
 -- Imports
@@ -25,10 +22,7 @@ local train_length = mod.train_length
 local update_train = mod.update_train
 local reverse_train = mod.reverse_train
 local link_cart_ahead = mod.link_cart_ahead
-local update_cart_orientation = mod.update_cart_orientation
 local get_cart_data = mod.get_cart_data
-local get_cart_position = mod.get_cart_position
-
 
 local function reverse_direction(staticdata)
 	if staticdata.behind or staticdata.ahead then
@@ -80,7 +74,7 @@ local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 	if luaentity then
 		local hook = luaentity["_mcl_minecarts_"..event]
 		if hook then hook(luaentity, pos, staticdata) end
-	else
+	--else
 		--minetest.log("warning", "TODO: change _mcl_minecarts_"..event.." calling so it is not dependent on the existence of a luaentity")
 	end
 end
@@ -101,6 +95,7 @@ local function handle_cart_leave(staticdata, pos, next_dir)
 	set_metadata_cart_status(pos, staticdata.uuid, nil)
 	handle_cart_enter_exit(staticdata, pos, next_dir, "on_leave" )
 end
+submod.handle_cart_leave = handle_cart_leave
 local function handle_cart_node_watches(staticdata, dtime)
 	local watches = staticdata.node_watches or {}
 	local new_watches = {}
@@ -150,7 +145,7 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 	local carts = minetest.deserialize(meta:get_string("_mcl_minecarts_carts")) or {}
 	local cart_uuid = nil
 	local dirty = false
-	for uuid,v in pairs(carts) do
+	for uuid,_ in pairs(carts) do
 		-- Clean up dead carts
 		local data = get_cart_data(uuid)
 		if not data or not data.connected_at then
@@ -165,7 +160,6 @@ local function handle_cart_collision(cart1_staticdata, prev_pos, next_dir)
 		meta:set_string("_mcl_minecarts_carts",minetest.serialize(carts))
 	end
 
-	local meta = minetest.get_meta(vector.add(pos,next_dir))
 	if not cart_uuid then return end
 
 	-- Don't collide with the train car in front of you
@@ -331,7 +325,6 @@ local function do_movement_step(staticdata, dtime)
 		local impulse = ctrl.impulse
 		ctrl.impulse = nil
 
-		local old_v_0 = v_0
 		local new_v_0 = v_0 + impulse
 		if new_v_0 > SPEED_MAX then
 			new_v_0 = SPEED_MAX
@@ -541,8 +534,7 @@ function submod.do_movement( staticdata, dtime )
 	end
 end
 
-local _half_pi = math.pi * 0.5
-function submod.do_detached_movement(self, dtime)
+function submod.do_detached_movement(self)
 	local staticdata = self._staticdata
 
 	-- Make sure the object is still valid before trying to move it
@@ -622,7 +614,7 @@ function submod.do_detached_movement(self, dtime)
 	end
 
 	-- Reset pitch if still not attached
-	local rot = self.object:get_rotation()
+	rot = self.object:get_rotation()
 	rot.x = 0
 	self.object:set_rotation(rot)
 end
