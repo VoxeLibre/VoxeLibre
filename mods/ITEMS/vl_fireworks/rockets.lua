@@ -175,6 +175,11 @@ local firework_def = {
 		return itemstack
 	end,
 	on_place = function(itemstack, user, pointed_thing)
+		local new_stack = mcl_util.call_on_rightclick(itemstack, user, pointed_thing)
+		if new_stack then
+			return new_stack
+		end
+
 		local pos = pointed_thing.above
 		vl_fireworks.shoot_firework(itemstack, pos)
 		if mcl_gamemode.get_gamemode(user) ~= "creative" then
