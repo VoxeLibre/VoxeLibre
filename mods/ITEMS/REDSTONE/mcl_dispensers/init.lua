@@ -11,6 +11,9 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local C = minetest.colorize
 local F = minetest.formspec_escape
 
+-- TODO: actually should have a slight lag as in MC?
+local COOLDOWN = 0.19
+
 local dispenser_formspec = table.concat({
 	"formspec_version[4]",
 	"size[11.75,10.425]",
@@ -113,6 +116,9 @@ local dispenserdef = {
 			-- Dispense random item when triggered
 			action_on = function(pos, node)
 				local meta = minetest.get_meta(pos)
+				local gametime = core.get_gametime()
+				if gametime < meta:get_float("cooldown") then return end
+				meta:set_float("cooldown", gametime + COOLDOWN)
 				local inv = meta:get_inventory()
 				local droppos, dropdir
 				if node.name == "mcl_dispensers:dispenser" then
