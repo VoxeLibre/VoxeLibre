@@ -153,6 +153,7 @@
 * THE-NERD2
 * ethan
 * villager8472
+* ninjum
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -258,6 +259,7 @@
 * Pixel-Peter
 * Laudrin
 * chmodsayshello
+* ninjum
 
 ## Funders
 * 40W
