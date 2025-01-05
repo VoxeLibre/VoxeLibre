@@ -56,7 +56,7 @@ function mob_class:jock_to(mob, reletive_pos, rot)
 	if not pos then return end
 
 	self.jockey = mob
-	local jock = minetest.add_entity(pos, mob)
+	local jock = mcl_mobs.spawn(pos, mob)
 	if not jock then return end
 	jock:get_luaentity().docile_by_day = false
 	jock:get_luaentity().riden_by_jock = true
