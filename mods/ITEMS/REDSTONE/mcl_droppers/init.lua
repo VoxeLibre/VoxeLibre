@@ -165,6 +165,8 @@ local dropperdef = {
 
 			-- Check if the drop item has a custom handler
 			local itemdef = minetest.registered_craftitems[dropitem:get_name()]
+			if not itemdef then return end
+
 			if itemdef._mcl_dropper_on_drop then
 				item_dropped = itemdef._mcl_dropper_on_drop(dropitem, droppos)
 			end
