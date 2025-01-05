@@ -85,7 +85,7 @@ minetest.register_lbm({
 			mcl_chests.chest_update_after_close(pos)
 		elseif node_name == "mcl_chests:ender_chest" then
 			local meta = minetest.get_meta(pos)
-			meta:set_string("formspec", formspec_ender_chest)
+			meta:set_string("formspec", mcl_chests.formspec_ender_chest)
 		end
 	end
 })

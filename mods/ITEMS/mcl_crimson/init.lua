@@ -162,10 +162,10 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 			end
 			grow_vines(pos, 1, "mcl_crimson:twisting_vines")
 			local idef = itemstack:get_definition()
-			local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+			local itemstack, success = minetest.item_place_node(itemstack, clicker, pointed_thing)
 			if success then
 				if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+				minetest.sound_play(idef.sounds.place, {pos=pointed_thing.above, gain=1}, true)
 			end
 		end
 
@@ -257,10 +257,10 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 			end
 			grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
 			local idef = itemstack:get_definition()
-			local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+			local itemstack, success = minetest.item_place_node(itemstack, clicker, pointed_thing)
 			if success then
 				if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
+				minetest.sound_play(idef.sounds.place, {pos=pointed_thing.above, gain=1}, true)
 			end
 		end
 

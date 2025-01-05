@@ -191,7 +191,7 @@ local dropperdef = {
 				local speed = 3
 				item_entity:set_velocity(vector.multiply(drop_vel, speed))
 				stack:take_item()
-				item_dropped = trie
+				item_dropped = true
 			end
 
 			-- Remove dropped items from inventory

@@ -11,7 +11,7 @@ mod.initialize = function(meta)
 	meta:set_string("commander", "")
 end
 
-mod.place = function(meta, placer)	
+mod.place = function(meta, placer)
 	if not placer then return end
 
 	meta:set_string("commander", placer:get_player_name())
@@ -118,7 +118,7 @@ end
 
 local formspec_metas = {}
 
-mod.handle_rightclick = function(meta, player)
+mod.handle_rightclick = function(meta, player, pos)
 	local can_edit = true
 	-- Only allow write access in Creative Mode
 	if not minetest.is_creative_enabled(player:get_player_name()) then
@@ -205,7 +205,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		-- Retrieve the metadata object this formspec data belongs to
 		local index, _, fs_id = string.find(formname, "commandblock_(-?%d+)")
 		fs_id = tonumber(fs_id)
-		if not index or not fs_id or not formspec_metas[fs_id] then 
+		if not index or not fs_id or not formspec_metas[fs_id] then
 			print("index="..tostring(index)..", fs_id="..tostring(fs_id).."formspec_metas[fs_id]="..tostring(formspec_metas[fs_id]))
 			minetest.chat_send_player(player:get_player_name(), S("Editing the command block has failed! The command block is gone."))
 			return

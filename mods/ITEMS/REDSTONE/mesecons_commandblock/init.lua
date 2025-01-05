@@ -53,8 +53,7 @@ local function on_rightclick(pos, node, player, itemstack, pointed_thing)
 	end
 
 	local meta = minetest.get_meta(pos)
-	api.handle_rightclick(meta, player)
-
+	api.handle_rightclick(meta, player, pos)
 end
 
 local function on_place(itemstack, placer, pointed_thing)

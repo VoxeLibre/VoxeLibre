@@ -46,7 +46,7 @@ core.register_craftitem("mcl_bows:rocket", {
 	end,
 	_on_collide_with_entity = function(self, _, obj)
 		if self._in_player == false then
-			pos = self.object:get_pos()
+			local pos = self.object:get_pos()
 			obj:punch(self.object, 1.0, {
 				full_punch_interval=1.0,
 				damage_groups={fleshy=self._damage},

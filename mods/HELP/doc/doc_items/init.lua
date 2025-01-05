@@ -1152,7 +1152,7 @@ doc.add_category("mobs", {
 				datastring = datastring .. S("Type: @1", data.type)
 				datastring = newline2(datastring)
 			end
-			
+
 			if data.spawn_class then
 				datastring = datastring .. S("spawn class: @1", data.spawn_class)
 				datastring = newline2(datastring)
@@ -1167,25 +1167,18 @@ doc.add_category("mobs", {
 				datastring = datastring .. S("Can Fly")
 				datastring = newline2(datastring)
 			end
-			
-			if data.drops then
-				count = 0
+
+			if data.drops and #data.drops > 0 then
+				datastring = datastring .. S("drops: ")
+				datastring = newline(datastring)
+
 				for _,item in ipairs(data.drops) do
-					count = count + 1
-				end
-
-				if count > 0 then
-					datastring = datastring .. S("drops: ")
+					local itemDescription = ItemStack(item.name):get_short_description()
+					datastring = datastring .. itemDescription
 					datastring = newline(datastring)
-
-					for _,item in ipairs(data.drops) do
-						local itemDescription = ItemStack(item.name):get_short_description()
-						datastring = datastring .. itemDescription
-						datastring = newline(datastring)
-					end
-
-					datastring = newline2(datastring)
 				end
+
+				datastring = newline2(datastring)
 			end
 
 			if data.follow then
@@ -1203,12 +1196,11 @@ doc.add_category("mobs", {
 						datastring = newline(datastring)
 					end
 				end
-				
+
 				datastring = newline2(datastring)
 			end
 
 			local formstring = doc.widgets.text(datastring, nil, nil, doc.FORMSPEC.ENTRY_WIDTH - 1.2)
-			
 			return formstring
 		else
 			return "label[0,1;NO DATA AVALIABLE!]"
