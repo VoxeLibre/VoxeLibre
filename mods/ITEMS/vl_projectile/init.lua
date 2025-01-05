@@ -359,24 +359,24 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	local node_def = core.registered_nodes[node.name]
 	local collides_with = projectile_def.collides_with
 
-	if entity_def.physical then
-		-- Projectile has stopped in one axis, so it probably hit something.
-		-- This detection is a bit clunky, but sadly, MT does not offer a direct collision detection for us. :-(
-		local vel = self.object:get_velocity()
-		if not self._last_velocity then
-			self._last_velocity = vel
-			return
-		end
+	if not collides_with or not mcl_util.match_node_to_filter(node.name, collides_with) then
+		if entity_def.physical then
+			-- Projectile has stopped in one axis, so it probably hit something.
+			-- This detection is a bit clunky, but sadly, MT does not offer a direct collision detection for us. :-(
+			local vel = self.object:get_velocity()
+			if not self._last_velocity then
+				self._last_velocity = vel
+				return
+			end
 
-		local delta_v = (vel - self._last_velocity)
-		local vel_length = vector.length(vel)
-		if vel_length > 1 then delta_v = delta_v / vel_length end
-		self._last_velocity = vel
-		if math.abs(delta_v.x) <= 0.1 and math.abs(delta_v.z) <= 0.1 and math.abs(delta_v.y) <= 0.2 then
-			return
-		end
-	else
-		if node_def and not node_def.walkable and (not collides_with or not mcl_util.match_node_to_filter(node.name, collides_with)) then
+			local delta_v = (vel - self._last_velocity)
+			local vel_length = vector.length(vel)
+			if vel_length > 1 then delta_v = delta_v / vel_length end
+			self._last_velocity = vel
+			if math.abs(delta_v.x) <= 0.1 and math.abs(delta_v.z) <= 0.1 and math.abs(delta_v.y) <= 0.2 then
+				return
+			end
+		elseif node_def and not node_def.walkable then
 			return
 		end
 	end
@@ -430,7 +430,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 		if hook then hook(self, self._stuckin, snode, sdef) end
 	end
 
-	-- Call entity collied hook
+	-- Call entity collided hook
 	local hook = projectile_def.on_collide_with_solid
 	if hook then hook(self, pos, node, node_def) end
 

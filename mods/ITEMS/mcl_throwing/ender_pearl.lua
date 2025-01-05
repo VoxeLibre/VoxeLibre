@@ -31,7 +31,7 @@ function on_collide(self, pos, node)
 	end
 
 	-- Make sure we have a reference to the player
-	local player = self._thrower and core.get_player_by_name(self._thrower)
+	local player = self._owner and core.get_player_by_name(self._owner)
 	if not player then return end
 
 	-- Teleport and hurt player
@@ -101,11 +101,11 @@ end
 
 -- Ender pearl entity
 vl_projectile.register("mcl_throwing:ender_pearl_entity",{
-	physical = false,
+	physical = true,
 	timer=0,
 	textures = {"mcl_throwing_ender_pearl.png"},
 	visual_size = {x=0.9, y=0.9},
-	collisionbox = {0,0,0,0,0,0},
+	collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
 	pointable = false,
 
 	get_staticdata = mcl_throwing.get_staticdata,
@@ -113,7 +113,6 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 
 	on_step = vl_projectile.update_projectile,
 	_lastpos={},
-	_thrower = nil,		-- Player ObjectRef of the player who threw the ender pearl
 	_vl_projectile = {
 		behaviors = {
 			vl_projectile.collides_with_solids,
