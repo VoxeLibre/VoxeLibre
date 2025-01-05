@@ -73,28 +73,21 @@ local cocoa_place = mcl_cocoas.place
 local cocoa_grow = mcl_cocoas.grow
 
 -- Cocoa pod variant definitions.
---[[ TODO: Use a mesh for cocoas for perfect texture compability. ]]
 local podinfo = {
-	{	desc = S("Premature Cocoa Pod"),
+	{
+		desc = S("Premature Cocoa Pod"),
 		longdesc = S("Cocoa pods grow on the side of jungle trees in 3 stages."),
-		tiles = {
-			"mcl_cocoas_cocoa_stage_0.png",
-		},
 		n_box = {-0.125, -0.0625, 0.1875, 0.125, 0.25, 0.4375},
 		s_box = {-0.125, -0.0625, 0.1875, 0.125, 0.5,  0.5   },
 	},
-	{	desc = S("Medium Cocoa Pod"),
-		tiles = {
-			"mcl_cocoas_cocoa_stage_1.png",
-		},
+	{
+		desc = S("Medium Cocoa Pod"),
 		n_box = {-0.1875, -0.1875, 0.0625, 0.1875, 0.25, 0.4375},
 		s_box = {-0.1875, -0.1875, 0.0625, 0.1875, 0.5,  0.5   },
 	},
-	{	desc = S("Mature Cocoa Pod"),
+	{
+		desc = S("Mature Cocoa Pod"),
 		longdesc = S("A mature cocoa pod grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further."),
-		tiles = {
-			"mcl_cocoas_cocoa_stage_2.png",
-		},
 		n_box = {-0.25, -0.3125, -0.0625, 0.25, 0.25, 0.4375},
 		s_box = {-0.25, -0.3125, -0.0625, 0.25, 0.5,  0.5   },
 	},
@@ -107,16 +100,10 @@ for i = 1, 3 do
 		_doc_items_longdesc = podinfo[i].longdesc,
 		paramtype = "light",
 		paramtype2 = "facedir",
-		drawtype = "nodebox",
-		tiles = podinfo[i].tiles,
+		drawtype = "mesh",
+		mesh = "mcl_cocoas_cocoa_stage_"..(i-1)..".obj",
+		tiles = {"mcl_cocoas_cocoa_stage_"..(i-1)..".png"},
 		use_texture_alpha = "clip",
-		node_box = {
-			type = "fixed",
-			fixed = {
-				podinfo[i].n_box, -- Pod
-				-- FIXME: This has a thickness of 0. Is this OK in Luanti?
-				{ 0, 0.25, 0.25, 0, 0.5, 0.5 }, }, -- Stem
-		},
 		collision_box = {
 			type = "fixed",
 			fixed = podinfo[i].n_box
@@ -146,8 +133,7 @@ for i = 1, 3 do
 	if i == 2 then
 		def._doc_items_longdesc = nil
 		def._doc_items_create_entry = false
-	end
-	if i == 3 then
+	elseif i == 3 then
 		def.drop = "mcl_cocoas:cocoa_beans 3"
 		def._on_bone_mealing = nil
 	end
@@ -171,16 +157,16 @@ minetest.register_craftitem("mcl_cocoas:cocoa_beans", {
 })
 
 minetest.register_abm({
-		label = "Cocoa pod growth",
-		nodenames = {"mcl_cocoas:cocoa_1", "mcl_cocoas:cocoa_2"},
-		-- Same as potatoes
-		-- TODO: Tweak/balance the growth speed
-		interval = 50,
-		chance = 20,
-		action = function(pos, node)
-			mcl_cocoas.grow(pos)
-		end
-}	)
+	label = "Cocoa pod growth",
+	nodenames = {"mcl_cocoas:cocoa_1", "mcl_cocoas:cocoa_2"},
+	-- Same as potatoes
+	-- TODO: Tweak/balance the growth speed
+	interval = 50,
+	chance = 20,
+	action = function(pos, node)
+		mcl_cocoas.grow(pos)
+	end
+})
 
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
