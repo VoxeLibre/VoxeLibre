@@ -175,6 +175,7 @@ local fish = function(itemstack, player, pointed_thing)
 			ent = objs[n]:get_luaentity()
 			if ent and ent._owner == player_name and ent.objtype=="fishing" then
 				noent = false
+				mcl_util.remove_entity(ent)
 				break
 			end
 		end
@@ -319,14 +320,13 @@ vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 	on_activate = mcl_throwing.on_activate,
 
 	_vl_projectile = {
+		survive_collision = true,
 		behaviors = {
 			vl_projectile.collides_with_solids,
 		},
 		collides_with = {"group:liquid"},
 		on_collide_with_solid = function(self, pos, node)
 			local player = self._owner
-
-			mcl_util.remove_entity(self)
 
 			-- Make sure the player field is valid for when we create the floating bobber
 			if not player then return end
@@ -338,6 +338,11 @@ vl_projectile.register("mcl_fishing:flying_bobber_entity", {
 				local ent = core.add_entity(pos, "mcl_fishing:bobber_entity"):get_luaentity()
 				ent.player = player
 				ent.child = true
+				mcl_util.remove_entity(self)
+			else
+				local obj = self.object
+				obj:set_velocity(vector.zero())
+				obj:set_acceleration(vector.zero())
 			end
 		end
 	},
