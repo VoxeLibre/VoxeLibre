@@ -99,10 +99,10 @@ end
 --[[
   Returns true if an item was pushed to the minecart
 ]]
-local function hopper_push_to_mc(mc_ent, dest_pos, inv_size)
+local function hopper_push_to_mc(mc_ent, dest_pos)
 	if not mcl_util.metadata_last_act(minetest.get_meta(dest_pos), "hopper_push_timer", 1) then return false end
 
-	local dest_inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
+	local dest_inv = mcl_entity_invs.load_inv(mc_ent, mc_ent._inv_size)
 	if not dest_inv then
 		mcl_log("No inv")
 		return false
@@ -144,10 +144,10 @@ end
 --[[
   Returns true if an item was pulled from the minecart
 ]]
-local function hopper_pull_from_mc(mc_ent, dest_pos, inv_size)
+local function hopper_pull_from_mc(mc_ent, dest_pos)
 	if not mcl_util.metadata_last_act(minetest.get_meta(dest_pos), "hopper_pull_timer", 1) then return false end
 
-	local inv = mcl_entity_invs.load_inv(mc_ent, inv_size)
+	local inv = mcl_entity_invs.load_inv(mc_ent, mc_ent._inv_size)
 	if not inv then
 		mcl_log("No inv")
 		return false
@@ -300,7 +300,7 @@ local def_hopper = {
 		-- Only pull to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
-			hopper_pull_from_mc(cart, pos, 5)
+			hopper_pull_from_mc(cart, pos)
 		end
 	end,
 	_mcl_minecarts_on_enter_above = function(pos, cart, next_dir)
@@ -309,7 +309,7 @@ local def_hopper = {
 		-- Only push to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
-			hopper_push_to_mc(cart, pos, 5)
+			hopper_push_to_mc(cart, pos)
 		end
 	end,
 	_mcl_minecarts_on_leave_above = function(pos, cart, next_dir)
@@ -331,9 +331,9 @@ local def_hopper = {
 		end
 		if vector.direction(pos,cart_pos).y > 0 then
 			-- The cart is above us, pull from minecart
-			hopper_pull_from_mc(cart, pos, 5)
+			hopper_pull_from_mc(cart, pos)
 		else
-			hopper_push_to_mc(cart, pos, 5)
+			hopper_push_to_mc(cart, pos)
 		end
 
 		return true
@@ -436,7 +436,7 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
 end
 
----Sidewars hopper (base definition)
+---Sideways hopper (base definition)
 ---@type node_definition
 local def_hopper_side = {
 	_doc_items_create_entry = false,
@@ -549,7 +549,7 @@ local def_hopper_side = {
 		-- Only push to containers
 		if cart and cart.groups and (cart.groups.container or 0) ~= 0 then
 			cart:add_node_watch(pos)
-			hopper_pull_from_mc(cart, pos, 5)
+			hopper_pull_from_mc(cart, pos)
 		end
 	end,
 	_mcl_minecarts_on_leave_below = function(pos, cart, next_dir)
@@ -581,7 +581,7 @@ local def_hopper_side = {
 			cart:add_node_watch(pos)
 		end
 
-		hopper_push_to_mc(cart, pos, 5)
+		hopper_push_to_mc(cart, pos)
 	end,
 	_mcl_minecarts_on_leave_side = function(pos, cart, next_dir)
 		if not cart then return end
@@ -599,9 +599,9 @@ local def_hopper_side = {
 		end
 
 		if cart_pos.y == pos.y then
-			hopper_push_to_mc(cart, pos, 5)
+			hopper_push_to_mc(cart, pos)
 		elseif cart_pos.y > pos.y then
-			hopper_pull_from_mc(cart, pos, 5)
+			hopper_pull_from_mc(cart, pos)
 		end
 
 		return true
@@ -676,20 +676,12 @@ minetest.register_abm({
 							and (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC)
 							and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
 							mcl_log("Minecart close enough")
-							if entity.name == "mcl_minecarts:hopper_minecart" then
-								--hopper_pull_from_mc(entity, pos, 5)
-							elseif entity.name == "mcl_minecarts:chest_minecart" or entity.name == "mcl_boats:chest_boat" then
-								hopper_pull_from_mc(entity, pos, 27)
-							end
+							hopper_pull_from_mc(entity, pos)
 						elseif (ent_pos_y == pos.y - 1)
 							and (hm_pos.x >= pos.x - DIST_FROM_MC and hm_pos.x <= pos.x + DIST_FROM_MC)
 							and (hm_pos.z >= pos.z - DIST_FROM_MC and hm_pos.z <= pos.z + DIST_FROM_MC) then
 							mcl_log("Minecart close enough")
-							if entity.name == "mcl_minecarts:hopper_minecart" then
-								--hopper_push_to_mc(entity, pos, 5)
-							elseif entity.name == "mcl_minecarts:chest_minecart" or entity.name == "mcl_boats:chest_boat" then
-								hopper_push_to_mc(entity, pos, 27)
-							end
+							hopper_push_to_mc(entity, pos)
 						end
 					end
 				else
