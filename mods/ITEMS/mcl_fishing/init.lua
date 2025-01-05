@@ -35,8 +35,7 @@ local fish = function(itemstack, player, pointed_thing)
 		local pos = player:get_pos()
 
 		local objs = minetest.get_objects_inside_radius(pos, 125)
-		local num = 0
-		local ent = nil
+		local ent
 		local noent = true
 
 		local durability = FISHING_ROD_DURABILITY
@@ -53,9 +52,7 @@ local fish = function(itemstack, player, pointed_thing)
 					if (player:get_player_name() == ent.player) then
 						noent = false
 						if ent._dive == true then
-							local itemname
 							local items
-							local itemcount = 1
 							local pr = PseudoRandom(os.time() * math.random(1, 100))
 							local r = pr:next(1, 100)
 							local fish_values = {85, 84.8, 84.7, 84.5}
@@ -354,10 +351,8 @@ mcl_throwing.register_throwable_object("mcl_fishing:flying_bobber", "mcl_fishing
 -- If player leaves area, remove bobber.
 minetest.register_on_leaveplayer(function(player)
 	local objs = minetest.get_objects_inside_radius(player:get_pos(), 250)
-	local ent = nil
-	local noent = true
 	for n = 1, #objs do
-		ent = objs[n]:get_luaentity()
+		local ent = objs[n]:get_luaentity()
 		if ent then
 			if ent.player and ent.objtype=="fishing" then
 				ent.object:remove()
@@ -371,12 +366,9 @@ end)
 -- If player dies, remove bobber.
 minetest.register_on_dieplayer(function(player)
 	local objs = minetest.get_objects_inside_radius(player:get_pos(), 250)
-	local num = 0
-	local ent = nil
-	local noent = true
 
 	for n = 1, #objs do
-		ent = objs[n]:get_luaentity()
+		local ent = objs[n]:get_luaentity()
 		if ent then
 			if ent.player and ent.objtype=="fishing" then
 				ent.object:remove()
@@ -515,10 +507,8 @@ minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 
 
 minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
-
 	if itemstack:get_name() == "mcl_fishing:pufferfish_raw" then
 		mcl_potions.give_effect_by_level("poison", user, 3, 60)
 		mcl_potions.give_effect_by_level("nausea", user, 2, 20)
 	end
-
 end )
