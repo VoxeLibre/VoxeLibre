@@ -1,7 +1,6 @@
 mcl_itemframes = {}
 mcl_itemframes.registered_nodes = {}
 mcl_itemframes.registered_itemframes = {}
-local S = minetest.get_translator(minetest.get_current_modname())
 
 local function table_merge(t, ...)
 	local t2 = table.copy(t)
@@ -15,17 +14,17 @@ local fbox = {
 
 local base_props = {
 	visual = "wielditem",
-	visual_size = { x = 0.3, y = 0.3 },
+	visual_size = {x = 0.3, y = 0.3},
 	physical = false,
 	pointable = false,
-	textures = { "blank.png" },
+	textures = {"blank.png"},
 }
 
 local map_props = {
 	visual = "upright_sprite",
-	visual_size = { x = 1, y = 1 },
+	visual_size = {x = 1, y = 1},
 	collide_with_objects = false,
-	textures = { "blank.png" },
+	textures = {"blank.png"},
 }
 
 mcl_itemframes.tpl_node = {
@@ -51,9 +50,10 @@ mcl_itemframes.tpl_node = {
 mcl_itemframes.tpl_entity = {
 	initial_properties = base_props,
 }
---Utility functions
+
+-- Utility functions
 local function find_entity(pos)
-	for _,o in pairs(minetest.get_objects_inside_radius(pos, 0.45)) do
+	for _,o in pairs(core.get_objects_inside_radius(pos, 0.45)) do
 		local l = o:get_luaentity()
 		if l and l.name == "mcl_itemframes:item" then
 			return l
@@ -64,7 +64,7 @@ end
 local function find_or_create_entity(pos)
 	local l = find_entity(pos)
 	if not l then
-		l = minetest.add_entity(pos, "mcl_itemframes:item"):get_luaentity()
+		l = core.add_entity(pos, "mcl_itemframes:item"):get_luaentity()
 	end
 	return l
 end
@@ -78,8 +78,8 @@ end
 mcl_itemframes.remove_entity = remove_entity
 
 local function drop_item(pos)
-	local inv = minetest.get_meta(pos):get_inventory()
-	minetest.add_item(pos, inv:get_stack("main", 1))
+	local inv = core.get_meta(pos):get_inventory()
+	core.add_item(pos, inv:get_stack("main", 1))
 	inv:set_stack("main", 1, ItemStack(""))
 	remove_entity(pos)
 end
@@ -92,7 +92,7 @@ end
 
 local function update_entity(pos)
 	if not pos then return end
-	local inv = minetest.get_meta(pos):get_inventory()
+	local inv = core.get_meta(pos):get_inventory()
 	local itemstack = inv:get_stack("main", 1)
 	if not itemstack then
 		remove_entity(pos)
@@ -109,20 +109,20 @@ local function update_entity(pos)
 end
 mcl_itemframes.update_entity = update_entity
 
---Node functions
+-- Node functions
 function mcl_itemframes.tpl_node.on_rightclick(pos, node, clicker, ostack, pointed_thing)
 	local name = clicker:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
+	if core.is_protected(pos, name) then
+		core.record_protection_violation(pos, name)
 		return ostack
 	end
 	local pstack = ItemStack(ostack)
 	local itemstack = pstack:take_item()
-	local inv = minetest.get_meta(pos):get_inventory()
+	local inv = core.get_meta(pos):get_inventory()
 	drop_item(pos)
 	inv:set_stack("main", 1, itemstack)
 	update_entity(pos)
-	if not minetest.is_creative_enabled(clicker:get_player_name()) then
+	if not core.is_creative_enabled(clicker:get_player_name()) then
 		return pstack
 	end
 	return ostack
@@ -131,7 +131,7 @@ end
 mcl_itemframes.tpl_node.on_destruct = remove_entity
 
 function mcl_itemframes.tpl_node.on_construct(pos)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 	inv:set_size("main", 1)
 end
@@ -148,7 +148,7 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 	else
 		pos = self._itemframe_pos
 	end
-	local ndef = minetest.registered_nodes[minetest.get_node(pos).name]
+	local ndef = core.registered_nodes[core.get_node(pos).name]
 	if not ndef._mcl_itemframe then
 		self.object:remove()
 		update_entity()
@@ -159,14 +159,14 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 	self._stack = itemstack
 	self._map_id = get_map_id(itemstack)
 
-	local dir = minetest.wallmounted_to_dir(minetest.get_node(pos).param2)
+	local dir = core.wallmounted_to_dir(core.get_node(pos).param2)
 	self.object:set_pos(vector.add(self._itemframe_pos, dir * 0.42))
 	self.object:set_rotation(vector.dir_to_rotation(dir))
 
 	if self._map_id then
 		mcl_maps.load_map(self._map_id, function(texture)
 			if self.object and self.object:get_pos() then
-				self.object:set_properties(table_merge(map_props, { textures = { texture }}))
+				self.object:set_properties(table_merge(map_props, {textures = {texture}}))
 			end
 		end)
 		return
@@ -175,21 +175,21 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 	local ws = idef.wield_scale
 	self.object:set_properties(table_merge(base_props, {
 		wield_item = self._item,
-		visual_size = { x = base_props.visual_size.x / ws.x, y = base_props.visual_size.y / ws.y },
+		visual_size = {x = base_props.visual_size.x / ws.x, y = base_props.visual_size.y / ws.y},
 	}, def.object_properties or {}))
 end
 
 function mcl_itemframes.tpl_entity:get_staticdata()
-	local s = { item = self._item, itemframe_pos = self._itemframe_pos, itemstack = self._itemstack, map_id = self._map_id }
+	local s = {item = self._item, itemframe_pos = self._itemframe_pos, itemstack = self._itemstack, map_id = self._map_id}
 	s.props = self.object:get_properties()
-	return minetest.serialize(s)
+	return core.serialize(s)
 end
 
 function mcl_itemframes.tpl_entity:on_activate(staticdata, dtime_s)
-	local s = minetest.deserialize(staticdata)
+	local s = core.deserialize(staticdata)
 	if (type(staticdata) == "string" and dtime_s and dtime_s > 0) then
 		--try to re-initialize items without proper staticdata
-		local p = minetest.find_node_near(self.object:get_pos(), 1, {"group:itemframe"})
+		local p = core.find_node_near(self.object:get_pos(), 1, {"group:itemframe"})
 		self.object:remove()
 		if p then
 			update_entity(p)
@@ -209,11 +209,11 @@ function mcl_itemframes.tpl_entity:on_step(dtime)
 	self._timer = (self._timer and self._timer - dtime) or 1
 	if self._timer > 0 then return end
 	self._timer = 1
-	if minetest.get_item_group(minetest.get_node(self._itemframe_pos).name, "itemframe") <= 0 then
+	if core.get_item_group(core.get_node(self._itemframe_pos).name, "itemframe") <= 0 then
 		self.object:remove()
 		return
 	end
-	if minetest.get_item_group(self._item, "clock") > 0 then
+	if core.get_item_group(self._item, "clock") > 0 then
 		self:set_item(ItemStack("mcl_clock:clock_"..mcl_clock.get_clock_frame()))
 	end
 end
@@ -223,76 +223,25 @@ function mcl_itemframes.register_itemframe(name, def)
 	local nodename = "mcl_itemframes:"..name
 	table.insert(mcl_itemframes.registered_nodes, nodename)
 	mcl_itemframes.registered_itemframes[name] = def
-	minetest.register_node(":"..nodename, table_merge(mcl_itemframes.tpl_node, def.node, {
+	core.register_node(":"..nodename, table_merge(mcl_itemframes.tpl_node, def.node, {
 		_mcl_itemframe = name,
-		groups = table_merge({ dig_immediate = 3, deco_block = 1, dig_by_piston = 1, handy = 1, axey = 1, itemframe = 1 }, def.node.groups),
+		groups = table_merge({dig_immediate = 3, deco_block = 1, dig_by_piston = 1, handy = 1, axey = 1, itemframe = 1}, def.node.groups),
 	}))
 end
 
-minetest.register_entity("mcl_itemframes:item", mcl_itemframes.tpl_entity)
+core.register_entity("mcl_itemframes:item", mcl_itemframes.tpl_entity)
 
-mcl_itemframes.register_itemframe("frame", {
-	node = {
-		description = S("Item Frame"),
-		_tt_help = S("Can hold an item"),
-		_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
-		_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
-		tiles = { "mcl_itemframes_itemframe_background.png" },
-		inventory_image = "mcl_itemframes_item_frame.png",
-		wield_image = "mcl_itemframes_item_frame.png",
-	},
-})
-
-mcl_itemframes.register_itemframe("glow_frame", {
-	node = {
-		description = S("Glow Item Frame"),
-		_tt_help = S("Can hold an item and glows"),
-		_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
-		_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
-		tiles = { "mcl_itemframes_glow_item_frame_border.png" },
-		inventory_image = "mcl_itemframes_glow_item_frame.png",
-		wield_image = "mcl_itemframes_glow_item_frame.png",
-	},
-	object_properties = { glow = 15 },
-})
-
-awards.register_achievement("mcl_itemframes:glowframe", {
-	title = S("Glow and Behold!"),
-	description = S("Craft a glow item frame."),
-	icon = "mcl_itemframes_glow_item_frame.png",
-	trigger = {
-		type = "craft",
-		item = "mcl_itemframes:glow_item_frame",
-		target = 1
-	},
-	type = "Advancement",
-	group = "Overworld",
-})
-
-minetest.register_lbm({
+core.register_lbm({
 	label = "Respawn item frame item entities",
 	name = "mcl_itemframes:respawn_entities",
-	nodenames = { "group:itemframe" },
+	nodenames = {"group:itemframe"},
 	run_at_every_load = true,
 	action = function(pos,_)
 		update_entity(pos)
 	end
 })
 
--- Register the base frame's recipes.
-minetest.register_craft({
-	output = "mcl_itemframes:frame",
-	recipe = {
-		{ "mcl_core:stick", "mcl_core:stick", "mcl_core:stick" },
-		{ "mcl_core:stick", "mcl_mobitems:leather", "mcl_core:stick" },
-		{ "mcl_core:stick", "mcl_core:stick", "mcl_core:stick" },
-	}
-})
+local modpath = core.get_modpath(core.get_current_modname())
 
-minetest.register_craft({
-	type = "shapeless",
-	output = 'mcl_itemframes:glow_frame',
-	recipe = { 'mcl_mobitems:glow_ink_sac', 'mcl_itemframes:item_frame' },
-})
-
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/compat.lua")
+dofile(modpath .. "/register.lua")
+dofile(modpath .. "/compat.lua")
