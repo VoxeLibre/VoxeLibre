@@ -507,7 +507,7 @@ end
 local function get_water_spawn(p)
 		local nn = minetest.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
 		if nn and #nn > 0 then
-			return nn[math.random(#nn)]
+			return nn[math_random(#nn)]
 		end
 end
 
@@ -970,7 +970,7 @@ if mobs_spawn then
 			cumulative_chance = cumulative_chance + spawn_table[i].chance
 		end
 
-		local mob_chance_offset = math_random(1, 1e6) / 1e6 * cumulative_chance
+		local mob_chance_offset = math_random() * cumulative_chance
 		--minetest.log("action", "mob_chance_offset = "..tostring(mob_chance_offset).."/"..tostring(cumulative_chance))
 
 		for i = 1,#spawn_table do
@@ -984,7 +984,9 @@ if mobs_spawn then
 			mob_chance_offset = mob_chance_offset - mob_chance
 		end
 
-		assert(not "failed")
+		-- We should never reach this point
+		-- TODO: remove this before merging
+		error("failed")
 	end
 
 	local spawn_lists = {}
@@ -1000,7 +1002,7 @@ if mobs_spawn then
 		end
 		local cap_space_passive = mob_cap_space(pos, "passive", mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile )
 		if cap_space_passive > 0 then
-			if math.random(100) < peaceful_percentage_spawned then
+			if math_random(100) < peaceful_percentage_spawned then
 				spawn_passive = true
 			end
 		end
@@ -1103,7 +1105,7 @@ if mobs_spawn then
 			local group_min = mob_def_ent.spawn_in_group_min or 1
 			if not group_min then group_min = 1 end
 
-			local amount_to_spawn = math.random(group_min, spawn_in_group)
+			local amount_to_spawn = math_random(group_min, spawn_in_group)
 			mcl_log("Spawning quantity: " .. amount_to_spawn)
 			amount_to_spawn = math.min(amount_to_spawn, cap_space_available)
 			mcl_log("throttled spawning quantity: " .. amount_to_spawn)
@@ -1175,7 +1177,7 @@ if mobs_spawn then
 		timer = next_spawn
 		if timer > MAX_SPAWN_CYCLE_TIME then timer = MAX_SPAWN_CYCLE_TIME end
 
-		if took > debug_time_threshold then
+		if logging and took > debug_time_threshold then
 			minetest.log("action","[mcl_mobs] took "..took.." us")
 			minetest.log("Next spawn attempt in "..tostring(timer))
 		end
@@ -1226,7 +1228,7 @@ function mob_class:check_despawn(pos, dtime)
 			mcl_util.remove_entity(self)
 			return true
 		elseif self.lifetimer <= 10 then
-			if math.random(10) < 4 then
+			if math_random(10) < 4 then
 				self.despawn_immediately = true
 			else
 				self.lifetimer = 20
