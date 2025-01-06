@@ -51,6 +51,9 @@ function table.find(t, item)
 	return nil
 end
 
+---@param a table
+---@param b table
+---@return table
 function table.intersect(a, b)
 	local values_map = {}
 
@@ -60,7 +63,7 @@ function table.intersect(a, b)
 	-- Get all the values that are in both tables
 	local result = {}
 	for v,count in pairs(values_map) do
-		if count == 2 then table.insert(result, v) end
+		if count == 2 then result[#result + 1] = v end
 	end
 	return result
 end
