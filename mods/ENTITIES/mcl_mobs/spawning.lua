@@ -277,8 +277,6 @@ function mcl_mobs:spawn_setup(def)
 	local chance           = def.chance or 1000
 	local aoc              = def.aoc or aoc_range
 
-	local
-
 	-- chance/spawn number override in minetest.conf for registered mob
 	local numbers = minetest.settings:get(name)
 	if numbers then
@@ -495,10 +493,10 @@ local function is_farm_animal(n)
 end
 
 local function get_water_spawn(p)
-		local nn = minetest.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
-		if nn and #nn > 0 then
-			return nn[math_random(#nn)]
-		end
+	local nn = minetest.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
+	if nn and #nn > 0 then
+		return nn[math_random(#nn)]
+	end
 end
 
 --- helper to check a single node p
@@ -687,6 +685,22 @@ function mcl_mobs.spawn(pos,id)
 	return obj
 end
 
+---@class mcl_mobs.SpawnState
+---@field cap_space_hostile integer
+---@field cap_space_passive integer
+---@field spawn_hostile boolean
+---@field spawn_passive boolean
+---@field is_ground boolean
+---@field is_grass boolean
+---@field is_water boolean
+---@field biome string
+---@field dimension string
+---@field light integer
+---@field serialized string
+
+---@param pos vector.Vector
+---@param parent_state mcl_mobs.SpawnState?
+---@return mcl_mobs.SpawnState?, core.Node?
 local function build_state_for_position(pos, parent_state)
 	-- Get spawning parameters for this location
 	local biome_name = get_biome_name(pos)
@@ -768,6 +782,14 @@ local function build_state_for_position(pos, parent_state)
 		end
 	end
 
+	-- Convert state into a format that can be used as a hash table key
+	state.serialized = string.format("%s:%s:d:%d:%s:%s:%s:%s:%s:%d",
+		state.biome, state.dimension,
+		state.cap_space_hostile, state.cap_space_passive,
+		state.spawn_hostile, state.spawn_passive,
+		state.is_ground, state.is_grass, state.is_water,
+		state.light
+	)
 	return state,node
 end
 
@@ -983,24 +1005,16 @@ if mobs_spawn then
 	end
 
 	local spawn_lists = {}
-	local function get_spawn_list(pos, cap_space_hostile, cap_space_non_hostile)
-		local spawn_hostile = false
-		local spawn_passive = false
-
+	local function get_spawn_list(pos, hostile_limit, passive_limit)
 		-- Check capacity
-		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("spawn_class", pos)
-		local cap_space_hostile = mob_cap_space(pos, "hostile", mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile )
-		if cap_space_hostile > 0 then
-			spawn_hostile = true
-		end
-		local cap_space_passive = mob_cap_space(pos, "passive", mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile )
-		if cap_space_passive > 0 then
-			if math_random(100) < peaceful_percentage_spawned then
-				spawn_passive = true
-			end
-		end
+		local mob_counts_close, mob_counts_wide = count_mobs_all("spawn_class", pos)
+		local cap_space_hostile = mob_cap_space(pos, "hostile", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
+		local spawn_hostile = cap_space_hostile > 0
 
-		-- Merge light level chcekss with cap checks
+		local cap_space_passive = mob_cap_space(pos, "passive", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
+		local spawn_passive = cap_space_passive > 0 and math_random(100) < peaceful_percentage_spawned
+
+		-- Merge light level checks with cap checks
 		local state, node = build_state_for_position(pos)
 		if not state then return end
 		state.spawn_hostile = spawn_hostile and state.spawn_hostile
@@ -1010,7 +1024,7 @@ if mobs_spawn then
 		if not state.spawn_hostile and not state.spawn_passive then return end
 
 		-- Check the cache to see if we have already built a spawn list for this state
-		local state_hash = compute_hash(state) -- from mcl_enchanting
+		local state_hash = state.serialized
 		local spawn_list = spawn_lists[state_hash]
 		state.cap_space_hostile = cap_space_hostile
 		state.cap_space_passive = cap_space_passive
@@ -1020,16 +1034,21 @@ if mobs_spawn then
 
 		-- Build a spawn list for this state
 		spawn_list = {}
-		local spawn_names = {}
 		for _,def in pairs(spawn_dictionary) do
 			if initial_spawn_check(state, node, def) then
 				spawn_list[#spawn_list + 1] = def
-				spawn_names[#spawn_names + 1] = def.name
 			end
 		end
 
 		if logging then
-			minetest.log(dump({
+			local spawn_names = {}
+			for _,def in pairs(spawn_dictionary) do
+				if initial_spawn_check(state, node, def) then
+					spawn_names[#spawn_names + 1] = def.name
+				end
+			end
+
+			core.log(dump({
 				pos = pos,
 				node = node,
 				state = state,
@@ -1093,7 +1112,6 @@ if mobs_spawn then
 		--everything is correct, spawn mob
 		local spawn_in_group = mob_def_ent.spawn_in_group or 4
 
-		local spawned
 		if spawn_in_group then
 			local group_min = mob_def_ent.spawn_in_group_min or 1
 			if not group_min then group_min = 1 end
