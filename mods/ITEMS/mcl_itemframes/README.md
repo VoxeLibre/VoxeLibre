@@ -14,3 +14,7 @@ ultimately contained about 1000 lines of code.
 > With the rewrite it was possible to reduce this to less than 300 and add the
 possibility to place itemframes horizontally as well as a clean API to define
 custom item holding nodes.
+
+## Media
+
+* `mcl_itemframes_frame.obj` by rudzik8 (CC BY-SA 4.0)
