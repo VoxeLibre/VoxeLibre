@@ -1,6 +1,12 @@
-mcl_itemframes = {}
-mcl_itemframes.registered_nodes = {}
-mcl_itemframes.registered_itemframes = {}
+mcl_itemframes = {
+	registered_nodes = {},
+	registered_itemframes = {},
+}
+
+local S = core.get_translator(core.get_current_modname())
+
+local longdesc = S("Item frames are decorative blocks in which items can be placed.")
+local usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item.")
 
 local function table_merge(t, ...)
 	local t2 = table.copy(t)
@@ -41,6 +47,8 @@ local tpl_node = {
 	node_placement_prediction = "",
 	_mcl_hardness = 0.5,
 	_mcl_blast_resistance = 0.5,
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usagehelp,
 	after_dig_node = mcl_util.drop_items_from_meta_container({"main"}),
 	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_put = function() return 0 end,
