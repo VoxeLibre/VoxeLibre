@@ -14,26 +14,19 @@ local get_node                     = minetest.get_node
 local get_node_light               = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local mt_get_biome_name            = minetest.get_biome_name
-local get_objects_inside_radius    = minetest.get_objects_inside_radius
 local get_connected_players        = minetest.get_connected_players
-local registered_nodes             = minetest.registered_nodes
+local get_item_group               = core.get_item_group
 
 local math_min       = math.min
 local math_max       = math.max
 local math_random    = math.random
 local math_floor     = math.floor
 local math_ceil      = math.ceil
-local math_cos       = math.cos
-local math_sin       = math.sin
 local math_sqrt      = math.sqrt
 local math_abs       = math.abs
 
 local vector_distance = vector.distance
-local vector_new      = vector.new
-local vector_floor    = vector.floor
 
-local table_copy     = table.copy
-local table_remove   = table.remove
 local pairs = pairs
 local check_line_of_sight = mcl_mobs.check_line_of_sight
 
@@ -96,7 +89,6 @@ mcl_log("Percentage of hostile spawns are group: " .. hostile_group_percentage_s
 --do mobs spawn?
 local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
-local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn",false)
 
 -- count how many mobs are in an area
 local function count_mobs(pos,r,mob_type)
@@ -752,9 +744,7 @@ local function build_state_for_position(pos, parent_state)
 
 	-- Legacy lighting
 	if not modern_lighting then
-		if gotten_light < spawn_def.min_light or gotten_light > spawn_def.max_light then
-			state.light = gotten_light
-		end
+		state.light = gotten_light
 	else
 		-- Modern lighting
 		local light_node = get_node(pos)
@@ -960,7 +950,6 @@ if mobs_spawn then
 	end
 
 	local function find_spawning_position(pos, max_times)
-		local spawning_position
 		local max_loops = max_times or 1
 
 		--mcl_log("mapgen_limit: " .. SPAWN_MAPGEN_LIMIT)
@@ -1075,7 +1064,7 @@ if mobs_spawn then
 
 		-- Select a mob
 		local spawn_list, state, node = get_spawn_list(spawning_position, cap_space_hostile, cap_space_non_hostile)
-		if not spawn_list then return end
+		if not spawn_list or not state then return end
 		local mob_def = select_random_mob_def(spawn_list)
 		if not mob_def or not mob_def.name then return end
 		local mob_def_ent = minetest.registered_entities[mob_def.name]
