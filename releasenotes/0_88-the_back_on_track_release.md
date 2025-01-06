@@ -16,6 +16,7 @@
 * THE-NERD2
 * ethan
 * villager8472
+* ninjum
 
 ### Minecart update
 Thanks to enormous efforts of teknomunk, minecart code is rewritten and better than ever! Minecarts that get off the rails behave predictably and can get *back on track*. They can move diagonally on zig-zag rails. Proper physics are employed. Command block minecarts have been added. Code quality is improved and further improvements and additions will be easier and more feasible. Countless bugs have been fixed and carts are finally quite reliable. Make sure to check them out and let us know what you think!
@@ -159,3 +160,25 @@ Map (from the map item) colors have been improved by kno10, who also added to th
 * Fixed unknown items related crash – by teknomunk
 * Fixed a potential mob-related crash – by Herowl and kno10
 * Fixed rare crashes related to dispensers/droppers interacting with unknown nodes – by rudzik8
+
+## 0.88.1 hotfix
+* Added Galician translation – by ninjum
+* Updated translation files – by kno10
+* Fixed a bug that derailed carts in some cases – by teknomunk
+* Changed cart dismount to behind the cart – by teknomunk
+* Mob movement logging disabled by default – by teknomunk
+* Added map colors for new nodes – by kno10
+* Fixed minor code quality issues – by kno10, rudzik8 and teknomunk
+* Fixed bobber and throwables collision issues – by teknomunk
+* Meshes for cocoa pods used properly – by rudzik8
+* Fixed jockey mob spawn check – by rudzik8
+* Added a cooldown for droppers and dispensers – by kno10
+* Fixed node interaction with firework rocket in hand – by rudzik8
+* Fixed bugs related to bonemealing sweetberry (including a crash) – by teknomunk
+* Fixed a rare crash related to TNT minecarts – by teknomunk
+* Fixed a fishing pole casting crash – by teknomunk
+* Fixed a crash related to rocket usage – by teknomunk
+* Fixed a crash related to ender pearls – by teonomunk
+* Fixed a rare crash relates to droppers – by rudzik8
+* Fixed a bug related to minecarts that may destroy items in transfer in rare cases – by teknomumk
+* Fixed a crash when trying to strip hollow logs – by rudzik8

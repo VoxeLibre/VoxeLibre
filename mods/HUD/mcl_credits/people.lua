@@ -155,6 +155,7 @@ return {
 		"THE-NERD2",
 		"ethan",
 		"villager8472",
+		"ninjum",
 	}},
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",
@@ -260,6 +261,7 @@ return {
 		"Pixel-Peter",
 		"Laudrin",
 		"chmodsayshello",
+		"ninjum",
 	}},
 	{S("Funders"), 0xF7FF00, {
 		"40W",
