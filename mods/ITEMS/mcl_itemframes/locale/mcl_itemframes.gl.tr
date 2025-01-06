@@ -1,11 +1,21 @@
 # textdomain: mcl_itemframes
-Can hold an item.=Pode conter un elemento.
-Item Frame=Marco de elemento
-Can hold an item and glows.=Pode conter un elemento e brilla.
-Glowing Item Frame=Marco de elementos brillantes
-##[ item_frames_API.lua ]##
-Glow and Behold!=¡Brillo e Velaí!
-Craft a glow item frame.=Elabora un marco de elementos brillantes.
 Item frames are decorative blocks in which items can be placed.=Os marcos de elementos son bloques decorativos nos que se poden colocar elementos.
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Simplemente coloque calquera elemento no marco do elemento. Use o marco do elemento de novo para recuperar o elemento.
+Item Frame=Marco de elemento
+Can hold an item=
+Glow Item Frame=
+Can hold an item and glows=
+Invisible Item Frame=
+Can hold an item but is invisible=
+Invisible Glow Item Frame=
+Can hold an item and glows but is invisible=
+Glow and Behold!=¡Brillo e Velaí!
+Craft a glow item frame.=Elabora un marco de elementos brillantes.
+
+
+##### not used anymore #####
+
+Can hold an item.=Pode conter un elemento.
+Can hold an item and glows.=Pode conter un elemento e brilla.
+Glowing Item Frame=Marco de elementos brillantes
 Glowing item frames are decorative blocks in which items can be placed and made to glow.=Os marcos de elementos brillantes son bloques decorativos nos que se poden colocar elementos.
