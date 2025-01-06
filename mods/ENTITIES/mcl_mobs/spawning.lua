@@ -273,18 +273,11 @@ function mcl_mobs:spawn_setup(def)
 		return
 	end
 
-	local dimension        = def.dimension or "overworld"
-	local type_of_spawning = def.type_of_spawning or "ground"
 	local biomes           = def.biomes or nil
-	local min_light        = def.min_light or 0
-	local max_light        = def.max_light or (minetest.LIGHT_MAX + 1)
 	local chance           = def.chance or 1000
 	local aoc              = def.aoc or aoc_range
-	local min_height       = def.min_height or mcl_vars.mg_overworld_min
-	local max_height       = def.max_height or mcl_vars.mg_overworld_max
-	local day_toggle       = def.day_toggle
-	local on_spawn         = def.on_spawn
-	local check_position   = def.check_position
+
+	local
 
 	-- chance/spawn number override in minetest.conf for registered mob
 	local numbers = minetest.settings:get(name)
@@ -306,18 +299,18 @@ function mcl_mobs:spawn_setup(def)
 
 	spawn_dictionary[#spawn_dictionary + 1] = {
 		name             = name,
-		dimension        = dimension,
-		type_of_spawning = type_of_spawning,
+		dimension        = def.dimension or "overworld",
+		type_of_spawning = def.type_of_spawning or "ground",
 		biomes           = biomes,
-		min_light        = min_light,
-		max_light        = max_light,
+		min_light        = def.min_light or 0,
+		max_light        = def.max_light or (core.LIGHT_MAX + 1),
 		chance           = chance,
 		aoc              = aoc,
-		min_height       = min_height,
-		max_height       = max_height,
-		day_toggle       = day_toggle,
-		check_position   = check_position,
-		on_spawn         = on_spawn,
+		min_height       = def.min_height or mcl_vars.mg_overworld_min,
+		max_height       = def.max_height or mcl_vars.mg_overworld_max,
+		day_toggle       = def.day_toggle,
+		check_position   = def.check_position,
+		on_spawn         = def.on_spawn,
 	}
 end
 
@@ -375,7 +368,7 @@ function mcl_mobs:mob_light_lvl(mob_name, dimension)
 end
 
 function mcl_mobs:non_spawn_specific(mob_name,dimension,min_light,max_light)
-	table.insert(non_spawn_dictionary, mob_name)
+	non_spawn_dictionary[#non_spawn_dictionary + 1] = mob_name
 	non_spawn_dictionary[mob_name] = {
 		[dimension] = {
 			min_light = min_light , max_light = max_light
@@ -782,8 +775,7 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 	-- Find possible spawn locations and shuffle the list
 	local nn = find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5), vector.offset(p,5,3,5), spawn_on)
 	if not nn or #nn < 1 then
-		nn = {}
-		table.insert(nn,p)
+		nn = {p}
 	end
 	table.shuffle(nn)
 	--minetest.log("Spawn point list: "..dump(nn))
@@ -840,7 +832,7 @@ minetest.register_chatcommand("spawn_mob",{
 
 		local modifiers = {}
 		for capture in string.gmatch(param, "%:(.-)%:") do
-			table.insert(modifiers, ":"..capture)
+			modifiers[#modifiers + 1] = ":"..capture
 		end
 
 		local mobname = param
@@ -1031,8 +1023,8 @@ if mobs_spawn then
 		local spawn_names = {}
 		for _,def in pairs(spawn_dictionary) do
 			if initial_spawn_check(state, node, def) then
-				table.insert(spawn_list, def)
-				table.insert(spawn_names, def.name)
+				spawn_list[#spawn_list + 1] = def
+				spawn_names[#spawn_names + 1] = def.name
 			end
 		end
 
