@@ -27,7 +27,7 @@ local map_props = {
 	textures = {"blank.png"},
 }
 
-mcl_itemframes.tpl_node = {
+local tpl_node = {
 	drawtype = "mesh",
 	is_ground_content = false,
 	mesh = "mcl_itemframes_frame.obj",
@@ -47,9 +47,11 @@ mcl_itemframes.tpl_node = {
 	allow_metadata_inventory_take = function() return 0 end,
 }
 
-mcl_itemframes.tpl_entity = {
+local tpl_entity = {
 	initial_properties = base_props,
 }
+
+local tpl_groups = {dig_immediate = 3, deco_block = 1, dig_by_piston = 1, handy = 1, axey = 1, itemframe = 1}
 
 -- Utility functions
 local function find_entity(pos)
@@ -110,7 +112,7 @@ end
 mcl_itemframes.update_entity = update_entity
 
 -- Node functions
-function mcl_itemframes.tpl_node.on_rightclick(pos, node, clicker, ostack, pointed_thing)
+function tpl_node.on_rightclick(pos, node, clicker, ostack, pointed_thing)
 	local name = clicker:get_player_name()
 	if core.is_protected(pos, name) then
 		core.record_protection_violation(pos, name)
@@ -128,16 +130,16 @@ function mcl_itemframes.tpl_node.on_rightclick(pos, node, clicker, ostack, point
 	return ostack
 end
 
-mcl_itemframes.tpl_node.on_destruct = remove_entity
+tpl_node.on_destruct = remove_entity
 
-function mcl_itemframes.tpl_node.on_construct(pos)
+function tpl_node.on_construct(pos)
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 	inv:set_size("main", 1)
 end
 
 -- Entity functions
-function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
+function tpl_entity:set_item(itemstack, pos)
 	if not itemstack or not itemstack.get_name then
 		self.object:remove()
 		update_entity(pos)
@@ -151,7 +153,7 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 	local ndef = core.registered_nodes[core.get_node(pos).name]
 	if not ndef._mcl_itemframe then
 		self.object:remove()
-		update_entity()
+		update_entity(pos)
 		return
 	end
 	local def = mcl_itemframes.registered_itemframes[ndef._mcl_itemframe]
@@ -163,6 +165,7 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 	self.object:set_pos(vector.add(self._itemframe_pos, dir * 0.42))
 	self.object:set_rotation(vector.dir_to_rotation(dir))
 
+	-- map support
 	if self._map_id then
 		mcl_maps.load_map(self._map_id, function(texture)
 			if self.object and self.object:get_pos() then
@@ -171,24 +174,34 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 		end)
 		return
 	end
+
 	local idef = itemstack:get_definition()
 	local ws = idef.wield_scale
 	self.object:set_properties(table_merge(base_props, {
 		wield_item = self._item,
-		visual_size = {x = base_props.visual_size.x / ws.x, y = base_props.visual_size.y / ws.y},
+		-- apply the wield_scale to the set item
+		visual_size = {
+			x = base_props.visual_size.x / ws.x,
+			y = base_props.visual_size.y / ws.y
+		},
 	}, def.object_properties or {}))
 end
 
-function mcl_itemframes.tpl_entity:get_staticdata()
-	local s = {item = self._item, itemframe_pos = self._itemframe_pos, itemstack = self._itemstack, map_id = self._map_id}
+function tpl_entity:get_staticdata()
+	local s = {
+		item = self._item,
+		itemframe_pos = self._itemframe_pos,
+		itemstack = self._itemstack,
+		map_id = self._map_id
+	}
 	s.props = self.object:get_properties()
 	return core.serialize(s)
 end
 
-function mcl_itemframes.tpl_entity:on_activate(staticdata, dtime_s)
+function tpl_entity:on_activate(staticdata, dtime_s)
 	local s = core.deserialize(staticdata)
 	if (type(staticdata) == "string" and dtime_s and dtime_s > 0) then
-		--try to re-initialize items without proper staticdata
+		-- try to re-initialize items without proper staticdata
 		local p = core.find_node_near(self.object:get_pos(), 1, {"group:itemframe"})
 		self.object:remove()
 		if p then
@@ -205,7 +218,7 @@ function mcl_itemframes.tpl_entity:on_activate(staticdata, dtime_s)
 	end
 end
 
-function mcl_itemframes.tpl_entity:on_step(dtime)
+function tpl_entity:on_step(dtime)
 	self._timer = (self._timer and self._timer - dtime) or 1
 	if self._timer > 0 then return end
 	self._timer = 1
@@ -223,20 +236,20 @@ function mcl_itemframes.register_itemframe(name, def)
 	local nodename = "mcl_itemframes:"..name
 	table.insert(mcl_itemframes.registered_nodes, nodename)
 	mcl_itemframes.registered_itemframes[name] = def
-	core.register_node(":"..nodename, table_merge(mcl_itemframes.tpl_node, def.node, {
+	core.register_node(":"..nodename, table_merge(tpl_node, def.node, {
 		_mcl_itemframe = name,
-		groups = table_merge({dig_immediate = 3, deco_block = 1, dig_by_piston = 1, handy = 1, axey = 1, itemframe = 1}, def.node.groups),
+		groups = table_merge(tpl_groups, def.node.groups)
 	}))
 end
 
-core.register_entity("mcl_itemframes:item", mcl_itemframes.tpl_entity)
+core.register_entity("mcl_itemframes:item", tpl_entity)
 
 core.register_lbm({
 	label = "Respawn item frame item entities",
 	name = "mcl_itemframes:respawn_entities",
 	nodenames = {"group:itemframe"},
 	run_at_every_load = true,
-	action = function(pos,_)
+	action = function(pos)
 		update_entity(pos)
 	end
 })
