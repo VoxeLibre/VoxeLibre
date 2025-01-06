@@ -58,12 +58,13 @@ function table.intersect(a, b)
 	local values_map = {}
 
 	for _,v in pairs(a) do values_map[v] = 1 end
-	for _,v in pairs(b) do values_map[v] = (values_map[v] or 0) + 1 end
 
 	-- Get all the values that are in both tables
 	local result = {}
-	for v,count in pairs(values_map) do
-		if count == 2 then result[#result + 1] = v end
+	for _,v in pairs(b) do
+		if values_map[v] then
+			result[#result + 1] = v
+		end
 	end
 	return result
 end
