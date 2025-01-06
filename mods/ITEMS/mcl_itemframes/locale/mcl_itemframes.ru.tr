@@ -2,13 +2,13 @@
 Item frames are decorative blocks in which items can be placed.=Рамки это декоративные блоки, в которые можно помещать предметы.
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Просто поместите в рамку любой предмет. Используйте рамку вновь, чтобы забрать из неё предмет обратно.
 Item Frame=Рамка
-Can hold an item=
-Glow Item Frame=
-Can hold an item and glows=
-Invisible Item Frame=
-Can hold an item but is invisible=
-Invisible Glow Item Frame=
-Can hold an item and glows but is invisible=
+Can hold an item=Может хранить предмет
+Glow Item Frame=Светящаяся рамка
+Can hold an item and glows=Светится и может хранить предмет
+Invisible Item Frame=Невидимая рамка
+Can hold an item but is invisible=Невидима и может хранить предмет
+Invisible Glow Item Frame=Невидимая светящаяся рамка
+Can hold an item and glows but is invisible=Невидима, светится и может хранить предмет
 Glow and Behold!=Сияй и созерцай!
 Craft a glow item frame.=Создайте светящуюся рамку.
 
