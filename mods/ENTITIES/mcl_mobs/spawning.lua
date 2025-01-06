@@ -15,7 +15,6 @@ local get_node_light               = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local mt_get_biome_name            = minetest.get_biome_name
 local get_connected_players        = minetest.get_connected_players
-local get_item_group               = core.get_item_group
 
 local math_min       = math.min
 local math_max       = math.max
@@ -281,8 +280,8 @@ function mcl_mobs:spawn_setup(def)
 	local max_light        = def.max_light or (minetest.LIGHT_MAX + 1)
 	local chance           = def.chance or 1000
 	local aoc              = def.aoc or aoc_range
-	local min_height       = def.min_height or mcl_mapgen.overworld.min
-	local max_height       = def.max_height or mcl_mapgen.overworld.max
+	local min_height       = def.min_height or mcl_vars.mg_overworld_min
+	local max_height       = def.max_height or mcl_vars.mg_overworld_max
 	local day_toggle       = def.day_toggle
 	local on_spawn         = def.on_spawn
 	local check_position   = def.check_position
@@ -290,9 +289,9 @@ function mcl_mobs:spawn_setup(def)
 	-- chance/spawn number override in minetest.conf for registered mob
 	local numbers = minetest.settings:get(name)
 	if numbers then
-		numbers = numbers:split(",")
-		chance = tonumber(numbers[1]) or chance
-		aoc = tonumber(numbers[2]) or aoc
+		local number_parts = numbers:split(",")
+		chance = tonumber(number_parts[1]) or chance
+		aoc = tonumber(number_parts[2]) or aoc
 		if chance == 0 then
 			minetest.log("warning", string.format("[mcl_mobs] %s has spawning disabled", name))
 			return
@@ -393,11 +392,10 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 
 	-- chance/spawn number override in minetest.conf for registered mob
 	local numbers = minetest.settings:get(name)
-
 	if numbers then
-		numbers = numbers:split(",")
-		chance = tonumber(numbers[1]) or chance
-		aoc = tonumber(numbers[2]) or aoc
+		local number_parts = numbers:split(",")
+		chance = tonumber(number_parts[1]) or chance
+		aoc = tonumber(number_parts[2]) or aoc
 
 		if chance == 0 then
 			minetest.log("warning", string.format("[mcl_mobs] %s has spawning disabled", name))
@@ -408,8 +406,7 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 	end
 
 	--load information into the spawn dictionary
-	local key = #spawn_dictionary + 1
-	spawn_dictionary[key] = {
+	spawn_dictionary[#spawn_dictionary + 1] = {
 		name = name,
 		dimension = dimension,
 		type_of_spawning = type_of_spawning,
@@ -707,20 +704,24 @@ local function build_state_for_position(pos, parent_state)
 	-- Get node and make sure it's loaded and a valid spawn point
 	local node = get_node(pos)
 	local node_name = node.name
+	local node_def = core.registered_nodes[node_name] or core.nodedef_default
+	local groups = node_def.groups or {}
 
 	-- Make sure we can spawn here
 	if not node or node_name == "ignore" or node_name == "mcl_core:bedrock" then return end
 
 	-- Check if it's ground
-	local is_water = get_item_group(node_name, "water") ~= 0
+	local is_water = (groups.water or 0) ~= 0
 	local is_ground = false
 	if not is_water then
-		is_ground = get_item_group(node_name,"solid") ~= 0
+		is_ground = (groups.solid or 0) ~= 0
 		if not is_ground then
 			pos.y = pos.y - 1
 			node = get_node(pos)
 			node_name = node.name
-			is_ground = get_item_group(node_name,"solid") ~= 0
+			node_def = core.registered_nodes[node.name] or core.nodedef_default
+			groups = node_def.groups or {}
+			is_ground = (groups.solid or 0) ~= 0
 		end
 		pos.y = pos.y + 1
 	end
@@ -735,8 +736,8 @@ local function build_state_for_position(pos, parent_state)
 	state.biome = biome_name
 	state.dimension = dimension
 
-	state.is_ground = is_ground and get_item_group(node_name, "leaves") == 0
-	state.is_grass = get_item_group(node_name, "grass_block") ~= 0
+	state.is_ground = is_ground and (groups.leaves or 0) == 0
+	state.is_grass = (groups.grass_block or 0) ~= 0
 	state.is_water = is_water
 
 	-- Check light level
