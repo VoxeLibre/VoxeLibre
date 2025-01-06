@@ -43,7 +43,7 @@ local tpl_node = {
 	paramtype = "light",
 	paramtype2 = "wallmounted",
 	sunlight_propagates = true,
-	sounds = mcl_sounds.node_sound_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	node_placement_prediction = "",
 	_mcl_hardness = 0.5,
 	_mcl_blast_resistance = 0.5,
@@ -144,6 +144,14 @@ function tpl_node.on_construct(pos)
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 	inv:set_size("main", 1)
+end
+
+-- hack to force the place sound to play
+function tpl_node.after_place_node(pos, placer, itemstack, pointed_thing)
+	local idef = itemstack:get_definition()
+	if idef and idef.sounds and idef.sounds.place then
+		core.sound_play(idef.sounds.place, {pos = pos}, true)
+	end
 end
 
 -- Entity functions
