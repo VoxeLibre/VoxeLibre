@@ -3,7 +3,15 @@ mcl_itemframes.registered_nodes = {}
 mcl_itemframes.registered_itemframes = {}
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local fbox = {type = "fixed", fixed = {-6/16, -1/2, -6/16, 6/16, -7/16, 6/16}}
+local function table_merge(t, ...)
+	local t2 = table.copy(t)
+	return table.update(t2, ...)
+end
+
+local fbox = {
+	type = "fixed",
+	fixed = {-6/16, -1/2, -6/16, 6/16, -7/16, 6/16}
+}
 
 local base_props = {
 	visual = "wielditem",
@@ -21,9 +29,9 @@ local map_props = {
 }
 
 mcl_itemframes.tpl_node = {
-	drawtype = "nodebox",
+	drawtype = "mesh",
 	is_ground_content = false,
-	node_box = fbox,
+	mesh = "mcl_itemframes_frame.obj",
 	selection_box = fbox,
 	collision_box = fbox,
 	use_texture_alpha = "opaque",
@@ -158,14 +166,14 @@ function mcl_itemframes.tpl_entity:set_item(itemstack, pos)
 	if self._map_id then
 		mcl_maps.load_map(self._map_id, function(texture)
 			if self.object and self.object:get_pos() then
-				self.object:set_properties(table.merge(map_props, { textures = { texture }}))
+				self.object:set_properties(table_merge(map_props, { textures = { texture }}))
 			end
 		end)
 		return
 	end
 	local idef = itemstack:get_definition()
 	local ws = idef.wield_scale
-	self.object:set_properties(table.merge(base_props, {
+	self.object:set_properties(table_merge(base_props, {
 		wield_item = self._item,
 		visual_size = { x = base_props.visual_size.x / ws.x, y = base_props.visual_size.y / ws.y },
 	}, def.object_properties or {}))
@@ -215,9 +223,9 @@ function mcl_itemframes.register_itemframe(name, def)
 	local nodename = "mcl_itemframes:"..name
 	table.insert(mcl_itemframes.registered_nodes, nodename)
 	mcl_itemframes.registered_itemframes[name] = def
-	minetest.register_node(":"..nodename, table.merge(mcl_itemframes.tpl_node, def.node, {
+	minetest.register_node(":"..nodename, table_merge(mcl_itemframes.tpl_node, def.node, {
 		_mcl_itemframe = name,
-		groups = table.merge({ dig_immediate = 3, deco_block = 1, dig_by_piston = 1, handy = 1, axey = 1, itemframe = 1 }, def.node.groups),
+		groups = table_merge({ dig_immediate = 3, deco_block = 1, dig_by_piston = 1, handy = 1, axey = 1, itemframe = 1 }, def.node.groups),
 	}))
 end
 
@@ -229,7 +237,7 @@ mcl_itemframes.register_itemframe("frame", {
 		_tt_help = S("Can hold an item"),
 		_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
 		_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
-		tiles = { "mcl_itemframes_item_frame.png" },
+		tiles = { "mcl_itemframes_itemframe_background.png" },
 		inventory_image = "mcl_itemframes_item_frame.png",
 		wield_image = "mcl_itemframes_item_frame.png",
 	},
@@ -241,7 +249,7 @@ mcl_itemframes.register_itemframe("glow_frame", {
 		_tt_help = S("Can hold an item and glows"),
 		_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
 		_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
-		tiles = { "mcl_itemframes_glow_item_frame.png" },
+		tiles = { "mcl_itemframes_glow_item_frame_border.png" },
 		inventory_image = "mcl_itemframes_glow_item_frame.png",
 		wield_image = "mcl_itemframes_glow_item_frame.png",
 	},
