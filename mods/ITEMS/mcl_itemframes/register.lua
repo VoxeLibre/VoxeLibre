@@ -48,7 +48,7 @@ awards.register_achievement("mcl_itemframes:glowframe", {
 	icon = "mcl_itemframes_glow_item_frame.png",
 	trigger = {
 		type = "craft",
-		item = "mcl_itemframes:glow_item_frame",
+		item = "mcl_itemframes:glow_frame",
 		target = 1
 	},
 	type = "Advancement",
