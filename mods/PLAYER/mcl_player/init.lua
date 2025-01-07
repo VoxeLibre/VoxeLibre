@@ -164,7 +164,7 @@ end
 function mcl_player.get_player_formspec_model(player, x, y, w, h, fsname)
 	local name = player:get_player_name()
 	local model = player_model[name]
-	local anim = models[model].animations[player_anim[name]]
+	local anim = models[model].animations["stand"]
 	local textures = get_player_textures(name)
 	if not player_visible[name] then
 		textures = table.copy(textures)
