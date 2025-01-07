@@ -264,6 +264,7 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 ---@field min_light integer
 ---@field max_light integer
 ---@field chance integer
+---@field interval integer
 ---@field aoc integer
 ---@field min_height integer
 ---@field max_height integer
@@ -330,6 +331,7 @@ function mcl_mobs:spawn_setup(def)
 		min_light        = def.min_light or 0,
 		max_light        = def.max_light or (core.LIGHT_MAX + 1),
 		chance           = chance,
+		interval         = 1, -- Currently unused
 		aoc              = aoc,
 		min_height       = def.min_height or mcl_vars.mg_overworld_min,
 		max_height       = def.max_height or mcl_vars.mg_overworld_max,
@@ -401,6 +403,10 @@ function mcl_mobs:non_spawn_specific(mob_name,dimension,min_light,max_light)
 	}
 end
 
+---@param name string
+---@param dimension string
+---@param type_of_spawning string
+---@param biomes string[]
 function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn, check_position)
 	-- Do mobs spawn at all?
 	if not mobs_spawn then return end
@@ -439,11 +445,13 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 		min_light = min_light,
 		max_light = max_light,
 		chance = chance,
+		interval = interval, -- Currently unused
 		aoc = aoc,
 		min_height = min_height,
 		max_height = max_height,
 		day_toggle = day_toggle,
 		check_position = check_position,
+		on_spawn = on_spawn
 	}
 end
 
@@ -1028,7 +1036,7 @@ if mobs_spawn then
 		local mob_chance_offset = math_random() * cumulative_chance
 		--minetest.log("action", "mob_chance_offset = "..tostring(mob_chance_offset).."/"..tostring(cumulative_chance))
 
-		for i = 1,#spawn_table do
+		for i = 1,(#spawn_table-1) do
 			local mob_def = spawn_table[i]
 			local mob_chance = mob_def.chance
 			if mob_chance_offset <= mob_chance then
@@ -1039,9 +1047,8 @@ if mobs_spawn then
 			mob_chance_offset = mob_chance_offset - mob_chance
 		end
 
-		-- We should never reach this point
-		-- TODO: remove this before merging
-		error("failed")
+		-- If we get here, return the last element in the spawn table
+		return spawn_table[#spawn_table]
 	end
 
 	local spawn_lists = {}
