@@ -69,3 +69,16 @@ function table.intersect(a, b)
 	return result
 end
 
+-- Removes one element randomly selected from the array section of the table and
+-- returns it, or nil if there are no elements in the array section of the table
+function table.remove_random_element(table)
+	local count = #table
+	if count == 0 then return nil end
+
+	local idx = math.random(count)
+	local res = table[idx]
+	table[idx] = table[count]
+	table[count] = nil
+	count = count - 1
+	return res
+end

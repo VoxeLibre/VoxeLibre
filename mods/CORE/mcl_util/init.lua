@@ -6,20 +6,6 @@ dofile(modpath.."/roman_numerals.lua")
 dofile(modpath.."/nodes.lua")
 dofile(modpath.."/table.lua")
 
--- Removes one element randomly selected from the array section of the table and
--- returns it, or nil if there are no elements in the array section of the table
-function table.remove_random_element(table)
-	local count = #table
-	if count == 0 then return nil end
-
-	local idx = math.random(count)
-	local res = table[idx]
-	table[idx] = table[count]
-	table[count] = nil
-	count = count - 1
-	return res
-end
-
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
 local LOG_MODULE = "[MCL2]"
 function mcl_util.mcl_log(message, module, bypass_default_logger)
