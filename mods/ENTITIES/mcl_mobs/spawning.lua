@@ -831,12 +831,11 @@ local function build_state_for_position(pos, parent_state)
 	end
 
 	-- Convert state into a format that can be used as a hash table key
-	state.serialized = string.format("%s:%s:d:%d:%s:%s:%s:%s:%s:%s:%d",
+	state.serialized = string.format("%s:%s:%s:%s:%s:%s:%s:%s:%d",
 		state.biome, state.dimension,
-		state.cap_space_hostile, state.cap_space_passive,
 		state.spawn_hostile, state.spawn_passive,
 		state.is_ground, state.is_grass, state.is_water, state.is_lava,
-		state.light
+		state.light or 0
 	)
 	return state,node
 end
@@ -1219,7 +1218,7 @@ if mobs_spawn then
 		-- Time the function
 		local start_time_us = minetest.get_us_time()
 		handler()
-		local stop_time_us = minetest.get_us_time()
+		local stop_time_us = minetest.get_us_time() + 1
 
 		-- Measure how long this took and calculate the time until the next call
 		local took = stop_time_us - start_time_us
@@ -1231,13 +1230,15 @@ if mobs_spawn then
 	--MAIN LOOP
 	local timer = 0
 	minetest.register_globalstep(function(dtime)
+		timer = timer - dtime
+		if timer > 0 then return end
+
 		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
 		timer = next_spawn
 		if timer > MAX_SPAWN_CYCLE_TIME then timer = MAX_SPAWN_CYCLE_TIME end
 
 		if logging and took > debug_time_threshold then
-			minetest.log("action","[mcl_mobs] took "..took.." us")
-			minetest.log("Next spawn attempt in "..tostring(timer))
+			minetest.log("Next spawn attempt in "..tostring(timer).." previous attempt took "..took.." us")
 		end
 	end)
 end
