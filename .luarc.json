@@ -3,6 +3,7 @@
   "diagnostics": { "disable": ["lowercase-global"] },
   "diagnostics.globals": [
     "minetest",
+    "core",
     "dump",
     "dump2",
     "Raycast",
@@ -18,5 +19,6 @@
     "AreaStore",
     "vector"
   ],
+  "workspace.library": ["/usr/share/luanti/luanti-lls-definitions/library", "/usr/share/luanti/builtin"],
   "workspace.ignoreDir": [".luacheckrc"]
 }
