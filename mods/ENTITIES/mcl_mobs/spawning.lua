@@ -254,9 +254,27 @@ WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
 ]]--
 
 
---this is where all of the spawning information is kept
+-- this is where all of the spawning information is kept
+---@class mcl_mobs.SpawnDef
+---@field name string
+---@field dimension string
+---@field type_of_spawning "ground"|"water"|"lava"
+---@field biomes? string[]
+---@field biomes_lookup {[string]: boolean}
+---@field min_light integer
+---@field max_light integer
+---@field chance integer
+---@field aoc integer
+---@field min_height integer
+---@field max_height integer
+---@field day_toggle boolean
+---@field check_position? fun(pos : vector.Vector): boolean
+---@field on_spawn? fun()
+---@type mcl_mobs.SpawnDef[]
 local spawn_dictionary = {}
+
 --this is where all of the spawning information  is kept for mobs that don't naturally spawn
+---@type {[string]: {[string]: {min_light: integer, max_light: integer}}}
 local non_spawn_dictionary = {}
 
 function mcl_mobs:spawn_setup(def)
@@ -295,11 +313,20 @@ function mcl_mobs:spawn_setup(def)
 		minetest.log("warning", "Chance shouldn't be less than 1 (mob name: " .. name ..")")
 	end
 
+	-- Create lookup table for biomes
+	local biomes_lookup = {}
+	if biomes then
+		for i=1,#biomes do
+			biomes_lookup[biomes[i]] = true
+		end
+	end
+
 	spawn_dictionary[#spawn_dictionary + 1] = {
 		name             = name,
 		dimension        = def.dimension or "overworld",
 		type_of_spawning = def.type_of_spawning or "ground",
 		biomes           = biomes,
+		biomes_lookup    = biomes_lookup,
 		min_light        = def.min_light or 0,
 		max_light        = def.max_light or (core.LIGHT_MAX + 1),
 		chance           = chance,
@@ -396,12 +423,19 @@ function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_
 		minetest.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
 	end
 
+	-- Create lookup table for biomes
+	local biomes_lookup = {}
+	for i=1,#biomes do
+		biomes_lookup[biomes[i]] = true
+	end
+
 	--load information into the spawn dictionary
 	spawn_dictionary[#spawn_dictionary + 1] = {
 		name = name,
 		dimension = dimension,
 		type_of_spawning = type_of_spawning,
 		biomes = biomes,
+		biomes_lookup = biomes_lookup,
 		min_light = min_light,
 		max_light = max_light,
 		chance = chance,
@@ -602,7 +636,7 @@ local function initial_spawn_check(state, node, spawn_def)
 	-- Make the dimention is correct
 	if spawn_def.dimension ~= state.dimension then return log_fail("incorrect dimension") end
 
-	if type(spawn_def.biomes) ~= "table" or not table.find(spawn_def.biomes, state.biome) then
+	if spawn_def.biomes and not spawn_def.biomes_lookup[state.biome] then
 		return log_fail("Incorrect biome")
 	end
 
