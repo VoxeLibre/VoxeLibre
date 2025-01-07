@@ -427,31 +427,6 @@ if mg_name == "v6" then
 	dofile(modpath.."/v6.lua")
 end
 
--- This should be moved to mcl_structures eventually if the dependencies can be sorted out.
-mcl_mapgen_core.register_generator("structures",nil, function(minp, maxp, blockseed)
-	local gennotify = minetest.get_mapgen_object("gennotify")
-	local has = false
-	local poshash = minetest.hash_node_position(minp)
-	for _,struct in pairs(mcl_structures.registered_structures) do
-		local pr = PseudoRandom(blockseed + 42)
-		if struct.deco_id then
-			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
-				if struct.chunk_probability == nil or (not has and pr:next(1,struct.chunk_probability) == 1 ) then
-					mcl_structures.place_structure(vector.offset(pos,0,1,0),struct,pr,blockseed)
-					has=true
-				end
-			end
-		elseif struct.static_pos then
-			for _,p in pairs(struct.static_pos) do
-				if vector.in_area(p,minp,maxp) then
-					mcl_structures.place_structure(p,struct,pr,blockseed)
-				end
-			end
-		end
-	end
-	return false, false, false
-end, 100, true)
-
 minetest.register_lbm({
 	label = "Fix grass palette indexes", -- This LBM fixes any incorrect grass palette indexes.
 	name = "mcl_mapgen_core:fix_grass_palette_indexes",

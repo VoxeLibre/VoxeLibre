@@ -1,5 +1,7 @@
 mcl_structures.registered_structures = {}
 
+local RANDOM_SEED_OFFSET = 959 -- random constant that should be unique across each library
+
 local disabled_structures = minetest.settings:get("mcl_disabled_structures")
 if disabled_structures then	disabled_structures = disabled_structures:split(",")
 else disabled_structures = {} end
@@ -326,15 +328,15 @@ function mcl_structures.place_structure(pos, def, pr, blockseed, rot)
 end
 
 local EMPTY_SCHEMATIC = { size = {x = 0, y = 0, z = 0}, data = { } }
-
 function mcl_structures.register_structure(name,def,nospawn) --nospawn means it will not be placed by mapgen decoration mechanism
 	if mcl_structures.is_disabled(name) then return end
 	local flags = def.flags or "place_center_x, place_center_z, force_placement"
 	def.name = name
 	if not nospawn and def.place_on then
 		minetest.register_on_mods_loaded(function() --make sure all previous decorations and biomes have been registered
-			def.deco = minetest.register_decoration({
-				name = "mcl_structures:deco_"..name,
+			mcl_mapgen_core.register_decoration({
+				name = "mcl_structures:"..name,
+				rank = def.rank or (def.terrain_feature and 900) or 100, -- run before regular decorations
 				deco_type = "schematic",
 				schematic = EMPTY_SCHEMATIC,
 				place_on = def.place_on,
@@ -347,10 +349,13 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 				biomes = def.biomes,
 				y_max = def.y_max,
 				y_min = def.y_min
-			})
-			def.deco_id = minetest.get_decoration_id("mcl_structures:deco_"..name)
-			minetest.set_gen_notify({decoration=true}, { def.deco_id })
-			--catching of gennotify happens in mcl_mapgen_core
+				},
+				function()
+					def.deco_id = minetest.get_decoration_id("mcl_structures:"..name)
+					minetest.set_gen_notify({decoration=true}, { def.deco_id })
+					--catching of gennotify happens in mcl_mapgen_core
+				end
+			)
 		end)
 	end
 	mcl_structures.registered_structures[name] = def
@@ -390,4 +395,28 @@ function mcl_structures.register_structure_spawn(def)
 	})
 end
 
-
+-- To avoid a cyclic dependency, run this when modules have finished loading
+minetest.register_on_mods_loaded(function()
+mcl_mapgen_core.register_generator("structures", nil, function(minp, maxp, blockseed)
+	local gennotify = minetest.get_mapgen_object("gennotify")
+	for _,struct in pairs(mcl_structures.registered_structures) do
+		if struct.deco_id then
+			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
+				local pr = PcgRandom(minetest.hash_node_position(pos) + blockseed + RANDOM_SEED_OFFSET)
+				if struct.chunk_probability == nil or pr:next(1, struct.chunk_probability) == 1 then
+					mcl_structures.place_structure(vector.offset(pos,0,1,0),struct,pr,blockseed)
+					if struct.chunk_probability then break end -- one (attempt) per chunk only
+				end
+			end
+		elseif struct.static_pos then
+			local pr = PcgRandom(blockseed + RANDOM_SEED_OFFSET)
+			for _, pos in pairs(struct.static_pos) do
+				if vector.in_area(pos, minp, maxp) then
+					mcl_structures.place_structure(pos, struct, pr, blockseed)
+				end
+			end
+		end
+	end
+	return false, false, false
+end, 100, true)
+end)

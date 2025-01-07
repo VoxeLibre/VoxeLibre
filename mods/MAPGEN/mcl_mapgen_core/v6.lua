@@ -45,6 +45,7 @@ local function register_mgv6_decorations()
 
 	-- Doubletall grass
 	minetest.register_decoration({
+		rank = 1500,
 		deco_type = "schematic",
 		schematic = {
 			size = { x=1, y=3, z=1 },
@@ -81,6 +82,7 @@ local function register_mgv6_decorations()
 		},
 		-- v6 hack: This makes sure large ferns only appear in jungles
 		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
+		rank = 1510, -- larger than fern
 		num_spawn_by = 1,
 		place_on = {"group:grass_block_no_snow"},
 
@@ -192,6 +194,7 @@ local function register_mgv6_decorations()
 		},
 		-- Small trick to make sure melon spawn in jungles
 		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
+		rank = 1510, -- larger than fern
 		num_spawn_by = 1,
 		y_min = 1,
 		y_max = 40,
@@ -214,6 +217,7 @@ local function register_mgv6_decorations()
 		y_min = 1,
 		y_max = mcl_vars.overworld_max,
 		decoration = "mcl_flowers:tallgrass",
+		rank = 1500,
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -230,6 +234,7 @@ local function register_mgv6_decorations()
 		y_min = 1,
 		y_max = mcl_vars.overworld_max,
 		decoration = "mcl_flowers:tallgrass",
+		rank = 1500,
 	})
 
 	-- Seagrass and kelp
@@ -256,6 +261,7 @@ local function register_mgv6_decorations()
 			y_min = mcl_vars.overworld_min,
 			y_max = 0,
 			decoration = "mcl_ocean:seagrass_"..mat,
+			rank = 1500,
 		})
 		minetest.register_decoration({
 			deco_type = "simple",
@@ -276,6 +282,7 @@ local function register_mgv6_decorations()
 			y_min = mcl_vars.overworld_min,
 			y_max = -5,
 			decoration = "mcl_ocean:seagrass_"..mat,
+			rank = 1500,
 		})
 
 		minetest.register_decoration({
@@ -356,6 +363,7 @@ local function register_mgv6_decorations()
 		y_min = 1,
 		y_max = mcl_vars.overworld_max,
 		decoration = "mcl_flowers:tallgrass",
+		rank = 1500,
 	})
 
 	local mushrooms = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown"}
