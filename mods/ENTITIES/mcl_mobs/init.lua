@@ -127,6 +127,23 @@ function mcl_mobs.register_mob(name, def)
 		end
 	end
 
+	local fly_in = {}
+	if type(def.fly_in) == "string" then
+		fly_in[def.fly_in] = true
+	elseif def.fly_in then
+		for k,v in pairs(def.fly_in) do
+			if type(k) == "number" then
+				fly_in[v] = true
+			elseif v == true then
+				fly_in[k] = true
+			else
+				minetest.log("warning", "mob "..name.." fly_in not understood: "..dump(k).." "..dump(v))
+			end
+		end
+	else
+		fly_in["air"] = true
+	end
+
 	local collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	-- Workaround for <https://github.com/minetest/minetest/issues/5966>:
 	-- Increase upper Y limit to avoid mobs glitching through solid nodes.
@@ -153,7 +170,7 @@ function mcl_mobs.register_mob(name, def)
 		attack_type = def.attack_type,
 		attack_frequency = def.attack_frequency,
 		fly = def.fly or false,
-		fly_in = (type(def.fly_in) == "string" and {def.fly_in}) or def.fly_in or {"air"},
+		fly_in = fly_in,
 		owner = def.owner or "",
 		order = def.order or "",
 		on_die = def.on_die,

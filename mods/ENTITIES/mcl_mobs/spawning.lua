@@ -530,16 +530,11 @@ local function get_water_spawn(p)
 		end
 end
 
+local FLY_IN_AIR = { air = true }
 local function has_room(self, pos)
 	local cb = self.spawnbox or self.collisionbox
-	local nodes = self.fly_in or { "air" }
-	local airlike = false
-	for i=1,#nodes do
-		if nodes[i] == "air" then
-			airlike = true
-			break
-		end
-	end
+	local fly_in = self.fly_in or FLY_IN_AIR
+	local fly_in_air = not not fly_in["air"]
 
 	-- Calculate area to check for room
 	local cb_height = cb[5] - cb[2]
@@ -564,26 +559,29 @@ local function has_room(self, pos)
 				p.x = x
 				local node = get_node(p)
 				local nam = node.name
-				if nam == "ignore" then goto continue end
-				if nam == "air" and airlike then goto continue end
-				if airlike then
-					local n_def = registered_nodes[nam]
-					if not n_def then goto continue end
-					if not n_def.walkable and n_def.liquidtype == "none" then goto continue end
+				local n_def = registered_nodes[nam]
+				-- Fast-track common cases:
+				local continue = nam == "ignore" or (nam == "air" and fly_in_air) or not n_def
+				-- if fly_in "air", also include other non-walkable non-liquid nodes:
+				continue = continue or (fly_in_air and n_def and not n_def.walkable and n_def.liquidtype == "none")
+				-- other things we can fly in
+				continue = continue or not not fly_in[nam]
+				if not continue then
+					if not check_headroom then
+						return false
+					end
+					if n_def.node_box == "regular" then
+						return false
+					end
+					-- perform sub-node checks in top layer
+					local boxes = minetest.get_node_boxes("collision_box", p, node)
+					for i = 1,#boxes do
+						-- headroom is measured from the bottom, hence +0.5
+						if boxes[i][2] + 0.5 < headroom then
+							return false
+						end
+					end
 				end
-				for i = 1,#nodes do
-					-- todo: support groups, too?
-					if nam == nodes[i] then goto continue end
-				end
-				if not check_headroom then return false end
-				-- perform sub-node checks in top layer
-				local boxes = minetest.get_node_boxes("collision_box", p, node)
-				for i = 1,#boxes do
-					local box = boxes[i]
-					if box[2] + 0.5 < headroom then return false end
-					if box[5] + 0.5 < headroom then return false end
-				end
-				::continue::
 			end
 		end
 	end
@@ -680,7 +678,7 @@ function mcl_mobs.spawn(pos,id)
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
 	if not has_room(def, pos) then return false end
 	if math.round(pos.y) == pos.y then -- node spawn
-		pos.y = pos.y - 0.5 - def.collisionbox[2] -- spawn just above ground below
+		pos.y = pos.y - 0.495 - def.collisionbox[2] -- spawn just above ground below
 	end
 	local obj = minetest.add_entity(pos, def.name)
 	-- initialize head bone
@@ -725,7 +723,7 @@ local S = minetest.get_translator("mcl_mobs")
 
 minetest.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
-	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly_in=air>::var<fly=true>:\n etc."),
+	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly=true>:\n etc."),
 	func = function(n,param)
 		local pos = minetest.get_player_by_name(n):get_pos()
 

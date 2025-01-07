@@ -291,22 +291,9 @@ end
 
 -- are we flying in what we are suppose to? (taikedz)
 function mob_class:flight_check()
-
 	local nod = self.standing_in
-	local def = minetest.registered_nodes[nod]
-
-	if not def then return false end -- nil check
-
-	for _,checknode in pairs(self.fly_in or {"air"}) do
-		if nod == checknode or nod == "ignore" then
-			return true
-		end
-		if checknode == "air" and def.drawtype == "airlike" then
-			return true
-		end
-	end
-
-	return false
+	if nod == "ignore" then return true end
+	return not not self.fly_in[nod] -- force boolean
 end
 
 -- check if mob is dead or only hurt
