@@ -648,6 +648,9 @@ local function initial_spawn_check(state, node, spawn_def)
 	-- Water mobs must spawn in water
 	if spawn_def.type_of_spawning == "water" and not state.is_water then return log_fail("not water node") end
 
+	-- Lava mobs must spawn in lava
+	if spawn_def.type_of_spawning == "lava" and not state.is_lava then return log_fail("not water node") end
+
 	-- Farm animals must spawn on grass
 	if is_farm_animal(spawn_def.name) and not state.is_grass then return log_fail("not grass block") end
 
@@ -727,6 +730,7 @@ end
 ---@field is_ground boolean
 ---@field is_grass boolean
 ---@field is_water boolean
+---@field is_lava boolean
 ---@field biome string
 ---@field dimension string
 ---@field light integer
@@ -753,8 +757,9 @@ local function build_state_for_position(pos, parent_state)
 
 	-- Check if it's ground
 	local is_water = (groups.water or 0) ~= 0
+	local is_lava = (groups.lava or 0) ~= 0
 	local is_ground = false
-	if not is_water then
+	if not is_water and not is_lava then
 		is_ground = (groups.solid or 0) ~= 0
 		if not is_ground then
 			pos.y = pos.y - 1
@@ -780,6 +785,7 @@ local function build_state_for_position(pos, parent_state)
 	state.is_ground = is_ground and (groups.leaves or 0) == 0
 	state.is_grass = (groups.grass_block or 0) ~= 0
 	state.is_water = is_water
+	state.is_lava = is_lava
 
 	-- Check light level
 	local gotten_light = get_node_light(pos)
@@ -817,11 +823,11 @@ local function build_state_for_position(pos, parent_state)
 	end
 
 	-- Convert state into a format that can be used as a hash table key
-	state.serialized = string.format("%s:%s:d:%d:%s:%s:%s:%s:%s:%d",
+	state.serialized = string.format("%s:%s:d:%d:%s:%s:%s:%s:%s:%s:%d",
 		state.biome, state.dimension,
 		state.cap_space_hostile, state.cap_space_passive,
 		state.spawn_hostile, state.spawn_passive,
-		state.is_ground, state.is_grass, state.is_water,
+		state.is_ground, state.is_grass, state.is_water, state.is_lava,
 		state.light
 	)
 	return state,node
