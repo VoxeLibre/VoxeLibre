@@ -220,11 +220,11 @@ end
 
 -- this is where all of the spawning information is kept
 ---@class mcl_mobs.SpawnDef
----@field name string
+---@field name string Name of the mob. Required
 ---@field dimension "overworld"|"nether"|"end"
 ---@field type_of_spawning "ground"|"water"|"lava"
----@field biomes? string[]
----@field biomes_lookup {[string]: boolean}
+---@field biomes? string[] List of biomes the mob can spawn in
+---@field biomes_lookup {[string]: boolean} Lookup table version of biomes field
 ---@field min_light integer
 ---@field max_light integer
 ---@field chance integer
@@ -578,7 +578,7 @@ local function spawn_check(pos, state, node, spawn_def)
 
 	-- Spawns require enough room for the mob
 	local mob_def = minetest.registered_entities[spawn_def.name]
-	if not has_room(mob_def,pos) then return false end
+	if not has_room(mob_def, pos) then return false end
 
 	-- Don't spawn if the spawn definition has a custom check and that fails
 	if spawn_def.check_position and not spawn_def.check_position(pos) then return false end
@@ -799,8 +799,8 @@ minetest.register_chatcommand("spawn_mob",{
 			modifiers[#modifiers + 1] = ":"..capture
 		end
 
-		local mobname = param
 		local mod1 = string.find(param, ":")
+		local mobname = param
 		if mod1 then
 			mobname = string.sub(param, 1, mod1-1)
 		end
@@ -1028,6 +1028,12 @@ if mobs_spawn then
 		local cap_space_available = state.cap_space_passive
 		if mob_def_ent.type == "monster" then
 			cap_space_available = state.cap_space_hostile
+		end
+
+		-- Move up one node for lava spawns
+		if mob_def.type_of_spawning == "lava" then
+			spawning_position.y = spawning_position.y + 1
+			node = core.get_node(spawning_position)
 		end
 
 		-- Make sure we would be spawning a mob
