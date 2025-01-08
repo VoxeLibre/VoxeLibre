@@ -247,27 +247,28 @@ end
 ---@type mcl_mobs.SpawnDef[]
 local spawn_dictionary = {}
 
---this is where all of the spawning information  is kept for mobs that don't naturally spawn
+--this is where all of the spawning information is kept for mobs that don't naturally spawn
 ---@type {[string]: {[string]: {min_light: integer, max_light: integer}}}
 local non_spawn_dictionary = {}
 
 function mcl_mobs:spawn_setup(def)
 	if not mobs_spawn then return end
 
-	if not def then
-		minetest.log("warning", "Empty mob spawn setup definition")
-		return
-	end
-
+	-- Validate required definition fields are present
+	assert(def)
+	assert(def.name)
 	local name = def.name
-	if not name then
-		minetest.log("warning", "Missing mob name")
-		return
-	end
 
-	local biomes           = def.biomes or nil
-	local chance           = def.chance or 1000
-	local aoc              = def.aoc or aoc_range
+	-- Defaults
+	def.chance = def.chance or 1000
+	def.aoc = def.aoc or aoc_range
+	def.dimension = def.dimension or "overworld"
+	def.type_of_spawning = def.type_of_spawning or "overworld"
+	def.interval = def.interval or 1
+	def.min_height = def.min_height or mcl_vars.mg_overworld_min
+	def.max_height = def.max_height or mcl_vars.mg_overworld_max
+	def.min_light = def.min_light or 0
+	def.max_light = def.max_light or core.LIGHT_MAX + 1
 
 	-- chance/spawn number override in minetest.conf for registered mob
 	local numbers = minetest.settings:get(name)
@@ -282,36 +283,22 @@ function mcl_mobs:spawn_setup(def)
 		minetest.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
 	end
 
-	if chance < 1 then
-		chance = 1
+	if def.chance < 1 then
+		def.chance = 1
 		minetest.log("warning", "Chance shouldn't be less than 1 (mob name: " .. name ..")")
 	end
 
 	-- Create lookup table for biomes
 	local biomes_lookup = {}
+	def.biomes_lookup = biomes_lookup
+	local biomes = def.biomes
 	if biomes then
-		for i=1,#biomes do
+		for i=1,#def.biomes do
 			biomes_lookup[biomes[i]] = true
 		end
 	end
 
-	spawn_dictionary[#spawn_dictionary + 1] = {
-		name             = name,
-		dimension        = def.dimension or "overworld",
-		type_of_spawning = def.type_of_spawning or "ground",
-		biomes           = biomes,
-		biomes_lookup    = biomes_lookup,
-		min_light        = def.min_light or 0,
-		max_light        = def.max_light or (core.LIGHT_MAX + 1),
-		chance           = chance,
-		interval         = 1, -- Currently unused
-		aoc              = aoc,
-		min_height       = def.min_height or mcl_vars.mg_overworld_min,
-		max_height       = def.max_height or mcl_vars.mg_overworld_max,
-		day_toggle       = def.day_toggle,
-		check_position   = def.check_position,
-		on_spawn         = def.on_spawn,
-	}
+	spawn_dictionary[#spawn_dictionary + 1] = def
 end
 
 function mcl_mobs:mob_light_lvl(mob_name, dimension)
@@ -380,52 +367,27 @@ end
 ---@param dimension string
 ---@param type_of_spawning string
 ---@param biomes string[]
+---@deprecated
 function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn, check_position)
 	-- Do mobs spawn at all?
 	if not mobs_spawn then return end
 
-	assert(min_height)
-	assert(max_height)
-
-	-- chance/spawn number override in minetest.conf for registered mob
-	local numbers = minetest.settings:get(name)
-	if numbers then
-		local number_parts = numbers:split(",")
-		chance = tonumber(number_parts[1]) or chance
-		aoc = tonumber(number_parts[2]) or aoc
-
-		if chance == 0 then
-			minetest.log("warning", string.format("[mcl_mobs] %s has spawning disabled", name))
-			return
-		end
-
-		minetest.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
-	end
-
-	-- Create lookup table for biomes
-	local biomes_lookup = {}
-	for i=1,#biomes do
-		biomes_lookup[biomes[i]] = true
-	end
-
-	--load information into the spawn dictionary
-	spawn_dictionary[#spawn_dictionary + 1] = {
+	mcl_mobs:spawn_setup({
 		name = name,
 		dimension = dimension,
 		type_of_spawning = type_of_spawning,
 		biomes = biomes,
-		biomes_lookup = biomes_lookup,
 		min_light = min_light,
 		max_light = max_light,
+		interval = interval,
 		chance = chance,
-		interval = interval, -- Currently unused
 		aoc = aoc,
 		min_height = min_height,
 		max_height = max_height,
-		day_toggle = day_toggle, -- Currently unused
+		day_toggle = day_toggle,
+		on_spawn = on_spawn,
 		check_position = check_position,
-		on_spawn = on_spawn
-	}
+	})
 end
 
 local function get_next_mob_spawn_pos(pos)
@@ -1000,14 +962,7 @@ if mobs_spawn then
 	local function select_random_mob_def(spawn_table)
 		if #spawn_table == 0 then return nil end
 
-		local cumulative_chance = 0
-		for i = 1,#spawn_table do
-			cumulative_chance = cumulative_chance + spawn_table[i].chance
-		end
-
-		local mob_chance_offset = math_random() * cumulative_chance
-		--minetest.log("action", "mob_chance_offset = "..tostring(mob_chance_offset).."/"..tostring(cumulative_chance))
-
+		local mob_chance_offset = math_random() * spawn_table.cumulative_chance
 		for i = 1,(#spawn_table-1) do
 			local mob_def = spawn_table[i]
 			local mob_chance = mob_def.chance
@@ -1058,6 +1013,13 @@ if mobs_spawn then
 				spawn_list[#spawn_list + 1] = def
 			end
 		end
+
+		-- Calculate cumulative chance value
+		local cumulative_chance = 0
+		for i = 1,#spawn_list do
+			cumulative_chance = cumulative_chance + spawn_list[i].chance
+		end
+		spawn_list.cumulative_chance = cumulative_chance
 
 		if logging then
 			local spawn_names = {}
