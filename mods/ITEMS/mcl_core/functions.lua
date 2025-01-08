@@ -830,7 +830,8 @@ minetest.register_lbm({
 local TREE_MINIMUM_LIGHT = 9
 
 local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two, sapling)
-	return function(pos, node, grow_by)
+	-- ABM signature + extra parameter
+	return function(pos, node, active_object_count, active_object_count_wider, grow_by)
 		local meta = minetest.get_meta(pos)
 		-- Checks if the sapling at pos has enough light and the correct soil
 		local light = minetest.get_node_light(pos)
@@ -944,21 +945,21 @@ end
 -- node: Node table of the node at this position, from minetest.get_node
 -- Returns true on success and false on failure
 -- TODO: replace this with a proper tree API
-function mcl_core.grow_sapling(pos, node)
+function mcl_core.grow_sapling(pos, node, stages)
 	if node.name == "mcl_core:sapling" then
-		grow_oak(pos)
+		grow_oak(pos, node, nil, nil, stages)
 	elseif node.name == "mcl_core:darksapling" then
-		grow_dark_oak(pos)
+		grow_dark_oak(pos, node, nil, nil, stages)
 	elseif node.name == "mcl_core:junglesapling" then
-		grow_jungle_tree(pos)
+		grow_jungle_tree(pos, node, nil, nil, stages)
 	elseif node.name == "mcl_core:acaciasapling" then
-		grow_acacia(pos)
+		grow_acacia(pos, node, nil, nil, stages)
 	elseif node.name == "mcl_core:sprucesapling" then
-		grow_spruce(pos)
+		grow_spruce(pos, node, nil, nil, stages)
 	elseif node.name == "mcl_core:birchsapling" then
-		grow_birch(pos)
+		grow_birch(pos, node, nil, nil, stages)
 	elseif node.name == "mcl_cherry_blossom:cherrysapling" then
-		grow_cherry(pos)
+		grow_cherry(pos, node, nil, nil, stages)
 	else
 		return false
 	end
@@ -1024,6 +1025,30 @@ minetest.register_abm({
 	chance = 5,
 	action = grow_acacia
 })
+
+minetest.register_lbm({
+	label = "Add growth for trees in unloaded blocks",
+	name = "mcl_core:tree_sapling_growth",
+	nodenames = { "group:sapling" },
+	neighbors = {"group:soil_sapling"},
+	run_at_every_load = true,
+	action = function(pos, node, dtime_s)
+		-- right now, all trees have 1/(35*5) chance
+		-- TODO: make this an API similar to farming
+		local interval, chance = 35, 5
+		local rolls = floor(dtime_s / interval)
+		if rolls <= 0 then return end
+		-- simulate how often the block will be ticked
+		local stages = 0
+		for i = 1,rolls do
+			if random(1, chance) == 1 then stages = stages + 1 end
+		end
+		if stages > 0 then
+			mcl_core.grow_sapling(pos, node, stages)
+		end
+	end,
+})
+
 
 local function leafdecay_particles(pos, node)
 	minetest.add_particlespawner({
