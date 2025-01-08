@@ -92,7 +92,6 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 
 	run_generators(minp, maxp, blockseed)
 
-	mcl_vars.add_chunk(minp)
 	if logging then
 		minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "Generating chunk", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - t1)*1000))
 	end
