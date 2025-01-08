@@ -191,9 +191,18 @@ function tpl_entity:set_item(itemstack, pos)
 
 	-- map support
 	if self._map_id then
+		local unran_callback = true
 		mcl_maps.load_map(self._map_id, function(texture)
+			unran_callback = false
 			if self.object and self.object:get_pos() then
 				self.object:set_properties(table_merge(map_props, {textures = {texture}}))
+			end
+		end)
+		-- dirty recursive hack because dynamic_add_media is unreliable
+		-- (and subsequently, mcl_maps.load_map is just as unreliable)
+		core.after(0, function()
+			if unran_callback then
+				update_entity(pos)
 			end
 		end)
 		return
