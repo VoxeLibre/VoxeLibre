@@ -227,37 +227,10 @@ function mcl_mobs:spawn_abm_check(pos, node, name)
 	-- return true to stop spawning mob
 end
 
-
---[[
-	Custom elements changed:
-
-name:
-the mobs name
-
-dimension:
-"overworld"
-"nether"
-"end"
-
-types of spawning:
-"water"
-"ground"
-"lava"
-
-biomes: tells the spawner to allow certain mobs to spawn in certain biomes
-{"this", "that", "grasslands", "whatever"}
-
-
-what is aoc??? objects in area
-
-WARNING: BIOME INTEGRATION NEEDED -> How to get biome through lua??
-]]--
-
-
 -- this is where all of the spawning information is kept
 ---@class mcl_mobs.SpawnDef
 ---@field name string
----@field dimension string
+---@field dimension "overworld"|"nether"|"end"
 ---@field type_of_spawning "ground"|"water"|"lava"
 ---@field biomes? string[]
 ---@field biomes_lookup {[string]: boolean}
