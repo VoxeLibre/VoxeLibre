@@ -127,27 +127,20 @@ local function count_mobs_all(categorise_by, pos)
 	local num = 0
 	for _,entity in pairs(minetest.luaentities) do
 		if entity and entity.is_mob then
-
 			local add_entry = false
-			--local mob_type = entity.type -- animal / monster / npc
 			local mob_cat = entity[categorise_by]
 
 			if pos then
 				local mob_pos = entity.object:get_pos()
 				if mob_pos then
 					local distance = vector.distance(pos, mob_pos)
-					--mcl_log("distance: ".. distance)
 					if distance <= MOB_SPAWN_ZONE_MIDDLE then
-						--mcl_log("distance is close")
 						count_mobs_add_entry (mobs_found_close, mob_cat)
 						count_mobs_add_entry (mobs_found_wide, mob_cat)
 						add_entry = true
 					elseif distance <= MOB_SPAWN_ZONE_OUTER then
-						--mcl_log("distance is wide")
 						count_mobs_add_entry (mobs_found_wide, mob_cat)
 						add_entry = true
-					else
-						--mcl_log("mob_pos: " .. minetest.pos_to_string(mob_pos))
 					end
 				end
 			else
@@ -155,13 +148,11 @@ local function count_mobs_all(categorise_by, pos)
 				add_entry = true
 			end
 
-
 			if add_entry then
 				num = num + 1
 			end
 		end
 	end
-	--mcl_log("num: ".. num)
 	return mobs_found_close, mobs_found_wide, num
 end
 
@@ -274,13 +265,13 @@ function mcl_mobs:spawn_setup(def)
 	local numbers = minetest.settings:get(name)
 	if numbers then
 		local number_parts = numbers:split(",")
-		chance = tonumber(number_parts[1]) or chance
-		aoc = tonumber(number_parts[2]) or aoc
-		if chance == 0 then
+		def.chance = tonumber(number_parts[1]) or def.chance
+		def.aoc = tonumber(number_parts[2]) or def.aoc
+		if def.chance == 0 then
 			minetest.log("warning", string.format("[mcl_mobs] %s has spawning disabled", name))
 			return
 		end
-		minetest.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, chance, aoc))
+		minetest.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, def.chance, def.aoc))
 	end
 
 	if def.chance < 1 then
@@ -345,8 +336,6 @@ function mcl_mobs:mob_light_lvl(mob_name, dimension)
 					return mob_dimension_default.min_light, mob_dimension_default.max_light
 				end
 			end
-		else
-			--minetest.log("not in consolidated")
 		end
 	end
 
@@ -369,9 +358,6 @@ end
 ---@param biomes string[]
 ---@deprecated
 function mcl_mobs:spawn_specific(name, dimension, type_of_spawning, biomes, min_light, max_light, interval, chance, aoc, min_height, max_height, day_toggle, on_spawn, check_position)
-	-- Do mobs spawn at all?
-	if not mobs_spawn then return end
-
 	mcl_mobs:spawn_setup({
 		name = name,
 		dimension = dimension,
@@ -553,74 +539,49 @@ local function get_biome_name(pos)
 	return gotten_biome and mt_get_biome_name(gotten_biome.biome)
 end
 
-local counts = {}
-local function initial_spawn_check(state, node, spawn_def)
-	local function log_fail(reason)
-		local count = (counts[reason] or 0) + 1
-		counts[reason] = count
-		if logging then
-			minetest.log("Spawn check for "..tostring(spawn_def and spawn_def.name).." failed - "..reason.." ("..count..") "..dump({
-				state = state,
-				node = node,
-			}))
-		end
-		return false
-	end
-
-	if not spawn_def then return log_fail("missing spawn_def") end
+local function initial_spawn_check(state, spawn_def)
+	if not spawn_def then return false end
 	local mob_def = minetest.registered_entities[spawn_def.name]
 
 	if mob_def.type == "monster" then
-		if not state.spawn_hostile then return log_fail("can't spawn hostile") end
+		if not state.spawn_hostile then return false end
 	else
-		if not state.spawn_passive then return log_fail("can't spawn passive") end
+		if not state.spawn_passive then return false end
 	end
 
 	-- Make the dimention is correct
-	if spawn_def.dimension ~= state.dimension then return log_fail("incorrect dimension") end
-
-	if spawn_def.biomes and not spawn_def.biomes_lookup[state.biome] then
-		return log_fail("Incorrect biome")
-	end
+	if spawn_def.dimension ~= state.dimension then return false end
+	if spawn_def.biomes and not spawn_def.biomes_lookup[state.biome] then return false end
 
 	-- Ground mobs must spawn on solid nodes that are not leafes
-	if spawn_def.type_of_spawning == "ground" and not state.is_ground then
-		return log_fail("not ground node")
-	end
+	if spawn_def.type_of_spawning == "ground" and not state.is_ground then return false end
 
 	-- Water mobs must spawn in water
-	if spawn_def.type_of_spawning == "water" and not state.is_water then return log_fail("not water node") end
+	if spawn_def.type_of_spawning == "water" and not state.is_water then return false end
 
 	-- Lava mobs must spawn in lava
-	if spawn_def.type_of_spawning == "lava" and not state.is_lava then return log_fail("not water node") end
+	if spawn_def.type_of_spawning == "lava" and not state.is_lava then return false end
 
 	-- Farm animals must spawn on grass
-	if is_farm_animal(spawn_def.name) and not state.is_grass then return log_fail("not grass block") end
+	if is_farm_animal(spawn_def.name) and not state.is_grass then return false end
 
 	return true
 end
 
 local function spawn_check(pos, state, node, spawn_def)
-	local function log_fail(reason)
-		local count = (counts[reason] or 0) + 1
-		counts[reason] = count
-		mcl_log("Spawn check failed - "..reason.." ("..count..")")
-		return false
-	end
-
-	if not initial_spawn_check(state, node, spawn_def) then return false end
+	if not initial_spawn_check(state, spawn_def) then return false end
 
 	dbg_spawn_attempts = dbg_spawn_attempts + 1
 
 	-- Make sure the mob can spawn at this location
-	if pos.y < spawn_def.min_height or pos.y > spawn_def.max_height then return log_fail("incorrect height") end
+	if pos.y < spawn_def.min_height or pos.y > spawn_def.max_height then return false end
 
 	-- Spawns require enough room for the mob
 	local mob_def = minetest.registered_entities[spawn_def.name]
-	if not has_room(mob_def,pos) then return log_fail("mob doesn't fit here") end
+	if not has_room(mob_def,pos) then return false end
 
 	-- Don't spawn if the spawn definition has a custom check and that fails
-	if spawn_def.check_position and not spawn_def.check_position(pos) then return log_fail("custom position check failed") end
+	if spawn_def.check_position and not spawn_def.check_position(pos) then return false end
 
 	return true
 end
@@ -707,7 +668,6 @@ local function build_state_for_position(pos, parent_state)
 		if not is_ground then
 			pos.y = pos.y - 1
 			node = get_node(pos)
-			node_name = node.name
 			node_def = core.registered_nodes[node.name] or core.nodedef_default
 			groups = node_def.groups or {}
 			is_ground = (groups.solid or 0) ~= 0
@@ -735,7 +695,7 @@ local function build_state_for_position(pos, parent_state)
 
 	-- Legacy lighting
 	if not modern_lighting then
-		state.light = gotten_light
+		state.light = gotten_light or 0
 	else
 		-- Modern lighting
 		local light_node = get_node(pos)
@@ -848,7 +808,7 @@ minetest.register_chatcommand("spawn_mob",{
 		local mob = mcl_mobs.spawn(pos,mobname)
 		if mob then
 			for c=1, #modifiers do
-				modifs = modifiers[c]
+				local modifs = modifiers[c]
 
 				local mod1 = string.find(modifs, ":")
 				local mod_start = string.find(modifs, "<")
@@ -860,7 +820,7 @@ minetest.register_chatcommand("spawn_mob",{
 						local variable = string.sub(modifs, mod_start+1, mod_vals-1)
 						local value = string.sub(modifs, mod_vals+1, mod_end-1)
 
-						number_tag = string.find(value, "NUM")
+						local number_tag = string.find(value, "NUM")
 						if number_tag then
 							value = tonumber(string.sub(value, 4, -1))
 						end
@@ -914,7 +874,7 @@ if mobs_spawn then
 		mcl_log("mob_type", mob_type)
 		mcl_log("cap_space_wide", cap_space_wide)
 
-		local cap_space_available = 0
+		local cap_space_available
 		if mob_type == "hostile" then
 			mcl_log("cap_space_global", cap_space_hostile)
 			cap_space_available = math_min(cap_space_hostile, cap_space_wide)
@@ -1009,7 +969,7 @@ if mobs_spawn then
 		-- Build a spawn list for this state
 		spawn_list = {}
 		for _,def in pairs(spawn_dictionary) do
-			if initial_spawn_check(state, node, def) then
+			if initial_spawn_check(state, def) then
 				spawn_list[#spawn_list + 1] = def
 			end
 		end
@@ -1024,7 +984,7 @@ if mobs_spawn then
 		if logging then
 			local spawn_names = {}
 			for _,def in pairs(spawn_dictionary) do
-				if initial_spawn_check(state, node, def) then
+				if initial_spawn_check(state, def) then
 					spawn_names[#spawn_names + 1] = def.name
 				end
 			end
@@ -1182,7 +1142,7 @@ local function despawn_allowed(self)
 	local nametag = self.nametag and self.nametag ~= ""
 	local not_busy = self.state ~= "attack" and self.following == nil
 	if self.can_despawn == true then
-		if not nametag and not_busy and not self.tamed == true and not self.persistent == true then
+		if not nametag and not_busy and self.tamed ~= true and self.persistent ~= true then
 			return true
 		end
 	end
@@ -1238,7 +1198,7 @@ minetest.register_chatcommand("mobstats",{
 		minetest.chat_send_player(n,"mobs: within 32 radius of player/total loaded :"..count_mobs(pos,MOB_CAP_INNER_RADIUS) .. "/" .. count_mobs_total())
 		minetest.chat_send_player(n,"spawning attempts since server start:" .. dbg_spawn_succ .. "/" .. dbg_spawn_attempts)
 
-		local mob_counts_close, mob_counts_wide, total_mobs = count_mobs_all("name") -- Can use "type"
+		local _, mob_counts_wide, total_mobs = count_mobs_all("name") -- Can use "type"
 		output_mob_stats(mob_counts_wide, total_mobs, true)
 	end
 })
