@@ -49,7 +49,7 @@ local tpl_node = {
 	_mcl_blast_resistance = 0.5,
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usagehelp,
-	after_dig_node = mcl_util.drop_items_from_meta_container({"main"}),
+	after_dig_node = mcl_util.drop_items_from_meta_container("main"),
 	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_put = function() return 0 end,
 	allow_metadata_inventory_take = function() return 0 end,
@@ -59,7 +59,15 @@ local tpl_entity = {
 	initial_properties = base_props,
 }
 
-local tpl_groups = {dig_immediate = 3, deco_block = 1, dig_by_piston = 1, handy = 1, axey = 1, itemframe = 1}
+local tpl_groups = {
+	dig_immediate = 3,
+	deco_block = 1,
+	dig_by_piston = 1,
+	handy = 1,
+	axey = 1,
+	attached_node = 1,
+	itemframe = 1
+}
 
 -- Utility functions
 local function find_entity(pos)
