@@ -26,7 +26,6 @@ local cherry_particle = {
 	velocity = vector.zero(),
 	acceleration = vector.new(0,-1,0),
 	size = 1.3 + math.random() * 1.2,
-	texture = "mcl_cherry_blossom_particle_" .. math.random(1, 12) .. ".png",
 	animation = {
 		type = "vertical_frames",
 		aspect_w = 3,
