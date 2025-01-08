@@ -22,6 +22,7 @@ local SPRUCE_TREE_ID = 3
 local ACACIA_TREE_ID = 4
 local JUNGLE_TREE_ID = 5
 local BIRCH_TREE_ID = 6
+local CHERRY_TREE_ID = 7
 
 minetest.register_abm({
 	label = "Lava cooling",
@@ -305,6 +306,8 @@ local function check_tree_growth(pos, tree_id, options)
 		return check_growth_width(pos, 7, 8)
 	elseif tree_id == DARK_OAK_TREE_ID and two_by_two then
 		return check_growth_width(pos, 4, 7)
+	elseif tree_id == CHERRY_TREE_ID then
+		return check_growth_width(pos, 7, 8)
 	end
 
 	return false
@@ -356,6 +359,8 @@ function mcl_core.generate_tree(pos, tree_type, options)
 		end
 	elseif tree_type == BIRCH_TREE_ID then
 		mcl_core.generate_birch_tree(pos)
+	elseif tree_type == CHERRY_TREE_ID then
+		mcl_cherry_blossom.generate_cherry_tree(pos)
 	end
 	mcl_core.update_sapling_foliage_colors(pos)
 end
@@ -822,35 +827,14 @@ minetest.register_lbm({
 --------------------------
 -- Try generate tree   ---
 --------------------------
-local treelight = 9
+local TREE_MINIMUM_LIGHT = 9
 
 local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two, sapling)
-	return function(pos)
+	return function(pos, node, grow_by)
 		local meta = minetest.get_meta(pos)
-		if meta:get("grown") then return end
 		-- Checks if the sapling at pos has enough light and the correct soil
 		local light = minetest.get_node_light(pos)
-		if not light then return end
-		local low_light = light < treelight
-
-		local delta = 1
-		local current_game_time = minetest.get_day_count() + minetest.get_timeofday()
-
-		local last_game_time = tonumber(meta:get_string("last_gametime"))
-		meta:set_string("last_gametime", tostring(current_game_time))
-
-		if last_game_time then
-			delta = current_game_time - last_game_time
-		elseif low_light then
-			return
-		end
-
-		if low_light then
-			if delta < 1.2 then return end
-			if minetest.get_node_light(pos, 0.5) < treelight then return end
-		end
-
-		-- TODO: delta is [days] missed in inactive area. Currently we just add it to stage, which is far from a perfect calculation...
+		if not light or light < TREE_MINIMUM_LIGHT then return end
 
 		local soilnode = minetest.get_node(vector_offset(pos, 0, -1, 0))
 		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
@@ -858,86 +842,80 @@ local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two,
 
 		-- Increase and check growth stage
 		local meta = minetest.get_meta(pos)
-		local stage = meta:get_int("stage")
-		if stage == nil then stage = 0 end
-		stage = stage + max(1, floor(delta))
-		if stage >= 3 then
-			meta:set_string("grown", "true")
-			-- This sapling grows in a special way when there are 4 saplings in a 2x2 pattern
-			if two_by_two then
-				-- Check 8 surrounding saplings and try to find a 2x2 pattern
-				local function is_sapling(pos, sapling)
-					return minetest.get_node(pos).name == sapling
-				end
-				-- clockwise from x+1, coded right/bottom/left/top
-				local prr = vector_offset(pos,  1, 0,  0) -- right
-				local prb = vector_offset(pos,  1, 0, -1) -- right bottom
-				local pbb = vector_offset(pos,  0, 0, -1) -- bottom
-				local pbl = vector_offset(pos, -1, 0, -1) -- bottom left
-				local pll = vector_offset(pos, -1, 0,  0) -- left
-				local plt = vector_offset(pos, -1, 0,  1) -- left top
-				local ptt = vector_offset(pos,  0, 0,  1) -- top
-				local ptr = vector_offset(pos,  1, 0,  1) -- top right
-				local srr = is_sapling(prr, sapling)
-				local srb = is_sapling(prb, sapling)
-				local sbb = is_sapling(pbb, sapling)
-				local sbl = is_sapling(pbl, sapling)
-				local sll = is_sapling(pll, sapling)
-				local slt = is_sapling(plt, sapling)
-				local stt = is_sapling(ptt, sapling)
-				local str = is_sapling(ptr, sapling)
-				-- In a 3x3 field there are 4 possible 2x2 squares. We check them all.
-				if srr and srb and sbb and check_tree_growth(pos, tree_id, { two_by_two = true }) then
-					-- Success: Remove saplings and place tree
-					minetest.remove_node(pos)
-					minetest.remove_node(prr)
-					minetest.remove_node(prb)
-					minetest.remove_node(pbb)
-					mcl_core.generate_tree(pos, tree_id, { two_by_two = true }) -- center is top-left of 2x2
-					return
-				elseif sbb and sbl and sll and check_tree_growth(pll, tree_id, { two_by_two = true }) then
-					minetest.remove_node(pos)
-					minetest.remove_node(pbb)
-					minetest.remove_node(pbl)
-					minetest.remove_node(pll)
-					mcl_core.generate_tree(pll, tree_id, { two_by_two = true }) -- ll is top-left of 2x2
-					return
-				elseif sll and slt and stt and check_tree_growth(plt, tree_id, { two_by_two = true }) then
-					minetest.remove_node(pos)
-					minetest.remove_node(pll)
-					minetest.remove_node(plt)
-					minetest.remove_node(ptt)
-					mcl_core.generate_tree(plt, tree_id, { two_by_two = true }) -- lt is top-left of 2x2
-					return
-				elseif stt and str and srr and check_tree_growth(ptt, tree_id, { two_by_two = true }) then
-					minetest.remove_node(pos)
-					minetest.remove_node(ptt)
-					minetest.remove_node(ptr)
-					minetest.remove_node(prr)
-					mcl_core.generate_tree(ptt, tree_id, { two_by_two = true }) -- tt is top-left of 2x2
-					return
-				end
-			end
-				if one_by_one and tree_id == OAK_TREE_ID then
-				-- There is a chance that this tree wants to grow as a balloon oak
-				if random(1, 12) == 1 then
-					-- Check if there is room for that
-					if check_tree_growth(pos, tree_id, { balloon = true }) then
-						minetest.set_node(pos, {name="air"})
-						mcl_core.generate_tree(pos, tree_id, { balloon = true })
-						return
-					end
-				end
-			end
-			-- If this sapling can grow alone
-			if one_by_one and check_tree_growth(pos, tree_id) then
-				-- Single sapling
-				minetest.set_node(pos, {name="air"})
-				mcl_core.generate_tree(pos, tree_id)
+		local stage = (meta:get_int("stage") or 0) + (grow_by or 1)
+		if stage < 3 then
+			meta:set_int("stage", stage)
+			return
+		end
+		-- This sapling grows in a special way when there are 4 saplings in a 2x2 pattern
+		if two_by_two then
+			-- Check 8 surrounding saplings and try to find a 2x2 pattern
+			-- clockwise from x+1, coded right/bottom/left/top
+			local prr = vector_offset(pos,  1, 0,  0) -- right
+			local prb = vector_offset(pos,  1, 0, -1) -- right bottom
+			local pbb = vector_offset(pos,  0, 0, -1) -- bottom
+			local pbl = vector_offset(pos, -1, 0, -1) -- bottom left
+			local pll = vector_offset(pos, -1, 0,  0) -- left
+			local plt = vector_offset(pos, -1, 0,  1) -- left top
+			local ptt = vector_offset(pos,  0, 0,  1) -- top
+			local ptr = vector_offset(pos,  1, 0,  1) -- top right
+			local srr = minetest.get_node(prr).name == sapling
+			local srb = minetest.get_node(prb).name == sapling
+			local sbb = minetest.get_node(pbb).name == sapling
+			local sbl = minetest.get_node(pbl).name == sapling
+			local sll = minetest.get_node(pll).name == sapling
+			local slt = minetest.get_node(plt).name == sapling
+			local stt = minetest.get_node(ptt).name == sapling
+			local str = minetest.get_node(ptr).name == sapling
+			-- In a 3x3 field there are 4 possible 2x2 squares. We check them all.
+			if srr and srb and sbb and check_tree_growth(pos, tree_id, { two_by_two = true }) then
+				-- Success: Remove saplings and place tree
+				minetest.remove_node(pos)
+				minetest.remove_node(prr)
+				minetest.remove_node(prb)
+				minetest.remove_node(pbb)
+				mcl_core.generate_tree(pos, tree_id, { two_by_two = true }) -- center is top-left of 2x2
+				return
+			elseif sbb and sbl and sll and check_tree_growth(pll, tree_id, { two_by_two = true }) then
+				minetest.remove_node(pos)
+				minetest.remove_node(pbb)
+				minetest.remove_node(pbl)
+				minetest.remove_node(pll)
+				mcl_core.generate_tree(pll, tree_id, { two_by_two = true }) -- ll is top-left of 2x2
+				return
+			elseif sll and slt and stt and check_tree_growth(plt, tree_id, { two_by_two = true }) then
+				minetest.remove_node(pos)
+				minetest.remove_node(pll)
+				minetest.remove_node(plt)
+				minetest.remove_node(ptt)
+				mcl_core.generate_tree(plt, tree_id, { two_by_two = true }) -- lt is top-left of 2x2
+				return
+			elseif stt and str and srr and check_tree_growth(ptt, tree_id, { two_by_two = true }) then
+				minetest.remove_node(pos)
+				minetest.remove_node(ptt)
+				minetest.remove_node(ptr)
+				minetest.remove_node(prr)
+				mcl_core.generate_tree(ptt, tree_id, { two_by_two = true }) -- tt is top-left of 2x2
 				return
 			end
-		else
-			meta:set_int("stage", stage)
+		end
+			if one_by_one and tree_id == OAK_TREE_ID then
+			-- There is a chance that this tree wants to grow as a balloon oak
+			if random(1, 12) == 1 then
+				-- Check if there is room for that
+				if check_tree_growth(pos, tree_id, { balloon = true }) then
+					minetest.set_node(pos, {name="air"})
+					mcl_core.generate_tree(pos, tree_id, { balloon = true })
+					return
+				end
+			end
+		end
+		-- If this sapling can grow alone
+		if one_by_one and check_tree_growth(pos, tree_id) then
+			-- Single sapling
+			minetest.set_node(pos, {name="air"})
+			mcl_core.generate_tree(pos, tree_id)
+			return
 		end
 	end
 end
@@ -948,6 +926,9 @@ local grow_jungle_tree = sapling_grow_action(JUNGLE_TREE_ID, 1, true, true, "mcl
 local grow_acacia = sapling_grow_action(ACACIA_TREE_ID, 2, true, false)
 local grow_spruce = sapling_grow_action(SPRUCE_TREE_ID, 1, true, true, "mcl_core:sprucesapling")
 local grow_birch = sapling_grow_action(BIRCH_TREE_ID, 1, true, false)
+local grow_cherry = sapling_grow_action(CHERRY_TREE_ID, 1, true, false)
+-- export for cherry tree module
+mcl_core.grow_cherry = grow_cherry
 
 function mcl_core.update_sapling_foliage_colors(pos)
 	local foliage = minetest.find_nodes_in_area(
@@ -977,7 +958,7 @@ function mcl_core.grow_sapling(pos, node)
 	elseif node.name == "mcl_core:birchsapling" then
 		grow_birch(pos)
 	elseif node.name == "mcl_cherry_blossom:cherrysapling" then
-		return mcl_cherry_blossom.generate_cherry_tree(pos)
+		grow_cherry(pos)
 	else
 		return false
 	end

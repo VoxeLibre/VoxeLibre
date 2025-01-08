@@ -1,19 +1,14 @@
 -- Tree Growth
 -- TODO: Use better spawning behavior and wood api when wood api is finished.
 function mcl_cherry_blossom.generate_cherry_tree(pos)
-	local pr = PseudoRandom(pos.x+pos.y+pos.z)
-	local r = pr:next(1,3)
-	local modpath = minetest.get_modpath("mcl_cherry_blossom")
-	local path = modpath.."/schematics/mcl_cherry_blossom_tree_"..tostring(r)..".mts"
-	if mcl_core.check_growth_width(pos,7,8) then
-		minetest.set_node(pos, {name = "air"})
-		if r == 1 then
-			minetest.place_schematic(vector.offset(pos, -2, 0, -2), path, "random", nil, false)
-		elseif r == 2 then
-			minetest.place_schematic(vector.offset(pos, -2, 0, -2), path, nil, nil, false)
-		elseif r == 3 then
-			minetest.place_schematic(vector.offset(pos, -3, 0, -3), path, nil, nil, false)
-		end
+	local r = math.random(1,3)
+	local path = minetest.get_modpath("mcl_cherry_blossom").."/schematics/mcl_cherry_blossom_tree_"..r..".mts"
+	if r == 1 then
+		minetest.place_schematic(vector.offset(pos, -2, 0, -2), path, "random", nil, false)
+	elseif r == 2 then
+		minetest.place_schematic(vector.offset(pos, -2, 0, -2), path, nil, nil, false)
+	elseif r == 3 then
+		minetest.place_schematic(vector.offset(pos, -3, 0, -3), path, nil, nil, false)
 	end
 end
 
@@ -22,9 +17,7 @@ minetest.register_abm({
 	nodenames = "mcl_cherry_blossom:cherrysapling",
 	interval = 35,
 	chance = 5,
-	action = function(pos,node)
-		mcl_cherry_blossom.generate_cherry_tree(pos)
-	end,
+	action = mcl_core.grow_cherry
 })
 
 local cherry_particle = {
