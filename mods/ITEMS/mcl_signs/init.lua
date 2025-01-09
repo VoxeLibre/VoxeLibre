@@ -244,11 +244,11 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	-- place on wall
 	if wdir ~= 0 and wdir ~= 1 then
 		placestack:set_name("mcl_signs:wall_sign_"..def._mcl_sign_wood)
-		itemstack, pos = minetest.item_place(placestack, placer, pointed_thing, wdir)
+		itemstack, pos = minetest.item_place_node(placestack, placer, pointed_thing, wdir)
 	elseif wdir == 1 then -- standing, not ceiling
 		placestack:set_name("mcl_signs:standing_sign_"..def._mcl_sign_wood)
 		local rot = normalize_rotation(placer:get_look_horizontal() * 180 / math.pi / 1.5)
-		itemstack, pos = minetest.item_place(placestack, placer, pointed_thing,  rot) -- param2 value is degrees / 1.5
+		itemstack, pos = minetest.item_place_node(placestack, placer, pointed_thing,  rot) -- param2 value is degrees / 1.5
 	else
 		return itemstack
 	end
