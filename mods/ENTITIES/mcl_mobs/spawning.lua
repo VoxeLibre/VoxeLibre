@@ -923,11 +923,12 @@ if mobs_spawn then
 		if #spawn_table == 0 then return nil end
 
 		local mob_chance_offset = math_random() * spawn_table.cumulative_chance
+		-- Deliberately one less that the table size. The last item will always
+		-- be chosen when all others aren't selected
 		for i = 1,(#spawn_table-1) do
 			local mob_def = spawn_table[i]
 			local mob_chance = mob_def.chance
 			if mob_chance_offset <= mob_chance then
-				--minetest.log(mob_def.name.." "..mob_chance)
 				return mob_def
 			end
 
@@ -1008,7 +1009,7 @@ if mobs_spawn then
 		if not spawning_position then
 			fail_count = fail_count + 1
 			if logging and fail_count > 16 then
-				minetest.log("action", "[Mobs spawn] Cannot find a valid spawn position in last 16 attemtps")
+				minetest.log("action", "[Mobs spawn] Could not find a valid spawn position in last 16 attempts")
 			end
 			return
 		end
@@ -1046,13 +1047,13 @@ if mobs_spawn then
 		if mob_def.type_of_spawning == "water" then
 			spawning_position = get_water_spawn(spawning_position)
 			if not spawning_position then
-				minetest.log("warning","[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+				mcl_log("[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
 				return
 			end
 		end
 
 		if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
-			minetest.log("warning","[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
+			mcl_log("[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
 			return
 		end
 
