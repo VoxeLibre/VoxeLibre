@@ -642,6 +642,8 @@ end
 ---@field light integer
 ---@field serialized string
 
+-- State serialization table workspace
+local _sst = {"","","","","","","","",0}
 ---@param pos vector.Vector
 ---@param parent_state mcl_mobs.SpawnState?
 ---@return mcl_mobs.SpawnState?, core.Node?
@@ -728,12 +730,17 @@ local function build_state_for_position(pos, parent_state)
 	end
 
 	-- Convert state into a format that can be used as a hash table key
-	state.serialized = string.format("%s:%s:%s:%s:%s:%s:%s:%s:%d",
-		state.biome, state.dimension,
-		state.spawn_hostile, state.spawn_passive,
-		state.is_ground, state.is_grass, state.is_water, state.is_lava,
-		state.light or 0
-	)
+	-- This needs to be as fast as possible
+	_sst[1] = state.biome
+	_sst[2] = state.dimension
+	_sst[3] = state.spawn_hostile and "T" or "F"
+	_sst[4] = state.spawn_passive and "T" or "F"
+	_sst[5] = state.is_ground and "T" or "F"
+	_sst[6] = state.is_grass and "T" or "F"
+	_sst[7] = state.is_water and "T" or "F"
+	_sst[8] = state.is_lava and "T" or "F"
+	_sst[9] = state.light or 0
+	state.serialized = table.concat(_sst,":")
 	return state,node
 end
 
