@@ -107,8 +107,23 @@ function mob_class:item_drop(cooked, looting_level)
 
 	self.drops = self.drops or {}
 
-	for n = 1, #self.drops do
-		local dropdef = self.drops[n]
+	local drops_tp = table.copy(self.drops)
+
+	if self.wears_armor then
+		for armortype,amoritem in pairs(self.armor_list) do
+			table.insert(drops_tp,
+				{name = amoritem,
+				chance = 20,
+				min = 1,
+				max = 1,
+				looting = "rare",}
+			)
+			print(amoritem)
+		end
+	end
+
+	for n = 1, #drops_tp do
+		local dropdef = drops_tp[n]
 		local chance = 1 / dropdef.chance
 		local looting_type = dropdef.looting
 

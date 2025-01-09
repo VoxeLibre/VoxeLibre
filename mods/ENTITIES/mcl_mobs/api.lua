@@ -63,6 +63,48 @@ function mob_class:jock_to(mob, reletive_pos, rot)
 	self.object:set_attach(jock, "", reletive_pos, rot)
 end
 
+local function get_armor_by_chance()
+	local armor = {helmet="",chestplate="",boots="",leggings=""}
+
+	if math.random(100) <= 5 then
+		local armor_materials = {
+			gold = 48.73,
+			leather = 37.06,
+			chain = 12.90,
+			iron = 1.27,
+			diamond = 0.04,
+		}
+
+		local material = ""
+
+		local random_number = math.random(10000)/100 -- 000.00 - 100.00
+
+	 -- accurately by percentage pick a random armor material.
+		inter = 0
+		for m,chance in pairs(armor_materials) do
+			inter = inter+chance
+			if random_number < inter then
+				material = m
+				break
+			end
+		end
+
+		armor.boots = "mcl_armor:boots_"..material -- 100% chance
+
+		if math.random(100) < 75 then -- %75 chance of leggings
+			armor.leggings = "mcl_armor:leggings_"..material -- 75% chance
+		end
+		if math.random(100) < 75 then -- %75 chance of chestplate
+			armor.chestplate = "mcl_armor:chestplate_"..material
+		end
+		if math.random(100) < 75 then -- %75 chance of helmet
+			armor.helmet = "mcl_armor:helmet_"..material
+		end
+	end
+
+	return armor
+end
+
 function mob_class:get_staticdata()
 	for _,p in pairs(minetest.get_connected_players()) do
 		self:remove_particlespawners(p:get_player_name())
@@ -245,7 +287,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	if not self.wears_armor and self.armor_list then self.armor_list = nil end
 
 	if not self._run_armor_init and self.wears_armor then
-		self.armor_list={helmet="",chestplate="",boots="",leggings=""}
+		self.armor_list=get_armor_by_chance() -- 5% percent chance to spawn with armor. Accurate dispersion in function.
 		self:set_armor_texture()
 		self._run_armor_init = true
 	end
