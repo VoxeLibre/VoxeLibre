@@ -530,6 +530,35 @@ local function get_water_spawn(p)
 		end
 end
 
+--- helper to check a single node p
+local function check_room_helper(p, fly_in, fly_in_air, headroom, check_headroom)
+	local node = get_node(p)
+	local name = node.name
+	-- fast-track very common air case:
+	if fly_in_air and name == "air" then return true end
+	local n_def = registered_nodes[name]
+	if not n_def then return false end -- don't spawn in ignore
+
+	-- Fast-track common cases:
+	-- if fly_in "air", also include other non-walkable non-liquid nodes:
+	if fly_in_air and n_def and not n_def.walkable and n_def.liquidtype == "none" then return true end
+	-- other things we can fly in
+	if fly_in[name] then return true end
+	-- negative checks: need full node
+	if not check_headroom then return false end
+	-- solid block always overlaps
+	if n_def.node_box == "regular" then return false end
+	-- perform sub-node checks in top layer
+	local boxes = minetest.get_node_boxes("collision_box", p, node)
+	for i = 1,#boxes do
+		-- headroom is measured from the bottom, hence +0.5
+		if boxes[i][2] + 0.5 < headroom then
+			return false
+		end
+	end
+	return true
+end
+
 local FLY_IN_AIR = { air = true }
 local function has_room(self, pos)
 	local cb = self.spawnbox or self.collisionbox
@@ -557,30 +586,8 @@ local function has_room(self, pos)
 			p.z = z
 			for x = p1.x,p2.x do
 				p.x = x
-				local node = get_node(p)
-				local nam = node.name
-				local n_def = registered_nodes[nam]
-				-- Fast-track common cases:
-				local continue = nam == "ignore" or (nam == "air" and fly_in_air) or not n_def
-				-- if fly_in "air", also include other non-walkable non-liquid nodes:
-				continue = continue or (fly_in_air and n_def and not n_def.walkable and n_def.liquidtype == "none")
-				-- other things we can fly in
-				continue = continue or not not fly_in[nam]
-				if not continue then
-					if not check_headroom then
-						return false
-					end
-					if n_def.node_box == "regular" then
-						return false
-					end
-					-- perform sub-node checks in top layer
-					local boxes = minetest.get_node_boxes("collision_box", p, node)
-					for i = 1,#boxes do
-						-- headroom is measured from the bottom, hence +0.5
-						if boxes[i][2] + 0.5 < headroom then
-							return false
-						end
-					end
+				if not check_room_helper(p, fly_in, fly_in_air, headroom, check_headroom) then
+					return false
 				end
 			end
 		end
@@ -636,7 +643,6 @@ local function spawn_check(pos, spawn_def)
 	if spawn_def.biomes and not biome_check(spawn_def.biomes, get_biome_name(pos)) then return end
 	-- check if there is enough room
 	local mob_def = minetest.registered_entities[spawn_def.name]
-	-- checked again later! if not has_room(mob_def,pos) then return end
 	-- additional checks (slime etc.)
 	if spawn_def.check_position and not spawn_def.check_position(pos) then return end
 	if spawn_protected and minetest.is_protected(pos, "") then return end
