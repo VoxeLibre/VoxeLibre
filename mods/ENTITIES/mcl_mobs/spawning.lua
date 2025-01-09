@@ -279,13 +279,15 @@ function mcl_mobs:spawn_setup(def)
 		minetest.log("warning", "Chance shouldn't be less than 1 (mob name: " .. name ..")")
 	end
 
-	-- Create lookup table for biomes
-	local biomes_lookup = {}
-	def.biomes_lookup = biomes_lookup
-	local biomes = def.biomes
-	if biomes then
-		for i=1,#def.biomes do
-			biomes_lookup[biomes[i]] = true
+	-- Create lookup table from biomes if one isn't provided
+	if not def.biomes_lookup then
+		local biomes_lookup = {}
+		def.biomes_lookup = biomes_lookup
+		local biomes = def.biomes
+		if biomes then
+			for i=1,#biomes do
+				biomes_lookup[biomes[i]] = true
+			end
 		end
 	end
 
