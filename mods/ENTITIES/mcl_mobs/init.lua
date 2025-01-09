@@ -145,12 +145,6 @@ function mcl_mobs.register_mob(name, def)
 	end
 
 	local collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
-	-- Workaround for <https://github.com/minetest/minetest/issues/5966>:
-	-- Increase upper Y limit to avoid mobs glitching through solid nodes.
-	-- FIXME: Remove workaround if it's no longer needed.
-	if collisionbox[5] < 0.79 then
-		collisionbox[5] = 0.79
-	end
 	local final_def = {
 		use_texture_alpha = def.use_texture_alpha,
 		head_swivel = def.head_swivel or nil, -- bool to activate this function
@@ -190,7 +184,8 @@ function mcl_mobs.register_mob(name, def)
 		breathes_in_water = def.breathes_in_water or false,
 		physical = true,
 		collisionbox = collisionbox,
-		selectionbox = def.selectionbox or def.collisionbox,
+		selectionbox = def.selectionbox or collisionbox,
+		spawnbox = def.spawnbox or collisionbox,
 		visual = def.visual,
 		visual_size = def.visual_size or {x = 1, y = 1},
 		mesh = def.mesh,
