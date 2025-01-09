@@ -578,10 +578,6 @@ local function spawn_check(pos, state, node, spawn_def)
 	-- Make sure the mob can spawn at this location
 	if pos.y < spawn_def.min_height or pos.y > spawn_def.max_height then return false end
 
-	-- Spawns require enough room for the mob
-	local mob_def = minetest.registered_entities[spawn_def.name]
-	if not has_room(mob_def, pos) then return false end
-
 	-- Don't spawn if the spawn definition has a custom check and that fails
 	if spawn_def.check_position and not spawn_def.check_position(pos) then return false end
 
