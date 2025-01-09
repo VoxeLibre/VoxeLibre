@@ -44,13 +44,6 @@ function table.pairs_by_keys(t, f)
 	return iter
 end
 
-function table.find(t, item)
-	for k,v in pairs(t) do
-		if v == item then return k end
-	end
-	return nil
-end
-
 ---@param a table
 ---@param b table
 ---@return table
