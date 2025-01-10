@@ -15,6 +15,7 @@ local get_node_light               = minetest.get_node_light
 local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
 local mt_get_biome_name            = minetest.get_biome_name
 local get_connected_players        = minetest.get_connected_players
+local registered_nodes             = minetest.registered_nodes
 
 local math_min       = math.min
 local math_max       = math.max
