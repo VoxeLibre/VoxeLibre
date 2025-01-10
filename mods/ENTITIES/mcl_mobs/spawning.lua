@@ -19,6 +19,7 @@ local get_connected_players        = minetest.get_connected_players
 local math_min       = math.min
 local math_max       = math.max
 local math_random    = math.random
+local math_round     = math.round
 local math_floor     = math.floor
 local math_ceil      = math.ceil
 local math_sqrt      = math.sqrt
@@ -246,8 +247,9 @@ function mcl_mobs:spawn_setup(def)
 	if not mobs_spawn then return end
 
 	-- Validate required definition fields are present
-	assert(def)
-	assert(def.name)
+	assert(def, "Missing spawn definition")
+	assert(def.name, "Spawn definition missing entity name")
+	assert(minetest.registered_entities[def.name], "Entity name not registered")
 	local name = def.name
 
 	-- Defaults
@@ -502,13 +504,13 @@ local function has_room(self, pos)
 	-- Calculate area to check for room
 	local cb_height = cb[5] - cb[2]
 	local p1 = vector.new(
-		math.round(pos.x + cb[1]),
-		math.floor(pos.y),
-		math.round(pos.z + cb[3]))
+		math_round(pos.x + cb[1]),
+		math_floor(pos.y),
+		math_round(pos.z + cb[3]))
 	local p2 = vector.new(
-		math.round(pos.x + cb[4]),
-		math.ceil(p1.y + cb_height) - 1,
-		math.round(pos.z + cb[6]))
+		math_round(pos.x + cb[4]),
+		math_ceil(p1.y + cb_height) - 1,
+		math_round(pos.z + cb[6]))
 
 	-- Check if the entire spawn volume is free
 	local p = vector.copy(pos)
@@ -555,7 +557,7 @@ local function initial_spawn_check(state, spawn_def)
 	if spawn_def.dimension ~= state.dimension then return false end
 	if spawn_def.biomes and not spawn_def.biomes_lookup[state.biome] then return false end
 
-	-- Ground mobs must spawn on solid nodes that are not leafes
+	-- Ground mobs must spawn on solid nodes that are not leaves
 	if spawn_def.type_of_spawning == "ground" and not state.is_ground then return false end
 
 	-- Water mobs must spawn in water
@@ -1029,7 +1031,6 @@ if mobs_spawn then
 		local mob_def = select_random_mob_def(spawn_list)
 		if not mob_def or not mob_def.name then return end
 		local mob_def_ent = minetest.registered_entities[mob_def.name]
-		if not mob_def_ent then return end
 
 		local cap_space_available = state.cap_space_passive
 		if mob_def_ent.type == "monster" then
@@ -1071,13 +1072,13 @@ if mobs_spawn then
 
 			local amount_to_spawn = math_random(group_min, spawn_in_group)
 			mcl_log("Spawning quantity: " .. amount_to_spawn)
-			amount_to_spawn = math.min(amount_to_spawn, cap_space_available)
+			amount_to_spawn = math_min(amount_to_spawn, cap_space_available)
 			mcl_log("throttled spawning quantity: " .. amount_to_spawn)
 
 			if amount_to_spawn > 1 then
 				if logging then
 					minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name ..
-						"mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name ..
+						" mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name ..
 						" at " .. minetest.pos_to_string(spawning_position, 1)
 					)
 				end
