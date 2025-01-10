@@ -598,18 +598,18 @@ function mcl_mobs.spawn(pos,id)
 		local wx, wz = cb[4] - cb[1], cb[6] - cb[3]
 		local retry = false
 		if (wx > 1 and wx <= 2) then
-			pos.x = pos.x + math.random(0,1) - 0.5
+			pos.x = pos.x + math_random(0,1) - 0.5
 			retry = true
 		end
 		if (wz > 1 and wz <= 2) then
-			pos.z = pos.z + math.random(0,1) - 0.5
+			pos.z = pos.z + math_random(0,1) - 0.5
 			retry = true
 		end
 		if not retry or not has_room(def, pos) then
 			return false
 		end
 	end
-	if math.round(pos.y) == pos.y then -- node spawn
+	if math_round(pos.y) == pos.y then -- node spawn
 		pos.y = pos.y - 0.495 - def.collisionbox[2] -- spawn just above ground below
 	end
 	local obj = minetest.add_entity(pos, def.name)
