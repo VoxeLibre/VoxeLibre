@@ -1079,17 +1079,17 @@ if mobs_spawn then
 			if amount_to_spawn > 1 then
 				if logging then
 					minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name ..
-						" mob spawns on " ..minetest.get_node(vector.offset(spawning_position,0,-1,0)).name ..
+						" mob spawns on " ..get_node(vector.offset(spawning_position,0,-1,0)).name ..
 						" at " .. minetest.pos_to_string(spawning_position, 1)
 					)
 				end
-				return spawn_group(spawning_position,mob_def,{minetest.get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn, state)
+				return spawn_group(spawning_position,mob_def,{get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn, state)
 			end
 		end
 
 		if logging then
 			minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..
-				minetest.get_node(vector.offset(spawning_position,0,-1,0)).name .." at "..
+				get_node(vector.offset(spawning_position,0,-1,0)).name .." at "..
 				minetest.pos_to_string(spawning_position, 1)
 			)
 		end
