@@ -6,6 +6,7 @@ local entity_stub = {
 	end
 }
 
+-- Replace old item frames and their entities
 core.register_entity("mcl_itemframes:item_frame_item", entity_stub)
 core.register_entity("mcl_itemframes:item_frame_map", entity_stub)
 core.register_entity("mcl_itemframes:glow_item_frame_item", entity_stub)
@@ -28,6 +29,7 @@ core.register_lbm({
 	end
 })
 
+-- Wrapper for backwards compatibility with the old API
 function mcl_itemframes.create_custom_frame(_, name, has_glow, tiles, _, ttframe, description, inv_wield_image)
 	if not inv_wield_image or inv_wield_image == "" then
 		inv_wield_image = tiles
@@ -42,7 +44,7 @@ function mcl_itemframes.create_custom_frame(_, name, has_glow, tiles, _, ttframe
 			tiles = {tiles},
 			inventory_image = inv_wield_image,
 			wield_image = inv_wield_image,
-		},
+		}
 	}
 	if has_glow then
 		def.object_properties = {glow = 15}

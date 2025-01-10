@@ -3,7 +3,7 @@
 Adds regular and glowing item frames into VoxeLibre.
 
 * Rewritten from scratch for Mineclonia by cora
-* Ported to and adapted for VoxeLibre by rudzik8
+* Ported to and adapted for VoxeLibre with changes by rudzik8
 
 From original README.md:
 

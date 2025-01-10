@@ -154,8 +154,8 @@ function tpl_node.on_construct(pos)
 	inv:set_size("main", 1)
 end
 
--- hack to force the place sound to play
 function tpl_node.after_place_node(pos, placer, itemstack, pointed_thing)
+	-- hack to force the place sound to play
 	local idef = itemstack:get_definition()
 	if idef and idef.sounds and idef.sounds.place then
 		core.sound_play(idef.sounds.place, {pos = pos}, true)
@@ -169,18 +169,22 @@ function tpl_entity:set_item(itemstack, pos)
 		update_entity(pos)
 		return
 	end
+
 	if pos then
 		self._itemframe_pos = pos
 	else
 		pos = self._itemframe_pos
 	end
+
 	local ndef = core.registered_nodes[core.get_node(pos).name]
 	if not ndef._mcl_itemframe then
 		self.object:remove()
 		update_entity(pos)
 		return
 	end
+
 	local def = mcl_itemframes.registered_itemframes[ndef._mcl_itemframe]
+
 	self._item = itemstack:get_name()
 	self._stack = itemstack
 	self._map_id = get_map_id(itemstack)
@@ -255,10 +259,13 @@ function tpl_entity:on_step(dtime)
 	self._timer = (self._timer and self._timer - dtime) or 1
 	if self._timer > 0 then return end
 	self._timer = 1
+
 	if core.get_item_group(core.get_node(self._itemframe_pos).name, "itemframe") <= 0 then
 		self.object:remove()
 		return
 	end
+
+	-- update clock if present
 	if core.get_item_group(self._item, "clock") > 0 then
 		self:set_item(ItemStack("mcl_clock:clock_"..mcl_clock.get_clock_frame()))
 	end

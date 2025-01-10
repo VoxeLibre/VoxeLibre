@@ -3,6 +3,7 @@
 ## Functions
 
 * `mcl_itemframes.register_itemframe(name, itemframe_definition)`
+	* Registers a new item frame as `"mcl_itemframes:"..name`. See Itemframe definition below for reference.
 * `mcl_itemframes.remove_entity(pos)`
 	* Removes the item entity belonging to the itemframe at `pos`, does not delete the item (inventory) of the itemframe.
 * `mcl_itemframes.update_entity(pos)`
@@ -21,7 +22,7 @@
 {
 	node = {
 		description = "My cool Frame",
-		tiles = { "my_texture.png"},
+		tiles = {"my_texture.png"},
 		-- ... this can contain any node definition fields which will be used for the itemframe node
 	},
 	object_properties = {
