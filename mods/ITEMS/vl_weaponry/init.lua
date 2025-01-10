@@ -20,10 +20,6 @@ table.update(spear_entity,{
 	visual_size = {x=-0.5, y=-0.5},
 	textures = {"vl_weaponry:spear_wood"},
 	_on_remove = function(self)
-		-- Prevent item duplication
-		if self._picked_up then return end
-		self._picked_up = true
-
 		vl_projectile.replace_with_item_drop(self, self.object:get_pos())
 	end,
 })

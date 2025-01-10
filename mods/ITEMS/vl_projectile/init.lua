@@ -266,6 +266,9 @@ function mod.replace_with_item_drop(self, pos, projectile_def)
 	end
 
 	if item and self._collectable and not core.is_creative_enabled("") then
+		-- Prevent item duplication
+		self._collectable = false
+
 		local item = core.add_item(pos, item)
 		item:set_velocity(vector.zero())
 		item:set_yaw(self.object:get_yaw())
