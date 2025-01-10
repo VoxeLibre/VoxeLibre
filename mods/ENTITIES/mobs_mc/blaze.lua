@@ -143,18 +143,19 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 	spawn_check = spawn_check,
 })
 
-mcl_mobs:spawn_specific(
-"mobs_mc:blaze",
-"nether",
-"ground",
-{"Nether"},
-0,
-minetest.LIGHT_MAX+1,
-30,
-1000,
-3,
-mcl_vars.mg_nether_min,
-mcl_vars.mg_nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:blaze",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = {"Nether"},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX + 1,
+	chance = 30,
+	interval = 1000,
+	aoc = 3,
+	min_height = mcl_vars.mg_nether_min,
+	max_height = mcl_vars.mg_nether_max
+})
 
 -- Blaze fireball
 mcl_mobs.register_arrow("mobs_mc:blaze_fireball", {
