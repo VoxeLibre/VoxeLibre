@@ -530,18 +530,40 @@ local function get_water_spawn(p)
 		end
 end
 
-local function has_room(self, pos)
-	local cb = self.spawnbox or self.collisionbox
-	local nodes = {}
-	if self.fly_in then
-		local t = type(self.fly_in)
-		if t == "table" then
-			nodes = table.copy(self.fly_in)
-		elseif t == "string" then
-			table.insert(nodes,self.fly_in)
+--- helper to check a single node p
+local function check_room_helper(p, fly_in, fly_in_air, headroom, check_headroom)
+	local node = get_node(p)
+	local name = node.name
+	-- fast-track very common air case:
+	if fly_in_air and name == "air" then return true end
+	local n_def = registered_nodes[name]
+	if not n_def then return false end -- don't spawn in ignore
+
+	-- Fast-track common cases:
+	-- if fly_in "air", also include other non-walkable non-liquid nodes:
+	if fly_in_air and n_def and not n_def.walkable and n_def.liquidtype == "none" then return true end
+	-- other things we can fly in
+	if fly_in[name] then return true end
+	-- negative checks: need full node
+	if not check_headroom then return false end
+	-- solid block always overlaps
+	if n_def.node_box == "regular" then return false end
+	-- perform sub-node checks in top layer
+	local boxes = minetest.get_node_boxes("collision_box", p, node)
+	for i = 1,#boxes do
+		-- headroom is measured from the bottom, hence +0.5
+		if boxes[i][2] + 0.5 < headroom then
+			return false
 		end
 	end
-	table.insert(nodes,"air")
+	return true
+end
+
+local FLY_IN_AIR = { air = true }
+local function has_room(self, pos)
+	local cb = self.spawnbox or self.collisionbox
+	local fly_in = self.fly_in or FLY_IN_AIR
+	local fly_in_air = not not fly_in["air"]
 
 	-- Calculate area to check for room
 	local cb_height = cb[5] - cb[2]
@@ -555,61 +577,22 @@ local function has_room(self, pos)
 		math.round(pos.z + cb[6]))
 
 	-- Check if the entire spawn volume is free
-	local dx = p2.x - p1.x + 1
-	local dy = p2.y - p1.y + 1
-	local dz = p2.z - p1.z + 1
-	local found_nodes = minetest.find_nodes_in_area(p1,p2,nodes) or 0
-	local n = #found_nodes
-	if n == dx * dy * dz then
-		return true
-	end
-
-	-- If we don't have an implementation of get_node_boxes, we can't check for sub-node space
-	if not minetest.get_node_boxes then return false end
-
-	-- Check if it's possible for a sub-node space check to succeed
-	local needed_in_bottom_section = dx * ( dy - 1) * dz
-	if n < needed_in_bottom_section then return false end
-
-	-- Make sure the entire volume except for the top level is free before checking the top layer
-	if dy > 1 then
-		-- Remove nodes in the top layer from the count
-		for i = 1,#found_nodes do
-			if found_nodes[i].y == p2.y then
-				n = n - 1
-			end
-		end
-
-		-- If the entire volume except the top layer isn't air (or nodes) then we can't spawn this mob here
-		if n < needed_in_bottom_section then return false end
-	end
-
-	-- Check the top layer to see if we have enough space to spawn in
-	local top_layer_height = 1
-	local processed = {}
-	for x = p1.x,p2.x do
+	local p = vector.copy(pos)
+	local headroom = cb_height - (p2.y - p1.y) -- headroom needed in top layer
+	for y = p1.y,p2.y do
+		p.y = y
+		local check_headroom = headroom < 1 and y == p2.y and minetest.get_node_boxes
 		for z = p1.z,p2.z do
-			local test_pos = vector.new(x,p2.y,z)
-			local node = minetest.get_node(test_pos) or { name = "ignore" }
-			local cache_name = string.format("%s-%d", node.name, node.param2)
-			if not processed[cache_name] then
-				-- Calculate node bounding box and select the lowest y value
-				local boxes = minetest.get_node_boxes("collision_box", test_pos, node)
-				for i = 1,#boxes do
-					local box = boxes[i]
-					local y_test = box[2] + 0.5
-					if y_test < top_layer_height then top_layer_height = y_test end
-
-					local y_test = box[5] + 0.5
-					if y_test < top_layer_height then top_layer_height = y_test end
+			p.z = z
+			for x = p1.x,p2.x do
+				p.x = x
+				if not check_room_helper(p, fly_in, fly_in_air, headroom, check_headroom) then
+					return false
 				end
 			end
 		end
 	end
-	if top_layer_height + dy - 1 >= cb_height then return true end
-
-	-- We don't have room
-	return false
+	return true
 end
 
 mcl_mobs.custom_biomecheck = nil
@@ -660,7 +643,6 @@ local function spawn_check(pos, spawn_def)
 	if spawn_def.biomes and not biome_check(spawn_def.biomes, get_biome_name(pos)) then return end
 	-- check if there is enough room
 	local mob_def = minetest.registered_entities[spawn_def.name]
-	if not has_room(mob_def,pos) then return end
 	-- additional checks (slime etc.)
 	if spawn_def.check_position and not spawn_def.check_position(pos) then return end
 	if spawn_protected and minetest.is_protected(pos, "") then return end
@@ -700,7 +682,27 @@ function mcl_mobs.spawn(pos,id)
 	if not pos or not id then return false end
 	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
-	if not has_room(def, pos) then return false end
+	if not has_room(def, pos) then
+		local cb = def.spawnbox or def.collisionbox
+		-- simple position adjustment for 2x2 mobs until we add something better for asymmetric cases
+		-- e.g., when spawning next to a fence on one side, the 0.5 offset may not be optimal.
+		local wx, wz = cb[4] - cb[1], cb[6] - cb[3]
+		local retry = false
+		if (wx > 1 and wx <= 2) then
+			pos.x = pos.x + math.random(0,1) - 0.5
+			retry = true
+		end
+		if (wz > 1 and wz <= 2) then
+			pos.z = pos.z + math.random(0,1) - 0.5
+			retry = true
+		end
+		if not retry or not has_room(def, pos) then
+			return false
+		end
+	end
+	if math.round(pos.y) == pos.y then -- node spawn
+		pos.y = pos.y - 0.495 - def.collisionbox[2] -- spawn just above ground below
+	end
 	local obj = minetest.add_entity(pos, def.name)
 	-- initialize head bone
 	if def.head_swivel and def.head_bone_position then
@@ -744,7 +746,7 @@ local S = minetest.get_translator("mcl_mobs")
 
 minetest.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
-	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly_in=air>::var<fly=true>:\n etc."),
+	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly=true>:\n etc."),
 	func = function(n,param)
 		local pos = minetest.get_player_by_name(n):get_pos()
 

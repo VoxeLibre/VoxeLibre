@@ -127,13 +127,24 @@ function mcl_mobs.register_mob(name, def)
 		end
 	end
 
-	local collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
-	-- Workaround for <https://github.com/minetest/minetest/issues/5966>:
-	-- Increase upper Y limit to avoid mobs glitching through solid nodes.
-	-- FIXME: Remove workaround if it's no longer needed.
-	if collisionbox[5] < 0.79 then
-		collisionbox[5] = 0.79
+	local fly_in = {}
+	if type(def.fly_in) == "string" then
+		fly_in[def.fly_in] = true
+	elseif def.fly_in then
+		for k,v in pairs(def.fly_in) do
+			if type(k) == "number" then
+				fly_in[v] = true
+			elseif v == true then
+				fly_in[k] = true
+			else
+				minetest.log("warning", "mob "..name.." fly_in not understood: "..dump(k).." "..dump(v))
+			end
+		end
+	else
+		fly_in["air"] = true
 	end
+
+	local collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	local final_def = {
 		use_texture_alpha = def.use_texture_alpha,
 		head_swivel = def.head_swivel or nil, -- bool to activate this function
@@ -153,7 +164,7 @@ function mcl_mobs.register_mob(name, def)
 		attack_type = def.attack_type,
 		attack_frequency = def.attack_frequency,
 		fly = def.fly or false,
-		fly_in = def.fly_in or {"air", "__airlike"},
+		fly_in = fly_in,
 		owner = def.owner or "",
 		order = def.order or "",
 		on_die = def.on_die,
@@ -173,7 +184,8 @@ function mcl_mobs.register_mob(name, def)
 		breathes_in_water = def.breathes_in_water or false,
 		physical = true,
 		collisionbox = collisionbox,
-		selectionbox = def.selectionbox or def.collisionbox,
+		selectionbox = def.selectionbox or collisionbox,
+		spawnbox = def.spawnbox or collisionbox,
 		visual = def.visual,
 		visual_size = def.visual_size or {x = 1, y = 1},
 		mesh = def.mesh,
@@ -601,13 +613,8 @@ function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, ad
 					return itemstack
 				end
 
-				pos.y = pos.y - 1
 				local mob = mcl_mobs.spawn(pos, mob_name)
-				if not mob then
-					pos.y = pos.y + 1
-					mob = mcl_mobs.spawn(pos, mob_name)
-					if not mob then return end
-				end
+				if not mob then return end
 
 				local entityname = itemstack:get_name()
 				minetest.log("action", "Player " ..name.." spawned "..entityname.." at "..minetest.pos_to_string(pos))
