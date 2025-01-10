@@ -416,7 +416,7 @@ _a_circumflex_
 _a_tilde_
 5
 Å
-_a_ring
+_a_ring_
 5
 Æ
 _ae_lig_
