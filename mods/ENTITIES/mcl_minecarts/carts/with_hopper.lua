@@ -171,7 +171,7 @@ mod.register_minecart({
 		hopper_take_item(self, dtime)
 
 		local staticdata = self._staticdata
-		local pos = mcl_minecarts.get_cart_position(staticdata)
+		local pos = mcl_minecarts.get_cart_position(staticdata) or self.object:get_pos()
 
 		self._mcl_minecarts_on_enter(self, pos, staticdata)
 	end,
