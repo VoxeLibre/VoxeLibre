@@ -1,5 +1,13 @@
 vl_pickblock = {}
 
+local function get_stack_count(player, def)
+	local switch = player:get_meta():get_int("mcl_inventory:switch_stack")
+	if switch == 64 then
+		return def.stack_max or switch
+	end
+	return 1
+end
+
 -- The main Pickblock handler function.
 -- To be called in hand's `on_place`
 -- (assumes that pointed_thing.type == "node")
@@ -41,7 +49,7 @@ function vl_pickblock.pickblock(itemstack, placer, pointed_thing)
 	end
 
 	local rstack = ItemStack(rnode)
-	rstack:set_count(placer:get_meta():get_int("mcl_inventory:switch_stack"))
+	rstack:set_count(get_stack_count(placer, def))
 	return rstack
 end
 
