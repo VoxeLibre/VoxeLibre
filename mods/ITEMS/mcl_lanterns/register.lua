@@ -16,6 +16,14 @@ mcl_lanterns.register_lantern("soul_lantern", {
 	light_level = 10,
 })
 
+mcl_lanterns.register_lantern("gold_lantern", {
+	description = S("Gold Lantern"),
+	longdesc = S("Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks."),
+	texture = "mcl_lanterns_gold_lantern.png",
+	texture_inv = "mcl_lanterns_gold_lantern_inv.png",
+	light_level = 14,
+})
+
 minetest.register_craft({
 	output = "mcl_lanterns:lantern_floor",
 	recipe = {
@@ -32,4 +40,14 @@ minetest.register_craft({
 		{"mcl_core:iron_nugget", "mcl_blackstone:soul_torch" , "mcl_core:iron_nugget"},
 		{"mcl_core:iron_nugget", "mcl_core:iron_nugget"      , "mcl_core:iron_nugget"},
 	},
+	
+	minetest.register_craft({
+	output = "mcl_lanterns:gold_lantern_floor",
+	recipe = {
+		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
+		{"mcl_core:gold_nugget", "mcl_torches:torch"   , "mcl_core:gold_nugget"},
+		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
+	},
+})
+
 })
