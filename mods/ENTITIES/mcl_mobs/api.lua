@@ -20,6 +20,29 @@ local mobs_debug = minetest.settings:get_bool("mobs_debug", false) -- Shows help
 local spawn_logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", true)
 local DEVELOPMENT = minetest.settings:get_bool("mcl_development", false)
 
+
+--################
+-- Armor #########
+--################
+local ARMOR_MATERIAL_CHANCE = {
+	gold = 48.73,
+	leather = 37.06,
+	chain = 12.90,
+	iron = 1.27,
+	diamond = 0.04,
+}
+
+-- TODO: Workshop chances per piece
+local ARMOR_PIECE_CHANCES = {
+	boots = 75,
+	leggings = 75,
+	chestplate = 75,
+	helmet = 75,
+}
+
+ARMOR_SPAWN_CHANCE = 100
+--################
+
 -- Peaceful mode message so players will know there are no monsters
 if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	minetest.register_on_joinplayer(function(player)
@@ -63,17 +86,11 @@ function mob_class:jock_to(mob, reletive_pos, rot)
 	self.object:set_attach(jock, "", reletive_pos, rot)
 end
 
-local function get_armor_by_chance()
+local function get_armor_by_chance(armor_materials, armor_pieces)
 	local armor = {helmet="",chestplate="",boots="",leggings=""}
 
-	if math.random(100) <= 5 then
-		local armor_materials = {
-			gold = 48.73,
-			leather = 37.06,
-			chain = 12.90,
-			iron = 1.27,
-			diamond = 0.04,
-		}
+	if math.random(100) <= ARMOR_SPAWN_CHANCE then
+
 
 		local material = ""
 
@@ -89,15 +106,17 @@ local function get_armor_by_chance()
 			end
 		end
 
-		armor.boots = "mcl_armor:boots_"..material -- 100% chance
 
-		if math.random(100) < 75 then -- %75 chance of leggings
+		if math.random(100) <= armor_pieces.boots then -- %75 chance of leggings
+			armor.boots = "mcl_armor:boots_"..material -- 100% chance
+		end
+		if math.random(100) <= armor_pieces.leggings then -- %75 chance of leggings
 			armor.leggings = "mcl_armor:leggings_"..material -- 75% chance
 		end
-		if math.random(100) < 75 then -- %75 chance of chestplate
+		if math.random(100) <= armor_pieces.chestplate then -- %75 chance of chestplate
 			armor.chestplate = "mcl_armor:chestplate_"..material
 		end
-		if math.random(100) < 75 then -- %75 chance of helmet
+		if math.random(100) <= armor_pieces.helmet then -- %75 chance of helmet
 			armor.helmet = "mcl_armor:helmet_"..material
 		end
 	end
@@ -287,7 +306,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	if not self.wears_armor and self.armor_list then self.armor_list = nil end
 
 	if not self._run_armor_init and self.wears_armor then
-		self.armor_list=get_armor_by_chance() -- 5% percent chance to spawn with armor. Accurate dispersion in function.
+		self.armor_list=get_armor_by_chance(ARMOR_MATERIAL_CHANCE, ARMOR_PIECE_CHANCES) -- 5% percent chance to spawn with armor. Accurate dispersion in function.
 		self:set_armor_texture()
 		self._run_armor_init = true
 	end
