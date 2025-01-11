@@ -15,9 +15,11 @@ end
 minetest.register_abm({
 	label = "Cherry Tree Growth",
 	nodenames = "mcl_cherry_blossom:cherrysapling",
-	interval = 35,
-	chance = 5,
-	action = mcl_core.grow_cherry
+	interval = 30,
+	chance = 3,
+	action = function(pos, node)
+		mcl_core.grow_cherry(pos, node, 1)
+	end
 })
 
 local cherry_particle = {

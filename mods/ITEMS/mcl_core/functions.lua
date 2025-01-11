@@ -359,7 +359,7 @@ function mcl_core.generate_tree(pos, tree_type, options)
 		end
 	elseif tree_type == BIRCH_TREE_ID then
 		mcl_core.generate_birch_tree(pos)
-	elseif tree_type == CHERRY_TREE_ID then
+	elseif tree_type == CHERRY_TREE_ID and mcl_cherry_blossom then
 		mcl_cherry_blossom.generate_cherry_tree(pos)
 	end
 	mcl_core.update_sapling_foliage_colors(pos)
@@ -830,8 +830,7 @@ minetest.register_lbm({
 local TREE_MINIMUM_LIGHT = 9
 
 local function sapling_grow_action(tree_id, soil_needed, one_by_one, two_by_two, sapling)
-	-- ABM signature + extra parameter
-	return function(pos, node, active_object_count, active_object_count_wider, grow_by)
+	return function(pos, node, grow_by)
 		local meta = minetest.get_meta(pos)
 		-- Checks if the sapling at pos has enough light and the correct soil
 		local light = minetest.get_node_light(pos)
@@ -971,9 +970,11 @@ minetest.register_abm({
 	label = "Oak tree growth",
 	nodenames = {"mcl_core:sapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 35,
-	chance = 5,
-	action = grow_oak
+	interval = 30,
+	chance = 3,
+	action = function(pos, node)
+		grow_oak(pos, node, 1)
+	end
 })
 
 -- Dark oak tree
@@ -981,9 +982,11 @@ minetest.register_abm({
 	label = "Dark oak tree growth",
 	nodenames = {"mcl_core:darksapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 35,
-	chance = 5,
-	action = grow_dark_oak
+	interval = 30,
+	chance = 3,
+	action = function(pos, node)
+		grow_dark_oak(pos, node, 1)
+	end
 })
 
 -- Jungle Tree
@@ -991,9 +994,11 @@ minetest.register_abm({
 	label = "Jungle tree growth",
 	nodenames = {"mcl_core:junglesapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 35,
-	chance = 5,
-	action = grow_jungle_tree
+	interval = 30,
+	chance = 3,
+	action = function(pos, node)
+		grow_jungle_tree(pos, node, 1)
+	end
 })
 
 -- Spruce tree
@@ -1001,9 +1006,11 @@ minetest.register_abm({
 	label = "Spruce tree growth",
 	nodenames = {"mcl_core:sprucesapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 35,
-	chance = 5,
-	action = grow_spruce
+	interval = 30,
+	chance = 3,
+	action = function(pos, node)
+		grow_spruce(pos, node, 1)
+	end
 })
 
 -- Birch tree
@@ -1011,9 +1018,11 @@ minetest.register_abm({
 	label = "Birch tree growth",
 	nodenames = {"mcl_core:birchsapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 35,
-	chance = 5,
-	action = grow_birch
+	interval = 30,
+	chance = 3,
+	action = function(pos, node)
+		grow_birch(pos, node, 1)
+	end
 })
 
 -- Acacia tree
@@ -1021,9 +1030,11 @@ minetest.register_abm({
 	label = "Acacia tree growth",
 	nodenames = {"mcl_core:acaciasapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 35,
-	chance = 5,
-	action = grow_acacia
+	interval = 30,
+	chance = 3,
+	action = function(pos, node)
+		grow_acacia(pos, node, 1)
+	end
 })
 
 minetest.register_lbm({
@@ -1033,9 +1044,9 @@ minetest.register_lbm({
 	neighbors = {"group:soil_sapling"},
 	run_at_every_load = true,
 	action = function(pos, node, dtime_s)
-		-- right now, all trees have 1/(35*5) chance
+		-- right now, all trees have 1/(30*3) chance
 		-- TODO: make this an API similar to farming
-		local interval, chance = 35, 5
+		local interval, chance = 30, 3
 		local rolls = floor(dtime_s / interval)
 		if rolls <= 0 then return end
 		-- simulate how often the block will be ticked
