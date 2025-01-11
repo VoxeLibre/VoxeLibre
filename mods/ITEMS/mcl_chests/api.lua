@@ -422,12 +422,12 @@ end
 local function hopper_pull_double(side) return function(pos, hop_pos, hop_inv, hop_list)
 	local top_inv, bottom_inv = get_chest_inventories(pos, side)
 
-	local stack_id = mcl_util.select_stack(top_inv, "main", hop_inv, hop_list)
+	local stack_id = mcl_util.select_stack(top_inv, "main", hop_inv, hop_list, nil, 1)
 	if stack_id ~= nil then
 		return top_inv, "main", stack_id
 	end
 
-	stack_id = mcl_util.select_stack(bottom_inv, "main", hop_inv, hop_list)
+	stack_id = mcl_util.select_stack(bottom_inv, "main", hop_inv, hop_list, nil, 1)
 	return bottom_inv, "main", stack_id
 end end
 
