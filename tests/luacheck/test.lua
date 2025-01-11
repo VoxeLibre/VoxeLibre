@@ -27,7 +27,7 @@ function read_mod_configuration(file)
 
 	local f = io.open(file, "r")
 	for line in f:lines() do
-		local parts = string:split("=")
+		local parts = line:split("=")
 		if parts and #parts >= 2 then
 			local key = parts[1]:strip()
 			local value = parts[2]:strip()
