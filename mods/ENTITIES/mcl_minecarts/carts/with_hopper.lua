@@ -169,6 +169,11 @@ mod.register_minecart({
 	end,
 	_mcl_minecarts_on_step = function(self, dtime)
 		hopper_take_item(self, dtime)
+
+		local staticdata = self._staticdata
+		local pos = mcl_minecarts.get_cart_position(staticdata)
+
+		self._mcl_minecarts_on_enter(self, pos, staticdata)
 	end,
 	creative = true
 })
