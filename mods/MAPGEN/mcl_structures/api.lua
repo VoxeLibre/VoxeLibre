@@ -11,6 +11,7 @@ local mob_cap_player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 
 local mob_cap_animal = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10
 
 local logging = minetest.settings:get_bool("mcl_logging_structures",true)
+local worldseed = minetest.get_mapgen_setting("seed")
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
@@ -348,14 +349,17 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 				flags = flags,
 				biomes = def.biomes,
 				y_max = def.y_max,
-				y_min = def.y_min
-				},
-				function()
-					def.deco_id = minetest.get_decoration_id("mcl_structures:"..name)
-					minetest.set_gen_notify({decoration=true}, { def.deco_id })
-					--catching of gennotify happens in mcl_mapgen_core
+				y_min = def.y_min,
+				gen_callback = function(t,minp,maxp,blockseed)
+					for _, pos in ipairs(t) do
+						local pr = PcgRandom(minetest.hash_node_position(pos) + worldseed + RANDOM_SEED_OFFSET)
+						if def.chunk_probability == nil or pr:next(0, 1e9) * 1e-9 * def.chunk_probability <= 1 then
+							mcl_structures.place_structure(pos, def, pr, blockseed)
+							if def.chunk_probability ~= nil then break end -- allow only one per gennotify, e.g., on multiple surfaces
+						end
+					end
 				end
-			)
+			})
 		end)
 	end
 	mcl_structures.registered_structures[name] = def
@@ -397,18 +401,9 @@ end
 
 -- To avoid a cyclic dependency, run this when modules have finished loading
 minetest.register_on_mods_loaded(function()
-mcl_mapgen_core.register_generator("structures", nil, function(minp, maxp, blockseed)
-	local gennotify = minetest.get_mapgen_object("gennotify")
+mcl_mapgen_core.register_generator("static structures", nil, function(minp, maxp, blockseed)
 	for _,struct in pairs(mcl_structures.registered_structures) do
-		if struct.deco_id then
-			for _, pos in pairs(gennotify["decoration#"..struct.deco_id] or {}) do
-				local pr = PcgRandom(minetest.hash_node_position(pos) + blockseed + RANDOM_SEED_OFFSET)
-				if struct.chunk_probability == nil or pr:next(1, struct.chunk_probability) == 1 then
-					mcl_structures.place_structure(vector.offset(pos,0,1,0),struct,pr,blockseed)
-					if struct.chunk_probability then break end -- one (attempt) per chunk only
-				end
-			end
-		elseif struct.static_pos then
+		if struct.static_pos then
 			local pr = PcgRandom(blockseed + RANDOM_SEED_OFFSET)
 			for _, pos in pairs(struct.static_pos) do
 				if vector.in_area(pos, minp, maxp) then
