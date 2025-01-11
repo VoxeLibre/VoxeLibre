@@ -276,6 +276,7 @@ local function calculate_acceleration(staticdata)
 	local ctrl = staticdata.controls or {}
 	local time_active = minetest.get_gametime() - 0.25
 
+	local apply_gravity = true
 	if (ctrl.forward or 0) > time_active then
 		if staticdata.velocity <= 0.05 then
 			local look_dir = look_directions[ctrl.look or 0] or mod.north
@@ -293,6 +294,7 @@ local function calculate_acceleration(staticdata)
 		-- Standard friction
 	elseif node_def and node_def._rail_acceleration then
 		local rail_accel = node_def._rail_acceleration
+		apply_gravity = false -- Don't apply gravity when the rail is accelerating the cart
 		if type(rail_accel) == "function" then
 			acceleration = (rail_accel(pos, staticdata) or 0) * 4
 		else
@@ -301,11 +303,13 @@ local function calculate_acceleration(staticdata)
 	end
 
 	-- Factor in gravity after everything else
-	local gravity_strength = 2.45 --friction * 5
-	if staticdata.dir.y < 0 then
-		acceleration = gravity_strength - FRICTION
-	elseif staticdata.dir.y > 0 then
-		acceleration = -gravity_strength + FRICTION
+	if apply_gravity then
+		local gravity_strength = 2.45 --friction * 5
+		if staticdata.dir.y < 0 then
+			acceleration = gravity_strength - FRICTION
+		elseif staticdata.dir.y > 0 then
+			acceleration = -gravity_strength + FRICTION
+		end
 	end
 
 	return acceleration
