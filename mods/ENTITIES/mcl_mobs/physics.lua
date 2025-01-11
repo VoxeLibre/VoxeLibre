@@ -93,6 +93,7 @@ function mob_class:item_drop(cooked, looting_level)
 	local drops_tp = table.copy(self.drops)
 
 	if self.wears_armor then
+		-- Adds correct drops for armor worn by mob (TODO: make armor gathered from player drop 100% of the time.)
 		for armortype,amoritem in pairs(self.armor_list) do
 			table.insert(drops_tp,
 				{name = amoritem,
@@ -101,7 +102,7 @@ function mob_class:item_drop(cooked, looting_level)
 				max = 1,
 				looting = "rare",}
 			)
-			print(amoritem)
+			--print(amoritem)
 		end
 	end
 
