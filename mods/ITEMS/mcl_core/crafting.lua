@@ -580,3 +580,6 @@ minetest.register_craft({
 	recipe = "mcl_core:stick",
 	burntime = 5,
 })
+
+-- Stonecutter Recipes
+mcl_stonecutter.register_recipe("mcl_core:goldblock", "mcl_core:goldblock_polished")
