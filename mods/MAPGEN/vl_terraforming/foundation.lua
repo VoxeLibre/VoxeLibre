@@ -102,7 +102,7 @@ function vl_terraforming.foundation_vm(vm, px, py, pz, sx, sy, sz, corners, surf
 	end
 	-- construct additional baseplate below, also try to make it interesting
 	for yi = py-2,py-20,-1 do
-		local dy2 = max(0,py-2-yi)^2*0.05
+		local dy2 = max(0,py-2-yi)^2*0.10
 		local active = false
 		for xi = px-1,px+sx do
 			local dx22 = max(abs(cx-xi)-1.49,0)^2*wx2

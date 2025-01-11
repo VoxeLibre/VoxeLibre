@@ -1,20 +1,16 @@
 vl_structures.registered_structures = {}
 
 local structure_boost = tonumber(minetest.settings:get("vl_structures_boost")) or 1
-local worldseed = minetest.get_mapgen_setting("seed")
-local RANDOM_SEED_OFFSET = 959 -- random constant that should be unique across each library
-
-local vector_offset = vector.offset
-
--- FIXME: switch to vl_structures_logging?
-local logging = true or minetest.settings:get_bool("mcl_logging_structures", true)
-
--- FIXME: switch to vl_structures_disabled?
-local disabled_structures = minetest.settings:get("mcl_disabled_structures")
+local logging = minetest.settings:get_bool("vl_structures_logging", false)
+local disabled_structures = minetest.settings:get("vl_structures_disabled")
 disabled_structures = disabled_structures and disabled_structures:split(",") or {}
 function vl_structures.is_disabled(structname)
 	return table.indexof(disabled_structures,structname) ~= -1
 end
+
+local worldseed = minetest.get_mapgen_setting("seed")
+local RANDOM_SEED_OFFSET = 959 -- random constant that should be unique across each library
+local vector_offset = vector.offset
 
 --- Trim a full path name to its last two parts as short name for logging
 local function basename(filename)
@@ -101,30 +97,28 @@ function vl_structures.place_structure(pos, def, pr, blockseed, rot)
 	end
 	-- structure has a custom place function
 	if not def.place_func then
-		minetest.log("warning","[vl_structures] no schematics and no place_func for schematic "..def.name)
+		minetest.log("warning", "[vl_structures] no schematics and no place_func for schematic "..def.name)
 		return false
 	end
 	local pp = yoffset ~= 0 and vector_offset(pos, 0, yoffset, 0) or pos
 	if def.place_func and def.prepare then
-		minetest.log("warning", "[vl_structures] needed prepare for "..def.name.." placed at "..minetest.pos_to_string(pp).." but do not have size information")
+		minetest.log("warning", "[vl_structures] needed prepare for "..def.name.." placed at "..minetest.pos_to_string(pp).." but do not have size information.")
 	end
 	if def.place_func and def.place_func(pp,def,pr,blockseed) then
-		if not def.after_place or (def.after_place and def.after_place(pos,def,pr,pmin,pmax,size,param.rotation)) then
-			if def.sidelen then
-				local p1, p2 = vector_offset(pos,-def.sidelen,-def.sidelen,-def.sidelen), vector.offset(pos,def.sidelen,def.sidelen,def.sidelen)
-				if def.loot then vl_structures.fill_chests(p1,p2,def.loot,pr) end
-				if def.construct_nodes then vl_structures.construct_nodes(p1,p2,def.construct_nodes) end
-			end
-			if log_enabled then
-				minetest.log("action","[vl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
-			end
-			return true
-		else
-			minetest.log("warning","[vl_structures] after_place failed for schematic "..def.name)
+		if def.after_place and not def.after_place(pos,def,pr,pmin,pmax,size,param.rotation) then
+			minetest.log("warning", "[vl_structures] after_place failed for structure "..def.name)
 			return false
 		end
+		if log_enabled then
+			minetest.log("action","[vl_structures] "..def.name.." placed at "..minetest.pos_to_string(pp))
+		end
+		return true
 	elseif log_enabled then
-		minetest.log("warning","[vl_structures] place_func failed for schematic "..def.name)
+		if def.place_func then
+			minetest.log("warning","[vl_structures] place_func failed for structure "..def.name)
+		else
+			minetest.log("warning","[vl_structures] do not know how to place structure "..def.name)
+		end
 	end
 end
 
@@ -139,13 +133,13 @@ function vl_structures.register_structure(name,def)
 	def.name = name
 	vl_structures.registered_structures[name] = def
 	if def.prepare and def.prepare.clear == nil and (def.prepare.clear_bottom or def.prepare.clear_top) then def.prepare.clear = true end
-	if not def.noise_params and def.chunk_probability and not def.fill_ratio then
+	if not def.fill_ratio and def.chunk_probability and not def.noise_params then
 		def.fill_ratio = 1.1/80/80 -- 1 per chunk, controlled by chunk probability only
 	end
 	def.flags = def.flags or vl_structures.DEFAULT_FLAGS
 	if def.filenames then
 		for _, filename in ipairs(def.filenames) do
-			if not mcl_util.file_exists(filename) then
+			if mcl_util and not mcl_util.file_exists(filename) then
 				minetest.log("warning","[vl_structures] schematic "..(name or "unknown").." is missing file "..basename(filename))
 				return nil
 			end
@@ -153,21 +147,22 @@ function vl_structures.register_structure(name,def)
 	end
 	if def.place_on then
 		minetest.register_on_mods_loaded(function()
-			def.deco = mcl_mapgen_core.register_decoration({
+			local register_decoration = mcl_mapgen_core.register_decoration or minetest.register_decoration -- optional dependency
+			register_decoration({
 				name = "vl_structures:"..name,
 				rank = def.rank or (def.terrain_feature and 900) or 100, -- run before regular decorations
-				deco_type = "schematic",
-				schematic = EMPTY_SCHEMATIC, -- use gennotify only
+				fill_ratio = def.fill_ratio,
+				noise_params = def.noise_params,
+				y_max = def.y_max,
+				y_min = def.y_min,
+				biomes = def.biomes,
 				place_on = def.place_on,
 				spawn_by = def.spawn_by,
 				num_spawn_by = def.num_spawn_by,
 				sidelen = 80, -- no def.sidelen subdivisions for now, this field was used differently before
-				fill_ratio = def.fill_ratio,
-				noise_params = def.noise_params,
 				flags = def.flags,
-				biomes = def.biomes,
-				y_max = def.y_max,
-				y_min = def.y_min,
+				deco_type = "schematic",
+				schematic = EMPTY_SCHEMATIC, -- use gennotify only
 				gen_callback = function(t,minp,maxp,blockseed)
 					for _, pos in ipairs(t) do
 						local pr = PcgRandom(minetest.hash_node_position(pos) + worldseed + RANDOM_SEED_OFFSET)
@@ -183,6 +178,7 @@ function vl_structures.register_structure(name,def)
 end
 
 -- To avoid a cyclic dependency, run this when modules have finished loading
+-- Maybe we can eventually remove this - the end portal should likely go into the mapgen itself.
 minetest.register_on_mods_loaded(function()
 mcl_mapgen_core.register_generator("static structures", nil, function(minp, maxp, blockseed)
 	for _,struct in pairs(vl_structures.registered_structures) do
@@ -199,38 +195,4 @@ mcl_mapgen_core.register_generator("static structures", nil, function(minp, maxp
 	return false, false, false
 end, 100, true) -- light in the end is sensitive to these options
 end)
-
-local structure_spawns = {}
-function vl_structures.register_structure_spawn(def)
-	--name,y_min,y_max,spawnon,biomes,chance,interval,limit
-	minetest.register_abm({
-		label = "Spawn "..def.name,
-		nodenames = def.spawnon,
-		min_y = def.y_min or -31000,
-		max_y = def.y_max or 31000,
-		interval = def.interval or 60,
-		chance = def.chance or 5,
-		action = function(pos, node, active_object_count, active_object_count_wider)
-			local limit = def.limit or 7
-			if active_object_count_wider > limit + mob_cap_animal then return end
-			if active_object_count_wider > mob_cap_player then return end
-			local p = vector_offset(pos, 0, 1, 0)
-			local pname = minetest.get_node(p).name
-			if def.type_of_spawning == "water" then
-				if pname ~= "mcl_core:water_source" and pname ~= "mclx_core:river_water_source" then return end
-			else
-				if pname ~= "air" then return end
-			end
-			if minetest.get_meta(pos):get_string("spawnblock") == "" then return end
-			if mg_name ~= "v6" and mg_name ~= "singlenode" and def.biomes then
-				if table.indexof(def.biomes, minetest.get_biome_name(minetest.get_biome_data(p).biome)) == -1 then
-					return
-				end
-			end
-			local mobdef = minetest.registered_entities[def.name]
-			if mobdef.can_spawn and not mobdef.can_spawn(p) then return end
-			minetest.add_entity(p, def.name)
-		end,
-	})
-end
 
