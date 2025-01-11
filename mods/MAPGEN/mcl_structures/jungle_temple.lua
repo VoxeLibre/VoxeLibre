@@ -2,16 +2,14 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
-mcl_structures.register_structure("jungle_temple",{
+vl_structures.register_structure("jungle_temple",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
 	flags = "place_center_x, place_center_z",
-	solid_ground = true,
 	y_offset = function(pr) return pr:next(-3,0) -5 end,
 	chunk_probability = 5,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Jungle" },
-	sidelen = 18,
 	filenames = {
 		modpath.."/schematics/mcl_structures_jungle_temple.mts",
 		modpath.."/schematics/mcl_structures_jungle_temple_nice.mts",

@@ -83,57 +83,76 @@ end
 
 local mushrooms = {"mcl_mushrooms:mushroom_brown","mcl_mushrooms:mushroom_red"}
 
-local function get_fallen_tree_schematic(pos,pr)
+local function place_tree(pos,def,pr)
 	local tree = minetest.find_node_near(pos,15,{"group:tree"})
 	if not tree then return end
 	tree = minetest.get_node(tree).name
-	local maxlen = 8
-	local minlen = 2
-	local vprob = 120
-	local mprob = 160
+	local minlen, maxlen = 3, 9
+	local vrate, mrate = 120, 160
 	local len = pr:next(minlen,maxlen)
-	local schem = {
-		size = {x = len + 2, y = 2, z = 3},
-		data = {
-			{name = "air", prob=0},
-			{name = "air", prob=0},
-		}
-	}
-	for i = 1,len do
-		table.insert(schem.data,{name = "mcl_core:vine",param2=4, prob=vprob})
+	local dir = pr:next(0,3)
+	local dx, dy, dz, param2, w1, w2
+	if dir == 0 then
+		dx, dy, dz, param2, w1, w2 = 1, 0, 0, 12, 5, 4
+	elseif dir == 1 then
+		dx, dy, dz, param2, w1, w2 = -1, 0, 0, 12, 4, 5
+	elseif dir == 2 then
+		dx, dy, dz, param2, w1, w2 = 0, 0, 1, 6, 3, 2
+	else -- if dir == 3 then
+		dx, dy, dz, param2, w1, w2 = 0, 0, -1, 6, 2, 3
 	end
-	table.insert(schem.data,{name = "air", prob=0})
-	table.insert(schem.data,{name = "air", prob=0})
+	-- TODO: port this to voxel manipulators
+	-- ensure we have room for the tree
+	local minsupport, maxsupport = 99, 1
 	for i = 1,len do
-		table.insert(schem.data,{name = "air", prob=0})
+		-- check below
+		local n = minetest.get_node(vector.offset(pos, dx * i, -1, dz * i)).name
+		local nd = minetest.registered_nodes[n]
+		if n ~= "air" and nd.groups and nd.groups.solid and i > 2 then
+			if i < minsupport then minsupport = i end
+			maxsupport = i
+		end
+		-- check space
+		local n = minetest.get_node(vector.offset(pos, dx * i, 0, dz * i)).name
+		local nd = minetest.registered_nodes[n]
+		if n ~= "air" and nd.groups and not nd.groups.plant then
+			if i < minlen or pr:next(1,maxsupport) == 1 then return end
+			len = i
+			break
+		end
 	end
-
-	table.insert(schem.data,{name = tree, param2 = 0})
-	table.insert(schem.data,{name = "air", prob=0})
-	for i = 1,len do
-		table.insert(schem.data,{name = tree, param2 = 12})
+	if maxsupport - minsupport < minlen then return end
+	len = math.min(len, maxsupport - 1)
+	if len < minlen then return end
+	-- place the tree
+	minetest.swap_node(pos, {name = tree, param2 = 0})
+	for i = 2,len do
+		minetest.swap_node(vector.offset(pos, dx * i, 0, dz * i), {name = tree, param2 = param2})
+		if pr:next(0,255) < vrate then
+			local side = vector.offset(pos, dx * i + dz, 0, dz * i + dx)
+			local n = minetest.get_node(side).name
+			if n == "air" then
+				minetest.swap_node(side, {name="mcl_core:vine", param2=w1})
+			end
+		end
+		if pr:next(0,255) < vrate then
+			local side = vector.offset(pos, dx * i - dz, 0, dz * i - dx)
+			local n = minetest.get_node(side).name
+			if n == "air" then
+				minetest.swap_node(side, {name="mcl_core:vine", param2=w2})
+			end
+		end
+		if pr:next(0,255) < mrate then
+			local top = vector.offset(pos, dx * i, 1, dz * i)
+			local n = minetest.get_node(top).name
+			if n == "air" then
+				minetest.swap_node(top, {name = mushrooms[pr:next(1,#mushrooms)], param2 = 12})
+			end
+		end
 	end
-	table.insert(schem.data,{name = "air", prob=0})
-	table.insert(schem.data,{name = "air", prob=0})
-	for i = 1,len do
-		table.insert(schem.data,{name =  mushrooms[pr:next(1,#mushrooms)], param2 = 12, prob=mprob})
-	end
-
-	table.insert(schem.data,{name = "air", prob=0})
-	table.insert(schem.data,{name = "air", prob=0})
-	for i = 1,len do
-		table.insert(schem.data,{name = "mcl_core:vine",param2=5, prob=vprob})
-	end
-	table.insert(schem.data,{name = "air", prob=0})
-	table.insert(schem.data,{name = "air", prob=0})
-	for i = 1,len do
-		table.insert(schem.data,{name = "air", prob=0})
-	end
-
-	return schem
 end
 
-mcl_structures.register_structure("fallen_tree",{
+vl_structures.register_structure("fallen_tree",{
 	rank = 1100, -- after regular trees
 	place_on = {"group:grass_block"},
 	terrain_feature = true,
@@ -146,24 +165,14 @@ mcl_structures.register_structure("fallen_tree",{
 		persist = 0.66
 	},
 	flags = "place_center_x, place_center_z",
-	sidelen = 18,
+	sidelen = 10,
 	solid_ground = true,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
-	on_place = function(pos,def,pr)
-		local air_p1 = vector.offset(pos,-def.sidelen/2,1,-def.sidelen/2)
-		local air_p2 = vector.offset(air_p1,def.sidelen-1,0,def.sidelen-1)
-		local air = minetest.find_nodes_in_area(air_p1,air_p2,{"air"})
-		return #air >= (def.sidelen * def.sidelen) / 2
-	end,
-	place_func = function(pos,def,pr)
-		local schem=get_fallen_tree_schematic(pos,pr)
-		if not schem then return end
-		return minetest.place_schematic(pos,schem,"random")
-	end
+	place_func = place_tree
 })
 
-mcl_structures.register_structure("lavapool",{
+vl_structures.register_structure("lavapool",{
 	place_on = {"group:sand", "group:dirt", "group:stone"},
 	terrain_feature = true,
 	noise_params = {
@@ -183,7 +192,7 @@ mcl_structures.register_structure("lavapool",{
 	end
 })
 
-mcl_structures.register_structure("water_lake",{
+vl_structures.register_structure("water_lake",{
 	place_on = {"group:dirt","group:stone"},
 	terrain_feature = true,
 	noise_params = {
@@ -203,7 +212,7 @@ mcl_structures.register_structure("water_lake",{
 	end
 })
 
-mcl_structures.register_structure("water_lake_mangrove_swamp",{
+vl_structures.register_structure("water_lake_mangrove_swamp",{
 	place_on = {"mcl_mud:mud"},
 	biomes = { "MangroveSwamp" },
 	terrain_feature = true,
@@ -224,7 +233,7 @@ mcl_structures.register_structure("water_lake_mangrove_swamp",{
 	end
 })
 
-mcl_structures.register_structure("basalt_column",{
+vl_structures.register_structure("basalt_column",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
 	terrain_feature = true,
 	spawn_by = {"air"},
@@ -268,7 +277,7 @@ mcl_structures.register_structure("basalt_column",{
 		return true
 	end
 })
-mcl_structures.register_structure("basalt_pillar",{
+vl_structures.register_structure("basalt_pillar",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
 	terrain_feature = true,
 	noise_params = {
@@ -310,7 +319,7 @@ mcl_structures.register_structure("basalt_pillar",{
 	end
 })
 
-mcl_structures.register_structure("lavadelta",{
+vl_structures.register_structure("lavadelta",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
 	spawn_by = {"mcl_blackstone:basalt","mcl_blackstone:blackstone"},
 	num_spawn_by = 2,

@@ -1,10 +1,9 @@
-local registered_generators = {}
-
-local lvm, nodes, param2 = 0, 0, 0
-local lvm_buffer, lvm_buffer2 = {}, {}
-
 local logging = minetest.settings:get_bool("mcl_logging_mapgen", false)
 local log_timing = minetest.settings:get_bool("mcl_logging_mapgen_timing", false) -- detailed, for performance debugging
+
+local registered_generators = {}
+local lvm, nodes, param2 = 0, 0, 0
+local lvm_buffer, lvm_buffer2 = {}, {}
 
 local function run_generators(minp, maxp, blockseed)
 	if nodes == 0 then return end
@@ -187,7 +186,6 @@ local function sort_decorations()
 	end
 	table.sort(keys)
 	for _, key in ipairs(keys) do
-		-- minetest.log("action", "Deco: "..key) -- dump the resulting order
 		minetest.register_decoration(map[key])
 		if map[key].callback then map[key].callback() end
 	end
