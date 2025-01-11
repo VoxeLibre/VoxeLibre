@@ -55,12 +55,7 @@ for i=0,4 do
 			groups = {pickaxey=1, material_stone=1, not_in_creative_inventory=1},
 			_mcl_hardness = 22.5,
 			sounds= mcl_sounds.node_sound_stone_defaults(),
-			drop = {
-				max_items = 1,
-				items = {
-					{items = {"mcl_beds:respawn_anchor"}},
-				}
-			},
+			drop = "mcl_beds:respawn_anchor",
 			light_source = math.min((4 * i) - 1, minetest.LIGHT_MAX),
 			use_texture_alpha = "blend",
 		})
