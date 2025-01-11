@@ -13,7 +13,7 @@ local WHITESPACE = {
 }
 function string.strip(str)
 	str  = str:gsub("^%s+","")
-	return str:gsub("%s$+","")
+	return str:gsub("%s+$","")
 end
 
 function read_mod_configuration(file)
