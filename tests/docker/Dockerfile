@@ -14,6 +14,7 @@ RUN apk add --no-cache --virtual=build-dependencies build-base lua5.3-dev luajit
 ENTRYPOINT ["/bin/sh"]
 
 RUN git config --global http.postBuffer 52428800 && \
-    git clone REPO && \
+    mkdir /VoxeLibre && cd /VoxeLibre && \
+    git init && git remote add origin REPO && git fetch --depth 1 && git checkout master && \
     apk add minetest x11vnc xdotool
 
