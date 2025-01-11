@@ -231,6 +231,14 @@ mcl_villages.register_building({
 })
 
 mcl_villages.register_building({
+	name = "house_chimney",
+	mts = schem_path .. "haeuschen2.mts",
+	min_jobs = 2,
+	max_jobs = 99,
+	yadjust = 1,
+})
+
+mcl_villages.register_building({
 	name = "house_small",
 	mts = schem_path .. "new_villages/house_1_bed.mts",
 	min_jobs = 1,
@@ -268,16 +276,26 @@ mcl_villages.register_building({
 
 mcl_villages.register_building({
 	name = "fletcher",
-	mts = schem_path .. "new_villages/fletcher.mts",
+	mts = schem_path .. "bogner.mts",
 	num_others = 8,
-	yadjust = 1,
+	yadjust = 0,
 })
 
 mcl_villages.register_building({
 	name = "library",
 	mts = schem_path .. "new_villages/library.mts",
+	min_jobs = 12,
+	max_jobs = 99,
 	num_others = 15,
 	yadjust = 1,
+})
+
+mcl_villages.register_building({
+	name = "librarian",
+	mts = schem_path .. "schreiber.mts",
+	min_jobs = 1,
+	max_jobs = 11,
+	yadjust = 0,
 })
 
 mcl_villages.register_building({
@@ -333,11 +351,11 @@ mcl_villages.register_building({
 
 mcl_villages.register_building({
 	name = "church",
-	mts = schem_path .. "new_villages/church.mts",
+	mts = schem_path .. "kirche.mts",
 	num_others = 20,
 	min_jobs = 10,
 	max_jobs = 99,
-	yadjust = 1,
+	yadjust = 0,
 })
 
 mcl_villages.register_building({
