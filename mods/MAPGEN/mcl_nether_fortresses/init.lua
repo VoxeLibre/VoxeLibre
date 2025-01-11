@@ -1,7 +1,5 @@
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
-local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local BLAZE_SPAWNER_MAX_LIGHT = 11
 
