@@ -7,19 +7,6 @@ local logging = minetest.settings:get_bool("mcl_logging_mapgen", false)
 local log_timing = minetest.settings:get_bool("mcl_logging_mapgen_timing", false) -- detailed, for performance debugging
 local seed = minetest.get_mapgen_setting("seed")
 
-local function run_generators(minp, maxp, blockseed)
-	if nodes == 0 then return end
-	for _, rec in ipairs(registered_generators) do
-		if rec.nf then
-			local gt1 = os.clock()
-			rec.nf(vector.copy(minp), vector.copy(maxp), blockseed) -- defensive copies against some generator changing the vectors
-			if log_timing then
-				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", rec.id, minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt1)*1000))
-			end
-		end
-	end
-end
-
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	local t1 = os.clock()
 	if lvm > 0 then
@@ -64,7 +51,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "set_data", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt1)*1000))
 			end
 			local gt2 = os.clock()
-			if deco_table then
+			if deco_table and #deco_table > 0 then
 				minetest.generate_decorations(vm,vector.new(minp.x,deco_table.min,minp.z),vector.new(maxp.x,deco_table.max,maxp.z))
 			elseif deco_used then
 				minetest.generate_decorations(vm)
@@ -73,7 +60,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "decorations", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt2)*1000))
 			end
 			local gt3 = os.clock()
-			if ore_table then
+			if ore_table and #ore_table > 0 then
 				minetest.generate_ores(vm,vector.new(minp.x,ore_table.min,minp.z),vector.new(maxp.x,ore_table.max,maxp.z))
 			elseif ore_used then
 				minetest.generate_ores(vm)
@@ -91,7 +78,17 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 		end
 	end
 
-	run_generators(minp, maxp, blockseed)
+	if nodes > 0 then
+		for _, rec in ipairs(registered_generators) do
+			if rec.nf then
+				local gt1 = os.clock()
+				rec.nf(vector.copy(minp), vector.copy(maxp), blockseed) -- defensive copies against some generator changing the vectors
+				if log_timing then
+					minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", rec.id, minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt1)*1000))
+				end
+			end
+		end
+	end
 
 	if logging then
 		minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "Generating chunk", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - t1)*1000))
