@@ -22,8 +22,10 @@ function vl_pickblock.pickblock(itemstack, placer, pointed_thing)
 		rnode = def._vl_pickblock
 	elseif not illegal then
 		rnode = node.name
+	elseif def.drop and type(def.drop) == "string" then
+		rnode = def.drop
 	else
-		-- node is illegal and has no _vl_pickblock, tough luck
+		-- node is illegal and has no _vl_pickblock OR drop, tough luck
 		return
 	end
 
