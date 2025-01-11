@@ -40,7 +40,9 @@ function vl_pickblock.pickblock(itemstack, placer, pointed_thing)
 		end
 	end
 
-	return rnode
+	local rstack = ItemStack(rnode)
+	rstack:set_count(placer:get_meta():get_int("mcl_inventory:switch_stack"))
+	return rstack
 end
 
 -- Pickblock handler for mobs.
@@ -70,5 +72,7 @@ function vl_pickblock.pickmob(itemstack, clicker, pointed_thing)
 		end
 	end
 
-	return le.name
+	local rstack = ItemStack(le.name)
+	rstack:set_count(clicker:get_meta():get_int("mcl_inventory:switch_stack"))
+	return rstack
 end
