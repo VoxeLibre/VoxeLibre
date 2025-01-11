@@ -53,7 +53,7 @@ end
 -- @return center on base level, area minimum, area maximum, rotated size (=pmax-pmin+1)
 function vl_structures.get_extends(pos, size, yoffset, rotation, flags)
 	local size = vl_structures.size_rotated(size, rotation)
-	local pmin = vl_structures.top_left_from_flags(pos, size, flags or DEFAULT_FLAGS)
+	local pmin = vl_structures.top_left_from_flags(pos, size, flags or vl_structures.DEFAULT_FLAGS)
 	local cent = vector_offset(pmin, floor((size.x-1)*0.5), 0, floor((size.z-1)*0.5)) -- center
 	pmin.y = pmin.y + (yoffset or 0) -- to pmin and pmax only
 	local pmax = vector_offset(pmin, size.x - 1, size.y - 1, size.z - 1)

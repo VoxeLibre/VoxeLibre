@@ -1,7 +1,7 @@
 mcl_villages = {}
 mcl_villages.modpath = minetest.get_modpath(minetest.get_current_modname())
 
-local village_chance = tonumber(minetest.settings:get("mcl_villages_village_probability")) or 1
+local village_boost = tonumber(minetest.settings:get("vl_villages_boost")) or 1
 
 dofile(mcl_villages.modpath.."/const.lua")
 dofile(mcl_villages.modpath.."/utils.lua")
@@ -47,9 +47,9 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
 		if maxp.y < 0 then return end
-		if village_chance == 0 then return end
+		if village_boost == 0 then return end
 		local pr = PcgRandom(blockseed)
-		if pr:next(0, 100) > village_chance then return end
+		if pr:next(0,1e9) * 100e-9 >= village_boost then return end
 		local big_minp = vector.copy(minp) --vector.offset(minp, -16, -16, -16)
 		local big_maxp = vector.copy(maxp) --vector.offset(maxp, 16, 16, 16)
 		minetest.emerge_area(big_minp, big_maxp, ecb_village,
@@ -63,7 +63,7 @@ if mg_name ~= "singlenode" then
 		lvm:set_data(data) -- FIXME: ugly hack, better directly manipulate the data array
 		lvm:set_param2_data(data2)
 		local pr = PcgRandom(blockseed)
-		if pr:next(0, 100) > village_chance then return end
+		if pr:next(0,1e9) * 100e-9 > village_boost then return end
 		local settlement = mcl_villages.create_site_plan(lvm, minp, maxp, pr)
 		if not settlement then return false, false end
 
@@ -85,7 +85,7 @@ if mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("villages", nil, function(minp, maxp, blockseed)
 		if maxp.y < 0 or mcl_villages.village_exists(blockseed) then return end
 		local pr = PcgRandom(blockseed)
-		if pr:next(0, 100) > village_chance then return end
+		if pr:next(0,1e9) * 10ee-9 > village_boost then return end
 		--local lvm, emin, emax = minetest.get_mapgen_object("voxelmanip") -- did not get the lighting fixed?
 		local lvm = VoxelManip()
 		lvm:read_from_map(minp, maxp)
