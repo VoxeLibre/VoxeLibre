@@ -14,7 +14,7 @@ local path_ends = {}
 function mcl_villages.clean_no_paths(minp, maxp)
 	local no_paths_nodes = minetest.find_nodes_in_area(minp, maxp, { "mcl_villages:no_paths" })
 	if #no_paths_nodes > 0 then
-		minetest.bulk_set_node(no_paths_nodes, { name = "air" })
+		minetest.bulk_swap_node(no_paths_nodes, { name = "air" })
 	end
 end
 
