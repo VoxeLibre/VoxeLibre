@@ -1,6 +1,5 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
---local S = minetest.get_translator(modname)
 local water_level = minetest.get_mapgen_setting("water_level")
 
 --schematics by chmodsayshello
@@ -91,6 +90,8 @@ local beach_biomes = {
 	"Jungle_shore"
 }
 
+-- FIXME: integrate treasure maps from MCLA
+
 vl_structures.register_structure("shipwreck",{
 	place_on = {"group:sand","mcl_core:gravel"},
 	spawn_by = {"group:water"},
@@ -127,13 +128,13 @@ vl_structures.register_structure("shipwreck",{
 					{ itemstring = "mcl_core:coal_lump", weight = 6, amount_min = 2, amount_max = 8 },
 					{ itemstring = "mcl_mobitems:rotten_flesh", weight = 5, amount_min = 5, amount_max = 24 },
 					{ itemstring = "mcl_farming:potato_item", weight = 3, amount_min = 1, amount_max = 5 },
-					{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3, func = function(stack, pr)
+					{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3, func = function(stack, _)
 							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-					{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3, func = function(stack, pr)
+					{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3, func = function(stack, _)
 							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-					{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3, func = function(stack, pr)
+					{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3, func = function(stack, _)
 							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-					{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3, func = function(stack, pr)
+					{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3, func = function(stack, _)
 							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
 					{ itemstring = "mcl_bamboo:bamboo", weight = 2, amount_min = 1, amount_max = 3 },
 					{ itemstring = "mcl_farming:pumpkin", weight = 2, amount_min = 1, amount_max = 3 },

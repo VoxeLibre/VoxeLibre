@@ -1,13 +1,12 @@
 local modname = minetest.get_current_modname()
---local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 vl_structures.register_structure("fossil",{
 	place_on = {"group:material_stone","group:sand"},
 	flags = "place_center_x, place_center_z",
 	prepare = { },
-	chunk_probability = 15, -- was 25
-	y_offset = function(pr) return pr:next(-16,-32) end,
+	chunk_probability = 15, -- was 25, FIXME: needs rebalancing
+	y_offset = function(pr) return pr:next(-32,-16) end,
 	y_max = 15,
 	y_min = mcl_vars.mg_overworld_min + 35,
 	biomes = { "Desert" },

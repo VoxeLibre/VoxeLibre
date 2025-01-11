@@ -1,6 +1,5 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
---local S = minetest.get_translator(modname)
 local water_level = minetest.get_mapgen_setting("water_level")
 
 local spawnon = { "mcl_stairs:slab_prismarine_dark" }
@@ -81,7 +80,9 @@ vl_structures.register_structure("ocean_temple",{
 		persist = 0.001,
 		flags = "absvalue",
 	},
+	flags = "force_placement",
 	force_place = true,
+	prepare = { tolerance = -1, clear = false, foundation = false },
 	biomes = ocean_biomes,
 	y_max = water_level-4,
 	y_min = mcl_vars.mg_overworld_min,
@@ -89,9 +90,8 @@ vl_structures.register_structure("ocean_temple",{
 		modpath .. "/schematics/mcl_structures_ocean_temple.mts",
 		modpath .. "/schematics/mcl_structures_ocean_temple_2.mts",
 	},
-	prepare = { tolerance = -1, clear = false, foundation = false },
 	y_offset = function(pr) return pr:next(-2,0) end,
-	after_place = function(p,def,pr,p1,p2)
+	after_place = function(p, _, pr, p1, p2)
 		vl_structures.spawn_mobs("mobs_mc:guardian",spawnon,p1,p2,pr,5,true)
 		vl_structures.spawn_mobs("mobs_mc:guardian_elder",spawnon,p1,p2,pr,1,true)
 		vl_structures.construct_nodes(p1,p2,{"group:wall"})
