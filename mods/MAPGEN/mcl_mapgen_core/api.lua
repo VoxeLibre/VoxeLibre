@@ -147,9 +147,32 @@ end
 local pending_decorations = {}
 local gennotify_map = {}
 function mcl_mapgen_core.register_decoration(def, callback)
-	def = table.copy(def) -- defensive deep copy, needed for water lily
 	if def.gen_callback and not def.name then error("gen_callback requires a named decoration.") end
 	if callback then error("Callbacks have been redesigned.") end
+	-- customize foliage colors
+	if (def._mcl_foliage_palette_index or 0) > 0 then
+		if type(def.schematic) ~= "string" then error("Can currently only be used with file schematics.") end
+		-- Load the schema and apply foliage palette
+		local schem = minetest.read_schematic(def.schematic, {})
+		schem.name = def.schematic -- preserve the file name
+		local cache = {}
+		for _, node in ipairs(schem.data) do
+			local kind = cache[node.name]
+			if kind == nil then
+				local ndef = minetest.registered_nodes[node.name]
+				kind = ndef and (ndef.groups.foliage_palette and "color")
+				             or (ndef.groups.foliage_palette_wallmounted and "colorwallmounted")
+				             or false
+				cache[node.name] = kind
+			end
+			if kind == "color" then
+				node.param2 = def._mcl_foliage_palette_index
+			elseif kind == "colorwallmounted" then
+				node.param2 = def._mcl_foliage_palette_index * 8 + (node.param2 % 8)
+			end
+		end
+		def.schematic = schem
+	end
 	if pending_decorations == nil then
 		-- Please do not register decorations in minetest.register_on_mods_loaded.
 		-- This should usually not happen, but modders may misuse this.
@@ -159,7 +182,7 @@ function mcl_mapgen_core.register_decoration(def, callback)
 		if def.gen_callback then
 			def.deco_id = minetest.get_decoration_id(def.name)
 			if not def.deco_id then
-				error("Failed to get the decoration id for "..tostring(key))
+				error("Failed to get the decoration id for "..tostring(def.name))
 			else
 				minetest.set_gen_notify({decoration = true}, {def.deco_id})
 				gennotify_map["decoration#" .. def.deco_id] = def
@@ -181,6 +204,10 @@ local function sort_decorations()
 			local sc = string.split(def.schematic:gsub(".mts",""), "/")
 			name = sc[#sc]
 		end
+		if not name and type(def.schematic) == "table" and def.schematic.name then
+			local sc = string.split(def.schematic.name, "/")
+			name = string.format("%s:%04d", sc[#sc], i)
+		end
 		if not name and type(def.schematic) == "table" and def.schematic.data then
 			name = "" -- "serialize" the schematic
 			for _, v in ipairs(def.schematic.data) do
@@ -196,15 +223,19 @@ local function sort_decorations()
 	table.sort(keys)
 	for _, key in ipairs(keys) do
 		local def = map[key]
+		if def.name and minetest.get_decoration_id(def.name) then
+			minetest.log("warning", "Decoration ID not unique: "..def.name)
+		end
 		local deco_id = minetest.register_decoration(def)
 		if not deco_id then
-			error("Failed to register decoration"..tostring(key))
+			error("Failed to register decoration "..tostring(def.name).." - name not unique?")
 		end
-		if def.gen_callback then
+		if def.name then
 			deco_id = minetest.get_decoration_id(def.name)
 			if not deco_id then
-				error("Failed to get the decoration id for "..tostring(key))
-			else
+				error("Failed to register decoration "..tostring(def.name).." - name not unique?")
+			end
+			if def.gen_callback then
 				minetest.set_gen_notify({decoration = true}, {deco_id})
 				gennotify_map["decoration#" .. deco_id] = def
 			end

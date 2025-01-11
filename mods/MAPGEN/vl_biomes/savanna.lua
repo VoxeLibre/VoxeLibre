@@ -40,12 +40,13 @@ mcl_mapgen_core.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	sidelen = 80,
 	fill_ratio = 0.0004,
-	biomes = {"JungleEdge", "JungleEdgeM", "Savanna"},
+	biomes = {"Savanna"},
 	y_min = 1,
 	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_mcl_foliage_palette_index = 3,
 })
 -- Acacia (many variants)
 for a = 1, 7 do
@@ -60,6 +61,7 @@ for a = 1, 7 do
 		schematic = mod_mcl_core .. "/schematics/mcl_core_acacia_" .. a .. ".mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
+		_mcl_foliage_palette_index = 3,
 	})
 end
 

@@ -88,7 +88,6 @@ vl_biomes.register_spruce_decoration(3000, 0.0008, "mcl_core_spruce_huge_up_1.mt
 vl_biomes.register_spruce_decoration(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"MegaTaiga"})
 vl_biomes.register_spruce_decoration(6000, 0.0008, "mcl_core_spruce_huge_up_3.mts", {"MegaTaiga"})
 
-
 -- Common spruce
 vl_biomes.register_spruce_decoration(2500, 0.00325, "mcl_core_spruce_1.mts", {"MegaTaiga"})
 vl_biomes.register_spruce_decoration(7000, 0.00425, "mcl_core_spruce_3.mts", {"MegaTaiga"})
