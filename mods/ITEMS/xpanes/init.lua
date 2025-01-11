@@ -233,6 +233,25 @@ xpanes.register_pane("bar", {
 	_mcl_hardness = 5,
 })
 
+-- Gold Bars
+xpanes.register_pane("bar", {
+	description = S("Gold Bars"),
+	_doc_items_longdesc = S("Gold bars neatly connect to their neighbors as you build them."),
+	textures = {"xpanes_pane_gold.png","xpanes_pane_gold.png","xpanes_top_gold.png"},
+	inventory_image = "xpanes_pane_gold.png",
+	wield_image = "xpanes_pane_gold.png",
+	groups = {pickaxey=1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+	recipe = {
+		{"mcl_core:gold_ingot", "mcl_core:gold_ingot", "mcl_core:gold_ingot"},
+		{"mcl_core:gold_ingot", "mcl_core:gold_ingot", "mcl_core:gold_ingot"},
+	},
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+})
+
+
 -- Glass Pane
 pane(S("Glass Pane"), "mcl_core:glass", "_natural") -- triggers special case
 
