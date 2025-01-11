@@ -350,3 +350,15 @@ mcl_stairs.register_slab("stonebrickmossy", "mcl_core:stonebrickmossy",
 		mcl_sounds.node_sound_stone_defaults(), nil, nil,
 		S("Double Mossy Stone Brick Slab"))
 
+mcl_stairs.register_stair("gold_polished", "mcl_core:goldblock_polished",
+	{pickaxey = 2,},
+	{"mcl_gold_block_polished.png", "mcl_gold_block_polished.png", "mcl_gold_block_polished.png", "mcl_gold_block_polished.png", "mcl_gold_block_polished.png", "mcl_gold_block_polished.png"},
+	S("Stairs of Polished Gold Block"),
+	nil, nil, nil,
+	"woodlike")
+mcl_stairs.register_slab("gold_polished", "mcl_core:goldblock_polished",
+	{pickaxey = 2, waxed = 1},
+	{"mcl_gold_block_polished.png", "mcl_gold_block_polished.png", "mcl_gold_block_polished.png"},
+	S("Slab of Polished Gold Block"),
+	nil, nil, nil,
+	S("Double Slab of Polished Gold"))
