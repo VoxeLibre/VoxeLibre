@@ -19,7 +19,8 @@ local allowed_non_solid_nodes_floor = {
 	"mcl_end:end_rod",
 	"mcl_end:dragon_egg",
 	"mcl_portals:end_portal_frame_eye",
-	"mcl_lanterns:chain"
+	"mcl_lanterns:chain",
+	"mcl_lanterns:gold_chain",
 }
 -- The function below allows nodes that call it to be included in the 'allowed floor placement' list above. This lets lanterns be placed on top of said nodes. Most useful for modded in nodes.
 function mcl_lanterns.add_allowed_non_solid_nodes_floor (node_name)
@@ -37,7 +38,8 @@ local allowed_non_solid_nodes_ceiling = {
 	"mcl_end:chorus_flower_dead",
 	"mcl_end:end_rod",
 	"mcl_core:grass_path",
-	"mcl_lanterns:chain"
+	"mcl_lanterns:chain",
+	"mcl_lanterns:gold_chain",
 }
 -- The function below allows nodes that call it to be included in the 'allowed ceiling placement' list above. This lets lanterns be placed below said nodes. Most useful for modded in nodes. 
 function mcl_lanterns.add_allowed_non_solid_nodes_ceiling (node_name)
