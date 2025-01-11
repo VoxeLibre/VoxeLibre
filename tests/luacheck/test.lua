@@ -1,4 +1,4 @@
-#!/usr/bin/lua
+#!/usr/bin/env lua
 
 local luacheck = "luacheck"
 
@@ -12,23 +12,8 @@ local WHITESPACE = {
 	["\n"] = true,
 }
 function string.strip(str)
-	local start = 0
-	local stop
-	for i = 1,#str do
-		if not WHITESPACE[str:sub(i,i)] then
-			start = i
-			break
-		end
-	end
-	for i = 1,#str do
-		local p = #str - i + 1
-		if not WHITESPACE[str:sub(p,p)] then
-			stop = #str - i + 1
-			break
-		end
-	end
-
-	return str:sub(start, stop)
+	str  = str:gsub("^%s+","")
+	return str:gsub("%s$+","")
 end
 
 function read_mod_configuration(file)
@@ -40,9 +25,9 @@ function read_mod_configuration(file)
 		dir = table.concat(parts,"/").."/",
 	}
 
-	local f = io.open(file)
+	local f = io.open(file, "r")
 	for line in f:lines() do
-		local parts = string.split(line,"=")
+		local parts = string:split("=")
 		if parts and #parts >= 2 then
 			local key = parts[1]:strip()
 			local value = parts[2]:strip()
