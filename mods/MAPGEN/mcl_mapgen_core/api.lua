@@ -1,11 +1,10 @@
-local registered_generators = {}
-
-local lvm, nodes, param2 = 0, 0, 0
-local lvm_buffer, lvm_buffer2 = {}, {}
-
 local logging = minetest.settings:get_bool("mcl_logging_mapgen", false)
 local log_timing = minetest.settings:get_bool("mcl_logging_mapgen_timing", false) -- detailed, for performance debugging
 local seed = minetest.get_mapgen_setting("seed")
+
+local registered_generators = {}
+local lvm, nodes, param2 = 0, 0, 0
+local lvm_buffer, lvm_buffer2 = {}, {}
 
 minetest.register_on_generated(function(minp, maxp, blockseed)
 	local t1 = os.clock()
