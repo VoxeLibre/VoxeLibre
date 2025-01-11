@@ -17,7 +17,7 @@ for _, biome in ipairs(vl_biomes.overworld_biomes) do
 		decoration = "mcl_core:reeds",
 		height = 1,
 		height_max = 3,
-		spawn_by = {"mcl_core:water_source", "mcl_core:river_water_source", "group:frosted_ice"},
+		spawn_by = {"mcl_core:water_source", "mclx_core:river_water_source", "group:frosted_ice"},
 		num_spawn_by = 1,
 		biomes = {biome},
 		param2 = biome._mcl_foliage_palette_index
