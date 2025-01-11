@@ -42,3 +42,38 @@ minetest.register_on_mods_loaded(function()
 	minetest.registered_chatcommands["spawnstruct"].params = p
 end)
 
+--- /locate chat command
+minetest.register_chatcommand("locate", {
+	params = "",
+	description = S("Locate a pre-defined structure near your position."),
+	privs = {debug = true},
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		if not player then return end
+		local pos = player:get_pos()
+		if not pos then return end
+		if param == "" then
+			local data = vl_structures.get_structure_spawns()
+			local datastr = ""
+			for i, d in ipairs(data) do datastr = datastr .. (i > 1 and " | " or "") .. d end
+			if datastr == "" then
+				minetest.chat_send_player(name, S("Error: No structure type given, and no structures were recently spawned."))
+			else
+				minetest.chat_send_player(name, S("Error: No structure type given. Recently spawned structures include: "..datastr.."”."))
+			end
+			return
+		end
+		local data = vl_structures.get_structure_spawns(param)
+		local bestd, bestp = 1e9, nil
+		for _, p in ipairs(data or {}) do
+			local sdx = math.abs(p.x-pos.x) + math.abs(p.y-pos.y) + math.abs(p.z-pos.z)
+			if sdx < bestd or not bestv then bestd, bestp = sdx, p end
+		end
+		if bestp then
+			minetest.chat_send_player(name, S("A "..param.." can be found at "..minetest.pos_to_string(bestp)))
+		else
+			minetest.chat_send_player(name, S("Structure type not known or no structure of this type spawned yet."))
+		end
+	end
+})
+
