@@ -214,6 +214,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "mcl_core:gold_ingot 9",
+	recipe = {
+		{"mcl_core:goldblock_polished"},
+	}
+})
+
+minetest.register_craft({
 	output = "mcl_core:gold_nugget 9",
 	recipe = {{"mcl_core:gold_ingot"}},
 })
