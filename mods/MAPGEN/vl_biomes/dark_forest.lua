@@ -47,6 +47,7 @@ mcl_mapgen_core.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_dark_oak.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_mcl_foliage_palette_index = 7,
 })
 
 local ratio_mushroom = 0.0001
