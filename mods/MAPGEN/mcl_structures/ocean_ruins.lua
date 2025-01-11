@@ -1,5 +1,6 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
+local water_level = minetest.get_mapgen_setting("water_level")
 
 local cold_oceans = {
 	"RoofedForest_ocean",
@@ -71,14 +72,15 @@ local warm_oceans = {
 
 local cold = {
 	place_on = {"group:sand","mcl_core:gravel","mcl_core:dirt","mcl_core:clay","group:material_stone"},
-	spawn_by = {"mcl_core:water_source"},
+	spawn_by = {"group:water"},
 	num_spawn_by = 2,
-	flags = "place_center_x, place_center_z, force_placement",
-	y_offset = -1,
-	y_min = mcl_vars.mg_overworld_min,
-	y_max = -2,
+	chunk_probability = 10, -- todo: 15?
 	biomes = cold_oceans,
-	chunk_probability = 10,
+	y_min = mcl_vars.mg_overworld_min,
+	y_max = water_level - 6,
+	y_offset = -1,
+	flags = "place_center_x, place_center_z, force_placement",
+	prepare = { foundation = -2, clear = false, mode="water" },
 	filenames = {
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_1.mts",
 		modpath.."/schematics/mcl_structures_ocean_ruins_cold_2.mts",

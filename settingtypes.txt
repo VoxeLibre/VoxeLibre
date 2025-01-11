@@ -40,7 +40,7 @@ mcl_doTileDrops (Blocks have drops) bool true
 mcl_explosions_griefing (Explosions destroy blocks) bool true
 
 # Comma separated list of disabled structure names
-mcl_disabled_structures (Disabled structures) string
+vl_structures_disabled (Disabled structures) string
 
 # Comma separated list of disabled event names
 mcl_disabled_events (Disabled events) string
@@ -356,7 +356,7 @@ mcl_logging_mapgen (Chunk generation logging) bool false
 mcl_logging_dungeons (Dungeons generation logging) bool false
 
 # If enabled generated structures will be logged
-mcl_logging_structures (Structure generation logging) bool false
+vl_structures_logging (Structure generation logging) bool false
 
 #Complete debug logging for mcl_signs events. Use this if you have issues with signs.
 mcl_logging_mcl_signs (Complete debug logging for mcl_signs) bool false
