@@ -165,7 +165,7 @@ mod.register_minecart({
 		local above_pos = vector.offset(pos,0,1,0)
 		mcl_util.hopper_pull_to_inventory(inv, 'main', above_pos, pos)
 
-		staticdata.hopper_delay =  (staticdata.hopper_delay or 0) + (1/20)
+		staticdata.hopper_delay =  (staticdata.hopper_delay or 0) + 0.25
 	end,
 	_mcl_minecarts_on_step = function(self, dtime)
 		hopper_take_item(self, dtime)
