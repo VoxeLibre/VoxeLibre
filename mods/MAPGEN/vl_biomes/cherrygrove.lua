@@ -42,8 +42,8 @@ for i=1,3 do
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 80,
 		noise_params = {
-			offset = 0.007,
-			scale = 0.08,
+			offset = -0.005,
+			scale = 0.05,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 13+i,
 			octaves = 3,
