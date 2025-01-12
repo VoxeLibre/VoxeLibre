@@ -53,7 +53,7 @@ Find a solid surface covered by water starting at the given position. When in a 
 This will ignore trees, mushrooms, and similar surface decorations.
 
 
-## `vl_terraforming.find_level(cpos, size, tolerance, surface, mode)`
+## `vl_terraforming.find_level(cpos, miny, maxy, size, tolerance, surface, mode)`
 
 Find "level" (sufficiently even) ground for a structure, centered at the given position, and of the given size.
 

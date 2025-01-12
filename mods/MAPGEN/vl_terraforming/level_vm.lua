@@ -8,8 +8,10 @@ local is_solid_not_tree = vl_terraforming._is_solid_not_tree
 --- Find ground below a given position
 -- @param vm VoxelManip: buffer
 -- @param pos vector: Start position
+-- @param miny int: Minimum y
+-- @param maxy int: Maximum y
 -- @return position and material of surface
-function vl_terraforming.find_ground_vm(vm, pos)
+function vl_terraforming.find_ground_vm(vm, pos, miny, maxy)
 	if not pos then return nil, nil end
 	local get_node = vm.get_node_at
 	pos = vector_copy(pos)
@@ -22,7 +24,7 @@ function vl_terraforming.find_ground_vm(vm, pos)
 	end
 	if is_solid_not_tree(cur) then -- find up
 		local prev = cur
-		while true do
+		while pos.y < maxy do
 			pos.y = pos.y + 1
 			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
@@ -35,8 +37,9 @@ function vl_terraforming.find_ground_vm(vm, pos)
 			end
 			prev = cur
 		end
+		return nil
 	else -- find down
-		while true do
+		while pos.y > miny do
 			pos.y = pos.y - 1
 			local prev = cur
 			local cur = get_node(vm, pos)
@@ -51,6 +54,7 @@ function vl_terraforming.find_ground_vm(vm, pos)
 				return pos, cur
 			end
 		end
+		return nil
 	end
 end
 local find_ground_vm = vl_terraforming.find_ground_vm
@@ -58,8 +62,10 @@ local find_ground_vm = vl_terraforming.find_ground_vm
 --- Find ground or liquid surface for a given position
 -- @param vm VoxelManip: buffer
 -- @param pos vector: Start position
+-- @param miny int: Minimum y
+-- @param maxy int: Maximum y
 -- @return position and material of surface
-function vl_terraforming.find_under_air_vm(vm, pos)
+function vl_terraforming.find_under_air_vm(vm, pos, miny, maxy)
 	if not pos then return nil, nil end
 	local get_node = vm.get_node_at
 	pos = vector_copy(pos)
@@ -72,7 +78,7 @@ function vl_terraforming.find_under_air_vm(vm, pos)
 	end
 	if is_solid_not_tree(cur) or is_liquid(cur) then -- find up
 		local prev = cur
-		while true do
+		while pos.y < maxy do
 			pos.y = pos.y + 1
 			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
@@ -86,8 +92,9 @@ function vl_terraforming.find_under_air_vm(vm, pos)
 			end
 			prev = cur
 		end
+		return nil
 	else -- find down
-		while true do
+		while pos.y > miny do
 			pos.y = pos.y - 1
 			local prev = cur
 			local cur = get_node(vm, pos)
@@ -100,6 +107,7 @@ function vl_terraforming.find_under_air_vm(vm, pos)
 				return pos, cur
 			end
 		end
+		return nil
 	end
 end
 local find_under_air_vm = vl_terraforming.find_under_air_vm
@@ -107,8 +115,10 @@ local find_under_air_vm = vl_terraforming.find_under_air_vm
 --- Find liquid surface for a given position
 -- @param vm VoxelManip: buffer
 -- @param pos vector: Start position
+-- @param miny int: Minimum y
+-- @param maxy int: Maximum y
 -- @return position and material of surface
-function vl_terraforming.find_liquid_surface_vm(vm, pos)
+function vl_terraforming.find_liquid_surface_vm(vm, pos, miny, maxy)
 	if not pos then return nil, nil end
 	local get_node = vm.get_node_at
 	pos = vector_copy(pos)
@@ -121,7 +131,7 @@ function vl_terraforming.find_liquid_surface_vm(vm, pos)
 	end
 	if is_liquid(cur) then -- find up
 		local prev = cur
-		while true do
+		while pos.y < maxy do
 			pos.y = pos.y + 1
 			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
@@ -135,8 +145,9 @@ function vl_terraforming.find_liquid_surface_vm(vm, pos)
 			end
 			prev = cur
 		end
+		return nil
 	else -- find down
-		while true do
+		while pos.y > miny do
 			pos.y = pos.y - 1
 			local prev = cur
 			local cur = get_node(vm, pos)
@@ -153,6 +164,7 @@ function vl_terraforming.find_liquid_surface_vm(vm, pos)
 				return pos, cur
 			end
 		end
+		return nil
 	end
 end
 local find_liquid_surface_vm = vl_terraforming.find_liquid_surface_vm
@@ -160,8 +172,10 @@ local find_liquid_surface_vm = vl_terraforming.find_liquid_surface_vm
 --- Find under water surface for a given position
 -- @param vm VoxelManip: buffer
 -- @param pos vector: Start position
+-- @param miny int: Minimum y
+-- @param maxy int: Maximum y
 -- @return position and material of surface
-function vl_terraforming.find_under_water_surface_vm(vm, pos)
+function vl_terraforming.find_under_water_surface_vm(vm, pos, miny, maxy)
 	if not pos then return nil, nil end
 	local get_node = vm.get_node_at
 	pos = vector_copy(pos)
@@ -174,7 +188,7 @@ function vl_terraforming.find_under_water_surface_vm(vm, pos)
 	end
 	if is_solid_not_tree(cur) then -- find up
 		local prev = cur
-		while true do
+		while pos.y < maxy do
 			pos.y = pos.y + 1
 			local cur = get_node(vm, pos)
 			if not cur or cur.name == "ignore" then
@@ -188,8 +202,9 @@ function vl_terraforming.find_under_water_surface_vm(vm, pos)
 			end
 			prev = cur
 		end
+		return nil
 	else -- find down
-		while true do
+		while pos.y > miny do
 			pos.y = pos.y - 1
 			local prev = cur
 			local cur = get_node(vm, pos)
@@ -207,6 +222,7 @@ function vl_terraforming.find_under_water_surface_vm(vm, pos)
 				end
 			end
 		end
+		return nil
 	end
 end
 local find_under_water_surface_vm = vl_terraforming.find_under_water_surface_vm
@@ -214,18 +230,20 @@ local find_under_water_surface_vm = vl_terraforming.find_under_water_surface_vm
 --- find suitable height for a structure of this size
 -- @param vm VoxelManip: to read data
 -- @param cpos vector: center
+-- @param miny int: minimum y
+-- @param maxy int: maximum y
 -- @param size vector: area size
 -- @param tolerance number or string: maximum height difference allowed, default 8,
 -- @param surface string: "solid" (default), "liquid_surface", "under_air"
 -- @param mode string: "median" (default), "min" and "max"
 -- @return position over surface, surface material  (or nil, nil)
-function vl_terraforming.find_level_vm(vm, cpos, size, tolerance, surface, mode)
+function vl_terraforming.find_level_vm(vm, cpos, miny, maxy, size, tolerance, surface, mode)
 	local _find_ground = find_ground_vm
 	if surface == "liquid_surface" or surface == "liquid" then _find_ground = find_liquid_surface_vm end
 	if surface == "under_water" or surface == "water" then _find_ground = find_under_water_surface_vm end
 	if surface == "under_air" then _find_ground = find_under_air_vm end
 	-- begin at center, then top-left and clockwise
-	local pos, surface_material = _find_ground(vm, cpos)
+	local pos, surface_material = _find_ground(vm, cpos, miny, maxy)
 	if not pos then
 		-- minetest.log("action", "[vl_terraforming] no ground at starting position "..minetest.pos_to_string(cpos).." surface "..tostring(surface or "default"))
 		return nil, nil
@@ -235,19 +253,19 @@ function vl_terraforming.find_level_vm(vm, cpos, size, tolerance, surface, mode)
 	if size.x == 1 and size.z == 1 then return pos end
 	-- move to top left corner
 	pos.x, pos.z = pos.x - floor((size.x-1)/2), pos.z - floor((size.z-1)/2)
-	local pos_c = _find_ground(vm, pos)
+	local pos_c = _find_ground(vm, pos, miny, maxy)
 	if pos_c then table.insert(ys, pos_c.y) end
 	-- move to top right corner
 	pos.x = pos.x + size.x - 1
-	local pos_c = _find_ground(vm, pos)
+	local pos_c = _find_ground(vm, pos, miny, maxy)
 	if pos_c then table.insert(ys, pos_c.y) end
 	-- move to bottom right corner
 	pos.z = pos.z + size.z - 1
-	local pos_c = _find_ground(vm, pos)
+	local pos_c = _find_ground(vm, pos, miny, maxy)
 	if pos_c then table.insert(ys, pos_c.y) end
 	-- move to bottom left corner
 	pos.x = pos.x - (size.x - 1)
-	local pos_c = _find_ground(vm, pos)
+	local pos_c = _find_ground(vm, pos, miny, maxy)
 	if pos_c then table.insert(ys, pos_c.y) end
 	table.sort(ys)
 

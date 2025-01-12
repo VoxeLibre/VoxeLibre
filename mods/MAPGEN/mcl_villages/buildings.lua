@@ -59,7 +59,7 @@ local function layout_town(minp, maxp, pr, input_settlement)
 			-- ensure we have 3 space for terraforming, and avoid problems with VoxelManip
 			if  tlpos.x - 3 >= minp.x and tlpos.x + size.x + 3 <= maxp.x
 			and tlpos.z + 3 >= minp.z and tlpos.z + size.y + 3 <= maxp.z then
-				local pos, surface_material = vl_terraforming.find_level(cpos, size, prepare.tolerance, prepare.surface, prepare.mode)
+				local pos, surface_material = vl_terraforming.find_level(cpos, minp.y - 10, maxp.y + 10, size, prepare.tolerance, prepare.surface, prepare.mode)
 				if pos and pos.y + size.y > maxp.y then pos = nil end
 				-- check distance to other buildings. Note that we still want to add baseplates etc.
 				if pos and mcl_villages.surface_mat[surface_material.name] and mcl_villages.check_distance(settlement, pos, size.x, size.z, mindist) then
