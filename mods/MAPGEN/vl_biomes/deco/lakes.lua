@@ -27,7 +27,7 @@ local function makelake(pos, size, liquid, placein, border, pr, noair)
 		end)
 		local y = pos.y - 1
 		local lq, air = {}, {}
-		local r = pr:next(1,#nn)
+		local r = pr:next(1,math.ceil(#nn * 0.8)) -- circle is pi/4 of the square
 		for i=1,r do
 			for j = 1, 20 do
 				table.insert(air, vector.offset(nn[i], 0, j, 0))
