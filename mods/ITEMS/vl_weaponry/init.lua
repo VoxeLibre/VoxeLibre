@@ -24,6 +24,7 @@ table.update(spear_entity,{
 	end,
 })
 table.update(spear_entity._vl_projectile,{
+	creative_collectable = true,
 	behaviors = {
 		vl_projectile.sticks,
 		vl_projectile.burns,

@@ -256,22 +256,18 @@ function mod.has_tracer(self, dtime, entity_def, projectile_def)
 end
 
 function mod.replace_with_item_drop(self, pos, projectile_def)
-	local item = self._arrow_item
+	projectile_def = projectile_def or self._vl_projectile
+	local item = self._arrow_item or projectile_def and projectile_def.item
 
-	if not item then
-		projectile_def = projectile_def or self._vl_projectile
-		if not projectile_def then return end
-
-		item = projectile_def.item
-	end
-
-	if item and self._collectable and not core.is_creative_enabled("") then
+	if item and self._collectable and (projectile_def and projectile_def.creative_collectable or not core.is_creative_enabled("")) then
 		-- Prevent item duplication
 		self._collectable = false
 
-		local item = core.add_item(pos, item)
-		item:set_velocity(vector.zero())
-		item:set_yaw(self.object:get_yaw())
+		local drop_item = core.add_item(pos, item)
+		if drop_item then
+			drop_item:set_velocity(vector.zero())
+			drop_item:set_yaw(self.object:get_yaw())
+		end
 	end
 
 	mcl_burning.extinguish(self.object)
