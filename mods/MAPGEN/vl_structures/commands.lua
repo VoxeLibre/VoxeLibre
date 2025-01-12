@@ -54,7 +54,10 @@ minetest.register_chatcommand("locate", {
 		if param == "" then
 			local data = vl_structures.get_structure_spawns()
 			local datastr = ""
-			for i, d in ipairs(data) do datastr = datastr .. (i > 1 and " | " or "") .. d end
+			for i, d in ipairs(data) do
+				local c = vl_structures.get_structure_spawns(d)
+				datastr = datastr .. (i > 1 and " | " or "") .. d .. " (" .. #c .. ")"
+			end
 			if datastr == "" then
 				minetest.chat_send_player(name, S("Error: No structure type given, and no structures were recently spawned - try /emerge 128 and give the game some time."))
 			else
