@@ -142,9 +142,12 @@ core.register_allow_player_inventory_action(function(player, action, inventory, 
 		local stack = inventory:get_stack("cartography_table_output", 1)
 		local addon = inventory:get_stack("cartography_table_input", 2)
 		if stack:get_name():find("mcl_maps:filled_map") and addon:get_name() == "mcl_core:paper" then
-			local pname = player:get_player_name()
-			core.chat_send_player(pname, S("Zooming a map may take several seconds to generate the world, please wait."))
-			local callback = function(id, filename) core.chat_send_player(pname, S("The zoomed map is now ready.")) end
+			-- also send chat, as the actionbar may be hidden by the cartograph table
+			core.chat_send_player(player:get_player_name(), core.get_color_escape_sequence("gold")..S("Zooming a map may take several seconds to generate the world, please wait."))
+			mcl_title.set(player, "actionbar", {text=S("Zooming a map may take several seconds to generate the world, please wait."), color="gold", stay=5*20})
+			local callback = function(id, filename)
+				mcl_title.set(player, "actionbar", {text=S("The zoomed map is now ready."), color="green", stay=3*20})
+			end
 			mcl_maps.regenerate_map(stack, callback) -- new zoom level
 			inventory:set_stack("cartography_table_output", 1, stack)
 		end
@@ -200,7 +203,7 @@ end)
 core.register_node("mcl_cartography_table:cartography_table", {
 	description = S("Cartography Table"),
 	_tt_help = S("Used to copy, lock, and zoom maps"),
-	_doc_items_longdesc = S("A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and maps may only be zoomed out once right now."),
+	_doc_items_longdesc = S("A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and the maximum zoom level may be restricted by server settings to limit the performance impact."),
 	tiles = {
 		"mcl_cartography_table_top.png", "mcl_cartography_table_side3.png",
 		"mcl_cartography_table_side3.png", "mcl_cartography_table_side2.png",
