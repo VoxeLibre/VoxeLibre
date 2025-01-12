@@ -6,7 +6,8 @@
 -- Check for engine updates that allow improvements
 mcl_maps = {}
 
-mcl_maps.max_zoom = 2 -- level 3 already may take some 20 minutes...
+-- level 4 already may take some 20 minutes...
+mcl_maps.max_zoom = (tonumber(core.settings:get("vl_maps_max_zoom")) or 2)
 mcl_maps.enable_maps = core.settings:get_bool("enable_real_maps", true)
 mcl_maps.allow_nether_maps = core.settings:get_bool("vl_maps_allow_nether", true)
 mcl_maps.map_allow_overlap = core.settings:get_bool("vl_maps_allow_overlap", true) -- 50% overlap allowed in each level
@@ -69,7 +70,7 @@ local function generate_map(id, minp, maxp, callback)
 			local pixels = {}
 			local area = VoxelArea:new({ MinEdge = emin, MaxEdge = emax })
 			local xsize, zsize = maxp.x - minp.x + 1, maxp.z - minp.z + 1
-			-- Step size, for zoom levels > 0
+			-- Step size, for zoom levels > 1
 			local xstep, zstep = ceil(xsize / 128), ceil(zsize / 128)
 			local ystride = area.ystride
 			for z = zsize, 1, -zstep do
@@ -94,22 +95,24 @@ local function generate_map(id, minp, maxp, callback)
 							end
 							if color then
 								if solid_under_air == 0 then
-									cagg = { 0, 0, 0, 0 } -- reset
+									cagg, height = { 0, 0, 0, 0 }, nil -- reset
 									solid_under_air = 1
 								end
 								local alpha = cagg[4] -- 0 (transparent) to 255 (opaque)
-								local a = (color[4] or 255) * (255 - alpha) / 255 -- 0 to 255
-								local f = a / 255 -- 0 to 1, color contribution
-								-- Alpha blend the colors:
-								cagg[1] = cagg[1] + f * color[1]
-								cagg[2] = cagg[2] + f * color[2]
-								cagg[3] = cagg[3] + f * color[3]
-								alpha = cagg[4] + a -- new alpha, 0 to 255
-								cagg[4] = alpha
+								if alpha < 255 then
+									local a = (color[4] or 255) * (255 - alpha) / 255 -- 0 to 255
+									local f = a / 255 -- 0 to 1, color contribution
+									-- Alpha blend the colors:
+									cagg[1] = cagg[1] + f * color[1]
+									cagg[2] = cagg[2] + f * color[2]
+									cagg[3] = cagg[3] + f * color[3]
+									alpha = cagg[4] + a -- new alpha, 0 to 255
+									cagg[4] = alpha
+								end
 
 								-- ground estimate with transparent blocks
 								if alpha > 140 and not height then height = map_y end
-								if alpha >= 250 then
+								if alpha >= 250 and solid_under_air > 0 then
 									-- adjust color to give a 3d effect
 									if last_height and height then
 										local dheight = max(-48, min((height - last_height) * 8, 48))
@@ -122,7 +125,7 @@ local function generate_map(id, minp, maxp, callback)
 								end
 							end
 						elseif solid_under_air == -1 then
-							solid_under_air = 0
+							solid_under_air = 0 -- first air
 						end
 					end
 					-- clamp colors values to 0:255 for PNG
@@ -149,9 +152,9 @@ local function generate_map(id, minp, maxp, callback)
 end
 
 local function configure_map(itemstack, cx, dim, cz, zoom, callback)
-	zoom = zoom or 0
+	zoom = max(zoom or 1, 1)
 	-- Texture size is 128
-	local size = 128 * (2^zoom)
+	local size = 64 * (2^zoom)
 	local halfsize = size / 2
 	-- If enabled, round to halfsize grid, otherwise to size grid.
 	if mcl_maps.map_allow_overlap then
@@ -244,9 +247,10 @@ local function fill_map(itemstack, placer, pointed_thing)
 	if new_stack then return new_stack end
 
 	if mcl_maps.enable_maps then
-		local pname = placer:get_player_name()
-		core.chat_send_player(pname, S("It may take a moment for the map to be ready."))
-		local callback = function(id, filename) core.chat_send_player(pname, S("The new map is now ready.")) end
+		mcl_title.set(placer, "actionbar", {text=S("It may take a moment for the map to be ready."), color="gold", stay=5*20})
+		local callback = function(id, filename)
+			mcl_title.set(placer, "actionbar", {text=S("The new map is now ready."), color="green", stay=3*20})
+		end
 		local new_map = mcl_maps.create_map(placer:get_pos(), 0, callback)
 		itemstack:take_item()
 		if itemstack:is_empty() then return new_map end
@@ -418,7 +422,7 @@ core.register_globalstep(function(dtime)
 				maps[player] = {texture, minp, maxp}
 			end
 
-			-- ,ap overlay with player position
+			-- map overlay with player position
 			local pos = player:get_pos() -- was: vector.round(player:get_pos())
 			local minp, maxp = maps[player][2], maps[player][3]
 
