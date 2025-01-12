@@ -26,6 +26,9 @@ local mod_mcl_crimson = minetest.get_modpath("mcl_crimson")
 local mod_mcl_blackstone = minetest.get_modpath("mcl_blackstone")
 local mod_mcl_mangrove = minetest.get_modpath("mcl_mangrove")
 
+-- these are registered asynchronously
+local deco_ids_fungus = {}
+local deco_ids_trees = {}
 local deco_id_chorus_plant
 
 --
@@ -3988,7 +3991,11 @@ local function register_decorations()
 		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_1.mts",
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:mangrove_tree_1")
+		table.insert(deco_ids_trees, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		name = "mcl_biomes:mangrove_tree_2",
 		deco_type = "schematic",
@@ -4001,7 +4008,11 @@ local function register_decorations()
 		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_2.mts",
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:mangrove_tree_2")
+		table.insert(deco_ids_trees, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		name = "mcl_biomes:mangrove_tree_3",
 		deco_type = "schematic",
@@ -4014,7 +4025,11 @@ local function register_decorations()
 		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_3.mts",
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:mangrove_tree_3")
+		table.insert(deco_ids_trees, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		name = "mcl_biomes:mangrove_tree_4",
 		deco_type = "schematic",
@@ -4027,7 +4042,11 @@ local function register_decorations()
 		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_4.mts",
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:mangrove_tree_4")
+		table.insert(deco_ids_trees, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		name = "mcl_biomes:mangrove_tree_5",
 		deco_type = "schematic",
@@ -4040,7 +4059,11 @@ local function register_decorations()
 		schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_5.mts",
 		flags = "place_center_x, place_center_z, force_placement",
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:mangrove_tree_5")
+		table.insert(deco_ids_trees, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		name = "mcl_biomes:mangrove_bee_nest",
 		deco_type = "schematic",
@@ -4063,7 +4086,11 @@ local function register_decorations()
 		rotation = "random",
 		spawn_by = "group:flower",
 		rank = 1550,
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:mangrove_bee_nest")
+		table.insert(deco_ids_trees, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_mud:mud"},
@@ -5577,7 +5604,11 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_1.mts",
 		size = vector.new(5, 11, 5),
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:warped_tree1")
+		table.insert(deco_ids_fungus, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
 		name = "mcl_biomes:warped_tree2",
@@ -5591,7 +5622,11 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_2.mts",
 		size = vector.new(5, 6, 5),
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:warped_tree2")
+		table.insert(deco_ids_fungus, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
 		name = "mcl_biomes:warped_tree3",
@@ -5605,7 +5640,11 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_3.mts",
 		size = vector.new(5, 12, 5),
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:warped_tree3")
+		table.insert(deco_ids_fungus, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_crimson:warped_nylium", "mcl_crimson:twisting_vines"},
@@ -5653,7 +5692,7 @@ local function register_dimension_decorations()
 	})
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
-		name = "mcl_biomes:crimson_tree",
+		name = "mcl_biomes:crimson_tree1",
 		place_on = {"mcl_crimson:crimson_nylium"},
 		sidelen = 16,
 		fill_ratio = 0.008,
@@ -5664,7 +5703,12 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_1.mts",
 		size = vector.new(5, 8, 5),
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:crimson_tree1")
+		table.insert(deco_ids_fungus, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
+	minetest.register_alias("mcl_biomes:crimson_tree", "mcl_biomes:crimson_tree1") -- legacy inconsistency, fixed 08/2024
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
 		name = "mcl_biomes:crimson_tree2",
@@ -5678,7 +5722,11 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_2.mts",
 		size = vector.new(5, 12, 5),
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:crimson_tree2")
+		table.insert(deco_ids_fungus, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
 		name = "mcl_biomes:crimson_tree3",
@@ -5692,7 +5740,11 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_3.mts",
 		size = vector.new(7, 13, 7),
 		rotation = "random",
-	})
+	}, function()
+		local f = minetest.get_decoration_id("mcl_biomes:crimson_tree3")
+		table.insert(deco_ids_fungus, f)
+		minetest.set_gen_notify({decoration = true}, {f})
+	end)
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_crimson:warped_nylium", "mcl_crimson:weeping_vines", "mcl_nether:netherrack"},
@@ -5903,13 +5955,11 @@ local function register_dimension_decorations()
 		decoration = "mcl_end:chorus_flower",
 		height = 1,
 		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands"},
-	})
-
-	deco_id_chorus_plant = minetest.get_decoration_id("mcl_biomes:chorus_plant")
-	minetest.set_gen_notify({decoration = true}, {deco_id_chorus_plant})
-
+	},function()
+		deco_id_chorus_plant = minetest.get_decoration_id("mcl_biomes:chorus_plant")
+		minetest.set_gen_notify({decoration = true}, {deco_id_chorus_plant})
+	end)
 	-- TODO: End cities
-
 end
 
 
@@ -5943,30 +5993,6 @@ if mg_name ~= "singlenode" then
 	register_dimension_decorations()
 
 	-- Overworld decorations for v6 are handled in mcl_mapgen_core
-
-	local deco_ids_fungus = {
-		minetest.get_decoration_id("mcl_biomes:crimson_tree1"),
-		minetest.get_decoration_id("mcl_biomes:crimson_tree2"),
-		minetest.get_decoration_id("mcl_biomes:crimson_tree3"),
-		minetest.get_decoration_id("mcl_biomes:warped_tree1"),
-		minetest.get_decoration_id("mcl_biomes:warped_tree2"),
-		minetest.get_decoration_id("mcl_biomes:warped_tree3")
-	}
-	local deco_ids_trees = {
-		minetest.get_decoration_id("mcl_biomes:mangrove_tree_1"),
-		minetest.get_decoration_id("mcl_biomes:mangrove_tree_2"),
-		minetest.get_decoration_id("mcl_biomes:mangrove_tree_3"),
-		minetest.get_decoration_id("mcl_biomes:mangrove_tree_4"),
-		minetest.get_decoration_id("mcl_biomes:mangrove_tree_5"),
-		minetest.get_decoration_id("mcl_biomes:mangrove_bee_nest"),
-	}
-	for _, f in pairs(deco_ids_fungus) do
-		minetest.set_gen_notify({decoration = true}, {f})
-	end
-	for _, f in pairs(deco_ids_trees) do
-		minetest.set_gen_notify({decoration = true}, {f})
-	end
-
 	local function mangrove_roots_gen(gennotify, pr)
 		for _, f in pairs(deco_ids_trees) do
 			for _, pos in ipairs(gennotify["decoration#" .. f] or {}) do
@@ -6020,9 +6046,7 @@ if mg_name ~= "singlenode" then
 				local biomemap = minetest.get_mapgen_object("biomemap")
 				local swamp_biome_id = minetest.get_biome_id("MangroveSwamp")
 				local swamp_shore_id = minetest.get_biome_id("MangroveSwamp_shore")
-				local is_swamp = table.indexof(biomemap, swamp_biome_id) ~= -1
-				local is_swamp_shore = table.indexof(biomemap, swamp_shore_id) ~= -1
-				if is_swamp or is_swamp_shore then
+				if biomemap and (table.indexof(biomemap, swamp_biome_id) ~= -1 or table.indexof(biomemap, swamp_shore_id) ~= -1) then
 					mangrove_roots_gen(gennotify, pr)
 				end
 			end
