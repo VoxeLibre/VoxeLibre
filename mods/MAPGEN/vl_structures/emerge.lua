@@ -19,7 +19,7 @@ local function tolerance_enabled(tolerance, surface, mode)
 	return tolerance ~= "off" and (tolerance or surface or mode) and true
 end
 
---- Main palcement step, when the area has been emerged
+--- Main placement step, when the area has been emerged
 local function emerge_schematics(blockpos, action, calls_remaining, param)
 	if calls_remaining >= 1 then return end
 	local start = os.clock()
@@ -46,7 +46,8 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 	-- Step 1: adjust ground to a more level position
 	-- todo: also support checking ground of daughter schematics, but not used by current schematics
 	if pos and size and prepare and tolerance_enabled(prepare.tolerance, prepare.surface, prepare.mode) then
-		pos, surface_mat = vl_terraforming.find_level(pos, size, prepare.tolerance, prepare.surface, prepare.mode)
+		local miny, maxy = param.miny or (pos.y - 20), param.max or (pos.y + 20)
+		pos, surface_mat = vl_terraforming.find_level(pos, miny, maxy, size, prepare.tolerance, prepare.surface, prepare.mode)
 		if not pos then
 			minetest.log("warning", "[vl_structures] Not spawning "..tostring(def.name or param.schematic.name).." at "..minetest.pos_to_string(param.pos).." because ground is too uneven.")
 			return
