@@ -318,6 +318,10 @@ minetest.register_node(SCAFFOLDING_NAME, {
 			if wdir == 1 then
 				if (anode == "air" or minetest.registered_nodes[anode].buildable_to) and not mcl_bamboo.is_protected(pointed.above, placer) then
 					minetest.set_node(pointed.above, { name = SCAFFOLDING_NAME, param2 = 0 })
+	           		minetest.sound_play({name="default_wood_footstep", gain=1}, {
+					pos = pos,
+					max_hear_distance = 16,
+    				}, true)
 					if not minetest.is_creative_enabled(placer:get_player_name()) then
 						itemstack:take_item(1)
 					end
@@ -355,6 +359,10 @@ minetest.register_node(SCAFFOLDING_NAME, {
 
 				-- okay, we're good. place the node and take the item unless we are in creative mode.
 				minetest.set_node(pos, node)
+           		minetest.sound_play({name="default_wood_footstep", gain=1}, {
+				pos = pos,
+				max_hear_distance = 16,
+    			}, true)				
 				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item(1)
 				end
