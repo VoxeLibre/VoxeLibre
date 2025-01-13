@@ -31,6 +31,7 @@ local vector_distance = vector.distance
 local pairs = pairs
 local check_line_of_sight = mcl_mobs.check_line_of_sight
 
+local profile = false
 local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", false)
 local function mcl_log(message, property)
 	if property then message = message .. ": " .. dump(property) end
@@ -43,7 +44,7 @@ local dbg_spawn_succ = 0
 
 local remove_far = true
 
-local MAX_SPAWN_CYCLE_TIME = 2.5
+local MAX_SPAWN_CYCLE_TIME = 1.65 -- 33 timesteps at 0.05 seconds each
 local FIND_SPAWN_POS_RETRIES = 1
 
 local MOB_SPAWN_ZONE_INNER = 24
@@ -1138,7 +1139,15 @@ if mobs_spawn then
 
 	--MAIN LOOP
 	local timer = 0
+	local start = true
+	local start_time
+	local total_time = 0
+	local count = 0
 	minetest.register_globalstep(function(dtime)
+		if start then
+			start = false
+			start_time = core.get_us_time()
+		end
 		timer = timer - dtime
 		if timer > 0 then return end
 
@@ -1146,8 +1155,12 @@ if mobs_spawn then
 		timer = next_spawn
 		if timer > MAX_SPAWN_CYCLE_TIME then timer = MAX_SPAWN_CYCLE_TIME end
 
-		if logging and took > debug_time_threshold then
+		if profile or logging and took > debug_time_threshold then
+			total_time = total_time + took
+			count = count + 1
+
 			minetest.log("Next spawn attempt in "..tostring(timer).." previous attempt took "..took.." us")
+			minetest.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time)).."% count="..count)
 		end
 	end)
 end
