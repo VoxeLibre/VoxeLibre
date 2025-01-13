@@ -28,7 +28,7 @@ end
 vl_structures.register_structure("witches_circle",{
 	place_on = {"group:grass_block", "group:dirt", "mclx_core:river_water_source"},
 	flags = "place_center_x, place_center_z, all_surfaces",
-	chunk_probability = 20,
+	chunk_probability = 40,
 	prepare = { tolerance = 3, clear_bottom = 1, clear_top = 0, padding = 0, corners = 1, foundation = -2 },
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,

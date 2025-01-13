@@ -4,7 +4,7 @@ local modpath = minetest.get_modpath(modname)
 vl_structures.register_structure("campsite",{
 	place_on = {"group:grass_block"},
 	flags = "place_center_x, place_center_z",
-	chunk_probability = 50,
+	chunk_probability = 80,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	prepare = { tolerance = 1, foundation = -2, clear_top = 1, padding = 1, corners = 1 }, -- low tolerance, perform little terraforming
