@@ -31,6 +31,9 @@ function vl_terraforming.find_ground_vm(vm, pos, miny, maxy)
 				-- minetest.log("action", "No ground, "..tostring(cur and cur.name).." over "..tostring(prev and prev.name).." at "..minetest.pos_to_string(pos))
 				return nil
 			end
+			if is_liquid(cur) then
+				return nil
+			end
 			if not is_solid_not_tree(cur) then
 				pos.y = pos.y - 1
 				return pos, prev
