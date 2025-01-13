@@ -294,22 +294,20 @@ local function calculate_acceleration(staticdata)
 		-- Standard friction
 	elseif node_def and node_def._rail_acceleration then
 		local rail_accel = node_def._rail_acceleration
-		apply_gravity = false -- Don't apply gravity when the rail is accelerating the cart
 		if type(rail_accel) == "function" then
 			acceleration = (rail_accel(pos, staticdata) or 0) * 4
 		else
 			acceleration = rail_accel * 4
 		end
+		apply_gravity = acceleration <= 0 -- Don't apply gravity when the rail is accelerating the cart uphill
 	end
 
 	-- Factor in gravity after everything else
-	if apply_gravity then
-		local gravity_strength = 2.45 --friction * 5
-		if staticdata.dir.y < 0 then
-			acceleration = gravity_strength - FRICTION
-		elseif staticdata.dir.y > 0 then
-			acceleration = -gravity_strength + FRICTION
-		end
+	local gravity_strength = 2.45 --friction * 5
+	if staticdata.dir.y < 0 then
+		acceleration = gravity_strength - FRICTION
+	elseif apply_gravity and staticdata.dir.y > 0 then
+		acceleration = -gravity_strength + FRICTION
 	end
 
 	return acceleration
