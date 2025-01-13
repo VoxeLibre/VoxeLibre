@@ -10,14 +10,14 @@ local doornames = {
 }
 
 for oldname, newname in pairs(doornames) do
-	minetest.register_alias("doors:"..oldname, "mcl_doors:"..newname)
-	minetest.register_alias("doors:"..oldname.."_t_1", "mcl_doors:"..newname.."_t_1")
-	minetest.register_alias("doors:"..oldname.."_b_1", "mcl_doors:"..newname.."_b_1")
-	minetest.register_alias("doors:"..oldname.."_t_2", "mcl_doors:"..newname.."_t_2")
-	minetest.register_alias("doors:"..oldname.."_b_2", "mcl_doors:"..newname.."_b_2")
+	core.register_alias("doors:"..oldname, "mcl_doors:"..newname)
+	core.register_alias("doors:"..oldname.."_t_1", "mcl_doors:"..newname.."_t_1")
+	core.register_alias("doors:"..oldname.."_b_1", "mcl_doors:"..newname.."_b_1")
+	core.register_alias("doors:"..oldname.."_t_2", "mcl_doors:"..newname.."_t_2")
+	core.register_alias("doors:"..oldname.."_b_2", "mcl_doors:"..newname.."_b_2")
 end
 
-minetest.register_alias("doors:trapdoor", "mcl_doors:trapdoor")
-minetest.register_alias("doors:trapdoor_open", "mcl_doors:trapdoor_open")
-minetest.register_alias("doors:iron_trapdoor", "mcl_doors:iron_trapdoor")
-minetest.register_alias("doors:iron_trapdoor_open", "mcl_doors:iron_trapdoor_open")
+core.register_alias("doors:trapdoor", "mcl_doors:trapdoor_oak")
+core.register_alias("doors:trapdoor_open", "mcl_doors:trapdoor_oak_open")
+core.register_alias("doors:iron_trapdoor", "mcl_doors:iron_trapdoor")
+core.register_alias("doors:iron_trapdoor_open", "mcl_doors:iron_trapdoor_open")

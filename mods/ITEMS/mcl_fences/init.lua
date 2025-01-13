@@ -1,5 +1,19 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local function table_merge(tbl, ...)
+	local t = table.copy(tbl)
+	for _, to in ipairs{...} do
+		for k,v in pairs(to) do
+			if type(t[k]) == "table" and type(v) == "table" then
+				t[k] = table_merge(t[k], v)
+			else
+				t[k] = v
+			end
+		end
+	end
+	return t
+end
+
 -- Node box
 local p = {-2/16, -0.5, -2/16, 2/16, 0.5, 2/16}
 local x1 = {-0.5, 4/16, -1/16, -2/16, 7/16, 1/16}   --oben(quer) -x
@@ -30,11 +44,14 @@ function mcl_fences.register_fence(id, fence_name, texture, groups, hardness, bl
 	else
 		connects_to = table.copy(connects_to)
 	end
-	local fence_id = minetest.get_current_modname()..":"..id
+	local fence_id = id
+	if not fence_id:find(":") then
+		fence_id = (minetest.get_current_modname() or "mcl_fences") .. ":" .. id
+	end
 	table.insert(connects_to, "group:solid")
 	table.insert(connects_to, "group:fence_gate")
 	table.insert(connects_to, fence_id)
-	minetest.register_node(fence_id, {
+	minetest.register_node(":"..fence_id, {
 		description = fence_name,
 		_doc_items_longdesc = S("Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump."),
 		tiles = {texture},
@@ -80,7 +97,10 @@ function mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, ha
 		minetest.set_node(pos, node)
 	end
 
-	local gate_id = minetest.get_current_modname()..":"..id.."_gate"
+	local gate_id = id .. "_gate"
+	if not gate_id:find(":") then
+		gate_id = (minetest.get_current_modname() or "mcl_fences") .. ":" .. id .. "_gate"
+	end
 	local open_gate_id = gate_id .. "_open"
 	if not sound_open then
 		sound_open = "doors_fencegate_open"
@@ -124,7 +144,7 @@ function mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, ha
 	cgroups.mesecon_ignore_opaque_dig = 1
 	cgroups.mesecon_effector_on = 1
 	cgroups.fence_gate = 1
-	minetest.register_node(open_gate_id, {
+	minetest.register_node(":"..open_gate_id, {
 		tiles = {texture},
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -170,7 +190,7 @@ function mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, ha
 	local cgroups_closed = table.copy(cgroups)
 	cgroups_closed.mesecon_effector_on = nil
 	cgroups_closed.mesecon_effector_off = nil
-	minetest.register_node(gate_id, {
+	minetest.register_node(":"..gate_id, {
 		description = fence_gate_name,
 		_tt_help = S("Openable by players and redstone power"),
 		_doc_items_longdesc = S("Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates."),
@@ -246,56 +266,93 @@ function mcl_fences.register_fence_and_fence_gate(id, fence_name, fence_gate_nam
 	return fence_id, gate_id, open_gate_id
 end
 
-local wood_groups = {handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20}
+local wood_groups = {handy=1, axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20}
 local wood_connect = {"group:fence_wood"}
 local wood_sounds = mcl_sounds.node_sound_wood_defaults()
 
 local woods = {
-	{"", S("Oak Fence"), S("Oak Fence Gate"), "mcl_fences_fence_oak.png", "mcl_fences_fence_gate_oak.png", "mcl_core:wood"},
-	{"spruce", S("Spruce Fence"), S("Spruce Fence Gate"), "mcl_fences_fence_spruce.png", "mcl_fences_fence_gate_spruce.png", "mcl_core:sprucewood"},
-	{"birch", S("Birch Fence"), S("Birch Fence Gate"), "mcl_fences_fence_birch.png", "mcl_fences_fence_gate_birch.png", "mcl_core:birchwood"},
-	{"jungle", S("Jungle Fence"), S("Jungle Fence Gate"), "mcl_fences_fence_jungle.png", "mcl_fences_fence_gate_jungle.png", "mcl_core:junglewood"},
-	{"dark_oak", S("Dark Oak Fence"), S("Dark Oak Fence Gate"), "mcl_fences_fence_big_oak.png", "mcl_fences_fence_gate_big_oak.png", "mcl_core:darkwood"},
-	{"acacia", S("Acacia Fence"), S("Acacia Fence Gate"), "mcl_fences_fence_acacia.png", "mcl_fences_fence_gate_acacia.png", "mcl_core:acaciawood"},
+	oak = {
+		_fences = {
+			[2] = S("Oak Fence"),
+			[3] = S("Oak Fence Gate"),
+			[4] = "mcl_fences_fence_oak.png",
+		},
+	},
+	spruce = {
+		_fences = {
+			[2] = S("Spruce Fence"),
+			[3] = S("Spruce Fence Gate"),
+			[4] = "mcl_fences_fence_spruce.png",
+		},
+	},
+	birch = {
+		_fences = {
+			[2] = S("Birch Fence"),
+			[3] = S("Birch Fence Gate"),
+			[4] = "mcl_fences_fence_birch.png",
+		},
+	},
+	jungle = {
+		_fences = {
+			[2] = S("Jungle Fence"),
+			[3] = S("Jungle Fence Gate"),
+			[4] = "mcl_fences_fence_jungle.png",
+		},
+	},
+	dark_oak = {
+		_fences = {
+			[2] = S("Dark Oak Fence"),
+			[3] = S("Dark Oak Fence Gate"),
+			[4] = "mcl_fences_fence_big_oak.png",
+		},
+	},
+	acacia = {
+		_fences = {
+			[2] = S("Acacia Fence"),
+			[3] = S("Acacia Fence Gate"),
+			[4] = "mcl_fences_fence_acacia.png",
+		},
+	},
 }
 
-for w=1, #woods do
-	local wood = woods[w]
-	local id, id_gate
-	if wood[1] == "" then
-		id = "fence"
-		id_gate = "fence_gate"
-	else
-		id = wood[1].."_fence"
-		id_gate = wood[1].."_fence_gate"
-	end
-	mcl_fences.register_fence_and_fence_gate(
-		id,
-		wood[2],
-		wood[3],
-		wood[4],
+vl_trees.register_on_woods_added(function(name, def)
+	if not def._fences then return end
+
+	local pname = def.planks
+	local pdef = minetest.registered_nodes[pname]
+
+	local fname = def.__modname .. ":" .. name .. "_fence"
+	local gname = fname .. "_gate"
+
+	local fdef = {
+		fname,
+		nil, -- fence description
+		nil, -- fence gate description
+		nil, -- fence texture
 		wood_groups,
-		minetest.registered_nodes["mcl_core:wood"]._mcl_hardness,
-		minetest.registered_nodes["mcl_core:wood"]._mcl_blast_resistance,
-		wood_connect,
-		wood_sounds)
+		pdef._mcl_hardness,
+		pdef._mcl_blast_resistance,
+		{"group:fence_wood"},
+		pdef.sounds
+	}
+	table.update(fdef, def._fences)
+	mcl_fences.register_fence_and_fence_gate(unpack(fdef))
 
 	minetest.register_craft({
-		output = "mcl_fences:"..id.." 3",
+		output = fname .. " 3",
 		recipe = {
-			{wood[6], "mcl_core:stick", wood[6]},
-			{wood[6], "mcl_core:stick", wood[6]},
+			{pname, "mcl_core:stick", pname},
+			{pname, "mcl_core:stick", pname},
 		}
 	})
 	minetest.register_craft({
-		output = "mcl_fences:"..id_gate,
+		output = gname,
 		recipe = {
-			{"mcl_core:stick", wood[6], "mcl_core:stick"},
-			{"mcl_core:stick", wood[6], "mcl_core:stick"},
+			{"mcl_core:stick", pname, "mcl_core:stick"},
+			{"mcl_core:stick", pname, "mcl_core:stick"},
 		}
 	})
-end
-
+end, woods)
 
 -- Nether Brick Fence (without fence gate!)
 mcl_fences.register_fence(
@@ -321,3 +378,6 @@ minetest.register_craft({
 	recipe = "group:fence_wood",
 	burntime = 15,
 })
+
+core.register_alias("mcl_fences:fence", "mcl_core:oak_fence")
+core.register_alias("mcl_fences:fence_gate", "mcl_core:oak_fence_gate")

@@ -18,7 +18,7 @@ function vl_hollow_logs.register_craft(material, result)
 		type = "shapeless"
 	})
 
-	mcl_stonecutter.register_recipe(material, "vl_hollow_logs:"..result.."_hollow", 1)
+	--mcl_stonecutter.register_recipe(material, "vl_hollow_logs:"..result.."_hollow", 1)
 end
 
 for _, defs in pairs(vl_hollow_logs.logs) do

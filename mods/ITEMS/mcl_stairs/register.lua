@@ -35,30 +35,58 @@ function mcl_stairs.register_craft_slab(subname, recipeitem)
 end
 
 local woods = {
-	{ "wood", "default_wood.png", S("Oak Wood Stairs"), S("Oak Wood Slab"), S("Double Oak Wood Slab") },
-	{ "junglewood", "default_junglewood.png", S("Jungle Wood Stairs"), S("Jungle Wood Slab"), S("Double Jungle Wood Slab") },
-	{ "acaciawood", "default_acacia_wood.png", S("Acacia Wood Stairs"), S("Acacia Wood Slab"), S("Double Acacia Wood Slab") },
-	{ "sprucewood", "mcl_core_planks_spruce.png", S("Spruce Wood Stairs"), S("Spruce Wood Slab"), S("Double Spruce Wood Slab") },
-	{ "birchwood", "mcl_core_planks_birch.png", S("Birch Wood Stairs"), S("Birch Wood Slab"), S("Double Birch Wood Slab") },
-	{ "darkwood", "mcl_core_planks_big_oak.png", S("Dark Oak Wood Stairs"), S("Dark Oak Wood Slab"), S("Double Dark Oak Wood Slab") },
+	oak = {
+		_planks_stairs = S("Oak Wood Stairs"),
+		_planks_slab = S("Oak Wood Slab"),
+		_planks_double_slab = S("Double Oak Wood Slab"),
+	},
+	dark_oak = {
+		_planks_stairs = S("Dark Oak Wood Stairs"),
+		_planks_slab = S("Dark Oak Wood Slab"),
+		_planks_double_slab = S("Double Dark Oak Wood Slab"),
+	},
+	jungle = {
+		_planks_stairs = S("Jungle Wood Stairs"),
+		_planks_slab = S("Jungle Wood Slab"),
+		_planks_double_slab = S("Double Jungle Wood Slab"),
+	},
+	acacia = {
+		_planks_stairs = S("Acacia Wood Stairs"),
+		_planks_slab = S("Acacia Wood Slab"),
+		_planks_double_slab = S("Double Acacia Wood Slab"),
+	},
+	spruce = {
+		_planks_stairs = S("Spruce Wood Stairs"),
+		_planks_slab = S("Spruce Wood Slab"),
+		_planks_double_slab = S("Double Spruce Wood Slab"),
+	},
+	birch = {
+		_planks_stairs = S("Birch Wood Stairs"),
+		_planks_slab = S("Birch Wood Slab"),
+		_planks_double_slab = S("Double Birch Wood Slab"),
+	},
 }
 
-for w=1, #woods do
-	local wood = woods[w]
-	mcl_stairs.register_stair(wood[1], "mcl_core:"..wood[1],
-			{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
-			{wood[2]},
-			wood[3],
-			mcl_sounds.node_sound_wood_defaults(), nil, nil,
-			"woodlike")
-	mcl_stairs.register_slab(wood[1], "mcl_core:"..wood[1],
-			{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
-			{wood[2]},
-			wood[4],
-			mcl_sounds.node_sound_wood_defaults(), nil, nil,
-			wood[5])
-end
+vl_trees.register_on_woods_added(function(name, def)
+	local pname = def.planks
+	local short = pname:gsub(".+:", "")
+	local pdef = minetest.registered_nodes[pname]
 
+	local groups = table.copy(pdef.groups)
+	groups.wood = nil
+
+	local groups_stairs = table.copy(groups)
+	groups_stairs.wood_stairs = 1
+
+	local groups_slab = table.copy(groups)
+	groups_slab.wood_slab = 1
+
+	mcl_stairs.register_stair(short, pname, groups_stairs, pdef.tiles, def._planks_stairs, pdef.sounds,
+		nil, nil, "woodlike")
+	mcl_stairs.register_slab(short, pname, groups_slab, pdef.tiles, def._planks_slab, pdef.sounds,
+		nil, nil,
+		def._planks_double_slab)
+end, woods)
 
 mcl_stairs.register_slab("stone_rough", "mcl_core:stone",
 		{pickaxey=1, material_stone=1},

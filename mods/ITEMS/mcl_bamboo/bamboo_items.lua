@@ -202,8 +202,8 @@ if minetest.get_modpath("mcl_fences") then
 		S("Bamboo Fence"),
 		"mcl_bamboo_fence_bamboo.png",
 		wood_groups,
-		minetest.registered_nodes["mcl_core:wood"]._mcl_hardness,
-		minetest.registered_nodes["mcl_core:wood"]._mcl_blast_resistance,
+		minetest.registered_nodes["mcl_core:wood_oak"]._mcl_hardness,
+		minetest.registered_nodes["mcl_core:wood_oak"]._mcl_blast_resistance,
 		wood_connect, node_sound)
 
 	local gate_id = mcl_fences.register_fence_gate(
@@ -211,8 +211,8 @@ if minetest.get_modpath("mcl_fences") then
 		S("Bamboo Fence Gate"),
 		"mcl_bamboo_fence_gate_bamboo.png",
 		wood_groups,
-		minetest.registered_nodes["mcl_core:wood"]._mcl_hardness,
-		minetest.registered_nodes["mcl_core:wood"]._mcl_blast_resistance,
+		minetest.registered_nodes["mcl_core:wood_oak"]._mcl_hardness,
+		minetest.registered_nodes["mcl_core:wood_oak"]._mcl_blast_resistance,
 		node_sound)
 
 	mcl_bamboo.mcl_log(dump(fence_id))

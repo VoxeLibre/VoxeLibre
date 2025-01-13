@@ -253,7 +253,7 @@ mesecon.register_button(
 	"mesecons_button_push")
 
 local woods = {
-	{ "wood", "mcl_core:wood", "default_wood.png", S("Oak Button") },
+	{ "wood", "mcl_core:wood_oak", "default_wood.png", S("Oak Button") },
 	{ "acaciawood", "mcl_core:acaciawood", "default_acacia_wood.png", S("Acacia Button") },
 	{ "birchwood", "mcl_core:birchwood", "mcl_core_planks_birch.png", S("Birch Button") },
 	{ "darkwood", "mcl_core:darkwood", "mcl_core_planks_big_oak.png", S("Dark Oak Button") },

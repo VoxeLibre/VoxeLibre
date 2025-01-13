@@ -2,66 +2,73 @@ local S = ...
 
 local woods = {
 	oak = {
-		def = {description = S("Oak Sign")},
-		color = "#917056",
-		wood = "mcl_core:wood",
+		_sign = {
+			[1] = "#917056",
+			[2] = {description = S("Oak Sign")},
+		}
 	},
 	dark_oak = {
-		def = {description = S("Dark Oak Sign")},
-		color = "#625048",
-		wood = "mcl_core:darkwood",
+		_sign = {
+			[1] = "#625048",
+			[2] = {description = S("Dark Oak Sign")},
+		}
 	},
 	acacia = {
-		def = {description = S("Acacia Sign")},
-		color = "#965638",
-		wood = "mcl_core:acaciawood",
+		_sign = {
+			[1] = "#965638",
+			[2] = {description = S("Acacia Sign")},
+		}
 	},
 	birch = {
-		def = {description = S("Birch Sign")},
-		color = "#AA907A",
-		wood = "mcl_core:birchwood",
+		_sign = {
+			[1] = "#AA907A",
+			[2] = {description = S("Birch Sign")},
+		}
 	},
 	jungle = {
-		def = {description = S("Jungle Sign")},
-		color = "#845A43",
-		wood = "mcl_core:junglewood",
+		_sign = {
+			[1] = "#845A43",
+			[2] = {description = S("Jungle Sign")},
+		}
 	},
 	spruce = {
-		def = {description = S("Spruce Sign")},
-		color = "#604335",
-		wood = "mcl_core:sprucewood",
+		_sign = {
+			[1] = "#604335",
+			[2] = {description = S("Spruce Sign")},
+		}
 	},
+	-- Non-core woods. Left here for historic reasons (to not disturb i18n)
+	mangrove = {
+		_sign = {
+			[1] = "#8E3731",
+			[2] = {description = S("Mangrove Sign")},
+		}
+	},
+	--[[crimson = {
+		_sign = {
+			[2] = {description = S("Crimson Hyphae Sign")},
+			[1] = "#810000",
+		}
+	},
+	warped = {
+		_sign = {
+			[2] = {description = S("Warped Hyphae Sign")},
+			[1] = "#0E4C4C",
+		}
+	},]]
 }
 
-if core.get_modpath("mcl_mangrove") then
-	woods.mangrove = {
-		def = {description = S("Mangrove Sign")},
-		color = "#8E3731",
-		wood = "mcl_mangrove:mangrove_wood",
-	}
-end
+vl_trees.register_on_woods_added(function(name, def)
+	if not def._sign then return end
 
-if core.get_modpath("mcl_crimson") then
-	woods.crimson = {
-		def = {description = S("Crimson Hyphae Sign")},
-		color = "#810000",
-		wood = "mcl_crimson:crimson_hyphae_wood",
-	}
-	woods.warped = {
-		def = {description = S("Warped Hyphae Sign")},
-		color = "#0E4C4C",
-		wood = "mcl_crimson:warped_hyphae_wood",
-	}
-end
-
-for name, tbl in pairs(woods) do
-	mcl_signs.register_sign(name, tbl.color, tbl.def)
+	local pname = def.planks
+	mcl_signs.register_sign(name, unpack(def._sign))
 	core.register_craft({
 		output = "mcl_signs:wall_sign_"..name.." 3",
 		recipe = {
-			{tbl.wood, tbl.wood, tbl.wood},
-			{tbl.wood, tbl.wood, tbl.wood},
+			{pname, pname, pname},
+			{pname, pname, pname},
 			{"", "mcl_core:stick", ""}
 		}
 	})
-end
+end, woods)

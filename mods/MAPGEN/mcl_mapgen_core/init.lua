@@ -8,14 +8,15 @@ local modpath = minetest.get_modpath(modname)
 
 minetest.register_alias("mapgen_air", "air")
 minetest.register_alias("mapgen_stone", "mcl_core:stone")
-minetest.register_alias("mapgen_tree", "mcl_core:tree")
-minetest.register_alias("mapgen_leaves", "mcl_core:leaves")
-minetest.register_alias("mapgen_jungletree", "mcl_core:jungletree")
-minetest.register_alias("mapgen_jungleleaves", "mcl_core:jungleleaves")
-minetest.register_alias("mapgen_pine_tree", "mcl_core:sprucetree")
-minetest.register_alias("mapgen_pine_needles", "mcl_core:spruceleaves")
+minetest.register_alias("mapgen_tree", "mcl_core:tree_oak")
+minetest.register_alias("mapgen_leaves", "mcl_core:leaves_oak")
 
-minetest.register_alias("mapgen_apple", "mcl_core:leaves")
+minetest.register_alias("mapgen_jungletree", "mcl_core:tree_jungle")
+minetest.register_alias("mapgen_jungleleaves", "mcl_core:leaves_jungle")
+minetest.register_alias("mapgen_pine_tree", "mcl_core:tree_spruce")
+minetest.register_alias("mapgen_pine_needles", "mcl_core:leaves_spruce")
+
+minetest.register_alias("mapgen_apple", "mcl_core:leaves_oak")
 minetest.register_alias("mapgen_water_source", "mcl_core:water_source")
 minetest.register_alias("mapgen_dirt", "mcl_core:dirt")
 minetest.register_alias("mapgen_dirt_with_grass", "mcl_core:dirt_with_grass")
@@ -37,6 +38,7 @@ if minetest.get_modpath("mclx_core") then
 else
 	minetest.register_alias("mapgen_river_water_source", "mcl_core:water_source")
 end
+
 minetest.register_alias("mapgen_snow", "mcl_core:snow")
 minetest.register_alias("mapgen_snowblock", "mcl_core:snowblock")
 minetest.register_alias("mapgen_ice", "mcl_core:ice")
@@ -75,8 +77,8 @@ local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
 local c_top_snow = minetest.get_content_id("mcl_core:snow")
 local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
 local c_clay = minetest.get_content_id("mcl_core:clay")
-local c_leaves = minetest.get_content_id("mcl_core:leaves")
-local c_jungleleaves = minetest.get_content_id("mcl_core:jungleleaves")
+local c_leaves = minetest.get_content_id("mcl_core:leaves_oak")
+local c_jungleleaves = minetest.get_content_id("mcl_core:leaves_jungle")
 --local c_jungletree = minetest.get_content_id("mcl_core:jungletree")
 local c_cocoa_1 = minetest.get_content_id("mcl_cocoas:cocoa_1")
 local c_cocoa_2 = minetest.get_content_id("mcl_cocoas:cocoa_2")
@@ -391,6 +393,39 @@ local function block_fixes_seagrass(vm, data, data2, emin, emax, area, minp, max
 		set_seagrass_param2(minp, maxp, data2, area, {"group:seagrass"})
 end
 
+local biome_id_p2 = {}
+local biomecolor_nodes = {}
+
+minetest.register_on_mods_loaded(function()
+	for n, _ in pairs(minetest.registered_nodes) do
+		if minetest.get_item_group(n, "biomecolor") > 0 then
+			table.insert(biomecolor_nodes, n)
+		end
+	end
+	for k, v in pairs(minetest.registered_biomes) do
+		biome_id_p2[minetest.get_biome_id(k)] = v._mcl_grass_palette_index or 255
+	end
+end)
+
+-- TODO: everything should use "biomecolor"
+local function set_param2_nodes(vm, data, data2, emin, emax, area, minp, maxp, blockseed) ---@diagnostic disable-line: unused-local
+	if emin.y > mcl_vars.mg_overworld_max or emax.y < mcl_vars.mg_overworld_min then return end
+	local biomemap = minetest.get_mapgen_object("biomemap")
+	if not biomemap then return end
+	local lvm_used = false
+	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
+	local nodes = minetest.find_nodes_in_area(minp, maxp, biomecolor_nodes)
+	for _, n in pairs(nodes) do
+		local p_pos = area:index(n.x, n.y, n.z)
+		local p2 = biome_id_p2[biomemap[aream:index(n.x, 0, n.z)]]
+		if p2 then
+			data2[p_pos] = math.floor(data2[p_pos] / 32) * 32 + p2
+			lvm_used = true
+		end
+	end
+	return lvm_used
+end
+
 -- End block fixes:
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
@@ -417,6 +452,7 @@ if mg_name ~= "v6" and mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_water", block_fixes_water, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_seagrass", block_fixes_seagrass, nil, 9999, true)
+	mcl_mapgen_core.register_generator("set_param2_nodes", set_param2_nodes, nil, 9999, true)
 end
 
 if mg_name == "v6" then
@@ -515,4 +551,5 @@ local function fix_foliage_missed(minp, maxp)
 		end
 	end
 end
+
 mcl_mapgen_core.register_generator("fix_foliage_missed", nil, fix_foliage_missed)

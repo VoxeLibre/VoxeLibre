@@ -208,7 +208,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 end
 
 local woods = {
-	{ "wood", "mcl_core:wood", "default_wood.png", S("Oak Pressure Plate") },
+	{ "wood", "mcl_core:wood_oak", "default_wood.png", S("Oak Pressure Plate") },
 	{ "acaciawood", "mcl_core:acaciawood", "default_acacia_wood.png", S("Acacia Pressure Plate") },
 	{ "birchwood", "mcl_core:birchwood", "mcl_core_planks_birch.png", S("Birch Pressure Plate") },
 	{ "darkwood", "mcl_core:darkwood", "mcl_core_planks_big_oak.png", S("Dark Oak Pressure Plate" )},

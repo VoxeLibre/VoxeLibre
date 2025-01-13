@@ -134,7 +134,7 @@ function mcl_doors:register_trapdoor(name, def)
 	local groups_closed = groups
 	groups_closed.trapdoor = 1
 	groups_closed.deco_block = 1
-	minetest.register_node(name, {
+	minetest.register_node(":"..name, {
 		description = def.description,
 		_tt_help = tt_help,
 		_doc_items_longdesc = longdesc,
@@ -209,7 +209,7 @@ function mcl_doors:register_trapdoor(name, def)
 	groups_open.trapdoor = 2
 	groups_open.not_in_creative_inventory = 1
 	-- Non-climbable opened
-	minetest.register_node(name .. "_open", {
+	minetest.register_node(":"..name .. "_open", {
 		drawtype = "nodebox",
 		tiles = tiles_open,
 		use_texture_alpha = "clip",
@@ -239,7 +239,7 @@ function mcl_doors:register_trapdoor(name, def)
 	})
 
 	-- Climbable opened
-	minetest.register_node(name .. "_ladder", {
+	minetest.register_node(":"..name .. "_ladder", {
 		drawtype = "nodebox",
 		tiles = tiles_open,
 		use_texture_alpha = "clip",

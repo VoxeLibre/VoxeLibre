@@ -92,7 +92,7 @@ function mcl_doors:register_door(name, def)
 		craftitem_groups.flammable = def.groups.flammable
 	end
 
-	minetest.register_craftitem(name, {
+	minetest.register_craftitem(":"..name, {
 		description = def.description,
 		_tt_help = tt_help,
 		_doc_items_longdesc = longdesc,
@@ -365,7 +365,7 @@ function mcl_doors:register_door(name, def)
 		return false
 	end
 
-	minetest.register_node(name.."_b_1", _b_1_def)
+	minetest.register_node(":"..name.."_b_1", _b_1_def)
 
 	if def.only_redstone_can_open then
 		on_rightclick = nil
@@ -413,7 +413,7 @@ function mcl_doors:register_door(name, def)
 		return false
 	end
 
-	minetest.register_node(name.."_t_1", _t_1_def)
+	minetest.register_node(":"..name.."_t_1", _t_1_def)
 
 	if def.only_redstone_can_open then
 		on_rightclick = nil
@@ -461,7 +461,7 @@ function mcl_doors:register_door(name, def)
 		return false
 	end
 
-	minetest.register_node(name.."_b_2", _b_2_def)
+	minetest.register_node(":"..name.."_b_2", _b_2_def)
 
 	if def.only_redstone_can_open then
 		on_rightclick = nil
@@ -509,7 +509,7 @@ function mcl_doors:register_door(name, def)
 		return false
 	end
 
-	minetest.register_node(name.."_t_2", _t_2_def)
+	minetest.register_node(":"..name.."_t_2", _t_2_def)
 
 	if not def.only_redstone_can_open then
 		on_rightclick = function(pos, node, clicker)
@@ -555,7 +555,7 @@ function mcl_doors:register_door(name, def)
 		return false
 	end
 
-	minetest.register_node(name.."_b_3", _b_3_def)
+	minetest.register_node(":"..name.."_b_3", _b_3_def)
 
 	if def.only_redstone_can_open then
 		on_rightclick = nil
@@ -603,7 +603,7 @@ function mcl_doors:register_door(name, def)
 		return false
 	end
 
-	minetest.register_node(name.."_t_3", _t_3_def)
+	minetest.register_node(":"..name.."_t_3", _t_3_def)
 
 	if def.only_redstone_can_open then
 		on_rightclick = nil
@@ -651,7 +651,7 @@ function mcl_doors:register_door(name, def)
 		return false
 	end
 
-	minetest.register_node(name.."_b_4", _b_4_def)
+	minetest.register_node(":"..name.."_b_4", _b_4_def)
 
 	if def.only_redstone_can_open then
 		on_rightclick = nil
@@ -699,7 +699,7 @@ function mcl_doors:register_door(name, def)
 		return false
 	end
 
-	minetest.register_node(name.."_t_4", _t_4_def)
+	minetest.register_node(":"..name.."_t_4", _t_4_def)
 
 
 	-- Add entry aliases for the Help

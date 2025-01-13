@@ -1,4 +1,4 @@
--- Aliases for backwards-compability with 0.21.0
+-- Aliases for backwards-compability
 
 local materials = {
 	"wood", "junglewood", "sprucewood", "acaciawood", "birchwood", "darkwood",
@@ -18,3 +18,22 @@ end
 
 minetest.register_alias("stairs:slab_stone", "mcl_stairs:slab_stone")
 minetest.register_alias("stairs:slab_stone_double", "mcl_stairs:slab_stone_double")
+
+-- vl_trees transition
+local woods = {
+	["wood"] = "wood_oak",
+	["junglewood"] = "wood_jungle",
+	["sprucewood"] = "wood_spruce",
+	["acaciawood"] = "wood_acacia",
+	["birchwood"] = "wood_birch",
+	["darkwood"] = "wood_dark_oak"
+}
+
+for old, new in pairs(woods) do
+	minetest.register_alias("mcl_stairs:stair_"..old, "mcl_stairs:stair_"..new)
+	minetest.register_alias("mcl_stairs:stair_"..old.."_inner", "mcl_stairs:stair_"..new.."_inner")
+	minetest.register_alias("mcl_stairs:stair_"..old.."_outer", "mcl_stairs:stair_"..new.."_outer")
+	minetest.register_alias("mcl_stairs:slab_"..old, "mcl_stairs:slab_"..new)
+	minetest.register_alias("mcl_stairs:slab_"..old.."_top", "mcl_stairs:slab_"..new.."_top")
+	minetest.register_alias("mcl_stairs:slab_"..old.."_double", "mcl_stairs:slab_"..new.."_double")
+end
