@@ -17,7 +17,7 @@ Arguments:
   * `damages_players`: if true, the projectile will deal damage to players.
   * `damage_groups`: damage group information to use for `punch()`. May be a function of type `function(projectile,
                      entity_def, projectile_def, obj)` that returns dynamic damange group information.
-  * `creative_collecable`: if true, projectiles that are marked as `_collectable = true` will be picked up even in
+  * `creative_collectable`: if true, projectiles that are marked as `_collectable = true` will be picked up even in
                            creative gamemode.
   * `allow_punching`: will the projectile punch entities it collides with. May be either a boolean or a function
                       of type `function(projectile, entity_def, projectile_def, obj)`.
