@@ -370,12 +370,13 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 	return lvm_used, lvm_used, deco, ores
 end
 
---[[ largely replaced with decoration hack to replace grass nodes
+-- largely replaced with decoration hack to replace grass nodes
+-- BUT this still happens at the famous y=+48 level because of mapgen overgeneration
 local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 (=color) of nodes which use the grass colour palette.
 	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
 		set_grass_palette(minp,maxp,data2,area,{"group:grass_palette"})
-end]]
+end
 
 --[[ replaced with schematic specialization per biome
 local function block_fixes_foliage(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
@@ -420,7 +421,7 @@ mcl_mapgen_core.register_generator("world_structure", world_structure, nil, 1, t
 mcl_mapgen_core.register_generator("end_fixes", end_basic, nil, 9999, true)
 
 if mg_name ~= "v6" and mg_name ~= "singlenode" then
--- replaced with decoration mechanism: mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
+	mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
 -- replaced with schema specialization: mcl_mapgen_core.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_water", block_fixes_water, nil, 9999, true)
 -- replaced with using param2=3 during generation mcl_mapgen_core.register_generator("block_fixes_seagrass", block_fixes_seagrass, nil, 9999, true)
