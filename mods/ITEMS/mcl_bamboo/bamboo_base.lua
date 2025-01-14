@@ -27,7 +27,7 @@ local bamboo_def = {
 	drawtype = "nodebox",
 	paramtype = "light",
 	groups = {handy = 1, axey = 1, choppy = 1, dig_by_piston = 1, plant = 1, non_mycelium_plant = 1, flammable = 3},
-	sounds = node_sound,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	drop = BAMBOO,
 
 	inventory_image = "mcl_bamboo_bamboo_shoot.png",
@@ -183,6 +183,11 @@ local bamboo_def = {
 			and node_above_name ~= "mcl_nether:nether_lava_source" then
 			local _, position = minetest.item_place(place_item, placer, pointed_thing, fdir)
 			if position then
+    		minetest.sound_play({name="default_wood_footstep", gain=1}, {
+   			pos = pos,
+			gain= 1,
+			max_hear_distance = 10,
+		}, true)
 				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item(1)
 				end
@@ -214,7 +219,7 @@ local bamboo_def = {
 
 		if node_above and ((bamboo_node and bamboo_node > 0) or node_above.name == BAMBOO_ENDCAP_NAME) then
 			minetest.remove_node(new_pos)
-			minetest.sound_play(node_sound.dug, sound_params, true)
+		minetest.sound_play(mcl_sounds.node_sound_wood_defaults(), sound_params, true)
 			minetest.add_item(new_pos, istack)
 		end
 	end,
