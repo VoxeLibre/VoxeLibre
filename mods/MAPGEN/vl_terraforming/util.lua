@@ -50,6 +50,7 @@ function vl_terraforming._is_tree_or_leaves(node)
 	if name == "mcl_crimson:warped_hyphae" then return true end -- warped forest, treat as tree
 	if name == "mcl_crimson:warped_wart_block" then return true end -- warped forest, treat as leaves
 	if name == "mcl_crimson:shroomlight" then return true end -- crimson forest, treat as tree
+	if name == "mcl_core:snow" then return true end -- snow cover on tree, remove also
 	local meta = minetest.registered_items[node]
 	local groups = meta and meta.groups
 	return groups and ((groups.tree or 0) > 0 or (groups.leaves or 0) > 0 or (groups.plant or 0) > 0 or (groups.huge_mushroom or 0) > 0)
