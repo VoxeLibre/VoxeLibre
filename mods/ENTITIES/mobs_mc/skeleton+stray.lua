@@ -38,6 +38,7 @@ local skeleton = {
 		"mobs_mc_skeleton.png", -- skeleton
 	} },
 	makes_footstep_sound = true,
+	walk_velocity = 1,
 	textures = {
 		{
 			"mobs_mc_empty.png", -- armor
