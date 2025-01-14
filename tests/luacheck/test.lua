@@ -5,17 +5,6 @@ local luacheck = "luacheck"
 core = {}
 dofile("tests/lib/misc_helpers.lua")
 
-local WHITESPACE = {
-	[" "] = true,
-	["\t"] = true,
-	["\r"] = true,
-	["\n"] = true,
-}
-function string.strip(str)
-	str  = str:gsub("^%s+","")
-	return str:gsub("%s+$","")
-end
-
 function read_mod_configuration(file)
 	local parts = file:split("/")
 	parts[#parts] = nil
@@ -26,11 +15,13 @@ function read_mod_configuration(file)
 	}
 
 	local f = io.open(file, "r")
+	if not f then return conf end
+
 	for line in f:lines() do
-		local parts = line:split("=")
+		parts = line:split("=")
 		if parts and #parts >= 2 then
-			local key = parts[1]:strip()
-			local value = parts[2]:strip()
+			local key = parts[1]:trim()
+			local value = parts[2]:trim()
 			conf[key] = value
 		end
 	end
@@ -59,48 +50,49 @@ function read_mod_data()
 	return mods,mod_names
 end
 
-function get_deps_for_mod(mod, mods)
-	local function add_deps_for_mod(mod, mods, deps, seen)
-		if not mods[mod] then return end
+local function add_deps_for_mod(mod, mods, deps, seen)
+	if not mods[mod] then return end
 
-		local dep_list = mods[mod].depends
-		if dep_list then
-			local depends = dep_list:split(",")
-			for i = 1,#depends do
-				local depend = depends[i]:strip()
-				if not seen[depend] then
-					seen[depend] = true
-					table.insert(deps, depend)
-					add_deps_for_mod(depend, mods, deps, seen)
-				end
-			end
-		end
-
-		local dep_list = mods[mod].optional_depends
-		if dep_list then
-			local depends = dep_list:split(",")
-			for i = 1,#depends do
-				local depend = depends[i]:strip()
-				if not seen[depend] then
-					seen[depend] = true
-					table.insert(deps, depend)
-					add_deps_for_mod(depend, mods, deps, seen)
-				end
-			end
-		end
-
-		local dep_list = mods[mod].luacheck_globals
-		if dep_list then
-			local globals = dep_list:split(",")
-			for i = 1,#globals do
-				local global = globals[i]:strip()
-				if not seen["global: "..global] then
-					seen["global: "..global] = true
-					table.insert(deps, global)
-				end
+	local dep_list = mods[mod].depends
+	if dep_list then
+		local depends = dep_list:split(",")
+		for i = 1,#depends do
+			local depend = depends[i]:trim()
+			if not seen[depend] then
+				seen[depend] = true
+				table.insert(deps, depend)
+				add_deps_for_mod(depend, mods, deps, seen)
 			end
 		end
 	end
+
+	dep_list = mods[mod].optional_depends
+	if dep_list then
+		local depends = dep_list:split(",")
+		for i = 1,#depends do
+			local depend = depends[i]:trim()
+			if not seen[depend] then
+				seen[depend] = true
+				table.insert(deps, depend)
+				add_deps_for_mod(depend, mods, deps, seen)
+			end
+		end
+	end
+
+	dep_list = mods[mod].luacheck_globals
+	if dep_list then
+		local globals = dep_list:split(",")
+		for i = 1,#globals do
+			local global = globals[i]:trim()
+			if not seen["global: "..global] then
+				seen["global: "..global] = true
+				table.insert(deps, global)
+			end
+		end
+	end
+end
+
+function get_deps_for_mod(mod, mods)
 	local deps = {mod}
 	local seen = {[mod] = true}
 	add_deps_for_mod(mod, mods, deps, seen)
@@ -114,12 +106,12 @@ for i = 1,#mod_names do
 
 	local deps = get_deps_for_mod(mod, mods)
 
-	local cmd_options = " --no-color"
-	for i = 1,#deps do
-		cmd_options = cmd_options .. " --globals "..deps[i]
+	local cmd_options = ""
+	-- cmd_options = cmd_options .. " --no-color"
+	for j = 1,#deps do
+		cmd_options = cmd_options .. " --globals "..deps[j]
 	end
 
-	local filename = ""
 	print("echo Checking "..config.name.." located at "..config.dir)
 	print("(")
 	print("\tcd "..config.dir)
