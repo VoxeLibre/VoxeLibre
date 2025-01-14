@@ -1160,7 +1160,7 @@ if mobs_spawn then
 			count = count + 1
 
 			minetest.log("Next spawn attempt in "..tostring(timer).." previous attempt took "..took.." us")
-			minetest.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time)).."% count="..count)
+			minetest.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time)).."% count="..count..", "..tostring(total_time/count).."us per spawn attempt")
 		end
 	end)
 end
