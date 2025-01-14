@@ -92,9 +92,9 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	},
 	fear_height = 4,
 	sounds = {
-		random = "mobs_sheep",
+		random = "mobs_mc_sheep_random",
 		death = "mobs_sheep",
-		damage = "mobs_sheep",
+		damage = "mobs_mc_sheep_damage",
 		sounds = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
