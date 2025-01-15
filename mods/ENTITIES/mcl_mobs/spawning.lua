@@ -129,7 +129,9 @@ local function count_mobs_all(categorise_by, pos)
 	local mobs_found_close = {}
 
 	local num = 0
-	for _,entity in pairs(minetest.luaentities) do
+	local luaentities = core.luaentities
+	for i=1,#luaentities do
+		local entity = luaentities[i]
 		if entity and entity.is_mob then
 			local add_entry = false
 			local mob_cat = entity[categorise_by]
@@ -165,8 +167,10 @@ local function count_mobs_total_cap(mob_type)
 	local num = 0
 	local hostile = 0
 	local non_hostile = 0
-	for _,l in pairs(minetest.luaentities) do
-		if l.is_mob then
+	local luaentities = core.luaentities
+	for i = 1,#luaentities do
+		local l = luaentities[i]
+		if l and l.is_mob then
 			total = total + 1
 			local nametagged = l.nametag and l.nametag ~= ""
 			if ( mob_type == nil or l.type == mob_type ) and not nametagged then
@@ -176,16 +180,9 @@ local function count_mobs_total_cap(mob_type)
 					non_hostile = non_hostile + 1
 				end
 				num = num + 1
-			else
-				mcl_log("l.name", l.name)
-				mcl_log("l.nametag", l.nametag)
-
 			end
 		end
 	end
-	mcl_log("Total mobs", total)
-	mcl_log("hostile", hostile)
-	mcl_log("non_hostile", non_hostile)
 	return num, non_hostile, hostile
 end
 
@@ -439,7 +436,8 @@ local function get_next_mob_spawn_pos(pos)
 
 	-- Select only the locations at a valid distance
 	local valid_positions = {}
-	for _,check_pos in ipairs(spawning_position_list) do
+	for i=1,#spawning_position_list do
+		local check_pos = spawning_position_list[i]
 		local dist = vector.distance(pos, check_pos)
 		if dist >= MOB_SPAWN_ZONE_INNER and dist <= MOB_SPAWN_ZONE_OUTER then
 			valid_positions[#valid_positions + 1] = check_pos
@@ -449,12 +447,10 @@ local function get_next_mob_spawn_pos(pos)
 
 	-- No valid locations, failed to find a position
 	if #spawning_position_list == 0 then
-		mcl_log("Spawning position isn't good. Do not spawn: " .. minetest.pos_to_string(goal_pos))
 		return nil
 	end
 
 	-- Pick a random valid location
-	mcl_log("Spawning positions available: " .. minetest.pos_to_string(goal_pos))
 	return spawning_position_list[math_random(1, #spawning_position_list)]
 end
 
@@ -745,7 +741,6 @@ local function build_state_for_position(pos, parent_state)
 	hash_num = hash_num + (state.spawn_passive and 8192 or 0) + (state.spawn_hostile and 16384 or 0) + 32768 * (state.light or 0)
 
 	state.hash = hash_num
-	core.log("hash="..hash_num)
 	return state,node
 end
 
@@ -868,7 +863,7 @@ minetest.register_chatcommand("spawn_mob",{
 })
 
 if mobs_spawn then
-	local function mob_cap_space (pos, mob_type, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
+	local function mob_cap_space(mob_type, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
 		-- Some mob examples
 		--type = "monster", spawn_class = "hostile",
 		--type = "animal", spawn_class = "passive",
@@ -879,43 +874,25 @@ if mobs_spawn then
 
 		local mob_total_wide = mob_counts_wide[mob_type]
 		if not mob_total_wide then
-			--mcl_log("none of type found. set as 0")
 			mob_total_wide = 0
 		end
 
 		local cap_space_wide = math_max(type_cap - mob_total_wide, 0)
 
-		mcl_log("mob_type", mob_type)
-		mcl_log("cap_space_wide", cap_space_wide)
-
 		local cap_space_available
 		if mob_type == "hostile" then
-			mcl_log("cap_space_global", cap_space_hostile)
 			cap_space_available = math_min(cap_space_hostile, cap_space_wide)
 		else
-			mcl_log("cap_space_global", cap_space_non_hostile)
 			cap_space_available = math_min(cap_space_non_hostile, cap_space_wide)
 		end
 
 		local mob_total_close = mob_counts_close[mob_type]
 		if not mob_total_close then
-			--mcl_log("none of type found. set as 0")
 			mob_total_close = 0
 		end
 
 		local cap_space_close = math_max(close_zone_cap - mob_total_close, 0)
 		cap_space_available = math_min(cap_space_available, cap_space_close)
-
-		mcl_log("cap_space_close", cap_space_close)
-		mcl_log("cap_space_available", cap_space_available)
-
-		if false and mob_type == "water" then
-			mcl_log("mob_type: " .. mob_type .. " and pos: " .. minetest.pos_to_string(pos))
-			mcl_log("wide: " .. mob_total_wide .. "/" .. type_cap)
-			mcl_log("cap_space_wide: " .. cap_space_wide)
-			mcl_log("close: " .. mob_total_close .. "/" .. close_zone_cap)
-			mcl_log("cap_space_close: " .. cap_space_close)
-		end
 
 		return cap_space_available
 	end
@@ -923,7 +900,6 @@ if mobs_spawn then
 	local function find_spawning_position(pos, max_times)
 		local max_loops = max_times or 1
 
-		--mcl_log("mapgen_limit: " .. SPAWN_MAPGEN_LIMIT)
 		while max_loops > 0 do
 			local spawning_position = get_next_mob_spawn_pos(pos)
 			if spawning_position then return spawning_position end
@@ -957,10 +933,10 @@ if mobs_spawn then
 	local function get_spawn_list(pos, hostile_limit, passive_limit)
 		-- Check capacity
 		local mob_counts_close, mob_counts_wide = count_mobs_all("spawn_class", pos)
-		local cap_space_hostile = mob_cap_space(pos, "hostile", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
+		local cap_space_hostile = mob_cap_space("hostile", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
 		local spawn_hostile = cap_space_hostile > 0
 
-		local cap_space_passive = mob_cap_space(pos, "passive", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
+		local cap_space_passive = mob_cap_space("passive", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
 		local spawn_passive = cap_space_passive > 0 and math_random(100) < peaceful_percentage_spawned
 
 		-- Merge light level checks with cap checks
@@ -983,7 +959,8 @@ if mobs_spawn then
 
 		-- Build a spawn list for this state
 		spawn_list = {}
-		for _,def in pairs(spawn_dictionary) do
+		for i = 1,#spawn_dictionary do
+			local def = spawn_dictionary[i]
 			if initial_spawn_check(state, def) then
 				spawn_list[#spawn_list + 1] = def
 			end
@@ -1085,9 +1062,7 @@ if mobs_spawn then
 					break
 				end
 			end
-			mcl_log("Spawning quantity: " .. amount_to_spawn)
 			amount_to_spawn = math_min(amount_to_spawn, cap_space_available)
-			mcl_log("throttled spawning quantity: " .. amount_to_spawn)
 
 			if amount_to_spawn > 1 then
 				if logging then
@@ -1106,8 +1081,7 @@ if mobs_spawn then
 				minetest.pos_to_string(spawning_position, 1)
 			)
 		end
-		local res = mcl_mobs.spawn(spawning_position, mob_def.name)
-		return res
+		return mcl_mobs.spawn(spawning_position, mob_def.name)
 	end
 
 	local count = 0
@@ -1118,20 +1092,21 @@ if mobs_spawn then
 
 		local cap_space_hostile = math_max(mob_cap.global_hostile - total_hostile, 0)
 		local cap_space_non_hostile =  math_max(mob_cap.global_non_hostile - total_non_hostile, 0)
-		mcl_log("global cap_space_hostile", cap_space_hostile)
-		mcl_log("global cap_space_non_hostile", cap_space_non_hostile)
 
 		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
 			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
 			return
 		end --mob cap per player
 
-		for _, player in pairs(players) do
-			local pos = player:get_pos()
-			local dimension = mcl_worlds.pos_to_dimension(pos)
-			-- ignore void and unloaded area
-			if dimension ~= "void" and dimension ~= "default" then
-				spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
+		for i = 1,#players do
+			local player = players[i]
+			if player then
+				local pos = player:get_pos()
+				local dimension = mcl_worlds.pos_to_dimension(pos)
+				-- ignore void and unloaded area
+				if dimension ~= "void" and dimension ~= "default" then
+					spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
+				end
 			end
 		end
 	end
