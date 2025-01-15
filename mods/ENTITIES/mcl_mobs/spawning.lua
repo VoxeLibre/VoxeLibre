@@ -41,6 +41,7 @@ if not logging then mcl_log = function() end end
 
 local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
+local exclude_time = 0
 
 local remove_far = true
 
@@ -542,7 +543,9 @@ end
 local function get_biome_name(pos)
 	if mcl_mobs.custom_biomecheck then return mcl_mobs.custom_biomecheck(pos) end
 	local gotten_biome = minetest.get_biome_data(pos)
-	return gotten_biome and mt_get_biome_name(gotten_biome.biome)
+	local biome_id = gotten_biome.biome
+	local biome_name = gotten_biome and mt_get_biome_name(biome_id)
+	return biome_name, biome_id
 end
 
 local function initial_spawn_check(state, spawn_def)
@@ -613,7 +616,9 @@ function mcl_mobs.spawn(pos,id)
 	if math_round(pos.y) == pos.y then -- node spawn
 		pos.y = pos.y - 0.495 - def.collisionbox[2] -- spawn just above ground below
 	end
+	local start_time = core.get_us_time()
 	local obj = minetest.add_entity(pos, def.name)
+	exclude_time = exclude_time + core.get_us_time() - start_time
 	-- initialize head bone
 	if def.head_swivel and def.head_bone_position then
 		if obj and obj.get_bone_override then -- minetest >= 5.9
@@ -640,7 +645,7 @@ end
 ---@field biome string
 ---@field dimension string
 ---@field light integer
----@field serialized string
+---@field hash integer
 
 -- State serialization table workspace
 local _sst = {"","","","","","","","",0}
@@ -649,19 +654,23 @@ local _sst = {"","","","","","","","",0}
 ---@return mcl_mobs.SpawnState?, core.Node?
 local function build_state_for_position(pos, parent_state)
 	-- Get spawning parameters for this location
-	local biome_name = get_biome_name(pos)
+	local biome_name,biome_id = get_biome_name(pos)
 	if not biome_name then return end
 
-	local dimension = mcl_worlds.pos_to_dimension(pos)
+	local dimension, dim_id = mcl_worlds.pos_to_dimension(pos)
 
 	-- Get node and make sure it's loaded and a valid spawn point
 	local node = get_node(pos)
 	local node_name = node.name
+	if not node or node_name == "ignore" or node_name == "mcl_core:bedrock" then return end
+
+	---@type integer
+	local hash_num = biome_id * 8 + dim_id
+
 	local node_def = core.registered_nodes[node_name] or core.nodedef_default
 	local groups = node_def.groups or {}
 
 	-- Make sure we can spawn here
-	if not node or node_name == "ignore" or node_name == "mcl_core:bedrock" then return end
 
 	-- Check if it's ground
 	local is_water = (groups.water or 0) ~= 0
@@ -678,13 +687,18 @@ local function build_state_for_position(pos, parent_state)
 		end
 		pos.y = pos.y + 1
 	end
+	hash_num = hash_num + (is_water and 1024 or 0) + (is_lava and 2048 or 0) + (is_ground and 4096 or 0)
 
 	-- Build spawn state data
-	local state = {
-		spawn_hostile = true,
-		spawn_passive = true,
-	}
-	if parent_state then state = table.copy(parent_state) end
+	local state
+	if parent_state then
+		state = table.copy(parent_state)
+	else
+		state = {
+			spawn_hostile = true,
+			spawn_passive = true,
+		}
+	end
 
 	state.biome = biome_name
 	state.dimension = dimension
@@ -728,19 +742,10 @@ local function build_state_for_position(pos, parent_state)
 			state.spawn_passive = false
 		end
 	end
+	hash_num = hash_num + (state.spawn_passive and 8192 or 0) + (state.spawn_hostile and 16384 or 0) + 32768 * (state.light or 0)
 
-	-- Convert state into a format that can be used as a hash table key
-	-- This needs to be as fast as possible
-	_sst[1] = state.biome
-	_sst[2] = state.dimension
-	_sst[3] = state.spawn_hostile and "T" or "F"
-	_sst[4] = state.spawn_passive and "T" or "F"
-	_sst[5] = state.is_ground and "T" or "F"
-	_sst[6] = state.is_grass and "T" or "F"
-	_sst[7] = state.is_water and "T" or "F"
-	_sst[8] = state.is_lava and "T" or "F"
-	_sst[9] = state.light or 0
-	state.serialized = table.concat(_sst,":")
+	state.hash = hash_num
+	core.log("hash="..hash_num)
 	return state,node
 end
 
@@ -773,7 +778,7 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 		end
 		if not sp then return o end
 
-		-- Spawning prohibited in protected areas
+		-- Get state for each new position
 		local state, node = build_state_for_position(sp, parent_state)
 
 		if spawn_check(sp, state, node, mob) then
@@ -968,7 +973,7 @@ if mobs_spawn then
 		if not state.spawn_hostile and not state.spawn_passive then return end
 
 		-- Check the cache to see if we have already built a spawn list for this state
-		local state_hash = state.serialized
+		local state_hash = state.hash
 		local spawn_list = spawn_lists[state_hash]
 		state.cap_space_hostile = cap_space_hostile
 		state.cap_space_passive = cap_space_passive
@@ -1072,7 +1077,14 @@ if mobs_spawn then
 			local group_min = mob_def_ent.spawn_in_group_min or 1
 			if not group_min then group_min = 1 end
 
-			local amount_to_spawn = math_random(group_min, spawn_in_group)
+			local amount_to_spawn = group_min
+			for i = group_min,spawn_in_group do
+				if math_random() > 0.80 then
+					amount_to_spawn = amount_to_spawn + 1
+				else
+					break
+				end
+			end
 			mcl_log("Spawning quantity: " .. amount_to_spawn)
 			amount_to_spawn = math_min(amount_to_spawn, cap_space_available)
 			mcl_log("throttled spawning quantity: " .. amount_to_spawn)
@@ -1094,10 +1106,13 @@ if mobs_spawn then
 				minetest.pos_to_string(spawning_position, 1)
 			)
 		end
-		return mcl_mobs.spawn(spawning_position, mob_def.name)
+		local res = mcl_mobs.spawn(spawning_position, mob_def.name)
+		return res
 	end
 
+	local count = 0
 	local function attempt_spawn()
+		count = count + 1
 		local players = get_connected_players()
 		local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
 
@@ -1142,7 +1157,6 @@ if mobs_spawn then
 	local start = true
 	local start_time
 	local total_time = 0
-	local count = 0
 	minetest.register_globalstep(function(dtime)
 		if start then
 			start = false
@@ -1151,13 +1165,13 @@ if mobs_spawn then
 		timer = timer - dtime
 		if timer > 0 then return end
 
+		exclude_time = 0
 		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
 		timer = next_spawn
 		if timer > MAX_SPAWN_CYCLE_TIME then timer = MAX_SPAWN_CYCLE_TIME end
 
 		if profile or logging and took > debug_time_threshold then
-			total_time = total_time + took
-			count = count + 1
+			total_time = total_time + took - exclude_time
 
 			minetest.log("Next spawn attempt in "..tostring(timer).." previous attempt took "..took.." us")
 			minetest.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time)).."% count="..count..", "..tostring(total_time/count).."us per spawn attempt")
