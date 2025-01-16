@@ -4,6 +4,7 @@ local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
 dofile(modpath.."/roman_numerals.lua")
 dofile(modpath.."/nodes.lua")
+dofile(modpath.."/hashing.lua")
 
 -- Updates all values in t using values from to*.
 function table.update(t, ...)
