@@ -346,6 +346,9 @@ mcl_logging_mobs_movement (Log Mob Movement) bool false
 # If enabled mapgen timings will be dumped to log
 mcl_logging_mapgen (Chunk generation logging) bool false
 
+# If enabled generated dungeons will be logged
+mcl_logging_dungeons (Dungeons generation logging) bool false
+
 # If enabled generated structures will be logged
 mcl_logging_structures (Structure generation logging) bool false
 
