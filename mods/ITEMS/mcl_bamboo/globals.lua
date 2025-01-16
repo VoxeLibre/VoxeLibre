@@ -7,7 +7,6 @@
 local DEBUG = false
 
 local rand = math.random
-math.randomseed((os.time() + 31) * 31415) -- try to make a valid seed
 local BAMBOO_MAX_HEIGHT = 16 -- base height check.
 
 local BAMBOO_SOIL_DIST = BAMBOO_MAX_HEIGHT * -1
@@ -145,8 +144,7 @@ function mcl_bamboo.grow_bamboo(pos, bonemeal_applied)
 	-- If applying bonemeal, randomly grow two segments instead of one
 	local grow_amount = 1
 	if bonemeal_applied then
-		local rng = PcgRandom(minetest.hash_node_position(pos) + minetest.get_us_time())
-		if rng:next(1, GROW_DOUBLE_CHANCE) == 1 then
+		if rand(1, GROW_DOUBLE_CHANCE) == 1 then
 			grow_amount = 2
 		end
 	end
