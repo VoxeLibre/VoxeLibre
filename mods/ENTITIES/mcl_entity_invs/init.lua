@@ -163,8 +163,7 @@ function mcl_entity_invs.register_inv(entity_name,show_name,size,no_on_righclick
 			self._items = d._items
 			self._inv_size = d._inv_size
 		else
-			self._inv_id="entity_inv_"..minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
-			--gametime and position for collision safety and math.random salt to protect against position brute-force
+			self._inv_id="entity_inv_"..mcl_util.gen_uuid()
 		end
 		return r
 	end
