@@ -1,5 +1,6 @@
 -- Some global variables (don't overwrite them!)
 mcl_vars = {}
+local modpath = core.get_modpath(core.get_current_modname())
 
 minetest.log("action", "World seed = " .. minetest.get_mapgen_setting("seed"))
 
@@ -22,7 +23,7 @@ if not map_version then
 	core.set_mapgen_setting("vl_world_version", map_version, true)
 end
 mcl_vars.map_version = map_version -- make available
-core.log("action", "Voxelibre mapgen version = "..map_version)
+core.log("action", "VoxeLibre mapgen version = "..map_version)
 
 mcl_vars.redstone_tick = 0.1
 
@@ -216,6 +217,7 @@ minetest.craftitemdef_default.stack_max = 64
 -- Set random seed for all other mods (Remember to make sure no other mod calls this function)
 math.randomseed(os.time())
 
+---DEPRECATED. If you need to ensure the area is emerged, use LVM.
 ---"Trivial" (actually NOT) function to just read the node and some stuff to not just return "ignore", like mt 5.4 does.
 ---@param pos Vector Position, if it's wrong, `{name="error"}` node will return.
 ---@param force? boolean Optional (default: `false`), Do the maximum to still read the node within us_timeout.
@@ -251,4 +253,7 @@ function mcl_vars.get_node(pos, force, us_timeout)
 	return node
 	-- it still can return "ignore", LOL, even if force = true, but only after time out
 end
+
+dofile(modpath.."/tune_jit.lua")
+dofile(modpath.."/get_node_name.lua")
 
