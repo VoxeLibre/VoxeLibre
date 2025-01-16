@@ -30,7 +30,7 @@ local function hut_placement_callback(pos,def,pr)
 	local legs = minetest.find_nodes_in_area(vector.offset(pos,-hl,0,-hl),vector.offset(pos,hl,0,hl), "mcl_core:tree")
 	local tree = {}
 	for _,leg in pairs(legs) do
-		while minetest.get_item_group(mcl_vars.get_node(vector.offset(leg,0,-1,0), true, 333333).name, "water") ~= 0 do
+		while minetest.get_item_group(minetest.get_node(vector.offset(leg,0,-1,0)).name, "water") ~= 0 do
 			leg = vector.offset(leg,0,-1,0)
 			table.insert(tree,leg)
 		end

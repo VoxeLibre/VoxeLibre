@@ -4,7 +4,7 @@
 -------------------------------------------------------------------------------
 function settlements.build_schematic(vm, data, va, pos, building, replace_wall, name)
   -- get building node material for better integration to surrounding
-  local platform_material =  mcl_vars.get_node(pos)
+  local platform_material =  minetest.get_node(pos)
   if not platform_material or (platform_material.name == "air" or platform_material.name == "ignore")  then
     return
   end
@@ -88,7 +88,7 @@ function settlements.create_site_plan(maxp, minp, pr)
 	}
 
 	-- find center_surface of chunk
-	local center_surface , surface_material = settlements.find_surface(center, true)
+	local center_surface , surface_material = settlements.find_surface(center)
 	local chunks = {}
 	chunks[mcl_vars.get_chunk_number(center)] = true
 
@@ -134,7 +134,7 @@ function settlements.create_site_plan(maxp, minp, pr)
 				pos_surface, surface_material = settlements.find_surface(pos1)
 			else
 				chunks[chunk_number] = true
-				pos_surface, surface_material = settlements.find_surface(pos1, true)
+				pos_surface, surface_material = settlements.find_surface(pos1)
 			end
 			if not pos_surface then break end
 

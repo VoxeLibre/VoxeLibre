@@ -1,4 +1,4 @@
-local get_node = mcl_vars.get_node
+local get_node = minetest.get_node
 
 -------------------------------------------------------------------------------
 -- function to copy tables
@@ -22,18 +22,13 @@ end
 -- function to find surface block y coordinate
 -- returns surface postion
 -------------------------------------------------------------------------------
-function settlements.find_surface(pos, wait)
+function settlements.find_surface(pos)
 	local p6 = vector.new(pos)
 	local cnt = 0
 	local itter = 1 -- count up or down
 	local cnt_max = 200
 	-- check, in which direction to look for surface
-	local surface_node
-	if wait then
-		surface_node = get_node(p6, true, 10000000)
-	else
-		surface_node = get_node(p6)
-	end
+	local surface_node = get_node(p6)
 	if surface_node.name=="air" or surface_node.name=="ignore" then
 		itter = -1
 	end

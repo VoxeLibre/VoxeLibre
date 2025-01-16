@@ -90,7 +90,7 @@ mcl_structures.register_structure("nether_outpost_with_bridges",{
 		local legs = minetest.find_nodes_in_area(vector.offset(pos,-45,-2,-45),vector.offset(pos,45,0,45), "mcl_nether:nether_brick")
 		local bricks = {}
 		for _,leg in pairs(legs) do
-			while minetest.get_item_group(mcl_vars.get_node(vector.offset(leg,0,-1,0), true, 333333).name, "solid") == 0 do
+			while minetest.get_item_group(minetest.get_node(vector.offset(leg,0,-1,0)).name, "solid") == 0 do
 				leg = vector.offset(leg,0,-1,0)
 				table.insert(bricks,leg)
 			end

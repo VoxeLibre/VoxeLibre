@@ -6,31 +6,24 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 -- Are dungeons disabled?
 if mcl_vars.mg_dungeons == false or mg_name == "singlenode" then return end
 
---lua locals
---minetest
 local registered_nodes = minetest.registered_nodes
 local swap_node        = minetest.swap_node
 local set_node         = minetest.set_node
 local dir_to_facedir   = minetest.dir_to_facedir
 local get_meta         = minetest.get_meta
+local get_node         = minetest.get_node
 local emerge_area      = minetest.emerge_area
 
---vector
 local vector_new       = vector.new
 local vector_add       = vector.add
 local vector_subtract  = vector.subtract
 
---table
 local table_insert     = table.insert
 local table_sort       = table.sort
 
---math
 local math_min         = math.min
 local math_max         = math.max
 local math_ceil        = math.ceil
-
---custom mcl_vars
-local get_node = mcl_vars.get_node
 
 
 local min_y = math_max(mcl_vars.mg_overworld_min, mcl_vars.mg_bedrock_overworld_max) + 1

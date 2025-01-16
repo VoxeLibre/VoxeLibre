@@ -169,7 +169,7 @@ for _, key in pairs(keys) do
 	end
 end
 
-local get_node = mcl_vars.get_node
+local get_node = minetest.get_node
 local set_node = minetest.set_node
 local registered_nodes = minetest.registered_nodes
 local is_protected = minetest.is_protected
@@ -211,7 +211,7 @@ local function get_portal_pos(pos)
 	local nn = find_nodes_in_area(p1,p2,{"mcl_portals:portal"})
 	for _,p in pairs(nn) do
 		local m = minetest.get_meta(p):get_string("target_portal")
-		if m and m ~= "" and mcl_vars.get_node(p).name == "mcl_portals:portal" then
+		if m and m ~= "" and get_node(p).name == "mcl_portals:portal" then
 			return minetest.get_position_from_hash(m)
 		end
 	end
