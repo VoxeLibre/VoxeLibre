@@ -42,11 +42,11 @@ if not logging then mcl_log = function() end end
 local dbg_spawn_attempts = 0
 local dbg_spawn_succ = 0
 local exclude_time = 0
+local note = nil
 
 local remove_far = true
 
 local MAX_SPAWN_CYCLE_TIME = 1.65 -- 33 timesteps at 0.05 seconds each
-local FIND_SPAWN_POS_RETRIES = 1
 
 local MOB_SPAWN_ZONE_INNER = 24
 local MOB_SPAWN_ZONE_INNER_SQ = MOB_SPAWN_ZONE_INNER^2 -- squared
@@ -604,6 +604,7 @@ function mcl_mobs.spawn(pos,id)
 			retry = true
 		end
 		if not retry or not has_room(def, pos) then
+			--note = "no room for mob"
 			return false
 		end
 	end
@@ -612,6 +613,7 @@ function mcl_mobs.spawn(pos,id)
 	end
 	local start_time = core.get_us_time()
 	local obj = core.add_entity(pos, def.name)
+	--note = "spawned a mob"
 	exclude_time = exclude_time + core.get_us_time() - start_time
 	-- initialize head bone
 	if def.head_swivel and def.head_bone_position then
@@ -641,25 +643,18 @@ end
 ---@field light integer
 ---@field hash integer
 
--- State serialization table workspace
-local _sst = {"","","","","","","","",0}
 ---@param pos vector.Vector
 ---@param parent_state mcl_mobs.SpawnState?
+---@param spawn_hostile boolean
+---@param spawn_passive boolean
 ---@return mcl_mobs.SpawnState?, core.Node?
-local function build_state_for_position(pos, parent_state)
+local function build_state_for_position(pos, parent_state, spawn_hostile, spawn_passive)
 	local dimension, dim_id = mcl_worlds.pos_to_dimension(pos)
 
 	-- Get node and make sure it's loaded and a valid spawn point
 	local node = get_node(pos)
 	local node_name = node.name
 	if not node or node_name == "ignore" or node_name == "mcl_core:bedrock" then return end
-
-	-- Get spawning parameters for this location
-	local biome_name,biome_id = get_biome_name(pos)
-	if not biome_name then return end
-
-	---@type integer
-	local hash_num = biome_id * 8 + dim_id
 
 	local node_def = core.registered_nodes[node_name] or core.nodedef_default
 	local groups = node_def.groups or {}
@@ -682,27 +677,14 @@ local function build_state_for_position(pos, parent_state)
 		pos.y = pos.y + 1
 	end
 	is_ground = is_ground and (groups.leaves or 0) == 0
-	hash_num = hash_num + (is_water and 0x400 or 0) + (is_lava and 0x800 or 0) + (is_ground and 0x1000 or 0)
-
-	-- Build spawn state data
-	local state = parent_state and table.copy(parent_state) or {}
-	local spawn_hostile = true
-	local spawn_passive = true
-
-	state.biome = biome_name
-	state.dimension = dimension
-
-	state.is_ground = is_ground
-	state.is_grass = (groups.grass_block or 0) ~= 0
-	state.is_water = is_water
-	state.is_lava = is_lava
 
 	-- Check light level
 	local gotten_light = get_node_light(pos)
+	local light = 0
 
 	-- Legacy lighting
 	if not modern_lighting then
-		state.light = gotten_light or 0
+		light = gotten_light or 0
 	else
 		-- Modern lighting
 		local light_node = get_node(pos)
@@ -710,18 +692,42 @@ local function build_state_for_position(pos, parent_state)
 		local art_light = core.get_artificial_light(light_node.param1)
 
 		if dimension == "nether" then
-			spawn_hostile = art_light <= nether_threshold
+			spawn_hostile = spawn_hostile and art_light <= nether_threshold
 		elseif dimension == "end" then
-			spawn_hostile = art_light <= end_threshold
+			spawn_hostile = spawn_hostile and art_light <= end_threshold
 		elseif dimension == "overworld" then
-			spawn_hostile = art_light <= overworld_threshold and sky_light <= overworld_sky_threshold
+			spawn_hostile = spawn_hostile and art_light <= overworld_threshold and sky_light <= overworld_sky_threshold
 		end
 
 		-- passive threshold is apparently the same in all dimensions ...
-		spawn_passive = gotten_light >= overworld_passive_threshold
+		spawn_passive = spawn_passive and gotten_light >= overworld_passive_threshold
 	end
+
+	-- Impossible to spawn a mob here
+	if not spawn_hostile and not spawn_passive then
+		--note = "can't spawn either hostile or passive mobs here"
+		return
+	end
+
+	-- Get biome information
+	local biome_name,biome_id = get_biome_name(pos)
+	if not biome_name then return end
+
+	-- Build spawn state data
+	local state = parent_state and table.copy(parent_state) or {}
+	state.biome = biome_name
+	state.dimension = dimension
+	state.is_ground = is_ground
+	state.is_grass = (groups.grass_block or 0) ~= 0
+	state.is_water = is_water
+	state.is_lava = is_lava
+	state.light = light
 	state.spawn_passive = spawn_passive
 	state.spawn_hostile = spawn_hostile
+
+	---@type integer
+	local hash_num = biome_id * 8 + dim_id
+	hash_num = hash_num + (is_water and 0x400 or 0) + (is_lava and 0x800 or 0) + (is_ground and 0x1000 or 0)
 	hash_num = hash_num + (spawn_passive and 0x2000 or 0) + (spawn_hostile and 0x4000 or 0) + 0x8000 * (state.light or 0)
 
 	state.hash = hash_num
@@ -759,7 +765,7 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 		if not sp then return o end
 
 		-- Get state for each new position
-		local state, node = build_state_for_position(sp, parent_state)
+		local state, node = build_state_for_position(sp, parent_state, true, true)
 
 		if spawn_check(sp, state, node, mob) then
 			if mob.type_of_spawning == "water" then
@@ -882,18 +888,6 @@ if mobs_spawn then
 		return cap_space_available
 	end
 
-	local function find_spawning_position(pos, max_times)
-		local max_loops = max_times or 1
-
-		while max_loops > 0 do
-			local spawning_position = get_next_mob_spawn_pos(pos)
-			if spawning_position then return spawning_position end
-			max_loops = max_loops - 1
-		end
-
-		return nil
-	end
-
 	local function select_random_mob_def(spawn_table)
 		if #spawn_table == 0 then return nil end
 
@@ -925,13 +919,16 @@ if mobs_spawn then
 		local spawn_passive = cap_space_passive > 0 and math_random(100) < peaceful_percentage_spawned
 
 		-- Merge light level checks with cap checks
-		local state, node = build_state_for_position(pos)
-		if not state then return end
-		state.spawn_hostile = spawn_hostile and state.spawn_hostile
-		state.spawn_passive = spawn_passive and state.spawn_passive
+		local state, node = build_state_for_position(pos, nil, spawn_hostile, spawn_passive)
+		if not state then
+			--note = note or "no valid state for position"
+			return
+		end
 
 		-- Make sure it is possible to spawn a mob here
-		if not state.spawn_hostile and not state.spawn_passive then return end
+		if not state.spawn_hostile and not state.spawn_passive then
+			return
+		end
 
 		-- Check the cache to see if we have already built a spawn list for this state
 		local state_hash = state.hash
@@ -981,24 +978,34 @@ if mobs_spawn then
 	-- Spawns one mob or one group of mobs
 	local fail_count = 0
 	local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
-		local spawning_position = find_spawning_position(pos, FIND_SPAWN_POS_RETRIES)
+		local spawning_position = get_next_mob_spawn_pos(pos)
 		if not spawning_position then
 			fail_count = fail_count + 1
 			if logging and fail_count > 16 then
 				core.log("action", "[Mobs spawn] Could not find a valid spawn position in last 16 attempts")
 			end
+			--note = "no valid spawn position"
 			return
 		end
 		fail_count = 0
 
 		-- Spawning prohibited in protected areas
-		if spawn_protected and core.is_protected(spawning_position, "") then return end
+		if spawn_protected and core.is_protected(spawning_position, "") then
+			--note = "position protected"
+			return
+		end
 
 		-- Select a mob
 		local spawn_list, state, node = get_spawn_list(spawning_position, cap_space_hostile, cap_space_non_hostile)
-		if not spawn_list or not state then return end
+		if not spawn_list or not state then
+			--note = note or "no spawnable mobs for pos"
+			return
+		end
 		local mob_def = select_random_mob_def(spawn_list)
-		if not mob_def or not mob_def.name then return end
+		if not mob_def or not mob_def.name then
+			--note = "no mob definition"
+			return
+		end
 		local mob_def_ent = core.registered_entities[mob_def.name]
 
 		local cap_space_available = mob_def_ent.type == "monster" and state.cap_space_hostile or state.cap_space_passive
@@ -1012,6 +1019,7 @@ if mobs_spawn then
 		-- Make sure we would be spawning a mob
 		if not spawn_check(spawning_position, state, node, mob_def) then
 			if logging then mcl_log("Spawn check failed") end
+			--note = "spawn check failed"
 			return
 		end
 
@@ -1022,6 +1030,7 @@ if mobs_spawn then
 				if logging then
 					mcl_log("[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..core.pos_to_string(vector.round(pos)))
 				end
+				--note = "no water"
 				return
 			end
 		end
@@ -1030,6 +1039,7 @@ if mobs_spawn then
 			if logging then
 				mcl_log("[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..core.pos_to_string(vector.round(spawning_position)))
 			end
+			--note = "mob refused to spawn"
 			return
 		end
 
@@ -1081,6 +1091,7 @@ if mobs_spawn then
 
 		if total_mobs > mob_cap.total or total_mobs >= #players * mob_cap.player then
 			core.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
+			--note = "global mob cap reached"
 			return
 		end --mob cap per player
 
@@ -1126,15 +1137,15 @@ if mobs_spawn then
 		timer = timer - dtime
 		if timer > 0 then return end
 
+		note = nil
 		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
 		timer = next_spawn
 		if timer > MAX_SPAWN_CYCLE_TIME then timer = MAX_SPAWN_CYCLE_TIME end
 
 		if profile or logging and took > debug_time_threshold then
 			total_time = total_time + took
-
-			core.log("Next spawn attempt in "..tostring(timer).." previous attempt took "..took.." us")
-			core.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time) * 100).."% count="..count..", "..tostring(total_time/count).."us per spawn attempt")
+			core.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time) * 100).."% count="..count..
+				", "..tostring(total_time/count).."us per spawn attempt, took="..took.." us, note="..(note or ""))
 		end
 	end)
 end
