@@ -460,9 +460,7 @@ end
 
 local function get_water_spawn(p)
 	local nn = minetest.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
-	if nn and #nn > 0 then
-		return nn[math_random(#nn)]
-	end
+	return nn and #nn > 0 and nn[math_random(#nn)]
 end
 
 --- helper to check a single node p
@@ -538,9 +536,9 @@ end
 
 local function get_biome_name(pos)
 	if mcl_mobs.custom_biomecheck then return mcl_mobs.custom_biomecheck(pos) end
-	local gotten_biome = minetest.get_biome_data(pos)
-	local biome_id = gotten_biome.biome
-	local biome_name = gotten_biome and mt_get_biome_name(biome_id)
+	local biome_data = minetest.get_biome_data(pos)
+	local biome_id = biome_data and biome_data.biome
+	local biome_name = biome_id and mt_get_biome_name(biome_id)
 	return biome_name, biome_id
 end
 
@@ -649,16 +647,16 @@ local _sst = {"","","","","","","","",0}
 ---@param parent_state mcl_mobs.SpawnState?
 ---@return mcl_mobs.SpawnState?, core.Node?
 local function build_state_for_position(pos, parent_state)
-	-- Get spawning parameters for this location
-	local biome_name,biome_id = get_biome_name(pos)
-	if not biome_name then return end
-
 	local dimension, dim_id = mcl_worlds.pos_to_dimension(pos)
 
 	-- Get node and make sure it's loaded and a valid spawn point
 	local node = get_node(pos)
 	local node_name = node.name
 	if not node or node_name == "ignore" or node_name == "mcl_core:bedrock" then return end
+
+	-- Get spawning parameters for this location
+	local biome_name,biome_id = get_biome_name(pos)
+	if not biome_name then return end
 
 	---@type integer
 	local hash_num = biome_id * 8 + dim_id
@@ -683,23 +681,18 @@ local function build_state_for_position(pos, parent_state)
 		end
 		pos.y = pos.y + 1
 	end
-	hash_num = hash_num + (is_water and 1024 or 0) + (is_lava and 2048 or 0) + (is_ground and 4096 or 0)
+	is_ground = is_ground and (groups.leaves or 0) == 0
+	hash_num = hash_num + (is_water and 0x400 or 0) + (is_lava and 0x800 or 0) + (is_ground and 0x1000 or 0)
 
 	-- Build spawn state data
-	local state
-	if parent_state then
-		state = table.copy(parent_state)
-	else
-		state = {
-			spawn_hostile = true,
-			spawn_passive = true,
-		}
-	end
+	local state = parent_state and table.copy(parent_state) or {}
+	local spawn_hostile = true
+	local spawn_passive = true
 
 	state.biome = biome_name
 	state.dimension = dimension
 
-	state.is_ground = is_ground and (groups.leaves or 0) == 0
+	state.is_ground = is_ground
 	state.is_grass = (groups.grass_block or 0) ~= 0
 	state.is_water = is_water
 	state.is_lava = is_lava
@@ -717,28 +710,19 @@ local function build_state_for_position(pos, parent_state)
 		local art_light = minetest.get_artificial_light(light_node.param1)
 
 		if dimension == "nether" then
-			if art_light > nether_threshold then
-				state.spawn_hostile = false
-			end
+			spawn_hostile = art_light <= nether_threshold
 		elseif dimension == "end" then
-			if art_light > end_threshold then
-				state.spawn_hostile = false
-			end
+			spawn_hostile = art_light <= end_threshold
 		elseif dimension == "overworld" then
-			if art_light > overworld_threshold then
-				state.spawn_hostile = false
-			end
-			if sky_light > overworld_sky_threshold then
-				state.spawn_hostile = false
-			end
+			spawn_hostile = art_light <= overworld_threshold and sky_light <= overworld_sky_threshold
 		end
 
 		-- passive threshold is apparently the same in all dimensions ...
-		if gotten_light < overworld_passive_threshold then
-			state.spawn_passive = false
-		end
+		spawn_passive = gotten_light >= overworld_passive_threshold
 	end
-	hash_num = hash_num + (state.spawn_passive and 8192 or 0) + (state.spawn_hostile and 16384 or 0) + 32768 * (state.light or 0)
+	state.spawn_passive = spawn_passive
+	state.spawn_hostile = spawn_hostile
+	hash_num = hash_num + (spawn_passive and 0x2000 or 0) + (spawn_hostile and 0x4000 or 0) + 0x8000 * (state.light or 0)
 
 	state.hash = hash_num
 	return state,node
@@ -749,8 +733,9 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 	local nn = find_nodes_in_area_under_air(vector.offset(p,-5,-3,-5), vector.offset(p,5,3,5), spawn_on)
 	if not nn or #nn < 1 then
 		nn = {p}
+	elseif #nn > 1 then
+		table.shuffle(nn)
 	end
-	table.shuffle(nn)
 	--minetest.log("Spawn point list: "..dump(nn))
 
 	-- Use the first amount_to_spawn positions to spawn mobs. If a spawn position is protected,
@@ -1016,10 +1001,7 @@ if mobs_spawn then
 		if not mob_def or not mob_def.name then return end
 		local mob_def_ent = minetest.registered_entities[mob_def.name]
 
-		local cap_space_available = state.cap_space_passive
-		if mob_def_ent.type == "monster" then
-			cap_space_available = state.cap_space_hostile
-		end
+		local cap_space_available = mob_def_ent.type == "monster" and state.cap_space_hostile or state.cap_space_passive
 
 		-- Move up one node for lava spawns
 		if mob_def.type_of_spawning == "lava" then
@@ -1029,7 +1011,7 @@ if mobs_spawn then
 
 		-- Make sure we would be spawning a mob
 		if not spawn_check(spawning_position, state, node, mob_def) then
-			mcl_log("Spawn check failed")
+			if logging then mcl_log("Spawn check failed") end
 			return
 		end
 
@@ -1037,13 +1019,17 @@ if mobs_spawn then
 		if mob_def.type_of_spawning == "water" then
 			spawning_position = get_water_spawn(spawning_position)
 			if not spawning_position then
-				mcl_log("[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+				if logging then
+					mcl_log("[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+				end
 				return
 			end
 		end
 
 		if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
-			mcl_log("[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
+			if logging then
+				mcl_log("[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
+			end
 			return
 		end
 
@@ -1093,7 +1079,7 @@ if mobs_spawn then
 		local cap_space_hostile = math_max(mob_cap.global_hostile - total_hostile, 0)
 		local cap_space_non_hostile =  math_max(mob_cap.global_non_hostile - total_non_hostile, 0)
 
-		if total_mobs > mob_cap.total or total_mobs > #players * mob_cap.player then
+		if total_mobs > mob_cap.total or total_mobs >= #players * mob_cap.player then
 			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
 			return
 		end --mob cap per player
@@ -1140,13 +1126,12 @@ if mobs_spawn then
 		timer = timer - dtime
 		if timer > 0 then return end
 
-		exclude_time = 0
 		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
 		timer = next_spawn
 		if timer > MAX_SPAWN_CYCLE_TIME then timer = MAX_SPAWN_CYCLE_TIME end
 
 		if profile or logging and took > debug_time_threshold then
-			total_time = total_time + took - exclude_time
+			total_time = total_time + took
 
 			minetest.log("Next spawn attempt in "..tostring(timer).." previous attempt took "..took.." us")
 			minetest.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time)).."% count="..count..", "..tostring(total_time/count).."us per spawn attempt")
