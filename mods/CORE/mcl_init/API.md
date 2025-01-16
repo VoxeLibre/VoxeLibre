@@ -1,6 +1,35 @@
 # mcl_init
 
-Initialization of VoxeLibre, in particular some shared variables exposed via `mcl_vars`.
+Initialization of VoxeLibre, in particular some shared variables and utility functions exposed via `mcl_vars`.
+
+## `get_node_name`
+
+This is an interim API while we still support Luanti versions that do not expose `core.get_node_raw`.
+We would like to use that function because it generates fewer Lua tables, and hence causes less garbage collection,
+yielding better performance. The current `get_node_name` API is a middle-ground that covers many use cases
+of that API, while having little overhead over the old `core.get_node`, nor the new `core.get_node_raw` API then.
+
+- `mcl_vars.get_node_name(pos)` returns the node *name*, param1 and param2 at position `pos`.
+
+- `mcl_vars.get_node_name_raw(x, y, z)` returns the node *name*, param1 and param2 at position (x,y,z).
+
+- `mcl_vars.get_node_raw(x, y, z)` returns the *content ID*, param1 and param2 at position (x,y,z).
+
+Which version to use:
+
+1. if you are working with content ids (integers), use `get_node_raw`.
+2. if you work with node names, and vectors, use `get_node_name`.
+3. if you work with node names and integer coordinate loops, use `get_node_name_raw`.
+4. if you need dense access on a larger volume, use a Lua Voxel Manipulator.
+
+Overhead:
+
+On current Luanti, without trusted mods, all functions use `get_node`, and the performance will be similar to
+using `get_node`.
+
+When `core.get_node_raw` becomes a public API, or when the trusted mod hack is enabled, the first two perform similar
+to using `core.get_node_raw` followed by an content ID to node name lookup (which is supposedly a simple array access).
+While the function `get_node_raw` becomes an alias for `core.get_node_raw`.
 
 
 ## Optimized LuaJIT parameters
