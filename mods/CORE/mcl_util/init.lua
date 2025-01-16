@@ -746,13 +746,17 @@ function mcl_util.trace_nodes(pos, dir, allowed_nodes, limit)
 
 	return nil, limit, nil
 end
-function mcl_util.gen_uuid()
+
+-- Make a local random to guard against someone misusing math.randomseed
+local uuid_rng = PcgRandom(bit.bxor(math.random(0xFFFFFFFF), os.time()))
+function mcl_util.gen_uuid(len32)
+	len32 = len32 and len32 > 0 or 4
 	-- Generate a random 128-bit ID that can be assumed to be unique
 	-- To have a 1% chance of a collision, there would have to be 1.6x10^76 IDs generated
 	-- https://en.wikipedia.org/wiki/Birthday_problem#Probability_table
 	local u = {}
-	for i = 1,16 do
-		u[#u + 1] = string.format("%02X",math.random(1,255))
+	for i = 1,len32 do
+		u[#u + 1] = bit.tohex(uuid_rng:next()) -- 32 bit at a time
 	end
 	return table.concat(u)
 end

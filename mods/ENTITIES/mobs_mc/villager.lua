@@ -2284,7 +2284,7 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 			set_textures(self)
 			return
 		end
-		self._id=minetest.sha1(minetest.get_gametime()..minetest.pos_to_string(self.object:get_pos())..tostring(math.random()))
+		self._id=mcl_util.gen_uuid()
 		set_textures(self)
 	end,
 	on_die = function(self, pos, cmi_cause)
