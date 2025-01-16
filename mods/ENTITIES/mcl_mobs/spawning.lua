@@ -2,20 +2,20 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local modern_lighting = minetest.settings:get_bool("mcl_mobs_modern_lighting", true)
-local nether_threshold = tonumber(minetest.settings:get("mcl_mobs_nether_threshold")) or 11
-local end_threshold = tonumber(minetest.settings:get("mcl_mobs_end_threshold")) or 0
-local overworld_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_threshold")) or 0
-local overworld_sky_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_sky_threshold")) or 7
-local overworld_passive_threshold = tonumber(minetest.settings:get("mcl_mobs_overworld_passive_threshold")) or 7
-local debug_time_threshold = tonumber(minetest.settings:get("vl_debug_time_threshold")) or 1000
+local modern_lighting = core.settings:get_bool("mcl_mobs_modern_lighting", true)
+local nether_threshold = tonumber(core.settings:get("mcl_mobs_nether_threshold")) or 11
+local end_threshold = tonumber(core.settings:get("mcl_mobs_end_threshold")) or 0
+local overworld_threshold = tonumber(core.settings:get("mcl_mobs_overworld_threshold")) or 0
+local overworld_sky_threshold = tonumber(core.settings:get("mcl_mobs_overworld_sky_threshold")) or 7
+local overworld_passive_threshold = tonumber(core.settings:get("mcl_mobs_overworld_passive_threshold")) or 7
+local debug_time_threshold = tonumber(core.settings:get("vl_debug_time_threshold")) or 1000
 
-local get_node                     = minetest.get_node
-local get_node_light               = minetest.get_node_light
-local find_nodes_in_area_under_air = minetest.find_nodes_in_area_under_air
-local mt_get_biome_name            = minetest.get_biome_name
-local get_connected_players        = minetest.get_connected_players
-local registered_nodes             = minetest.registered_nodes
+local get_node                     = core.get_node
+local get_node_light               = core.get_node_light
+local find_nodes_in_area_under_air = core.find_nodes_in_area_under_air
+local mt_get_biome_name            = core.get_biome_name
+local get_connected_players        = core.get_connected_players
+local registered_nodes             = core.registered_nodes
 
 local math_min       = math.min
 local math_max       = math.max
@@ -32,7 +32,7 @@ local pairs = pairs
 local check_line_of_sight = mcl_mobs.check_line_of_sight
 
 local profile = false
-local logging = minetest.settings:get_bool("mcl_logging_mobs_spawn", false)
+local logging = core.settings:get_bool("mcl_logging_mobs_spawn", false)
 local function mcl_log(message, property)
 	if property then message = message .. ": " .. dump(property) end
 	mcl_util.mcl_log(message, "[Mobs spawn]", true)
@@ -64,22 +64,22 @@ local MOBS_CAP_CLOSE = 10
 local SPAWN_MAPGEN_LIMIT  = mcl_vars.mapgen_limit - 150
 
 local mob_cap = {
-	hostile = tonumber(minetest.settings:get("mcl_mob_cap_monster")) or 70,
-	passive = tonumber(minetest.settings:get("mcl_mob_cap_animal")) or 10,
-	ambient = tonumber(minetest.settings:get("mcl_mob_cap_ambient")) or 15,
-	water = tonumber(minetest.settings:get("mcl_mob_cap_water")) or 8,
-	water_ambient = tonumber(minetest.settings:get("mcl_mob_cap_water_ambient")) or 20,
-	water_underground = tonumber(minetest.settings:get("mcl_mob_cap_water_underground")) or 5,
-	axolotl = tonumber(minetest.settings:get("mcl_mob_cap_axolotl")) or 2, -- TODO should be 5 when lush caves added
-	player = tonumber(minetest.settings:get("mcl_mob_cap_player")) or 75,
-	global_hostile = tonumber(minetest.settings:get("mcl_mob_cap_hostile")) or 300,
-	global_non_hostile = tonumber(minetest.settings:get("mcl_mob_cap_non_hostile")) or 300,
-	total = tonumber(minetest.settings:get("mcl_mob_cap_total")) or 500,
+	hostile = tonumber(core.settings:get("mcl_mob_cap_monster")) or 70,
+	passive = tonumber(core.settings:get("mcl_mob_cap_animal")) or 10,
+	ambient = tonumber(core.settings:get("mcl_mob_cap_ambient")) or 15,
+	water = tonumber(core.settings:get("mcl_mob_cap_water")) or 8,
+	water_ambient = tonumber(core.settings:get("mcl_mob_cap_water_ambient")) or 20,
+	water_underground = tonumber(core.settings:get("mcl_mob_cap_water_underground")) or 5,
+	axolotl = tonumber(core.settings:get("mcl_mob_cap_axolotl")) or 2, -- TODO should be 5 when lush caves added
+	player = tonumber(core.settings:get("mcl_mob_cap_player")) or 75,
+	global_hostile = tonumber(core.settings:get("mcl_mob_cap_hostile")) or 300,
+	global_non_hostile = tonumber(core.settings:get("mcl_mob_cap_non_hostile")) or 300,
+	total = tonumber(core.settings:get("mcl_mob_cap_total")) or 500,
 }
 
-local peaceful_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_percentage_spawned")) or 30
-local peaceful_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_peaceful_group_percentage_spawned")) or 15
-local hostile_group_percentage_spawned = tonumber(minetest.settings:get("mcl_mob_hostile_group_percentage_spawned")) or 20
+local peaceful_percentage_spawned = tonumber(core.settings:get("mcl_mob_peaceful_percentage_spawned")) or 30
+local peaceful_group_percentage_spawned = tonumber(core.settings:get("mcl_mob_peaceful_group_percentage_spawned")) or 15
+local hostile_group_percentage_spawned = tonumber(core.settings:get("mcl_mob_hostile_group_percentage_spawned")) or 20
 
 mcl_log("Mob cap hostile: " .. mob_cap.hostile)
 mcl_log("Mob cap water: " .. mob_cap.water)
@@ -90,13 +90,13 @@ mcl_log("Percentage of peaceful spawns are group: " .. peaceful_group_percentage
 mcl_log("Percentage of hostile spawns are group: " .. hostile_group_percentage_spawned)
 
 --do mobs spawn?
-local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
-local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
+local mobs_spawn = core.settings:get_bool("mobs_spawn", true) ~= false
+local spawn_protected = core.settings:get_bool("mobs_spawn_protected") ~= false
 
 -- count how many mobs are in an area
 local function count_mobs(pos,r,mob_type)
 	local num = 0
-	for _,l in pairs(minetest.luaentities) do
+	for _,l in pairs(core.luaentities) do
 		if l and l.is_mob and (mob_type == nil or l.type == mob_type) then
 			local p = l.object:get_pos()
 			if p and vector_distance(p,pos) < r then
@@ -109,7 +109,7 @@ end
 
 local function count_mobs_total(mob_type)
 	local num = 0
-	for _,l in pairs(minetest.luaentities) do
+	for _,l in pairs(core.luaentities) do
 		if l.is_mob then
 			if mob_type == nil or l.type == mob_type then
 				num = num + 1
@@ -190,9 +190,9 @@ local function output_mob_stats(mob_counts, total_mobs, chat_display)
 	if (total_mobs) then
 		local total_output = "Total mobs found: " .. total_mobs
 		if chat_display then
-			minetest.log(total_output)
+			core.log(total_output)
 		else
-			minetest.log("action", total_output)
+			core.log("action", total_output)
 		end
 
 	end
@@ -204,9 +204,9 @@ local function output_mob_stats(mob_counts, total_mobs, chat_display)
 	end
 	if detailed and detailed ~= "" then
 		if chat_display then
-			minetest.log(detailed)
+			core.log(detailed)
 		else
-			minetest.log("action", detailed)
+			core.log("action", detailed)
 		end
 	end
 end
@@ -249,7 +249,7 @@ function mcl_mobs:spawn_setup(def)
 	-- Validate required definition fields are present
 	assert(def, "Missing spawn definition")
 	assert(def.name, "Spawn definition missing entity name")
-	assert(minetest.registered_entities[def.name], "Entity name not registered")
+	assert(core.registered_entities[def.name], "Entity name not registered")
 	local name = def.name
 
 	-- Defaults
@@ -263,22 +263,22 @@ function mcl_mobs:spawn_setup(def)
 	def.min_light = def.min_light or 0
 	def.max_light = def.max_light or core.LIGHT_MAX + 1
 
-	-- chance/spawn number override in minetest.conf for registered mob
-	local numbers = minetest.settings:get(name)
+	-- chance/spawn number override in core.conf for registered mob
+	local numbers = core.settings:get(name)
 	if numbers then
 		local number_parts = numbers:split(",")
 		def.chance = tonumber(number_parts[1]) or def.chance
 		def.aoc = tonumber(number_parts[2]) or def.aoc
 		if def.chance == 0 then
-			minetest.log("warning", string.format("[mcl_mobs] %s has spawning disabled", name))
+			core.log("warning", string.format("[mcl_mobs] %s has spawning disabled", name))
 			return
 		end
-		minetest.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, def.chance, def.aoc))
+		core.log("action", string.format("[mcl_mobs] Chance setting for %s changed to %s (total: %s)", name, def.chance, def.aoc))
 	end
 
 	if def.chance < 1 then
 		def.chance = 1
-		minetest.log("warning", "Chance shouldn't be less than 1 (mob name: " .. name ..")")
+		core.log("warning", "Chance shouldn't be less than 1 (mob name: " .. name ..")")
 	end
 
 	-- Create lookup table from biomes if one isn't provided
@@ -302,17 +302,17 @@ function mcl_mobs:mob_light_lvl(mob_name, dimension)
 	if non_spawn_dictionary[mob_name] then
 		local mob_dimension = non_spawn_dictionary[mob_name][dimension]
 		if mob_dimension then
-			--minetest.log("Found in non spawn dictionary for dimension")
+			--core.log("Found in non spawn dictionary for dimension")
 			return mob_dimension.min_light, mob_dimension.max_light
 		else
-			--minetest.log("Found in non spawn dictionary but not for dimension")
+			--core.log("Found in non spawn dictionary but not for dimension")
 			local overworld_non_spawn_def = non_spawn_dictionary[mob_name]["overworld"]
 			if overworld_non_spawn_def then
 				return overworld_non_spawn_def.min_light, overworld_non_spawn_def.max_light
 			end
 		end
 	else
-		--minetest.log("must be in spawning dictionary")
+		--core.log("must be in spawning dictionary")
 		for i,v in pairs(spawn_dictionary) do
 			local current_mob_name = spawn_dictionary[i].name
 			local current_mob_dim = spawn_dictionary[i].dimension
@@ -328,13 +328,13 @@ function mcl_mobs:mob_light_lvl(mob_name, dimension)
 		end
 
 		if spawn_dictionary_consolidated[mob_name] then
-			--minetest.log("is in consolidated")
+			--core.log("is in consolidated")
 			local mob_dimension = spawn_dictionary_consolidated[mob_name][dimension]
 			if mob_dimension then
-				--minetest.log("found for dimension")
+				--core.log("found for dimension")
 				return mob_dimension.min_light, mob_dimension.max_light
 			else
-				--minetest.log("not found for dimension, use overworld def")
+				--core.log("not found for dimension, use overworld def")
 				local mob_dimension_default = spawn_dictionary_consolidated[mob_name]["overworld"]
 				if mob_dimension_default then
 					return mob_dimension_default.min_light, mob_dimension_default.max_light
@@ -343,8 +343,8 @@ function mcl_mobs:mob_light_lvl(mob_name, dimension)
 		end
 	end
 
-	minetest.log("action", "There are no light levels for mob (" .. tostring(mob_name) .. ") in dimension (" .. tostring(dimension) .. "). Return defaults")
-	return 0, minetest.LIGHT_MAX+1
+	core.log("action", "There are no light levels for mob (" .. tostring(mob_name) .. ") in dimension (" .. tostring(dimension) .. "). Return defaults")
+	return 0, core.LIGHT_MAX+1
 end
 
 function mcl_mobs:non_spawn_specific(mob_name,dimension,min_light,max_light)
@@ -397,7 +397,7 @@ local function get_next_mob_spawn_pos(pos)
 	local goal_pos = vector.offset(pos, xoff, yoff, zoff)
 
 	if not (math_abs(goal_pos.x) <= SPAWN_MAPGEN_LIMIT and math_abs(goal_pos.y) <= SPAWN_MAPGEN_LIMIT and math_abs(goal_pos.z) <= SPAWN_MAPGEN_LIMIT) then
-		mcl_log("Pos outside mapgen limits: " .. minetest.pos_to_string(goal_pos))
+		mcl_log("Pos outside mapgen limits: " .. core.pos_to_string(goal_pos))
 		return nil
 	end
 
@@ -459,7 +459,7 @@ local function is_farm_animal(n)
 end
 
 local function get_water_spawn(p)
-	local nn = minetest.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
+	local nn = core.find_nodes_in_area(vector.offset(p,-2,-1,-2),vector.offset(p,2,-15,2),{"group:water"})
 	return nn and #nn > 0 and nn[math_random(#nn)]
 end
 
@@ -482,7 +482,7 @@ local function check_room_helper(p, fly_in, fly_in_air, headroom, check_headroom
 	-- solid block always overlaps
 	if n_def.node_box == "regular" then return false end
 	-- perform sub-node checks in top layer
-	local boxes = minetest.get_node_boxes("collision_box", p, node)
+	local boxes = core.get_node_boxes("collision_box", p, node)
 	for i = 1,#boxes do
 		-- headroom is measured from the bottom, hence +0.5
 		if boxes[i][2] + 0.5 < headroom then
@@ -514,7 +514,7 @@ local function has_room(self, pos)
 	local headroom = cb_height - (p2.y - p1.y) -- headroom needed in top layer
 	for y = p1.y,p2.y do
 		p.y = y
-		local check_headroom = headroom < 1 and y == p2.y and minetest.get_node_boxes
+		local check_headroom = headroom < 1 and y == p2.y and core.get_node_boxes
 		for z = p1.z,p2.z do
 			p.z = z
 			for x = p1.x,p2.x do
@@ -536,7 +536,7 @@ end
 
 local function get_biome_name(pos)
 	if mcl_mobs.custom_biomecheck then return mcl_mobs.custom_biomecheck(pos) end
-	local biome_data = minetest.get_biome_data(pos)
+	local biome_data = core.get_biome_data(pos)
 	local biome_id = biome_data and biome_data.biome
 	local biome_name = biome_id and mt_get_biome_name(biome_id)
 	return biome_name, biome_id
@@ -544,7 +544,7 @@ end
 
 local function initial_spawn_check(state, spawn_def)
 	if not spawn_def then return false end
-	local mob_def = minetest.registered_entities[spawn_def.name]
+	local mob_def = core.registered_entities[spawn_def.name]
 
 	if mob_def.type == "monster" then
 		if not state.spawn_hostile then return false end
@@ -587,7 +587,7 @@ end
 
 function mcl_mobs.spawn(pos,id)
 	if not pos or not id then return false end
-	local def = minetest.registered_entities[id] or minetest.registered_entities["mobs_mc:"..id] or minetest.registered_entities["extra_mobs:"..id]
+	local def = core.registered_entities[id] or core.registered_entities["mobs_mc:"..id] or core.registered_entities["extra_mobs:"..id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
 	if not has_room(def, pos) then
 		local cb = def.spawnbox or def.collisionbox
@@ -611,7 +611,7 @@ function mcl_mobs.spawn(pos,id)
 		pos.y = pos.y - 0.495 - def.collisionbox[2] -- spawn just above ground below
 	end
 	local start_time = core.get_us_time()
-	local obj = minetest.add_entity(pos, def.name)
+	local obj = core.add_entity(pos, def.name)
 	exclude_time = exclude_time + core.get_us_time() - start_time
 	-- initialize head bone
 	if def.head_swivel and def.head_bone_position then
@@ -706,8 +706,8 @@ local function build_state_for_position(pos, parent_state)
 	else
 		-- Modern lighting
 		local light_node = get_node(pos)
-		local sky_light = minetest.get_natural_light(pos) or 0
-		local art_light = minetest.get_artificial_light(light_node.param1)
+		local sky_light = core.get_natural_light(pos) or 0
+		local art_light = core.get_artificial_light(light_node.param1)
 
 		if dimension == "nether" then
 			spawn_hostile = art_light <= nether_threshold
@@ -736,7 +736,7 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 	elseif #nn > 1 then
 		table.shuffle(nn)
 	end
-	--minetest.log("Spawn point list: "..dump(nn))
+	--core.log("Spawn point list: "..dump(nn))
 
 	-- Use the first amount_to_spawn positions to spawn mobs. If a spawn position is protected,
 	-- it is removed from the list and not counted against the spawn amount. Only one mob will
@@ -750,7 +750,7 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 			sp = vector.offset(nn[#nn],0,1,0)
 			nn[#nn] = nil
 
-			if spawn_protected and minetest.is_protected(sp, "") then
+			if spawn_protected and core.is_protected(sp, "") then
 				sp = nil
 			elseif not check_line_of_sight(p, sp) then
 				sp = nil
@@ -766,7 +766,7 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 				sp = get_water_spawn(sp)
 			end
 
-			--minetest.log("Using spawn point "..vector.to_string(sp))
+			--core.log("Using spawn point "..vector.to_string(sp))
 
 			o = mcl_mobs.spawn(sp,mob.name)
 			if o then
@@ -780,13 +780,13 @@ end
 
 mcl_mobs.spawn_group = spawn_group
 
-local S = minetest.get_translator("mcl_mobs")
+local S = core.get_translator("mcl_mobs")
 
-minetest.register_chatcommand("spawn_mob",{
+core.register_chatcommand("spawn_mob",{
 	privs = { debug = true },
 	description=S("spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: \n spawn_mob skeleton:var<passive=true>:\n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: \n spawn_mob skeleton:var<jump_height=NUM10>:\n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: \n spawn_mob skeleton:var<passive=true>::var<jump_height=NUM10>::var<fly=true>:\n etc."),
 	func = function(n,param)
-		local pos = minetest.get_player_by_name(n):get_pos()
+		local pos = core.get_player_by_name(n):get_pos()
 
 		local modifiers = {}
 		for capture in string.gmatch(param, "%:(.-)%:") do
@@ -826,21 +826,21 @@ minetest.register_chatcommand("spawn_mob",{
 						end
 
 						if not mob_entity[variable] then
-							minetest.log("warning", n.." mob variable "..variable.." previously unset")
+							core.log("warning", n.." mob variable "..variable.." previously unset")
 						end
 
 						mob_entity[variable] = value
 
 					else
-						minetest.log("warning", n.." couldn't modify "..mobname.." at "..minetest.pos_to_string(pos).. ", missing paramaters")
+						core.log("warning", n.." couldn't modify "..mobname.." at "..core.pos_to_string(pos).. ", missing paramaters")
 					end
 				else
-					minetest.log("warning", n.." couldn't modify "..mobname.." at "..minetest.pos_to_string(pos).. ", missing modification type")
+					core.log("warning", n.." couldn't modify "..mobname.." at "..core.pos_to_string(pos).. ", missing modification type")
 				end
 			end
 
-			minetest.log("action", n.." spawned "..mobname.." at "..minetest.pos_to_string(pos))
-			return true, mobname.." spawned at "..minetest.pos_to_string(pos)
+			core.log("action", n.." spawned "..mobname.." at "..core.pos_to_string(pos))
+			return true, mobname.." spawned at "..core.pos_to_string(pos)
 		else
 			return false, "Couldn't spawn "..mobname
 		end
@@ -985,21 +985,21 @@ if mobs_spawn then
 		if not spawning_position then
 			fail_count = fail_count + 1
 			if logging and fail_count > 16 then
-				minetest.log("action", "[Mobs spawn] Could not find a valid spawn position in last 16 attempts")
+				core.log("action", "[Mobs spawn] Could not find a valid spawn position in last 16 attempts")
 			end
 			return
 		end
 		fail_count = 0
 
 		-- Spawning prohibited in protected areas
-		if spawn_protected and minetest.is_protected(spawning_position, "") then return end
+		if spawn_protected and core.is_protected(spawning_position, "") then return end
 
 		-- Select a mob
 		local spawn_list, state, node = get_spawn_list(spawning_position, cap_space_hostile, cap_space_non_hostile)
 		if not spawn_list or not state then return end
 		local mob_def = select_random_mob_def(spawn_list)
 		if not mob_def or not mob_def.name then return end
-		local mob_def_ent = minetest.registered_entities[mob_def.name]
+		local mob_def_ent = core.registered_entities[mob_def.name]
 
 		local cap_space_available = mob_def_ent.type == "monster" and state.cap_space_hostile or state.cap_space_passive
 
@@ -1020,7 +1020,7 @@ if mobs_spawn then
 			spawning_position = get_water_spawn(spawning_position)
 			if not spawning_position then
 				if logging then
-					mcl_log("[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..minetest.pos_to_string(vector.round(pos)))
+					mcl_log("[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..core.pos_to_string(vector.round(pos)))
 				end
 				return
 			end
@@ -1028,7 +1028,7 @@ if mobs_spawn then
 
 		if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
 			if logging then
-				mcl_log("[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..minetest.pos_to_string(vector.round(spawning_position)))
+				mcl_log("[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..core.pos_to_string(vector.round(spawning_position)))
 			end
 			return
 		end
@@ -1052,9 +1052,9 @@ if mobs_spawn then
 
 			if amount_to_spawn > 1 then
 				if logging then
-					minetest.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name ..
+					core.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name ..
 						" mob spawns on " ..get_node(vector.offset(spawning_position,0,-1,0)).name ..
-						" at " .. minetest.pos_to_string(spawning_position, 1)
+						" at " .. core.pos_to_string(spawning_position, 1)
 					)
 				end
 				return spawn_group(spawning_position,mob_def,{get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn, state)
@@ -1062,9 +1062,9 @@ if mobs_spawn then
 		end
 
 		if logging then
-			minetest.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..
+			core.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..
 				get_node(vector.offset(spawning_position,0,-1,0)).name .." at "..
-				minetest.pos_to_string(spawning_position, 1)
+				core.pos_to_string(spawning_position, 1)
 			)
 		end
 		return mcl_mobs.spawn(spawning_position, mob_def.name)
@@ -1080,7 +1080,7 @@ if mobs_spawn then
 		local cap_space_non_hostile =  math_max(mob_cap.global_non_hostile - total_non_hostile, 0)
 
 		if total_mobs > mob_cap.total or total_mobs >= #players * mob_cap.player then
-			minetest.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
+			core.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
 			return
 		end --mob cap per player
 
@@ -1102,9 +1102,9 @@ if mobs_spawn then
 		if timer > 0 then return timer, 0 end
 
 		-- Time the function
-		local start_time_us = minetest.get_us_time()
+		local start_time_us = core.get_us_time()
 		handler()
-		local stop_time_us = minetest.get_us_time() + 1
+		local stop_time_us = core.get_us_time() + 1
 
 		-- Measure how long this took and calculate the time until the next call
 		local took = stop_time_us - start_time_us
@@ -1118,7 +1118,7 @@ if mobs_spawn then
 	local start = true
 	local start_time
 	local total_time = 0
-	minetest.register_globalstep(function(dtime)
+	core.register_globalstep(function(dtime)
 		if start then
 			start = false
 			start_time = core.get_us_time()
@@ -1133,8 +1133,8 @@ if mobs_spawn then
 		if profile or logging and took > debug_time_threshold then
 			total_time = total_time + took
 
-			minetest.log("Next spawn attempt in "..tostring(timer).." previous attempt took "..took.." us")
-			minetest.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time)).."% count="..count..", "..tostring(total_time/count).."us per spawn attempt")
+			core.log("Next spawn attempt in "..tostring(timer).." previous attempt took "..took.." us")
+			core.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time) * 100).."% count="..count..", "..tostring(total_time/count).."us per spawn attempt")
 		end
 	end)
 end
@@ -1177,7 +1177,7 @@ function mob_class:check_despawn(pos, dtime)
 	if remove_far and despawn_allowed(self) then
 		if self.despawn_immediately or self.lifetimer <= 0 then
 			if logging then
-				minetest.log("action", "[mcl_mobs] Mob "..self.name.." despawns at "..minetest.pos_to_string(pos, 1) .. " lifetimer ran out")
+				core.log("action", "[mcl_mobs] Mob "..self.name.." despawns at "..core.pos_to_string(pos, 1) .. " lifetimer ran out")
 			end
 			mcl_burning.extinguish(self.object)
 			mcl_util.remove_entity(self)
@@ -1192,12 +1192,12 @@ function mob_class:check_despawn(pos, dtime)
 	end
 end
 
-minetest.register_chatcommand("mobstats",{
+core.register_chatcommand("mobstats",{
 	privs = { debug = true },
 	func = function(n,param)
-		local pos = minetest.get_player_by_name(n):get_pos()
-		minetest.chat_send_player(n,"mobs: within 32 radius of player/total loaded :"..count_mobs(pos,MOB_CAP_INNER_RADIUS) .. "/" .. count_mobs_total())
-		minetest.chat_send_player(n,"spawning attempts since server start:" .. dbg_spawn_succ .. "/" .. dbg_spawn_attempts)
+		local pos = core.get_player_by_name(n):get_pos()
+		core.chat_send_player(n,"mobs: within 32 radius of player/total loaded :"..count_mobs(pos,MOB_CAP_INNER_RADIUS) .. "/" .. count_mobs_total())
+		core.chat_send_player(n,"spawning attempts since server start:" .. dbg_spawn_succ .. "/" .. dbg_spawn_attempts)
 
 		local _, mob_counts_wide, total_mobs = count_mobs_all("name") -- Can use "type"
 		output_mob_stats(mob_counts_wide, total_mobs, true)
