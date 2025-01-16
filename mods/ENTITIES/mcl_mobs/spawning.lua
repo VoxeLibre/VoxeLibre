@@ -46,8 +46,6 @@ local note = nil
 
 local remove_far = true
 
-local MAX_SPAWN_CYCLE_TIME = 1.65 -- 33 timesteps at 0.05 seconds each
-
 local MOB_SPAWN_ZONE_INNER = 24
 local MOB_SPAWN_ZONE_INNER_SQ = MOB_SPAWN_ZONE_INNER^2 -- squared
 local MOB_SPAWN_ZONE_MIDDLE = 32
@@ -726,11 +724,9 @@ local function build_state_for_position(pos, parent_state, spawn_hostile, spawn_
 	state.spawn_hostile = spawn_hostile
 
 	---@type integer
-	local hash_num = biome_id * 8 + dim_id
-	hash_num = hash_num + (is_water and 0x400 or 0) + (is_lava and 0x800 or 0) + (is_ground and 0x1000 or 0)
-	hash_num = hash_num + (spawn_passive and 0x2000 or 0) + (spawn_hostile and 0x4000 or 0) + 0x8000 * (state.light or 0)
-
-	state.hash = hash_num
+	state.hash = biome_id * 8 + dim_id
+	           + (is_water and 0x400 or 0) + (is_lava and 0x800 or 0) + (is_ground and 0x1000 or 0)
+	           + (spawn_passive and 0x2000 or 0) + (spawn_hostile and 0x4000 or 0) + 0x8000 * (state.light or 0)
 	return state,node
 end
 
@@ -1109,8 +1105,8 @@ if mobs_spawn then
 	end
 
 	local function fixed_timeslice(timer, dtime, timeslice_us, handler)
-		timer = timer - dtime
-		if timer > 0 then return timer, 0 end
+		timer = timer + dtime * timeslice_us * 1e-6
+		if timer <= 0 then return timer, 0 end
 
 		-- Time the function
 		local start_time_us = core.get_us_time()
@@ -1119,7 +1115,7 @@ if mobs_spawn then
 
 		-- Measure how long this took and calculate the time until the next call
 		local took = stop_time_us - start_time_us
-		timer = took / timeslice_us
+		timer = timer - took * 1e-6
 
 		return timer, took
 	end
@@ -1134,15 +1130,12 @@ if mobs_spawn then
 			start = false
 			start_time = core.get_us_time()
 		end
-		timer = timer - dtime
-		if timer > 0 then return end
 
-		note = nil
+		--note = nil
 		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
 		timer = next_spawn
-		if timer > MAX_SPAWN_CYCLE_TIME then timer = MAX_SPAWN_CYCLE_TIME end
 
-		if profile or logging and took > debug_time_threshold then
+		if (profile or logging) and took > 0 then
 			total_time = total_time + took
 			core.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time) * 100).."% count="..count..
 				", "..tostring(total_time/count).."us per spawn attempt, took="..took.." us, note="..(note or ""))
