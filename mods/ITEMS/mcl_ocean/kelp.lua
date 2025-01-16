@@ -526,7 +526,7 @@ kelp.registered_surfaces = {}
 -- If you define your own properties, it overrides the default ones.
 kelp.surface_deftemplate = {
 	drawtype = "plantlike_rooted",
-	paramtype = "light",
+	paramtype = "none",
 	paramtype2 = "leveled",
 	place_param2 = 16,
 	--tiles = def.tiles,
