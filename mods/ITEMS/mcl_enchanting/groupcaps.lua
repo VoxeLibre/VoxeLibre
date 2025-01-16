@@ -2,7 +2,7 @@ local groupcaps_cache = {}
 
 -- Compute a hash value.
 function compute_hash(value)
-	return string.sub(minetest.sha1(minetest.serialize(value)), 1, 8)
+	return bit.tohex(mcl_util.djb2_hash(minetest.serialize(value)))
 end
 
 -- Get the groupcaps and hash for an enchanted tool.  If this function is called
