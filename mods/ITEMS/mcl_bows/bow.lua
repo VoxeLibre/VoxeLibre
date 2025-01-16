@@ -251,6 +251,10 @@ controls.register_on_release(function(player, key, time)
 	local name = wielditem:get_name()
 	if name == "mcl_bows:bow" or name == "mcl_bows:bow_enchanted" then
 		local meta = wielditem:get_meta()
+		if not core.is_yes(meta:get("active")) then
+			reset_bow_state(player)
+			return
+		end
 		local enchanted = mcl_enchanting.is_enchanted(name)
 		local speed, damage
 		local p_load = bow_load[player:get_player_name()]
@@ -315,7 +319,7 @@ controls.register_on_hold(function(player, key, time)
 	local meta = wielditem:get_meta()
 	if bow_load[name] == nil
 		and (wielditem:get_name()=="mcl_bows:bow" or wielditem:get_name()=="mcl_bows:bow_enchanted")
-		and (meta:get("active") or key == "zoom") and (creative or get_arrow(player)) then
+		and (core.is_yes(meta:get("active")) or key == "zoom") and (creative or get_arrow(player)) then
 			local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
 			local im_string = "mcl_bows_bow_0.png"
 			if enchanted then im_string = im_string .. mcl_enchanting.overlay end

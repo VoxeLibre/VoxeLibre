@@ -151,6 +151,11 @@ controls.register_on_release(function(player, key, time)
 	if key~="RMB" and key~="zoom" then return end
 	local wielditem = player:get_wielded_item()
 	if core.get_item_group(wielditem:get_name(), "spear") < 1 then return end
+	local meta = wielditem:get_meta()
+	if not core.is_yes(meta:get("active")) then
+		reset_spear_state(player)
+		return
+	end
 	local pname = player:get_player_name()
 	local raise_moment = spear_raise_time[pname] or 0
 	local power = math.max(math.min((core.get_us_time() - raise_moment)
@@ -168,7 +173,7 @@ controls.register_on_hold(function(player, key, time)
 		return
 	end
 	local meta = wielditem:get_meta()
-	if spear_raise_time[name] == nil and (meta:get("active") or key == "zoom") then
+	if spear_raise_time[name] == nil and (core.is_yes(meta:get("active")) or key == "zoom") then
 		meta:set_string("inventory_image", wielditem:get_definition().inventory_image .. "^[transformR90")
 		player:set_wielded_item(wielditem)
 		if core.get_modpath("playerphysics") then
