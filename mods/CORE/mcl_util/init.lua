@@ -5,6 +5,7 @@ local modpath = core.get_modpath(modname)
 dofile(modpath.."/roman_numerals.lua")
 dofile(modpath.."/nodes.lua")
 dofile(modpath.."/table.lua")
+dofile(modpath.."/hashing.lua")
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
 local LOG_MODULE = "[MCL2]"
