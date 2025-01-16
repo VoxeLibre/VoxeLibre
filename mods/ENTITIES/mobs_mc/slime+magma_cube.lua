@@ -22,8 +22,10 @@ local function is_slime_chunk(pos)
 	if not pos then return end -- no position given
 	if slime_ratio == 0 then return end -- no slime chunks
 	if slime_ratio <= 1 then return true end -- slime everywhere
-	local bpos = vector.new(floor(pos.x / MAPBLOCK_SIZE), slime_3d_chunks and floor(pos.y / MAPBLOCK_SIZE) or 0, floor(pos.z / MAPBLOCK_SIZE))
-	return PcgRandom(minetest.hash_node_position(bpos) + world_seed):next(0,1e9)/1e9 * slime_ratio < 1
+	local x = floor(pos.x / MAPBLOCK_SIZE)
+	local y = slime_3d_chunks and floor(pos.y / MAPBLOCK_SIZE) or 0
+	local z = floor(pos.z / MAPBLOCK_SIZE)
+	return mcl_util.hash_pos(x, y, z, world_seed) / 0x100000000 * slime_ratio < 1
 end
 
 -- Returns a function that spawns children in a circle around pos.
