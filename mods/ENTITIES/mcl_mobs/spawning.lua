@@ -763,7 +763,7 @@ local function spawn_group(p, mob, spawn_on, amount_to_spawn, parent_state)
 		-- Get state for each new position
 		local state, node = build_state_for_position(sp, parent_state, true, true)
 
-		if spawn_check(sp, state, node, mob) then
+		if state and spawn_check(sp, state, node, mob) then
 			if mob.type_of_spawning == "water" then
 				sp = get_water_spawn(sp)
 			end
