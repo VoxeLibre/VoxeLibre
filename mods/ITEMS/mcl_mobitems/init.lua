@@ -441,10 +441,8 @@ minetest.register_craftitem("mcl_mobitems:heart_of_the_sea", {
 	stack_max = 64,
 })
 
+
 local horse_armor_use = S("Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.")
-
--- https://minecraft.fandom.com/wiki/Armor#Damage_protection
-
 minetest.register_craftitem("mcl_mobitems:leather_horse_armor", {
 	description = S("Leather Horse Armor"),
 	_doc_items_longdesc = S("Leather horse armor can be worn by horses to increase their protection from harm a little."),
