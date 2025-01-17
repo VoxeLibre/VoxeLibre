@@ -122,11 +122,6 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	},
 	-- Properly regrow wool after eating grass
 	on_replace = function(self, pos, oldnode, newnode)
-	minetest.sound_play({name="mcl_hunger_bite", gain=1}, {
-		pos = pos,
-		gain= 1,
-		max_hear_distance = 16,
-	}, true)
 		if not self.color or not colors[self.color] then
 			self.color = "unicolor_white"
 		end
@@ -154,6 +149,11 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 				self.object:set_velocity(vector.zero())
 				self.gotten = false
 				self.object:set_properties({ textures = self.base_texture })
+				minetest.sound_play({name="mobs_mc_animal_eat_generic", gain=0.4}, {
+				pos = pos,
+				gain= 0.4,
+				max_hear_distance = 16,
+				}, true)
 			end
 		end)
 
