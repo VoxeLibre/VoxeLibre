@@ -1,5 +1,4 @@
 -- Cactus and Sugar Cane
-
 local S = minetest.get_translator(minetest.get_current_modname())
 
 minetest.register_node("mcl_core:cactus", {
@@ -42,9 +41,8 @@ minetest.register_node("mcl_core:cactus", {
 	},
 	-- Only allow to place cactus on sand or cactus
 	on_place = mcl_util.generate_on_place_plant_function(function(pos, node)
-		local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
-		if not node_below then return false end
-		return (node_below.name == "mcl_core:cactus" or minetest.get_item_group(node_below.name, "sand") == 1)
+		local node_below = minetest.get_node_or_nil(vector.offset(pos, 0, -1, 0))
+		return node_below and (node_below.name == "mcl_core:cactus" or minetest.get_item_group(node_below.name, "sand") == 1)
 	end),
 	_mcl_blast_resistance = 0.4,
 	_mcl_hardness = 0.4,
@@ -95,7 +93,7 @@ minetest.register_node("mcl_core:reeds", {
 	node_placement_prediction = "",
 	drop = "mcl_core:reeds", -- to prevent color inheritation
 	on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
-		local soil_pos = {x=place_pos.x, y=place_pos.y-1, z=place_pos.z}
+		local soil_pos = vector.offset(place_pos, 0, -1, 0)
 		local soil_node = minetest.get_node_or_nil(soil_pos)
 		if not soil_node then return false end
 		local snn = soil_node.name -- soil node name
@@ -118,16 +116,12 @@ minetest.register_node("mcl_core:reeds", {
 		-- Legal water position rules are the same as for decoration spawn_by rules.
 		-- This differs from MC, which does not allow diagonal neighbors
 		-- and neighbors 1 layer above.
-		local np1 = {x=soil_pos.x-1, y=soil_pos.y, z=soil_pos.z-1}
-		local np2 = {x=soil_pos.x+1, y=soil_pos.y+1, z=soil_pos.z+1}
-		if #minetest.find_nodes_in_area(np1, np2, {"group:water", "group:frosted_ice"}) > 0 then
+		if #minetest.find_nodes_in_area(vector.offset(soil_pos, -1, 0, -1), vector.offset(soil_pos, 1, 1, 1), {"group:water", "group:frosted_ice"}) > 0 then
 			-- Water found! Sugar canes are happy! :-)
 			return true
 		end
-
 		-- No water found! Sugar canes are not amuzed and refuses to be placed. :-(
 		return false
-
 	end),
 	on_construct = function(pos)
 		local node = minetest.get_node(pos)
