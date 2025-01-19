@@ -1,13 +1,13 @@
--- TODO: improve support for larger zoom levels, maybe by NOT using vmanip but rather raycasting?
+-- TODO: improve support for larger zoom levels, benchmark raycasting, too?
 -- TODO: only send texture to players that have the map
 -- TODO: use ephemeral textures or base64 inline textures to eventually allow explorer maps?
 -- TODO: show multiple players on the map
 -- TODO: show banners on map
+-- TODO: when the minimum supported Luanti version has core.get_node_raw, use it
 -- Check for engine updates that allow improvements
 mcl_maps = {}
 
--- level 4 already may take some 20 minutes...
-mcl_maps.max_zoom = (tonumber(core.settings:get("vl_maps_max_zoom")) or 2)
+mcl_maps.max_zoom = (tonumber(core.settings:get("vl_maps_max_zoom")) or 4)
 mcl_maps.enable_maps = core.settings:get_bool("enable_real_maps", true)
 mcl_maps.allow_nether_maps = core.settings:get_bool("vl_maps_allow_nether", true)
 mcl_maps.map_allow_overlap = core.settings:get_bool("vl_maps_allow_overlap", true) -- 50% overlap allowed in each level
@@ -27,15 +27,16 @@ local string_to_pos = core.string_to_pos
 local get_item_group = core.get_item_group
 local dynamic_add_media = core.dynamic_add_media
 local get_connected_players = core.get_connected_players
+local get_node_name_raw = mcl_vars.get_node_name_raw
 
 local storage = core.get_mod_storage()
 local worldpath = core.get_worldpath()
-local map_textures_path = worldpath .. "/mcl_maps/"
+local map_textures_path = worldpath .. DIR_DELIM .. "mcl_maps" .. DIR_DELIM
 
 core.mkdir(map_textures_path)
 
 local function load_json_file(name)
-	local file = assert(io.open(modpath .. "/" .. name .. ".json", "r"))
+	local file = assert(io.open(modpath .. DIR_DELIM .. name .. ".json", "r"))
 	local data = core.parse_json(file:read("*all"))
 	file:close()
 	return data
@@ -45,108 +46,96 @@ local texture_colors = load_json_file("colors")
 
 local maps_generating, maps_loading = {}, {}
 
-local c_air = core.get_content_id("air")
+-- Main map generation function, called from emerge
+local function do_generate_map(id, minp, maxp, callback, t1)
+	local t2 = os.clock()
+	-- Generate a (usually) 128x128 linear array for the image
+	local pixels = {}
+	local xsize, zsize = maxp.x - minp.x + 1, maxp.z - minp.z + 1
+	-- Step size, for zoom levels > 1
+	local xstep, zstep = ceil(xsize / 128), ceil(zsize / 128)
+	for z = zsize, 1, -zstep do
+		local map_z = minp.z + z - 1
+		local last_height
+		for x = 1, xsize, xstep do
+			local map_x = minp.x + x - 1
+			-- color aggregate and height information (for 3D effect)
+			local cagg, height = { 0, 0, 0, 0 }, nil
+			local solid_under_air = -1 -- anything but air, actually
+			for map_y = maxp.y, minp.y, -1 do
+				local nodename, _, param2 = get_node_name_raw(map_x, map_y, map_z)
+				if nodename ~= "air" then
+					local color = texture_colors[nodename]
+					-- use param2 if available:
+					if color and type(color[1]) == "table" then
+						color = color[param2 + 1] or color[1]
+					end
+					if color then
+						if solid_under_air == 0 then
+							cagg, height = { 0, 0, 0, 0 }, nil -- reset
+							solid_under_air = 1
+						end
+						local alpha = cagg[4] -- 0 (transparent) to 255 (opaque)
+						if alpha < 255 then
+							local a = (color[4] or 255) * (255 - alpha) / 255 -- 0 to 255
+							local f = a / 255 -- 0 to 1, color contribution
+							-- Alpha blend the colors:
+							cagg[1] = cagg[1] + f * color[1]
+							cagg[2] = cagg[2] + f * color[2]
+							cagg[3] = cagg[3] + f * color[3]
+							alpha = cagg[4] + a -- new alpha, 0 to 255
+							cagg[4] = alpha
+						end
 
-local function generate_map(id, minp, maxp, callback)
+						-- ground estimate with transparent blocks
+						if alpha > 140 and not height then height = map_y end
+						if alpha >= 250 and solid_under_air > 0 then
+							-- adjust color to give a 3d effect
+							if last_height and height then
+								local dheight = max(-48, min((height - last_height) * 8, 48))
+								cagg[1] = cagg[1] + dheight
+								cagg[2] = cagg[2] + dheight
+								cagg[3] = cagg[3] + dheight
+							end
+							cagg[4] = 255 -- make fully opaque
+							break
+						end
+					end
+				elseif solid_under_air == -1 then
+					solid_under_air = 0 -- first air
+				end
+			end
+			-- clamp colors values to 0:255 for PNG
+			-- because 3d height effect may exceed this range
+			cagg[1] = max(0, min(round(cagg[1]), 255))
+			cagg[2] = max(0, min(round(cagg[2]), 255))
+			cagg[3] = max(0, min(round(cagg[3]), 255))
+			cagg[4] = max(0, min(round(cagg[4]), 255))
+			pixels[#pixels + 1] = string.char(cagg[1], cagg[2], cagg[3], cagg[4])
+			last_height = height
+		end
+	end
+	-- Save as png texture
+	local t3 = os.clock()
+	local filename = map_textures_path .. "mcl_maps_map_" .. id .. ".png"
+	core.safe_file_write(filename, core.encode_png(xsize / xstep, zsize / zstep, table.concat(pixels)))
+	local t4 = os.clock()
+	--core.log("action", string.format("Completed map %s after %.2fms (%.2fms emerge, %.2fms map, %.2fms png)", id, (os.clock()-t1)*1000, (t2-t1)*1000, (t3-t2)*1000, (t4-t3)*1000))
+	maps_generating[id] = nil
+	if callback then callback(id, filename) end
+end
+
+-- Trigger map generation
+local function emerge_generate_map(id, minp, maxp, callback)
 	if maps_generating[id] then return end
 	maps_generating[id] = true
-	-- FIXME: reduce resolution when zoomed out
 	local t1 = os.clock()
 	core.emerge_area(minp, maxp, function(blockpos, action, calls_remaining)
 		if calls_remaining > 0 then return end
 		-- do a DOUBLE emerge to give mapgen the chance to place structures triggered by the initial emerge
 		core.emerge_area(minp, maxp, function(blockpos, action, calls_remaining)
 			if calls_remaining > 0 then return end
-
-			-- Load voxelmanip, measure time as this is fairly expensive
-			local t2 = os.clock()
-			local vm = core.get_voxel_manip()
-			local emin, emax = vm:read_from_map(minp, maxp)
-			local data = vm:get_data()
-			local param2data = vm:get_param2_data()
-			local t3 = os.clock()
-
-			-- Generate a (usually) 128x128 linear array for the image
-			local pixels = {}
-			local area = VoxelArea:new({ MinEdge = emin, MaxEdge = emax })
-			local xsize, zsize = maxp.x - minp.x + 1, maxp.z - minp.z + 1
-			-- Step size, for zoom levels > 1
-			local xstep, zstep = ceil(xsize / 128), ceil(zsize / 128)
-			local ystride = area.ystride
-			for z = zsize, 1, -zstep do
-				local map_z = minp.z  + z - 1
-				local last_height
-				for x = 1, xsize, xstep do
-					local map_x = minp.x + x - 1
-
-					-- color aggregate and height information (for 3D effect)
-					local cagg, height = { 0, 0, 0, 0 }, nil
-					local solid_under_air = -1 -- anything but air, actually
-					local index = area:index(map_x, maxp.y, map_z) + ystride
-					for map_y = maxp.y, minp.y, -1 do
-						index = index - ystride -- vertically down until we are opaque
-
-						local c_id = data[index]
-						if c_id ~= c_air then
-							local color = texture_colors[core.get_name_from_content_id(c_id)]
-							-- use param2 if available:
-							if color and type(color[1]) == "table" then
-								color = color[param2data[index] + 1] or color[1]
-							end
-							if color then
-								if solid_under_air == 0 then
-									cagg, height = { 0, 0, 0, 0 }, nil -- reset
-									solid_under_air = 1
-								end
-								local alpha = cagg[4] -- 0 (transparent) to 255 (opaque)
-								if alpha < 255 then
-									local a = (color[4] or 255) * (255 - alpha) / 255 -- 0 to 255
-									local f = a / 255 -- 0 to 1, color contribution
-									-- Alpha blend the colors:
-									cagg[1] = cagg[1] + f * color[1]
-									cagg[2] = cagg[2] + f * color[2]
-									cagg[3] = cagg[3] + f * color[3]
-									alpha = cagg[4] + a -- new alpha, 0 to 255
-									cagg[4] = alpha
-								end
-
-								-- ground estimate with transparent blocks
-								if alpha > 140 and not height then height = map_y end
-								if alpha >= 250 and solid_under_air > 0 then
-									-- adjust color to give a 3d effect
-									if last_height and height then
-										local dheight = max(-48, min((height - last_height) * 8, 48))
-										cagg[1] = cagg[1] + dheight
-										cagg[2] = cagg[2] + dheight
-										cagg[3] = cagg[3] + dheight
-									end
-									cagg[4] = 255 -- make fully opaque
-									break
-								end
-							end
-						elseif solid_under_air == -1 then
-							solid_under_air = 0 -- first air
-						end
-					end
-					-- clamp colors values to 0:255 for PNG
-					-- because 3d height effect may exceed this range
-					cagg[1] = max(0, min(round(cagg[1]), 255))
-					cagg[2] = max(0, min(round(cagg[2]), 255))
-					cagg[3] = max(0, min(round(cagg[3]), 255))
-					cagg[4] = max(0, min(round(cagg[4]), 255))
-					pixels[#pixels + 1] = string.char(cagg[1], cagg[2], cagg[3], cagg[4])
-					last_height = height
-				end
-			end
-			-- Save as png texture
-			local filename = map_textures_path .. "mcl_maps_map_" .. id .. ".png"
-			local data = core.encode_png(xsize / xstep, zsize / zstep, table.concat(pixels))
-			local f = assert(io.open(filename, "wb"))
-			f:write(data)
-			f:close()
-			-- core.log("action", string.format("Completed map %s after %.2fms (%.2fms emerge, %.2fms LVM, %.2fms map)", id, (os.clock()-t1)*1000, (t2-t1)*1000, (t3-t2)*1000, (os.clock()-t3)*1000))
-			maps_generating[id] = nil
-			if callback then callback(id, filename) end
+			do_generate_map(id, minp, maxp, callback, t1)
 		end)
 	end)
 end
@@ -197,7 +186,7 @@ local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 	meta:set_string("mcl_maps:maxp", pos_to_string(maxp))
 	tt.reload_itemstack_description(itemstack)
 
-	generate_map(id, minp, maxp, callback)
+	emerge_generate_map(id, minp, maxp, callback)
 	return itemstack
 end
 
