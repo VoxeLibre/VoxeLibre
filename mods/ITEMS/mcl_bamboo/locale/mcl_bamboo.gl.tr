@@ -15,13 +15,13 @@ To open or close a wooden door, rightclick it or supply its lower half with a re
 Bamboo Trapdoor=Trapela de bambú
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=As trapelas de madeira son barreiras horizontais que podense abrir e pechar ca man ou por un sinal de pedra vermella.
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou pechar unha trapela, fai clic dereito ou manda un sinal de pedra vermella cara ela.
-Bamboo Stair=Escaleira de bambú
+Bamboo Stairs=Escaleira de bambú
 Bamboo Slab=Lousa de bambú
 Double Bamboo Slab=Lousa dobre de bambú
-Stripped Bamboo Stair=Escaleira de bambú sen cortiza
+Stripped Bamboo Stairs=Escaleira de bambú sen cortiza
 Stripped Bamboo Slab=Lousa de bambú sen cortiza
 Double Stripped Bamboo Slab=Lousa dobre de bambú sen cortiza
-Bamboo Plank Stair=Escaleira de madeira de bambú
+Bamboo Plank Stairs=Escaleira de madeira de bambú
 Bamboo Plank Slab=Lousa de madeira de bambú
 Double Bamboo Plank Slab=Lousa dobre de madeira de bambú
 Bamboo Pressure Plate=Placa de presión de bambú
@@ -32,7 +32,7 @@ Bamboo Fence Gate=Porta de cerca de bambú
 Bamboo Button=Botón de bambú
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Un botón de bambú e un compoñente de pedra vermella feito de pedra o cal se pode presionar para proporcionar enerxía de pedra vermella. Cando se empuxa, alimenta os compoñentes adxacentes de pedra vermella durante 1 segundo.
-Bamboo Mosaic Stair=Escaleiras de mosaico de bambú
+Bamboo Mosaic Stairs=Escaleiras de mosaico de bambú
 Bamboo Mosaic Slab=Lousa de mosaico de bambú
 Double Bamboo Mosaic Slab=Lousa dobre de mosaico de bambú
 Scaffolding=Estada

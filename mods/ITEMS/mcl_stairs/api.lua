@@ -382,7 +382,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 end
 
 
--- Stair/slab registration function.
+-- Stairs/slab registration function.
 -- Nodes will be called mcl_stairs:{stair,slab}_<subname>
 
 function mcl_stairs.register_stair_and_slab(subname, recipeitem,

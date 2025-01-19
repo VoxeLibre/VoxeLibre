@@ -511,7 +511,7 @@ minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 	_mcl_hardness = 2,
 })
 
-mcl_stairs.register_stair("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", wood_stair_groups, false, S("Warped Stair"))
+mcl_stairs.register_stair("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", wood_stair_groups, false, S("Warped Stairs"))
 mcl_stairs.register_slab("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", wood_slab_groups, false, S("Warped Slab"))
 
 minetest.register_craft({
@@ -774,7 +774,7 @@ minetest.register_craft({
 	},
 })
 
-mcl_stairs.register_stair("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_stair_groups, false, S("Crimson Stair"))
+mcl_stairs.register_stair("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_stair_groups, false, S("Crimson Stairs"))
 mcl_stairs.register_slab("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_slab_groups, false, S("Crimson Slab"))
 
 minetest.register_abm({

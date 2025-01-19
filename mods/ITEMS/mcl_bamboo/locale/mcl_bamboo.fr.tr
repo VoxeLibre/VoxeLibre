@@ -13,13 +13,13 @@ To open or close a wooden door, rightclick it or supply its lower half with a re
 Bamboo Trapdoor=Trappe de bambou
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Les trappes de bois sont des barrières horizontales qui peuvent être ouvertes et fermées à la main ou par un signal redstone. Lorsqu'elles sont ouvertes, elles peuvent êtres escaladées comme une échelle.
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Pour ouvrir ou fermer la trappe, cliquer droit ou lui envoyer un signal redstone.
-Bamboo Stair=Escalier de bambou
+Bamboo Stairs=Escalier de bambou
 Bamboo Slab=Dalle de bambou
 Double Bamboo Slab=Double dalle de bambou
-Stripped Bamboo Stair=Escalier de bambou écorcée
+Stripped Bamboo Stairs=Escalier de bambou écorcée
 Stripped Bamboo Slab=Dalle de bambou écorcée
 Double Stripped Bamboo Slab=Double dalle de bambou écorcée
-Bamboo Plank Stair=Escalier de planches de bambou
+Bamboo Plank Stairs=Escalier de planches de bambou
 Bamboo Plank Slab=Dalle de planches de bambou
 Double Bamboo Plank Slab=Double dalle de planches de bambou
 Bamboo Pressure Plate=Plaque de pression de bambou
@@ -30,7 +30,7 @@ Bamboo Fence Gate=Portillon de bambou
 Bamboo Button=Bouton en bambou
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Un bouton en bambou est un composant redstone fait de bamboo qui peut être poussé pour fournir un signal redstone. Lorsque poussé, il alimente les composants redstone adjacents pendant 1 seconde.
-Bamboo Mosaic Stair=Escalier mosaïque de bambou
+Bamboo Mosaic Stairs=Escalier mosaïque de bambou
 Bamboo Mosaic Slab=Dalle mosaïque de bambou
 Double Bamboo Mosaic Slab=Double dalle mosaïque de bambou
 Scaffolding=Échafaudage

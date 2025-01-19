@@ -13,13 +13,13 @@ To open or close a wooden door, rightclick it or supply its lower half with a re
 Bamboo Trapdoor=Bambusfallem
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Trefallemmer er horisontale barrierer som kan åpnes og lukkes for hånd eller via et rødsteinssignal. De opptar den øvre eller nedre delen av en blokk, avhengig av hvordan de har blitt plassert. Når de er åpne, kan de klatres i som en stige.
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å åpne eller lukke fallemmen, høyreklikk på den eller send et rødsteinssignal til den.
-Bamboo Stair=Bambustrapp
+Bamboo Stairs=Bambustrapp
 Bamboo Slab=Bambushelle
 Double Bamboo Slab=Dobbel bambushelle
-Stripped Bamboo Stair=Slidet bambustrapp
+Stripped Bamboo Stairs=Slidet bambustrapp
 Stripped Bamboo Slab=Slindet bambushelle
 Double Stripped Bamboo Slab=Dobbel slindet bambushelle
-Bamboo Plank Stair=Bambusplanketrapp
+Bamboo Plank Stairs=Bambusplanketrapp
 Bamboo Plank Slab=Bambusplankehelle
 Double Bamboo Plank Slab= Dobbel bambusplankehelle
 Bamboo Pressure Plate=Bambustrykkplate
@@ -30,7 +30,7 @@ Bamboo Fence Gate=Bambusport
 Bamboo Button=Bambusknapp
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=En bambusknapp er en rødsteinskomponent laget av bambus som kan skyves for å gi rødsteinskraft. Når den trykkes, driver den tilstøtende rødsteinskomponenter i 1 sekund.
-Bamboo Mosaic Stair=Bambusmosaikktrapp
+Bamboo Mosaic Stairs=Bambusmosaikktrapp
 Bamboo Mosaic Slab=Bambusmosaikkhelle
 Double Bamboo Mosaic Slab=Dobbel bambusmosaikkhelle
 Scaffolding=Stilas

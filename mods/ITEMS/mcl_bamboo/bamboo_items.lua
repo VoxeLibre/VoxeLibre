@@ -87,21 +87,21 @@ if minetest.get_modpath("mcl_stairs") then
 		mcl_stairs.register_stair_and_slab_simple(
 				"bamboo_block",
 				"mcl_bamboo:bamboo_block",
-				S("Bamboo Stair"),
+				S("Bamboo Stairs"),
 				S("Bamboo Slab"),
 				S("Double Bamboo Slab")
 		)
 		mcl_stairs.register_stair_and_slab_simple(
 				"bamboo_stripped",
 				"mcl_bamboo:bamboo_block_stripped",
-				S("Stripped Bamboo Stair"),
+				S("Stripped Bamboo Stairs"),
 				S("Stripped Bamboo Slab"),
 				S("Double Stripped Bamboo Slab")
 		)
 		mcl_stairs.register_stair_and_slab_simple(
 				"bamboo_plank",
 				BAMBOO_PLANK,
-				S("Bamboo Plank Stair"),
+				S("Bamboo Plank Stairs"),
 				S("Bamboo Plank Slab"),
 				S("Double Bamboo Plank Slab")
 		)
@@ -233,7 +233,7 @@ if minetest.get_modpath("mcl_stairs") then
 		mcl_stairs.register_stair_and_slab_simple(
 				"bamboo_mosaic",
 				"mcl_bamboo:bamboo_mosaic",
-				S("Bamboo Mosaic Stair"),
+				S("Bamboo Mosaic Stairs"),
 				S("Bamboo Mosaic Slab"),
 				S("Double Bamboo Mosaic Slab")
 		)

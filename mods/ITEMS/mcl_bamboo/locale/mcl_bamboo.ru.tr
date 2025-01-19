@@ -13,13 +13,13 @@ To open or close a wooden door, rightclick it or supply its lower half with a re
 Bamboo Trapdoor=Бамбуковый люк
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Деревянные люки это горизонтальные преграды, которые можно открывать и закрывать вручную и по сигналу редстоуна. Они занимают верхнюю или нижнюю часть блока, в зависимости от того, как они были установлены. В открытом состоянии по ним можно карабкаться, как по лестницам.
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Чтобы открыть или закрыть деревянный люк, кликните по нему правой кнопкой либо подайте на него сигнал редстоуна.
-Bamboo Stair=Бамбуковые ступени
+Bamboo Stairs=Бамбуковые ступени
 Bamboo Slab=Бамбуковая плита
 Double Bamboo Slab=Двойная бамбуковая плита
-Stripped Bamboo Stair=Обтёсанные бамбуковые ступени
+Stripped Bamboo Stairs=Обтёсанные бамбуковые ступени
 Stripped Bamboo Slab=Обтёсанная бамбуковая плита
 Double Stripped Bamboo Slab=Двойная обтёсанная бамбуковая плита
-Bamboo Plank Stair=Ступени из бамбуковых досок
+Bamboo Plank Stairs=Ступени из бамбуковых досок
 Bamboo Plank Slab=Плита из бамбуковых досок
 Double Bamboo Plank Slab=Двойная плита из бамбуковых досок
 Bamboo Pressure Plate=Бамбуковая нажимная плита
@@ -30,7 +30,7 @@ Bamboo Fence Gate=Бамбуковая калитка
 Bamboo Button=Бамбуковая кнопка
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Бамбуковая кнопка это компонент редстоуна, сделанный из бамбука, её можно нажать, чтобы получить сигнал редстоуна. При нажатии она включает соседние компоненты редстоуна на 1 с.
-Bamboo Mosaic Stair=Ступени из бамбуковой мозаики
+Bamboo Mosaic Stairs=Ступени из бамбуковой мозаики
 Bamboo Mosaic Slab=Плита из бамбуковой мозаики
 Double Bamboo Mosaic Slab=Двойная бамбуковая мозаичная плита
 Scaffolding=Строительные леса

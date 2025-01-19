@@ -13,13 +13,13 @@ To open or close a wooden door, rightclick it or supply its lower half with a re
 Bamboo Trapdoor=Alçapão de Bambu
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Alçapões de madeira são barreiras horizontais as quais podem ser abertas ou fechadas com a mão ou um sinal de redstone. Eles ocupam a parte superior ou inferior de um bloco, dependendo de como eles são posicionados. Quando abertos, eles são escaláveis como uma escada.
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou fechar o alçapão, clique com o botão direito ou mande-o um sinal de redstone.
-Bamboo Stair=Escada de Bambu
+Bamboo Stairs=Escada de Bambu
 Bamboo Slab=Laje de Bambu
 Double Bamboo Slab=Laje Dupla de Bambu
-Stripped Bamboo Stair=Escada de Bambu Descascado
+Stripped Bamboo Stairs=Escada de Bambu Descascado
 Stripped Bamboo Slab=Laje de Bambu Descascado
 Double Stripped Bamboo Slab=Laje Dupla de Bambu Descascado
-Bamboo Plank Stair=Escada de Tábuas de Bambu
+Bamboo Plank Stairs=Escada de Tábuas de Bambu
 Bamboo Plank Slab=Laje de Tábuas de Bambu
 Double Bamboo Plank Slab=Laje Dupla de Tábuas de Bambu
 Bamboo Pressure Plate=Placa de Pressão de Bambu
@@ -30,7 +30,7 @@ Bamboo Fence Gate=Portão de Bambu
 Bamboo Button=Botão de Bambu
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Um botão de bambu é um componente de redstone feito de bambu ao qual pode ser empurrado para providenciar carga de redstone. Quando empurrado, energiza componentes de redstone adjacentes por 1 segundo.
-Bamboo Mosaic Stair=Escada de Mosaico de Bambu
+Bamboo Mosaic Stairs=Escada de Mosaico de Bambu
 Bamboo Mosaic Slab=Laje de Mosaico de Bambu
 Double Bamboo Mosaic Slab=Laje Dupla de Mosaico de Bambu
 Scaffolding=Andaime

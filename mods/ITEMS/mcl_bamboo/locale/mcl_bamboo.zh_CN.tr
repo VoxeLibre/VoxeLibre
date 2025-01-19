@@ -13,13 +13,13 @@ To open or close a wooden door, rightclick it or supply its lower half with a re
 Bamboo Trapdoor=竹制活板门
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=木质活板门是水平的障碍物，可以通过手动或红石信号来打开和关闭，它们会根据放置方式占据方块的上半部分或下半部分，打开时，可以像爬梯子一样攀爬它们。
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=要打开或关闭活板门，可右键点击它或向其发送红石信号。
-Bamboo Stair=竹制楼梯
+Bamboo Stairs=竹制楼梯
 Bamboo Slab=竹制台阶
 Double Bamboo Slab=双层竹制台阶
-Stripped Bamboo Stair=去皮竹制楼梯
+Stripped Bamboo Stairs=去皮竹制楼梯
 Stripped Bamboo Slab=去皮竹制台阶
 Double Stripped Bamboo Slab=双层去皮竹制台阶
-Bamboo Plank Stair=竹木板楼梯
+Bamboo Plank Stairs=竹木板楼梯
 Bamboo Plank Slab=竹木板台阶
 Double Bamboo Plank Slab=双层竹木板台阶
 Bamboo Pressure Plate=竹制压力板
@@ -30,7 +30,7 @@ Bamboo Fence Gate=竹栅栏门
 Bamboo Button=竹制按钮
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=竹制按钮是一种由竹子制成的红石元件，按下它可以提供红石信号，按下时，它能为相邻的红石元件供电1秒。
-Bamboo Mosaic Stair=竹制马赛克楼梯
+Bamboo Mosaic Stairs=竹制马赛克楼梯
 Bamboo Mosaic Slab=竹制马赛克台阶
 Double Bamboo Mosaic Slab=双层竹制马赛克台阶
 Scaffolding=脚手架

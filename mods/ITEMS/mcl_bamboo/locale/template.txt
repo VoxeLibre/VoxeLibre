@@ -13,13 +13,13 @@ To open or close a wooden door, rightclick it or supply its lower half with a re
 Bamboo Trapdoor=
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=
-Bamboo Stair=
+Bamboo Stairs=
 Bamboo Slab=
 Double Bamboo Slab=
-Stripped Bamboo Stair=
+Stripped Bamboo Stairs=
 Stripped Bamboo Slab=
 Double Stripped Bamboo Slab=
-Bamboo Plank Stair=
+Bamboo Plank Stairs=
 Bamboo Plank Slab=
 Double Bamboo Plank Slab=
 Bamboo Pressure Plate=
@@ -30,7 +30,7 @@ Bamboo Fence Gate=
 Bamboo Button=
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=
-Bamboo Mosaic Stair=
+Bamboo Mosaic Stairs=
 Bamboo Mosaic Slab=
 Double Bamboo Mosaic Slab=
 Scaffolding=
