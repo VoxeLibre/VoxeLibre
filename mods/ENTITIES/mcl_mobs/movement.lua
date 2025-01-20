@@ -28,6 +28,7 @@ local vector_zero = vector.zero
 local vector_copy = vector.copy
 local vector_offset = vector.offset
 local vector_distance = vector.distance
+local raycast_line_of_sight = mcl_mobs.check_line_of_sight
 
 local registered_fallback_node = minetest.registered_nodes[mcl_mobs.fallback_node]
 
@@ -62,26 +63,6 @@ function mob_class:is_node_waterhazard(nodename)
 	   or (not self.breathes_in_water and self.breath_max ~= -1 and (ndef.drowning or 0) > 0))
 end
 
-
-local function raycast_line_of_sight(origin, target)
-	local raycast = minetest.raycast(origin, target, false, true)
-	local los_blocked = false
-	for hitpoint in raycast do
-		if hitpoint.type == "node" then
-			--TODO type object could block vision, for example chests
-			local node = minetest.get_node(minetest.get_pointed_thing_position(hitpoint))
-
-			if node.name ~= "air" then
-				local nodef = minetest.registered_nodes[node.name]
-				if nodef and nodef.walkable then
-					los_blocked = true
-					break
-				end
-			end
-		end
-	end
-	return not los_blocked
-end
 
 function mob_class:target_visible(origin)
 	if not origin then return end

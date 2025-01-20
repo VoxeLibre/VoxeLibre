@@ -112,7 +112,19 @@ mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 	},
 })
 
-mcl_mobs:spawn_specific("mobs_mc:guardian_elder", { "mcl_core:water_source", "mclx_core:river_water_source" }, { "mcl_core:water_source", "mclx_core:river_water_source" }, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mcl_vars.mg_overworld_min, mobs_mc.water_level-18, mobs_mc.water_level)
+mcl_mobs:spawn_specific(
+	"mobs_mc:guardian_elder", -- name
+	"overworld", -- dimension
+	"water", -- type_of_spawning
+	{},	-- no biomes, only spawn in structures
+	0, -- min_light
+	core.LIGHT_MAX+1, -- max_light
+	30, -- interval
+	40000, -- chance
+	2, -- aoc
+	mcl_vars.mg_overworld_min, -- min_height
+	mobs_mc.water_level - 18 -- max_height
+)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "#ceccba", "#747693", 0)
