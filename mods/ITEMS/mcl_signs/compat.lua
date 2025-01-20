@@ -1,3 +1,4 @@
+mcl_signs.old_rotnames = {}
 
 --these are the "rotation strings" of the old sign rotation scheme
 local rotkeys = {
@@ -5,6 +6,7 @@ local rotkeys = {
 	"45",
 	"67_5"
 }
+
 --this is a translation table for the old sign rotation scheme to degrotate
 --the first level is the itemstring part and the second level represents
 --the facedir param2 (+1) mapped to the degrotate param2
@@ -28,6 +30,7 @@ local nidp2_degrotate = {
 		15,
 	}
 }
+
 local mcl2standingsigns = {}
 mcl2standingsigns["mcl_signs:standing_sign"] = "mcl_signs:standing_sign_oak"
 mcl2standingsigns["mcl_signs:standing_sign_acaciawood"] = "mcl_signs:standing_sign_acacia"
@@ -38,7 +41,7 @@ mcl2standingsigns["mcl_signs:standing_sign_sprucewood"] = "mcl_signs:standing_si
 mcl2standingsigns["mcl_signs:standing_sign_mangrove_wood"] = "mcl_signs:standing_sign_mangrove"
 mcl2standingsigns["mcl_signs:standing_sign_crimson_hyphae_wood"] = "mcl_signs:standing_sign_crimson"
 mcl2standingsigns["mcl_signs:standing_sign_warped_hyphae_wood"] = "mcl_signs:standing_sign_warped"
-mcl2standingsigns["mcl_signs:standing_sign_cherrywood"] = "mcl_signs:standing_sign_cherry_blossom"
+mcl2standingsigns["mcl_signs:standing_sign_cherrywood"] = "mcl_signs:standing_sign_cherry"
 
 local mcl2rotsigns = {}
 
@@ -52,24 +55,24 @@ for _,v in pairs(rotkeys) do
 	mcl2rotsigns["mcl_signs:standing_sign"..v.."_mangrove_wood"] = "mcl_signs:standing_sign_mangrove"
 	mcl2rotsigns["mcl_signs:standing_sign"..v.."_crimson_hyphae_wood"] = "mcl_signs:standing_sign_crimson"
 	mcl2rotsigns["mcl_signs:standing_sign"..v.."_warped_hyphae_wood"] = "mcl_signs:standing_sign_warped"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_cherrywood"] = "mcl_signs:standing_sign_cherry_blossom"
+	mcl2rotsigns["mcl_signs:standing_sign"..v.."_cherrywood"] = "mcl_signs:standing_sign_cherry"
 end
 
 function mcl_signs.upgrade_sign_meta(pos)
-		local m = minetest.get_meta(pos)
-		local col = m:get_string("mcl_signs:text_color")
-		local glo = m:get_string("mcl_signs:glowing_sign")
-		if col ~= "" then
-			m:set_string("color",col)
-			m:set_string("mcl_signs:text_color","")
-		end
-		if glo == "true" then
-			m:set_string("glow",glo)
-		end
-		if glo ~= "" then
-			m:set_string("mcl_signs:glowing_sign","")
-		end
-		mcl_signs.get_text_entity (pos, true) -- the 2nd "true" arg means deleting the entity for respawn
+	local m = core.get_meta(pos)
+	local col = m:get_string("mcl_signs:text_color")
+	local glo = m:get_string("mcl_signs:glowing_sign")
+	if col ~= "" then
+		m:set_string("color",col)
+		m:set_string("mcl_signs:text_color","")
+	end
+	if glo == "true" then
+		m:set_string("glow",glo)
+	end
+	if glo ~= "" then
+		m:set_string("mcl_signs:glowing_sign","")
+	end
+	mcl_signs.get_text_entity(pos, true) -- the 2nd "true" arg means deleting the entity for respawn
 end
 
 function mcl_signs.upgrade_sign_rot(pos,node)
@@ -91,7 +94,7 @@ function mcl_signs.upgrade_sign_rot(pos,node)
 		if mcl2standingsigns[node.name] then
 			node.name = mcl2standingsigns[node.name]
 		end
-		local def = minetest.registered_nodes[node.name]
+		local def = core.registered_nodes[node.name]
 		if def and def._mcl_sign_type == "standing" then
 			if node.param2 == 1 or node.param2 == 121 then
 				node.param2 = 180
@@ -102,12 +105,12 @@ function mcl_signs.upgrade_sign_rot(pos,node)
 			end
 		end
 	end
-	minetest.swap_node(pos,node)
+	core.swap_node(pos,node)
 	mcl_signs.upgrade_sign_meta(pos)
 	mcl_signs.update_sign(pos)
 end
 
-minetest.register_lbm({
+core.register_lbm({
 	nodenames = {"group:sign"},
 	name = "mcl_signs:update_old_signs",
 	label = "Update old signs",
@@ -117,7 +120,8 @@ minetest.register_lbm({
 
 for k,_ in pairs(mcl2rotsigns) do table.insert(mcl_signs.old_rotnames, k) end
 for k,_ in pairs(mcl2standingsigns) do table.insert(mcl_signs.old_rotnames, k) end
-minetest.register_lbm({
+
+core.register_lbm({
 	nodenames = mcl_signs.old_rotnames,
 	name = "mcl_signs:update_old_rotated_standing",
 	label = "Update old standing rotated signs",
