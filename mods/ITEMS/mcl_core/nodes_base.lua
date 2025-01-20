@@ -1132,7 +1132,7 @@ for i=1,8 do
 			mcl_core.clear_snow_dirt(npos, node)
 		end,
 		node_box = node_box,
-		groups = {shovely=2, attached_node=1,deco_block=1, dig_by_piston=1, snow_cover=1, top_snow=i},
+		groups = {shovely=2, supported_node=1, deco_block=1, dig_by_piston=1, snow_cover=1, top_snow=i},
 		sounds = mcl_sounds.node_sound_snow_defaults(),
 		on_construct = mcl_core.on_snow_construct,
 		on_place = on_place,
