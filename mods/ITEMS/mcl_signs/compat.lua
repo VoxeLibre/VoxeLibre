@@ -1,15 +1,15 @@
 mcl_signs.old_rotnames = {}
 
---these are the "rotation strings" of the old sign rotation scheme
+-- these are the "rotation strings" of the old sign rotation scheme
 local rotkeys = {
 	"22_5",
 	"45",
 	"67_5"
 }
 
---this is a translation table for the old sign rotation scheme to degrotate
---the first level is the itemstring part and the second level represents
---the facedir param2 (+1) mapped to the degrotate param2
+-- this is a translation table for the old sign rotation scheme to degrotate
+-- the first level is the itemstring part and the second level represents
+-- the facedir param2 (+1) mapped to the degrotate param2
 local nidp2_degrotate = {
 	["22_5"] = {
 		225,
@@ -31,46 +31,44 @@ local nidp2_degrotate = {
 	}
 }
 
+local signs = {
+	[""] = "_oak",
+	["_acaciawood"] = "_acacia",
+	["_junglewood"] = "_jungle",
+	["_birchwood"] = "_birch",
+	["_darkwood"] = "_dark_oak",
+	["_sprucewood"] = "_spruce",
+	["_mangrove_wood"] = "_mangrove",
+	["_crimson_hyphae_wood"] = "_crimson",
+	["_warped_hyphae_wood"] = "_warped",
+	["_cherrywood"] = "_cherry",
+}
+
 local mcl2standingsigns = {}
-mcl2standingsigns["mcl_signs:standing_sign"] = "mcl_signs:standing_sign_oak"
-mcl2standingsigns["mcl_signs:standing_sign_acaciawood"] = "mcl_signs:standing_sign_acacia"
-mcl2standingsigns["mcl_signs:standing_sign_junglewood"] = "mcl_signs:standing_sign_jungle"
-mcl2standingsigns["mcl_signs:standing_sign_birchwood"] = "mcl_signs:standing_sign_birch"
-mcl2standingsigns["mcl_signs:standing_sign_darkwood"] = "mcl_signs:standing_sign_dark_oak"
-mcl2standingsigns["mcl_signs:standing_sign_sprucewood"] = "mcl_signs:standing_sign_spruce"
-mcl2standingsigns["mcl_signs:standing_sign_mangrove_wood"] = "mcl_signs:standing_sign_mangrove"
-mcl2standingsigns["mcl_signs:standing_sign_crimson_hyphae_wood"] = "mcl_signs:standing_sign_crimson"
-mcl2standingsigns["mcl_signs:standing_sign_warped_hyphae_wood"] = "mcl_signs:standing_sign_warped"
-mcl2standingsigns["mcl_signs:standing_sign_cherrywood"] = "mcl_signs:standing_sign_cherry"
-
 local mcl2rotsigns = {}
+for old, new in pairs(signs) do
+	local newname = "mcl_signs:standing_sign"..new
 
-for _,v in pairs(rotkeys) do
-	mcl2rotsigns["mcl_signs:standing_sign"..v] = "mcl_signs:standing_sign_oak"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_acaciawood"] = "mcl_signs:standing_sign_acacia"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_junglewood"] = "mcl_signs:standing_sign_jungle"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_birchwood"] = "mcl_signs:standing_sign_birch"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_darkwood"] = "mcl_signs:standing_sign_dark_oak"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_sprucewood"] = "mcl_signs:standing_sign_spruce"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_mangrove_wood"] = "mcl_signs:standing_sign_mangrove"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_crimson_hyphae_wood"] = "mcl_signs:standing_sign_crimson"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_warped_hyphae_wood"] = "mcl_signs:standing_sign_warped"
-	mcl2rotsigns["mcl_signs:standing_sign"..v.."_cherrywood"] = "mcl_signs:standing_sign_cherry"
+	mcl2standingsigns["mcl_signs:standing_sign"..old] = newname
+	for _, rotkey in ipairs(rotkeys) do
+		mcl2rotsigns["mcl_signs:standing_sign"..rotkey..old] = newname
+	end
+	core.register_alias("mcl_signs:wall_sign"..old, newname)
 end
 
 function mcl_signs.upgrade_sign_meta(pos)
 	local m = core.get_meta(pos)
-	local col = m:get_string("mcl_signs:text_color")
-	local glo = m:get_string("mcl_signs:glowing_sign")
-	if col ~= "" then
-		m:set_string("color",col)
-		m:set_string("mcl_signs:text_color","")
+	local color = m:get_string("mcl_signs:text_color")
+	local glow = m:get_string("mcl_signs:glowing_sign")
+	if color ~= "" then
+		m:set_string("color", color)
+		m:set_string("mcl_signs:text_color", "")
 	end
-	if glo == "true" then
-		m:set_string("glow",glo)
+	if glow == "true" then
+		m:set_string("glow", glow)
 	end
-	if glo ~= "" then
-		m:set_string("mcl_signs:glowing_sign","")
+	if glow ~= "" then
+		m:set_string("mcl_signs:glowing_sign", "")
 	end
 	mcl_signs.get_text_entity(pos, true) -- the 2nd "true" arg means deleting the entity for respawn
 end
