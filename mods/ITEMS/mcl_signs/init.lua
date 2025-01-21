@@ -17,11 +17,10 @@ local DEFAULT_COLOR = "#000000"
 
 local SIGN_GLOW_INTENSITY = 14
 
-local signs_editable = core.settings:get_bool("mcl_signs_editable", false)
-
 local S = core.get_translator(core.get_current_modname())
 local F = core.formspec_escape
 
+-- Template definition
 local sign_tpl = {
 	_tt_help = S("Can be written"),
 	_doc_items_longdesc = S("Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them."),
@@ -45,8 +44,10 @@ local sign_tpl = {
 	_mcl_sign_type = "standing"
 }
 
---Signs data / meta
-local function normalize_rotation(rot) return math.floor(0.5 + rot / 15) * 15 end
+-- Signs data / meta
+local function normalize_rotation(rot)
+	return math.floor(0.5 + rot / 15) * 15
+end
 
 local function get_signdata(pos)
 	local node = core.get_node(pos)
@@ -93,21 +94,12 @@ local function set_signmeta(pos,def)
 end
 
 -- Text/texture
---[[ File format of characters.txt:
-It's an UTF-8 encoded text file that contains metadata for all supported characters. It contains a sequence of info
-	blocks, one for each character. Each info block is made out of 3 lines:
-Line 1: The literal UTF-8 encoded character
-Line 2: Name of the texture file for this character minus the “.png” suffix; found in the “textures/” sub-directory
-Line 3: Currently ignored. Previously this was for the character width in pixels
-
-After line 3, another info block may follow. This repeats until the end of the file.
-
-All character files must be 5 or 6 pixels wide (5 pixels are preferred)
-]]
 local modpath = core.get_modpath(core.get_current_modname())
 local chars_file = io.open(modpath .. "/characters.txt", "r")
--- FIXME: Support more characters (many characters are missing). Currently ASCII and Latin-1 Supplement are supported.
-assert(chars_file, "[mcl_signs] characters.txt not found")
+-- FIXME: Support more characters (many characters are missing).
+-- Currently ASCII and Latin-1 Supplement are supported.
+assert(chars_file, "mcl_signs/characters.txt not found")
+
 local charmap = {}
 while true do
 	local char = chars_file:read("*l")
@@ -149,7 +141,6 @@ local function string_to_line_array(str)
 	end
 	return linechar_table
 end
-
 
 function mcl_signs.create_lines(text)
 	local line_num = 1
@@ -194,8 +185,8 @@ function mcl_signs.generate_line(s, ypos)
 	local texture = ""
 	local xpos = math.floor((SIGN_WIDTH - width) / 2)
 
-	for j = 1, #parsed do
-		texture = texture .. ":" .. xpos .. "," .. ypos .. "=" .. parsed[j] .. ".png"
+	for _, file in ipairs(parsed) do
+		texture = texture .. ":" .. xpos .. "," .. ypos .. "=" .. file.. ".png"
 		xpos = xpos + printed_char_width
 	end
 	return texture
@@ -207,8 +198,8 @@ function mcl_signs.generate_texture(data)
 	local ypos = 0
 	local letter_color = data.color or DEFAULT_COLOR
 
-	for i = 1, #lines do
-		texture = texture .. mcl_signs.generate_line(lines[i], ypos)
+	for _, line in ipairs(lines) do
+		texture = texture .. mcl_signs.generate_line(line, ypos)
 		ypos = ypos + LINE_HEIGHT
 	end
 
@@ -231,7 +222,7 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	end
 
 	local above = pointed_thing.above
-	local dir = {x = under.x - above.x, y = under.y - above.y, z = under.z - above.z}
+	local dir = vector.subtract(under, above)
 	local wdir = core.dir_to_wallmounted(dir)
 
 	local itemstring = itemstack:get_name()
@@ -255,7 +246,7 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
-function sign_tpl.on_rightclick(pos, _, clicker, itemstack, _)
+function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
 	if itemstack:get_name() == "mcl_mobitems:glow_ink_sac" then
 		local data = get_signdata(pos)
 		if data then
@@ -268,65 +259,65 @@ function sign_tpl.on_rightclick(pos, _, clicker, itemstack, _)
 				itemstack:take_item()
 			end
 		end
-	elseif signs_editable then
-		if not mcl_util.check_position_protection(pos, clicker) then
-			mcl_signs.show_formspec(clicker, pos)
-		end
+	elseif not mcl_util.check_position_protection(pos, clicker) then
+		mcl_signs.show_formspec(clicker, pos)
 	end
 	return itemstack
 end
 
 function sign_tpl.on_destruct(pos)
-	mcl_signs.get_text_entity (pos, true)
+	mcl_signs.get_text_entity(pos, true)
 end
 
-function sign_tpl._on_dye_place(pos,color)
+function sign_tpl._on_dye_place(pos, color)
 	set_signmeta(pos,{
 		color = mcl_dyes.colors[color].rgb
 	})
 	mcl_signs.update_sign(pos)
 end
 
-local sign_wall = table_merge(sign_tpl,{
+local sign_wall = table_merge(sign_tpl, {
 	mesh = "mcl_signs_signonwallmount.obj",
 	paramtype2 = "wallmounted",
-	selection_box = {type = "wallmounted", wall_side = {-0.5, -7 / 28, -0.5, -23 / 56, 7 / 28, 0.5}},
+	selection_box = {
+		type = "wallmounted",
+		wall_side = {-0.5, -7/28, -0.5, -23/56, 7/28, 0.5}
+	},
 	groups = {axey = 1, handy = 2, sign = 1},
 	_mcl_sign_type = "wall",
 })
 
---Formspec
+-- Formspec
 function mcl_signs.show_formspec(player, pos)
 	if not pos then return end
 	local old_text = core.get_meta(pos):get_string("text")
-	core.show_formspec(player:get_player_name(),
-		"mcl_signs:set_text_" .. pos.x .. "_" .. pos.y .. "_" .. pos.z,
-		"size[6,3]textarea[0.25,0.25;6,1.5;text;" ..
-		F(S("Enter sign text:")) .. ";"..core.formspec_escape(old_text) .."]label[0,1.5;" ..
-		F(S("Maximum line length: 15")) .. "\n" ..
-		F(S("Maximum lines: 4")) ..
-		"]button_exit[0,2.5;6,1;submit;" .. F(S("Done")) .. "]"
-	)
+	core.show_formspec(player:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, table.concat({
+		"size[6,3]textarea[0.25,0.25;6,1.5;text;",
+		F(S("Enter sign text:")), ";", core.formspec_escape(old_text), "]label[0,1.5;",
+		F(S("Maximum line length: 15")), "\n",
+		F(S("Maximum lines: 4")),
+		"]button_exit[0,2.5;6,1;submit;", F(S("Done")), "]"
+	}))
 end
 
 core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname:find("mcl_signs:set_text_") == 1 then
 		local x, y, z = formname:match("mcl_signs:set_text_(.-)_(.-)_(.*)")
-		local pos = {x = tonumber(x), y = tonumber(y), z = tonumber(z)}
-		if not pos or not pos.x or not pos.y or not pos.z or not fields or not fields.text then
-			return
-		end
-		if not mcl_util.check_position_protection(pos, player) and (signs_editable or core.get_meta(pos):get_string("text") == "") then
-			set_signmeta(pos,{
-				text = tostring(fields.text):sub(1, 256), --limit saved text to 256 characters (4 lines x 15 chars = 60 so this should be more than is ever needed).
+		local pos = vector.new(tonumber(x), tonumber(y), tonumber(z))
+		if not fields or not fields.text then return end
+		if not mcl_util.check_position_protection(pos, player) then
+			set_signmeta(pos, {
+				-- limit saved text to 256 characters
+				-- (4 lines x 15 chars = 60 so this should be more than is ever needed)
+				text = tostring(fields.text):sub(1, 256)
 			})
 			mcl_signs.update_sign(pos)
 		end
 	end
 end)
 
---Text entity handling
-function mcl_signs.get_text_entity (pos, force_remove)
+-- Text entity handling
+function mcl_signs.get_text_entity(pos, force_remove)
 	local objects = core.get_objects_inside_radius(pos, 0.5)
 	local text_entity
 	local i = 0
@@ -403,15 +394,16 @@ end
 
 function mcl_signs.register_sign(name, color, def)
 	local newfields = {
-		tiles = { colored_texture("mcl_signs_sign_greyscale.png", color) },
+		tiles = {colored_texture("mcl_signs_sign_greyscale.png", color)},
 		inventory_image = colored_texture("mcl_signs_default_sign_greyscale.png", color),
 		wield_image = colored_texture("mcl_signs_default_sign_greyscale.png", color),
 		drop = "mcl_signs:wall_sign_"..name,
 		_mcl_sign_wood = name,
 	}
 
-	core.register_node(":mcl_signs:standing_sign_"..name, table_merge(sign_tpl, newfields, def or {}))
-	core.register_node(":mcl_signs:wall_sign_"..name, table_merge(sign_wall, newfields, def or {}))
+	def = def or {}
+	core.register_node(":mcl_signs:standing_sign_"..name, table_merge(sign_tpl, newfields, def))
+	core.register_node(":mcl_signs:wall_sign_"..name, table_merge(sign_wall, newfields, def))
 end
 
 dofile(modpath.."/register.lua")
