@@ -112,19 +112,19 @@ mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 	},
 })
 
-mcl_mobs:spawn_specific(
-	"mobs_mc:guardian_elder", -- name
-	"overworld", -- dimension
-	"water", -- type_of_spawning
-	{},	-- no biomes, only spawn in structures
-	0, -- min_light
-	core.LIGHT_MAX+1, -- max_light
-	30, -- interval
-	40000, -- chance
-	2, -- aoc
-	mcl_vars.mg_overworld_min, -- min_height
-	mobs_mc.water_level - 18 -- max_height
-)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:guardian_elder",
+	dimension = "overworld",
+	type_of_spawning = "water",
+	biomes = {},	-- no biomes, only spawn in structures
+	min_light = 0,
+	max_light = core.LIGHT_MAX+1,
+	chance = 40000,
+	interval = 30,
+	aoc = 2,
+	min_height = mcl_vars.mg_overworld_min,
+	max_height = mobs_mc.water_level - 18
+})
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "#ceccba", "#747693", 0)

@@ -99,19 +99,19 @@ mcl_mobs.register_mob("mobs_mc:guardian", {
 	view_range = 16,
 })
 
-mcl_mobs:spawn_specific(
-	"mobs_mc:guardian", -- name
-	"overworld", -- dimension
-	"water", -- type_of_spawning
-	{},	-- no biomes, only spawn in structures
-	0, -- min_light
-	core.LIGHT_MAX+1, -- max_light
-	30, -- interval
-	25000, -- chance
-	2, -- aoc
-	mcl_vars.mg_overworld_min, -- min_height
-	mobs_mc.water_level - 10 -- max_height
-)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:guardian",
+	dimension = "overworld",
+	type_of_spawning = "water",
+	biomes = {},	-- no biomes, only spawn in structures
+	min_light = 0, -- min_light
+	max_light = core.LIGHT_MAX+1, -- max_light
+	chance = 25000,
+	interval = 30,
+	aoc = 2,
+	min_height = mcl_vars.mg_overworld_min,
+	max_height = mobs_mc.water_level - 10
+})
 mcl_mobs:non_spawn_specific("mobs_mc:guardian","overworld",0,minetest.LIGHT_MAX+1)
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:guardian", S("Guardian"), "#5a8272", "#f17d31", 0)

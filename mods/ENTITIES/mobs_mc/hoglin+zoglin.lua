@@ -124,20 +124,21 @@ baby_hoglin.child = 1
 mcl_mobs.register_mob("mobs_mc:baby_hoglin", baby_hoglin)
 
 -- Regular spawning in the Nether
-mcl_mobs:spawn_specific(
-"mobs_mc:hoglin",
-"nether",
-"ground",
-{
-"CrimsonForest"
-},
-0,
-minetest.LIGHT_MAX+1,
-30,
-200,
-3,
-mcl_vars.mg_nether_min,
-mcl_vars.mg_nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:hoglin",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = {
+		"CrimsonForest"
+	},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 200,
+	interval = 30,
+	aoc = 3,
+	min_height = mcl_vars.mg_nether_min,
+	max_height = mcl_vars.mg_nether_max
+})
 
 mcl_mobs:non_spawn_specific("mobs_mc:hoglin","overworld",0,7)
 
