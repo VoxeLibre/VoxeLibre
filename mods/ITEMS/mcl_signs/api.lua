@@ -12,6 +12,24 @@ local LINE_HEIGHT = 14
 local CHAR_WIDTH = 5
 
 local DEFAULT_COLOR = "#000000"
+local DYE_TO_COLOR = {
+	["white"] = "#d0d6d7",
+	["grey"] = "#818177",
+	["dark_grey"] = "#383c40",
+	["black"] = "#080a10",
+	["violet"] = "#6821a0",
+	["blue"] = "#2e3094",
+	["lightblue"] = "#258ec9",
+	["cyan"] = "#167b8c",
+	["dark_green"] = "#4b5e25",
+	["green"] = "#60ac19",
+	["yellow"] = "#f1b216",
+	["brown"] = "#633d20",
+	["orange"] = "#e26501",
+	["red"] = "#912222",
+	["magenta"] = "#ab31a2",
+	["pink"] = "#d56791",
+}
 
 local SIGN_GLOW_INTENSITY = 14
 
@@ -84,11 +102,11 @@ local function get_signdata(pos)
 	}
 end
 
-local function set_signmeta(pos,def)
+local function set_signmeta(pos, def)
 	local meta = core.get_meta(pos)
-	if def.text then meta:set_string("text",def.text) end
-	if def.color then meta:set_string("color",def.color) end
-	if def.glow then meta:set_string("glow",def.glow) end
+	if def.text then meta:set_string("text", def.text) end
+	if def.color then meta:set_string("color", def.color) end
+	if def.glow then meta:set_string("glow", def.glow) end
 end
 
 -- Text/texture
@@ -247,7 +265,8 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 end
 
 function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
-	if itemstack:get_name() == "mcl_mobitems:glow_ink_sac" then
+	local iname = itemstack:get_name()
+	if iname == "mcl_mobitems:glow_ink_sac" then
 		local data = get_signdata(pos)
 		if data then
 			if data.color == "#000000" then
@@ -259,6 +278,13 @@ function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
 				itemstack:take_item()
 			end
 		end
+	elseif iname:sub(1, 8) == "mcl_dye:" then
+		local color = iname:sub(9)
+		set_signmeta(pos, {color = DYE_TO_COLOR[color]})
+		mcl_signs.update_sign(pos)
+		if not core.is_creative_enabled(clicker:get_player_name()) then
+			itemstack:take_item()
+		end
 	elseif not mcl_util.check_position_protection(pos, clicker) then
 		mcl_signs.show_formspec(clicker, pos)
 	end
@@ -269,12 +295,13 @@ function sign_tpl.on_destruct(pos)
 	mcl_signs.get_text_entity(pos, true)
 end
 
-function sign_tpl._on_dye_place(pos, color)
-	set_signmeta(pos,{
-		color = mcl_dyes.colors[color].rgb
-	})
-	mcl_signs.update_sign(pos)
-end
+-- TODO: reactivate when a good dyes API is finished
+--function sign_tpl._on_dye_place(pos, color)
+--	set_signmeta(pos, {
+--		color = mcl_dyes.colors[color].rgb
+--	})
+--	mcl_signs.update_sign(pos)
+--end
 
 local sign_wall = table_merge(sign_tpl, {
 	mesh = "mcl_signs_signonwallmount.obj",
