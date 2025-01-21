@@ -132,25 +132,26 @@ mcl_mobs.register_mob("mobs_mc:killer_bunny", killer_bunny)
 -- Mob spawning rules.
 -- Different skins depending on spawn location <- we'll get to this when the spawning algorithm is fleshed out
 
-mcl_mobs:spawn_specific(
-"mobs_mc:rabbit",
-"overworld",
-"ground",
-{
-"Desert",
-"FlowerForest",
-"Taiga",
-"MegaSpruceTaiga",
-"MegaTaiga",
-"ColdTaiga",
-},
-9,
-minetest.LIGHT_MAX+1,
-30,
-40,
-8,
-mcl_vars.mg_overworld_min,
-mcl_vars.mg_overworld_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:rabbit",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = {
+		"Desert",
+		"FlowerForest",
+		"Taiga",
+		"MegaSpruceTaiga",
+		"MegaTaiga",
+		"ColdTaiga",
+	},
+	min_light = 9,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 40,
+	interval = 30,
+	aoc = 8,
+	min_height = mcl_vars.mg_overworld_min,
+	max_height = mcl_vars.mg_overworld_max
+})
 
 --[[
 local spawn = {

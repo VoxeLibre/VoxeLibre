@@ -73,22 +73,23 @@ mcl_mobs.register_mob("mobs_mc:polar_bear", {
 })
 
 
-mcl_mobs:spawn_specific(
-"mobs_mc:polar_bear",
-"overworld",
-"ground",
-{
-"ColdTaiga",
-"IcePlainsSpikes",
-"IcePlains",
-},
-0,
-minetest.LIGHT_MAX+1,
-30,
-50,
-3,
-mcl_vars.mg_overworld_min,
-mcl_vars.mg_overworld_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:polar_bear",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = {
+		"ColdTaiga",
+		"IcePlainsSpikes",
+		"IcePlains",
+	},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 50,
+	interval = 30,
+	aoc = 3,
+	min_height = mcl_vars.mg_overworld_min,
+	max_height = mcl_vars.mg_overworld_max
+})
 
 -- spawn egg
 mcl_mobs.register_egg("mobs_mc:polar_bear", S("Polar Bear"), "#f2f2f2", "#959590", 0)
