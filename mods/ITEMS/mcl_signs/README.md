@@ -1,6 +1,6 @@
 # `mcl_signs`
 
-* Originally based on reworked signs mod by PilzAdam (https://forum.minetest.net/viewtopic.php?t=3289)
+* Originally based on reworked signs mod by PilzAdam (<https://forum.minetest.net/viewtopic.php?t=3289>)
 * Adapted for MineClone2 by Wuzzy
 * Later massively extended by Michial
 * Mostly rewritten and simplified by cora
