@@ -53,7 +53,7 @@ for old, new in pairs(signs) do
 	for _, rotkey in ipairs(rotkeys) do
 		mcl2rotsigns["mcl_signs:standing_sign"..rotkey..old] = newname
 	end
-	core.register_alias("mcl_signs:wall_sign"..old, newname)
+	core.register_alias("mcl_signs:wall_sign"..old, "mcl_signs:wall_sign"..new)
 end
 
 function mcl_signs.upgrade_sign_meta(pos)
@@ -73,7 +73,7 @@ function mcl_signs.upgrade_sign_meta(pos)
 	mcl_signs.get_text_entity(pos, true) -- the 2nd "true" arg means deleting the entity for respawn
 end
 
-function mcl_signs.upgrade_sign_rot(pos,node)
+function mcl_signs.upgrade_sign_rot(pos, node)
 	local numsign = false
 
 	for _,v in pairs(rotkeys) do
