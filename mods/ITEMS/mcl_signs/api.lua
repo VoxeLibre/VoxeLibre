@@ -40,7 +40,7 @@ local F = core.formspec_escape
 local sign_tpl = {
 	_tt_help = S("Can be written"),
 	_doc_items_longdesc = S("Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them."),
-	_doc_items_usagehelp = S("After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow."),
+	_doc_items_usagehelp = S("After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow. Use bone meal to remove color and glow.", NUMBER_OF_LINES, LINE_LENGTH),
 	use_texture_alpha = "opaque",
 	sunlight_propagates = true,
 	walkable = false,
@@ -133,14 +133,33 @@ local function string_to_line_array(str)
 	local linechar = 1
 	local cr_last = false
 	linechar_table[current] = ""
-	for char in str:gmatch(".") do
+
+	-- word wrap
+	local nstr
+	if #str > LINE_LENGTH then
+		local space_left = LINE_LENGTH
+		for word in str:gmatch("%S+") do
+			if #word + 1 > space_left then
+				nstr = (not nstr and "" or nstr .. "\n") .. word
+				space_left = LINE_LENGTH - #word
+			else
+				nstr = (not nstr and "" or nstr .. " ") .. word
+				space_left = space_left - (#word + 1)
+			end
+		end
+	else
+		nstr = str
+	end
+
+	-- compile characters
+	for char in nstr:gmatch(".") do
 		local add
 		local is_cr, is_lf = char == "\r", char == "\n"
 
 		if is_cr and not cr_last then
 			cr_last = true
 			add = false
-		elseif is_lf or cr_last or linechar > 15 then
+		elseif is_lf or cr_last or linechar > LINE_LENGTH then
 			cr_last = is_cr
 			add = not (is_cr or is_lf)
 			current = current + 1
@@ -155,18 +174,17 @@ local function string_to_line_array(str)
 			linechar = linechar + 1
 		end
 	end
+
 	return linechar_table
 end
 
 function mcl_signs.create_lines(text)
-	local line_num = 1
 	local text_table = {}
-	for _, line in ipairs(string_to_line_array(text)) do
-		if line_num > NUMBER_OF_LINES then
+	for idx, line in ipairs(string_to_line_array(text)) do
+		if idx > NUMBER_OF_LINES then
 			break
 		end
 		table.insert(text_table, line)
-		line_num = line_num + 1
 	end
 	return text_table
 end
@@ -270,14 +288,20 @@ function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
 		local data = get_signdata(pos)
 		if data then
 			if data.color == "#000000" then
-				data.color = "#7e7e7e" --black doesn't glow in the dark
+				data.color = "#7e7e7e" -- black doesn't glow in the dark
 			end
-			set_signmeta(pos, {glow ="true", color = data.color})
+			set_signmeta(pos, {glow = "true", color = data.color})
 			mcl_signs.update_sign(pos)
 			if not core.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
 			end
 		end
+	elseif iname == "mcl_bone_meal:bone_meal" then
+		set_signmeta(pos, {
+			glow = "false",
+			color = DEFAULT_COLOR,
+		})
+		mcl_signs.update_sign(pos)
 	elseif iname:sub(1, 8) == "mcl_dye:" then
 		local color = iname:sub(9)
 		set_signmeta(pos, {color = DYE_TO_COLOR[color]})
@@ -321,8 +345,8 @@ function mcl_signs.show_formspec(player, pos)
 	core.show_formspec(player:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, table.concat({
 		"size[6,3]textarea[0.25,0.25;6,1.5;text;",
 		F(S("Enter sign text:")), ";", core.formspec_escape(old_text), "]label[0,1.5;",
-		F(S("Maximum line length: 15")), "\n",
-		F(S("Maximum lines: 4")),
+		F(S("Maximum line length: @1", LINE_LENGTH)), "\n",
+		F(S("Maximum lines: @1", NUMBER_OF_LINES)),
 		"]button_exit[0,2.5;6,1;submit;", F(S("Done")), "]"
 	}))
 end
@@ -376,7 +400,7 @@ function mcl_signs.update_sign(pos)
 		if not text_entity or not text_entity:get_pos() then return end
 	end
 
-	local glow
+	local glow = 0
 	if data.glow then
 		glow = SIGN_GLOW_INTENSITY
 	end
