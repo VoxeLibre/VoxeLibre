@@ -97,7 +97,6 @@ mcl_mobs.register_mob("mobs_mc:dolphin", dolphin)
 
 
 --spawning TO DO: in schools
-local water = 0
 mcl_mobs:spawn_setup({
 	name = "mobs_mc:dolphin",
 	dimension = "overworld",
@@ -247,8 +246,8 @@ mcl_mobs:spawn_setup({
 	chance = 70,
 	interval = 30,
 	aoc = 3,
-	min_height = water-16,
-	max_height = water+1
+	min_height = mobs_mc.water_level - 16,
+	max_height = mobs_mc.water_level + 1
 })
 
 --spawn egg

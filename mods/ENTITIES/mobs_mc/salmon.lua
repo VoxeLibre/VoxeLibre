@@ -72,7 +72,6 @@ mcl_mobs.register_mob("mobs_mc:salmon", salmon)
 
 
 --spawning TODO: in schools
-local water = 0
 mcl_mobs:spawn_setup({
 	name = "mobs_mc:salmon",
 	dimension = "overworld",
@@ -223,8 +222,8 @@ mcl_mobs:spawn_setup({
 	chance = 260,
 	interval = 30,
 	aoc = 3,
-	min_height = water-16,
-	max_height = water+1
+	min_height = mobs_mc.water_level - 16,
+	max_height = mobs_mc.water_level + 1
 })
 
 --spawn egg

@@ -94,8 +94,6 @@ local axolotl = {
 
 mcl_mobs.register_mob("mobs_mc:axolotl", axolotl)
 
-local water = 0
-
 mcl_mobs:spawn_setup({
 	name = "mobs_mc:axolotl",
 	dimension = "overworld",
