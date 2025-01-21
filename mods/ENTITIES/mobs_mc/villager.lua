@@ -2327,39 +2327,6 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 	end,
 })
 
-
---[[
-Villager spawning in mcl_villages
-mcl_mobs:spawn_specific(
-"mobs_mc:villager",
-"overworld",
-"ground",
-{
-"FlowerForest",
-"Swampland",
-"Taiga",
-"ExtremeHills",
-"BirchForest",
-"MegaSpruceTaiga",
-"MegaTaiga",
-"ExtremeHills+",
-"Forest",
-"Plains",
-"ColdTaiga",
-"SunflowerPlains",
-"RoofedForest",
-"MesaPlateauFM_grasstop",
-"ExtremeHillsM",
-"BirchForestM",
-},
-0,
-minetest.LIGHT_MAX+1,
-30,
-2,
-4,
-mobs_mc.water_level+1,
-mcl_vars.mg_overworld_max)
---]]
 -- spawn eggs
 mcl_mobs:non_spawn_specific("mobs_mc:villager","overworld", 0, minetest.LIGHT_MAX+1)
 mcl_mobs.register_egg("mobs_mc:villager", S("Villager"), "#563d33", "#bc8b72", 0)

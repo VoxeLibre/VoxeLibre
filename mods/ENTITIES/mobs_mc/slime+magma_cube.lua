@@ -231,86 +231,92 @@ local swampy_biomes = {"Swampland", "MangroveSwamp"}
 local swamp_min = water_level
 local swamp_max = water_level + 27
 
-mcl_mobs:spawn_specific(
-"mobs_mc:slime_tiny",
-"overworld",
-"ground",
-cave_biomes,
-0,
-slime_max_light,
-30,
-1000,
-4,
-cave_min,
-cave_max,
-nil, nil, is_slime_chunk)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:slime_tiny",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = cave_biomes,
+	min_light = 0,
+	max_light = slime_max_light,
+	chance = 1000,
+	interval = 30,
+	aoc = 4,
+	min_height = cave_min,
+	max_height = cave_max,
+	check_position = is_slime_chunk
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:slime_tiny",
-"overworld",
-"ground",
-swampy_biomes,
-0,
-swamp_light_max,
-30,
-1000,
-4,
-swamp_min,
-swamp_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:slime_tiny",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = swampy_biomes,
+	min_light = 0,
+	max_light = swamp_light_max,
+	chance = 1000,
+	interval = 30,
+	aoc = 4,
+	min_height = swamp_min,
+	max_height = swamp_max
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:slime_small",
-"overworld",
-"ground",
-cave_biomes,
-0,
-slime_max_light,
-30,
-1000,
-4,
-cave_min,
-cave_max,
-nil, nil, is_slime_chunk)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:slime_small",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = cave_biomes,
+	min_light = 0,
+	max_light = slime_max_light,
+	interval = 30,
+	chance = 1000,
+	aoc = 4,
+	min_height = cave_min,
+	max_height = cave_max,
+	check_position = is_slime_chunk
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:slime_small",
-"overworld",
-"ground",
-swampy_biomes,
-0,
-swamp_light_max,
-30,
-1000,
-4,
-swamp_min,
-swamp_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:slime_small",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = swampy_biomes,
+	min_light = 0,
+	max_light = swamp_light_max,
+	interval = 30,
+	chance = 1000,
+	aoc = 4,
+	min_height = swamp_min,
+	max_height = swamp_max
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:slime_big",
-"overworld",
-"ground",
-cave_biomes,
-0,
-slime_max_light,
-30,
-1000,
-4,
-cave_min,
-cave_max,
-nil, nil, is_slime_chunk)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:slime_big",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = cave_biomes,
+	min_light = 0,
+	max_light = slime_max_light,
+	chance = 1000,
+	interval = 30,
+	aoc = 4,
+	min_height = cave_min,
+	max_height = cave_max,
+	check_position = is_slime_chunk
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:slime_big",
-"overworld",
-"ground",
-swampy_biomes,
-0,
-swamp_light_max,
-30,
-1000,
-4,
-swamp_min,
-swamp_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:slime_big",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = swampy_biomes,
+	min_light = 0,
+	max_light = swamp_light_max,
+	chance = 1000,
+	interval = 30,
+	aoc = 4,
+	min_height = swamp_min,
+	max_height = swamp_max
+})
 
 -- Magma cube
 local magma_cube_big = {
@@ -424,44 +430,47 @@ local magma_cube_biomes = {"Nether", "BasaltDelta"}
 local nether_min = mcl_vars.mg_nether_min
 local nether_max = mcl_vars.mg_nether_max
 
-mcl_mobs:spawn_specific(
-"mobs_mc:magma_cube_tiny",
-"nether",
-"ground",
-magma_cube_biomes,
-0,
-minetest.LIGHT_MAX+1,
-30,
-100,
-4,
-nether_min,
-nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:magma_cube_tiny",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = magma_cube_biomes,
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 100,
+	interval = 30,
+	aoc = 4,
+	min_height = nether_min,
+	max_height = nether_max
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:magma_cube_small",
-"nether",
-"ground",
-magma_cube_biomes,
-0,
-minetest.LIGHT_MAX+1,
-30,
-100,
-4,
-nether_min,
-nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:magma_cube_small",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = magma_cube_biomes,
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 100,
+	interval = 30,
+	aoc = 4,
+	min_height = nether_min,
+	max_height = nether_max
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:magma_cube_big",
-"nether",
-"ground",
-magma_cube_biomes,
-0,
-minetest.LIGHT_MAX+1,
-30,
-100,
-4,
-nether_min,
-nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:magma_cube_big",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = magma_cube_biomes,
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 100,
+	interval = 30,
+	aoc = 4,
+	min_height = nether_min,
+	max_height = nether_max
+})
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "#350000", "#fcfc00")
