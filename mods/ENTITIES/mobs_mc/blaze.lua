@@ -150,8 +150,8 @@ mcl_mobs:spawn_setup({
 	biomes = {"Nether"},
 	min_light = 0,
 	max_light = minetest.LIGHT_MAX + 1,
-	chance = 30,
-	interval = 1000,
+	chance = 1000,
+	interval = 30,
 	aoc = 3,
 	min_height = mcl_vars.mg_nether_min,
 	max_height = mcl_vars.mg_nether_max

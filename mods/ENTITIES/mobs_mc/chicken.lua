@@ -156,8 +156,8 @@ mcl_mobs:spawn_setup({
 	},
 	min_light = 9,
 	max_light = minetest.LIGHT_MAX + 1,
-	chance = 30,
-	interval = 100,
+	chance = 100,
+	interval = 30,
 	aoc = 3,
 	min_height = mobs_mc.water_level,
 	max_height = mcl_vars.mg_overworld_max
