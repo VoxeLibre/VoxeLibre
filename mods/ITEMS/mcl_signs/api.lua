@@ -83,12 +83,12 @@ local function get_signdata(pos)
 	if def.paramtype2  == "wallmounted" then
 		typ = "wall"
 		local dir = core.wallmounted_to_dir(node.param2)
-		spos = vector.add(vector.offset(pos,0,-0.25,0),dir * 0.41 )
+		spos = vector.add(vector.offset(pos, 0, -0.25, 0), dir * 0.41)
 		yaw = core.dir_to_yaw(dir)
 	else
 		yaw = math.rad(((node.param2 * 1.5 ) + 1 ) % 360)
 		local dir = core.yaw_to_dir(yaw)
-		spos = vector.add(vector.offset(pos,0,0.08,0),dir * -0.05)
+		spos = vector.add(vector.offset(pos, 0, 0.08, 0), dir * -0.05)
 	end
 	if color == "" then color = DEFAULT_COLOR end
 	return {
