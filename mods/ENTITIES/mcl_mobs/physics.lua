@@ -377,13 +377,10 @@ function mob_class:check_for_death(cause, cmi_cause)
 				local pos = self.object:get_pos()
 				local xp_amount = random(self.xp_min, self.xp_max)
 
-				if not mcl_sculk.handle_death(pos, xp_amount) then
-					--minetest.log("Xp not thrown")
+				if (self._last_attacked_time or 0) > core.get_us_time() - 5e6 and not mcl_sculk.handle_death(pos, xp_amount) then
 					if minetest.is_creative_enabled("") ~= true then
 						mcl_experience.throw_xp(pos, xp_amount)
 					end
-				else
-					--minetest.log("xp thrown")
 				end
 			end
 		end
