@@ -2,14 +2,17 @@
 
 * Originally based on reworked signs mod by PilzAdam (<https://forum.minetest.net/viewtopic.php?t=3289>)
 * Adapted for MineClone2 by Wuzzy
-* Later massively extended by Michial
-* Mostly rewritten and simplified by cora
-* Adapted for VoxeLibre by rudzik8
+* Later massively extended by Michieal
+* Mostly rewritten for Mineclonia and simplified by cora
+* Re-adapted for VoxeLibre and improved upon by rudzik8
 
-License of code and font: MIT License
 
-Font source: 04.jp.org, some modifications and additions were made (added support for Latin-1 Supplement)\
-Original font license text states: “YOU MAY USE THEM AS YOU LIKE” (in about.gif file distributed with the font)
+## License
+
+Code and font: MIT (see `LICENSE` file for details)
+
+Font source: 04.jp.org, some modifications and additions were made (Latin-1 and Latin-2 support)
+Original font license text states: "YOU MAY USE THEM AS YOU LIKE" (in about.gif file distributed with the font)
 
 License of models: GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)\
 Models author: 22i.\
