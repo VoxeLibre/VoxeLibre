@@ -328,14 +328,17 @@ mcl_bookshelf_inventories (Enable bookshelf inventories) bool true
 # Enable swiftness on enchanted golden apples
 mcl_enable_fapples (Enable swiftness on enchanted golden apples) bool true
 
-# All tameable mobs listen to the "sit" righclick like dogs
+# All tameable mobs listen to the "sit" rightclick like dogs
 mcl_extended_pet_control (Extended pet control) bool true
 
 # Enable hamburgers for villagers to follow
 mcl_enable_hamburger (Enable Hamburger) bool true
 
-# Starting Inventory contents (given directly to the new player) type: bool
+# Starting Inventory contents (given directly to the new player)
 give_starting_inv (Player Starter Pack) bool false
+
+# Use word wrapping for signs to break lines between words rather than within them
+vl_signs_word_wrap (Word wrap sign text) bool true
 
 [Debugging]
 # If enabled, this will show the itemstring of an item in the description.
