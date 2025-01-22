@@ -459,7 +459,7 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 			attacker_name = info and info.attacker_name
 		})
 		
-		if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
+		if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= 5e6) then
 			local pos = self.vl_drops_pos or self.object:get_pos()
 			local xp_amount = random(self.xp_min, self.xp_max)
 
