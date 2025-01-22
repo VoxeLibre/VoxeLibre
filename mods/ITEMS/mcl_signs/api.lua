@@ -31,6 +31,8 @@ local DYE_TO_COLOR = {
 	["pink"] = "#d56791",
 }
 
+local DEFAULT_WORDWRAP = true
+
 local SIGN_GLOW_INTENSITY = 14
 
 local S = core.get_translator(core.get_current_modname())
@@ -72,12 +74,8 @@ local function get_signdata(pos)
 	local meta = core.get_meta(pos)
 	local text = meta:get_string("text")
 	local color = meta:get_string("color")
-	local glow = meta:get_string("glow")
-	if glow == "true" then
-		glow = true
-	else
-		glow = false
-	end
+	local glow = core.is_yes(meta:get_string("glow"))
+	local wordwrap = core.is_yes(meta:get_string("wordwrap"))
 	local yaw, spos
 	local typ = "standing"
 	if def.paramtype2  == "wallmounted" then
@@ -99,6 +97,7 @@ local function get_signdata(pos)
 		typ = typ,
 		glow = glow,
 		text_pos = spos,
+		wordwrap = wordwrap,
 	}
 end
 
@@ -107,6 +106,7 @@ local function set_signmeta(pos, def)
 	if def.text then meta:set_string("text", def.text) end
 	if def.color then meta:set_string("color", def.color) end
 	if def.glow then meta:set_string("glow", def.glow) end
+	if def.wordwrap then meta:set_string("wordwrap", def.wordwrap) end
 end
 
 -- Text/texture
@@ -127,6 +127,30 @@ while true do
 	charmap[char] = img
 end
 
+local function word_wrap(str)
+	local nstr
+	for line in str:gmatch("[^\r\n]+") do
+		local nline
+		--if #line > LINE_LENGTH then
+			--core.log(dump(line))
+			local space_left = LINE_LENGTH
+			for word in line:gmatch("%S+") do
+				if #word + 1 > space_left then
+					nline = (not nline and "" or nline .. "\n") .. word
+					space_left = LINE_LENGTH - #word
+				else
+					nline = (not nline and "" or nline .. " ") .. word
+					space_left = space_left - (#word + 1)
+				end
+			end
+		--else
+		--	nline = line
+		--end
+		nstr = (not nstr and "" or nstr .. "\n") .. nline
+	end
+	return nstr or ""
+end
+
 local function string_to_line_array(str)
 	local linechar_table = {}
 	local current = 1
@@ -134,25 +158,8 @@ local function string_to_line_array(str)
 	local cr_last = false
 	linechar_table[current] = ""
 
-	-- word wrap
-	local nstr
-	if #str > LINE_LENGTH then
-		local space_left = LINE_LENGTH
-		for word in str:gmatch("%S+") do
-			if #word + 1 > space_left then
-				nstr = (not nstr and "" or nstr .. "\n") .. word
-				space_left = LINE_LENGTH - #word
-			else
-				nstr = (not nstr and "" or nstr .. " ") .. word
-				space_left = space_left - (#word + 1)
-			end
-		end
-	else
-		nstr = str
-	end
-
 	-- compile characters
-	for char in nstr:gmatch(".") do
+	for char in str:gmatch(".") do
 		local add
 		local is_cr, is_lf = char == "\r", char == "\n"
 
@@ -227,7 +234,7 @@ function mcl_signs.generate_line(s, ypos)
 end
 
 function mcl_signs.generate_texture(data)
-	local lines = mcl_signs.create_lines(data.text or "")
+	local lines = mcl_signs.create_lines(data.wordwrap and word_wrap(data.text or "") or (data.text or ""))
 	local texture = "[combine:" .. SIGN_WIDTH .. "x" .. SIGN_WIDTH
 	local ypos = 0
 	local letter_color = data.color or DEFAULT_COLOR
@@ -239,6 +246,11 @@ function mcl_signs.generate_texture(data)
 
 	texture = "(" .. texture .. "^[multiply:" .. letter_color .. ")"
 	return texture
+end
+
+function sign_tpl.on_construct(pos)
+	local meta = core.get_meta(pos)
+	meta:set_string("wordwrap", tostring(DEFAULT_WORDWRAP))
 end
 
 function sign_tpl.on_place(itemstack, placer, pointed_thing)
@@ -341,13 +353,18 @@ local sign_wall = table_merge(sign_tpl, {
 -- Formspec
 function mcl_signs.show_formspec(player, pos)
 	if not pos then return end
-	local old_text = core.get_meta(pos):get_string("text")
+	local meta = core.get_meta(pos)
+	local old_text = meta:get_string("text")
+	local wordwrap = meta:get_string("wordwrap")
 	core.show_formspec(player:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, table.concat({
 		"size[6,3]textarea[0.25,0.25;6,1.5;text;",
-		F(S("Enter sign text:")), ";", core.formspec_escape(old_text), "]label[0,1.5;",
-		F(S("Maximum line length: @1", LINE_LENGTH)), "\n",
-		F(S("Maximum lines: @1", NUMBER_OF_LINES)),
-		"]button_exit[0,2.5;6,1;submit;", F(S("Done")), "]"
+		F(S("Enter sign text:")), ";", F(old_text), "]",
+		"label[0,1.5;",
+			F(S("Maximum line length: @1", LINE_LENGTH)), "\n",
+			F(S("Maximum lines: @1", NUMBER_OF_LINES)),
+		"]",
+		"checkbox[4,1.5;wordwrap;", F(S("Word wrap")), ";", wordwrap, "]",
+		"button_exit[0,2.5;6,1;submit;", F(S("Done")), "]"
 	}))
 end
 
@@ -355,9 +372,13 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname:find("mcl_signs:set_text_") == 1 then
 		local x, y, z = formname:match("mcl_signs:set_text_(.-)_(.-)_(.*)")
 		local pos = vector.new(tonumber(x), tonumber(y), tonumber(z))
-		if not fields or not fields.text then return end
+		if not fields or not fields.text--[[ or not fields.submit]] then return end
 		if not mcl_util.check_position_protection(pos, player) then
+			local wordwrap = core.get_meta(pos):get_string("wordwrap")
+			if fields.wordwrap then wordwrap = fields.wordwrap end
+
 			set_signmeta(pos, {
+				wordwrap = wordwrap,
 				-- limit saved text to 256 characters
 				-- (4 lines x 15 chars = 60 so this should be more than is ever needed)
 				text = tostring(fields.text):sub(1, 256)
