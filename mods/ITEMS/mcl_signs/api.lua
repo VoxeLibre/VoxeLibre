@@ -1,3 +1,5 @@
+local S, charmap = ...
+
 local function table_merge(t, ...)
 	local t2 = table.copy(t)
 	return table.update(t2, ...)
@@ -36,7 +38,6 @@ local wordwrap_enabled = core.settings:get_bool("vl_signs_word_wrap", true)
 
 local SIGN_GLOW_INTENSITY = 14
 
-local S = core.get_translator(core.get_current_modname())
 local F = core.formspec_escape
 
 -- Template definition
@@ -108,24 +109,6 @@ local function set_signmeta(pos, def)
 	if def.color then meta:set_string("color", def.color) end
 	if def.glow then meta:set_string("glow", def.glow) end
 	--if def.wordwrap then meta:set_string("wordwrap", def.wordwrap) end
-end
-
--- Text/texture
-local modpath = core.get_modpath(core.get_current_modname())
-local chars_file = io.open(modpath .. "/characters.txt", "r")
--- FIXME: Support more characters (many characters are missing).
--- Currently ASCII and Latin-1 Supplement are supported.
-assert(chars_file, "mcl_signs/characters.txt not found")
-
-local charmap = {}
-while true do
-	local char = chars_file:read("*l")
-	if char == nil then
-		break
-	end
-	local img = chars_file:read("*l")
-	local _ = chars_file:read("*l")
-	charmap[char] = img
 end
 
 local function word_wrap(str)

@@ -1,4 +1,4 @@
-local S = core.get_translator(core.get_current_modname())
+local S = ...
 
 local woods = {
 	oak = {
