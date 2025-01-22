@@ -459,19 +459,22 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local mob_pos = self.object:get_pos()
 	local player_pos = hitter:get_pos()
 	local weapon = hitter:get_wielded_item()
+	local time_now = minetest.get_us_time()
 
 	if is_player then
 		-- is mob out of reach?
 		if (vector.distance(mob_pos, player_pos) - self._avg_radius) > (weapon:get_definition().range or 3) then
 			return
 		end
+
 		-- is mob protected?
 		if self.protected and minetest.is_protected(mob_pos, hitter:get_player_name()) then return end
 
 		mcl_potions.update_haste_and_fatigue(hitter)
+
+		self.xp_timestamp = time_now
 	end
 
-	local time_now = minetest.get_us_time()
 	local time_diff = time_now - self.invul_timestamp
 
 	-- check for invulnerability time in microseconds (0.5 second)
@@ -491,7 +494,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		return
 	end
 
-	local time_now = minetest.get_us_time()
+	time_now = minetest.get_us_time()
 
 	if is_player then
 		if minetest.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
