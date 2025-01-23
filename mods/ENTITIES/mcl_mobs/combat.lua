@@ -28,6 +28,7 @@ local vector_new = vector.new
 local vector_copy = vector.copy
 local vector_distance = vector.distance
 local vector_zero = vector.zero
+local get_node_name = mcl_vars.get_node_name
 
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
@@ -188,7 +189,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 
 					-- remove one block above to make room to jump
 					if not minetest.is_protected(s, "") then
-						local node1 = minetest.get_node(s).name
+						local node1 = get_node_name(s)
 						local ndef1 = minetest.registered_nodes[node1]
 
 						if node1 ~= "air"
@@ -209,7 +210,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 					local p1 = vector_offset(s, cos(yaw1), 0, sin(yaw1))
 
 					if not minetest.is_protected(p1, "") then
-						local node1 = minetest.get_node(p1).name
+						local node1 = get_node_name(p1)
 						local ndef1 = minetest.registered_nodes[node1]
 						if node1 ~= "air" and node1 ~= "ignore"
 							and ndef1
@@ -222,7 +223,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 						end
 
 						p1.y = p1.y + 1
-						node1 = minetest.get_node(p1).name
+						node1 = get_node_name(p1)
 						ndef1 = minetest.registered_nodes[node1]
 
 						if node1 ~= "air" and node1 ~= "ignore"

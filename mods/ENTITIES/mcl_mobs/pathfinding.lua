@@ -1,5 +1,6 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
+local get_node_name = mcl_vars.get_node_name
 
 local PATHFINDING_FAIL_THRESHOLD = 200 -- no. of ticks to fail before giving up. 20p/s. 5s helps them get through door
 local PATHFINDING_FAIL_WAIT = 30 -- how long to wait before trying to path again
@@ -120,7 +121,7 @@ local function calculate_path_through_door (p, cur_door_pos, t)
 
 	for _,v in pairs(plane_adjacents) do
 		local pos_closest_to_door = vector.add(cur_door_pos,v)
-		local ndef = minetest.registered_nodes[minetest.get_node(pos_closest_to_door).name]
+		local ndef = minetest.registered_nodes[get_node_name(pos_closest_to_door)]
 		if not ndef.walkable then
 			mcl_log("We have open space next to door at: " .. minetest.pos_to_string(pos_closest_to_door))
 
@@ -158,7 +159,7 @@ end
 
 -- we treat ignore as solid, as we cannot path there
 local function is_solid(pos)
-	local ndef = minetest.registered_nodes[minetest.get_node(pos).name]
+	local ndef = minetest.registered_nodes[get_node_name(pos)]
 	return (not ndef) or ndef.walkable
 end
 
@@ -184,13 +185,13 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 	local start = self.object:get_pos()
 	local p = find_open_node(start, 1)
 	if not p then -- buried?
-		minetest.log("action", "Cannot path from "..minetest.pos_to_string(start).." because it is solid. Nodetype: "..minetest.get_node(start).name)
+		minetest.log("action", "Cannot path from "..minetest.pos_to_string(start).." because it is solid. Nodetype: "..get_node_name(start))
 		return
 	end
 	-- target might be a job-site that is solid
 	local t, drop_last_wp = find_open_node(target, 1)
 	if not t then
-		minetest.log("action", "Cannot path to "..minetest.pos_to_string(target).." because it is solid. Nodetype: "..minetest.get_node(target).name)
+		minetest.log("action", "Cannot path to "..minetest.pos_to_string(target).." because it is solid. Nodetype: "..get_node_name(target))
 		return
 	end
 
@@ -263,7 +264,7 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 		local i = 1
 		while i < #wp do
 			-- fence or wall underneath?
-			local bdef = minetest.registered_nodes[minetest.get_node(vector.offset(wp[i].pos, 0, -1, 0)).name]
+			local bdef = minetest.registered_nodes[get_node_name(vector.offset(wp[i].pos, 0, -1, 0))]
 			if not bdef then minetest.log("warning", "There must not be unknown nodes on path") end
 			-- carpets are fine
 			if bdef and (bdef.groups.carpet or 0) > 0 then
@@ -288,7 +289,7 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 				local j = i + 1
 				while j <= #wp do
 					local below = vector.offset(wp[j].pos, 0, -1, 0)
-					local bdef = minetest.registered_nodes[minetest.get_node(below).name]
+					local bdef = minetest.registered_nodes[get_node_name(below)]
 					if not bdef or ((bdef.groups.fence or 0) == 0 and (bdef.groups.wall or 0) == 0) then
 						break
 					end

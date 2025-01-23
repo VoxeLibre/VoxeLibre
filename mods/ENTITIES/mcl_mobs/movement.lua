@@ -29,6 +29,8 @@ local raycast_line_of_sight = mcl_mobs.check_line_of_sight
 
 local mobs_see_through_opaque = mcl_mobs.see_through_opaque
 local line_of_sight = mcl_mobs.line_of_sight
+local get_node_name = mcl_vars.get_node_name
+local get_node_name_raw = mcl_vars.get_node_name_raw
 
 -- Stop movement and stand
 function mob_class:stand()
@@ -107,7 +109,7 @@ function mob_class:can_jump_cliff()
 
 	local dir_x, dir_z = -sin(yaw) * (cbox[4] + 0.5), cos(yaw) * (cbox[4] + 0.5)
 	-- below next:
-	local node_low = minetest.get_node(vector_offset(pos, dir_x * 0.6, -0.5, dir_z * 0.6)).name
+	local node_low = get_node_name_raw(pos.x + dir_x * 0.6, pos.y - 0.5, pos.z + dir_z * 0.6)
 	local ndef_low = minetest.registered_nodes[node_low]
 	-- next is solid, no need to jump
 	if ndef_low and ndef_low.walkable then
@@ -115,8 +117,8 @@ function mob_class:can_jump_cliff()
 		return false
 	end
 
-	local node_far  = minetest.get_node(vector_offset(pos, dir_x * 1.6, -0.5, dir_z * 1.6)).name
-	local node_far2 = minetest.get_node(vector_offset(pos, dir_x * 2.5, -0.5, dir_z * 2.5)).name
+	local node_far  = get_node_name_raw(pos.x + dir_x * 1.6, pos.y - 0.5, pos.z + dir_z * 1.6)
+	local node_far2 = get_node_name_raw(pos.x + dir_x * 2.5, pos.y - 0.5, pos.z + dir_z * 2.5)
 	local ndef_far  = minetest.registered_nodes[node_far]
 	local ndef_far2 = minetest.registered_nodes[node_far2]
 	-- TODO: also check there is air above these nodes?
@@ -159,12 +161,12 @@ function mob_class:is_at_cliff_or_danger()
 		end
 		return "drop of "..tostring(height)
 	end
-	local bnode = minetest.get_node(blocker)
-	-- minetest.log("At cliff: " .. self.name .. " below " .. bnode.name .. " height "..height)
+	local bname = get_node_name(blocker)
+	-- minetest.log("At cliff: " .. self.name .. " below " .. bname .. " height "..height)
 	if self:is_node_dangerous(self.standing_in.name) or self:is_node_waterhazard(self.standing_in.name) then
 		return false -- allow to get out of the immediate danger
 	end
-	if self:is_node_dangerous(bnode.name) or self:is_node_waterhazard(bnode.name) then return bnode.name end
+	if self:is_node_dangerous(bname) or self:is_node_waterhazard(bname) then return bname end
 	return false
 end
 
@@ -190,8 +192,8 @@ function mob_class:is_at_water_danger()
 		vector_new(pos.x + dir_x, ypos - 3, pos.z + dir_z))
 
 	if not los then
-		local bnode = minetest.get_node(blocker)
-		if self:is_node_waterhazard(bnode.name) then return bnode.name end
+		local bname = get_node_name(blocker)
+		if self:is_node_waterhazard(bname) then return bname end
 	end
 	return false
 end
@@ -255,10 +257,10 @@ function mob_class:do_jump()
 	local dir_z =  cos(yaw) * (cbox[4] + 0.5) + v.z * 0.25
 
 	-- what is in front of mob?
-	local nod = minetest.get_node(vector_offset(pos, dir_x, 0.5, dir_z))
-	local ndef = minetest.registered_nodes[nod.name]
+	local nnam = get_node_name_raw(pos.x + dir_x, pos.y + 0.5, pos.z + dir_z)
+	local ndef = minetest.registered_nodes[nnam]
 	-- thin blocks that do not need to be jumped
-	if nod.name == NODE_SNOW or (ndef and ndef.groups.carpet or 0) > 0 then return false end
+	if nnam == NODE_SNOW or (ndef and ndef.groups.carpet or 0) > 0 then return false end
 	-- nothing to jump on?
 	if self.walk_chance ~= 0 and not (ndef and ndef.walkable) and not self._can_jump_cliff then return false end
 	-- facing a fence? jumping will not help (FIXME: consider jump height)
@@ -269,11 +271,11 @@ function mob_class:do_jump()
 
 	-- this is used to detect if there's a block on top of the block in front of the mob.
 	-- If there is, there is no point in jumping as we won't manage.
-	local node_top = minetest.get_node(vector_offset(pos, dir_x, 1.5, dir_z)).name
+	local nnam_top = get_node_name_raw(pos.x + dir_x, pos.y + 1.5, pos.z + dir_z)
 	-- TODO: also check above the mob itself, and check the full mob height?
 
 	-- we don't attempt to jump if there's a stack of blocks blocking, unless attacking
-	local ntdef = minetest.registered_nodes[node_top]
+	local ntdef = minetest.registered_nodes[nnam_top]
 	-- TODO: snow, carpet?
 	if ntdef and ntdef.walkable == true --[[and not (self.attack and self.state == "attack")]] then return false end
 
@@ -562,7 +564,7 @@ function mob_class:do_states_walk()
 		-- did we find land?
 		if lp then
 			if logging then
-				minetest.log("action", "[mcl_mobs] "..self.name.." heading to land ".. tostring(minetest.get_node(lp).name or nil))
+				minetest.log("action", "[mcl_mobs] "..self.name.." heading to land ".. tostring(get_node_name(lp) or nil))
 			end
 			-- look towards land and move in that direction
 			self:turn_in_direction(lp.x - s.x, lp.z - s.z, 8)
@@ -585,10 +587,10 @@ function mob_class:do_states_walk()
 	else --if not facing_wall then
 		local cbox = self.collisionbox
 		local dir_x, dir_z = -sin(yaw - QUARTERPI) * (cbox[4] + 0.5), cos(yaw - QUARTERPI) * (cbox[4] + 0.5)
-		local nodface = minetest.registered_nodes[minetest.get_node(vector_offset(s, dir_x, (cbox[5] - cbox[2]) * 0.5, dir_z)).name]
+		local nodface = minetest.registered_nodes[get_node_name_raw(s.x + dir_x, s.y + (cbox[5] - cbox[2]) * 0.5, s.z + dir_z)]
 		if nodface and nodface.walkable then
 			dir_x, dir_z = -sin(yaw + QUARTERPI) * (cbox[4] + 0.5), cos(yaw + QUARTERPI) * (cbox[4] + 0.5)
-			nodface = minetest.registered_nodes[minetest.get_node(vector_offset(s, dir_x, (cbox[5] - cbox[2]) * 0.5, dir_z)).name]
+			nodface = minetest.registered_nodes[get_node_name_raw(s.x + dir_x, s.y + (cbox[5] - cbox[2]) * 0.5, s.z + dir_z)]
 			if nodface and nodface.walkable then
 				facing_wall = true
 			end

@@ -20,6 +20,8 @@ local atan2 = math.atan2
 local sin = math.sin
 local cos = math.cos
 local sqrt = math.sqrt
+local get_node_name = mcl_vars.get_node_name
+local get_node_name_raw = mcl_vars.get_node_name_raw
 local NODE_IGNORE = mcl_mobs.NODE_IGNORE
 
 --local PATHFINDING = "gowp"
@@ -45,29 +47,36 @@ end
 -- standing_under: node above
 -- these may be "nil" (= ignore) and are otherwise already resolved via minetest.registered_nodes
 function mob_class:update_standing(pos, moveresult)
-	local temp_pos = vector.offset(pos, 0, self.collisionbox[2] + 0.5, 0) -- foot level
 	self.collides = moveresult and moveresult.collides
-	self.standing_in = minetest.registered_nodes[minetest.get_node(temp_pos).name] or NODE_IGNORE
-	temp_pos.y = temp_pos.y - 1 -- below
+
+	local standing_in_y = floor(pos.y + self.collisionbox[2] + 0.501)
+	self.standing_in = minetest.registered_nodes[get_node_name_raw(pos.x, standing_in_y, pos.z)] or NODE_IGNORE
+
+	--- Update "standing on"
 	-- sometimes, we may be colliding with a node *not* below us, effectively standing on it instead (e.g., a corner)
-	if not self.standing_on.walkable and moveresult and moveresult.collisions then
+	local updated = false
+	if moveresult and moveresult.collisions then
 		-- to inspect: minetest.log("action", dump(moveresult):gsub(" *\n\\s*",""))
 		for _, c in ipairs(moveresult.collisions) do
 			if c.axis == "y" and c.type == "node" and c.old_velocity.y < 0 then
-				self.standing_on_node = minetest.get_node(c.node_pos)
-				self.standing_on = minetest.registered_nodes[self.standing_on_node.name]
-				goto standing_on_updated
+				local nodename, _, param2 = get_node_name(c.node_pos)
+				self.standing_on = minetest.registered_nodes[nodename] or NODE_IGNORE
+				self.standing_on_p2 = param2 -- to allow access to param2 in, e.g., stalker
+				updated = true
+				break
 			end
 		end
 	end
 	-- fallback
-	self.standing_on_node = minetest.get_node(temp_pos) -- to allow access to param2 in, e.g., stalker
-	self.standing_on = self.standing_on_node and minetest.registered_nodes[self.standing_on_node.name] or NODE_IGNORE
-	::standing_on_updated::
-	-- approximate height of head over ground:
-	self.standing_height = pos.y - math.floor(temp_pos.y + 0.5) - 0.5 + self.head_eye_height * 0.9
-	temp_pos.y = temp_pos.y + 2 -- at +1 = above
-	self.standing_under = minetest.registered_nodes[minetest.get_node(temp_pos).name] or NODE_IGNORE
+	if not updated then
+		local nodename, _, param2 = get_node_name_raw(pos.x, standing_in_y - 1, pos.z)
+		self.standing_on = minetest.registered_nodes[self.nodename] or NODE_IGNORE
+		self.standing_on_p2 = param2 -- to allow access to param2 in, e.g., stalker
+	end
+	-- one node above, "standing under"
+	self.standing_under = minetest.registered_nodes[get_node_name_raw(pos.x, standing_in_y + 1, pos.z)] or NODE_IGNORE
+	-- approximate height of head over the node border:
+	self.standing_height = pos.y + self.head_eye_height * 0.9 - (standing_in_y - 0.5)
 end
 
 function mob_class:player_in_active_range()
@@ -489,7 +498,7 @@ function mob_class:do_env_damage()
 
 	local standin = self.standing_in
 	-- wither rose effect
-	if standin.name == "mcl_flowers:wither_rose" then
+	if standin and standin.name == "mcl_flowers:wither_rose" then
 		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
 
@@ -530,7 +539,7 @@ function mob_class:do_env_damage()
 			return true
 		end
 	end
-	if standin.damage_per_second ~= 0 and not (standin.groups.lava or standin.groups.fire) then
+	if standin.damage_per_second and standin.damage_per_second ~= 0 and not (standin.groups.lava or standin.groups.fire) then
 		self.health = self.health - standin.damage_per_second
 		mcl_mobs.effect(vector.offset(pos, 0, 1, 0), 5, "mcl_particles_smoke.png")
 		if self:check_for_death("dps", {type = "environment", pos = pos, node = standin.name}) then
@@ -703,7 +712,7 @@ function mob_class:gravity_and_floating(pos, dtime, moveresult)
 	self.visc = 1
 	local vel = self.object:get_velocity() or vector.zero()
 	local standbody = self.standing_in
-	if standbody.groups.water then
+	if standbody and standbody.groups.water then
 		self.visc = 0.4
 		if self.floats > 0 then --and minetest.registered_nodes[get_node(vector.offset(pos, 0, self.collisionbox[5] - 0.25, 0)).name].groups.water then
 			local w = (self.standing_under.groups.water and 0 or self.standing_height) -- <1 is submerged, >1 is out
@@ -714,7 +723,7 @@ function mob_class:gravity_and_floating(pos, dtime, moveresult)
 			end
 		end
 		self.start_fall_y = nil -- otherwise might receive fall damage on the next jump?
-	elseif standbody.groups.lava then
+	elseif standbody and standbody.groups.lava then
 		self.visc = 0.5
 		if self.floats_on_lava > 0 then
 			local w = self.standing_under.groups.water and 0 or self.standing_height -- 0 is submerged, 1 is out
@@ -841,7 +850,7 @@ function mob_class:check_water_flow(dtime, pos)
 		-- Just to make sure we don't manipulate the speed for no reason
 		if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
 			-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
-			local f = 10 -- but we have acceleration here, not velocity. Was: 1.39
+			local f = 12 -- but we have acceleration here, not velocity. Was: 1.39
 			-- Set new item moving speed into the direciton of the liquid
 			self.acceleration = self.acceleration + vector.new(vec.x * f, -0.22, vec.z * f)
 			--self.physical_state = true

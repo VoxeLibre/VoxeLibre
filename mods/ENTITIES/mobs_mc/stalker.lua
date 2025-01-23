@@ -34,18 +34,18 @@ local function get_texture(self, prev)
 			color = color or minetest.colorspec_to_colorstring(standing_on.color)
 			-- get colors from mcl_maps data where possible, including param2
 			local cols = colors[standing_on.name]
-			if cols and type(cols[1]) == "table" and self.standing_on_node then
+			if cols and type(cols[1]) == "table" and self.standing_on_p2 then
 				local param2
 				if standing_on.paramtype2 == "color" then
-					param2 = self.standing_on_node.param2
+					param2 = self.standing_on_p2
 				elseif standing_on.paramtype2 == "colorfacedir" then
-					param2 = math.floor(self.standing_on_node.param2 / 8)
+					param2 = math.floor(self.standing_on_p2 / 8)
 				elseif standing_on.paramtype2 == "colorwallmounted" then
-					param2 = math.floor(self.standing_on_node.param2 / 32)
+					param2 = math.floor(self.standing_on_p2 / 32)
 				elseif standing_on.paramtype2 == "color4dir" then
-					param2 = math.floor(self.standing_on_node.param2 / 64)
+					param2 = math.floor(self.standing_on_p2 / 64)
 				elseif standing_on.paramtype2 == "colordegrotate" then
-					param2 = math.floor(self.standing_on_node.param2 / 8)
+					param2 = math.floor(self.standing_on_p2 / 8)
 				end
 				color = cols[param2 + 1] or color
 			end

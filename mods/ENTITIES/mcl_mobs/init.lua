@@ -12,9 +12,9 @@ local function line_of_sight(origin, target, see_through_opaque, liquids)
 	local raycast = minetest.raycast(origin, target, false, liquids or false)
 	for hitpoint in raycast do
 		if hitpoint.type == "node" then
-			local node = minetest.get_node(minetest.get_pointed_thing_position(hitpoint))
-			if node.name ~= "air" then
-				local nodef = minetest.registered_nodes[node.name]
+			local nodename = get_node_name(minetest.get_pointed_thing_position(hitpoint))
+			if nodename ~= "air" then
+				local nodef = minetest.registered_nodes[nodename]
 				if nodef and nodef.walkable and not (see_through_opaque and not nodef.groups.opaque) then
 					return false
 				end

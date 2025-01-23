@@ -389,7 +389,7 @@ end
 function mob_class:on_step(dtime, moveresult)
 	-- allow crash in development mode
 	if DEVELOPMENT then return on_step_work(self, dtime, moveresult) end
-	-- Removed as bundled Lua (5.1 doesn't support xpcall)
+	-- Bundled Lua (5.1 doesn't support xpcall, only luaJit)
 	local status, retVal
 	if xpcall then
 		status, retVal = xpcall(on_step_work, on_step_error_handler, self, dtime, moveresult)
@@ -400,8 +400,8 @@ function mob_class:on_step(dtime, moveresult)
 	warn_user_error()
 	local pos = self.object:get_pos()
 	if pos then
-		local node = minetest.get_node(pos)
-		if node and node.name == "ignore" then minetest.log("warning", "Pos is ignored: " .. dump(pos)) end
+		local nodename = mcl_vars.get_node_name(pos)
+		if nodename == "ignore" then minetest.log("warning", "Pos is ignored: " .. dump(pos)) end
 	end
 	log_error(dump(retVal), dump(pos), dump(self))
 end
