@@ -239,10 +239,26 @@ local function make_mesecons(base_name, suffix, base_mesecons)
 		mesecons.conductor = table.copy(base_mesecons.conductor)
 
 		if mesecons.conductor.onstate then
-			mesecons.conductor.onstate = base_mesecons.conductor.onstate..suffix
+			if type(mesecons.conductor.onstate) == "function" then
+				local old_onstate = mesecons.conductor.onstate
+				mesecons.conductor.onstate = function(pos, node)
+					local res = old_onstate(pos, node)
+					return {res[1]..suffix, res[2]}
+				end
+			else
+				mesecons.conductor.onstate = base_mesecons.conductor.onstate..suffix
+			end
 		end
 		if base_mesecons.conductor.offstate then
-			mesecons.conductor.offstate = base_mesecons.conductor.offstate..suffix
+			if type(mesecons.conductor.offstate) == "function" then
+				local old_offstate = mesecons.conductor.offstate
+				mesecons.conductor.offstate = function(pos, node)
+					local res = old_offstate(pos, node)
+					return {res[1]..suffix, res[2]}
+				end
+			else
+				mesecons.conductor.offstate = base_mesecons.conductor.offstate..suffix
+			end
 		end
 	end
 

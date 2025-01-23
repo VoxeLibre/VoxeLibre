@@ -21,8 +21,12 @@ mod.register_curves_rail("mcl_minecarts:golden_rail_v2",{
 	mesecons = {
 		conductor = {
 			state = mesecon.state.off,
-			offstate = "mcl_minecarts:golden_rail_v2",
-			onstate  = "mcl_minecarts:golden_rail_v2_on",
+			offstate = function(pos, node)
+				return {"mcl_minecarts:golden_rail_v2", node.param2}
+			end,
+			onstate  = function(pos, node)
+				return {"mcl_minecarts:golden_rail_v2_on", node.param2}
+			end,
 			rules = mod.rail_rules_long,
 		},
 	},
@@ -73,8 +77,12 @@ mod.register_curves_rail("mcl_minecarts:golden_rail_v2_on",{
 	mesecons = {
 		conductor = {
 			state = mesecon.state.on,
-			offstate = "mcl_minecarts:golden_rail_v2",
-			onstate  = "mcl_minecarts:golden_rail_v2_on",
+			offstate = function(pos, node)
+				return {"mcl_minecarts:golden_rail_v2", node.param2}
+			end,
+			onstate  = function(pos, node)
+				return {"mcl_minecarts:golden_rail_v2_on", node.param2}
+			end,
 			rules = mod.rail_rules_long,
 		},
 	},
