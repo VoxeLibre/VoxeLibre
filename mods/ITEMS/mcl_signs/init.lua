@@ -6,16 +6,13 @@ local S = core.get_translator(modname)
 local modpath = core.get_modpath(modname)
 
 -- Character map
-local chars_file = io.open(modpath .. "/characters.txt", "r")
-assert(chars_file, "mcl_signs/characters.txt not found")
-
 local charmap = {}
-while true do
-	local char = chars_file:read("*l")
-	if char == nil then break end
-	local img = chars_file:read("*l")
-	local _ = chars_file:read("*l")
-	charmap[char] = img
+for line in io.lines(modpath .. "/characters.tsv") do
+	local split = line:split("\t")
+	if #split > 0 then
+		local char, img, _ = split[1], split[2], split[3]
+		charmap[char] = img
+	end
 end
 mcl_signs.charmap = charmap
 
