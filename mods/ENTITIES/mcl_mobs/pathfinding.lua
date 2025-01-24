@@ -120,8 +120,8 @@ local function calculate_path_through_door (p, cur_door_pos, t)
 
 	for _,v in pairs(plane_adjacents) do
 		local pos_closest_to_door = vector.add(cur_door_pos,v)
-		local n = minetest.get_node(pos_closest_to_door)
-		if not n.walkable then
+		local ndef = minetest.registered_nodes[minetest.get_node(pos_closest_to_door).name]
+		if not ndef.walkable then
 			mcl_log("We have open space next to door at: " .. minetest.pos_to_string(pos_closest_to_door))
 
 			local prospective_wp = minetest.find_path(p, pos_closest_to_door, PATHFINDING_SEARCH_DISTANCE, 1, 4)
