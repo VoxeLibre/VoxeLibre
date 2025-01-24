@@ -758,7 +758,8 @@ function doc.generate_entry_list(cid, playername)
 		local entry_textlist = "textlist[0,1;"..(doc.FORMSPEC.WIDTH-0.2)..","..(doc.FORMSPEC.HEIGHT-2)..";doc_catlist;"
 		local counter = 0
 		doc.data.players[playername].entry_ids = {}
-		local entries = doc.get_sorted_entry_names(cid)
+		local lang = core.get_player_information(playername).lang_code
+		local entries = doc.get_sorted_entry_names(cid, lang)
 		doc.data.players[playername].catsel_list = {}
 		for i=1, #entries do
 			local eid = entries[i]
@@ -800,8 +801,7 @@ function doc.generate_entry_list(cid, playername)
 	return formstring
 end
 
-function doc.get_sorted_entry_names(cid)
-	local sort_table = {}
+function doc.get_sorted_entry_names(cid, lang)
 	local entry_table = {}
 	local cat = doc.data.categories[cid]
 	local used_eids = {}
@@ -824,21 +824,15 @@ function doc.get_sorted_entry_names(cid)
 		end
 	end
 	for eid,entry in pairs(cat.entries) do
-		local new_entry = table.copy(entry)
-		new_entry.eid = eid
 		if not used_eids[eid] then
+			local new_entry = table.copy(entry)
+			new_entry.eid = eid
+			new_entry.__sort_key = entry.name and core.strip_colors(core.get_translated_string(lang, entry.name)):lower() or eid
 			table.insert(entry_table, new_entry)
 		end
-		table.insert(sort_table, entry.name)
 	end
 	if cat.def.sorting == "custom" then
 		return extract(entry_table)
-	else
-		table.sort(sort_table)
-	end
-	local reverse_sort_table = table.copy(sort_table)
-	for i=1, #sort_table do
-		reverse_sort_table[sort_table[i]] = i
 	end
 	local comp
 	if cat.def.sorting ~= "nosort" then
@@ -848,7 +842,7 @@ function doc.get_sorted_entry_names(cid)
 		-- Alphabetic sorting
 		elseif cat.def.sorting == "abc" or cat.def.sorting == nil then
 			comp = function(e1, e2)
-				if reverse_sort_table[e1.name] < reverse_sort_table[e2.name] then return true else return false end
+				return e1.__sort_key < e2.__sort_key
 			end
 		end
 		table.sort(entry_table, comp)
