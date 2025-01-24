@@ -1247,7 +1247,7 @@ local function retrieve_my_jobsite (self)
 		mcl_log("find_jobsite. Invalid params. Should not happen")
 		return
 	end
-	local n = mcl_vars.get_node(self._jobsite)
+	local n = minetest.get_node(self._jobsite)
 	local m = minetest.get_meta(self._jobsite)
 	if m:get_string("villager") == self._id then
 		--mcl_log("find_jobsite. is my job.")
@@ -1414,7 +1414,7 @@ local function validate_bed(self)
 	if not self or not self._bed then
 		return false
 	end
-	local n = mcl_vars.get_node(self._bed)
+	local n = minetest.get_node(self._bed)
 	if not n then
 		self._bed = nil
 		return false
