@@ -11,6 +11,8 @@
 
 Code and font: MIT (see `LICENSE` file for details)
 
+`utf8.lua` is taken from `modlib`, by Lars Mueller alias LMD or appguru(eu): [source](https://github.com/appgurueu/modlib/blob/master/utf8.lua)
+
 License of models: GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)\
 Models author: 22i.\
 Source: <https://github.com/22i/amc>

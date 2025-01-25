@@ -3,28 +3,40 @@
 ## Functions
 
 * `mcl_signs.register_sign(name, color, [definition])`
+	* `name` is the part of the namestring that will follow `"mcl_signs:"`
+	* `color` is the HEX color value to color the greyscale sign texture with.
+	  **Hint:** use `""` or `"#ffffff"` if you're overriding the texture fields
+	  in sign definition
+	* `definition` is optional, see section below for reference
 
 ## Sign definition
 
 ```lua
 {
-	-- This can contain any node definition fields which will ultimately make up the sign nodes.
-	-- Usually you will want to at least supply "description" and "_doc_items_longdesc".
+	-- This can contain any node definition fields which will ultimately make
+	-- up the sign nodes.
+	-- Usually you'll want to at least supply `description`.
+	description = S("Significant Sign"),
+
+    -- If you don't want to use texture coloring, you'll have to supply the
+	-- textures yourself:
+
 }
 ```
 
-## `characters.txt`
+## Character map (`characters.tsv`)
 
 It's a UTF-8 encoded text file that contains metadata for all supported
-characters. It contains a sequence of info blocks, one for each character. Each
-info block is made out of 3 lines:
+characters. Despite its file extension and the theoretical possibility of
+opening it in a spreadsheet editor, it's still plaintext values separated with
+`\t` (tab idents). The separated values are _columns_, and the lines they are
+located at are _cells_. 1 cell and 3 columns per character:
 
-* **Line 1:** The literal UTF-8 encoded character
-* **Line 2:** Name of the texture file for this character minus the ".png"
+* **Column 1:** The literal UTF-8 encoded character
+* **Column 2:** Name of the texture file for this character minus the ".png"
   suffix (found in the "textures/" sub-directory in root)
-* **Line 3:** Currently ignored. Previously this was for the character width
-  in pixels
+* **Column 3:** Currently ignored. This is reserved for character width in
+  pixels in case the font will be made proportional
 
-After line 3, another info block may follow. This repeats until the end of the file.
-
-All character files must be 5 or 6 pixels wide (5 pixels are preferred).
+All character textures must be 12 pixels high and 5 or 6 pixels wide (5
+is preferred).

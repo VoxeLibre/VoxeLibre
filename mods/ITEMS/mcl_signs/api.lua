@@ -1,4 +1,4 @@
-local S, charmap = ...
+local S, charmap, utf8 = ...
 
 local function table_merge(t, ...)
 	local t2 = table.copy(t)
@@ -12,6 +12,12 @@ local NUMBER_OF_LINES = 4
 
 local LINE_HEIGHT = 14
 local CHAR_WIDTH = 5
+
+local SIGN_GLOW_INTENSITY = 14
+
+local LF_CODEPOINT = utf8.codepoint("\n")
+local SP_CODEPOINT = utf8.codepoint(" ")
+local DS_CODEPOINT = utf8.codepoint("-") -- used as the wrapping character
 
 local DEFAULT_COLOR = "#000000"
 local DYE_TO_COLOR = {
@@ -32,10 +38,6 @@ local DYE_TO_COLOR = {
 	["magenta"] = "#ab31a2",
 	["pink"] = "#d56791",
 }
-
-local wordwrap_enabled = core.settings:get_bool("vl_signs_word_wrap", true)
-
-local SIGN_GLOW_INTENSITY = 14
 
 local F = core.formspec_escape
 
@@ -72,10 +74,15 @@ local function get_signdata(pos)
 	local node = core.get_node(pos)
 	local def = core.registered_nodes[node.name]
 	if not def or core.get_item_group(node.name, "sign") < 1 then return end
+
 	local meta = core.get_meta(pos)
 	local text = meta:get_string("text")
 	local color = meta:get_string("color")
+	if color == "" then
+		color = DEFAULT_COLOR
+	end
 	local glow = core.is_yes(meta:get_string("glow"))
+
 	local yaw, spos
 	local typ = "standing"
 	if def.paramtype2  == "wallmounted" then
@@ -84,11 +91,11 @@ local function get_signdata(pos)
 		spos = vector.add(vector.offset(pos, 0, -0.25, 0), dir * 0.41)
 		yaw = core.dir_to_yaw(dir)
 	else
-		yaw = math.rad(((node.param2 * 1.5 ) + 1 ) % 360)
+		yaw = math.rad(((node.param2 * 1.5) + 1) % 360)
 		local dir = core.yaw_to_dir(yaw)
 		spos = vector.add(vector.offset(pos, 0, 0.08, 0), dir * -0.05)
 	end
-	if color == "" then color = DEFAULT_COLOR end
+
 	return {
 		text = text,
 		color = color,
@@ -107,95 +114,48 @@ local function set_signmeta(pos, def)
 	if def.glow then meta:set_string("glow", def.glow) end
 end
 
-local function word_wrap(str)
-	local output = {}
-	for line in str:gmatch("[^\r\n]*") do
-		local nline = ""
-		for word in line:gmatch("%S+") do
-			if #nline + #word + 1 > LINE_LENGTH then
-				if nline ~= "" then table.insert(output, nline) end
-				nline = word
-			else
-				if nline ~= "" then nline = nline .. " " end
-				nline = nline .. word
-			end
-		end
-		table.insert(output, nline)
-	end
-	return table.concat(output, "\n")
-end
-
 local function string_to_line_array(str)
-	local linechar_table = {}
-	local current = 1
-	local linechar = 1
-	local cr_last = false
-	linechar_table[current] = ""
+	local lines = {}
+	local line = {}
 
-	-- compile characters
-	for char in str:gmatch(".") do
-		local add
-		local is_cr, is_lf = char == "\r", char == "\n"
+	str = string.gsub(str, "\r\n?", "\n")
+	for _, code in utf8.codes(str) do
+		if #lines > NUMBER_OF_LINES then break end
 
-		if is_cr and not cr_last then
-			cr_last = true
-			add = false
-		elseif is_lf or cr_last or linechar > LINE_LENGTH then
-			cr_last = is_cr
-			add = not (is_cr or is_lf)
-			current = current + 1
-			linechar_table[current] = ""
-			linechar = 1
+		if code == LF_CODEPOINT
+				or code == SP_CODEPOINT and #line >= (LINE_LENGTH - 1) then
+			table.insert(lines, line)
+			line = {}
+		elseif #line >= LINE_LENGTH then
+			table.insert(line, DS_CODEPOINT)
+			table.insert(lines, line)
+			line = {code}
 		else
-			add = true
-		end
-
-		if add then
-			linechar_table[current] = linechar_table[current] .. char
-			linechar = linechar + 1
+			table.insert(line, code)
 		end
 	end
+	if #line > 0 then table.insert(lines, line) end
 
-	return linechar_table
+	return lines
 end
+mcl_signs.create_lines = string_to_line_array
 
-function mcl_signs.create_lines(text)
-	local text_table = {}
-	for idx, line in ipairs(string_to_line_array(text)) do
-		if idx > NUMBER_OF_LINES then
-			break
-		end
-		table.insert(text_table, line)
-	end
-	return text_table
-end
-
-function mcl_signs.generate_line(s, ypos)
-	local i = 1
+local function generate_line(s, ypos)
 	local parsed = {}
 	local width = 0
-	local chars = 0
 	local printed_char_width = CHAR_WIDTH + 1
-	while chars < LINE_LENGTH and i <= #s do
-		local file
-		-- Get and render character
-		if charmap[s:sub(i, i)] then
-			file = charmap[s:sub(i, i)]
-			i = i + 1
-		elseif i < #s and charmap[s:sub(i, i + 1)] then
-			file = charmap[s:sub(i, i + 1)]
-			i = i + 2
-		else
-			-- Use replacement character:
-			file = "_rc"
-			i = i + 1
+
+	for _, code in ipairs(s) do
+		local file = "_rc"
+		if charmap[utf8.char(code)] then
+			file = charmap[utf8.char(code)]
 		end
 		if file then
 			width = width + printed_char_width
 			table.insert(parsed, file)
-			chars = chars + 1
 		end
 	end
+
 	width = width - 1
 	local texture = ""
 	local xpos = math.floor((SIGN_WIDTH - width) / 2)
@@ -206,29 +166,106 @@ function mcl_signs.generate_line(s, ypos)
 	end
 	return texture
 end
+mcl_signs.generate_line = generate_line
 
-function mcl_signs.generate_texture(data)
-	data.text = data.text or ""
-	--local lines = mcl_signs.create_lines(data.wordwrap and word_wrap(data.text) or data.text)
-	local lines = mcl_signs.create_lines(wordwrap_enabled and word_wrap(data.text) or data.text)
+local function generate_texture(data)
+	local lines = string_to_line_array(data.text or "")
 	local texture = "[combine:" .. SIGN_WIDTH .. "x" .. SIGN_WIDTH
 	local ypos = 0
 	local letter_color = data.color or DEFAULT_COLOR
 
 	for _, line in ipairs(lines) do
-		texture = texture .. mcl_signs.generate_line(line, ypos)
+		texture = texture .. generate_line(line, ypos)
 		ypos = ypos + LINE_HEIGHT
 	end
 
 	texture = "(" .. texture .. "^[multiply:" .. letter_color .. ")"
 	return texture
 end
+mcl_signs.generate_texture = generate_texture
 
-function sign_tpl.on_place(itemstack, placer, pointed_thing)
-	if pointed_thing.type ~= "node" then
-		return itemstack
+-- Text entity handling
+local function get_text_entity(pos, force_remove)
+	local objects = core.get_objects_inside_radius(pos, 0.5)
+	local text_entity
+	local i = 0
+	for _, v in pairs(objects) do
+		local ent = v:get_luaentity()
+		if ent and ent.name == "mcl_signs:text" then
+			i = i + 1
+			if i > 1 or force_remove == true then
+				v:remove()
+			else
+				text_entity = v
+			end
+		end
+	end
+	return text_entity
+end
+mcl_signs.get_text_entity = get_text_entity
+
+local function update_sign(pos)
+	local data = get_signdata(pos)
+
+	local text_entity = get_text_entity(pos)
+	if text_entity and not data then
+		text_entity:remove()
+		return false
+	elseif not data then
+		return false
+	elseif not text_entity then
+		text_entity = core.add_entity(data.text_pos, "mcl_signs:text")
+		if not text_entity or not text_entity:get_pos() then return end
 	end
 
+	local glow = 0
+	if data.glow then
+		glow = SIGN_GLOW_INTENSITY
+	end
+	text_entity:set_properties({
+		textures = {generate_texture(data)},
+		glow = glow,
+	})
+	text_entity:set_yaw(data.yaw)
+	text_entity:set_armor_groups({immortal = 1})
+	return true
+end
+mcl_signs.update_sign = update_sign
+
+-- Formspec
+local function show_formspec(player, pos)
+	if not pos then return end
+	local meta = core.get_meta(pos)
+	local old_text = meta:get_string("text")
+	core.show_formspec(player:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, table.concat({
+		"size[6,3]textarea[0.25,0.25;6,1.5;text;",
+		F(S("Enter sign text:")), ";", F(old_text), "]",
+		"label[0,1.5;",
+			F(S("Maximum line length: @1", LINE_LENGTH)), "\n",
+			F(S("Maximum lines: @1", NUMBER_OF_LINES)),
+		"]",
+		"button_exit[0,2.5;6,1;submit;", F(S("Done")), "]"
+	}))
+end
+mcl_signs.show_formspec = show_formspec
+
+core.register_on_player_receive_fields(function(player, formname, fields)
+	if formname:find("mcl_signs:set_text_") == 1 then
+		local x, y, z = formname:match("mcl_signs:set_text_(.-)_(.-)_(.*)")
+		local pos = vector.new(tonumber(x), tonumber(y), tonumber(z))
+		if not fields or not fields.text then return end
+		if not mcl_util.check_position_protection(pos, player) then
+			set_signmeta(pos, {
+				-- limit saved text to 256 characters
+				-- (4 lines x 15 chars = 60 so this should be more than is ever needed)
+				text = tostring(fields.text):sub(1, 256)
+			})
+			update_sign(pos)
+		end
+	end
+end)
+
+function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	local under = pointed_thing.under
 	local node = core.get_node(under)
 	local def = core.registered_nodes[node.name]
@@ -243,24 +280,25 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	local wdir = core.dir_to_wallmounted(dir)
 
 	local itemstring = itemstack:get_name()
-	local placestack = ItemStack(itemstack)
 	local def = itemstack:get_definition()
 
 	local pos
-	-- place on wall
-	if wdir ~= 0 and wdir ~= 1 then
-		placestack:set_name("mcl_signs:wall_sign_"..def._mcl_sign_wood)
-		itemstack, pos = core.item_place_node(placestack, placer, pointed_thing, wdir)
-	elseif wdir == 1 then -- standing, not ceiling
+	local placestack = ItemStack(itemstack)
+	if wdir < 1 then
+		-- no placement on ceilings allowed yet
+		return itemstack
+	elseif wdir == 1 then
 		placestack:set_name("mcl_signs:standing_sign_"..def._mcl_sign_wood)
 		-- param2 value is degrees / 1.5
 		local rot = normalize_rotation(placer:get_look_horizontal() * 180 / math.pi / 1.5)
 		itemstack, pos = core.item_place_node(placestack, placer, pointed_thing, rot)
 	else
-		return itemstack
+		placestack:set_name("mcl_signs:wall_sign_"..def._mcl_sign_wood)
+		itemstack, pos = core.item_place_node(placestack, placer, pointed_thing, wdir)
 	end
 
-	mcl_signs.show_formspec(placer, pos)
+	show_formspec(placer, pos)
+	-- restore canonical name as core.item_place_node might have changed it
 	itemstack:set_name(itemstring)
 	return itemstack
 end
@@ -274,7 +312,7 @@ function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
 				data.color = "#7e7e7e" -- black doesn't glow in the dark
 			end
 			set_signmeta(pos, {glow = "true", color = data.color})
-			mcl_signs.update_sign(pos)
+			update_sign(pos)
 			if not core.is_creative_enabled(clicker:get_player_name()) then
 				itemstack:take_item()
 			end
@@ -284,22 +322,22 @@ function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
 			glow = "false",
 			color = DEFAULT_COLOR,
 		})
-		mcl_signs.update_sign(pos)
+		update_sign(pos)
 	elseif iname:sub(1, 8) == "mcl_dye:" then
 		local color = iname:sub(9)
 		set_signmeta(pos, {color = DYE_TO_COLOR[color]})
-		mcl_signs.update_sign(pos)
+		update_sign(pos)
 		if not core.is_creative_enabled(clicker:get_player_name()) then
 			itemstack:take_item()
 		end
 	elseif not mcl_util.check_position_protection(pos, clicker) then
-		mcl_signs.show_formspec(clicker, pos)
+		show_formspec(clicker, pos)
 	end
 	return itemstack
 end
 
 function sign_tpl.on_destruct(pos)
-	mcl_signs.get_text_entity(pos, true)
+	get_text_entity(pos, true)
 end
 
 -- TODO: reactivate when a good dyes API is finished
@@ -321,91 +359,13 @@ local sign_wall = table_merge(sign_tpl, {
 	_mcl_sign_type = "wall",
 })
 
--- Formspec
-function mcl_signs.show_formspec(player, pos)
-	if not pos then return end
-	local meta = core.get_meta(pos)
-	local old_text = meta:get_string("text")
-	core.show_formspec(player:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, table.concat({
-		"size[6,3]textarea[0.25,0.25;6,1.5;text;",
-		F(S("Enter sign text:")), ";", F(old_text), "]",
-		"label[0,1.5;",
-			F(S("Maximum line length: @1", LINE_LENGTH)), "\n",
-			F(S("Maximum lines: @1", NUMBER_OF_LINES)),
-		"]",
-		"button_exit[0,2.5;6,1;submit;", F(S("Done")), "]"
-	}))
-end
-
-core.register_on_player_receive_fields(function(player, formname, fields)
-	if formname:find("mcl_signs:set_text_") == 1 then
-		local x, y, z = formname:match("mcl_signs:set_text_(.-)_(.-)_(.*)")
-		local pos = vector.new(tonumber(x), tonumber(y), tonumber(z))
-		if not fields or not fields.text then return end
-		if not mcl_util.check_position_protection(pos, player) then
-			set_signmeta(pos, {
-				-- limit saved text to 256 characters
-				-- (4 lines x 15 chars = 60 so this should be more than is ever needed)
-				text = tostring(fields.text):sub(1, 256)
-			})
-			mcl_signs.update_sign(pos)
-		end
-	end
-end)
-
--- Text entity handling
-function mcl_signs.get_text_entity(pos, force_remove)
-	local objects = core.get_objects_inside_radius(pos, 0.5)
-	local text_entity
-	local i = 0
-	for _, v in pairs(objects) do
-		local ent = v:get_luaentity()
-		if ent and ent.name == "mcl_signs:text" then
-			i = i + 1
-			if i > 1 or force_remove == true then
-				v:remove()
-			else
-				text_entity = v
-			end
-		end
-	end
-	return text_entity
-end
-
-function mcl_signs.update_sign(pos)
-	local data = get_signdata(pos)
-
-	local text_entity = mcl_signs.get_text_entity(pos)
-	if text_entity and not data then
-		text_entity:remove()
-		return false
-	elseif not data then
-		return false
-	elseif not text_entity then
-		text_entity = core.add_entity(data.text_pos, "mcl_signs:text")
-		if not text_entity or not text_entity:get_pos() then return end
-	end
-
-	local glow = 0
-	if data.glow then
-		glow = SIGN_GLOW_INTENSITY
-	end
-	text_entity:set_properties({
-		textures = {mcl_signs.generate_texture(data)},
-		glow = glow,
-	})
-	text_entity:set_yaw(data.yaw)
-	text_entity:set_armor_groups({immortal = 1})
-	return true
-end
-
 core.register_lbm({
 	nodenames = {"group:sign"},
 	name = "mcl_signs:restore_entities",
 	label = "Restore sign text",
 	run_at_every_load = true,
 	action = function(pos)
-		mcl_signs.update_sign(pos)
+		update_sign(pos)
 	end
 })
 
@@ -418,7 +378,7 @@ core.register_entity("mcl_signs:text", {
 	},
 	on_activate = function(self)
 		local pos = self.object:get_pos()
-		mcl_signs.update_sign(pos)
+		update_sign(pos)
 		local props = self.object:get_properties()
 		local t = props and props.textures
 		if type(t) ~= "table" or #t == 0 then self.object:remove() end
