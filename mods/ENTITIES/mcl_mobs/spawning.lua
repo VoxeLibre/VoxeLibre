@@ -127,10 +127,8 @@ local function count_mobs_all(categorise_by, pos)
 	local mobs_found_close = {}
 
 	local num = 0
-	local luaentities = core.luaentities
-	for i=1,#luaentities do
-		local entity = luaentities[i]
-		if entity and entity.is_mob then
+	for _,entity in pairs(core.luaentities) do
+		if entity.is_mob then
 			local add_entry = false
 			local mob_cat = entity[categorise_by]
 
@@ -161,15 +159,11 @@ local function count_mobs_all(categorise_by, pos)
 end
 
 local function count_mobs_total_cap(mob_type)
-	local total = 0
 	local num = 0
 	local hostile = 0
 	local non_hostile = 0
-	local luaentities = core.luaentities
-	for i = 1,#luaentities do
-		local l = luaentities[i]
-		if l and l.is_mob then
-			total = total + 1
+	for _,l in pairs(core.luaentities) do
+		if l.is_mob then
 			local nametagged = l.nametag and l.nametag ~= ""
 			if ( mob_type == nil or l.type == mob_type ) and not nametagged then
 				if l.spawn_class == "hostile" then
