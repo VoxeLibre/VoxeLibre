@@ -76,7 +76,7 @@ end
 function mcl_signs.upgrade_sign_rot(pos, node)
 	local numsign = false
 
-	for _,v in pairs(rotkeys) do
+	for _,v in ipairs(rotkeys) do
 		if mcl2rotsigns[node.name] then
 			node.name = mcl2rotsigns[node.name]
 			node.param2 = nidp2_degrotate[v][node.param2 + 1]
@@ -103,7 +103,8 @@ function mcl_signs.upgrade_sign_rot(pos, node)
 			end
 		end
 	end
-	core.swap_node(pos,node)
+
+	core.swap_node(pos, node)
 	mcl_signs.upgrade_sign_meta(pos)
 	mcl_signs.update_sign(pos)
 end
