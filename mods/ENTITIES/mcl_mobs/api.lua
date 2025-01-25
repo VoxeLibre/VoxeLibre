@@ -228,6 +228,18 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self._current_animation = nil
 	self:set_animation("stand")
 
+	-- reinitialize bone
+	if def.head_swivel and def.head_bone_position then
+		if self.object and self.object.get_bone_override then -- minetest >= 5.9
+			self.object:set_bone_override(def.head_swivel, {
+				position = { vec = def.head_bone_position, absolute = true },
+				rotation = { vec = vector.zero(), absolute = true }
+			})
+		else -- minetest < 5.9
+			self.object:set_bone_position(def.head_swivel, def.head_bone_position, vector.zero())
+		end
+	end
+
 	if self.riden_by_jock then --- Keep this function before self:on_spawn()
 		self.object:remove()
 		return
