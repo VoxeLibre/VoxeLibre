@@ -38,6 +38,7 @@ local skeleton = {
 		"mobs_mc_skeleton.png", -- skeleton
 	} },
 	makes_footstep_sound = true,
+	walk_velocity = 1,
 	textures = {
 		{
 			"mobs_mc_empty.png", -- armor
@@ -47,7 +48,7 @@ local skeleton = {
 	},
 	-- TODO: change random to new api when min minetest version is 5.8
 	sounds = {
-		random = "mobs_mc_skeleton_random.2",
+		random = "mobs_mc_skeleton_random",
 		death = "mobs_mc_skeleton_death",
 		damage = "mobs_mc_skeleton_hurt",
 		distance = 16,
