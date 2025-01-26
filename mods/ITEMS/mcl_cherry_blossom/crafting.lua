@@ -81,6 +81,15 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "mcl_signs:wall_sign_cherry 3",
+	recipe = {
+		{planks, planks, planks},
+		{planks, planks, planks},
+		{"", "mcl_core:stick", ""},
+	}
+})
+
 -- Smelting
 minetest.register_craft({
 	type = "fuel",
