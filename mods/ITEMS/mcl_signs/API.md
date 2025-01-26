@@ -1,4 +1,4 @@
-# `mcl_signs` API
+# `mcl_signs` API Reference
 
 ## Functions
 
@@ -8,6 +8,23 @@
 	  **Hint:** use `""` or `"#ffffff"` if you're overriding the texture fields
 	  in sign definition
 	* `definition` is optional, see section below for reference
+* `mcl_signs.update_sign(pos)`
+	* Updates the sign node and entity at `pos`
+* `mcl_signs.get_text_entity(pos, [force_remove])`
+	* Finds and returns ObjectRef for text entity for the sign at `pos`
+	* `force_remove` automatically removes the found entity if truthy
+* `mcl_signs.create_lines(str)`
+	* Converts a string to a line-broken (with hyphens) sequence table of UTF-8
+	  codepoints
+* `mcl_signs.generate_line(codepoints, ypos)`
+	* Generates a texture string from a codepoints sequence table (for a single
+	  line) using the character map
+	* `ypos` is the Y tile coordinate offset for the texture string to specify
+* `mcl_signs.generate_texture(data)`
+	* Generates a texture string from a sign data table
+* `mcl_signs.show_formspec(player, pos)`
+	* Shows the formspec of the sign at `pos` to `player` if protection checks
+	  pass.
 
 ## Sign definition
 
@@ -30,9 +47,12 @@
 
 It's a UTF-8 encoded text file that contains metadata for all supported
 characters. Despite its file extension and the theoretical possibility of
-opening it in a spreadsheet editor, it's still plaintext values separated with
+opening it in a spreadsheet editor, it's still plaintext values separated by
 `\t` (tab idents). The separated values are _columns_, and the lines they are
-located at are _cells_. 1 cell and 3 columns per character:
+located at are _rows_. It's customary that different character sets are
+separated with an empty line for readability.
+
+The format expects 1 row with 3 columns per character:
 
 * **Column 1:** The literal (as-is) glyph. Only [precomposed characters](https://en.wikipedia.org/wiki/Precomposed_character) are supported
 * **Column 2:** Name of the texture file for this character minus the ".png"
@@ -42,3 +62,5 @@ located at are _cells_. 1 cell and 3 columns per character:
 
 All character textures must be 12 pixels high and 5 or 6 pixels wide (5
 is preferred).
+
+Can be accessed by other mods via `mcl_signs.charmap["?"]`.
