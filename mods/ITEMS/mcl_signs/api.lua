@@ -114,6 +114,7 @@ local function set_signmeta(pos, def)
 	if def.glow then meta:set_string("glow", def.glow) end
 end
 
+-- Text processing
 local function string_to_line_array(str)
 	local lines = {}
 	local line = {}
@@ -204,6 +205,7 @@ local function get_text_entity(pos, force_remove)
 end
 mcl_signs.get_text_entity = get_text_entity
 
+-- Update the sign text entity (create if doesn't exist)
 local function update_sign(pos)
 	local data = get_signdata(pos)
 
@@ -231,6 +233,31 @@ local function update_sign(pos)
 	return true
 end
 mcl_signs.update_sign = update_sign
+
+core.register_lbm({
+	name = "mcl_signs:restore_entities",
+	nodenames = {"group:sign"},
+	label = "Restore sign text",
+	run_at_every_load = true,
+	action = update_sign,
+})
+
+-- Text entity definition
+core.register_entity("mcl_signs:text", {
+	initial_properties = {
+		pointable = false,
+		visual = "upright_sprite",
+		physical = false,
+		collide_with_objects = false,
+	},
+	on_activate = function(self)
+		local pos = self.object:get_pos()
+		update_sign(pos)
+		local props = self.object:get_properties()
+		local t = props and props.textures
+		if type(t) ~= "table" or #t == 0 then self.object:remove() end
+	end,
+})
 
 -- Formspec
 local function show_formspec(player, pos)
@@ -265,6 +292,7 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
+-- Node definition callbacks
 function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	local under = pointed_thing.under
 	local node = core.get_node(under)
@@ -348,6 +376,7 @@ end
 --	mcl_signs.update_sign(pos)
 --end
 
+-- Wall sign definition
 local sign_wall = table_merge(sign_tpl, {
 	mesh = "mcl_signs_signonwallmount.obj",
 	paramtype2 = "wallmounted",
@@ -357,32 +386,6 @@ local sign_wall = table_merge(sign_tpl, {
 	},
 	groups = {axey = 1, handy = 2, sign = 1, deco_block = 1},
 	_mcl_sign_type = "wall",
-})
-
-core.register_lbm({
-	nodenames = {"group:sign"},
-	name = "mcl_signs:restore_entities",
-	label = "Restore sign text",
-	run_at_every_load = true,
-	action = function(pos)
-		update_sign(pos)
-	end
-})
-
-core.register_entity("mcl_signs:text", {
-	initial_properties = {
-		pointable = false,
-		visual = "upright_sprite",
-		physical = false,
-		collide_with_objects = false,
-	},
-	on_activate = function(self)
-		local pos = self.object:get_pos()
-		update_sign(pos)
-		local props = self.object:get_properties()
-		local t = props and props.textures
-		if type(t) ~= "table" or #t == 0 then self.object:remove() end
-	end,
 })
 
 local function colored_texture(texture, color)
