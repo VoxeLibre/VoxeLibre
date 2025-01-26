@@ -282,11 +282,25 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 		local pos = vector.new(tonumber(x), tonumber(y), tonumber(z))
 		if not fields or not fields.text then return end
 		if not mcl_util.check_position_protection(pos, player) then
-			set_signmeta(pos, {
-				-- limit saved text to 256 characters
-				-- (4 lines x 15 chars = 60 so this should be more than is ever needed)
-				text = tostring(fields.text):sub(1, 256)
-			})
+			-- limit saved text to 256 characters
+			-- (4 lines x 15 chars = 60 so this should be more than is ever needed)
+			local text = tostring(fields.text):sub(1, 256)
+
+			do -- guard against invalid UTF-8 and crashes down the line
+				local iter = utf8.codes(text)
+				while true do
+					local success, idx_or_error, _ = pcall(iter)
+					if not success then
+						text = "Invalid UTF-8"
+						core.log("warning", ("[mcl_signs] %s tried to insert invalid UTF-8 into a sign at %s"):format(player:get_player_name(), tostring(pos)))
+						break
+					elseif not idx_or_error then
+						break
+					end
+				end
+			end
+
+			set_signmeta(pos, {text = text})
 			update_sign(pos)
 		end
 	end
