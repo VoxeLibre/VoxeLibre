@@ -54,9 +54,10 @@ separated with an empty line for readability.
 
 The format expects 1 row with 3 columns per character:
 
-* **Column 1:** The literal (as-is) glyph. Only [precomposed characters](https://en.wikipedia.org/wiki/Precomposed_character) are supported
+* **Column 1:** The literal (as-is) glyph. Only [precomposed characters](https://en.wikipedia.org/wiki/Precomposed_character)
+  are supported for diacritics
 * **Column 2:** Name of the texture file for this character minus the ".png"
-  suffix (found in the "textures/" sub-directory in root)
+  suffix (found in the `textures/` sub-directory in root)
 * **Column 3:** Currently ignored. This is reserved for character width in
   pixels in case the font will be made proportional
 
