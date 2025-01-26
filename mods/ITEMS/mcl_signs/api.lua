@@ -140,12 +140,12 @@ local function string_to_line_array(str)
 end
 mcl_signs.create_lines = string_to_line_array
 
-local function generate_line(s, ypos)
+local function generate_line(codepoints, ypos)
 	local parsed = {}
 	local width = 0
 	local printed_char_width = CHAR_WIDTH + 1
 
-	for _, code in ipairs(s) do
+	for _, code in ipairs(codepoints) do
 		local file = "_rc"
 		if charmap[utf8.char(code)] then
 			file = charmap[utf8.char(code)]
@@ -158,7 +158,7 @@ local function generate_line(s, ypos)
 
 	width = width - 1
 	local texture = ""
-	local xpos = math.floor((SIGN_WIDTH - width) / 2)
+	local xpos = math.floor((SIGN_WIDTH - width) / 2) -- center with X offset
 
 	for _, file in ipairs(parsed) do
 		texture = texture .. ":" .. xpos .. "," .. ypos .. "=" .. file.. ".png"
