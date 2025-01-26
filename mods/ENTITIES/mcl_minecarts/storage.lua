@@ -24,6 +24,7 @@ local function get_cart_data(uuid)
 		if data.distance == -0/0 then data.distance = 0 end
 		data.dir = vector.new(data.dir)
 		data.connected_at = vector.new(data.connected_at)
+		data.uuid = uuid
 	end
 
 	cart_data[uuid] = data
