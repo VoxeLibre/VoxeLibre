@@ -180,6 +180,14 @@ if minetest.get_modpath("mcl_signs") then
 		wield_image = "mcl_bamboo_bamboo_sign_wield.png",
 	})
 	minetest.register_alias("bamboo_sign", "mcl_signs:wall_sign_bamboo")
+	minetest.register_craft({
+		output = "mcl_signs:wall_sign_bamboo 3",
+		recipe = {
+			{BAMBOO_PLANK, BAMBOO_PLANK, BAMBOO_PLANK},
+			{BAMBOO_PLANK, BAMBOO_PLANK, BAMBOO_PLANK},
+			{"", "mcl_core:stick", ""},
+		},
+	})
 end
 
 if minetest.get_modpath("mcl_fences") then
