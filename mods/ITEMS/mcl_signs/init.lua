@@ -10,7 +10,7 @@ local utf8 = dofile(modpath .. DIR_DELIM .. "utf8.lua")
 
 -- Character map (see API.md for reference)
 local charmap = {}
-for line in io.lines(modpath .. "/characters.tsv") do
+for line in io.lines(modpath .. DIR_DELIM .. "characters.tsv") do
 	local split = line:split("\t")
 	if #split == 3 then
 		local char, img, _ = split[1], split[2], split[3] -- 3rd is ignored, reserved for width
