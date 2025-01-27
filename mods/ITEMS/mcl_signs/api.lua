@@ -148,13 +148,11 @@ local function generate_line(codepoints, ypos)
 
 	for _, code in ipairs(codepoints) do
 		local file = "_rc"
-		if charmap[utf8.char(code)] then
-			file = charmap[utf8.char(code)]
-		end
-		if file then
-			width = width + printed_char_width
-			table.insert(parsed, file)
-		end
+		local char = utf8.char(code)
+		if charmap[char] then file = charmap[char] end
+
+		width = width + printed_char_width
+		table.insert(parsed, file)
 	end
 
 	width = width - 1
@@ -346,6 +344,8 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 end
 
 function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
+	if mcl_util.check_position_protection(pos, clicker) then return end
+
 	local iname = itemstack:get_name()
 	if iname == "mcl_mobitems:glow_ink_sac" then
 		local data = get_signdata(pos)
@@ -365,16 +365,20 @@ function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
 			color = DEFAULT_COLOR,
 		})
 		update_sign(pos)
+		if not core.is_creative_enabled(clicker:get_player_name()) then
+			itemstack:take_item()
+		end
 	elseif iname:sub(1, 8) == "mcl_dye:" then
-		local color = iname:sub(9)
-		set_signmeta(pos, {color = DYE_TO_COLOR[color]})
+		local dye = iname:sub(9)
+		set_signmeta(pos, {color = DYE_TO_COLOR[dye]})
 		update_sign(pos)
 		if not core.is_creative_enabled(clicker:get_player_name()) then
 			itemstack:take_item()
 		end
-	elseif not mcl_util.check_position_protection(pos, clicker) then
+	else
 		show_formspec(clicker, pos)
 	end
+
 	return itemstack
 end
 

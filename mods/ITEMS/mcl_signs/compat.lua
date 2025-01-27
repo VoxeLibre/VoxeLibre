@@ -1,5 +1,3 @@
-local old_rotnames = {}
-
 -- these are the "rotation strings" of the old sign rotation scheme
 local rotkeys = {
 	"22_5",
@@ -57,18 +55,18 @@ for old, new in pairs(signs) do
 end
 
 local function upgrade_sign_meta(pos)
-	local m = core.get_meta(pos)
-	local color = m:get_string("mcl_signs:text_color")
-	local glow = m:get_string("mcl_signs:glowing_sign")
+	local meta = core.get_meta(pos)
+	local color = meta:get_string("mcl_signs:text_color")
+	local glow = meta:get_string("mcl_signs:glowing_sign")
 	if color ~= "" then
-		m:set_string("color", color)
-		m:set_string("mcl_signs:text_color", "")
+		meta:set_string("color", color)
+		meta:set_string("mcl_signs:text_color", "")
 	end
 	if glow == "true" then
-		m:set_string("glow", glow)
+		meta:set_string("glow", glow)
 	end
 	if glow ~= "" then
-		m:set_string("mcl_signs:glowing_sign", "")
+		meta:set_string("mcl_signs:glowing_sign", "")
 	end
 	mcl_signs.get_text_entity(pos, true) -- the 2nd "true" arg means deleting the entity for respawn
 end
@@ -76,13 +74,13 @@ end
 local function upgrade_sign_rot(pos, node)
 	local numsign = false
 
-	for _,v in ipairs(rotkeys) do
+	for _, v in ipairs(rotkeys) do
 		if old_rotsigns[node.name] then
 			node.name = old_rotsigns[node.name]
 			node.param2 = nidp2_degrotate[v][node.param2 + 1]
 			numsign = true
 		elseif node.name:find(v) then
-			node.name = node.name:gsub(v,"")
+			node.name = node.name:gsub(v, "")
 			node.param2 = nidp2_degrotate[v][node.param2 + 1]
 			numsign = true
 		end
@@ -117,6 +115,7 @@ core.register_lbm({
 	action = upgrade_sign_rot,
 })
 
+local old_rotnames = {}
 for k,_ in pairs(old_rotsigns) do table.insert(old_rotnames, k) end
 for k,_ in pairs(old_standingsigns) do table.insert(old_rotnames, k) end
 
