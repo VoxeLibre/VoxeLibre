@@ -39,6 +39,7 @@ local signs = {
 	["_mangrove_wood"] = "_mangrove",
 	["_crimson_hyphae_wood"] = "_crimson",
 	["_warped_hyphae_wood"] = "_warped",
+	["_bamboo"] = "_bamboo",
 	["_cherrywood"] = "_cherry",
 }
 
