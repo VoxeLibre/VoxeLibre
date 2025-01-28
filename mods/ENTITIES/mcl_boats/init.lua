@@ -175,6 +175,11 @@ function boat.on_activate(self, staticdata, dtime_s)
 		self._last_v = self._v
 		self._itemstring = data.itemstring
 
+		-- Fix data corruption
+		if not data.textures then
+			data.textures = self.textures
+		end
+
 		-- Update the texutes for existing old boat entity instances.
 		-- Maybe remove this in the future.
 		if #data.textures ~= 2 then
