@@ -1,6 +1,7 @@
 #!/bin/sh
 
-set -ex
+set -e
+#set -x
 which luarocks && eval $(luarocks path)
 which luarocks-5.3 && eval $(luarocks-5.3 path)
 
