@@ -195,7 +195,7 @@ _	_un	3
 Ś	_s_acute_	5
 Š	_s_caron_	5
 Ş	_s_cedille_	5
-Ș	_s_cedille_	5
+Ș	_s_comma_	5
 Ť	_t_caron_	5
 Ź	_z_acute_	5
 Ž	_z_caron_	5
@@ -206,7 +206,7 @@ _	_un	3
 ś	_s_acute	5
 š	_s_caron	5
 ş	_s_cedille	5
-ș	_s_cedille	5
+ș	_s_comma	5
 ť	_t_caron	5
 ź	_z_acute	5
 ž	_z_caron	5
@@ -226,6 +226,7 @@ _	_un	3
 Ů	_u_ring_	6
 Ű	_u_2acute_	6
 Ţ	_t_cedille_	5
+Ț	_t_comma_	5
 ŕ	_r_acute	5
 ă	_a_breve	5
 ĺ	_l_acute	5
@@ -241,6 +242,7 @@ _	_un	3
 ů	_u_ring	5
 ű	_u_2acute	5
 ţ	_t_cedille	5
+ț	_t_comma	5
 Ħ	_h_stroke_	6
 Ĥ	_h_circumflex_	6
 İ	_i_overdot_	3
