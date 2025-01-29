@@ -13,7 +13,7 @@ describe('mcl_mobs', function()
 		mock.current_modname = "mcl_mobs"
 		mock.modpaths["mcl_mobs"] = "./"
 		mock.modpaths["mcl_util"] = "../../CORE/mcl_util"
-		mock.modpaths["vl_unit_testing"] = "true"
+		mock.modpaths["vl_unit_testing"] = true
 
 		dofile("./init.lua")
 		mcl_mobs = _G.mcl_mobs
