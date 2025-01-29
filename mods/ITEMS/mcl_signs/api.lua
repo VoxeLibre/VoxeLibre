@@ -307,12 +307,15 @@ end)
 -- Node definition callbacks
 function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	local under = pointed_thing.under
-	local node = core.get_node(under)
-	local def = core.registered_nodes[node.name]
-	if not def then return itemstack end
+	do
+		local node = core.get_node(under)
+		local def = core.registered_nodes[node.name]
+		if def and def.buildable_to then return itemstack end
+	end
 
-	if mcl_util.call_on_rightclick(itemstack, placer, pointed_thing) then
-		return itemstack
+	local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
+	if new_stack then
+		return new_stack
 	end
 
 	local above = pointed_thing.above
