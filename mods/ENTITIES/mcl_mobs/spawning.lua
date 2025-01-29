@@ -1242,22 +1242,6 @@ function mob_class:despawn_allowed()
 	despawn_allowed(self)
 end
 
-assert(despawn_allowed({can_despawn=false}) == false, "despawn_allowed - can_despawn false failed")
-assert(despawn_allowed({can_despawn=true}) == true, "despawn_allowed - can_despawn true failed")
-
-assert(despawn_allowed({can_despawn=true, nametag=""}) == true, "despawn_allowed - blank nametag failed")
-assert(despawn_allowed({can_despawn=true, nametag=nil}) == true, "despawn_allowed - nil nametag failed")
-assert(despawn_allowed({can_despawn=true, nametag="bob"}) == false, "despawn_allowed - nametag failed")
-
-assert(despawn_allowed({can_despawn=true, state="attack"}) == false, "despawn_allowed - attack state failed")
-assert(despawn_allowed({can_despawn=true, following="blah"}) == false, "despawn_allowed - following state failed")
-
-assert(despawn_allowed({can_despawn=true, tamed=false}) == true, "despawn_allowed - not tamed")
-assert(despawn_allowed({can_despawn=true, tamed=true}) == false, "despawn_allowed - tamed")
-
-assert(despawn_allowed({can_despawn=true, persistent=true}) == false, "despawn_allowed - persistent")
-assert(despawn_allowed({can_despawn=true, persistent=false}) == true, "despawn_allowed - not persistent")
-
 function mob_class:check_despawn(pos, dtime)
 	self.lifetimer = self.lifetimer - dtime
 
@@ -1291,3 +1275,6 @@ core.register_chatcommand("mobstats",{
 		output_mob_stats(mob_counts_wide, total_mobs, true)
 	end
 })
+if core.get_modpath("vl_unit_testing") then
+	mcl_mobs.despawn_allowed = despawn_allowed
+end
