@@ -121,7 +121,7 @@ local function string_to_line_array(str)
 
 	str = string.gsub(str, "\r\n?", "\n")
 	for _, code in utf8.codes(str) do
-		if #lines > NUMBER_OF_LINES then break end
+		if #lines >= NUMBER_OF_LINES then break end
 
 		if code == LF_CODEPOINT
 				or code == SP_CODEPOINT and #line >= (LINE_LENGTH - 1) then
@@ -135,7 +135,7 @@ local function string_to_line_array(str)
 			table.insert(line, code)
 		end
 	end
-	if #line > 0 then table.insert(lines, line) end
+	if #line > 0 and #lines < NUMBER_OF_LINES then table.insert(lines, line) end
 
 	return lines
 end
