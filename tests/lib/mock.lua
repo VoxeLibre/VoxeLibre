@@ -7,38 +7,50 @@ print("package.path="..package.path)
 
 function mock.luanti(g)
 	local mock
+	local luanti_core
 	mock = {
-		on_mods_loaded = {},
+		registered_on_mods_loaded = {},
 		globalsteps = 0,
 		last_fake_globalstep_dtime = 0,
 		time_offset = 0,
 		current_modname = nil,
 		modpaths = {},
 		settings = {},
+		log = {},
 		registered_globalsteps = {
 			function(dtime)
 				mock.globalsteps = mock.globalsteps + 1
-				mock.last_fake_globaltime_dtime = dtime
+				mock.last_fake_globalstep_dtime = dtime
 			end,
 		},
 		fastforward = function(dtime)
 			mock.time_offset = mock.time_offset + dtime
 		end,
+		on_mods_loaded = function()
+			local callbacks = mock.registered_on_mods_loaded
+			for i = 1,#callbacks do
+				callbacks[i]()
+			end
+		end,
 		call_globalsteps = function(dtime)
-			local callbacks = mock.registered_globalsteps
+			local callbacks = luanti_core.registered_globalsteps
 			for i = 1,#callbacks do
 				callbacks[i](dtime)
 			end
 		end,
 	}
 
-	function mock:fastforward(amount)
-		self.time_offset = self.time_offset + amount
+	function mock.fastforward(amount)
+		mock.time_offset = mock.time_offset + amount
 	end
 
-	local luanti_core = {
+	luanti_core = {
 		registered_globalsteps = mock.registered_globalsteps,
 		registered_nodes = {},
+		log = function(class, msg)
+			table.insert(mock.log, {class,msg})
+			print("["..class.."] "..msg)
+		end,
 		settings = {
 			get_bool = function(key)
 				return mock.settings[key] == "true"
@@ -60,7 +72,7 @@ function mock.luanti(g)
 			return mock.modpaths[modname]
 		end,
 		register_on_mods_loaded = function(func)
-			table.insert(mock.on_mods_loaded, func)
+			table.insert(mock.registered_on_mods_loaded, func)
 		end,
 		register_globalstep = function(callback)
 			table.insert(mock.registered_globalsteps, callback)
