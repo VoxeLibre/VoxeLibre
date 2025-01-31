@@ -161,9 +161,7 @@ local function ustring_to_line_array(ustr)
 	local lines = {}
 	local line = {}
 
-	--str = string.gsub(str, "\r\n?", "\n")
-
-	for _, code in pairs(ustr) do
+	for _, code in ipairs(ustr) do
 		if #lines >= NUMBER_OF_LINES then break end
 
 		if code == LF_CODEPOINT
@@ -184,12 +182,12 @@ local function ustring_to_line_array(ustr)
 end
 mcl_signs.ustring_to_line_array = ustring_to_line_array
 
-local function generate_line(codepoints, ypos)
+local function generate_line(ustr, ypos)
 	local parsed = {}
 	local width = 0
 	local printed_char_width = CHAR_WIDTH + 1
 
-	for _, code in ipairs(codepoints) do
+	for _, code in ipairs(ustr) do
 		local file = "_rc"
 		if charmap[code] then file = charmap[code] end
 

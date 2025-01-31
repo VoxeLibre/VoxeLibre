@@ -3,7 +3,9 @@
 ## Specifics
 
 The signs code internally uses Lua lists (array tables) of UTF-8 codepoints to
-process text, as Lua 5.1 treats strings stupid-simple.
+process text, as Lua 5.1 makes too many assumptions about strings that don't
+apply to Unicode text.
+
 From [Lua 5.1 Reference Manual, §2.2](https://www.lua.org/manual/5.1/manual.html#2.2):
 
 > _String_ represents arrays of characters. Lua is 8-bit clean: strings can
@@ -12,12 +14,13 @@ From [Lua 5.1 Reference Manual, §2.2](https://www.lua.org/manual/5.1/manual.htm
 This is OK when all you have is ASCII, where each character really does take up
 just 8 bits, or 1 byte. And the code prior to the rework even made some
 workarounds to support 2 byte values for the Latin-1 character set. But a UTF-8
-character can take up from 1 to 4 bytes! And when you try to treat a 4 byte
-character as a 2 byte one, you'll get 2 invalid characters! Unthinkable!
+character can be up to 4 bytes in size! And when we try to treat a 4 byte
+character as a 2 byte one, we get 2 invalid characters! Unthinkable!
 
 Luckily, modlib's `utf8.lua` comes to rescue with its codepoint handlers. We
-use `utf8.codes` to cycle through user input strings and convert them to those
-Lua codepoint lists, which we call _UTF-8 strings_, or _u-strings_ for short.
+use `utf8.codes` to cycle through user input strings and convert them to the
+codepoint lists mentioned previously, which will be referred to here as
+_UTF-8 strings_, or _u-strings_ for short.
 
 
 ## Functions
@@ -41,12 +44,12 @@ Lua codepoint lists, which we call _UTF-8 strings_, or _u-strings_ for short.
 	* Converts a u-string to string. Used for displaying text in sign formspec
 * `mcl_signs.ustring_to_line_array(ustr)`
 	* Converts a u-string to line-broken list of u-strings aka _a line array_
-* `mcl_signs.generate_line(codepoints, ypos)`
-	* Generates a texture string from a codepoints sequence table (for a single
-	  line) using the character map
+* `mcl_signs.generate_line(ustr, ypos)`
+	* Generates a texture string from a u-string for a single line using the
+	  character map
 	* `ypos` is the Y tile coordinate offset for the texture string to specify
 * `mcl_signs.generate_texture(data)`
-	* Generates a texture string from a sign data table
+	* Generates a texture string for the sign text entity from data table
 * `mcl_signs.show_formspec(player, pos)`
 	* Shows the formspec of the sign at `pos` to `player` if protection checks
 	  pass.
