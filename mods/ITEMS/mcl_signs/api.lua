@@ -18,9 +18,18 @@ local SIGN_GLOW_INTENSITY = 14
 local LF_CODEPOINT = utf8.codepoint("\n")
 local CR_CODEPOINT = utf8.codepoint("\r")
 local SP_CODEPOINT = utf8.codepoint(" ")
-local DS_CODEPOINT = utf8.codepoint("-") -- used as the wrapping character
 
---local INVALID_UTF8_STR = {"<", "I", "n", "v", "a", "l", "i", "d", " ", "U", "T", "F", "-", "8", ">"}
+local WRAP_CODEPOINT
+do
+	local setting = core.settings:get("mcl_signs_wrap_character")
+	local wrap_char = "‐" -- "hyphen"
+	if setting == "ellipsis" then
+		wrap_char = "…"
+	elseif setting == "return" then
+		wrap_char = "↵"
+	end
+	WRAP_CODEPOINT = utf8.codepoint(wrap_char)
+end
 
 local DEFAULT_COLOR = "#000000"
 local DYE_TO_COLOR = {
@@ -162,7 +171,7 @@ local function ustring_to_line_array(ustr)
 			table.insert(lines, line)
 			line = {}
 		elseif #line >= LINE_LENGTH then
-			table.insert(line, DS_CODEPOINT)
+			table.insert(line, WRAP_CODEPOINT)
 			table.insert(lines, line)
 			line = {code}
 		else
