@@ -148,8 +148,7 @@ local function generate_line(codepoints, ypos)
 
 	for _, code in ipairs(codepoints) do
 		local file = "_rc"
-		local char = utf8.char(code)
-		if charmap[char] then file = charmap[char] end
+		if charmap[code] then file = charmap[code] end
 
 		width = width + printed_char_width
 		table.insert(parsed, file)

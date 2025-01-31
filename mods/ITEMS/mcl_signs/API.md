@@ -64,4 +64,4 @@ The format expects 1 row with 3 columns per character:
 All character textures must be 12 pixels high and 5 or 6 pixels wide (5
 is preferred).
 
-Can be accessed by other mods via `mcl_signs.charmap["?"]`.
+Can be accessed by other mods via `mcl_signs.charmap[<utf-8 codepoint>]`.

@@ -14,7 +14,8 @@ for line in io.lines(modpath .. DIR_DELIM .. "characters.tsv") do
 	local split = line:split("\t")
 	if #split == 3 then
 		local char, img, _ = split[1], split[2], split[3] -- 3rd is ignored, reserved for width
-		charmap[char] = img
+		local code = utf8.codepoint(char)
+		charmap[code] = img
 	end
 end
 mcl_signs.charmap = charmap
