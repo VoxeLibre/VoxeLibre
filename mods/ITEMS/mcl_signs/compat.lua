@@ -59,6 +59,7 @@ local function upgrade_sign_meta(pos)
 	local meta = core.get_meta(pos)
 	local color = meta:get_string("mcl_signs:text_color")
 	local glow = meta:get_string("mcl_signs:glowing_sign")
+	local text = meta:get_string("text")
 	if color ~= "" then
 		meta:set_string("color", color)
 		meta:set_string("mcl_signs:text_color", "")
@@ -68,6 +69,11 @@ local function upgrade_sign_meta(pos)
 	end
 	if glow ~= "" then
 		meta:set_string("mcl_signs:glowing_sign", "")
+	end
+	if text ~= "" then
+		local ustr = mcl_signs.string_to_ustring(text)
+		meta:set_string("utext", core.serialize(ustr))
+		meta:set_string("text", "")
 	end
 	mcl_signs.get_text_entity(pos, true) -- the 2nd "true" arg means deleting the entity for respawn
 end

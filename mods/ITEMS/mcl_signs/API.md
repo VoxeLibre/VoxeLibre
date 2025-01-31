@@ -1,5 +1,25 @@
 # `mcl_signs` API Reference
 
+## Specifics
+
+The signs code internally uses Lua lists (array tables) of UTF-8 codepoints to
+process text, as Lua 5.1 treats strings stupid-simple.
+From [Lua 5.1 Reference Manual, §2.2](https://www.lua.org/manual/5.1/manual.html#2.2):
+
+> _String_ represents arrays of characters. Lua is 8-bit clean: strings can
+> contain any 8-bit character, including embedded zeros (`'\0'`).
+
+This is OK when all you have is ASCII, where each character really does take up
+just 8 bits, or 1 byte. And the code prior to the rework even made some
+workarounds to support 2 byte values for the Latin-1 character set. But a UTF-8
+character can take up from 1 to 4 bytes! And when you try to treat a 4 byte
+character as a 2 byte one, you'll get 2 invalid characters! Unthinkable!
+
+Luckily, modlib's `utf8.lua` comes to rescue with its codepoint handlers. We
+use `utf8.codes` to cycle through user input strings and convert them to those
+Lua codepoint lists, which we call _UTF-8 strings_, or _u-strings_ for short.
+
+
 ## Functions
 
 * `mcl_signs.register_sign(name, color, [definition])`
@@ -13,9 +33,14 @@
 * `mcl_signs.get_text_entity(pos, [force_remove])`
 	* Finds and returns ObjectRef for text entity for the sign at `pos`
 	* `force_remove` automatically removes the found entity if truthy
-* `mcl_signs.create_lines(str)`
-	* Converts a string to a line-broken (with hyphens) sequence table of UTF-8
-	  codepoints
+* `mcl_signs.string_to_ustring(str, [max_characters])`
+	* `str` is the string to convert to u-string
+	* `max_characters` is optional, defines the codepoint index to stop reading
+	  at. 256 by default
+* `mcl_signs.ustring_to_string(ustr)`
+	* Converts a u-string to string. Used for displaying text in sign formspec
+* `mcl_signs.ustring_to_line_array(ustr)`
+	* Converts a u-string to line-broken list of u-strings aka _a line array_
 * `mcl_signs.generate_line(codepoints, ypos)`
 	* Generates a texture string from a codepoints sequence table (for a single
 	  line) using the character map

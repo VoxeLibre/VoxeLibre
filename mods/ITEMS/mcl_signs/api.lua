@@ -16,8 +16,11 @@ local CHAR_WIDTH = 5
 local SIGN_GLOW_INTENSITY = 14
 
 local LF_CODEPOINT = utf8.codepoint("\n")
+local CR_CODEPOINT = utf8.codepoint("\r")
 local SP_CODEPOINT = utf8.codepoint(" ")
 local DS_CODEPOINT = utf8.codepoint("-") -- used as the wrapping character
+
+--local INVALID_UTF8_STR = {"<", "I", "n", "v", "a", "l", "i", "d", " ", "U", "T", "F", "-", "8", ">"}
 
 local DEFAULT_COLOR = "#000000"
 local DYE_TO_COLOR = {
@@ -76,7 +79,7 @@ local function get_signdata(pos)
 	if not def or core.get_item_group(node.name, "sign") < 1 then return end
 
 	local meta = core.get_meta(pos)
-	local text = meta:get_string("text")
+	local text = core.deserialize(meta:get_string("utext"), true) or {}
 	local color = meta:get_string("color")
 	if color == "" then
 		color = DEFAULT_COLOR
@@ -107,20 +110,51 @@ local function get_signdata(pos)
 	}
 end
 
-local function set_signmeta(pos, def)
+local function set_signmeta(pos, tbl)
 	local meta = core.get_meta(pos)
-	if def.text then meta:set_string("text", def.text) end
-	if def.color then meta:set_string("color", def.color) end
-	if def.glow then meta:set_string("glow", def.glow) end
+	if tbl.text then meta:set_string("utext", core.serialize(tbl.text)) end
+	if tbl.color then meta:set_string("color", tbl.color) end
+	if tbl.glow then meta:set_string("glow", tbl.glow) end
 end
 
 -- Text processing
-local function string_to_line_array(str)
+local function string_to_ustring(str, max_characters)
+	-- limit saved text to 256 characters by default
+	-- (4 lines x 15 chars = 60 so this should be more than is ever needed)
+	max_characters = max_characters or 256
+
+	local ustr = {}
+
+	local iter = utf8.codes(str)
+	while true do
+		local success, i, code = pcall(iter)
+		if not success or not i or i >= max_characters
+				or code == CR_CODEPOINT then
+			break
+		end
+		table.insert(ustr, code)
+	end
+
+	return ustr
+end
+mcl_signs.string_to_ustring = string_to_ustring
+
+local function ustring_to_string(ustr)
+	local str = ""
+	for _, code in ipairs(ustr) do
+		str = str .. utf8.char(code)
+	end
+	return str
+end
+mcl_signs.ustring_to_string = ustring_to_string
+
+local function ustring_to_line_array(ustr)
 	local lines = {}
 	local line = {}
 
-	str = string.gsub(str, "\r\n?", "\n")
-	for _, code in utf8.codes(str) do
+	--str = string.gsub(str, "\r\n?", "\n")
+
+	for _, code in pairs(ustr) do
 		if #lines >= NUMBER_OF_LINES then break end
 
 		if code == LF_CODEPOINT
@@ -139,7 +173,7 @@ local function string_to_line_array(str)
 
 	return lines
 end
-mcl_signs.create_lines = string_to_line_array
+mcl_signs.ustring_to_line_array = ustring_to_line_array
 
 local function generate_line(codepoints, ypos)
 	local parsed = {}
@@ -167,7 +201,7 @@ end
 mcl_signs.generate_line = generate_line
 
 local function generate_texture(data)
-	local lines = string_to_line_array(data.text or "")
+	local lines = ustring_to_line_array(data.text)
 	local texture = "[combine:" .. SIGN_WIDTH .. "x" .. SIGN_WIDTH
 	local ypos = 0
 	local letter_color = data.color or DEFAULT_COLOR
@@ -260,7 +294,7 @@ core.register_entity("mcl_signs:text", {
 local function show_formspec(player, pos)
 	if not pos then return end
 	local meta = core.get_meta(pos)
-	local old_text = meta:get_string("text")
+	local old_text = ustring_to_string(core.deserialize(meta:get_string("utext"), true) or {})
 	core.show_formspec(player:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, table.concat({
 		"size[6,3]textarea[0.25,0.25;6,1.5;text;",
 		F(S("Enter sign text:")), ";", F(old_text), "]",
@@ -279,25 +313,8 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 		local pos = vector.new(tonumber(x), tonumber(y), tonumber(z))
 		if not fields or not fields.text then return end
 		if not mcl_util.check_position_protection(pos, player) then
-			-- limit saved text to 256 characters
-			-- (4 lines x 15 chars = 60 so this should be more than is ever needed)
-			local text = tostring(fields.text):sub(1, 256)
-
-			do -- guard against invalid UTF-8 and crashes down the line
-				local iter = utf8.codes(text)
-				while true do
-					local success, idx_or_error, _ = pcall(iter)
-					if not success then
-						text = "Invalid UTF-8"
-						core.log("warning", ("[mcl_signs] %s tried to insert invalid UTF-8 into a sign at %s"):format(player:get_player_name(), tostring(pos)))
-						break
-					elseif not idx_or_error then
-						break
-					end
-				end
-			end
-
-			set_signmeta(pos, {text = text})
+			local utext = string_to_ustring(fields.text)
+			set_signmeta(pos, {text = utext})
 			update_sign(pos)
 		end
 	end
@@ -306,7 +323,7 @@ end)
 -- Node definition callbacks
 function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	local under = pointed_thing.under
-	do
+	do -- ensure the node we attach to can actually be attached to
 		local node = core.get_node(under)
 		local def = core.registered_nodes[node.name]
 		if def and def.buildable_to then return itemstack end
