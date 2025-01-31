@@ -4,7 +4,7 @@
 * Adapted for MineClone2 by Wuzzy
 * Later massively extended by Michieal
 * Mostly rewritten for Mineclonia and simplified by cora
-* Re-adapted for VoxeLibre and improved upon by rudzik8
+* Reworked for VoxeLibre with UTF-8 support by rudzik8
 
 
 ## Characters
