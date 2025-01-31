@@ -261,6 +261,12 @@ mcl_buckets_use_select_box (Buckets use select box) bool false
 # 'Calendar' means from December 24th to January 7th
 vl_christmas_decorations (Christmas decorations) enum Calendar Always,Calendar,Never
 
+# The character used to break lines on signs when they reach the character limit.
+# * Hyphen: ‐
+# * Ellipsis: …
+# * Return: ↵
+mcl_signs_wrap_character (Signs wrapping character) enum hyphen hyphen,ellipsis,return
+
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.
 #
@@ -356,8 +362,5 @@ mcl_logging_dungeons (Dungeons generation logging) bool false
 # If enabled generated structures will be logged
 mcl_logging_structures (Structure generation logging) bool false
 
-#Complete debug logging for mcl_signs events. Use this if you have issues with signs.
-mcl_logging_mcl_signs (Complete debug logging for mcl_signs) bool false
-
-#Debug logging for mcl_events.
+# Debug logging for mcl_events.
 mcl_logging_event_api (Debug logging for mcl_events) bool false
