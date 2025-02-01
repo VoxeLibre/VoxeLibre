@@ -261,11 +261,11 @@ mcl_buckets_use_select_box (Buckets use select box) bool false
 # 'Calendar' means from December 24th to January 7th
 vl_christmas_decorations (Christmas decorations) enum Calendar Always,Calendar,Never
 
-# The character used to break lines on signs when they reach the character limit.
-# * Hyphen: ‐
-# * Ellipsis: …
-# * Return: ↵
-mcl_signs_wrap_character (Signs wrapping character) enum hyphen hyphen,ellipsis,return
+# Controls the behavior when the character limit on a line on a sign is reached.
+# * word_wrap: try to fit whole words without breaking, wrap if impossible
+# * word_break: break words if they reach the limit, make exceptions for spaces
+# * truncate: stop adding characters to a line past the limit, add ... instead
+mcl_signs_wrap_mode (Signs text wrapping mode) enum word_wrap word_wrap,word_break,truncate
 
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.

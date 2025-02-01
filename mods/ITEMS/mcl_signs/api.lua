@@ -19,18 +19,6 @@ local LF_CODEPOINT = utf8.codepoint("\n")
 local CR_CODEPOINT = utf8.codepoint("\r")
 local SP_CODEPOINT = utf8.codepoint(" ")
 
-local WRAP_CODEPOINT
-do
-	local setting = core.settings:get("mcl_signs_wrap_character")
-	local wrap_char = "‐" -- "hyphen"
-	if setting == "ellipsis" then
-		wrap_char = "…"
-	elseif setting == "return" then
-		wrap_char = "↵"
-	end
-	WRAP_CODEPOINT = utf8.codepoint(wrap_char)
-end
-
 local DEFAULT_COLOR = "#000000"
 local DYE_TO_COLOR = {
 	["white"] = "#d0d6d7",
@@ -157,28 +145,97 @@ local function ustring_to_string(ustr)
 end
 mcl_signs.ustring_to_string = ustring_to_string
 
-local function ustring_to_line_array(ustr)
-	local lines = {}
-	local line = {}
+local ustring_to_line_array
+local wrap_mode = core.settings:get("mcl_signs_wrap_mode") or "word_wrap"
+local WRAP_CODEPOINT = utf8.codepoint("‐") -- default, ellipsis for "truncate"
 
-	for _, code in ipairs(ustr) do
-		if #lines >= NUMBER_OF_LINES then break end
+if wrap_mode == "word_break" then
+	function ustring_to_line_array(ustr)
+		local lines = {}
+		local line = {}
 
-		if code == LF_CODEPOINT
-				or code == SP_CODEPOINT and #line >= (LINE_LENGTH - 1) then
-			table.insert(lines, line)
-			line = {}
-		elseif #line >= LINE_LENGTH then
-			table.insert(line, WRAP_CODEPOINT)
-			table.insert(lines, line)
-			line = {code}
-		else
-			table.insert(line, code)
+		for _, code in ipairs(ustr) do
+			if #lines >= NUMBER_OF_LINES then break end
+
+			if code == LF_CODEPOINT
+					or code == SP_CODEPOINT and #line >= (LINE_LENGTH - 1) then
+				table.insert(lines, line)
+				line = {}
+			elseif #line >= LINE_LENGTH then
+				table.insert(line, WRAP_CODEPOINT)
+				table.insert(lines, line)
+				line = {code}
+			else
+				table.insert(line, code)
+			end
 		end
-	end
-	if #line > 0 and #lines < NUMBER_OF_LINES then table.insert(lines, line) end
+		if #line > 0 and #lines < NUMBER_OF_LINES then table.insert(lines, line) end
 
-	return lines
+		return lines
+	end
+elseif wrap_mode == "word_wrap" then
+	function ustring_to_line_array(ustr)
+		local lines = {}
+		local line = {}
+		local word = {}
+
+		for _, code in ipairs(ustr) do
+			if #lines >= NUMBER_OF_LINES then break end
+
+			--core.log(dump(utf8.char(code)))
+			if code == LF_CODEPOINT then --core.log("code == LF_CODEPOINT")
+				table.insert_all(line, word)
+				word = {}
+				table.insert(lines, line)
+				line = {}
+			elseif code == SP_CODEPOINT then --core.log("code == SP_CODEPOINT")
+				if #line > 0 then table.insert(line, code) end
+				table.insert_all(line, word)
+				word = {}
+			elseif #line + #word + 1 >= LINE_LENGTH then --core.log("#line + #word + 1 >= LINE_LENGTH")
+				--table.insert(word, code)
+				if #word > 0 then
+					if #line > 0 then table.insert(line, SP_CODEPOINT) end
+					table.insert_all(line, word)
+					table.insert(line, WRAP_CODEPOINT)
+				end
+				table.insert(lines, line)
+				line = {}
+				word = {code}
+			else --core.log("else")
+				table.insert(word, code)
+			end
+		end
+		if #word > 0 and #line + (#line > 0 and 1 or 0) + #word >= LINE_LENGTH then
+			if #line > 0 then table.insert(line, SP_CODEPOINT) end
+			table.insert_all(line, word)
+		end
+		if #line > 0 and #lines < NUMBER_OF_LINES then table.insert(lines, line) end
+
+		return lines
+	end
+elseif wrap_mode == "truncate" then
+	WRAP_CODEPOINT = utf8.codepoint("…")
+	function ustring_to_line_array(ustr)
+		local lines = {}
+		local line = {}
+
+		for _, code in ipairs(ustr) do
+			if #lines >= NUMBER_OF_LINES then break end
+
+			if code == LF_CODEPOINT then
+				table.insert(lines, line)
+				line = {}
+			elseif #line == LINE_LENGTH then
+				table.insert(line, WRAP_CODEPOINT)
+			elseif #line < LINE_LENGTH then
+				table.insert(line, code)
+			end
+		end
+		if #line > 0 and #lines < NUMBER_OF_LINES then table.insert(lines, line) end
+
+		return lines
+	end
 end
 mcl_signs.ustring_to_line_array = ustring_to_line_array
 
@@ -298,19 +355,31 @@ core.register_entity("mcl_signs:text", {
 })
 
 -- Formspec
-local function show_formspec(player, pos)
+local function show_formspec(player, pos, guest)
 	if not pos then return end
 	local meta = core.get_meta(pos)
 	local old_text = ustring_to_string(core.deserialize(meta:get_string("utext"), true) or {})
-	core.show_formspec(player:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, table.concat({
-		"size[6,3]textarea[0.25,0.25;6,1.5;text;",
-		F(S("Enter sign text:")), ";", F(old_text), "]",
-		"label[0,1.5;",
-			F(S("Maximum line length: @1", LINE_LENGTH)), "\n",
-			F(S("Maximum lines: @1", NUMBER_OF_LINES)),
-		"]",
-		"button_exit[0,2.5;6,1;submit;", F(S("Done")), "]"
-	}))
+
+	local fs
+	if guest then
+		fs = {
+			"size[6,2.3]textarea[0.25,0.25;6,1.5;text;",
+			F(S("Sign text:")), ";", F(old_text), "]",
+			"button_exit[0,1.7;6,1;submit;", F(S("Close")), "]"
+		}
+	else
+		fs = {
+			"size[6,3]textarea[0.25,0.25;6,1.5;text;",
+			F(S("Enter sign text:")), ";", F(old_text), "]",
+			"label[0,1.5;",
+				F(S("Maximum line length: @1", LINE_LENGTH)), "\n",
+				F(S("Maximum lines: @1", NUMBER_OF_LINES)),
+			"]",
+			"button_exit[0,2.4;6,1;submit;", F(S("Done")), "]"
+		}
+	end
+
+	core.show_formspec(player:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, table.concat(fs))
 end
 mcl_signs.show_formspec = show_formspec
 
@@ -370,7 +439,10 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 end
 
 function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
-	if mcl_util.check_position_protection(pos, clicker) then return end
+	if mcl_util.check_position_protection(pos, clicker) then
+		show_formspec(clicker, pos, true)
+		return itemstack
+	end
 
 	local iname = itemstack:get_name()
 	if iname == "mcl_mobitems:glow_ink_sac" then
