@@ -262,7 +262,7 @@ mcl_buckets_use_select_box (Buckets use select box) bool false
 vl_christmas_decorations (Christmas decorations) enum Calendar Always,Calendar,Never
 
 # Controls the behavior when the character limit on a line on a sign is reached.
-# * word_wrap: try to fit whole words without breaking, wrap if impossible
+# * word_wrap: wrap at spaces and hyphens, break words if impossible
 # * word_break: break words if they reach the limit, make exceptions for spaces
 # * truncate: stop adding characters to a line past the limit, add ... instead
 mcl_signs_wrap_mode (Signs text wrapping mode) enum word_wrap word_wrap,word_break,truncate

@@ -145,6 +145,14 @@ local function ustring_to_string(ustr)
 end
 mcl_signs.ustring_to_string = ustring_to_string
 
+-- TODO: make shared code as table.slice()?
+local function subseq(ustr, s, e)
+	local line = {}
+	for i=s,e do line[#line+1] = ustr[i] end
+	return line
+end
+
+
 local ustring_to_line_array
 local wrap_mode = core.settings:get("mcl_signs_wrap_mode") or "word_wrap"
 local WRAP_CODEPOINT = utf8.codepoint("‐") -- default, ellipsis for "truncate"
@@ -176,42 +184,29 @@ if wrap_mode == "word_break" then
 elseif wrap_mode == "word_wrap" then
 	function ustring_to_line_array(ustr)
 		local lines = {}
-		local line = {}
-		local word = {}
+		local startpos, breakpos = 1, 1
 
-		for _, code in ipairs(ustr) do
+		for curpos=1,#ustr do
 			if #lines >= NUMBER_OF_LINES then break end
 
-			--core.log(dump(utf8.char(code)))
-			if code == LF_CODEPOINT then --core.log("code == LF_CODEPOINT")
-				table.insert_all(line, word)
-				word = {}
-				table.insert(lines, line)
-				line = {}
-			elseif code == SP_CODEPOINT then --core.log("code == SP_CODEPOINT")
-				if #line > 0 then table.insert(line, code) end
-				table.insert_all(line, word)
-				word = {}
-			elseif #line + #word + 1 >= LINE_LENGTH then --core.log("#line + #word + 1 >= LINE_LENGTH")
-				--table.insert(word, code)
-				if #word > 0 then
-					if #line > 0 then table.insert(line, SP_CODEPOINT) end
-					table.insert_all(line, word)
-					table.insert(line, WRAP_CODEPOINT)
+			local code = ustr[curpos]
+			if code == SP_CODEPOINT or code == HY_CODEPOINT then breakpos = curpos end
+			if code == LF_CODEPOINT then
+				table.insert(lines, subseq(ustr, startpos, curpos-1))
+				startpos, breakpos = curpos + 1, curpos + 1
+			elseif curpos - startpos + 1 > LINE_LENGTH then
+				if breakpos <= startpos then -- forced break, no space in word
+					table.insert(lines, subseq(ustr, startpos, curpos))
+					startpos, breakpos = curpos + 1, curpos + 1
+				else
+					table.insert(lines, subseq(ustr, startpos, breakpos + (ustr[breakpos] == HY_CODEPOINT and 0 or -1)))
+					startpos, breakpos = breakpos + 1, breakpos + 1
 				end
-				table.insert(lines, line)
-				line = {}
-				word = {code}
-			else --core.log("else")
-				table.insert(word, code)
 			end
 		end
-		if #word > 0 and #line + (#line > 0 and 1 or 0) + #word >= LINE_LENGTH then
-			if #line > 0 then table.insert(line, SP_CODEPOINT) end
-			table.insert_all(line, word)
+		if #lines < NUMBER_OF_LINES and startpos < #ustr then
+			table.insert(lines, subseq(ustr, startpos, #ustr))
 		end
-		if #line > 0 and #lines < NUMBER_OF_LINES then table.insert(lines, line) end
-
 		return lines
 	end
 elseif wrap_mode == "truncate" then
