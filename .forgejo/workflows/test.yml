@@ -1,7 +1,7 @@
 on: [push]
 jobs:
   test:
-    runs-on: docker
+    runs-on: voxelibre-ci
     container:
       image: 127.0.0.1:5000/voxelibre-test:latest
     steps:
