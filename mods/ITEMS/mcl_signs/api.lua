@@ -15,11 +15,11 @@ local CHAR_WIDTH = 5
 
 local SIGN_GLOW_INTENSITY = 14
 
-local LINE_BREAK = {
+local NEWLINE = {
 	[0x000A] = true,
 	[0x000B] = true,
 	[0x000C] = true,
-	-- [0x000D] = true,
+	-- U+000D (CR) is dropped on U-string conversion
 	[0x0085] = true,
 	[0x2028] = true,
 	[0x2029] = true,
@@ -211,7 +211,7 @@ if wrap_mode == "word_break" then
 		for _, code in ipairs(ustr) do
 			if #lines >= NUMBER_OF_LINES then break end
 
-			if LINE_BREAK[code]
+			if NEWLINE[code]
 					or WHITESPACE[code] and #line >= (LINE_LENGTH - 1) then
 				table.insert(lines, line)
 				line = {}
@@ -237,12 +237,14 @@ elseif wrap_mode == "word_wrap" then
 
 			if WHITESPACE[code] or HYPHEN[code] then
 				stop = cursor
-			elseif LINE_BREAK[code] then
+			elseif NEWLINE[code] then
 				table.insert(lines, subseq(ustr, start, cursor - 1))
 				start, stop = cursor + 1, cursor + 1
-			elseif cursor - start + 1 > LINE_LENGTH then
+			elseif cursor - start + 1 >= LINE_LENGTH then
 				if stop <= start then -- forced break, no space in word
-					table.insert(lines, subseq(ustr, start, cursor))
+					local line = subseq(ustr, start, cursor)
+					table.insert(line, WRAP_CODEPOINT)
+					table.insert(lines, line)
 					start, stop = cursor + 1, cursor + 1
 				else
 					table.insert(lines, subseq(ustr, start, stop + (HYPHEN[ustr[stop]] and 0 or -1)))
@@ -265,7 +267,7 @@ elseif wrap_mode == "truncate" then
 		for _, code in ipairs(ustr) do
 			if #lines >= NUMBER_OF_LINES then break end
 
-			if LINE_BREAK[code] then
+			if NEWLINE[code] then
 				table.insert(lines, line)
 				line = {}
 			elseif #line == LINE_LENGTH then

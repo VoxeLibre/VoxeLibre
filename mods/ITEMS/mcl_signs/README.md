@@ -5,6 +5,7 @@
 * Later massively extended by Michieal
 * Mostly rewritten for Mineclonia and simplified by cora
 * Reworked for VoxeLibre with UTF-8 support by rudzik8
+* Word wrap algorithm improved by kno10
 
 
 ## Characters
