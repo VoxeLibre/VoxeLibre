@@ -407,7 +407,7 @@ local function show_formspec(player, pos, guest)
 	local fs
 	if guest then
 		fs = {
-			"size[6,2.3]textarea[0.25,0.25;6,1.5;text;",
+			"size[6,2.3]textarea[0.25,0.25;6,1.5;;",
 			F(S("Sign text:")), ";", F(old_text), "]",
 			"button_exit[0,1.7;6,1;submit;", F(S("Close")), "]"
 		}
