@@ -167,6 +167,7 @@ local function string_to_ustring(str, max_characters)
 
 	local ustr = {}
 
+	-- pcall wrapping to protect against invalid UTF-8
 	local iter = utf8.codes(str)
 	while true do
 		local success, i, code = pcall(iter)

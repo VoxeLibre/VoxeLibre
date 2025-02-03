@@ -44,6 +44,7 @@ _UTF-8 strings_, or _u-strings_ for short.
 	* Converts a u-string to string. Used for displaying text in sign formspec
 * `mcl_signs.ustring_to_line_array(ustr)`
 	* Converts a u-string to line-broken list of u-strings aka _a line array_
+	* Behavior on line overflow is controlled by the `mcl_signs_wrap_mode` enum
 * `mcl_signs.generate_line(ustr, ypos)`
 	* Generates a texture string from a u-string for a single line using the
 	  character map
