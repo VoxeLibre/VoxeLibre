@@ -484,7 +484,7 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 end
 
 function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
-	if mcl_util.check_position_protection(pos, clicker) then
+	if core.is_protected(pos, clicker:get_player_name()) then
 		show_formspec(clicker, pos, true)
 		return itemstack
 	end
