@@ -15,9 +15,54 @@ local CHAR_WIDTH = 5
 
 local SIGN_GLOW_INTENSITY = 14
 
-local LF_CODEPOINT = utf8.codepoint("\n")
+local LINE_BREAK = {
+	[0x000A] = true,
+	[0x000B] = true,
+	[0x000C] = true,
+	-- [0x000D] = true,
+	[0x0085] = true,
+	[0x2028] = true,
+	[0x2029] = true,
+}
+
+local WHITESPACE = {
+	[0x0009] = true,
+	[0x0020] = true,
+	-- U+00A0 is a whitespace, but a non-breaking one
+	[0x1680] = true,
+	[0x2000] = true,
+	[0x2001] = true,
+	[0x2002] = true,
+	[0x2003] = true,
+	[0x2004] = true,
+	[0x2005] = true,
+	[0x2006] = true,
+	-- U+2007 is a whitespace, but a non-breaking one
+	[0x2008] = true,
+	[0x2009] = true,
+	[0x200A] = true,
+	-- U+202F is a whitespace, but a non-breaking one
+	[0x205F] = true,
+	[0x3000] = true,
+}
+
+local HYPHEN = {
+	[0x002D] = true,
+	[0x00AD] = true,
+	[0x058A] = true,
+	[0x05BE] = true,
+	[0x1806] = true,
+	[0x2010] = true,
+	-- U+2011 is a hyphen, but a non-breaking one
+	[0x2E17] = true,
+	[0x2E5D] = true,
+	[0x30FB] = true,
+	[0xFE63] = true,
+	[0xFF0D] = true,
+	[0xFF65] = true,
+}
+
 local CR_CODEPOINT = utf8.codepoint("\r")
-local SP_CODEPOINT = utf8.codepoint(" ")
 
 local DEFAULT_COLOR = "#000000"
 local DYE_TO_COLOR = {
@@ -148,10 +193,11 @@ mcl_signs.ustring_to_string = ustring_to_string
 -- TODO: make shared code as table.slice()?
 local function subseq(ustr, s, e)
 	local line = {}
-	for i=s,e do line[#line+1] = ustr[i] end
+	for i = s, e do
+		line[#line+1] = ustr[i]
+	end
 	return line
 end
-
 
 local ustring_to_line_array
 local wrap_mode = core.settings:get("mcl_signs_wrap_mode") or "word_wrap"
@@ -165,8 +211,8 @@ if wrap_mode == "word_break" then
 		for _, code in ipairs(ustr) do
 			if #lines >= NUMBER_OF_LINES then break end
 
-			if code == LF_CODEPOINT
-					or code == SP_CODEPOINT and #line >= (LINE_LENGTH - 1) then
+			if LINE_BREAK[code]
+					or WHITESPACE[code] and #line >= (LINE_LENGTH - 1) then
 				table.insert(lines, line)
 				line = {}
 			elseif #line >= LINE_LENGTH then
@@ -184,29 +230,30 @@ if wrap_mode == "word_break" then
 elseif wrap_mode == "word_wrap" then
 	function ustring_to_line_array(ustr)
 		local lines = {}
-		local startpos, breakpos = 1, 1
+		local start, stop = 1, 1
 
-		for curpos=1,#ustr do
+		for cursor, code in ipairs(ustr) do
 			if #lines >= NUMBER_OF_LINES then break end
 
-			local code = ustr[curpos]
-			if code == SP_CODEPOINT or code == HY_CODEPOINT then breakpos = curpos end
-			if code == LF_CODEPOINT then
-				table.insert(lines, subseq(ustr, startpos, curpos-1))
-				startpos, breakpos = curpos + 1, curpos + 1
-			elseif curpos - startpos + 1 > LINE_LENGTH then
-				if breakpos <= startpos then -- forced break, no space in word
-					table.insert(lines, subseq(ustr, startpos, curpos))
-					startpos, breakpos = curpos + 1, curpos + 1
+			if WHITESPACE[code] or HYPHEN[code] then
+				stop = cursor
+			elseif LINE_BREAK[code] then
+				table.insert(lines, subseq(ustr, start, cursor - 1))
+				start, stop = cursor + 1, cursor + 1
+			elseif cursor - start + 1 > LINE_LENGTH then
+				if stop <= start then -- forced break, no space in word
+					table.insert(lines, subseq(ustr, start, cursor))
+					start, stop = cursor + 1, cursor + 1
 				else
-					table.insert(lines, subseq(ustr, startpos, breakpos + (ustr[breakpos] == HY_CODEPOINT and 0 or -1)))
-					startpos, breakpos = breakpos + 1, breakpos + 1
+					table.insert(lines, subseq(ustr, start, stop + (HYPHEN[ustr[stop]] and 0 or -1)))
+					start, stop = stop + 1, stop + 1
 				end
 			end
 		end
-		if #lines < NUMBER_OF_LINES and startpos < #ustr then
-			table.insert(lines, subseq(ustr, startpos, #ustr))
+		if #lines < NUMBER_OF_LINES and start < #ustr then
+			table.insert(lines, subseq(ustr, start, #ustr))
 		end
+
 		return lines
 	end
 elseif wrap_mode == "truncate" then
@@ -218,7 +265,7 @@ elseif wrap_mode == "truncate" then
 		for _, code in ipairs(ustr) do
 			if #lines >= NUMBER_OF_LINES then break end
 
-			if code == LF_CODEPOINT then
+			if LINE_BREAK[code] then
 				table.insert(lines, line)
 				line = {}
 			elseif #line == LINE_LENGTH then
