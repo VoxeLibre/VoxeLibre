@@ -114,7 +114,7 @@ for i = 1,#mod_names do
 
 	print("echo ------------------------------")
 	print("echo Checking "..config.name.." located at "..config.dir)
-	print("\t\techo Using "..luacheck.." <file>"..cmd_options)
+	print("\t\techo 'Using "..luacheck.." <file>"..cmd_options.."'")
 	print("(")
 	print("\tcd "..config.dir)
 	print("\tfor FILE in *.lua; do")
