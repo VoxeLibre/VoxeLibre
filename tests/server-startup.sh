@@ -3,9 +3,13 @@
 # Record version information
 minetest --version
 
+# Setup minetest/luanti config directory
+mkdir -p ~/.minetest/games
+ln -s /VoxeLibre ~/.minetest/games
+
 # Server Startup Test
 ((
-	minetest --server --world tests/tmp --gameid VoxeLibre
+	minetest --server --worldname test --gameid VoxeLibre
 ) 2>&1 | cat > /tmp/setup.log ) &
 PID=$!
 
