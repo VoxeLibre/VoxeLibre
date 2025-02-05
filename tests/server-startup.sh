@@ -3,14 +3,15 @@
 # Server Startup Test
 ((
 	minetestserver --world tests/tmp --gameid VoxeLibre
-) 2>&1 | cat > setup.log ) &
+) 2>&1 | cat > /tmp/setup.log ) &
 PID=$!
 
+# Wait for the server to complete startup or timeout after 15 seconds
 DONE=false
 SUCCESS=false
 COUNT=30
 while ! $DONE; do
-	if cat setup.log | grep -q 'listening on'; then
+	if cat /tmp/setup.log | grep -q 'listening on'; then
 		DONE=true
 		SUCCESS=true
 	fi
@@ -22,8 +23,13 @@ while ! $DONE; do
 	sleep 0.5
 done
 
+# Stop the server
 kill $PID
 killall minetestserver
+
+# Display log contents
+cat /tmp/setup.log
+rm /tmp/setup.log
 
 echo $SUCCESS
 if ! $SUCCESS; then
