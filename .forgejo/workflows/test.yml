@@ -12,6 +12,6 @@ jobs:
       - name: Unit Tests
         run: cd /VoxeLibre && sh tests/unit-tests.sh
       - name: Luacheck
-        run: cd /VoxeLibre && sh tests/luacheck.test.sh || true
+        run: cd /VoxeLibre && sh tests/luacheck/test.sh || true
       - name: Lua Language Server Checks
         run: cd /VoxeLibre && sh tests/lua-language-server.sh || true
