@@ -84,13 +84,8 @@ local function add_random_flower(pos, color)
 			return true
 		end
 	else
-		local flowers_table
-		if mg_name == "v6" then
-			flowers_table = flowers_table_plains
-		else
-			local biome = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
-			flowers_table = biome_flowers_tables[biome] or flowers_table_simple
-		end
+		local biome = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
+		local flowers_table = biome_flowers_tables[biome] or flowers_table_simple
 		minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
 	end
 end

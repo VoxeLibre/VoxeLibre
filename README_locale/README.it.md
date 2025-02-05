@@ -167,7 +167,6 @@ Funzionalità bonus (non incluse in Minecraft):
 * Guida da fabbricazione inclusa che mostra ricette di fabbricazione e di forgiatura
 * Sistema di aiuti in gioco contenente informazioni estese su basi del gameplay, blocchi, oggetti e altro
 * Ricette di fabbricazione temporanee. Esistono solamente per rendere disponibili oggetti altrimenti non ottenibili quando non sei in modalità creativa. Queste ricette verranno rimosse man mano che lo sviluppo avanza e più funzionalità vengono implementate.
-* Alberelli nei bauli con [mapgen v6](https://wiki.luanti.org/Map_generator#v6)
 * Completamente moddabile (grazie alla potente API Lua di Luanti)
 * Nuovi blocchi e oggetti:
     * Strumento informativo, ti mostra l'aiuto per ciò che colpisci

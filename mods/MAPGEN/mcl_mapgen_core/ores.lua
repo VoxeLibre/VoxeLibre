@@ -530,37 +530,6 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	--
-	-- Emerald
-	--
-
-	if mg_name == "v6" then
-		-- Generate everywhere in v6, but rarely.
-
-		-- Common spawn
-		minetest.register_ore({
-			ore_type       = "scatter",
-			ore            = "mcl_core:stone_with_emerald",
-			wherein        = stonelike,
-			clust_scarcity = 14340,
-			clust_num_ores = 1,
-			clust_size     = 1,
-			y_min          = mcl_vars.mg_overworld_min,
-			y_max          = mcl_worlds.layer_to_y(29),
-		})
-		-- Rare spawn
-		minetest.register_ore({
-			ore_type       = "scatter",
-			ore            = "mcl_core:stone_with_emerald",
-			wherein        = stonelike,
-			clust_scarcity = 21510,
-			clust_num_ores = 1,
-			clust_size     = 1,
-			y_min          = mcl_worlds.layer_to_y(30),
-			y_max          = mcl_worlds.layer_to_y(32),
-		})
-	end
-
-	--
 	-- Lapis Lazuli
 	--
 
@@ -711,11 +680,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		for _, o in pairs(ore_mapgen) do
 			register_ore_mg("mcl_deepslate:deepslate_with_"..o[1], o[2], o[3], o[4], o[5], o[6])
 		end
-		if minetest.get_mapgen_setting("mg_name") == "v6" then
-			register_ore_mg("mcl_deepslate:deepslate_with_emerald", 14340, 1, 1, deepslate_min, deepslate_max)
-		else
-			register_ore_mg("mcl_deepslate:deepslate_with_emerald", 16384, 1, 1, mcl_worlds.layer_to_y(4), deepslate_max, mountains)
-		end
+		register_ore_mg("mcl_deepslate:deepslate_with_emerald", 16384, 1, 1, mcl_worlds.layer_to_y(4), deepslate_max, mountains)
 		if copper_mod then
 			register_ore_mg("mcl_deepslate:deepslate_with_copper", 830, 5, 3, deepslate_min, deepslate_max)
 			minetest.register_ore({

@@ -104,19 +104,6 @@ local loottable =
 	}
 }
 
--- Bonus loot for v6 mapgen: Otherwise unobtainable saplings.
-if mg_name == "v6" then
-	table.insert(loottable, {
-		stacks_min = 1,
-		stacks_max = 3,
-		items = {
-			{ itemstring = "mcl_core:birchsapling", weight = 1, amount_min = 1, amount_max = 2 },
-			{ itemstring = "mcl_core:acaciasapling", weight = 1, amount_min = 1, amount_max = 2 },
-			{ itemstring = "", weight = 6 },
-		},
-	})
-end
-
 local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 	if calls_remaining >= 1 then return end
 

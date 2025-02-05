@@ -140,7 +140,6 @@ Fonctionnalités bonus (absentes de Minecraft) :
 * Guide d'artisanat intégré au jeu qui montre les recettes d'artisanat et de cuisson
 * Système d'aide intégré au jeu contenant des informations à propos des techniques de base, blocs, objets et plus
 * Recettes d'artisanat temporaires. Elles existent uniquement pour rendre des objets accessibles qui ne le seraient pas autrement sauf en mode créatif. Elles seront retirées au cours de l'avancement du développement et de l'ajout de nouvelles fonctionnalités.
-* Pousses dans les coffres en [mapgen v6](https://wiki.luanti.org/Map_generator#v6)
 * Entièrement moddable (grâce la puissante API Lua de Luanti)
 * Nouveaux blocs et objets :
     * Outil de recherche, montre l'aide de ce qu'il touche

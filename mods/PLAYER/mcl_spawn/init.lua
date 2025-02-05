@@ -75,7 +75,7 @@ local node_search_list =
 -- Initial variables
 
 local success = storage:get_int("mcl_spawn_success")==1
-local searched = (storage:get_int("mcl_spawn_searched")==1) or mg_name == "v6" or mg_name == "singlenode" or minetest.settings:get("static_spawnpoint")
+local searched = (storage:get_int("mcl_spawn_searched")==1) or mg_name == "singlenode" or minetest.settings:get("static_spawnpoint")
 local return_spawn = minetest.settings:get_bool("mcl_return_spawn", true)
 local wsp = minetest.string_to_pos(storage:get_string("mcl_spawn_world_spawn_point")) or {} -- world spawn position
 local check = storage:get_int("mcl_spawn_check") or 0

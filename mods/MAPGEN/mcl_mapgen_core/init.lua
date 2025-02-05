@@ -395,13 +395,11 @@ end
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
 	local lvm_used = false
-	if mg_name ~= "v6" then
-		local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
-		if #nodes > 0 then
-			lvm_used = true
-			for _,n in pairs(nodes) do
-				data[area:index(n.x, n.y, n.z)] = c_air
-			end
+	local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
+	if #nodes > 0 then
+		lvm_used = true
+		for _,n in pairs(nodes) do
+			data[area:index(n.x, n.y, n.z)] = c_air
 		end
 	end
 	vm:set_lighting({day=15,night=0})
@@ -412,15 +410,11 @@ end
 mcl_mapgen_core.register_generator("world_structure", world_structure, nil, 1, true)
 mcl_mapgen_core.register_generator("end_fixes", end_basic, nil, 9999, true)
 
-if mg_name ~= "v6" and mg_name ~= "singlenode" then
+if mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_water", block_fixes_water, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_seagrass", block_fixes_seagrass, nil, 9999, true)
-end
-
-if mg_name == "v6" then
-	dofile(modpath.."/v6.lua")
 end
 
 minetest.register_lbm({

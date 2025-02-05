@@ -63,7 +63,7 @@ local psdef= {
 
 function mcl_weather.has_snow(pos)
 	if not mcl_worlds.has_weather(pos) then return false end
-	if  mgname == "singlenode" or mgname == "v6" then return false end
+	if  mgname == "singlenode" then return false end
 	local bn = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
 	local bd = minetest.registered_biomes[bn]
 	if bd and bd._mcl_biome_type == "snowy" then return true end

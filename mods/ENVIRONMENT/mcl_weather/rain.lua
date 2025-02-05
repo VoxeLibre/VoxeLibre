@@ -44,7 +44,7 @@ local textures = {"weather_pack_rain_raindrop_1.png", "weather_pack_rain_raindro
 
 function mcl_weather.has_rain(pos)
 	if not mcl_worlds.has_weather(pos) then return false end
-	if  mgname == "singlenode" or mgname == "v6" then return true end
+	if  mgname == "singlenode" then return true end
 	local bd = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
 	if bd and bd._mcl_biome_type == "hot" then return false end
 	return true
