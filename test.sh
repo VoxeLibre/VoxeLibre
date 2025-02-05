@@ -1,16 +1,8 @@
-#!/bin/sh
+#/bin/sh
 
 set -e
-#set -x
-which luarocks && eval $(luarocks path)
-which luarocks-5.3 && eval $(luarocks-5.3 path)
 
+sh tests/server-startup.sh
+sh tests/unit-tests.sh
 sh tests/luacheck/test.sh || true
-
-# Run unit tests
-find ./ -name 'unit-test.lua' | while read TEST; do
-	(
-		cd $(dirname $TEST)
-		busted unit-test.lua
-	)
-done
+sh tests/lua-language-server.sh || true
