@@ -6,6 +6,7 @@ RUN apk add --no-cache --virtual=build-dependencies build-base lua5.3-dev luajit
     luarocks-5.3 install luacov && \
     luarocks-5.3 install luacheck && \
     luarocks-5.3 install luaposix && \
+    luarocks-5.3 install lunajson && \
     git clone https://github.com/AlberTajuelo/bitop-lua.git && \
     cd bitop-lua && \
     sed -i 's/"lua >= 5.1, < 5.3"/"lua >= 5.1"/' bitop-lua-1.0-0.rockspec && \
