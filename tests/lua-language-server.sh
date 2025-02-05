@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+LUA=$( which lua || which lua5.1 || which lua5.2 || which lua5.3 || which luajit )
 
 # Make sure luanti lls definitions are up-to-date
 (
@@ -12,4 +13,4 @@ set -e
 )
 
 lua-language-server --check . --log check.log --logpath ./log | tr '\r' '\n' || true
-lua tests/display-lls-check-log.lua
+$LUA tests/display-lls-check-log.lua
