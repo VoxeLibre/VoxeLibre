@@ -1,8 +1,11 @@
 #!/bin/sh
 
+# Record version information
+minetest --version
+
 # Server Startup Test
 ((
-	minetestserver --world tests/tmp --gameid VoxeLibre
+	minetest --server --world tests/tmp --gameid VoxeLibre
 ) 2>&1 | cat > /tmp/setup.log ) &
 PID=$!
 
