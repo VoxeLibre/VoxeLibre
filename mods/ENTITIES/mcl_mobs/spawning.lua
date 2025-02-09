@@ -1080,7 +1080,9 @@ if mobs_spawn then
 		local cap_space_non_hostile =  math_max(mob_cap.global_non_hostile - total_non_hostile, 0)
 
 		if total_mobs > mob_cap.total or total_mobs >= #players * mob_cap.player then
-			core.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
+			if logging then
+				core.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
+			end
 			--note = "global mob cap reached"
 			return
 		end --mob cap per player
