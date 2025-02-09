@@ -177,16 +177,7 @@ function mob_class:check_breeding()
 			})
 
 			-- custom function when child grows up
-			if self.on_grown then
-				self.on_grown(self)
-			else
-				-- jump when fully grown so as not to fall into ground
-				self.object:set_velocity({
-					x = 0,
-					y = self.jump_height,
-					z = 0
-				})
-			end
+			if self.on_grown then self:on_grown() end
 
 			self.animation = nil
 			local anim = self._current_animation
