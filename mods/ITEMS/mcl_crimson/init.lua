@@ -385,6 +385,7 @@ minetest.register_node("mcl_crimson:shroomlight", {
 	tiles = {"mcl_crimson_shroomlight.png"},
 	groups = {handy = 1, hoey = 7, swordy = 1, deco_block = 1, compostability = 65},
 	light_source = minetest.LIGHT_MAX,
+	paramtype = "light",
 	_mcl_hardness = 1,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_leaves_defaults({

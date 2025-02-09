@@ -3523,13 +3523,6 @@ local function register_coral_decos(ck)
 	})
 end
 
---- Fix light for mushroom lights after generation
-local function fix_light_17x17_gennotify(t, minp, maxp, blockseed)
-	for _, pos in ipairs(t) do
-		minetest.fix_light(vector.offset(pos, -8, -8, -8), vector.offset(pos, 8, 8, 8))
-	end
-end
-
 --- Grow mangrove roots after generation
 local swamp_biome_id, swamp_shore_id
 local function mangrove_root_gennotify(t, minp, maxp, blockseed)
@@ -5612,7 +5605,6 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_1.mts",
 		size = vector.new(5, 11, 5),
 		rotation = "random",
-		gen_callback = fix_light_17x17_gennotify,
 	})
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
@@ -5627,7 +5619,6 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_2.mts",
 		size = vector.new(5, 6, 5),
 		rotation = "random",
-		gen_callback = fix_light_17x17_gennotify,
 	})
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
@@ -5642,7 +5633,6 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/warped_fungus_3.mts",
 		size = vector.new(5, 12, 5),
 		rotation = "random",
-		gen_callback = fix_light_17x17_gennotify,
 	})
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
@@ -5702,7 +5692,6 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_1.mts",
 		size = vector.new(5, 8, 5),
 		rotation = "random",
-		gen_callback = fix_light_17x17_gennotify,
 	})
 	minetest.register_alias("mcl_biomes:crimson_tree", "mcl_biomes:crimson_tree1") -- legacy inconsistency, fixed 08/2024
 	mcl_mapgen_core.register_decoration({
@@ -5718,7 +5707,6 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_2.mts",
 		size = vector.new(5, 12, 5),
 		rotation = "random",
-		gen_callback = fix_light_17x17_gennotify,
 	})
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
@@ -5733,7 +5721,6 @@ local function register_dimension_decorations()
 		schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_3.mts",
 		size = vector.new(7, 13, 7),
 		rotation = "random",
-		gen_callback = fix_light_17x17_gennotify,
 	})
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
