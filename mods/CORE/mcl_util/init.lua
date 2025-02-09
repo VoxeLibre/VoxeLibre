@@ -642,13 +642,15 @@ function mcl_util.move_player_list(player, src_listname)
 		player:get_look_dir(), false)
 end
 
+local christmas_deco = minetest.settings:get("vl_christmas_decorations") or "Calendar"
+
 function mcl_util.is_it_christmas()
 	local date = os.date("*t")
-	if date.month == 12 and date.day >= 24 or date.month == 1 and date.day <= 7 then
-		return true
-	else
-		return false
-	end
+	local date_is_christmas = (date.month == 12 and date.day >= 24 or date.month == 1 and date.day <= 7)
+
+	return christmas_deco == "Always"
+		or (christmas_deco == "Calendar" and date_is_christmas)
+		or false
 end
 
 function mcl_util.to_bool(val)
