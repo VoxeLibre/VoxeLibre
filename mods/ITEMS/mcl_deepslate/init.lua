@@ -218,6 +218,7 @@ local function register_deepslate_variant(item, texture, desc, longdesc, stair, 
 end
 
 local deepslate_variants = {
+	-- Do not reorder the below. Doing so will break the cobbled->polished->bricks->tiles craft recipes.
 	{ "cobbled", "cobbled_deepslate",
 		S("Cobbled Deepslate"), S("Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone."),
 		S("Cobbled Deepslate Stairs"), S("Cobbled Deepslate Slab"), S("Double Cobbled Deepslate Slab"), S("Cobbled Deepslate Wall"),
@@ -230,13 +231,15 @@ local deepslate_variants = {
 		S("Deepslate Bricks"), S("Deepslate bricks are the brick version of deepslate."),
 		S("Deepslate Bricks Stairs"), S("Deepslate Bricks Slab"), S("Double Deepslate Bricks Slab"), S("Deepslate Bricks Wall"),
 	},
-	{ "bricks_cracked", "cracked_deepslate_bricks",
-		S("Cracked Deepslate Bricks"), S("Cracked deepslate bricks are a cracked brick version of deepslate."),
-		nil, nil, nil, nil,
-	},
 	{ "tiles", "deepslate_tiles",
 		S("Deepslate Tiles"), S("Deepslate tiles are a decorative variant of deepslate."),
 		S("Deepslate Tiles Stairs"), S("Deepslate Tiles Slab"), S("Double Deepslate Tiles Slab"), S("Deepslate Tiles Wall"),
+	},
+	-- Do not reorder the above. Doing so will break the cobbled->polished->bricks->tiles craft recipes.
+
+	{ "bricks_cracked", "cracked_deepslate_bricks",
+		S("Cracked Deepslate Bricks"), S("Cracked deepslate bricks are a cracked brick version of deepslate."),
+		nil, nil, nil, nil,
 	},
 	{ "tiles_cracked", "cracked_deepslate_tiles",
 		S("Cracked Deepslate Tiles"), S("Cracked deepslate tiles are a cracked decorative variant of deepslate."),
