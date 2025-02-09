@@ -149,10 +149,11 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 				self.object:set_velocity(vector.zero())
 				self.gotten = false
 				self.object:set_properties({ textures = self.base_texture })
-				minetest.sound_play({name="mobs_mc_animal_eat_generic", gain=0.4}, {
-				pos = pos,
-				gain= 0.4,
-				max_hear_distance = 16,
+				minetest.sound_play({
+					name="mobs_mc_animal_eat_generic",
+					pos = pos,
+					gain = 0.4,
+					max_hear_distance = 16,
 				}, true)
 			end
 		end)
