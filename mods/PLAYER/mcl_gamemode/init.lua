@@ -70,7 +70,7 @@ minetest.register_chatcommand("gamemode", {
 	description = S("Change gamemode (survival/creative) for yourself or player"),
 	privs = { server = true },
 	func = function(n, param)
-		-- Full input validation ( just for @erlehmann <3 )
+		-- Full input validation ( just for @erle <3 )
 		local p = minetest.get_player_by_name(n)
 		local args = param:split(" ")
 		if args[2] ~= nil then

@@ -75,7 +75,7 @@ Origin of those models:
         * `mobs_mc_mushroom_brown.png` (CC0)
 
 * “Spawn egg” textures (`mobs_mc_spawn_icon_*`) by 22i
-* Llama decor (carpet) textures (`mobs_mc_llama_decor_*`) by erlehmann and rudzik8
+* Llama decor (carpet) textures (`mobs_mc_llama_decor_*`) by erle and rudzik8
 * Any other texture not mentioned here are licensed under the MIT License
 
 ## Sounds

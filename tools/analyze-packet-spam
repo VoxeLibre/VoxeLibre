@@ -1,6 +1,6 @@
 #!/bin/sh -eu
 # analyze-packet-spam – show minetest client packet count per second
-# Copyright © 2021  Nils Dagsson Moskopp (erlehmann)
+# Copyright © 2021 Ælla Chiana Moskopp (erle)
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as

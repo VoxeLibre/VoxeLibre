@@ -74,7 +74,7 @@ return {
 		"Tianyang Zhang",
 		"j45",
 		"Marcin Serwin",
-		"erlehmann",
+		"erle",
 		"E",
 		"n_to",
 		"debiankaios",
