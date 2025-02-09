@@ -526,8 +526,23 @@ function mcl_mobs.register_custom_biomecheck(custom_biomecheck)
 	mcl_mobs.custom_biomecheck = custom_biomecheck
 end
 
+local custom_biome_ids = {}
+local custom_biome_names = {}
+local next_custom_biome_id = 0
+
 local function get_biome_name(pos)
-	if mcl_mobs.custom_biomecheck then return mcl_mobs.custom_biomecheck(pos) end
+	if mcl_mobs.custom_biomecheck then
+		local biome_name = mcl_mobs.custom_biomecheck(pos)
+		local biome_id = custom_biome_ids[biome_name]
+		if not biome_id then
+			biome_id = next_custom_biome_id
+			next_custom_biome_name = biome_id + 1
+
+			custom_biome_ids[biome_name] = biome_id
+			custom_biome_names[biome_id] = biome_name
+		end
+		return biome_name, biome_id
+	end
 	local biome_data = core.get_biome_data(pos)
 	local biome_id = biome_data and biome_data.biome
 	local biome_name = biome_id and mt_get_biome_name(biome_id)
