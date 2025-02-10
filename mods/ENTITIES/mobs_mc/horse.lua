@@ -586,51 +586,53 @@ mcl_entity_invs.register_inv("mobs_mc:mule","Mule",15,true)
 
 --===========================
 --Spawn Function
-mcl_mobs:spawn_specific(
-"mobs_mc:horse",
-"overworld",
-"ground",
-{
-	"flat",
-	"Plains",
-	"Plains_beach",
-	"SunflowerPlains",
-	"Savanna",
-	"Savanna_beach",
-	"SavannaM",
-	"Savanna_beach",
-	"Plains_beach",
-},
-0,
-minetest.LIGHT_MAX+1,
-30,
-40,
-4,
-mobs_mc.water_level+3,
-mcl_vars.mg_overworld_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:horse",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = {
+		"flat",
+		"Plains",
+		"Plains_beach",
+		"SunflowerPlains",
+		"Savanna",
+		"Savanna_beach",
+		"SavannaM",
+		"Savanna_beach",
+		"Plains_beach",
+	},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 40,
+	interval = 30,
+	aoc = 4,
+	min_height = mobs_mc.water_level+3,
+	max_height = mcl_vars.mg_overworld_max
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:donkey",
-"overworld",
-"ground",
-{
-	"flat",
-	"Plains",
-	"Plains_beach",
-	"SunflowerPlains",
-	"Savanna",
-	"Savanna_beach",
-	"SavannaM",
-	"Savanna_beach",
-	"Plains_beach",
-},
-9,
-minetest.LIGHT_MAX+1,
-30,
-10,
-4,
-mobs_mc.water_level+3,
-mcl_vars.mg_overworld_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:donkey",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = {
+		"flat",
+		"Plains",
+		"Plains_beach",
+		"SunflowerPlains",
+		"Savanna",
+		"Savanna_beach",
+		"SavannaM",
+		"Savanna_beach",
+		"Plains_beach",
+	},
+	min_light = 9,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 10,
+	interval = 30,
+	aoc = 4,
+	min_height = mobs_mc.water_level+3,
+	max_height = mcl_vars.mg_overworld_max
+})
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:horse", S("Horse"), "#c09e7d", "#eee500", 0)

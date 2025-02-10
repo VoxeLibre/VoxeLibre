@@ -402,73 +402,75 @@ piglin_brute.drops = {
 }
 mcl_mobs.register_mob("mobs_mc:piglin_brute", piglin_brute)
 
-
-
 -- Regular spawning in the Nether
-mcl_mobs:spawn_specific(
-"mobs_mc:piglin",
-"nether",
-"ground",
-{
-"Nether",
-"CrimsonForest"
-},
-0,
-minetest.LIGHT_MAX+1,
-30,
-150,
-3,
-mcl_vars.mg_lava_nether_max,
-mcl_vars.mg_nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:piglin",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = {
+		"Nether",
+		"CrimsonForest"
+	},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 150,
+	interval = 30,
+	aoc = 3,
+	min_height = mcl_vars.mg_lava_nether_max,
+	max_height = mcl_vars.mg_nether_max
+})
 
-mcl_mobs:spawn_specific(
-"mobs_mc:sword_piglin",
-"nether",
-"ground",
-{
-			"Nether",
-			"CrimsonForest"
-		},
-0,
-minetest.LIGHT_MAX+1,
-30,
-150,
-3,
-mcl_vars.mg_lava_nether_max,
-mcl_vars.mg_nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:sword_piglin",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = {
+		"Nether",
+		"CrimsonForest"
+	},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 150,
+	interval = 30,
+	aoc = 3,
+	min_height = mcl_vars.mg_lava_nether_max,
+	max_height = mcl_vars.mg_nether_max
+})
 
-mcl_mobs:spawn_specific(
-		"mobs_mc:zombified_piglin",
-		"nether",
-		"ground",
-		{
-			"Nether",
-			"CrimsonForest",
-		},
-		0,
-		minetest.LIGHT_MAX+1,
-		30,
-		1000,
-		3,
-		mcl_vars.mg_nether_min,
-		mcl_vars.mg_nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:zombified_piglin",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = {
+		"Nether",
+		"CrimsonForest",
+	},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 1000,
+	interval = 30,
+	aoc = 3,
+	min_height = mcl_vars.mg_nether_min,
+	max_height = mcl_vars.mg_nether_max
+})
 
 -- Baby zombie is 20 times less likely than regular zombies
-mcl_mobs:spawn_specific(
-		"mobs_mc:baby_zombified_piglin",
-		"nether",
-		"ground",
-		{
-			"Nether",
-			"CrimsonForest",
-		},
-		0,
-		minetest.LIGHT_MAX+1,
-		30,
-		50,
-		4,
-		mcl_vars.mg_nether_min,
-		mcl_vars.mg_nether_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:baby_zombified_piglin",
+	dimension = "nether",
+	type_of_spawning = "ground",
+	biomes = {
+		"Nether",
+		"CrimsonForest",
+	},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 50,
+	interval = 30,
+	aoc = 4,
+	min_height = mcl_vars.mg_nether_min,
+	max_height = mcl_vars.mg_nether_max
+})
 
 mcl_mobs:non_spawn_specific("mobs_mc:piglin","overworld",0,7)
 mcl_mobs:non_spawn_specific("mobs_mc:sword_piglin","overworld",0,7)

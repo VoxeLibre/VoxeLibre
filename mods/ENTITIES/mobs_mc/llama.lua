@@ -272,27 +272,28 @@ mcl_mobs.register_arrow("mobs_mc:llamaspit", {
 })
 
 --spawn
-mcl_mobs:spawn_specific(
-"mobs_mc:llama",
-"overworld",
-"ground",
-{
-	"Savanna",
-	"SavannaM",
-	"SavannaM_beach",
-	"Savanna_beach",
-	"Savanna_ocean",
-	"ExtremeHills",
-	"ExtremeHills_beach",
-	"ExtremeHillsM",
-}, --FIXME: Needs Windswept Forest when that is added.
-0,
-minetest.LIGHT_MAX+1,
-30,
-50,
-5,
-mobs_mc.water_level+15,
-mcl_vars.mg_overworld_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:llama",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = {
+		"Savanna",
+		"SavannaM",
+		"SavannaM_beach",
+		"Savanna_beach",
+		"Savanna_ocean",
+		"ExtremeHills",
+		"ExtremeHills_beach",
+		"ExtremeHillsM",
+	}, --FIXME: Needs Windswept Forest when that is added.
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	interval = 30,
+	chance = 50,
+	aoc = 5,
+	min_height = mobs_mc.water_level+15,
+	max_height = mcl_vars.mg_overworld_max
+})
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:llama", S("Llama"), "#c09e7d", "#995f40", 0)

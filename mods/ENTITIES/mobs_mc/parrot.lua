@@ -221,23 +221,24 @@ mcl_mobs.register_mob("mobs_mc:parrot", {
 })
 
 -- Parrots spawn rarely in jungles. TODO: Also check for jungle *biome* <- I'll get to this eventually -j4i
-mcl_mobs:spawn_specific(
-"mobs_mc:parrot",
-"overworld",
-"ground",
-{
-"Jungle",
-"JungleEdgeM",
-"JungleM",
-"JungleEdge",
-},
-0,
-minetest.LIGHT_MAX+1,
-7,
-400,
-1,
-mobs_mc.water_level+7,
-mcl_vars.mg_overworld_max)
+mcl_mobs:spawn_setup({
+	name = "mobs_mc:parrot",
+	dimension = "overworld",
+	type_of_spawning = "ground",
+	biomes = {
+		"Jungle",
+		"JungleEdgeM",
+		"JungleM",
+		"JungleEdge",
+	},
+	min_light = 0,
+	max_light = minetest.LIGHT_MAX+1,
+	chance = 400,
+	interval = 7,
+	aoc = 1,
+	min_height = mobs_mc.water_level+7,
+	max_height = mcl_vars.mg_overworld_max
+})
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:parrot", S("Parrot"), "#0da70a", "#ff0000", 0)
