@@ -42,7 +42,7 @@ vl_biomes.register_biome({
 mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 80,
+	sidelen = 16,
 	noise_params = {
 		offset = 0.0055,
 		scale = 0.0011,

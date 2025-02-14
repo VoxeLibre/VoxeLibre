@@ -39,7 +39,7 @@ mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
 	terrain_feature = true,
-	sidelen = 80,
+	sidelen = 16,
 	noise_params = {
 		offset = 0.00040,
 		scale = 0.001,
@@ -61,7 +61,7 @@ mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
 	terrain_feature = true,
-	sidelen = 80,
+	sidelen = 16,
 	noise_params = {
 		offset = 0.005,
 		scale = 0.001,
