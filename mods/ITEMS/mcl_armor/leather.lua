@@ -1,3 +1,4 @@
+local S = minetest.get_translator(minetest.get_current_modname())
 local C = minetest.colorize
 
 local colors = {
@@ -96,11 +97,11 @@ end
 
 mcl_armor.register_set({
 	name = "leather",
-	description = "Leather",
 	descriptions = {
-		head = "Cap",
-		torso = "Tunic",
-		legs = "Pants",
+		head = S("Leather Cap"),
+		torso = S("Leather Tunic"),
+		legs = S("Leather Pants"),
+		feet = S("Leather Boots"),
 	},
 	durability = 80,
 	enchantability = 15,
