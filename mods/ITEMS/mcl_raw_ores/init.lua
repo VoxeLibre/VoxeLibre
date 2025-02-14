@@ -1,21 +1,19 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local function register_raw_ore(description, n)
-	local ore = description:lower()
-	local n = n or ""
+local function register_raw_ore(ore, item_desc, item_longdesc, block_desc, block_longdesc)
 	local raw_ingot = "mcl_raw_ores:raw_"..ore
 	local texture = "mcl_raw_ores_raw_"..ore
 
 	minetest.register_craftitem(raw_ingot, {
-		description = S("Raw "..description),
-		_doc_items_longdesc = S("Raw "..ore..". Mine a"..n.." "..ore.." ore to get it."),
+		description = item_desc,
+		_doc_items_longdesc = item_longdesc,
 		inventory_image = texture..".png",
 		groups = { craftitem = 1, blast_furnace_smeltable = 1 },
 	})
 
 	minetest.register_node(raw_ingot.."_block", {
-		description = S("Block of Raw "..description),
-		_doc_items_longdesc = S("A block of raw "..ore.." is mostly a decorative block but also useful as a compact storage of raw "..ore.."."),
+		description = block_desc,
+		_doc_items_longdesc = block_longdesc,
 		tiles = { texture.."_block.png" },
 		is_ground_content = false,
 		groups = { pickaxey = 2, building_block = 1, blast_furnace_smeltable = 1 },
@@ -55,5 +53,7 @@ local function register_raw_ore(description, n)
 	})
 end
 
-register_raw_ore("Iron", "n")
-register_raw_ore("Gold")
+register_raw_ore("iron", S("Raw Iron"), S("Raw iron. Mine an iron ore to get it."), S("Block of Raw Iron"),
+	S("A block of raw iron is mostly a decorative block but also useful as a compact storage of raw iron."))
+register_raw_ore("gold", S("Raw Gold"), S("Raw gold. Mine a gold ore to get it."), S("Block of Raw Gold"),
+	S("A block of raw gold is mostly a decorative block but also useful as a compact storage of raw gold."))
