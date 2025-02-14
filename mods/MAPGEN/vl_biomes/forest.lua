@@ -42,7 +42,7 @@ for i = 1, 4 do
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-		sidelen = 80,
+		sidelen = 16,
 		noise_params = {
 			offset = 0.000545,
 			scale = 0.0011,
