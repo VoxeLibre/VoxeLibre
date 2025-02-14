@@ -62,7 +62,7 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"group:grass_block", "mcl_core:podzol"},
-	sidelen = 80,
+	sidelen = 16,
 	noise_params = {
 		offset = -0.025,
 		scale = 0.025,

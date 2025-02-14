@@ -58,7 +58,7 @@ mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	decoration = "mcl_blackstone:basalt",
 	place_on = {"mcl_blackstone:basalt", "mcl_nether:netherrack", "mcl_blackstone:blackstone"},
-	sidelen = 80,
+	sidelen = 8,
 	height_max = 55,
 	noise_params = {
 		offset = -0.0085,
@@ -80,7 +80,7 @@ mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	decoration = "mcl_blackstone:basalt",
 	place_on = {"mcl_blackstone:basalt", "mcl_nether:netherrack", "mcl_blackstone:blackstone"},
-	sidelen = 80,
+	sidelen = 8,
 	height_max = 15,
 	noise_params = {
 		offset = -0.0085,
