@@ -38,7 +38,7 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	place_on = {"group:grass_block_no_snow"},
-	sidelen = 16,
+	sidelen = 8,
 	noise_params = {
 		offset = -0.005,
 		scale = 0.006,
@@ -57,7 +57,7 @@ mcl_mapgen_core.register_decoration({
 mcl_mapgen_core.register_decoration({
 	deco_type = "simple",
 	place_on = {"group:grass_block_no_snow"},
-	sidelen = 80,
+	sidelen = 8,
 	noise_params = {
 		offset = 0.013,
 		scale = 0.006,
