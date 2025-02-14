@@ -141,14 +141,6 @@ mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"mcl_mud:mud"},
 	sidelen = 80,
-	--[[noise_params = {
-		offset = 0.01,
-		scale = 0.00001,
-		spread = vector.new(250, 250, 250),
-		seed = 2,
-		octaves = 3,
-		persist = 0.33
-	},]]--
 	fill_ratio = 0.0005,
 	biomes = {"MangroveSwamp"},
 	y_min = 1,
