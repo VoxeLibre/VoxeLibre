@@ -6,7 +6,7 @@ mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
 	terrain_feature = true,
-	sidelen = 80,
+	sidelen = 16,
 	noise_params = {
 		offset = 0.00015,
 		scale = 0.001,
@@ -28,7 +28,7 @@ mcl_mapgen_core.register_decoration({
 	deco_type = "schematic",
 	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
 	terrain_feature = true,
-	sidelen = 80,
+	sidelen = 16,
 	noise_params = {
 		offset = 0.001,
 		scale = 0.001,
