@@ -30,4 +30,4 @@ mcl_minecarts.register_minecart({
 	on_activate_by_rail = nil,
 	creative = true
 })
-mcl_entity_invs.register_inv("mcl_minecarts:chest_minecart","Minecart",27,false,true)
+mcl_entity_invs.register_inv("mcl_minecarts:chest_minecart",S("Minecart"),27,false,true)
