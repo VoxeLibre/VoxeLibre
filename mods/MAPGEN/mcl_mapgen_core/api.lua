@@ -149,6 +149,14 @@ end
 local pending_decorations = {}
 local gennotify_map = {}
 function mcl_mapgen_core.register_decoration(def, callback)
+	if def.sidelen and (80 % def.sidelen ~= 0) then
+		-- c.f., https://api.luanti.org/definition-tables/#decoration-definition
+		minetest.log("warning", "Decoration sidelen must be a divisors of the chunk size 80, check "..tostring(def.name))
+	end
+	if def.fill_ratio and def.noise_params then
+		-- c.f., https://api.luanti.org/definition-tables/#decoration-definition
+		minetest.log("warning", "Decoration fill_ratio is used only if noise_params is not specified, check "..tostring(def.name))
+	end
 	def = table.copy(def) -- defensive deep copy, needed for water lily
 	if def.gen_callback and not def.name then error("gen_callback requires a named decoration.") end
 	if callback then error("Callbacks have been redesigned.") end
