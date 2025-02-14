@@ -1,5 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
-local F = function(f) return minetest.formspec_escape(S(f)) end
+local F = minetest.formspec_escape
 
 local mod_central_messages = minetest.get_modpath("central_message")
 local mod_inventory_plus = minetest.get_modpath("inventory_plus")
@@ -554,9 +554,9 @@ function doc.widgets.gallery(imagedata, playername, x, y, aspect_ratio, width, r
 		if imageindex > 1 then
 			formstring = formstring .. "button["..x..","..y..";"..bw..","..ih..";doc_button_gallery_prev;"..F("<").."]"
 			if rows == 1 then
-				tt = F("Show previous image")
+				tt = F(S("Show previous image"))
 			else
-				tt = F("Show previous gallery page")
+				tt = F(S("Show previous gallery page"))
 			end
 			formstring = formstring .. "tooltip[doc_button_gallery_prev;"..tt.."]"
 		end
@@ -564,9 +564,9 @@ function doc.widgets.gallery(imagedata, playername, x, y, aspect_ratio, width, r
 			local rightx = buttonoffset + (x + rows * iw)
 			formstring = formstring .. "button["..rightx..","..y..";"..bw..","..ih..";doc_button_gallery_next;"..F(">").."]"
 			if rows == 1 then
-				tt = F("Show next image")
+				tt = F(S("Show next image"))
 			else
-				tt = F("Show next gallery page")
+				tt = F(S("Show next gallery page"))
 			end
 			formstring = formstring .. "tooltip[doc_button_gallery_next;"..tt.."]"
 		end
@@ -666,7 +666,7 @@ function doc.formspec_main(playername)
 	local formstring = "textarea[0.35,0;"..doc.FORMSPEC.WIDTH..",1;;;"..minetest.formspec_escape(DOC_INTRO) .. "\n"
 	local notify_checkbox_x, notify_checkbox_y
 	if doc.get_category_count() >= 1 then
-		formstring = formstring .. F("Please select a category you wish to learn more about:").."]"
+		formstring = formstring .. F(S("Please select a category you wish to learn more about:")).."]"
 		if doc.get_category_count() <= (CATEGORYFIELDSIZE.WIDTH * CATEGORYFIELDSIZE.HEIGHT)  then
 			local y = 1
 			local x = 1
@@ -710,15 +710,15 @@ function doc.formspec_main(playername)
 				formstring = formstring .. doc.data.categories[doc.data.players[playername].category].order_position
 			end
 			formstring = formstring .. "]"
-			formstring = formstring .. "button[0,"..(doc.FORMSPEC.HEIGHT-1)..";3,1;doc_button_goto_category;"..F("Show category").."]"
+			formstring = formstring .. "button[0,"..(doc.FORMSPEC.HEIGHT-1)..";3,1;doc_button_goto_category;"..F(S("Show category")).."]"
 			notify_checkbox_x = 3.5
 			notify_checkbox_y = doc.FORMSPEC.HEIGHT-1
 		end
 		local text
 		if mod_central_messages then
-			text = F("Notify me when new help is available")
+			text = F(S("Notify me when new help is available"))
 		else
-			text = F("Play notification sound when new help is available")
+			text = F(S("Play notification sound when new help is available"))
 		end
 		formstring = formstring .. "checkbox["..notify_checkbox_x..","..notify_checkbox_y..";doc_setting_notify_on_reveal;"..text..";"..
 		tostring(doc.data.players[playername].stored_data.notify_on_reveal == true) .. "]"
@@ -736,7 +736,7 @@ function doc.formspec_error_no_categories()
 S("No categories have been registered, but they are required to provide help.").."\n"..
 S("The Documentation System [doc] does not come with help contents on its own, it needs additional mods to add help content. Please make sure such mods are enabled on for this world, and try again.")) .. "\n\n" ..
 S("Recommended mods: doc_basics, doc_items, doc_identifier, doc_encyclopedia.")
-	formstring = formstring .. ";]button_exit[3,5;2,1;okay;"..F("OK").."]"
+	formstring = formstring .. ";]button_exit[3,5;2,1;okay;"..F(S("OK")).."]"
 	return formstring
 end
 
@@ -745,7 +745,7 @@ function doc.formspec_error_hidden(category_id, entry_id)
 	formstring = formstring .. minetest.formspec_escape(
 	colorize(COLOR_ERROR, S("Error: Access denied.")) .. "\n\n" ..
 	S("Access to the requested entry has been denied; this entry is secret. You may unlock access by progressing in the game. Figure out on your own how to unlock this entry."))
-	formstring = formstring .. ";]button_exit[3,5;2,1;okay;"..F("OK").."]"
+	formstring = formstring .. ";]button_exit[3,5;2,1;okay;"..F(S("OK")).."]"
 	return formstring
 end
 
@@ -854,9 +854,9 @@ end
 function doc.formspec_category(id, playername)
 	local formstring
 	if id == nil then
-		formstring = "label[0,0;"..F("Help > (No Category)") .. "]"
-		formstring = formstring .. "label[0,0.5;"..F("You haven't chosen a category yet. Please choose one in the category list first.").."]"
-		formstring = formstring .. "button[0,1;3,1;doc_button_goto_main;"..F("Go to category list").."]"
+		formstring = "label[0,0;"..F(S("Help > (No Category)")) .. "]"
+		formstring = formstring .. "label[0,0.5;"..F(S("You haven't chosen a category yet. Please choose one in the category list first.")).."]"
+		formstring = formstring .. "button[0,1;3,1;doc_button_goto_main;"..F(S("Go to category list")).."]"
 	else
 		formstring = "label[0,0;"..minetest.formspec_escape(S("Help > @1", doc.data.categories[id].def.name)).."]"
 		local total = doc.get_entry_count(id)
@@ -864,11 +864,11 @@ function doc.formspec_category(id, playername)
 			local revealed = doc.get_revealed_count(playername, id)
 			if revealed == 0 then
 				formstring = formstring .. "label[0,0.5;"..minetest.formspec_escape(S("Currently all entries in this category are hidden from you.").."\n"..S("Unlock new entries by progressing in the game.")).."]"
-				formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_main;"..F("Go to category list").."]"
+				formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_main;"..F(S("Go to category list")).."]"
 			else
-				formstring = formstring .. "label[0,0.5;"..F("This category has the following entries:").."]"
+				formstring = formstring .. "label[0,0.5;"..F(S("This category has the following entries:")).."]"
 				formstring = formstring .. doc.generate_entry_list(id, playername)
-				formstring = formstring .. "button[0,"..(doc.FORMSPEC.HEIGHT-1)..";3,1;doc_button_goto_entry;"..F("Show entry").."]"
+				formstring = formstring .. "button[0,"..(doc.FORMSPEC.HEIGHT-1)..";3,1;doc_button_goto_entry;"..F(S("Show entry")).."]"
 				formstring = formstring .. "label["..(doc.FORMSPEC.WIDTH-4)..","..(doc.FORMSPEC.HEIGHT-1)..";"..minetest.formspec_escape(S("Number of entries: @1", total)).."\n"
 				local viewed = doc.get_viewed_count(playername, id)
 				local hidden = total - revealed
@@ -883,12 +883,12 @@ function doc.formspec_category(id, playername)
 						formstring = formstring .. "]"
 					end
 				else
-					formstring = formstring .. F("All entries read.").."]"
+					formstring = formstring .. F(S("All entries read.")).."]"
 				end
 			end
 		else
-			formstring = formstring .. "label[0,0.5;"..F("This category is empty.").."]"
-			formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_main;"..F("Go to category list").."]"
+			formstring = formstring .. "label[0,0.5;"..F(S("This category is empty.")).."]"
+			formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_main;"..F(S("Go to category list")).."]"
 		end
 	end
 	return formstring
@@ -901,25 +901,25 @@ function doc.formspec_entry_navigation(category_id, entry_id)
 	local formstring = ""
 	formstring = formstring .. "button["..(doc.FORMSPEC.WIDTH-2)..","..(doc.FORMSPEC.HEIGHT-0.5)..";1,1;doc_button_goto_prev;"..F("<").."]"
 	formstring = formstring .. "button["..(doc.FORMSPEC.WIDTH-1)..","..(doc.FORMSPEC.HEIGHT-0.5)..";1,1;doc_button_goto_next;"..F(">").."]"
-	formstring = formstring .. "tooltip[doc_button_goto_prev;"..F("Show previous entry").."]"
-	formstring = formstring .. "tooltip[doc_button_goto_next;"..F("Show next entry").."]"
+	formstring = formstring .. "tooltip[doc_button_goto_prev;"..F(S("Show previous entry")).."]"
+	formstring = formstring .. "tooltip[doc_button_goto_next;"..F(S("Show next entry")).."]"
 	return formstring
 end
 
 function doc.formspec_entry(category_id, entry_id, playername)
 	local formstring
 	if category_id == nil then
-		formstring = "label[0,0;"..F("Help > (No Category)") .. "]"
-		formstring = formstring .. "label[0,0.5;"..F("You haven't chosen a category yet. Please choose one in the category list first.").."]"
-		formstring = formstring .. "button[0,1;3,1;doc_button_goto_main;"..F("Go to category list").."]"
+		formstring = "label[0,0;"..F(S("Help > (No Category)")) .. "]"
+		formstring = formstring .. "label[0,0.5;"..F(S("You haven't chosen a category yet. Please choose one in the category list first.")).."]"
+		formstring = formstring .. "button[0,1;3,1;doc_button_goto_main;"..F(S("Go to category list")).."]"
 	elseif entry_id == nil then
 		formstring = "label[0,0;"..minetest.formspec_escape(S("Help > @1 > (No Entry)", doc.data.categories[category_id].def.name)) .. "]"
 		if doc.get_entry_count(category_id) >= 1 then
-			formstring = formstring .. "label[0,0.5;"..F("You haven't chosen an entry yet. Please choose one in the entry list first.").."]"
-			formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_category;"..F("Go to entry list").."]"
+			formstring = formstring .. "label[0,0.5;"..F(S("You haven't chosen an entry yet. Please choose one in the entry list first.")).."]"
+			formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_category;"..F(S("Go to entry list")).."]"
 		else
-			formstring = formstring .. "label[0,0.5;"..F("This category does not have any entries.").."]"
-			formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_main;"..F("Go to category list").."]"
+			formstring = formstring .. "label[0,0.5;"..F(S("This category does not have any entries.")).."]"
+			formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_main;"..F(S("Go to category list")).."]"
 		end
 	else
 
