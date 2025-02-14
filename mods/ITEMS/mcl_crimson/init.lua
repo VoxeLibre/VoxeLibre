@@ -513,7 +513,7 @@ minetest.register_node("mcl_crimson:warped_hyphae_wood", {
 })
 
 mcl_stairs.register_stair("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", wood_stair_groups, false, S("Warped Stairs"))
-mcl_stairs.register_slab("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", wood_slab_groups, false, S("Warped Slab"))
+mcl_stairs.register_slab("warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", wood_slab_groups, false, S("Warped Slab"), nil, nil, nil, S("Double Warped Slab"))
 
 minetest.register_craft({
 	output = "mcl_crimson:warped_hyphae_wood 4",
@@ -776,7 +776,7 @@ minetest.register_craft({
 })
 
 mcl_stairs.register_stair("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_stair_groups, false, S("Crimson Stairs"))
-mcl_stairs.register_slab("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_slab_groups, false, S("Crimson Slab"))
+mcl_stairs.register_slab("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_slab_groups, false, S("Crimson Slab"), nil, nil, nil, S("Double Crimson Slab"))
 
 core.override_item("mcl_nether:netherrack", {
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
