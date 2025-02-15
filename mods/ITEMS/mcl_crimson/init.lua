@@ -778,6 +778,15 @@ minetest.register_craft({
 mcl_stairs.register_stair("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_stair_groups, false, S("Crimson Stairs"))
 mcl_stairs.register_slab("crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", wood_slab_groups, false, S("Crimson Slab"))
 
+core.override_item("mcl_nether:netherrack", {
+	_on_bone_meal = function(itemstack, placer, pointed_thing)
+		local n = has_nylium_neighbor(pointed_thing.under)
+		if n then
+			core.set_node(pointed_thing.under, n)
+		end
+	end
+})
+
 minetest.register_abm({
 	label = "Turn Crimson Nylium and Warped Nylium below solid block into Netherrack",
 	nodenames = {"mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium"},
