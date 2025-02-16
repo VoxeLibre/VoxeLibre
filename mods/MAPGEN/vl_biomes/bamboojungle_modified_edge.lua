@@ -1,8 +1,8 @@
 local mod_mcl_core = core.get_modpath("mcl_core")
 
--- Jungle Edge M (very rare).
--- Almost identical to Jungle Edge. Has deeper dirt. Melons spawn here a lot.
--- This biome occours directly between Jungle M and Jungle Edge but also has a small border to Jungle.
+-- Bamboo Jungle Edge M (very rare).
+-- Almost identical to Bamboo Jungle Edge. Has deeper dirt.
+-- This biome occours directly between Bamboo Jungle M and Bamboo Jungle Edge but also has a small border to Bamboo Jungle.
 -- This biome is very small in general.
 vl_biomes.register_biome({
 	name = "BambooJungleEdgeM",
@@ -14,8 +14,9 @@ vl_biomes.register_biome({
 	depth_riverbed = 2,
 	y_min = 1,
 	y_max = vl_biomes.overworld_max,
-	humidity_point = 95, -- FIXME: This biome will currently not spawn
-	heat_point = 95, -- because the parameters are the same as of BambooJungleM
+	-- note: with 95/95, the biome would actually never spawn
+	humidity_point = mcl_util.minimum_version(mcl_vars.map_version, {0, 90}) and 97 or 95,
+	heat_point = mcl_util.minimum_version(mcl_vars.map_version, {0, 90}) and 90 or 95,
 	_vl_biome_type = "medium",
 	_vl_water_temp = "lukewarm",
 	_vl_grass_palette = "mangroveswamp",
