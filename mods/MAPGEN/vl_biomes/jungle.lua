@@ -38,10 +38,9 @@ vl_biomes.register_biome({
 })
 
 -- Small “classic” oak (many biomes)
-mcl_mapgen_core.register_decoration({
+vl_biomes.register_decoration({
 	deco_type = "schematic",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 80,
 	fill_ratio = 0.004,
 	biomes = {"Jungle"},
 	y_min = 1,
@@ -53,10 +52,9 @@ mcl_mapgen_core.register_decoration({
 
 -- Huge jungle tree (4 variants)
 for i = 1, 4 do
-	mcl_mapgen_core.register_decoration({
+	vl_biomes.register_decoration({
 		deco_type = "schematic",
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-		sidelen = 80,
 		fill_ratio = 0.0008,
 		biomes = {"Jungle"},
 		y_min = 4,
@@ -68,63 +66,40 @@ for i = 1, 4 do
 end
 
 -- Common jungle tree
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 80,
-	fill_ratio = 0.025,
+vl_biomes.register_decoration({
 	biomes = {"Jungle"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	fill_ratio = 0.025,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 80,
-	fill_ratio = 0.015,
+vl_biomes.register_decoration({
 	biomes = {"Jungle"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_2.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	fill_ratio = 0.015,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 80,
-	fill_ratio = 0.005,
+vl_biomes.register_decoration({
 	biomes = {"Jungle"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_3.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	fill_ratio = 0.005,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 80,
-	fill_ratio = 0.005,
+vl_biomes.register_decoration({
 	biomes = {"Jungle"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_4.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	fill_ratio = 0.005,
 })
 
 -- Jungle bush
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"Jungle"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+	y_min = 3,
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.0196,
 		scale = 0.015,
@@ -133,17 +108,13 @@ mcl_mapgen_core.register_decoration({
 		octaves = 4,
 		persist = 0.6,
 	},
-	biomes = {"Jungle"},
-	y_min = 3,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
-	flags = "place_center_x, place_center_z",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"Jungle" },
+	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves_2.mts",
+	y_min = 3,
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.0196,
 		scale = 0.005,
@@ -152,9 +123,4 @@ mcl_mapgen_core.register_decoration({
 		octaves = 4,
 		persist = 0.6,
 	},
-	biomes = {"Jungle" },
-	y_min = 3,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves_2.mts",
-	flags = "place_center_x, place_center_z",
 })
