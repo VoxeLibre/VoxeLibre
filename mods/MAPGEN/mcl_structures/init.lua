@@ -57,24 +57,6 @@ mcl_structures.register_structure("fossil",{
 	},
 })
 
-mcl_structures.register_structure("boulder",{
-	filenames = {
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder.mts",
-		-- small boulder 3x as likely
-	},
-},true) --is spawned as a normal decoration. this is just for /spawnstruct
-
-mcl_structures.register_structure("ice_spike_small",{
-	filenames = { modpath.."/schematics/mcl_structures_ice_spike_small.mts"	},
-},true) --is spawned as a normal decoration. this is just for /spawnstruct
-mcl_structures.register_structure("ice_spike_large",{
-	sidelen = 6,
-	filenames = { modpath.."/schematics/mcl_structures_ice_spike_large.mts"	},
-},true) --is spawned as a normal decoration. this is just for /spawnstruct
-
 -- Debug command
 local function dir_to_rotation(dir)
 	local ax, az = math.abs(dir.x), math.abs(dir.z)
