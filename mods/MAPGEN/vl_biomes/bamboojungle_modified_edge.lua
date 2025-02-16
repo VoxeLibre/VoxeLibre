@@ -14,8 +14,8 @@ vl_biomes.register_biome({
 	depth_riverbed = 2,
 	y_min = 1,
 	y_max = vl_biomes.overworld_max,
-	humidity_point = 95, -- FIXME: This biome will currently not spawn
-	heat_point = 95, -- because the parameters are the same as of BambooJungleM
+	humidity_point = 97,
+	heat_point = 90,
 	_mcl_biome_type = "medium",
 	_mcl_water_temp = "lukewarm",
 	_mcl_grass_palette_index = 27,
