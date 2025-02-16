@@ -21,17 +21,15 @@ vl_biomes.register_biome({
 	_mcl_fogcolor = "#1B4745"
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_nether:magma"},
-	sidelen = 16,
-	fill_ratio = 10,
+vl_biomes.register_decoration({
 	biomes = {"SoulsandValley"},
+	decoration = "mcl_blackstone:soul_soil",
+	param2 = 0,
 	y_min = vl_biomes.lava_nether_max,
 	y_max = vl_biomes.nether_deco_max,
-	decoration = "mcl_blackstone:soul_soil",
+	place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_nether:magma"},
+	fill_ratio = 10, -- fill
 	flags = "all_floors, all_ceilings",
-	param2 = 0,
 })
 
 core.register_ore({
@@ -56,66 +54,48 @@ core.register_ore({
 	}
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soul_sand"},
-	sidelen = 16,
-	fill_ratio = 0.062,
+vl_biomes.register_decoration({
 	biomes = {"SoulsandValley"},
-	y_min = vl_biomes.lava_nether_max + 1,
-	flags = "all_floors",
-	max_height = 5,
 	decoration = "mcl_blackstone:soul_fire",
+	max_height = 5,
+	y_min = vl_biomes.lava_nether_max + 1,
+	place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soul_sand"},
+	fill_ratio = 0.062,
+	flags = "all_floors",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"SoulsandValley"},
+	schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_1.mts", -- size = vector.new(5, 8, 5),
+	y_min = vl_biomes.lava_nether_max + 1,
 	place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
-	sidelen = 16,
 	fill_ratio = 0.000212,
-	biomes = {"SoulsandValley"},
-	y_min = vl_biomes.lava_nether_max + 1,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_1.mts",
-	size = vector.new(5, 8, 5),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"SoulsandValley"},
+	schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_2.mts", -- size = vector.new(5, 8, 5),
+	y_min = vl_biomes.lava_nether_max + 1,
 	place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
-	sidelen = 16,
 	fill_ratio = 0.0002233,
-	biomes = {"SoulsandValley"},
-	y_min = vl_biomes.lava_nether_max + 1,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_2.mts",
-	size = vector.new(5, 8, 5),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"SoulsandValley"},
+	schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_3.mts", -- size = vector.new(5, 8, 5),
+	y_min = vl_biomes.lava_nether_max + 1,
 	place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
-	sidelen = 16,
 	fill_ratio = 0.000225,
-	biomes = {"SoulsandValley"},
-	y_min = vl_biomes.lava_nether_max + 1,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_3.mts",
-	size = vector.new(5, 8, 5),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
-	sidelen = 16,
-	fill_ratio = 0.00022323,
+vl_biomes.register_decoration({
 	biomes = {"SoulsandValley"},
+	schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_4.mts", -- size = vector.new(5, 8, 5),
 	y_min = vl_biomes.lava_nether_max + 1,
+	place_on = {"mcl_blackstone:soul_soil", "mcl_nether:soulsand"},
+	fill_ratio = 0.00022323,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_blackstone .. "/schematics/mcl_blackstone_nether_fossil_4.mts",
-	size = vector.new(5, 8, 5),
-	rotation = "random",
 })

@@ -42,10 +42,10 @@ vl_biomes.register_biome({
 
 -- Large oaks
 for i = 1, 4 do
-	mcl_mapgen_core.register_decoration({
-		deco_type = "schematic",
+	vl_biomes.register_decoration({
+		biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_" .. i .. ".mts",
 		place_on = {"group:grass_block", "mcl_core:dirt", },
-		sidelen = 16,
 		noise_params = {
 			offset = -0.0007,
 			scale = 0.001,
@@ -54,20 +54,14 @@ for i = 1, 4 do
 			octaves = 3,
 			persist = 0.6
 		},
-		biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
-		y_min = 1,
-		y_max = vl_biomes.overworld_max,
-		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_" .. i .. ".mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
 	})
 end
 
 -- Small “classic” oak (many biomes)
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	place_on = {"group:grass_block", "mcl_core:dirt", },
-	sidelen = 16,
 	noise_params = {
 		offset = 0.0,
 		scale = 0.002,
@@ -76,18 +70,13 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.7
 	},
-	biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+	y_min = 50,
 	place_on = {"group:grass_block", "mcl_core:dirt"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.006,
 		scale = 0.002,
@@ -96,12 +85,6 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.7
 	},
-	biomes = {"ExtremeHills+", "ExtremeHills+_snowtop"},
-	y_min = 50,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
 })
 
 -- Spruce
@@ -111,11 +94,16 @@ vl_biomes.register_spruce_decoration(7000, 0.003, "mcl_core_spruce_3.mts", {"Ext
 vl_biomes.register_spruce_decoration(9000, 0.002, "mcl_core_spruce_4.mts", {"ExtremeHills+", "ExtremeHills+_snowtop"}, 50)
 
 --  Place tall grass on snow in Extreme Hills+
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	rank = 1500,
+vl_biomes.register_decoration({
+	biomes = {"ExtremeHills+_snowtop"},
+	schematic = {
+		size = vector.new(1, 2, 1),
+		data = {
+			{name = "mcl_core:dirt_with_grass", force_place = true, param2 = 8 },
+			{name = "mcl_flowers:tallgrass", param2 = 8},
+		},
+	},
 	place_on = {"group:grass_block"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.0,
 		scale = 0.09,
@@ -124,14 +112,5 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6,
 	},
-	biomes = {"ExtremeHills+_snowtop"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = {
-		size = vector.new(1, 2, 1),
-		data = {
-			{name = "mcl_core:dirt_with_grass", force_place = true, param2 = 8 },
-			{name = "mcl_flowers:tallgrass", param2 = 8},
-		},
-	},
+	rank = 1500,
 })

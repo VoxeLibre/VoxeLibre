@@ -11,10 +11,17 @@ for _, b in pairs(biomes) do
 	end
 end
 for param2, bs in pairs(bmap) do
-	mcl_mapgen_core.register_decoration({
-		deco_type = "simple",
+	vl_biomes.register_decoration({
+		biomes = bs,
+		decoration = "mcl_core:reeds",
+		param2 = param2,
+		height = 1,
+		height_max = 3,
+		y_min = 1,
+		y_max = vl_biomes.overworld_max,
 		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
-		sidelen = 16,
+		spawn_by = {"mcl_core:water_source", "mclx_core:river_water_source", "group:frosted_ice"},
+		num_spawn_by = 1,
 		noise_params = {
 			offset = -0.3,
 			scale = 0.7,
@@ -23,23 +30,21 @@ for param2, bs in pairs(bmap) do
 			octaves = 3,
 			persist = 0.7
 		},
-		y_min = 1,
-		y_max = vl_biomes.overworld_max,
-		decoration = "mcl_core:reeds",
-		height = 1,
-		height_max = 3,
-		spawn_by = {"mcl_core:water_source", "mclx_core:river_water_source", "group:frosted_ice"},
-		num_spawn_by = 1,
-		biomes = bs,
-		param2 = param2
 	})
 end
 
 -- additional reeds in swamps
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
+vl_biomes.register_decoration({
+	biomes = {"Swampland", "Swampland_shore"},
+	decoration = "mcl_core:reeds",
+	param2 = 28, -- Swampland grass palette index
+	height = 1,
+	height_max = 3,
+	y_min = 1,
+	y_max = vl_biomes.overworld_max,
 	place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
-	sidelen = 16,
+	spawn_by = {"mcl_core:water_source", "group:frosted_ice"},
+	num_spawn_by = 1,
 	noise_params = {
 		offset = 0.1,
 		scale = 0.5,
@@ -48,13 +53,4 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.7,
 	},
-	biomes = {"Swampland", "Swampland_shore"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	decoration = "mcl_core:reeds",
-	height = 1,
-	height_max = 3,
-	spawn_by = {"mcl_core:water_source", "group:frosted_ice"},
-	num_spawn_by = 1,
-	param2 = 28 -- Swampland grass palette index
 })
