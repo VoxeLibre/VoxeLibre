@@ -38,31 +38,19 @@ vl_biomes.register_biome({
 	}
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 80,
-	fill_ratio = 0.0004,
+vl_biomes.register_decoration({
 	biomes = {"Savanna"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	fill_ratio = 0.0004,
 })
 
 -- Acacia (many variants)
 for a = 1, 7 do
-	mcl_mapgen_core.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
-		sidelen = 16,
-		fill_ratio = 0.0002,
+	vl_biomes.register_decoration({
 		biomes = {"Savanna"},
-		y_min = 1,
-		y_max = vl_biomes.overworld_max,
 		schematic = mod_mcl_core .. "/schematics/mcl_core_acacia_" .. a .. ".mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+		fill_ratio = 0.0002,
 	})
 end

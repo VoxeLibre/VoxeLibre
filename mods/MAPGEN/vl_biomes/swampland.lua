@@ -39,10 +39,10 @@ vl_biomes.register_biome({
 })
 
 -- Swamp oak
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"Swampland", "Swampland_shore"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_swamp.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.0055,
 		scale = 0.0011,
@@ -51,38 +51,23 @@ mcl_mapgen_core.register_decoration({
 		octaves = 5,
 		persist = 0.6,
 	},
-	biomes = {"Swampland", "Swampland_shore"},
-	y_min = 0,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_swamp.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
 })
 
--- Lily pad
-local lily_schem = {
-	{name = "mcl_core:water_source"},
-	{name = "mcl_flowers:waterlily"},
-}
-
--- Spawn them in shallow water at ocean level in Swampland.
--- Tweak lilydepth to change the maximum water depth
-local lilydepth = 3
-
-for d = 1, lilydepth do
+-- Lily pads in shallow water at ocean level in Swampland.
+local lily_schem = {{name = "mcl_core:water_source", param2 = 1}, {name = "mcl_flowers:waterlily"}}
+for d = 1, 3 do
 	local height = d + 2
 	local y = 1 - d
 	table.insert(lily_schem, 1, {name = "ignore", prob = 0})
 
-	mcl_mapgen_core.register_decoration({
+	vl_biomes.register_decoration({
 		name = "lily:"..tostring(d),
-		deco_type = "schematic",
+		biomes = {"Swampland_shore"},
 		schematic = {
 			size = vector.new(1, height, 1),
-			data = table.copy(lily_schem),
+			data = lily_schem,
 		},
 		place_on = "mcl_core:dirt",
-		sidelen = 16,
 		noise_params = {
 			offset = 0.3 - 0.2 * d, -- more when shallow
 			scale = 0.3,
@@ -93,7 +78,5 @@ for d = 1, lilydepth do
 		},
 		y_min = y,
 		y_max = y,
-		biomes = {"Swampland_shore"},
-		rotation = "random",
 	})
 end

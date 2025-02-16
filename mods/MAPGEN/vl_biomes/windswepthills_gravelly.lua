@@ -53,10 +53,10 @@ core.register_ore({
 
 -- Large oaks
 for i = 1, 4 do
-	mcl_mapgen_core.register_decoration({
-		deco_type = "schematic",
+	vl_biomes.register_decoration({
+		biomes = {"ExtremeHillsM"},
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_" .. i .. ".mts",
 		place_on = {"group:grass_block", "mcl_core:dirt", },
-		sidelen = 16,
 		noise_params = {
 			offset = -0.0007,
 			scale = 0.001,
@@ -65,20 +65,14 @@ for i = 1, 4 do
 			octaves = 3,
 			persist = 0.6
 		},
-		biomes = {"ExtremeHillsM"},
-		y_min = 1,
-		y_max = vl_biomes.overworld_max,
-		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_" .. i .. ".mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
 	})
 end
 
 -- Small “classic” oak (many biomes)
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"ExtremeHillsM"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	place_on = {"group:grass_block", "mcl_core:dirt", },
-	sidelen = 16,
 	noise_params = {
 		offset = 0.0,
 		scale = 0.002,
@@ -87,12 +81,6 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.7
 	},
-	biomes = {"ExtremeHillsM"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
 })
 
 vl_biomes.register_spruce_decoration(11000, 0.000025, "mcl_core_spruce_5.mts", {"ExtremeHillsM"})

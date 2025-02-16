@@ -21,108 +21,86 @@ vl_biomes.register_biome({
 	_mcl_fogcolor = "#1A051A"
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:magma", "mcl_blackstone:blackstone"},
-	sidelen = 16,
-	fill_ratio = 10,
+vl_biomes.register_decoration({
 	biomes = {"WarpedForest"},
+	decoration = "mcl_crimson:warped_nylium",
+	param2 = 0,
 	y_min = vl_biomes.lava_nether_max,
 	y_max = vl_biomes.nether_deco_max,
-	decoration = "mcl_crimson:warped_nylium",
+	place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:magma", "mcl_blackstone:blackstone"},
+	fill_ratio = 10, -- fill
 	flags = "all_floors",
-	param2 = 0,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:warped_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.02,
+vl_biomes.register_decoration({
 	biomes = {"WarpedForest"},
+	decoration = "mcl_crimson:warped_fungus",
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 10,
+	place_on = {"mcl_crimson:warped_nylium"},
+	fill_ratio = 0.02,
 	flags = "all_floors",
-	decoration = "mcl_crimson:warped_fungus",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
 	name = "vl_biomes:warped_tree1",
-	place_on = {"mcl_crimson:warped_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.007,
 	biomes = {"WarpedForest"},
+	schematic = mod_mcl_crimson .. "/schematics/warped_fungus_1.mts", -- size = vector.new(5, 11, 5),
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 15,
+	place_on = {"mcl_crimson:warped_nylium"},
+	fill_ratio = 0.007,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_crimson .. "/schematics/warped_fungus_1.mts",
-	size = vector.new(5, 11, 5),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	name = "vl_biomes:warped_tree2",
-	place_on = {"mcl_crimson:warped_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.005,
+vl_biomes.register_decoration({
 	biomes = {"WarpedForest"},
+	schematic = mod_mcl_crimson .. "/schematics/warped_fungus_2.mts", -- size = vector.new(5, 6, 5),
+	name = "vl_biomes:warped_tree2",
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 10,
+	place_on = {"mcl_crimson:warped_nylium"},
+	fill_ratio = 0.005,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_crimson .. "/schematics/warped_fungus_2.mts",
-	size = vector.new(5, 6, 5),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
 	name = "vl_biomes:warped_tree3",
-	place_on = {"mcl_crimson:warped_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.003,
 	biomes = {"WarpedForest"},
+	schematic = mod_mcl_crimson .. "/schematics/warped_fungus_3.mts", -- size = vector.new(5, 12, 5),
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 14,
+	place_on = {"mcl_crimson:warped_nylium"},
+	fill_ratio = 0.003,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_crimson .. "/schematics/warped_fungus_3.mts",
-	size = vector.new(5, 12, 5),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:warped_nylium", "mcl_crimson:twisting_vines"},
-	sidelen = 16,
-	fill_ratio = 0.032,
+vl_biomes.register_decoration({
 	biomes = {"WarpedForest"},
-	y_min = vl_biomes.lava_nether_max + 1,
-	flags = "all_floors",
+	decoration = "mcl_crimson:twisting_vines",
 	height = 2,
 	height_max = 8,
-	decoration = "mcl_crimson:twisting_vines",
+	y_min = vl_biomes.lava_nether_max + 1,
+	place_on = {"mcl_crimson:warped_nylium", "mcl_crimson:twisting_vines"},
+	fill_ratio = 0.032,
+	flags = "all_floors",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:warped_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.0812,
+vl_biomes.register_decoration({
 	biomes = {"WarpedForest"},
-	y_min = vl_biomes.lava_nether_max + 1,
-	flags = "all_floors",
-	max_height = 5,
 	decoration = "mcl_crimson:warped_roots",
+	max_height = 5,
+	y_min = vl_biomes.lava_nether_max + 1,
+	place_on = {"mcl_crimson:warped_nylium"},
+	fill_ratio = 0.0812,
+	flags = "all_floors",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:crimson_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.052,
+vl_biomes.register_decoration({
 	biomes = {"WarpedForest"},
-	y_min = vl_biomes.lava_nether_max + 1,
-	flags = "all_floors",
 	decoration = "mcl_crimson:nether_sprouts",
+	place_on = {"mcl_crimson:crimson_nylium"},
+	y_min = vl_biomes.lava_nether_max + 1,
+	fill_ratio = 0.052,
+	flags = "all_floors",
 })

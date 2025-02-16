@@ -35,11 +35,12 @@ vl_biomes.register_biome({
 
 -- FIXME: on slopes, they tend to float on one side. Use even larger spikes and a negative y_offset? Use terraforming with ice?
 -- Large ice spike
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
+vl_biomes.register_decoration({
+	biomes = {"IcePlainsSpikes"},
+	schematic = modpath .. "/schematics/mcl_structures_ice_spike_large.mts",
 	terrain_feature = true,
-	sidelen = 16,
+	place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
+	y_min = 4,
 	noise_params = {
 		offset = 0.00040,
 		scale = 0.001,
@@ -48,20 +49,15 @@ mcl_mapgen_core.register_decoration({
 		octaves = 4,
 		persist = 0.67,
 	},
-	biomes = {"IcePlainsSpikes"},
-	y_min = 4,
-	y_max = vl_biomes.overworld_max,
-	schematic = modpath .. "/schematics/mcl_structures_ice_spike_large.mts",
-	rotation = "random",
-	flags = "place_center_x, place_center_z",
 })
 
 -- Small ice spike
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
+vl_biomes.register_decoration({
+	biomes = {"IcePlainsSpikes"},
+	schematic = modpath .. "/schematics/mcl_structures_ice_spike_small.mts",
 	terrain_feature = true,
-	sidelen = 16,
+	place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
+	y_min = 4,
 	noise_params = {
 		offset = 0.005,
 		scale = 0.001,
@@ -70,10 +66,4 @@ mcl_mapgen_core.register_decoration({
 		octaves = 4,
 		persist = 0.67,
 	},
-	biomes = {"IcePlainsSpikes"},
-	y_min = 4,
-	y_max = vl_biomes.overworld_max,
-	schematic = modpath .. "/schematics/mcl_structures_ice_spike_small.mts",
-	rotation = "random",
-	flags = "place_center_x, place_center_z",
 })

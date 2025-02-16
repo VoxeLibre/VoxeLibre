@@ -39,10 +39,10 @@ vl_biomes.register_biome({
 })
 
 for i = 1, 4 do
-	mcl_mapgen_core.register_decoration({
-		deco_type = "schematic",
+	vl_biomes.register_decoration({
+		biomes = {"Forest"},
+		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_"..i..".mts",
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-		sidelen = 16,
 		noise_params = {
 			offset = 0.000545,
 			scale = 0.0011,
@@ -51,20 +51,14 @@ for i = 1, 4 do
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"Forest"},
-		y_min = 1,
-		y_max = vl_biomes.overworld_max,
-		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_"..i..".mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
 	})
 end
 
 -- Small “classic” oak (many biomes)
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"Forest"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.025,
 		scale = 0.0022,
@@ -73,42 +67,22 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
-	biomes = {"Forest"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
-	--[[noise_params = {
-		offset = 0.01,
-		scale = 0.00001,
-		spread = vector.new(250, 250, 250),
-		seed = 2,
-		octaves = 3,
-		persist = 0.33
-	},]]
-	fill_ratio = 0.00002,
+vl_biomes.register_decoration({
 	biomes = {"Forest"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic_bee_nest.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	spawn_by = "group:flower",
+	fill_ratio = 0.00002,
 	rank = 1550, -- after flowers!
 })
 
 -- Rare balloon oak
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"Forest"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_balloon.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.002083,
 		scale = 0.0022,
@@ -117,19 +91,13 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6,
 	},
-	biomes = {"Forest"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_balloon.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
 })
 
 -- Birch
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"Forest"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_birch.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.000333,
 		scale = -0.0015,
@@ -138,32 +106,12 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
-	biomes = {"Forest"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_birch.mts",
-	flags = "place_center_x, place_center_z",
 })
-
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
-	--[[noise_params = {
-		offset = 0.01,
-		scale = 0.00001,
-		spread = vector.new(250, 250, 250),
-		seed = 2,
-		octaves = 3,
-		persist = 0.33
-	},]]--
-	fill_ratio = 0.00002,
+vl_biomes.register_decoration({
 	biomes = {"Forest"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_birch_bee_nest.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	spawn_by = "group:flower",
+	fill_ratio = 0.00002,
 	rank = 1550, -- after flowers!
 })
