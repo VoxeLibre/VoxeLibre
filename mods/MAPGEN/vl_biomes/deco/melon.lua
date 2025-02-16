@@ -1,8 +1,10 @@
 -- Melon
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
+vl_biomes.register_decoration({
+	biomes = {"Jungle", "BambooJungle"},
+	decoration = "mcl_farming:melon",
+	y_min = 1,
+	y_max = mcl_vars.mg_overworld_max,
 	place_on = {"group:grass_block_no_snow"},
-	sidelen = 16,
 	noise_params = {
 		offset = -0.01,
 		scale = 0.006,
@@ -11,16 +13,14 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 1,
-	y_max = mcl_vars.mg_overworld_max,
-	decoration = "mcl_farming:melon",
-	biomes = {"Jungle", "BambooJungle"},
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
+vl_biomes.register_decoration({
+	biomes = {"JungleM", "BambooJungleM"},
+	decoration = "mcl_farming:melon",
+	y_min = 1,
+	y_max = mcl_vars.mg_overworld_max,
 	place_on = {"group:grass_block_no_snow"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.0,
 		scale = 0.006,
@@ -29,16 +29,14 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 1,
-	y_max = mcl_vars.mg_overworld_max,
-	decoration = "mcl_farming:melon",
-	biomes = {"JungleM", "BambooJungleM"},
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
+vl_biomes.register_decoration({
+	biomes = {"JungleEdge", "JungleEdgeM", "BambooJungleEdge", "BambooJungleEdgeM"},
+	decoration = "mcl_farming:melon",
+	y_min = 1,
+	y_max = mcl_vars.mg_overworld_max,
 	place_on = {"group:grass_block_no_snow"},
-	sidelen = 8,
 	noise_params = {
 		offset = -0.005,
 		scale = 0.006,
@@ -47,17 +45,15 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 1,
-	y_max = mcl_vars.mg_overworld_max,
-	decoration = "mcl_farming:melon",
-	biomes = {"JungleEdge", "JungleEdgeM", "BambooJungleEdge", "BambooJungleEdgeM"},
 })
 
 -- Lots of melons in Jungle Edge M
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
+vl_biomes.register_decoration({
+	biomes = {"JungleEdgeM"},
+	decoration = "mcl_farming:melon",
+	y_min = 1,
+	y_max = mcl_vars.mg_overworld_max,
 	place_on = {"group:grass_block_no_snow"},
-	sidelen = 8,
 	noise_params = {
 		offset = 0.013,
 		scale = 0.006,
@@ -66,8 +62,4 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 1,
-	y_max = mcl_vars.mg_overworld_max,
-	decoration = "mcl_farming:melon",
-	biomes = {"JungleEdgeM"},
 })

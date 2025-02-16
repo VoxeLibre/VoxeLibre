@@ -163,30 +163,11 @@ end
 --[[ END OF DANGER ZONE ]]
 
 -- Dead bushes
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	rank = 1500,
-	place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
-	sidelen = 16,
-	noise_params = {
-		offset = 0.01,
-		scale = 0.06,
-		spread = vector.new(100, 100, 100),
-		seed = 1972,
-		octaves = 3,
-		persist = 0.6
-	},
-	y_min = 4,
-	y_max = vl_biomes.overworld_max,
+vl_biomes.register_decoration({
 	biomes = {"Mesa", "Mesa_sandlevel", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_grasstop", "MesaBryce"},
 	decoration = "mcl_core:deadbush",
-	height = 1,
-})
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	rank = 1500,
-	place_on = {"group:sand", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
-	sidelen = 16,
+	y_min = 4,
+	place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
 	noise_params = {
 		offset = 0.01,
 		scale = 0.06,
@@ -195,17 +176,13 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 4,
-	y_max = vl_biomes.overworld_max,
+	rank = 1500,
+})
+vl_biomes.register_decoration({
 	biomes = {"MesaPlateauFM_grasstop"},
 	decoration = "mcl_core:deadbush",
-	height = 1,
-})
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	rank = 1500,
-	place_on = {"group:sand"},
-	sidelen = 16,
+	y_min = 4,
+	place_on = {"group:sand", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
 	noise_params = {
 		offset = 0.01,
 		scale = 0.06,
@@ -214,17 +191,13 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 4,
-	y_max = vl_biomes.overworld_max,
+	rank = 1500,
+})
+vl_biomes.register_decoration({
 	biomes = {"MesaPlateauFM", "MesaPlateauFM_sandlevel"},
 	decoration = "mcl_core:deadbush",
-	height = 1,
-})
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	rank = 1500,
-	place_on = {"group:hardened_clay"},
-	sidelen = 16,
+	y_min = 4,
+	place_on = {"group:sand"},
 	noise_params = {
 		offset = 0.01,
 		scale = 0.06,
@@ -233,9 +206,20 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 4,
-	y_max = vl_biomes.overworld_max,
+	rank = 1500,
+})
+vl_biomes.register_decoration({
 	biomes = {"MesaPlateauFM", "MesaPlateauFM_sandlevel", "MesaPlateauFM_grasstop"},
 	decoration = "mcl_core:deadbush",
-	height = 1,
+	y_min = 4,
+	place_on = {"group:hardened_clay"},
+	noise_params = {
+		offset = 0.01,
+		scale = 0.06,
+		spread = vector.new(100, 100, 100),
+		seed = 1972,
+		octaves = 3,
+		persist = 0.6
+	},
+	rank = 1500,
 })

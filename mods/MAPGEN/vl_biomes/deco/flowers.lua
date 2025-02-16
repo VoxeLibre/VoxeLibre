@@ -8,8 +8,8 @@ local function register_large_flower(name, biomes, seed, offset)
 		for _, b in pairs(biomes) do
 			local param2 = core.registered_biomes[b]._mcl_grass_palette_index or 0
 			local tparam2 = thas_param2 and param2 or nil
-			mcl_mapgen_core.register_decoration({
-				deco_type = "schematic",
+			vl_biomes.register_decoration({
+				biomes = {b},
 				schematic = {
 					size = vector.new(1, 2, 1),
 					data = {
@@ -17,8 +17,9 @@ local function register_large_flower(name, biomes, seed, offset)
 						{name = "mcl_flowers:" .. name .. "_top", param2 = tparam2 },
 					},
 				},
+				y_min = 1,
+				y_max = vl_biomes.overworld_max,
 				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-				sidelen = 16,
 				noise_params = {
 					offset = offset,
 					scale = 0.01,
@@ -27,14 +28,11 @@ local function register_large_flower(name, biomes, seed, offset)
 					octaves = 5,
 					persist = 0.62,
 				},
-				y_min = 1,
-				y_max = vl_biomes.overworld_max,
-				biomes = {b},
 			})
 		end
 	else
-		mcl_mapgen_core.register_decoration({
-			deco_type = "schematic",
+		vl_biomes.register_decoration({
+			biomes = biomes,
 			schematic = {
 				size = vector.new(1, 2, 1),
 				data = {
@@ -42,8 +40,9 @@ local function register_large_flower(name, biomes, seed, offset)
 					{name = "mcl_flowers:" .. name .. "_top" },
 				},
 			},
+			y_min = 1,
+			y_max = vl_biomes.overworld_max,
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-			sidelen = 16,
 			noise_params = {
 				offset = offset,
 				scale = 0.01,
@@ -52,9 +51,6 @@ local function register_large_flower(name, biomes, seed, offset)
 				octaves = 5,
 				persist = 0.62,
 			},
-			y_min = 1,
-			y_max = vl_biomes.overworld_max,
-			biomes = biomes,
 		})
 	end
 end
@@ -73,10 +69,13 @@ local function register_flower(name, biomes, seed, offset)
 	if has_param2 then
 		for _, b in pairs(biomes) do
 			local param2 = core.registered_biomes[b]._mcl_grass_palette_index or 0
-			mcl_mapgen_core.register_decoration({
-				deco_type = "simple",
+			vl_biomes.register_decoration({
+				biomes = {b},
+				decoration = "mcl_flowers:" .. name,
+				param2 = param2,
+				y_min = 1,
+				y_max = vl_biomes.overworld_max,
 				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-				sidelen = 16,
 				noise_params = {
 					offset = offset,
 					scale = 0.006,
@@ -85,18 +84,15 @@ local function register_flower(name, biomes, seed, offset)
 					octaves = 3,
 					persist = 0.6
 				},
-				y_min = 1,
-				y_max = vl_biomes.overworld_max,
-				biomes = {b},
-				decoration = "mcl_flowers:" .. name,
-				param2 = param2
 			})
 		end
 	else
-		mcl_mapgen_core.register_decoration({
-			deco_type = "simple",
+		vl_biomes.register_decoration({
+			biomes = biomes,
+			decoration = "mcl_flowers:" .. name,
+			y_min = 1,
+			y_max = vl_biomes.overworld_max,
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-			sidelen = 16,
 			noise_params = {
 				offset = offset,
 				scale = 0.006,
@@ -105,10 +101,6 @@ local function register_flower(name, biomes, seed, offset)
 				octaves = 3,
 				persist = 0.6
 			},
-			y_min = 1,
-			y_max = vl_biomes.overworld_max,
-			biomes = biomes,
-			decoration = "mcl_flowers:" .. name,
 		})
 	end
 end

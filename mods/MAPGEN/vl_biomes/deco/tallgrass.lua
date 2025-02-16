@@ -11,11 +11,13 @@ local function register_grass_decoration(offset, scale, biomes)
 		end
 	end
 	for param2, bs in pairs(bmap) do
-		mcl_mapgen_core.register_decoration({
-			deco_type = "simple",
-			rank = 1500,
+		vl_biomes.register_decoration({
+			biomes = bs,
+			decoration = "mcl_flowers:tallgrass",
+			param2 = param2,
+			y_min = 1,
+			y_max = vl_biomes.overworld_max,
 			place_on = {"group:grass_block_no_snow", "mcl_mud:mud"},
-			sidelen = 16,
 			noise_params = {
 				offset = offset,
 				scale = scale,
@@ -24,11 +26,7 @@ local function register_grass_decoration(offset, scale, biomes)
 				octaves = 3,
 				persist = 0.6
 			},
-			biomes = bs,
-			y_min = 1,
-			y_max = vl_biomes.overworld_max,
-			decoration = "mcl_flowers:tallgrass",
-			param2 = param2,
+			rank = 1500,
 		})
 	end
 end
@@ -74,9 +72,8 @@ local function register_doubletall_grass(offset, scale, biomes)
 		end
 	end
 	for param2, bs in pairs(bmap) do
-		mcl_mapgen_core.register_decoration({
-			deco_type = "schematic",
-			rank = 1500,
+		vl_biomes.register_decoration({
+			biomes = bs,
 			schematic = {
 				size = vector.new(1, 3, 1),
 				data = {
@@ -86,8 +83,9 @@ local function register_doubletall_grass(offset, scale, biomes)
 				},
 			},
 			flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
+			y_min = 1,
+			y_max = vl_biomes.overworld_max,
 			place_on = {"group:grass_block_no_snow"},
-			sidelen = 16,
 			noise_params = {
 				offset = offset,
 				scale = scale,
@@ -96,9 +94,7 @@ local function register_doubletall_grass(offset, scale, biomes)
 				octaves = 3,
 				persist = 0.6,
 			},
-			y_min = 1,
-			y_max = vl_biomes.overworld_max,
-			biomes = bs,
+			rank = 1500,
 		})
 	end
 end
@@ -108,11 +104,12 @@ register_doubletall_grass(-0.01, 0.03, {"Forest", "FlowerForest", "BirchForest",
 register_doubletall_grass(-0.002, 0.03, {"Plains", "SunflowerPlains"})
 register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"})
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	rank = 1500,
+vl_biomes.register_decoration({
+	biomes = {"BambooJungle", "BambooJungleEdge","BambooJungleM", "BambooJungleEdge"},
+	decoration = "mcl_flowers:tallgrass",
+	y_max = vl_biomes.overworld_max,
+	y_min = 1,
 	place_on = {"group:grass_block_no_snow"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0,
 		scale = 0.012,
@@ -123,8 +120,5 @@ mcl_mapgen_core.register_decoration({
 		lacunarity = 1.0,
 		flags = "absvalue"
 	},
-	biomes = {"BambooJungle", "BambooJungleEdge","BambooJungleM", "BambooJungleEdge"},
-	y_max = vl_biomes.overworld_max,
-	y_min = 1,
-	decoration = "mcl_flowers:tallgrass"
+	rank = 1500,
 })

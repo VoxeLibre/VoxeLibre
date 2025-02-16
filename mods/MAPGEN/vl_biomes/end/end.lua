@@ -275,12 +275,15 @@ core.register_ore({
 })
 
 -- Chorus plant
-mcl_mapgen_core.register_decoration({
+vl_biomes.register_decoration({
 	name = "vl_biomes:chorus",
-	deco_type = "simple",
+	biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands"},
+	decoration = "mcl_end:chorus_plant",
+	height = 1,
+	height_max = 8,
+	y_min = vl_biomes.end_min,
+	y_max = vl_biomes.end_max,
 	place_on = {"mcl_end:end_stone"},
-	flags = "all_floors",
-	sidelen = 16,
 	noise_params = {
 		offset = -0.012,
 		scale = 0.024,
@@ -289,34 +292,18 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = vl_biomes.end_min,
-	y_max = vl_biomes.end_max,
-	decoration = "mcl_end:chorus_plant",
-	height = 1,
-	height_max = 8,
-	biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands"},
+	flags = "all_floors",
 })
 
-mcl_mapgen_core.register_decoration({
+vl_biomes.register_decoration({
 	name = "vl_biomes:chorus_plant",
-	deco_type = "simple",
-	place_on = {"mcl_end:chorus_plant"},
-	flags = "all_floors",
-	sidelen = 16,
-	fill_ratio = 10,
-	--[[noise_params = {
-		offset = -0.012,
-		scale = 0.024,
-		spread = vector.new(100, 100, 100),
-		seed = 257,
-		octaves = 3,
-		persist = 0.6
-	},--]]
+	biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands"},
+	decoration = "mcl_end:chorus_flower",
 	y_min = vl_biomes.end_min,
 	y_max = vl_biomes.end_max,
-	decoration = "mcl_end:chorus_flower",
-	height = 1,
-	biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens", "EndSmallIslands"},
+	place_on = {"mcl_end:chorus_plant"},
+	fill_ratio = 10, -- fill
+	flags = "all_floors",
 	gen_callback = function(t, minp, maxp, blockseed)
 		local pr = PcgRandom(blockseed + mg_seed + 99682)
 		for _, pos in ipairs(t) do

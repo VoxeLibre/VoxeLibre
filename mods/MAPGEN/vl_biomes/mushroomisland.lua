@@ -35,78 +35,50 @@ local ratio_mushroom_mycelium = 0.002
 local ratio_mushroom_mycelium_huge = ratio_mushroom_mycelium * (11 / 12)
 local ratio_mushroom_mycelium_giant = ratio_mushroom_mycelium * (1 / 12)
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"mcl_core:mycelium"},
-	sidelen = 80,
-	fill_ratio = ratio_mushroom_mycelium_huge,
+vl_biomes.register_decoration({
 	biomes = {"MushroomIsland"}, --"MushroomIslandShore"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_brown.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "0",
-})
-
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
 	place_on = {"mcl_core:mycelium"},
-	sidelen = 80,
-	fill_ratio = ratio_mushroom_mycelium_giant,
-	biomes = {"MushroomIsland"}, --"MushroomIslandShore"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_brown.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "0",
-})
-
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"mcl_core:mycelium"},
-	sidelen = 80,
 	fill_ratio = ratio_mushroom_mycelium_huge,
-	biomes = {"MushroomIsland"}, --"MushroomIslandShore"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_red.mts",
-	flags = "place_center_x, place_center_z",
 	rotation = "0",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"mcl_core:mycelium"},
-	sidelen = 80,
-	fill_ratio = ratio_mushroom_mycelium_giant,
+vl_biomes.register_decoration({
 	biomes = {"MushroomIsland"}, --"MushroomIslandShore"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
+	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_brown.mts",
+	place_on = {"mcl_core:mycelium"},
+	fill_ratio = ratio_mushroom_mycelium_giant,
+	rotation = "0",
+})
+
+vl_biomes.register_decoration({
+	biomes = {"MushroomIsland"}, --"MushroomIslandShore"},
+	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_red.mts",
+	place_on = {"mcl_core:mycelium"},
+	fill_ratio = ratio_mushroom_mycelium_huge,
+	rotation = "0",
+})
+
+vl_biomes.register_decoration({
+	biomes = {"MushroomIsland"}, --"MushroomIslandShore"},
 	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_red.mts",
-	flags = "place_center_x, place_center_z",
+	place_on = {"mcl_core:mycelium"},
+	fill_ratio = ratio_mushroom_mycelium_giant,
 	rotation = "0",
 })
 
 -- Mushrooms in mushroom biome
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:mycelium"},
-	sidelen = 80,
-	fill_ratio = 0.009,
-	biomes = {"MushroomIsland", "MushroomIsland_shore"},
-	noise_threshold = 2.0,
-	y_min = vl_biomes.overworld_min,
-	y_max = vl_biomes.overworld_max,
+vl_biomes.register_decoration({
+	biomes = {"MushroomIsland"}, --"MushroomIsland_shore"},
 	decoration = "mcl_mushrooms:mushroom_red",
+	place_on = {"mcl_core:mycelium"},
+	fill_ratio = 0.009,
+	noise_threshold = 2.0,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:mycelium"},
-	sidelen = 80,
-	fill_ratio = 0.009,
-	biomes = {"MushroomIsland", "MushroomIsland_shore"},
-	y_min = vl_biomes.overworld_min,
-	y_max = vl_biomes.overworld_max,
+vl_biomes.register_decoration({
+	biomes = {"MushroomIsland"}, --"MushroomIsland_shore"},
 	decoration = "mcl_mushrooms:mushroom_brown",
+	place_on = {"mcl_core:mycelium"},
+	fill_ratio = 0.009,
 })

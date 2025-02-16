@@ -28,10 +28,10 @@ vl_biomes.register_biome({
 	}
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"BirchForestM"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_birch_tall.mts",
 	place_on = {"group:grass_block_no_snow"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.03,
 		scale = 0.0025,
@@ -40,32 +40,13 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
-	biomes = {"BirchForestM"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_birch_tall.mts",
-	flags = "place_center_x, place_center_z",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
-	sidelen = 16,
-	--[[noise_params = {
-		offset = 0.01,
-		scale = 0.00001,
-		spread = vector.new(250, 250, 250),
-		seed = 2,
-		octaves = 3,
-		persist = 0.33
-	},]]--
-	fill_ratio = 0.00002,
+vl_biomes.register_decoration({
 	biomes = {"BirchForestM"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
 	schematic = mod_mcl_core .. "/schematics/mcl_core_birch_bee_nest.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	spawn_by = "group:flower",
+	fill_ratio = 0.00002,
 	rank = 1550, -- after flowers!
 })
