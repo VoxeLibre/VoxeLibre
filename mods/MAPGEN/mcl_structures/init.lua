@@ -18,63 +18,11 @@ dofile(modpath.."/geode.lua")
 dofile(modpath.."/pillager_outpost.lua")
 dofile(modpath.."/end_spawn.lua")
 dofile(modpath.."/end_city.lua")
+dofile(modpath.."/desert_well.lua")
+dofile(modpath.."/fossil.lua")
 
-
-mcl_structures.register_structure("desert_well",{
-	place_on = {"group:sand"},
-	fill_ratio = 0.01,
-	flags = "place_center_x, place_center_z",
-	not_near = { "desert_temple_new" },
-	solid_ground = true,
-	sidelen = 4,
-	chunk_probability = 600,
-	y_max = mcl_vars.mg_overworld_max,
-	y_min = 1,
-	y_offset = -2,
-	biomes = { "Desert" },
-	filenames = { modpath.."/schematics/mcl_structures_desert_well.mts" },
-})
-
-mcl_structures.register_structure("fossil",{
-	place_on = {"group:material_stone","group:sand"},
-	fill_ratio = 0.01,
-	flags = "place_center_x, place_center_z",
-	solid_ground = true,
-	sidelen = 13,
-	chunk_probability = 1000,
-	y_offset = function(pr) return ( pr:next(1,16) * -1 ) -16 end,
-	y_max = 15,
-	y_min = mcl_vars.mg_overworld_min + 35,
-	biomes = { "Desert" },
-	filenames = {
-		modpath.."/schematics/mcl_structures_fossil_skull_1.mts", -- 4×5×5
-		modpath.."/schematics/mcl_structures_fossil_skull_2.mts", -- 5×5×5
-		modpath.."/schematics/mcl_structures_fossil_skull_3.mts", -- 5×5×7
-		modpath.."/schematics/mcl_structures_fossil_skull_4.mts", -- 7×5×5
-		modpath.."/schematics/mcl_structures_fossil_spine_1.mts", -- 3×3×13
-		modpath.."/schematics/mcl_structures_fossil_spine_2.mts", -- 5×4×13
-		modpath.."/schematics/mcl_structures_fossil_spine_3.mts", -- 7×4×13
-		modpath.."/schematics/mcl_structures_fossil_spine_4.mts", -- 8×5×13
-	},
-})
-
-mcl_structures.register_structure("boulder",{
-	filenames = {
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder_small.mts",
-		modpath.."/schematics/mcl_structures_boulder.mts",
-		-- small boulder 3x as likely
-	},
-},true) --is spawned as a normal decoration. this is just for /spawnstruct
-
-mcl_structures.register_structure("ice_spike_small",{
-	filenames = { modpath.."/schematics/mcl_structures_ice_spike_small.mts"	},
-},true) --is spawned as a normal decoration. this is just for /spawnstruct
-mcl_structures.register_structure("ice_spike_large",{
-	sidelen = 6,
-	filenames = { modpath.."/schematics/mcl_structures_ice_spike_large.mts"	},
-},true) --is spawned as a normal decoration. this is just for /spawnstruct
+dofile(modpath.."/boulder.lua")
+dofile(modpath.."/ice_spike.lua")
 
 -- Debug command
 local function dir_to_rotation(dir)
