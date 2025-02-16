@@ -188,10 +188,11 @@ core.register_ore({
 })
 
 -- Small “classic” oak (many biomes)
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"MesaPlateauFM_grasstop"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
+	y_min = 30,
 	place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.008,
 		scale = 0.002,
@@ -200,10 +201,4 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.7
 	},
-	biomes = {"MesaPlateauFM_grasstop"},
-	y_min = 30,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
 })

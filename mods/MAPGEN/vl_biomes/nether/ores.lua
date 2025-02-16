@@ -1,30 +1,26 @@
 -- the following decoration is a hack to cover exposed bedrock in netherrack - be careful not to put any ceiling decorations in a way that would apply to this (they would get generated regardless of biome)
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:bedrock"},
-	sidelen = 16,
-	fill_ratio = 10,
-	y_min = mcl_vars.mg_lava_nether_max,
-	y_max = mcl_vars.mg_nether_max + 15,
+vl_biomes.register_decoration({
+	decoration = "mcl_nether:netherrack",
+	param2 = 0,
 	height = 6,
 	max_height = 10,
-	decoration = "mcl_nether:netherrack",
+	y_min = mcl_vars.mg_lava_nether_max,
+	y_max = mcl_vars.mg_nether_max + 15,
+	place_on = {"mcl_core:bedrock"},
+	fill_ratio = 10, -- fill
 	flags = "all_ceilings",
-	param2 = 0,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:bedrock"},
-	sidelen = 16,
-	fill_ratio = 10,
-	y_min = mcl_vars.mg_nether_min - 10,
-	y_max = mcl_vars.mg_lava_nether_max,
+vl_biomes.register_decoration({
+	decoration = "mcl_nether:netherrack",
+	param2 = 0,
 	height = 7,
 	max_height = 14,
-	decoration = "mcl_nether:netherrack",
+	y_min = mcl_vars.mg_nether_min - 10,
+	y_max = mcl_vars.mg_lava_nether_max,
+	place_on = {"mcl_core:bedrock"},
+	fill_ratio = 10, -- fill
 	flags = "all_floors,force_placement",
-	param2 = 0,
 })
 
 --nether gold

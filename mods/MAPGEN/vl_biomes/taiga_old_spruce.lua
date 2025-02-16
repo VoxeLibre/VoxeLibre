@@ -38,11 +38,11 @@ vl_biomes.register_spruce_decoration(2500, 0.00325, "mcl_core_spruce_1.mts", {"M
 vl_biomes.register_spruce_decoration(7000, 0.00425, "mcl_core_spruce_3.mts", {"MegaSpruceTaiga"})
 vl_biomes.register_spruce_decoration(5000, 0.00250, "mcl_core_spruce_2.mts", {"MegaSpruceTaiga"})
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	rank = 1500,
+vl_biomes.register_decoration({
+	biomes = {"MegaSpruceTaiga"},
+	decoration = "mcl_core:deadbush",
+	y_min = 4,
 	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.01,
 		scale = 0.003,
@@ -51,32 +51,20 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 4,
-	y_max = vl_biomes.overworld_max,
-	biomes = {"MegaSpruceTaiga"},
-	decoration = "mcl_core:deadbush",
-	height = 1,
+	rank = 1500,
 })
 
 -- Mushrooms in Taiga
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:podzol"},
-	sidelen = 80,
-	fill_ratio = 0.003,
+vl_biomes.register_decoration({
 	biomes = {"MegaSpruceTaiga"},
-	y_min = vl_biomes.overworld_min,
-	y_max = vl_biomes.overworld_max,
 	decoration = "mcl_mushrooms:mushroom_red",
+	place_on = {"mcl_core:podzol"},
+	fill_ratio = 0.003,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:podzol"},
-	sidelen = 80,
-	fill_ratio = 0.003,
+vl_biomes.register_decoration({
 	biomes = {"MegaSpruceTaiga"},
-	y_min = vl_biomes.overworld_min,
-	y_max = vl_biomes.overworld_max,
 	decoration = "mcl_mushrooms:mushroom_brown",
+	place_on = {"mcl_core:podzol"},
+	fill_ratio = 0.003,
 })
