@@ -4,11 +4,13 @@ local function register_fern_decoration(offset, scale, biomes)
 		local biome = core.registered_biomes[b]
 		if biome then -- ignore unknown biomes
 			local param2 = biome._mcl_grass_palette_index
-			mcl_mapgen_core.register_decoration({
-				deco_type = "simple",
-				rank = 1600, -- even after tall variants
+			vl_biomes.register_decoration({
+				biomes = {b},
+				decoration = "mcl_flowers:fern",
+				param2 = param2,
+				y_min = 1,
+				y_max = vl_biomes.overworld_max,
 				place_on = {"group:grass_block_no_snow", "mcl_core:podzol", "mcl_mud:mud"},
-				sidelen = 16,
 				noise_params = {
 					offset = offset,
 					scale = scale,
@@ -17,11 +19,7 @@ local function register_fern_decoration(offset, scale, biomes)
 					octaves = 3,
 					persist = 0.6
 				},
-				biomes = {b},
-				y_min = 1,
-				y_max = vl_biomes.overworld_max,
-				decoration = "mcl_flowers:fern",
-				param2 = param2,
+				rank = 1600, -- even after tall variants
 			})
 		end
 	end
@@ -51,9 +49,8 @@ local function register_double_fern(offset, scale, biomes)
 		local biome = core.registered_biomes[b]
 		if biome then -- ignore unknown biomes
 			local param2 = biome._mcl_grass_palette_index
-			mcl_mapgen_core.register_decoration({
-				deco_type = "schematic",
-				rank = 1500, -- before regular fern
+			vl_biomes.register_decoration({
+				biomes = {b},
 				schematic = {
 					size = vector.new(1, 2, 1),
 					data = {
@@ -61,10 +58,11 @@ local function register_double_fern(offset, scale, biomes)
 						{name = "mcl_flowers:double_fern_top", param1 = 255, param2 = param2},
 					},
 				},
+				y_min = 1,
+				y_max = vl_biomes.overworld_max,
 				place_on = {"group:grass_block_no_snow", "mcl_core:podzol"},
 				place_offset_y = 1,
 				flags = "all_floors, force_placement",
-				sidelen = 16,
 				noise_params = {
 					offset = offset,
 					scale = scale,
@@ -73,9 +71,7 @@ local function register_double_fern(offset, scale, biomes)
 					octaves = 2,
 					persist = 0.66,
 				},
-				y_min = 1,
-				y_max = vl_biomes.overworld_max,
-				biomes = {b},
+				rank = 1500, -- before regular fern
 			})
 		end
 	end

@@ -35,7 +35,7 @@ vl_biomes.register_biome({
 })
 
 -- Small “classic” oak (many biomes)
-mcl_mapgen_core.register_decoration({
+vl_biomes.register_decoration({
 	deco_type = "schematic",
 	place_on = {"group:grass_block", "mcl_core:dirt", },
 	sidelen = 16,
@@ -56,10 +56,10 @@ mcl_mapgen_core.register_decoration({
 })
 
 -- Rare spruce in Ice Plains
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"IcePlains"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_5.mts",
 	place_on = {"group:grass_block"},
-	sidelen = 16,
 	noise_params = {
 		offset = -0.00075,
 		scale = -0.0015,
@@ -68,19 +68,20 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.7
 	},
-	biomes = {"IcePlains"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_5.mts",
-	flags = "place_center_x, place_center_z",
 })
 
 -- Place tall grass on snow in Ice Plains
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
-	rank = 1500,
+vl_biomes.register_decoration({
+	biomes = {"IcePlains"},
+	schematic = {
+		size = vector.new(1, 2, 1),
+		data = {
+			{name = "mcl_core:dirt_with_grass", force_place = true, param2 = 10 },
+			{name = "mcl_flowers:tallgrass", param2 = 10},
+		},
+	},
 	place_on = {"group:grass_block"},
-	sidelen = 16,
+	place_y_offset = -1,
 	noise_params = {
 		offset = -0.08,
 		scale = 0.09,
@@ -89,15 +90,5 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6,
 	},
-	biomes = {"IcePlains"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = {
-		size = vector.new(1, 2, 1),
-		data = {
-			{name = "mcl_core:dirt_with_grass", force_place = true, param2 = 10 },
-			{name = "mcl_flowers:tallgrass", param2 = 10},
-		},
-	},
-	place_y_offset = -1,
+	rank = 1500,
 })

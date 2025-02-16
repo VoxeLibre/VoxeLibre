@@ -3,12 +3,18 @@ local surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel", "mcl_core
 local nodes = {"mcl_ocean:seagrass_dirt", "mcl_ocean:seagrass_sand", "mcl_ocean:seagrass_gravel", "mcl_ocean:seagrass_redsand"}
 local function register_seagrass_decoration(offset, scale, biomes)
 	for s = 1, #surfaces do
-		mcl_mapgen_core.register_decoration({
+		vl_biomes.register_decoration({
 			name = "Seagrass on "..surfaces[s],
-			deco_type = "simple",
-			rank = 1500,
+			biomes = biomes,
+			decoration = nodes[s],
+			param2 = 3, -- always use meshoption 3
+			y_min = vl_biomes.DEEP_OCEAN_MIN,
+			y_max = 0,
 			place_on = {surfaces[s]},
-			sidelen = 16,
+			place_offset_y = -1,
+			spawn_by = "mcl_core:water_source",
+			check_offset = 1,
+			num_spawn_by = 9,
 			noise_params = {
 				offset = offset,
 				scale = scale,
@@ -17,16 +23,8 @@ local function register_seagrass_decoration(offset, scale, biomes)
 				octaves = 3,
 				persist = 0.6,
 			},
-			biomes = biomes,
-			y_min = vl_biomes.DEEP_OCEAN_MIN,
-			y_max = 0,
-			decoration = nodes[s],
-			param2 = 3, -- always use meshoption 3
-			place_offset_y = -1,
 			flags = "force_placement",
-			spawn_by = "mcl_core:water_source",
-			check_offset = 1,
-			num_spawn_by = 9,
+			rank = 1500,
 		})
 	end
 end

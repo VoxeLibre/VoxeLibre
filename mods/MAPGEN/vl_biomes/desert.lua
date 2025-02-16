@@ -26,11 +26,11 @@ vl_biomes.register_biome({
 	}
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	rank = 1500,
+vl_biomes.register_decoration({
+	biomes = {"Desert"},
+	decoration = "mcl_core:deadbush",
+	y_min = 4,
 	place_on = {"group:sand", "group:hardened_clay"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.01,
 		scale = 0.006,
@@ -39,9 +39,5 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.6
 	},
-	y_min = 4,
-	y_max = vl_biomes.overworld_max,
-	biomes = {"Desert"},
-	decoration = "mcl_core:deadbush",
-	height = 1,
+	rank = 1500,
 })

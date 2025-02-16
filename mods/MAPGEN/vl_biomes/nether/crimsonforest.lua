@@ -20,99 +20,79 @@ vl_biomes.register_biome({
 	_mcl_fogcolor = "#330303"
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:magma", "mcl_blackstone:blackstone"},
-	sidelen = 16,
-	fill_ratio = 10,
+vl_biomes.register_decoration({
 	biomes = {"CrimsonForest"},
+	decoration = "mcl_crimson:crimson_nylium",
+	param2 = 0,
 	y_min = vl_biomes.lava_nether_max,
 	y_max = vl_biomes.nether_deco_max,
-	decoration = "mcl_crimson:crimson_nylium",
+	place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:magma", "mcl_blackstone:blackstone"},
+	fill_ratio = 10, -- fill
 	flags = "all_floors",
-	param2 = 0,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:crimson_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.02,
+vl_biomes.register_decoration({
 	biomes = {"CrimsonForest"},
+	decoration = "mcl_crimson:crimson_fungus",
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 10,
+	place_on = {"mcl_crimson:crimson_nylium"},
+	fill_ratio = 0.02,
 	flags = "all_floors",
-	decoration = "mcl_crimson:crimson_fungus",
 })
 
 --- Fix light for mushroom lights after generation
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
 	name = "vl_biomes:crimson_tree1",
-	place_on = {"mcl_crimson:crimson_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.008,
 	biomes = {"CrimsonForest"},
+	schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_1.mts", -- size = vector.new(5, 8, 5),
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 10,
+	place_on = {"mcl_crimson:crimson_nylium"},
+	fill_ratio = 0.008,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_1.mts",
-	size = vector.new(5, 8, 5),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
 	name = "vl_biomes:crimson_tree2",
-	place_on = {"mcl_crimson:crimson_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.006,
 	biomes = {"CrimsonForest"},
+	schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_2.mts", -- size = vector.new(5, 12, 5),
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 15,
+	place_on = {"mcl_crimson:crimson_nylium"},
+	fill_ratio = 0.006,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_2.mts",
-	size = vector.new(5, 12, 5),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
 	name = "vl_biomes:crimson_tree3",
-	place_on = {"mcl_crimson:crimson_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.004,
 	biomes = {"CrimsonForest"},
+	schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_3.mts", --size = vector.new(7, 13, 7),
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 20,
+	place_on = {"mcl_crimson:crimson_nylium"},
+	fill_ratio = 0.004,
 	flags = "all_floors, place_center_x, place_center_z",
-	schematic = mod_mcl_crimson .. "/schematics/crimson_fungus_3.mts",
-	size = vector.new(7, 13, 7),
-	rotation = "random",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:warped_nylium", "mcl_crimson:weeping_vines", "mcl_nether:netherrack"},
-	sidelen = 16,
-	fill_ratio = 0.063,
+vl_biomes.register_decoration({
 	biomes = {"CrimsonForest"},
-	y_min = vl_biomes.lava_nether_max + 1,
-	y_max = vl_biomes.nether_deco_max,
-	flags = "all_ceilings",
+	decoration = "mcl_crimson:weeping_vines",
 	height = 2,
 	height_max = 8,
-	decoration = "mcl_crimson:weeping_vines",
+	y_min = vl_biomes.lava_nether_max + 1,
+	y_max = vl_biomes.nether_deco_max,
+	place_on = {"mcl_crimson:warped_nylium", "mcl_crimson:weeping_vines", "mcl_nether:netherrack"},
+	fill_ratio = 0.063,
+	flags = "all_ceilings",
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_crimson:crimson_nylium"},
-	sidelen = 16,
-	fill_ratio = 0.082,
+vl_biomes.register_decoration({
 	biomes = {"CrimsonForest"},
-	y_min = vl_biomes.lava_nether_max + 1,
-	flags = "all_floors",
-	max_height = 5,
 	decoration = "mcl_crimson:crimson_roots",
+	max_height = 5,
+	y_min = vl_biomes.lava_nether_max + 1,
+	place_on = {"mcl_crimson:crimson_nylium"},
+	fill_ratio = 0.082,
+	flags = "all_floors",
 })

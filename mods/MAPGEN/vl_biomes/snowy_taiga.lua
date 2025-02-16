@@ -60,10 +60,11 @@ vl_biomes.register_biome({
 })
 
 -- Small lollipop spruce
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"ColdTaiga"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_lollipop.mts",
+	y_min = 2,
 	place_on = {"group:grass_block", "mcl_core:podzol"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.004,
 		scale = 0.0022,
@@ -72,18 +73,14 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
-	biomes = {"ColdTaiga"},
-	y_min = 2,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_lollipop.mts",
-	flags = "place_center_x, place_center_z",
 })
 
 -- Matchstick spruce: Very few leaves, tall trunk
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"ColdTaiga"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_matchstick.mts",
+	y_min = 3,
 	place_on = {"group:grass_block", "mcl_core:podzol"},
-	sidelen = 16,
 	noise_params = {
 		offset = -0.025,
 		scale = 0.025,
@@ -92,11 +89,6 @@ mcl_mapgen_core.register_decoration({
 		octaves = 5,
 		persist = 0.60,
 	},
-	biomes = {"ColdTaiga"},
-	y_min = 3,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_matchstick.mts",
-	flags = "place_center_x, place_center_z",
 })
 
 vl_biomes.register_spruce_decoration(11000, 0.00150, "mcl_core_spruce_5.mts", {"ColdTaiga"})
