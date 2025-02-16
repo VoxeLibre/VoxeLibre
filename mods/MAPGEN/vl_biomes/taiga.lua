@@ -39,10 +39,11 @@ vl_biomes.register_biome({
 })
 
 -- Small lollipop spruce
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"Taiga"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_lollipop.mts",
+	y_min = 2,
 	place_on = {"group:grass_block", "mcl_core:podzol"},
-	sidelen = 16,
 	noise_params = {
 		offset = 0.004,
 		scale = 0.0022,
@@ -51,18 +52,14 @@ mcl_mapgen_core.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
-	biomes = {"Taiga"},
-	y_min = 2,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_lollipop.mts",
-	flags = "place_center_x, place_center_z",
 })
 
 -- Matchstick spruce: Very few leaves, tall trunk
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = {"Taiga"},
+	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_matchstick.mts",
+	y_min = 3,
 	place_on = {"group:grass_block", "mcl_core:podzol"},
-	sidelen = 16,
 	noise_params = {
 		offset = -0.025,
 		scale = 0.025,
@@ -71,11 +68,6 @@ mcl_mapgen_core.register_decoration({
 		octaves = 5,
 		persist = 0.60,
 	},
-	biomes = {"Taiga"},
-	y_min = 3,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_matchstick.mts",
-	flags = "place_center_x, place_center_z",
 })
 
 -- Common spruce
@@ -85,24 +77,16 @@ vl_biomes.register_spruce_decoration(7000, 0.00425, "mcl_core_spruce_3.mts", {"T
 vl_biomes.register_spruce_decoration(9000, 0.00325, "mcl_core_spruce_4.mts", {"Taiga"})
 
 -- Mushrooms in Taiga
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:podzol"},
-	sidelen = 80,
-	fill_ratio = 0.003,
+vl_biomes.register_decoration({
 	biomes = {"Taiga"},
-	y_min = vl_biomes.overworld_min,
-	y_max = vl_biomes.overworld_max,
 	decoration = "mcl_mushrooms:mushroom_red",
+	place_on = {"mcl_core:podzol"},
+	fill_ratio = 0.003,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:podzol"},
-	sidelen = 80,
-	fill_ratio = 0.003,
+vl_biomes.register_decoration({
 	biomes = {"Taiga"},
-	y_min = vl_biomes.overworld_min,
-	y_max = vl_biomes.overworld_max,
 	decoration = "mcl_mushrooms:mushroom_brown",
+	place_on = {"mcl_core:podzol"},
+	fill_ratio = 0.003,
 })

@@ -2,11 +2,12 @@
 local modpath = core.get_modpath(core.get_current_modname())
 
 -- Mossy cobblestone boulder (3x3)
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = { "MegaTaiga", "MegaSpruceTaiga" },
+	schematic = modpath .. "/schematics/mcl_structures_boulder.mts",
+	y_min = 1,
+	y_max = vl_biomes.overworld_max,
 	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
-	terrain_feature = true,
-	sidelen = 16,
 	noise_params = {
 		offset = 0.00015,
 		scale = 0.001,
@@ -15,20 +16,16 @@ mcl_mapgen_core.register_decoration({
 		octaves = 4,
 		persist = 0.63,
 	},
-	biomes = { "MegaTaiga", "MegaSpruceTaiga" },
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = modpath .. "/schematics/mcl_structures_boulder.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	terrain_feature = true,
 })
 
 -- Small mossy cobblestone boulder (2x2)
-mcl_mapgen_core.register_decoration({
-	deco_type = "schematic",
+vl_biomes.register_decoration({
+	biomes = { "MegaTaiga", "MegaSpruceTaiga" },
+	schematic = modpath .. "/schematics/mcl_structures_boulder_small.mts",
+	y_min = 1,
+	y_max = vl_biomes.overworld_max,
 	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
-	terrain_feature = true,
-	sidelen = 16,
 	noise_params = {
 		offset = 0.001,
 		scale = 0.001,
@@ -37,10 +34,5 @@ mcl_mapgen_core.register_decoration({
 		octaves = 4,
 		persist = 0.63,
 	},
-	biomes = { "MegaTaiga", "MegaSpruceTaiga" },
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	schematic = modpath .. "/schematics/mcl_structures_boulder_small.mts",
-	flags = "place_center_x, place_center_z",
-	rotation = "random",
+	terrain_feature = true,
 })

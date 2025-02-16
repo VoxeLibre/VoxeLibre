@@ -19,51 +19,43 @@ vl_biomes.register_biome({
 	_mcl_fogcolor = "#330808"
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:glowstone", "mcl_nether:magma"},
-	sidelen = 16,
-	fill_ratio = 10,
+vl_biomes.register_decoration({
 	biomes = {"Nether"},
+	decoration = "mcl_nether:netherrack",
+	param2 = 0,
 	y_min = vl_biomes.lava_nether_max,
 	y_max = vl_biomes.nether_deco_max,
-	decoration = "mcl_nether:netherrack",
+	place_on = {"mcl_nether:netherrack", "mcl_nether:glowstone", "mcl_blackstone:nether_gold", "mcl_nether:quartz_ore", "mcl_core:gravel", "mcl_nether:soul_sand", "mcl_nether:glowstone", "mcl_nether:magma"},
+	fill_ratio = 10, -- fill
 	flags = "all_floors",
-	param2 = 0,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_nether:netherrack", "mcl_nether:magma"},
-	sidelen = 16,
-	fill_ratio = 0.04,
+vl_biomes.register_decoration({
 	biomes = {"Nether"},
-	y_min = vl_biomes.lava_nether_max + 1,
-	y_max = vl_biomes.nether_max - 1,
-	flags = "all_floors",
 	decoration = "mcl_fire:eternal_fire",
-})
-
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_nether:netherrack"},
-	sidelen = 16,
-	fill_ratio = 0.013,
-	biomes = {"Nether"},
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 1,
+	place_on = {"mcl_nether:netherrack", "mcl_nether:magma"},
+	fill_ratio = 0.04,
 	flags = "all_floors",
+})
+
+vl_biomes.register_decoration({
+	biomes = {"Nether"},
 	decoration = "mcl_mushrooms:mushroom_brown",
-})
-
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_nether:netherrack"},
-	sidelen = 16,
-	fill_ratio = 0.012,
-	biomes = {"Nether"},
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 1,
+	place_on = {"mcl_nether:netherrack"},
+	fill_ratio = 0.013,
 	flags = "all_floors",
+})
+
+vl_biomes.register_decoration({
+	biomes = {"Nether"},
 	decoration = "mcl_mushrooms:mushroom_red",
+	y_min = vl_biomes.lava_nether_max + 1,
+	y_max = vl_biomes.nether_max - 1,
+	place_on = {"mcl_nether:netherrack"},
+	fill_ratio = 0.012,
+	flags = "all_floors",
 })

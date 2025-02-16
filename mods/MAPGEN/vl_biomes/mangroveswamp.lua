@@ -61,151 +61,113 @@ local function mangrove_root_gennotify(t, minp, maxp, blockseed)
 	end
 end
 
-mcl_mapgen_core.register_decoration({
+vl_biomes.register_decoration({
 	name = "vl_biomes:mangrove_tree_1",
-	deco_type = "schematic",
-	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.0065,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
+	biomes = {"MangroveSwamp"}, -- "MangroveSwamp_shore"},
 	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_1.mts",
-	flags = "place_center_x, place_center_z, force_placement",
-	rotation = "random",
-	gen_callback = mangrove_root_gennotify,
-})
-
-mcl_mapgen_core.register_decoration({
-	name = "vl_biomes:mangrove_tree_2",
-	deco_type = "schematic",
-	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.0045,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
-	y_min = -1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_2.mts",
-	flags = "place_center_x, place_center_z, force_placement",
-	rotation = "random",
-	gen_callback = mangrove_root_gennotify,
-})
-
-mcl_mapgen_core.register_decoration({
-	name = "vl_biomes:mangrove_tree_3",
-	deco_type = "schematic",
-	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.023,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
-	y_min = -1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_3.mts",
-	flags = "place_center_x, place_center_z, force_placement",
-	rotation = "random",
-	gen_callback = mangrove_root_gennotify,
-})
-
-mcl_mapgen_core.register_decoration({
-	name = "vl_biomes:mangrove_tree_4",
-	deco_type = "schematic",
-	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.023,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
-	y_min = -1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_4.mts",
-	flags = "place_center_x, place_center_z, force_placement",
-	rotation = "random",
-	gen_callback = mangrove_root_gennotify,
-})
-
-mcl_mapgen_core.register_decoration({
-	name = "vl_biomes:mangrove_tree_5",
-	deco_type = "schematic",
-	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.023,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
-	y_min = -1,
-	y_max = vl_biomes.overworld_max,
-	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_5.mts",
-	flags = "place_center_x, place_center_z, force_placement",
-	rotation = "random",
-	gen_callback = mangrove_root_gennotify,
-})
-
-mcl_mapgen_core.register_decoration({
-	name = "vl_biomes:mangrove_bee_nest",
-	deco_type = "schematic",
-	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.0005,
-	biomes = {"MangroveSwamp"},
 	y_min = 1,
-	y_max = vl_biomes.overworld_max,
+	place_on = {"mcl_mud:mud"},
+	fill_ratio = 0.0065,
+	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
+	gen_callback = mangrove_root_gennotify,
+})
+
+vl_biomes.register_decoration({
+	name = "vl_biomes:mangrove_tree_2",
+	biomes = {"MangroveSwamp"}, -- "MangroveSwamp_shore"},
+	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_2.mts",
+	y_min = -1,
+	place_on = {"mcl_mud:mud"},
+	fill_ratio = 0.0045,
+	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
+	gen_callback = mangrove_root_gennotify,
+})
+
+vl_biomes.register_decoration({
+	name = "vl_biomes:mangrove_tree_3",
+	biomes = {"MangroveSwamp"}, -- "MangroveSwamp_shore"},
+	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_3.mts",
+	y_min = -1,
+	place_on = {"mcl_mud:mud"},
+	fill_ratio = 0.023,
+	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
+	gen_callback = mangrove_root_gennotify,
+})
+
+vl_biomes.register_decoration({
+	name = "vl_biomes:mangrove_tree_4",
+	biomes = {"MangroveSwamp"}, -- "MangroveSwamp_shore"},
+	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_4.mts",
+	y_min = -1,
+	place_on = {"mcl_mud:mud"},
+	fill_ratio = 0.023,
+	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
+	gen_callback = mangrove_root_gennotify,
+})
+
+vl_biomes.register_decoration({
+	biomes = {"MangroveSwamp"}, -- "MangroveSwamp_shore"},
+	name = "vl_biomes:mangrove_tree_5",
+	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_5.mts",
+	y_min = -1,
+	place_on = {"mcl_mud:mud"},
+	fill_ratio = 0.023,
+	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
+	gen_callback = mangrove_root_gennotify,
+})
+
+vl_biomes.register_decoration({
+	name = "vl_biomes:mangrove_bee_nest",
+	biomes = {"MangroveSwamp"},
 	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_bee_nest.mts",
-	flags = "place_center_x, place_center_z, force_placement",
-	rotation = "random",
+	place_on = {"mcl_mud:mud"},
 	spawn_by = "group:flower",
+	fill_ratio = 0.0005,
+	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	rank = 1550,
 	gen_callback = mangrove_root_gennotify,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.045,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+vl_biomes.register_decoration({
+	biomes = {"MangroveSwamp"}, --"MangroveSwamp_shore"},
+	decoration = "mcl_mangrove:water_logged_roots",
 	y_min = 0,
 	y_max = 0,
-	decoration = "mcl_mangrove:water_logged_roots",
-	flags = "place_center_x, place_center_z, force_placement",
+	place_on = {"mcl_mud:mud"},
+	fill_ratio = 0.045,
+	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
+vl_biomes.register_decoration({
+	biomes = {"MangroveSwamp"}, --"MangroveSwamp_shore"},
+	decoration = "mcl_mangrove:water_logged_roots",
+	y_min = 0,
+	y_max = 0,
 	place_on = {"mcl_mangrove:mangrove_roots"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 2,
-	sidelen = 80,
 	fill_ratio = 10,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
-	y_min = 0,
-	y_max = 0,
-	decoration = "mcl_mangrove:water_logged_roots",
-	flags = "place_center_x, place_center_z, force_placement, all_ceilings",
+	flags = "place_center_x, place_center_z, force_placement, all_ceilings", -- not default: all_ceilings
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.045,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
-	place_offset_y = -1,
+vl_biomes.register_decoration({
+	biomes = {"MangroveSwamp"}, --"MangroveSwamp_shore"},
 	decoration = "mcl_mangrove:mangrove_mud_roots",
-	flags = "place_center_x, place_center_z, force_placement",
-})
-
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
 	place_on = {"mcl_mud:mud"},
-	sidelen = 80,
-	fill_ratio = 0.008,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
-	decoration = "mcl_core:deadbush",
-	flags = "place_center_x, place_center_z",
+	place_offset_y = -1,
+	fill_ratio = 0.045,
 })
 
-mcl_mapgen_core.register_decoration({
-	deco_type = "simple",
-	place_on = {"mcl_core:water_source"},
-	sidelen = 80,
-	fill_ratio = 0.035,
-	biomes = {"MangroveSwamp", "MangroveSwamp_shore"},
+vl_biomes.register_decoration({
+	biomes = {"MangroveSwamp"}, --"MangroveSwamp_shore"},
+	decoration = "mcl_core:deadbush",
+	place_on = {"mcl_mud:mud"},
+	fill_ratio = 0.008,
+})
+
+vl_biomes.register_decoration({
+	biomes = {"MangroveSwamp"}, --"MangroveSwamp_shore"},
 	decoration = "mcl_flowers:waterlily",
-	flags = "place_center_x, place_center_z, liquid_surface",
+	place_on = {"mcl_core:water_source"},
+	fill_ratio = 0.035,
 })
