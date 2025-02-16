@@ -10,11 +10,13 @@ local function register_grass_decoration(offset, scale, biomes)
 		end
 	end
 	for param2, bs in pairs(bmap) do
-		mcl_mapgen_core.register_decoration({
-			deco_type = "simple",
-			rank = 1600, -- after double grass
+		vl_biomes.register_decoration({
+			biomes = bs,
+			decoration = "mcl_flowers:tallgrass",
+			param2 = param2,
+			y_min = 1,
+			y_max = vl_biomes.overworld_max,
 			place_on = {"group:grass_block_no_snow", "mcl_mud:mud"},
-			sidelen = 16,
 			noise_params = {
 				offset = offset,
 				scale = scale,
@@ -23,11 +25,7 @@ local function register_grass_decoration(offset, scale, biomes)
 				octaves = 3,
 				persist = 0.6
 			},
-			biomes = bs,
-			y_min = 1,
-			y_max = vl_biomes.overworld_max,
-			decoration = "mcl_flowers:tallgrass",
-			param2 = param2,
+			rank = 1600, -- after double grass
 		})
 	end
 end
@@ -72,9 +70,8 @@ local function register_doubletall_grass(offset, scale, biomes)
 		end
 	end
 	for param2, bs in pairs(bmap) do
-		mcl_mapgen_core.register_decoration({
-			deco_type = "schematic",
-			rank = 1500, -- run before regular grass
+		vl_biomes.register_decoration({
+			biomes = bs,
 			schematic = {
 				size = vector.new(1, 2, 1),
 				data = {
@@ -83,9 +80,10 @@ local function register_doubletall_grass(offset, scale, biomes)
 				},
 			},
 			flags = "all_floors, force_placement",
+			y_min = 1,
+			y_max = vl_biomes.overworld_max,
 			place_on = {"group:grass_block_no_snow"},
 			place_offset_y = 1,
-			sidelen = 16,
 			noise_params = {
 				offset = offset,
 				scale = scale,
@@ -94,9 +92,7 @@ local function register_doubletall_grass(offset, scale, biomes)
 				octaves = 3,
 				persist = 0.6,
 			},
-			y_min = 1,
-			y_max = vl_biomes.overworld_max,
-			biomes = bs,
+			rank = 1500, -- run before regular grass
 		})
 	end
 end

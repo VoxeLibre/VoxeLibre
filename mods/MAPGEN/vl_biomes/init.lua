@@ -220,8 +220,47 @@ function vl_biomes.register_biome(def)
 	end
 end
 
--- TODO: also add similar helper as below for oaks?
+-- nil tolerant
+local function min(a,b) return a and (b and math.min(a,b) or a) or b end
+local function max(a,b) return a and (b and math.max(a,b) or a) or b end
 
+--- Register a decoration, with some defaults:
+--- If 'schematic' is set, deco_type="schematic", flags = "place_center_x, place_center_y", rotation="random".
+--- If 'decoration' is set, deco_type="simple".
+--- Default y_min and y_max are inferred from the biomes.
+--- @param def table: biome definition
+function vl_biomes.register_decoration(def)
+	-- apply some defaults
+	if def.schematic then
+		if def.deco_type and def.deco_type ~= "schematic" then core.log("warning", "Schematic, but deco_type = "..def.deco_type.." in "..dump(def.name or def.schematic, "")) end
+		def.deco_type = "schematic"
+		if not def.flags then def.flags = "place_center_x, place_center_z" end
+		if not def.rotation then def.rotation = "random" end
+	end
+	if def.decoration then
+		if def.deco_type and def.deco_type ~= "simple" then core.log("warning", "Simple decoration "..dump(def.decoration,"").." has deco_type "..def.deco_type) end
+		def.deco_type = "simple"
+	end
+	-- Use y_min/y_max from biomes
+	if def.biomes and (not def.y_min) or (not def.y_max) then
+		local y_min, y_max
+		for _, bn in pairs(def.biomes) do
+			local b = core.registered_biomes[bn]
+			if not b then
+				core.log("warning", "Biome not found "..bn.." in "..dump(def.name or def.decoration or def.schematics, ""))
+			else
+				y_min = min(y_min, b.min_pos and b.min_pos.y or b.y_min)
+				y_max = max(y_max, b.max_pos and b.max_pos.y or b.y_max)
+			end
+		end
+		def.y_min = def.y_min or y_min
+		def.y_max = def.y_max or y_max
+	end
+	-- def.sidelen = 8 is default in Luanti
+	mcl_mapgen_core.register_decoration(def)
+end
+
+-- TODO: also add similar helper as below for oaks?
 -- helper for spruce decorations
 function vl_biomes.register_spruce_decoration(seed, offset, sprucename, biomes, y_min)
 	local mod_mcl_core = core.get_modpath("mcl_core")
