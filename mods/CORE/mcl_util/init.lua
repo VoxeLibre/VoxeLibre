@@ -527,16 +527,13 @@ function mcl_util.set_properties(obj, props)
 end
 
 -- Update bones, but only when changed
-function mcl_util.set_bone_position(obj, bone, pos, rot)
-	if core.get_bone_override then -- minetest >= 5.9
-		local over = obj:get_bone_override(bone)
-		local pos_equal = not pos or not over.position.absolute or vector.equals(vector.round(over.position.vec), vector.round(pos))
-		local rot_equal = not rot or not over.rotation.absolute or vector.equals(vector.round(over.rotation.vec), vector.round(rot))
-		if not pos_equal or not rot_equal then
-			if pos then over.position = { vec = pos, absolute = true, interpolation = 0.1 } end
-			if rot then over.rotation = { vec = rot, absolute = true, interpolation = 0.1 } end
-			obj:set_bone_override(bone, over)
-		end
+function mcl_util.set_bone_position(obj, bone, pos, rot, scale)
+	if obj.set_bone_override then -- minetest >= 5.9
+		obj:set_bone_override(bone, {
+			position = pos and { vec = pos, absolute = true } or nil,
+			rotation = rot and { vec = rot, absolute = true } or nil,
+			scale = scale and { vec = scale, absolute = true } or nil,
+		})
 	else -- minetest up to 5.8
 		rot = rot and rot:apply(math.deg)
 		local current_pos, current_rot = obj:get_bone_position(bone)
