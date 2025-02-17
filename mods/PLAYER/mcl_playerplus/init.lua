@@ -114,7 +114,21 @@ end
 local node_stand, node_stand_below, node_head, node_feet, node_head_top
 local is_swimming
 
-local set_bone_pos = mcl_util.set_bone_position
+-- HACK work around https://github.com/luanti-org/luanti/issues/15692
+-- Scales corresponding to default perfect 180° rotations in the character b3d model
+local bone_workaround_scales = {
+	Body_Control = vector.new(-1, 1, -1),
+	Leg_Right = vector.new(1, -1, -1),
+	Leg_Left = vector.new(1, -1, -1),
+	Cape = vector.new(1, -1, 1),
+	Arm_Right_Pitch_Control = vector.new(1, -1, -1),
+	Arm_Left_Pitch_Control = vector.new(1, -1, -1),
+}
+
+local function set_bone_pos(player, bonename, pos, rot)
+	return mcl_util.set_bone_position(player, bonename, pos, rot, bone_workaround_scales[bonename])
+end
+
 local set_properties = mcl_util.set_properties
 
 local function anglediff(a1, a2)
