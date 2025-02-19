@@ -461,6 +461,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local weapon = hitter:get_wielded_item()
 	local time_now = minetest.get_us_time()
 
+	-- check for invulnerability time in microseconds (0.5 second)
+	local time_diff = time_now - self.invul_timestamp
+	if time_diff <= 500000 and time_diff >= 0 then return end
+
 	if is_player then
 		-- is mob out of reach?
 		if (vector.distance(mob_pos, player_pos) - self._avg_radius) > (weapon:get_definition().range or 3) then
@@ -473,12 +477,13 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		mcl_potions.update_haste_and_fatigue(hitter)
 
 		self.xp_timestamp = time_now
+	else
+		-- set/update 'drop xp' timestamp if hit by a player's projectiles
+		local hitter_le = hitter:get_luaentity()
+		if hitter_le._vl_projectile and core.get_player_by_name(hitter_le._owner) then
+			self.xp_timestamp = time_now
+		end
 	end
-
-	local time_diff = time_now - self.invul_timestamp
-
-	-- check for invulnerability time in microseconds (0.5 second)
-	if time_diff <= 500000 and time_diff >= 0 then return end
 
 	-- custom punch function
 	if self.do_punch then
@@ -494,19 +499,14 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		return
 	end
 
-	time_now = minetest.get_us_time()
-
-	if is_player then
-		if minetest.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
-		-- set/update 'drop xp' timestamp if hitted by player
-		self.xp_timestamp = time_now
-	end
-
 	-- punch interval
 	local punch_interval = 1.4
 
-	-- exhaust attacker
 	if is_player then
+		-- Instant kill mobs in creative
+		if minetest.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
+
+		-- exhaust attacker
 		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
 	end
 
@@ -519,7 +519,6 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	if tflp == 0 then
 		tflp = 0.2
 	end
-
 
 	for group,_ in pairs((tool_capabilities.damage_groups or {}) ) do
 		tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)
