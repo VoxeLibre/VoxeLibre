@@ -413,13 +413,12 @@ function mob_class:check_for_death(cause, cmi_cause)
 		end
 
 		-- Award XP
-		if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
-			local pos = self.object:get_pos()
-			local xp_amount = random(self.xp_min, self.xp_max)
-
+		if ((not self.child) or self.type ~= "animal") then
 			local player_hit = self._player_hit_time and (core.get_us_time() - self._player_hit_time) < 5e6
 			if player_hit and not mcl_sculk.handle_death(pos, xp_amount) then
 				if minetest.is_creative_enabled("") ~= true then
+					local pos = self.object:get_pos()
+					local xp_amount = random(self.xp_min, self.xp_max)
 					mcl_experience.throw_xp(pos, xp_amount)
 				end
 			end
