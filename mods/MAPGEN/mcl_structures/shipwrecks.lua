@@ -211,8 +211,8 @@ mcl_structures.register_structure("ocean_temple",{
 		mcl_structures.spawn_mobs("mobs_mc:guardian_elder",spawnon,p1,p2,pr,1,true)
 		mcl_structures.construct_nodes(p1,p2,{"group:wall"})
 
-		local minp = vector.offset(pos, -10, -4, 10)
-		local maxp = vector.offset(pos,  10,  2, 10)
+		local minp = vector.offset(p, -10, -4, 10)
+		local maxp = vector.offset(p,  10,  2, 10)
 		mcl_ocean.kelp.remove_kelp_below_structure(minp, maxp)
 	end,
 	loot = {
