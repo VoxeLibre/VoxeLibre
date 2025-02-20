@@ -9,21 +9,26 @@ tnt.BLINKTIMER = 0.25
 ---@param pos Vector
 ---@param entname string
 ---@return ObjectRef?
-local function spawn_tnt(pos, entname)
+local function spawn_tnt(pos, entname, owner)
 	minetest.sound_play("tnt_ignite", { pos = pos, gain = 1.0, max_hear_distance = 15 }, true)
 	local ent = minetest.add_entity(pos, entname)
 	if ent then
 		ent:set_armor_groups({ immortal = 1 })
+		local le = ent:get_luaentity()
+		if le then
+			le._owner = owner
+		end
 	end
 	return ent
 end
 
 ---@param pos Vector
+---@param owner String
 ---@return ObjectRef?
-function tnt.ignite(pos)
+function tnt.ignite(pos, owner)
 	minetest.remove_node(pos)
-	local e = spawn_tnt(pos, "mcl_tnt:tnt")
-	minetest.check_for_falling(pos)
+	local e = spawn_tnt(pos, "mcl_tnt:tnt", owner)
+	minetest.check_for_falling(pos, owner)
 	return e
 end
 
@@ -96,7 +101,7 @@ minetest.register_node("mcl_tnt:tnt", {
 		end
 	end,
 	_on_ignite = function(player, pointed_thing)
-		tnt.ignite(pointed_thing.under)
+		tnt.ignite(pointed_thing.under, player:get_player_name())
 		return true
 	end,
 	_on_burn = function(pos)
@@ -113,7 +118,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	_vl_projectile = {
 		on_collide = function(projectile, pos, node, node_def)
 			if mcl_burning.is_burning(projectile) then
-				tnt.ignite(pos)
+				tnt.ignite(pos, projectile._owner)
 			end
 		end
 	},
@@ -216,7 +221,8 @@ function TNT:on_step(dtime, _)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > tnt.BOOMTIMER then
-		mcl_explosions.explode(self.object:get_pos(), 4, {}, self.object)
+		local source = (self._owner and core.get_player_by_name(self._owner)) or self.object
+		mcl_explosions.explode(self.object:get_pos(), 4, {}, source)
 		self.object:remove()
 	end
 end
