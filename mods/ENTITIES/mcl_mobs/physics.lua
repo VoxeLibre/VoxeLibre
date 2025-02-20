@@ -75,25 +75,26 @@ function mob_class:object_in_range(object)
 	return p1 and p2 and (vector.distance(p1, p2) <= dist)
 end
 
-function mob_class:item_drop(cooked, looting_level)
-
+function mob_class:item_drop(cooked, looting_level, player_kill)
 	if not mobs_drop_items then return end
-
-	looting_level = looting_level or 0
-
 	if (self.child and self.type ~= "monster") then
 		return
 	end
 
 	local obj, item, num
 	local pos = self.object:get_pos()
+	looting_level = looting_level or 0
 
-	self.drops = self.drops or {}
-
-	for n = 1, #self.drops do
-		local dropdef = self.drops[n]
+	local drops = self.drops or {}
+	for n = 1, #drops do
+		local dropdef = drops[n]
 		local chance = 1 / dropdef.chance
 		local looting_type = dropdef.looting
+
+		-- Only do rare drops when killed by a player
+		if not player_kill and looting_type == "rare" then
+			chance = 0
+		end
 
 		if looting_level > 0 then
 			local chance_function = dropdef.looting_chance_function
@@ -137,8 +138,6 @@ function mob_class:item_drop(cooked, looting_level)
 			end
 		end
 	end
-
-	self.drops = {}
 end
 
 -- collision function borrowed amended from jordan4ibanez open_ai mod
@@ -349,9 +348,11 @@ function mob_class:check_for_death(cause, cmi_cause)
 	self:mob_sound("death")
 
 	local function death_handle(self)
+		local player_hit = self._player_hit_time and (core.get_us_time() - self._player_hit_time) < 5e6
+
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
-			self:item_drop(true, 0)
+			self:item_drop(true, 0, player_hit)
 		else
 			local wielditem = ItemStack()
 			if cause == "hit" then
@@ -362,12 +363,11 @@ function mob_class:check_for_death(cause, cmi_cause)
 			end
 			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
-			self:item_drop(cooked, looting)
+			self:item_drop(cooked, looting, player_hit)
 		end
 
 		-- Award XP
 		if ((not self.child) or self.type ~= "animal") then
-			local player_hit = self._player_hit_time and (core.get_us_time() - self._player_hit_time) < 5e6
 			if player_hit and not mcl_sculk.handle_death(pos, xp_amount) then
 				if minetest.is_creative_enabled("") ~= true then
 					local pos = self.object:get_pos()
