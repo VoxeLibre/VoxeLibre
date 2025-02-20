@@ -332,7 +332,19 @@ function mcl_mobs.register_mob(name, def)
 			return false, true, {}
 		end,
 		do_punch = def.do_punch,
-		deal_damage = def.deal_damage,
+		deal_damage = function(self, damage, reason)
+			if (reason.direct and reason.direct:is_player()) or
+			   (reason.source and reason.source:is_player())
+			then
+				self._player_hit_time = core.get_us_time()
+			end
+
+			if def.deal_damage then
+				def.deal_damage(self, damage, reason)
+			else
+				self.health = self.health - damage
+			end
+		end,
 		on_breed = def.on_breed,
 		on_grown = def.on_grown,
 		on_pick_up = def.on_pick_up,
