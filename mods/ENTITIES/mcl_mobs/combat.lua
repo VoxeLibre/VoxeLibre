@@ -469,12 +469,12 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 		mcl_potions.update_haste_and_fatigue(hitter)
 
-		self._last_attacked_time = time_now
+		self._player_hit_time = time_now
 	else
 		-- set/update 'drop xp' timestamp if hit by a player's projectiles
 		local hitter_le = hitter:get_luaentity()
 		if hitter_le._vl_projectile and core.get_player_by_name(hitter_le._owner) then
-			self._last_attacked_time = time_now
+			self._player_hit_time = time_now
 		end
 	end
 
