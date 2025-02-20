@@ -129,6 +129,7 @@ end
 ---    cooked       : boolean?,
 ---    looting_level: number?,
 ---    attacker_name: string?,
+---    player_kill: boolean?,
 ---}
 function mob_class:item_drop(params)
 	if not mobs_drop_items then return end
@@ -140,13 +141,13 @@ function mob_class:item_drop(params)
 	local looting_level = params.looting_level or 0
 	local cooked        = params.cooked or false
 	local attacker_name = params.attacker_name or nil
+	local player_kill   = params.player_kill or false
 
 	local pos = self.vl_drops_pos or self.object:get_pos()
-	
-	self.drops = self.drops or {}
+	local drops = self.drops or {}
 
-	for n = 1, #self.drops do
-		local dropdef = self.drops[n]
+	for n = 1, #drops do
+		local dropdef = drops[n]
 
 		local chance, error = calculate_drop_chance(dropdef, looting_level, attacker_name)
 		if error then
@@ -154,6 +155,11 @@ function mob_class:item_drop(params)
 				"error calculating drop chance of drop #%d for entity %q, falling back to 1: %s",
 				n, self.name, error))
 			chance = 1
+		end
+
+		-- Only do special drops when killed by a player
+		if not player_kill and dropdef.looting ~= "common" then
+			chance = 0
 		end
 
 		local num = 0
@@ -440,9 +446,11 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 
 		if not gamerule_doMobLoot then return end
 
+		local player_kill = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp) < 5e6
+
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
-			self:item_drop({ cooked = true })
+			self:item_drop({ cooked = true, player_kill = player_kill })
 			return
 		end
 
@@ -456,7 +464,8 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 		self:item_drop({
 			cooked        = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect"),
 			looting       = mcl_enchanting.get_enchantment(wielditem, "looting"),
-			attacker_name = info and info.attacker_name
+			attacker_name = info and info.attacker_name,
+			player_kill   = player_kill,
 		})
 		
 		-- Award XP
