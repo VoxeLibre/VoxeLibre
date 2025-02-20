@@ -3458,6 +3458,14 @@ local corals = {
 	"fire"
 }
 
+local function clear_kelp(t, minp, maxp, blockseed)
+	for _,pos in pairs(t) do
+		pos_minp = vector.offset(pos, -4, -4, -4)
+		pos_maxp = vector.offset(pos,  4,  2,  4)
+		mcl_ocean.kelp.remove_kelp_below_structure(pos_minp, pos_maxp)
+	end
+end
+
 local function register_coral_decos(ck)
 	local c = corals[ck]
 	local noise = {
@@ -3471,6 +3479,7 @@ local function register_coral_decos(ck)
 		flags = "absvalue"
 	}
 	mcl_mapgen_core.register_decoration({
+		name = "coral_deco_"..c.."_s1",
 		deco_type = "schematic",
 		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
 		sidelen = 80,
@@ -3481,8 +3490,10 @@ local function register_coral_decos(ck)
 		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
+		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
+		name = "coral_deco_"..c.."_s2",
 		deco_type = "schematic",
 		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
 		noise_params = noise,
@@ -3493,9 +3504,11 @@ local function register_coral_decos(ck)
 		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
+		gen_callback = clear_kelp,
 	})
 
 	mcl_mapgen_core.register_decoration({
+		name = "coral_deco_"..c.."_block",
 		deco_type = "simple",
 		place_on = {"mcl_ocean:" .. c .. "_coral_block"},
 		sidelen = 16,
@@ -3507,8 +3520,10 @@ local function register_coral_decos(ck)
 		flags = "force_placement, all_floors",
 		height = 1,
 		height_max = 1,
+		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
+		name = "coral_deco_"..c.."_fan",
 		deco_type = "simple",
 		place_on = {"mcl_ocean:horn_coral_block"},
 		sidelen = 16,
@@ -3520,6 +3535,7 @@ local function register_coral_decos(ck)
 		flags = "force_placement, all_floors",
 		height = 1,
 		height_max = 1,
+		gen_callback = clear_kelp,
 	})
 end
 
@@ -3553,6 +3569,7 @@ local function register_decorations()
 		register_coral_decos(k)
 	end
 	mcl_mapgen_core.register_decoration({
+		name = "coral_dead_brain",
 		deco_type = "simple",
 		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
 		sidelen = 16,
@@ -3574,9 +3591,11 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
+		gen_callback = clear_kelp,
 	})
 
 	mcl_mapgen_core.register_decoration({
+		name = "coral_pickled_dead_brain_1",
 		deco_type = "simple",
 		place_on = {"mcl_ocean:dead_brain_coral_block"},
 		sidelen = 16,
@@ -3589,8 +3608,10 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
+		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
+		name = "coral_pickled_dead_brain_2",
 		deco_type = "simple",
 		place_on = {"mcl_ocean:dead_brain_coral_block"},
 		sidelen = 16,
@@ -3603,8 +3624,10 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
+		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
+		name = "coral_pickled_dead_brain_3",
 		deco_type = "simple",
 		place_on = {"mcl_ocean:dead_brain_coral_block"},
 		sidelen = 16,
@@ -3617,8 +3640,10 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
+		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
+		name = "coral_pickled_dead_brain_4",
 		deco_type = "simple",
 		place_on = {"mcl_ocean:dead_brain_coral_block"},
 		sidelen = 16,
@@ -3631,9 +3656,11 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
+		gen_callback = clear_kelp,
 	})
 	--rare CORAl
 	mcl_mapgen_core.register_decoration({
+		name = "coral_cora",
 		deco_type = "schematic",
 		place_on = {"group:sand", "mcl_core:gravel"},
 		fill_ratio = 0.0001,
@@ -3644,6 +3671,7 @@ local function register_decorations()
 		schematic = mod_mcl_structures .. "/schematics/coral_cora.mts",
 		rotation = "random",
 		flags = "place_center_x,place_center_z, force_placement",
+		gen_callback = clear_kelp,
 	})
 
 	mcl_mapgen_core.register_decoration({
