@@ -4,11 +4,11 @@ local S = minetest.get_translator(modname)
 
 local function detonate_tnt_minecart(self)
 	local pos = self.object:get_pos()
+	mcl_explosions.explode(pos, 6, { drop_chance = 1.0}, core.get_player_by_name(self._owner or ""))
 	self.object:remove()
-	mcl_explosions.explode(pos, 6, { drop_chance = 1.0 })
 end
 
-local function activate_tnt_minecart(self, timer)
+local function activate_tnt_minecart(self, timer, clicker)
 	if self._boomtimer then
 		return
 	end
@@ -30,6 +30,9 @@ local function activate_tnt_minecart(self, timer)
 		glow = 15,
 	})
 	self._blinktimer = tnt.BLINKTIMER
+	if clicker then
+		self._owner = clicker:get_player_name()
+	end
 	minetest.sound_play("tnt_ignite", {pos = self.object:get_pos(), gain = 1.0, max_hear_distance = 15}, true)
 end
 mod.register_minecart({
@@ -77,7 +80,7 @@ mod.register_minecart({
 				local inv = clicker:get_inventory()
 				inv:set_stack("main", index, held)
 			end
-			activate_tnt_minecart(self)
+			activate_tnt_minecart(self, nil, clicker)
 		end
 	end,
 	on_activate_by_rail = activate_tnt_minecart,
