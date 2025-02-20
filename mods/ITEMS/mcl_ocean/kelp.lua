@@ -53,6 +53,7 @@ mcl_ocean.kelp = kelp
 -- Once reach the maximum, kelp no longer grows.
 kelp.MIN_AGE = 0
 kelp.MAX_AGE = 25
+kelp.MAX_HEIGHT = 16
 
 kelp.TICK = 0.2 -- Tick interval (in seconds) for updating kelp.
 
@@ -369,6 +370,22 @@ local function detach_unsubmerged(pos)
 		kelp.detach_dig(dig_pos, pos, true, node, height)
 		local new_age = kelp.roll_init_age()
 		store_age(pos, new_age)
+	end
+end
+
+function kelp.remove_kelp_below_structure(minp, maxp)
+	local minp = vector.offset(minp, 0, -kelp.MAX_HEIGHT - 1, 0)
+	local kelp_pos_list,_ = minetest.find_nodes_in_area(minp, maxp, {"group:kelp"})
+
+	for i = 1,#kelp_pos_list do
+		local kelp_pos = kelp_pos_list[i]
+		local kelp_node = minetest.get_node(kelp_pos)
+
+		minetest.swap_node(kelp_pos, {
+			name = minetest.registered_nodes[kelp_node.name].node_dig_prediction,
+			param = kelp_node.param,
+			param2 = 0,
+		})
 	end
 end
 
