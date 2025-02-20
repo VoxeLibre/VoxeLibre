@@ -335,7 +335,6 @@ end
 
 -- check if mob is dead or only hurt
 function mob_class:check_for_death(cause, cmi_cause)
-
 	if self.state == "die" then
 		return true
 	end
@@ -411,15 +410,17 @@ function mob_class:check_for_death(cause, cmi_cause)
 			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
 			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
 			self:item_drop(cooked, looting)
+		end
 
-			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
-				local pos = self.vl_drops_pos or self.object:get_pos()
-				local xp_amount = random(self.xp_min, self.xp_max)
+		-- Award XP
+		if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
+			local pos = self.vl_drops_pos or self.object:get_pos()
+			local xp_amount = random(self.xp_min, self.xp_max)
 
-				if (self._last_attacked_time or 0) > core.get_us_time() - 5e6 and not mcl_sculk.handle_death(pos, xp_amount) then
-					if minetest.is_creative_enabled("") ~= true then
-						mcl_experience.throw_xp(pos, xp_amount)
-					end
+			local player_hit = self._player_hit_time and (core.get_us_time() - self._player_hit_time) < 5e6
+			if player_hit and not mcl_sculk.handle_death(pos, xp_amount) then
+				if minetest.is_creative_enabled("") ~= true then
+					mcl_experience.throw_xp(pos, xp_amount)
 				end
 			end
 		end
