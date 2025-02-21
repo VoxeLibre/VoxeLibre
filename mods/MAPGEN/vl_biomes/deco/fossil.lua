@@ -1,24 +1,24 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
-mcl_structures.register_structure("fossil",{
-	place_on = {"group:material_stone","group:sand"},
-	fill_ratio = 0.01,
+vl_structures.register_structure("fossil", {
+	place_on = { "group:material_stone", "group:sand" },
 	flags = "place_center_x, place_center_z",
-	solid_ground = true,
-	sidelen = 16,
-	chunk_probability = 1000,
-	y_offset = function(pr) return ( pr:next(1,16) * -1 ) -16 end,
+	prepare = false,
+	rank = 900, -- actually a terrain feature,
+	terrain_feature = false, -- but add them to /locate nevertheless
+	chunk_probability = 15, -- was 25, FIXME: needs rebalancing
+	y_offset = function(pr) return pr:next(-32,-16) end,
 	y_max = 15,
 	y_min = mcl_vars.mg_overworld_min + 35,
 	biomes = { "Desert" },
 	filenames = {
-		modpath.."/schematics/mcl_structures_fossil_skull_1.mts", -- 4×5×5
-		modpath.."/schematics/mcl_structures_fossil_skull_2.mts", -- 5×5×5
-		modpath.."/schematics/mcl_structures_fossil_skull_3.mts", -- 5×5×7
-		modpath.."/schematics/mcl_structures_fossil_skull_4.mts", -- 7×5×5
-		modpath.."/schematics/mcl_structures_fossil_spine_1.mts", -- 3×3×13
-		modpath.."/schematics/mcl_structures_fossil_spine_2.mts", -- 5×4×13
-		modpath.."/schematics/mcl_structures_fossil_spine_3.mts", -- 7×4×13
-		modpath.."/schematics/mcl_structures_fossil_spine_4.mts", -- 8×5×13
+		modpath.."/schematics/mcl_structures_fossil_skull_1.mts", -- 4x5x5
+		modpath.."/schematics/mcl_structures_fossil_skull_2.mts", -- 5x5x5
+		modpath.."/schematics/mcl_structures_fossil_skull_3.mts", -- 5x5x7
+		modpath.."/schematics/mcl_structures_fossil_skull_4.mts", -- 7x5x5
+		modpath.."/schematics/mcl_structures_fossil_spine_1.mts", -- 3x3x13
+		modpath.."/schematics/mcl_structures_fossil_spine_2.mts", -- 5x4x13
+		modpath.."/schematics/mcl_structures_fossil_spine_3.mts", -- 7x4x13
+		modpath.."/schematics/mcl_structures_fossil_spine_4.mts", -- 8x5x13
 	},
 })

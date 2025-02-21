@@ -138,7 +138,7 @@ local adjacents = {
 	vector.new(0,-1,0)
 }
 
-mcl_structures.register_structure("basalt_column",{
+vl_structures.register_structure("basalt_column",{
 	place_on = { "mcl_blackstone:blackstone", "mcl_blackstone:basalt" },
 	terrain_feature = true,
 	spawn_by = { "air" },
@@ -182,7 +182,7 @@ mcl_structures.register_structure("basalt_column",{
 	end
 })
 
-mcl_structures.register_structure("basalt_pillar",{
+vl_structures.register_structure("basalt_pillar",{
 	place_on = { "mcl_blackstone:blackstone", "mcl_blackstone:basalt" },
 	terrain_feature = true,
 	noise_params = {
@@ -224,7 +224,7 @@ mcl_structures.register_structure("basalt_pillar",{
 	end
 })
 
-mcl_structures.register_structure("lavadelta",{
+vl_structures.register_structure("lavadelta",{
 	place_on = { "mcl_blackstone:blackstone", "mcl_blackstone:basalt" },
 	spawn_by = { "mcl_blackstone:basalt", "mcl_blackstone:blackstone" },
 	num_spawn_by = 2,
