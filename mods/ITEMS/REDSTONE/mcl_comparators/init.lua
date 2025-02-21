@@ -1,8 +1,9 @@
 local S = core.get_translator(core.get_current_modname())
 
 -- Functions that get the input/output rules of the comparator
+-- Precompute rules for all 4 directions
 local output_rules = {
-	[0] = {vector.new(-1, 0, 0)},
+	[0] = mesecon.rotate_rules_left({vector.new(-1, 0, 0)}),
 }
 for i = 1,4 do
 	output_rules[i] = mesecon.rotate_rules_left(output_rules[i-1])
@@ -10,64 +11,25 @@ end
 local function comparator_get_output_rules(node)
 	return output_rules[node.param2]
 end
-
 local input_rules = {
-	[0] = {
+	[0] = mesecon.rotate_rules_left({
 		-- we rely on this order in update_self below, do not change
 		{x = 1, y = 0, z =  0},  -- back
 		{x = 0, y = 0, z = -1},  -- side
 		{x = 0, y = 0, z =  1},  -- side
-	},
+	}),
 }
 for i = 1,4 do
 	input_rules[i] = mesecon.rotate_rules_left(input_rules[i-1])
 end
-
 local function comparator_get_input_rules(node)
 	return input_rules[node.param2]
-end
-
-
--- Functions that are called after the delay time
-
-local function comparator_turnon(params)
-	local rules = comparator_get_output_rules(params.node)
-	mesecon.receptor_on(params.pos, rules)
-end
-
-
-local function comparator_turnoff(params)
-	local rules = comparator_get_output_rules(params.node)
-	mesecon.receptor_off(params.pos, rules)
-end
-
-
--- Functions that set the correct node type an schedule a turnon/off
-
-local function comparator_activate(pos, node)
-	local def = core.registered_nodes[node.name]
-	local onstate = def.comparator_onstate
-	if onstate then
-		core.swap_node(pos, { name = onstate, param2 = node.param2 })
-	end
-	core.after(0.1, comparator_turnon , {pos = pos, node = node})
-end
-
-
-local function comparator_deactivate(pos, node)
-	local def = core.registered_nodes[node.name]
-	local offstate = def.comparator_offstate
-	if offstate then
-		core.swap_node(pos, { name = offstate, param2 = node.param2 })
-	end
-	core.after(0.1, comparator_turnoff, {pos = pos, node = node})
 end
 
 -- update comparator state, if needed
 local function update_self(pos, node)
 	node = node or core.get_node(pos)
 	local node_def = core.registered_nodes[node.name]
-	local old_power = vl_redstone.get_power_level(pos)
 
 	-- Find the node we are pointing at
 	local input_rules = comparator_get_input_rules(node);
@@ -81,7 +43,7 @@ local function update_self(pos, node)
 
 	local back_power_level = 0
 	if back_nodedef and back_nodedef._mcl_comparators_get_reading then
-		back_power_level = back_nodedef._mcl_comparators_get_reading(back_pos)
+		back_power_level = back_nodedef._mcl_comparators_get_reading(back_pos, back_node, back_nodedef)
 	else
 		back_power_level = vl_redstone.get_power_level(back_pos)
 	end
@@ -109,21 +71,19 @@ local function update_self(pos, node)
 	if power_level < 0 then power_level = 0 end
 	if power_level > 16 then power_level = 16 end
 
-	core.log(dump{
-		old_power = old_power,
-		power_level = power_level
-	})
+	local old_power = vl_redstone.get_power_level(pos)
+	if old_power ~= power_level then
+		-- Update output power level
+		vl_redstone.set_power_level(pos, output_rules[node.param2], power_level)
 
-	-- Update output power level
-	vl_redstone.set_power_level(pos, output_rules[node.param2], power_level)
-
-	-- Update node
-	if power_level ~= 0 then
-		node.name = node_def.comparator_onstate
-		core.swap_node(pos, node)
-	else
-		node.name = node_def.comparator_offstate
-		core.swap_node(pos, node)
+		-- Update node
+		if power_level ~= 0 then
+			node.name = node_def.comparator_onstate
+			core.swap_node(pos, node)
+		else
+			node.name = node_def.comparator_offstate
+			core.swap_node(pos, node)
+		end
 	end
 end
 
@@ -268,7 +228,6 @@ for _, mode in pairs{"comp", "sub"} do
 			sounds = mcl_sounds.node_sound_stone_defaults(),
 			mesecons = {
 				receptor = {
-					state = state,
 					rules = comparator_get_output_rules,
 				},
 				effector = {
@@ -277,6 +236,7 @@ for _, mode in pairs{"comp", "sub"} do
 				}
 			},
 			on_rotate = on_rotate,
+			vl_block_update = update_self
 		}
 
 		if mode == "comp" and state == mesecon.state.off then
@@ -301,7 +261,6 @@ for _, mode in pairs{"comp", "sub"} do
 		end
 
 		core.register_node(nodename, nodedef)
-		mcl_wip.register_wip_item(nodename)
 	end
 end
 
@@ -318,33 +277,6 @@ core.register_craft({
 		{ stone,   stone,   stone   },
 	}
 })
-
--- Register active block handlers
-core.register_abm({
-	label = "Comparator signal input check (comparator is off)",
-	nodenames = {
-		"mcl_comparators:comparator_off_comp",
-		"mcl_comparators:comparator_off_sub",
-	},
-	neighbors = {"group:container", "group:comparator_signal"},
-	interval = 1,
-	chance = 1,
-	action = update_self,
-})
-
-core.register_abm({
-	label = "Comparator signal input check (comparator is on)",
-	nodenames = {
-		"mcl_comparators:comparator_on_comp",
-		"mcl_comparators:comparator_on_sub",
-	},
-	-- needs to run regardless of neighbors to make sure we detect when a
-	-- container is dug
-	interval = 1,
-	chance = 1,
-	action = update_self,
-})
-
 
 -- Add entry aliases for the Help
 if core.get_modpath("doc") then

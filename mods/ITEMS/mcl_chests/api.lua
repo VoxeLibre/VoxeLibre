@@ -268,6 +268,7 @@ mcl_chests.protection_check_put_take = protection_check_take
 -- Logging functions
 local function log_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 	core.log("action", player:get_player_name() .. " moves stuff to chest at " .. core.pos_to_string(pos))
+	vl_block_update.node_changed(pos)
 end
 
 local function log_inventory_put(pos, listname, index, stack, player)
@@ -278,10 +279,12 @@ local function log_inventory_put(pos, listname, index, stack, player)
 		inv:add_item("main", stack)
 	end
 	-- END OF LISTRING WORKAROUND
+	vl_block_update.node_changed(pos)
 end
 
 local function log_inventory_take(pos, listname, index, stack, player)
 	core.log("action", player:get_player_name() .. " takes stuff from chest at " .. core.pos_to_string(pos))
+	vl_block_update.node_changed(pos)
 end
 
 -- To be called when a chest is closed (only relevant for trapped chest atm)
@@ -572,6 +575,9 @@ local function log_inventory_put_double(side) return function(pos, listname, ind
 		double_chest_add_item(top_inv, bottom_inv, "main", stack)
 	end
 	-- END OF LISTRING WORKAROUND
+
+	vl_block_update.node_changed(pos)
+	-- TODO: also node_changed() the other half of the double chest
 end end
 
 -- This is a helper function to register regular chests (both small and double variants).
@@ -772,6 +778,20 @@ function mcl_chests.register_chest(basename, d)
 		on_metadata_inventory_take = log_inventory_take,
 		_mcl_blast_resistance = d.hardness,
 		_mcl_hardness = d.hardness,
+		_mcl_comparators_get_reading = function(pos)
+			local meta = core.get_meta(pos)
+			local inv = meta:get_inventory()
+			if not inv or inv:is_empty("main") then return 0 end
+
+			local size = inv:get_size("main")
+			local fill = 0
+			for i = 1,size do
+				local itemstack = inv:get_stack("main",i)
+				fill = fill + ( itemstack:get_count() / itemstack:get_stack_max())
+			end
+
+			return 1 + math.floor(15 * fill / size)
+		end,
 
 		on_rightclick = function(pos, node, clicker)
 			local topnode = core.get_node(vector.offset(pos, 0, 1, 0))
