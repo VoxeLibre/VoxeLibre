@@ -1,79 +1,45 @@
-local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
-local modpath = minetest.get_modpath(modname)
+local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 mcl_structures = {}
 
-dofile(modpath.."/api.lua")
-dofile(modpath.."/shipwrecks.lua")
-dofile(modpath.."/ocean_temple.lua")
+-- some legacy API adapters
+mcl_structures.is_disabled = function() return false end
+mcl_structures.init_node_construct = vl_structures.construct_node
+mcl_structures.construct_nodes = vl_structures.construct_nodes
+mcl_structures.fill_chests = vl_structures.fill_chests
+mcl_structures.spawn_mobs = vl_structures.spawn_mobs
+
+mcl_structures.place_schematic = function(pos, schematic, rotation, replacements, force_placement, flags, after_placement_callback, pr, callback_param)
+	-- Replace old PseudoRandom with PcgRandom
+	if not pr.rand_normal_dist then pr = PcgRandom(pr:next() + pr:next() * 32768) end
+	vl_structures.place_schematic(pos, yoffset, schematic, rotation, {
+		replacements = replacements,
+		force_placement = force_placement,
+		flags = flags,
+		after_place = function(pos,def,pr,pmin,pmax,size,rotation) after_placement_callback(pmin,pmax,size,rotation,pr) end,
+		callback_param = callback_param
+	}, pr)
+end
+mcl_structures.place_structure = vl_structures.place_structure -- still compatible
+mcl_structures.register_structure = function(name, def, nospawn)
+	def.name = def.name or name
+	if not def.solid_ground then def.prepare = def.prepare or {} end
+	-- nospawn: ignored, just do not set place_on!
+	vl_structures.register_structure(name, def)
+end
+-- TODO: provide more legacy adapters that translate parameters?
+
 dofile(modpath.."/desert_temple.lua")
+dofile(modpath.."/desert_well.lua")
+dofile(modpath.."/end_city.lua")
+dofile(modpath.."/end_spawn.lua")
+dofile(modpath.."/igloo.lua")
 dofile(modpath.."/jungle_temple.lua")
 dofile(modpath.."/ocean_ruins.lua")
-dofile(modpath.."/witch_hut.lua")
-dofile(modpath.."/igloo.lua")
-dofile(modpath.."/woodland_mansion.lua")
-dofile(modpath.."/ruined_portal.lua")
+dofile(modpath.."/ocean_temple.lua")
 dofile(modpath.."/pillager_outpost.lua")
-dofile(modpath.."/end_spawn.lua")
-dofile(modpath.."/end_city.lua")
-dofile(modpath.."/desert_well.lua")
+dofile(modpath.."/ruined_portal.lua")
+dofile(modpath.."/shipwrecks.lua")
+dofile(modpath.."/witch_hut.lua")
+dofile(modpath.."/woodland_mansion.lua")
 
--- Debug command
-local function dir_to_rotation(dir)
-	local ax, az = math.abs(dir.x), math.abs(dir.z)
-	if ax > az then
-		if dir.x < 0 then
-			return "270"
-		end
-		return "90"
-	end
-	if dir.z < 0 then
-		return "180"
-	end
-	return "0"
-end
-
-minetest.register_chatcommand("spawnstruct", {
-	params = "dungeon",
-	description = S("Generate a pre-defined structure near your position."),
-	privs = {debug = true},
-	func = function(name, param)
-		local player = minetest.get_player_by_name(name)
-		if not player then return end
-		local pos = player:get_pos()
-		if not pos then return end
-		pos = vector.round(pos)
-		local dir = minetest.yaw_to_dir(player:get_look_horizontal())
-		local rot = dir_to_rotation(dir)
-		local pr = PseudoRandom(pos.x+pos.y+pos.z)
-		local errord = false
-		local message = S("Structure placed.")
-		if param == "dungeon" and mcl_dungeons and mcl_dungeons.spawn_dungeon then
-			mcl_dungeons.spawn_dungeon(pos, rot, pr)
-		elseif param == "" then
-			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
-			errord = true
-		else
-			for n,d in pairs(mcl_structures.registered_structures) do
-				if n == param then
-					mcl_structures.place_structure(pos,d,pr,math.random(),rot)
-					return true,message
-				end
-			end
-			message = S("Error: Unknown structure type. Please use “/spawnstruct <type>”.")
-			errord = true
-		end
-		minetest.chat_send_player(name, message)
-		if errord then
-			minetest.chat_send_player(name, S("Use /help spawnstruct to see a list of available types."))
-		end
-	end
-})
-minetest.register_on_mods_loaded(function()
-	local p = ""
-	for n,_ in pairs(mcl_structures.registered_structures) do
-		p = p .. " | "..n
-	end
-	minetest.registered_chatcommands["spawnstruct"].params = minetest.registered_chatcommands["spawnstruct"].params .. p
-end)

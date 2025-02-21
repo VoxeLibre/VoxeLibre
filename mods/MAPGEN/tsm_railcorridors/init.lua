@@ -1081,11 +1081,10 @@ local function create_corridor_system(main_cave_coords, pr)
 	return true
 end
 
-mcl_structures.register_structure("mineshaft",{
+vl_structures.register_structure("mineshaft",{
 	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt","mcl_core:dirt_with_grass","mcl_core:gravel","group:material_stone","mcl_core:snow"},
-	fill_ratio = 0.0001,
+	chunk_probability = 4,
 	flags = "place_center_x, place_center_z, force_placement, all_floors",
-	sidelen = 32,
 	y_max = 40,
 	y_min = mcl_vars.mg_overworld_min,
 	place_func = function(pos,_,pr,blockseed)
