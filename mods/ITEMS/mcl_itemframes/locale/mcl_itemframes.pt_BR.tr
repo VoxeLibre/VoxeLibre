@@ -1,16 +1,21 @@
 # textdomain: mcl_itemframes
-Can hold an item.=Pode segurar um item.
-Item Frame=Moldura
-Can hold an item and glows.=Pode segurar um item e brilha.
-Glowing Item Frame=Moldura Brilhante
-##[ item_frames_API.lua ]##
-Glow and Behold!=Brilhe e Veja!
-Craft a glow item frame.=Fabrique uma moldura brilhante.
 Item frames are decorative blocks in which items can be placed.=Molduras são blocos decorativos aos quais itens podem ser posicionadas.
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Apenas posicione qualquer item na moldura. Use a moldura de novo para pegar o item de volta.
-Glowing item frames are decorative blocks in which items can be placed and made to glow.=
+Item Frame=Moldura
+Can hold an item=
+Glow Item Frame=
+Can hold an item and glows=
+Invisible Item Frame=
+Can hold an item but is invisible=
+Invisible Glow Item Frame=
+Can hold an item and glows but is invisible=
+Glow and Behold!=Brilhe e Veja!
+Craft a glow item frame.=Fabrique uma moldura brilhante.
 
 
 ##### not used anymore #####
 
+Can hold an item.=Pode segurar um item.
+Can hold an item and glows.=Pode segurar um item e brilha.
+Glowing Item Frame=Moldura Brilhante
 Glowing item frames are decorative blocks in which items can be placed.=Molduras brilhantes são blocos decorativos aos quais itens podem ser posicionados.
