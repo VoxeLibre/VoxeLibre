@@ -93,6 +93,7 @@ local function node_changed(pos)
 		node_change_callbacks[i](pos)
 	end
 end
+mod.node_changed = node_changed
 
 local old_add_node = core.add_node
 ---@diagnostic disable-next-line:duplicate-set-field
