@@ -20,7 +20,7 @@ local function connectable(itemstring)
 	return (minetest.get_item_group(itemstring, "wall") == 1) or (minetest.get_item_group(itemstring, "solid") == 1)
 end
 
-local function update_wall(pos)
+function mcl_walls.update_wall(pos)
 	local thisnode = minetest.get_node(pos)
 
 	if minetest.get_item_group(thisnode.name, "wall") == 0 then
@@ -71,7 +71,7 @@ end
 local function update_wall_global(pos)
 	for i = 1,5 do
 		local dir = directions[i]
-		update_wall({x = pos.x + dir.x, y = pos.y + dir.y, z = pos.z + dir.z})
+		mcl_walls.update_wall(vector.offset(pos, dir.x, dir.y, dir.z))
 	end
 end
 
@@ -269,7 +269,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
-		on_construct = update_wall,
+		on_construct = mcl_walls.update_wall,
 		sounds = sounds,
 		_mcl_blast_resistance = blast_resistance,
 		_mcl_hardness = hardness,

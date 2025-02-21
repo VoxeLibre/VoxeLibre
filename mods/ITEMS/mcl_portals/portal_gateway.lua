@@ -4,34 +4,38 @@ local storage = mcl_portals.storage
 local vector = vector
 
 local gateway_positions = {
-	{x = 96, y = -26925, z = 0},
-	{x = 91, y = -26925, z = 29},
-	{x = 77, y = -26925, z = 56},
-	{x = 56, y = -26925, z = 77},
-	{x = 29, y = -26925, z = 91},
-	{x = 0, y = -26925, z = 96},
-	{x = -29, y = -26925, z = 91},
-	{x = -56, y = -26925, z = 77},
-	{x = -77, y = -26925, z = 56},
-	{x = -91, y = -26925, z = 29},
-	{x = -96, y = -26925, z = 0},
-	{x = -91, y = -26925, z = -29},
-	{x = -77, y = -26925, z = -56},
-	{x = -56, y = -26925, z = -77},
-	{x = -29, y = -26925, z = -91},
-	{x = 0, y = -26925, z = -96},
-	{x = 29, y = -26925, z = -91},
-	{x = 56, y = -26925, z = -77},
-	{x = 77, y = -26925, z = -56},
-	{x = 91, y = -26925, z = -29},
+	vector.new(96, -26925, 0),
+	vector.new(91, -26925, 29),
+	vector.new(77, -26925, 56),
+	vector.new(56, -26925, 77),
+	vector.new(29, -26925, 91),
+	vector.new(0, -26925, 96),
+	vector.new(-29, -26925, 91),
+	vector.new(-56, -26925, 77),
+	vector.new(-77, -26925, 56),
+	vector.new(-91, -26925, 29),
+	vector.new(-96, -26925, 0),
+	vector.new(-91, -26925, -29),
+	vector.new(-77, -26925, -56),
+	vector.new(-56, -26925, -77),
+	vector.new(-29, -26925, -91),
+	vector.new(0, -26925, -96),
+	vector.new(29, -26925, -91),
+	vector.new(56, -26925, -77),
+	vector.new(77, -26925, -56),
+	vector.new(91, -26925, -29),
 }
 
 local path_gateway_portal = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_gateway_portal.mts"
 
 local function spawn_gateway_portal(pos, dest_str)
-	return mcl_structures.place_schematic(vector.add(pos, vector.new(-1, -2, -1)), path_gateway_portal, "0", nil, true, nil, dest_str and function()
-		minetest.get_meta(pos):set_string("mcl_portals:gateway_destination", dest_str)
-	end)
+	return vl_structures.place_schematic(vector.offset(pos, -1, -2, -1), 0, path_gateway_portal, "0", {
+		force_placement = true,
+		prepare = false,
+		after_place = dest_str and function()
+			minetest.get_meta(pos):set_string("mcl_portals:gateway_destination", dest_str)
+		end
+	}, nil)
 end
 
 function mcl_portals.spawn_gateway_portal()
@@ -63,7 +67,7 @@ local function find_destination_pos(minp, maxp)
 				if nn ~= "ignore" and nn ~= "mcl_portals:portal_gateway" and nn ~= "mcl_core:bedrock" then
 					local def = minetest.registered_nodes[nn]
 					if def and def.walkable then
-						return vector.add(pos, vector.new(0, 1.5, 0))
+						return vector.offset(pos, 0, 1.5, 0)
 					end
 				end
 			end
@@ -86,13 +90,13 @@ local function teleport(pos, obj)
 	else
 		dest_portal = minetest.string_to_pos(dest_str)
 	end
-	local minp = vector.subtract(dest_portal, vector.new(5, 40, 5))
-	local maxp = vector.add(dest_portal, vector.new(5, 10, 5))
+	local minp = vector.offset(dest_portal, -5, -40, -5)
+	local maxp = vector.offset(dest_portal, 5, 10, 5)
 	preparing[pos_str] = true
 	minetest.emerge_area(minp, maxp, function(blockpos, action, calls_remaining, param)
 		if calls_remaining < 1 then
 			if obj and obj:is_player() or obj:get_luaentity() then
-				obj:set_pos(find_destination_pos(minp, maxp) or vector.add(dest_portal, vector.new(0, 3.5, 0)))
+				obj:set_pos(find_destination_pos(minp, maxp) or vector.offset(dest_portal, 0, 3.5, 0))
 			end
 			preparing[pos_str] = false
 		end

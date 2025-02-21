@@ -38,3 +38,15 @@ vl_biomes.register_decoration({
 	},
 	terrain_feature = true,
 })
+
+vl_structures.register_structure("boulder", {
+	-- for /spawnstruct
+	filenames = {
+		-- small boulder 3x as likely
+		modpath.."/schematics/mcl_structures_boulder_small.mts",
+		modpath.."/schematics/mcl_structures_boulder_small.mts",
+		modpath.."/schematics/mcl_structures_boulder_small.mts",
+		modpath.."/schematics/mcl_structures_boulder.mts",
+	},
+})
+

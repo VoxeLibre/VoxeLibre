@@ -99,7 +99,7 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 	return true
 end
 
-mcl_structures.register_structure("lavapool", {
+vl_structures.register_structure("lavapool", {
 	place_on = { "group:sand", "group:dirt", "group:stone" },
 	terrain_feature = true,
 	noise_params = {
@@ -120,7 +120,7 @@ mcl_structures.register_structure("lavapool", {
 	end
 })
 
-mcl_structures.register_structure("water_lake", {
+vl_structures.register_structure("water_lake", {
 	place_on = { "group:dirt", "group:stone" },
 	terrain_feature = true,
 	noise_params = {
@@ -141,7 +141,7 @@ mcl_structures.register_structure("water_lake", {
 	end
 })
 
-mcl_structures.register_structure("water_lake_swamp", {
+vl_structures.register_structure("water_lake_swamp", {
 	place_on = { "group:dirt", "group:stone" },
 	biomes = { "Swampland" },
 	terrain_feature = true,
@@ -163,7 +163,7 @@ mcl_structures.register_structure("water_lake_swamp", {
 	end
 })
 
-mcl_structures.register_structure("water_lake_mangrove_swamp", {
+vl_structures.register_structure("water_lake_mangrove_swamp", {
 	place_on = { "mcl_mud:mud" },
 	biomes = { "MangroveSwamp" },
 	terrain_feature = true,

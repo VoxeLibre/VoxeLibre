@@ -1,9 +1,8 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
-
-local seed = minetest.get_mapgen_setting("seed")
 local water_level = minetest.get_mapgen_setting("water_level")
-local pr = PseudoRandom(seed)
+
+local spawnon = { "mcl_stairs:slab_prismarine_dark" }
 
 local ocean_biomes = {
 	"RoofedForest_ocean",
@@ -68,9 +67,7 @@ local ocean_biomes = {
 	"JungleM_ocean"
 }
 
-local spawnon = { "mcl_stairs:slab_prismarine_dark"}
-
-mcl_structures.register_structure("ocean_temple",{
+vl_structures.register_structure("ocean_temple",{
 	place_on = {"group:sand","mcl_core:gravel"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 4,
@@ -83,8 +80,9 @@ mcl_structures.register_structure("ocean_temple",{
 		persist = 0.001,
 		flags = "absvalue",
 	},
-	sidelen = 32,
 	flags = "force_placement",
+	force_placement = true,
+	prepare = { tolerance = 8, clear = false, foundation = 3, surface = "water" },
 	biomes = ocean_biomes,
 	y_max = water_level-4,
 	y_min = mcl_vars.mg_overworld_min,
@@ -92,14 +90,11 @@ mcl_structures.register_structure("ocean_temple",{
 		modpath .. "/schematics/mcl_structures_ocean_temple.mts",
 		modpath .. "/schematics/mcl_structures_ocean_temple_2.mts",
 	},
-	y_offset = function(pr) return pr:next(-2,0) end,
-	after_place = function(p,def,pr)
-		local p1 = vector.offset(p,-9,0,-9)
-		local p2 = vector.offset(p,9,32,9)
-		mcl_structures.spawn_mobs("mobs_mc:guardian",spawnon,p1,p2,pr,5,true)
-		mcl_structures.spawn_mobs("mobs_mc:guardian_elder",spawnon,p1,p2,pr,1,true)
-		mcl_structures.construct_nodes(p1,p2,{"group:wall"})
-
+	y_offset = function(pr) return pr:next(-1,0) end,
+	after_place = function(p, _, pr, p1, p2)
+		vl_structures.spawn_mobs("mobs_mc:guardian",spawnon,p1,p2,pr,5,true)
+		vl_structures.spawn_mobs("mobs_mc:guardian_elder",spawnon,p1,p2,pr,1,true)
+		vl_structures.construct_nodes(p1,p2,{"group:wall"})
 		local minp = vector.offset(p, -20, -4, -20)
 		local maxp = vector.offset(p,  20,  4,  20)
 		mcl_ocean.kelp.remove_kelp_below_structure(minp, maxp)
@@ -143,7 +138,7 @@ mcl_structures.register_structure("ocean_temple",{
 	}
 })
 
-mcl_structures.register_structure_spawn({
+vl_structures.register_structure_spawn({
 	name = "mobs_mc:guardian",
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = mcl_vars.mg_overworld_max,
@@ -153,7 +148,7 @@ mcl_structures.register_structure_spawn({
 	spawnon = spawnon,
 })
 
-mcl_structures.register_structure_spawn({
+vl_structures.register_structure_spawn({
 	name = "mobs_mc:guardian_elder",
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = mcl_vars.mg_overworld_max,

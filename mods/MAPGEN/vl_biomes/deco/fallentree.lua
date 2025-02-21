@@ -7,7 +7,7 @@ local vprob, mprob = 0.4, 0.25 -- probability of vines, probability of mushrooms
 local get_node_name = mcl_vars.get_node_name
 local get_node_name_raw = mcl_vars.get_node_name_raw
 
-mcl_structures.register_structure("fallen_tree",{
+vl_structures.register_structure("fallen_tree",{
 	rank = 1100, -- after regular trees, but we run in gennotify anyway
 	place_on = {"group:grass_block", "group:dirt"}, -- dirt, podzol in mega taiga
 	terrain_feature = true,

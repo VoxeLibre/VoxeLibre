@@ -83,21 +83,20 @@ local function generate_strongholds(minp, maxp, blockseed)
 					pos.z = maxp.z - 7
 				end
 
-				--mcl_structures.call_struct(pos, "end_portal_shrine", nil, pr)
+				--vl_structures.call_struct(pos, "end_portal_shrine", nil, pr)
 				strongholds[s].generated = true
 			end
 		end
 	end
 end
 
-mcl_structures.register_structure("end_shrine",{
+vl_structures.register_structure("end_shrine",{
 	static_pos = init_strongholds(),
+	prepare = { tolerance = "off", foundation = false, clear = false },
 	filenames = {
 		minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
 	},
-	after_place = function(pos,def,pr,blockseed,p1,p2,size,rotation)
-		local p1 = vector.subtract(pos,size)
-		local p2 = vector.add(pos,size)
+	after_place = function(pos, def, pr, p1, p2, size, rotation)
 		local spawners = minetest.find_nodes_in_area(p1, p2, "mcl_mobspawners:spawner")
 		for s=1, #spawners do
 			--local meta = minetest.get_meta(spawners[s])
