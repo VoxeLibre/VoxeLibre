@@ -6,6 +6,7 @@ mcl_structures = {}
 
 dofile(modpath.."/api.lua")
 dofile(modpath.."/shipwrecks.lua")
+dofile(modpath.."/ocean_temple.lua")
 dofile(modpath.."/desert_temple.lua")
 dofile(modpath.."/jungle_temple.lua")
 dofile(modpath.."/ocean_ruins.lua")
