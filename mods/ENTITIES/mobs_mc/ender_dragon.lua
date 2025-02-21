@@ -130,7 +130,7 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 	on_die = function(self, pos, cmi_cause)
 		if self._portal_pos then
 			mcl_portals.spawn_gateway_portal()
-			mcl_structures.place_structure(self._portal_pos,mcl_structures.registered_structures["end_exit_portal_open"],PseudoRandom(minetest.get_mapgen_setting("seed")),-1)
+			mcl_structures.spawn_end_exit_portal(self._portal_pos)
 			if self._initial then
 				mcl_experience.throw_xp(pos, 11500) -- 500 + 11500 = 12000
 				minetest.set_node(vector.add(self._portal_pos, vector.new(0, 5, 0)), {name = "mcl_end:dragon_egg"})
