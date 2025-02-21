@@ -243,14 +243,15 @@ minetest.register_on_dignode(function(pos, node)
 end)
 
 -- Check if a node stops a tree from growing. Torches, plants, wood, tree,
--- leaves and dirt does not affect tree growth.
+-- leaves, dirt and buildable nodes do not affect tree growth.
 local function node_stops_growth(node)
 	if node.name == "air" then return false end
 	local def = minetest.registered_nodes[node.name]
 	local groups = def and def.groups
 	if not groups then return true end
 
-	return not (groups.leaves or groups.wood or groups.tree or groups.plant or groups.dirt or groups.torch or groups.bark)
+	return not (groups.leaves or groups.wood or groups.tree or groups.plant or groups.dirt or
+	            groups.torch or groups.bark or def.buildable_to)
 end
 
 -- Check if a tree can grow at position. The width is the width to check
