@@ -5,7 +5,7 @@ mcl_structures.register_structure("fossil",{
 	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
 	solid_ground = true,
-	sidelen = 13,
+	sidelen = 16,
 	chunk_probability = 1000,
 	y_offset = function(pr) return ( pr:next(1,16) * -1 ) -16 end,
 	y_max = 15,

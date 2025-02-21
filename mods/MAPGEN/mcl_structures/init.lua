@@ -14,15 +14,10 @@ dofile(modpath.."/witch_hut.lua")
 dofile(modpath.."/igloo.lua")
 dofile(modpath.."/woodland_mansion.lua")
 dofile(modpath.."/ruined_portal.lua")
-dofile(modpath.."/geode.lua")
 dofile(modpath.."/pillager_outpost.lua")
 dofile(modpath.."/end_spawn.lua")
 dofile(modpath.."/end_city.lua")
 dofile(modpath.."/desert_well.lua")
-dofile(modpath.."/fossil.lua")
-
-dofile(modpath.."/boulder.lua")
-dofile(modpath.."/ice_spike.lua")
 
 -- Debug command
 local function dir_to_rotation(dir)

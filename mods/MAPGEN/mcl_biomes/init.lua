@@ -21,6 +21,7 @@ local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superfl
 
 local mod_mcl_structures = minetest.get_modpath("mcl_structures")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_mcl_terrain_features = minetest.get_modpath("mcl_terrain_features")
 local mod_mcl_mushrooms = minetest.get_modpath("mcl_mushrooms")
 local mod_mcl_crimson = minetest.get_modpath("mcl_crimson")
 local mod_mcl_blackstone = minetest.get_modpath("mcl_blackstone")
@@ -3703,7 +3704,7 @@ local function register_decorations()
 		biomes = {"IcePlainsSpikes"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_ice_spike_large.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_ice_spike_large.mts",
 		rotation = "random",
 		flags = "place_center_x, place_center_z",
 	})
@@ -3724,7 +3725,7 @@ local function register_decorations()
 		biomes = {"IcePlainsSpikes"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_ice_spike_small.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_ice_spike_small.mts",
 		rotation = "random",
 		flags = "place_center_x, place_center_z",
 	})
@@ -4677,7 +4678,7 @@ local function register_decorations()
 		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_boulder.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_boulder.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -4698,7 +4699,7 @@ local function register_decorations()
 		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_boulder_small.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_boulder_small.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
