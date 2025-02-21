@@ -387,6 +387,8 @@ elseif mg_name ~= "v6" then
 	dofile(modpath.."/deco/corals.lua")
 	dofile(modpath.."/deco/fern.lua")
 	dofile(modpath.."/deco/flowers.lua")
+	dofile(modpath.."/deco/fossil.lua")
+	dofile(modpath.."/deco/geode.lua")
 	dofile(modpath.."/deco/kelp.lua")
 	dofile(modpath.."/deco/melon.lua")
 	dofile(modpath.."/deco/mushrooms.lua")
