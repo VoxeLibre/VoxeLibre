@@ -1,32 +1,26 @@
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
-local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local spawnon = {"mcl_deepslate:deepslate","mcl_core:birchwood","mcl_wool:red_carpet","mcl_wool:brown_carpet"}
 
-mcl_structures.register_structure("woodland_cabin",{
+vl_structures.register_structure("woodland_cabin",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
-	fill_ratio = 0.01,
 	flags = "place_center_x, place_center_z",
-	solid_ground = true,
-	make_foundation = true,
-	chunk_probability = 800,
+	prepare = { tolerance = 3, padding = 2, corners = 5, foundation = -5, clear = true, clear_top = 2 },
+	force_placement = false,
+	chunk_probability = 20,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "RoofedForest" },
-	sidelen = 32,
 	filenames = {
 		modpath.."/schematics/mcl_structures_woodland_cabin.mts",
 		modpath.."/schematics/mcl_structures_woodland_outpost.mts",
 	},
 	construct_nodes = {"mcl_barrels:barrel_closed","mcl_books:bookshelf"},
-	after_place = function(p,def,pr)
-		local p1=vector.offset(p,-def.sidelen,-1,-def.sidelen)
-		local p2=vector.offset(p,def.sidelen,def.sidelen,def.sidelen)
-		mcl_structures.spawn_mobs("mobs_mc:vindicator",spawnon,p1,p2,pr,5)
-		mcl_structures.spawn_mobs("mobs_mc:evoker",spawnon,p1,p2,pr,1)
-		mcl_structures.spawn_mobs("mobs_mc:parrot",{"mcl_heads:wither_skeleton"},p1,p2,pr,1)
+	after_place = function(p,def,pr,p1,p2)
+		vl_structures.spawn_mobs("mobs_mc:vindicator",spawnon,p1,p2,pr,5)
+		vl_structures.spawn_mobs("mobs_mc:evoker",spawnon,p1,p2,pr,1)
+		vl_structures.spawn_mobs("mobs_mc:parrot",{"mcl_heads:wither_skeleton"},p1,p2,pr,1)
 	end,
 	loot = {
 		["mcl_chests:chest_small" ] ={{
@@ -69,7 +63,7 @@ mcl_structures.register_structure("woodland_cabin",{
 	}
 })
 
-mcl_structures.register_structure_spawn({
+vl_structures.register_structure_spawn({
 	name = "mobs_mc:vindicator",
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = mcl_vars.mg_overworld_max,
@@ -79,7 +73,7 @@ mcl_structures.register_structure_spawn({
 	spawnon = spawnon,
 })
 
-mcl_structures.register_structure_spawn({
+vl_structures.register_structure_spawn({
 	name = "mobs_mc:evoker",
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = mcl_vars.mg_overworld_max,

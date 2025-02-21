@@ -1,18 +1,6 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
-
-local seed = minetest.get_mapgen_setting("seed")
 local water_level = minetest.get_mapgen_setting("water_level")
-local pr = PseudoRandom(seed)
-
---schematics by chmodsayshello
-local schems = {
-	modpath.."/schematics/mcl_structures_shipwreck_full_damaged.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_full_normal.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_full_back_damaged.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_half_front.mts",
-	modpath.."/schematics/mcl_structures_shipwreck_half_back.mts",
-}
 
 local ocean_biomes = {
 	"RoofedForest_ocean",
@@ -77,26 +65,27 @@ local ocean_biomes = {
 	"JungleM_ocean"
 }
 
-mcl_structures.register_structure("shipwreck",{
+-- FIXME: integrate treasure maps from MCLA
+
+vl_structures.register_structure("shipwreck",{
 	place_on = {"group:sand","mcl_core:gravel"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 4,
-	noise_params = {
-		offset = 0,
-		scale = 0.000022,
-		spread = {x = 250, y = 250, z = 250},
-		seed = 3,
-		octaves = 3,
-		persist = 0.001,
-		flags = "absvalue",
-	},
-	sidelen = 16,
-	flags = "force_placement",
+	chunk_probability = 20,
 	biomes = ocean_biomes,
-	y_max = water_level-4,
 	y_min = mcl_vars.mg_overworld_min,
-	filenames = schems,
-	y_offset = function(pr) return pr:next(-4,-2) end,
+	y_max = water_level-5,
+	y_offset = function(pr) return pr:next(-3,-1) end,
+	flags = "place_center_x, place_center_z, force_placement",
+	prepare = { tolerance = 99, clear = false, foundation = false, surface = "water", mode = "min" },
+	filenames = {
+		--schematics by chmodsayshello
+		modpath.."/schematics/mcl_structures_shipwreck_full_damaged.mts",
+		modpath.."/schematics/mcl_structures_shipwreck_full_normal.mts",
+		modpath.."/schematics/mcl_structures_shipwreck_full_back_damaged.mts",
+		modpath.."/schematics/mcl_structures_shipwreck_half_front.mts",
+		modpath.."/schematics/mcl_structures_shipwreck_half_back.mts",
+	},
 	loot = {
 		["mcl_chests:chest_small"] = {
 			{
@@ -113,13 +102,13 @@ mcl_structures.register_structure("shipwreck",{
 					{ itemstring = "mcl_core:coal_lump", weight = 6, amount_min = 2, amount_max = 8 },
 					{ itemstring = "mcl_mobitems:rotten_flesh", weight = 5, amount_min = 5, amount_max = 24 },
 					{ itemstring = "mcl_farming:potato_item", weight = 3, amount_min = 1, amount_max = 5 },
-					{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3, func = function(stack, pr)
+					{ itemstring = "mcl_armor:helmet_leather_enchanted", weight = 3, func = function(stack, _)
 							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-					{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3, func = function(stack, pr)
+					{ itemstring = "mcl_armor:chestplate_leather_enchanted", weight = 3, func = function(stack, _)
 							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-					{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3, func = function(stack, pr)
+					{ itemstring = "mcl_armor:leggings_leather_enchanted", weight = 3, func = function(stack, _)
 							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
-					{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3, func = function(stack, pr)
+					{ itemstring = "mcl_armor:boots_leather_enchanted", weight = 3, func = function(stack, _)
 							mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}) end },
 					{ itemstring = "mcl_bamboo:bamboo", weight = 2, amount_min = 1, amount_max = 3 },
 					{ itemstring = "mcl_farming:pumpkin", weight = 2, amount_min = 1, amount_max = 3 },

@@ -1,123 +1,101 @@
 local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
+local worldseed = minetest.get_mapgen_setting("seed")
 
-
-mcl_structures.register_structure("end_spawn_obsidian_platform",{
-	static_pos ={mcl_vars.mg_end_platform_pos},
-	place_func = function(pos,def,pr)
-		local obby = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_end:end_stone"})
-		local air = minetest.find_nodes_in_area(vector.offset(pos,-2,1,-2),vector.offset(pos,2,3,2),{"air","mcl_end:end_stone"})
-		minetest.bulk_set_node(obby,{name="mcl_core:obsidian"})
-		minetest.bulk_set_node(air,{name="air"})
-		return true
-	end,
-})
-
-mcl_structures.register_structure("end_exit_portal",{
-	static_pos = { mcl_vars.mg_end_exit_portal_pos },
-	filenames = {
-		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
-	},
-	after_place = function(pos,def,pr,blockseed)
-		if  minetest.settings:get_bool("only_peaceful_mobs", false) then
-			return
-		end
-		local p1 = vector.offset(pos,-16,-16,-16)
-		local p2 = vector.offset(pos,16,21,16)
-		minetest.emerge_area(p1,p2,function(blockpos, action, calls_remaining, param)
-			if calls_remaining > 0 then return end
-			minetest.bulk_set_node(minetest.find_nodes_in_area(p1,p2,{"mcl_portals:portal_end"}),{name="air"})
-			local obj = minetest.add_entity(vector.offset(pos,3, 11, 3), "mobs_mc:enderdragon")
-			if obj then
-				local dragon_entity = obj:get_luaentity()
-				dragon_entity._portal_pos = pos
-				if blockseed ~= -1 then
-					dragon_entity._initial = true
-				end
-			else
-				minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
-			end
-			minetest.fix_light(p1,p2)
-		end)
-	end
-})
-mcl_structures.register_structure("end_exit_portal_open",{
-	filenames = {
-		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
-	},
-	after_place  = function(pos,def,pr)
-		local p1 = vector.offset(pos,-16,-16,-16)
-		local p2 = vector.offset(pos,16,16,16)
-		minetest.fix_light(p1,p2)
-	end
-})
-mcl_structures.register_structure("end_gateway_portal",{
-	filenames = {
-		modpath.."/schematics/mcl_structures_end_gateway_portal.mts"
-	},
-})
-
-local function get_tower(p,h,tbl)
-	for i = 1,h do
-		table.insert(tbl,vector.offset(p,0,i,0))
-	end
+-- mcl_structures_end_exit_portal open is triggered by mods/ENTITIES/mobs_mc/ender_dragon.lua
+mcl_structures.spawn_end_exit_portal = function(pos)
+	local schematic = vl_structures.load_schematic(modpath.."/schematics/mcl_structures_end_exit_portal.mts")
+	vl_structures.place_schematic(pos, 0, schematic, "0", { name="end_exit_portal_open", prepare = false })
 end
 
-local function make_endspike(pos,width,height)
-	local nn = minetest.find_nodes_in_area(vector.offset(pos,-width/2,0,-width/2),vector.offset(pos,width/2,0,width/2),{"air","group:solid"})
+-- mcl_structures_end_gateway_portal.mts: see mods/ITEMS/mcl_portals/portal_gateway.lua
+mcl_structures.spawn_end_gateway_portal = function(pos)
+	local schematic = vl_structures.load_schematic(modpath.."/schematics/mcl_structures_end_gateway_portal.mts")
+	vl_structures.place_schematic(pos, 0, schematic, "0", { name="end_gateway_portal", prepare = false })
+end
+
+local function make_endspike(pos, rad, height)
+	-- FIXME: why find_nodes, not just use the circle?
+	local nn = minetest.find_nodes_in_area(vector.offset(pos, -rad, 0, -rad), vector.offset(pos, rad, 0, rad), {"air", "group:solid"})
 	table.sort(nn,function(a, b)
 		return vector.distance(pos, a) < vector.distance(pos, b)
 	end)
 	local nodes = {}
-	for i = 1,math.ceil(#nn*0.55) do
-		get_tower(nn[i],height,nodes)
+	for i = 1, math.ceil(#nn * 0.55) do
+		for j = 1, height do
+			table.insert(nodes, vector.offset(nn[i], 0, j, 0))
+		end
 	end
-	minetest.bulk_set_node(nodes,{ name="mcl_core:obsidian"} )
-	return vector.offset(pos,0,height,0)
+	minetest.bulk_swap_node(nodes, {name = "mcl_core:obsidian"})
+	return vector.offset(pos, 0, height, 0)
 end
 
-function make_cage(pos,width)
+function make_cage(pos, rad)
+	if not xpanes then return end
 	local nodes = {}
-	local nodes2 = {}
-	local r = math.max(1,math.floor(width/2) - 2)
-	for x=-r,r do for y = 0,width do for z = -r,r do
-		if x == r or x == -r or z==r or z == -r then
-			table.insert(nodes,vector.add(pos,vector.new(x,y,z)))
-		end
-	end end end
-	if xpanes then
-		minetest.bulk_set_node(nodes,{ name="xpanes:bar_flat"} )
-		for _,p in pairs(nodes) do
-			xpanes.update_pane(p)
-		end
-	end
+	local r = math.max(1, rad - 2)
+	for y = 0, rad * 2 do for xz = -r, r do
+		table.insert(nodes,vector.add(pos,vector.new(xz,y, r)))
+		table.insert(nodes,vector.add(pos,vector.new(xz,y,-r)))
+		table.insert(nodes,vector.add(pos,vector.new( r,y,xz)))
+		table.insert(nodes,vector.add(pos,vector.new(-r,y,xz)))
+	end end
+	minetest.bulk_swap_node(nodes, {name = "xpanes:bar_flat"} )
+	for _,p in pairs(nodes) do xpanes.update_pane(p) end
 end
 
 local function get_points_on_circle(pos,r,n)
-	local rt = {}
+	local rt, step = {}, 2 * math.pi / n
 	for i=1, n do
-		table.insert(rt,vector.offset(pos,r * math.cos(((i-1)/n) * (2*math.pi)),0,  r* math.sin(((i-1)/n) * (2*math.pi)) ))
+		table.insert(rt, vector.offset(pos, r * math.cos((i-1)*step), 0,  r * math.sin((i-1)*step)))
 	end
 	return rt
 end
 
-mcl_structures.register_structure("end_spike",{
-	static_pos =get_points_on_circle(vector.offset(mcl_vars.mg_end_exit_portal_pos,0,-20,0),43,10),
-	place_func = function(pos,def,pr)
-		local d = pr:next(6,12)
-		local h = d * pr:next(4,6)
-		local p1 = vector.offset(pos, -d / 2, 0, -d / 2)
-		local p2 = vector.offset(pos, d / 2, h + d, d / 2)
-		minetest.emerge_area(p1, p2, function(blockpos, action, calls_remaining, param)
+minetest.register_on_mods_loaded(function()
+-- TODO: use LVM?
+mcl_mapgen_core.register_generator("end structures", nil, function(minp, maxp, blockseed)
+	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
+	-- end spawn obsidian platform
+	local pos = mcl_vars.mg_end_platform_pos
+	if vector.in_area(pos, minp, maxp) then
+		local obby = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_end:end_stone"})
+		local air  = minetest.find_nodes_in_area(vector.offset(pos,-2,1,-2),vector.offset(pos,2,3,2),{"air","mcl_end:end_stone"})
+		minetest.bulk_swap_node(obby,{name="mcl_core:obsidian"})
+		minetest.bulk_swap_node(air,{name="air"})
+	end
+	-- end exit portal and pillars
+	local pos = mcl_vars.mg_end_exit_portal_pos
+	if vector.in_area(pos, minp, maxp) then
+		local pr = PcgRandom(worldseed)
+		-- emerge pillars
+		local p1, p2 = vector.offset(pos, -43-6, -10, -43-6), vector.offset(pos, 43+6, 12*6-10, 43+6)
+		minetest.emerge_area(p1, p2, function(_, _, calls_remaining)
 			if calls_remaining ~= 0 then return end
-			local s = make_endspike(pos,d,h)
-			minetest.set_node(vector.offset(s,0,1,0),{name="mcl_core:bedrock"})
-			minetest.add_entity(vector.offset(s,0,2,0),"mcl_end:crystal")
-			if pr:next(1,3) == 1 then
-				make_cage(vector.offset(s,0,1,0),d)
+			for _, p in ipairs(get_points_on_circle(vector.offset(pos, 0, -10, 0), 43, 10)) do
+				local rad = pr:next(3,6)
+				local top = make_endspike(p, rad, rad * 2 * pr:next(4,6) - 10)
+				minetest.swap_node(vector.offset(top, 0, 1, 0), {name = "mcl_core:bedrock"})
+				minetest.add_entity(vector.offset(top, 0, 2, 0), "mcl_end:crystal")
+				if pr:next(1, 3) == 1 then make_cage(vector.offset(top, 0, 1, 0), rad) end
 			end
 		end)
-		return true
-	end,
-})
+		-- emerge end portal
+		local schematic = vl_structures.load_schematic(modpath.."/schematics/mcl_structures_end_exit_portal.mts")
+		vl_structures.place_schematic(pos, 0, schematic, "0", { name = "end portal", prepare = false,
+			after_place = function(pos,def,pr,pmin,pmax,size,rot)
+				-- spawn ender dragon
+				if minetest.settings:get_bool("only_peaceful_mobs", false) then return end
+				minetest.bulk_swap_node(minetest.find_nodes_in_area(pmin, pmax, {"mcl_portals:portal_end"}), { name="air" })
+				local obj = minetest.add_entity(vector.offset(pos, 3, 11, 3), "mobs_mc:enderdragon")
+				if obj then
+					local dragon_entity = obj:get_luaentity()
+					dragon_entity._portal_pos = pos
+					dragon_entity._initial = true
+				else
+					minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
+				end
+			end}, pr)
+	end
+end, 100)
+end)
