@@ -548,6 +548,9 @@ local function set_power_level(pos, rules, power_level)
 		end)
 	end
 end
+function vl_redstone.set_power_level(pos, rules, power_level)
+	core.after(0, set_power_level, pos, rules, power_level)
+end
 --vl_scheduler.register_serializable("vl_redstone:set_power_level", set_power_level)
 
 -- Override mesecon.receptor_* functions
