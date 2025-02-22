@@ -50,6 +50,7 @@ local function do_observer_activation(pos, node, def)
 		mesecon.receptor_on(pos)
 	end
 end
+vl_scheduler.register_serializable("mcl_observers:do_observer_activation", do_observer_activation)
 
 ---@param node core.Node
 local function update_observer(pos, node, def, force_activate)
@@ -113,7 +114,6 @@ core.register_node("mcl_observers:observer_off",{
 
 	after_place_node = observer_orientate,
 	_mcl_observer_on_name = "mcl_observers:observer_on",
-	_onload = on_load,
 })
 core.register_node("mcl_observers:observer_on",{
 	is_ground_content = false,
