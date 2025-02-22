@@ -36,6 +36,22 @@ local function protection_check_put_take(pos, listname, index, stack, player)
 	end
 end
 
+local function log_inventory_move(pos, listname, index, stack, player)
+	core.log("action", player:get_player_name() ..
+		" moves stuff in barrel at " .. core.pos_to_string(pos))
+	vl_block_update.node_changed(pos)
+end
+local function log_inventory_put(pos, listname, index, stack, player)
+	core.log("action", player:get_player_name() ..
+		" moves stuff to barrel at " .. core.pos_to_string(pos))
+	vl_block_update.node_changed(pos)
+end
+local function log_inventory_take(pos, listnae, index, stack, player)
+	core.log("action", player:get_player_name() ..
+		" takes stuff from barrel at " .. core.pos_to_string(pos))
+	vl_block_update.node_changed(pos)
+end
+
 local function barrel_open(pos, node, clicker)
 	local name = minetest.get_meta(pos):get_string("name")
 
@@ -139,25 +155,16 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	allow_metadata_inventory_move = protection_check_move,
 	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = protection_check_put_take,
-	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		minetest.log("action", player:get_player_name() ..
-			" moves stuff in barrel at " .. minetest.pos_to_string(pos))
-	end,
-	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name() ..
-			" moves stuff to barrel at " .. minetest.pos_to_string(pos))
-	end,
-	on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name() ..
-			" takes stuff from barrel at " .. minetest.pos_to_string(pos))
-	end,
+	on_metadata_inventory_move = log_inventory_move,
+	on_metadata_inventory_put = log_inventory_put,
+	on_metadata_inventory_take = log_inventory_take,
 	after_dig_node = drop_content,
 	on_blast = on_blast,
 	on_rightclick = barrel_open,
 	on_destruct = close_forms,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
-	_mcl_comparator_get_reading = function(pos)
+	_mcl_comparators_get_reading = function(pos)
 		local inv = core.get_meta(pos):get_inventory()
 		return mcl_comparators.read_inventory(inv, "main")
 	end,
@@ -187,24 +194,19 @@ minetest.register_node("mcl_barrels:barrel_open", {
 	allow_metadata_inventory_move = protection_check_move,
 	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = protection_check_put_take,
-	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		minetest.log("action", player:get_player_name() ..
-			" moves stuff in barrel at " .. minetest.pos_to_string(pos))
-	end,
-	on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name() ..
-			" moves stuff to barrel at " .. minetest.pos_to_string(pos))
-	end,
-	on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name() ..
-			" takes stuff from barrel at " .. minetest.pos_to_string(pos))
-	end,
+	on_metadata_inventory_move = log_inventory_move,
+	on_metadata_inventory_put = log_inventory_put,
+	on_metadata_inventory_take = log_inventory_take,
 	after_dig_node = drop_content,
 	on_blast = on_blast,
 	on_rightclick = barrel_open,
 	on_destruct = close_forms,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
+	_mcl_comparators_get_reading = function(pos)
+		local inv = core.get_meta(pos):get_inventory()
+		return mcl_comparators.read_inventory(inv, "main")
+	end,
 })
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
