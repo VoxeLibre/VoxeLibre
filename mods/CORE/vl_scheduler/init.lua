@@ -50,6 +50,79 @@ end
 function vl_scheduler.set_debug(value)
 	DEBUG = value
 end
+local storage = core.get_mod_storage()
+local registered_serializable = {}
+local registered_serializable_from_name = {}
+function vl_scheduler.save()
+	vl_scheduler.print_debug_dump()
+
+	local sequence = storage:get_int("sequence") + 1
+	local task_count = 0
+
+	-- Serialize run queue
+	for i = 1,4 do
+		local iter = run_queue[i]
+		while iter do
+			if iter.name then
+				storage:set_string("task_"..sequence.."_"..task_count, core.serialize{
+					name = iter.name,
+					args = iter.args,
+					time = 0,
+					priority = i,
+				})
+				task_count = task_count + 1
+			end
+			iter = iter.next
+		end
+	end
+
+	-- Serialize task ring
+	for i = 0,31 do
+		local iter = task_ring[(task_pos + i)%32]
+		while iter do
+			if iter.name then
+				storage:set_string("task_"..sequence.."_"..task_count, core.serialize{
+					name = iter.name,
+					args = iter.args,
+					time = 1 + i,
+					priority = task.priority,
+				})
+				task_count = task_count + 1
+			end
+			iter = iter.next
+		end
+	end
+
+	--TODO: Serialize long duration task queue
+
+	storage:set_int("task_count_"..tostring(sequence), task_count)
+	storage:set_int("sequence", sequence)
+end
+function vl_scheduler.load()
+	-- Delete all but the latest sequence
+	local sequence = storage:get_int("sequence")
+	local keys = storage:get_keys()
+	for _,key in ipairs(keys) do
+		if key:sub(0,11) == "task_count_" and key ~= "task_count_"..sequence then
+			local old_sequence = tonumber(key:sub(12))
+			local task_count = storage:get_int(key)
+
+			-- Delete all the old task data
+			for i = 0,task_count do
+				storage:set_string("task_"..sequence.."_"..i, "")
+			end
+
+			-- Delete this sequence
+			storage:set_string(key, "")
+		end
+	end
+
+	core.log("TODO: load and requeue scheduler tasks")
+end
+function vl_scheduler.register_serializable(name, func)
+	registered_serializable[func] = name
+	registered_serializable_from_name[name] = func
+end
 
 local function new_task()
 	if not free_tasks then return {} end
@@ -249,6 +322,7 @@ local function vl_scheduler_after(time, priority, func, ...)
 	task.args = {...}
 	task.next = nil
 	task.real_func = func
+	task.name = registered_serializable[func]
 	setmetatable(task, task_metatable)
 	local timesteps = math.round(time / 0.05)
 	queue_task(timesteps, priority, task)
@@ -263,5 +337,8 @@ vl_scheduler.after = vl_scheduler_after
 function core.after(time, func, ...)
 	return vl_scheduler_after(time, 2, func, ...)
 end
+
+core.register_on_shutdown(vl_scheduler.save)
+core.register_on_mods_loaded(vl_scheduler.load)
 
 return vl_scheduler
