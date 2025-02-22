@@ -11,6 +11,7 @@ vl_biomes.register_biome({
 	depth_riverbed = 2,
 	y_min = 1, -- was 4, with Shore below
 	y_max = 20, -- Note: Limited in height!
+	weight = mcl_vars.biome_weights and 0.5 or 1.0, -- Luanti 5.11+
 	vertical_blend = 1,
 	humidity_point = 106,
 	heat_point = 50,

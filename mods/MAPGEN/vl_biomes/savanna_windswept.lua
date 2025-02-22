@@ -14,6 +14,7 @@ vl_biomes.register_biome({
 	y_max = vl_biomes.overworld_max,
 	humidity_point = 48,
 	heat_point = 100,
+	weight = mcl_vars.biome_weights and 0.75 or 1.0, -- Luanti 5.11+
 	_vl_biome_type = "hot",
 	_vl_water_temp = "lukewarm",
 	_vl_grass_palette = "savanna_windswept",

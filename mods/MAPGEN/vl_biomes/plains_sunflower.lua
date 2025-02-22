@@ -11,6 +11,7 @@ vl_biomes.register_biome({
 	y_max = vl_biomes.overworld_max,
 	humidity_point = 28,
 	heat_point = 45,
+	weight = mcl_vars.biome_weights and 0.75 or 1.0, -- Luanti 5.11+
 	_vl_biome_type = "medium",
 	_vl_water_temp = "ocean",
 	_vl_grass_palette = "plains_sunflower",
