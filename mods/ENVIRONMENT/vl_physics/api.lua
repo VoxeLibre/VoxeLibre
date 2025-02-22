@@ -7,13 +7,21 @@ function mod.register_environment_effect(effect)
 	list[#list + 1] = effect
 end
 
-function mod.get_environment_effect(pos, vel, staticdata, mass, entity)
+-- Get the physics effects that affect an entity
+---@param pos vector.Vector Current position of the entity
+---@param collision_box table The collision box of the entity used to determine if the entity
+--        overlaps nodes
+---@param vel Number The entity's previous velocity
+---@param staticdata table
+---@param mass Number
+---@param entity core.LuaEntity
+function mod.get_environment_effect(pos, collision_box, vel, staticdata, mass, entity)
 	local v = vector.zero()
 	local a = vector.zero()
 
 	-- Accumulate all enviornmental effects
 	for _,effect in ipairs(registered_environment_effects) do
-		local dv,da = effect(pos, vel, staticdata, entity)
+		local dv,da = effect(pos, collisionbox, vel, staticdata, entity)
 		if dv then
 			v = v + dv
 		end
@@ -40,7 +48,7 @@ function mod.apply_entity_environmental_physics(self, data)
 
 	local pos = self.object:get_pos()
 	local vel = self.object:get_velocity()
-	local new_velocity,new_acceleration = vl_physics.get_environment_effect(pos, vel, data, mass, self)
+	local new_velocity,new_acceleration = vl_physics.get_environment_effect(pos, nil, vel, data, mass, self)
 
 	--if new_velocity then print("new_velocity="..tostring(new_velocity)) end
 	--if new_acceleration then print("new_acceleration="..tostring(new_acceleration)) end
