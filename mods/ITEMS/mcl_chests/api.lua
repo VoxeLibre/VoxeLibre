@@ -779,18 +779,8 @@ function mcl_chests.register_chest(basename, d)
 		_mcl_blast_resistance = d.hardness,
 		_mcl_hardness = d.hardness,
 		_mcl_comparators_get_reading = function(pos)
-			local meta = core.get_meta(pos)
-			local inv = meta:get_inventory()
-			if not inv or inv:is_empty("main") then return 0 end
-
-			local size = inv:get_size("main")
-			local fill = 0
-			for i = 1,size do
-				local itemstack = inv:get_stack("main",i)
-				fill = fill + ( itemstack:get_count() / itemstack:get_stack_max())
-			end
-
-			return 1 + math.floor(15 * fill / size)
+			local meta = core.get_meta(pos):get_inventory()
+			return mcl_comparators.read_inventory(inv, "main")
 		end,
 
 		on_rightclick = function(pos, node, clicker)
