@@ -157,6 +157,10 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	on_destruct = close_forms,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
+	_mcl_comparator_get_reading = function(pos)
+		local inv = core.get_meta(pos):get_inventory()
+		return mcl_comparators.read_inventory(inv, "main")
+	end,
 })
 
 minetest.register_node("mcl_barrels:barrel_open", {

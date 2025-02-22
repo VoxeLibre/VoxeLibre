@@ -1,5 +1,19 @@
 local S = core.get_translator(core.get_current_modname())
 
+mcl_comparators = {}
+function mcl_comparators.read_inventory(inv, inv_name)
+	if not inv or inv:is_empty(inv_name) then return 0 end
+
+	local size = inv:get_size(inv_name)
+	local fill = 0
+	for i = 1,size do
+		local itemstack = inv:get_stack(inv_name,i)
+		fill = fill + ( itemstack:get_count() / itemstack:get_stack_max())
+	end
+
+	return 1 + math.floor(15 * fill / size)
+end
+
 -- Functions that get the input/output rules of the comparator
 -- Precompute rules for all 4 directions
 local output_rules = {
