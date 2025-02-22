@@ -11,3 +11,4 @@ Schematics
 * Cocoon - kno10
 * Witches Circle - kno10
 * Statues - kno10
+* Forest Tree Hideout - kno10
