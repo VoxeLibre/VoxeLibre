@@ -27,11 +27,14 @@ function vl_hollow_logs.register_hollow_log(defs)
 
 	local collisionbox = {
 		type = "fixed",
+		-- Note: visually, we have 3/16 pixels, but for collision we only use 1/16
+		-- to allow smoke to better pass through. Can be reduced when Luanti has
+		-- resolved https://github.com/luanti-org/luanti/issues/15820
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0.5, -0.375},
-			{-0.5, -0.5, -0.5, -0.375, 0.5, 0.5},
-			{0.375, -0.5, -0.5, 0.5, 0.5, 0.5},
-			{-0.5, -0.5, 0.375, 0.5, 0.5, 0.5},
+			{-0.5, -0.5, -0.5, 0.5, 0.5, -0.4375},
+			{-0.5, -0.5, -0.5, -0.4375, 0.5, 0.5},
+			{0.4375, -0.5, -0.5, 0.5, 0.5, 0.5},
+			{-0.5, -0.5, 0.4375, 0.5, 0.5, 0.5},
 		}
 	}
 
