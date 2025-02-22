@@ -175,34 +175,22 @@ local function create_smoke_partspawner (pos, constructor)
 		destroy_particle_spawner (pos)
 	end
 
-	local haybale = false
-
-	local node_below = vector.offset(pos, 0, -1, 0)
-	if minetest.get_node(node_below).name == "mcl_farming:hay_block" then
-		haybale = true
-	end
-
-	local smoke_timer
-
-	if haybale then
-		smoke_timer = 4
-	else
-		smoke_timer = 2.4
-	end
+	local haybale = minetest.get_node(vector.offset(pos, 0, -1, 0)).name == "mcl_farming:hay_block"
+	local smoke_timer = haybale and 4 or 2.4
 
 	local spawner_id = minetest.add_particlespawner({
 		amount = 3,
 		time = 0,
-		minpos = vector.add(pos, vector.new(-0.25, 0, -0.25)),
-		maxpos = vector.add(pos, vector.new( 0.25, 0,  0.25)),
-		minvel = vector.new(-0.2, 0.5, -0.2),
-		maxvel = vector.new(0.2, 1,  0.2),
+		minpos = vector.add(pos, vector.new(-0.15, 0, -0.15)),
+		maxpos = vector.add(pos, vector.new( 0.15, 0.2,  0.15)),
+		minvel = vector.new(-0.1, 0.5, -0.1),
+		maxvel = vector.new(0.1, 0.5,  0.1),
 		minacc = vector.new(0, 0.5, 0),
 		maxacc = vector.new(0, 0.5, 0),
 		minexptime = smoke_timer,
 		maxexptime = smoke_timer * 2,
-		minsize = 6,
-		maxsize = 8,
+		minsize = 4,
+		maxsize = 6,
 		collisiondetection = true,
 		vertical = false,
 		texture = "mcl_campfires_particle_1.png",
