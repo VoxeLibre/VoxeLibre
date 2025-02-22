@@ -56,8 +56,12 @@ local function update_self(pos, node)
 	local mode = node_def.comparator_mode
 
 	local back_power_level = 0
-	if back_nodedef and back_nodedef._mcl_comparators_get_reading then
-		back_power_level = back_nodedef._mcl_comparators_get_reading(back_pos, back_node, back_nodedef)
+	if back_nodedef then
+		if back_nodedef._mcl_comparators_get_reading then
+			back_power_level = back_nodedef._mcl_comparators_get_reading(back_pos, back_node, back_nodedef)
+		elseif back_nodedef.groups.comparator_signal then
+			back_power_level = back_nodedef.groups.comparator_signal
+		end
 	else
 		back_power_level = vl_redstone.get_power_level(back_pos)
 	end

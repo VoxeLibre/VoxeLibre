@@ -41,7 +41,7 @@ minetest.register_craft({
 local get_item_group = minetest.get_item_group
 local is_creative_enabled = minetest.is_creative_enabled
 local registered_nodes = minetest.registered_nodes
-local swap_node = minetest.swap_node
+local set_node = core.set_node
 local get_node_timer = minetest.get_node_timer
 local add_item = minetest.add_item
 local vector_offset = vector.offset
@@ -66,7 +66,7 @@ local function composter_progress_chance(pos, node, chance)
 		else
 			level = "ready"
 		end
-		swap_node(pos, {name = "mcl_composters:composter_" .. level})
+		set_node(pos, {name = "mcl_composters:composter_" .. level})
 		minetest.sound_play({name="default_grass_footstep", gain=0.4}, {
 			pos = pos,
 			gain= 0.4,
@@ -130,7 +130,7 @@ end
 -- returns false, thereby cancelling further activity of the timer.
 --
 local function composter_ready(pos)
-	swap_node(pos, {name = "mcl_composters:composter_ready"})
+	set_node(pos, {name = "mcl_composters:composter_ready"})
 	-- maybe spawn particles again?
 	minetest.sound_play({name="default_dig_snappy", gain=1}, {
 		pos = pos,
@@ -162,7 +162,7 @@ local function composter_harvest(pos, node, player, itemstack, pointed_thing)
 	--remove bone meal from internal inventory
 	inv:set_stack("dst", 1, ItemStack())
 	-- reset ready type composter to empty type
-	swap_node(pos, {name="mcl_composters:composter"})
+	set_node(pos, {name="mcl_composters:composter"})
 	-- spawn bone meal item
 	add_item(pos, "mcl_bone_meal:bone_meal")
 	-- TODO play some sounds
@@ -308,6 +308,7 @@ local function register_filled_composter(level)
 			end
 			inv:remove_item("src", stack)
 		end,
+		_mcl_comparator_get_reading = level
 	})
 
 	-- Add entry aliases for the Help
@@ -365,8 +366,9 @@ minetest.register_node("mcl_composters:composter_ready", {
 		return nil, nil, nil
 	end,
 	_mcl_hoppers_on_after_pull = function(pos)
-		minetest.swap_node(pos, {name = "mcl_composters:composter"})
+		set_node(pos, {name = "mcl_composters:composter"})
 	end,
+	_mcl_comparator_get_reading = 8,
 })
 
 -- Add entry aliases for the Help
