@@ -340,6 +340,10 @@ local def_hopper = {
 		return true
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_comparator_get_reading = function(pos)
+		local inv = core.get_meta(pos):get_inventory()
+		return mcl_comparators.read_inventory(inv, "main")
+	end,
 
 	_mcl_blast_resistance = 4.8,
 	_mcl_hardness = 3,
