@@ -14,6 +14,7 @@ vl_biomes.register_biome({
 	depth_riverbed = 2,
 	y_min = 1,
 	y_max = vl_biomes.overworld_max,
+	weight = mcl_vars.biome_weights and 0.5 or 1.0, -- Luanti 5.11+
 	humidity_point = 24,
 	heat_point = -5,
 	_vl_biome_type = "snowy",
