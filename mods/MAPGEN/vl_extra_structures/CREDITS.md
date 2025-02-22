@@ -9,3 +9,4 @@ Schematics
 * Campsite - kno10
 * Obelisks - kno10
 * Cocoon - kno10
+* Witches Circle - kno10
