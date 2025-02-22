@@ -8,3 +8,4 @@ Schematics
 * Graveyard - PrairieWind, modified by kno10
 * Campsite - kno10
 * Obelisks - kno10
+* Cocoon - kno10
