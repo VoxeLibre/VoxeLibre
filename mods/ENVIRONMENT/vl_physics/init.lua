@@ -7,6 +7,7 @@ dofile(modpath.."/api.lua")
 
 -- Locallized functions
 local math_round = math.round
+local mcl_vars_get_node_raw = mcl_vars.get_node_raw
 
 -- Flowing water
 -- TODO: move to Flowlib
@@ -55,10 +56,11 @@ end)
 local DEFAULT_NODE_PHYSICS = {
 	friction = 0.9
 }
-local function apply_node_physics(pos, v, a, vel, staticdata, entity)
-	local node = core.get_node(pos)
-	local node_def = minetest.registered_nodes[node.name] or {}
-	local node_physics = node_def._vl_physics or DEFAULT_NODE_PHYSICS
+local AIR_CONTENT_ID = nil
+local registered_node_physics = {}
+local function apply_node_physics(x,y,z, v, a, vel, staticdata, entity)
+	local node_content_id = mcl_vars_get_node_raw(x,y,z)
+	local node_physics = registered_node_physics[node_content_id] or DEFAULT_NODE_PHYSICS
 
 	-- Custom node physics
 	local node_physics_effect = node_physics.effect
@@ -66,19 +68,20 @@ local function apply_node_physics(pos, v, a, vel, staticdata, entity)
 		return node_physics_effect(pos, vel, staticdata)
 	end
 
-	-- Default node physics
+	-- Standard node physics
+	local vel_x, vel_y, vel_z = vel.x, vel.y, vel.z
 
 	-- Friction
-	if node.name ~= "air" and vector.length(vel) > 0.01 then
+	local len = vel_x*vel_x + vel_y+vel_y + vel_z+vel_z
+	if node_content_id ~= AIR_CONTENT_ID and len >0.0001 then
 		local friction_scale = node_physics.friction
-		a.x = a.x + vel.x * -friction_scale
-		a.y = a.y + vel.y * -friction_scale
-		a.z = a.z + vel.z * -friction_scale
+		a.x = a.x + vel_x * -friction_scale
+		a.y = a.y + vel_y * -friction_scale
+		a.z = a.z + vel_z * -friction_scale
 	end
 end
 
 local DEFAULT_COLLISION_BOX = { -0.312, -0.55, -0.312, 0.312, 1.25, 0.312 }
-local npos = vector.zero()
 local a = vector.zero()
 local v = vector.zero()
 mod.register_environment_effect(function(pos, collisionbox, vel, staticdata, entity)
@@ -86,16 +89,15 @@ mod.register_environment_effect(function(pos, collisionbox, vel, staticdata, ent
 	a.x,a.y,a.z = 0,0,0
 	v.x,v.y,v.z = 0,0,0
 
-	npos.x = math_round(pos.x)
-	npos.z = math_round(pos.z)
+	-- Apply node physics for the nodewe are inside of
+	local x = math_round(pos.x)
+	local z = math_round(pos.z)
 	for y = math_round(pos.y)-1,math_round(pos.y) do
-		npos.y = y
-
-		-- Apply node physics for the node we are inside of
-		apply_node_physics(npos, v, a, vel, staticdata, entity)
+		apply_node_physics(x,y,z, v, a, vel, staticdata, entity)
 	end
 
 	-- Make speeds of less than 1/100 block/second count as zero
+	-- Check done with squared distance
 	local len = v.x*v.x + v.y+v.y + v.z+v.z
 	if len < 0.0001 then
 		return nil, a
@@ -104,3 +106,13 @@ mod.register_environment_effect(function(pos, collisionbox, vel, staticdata, ent
 	end
 end)
 
+core.register_on_mods_loaded(function()
+	local core_get_content_id = core.get_content_id
+
+	AIR_CONTENT_ID = core_get_content_id("air")
+	for node_name,def in pairs(core.registered_nodes) do
+		if def._vl_physics then
+			registered_node_physics[core_get_content_id(node_name)] = def._vl_physics
+		end
+	end
+end)
