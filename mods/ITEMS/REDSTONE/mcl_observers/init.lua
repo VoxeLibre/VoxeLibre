@@ -43,6 +43,14 @@ local function observer_orientate(pos, placer)
 	end
 end
 
+local function do_observer_activation(pos, node, def)
+	if def and def._mcl_observer_on_name then
+		node.name = def._mcl_observer_on_name
+		core.set_node(pos, node)
+		mesecon.receptor_on(pos)
+	end
+end
+
 ---@param node core.Node
 local function update_observer(pos, node, def, force_activate)
 	local front = observer_look_position(pos, node)
@@ -50,15 +58,10 @@ local function update_observer(pos, node, def, force_activate)
 		return
 	end
 
+	def = def or core.registered_nodes[node.name]
+
 	-- Node state changed! Activate observer
-	core.after(0,function()
-		def = core.registered_nodes[node.name]
-		if def and def._mcl_observer_on_name then
-			node.name = def._mcl_observer_on_name
-			core.set_node(pos, node)
-			mesecon.receptor_on(pos)
-		end
-	end)
+	core.after(0,do_observer_activation, pos, node, def)
 end
 local function on_move(pos, node)
 	update_observer(pos, node, core.registered_nodes[node.name], true)
