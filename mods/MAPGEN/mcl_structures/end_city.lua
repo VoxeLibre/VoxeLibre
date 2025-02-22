@@ -139,3 +139,52 @@ vl_structures.register_structure_spawn({
 	limit = 6,
 	spawnon = spawnon,
 })
+
+vl_structures.register_structure("small_end_city",{
+	chunk_probability = 3,
+	hash_mindist_2d = 160,
+	place_on = {"mcl_end:end_stone"},
+	flags = "place_center_x, place_center_z, all_floors",
+	y_offset = 0,
+	prepare = { foundation = -1, tolerance = 15 },
+	biomes = { "End", "EndHighlands", "EndMidlands", "EndBarrens", "EndSmallIslands" },
+	filenames = {
+		modpath.."/schematics/mcl_structures_end_city_simple.mts",
+	},
+	after_place = function(pos,def,pr,p1,p2)
+		-- not on roof
+		vl_structures.spawn_mobs("mobs_mc:shulker",spawnon,p1,vector.offset(p2,0,-2,0),pr,1)
+	end,
+	construct_nodes = {"mcl_chests:ender_chest_small","mcl_chests:ender_chest","mcl_brewing:stand_000","mcl_chests:violet_shulker_box_small"},
+	loot = {
+		[ "mcl_chests:chest_small" ] ={{
+			stacks_min = 2,
+			stacks_max = 6,
+			items = {
+				{ itemstring = "mcl_mobitems:bone", weight = 20, amount_min = 4, amount_max=6 },
+				{ itemstring = "mcl_farming:beetroot_seeds", weight = 16, amount_min = 1, amount_max=10 },
+				{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },
+				{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 4, amount_max = 8 },
+				{ itemstring = "mcl_core:diamond", weight = 3, amount_min = 2, amount_max = 7 },
+				{ itemstring = "mcl_mobitems:saddle", weight = 3, },
+				{ itemstring = "mcl_core:emerald", weight = 2, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_tools:pick_iron_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_tools:shovel_iron_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_tools:sword_iron_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_armor:helmet_iron_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_armor:chestplate_iron_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_armor:leggings_iron_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_armor:boots_iron_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_tools:pick_diamond_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_tools:shovel_diamond_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_armor:helmet_diamond_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_armor:leggings_diamond_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_armor:boots_diamond_enchanted", weight = 3,func = function(stack, pr) mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_core:emerald", weight = 2, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_mobitems:iron_horse_armor", weight = 1, },
+				{ itemstring = "mcl_mobitems:gold_horse_armor", weight = 1, },
+				{ itemstring = "mcl_core:apple_gold_enchanted", weight = 2, },
+			}
+		}}
+	}
+})
