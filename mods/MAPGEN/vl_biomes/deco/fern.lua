@@ -27,7 +27,7 @@ end
 
 local fern_minimal = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga", "MangroveSwamp"}
 local fern_low = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga"}
-local fern_Jungle = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM"}
+local fern_Jungle = {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Swampland"}
 --local fern_JungleM = { "JungleM" },
 
 -- FIXME: register once per biome only, with appropriate parameters?
@@ -77,5 +77,5 @@ local function register_double_fern(offset, scale, biomes)
 	end
 end
 
-register_double_fern(0.01, 0.03, {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga", "BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", })
-register_double_fern(0.15, 0.1, {"JungleM", "BambooJungleM", "BambooJungle"})
+register_double_fern(0.01, 0.03, {"Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga", "BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", "Swampland" })
+register_double_fern(0.15, 0.1, {"JungleM", "BambooJungleM", "BambooJungle", "Swampland"})
