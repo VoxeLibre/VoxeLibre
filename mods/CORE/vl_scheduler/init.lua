@@ -34,6 +34,39 @@ local long_queue = amt_queue.new()
 for i = 1,32 do
 	task_ring[i] = {}
 end
+local task_metatable = {
+	__index = {
+		cancel = function(self)
+			self.real_func = function() end
+		end,
+		func = function(self)
+			self.real_func(unpack(self.args))
+		end,
+	}
+}
+
+local function new_task()
+	if not free_tasks then
+		local task = {}
+		setmetatable(task, task_metatable)
+		return task
+	end
+
+	local res = free_tasks
+	free_tasks = free_tasks.next
+	free_task_count = free_task_count - 1
+	res.next = nil
+	return res
+end
+vl_scheduler.new_task = new_task
+local function free_task(task)
+	if free_task_count >= MAX_FREE_TASKS then return end
+
+	task.last = nil
+	task.next = free_tasks
+	free_tasks = task
+	free_task_count = free_task_count + 1
+end
 
 function vl_scheduler.print_debug_dump()
 	print(dump{
@@ -53,6 +86,14 @@ end
 local storage = core.get_mod_storage()
 local registered_serializable = {}
 local registered_serializable_from_name = {}
+local function serialize_task(task, time)
+	return core.serialize{
+		name = task.name,
+		args = task.args,
+		time = 0,
+		priority = i,
+	}
+end
 function vl_scheduler.save()
 	vl_scheduler.print_debug_dump()
 
@@ -64,12 +105,7 @@ function vl_scheduler.save()
 		local iter = run_queue[i]
 		while iter do
 			if iter.name then
-				storage:set_string("task_"..sequence.."_"..task_count, core.serialize{
-					name = iter.name,
-					args = iter.args,
-					time = 0,
-					priority = i,
-				})
+				storage:set_string("task_"..sequence.."_"..task_count, serialize_task(task, 0))
 				task_count = task_count + 1
 			end
 			iter = iter.next
@@ -81,12 +117,7 @@ function vl_scheduler.save()
 		local iter = task_ring[(task_pos + i)%32]
 		while iter do
 			if iter.name then
-				storage:set_string("task_"..sequence.."_"..task_count, core.serialize{
-					name = iter.name,
-					args = iter.args,
-					time = 1 + i,
-					priority = task.priority,
-				})
+				storage:set_string("task_"..sequence.."_"..task_count, serialize_task(iter, 1 + i))
 				task_count = task_count + 1
 			end
 			iter = iter.next
@@ -117,30 +148,23 @@ function vl_scheduler.load()
 		end
 	end
 
-	core.log("TODO: load and requeue scheduler tasks")
+	local task_count = storage:get_int("task_count_"..sequence) - 1
+	for i = 0,task_count do
+		local data = core.deserialize(storage:get_string("task_"..sequence.."_"..i))
+		local real_func = registered_serializable_from_name[data.name]
+		if real_func then
+			local task = new_task()
+			task.args = data.args
+			task.next = nil
+			task.real_func = real_func
+			task.name = data.name
+			vl_scheduler.queue_task(data.time, data.priority, task)
+		end
+	end
 end
 function vl_scheduler.register_serializable(name, func)
 	registered_serializable[func] = name
 	registered_serializable_from_name[name] = func
-end
-
-local function new_task()
-	if not free_tasks then return {} end
-
-	local res = free_tasks
-	free_tasks = free_tasks.next
-	free_task_count = free_task_count - 1
-	res.next = nil
-	return res
-end
-vl_scheduler.new_task = new_task
-local function free_task(task)
-	if free_task_count >= MAX_FREE_TASKS then return end
-
-	task.last = nil
-	task.next = free_tasks
-	free_tasks = task
-	free_task_count = free_task_count + 1
 end
 
 local function build_every_globalstep()
@@ -306,24 +330,11 @@ local function queue_task(when, priority, task)
 end
 vl_scheduler.queue_task = queue_task
 
-local task_metatable = {
-	__index = {
-		cancel = function(self)
-			self.real_func = function() end
-		end,
-		func = function(self)
-			self.real_func(unpack(self.args))
-		end,
-	}
-}
-
 local function vl_scheduler_after(time, priority, func, ...)
 	local task = new_task()
 	task.args = {...}
-	task.next = nil
 	task.real_func = func
 	task.name = registered_serializable[func]
-	setmetatable(task, task_metatable)
 	local timesteps = math.round(time / 0.05)
 	queue_task(timesteps, priority, task)
 
