@@ -173,8 +173,8 @@ mcl_structures.register_structure("shipwreck",{
 		}
 	},
 	after_place = function(pos)
-		local minp = vector.offset(pos, -20, -8, 20)
-		local maxp = vector.offset(pos,  20,  2, 20)
+		local minp = vector.offset(pos, -20, -8, -20)
+		local maxp = vector.offset(pos,  20,  2,  20)
 		mcl_ocean.kelp.remove_kelp_below_structure(minp, maxp)
 	end,
 })
@@ -211,8 +211,8 @@ mcl_structures.register_structure("ocean_temple",{
 		mcl_structures.spawn_mobs("mobs_mc:guardian_elder",spawnon,p1,p2,pr,1,true)
 		mcl_structures.construct_nodes(p1,p2,{"group:wall"})
 
-		local minp = vector.offset(p, -20, -4, 20)
-		local maxp = vector.offset(p,  20,  4, 20)
+		local minp = vector.offset(p, -20, -4, -20)
+		local maxp = vector.offset(p,  20,  4,  20)
 		mcl_ocean.kelp.remove_kelp_below_structure(minp, maxp)
 	end,
 	loot = {
