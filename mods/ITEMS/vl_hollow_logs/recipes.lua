@@ -9,6 +9,15 @@ function vl_hollow_logs.register_craft(material, result)
 		type = "shaped"
 	})
 
+	minetest.register_craft({
+		output = "vl_hollow_logs:"..result.."_hollow_ladder",
+		recipe = {
+			"vl_hollow_logs:"..result.."_hollow",
+			"mcl_core:ladder"
+		},
+		type = "shapeless"
+	})
+
 	mcl_stonecutter.register_recipe(material, "vl_hollow_logs:"..result.."_hollow", 1)
 end
 

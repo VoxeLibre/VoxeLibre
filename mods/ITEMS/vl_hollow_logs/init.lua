@@ -1,6 +1,8 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 local S = minetest.get_translator(minetest.get_current_modname())
 
+local LADDER_SUFFIX = "^vl_hollow_logs_ladder.png"
+
 vl_hollow_logs = {}
 --- Function to register a hollow log. See API.md to learn how to use this function.
 ---@param defs table {name:string, stripped_name>string, desc:string, stripped_desc:string, not_flammable:boolean|nil}
@@ -58,21 +60,35 @@ function vl_hollow_logs.register_hollow_log(defs)
 		use_texture_alpha = "clip",
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		sunlight_propagates = true,
-		climbable = true,
 		tiles = {modname .. "_"..name..".png"},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
 		_mcl_stripped_variant = modname .. ":"..stripped_name.."_hollow"
 	}
+	minetest.register_node(modname .. ":"..name.."_hollow", hollow_log_def)
 
 	local stripped_hollow_log_def = table.copy(hollow_log_def)
 	stripped_hollow_log_def.description = stripped_desc
 	stripped_hollow_log_def.tiles = {modname .. "_stripped_"..name..".png"}
 	stripped_hollow_log_def._mcl_stripped_variant = nil
 
-	minetest.register_node(modname .. ":"..name.."_hollow", hollow_log_def)
-
 	minetest.register_node(modname .. ":"..stripped_name.."_hollow", stripped_hollow_log_def)
+
+	-- ladder variant
+	local ladder_hl_def = table.copy(hollow_log_def)
+	ladder_hl_def.description = desc .. " " .. S("with ladder")
+	ladder_hl_def.tiles[1] = ladder_hl_def.tiles[1] .. LADDER_SUFFIX
+	ladder_hl_def._mcl_stripped_variant = ladder_hl_def._mcl_stripped_variant .. "_ladder"
+	ladder_hl_def.climbable = true
+
+	minetest.register_node(modname .. ":"..name.."_hollow_ladder", ladder_hl_def)
+
+	local ladder_stripped_hl_def = table.copy(stripped_hollow_log_def)
+	ladder_stripped_hl_def.description = desc .. " " .. S("with ladder")
+	ladder_stripped_hl_def.tiles[1] = ladder_stripped_hl_def.tiles[1] .. LADDER_SUFFIX
+	ladder_stripped_hl_def.climbable = true
+
+	minetest.register_node(modname .. ":"..stripped_name.."_hollow_ladder", ladder_stripped_hl_def)
 end
 
 vl_hollow_logs.logs = {
