@@ -8,6 +8,32 @@ local LUANTI_PATH = os.getenv("LUANTI_PATH") or "/usr/share/luanti"
 function mock.luanti(g)
 	local mock
 	local luanti_core
+	local storage_internal = {}
+	local storage = {
+		get_int = function(self, key, default)
+			key = tostring(key)
+			return tonumber(storage_internal[key] or default or 0)
+		end,
+		get_string = function(self, key, default)
+			key = tostring(key)
+			return tostring(storage_internal[key] or default or "")
+		end,
+		set_int = function(self, key, value)
+			key = tostring(key)
+			storage_internal[key] = tostring(value)
+		end,
+		set_string = function(self, key, value)
+			key = tostring(key)
+			storage_internal[key] = tostring(value)
+		end,
+		get_keys = function(self)
+			local keys = {}
+			for k,_ in pairs(storage_internal) do
+				keys[#keys + 1] = k
+			end
+			return keys
+		end,
+	}
 	mock = {
 		registered_on_mods_loaded = {},
 		globalsteps = 0,
@@ -46,6 +72,7 @@ function mock.luanti(g)
 				callbacks[i](dtime)
 			end
 		end,
+		storage = storage,
 	}
 
 	function mock.fastforward(amount)
@@ -112,26 +139,12 @@ function mock.luanti(g)
 		nodedef_default = {},
 		craftitemdef_default = {},
 		global_exists = function(name) return not not rawget(_G,name) end,
-		get_mod_storage = function()
-			local storage = mock.mod_storage[mock.current_modname] or {}
-			mock.mod_storage[mock.current_modname] = storage
-
-			return {
-				get_keys = function()
-					local keys = {}
-					for k,_ in pairs(storage) do
-						keys[#keys+1] = k
-					end
-					return keys
-				end,
-				set_string = function(k,v)
-					storage[tostring(k)] = tostring(v)
-				end,
-			}
-		end,
 		serialize = function(value)
 			return ""
 		end,
+		get_mod_storage = function()
+			return mock.storage
+		end
 	}
 
 	-- Update the specified global environment to act as though the Luanti engine is present
