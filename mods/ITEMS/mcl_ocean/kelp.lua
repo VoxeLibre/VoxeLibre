@@ -384,8 +384,16 @@ function kelp.remove_kelp_below_structure(minp, maxp)
 		local kelp_node = core.get_node(kelp_pos)
 
 		-- Convert kelp back to normal node
-		kelp_node.name = core.registered_nodes[kelp_node.name].node_dig_prediction
-		core.swap_node(kelp_pos, kelp_node)
+		local dig_pos,_,new_height = kelp.find_unsubmerged(kelp_pos, kelp_node)
+		if dig_pos then
+			new_height = new_height - 1
+			if new_height <= 0 then
+				kelp_node.name = core.registered_nodes[kelp_node.name].node_dig_prediction
+			else
+				kelp_node.param2 = 16 * new_height
+			end
+			core.swap_node(kelp_pos, kelp_node)
+		end
 	end
 end
 

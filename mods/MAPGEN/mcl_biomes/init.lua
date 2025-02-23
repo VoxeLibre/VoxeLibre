@@ -3460,8 +3460,8 @@ local corals = {
 
 local function clear_kelp(t, minp, maxp, blockseed)
 	for _,pos in pairs(t) do
-		local pos_minp = vector.offset(pos, -4, -4, -4)
-		local pos_maxp = vector.offset(pos,  4,  2,  4)
+		local pos_minp = vector.offset(pos, -8, -4, -8)
+		local pos_maxp = vector.offset(pos,  8,  2,  8)
 		mcl_ocean.kelp.remove_kelp_below_structure(pos_minp, pos_maxp)
 	end
 end
