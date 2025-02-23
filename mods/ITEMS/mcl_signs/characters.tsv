@@ -457,7 +457,9 @@ _	_un	3
 Ή	_grk_eta_tonos_	5
 ή	_grk_eta_tonos	4
 Θ	_cyr_oo_	4
+ϴ	_cyr_oo_	4
 θ	_grk_th	4
+ϑ	_grk_ths	5
 Ι	_i_	5
 ι	_i_dotless	5
 Ί	_grk_i_tonos_	5
@@ -500,6 +502,7 @@ _	_un	3
 ΰ	_grk_u_dtonos	5
 Φ	_cyr_f_	5
 φ	_grk_f	5
+ϕ	_cyr_f	5
 Χ	_x_	5
 χ	_grk_ch	5
 Ψ	_grk_ps_	5
