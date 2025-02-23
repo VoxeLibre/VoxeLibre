@@ -1,20 +1,20 @@
 -- TODO: move to mcl_ocean with a late registration (when biomes are registered)?
 local surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel", "mcl_core:redsand"}
 local nodes = {"mcl_ocean:seagrass_dirt", "mcl_ocean:seagrass_sand", "mcl_ocean:seagrass_gravel", "mcl_ocean:seagrass_redsand"}
-local function register_seagrass_decoration(offset, scale, biomes)
+local function register_seagrass_decoration(offset, scale, biomes, suffix)
 	for s = 1, #surfaces do
 		vl_biomes.register_decoration({
-			name = "Seagrass on "..surfaces[s],
+			name = "Seagrass on "..surfaces[s]..(suffix or ""),
 			biomes = biomes,
 			decoration = nodes[s],
 			param2 = 3, -- always use meshoption 3
 			y_min = vl_biomes.DEEP_OCEAN_MIN,
-			y_max = 0,
+			y_max = 1,
 			place_on = {surfaces[s]},
 			place_offset_y = -1,
 			spawn_by = "mcl_core:water_source",
 			check_offset = 1,
-			num_spawn_by = 9,
+			num_spawn_by = 5,
 			noise_params = {
 				offset = offset,
 				scale = scale,
@@ -47,7 +47,6 @@ register_seagrass_decoration(0, 0.5, {
 	"BirchForest_ocean",
 	"BirchForestM_ocean",
 	"RoofedForest_ocean",
-	"Swampland_ocean",
 	"Jungle_ocean",
 	"JungleM_ocean",
 	"JungleEdge_ocean",
@@ -94,11 +93,25 @@ register_seagrass_decoration(0, 0.5, {
 	"MesaBryce_sandlevel",
 	"MesaPlateauF_sandlevel",
 	"MesaPlateauFM_sandlevel",
-	"Swampland_shore",
 	"Jungle_shore",
 	"JungleM_shore",
 	"Savanna_beach",
 	"FlowerForest_beach",
 	"ColdTaiga_beach_water",
 	"ExtremeHills_beach",
+	"BambooJungle_ocean", -- borders mangrove as sand contrast is already high
+	"BambooJungleM_ocean", -- borders mangrove as sand contrast is already high
+	"BambooJungleEdge_ocean", -- borders mangrove as sand contrast is already high
+	"BambooJungleEdgeM_ocean", -- borders mangrove as sand contrast is already high
+	"Forest_beach", -- borders swamp, for more consistency as sand contrast is already high
+	"BirchForest_beach", -- borders swamp, for more consistency as sand contrast is already high
+	"RoofedForest_beach", -- borders swamp, for more consistency
 })
+
+-- More seagrass in swamps (except deep ocean)
+register_seagrass_decoration(0.3, 0.4, {
+	"Swampland_ocean",
+	"Swampland_shore",
+	"MangroveSwamp",
+	"MangroveSwamp_ocean",
+}, "swamp")
