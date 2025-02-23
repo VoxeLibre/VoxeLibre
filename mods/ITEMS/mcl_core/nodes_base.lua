@@ -370,7 +370,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_doc_items_hidden = false,
 	paramtype2 = "color",
 	tiles = {"mcl_core_grass_block_top.png", { name="default_dirt.png", color="white" }, { name="default_dirt.png^mcl_dirt_grass_shadow.png", color="white" }},
-	overlay_tiles = {"mcl_core_grass_block_top.png", "blank.png", {name="mcl_core_grass_block_side_overlay.png", tileable_vertical=false}},
+	overlay_tiles = {"", "", {name="mcl_core_grass_block_side_overlay.png", tileable_vertical=false}},
 	palette = "mcl_core_palette_grass.png",
 	palette_index = 0,
 	color = "#7CBD6B",
