@@ -32,25 +32,3 @@ for param2, bs in pairs(bmap) do
 		},
 	})
 end
-
--- additional reeds in swamps
-vl_biomes.register_decoration({
-	biomes = {"Swampland", "Swampland_shore"},
-	decoration = "mcl_core:reeds",
-	param2 = 28, -- Swampland grass palette index
-	height = 1,
-	height_max = 3,
-	y_min = 1,
-	y_max = vl_biomes.overworld_max,
-	place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
-	spawn_by = {"mcl_core:water_source", "group:frosted_ice"},
-	num_spawn_by = 1,
-	noise_params = {
-		offset = 0.1,
-		scale = 0.5,
-		spread = vector.new(100, 100, 100),
-		seed = 3,
-		octaves = 3,
-		persist = 0.7,
-	},
-})
