@@ -526,19 +526,35 @@ function mcl_util.set_properties(obj, props)
 	end
 end
 
+local vector_distance, vector_zero = vector.distance, vector.zero
+
 -- Update bones, but only when changed
 function mcl_util.set_bone_position(obj, bone, pos, rot, scale)
-	if obj.set_bone_override then -- minetest >= 5.9
-		obj:set_bone_override(bone, {
-			position = pos and { vec = pos, absolute = true } or nil,
-			rotation = rot and { vec = rot, absolute = true } or nil,
-			scale = scale and { vec = scale, absolute = true } or nil,
-		})
-	else -- minetest up to 5.8
+	local current_pos, current_rot
+	if obj.set_bone_override then -- Luanti >= 5.9
+		do
+			local ov = obj:get_bone_override(bone)
+			current_pos, current_rot = ov.position.vec, ov.rotation.vec
+		end
+
+		-- Only apply when the values aren't the same:
+		-- Compare the distance between new and old vectors against an epsilon.
+		local pos_equal = vector_distance(current_pos, pos or vector_zero()) < 1
+		-- The epsilon is 0.1 as the new API uses radians and more precision is neccesary.
+		local rot_equal = vector_distance(current_rot, rot or vector_zero()) < 0.1
+		if not pos_equal or not rot_equal then
+			obj:set_bone_override(bone, {
+				position = pos and {vec = pos, absolute = true, interpolation = 0.1} or nil,
+				rotation = rot and {vec = rot, absolute = true, interpolation = 0.1} or nil,
+				scale = scale and {vec = scale, absolute = true, interpolation = 0.1} or nil,
+			})
+		end
+	else -- Luanti <= 5.8
 		rot = rot and rot:apply(math.deg)
-		local current_pos, current_rot = obj:get_bone_position(bone)
-		local pos_equal = not pos or vector.equals(vector.round(current_pos), vector.round(pos))
-		local rot_equal = not rot or vector.equals(vector.round(current_rot), vector.round(rot))
+		current_pos, current_rot = obj:get_bone_position(bone)
+
+		local pos_equal = vector_distance(current_pos, pos or current_pos) < 1
+		local rot_equal = vector_distance(current_rot, rot or current_rot) < 1
 		if not pos_equal or not rot_equal then
 			obj:set_bone_position(bone, pos or current_pos, rot or current_rot)
 		end
