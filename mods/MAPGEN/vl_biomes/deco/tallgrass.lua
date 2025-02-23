@@ -55,7 +55,7 @@ register_grass_decoration(0.09, -0.03, grass_plains)
 register_grass_decoration(0.18, -0.03, grass_savanna)
 register_grass_decoration(0.05, -0.03, grass_sparse)
 register_grass_decoration(0.05, 0.05, grass_mpfm)
-register_grass_decoration(-0.03, 1, {"BambooJungle", "BambooJungleM", "BambooJungleEdge"})
+register_grass_decoration(-0.03, 1, {"BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM"})
 register_grass_decoration(0.18, 0.03, {"Swampland"})
 
 -- Doubletall grass registration helper
@@ -97,7 +97,7 @@ local function register_doubletall_grass(offset, scale, biomes)
 	end
 end
 
-register_doubletall_grass(-0.0005, -0.3, {"BambooJungle", "BambooJungleM", "BambooJungleEdge"})
+register_doubletall_grass(-0.0005, -0.3, {"BambooJungle", "BambooJungleM", "BambooJungleEdge", "BambooJungleEdgeM", "Swampland"})
 register_doubletall_grass(-0.01, 0.03, {"Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Taiga"})
 register_doubletall_grass(-0.002, 0.03, {"Plains", "SunflowerPlains"})
 register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"})

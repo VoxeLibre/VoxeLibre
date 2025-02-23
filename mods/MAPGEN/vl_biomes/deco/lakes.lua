@@ -141,6 +141,28 @@ mcl_structures.register_structure("water_lake", {
 	end
 })
 
+mcl_structures.register_structure("water_lake_swamp", {
+	place_on = { "group:dirt", "group:stone" },
+	biomes = { "Swampland" },
+	terrain_feature = true,
+	noise_params = {
+		offset = 0.0001,
+		scale = 0.000132,
+		spread = vector.new(250, 250, 250),
+		seed = 6403401,
+		octaves = 3,
+		persist = 0.001,
+		flags = "absvalue",
+	},
+	y_max = mcl_vars.mg_overworld_max,
+	y_min = core.get_mapgen_setting("water_level"),
+	place_func = function(pos, _, pr)
+		return makelake(pos, 4, { name = "mclx_core:river_water_source" },
+			{ "group:material_stone", "group:sand", "group:dirt", "group:grass_block"},
+			nil, { name = "mcl_mud:mud" }, pr)
+	end
+})
+
 mcl_structures.register_structure("water_lake_mangrove_swamp", {
 	place_on = { "mcl_mud:mud" },
 	biomes = { "MangroveSwamp" },
