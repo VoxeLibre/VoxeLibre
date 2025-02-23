@@ -118,8 +118,8 @@ local cold = {
 		}
 	},
 	after_place = function(pos)
-		local minp = vector.offset(pos, -10, -4, 10)
-		local maxp = vector.offset(pos,  10,  2, 10)
+		local minp = vector.offset(pos, -10, -4, -10)
+		local maxp = vector.offset(pos,  10,  2,  10)
 		mcl_ocean.kelp.remove_kelp_below_structure(minp, maxp)
 	end,
 }
