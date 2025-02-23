@@ -132,6 +132,14 @@ local function has_items(self)
 end
 amt_queue.has_items = has_items
 
+local function iterate_items(self, i)
+	return nil, nil
+end
+local function items(self)
+	return iterate_items, self, nil
+end
+amt_queue.items = items
+
 function amt_queue.advance_to_next(self)
 	if self.mask == 0 then return end
 
