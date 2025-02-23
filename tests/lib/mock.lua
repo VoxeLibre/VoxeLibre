@@ -8,6 +8,32 @@ print("package.path="..package.path)
 function mock.luanti(g)
 	local mock
 	local luanti_core
+	local storage_internal = {}
+	local storage = {
+		get_int = function(self, key, default)
+			key = tostring(key)
+			return tonumber(storage_internal[key] or default or 0)
+		end,
+		get_string = function(self, key, default)
+			key = tostring(key)
+			return tostring(storage_internal[key] or default or "")
+		end,
+		set_int = function(self, key, value)
+			key = tostring(key)
+			storage_internal[key] = tostring(value)
+		end,
+		set_string = function(self, key, value)
+			key = tostring(key)
+			storage_internal[key] = tostring(value)
+		end,
+		get_keys = function(self)
+			local keys = {}
+			for k,_ in pairs(storage_internal) do
+				keys[#keys + 1] = k
+			end
+			return keys
+		end,
+	}
 	mock = {
 		registered_on_mods_loaded = {},
 		globalsteps = 0,
@@ -38,6 +64,7 @@ function mock.luanti(g)
 				callbacks[i](dtime)
 			end
 		end,
+		storage = storage,
 	}
 
 	function mock.fastforward(amount)
@@ -93,6 +120,9 @@ function mock.luanti(g)
 			local sec, nsec = posix.clock_gettime(0)
 			return sec * 1e6 + math.floor(nsec / 1000) + mock.time_offset
 		end,
+		get_mod_storage = function()
+			return mock.storage
+		end
 	}
 
 	-- Update the specified global environment to act as though the Luanti engine is present
