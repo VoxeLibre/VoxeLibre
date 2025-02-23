@@ -1,5 +1,5 @@
-local modpath = minetest.get_modpath(minetest.get_current_modname())
-local S = minetest.get_translator(minetest.get_current_modname())
+local modpath = core.get_modpath(core.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local LADDER_SUFFIX = "^vl_hollow_logs_ladder.png"
 
@@ -20,11 +20,11 @@ function vl_hollow_logs.register_hollow_log(defs)
 		error("defs[5] must be a boolean if present")
 	end
 
-	local modname = minetest.get_current_modname()
+	local modname = core.get_current_modname()
 
 	if #defs > 5 then
-		minetest.log("warning", "[vl_hollow_logs] unused vars passed, dumping the table")
-		minetest.log("warning", "from mod " .. modname .. ": " .. dump(defs))
+		core.log("warning", "[vl_hollow_logs] unused vars passed, dumping the table")
+		core.log("warning", "from mod " .. modname .. ": " .. dump(defs))
 	end
 
 	local name = defs[1]
@@ -65,14 +65,14 @@ function vl_hollow_logs.register_hollow_log(defs)
 		_mcl_hardness = 2,
 		_mcl_stripped_variant = modname .. ":"..stripped_name.."_hollow"
 	}
-	minetest.register_node(modname .. ":"..name.."_hollow", hollow_log_def)
+	core.register_node(modname .. ":"..name.."_hollow", hollow_log_def)
 
 	local stripped_hollow_log_def = table.copy(hollow_log_def)
 	stripped_hollow_log_def.description = stripped_desc
 	stripped_hollow_log_def.tiles = {modname .. "_stripped_"..name..".png"}
 	stripped_hollow_log_def._mcl_stripped_variant = nil
 
-	minetest.register_node(modname .. ":"..stripped_name.."_hollow", stripped_hollow_log_def)
+	core.register_node(modname .. ":"..stripped_name.."_hollow", stripped_hollow_log_def)
 
 	-- ladder variant
 	local ladder_hl_def = table.copy(hollow_log_def)
@@ -81,14 +81,14 @@ function vl_hollow_logs.register_hollow_log(defs)
 	ladder_hl_def._mcl_stripped_variant = ladder_hl_def._mcl_stripped_variant .. "_ladder"
 	ladder_hl_def.climbable = true
 
-	minetest.register_node(modname .. ":"..name.."_hollow_ladder", ladder_hl_def)
+	core.register_node(modname .. ":"..name.."_hollow_ladder", ladder_hl_def)
 
 	local ladder_stripped_hl_def = table.copy(stripped_hollow_log_def)
 	ladder_stripped_hl_def.description = desc .. " " .. S("with ladder")
 	ladder_stripped_hl_def.tiles[1] = ladder_stripped_hl_def.tiles[1] .. LADDER_SUFFIX
 	ladder_stripped_hl_def.climbable = true
 
-	minetest.register_node(modname .. ":"..stripped_name.."_hollow_ladder", ladder_stripped_hl_def)
+	core.register_node(modname .. ":"..stripped_name.."_hollow_ladder", ladder_stripped_hl_def)
 end
 
 vl_hollow_logs.logs = {
@@ -101,15 +101,15 @@ vl_hollow_logs.logs = {
 }
 
 
-if minetest.get_modpath("mcl_cherry_blossom") then
+if core.get_modpath("mcl_cherry_blossom") then
 	table.insert(vl_hollow_logs.logs, {"cherrytree", "stripped_cherrytree", S("Hollow Cherry Log"), S("Stripped Hollow Cherry Log")})
 end
 
-if minetest.get_modpath("mcl_mangrove") then
+if core.get_modpath("mcl_mangrove") then
 	table.insert(vl_hollow_logs.logs, {"mangrove_tree", "mangrove_stripped", S("Hollow Mangrove Log"), S("Stripped Hollow Mangrove Log")})
 end
 
-if minetest.get_modpath("mcl_crimson") then
+if core.get_modpath("mcl_crimson") then
 	table.insert(vl_hollow_logs.logs, {"crimson_hyphae", "stripped_crimson_hyphae", S("Hollow Crimson Stem"), S("Stripped Hollow Crimson Stem"), true})
 	table.insert(vl_hollow_logs.logs, {"warped_hyphae", "stripped_warped_hyphae", S("Hollow Warped Stem"), S("Stripped Hollow Warped Stem"), true})
 end
