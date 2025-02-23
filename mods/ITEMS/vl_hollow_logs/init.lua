@@ -1,6 +1,7 @@
 local modpath = core.get_modpath(core.get_current_modname())
 local S = core.get_translator(core.get_current_modname())
 
+local LADDER_DESC_SUFFIX = " " .. S("with a Ladder")
 local LADDER_SUFFIX = "^vl_hollow_logs_ladder.png"
 
 vl_hollow_logs = {}
@@ -76,7 +77,7 @@ function vl_hollow_logs.register_hollow_log(defs)
 
 	-- ladder variant
 	local ladder_hl_def = table.copy(hollow_log_def)
-	ladder_hl_def.description = desc .. " " .. S("with ladder")
+	ladder_hl_def.description = desc .. LADDER_DESC_SUFFIX
 	ladder_hl_def.tiles[1] = ladder_hl_def.tiles[1] .. LADDER_SUFFIX
 	ladder_hl_def._mcl_stripped_variant = ladder_hl_def._mcl_stripped_variant .. "_ladder"
 	ladder_hl_def.climbable = true
@@ -84,7 +85,7 @@ function vl_hollow_logs.register_hollow_log(defs)
 	core.register_node(modname .. ":"..name.."_hollow_ladder", ladder_hl_def)
 
 	local ladder_stripped_hl_def = table.copy(stripped_hollow_log_def)
-	ladder_stripped_hl_def.description = desc .. " " .. S("with ladder")
+	ladder_stripped_hl_def.description = desc .. LADDER_DESC_SUFFIX
 	ladder_stripped_hl_def.tiles[1] = ladder_stripped_hl_def.tiles[1] .. LADDER_SUFFIX
 	ladder_stripped_hl_def.climbable = true
 
