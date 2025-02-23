@@ -1,10 +1,10 @@
 -- TODO: move to mcl_ocean?
 local surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel"}
 local nodes = {"mcl_ocean:kelp_dirt", "mcl_ocean:kelp_sand", "mcl_ocean:kelp_gravel"}
-local function register_kelp_decoration(offset, scale, biomes)
+local function register_kelp_decoration(offset, scale, biomes, suffix)
 	for s = 1, #surfaces do
 		vl_biomes.register_decoration({
-			name = "Kelp on "..surfaces[s],
+			name = "Kelp on "..surfaces[s]..(suffix or ""),
 			biomes = biomes,
 			decoration = nodes[s],
 			param2 = 16,
@@ -43,7 +43,6 @@ register_kelp_decoration(-0.5, 1, {
 	"BirchForest_ocean",
 	"BirchForestM_ocean",
 	"RoofedForest_ocean",
-	"Swampland_ocean",
 	"Jungle_ocean",
 	"JungleM_ocean",
 	"JungleEdge_ocean",
@@ -68,3 +67,9 @@ register_kelp_decoration(-0.5, 1, {
 	"JungleEdgeM_deep_ocean",
 	"MushroomIsland_deep_ocean",
 })
+
+-- More kelp in swampland
+register_kelp_decoration(0.25, 0.5, {
+	"Swampland_ocean",
+	"Swampland_shore",
+}, "swamp")
