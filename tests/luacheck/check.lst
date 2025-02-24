@@ -1,4 +1,3 @@
-
 ./mods/CORE/controls/init.lua
 ./mods/CORE/flowlib/init.lua
 ./mods/CORE/mcl_attached/init.lua
@@ -17,6 +16,8 @@
 ./mods/CORE/tga_encoder/donut.lua
 ./mods/CORE/tga_encoder/examples.lua
 ./mods/CORE/tga_encoder/logo.lua
+./mods/CORE/vl_scheduler/init.lua
+./mods/CORE/vl_scheduler/queue.lua
 ./mods/CORE/vl_trusted/init.lua
 ./mods/CORE/vl_tuning/init.lua
 ./mods/ENTITIES/mcl_burning/init.lua

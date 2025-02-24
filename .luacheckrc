@@ -40,10 +40,11 @@ read_globals = {
 		fields = {
 			"hypot",
 			"sign",
-			"factorial"
+			"factorial",
+			"round"
 		}
 	},
-	------
+
 	--MODS
 	------
 
