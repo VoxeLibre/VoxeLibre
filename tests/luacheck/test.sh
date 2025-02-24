@@ -9,6 +9,7 @@ if [[ -z "$LUA" ]]; then
 	echo "Unable to find lua interpreter"
 	exit 1
 fi
+echo -n > luacheck-passed.lst
 (
 	find ./ -name mod.conf
 	echo EOF
