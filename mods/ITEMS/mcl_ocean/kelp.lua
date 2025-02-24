@@ -511,6 +511,7 @@ end
 -- List of supported surfaces for seagrass and kelp.
 kelp.surfaces = {
 	{ name="dirt",    nodename="mcl_core:dirt",    },
+	{ name="mud",     nodename="mcl_mud:mud",    },
 	{ name="sand",    nodename="mcl_core:sand",    },
 	{ name="redsand", nodename="mcl_core:redsand", },
 	{ name="gravel",  nodename="mcl_core:gravel",  },
@@ -604,6 +605,10 @@ function kelp.register_kelp_surface(surface, surface_deftemplate, surface_docs)
 	surface_deftemplate.node_dig_prediction = surface_deftemplate.node_dig_prediction or nodename
 	surface_deftemplate.groups.falling_node = surface_deftemplate.groups.falling_node or falling_node
 	surface_deftemplate._mcl_falling_node_alternative = surface_deftemplate._mcl_falling_node_alternative or (falling_node and nodename or nil)
+
+	if name == "dirt" or name == "mud" then
+		surface_deftemplate.special_tiles[1].image = "mcl_ocean_kelp_plant_dark.png"
+	end
 
 	minetest.register_node(surfacename, surface_deftemplate)
 end

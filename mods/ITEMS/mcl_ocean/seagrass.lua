@@ -5,6 +5,7 @@ local mod_doc = minetest.get_modpath("doc")
 -- List of supported surfaces for seagrass
 local surfaces = {
 	{ "dirt", "mcl_core:dirt" },
+	{ "mud", "mcl_mud:mud" },
 	{ "sand", "mcl_core:sand", 1 },
 	{ "redsand", "mcl_core:redsand", 1 },
 	{ "gravel", "mcl_core:gravel", 1 },
@@ -46,6 +47,8 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 	-- Select a seagrass node
 	if node_under.name == "mcl_core:dirt" then
 		node_under.name = "mcl_ocean:seagrass_dirt"
+	elseif node_under.name == "mcl_mud:mud" then
+		node_under.name = "mcl_ocean:seagrass_mud"
 	elseif node_under.name == "mcl_core:sand" then
 		node_under.name = "mcl_ocean:seagrass_sand"
 	elseif node_under.name == "mcl_core:redsand" then
@@ -95,6 +98,7 @@ for s=1, #surfaces do
 	sounds.dig = leaf_sounds.dig
 	sounds.dug = leaf_sounds.dug
 	sounds.place = leaf_sounds.place
+	local texture = "mcl_ocean_seagrass.png"
 	local doc_longdesc, doc_img, desc
 	if surfaces[s][1] == "dirt" then
 		doc_longdesc = S("Seagrass grows inside water on top of dirt, sand or gravel.")
@@ -103,6 +107,9 @@ for s=1, #surfaces do
 		doc_img = "mcl_ocean_seagrass_item.png"
 	else
 		doc_create = false
+	end
+	if surfaces[s][1] == "dirt" or surfaces[s][1] == "mud" then
+		texture = "mcl_ocean_seagrass_dark.png"
 	end
 	minetest.register_node("mcl_ocean:seagrass_"..surfaces[s][1], {
 		_doc_items_entry_name = desc,
@@ -116,7 +123,7 @@ for s=1, #surfaces do
 		tiles = def.tiles,
 		special_tiles = {
 			{
-			image = "mcl_ocean_seagrass.png",
+			image = texture,
 			animation = {type="vertical_frames", aspect_w=16, aspect_h=16, length=1.0},
 			}
 		},
