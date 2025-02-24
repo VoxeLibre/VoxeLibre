@@ -57,6 +57,8 @@ function mcl_flowers.register_simple_flower(name, def)
 		wield_image = def.image,
 		sunlight_propagates = true,
 		paramtype = "light",
+		paramtype2 = "meshoptions",
+		place_param2 = 8,
 		walkable = false,
 		buildable_to = true,
 		stack_max = 64,
