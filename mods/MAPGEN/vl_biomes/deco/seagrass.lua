@@ -7,7 +7,9 @@ local function register_seagrass_decoration(offset, scale, biomes, suffix)
 			name = "Seagrass on "..surfaces[s]..(suffix or ""),
 			biomes = biomes,
 			decoration = nodes[s],
-			param2 = 3, -- always use meshoption 3
+			paramtype2 = "meshoptions",
+			param2 = 8,
+			param2_max = 11,
 			y_min = vl_biomes.DEEP_OCEAN_MIN,
 			y_max = 1,
 			place_on = {surfaces[s]},

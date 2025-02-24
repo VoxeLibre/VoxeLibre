@@ -253,17 +253,6 @@ local function set_water_palette(minp,maxp,data2,area,nodes)
 	return lvm_used
 end
 
-local function set_seagrass_param2(minp,maxp,data2,area,nodes)
-	local nodes = minetest.find_nodes_in_area(minp, maxp, nodes)
-	local lvm_used = false
-	for n=1, #nodes do
-		local n = nodes[n]
-		data2[area:index(n.x, n.y, n.z)] = 3
-		lvm_used = true
-	end
-	return lvm_used
-end
-
 -- Below the bedrock, generate air/void
 local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local pr = PseudoRandom(blockseed)
@@ -335,12 +324,6 @@ local function block_fixes_water(vm, data, data2, emin, emax, area, minp, maxp, 
 		set_water_palette(minp,maxp,data2,area,{"group:water_palette"})
 end
 
-local function block_fixes_seagrass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	-- Set param2 of seagrass to 3.
-	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
-		set_seagrass_param2(minp, maxp, data2, area, {"group:seagrass"})
-end
-
 -- End block fixes:
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
@@ -361,7 +344,6 @@ if mg_name ~= "singlenode" then
 	mcl_mapgen_core.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
 	mcl_mapgen_core.register_generator("block_fixes_water", block_fixes_water, nil, 9999, true)
-	mcl_mapgen_core.register_generator("block_fixes_seagrass", block_fixes_seagrass, nil, 9999, true)
 end
 
 minetest.register_lbm({
@@ -414,19 +396,6 @@ minetest.register_lbm({
 		local water_palette_index = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index
 		if node.param2 ~= water_palette_index then
 			node.param2 = water_palette_index
-			minetest.set_node(pos, node)
-		end
-	end
-})
-
-minetest.register_lbm({
-	label = "Fix incorrect seagrass", -- Set correct param2 of seagrass in old mapblocks.
-	name = "mcl_mapgen_core:fix_incorrect_seagrass",
-	nodenames = {"group:seagrass"},
-	run_at_every_load = false,
-	action = function(pos, node)
-		if node.param2 ~= 3 then
-			node.param2 = 3
 			minetest.set_node(pos, node)
 		end
 	end
