@@ -99,6 +99,7 @@ function mock.luanti(g)
 	g.unpack = table.unpack
 	g.dump = dump
 	g.math.round = function(x) return math.floor(x + 0.5) end
+	g.PcgRandom = function() end
 
 	-- Interface to mock luanti engine
 	return mock
