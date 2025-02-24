@@ -7,7 +7,7 @@
 ---@field last amt_queue.Item?
 
 local one_over_log2 = 1.0 / math.log(2)
-function bit.lsb(v)
+local function bit_lsb(v)
 	local k = bit.band(v, bit.bnot(v-1))
 	return math.log(k) * one_over_log2
 end
@@ -143,9 +143,9 @@ amt_queue.items = items
 function amt_queue.advance_to_next(self)
 	if self.mask == 0 then return end
 
-	local level = bit.lsb(self.mask) + 1
+	local level = bit_lsb(self.mask) + 1
 	local level_table = self[level] or dummy
-	level_table.rotate = bit.lsb(level_table.mask)
+	level_table.rotate = bit_lsb(level_table.mask)
 
 	for i = (level-1),1,-1 do
 		level_table = self[i]
@@ -156,7 +156,7 @@ function amt_queue.advance_to_next(self)
 		end
 		local new_level_table = pop_from_level(self, i+1)
 		if new_level_table then
-			new_level_table.rotate = bit.lsb(new_level_table.mask)
+			new_level_table.rotate = bit_lsb(new_level_table.mask)
 		end
 		self[i] = new_level_table
 	end

@@ -91,7 +91,7 @@ local function serialize_task(task, time)
 		name = task.name,
 		args = task.args,
 		time = 0,
-		priority = i,
+		priority = task.priority,
 	}
 end
 function vl_scheduler.save()
@@ -105,7 +105,7 @@ function vl_scheduler.save()
 		local iter = run_queue[i]
 		while iter do
 			if iter.name then
-				storage:set_string("task_"..sequence.."_"..task_count, serialize_task(task, 0))
+				storage:set_string("task_"..sequence.."_"..task_count, serialize_task(iter, 0))
 				task_count = task_count + 1
 			end
 			iter = iter.next
@@ -135,7 +135,6 @@ function vl_scheduler.load()
 	local keys = storage:get_keys()
 	for _,key in ipairs(keys) do
 		if key:sub(0,11) == "task_count_" and key ~= "task_count_"..sequence then
-			local old_sequence = tonumber(key:sub(12))
 			local task_count = storage:get_int(key)
 
 			-- Delete all the old task data
