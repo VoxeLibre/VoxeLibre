@@ -98,6 +98,8 @@ local function register_flower(name, biomes, seed, offset)
 		vl_biomes.register_decoration({
 			biomes = biomes,
 			decoration = "mcl_flowers:" .. name,
+			param2 = 8,
+			param2_max = 9,
 			y_min = 1,
 			y_max = vl_biomes.overworld_max,
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
