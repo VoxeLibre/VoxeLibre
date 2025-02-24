@@ -9,60 +9,82 @@ vl_block_update = mod
 
 local PROFILE = false
 local lookaside_cache = {}
-local pending_block_updates = {}
-local has_block_updates = false
+
+local mod_internal = {
+	pending_block_updates = {},
+	lookaside_cache = lookaside_cache,
+	vl_block_update = vl_block_update,
+	has_block_updates = false,
+}
+
+local function make_pattern_setter(block_update_pattern)
+	local code = [[
+		local args = ...
+		local mod_internal = args.mod_internal
+		local lookaside_cache = mod_internal.lookaside_cache
+		local vl_block_update = mod_internal.vl_block_update
+
+		local core_hash_node_position = core.hash_node_position
+
+		return function(pos)
+			local pos_hash = core_hash_node_position(pos)
+			vl_block_update.updated[pos_hash] = true
+			mod_internal.has_block_updates = true
+			lookaside_cache[pos_hash] = nil
+	]]
+
+	if type(core.hash_node_position(vector.zero())) == "number" then
+		for i = 1,#block_update_pattern do
+			local hash_diff = core.hash_node_position(block_update_pattern[i]) - core.hash_node_position(vector.zero())
+			if hash_diff < 0 then
+				code = code.. "mod_internal.pending_block_updates[pos_hash-"..tostring(-hash_diff).."]=true\n"
+			else
+				code = code.. "mod_internal.pending_block_updates[pos_hash+"..tostring(hash_diff).."]=true\n"
+			end
+		end
+	else
+		local p = block_update_pattern[1]
+		code = code .. "local np = vector.offset(pos,"..p.x..","..p.y..","..p.z..")\n"
+		code = code .. "mod_internal.pending_block_updates[core.hash_node_position(np)]=true\n"
+		for i = 2,#block_update_pattern do
+			p = block_update_pattern[i]
+			code = code .. "np.x = pos.x+("..p.x..")\n"
+			code = code .. "np.y = pos.y+("..p.x..")\n"
+			code = code .. "np.z = pos.z+("..p.x..")\n"
+			code = code .. "mod_internal.pending_block_updates[core.hash_node_position(np)]=true\n"
+		end
+	end
+
+	code = code .. [[
+		end
+	]]
+
+	print("code:\n"..code)
+	return loadstring(code)({mod_internal = mod_internal})
+end
+
 
 -- Block updates are processed on the next timestep
 -- This is written to consolidate multiple updates to the same position
-local function queue_block_updates(pos)
-	pos = vector.round(pos)
-	local pos_hash = core.hash_node_position(pos)
-	vl_block_update.updated[pos_hash] = true
-	has_block_updates = true
-	lookaside_cache[pos_hash] = nil
-	<<<
-		local block_update_pattern = {
-			vector.new( 1, 0, 0), vector.new(-1, 0, 0), vector.new( 0, 1, 0),
-			vector.new( 0,-1, 0), vector.new( 0, 0, 1), vector.new( 0, 0,-1),
-			vector.new( 2, 0, 0), vector.new(-2, 0, 0), vector.new( 0, 2, 0),
-			vector.new( 0,-2, 0), vector.new( 0, 0, 2), vector.new( 0, 0,-2),
-			vector.new( 1, 1, 0), vector.new( 1,-1, 0), vector.new(-1, 1, 0),
-			vector.new(-1,-1, 0), vector.new( 1, 0, 1), vector.new(-1, 0, 1),
-			vector.new( 1, 0,-1), vector.new(-1, 0,-1), vector.new( 0, 1, 1),
-			vector.new( 0,-1, 1), vector.new( 0, 1,-1), vector.new( 0,-1,-1),
-		}
-
-		if type(core.hash_node_position(vector.zero())) == "number" then
-			for i = 1,#block_update_pattern do
-				local hash_diff = core.hash_node_position(block_update_pattern[i]) - core.hash_node_position(vector.zero())
-				if hash_diff < 0 then
-					code = code.. "\tpending_block_updates[pos_hash-"..tostring(-hash_diff).."]=true\n"
-				else
-					code = code.. "\tpending_block_updates[pos_hash+"..tostring(hash_diff).."]=true\n"
-				end
-			end
-		else
-			local p = block_update_pattern[1]
-			code = code .. "\tlocal np = vector.offset(pos,"..p.x..","..p.y..","..p.z..")\n"
-			code = code .. "\tpending_block_updates[core.hash_node_position(np)]=true\n"
-			for i = 2,#block_update_pattern do
-				p = block_update_pattern[i]
-				code = code .. "\tnp.x = pos.x+("..p.x..")\n"
-				code = code .. "\tnp.y = pos.y+("..p.x..")\n"
-				code = code .. "\tnp.z = pos.z+("..p.x..")\n"
-				code = code .. "\tpending_block_updates[core.hash_node_position(np)]=true\n"
-			end
-		end
-	>>>
-end
+local two_around_pattern = {
+	vector.new( 1, 0, 0), vector.new(-1, 0, 0), vector.new( 0, 1, 0),
+	vector.new( 0,-1, 0), vector.new( 0, 0, 1), vector.new( 0, 0,-1),
+	vector.new( 2, 0, 0), vector.new(-2, 0, 0), vector.new( 0, 2, 0),
+	vector.new( 0,-2, 0), vector.new( 0, 0, 2), vector.new( 0, 0,-2),
+	vector.new( 1, 1, 0), vector.new( 1,-1, 0), vector.new(-1, 1, 0),
+	vector.new(-1,-1, 0), vector.new( 1, 0, 1), vector.new(-1, 0, 1),
+	vector.new( 1, 0,-1), vector.new(-1, 0,-1), vector.new( 0, 1, 1),
+	vector.new( 0,-1, 1), vector.new( 0, 1,-1), vector.new( 0,-1,-1),
+}
+local queue_block_updates = make_pattern_setter(two_around_pattern)
 
 core.register_globalstep(function()
-	if not has_block_updates then return end
+	if not mod_internal.has_block_updates then return end
 
 	local start = core.get_us_time()
-	local updates = pending_block_updates
-	pending_block_updates = {}
-	has_block_updates = false
+	local updates = mod_internal.pending_block_updates
+	mod_internal.pending_block_updates = {}
+	mod_internal.has_block_updates = false
 
 	for hash,_ in pairs(updates) do
 		local lookaside = lookaside_cache[hash]
