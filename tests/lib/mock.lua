@@ -128,6 +128,8 @@ function mock.luanti(g)
 		end,
 		register_alias = function()
 		end,
+		register_lbm = function()
+		end,
 		get_us_time = function()
 			local sec, nsec = posix.clock_gettime(0)
 			return sec * 1e6 + math.floor(nsec / 1000) + mock.time_offset
