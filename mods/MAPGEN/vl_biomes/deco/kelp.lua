@@ -1,6 +1,6 @@
 -- TODO: move to mcl_ocean?
-local surfaces = {"mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel"}
-local nodes = {"mcl_ocean:kelp_dirt", "mcl_ocean:kelp_sand", "mcl_ocean:kelp_gravel"}
+local surfaces = {"mcl_core:dirt", "mcl_mud:mud", "mcl_core:sand", "mcl_core:gravel"}
+local nodes = {"mcl_ocean:kelp_dirt", "mcl_ocean:kelp_mud", "mcl_ocean:kelp_sand", "mcl_ocean:kelp_gravel"}
 local function register_kelp_decoration(offset, scale, biomes, suffix)
 	for s = 1, #surfaces do
 		vl_biomes.register_decoration({
