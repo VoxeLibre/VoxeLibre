@@ -120,13 +120,18 @@ function mock.luanti(g)
 		end,
 		register_alias = function()
 		end,
+		register_lbm = function()
+		end,
 		get_us_time = function()
 			local sec, nsec = posix.clock_gettime(0)
 			return sec * 1e6 + math.floor(nsec / 1000) + mock.time_offset
 		end,
 		get_mod_storage = function()
 			return mock.storage
-		end
+		end,
+		hash_node_position = function(pos)
+			return (pos.z + 0x8000) * 0x100000000 + (pos.y + 0x8000) * 0x10000 + (pos.x + 0x8000)
+		end,
 	}
 
 	-- Update the specified global environment to act as though the Luanti engine is present
@@ -135,7 +140,12 @@ function mock.luanti(g)
 	g.core = {}
 	g.dump = dump
 	g.vector = {
-		new = function() end
+		new = function(x,y,z)
+			return {x=x, y=y, z=z}
+		end,
+		zero = function()
+			return {x=0, y=0, z=0}
+		end,
 	}
 	dofile(LUANTI_PATH.."/builtin/common/misc_helpers.lua")
 	_G = old_G
