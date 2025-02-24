@@ -485,10 +485,12 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	local survive_collision = projectile_def.survive_collision
 
 	-- Apply damage
-	-- Note: Damage blocking for shields is handled in mcl_shields with an mcl_damage modifier
-	local do_damage = false
+	-- Note: Damage blocking for shields is handled in mcl_shields with an mcl_damage modifier.
+	--       We need to know it to avoid setting blocking players on fire and activating collision callbacks.
+	local do_damage, object_blocking = false, false
 	if object:is_player() and projectile_def.damages_players then
 		do_damage = true
+		object_blocking = mcl_shields.is_blocking(object)
 
 		if handle_player_sticking(self, entity_def, projectile_def, object) then
 			-- Force the projectile to survive if it stuck in a player
@@ -519,20 +521,23 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		damage_particles(vector.add(pos, vector.multiply(self.object:get_velocity(), 0.1)), self._is_critical)
 
 		-- Light things on fire
-		if object_alive and mcl_burning.is_burning(self.object) then
+		if object_alive and not object_blocking
+				and mcl_burning.is_burning(self.object) then
 			mcl_burning.set_on_fire(object, 5)
 		end
 	end
 
-	-- Call entity collision hook
-	local hook = projectile_def.on_collide_with_entity
-	if hook then hook(self, pos, object) end
+	if not object_blocking then
+		-- Call entity collision hook
+		local hook = projectile_def.on_collide_with_entity
+		if hook then hook(self, pos, object) end
 
-	-- Call reverse entity collision hook
-	local other_entity_def = core.registered_entities[object.name] or {}
-	local other_entity_vl_projectile = other_entity_def._vl_projectile or {}
-	local hook = other_entity_vl_projectile and other_entity_vl_projectile.on_collide
-	if hook then hook(object, self) end
+		-- Call reverse entity collision hook
+		local other_entity_def = core.registered_entities[object.name] or {}
+		local other_entity_vl_projectile = other_entity_def._vl_projectile or {}
+		local hook = other_entity_vl_projectile and other_entity_vl_projectile.on_collide
+		if hook then hook(object, self) end
+	end
 
 	-- Play sounds
 	local sounds = projectile_def.sounds or {}
