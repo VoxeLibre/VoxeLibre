@@ -112,13 +112,21 @@ for i = 1,#mod_names do
 		cmd_options = cmd_options .. " --globals "..deps[j]
 	end
 
+	print("set -e")
 	print("echo ------------------------------")
 	print("echo Checking "..config.name.." located at "..config.dir)
-	print("\t\techo 'Using "..luacheck.." <file>"..cmd_options.."'")
+	print("echo 'Using "..luacheck.." <file>"..cmd_options.."'")
+	print("BASE=$(pwd)")
 	print("(")
 	print("\tcd "..config.dir)
 	print("\tfor FILE in *.lua; do")
-	print("\t\t"..luacheck.." $FILE"..cmd_options)
+	print("\t\tif grep \""..config.dir.."$FILE\" $BASE/tests/luacheck/check.lst; then")
+	print("\t\t\t"..luacheck.." $FILE"..cmd_options)
+	print("\t\telse")
+	print("\t\t\tif "..luacheck.." $FILE"..cmd_options.."; then")
+	print("\t\t\t\techo \""..config.dir.."$FILE\" >> $BASE/luacheck-passed.lst")
+	print("\t\t\tfi")
+	print("\t\tfi")
 	print("\tdone")
 	print(")")
 end
