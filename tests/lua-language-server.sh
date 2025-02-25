@@ -1,7 +1,7 @@
 #!/bin/sh
 
+source tests/env.sh
 set -e
-LUA=$( which lua || which lua5.1 || which lua5.2 || which lua5.3 || which luajit )
 
 # Make sure luanti lls definitions are up-to-date
 (
