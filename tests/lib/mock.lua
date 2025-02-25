@@ -1,5 +1,7 @@
 local mock = {}
 local posix = require('posix')
+local os = require("os")
+local LUANTI_PATH = os.getenv("LUANTI_PATH") or "/usr/share/luanti"
 
 print("package.path="..package.path)
 
@@ -89,7 +91,7 @@ function mock.luanti(g)
 	g.vector = {
 		new = function() end
 	}
-	require("misc_helpers")
+	dofile(LUANTI_PATH.."/builtin/common/misc_helpers.lua")
 	_G = old_G
 
 	g.core = luanti_core
