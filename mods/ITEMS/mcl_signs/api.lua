@@ -62,7 +62,8 @@ local HYPHEN = {
 	[0xFF65] = true,
 }
 
-local CR_CODEPOINT = utf8.codepoint("\r")
+local CR_CODEPOINT = utf8.codepoint("\r") -- ignored
+local WRAP_CODEPOINT = utf8.codepoint("‐") -- default, ellipsis for "truncate"
 
 local DEFAULT_COLOR = "#000000"
 local DYE_TO_COLOR = {
@@ -103,7 +104,7 @@ local sign_tpl = {
 		type = "fixed",
 		fixed = {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2}
 	},
-	groups = {axey = 1, handy = 2, sign = 1, not_in_creative_inventory = 1},
+	groups = {axey = 1, handy = 2, sign = 1, supported_node = 1, not_in_creative_inventory = 1},
 	stack_max = 16,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	node_placement_prediction = "",
@@ -202,8 +203,6 @@ end
 
 local ustring_to_line_array
 local wrap_mode = core.settings:get("mcl_signs_wrap_mode") or "word_wrap"
-local WRAP_CODEPOINT = utf8.codepoint("‐") -- default, ellipsis for "truncate"
-
 if wrap_mode == "word_break" then
 	function ustring_to_line_array(ustr)
 		local lines = {}
@@ -360,13 +359,9 @@ local function update_sign(pos)
 		if not text_entity or not text_entity:get_pos() then return end
 	end
 
-	local glow = 0
-	if data.glow then
-		glow = SIGN_GLOW_INTENSITY
-	end
 	text_entity:set_properties({
 		textures = {generate_texture(data)},
-		glow = glow,
+		glow = data.glow and SIGN_GLOW_INTENSITY or 0,
 	})
 	text_entity:set_yaw(data.yaw)
 	text_entity:set_armor_groups({immortal = 1})
@@ -545,7 +540,7 @@ local sign_wall = table_merge(sign_tpl, {
 		type = "wallmounted",
 		wall_side = {-0.5, -7/28, -0.5, -23/56, 7/28, 0.5}
 	},
-	groups = {axey = 1, handy = 2, sign = 1, deco_block = 1},
+	groups = {axey = 1, handy = 2, sign = 1, supported_node_wallmounted = 1, deco_block = 1},
 	_mcl_sign_type = "wall",
 })
 
