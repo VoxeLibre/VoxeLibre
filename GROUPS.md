@@ -58,7 +58,10 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `can_eat_when_full=1`: Only for foodstuffs. This item can be eaten when the user has a full hunger bar
 * `attached_node=1`: if the node under it is not a walkable block the node will be dropped as an item. If the node is wallmounted the wallmounted direction is checked.
 * `attached_node_facedir=1`: Like `attached_node`, but for facedir nodes
+* `attached_node_wallmounted=1`: Like `attached_node`, but for wallmounted nodes
 * `supported_node=1`: Like `attached_node`, but can be placed on any nodes that do not have the `drawtype="airlike"` attribute.
+* `supported_node_facedir=1`: Like `supported_node`, but for facedir nodes
+* `supported_node_wallmounted=1`: Like `supported_node`, but for wallmounted nodes
 * `cauldron`: Cauldron. 1: Empty. 2-4: Water height
 * `anvil`: Anvil. 1: No damage. 2-3: Higher damage levels
 * `no_rename=1`: Item cannot be renamed by anvil
