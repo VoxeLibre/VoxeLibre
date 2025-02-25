@@ -1,9 +1,7 @@
 #!/bin/sh
 
+source tests/env.sh
 set -e
-
-which luarocks && eval $(luarocks path)
-which luarocks-5.3 && eval $(luarocks-5.3 path)
 
 find ./ -name 'mod.conf' | sort | while read MOD; do
 	(
