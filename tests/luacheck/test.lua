@@ -107,30 +107,34 @@ for i = 1,#mod_names do
 	local deps = get_deps_for_mod(mod, mods)
 
 	local cmd_options = ""
-	-- cmd_options = cmd_options .. " --no-color"
 	for j = 1,#deps do
 		cmd_options = cmd_options .. " --globals "..deps[j]
 	end
 
 	print("set -e")
-	print("echo ------------------------------")
 	print("echo Checking "..config.name.." located at "..config.dir)
-	print("echo 'Using "..luacheck.." <file>"..cmd_options.."'")
+	--print("echo 'Using "..luacheck.." <file> "..cmd_options.."'")
 	print("BASE=$(pwd)")
 	print("(")
-	print("\tcd "..config.dir)
-	print("\tfor FILE in *.lua; do")
-	print("\t\tif grep \""..config.dir.."$FILE\" $BASE/tests/luacheck/check.lst; then")
-	print("\t\t\t"..luacheck.." $FILE"..cmd_options)
-	print("\t\t\techo \""..config.dir.."$FILE\" >> $BASE/luacheck-passed.lst")
-	print("\t\telse")
-	print("\t\t\tif "..luacheck.." $FILE"..cmd_options.."; then")
-	print("\t\t\t\techo \""..config.dir.."$FILE\" >> $BASE/luacheck-passed.lst")
-	print("\t\t\telse")
-	print("\t\t\t\techo \"Checks for $FILE are currently advisory only\"")
-	print("\t\t\tfi")
-	print("\t\tfi")
-	print("\tdone")
+	print(	"cd "..config.dir)
+	print(	"for FILE in *.lua; do")
+	print(		"if grep -q \""..config.dir.."$FILE\" $BASE/tests/luacheck/check.lst; then")
+	print(			"if ! "..luacheck.." $FILE "..cmd_options.." 2>&1 >/tmp/output; then")
+	print(				"cat /tmp/output | sed -e 's/warning/error/'")
+	print(				"exit 1")
+	print(			"fi")
+	print(			"echo \""..config.dir.."$FILE\" >> $BASE/luacheck-passed.lst")
+	print(		"else")
+	print(			"if "..luacheck.." $FILE"..cmd_options.." 2>&1 > /tmp/output; then")
+	print(				"echo \""..config.dir.."$FILE\" >> $BASE/luacheck-passed.lst")
+	print(			"else")
+	print(				"if ! grep -q OK /tmp/output; then")
+	print(					"cat /tmp/output")
+	print(				"fi")
+	print(				"echo \"Checks for $FILE are currently advisory only\"")
+	print(			"fi")
+	print(		"fi")
+	print(	"done")
 	print(")")
 end
 
