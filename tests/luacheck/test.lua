@@ -1,9 +1,10 @@
 #!/usr/bin/env lua
 
 local luacheck = "luacheck"
-
+local os = require("os")
+local LUANTI_PATH = os.getenv("LUANTI_PATH") or "/usr/share/luanti"
 core = {}
-dofile("tests/lib/misc_helpers.lua")
+dofile(LUANTI_PATH.."/builtin/common/misc_helpers.lua")
 
 function read_mod_configuration(file)
 	local parts = file:split("/")
