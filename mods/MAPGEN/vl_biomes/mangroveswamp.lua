@@ -2,6 +2,8 @@
 local mod_mcl_mangrove = core.get_modpath("mcl_mangrove")
 local mg_seed = core.get_mapgen_setting("seed")
 
+local get_node_name_raw = mcl_vars.get_node_name_raw
+
 -- Mangrove swamp
 vl_biomes.register_biome({
 	name = "MangroveSwamp",
@@ -40,13 +42,13 @@ vl_biomes.register_biome({
 --- Grow mangrove roots after generation
 local bulk_swap_node = core.bulk_swap_node or core.bulk_set_node
 local function mangrove_root_gennotify(t, minp, maxp, blockseed)
+	local pr = PcgRandom(blockseed + mg_seed + 38327)
 	for _, pos in ipairs(t) do
-		local nn = core.find_nodes_in_area(vector.offset(pos, -8, -1, -8), vector.offset(pos, 8, 0, 8), {"mcl_mangrove:mangrove_roots"})
+		local nn = core.find_nodes_in_area(minp, maxp, {"mcl_mangrove:mangrove_roots"})
 		if nn and #nn > 0 then
-			local pr = PcgRandom(blockseed + mg_seed + 38327)
 			for _, v in pairs(nn) do
 				local l = pr:next(2, 16)
-				local n = core.get_node(vector.offset(v, 0, -1, 0)).name
+				local n = get_node_name_raw(v.x, v.y-1, v.z)
 				if core.get_item_group(n, "water") > 0 then
 					local wl = "mcl_mangrove:water_logged_roots"
 					if n:find("river") then wl = "mcl_mangrove:river_water_logged_roots" end
