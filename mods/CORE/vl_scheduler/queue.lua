@@ -43,10 +43,14 @@ local zero_schedule = {0}
 
 ---@param size number
 ---@return amt_queue.Queue
-function amt_queue.new(size)
+function amt_queue.new(reduce_callback, size)
 	size = size or 30
 	assert(size <= 30, tostring(size).." exceeds maximum amt_queue size of 30")
-	local pc = {size = size, mask = 0}
+	local pc = {
+		size = size,
+		mask = 0,
+		reduce = reduce_callback,
+	}
 	setmetatable(pc, metatable)
 	return pc
 end
@@ -87,16 +91,8 @@ function amt_queue.insert(self, item, offset)
 	end
 
 	local s = schedule[1]
-	local next_item = section[s]
-	item.next = next_item
-	if next_item then
-		item.last = next_item.last
-		--next_item.prev = item
-	else
-		item.last = item
-	end
+	section[s] = self.reduce(section[s], item)
 	section.mask = bit.bor(section.mask, bit.lshift(1,s))
-	section[s] = item
 end
 
 ---@param self amt_queue.Queue
