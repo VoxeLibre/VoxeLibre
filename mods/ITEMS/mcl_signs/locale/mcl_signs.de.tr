@@ -1,18 +1,27 @@
 # textdomain: mcl_signs
-Sign=Schild
-Birch Sign=Birkenholzschild
-Spruce Sign=Fichtenholzschild
-Dark Oak Sign=Schwarzeichenschild
-Jungle Sign=Dschungelholzschild
-Acacia Sign=Akazienholzschild
-Mangrove Sign=Mangrovenholzschild
-Warped Hyphae Sign=Wirrhyphenschild
-Crimson Hyphae Sign=Karmesinhyphenschild
-##[ signs_api.lua ]##
 Can be written=Kann beschriftet werden
 Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Schilder können beschrieben werden und kommen in zwei Varianten: Wandschild und stehendes Schild. Sie können auf und an den Seiten von anderen Blöclen platziert werden, aber nicht unter ihnen.
-After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow.=Nachdem das Schild platziert wurde, kann man etwas darauf schreiben. 4 Zeilen mit je 15 Zeichen pro Zeile sind verfügbar, alles darüber geht verloren. Es werden nicht alle Zeichen unterstützt. Der Text kann nicht geändert werden, sobald er geschrieben wurde; man muss das Schild erneut platzieren. Kann gefärbt und zum Leuchten gebracht werden.
+After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=
+Sign text:=
+Close=
 Enter sign text:=Schildtext eingeben:
+Maximum line length: @1=Maximale Zeilenlänge: @1
+Maximum lines: @1=Maximale Zeilen: @1
+Done=Fertig
+Oak Sign=Eichezeichen
+Dark Oak Sign=Dunkles Eichenschild
+Acacia Sign=Akazienzeichen
+Birch Sign=Birke Zeichen
+Jungle Sign=Dschungelzeichen
+Spruce Sign=Fichtenzeichen
+Mangrove Sign=Mangroven-Zeichen
+Crimson Hyphae Sign=Hochrotes Hyphen-Zeichen
+Warped Hyphae Sign=Verzerrtes Hyphen-Zeichen
+
+
+##### not used anymore #####
+
+Sign=Zeichen / Schild
+After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow.=Nachdem das Schild platziert wurde, kann man etwas darauf schreiben. 4 Zeilen mit je 15 Zeichen pro Zeile sind verfügbar, alles darüber geht verloren. Es werden nicht alle Zeichen unterstützt. Der Text kann nicht geändert werden, sobald er geschrieben wurde; man muss das Schild erneut platzieren. Kann gefärbt und zum Leuchten gebracht werden.
 Maximum line length: 15=Maximale Zeilenlänge: 15
 Maximum lines: 4=Maximale Zeilen: 4
-Done=Fertig

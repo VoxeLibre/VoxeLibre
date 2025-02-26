@@ -172,15 +172,22 @@ if minetest.get_modpath("mesecons_pressureplates") then
 end
 
 if minetest.get_modpath("mcl_signs") then
-	mcl_bamboo.mcl_log("Signs Section Entrance. Modpath exists.")
-	if mcl_signs ~= nil then
-		-- Bamboo Signs...
-		mcl_signs.register_sign_custom("mcl_bamboo", "_bamboo", "mcl_bamboo_bamboo_sign.png",
-				"#ffffff", "mcl_bamboo_bamboo_sign_wield.png", "mcl_bamboo_bamboo_sign_wield.png",
-				S("Bamboo Sign"))
-		mcl_signs.register_sign_craft("mcl_bamboo", BAMBOO_PLANK, "_bamboo")
-		minetest.register_alias("bamboo_sign", "mcl_signs:wall_sign_bamboo")
-	end
+	-- Bamboo Signs...
+	mcl_signs.register_sign("bamboo", "", {
+		description = S("Bamboo Sign"),
+		tiles = {"mcl_bamboo_bamboo_sign.png"},
+		inventory_image = "mcl_bamboo_bamboo_sign_wield.png",
+		wield_image = "mcl_bamboo_bamboo_sign_wield.png",
+	})
+	minetest.register_alias("bamboo_sign", "mcl_signs:wall_sign_bamboo")
+	minetest.register_craft({
+		output = "mcl_signs:wall_sign_bamboo 3",
+		recipe = {
+			{BAMBOO_PLANK, BAMBOO_PLANK, BAMBOO_PLANK},
+			{BAMBOO_PLANK, BAMBOO_PLANK, BAMBOO_PLANK},
+			{"", "mcl_core:stick", ""},
+		},
+	})
 end
 
 if minetest.get_modpath("mcl_fences") then

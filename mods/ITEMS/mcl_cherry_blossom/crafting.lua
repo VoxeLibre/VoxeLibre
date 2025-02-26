@@ -81,7 +81,14 @@ minetest.register_craft({
 	}
 })
 
-mcl_signs.register_sign_craft("mcl_cherry_blossom", "mcl_cherry_blossom:cherrywood", "_cherrywood")
+minetest.register_craft({
+	output = "mcl_signs:wall_sign_cherry 3",
+	recipe = {
+		{planks, planks, planks},
+		{planks, planks, planks},
+		{"", "mcl_core:stick", ""},
+	}
+})
 
 -- Smelting
 minetest.register_craft({

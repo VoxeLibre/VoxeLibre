@@ -261,6 +261,12 @@ mcl_buckets_use_select_box (Buckets use select box) bool false
 # 'Calendar' means from December 24th to January 7th
 vl_christmas_decorations (Christmas decorations) enum Calendar Always,Calendar,Never
 
+# Controls the behavior when the character limit on a line on a sign is reached.
+# * word_wrap: wrap at spaces and hyphens, break words if impossible
+# * word_break: break words if they reach the limit, make exceptions for spaces
+# * truncate: stop adding characters to a line past the limit, add ... instead
+mcl_signs_wrap_mode (Signs text wrapping mode) enum word_wrap word_wrap,word_break,truncate
+
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.
 #
@@ -328,13 +334,13 @@ mcl_bookshelf_inventories (Enable bookshelf inventories) bool true
 # Enable swiftness on enchanted golden apples
 mcl_enable_fapples (Enable swiftness on enchanted golden apples) bool true
 
-# All tameable mobs listen to the "sit" righclick like dogs
+# All tameable mobs listen to the "sit" rightclick like dogs
 mcl_extended_pet_control (Extended pet control) bool true
 
 # Enable hamburgers for villagers to follow
 mcl_enable_hamburger (Enable Hamburger) bool true
 
-# Starting Inventory contents (given directly to the new player) type: bool
+# Starting Inventory contents (given directly to the new player)
 give_starting_inv (Player Starter Pack) bool false
 
 [Debugging]
@@ -356,8 +362,5 @@ mcl_logging_dungeons (Dungeons generation logging) bool false
 # If enabled generated structures will be logged
 mcl_logging_structures (Structure generation logging) bool false
 
-#Complete debug logging for mcl_signs events. Use this if you have issues with signs.
-mcl_logging_mcl_signs (Complete debug logging for mcl_signs) bool false
-
-#Debug logging for mcl_events.
+# Debug logging for mcl_events.
 mcl_logging_event_api (Debug logging for mcl_events) bool false

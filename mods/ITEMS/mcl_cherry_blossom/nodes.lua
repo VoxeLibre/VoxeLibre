@@ -61,9 +61,12 @@ mcl_stairs.register_slab("cherrywood", "mcl_cherry_blossom:cherrywood",
 		S("Double Cherry Slab"))
 
 -- Signs
-mcl_signs.register_sign_custom("mcl_cherry_blossom", "_cherrywood",
-		"mcl_cherry_blossom_sign.png", nil,
-		"mcl_cherry_blossom_sign_inv.png", "mcl_cherry_blossom_sign_inv.png", S("Cherry Sign"))
+mcl_signs.register_sign("cherry", "", {
+	description = S("Cherry Sign"),
+	tiles = {"mcl_cherry_blossom_sign.png"},
+	inventory_image = "mcl_cherry_blossom_sign_inv.png",
+	wield_image = "mcl_cherry_blossom_sign_inv.png",
+})
 
 -- Fences & Gates
 mcl_fences.register_fence_and_fence_gate(
