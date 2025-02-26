@@ -427,7 +427,7 @@ core.register_on_mods_loaded(vl_scheduler.load)
 
 -- Update start time on first globalstep
 vl_scheduler.after(0, 1, function()
-	start = core.get_us_time()
+	start_time = core.get_us_time()
 end)
 
 return vl_scheduler
