@@ -83,6 +83,10 @@ function mock.luanti(g)
 		registered_globalsteps = mock.registered_globalsteps,
 		registered_nodes = {},
 		log = function(class, msg)
+			if not msg then
+				msg = class
+				class = "Server"
+			end
 			table.insert(mock.log, {class,msg})
 			print("["..class.."] "..msg)
 		end,
