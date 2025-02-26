@@ -1085,9 +1085,7 @@ if mobs_spawn then
 		return mcl_mobs.spawn(spawning_position, mob_def.name)
 	end
 
-	local count = 0
 	local function attempt_spawn()
-		count = count + 1
 		local players = get_connected_players()
 		local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
 
@@ -1115,43 +1113,7 @@ if mobs_spawn then
 		end
 	end
 
-	local function fixed_timeslice(timer, dtime, timeslice_us, handler)
-		timer = timer + dtime * timeslice_us * 1e-6
-		if timer <= 0 then return timer, 0 end
-
-		-- Time the function
-		local start_time_us = core.get_us_time()
-		handler()
-		local stop_time_us = core.get_us_time() + 1
-
-		-- Measure how long this took and calculate the time until the next call
-		local took = stop_time_us - start_time_us
-		timer = timer - took * 1e-6
-
-		return timer, took
-	end
-
-	--MAIN LOOP
-	local timer = 0
-	local start = true
-	local start_time
-	local total_time = 0
-	core.register_globalstep(function(dtime)
-		if start then
-			start = false
-			start_time = core.get_us_time()
-		end
-
-		--note = nil
-		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
-		timer = next_spawn
-
-		if (profile or logging) and took > 0 then
-			total_time = total_time + took
-			core.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time) * 100).."% count="..count..
-				", "..tostring(total_time/count).."us per spawn attempt, took="..took.." us, note="..(note or ""))
-		end
-	end)
+	vl_scheduler.register_fixed_globalstep(vl_scheduler.PRIORITY_NOW_MAIN, 1000, attempt_spawn, profile or logging)
 end
 
 local function despawn_allowed(self)
