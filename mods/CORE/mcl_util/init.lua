@@ -769,3 +769,8 @@ function mcl_util.metadata_last_act(meta, name, delay)
 	return true
 end
 
+function mcl_util.caller_from_traceback(traceback)
+	local parts = traceback:split("\n")[3]:split(DIR_DELIM.."mods"..DIR_DELIM)[2]:split(":")
+	return "mods"..DIR_DELIM..parts[1]..":"..parts[2]
+end
+
