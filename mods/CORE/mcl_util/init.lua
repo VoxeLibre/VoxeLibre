@@ -814,4 +814,8 @@ end
 mcl_util.parse_version = mcl_vars.parse_version
 mcl_util.minimum_version = mcl_vars.minimum_version
 mcl_util.format_version = mcl_vars.format_version
+function mcl_util.caller_from_traceback(traceback)
+	local parts = traceback:split("\n")[3]:split(DIR_DELIM.."mods"..DIR_DELIM)[2]:split(":")
+	return "mods"..DIR_DELIM..parts[1]..":"..parts[2]
+end
 
