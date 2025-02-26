@@ -45,7 +45,11 @@ local MAX_FREE_TASKS = 200
 ---@type table<number, vl_scheduler.Task[]>
 local task_ring = {}
 local task_pos = 1
-local long_queue = amt_queue.new()
+local long_queue = amt_queue.new(function(old_item, new_item)
+	new_item.next = old_item
+	new_item.last = old_item and old_item.last or new_item
+	return new_item
+end)
 
 -- Initialize task ring to avoid memory allocations while running
 for i = 1,32 do
