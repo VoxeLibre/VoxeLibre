@@ -4,7 +4,9 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local function spawn_silverfish(pos, oldnode, oldmetadata, digger)
-	if not minetest.is_creative_enabled("") then
+	if not minetest.is_creative_enabled("") and core.get_modpath("mobs_mc") then
+		-- weak runtime dependency only, avoid load dependency cycle
+		-- TODO: use spawning API instead
 		minetest.add_entity(pos, "mobs_mc:silverfish")
 	end
 end
