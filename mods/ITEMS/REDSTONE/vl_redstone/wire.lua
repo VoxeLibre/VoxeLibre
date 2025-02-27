@@ -1,4 +1,3 @@
-local mod = vl_redstone
 local use_texture_alpha = core.features.use_texture_alpha_string_modes and "clip" or true
 local DEBUG = false
 local box_center = {-1/16, -.5, -1/16, 1/16, -.5+1/64, 1/16}
@@ -160,9 +159,9 @@ local parts = {
 	[11]= {-1,-1, 0,   4},
 	[12]= { 0,-1,-1,   8},
 }
-local rules = {}
+local mesecon_rules = {}
 for i = 1,12 do
-	rules[#rules + 1] = {x = parts[i][1], y = parts[i][2], z = parts[i][3], spread = true}
+	mesecon_rules[#mesecon_rules + 1] = {x = parts[i][1], y = parts[i][2], z = parts[i][3], spread = true}
 end
 local function can_connect_dust(from, to)
 	local node = core.get_node(to)
@@ -202,9 +201,6 @@ local function update_redstone_wire(orig, update_neighbor)
 		node.name = connections[1]
 		node.param2 = connections[2] + power * 4
 		core.set_node(orig, node)
-
-		-- Update netlist because it has changed
-		mod.build_netlist(orig)
 	end
 end
 
@@ -237,7 +233,7 @@ local base_def = {
 
 	mesecons = {
 		conductor = {
-			rules = rules,
+			rules = mesecon_rules,
 			state = function(node)
 				if node.param2 >= 4 then
 					return mesecon.state.on
@@ -245,10 +241,10 @@ local base_def = {
 					return mesecon.state.off
 				end
 			end,
-			onstate = function(pos, node)
+			onstate = function(_, node)
 				return {node.name, node.param2 % 4 + 60}
 			end,
-			offstate = function(pos, node)
+			offstate = function(_, node)
 				return {node.name, node.param2 % 4}
 			end,
 		}
@@ -267,6 +263,10 @@ local base_def = {
 	},
 
 	vl_block_update = update_redstone_wire,
+	after_place_node = function(pos)
+		core.log("after place")
+		update_redstone_wire(pos)
+	end,
 }
 
 core.register_node("vl_redstone:dust", base_def)
