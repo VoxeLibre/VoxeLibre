@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(minetest.get_current_modname())
 
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
@@ -79,8 +79,11 @@ local function spawn_crystal(pos)
 	for _, crystal in pairs(crystals) do
 		crystal_explode(crystal)
 	end
-	local portal_pos = vector.add(portal_center, vector.new(0, -1, 0))
-	mcl_structures.place_structure(portal_pos,mcl_structures.registered_structures["end_exit_portal"],PseudoRandom(minetest.get_mapgen_setting("seed")),-1)
+	-- avoid dependency cycle
+	if vl_structures then
+		local portal_pos = vector.offset(portal_center, 0, -1, 0)
+		vl_structures.place_structure(portal_pos,vl_structures.registered_structures["end_exit_portal"],PcgRandom(minetest.get_mapgen_setting("seed")),-1)
+	end
 end
 
 minetest.register_entity("mcl_end:crystal", {

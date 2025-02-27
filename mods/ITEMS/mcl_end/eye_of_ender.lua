@@ -90,7 +90,7 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 		local player_name = user:get_player_name()
 		local origin = user:get_pos()
 		origin.y = origin.y + 1.5
-		local strongholds = mcl_structures.registered_structures["end_shrine"].static_pos
+		local strongholds = vl_structures and vl_structures.registered_structures["end_shrine"].static_pos or {}
 		local dim = mcl_worlds.pos_to_dimension(origin)
 		local is_creative = minetest.is_creative_enabled(player_name)
 
