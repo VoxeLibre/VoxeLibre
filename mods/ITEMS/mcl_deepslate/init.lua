@@ -6,7 +6,9 @@ local cobble = "mcl_deepslate:deepslate_cobbled"
 local stick = "mcl_core:stick"
 
 local function spawn_silverfish(pos, oldnode, oldmetadata, digger)
-	if not minetest.is_creative_enabled("") then
+	-- Weak dependency, to avoid module load order cycles
+	if not minetest.is_creative_enabled("") and core.get_modpath("mobs_mc") then
+		-- TODO: use spawning API instead
 		minetest.add_entity(pos, "mobs_mc:silverfish")
 	end
 end
