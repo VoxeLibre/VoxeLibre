@@ -481,7 +481,8 @@ end
 
 -- Deal light damage to mob, returns true if mob died
 function mob_class:deal_light_damage(pos, damage)
-	if not ((mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
+	-- weak runtime dependency, avoid load dependency cycle
+	if not mcl_weather or not ((mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
 		self.health = self.health - damage
 
 		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
