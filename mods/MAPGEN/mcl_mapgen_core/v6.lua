@@ -496,7 +496,7 @@ local function generate_mgv6_structures()
 					end
 				end
 
-				if ground_y then
+				if ground_y and mcl_structures then
 					p.y = ground_y+1
 					local nn0 = minetest.get_node(p).name
 					-- Check if the node can be replaced
@@ -509,7 +509,7 @@ local function generate_mgv6_structures()
 								local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:snowblock")
 								local surface2 = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:dirt_with_grass_snow")
 								if #surface + #surface2 >= 63 then
-									mcl_structures.call_struct(p, "igloo", nil, pr)
+									mcl_structures.place_structure(p, mcl_structures.registered_structures["igloo"], pr)
 									chunk_has_igloo = true
 								end
 							end
@@ -528,7 +528,7 @@ local function generate_mgv6_structures()
 								local nodes = minetest.find_nodes_in_area(p1, p2, {"mcl_core:sandstone", "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:dirt", "mcl_core:gravel"})
 
 								if #nodes >= 100 then -- >= 80%
-									mcl_structures.call_struct(p1, "fossil", nil, pr)
+									mcl_structures.place_structure(p1, mcl_structures.registered_structures["fossil"], pr)
 								end
 							end
 						end
