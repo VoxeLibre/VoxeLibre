@@ -526,22 +526,35 @@ function mcl_util.set_properties(obj, props)
 	end
 end
 
+local vector_distance, vector_zero = vector.distance, vector.zero
+
 -- Update bones, but only when changed
-function mcl_util.set_bone_position(obj, bone, pos, rot)
-	if core.get_bone_override then -- minetest >= 5.9
-		local over = obj:get_bone_override(bone)
-		local pos_equal = not pos or not over.position.absolute or vector.equals(vector.round(over.position.vec), vector.round(pos))
-		local rot_equal = not rot or not over.rotation.absolute or vector.equals(vector.round(over.rotation.vec), vector.round(rot))
-		if not pos_equal or not rot_equal then
-			if pos then over.position = { vec = pos, absolute = true, interpolation = 0.1 } end
-			if rot then over.rotation = { vec = rot, absolute = true, interpolation = 0.1 } end
-			obj:set_bone_override(bone, over)
+function mcl_util.set_bone_position(obj, bone, pos, rot, scale)
+	local current_pos, current_rot
+	if obj.set_bone_override then -- Luanti >= 5.9
+		do
+			local ov = obj:get_bone_override(bone)
+			current_pos, current_rot = ov.position.vec, ov.rotation.vec
 		end
-	else -- minetest up to 5.8
+
+		-- Only apply when the values aren't the same:
+		-- Compare the distance between new and old vectors against an epsilon.
+		local pos_equal = vector_distance(current_pos, pos or vector_zero()) < 1
+		-- The epsilon is 0.1 as the new API uses radians and more precision is neccesary.
+		local rot_equal = vector_distance(current_rot, rot or vector_zero()) < 0.1
+		if not pos_equal or not rot_equal then
+			obj:set_bone_override(bone, {
+				position = pos and {vec = pos, absolute = true, interpolation = 0.1} or nil,
+				rotation = rot and {vec = rot, absolute = true, interpolation = 0.1} or nil,
+				scale = scale and {vec = scale, absolute = true, interpolation = 0.1} or nil,
+			})
+		end
+	else -- Luanti <= 5.8
 		rot = rot and rot:apply(math.deg)
-		local current_pos, current_rot = obj:get_bone_position(bone)
-		local pos_equal = not pos or vector.equals(vector.round(current_pos), vector.round(pos))
-		local rot_equal = not rot or vector.equals(vector.round(current_rot), vector.round(rot))
+		current_pos, current_rot = obj:get_bone_position(bone)
+
+		local pos_equal = vector_distance(current_pos, pos or current_pos) < 1
+		local rot_equal = vector_distance(current_rot, rot or current_rot) < 1
 		if not pos_equal or not rot_equal then
 			obj:set_bone_position(bone, pos or current_pos, rot or current_rot)
 		end
