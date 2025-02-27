@@ -165,11 +165,15 @@ mcl_structures.register_structure("nether_bulwark",{
 				end },
 				{ itemstring = "mcl_core:goldblock", weight = 1, },
 				{ itemstring = "mcl_tools:sword_gold", weight = 1, },
+				{ itemstring = "mcl_jukebox:record_8", weight = 5 },
 				{ itemstring = "mcl_tools:axe_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
 				{ itemstring = "mcl_armor:helmet_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
 				{ itemstring = "mcl_armor:chestplate_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
 				{ itemstring = "mcl_armor:leggings_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
 				{ itemstring = "mcl_armor:boots_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
+				{ itemstring = "mcl_nether:netherite_upgrade_template", weight = 8 },
+				{ itemstring = "mcl_nether:ancient_debris", weight = 12 },
+				{ itemstring = "mcl_nether:netherite_scrap", weight = 4 },
 			}
 		},
 		{
@@ -189,6 +193,7 @@ mcl_structures.register_structure("nether_bulwark",{
 			items = {
 				{ itemstring = "mcl_compass:lodestone" },
 				{ itemstring = "mcl_armor:rib" },
+				{ itemstring = "mcl_armor:snout" },
 			}
 		}}
 	},
