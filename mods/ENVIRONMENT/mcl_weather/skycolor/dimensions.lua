@@ -6,24 +6,6 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 local dimension_handlers = {}
 mcl_weather.skycolor.dimension_handlers = dimension_handlers
 
--- Function to work out light modifier at different times
--- Noon is brightest, midnight is darkest, 0600 and 1800 is in the middle of this
-local function get_light_modifier(time)
-	-- 0.1 = 0.2
-	-- 0.4 = 0.8
-	-- 0.5 = 1
-	-- 0.6 = 0.8
-	-- 0.9 = 0.2
-
-	local light_multiplier =  time * 2
-	if time > 0.5 then
-		light_multiplier = 2 * (1 - time)
-	else
-		light_multiplier = time / 0.5
-	end
-	return light_multiplier
-end
-
 function dimension_handlers.overworld(player, sky_data)
 	local pos = player:get_pos()
 
@@ -57,6 +39,7 @@ function dimension_handlers.overworld(player, sky_data)
 			fog_tint_type = "custom",
 		},
 		clouds = true,
+		fog = { fog_start = -1, fog_distance = -1, fog_color = "#00000000" },
 	}
 	sky_data.sun = {visible = true, sunrise_visible = true}
 	sky_data.moon = {visible = true}
@@ -96,7 +79,7 @@ function dimension_handlers.overworld(player, sky_data)
 			sky_data.day_night_ratio = 1
 		elseif light_factor then
 			local time = minetest.get_timeofday()
-			local light_multiplier = get_light_modifier(time)
+			local light_multiplier = mcl_weather.skycolor.get_light_modifier(time)
 			local new_light = math.max(light_factor * light_multiplier, MINIMUM_LIGHT_LEVEL)
 			sky_data.day_night_ratio = new_light
 		end
@@ -105,8 +88,8 @@ end
 
 -- This can't be function dimension_handlers.end() due to lua syntax
 dimension_handlers["end"] = function(player, sky_data)
-	local biomesky = "#000000"
-	local biomefog = "#A080A0"
+	local biomesky = "#0F0F0F"
+	local biomefog = "#0F0F0F"
 	if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		local biome_index = minetest.get_biome_data(player:get_pos()).biome
 		local biome_name = minetest.get_biome_name(biome_index)
@@ -121,6 +104,7 @@ dimension_handlers["end"] = function(player, sky_data)
 		base_color = biomesky,
 		textures = {t,t,t,t,t,t},
 		clouds = false,
+		fog = { fog_start = 0.5, fog_distance = -1, fog_color = "#0F0F0F" }, -- average color of skybox
 	}
 	sky_data.sun = {visible = false , sunrise_visible = false}
 	sky_data.moon = {visible = false}
@@ -129,7 +113,7 @@ dimension_handlers["end"] = function(player, sky_data)
 end
 
 function dimension_handlers.nether(player, sky_data)
-	local biomesky = "#6EB1FF"
+	local biomesky = "#000000"
 	local biomefog = "#330808"
 	if mg_name ~= "v6" and mg_name ~= "singlenode" then
 		local biome_index = minetest.get_biome_data(player:get_pos()).biome
@@ -143,19 +127,9 @@ function dimension_handlers.nether(player, sky_data)
 		end
 	end
 	sky_data.sky = {
-		type = "regular",
-		sky_color = {
-			day_sky = biomefog,
-			day_horizon = biomefog,
-			dawn_sky = biomefog,
-			dawn_horizon = biomefog,
-			night_sky = biomefog,
-			night_horizon = biomefog,
-			indoors = biomefog,
-			fog_sun_tint = biomefog,
-			fog_moon_tint = biomefog,
-			fog_tint_type = "custom"
-		},
+		type = "plain",
+		base_color = biomefog,
+		fog = { fog_start = 0.1, fog_distance = -1, fog_color = biomefog },
 		clouds = false,
 	}
 	sky_data.sun = {visible = false , sunrise_visible = false}

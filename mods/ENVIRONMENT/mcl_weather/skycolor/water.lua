@@ -20,6 +20,8 @@ local function water_sky(player, sky_data)
 
 	if checkname == "mclx_core:river_water_source" or checkname == "mclx_core:river_water_flowing" then water_color = "#0084FF" end
 
+	local water_fog_color = mcl_weather.skycolor.adjust_brightness_by_daylight(water_color)
+
 	sky_data.sky = { type = "regular",
 		sky_color = {
 			day_sky = water_color,
@@ -34,6 +36,7 @@ local function water_sky(player, sky_data)
 			fog_tint_type = "custom"
 		},
 		clouds = true,
+		fog = { fog_start = 0, fog_distance = 80, fog_color = water_fog_color }, -- TODO: make distance biome configurable?
 	}
 end
 table.insert(mcl_weather.skycolor.filters, water_sky)
