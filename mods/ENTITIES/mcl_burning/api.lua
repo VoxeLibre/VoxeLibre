@@ -16,7 +16,8 @@ end
 function mcl_burning.is_affected_by_rain(obj)
 	local pos = obj:get_pos()
 	if not pos then return false end
-	return mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) and mcl_weather.has_rain(pos)
+	-- weak runtime dependency only, avoid load dependency cycle
+	return mcl_weather and mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) and mcl_weather.has_rain(pos)
 end
 
 function mcl_burning.is_affected_by_sunlight(obj, threshold)
