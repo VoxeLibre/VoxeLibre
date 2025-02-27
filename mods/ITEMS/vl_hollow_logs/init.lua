@@ -1,28 +1,23 @@
-local modpath = minetest.get_modpath(minetest.get_current_modname())
-local S = minetest.get_translator(minetest.get_current_modname())
+local modpath = core.get_modpath(core.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
+
+local LADDER_SUFFIX = "^vl_hollow_logs_ladder.png"
 
 vl_hollow_logs = {}
 --- Function to register a hollow log. See API.md to learn how to use this function.
 ---@param defs table {name:string, stripped_name>string, desc:string, stripped_desc:string, not_flammable:boolean|nil}
 function vl_hollow_logs.register_hollow_log(defs)
-	if not defs or #defs < 4 then
-		error("Incomplete definition provided")
-	end
-
+	assert(defs and #defs >= 4, "Incomplete definition provided")
 	for i = 1, 4 do
-		if type(defs[i]) ~= "string" then
-			error("defs["..i.."] must be a string")
-		end
+		assert(type(defs[i]) == "string", "defs["..i.."] must be a string")
 	end
-	if defs[5] and type(defs[5]) ~= "boolean" then
-		error("defs[5] must be a boolean if present")
-	end
+	assert(not defs[5] or type(defs[5]) == "boolean", "defs[5] must be a boolean if present")
 
-	local modname = minetest.get_current_modname()
+	local modname = core.get_current_modname()
 
 	if #defs > 5 then
-		minetest.log("warning", "[vl_hollow_logs] unused vars passed, dumping the table")
-		minetest.log("warning", "from mod " .. modname .. ": " .. dump(defs))
+		core.log("warning", "[vl_hollow_logs] unused vars passed, dumping the table")
+		core.log("warning", "from mod " .. modname .. ": " .. dump(defs))
 	end
 
 	local name = defs[1]
@@ -46,7 +41,7 @@ function vl_hollow_logs.register_hollow_log(defs)
 		table.update(groups, {fire_encouragement = 5, fire_flammability = 5, flammable = 2, hollow_log_burnable = 1})
 	end
 
-	minetest.register_node(modname .. ":"..name.."_hollow", {
+	local hollow_log_def = {
 		collision_box = collisionbox,
 		description = desc,
 		drawtype = "mesh",
@@ -61,25 +56,32 @@ function vl_hollow_logs.register_hollow_log(defs)
 		tiles = {modname .. "_"..name..".png"},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
-		_mcl_stripped_variant = modname .. ":"..stripped_name.."_hollow"
-	})
+		_mcl_stripped_variant = modname .. ":" .. stripped_name .. "_hollow"
+	}
+	core.register_node(modname .. ":" .. name .. "_hollow", hollow_log_def)
 
-	minetest.register_node(modname .. ":"..stripped_name.."_hollow", {
-		collision_box = collisionbox,
-		description = stripped_desc,
-		drawtype = "mesh",
-		groups = groups,
-		mesh = "vl_hollow_logs_log.obj",
-		on_place = mcl_util.rotate_axis,
-		paramtype = "light",
-		paramtype2 = "facedir",
-		use_texture_alpha = "clip",
-		sounds = mcl_sounds.node_sound_wood_defaults(),
-		sunlight_propagates = true,
-		tiles = {modname .. "_stripped_"..name..".png"},
-		_mcl_blast_resistance = 2,
-		_mcl_hardness = 2
-	})
+	local stripped_hollow_log_def = table.copy(hollow_log_def)
+	stripped_hollow_log_def.description = stripped_desc
+	stripped_hollow_log_def.tiles = {modname .. "_stripped_"..name..".png"}
+	stripped_hollow_log_def._mcl_stripped_variant = nil
+
+	core.register_node(modname .. ":" .. stripped_name .. "_hollow", stripped_hollow_log_def)
+
+	-- ladder variant
+	local ladder_hl_def = table.copy(hollow_log_def)
+	ladder_hl_def.description = S("@1 with a Ladder", desc)
+	ladder_hl_def.tiles[1] = ladder_hl_def.tiles[1] .. LADDER_SUFFIX
+	ladder_hl_def._mcl_stripped_variant = ladder_hl_def._mcl_stripped_variant .. "_ladder"
+	ladder_hl_def.climbable = true
+
+	core.register_node(modname .. ":" .. name .. "_hollow_ladder", ladder_hl_def)
+
+	local ladder_stripped_hl_def = table.copy(stripped_hollow_log_def)
+	ladder_stripped_hl_def.description = S("@1 with a Ladder", desc)
+	ladder_stripped_hl_def.tiles[1] = ladder_stripped_hl_def.tiles[1] .. LADDER_SUFFIX
+	ladder_stripped_hl_def.climbable = true
+
+	core.register_node(modname .. ":" .. stripped_name .. "_hollow_ladder", ladder_stripped_hl_def)
 end
 
 vl_hollow_logs.logs = {
@@ -92,15 +94,15 @@ vl_hollow_logs.logs = {
 }
 
 
-if minetest.get_modpath("mcl_cherry_blossom") then
+if core.get_modpath("mcl_cherry_blossom") then
 	table.insert(vl_hollow_logs.logs, {"cherrytree", "stripped_cherrytree", S("Hollow Cherry Log"), S("Stripped Hollow Cherry Log")})
 end
 
-if minetest.get_modpath("mcl_mangrove") then
+if core.get_modpath("mcl_mangrove") then
 	table.insert(vl_hollow_logs.logs, {"mangrove_tree", "mangrove_stripped", S("Hollow Mangrove Log"), S("Stripped Hollow Mangrove Log")})
 end
 
-if minetest.get_modpath("mcl_crimson") then
+if core.get_modpath("mcl_crimson") then
 	table.insert(vl_hollow_logs.logs, {"crimson_hyphae", "stripped_crimson_hyphae", S("Hollow Crimson Stem"), S("Stripped Hollow Crimson Stem"), true})
 	table.insert(vl_hollow_logs.logs, {"warped_hyphae", "stripped_warped_hyphae", S("Hollow Warped Stem"), S("Stripped Hollow Warped Stem"), true})
 end
