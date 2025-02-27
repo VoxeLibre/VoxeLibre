@@ -121,8 +121,8 @@ end
 
 local skycolor_filters = {}
 skycolor.filters = skycolor_filters
-dofile(modpath.."/skycolor/water.lua")
 dofile(modpath.."/skycolor/dimensions.lua")
+dofile(modpath.."/skycolor/water.lua")
 dofile(modpath.."/skycolor/effects.lua")
 
 local function get_skycolor_info(player)
@@ -139,7 +139,6 @@ local function get_skycolor_info(player)
 	return skycolor_data
 end
 
-local water_sky = skycolor.water_sky
 function skycolor.update_player_sky_color(player)
 	-- Don't update more than once every 250 milliseconds
 	local skycolor_data = get_skycolor_info(player)
@@ -173,6 +172,18 @@ function skycolor.update_sky_color(players)
 	for _, player in ipairs(players) do
 		update(player)
 	end
+end
+
+function skycolor.get_light_modifier(time)
+	return time <= 0.5 and (time * 2) or (2 - time * 2)
+end
+
+function skycolor.adjust_brightness_by_daylight(color)
+	if not color then return color end
+	local light_factor = math.max((mcl_weather.get_current_light_factor() or 1) * skycolor.get_light_modifier(core.get_timeofday()), 0.2)
+	if light_factor >= 0.95 then return color end
+	local parts = core.colorspec_to_table(color)
+	return parts and {r = parts.r * light_factor, g = parts.g * light_factor, b = parts.b * light_factor, a = parts.a}
 end
 
 -- Returns current layer color in {r, g, b} format
