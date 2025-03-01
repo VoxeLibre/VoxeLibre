@@ -14,4 +14,4 @@ jobs:
       - name: Luacheck
         run: cd /VoxeLibre; sh tests/luacheck/test.sh
       - name: Lua Language Server Checks
-        run: cd /VoxeLibre; sh tests/lua-language-server.sh || true
+        run: cd /VoxeLibre; sh tests/lua-language-server.sh
