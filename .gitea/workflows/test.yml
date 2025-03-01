@@ -1,0 +1,17 @@
+on: [push]
+jobs:
+  test:
+    runs-on: voxelibre-ci
+    container:
+      image: 127.0.0.1:5000/voxelibre-test:latest
+    steps:
+      - name: Checkout
+        run: cd /VoxeLibre && git fetch --depth=1 origin ${{ github.sha }} && git checkout ${{ github.sha }}
+      - name: Server Startup
+        run: cd /VoxeLibre; sh tests/server-startup.sh
+      - name: Unit Tests
+        run: cd /VoxeLibre; sh tests/unit-tests.sh
+      - name: Luacheck
+        run: cd /VoxeLibre; sh tests/luacheck/test.sh || true
+      - name: Lua Language Server Checks
+        run: cd /VoxeLibre; sh tests/lua-language-server.sh || true
