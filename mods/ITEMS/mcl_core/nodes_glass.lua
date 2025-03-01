@@ -46,7 +46,7 @@ function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
 		paramtype = "light",
 		paramtype2 = "glasslikeliquidlevel",
 		sunlight_propagates = true,
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
+		use_texture_alpha = "blend",
 		stack_max = 64,
 		-- TODO: Add color to groups
 		groups = {handy=1, glass=1, building_block=1, material_glass=1},

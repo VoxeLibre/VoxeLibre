@@ -581,7 +581,7 @@ minetest.register_node(PORTAL, {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
+	use_texture_alpha = "blend",
 	walkable = false,
 	buildable_to = false,
 	is_ground_content = false,

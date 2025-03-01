@@ -298,7 +298,7 @@ function mcl_doors:register_door(name, def)
 
 	local template_def = {
 		tiles = nil,
-		use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+		use_texture_alpha = "clip",
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
