@@ -13,13 +13,14 @@ local core_get_content_id = core.get_content_id
 --- Get the node name, param and param2 using `core.get_node_raw` if available, fall back to regular get_node otherwise.
 ---
 --- @param pos vector: position
---- @return (string, number, number): node name, param1 and param2
+--- @return string, number, number: node name, param1 and param2
 function mcl_vars.get_node_name(pos) -- Fallback version
 	local node = core_get_node(pos)
 	return node.name, node.param1, node.param2
 end
 -- optimized version
-if core_get_node_raw then 
+if core_get_node_raw then
+	---@param pos vector.Vector
 	mcl_vars.get_node_name = function(pos)
 		local content, param1, param2, pos_ok = core_get_node_raw(pos.x, pos.y, pos.z)
 		if not pos_ok then return "ignore", 0, 0 end
@@ -33,7 +34,7 @@ end
 --- @param x number: coordinate
 --- @param y number: coordinate
 --- @param z number: coordinate
---- @return (string, number, number): node name, param1, param2
+--- @return string, number, number: node name, param1, param2
 function mcl_vars.get_node_name_raw(x, y, z) -- Fallback version
 	local node = core_get_node({x=x,y=y,z=z}) -- raw table, not need for vector
 	return node.name, node.param1, node.param2
@@ -54,7 +55,7 @@ end
 --- @param x number: coordinate
 --- @param y number: coordinate
 --- @param z number: coordinate
---- @return (number, number, number, boolean): node content id, param1, param2, pos_ok
+--- @return number, number, number, boolean: node content id, param1, param2, pos_ok
 function mcl_vars.get_node_raw(x, y, z) -- Fallback
 	local node = core_get_node({x=x,y=y,z=z}) -- raw table, not need for vector
 	return core_get_content_id(node.name), node.param1, node.param2, node.name ~= "ignore"

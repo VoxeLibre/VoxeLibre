@@ -1,7 +1,7 @@
 package.path = package.path .. ";../../../tests/lib/?.lua"
 local mock = require("mock").luanti(_G)
 
-local mcl_util = nil
+local mcl_util = {}
 
 describe('mcl_util', function()
 	it('loads', function()

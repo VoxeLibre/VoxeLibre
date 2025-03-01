@@ -2,11 +2,13 @@
 mcl_vars = {}
 local modpath = core.get_modpath(core.get_current_modname())
 
-minetest.log("action", "World seed = " .. minetest.get_mapgen_setting("seed"))
+core.log("action", "World seed = " .. core.get_mapgen_setting("seed"))
 
--- Get a version number for map generation.
-local map_version = tonumber(core.get_mapgen_setting("vl_world_version") or "")
-if not map_version then
+---@type number Version number for map generation.
+mcl_vars.map_version = (function()
+	local map_version = tonumber(core.get_mapgen_setting("vl_world_version") or "")
+	if map_version then return map_version end
+
 	-- Try to read gametime *before* initialization
 	-- Primarily to detect when an old world is loaded.
 	local start_time = tonumber(Settings(core.get_worldpath() .. "/env_meta.txt"):get("game_time")) or 0
@@ -14,16 +16,17 @@ if not map_version then
 		map_version = 0.87 -- starting in 0.88, the version should be stored.
 	else
 		local game_version = Settings(core.get_game_info().path .. "/game.conf"):get("version")
-		map_version = game_version and tostring(game_version:match("(%d+%.%d+)"))
+		map_version = game_version and tonumber(game_version:match("(%d+%.%d+)"))
 		if not map_version then
 			core.log("warning", "Could not obtain a game version. Fallback to 0.87. "..dump(game_version))
 			map_version = 0.87
 		end
 	end
 	core.set_mapgen_setting("vl_world_version", map_version, true)
-end
-mcl_vars.map_version = map_version -- make available
-core.log("action", "VoxeLibre mapgen version = "..map_version)
+
+	return map_version
+end)()
+core.log("action", "VoxeLibre mapgen version = "..mcl_vars.map_version)
 
 mcl_vars.redstone_tick = 0.1
 
@@ -52,16 +55,16 @@ mcl_vars.hud_type_field = core.features["hud_def_type_field"] and "type" or "hud
 mcl_vars.tool_wield_scale = vector.new(1.8, 1.8, 1)
 
 -- Mapgen variables
-local mg_name = minetest.get_mapgen_setting("mg_name")
+local mg_name = core.get_mapgen_setting("mg_name")
 local minecraft_height_limit = 256
-local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local superflat = mg_name == "flat" and core.get_mapgen_setting("mcl_superflat_classic") == "true"
 local singlenode = mg_name == "singlenode"
 
 -- Calculate mapgen_edge_min/mapgen_edge_max
-mcl_vars.chunksize = math.max(1, tonumber(minetest.get_mapgen_setting("chunksize")) or 5)
-mcl_vars.MAP_BLOCKSIZE = math.max(1, minetest.MAP_BLOCKSIZE or 16)
-mcl_vars.mapgen_limit = math.max(1, tonumber(minetest.get_mapgen_setting("mapgen_limit")) or 31000)
-mcl_vars.MAX_MAP_GENERATION_LIMIT = math.max(1, minetest.MAX_MAP_GENERATION_LIMIT or 31000)
+mcl_vars.chunksize = math.max(1, tonumber(core.get_mapgen_setting("chunksize")) or 5)
+mcl_vars.MAP_BLOCKSIZE = math.max(1, core.MAP_BLOCKSIZE or 16)
+mcl_vars.mapgen_limit = math.max(1, tonumber(core.get_mapgen_setting("mapgen_limit")) or 31000)
+mcl_vars.MAX_MAP_GENERATION_LIMIT = math.max(1, core["MAX_MAP_GENERATION_LIMIT"] or 31000)
 
 -- Central chunk is offset from 0,0,0 coordinates by 32 nodes (2 blocks)
 -- See more in https://git.minetest.land/VoxeLibre/VoxeLibre/wiki/World-structure%3A-positions%2C-boundaries%2C-blocks%2C-chunks%2C-dimensions%2C-barriers-and-the-void
@@ -96,8 +99,8 @@ local function coordinate_to_chunk(x)
 	return math.floor((coordinate_to_block(x) - central_chunk_offset) / mcl_vars.chunksize)
 end
 
----@param pos Vector
----@return Vector
+---@param pos vector.Vector
+---@return vector.Vector
 function mcl_vars.pos_to_block(pos)
 	return vector.new(
 		coordinate_to_block(pos.x),
@@ -106,8 +109,8 @@ function mcl_vars.pos_to_block(pos)
 	)
 end
 
----@param pos Vector
----@return Vector
+---@param pos vector.Vector
+---@return vector.Vector
 function mcl_vars.pos_to_chunk(pos)
 	return vector.new(
 		coordinate_to_chunk(pos.x),
@@ -120,7 +123,7 @@ local k_positive = math.ceil(mcl_vars.MAX_MAP_GENERATION_LIMIT / mcl_vars.chunk_
 local k_positive_z = k_positive * 2
 local k_positive_y = k_positive_z * k_positive_z
 
----@param pos Vector
+---@param pos vector.Vector
 ---@return integer
 function mcl_vars.get_chunk_number(pos) -- unsigned int
 	local c = mcl_vars.pos_to_chunk(pos)
@@ -160,7 +163,7 @@ elseif singlenode then
 	mcl_vars.mg_bedrock_is_rough = false
 else
 	-- Classic superflat
-	local ground = tonumber(minetest.get_mapgen_setting("mgflat_ground_level")) or 8
+	local ground = tonumber(core.get_mapgen_setting("mgflat_ground_level")) or 8
 
 	mcl_vars.mg_overworld_min = ground - 3
 	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
@@ -178,7 +181,7 @@ mcl_vars.mg_nether_min = -29067 -- Carefully chosen to be at a mapchunk border
 mcl_vars.mg_nether_max = mcl_vars.mg_nether_min + 128
 mcl_vars.mg_bedrock_nether_bottom_min = mcl_vars.mg_nether_min
 mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
-mcl_vars.mg_nether_deco_max = mcl_vars.mg_nether_max -11 -- this is so ceiling decorations don't spill into other biomes as bedrock generation calls minetest.generate_decorations to put netherrack under the bedrock
+mcl_vars.mg_nether_deco_max = mcl_vars.mg_nether_max -11 -- this is so ceiling decorations don't spill into other biomes as bedrock generation calls core.generate_decorations to put netherrack under the bedrock
 if not superflat then
 	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
 	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
@@ -214,49 +217,49 @@ mcl_vars.mg_realm_barrier_overworld_end_min = mcl_vars.mg_end_max - 11
 mcl_vars.mg_dungeons = true
 
 -- Set default stack sizes
-minetest.nodedef_default.stack_max = 64
-minetest.craftitemdef_default.stack_max = 64
+core.nodedef_default.stack_max = 64
+core.craftitemdef_default.stack_max = 64
 
 -- Set random seed for all other mods (Remember to make sure no other mod calls this function)
 math.randomseed(os.time())
 
 ---DEPRECATED. If you need to ensure the area is emerged, use LVM.
 ---"Trivial" (actually NOT) function to just read the node and some stuff to not just return "ignore", like mt 5.4 does.
----@param pos Vector Position, if it's wrong, `{name="error"}` node will return.
+---@param pos vector.Vector Position, if it's wrong, `{name="error"}` node will return.
 ---@param force? boolean Optional (default: `false`), Do the maximum to still read the node within us_timeout.
 ---@param us_timeout? number Optional (default: `244 = 0.000244 s = 1/80/80/80`), set it at least to `3000000` to let mapgen to finish its job
----@return node # Node definition, eg. `{name="air"}`. Unfortunately still can return `{name="ignore"}`.
+---@return core.Node # Node definition, eg. `{name="air"}`. Unfortunately still can return `{name="ignore"}`.
 ---@nodiscard
 function mcl_vars.get_node(pos, force, us_timeout)
 	-- check initial circumstances
 	if not pos or not pos.x or not pos.y or not pos.z then return { name = "error" } end
 
 	-- try common way
-	local node = minetest.get_node(pos)
+	local node = core.get_node(pos)
 	if node.name ~= "ignore" then
 		return node
 	end
 
 	-- try LVM
-	minetest.get_voxel_manip():read_from_map(pos, pos)
-	node = minetest.get_node(pos)
+	core.get_voxel_manip():read_from_map(pos, pos)
+	node = core.get_node(pos)
 	if node.name ~= "ignore" or not force then
 		return node
 	end
 
 	-- try async emerge + BUSY wait (a really BAD idea, you should rather accept failure)
-	minetest.emerge_area(pos, pos) -- runs async!
+	core.emerge_area(pos, pos) -- runs async!
 
-	local t = minetest.get_us_time()
-	node = minetest.get_node(pos)
-	while (not node or node.name == "ignore") and (minetest.get_us_time() - t < (us_timeout or 244)) do
-		node = minetest.get_node(pos)
+	local t = core.get_us_time()
+	node = core.get_node(pos)
+	while (not node or node.name == "ignore") and (core.get_us_time() - t < (us_timeout or 244)) do
+		node = core.get_node(pos)
 	end
 
 	return node
 	-- it still can return "ignore", LOL, even if force = true, but only after time out
 end
 
-dofile(modpath.."/tune_jit.lua")
-dofile(modpath.."/get_node_name.lua")
+dofile(modpath..DIR_DELIM.."tune_jit.lua")
+dofile(modpath..DIR_DELIM.."get_node_name.lua")
 
