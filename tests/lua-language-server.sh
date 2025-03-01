@@ -9,7 +9,11 @@ set -e
 	cd /usr/share/luanti
 	git clone https://codeberg.org/teknomunk/luanti-lls-definitions.git || true
 	cd luanti-lls-definitions
+	git checkout fill-out-definitions
 	git pull
+	if ! [[ -d /usr/share/luanti/builtin ]]; then
+		ln /usr/share/minetest/builtin /usr/share/luanti/builtin -s
+	fi
 )
 
 lua-language-server --check . --log check.log --logpath ./log | tr '\r' '\n' || true
