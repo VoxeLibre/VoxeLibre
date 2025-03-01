@@ -44,7 +44,7 @@ function read_mod_data()
 			table.insert(mod_names, name)
 			mods[name] = mod_conf
 		else
-			print("echo 'Warning! "..line.." doesn't declare module name'")
+			print("echo 'Warning! "..line.." does not declare module name'")
 		end
 	end
 
@@ -54,28 +54,17 @@ end
 local function add_deps_for_mod(mod, mods, deps, seen)
 	if not mods[mod] then return end
 
-	local dep_list = mods[mod].depends
-	if dep_list then
-		local depends = dep_list:split(",")
-		for i = 1,#depends do
-			local depend = depends[i]:trim()
-			if not seen[depend] then
-				seen[depend] = true
-				table.insert(deps, depend)
-				add_deps_for_mod(depend, mods, deps, seen)
-			end
-		end
-	end
-
-	dep_list = mods[mod].optional_depends
-	if dep_list then
-		local depends = dep_list:split(",")
-		for i = 1,#depends do
-			local depend = depends[i]:trim()
-			if not seen[depend] then
-				seen[depend] = true
-				table.insert(deps, depend)
-				add_deps_for_mod(depend, mods, deps, seen)
+	for _,dep_type in ipairs({"optional_depends","depends","runtime_depends","runtime_optional_depends"}) do
+		local dep_list = mods[mod][dep_type]
+		if dep_list then
+			local depends = dep_list:split(",")
+			for i = 1,#depends do
+				local depend = depends[i]:trim()
+				if not seen[depend] then
+					seen[depend] = true
+					table.insert(deps, depend)
+					add_deps_for_mod(depend, mods, deps, seen)
+				end
 			end
 		end
 	end
@@ -114,7 +103,6 @@ for i = 1,#mod_names do
 
 	print("set -e")
 	print("echo Checking "..config.name.." located at "..config.dir)
-	--print("echo 'Using "..luacheck.." <file> "..cmd_options.."'")
 	print("BASE=$(pwd)")
 	print("(")
 	print(	"cd "..config.dir)
