@@ -276,7 +276,7 @@ local filled_def = {
 core.register_craftitem("mcl_maps:filled_map", filled_def)
 
 local filled_wield_def = table.copy(filled_def)
-filled_wield_def.use_texture_alpha = core.features.use_texture_alpha_string_modes and "opaque" or false
+filled_wield_def.use_texture_alpha = "opaque"
 filled_wield_def.visual_scale = 1
 filled_wield_def.wield_scale = { x = 1, y = 1, z = 1 }
 filled_wield_def.paramtype = "light"
