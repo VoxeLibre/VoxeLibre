@@ -450,19 +450,19 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		ore_type       = "scatter",
 		ore            = "mcl_nether:ancient_debris",
 		wherein         = ancient_debris_wherein,
-		clust_scarcity = 25000, -- 0.004% chance
+		clust_scarcity = 12000, -- MC would be 25000, MCLA uses 15000, needs balancing
 		clust_num_ores = 3,
 		clust_size     = 3,
 		y_min = mcl_vars.mg_nether_min + 8,
 		y_max = mcl_vars.mg_nether_min + 22,
 	})
 
-		-- Rare spawn (below)
+	-- Rare spawn (below)
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:ancient_debris",
 		wherein         = ancient_debris_wherein,
-		clust_scarcity = 32000,
+		clust_scarcity = 20000,
 		clust_num_ores = 2,
 		clust_size     = 3,
 		y_min = mcl_vars.mg_nether_min,
@@ -474,7 +474,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		ore_type       = "scatter",
 		ore            = "mcl_nether:ancient_debris",
 		wherein         = ancient_debris_wherein,
-		clust_scarcity = 32000,
+		clust_scarcity = 20000,
 		clust_num_ores = 2,
 		clust_size     = 3,
 		y_min = mcl_vars.mg_nether_min + 22,
