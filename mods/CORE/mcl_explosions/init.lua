@@ -35,6 +35,8 @@ local check_for_falling = minetest.check_for_falling
 local add_item = minetest.add_item
 local pos_to_string = minetest.pos_to_string
 
+local has_mcl_beds = core.get_modpath("mcl_beds")
+
 -- Saved sphere explosion shapes for various radiuses
 local sphere_shapes = {}
 
@@ -71,6 +73,7 @@ end)
 --
 -- Should be possible to improve by using a midpoint circle algorithm multiple
 -- times to create the sphere, currently uses more of a brute-force approach.
+---@param radius number
 local function compute_sphere_rays(radius)
 	local rays = {}
 	local sphere = {}
@@ -129,10 +132,8 @@ end
 ---@field tnt_knockback? boolean
 
 -- Add particles from explosion
---
--- Parameters:
--- pos - The position of the explosion
--- radius - The radius of the explosion
+---@param pos vector.Vector The position of the explosion
+---@param radius number The radius of the explosion
 local function add_particles(pos, radius)
 	minetest.add_particlespawner({
 		amount = 64,
@@ -334,7 +335,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 				if obj:is_player() then
 					--- @cast obj core.PlayerRef
 					local name = obj:get_player_name()
-					if mcl_beds then
+					if has_mcl_beds then
 						local meta = obj:get_meta()
 						if meta:get_string("mcl_beds:sleeping") == "true" then
 							minetest.close_formspec(name, "") -- ABSOLUTELY NECESSARY FOR MT5.3 -- TODO: REMOVE THIS IN THE FUTURE

@@ -4,6 +4,7 @@
 ./mods/CORE/mcl_attached/init.lua
 ./mods/CORE/mcl_autogroup/init.lua
 ./mods/CORE/mcl_damage/init.lua
+./mods/CORE/mcl_explosions/init.lua
 ./mods/CORE/mcl_init/init.lua
 ./mods/CORE/mcl_init/tune_jit.lua
 ./mods/CORE/mcl_loot/init.lua
@@ -197,6 +198,7 @@
 ./mods/ITEMS/mcl_throwing/init.lua
 ./mods/ITEMS/mcl_throwing/register.lua
 ./mods/ITEMS/mcl_throwing/snowball.lua
+./mods/ITEMS/mcl_tnt/init.lua
 ./mods/ITEMS/mcl_tools/aliases.lua
 ./mods/ITEMS/mcl_tools/crafting.lua
 ./mods/ITEMS/mcl_torches/api.lua
