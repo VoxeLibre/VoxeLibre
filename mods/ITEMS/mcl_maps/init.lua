@@ -162,7 +162,7 @@ local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 		else
 			miny, maxy = mcl_vars.mg_nether_max, mcl_vars.mg_nether_max -- map the nether roof...
 		end
-	elseif dim == "overworld" then
+	elseif dim == "overworld" or dim == "" then
 		miny, maxy = -32, 63
 	else
 		miny = tonumber(dim) - 32
