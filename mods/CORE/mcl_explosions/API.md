@@ -13,3 +13,13 @@ This mod provide helper functions to create explosions.
     * griefing: bool, if true, the explosion will destroy nodes (default: true)
     * grief_protected: bool, if true, the explosion will also destroy nodes which have been protected (default: false)
 * puncher: (optional) entity, will be used as source for damage done by the explosion
+
+Additional Node Definition Fields
+* `on_blast`: callback of type 'function(pos, _, do_drop) called when a node is hit with an explosion
+  * `pos`: Position of the node
+  * `intensity`: Power of a 
+  * `do_drop`: true if nodes should do drops
+* `_mcl_blast_resistance`: a number between 0 (always blast) and 100000 (never blast) for how resistant a node is to explosions
+
+Additional Entity Definition Fields
+* `tnt_knockback`: if true, the entity will experience increased knockback when hit with an explosion

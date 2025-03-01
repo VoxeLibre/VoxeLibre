@@ -14,6 +14,9 @@ tnt = {}
 tnt.BOOMTIMER = 4
 tnt.BLINKTIMER = 0.25
 
+---@class core.LuaEntity
+---@field timer number
+---
 ---@param pos vector.Vector
 ---@param entname string
 ---@param owner string
@@ -32,9 +35,8 @@ local function spawn_tnt(pos, entname, owner)
 end
 
 ---@param pos vector.Vector
----@return core.ObjectRef?
 ---@param owner string
----@return ObjectRef?
+---@return core.ObjectRef?
 function tnt.ignite(pos, owner)
 	minetest.remove_node(pos)
 	local e = spawn_tnt(pos, "mcl_tnt:tnt", owner)
@@ -106,8 +108,9 @@ minetest.register_node("mcl_tnt:tnt", {
 	mesecons = tnt_mesecons,
 	on_blast = function(pos, _)
 		local e = tnt.ignite(pos)
-		if e then
-			e:get_luaentity().timer = tnt.BOOMTIMER - (0.5 + math.random())
+		local le = e and e:get_luaentity()
+		if le then
+			le.timer = tnt.BOOMTIMER - (0.5 + math.random())
 		end
 	end,
 	_on_ignite = function(player, pointed_thing)
@@ -133,6 +136,7 @@ minetest.register_node("mcl_tnt:tnt", {
 		end
 	},
 	sounds = sounds,
+	_mcl_blast_resistance = 0,
 })
 
 local TNT = {
