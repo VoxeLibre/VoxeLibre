@@ -303,9 +303,9 @@ local function calculate_acceleration(staticdata)
 	-- Factor in gravity after everything else
 	local gravity_strength = 2.45 --friction * 5
 	if staticdata.dir.y < 0 then
-		acceleration = gravity_strength - FRICTION
+		acceleration = acceleration + gravity_strength - FRICTION
 	elseif staticdata.dir.y > 0 then
-		acceleration = -gravity_strength + FRICTION
+		acceleration = acceleration - gravity_strength - FRICTION
 	end
 
 	return acceleration
