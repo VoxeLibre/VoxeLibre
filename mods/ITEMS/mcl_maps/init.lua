@@ -140,17 +140,47 @@ local function emerge_generate_map(id, minp, maxp, callback)
 	end)
 end
 
+function mcl_maps.convert_legacy_map(itemstack, meta)
+	meta = meta or itemstack:get_meta()
+	tt.reload_itemstack_description(itemstack)
+
+	local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
+	local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
+	cx = minp.x + 64
+	cz = minp.z + 64
+	meta:set_int("mcl_maps:cx", cx)
+	meta:set_int("mcl_maps:cz", cz)
+	meta:set_int("mcl_maps:zoom", 1)
+	meta:set_string("mcl_maps:dim", "overworld")
+
+	tt.reload_itemstack_description(itemstack)
+end
+
 local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 	zoom = max(zoom or 1, 1)
 	-- Texture size is 128
 	local size = 64 * (2^zoom)
 	local halfsize = size / 2
+
+	local meta = itemstack:get_meta()
+
+	-- Legacy conversion
+	if dim == "" then
+		local fields = meta:to_table().fields
+		local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
+		local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
+		dim = "overworld"
+		cx = minp.x + halfsize
+		cz = minp.z + halfsize
+	end
+
 	-- If enabled, round to halfsize grid, otherwise to size grid.
 	if mcl_maps.map_allow_overlap then
 		cx, cz = (floor(cx / halfsize) + 0.5) * halfsize, (floor(cz / halfsize) + 0.5) * halfsize
 	else
 		cx, cz = (floor(cx / size) + 0.5) * size, (floor(cz / size) + 0.5) * size
 	end
+
 	-- Y range to use for mapping. In nether, if we begin above bedrock, maps will be bedrock only, similar to MC
 	-- Prefer smaller ranges for performance!
 	local miny, maxy
@@ -162,7 +192,7 @@ local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 		else
 			miny, maxy = mcl_vars.mg_nether_max, mcl_vars.mg_nether_max -- map the nether roof...
 		end
-	elseif dim == "overworld" or dim == "" then
+	elseif dim == "overworld" then
 		miny, maxy = -32, 63
 	else
 		miny = tonumber(dim) - 32
@@ -176,7 +206,6 @@ local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 	local minp = vector.new(cx - halfsize, miny, cz - halfsize)
 	local maxp = vector.new(cx + halfsize - 1, maxy, cz + halfsize - 1)
 
-	local meta = itemstack:get_meta()
 	meta:set_string("mcl_maps:id", id)
 	meta:set_int("mcl_maps:cx", cx)
 	meta:set_string("mcl_maps:dim", dim)
