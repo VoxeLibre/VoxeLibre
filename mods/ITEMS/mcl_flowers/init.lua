@@ -484,7 +484,7 @@ minetest.register_node("mcl_flowers:waterlily", {
 	paramtype2 = "facedir",
 	tiles = {"flowers_waterlily.png", "flowers_waterlily.png^[transformFY"},
 	color = "#208030",
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+	use_texture_alpha = "clip",
 	inventory_image = "flowers_waterlily.png",
 	wield_image = "flowers_waterlily.png",
 	liquids_pointable = true,
