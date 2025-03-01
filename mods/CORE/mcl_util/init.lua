@@ -2,12 +2,12 @@ mcl_util = {}
 
 local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
-dofile(modpath.."/roman_numerals.lua")
-dofile(modpath.."/nodes.lua")
-dofile(modpath.."/table.lua")
-dofile(modpath.."/hashing.lua")
+dofile(modpath..DIR_DELIM.."roman_numerals.lua")
+dofile(modpath..DIR_DELIM.."nodes.lua")
+dofile(modpath..DIR_DELIM.."table.lua")
+dofile(modpath..DIR_DELIM.."hashing.lua")
 
-local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
+local LOGGING_ON = core.settings:get_bool("mcl_logging_default", false)
 local LOG_MODULE = "[MCL2]"
 function mcl_util.mcl_log(message, module, bypass_default_logger)
 	local selected_module = LOG_MODULE
@@ -15,12 +15,12 @@ function mcl_util.mcl_log(message, module, bypass_default_logger)
 		selected_module = module
 	end
 	if (bypass_default_logger or LOGGING_ON) and message then
-		minetest.log(selected_module .. " " .. message)
+		core.log(selected_module .. " " .. message)
 	end
 end
 function mcl_util.make_mcl_logger(label, option)
 	-- Return dummy function if debug option isn't set
-	if not minetest.settings:get_bool(option,false) then return function() end, false end
+	if not core.settings:get_bool(option,false) then return function() end, false end
 
 	local label_text = "["..tostring(label).."]"
 	return function(message)
@@ -55,20 +55,20 @@ function mcl_util.check_dtime_timer(self, dtime, timer_name, threshold)
 		self._timers[timer_name] = 0
 	else
 		self._timers[timer_name] = self._timers[timer_name] + dtime
-		--minetest.log("dtime: " .. tostring(self._timers[timer_name]))
+		--core.log("dtime: " .. tostring(self._timers[timer_name]))
 	end
 
 	if self._timers[timer_name] > threshold then
-		--minetest.log("Over threshold")
+		--core.log("Over threshold")
 		self._timers[timer_name] = 0
 		return true
 		--else
-		--minetest.log("Not over threshold")
+		--core.log("Not over threshold")
 	end
 	return false
 end
 
--- While we should always favour the new minetest vector functions such as vector.new or vector.offset which validate on
+-- While we should always favour the new luanti vector functions such as vector.new or vector.offset which validate on
 -- creation. There may be cases where state gets corrupted and we may have to check the vector is valid if created the
 -- old way. This allows us to do this as a tactical solution until old style vectors are completely removed.
 function mcl_util.validate_vector (vect)
@@ -91,13 +91,13 @@ function mcl_util.file_exists(name)
 end
 
 --- Selects item stack to transfer from
----@param src_inventory InvRef Source innentory to pull from
+---@param src_inventory core.InvRef Source innentory to pull from
 ---@param src_list string Name of source inventory list to pull from
----@param dst_inventory InvRef Destination inventory to push to
+---@param dst_inventory core.InvRef Destination inventory to push to
 ---@param dst_list string Name of destination inventory list to push to
----@param condition? fun(stack: ItemStack) Condition which items are allowed to be transfered.
+---@param condition? fun(stack: core.ItemStack) Condition which items are allowed to be transfered.
 ---@param count? integer Number of items to try to transfer at once
----@return integer Item stack number to be transfered
+---@return integer? Item stack number to be transfered
 function mcl_util.select_stack(src_inventory, src_list, dst_inventory, dst_list, condition, count)
 	local src_size = src_inventory:get_size(src_list)
 	local stack
@@ -146,19 +146,25 @@ function mcl_util.move_item(source_inventory, source_list, source_stack_id, dest
 	return true, new_stack
 end
 
+---@class core.NodeDef
+---@field _mcl_hoppers_on_try_push? fun(dst_pos : vector.Vector, pos : vector.Vector, hop_inv : core.InvRef, hop_list : string) : core.InvRef,string,integer
+---@field _mcl_hoppers_on_after_push? fun(pos : vector.Vector)
+---@field _mcl_hoppers_on_try_pull? fun(dst_pos : vector.Vector, pos : vector.Vector, hop_inv : core.InvRef, hop_list : string) : core.InvRef,string,integer
+---@field _mcl_hoppers_on_after_pull? fun(pos : vector.Vector)
+
 --- Try pushing item from hopper inventory to destination inventory
----@param pos Vector
----@param dst_pos Vector
+---@param pos vector.Vector
+---@param dst_pos vector.Vector
 function mcl_util.hopper_push(pos, dst_pos)
-	local hop_inv = minetest.get_meta(pos):get_inventory()
+	local hop_inv = core.get_meta(pos):get_inventory()
 	local hop_list = 'main'
 
 	-- Get node pos' for item transfer
-	local dst = minetest.get_node(dst_pos)
-	if not minetest.registered_nodes[dst.name] then return end
-	local dst_type = minetest.get_item_group(dst.name, "container")
+	local dst = core.get_node(dst_pos)
+	if not core.registered_nodes[dst.name] then return end
+	local dst_type = core.get_item_group(dst.name, "container")
 	if dst_type ~= 2 then return end
-	local dst_def = minetest.registered_nodes[dst.name]
+	local dst_def = core.registered_nodes[dst.name]
 
 	local dst_list = 'main'
 	local dst_inv, stack_id
@@ -167,7 +173,7 @@ function mcl_util.hopper_push(pos, dst_pos)
 	if dst_def._mcl_hoppers_on_try_push then
 		dst_inv, dst_list, stack_id = dst_def._mcl_hoppers_on_try_push(dst_pos, pos, hop_inv, hop_list)
 	else
-		local dst_meta = minetest.get_meta(dst_pos)
+		local dst_meta = core.get_meta(dst_pos)
 		dst_inv = dst_meta:get_inventory()
 		stack_id = mcl_util.select_stack(hop_inv, hop_list, dst_inv, dst_list, nil, 1)
 	end
@@ -184,11 +190,11 @@ end
 
 function mcl_util.hopper_pull_to_inventory(hop_inv, hop_list, src_pos, pos)
 	-- Get node pos' for item transfer
-	local src = minetest.get_node(src_pos)
-	if not minetest.registered_nodes[src.name] then return end
-	local src_type = minetest.get_item_group(src.name, "container")
+	local src = core.get_node(src_pos)
+	if not core.registered_nodes[src.name] then return end
+	local src_type = core.get_item_group(src.name, "container")
 	if src_type ~= 2 then return end
-	local src_def = minetest.registered_nodes[src.name]
+	local src_def = core.registered_nodes[src.name]
 
 	local src_list = 'main'
 	local src_inv, stack_id
@@ -196,29 +202,31 @@ function mcl_util.hopper_pull_to_inventory(hop_inv, hop_list, src_pos, pos)
 	if src_def._mcl_hoppers_on_try_pull then
 		src_inv, src_list, stack_id = src_def._mcl_hoppers_on_try_pull(src_pos, pos, hop_inv, hop_list)
 	else
-		local src_meta = minetest.get_meta(src_pos)
+		local src_meta = core.get_meta(src_pos)
 		src_inv = src_meta:get_inventory()
 		stack_id = mcl_util.select_stack(src_inv, src_list, hop_inv, hop_list)
 	end
 
 	if stack_id ~= nil then
 		local ok = mcl_util.move_item(src_inv, src_list, stack_id, hop_inv, hop_list)
-		if src_def._mcl_hoppers_on_after_pull then
+		if ok and src_def._mcl_hoppers_on_after_pull then
 			src_def._mcl_hoppers_on_after_pull(src_pos)
 		end
+
+		return ok
 	end
 end
 -- Try pulling from source inventory to hopper inventory
----@param pos Vector
----@param src_pos Vector
+---@param pos vector.Vector
+---@param src_pos vector.Vector
 function mcl_util.hopper_pull(pos, src_pos)
-	return mcl_util.hopper_pull_to_inventory(minetest.get_meta(pos):get_inventory(), "main", src_pos, pos)
+	return mcl_util.hopper_pull_to_inventory(core.get_meta(pos):get_inventory(), "main", src_pos, pos)
 end
 
 local function drop_item_stack(pos, stack)
 	if not stack or stack:is_empty() then return end
 	local drop_offset = vector.new(math.random() - 0.5, 0, math.random() - 0.5)
-	minetest.add_item(vector.add(pos, drop_offset), stack)
+	core.add_item(vector.add(pos, drop_offset), stack)
 end
 
 function mcl_util.drop_items_from_meta_container(listname)
@@ -244,7 +252,7 @@ end
 -- Returns true if item (itemstring or ItemStack) can be used as a furnace fuel.
 -- Returns false otherwise
 function mcl_util.is_fuel(item)
-	return minetest.get_craft_result({method = "fuel", width = 1, items = {item}}).time ~= 0
+	return core.get_craft_result({method = "fuel", width = 1, items = {item}}).time ~= 0
 end
 
 -- adjust the y level of an object to the center of its collisionbox
@@ -275,9 +283,9 @@ function mcl_util.call_on_rightclick(itemstack, player, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing and pointed_thing.type == "node" then
 		local pos = pointed_thing.under
-		local node = minetest.get_node(pos)
+		local node = core.get_node(pos)
 		if player and not player:get_player_control().sneak then
-			local nodedef = minetest.registered_nodes[node.name]
+			local nodedef = core.registered_nodes[node.name]
 			local on_rightclick = nodedef and nodedef.on_rightclick
 			if on_rightclick then
 				return on_rightclick(pos, node, player, itemstack, pointed_thing) or itemstack
@@ -291,9 +299,9 @@ function mcl_util.handle_node_rightclick(itemstack, player, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing and pointed_thing.type == "node" then
 		local pos = pointed_thing.under
-		local node = minetest.get_node(pos)
+		local node = core.get_node(pos)
 		if player and not player:get_player_control().sneak then
-			local nodedef = minetest.registered_nodes[node.name]
+			local nodedef = core.registered_nodes[node.name]
 			local on_rightclick = nodedef and nodedef.on_rightclick
 			if on_rightclick then
 				return on_rightclick(pos, node, player, itemstack, pointed_thing) or itemstack, true
@@ -305,7 +313,7 @@ end
 
 function mcl_util.calculate_durability(itemstack)
 	local unbreaking_level = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
-	local armor_uses = minetest.get_item_group(itemstack:get_name(), "mcl_armor_uses")
+	local armor_uses = core.get_item_group(itemstack:get_name(), "mcl_armor_uses")
 
 	local uses
 
@@ -439,7 +447,7 @@ function mcl_util.replace_mob(obj, mob)
 	local rot = obj:get_yaw()
 	local pos = obj:get_pos()
 	obj:remove()
-	obj = minetest.add_entity(pos, mob)
+	obj = core.add_entity(pos, mob)
 	if not obj then return end
 	obj:set_yaw(rot)
 	return obj
@@ -449,13 +457,8 @@ function mcl_util.get_pointed_thing(player, liquid)
 	local pos = vector.offset(player:get_pos(), 0, player:get_properties().eye_height, 0)
 	local look_dir = vector.multiply(player:get_look_dir(), 5)
 	local pos2 = vector.add(pos, look_dir)
-	local ray = minetest.raycast(pos, pos2, false, liquid)
-
-	if ray then
-		for pointed_thing in ray do
-			return pointed_thing
-		end
-	end
+	local ray = core.raycast(pos, pos2, false, liquid)
+	return ray and ray()
 end
 
 -- This following part is 2 wrapper functions + helpers for
@@ -549,40 +552,34 @@ end
 -- Applies is_protected() to a 3D lattice of points in the defined volume. The points are spaced
 -- evenly throughout the volume and have a spacing similar to, but no larger than, "interval".
 --
--- @param pos1          A position table of the area volume's first edge.
--- @param pos2          A position table of the area volume's second edge.
--- @param player        The player performing the action.
--- @param interval	    Optional. Max spacing between checked points at the volume.
---      Default: Same as minetest.is_area_protected.
---
--- @return	true on protection violation detection. false otherwise.
---
 -- @notes   *All corners and edges of the defined volume are checked.
 ]]
+---@param pos1 vector.Vector Position of the area volume's first edge.
+---@param pos2 vector.Vector Position of the area volume's second edge.
+---@param player core.Player The player performing the action.
+---@param interval? number Max spacing between checked points at the volume. (optional)
+---@return boolean true on protection violation detection and false otherwise.
 function mcl_util.check_area_protection(pos1, pos2, player, interval)
 	local name = player and player:get_player_name() or ""
 
-	local protected_pos = minetest.is_area_protected(pos1, pos2, name, interval)
+	local protected_pos = core.is_area_protected(pos1, pos2, name, interval)
 	if protected_pos then
-		minetest.record_protection_violation(protected_pos, name)
+		core.record_protection_violation(protected_pos, name)
 		return true
 	end
 
 	return false
 end
 
---[[Check for a protection violation on a single position.
---
--- @param position      A position table to check for protection violation.
--- @param player        The player performing the action.
---
--- @return	true on protection violation detection. false otherwise.
-]]
+--- Check for a protection violation on a single position.
+---@param position vector.Vector The position to check for protection violation.
+---@param player core.Player The player performing the action.
+---@return boolean true on protection violation detection and false otherwise.
 function mcl_util.check_position_protection(position, player)
 	local name = player and player:get_player_name() or ""
 
-	if minetest.is_protected(position, name) then
-		minetest.record_protection_violation(position, name)
+	if core.is_protected(position, name) then
+		core.record_protection_violation(position, name)
 		return true
 	end
 
@@ -590,12 +587,12 @@ function mcl_util.check_position_protection(position, player)
 end
 
 ---Move items from one inventory list to another, drop items that do not fit in provided pos and direction.
----@param src_inv mt.InvRef
+---@param src_inv core.InvRef
 ---@param src_listname string
----@param out_inv mt.InvRef
+---@param out_inv core.InvRef
 ---@param out_listname string
----@param pos mt.Vector Position to throw items at
----@param dir? mt.Vector Direction to throw items in
+---@param pos vector.Vector Position to throw items at
+---@param dir? vector.Vector Direction to throw items in
 ---@param insta_collect? boolean Enable instant collection, let players collect dropped items instantly. Default `false`
 function mcl_util.move_list(src_inv, src_listname, out_inv, out_listname, pos, dir, insta_collect)
 	local src_list = src_inv:get_list(src_listname)
@@ -609,7 +606,7 @@ function mcl_util.move_list(src_inv, src_listname, out_inv, out_listname, pos, d
 			p.x = p.x + (math.random(1, 3) * 0.2)
 			p.z = p.z + (math.random(1, 3) * 0.2)
 
-			local obj = minetest.add_item(p, stack)
+			local obj = core.add_item(p, stack)
 			if obj then
 				if dir then
 					local v = vector.copy(dir)
@@ -631,7 +628,7 @@ function mcl_util.move_list(src_inv, src_listname, out_inv, out_listname, pos, d
 end
 
 ---Move items from a player's inventory list to its main inventory list, drop items that do not fit in front of him.
----@param player mt.PlayerObjectRef
+---@param player core.PlayerObjectRef
 ---@param src_listname string
 function mcl_util.move_player_list(player, src_listname)
 	mcl_util.move_list(player:get_inventory(), src_listname, player:get_inventory(), "main",
@@ -639,7 +636,7 @@ function mcl_util.move_player_list(player, src_listname)
 		player:get_look_dir(), false)
 end
 
-local christmas_deco = minetest.settings:get("vl_christmas_decorations") or "Calendar"
+local christmas_deco = core.settings:get("vl_christmas_decorations") or "Calendar"
 
 function mcl_util.is_it_christmas()
 	local date = os.date("*t")
@@ -656,12 +653,15 @@ function mcl_util.to_bool(val)
 end
 
 if not vector.in_area then
-	-- backport from minetest 5.8, can be removed when the minimum version is 5.8
+	-- backport from luanti 5.8, can be removed when the minimum version is 5.8
+	--luacheck: push ignore 122
+	---@diagnostic disable-next-line: duplicate-set-field
 	vector.in_area = function(pos, min, max)
 		return (pos.x >= min.x) and (pos.x <= max.x) and
 		       (pos.y >= min.y) and (pos.y <= max.y) and
 		       (pos.z >= min.z) and (pos.z <= max.z)
 	end
+	--luacheck: pop
 end
 if not core.bulk_swap_node then
 	function core.bulk_swap_node(positions, node)
@@ -672,11 +672,11 @@ if not core.bulk_swap_node then
 end
 
 -- Traces along a line of nodes vertically to find the next possition that isn't an allowed node
----@param pos The position to start tracing from
----@param dir The direction to trace in. 1 is up, -1 is down, all other values are not allowed.
----@param allowed_nodes A set of node names to trace along.
----@param limit The maximum number of steps to make. Defaults to 16 if nil or missing
----@return Three return values:
+---@param pos vector.Vector The position to start tracing from
+---@param dir vector.Vector The direction to trace in. 1 is up, -1 is down, all other values are not allowed.
+---@param allowed_nodes string[] A set of node names to trace along.
+---@param limit integer The maximum number of steps to make. Defaults to 16 if nil or missing
+---@return vector.Vector?,number,core.Node? Three return values:
 ---   the position of the next node that isn't allowed or nil if no such node was found,
 ---   the distance from the start where that node was found,
 ---   the node table if a node was found
@@ -686,7 +686,7 @@ function mcl_util.trace_nodes(pos, dir, allowed_nodes, limit)
 
 	for i = 1,limit do
 		pos = vector.offset(pos, 0, dir, 0)
-		local node = minetest.get_node(pos)
+		local node = core.get_node(pos)
 		if not allowed_nodes[node.name] then return pos, i, node end
 	end
 
@@ -698,7 +698,7 @@ local uuid_rng = PcgRandom(bit.bxor(math.floor(math.random() * 0xFFFFFFFF), os.t
 --- Generate a random 128-bit ID that can be assumed to be unique
 --- To have a 1% chance of a collision, there would have to be 1.6x10^76 IDs generated
 --- https://en.wikipedia.org/wiki/Birthday_problem#Probability_table
---- @param len32 integer: length in 32-bit units, optional, default 4 (128 bit)
+--- @param len32? integer: length in 32-bit units, optional, default 4 (128 bit)
 --- @return string: UUID string, 8xlen32 characters, default 32
 function mcl_util.gen_uuid(len32)
 	len32 = (len32 and len32 > 0) and len32 or 4 -- len32 might be nil
@@ -752,10 +752,14 @@ function mcl_util.table_keys(t)
 	return keys
 end
 
+---@class core.LuaEntity
+---@field _active_object_id? integer
+---@field _uuid? string
+
 local uuid_to_aoid_cache = {}
 local function scan_active_objects()
 	-- Update active object ids for all active objects
-	for active_object_id,o in pairs(minetest.luaentities) do
+	for active_object_id,o in pairs(core.luaentities) do
 		o._active_object_id = active_object_id
 		if o._uuid then
 			uuid_to_aoid_cache[o._uuid] = active_object_id
@@ -766,7 +770,7 @@ function mcl_util.get_active_object_id(obj)
 	local le = obj:get_luaentity()
 
 	-- If the active object id in the lua entity is correct, return that
-	if le._active_object_id and minetest.luaentities[le._active_object_id] == le then
+	if le._active_object_id and core.luaentities[le._active_object_id] == le then
 		return le._active_object_id
 	end
 
@@ -781,7 +785,7 @@ end
 --- @param uuid string
 --- @return core.LuaEntity?
 function mcl_util.get_luaentity_from_uuid(uuid)
-	return minetest.luaentities[ mcl_util.get_active_object_id_from_uuid(uuid) ]
+	return core.luaentities[ mcl_util.get_active_object_id_from_uuid(uuid) ]
 end
 function mcl_util.assign_uuid(obj)
 	assert(obj)
@@ -799,15 +803,14 @@ function mcl_util.assign_uuid(obj)
 end
 function mcl_util.metadata_last_act(meta, name, delay)
 	local last_act = meta:get_float(name)
-	local now = minetest.get_us_time() * 1e-6
+	local now = core.get_us_time() * 1e-6
 	if last_act > now + 0.5 then
 		-- Last action was in the future, clock went backwards, so reset
+		meta:set_float(name, now)
+		return true
 	elseif last_act >= now - delay then
 		return false
 	end
-
-	meta:set_float(name, now)
-	return true
 end
 
 -- Functions for comparing versions. These better fit mcl_util, but are used early

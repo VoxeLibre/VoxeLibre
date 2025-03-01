@@ -5,11 +5,13 @@
 ./mods/CORE/mcl_autogroup/init.lua
 ./mods/CORE/mcl_damage/init.lua
 ./mods/CORE/mcl_init/init.lua
+./mods/CORE/mcl_init/get_node_name.lua
 ./mods/CORE/mcl_init/tune_jit.lua
 ./mods/CORE/mcl_loot/init.lua
 ./mods/CORE/mcl_oxidation/init.lua
 ./mods/CORE/mcl_particles/init.lua
 ./mods/CORE/mcl_sounds/init.lua
+./mods/CORE/mcl_util/init.lua
 ./mods/CORE/mcl_util/hashing.lua
 ./mods/CORE/mcl_util/roman_numerals.lua
 ./mods/CORE/mcl_worlds/init.lua

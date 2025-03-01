@@ -18,6 +18,9 @@ local has_awards = minetest.get_modpath("awards")
 
 mcl_item_entity = {}
 
+---@class core.LuaEntity
+---@field _insta_collect? boolean
+
 --basic settings
 local item_drop_settings                 = {} --settings table
 item_drop_settings.dug_buffer            = 0.65 -- the warm up period before a dug item can be collected
