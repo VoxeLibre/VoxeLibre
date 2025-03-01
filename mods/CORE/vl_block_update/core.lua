@@ -59,7 +59,6 @@ local function make_pattern_setter(block_update_pattern)
 		end
 	]]
 
-	print("code:\n"..code)
 	return loadstring(code)({mod_internal = mod_internal})
 end
 
