@@ -193,7 +193,15 @@ end
 function mcl_maps.load_map(id, callback)
 	if id == "" or maps_generating[id] then return false end
 
-	local texture = "mcl_maps_map_" .. id .. ".png"
+	-- Use a legacy tga map texture if present
+	local texture = "mcl_maps_map_texture_"..id..".tga"
+	local f = io.open(worldpath .. DIR_DELIM .. "mcl_maps" .. DIR_DELIM .. texture, "r")
+	if f then
+		f:close()
+	else
+		texture = "mcl_maps_map_" .. id .. ".png"
+	end
+
 	if maps_loading[id] then
 		if callback then callback(texture) end
 		return texture
