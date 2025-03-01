@@ -115,7 +115,6 @@
 ./mods/ITEMS/mcl_cake/init.lua
 ./mods/ITEMS/mcl_campfires/init.lua
 ./mods/ITEMS/mcl_campfires/register.lua
-./mods/ITEMS/mcl_cartography_table/init.lua
 ./mods/ITEMS/mcl_cherry_blossom/crafting.lua
 ./mods/ITEMS/mcl_cherry_blossom/growth.lua
 ./mods/ITEMS/mcl_chests/api.lua
@@ -170,7 +169,6 @@
 ./mods/ITEMS/mcl_lanterns/register.lua
 ./mods/ITEMS/mcl_lightning_rods/init.lua
 ./mods/ITEMS/mcl_loom/init.lua
-./mods/ITEMS/mcl_maps/init.lua
 ./mods/ITEMS/mcl_monster_eggs/init.lua
 ./mods/ITEMS/mcl_mud/init.lua
 ./mods/ITEMS/mcl_mushrooms/huge.lua
