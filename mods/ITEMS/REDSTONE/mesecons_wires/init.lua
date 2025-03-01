@@ -247,7 +247,7 @@ S("Read the help entries on the other redstone components to learn how redstone 
 		mesecon.register_node(":mesecons:wire_"..nodeid, {
 			drawtype = "nodebox",
 			paramtype = "light",
-			use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "clip" or true,
+			use_texture_alpha = "clip",
 			sunlight_propagates = true,
 			selection_box = selectionbox,
 			node_box = nodebox,

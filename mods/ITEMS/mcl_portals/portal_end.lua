@@ -72,7 +72,7 @@ minetest.register_node("mcl_portals:portal_end", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	sunlight_propagates = true,
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "blend" or true,
+	use_texture_alpha = "blend",
 	walkable = false,
 	diggable = false,
 	pointable = false,
@@ -284,7 +284,7 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 	_doc_items_usagehelp = S("To create an End portal, you need 12 end portal frames and 12 eyes of ender. The end portal frames have to be arranged around a horizontal 3×3 area with each block facing inward. Any other arrangement will fail.") .. "\n" .. S("Place an eye of ender into each block. The end portal appears in the middle after placing the final eye.") .. "\n" .. S("Once placed, an eye of ender can not be taken back."),
 	groups = { creative_breakable = 1, deco_block = 1, end_portal_frame = 1, unbreakable = 1 },
 	tiles = { "mcl_portals_endframe_top.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_side.png" },
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+	use_texture_alpha = "opaque",
 	paramtype2 = "facedir",
 	drawtype = "nodebox",
 	node_box = {
@@ -311,7 +311,7 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	_doc_items_create_entry = false,
 	groups = { creative_breakable = 1, deco_block = 1, comparator_signal = 15, end_portal_frame = 2, not_in_creative_inventory = 1, unbreakable = 1 },
 	tiles = { "mcl_portals_endframe_top.png^[lowpart:75:mcl_portals_endframe_eye.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_eye.png^mcl_portals_endframe_side.png" },
-	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
+	use_texture_alpha = "opaque",
 	paramtype2 = "facedir",
 	drawtype = "nodebox",
 	node_box = {
