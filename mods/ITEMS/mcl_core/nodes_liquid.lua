@@ -9,11 +9,6 @@ local math = math
 local WATER_VISC = 1
 local LAVA_VISC = 7
 local LIGHT_LAVA = minetest.LIGHT_MAX
-local USE_TEXTURE_ALPHA = true
-
-if minetest.features.use_texture_alpha_string_modes then
-	USE_TEXTURE_ALPHA = "blend"
-end
 
 minetest.register_node("mcl_core:water_flowing", {
 	description = S("Flowing Water"),
@@ -36,7 +31,7 @@ minetest.register_node("mcl_core:water_flowing", {
 	color = "#3F76E4",
 	sounds = mcl_sounds.node_sound_water_defaults(),
 	is_ground_content = false,
-	use_texture_alpha = USE_TEXTURE_ALPHA,
+	use_texture_alpha = "blend",
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
 	walkable = false,
