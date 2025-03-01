@@ -3520,12 +3520,11 @@ local function register_coral_decos(ck)
 		flags = "force_placement, all_floors",
 		height = 1,
 		height_max = 1,
-		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
 		name = "coral_deco_"..c.."_fan",
 		deco_type = "simple",
-		place_on = {"mcl_ocean:horn_coral_block"},
+		place_on = {"mcl_ocean:"..c.."_coral_block"},
 		sidelen = 16,
 		fill_ratio = 7,
 		y_min = coral_min,
@@ -3535,7 +3534,6 @@ local function register_coral_decos(ck)
 		flags = "force_placement, all_floors",
 		height = 1,
 		height_max = 1,
-		gen_callback = clear_kelp,
 	})
 end
 
