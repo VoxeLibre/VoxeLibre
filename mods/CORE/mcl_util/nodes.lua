@@ -133,7 +133,7 @@ function mcl_util.generate_on_place_plant_function(condition)
 
 		if placer and not placer:get_player_control().sneak then
 			if node_def and node_def.on_rightclick then
-				return node_def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				return node_def.on_rightclick(pointed_thing.under, node, placer, itemstack, pointed_thing) or itemstack
 			end
 		end
 
@@ -177,7 +177,7 @@ end
 ---You have to make sure that the nodes you return true for have `buildable_to = true`.
 ---@param func fun(node_name: string): boolean Return `true` if node must not replace the buildable_to node
 ---                                            which have `node_name`
----@return fun(itemstack: ItemStack, placer: ObjectRef, pointed_thing: pointed_thing, param2: integer): ItemStack?
+---@return fun(itemstack: core.ItemStack, placer: core.ObjectRef, pointed_thing: core.PointedThing, param2: integer): core.ItemStack?
 function mcl_util.bypass_buildable_to(func)
 	-- Copied from minetest builtin
 	-- https://github.com/minetest/minetest/blob/526a2f7b8c45504088e194a83d54a19045227bbd/builtin/game/item.lua#L5-L12
@@ -255,6 +255,7 @@ function mcl_util.bypass_buildable_to(func)
 		if def.type ~= "node" or pointed_thing.type ~= "node" then
 			return itemstack
 		end
+		---@cast def core.NodeDef
 
 		local under = pointed_thing.under
 		local oldnode_under = core.get_node_or_nil(under)
