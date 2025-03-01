@@ -6,9 +6,12 @@ tnt = {}
 tnt.BOOMTIMER = 4
 tnt.BLINKTIMER = 0.25
 
----@param pos Vector
+---@class core.LuaEntity
+---@field timer number
+
+---@param pos vector.Vector
 ---@param entname string
----@return ObjectRef?
+---@return core.LuaEntityRef?
 local function spawn_tnt(pos, entname)
 	minetest.sound_play("tnt_ignite", { pos = pos, gain = 1.0, max_hear_distance = 15 }, true)
 	local ent = minetest.add_entity(pos, entname)
@@ -18,8 +21,8 @@ local function spawn_tnt(pos, entname)
 	return ent
 end
 
----@param pos Vector
----@return ObjectRef?
+---@param pos vector.Vector
+---@return core.LuaEntityRef?
 function tnt.ignite(pos)
 	minetest.remove_node(pos)
 	local e = spawn_tnt(pos, "mcl_tnt:tnt")
@@ -30,7 +33,7 @@ end
 ---Add smoke particle of entity at pos.
 ---
 ---Intended to be called every step.
----@param pos Vector
+---@param pos vector.Vector
 function tnt.smoke_step(pos)
 	minetest.add_particle({
 		pos                = vector.offset(pos, 0, 0.5, 0),
@@ -91,8 +94,9 @@ minetest.register_node("mcl_tnt:tnt", {
 	mesecons = tnt_mesecons,
 	on_blast = function(pos, _)
 		local e = tnt.ignite(pos)
-		if e then
-			e:get_luaentity().timer = tnt.BOOMTIMER - (0.5 + math.random())
+		local le = e and e:get_luaentity()
+		if le then
+			le.timer = tnt.BOOMTIMER - (0.5 + math.random())
 		end
 	end,
 	_on_ignite = function(player, pointed_thing)
@@ -118,6 +122,7 @@ minetest.register_node("mcl_tnt:tnt", {
 		end
 	},
 	sounds = sounds,
+	_mcl_blast_resistance = 0,
 })
 
 local TNT = {
