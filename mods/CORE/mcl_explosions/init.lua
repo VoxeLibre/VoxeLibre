@@ -12,6 +12,10 @@ under the LGPLv2.1 license.
 
 mcl_explosions = {}
 
+---@class core.NodeDef
+---@field on_blast? fun(pos : vector.Vector, intensity : number, do_drop : boolean)
+---@field _mcl_blast_resistance number
+
 local mod_fire = minetest.get_modpath("mcl_fire")
 local explosions_griefing = minetest.settings:get_bool("mcl_explosions_griefing", true)
 --local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
@@ -36,6 +40,7 @@ local sphere_shapes = {}
 
 -- Saved node definitions in table using cid-keys for faster look-up.
 local node_blastres = {}
+---type table<integer, fun(pos : vector.Vector, unknown, do_drop : boolean)>
 local node_on_blast = {}
 local node_walkable = {}
 
@@ -119,6 +124,9 @@ local function compute_sphere_rays(radius)
 
 	return rays
 end
+
+---@class core.LuaEntity
+---@field tnt_knockback? boolean
 
 -- Add particles from explosion
 --
@@ -252,7 +260,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 
 			if obj:is_player() then
 				collisionbox = { -0.3, 0.0, -0.3, 0.3, 1.77, 0.3 }
-			elseif ent.name then
+			elseif ent and ent.name then
 				local def = minetest.registered_entities[ent.name]
 				collisionbox = def.collisionbox
 			end
@@ -323,6 +331,8 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 
 				local sleep_formspec_doesnt_close_mt53 = false
 				if obj:is_player() then
+					---@cast obj +core.PlayerObjectRef
+					---@cast obj -core.LuaEntityRef
 					local name = obj:get_player_name()
 					if mcl_beds then
 						local meta = obj:get_meta()
@@ -448,11 +458,11 @@ end
 -- griefing - If true, the explosion will destroy nodes (default: true)
 -- grief_protected - If true, the explosion will also destroy nodes which have
 --                   been protected (default: false)
----@param pos Vector
+---@param pos vector.Vector
 ---@param strength number
 ---@param info {drop_chance: number, max_blast_resistance: number, sound: boolean, particles: boolean, fire: boolean, griefing: boolean, grief_protected: boolean}
----@param direct? ObjectRef
----@param source? ObjectRef
+---@param direct? core.ObjectRef
+---@param source? core.ObjectRef
 function mcl_explosions.explode(pos, strength, info, direct, source)
 	if info == nil then
 		info = {}
