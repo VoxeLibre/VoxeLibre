@@ -11,6 +11,7 @@ mcl_maps.max_zoom = (tonumber(core.settings:get("vl_maps_max_zoom")) or 4)
 mcl_maps.enable_maps = core.settings:get_bool("enable_real_maps", true)
 mcl_maps.allow_nether_maps = core.settings:get_bool("vl_maps_allow_nether", true)
 mcl_maps.map_allow_overlap = core.settings:get_bool("vl_maps_allow_overlap", true) -- 50% overlap allowed in each level
+mcl_maps.map_update_rate = 1 / (tonumber(core.settings:get("vl_maps_map_update_rate")) or 15) -- invert for the globalstep check
 
 local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
@@ -425,7 +426,14 @@ core.register_on_leaveplayer(function(player)
 	huds[player] = nil
 end)
 
+local etime = 0
 core.register_globalstep(function(dtime)
+	etime = etime + dtime
+	if etime < mcl_maps.map_update_rate then
+		return
+	end
+	etime = 0
+
 	for _, player in pairs(get_connected_players()) do
 		local wield = player:get_wielded_item()
 		local texture = mcl_maps.load_map_item(wield)
