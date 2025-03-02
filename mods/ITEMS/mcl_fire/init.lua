@@ -240,8 +240,8 @@ if flame_sound then
 		local player_name = player:get_player_name()
 		-- Search for flame nodes in radius around player
 		local ppos = player:get_pos()
-		local areamin = ppos - radius
-		local areamax = ppos + radius
+		local areamin = vector_offset(ppos, -radius, -radius, -radius)
+		local areamax = vector_offset(ppos,  radius,  radius,  radius)
 		local fpos, num = find_nodes_in_area(
 			areamin, areamax,
 			{"mcl_fire:fire", "mcl_fire:eternal_fire"}
