@@ -20,6 +20,7 @@ minetest.register_entity("mobs_mc:spider_eyes", {
 		textures = {
 			"mobs_mc_spider_eyes.png",
 		},
+		glow = 50,
 	},
 	on_step = function(self)
 		if self and self.object then
@@ -28,7 +29,6 @@ minetest.register_entity("mobs_mc:spider_eyes", {
 			end
 		end
 	end,
-	glow = 50,
 })
 
 local spider = {
