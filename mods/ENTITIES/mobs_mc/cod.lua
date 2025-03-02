@@ -37,7 +37,8 @@ local cod = {
 	passive = true,
 	initial_properties = {
 		hp_min = 3,
-		hp_max = 3
+		hp_max = 3,
+		collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
 	},
 	xp_min = 1,
 	xp_max = 3,
@@ -46,7 +47,6 @@ local cod = {
 	spawn_in_group_min = 2, -- was 3
 	spawn_in_group = 4, -- was 8 nerfed until we can cap them properly locally. this is a group size, not a per spawn attempt
 	tilt_swim = true,
-	collisionbox = {-0.3, 0.0, -0.3, 0.3, 0.79, 0.3},
 	visual = "mesh",
 	mesh = "extra_mobs_cod.b3d",
 	textures = {

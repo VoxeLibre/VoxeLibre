@@ -18,6 +18,7 @@ local strider = {
 	initial_properties = {
 		hp_min = 20,
 		hp_max = 20,
+		collisionbox = {-.6, -0.01, -.6, .6, 1.94, .6},
 	},
 	xp_min = 9,
 	xp_max = 9,
@@ -25,7 +26,6 @@ local strider = {
 	attack_type = "dogfight",
 	damage = 2,
 	reach = 2,
-	collisionbox = {-.6, -0.01, -.6, .6, 1.94, .6},
 	visual = "mesh",
 	mesh = "extra_mobs_strider.b3d",
 	textures = { {
@@ -209,7 +209,7 @@ mcl_mobs.register_mob("mobs_mc:strider", strider)
 
 local baby_strider = table.copy(strider)
 baby_strider.description = S("Baby Strider")
-baby_strider.collisionbox = {-.3, -0.01, -.3, .3, 0.94, .3}
+baby_strider.initial_properties.collisionbox = {-.3, -0.01, -.3, .3, 0.94, .3}
 baby_strider.xp_min = 13
 baby_strider.xp_max = 13
 textures = { {

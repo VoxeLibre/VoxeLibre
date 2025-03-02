@@ -8,7 +8,8 @@ local axolotl = {
 	passive = false,
 	initial_properties = {
 		hp_min = 14,
-		hp_max = 14
+		hp_max = 14,
+		collisionbox = {-0.5, 0.0, -0.5, 0.5, 0.8, 0.5},
 	},
 	xp_min = 1,
 	xp_max = 7,
@@ -25,7 +26,6 @@ local axolotl = {
 	spawn_in_group_min = 1,
 	spawn_in_group = 4,
 	tilt_swim = true,
-	collisionbox = {-0.5, 0.0, -0.5, 0.5, 0.8, 0.5},
 	visual = "mesh",
 	mesh = "mobs_mc_axolotl.b3d",
 	textures = {

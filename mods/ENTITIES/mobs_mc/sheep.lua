@@ -62,10 +62,10 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	initial_properties = {
 		hp_min = 8,
 		hp_max = 8,
+		collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
 	},
 	xp_min = 1,
 	xp_max = 3,
-	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
 	head_swivel = "head.control",
 	head_eye_height = 1.0,
 	head_bone_position = vector.new( 0, 3.3, -.9 ), -- for minetest <= 5.8

@@ -13,11 +13,12 @@ mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 	initial_properties = {
 		hp_min = 80,
 		hp_max = 80,
+		breath_max = -1,
+		collisionbox = {-0.99875, 0.5, -0.99875, 0.99875, 2.4975, 0.99875},
 	},
 	xp_min = 10,
 	xp_max = 10,
-	breath_max = -1,
-    	passive = false,
+	passive = false,
 	attack_type = "dogfight",
 	pathfinding = 1,
 	view_range = 16,
@@ -25,7 +26,6 @@ mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 	run_velocity = 4,
 	damage = 8,
 	reach = 3,
-	collisionbox = {-0.99875, 0.5, -0.99875, 0.99875, 2.4975, 0.99875},
 	visual = "mesh",
 	mesh = "mobs_mc_guardian.b3d",
 	textures = {

@@ -140,7 +140,8 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 	if use_pathfind then
 		-- lets try find a path, first take care of positions
 		-- since pathfinder is very sensitive
-		local sheight = self.collisionbox[5] - self.collisionbox[2]
+		local cb = self.initial_properties.collisionbox
+		local sheight = cb[5] - cb[2]
 
 		-- round position to center of node to avoid stuck in walls
 		-- also adjust height for player models!
@@ -183,7 +184,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 						end
 					end
 
-					local sheight = ceil(self.collisionbox[5]) + 1
+					local sheight = ceil(self.initial_properties.collisionbox[5]) + 1
 
 					-- assume mob is 2 blocks high so it digs above its head
 					s.y = s.y + sheight
@@ -1022,7 +1023,8 @@ function mob_class:do_states_attack(dtime)
 		end
 
 		local p = self.object:get_pos()
-		p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) * 0.5
+		local cb = self.initial_properties.collisionbox
+		p.y = p.y + (cb[2] + cb[5]) * 0.5
 
 		if self.shoot_interval and self.timer > self.shoot_interval and random(1, 100) <= 60
 				and not minetest.raycast(vector_offset(p, 0, self.shoot_offset, 0), vector_offset(self.attack:get_pos(), 0, 1.5, 0), false, false):next() then

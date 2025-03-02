@@ -42,11 +42,11 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 	initial_properties = {
 		hp_min = 30,
 		hp_max = 30,
+		collisionbox = {-0.5, -0.01, -0.5, 0.5, 0.99, 0.5},
 	},
 	xp_min = 5,
 	xp_max = 5,
 	armor = 20,
-	collisionbox = {-0.5, -0.01, -0.5, 0.5, 0.99, 0.5},
 	visual = "mesh",
 	mesh = "mobs_mc_shulker.b3d",
 	textures = { "mobs_mc_endergolem.png", },
