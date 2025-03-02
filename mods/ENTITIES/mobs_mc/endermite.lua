@@ -11,7 +11,7 @@ mcl_mobs.register_mob("mobs_mc:endermite", {
 	passive = false,
 	initial_properties = {
 		hp_min = 8,
-		hp_max = 8
+		hp_max = 8,
 		collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.29, 0.2},
 	},
 	xp_min = 3,
