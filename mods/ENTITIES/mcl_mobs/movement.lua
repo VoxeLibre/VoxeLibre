@@ -60,7 +60,7 @@ function mob_class:is_node_waterhazard(nodename)
 	local ndef = minetest.registered_nodes[nodename]
 	return ndef	and ndef.groups.water and (
           (self.water_damage > 0)
-	   or (not self.breathes_in_water and self.breath_max ~= -1 and (ndef.drowning or 0) > 0))
+	   or (not self.breathes_in_water and self.initial_properties.breath_max ~= -1 and (ndef.drowning or 0) > 0))
 end
 
 
@@ -76,7 +76,7 @@ function mob_class:target_visible(origin)
 	--minetest.log("origin_eye_pos: " .. dump(origin_eye_pos))
 
 	local targ_head_height, targ_feet_height
-	local cbox = self.collisionbox
+	local cbox = self.initial_properties.collisionbox
 	if self.attack:is_player() then
 		targ_head_height = vector_offset(target_pos, 0, cbox[5], 0)
 		targ_feet_height = target_pos -- Cbox would put feet under ground which interferes with ray
@@ -165,7 +165,7 @@ end
 function mob_class:can_jump_cliff()
 	local yaw = self.object:get_yaw()
 	local pos = self.object:get_pos()
-	local cbox = self.collisionbox
+	local cbox = self.initial_properties.collisionbox
 
 	-- where is front
 	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
@@ -212,7 +212,7 @@ function mob_class:is_at_cliff_or_danger()
 		return false
 	end
 	local yaw = self.object:get_yaw()
-	local cbox = self.collisionbox
+	local cbox = self.initial_properties.collisionbox
 	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
 	local dir_z = cos(yaw) * (cbox[4] + 0.5)
 
@@ -248,7 +248,7 @@ end
 
 -- copy the 'mob facing cliff_or_danger check' from above, and rework to avoid water
 function mob_class:is_at_water_danger()
-	if self.water_damage == 0 and self.breath_max == -1 then
+	if self.water_damage == 0 and self.initial_properties.breath_max == -1 then
 		--minetest.log("Do not need a water check for: " .. self.name)
 		return false
 	end
@@ -269,7 +269,7 @@ function mob_class:is_at_water_danger()
 		return false
 	end
 
-	local cbox = self.collisionbox
+	local cbox = self.initial_properties.collisionbox
 	local dir_x = -sin(yaw) * (cbox[4] + 0.5)
 	local dir_z =  cos(yaw) * (cbox[4] + 0.5)
 
@@ -331,7 +331,7 @@ function mob_class:do_jump()
 
 	local pos = self.object:get_pos()
 	local v = self.object:get_velocity()
-	local cbox = self.collisionbox
+	local cbox = self.initial_properties.collisionbox
 
 	local in_water = minetest.get_item_group(node_ok(pos).name, "water") > 0
 	-- what is mob standing on?
@@ -617,7 +617,7 @@ function mob_class:flop()
 			self.object:set_acceleration(vector_new(0, DEFAULT_FALL_SPEED, 0))
 
 			local p = self.object:get_pos()
-			local sdef = minetest.registered_nodes[node_ok(vector_offset(p, 0, self.collisionbox[2] - 0.2, 0)).name]
+			local sdef = minetest.registered_nodes[node_ok(vector_offset(p, 0, self.initial_properties.collisionbox[2] - 0.2, 0)).name]
 			-- Flop on ground
 			if sdef and sdef.walkable then
 				if self.object:get_velocity().y < 0.1 then
@@ -716,7 +716,7 @@ function mob_class:do_states_walk()
 	end
 	-- facing wall? then turn
 	local facing_wall = false
-	local cbox = self.collisionbox
+	local cbox = self.initial_properties.collisionbox
 	local dir_x = -sin(yaw - QUARTERPI) * (cbox[4] + 0.5)
 	local dir_z =  cos(yaw - QUARTERPI) * (cbox[4] + 0.5)
 	local nodface = node_ok(vector_offset(s,  dir_x, cbox[5] - cbox[2], dir_z))

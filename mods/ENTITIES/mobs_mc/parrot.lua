@@ -133,14 +133,14 @@ mcl_mobs.register_mob("mobs_mc:parrot", {
 	pathfinding = 1,
 	initial_properties = {
 		hp_min = 6,
-		hp_max = 6
+		hp_max = 6,
+		collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.89, 0.25},
 	},
 	xp_min = 1,
 	xp_max = 3,
 	head_swivel = "head.control",
 	head_bone_position = vector.new( 0, 1.211, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
-	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.89, 0.25},
 	visual = "mesh",
 	mesh = "mobs_mc_parrot.b3d",
 	textures = {{"mobs_mc_parrot_blue.png"},{"mobs_mc_parrot_green.png"},{"mobs_mc_parrot_grey.png"},{"mobs_mc_parrot_red_blue.png"},{"mobs_mc_parrot_yellow_blue.png"}},

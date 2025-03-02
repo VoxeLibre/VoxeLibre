@@ -189,7 +189,8 @@ function mob_class:damage_effect(damage)
 
 		local pos = self.object:get_pos()
 
-		pos.y = pos.y + (self.collisionbox[5] - self.collisionbox[2]) * .5
+		local cb = self.initial_properties.collisionbox
+		pos.y = pos.y + (cb[5] - cb[2]) * .5
 
 		local texture = "mobs_blood.png"
 		-- full heart damage (one particle for each 2 HP damage)

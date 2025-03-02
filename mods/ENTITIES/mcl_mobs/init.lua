@@ -145,7 +145,7 @@ function mcl_mobs.register_mob(name, def)
 		fly_in["air"] = true
 	end
 
-	local collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
+	local collisionbox = def.collisionbox or def.initial_properties.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	local final_def = {
 		use_texture_alpha = def.use_texture_alpha,
 		head_swivel = def.head_swivel or nil, -- bool to activate this function
@@ -179,15 +179,15 @@ function mcl_mobs.register_mob(name, def)
 		initial_properties = {
 			hp_min = scale_difficulty(def.initial_properties.hp_min, 5, 1),
 			hp_max = scale_difficulty(def.initial_properties.hp_max, 10, 1),
+			breath_max = (def.initial_properties and def.initial_properties.breath_max or def.breath_max) or 15,
+			physical = true,
+			collisionbox = collisionbox,
 		},
 		xp_min = def.xp_min or 0,
 		xp_max = def.xp_max or 0,
 		xp_timestamp = 0,
 		invul_timestamp = 0,
-		breath_max = def.breath_max or 15,
 		breathes_in_water = def.breathes_in_water or false,
-		physical = true,
-		collisionbox = collisionbox,
 		selectionbox = def.selectionbox or collisionbox,
 		spawnbox = def.spawnbox or collisionbox,
 		visual = def.visual,

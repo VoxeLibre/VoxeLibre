@@ -23,6 +23,7 @@ mcl_mobs.register_mob("mobs_mc:evoker", {
 	initial_properties = {
 		hp_min = 24,
 		hp_max = 24,
+		collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.95, 0.4},
 	},
 	xp_min = 10,
 	xp_max = 10,
@@ -30,7 +31,6 @@ mcl_mobs.register_mob("mobs_mc:evoker", {
 	head_eye_height = 1.5,
 	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
-	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.95, 0.4},
 	visual = "mesh",
 	mesh = "mobs_mc_villager.b3d",
 	textures = { {

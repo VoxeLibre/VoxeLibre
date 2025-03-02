@@ -69,10 +69,10 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	initial_properties = {
 		hp_min = 20,
 		hp_max = 20,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
 	},
 	xp_min = 5,
 	xp_max = 5,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
 	pathfinding = 1,
 	visual = "mesh",
 	mesh = "vl_stalker.b3d",
@@ -208,10 +208,10 @@ mcl_mobs.register_mob("mobs_mc:stalker_overloaded", {
 	initial_properties = {
 		hp_min = 20,
 		hp_max = 20,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
 	},
 	xp_min = 5,
 	xp_max = 5,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
 	pathfinding = 1,
 	visual = "mesh",
 	mesh = "vl_stalker.b3d",

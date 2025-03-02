@@ -138,7 +138,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self.base_texture = def.textures[self.texture_selected]
 		self.base_mesh = def.mesh
 		self.base_size = self.visual_size
-		self.base_colbox = self.collisionbox
+		self.base_colbox = self.initial_properties.collisionbox
 		self.base_selbox = self.selectionbox
 	end
 
@@ -175,7 +175,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	end
 
 	if self.health == 0 then self.health = math.random(self.initial_properties.hp_min, self.initial_properties.hp_max) end
-	if self.breath == nil then self.breath = self.breath_max end
+	if self.breath == nil then self.breath = self.initial_properties.breath_max end
 
 	self.path = {}
 	self.path.way = {} -- path to follow, table of positions
@@ -200,7 +200,9 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.sounds.distance = self.sounds.distance or 10
 	self.textures = textures
 	self.mesh = mesh
-	self.collisionbox = colbox
+	self.object:set_properties({
+		collisionbox = colbox
+	})
 	self.selectionbox = selbox
 	self.visual_size = vis_size
 	self.standing_in = "ignore"

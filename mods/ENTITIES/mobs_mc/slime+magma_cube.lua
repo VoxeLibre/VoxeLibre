@@ -98,10 +98,10 @@ local slime_big = {
 	initial_properties = {
 		hp_min = 16,
 		hp_max = 16,
+		collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02, rotate = true},
 	},
 	xp_min = 4,
 	xp_max = 4,
-	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02, rotate = true},
 	visual_size = {x=12.5, y=12.5},
 	textures = {{"mobs_mc_slime.png", "mobs_mc_slime.png"}},
 	visual = "mesh",
@@ -154,7 +154,7 @@ slime_small.hp_min = 4
 slime_small.hp_max = 4
 slime_small.xp_min = 2
 slime_small.xp_max = 2
-slime_small.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51, rotate = true}
+slime_small.initial_properties.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51, rotate = true}
 slime_small.visual_size = {x=6.25, y=6.25}
 slime_small.damage = 3
 slime_small.reach = 2.25
@@ -172,7 +172,7 @@ slime_tiny.hp_min = 1
 slime_tiny.hp_max = 1
 slime_tiny.xp_min = 1
 slime_tiny.xp_max = 1
-slime_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505, rotate = true}
+slime_tiny.initial_properties.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505, rotate = true}
 slime_tiny.visual_size = {x=3.125, y=3.125}
 slime_tiny.damage = 1
 slime_tiny.reach = 2
@@ -328,10 +328,10 @@ local magma_cube_big = {
 	initial_properties = {
 		hp_min = 16,
 		hp_max = 16,
+		collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02, rotate = true},
 	},
 	xp_min = 4,
 	xp_max = 4,
-	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02, rotate = true},
 	visual_size = {x=12.5, y=12.5},
 	textures = {{ "mobs_mc_magmacube.png", "mobs_mc_magmacube.png" }},
 	visual = "mesh",
@@ -392,7 +392,7 @@ magma_cube_small.hp_min = 4
 magma_cube_small.hp_max = 4
 magma_cube_small.xp_min = 2
 magma_cube_small.xp_max = 2
-magma_cube_small.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51, rotate = true}
+magma_cube_small.initial_properties.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51, rotate = true}
 magma_cube_small.visual_size = {x=6.25, y=6.25}
 magma_cube_small.damage = 3
 magma_cube_small.reach = 2.1
@@ -415,7 +415,7 @@ magma_cube_tiny.hp_min = 1
 magma_cube_tiny.hp_max = 1
 magma_cube_tiny.xp_min = 1
 magma_cube_tiny.xp_max = 1
-magma_cube_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505, rotate = true}
+magma_cube_tiny.initial_properties.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505, rotate = true}
 magma_cube_tiny.visual_size = {x=3.125, y=3.125}
 magma_cube_tiny.walk_velocity = 1.02
 magma_cube_tiny.run_velocity = 1.02

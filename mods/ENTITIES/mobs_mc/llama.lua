@@ -68,10 +68,10 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 	initial_properties = {
 		hp_min = 15,
 		hp_max = 30,
+		collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},
 	},
 	xp_min = 1,
 	xp_max = 3,
-	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_llama.b3d",
 	textures = { -- 1: chest -- 2: decor (carpet) -- 3: llama base texture

@@ -18,11 +18,11 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	group_attack = true,
 	initial_properties = {
 		hp_min = 10,
-		hp_max = 10
+		hp_max = 10,
+		collisionbox = {-2, 0, -2, 2, 4, 2, rotate=true},
 	},
 	xp_min = 5,
 	xp_max = 5,
-	collisionbox = {-2, 0, -2, 2, 4, 2, rotate=true},
 	visual = "mesh",
 	mesh = "mobs_mc_ghast.b3d",
 	spawn_in_group = 1,

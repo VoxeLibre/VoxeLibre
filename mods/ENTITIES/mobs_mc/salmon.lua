@@ -18,13 +18,13 @@ local salmon = {
 	initial_properties = {
 		hp_min = 3,
 		hp_max = 3,
+		collisionbox = {-0.4, 0.0, -0.4, 0.4, 0.79, 0.4},
 	},
 	xp_min = 1,
 	xp_max = 3,
 	armor = 100,
 	spawn_in_group = 5,
 	tilt_swim = true,
-	collisionbox = {-0.4, 0.0, -0.4, 0.4, 0.79, 0.4},
 	visual = "mesh",
 	mesh = "extra_mobs_salmon.b3d",
 	textures = {

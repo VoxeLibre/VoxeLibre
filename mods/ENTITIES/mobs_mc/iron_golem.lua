@@ -21,9 +21,9 @@ mcl_mobs.register_mob("mobs_mc:iron_golem", {
 	initial_properties = {
 		hp_min = 100,
 		hp_max = 100,
+		breath_max = -1,
+		collisionbox = {-0.7, -0.01, -0.7, 0.7, 2.69, 0.7},
 	},
-	breath_max = -1,
-	collisionbox = {-0.7, -0.01, -0.7, 0.7, 2.69, 0.7},
 	visual = "mesh",
 	mesh = "mobs_mc_iron_golem.b3d",
 	head_swivel = "head.control",

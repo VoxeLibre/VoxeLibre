@@ -34,7 +34,8 @@ local ocelot = {
 	spawn_in_group_min = 1,
 	initial_properties = {
 		hp_min = 10,
-		hp_max = 10
+		hp_max = 10,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 0.69, 0.3},
 	},
 	xp_min = 1,
 	xp_max = 3,
@@ -43,7 +44,6 @@ local ocelot = {
 	head_bone_position = vector.new( 0, 6.44, -0.42 ), -- for minetest <= 5.8
 	head_yaw="z",
 	curiosity = 4,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 0.69, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_cat.b3d",
 	textures = {"mobs_mc_cat_ocelot.png"},

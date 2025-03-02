@@ -38,6 +38,7 @@ mcl_mobs.register_mob("mobs_mc:glow_squid", {
 	initial_properties = {
 		hp_min = 10,
 		hp_max = 10,
+		collisionbox = { -0.4, 0.0, -0.4, 0.4, 0.9, 0.4 },
 	},
 	xp_min = 1,
 	xp_max = 3,
@@ -46,7 +47,6 @@ mcl_mobs.register_mob("mobs_mc:glow_squid", {
 	-- tilt_swim breaks the animations.
 	--tilt_swim = true,
 	-- FIXME: If the qlow squid is near the floor, it turns black
-	collisionbox = { -0.4, 0.0, -0.4, 0.4, 0.9, 0.4 },
 	visual = "mesh",
 	mesh = "extra_mobs_glow_squid.b3d",
 	textures = {

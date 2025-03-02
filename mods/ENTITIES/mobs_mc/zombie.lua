@@ -52,6 +52,8 @@ local zombie = {
 	initial_properties = {
 		hp_min = 20,
 		hp_max = 20,
+		breath_max = -1,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.8, 0.3},
 	},
 	xp_min = 5,
 	xp_max = 5,
@@ -60,10 +62,8 @@ local zombie = {
 	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8
 	curiosity = 7,
 	head_pitch_multiplier=-1,
-	breath_max = -1,
 	wears_armor = 1,
 	armor = {undead = 90, fleshy = 90},
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.8, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_zombie.b3d",
 	textures = {
@@ -113,7 +113,7 @@ mcl_mobs.register_mob("mobs_mc:zombie", zombie)
 local baby_zombie = table.copy(zombie)
 baby_zombie.description = S("Baby Zombie")
 baby_zombie.head_eye_height = 0.8
-baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.98, 0.25}
+baby_zombie.initial_properties.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.98, 0.25}
 baby_zombie.xp_min = 12
 baby_zombie.xp_max = 12
 baby_zombie.walk_velocity = 1.2

@@ -54,10 +54,10 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 	initial_properties = {
 		hp_max = 200,
 		hp_min = 200,
+		collisionbox = {-2, 3, -2, 2, 5, 2},
 	},
 	xp_min = 500,
 	xp_max = 500,
-	collisionbox = {-2, 3, -2, 2, 5, 2},
 	physical = false,
 	visual = "mesh",
 	mesh = "mobs_mc_dragon.b3d",

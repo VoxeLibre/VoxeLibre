@@ -2109,13 +2109,13 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 	initial_properties = {
 		hp_min = 20,
 		hp_max = 20,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	},
 	head_swivel = "head.control",
 	head_eye_height = 1.5,
 	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	runaway = true,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_villager.b3d",
 	textures = {
