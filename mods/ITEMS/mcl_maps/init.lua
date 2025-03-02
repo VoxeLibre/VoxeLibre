@@ -151,7 +151,7 @@ function mcl_maps.convert_legacy_map(itemstack, meta)
 	meta:set_int("mcl_maps:cx", cx)
 	meta:set_int("mcl_maps:cz", cz)
 	meta:set_int("mcl_maps:zoom", 1)
-	meta:set_string("mcl_maps:dim", "overworld")
+	meta:set_string("mcl_maps:dim", mcl_worlds.pos_to_dimension(minp))
 
 	tt.reload_itemstack_description(itemstack)
 end
@@ -169,7 +169,7 @@ local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 		local fields = meta:to_table().fields
 		local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
 		local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
-		dim = "overworld"
+		dim = mcl_worlds.pos_to_dimension(minp)
 		cx = minp.x + halfsize
 		cz = minp.z + halfsize
 	end
