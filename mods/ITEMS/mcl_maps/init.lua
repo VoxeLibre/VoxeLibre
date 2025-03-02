@@ -7,7 +7,7 @@
 -- Check for engine updates that allow improvements
 mcl_maps = {}
 
-mcl_maps.max_zoom = (tonumber(core.settings:get("vl_maps_max_zoom")) or 4)
+mcl_maps.max_zoom = (tonumber(core.settings:get("vl_maps_max_zoom")) or 3)
 mcl_maps.enable_maps = core.settings:get_bool("enable_real_maps", true)
 mcl_maps.allow_nether_maps = core.settings:get_bool("vl_maps_allow_nether", true)
 mcl_maps.map_allow_overlap = core.settings:get_bool("vl_maps_allow_overlap", true) -- 50% overlap allowed in each level
