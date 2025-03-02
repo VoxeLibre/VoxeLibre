@@ -110,6 +110,7 @@ for _, e in pairs(mcl_shields.enchantments) do
 	mcl_enchanting.enchantments[e].secondary.shield = true
 end
 
+---@return boolean?, core.ItemStack?
 function mcl_shields.is_blocking(obj)
 	if not obj:is_player() then return end
   if mcl_shields.players[obj] then
