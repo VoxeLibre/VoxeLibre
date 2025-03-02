@@ -405,7 +405,7 @@ local huds = {}
 
 core.register_on_joinplayer(function(player)
 	local map_def = {
-		hud_elem_type = "image",
+		[mcl_vars.hud_type_field] = "image",
 		text = "blank.png",
 		position = { x = 0.75, y = 0.8 },
 		alignment = { x = 0, y = -1 },

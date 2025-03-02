@@ -178,7 +178,7 @@ function mcl_experience.setup_hud(player)
 
 	if not minetest.is_creative_enabled(player:get_player_name()) then
 		hud_bars[player] = player:hud_add({
-			hud_elem_type = "image",
+			[mcl_vars.hud_type_field] = "image",
 			position = { x = 0.5, y = 1 },
 			offset = { x = (-9 * 28) - 3, y = -(48 + 24 + 16 - 5) },
 			scale = { x = 0.35, y = 0.375 },
@@ -187,7 +187,7 @@ function mcl_experience.setup_hud(player)
 		})
 
 		hud_levels[player] = player:hud_add({
-			hud_elem_type = "text",
+			[mcl_vars.hud_type_field] = "text",
 			position = { x = 0.5, y = 1 },
 			number = 0x80FF20,
 			offset = { x = 0, y = -(48 + 24 + 24) },

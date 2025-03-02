@@ -130,7 +130,7 @@ local function init_hud(player)
 		hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
 	end
 	mcl_hunger.eat_anim_hud[name] = player:hud_add({
-		hud_elem_type = "image",
+		[mcl_vars.hud_type_field] = "image",
 		text = "blank.png",
 		position = {x = 0.5, y = 1},
 		scale = {x = -25, y = -45},

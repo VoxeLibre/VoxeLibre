@@ -305,7 +305,7 @@ function awards.unlock(name, award)
 	else
 		local player = minetest.get_player_by_name(name)
 		local one = player:hud_add({
-			hud_elem_type = "image",
+			[mcl_vars.hud_type_field] = "image",
 			name = "award_bg",
 			scale = {x = 1.25, y = 1},
 			text = background,
@@ -325,7 +325,7 @@ function awards.unlock(name, award)
 			hud_announce = S("Advancement Made!")
 		end
 		local two = player:hud_add({
-			hud_elem_type = "text",
+			[mcl_vars.hud_type_field] = "text",
 			name = "award_au",
 			number = 0xFFFF00,
 			scale = {x = 100, y = 20},
@@ -336,7 +336,7 @@ function awards.unlock(name, award)
 			z_index = 102,
 		})
 		local three = player:hud_add({
-			hud_elem_type = "text",
+			[mcl_vars.hud_type_field] = "text",
 			name = "award_title",
 			number = 0xFFFFFF,
 			scale = {x = 100, y = 20},
@@ -351,7 +351,7 @@ function awards.unlock(name, award)
 		Yes, it's a hack, but it works for all texture sizes and is needed because the image
 		type does NOT allow us a simple scaling. ]]
 		local four = player:hud_add({
-			hud_elem_type = "statbar",
+			[mcl_vars.hud_type_field] = "statbar",
 			name = "award_icon",
 			size = {x=64, y = 64},
 			number = 2,

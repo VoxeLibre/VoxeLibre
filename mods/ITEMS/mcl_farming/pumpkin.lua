@@ -141,7 +141,7 @@ if minetest.get_modpath("mcl_armor") then
 	local function add_pumpkin_hud(player)
 		pumpkin_hud[player] = {
 			pumpkin_blur = player:hud_add({
-				hud_elem_type = "image",
+				[mcl_vars.hud_type_field] = "image",
 				position = {x = 0.5, y = 0.5},
 				scale = {x = -101, y = -101},
 				text = "mcl_farming_pumpkin_hud.png",
@@ -150,7 +150,7 @@ if minetest.get_modpath("mcl_armor") then
 			--this is a fake crosshair, because hotbar and crosshair doesn't support z_index
 			--TODO: remove this and add correct z_index values
 			fake_crosshair = player:hud_add({
-				hud_elem_type = "image",
+				[mcl_vars.hud_type_field] = "image",
 				position = {x = 0.5, y = 0.5},
 				scale = {x = 1, y = 1},
 				text = "crosshair.png",

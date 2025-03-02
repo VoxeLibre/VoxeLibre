@@ -363,7 +363,7 @@ local function add_shield_hud(shieldstack, player, blocking)
 		player:hud_set_flags({wielditem = false})
 	end
 	shield_hud[player] = player:hud_add({
-		hud_elem_type = "image",
+		[mcl_vars.hud_type_field] = "image",
 		position = {x = 0.5, y = 0.5},
 		scale = {x = -101, y = -101},
 		offset = {x = offset, y = 0},

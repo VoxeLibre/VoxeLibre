@@ -559,7 +559,7 @@ mcl_potions.register_effect({
 							player:hud_change(hud_id, "scale", {x = scale, y = scale})
 						else
 							EF.glowing[object].waypoints[player] = player:hud_add({
-								hud_elem_type = "image_waypoint",
+								[hud_type_field] = "image_waypoint",
 								position = {x = 0.5, y = 0.5},
 								scale = {x = scale, y = scale},
 								text = "mcl_potions_glow_waypoint.png",
@@ -773,7 +773,7 @@ mcl_potions.register_effect({
 		playerphysics.add_physics_factor(object, "speed", "mcl_potions:frost", 1-factor)
 		if EF.frost[object].vignette then return end
 		EF.frost[object].vignette = object:hud_add({
-			hud_elem_type = "image",
+			[hud_type_field] = "image",
 			position = {x = 0.5, y = 0.5},
 			scale = {x = -101, y = -101},
 			text = "mcl_potions_frost_hud.png",
@@ -782,7 +782,7 @@ mcl_potions.register_effect({
 	end,
 	on_load = function(object, factor)
 		EF.frost[object].vignette = object:hud_add({
-			hud_elem_type = "image",
+			[hud_type_field] = "image",
 			position = {x = 0.5, y = 0.5},
 			scale = {x = -101, y = -101},
 			text = "mcl_potions_frost_hud.png",
@@ -823,7 +823,7 @@ mcl_potions.register_effect({
 	end,
 	on_start = function(object, factor)
 		EF.blindness[object].vignette = object:hud_add({
-			hud_elem_type = "image",
+			[hud_type_field] = "image",
 			position = {x = 0.5, y = 0.5},
 			scale = {x = -101, y = -101},
 			text = "mcl_potions_blindness_hud.png",
@@ -833,7 +833,7 @@ mcl_potions.register_effect({
 	end,
 	on_load = function(object, factor)
 		EF.blindness[object].vignette = object:hud_add({
-			hud_elem_type = "image",
+			[hud_type_field] = "image",
 			position = {x = 0.5, y = 0.5},
 			scale = {x = -101, y = -101},
 			text = "mcl_potions_blindness_hud.png",
@@ -1219,6 +1219,8 @@ local function potions_set_hudbar(player)
 	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
 end
 
+local hud_type_field = mcl_vars.hud_type_field
+
 local icon_ids = {}
 
 local function potions_init_icons(player)
@@ -1228,7 +1230,7 @@ local function potions_init_icons(player)
 		local x = -52 * e - 2
 		local id = {}
 		id.img = player:hud_add({
-			hud_elem_type = "image",
+			[hud_type_field] = "image",
 			text = "blank.png",
 			position = { x = 1, y = 0 },
 			offset = { x = x, y = 3 },
@@ -1237,7 +1239,7 @@ local function potions_init_icons(player)
 			z_index = 100,
 		})
 		id.label = player:hud_add({
-			hud_elem_type = "text",
+			[hud_type_field] = "text",
 			text = "",
 			position = { x = 1, y = 0 },
 			offset = { x = x+22, y = 50 },
@@ -1248,7 +1250,7 @@ local function potions_init_icons(player)
 			number = 0xFFFFFF,
 		})
 		id.timestamp = player:hud_add({
-			hud_elem_type = "text",
+			[hud_type_field] = "text",
 			text = "",
 			position = { x = 1, y = 0 },
 			offset = { x = x+22, y = 65 },

@@ -33,7 +33,7 @@ local function add_scope(player)
 	local wielditem = player:get_wielded_item()
 	if wielditem:get_name() == "mcl_spyglass:spyglass" then
 		spyglass_scope[player] = player:hud_add({
-			hud_elem_type = "image",
+			[mcl_vars.hud_type_field] = "image",
 			position = {x = 0.5, y = 0.5},
 			scale = {x = -100, y = -100},
 			text = "mcl_spyglass_scope.png",
