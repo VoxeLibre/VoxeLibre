@@ -204,7 +204,7 @@ function vl_structures.register_structure(name, def)
 			end
 		end
 	end
-	mcl_mapgen_core.register_decoration({
+	vl_mapgen.register_decoration({
 		name = "vl_structures:"..name,
 		rank = def.rank or (def.terrain_feature and 1200) or 100, -- run before regular decorations
 		fill_ratio = def.fill_ratio,
@@ -258,7 +258,7 @@ end
 -- To avoid a cyclic dependency, run this when modules have finished loading
 -- Maybe we can eventually remove this - the end portal should likely go into the mapgen itself.
 core.register_on_mods_loaded(function()
-mcl_mapgen_core.register_generator("static structures", nil, function(minp, maxp, blockseed)
+vl_mapgen.register_generator("static structures", nil, function(minp, maxp, blockseed)
 	for _,struct in pairs(vl_structures.registered_structures) do
 		if struct.static_pos then
 			local pr -- initialize only when needed below

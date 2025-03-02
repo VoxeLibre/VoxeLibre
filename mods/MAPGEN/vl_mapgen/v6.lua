@@ -2,7 +2,7 @@ local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height 
 
 local function register_mgv6_decorations()
 	-- Cacti
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		place_on = {"group:sand"},
 		sidelen = 16,
@@ -22,7 +22,7 @@ local function register_mgv6_decorations()
 	})
 
 	-- Sugar canes
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 		sidelen = 16,
@@ -44,7 +44,7 @@ local function register_mgv6_decorations()
 	})
 
 	-- Doubletall grass
-	minetest.register_decoration({
+	core.register_decoration({
 		rank = 1500,
 		deco_type = "schematic",
 		schematic = {
@@ -70,7 +70,7 @@ local function register_mgv6_decorations()
 	})
 
 	-- Large ferns
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "schematic",
 		schematic = {
 			size = { x=1, y=3, z=1 },
@@ -101,7 +101,7 @@ local function register_mgv6_decorations()
 
 	-- Large flowers
 	local function register_large_flower(name, seed, offset)
-		minetest.register_decoration({
+		core.register_decoration({
 			deco_type = "schematic",
 			schematic = {
 				size = { x=1, y=3, z=1 },
@@ -134,7 +134,7 @@ local function register_mgv6_decorations()
 	register_large_flower("sunflower", 2940, -0.005)
 
 	-- Lily pad
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "schematic",
 		schematic = {
 			size = { x=1, y=3, z=1 },
@@ -160,7 +160,7 @@ local function register_mgv6_decorations()
 	})
 
 	-- Pumpkin
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		decoration = "mcl_farming:pumpkin",
 		param2 = 0,
@@ -180,7 +180,7 @@ local function register_mgv6_decorations()
 	})
 
 	-- Melon
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
@@ -202,7 +202,7 @@ local function register_mgv6_decorations()
 	})
 
 	-- Tall grass
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
@@ -219,7 +219,7 @@ local function register_mgv6_decorations()
 		decoration = "mcl_flowers:tallgrass",
 		rank = 1500,
 	})
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
@@ -242,7 +242,7 @@ local function register_mgv6_decorations()
 	for i=1, #materials do
 		local mat = materials[i]
 
-		minetest.register_decoration({
+		core.register_decoration({
 			deco_type = "simple",
 			spawn_by = {"group:water"},
 			num_spawn_by = 1,
@@ -263,7 +263,7 @@ local function register_mgv6_decorations()
 			decoration = "mcl_ocean:seagrass_"..mat,
 			rank = 1500,
 		})
-		minetest.register_decoration({
+		core.register_decoration({
 			deco_type = "simple",
 			spawn_by = {"group:water"},
 			num_spawn_by = 1,
@@ -285,7 +285,7 @@ local function register_mgv6_decorations()
 			rank = 1500,
 		})
 
-		minetest.register_decoration({
+		core.register_decoration({
 			deco_type = "simple",
 			spawn_by = {"group:water"},
 			num_spawn_by = 1,
@@ -307,7 +307,7 @@ local function register_mgv6_decorations()
 			param2 = 16,
 			param2_max = 96,
 		})
-		minetest.register_decoration({
+		core.register_decoration({
 			deco_type = "simple",
 			spawn_by = {"group:water"},
 			num_spawn_by = 1,
@@ -334,7 +334,7 @@ local function register_mgv6_decorations()
 
 	-- Wet Sponge
 	-- TODO: Remove this when we got ocean monuments
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		decoration = "mcl_sponges:sponge_wet",
 		spawn_by = {"group:water"},
@@ -355,7 +355,7 @@ local function register_mgv6_decorations()
 	})
 
 	-- Add a small amount of tall grass everywhere to avoid areas completely empty devoid of tall grass
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
@@ -370,7 +370,7 @@ local function register_mgv6_decorations()
 	local mseeds = { 7133, 8244 }
 	for m=1, #mushrooms do
 		-- Mushrooms next to trees
-		minetest.register_decoration({
+		core.register_decoration({
 			deco_type = "simple",
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
 			sidelen = 16,
@@ -391,7 +391,7 @@ local function register_mgv6_decorations()
 	end
 
 	-- Dead bushes
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt", "group:hardened_clay"},
 		sidelen = 16,
@@ -415,7 +415,7 @@ local function register_mgv6_decorations()
 		if y_max == nil then
 			y_max = mcl_vars.mg_overworld_max
 		end
-		minetest.register_decoration({
+		core.register_decoration({
 			deco_type = "simple",
 			place_on = {"group:grass_block_no_snow"},
 			sidelen = 16,
@@ -450,7 +450,7 @@ local function register_mgv6_decorations()
 	register_mgv6_flower("poppy", 9439)
 
 	-- Put top snow on snowy grass blocks. The v6 mapgen does not generate the top snow on its own.
-	minetest.register_decoration({
+	core.register_decoration({
 		deco_type = "simple",
 		place_on = {"group:grass_block_snow"},
 		sidelen = 16,
@@ -470,7 +470,7 @@ local function generate_mgv6_structures()
 	if maxp.y >= struct_min and minp.y <= struct_max then
 		-- Generate structures
 		local pr = PcgRandom(blockseed)
-		perlin_structures = perlin_structures or minetest.get_perlin(329, 3, 0.6, 100)
+		perlin_structures = perlin_structures or core.get_perlin(329, 3, 0.6, 100)
 		-- Assume X and Z lengths are equal
 		local divlen = 5
 		for x0 = minp.x, maxp.x, divlen do for z0 = minp.z, maxp.z, divlen do
@@ -485,10 +485,10 @@ local function generate_mgv6_structures()
 				local nn
 				for y = struct_max, struct_min, -1 do
 					p.y = y
-					local checknode = minetest.get_node(p)
+					local checknode = core.get_node(p)
 					if checknode then
 						nn = checknode.name
-						local def = minetest.registered_nodes[nn]
+						local def = core.registered_nodes[nn]
 						if def and def.walkable then
 							ground_y = y
 							break
@@ -498,16 +498,16 @@ local function generate_mgv6_structures()
 
 				if ground_y and mcl_structures then
 					p.y = ground_y+1
-					local nn0 = minetest.get_node(p).name
+					local nn0 = core.get_node(p).name
 					-- Check if the node can be replaced
-					if minetest.registered_nodes[nn0] and minetest.registered_nodes[nn0].buildable_to then
+					if core.registered_nodes[nn0] and core.registered_nodes[nn0].buildable_to then
 						-- Igloos
-						if not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or (minetest.get_item_group(nn, "grass_block_snow") == 1)) then
+						if not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or (core.get_item_group(nn, "grass_block_snow") == 1)) then
 							if pr:next(1, 4400) == 1 then
 								-- Check surface
 								local floor = {x=p.x+9, y=p.y-1, z=p.z+9}
-								local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:snowblock")
-								local surface2 = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:dirt_with_grass_snow")
+								local surface = core.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:snowblock")
+								local surface2 = core.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:dirt_with_grass_snow")
 								if #surface + #surface2 >= 63 then
 									mcl_structures.place_structure(p, mcl_structures.registered_structures["igloo"], pr)
 									chunk_has_igloo = true
@@ -525,7 +525,7 @@ local function generate_mgv6_structures()
 								-- Very rough check of the environment (we expect to have enough stonelike nodes).
 								-- Fossils may still appear partially exposed in caves, but this is O.K.
 								local p2 = vector.add(p1, 4)
-								local nodes = minetest.find_nodes_in_area(p1, p2, {"mcl_core:sandstone", "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:dirt", "mcl_core:gravel"})
+								local nodes = core.find_nodes_in_area(p1, p2, {"mcl_core:sandstone", "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:dirt", "mcl_core:gravel"})
 
 								if #nodes >= 100 then -- >= 80%
 									mcl_structures.place_structure(p1, mcl_structures.registered_structures["fossil"], pr)
@@ -538,8 +538,8 @@ local function generate_mgv6_structures()
 						local prob = minecraft_chunk_probability(48, minp, maxp)
 						if pr:next(1, prob) == 1 then
 
-							local swampland = minetest.get_biome_id("Swampland")
-							local swampland_shore = minetest.get_biome_id("Swampland_shore")
+							local swampland = core.get_biome_id("Swampland")
+							local swampland_shore = core.get_biome_id("Swampland_shore")
 
 						-- Where do witches live?
 							-- v6: In Normal biome
@@ -561,7 +561,7 @@ local function generate_mgv6_structures()
 
 								-- This checks free space at the “body” of the hut and a bit around.
 								-- ALL nodes must be free for the placement to succeed.
-								local free_nodes = minetest.find_nodes_in_area(p1, p2, {"air", "mcl_core:water_source", "mcl_flowers:waterlily"})
+								local free_nodes = core.find_nodes_in_area(p1, p2, {"air", "mcl_core:water_source", "mcl_flowers:waterlily"})
 								if #free_nodes >= ((size.x+1)*(size.y+1)*(size.z+1)) then
 									local place = {x=p.x, y=WITCH_HUT_HEIGHT-1, z=p.z}
 
@@ -571,9 +571,9 @@ local function generate_mgv6_structures()
 									mcl_structures.place_structure(place,mcl_structures.registered_structures["witch_hut"],pr)
 
 									local function place_tree_if_free(pos, prev_result)
-										local nn = minetest.get_node(pos).name
+										local nn = core.get_node(pos).name
 										if nn == "mcl_flowers:waterlily" or nn == "mcl_core:water_source" or nn == "mcl_core:water_flowing" or nn == "air" then
-											minetest.set_node(pos, {name="mcl_core:tree", param2=0})
+											core.set_node(pos, {name="mcl_core:tree", param2=0})
 											return prev_result
 										else
 											return false
@@ -632,9 +632,9 @@ local function generate_mgv6_structures()
 							if spike < 3 then
 								-- Check surface
 								local floor = {x=p.x+4, y=p.y-1, z=p.z+4}
-								local surface = minetest.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock"})
+								local surface = core.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock"})
 								-- Check for collision with spruce
-								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+2,z=p.z+1}, {x=p.x+4, y=p.y+6, z=p.z+4}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
+								local spruce_collisions = core.find_nodes_in_area({x=p.x+1,y=p.y+2,z=p.z+1}, {x=p.x+4, y=p.y+6, z=p.z+4}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
 								if #surface >= 9 and #spruce_collisions == 0 then
 									mcl_structures.place_structure(p,mcl_structures.registered_structures["ice_spike_large"],pr)
@@ -642,10 +642,10 @@ local function generate_mgv6_structures()
 							elseif spike < 100 then
 								-- Check surface
 								local floor = {x=p.x+6, y=p.y-1, z=p.z+6}
-								local surface = minetest.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock", "mcl_core:dirt_with_grass_snow"})
+								local surface = core.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock", "mcl_core:dirt_with_grass_snow"})
 
 								-- Check for collision with spruce
-								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+1,z=p.z+1}, {x=p.x+6, y=p.y+6, z=p.z+6}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
+								local spruce_collisions = core.find_nodes_in_area({x=p.x+1,y=p.y+1,z=p.z+1}, {x=p.x+6, y=p.y+6, z=p.z+6}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
 								if #surface >= 25 and #spruce_collisions == 0 then
 									mcl_structures.place_structure(p,mcl_structures.registered_structures["ice_spike_small"],pr)
@@ -671,17 +671,17 @@ local function generate_underground_mushrooms(minp, maxp, seed)
 	end
 
 	local bpos
-	local stone = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_core:stone", "mcl_core:dirt", "mcl_core:mycelium", "mcl_core:podzol", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:stone_with_iron", "mcl_core:stone_with_gold"})
+	local stone = core.find_nodes_in_area_under_air(minp, maxp, {"mcl_core:stone", "mcl_core:dirt", "mcl_core:mycelium", "mcl_core:podzol", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:stone_with_iron", "mcl_core:stone_with_gold"})
 
 	for n = 1, #stone do
 		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
 
-		local l = minetest.get_node_light(bpos, 0.5)
+		local l = core.get_node_light(bpos, 0.5)
 		if bpos.y >= min and bpos.y <= max and l and l <= 12 and pr_shroom:next(1,1000) < 4 then
 			if pr_shroom:next(1,2) == 1 then
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
+				core.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
+				core.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
 			end
 		end
 	end
@@ -697,14 +697,14 @@ local function generate_nether_decorations(minp, maxp, seed)
 		return
 	end
 
-	minetest.log("action", "[mcl_mapgen_core] Nether decorations " .. minetest.pos_to_string(minp) .. " ... " .. minetest.pos_to_string(maxp))
+	core.log("action", "[vl_mapgen] Nether decorations " .. core.pos_to_string(minp) .. " ... " .. core.pos_to_string(maxp))
 
 	-- TODO: Generate everything based on Perlin noise instead of PseudoRandom
 
 	local bpos
-	local rack = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:netherrack"})
-	local magma = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:magma"})
-	local ssand = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:soul_sand"})
+	local rack = core.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:netherrack"})
+	local magma = core.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:magma"})
+	local ssand = core.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:soul_sand"})
 
 	-- Helper function to spawn “fake” decoration
 	local function special_deco(nodes, spawn_func)
@@ -718,27 +718,27 @@ local function generate_nether_decorations(minp, maxp, seed)
 	special_deco(rack, function(bpos)
 		-- Eternal fire on netherrack
 		if pr_nether:next(1,100) <= 3 then
-			minetest.set_node(bpos, {name = "mcl_fire:eternal_fire"})
+			core.set_node(bpos, {name = "mcl_fire:eternal_fire"})
 		end
 	end)
 
 	-- Eternal fire on magma cubes
 	special_deco(magma, function(bpos)
 		if pr_nether:next(1,150) == 1 then
-			minetest.set_node(bpos, {name = "mcl_fire:eternal_fire"})
+			core.set_node(bpos, {name = "mcl_fire:eternal_fire"})
 		end
 	end)
 
 	-- Mushrooms on netherrack
 	-- Note: Spawned *after* the fire because of light level checks
 	special_deco(rack, function(bpos)
-		local l = minetest.get_node_light(bpos, 0.5)
+		local l = core.get_node_light(bpos, 0.5)
 		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and l and l <= 12 and pr_nether:next(1,1000) <= 4 then
 			-- TODO: Make mushrooms appear in groups, use Perlin noise
 			if pr_nether:next(1,2) == 1 then
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
+				core.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
+				core.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
 			end
 		end
 	end)
@@ -747,7 +747,7 @@ local function generate_nether_decorations(minp, maxp, seed)
 	-- TODO: Spawn in Nether fortresses
 	special_deco(ssand, function(bpos)
 		if pr_nether:next(1, nether_wart_chance) == 1 then
-			minetest.set_node(bpos, {name = "mcl_nether:nether_wart"})
+			core.set_node(bpos, {name = "mcl_nether:nether_wart"})
 		end
 	end)
 end
@@ -764,15 +764,15 @@ local function remove_mgv6_broken_plants(minp,maxp)
 	2) Cavegen: Removes the bottom part, the upper part floats
 	3) Mudflow: Same as 2) ]]
 
-	local plants = minetest.find_nodes_in_area(minp, maxp, "group:double_plant")
+	local plants = core.find_nodes_in_area(minp, maxp, "group:double_plant")
 	for n = 1, #plants do
 		local node = vm:get_node_at(plants[n])
-		local is_top = minetest.get_item_group(node.name, "double_plant") == 2
+		local is_top = core.get_item_group(node.name, "double_plant") == 2
 		if is_top then
 			local p_pos = area:index(plants[n].x, plants[n].y-1, plants[n].z)
 			if p_pos then
 				node = vm:get_node_at({x=plants[n].x, y=plants[n].y-1, z=plants[n].z})
-				local is_bottom = minetest.get_item_group(node.name, "double_plant") == 1
+				local is_bottom = core.get_item_group(node.name, "double_plant") == 1
 				if not is_bottom then
 					p_pos = area:index(plants[n].x, plants[n].y, plants[n].z)
 					data[p_pos] = c_air
@@ -790,12 +790,12 @@ local function basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 		-- Nether block fixes:
 	-- * Replace water with Nether lava.
 	-- * Replace stone, sand dirt in v6 so the Nether works in v6.
-	local nodes = minetest.find_nodes_in_area(emin, emax, {"group:water"})
+	local nodes = core.find_nodes_in_area(emin, emax, {"group:water"})
 	for _, n in pairs(nodes) do
 		data[area:index(n.x, n.y, n.z)] = c_nether_lava
 		lvm_used = true
 	end
-	nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+	nodes = core.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 	for n=1, #nodes do
 		local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
 		if data[p_pos] == c_water then
@@ -815,7 +815,7 @@ local function end_fixes(minp,maxp)
 	if not ( minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min ) then
 		return
 	end
-	local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+	local nodes = core.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 	if #nodes > 0 then
 		lvm_used = true
 		for _,n in pairs(nodes) do
@@ -832,9 +832,9 @@ local function basic_node(minp, maxp, blockseed)
 			generate_nether_decorations(minp, maxp, blockseed)
 			end_fixes(minp,maxp)
 			remove_mgv6_broken_plants(minp,maxp,blockseed)
-			generate_mgv6_structures(minp, maxp, blockseed, minetest.get_mapgen_object("biomemap"))
+			generate_mgv6_structures(minp, maxp, blockseed, core.get_mapgen_object("biomemap"))
 		end
 	end
 end
 
-mcl_mapgen_core.register_generator("mgv6-fixes", basic, basic_node, 10, true)
+vl_mapgen.register_generator("mgv6-fixes", basic, basic_node, 10, true)
