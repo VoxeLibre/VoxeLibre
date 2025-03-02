@@ -18,11 +18,11 @@ end
 -- Coral Reefs
 for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
 	local noise = {
-		offset = -0.0085,
+		offset = -0.0025,
 		scale = 0.002,
 		spread = vector.new(25, 120, 25),
 		seed = 235,
-		octaves = 5,
+		octaves = 4,
 		persist = 1.8,
 		lacunarity = 3.5,
 		flags = "absvalue"
@@ -100,7 +100,7 @@ vl_biomes.register_decoration({
 		scale = 0.002,
 		spread = vector.new(25, 120, 25),
 		seed = 235,
-		octaves = 5,
+		octaves = 4,
 		persist = 1.8,
 		lacunarity = 3.5,
 		flags = "absvalue"
@@ -151,21 +151,5 @@ vl_biomes.register_decoration({
 	place_offset_y = -1,
 	fill_ratio = 2,
 	flags = "force_placement, all_floors",
-	terrain_feature = true,
-})
---rare CORAl easter egg (multicolored coral)
-vl_biomes.register_decoration({
-	name = "coral_deco_cora",
-	biomes = warm_oceans,
-	schematic = modpath .. "/schematics/coral_cora.mts",
-	y_min = coral_min,
-	y_max = coral_max,
-	place_on = {"group:sand", "mcl_core:gravel"},
-	spawn_by = "mcl_core:water_source",
-	check_offset = 1,
-	num_spawn_by = 12,
-	fill_ratio = 0.0001,
-	flags = "all_floors,force_placement",
-	gen_callback = clear_kelp,
 	terrain_feature = true,
 })
