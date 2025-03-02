@@ -1,11 +1,10 @@
-
 local deepslate_max = mcl_worlds.layer_to_y(16)
 local deepslate_min = mcl_vars.mg_overworld_min
 
-local copper_mod = minetest.get_modpath("mcl_copper")
+local copper_mod = core.get_modpath("mcl_copper")
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
-local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local mg_name = core.get_mapgen_setting("mg_name")
+local superflat = mg_name == "flat" and core.get_mapgen_setting("mcl_superflat_classic") == "true"
 
 local mountains = {
 	"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
@@ -14,7 +13,7 @@ local mountains = {
 }
 
 --Clay
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "blob",
 	ore            = "mcl_core:clay",
 	wherein        = {"mcl_core:sand","mcl_core:stone","mcl_core:gravel"},
@@ -39,7 +38,7 @@ minetest.register_ore({
 local specialstones = { "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite" }
 for s=1, #specialstones do
 	local node = specialstones[s]
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "blob",
 		ore            = node,
 		wherein        = {"mcl_core:stone"},
@@ -59,7 +58,7 @@ for s=1, #specialstones do
 			flags = "defaults",
 		}
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "blob",
 		ore            = node,
 		wherein        = {"mcl_core:stone"},
@@ -84,7 +83,7 @@ end
 local stonelike = {"mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite"}
 
 -- Dirt
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "blob",
 	ore            = "mcl_core:dirt",
 	wherein        = stonelike,
@@ -106,7 +105,7 @@ minetest.register_ore({
 })
 
 -- Gravel
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "blob",
 	ore            = "mcl_core:gravel",
 	wherein        = stonelike,
@@ -128,7 +127,7 @@ minetest.register_ore({
 })
 
 
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "blob",
 	ore            = "mcl_deepslate:tuff",
 	wherein        = { "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_deepslate:deepslate" },
@@ -136,7 +135,7 @@ minetest.register_ore({
 	clust_num_ores = 58,
 	clust_size     = 7,
 	y_min          = deepslate_min,
-    y_max          = deepslate_max,
+	y_max          = deepslate_max,
 	noise_params = {
 		offset  = 0,
 		scale   = 1,
@@ -150,9 +149,9 @@ minetest.register_ore({
 })
 
 -- DEEPSLATE
-if minetest.settings:get_bool("mcl_generate_deepslate", true) then
+if core.settings:get_bool("mcl_generate_deepslate", true) then
 
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "blob",
 		ore            = "mcl_deepslate:deepslate",
 		wherein        = { "mcl_core:stone" },
@@ -173,7 +172,7 @@ if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 		}
 	})
 	
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_deepslate:infested_deepslate",
 		wherein        = "mcl_deepslate:deepslate",
@@ -185,7 +184,7 @@ if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 		biomes         = mountains,
 	})
 
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:water_source",
 		wherein        = "mcl_deepslate:deepslate",
@@ -196,7 +195,7 @@ if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 		y_max          = deepslate_max,
 	})
 
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:lava_source",
 		wherein        = "mcl_deepslate:deepslate",
@@ -207,7 +206,7 @@ if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 		y_max          = mcl_worlds.layer_to_y(10),
 	})
 
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:lava_source",
 		wherein        = "mcl_deepslate:deepslate",
@@ -220,13 +219,13 @@ if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 
 end
 
-if minetest.settings:get_bool("mcl_generate_ores", true) then
+if core.settings:get_bool("mcl_generate_ores", true) then
 	--
 	-- Coal
 	--
 
 	-- Common spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein        = stonelike,
@@ -236,7 +235,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_vars.mg_overworld_min,
 		y_max          = mcl_worlds.layer_to_y(50),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein        = stonelike,
@@ -246,7 +245,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_vars.mg_overworld_min,
 		y_max          = mcl_worlds.layer_to_y(50),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein        = stonelike,
@@ -258,7 +257,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Medium-rare spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein        = stonelike,
@@ -268,7 +267,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(51),
 		y_max          = mcl_worlds.layer_to_y(80),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein        = stonelike,
@@ -278,7 +277,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(51),
 		y_max          = mcl_worlds.layer_to_y(80),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein        = stonelike,
@@ -290,7 +289,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Rare spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein         = stonelike,
@@ -300,7 +299,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(81),
 		y_max          = mcl_worlds.layer_to_y(128),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein         = stonelike,
@@ -310,7 +309,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(81),
 		y_max          = mcl_worlds.layer_to_y(128),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_coal",
 		wherein         = stonelike,
@@ -324,7 +323,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	--
 	-- Iron
 	--
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_iron",
 		wherein         = stonelike,
@@ -334,7 +333,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_vars.mg_overworld_min,
 		y_max          = mcl_worlds.layer_to_y(39),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_iron",
 		wherein         = stonelike,
@@ -350,7 +349,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	--
 
 	-- Common spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_gold",
 		wherein         = stonelike,
@@ -360,7 +359,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_vars.mg_overworld_min,
 		y_max          = mcl_worlds.layer_to_y(30),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_gold",
 		wherein         = stonelike,
@@ -372,7 +371,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Rare spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_gold",
 		wherein         = stonelike,
@@ -388,7 +387,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	--
 
 	-- Common spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_diamond",
 		wherein         = stonelike,
@@ -398,7 +397,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_vars.mg_overworld_min,
 		y_max          = mcl_worlds.layer_to_y(12),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_diamond",
 		wherein         = stonelike,
@@ -408,7 +407,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_vars.mg_overworld_min,
 		y_max          = mcl_worlds.layer_to_y(12),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_diamond",
 		wherein         = stonelike,
@@ -420,7 +419,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Rare spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_diamond",
 		wherein         = stonelike,
@@ -430,7 +429,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(13),
 		y_max          = mcl_worlds.layer_to_y(15),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_diamond",
 		wherein         = stonelike,
@@ -446,7 +445,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	--
 	local ancient_debris_wherein = {"mcl_nether:netherrack","mcl_blackstone:blackstone","mcl_blackstone:basalt"}
 	-- Common spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:ancient_debris",
 		wherein         = ancient_debris_wherein,
@@ -458,7 +457,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Rare spawn (below)
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:ancient_debris",
 		wherein         = ancient_debris_wherein,
@@ -470,7 +469,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Rare spawn (above)
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:ancient_debris",
 		wherein         = ancient_debris_wherein,
@@ -486,7 +485,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	--
 
 	-- Common spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_redstone",
 		wherein         = stonelike,
@@ -496,7 +495,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_vars.mg_overworld_min,
 		y_max          = mcl_worlds.layer_to_y(13),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_redstone",
 		wherein         = stonelike,
@@ -508,7 +507,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Rare spawn
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_redstone",
 		wherein         = stonelike,
@@ -518,7 +517,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(13),
 		y_max          = mcl_worlds.layer_to_y(15),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_redstone",
 		wherein         = stonelike,
@@ -537,7 +536,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		-- Generate everywhere in v6, but rarely.
 
 		-- Common spawn
-		minetest.register_ore({
+		core.register_ore({
 			ore_type       = "scatter",
 			ore            = "mcl_core:stone_with_emerald",
 			wherein        = stonelike,
@@ -548,7 +547,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 			y_max          = mcl_worlds.layer_to_y(29),
 		})
 		-- Rare spawn
-		minetest.register_ore({
+		core.register_ore({
 			ore_type       = "scatter",
 			ore            = "mcl_core:stone_with_emerald",
 			wherein        = stonelike,
@@ -565,7 +564,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	--
 
 	-- Common spawn (in the center)
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -577,7 +576,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Rare spawn (below center)
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -587,7 +586,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(10),
 		y_max          = mcl_worlds.layer_to_y(13),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -597,7 +596,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(6),
 		y_max          = mcl_worlds.layer_to_y(9),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -607,7 +606,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(2),
 		y_max          = mcl_worlds.layer_to_y(5),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -619,7 +618,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	-- Rare spawn (above center)
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -629,7 +628,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(17),
 		y_max          = mcl_worlds.layer_to_y(20),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -639,7 +638,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(21),
 		y_max          = mcl_worlds.layer_to_y(24),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -649,7 +648,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(25),
 		y_max          = mcl_worlds.layer_to_y(28),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -659,7 +658,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_min          = mcl_worlds.layer_to_y(29),
 		y_max          = mcl_worlds.layer_to_y(32),
 	})
-	minetest.register_ore({
+	core.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_lapis",
 		wherein         = stonelike,
@@ -670,11 +669,11 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		y_max          = mcl_worlds.layer_to_y(32),
 	})
 
-	if minetest.settings:get_bool("mcl_generate_deepslate", true) then
+	if core.settings:get_bool("mcl_generate_deepslate", true) then
 			local stonelike = { "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite" }
 		local function register_ore_mg(ore, scarcity, num, size, y_min, y_max, biomes)
 			biomes = biomes or ""
-			minetest.register_ore({
+			core.register_ore({
 				ore_type       = "scatter",
 				ore            = ore,
 				wherein        = { "mcl_deepslate:deepslate", "mcl_deepslate:tuff" },
@@ -711,14 +710,14 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		for _, o in pairs(ore_mapgen) do
 			register_ore_mg("mcl_deepslate:deepslate_with_"..o[1], o[2], o[3], o[4], o[5], o[6])
 		end
-		if minetest.get_mapgen_setting("mg_name") == "v6" then
+		if core.get_mapgen_setting("mg_name") == "v6" then
 			register_ore_mg("mcl_deepslate:deepslate_with_emerald", 14340, 1, 1, deepslate_min, deepslate_max)
 		else
 			register_ore_mg("mcl_deepslate:deepslate_with_emerald", 16384, 1, 1, mcl_worlds.layer_to_y(4), deepslate_max, mountains)
 		end
 		if copper_mod then
 			register_ore_mg("mcl_deepslate:deepslate_with_copper", 830, 5, 3, deepslate_min, deepslate_max)
-			minetest.register_ore({
+			core.register_ore({
 				ore_type       = "scatter",
 				ore            = "mcl_copper:stone_with_copper",
 				wherein        = stonelike,
@@ -728,7 +727,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 				y_min          = mcl_vars.mg_overworld_min,
 				y_max          = mcl_worlds.layer_to_y(39),
 			})
-			minetest.register_ore({
+			core.register_ore({
 				ore_type       = "scatter",
 				ore            = "mcl_copper:stone_with_copper",
 				wherein        = stonelike,
@@ -745,7 +744,7 @@ end
 if not superflat then
 -- Water and lava springs (single blocks of lava/water source)
 -- Water appears at nearly every height, but not near the bottom
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:water_source",
 	wherein         = {"mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite", "mcl_core:dirt"},
@@ -757,7 +756,7 @@ minetest.register_ore({
 })
 
 -- Lava springs are rather common at -31 and below
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:lava_source",
 	wherein         = stonelike,
@@ -768,7 +767,7 @@ minetest.register_ore({
 	y_max          = mcl_worlds.layer_to_y(10),
 })
 
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:lava_source",
 	wherein         = stonelike,
@@ -780,7 +779,7 @@ minetest.register_ore({
 })
 
 -- Lava springs will become gradually rarer with increasing height
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:lava_source",
 	wherein         = stonelike,
@@ -791,7 +790,7 @@ minetest.register_ore({
 	y_max          = mcl_worlds.layer_to_y(47),
 })
 
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:lava_source",
 	wherein         = stonelike,
@@ -803,7 +802,7 @@ minetest.register_ore({
 })
 
 -- Lava may even appear above surface, but this is very rare
-minetest.register_ore({
+core.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:lava_source",
 	wherein         = stonelike,

@@ -63,7 +63,7 @@ core.register_ore({
 	ore_type = "sheet",
 	ore = "mcl_nether:soul_sand",
 	-- Note: Stone is included only for v6 mapgen support. Netherrack is not generated naturally
-	-- in v6, but instead set with the on_generated function in mcl_mapgen_core.
+	-- in v6, but instead set with the on_generated function in vl_mapgen.
 	wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
 	clust_scarcity = 13 * 13 * 13,
 	clust_size = 5,

@@ -1112,7 +1112,7 @@ vl_structures.register_structure("mineshaft",{
 
 --[[ Old Generation code this is VERY slow
 -- The rail corridor algorithm starts here
-mcl_mapgen_core.register_generator("railcorridors", nil, function(minp, maxp, blockseed, _pr)
+vl_mapgen.register_generator("railcorridors", nil, function(minp, maxp, blockseed, _pr)
 	-- We re-init the randomizer for every mapchunk as we start generating in the middle of each mapchunk.
 	-- We can't use the mapgen seed as this would make the algorithm depending on the order the mapchunk generate.
 	InitRandomizer(blockseed)
