@@ -11,6 +11,9 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local C = minetest.colorize
 local F = minetest.formspec_escape
 
+---@class core.LuaEntity
+---@field _shot_from_dispenser? boolean
+
 -- TODO: actually should have a slight lag as in MC?
 local COOLDOWN = 0.19
 
