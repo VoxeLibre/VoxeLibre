@@ -28,7 +28,7 @@ end
 local function wither_unstuck(self)
 	local pos = self.object:get_pos()
 	if mobs_griefing then -- destroy blocks very nearby (basically, colliding with)
-		local col = self.collisionbox
+		local col = self.initial_properties.collisionbox
 		local pos1 = vector.offset(pos, col[1], col[2], col[3])
 		local pos2 = vector.offset(pos, col[4], col[5], col[6])
 		for z = pos1.z, pos2.z do for y = pos1.y, pos2.y do for x = pos1.x, pos2.x do
@@ -74,12 +74,12 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 	initial_properties = {
 		hp_max = 300,
 		hp_min = 300,
+		collisionbox = {-0.9, 0.4, -0.9, 0.9, 2.45, 0.9},
 	},
 	xp_min = 50,
 	xp_max = 50,
 	armor = {undead = 80, fleshy = 100},
 	-- This deviates from MC Wiki's size, which makes no sense
-	collisionbox = {-0.9, 0.4, -0.9, 0.9, 2.45, 0.9},
 	visual = "mesh",
 	mesh = "mobs_mc_wither.b3d",
 	textures = {
@@ -321,9 +321,10 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 		local sr = self.object:get_pos() + side_cor -- position of side right head
 		local sl = self.object:get_pos() - side_cor -- position of side left head
 		-- height corrections
-		m.y = m.y + self.collisionbox[5]
-		sr.y = sr.y + self.collisionbox[5] - 0.3
-		sl.y = sl.y + self.collisionbox[5] - 0.3
+		local cb = self.initial_properties.collisionbox
+		m.y = m.y + self.cb[5]
+		sr.y = sr.y + self.cb[5] - 0.3
+		sl.y = sl.y + self.cb[5] - 0.3
 		local rand_pos = math.random(1,3)
 		if rand_pos == 1 then m = sr
 		elseif rand_pos == 2 then m = sl end

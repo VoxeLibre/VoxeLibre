@@ -19,10 +19,10 @@ mcl_mobs.register_mob("mobs_mc:vindicator", {
 	initial_properties = {
 		hp_min = 24,
 		hp_max = 24
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	},
 	xp_min = 6,
 	xp_max = 6,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_vindicator.b3d",
 	head_swivel = "head.control",
