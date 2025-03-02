@@ -14,3 +14,6 @@ set -e
 
 lua-language-server --check . --check_format json --logpath ./log | tr '\r' '\n' || true
 $LUA tests/display-lls-check-log.lua
+RES=$?
+echo RES=$RES
+exit $RES
