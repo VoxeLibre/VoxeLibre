@@ -28,6 +28,7 @@ local string_to_pos = core.string_to_pos
 local get_item_group = core.get_item_group
 local dynamic_add_media = core.dynamic_add_media
 local get_connected_players = core.get_connected_players
+local get_node_light = core.get_node_light
 local get_node_name_raw = mcl_vars.get_node_name_raw
 
 local storage = core.get_mod_storage()
@@ -447,17 +448,20 @@ core.register_globalstep(function(dtime)
 				player:set_wielded_item(wield)
 			end
 
+			local pos = player:get_pos() -- was: vector.round(player:get_pos())
+			local light = get_node_light(vector.offset(pos, 0, 0.5, 0)) or 0
+
 			-- change map only when necessary
-			if not maps[player] or texture ~= maps[player][1] then
-				player:hud_change(hud.map, "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture)
+			if not maps[player] or texture ~= maps[player][1] or light ~= maps[player][4] then
+				local light_overlay = "^[colorize:black:" .. 255 - (light * 17)
+				player:hud_change(hud.map, "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture .. light_overlay)
 				local meta = wield:get_meta()
 				local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
 				local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
-				maps[player] = {texture, minp, maxp}
+				maps[player] = {texture, minp, maxp, light}
 			end
 
 			-- map overlay with player position
-			local pos = player:get_pos() -- was: vector.round(player:get_pos())
 			local minp, maxp = maps[player][2], maps[player][3]
 
 			-- Use dots when outside of map, indicate direction
