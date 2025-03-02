@@ -3,29 +3,48 @@ local mod = vl_projectile
 
 local vl_physics_path = core.get_modpath("vl_physics")
 
-local DEBUG = false
+---@class core.LuaEntity
+---@field _owner string
+---@field _hittable_by_projectile? boolean
+
+---@class vl_projectile.Projectile : core.LuaEntity
+---@field _vl_projectile vl_projectile.ProjectileDef
+---@field _starting_velocity vector.Vector
+---@field _startpos vector.Vector
+
+---@class vl_projectile.ProjectileDef
+---@field ignore_gravity? boolean
+
+---@class core.NodeDef
+---@field _vl_projectile? vl_projectile.NodeDef
+
+---@class vl_projectile.NodeDef
+---@field on_collide? fun(projectile : vl_projectile.Projectile, pos : vector.Vector, node : core.Node, node_def, core.NodeDef)
+
 local YAW_OFFSET = -math.pi/2
 local GRAVITY = tonumber(core.settings:get("movement_gravity"))
 local STUCK_TIMEOUT = 60
-local STUCK_RECHECK_TIME = 0.25
 local enable_pvp = core.settings:get_bool("enable_pvp")
 
 function mod.projectile_physics(obj, entity_def, v, a)
 	local le = obj:get_luaentity()
 	if not le then return end
 
-	local entity_def = core.registered_entities[le.name]
+	entity_def = entity_def or core.registered_entities[le.name]
 	local pos = obj:get_pos()
 	if not pos then return end
 
 	if vl_physics_path then
-		v,a = vl_physics.apply_entity_environmental_physics(obj)
+		v,a = _G["vl_physics"].apply_entity_environmental_physics(obj)
 	else
+		local vl_projectile_def = entity_def["_vl_projectile"]
+		if not vl_projectile_def then return end
+
 		-- Simple physics
 		v = v or obj:get_velocity()
 		a = a or vector.zero()
 
-		if not entity_def._vl_projectile.ignore_gravity then
+		if not vl_projectile_def.ignore_gravity then
 			a = a + vector.new(0,-GRAVITY,0)
 		end
 
@@ -78,7 +97,7 @@ function mod.update_projectile(self, dtime)
 
 	local entity_name = self.name
 	local entity_def = core.registered_entities[entity_name] or {}
-	local entity_vl_projectile = entity_def._vl_projectile or {}
+	local entity_vl_projectile = entity_def["_vl_projectile"] or {}
 
 	-- Update entity timer and remove expired projectiles
 	self.timer = (self.timer or 0) + dtime
@@ -311,6 +330,7 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	for i = 1,#objects do
 		local obj = objects[i]
 		if obj:is_player() then
+			---@cast obj core.Player
 			local player_name = obj:get_player_name()
 			local creative = core.is_creative_enabled(player_name)
 			if self._collectable and not creative then
@@ -535,7 +555,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 
 		-- Call reverse entity collision hook
 		local other_entity_def = core.registered_entities[object.name] or {}
-		local other_entity_vl_projectile = other_entity_def._vl_projectile or {}
+		local other_entity_vl_projectile = other_entity_def["_vl_projectile"] or {}
 		local hook = other_entity_vl_projectile and other_entity_vl_projectile.on_collide
 		if hook then hook(object, self) end
 	end
@@ -608,6 +628,10 @@ end
 function mod.create(entity_id, options)
 	local pos = options.pos
 	local obj = core.add_entity(pos, entity_id, options.staticdata)
+	if not obj then
+		core.log("warning", "Unable to create projectile "..entity_id)
+		return
+	end
 
 	-- Set initial velocity and acceleration
 	local a, v
@@ -623,6 +647,7 @@ function mod.create(entity_id, options)
 
 	-- Update projectile parameters
 	local luaentity = obj:get_luaentity()
+	---@cast luaentity vl_projectile.Projectile
 	if options.owner_id then
 		luaentity._owner = options.owner_id
 	elseif options.owner then
