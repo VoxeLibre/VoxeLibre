@@ -388,7 +388,9 @@ function mob_class:check_head_swivel(dtime)
 	if self.object.get_bone_override then -- minetest >= 5.9
 		self.object:set_bone_override(self.head_swivel, {
 			position = { vec = self.head_bone_position, absolute = true },
-			rotation = { vec = newr, absolute = true, interpolation = 0.1 } })
+			rotation = { vec = newr, absolute = true, interpolation = 0.1 },
+			scale = self.head_scale and { vec = self.head_scale, absolute = true, interpolation = 0.1 } or nil,
+		})
 	else -- minetest < 5.9
 		-- old API uses degrees not radians and absolute positions
 		self.object:set_bone_position(self.head_swivel, self.head_bone_position, vector.apply(newr, math.deg))
