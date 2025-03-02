@@ -6,20 +6,33 @@ local vl_physics_path = core.get_modpath("vl_physics")
 ---@class core.LuaEntity
 ---@field _owner string
 ---@field _hittable_by_projectile? boolean
+---@field _vl_projectile vl_projectile.EntityDef
 
----@class vl_projectile.Projectile : core.LuaEntity
+---@class vl_projectile.ProjectileEntityDef : core.EntityDef
 ---@field _vl_projectile vl_projectile.ProjectileDef
+---@field _thrower nil
+---@field _shooter nil
+---@field _last_pos nil
+
+---@class vl_projectile.ProjectileEntity : core.LuaEntity, vl_projectile.ProjectileEntityDef
 ---@field _starting_velocity vector.Vector
 ---@field _startpos vector.Vector
+---@field _allow_punch? boolean
 
----@class vl_projectile.ProjectileDef
+---@class vl_projectile.EntityDef
+---@field can_punch? boolean
+
+---@class vl_projectile.ProjectileDef : vl_projectile.EntityDef
 ---@field ignore_gravity? boolean
+---@field behaviors fun()[]
+---@field allow_punching? fun(self : vl_projectile.ProjectileEntity, ...) : boolean
+---@field on_collide? fun(self : core.LuaEntityRef, projectile : vl_projectile.ProjectileEntity)
 
 ---@class core.NodeDef
 ---@field _vl_projectile? vl_projectile.NodeDef
 
 ---@class vl_projectile.NodeDef
----@field on_collide? fun(projectile : vl_projectile.Projectile, pos : vector.Vector, node : core.Node, node_def, core.NodeDef)
+---@field on_collide? fun(projectile : vl_projectile.ProjectileEntity, pos : vector.Vector, node : core.Node, node_def, core.NodeDef)
 
 local YAW_OFFSET = -math.pi/2
 local GRAVITY = tonumber(core.settings:get("movement_gravity"))
@@ -481,6 +494,7 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	return true
 end
 
+---@param object core.LuaEntityRef|core.PlayerObjectRef
 local function handle_entity_collision(self, entity_def, projectile_def, object)
 	-- Arrows stuck in players can't collide with entities
 	if self._in_player then return end
@@ -494,7 +508,10 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 
 	local pos = self.object:get_pos()
 	local dir = vector.normalize(self.object:get_velocity())
+
+	---@type core.LuaEntity?
 	local object_lua = object:get_luaentity()
+	---@cast object_lua core.LuaEntity|mcl_mobs.MobEntity|nil
 
 	-- Allow entities to selectively prevent being hit
 	local entity_hook = object_lua and object_lua._vl_projectile and object_lua._vl_projectile.can_punch
@@ -511,7 +528,7 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 	local do_damage, object_blocking = false, false
 	if object:is_player() and projectile_def.damages_players then
 		do_damage = true
-		object_blocking = mcl_shields.is_blocking(object)
+		object_blocking = mcl_shields.is_blocking(object) or false
 
 		if handle_player_sticking(self, entity_def, projectile_def, object) then
 			-- Force the projectile to survive if it stuck in a player
@@ -553,11 +570,17 @@ local function handle_entity_collision(self, entity_def, projectile_def, object)
 		local hook = projectile_def.on_collide_with_entity
 		if hook then hook(self, pos, object) end
 
-		-- Call reverse entity collision hook
-		local other_entity_def = core.registered_entities[object.name] or {}
-		local other_entity_vl_projectile = other_entity_def["_vl_projectile"] or {}
-		local hook = other_entity_vl_projectile and other_entity_vl_projectile.on_collide
-		if hook then hook(object, self) end
+		if object_lua then
+			---@cast object core.LuaEntityRef
+
+			-- Call reverse entity collision hook
+			local other_entity_def = core.registered_entities[object_lua.name] or {}
+			---@cast other_entity_def core.EntityDef|vl_projectile.ProjectileEntityDef
+
+			local other_entity_vl_projectile = other_entity_def._vl_projectile or {}
+			local hook = other_entity_vl_projectile and other_entity_vl_projectile.on_collide
+			if hook then hook(object, self) end
+		end
 	end
 
 	-- Play sounds
@@ -588,6 +611,7 @@ function mod.collides_with_entities(self, dtime, entity_def, projectile_def)
 	for i = 1,#objects do
 		local object = objects[i]
 		local entity = object:get_luaentity()
+		---@cast entity core.LuaEntity|mcl_mobs.MobEntity
 
 		if object ~= self.object and (not entity or entity.name ~= self.name) then
 			if object:is_player() then
@@ -647,7 +671,8 @@ function mod.create(entity_id, options)
 
 	-- Update projectile parameters
 	local luaentity = obj:get_luaentity()
-	---@cast luaentity vl_projectile.Projectile
+	---@cast luaentity vl_projectile.ProjectileEntity
+
 	if options.owner_id then
 		luaentity._owner = options.owner_id
 	elseif options.owner then
@@ -663,6 +688,7 @@ function mod.create(entity_id, options)
 	return obj
 end
 
+---@param def vl_projectile.ProjectileEntityDef
 function mod.register(name, def)
 	local def_vl_projectile = def._vl_projectile
 	assert(def_vl_projectile, "vl_projectile.register() requires definition to define _vl_projectile")
@@ -674,12 +700,14 @@ function mod.register(name, def)
 		if behaviors[i] == vl_projectile.has_owner_grace_distance then
 			local old_allow_punching = def_vl_projectile.allow_punching
 			if old_allow_punching then
+				---@param self vl_projectile.ProjectileEntity
 				def_vl_projectile.allow_punching = function(self, ...)
 					if not self._allow_punch then return false end
 
 					return old_allow_punching(self, ...)
 				end
 			else
+				---@param self vl_projectile.ProjectileEntity
 				def_vl_projectile.allow_punching = function(self, ...)
 					if not self._allow_punch then return false end
 
@@ -693,6 +721,7 @@ function mod.register(name, def)
 		def.on_step = mod.update_projectile
 	end
 
+	-- Force definition to not have these fields set
 	def._thrower = nil
 	def._shooter = nil
 	def._last_pos = nil

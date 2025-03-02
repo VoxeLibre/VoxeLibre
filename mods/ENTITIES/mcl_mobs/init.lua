@@ -7,6 +7,9 @@ local path = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 mcl_mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
+---@class mcl_mobs.MobEntity : core.LuaEntity
+---@field is_mob true
+
 -- used by the libaries below.
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
