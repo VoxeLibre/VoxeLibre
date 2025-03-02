@@ -139,10 +139,10 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self.base_mesh = def.mesh
 		self.base_size = self.visual_size
 		self.base_colbox = self.initial_properties.collisionbox
-		self.base_selbox = self.selectionbox
+		self.base_selbox = self.initial_properties.selectionbox
 	end
 
-	self.base_selbox = self.base_selbox or self.selectionbox or self.base_colbox
+	self.base_selbox = self.base_selbox or self.initial_properties.selectionbox or self.base_colbox
 
 	local textures = self.base_texture
 	local mesh = self.base_mesh
@@ -201,9 +201,9 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.textures = textures
 	self.mesh = mesh
 	self.object:set_properties({
-		collisionbox = colbox
+		collisionbox = colbox,
+		selectionbox = selbox,
 	})
-	self.selectionbox = selbox
 	self.visual_size = vis_size
 	self.standing_in = "ignore"
 	self.standing_on = "ignore"
