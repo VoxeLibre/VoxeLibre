@@ -178,7 +178,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 		-- passive regeneration
 		self._custom_timer = self._custom_timer + dtime
 		if self._custom_timer > 1 then
-			self.health = math.min(self.health + 1, self.hp_max)
+			self.health = math.min(self.health + 1, self.initial_properties.hp_max)
 			self._custom_timer = self._custom_timer - 1
 		end
 
@@ -218,7 +218,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 
 		-- update things dependent on HP
 		local rand_factor
-		if self.health < (self.hp_max / 2) then
+		if self.health < (self.initial_properties.hp_max / 2) then
 			self.base_texture = "mobs_mc_wither_half_health.png"
 			self.fly = false
 			self._arrow_resistant = true
@@ -432,7 +432,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 		minetest.sound_play("mobs_mc_wither_spawn", {object=self.object, gain=1.0, max_hear_distance=64})
 		self._custom_timer = 0.0
 		self._death_timer = 0.0
-		self._health_old = self.hp_max
+		self._health_old = self.initial_properties.hp_max
 		self._spawning = 10
 		return true
 	end,

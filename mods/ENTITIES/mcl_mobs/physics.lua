@@ -315,8 +315,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 	if self.health > 0 then
 
 		-- make sure health isn't higher than max
-		if self.health > self.hp_max then
-			self.health = self.hp_max
+		if self.health > self.initial_properties.hp_max then
+			self.health = self.initial_properties.hp_max
 		end
 
 		-- play damage sound if health was reduced and make mob flash red.
@@ -339,7 +339,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		and (cmi_cause and cmi_cause.type == "punch") then
 
 			self.htimer = 2
-			self.nametag = "♥ " .. self.health .. " / " .. self.hp_max
+			self.nametag = "♥ " .. self.health .. " / " .. self.initial_properties.hp_max
 
 			self:update_tag()
 		end
