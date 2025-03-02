@@ -2025,7 +2025,7 @@ local trade_inventory = {
 					trader._locked_trades = 0
 					-- Also heal trader for unlocking stuff
 					-- TODO: Replace by Regeneration I
-					trader.health = math.min(trader.hp_max, trader.health + 4)
+					trader.health = math.min(trader.initial_properties.hp_max, trader.health + 4)
 				end
 				mcl_experience.add_xp(player, xp)
 				trade.trade_counter = trade.trade_counter + 1
@@ -2058,7 +2058,7 @@ local trade_inventory = {
 						trader._locked_trades = 1
 						-- Also heal trader for unlocking stuff
 						-- TODO: Replace by Regeneration I
-						trader.health = math.min(trader.hp_max, trader.health + 4)
+						trader.health = math.min(trader.initial_properties.hp_max, trader.health + 4)
 					end
 				end
 				trader._trades = minetest.serialize(trades)

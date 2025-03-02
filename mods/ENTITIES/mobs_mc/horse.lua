@@ -195,7 +195,7 @@ local horse = {
 		-- Slowly regenerate health
 		self._regentimer = self._regentimer + dtime
 		if self._regentimer >= 4 then
-			if self.health < self.hp_max then
+			if self.health < self.initial_properties.hp_max then
 				self.health = self.health + 1
 			end
 			self._regentimer = 0

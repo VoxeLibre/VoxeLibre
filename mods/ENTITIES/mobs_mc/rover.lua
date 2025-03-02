@@ -116,8 +116,10 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 	can_despawn = true,
 	passive = true,
 	pathfinding = 1,
-	hp_min = 40,
-	hp_max = 40,
+	initial_properties = {
+		hp_min = 40,
+		hp_max = 40,
+	},
 	xp_min = 5,
 	xp_max = 5,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},

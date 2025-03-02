@@ -120,7 +120,7 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 			-- heal
 			self._heal_timer = (self._heal_timer or 0) + dtime
 			if self._heal_timer > HEAL_INTERVAL then
-				self.health = math.min(self.hp_max,self.health + HEAL_AMOUNT)
+				self.health = math.min(self.initial_properties.hp_max,self.health + HEAL_AMOUNT)
 				self._heal_timer = self._heal_timer - HEAL_INTERVAL
 			end
 		end

@@ -174,7 +174,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		}
 	end
 
-	if self.health == 0 then self.health = math.random(self.hp_min, self.hp_max) end
+	if self.health == 0 then self.health = math.random(self.initial_properties.hp_min, self.initial_properties.hp_max) end
 	if self.breath == nil then self.breath = self.breath_max end
 
 	self.path = {}

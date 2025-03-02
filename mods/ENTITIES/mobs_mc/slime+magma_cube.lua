@@ -325,8 +325,10 @@ local magma_cube_big = {
 	description = S("Magma Cube - big"),
 	type = "monster",
 	spawn_class = "hostile",
-	hp_min = 16,
-	hp_max = 16,
+	initial_properties = {
+		hp_min = 16,
+		hp_max = 16,
+	},
 	xp_min = 4,
 	xp_max = 4,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02, rotate = true},

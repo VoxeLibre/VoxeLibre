@@ -176,8 +176,10 @@ function mcl_mobs.register_mob(name, def)
 		jump_height = def.jump_height or 4, -- was 6
 		rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
 		lifetimer = def.lifetimer or 57.73,
-		hp_min = scale_difficulty(def.hp_min, 5, 1),
-		hp_max = scale_difficulty(def.hp_max, 10, 1),
+		initial_properties = {
+			hp_min = scale_difficulty(def.initial_properties.hp_min, 5, 1),
+			hp_max = scale_difficulty(def.initial_properties.hp_max, 10, 1),
+		},
 		xp_min = def.xp_min or 0,
 		xp_max = def.xp_max or 0,
 		xp_timestamp = 0,

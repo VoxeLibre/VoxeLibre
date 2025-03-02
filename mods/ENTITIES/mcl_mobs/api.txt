@@ -28,8 +28,9 @@ functions needed for the mob to work properly which contains the following:
 	"monster"		attacks player or npc on sight.
 	"npc"			walk around and will defend themselves if hit first, they
 					kill monsters.
-	'hp_min'		the minimum health value the mob can spawn with.
-	'hp_max'		the maximum health value the mob can spawn with.
+	'initial_properties'	Initial entity properties. Has these fields:
+		'hp_min'		the minimum health value the mob can spawn with.
+		'hp_max'		the maximum health value the mob can spawn with.
 	'breath_max'	The maximum breath value the mob can spawn with and can have.
 					If -1 (default), mob does not take drowning damage.
 	'breathes_in_water' If true, mob loses breath when not in water. Otherwise,
