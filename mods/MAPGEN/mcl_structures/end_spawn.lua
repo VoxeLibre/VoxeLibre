@@ -54,7 +54,7 @@ end
 
 minetest.register_on_mods_loaded(function()
 -- TODO: use LVM?
-mcl_mapgen_core.register_generator("end structures", nil, function(minp, maxp, blockseed)
+vl_mapgen.register_generator("end structures", nil, function(minp, maxp, blockseed)
 	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
 	-- end spawn obsidian platform
 	local pos = mcl_vars.mg_end_platform_pos
@@ -93,7 +93,7 @@ mcl_mapgen_core.register_generator("end structures", nil, function(minp, maxp, b
 					dragon_entity._portal_pos = pos
 					dragon_entity._initial = true
 				else
-					minetest.log("error", "[mcl_mapgen_core] ERROR! Ender dragon doesn't want to spawn")
+					minetest.log("error", "[vl_mapgen] ERROR! Ender dragon doesn't want to spawn")
 				end
 			end}, pr)
 	end

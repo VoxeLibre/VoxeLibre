@@ -1,21 +1,21 @@
+local logging = core.settings:get_bool("vl_logging_mapgen_chunks", false) -- basic
+local log_timing = core.settings:get_bool("vl_logging_mapgen_timing", false) -- detailed, for performance debugging
+
+local seed = core.get_mapgen_setting("seed")
 local registered_generators = {}
 
 local lvm, nodes, param2 = 0, 0, 0
 local lvm_buffer, lvm_buffer2 = {}, {}
 
-local logging = minetest.settings:get_bool("mcl_logging_mapgen", false)
-local log_timing = minetest.settings:get_bool("mcl_logging_mapgen_timing", false) -- detailed, for performance debugging
-local seed = minetest.get_mapgen_setting("seed")
-
-minetest.register_on_generated(function(minp, maxp, blockseed)
+core.register_on_generated(function(minp, maxp, blockseed)
 	local t1 = os.clock()
 	if lvm > 0 then
-		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+		local vm, emin, emax = core.get_mapgen_object("voxelmanip")
 		local area = VoxelArea(emin, emax)
 		local data = vm:get_data(lvm_buffer)
 		local data2 = param2 > 0 and vm:get_param2_data(lvm_buffer2)
 		if log_timing then
-			minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "get_data", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - t1)*1000))
+			core.log("action", string.format("[vl_mapgen] %-20s %s ... %s %8.2fms", "get_data", core.pos_to_string(minp), core.pos_to_string(maxp), (os.clock() - t1)*1000))
 		end
 
 		local lvm_used, shadow, deco_used, deco_table, ore_used, ore_table = false, false, false, false, false, false
@@ -40,7 +40,7 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 					ore_used = true
 				end
 				if log_timing then
-					minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", gen.id, minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt1)*1000))
+					core.log("action", string.format("[vl_mapgen] %-20s %s ... %s %8.2fms", gen.id, core.pos_to_string(minp), core.pos_to_string(maxp), (os.clock() - gt1)*1000))
 				end
 			end
 		end
@@ -50,32 +50,32 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 			vm:set_data(data)
 			if param2 > 0 then vm:set_param2_data(data2) end
 			if log_timing then
-				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "set_data", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt1)*1000))
+				core.log("action", string.format("[vl_mapgen] %-20s %s ... %s %8.2fms", "set_data", core.pos_to_string(minp), core.pos_to_string(maxp), (os.clock() - gt1)*1000))
 			end
 			local gt2 = os.clock()
 			if deco_used then
-				minetest.generate_decorations(vm)
+				core.generate_decorations(vm)
 			elseif deco_table then
-				minetest.generate_decorations(vm,vector.new(minp.x,deco_table.min,minp.z),vector.new(maxp.x,deco_table.max,maxp.z))
+				core.generate_decorations(vm,vector.new(minp.x,deco_table.min,minp.z),vector.new(maxp.x,deco_table.max,maxp.z))
 			end
 			if log_timing and (deco_table or deco_used) then
-				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "decorations", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt2)*1000))
+				core.log("action", string.format("[vl_mapgen] %-20s %s ... %s %8.2fms", "decorations", core.pos_to_string(minp), core.pos_to_string(maxp), (os.clock() - gt2)*1000))
 			end
 			local gt3 = os.clock()
 			if ore_used then
-				minetest.generate_ores(vm)
+				core.generate_ores(vm)
 			elseif ore_table then
-				minetest.generate_ores(vm,vector.new(minp.x,ore_table.min,minp.z),vector.new(maxp.x,ore_table.max,maxp.z))
+				core.generate_ores(vm,vector.new(minp.x,ore_table.min,minp.z),vector.new(maxp.x,ore_table.max,maxp.z))
 			end
 			if log_timing and (ore_table or ore_used) then
-				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "ores", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt3)*1000))
+				core.log("action", string.format("[vl_mapgen] %-20s %s ... %s %8.2fms", "ores", core.pos_to_string(minp), core.pos_to_string(maxp), (os.clock() - gt3)*1000))
 			end
 			local gt4 = os.clock()
 			vm:calc_lighting(minp, maxp, shadow)
 			vm:update_liquids()
 			vm:write_to_map(false)
 			if log_timing then
-				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "light/write/liquids", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt4)*1000))
+				core.log("action", string.format("[vl_mapgen] %-20s %s ... %s %8.2fms", "light/write/liquids", core.pos_to_string(minp), core.pos_to_string(maxp), (os.clock() - gt4)*1000))
 			end
 		end
 	end
@@ -86,22 +86,22 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				local gt1 = os.clock()
 				gen.nf(vector.copy(minp), vector.copy(maxp), blockseed) -- defensive copies against some generator changing the vectors
 				if log_timing then
-					minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", gen.id, minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt1)*1000))
+					core.log("action", string.format("[vl_mapgen] %-20s %s ... %s %8.2fms", gen.id, core.pos_to_string(minp), core.pos_to_string(maxp), (os.clock() - gt1)*1000))
 				end
 			end
 		end
 	end
 
 	if logging then
-		minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "Generating chunk", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - t1)*1000))
+		core.log("action", string.format("[vl_mapgen] %-20s %s ... %s %8.2fms", "Generating chunk", core.pos_to_string(minp), core.pos_to_string(maxp), (os.clock() - t1)*1000))
 	end
 end)
 
-function minetest.register_on_generated(node_function)
-	mcl_mapgen_core.register_generator("mod_"..minetest.get_current_modname().."_"..tostring(#registered_generators+1), nil, node_function)
+function core.register_on_generated(node_function)
+	vl_mapgen.register_generator("mod_"..core.get_current_modname().."_"..tostring(#registered_generators+1), nil, node_function)
 end
 
-function mcl_mapgen_core.register_generator(id, lvm_function, node_function, priority, needs_param2)
+function vl_mapgen.register_generator(id, lvm_function, node_function, priority, needs_param2)
 	if not id then return end
 
 	local priority = priority or 5000
@@ -124,7 +124,7 @@ function mcl_mapgen_core.register_generator(id, lvm_function, node_function, pri
 	end)
 end
 
-function mcl_mapgen_core.unregister_generator(id)
+function vl_mapgen.unregister_generator(id)
 	local index
 	for i, gen in ipairs(registered_generators) do
 		if gen.id == id then
@@ -148,30 +148,30 @@ end
 -- c.f., https://github.com/minetest/minetest/issues/14919
 local pending_decorations = {}
 local gennotify_map = {}
-function mcl_mapgen_core.register_decoration(def, callback)
+function vl_mapgen.register_decoration(def, callback)
 	if def.sidelen and (80 % def.sidelen ~= 0) then
 		-- c.f., https://api.luanti.org/definition-tables/#decoration-definition
-		minetest.log("warning", "Decoration sidelen must be a divisors of the chunk size 80, check "..tostring(def.name))
+		core.log("warning", "Decoration sidelen must be a divisors of the chunk size 80, check "..tostring(def.name))
 	end
 	if def.fill_ratio and def.noise_params then
 		-- c.f., https://api.luanti.org/definition-tables/#decoration-definition
-		minetest.log("warning", "Decoration fill_ratio is used only if noise_params is not specified, check "..tostring(def.name))
+		core.log("warning", "Decoration fill_ratio is used only if noise_params is not specified, check "..tostring(def.name))
 	end
 	def = table.copy(def) -- defensive deep copy, needed for water lily
 	if def.gen_callback and not def.name then error("gen_callback requires a named decoration.") end
 	if callback then error("Callbacks have been redesigned.") end
 	if pending_decorations == nil then
-		-- Please do not register decorations in minetest.register_on_mods_loaded.
+		-- Please do not register decorations in core.register_on_mods_loaded.
 		-- This should usually not happen, but modders may misuse this.
 		-- Nothing really bad should happen though, but the rank is ignored.
-		minetest.log("warning", "Decoration registered after mapgen core initialization: "..tostring(def.name))
-		minetest.register_decoration(def)
+		core.log("warning", "Decoration registered after mapgen core initialization: "..tostring(def.name))
+		core.register_decoration(def)
 		if def.gen_callback then
-			def.deco_id = minetest.get_decoration_id(def.name)
+			def.deco_id = core.get_decoration_id(def.name)
 			if not def.deco_id then
-				error("Failed to get the decoration id for "..tostring(key))
+				error("Failed to get the decoration id for "..tostring(def.name))
 			else
-				minetest.set_gen_notify({decoration = true}, {def.deco_id})
+				core.set_gen_notify({decoration = true}, {def.deco_id})
 				gennotify_map["decoration#" .. def.deco_id] = def
 			end
 		end
@@ -206,16 +206,16 @@ local function sort_decorations()
 	table.sort(keys)
 	for _, key in ipairs(keys) do
 		local def = map[key]
-		local deco_id = minetest.register_decoration(def)
+		local deco_id = core.register_decoration(def)
 		if not deco_id then
 			error("Failed to register decoration"..tostring(key))
 		end
 		if def.name and def.gen_callback then
-			deco_id = minetest.get_decoration_id(def.name)
+			deco_id = core.get_decoration_id(def.name)
 			if not deco_id then
 				error("Failed to get the decoration id for "..tostring(key))
 			else
-				minetest.set_gen_notify({decoration = true}, {deco_id})
+				core.set_gen_notify({decoration = true}, {deco_id})
 				gennotify_map["decoration#" .. deco_id] = def
 			end
 		end
@@ -223,9 +223,9 @@ local function sort_decorations()
 	pending_decorations = nil -- as we will not run again
 end
 
-mcl_mapgen_core.register_generator("Gennotify callbacks", nil, function(minp, maxp, blockseed)
+vl_mapgen.register_generator("Gennotify callbacks", nil, function(minp, maxp, blockseed)
 	local pr = PcgRandom(blockseed + seed + 48214) -- constant seed offset
-	local gennotify = minetest.get_mapgen_object("gennotify")
+	local gennotify = core.get_mapgen_object("gennotify")
 	for key, def in pairs(gennotify_map) do
 		local t = gennotify[key]
 		if t and #t > 0 then
@@ -239,4 +239,4 @@ mcl_mapgen_core.register_generator("Gennotify callbacks", nil, function(minp, ma
 	end
 end)
 
-minetest.register_on_mods_loaded(sort_decorations)
+core.register_on_mods_loaded(sort_decorations)

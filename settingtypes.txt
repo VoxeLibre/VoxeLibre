@@ -376,8 +376,11 @@ mcl_logging_mobs_spawn (Log Mob Spawning) bool false
 #Log mob movement events
 mcl_logging_mobs_movement (Log Mob Movement) bool false
 
-# If enabled mapgen timings will be dumped to log
-mcl_logging_mapgen (Chunk generation logging) bool false
+# Log basic mapgen chunk generation information
+vl_logging_mapgen_chunks (Chunk generation logging) bool false
+
+# Log detailed timing information for profiling map generation components
+vl_logging_mapgen_timing (Detailed mapgen timing information) bool false
 
 # If enabled generated dungeons will be logged
 mcl_logging_dungeons (Dungeons generation logging) bool false

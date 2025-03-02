@@ -277,14 +277,14 @@ function vl_biomes.register_decoration(def)
 		def.y_max = def.y_max or y_max
 	end
 	-- def.sidelen = 8 is default in Luanti
-	mcl_mapgen_core.register_decoration(def)
+	vl_mapgen.register_decoration(def)
 end
 
 -- TODO: also add similar helper as below for oaks?
 -- helper for spruce decorations
 function vl_biomes.register_spruce_decoration(seed, offset, sprucename, biomes, y_min, place_offset_y)
 	local mod_mcl_core = core.get_modpath("mcl_core")
-	mcl_mapgen_core.register_decoration({
+	vl_mapgen.register_decoration({
 		deco_type = "schematic",
 		place_on = {"group:grass_block", "mcl_core:dirt", "mcl_core:podzol"},
 		place_offset_y = place_offset_y or 1,
