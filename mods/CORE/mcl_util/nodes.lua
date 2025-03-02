@@ -250,6 +250,10 @@ function mcl_util.bypass_buildable_to(func)
 
 	-- Copied from minetest builtin
 	-- https://github.com/minetest/minetest/blob/e7dd9737bd5deb573c9fef7b3ff2ead29b2cfe31/builtin/game/item.lua#L146-L294
+	---@param itemstack core.ItemStack
+	---@param placer core.PlayerObjectRef
+	---@param pointed_thing core.PointedThing
+	---@param param2 integer
 	return function(itemstack, placer, pointed_thing, param2)
 		local def = itemstack:get_definition()
 		if def.type ~= "node" or pointed_thing.type ~= "node" then

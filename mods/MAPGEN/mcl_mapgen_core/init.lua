@@ -2,6 +2,12 @@ mcl_mapgen_core = {}
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+-- Type annotation
+---@class core.BiomeDef
+---@field _mcl_water_palette_index integer
+---@field _mcl_foliage_palette_index integer
+---@field _mcl_grass_palette_index integer
+
 --
 -- Aliases for map generator outputs
 --
