@@ -61,7 +61,7 @@ local function do_generate_map(id, minp, maxp, callback, t1)
 		for x = 1, xsize, xstep do
 			local map_x = minp.x + x - 1
 			-- color aggregate and height information (for 3D effect)
-			local cagg, height = { 0, 0, 0, 0 }, nil
+			local cagg, height = {0, 0, 0, 0}, nil
 			local solid_under_air = -1 -- anything but air, actually
 			for map_y = maxp.y, minp.y, -1 do
 				local nodename, _, param2 = get_node_name_raw(map_x, map_y, map_z)
@@ -73,7 +73,7 @@ local function do_generate_map(id, minp, maxp, callback, t1)
 					end
 					if color then
 						if solid_under_air == 0 then
-							cagg, height = { 0, 0, 0, 0 }, nil -- reset
+							cagg, height = {0, 0, 0, 0}, nil -- reset
 							solid_under_air = 1
 						end
 						local alpha = cagg[4] -- 0 (transparent) to 255 (opaque)
@@ -225,7 +225,7 @@ function mcl_maps.load_map(id, callback)
 
 	-- Use a legacy tga map texture if present
 	local texture = "mcl_maps_map_texture_"..id..".tga"
-	local f = io.open(worldpath .. DIR_DELIM .. "mcl_maps" .. DIR_DELIM .. texture, "r")
+	local f = io.open(map_textures_path .. texture, "r")
 	if f then
 		f:close()
 	else
@@ -308,7 +308,7 @@ local filled_def = {
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
 	stack_max = 64,
-	groups = { not_in_creative_inventory = 1, filled_map = 1, tool = 1 },
+	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1},
 }
 
 core.register_craftitem("mcl_maps:filled_map", filled_def)
@@ -316,7 +316,7 @@ core.register_craftitem("mcl_maps:filled_map", filled_def)
 local filled_wield_def = table.copy(filled_def)
 filled_wield_def.use_texture_alpha = core.features.use_texture_alpha_string_modes and "opaque" or false
 filled_wield_def.visual_scale = 1
-filled_wield_def.wield_scale = { x = 1, y = 1, z = 1 }
+filled_wield_def.wield_scale = vector.new(1, 1, 1)
 filled_wield_def.paramtype = "light"
 filled_wield_def.drawtype = "mesh"
 filled_wield_def.node_placement_prediction = ""
@@ -333,20 +333,20 @@ if mcl_skins_enabled then
 			local female = table.copy(filled_wield_def)
 			female._mcl_hand_id = skin.id
 			female.mesh = "mcl_meshhand_female.b3d"
-			female.tiles = { skin.texture }
+			female.tiles = {skin.texture}
 			core.register_node("mcl_maps:filled_map_" .. skin.id, female)
 		else
 			local male = table.copy(filled_wield_def)
 			male._mcl_hand_id = skin.id
 			male.mesh = "mcl_meshhand.b3d"
-			male.tiles = { skin.texture }
+			male.tiles = {skin.texture}
 			core.register_node("mcl_maps:filled_map_" .. skin.id, male)
 		end
 	end
 else
 	filled_wield_def._mcl_hand_id = "hand"
 	filled_wield_def.mesh = "mcl_meshhand.b3d"
-	filled_wield_def.tiles = { "character.png" }
+	filled_wield_def.tiles = {"character.png"}
 	core.register_node("mcl_maps:filled_map_hand", filled_wield_def)
 end
 
@@ -375,16 +375,16 @@ end)
 core.register_craft({
 	output = "mcl_maps:empty_map",
 	recipe = {
-		{ "mcl_core:paper", "mcl_core:paper", "mcl_core:paper" },
-		{ "mcl_core:paper", "group:compass",  "mcl_core:paper" },
-		{ "mcl_core:paper", "mcl_core:paper", "mcl_core:paper" },
+		{"mcl_core:paper", "mcl_core:paper", "mcl_core:paper"},
+		{"mcl_core:paper", "group:compass",  "mcl_core:paper"},
+		{"mcl_core:paper", "mcl_core:paper", "mcl_core:paper"},
 	}
 })
 
 core.register_craft({
 	type = "shapeless",
 	output = "mcl_maps:filled_map 2",
-	recipe = { "group:filled_map", "mcl_maps:empty_map" },
+	recipe = {"group:filled_map", "mcl_maps:empty_map"},
 })
 
 local function on_craft(itemstack, player, old_craft_grid, craft_inv)
@@ -408,13 +408,13 @@ core.register_on_joinplayer(function(player)
 	local map_def = {
 		[mcl_vars.hud_type_field] = "image",
 		text = "blank.png",
-		position = { x = 0.75, y = 0.8 },
-		alignment = { x = 0, y = -1 },
-		offset = { x = 0, y = 0 },
-		scale = { x = 2, y = 2 },
+		position = {x = 0.75, y = 0.8},
+		alignment = {x = 0, y = -1},
+		offset = {x = 0, y = 0},
+		scale = {x = 2, y = 2},
 	}
 	local marker_def = table.copy(map_def)
-	marker_def.alignment = { x = 0, y = 0 }
+	marker_def.alignment = {x = 0, y = 0}
 	huds[player] = {
 		map = player:hud_add(map_def),
 		marker = player:hud_add(marker_def),
@@ -493,7 +493,7 @@ core.register_globalstep(function(dtime)
 
 			-- Note the alignment and scale used above
 			local f = 2 * 128 / (maxp.x - minp.x + 1)
-			player:hud_change(hud.marker, "offset", { x = (pos.x - minp.x) * f - 128, y = (maxp.z - pos.z) * f - 256 })
+			player:hud_change(hud.marker, "offset", {x = (pos.x - minp.x) * f - 128, y = (maxp.z - pos.z) * f - 256})
 			player:hud_change(hud.marker, "text", marker)
 
 		elseif maps[player] then -- disable map
