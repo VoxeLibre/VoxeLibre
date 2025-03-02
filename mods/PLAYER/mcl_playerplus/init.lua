@@ -361,7 +361,7 @@ minetest.register_globalstep(function(dtime)
 			set_properties(player, player_props_elytra)
 
 			-- control body bone when flying
-			local body_rot = vector.new(dir_to_pitch(player_velocity) + 1.92, -player_vel_yaw + yaw, 3.1415)
+			local body_rot = vector.new(dir_to_pitch(player_velocity) + 1.92, -player_vel_yaw + yaw, 0)
 			set_bone_pos(player, "Body_Control", nil, body_rot)
 		elseif parent then
 			set_properties(player, player_props_riding)
@@ -389,7 +389,7 @@ minetest.register_globalstep(function(dtime)
 			set_properties(player, player_props_swimming)
 
 			-- control body bone when swimming
-			local body_rot = vector.new((1.3 + dir_to_pitch(player_velocity)), player_vel_yaw - yaw, 3.1415)
+			local body_rot = vector.new((1.3 + dir_to_pitch(player_velocity)), player_vel_yaw - yaw, 0)
 			set_bone_pos(player,"Body_Control", nil, body_rot)
 		elseif get_item_group(mcl_playerinfo[name].node_head, "solid") == 0
 		and get_item_group(mcl_playerinfo[name].node_head_top, "solid") == 0 then
@@ -513,7 +513,7 @@ minetest.register_globalstep(function(dtime)
 
 		-- Standing on a soul block? If so, check for speed bonus / penalty
 		if get_item_group(node_stand, "soul_block") ~= 0 then
-			
+
 			-- Standing on soul sand? If so, walk slower (unless player wears Soul Speed boots, then apply bonus)
 			if node_stand == "mcl_nether:soul_sand" then
 				-- TODO: Tweak walk speed
