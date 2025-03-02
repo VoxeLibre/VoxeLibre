@@ -16,7 +16,7 @@ local function update_cartography_table(player)
 	local formspec = table.concat({
 		"formspec_version[4]",
 		"size[11.75,10.425]",
-		"label[0.375,0.375;" .. F(C(mcl_formspec.label_color, S("Cartography Table"))) .. "]",
+		"label[0.375,0.375;", F(C(mcl_formspec.label_color, S("Cartography Table"))), "]",
 
 		-- First input slot
 		mcl_formspec.get_itemslot_bg_v4(1, 0.75, 1, 1),
@@ -37,7 +37,7 @@ local function update_cartography_table(player)
 		"list[current_player;cartography_table_output;9.75,2;1,1;]",
 
 		-- Player inventory
-		"label[0.375,4.7;" .. F(C(mcl_formspec.label_color, S("Inventory"))) .. "]",
+		"label[0.375,4.7;", F(C(mcl_formspec.label_color, S("Inventory"))), "]",
 		mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
 		"list[current_player;main;0.375,5.1;9,3;9]",
 
@@ -74,31 +74,29 @@ local function update_cartography_table(player)
 		map:get_meta():set_int("mcl_maps:zoom", old_zoom + 1)
 		tt.reload_itemstack_description(map)
 		inv:set_stack("cartography_table_output", 1, map)
-
 	elseif not map:is_empty() and addon:get_name() == "mcl_maps:empty_map" then
 		---- Copy a map
 		if texture then
-			formspec = formspec .. table.concat({
+			formspec = table.concat({formspec,
 				"image[6.125,0.5;3,3;mcl_maps_map_background.png]",
-				"image[6.375,0.75;2.5,2.5;" .. texture .. "]",
+				"image[6.375,0.75;2.5,2.5;", texture, "]",
 				"image[5.125,1.5;3,3;mcl_maps_map_background.png]",
-				"image[5.375,1.75;2.5,2.5;" .. texture .. "]"
+				"image[5.375,1.75;2.5,2.5;", texture, "]"
 			})
 		else
-			formspec = formspec .. table.concat({
+			formspec = table.concat({formspec,
 				"image[6.125,0.5;3,3;mcl_maps_map_background.png]",
 				"image[5.125,1.5;3,3;mcl_maps_map_background.png]"
 			})
 		end
 		map:set_count(2)
 		inv:set_stack("cartography_table_output", 1, map)
-
-	elseif addon:get_name() == "xpanes:pane_natural_flat" and not map:is_empty() then
+	elseif not map:is_empty() and addon:get_name() == "xpanes:pane_natural_flat" then
 		---- Lock a map
 		formspec = formspec .. "image[5.125,0.5;4,4;mcl_maps_map_background.png]"
 		if texture then formspec = formspec .. "image[5.375,0.75;3.5,3.5;" .. texture .. "]" end
 		if map:get_meta():get_int("mcl_maps:locked") == 1 then
-			formspec = formspec .. table.concat({
+			formspec = table.concat({formspec,
 				"image[3.2,2;1,1;mcl_core_barrier.png]",
 				"image[8.375,3.75;0.5,0.5;mcl_core_barrier.png]"
 			})
@@ -122,8 +120,8 @@ core.register_on_joinplayer(function(player)
 	inv:set_size("cartography_table_input", 2)
 	inv:set_size("cartography_table_output", 1)
 
-	--The player might have items remaining in the slots from the previous join; this is likely
-	--when the server has been shutdown and the server didn't clean up the player inventories.
+	-- The player might have items remaining in the slots from the previous join; this is likely
+	-- when the server has been shutdown and the server didn't clean up the player inventories.
 	mcl_util.move_player_list(player, "cartography_table_input")
 	player:get_inventory():set_list("cartography_table_output", {})
 end)
@@ -153,7 +151,7 @@ core.register_allow_player_inventory_action(function(player, action, inventory, 
 		local stack = inventory:get_stack("cartography_table_output", 1)
 		local addon = inventory:get_stack("cartography_table_input", 2)
 		if stack:get_name():find("mcl_maps:filled_map") and addon:get_name() == "mcl_core:paper" then
-			-- also send chat, as the actionbar may be hidden by the cartograph table
+			-- also send chat, as the actionbar may be hidden by the cartography table
 			core.chat_send_player(player:get_player_name(), core.get_color_escape_sequence("gold")..S("Zooming a map may take several seconds to generate the world, please wait."))
 			mcl_title.set(player, "actionbar", {text=S("Zooming a map may take several seconds to generate the world, please wait."), color="gold", stay=5*20})
 			local callback = function(id, filename)
@@ -221,7 +219,7 @@ core.register_node("mcl_cartography_table:cartography_table", {
 		"mcl_cartography_table_side3.png", "mcl_cartography_table_side1.png"
 	},
 	paramtype2 = "facedir",
-	groups = { axey = 2, handy = 1, deco_block = 1, material_wood = 1, flammable = 1 },
+	groups = {axey = 2, handy = 1, deco_block = 1, material_wood = 1, flammable = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
@@ -233,9 +231,9 @@ core.register_node("mcl_cartography_table:cartography_table", {
 core.register_craft({
 	output = "mcl_cartography_table:cartography_table",
 	recipe = {
-		{ "mcl_core:paper", "mcl_core:paper", "" },
-		{ "group:wood", "group:wood", "" },
-		{ "group:wood", "group:wood", "" },
+		{"mcl_core:paper", "mcl_core:paper", ""},
+		{"group:wood",     "group:wood",     ""},
+		{"group:wood",     "group:wood",     ""},
 	}
 })
 
