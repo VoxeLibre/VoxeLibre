@@ -1,6 +1,7 @@
 -- Global namespace for functions
 
 mcl_fire = {}
+local DEBUG = false
 
 ---@class core.NodeDef
 ---@field _on_burn? fun(pos : vector.Vector)
@@ -9,81 +10,51 @@ mcl_fire = {}
 local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
 local S = core.get_translator(modname)
-
 local has_mcl_portals = core.get_modpath("mcl_portals")
 
+-- Localized functions
 local set_node = core.set_node
 local get_node = core.get_node
 local add_node = core.add_node
 local swap_node = core.swap_node
 local get_node_or_nil = core.get_node_or_nil
-
 local find_nodes_in_area = core.find_nodes_in_area
 local get_item_group = core.get_item_group
-
 local get_connected_players = core.get_connected_players
-
-local vector = vector
-local math = math
+local vector_new = vector.new
+local vector_offset = vector.offset
+local vector_zero = vector.zero
+local math_ceil = math.ceil
+local math_min = math.min
+local math_pow = math.pow
+local math_random = math.random
 
 local adjacents = {
-	{ x =-1, y = 0, z = 0 },
-	{ x = 1, y = 0, z = 0 },
-	{ x = 0, y = 1, z = 0 },
-	{ x = 0, y =-1, z = 0 },
-	{ x = 0, y = 0, z =-1 },
-	{ x = 0, y = 0, z = 1 },
+	vector_new(-1,  0,  0),
+	vector_new( 1,  0,  0),
+	vector_new( 0,  1,  0),
+	vector_new( 0, -1,  0),
+	vector_new( 0,  0, -1),
+	vector_new( 0,  0,  1),
 }
 
 local function shuffle_table(t)
 	for i = #t, 1, -1 do
-		local r = math.random(i)
+		local r = math_random(i)
 		t[i], t[r] = t[r], t[i]
 	end
 end
 shuffle_table(adjacents)
 
 local function has_flammable(pos)
+	local p = vector_zero() -- Only allocate one new table
 	for _,v in pairs(adjacents) do
-		local p=vector.add(pos,v)
-		local n=get_node_or_nil(p)
+		p.x, p.y, p.z = pos.x + v.x, pos.y + v.y, pos.z + v.z
+		local n = get_node_or_nil(p)
 		if n and get_item_group(n.name, "flammable") ~= 0 then
 			return p
 		end
 	end
-end
-
-local function min_neighbor_fire_age(lowest, pos)
-	local node = get_node_or_nil(pos)
-	if not node then return lowest end
-	if get_item_group(node.name, "fire") == 0 then return lowest end
-	if not lowest or lowest > node.param2 then return node.param2 end
-	return lowest
-end
-
-local function get_adjacent_fire_age(orig_pos)
-	local lowest_age = nil
-
-	-- find minimum age (param2) among adjacent fire nodes
-	local pos = vector.offset(orig_pos, 1, 0, 0)
-	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-
-	pos.x = orig_pos.x + 1
-	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-
-	pos.x, pos.y = orig_pos.x, orig_pos.y - 1
-	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-
-	pos.y = orig_pos.y + 1
-	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-
-	pos.y, pos.z = orig_pos.y, orig_pos.z - 1
-	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-
-	pos.z = orig_pos.z + 1
-	lowest_age = min_neighbor_fire_age(lowest_age, pos)
-
-	return lowest_age
 end
 
 local smoke_pdef = {
@@ -127,19 +98,12 @@ end
 
 -- exponential constant is such that at age=255, p=0.5%
 local K1 = ( math.log(0.005) / math.log(10) ) / 255
+
+---@param pos vector.Vector
+---@param age integer
+---@param force? boolean
 local function spawn_fire(pos, age, force)
-	if not age then
-		core.log("warning","No age specified at "..debug.traceback())
-
-		-- Get adjacent age
-		local adjacent_age = get_adjacent_fire_age(pos)
-
-		-- Don't create new fire if we can't find adjacent fire from this position
-		if not adjacent_age then return end
-
-		age = adjacent_age + math.ceil(core.get_humidity(pos)/10) + math.random(5)
-	end
-	if age <= 1 then
+	if DEBUG and age <= 1 then
 		core.log("warning","new flash point at "..vector.to_string(pos).." age="..tostring(age)..",backtrace = "..debug.traceback())
 	end
 	if age >= 255 then age = 255 end
@@ -152,13 +116,14 @@ local function spawn_fire(pos, age, force)
 	if node_is_flammable then
 		probability_age = probability_age * 0.80
 	end
-	local probability = math.pow(10,K1 * probability_age)
-	if not force and math.random() >= probability then
+	local probability = math_pow(10,K1 * probability_age)
+	if not force and math_random() >= probability then
 		return
 	end
 
-	set_node(pos, {name="mcl_fire:fire", param2 = age})
-	core.check_single_for_falling(vector.offset(pos,0,1,0))
+	-- Just updating age, don't trigger observers, etc.
+	swap_node(pos, {name="mcl_fire:fire", param2 = age})
+	core.check_single_for_falling(vector_offset(pos,0,1,0))
 end
 
 core.register_node("mcl_fire:fire", {
@@ -263,26 +228,22 @@ core.register_node("mcl_fire:eternal_fire", {
 --
 
 if flame_sound then
-
 	local handles = {}
 	local timer = 0
 
 	-- Parameters
-
 	local radius = 8 -- Flame node search radius around player
 	local cycle = 3 -- Cycle time for sound updates
 
 	-- Update sound for player
-
 	function mcl_fire.update_player_sound(player)
 		local player_name = player:get_player_name()
 		-- Search for flame nodes in radius around player
 		local ppos = player:get_pos()
-		local areamin = vector.subtract(ppos, radius)
-		local areamax = vector.add(ppos, radius)
+		local areamin = ppos - radius
+		local areamax = ppos + radius
 		local fpos, num = find_nodes_in_area(
-			areamin,
-			areamax,
+			areamin, areamax,
 			{"mcl_fire:fire", "mcl_fire:eternal_fire"}
 		)
 		-- Total number of flames in radius
@@ -297,6 +258,7 @@ if flame_sound then
 		if flames > 0 then
 			-- Find centre of flame positions
 			local fposmid = fpos[1]
+
 			-- If more than 1 flame
 			if #fpos > 1 then
 				local fposmin = areamax
@@ -322,15 +284,16 @@ if flame_sound then
 						fposmin.z = fposi.z
 					end
 				end
-				fposmid = vector.divide(vector.add(fposmin, fposmax), 2)
+				fposmid = (fposmin + fposmax) / 2
 			end
+
 			-- Play sound
 			local handle = core.sound_play(
 				"fire_fire",
 				{
 					pos = fposmid,
 					to_player = player_name,
-					gain = math.min(0.06 * (1 + flames * 0.125), 0.18),
+					gain = math_min(0.06 * (1 + flames * 0.125), 0.18),
 					max_hear_distance = 32,
 					loop = true, -- In case of lag
 				}
@@ -343,7 +306,6 @@ if flame_sound then
 	end
 
 	-- Cycle for updating players sounds
-
 	core.register_globalstep(function(dtime)
 		timer = timer + dtime
 		if timer < cycle then
@@ -358,7 +320,6 @@ if flame_sound then
 	end)
 
 	-- Stop sound and clear handle on player leave
-
 	core.register_on_leaveplayer(function(player)
 		local player_name = player:get_player_name()
 		if handles[player_name] then
@@ -381,11 +342,15 @@ end
 
 -- [...] a fire block can turn any air block that is adjacent to a flammable block into a fire block. This can happen at a distance of up to one block downward, one block sideways (including diagonals), and four blocks upward of the original fire block (not the block the fire is on/next to).
 local function get_ignitable(pos)
-	return check_aircube(vector.offset(pos, -1, -1, -1), vector.offset(pos, 1, 4, 1))
+	return check_aircube(vector_offset(pos, -1, -1, -1), vector_offset(pos, 1, 4, 1))
 end
 -- Fire spreads from a still lava block similarly: any air block one above and up to one block sideways (including diagonals) or two above and two blocks sideways (including diagonals) that is adjacent to a flammable block may be turned into a fire block.
 local function get_ignitable_by_lava(pos)
-	return check_aircube(vector.add(pos,vector.new(-1,1,-1)),vector.add(pos,vector.new(1,1,1))) or check_aircube(vector.add(pos,vector.new(-2,2,-2)),vector.add(pos,vector.new(2,2,2))) or nil
+	return check_aircube(
+		vector_offset(pos, -1, 1, -1), vector_offset(pos, 1, 1, 1)
+	) or check_aircube(
+		vector_offset(pos, -2, 2, -2), vector_offset(pos, 2, 2, 2)
+	) or nil
 end
 
 --
@@ -440,21 +405,21 @@ else -- Fire enabled
 			local age = node.param2
 
 			-- Always age the source fire
-			age = age + math.ceil(core.get_humidity(pos)/10) + math.random(5)
+			age = age + math_ceil(core.get_humidity(pos)/10) + math_random(5)
 			if age > 255 then age = 255 end
 			node.param2 = age
 
 			local p = get_ignitable(pos)
 			if p then
 				-- Spawn new fire with an age based on this node's age
-				spawn_fire(p, age + math.ceil(core.get_humidity(p)/10) + math.random(5))
+				spawn_fire(p, age + math_ceil(core.get_humidity(p)/10) + math_random(5))
 				shuffle_table(adjacents)
 			end
 
 			if node.name ~= "mcl_fire:eternal_fire" then
 				-- Randomly extinguish fires with increasing probability the older they are
-				local extinguish_probability = math.pow(10,K2 * age + C2)
-				if math.random() <= extinguish_probability then
+				local extinguish_probability = math_pow(10,K2 * age + C2)
+				if math_random() <= extinguish_probability then
 					node.name = "air"
 					node.param2 = 0
 
@@ -507,12 +472,12 @@ else -- Fire enabled
 				local source_node = get_node(pos)
 				local age = source_node.param2
 
-				spawn_fire(p, age + math.ceil(core.get_humidity(p)/10) + math.random(5), true)
+				spawn_fire(p, age + math_ceil(core.get_humidity(p)/10) + math_random(5), true)
 				core.check_for_falling(p)
 
 				if source_node.name == "mcl_fire:fire" then
 					-- Always age the source fire
-					age = age + math.ceil(core.get_humidity(pos)/10) + math.random(5)
+					age = age + math_ceil(core.get_humidity(pos)/10) + math_random(5)
 					if age > 255 then age = 255 end
 					source_node.param2 = age
 					set_node(pos, source_node)
@@ -549,7 +514,7 @@ function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 		return
 	end
 
-	local n_below = get_node(vector.offset(pointed_thing.above, 0, -1, 0))
+	local n_below = get_node(vector_offset(pointed_thing.above, 0, -1, 0))
 	if core.get_item_group(n_below.name, "water") ~= 0 then
 		return
 	end
