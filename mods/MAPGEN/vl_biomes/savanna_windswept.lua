@@ -39,5 +39,6 @@ for a = 1, 7 do
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
 		place_offset_y = 1,
 		fill_ratio = 0.0002,
+		_vl_foliage_palette = "mangroveswamp",
 	})
 end
