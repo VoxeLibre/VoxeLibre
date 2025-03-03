@@ -3589,7 +3589,6 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
-		gen_callback = clear_kelp,
 	})
 
 	mcl_mapgen_core.register_decoration({
@@ -3606,7 +3605,6 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
-		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
 		name = "coral_pickled_dead_brain_2",
@@ -3622,7 +3620,6 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
-		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
 		name = "coral_pickled_dead_brain_3",
@@ -3638,7 +3635,6 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
-		gen_callback = clear_kelp,
 	})
 	mcl_mapgen_core.register_decoration({
 		name = "coral_pickled_dead_brain_4",
@@ -3654,7 +3650,6 @@ local function register_decorations()
 		height = 1,
 		height_max = 1,
 		place_offset_y = -1,
-		gen_callback = clear_kelp,
 	})
 	--rare CORAl
 	mcl_mapgen_core.register_decoration({
