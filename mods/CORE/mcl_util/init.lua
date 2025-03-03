@@ -823,4 +823,27 @@ function mcl_util.metadata_last_act(meta, name, delay)
 	meta:set_float(name, now)
 	return true
 end
+-- test is the version v1 is larger or equal v2
+function mcl_util.minimum_version(ver1, ver2)
+	if not ver1 or not ver2 then return false end
+	for i,v1 in ipairs(ver1) do
+		local v2 = ver2[i] or 0 -- treat missing values as zero
+		if type(v1) ~= "number" then return false end -- strings are prerelease versions
+		assert(type(v2) == "number") -- version tests may only test release versions
+		if v1 > v2 then return true end
+		if v1 < v2 then return false end
+	end
+	return #ver1 >= #ver2
+end
+assert(mcl_util.minimum_version({0, 88}, {0, 88}))
+assert(mcl_util.minimum_version({0, 88}, {0, 88, 1}) == false)
+assert(mcl_util.minimum_version({0, 88}, {0, 89}) == false)
+assert(mcl_util.minimum_version({0, 88, 1}, {0, 88}))
+assert(mcl_util.minimum_version({0, 88, 1}, {0, 88, 1}))
+assert(mcl_util.minimum_version({0, 88, 1}, {0, 89}) == false)
+assert(mcl_util.minimum_version({0, 89}, {0, 88}))
+assert(mcl_util.minimum_version({0, 89}, {0, 88, 1}))
+assert(mcl_util.minimum_version({0, 89}, {0, 89}))
+assert(mcl_util.minimum_version(mcl_vars.parse_version("0.89.0-SNAPSHOT"), {0, 88}))
+assert(mcl_util.minimum_version(mcl_vars.parse_version("0.89.0-SNAPSHOT"), {0, 89}) == false)
 
