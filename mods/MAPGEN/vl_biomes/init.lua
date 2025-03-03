@@ -277,6 +277,9 @@ function vl_biomes.register_decoration(def)
 		def.y_max = def.y_max or y_max
 	end
 	-- def.sidelen = 8 is default in Luanti
+	if def._vl_foliage_palette then
+		def._vl_foliage_palette_index = vl_biomes.foliage_palette[def._vl_foliage_palette]
+	end
 	vl_mapgen.register_decoration(def)
 end
 

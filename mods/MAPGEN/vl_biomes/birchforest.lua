@@ -41,6 +41,7 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
+	-- already in schematic _vl_foliage_palette = "birchforest",
 })
 
 vl_biomes.register_decoration({
@@ -51,4 +52,5 @@ vl_biomes.register_decoration({
 	spawn_by = "group:flower",
 	fill_ratio = 0.00002,
 	rank = 1550, -- after flowers!
+	-- already in schematic _vl_foliage_palette = "birchforest",
 })

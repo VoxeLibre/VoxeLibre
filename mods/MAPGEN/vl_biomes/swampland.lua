@@ -56,6 +56,7 @@ vl_biomes.register_decoration({
 		octaves = 5,
 		persist = 0.6,
 	},
+	_vl_foliage_palette = "swampland",
 })
 
 -- Lily pads in shallow water at ocean level in Swampland.

@@ -39,6 +39,7 @@ vl_biomes.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	place_offset_y = 1,
 	fill_ratio = 0.0045,
+	_vl_foliage_palette = "jungle_edge",
 })
 
 vl_biomes.register_decoration({
@@ -55,4 +56,5 @@ vl_biomes.register_decoration({
 		octaves = 4,
 		persist = 0.6,
 	},
+	_vl_foliage_palette = "jungle_edge",
 })

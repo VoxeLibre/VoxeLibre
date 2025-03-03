@@ -44,6 +44,7 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
+	_vl_foliage_palette = "forest",
 })
 
 local ratio_mushroom = 0.0001

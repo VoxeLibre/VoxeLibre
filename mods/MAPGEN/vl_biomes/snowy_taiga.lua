@@ -74,6 +74,7 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
+	-- already in schematic: _vl_foliage_palette = "snowy_taiga",
 })
 
 -- Matchstick spruce: Very few leaves, tall trunk
@@ -91,6 +92,7 @@ vl_biomes.register_decoration({
 		octaves = 5,
 		persist = 0.60,
 	},
+	-- already in schematic: _vl_foliage_palette = "snowy_taiga",
 })
 
 vl_biomes.register_spruce_decoration(11000, 0.00150, "mcl_core_spruce_5.mts", {"ColdTaiga"})

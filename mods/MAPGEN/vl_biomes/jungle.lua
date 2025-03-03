@@ -49,6 +49,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_vl_foliage_palette = "jungle",
 })
 
 -- Huge jungle tree (4 variants)
@@ -63,6 +64,7 @@ for i = 1, 4 do
 		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
+		_vl_foliage_palette = "jungle",
 	})
 end
 
@@ -73,6 +75,7 @@ vl_biomes.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	place_offset_y = 1,
 	fill_ratio = 0.025,
+	_vl_foliage_palette = "jungle",
 })
 
 vl_biomes.register_decoration({
@@ -81,6 +84,7 @@ vl_biomes.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	place_offset_y = 1,
 	fill_ratio = 0.015,
+	_vl_foliage_palette = "jungle",
 })
 
 vl_biomes.register_decoration({
@@ -89,6 +93,7 @@ vl_biomes.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	place_offset_y = 1,
 	fill_ratio = 0.005,
+	_vl_foliage_palette = "jungle",
 })
 
 vl_biomes.register_decoration({
@@ -97,6 +102,7 @@ vl_biomes.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	place_offset_y = 1,
 	fill_ratio = 0.005,
+	_vl_foliage_palette = "jungle",
 })
 
 -- Jungle bush
@@ -114,6 +120,7 @@ vl_biomes.register_decoration({
 		octaves = 4,
 		persist = 0.6,
 	},
+	_vl_foliage_palette = "jungle",
 })
 
 vl_biomes.register_decoration({
@@ -130,4 +137,5 @@ vl_biomes.register_decoration({
 		octaves = 4,
 		persist = 0.6,
 	},
+	_vl_foliage_palette = "jungle",
 })

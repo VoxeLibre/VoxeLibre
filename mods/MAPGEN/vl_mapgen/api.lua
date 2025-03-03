@@ -158,6 +158,32 @@ function vl_mapgen.register_decoration(def, callback)
 	end
 	if def.gen_callback and not def.name then error("gen_callback requires a named decoration.") end
 	if callback then error("Callbacks have been redesigned.") end
+	-- customize foliage colors
+	-- TODO: move into vl_biomes because of dependencies?
+	if def._vl_foliage_palette then
+		if type(def.schematic) ~= "string" then error("Can currently only be used with file schematics.") end
+		local palette_index = def._vl_foliage_palette_index or (vl_biomes and vl_biomes.foliage_palette[def._vl_foliage_palette])
+		-- Load the schema and apply foliage palette
+		local schem = core.read_schematic(def.schematic, {})
+		schem.name = def.schematic -- preserve the file name
+		local cache = {}
+		for _, node in ipairs(schem.data) do
+			local kind = cache[node.name]
+			if kind == nil then
+				local ndef = core.registered_nodes[node.name]
+				kind = ndef and (ndef.groups.foliage_palette and "color")
+				             or (ndef.groups.foliage_palette_wallmounted and "colorwallmounted")
+				             or false
+				cache[node.name] = kind
+			end
+			if kind == "color" then
+				node.param2 = palette_index
+			elseif kind == "colorwallmounted" then
+				node.param2 = palette_index * 8 + (node.param2 % 8)
+			end
+		end
+		def.schematic = schem
+	end
 	if pending_decorations == nil then
 		-- Please do not register decorations in core.register_on_mods_loaded.
 		-- This should usually not happen, but modders may misuse this.
@@ -188,6 +214,10 @@ local function sort_decorations()
 			local sc = string.split(def.schematic:gsub(".mts",""), "/")
 			name = sc[#sc]
 		end
+		if not name and type(def.schematic) == "table" and def.schematic.name then
+			local sc = string.split(def.schematic.name, "/")
+			name = string.format("%s:%04d", sc[#sc], i)
+		end
 		if not name and type(def.schematic) == "table" and def.schematic.data then
 			name = "" -- "serialize" the schematic
 			for _, v in ipairs(def.schematic.data) do
@@ -203,14 +233,17 @@ local function sort_decorations()
 	table.sort(keys)
 	for _, key in ipairs(keys) do
 		local def = map[key]
+		if def.name and core.get_decoration_id(def.name) then
+			core.log("warning", "Decoration ID not unique: "..tostring(def.name or key))
+		end
 		local deco_id = core.register_decoration(def)
 		if not deco_id then
-			error("Failed to register decoration"..tostring(key))
+			error("Failed to register decoration "..tostring(def.name or key).." - name not unique or schematic not found?")
 		end
 		if def.name and def.gen_callback then
 			deco_id = core.get_decoration_id(def.name)
 			if not deco_id then
-				error("Failed to get the decoration id for "..tostring(key))
+				error("Failed to register decoration "..tostring(def.name or key).." - name not unique?")
 			else
 				core.set_gen_notify({decoration = true}, {deco_id})
 				gennotify_map["decoration#" .. deco_id] = def

@@ -232,6 +232,7 @@ local function set_water_palette(minp,maxp,data2,area,nodes)
 	local biomemap = core.get_mapgen_object("biomemap")
 	if not biomemap then return end
 	local aream = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
+	-- FIXME: this relies on the voxelmanip already being written.
 	local nodes = core.find_nodes_in_area(minp, maxp, nodes)
 	local lvm_used = false
 	for n=1, #nodes do
@@ -303,16 +304,12 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 	return lvm_used, lvm_used, deco, ores
 end
 
+-- largely replaced with decoration hack to replace grass nodes
+-- BUT this still happens at the famous y=+48 level because of mapgen overgeneration
 local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 (=color) of nodes which use the grass colour palette.
 	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
 		set_grass_palette(minp,maxp,data2,area,{"group:grass_palette"})
-end
-
-local function block_fixes_foliage(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	-- Set param2 (=color) of nodes which use the foliage colour palette.
-	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
-		set_foliage_palette(minp,maxp,data2,area,{"group:foliage_palette", "group:foliage_palette_wallmounted"})
 end
 
 local function block_fixes_water(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
@@ -339,7 +336,6 @@ vl_mapgen.register_generator("end_fixes", end_basic, nil, 9999, true)
 
 if mg_name ~= "singlenode" then
 	vl_mapgen.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
-	vl_mapgen.register_generator("block_fixes_foliage", block_fixes_foliage, nil, 9999, true)
 	vl_mapgen.register_generator("block_fixes_water", block_fixes_water, nil, 9999, true)
 end
 
@@ -352,7 +348,7 @@ core.register_lbm({
 		local grass_palette_index = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
 		if node.param2 ~= grass_palette_index then
 			node.param2 = grass_palette_index
-			core.set_node(pos, node)
+			core.swap_node(pos, node)
 		end
 	end
 })
@@ -371,14 +367,14 @@ core.register_lbm({
 			core.place_node(vector.offset(pos, 0, 1, 0), node) -- Offset required, since otherwise the leaves sink one node for some reason.
 		elseif node.param2 ~= foliage_palette_index and node.name ~= "mcl_core:vine" then
 			node.param2 = foliage_palette_index
-			core.set_node(pos, node)
+			core.swap_node(pos, node)
 		elseif node.name == "mcl_core:vine" then
 			local biome_param2 = foliage_palette_index
 			local rotation_param2 = mcl_util.get_colorwallmounted_rotation(pos)
 			local final_param2 = (biome_param2 * 8) + rotation_param2
 			if node.param2 ~= final_param2 then
 				node.param2 = final_param2
-				core.set_node(pos, node)
+				core.swap_node(pos, node)
 			end
 		end
 	end
@@ -393,33 +389,7 @@ core.register_lbm({
 		local water_palette_index = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index
 		if node.param2 ~= water_palette_index then
 			node.param2 = water_palette_index
-			core.set_node(pos, node)
+			core.swap_node(pos, node)
 		end
 	end
 })
-
--- We go outside x and y for where trees are placed next to a biome that has already been generated.
--- We go above maxp.y because trees can often get placed close to the top of a generated area and folliage may not
--- be coloured correctly.
-local function fix_foliage_missed(minp, maxp)
-	if maxp.y < 0 then return end
-	local pos1, pos2 = vector.offset(minp, -6, 0, -6), vector.offset(maxp, 6, 14, 6)
-	local foliage = core.find_nodes_in_area(pos1, pos2, {"group:foliage_palette", "group:foliage_palette_wallmounted"})
-	for _, fpos in pairs(foliage) do
-		local fnode = core.get_node(fpos)
-		local foliage_palette_index = mcl_util.get_palette_indexes_from_pos(fpos).foliage_palette_index
-		if fnode.param2 ~= foliage_palette_index and fnode.name ~= "mcl_core:vine" then
-			fnode.param2 = foliage_palette_index
-			core.set_node(fpos, fnode)
-		elseif fnode.name == "mcl_core:vine" then
-			local biome_param2 = foliage_palette_index
-			local rotation_param2 = mcl_util.get_colorwallmounted_rotation(fpos)
-			local final_param2 = (biome_param2 * 8) + rotation_param2
-			if fnode.param2 ~= final_param2 then
-				fnode.param2 = final_param2
-				core.set_node(fpos, fnode)
-			end
-		end
-	end
-end
-vl_mapgen.register_generator("fix_foliage_missed", nil, fix_foliage_missed)
