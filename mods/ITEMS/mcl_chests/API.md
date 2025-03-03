@@ -7,7 +7,7 @@ animations are achieved by giving each chest node an entity, as Luanti (as of
 Because of that, a lot of parameters passed through the exposed functions are
 related to nodes and entities.
 
-Please refer to the [Luanti documentation](http://api.minetest.net/) and code
+Please refer to the [Luanti documentation](http://api.luanti.org/) and code
 comments in `api.lua`.
 
 
@@ -27,9 +27,9 @@ trapped chests.
     -- Will be shown as chest's name in the inventory.
 
     title = {
-        small = S("Stone Chest") -- the same as `desc` if not specified
-        double = S("Large Stone Chest") -- defaults to `"Large " .. desc`
-    }
+        small = S("Stone Chest"), -- the same as `desc` if not specified
+        double = S("Large Stone Chest"), -- defaults to `"Large " .. desc`
+   }
     -- These will be shown when opening the chest (in formspecs).
 
     longdesc = S(
@@ -41,9 +41,9 @@ trapped chests.
     -- Equivalent to `_doc_items_longdesc`, `_doc_items_usagehelp` and
     -- `_tt_help` fields of Item/Node definition. Shown in the tooltip and wiki.
 
-    tiles = { 
-        small = { "vl_stone_chests_small.png" },
-        double = { "vl_stone_chests_double.png" },
+    tiles = {
+        small = {"vl_stone_chests_small.png"},
+        double = {"vl_stone_chests_double.png"},
         inv = {
             "vl_stone_chests_top.png",
             "vl_stone_chests_bottom.png",
@@ -51,8 +51,8 @@ trapped chests.
             "vl_stone_chests_left.png",
             "vl_stone_chests_back.png",
             "vl_stone_chests_front.png"
-        },
-    },
+       },
+   },
     -- `small` and `double` fields contain the textures that will be applied to
     -- chest entities.
     -- `inv` field contains table of textures (6 in total, for each cube side),
@@ -62,14 +62,14 @@ trapped chests.
         pickaxey = 1,
         stone = 1,
         material_stone = 1,
-    },
+   },
     -- Equivalent to `groups` field of Item/Node definition. There is some table
-    -- merging occuring internally, but it is purely for entity rendering.
+    -- merging occurring internally, but it is purely for entity rendering.
 
-    sounds = { 
+    sounds = {
         mcl_sounds.node_sound_stone_defaults(), -- defaults to `nil`
         "vl_stone_chests_sound" -- defaults to `"default_chest"`
-    },
+   },
     -- First value is equivalent to `sounds` field of Item/Node definition.
     -- Second value is a sound prefix, from which the actual sounds will be
     -- concatenated (e.g. `vl_stone_chests_sound_open.ogg`). See `api.lua`.
@@ -81,12 +81,12 @@ trapped chests.
     hidden = false,
     -- Equivalent to `_doc_items_hidden` field of Item/Node definition.
 
-    mesecons = { 
-        receptor = { 
+    mesecons = {
+        receptor = {
             state = mesecon.state.on,
             rules = mesecon.rules.pplate,
-        },
-    },
+       }
+   },
     -- Equivalent to `mesecons` field of Item/Node definition.
 
     on_rightclick = function(pos, node, clicker)
@@ -179,7 +179,7 @@ and is applied in `on_rotate` field of Node definition.
 
 This table contains all currently open chests, indexed by player name.
 
-`nil` if player is not using a chest, and `{ pos = <chest node position> }`
+`nil` if player is not using a chest, and `{pos = <chest node position>}`
 otherwise (where position is a vector value).
 
 
@@ -227,7 +227,7 @@ This function is called when a chest is closed by `player_chest_close`.
 
 ## `mcl_chests.is_not_shulker_box(stack)`
 
-This function checks for whether `stack` is a shulker box, and returns `false`
-if it is. Used internally to disallow putting shulker boxes into shulker boxes.
+This function checks whether `stack` is a shulker box, and returns `false` if
+it is. Used internally to disallow putting shulker boxes into shulker boxes.
 
 * `stack` is an ItemStack.

@@ -9,7 +9,7 @@ The API is documented in `API.md`.
 ## License of source code
 
 Copyright (C) 2011-2012 celeron55, Perttu Ahola <celeron55@gmail.com>\
-Copyright (C) 2024 rudzik8, Mikita Wiśniewski <rudzik8@protonmail.com>
+Copyright (C) 2024-2025 rudzik8, Mikita Wiśniewski <rudzik8@protonmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by

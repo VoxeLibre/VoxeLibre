@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 mcl_chests.register_chest("stone_chest", {
 	desc = S("Stone Chest"),
@@ -13,9 +13,10 @@ mcl_chests.register_chest("stone_chest", {
 	usagehelp = S("To access its inventory, rightclick it. When broken, the items will drop out."),
 	tt_help = S("27 inventory slots") .. "\n" .. S("Can be combined to a large stone chest"),
 	tiles = {
-		small = { mcl_chests.tiles.chest_normal_small[1] .. "^[hsl:-15:-80:-20" },
-		double = { mcl_chests.tiles.chest_normal_double[1] .. "^[hsl:-15:-80:-20" },
-		inv = { "default_chest_top.png^[hsl:-15:-80:-20",
+		small = {mcl_chests.tiles.chest_normal_small[1] .. "^[hsl:-15:-80:-20"},
+		double = {mcl_chests.tiles.chest_normal_double[1] .. "^[hsl:-15:-80:-20"},
+		inv = {
+			"default_chest_top.png^[hsl:-15:-80:-20",
 			"mcl_chests_chest_bottom.png^[hsl:-15:-80:-20",
 			"mcl_chests_chest_right.png^[hsl:-15:-80:-20",
 			"mcl_chests_chest_left.png^[hsl:-15:-80:-20",
@@ -40,11 +41,11 @@ mcl_chests.register_chest("stone_chest", {
 	end,
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_chests:stone_chest",
 	recipe = {
-		{ "mcl_core:stone", "mcl_core:stone", "mcl_core:stone" },
-		{ "mcl_core:stone", "",               "mcl_core:stone" },
-		{ "mcl_core:stone", "mcl_core:stone", "mcl_core:stone" },
+		{"mcl_core:stone", "mcl_core:stone", "mcl_core:stone"},
+		{"mcl_core:stone", "",               "mcl_core:stone"},
+		{"mcl_core:stone", "mcl_core:stone", "mcl_core:stone"},
 	},
 })
