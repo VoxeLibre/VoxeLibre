@@ -65,6 +65,7 @@ for i = 1, 4 do
 			octaves = 3,
 			persist = 0.6
 		},
+		_vl_foliage_palette = "stonebeach",
 	})
 end
 
@@ -81,6 +82,7 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.7
 	},
+	_vl_foliage_palette = "stonebeach",
 })
 
 vl_biomes.register_spruce_decoration(11000, 0.000025, "mcl_core_spruce_5.mts", {"ExtremeHillsM"})

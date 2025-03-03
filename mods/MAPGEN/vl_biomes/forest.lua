@@ -51,6 +51,7 @@ for i = 1, 4 do
 			octaves = 3,
 			persist = 0.66
 		},
+	    _vl_foliage_palette = "forest",
 	})
 end
 
@@ -67,6 +68,7 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
+    _vl_foliage_palette = "forest",
 })
 
 vl_biomes.register_decoration({
@@ -76,6 +78,7 @@ vl_biomes.register_decoration({
 	spawn_by = "group:flower",
 	fill_ratio = 0.00002,
 	rank = 1550, -- after flowers!
+    _vl_foliage_palette = "forest",
 })
 
 -- Rare balloon oak
@@ -91,6 +94,7 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.6,
 	},
+    _vl_foliage_palette = "forest",
 })
 
 -- Birch

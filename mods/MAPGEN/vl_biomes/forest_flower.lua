@@ -52,6 +52,7 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.66
 	},
+    _vl_foliage_palette = "forest",
 })
 
 vl_biomes.register_decoration({
@@ -61,6 +62,7 @@ vl_biomes.register_decoration({
 	fill_ratio = 0.0002,
 	spawn_by = "group:flower",
 	rank = 1550, -- after flowers!
+    _vl_foliage_palette = "forest",
 })
 
 -- Birch

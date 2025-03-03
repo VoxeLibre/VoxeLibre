@@ -72,6 +72,7 @@ vl_biomes.register_decoration({
 	fill_ratio = 0.0065,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
+	-- already in schematic: _vl_foliage_palette = "mangroveswamp",
 })
 
 vl_biomes.register_decoration({
@@ -83,6 +84,7 @@ vl_biomes.register_decoration({
 	fill_ratio = 0.0045,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
+	-- already in schematic: _vl_foliage_palette = "mangroveswamp",
 })
 
 vl_biomes.register_decoration({
@@ -94,6 +96,7 @@ vl_biomes.register_decoration({
 	fill_ratio = 0.023,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
+	-- already in schematic: _vl_foliage_palette = "mangroveswamp",
 })
 
 vl_biomes.register_decoration({
@@ -105,6 +108,7 @@ vl_biomes.register_decoration({
 	fill_ratio = 0.023,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
+	-- already in schematic: _vl_foliage_palette = "mangroveswamp",
 })
 
 vl_biomes.register_decoration({
@@ -116,6 +120,7 @@ vl_biomes.register_decoration({
 	fill_ratio = 0.023,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
+	-- already in schematic: _vl_foliage_palette = "mangroveswamp",
 })
 
 vl_biomes.register_decoration({
@@ -128,6 +133,7 @@ vl_biomes.register_decoration({
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	rank = 1550,
 	gen_callback = mangrove_root_gennotify,
+	-- already in schematic: _vl_foliage_palette = "mangroveswamp",
 })
 
 vl_biomes.register_decoration({

@@ -201,4 +201,5 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.7
 	},
+	_vl_foliage_palette = "badlands",
 })
