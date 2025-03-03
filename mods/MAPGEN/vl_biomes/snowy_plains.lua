@@ -54,6 +54,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	flags = "place_center_x, place_center_z",
 	rotation = "random",
+	_vl_foliage_palette = "snowy_taiga",
 })
 
 -- Rare spruce in Ice Plains
@@ -70,6 +71,7 @@ vl_biomes.register_decoration({
 		octaves = 3,
 		persist = 0.7
 	},
+	-- already in schematic: _vl_foliage_palette = "snowy_taiga",
 })
 
 -- Place tall grass on snow in Ice Plains
