@@ -51,16 +51,27 @@ local function update_cartography_table(player)
 	local addon = inv:get_stack("cartography_table_input", 2)
 	inv:set_stack("cartography_table_output", 1, nil)
 
+	local meta
+	local old_zoom
+	if not map:is_empty() then
+		meta = map:get_meta()
+		old_zoom = meta:get_int("mcl_maps:zoom")
+		if old_zoom < 1 then
+			mcl_maps.convert_legacy_map(map, meta)
+			old_zoom = 1
+		end
+	end
+
 	if not map:is_empty() and addon:get_name() == "mcl_core:paper"
-			and map:get_meta():get_int("mcl_maps:zoom") < mcl_maps.max_zoom
-			and map:get_meta():get_int("mcl_maps:locked") ~= 1 then
+			and old_zoom < mcl_maps.max_zoom
+			and meta :get_int("mcl_maps:locked") ~= 1 then
 		---- Zoom a map
 		formspec = formspec .. "image[5.125,0.5;4,4;mcl_maps_map_background.png]"
 		-- TODO: show half size in appropriate position?
 		if texture then formspec = formspec .. "image[6.25,1.625;1.75,1.75;" .. texture .. "]" end
 		-- zoom will be really applied when taking from the stack
 		-- to not cause unnecessary map generation. But the tooltip should be right already:
-		map:get_meta():set_int("mcl_maps:zoom", map:get_meta():get_int("mcl_maps:zoom") + 1)
+		map:get_meta():set_int("mcl_maps:zoom", old_zoom + 1)
 		tt.reload_itemstack_description(map)
 		inv:set_stack("cartography_table_output", 1, map)
 
