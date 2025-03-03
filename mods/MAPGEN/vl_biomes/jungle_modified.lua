@@ -45,6 +45,7 @@ vl_biomes.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	place_offset_y = 1,
 	fill_ratio = 0.004,
+	_vl_foliage_palette = "jungle",
 })
 
 -- Huge jungle tree (4 variants)
@@ -55,6 +56,7 @@ for i = 1, 4 do
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		fill_ratio = 0.003,
 		y_min = 4,
+		_vl_foliage_palette = "jungle",
 	})
 end
 
@@ -64,6 +66,7 @@ vl_biomes.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	place_offset_y = 1,
 	fill_ratio = 0.09,
+	_vl_foliage_palette = "jungle",
 })
 
 vl_biomes.register_decoration({
@@ -79,4 +82,5 @@ vl_biomes.register_decoration({
 		octaves = 4,
 		persist = 0.6,
 	},
+	_vl_foliage_palette = "jungle",
 })

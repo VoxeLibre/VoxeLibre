@@ -44,6 +44,7 @@ vl_biomes.register_decoration({
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 	place_offset_y = 1,
 	fill_ratio = 0.0004,
+	_vl_foliage_palette = "savanna",
 })
 
 -- Acacia (many variants)
@@ -53,5 +54,6 @@ for a = 1, 7 do
 		schematic = mod_mcl_core .. "/schematics/mcl_core_acacia_" .. a .. ".mts",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
 		fill_ratio = 0.0002,
+		_vl_foliage_palette = "savanna",
 	})
 end
