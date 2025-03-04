@@ -112,6 +112,16 @@ mcl_vars.start_time = start_time
 core.log("action", "VoxeLibre mapgen version = "..format_version(map_version, true).." initial version = "..format_version(map_initial_version, true))
 core.log("action", "World created with Luanti version = "..format_version(luanti_initial_version))
 
+--- Check if biome weighting was available on map creation
+local biome_weights = core.get_mapgen_setting("vl_biome_weights")
+if biome_weights == "true" then biome_weights = true end
+if biome_weights == "false" then biome_weights = false end
+if biome_weights == nil then -- but NOT false
+	biome_weights = start_time == 0 and core.features.biome_weights
+	core.set_mapgen_setting("vl_biome_weights", tostring(biome_weights), true)
+end
+mcl_vars.biome_weights = biome_weights
+
 core.register_chatcommand("ver", {
 	description = S("Display the game version."),
 	func = function(name, params)
