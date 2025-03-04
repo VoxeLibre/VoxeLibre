@@ -4,26 +4,32 @@ local modpath = core.get_modpath(core.get_current_modname())
 
 minetest.log("action", "World seed = " .. minetest.get_mapgen_setting("seed"))
 
--- Get a version number for map generation.
-local map_version = tonumber(core.get_mapgen_setting("vl_world_version") or "")
-if not map_version then
-	-- Try to read gametime *before* initialization
-	-- Primarily to detect when an old world is loaded.
-	local start_time = tonumber(Settings(core.get_worldpath() .. "/env_meta.txt"):get("game_time")) or 0
-	if start_time > 0 then -- old world, assume "0.87 or earlier"
-		map_version = 0.87 -- starting in 0.88, the version should be stored.
-	else
+--- Try to read gametime *before* initialization. Primarily to detect when an old world is loaded.
+local start_time = tonumber(Settings(core.get_worldpath() .. "/env_meta.txt"):get("game_time")) or 0
+
+--- Get a version number for map generation.
+local function parse_version(str)
+	local parts = str:split(".")
+	for i, v in ipairs(parts) do parts[i] = tonumber(v) or v end
+	return parts
+end
+local map_version = parse_version(core.get_mapgen_setting("vl_world_version") or "")
+if #map_version == 0 then
+	if start_time == 0 then
 		local game_version = Settings(core.get_game_info().path .. "/game.conf"):get("version")
-		map_version = game_version and tostring(game_version:match("(%d+%.%d+)"))
-		if not map_version then
-			core.log("warning", "Could not obtain a game version. Fallback to 0.87. "..dump(game_version))
-			map_version = 0.87
+		if game_version then
+			core.set_mapgen_setting("vl_world_version", game_version, true)
+			map_version = parse_version(game_version)
 		end
 	end
-	core.set_mapgen_setting("vl_world_version", map_version, true)
+	if #map_version == 0 then -- old world, assume "0.87 or earlier"
+		core.log("warning", "Could not obtain a game version. Fallback to 0.87. "..dump(game_version))
+		core.set_mapgen_setting("vl_world_version", "0.87", true)
+		map_version = {0, 87}
+	end
 end
 mcl_vars.map_version = map_version -- make available
-core.log("action", "VoxeLibre mapgen version = "..map_version)
+core.log("action", "VoxeLibre mapgen version = "..table.concat(map_version, "."))
 
 mcl_vars.redstone_tick = 0.1
 
