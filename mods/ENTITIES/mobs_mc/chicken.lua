@@ -164,4 +164,4 @@ mcl_mobs:spawn_setup({
 })
 
 -- spawn eggs
-mcl_mobs.register_egg("mobs_mc:chicken", S("Chicken"), "#a1a1a1", "#ff0000", 0)
+mcl_mobs.register_egg("mobs_mc:chicken", S("Chicken"), "#ddc3a8", "#ff0000", 0)
