@@ -16,7 +16,7 @@ local axolotl = {
 	head_bone_position = vector.new( 0, -1, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	head_yaw="z",
-	head_scale = vector.new(1,-1,-1),
+	head_scale = vector.new(-1,-1,1),
 
 	armor = 100,
 	rotate = 180,
