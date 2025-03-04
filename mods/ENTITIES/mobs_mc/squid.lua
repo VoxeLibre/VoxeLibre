@@ -217,4 +217,4 @@ mcl_mobs:spawn_setup({
 })
 
 -- spawn eggs
-mcl_mobs.register_egg("mobs_mc:squid", S("Squid"), "#223b4d", "#708999", 0)
+mcl_mobs.register_egg("mobs_mc:squid", S("Squid"), "#1f3044", "#567695", 0)
