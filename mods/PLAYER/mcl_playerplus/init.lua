@@ -125,8 +125,14 @@ local bone_workaround_scales = {
 	Arm_Left_Pitch_Control = vector.new(1, -1, -1),
 }
 
-local function set_bone_pos(player, bonename, pos, rot)
-	return mcl_util.set_bone_position(player, bonename, pos, rot, bone_workaround_scales[bonename])
+local function set_bone_pos(player, bonename, pos, rot, scale)
+	return mcl_util.set_bone_position(
+		player,
+		bonename,
+		pos,
+		rot,
+		scale or bone_workaround_scales[bonename]
+	)
 end
 
 local set_properties = mcl_util.set_properties
@@ -355,14 +361,14 @@ minetest.register_globalstep(function(dtime)
 		if elytra.active then
 			-- set head pitch and yaw when flying
 			local head_rot = vector.new(pitch - dir_to_pitch(player_velocity) + 0.87, player_vel_yaw - yaw, 0)
-			set_bone_pos(player,"Head_Control", nil, head_rot)
+			set_bone_pos(player, "Head_Control", nil, head_rot)
 
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_elytra)
 
 			-- control body bone when flying
 			local body_rot = vector.new(dir_to_pitch(player_velocity) + 1.92, -player_vel_yaw + yaw, 3.1415)
-			set_bone_pos(player, "Body_Control", nil, body_rot)
+			set_bone_pos(player, "Body_Control", nil, body_rot, vector.new(-1, 1, 1))
 		elseif parent then
 			set_properties(player, player_props_riding)
 			local parent_yaw = parent:get_yaw()
@@ -390,7 +396,7 @@ minetest.register_globalstep(function(dtime)
 
 			-- control body bone when swimming
 			local body_rot = vector.new((1.3 + dir_to_pitch(player_velocity)), player_vel_yaw - yaw, 3.1415)
-			set_bone_pos(player,"Body_Control", nil, body_rot)
+			set_bone_pos(player, "Body_Control", nil, body_rot, vector.new(-1, 1, 1))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "solid") == 0
 		and get_item_group(mcl_playerinfo[name].node_head_top, "solid") == 0 then
 			-- sets eye height, and nametag color accordingly
