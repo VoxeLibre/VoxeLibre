@@ -76,7 +76,7 @@ local function info()
 		local hud = huds[name]
 		if s and not hud then
 			local def = {
-				hud_elem_type = "text",
+				[mcl_vars.hud_type_field] = "text",
 				alignment     = {x = 1, y = -1},
 				scale         = {x = 100, y = 100},
 				position      = {x = 0.0073, y = 0.889},

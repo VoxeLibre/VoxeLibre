@@ -7,6 +7,8 @@ local N = function(s) return s end
 local math = math
 local table = table
 
+local hud_type_field = mcl_vars.hud_type_field
+
 hb = {
     hudtables = {},
     -- number of registered HUD bars
@@ -207,7 +209,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, direction, 
 
 		if hb.settings.bar_type == "progress_bar" then
 			ids.bg = player:hud_add({
-				hud_elem_type = "image",
+				[hud_type_field] = "image",
 				position = pos,
 				scale = bgscale,
 				text = "hudbars_bar_background.png",
@@ -217,7 +219,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, direction, 
 			})
 			if textures.icon then
 				ids.icon = player:hud_add({
-					hud_elem_type = "image",
+					[hud_type_field] = "image",
 					position = pos,
 					scale = iconscale,
 					text = textures.icon,
@@ -250,7 +252,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, direction, 
 		end
 
 		ids.bar = player:hud_add({
-			hud_elem_type = "statbar",
+			[hud_type_field] = "statbar",
 			position = pos,
 			text = bar_image,
 			text2 = text2,
@@ -264,7 +266,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, direction, 
 		})
 		if hb.settings.bar_type == "progress_bar" then
 			ids.text = player:hud_add({
-				hud_elem_type = "text",
+				[hud_type_field] = "text",
 				position = pos,
 				text = text,
 				alignment = {x=1,y=1},

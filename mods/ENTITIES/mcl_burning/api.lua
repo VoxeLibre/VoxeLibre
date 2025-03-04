@@ -56,6 +56,8 @@ function mcl_burning.get_touching_nodes(obj, nodenames, storage)
 	return nodes
 end
 
+local hud_type_field = mcl_vars.hud_type_field
+
 -- Manages the fire animation on a burning player's HUD
 --
 -- Parameters:
@@ -72,7 +74,7 @@ function mcl_burning.update_hud(player)
 	if not storage.fire_hud_id then
 		storage.animation_frame = 1
 		storage.fire_hud_id = player:hud_add({
-			hud_elem_type = "image",
+			[hud_type_field] = "image",
 			position = {x = 0.5, y = 0.5},
 			scale = {x = -100, y = -100},
 			text = hud_flame_animated .. storage.animation_frame,

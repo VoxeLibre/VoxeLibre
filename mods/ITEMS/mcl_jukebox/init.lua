@@ -53,7 +53,7 @@ local function now_playing(player, name)
 		player:hud_change(id, "text", text)
 	else
 		id = player:hud_add({
-			hud_elem_type = "text",
+			[mcl_vars.hud_type_field] = "text",
 			position = { x=0.5, y=0.8 },
 			offset = { x=0, y = 0 },
 			number = 0x55FFFF,

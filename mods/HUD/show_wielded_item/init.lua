@@ -44,7 +44,7 @@ local function set_hud(player)
 	end
 
 	huds[player_name] = player:hud_add({
-		hud_elem_type = "text",
+		[mcl_vars.hud_type_field] = "text",
 		position = {x=0.5, y=1},
 		offset = off,
 		alignment = {x=0, y=0},
