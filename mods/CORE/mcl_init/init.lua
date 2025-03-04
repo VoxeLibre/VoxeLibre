@@ -54,6 +54,16 @@ mcl_vars.map_version = map_version -- make available
 mcl_vars.map_initial_version = map_initial_version -- make available
 core.log("action", "VoxeLibre mapgen version = "..table.concat(map_version, ".").." initial version = "..table.concat(map_initial_version, "."))
 
+--- Check if biome weighting was available on map creation
+local biome_weights = core.get_mapgen_setting("vl_biome_weights")
+if biome_weights == "true" then biome_weights = true end
+if biome_weights == "false" then biome_weights = false end
+if biome_weights == nil then -- but NOT false
+	biome_weights = start_time == 0 and core.features.biome_weights
+	core.set_mapgen_setting("vl_biome_weights", tostring(biome_weights), true)
+end
+mcl_vars.biome_weights = biome_weights
+
 mcl_vars.redstone_tick = 0.1
 
 -- GUI / inventory menu settings
