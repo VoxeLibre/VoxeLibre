@@ -33,7 +33,7 @@ mcl_structures.register_structure("end_shipwreck",{
 		local fr = minetest.find_node_near(pos,def.sidelen,{"mcl_itemframes:frame"})
 		if fr then
 			if mcl_itemframes then
-				mcl_itemframes.update_item_entity(fr,minetest.get_node(fr))
+				mcl_itemframes.update_entity(fr)
 			end
 		end
 		return spawn_shulkers(pos,def,pr)
