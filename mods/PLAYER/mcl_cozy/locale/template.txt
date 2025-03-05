@@ -1,0 +1,8 @@
+# textdomain: mcl_cozy
+Sit down=
+Lay down=
+Move to stand up=
+This spot is already occupied!=
+@1 sits=
+@1 lies=
+@1 stands up=

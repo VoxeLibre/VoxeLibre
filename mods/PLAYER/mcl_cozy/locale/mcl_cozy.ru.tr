@@ -1,0 +1,8 @@
+# textdomain: mcl_cozy
+Sit down=Сесть
+Lay down=Лечь
+Move to stand up=Двиньтесь чтобы встать
+This spot is already occupied!=Это место уже занято!
+@1 sits=@1 сел(а)
+@1 lies=@1 лег(ла)
+@1 stands up=@1 встал(а)

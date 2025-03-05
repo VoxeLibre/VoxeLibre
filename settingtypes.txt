@@ -87,6 +87,14 @@ mcl_craftguide_progressive_mode	(Learn crafting recipes progressively) bool true
 # If disabled, the skin of all players will be character.png
 mcl_enable_skin_customization (Enable player skin customization) bool true
 
+# If enabled, players will be able to sit on stairs and slabs by right-clicking
+# them
+mcl_cozy_sit_on_stairs (Sit on stairs & slabs) bool true
+
+# If enabled, messages like "* player stands up" (in style of /me) will be sent
+# each time a player sits, lays or stands up
+mcl_cozy_print_actions (Print actions) bool false
+
 # How far the player hand can reach
 # Default:4.5
 mcl_hand_range (Hand range) float 4.5 1 128
