@@ -7,10 +7,11 @@
 -- Check for engine updates that allow improvements
 mcl_maps = {}
 
-mcl_maps.max_zoom = (tonumber(core.settings:get("vl_maps_max_zoom")) or 4)
+mcl_maps.max_zoom = tonumber(core.settings:get("vl_maps_max_zoom")) or 3
 mcl_maps.enable_maps = core.settings:get_bool("enable_real_maps", true)
 mcl_maps.allow_nether_maps = core.settings:get_bool("vl_maps_allow_nether", true)
 mcl_maps.map_allow_overlap = core.settings:get_bool("vl_maps_allow_overlap", true) -- 50% overlap allowed in each level
+mcl_maps.map_update_rate = 1 / (tonumber(core.settings:get("vl_maps_map_update_rate")) or 15) -- invert for the globalstep check
 
 local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
@@ -19,14 +20,16 @@ local S = core.get_translator(modname)
 local vector = vector
 local table = table
 local pairs = pairs
-local min, max, round, floor, ceil = math.min, math.max, math.round, math.floor, math.ceil
-local HALF_PI = math.pi * 0.5
+local min, max, round, floor, ceil, abs, pi = math.min, math.max, math.round, math.floor, math.ceil, math.abs, math.pi
+local char = string.char
+local concat = table.concat
 
 local pos_to_string = core.pos_to_string
 local string_to_pos = core.string_to_pos
 local get_item_group = core.get_item_group
 local dynamic_add_media = core.dynamic_add_media
 local get_connected_players = core.get_connected_players
+local get_node_light = core.get_node_light
 local get_node_name_raw = mcl_vars.get_node_name_raw
 
 local storage = core.get_mod_storage()
@@ -47,8 +50,8 @@ local texture_colors = load_json_file("colors")
 local maps_generating, maps_loading = {}, {}
 
 -- Main map generation function, called from emerge
-local function do_generate_map(id, minp, maxp, callback, t1)
-	local t2 = os.clock()
+local function do_generate_map(id, minp, maxp, callback--[[, t1]])
+	--local t2 = os.clock()
 	-- Generate a (usually) 128x128 linear array for the image
 	local pixels = {}
 	local xsize, zsize = maxp.x - minp.x + 1, maxp.z - minp.z + 1
@@ -59,20 +62,20 @@ local function do_generate_map(id, minp, maxp, callback, t1)
 		local last_height
 		for x = 1, xsize, xstep do
 			local map_x = minp.x + x - 1
-			-- color aggregate and height information (for 3D effect)
-			local cagg, height = { 0, 0, 0, 0 }, nil
+			-- Color aggregate and height information (for 3D effect)
+			local cagg, height = {0, 0, 0, 0}, nil
 			local solid_under_air = -1 -- anything but air, actually
 			for map_y = maxp.y, minp.y, -1 do
 				local nodename, _, param2 = get_node_name_raw(map_x, map_y, map_z)
 				if nodename ~= "air" then
 					local color = texture_colors[nodename]
-					-- use param2 if available:
+					-- Use param2 if available:
 					if color and type(color[1]) == "table" then
 						color = color[param2 + 1] or color[1]
 					end
 					if color then
 						if solid_under_air == 0 then
-							cagg, height = { 0, 0, 0, 0 }, nil -- reset
+							cagg, height = {0, 0, 0, 0}, nil -- reset
 							solid_under_air = 1
 						end
 						local alpha = cagg[4] -- 0 (transparent) to 255 (opaque)
@@ -87,10 +90,10 @@ local function do_generate_map(id, minp, maxp, callback, t1)
 							cagg[4] = alpha
 						end
 
-						-- ground estimate with transparent blocks
+						-- Ground estimate with transparent blocks
 						if alpha > 140 and not height then height = map_y end
 						if alpha >= 250 and solid_under_air > 0 then
-							-- adjust color to give a 3d effect
+							-- Adjust color to give a 3D effect
 							if last_height and height then
 								local dheight = max(-48, min((height - last_height) * 8, 48))
 								cagg[1] = cagg[1] + dheight
@@ -105,21 +108,21 @@ local function do_generate_map(id, minp, maxp, callback, t1)
 					solid_under_air = 0 -- first air
 				end
 			end
-			-- clamp colors values to 0:255 for PNG
-			-- because 3d height effect may exceed this range
+			-- Clamp colors values to 0..255 for PNG
+			-- (because 3D height effect may exceed this range)
 			cagg[1] = max(0, min(round(cagg[1]), 255))
 			cagg[2] = max(0, min(round(cagg[2]), 255))
 			cagg[3] = max(0, min(round(cagg[3]), 255))
 			cagg[4] = max(0, min(round(cagg[4]), 255))
-			pixels[#pixels + 1] = string.char(cagg[1], cagg[2], cagg[3], cagg[4])
+			pixels[#pixels + 1] = char(cagg[1], cagg[2], cagg[3], cagg[4])
 			last_height = height
 		end
 	end
 	-- Save as png texture
-	local t3 = os.clock()
+	--local t3 = os.clock()
 	local filename = map_textures_path .. "mcl_maps_map_" .. id .. ".png"
-	core.safe_file_write(filename, core.encode_png(xsize / xstep, zsize / zstep, table.concat(pixels)))
-	local t4 = os.clock()
+	core.safe_file_write(filename, core.encode_png(xsize / xstep, zsize / zstep, concat(pixels)))
+	--local t4 = os.clock()
 	--core.log("action", string.format("Completed map %s after %.2fms (%.2fms emerge, %.2fms map, %.2fms png)", id, (os.clock()-t1)*1000, (t2-t1)*1000, (t3-t2)*1000, (t4-t3)*1000))
 	maps_generating[id] = nil
 	if callback then callback(id, filename) end
@@ -129,13 +132,13 @@ end
 local function emerge_generate_map(id, minp, maxp, callback)
 	if maps_generating[id] then return end
 	maps_generating[id] = true
-	local t1 = os.clock()
+	--local t1 = os.clock()
 	core.emerge_area(minp, maxp, function(blockpos, action, calls_remaining)
 		if calls_remaining > 0 then return end
-		-- do a DOUBLE emerge to give mapgen the chance to place structures triggered by the initial emerge
+		-- Do a DOUBLE emerge to give mapgen the chance to place structures triggered by the initial emerge
 		core.emerge_area(minp, maxp, function(blockpos, action, calls_remaining)
 			if calls_remaining > 0 then return end
-			do_generate_map(id, minp, maxp, callback, t1)
+			do_generate_map(id, minp, maxp, callback--[[, t1]])
 		end)
 	end)
 end
@@ -146,8 +149,8 @@ function mcl_maps.convert_legacy_map(itemstack, meta)
 
 	local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
 	local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
-	cx = minp.x + 64
-	cz = minp.z + 64
+	local cx = minp.x + 64
+	local cz = minp.z + 64
 	meta:set_int("mcl_maps:cx", cx)
 	meta:set_int("mcl_maps:cz", cz)
 	meta:set_int("mcl_maps:zoom", 1)
@@ -159,7 +162,7 @@ end
 local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 	zoom = max(zoom or 1, 1)
 	-- Texture size is 128
-	local size = 64 * (2^zoom)
+	local size = 64 * (2 ^ zoom)
 	local halfsize = size / 2
 
 	local meta = itemstack:get_meta()
@@ -174,7 +177,7 @@ local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 		cz = minp.z + halfsize
 	end
 
-	-- If enabled, round to halfsize grid, otherwise to size grid.
+	-- If enabled, round to halfsize grid, otherwise to size grid
 	if mcl_maps.map_allow_overlap then
 		cx, cz = (floor(cx / halfsize) + 0.5) * halfsize, (floor(cz / halfsize) + 0.5) * halfsize
 	else
@@ -202,7 +205,7 @@ local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 	-- File name conventions, including a unique number in case someone maps the same area twice (old and new)
 	local seq = storage:get_int("next_id")
 	storage:set_int("next_id", seq + 1)
-	local id = table.concat({cx, dim, cz, zoom, seq}, "_")
+	local id = concat({cx, dim, cz, zoom, seq}, "_")
 	local minp = vector.new(cx - halfsize, miny, cz - halfsize)
 	local maxp = vector.new(cx + halfsize - 1, maxy, cz + halfsize - 1)
 
@@ -222,9 +225,9 @@ end
 function mcl_maps.load_map(id, callback)
 	if id == "" or maps_generating[id] then return false end
 
-	-- Use a legacy tga map texture if present
+	-- Use a legacy TGA map texture if present
 	local texture = "mcl_maps_map_texture_"..id..".tga"
-	local f = io.open(worldpath .. DIR_DELIM .. "mcl_maps" .. DIR_DELIM .. texture, "r")
+	local f = io.open(map_textures_path .. texture, "r")
 	if f then
 		f:close()
 	else
@@ -236,7 +239,7 @@ function mcl_maps.load_map(id, callback)
 		return texture
 	end
 
-	-- core.dynamic_add_media() never blocks in Minetest 5.5, callback runs after load
+	-- core.dynamic_add_media() never blocks in Luanti 5.5, callback runs after load
 	-- TODO: send only to the player that needs it!
 	dynamic_add_media(map_textures_path .. texture, function()
 		if not maps_loading[id] then -- avoid repeated callbacks
@@ -274,10 +277,10 @@ local function fill_map(itemstack, placer, pointed_thing)
 
 	if mcl_maps.enable_maps then
 		mcl_title.set(placer, "actionbar", {text=S("It may take a moment for the map to be ready."), color="gold", stay=5*20})
-		local callback = function(id, filename)
+		local new_map = mcl_maps.create_map(placer:get_pos(), 0, function(id, filename)
 			mcl_title.set(placer, "actionbar", {text=S("The new map is now ready."), color="green", stay=3*20})
-		end
-		local new_map = mcl_maps.create_map(placer:get_pos(), 0, callback)
+		end)
+
 		itemstack:take_item()
 		if itemstack:is_empty() then return new_map end
 		local inv = placer:get_inventory()
@@ -297,7 +300,15 @@ core.register_craftitem("mcl_maps:empty_map", {
 	inventory_image = "mcl_maps_map_empty.png",
 	on_place = fill_map,
 	on_secondary_use = fill_map,
-	stack_max = 64,
+})
+
+core.register_craft({
+	output = "mcl_maps:empty_map",
+	recipe = {
+		{"mcl_core:paper", "mcl_core:paper", "mcl_core:paper"},
+		{"mcl_core:paper", "group:compass",  "mcl_core:paper"},
+		{"mcl_core:paper", "mcl_core:paper", "mcl_core:paper"},
+	}
 })
 
 local filled_def = {
@@ -306,16 +317,17 @@ local filled_def = {
 	_doc_items_longdesc = S("When created, the map saves the nearby area as an image that can be viewed any time by holding the map."),
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
-	stack_max = 64,
-	groups = { not_in_creative_inventory = 1, filled_map = 1, tool = 1 },
+	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1},
 }
 
 core.register_craftitem("mcl_maps:filled_map", filled_def)
 
+-- Only nodes can have meshes, which means that all player hands are nodes
+-- Thus, to render a map over a player hand, we have to register nodes for this too
 local filled_wield_def = table.copy(filled_def)
 filled_wield_def.use_texture_alpha = core.features.use_texture_alpha_string_modes and "opaque" or false
 filled_wield_def.visual_scale = 1
-filled_wield_def.wield_scale = { x = 1, y = 1, z = 1 }
+filled_wield_def.wield_scale = vector.new(1, 1, 1)
 filled_wield_def.paramtype = "light"
 filled_wield_def.drawtype = "mesh"
 filled_wield_def.node_placement_prediction = ""
@@ -323,7 +335,6 @@ filled_wield_def.on_place = mcl_util.call_on_rightclick
 filled_wield_def._mcl_wieldview_item = "mcl_maps:filled_map"
 
 local mcl_skins_enabled = core.global_exists("mcl_skins")
-
 if mcl_skins_enabled then
 	-- Generate a node for every skin
 	local list = mcl_skins.get_skin_list()
@@ -332,27 +343,28 @@ if mcl_skins_enabled then
 			local female = table.copy(filled_wield_def)
 			female._mcl_hand_id = skin.id
 			female.mesh = "mcl_meshhand_female.b3d"
-			female.tiles = { skin.texture }
+			female.tiles = {skin.texture}
 			core.register_node("mcl_maps:filled_map_" .. skin.id, female)
 		else
 			local male = table.copy(filled_wield_def)
 			male._mcl_hand_id = skin.id
 			male.mesh = "mcl_meshhand.b3d"
-			male.tiles = { skin.texture }
+			male.tiles = {skin.texture}
 			core.register_node("mcl_maps:filled_map_" .. skin.id, male)
 		end
 	end
 else
 	filled_wield_def._mcl_hand_id = "hand"
 	filled_wield_def.mesh = "mcl_meshhand.b3d"
-	filled_wield_def.tiles = { "character.png" }
+	filled_wield_def.tiles = {"character.png"}
 	core.register_node("mcl_maps:filled_map_hand", filled_wield_def)
 end
 
+-- Avoid dropping detached hands with held maps
 local old_add_item = core.add_item
 function core.add_item(pos, stack)
 	if not pos then
-		core.log("warning", "Trying to add item with missing pos: " .. tostring(stack))
+		core.log("warning", "Trying to add item with missing pos: " .. dump(stack))
 		return
 	end
 	stack = ItemStack(stack)
@@ -362,6 +374,7 @@ function core.add_item(pos, stack)
 	return old_add_item(pos, stack)
 end
 
+-- Zoom level tooltip
 tt.register_priority_snippet(function(itemstring, _, itemstack)
 	if itemstack and get_item_group(itemstring, "filled_map") > 0 then
 		local zoom = itemstack:get_meta():get_string("mcl_maps:zoom")
@@ -371,19 +384,11 @@ tt.register_priority_snippet(function(itemstring, _, itemstack)
 	end
 end)
 
-core.register_craft({
-	output = "mcl_maps:empty_map",
-	recipe = {
-		{ "mcl_core:paper", "mcl_core:paper", "mcl_core:paper" },
-		{ "mcl_core:paper", "group:compass",  "mcl_core:paper" },
-		{ "mcl_core:paper", "mcl_core:paper", "mcl_core:paper" },
-	}
-})
-
+-- Support copying maps as a crafting recipe
 core.register_craft({
 	type = "shapeless",
 	output = "mcl_maps:filled_map 2",
-	recipe = { "group:filled_map", "mcl_maps:empty_map" },
+	recipe = {"group:filled_map", "mcl_maps:empty_map"},
 })
 
 local function on_craft(itemstack, player, old_craft_grid, craft_inv)
@@ -400,6 +405,7 @@ end
 core.register_on_craft(on_craft)
 core.register_craft_predict(on_craft)
 
+-- Render handheld maps as part of HUD overlay
 local maps = {}
 local huds = {}
 
@@ -407,13 +413,13 @@ core.register_on_joinplayer(function(player)
 	local map_def = {
 		[mcl_vars.hud_type_field] = "image",
 		text = "blank.png",
-		position = { x = 0.75, y = 0.8 },
-		alignment = { x = 0, y = -1 },
-		offset = { x = 0, y = 0 },
-		scale = { x = 2, y = 2 },
+		position = {x = 0.75, y = 0.8},
+		alignment = {x = 0, y = -1},
+		offset = {x = 0, y = 0},
+		scale = {x = 2, y = 2},
 	}
 	local marker_def = table.copy(map_def)
-	marker_def.alignment = { x = 0, y = 0 }
+	marker_def.alignment = {x = 0, y = 0}
 	huds[player] = {
 		map = player:hud_add(map_def),
 		marker = player:hud_add(marker_def),
@@ -425,7 +431,14 @@ core.register_on_leaveplayer(function(player)
 	huds[player] = nil
 end)
 
+local etime = 0
 core.register_globalstep(function(dtime)
+	etime = etime + dtime
+	if etime < mcl_maps.map_update_rate then
+		return
+	end
+	etime = 0
+
 	for _, player in pairs(get_connected_players()) do
 		local wield = player:get_wielded_item()
 		local texture = mcl_maps.load_map_item(wield)
@@ -439,45 +452,56 @@ core.register_globalstep(function(dtime)
 				player:set_wielded_item(wield)
 			end
 
-			-- change map only when necessary
-			if not maps[player] or texture ~= maps[player][1] then
-				player:hud_change(hud.map, "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture)
+			local pos = player:get_pos() -- was: vector.round(player:get_pos())
+			local light = get_node_light(vector.offset(pos, 0, 0.5, 0)) or 0
+
+			-- Change map only when necessary
+			if not maps[player] or texture ~= maps[player][1] or light ~= maps[player][4] then
+				local light_overlay = "^[colorize:black:" .. 255 - (light * 17)
+				player:hud_change(hud.map, "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. texture .. light_overlay)
 				local meta = wield:get_meta()
 				local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
 				local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
-				maps[player] = {texture, minp, maxp}
+				maps[player] = {texture, minp, maxp, light}
 			end
 
-			-- map overlay with player position
-			local pos = player:get_pos() -- was: vector.round(player:get_pos())
+			-- Map overlay with player position
 			local minp, maxp = maps[player][2], maps[player][3]
 
 			-- Use dots when outside of map, indicate direction
-			local marker = "mcl_maps_player_arrow.png"
+			local marker
 			if pos.x < minp.x then
-				marker = "mcl_maps_player_dot.png"
+				marker = abs(minp.x - pos.x) < 256 and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
 				pos.x = minp.x
 			elseif pos.x > maxp.x then
-				marker = "mcl_maps_player_dot.png"
+				marker = abs(pos.x - maxp.x) < 256 and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
 				pos.x = maxp.x
 			end
 
+			-- Never override the small marker
 			if pos.z < minp.z then
-				marker = "mcl_maps_player_dot.png"
+				marker = (abs(minp.z - pos.z) < 256 and marker ~= "mcl_maps_player_dot.png")
+					and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
 				pos.z = minp.z
 			elseif pos.z > maxp.z then
-				marker = "mcl_maps_player_dot.png"
+				marker = (abs(pos.z - maxp.z) < 256 and marker ~= "mcl_maps_player_dot.png")
+					and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
 				pos.z = maxp.z
 			end
 
-			if marker == "mcl_maps_player_arrow.png" then
-				local yaw = (floor(player:get_look_horizontal() / HALF_PI + 0.5) % 4) * 90
-				marker = marker .. "^[transformR" .. yaw
+			-- Default to yaw-based player arrow
+			if not marker then
+				local yaw = (floor(player:get_look_horizontal() * 180 / pi / 45 + 0.5) % 8) * 45
+				if yaw == 0 or yaw == 90 or yaw == 180 or yaw == 270 then
+					marker = "mcl_maps_player_arrow.png^[transformR" .. yaw
+				else
+					marker = "mcl_maps_player_arrow_diagonal.png^[transformR" .. (yaw - 45)
+				end
 			end
 
 			-- Note the alignment and scale used above
 			local f = 2 * 128 / (maxp.x - minp.x + 1)
-			player:hud_change(hud.marker, "offset", { x = (pos.x - minp.x) * f - 128, y = (maxp.z - pos.z) * f - 256 })
+			player:hud_change(hud.marker, "offset", {x = (pos.x - minp.x) * f - 128, y = (maxp.z - pos.z) * f - 256})
 			player:hud_change(hud.marker, "text", marker)
 
 		elseif maps[player] then -- disable map
