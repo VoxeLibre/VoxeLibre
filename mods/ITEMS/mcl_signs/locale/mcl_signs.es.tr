@@ -1,4 +1,5 @@
 # textdomain: mcl_signs
+##[ api.lua ]##
 Can be written=Los letreros se pueden escribir
 Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Los letreros se pueden escribir y vienen en dos variantes: letrero de muro y letrero en un poste de letrero. Los letreros se pueden colocar en la parte superior y en los costados de otros bloques, pero no debajo de ellos.
 After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=
@@ -8,6 +9,7 @@ Enter sign text:=Inserte el texto del letrero:
 Maximum line length: @1=Longitud máxima de línea: @1
 Maximum lines: @1=Líneas máximas: @1
 Done=Escribir cartel
+##[ register.lua ]##
 Oak Sign=Signo de roble
 Dark Oak Sign=Signo de roble oscuro
 Acacia Sign= Signo de acacia
