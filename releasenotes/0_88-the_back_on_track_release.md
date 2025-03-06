@@ -145,7 +145,7 @@ Map (from the map item) colors have been improved by kno10, who also added to th
 * Utilize new Luanti bone APIs – by kno10
 * Fix trees being cut in half by cavegen – by kno10
 * Save world creation game version in the world – by kno10
-* Fixed minor definition bugs concerning lighting – by kno10
+* Fixed minor definition bugs concerning lighting – adapted from MCLA (goblin_mode)
 * Optimized crying obsidian particles creation – by kno10
 * Stonecutter GUI background texture – by SmokeyDope
 * Documentation fixes – by tacotexmex, rudzik8, teknomunk, Nicu
