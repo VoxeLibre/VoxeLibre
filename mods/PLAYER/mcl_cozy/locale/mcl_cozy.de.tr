@@ -1,0 +1,12 @@
+# textdomain: mcl_cozy
+Sit down=Hinsetzen
+@1 sits=@1 sitzt
+You can't sit, the block's too far away!=Du kannst dich nicht hinsetzen, der Block ist zu weit entfernt!
+You have to stop moving before sitting down!=Du musst stehenbleiben, bevor du dich hinsetzen kannst!
+Lie down=Hinlegen
+@1 lies=@1 liegt
+You can't lay, the block's too far away!=Du kannst dich nicht hinlegen, der Block ist zu weit entfernt!
+You have to stop moving before lying down!=Du musst anhalten, bevor du dich hinlegen kannst!
+@1 stands up=@1 steht auf
+Move to stand up=Bewege dich um aufzustehen
+This block is already occupied!=Dieser Block ist bereits besetzt.
