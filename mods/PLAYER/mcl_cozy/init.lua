@@ -16,6 +16,13 @@ local ACTION_APPLY_DELAY = 0.05
 mcl_cozy = {}
 mcl_cozy.players = {}
 
+-- backwards compatibility
+mcl_cozy.pos = setmetatable({}, {
+	__index = function(_, name)
+		return mcl_cozy.players[name] and mcl_cozy.players[name][1]
+	end
+})
+
 -- TODO: when the API is more polished and there is demand, un-internalize this
 local actions = {
 	["sit"] = {
