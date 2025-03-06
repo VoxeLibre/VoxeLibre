@@ -14,7 +14,7 @@ local PLAYERSP_THRESHOLD = 0.1
 local ACTION_APPLY_DELAY = 0.05
 
 mcl_cozy = {}
-mcl_cozy.pos = {}
+mcl_cozy.players = {}
 
 -- TODO: when the API is more polished and there is demand, un-internalize this
 local actions = {
@@ -93,7 +93,7 @@ function mcl_cozy.stand_up(player)
 	playerphysics.remove_physics_factor(player, "jump", "mcl_cozy:attached")
 	set_attach(player, false)
 	mcl_player.player_set_animation(player, "stand", 30)
-	mcl_cozy.pos[name] = nil
+	mcl_cozy.players[name] = nil
 	mcl_cozy.print_action(name, "stand")
 end
 
@@ -108,14 +108,18 @@ for action, def in pairs(actions) do
 		local ppos = player:get_pos()
 
 		-- check attachment
-		if is_attached(player) then
-			mcl_cozy.pos[name] = nil
+		if is_attached(player)
+				and (not mcl_cozy.players[name] or mcl_cozy.players[name][2] == action) then
 			mcl_cozy.stand_up(player)
 			return
 		end
 
 		local delay = 0
 		if pos then
+			-- check space above
+			if core.registered_nodes[core.get_node(vector.offset(pos, 0, 1, 0)).name].walkable then
+				return
+			end
 			-- check distance
 			if vector.distance(pos, ppos) > DISTANCE_THRESHOLD then
 				mcl_cozy.actionbar_show_status(player, def.message.actionbar.distance_fail)
@@ -127,8 +131,8 @@ for action, def in pairs(actions) do
 				return
 			end
 			-- check if occupied
-			for _, other_pos in pairs(mcl_cozy.pos) do
-				if vector.distance(pos, other_pos) < PLAYERSP_THRESHOLD then
+			for _, other in pairs(mcl_cozy.players) do
+				if vector.distance(pos, other[1]) < PLAYERSP_THRESHOLD then
 					mcl_cozy.actionbar_show_status(player,
 						def.message.actionbar.occupancy_fail or S("This block is already occupied!"))
 					return
@@ -177,7 +181,7 @@ for action, def in pairs(actions) do
 		playerphysics.add_physics_factor(player, "jump", "mcl_cozy:attached", 0)
 
 		set_attach(player, true)
-		mcl_cozy.pos[name] = pos
+		mcl_cozy.players[name] = {pos, action}
 
 		core.after(delay, function()
 			if player then
@@ -206,7 +210,7 @@ core.register_globalstep(function(dtime)
 		local name = player:get_player_name()
 		local ctrl = player:get_player_control()
 
-		if mcl_cozy.pos[name] then
+		if mcl_cozy.players[name] then
 			-- unmount when player tries to move
 			if (ctrl.up == true or ctrl.down == true or
 					ctrl.left == true or ctrl.right == true or
@@ -225,7 +229,7 @@ core.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	playerphysics.remove_physics_factor(player, "speed", "mcl_cozy:attached")
 	playerphysics.remove_physics_factor(player, "jump", "mcl_cozy:attached")
-	mcl_cozy.pos[name] = nil
+	mcl_cozy.players[name] = nil
 end)
 
 if core.get_modpath("mcl_stairs") and mcl_cozy_sit_on_stairs then
