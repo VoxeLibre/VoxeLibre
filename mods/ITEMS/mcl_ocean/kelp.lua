@@ -18,10 +18,10 @@ local mt_registered_items = minetest.registered_items
 local mt_registered_nodes = minetest.registered_nodes
 
 -- functions
-local mt_log = minetest.log
 local mt_add_item = minetest.add_item
 local mt_get_item_group = minetest.get_item_group
 local mt_get_node = minetest.get_node
+local mcl_get_node_name = mcl_vars.get_node_name
 local mt_get_node_level = minetest.get_node_level
 local mt_get_node_max_level = minetest.get_node_max_level
 local mt_get_node_or_nil = minetest.get_node_or_nil
@@ -35,13 +35,9 @@ local mt_record_protection_violation = minetest.record_protection_violation
 local mt_is_creative_enabled = minetest.is_creative_enabled
 local mt_sound_play = minetest.sound_play
 
-local math = math
---local string = string
-local table = table
-
--- DEBUG: functions
--- local log = minetest.log
--- local chatlog = minetest.chat_send_all
+local min = math.min
+local random = math.random
+local rshift, band = bit.rshift, bit.band
 
 --------------------------------------------------------------------------------
 -- Kelp API
@@ -53,6 +49,10 @@ mcl_ocean.kelp = kelp
 -- Once reach the maximum, kelp no longer grows.
 kelp.MIN_AGE = 0
 kelp.MAX_AGE = 25
+
+-- Named constant for maximum height the engine allows kelp to grow
+local MAX_HEIGHT = 16
+kelp.MAX_HEIGHT = MAX_HEIGHT
 
 kelp.TICK = 0.2 -- Tick interval (in seconds) for updating kelp.
 
@@ -82,26 +82,23 @@ end
 -- Returns the liquidtype, if indeed water.
 function kelp.is_submerged(node)
 	local g = mt_get_item_group(node.name, "water")
-	if g > 0 and g <= 3  then
-		-- Expected only "source" and "flowing" from water liquids
-		return mt_registered_nodes[node.name].liquidtype
-	end
-	return false
+	-- Expected only "source" and "flowing" from water liquids
+	return g > 0 and g <= 3 and mt_registered_nodes[node.name].liquidtype
 end
 
 
 -- Is the water downward flowing?
 -- (kelp can grow/be placed inside downward flowing water)
-function kelp.is_downward_flowing(pos, node, pos_above, node_above, __is_above__)
+function kelp.is_downward_flowing(pos, node, pos_above, node_above, is_above)
 	-- Function params: (pos[, node]) or (node, pos_above) or (node, node_above)
 	local node = node or mt_get_node(pos)
 
-	local result = (math.floor(node.param2 / 8) % 2) == 1
-	if not (result or __is_above__) then
+	local result = band(rshift(node.param2, 3), 1) == 1
+	if not result and not is_above then
 		-- If not, also check node above.
 		-- (this is needed due a weird quirk in the definition of "downwards flowing"
 		-- liquids in Luanti)
-		local pos_above = pos_above or {x=pos.x,y=pos.y+1,z=pos.z}
+		local pos_above = pos_above or vector.offset(pos, 0, 1, 0)
 		local node_above = node_above or mt_get_node(pos_above)
 		result = kelp.is_submerged(node_above)
 			or kelp.is_downward_flowing(nil, node_above, nil, nil, true)
@@ -124,7 +121,7 @@ function kelp.is_falling(pos, node, is_falling, pos_bottom, node_bottom, def_bot
 		return false
 	end
 
-	local pos_bottom = pos_bottom or {x = pos.x, y = pos.y - 1, z = pos.z}
+	local pos_bottom = pos_bottom or vector.offset(pos, 0, -1, 0)
 	-- get_node_or_nil: Only fall if node below is loaded
 	local node_bottom = node_bottom or mt_get_node_or_nil(pos_bottom)
 	local nodename_bottom = node_bottom.name
@@ -153,18 +150,10 @@ function kelp.is_falling(pos, node, is_falling, pos_bottom, node_bottom, def_bot
 end
 
 
--- Roll whether to grow kelp or not.
-function kelp.roll_growth(numerator, denominator)
-	-- Optional params: numerator, denominator
-	--return math.random(denominator or kelp.ROLL_GROWTH_DENOMINATOR) <= (numerator or kelp.ROLL_GROWTH_NUMERATOR)
-	return true -- probability done by ABM
-end
-
-
 -- Roll initial age for kelp.
 function kelp.roll_init_age(min, max)
 	-- Optional params
-	return math.random(min or kelp.MIN_AGE, (max or kelp.MAX_AGE)-1)
+	return random(min or kelp.MIN_AGE, (max or kelp.MAX_AGE)-1)
 end
 
 
@@ -172,7 +161,7 @@ end
 -- For the special case where the max param2 is reached, interpret that as the
 -- 16th kelp stem.
 function kelp.get_height(param2)
-	return math.floor(param2 / 16) + math.floor(param2 % 16 / 8)
+	return rshift(param2, 4) + band(rshift(param2, 3), 1)
 end
 
 
@@ -180,7 +169,7 @@ end
 function kelp.get_tip(pos, height)
 	-- Optional params: height
 	local height = height or kelp.get_height(mt_get_node(pos).param2)
-	local pos_tip = {x=pos.x, y=pos.y+height+1, z=pos.z}
+	local pos_tip = vector.offset(pos, 0, height + 1, 0)
 	return pos_tip, mt_get_node(pos_tip), height
 end
 
@@ -189,12 +178,11 @@ end
 function kelp.find_unsubmerged(pos, node, height)
 	-- Optional params: node, height
 	local node = node or mt_get_node(pos)
-	local height = height or ((node.param2 >= 0 and node.param2 < 16) and 1) or kelp.get_height(node.param2)
+	local height = height or (node.param2 < 16 and 1) or kelp.get_height(node.param2)
 
-	local walk_pos = {x=pos.x, z=pos.z}
-	local y = pos.y
+	local walk_pos = vector.copy(pos)
 	for i=1,height do
-		walk_pos.y = y + i
+		walk_pos.y = pos.y + i
 		local walk_node = mt_get_node(walk_pos)
 		if walk_node.name ~= "ignore" and not kelp.is_submerged(walk_node) then
 			return walk_pos, walk_node, height, i
@@ -207,43 +195,30 @@ end
 -- Obtain next param2.
 function kelp.next_param2(param2)
 	-- param2 max value is 255, so adding to 256 causes overflow.
-	return math.min(param2+16 - param2 % 16, 255);
+	return min(param2 + 16 - band(param2, 0xF), 255);
 end
 
-local function store_age (pos, age)
+local function store_age(pos, age)
 	if pos then
 		--minetest.log("age: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 		mt_get_meta(pos):set_int("mcl_ocean:kelp_age", age)
 	end
 end
 
-local function retrieve_age (pos)
+local function retrieve_age(pos)
 	local meta = mt_get_meta(pos)
 	local age_set = meta:contains("mcl_ocean:kelp_age")
-	if not age_set then
-		return nil
-	end
-
-	local age = meta:get_int("mcl_ocean:kelp_age")
-	--minetest.log("age: " .. tostring(age))
-	return age
+	return age_set and meta:get_int("mcl_ocean:kelp_age") or nil
 end
 
 -- Initialise a kelp's age.
 function kelp.init_age(pos)
-	-- Watched params: pos
-	-- Optional params: age, from_lbm
-
 	local age = retrieve_age(pos)
-
 	if not age then
 		age = kelp.roll_init_age()
 		--minetest.log("no kelp age set so init with: " .. tostring(new_age))
 		store_age(pos, age)
-	else
-		--minetest.log("stored_age: " .. tostring(age))
 	end
-
 	return age
 end
 
@@ -305,10 +280,9 @@ end
 function kelp.detach_drop(pos, height)
 	-- Optional params: height
 	local height = height or kelp.get_height(mt_get_node(pos).param2)
-	local y = pos.y
-	local walk_pos = {x=pos.x, z=pos.z}
+	local walk_pos = vector.copy(pos)
 	for i=1,height do
-		walk_pos.y = y+i
+		walk_pos.y = pos.y + i
 		mt_add_item(walk_pos, "mcl_ocean:kelp")
 	end
 	return true
@@ -334,8 +308,7 @@ function kelp.detach_dig(dig_pos, pos, drop, node, height)
 		end
 		mt_set_node(pos, {
 			name=mt_registered_nodes[node.name].node_dig_prediction,
-			param=node.param,
-			param2=0 })
+			param=node.param, param2=0 })
 
 	-- Digs the kelp beginning at a height.
 	else
@@ -372,6 +345,27 @@ local function detach_unsubmerged(pos)
 	end
 end
 
+function kelp.remove_kelp_below_structure(minp, maxp)
+	local minp = vector.offset(minp, 0, -MAX_HEIGHT - 1, 0)
+	local kelp_pos_list,_ = core.find_nodes_in_area(minp, maxp, {"group:kelp"})
+
+	for _,kelp_pos in ipairs(kelp_pos_list) do
+		local kelp_node = core.get_node(kelp_pos)
+
+		-- Convert kelp back to normal node
+		local dig_pos,_,_,new_height = kelp.find_unsubmerged(kelp_pos, kelp_node)
+		if dig_pos then
+			new_height = new_height - 1
+			if new_height <= 0 then
+				kelp_node.name = core.registered_nodes[kelp_node.name].node_dig_prediction
+			else
+				kelp_node.param2 = 16 * new_height
+			end
+			core.swap_node(kelp_pos, kelp_node)
+		end
+	end
+end
+
 local function grow_kelp (pos)
 	local node = mt_get_node(pos)
 	local age = retrieve_age(pos)
@@ -384,13 +378,10 @@ local function grow_kelp (pos)
 	if kelp.is_age_growable(age) then
 		--minetest.log("age growable: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 		kelp.next_grow(age+1, pos, node)
-	else
-		--minetest.log("age not: ".. tostring(age) .. ", pos: ".. mt_pos_to_string(pos))
 	end
 end
 
 function kelp.surface_on_construct(pos)
-	--minetest.log("on construct kelp called")
 	kelp.init_age(pos)
 end
 
@@ -435,7 +426,7 @@ function kelp.kelp_on_place(itemstack, placer, pointed_thing)
 	-- Protection
 	if mt_is_protected(pos_under, player_name) or
 			mt_is_protected(pos_above, player_name) then
-		mt_log("action", player_name
+		minetest.log("action", player_name
 			.. " tried to place " .. itemstack:get_name()
 			.. " at protected position "
 			.. mt_pos_to_string(pos_under))
