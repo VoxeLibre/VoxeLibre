@@ -3,20 +3,12 @@ Item frames are decorative blocks in which items can be placed.=Artikelrahmen si
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Platzieren Sie einfach einen beliebigen Gegenstand auf dem Gegenstandsrahmen. Verwenden Sie den Artikelrahmen erneut, um den Artikel abzurufen.
 ##[ register.lua ]##
 Item Frame=Gegenstandsrahmen
-Can hold an item=
-Glow Item Frame=
-Can hold an item and glows=
-Invisible Item Frame=
-Can hold an item but is invisible=
-Invisible Glow Item Frame=
-Can hold an item and glows but is invisible=
+Can hold an item=Kann einen Gegenstand enthalten.
+Glow Item Frame=Leuchtender Gegenstandsrahmen
+Can hold an item and glows=Kann einen Gegenstand enthalten und leuchtet.
+Invisible Item Frame=Unsichtbarer Gegenstandsrahmen
+Can hold an item but is invisible=Kann einen Gegenstand enthalten, aber ist unsichtbar.
+Invisible Glow Item Frame=Unsichtbarer, leuchtender Gegenstandsrahmen
+Can hold an item and glows but is invisible=Kann einen Gegenstand enthalten und beleuchten, ist aber unsichtbar.
 Glow and Behold!=Leuchte und staune!
 Craft a glow item frame.=Erzeuge einen leuchtenden Gegenstandsrahmen
-
-
-##### not used anymore #####
-
-Can hold an item.=Kann einen Gegenstand halten.
-Can hold an item and glows.=Kann einen Gegenstand halten und leuchtet.
-Glowing Item Frame=Leuchtender Gegenstandsrahmen
-Glowing item frames are decorative blocks in which items can be placed and made to glow.=Leuchtende Gegenstandsrahmen sind dekorative Blöcke, in denen Gegenstände platziert und zum Leuchten gebracht werden können.
