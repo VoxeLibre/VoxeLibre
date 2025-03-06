@@ -298,5 +298,5 @@ mcl_mobs:spawn_setup({
 mcl_mobs:non_spawn_specific("mobs_mc:cave_spider","overworld",0,7)
 
 -- spawn eggs
-mcl_mobs.register_egg("mobs_mc:spider", S("Spider"), "#342d26", "#a80e0e", 0)
-mcl_mobs.register_egg("mobs_mc:cave_spider", S("Cave Spider"), "#0c424e", "#a80e0e", 0)
+mcl_mobs.register_egg("mobs_mc:spider", S("Spider"), "#422923", "#f15d22", 0)
+mcl_mobs.register_egg("mobs_mc:cave_spider", S("Cave Spider"), "#2a2027", "#f15d22", 0)
