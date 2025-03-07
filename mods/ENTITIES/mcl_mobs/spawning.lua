@@ -620,11 +620,13 @@ function mcl_mobs.spawn(pos,id)
 	end
 	local start_time = core.get_us_time()
 	local obj = core.add_entity(pos, def.name)
+	if not obj then return end
+
 	--note = "spawned a mob"
 	exclude_time = exclude_time + core.get_us_time() - start_time
 	-- initialize head bone
 	if def.head_swivel and def.head_bone_position then
-		if obj and obj.get_bone_override then -- minetest >= 5.9
+		if obj.get_bone_override then -- minetest >= 5.9
 			obj:set_bone_override(def.head_swivel, {
 				position = { vec = def.head_bone_position, absolute = true },
 				rotation = { vec = vector.zero(), absolute = true }
