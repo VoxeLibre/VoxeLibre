@@ -1,4 +1,6 @@
 local S = core.get_translator(core.get_current_modname())
+local N = function(s) return s end
+
 local mcl_cozy_sit_on_stairs = core.settings:get_bool("mcl_cozy_sit_on_stairs", true)
 local mcl_cozy_print_actions = core.settings:get_bool("mcl_cozy_print_actions", false)
 
@@ -9,14 +11,14 @@ local DISTANCE_THRESHOLD = 3
 local VELOCITY_THRESHOLD = 0.125
 local PLAYERSP_THRESHOLD = 0.1
 
--- used to partially avoid a race condition(?) causing the player animation to not be set properly when mounting onto
--- a block (e.g. stair)
+-- used to partially avoid a race condition(?) causing the player animation to
+-- not be set properly when mounting onto a block (e.g. stair)
 local ACTION_APPLY_DELAY = 0.05
 
 mcl_cozy = {}
 mcl_cozy.players = {}
 
--- backwards compatibility
+-- backwards compatibility w/ mcl_cozy 3.0.0
 mcl_cozy.pos = setmetatable({}, {
 	__index = function(_, name)
 		return mcl_cozy.players[name] and mcl_cozy.players[name][1]
@@ -28,7 +30,7 @@ local actions = {
 	["sit"] = {
 		description = S("Sit down"),
 		message = {
-			chat = "@1 sits",
+			chat = N("@1 sits"),
 			actionbar = {
 				distance_fail = S("You can't sit, the block's too far away!"),
 				movement_fail = S("You have to stop moving before sitting down!"),
@@ -42,7 +44,7 @@ local actions = {
 	["lay"] = {
 		description = S("Lie down"),
 		message = {
-			chat = "@1 lies",
+			chat = N("@1 lies"),
 			actionbar = {
 				distance_fail = S("You can't lay, the block's too far away!"),
 				movement_fail = S("You have to stop moving before lying down!"),
@@ -64,22 +66,21 @@ end
 local function is_air_below(player)
 	return mcl_playerinfo[player:get_player_name()].node_stand == "air"
 end
---[[if mcl_player.players then
-	is_attached = function(player)
-		return mcl_player.players[player].attached
-	end
-	set_attach = function(player, bool)
-		mcl_player.players[player].attached = bool
-	end
-	is_air_below = function(player)
-		return mcl_player.players[player].nodes.stand == "air"
-	end
+--[[ for MCLA's mcl_player rewrite
+local function is_attached(player)
+	return mcl_player.players[player].attached
+end
+local function set_attach(player, bool)
+	mcl_player.players[player].attached = bool
+end
+local function is_air_below(player)
+	return mcl_player.players[player].nodes.stand == "air"
 end]]
 
 function mcl_cozy.print_action(name, action)
 	if not mcl_cozy_print_actions then return end
 
-	local msg = "@1 stands up"
+	local msg = N("@1 stands up")
 	if actions[action] then
 		msg = actions[action].message.chat
 	end
@@ -214,17 +215,13 @@ end
 
 core.register_globalstep(function(dtime)
 	for _, player in ipairs(core.get_connected_players()) do
-		local name = player:get_player_name()
-		local ctrl = player:get_player_control()
+		if mcl_cozy.players[player:get_player_name()] then
+			local ctrl = player:get_player_control()
 
-		if mcl_cozy.players[name] then
 			-- unmount when player tries to move
-			if (ctrl.up == true or ctrl.down == true or
-					ctrl.left == true or ctrl.right == true or
-					ctrl.jump == true or ctrl.sneak == true) then
-				mcl_cozy.stand_up(player)
-			-- check the node below player (and if it's air, just unmount)
-			elseif is_air_below(player) then
+			if (ctrl.up or ctrl.down or ctrl.left or ctrl.right or ctrl.jump or ctrl.sneak)
+					-- unmount when there's air below
+					or is_air_below(player) then
 				mcl_cozy.stand_up(player)
 			end
 		end
@@ -233,10 +230,9 @@ end)
 
 -- fix players getting stuck after they leave while still sitting
 core.register_on_joinplayer(function(player)
-	local name = player:get_player_name()
 	playerphysics.remove_physics_factor(player, "speed", "mcl_cozy:attached")
 	playerphysics.remove_physics_factor(player, "jump", "mcl_cozy:attached")
-	mcl_cozy.players[name] = nil
+	mcl_cozy.players[player:get_player_name()] = nil
 end)
 
 if core.get_modpath("mcl_stairs") and mcl_cozy_sit_on_stairs then

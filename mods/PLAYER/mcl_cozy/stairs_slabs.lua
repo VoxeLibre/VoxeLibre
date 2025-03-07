@@ -1,3 +1,5 @@
+-- only loaded if core.settings:get_bool("mcl_cozy_sit_on_stairs")
+
 local function check_param2_and_sit(pos, ...)
 	local param2 = core.get_node(pos).param2
 	-- avoid inverted stairs
@@ -6,7 +8,7 @@ local function check_param2_and_sit(pos, ...)
 end
 
 core.register_on_mods_loaded(function()
-	for name, def in pairs(core.registered_nodes) do
+	for name, _ in pairs(core.registered_nodes) do
 		-- bottom slabs
 		if name:find("^mcl_stairs:slab") and not (name:find("_top$")) then
 			core.override_item(name, {
