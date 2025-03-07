@@ -6,25 +6,24 @@
 ## Creator of VoxeLibre
 * Wuzzy
 
-## Maintainers
-* AncientMariner
+## Maintainer
 * Herowl
 
 ## Previous Maintainers
 * Fleckenstein
 * cora
 * Nicu
+* AncientMariner
 
 ## Developers
 * AFCMS
 * epCode
-* chmodsayshello
-* MrRar
 * SmokeyDope
 * Faerraven / Michieal
 * rudzik8
 * teknomunk
 * kno10
+* AncientMariner
 
 ## Past Developers
 * jordan4ibanez
@@ -37,6 +36,8 @@
 * PrairieWind
 * FossFanatic
 * Codiac
+* chmodsayshello
+* MrRar
 
 ## Contributors
 * RandomLegoBrick
@@ -154,6 +155,10 @@
 * ethan
 * villager8472
 * ninjum
+* OpenSauce04
+* grillo-delmal
+* Yoric
+* potatoalienof13
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -198,6 +203,7 @@
 * Faerraven / Michieal
 * PrairieWind
 * ChrisPHP
+* rudzik8
 
 ## 3D Models
 * 22i
@@ -228,6 +234,9 @@
 * SmokeyDope
 * thunder1035
 * Herowl
+* NovaWostra
+* rudzik8
+* kno10
 
 ## Translations
 * Wuzzy
