@@ -1,4 +1,5 @@
 # textdomain: mcl_signs
+##[ api.lua ]##
 Can be written=書き込み可能
 Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=看板は書くことができ、2つのバリエーションがあります（壁かけ看板と立て看板）。看板の設置は、他のブロックの上部と側面にできますが、下部にはできません。
 After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=
@@ -8,6 +9,7 @@ Enter sign text:=看板の文字を入力：
 Maximum line length: @1=行あたりの最大文字数：@1
 Maximum lines: @1=最大行数：@1
 Done=完了
+##[ register.lua ]##
 Oak Sign=オークの看板
 Dark Oak Sign=ダークオークの看板
 Acacia Sign=アカシアの看板

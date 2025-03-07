@@ -1,4 +1,5 @@
 # textdomain: mcl_signs
+##[ api.lua ]##
 Can be written=Peut être écrit
 Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Les panneaux peuvent être écrits et se déclinent en deux variantes: panneau mural et panneau sur poteau. Des panneaux peuvent être placés en haut et sur les côtés des autres blocs, mais pas en dessous.
 After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=
@@ -8,6 +9,7 @@ Enter sign text:=Saisir le texte du panneau:
 Maximum line length: @1=Longueur maximum des lignes: @1
 Maximum lines: @1=Nombre maximum de lignes: @1
 Done=Terminé
+##[ register.lua ]##
 Oak Sign=Signe de chêne
 Dark Oak Sign=Enseigne Chêne Foncé
 Acacia Sign=Signe d'acacia

@@ -1,6 +1,7 @@
 # textdomain: mcl_itemframes
 Item frames are decorative blocks in which items can be placed.=Os marcos de elementos son bloques decorativos nos que se poden colocar elementos.
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Simplemente coloque calquera elemento no marco do elemento. Use o marco do elemento de novo para recuperar o elemento.
+##[ register.lua ]##
 Item Frame=Marco de elemento
 Can hold an item=
 Glow Item Frame=
