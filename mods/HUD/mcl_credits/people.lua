@@ -8,25 +8,24 @@ return {
 	{S("Creator of VoxeLibre"), 0xFBF837, {
 		"Wuzzy",
 	}},
-	{S("Maintainers"), 0xFF51D5, {
-		"AncientMariner",
+	{S("Maintainer"), 0xFFFFFF, {
 		"Herowl",
 	}},
 	{S("Previous Maintainers"), 0xFFFFFF, {
 		"Fleckenstein",
 		"cora",
 		"Nicu",
+		"AncientMariner",
 	}},
 	{S("Developers"), 0xF84355, {
 		"AFCMS",
 		"epCode",
-		"chmodsayshello",
-		"MrRar",
 		"SmokeyDope",
 		"Faerraven / Michieal",
 		"rudzik8",
 		"teknomunk",
 		"kno10",
+		"AncientMariner",
 	}},
 	{S("Past Developers"), 0xF84355, {
 		"jordan4ibanez",
@@ -39,6 +38,8 @@ return {
 		"PrairieWind",
 		"FossFanatic",
 		"Codiac",
+		"chmodsayshello",
+		"MrRar",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"RandomLegoBrick",
@@ -156,6 +157,10 @@ return {
 		"ethan",
 		"villager8472",
 		"ninjum",
+		"OpenSauce04",
+		"grillo-delmal",
+		"Yoric",
+		"potatoalienof13",
 	}},
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",
@@ -200,6 +205,7 @@ return {
 		"Faerraven / Michieal",
 		"PrairieWind",
 		"ChrisPHP",
+		"rudzik8",
 	}},
 	{S("3D Models"), 0x0019FF, {
 		"22i",
@@ -230,6 +236,9 @@ return {
 		"SmokeyDope",
 		"thunder1035",
 		"Herowl",
+		"NovaWostra",
+		"rudzik8",
+		"kno10",
 	}},
 	{S("Translations"), 0x00FF60, {
 		"Wuzzy",
