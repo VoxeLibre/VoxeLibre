@@ -1,0 +1,12 @@
+# textdomain: mcl_cozy
+Sit down=S'assoir
+@1 sits=@1 s'assoit
+You can't sit, the block's too far away!=
+You have to stop moving before sitting down!=
+Lie down=Se coucher
+@1 lies=@1 se couche
+You can't lay, the block's too far away!=
+You have to stop moving before lying down!=
+@1 stands up=@1 se lève
+Move to stand up=Se déplacer pour se lever
+This block is already occupied!=Cette place est déjà occupée!

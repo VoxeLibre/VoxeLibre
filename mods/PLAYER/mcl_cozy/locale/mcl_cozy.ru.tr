@@ -1,0 +1,12 @@
+# textdomain: mcl_cozy
+Sit down=Сесть
+@1 sits=@1 сел(а)
+You can't sit, the block's too far away!=Ты не можешь сесть, блок слишком далеко!
+You have to stop moving before sitting down!=Остановись, прежде чем садиться!
+Lie down=Лечь
+@1 lies=@1 лег(ла)
+You can't lay, the block's too far away!=Ты не можешь лечь, блок слишком далеко!
+You have to stop moving before lying down!=Остановись, прежде чем ложиться!
+@1 stands up=@1 встал(а)
+Move to stand up=Двиньтесь чтобы встать
+This block is already occupied!=Это место уже занято!
