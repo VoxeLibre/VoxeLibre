@@ -1691,23 +1691,30 @@ function mcl_potions.is_obj_hit(self, pos)
 	return false
 end
 
-
+local EMPTY_color = { r = 255, g = 255, b = 255, a = 0 }
+local WHITE_color = { r = 255, g = 255, b = 255, a = 255 }
 function mcl_potions.make_invisible(obj_ref, hide)
 	if obj_ref:is_player() then
 		if hide then
 			mcl_player.player_set_visibility(obj_ref, false)
-			obj_ref:set_nametag_attributes({ color = { a = 0 } })
+			obj_ref:set_properties({show_on_minimap = false})
+			obj_ref:set_nametag_attributes({ text = " ", color = EMPTY_color, bgcolor = EMPTY_color })
 		else
 			mcl_player.player_set_visibility(obj_ref, true)
-			obj_ref:set_nametag_attributes({ color = { r = 255, g = 255, b = 255, a = 255 } })
+			obj_ref:set_properties({show_on_minimap = true})
+			obj_ref:set_nametag_attributes({ text = obj_ref:get_player_name(), color = WHITE_color, bgcolor = false })
+			-- TODO add a nametag color API and delegate this there
 		end
 	else
+		local luaentity = obj_ref:get_luaentity()
 		if hide then
-			local luaentity = obj_ref:get_luaentity()
 			EF.invisibility[obj_ref].old_size = luaentity.visual_size
-			obj_ref:set_properties({ visual_size = { x = 0, y = 0 } })
+			obj_ref:set_properties({ visual_size = { x = 0, y = 0 }, show_on_minimap = false })
+			obj_ref:set_nametag_attributes({ text = " ", color = EMPTY_color, bgcolor = EMPTY_color })
 		else
-			obj_ref:set_properties({ visual_size = EF.invisibility[obj_ref].old_size })
+			obj_ref:set_properties({ visual_size = EF.invisibility[obj_ref].old_size, show_on_minimap = true })
+			obj_ref:set_nametag_attributes({ text = luaentity.nametag, color = WHITE_color, bgcolor = false })
+			-- TODO integrate this with mob naming better...
 		end
 	end
 end
