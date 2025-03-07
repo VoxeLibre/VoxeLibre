@@ -1,15 +1,20 @@
 <div align="center">
 <img src="/VoxeLibre/VoxeLibre/raw/branch/master/menu/icon.png">
 <h1>VoxeLibre</h1>
-<a href="https://content.luanti.org/packages/Wuzzy/mineclone2/"><img src="https://content.luanti.org/packages/Wuzzy/mineclone2/shields/downloads/" alt="ContentDB"></a> <a href="https://www.gnu.org/copyleft/gpl.html"><img src="https://img.shields.io/badge/License-GPLv3+-blue.svg" alt="GPLv3+ License"></a>
-
-<p>A survival sandbox game for Luanti. Survive, gather, hunt, mine for ores,
-build, explore, and do much more. Inspired by Minecraft, pushing beyond.</p>
-
-<p>Originally forked from MineClone (by davedevils) as MineClone 2, then renamed
-and heavily improved. Developed by many people, see
-<a href="CREDITS.md"><code>CREDITS.md</code></a> for a complete list.</p>
+<a href="https://content.luanti.org/packages/Wuzzy/mineclone2/">
+	<img src="https://content.luanti.org/packages/Wuzzy/mineclone2/shields/downloads/" alt="ContentDB">
+</a>
+<a href="https://www.gnu.org/copyleft/gpl.html">
+	<img src="https://img.shields.io/badge/License-GPLv3+-blue.svg" alt="GPLv3+ License">
+</a>
 </div>
+
+VoxeLibre is a survival sandbox game for Luanti. Survive, gather, hunt, mine for ores,
+build, explore, and do much more. Inspired by Minecraft, pushing beyond.
+
+Originally forked from MineClone (by davedevils) as MineClone 2, then renamed
+and heavily improved. Developed by many people, see
+[`CREDITS.md`](CREDITS.md) for a complete list.
 
 
 ## About
