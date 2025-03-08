@@ -69,9 +69,16 @@ end
 
 -- Register stairs.
 -- Node will be called mcl_stairs:stair_<subname>
-
+local allowed_attach = {
+	[0] = {},
+	[1] = {[20] = true, [21] = true, [22] = true, [23] = true},
+	[2] = {[3] = true, [21] = true},
+	[3] = {[1] = true, [23] = true},
+	[4] = {[2] = true, [22] = true},
+	[5] = {[0] = true, [20] = true},
+}
 local function allow_attach(node, wdir)
-	return wdir == 1 and math.floor(node.param2 / 4) == 5
+	return allowed_attach[wdir][node.param2] -- or (wdir == 1 and math.floor(node.param2 / 4) == 5)
 end
 
 function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, blast_resistance, hardness, corner_stair_texture_override)
