@@ -21,6 +21,7 @@ local def = {
 	y_offset = -5,
 	filenames = {
 		modpath.."/schematics/mcl_structures_ruined_portal_1.mts",
+		modpath.."/schematics/mcl_structures_ruined_portal_1b.mts",
 		modpath.."/schematics/mcl_structures_ruined_portal_2.mts",
 		modpath.."/schematics/mcl_structures_ruined_portal_3.mts",
 		modpath.."/schematics/mcl_structures_ruined_portal_4.mts",
