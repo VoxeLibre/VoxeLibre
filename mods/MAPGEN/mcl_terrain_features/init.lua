@@ -159,7 +159,7 @@ mcl_structures.register_structure("fallen_tree",{
 	place_func = function(pos,def,pr)
 		local schem=get_fallen_tree_schematic(pos,pr)
 		if not schem then return end
-		return minetest.place_schematic(pos,schem,"random")
+		return minetest.place_schematic(vector.offset(pos, 0, 1, 0), schem, "random")
 	end
 })
 
