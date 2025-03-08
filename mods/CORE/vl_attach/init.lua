@@ -82,18 +82,17 @@ core.register_on_mods_loaded(function()
 		end
 
 		-- Run all autogroup callbacks to build allow_attach
-		for i = 1,#autogroupers do
-			local autogrouper = autogroupers[i]
+		for _,autogrouper in ipairs(autogroupers) do
 			local run = true
-			for j = 1,#autogrouper.skip_existing do
-				if allow_attach[autogrouper.skip_existing[j]] ~= nil then
+			for _,skip in ipairs(autogrouper.skip_existing) do
+				if allow_attach[skip] ~= nil then
 					run = false
 					break
 				end
 			end
 
 			if run then
-				autogrouper.callback[i](allow_attach, name, def)
+				autogrouper.callback(allow_attach, name, def)
 			end
 		end
 
