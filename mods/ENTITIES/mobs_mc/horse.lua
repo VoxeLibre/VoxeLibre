@@ -189,7 +189,7 @@ local horse = {
 			self.terrain_type = 3
 			self.driver_attach_at = {x = 0, y = 4.17, z = -1.75}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
-			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
+			self.driver_scale = {x = 1/self.initial_properties.visual_size.x, y = 1/self.initial_properties.visual_size.y}
 		end
 
 		-- Slowly regenerate health
