@@ -24,7 +24,6 @@ local get_connected_players = core.get_connected_players
 local vector_new = vector.new
 local vector_offset = vector.offset
 local vector_zero = vector.zero
-local ceil = math.ceil
 local min = math.min
 local random = math.random
 
@@ -36,15 +35,36 @@ local difficulty_levels = {
 		K1 = math.log(0.0075) / log_10 / 255,
 
 		-- Extinguish parameters
-		C2 = math.log(1/20) / log_10,
-		K2 = -(math.log(1/20) / log_10) / 255,
+		-- p(0) = 2.5%, p(255) = 100%
+		C2 = -1.3010, -- log10(1/20)
+		K2 = -5.102e-3, -- log10(1/20) / 255,
 
 		age_min = 0,
 		age_max = 5,
 		humidity_factor = 1/10,
+
+		burn_age_min = 0,
+		burn_age_max = 2,
+		burn_humidity_factor = 1/25,
+	}, {
+		-- Spread
+		K1 = math.log(0.0005) / log_10 / 255,
+
+		-- Extinguish parameters
+		-- p(0) = 1%, p(255) = 5%
+		C2 = -2, -- log10(0.01)
+		K2 = 2.741e-3, -- (log10(0.05) + 2) / 255
+
+		age_min = 0,
+		age_max = 2,
+		humidity_factor = 1/10,
+
+		burn_age_min = 0,
+		burn_age_max = 1,
+		burn_humidity_factor = 1/50,
 	},
 }
-local consts = difficulty_levels[1]
+local consts = difficulty_levels[2]
 
 local adjacents = {
 	vector_new(-1,  0,  0),
@@ -411,13 +431,6 @@ else -- Fire enabled
 			age = min(255, age + random(consts.age_min, humidity_factor + consts.age_max))
 			node.param2 = age
 
-			local p = get_ignitable(pos)
-			if p then
-				-- Spawn new fire with an age based on this node's age
-				spawn_fire(p, min(255, age + random(humidity_factor)))
-				table.shuffle(adjacents)
-			end
-
 			if node.name ~= "mcl_fire:eternal_fire" then
 				-- Randomly extinguish fires with increasing probability the older they are
 				local extinguish_probability = 10 ^ (consts.K2 * age + consts.C2)
@@ -431,6 +444,16 @@ else -- Fire enabled
 				end
 			end
 			set_node(pos, node)
+			if node.name == "air" then return end
+
+			-- Fire spread
+			if age == 255 then return end
+			local p = get_ignitable(pos)
+			if p then
+				-- Spawn new fire with an age based on this node's age
+				spawn_fire(p, min(255, age + random(humidity_factor) + 1))
+				table.shuffle(adjacents)
+			end
 		end
 	})
 
@@ -455,14 +478,12 @@ else -- Fire enabled
 		label = "Remove flammable nodes",
 		nodenames = {"mcl_fire:fire","mcl_fire:eternal_fire"},
 		neighbors = {"group:flammable"},
-		interval = 5,
-		chance = 18,
+		interval = 1,
+		chance = 6,
 		catch_up = false,
 		action = function(pos)
 			local p = has_flammable(pos)
-			if not p then
-				return
-			end
+			if not p then return end
 
 			local def = core.registered_nodes[get_node(p).name]
 			local fgroup = def and def.groups.flammable or 0
@@ -473,12 +494,16 @@ else -- Fire enabled
 				local source_node = get_node(pos)
 				local age = source_node.param2
 
-				spawn_fire(p, age + ceil(core.get_humidity(p)/10) + random(5), true)
+				local humidity_factor = consts.burn_humidity_factor * core.get_humidity(pos)
+				age = min(255, age + random(consts.burn_age_min, humidity_factor + consts.burn_age_max))
+				if age == 255 then return end
+
+				spawn_fire(p, age + 1, true)
 				core.check_for_falling(p)
 
 				if source_node.name == "mcl_fire:fire" then
 					-- Always age the source fire
-					age = min(255, age + ceil(core.get_humidity(pos)/10) + random(5))
+					age = min(255, age + random(consts.age_min, consts.age_max + humidity_factor))
 					source_node.param2 = age
 					set_node(pos, source_node)
 				end
