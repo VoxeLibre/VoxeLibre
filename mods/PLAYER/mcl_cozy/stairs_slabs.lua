@@ -10,7 +10,7 @@ end
 core.register_on_mods_loaded(function()
 	for name, _ in pairs(core.registered_nodes) do
 		-- bottom slabs
-		if name:find("^mcl_stairs:slab") and not (name:find("_top$")) then
+		if name:find("^mcl_stairs:slab") and not (name:find("_top$") or name:find("_double$")) then
 			core.override_item(name, {
 				on_rightclick = mcl_cozy.sit,
 			})
