@@ -77,6 +77,12 @@ local function is_air_below(player)
 	return mcl_player.players[player].nodes.stand == "air"
 end]]
 
+local function check_distance(a, b)
+	return math.abs(a.x - b.x) > DISTANCE_THRESHOLD
+		or math.abs(a.y - b.y) > DISTANCE_THRESHOLD / 2
+		or math.abs(a.z - b.z) > DISTANCE_THRESHOLD
+end
+
 function mcl_cozy.print_action(name, action)
 	if not mcl_cozy_print_actions then return end
 
@@ -129,7 +135,7 @@ for action, def in pairs(actions) do
 				return
 			end
 			-- check distance
-			if vector.distance(pos, ppos) > DISTANCE_THRESHOLD then
+			if check_distance(pos, ppos) then
 				mcl_cozy.actionbar_show_status(player, def.message.actionbar.distance_fail)
 				return
 			end
