@@ -1,8 +1,6 @@
 local string = string
 local sf = string.format
 
--- Luanti 0.4 mod: player
--- See README.txt for licensing and other information.
 mcl_player = {}
 
 -- Player animation blending
@@ -43,7 +41,7 @@ local function get_player_textures(name)
 	local textures = player_textures[name]
 	if textures then return textures end
 
-	local textures = { "character.png", "blank.png", "blank.png" }
+	local textures = {"character.png", "blank.png", "blank.png"}
 	player_textures[name] = textures
 	return textures
 
@@ -81,12 +79,12 @@ local function update_player_textures(player)
 		textures[1] = "blank.png"
 	end
 
-	player:set_properties({ textures = textures })
+	player:set_properties({textures = textures})
 
 	-- Delay calling the callbacks because mods (including mcl_player)
-	-- need to fully initialize player data from minetest.register_on_joinplayer
+	-- need to fully initialize player data from core.register_on_joinplayer
 	-- before callbacks run
-	minetest.after(0.1, function()
+	core.after(0.1, function()
 		if player:is_player() then
 			for i, func in ipairs(registered_on_visual_change) do
 				func(player)
@@ -100,14 +98,12 @@ function mcl_player.player_set_model(player, model_name)
 	local name = player:get_player_name()
 	local model = models[model_name]
 	if model then
-		if player_model[name] == model_name then
-			return
-		end
+		if player_model[name] == model_name then return end
 		player_model[name] = model_name
 		player:set_properties({
 			mesh = model_name,
 			visual = "mesh",
-			visual_size = model.visual_size or { x = 1, y = 1 },
+			visual_size = model.visual_size or {x = 1, y = 1},
 			damage_texture_modifier = "^[colorize:red:130",
 		})
 		update_player_textures(player)
@@ -121,7 +117,7 @@ function mcl_player.player_set_model(player, model_name)
 		mcl_player.player_set_animation(player, new_anim)
 	else
 		player:set_properties({
-			textures = { "player.png", "player_back.png", },
+			textures = {"player.png", "player_back.png",},
 			visual = "upright_sprite",
 		})
 	end
@@ -189,17 +185,14 @@ function mcl_player.player_set_animation(player, anim_name, speed)
 end
 
 -- Update appearance when the player joins
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	mcl_player.player_attached[name] = false
 	player_visible[name] = true
 	get_player_textures(name)
-
-	--player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
--- 	player:set_fov(86.1) -- see <https://minecraft.gamepedia.com/Options#Video_settings>>>>
 end)
 
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 	player_model[name] = nil
 	player_anim[name] = nil
@@ -213,8 +206,8 @@ local player_set_animation = mcl_player.player_set_animation
 local player_attached = mcl_player.player_attached
 
 -- Check each player and apply animations
-minetest.register_globalstep(function(dtime)
-	for _, player in pairs(minetest.get_connected_players()) do
+core.register_globalstep(function(dtime)
+	for _, player in pairs(core.get_connected_players()) do
 		local name = player:get_player_name()
 		local model_name = player_model[name]
 		local model = model_name and models[model_name]
@@ -238,7 +231,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			-- ask if player is swiming
-			local head_in_water = minetest.get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0
+			local head_in_water = core.get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0
 			-- ask if player is sprinting
 			local is_sprinting = mcl_sprint.is_sprinting(name)
 
@@ -250,8 +243,8 @@ minetest.register_globalstep(function(dtime)
 			elseif player:get_meta():get_int("mcl_damage:damage_animation") > 0 then
 				player_set_animation(player, "walk", animation_speed_mod)
 				local name = player:get_player_name()
-				minetest.after(0.5, function()
-					local player = minetest.get_player_by_name(name)
+				core.after(0.5, function()
+					local player = core.get_player_by_name(name)
 					if not player then return end
 					player:get_meta():set_int("mcl_damage:damage_animation", 0)
 				end)

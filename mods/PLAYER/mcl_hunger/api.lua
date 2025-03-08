@@ -117,7 +117,6 @@ if mcl_hunger.active then
 		mcl_hunger.poison_hunger[player:get_player_name()] = 0
 		mcl_hunger.reset_bars_poison_hunger(player)
 	end
-
 else
 	-- When hunger is disabled, the functions are basically no-ops
 
@@ -156,5 +155,4 @@ else
 	function mcl_hunger.register_food() end
 
 	function mcl_hunger.stop_poison() end
-
 end

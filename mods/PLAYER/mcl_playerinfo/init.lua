@@ -1,27 +1,23 @@
 local table = table
 
-local storage = minetest.get_mod_storage()
+local storage = core.get_mod_storage()
 
 -- Player state for public API
 mcl_playerinfo = {}
 local player_mod_metadata = {}
 
 -- Get node but use fallback for nil or unknown
-local function node_ok(pos, fallback)
-
-	fallback = fallback or "air"
-
-	local node = minetest.get_node_or_nil(pos)
-
+local function node_ok(pos)
+	local node = core.get_node_or_nil(pos)
 	if not node then
-		return fallback
+		return "air"
 	end
 
-	if minetest.registered_nodes[node.name] then
+	if core.registered_nodes[node.name] then
 		return node.name
 	end
 
-	return fallback
+	return "air"
 end
 
 local function get_player_nodes(player_pos)
@@ -45,7 +41,7 @@ local function get_player_nodes(player_pos)
 end
 
 local time = 0
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 	-- Run the rest of the code every 0.5 seconds
 	time = time + dtime
 	if time < 0.5 then
@@ -57,7 +53,7 @@ minetest.register_globalstep(function(dtime)
 	time = 0
 
 	-- check players
-	for _,player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(core.get_connected_players()) do
 		-- who am I?
 		local name = player:get_player_name()
 
@@ -71,7 +67,6 @@ minetest.register_globalstep(function(dtime)
 		mcl_playerinfo[name].node_head = node_head
 		mcl_playerinfo[name].node_feet = node_feet
 		mcl_playerinfo[name].node_head_top = node_head_top
-
 	end
 
 end)
@@ -80,7 +75,7 @@ function mcl_playerinfo.get_mod_meta(player_name, modname)
 	-- Load the player's metadata
 	local meta = player_mod_metadata[player_name]
 	if not meta then
-		meta = minetest.deserialize(storage:get_string(player_name))
+		meta = core.deserialize(storage:get_string(player_name))
 	end
 	if not meta then
 		meta = {}
@@ -94,7 +89,7 @@ function mcl_playerinfo.get_mod_meta(player_name, modname)
 end
 
 -- set to blank on join (for 3rd party mods)
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 
 	mcl_playerinfo[name] = {
@@ -107,14 +102,14 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 -- clear when player leaves
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 
 	mcl_playerinfo[name] = nil
 end)
 
-minetest.register_on_shutdown(function()
+core.register_on_shutdown(function()
 	for name,data in pairs(player_mod_metadata) do
-		storage:set_string(name, minetest.serialize(data))
+		storage:set_string(name, core.serialize(data))
 	end
 end)

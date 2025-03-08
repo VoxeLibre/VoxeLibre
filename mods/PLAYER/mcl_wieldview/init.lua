@@ -1,15 +1,15 @@
-minetest.register_entity("mcl_wieldview:wieldview", {
+core.register_entity("mcl_wieldview:wieldview", {
 	initial_properties = {
-		hp_max           = 1,
-		visual           = "wielditem",
-		physical         = false,
-		is_visible       = false,
-		pointable        = false,
+		hp_max = 1,
+		visual = "wielditem",
+		physical = false,
+		is_visible = false,
+		pointable = false,
 		collide_with_objects = false,
 		static_save = false,
 		collisionbox = {-0.21, -0.21, -0.21, 0.21, 0.21, 0.21},
 		selectionbox = {-0.21, -0.21, -0.21, 0.21, 0.21, 0.21},
-		visual_size  = {x = 0.21, y = 0.21},
+		visual_size = {x = 0.21, y = 0.21},
 	}
 })
 
@@ -29,7 +29,7 @@ local function update_wieldview_entity(player)
 			item = def._mcl_wieldview_item
 		end
 
-		local item_def = minetest.registered_items[item]
+		local item_def = core.registered_items[item]
 		luaentity.object:set_properties({
 			glow = item_def and item_def.light_source or 0,
 			wield_item = item,
@@ -39,9 +39,9 @@ local function update_wieldview_entity(player)
 		-- If the player is running through an unloaded area,
 		-- the wieldview entity will sometimes get unloaded.
 		-- This code path is also used to initalize the wieldview.
-		-- Creating entites from minetest.register_on_joinplayer
+		-- Creating entites from core.register_on_joinplayer
 		-- is unreliable as of Luanti 5.6
-		local obj_ref = minetest.add_entity(player:get_pos(), "mcl_wieldview:wieldview")
+		local obj_ref = core.add_entity(player:get_pos(), "mcl_wieldview:wieldview")
 		if not obj_ref then return end
 		obj_ref:set_attach(player, "Wield_Item")
 		--obj_ref:set_attach(player, "Hand_Right", vector.new(0, 1, 0), vector.new(90, 45, 90))
@@ -49,16 +49,16 @@ local function update_wieldview_entity(player)
 	end
 end
 
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	if wieldview_luaentites[player] then
 		wieldview_luaentites[player].object:remove()
 	end
 	wieldview_luaentites[player] = nil
 end)
 
-minetest.register_globalstep(function(dtime)
-	local players = minetest.get_connected_players()
-	for i, player in pairs(players) do
+core.register_globalstep(function(dtime)
+	local players = core.get_connected_players()
+	for _, player in pairs(players) do
 		update_wieldview_entity(player)
 	end
 end)

@@ -12,16 +12,15 @@ local vector = vector
 
 local pairs = pairs
 
-local get_node = minetest.get_node
-local get_gametime = minetest.get_gametime
-local add_particlespawner = minetest.add_particlespawner
-local get_player_by_name = minetest.get_player_by_name
+local get_node = core.get_node
+local get_gametime = core.get_gametime
+local add_particlespawner = core.add_particlespawner
+local get_player_by_name = core.get_player_by_name
 
-local registered_nodes = minetest.registered_nodes
+local registered_nodes = core.registered_nodes
 
 local get_hunger = mcl_hunger.get_hunger
-local exhaust =  mcl_hunger.exhaust
-
+local exhaust = mcl_hunger.exhaust
 
 --Configuration variables, these are all explained in README.md
 mcl_sprint = {}
@@ -33,17 +32,13 @@ local players = {}
 -- Returns true if the player with the given name is sprinting, false if not.
 -- Returns nil if player does not exist.
 function mcl_sprint.is_sprinting(playername)
-	if players[playername] then
-		return players[playername].sprinting
-	else
-		return nil
-	end
+	return players[playername] and players[playername].sprinting
 end
 
-minetest.register_on_joinplayer(function(player)
-	local playerName = player:get_player_name()
+core.register_on_joinplayer(function(player)
+	local player_name = player:get_player_name()
 
-	players[playerName] = {
+	players[player_name] = {
 		sprinting = false,
 		timeOut = 0,
 		shouldSprint = false,
@@ -51,15 +46,15 @@ minetest.register_on_joinplayer(function(player)
 		lastPos = player:get_pos(),
 		sprintDistance = 0,
 		fov = 1.0,
-		channel = minetest.mod_channel_join("mcl_sprint:" .. playerName),
+		channel = core.mod_channel_join("mcl_sprint:" .. player_name),
 	}
 end)
-minetest.register_on_leaveplayer(function(player)
-	local playerName = player:get_player_name()
-	players[playerName] = nil
+core.register_on_leaveplayer(function(player)
+	local player_name = player:get_player_name()
+	players[player_name] = nil
 end)
 
-local function cancelClientSprinting(name)
+local function cancel_client_sprinting(name)
 	players[name].channel:send_all("")
 	players[name].clientSprint = false
 end
@@ -71,11 +66,11 @@ mcl_fovapi.register_modifier({
 	is_multiplier = true,
 })
 
-local function setSprinting(playerName, sprinting) --Sets the state of a player (0=stopped/moving, 1=sprinting)
-	if not sprinting and not mcl_sprint.is_sprinting(playerName) then return end
-	local player = minetest.get_player_by_name(playerName)
-	if players[playerName] then
-		players[playerName].sprinting = sprinting
+local function setSprinting(player_name, sprinting) --Sets the state of a player (0=stopped/moving, 1=sprinting)
+	if not sprinting and not mcl_sprint.is_sprinting(player_name) then return end
+	local player = core.get_player_by_name(player_name)
+	if players[player_name] then
+		players[player_name].sprinting = sprinting
 		if sprinting then
 			playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
 			mcl_fovapi.apply_modifier(player, "sprint")
@@ -126,48 +121,48 @@ local function get_top_node_tile(param2, paramtype2)
 	end
 end
 
-minetest.register_on_modchannel_message(function(channel_name, sender, message)
+core.register_on_modchannel_message(function(channel_name, sender, message)
 	if channel_name == "mcl_sprint:" .. sender then
-		players[sender].clientSprint = minetest.is_yes(message)
+		players[sender].clientSprint = core.is_yes(message)
 	end
 end)
 
-minetest.register_on_respawnplayer(function(player)
-	cancelClientSprinting(player:get_player_name())
+core.register_on_respawnplayer(function(player)
+	cancel_client_sprinting(player:get_player_name())
 end)
 
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 	--Get the gametime
-	local gameTime = get_gametime()
+	local game_time = get_gametime()
 
 	--Loop through all connected players
-	for playerName, playerInfo in pairs(players) do
-		local player = get_player_by_name(playerName)
+	for player_name, playerInfo in pairs(players) do
+		local player = get_player_by_name(player_name)
 		if player then
 			local ctrl = player:get_player_control()
 			--Check if the player should be sprinting
-			if players[playerName]["clientSprint"] or ctrl.aux1 and ctrl.up and not ctrl.sneak then
-				players[playerName]["shouldSprint"] = true
+			if players[player_name]["clientSprint"] or ctrl.aux1 and ctrl.up and not ctrl.sneak then
+				players[player_name]["shouldSprint"] = true
 			else
-				players[playerName]["shouldSprint"] = false
+				players[player_name]["shouldSprint"] = false
 			end
 
 			local playerPos = player:get_pos()
 			--If the player is sprinting, create particles behind and cause exhaustion
-			if playerInfo["sprinting"] == true and not player:get_attach() and gameTime % 0.1 == 0 then
+			if playerInfo["sprinting"] == true and not player:get_attach() and game_time % 0.1 == 0 then
 				-- Exhaust player for sprinting
-				local lastPos = players[playerName].lastPos
+				local lastPos = players[player_name].lastPos
 				local dist = vector.distance({x=lastPos.x, y=0, z=lastPos.z}, {x=playerPos.x, y=0, z=playerPos.z})
-				players[playerName].sprintDistance = players[playerName].sprintDistance + dist
-				if players[playerName].sprintDistance >= 1 then
-					local superficial = math.floor(players[playerName].sprintDistance)
-					exhaust(playerName, mcl_hunger.EXHAUST_SPRINT * superficial)
-					players[playerName].sprintDistance = players[playerName].sprintDistance - superficial
+				players[player_name].sprintDistance = players[player_name].sprintDistance + dist
+				if players[player_name].sprintDistance >= 1 then
+					local superficial = math.floor(players[player_name].sprintDistance)
+					exhaust(player_name, mcl_hunger.EXHAUST_SPRINT * superficial)
+					players[player_name].sprintDistance = players[player_name].sprintDistance - superficial
 				end
 
 				-- Sprint node particles
-				local playerNode = get_node({x=playerPos["x"], y=playerPos["y"]-1, z=playerPos["z"]})
-				local def = registered_nodes[playerNode.name]
+				local player_node = get_node({x=playerPos["x"], y=playerPos["y"]-1, z=playerPos["z"]})
+				local def = registered_nodes[player_node.name]
 				if def and def.walkable then
 					add_particlespawner({
 						amount = math.random(1, 2),
@@ -185,27 +180,27 @@ minetest.register_globalstep(function(dtime)
 						collisiondetection = true,
 						attached = player,
 						vertical = false,
-						node = playerNode,
-						node_tile = get_top_node_tile(playerNode.param2, def.paramtype2),
+						node = player_node,
+						node_tile = get_top_node_tile(player_node.param2, def.paramtype2),
 					})
 				end
 			end
 
 			--Adjust player states
-			players[playerName].lastPos = playerPos
-			if players[playerName]["shouldSprint"] == true then --Stopped
+			players[player_name].lastPos = playerPos
+			if players[player_name]["shouldSprint"] == true then --Stopped
 				local sprinting
 				-- Prevent sprinting if hungry or sleeping
 				if (mcl_hunger.active and get_hunger(player) <= 6)
 				or (player:get_meta():get_string("mcl_beds:sleeping") == "true") then
 					sprinting = false
-					cancelClientSprinting(playerName)
+					cancel_client_sprinting(player_name)
 				else
 					sprinting = true
 				end
-				setSprinting(playerName, sprinting)
-			elseif players[playerName]["shouldSprint"] == false then
-				setSprinting(playerName, false)
+				setSprinting(player_name, sprinting)
+			elseif players[player_name]["shouldSprint"] == false then
+				setSprinting(player_name, false)
 			end
 
 		end

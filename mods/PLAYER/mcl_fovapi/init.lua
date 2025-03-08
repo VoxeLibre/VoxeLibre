@@ -1,10 +1,3 @@
----
---- Copyright 2023, Michieal.
---- License: GPL3. (Default Mineclone2 License)
---- Created by michieal.
---- DateTime: 12/2/23 5:47 AM
----
-
 -- Locals (and cached)
 local DEBUG = false -- debug constant for troubleshooting.
 local pairs = pairs
@@ -15,39 +8,24 @@ mcl_fovapi = {}
 mcl_fovapi.registered_modifiers = {}
 mcl_fovapi.applied_modifiers = {}
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	local player_name = player:get_player_name()
 
-	-- initialization
 	mcl_fovapi.applied_modifiers[player_name] = {}
 end)
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	local player_name = player:get_player_name()
 
-	-- handle clean up
 	mcl_fovapi.applied_modifiers[player_name] = nil
 end)
 
 function mcl_fovapi.register_modifier(def)
-	if type(def.name) ~= "string" then
-		error("Modifier name must be a string")
-	end
-	if type(def.fov_factor) ~= "number" then
-		error("FOV factor must be a number")
-	end
-	if type(def.time) ~= "number" then
-		error("Transition time must be a number")
-	end
-	if def.reset_time ~= nil and type(def.reset_time) ~= "number" then
-		error("Reset time, if provided, must be a number")
-	end
-
-	if def.on_start ~= nil and type(def.on_start) ~= "function" then
-		error("Callback on_start must be a function")
-	end
-	if def.on_end ~= nil and type(def.on_end) ~= "function" then
-		error("Callback on_end must be a function")
-	end
+	assert(type(def.name) == "string", "Modifier name must be a string")
+	assert(type(def.fov_factor) == "number", "FOV factor must be a number")
+	assert(type(def.time) == "number", "Transition time must be a number")
+	assert(not def.reset_time or type(def.reset_time) == "number", "Reset time, if provided, must be a number")
+	assert(not def.on_start or type(def.on_start) == "function", "Callback on_start must be a function")
+	assert(not def.on_end or type(def.on_end) == "function", "Callback on_end must be a function")
 
 	local mdef = {}
 
@@ -55,23 +33,30 @@ function mcl_fovapi.register_modifier(def)
 	mdef.time = def.time
 	mdef.reset_time = def.reset_time or def.time
 
-	if def.is_multiplier == false then mdef.is_multiplier = false
-	else mdef.is_multiplier = true end
-	if def.exclusive == true then mdef.exclusive = true
-	else mdef.exclusive = false end
+	if def.is_multiplier == false then
+		mdef.is_multiplier = false
+	else
+		mdef.is_multiplier = true
+	end
+
+	if def.exclusive == true then
+		mdef.exclusive = true
+	else
+		mdef.exclusive = false
+	end
 
 	mdef.on_start = def.on_start
 	mdef.on_end = def.on_end
 
 	if DEBUG then
-		minetest.log("FOV::Modifier Definition Registered:\n" .. dump(def))
+		core.log("FOV::Modifier Definition Registered:\n" .. dump(def))
 	end
 
 	mcl_fovapi.registered_modifiers[def.name] = mdef
 
 end
 
-minetest.register_on_respawnplayer(function(player)
+core.register_on_respawnplayer(function(player)
 	mcl_fovapi.remove_all_modifiers(player)
 end)
 
@@ -99,11 +84,11 @@ function mcl_fovapi.apply_modifier(player, modifier_name, time_override)
 	mcl_fovapi.applied_modifiers[player_name][modifier_name] = true -- set the applied to be true.
 
 	if DEBUG then
-		minetest.log("FOV::Player Applied Modifiers :" .. dump(mcl_fovapi.applied_modifiers[player_name]))
+		core.log("FOV::Player Applied Modifiers :" .. dump(mcl_fovapi.applied_modifiers[player_name]))
 	end
 
 	if DEBUG then
-		minetest.log("FOV::Modifier applied to player:" .. player_name .. " modifier: " .. modifier_name)
+		core.log("FOV::Modifier applied to player:" .. player_name .. " modifier: " .. modifier_name)
 	end
 
 	local time = time_override or modifier.time
@@ -142,12 +127,12 @@ function mcl_fovapi.remove_modifier(player, modifier_name, time_override)
 
 	local player_name = player:get_player_name()
 	if not mcl_fovapi.applied_modifiers[player_name]
-		or not mcl_fovapi.applied_modifiers[player_name][modifier_name] then
-			return
+			or not mcl_fovapi.applied_modifiers[player_name][modifier_name] then
+		return
 	end
 
 	if DEBUG then
-		minetest.log("FOV::Player: " .. player_name .. " modifier: " .. modifier_name .. "removed.")
+		core.log("FOV::Player: " .. player_name .. " modifier: " .. modifier_name .. "removed.")
 	end
 
 	mcl_fovapi.applied_modifiers[player_name][modifier_name] = nil
@@ -208,7 +193,7 @@ function mcl_fovapi.remove_all_modifiers(player)
 
 	local player_name = player:get_player_name()
 	if DEBUG then
-		minetest.log("FOV::Player: " .. player_name .. " modifiers have been reset.")
+		core.log("FOV::Player: " .. player_name .. " modifiers have been reset.")
 	end
 
 	for name, x in pairs(mcl_fovapi.applied_modifiers[player_name]) do
