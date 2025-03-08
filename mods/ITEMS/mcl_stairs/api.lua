@@ -78,7 +78,7 @@ local allowed_attach = {
 	[5] = {[0] = true, [20] = true},
 }
 local function allow_attach(node, wdir)
-	return allowed_attach[wdir][node.param2] -- or (wdir == 1 and math.floor(node.param2 / 4) == 5)
+	return allowed_attach[wdir][node.param2]
 end
 
 function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, blast_resistance, hardness, corner_stair_texture_override)
