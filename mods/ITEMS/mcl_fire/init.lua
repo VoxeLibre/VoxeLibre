@@ -28,6 +28,24 @@ local ceil = math.ceil
 local min = math.min
 local random = math.random
 
+local log_10 = math.log(10)
+
+local difficulty_levels = {
+	{
+		-- Spread
+		K1 = math.log(0.0075) / log_10 / 255,
+
+		-- Extinguish parameters
+		C2 = math.log(1/20) / log_10,
+		K2 = -(math.log(1/20) / log_10) / 255,
+
+		age_min = 0,
+		age_max = 5,
+		humidity_factor = 1/10,
+	},
+}
+local consts = difficulty_levels[1]
+
 local adjacents = {
 	vector_new(-1,  0,  0),
 	vector_new( 1,  0,  0),
@@ -89,8 +107,6 @@ else
 	eternal_fire_help = S("Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
 end
 
--- exponential constant is such that at age=255, p=0.5%
-local K1 = ( math.log(0.005) / math.log(10) ) / 255
 
 ---@param pos vector.Vector
 ---@param age integer
@@ -109,13 +125,13 @@ local function spawn_fire(pos, age, force)
 	if node_is_flammable then
 		probability_age = probability_age * 0.80
 	end
-	local probability = 10 ^ (K1 * probability_age)
+	local probability = 10 ^ (consts.K1 * probability_age)
 	if not force and random() >= probability then
 		return
 	end
 
-	-- Just updating age, don't trigger observers, etc.
-	swap_node(pos, {name="mcl_fire:fire", param2 = age})
+	-- Node catches fire
+	set_node(pos, {name="mcl_fire:fire", param2 = age})
 	core.check_single_for_falling(vector_offset(pos,0,1,0))
 end
 
@@ -350,7 +366,6 @@ end
 --
 
 -- Extinguish all flames quickly with water and such
-
 core.register_abm({
 	label = "Extinguish fire",
 	nodenames = {"mcl_fire:fire", "mcl_fire:eternal_fire"},
@@ -378,18 +393,13 @@ if not fire_enabled then
 		catch_up = false,
 		action = core.remove_node,
 	})
-
 else -- Fire enabled
-
-	-- Extinguish parameters
-	local C2 = math.log(1/20) / math.log(10)
-	local K2 = -C2 / 255
 
 	-- Fire Spread
 	core.register_abm({
 		label = "Ignite flame",
 		nodenames ={"mcl_fire:fire","mcl_fire:eternal_fire"},
-		interval = 7,
+		interval = 1,
 		chance = 5,
 		catch_up = false,
 		action = function(pos)
@@ -397,19 +407,20 @@ else -- Fire enabled
 			local age = node.param2
 
 			-- Always age the source fire
-			age = min(255, age + ceil(core.get_humidity(pos)/10) + random(5))
+			local humidity_factor = consts.humidity_factor * core.get_humidity(pos)
+			age = min(255, age + random(consts.age_min, humidity_factor + consts.age_max))
 			node.param2 = age
 
 			local p = get_ignitable(pos)
 			if p then
 				-- Spawn new fire with an age based on this node's age
-				spawn_fire(p, age + ceil(core.get_humidity(p)/10) + random(5))
+				spawn_fire(p, min(255, age + random(humidity_factor)))
 				table.shuffle(adjacents)
 			end
 
 			if node.name ~= "mcl_fire:eternal_fire" then
 				-- Randomly extinguish fires with increasing probability the older they are
-				local extinguish_probability = 10 ^ (K2 * age + C2)
+				local extinguish_probability = 10 ^ (consts.K2 * age + consts.C2)
 				if random() <= extinguish_probability then
 					node.name = "air"
 					node.param2 = 0
