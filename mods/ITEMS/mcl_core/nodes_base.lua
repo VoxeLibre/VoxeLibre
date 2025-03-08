@@ -940,7 +940,7 @@ minetest.register_node("mcl_core:ice", {
 	use_texture_alpha = ice_texture_alpha,
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1},
-	_vl_allow_attach = {all = true, button = true},
+	_vl_allow_attach = {all = true},
 	drop = "",
 	sounds = mcl_sounds.node_sound_ice_defaults(),
 	node_dig_prediction = "mcl_core:water_source",

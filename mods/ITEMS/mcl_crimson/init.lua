@@ -416,6 +416,7 @@ minetest.register_node("mcl_crimson:shroomlight", {
 			footstep={name="default_dirt_footstep", gain=0.7},
 			dug={name="default_dirt_footstep", gain=1.5},
 	}),
+	_vl_allow_attach = {all = true},
 })
 
 minetest.register_node("mcl_crimson:warped_hyphae", {
