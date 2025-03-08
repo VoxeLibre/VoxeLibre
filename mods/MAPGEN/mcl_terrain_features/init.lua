@@ -150,6 +150,7 @@ mcl_structures.register_structure("fallen_tree",{
 	solid_ground = true,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
+	y_offset = 1,
 	on_place = function(pos,def,pr)
 		local air_p1 = vector.offset(pos,-def.sidelen/2,1,-def.sidelen/2)
 		local air_p2 = vector.offset(air_p1,def.sidelen-1,0,def.sidelen-1)
