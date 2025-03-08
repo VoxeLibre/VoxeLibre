@@ -145,11 +145,12 @@ mcl_structures.register_structure("fallen_tree",{
 		octaves = 3,
 		persist = 0.66
 	},
-	flags = "place_center_x, place_center_z",
-	sidelen = 18,
+	flags = "place_center_x, place_center_z, all_floors",
+	sidelen = 10,
 	solid_ground = true,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = minetest.get_mapgen_setting("water_level"),
+	y_offset = 1,
 	on_place = function(pos,def,pr)
 		local air_p1 = vector.offset(pos,-def.sidelen/2,1,-def.sidelen/2)
 		local air_p2 = vector.offset(air_p1,def.sidelen-1,0,def.sidelen-1)
@@ -159,7 +160,38 @@ mcl_structures.register_structure("fallen_tree",{
 	place_func = function(pos,def,pr)
 		local schem=get_fallen_tree_schematic(pos,pr)
 		if not schem then return end
-		return minetest.place_schematic(vector.offset(pos, 0, 1, 0), schem, "random")
+
+		local rot = math.random(4)
+		if rot % 2 == 0 then
+			for i=1, 7 do
+				local t1 = core.registered_nodes[core.get_node(vector.offset(pos, 0, 0, i)).name]
+				local t2 = core.registered_nodes[core.get_node(vector.offset(pos, 0, 0, -i)).name]
+				if not t1 or not t1.buildable_to or not t2 or not t2.buildable_to then return end
+			end
+			for i=1, 5 do
+				local b1 = core.registered_nodes[core.get_node(vector.offset(pos, 0, -1, i)).name]
+				local b2 = core.registered_nodes[core.get_node(vector.offset(pos, 0, -1, -i)).name]
+				if not b1 or not b1.groups.solid or b1.groups.solid <= 0
+						or not b2 or not b2.groups.solid or b2.groups.solid <= 0 then
+					return
+				end
+			end
+		else
+			for i=1, 7 do
+				local t1 = core.registered_nodes[core.get_node(vector.offset(pos, i, 0, 0)).name]
+				local t2 = core.registered_nodes[core.get_node(vector.offset(pos, -i, 0, 0)).name]
+				if not t1 or not t1.buildable_to or not t2 or not t2.buildable_to then return end
+			end
+			for i=1, 5 do
+				local b1 = core.registered_nodes[core.get_node(vector.offset(pos, i, -1, 0)).name]
+				local b2 = core.registered_nodes[core.get_node(vector.offset(pos, -i, -1, 0)).name]
+				if not b1 or not b1.groups.solid or b1.groups.solid <= 0
+						or not b2 or not b2.groups.solid or b2.groups.solid <= 0 then
+					return
+				end
+			end
+		end
+		return minetest.place_schematic(pos, schem, rot == 4 and "0" or (rot == 1 and "90" or (rot == 2 and "180" or "270")))
 	end
 })
 
