@@ -156,10 +156,7 @@ function vl_attach.place_attached(itemstack, placer, original_pointed_thing, ide
 		-- Check placement allowed
 		local wdir = core.dir_to_wallmounted(dir)
 		local attach_type = idef._vl_attach_type or "all"
-		if not vl_attach.check_allowed(under_node, wdir, attach_type) then
-			core.log("not allowed "..attach_type.. " " ..dump(under_node,""))
-			return
-		end
+		if not vl_attach.check_allowed(under_node, wdir, attach_type) then return end
 
 		-- Make sure the node would not immediately drop
 		local placed_node = {name = itemstack:get_name(), param2 = wdir}
