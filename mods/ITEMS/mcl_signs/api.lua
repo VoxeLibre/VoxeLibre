@@ -437,12 +437,10 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 local function make_placed_node_sign(placed_node, placer, dir, itemstack)
-	core.log("make placed sign")
-	local def = itemstack:get_definition()
 	local wdir = core.dir_to_wallmounted(dir)
+	local def = itemstack:get_definition()
 	if wdir < 1 then
-		-- no placement on ceilings allowed yet
-		return nil
+		return nil -- no placement on ceilings allowed until we have a hanging sign
 	elseif wdir == 1 then
 		placed_node.name = "mcl_signs:standing_sign_"..def._mcl_sign_wood
 		-- param2 value is degrees / 1.5
