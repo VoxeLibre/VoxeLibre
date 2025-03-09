@@ -148,18 +148,18 @@ end
 
 tpl_node.on_destruct = remove_entity
 
+-- Attachment
+tpl_node._vl_attach_type = "itemframe"
+tpl_node.on_place = vl_attach.place_attached
+vl_attach.set_default("itemframe", function(_, def, wdir)
+	-- Allow solid, opaque, full cube collision box nodes are allowed.
+	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0 and true
+end)
+
 function tpl_node.on_construct(pos)
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 	inv:set_size("main", 1)
-end
-
-function tpl_node.after_place_node(pos, placer, itemstack, pointed_thing)
-	-- hack to force the place sound to play
-	local idef = itemstack:get_definition()
-	if idef and idef.sounds and idef.sounds.place then
-		core.sound_play(idef.sounds.place, {pos = pos}, true)
-	end
 end
 
 -- Entity functions
