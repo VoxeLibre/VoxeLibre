@@ -62,8 +62,6 @@ vl_attach.register_autogroup({
 	end
 })
 
-local on_button_place = vl_attach.place_attached_wallmounted
-
 local buttonuse = S("Use the button to push it.")
 
 function mesecon.register_button(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, push_by_arrow, longdesc, button_sound)
@@ -119,7 +117,8 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		_tt_help = tt,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = buttonuse,
-		on_place = on_button_place,
+		_vl_attach_type = "button",
+		on_place = vl_attach.place_attached,
 		node_placement_prediction = "",
 		on_rightclick = function(pos, node)
 			mesecon.push_button(pos, node)
