@@ -136,6 +136,7 @@ function mcl_torches.register_torch(def)
 	groups.destroy_by_lava_flow = 1
 	groups.dig_by_piston = 1
 	groups.flame_type = def.flame_type or 1
+	groups.vl_attach = 1
 
 	local floordef = {
 		description = def.description,
