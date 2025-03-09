@@ -464,49 +464,9 @@ end)
 function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	local pos
 	itemstack, pos = vl_attach.place_attached(itemstack, placer, pointed_thing, nil, make_placed_node_sign)
-	if not itemstack then return end
+	if not pos then return end
 
 	show_formspec(placer, pos)
-	--[[
-	local under = pointed_thing.under
-	do -- ensure the node we attach to can actually be attached to
-		local node = core.get_node(under)
-		local def = core.registered_nodes[node.name]
-		if def and def.buildable_to then return itemstack end
-	end
-
-	local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
-	if new_stack then
-		return new_stack
-	end
-
-	local above = pointed_thing.above
-	local dir = vector.subtract(under, above)
-	local wdir = core.dir_to_wallmounted(dir)
-
-	local itemstring = itemstack:get_name()
-	local def = itemstack:get_definition()
-
-	local pos
-	local placestack = ItemStack(itemstack)
-	if wdir < 1 then
-		-- no placement on ceilings allowed yet
-		return itemstack
-	elseif wdir == 1 then
-		placestack:set_name("mcl_signs:standing_sign_"..def._mcl_sign_wood)
-		-- param2 value is degrees / 1.5
-		local rot = normalize_rotation(placer:get_look_horizontal() * 180 / math.pi / 1.5)
-		itemstack, pos = core.item_place_node(placestack, placer, pointed_thing, rot)
-	else
-		placestack:set_name("mcl_signs:wall_sign_"..def._mcl_sign_wood)
-		itemstack, pos = core.item_place_node(placestack, placer, pointed_thing, wdir)
-	end
-
-	show_formspec(placer, pos)
-	-- restore canonical name as core.item_place_node might have changed it
-	itemstack:set_name(itemstring)
-	return itemstack
-	--]]
 end
 
 function sign_tpl.on_rightclick(pos, _, clicker, itemstack)

@@ -115,18 +115,6 @@ vl_attach.register_autogroup({
 	end
 })
 
-local function make_placed_node_torch(placed_node, placer, dir, itemstack)
-	local itemstring = itemstack:get_name()
-
-	local wdir = core.dir_to_wallmounted(dir)
-	if wdir == 1 then
-		placed_node.name = itemstring
-	else
-		placed_node.name = itemstring.."_wall"
-	end
-	return placed_node
-end
-
 --
 -- 3d torch part
 --
@@ -177,9 +165,16 @@ function mcl_torches.register_torch(def)
 		sounds = def.sounds,
 		node_placement_prediction = "",
 		_vl_attach_type = "torch",
-		on_place = function(itemstack, placer, pointed_thing)
-			return vl_attach.place_attached(itemstack, placer, pointed_thing, nil, make_placed_node_torch)
+		_vl_attach_make_placed_node = function(placed_node, _, dir, _)
+			local wdir = core.dir_to_wallmounted(dir)
+			if wdir == 1 then
+				placed_node.name = itemstring
+			else
+				placed_node.name = itemstring.."_wall"
+			end
+			return placed_node
 		end,
+		on_place = vl_attach.place_attached,
 		on_rotate = false,
 		on_construct = function(pos)
 			if def.particles then
