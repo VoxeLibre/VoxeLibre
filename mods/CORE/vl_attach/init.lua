@@ -14,6 +14,7 @@ local defaults = {}
 ---@class core.NodeDef
 ---@field _vl_allow_attach? {[string]: boolean|fun(def : core.Node, wdir : number, attach_type : string)}?
 ---@field _vl_attach_type? string
+---@field _vl_attach_make_placed_node? fun(placed_node : core.Node, placer : core.Player, dir : vector.Vector, itemstack : core.ItemStack) : core.Node
 
 ---@param attach_type string
 ---@param allow_attach boolean|fun(node : core.Node, def : core.NodeDef, wdir : number, attach_type : string): boolean?
@@ -140,6 +141,7 @@ function vl_attach.place_attached(itemstack, placer, pointed_thing, idef, make_p
 	if not def then return end
 
 	idef = idef or itemstack:get_definition() --[[ @as core.NodeDef ]]
+	make_placed_node = make_placed_node or idef._vl_attach_make_placed_node
 
 	-- Check placement allowed
 	local wdir = core.dir_to_wallmounted(dir)
