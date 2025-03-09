@@ -101,87 +101,123 @@ function vl_attach.check_allowed(node, wdir, attach_type)
 	return allow_attach or false
 end
 
+local function handle_buildable_to(pointed_thing)
+	local under = pointed_thing.under
+	local under_node = minetest.get_node(under)
+	local def = minetest.registered_nodes[under_node.name]
+
+	local dir = under - pointed_thing.above
+	if def.buildable_to then
+		pointed_thing.above = under
+		under = under + dir
+		under_node = core.get_node(under)
+		def = registered_nodes[under_node.name]
+		if not def then return nil, dir, under_node end
+
+		pointed_thing.under = under
+	end
+
+	return def, dir, under_node
+end
+
 ---@param itemstack core.ItemStack
 ---@param placer core.PlayerObjectRef
 ---@param idef? core.NodeDef
----@paral pointed_thing core.PointedThing
-function vl_attach.place_attached_facedir(itemstack, placer, pointed_thing, idef)
+---@param pointed_thing core.PointedThing
+---@param make_placed_node fun(placed_node : core.Node, placer : core.Player, dir : vector.Vector, itemstack : core.ItemStack) : core.Node
+---@return core.ItemStack?, vector.Vector?
+function vl_attach.place_attached(itemstack, placer, pointed_thing, idef, make_placed_node)
 	-- Don't try to place nodes on entities
-	if pointed_thing.type ~= "node" then return itemstack end
+	if pointed_thing.type ~= "node" then return end
 
 	-- Check special rightclick action of pointed node
 	local handled
 	itemstack, handled = mcl_util.handle_node_rightclick(itemstack, placer, pointed_thing)
-	if handled then return itemstack end
+	if handled then return end
 
-	local under = pointed_thing.under
-	local under_node = minetest.get_node(under)
-	local def = minetest.registered_nodes[under_node.name]
+	-- Handle buildable_to nodes
+	local def, dir, under_node = handle_buildable_to(pointed_thing)
 	if not def then return end
-	local above = pointed_thing.above
+
 	idef = idef or itemstack:get_definition() --[[ @as core.NodeDef ]]
 
-	-- If the pointed node is buildable, let's look at the node *behind* that node
-	if def.buildable_to then
-		local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
-		local actual = vector.subtract(under, dir)
-		local actualnode = minetest.get_node(actual)
-		def = minetest.registered_nodes[actualnode.name]
-	end
-
 	-- Check placement allowed
-	local dir = under - above
 	local wdir = core.dir_to_wallmounted(dir)
-	if not vl_attach.check_allowed(under_node, wdir, idef._vl_attach_type or "all") then
-		return itemstack
+	local attach_type = idef._vl_attach_type or "all"
+	if not vl_attach.check_allowed(under_node, wdir, attach_type) then
+		core.log("not allowed "..attach_type.. " " ..dump(under_node,""))
+		return
 	end
 
+	-- Make sure the node would not immediately drop
+	local placed_node = {name = itemstack:get_name(), param2 = wdir}
+	placed_node = make_placed_node(placed_node, placer, dir, itemstack)
+	if not placed_node then
+		core.log("no placed node")
+		return
+	end
+	if vl_attach.should_drop(pointed_thing.under - dir, placed_node) then
+		core.log("should drop")
+		return
+	end
+
+	-- Place the node
+	local itemstring = itemstack:get_name()
+	local placestack = ItemStack(itemstack)
+	placestack:set_name(placed_node.name)
+	local pos
+	itemstack, pos = core.item_place_node(placestack, placer, pointed_thing, placed_node.param2)
+	if not pos then
+		itemstack, pos = core.item_place(placestack, placer, pointed_thing, placed_node.param2)
+	end
+
+	core.log(dump({pos=pos},""))
+
+	-- Restore name (core.item_place_node may change it)
+	itemstack:set_name(itemstring)
+
+	-- Play sound
+	if pos and idef.sounds and idef.sounds.place then
+		core.sound_play(idef.sounds.place, {pos=pointed_thing.above, gain=1}, true)
+	end
+	return itemstack, pos
+end
+
+local function make_placed_node_facedir(placed_node, placer, dir, _)
 	-- Calculate param2 based on the player's look direction
-	above = pointed_thing.above
 	local param2 = minetest.dir_to_facedir(dir, true)
 	if dir.y ~= 0 then
 		local yaw = placer:get_look_horizontal()
 		if (yaw > PI_OVER_4 and yaw < PI_OVER_4*3) or (yaw < PI_OVER_4*7 and yaw > PI_OVER_4*5) then
-			if dir.y == -1 then
-				param2 = 13
-			else
-				param2 = 15
-			end
+			param2 = dir.y == -1 and 13 or 15
 		else
-			if dir.y == -1 then
-				param2 = 10
-			else
-				param2 = 8
-			end
+			param2 = dir.y == -1 and 10 or 8
 		end
 	end
-
-	-- Make sure the node would not immediately drop
-	local placed_node = {name = itemstack:get_name(), param2 = param2}
-	if vl_attach.should_drop(under - dir, placed_node) then return itemstack end
-
-	-- Place the node
-	local success
-	itemstack, success = core.item_place_node(itemstack, placer, pointed_thing, param2)
-
-	-- Play sound
-	if success and idef.sounds and idef.sounds.place then
-		core.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
-	end
-	return itemstack
+	placed_node.param2 = param2
+	return placed_node
 end
-
-local placers = {
-	facedir = vl_attach.place_attached_facedir,
-}
 
 ---@param itemstack core.ItemStack
 ---@param placer core.PlayerObjectRef
+---@param idef? core.NodeDef
 ---@param pointed_thing core.PointedThing
-function vl_attach.place_attached(itemstack, placer, pointed_thing)
-	local idef = itemstack:get_definition() --[[ @as core.NodeDef ]]
-	local callback = placers[idef.paramtype2]
-	return callback and callback(itemstack, placer, pointed_thing, idef)
+---@return core.ItemStack?
+function vl_attach.place_attached_facedir(itemstack, placer, pointed_thing, idef)
+	return vl_attach.place_attached(itemstack, placer, pointed_thing, idef, make_placed_node_facedir)
+end
+
+local function make_placed_node_wallmounted(placed_node, _, _, _)
+	return placed_node
+end
+
+---@param itemstack core.ItemStack
+---@param placer core.PlayerObjectRef
+---@param idef? core.NodeDef
+---@param pointed_thing core.PointedThing
+---@return core.ItemStack?
+function vl_attach.place_attached_wallmounted(itemstack, placer, pointed_thing, idef)
+	return vl_attach.place_attached(itemstack, placer, pointed_thing, idef, make_placed_node_wallmounted)
 end
 
 ---@class vl_attach.AutogrouperDef
