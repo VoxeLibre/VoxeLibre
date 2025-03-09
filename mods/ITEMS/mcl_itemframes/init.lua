@@ -71,7 +71,8 @@ local tpl_groups = {
 	handy = 1,
 	axey = 1,
 	attached_node = 1,
-	itemframe = 1
+	itemframe = 1,
+	vl_attach = 1,
 }
 
 local function find_entity(pos)
