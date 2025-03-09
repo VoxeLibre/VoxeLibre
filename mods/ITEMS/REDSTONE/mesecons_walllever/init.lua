@@ -56,75 +56,8 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		minetest.sound_play("mesecons_button_push", {pos=pos, max_hear_distance=16}, true)
 	end,
 	node_placement_prediction = "",
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
-			-- no interaction possible with entities
-			return itemstack
-		end
-
-		local under = pointed_thing.under
-		local node = minetest.get_node(under)
-		local def = minetest.registered_nodes[node.name]
-		if not def then return end
-		local groups = def.groups
-
-		-- Check special rightclick action of pointed node
-		if def and def.on_rightclick then
-			if not placer:get_player_control().sneak then
-				return def.on_rightclick(under, node, placer, itemstack,
-					pointed_thing) or itemstack, false
-			end
-		end
-
-		-- If the pointed node is buildable, let's look at the node *behind* that node
-		if def.buildable_to then
-			local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
-			local actual = vector.subtract(under, dir)
-			local actualnode = minetest.get_node(actual)
-			def = minetest.registered_nodes[actualnode.name]
-			groups = def.groups
-		end
-
-		-- Allow placement everywhere that torches can be placed except on top of upside stairs and slabs
-		if not groups then return itemstack end
-		if groups.stair or groups.slab_top then return itemstack end
-		local above = pointed_thing.above
-		local wdir = minetest.dir_to_wallmounted(under - above)
-		if not vl_attach.check_allowed(node, wdir, "lever") then
-			return itemstack
-		end
-
-		local above = pointed_thing.above
-		local dir = vector.subtract(under, above)
-		local tau = math.pi*2
-		local wdir = minetest.dir_to_facedir(dir, true)
-		if dir.y ~= 0 then
-			local yaw = placer:get_look_horizontal()
-			if (yaw > tau/8 and yaw < (tau/8)*3) or (yaw < (tau/8)*7 and yaw > (tau/8)*5) then
-				if dir.y == -1 then
-					wdir = 13
-				else
-					wdir = 15
-				end
-			else
-				if dir.y == -1 then
-					wdir = 10
-				else
-					wdir = 8
-				end
-			end
-		end
-
-		local idef = itemstack:get_definition()
-		local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
-
-		if success then
-			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
-			end
-		end
-		return itemstack
-	end,
+	on_place = vl_attach.place_attached_facedir,
+	_vl_attach_type = "lever",
 
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
@@ -185,3 +118,20 @@ vl_attach.set_default("lever", function(_, wdir)
 	-- No ceiling levers
 	if wdir == 0 then return false end
 end)
+vl_attach.register_autogroup({
+	skip_existing = {"lever"},
+	callback = function(allow_attach, name, def)
+		local groups = def.groups
+		if not groups then return end
+
+		-- Only allow full-solid blocks to have buttons attached
+		if groups.solid and groups.opaque and (not def.node_box or def.node_box.type ~= "regular") then
+			allow_attach.lever = true
+		end
+
+		-- Exception: allow placing on top of top-slabs
+		if groups.slab_top then
+			allow_attach.lever = true
+		end
+	end
+})
