@@ -121,6 +121,10 @@ local function handle_buildable_to(pointed_thing)
 	return def, dir, under_node
 end
 
+local function make_placed_node_noop(placed_node, _, _, _)
+	return placed_node
+end
+
 ---@param itemstack core.ItemStack
 ---@param placer core.PlayerObjectRef
 ---@param idef? core.NodeDef
@@ -141,7 +145,7 @@ function vl_attach.place_attached(itemstack, placer, pointed_thing, idef, make_p
 	if not def then return end
 
 	idef = idef or itemstack:get_definition() --[[ @as core.NodeDef ]]
-	make_placed_node = make_placed_node or idef._vl_attach_make_placed_node
+	make_placed_node = make_placed_node or idef._vl_attach_make_placed_node or make_placed_node_noop
 
 	-- Check placement allowed
 	local wdir = core.dir_to_wallmounted(dir)
@@ -207,19 +211,6 @@ end
 ---@return core.ItemStack?
 function vl_attach.place_attached_facedir(itemstack, placer, pointed_thing, idef)
 	return vl_attach.place_attached(itemstack, placer, pointed_thing, idef, make_placed_node_facedir)
-end
-
-local function make_placed_node_wallmounted(placed_node, _, _, _)
-	return placed_node
-end
-
----@param itemstack core.ItemStack
----@param placer core.PlayerObjectRef
----@param idef? core.NodeDef
----@param pointed_thing core.PointedThing
----@return core.ItemStack?
-function vl_attach.place_attached_wallmounted(itemstack, placer, pointed_thing, idef)
-	return vl_attach.place_attached(itemstack, placer, pointed_thing, idef, make_placed_node_wallmounted)
 end
 
 ---@class vl_attach.AutogrouperDef
