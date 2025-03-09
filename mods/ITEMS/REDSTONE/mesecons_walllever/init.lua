@@ -44,7 +44,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		fixed = { -3/16, -4/16, 2/16, 3/16, 4/16, 8/16 },
 	},
 	use_texture_alpha = "clip",
-	groups = {handy=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
+	groups = {handy=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1, vl_attach=1},
 	is_ground_content = false,
 	description=S("Lever"),
 	_tt_help = S("Provides redstone power while it's turned on"),
@@ -82,8 +82,12 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 		type = "fixed",
 		fixed = { -3/16, -4/16, 2/16, 3/16, 4/16, 8/16 },
 	},
+<<<<<<< HEAD
 	use_texture_alpha = "clip",
 	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
+=======
+	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1, vl_attach=1},
+>>>>>>> de47967ac (Make nodes with group vl_attach=1 drop if they couldn't attach to the node behind them)
 	is_ground_content = false,
 	drop = "mesecons_walllever:wall_lever_off",
 	_doc_items_create_entry = false,

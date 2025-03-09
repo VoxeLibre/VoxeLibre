@@ -30,7 +30,27 @@ end
 ---@param node core.Node
 ---@return boolean
 function vl_attach.should_drop(pos, node)
-	local groups = registered_nodes[node.name].groups or {}
+	local def = registered_nodes[node.name] or {}
+	local groups = def and def.groups or {}
+
+	if groups.vl_attach == 1 then
+		local wdir, dir
+		if def.paramtype2 == "facedir" then
+			dir = core.facedir_to_dir(math.floor(node.param2 / 4))
+			wdir = core.dir_to_wallmounted(dir)
+		elseif def.paramtype2 == "wallmounted" then
+			wdir = node.param2
+			dir = -core.wallmounted_to_dir(wdir)
+		else
+			core.log("warning", node.name.." has groups.vl_attach = 1 when paramtyp2 is "..def.paramtype2)
+			return false
+		end
+
+		if not wdir then return true end
+
+		local under_node = core.get_node(pos - dir)
+		return not vl_attach.check_allowed(under_node, wdir, def._vl_attach_type)
+	end
 
 	if (groups.attached_node_facedir or 0) ~= 0 then
 		local dir = facedir_to_dir(node.param2)
@@ -40,14 +60,14 @@ function vl_attach.should_drop(pos, node)
 	end
 
 	if (groups.attached_node_wallmounted or 0) ~= 0 then
-		local dir = wallmounted_to_dir(node.param2)
+		dir = wallmounted_to_dir(node.param2)
 		if dir and get_item_group(get_node(vector.add(pos, dir)).name, "solid") == 0 then
 			return true
 		end
 	end
 
 	if (groups.supported_node or 0) ~= 0 then
-		local def = registered_nodes[get_node(vector.offset(pos, 0, -1, 0)).name]
+		def = registered_nodes[get_node(vector.offset(pos, 0, -1, 0)).name]
 		if def and def.drawtype == "airlike" then
 			return true
 		end
@@ -55,7 +75,7 @@ function vl_attach.should_drop(pos, node)
 
 	if (groups.supported_node_facedir or 0) ~= 0 then
 		local dir = facedir_to_dir(node.param2)
-		local def = dir and registered_nodes[get_node(vector.add(pos, dir)).name]
+		def = dir and registered_nodes[get_node(vector.add(pos, dir)).name]
 		if def and def.drawtype == "airlike" then
 			return true
 		end
@@ -63,7 +83,7 @@ function vl_attach.should_drop(pos, node)
 
 	if (groups.supported_node_wallmounted or 0) ~= 0 then
 		local dir = wallmounted_to_dir(node.param2)
-		local def = dir and registered_nodes[get_node(vector.add(pos, dir)).name]
+		def = dir and registered_nodes[get_node(vector.add(pos, dir)).name]
 		if def and def.drawtype == "airlike" then
 			return true
 		end
@@ -148,14 +168,16 @@ function vl_attach.place_attached(itemstack, placer, original_pointed_thing, ide
 	itemstack, handled = mcl_util.handle_node_rightclick(itemstack, placer, original_pointed_thing)
 	if handled then return end
 
+	idef = idef or itemstack:get_definition() --[[ @as core.NodeDef ]]
+	local itemstring = itemstack:get_name()
+	assert(idef.groups.vl_attach == 1, itemstring.." does not have vl_attach = 1")
+	make_placed_node = make_placed_node or idef._vl_attach_make_placed_node or make_placed_node_noop
+	local attach_type = idef._vl_attach_type or "all"
+
 	-- Handle buildable_to nodes
 	return handle_buildable_to(original_pointed_thing, function(dir, pointed_thing, under_node)
-		idef = idef or itemstack:get_definition() --[[ @as core.NodeDef ]]
-		make_placed_node = make_placed_node or idef._vl_attach_make_placed_node or make_placed_node_noop
-
 		-- Check placement allowed
 		local wdir = core.dir_to_wallmounted(dir)
-		local attach_type = idef._vl_attach_type or "all"
 		if not vl_attach.check_allowed(under_node, wdir, attach_type) then return end
 
 		-- Make sure the node would not immediately drop
@@ -165,7 +187,6 @@ function vl_attach.place_attached(itemstack, placer, original_pointed_thing, ide
 		if vl_attach.should_drop(pointed_thing.under - dir, placed_node) then return end
 
 		-- Place the node
-		local itemstring = itemstack:get_name()
 		local placestack = ItemStack(itemstack)
 		placestack:set_name(placed_node.name)
 		local pos
