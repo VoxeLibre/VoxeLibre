@@ -224,6 +224,14 @@ function tpl_node.on_rightclick(pos, _node, clicker, ostack, _pointed_thing)
 	return ostack
 end
 
+-- Attachment
+tpl_node._vl_attach_type = "itemframe"
+tpl_node.on_place = vl_attach.place_attached
+vl_attach.set_default("itemframe", function(_, def, wdir)
+	-- Allow solid, opaque, full cube collision box nodes are allowed.
+	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0 and true
+end)
+
 function tpl_node.on_construct(pos)
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
@@ -255,6 +263,7 @@ local function run_map_support(e)
 	end)
 end
 
+-- Entity functions
 function tpl_entity:set_item(itemstack, pos)
 	if not itemstack or not itemstack.get_name then
 		self.object:remove()
