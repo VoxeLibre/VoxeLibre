@@ -72,10 +72,12 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 	groups_off.dig_by_piston=1
 	groups_off.dig_immediate_piston=1
 	groups_off.button=1 -- button (off)
+	groups_off.vl_attach = 1
 
 	local groups_on = table.copy(groups_off)
 	groups_on.not_in_creative_inventory=1
 	groups_on.button=2 -- button (on)
+	groups_on.vl_attach = 1
 
 	if not button_sound then
 		button_sound = "mesecons_button_push"
