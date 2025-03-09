@@ -19,6 +19,7 @@ minetest.register_node("mcl_core:cactus", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	node_placement_prediction = "",
+	_vl_allow_attach = {all = false},
 	node_box = {
 		type = "fixed",
 		fixed = {
