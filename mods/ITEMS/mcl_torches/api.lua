@@ -96,7 +96,7 @@ vl_attach.set_default("torch", function(_, def, wdir)
 	if wdir == 0 then return false end
 
 	-- Allow solid, opaque, full cube collision box nodes are allowed.
-	if def.groups.solid and def.groups.opaque then return true end
+	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0 and true
 end)
 vl_attach.register_autogroup({
 	skip_existing = {"torch"},
@@ -114,6 +114,18 @@ vl_attach.register_autogroup({
 		end
 	end
 })
+
+local function make_placed_node_torch(placed_node, placer, dir, itemstack)
+	local itemstring = itemstack:get_name()
+
+	local wdir = core.dir_to_wallmounted(dir)
+	if wdir == 1 then
+		placed_node.name = itemstring
+	else
+		placed_node.name = itemstring.."_wall"
+	end
+	return placed_node
+end
 
 --
 -- 3d torch part
@@ -164,53 +176,9 @@ function mcl_torches.register_torch(def)
 		},
 		sounds = def.sounds,
 		node_placement_prediction = "",
+		_vl_attach_type = "torch",
 		on_place = function(itemstack, placer, pointed_thing)
-			if pointed_thing.type ~= "node" then
-				-- no interaction possible with entities, for now.
-				return itemstack
-			end
-
-			local under = pointed_thing.under
-			local node = minetest.get_node(under)
-			local def = minetest.registered_nodes[node.name]
-			if not def then return itemstack end
-
-			-- Call on_rightclick if the pointed node defines it
-			if placer and not placer:get_player_control().sneak then
-				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-					return minetest.registered_nodes[node.name].on_rightclick(under, node, placer, itemstack) or itemstack
-				end
-			end
-
-			local above = pointed_thing.above
-			local wdir = minetest.dir_to_wallmounted(under - above)
-
-			if vl_attach.check_allowed(node, wdir, "torch") == false then
-				return itemstack
-			end
-
-			local itemstring = itemstack:get_name()
-			local fakestack = ItemStack(itemstack)
-			local idef = fakestack:get_definition()
-			local retval
-
-			if wdir == 1 then
-				retval = fakestack:set_name(itemstring)
-			else
-				retval = fakestack:set_name(itemstring_wall)
-			end
-			if not retval then
-				return itemstack
-			end
-
-			local success
-			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing, wdir)
-			itemstack:set_name(itemstring)
-
-			if success and idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=under, gain=1}, true)
-			end
-			return itemstack
+			return vl_attach.place_attached(itemstack, placer, pointed_thing, nil, make_placed_node_torch)
 		end,
 		on_rotate = false,
 		on_construct = function(pos)
