@@ -436,8 +436,38 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
+local function make_placed_node_sign(placed_node, placer, dir, itemstack)
+	core.log("make placed sign")
+	local def = itemstack:get_definition()
+	local wdir = core.dir_to_wallmounted(dir)
+	if wdir < 1 then
+		-- no placement on ceilings allowed yet
+		return nil
+	elseif wdir == 1 then
+		placed_node.name = "mcl_signs:standing_sign_"..def._mcl_sign_wood
+		-- param2 value is degrees / 1.5
+		placed_node.param2 = normalize_rotation(placer:get_look_horizontal() * 180 / math.pi / 1.5)
+	else
+		placed_node.name = "mcl_signs:wall_sign_"..def._mcl_sign_wood
+	end
+	return placed_node
+end
+sign_tpl._vl_attach_type = "sign"
+vl_attach.set_default("sign",function(_, def, wdir)
+	-- Don't allow ceiling signs until we have a hanging sign
+	if wdir == 0 then return false end
+
+	return def.groups.solid and def.groups.opaque and true
+end)
+
 -- Node definition callbacks
 function sign_tpl.on_place(itemstack, placer, pointed_thing)
+	local pos
+	itemstack, pos = vl_attach.place_attached(itemstack, placer, pointed_thing, nil, make_placed_node_sign)
+	if not itemstack then return end
+
+	show_formspec(placer, pos)
+	--[[
 	local under = pointed_thing.under
 	do -- ensure the node we attach to can actually be attached to
 		local node = core.get_node(under)
@@ -476,6 +506,7 @@ function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	-- restore canonical name as core.item_place_node might have changed it
 	itemstack:set_name(itemstring)
 	return itemstack
+	--]]
 end
 
 function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
