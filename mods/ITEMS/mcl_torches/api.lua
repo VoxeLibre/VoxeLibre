@@ -208,6 +208,7 @@ function mcl_torches.register_torch(def)
 			wall_side = {-0.5, -0.3, -0.1, -0.2, 0.325, 0.1},
 		},
 		sounds = def.sounds,
+		_vl_attach_type = "torch",
 		on_rotate = false,
 		on_construct = function(pos)
 			if def.particles then
