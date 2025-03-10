@@ -439,9 +439,7 @@ end)
 local function make_placed_node_sign(placed_node, placer, dir, itemstack)
 	local wdir = core.dir_to_wallmounted(dir)
 	local def = itemstack:get_definition()
-	if wdir < 1 then
-		return nil -- no placement on ceilings allowed until we have a hanging sign
-	elseif wdir == 1 then
+	if wdir == 1 then
 		placed_node.name = "mcl_signs:standing_sign_"..def._mcl_sign_wood
 		-- param2 value is degrees / 1.5
 		placed_node.param2 = normalize_rotation(placer:get_look_horizontal() * 180 / math.pi / 1.5)
@@ -529,7 +527,7 @@ local sign_wall = table_merge(sign_tpl, {
 		type = "wallmounted",
 		wall_side = {-0.5, -7/28, -0.5, -23/56, 7/28, 0.5}
 	},
-	groups = {axey = 1, handy = 2, sign = 1, supported_node_wallmounted = 1, deco_block = 1},
+	groups = {axey = 1, handy = 2, sign = 1, supported_node_wallmounted = 1, deco_block = 1, vl_attach = 1},
 	_mcl_sign_type = "wall",
 })
 
