@@ -32,8 +32,7 @@ end
 function vl_attach.should_drop(pos, node)
 	local def = registered_nodes[node.name]
 	if not def then return false end
-
-	local groups = def and def.groups or {}
+	local groups = def and def.groups
 
 	if groups.vl_attach == 1 then
 		local wdir, dir
