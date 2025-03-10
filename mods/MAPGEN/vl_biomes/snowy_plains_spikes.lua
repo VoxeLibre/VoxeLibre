@@ -1,5 +1,4 @@
--- local modname = core.get_current_modname()
-local modpath = core.get_modpath("mcl_terrain_features") -- FIXME: move structures to vl_biomes
+local modpath = core.get_modpath(core.get_current_modname())
 
 -- Ice Plains Spikes (rare) aka Ice Spikes
 vl_biomes.register_biome({
