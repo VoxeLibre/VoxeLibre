@@ -453,7 +453,7 @@ vl_attach.set_default("sign",function(_, def, wdir)
 	-- Don't allow ceiling signs until we have a hanging sign
 	if wdir == 0 then return false end
 
-	return def.groups.solid and def.groups.opaque and true
+	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0
 end)
 
 -- Node definition callbacks
