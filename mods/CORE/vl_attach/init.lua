@@ -171,7 +171,14 @@ function vl_attach.place_attached(itemstack, placer, original_pointed_thing, ide
 
 	idef = idef or itemstack:get_definition() --[[ @as core.NodeDef ]]
 	local itemstring = itemstack:get_name()
-	assert(idef.groups.vl_attach == 1, itemstring.." does not have vl_attach = 1")
+	if idef.groups.vl_attach ~= 1 then
+		core.log("warning", itemstring.." does not have vl_attach = 1")
+		return
+	end
+	if not idef._vl_attach_type then
+		core.log("warning", itemstring.." does not have _vl_attach_type defined")
+		return
+	end
 	make_placed_node = make_placed_node or idef._vl_attach_make_placed_node or make_placed_node_noop
 	local attach_type = idef._vl_attach_type or "all"
 
@@ -184,6 +191,10 @@ function vl_attach.place_attached(itemstack, placer, original_pointed_thing, ide
 		-- Make sure the node would not immediately drop
 		local placed_node = {name = itemstack:get_name(), param2 = wdir}
 		placed_node = make_placed_node(placed_node, placer, dir, itemstack)
+		if not registered_nodes[placed_node.name]._vl_attach_type then
+			core.log("warning", placed_node.name.." does not have _vl_attach_type defined")
+			return
+		end
 		if not placed_node then return end
 		if vl_attach.should_drop(pointed_thing.under - dir, placed_node) then return end
 
