@@ -96,7 +96,7 @@ vl_attach.set_default("torch", function(_, def, wdir)
 	if wdir == 0 then return false end
 
 	-- Allow solid, opaque, full cube collision box nodes are allowed.
-	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0 and true
+	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0
 end)
 vl_attach.register_autogroup({
 	skip_existing = {"torch"},
@@ -109,7 +109,8 @@ vl_attach.register_autogroup({
 		end
 
 		-- Allow attaching torches to the tops of these node types
-		if groups.fence == 1 or groups.wall or groups.anvil or groups.pane then
+		if groups.fence == 1 or (groups.wall or 0) ~= 0 or (groups.anvil or 0) ~= 0
+		or (groups.pane or 0) ~= 0 then
 			allow_attach.torch = function(_, wdir) return wdir == 1 end
 		end
 	end
