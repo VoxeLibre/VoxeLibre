@@ -1,6 +1,5 @@
 -- boulders, in MegaTaiga and MegaSpruceTaiga
---local modname = core.get_current_modname()
-local modpath = core.get_modpath("mcl_terrain_features") -- FIXME: move to this module
+local modpath = core.get_modpath(core.get_current_modname())
 
 -- Mossy cobblestone boulder (3x3)
 mcl_mapgen_core.register_decoration({
