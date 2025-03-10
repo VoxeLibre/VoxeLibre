@@ -29,9 +29,9 @@ mcl_structures.register_structure("basalt_column",{
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
-		local nn = minetest.find_nodes_in_area(vector.offset(pos,-5,-1,-5),vector.offset(pos,5,-1,5),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
+		local nn = minetest.find_nodes_in_area(vector.offset(pos,-5,0,-5),vector.offset(pos,5,0,5),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
 		table.sort(nn,function(a, b)
-		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
+		   return vector.distance(pos, a) < vector.distance(pos, b)
 		end)
 		if #nn < 1 then return false end
 		local basalt = {}
@@ -72,9 +72,9 @@ mcl_structures.register_structure("basalt_pillar",{
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
-		local nn = minetest.find_nodes_in_area(vector.offset(pos,-2,-1,-2),vector.offset(pos,2,-1,2),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
+		local nn = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
 		table.sort(nn,function(a, b)
-		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
+		   return vector.distance(pos, a) < vector.distance(pos, b)
 		end)
 		if #nn < 1 then return false end
 		local basalt = {}
@@ -116,9 +116,9 @@ mcl_structures.register_structure("lavadelta",{
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
-		local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-10,-1,-10),vector.offset(pos,10,-2,10),{"mcl_blackstone:basalt","mcl_blackstone:blackstone","mcl_nether:netherrack"})
+		local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-10,0,-10),vector.offset(pos,10,-1,10),{"mcl_blackstone:basalt","mcl_blackstone:blackstone","mcl_nether:netherrack"})
 		table.sort(nn,function(a, b)
-		   return vector.distance(vector.new(pos.x,0,pos.z), a) < vector.distance(vector.new(pos.x,0,pos.z), b)
+		   return vector.distance(pos, a) < vector.distance(pos, b)
 		end)
 		if #nn < 1 then return false end
 		local lava = {}
