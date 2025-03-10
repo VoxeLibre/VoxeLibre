@@ -101,10 +101,10 @@ end)
 vl_attach.register_autogroup({
 	skip_existing = {"torch"},
 	callback = function(allow_attach, _, def)
-		local groups = def.groups or {}
+		local groups = def.groups
 
 		-- Always allow attaching torches to glass
-		if groups.glass then
+		if (groups.glass or 0) ~= 0 then
 			allow_attach.torch = true
 		end
 

@@ -126,15 +126,15 @@ vl_attach.register_autogroup({
 	skip_existing = {"lever"},
 	callback = function(allow_attach, name, def)
 		local groups = def.groups
-		if not groups then return end
 
 		-- Only allow full-solid blocks to have buttons attached
-		if groups.solid and groups.opaque and (not def.node_box or def.node_box.type ~= "regular") then
+		if (groups.solid or 0) ~= 0 and (groups.opaque or 0) ~= 0
+		and (not def.node_box or def.node_box.type ~= "regular") then
 			allow_attach.lever = true
 		end
 
 		-- Exception: allow placing on top of top-slabs
-		if groups.slab_top then
+		if (groups.slab_top or 0) ~= 0 then
 			allow_attach.lever = true
 		end
 	end
