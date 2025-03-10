@@ -5,7 +5,7 @@ local get_item_group = core.get_item_group
 local facedir_to_dir = core.facedir_to_dir
 local wallmounted_to_dir = core.wallmounted_to_dir
 local get_node = core.get_node
-local registered_nodes = minetest.registered_nodes
+local registered_nodes = core.registered_nodes
 
 -- Constants
 local PI_OVER_4 = math.pi / 4
@@ -25,12 +25,14 @@ function vl_attach.set_default(attach_type, allow_attach)
 	defaults[attach_type] = allow_attach
 end
 
--- Check if the node would
+-- Check if the node is no longer supported by a node that would allow attachment/support
 ---@param pos vector.Vector
 ---@param node core.Node
 ---@return boolean
 function vl_attach.should_drop(pos, node)
-	local def = registered_nodes[node.name] or {}
+	local def = registered_nodes[node.name]
+	if not def then return false end
+
 	local groups = def and def.groups or {}
 
 	if groups.vl_attach == 1 then
@@ -42,7 +44,7 @@ function vl_attach.should_drop(pos, node)
 			wdir = node.param2
 			dir = -core.wallmounted_to_dir(wdir)
 		else
-			core.log("warning", node.name.." has groups.vl_attach = 1 when paramtyp2 is "..def.paramtype2)
+			core.log("warning", node.name.." has groups.vl_attach = 1 when paramtype2 is "..def.paramtype2)
 			return false
 		end
 
@@ -51,9 +53,10 @@ function vl_attach.should_drop(pos, node)
 		local under_node = core.get_node(pos - dir)
 		return not vl_attach.check_allowed(under_node, wdir, def._vl_attach_type)
 	end
+	local dir
 
 	if (groups.attached_node_facedir or 0) ~= 0 then
-		local dir = facedir_to_dir(node.param2)
+		dir = facedir_to_dir(node.param2)
 		if dir and get_item_group(get_node(vector.add(pos, dir)).name, "solid") == 0 then
 			return true
 		end
@@ -74,7 +77,7 @@ function vl_attach.should_drop(pos, node)
 	end
 
 	if (groups.supported_node_facedir or 0) ~= 0 then
-		local dir = facedir_to_dir(node.param2)
+		dir = facedir_to_dir(node.param2)
 		def = dir and registered_nodes[get_node(vector.add(pos, dir)).name]
 		if def and def.drawtype == "airlike" then
 			return true
@@ -82,7 +85,7 @@ function vl_attach.should_drop(pos, node)
 	end
 
 	if (groups.supported_node_wallmounted or 0) ~= 0 then
-		local dir = wallmounted_to_dir(node.param2)
+		dir = wallmounted_to_dir(node.param2)
 		def = dir and registered_nodes[get_node(vector.add(pos, dir)).name]
 		if def and def.drawtype == "airlike" then
 			return true
@@ -93,13 +96,12 @@ function vl_attach.should_drop(pos, node)
 end
 
 -- Check if placement at given node is allowed
-local empty_table = {}
 ---@param node core.Node
 ---@param wdir number
 ---@param attach_type string
----@return boolean
+---@return boolean?
 function vl_attach.check_allowed(node, wdir, attach_type)
-	local def = minetest.registered_nodes[node.name]
+	local def = registered_nodes[node.name]
 	if not def then return false end
 
 	-- Handle type-specific checks that apply to all node types
@@ -111,7 +113,7 @@ function vl_attach.check_allowed(node, wdir, attach_type)
 	if allow_attach ~= nil then return allow_attach end
 
 	-- Allow nodes to define attachable device type handling
-	local vl_allow_attach = def._vl_allow_attach or empty_table
+	local vl_allow_attach = def._vl_allow_attach or {}
 
 	-- Find allow/deny/callback for specified attach_type, and use "all" as a fallback
 	if vl_allow_attach.all ~= nil then allow_attach = vl_allow_attach.all end
@@ -122,7 +124,7 @@ function vl_attach.check_allowed(node, wdir, attach_type)
 		allow_attach = allow_attach(node, wdir, attach_type)
 	end
 
-	return allow_attach or false
+	return allow_attach
 end
 
 ---@return core.ItemStack?, vector.Vector?
@@ -208,7 +210,7 @@ end
 
 local function make_placed_node_facedir(placed_node, placer, dir, _)
 	-- Calculate param2 based on the player's look direction
-	local param2 = minetest.dir_to_facedir(dir, true)
+	local param2 = core.dir_to_facedir(dir, true)
 	if dir.y ~= 0 then
 		local yaw = placer:get_look_horizontal()
 		if (yaw > PI_OVER_4 and yaw < PI_OVER_4*3) or (yaw < PI_OVER_4*7 and yaw > PI_OVER_4*5) then
@@ -242,23 +244,8 @@ function vl_attach.register_autogroup(def)
 	autogroupers[#autogroupers + 1] = def
 end
 
-local function table_modified(orig, new)
-	-- Check if values changed/added
-	for k,v in pairs(new) do
-		if orig[k] ~= v then return true end
-	end
-
-	-- Check if keys removed
-	for k,v in pairs(orig) do
-		if new[k] ~= v then return true end
-	end
-
-	return false
-end
-
 core.register_on_mods_loaded(function()
 	for name,def in pairs(core.registered_nodes) do
-		local original_allow_attach = def._vl_allow_attach or empty_table
 		local allow_attach = def._vl_allow_attach and table.copy(def._vl_allow_attach) or {}
 
 		-- Allow placing attachables over top buildable_to nodes
@@ -282,9 +269,7 @@ core.register_on_mods_loaded(function()
 		end
 
 		-- Update node definition of changes to allow_attach were made
-		if table_modified(original_allow_attach, allow_attach) then
-			core.override_item(name, {_vl_allow_attach = allow_attach})
-		end
+		core.override_item(name, {_vl_allow_attach = allow_attach})
 	end
 end)
 
