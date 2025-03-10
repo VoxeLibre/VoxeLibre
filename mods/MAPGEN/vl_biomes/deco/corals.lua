@@ -1,6 +1,5 @@
--- TODO: move this to the mcl_ocean module?
---local modname = core.get_current_modname()
-local modpath = core.get_modpath("mcl_terrain_features")
+-- TODO: move corals to the mcl_ocean module?
+local modpath = core.get_modpath(core.get_current_modname())
 
 local coral_min = vl_biomes.OCEAN_MIN
 local coral_max = -10
