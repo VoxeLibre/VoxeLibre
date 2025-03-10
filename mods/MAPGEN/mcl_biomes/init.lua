@@ -19,7 +19,6 @@ local mg_seed = minetest.get_mapgen_setting("seed")
 -- Some mapgen settings
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
-local mod_mcl_structures = minetest.get_modpath("mcl_structures")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
 local mod_mcl_terrain_features = minetest.get_modpath("mcl_terrain_features")
 local mod_mcl_mushrooms = minetest.get_modpath("mcl_mushrooms")
@@ -3488,7 +3487,7 @@ local function register_coral_decos(ck)
 		biomes = warm_oceans,
 		y_min = coral_min,
 		y_max = coral_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
 		gen_callback = clear_kelp,
@@ -3502,7 +3501,7 @@ local function register_coral_decos(ck)
 		biomes = warm_oceans,
 		y_min = coral_min,
 		y_max = coral_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
 		gen_callback = clear_kelp,
@@ -3662,7 +3661,7 @@ local function register_decorations()
 		biomes = warm_oceans,
 		y_min = coral_min,
 		y_max = coral_max,
-		schematic = mod_mcl_structures .. "/schematics/coral_cora.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/coral_cora.mts",
 		rotation = "random",
 		flags = "place_center_x,place_center_z, force_placement",
 		gen_callback = clear_kelp,
