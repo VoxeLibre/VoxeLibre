@@ -115,7 +115,7 @@ end
 for action, def in pairs(actions) do
 	if not def or type(def) ~= "table" then return end
 
-	mcl_cozy[action] = function(pos, _, player)
+	mcl_cozy[action] = function(pos, node, player)
 		if not player or not player:is_player() then return end
 
 		local name = player:get_player_name()
@@ -154,7 +154,7 @@ for action, def in pairs(actions) do
 			end
 
 			-- all checks pass
-			local node = core.get_node(pos)
+			node = node or core.get_node(pos)
 			local param2 = node.param2
 			local ndef = core.registered_nodes[node.name]
 
