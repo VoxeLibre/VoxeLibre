@@ -63,6 +63,7 @@ local function add_layer(banner, pattern, color)
 	local layers = minetest.deserialize(banner:get_meta():get_string("layers")) or {}
 	table.insert(layers, { pattern = pattern, color = dye_to_colorid_mapping[color:get_name()] })
 	banner:get_meta():set_string("layers", minetest.serialize(layers))
+	tt.reload_itemstack_description(banner)
 	return banner
 end
 
