@@ -227,7 +227,7 @@ minetest.register_node("mcl_loom:loom", {
 })
 
 minetest.register_craft({
-	output = "mcl_functional:loom",
+	output = "mcl_loom:loom",
 	recipe = {
 		{ "",                    "",                    "" },
 		{ "mcl_mobitems:string", "mcl_mobitems:string", "" },
