@@ -89,7 +89,7 @@ mcl_enable_skin_customization (Enable player skin customization) bool true
 
 # If enabled, players will be able to sit on stairs and slabs by right-clicking
 # them
-mcl_cozy_sit_on_stairs (Sit on stairs & slabs) bool true
+mcl_cozy_sit_on_stairs (Sit on stairs & slabs) bool false
 
 # If enabled, messages like "* player stands up" (in style of /me) will be sent
 # each time a player sits, lays or stands up

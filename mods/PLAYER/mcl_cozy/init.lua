@@ -1,7 +1,7 @@
 local S = core.get_translator(core.get_current_modname())
 local N = function(s) return s end
 
-local mcl_cozy_sit_on_stairs = core.settings:get_bool("mcl_cozy_sit_on_stairs", true)
+local mcl_cozy_sit_on_stairs = core.settings:get_bool("mcl_cozy_sit_on_stairs", false)
 local mcl_cozy_print_actions = core.settings:get_bool("mcl_cozy_print_actions", false)
 
 local SIT_EYE_OFFSET = vector.new(0, -7, 2)
