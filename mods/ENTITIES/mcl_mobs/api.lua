@@ -98,7 +98,7 @@ function mob_class:get_staticdata()
 end
 
 local function valid_texture(self, def_textures)
-	if not self.base_texture then return false end
+	if not self.base_texture or #self.base_texture ~= #def_textures then return false end
 	if self.texture_selected then
 		if #def_textures < self.texture_selected then
 			self.texture_selected = nil
