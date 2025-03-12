@@ -64,7 +64,7 @@ local function set_attach(player, bool)
 	mcl_player.player_attached[player:get_player_name()] = bool
 end
 local function is_unwalkable_below(player)
-	return not core.registered_nodes[mcl_playerinfo[player:get_player_name()].node_stand].walkable
+	return not mcl_playerinfo[player:get_player_name()].stand_on.walkable
 end
 --[[ for MCLA's mcl_player rewrite
 local function is_attached(player)

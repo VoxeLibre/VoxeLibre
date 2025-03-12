@@ -12,8 +12,7 @@ local mods_loaded = false
 
 function mcl_weather.set_sky_box_clear(player, sky, fog)
 	-- Make sure the player's head isn't in water before changing the skybox
-	local node_head = mcl_playerinfo[player:get_player_name()].node_head
-	if minetest.get_item_group(node_head, "water") ~= 0 then return end
+	if (mcl_playerinfo[player:get_player_name()].head_in.groups.water or 0) ~= 0 then return end
 
 	local sc = {
 			day_sky = "#7BA4FF",
@@ -44,8 +43,7 @@ end
 
 function mcl_weather.set_sky_color(player, def)
 	-- Make sure the player's head isn't in water before changing the skybox
-	local node_head = mcl_playerinfo[player:get_player_name()].node_head
-	if minetest.get_item_group(node_head, "water") ~= 0 then return end
+	if (mcl_playerinfo[player:get_player_name()].head_in.groups.water or 0) ~= 0 then return end
 
 	player:set_sky({
 		type = def.type,

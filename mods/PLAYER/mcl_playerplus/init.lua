@@ -3,22 +3,40 @@ mcl_playerplus = {
 	is_pressing_jump = {},
 }
 
-local get_connected_players = minetest.get_connected_players
-local dir_to_yaw = minetest.dir_to_yaw
-local get_item_group = minetest.get_item_group
-local check_player_privs = minetest.check_player_privs
-local find_node_near = minetest.find_node_near
-local get_name_from_content_id = minetest.get_name_from_content_id
-local get_voxel_manip = minetest.get_voxel_manip
-local add_particle = minetest.add_particle
-local add_particlespawner = minetest.add_particlespawner
+local get_connected_players = core.get_connected_players
+local dir_to_yaw = core.dir_to_yaw
+local get_item_group = core.get_item_group
+local check_player_privs = core.check_player_privs
+local find_node_near = core.find_node_near
+local get_name_from_content_id = core.get_name_from_content_id
+local get_voxel_manip = core.get_voxel_manip
+local add_particle = core.add_particle
+local add_particlespawner = core.add_particlespawner
+local registered_nodes = core.registered_nodes
+
+local get_node_name = mcl_vars.get_node_name
+local get_node_name_raw = mcl_vars.get_node_name_raw
 
 local is_sprinting = mcl_sprint.is_sprinting
 local exhaust = mcl_hunger.exhaust
 local playerphysics = playerphysics
 
-local vector = vector
-local math = math
+local vector_new = vector.new
+local vector_copy = vector.copy
+local vector_zero = vector.zero
+local vector_offset = vector.offset
+local vector_distance = vector.distance
+local vector_round = vector.round
+local vector_multiply = vector.multiply
+local vector_length = vector.length
+local abs = math.abs
+local min = math.min
+local max = math.max
+local floor = math.floor
+local ceil = math.ceil
+local sqrt = math.sqrt
+local atan2 = math.atan2
+local random = math.random
 local PI = math.pi
 local TWOPI = math.pi * 2
 
@@ -31,41 +49,27 @@ local elytra_vars = {
 	slowdown_mult = 0.0, -- amount of vel to take per sec
 	fall_speed = 0.2, -- amount of vel to fall down per sec
 	speedup_mult = 2, -- amount of speed to add based on look dir
-	max_speed = tonumber(minetest.settings:get("mcl_elytra_max_speed")) or 4.0, -- was 6 max amount to multiply against look direction when flying
+	max_speed = tonumber(core.settings:get("mcl_elytra_max_speed")) or 4.0, -- was 6 max amount to multiply against look direction when flying
 	pitch_penalty = 1.3, -- if pitching up, slow down at this rate as a multiplier
-	rocket_speed = tonumber(minetest.settings:get("mcl_elytra_rocket_speed")) or 3.5, --was 5.5
+	rocket_speed = tonumber(core.settings:get("mcl_elytra_rocket_speed")) or 3.5, --was 5.5
 }
 
---minetest.log("action", "elytra_vars.max_speed: " .. dump(elytra_vars.max_speed))
---minetest.log("action", "elytra_vars.rocket_speed: " .. dump(elytra_vars.rocket_speed))
-
-local time = 0
-local look_pitch = 0
-
 local function player_collision(player)
-
 	local pos = player:get_pos()
 	--local vel = player:get_velocity()
-	local x = 0
-	local z = 0
+	local x, z = 0, 0
 	local width = .75
 
-	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
-
+	for _,object in pairs(core.get_objects_inside_radius(pos, width)) do
 		local ent = object:get_luaentity()
 		if (object:is_player() or (ent and ent.is_mob and object ~= player)) then
-
 			local pos2 = object:get_pos()
-			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
-			local force = (width + 0.5) - vector.distance(
-				{x = pos.x, y = 0, z = pos.z},
-				{x = pos2.x, y = 0, z = pos2.z})
-
-			x = x + (vec.x * force)
-			z = z + (vec.z * force)
+			local vx, vz = pos.x - pos2.x, pos.z - pos2.z
+			local force = (width + 0.5) - sqrt(vx * vx + vz * vz)
+			x, z = x + vx * force, z + vz * force
 		end
 	end
-	return {x,z}
+	return x, z
 end
 
 local function walking_player(player, control)
@@ -73,7 +77,7 @@ local function walking_player(player, control)
 end
 
 local function dir_to_pitch(dir)
-	return -math.atan2(-dir.y, math.sqrt(dir.x * dir.x + dir.z * dir.z))
+	return -atan2(-dir.y, sqrt(dir.x * dir.x + dir.z * dir.z))
 end
 
 local player_vel_yaws = {}
@@ -82,15 +86,15 @@ function limit_vel_yaw(player_vel_yaw, yaw)
 	player_vel_yaw = player_vel_yaw % TWOPI
 	yaw = yaw % TWOPI
 
-	if math.abs(player_vel_yaw - yaw) > 0.7 then
+	if abs(player_vel_yaw - yaw) > 0.7 then
 		local player_vel_yaw_nm, yaw_nm = player_vel_yaw, yaw
 		if player_vel_yaw > yaw then
 			player_vel_yaw_nm = player_vel_yaw - TWOPI
 		else
 			yaw_nm = yaw - TWOPI
 		end
-		if math.abs(player_vel_yaw_nm - yaw_nm) > 0.7 then
-			local diff = math.abs(player_vel_yaw - yaw)
+		if abs(player_vel_yaw_nm - yaw_nm) > 0.7 then
+			local diff = abs(player_vel_yaw - yaw)
 			if diff > PI and diff < 3.229 or diff < PI and diff > 3.054 then
 				player_vel_yaw = yaw
 			elseif diff < PI then
@@ -111,18 +115,15 @@ function limit_vel_yaw(player_vel_yaw, yaw)
 	return player_vel_yaw % TWOPI
 end
 
-local node_stand, node_stand_below, node_head, node_feet, node_head_top
-local is_swimming
-
 -- HACK work around https://github.com/luanti-org/luanti/issues/15692
 -- Scales corresponding to default perfect 180° rotations in the character b3d model
 local bone_workaround_scales = {
-	Body_Control = vector.new(-1, 1, -1),
-	Leg_Right = vector.new(1, -1, -1),
-	Leg_Left = vector.new(1, -1, -1),
-	Cape = vector.new(1, -1, 1),
-	Arm_Right_Pitch_Control = vector.new(1, -1, -1),
-	Arm_Left_Pitch_Control = vector.new(1, -1, -1),
+	Body_Control = vector_new(-1, 1, -1),
+	Leg_Right = vector_new(1, -1, -1),
+	Leg_Left = vector_new(1, -1, -1),
+	Cape = vector_new(1, -1, 1),
+	Arm_Right_Pitch_Control = vector_new(1, -1, -1),
+	Arm_Left_Pitch_Control = vector_new(1, -1, -1),
 }
 
 local function set_bone_pos(player, bonename, pos, rot, scale)
@@ -139,13 +140,12 @@ local set_properties = mcl_util.set_properties
 
 local function anglediff(a1, a2)
 	local a = a1 - a2
-	return math.abs((a + math.pi) % (math.pi*2) - math.pi)
+	return abs((a + PI) % TWOPI - PI)
 end
+
 local function clamp(num, min, max)
-	return math.min(max, math.max(num, min))
+	return min(max, max(num, min))
 end
-
-
 
 local player_props_elytra = {
 	collisionbox = { -0.35, 0, -0.35, 0.35, 0.8, 0.35 },
@@ -173,31 +173,18 @@ local player_props_normal = {
 	nametag_color = { r = 225, b = 225, a = 225, g = 225 }
 }
 
-minetest.register_globalstep(function(dtime)
-
-	time = time + dtime
-
+local time = 0
+core.register_globalstep(function(dtime)
 	for _,player in pairs(get_connected_players()) do
-
-		--[[
-
-						 _                 _   _
-			  __ _ _ __ (_)_ __ ___   __ _| |_(_) ___  _ __  ___
-			 / _` | '_ \| | '_ ` _ \ / _` | __| |/ _ \| '_ \/ __|
-			| (_| | | | | | | | | | | (_| | |_| | (_) | | | \__ \
-			 \__,_|_| |_|_|_| |_| |_|\__,_|\__|_|\___/|_| |_|___/
-
-		]]--
-
 		local control = player:get_player_control()
 		local name = player:get_player_name()
-		--local meta = player:get_meta()
+		local playerinfo = mcl_playerinfo[name] or {}
 		local parent = player:get_attach()
 		local wielded = player:get_wielded_item()
 		local player_velocity = player:get_velocity() or player:get_player_velocity()
 		local wielded_def = wielded:get_definition()
 
-		local c_x, c_y = unpack(player_collision(player))
+		local c_x, c_y = player_collision(player)
 
 		if player_velocity.x + player_velocity.y < .5 and c_x + c_y > 0 then
 			player:add_velocity({x = c_x, y = 0, z = c_y})
@@ -216,67 +203,62 @@ minetest.register_globalstep(function(dtime)
 		player_vel_yaws[name] = player_vel_yaw
 
 		local fly_pos = player:get_pos()
-		local fly_node = minetest.get_node({x = fly_pos.x, y = fly_pos.y - 0.1, z = fly_pos.z}).name
+		local fly_node = get_node_name_raw(fly_pos.x, fly_pos.y - 0.1, fly_pos.z)
 		local elytra = mcl_playerplus.elytra[player]
 
-		if not elytra.active then
-			elytra.speed = 0
-		end
-
-		if not elytra.last_yaw then
-			elytra.last_yaw = player:get_look_horizontal()
-		end
+		if not elytra.active then elytra.speed = 0 end
+		elytra.last_yaw = elytra.last_yaw or player:get_look_horizontal()
 
 		local is_just_jumped = control.jump and not mcl_playerplus.is_pressing_jump[name] and not elytra.active
 		mcl_playerplus.is_pressing_jump[name] = control.jump
 		if is_just_jumped and not elytra.active then
 			local direction = player:get_look_dir()
-			elytra.speed = 1 - (direction.y/2 + 0.5)
+			elytra.speed = 1 - (direction.y * 0.5 + 0.5)
 		end
 
-		local fly_node_walkable = minetest.registered_nodes[fly_node] and minetest.registered_nodes[fly_node].walkable
-		elytra.active = minetest.get_item_group(player:get_inventory():get_stack("armor", 3):get_name(), "elytra") ~= 0
+		local fly_node_walkable = registered_nodes[fly_node] and registered_nodes[fly_node].walkable
+		elytra.active = get_item_group(player:get_inventory():get_stack("armor", 3):get_name(), "elytra") ~= 0
 			and not parent
 			and (elytra.active or (is_just_jumped and player_velocity.y < -0))
 			and ((not fly_node_walkable) or fly_node == "ignore")
 
 		if elytra.active then
 			if is_just_jumped then -- move the player up when they start flying to give some clearance
-				player:set_pos(vector.offset(player:get_pos(), 0, 0.8, 0))
+				player:set_pos(vector_offset(player:get_pos(), 0, 0.8, 0))
 			end
 			mcl_player.player_set_animation(player, "fly")
 			local direction = player:get_look_dir()
 			local player_vel = player:get_velocity()
-			local turn_amount = anglediff(minetest.dir_to_yaw(direction), minetest.dir_to_yaw(player_vel))
+			local turn_amount = anglediff(dir_to_yaw(direction), dir_to_yaw(player_vel))
 			local direction_mult = clamp(-(direction.y+0.1), -1, 1)
 			if direction_mult < 0 then direction_mult = direction_mult * elytra_vars.pitch_penalty end
 
 			local speed_mult = elytra.speed
-			local block_below = minetest.get_node(vector.offset(fly_pos, 0, -0.9, 0)).name
-			local reg_node_below = minetest.registered_nodes[block_below]
-			if (reg_node_below and not reg_node_below.walkable) and (player_vel.y ~= 0) then
+			local block_below = get_node_name_raw(fly_pos.x, fly_pos.y-0.9, fly_pos.z)
+			local reg_node_below = registered_nodes[block_below]
+			if reg_node_below and not reg_node_below.walkable and player_vel.y ~= 0 then
 				speed_mult = speed_mult + direction_mult * elytra_vars.speedup_mult * dtime
 			end
 			speed_mult = speed_mult - elytra_vars.slowdown_mult * clamp(dtime, 0.09, 0.2) -- slow down but don't overdo it
 			speed_mult = clamp(speed_mult, -elytra_vars.max_speed, elytra_vars.max_speed)
-			if turn_amount > 0.3 and math.abs(direction.y) < 0.98 then -- don't do this if looking straight up / down
-				speed_mult = speed_mult - (speed_mult * (turn_amount / (math.pi*8)))
+			if turn_amount > 0.3 and abs(direction.y) < 0.98 then -- don't do this if looking straight up / down
+				speed_mult = speed_mult - speed_mult * turn_amount / (PI*8)
 			end
 
 			playerphysics.add_physics_factor(player, "gravity", "mcl_playerplus:elytra", elytra_vars.fall_speed)
 			if elytra.rocketing > 0 then
 				elytra.rocketing = elytra.rocketing - dtime
-				if vector.length(player_velocity) < 40 then
-					-- player:add_velocity(vector.multiply(player:get_look_dir(), 4))
+				if vector_length(player_velocity) < 40 then
+					-- player:add_velocity(vector_multiply(player:get_look_dir(), 4))
 					speed_mult = elytra_vars.rocket_speed
 
 					if mcl_util.check_dtime_timer(name, dtime, "ely_rocket_particle_spawn", 0.3) then
 						add_particle({
 							pos = fly_pos,
-							velocity = vector.zero(),
-							acceleration = vector.zero(),
-							expirationtime = 0.3 + math.random() * 0.2,
-							size = math.random(1, 2),
+							velocity = vector_zero(),
+							acceleration = vector_zero(),
+							expirationtime = 0.3 + random() * 0.2,
+							size = random(1, 2),
 							collisiondetection = false,
 							vertical = false,
 							texture = "mcl_particles_bonemeal.png^[colorize:#bc7a57:127",
@@ -288,15 +270,16 @@ minetest.register_globalstep(function(dtime)
 
 			elytra.speed = speed_mult -- set the speed so you can keep track of it and add to it
 
-			local new_vel = vector.multiply(direction, speed_mult * dtime * 30) -- use the look dir and speed as a mult
+			local new_vel = vector_multiply(direction, speed_mult * dtime * 30) -- use the look dir and speed as a mult
 			-- new_vel.y = new_vel.y - elytra_vars.fall_speed * dtime -- make the player fall a set amount
 
 			-- slow the player down so less spongy movement by applying some of the inverse velocity
 			-- NOTE: do not set this higher than about 0.2 or the game will get the wrong vel and it will be broken
 			-- this is far from ideal, but there's no good way to set_velocity or slow down the player
-			player_vel = vector.multiply(player_vel, -0.1)
 			-- if speed_mult < 1 then player_vel.y = player_vel.y * 0.1 end
-			new_vel = vector.add(new_vel, player_vel)
+			new_vel.x = new_vel.x - 0.1 * player_vel.x
+			new_vel.y = new_vel.y - 0.1 * player_vel.y
+			new_vel.z = new_vel.z - 0.1 * player_vel.z
 
 			player:add_velocity(new_vel)
 		else -- reset things when you stop flying with elytra
@@ -304,110 +287,106 @@ minetest.register_globalstep(function(dtime)
 			playerphysics.remove_physics_factor(player, "gravity", "mcl_playerplus:elytra")
 		end
 
-		if control.RMB and core.get_item_group(wielded:get_name(), "spear") > 0 then
-			set_bone_pos(player, "Wield_Item", vector.new(0, 5.2, 1.2), vector.new(-1.57, 5.7, 1.57))
+		if control.RMB and get_item_group(wielded:get_name(), "spear") > 0 then
+			set_bone_pos(player, "Wield_Item", vector_new(0, 5.2, 1.2), vector_new(-1.57, 5.7, 1.57))
 		elseif wielded_def and wielded_def._mcl_toollike_wield then
-			set_bone_pos(player, "Wield_Item", vector.new(0, 4.7, 3.1), vector.new(-1.57, 3.93, 1.57))
+			set_bone_pos(player, "Wield_Item", vector_new(0, 4.7, 3.1), vector_new(-1.57, 3.93, 1.57))
 		elseif string.find(wielded:get_name(), "mcl_bows:bow") then
-			set_bone_pos(player, "Wield_Item", vector.new(1, 4, 0), vector.new(1.57, 2.27, 2.01))
+			set_bone_pos(player, "Wield_Item", vector_new(1, 4, 0), vector_new(1.57, 2.27, 2.01))
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_loaded") then
-			set_bone_pos(player, "Wield_Item", vector.new(0, 5.2, 1.2), vector.new(0, 3.1415, 1.27))
+			set_bone_pos(player, "Wield_Item", vector_new(0, 5.2, 1.2), vector_new(0, 3.1415, 1.27))
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow") then
-			set_bone_pos(player, "Wield_Item", vector.new(0, 5.2, 1.2), vector.new(0, 3.1415, 0.78))
+			set_bone_pos(player, "Wield_Item", vector_new(0, 5.2, 1.2), vector_new(0, 3.1415, 0.78))
 		elseif wielded_def.inventory_image == "" then
-			set_bone_pos(player, "Wield_Item", vector.new(0, 6, 2), vector.new(3.1415, -0.785, 0))
+			set_bone_pos(player, "Wield_Item", vector_new(0, 6, 2), vector_new(3.1415, -0.785, 0))
 		else
-			set_bone_pos(player, "Wield_Item", vector.new(0, 5.3, 2), vector.new(1.57, 0, 0))
+			set_bone_pos(player, "Wield_Item", vector_new(0, 5.3, 2), vector_new(1.57, 0, 0))
 		end
 
 		-- controls right and left arms pitch when shooting a bow or blocking
 		if mcl_shields.is_blocking(player) == 2 then
-			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(0.35, -0.35, 0))
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector_new(0.35, -0.35, 0))
 		elseif mcl_shields.is_blocking(player) == 1 then
-			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.new(0.35, 0.35, 0))
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector_new(0.35, 0.35, 0))
 		elseif string.find(wielded:get_name(), "mcl_bows:bow") and control.RMB then
-			local right_arm_rot = vector.new(pitch + 1.57, -0.524, pitch * -1 * .35)
-			local left_arm_rot = vector.new(pitch + 1.57, 0.75, pitch * .35)
+			local right_arm_rot = vector_new(pitch + 1.57, -0.524, pitch * -1 * .35)
+			local left_arm_rot = vector_new(pitch + 1.57, 0.75, pitch * .35)
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, left_arm_rot)
 		-- controls right and left arms pitch when holing a loaded crossbow
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_loaded") then
-			local right_arm_rot = vector.new(pitch + 1.57, -0.524, pitch * -1 * .35)
-			local left_arm_rot = vector.new(pitch + 1.57, 0.75, pitch * .35)
+			local right_arm_rot = vector_new(pitch + 1.57, -0.524, pitch * -1 * .35)
+			local left_arm_rot = vector_new(pitch + 1.57, 0.75, pitch * .35)
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, left_arm_rot)
 		-- controls arm for spear throwing
-		elseif core.get_item_group(wielded:get_name(), "spear") > 0 and control.RMB then
-			local right_arm_rot = vector.new(pitch + 1.8, 0, pitch * -1 * .35)
+		elseif get_item_group(wielded:get_name(), "spear") > 0 and control.RMB then
+			local right_arm_rot = vector_new(pitch + 1.8, 0, pitch * -1 * .35)
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
 		-- controls right and left arms pitch when loading a crossbow
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_") then
-			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(0.786, -0.35, 0.47))
-			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.new(0.96, 0.35, -0.786))
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector_new(0.786, -0.35, 0.47))
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector_new(0.96, 0.35, -0.786))
 		-- when punching
 		elseif control.LMB and not parent then
-			set_bone_pos(player,"Arm_Right_Pitch_Control", nil, vector.new(pitch, 0, 0))
-			set_bone_pos(player,"Arm_Left_Pitch_Control", nil, vector.zero())
+			set_bone_pos(player,"Arm_Right_Pitch_Control", nil, vector_new(pitch, 0, 0))
+			set_bone_pos(player,"Arm_Left_Pitch_Control", nil, vector_zero())
 		-- when holding an item.
 		elseif wielded:get_name() ~= "" then
-			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(0.35, 0, 0))
-			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.zero())
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector_new(0.35, 0, 0))
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector_zero())
 		-- resets arms pitch
 		else
-			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.zero())
-			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.zero())
+			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector_zero())
+			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector_zero())
 		end
 
 		if elytra.active then
 			-- set head pitch and yaw when flying
-			local head_rot = vector.new(pitch - dir_to_pitch(player_velocity) + 0.87, player_vel_yaw - yaw, 0)
+			local head_rot = vector_new(pitch - dir_to_pitch(player_velocity) + 0.87, player_vel_yaw - yaw, 0)
 			set_bone_pos(player, "Head_Control", nil, head_rot)
 
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_elytra)
 
 			-- control body bone when flying
-			local body_rot = vector.new(dir_to_pitch(player_velocity) + 1.92, -player_vel_yaw + yaw, 3.1415)
-			set_bone_pos(player, "Body_Control", nil, body_rot, vector.new(-1, 1, 1))
+			local body_rot = vector_new(dir_to_pitch(player_velocity) + 1.92, -player_vel_yaw + yaw, 3.1415)
+			set_bone_pos(player, "Body_Control", nil, body_rot, vector_new(-1, 1, 1))
 		elseif parent then
 			set_properties(player, player_props_riding)
 			local parent_yaw = parent:get_yaw()
-			local head_rot = vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0)
+			local head_rot = vector_new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0)
 			set_bone_pos(player, "Head_Control", nil, head_rot)
-			set_bone_pos(player,"Body_Control", nil, vector.zero())
+			set_bone_pos(player,"Body_Control", nil, vector_zero())
 		elseif control.sneak then
 			-- controls head pitch when sneaking
-			local head_rot = vector.new(pitch, player_vel_yaw - yaw, player_vel_yaw - yaw)
+			local head_rot = vector_new(pitch, player_vel_yaw - yaw, player_vel_yaw - yaw)
 			set_bone_pos(player, "Head_Control", nil, head_rot)
 
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_sneaking)
 
 			-- sneaking body conrols
-			set_bone_pos(player, "Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
-		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
+			set_bone_pos(player, "Body_Control", nil, vector_new(0, -player_vel_yaw + yaw, 0))
+		elseif (playerinfo.head_in.groups.water or 0) ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
-			is_swimming = true
-			local head_rot = vector.new(pitch - dir_to_pitch(player_velocity) + 0.35, player_vel_yaw - yaw, 0)
+			local head_rot = vector_new(pitch - dir_to_pitch(player_velocity) + 0.35, player_vel_yaw - yaw, 0)
 			set_bone_pos(player, "Head_Control", nil, head_rot)
 
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_swimming)
 
 			-- control body bone when swimming
-			local body_rot = vector.new((1.3 + dir_to_pitch(player_velocity)), player_vel_yaw - yaw, 3.1415)
-			set_bone_pos(player, "Body_Control", nil, body_rot, vector.new(-1, 1, 1))
-		elseif get_item_group(mcl_playerinfo[name].node_head, "solid") == 0
-		and get_item_group(mcl_playerinfo[name].node_head_top, "solid") == 0 then
+			local body_rot = vector_new((1.3 + dir_to_pitch(player_velocity)), player_vel_yaw - yaw, 3.1415)
+			set_bone_pos(player, "Body_Control", nil, body_rot, vector_new(-1, 1, 1))
+		elseif (playerinfo.head_in.groups.solid or 0) == 0 and (playerinfo.head_top.groups.solid or 0) == 0 then
 			-- sets eye height, and nametag color accordingly
-			is_swimming = false
 			set_properties(player, player_props_normal)
 
-			set_bone_pos(player,"Head_Control", nil, vector.new(pitch, player_vel_yaw - yaw, 0))
-			set_bone_pos(player,"Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
+			set_bone_pos(player,"Head_Control", nil, vector_new(pitch, player_vel_yaw - yaw, 0))
+			set_bone_pos(player,"Body_Control", nil, vector_new(0, -player_vel_yaw + yaw, 0))
 		end
 
-		local playerinfo = mcl_playerinfo[name] or {}
 		local plusinfo = playerinfo.mcl_playerplus
 		if not plusinfo then
 			plusinfo = {}
@@ -435,24 +414,9 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		if control.jump and mcl_playerplus_internal[name].jump_cooldown <= 0 then
-
-			--pos = player:get_pos()
-
-			node_stand = mcl_playerinfo[name].node_stand
-			node_stand_below = mcl_playerinfo[name].node_stand_below
-			node_head = mcl_playerinfo[name].node_head
-			node_feet = mcl_playerinfo[name].node_feet
-			node_head_top = mcl_playerinfo[name].node_head_top
-			if not node_stand or not node_stand_below or not node_head or not node_feet then
-				return
-			end
-			if (not minetest.registered_nodes[node_stand]
-			or not minetest.registered_nodes[node_stand_below]
-			or not minetest.registered_nodes[node_head]
-			or not minetest.registered_nodes[node_feet]
-			or not minetest.registered_nodes[node_head_top]) then
-				return
-			end
+			local stand_on = mcl_playerinfo[name].stand_on
+			local stand_over = mcl_playerinfo[name].stand_over
+			local feet_in = mcl_playerinfo[name].feet_in
 
 			-- Cause buggy exhaustion for jumping
 
@@ -461,74 +425,53 @@ minetest.register_globalstep(function(dtime)
 				* Not on or at climbable
 				* On walkable
 				* Not on disable_jump
-			FIXME: This code is pretty hacky and it is possible to miss some jumps or detect false
-			jumps because of delays, rounding errors, etc.
-			What this code *really* needs is some kind of jumping “callback” which this engine lacks
-			as of 0.4.15.
+				FIXME: This code is pretty hacky and it is possible to miss some jumps or detect false
+				jumps because of delays, rounding errors, etc.
+				What this code *really* needs is some kind of jumping “callback” which this engine lacks
+				as of 0.4.15.
 			]]
+			-- TODO: also require y speed > 0?
 
-			if get_item_group(node_feet, "liquid") == 0 and
-					get_item_group(node_stand, "liquid") == 0 and
-					not minetest.registered_nodes[node_feet].climbable and
-					not minetest.registered_nodes[node_stand].climbable and
-					(minetest.registered_nodes[node_stand].walkable or minetest.registered_nodes[node_stand_below].walkable)
-					and get_item_group(node_stand, "disable_jump") == 0
-					and get_item_group(node_stand_below, "disable_jump") == 0 then
-			-- Cause exhaustion for jumping
-			if is_sprinting(name) then
-				exhaust(name, mcl_hunger.EXHAUST_SPRINT_JUMP)
-			else
-				exhaust(name, mcl_hunger.EXHAUST_JUMP)
-			end
-
-			-- Reset cooldown timer
+			if (feet_in.groups.liquid or 0) == 0 and (stand_on.groups.liquid or 0) == 0 and
+					not feet_in.climbable and not stand_on.climbable and
+					(stand_on.walkable or stand_over.walkable)
+					and (stand_on.groups.disable_jump or 0) == 0 and (stand_over.groups.disable_jump or 0) == 0 then
+				exhaust(name, is_sprinting(name) and mcl_hunger.EXHAUST_SPRINT_JUMP or mcl_hunger.EXHAUST_JUMP)
 				mcl_playerplus_internal[name].jump_cooldown = 0.45
 			end
 		end
 	end
 
 	-- Run the rest of the code every 0.5 seconds
-	if time < 0.5 then
-		return
-	end
-
-	-- reset time for next check
-	-- FIXME: Make sure a regular check interval applies
+	time = time + dtime
+	if time < 0.5 then return end
 	time = 0
 
 	-- check players
 	for _,player in pairs(get_connected_players()) do
-		-- who am I?
 		local name = player:get_player_name()
-
-		-- where am I?
+		local playerinfo = mcl_playerinfo[name]
 		local pos = player:get_pos()
-
 		-- what is around me?
-		local node_stand = mcl_playerinfo[name].node_stand
-		local node_stand_below = mcl_playerinfo[name].node_stand_below
-		local node_head = mcl_playerinfo[name].node_head
-		local node_feet = mcl_playerinfo[name].node_feet
-		local node_head_top = mcl_playerinfo[name].node_head_top
-		if not node_stand or not node_stand_below or not node_head or not node_feet or not node_head_top then
-			return
-		end
+		local stand_on = playerinfo.stand_on
+		local stand_over = playerinfo.stand_over
+		local head_in = playerinfo.head_in
+		local feet_in = playerinfo.feet_in
 
-		local boots = player:get_inventory():get_stack("armor", 5)
-		local soul_speed = mcl_enchanting.get_enchantment(boots, "soul_speed")
-
-		-- Standing on a soul block? If so, check for speed bonus / penalty
-		if get_item_group(node_stand, "soul_block") ~= 0 then
-			
+		-- Soul speed: standing on a soul block? If so, check for speed bonus / penalty
+		-- Note: to mimick MC more closely, one would need to check the block -0.49 below
+		if (stand_on.groups.soul_block or 0) ~= 0 then
+			local boots = player:get_inventory():get_stack("armor", 5)
+			local soul_speed = mcl_enchanting.get_enchantment(boots, "soul_speed")
 			-- Standing on soul sand? If so, walk slower (unless player wears Soul Speed boots, then apply bonus)
-			if node_stand == "mcl_nether:soul_sand" then
+			if stand_on.name == "mcl_nether:soul_sand" then
 				-- TODO: Tweak walk speed
 				-- TODO: Also slow down mobs
 				-- Slow down even more when soul sand is above certain block
 				if soul_speed > 0 then
 					playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", soul_speed * 0.105 + 1.3)
 				else
-					if node_stand_below == "mcl_core:ice" or node_stand_below == "mcl_core:packed_ice" or node_stand_below == "mcl_core:slimeblock" or node_stand_below == "mcl_core:water_source" then
+					if stand_over.name == "mcl_core:ice" or stand_over.name == "mcl_core:packed_ice" or stand_over.name == "mcl_core:slimeblock" or stand_over.name == "mcl_core:water_source" then
 						playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", 0.1)
 					else
 						playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:soul_speed", 0.4)
@@ -541,7 +484,9 @@ minetest.register_globalstep(function(dtime)
 		else
 			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:soul_speed")
 		end
-		if get_item_group(node_feet, "liquid") ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
+
+		-- Depth strider effect
+		if (feet_in.groups.liquid or 0) ~= 0 and mcl_enchanting.get_enchantment(player:get_inventory():get_stack("armor", 5), "depth_strider") then
 			local boots = player:get_inventory():get_stack("armor", 5)
 			local depth_strider = mcl_enchanting.get_enchantment(boots, "depth_strider")
 			if depth_strider > 0 then
@@ -556,55 +501,45 @@ minetest.register_globalstep(function(dtime)
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
 		-- without group disable_suffocation=1)
 		-- if swimming, check the feet node instead, because the head node will be above the player when swimming
-		local ndef = minetest.registered_nodes[node_head]
-		if is_swimming then
-			ndef = minetest.registered_nodes[node_feet]
-		end
-		if (ndef.walkable == nil or ndef.walkable == true)
-		and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
-		and (ndef.node_box == nil or ndef.node_box.type == "regular")
-		and (ndef.groups.disable_suffocation ~= 1)
-		and (ndef.groups.opaque == 1)
-		and (node_head ~= "ignore")
-		-- Check privilege, too
-		and (not check_player_privs(name, {noclip = true})) then
+		local ndef = (head_in.groups.water or 0) == 0 and head_in or feet_in
+		if ndef.walkable ~= false
+				and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
+				and (ndef.node_box == nil or ndef.node_box.type == "regular")
+				and (ndef.groups.disable_suffocation ~= 1)
+				and (ndef.groups.opaque == 1)
+				-- Check privilege, too
+				and (not check_player_privs(name, {noclip = true})) then
 			mcl_util.deal_damage(player, 1, {type = "in_wall"})
 		end
 
-		-- Am I near a cactus?
-		if node_stand == "mcl_core:cactus" or node_feet == "mcl_core:cactus" or node_head == "mcl_core:cactus" then
+		-- Cactus damage
+		if stand_on.name == "mcl_core:cactus" or feet_in.name == "mcl_core:cactus" or head_in.name == "mcl_core:cactus" then
 			mcl_util.deal_damage(player, 1, {type = "cactus"})
 		else
 			local near = find_node_near(pos, 1, "mcl_core:cactus")
-			if near then
-				-- Am I touching the cactus? If so, it hurts
-				local dist = vector.distance(pos, near)
-				if dist < 1.1 then
-					mcl_util.deal_damage(player, 1, {type = "cactus"})
-				end
+			if near and vector_distance(pos, near) < 1.1 then
+				mcl_util.deal_damage(player, 1, {type = "cactus"})
 			end
 		end
 
 		--[[ Swimming: Cause exhaustion.
 		NOTE: As of 0.4.15, it only counts as swimming when you are with the feet inside the liquid!
 		Head alone does not count. We respect that for now. ]]
-		if not player:get_attach() and (get_item_group(node_feet, "liquid") ~= 0 or
-				get_item_group(node_stand, "liquid") ~= 0) then
+		if not player:get_attach() and ((feet_in.groups.liquid or 0) ~= 0 or (stand_on.groups.liquid or 0) ~= 0) then
 			local lastPos = mcl_playerplus_internal[name].lastPos
 			if lastPos then
-				local dist = vector.distance(lastPos, pos)
+				local dist = vector_distance(lastPos, pos)
 				mcl_playerplus_internal[name].swimDistance = mcl_playerplus_internal[name].swimDistance + dist
 				if mcl_playerplus_internal[name].swimDistance >= 1 then
-					local superficial = math.floor(mcl_playerplus_internal[name].swimDistance)
+					local superficial = floor(mcl_playerplus_internal[name].swimDistance)
 					exhaust(name, mcl_hunger.EXHAUST_SWIM * superficial)
 					mcl_playerplus_internal[name].swimDistance = mcl_playerplus_internal[name].swimDistance - superficial
 				end
 			end
-
 		end
 
-		-- Underwater: Spawn bubble particles
-		if get_item_group(node_head, "water") ~= 0 then
+		-- Underwater: spawn bubble particles
+		if (head_in.groups.water or 0) ~= 0 then
 			add_particlespawner({
 				amount = 10,
 				time = 0.15,
@@ -625,22 +560,19 @@ minetest.register_globalstep(function(dtime)
 
 		-- Show positions of barriers when player is wielding a barrier
 		local wi = player:get_wielded_item():get_name()
-		if wi == "mcl_core:barrier" or wi == "mcl_core:realm_barrier" or minetest.get_item_group(wi, "light_block") ~= 0 then
-			local pos = vector.round(player:get_pos())
+		if wi == "mcl_core:barrier" or wi == "mcl_core:realm_barrier" or get_item_group(wi, "light_block") ~= 0 then
+			local pos = vector_round(player:get_pos())
 			local r = 8
 			local vm = get_voxel_manip()
 			local emin, emax = vm:read_from_map({x=pos.x-r, y=pos.y-r, z=pos.z-r}, {x=pos.x+r, y=pos.y+r, z=pos.z+r})
-			local area = VoxelArea:new{
-				MinEdge = emin,
-				MaxEdge = emax,
-			}
+			local area = VoxelArea:new{ MinEdge = emin, MaxEdge = emax }
 			local data = vm:get_data()
-			for x=pos.x-r, pos.x+r do
-			for y=pos.y-r, pos.y+r do
 			for z=pos.z-r, pos.z+r do
+			for y=pos.y-r, pos.y+r do
+			for x=pos.x-r, pos.x+r do
 				local vi = area:indexp({x=x, y=y, z=z})
 				local nodename = get_name_from_content_id(data[vi])
-				local light_block_group = minetest.get_item_group(nodename, "light_block")
+				local light_block_group = get_item_group(nodename, "light_block")
 
 				local tex
 				if nodename == "mcl_core:barrier" then
@@ -667,20 +599,18 @@ minetest.register_globalstep(function(dtime)
 
 		-- Update internal values
 		mcl_playerplus_internal[name].lastPos = pos
-
 	end
-
 end)
 
 -- set to blank on join (for 3rd party mods)
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	local hp = player:get_hp()
 
 	mcl_playerplus_internal[name] = {
 		lastPos = nil,
 		swimDistance = 0,
-		jump_cooldown = -1,	-- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
+		jump_cooldown = -1, -- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
 		last_damage = 0,
 		invul_timestamp = 0,
 	}
@@ -688,103 +618,82 @@ minetest.register_on_joinplayer(function(player)
 
 	-- Luanti limitation: get_bone_position() returns all zeros vectors, because models are client-side not server-side
 	-- Workaround: call set_bone_position() one time first.
-	set_bone_pos(player, "Head_Control", vector.new(0, 6.75, 0))
-	set_bone_pos(player, "Arm_Right_Pitch_Control", vector.new(-3, 5.785, 0))
-	set_bone_pos(player, "Arm_Left_Pitch_Control", vector.new(3, 5.785, 0))
-	set_bone_pos(player, "Body_Control", vector.new(0, 6.75, 0))
+	set_bone_pos(player, "Head_Control", vector_new(0, 6.75, 0))
+	set_bone_pos(player, "Arm_Right_Pitch_Control", vector_new(-3, 5.785, 0))
+	set_bone_pos(player, "Arm_Left_Pitch_Control", vector_new(3, 5.785, 0))
+	set_bone_pos(player, "Body_Control", vector_new(0, 6.75, 0))
 	-- Respawn dead players on joining
 	if hp <= 0 then
 		player:respawn()
-		minetest.log("warning", name .. " joined the game with 0 hp and has been forced to respawn")
+		core.log("warning", name .. " joined the game with 0 hp and has been forced to respawn")
 	end
 
 	playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
 end)
 
 -- clear when player leaves
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
-
 	mcl_playerplus_internal[name] = nil
 	mcl_playerplus.elytra[player] = nil
 end)
 
 -- Don't change HP if the player falls in the water or through End Portal:
 mcl_damage.register_modifier(function(obj, damage, reason)
-	if reason.type == "fall" then
-		local pos = obj:get_pos()
-		local node = minetest.get_node(pos)
-		local velocity = obj:get_velocity() or obj:get_player_velocity() or {x=0,y=-10,z=0}
-		local v_axis_max = math.max(math.abs(velocity.x), math.abs(velocity.y), math.abs(velocity.z))
-		local step = {x = velocity.x / v_axis_max, y = velocity.y / v_axis_max, z = velocity.z / v_axis_max}
-		for i = 1, math.ceil(v_axis_max/5)+1 do -- trace at least 1/5 of the way per second
-			if not node or node.name == "ignore" then
-				minetest.get_voxel_manip():read_from_map(pos, pos)
-				node = minetest.get_node(pos)
-			end
-			if node then
-				local def = minetest.registered_nodes[node.name]
-				if not def or def.walkable then
-					return
-				end
-				if minetest.get_item_group(node.name, "water") ~= 0 then
-					return 0
-				end
-				if node.name == "mcl_portals:portal_end" then
-					if mcl_portals and mcl_portals.end_teleport then
-						mcl_portals.end_teleport(obj)
-					end
-					return 0
-				end
-				if node.name == "mcl_core:cobweb" then
-					return 0
-				end
-				if node.name == "mcl_core:vine" then
-					return 0
-				end
-			end
-			pos = vector.add(pos, step)
-			node = minetest.get_node(pos)
+	if reason.type ~= "fall" then return end
+
+	local pos = obj:get_pos()
+	local nodename = get_node_name(pos)
+	local velocity = obj:get_velocity() or obj:get_player_velocity() or {x=0,y=-10,z=0}
+	local v_axis_max = max(abs(velocity.x), abs(velocity.y), abs(velocity.z))
+	local step = {x = velocity.x / v_axis_max, y = velocity.y / v_axis_max, z = velocity.z / v_axis_max}
+	for i = 1, ceil(v_axis_max * 0.2)+1 do -- trace at least 1/5 of the way per second
+		local def = registered_nodes[nodename]
+		if not def or def.walkable then return 0 end
+		if (def.groups.water or 0) ~= 0 then return 0 end
+		if nodename == "mcl_portals:portal_end" then
+			if mcl_portals and mcl_portals.end_teleport then mcl_portals.end_teleport(obj) end
+			return 0
 		end
+		if nodename == "mcl_core:cobweb" then return 0 end
+		if nodename == "mcl_core:vine" then return 0 end
+		pos.x, pos.y, pos.z = pos.x + step.x, pos.y + step.y, pos.z + step.z
+		nodename = get_node_name(pos)
 	end
 end, -200)
 
-minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
+core.register_on_punchplayer(function(player, hitter, time_from_last_punch, tool_capabilities, dir, damage)
 	-- attack reach limit
 	if hitter and hitter:is_player() then
 		local weapon = hitter:get_wielded_item()
 		local player_pos = player:get_pos()
 		local hitter_pos = hitter:get_pos()
-		if vector.distance(player_pos, hitter_pos) > (weapon:get_definition().range or 3) then
-			damage = 0
-			return damage
+		if vector_distance(player_pos, hitter_pos) > (weapon:get_definition().range or 3) then
+			return 0 -- too far, no damage
 		end
 	end
 	-- damage invulnerability
 	if hitter then
 		local name = player:get_player_name()
-		local time_now = minetest.get_us_time()
+		local time_now = core.get_us_time()
 		local invul_timestamp = mcl_playerplus_internal[name].invul_timestamp
 		local time_diff = time_now - invul_timestamp
 		-- check for invulnerability time in microseconds (0.5 second)
 		if time_diff <= 500000 and time_diff >= 0 then
 			player:get_meta():set_int("mcl_damage:invulnerable", 1)
-			minetest.after(0.5, function()
-				local player = minetest.get_player_by_name(name)
+			core.after(0.5, function()
+				local player = core.get_player_by_name(name)
 				if not player then return end
 				player:get_meta():set_int("mcl_damage:invulnerable", 0)
 			end)
 			damage = damage - mcl_playerplus_internal[name].last_damage
-			if damage < 0 then
-				damage = 0
-			end
-			return damage
+			return max(0, damage)
 		else
 			mcl_playerplus_internal[name].last_damage = damage
 			mcl_playerplus_internal[name].invul_timestamp = time_now
 			player:get_meta():set_int("mcl_damage:damage_animation", 1)
-			minetest.after(0.5, function()
-				local player = minetest.get_player_by_name(name)
+			core.after(0.5, function()
+				local player = core.get_player_by_name(name)
 				if not player then return end
 				player:get_meta():set_int("mcl_damage:damage_animation", 0)
 			end)
@@ -792,15 +701,15 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 	end
 end)
 
-minetest.register_on_respawnplayer(function(player)
-	local pos = player:get_pos()
-	minetest.add_particlespawner({
+core.register_on_respawnplayer(function(player)
+	local pos = vector_copy(player:get_pos())
+	add_particlespawner({
 		amount = 50,
 		time = 0.001,
-		minpos = vector.add(pos, 0),
-		maxpos = vector.add(pos, 0),
-		minvel = vector.new(-5,-5,-5),
-		maxvel = vector.new(5,5,5),
+		minpos = pos,
+		maxpos = pos,
+		minvel = vector_new(-5,-5,-5),
+		maxvel = vector_new(5,5,5),
 		minexptime = 1.1,
 		maxexptime = 1.5,
 		minsize = 1,
@@ -810,7 +719,7 @@ minetest.register_on_respawnplayer(function(player)
 		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
 	})
 
-	minetest.sound_play("mcl_mobs_mob_poof", {
+	core.sound_play("mcl_mobs_mob_poof", {
 		pos = pos,
 		gain = 1.0,
 		max_hear_distance = 8,
