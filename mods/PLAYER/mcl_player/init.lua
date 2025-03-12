@@ -238,7 +238,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			-- ask if player is swiming
-			local head_in_water = minetest.get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0
+			local head_in_water = (mcl_playerinfo[name].head_in.groups.water or 0) ~= 0
 			-- ask if player is sprinting
 			local is_sprinting = mcl_sprint.is_sprinting(name)
 

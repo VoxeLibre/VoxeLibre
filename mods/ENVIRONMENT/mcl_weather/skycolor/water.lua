@@ -3,11 +3,9 @@ local DEFAULT_WATER_COLOR = "#3F76E4"
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local function water_sky(player, sky_data)
+	local head_in = mcl_playerinfo[player:get_player_name()].head_in
+	if (head_in.groups.water or 0) ~= 0 then return end
 	local water_color = DEFAULT_WATER_COLOR
-
-	local checkname = mcl_playerinfo[player:get_player_name()].node_head
-	if minetest.get_item_group(checkname, "water") == 0 then return end
-
 	local pos = player:get_pos()
 	local biome = nil
 	if mg_name ~= "v6" and mg_name ~= "singlenode" then
@@ -18,7 +16,7 @@ local function water_sky(player, sky_data)
 	if biome then water_color = biome._mcl_waterfogcolor end
 	if not biome then water_color = DEFAULT_WATER_COLOR end
 
-	if checkname == "mclx_core:river_water_source" or checkname == "mclx_core:river_water_flowing" then water_color = "#0084FF" end
+	if head_in.name == "mclx_core:river_water_source" or head_in.name == "mclx_core:river_water_flowing" then water_color = "#0084FF" end
 
 	sky_data.sky = { type = "regular",
 		sky_color = {
