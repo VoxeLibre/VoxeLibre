@@ -1,19 +1,20 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
+local function N(s) return s end
 local mod = {}
 mcl_compressed_block = mod
 
 local LABELS = {
-	[0] = "@1",
-	"Compressed @1",
-	"Double Compressed @1",
-	"Triple Compressed @1",
-	"Quadruple Compressed @1",
-	"Quintuple Compressed @1",
-	"Sextuple Compressed @1",
-	"Septuple Compressed @1",
-	"Octuple Compressed @1",
+	[0] = N("@1"),
+	N("Compressed @1"),
+	N("Double Compressed @1"),
+	N("Triple Compressed @1"),
+	N("Quadruple Compressed @1"),
+	N("Quintuple Compressed @1"),
+	N("Sextuple Compressed @1"),
+	N("Septuple Compressed @1"),
+	N("Octuple Compressed @1"),
 }
 local NODE_NAMES = {
 	[0] = "",
@@ -33,7 +34,7 @@ local HARDNESS = {
 	 3,  4,  5,  7,   9,  12,  16,  21,
 }
 
-local block_name = "Cobblestone"
+--local block_name = "Cobblestone"
 function mod.register_block_compression(base_block, block_name, max_levels, final_drops)
 	local base_nodedef = minetest.registered_nodes[base_block]
 	assert(base_nodedef)
@@ -45,9 +46,10 @@ function mod.register_block_compression(base_block, block_name, max_levels, fina
 
 		minetest.register_node(name,{
 			description = S(LABELS[i], base_nodedef.description),
-			_doc_items_longdesc = (
-				"@1 is a decorative block made from 9 @2. It is useful for saving space in your inventories."
-				):gsub("@1",LABELS[i]:gsub("@1",block_name)):gsub("@2",LABELS[i-1]:gsub("@1",block_name)),
+			_doc_items_longdesc = S(
+				"@1 is a decorative block made from 9 @2. It is useful for saving space in your inventories.",
+				S(LABELS[i], S(block_name)), S(LABELS[i-1], S(block_name))
+			),
 			_doc_items_hidden = false,
 			tiles = {base_nodedef.tiles[1].."^mcl_compressed_blocks_"..tostring(overlay_level).."x_overlay.png"},
 			is_ground_content = true,
@@ -79,9 +81,10 @@ function mod.register_block_compression(base_block, block_name, max_levels, fina
 	local name = "mcl_compressed_blocks:"..NODE_NAMES[max_levels]..block_name
 	minetest.register_node(name,{
 		description = S(LABELS[max_levels], base_nodedef.description),
-		_doc_items_longdesc = (
-			"@1 is a decorative block made from 9 @2. It is useful for saving space in your inventories."
-			):gsub("@1",LABELS[max_levels]:gsub("@1",block_name)):gsub("@2",LABELS[max_levels-1]:gsub("@1",block_name)),
+		_doc_items_longdesc = S(
+			"@1 is a decorative block made from 9 @2. It is useful for saving space in your inventories.",
+			S(LABELS[max_levels], S(block_name)), S(LABELS[max_levels-1], S(block_name))
+		),
 		_doc_items_hidden = false,
 		tiles = {base_nodedef.tiles[1].."^mcl_compressed_blocks_8x_overlay.png"},
 		is_ground_content = true,
