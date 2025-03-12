@@ -63,8 +63,8 @@ end
 local function set_attach(player, bool)
 	mcl_player.player_attached[player:get_player_name()] = bool
 end
-local function is_air_below(player)
-	return mcl_playerinfo[player:get_player_name()].node_stand == "air"
+local function is_unwalkable_below(player)
+	return not core.registered_nodes[mcl_playerinfo[player:get_player_name()].node_stand].walkable
 end
 --[[ for MCLA's mcl_player rewrite
 local function is_attached(player)
@@ -73,8 +73,8 @@ end
 local function set_attach(player, bool)
 	mcl_player.players[player].attached = bool
 end
-local function is_air_below(player)
-	return mcl_player.players[player].nodes.stand == "air"
+local function is_unwalkable_below(player)
+	return not core.registered_nodes[mcl_player.players[player].nodes.stand].walkable
 end]]
 
 local function check_distance(a, b)
@@ -212,7 +212,7 @@ for action, def in pairs(actions) do
 		func = function(name)
 			local player = core.get_player_by_name(name)
 			-- check the node below player (and if it's air, just don't sit)
-			if is_air_below(player) then return end
+			if is_unwalkable_below(player) then return end
 
 			mcl_cozy[action](nil, nil, player)
 		end
@@ -227,7 +227,7 @@ core.register_globalstep(function(dtime)
 			-- unmount when player tries to move
 			if (ctrl.up or ctrl.down or ctrl.left or ctrl.right or ctrl.jump or ctrl.sneak)
 					-- unmount when there's air below
-					or is_air_below(player) then
+					or is_unwalkable_below(player) then
 				mcl_cozy.stand_up(player)
 			end
 		end
