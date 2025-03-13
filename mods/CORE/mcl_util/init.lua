@@ -6,6 +6,7 @@ dofile(modpath.."/roman_numerals.lua")
 dofile(modpath.."/nodes.lua")
 dofile(modpath.."/table.lua")
 dofile(modpath.."/hashing.lua")
+dofile(modpath..DIR_DELIM.."fake_meta_data.lua")
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
 local LOG_MODULE = "[MCL2]"
