@@ -356,6 +356,7 @@ end -- END mcl_mobs.register_mob function
 
 
 local STRIP_FIELDS = { "mesh", "base_size", "textures", "base_mesh", "base_texture" }
+---@param unpacked_staticdata table
 function mcl_mobs.strip_staticdata(unpacked_staticdata)
 	-- Strip select fields from the staticdata to prevent conversion issues
 	for i = 1,#STRIP_FIELDS do
@@ -365,7 +366,7 @@ end
 function mcl_mobs.register_conversion(old_name, new_name)
 	minetest.register_entity(old_name, {
 		on_activate = function(self, staticdata, dtime)
-			local unpacked_staticdata = minetest.deserialize(staticdata)
+			local unpacked_staticdata = minetest.deserialize(staticdata) or {}
 			mcl_mobs.strip_staticdata(unpacked_staticdata)
 			staticdata = minetest.serialize(unpacked_staticdata)
 
