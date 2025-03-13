@@ -9,8 +9,21 @@ local start_time = tonumber(Settings(core.get_worldpath() .. "/env_meta.txt"):ge
 
 --- Get a version number for map generation.
 local function parse_version(str)
-	local parts = str:split(".")
-	for i, v in ipairs(parts) do parts[i] = tonumber(v) or v end
+	local parts = {}
+	while str ~= "" do
+		local m, tail = str:match("^(%d+)%.?(.*)$")
+		if m then
+			parts[#parts + 1] = tonumber(m)
+			if tonumber(tail) then
+				parts[#parts + 1] = tonumber(tail)
+				break
+			end
+			str = tail
+		else
+			parts[#parts + 1] = str
+			break
+		end
+	end
 	return parts
 end
 local map_version = parse_version(core.get_mapgen_setting("vl_world_version") or "")
@@ -28,6 +41,8 @@ if #map_version == 0 then
 		map_version = {0, 87}
 	end
 end
+-- Export:
+mcl_vars.parse_version = parse_version
 mcl_vars.map_version = map_version -- make available
 core.log("action", "VoxeLibre mapgen version = "..table.concat(map_version, "."))
 
