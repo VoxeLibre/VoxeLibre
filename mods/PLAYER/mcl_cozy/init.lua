@@ -1,7 +1,7 @@
 local S = core.get_translator(core.get_current_modname())
 local N = function(s) return s end
 
-local mcl_cozy_sit_on_stairs = core.settings:get_bool("mcl_cozy_sit_on_stairs", true)
+local mcl_cozy_sit_on_stairs = core.settings:get_bool("mcl_cozy_sit_on_stairs", false)
 local mcl_cozy_print_actions = core.settings:get_bool("mcl_cozy_print_actions", false)
 
 local SIT_EYE_OFFSET = vector.new(0, -7, 2)
@@ -63,8 +63,8 @@ end
 local function set_attach(player, bool)
 	mcl_player.player_attached[player:get_player_name()] = bool
 end
-local function is_air_below(player)
-	return mcl_playerinfo[player:get_player_name()].node_stand == "air"
+local function is_unwalkable_below(player)
+	return not core.registered_nodes[mcl_playerinfo[player:get_player_name()].node_stand].walkable
 end
 --[[ for MCLA's mcl_player rewrite
 local function is_attached(player)
@@ -73,9 +73,15 @@ end
 local function set_attach(player, bool)
 	mcl_player.players[player].attached = bool
 end
-local function is_air_below(player)
-	return mcl_player.players[player].nodes.stand == "air"
+local function is_unwalkable_below(player)
+	return not core.registered_nodes[mcl_player.players[player].nodes.stand].walkable
 end]]
+
+local function check_distance(a, b)
+	return math.abs(a.x - b.x) > DISTANCE_THRESHOLD
+		or math.abs(a.y - b.y) > DISTANCE_THRESHOLD / 2
+		or math.abs(a.z - b.z) > DISTANCE_THRESHOLD
+end
 
 function mcl_cozy.print_action(name, action)
 	if not mcl_cozy_print_actions then return end
@@ -109,7 +115,7 @@ end
 for action, def in pairs(actions) do
 	if not def or type(def) ~= "table" then return end
 
-	mcl_cozy[action] = function(pos, _, player)
+	mcl_cozy[action] = function(pos, node, player)
 		if not player or not player:is_player() then return end
 
 		local name = player:get_player_name()
@@ -129,7 +135,7 @@ for action, def in pairs(actions) do
 				return
 			end
 			-- check distance
-			if vector.distance(pos, ppos) > DISTANCE_THRESHOLD then
+			if check_distance(pos, ppos) then
 				mcl_cozy.actionbar_show_status(player, def.message.actionbar.distance_fail)
 				return
 			end
@@ -148,7 +154,7 @@ for action, def in pairs(actions) do
 			end
 
 			-- all checks pass
-			local node = core.get_node(pos)
+			node = node or core.get_node(pos)
 			local param2 = node.param2
 			local ndef = core.registered_nodes[node.name]
 
@@ -206,7 +212,7 @@ for action, def in pairs(actions) do
 		func = function(name)
 			local player = core.get_player_by_name(name)
 			-- check the node below player (and if it's air, just don't sit)
-			if is_air_below(player) then return end
+			if is_unwalkable_below(player) then return end
 
 			mcl_cozy[action](nil, nil, player)
 		end
@@ -221,7 +227,7 @@ core.register_globalstep(function(dtime)
 			-- unmount when player tries to move
 			if (ctrl.up or ctrl.down or ctrl.left or ctrl.right or ctrl.jump or ctrl.sneak)
 					-- unmount when there's air below
-					or is_air_below(player) then
+					or is_unwalkable_below(player) then
 				mcl_cozy.stand_up(player)
 			end
 		end

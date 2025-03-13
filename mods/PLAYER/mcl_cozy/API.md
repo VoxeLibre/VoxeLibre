@@ -8,10 +8,11 @@ of `action`, it means that it has to either be `"sit"` or `"lay"`.
 
 There is currently no way to register new actions.
 
-## `function mcl_cozy[action](pos, _, player)`
+## `function mcl_cozy[action](pos, node, player)`
 
 A function provided for every action that applies the action to `player`.
 If `pos` is nil, the player will be mounted to their current position.
+If `node` is nil and `pos` isn't, it will be fetched automatically.
 
 ```lua
 core.register_node("mymod:sit_on_me", {
