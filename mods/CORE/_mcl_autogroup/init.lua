@@ -347,7 +347,7 @@ local function overwrite()
 		count = count + 1
 		local newgroups = table.copy(ndef.groups)
 
-		if not newgroups.unbreakable and not newgroups.indestructible then
+		if not newgroups.unbreakable and not newgroups.indestructible and not newgroups.liquid then
 			ndef.diggable = true
 			mcl_autogroup.group_compatibility(newgroups)
 			if not ndef._mcl_hardness then
