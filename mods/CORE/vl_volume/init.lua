@@ -55,6 +55,26 @@ function vl_volume.get_meta(pos)
 	return meta
 end
 
+---@param pos vector.Vector
+---@return core.MetaDataRef?
+function vl_volume.get_area_meta(minp, maxp)
+	local data = {}
+
+	-- Create a table containing the union of all volume metadata that overlap the area minp,maxp
+	-- TODO: make this more efficient
+	for uuid,volume in pairs(volume_list) do
+		if mcl_util.area_overlaps(minp, maxp, volume.minp, volume.maxp) then
+			if not volume.table then
+				volume.table = core.deserialize(storage:get_string(uuid))
+			end
+
+			table.update(data, volume.table)
+		end
+	end
+
+	return mcl_util.make_fake_metadata({table = data, readonly = true})
+end
+
 ---@param minp vector.Vector
 ---@param maxp vector.Vector
 ---@return core.MetaDataRef
