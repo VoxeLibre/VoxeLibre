@@ -98,7 +98,7 @@ function mob_class:get_staticdata()
 end
 
 local function valid_texture(self, def_textures)
-	if not self.base_texture then return false end
+	if not self.base_texture or #self.base_texture ~= #def_textures then return false end
 	if self.texture_selected then
 		if #def_textures < self.texture_selected then
 			self.texture_selected = nil
@@ -131,6 +131,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 
 	--If textures in definition change, reload textures
 	if not valid_texture(self, def.textures) then
+		core.log("warning", "Possibly corrupted staticdata: "..staticdata)
+
 		-- compatiblity with old simple mobs textures
 		if type(def.textures[1]) == "string" then def.textures = {def.textures} end
 
