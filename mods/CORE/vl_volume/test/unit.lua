@@ -51,7 +51,10 @@ local vector = {
 	end,
 	copy = function(b)
 		return {x = b.x, y = b.y, z = b.z}
-	end
+	end,
+	equals = function(a,b)
+		return a.x == b.x and a.y == b.y and a.z == b.z
+	end,
 }
 local mcl_util = {}
 _G.mcl_util = mcl_util
@@ -59,6 +62,7 @@ _G.core = core
 _G.minetest = core
 _G.vector = vector
 _G.PcgRandom = function() end
+dofile("/usr/share/luanti/builtin/common/misc_helpers.lua")
 
 -- Dependency
 mock.load_mod("mcl_util", "../mcl_util")
@@ -68,6 +72,8 @@ describe('vl_volume',function()
 		mock.load_mod("vl_volume", "./")
 		vl_volume = _G.vl_volume
 	end)
+
+	-- Basic behavior
 	it('can create a volumes',function()
 		local md1 = vl_volume.create_volume(vector.new(-10,0,-10), vector.new(10,0,10))
 		md1:set_string("test", "1")
@@ -80,5 +86,21 @@ describe('vl_volume',function()
 		assert(md)
 		assert(md:get_string("test") == "1")
 		assert(md:get_string("test2") == "2")
+	end)
+
+	-- Caching support
+	it('will cache queries for better performance', function()
+		local v = vector.new(1,0,0)
+		local md1 = vl_volume.get_meta(v)
+		local md2 = vl_volume.get_meta(v)
+		assert(md1 == md2)
+	end)
+	it('will clear the cache when changes occur', function()
+		local v = vector.new(1,0,0)
+		local md1 = vl_volume.get_meta(v)
+		vl_volume.create_volume(vector.new(-2,0,-2), vector.new(2,2,2))
+
+		local md2 = vl_volume.get_meta(v)
+		assert(md1 ~= md2)
 	end)
 end)

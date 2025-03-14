@@ -33,27 +33,26 @@ function vl_volume.get_meta(pos)
 	local hash = mcl_util.hash_pos(pos.x, pos.y, pos.z, 15)
 	local cached = cache[hash]
 	if cached and vector.equals(cached.pos, pos) then
-		return cached.volume.meta
+		return cached.meta
 	end
 
+	local data = {}
+
+	-- Create a table containing the union of all volumes that contain 'pos'
 	-- TODO: make this more efficient
 	for uuid,volume in pairs(volume_list) do
 		if vector.in_area(pos, volume.minp, volume.maxp) then
 			if not volume.table then
 				volume.table = core.deserialize(storage:get_string(uuid))
-				volume.meta = mcl_util.make_fake_meta_data_ref({
-					volume = volume,
-					table = volume.table,
-					on_save = save_volume_metadata,
-				})
-				cached[hash] = {
-					pos = vector.copy(pos),
-					volume = volume,
-				}
-				return volume.meta
 			end
+
+			table.update(data, volume.table)
 		end
 	end
+
+	local meta = mcl_util.make_fake_metadata({table = data, readonly = true})
+	cache[hash] = {meta = meta, pos = pos}
+	return meta
 end
 
 ---@param minp vector.Vector
@@ -62,6 +61,7 @@ end
 function vl_volume.create_volume(minp, maxp)
 	-- Create the volume
 	local uuid = string.format("%d,%d,%d-%d,%d,%d", minp.x, minp.y, minp.z, maxp.x, maxp.y, maxp.z)
+
 	---@class vl_volume.Volume
 	local volume = {
 		minp = vector.copy(minp),
