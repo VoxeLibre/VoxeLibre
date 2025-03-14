@@ -25,7 +25,6 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 	local e1, e2 = vector.offset(pos,-size-1,-2,-size-1), vector.offset(pos,size+1,25,size+1)
 	core.emerge_area(e1, e2, function(_, _, calls_remaining)
 		if calls_remaining ~= 0 then return end
-		local floorn, bordern
 		local nnt = core.find_nodes_in_area(vector.offset(pos,-size,0,-size), vector.offset(pos,size,0,size), placein)
 		-- keep only nodes with nothing walkable above within circle
 		local sq = size * size
@@ -36,7 +35,7 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 				local below = core.registered_nodes[get_node_name_raw(n.x, n.y - 2, n.z)]
 				if below and below.walkable then
 					-- check y+2 to not cut into terrain too much
-					local aboven, _, abovep2 = get_node_name_raw(n.x, n.y + 2, n.z)
+					local aboven = get_node_name_raw(n.x, n.y + 2, n.z)
 					local above = core.registered_nodes[aboven]
 					if above and not (above.walkable and (above.groups.plant or 0) == 0) then
 						local j = #nn > 0 and pr:next(1, #nn + 1) or 1 -- insert position for shuffling
@@ -46,10 +45,6 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 							nn[#nn + 1], nn[j] = nn[j], n -- swap insert for shuffling
 						end
 					end
-					if above and not bordern and (above.groups.solid or 0) > 0 then
-						bordern = { name = aboven, param2 = abovep2 }
-					end
-					if not floorn then floorn = { name = below.name } end
 				end
 			end
 		end
@@ -70,12 +65,8 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 			end
 			-- Close holes in the floor, also replace dirt with grass
 			local below = vector.offset(nn[i], 0, -1, 0)
-			local bname, bpar2 = get_node_name(below)
-			local bdef = core.registered_nodes[bname]
-			if not bordern and (bdef.groups.solid or 0) > 0 then
-				bordern = { name = bname, param2 = bpar2 }
-			end
-			if bname == "mcl_core:dirt_with_grass" or not (bdef and bdef.walkable) then
+			local bname = get_node_name(below)
+			if bname == "mcl_core:dirt_with_grass" or not (core.registered_nodes[bname] or {}).walkable then
 				floor[#floor + 1] = below
 			end
 		end
@@ -95,15 +86,15 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 				end
 			end
 		end
-		bordern = bordern or def_border
+		local biome = mg_name ~= "v6" and core.registered_biomes[core.get_biome_name(core.get_biome_data(nn[1]).biome)]
+		local bordern = def_border or { name = biome and biome.node_top or "mcl_core:dirt_with_grass" }
+		local floorn = def_floor or { name = biome and biome.node_filler or biome.node_top or "mcl_core:stone" }
 		if bordern and bordern.name == "mcl_core:dirt_with_grass" and not bordern.param2 then
-			local biome = mg_name ~= "v6" and core.registered_biomes[core.get_biome_name(core.get_biome_data(nn[1]).biome)]
 			local p2 = biome and biome._mcl_grass_palette_index and biome._mcl_grass_palette_index or nil
-			bordern = { name = "mcl_core:dirt_with_grass", param2 = p2 } -- deliberate copy
+			bordern = { name = bordern.name, param2 = p2 } -- deliberate copy
 		end
 		core.bulk_swap_node(border, bordern)
-		core.bulk_swap_node(floor, floorn or def_floor)
-		return true
+		core.bulk_swap_node(floor, floorn)
 	end)
 	return true
 end
@@ -146,7 +137,7 @@ mcl_structures.register_structure("water_lake", {
 	place_func = function(pos, _, pr)
 		return makelake(pos, 5, { name = "mclx_core:river_water_source" },
 			{ "group:material_stone", "group:sand", "group:dirt", "group:grass_block"},
-			{ name = "mcl_core:dirt_with_grass" }, { name = "mcl_core:sand" }, pr)
+			nil, { name = "mcl_core:sand" }, pr)
 	end
 })
 
@@ -168,6 +159,6 @@ mcl_structures.register_structure("water_lake_mangrove_swamp", {
 	place_func = function(pos, _, pr)
 		return makelake(pos, 3, { name = "mcl_core:water_source" },
 			{ "group:material_stone", "group:sand", "group:dirt", "group:grass_block", "mcl_mud:mud"},
-			{ name = "mcl_mud:mud" }, { name = "mcl_core:mud" }, pr, true)
+			nil, { name = "mcl_core:mud" }, pr, true)
 	end
 })
