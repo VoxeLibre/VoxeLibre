@@ -17,7 +17,9 @@ local fake_metadata_ref_metatable = {
 function mcl_util.make_fake_metadata(data)
 	-- Validate argument
 	assert(type(data.table) == "table", "Fake metadata requires a 'table' field that is a table")
-	assert(type(data.on_save) == "function", "Fake metadata requires an 'on_save' field that is a function")
+	if not data.readonly then
+		assert(type(data.on_save) == "function", "Writable fake metadata requires an 'on_save' field that is a function")
+	end
 
 	return setmetatable(data, fake_metadata_ref_metatable)
 end
