@@ -45,9 +45,9 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 						else
 							nn[#nn + 1], nn[j] = nn[j], n -- swap insert for shuffling
 						end
-						if not bordern and (above.groups.solid or 0) > 0 then
-							bordern = { name = above, param2 = abovep2 }
-						end
+					end
+					if above and not bordern and (above.groups.solid or 0) > 0 then
+						bordern = { name = aboven, param2 = abovep2 }
 					end
 					if not floorn then floorn = { name = below.name } end
 				end
@@ -68,10 +68,14 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 					air[#air+1] = above
 				end
 			end
-			-- avoid grass under water, close gaps in the floor
+			-- Close holes in the floor, also replace dirt with grass
 			local below = vector.offset(nn[i], 0, -1, 0)
-			local bname = get_node_name(below)
-			if bname == "mcl_core:dirt_with_grass" or not (core.registered_nodes[bname] or {}).walkable then
+			local bname, bpar2 = get_node_name(below)
+			local bdef = core.registered_nodes[bname]
+			if not bordern and (bdef.groups.solid or 0) > 0 then
+				bordern = { name = bname, param2 = bpar2 }
+			end
+			if bname == "mcl_core:dirt_with_grass" or not (bdef and bdef.walkable) then
 				floor[#floor + 1] = below
 			end
 		end
