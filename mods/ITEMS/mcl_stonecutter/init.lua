@@ -17,7 +17,7 @@ local S = minetest.get_translator("mcl_stonecutter")
 local C = minetest.colorize
 local show_formspec = minetest.show_formspec
 
-local formspec_name = "mcl_stonecutter:stonecutter"
+local FORMSPEC_NAME = "mcl_stonecutter:stonecutter"
 
 mcl_stonecutter = {}
 
@@ -86,7 +86,7 @@ end
 ---https://github.com/minetest/minetest/issues/14013
 
 ---@param itemname string
-local function itenname_to_fieldname(itemname)
+local function itemname_to_fieldname(itemname)
 	return string.gsub(itemname, ":", "__")
 end
 
@@ -95,14 +95,14 @@ local function fieldname_to_itemname(fieldname)
 	return string.gsub(fieldname, "__", ":")
 end
 
--- Get the player configured stack size when taking items from creative inventory
+-- Get the player configured stack size when taking items from stonecutter inventory
 ---@param player mt.PlayerObjectRef
 ---@return integer
 local function get_stack_size(player)
 	return player:get_meta():get_int("mcl_stonecutter:switch_stack")
 end
 
--- Set the player configured stack size when taking items from creative inventory
+-- Set the player configured stack size when taking items from stonecutter inventory
 ---@param player mt.PlayerObjectRef
 ---@param n integer
 local function set_stack_size(player, n)
@@ -116,12 +116,12 @@ local function build_stonecutter_formspec(player, items)
 	local meta = player:get_meta()
 	local selected = meta:get_string("mcl_stonecutter:selected")
 
-	items = items or {}
+	local items = items or {}
 
 	-- Buttons are 3.5 / 4 = 0.875 wide
 	local c = 0
 	local items_content = "style_type[item_image_button;noclip=false;content_offset=0]" ..
-		(selected ~= "" and "style[" .. itenname_to_fieldname(selected) .. ";border=false;bgimg=mcl_inventory_button9_pressed.png;bgimg_pressed=mcl_inventory_button9_pressed.png;bgimg_middle=2,2]" or "")
+		(selected ~= "" and "style[" .. itemname_to_fieldname(selected) .. ";border=false;bgimg=mcl_inventory_button9_pressed.png;bgimg_pressed=mcl_inventory_button9_pressed.png;bgimg_middle=2,2]" or "")
 
 	for name, count in table.pairs_by_keys(items) do
 		c = c + 1
@@ -130,7 +130,7 @@ local function build_stonecutter_formspec(player, items)
 
 		items_content = items_content ..
 			string.format("item_image_button[%f,%f;0.875,0.875;%s;%s;]", x, y,
-				name, itenname_to_fieldname(name), tostring(count))
+				name, itemname_to_fieldname(name), tostring(count))
 	end
 
 	local formspec = table.concat({
@@ -189,7 +189,7 @@ end
 ---Display stonecutter menu to a player
 ---@param player mt.PlayerObjectRef
 function mcl_stonecutter.show_stonecutter_form(player)
-	show_formspec(player:get_player_name(), formspec_name,
+	show_formspec(player:get_player_name(), FORMSPEC_NAME,
 		build_stonecutter_formspec(player,
 			mcl_stonecutter.registered_recipes[player:get_inventory():get_stack("stonecutter_input", 1):get_name()]))
 end
@@ -197,7 +197,7 @@ end
 ---Change the selected output item.
 ---@param player mt.PlayerObjectRef
 ---@param item_name? string The item name of the output
-function set_selected_item(player, item_name)
+local function set_selected_item(player, item_name)
 	player:get_meta():set_string("mcl_stonecutter:selected", item_name and item_name or "")
 end
 
@@ -257,7 +257,7 @@ end
 
 --Drop items in slots and reset selected item on closing
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname ~= formspec_name then return end
+	if formname ~= FORMSPEC_NAME then return end
 
 	if fields.quit then
 		mcl_util.move_player_list(player, "stonecutter_input")
@@ -314,10 +314,11 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 			end
 		end
 	elseif action == "put" then
-		if inventory_info.to_list == "stonecutter_output" then
+		if inventory_info.listname == "stonecutter_output" then
 			return 0
 		end
-		if inventory_info.from_list == "stonecutter_output" then
+	elseif action == "take" then
+		if inventory_info.listname == "stonecutter_output" then
 			local selected = player:get_meta():get_string("mcl_stonecutter:selected")
 			local istack = inventory:get_stack("stonecutter_input", 1)
 			local recipes = mcl_stonecutter.registered_recipes[istack:get_name()]
@@ -331,12 +332,11 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 	end
 end)
 
-function remove_from_input(player, inventory, crafted_count)
+local function remove_from_input(player, inventory, crafted_count)
 	local meta = player:get_meta()
 	local selected = meta:get_string("mcl_stonecutter:selected")
 	local istack = inventory:get_stack("stonecutter_input", 1)
 	local recipes = mcl_stonecutter.registered_recipes[istack:get_name()]
-	local stack_size = meta:get_int("mcl_stonecutter:switch_stack")
 
 	-- selected should normally never be nil, but just in case
 	if selected and recipes then
