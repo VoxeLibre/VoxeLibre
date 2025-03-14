@@ -253,37 +253,100 @@ mesecon.register_button(
 	"mesecons_button_push")
 
 local woods = {
-	{ "wood", "mcl_core:wood_oak", "default_wood.png", S("Oak Button") },
-	{ "acaciawood", "mcl_core:acaciawood", "default_acacia_wood.png", S("Acacia Button") },
-	{ "birchwood", "mcl_core:birchwood", "mcl_core_planks_birch.png", S("Birch Button") },
-	{ "darkwood", "mcl_core:darkwood", "mcl_core_planks_big_oak.png", S("Dark Oak Button") },
-	{ "sprucewood", "mcl_core:sprucewood", "mcl_core_planks_spruce.png", S("Spruce Button") },
-	{ "junglewood", "mcl_core:junglewood", "default_junglewood.png", S("Jungle Button") },
+	["oak"] = {
+		_button = {
+			[1] = "wood",
+			[2] = S("Oak Button"),
+		}
+	},
+	["acacia"] = {
+		_button = {
+			[1] = "acaciawood",
+			[2] = S("Acacia Button"),
+		}
+	},
+	["birch"] = {
+		_button = {
+			[1] = "birchwood",
+			[2] = S("Birch Button"),
+		}
+	},
+	["dark_oak"] = {
+		_button = {
+			[1] = "darkwood",
+			[2] = S("Dark Oak Button"),
+		}
+	},
+	["spruce"] = {
+		_button = {
+			[1] = "sprucewood",
+			[2] = S("Spruce Button"),
+		}
+	},
+	["jungle"] = {
+		_button = {
+			[1] = "junglewood",
+			[2] = S("Jungle Button"),
+		}
+	},
 
-	{ "mangrove_wood", "mcl_mangrove:mangrove_wood", "mcl_mangrove_planks.png", S("Mangrove Button") },
-	{ "crimson_hyphae_wood", "mcl_crimson:crimson_hyphae_wood", "mcl_crimson_crimson_hyphae_wood.png", S("Crimson Button") },
-	{ "warped_hyphae_wood", "mcl_crimson:warped_hyphae_wood", "mcl_crimson_warped_hyphae_wood.png", S("Warped Button") },
+	["mangrove"] = {
+		_button = {
+			[1] = "mangrove_wood",
+			[2] = S("Mangrove Button"),
+		}
+	},
+	["crimson"] = {
+		_button = {
+			[1] = "crimson_hyphae_wood",
+			[2] = S("Crimson Button"),
+		}
+	},
+	["warped"] = {
+		_button = {
+			[1] = "warped_hyphae_wood",
+			[2] = S("Warped Button"),
+		}
+	},
 }
 
-for w=1, #woods do
-	mesecon.register_button(
-		woods[w][1],
-		woods[w][4],
-		woods[w][3],
-		woods[w][2],
-		mcl_sounds.node_sound_wood_defaults(),
-		{material_wood=1,handy=1,axey=1},
-		1.5,
-		true,
-		nil,
-		"mesecons_button_push_wood")
+local tpl_button = {
+	nil,
+	nil,
+	nil,
+	nil,
+	mcl_sounds.node_sound_wood_defaults(),
+	{material_wood = 1, handy = 1, axey = 1},
+	1.5,
+	true,
+	nil,
+	"mesecons_button_push_wood"
+}
 
-	minetest.register_craft({
+vl_trees.register_on_woods_added(function(name, def)
+	local bdef = def._button
+	if not bdef then return end
+
+	if bdef[1] then
+		core.register_alias("mesecons_button:button_"..bdef[1].."_off", "mesecons_button:button_"..name.."_off")
+		core.register_alias("mesecons_button:button_"..bdef[1].."_on", "mesecons_button:button_"..name.."_on")
+	end
+
+	local pname = def.planks
+	local pdef = core.registered_nodes[pname]
+	local ptexture = pdef.tiles[1]
+
+	bdef[1] = name
+	bdef[3] = ptexture
+	bdef[4] = pname
+	mesecon.register_button(unpack(table.update({}, tpl_button, bdef)))
+
+	core.register_craft({
 		type = "fuel",
-		recipe = "mesecons_button:button_"..woods[w][1].."_off",
+		recipe = "mesecons_button:button_"..name.."_off",
 		burntime = 5,
 	})
-end
+end, woods)
 
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
