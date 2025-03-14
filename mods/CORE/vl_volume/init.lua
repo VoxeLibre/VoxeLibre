@@ -28,7 +28,7 @@ end
 local cache = {}
 
 ---@param pos vector.Vector
----@return core.MetaDataRef?
+---@return core.MetaDataRef
 function vl_volume.get_meta(pos)
 	local hash = mcl_util.hash_pos(pos.x, pos.y, pos.z, 15)
 	local cached = cache[hash]
@@ -55,8 +55,9 @@ function vl_volume.get_meta(pos)
 	return meta
 end
 
----@param pos vector.Vector
----@return core.MetaDataRef?
+---@param minp vector.Vector
+---@param maxp vector.Vector
+---@return core.MetaDataRef
 function vl_volume.get_area_meta(minp, maxp)
 	local data = {}
 
