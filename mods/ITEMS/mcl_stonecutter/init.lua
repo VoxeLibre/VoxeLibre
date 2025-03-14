@@ -331,7 +331,7 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 	end
 end)
 
-function remove_from_input(player, inventory, crafted_count)
+local function remove_from_input(player, inventory, crafted_count)
 	local meta = player:get_meta()
 	local selected = meta:get_string("mcl_stonecutter:selected")
 	local istack = inventory:get_stack("stonecutter_input", 1)

@@ -131,7 +131,7 @@ core.register_on_leaveplayer(function(player)
 	player:get_inventory():set_list("cartography_table_output", {})
 end)
 
-function remove_from_input(player, inventory, count)
+local function remove_from_input(player, inventory, count)
 	local meta = player:get_meta()
 	local astack = inventory:get_stack("cartography_table_input", 1)
 	if astack then
