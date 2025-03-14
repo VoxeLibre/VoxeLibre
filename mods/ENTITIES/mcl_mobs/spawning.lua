@@ -486,7 +486,7 @@ end
 
 local FLY_IN_AIR = { air = true }
 local function has_room(self, pos)
-	local cb = self.spawnbox or self.collisionbox
+	local cb = self.spawnbox or self.initial_properties.collisionbox
 	local fly_in = self.fly_in or FLY_IN_AIR
 	local fly_in_air = not not fly_in["air"]
 
@@ -597,7 +597,7 @@ function mcl_mobs.spawn(pos,id)
 	local def = core.registered_entities[id] or core.registered_entities["mobs_mc:"..id] or core.registered_entities["extra_mobs:"..id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
 	if not has_room(def, pos) then
-		local cb = def.spawnbox or def.collisionbox
+		local cb = def.spawnbox or def.initial_properties.collisionbox
 		-- simple position adjustment for 2x2 mobs until we add something better for asymmetric cases
 		-- e.g., when spawning next to a fence on one side, the 0.5 offset may not be optimal.
 		local wx, wz = cb[4] - cb[1], cb[6] - cb[3]
@@ -616,7 +616,7 @@ function mcl_mobs.spawn(pos,id)
 		end
 	end
 	if math_round(pos.y) == pos.y then -- node spawn
-		pos.y = pos.y - 0.495 - def.collisionbox[2] -- spawn just above ground below
+		pos.y = pos.y - 0.495 - def.initial_properties.collisionbox[2] -- spawn just above ground below
 	end
 	local start_time = core.get_us_time()
 	local obj = core.add_entity(pos, def.name)

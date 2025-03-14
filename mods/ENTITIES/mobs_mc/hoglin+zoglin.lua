@@ -14,8 +14,11 @@ local hoglin = {
 	type = "monster",
 	passive = false,
 	spawn_class = "hostile",
-	hp_min = 40,
-	hp_max = 40,
+	initial_properties = {
+		hp_min = 40,
+		hp_max = 40,
+		collisionbox = {-.6, -0.01, -.6, .6, 1.4, .6},
+	},
 	xp_min = 9,
 	xp_max = 9,
 	armor = {fleshy = 90},
@@ -23,7 +26,6 @@ local hoglin = {
 	attack_frequency = 3;
 	damage = 4,
 	reach = 1.9,
-	collisionbox = {-.6, -0.01, -.6, .6, 1.4, .6},
 	visual = "mesh",
 	mesh = "extra_mobs_hoglin.b3d",
 	textures = { {
@@ -109,7 +111,7 @@ mcl_mobs.register_mob("mobs_mc:zoglin", zoglin)
 
 local baby_hoglin = table.copy(hoglin)
 baby_hoglin.description = S("Baby hoglin")
-baby_hoglin.collisionbox = {-.3, -0.01, -.3, .3, 0.94, .3}
+baby_hoglin.initial_properties.collisionbox = {-.3, -0.01, -.3, .3, 0.94, .3}
 baby_hoglin.xp_min = 20
 baby_hoglin.xp_max = 20
 baby_hoglin.visual_size = {x=hoglin.visual_size.x/2, y=hoglin.visual_size.y/2}

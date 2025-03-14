@@ -2025,7 +2025,7 @@ local trade_inventory = {
 					trader._locked_trades = 0
 					-- Also heal trader for unlocking stuff
 					-- TODO: Replace by Regeneration I
-					trader.health = math.min(trader.hp_max, trader.health + 4)
+					trader.health = math.min(trader.initial_properties.hp_max, trader.health + 4)
 				end
 				mcl_experience.add_xp(player, xp)
 				trade.trade_counter = trade.trade_counter + 1
@@ -2058,7 +2058,7 @@ local trade_inventory = {
 						trader._locked_trades = 1
 						-- Also heal trader for unlocking stuff
 						-- TODO: Replace by Regeneration I
-						trader.health = math.min(trader.hp_max, trader.health + 4)
+						trader.health = math.min(trader.initial_properties.hp_max, trader.health + 4)
 					end
 				end
 				trader._trades = minetest.serialize(trades)
@@ -2106,14 +2106,16 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 	type = "npc",
 	spawn_class = "passive",
 	passive = true,
-	hp_min = 20,
-	hp_max = 20,
+	initial_properties = {
+		hp_min = 20,
+		hp_max = 20,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
+	},
 	head_swivel = "head.control",
 	head_eye_height = 1.5,
 	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	runaway = true,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_villager.b3d",
 	textures = {

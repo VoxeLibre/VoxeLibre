@@ -147,7 +147,8 @@ function mob_class:collision()
 	if not pos then return 0,0 end
 	local vel = self.object:get_velocity()
 	local x, z = 0, 0
-	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
+	local cb = self.initial_properties.collisionbox
+	local width = -cb[1] + cb[4] + 0.5
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, width)) do
 		local ent = object:get_luaentity()
 		if object:is_player() or (ent and ent.is_mob and object ~= self.object) then
@@ -224,7 +225,7 @@ function mob_class:update_roll()
 
 	if is_Fleckenstein ~= self.is_Fleckenstein then
 		local pos = self.object:get_pos()
-		local cbox = is_Fleckenstein and table.copy(self.collisionbox) or self.object:get_properties().collisionbox
+		local cbox = is_Fleckenstein and table.copy(self.initial_properties.collisionbox) or self.object:get_properties().collisionbox
 		pos.y = pos.y + (cbox[2] + cbox[5])
 		cbox[2], cbox[5] = -cbox[5], -cbox[2]
 		-- This leads to child mobs having the wrong collisionbox
@@ -315,8 +316,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 	if self.health > 0 then
 
 		-- make sure health isn't higher than max
-		if self.health > self.hp_max then
-			self.health = self.hp_max
+		if self.health > self.initial_properties.hp_max then
+			self.health = self.initial_properties.hp_max
 		end
 
 		-- play damage sound if health was reduced and make mob flash red.
@@ -339,7 +340,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		and (cmi_cause and cmi_cause.type == "punch") then
 
 			self.htimer = 2
-			self.nametag = "♥ " .. self.health .. " / " .. self.hp_max
+			self.nametag = "♥ " .. self.health .. " / " .. self.initial_properties.hp_max
 
 			self:update_tag()
 		end
@@ -415,8 +416,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 
 
 	local collisionbox
-	if self.collisionbox then
-		collisionbox = table.copy(self.collisionbox)
+	if self.initial_properties.collisionbox then
+		collisionbox = table.copy(self.initial_properties.collisionbox)
 	end
 
 	self.state = "die"
@@ -463,7 +464,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 		end
 		death_handle(self)
 		local dpos = self.object:get_pos()
-		local cbox = self.collisionbox
+		local cbox = self.initial_properties.collisionbox
 		local yaw = self.object:get_rotation().y
 		mcl_burning.extinguish(self.object)
 		mcl_util.remove_entity(self)
@@ -540,10 +541,10 @@ function mob_class:do_env_damage()
 		end
 	end
 
-	local y_level = self.collisionbox[2]
+	local y_level = self.initial_properties.collisionbox[2]
 
 	if self.child then
-		y_level = self.collisionbox[2] * 0.5
+		y_level = self.initial_properties.collisionbox[2] * 0.5
 	end
 
 	-- what is mob standing in?
@@ -665,7 +666,7 @@ function mob_class:do_env_damage()
 	end
 
 	-- Drowning damage
-	if self.breath_max ~= -1 then
+	if self.initial_properties.breath_max ~= -1 then
 		local drowning = false
 
 		if self.breathes_in_water then
@@ -694,7 +695,7 @@ function mob_class:do_env_damage()
 				return true
 			end
 		else
-			self.breath = min(self.breath_max, self.breath + 1)
+			self.breath = min(self.initial_properties.breath_max, self.breath + 1)
 		end
 	end
 
@@ -843,7 +844,7 @@ function mob_class:falling(pos, moveresult)
 
 	-- in water then float up
 	if registered_node.groups.water then
-		if self.floats == 1 and minetest.registered_nodes[node_ok(vector.offset(pos,0,self.collisionbox[5] -0.25,0)).name].groups.water then
+		if self.floats == 1 and minetest.registered_nodes[node_ok(vector.offset(pos,0,self.initial_properties.collisionbox[5] -0.25,0)).name].groups.water then
 			self.object:set_acceleration(vector.new(0, -self.fall_speed / max(1, v.y^2), 0))
 		end
 	else

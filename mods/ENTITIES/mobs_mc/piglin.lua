@@ -50,14 +50,16 @@ local piglin = {
 	passive = false,
 	spawn_class = "hostile",
 	group_attack = {"mobs_mc:piglin", "mobs_mc:sword_piglin", "mobs_mc:piglin_brute"},
-	hp_min = 16,
-	hp_max = 16,
+	initial_properties = {
+		hp_min = 16,
+		hp_max = 16,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
+	},
 	xp_min = 9,
 	xp_max = 9,
 	armor = {fleshy = 90},
 	damage = 4,
 	reach = 3,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "extra_mobs_piglin.b3d",
 	spawn_in_group = 4,
@@ -242,8 +244,11 @@ local zombified_piglin = {
 	type = "animal",
 	passive = false,
 	spawn_class = "passive",
-	hp_min = 20,
-	hp_max = 20,
+	initial_properties = {
+		hp_min = 20,
+		hp_max = 20,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3}, -- same
+	},
 	xp_min = 6,
 	xp_max = 6,
 	armor = {undead = 90, fleshy = 90},
@@ -255,7 +260,6 @@ local zombified_piglin = {
 	head_bone_position = vector.new( 0, 2.417, 0 ), -- for minetest <= 5.8
 	head_eye_height = 1.4,
 	curiosity = 15,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3}, -- same
 	visual = "mesh",
 	mesh = "mobs_mc_zombie_pigman.b3d",
 	textures = { {
@@ -324,7 +328,7 @@ mcl_mobs.register_mob("mobs_mc:zombified_piglin", zombified_piglin)
 
 local baby_zombified_piglin = table.copy(zombified_piglin)
 baby_zombified_piglin.description = S("Baby Zombie Piglin")
-baby_zombified_piglin.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_zombified_piglin.initial_properties.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_zombified_piglin.head_eye_height = 0.8
 baby_zombified_piglin.xp_min = 13
 baby_zombified_piglin.xp_max = 13

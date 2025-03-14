@@ -63,11 +63,11 @@ local function set_doll_properties(doll, mob)
 		xs = doll_size_overrides[mob].x
 		ys = doll_size_overrides[mob].y
 	else
-		xs = (mobinfo.visual_size.x or 0) * 0.33333
-		ys = (mobinfo.visual_size.y or 0) * 0.33333
+		xs = (mobinfo.initial_properties.visual_size.x or 0) * 0.33333
+		ys = (mobinfo.initial_properties.visual_size.y or 0) * 0.33333
 	end
 	local prop = {
-		mesh = mobinfo.mesh,
+		mesh = mobinfo.initial_properties.mesh,
 		textures = get_mob_textures(mob),
 		visual_size = {
 			x = xs,
@@ -327,13 +327,15 @@ minetest.register_node("mcl_mobspawners:spawner", {
 -- Mob spawner doll (rotating icon inside cage)
 
 local doll_def = {
-	hp_max = 1,
-	physical = false,
-	pointable = false,
-	visual = "mesh",
-	makes_footstep_sound = false,
+	initial_properties = {
+		hp_max = 1,
+		physical = false,
+		pointable = false,
+		visual = "mesh",
+		makes_footstep_sound = false,
+		automatic_rotate = math.pi * 2.9,
+	},
 	timer = 0,
-	automatic_rotate = math.pi * 2.9,
 
 	_mob = default_mob, -- name of the mob this doll represents
 }
@@ -386,7 +388,7 @@ minetest.register_lbm({
 
 minetest.register_on_mods_loaded(function()
 	for name,mobinfo in pairs(minetest.registered_entities) do
-		if mobinfo.is_mob and not ( mobinfo.visual_size or mobinfo._convert_to ) then
+		if mobinfo.is_mob and not ( mobinfo.initial_properties.visual_size or mobinfo._convert_to ) then
 			minetest.log("warning", "Definition for "..tostring(name).." is missing field 'visual_size', mob spawners will not work properly")
 		end
 	end

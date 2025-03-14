@@ -145,7 +145,7 @@ function mcl_mobs.register_mob(name, def)
 		fly_in["air"] = true
 	end
 
-	local collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
+	local collisionbox = def.collisionbox or def.initial_properties.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	local final_def = {
 		use_texture_alpha = def.use_texture_alpha,
 		head_swivel = def.head_swivel or nil, -- bool to activate this function
@@ -159,7 +159,6 @@ function mcl_mobs.register_mob(name, def)
 		head_yaw = def.head_yaw or "y", -- axis to rotate head on
 		head_scale = def.head_scale,
 		wears_armor = def.wears_armor, -- a number value used to index texture slot for armor
-		stepheight = def.stepheight or 0.6,
 		name = name,
 		description = def.description,
 		type = def.type,
@@ -176,22 +175,27 @@ function mcl_mobs.register_mob(name, def)
 		jump_height = def.jump_height or 4, -- was 6
 		rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
 		lifetimer = def.lifetimer or 57.73,
-		hp_min = scale_difficulty(def.hp_min, 5, 1),
-		hp_max = scale_difficulty(def.hp_max, 10, 1),
+		initial_properties = {
+			hp_min = scale_difficulty(def.initial_properties.hp_min, 5, 1),
+			hp_max = scale_difficulty(def.initial_properties.hp_max, 10, 1),
+			breath_max = (def.initial_properties and def.initial_properties.breath_max or def.breath_max) or 15,
+			physical = true,
+			collisionbox = collisionbox,
+			selectionbox = def.selectionbox or collisionbox,
+			visual = def.visual,
+			visual_size = def.visual_size or {x = 1, y = 1},
+			mesh = def.mesh,
+			glow = def.glow,
+			makes_footstep_sound = def.makes_footstep_sound or false,
+			stepheight = def.stepheight or 0.6,
+			automatic_face_movement_max_rotation_per_sec = 300,
+		},
 		xp_min = def.xp_min or 0,
 		xp_max = def.xp_max or 0,
 		xp_timestamp = 0,
 		invul_timestamp = 0,
-		breath_max = def.breath_max or 15,
 		breathes_in_water = def.breathes_in_water or false,
-		physical = true,
-		collisionbox = collisionbox,
-		selectionbox = def.selectionbox or collisionbox,
 		spawnbox = def.spawnbox or collisionbox,
-		visual = def.visual,
-		visual_size = def.visual_size or {x = 1, y = 1},
-		mesh = def.mesh,
-		makes_footstep_sound = def.makes_footstep_sound or false,
 		view_range = def.view_range or 16,
 		walk_velocity = def.walk_velocity or 1,
 		run_velocity = def.run_velocity or 2,
@@ -215,7 +219,6 @@ function mcl_mobs.register_mob(name, def)
 		nofollow = def.nofollow,
 		can_open_doors = def.can_open_doors,
 		jump = def.jump ~= false,
-		automatic_face_movement_max_rotation_per_sec = 300,
 		walk_chance = def.walk_chance or 50,
 		attacks_monsters = def.attacks_monsters or false,
 		group_attack = def.group_attack or false,
@@ -280,7 +283,6 @@ function mcl_mobs.register_mob(name, def)
 		can_spawn = def.can_spawn,
 		ignores_nametag = def.ignores_nametag or false,
 		rain_damage = def.rain_damage or 0,
-		glow = def.glow,
 		can_despawn = can_despawn,
 		child = def.child or false,
 		texture_mods = {},

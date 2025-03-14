@@ -12,12 +12,15 @@ local S = minetest.get_translator("mobs_mc")
 
 -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
 minetest.register_entity("mobs_mc:spider_eyes", {
-	pointable = false,
-	visual = "mesh",
-	mesh = "mobs_mc_spider.b3d",
-	visual_size = {x=1.01/3, y=1.01/3},
-	textures = {
-		"mobs_mc_spider_eyes.png",
+	initial_properties = {
+		pointable = false,
+		visual = "mesh",
+		mesh = "mobs_mc_spider.b3d",
+		visual_size = {x=1.01/3, y=1.01/3},
+		textures = {
+			"mobs_mc_spider_eyes.png",
+		},
+		glow = 50,
 	},
 	on_step = function(self)
 		if self and self.object then
@@ -26,7 +29,6 @@ minetest.register_entity("mobs_mc:spider_eyes", {
 			end
 		end
 	end,
-	glow = 50,
 })
 
 local spider = {
@@ -39,8 +41,11 @@ local spider = {
 	pathfinding = 1,
 	damage = 2,
 	reach = 2,
-	hp_min = 16,
-	hp_max = 16,
+	initial_properties = {
+		hp_min = 16,
+		hp_max = 16,
+		collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
+	},
 	xp_min = 5,
 	xp_max = 5,
 	armor = {fleshy = 100, arthropod = 100},
@@ -67,7 +72,6 @@ local spider = {
 	head_bone_position = vector.new( 0, 1, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	head_yaw="z",
-	collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
 	spawnbox = {-1.2, -0.01, -1.2, 1.2, 0.89, 1.2},
 	visual = "mesh",
 	mesh = "mobs_mc_spider.b3d",
@@ -117,9 +121,9 @@ local cave_spider = table.copy(spider)
 cave_spider.description = S("Cave Spider")
 cave_spider.textures = { {"mobs_mc_cave_spider.png^(mobs_mc_spider_eyes.png^[makealpha:0,0,0)"} }
 cave_spider.damage = 2
-cave_spider.hp_min = 1
-cave_spider.hp_max = 12
-cave_spider.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.46, 0.35}
+cave_spider.initial_properties.hp_min = 1
+cave_spider.initial_properties.hp_max = 12
+cave_spider.initial_properties.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.46, 0.35}
 cave_spider.visual_size = {x=0.55,y=0.5}
 cave_spider.on_spawn = function(self)
 	self.object:set_properties({visual_size={x=0.55,y=0.5}})

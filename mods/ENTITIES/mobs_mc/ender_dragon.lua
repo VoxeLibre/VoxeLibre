@@ -51,11 +51,13 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 	pathfinding = 1,
 	attacks_animals = true,
 	walk_chance = 100,
-	hp_max = 200,
-	hp_min = 200,
+	initial_properties = {
+		hp_max = 200,
+		hp_min = 200,
+		collisionbox = {-2, 3, -2, 2, 5, 2},
+	},
 	xp_min = 500,
 	xp_max = 500,
-	collisionbox = {-2, 3, -2, 2, 5, 2},
 	physical = false,
 	visual = "mesh",
 	mesh = "mobs_mc_dragon.b3d",
@@ -118,7 +120,7 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 			-- heal
 			self._heal_timer = (self._heal_timer or 0) + dtime
 			if self._heal_timer > HEAL_INTERVAL then
-				self.health = math.min(self.hp_max,self.health + HEAL_AMOUNT)
+				self.health = math.min(self.initial_properties.hp_max,self.health + HEAL_AMOUNT)
 				self._heal_timer = self._heal_timer - HEAL_INTERVAL
 			end
 		end

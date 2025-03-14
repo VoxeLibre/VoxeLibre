@@ -8,11 +8,13 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 	spawn_class = "passive",
 	passive = true,
 	runaway = true,
-	hp_min = 10,
-	hp_max = 10,
+	initial_properties = {
+		hp_min = 10,
+		hp_max = 10,
+		collisionbox = {-0.45, -0.01, -0.45, 0.45, 0.865, 0.45},
+	},
 	xp_min = 1,
 	xp_max = 3,
-	collisionbox = {-0.45, -0.01, -0.45, 0.45, 0.865, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_pig.b3d",
 	textures = {{
@@ -65,7 +67,6 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 		 return true
 	end,
 	do_custom = function(self, dtime)
-
 		-- set needed values if not already present
 		if not self.v3 then
 			self.v3 = 0
@@ -75,7 +76,7 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 			self.terrain_type = 3
 			self.driver_attach_at = {x = 0.0, y = 6.5, z = -3.75}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
-			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
+			self.driver_scale = {x = 1/self.initial_properties.visual_size.x, y = 1/self.initial_properties.visual_size.y}
 			self.base_texture = self.texture_list[1]
 			self.object:set_properties({textures = self.base_texture})
 		end

@@ -65,11 +65,13 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 	head_bone_position = vector.new( 0, 10.62, 0 ), -- for minetest <= 5.8
 	curiosity = 60,
 
-	hp_min = 15,
-	hp_max = 30,
+	initial_properties = {
+		hp_min = 15,
+		hp_max = 30,
+		collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},
+	},
 	xp_min = 1,
 	xp_max = 3,
-	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_llama.b3d",
 	textures = { -- 1: chest -- 2: decor (carpet) -- 3: llama base texture
@@ -122,7 +124,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 			self.terrain_type = 3
 			self.driver_attach_at = {x = 0, y = 12.7, z = -5}
 			self.driver_eye_offset = {x = 0, y = 6, z = 0}
-			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
+			self.driver_scale = {x = 1/self.initial_properties.visual_size.x, y = 1/self.initial_properties.visual_size.y}
 		end
 
 		-- if driver present allow control of llama

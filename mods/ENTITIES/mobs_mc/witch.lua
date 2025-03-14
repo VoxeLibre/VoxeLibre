@@ -17,11 +17,13 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	type = "monster",
 	spawn_class = "hostile",
 	can_despawn = false,
-	hp_min = 26,
-	hp_max = 26,
+	initial_properties = {
+		hp_min = 26,
+		hp_max = 26,
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
+	},
 	xp_min = 5,
 	xp_max = 5,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_witch.b3d",
 	textures = {

@@ -154,9 +154,8 @@ local DEFAULT_CART_DEF = {
 		collisionbox = {-10/16., -0.5, -10/16, 10/16, 0.25, 10/16},
 		visual = "mesh",
 		visual_size = {x=1, y=1},
+		hp_max = MINECART_MAX_HP,
 	},
-
-	hp_max = MINECART_MAX_HP,
 
 	groups = {
 		minecart = 1,

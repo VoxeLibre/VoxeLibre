@@ -10,11 +10,13 @@ local rabbit = {
 	spawn_in_group = 3,
 	passive = true,
 	reach = 1,
-	hp_min = 3,
-	hp_max = 3,
+	initial_properties = {
+		hp_min = 3,
+		hp_max = 3,
+		collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.49, 0.2},
+	},
 	xp_min = 1,
 	xp_max = 3,
-	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.49, 0.2},
 	head_swivel = "head.control",
 	head_eye_height = 0.35,
 	head_bone_position = vector.new( 0, 2, -.3 ), -- for minetest <= 5.8

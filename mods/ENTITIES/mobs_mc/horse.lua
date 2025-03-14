@@ -117,7 +117,6 @@ local horse = {
 	visual = "mesh",
 	mesh = "mobs_mc_horse.b3d",
 	visual_size = {x=3.0, y=3.0},
-	collisionbox = {-0.69825, -0.01, -0.69825, 0.69825, 1.59, 0.69825},
 	animation = {
 		stand_speed = 25,
 		stand_start = 0,
@@ -151,8 +150,11 @@ local horse = {
 		"mcl_farming:carrot_item_gold",
 	},
 	passive = true,
-	hp_min = 15,
-	hp_max = 30,
+	initial_properties = {
+		hp_min = 15,
+		hp_max = 30,
+		collisionbox = {-0.69825, -0.01, -0.69825, 0.69825, 1.59, 0.69825},
+	},
 	xp_min = 1,
 	xp_max = 3,
 	floats = 1,
@@ -187,13 +189,13 @@ local horse = {
 			self.terrain_type = 3
 			self.driver_attach_at = {x = 0, y = 4.17, z = -1.75}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
-			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
+			self.driver_scale = {x = 1/self.initial_properties.visual_size.x, y = 1/self.initial_properties.visual_size.y}
 		end
 
 		-- Slowly regenerate health
 		self._regentimer = self._regentimer + dtime
 		if self._regentimer >= 4 then
-			if self.health < self.hp_max then
+			if self.health < self.initial_properties.hp_max then
 				self.health = self.health + 1
 			end
 			self._regentimer = 0
@@ -492,7 +494,7 @@ mcl_mobs.register_mob("mobs_mc:horse", horse)
 -- Skeleton horse
 local skeleton_horse = table.copy(horse)
 skeleton_horse.description = S("Skeleton Horse")
-skeleton_horse.breath_max = -1
+skeleton_horse.initial_properties.breath_max = -1
 skeleton_horse.armor = {undead = 100, fleshy = 100}
 skeleton_horse.textures = {{"blank.png", "mobs_mc_horse_skeleton.png", "blank.png"}}
 skeleton_horse.drops = {
@@ -515,7 +517,7 @@ mcl_mobs.register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 -- Zombie horse
 local zombie_horse = table.copy(horse)
 zombie_horse.description = S("Zombie Horse")
-zombie_horse.breath_max = -1
+zombie_horse.initial_properties.breath_max = -1
 zombie_horse.armor = {undead = 100, fleshy = 100}
 zombie_horse.textures = {{"blank.png", "mobs_mc_horse_zombie.png", "blank.png"}}
 zombie_horse.drops = {
@@ -551,13 +553,13 @@ donkey.sounds = {
 	distance = 16,
 }
 donkey.visual_size = { x=horse.visual_size.x*d, y=horse.visual_size.y*d }
-donkey.collisionbox = {
-	horse.collisionbox[1] * d,
-	horse.collisionbox[2] * d,
-	horse.collisionbox[3] * d,
-	horse.collisionbox[4] * d,
-	horse.collisionbox[5] * d,
-	horse.collisionbox[6] * d,
+donkey.initial_properties.collisionbox = {
+	horse.initial_properties.collisionbox[1] * d,
+	horse.initial_properties.collisionbox[2] * d,
+	horse.initial_properties.collisionbox[3] * d,
+	horse.initial_properties.collisionbox[4] * d,
+	horse.initial_properties.collisionbox[5] * d,
+	horse.initial_properties.collisionbox[6] * d,
 }
 donkey.jump = true
 donkey.jump_height = 3.75 -- can clear 1 block height
@@ -574,12 +576,12 @@ mule.visual_size = { x=horse.visual_size.x*m, y=horse.visual_size.y*m }
 mule.sounds = table.copy(donkey.sounds)
 mule.sounds.base_pitch = 1.15
 mule.collisionbox = {
-	horse.collisionbox[1] * m,
-	horse.collisionbox[2] * m,
-	horse.collisionbox[3] * m,
-	horse.collisionbox[4] * m,
-	horse.collisionbox[5] * m,
-	horse.collisionbox[6] * m,
+	horse.initial_properties.collisionbox[1] * m,
+	horse.initial_properties.collisionbox[2] * m,
+	horse.initial_properties.collisionbox[3] * m,
+	horse.initial_properties.collisionbox[4] * m,
+	horse.initial_properties.collisionbox[5] * m,
+	horse.initial_properties.collisionbox[6] * m,
 }
 mcl_mobs.register_mob("mobs_mc:mule", mule)
 mcl_entity_invs.register_inv("mobs_mc:mule","Mule",15,true)

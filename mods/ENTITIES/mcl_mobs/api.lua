@@ -125,7 +125,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	local tmp = minetest.deserialize(staticdata)
 	if tmp then
 		-- Patch incorrectly converted mobs
-		if tmp.base_mesh ~= minetest.registered_entities[self.name].mesh then mcl_mobs.strip_staticdata(tmp) end
+		if tmp.base_mesh ~= minetest.registered_entities[self.name].initial_properties.mesh then mcl_mobs.strip_staticdata(tmp) end
 		for _, stat in pairs(tmp) do self[_] = stat end
 	end
 
@@ -136,13 +136,13 @@ function mob_class:mob_activate(staticdata, def, dtime)
 
 		self.texture_selected = self.texture_selected or math.random(#def.textures)
 		self.base_texture = def.textures[self.texture_selected]
-		self.base_mesh = def.mesh
-		self.base_size = self.visual_size
-		self.base_colbox = self.collisionbox
-		self.base_selbox = self.selectionbox
+		self.base_mesh = self.initial_properties.mesh
+		self.base_size = self.initial_properties.visual_size
+		self.base_colbox = self.initial_properties.collisionbox
+		self.base_selbox = self.initial_properties.selectionbox
 	end
 
-	self.base_selbox = self.base_selbox or self.selectionbox or self.base_colbox
+	self.base_selbox = self.base_selbox or self.initial_properties.selectionbox or self.base_colbox
 
 	local textures = self.base_texture
 	local mesh = self.base_mesh
@@ -174,8 +174,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		}
 	end
 
-	if self.health == 0 then self.health = math.random(self.hp_min, self.hp_max) end
-	if self.breath == nil then self.breath = self.breath_max end
+	if self.health == 0 then self.health = math.random(self.initial_properties.hp_min, self.initial_properties.hp_max) end
+	if self.breath == nil then self.breath = self.initial_properties.breath_max end
 
 	self.path = {}
 	self.path.way = {} -- path to follow, table of positions
@@ -199,10 +199,12 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.old_health = self.health
 	self.sounds.distance = self.sounds.distance or 10
 	self.textures = textures
-	self.mesh = mesh
-	self.collisionbox = colbox
-	self.selectionbox = selbox
-	self.visual_size = vis_size
+	self.object:set_properties({
+		collisionbox = colbox,
+		selectionbox = selbox,
+		mesh = mesh,
+		visual_size = vis_size,
+	})
 	self.standing_in = "ignore"
 	self.standing_on = "ignore"
 	self.jump_sound_cooloff = 0 -- used to prevent jump sound from being played too often in short time
