@@ -29,7 +29,7 @@ local cache = {}
 
 ---@param pos vector.Vector
 ---@return core.MetaDataRef?
-function vl_volume.get_volume_meta(pos)
+function vl_volume.get_meta(pos)
 	local hash = mcl_util.hash_pos(pos.x, pos.y, pos.z, 15)
 	local cached = cache[hash]
 	if cached and vector.equals(cached.pos, pos) then
@@ -73,7 +73,7 @@ function vl_volume.create_volume(minp, maxp)
 	storage:set_string(uuid, core.serialize(volume))
 
 	-- Create a metadata-like object
-	local metadata = mcl_util.make_fake_meta_data_ref({
+	local metadata = mcl_util.make_fake_metadata({
 		volume = volume,
 		table = volume.table,
 		on_save = save_volume_metadata,
