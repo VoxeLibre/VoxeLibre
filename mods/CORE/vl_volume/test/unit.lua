@@ -3,7 +3,8 @@ package.path = package.path .. ";../../../tests/lib/?.lua"
 
 local vl_volume
 
--- Mock to get this to load, replace with the one from automated testing branch
+-- Mock to get this to load
+-- TODO: Replace this with the one from automated testing branch once that PR is merged
 local modname
 local modpaths = {}
 _G.DIR_DELIM = "/"
@@ -77,15 +78,28 @@ describe('vl_volume',function()
 	it('can create a volumes',function()
 		local md1 = vl_volume.create_volume(vector.new(-10,0,-10), vector.new(10,0,10))
 		md1:set_string("test", "1")
+		md1:set_string("structure", "true")
 
 		local md2 = vl_volume.create_volume(vector.new(0,0,0), vector.new(10,0,10))
 		md2:set_string("test2", "2")
+
+		local md3 = vl_volume.create_volume(vector.new(12,0,12), vector.new(20,0,20))
+		md3:set_string("structure", "true")
 	end)
 	it('can query position data', function()
 		local md = vl_volume.get_meta(vector.new(1,0,1))
 		assert(md)
 		assert(md:get_string("test") == "1")
 		assert(md:get_string("test2") == "2")
+	end)
+	it('can query areas', function()
+		local md1 = vl_volume.get_area_meta(vector.new(8,0,8), vector.new(12,2,12))
+		assert(md1)
+		assert(md1:get_string("structure") == "true")
+
+		local md2 = vl_volume.get_area_meta(vector.new(11,0,11), vector.new(11,2,11))
+		assert(md2)
+		assert(md2:get_string("structure") ~= "true")
 	end)
 
 	-- Caching support
