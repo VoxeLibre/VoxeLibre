@@ -499,7 +499,7 @@ minetest.register_node("mcl_brewing:stand_100", {
 	_tt_help = S("Brew Potions"),
 	groups = { pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
 	tiles = tiles,
-	use_texture_alpha = "clop",
+	use_texture_alpha = "clip",
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
 	sunlight_propagates = true,

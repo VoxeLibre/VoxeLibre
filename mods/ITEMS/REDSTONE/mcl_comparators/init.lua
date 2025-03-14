@@ -252,7 +252,6 @@ for _, mode in pairs{"comp", "sub"} do
 			_doc_items_usagehelp = usagehelp,
 			drawtype = "nodebox",
 			tiles = get_tiles(state_str, mode),
-			use_texture_alpha = "opaque",
 			--wield_image = "mcl_comparators_off.png",
 			walkable = true,
 			selection_box = collision_box,
