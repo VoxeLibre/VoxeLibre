@@ -19,8 +19,8 @@ local mg_seed = minetest.get_mapgen_setting("seed")
 -- Some mapgen settings
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
-local mod_mcl_structures = minetest.get_modpath("mcl_structures")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_mcl_terrain_features = minetest.get_modpath("mcl_terrain_features")
 local mod_mcl_mushrooms = minetest.get_modpath("mcl_mushrooms")
 local mod_mcl_crimson = minetest.get_modpath("mcl_crimson")
 local mod_mcl_blackstone = minetest.get_modpath("mcl_blackstone")
@@ -3487,7 +3487,7 @@ local function register_coral_decos(ck)
 		biomes = warm_oceans,
 		y_min = coral_min,
 		y_max = coral_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_coral_" .. c .. "_1.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
 		gen_callback = clear_kelp,
@@ -3501,7 +3501,7 @@ local function register_coral_decos(ck)
 		biomes = warm_oceans,
 		y_min = coral_min,
 		y_max = coral_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_coral_" .. c .. "_2.mts",
 		rotation = "random",
 		flags = "all_floors,force_placement",
 		gen_callback = clear_kelp,
@@ -3661,7 +3661,7 @@ local function register_decorations()
 		biomes = warm_oceans,
 		y_min = coral_min,
 		y_max = coral_max,
-		schematic = mod_mcl_structures .. "/schematics/coral_cora.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/coral_cora.mts",
 		rotation = "random",
 		flags = "place_center_x,place_center_z, force_placement",
 		gen_callback = clear_kelp,
@@ -3703,7 +3703,7 @@ local function register_decorations()
 		biomes = {"IcePlainsSpikes"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_ice_spike_large.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_ice_spike_large.mts",
 		rotation = "random",
 		flags = "place_center_x, place_center_z",
 	})
@@ -3724,7 +3724,7 @@ local function register_decorations()
 		biomes = {"IcePlainsSpikes"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_ice_spike_small.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_ice_spike_small.mts",
 		rotation = "random",
 		flags = "place_center_x, place_center_z",
 	})
@@ -4677,7 +4677,7 @@ local function register_decorations()
 		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_boulder.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_boulder.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -4698,7 +4698,7 @@ local function register_decorations()
 		biomes = {"MegaTaiga", "MegaSpruceTaiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = mod_mcl_structures .. "/schematics/mcl_structures_boulder_small.mts",
+		schematic = mod_mcl_terrain_features .. "/schematics/mcl_structures_boulder_small.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
