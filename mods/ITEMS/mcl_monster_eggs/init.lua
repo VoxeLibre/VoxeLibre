@@ -1,25 +1,22 @@
 -- Monster eggs!
 -- Blocks which spawn silverfish when destroyed.
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local function spawn_silverfish(pos, oldnode, oldmetadata, digger)
-	if not minetest.is_creative_enabled("") then
-		minetest.add_entity(pos, "mobs_mc:silverfish")
+	if not core.is_creative_enabled("") then
+		core.add_entity(pos, "mobs_mc:silverfish")
 	end
 end
 
 -- Template function for registering monster egg blocks
 local function register_block(subname, description, tiles, is_ground_content, hardness_override)
-	if is_ground_content == nil then
-		is_ground_content = false
-	end
+	if is_ground_content == nil then is_ground_content = false end
+
 	-- Default hardness matches for stone and stone brick variants; cobble has 1.0
-	local hardness = 0.75
-	if hardness_override then
-		hardness = hardness_override
-	end
-	minetest.register_node("mcl_monster_eggs:monster_egg_"..subname, {
+	local hardness = hardness_override or 0.75
+
+	core.register_node("mcl_monster_eggs:monster_egg_"..subname, {
 		description = description,
 		tiles = tiles,
 		is_ground_content = is_ground_content,
@@ -41,5 +38,4 @@ register_block("stonebrick", S("Infested Stone Bricks"), {"default_stone_brick.p
 register_block("stonebrickcracked", S("Infested Cracked Stone Bricks"), {"mcl_core_stonebrick_cracked.png"})
 register_block("stonebrickmossy", S("Infested Mossy Stone Bricks"), {"mcl_core_stonebrick_mossy.png"})
 register_block("stonebrickcarved", S("Infested Chiseled Stone Bricks"), {"mcl_core_stonebrick_carved.png"})
-
 
