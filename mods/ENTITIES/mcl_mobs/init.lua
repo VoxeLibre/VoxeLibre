@@ -145,6 +145,15 @@ function mcl_mobs.register_mob(name, def)
 		fly_in["air"] = true
 	end
 
+	-- Compatibility with old API
+	if not def.initial_properties then
+		def.initial_properties = {
+			hp_min = def.hp_min,
+			hp_max = def.hp_max,
+			breath_max = def.breath_max,
+		}
+	end
+
 	local collisionbox = def.collisionbox or def.initial_properties.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	local final_def = {
 		use_texture_alpha = def.use_texture_alpha,
