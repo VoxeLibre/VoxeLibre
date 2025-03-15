@@ -9,7 +9,6 @@ if translucent_ice then
 	ice_texture_alpha = "blend"
 else
 	ice_drawtype = "normal"
-	ice_texture_alpha = "opaque"
 end
 
 mcl_core.fortune_drop_ore = {
@@ -410,7 +409,6 @@ minetest.register_node("mcl_core:grass_path", {
 	_doc_items_longdesc = S("Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel."),
 	drop = "mcl_core:dirt",
 	is_ground_content = true,
-	use_texture_alpha = "opaque",
 	drawtype = "nodebox",
 	paramtype = "light",
 	node_box = {

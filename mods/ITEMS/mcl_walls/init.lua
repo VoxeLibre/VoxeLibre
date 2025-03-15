@@ -175,7 +175,6 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 			drawtype = "nodebox",
 			is_ground_content = false,
 			tiles = tiles,
-			use_texture_alpha = "opaque",
 			paramtype = "light",
 			sunlight_propagates = true,
 			groups = internal_groups,
@@ -202,7 +201,6 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		tiles = tiles,
-		use_texture_alpha = "opaque",
 		paramtype = "light",
 		sunlight_propagates = true,
 		is_ground_content = false,
@@ -228,7 +226,6 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		tiles = tiles,
-		use_texture_alpha = "opaque",
 		paramtype = "light",
 		sunlight_propagates = true,
 		is_ground_content = false,
@@ -256,7 +253,6 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 		is_ground_content = false,
 		groups = main_node_groups,
 		tiles = tiles,
-		use_texture_alpha = "opaque",
 		inventory_image = inventory_image,
 		stack_max = 64,
 		drawtype = "nodebox",

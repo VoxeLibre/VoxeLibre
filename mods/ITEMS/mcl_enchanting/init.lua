@@ -235,7 +235,6 @@ minetest.register_node("mcl_enchanting:table", {
 	_doc_items_hidden = false,
 	drawtype = "nodebox",
 	tiles = {"mcl_enchanting_table_top.png",  "mcl_enchanting_table_bottom.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png", "mcl_enchanting_table_side.png"},
-	use_texture_alpha = "opaque",
 	node_box = {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, 0.25, 0.5},
