@@ -131,7 +131,9 @@ function mob_class:mob_activate(staticdata, def, dtime)
 
 	--If textures in definition change, reload textures
 	if not valid_texture(self, def.textures) then
-		core.log("warning", "Possibly corrupted staticdata: "..staticdata)
+		if mobs_debug and staticdata ~= "" then
+			core.log("warning", "Possibly corrupted staticdata: "..staticdata)
+		end
 
 		-- compatiblity with old simple mobs textures
 		if type(def.textures[1]) == "string" then def.textures = {def.textures} end
