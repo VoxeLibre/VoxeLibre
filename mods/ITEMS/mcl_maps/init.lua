@@ -320,7 +320,7 @@ local filled_def = {
 	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1},
 }
 
-core.register_craftitem("mcl_maps:filled_map", filled_def)
+core.register_craftitem("mcl_maps:filled_map", table.copy(filled_def))
 
 -- Only nodes can have meshes, which means that all player hands are nodes
 -- Thus, to render a map over a player hand, we have to register nodes for this too

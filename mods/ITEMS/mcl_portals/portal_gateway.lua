@@ -43,6 +43,7 @@ function mcl_portals.spawn_gateway_portal()
 end
 
 local gateway_def = table.copy(minetest.registered_nodes["mcl_portals:portal_end"])
+gateway_def.name = nil
 gateway_def.description = S("End Gateway Portal")
 gateway_def._tt_help = S("Used to construct end gateway portals")
 gateway_def._doc_items_longdesc = S("An End gateway portal teleports creatures and objects to the outer End (and back!).")

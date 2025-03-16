@@ -1357,6 +1357,7 @@ function mcl_core.register_snowed_node(itemstring_snowed, itemstring_clear, tile
 	local def = table.copy(minetest.registered_nodes[itemstring_clear])
 	-- Just some group clearing
 	def.description = desc
+	def.name = nil
 	def._doc_items_longdesc = nil
 	def._doc_items_usagehelp = nil
 	def._doc_items_create_entry = false

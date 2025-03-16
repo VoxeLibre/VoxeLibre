@@ -596,9 +596,11 @@ function kelp.register_kelp_surface(surface, surface_deftemplate, surface_docs)
 	surface_deftemplate.tiles = surface_deftemplate.tiles or def_tiles
 	surface_deftemplate.inventory_image = surface_deftemplate.inventory_image or "("..def_tiles[1]..")^mcl_ocean_kelp_item.png"
 	surface_deftemplate.sounds = surface_deftemplate.sound or sounds
-	local falling_node = mt_get_item_group(nodename, "falling_node")
 	surface_deftemplate.node_dig_prediction = surface_deftemplate.node_dig_prediction or nodename
-	surface_deftemplate.groups.falling_node = surface_deftemplate.groups.falling_node or falling_node
+	local falling_node = mt_get_item_group(nodename, "falling_node")
+	if falling_node > 0 then
+		surface_deftemplate.groups.falling_node = surface_deftemplate.groups.falling_node
+	end
 	surface_deftemplate._mcl_falling_node_alternative = surface_deftemplate._mcl_falling_node_alternative or (falling_node and nodename or nil)
 
 	minetest.register_node(surfacename, surface_deftemplate)

@@ -3,6 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 -- Liquids: River Water
 
 local source = table.copy(minetest.registered_nodes["mcl_core:water_source"])
+source.name = nil
 source.description = S("River Water Source")
 source.liquid_range = 2
 source.waving = 3
@@ -19,6 +20,7 @@ source._doc_items_hidden = minetest.get_mapgen_setting("mg_name") ~= "valleys"
 source.post_effect_color = {a=60, r=0, g=132, b=255}
 
 local flowing = table.copy(minetest.registered_nodes["mcl_core:water_flowing"])
+flowing.name = nil
 flowing.description = S("Flowing River Water")
 flowing.liquid_range = 2
 flowing.waving = 3

@@ -282,9 +282,10 @@ minetest.register_node("mcl_bamboo:bamboo_plank", {
 	_mcl_hardness = 2,
 })
 
---	Bamboo Part 2 Base nodes.
--- 	Bamboo Mosaic
+-- Bamboo Part 2 Base nodes.
+-- Bamboo Mosaic
 local bamboo_mosaic = table.copy(minetest.registered_nodes[BAMBOO_PLANK])
+bamboo_mosaic.name = nil
 bamboo_mosaic.tiles = {"mcl_bamboo_bamboo_plank_mosaic.png"}
 bamboo_mosaic.groups = {handy = 1, axey = 1, flammable = 3, fire_encouragement = 5, fire_flammability = 20}
 bamboo_mosaic.description = S("Bamboo Mosaic Plank")
