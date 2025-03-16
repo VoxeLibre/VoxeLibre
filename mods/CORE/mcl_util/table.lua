@@ -1,6 +1,6 @@
--- Updates all values in t using values from to*.
+-- Updates all values in t using values from ...
 function table.update(t, ...)
-	for _, to in ipairs {...} do
+	for _, to in ipairs{...} do
 		for k, v in pairs(to) do
 			t[k] = v
 		end
@@ -8,9 +8,9 @@ function table.update(t, ...)
 	return t
 end
 
--- Updates nil values in t using values from to*.
+-- Updates nil values in t using values from ...
 function table.update_nil(t, ...)
-	for _, to in ipairs {...} do
+	for _, to in ipairs{...} do
 		for k, v in pairs(to) do
 			if t[k] == nil then
 				t[k] = v
@@ -18,6 +18,32 @@ function table.update_nil(t, ...)
 		end
 	end
 	return t
+end
+
+-- Recursively update all values in t using values from ...
+function table.update_deep(t, ...)
+	for _, to in ipairs{...} do
+		for k, v in pairs(to) do
+			if type(t[k]) == "table" and type(v) == "table" then
+				table.update_deep(t[k], v)
+			else
+				t[k] = v
+			end
+		end
+	end
+	return t
+end
+
+-- Merge tables with each other, return a new one
+function table.merge(tbl, ...)
+	local t = table.copy(tbl)
+	return table.update(t, ...)
+end
+
+-- Recursively merge tables with each other, return a new one
+function table.merge_deep(tbl, ...)
+	local t = table.copy(tbl)
+	return table.update_deep(t, ...)
 end
 
 ---Works the same as `pairs`, but order returned by keys
@@ -75,3 +101,4 @@ function table.remove_random_element(table)
 	count = count - 1
 	return res
 end
+

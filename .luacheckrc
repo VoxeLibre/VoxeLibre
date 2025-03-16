@@ -26,6 +26,14 @@ read_globals = {
 			"insert_all",
 			"key_value_swap",
 			"shuffle",
+			"update",
+			"update_nil",
+			"update_deep",
+			"merge",
+			"merge_deep",
+			"pairs_by_keys",
+			"intersect",
+			"remove_random_element",
 		}
 	},
 
