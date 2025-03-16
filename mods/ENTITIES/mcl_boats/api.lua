@@ -444,16 +444,6 @@ local tpl_boat = {
 	liquids_pointable = true,
 	groups = {boat = 1, wood_boat = 1, transport = 1},
 	stack_max = 1,
-	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
-		local below = mcl_vars.get_node_name_raw(droppos.x, droppos.y - 1, droppos.z)
-		-- Place boat as entity on or in water
-		if core.get_item_group(below, "water") ~= 0
-				or (dropnode.name == "air" and core.get_item_group(below, "water") ~= 0) then
-			core.add_entity(droppos, "mcl_boats:boat")
-		else
-			core.add_item(droppos, stack)
-		end
-	end,
 }
 
 local function register_boat_craftitem(name, def, has_chest)
@@ -485,6 +475,21 @@ local function register_boat_craftitem(name, def, has_chest)
 				itemstack:take_item()
 			end
 			return itemstack
+		end,
+		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+			local below = mcl_vars.get_node_name_raw(droppos.x, droppos.y - 1, droppos.z)
+			-- Place boat as entity on or in water
+			if core.get_item_group(dropnode.name, "water") ~= 0
+					or (dropnode.name == "air" and core.get_item_group(below, "water") ~= 0) then
+				local boat = core.add_entity(vector.offset(droppos, 0, -BOAT_Y_OFFSET - 0.3, 0), "mcl_boats:boat")
+				local le = boat:get_luaentity()
+				table.update(le, {_itemstring = name}, def.entity)
+				boat:set_properties({
+					textures = {def.entity_texture, has_chest and "mcl_chests_normal.png" or "blank.png"}
+				})
+			else
+				core.add_item(droppos, stack)
+			end
 		end,
 	}, has_chest and def.item_chest or def.item))
 end
