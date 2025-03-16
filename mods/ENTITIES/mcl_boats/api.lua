@@ -6,6 +6,7 @@ local BOAT_Y_OFFSET = 0.35
 local BOAT_Y_OFFSET_GROUND = BOAT_Y_OFFSET + 0.6
 local BOAT_SIDE_OFFSET = 1.001
 local BOAT_MAX_HP = 4
+local CHEST_TEXTURE = mcl_chests.tiles.chest_normal_small[1]
 
 local function is_water(pos)
 	return core.get_item_group(mcl_vars.get_node_name(pos), "water") ~= 0
@@ -169,7 +170,7 @@ function boat.on_activate(self, staticdata, dtime_s)
 			local has_chest = self._itemstring:find("chest")
 			data.textures = {
 				data.textures[1]:gsub("_chest", ""),
-				has_chest and "mcl_chests_normal.png" or "blank.png"
+				has_chest and CHEST_TEXTURE or "blank.png"
 			}
 		end
 
@@ -428,7 +429,7 @@ end
 core.register_entity("mcl_boats:boat", boat)
 
 local cboat = table.copy(boat)
-cboat.textures = {"mcl_boats_texture_oak_chest_boat.png", "mcl_chests_normal.png"}
+cboat.textures = {"mcl_boats_texture_oak_chest_boat.png", CHEST_TEXTURE}
 cboat._itemstring = "mcl_boats:chest_boat"
 cboat.collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.75, 0.5}
 cboat.selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.75, 0.7}
@@ -469,7 +470,7 @@ local function register_boat_craftitem(name, def, has_chest)
 			local le = boat:get_luaentity()
 			table.update(le, {_itemstring = name}, def.entity)
 			boat:set_properties({
-				textures = {def.entity_texture, has_chest and "mcl_chests_normal.png" or "blank.png"}
+				textures = {def.entity_texture, has_chest and CHEST_TEXTURE or "blank.png"}
 			})
 			boat:set_yaw(placer:get_look_horizontal())
 
@@ -487,7 +488,7 @@ local function register_boat_craftitem(name, def, has_chest)
 				local le = boat:get_luaentity()
 				table.update(le, {_itemstring = name}, def.entity)
 				boat:set_properties({
-					textures = {def.entity_texture, has_chest and "mcl_chests_normal.png" or "blank.png"}
+					textures = {def.entity_texture, has_chest and CHEST_TEXTURE or "blank.png"}
 				})
 			else
 				core.add_item(droppos, stack)
