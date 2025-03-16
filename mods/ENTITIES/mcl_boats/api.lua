@@ -374,7 +374,7 @@ function boat.on_step(self, dtime, moveresult)
 		new_velo = get_velocity(self._v, self.object:get_yaw(), self.object:get_velocity().y)
 	else
 		pos.y = pos.y + 1
-		local is_obsidian_boat = self.object:get_luaentity()._itemstring == "mcl_boats:boat_obsidian"
+		local sinks = self.object:get_luaentity()._sinks
 		if is_river_water(pos) then
 			local vy = self.object:get_velocity().y
 			if vy >= 5 then
@@ -386,7 +386,7 @@ function boat.on_step(self, dtime, moveresult)
 			end
 			new_velo = get_velocity(self._v, self.object:get_yaw(), vy)
 			self.object:set_pos(self.object:get_pos())
-		elseif is_water(pos) and not is_river_water(pos) or is_obsidian_boat then
+		elseif is_water(pos) or sinks then
 			-- Inside water: Slowly sink
 			local vy = self.object:get_velocity().y
 			vy = vy - 0.01
@@ -474,7 +474,8 @@ local function register_boat_craftitem(name, def, has_chest)
 			end
 
 			local boat = core.add_entity(pos, has_chest and "mcl_boats:chest_boat" or "mcl_boats:boat")
-			boat:get_luaentity()._itemstring = name
+			local le = boat:get_luaentity()
+			table.update(le, {_itemstring = name}, def.entity)
 			boat:set_properties({
 				textures = {def.entity_texture, has_chest and "mcl_chests_normal.png" or "blank.png"}
 			})

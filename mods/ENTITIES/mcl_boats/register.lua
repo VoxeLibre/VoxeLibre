@@ -92,6 +92,7 @@ local woods = {
 			inventory_image = "mcl_boats_obsidian_boat.png",
 			groups = {wood_boat = 0},
 		},
+		entity = {_sinks = true},
 		entity_texture = "mcl_boats_texture_obsidian_boat.png",
 		material = "mcl_core:obsidian",
 	},
