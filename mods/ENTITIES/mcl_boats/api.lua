@@ -88,6 +88,7 @@ local function attach_object(self, obj)
 			end
 		end, name)
 		obj:set_look_horizontal(yaw)
+		obj:set_eye_offset(vector.new(0, -5, 0), vector.new(0, -4, 0))
 		mcl_title.set(obj, "actionbar", {text=S("Sneak to dismount"), color="white", stay=60})
 	else
 		obj:get_luaentity()._old_visual_size = visual_size
@@ -101,6 +102,7 @@ local function detach_object(obj, change_pos)
 	if obj:is_player() then
 		mcl_player.player_attached[obj:get_player_name()] = false
 		mcl_player.player_set_animation(obj, "stand", 30)
+		obj:set_eye_offset(vector.zero(), vector.zero())
 	else
 		obj:get_luaentity()._old_visual_size = nil
 	end
