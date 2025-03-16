@@ -259,4 +259,5 @@ end
 
 dofile(modpath.."/tune_jit.lua")
 dofile(modpath.."/get_node_name.lua")
+dofile(modpath.."/check.lua")
 
