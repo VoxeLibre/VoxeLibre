@@ -125,7 +125,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 		end, self)
 	end
 
-	if abs(s.y - target_pos.y) > self.stepheight then
+	if abs(s.y - target_pos.y) > self.initial_properties.stepheight then
 		if height_switcher then
 			use_pathfind = true
 			height_switcher = false
@@ -160,7 +160,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 		local jumpheight = 0
 		if self.jump and self.jump_height >= 4 then
 			jumpheight = min(ceil(self.jump_height * 0.25), 4)
-		elseif self.stepheight > 0.5 then
+		elseif self.initial_properties.stepheight > 0.5 then
 			jumpheight = 1
 		end
 		self.path.way = minetest.find_path(s, p1, 16, jumpheight, dropheight, "A*_noprefetch")

@@ -145,6 +145,18 @@ function mcl_mobs.register_mob(name, def)
 		fly_in["air"] = true
 	end
 
+	-- Compatibility with old API
+	if def.hp_min or def.hp_max or def.breath_max then
+		core.log("warning", "mob "..name.." has deprecated placement of hp_min, hp_max and breath_max in base of mob defintion, move to initial_properties")
+	end
+	if not def.initial_properties then
+		def.initial_properties = {
+			hp_min = def.hp_min,
+			hp_max = def.hp_max,
+			breath_max = def.breath_max,
+		}
+	end
+
 	local collisionbox = def.collisionbox or def.initial_properties.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	local final_def = {
 		use_texture_alpha = def.use_texture_alpha,
