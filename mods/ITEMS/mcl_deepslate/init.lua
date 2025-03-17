@@ -4,6 +4,9 @@ local S = core.get_translator(modname)
 local copper_mod = core.get_modpath("mcl_copper")
 local cobble = "mcl_deepslate:deepslate_cobbled"
 
+-- runtime_depends
+assert(core.get_modpath("mcl_mobs"), "mcl_deepslate requires mcl_mobs at runtime")
+
 local function spawn_silverfish(pos, _,_,_)
 	if not core.is_creative_enabled("") then
 		mcl_mobs.spawn(pos, "mobs_mc:silverfish")
