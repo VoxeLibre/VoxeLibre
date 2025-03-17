@@ -10,9 +10,8 @@ local function spawn_silverfish(pos, _,_,_)
 end
 
 -- Template function for registering monster egg blocks
+---@param is_ground_content boolean
 local function register_block(subname, description, tiles, is_ground_content, hardness_override)
-	if is_ground_content == nil then is_ground_content = false end
-
 	-- Default hardness matches for stone and stone brick variants; cobble has 1.0
 	local hardness = hardness_override or 0.75
 
@@ -33,9 +32,9 @@ end
 
 -- Register all the monster egg blocks
 register_block("stone", S("Infested Stone"), {"default_stone.png"}, true)
-register_block("cobble", S("Infested Cobblestone"), {"default_cobble.png"}, nil, 1.0)
-register_block("stonebrick", S("Infested Stone Bricks"), {"default_stone_brick.png"})
-register_block("stonebrickcracked", S("Infested Cracked Stone Bricks"), {"mcl_core_stonebrick_cracked.png"})
-register_block("stonebrickmossy", S("Infested Mossy Stone Bricks"), {"mcl_core_stonebrick_mossy.png"})
-register_block("stonebrickcarved", S("Infested Chiseled Stone Bricks"), {"mcl_core_stonebrick_carved.png"})
+register_block("cobble", S("Infested Cobblestone"), {"default_cobble.png"}, false, 1.0)
+register_block("stonebrick", S("Infested Stone Bricks"), {"default_stone_brick.png"}, false)
+register_block("stonebrickcracked", S("Infested Cracked Stone Bricks"), {"mcl_core_stonebrick_cracked.png"}, false)
+register_block("stonebrickmossy", S("Infested Mossy Stone Bricks"), {"mcl_core_stonebrick_mossy.png"}, false)
+register_block("stonebrickcarved", S("Infested Chiseled Stone Bricks"), {"mcl_core_stonebrick_carved.png"}, false)
 
