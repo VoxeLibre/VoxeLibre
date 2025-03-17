@@ -146,11 +146,10 @@ function mcl_mobs.register_mob(name, def)
 	end
 
 	-- Compatibility with old API
+	if def.hp_min or def.hp_max or def.breath_max then
+		core.log("warning", "mob "..name.." has deprecated placement of hp_min, hp_max and breath_max in base of mob defintion, move to initial_properties")
+	end
 	if not def.initial_properties then
-		if def.hp_min or def.hp_max or def.breath_max then
-			core.log("warning", "mob "..name.." has deprecated placement of hp_min, hp_max and breath_max in base of mob defintion, move to initial_properties")
-		end
-
 		def.initial_properties = {
 			hp_min = def.hp_min,
 			hp_max = def.hp_max,
