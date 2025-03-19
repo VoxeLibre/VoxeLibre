@@ -2,9 +2,6 @@ vl_volume = {}
 local vl_volume = vl_volume
 
 local storage = core.get_mod_storage()
-local function save_volume_metadata(self)
-	storage:set_string(self.uuid, core.serialize(self.volume))
-end
 
 ---@class vl_volume.Volume
 ---@field minp vector.Vector
@@ -76,10 +73,13 @@ function vl_volume.get_area_meta(minp, maxp)
 	return mcl_util.make_fake_metadata({table = data, readonly = true})
 end
 
+local function noop() end
+
 ---@param minp vector.Vector
 ---@param maxp vector.Vector
----@return core.MetaDataRef
-function vl_volume.create_volume(minp, maxp)
+---@param callback? fun(md : core.MetaDataRef)
+---@return nil
+function vl_volume.create_volume(minp, maxp, callback)
 	-- Create the volume
 	local uuid = string.format("%d,%d,%d-%d,%d,%d", minp.x, minp.y, minp.z, maxp.x, maxp.y, maxp.z)
 
@@ -95,14 +95,18 @@ function vl_volume.create_volume(minp, maxp)
 
 	-- Create a metadata-like object
 	local metadata = mcl_util.make_fake_metadata({
-		volume = volume,
 		table = volume.table,
-		on_save = save_volume_metadata,
+		on_save = noop,
 	})
-	volume.meta = metadata
+
+	-- Allow changing metadata
+	if callback then
+		callback(metadata)
+	end
+
+	-- Save volume data
+	storage:set_string(uuid, core.serialize(volume))
 
 	-- Clear position cache
 	cache = {}
-
-	return metadata
 end
