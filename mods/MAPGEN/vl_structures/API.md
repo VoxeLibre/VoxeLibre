@@ -1,6 +1,6 @@
 # vl_structures
 
-Updated API for structure spawning.
+Updated API for structure spawning, by kno10.
 
 This module was developed with VoxeLibre and Mineclonia in mind, but means to be portable or at least easy to adapt to other games.
 
@@ -12,8 +12,8 @@ Structures in this API are defined using the following table:
 {
     name =,                 -- structure identifier for logging
     priority = 100,         -- priority to make placement order more deterministic. Default 100 except for terrain features (900)
-    chunk_probability =,    -- ratio that a block is chosen, 10 means 1-in-10 blocks
-    fill_ratio = nil,       -- OR number of structure spawn attempts per map chunk, default is 1/(80 x 80) when chunk_probability is set
+    chunk_probability =,    -- approx. probability (in 0:100) that a block spawns this structure if the other conditions hold
+    fill_ratio = nil,       -- OR number of structure spawn attempts per map chunk, to allow multiple
     noise = nil,            -- OR specify noise parameters, as per core.register_decoration
     y_min =,                -- minimum depth
     y_max =,                -- maximum depth
@@ -35,8 +35,43 @@ Structures in this API are defined using the following table:
     terrain_feature =,      -- affects placement priority and disables logging for uninteresting structures
     no_registry =,          -- do not register the structure for the /locate command (implied for terrain features)
     daughters =,            -- substructures to spawn, unstable API
+    hash_mindist =,         -- minimum distance for spawn attempts using minhash rule (3d version)
+    hash_mindist_2d =,      -- minimum distance for spawn attempts using minhash rule (cylinder version)
+    hash_seed =,            -- seed value for hashing, defaults to hash(name)
 }
 ```
+
+### MinHash to avoid neighboring structures
+
+A structure spawn will only be attempted with a minimum distance of a few blocks.
+To make this computationally cheap, deterministic, and independent of block generation order,
+every chunk (usually 80 nodes, for smaller distances we can also use less) is assigned a pseudo-random
+hash value, which is inexpensive to compute also for non-existant blocks.
+Before spawning a structure, it is first checked that all blocks within a radius
+have a higher minhash value, only then a structure spawn attempt will be performed.
+By symmetry, this means that on all neighbor chunks, there exists a lower hash value,
+and hence the structure is not spawned there.
+
+Example:
+
+For simplicity assume our hash values are two digit numbers, and we have a distance of 2, pretending 2D.
+We check all chunks with a maximum distance of 2, so in 2D we check 12 neighbors, and compute 13 hash values
+of block positions. Assuming we get the following hash values:
+```
+      42
+   77 99 33
+12  7  2 19 11
+   23 21  8
+       9
+```
+In this case, we would attempt a structure spawn, because 2 is the smallest number.
+If we instead had obtained 10 (or 7) we would not attempt a structure spawn, because it is not the smallest.
+Similarly, we will not attempt a spawn in the left neighbor, with hash 7, because it is larger than 2.
+
+There are a number of challenges to handling spawn probabilities in this scheme, beginning with biome and
+terrain limitations. Chunks are generated in 3d, and if terrain height crosses the y=48 border, we could get
+two spawns in the same region if we really only use 2d. But just taking only one out of three y chunks
+reduces the success rate to 1/3.
 
 ## vl_structures.register_structure(name,def)
 

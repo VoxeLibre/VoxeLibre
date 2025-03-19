@@ -4,11 +4,12 @@ local modpath = minetest.get_modpath(modname)
 local spawnon = {"mcl_deepslate:deepslate","mcl_core:birchwood","mcl_wool:red_carpet","mcl_wool:brown_carpet"}
 
 vl_structures.register_structure("woodland_cabin",{
+	chunk_probability = 2.5,
+	hash_mindist_2d = 80,
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
 	flags = "place_center_x, place_center_z",
 	prepare = { tolerance = 3, padding = 2, corners = 5, foundation = -5, clear = true, clear_top = 2 },
 	force_placement = false,
-	chunk_probability = 20,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "RoofedForest" },
