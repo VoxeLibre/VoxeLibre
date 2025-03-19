@@ -14,12 +14,12 @@ vl_biomes.register_biome({
 	vertical_blend = 1,
 	humidity_point = 106,
 	heat_point = 50,
-	_mcl_biome_type = "medium",
-	_mcl_water_temp = "ocean",
-	_mcl_grass_palette_index = 29,
-	_mcl_foliage_palette_index = 17,
-	_mcl_water_palette_index = 0,
-	_mcl_skycolor = vl_biomes.skycolor.jungle,
+	_vl_biome_type = "medium",
+	_vl_water_temp = "ocean",
+	_vl_grass_palette = "mushroomisland",
+	_vl_foliage_palette = "mushroomisland",
+	_vl_water_palette = "plains",
+	_vl_skycolor = vl_biomes.skycolor.jungle,
 	_vl_subbiomes = {
 		-- _shore = { name = "MushroomIslandShore", y_min = 1, y_max = 3, },
 		ocean = {

@@ -34,46 +34,52 @@ vl_biomes.fogcolor["end"] = "#A080A0" -- The End biomes seemingly don't use the 
 
 -- Colors of underwater fog effect, defaults for temperatures
 -- Swamp and Mangrove Swamp differ
-vl_biomes.waterfogcolor = { warm = "#43D5EE", lukewarm = "#45ADF2", ocean = "#3F76E4", cold = "#3D57D6", frozen = "#3938C9" }
+vl_biomes.water_fogcolor = {
+	warm = "#43D5EE",
+	lukewarm = "#45ADF2",
+	ocean = "#3F76E4",
+	cold = "#3D57D6",
+	frozen = "#3938C9"
+}
 
--- TODO: use these, right now this is just for reference
--- Grass palette map (for reference)
-vl_biomes.grass_palettes = {
+-- Grass palette map
+vl_biomes.grass_palette = {
 	plains = 0,
 	savanna = 1,
 	snowy_plains_spikes = 2,
-	snowy_taiga = 3,
+	snowy_taiga = 3, -- same as 2
 	taiga_old_pine = 4,
-	taiga_old_spruce = 5,
+	taiga_old_spruce = 5, -- same as 2
 	windswepthills = 6,
-	windswepthills_gravelly = 7,
-	windswepthills_forest = 8,
-	stonebeach = 9,
-	snowy_plains = 10,
-	plains_sunflower = 11,
+	windswepthills_gravelly = 7, -- same as 6
+	windswepthills_forest = 8, -- same as 6
+	stonebeach = 9, -- same as 6
+	snowy_plains = 10, -- same as 2
+	plains_sunflower = 11, -- same as 0
 	taiga = 12,
 	forest = 13,
-	forest_flower = 14,
-	birchforest = 15,
-	birchforest_old = 16,
-	desert = 17,
+	forest_flower = 14, -- same as 13
+	birchforest = 15, -- same as 13
+	birchforest_old = 16, -- same as 13
+	desert = 17, -- same as 1
 	dark_forest = 18,
 	badlands = 19,
-	badlands_eroded = 20,
-	badlands_wooded = 21,
-	badlands_wooded_mod = 22,
-	savanna_windswept = 23,
+	badlands_eroded = 20, -- same as 19
+	badlands_wooded = 21, -- same as 19
+	badlands_wooded_mod = 22, -- same as 19
+	savanna_windswept = 23, -- same as 1
 	jungle = 24,
 	bamboojungle = 24,
-	jungle_modified = 25,
-	bamboojungle_modified = 25,
-	jungle_edge = 26,
-	bamboojungle_edge = 26,
-	jungle_modified_edge = 27,
-	bamboojungle_modified_edge = 27,
-	mangroveswamp = 27,
+	jungle_modified = 25, -- same as 24
+	bamboojungle_modified = 25, -- same as 24
+	jungle_edge = 26, -- same as 24
+	bamboojungle_edge = 26, -- same as 24
+	jungle_modified_edge = 27, -- same as 24
+	bamboojungle_modified_edge = 27, -- same as 24
+	mangroveswamp = 27, -- same as 24
 	swampland = 28,
-	mushroomisland = 29
+	mushroomisland = 29,
+	-- unused 30 same as 13
 }
 -- Foliage palette map (for reference)
 vl_biomes.foliage_palette = {
@@ -82,11 +88,11 @@ vl_biomes.foliage_palette = {
 	snowy_taiga = 2,
 	desert = 3,
 	savanna = 3,
-	badlands = 4,
+	badlands = 4, -- same as 3
 	swampland = 5,
 	mangroveswamp = 6,
-	forest = 7,
-	dark_forest = 7,
+	forest = 7, -- same as 6
+	dark_forest = 7, -- same as 6
 	birchforest = 8,
 	taiga = 10,
 	taiga_old_pine = 9,
@@ -95,11 +101,11 @@ vl_biomes.foliage_palette = {
 	windswepthills = 11,
 	jungle = 12,
 	bamboojungle = 12,
-	jungle_edge = 13,
-	bamboojungle_edge = 13,
+	jungle_edge = 13, -- same as 12
+	bamboojungle_edge = 13, -- same as 12
 	-- FIXME: unused: 14,15
-	snowy_taiga_beach = 16, -- FIXME: only beach?
-	mushroomisland = 17,
+	snowy_taiga_beach = 16, -- same as 0, FIXME: only beach?
+	mushroomisland = 17, -- same as 6
 }
 -- Water palettes map
 vl_biomes.water_palette = {
@@ -129,20 +135,32 @@ vl_biomes.by_water_temp = {}
 vl_biomes.overworld_biomes = {}
 -- TODO: also add a list of nether and end biomes
 
+-- Add some compatibility variables to the biomes for _mcl names
+local function add_compatibility(def)
+	def._vl_water_fogcolor = def._vl_water_fogcolor or vl_biomes.water_fogcolor[def._vl_water_temp]
+
+	def._mcl_foliage_palette_index = vl_biomes.foliage_palette[def._vl_foliage_palette]
+	def._mcl_grass_palette_index = vl_biomes.grass_palette[def._vl_grass_palette]
+	def._mcl_water_palette_index = vl_biomes.water_palette[def._vl_grass_palette]
+	def._mcl_biome_type = def._vl_biome_type
+	def._mcl_water_temp = def._vl_water_temp
+	def._mcl_waterfogcolor = def._vl_water_fogcolor
+	def._mcl_skycolor = def._vl_skycolor
+end
+
 -- Register a biome
 -- This API has a few extensions over core.register_biome:
 --
--- - _mcl_skycolor affects sky color
--- - _mcl_waterfogcolor affects sky color depending on weather
--- - _mcl_biome_type = "snowy", "cold", "medium" or "hot" affects weather
--- - _mcl_foliage_palette_index affects tree colors
--- - _mcl_grass_palette_index affects grass color
--- - _mcl_water_palette_index affects water color
+-- - _vl_skycolor affects sky color
+-- - _vl_water_fogcolor affects sky color depending on weather
+-- - _vl_biome_type = "snowy", "cold", "medium" or "hot" affects weather
+-- - _vl_foliage_palette affects tree colors
+-- - _vl_grass_palette affects grass color
+-- - _vl_water_palette affects water color
 -- - some default values
 -- - subbiomes that inherit from defaults or their parents
 --
 -- TODO: add a "_mcl_world" parameter to set defaults for y_min, y_max, and ensure bounds?
--- TODO: switch to "_vl" prefix?
 function vl_biomes.register_biome(def)
 	local is_overworld = (def.y_min or def.min_pos.y) >= vl_biomes.overworld_min - 5 and (def.y_max or def.max_pos.y) <= vl_biomes.overworld_max + 5
 	local sub = def._vl_subbiomes or {}
@@ -150,13 +168,13 @@ function vl_biomes.register_biome(def)
 		-- some defaults:
 		def._mcl_fogcolor = def._mcl_fogcolor or vl_biomes.fogcolor.overworld
 		if sub.beach then
-			sub.beach._mcl_skycolor = sub.beach._mcl_skycolor or vl_biomes.skycolor.beach
+			sub.beach._vl_skycolor = sub.beach._vl_skycolor or vl_biomes.skycolor.beach
 		end
 		if sub.ocean then
 			local odef = sub.ocean
-			odef._mcl_skycolor = odef._mcl_skycolor or vl_biomes.skycolor.ocean
-			odef._mcl_water_temp = odef._mcl_water_temp or def._mcl_water_temp or "ocean"
-			odef._mcl_waterfogcolor = odef._mcl_waterfogcolor or def._mcl_waterfogcolor or vl_biomes.waterfogcolor[odef._mcl_water_temp]
+			odef._vl_skycolor = odef._vl_skycolor or vl_biomes.skycolor.ocean
+			odef._vl_water_temp = odef._vl_water_temp or def._vl_water_temp or "ocean"
+			odef._vl_water_fogcolor = odef._vl_water_fogcolor or def._vl_water_fogcolor or vl_biomes.water_fogcolor[odef._vl_water_temp]
 			if not odef.min_pos then odef.y_min = odef.y_min or vl_biomes.OCEAN_MIN end
 			if not odef.max_pos then odef.y_max = odef.y_max or 0 end
 			odef._mcl_foliage_palette_index = odef._mcl_foliage_palette_index or 0
@@ -174,9 +192,9 @@ function vl_biomes.register_biome(def)
 				node_riverbed = sub.ocean.node_riverbed or def.node_riverbed,
 				depth_riverbed = 2,
 				vertical_blend = 5,
-				_mcl_foliage_palette_index = 0, -- to avoid running the foliage fix
-				_mcl_skycolor = vl_biomes.skycolor.ocean,
-				_mcl_waterfogcolor = sub.ocean._mcl_waterfogcolor,
+				_vl_foliage_palette = 0, -- to avoid running the foliage fix
+				_vl_skycolor = vl_biomes.skycolor.ocean,
+				_vl_water_fogcolor = sub.ocean._vl_water_fogcolor,
 			}
 		end
 		-- Underground biomes are used to identify the underground and to prevent nodes from the surface
@@ -193,6 +211,7 @@ function vl_biomes.register_biome(def)
 			}
 		end
 	end
+	add_compatibility(def)
 	-- subbiomes
 	for k, sdef in pairs(sub) do
 		sdef.name = sdef.name or (def.name .. "_" .. k)
@@ -204,11 +223,12 @@ function vl_biomes.register_biome(def)
 		end
 		-- build a biome lookup map based on water temperature
 		-- TODO: make this a biome.groups mechanism
-		if k == "ocean" and sdef._mcl_water_temp then
-			local temp = sdef._mcl_water_temp
+		if k == "ocean" and sdef._vl_water_temp then
+			local temp = sdef._vl_water_temp
 			vl_biomes.by_water_temp[temp] = vl_biomes.by_water_temp[temp] or {}
 			table.insert(vl_biomes.by_water_temp[temp], sdef.name)
 		end
+		add_compatibility(sdef)
 	end
 	core.register_biome(def)
 	if is_overworld and def.y_max > 0 then table.insert(vl_biomes.overworld_biomes, def.name) end
@@ -281,7 +301,7 @@ function vl_biomes.register_spruce_decoration(seed, offset, sprucename, biomes, 
 		y_max = vl_biomes.overworld_max,
 		schematic = mod_mcl_core .. "/schematics/" .. sprucename,
 		flags = "place_center_x, place_center_z",
-		-- not supported by spruceleaves: _mcl_foliage_palette_index = foliage_color,
+		-- not supported by spruceleaves: _vl_foliage_palette = foliage_color,
 	})
 end
 
@@ -310,14 +330,14 @@ if superflat then
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 50,
 		heat_point = 50,
-		_mcl_biome_type = "medium",
-		_mcl_grass_palette_index = 0,
-		_mcl_foliage_palette_index = 1,
-		_mcl_water_palette_index = 0,
-		_mcl_watertemp = "ocean",
-		_mcl_waterfogcolor = vl_biomes.waterfogcolor.ocean,
-		_mcl_skycolor = "#78A7FF",
-		_mcl_fogcolor = vl_biomes.fogcolor.overworld
+		_vl_biome_type = "medium",
+		_vl_grass_palette = "plains",
+		_vl_foliage_palette = "plains",
+		_vl_water_palette = "plains",
+		_vl_water_temp = "ocean",
+		_vl_water_fogcolor = vl_biomes.water_fogcolor.ocean,
+		_vl_skycolor = "#78A7FF",
+		_vl_fogcolor = vl_biomes.fogcolor.overworld
 	})
 elseif mg_name ~= "v6" then
 	-- OVERWORLD biomes

@@ -15,13 +15,13 @@ vl_biomes.register_biome({
 	y_max = 27, -- Note: Limited in height!
 	humidity_point = 95,
 	heat_point = 94,
-	_mcl_biome_type = "hot",
-	_mcl_water_temp = "warm",
-	_mcl_grass_palette_index = 27,
-	_mcl_foliage_palette_index = 6,
-	_mcl_water_palette_index = 7,
-	_mcl_waterfogcolor = "#3A7A6A",
-	_mcl_skycolor = vl_biomes.skycolor.beach,
+	_vl_biome_type = "hot",
+	_vl_water_temp = "warm",
+	_vl_grass_palette = "mangroveswamp",
+	_vl_foliage_palette = "mangroveswamp",
+	_vl_water_palette = "mangroveswamp",
+	_vl_water_fogcolor = "#3A7A6A",
+	_vl_skycolor = vl_biomes.skycolor.beach,
 	_vl_subbiomes = {
 		-- removed, as it did not differ _shore = { y_min = -5, y_max = 0, },
 		ocean = {
