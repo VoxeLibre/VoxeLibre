@@ -110,26 +110,50 @@ function mcl_util.chunk_to_area(chunk)
 	return start, vector.offset(start, size-1, size-1, size-1)
 end
 
----@param a {minp: vector.Vector, maxp: vector.Vector}
----@param pos vector.Vector
+---@param a {minp: vector.Vector, maxp: vector.Vector, first: boolean}
+---@param pos vector.Vector?
 ---@return vector.Vector?,vector.Vector?
 local function area_iterator_get_next_pos(a, pos)
 	local minp, maxp = a.minp, a.maxp
 
+	if not a.first then
+		a.first = true
+		return pos, pos
+	end
+
+	if not pos then return end
+
 	pos.x = pos.x + 1
-	if pos.x ~= maxp.x then return pos, pos end
+	if pos.x > maxp.x then
+		pos.x = minp.x
+		pos.y = pos.y + 1
+		if pos.y > maxp.y then
+			pos.y = minp.y
+			pos.z = pos.z + 1
+			if pos.z > maxp.z then
+				pos = nil
+			end
+		end
+	end
 
-	pos.y = pos.y + 1
-	pos.x = minp.x
-	if pos.y ~= maxp.y then return pos, pos end
+	return pos, pos
+end
 
-	pos.z = pos.z + 1
-	pos.y = minp.y
-	if pos.z ~= maxp.z then return pos, pos end
+---@param pos vector.Vector?
+---@return vector.Vector?,vector.Vector?
+local function area_iterator_one_pos(a, pos)
+	if a.first then return end
+	a.first = true
+
+	return pos, pos
 end
 
 ---@param minp vector.Vector
 ---@param maxp vector.Vector
 function mcl_util.iterate_area(minp, maxp)
-	return area_iterator_get_next_pos, {minp=minp, max=maxp}, vector.copy(minp)
+	if vector.equals(minp, maxp) then
+		return area_iterator_one_pos, {first=false}, vector.copy(minp)
+	else
+		return area_iterator_get_next_pos, {first=false, minp=minp, maxp=maxp}, vector.copy(minp)
+	end
 end
