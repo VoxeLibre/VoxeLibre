@@ -10,6 +10,8 @@
 ./mods/CORE/mcl_oxidation/init.lua
 ./mods/CORE/mcl_particles/init.lua
 ./mods/CORE/mcl_sounds/init.lua
+./mods/CORE/mcl_util/area.lua
+./mods/CORE/mcl_util/fake_metadata.lua
 ./mods/CORE/mcl_util/hashing.lua
 ./mods/CORE/mcl_util/nodes.lua
 ./mods/CORE/mcl_util/roman_numerals.lua
@@ -19,6 +21,7 @@
 ./mods/CORE/tga_encoder/examples.lua
 ./mods/CORE/tga_encoder/logo.lua
 ./mods/CORE/vl_trusted/init.lua
+./mods/CORE/vl_volume/init.lua
 ./mods/ENTITIES/mcl_burning/init.lua
 ./mods/ENTITIES/mcl_dripping/init.lua
 ./mods/ENTITIES/mcl_minecarts/functions.lua
