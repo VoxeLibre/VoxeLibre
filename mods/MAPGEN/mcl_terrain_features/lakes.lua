@@ -159,6 +159,6 @@ mcl_structures.register_structure("water_lake_mangrove_swamp", {
 	place_func = function(pos, _, pr)
 		return makelake(pos, 3, { name = "mcl_core:water_source" },
 			{ "group:material_stone", "group:sand", "group:dirt", "group:grass_block", "mcl_mud:mud"},
-			nil, { name = "mcl_core:mud" }, pr, true)
+			nil, { name = "mcl_mud:mud" }, pr, true)
 	end
 })
