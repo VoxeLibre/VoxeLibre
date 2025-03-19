@@ -37,4 +37,25 @@ describe('mcl_util/area.lua', function()
 			assert(vector.equals(maxp, vector.new(0,0,0)))
 		end)
 	end)
+	describe('mcl_util.iterate_area', function()
+		it('will return exactly one position if minp and maxp are equal', function()
+			local n = 0
+			for pos in mcl_util.iterate_area(vector.new(0,0,0), vector.new(0,0,0)) do
+				n = n + 1
+				assert(vector.equals(pos, vector.new(0,0,0)))
+			end
+			assert(n == 1)
+		end)
+		it('will return each position exactly once', function()
+			local n = 0
+			local seen = {}
+			for pos in mcl_util.iterate_area(vector.new(0,0,0), vector.new(5,5,5)) do
+				n = n + 1
+				local s = string.format("%g,%g,%g", pos.x, pos.y, pos.z)
+				assert(not seen[s])
+				seen[s] = true
+			end
+			assert(n == 216)
+		end)
+	end)
 end)
