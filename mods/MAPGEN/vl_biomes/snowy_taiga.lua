@@ -14,12 +14,12 @@ vl_biomes.register_biome({
 	y_max = vl_biomes.overworld_max,
 	humidity_point = 58,
 	heat_point = 8,
-	_mcl_biome_type = "snowy",
-	_mcl_water_temp = "frozen",
-	_mcl_grass_palette_index = 3,
-	_mcl_foliage_palette_index = 2,
-	_mcl_water_palette_index = 5,
-	_mcl_skycolor = "#839EFF",
+	_vl_biome_type = "snowy",
+	_vl_water_temp = "frozen",
+	_vl_grass_palette = "snowy_taiga",
+	_vl_foliage_palette = "snowy_taiga",
+	_vl_water_palette = "snowy",
+	_vl_skycolor = "#839EFF",
 	_vl_subbiomes = {
 		-- A cold beach-like biome, implemented as low part of Cold Taiga
 		beach = {
@@ -31,8 +31,8 @@ vl_biomes.register_biome({
 			depth_filler = 2,
 			y_min = 1,
 			y_max = 2,
-			_mcl_foliage_palette_index = 16,
-			_mcl_skycolor = vl_biomes.skycolor.icy, -- not default, but icy
+			_vl_foliage_palette = "snowy_taiga_beach",
+			_vl_skycolor = vl_biomes.skycolor.icy, -- not default, but icy
 		},
 		-- Water part of the beach. Added to prevent snow being on the ice.
 		beach_water = {
@@ -44,8 +44,8 @@ vl_biomes.register_biome({
 			depth_filler = 2,
 			y_min = -4,
 			y_max = 0,
-			_mcl_foliage_palette_index = 16,
-			_mcl_skycolor = vl_biomes.skycolor.icy, -- not default, but icy
+			_vl_foliage_palette = "snowy_taiga_beach",
+			_vl_skycolor = vl_biomes.skycolor.icy, -- not default, but icy
 		},
 		ocean = {
 			node_top = "mcl_core:gravel",
@@ -54,7 +54,7 @@ vl_biomes.register_biome({
 			depth_filler = 3,
 			y_max = -5,
 			vertical_blend = 1,
-			_mcl_skycolor = vl_biomes.skycolor.icy, -- not default, but icy
+			_vl_skycolor = vl_biomes.skycolor.icy, -- not default, but icy
 		},
 	}
 })

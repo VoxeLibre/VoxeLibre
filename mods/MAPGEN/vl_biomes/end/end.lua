@@ -12,12 +12,12 @@ vl_biomes.register_biome({
 	heat_point = 1000, --ridiculously high values so End Island always takes precedent
 	humidity_point = 1000,
 	vertical_blend = 16,
-	_mcl_biome_type = "medium",
-	_mcl_grass_palette_index = 0,
-	_mcl_foliage_palette_index = 0,
-	_mcl_water_palette_index = 0,
-	_mcl_waterfogcolor = vl_biomes.waterfogcolor.default,
-	_mcl_skycolor = vl_biomes.skycolor["end"],
+	_vl_biome_type = "medium",
+	_vl_grass_palette = "plains",
+	_vl_foliage_palette = 0,
+	_vl_water_palette = "plains",
+	_vl_water_fogcolor = vl_biomes.water_fogcolor.default,
+	_vl_skycolor = vl_biomes.skycolor["end"],
 	_mcl_fogcolor = vl_biomes.fogcolor["end"]
 })
 --[[ These currenty are NOT actually generated:
@@ -33,12 +33,12 @@ vl_biomes.register_biome({
 	heat_point = 1000,
 	humidity_point = 1000,
 	vertical_blend = 16,
-	_mcl_biome_type = "medium",
-	_mcl_grass_palette_index = 0,
-	_mcl_foliage_palette_index = 0,
-	_mcl_water_palette_index = 0,
-	_mcl_waterfogcolor = vl_biomes.waterfogcolor.default,
-	_mcl_skycolor = vl_biomes.skycolor["end"],
+	_vl_biome_type = "medium",
+	_vl_grass_palette = "plains",
+	_vl_foliage_palette = 0,
+	_vl_water_palette = "plains",
+	_vl_water_fogcolor = vl_biomes.water_fogcolor.default,
+	_vl_skycolor = vl_biomes.skycolor["end"],
 	_mcl_fogcolor = vl_biomes.fogcolor["end"]
 })
 
@@ -54,12 +54,12 @@ vl_biomes.register_biome({
 	heat_point = 1000,
 	humidity_point = 1000,
 	vertical_blend = 16,
-	_mcl_biome_type = "medium",
-	_mcl_grass_palette_index = 0,
-	_mcl_foliage_palette_index = 0,
-	_mcl_water_palette_index = 0,
-	_mcl_waterfogcolor = vl_biomes.waterfogcolor.default,
-	_mcl_skycolor = vl_biomes.skycolor["end"],
+	_vl_biome_type = "medium",
+	_vl_grass_palette = "plains",
+	_vl_foliage_palette = 0,
+	_vl_water_palette = "plains",
+	_vl_water_fogcolor = vl_biomes.water_fogcolor.default,
+	_vl_skycolor = vl_biomes.skycolor["end"],
 	_mcl_fogcolor = vl_biomes.fogcolor["end"]
 })
 
@@ -75,12 +75,12 @@ vl_biomes.register_biome({
 	heat_point = 1000,
 	humidity_point = 1000,
 	vertical_blend = 16,
-	_mcl_biome_type = "medium",
-	_mcl_grass_palette_index = 0,
-	_mcl_foliage_palette_index = 0,
-	_mcl_water_palette_index = 0,
-	_mcl_waterfogcolor = vl_biomes.waterfogcolor.default,
-	_mcl_skycolor = vl_biomes.skycolor["end"],
+	_vl_biome_type = "medium",
+	_vl_grass_palette = "plains",
+	_vl_foliage_palette = 0,
+	_vl_water_palette = "plains",
+	_vl_water_fogcolor = vl_biomes.water_fogcolor.default,
+	_vl_skycolor = vl_biomes.skycolor["end"],
 	_mcl_fogcolor = vl_biomes.fogcolor["end"]
 })
 
@@ -96,12 +96,12 @@ vl_biomes.register_biome({
 	heat_point = 1000,
 	humidity_point = 1000,
 	vertical_blend = 16,
-	_mcl_biome_type = "medium",
-	_mcl_grass_palette_index = 0,
-	_mcl_foliage_palette_index = 0,
-	_mcl_water_palette_index = 0,
-	_mcl_waterfogcolor = vl_biomes.waterfogcolor.default,
-	_mcl_skycolor = vl_biomes.skycolor["end"],
+	_vl_biome_type = "medium",
+	_vl_grass_palette = "plains",
+	_vl_foliage_palette = 0,
+	_vl_water_palette = "plains",
+	_vl_water_fogcolor = vl_biomes.water_fogcolor.default,
+	_vl_skycolor = vl_biomes.skycolor["end"],
 	_mcl_fogcolor = vl_biomes.fogcolor["end"]
 })
 ]]--
@@ -120,12 +120,12 @@ vl_biomes.register_biome({
 	vertical_blend = 16,
 	max_pos = vector.new(1250, vl_biomes.end_min + 512, 1250),
 	min_pos = vector.new(-1250, vl_biomes.end_min, -1250),
-	_mcl_biome_type = "medium",
-	_mcl_grass_palette_index = 0,
-	_mcl_foliage_palette_index = 0,
-	_mcl_water_palette_index = 0,
-	_mcl_waterfogcolor = vl_biomes.waterfogcolor.default,
-	_mcl_skycolor = vl_biomes.skycolor["end"],
+	_vl_biome_type = "medium",
+	_vl_grass_palette = "plains",
+	_vl_foliage_palette = 0,
+	_vl_water_palette = "plains",
+	_vl_water_fogcolor = vl_biomes.water_fogcolor.default,
+	_vl_skycolor = vl_biomes.skycolor["end"],
 	_mcl_fogcolor = vl_biomes.fogcolor["end"]
 })
 
@@ -141,12 +141,12 @@ vl_biomes.register_biome({
 	heat_point = 50,
 	humidity_point = 50,
 	vertical_blend = 16,
-	_mcl_biome_type = "medium",
-	_mcl_grass_palette_index = 0,
-	_mcl_foliage_palette_index = 0,
-	_mcl_water_palette_index = 0,
-	_mcl_waterfogcolor = vl_biomes.waterfogcolor.default,
-	_mcl_skycolor = vl_biomes.skycolor["end"],
+	_vl_biome_type = "medium",
+	_vl_grass_palette = "plains",
+	_vl_foliage_palette = 0,
+	_vl_water_palette = "plains",
+	_vl_water_fogcolor = vl_biomes.water_fogcolor.default,
+	_vl_skycolor = vl_biomes.skycolor["end"],
 	_mcl_fogcolor = vl_biomes.fogcolor["end"]
 })
 

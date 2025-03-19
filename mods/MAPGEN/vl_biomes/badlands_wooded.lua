@@ -15,12 +15,12 @@ vl_biomes.register_biome({
 	humidity_point = 0,
 	heat_point = 60,
 	vertical_blend = 0, -- we want a sharp transition
-	_mcl_biome_type = "hot",
-	_mcl_water_temp = "warm",
-	_mcl_grass_palette_index = 21,
-	_mcl_foliage_palette_index = 4,
-	_mcl_water_palette_index = 3,
-	_mcl_skycolor = "#6EB1FF",
+	_vl_biome_type = "hot",
+	_vl_water_temp = "warm",
+	_vl_grass_palette = "badlands_wooded",
+	_vl_foliage_palette = "badlands",
+	_vl_water_palette = "desert",
+	_vl_skycolor = "#6EB1FF",
 	_vl_subbiomes = {
 		-- The oak forest plateau of this biome.
 		-- This is a plateau for grass blocks, dry shrubs, tall grass, coarse dirt and oaks.

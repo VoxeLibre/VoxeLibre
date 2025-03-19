@@ -11,11 +11,11 @@ vl_biomes.register_biome({
 	y_max = vl_biomes.nether_max + 80,
 	heat_point = 100,
 	humidity_point = 0,
-	_mcl_biome_type = "hot",
-	_mcl_grass_palette_index = 17,
-	_mcl_foliage_palette_index = 3,
-	_mcl_water_palette_index = 0,
-	_mcl_skycolor = vl_biomes.skycolor.nether,
+	_vl_biome_type = "hot",
+	_vl_grass_palette = "desert",
+	_vl_foliage_palette = "savanna",
+	_vl_water_palette = "plains",
+	_vl_skycolor = vl_biomes.skycolor.nether,
 	_mcl_fogcolor = "#330808"
 })
 

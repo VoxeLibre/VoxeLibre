@@ -12,12 +12,12 @@ vl_biomes.register_biome({
 	y_max = vl_biomes.overworld_max,
 	humidity_point = 61,
 	heat_point = 45,
-	_mcl_biome_type = "medium",
-	_mcl_water_temp = "ocean",
-	_mcl_grass_palette_index = 13,
-	_mcl_foliage_palette_index = 7,
-	_mcl_water_palette_index = 0,
-	_mcl_skycolor = "#79A6FF",
+	_vl_biome_type = "medium",
+	_vl_water_temp = "ocean",
+	_vl_grass_palette = "forest",
+	_vl_foliage_palette = "forest",
+	_vl_water_palette = "plains",
+	_vl_skycolor = "#79A6FF",
 	_vl_subbiomes = {
 		beach = {
 			node_top = "mcl_core:sand",
@@ -26,7 +26,7 @@ vl_biomes.register_biome({
 			depth_filler = 1,
 			y_min = -1,
 			y_max = 0,
-			_mcl_foliage_palette_index = 1, -- FIXME: remove?
+			_vl_foliage_palette = "plains", -- FIXME: remove?
 		},
 		ocean = {
 			node_top = "mcl_core:sand",
