@@ -65,13 +65,14 @@ local ocean_biomes = {
 	"JungleM_ocean"
 }
 
--- FIXME: integrate treasure maps from MCLA
+-- FIXME: add treasure maps
 
 vl_structures.register_structure("shipwreck",{
+	chunk_probability = 5,
+	hash_mindist_2d = 40,
 	place_on = {"group:sand","mcl_core:gravel"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 4,
-	chunk_probability = 20,
 	biomes = ocean_biomes,
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = water_level-5,

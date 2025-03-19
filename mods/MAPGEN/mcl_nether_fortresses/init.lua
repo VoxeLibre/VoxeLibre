@@ -4,8 +4,9 @@ local modpath = minetest.get_modpath(modname)
 local BLAZE_SPAWNER_MAX_LIGHT = 11
 
 vl_structures.register_structure("nether_outpost",{
+	chunk_probability = 5,
+	hash_mindist_2d = 60,
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
-	chunk_probability = 23,
 	flags = "place_center_x, place_center_y, all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
 	prepare = { tolerance = 20, padding = 4, corners = 5, foundation = true, clear = true, clear_top = 4 },
@@ -26,8 +27,9 @@ local nbridges = {
 		modpath.."/schematics/mcl_nether_fortresses_nether_bridge_4.mts",
 }
 vl_structures.register_structure("nether_bridge",{
+	chunk_probability = 10, -- because of the y restriction these are quite rare
+	hash_mindist_2d = 60,
 	place_on = {"mcl_nether:nether_lava_source","mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
-	chunk_probability = 8, -- because of the y restriction these are quite rare
 	flags = "place_center_x, place_center_y, all_floors",
 	prepare = { tolerance = 50, padding = -1, corners = 0, clear_bottom = 8, clear_top = 6 }, -- asymmetric padding would be nice to have
 	force_placement = true,
@@ -44,7 +46,7 @@ vl_structures.register_structure("nether_bridge",{
 			while true do
 				leg = vector.offset(leg,0,-1,0)
 				local nodename = minetest.get_node(leg).name
-				if nodename == "ignore" then break end
+				if nodename == "ignore" or nodename == "mcl_nether:soul_sand" then break end
 				if nodename ~= "air" and nodename ~= "mcl_core:lava_source" and minetest.get_item_group(nodename, "solid") ~= 0 then break end
 				table.insert(bricks,leg)
 			end
@@ -54,8 +56,9 @@ vl_structures.register_structure("nether_bridge",{
 })
 
 vl_structures.register_structure("nether_outpost_with_bridges",{
+	chunk_probability = 10,
+	hash_mindist_2d = 120,
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand","mcl_nether:nether_lava_source"},
-	chunk_probability = 10, -- because of the y restriction, it will still be rare
 	flags = "place_center_x, place_center_y, all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest","BasaltDelta"},
 	prepare = { tolerance = 20, padding = 4, corners = 5, foundation = true, clear_top = 3 },
@@ -106,7 +109,7 @@ vl_structures.register_structure("nether_outpost_with_bridges",{
 			while true do
 				leg = vector.offset(leg,0,-1,0)
 				local nodename = minetest.get_node(leg).name
-				if nodename == "ignore" then break end
+				if nodename == "ignore" or nodename == "mcl_nether:soul_sand" then break end
 				if nodename ~= "air" and nodename ~= "mcl_core:lava_source" and minetest.get_item_group(nodename, "solid") ~= 0 then break end
 				table.insert(bricks,leg)
 			end
@@ -129,8 +132,9 @@ vl_structures.register_structure_spawn({
 })
 
 vl_structures.register_structure("nether_bulwark",{
+	chunk_probability = 5,
+	hash_mindist_2d = 80,
 	place_on = {"mcl_nether:netherrack","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium","mcl_blackstone:basalt","mcl_blackstone:soul_soil","mcl_blackstone:blackstone","mcl_nether:soul_sand"},
-	chunk_probability = 29,
 	flags = "place_center_x, place_center_y, all_floors",
 	biomes = {"Nether","SoulsandValley","WarpedForest","CrimsonForest"},
 	prepare = { tolerance=10, padding=4, corners=5, foundation=-5, clear_top=0 },

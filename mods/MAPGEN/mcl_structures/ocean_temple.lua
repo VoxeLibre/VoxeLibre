@@ -68,19 +68,11 @@ local ocean_biomes = {
 }
 
 vl_structures.register_structure("ocean_temple",{
+	chunk_probability = 2,
+	hash_mindist_2d = 160,
 	place_on = {"group:sand","mcl_core:gravel"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 4,
-	noise_params = {
-		offset = 0,
-		scale = 0.0000122,
-		spread = {x = 250, y = 250, z = 250},
-		seed = 32345,
-		octaves = 3,
-		persist = 0.001,
-		flags = "absvalue",
-	},
-	flags = "force_placement",
 	force_placement = true,
 	prepare = { tolerance = 8, clear = false, foundation = 3, surface = "water" },
 	biomes = ocean_biomes,
@@ -95,9 +87,7 @@ vl_structures.register_structure("ocean_temple",{
 		vl_structures.spawn_mobs("mobs_mc:guardian",spawnon,p1,p2,pr,5,true)
 		vl_structures.spawn_mobs("mobs_mc:guardian_elder",spawnon,p1,p2,pr,1,true)
 		vl_structures.construct_nodes(p1,p2,{"group:wall"})
-		local minp = vector.offset(p, -20, -4, -20)
-		local maxp = vector.offset(p,  20,  4,  20)
-		mcl_ocean.kelp.remove_kelp_below_structure(minp, maxp)
+		mcl_ocean.kelp.remove_kelp_below_structure(p1, p2)
 	end,
 	loot = {
 		["mcl_chests:chest_small"] = {

@@ -3,10 +3,11 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 vl_structures.register_structure("jungle_temple",{
+	chunk_probability = 5,
+	hash_mindist_2d = 100,
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
 	flags = "place_center_x, place_center_z",
 	y_offset = function(pr) return pr:next(-3,0) -5 end,
-	chunk_probability = 5,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Jungle" },
