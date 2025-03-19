@@ -3,7 +3,7 @@ local posix = require('posix')
 local os = require("os")
 local LUANTI_PATH = os.getenv("LUANTI_PATH") or "/usr/share/luanti"
 
-print("package.path="..package.path)
+--print("package.path="..package.path)
 
 function mock.luanti(g)
 	local mock
@@ -15,12 +15,20 @@ function mock.luanti(g)
 		current_modname = nil,
 		modpaths = {},
 		settings = {},
+		mod_storage = {},
 		registered_globalsteps = {
 			function(dtime)
 				mock.globalsteps = mock.globalsteps + 1
 				mock.last_fake_globaltime_dtime = dtime
 			end,
 		},
+		load_mod = function(name, path)
+			local old_modname = mock.current_modname
+			mock.current_modname = name
+			mock.modpaths[name] = path
+			dofile(path..DIR_DELIM.."init.lua")
+			mock.current_modname = old_modname
+		end,
 		fastforward = function(dtime)
 			mock.time_offset = mock.time_offset + dtime
 		end,
@@ -81,6 +89,37 @@ function mock.luanti(g)
 			local sec, nsec = posix.clock_gettime(0)
 			return sec * 1e6 + math.floor(nsec / 1000) + mock.time_offset
 		end,
+		get_mapgen_setting = function() return "" end,
+		set_mapgen_setting = function() end,
+		log = function() end,
+		get_worldpath = function() return "" end,
+		get_game_info = function() return {
+			path = "",
+		} end,
+		features = {},
+		nodedef_default = {},
+		craftitemdef_default = {},
+		global_exists = function(name) return not not rawget(_G,name) end,
+		get_mod_storage = function()
+			local storage = mock.mod_storage[mock.current_modname] or {}
+			mock.mod_storage[mock.current_modname] = storage
+
+			return {
+				get_keys = function()
+					local keys = {}
+					for k,_ in pairs(storage) do
+						keys[#keys+1] = k
+					end
+					return keys
+				end,
+				set_string = function(k,v)
+					storage[tostring(k)] = tostring(v)
+				end,
+			}
+		end,
+		serialize = function(value)
+			return ""
+		end,
 	}
 
 	-- Update the specified global environment to act as though the Luanti engine is present
@@ -88,11 +127,32 @@ function mock.luanti(g)
 	_G = g
 	g.core = {}
 	g.dump = dump
+	local vector_metatable = {}
 	g.vector = {
-		new = function() end
+		new = function(x,y,z)
+			local res = {x=x, y=y, z=z}
+			setmetatable(res, vector_metatable)
+			return res
+		end,
+		copy = function(b)
+			return vector.new(b.x, b.y, b.z)
+		end,
+		equals = function(a,b)
+			return a.x == b.x and a.y == b.y and a.z == b.z
+		end,
+		offset = function(a,x,y,z)
+			return vector.new(a.x + x, a.y + y, a.z + z)
+		end,
 	}
+	vector_metatable.__index = g.vector
 	dofile(LUANTI_PATH.."/builtin/common/misc_helpers.lua")
 	_G = old_G
+
+	g.Settings = function()
+		return {
+			get = function() return "" end
+		}
+	end
 
 	g.core = luanti_core
 	g.minetest = luanti_core
