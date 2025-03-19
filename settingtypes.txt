@@ -40,13 +40,16 @@ mcl_doTileDrops (Blocks have drops) bool true
 mcl_explosions_griefing (Explosions destroy blocks) bool true
 
 # Comma separated list of disabled structure names
-mcl_disabled_structures (Disabled structures) string
+vl_structures_disabled (Disabled structures) string
 
 # Comma separated list of disabled event names
 mcl_disabled_events (Disabled events) string
 
 # Control the relative plant growth speed (default: 1)
 vl_plant_growth (Plant growth factor) float 1.0 0 100
+
+# Structure frequency multiplier, keep this less than 3 usually
+vl_structures_boost (Structure frequency multiplier) float 1.0 0.0 25.0
 
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal

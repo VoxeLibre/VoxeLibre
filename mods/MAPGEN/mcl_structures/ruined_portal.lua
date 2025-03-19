@@ -11,10 +11,11 @@ local function get_replacements(b,c,pr)
 end
 
 local def = {
+	chunk_probability = 2.5,
+	hash_mindist_2d = 160,
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:grass_block","group:sand","group:grass_block_snow","mcl_core:snow"},
 	flags = "place_center_x, place_center_z, all_floors",
 	prepare = { padding = 0, corners = 3, tolerance = 15, foundation = true, clear = true, clear_top = 0 },
-	chunk_probability = 20,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	y_offset = -5,

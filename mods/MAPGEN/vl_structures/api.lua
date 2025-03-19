@@ -1,12 +1,11 @@
 vl_structures.registered_structures = {}
 
 local logging = core.settings:get_bool("vl_structures_logging", false)
-local structure_boost = tonumber(core.settings:get("vl_structures_boost")) or 1
 local disabled_structures = core.settings:get("vl_structures_disabled")
 disabled_structures = disabled_structures and disabled_structures:split(",") or {}
 
 local worldseed = core.get_mapgen_setting("seed")
-local RANDOM_SEED_OFFSET = 959 -- random constant that should be unique across each library
+local RANDOM_SEED = 2345018571 -- random constant that should be unique across each library
 
 --- Trim a full path name to its last two parts as short name for logging
 local function basename(filename)
@@ -21,7 +20,7 @@ end
 function vl_structures.load_schematic(filename, name)
 	-- load, and ensure we have size information
 	if filename == nil then error("Filename is nil for schematic "..tostring(name)) end
-	if type(filename) == "string" then core.log("verbose", "Loading "..filename) end
+	if type(filename) == "string" then core.log("verbose", "[vl_structures] Loading "..filename) end
 	local s = loadstring(core.serialize_schematic(filename, "lua", {lua_use_comments = false, lua_num_indent_spaces = 0}) .. " return schematic")()
 	if not s then
 		core.log("warning", "[vl_structures] failed to load schematic "..basename(filename))
@@ -105,7 +104,9 @@ function vl_structures.place_structure(pos, def, pr, blockseed, rot)
 			core.log("warning", "[vl_structures] after_place failed for structure "..def.name)
 			return false
 		end
-		if def.name and not (def.terrain_feature or def.no_registry) then vl_structures.register_structures_spawn(def.name, pos) end
+		if def.name and not (def.terrain_feature or def.no_registry) then
+			vl_structures.register_structures_spawn(def.name, pos)
+		end
 		if log_enabled then
 			core.log("action", "[vl_structures] "..def.name.." placed at "..core.pos_to_string(pp))
 		end
@@ -114,24 +115,48 @@ function vl_structures.place_structure(pos, def, pr, blockseed, rot)
 		if def.place_func then
 			core.log("warning", "[vl_structures] place_func failed for structure "..def.name)
 		else
-			core.log("warning", "[vl_structures] do not know how to place structure "..def.name)
+			core.log("warning", "[vl_structures] no schematic and no place_func given for structure "..def.name)
 		end
 	end
 end
 
--- local EMPTY_SCHEMATIC = { size = {x = 1, y = 1, z = 1}, data = { { name = "ignore" } } }
+-- Empty schematic, as we use gennotify instead
 local EMPTY_SCHEMATIC = { size = {x = 0, y = 0, z = 0}, data = { } }
+-- Alternating: threshold and value
+-- Sidelen must be a divisor of 80, we avoid the very small values of 2/4/5
+local SIDELENS = { 0, --[[ 4, 10, 5, 18, ]] 8, 22, 10, 35, 16, 45, 20, 90, 40, 180, 80 }
+local function get_sidelen(dist)
+	for i = 1, #SIDELENS, 2 do
+		if dist < SIDELENS[i] then return SIDELENS[i - 1] end
+	end
+	return SIDELENS[#SIDELENS]
+end
 
 --- Register a structure
 -- @param name string: Structure name
 -- @param def table: Structure definition
 function vl_structures.register_structure(name, def)
+	def = table.copy(def)
 	def.name = def.name or name
 	if table.indexof(disabled_structures, name) ~= -1 then return end
 	if def.prepare and def.prepare.clear == nil and (def.prepare.clear_bottom or def.prepare.clear_top) then def.prepare.clear = true end
-	if not def.fill_ratio and def.chunk_probability and not def.noise_params then
-		def.fill_ratio = 1.1/80/80 -- 1 per chunk, controlled by chunk probability only
+	if def.chunk_probability and (def.fill_ratio or def.noise_params) then
+		core.log("warning", "[vl_structures] structure "..def.name.." uses chunk_probability along with fill_ratio or noise_params, this is not supported.")
 	end
+	-- choose a sidelen based on distance rules
+	local sidelen, ysidelen = def.terrain_feature and (def.sidelen or 16) or 80
+	if def.hash_mindist then
+		assert(type(def.hash_mindist) == "number", def.name.." has invalid hash_mindist")
+		sidelen, ysidelen = get_sidelen(def.hash_mindist), nil
+	elseif def.hash_mindist_2d then
+		assert(type(def.hash_mindist_2d) == "number", def.name.." has invalid hash_mindist_2d")
+		sidelen, ysidelen = get_sidelen(def.hash_mindist_2d), 40
+	end
+	if not def.fill_ratio and def.chunk_probability and not def.noise_params then
+		-- 100 attempts to find a node per chunk, but we stop on first success below
+		def.fill_ratio = math.max(100.01 / 80 / 80, math.min(5.01/sidelen/sidelen, 0.25))
+	end
+	def.hash_seed = def.hash_seed or mcl_util.djb2_hash(name)
 	def.flags = def.flags or vl_structures.DEFAULT_FLAGS
 	if def.filenames and mcl_util then
 		for _, filename in ipairs(def.filenames) do
@@ -142,21 +167,46 @@ function vl_structures.register_structure(name, def)
 		end
 	end
 	vl_structures.registered_structures[name] = def
+
 	if not def.place_on then return end -- only for /spawnstruct, for example
-	-- gennotify callback function, c.f., mcl_mapgen_core.register_decoration
-	local function gen_callback(t, minp, maxp, blockseed)
-		for _, pos in ipairs(t) do
-			local pr = PcgRandom(mcl_util.hash_pos(pos.x, pos.y, pos.z, worldseed + RANDOM_SEED_OFFSET))
-			if def.chunk_probability == nil or pr:next(0, 1e9) * 1e-9 * def.chunk_probability <= structure_boost then
-				if vl_structures.place_structure(pos, def, pr, blockseed) then
-					if def.chunk_probability ~= nil then break end -- allow only one per gennotify, e.g., on multiple surfaces
+
+	local gen_callback
+	if not def.chunk_probability then -- terrain feature?
+		gen_callback = function(t, minp, maxp, blockseed)
+			-- we deliberately do not use blockseed, it depends on decoration order
+			local seed = mcl_util.bitmix32(def.hash_seed, worldseed + RANDOM_SEED)
+			local pr = PcgRandom(mcl_util.hash_pos(minp.x, minp.y, minp.z, seed))
+			for _, pos in ipairs(t) do
+				vl_structures.place_structure(pos, def, pr, blockseed)
+			end
+		end
+	else
+		gen_callback = function(t, minp, maxp, blockseed)
+			-- we deliberately do not use blockseed, it depends on decoration order
+			local seed = mcl_util.bitmix32(def.hash_seed, worldseed + RANDOM_SEED)
+			local pr = PcgRandom(mcl_util.hash_pos(minp.x, minp.y, minp.z, seed))
+			local done = {}
+			for _, pos in ipairs(t) do
+				local bx, by, bz = vl_structures.pos_to_chunk(pos, sidelen, ysidelen)
+				local key = bz * 0x100000000 + by * 0x10000 + bx
+				if not done[key] then
+					-- Prevent spawning in neighboring chunks, if configured
+					if vl_structures.check_hash_distance(def, bx, by, bz, sidelen, seed) then
+						if vl_structures.place_structure(pos, def, pr, blockseed) then
+							if sidelen == 80 then break end
+							done[key] = 1
+						end
+					else
+						if sidelen == 80 then break end
+						done[key] = 1
+					end
 				end
 			end
 		end
 	end
 	mcl_mapgen_core.register_decoration({
 		name = "vl_structures:"..name,
-		rank = def.rank or (def.terrain_feature and 900) or 100, -- run before regular decorations
+		rank = def.rank or (def.terrain_feature and 1200) or 100, -- run before regular decorations
 		fill_ratio = def.fill_ratio,
 		noise_params = def.noise_params,
 		y_max = def.y_max,
@@ -165,7 +215,7 @@ function vl_structures.register_structure(name, def)
 		place_on = def.place_on,
 		spawn_by = def.spawn_by,
 		num_spawn_by = def.num_spawn_by,
-		sidelen = def.terrain_feature and (def.sidelen or 16) or 80,
+		sidelen = sidelen,
 		flags = def.flags,
 		deco_type = "schematic",
 		schematic = EMPTY_SCHEMATIC, -- use gennotify only
@@ -214,7 +264,7 @@ mcl_mapgen_core.register_generator("static structures", nil, function(minp, maxp
 			local pr -- initialize only when needed below
 			for _, pos in pairs(struct.static_pos) do
 				if vector.in_area(pos, minp, maxp) then
-					pr = pr or PcgRandom(blockseed + worldseed + RANDOM_SEED_OFFSET)
+					pr = pr or PcgRandom(blockseed + worldseed + RANDOM_SEED)
 					vl_structures.place_structure(pos, struct, pr, blockseed)
 				end
 			end

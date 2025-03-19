@@ -12,12 +12,13 @@ local function spawn_shulkers(pos,def,pr,p1,p2)
 end
 
 vl_structures.register_structure("end_shipwreck",{
+	chunk_probability = 10,
+	hash_mindist_2d = 160,
 	place_on = {"mcl_end:end_stone"},
 	flags = "place_center_x, place_center_z, all_floors",
 	y_offset = function(pr) return pr:next(15,40) end,
 	force_placement = false,
 	prepare = { foundation = false, clear = false },
-	chunk_probability = 25,
 	--y_max = mcl_vars.mg_end_max,
 	--y_min = mcl_vars.mg_end_min -100,
 	biomes = { "End", "EndHighlands", "EndMidlands", "EndBarrens", "EndSmallIslands" },
@@ -81,12 +82,13 @@ vl_structures.register_structure("end_shipwreck",{
 })
 
 vl_structures.register_structure("end_boat",{
+	chunk_probability = 5,
+	hash_mindist_2d = 160,
 	place_on = {"mcl_end:end_stone"},
 	flags = "place_center_x, place_center_z, all_floors",
 	y_offset = function(pr) return pr:next(10,20) end,
 	force_placement = false,
 	prepare = { foundation = false, clear = false },
-	chunk_probability = 10,
 	--y_max = mcl_vars.mg_end_max,
 	--y_min = mcl_vars.mg_end_min -100,
 	biomes = { "End", "EndHighlands", "EndMidlands", "EndBarrens", "EndSmallIslands" },

@@ -4,11 +4,12 @@ local modpath = minetest.get_modpath(modname)
 local spawnon = {"mcl_core:stripped_oak","mcl_stairs:slab_birchwood_top"}
 
 vl_structures.register_structure("pillager_outpost",{
+	chunk_probability = 2,
+	hash_mindist_2d = 160,
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass","group:sand"},
 	flags = "place_center_x, place_center_z",
 	prepare = { tolerance = 4, padding = 3, corners = 4, foundation = -8, clear = true },
 	y_offset = 0,
-	chunk_probability = 15,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert", "Plains", "Savanna", "IcePlains", "Taiga" },

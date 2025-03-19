@@ -29,11 +29,12 @@ local function temple_placement_callback(pos,def,pr,p1,p2)
 end
 
 vl_structures.register_structure("desert_temple",{
+	chunk_probability = 1,
+	hash_mindist_2d = 160,
 	place_on = {"group:sand"},
 	flags = "place_center_x, place_center_z",
 	y_offset = -12,
 	prepare = { tolerance = 10, padding = 3, corners = 3, foundation = true, clear = false },
-	chunk_probability = 18,
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 1,
 	biomes = { "Desert" },
