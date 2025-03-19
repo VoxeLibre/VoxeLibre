@@ -13,6 +13,7 @@ vl_structures.DEFAULT_STONE = { name = "mcl_core:stone" }
 vl_structures.DEFAULT_DUST = nil
 
 dofile(modpath.."/util.lua")
+dofile(modpath.."/hashdist.lua")
 dofile(modpath.."/emerge.lua")
 dofile(modpath.."/api.lua")
 dofile(modpath.."/spawning.lua")

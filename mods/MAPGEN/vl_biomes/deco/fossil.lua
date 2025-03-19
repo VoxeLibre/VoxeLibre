@@ -1,12 +1,12 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 vl_structures.register_structure("fossil", {
+	chunk_probability = 10, -- only in deserts
 	place_on = { "group:material_stone", "group:sand" },
 	flags = "place_center_x, place_center_z",
 	prepare = false,
 	rank = 900, -- actually a terrain feature,
 	terrain_feature = false, -- but add them to /locate nevertheless
-	chunk_probability = 15, -- was 25, FIXME: needs rebalancing
 	y_offset = function(pr) return pr:next(-32,-16) end,
 	y_max = 15,
 	y_min = mcl_vars.mg_overworld_min + 35,

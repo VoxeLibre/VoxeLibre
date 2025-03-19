@@ -42,12 +42,13 @@ local function hut_placement_callback(pos,def,pr,p1,p2)
 end
 
 vl_structures.register_structure("witch_hut",{
+	chunk_probability = 10, -- rare biome
+	hash_mindist_2d = 80,
 	place_on = {"mcl_core:water_source","group:sand","group:grass_block","group:dirt","mclx_core:river_water_source"},
 	spawn_by = {"mcl_core:water_source","mclx_core:river_water_source"},
 	check_offset = -1,
 	num_spawn_by = 3,
 	flags = "place_center_x, place_center_z, all_surfaces",
-	chunk_probability = 8,
 	prepare = { surface = "under_air", tolerance = 3, clear_bottom = 3, padding = 0, corners = 1, foundation = false, mode = "max" },
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = -5,

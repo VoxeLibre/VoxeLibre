@@ -71,10 +71,11 @@ local warm_oceans = {
 }
 
 local cold = {
+	chunk_probability = 5,
+	hash_mindist_2d = 80,
 	place_on = {"group:sand","mcl_core:gravel","mcl_core:dirt","mcl_core:clay","group:material_stone"},
 	spawn_by = {"group:water"},
 	num_spawn_by = 2,
-	chunk_probability = 10, -- todo: 15?
 	biomes = cold_oceans,
 	y_min = mcl_vars.mg_overworld_min,
 	y_max = water_level - 6,
@@ -114,10 +115,8 @@ local cold = {
 			}
 		}
 	},
-	after_place = function(pos)
-		local minp = vector.offset(pos, -10, -4, -10)
-		local maxp = vector.offset(pos,  10,  2,  10)
-		mcl_ocean.kelp.remove_kelp_below_structure(minp, maxp)
+	after_place = function(pos, _, _, p1, p2)
+		mcl_ocean.kelp.remove_kelp_below_structure(p1, p2)
 	end,
 }
 

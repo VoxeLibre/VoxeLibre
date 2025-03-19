@@ -1082,18 +1082,19 @@ local function create_corridor_system(main_cave_coords, pr)
 end
 
 vl_structures.register_structure("mineshaft",{
+	chunk_probability = 25,
+	-- with the placement logic below, this does not make much sense: hash_mindist = 1,
 	place_on = {"group:sand","group:grass_block","mcl_core:water_source","group:dirt","mcl_core:dirt_with_grass","mcl_core:gravel","group:material_stone","mcl_core:snow"},
-	chunk_probability = 4,
 	flags = "place_center_x, place_center_z, force_placement, all_floors",
 	y_max = 40,
 	y_min = mcl_vars.mg_overworld_min,
 	place_func = function(pos,_,pr,blockseed)
-		local r = pr:next(-50,-10)
-		local p = vector.offset(pos,0,r,0)
+		local r = pr:next(mcl_vars.mg_overworld_min + 5, math.max(mcl_vars.mg_overworld_min + 5, math.min(pos.y - 10, -10)))
+		local p = vector.offset(pos,0,r-pos.y,0)
 		if p.y < mcl_vars.mg_overworld_min + 5 then
 			p.y = mcl_vars.mg_overworld_min + 5
 		end
-		if p.y > -10 then return true end
+		if p.y > -10 then return false end
 		InitRandomizer(blockseed)
 
 		local hook = tsm_railcorridors.on_start

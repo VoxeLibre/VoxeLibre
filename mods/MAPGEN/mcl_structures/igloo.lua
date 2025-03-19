@@ -1,9 +1,9 @@
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
+local S = core.get_translator(modname)
 
 local function spawn_mobs(p1,p2,vi,zv)
-	local mc = minetest.find_nodes_in_area_under_air(p1,p2,{"mcl_core:stonebrickmossy"})
+	local mc = core.find_nodes_in_area_under_air(p1,p2,{"mcl_core:stonebrickmossy"})
 	if #mc == 2 then
 		local vp, zp = mc[1], mc[2]
 		if not vi and zv and zv:get_pos() and vector.distance(mc[1],zv:get_pos()) < 2 then
@@ -13,10 +13,10 @@ local function spawn_mobs(p1,p2,vi,zv)
 		elseif zv and vi then
 			return
 		end
-		vi = minetest.add_entity(vector.offset(vp,0,1,0),"mobs_mc:villager")
-		zv = minetest.add_entity(vector.offset(zp,0,1,0),"mobs_mc:villager_zombie")
+		vi = core.add_entity(vector.offset(vp,0,1,0),"mobs_mc:villager")
+		zv = core.add_entity(vector.offset(zp,0,1,0),"mobs_mc:villager_zombie")
 		if vi and vi:get_pos() and zv and zv:get_pos() then
-			minetest.after(1,spawn_mobs,p1,p2,vi,zv)
+			core.after(1,spawn_mobs,p1,p2,vi,zv)
 		end
 	end
 end
@@ -49,7 +49,7 @@ local function igloo_callback(cpos,def,pr,p1,p2,size,rotation)
 		tdir = vector.new(0, 0, 1)
 		tpos = vector.new(pos.x+3, pos.y, pos.z+7)
 	else
-		minetest.log("bad rotation: "..tostring(rotation))
+		core.log("bad rotation: "..tostring(rotation))
 		return false
 	end
 	local function set_brick(pos)
@@ -61,38 +61,40 @@ local function igloo_callback(cpos,def,pr,p1,p2,size,rotation)
 		else
 			brick = (c == 1 and "mcl_core:stonebrickcracked") or "mcl_core:stonebrick"
 		end
-		minetest.set_node(pos, {name=brick})
+		core.swap_node(pos, {name=brick})
 	end
 	local real_depth = 2
 	-- Check how deep we can actually dig
 	for y=pos.y-real_depth, pos.y-depth, -1 do
 		real_depth = real_depth + 1
-		local node = minetest.get_node(vector.new(tpos.x, y, tpos.z))
-		local def = node and minetest.registered_nodes[node.name]
+		local node = core.get_node(vector.new(tpos.x, y, tpos.z))
+		local def = node and core.registered_nodes[node.name]
 		if not (def and def.walkable and def.liquidtype == "none" and def.is_ground_content) then break end
 	end
 	local bpos = vector.new(cpos.x, pos.y-real_depth+1, cpos.z)
 	if real_depth <= 6 then
-		minetest.log("action", "Ground not deep enough for igloo basement: "..real_depth)
+		core.log("action", "Ground not deep enough for igloo basement: "..real_depth)
 		return false
 	end
 	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
 	vl_structures.place_schematic(bpos, -1, path, rotation, {
+		name = "igloo_basement",
 		force_placement = true,
 		prepare = { tolerance = "off", foundation = false, clear = false },
 		after_place = function(_, _, pr, p1, p2)
 			-- Generate ladder to basement
-			local ladder = {name="mcl_core:ladder", param2=minetest.dir_to_wallmounted(tdir)}
-			-- TODO: use voxelmanip?
-			minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
+			local ladder = {name="mcl_core:ladder", param2=core.dir_to_wallmounted(tdir)}
+			core.swap_node(tpos, {name="mcl_doors:trapdoor", param2=20+core.dir_to_facedir(dir)}) -- TODO: more reliable param2
+			-- TODO: use bulk swap? but igloos are rare anyway.
 			for y = tpos.y-1, bpos.y+4, -1 do
 				set_brick(vector.new(tpos.x-1, y, tpos.z  ))
 				set_brick(vector.new(tpos.x+1, y, tpos.z  ))
 				set_brick(vector.new(tpos.x  , y, tpos.z-1))
 				set_brick(vector.new(tpos.x  , y, tpos.z+1))
-				minetest.set_node(vector.new(tpos.x, y, tpos.z), ladder)
+				core.swap_node(vector.new(tpos.x, y, tpos.z), ladder)
 			end
 			vl_structures.fill_chests(p1,p2,def.loot,pr)
+			-- TODO: add something into brewing stand?
 			vl_structures.construct_nodes(p1,p2,{"mcl_brewing:stand_000","mcl_books:bookshelf"})
 			spawn_mobs(p1,p2)
 		end
@@ -100,9 +102,10 @@ local function igloo_callback(cpos,def,pr,p1,p2,size,rotation)
 end
 
 vl_structures.register_structure("igloo",{
+	chunk_probability = 0.5,
+	hash_mindist_2d = 80,
 	filenames = { modpath.."/schematics/mcl_structures_igloo_top.mts" },
 	place_on = {"mcl_core:snowblock","mcl_core:snow","group:grass_block_snow"},
-	chunk_probability = 15,
 	prepare = { tolerance = 3, padding = 1, corners = 1, foundation = -6, clear_top = -1 },
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = 0,
