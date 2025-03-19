@@ -1,0 +1,3 @@
+./mods/CORE/mcl_util/area.lua
+./mods/CORE/mcl_util/fake_metadata.lua
+./mods/CORE/vl_volume/init.lua
