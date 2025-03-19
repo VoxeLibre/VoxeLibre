@@ -49,12 +49,14 @@ end
 
 if not vector.in_area then
 	-- backport from Luanti 5.8, can be removed when the minimum version is 5.8
+	-- luacheck: push ignore 122
 	---@diagnostic disable-next-line:duplicate-set-field
 	vector.in_area = function(pos, minp, maxp)
 		return (pos.x >= minp.x) and (pos.x <= maxp.x) and
 		       (pos.y >= minp.y) and (pos.y <= maxp.y) and
 		       (pos.z >= minp.z) and (pos.z <= maxp.z)
 	end
+	-- luacheck: pop
 end
 
 ---@param a0 vector.Vector Area a minimum point
