@@ -4,6 +4,7 @@ local mock = require("mock").luanti(_G)
 local vl_volume
 
 -- Dependency
+mock.load_mod("mcl_init", "../mcl_init")
 mock.load_mod("mcl_util", "../mcl_util")
 
 describe('vl_volume',function()
