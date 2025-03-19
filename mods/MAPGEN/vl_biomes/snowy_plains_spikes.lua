@@ -16,19 +16,19 @@ vl_biomes.register_biome({
 	y_max = vl_biomes.overworld_max,
 	humidity_point = 24,
 	heat_point = -5,
-	_mcl_biome_type = "snowy",
-	_mcl_water_temp = "frozen",
-	_mcl_grass_palette_index = 2,
-	_mcl_foliage_palette_index = 2,
-	_mcl_water_palette_index = 5,
-	_mcl_skycolor = vl_biomes.skycolor.icy,
+	_vl_biome_type = "snowy",
+	_vl_water_temp = "frozen",
+	_vl_grass_palette = "snowy_plains_spikes",
+	_vl_foliage_palette = "snowy_taiga",
+	_vl_water_palette = "snowy",
+	_vl_skycolor = vl_biomes.skycolor.icy,
 	_vl_subbiomes = {
 		ocean = {
 			node_top = "mcl_core:gravel",
 			depth_top = 1,
 			node_filler = "mcl_core:gravel",
 			depth_filler = 3,
-			_mcl_skycolor = vl_biomes.skycolor.icy, -- not default, but icy
+			_vl_skycolor = vl_biomes.skycolor.icy, -- not default, but icy
 		},
 	}
 })
