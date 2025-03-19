@@ -80,6 +80,8 @@ local function noop() end
 ---@param callback? fun(md : core.MetaDataRef)
 ---@return nil
 function vl_volume.create_volume(minp, maxp, callback)
+	minp, maxp = mcl_util.normalize_area(minp, maxp)
+
 	-- Create the volume
 	local uuid = string.format("%d,%d,%d-%d,%d,%d", minp.x, minp.y, minp.z, maxp.x, maxp.y, maxp.z)
 
@@ -109,4 +111,13 @@ function vl_volume.create_volume(minp, maxp, callback)
 
 	-- Clear position cache
 	cache = {}
+
+	-- Update chunk
+	local minp_chunk = mcl_vars.pos_to_chunk(minp)
+	local maxp_chunk = mcl_vars.pos_to_chunk(maxp)
+
+	---@alias Vector vector.Vector
+	for pos in mcl_util.iterate_area(minp_chunk, maxp_chunk) do
+		--print(dump{ pos = pos })
+	end
 end
