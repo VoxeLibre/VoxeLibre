@@ -35,8 +35,42 @@ Structures in this API are defined using the following table:
     terrain_feature =,      -- affects placement priority and disables logging for uninteresting structures
     no_registry =,          -- do not register the structure for the /locate command (implied for terrain features)
     daughters =,            -- substructures to spawn, unstable API
+    hash_mindist =,         -- minimum distance (in chunks) using minhash rule, 3d
+    hash_mindist_2d =,      -- minimum distance (in chunks) using minhash rule, 2d
+    hash_seed =,            -- seed value for hashing, defaults to hash(name)
 }
 ```
+
+### MinHash to avoid neighboring structures
+
+A structure spawn will only be attempted with a minimum distance of a few blocks.
+To make this computationally cheap, deterministic, and independent of block generation order,
+every chunk (usually 80 nodes) is assigned a pseudo-random hash value,
+which is inexpensive to compute also for non-existant blocks.
+Before spawning a structure, it is first checked that all blocks within a radius
+have a higher minhash value, only then a structure spawn attempt will be performed.
+By symmetry, this means that on all neighbor chunks, there exists a lower minhash value,
+and hence the structure is not spawned there.
+
+We use Manhattan distance, and there exists a 2d and a 3d version, although we currently only use the 2d version.
+
+Example:
+For simplicity assume our hash values are two digit numbers, and we have a distance of 2.
+We check all chunks with a maximum distance of 2, so in 2D we check 12 neighbors, and compute 13 hash values
+of block positions. Assuming we get the following hash values:
+```
+      42
+   77 99 33
+12  7  2 19 11
+   23 21  8
+       9
+```
+In this case, we would attempt a structure spawn, because 2 is the smallest number.
+If we instead had obtained 10 (or 7) we would not attempt a structure spawn, because it is not the smallest.
+Similarly, we will not attempt a spawn in the left neighbor, with hash 7, because it is larger than 2.
+
+We *by design* use this value also as a probability. The smallest probability in the area times the number of cells
+included in this test area allows making the parameterization simpler.
 
 ## vl_structures.register_structure(name,def)
 

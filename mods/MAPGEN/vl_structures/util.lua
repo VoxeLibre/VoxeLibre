@@ -95,3 +95,11 @@ function vl_structures.fill_chests(p1,p2,loot,pr)
 	end
 end
 
+--- Mapgen generation chunk from position
+-- @param p vector: position
+-- @param sidelen number: subdivision sidelen, default 80
+-- @return x number, y number, z number
+function vl_structures.pos_to_chunk(p, sidelen)
+	sidelen = sidelen or 80
+	return math.floor((p.x + 32) / sidelen), math.floor((p.y + 32) / sidelen), math.floor((p.z + 32) / sidelen)
+end
