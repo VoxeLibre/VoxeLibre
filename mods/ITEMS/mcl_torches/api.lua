@@ -92,6 +92,8 @@ local function remove_flames(pos)
 end
 
 vl_attach.set_default("torch", function(_, def, wdir)
+	if not def then return false end
+
 	-- No ceiling torches
 	if wdir == 0 then return false end
 
@@ -111,7 +113,7 @@ vl_attach.register_autogroup({
 		-- Allow attaching torches to the tops of these node types
 		if groups.fence == 1 or (groups.wall or 0) ~= 0 or (groups.anvil or 0) ~= 0
 		or (groups.pane or 0) ~= 0 then
-			allow_attach.torch = function(_, wdir) return wdir == 1 end
+			allow_attach.torch = function(_, _, wdir) return wdir == 1 end
 		end
 	end
 })

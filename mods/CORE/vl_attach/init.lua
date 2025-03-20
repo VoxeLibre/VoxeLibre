@@ -15,7 +15,7 @@ local DOWN = vector.new(0,-1,0)
 local defaults = {}
 
 ---@class core.NodeDef
----@field _vl_allow_attach? {[string]: boolean|fun(def : core.Node, wdir : number, attach_type : string)}?
+---@field _vl_allow_attach? {[string]: boolean|fun(def : core.Node, def : core.NodeDef, wdir : number, attach_type : string):boolean?}
 ---@field _vl_attach_type? string
 ---@field _vl_attach_make_placed_node? fun(placed_node : core.Node, placer : core.Player, dir : vector.Vector, itemstack : core.ItemStack) : core.Node
 
@@ -104,25 +104,19 @@ function vl_attach.check_allowed(node, wdir, attach_type)
 	if not def then return false end
 
 	-- Handle type-specific checks that apply to all node types
-	---@type boolean|fun(node : core.Node, def : core.NodeDef, wdir : number, attach_type : string)
+	---@type boolean|fun(node : core.Node, def : core.NodeDef, wdir : number, attach_type : string) : boolean
 	local allow_attach = defaults[attach_type]
-	if type(allow_attach) == "function" then
-		allow_attach = allow_attach(node, def, wdir, attach_type)
-	end
-	if allow_attach ~= nil then return allow_attach end
 
 	-- Allow nodes to define attachable device type handling
-	local vl_allow_attach = def._vl_allow_attach or {}
-
-	-- Find allow/deny/callback for specified attach_type, and use "all" as a fallback
-	if vl_allow_attach.all ~= nil then allow_attach = vl_allow_attach.all end
-	if vl_allow_attach[attach_type] ~= nil then allow_attach = vl_allow_attach[attach_type] end
-
-	-- Dispatch callbacks
-	if type(allow_attach) == "function" then
-		allow_attach = allow_attach(node, wdir, attach_type)
+	local vl_allow_attach = def._vl_allow_attach
+	if vl_allow_attach then
+		-- Find allow/deny/callback for specified attach_type, and use "all" as a fallback
+		if vl_allow_attach.all ~= nil then allow_attach = vl_allow_attach.all end
+		if vl_allow_attach[attach_type] ~= nil then allow_attach = vl_allow_attach[attach_type] end
 	end
 
+	-- Dispatch callbacks
+	if type(allow_attach) == "function" then allow_attach = allow_attach(node, def, wdir, attach_type) end
 	return allow_attach
 end
 
