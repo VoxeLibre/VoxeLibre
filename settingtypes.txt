@@ -364,9 +364,6 @@ mcl_enable_hamburger (Enable Hamburger) bool true
 give_starting_inv (Player Starter Pack) bool false
 
 [Debugging]
-# If enabled, this will show the itemstring of an item in the description.
-mcl_item_id_debug (Item ID Debug) bool false
-
 #Log mob spawning and despawning events
 mcl_logging_mobs_spawn (Log Mob Spawning) bool false
 
