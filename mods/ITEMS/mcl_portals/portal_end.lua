@@ -311,7 +311,7 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	_doc_items_create_entry = false,
 	groups = { creative_breakable = 1, deco_block = 1, comparator_signal = 15, end_portal_frame = 2, not_in_creative_inventory = 1, unbreakable = 1 },
 	groups = { creative_breakable = 1, deco_block = 1, comparator_signal = 15, end_portal_frame = 2, not_in_creative_inventory = 1 },
-	_vl_allow_attach = {torch = function(node,wdir) return wdir == 1 end},
+	_vl_allow_attach = {torch = function(_,_,wdir) return wdir == 1 end},
 	tiles = { "mcl_portals_endframe_top.png^[lowpart:75:mcl_portals_endframe_eye.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_eye.png^mcl_portals_endframe_side.png" },
 	paramtype2 = "facedir",
 	drawtype = "nodebox",

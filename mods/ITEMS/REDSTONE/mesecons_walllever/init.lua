@@ -118,7 +118,7 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mesecons_walllever:wall_lever_off", "nodes", "mesecons_walllever:wall_lever_on")
 end
 
-vl_attach.set_default("lever", function(_, wdir)
+vl_attach.set_default("lever", function(_, _, wdir)
 	-- No ceiling levers
 	if wdir == 0 then return false end
 end)
