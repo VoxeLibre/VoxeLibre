@@ -40,7 +40,7 @@ local FLAT_ALLOWED_ATTACH = {
 	[4] = {[1] = true,             [2] = true, [3] = true,},
 	[5] = {[0] = true, [1] = true,             [3] = true,},
 }
-local function piston_allow_attach_flat(node, wdir)
+local function piston_allow_attach_flat(node, _, wdir)
 	return FLAT_ALLOWED_ATTACH[wdir][node.param2]
 end
 
