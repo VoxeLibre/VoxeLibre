@@ -698,6 +698,21 @@ end
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
+-- TODO REMOVE
+-- The following 3 functions are deprecated
+-- kept for API compatibility for now
+-- evaluate impact and remove soon™
+function mcl_core.get_grass_block_type(pos, requested_grass_block_name)
+	return {name = requested_grass_block_name or minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index}
+end
+function mcl_core.get_foliage_block_type(pos)
+	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index}
+end
+function mcl_core.get_water_block_type(pos)
+	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index}
+end
+-- end of deprecated block
+
 ------------------------------
 -- Spread grass blocks and mycelium on neighbor dirt
 ------------------------------
@@ -743,7 +758,7 @@ minetest.register_abm({
 					param2 = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
 				}
 			end
-			minetest.set_node(pos, {name=n2.name})
+			minetest.set_node(pos, n2)
 
 			-- If this was mycelium, uproot plant above
 			if n2.name == "mcl_core:mycelium" then
