@@ -394,6 +394,8 @@ local function ecb_spawn_dungeon(blockpos, action, calls_remaining, param)
 
 		mcl_mobspawners.setup_spawner(sp, spawner_mob, 0, 7)
 	end
+
+	vl_structures.register_structures_spawn("dungeon", sp)
 end
 
 local function dungeons_nodes(minp, maxp, blockseed)
