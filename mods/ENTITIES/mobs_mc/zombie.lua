@@ -53,7 +53,7 @@ local zombie = {
 		hp_min = 20,
 		hp_max = 20,
 		breath_max = -1,
-		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.8, 0.3},
+		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.89, 0.3},
 	},
 	xp_min = 5,
 	xp_max = 5,
