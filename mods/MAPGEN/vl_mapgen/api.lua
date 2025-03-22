@@ -1,7 +1,6 @@
 local logging = core.settings:get_bool("vl_logging_mapgen_chunks", false) -- basic
 local log_timing = core.settings:get_bool("vl_logging_mapgen_timing", false) -- detailed, for performance debugging
 
-local seed = core.get_mapgen_setting("seed")
 local registered_generators = {}
 
 local lvm, nodes, param2 = 0, 0, 0
@@ -224,16 +223,10 @@ local function sort_decorations()
 end
 
 vl_mapgen.register_generator("Gennotify callbacks", nil, function(minp, maxp, blockseed)
-	local pr = PcgRandom(blockseed + seed + 48214) -- constant seed offset
 	local gennotify = core.get_mapgen_object("gennotify")
 	for key, def in pairs(gennotify_map) do
 		local t = gennotify[key]
 		if t and #t > 0 then
-			-- Fisher-Yates shuffle, using pr
-			for i = 1, #t-1 do
-				local r = pr:next(i,#t)
-				t[i], t[r] = t[r], t[i]
-			end
 			def.gen_callback(t, minp, maxp, blockseed)
 		end
 	end
