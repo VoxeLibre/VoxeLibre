@@ -101,3 +101,20 @@ Bone control code, which had workarounds incompatible with 5.11+ Luanti versions
 ### Crash fixes
 * Extremely rare crashes related to minecarts and boats – by teknomunk
 * Fixed a crash with the Skyblock mod installed – by teknomunk
+
+
+## 0.89.1 hotfix
+* Moved some properties from mob definition to initial_properties (fixes some bugs and warning spam) – by teknomunk and Impulse
+* Minor structure fixes – by kno10
+* Improvements to mcl_cozy, disabled stair and slab interaction by default – by rudzik8
+* Fixed seagrass floor passing light – by kno10
+* Improved fallen log and lake generation – by kno10
+* Guard against horse texture-related crash – by teknomunk
+* Fixed liquids being diggable in some cases – by teknomunk
+* Fixed legacy mob conversion-related crash – by teknomunk
+* Fixed wrong Luanti sound API usage in sheep code – by rudzik8
+* Localized some functions (fixes an item duplication bug) – by teknomunk
+* Fixed incompatibility with PUC Lua (non-JIT crashed) – by kno10
+* Fixed an infinite loop causing a rare freeze – by kno10
+* Fixed item aliases being registered after game start – by teknomunk
+* Made zombie hitbox slightly taller (allows some mob spawning filters) – by Nicu
