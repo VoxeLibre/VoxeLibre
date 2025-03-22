@@ -698,20 +698,20 @@ end
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
--- Return appropriate grass block node for pos
+-- TODO REMOVE
+-- The following 3 functions are deprecated
+-- kept for API compatibility for now
+-- evaluate impact and remove soon™
 function mcl_core.get_grass_block_type(pos, requested_grass_block_name)
 	return {name = requested_grass_block_name or minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index}
 end
-
--- Return appropriate foliage block node for pos
 function mcl_core.get_foliage_block_type(pos)
 	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).foliage_palette_index}
 end
-
--- Return appropriate water block node for pos
 function mcl_core.get_water_block_type(pos)
 	return {name = minetest.get_node(pos).name, param2 = mcl_util.get_palette_indexes_from_pos(pos).water_palette_index}
 end
+-- end of deprecated block
 
 ------------------------------
 -- Spread grass blocks and mycelium on neighbor dirt
@@ -753,9 +753,12 @@ minetest.register_abm({
 
 			local n2 = minetest.get_node(p2)
 			if minetest.get_item_group(n2.name, "grass_block") ~= 0 then
-				n2 = mcl_core.get_grass_block_type(pos, "mcl_core:dirt_with_grass")
+				n2 = {
+					name = "mcl_core:dirt_with_grass",
+					param2 = mcl_util.get_palette_indexes_from_pos(pos).grass_palette_index
+				}
 			end
-			minetest.set_node(pos, {name=n2.name})
+			minetest.set_node(pos, n2)
 
 			-- If this was mycelium, uproot plant above
 			if n2.name == "mcl_core:mycelium" then
