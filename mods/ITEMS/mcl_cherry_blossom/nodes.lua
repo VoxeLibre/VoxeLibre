@@ -16,7 +16,7 @@ mcl_core.register_wooden_planks("cherrywood", S("Cherry Wood Planks"), {"mcl_che
 -- Leaves
 mcl_core.register_leaves("cherryleaves", S("Cherry Leaves"), 
 	S("Cherry blossom leaves are grown from cherry blossom trees."), {"mcl_cherry_blossom_leaves.png"},
-	nil, "none", nil, "mcl_cherry_blossom:cherrysapling", false, {20, 16, 12, 10})
+	nil, "none", nil, "mcl_cherry_blossom:cherrysapling", false, {20, 16, 12, 10}, 0, {"mcl_cherry_blossom_leaves_bushy.png"})
 
 -- Sapling
 mcl_core.register_sapling("cherrysapling", S("Cherry Sapling"),

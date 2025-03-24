@@ -275,6 +275,13 @@ vl_christmas_decorations (Christmas decorations) enum Calendar Always,Calendar,N
 # * truncate: stop adding characters to a line past the limit, add ... instead
 mcl_signs_wrap_mode (Signs text wrapping mode) enum word_wrap word_wrap,word_break,truncate
 
+# Controls rendering of leave nodes.
+# * block: classic block rendering
+# * bushy: extend beyond block boundaries
+# * rotated: also rotated on the y axis, like flowers
+# * diagonal: rotated diagonally
+vl_bushy_leaves (Bushy leaves) enum bushy block,bushy,rotated,diagonal
+
 [Experimental]
 # Whether ice is translucent. If disabled, ice is fully opaque.
 #
