@@ -161,6 +161,12 @@ local function try_object_pickup(player, inv, object, checkpos)
 	end
 end
 
+---@class core.LuaEntity
+---@field _magnet_distance number
+---@field collector string
+---@field collected boolean
+---@field age number
+
 minetest.register_globalstep(function(_)
 	tick = not tick
 
@@ -191,15 +197,20 @@ minetest.register_globalstep(function(_)
 
 			--magnet and collection
 			for _, object in pairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
-				if not object:is_player() and vector.distance(checkpos, object:get_pos()) < item_drop_settings.radius_magnet and
+				local distance = vector.distance(checkpos, object:get_pos())
+				if not object:is_player() and distance < item_drop_settings.radius_magnet and
 					object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer
 					and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
 
 					try_object_pickup( player, inv, object, checkpos )
 				elseif not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mcl_experience:orb" then
 					local entity = object:get_luaentity()
-					entity.collector = player:get_player_name()
-					entity.collected = true
+					local magnet_distance = entity._magnet_distance
+					if not magnet_distance or distance < magnet_distance then
+						entity.collector = player:get_player_name()
+						entity.collected = true
+						entity._magnet_distance = distance
+					end
 				end
 			end
 
