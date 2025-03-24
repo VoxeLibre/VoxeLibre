@@ -32,13 +32,15 @@ S("Arrows might get stuck on solid blocks and can be retrieved again. They are a
 
 -- Destroy arrow entity self at pos and drops it as an item
 local arrow_entity = {
-	physical = true,
-	pointable = false,
-	visual = "mesh",
-	mesh = "mcl_bows_arrow.obj",
-	visual_size = {x=-1, y=1},
-	textures = {"mcl_bows_arrow.png"},
-	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
+	initial_properties = {
+		physical = true,
+		pointable = false,
+		visual = "mesh",
+		mesh = "mcl_bows_arrow.obj",
+		visual_size = {x=-1, y=1},
+		textures = {"mcl_bows_arrow.png"},
+		collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
+	},
 	collide_with_objects = false,
 	liquid_drag = true,
 	_fire_damage_resistant = true,
