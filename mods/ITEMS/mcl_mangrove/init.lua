@@ -25,7 +25,7 @@ mcl_core.register_tree_trunk("mangrove_tree", S("Mangrove Wood"), S("Mangrove Ba
 mcl_core.register_wooden_planks("mangrove_wood", S("Mangrove Wood Planks"), {"mcl_mangrove_planks.png"})
 
 mcl_core.register_leaves("mangroveleaves", S("Mangrove Leaves"), S("Mangrove leaves are grown from mangrove trees."),
-	{"mcl_mangrove_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_mangrove:propagule", true, {20, 16, 12, 10}, 1)
+	{"mcl_mangrove_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_mangrove:propagule", true, {20, 16, 12, 10}, 1, {"mcl_mangrove_leaves_bushy.png"})
 
 mcl_core.register_stripped_trunk("mangrove_stripped", S("Stripped Mangrove Log"), S("Stripped Mangrove Wood"),
 	S("The stripped wood of a Mangrove tree"), S("The stripped bark of a Mangrove tree"),

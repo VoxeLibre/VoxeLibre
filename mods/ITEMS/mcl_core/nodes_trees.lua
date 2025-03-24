@@ -1,5 +1,8 @@
 -- Tree nodes: Wood, Wooden Planks, Sapling, Leaves, Stripped Wood
+local modpath = minetest.get_modpath(minetest.get_current_modname())
 local S = minetest.get_translator(minetest.get_current_modname())
+
+local bushy_leaves = minetest.settings:get("vl_bushy_leaves") or "bushy"
 
 local mod_screwdriver = minetest.get_modpath("screwdriver")
 
@@ -157,7 +160,7 @@ function mcl_core.register_wooden_planks(subname, description, tiles)
 	})
 end
 
-function mcl_core.register_leaves(subname, description, longdesc, tiles, color, paramtype2, palette, sapling, drop_apples, sapling_chances, foliage_palette)
+function mcl_core.register_leaves(subname, description, longdesc, tiles, color, paramtype2, palette, sapling, drop_apples, sapling_chances, foliage_palette, bushy_tiles)
 	local mod = minetest.get_current_modname()
 	local apple_chances = {200, 180, 160, 120, 40}
 	local stick_chances = {50, 45, 30, 35, 10}
@@ -227,7 +230,21 @@ function mcl_core.register_leaves(subname, description, longdesc, tiles, color, 
 		after_place_node = function(pos)
 			mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
 		end,
-		}
+	}
+
+	if bushy_tiles and bushy_leaves == "bushy" then
+		l_def.drawtype = "mesh"
+		l_def.mesh = "vl_bushy_leaves.obj"
+		l_def.tiles = bushy_tiles
+	elseif bushy_tiles and bushy_leaves == "rotated" then
+		l_def.drawtype = "mesh"
+		l_def.mesh = "vl_bushy_leaves_rot.obj"
+		l_def.tiles = bushy_tiles
+	elseif bushy_tiles and bushy_leaves == "diagonal" then
+		l_def.drawtype = "mesh"
+		l_def.mesh = "vl_bushy_leaves_diag.obj"
+		l_def.tiles = bushy_tiles
+	end
 
 	minetest.register_node(mod .. ":" .. subname, l_def)
 
@@ -345,12 +362,12 @@ mcl_core.register_sapling("birchsapling", S("Birch Sapling"),
 	nil, "mcl_core_sapling_birch.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
 
 
-mcl_core.register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from oak trees."), {"default_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:sapling", true, {20, 16, 12, 10}, 1)
-mcl_core.register_leaves("darkleaves", S("Dark Oak Leaves"), S("Dark oak leaves are grown from dark oak trees."), {"mcl_core_leaves_big_oak.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:darksapling", true, {20, 16, 12, 10}, 1)
-mcl_core.register_leaves("jungleleaves", S("Jungle Leaves"), S("Jungle leaves are grown from jungle trees."), {"default_jungleleaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:junglesapling", false, {40, 26, 32, 24, 10}, 1)
-mcl_core.register_leaves("acacialeaves", S("Acacia Leaves"), S("Acacia leaves are grown from acacia trees."), {"default_acacia_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:acaciasapling", false, {20, 16, 12, 10}, 1)
-mcl_core.register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {"mcl_core_leaves_spruce.png"}, "#619961", "none", nil, "mcl_core:sprucesapling", false, {20, 16, 12, 10}, 0)
-mcl_core.register_leaves("birchleaves", S("Birch Leaves"), S("Birch leaves are grown from birch trees."), {"mcl_core_leaves_birch.png"}, "#80A755", "none", nil, "mcl_core:birchsapling", false, {20, 16, 12, 10}, 0)
+mcl_core.register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from oak trees."), {"default_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:sapling", true, {20, 16, 12, 10}, 1, {"mcl_core_leaves_bushy.png"})
+mcl_core.register_leaves("darkleaves", S("Dark Oak Leaves"), S("Dark oak leaves are grown from dark oak trees."), {"mcl_core_leaves_big_oak.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:darksapling", true, {20, 16, 12, 10}, 1, {"mcl_core_leaves_big_oak_bushy.png"})
+mcl_core.register_leaves("jungleleaves", S("Jungle Leaves"), S("Jungle leaves are grown from jungle trees."), {"default_jungleleaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:junglesapling", false, {40, 26, 32, 24, 10}, 1, {"mcl_core_leaves_jungle_bushy.png"})
+mcl_core.register_leaves("acacialeaves", S("Acacia Leaves"), S("Acacia leaves are grown from acacia trees."), {"default_acacia_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:acaciasapling", false, {20, 16, 12, 10}, 1, {"mcl_core_leaves_acacia_bushy.png"})
+mcl_core.register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {"mcl_core_leaves_spruce.png"}, "#619961", "none", nil, "mcl_core:sprucesapling", false, {20, 16, 12, 10}, 0, {"mcl_core_leaves_spruce_bushy.png"})
+mcl_core.register_leaves("birchleaves", S("Birch Leaves"), S("Birch leaves are grown from birch trees."), {"mcl_core_leaves_birch.png"}, "#80A755", "none", nil, "mcl_core:birchsapling", false, {20, 16, 12, 10}, 0, {"mcl_core_leaves_birch_bushy.png"})
 
 
 
