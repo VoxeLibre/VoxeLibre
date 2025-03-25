@@ -40,8 +40,8 @@ local arrow_entity = {
 		visual_size = {x=-1, y=1},
 		textures = {"mcl_bows_arrow.png"},
 		collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
+		collide_with_objects = false,
 	},
-	collide_with_objects = false,
 	liquid_drag = true,
 	_fire_damage_resistant = true,
 

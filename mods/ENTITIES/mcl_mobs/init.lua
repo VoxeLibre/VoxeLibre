@@ -423,10 +423,15 @@ function mcl_mobs.register_arrow(name, def)
 	end
 
 	vl_projectile.register(name, {
-		physical = false,
-		visual = def.visual,
-		visual_size = def.visual_size,
-		textures = def.textures,
+		initial_properties = {
+			physical = false,
+			visual = def.visual,
+			visual_size = def.visual_size,
+			textures = def.textures,
+			collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0}, -- remove box around arrows
+			automatic_face_movement_dir = def.rotate
+				and (def.rotate - (math.pi / 180)) or false,
+		},
 		velocity = def.velocity,
 		hit_player = def.hit_player,
 		hit_node = def.hit_node,
@@ -434,7 +439,6 @@ function mcl_mobs.register_arrow(name, def)
 		hit_object = def.hit_object,
 		homing = def.homing,
 		drop = def.drop or false, -- drops arrow as registered item when true
-		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0}, -- remove box around arrows
 		timer = 0,
 		switch = 0,
 		_lifetime = def._lifetime or 7,
@@ -492,8 +496,6 @@ function mcl_mobs.register_arrow(name, def)
 			self.object:set_velocity(dir * vel)
 			self._owner = mcl_util.get_entity_id(puncher)
 		end,
-		automatic_face_movement_dir = def.rotate
-			and (def.rotate - (math.pi / 180)) or false,
 
 		on_activate = def.on_activate,
 
