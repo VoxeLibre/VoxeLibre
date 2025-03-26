@@ -1,7 +1,7 @@
 -- This file stores the various node types. This makes it easier to plug this mod into games
 -- in which you need to change the node names.
 
--- Adapted for MineClone 2!
+-- Adapted for VoxeLibre!
 
 -- Imports
 local create_minecart = mcl_minecarts.create_minecart
@@ -10,19 +10,19 @@ local save_cart_data = mcl_minecarts.save_cart_data
 
 -- Node names (Don't use aliases!)
 tsm_railcorridors.nodes = {
-	dirt = "mcl_core:dirt",
-	chest = "mcl_chests:chest",
-	rail = "mcl_minecarts:rail_v2",
-	torch_floor = "mcl_torches:torch",
-	torch_wall = "mcl_torches:torch_wall",
-	cobweb = "mcl_core:cobweb",
-	spawner = "mcl_mobspawners:spawner",
+	dirt        = { name = "mcl_core:dirt" },
+	chest       = { name = "mcl_chests:chest" },
+	rail        = { name = "mcl_minecarts:rail_v2" },
+	torch_floor = { name = "mcl_torches:torch", param2 = core.dir_to_wallmounted({x=0,y=-1,z=0}) },
+	torch_wall  = { name = "mcl_torches:torch_wall" },
+	cobweb      = { name = "mcl_core:cobweb" },
+	spawner     = { name = "mcl_mobspawners:spawner" },
 }
 
 local update_rail_connections = mcl_minecarts.update_rail_connections
 local rails_to_update = {}
 tsm_railcorridors.on_place_node = {
-	[tsm_railcorridors.nodes.rail] = function(pos, node)
+	[tsm_railcorridors.nodes.rail.name] = function(pos, node)
 		rails_to_update[#rails_to_update + 1] = pos
 	end,
 }
@@ -35,25 +35,25 @@ tsm_railcorridors.on_finish = function()
 	end
 end
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
-
+local WOOD, FENCE = { name = "mcl_core:wood" }, { name = "mcl_fences:fence" }
+local DARKWOOD, DARKFENCE = { name = "mcl_core:darkwood" }, { name = "mcl_fences:dark_oak_fence" }
+local mg_name = core.get_mapgen_setting("mg_name")
 if mg_name == "v6" then
 	-- In v6, wood is chosen randomly.
 	--[[ Wood types for the corridors. Corridors are made out of full wood blocks
 	and posts. For each corridor system, a random wood type is chosen with the chance
 	specified in per mille. ]]
 	tsm_railcorridors.nodes.corridor_woods = {
-		{ wood = "mcl_core:wood", post = "mcl_fences:fence", chance = 900},
-		{ wood = "mcl_core:darkwood", post = "mcl_fences:dark_oak_fence", chance = 100},
+		{ wood = WOOD, post = FENCE, chance = 900},
+		{ wood = DARKWOOD, post = DARKFENCE, chance = 100},
 	}
 else
 	-- This generates dark oak wood in mesa biomes and oak wood everywhere else.
-	function tsm_railcorridors.nodes.corridor_woods_function(_, node)
-		if minetest.get_item_group(node.name, "hardened_clay") ~= 0 then
-			return "mcl_core:darkwood", "mcl_fences:dark_oak_fence"
-		else
-			return "mcl_core:wood", "mcl_fences:fence"
+	function tsm_railcorridors.nodes.corridor_woods_function(_, nodename)
+		if core.get_item_group(nodename, "hardened_clay") ~= 0 then
+			return DARKWOOD, DARKFENCE
 		end
+		return WOOD, FENCE
 	end
 end
 
@@ -110,7 +110,7 @@ function tsm_railcorridors.create_cart_staticdata(entity_id, pos, pr, pr_carts)
 		save_cart_data(uuid)
 	end
 
-	return minetest.serialize({ uuid=uuid, seq=1 })
+	return core.serialize({ uuid=uuid, seq=1 })
 end
 
 -- Fallback function. Returns a random treasure. This function is called for chests
