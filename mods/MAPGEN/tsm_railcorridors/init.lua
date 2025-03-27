@@ -134,9 +134,9 @@ local function SetNodeIfCanBuild(x, y, z, node, check_above, can_replace_rail)
 end
 
 -- Tries to place a rail, taking the damage chance into account
-local function PlaceRail(x,y,z, damage_chance)
+local function PlaceRail(x,y,z, damage_chance, is_z)
 	if damage_chance and damage_chance > 0 and pr:next(1,1e9) * 1e-9 <= damage_chance then return false end
-	return SetNodeIfCanBuild(x, y, z, nodes.rail)
+	return SetNodeIfCanBuild(x, y, z, is_z and nodes.rail_z or nodes.rail)
 end
 
 -- Returns true if the node as point can be considered “ground”, that is, a solid material
@@ -578,7 +578,7 @@ local function create_corridor_section(wx,wy,wz, axis, sign, up_or_down, up_or_d
 			if get_node_name_raw(cx, cy, cz) == post.name then
 				cartplace = cartplace + 1
 			else
-				if IsRailSurface(cx, cy-1, cz) and PlaceRail(cx, cy, cz, damage) then
+				if IsRailSurface(cx, cy-1, cz) and PlaceRail(cx, cy, cz, damage, vx ~= 0) then
 					-- We don't put on a cart yet, we put it in the carts table
 					-- for later placement
 					table.insert(carts_table, {pos = {x=cx, y=cy, z=cz}, cart_type = pr_carts:next(1, #tsm_railcorridors.carts) })
@@ -607,7 +607,7 @@ local function create_corridor_section(wx,wy,wz, axis, sign, up_or_down, up_or_d
 		end
 
 		-- Main rail; this places almost all the rails
-		if IsRailSurface(px,py-1,pz) then PlaceRail(px,py,pz, damage) end
+		if IsRailSurface(px,py-1,pz) then PlaceRail(px,py,pz, damage, vx == 0) end
 
 		-- Place cobwebs left and right in the corridor
 		if place_cobwebs and nodes.cobweb then
@@ -642,7 +642,7 @@ local function create_corridor_section(wx,wy,wz, axis, sign, up_or_down, up_or_d
 		-- After going up or down, 1 missing rail piece must be added
 		Platform(fx,fy-1,fz, 0, wood)
 		if IsRailSurface(fx,fy-2,fz) then
-			PlaceRail(fx,fy-1,fz, damage)
+			PlaceRail(fx,fy-1,fz, damage, vx == 0)
 		end
 	end
 	if not corridor_dug then return end
@@ -785,7 +785,7 @@ local function create_corridor_system(main_cave_coords, pr)
 	local damage = pr:next(0,1e9)*1e-9 < probability_damage and pr:next(10, 50) * 0.01 or 0
 
 	-- Get wood and fence post types, using gameconfig.
-	local wood, post = nodes.corridor_woods_function(main_cave_coords, get_node_name(main_cave_coords))
+	local wood, post = nodes.corridor_woods_function(main_cave_coords)
 
 
 	-- Start 2-4 corridors in each direction
