@@ -12,7 +12,8 @@ local save_cart_data = mcl_minecarts.save_cart_data
 tsm_railcorridors.nodes = {
 	dirt        = { name = "mcl_core:dirt" },
 	chest       = { name = "mcl_chests:chest" },
-	rail        = { name = "mcl_minecarts:rail_v2" },
+	rail        = { name = "mcl_minecarts:rail_v2", param2 = 1 }, -- rail in x direction
+	rail_z      = { name = "mcl_minecarts:rail_v2", param2 = 0 }, -- rail in z direction
 	torch_floor = { name = "mcl_torches:torch", param2 = core.dir_to_wallmounted({x=0,y=-1,z=0}) },
 	torch_wall  = { name = "mcl_torches:torch_wall" },
 	cobweb      = { name = "mcl_core:cobweb" },
@@ -37,6 +38,13 @@ end
 
 local WOOD, FENCE = { name = "mcl_core:wood" }, { name = "mcl_fences:fence" }
 local DARKWOOD, DARKFENCE = { name = "mcl_core:darkwood" }, { name = "mcl_fences:dark_oak_fence" }
+local ACACIAWOOD, ACACIAFENCE = { name = "mcl_core:acaciawood" }, { name = "mcl_fences:acacia_fence" }
+local BIRCHWOOD, BIRCHFENCE = { name = "mcl_core:birchwood" }, { name = "mcl_fences:birch_fence" }
+local SPRUCEWOOD, SPRUCEFENCE = { name = "mcl_core:sprucewood" }, { name = "mcl_fences:spruce_fence" }
+local JUNGLEWOOD, JUNGLEFENCE = { name = "mcl_core:junglewood" }, { name = "mcl_fences:jungle_fence" }
+local MANGROVEWOOD, MANGROVEFENCE = { name = "mcl_mangrove:mangrovewood" }, { name = "mcl_mangrove:mangrove_wood_fence" }
+local BAMBOOWOOD, BAMBOOFENCE = { name = "mcl_bamboo:bamboo_block_stripped" }, { name = "mcl_bamboo:bamboo_fence" }
+
 local mg_name = core.get_mapgen_setting("mg_name")
 if mg_name == "v6" then
 	-- In v6, wood is chosen randomly.
@@ -49,10 +57,19 @@ if mg_name == "v6" then
 	}
 else
 	-- This generates dark oak wood in mesa biomes and oak wood everywhere else.
-	function tsm_railcorridors.nodes.corridor_woods_function(_, nodename)
-		if core.get_item_group(nodename, "hardened_clay") ~= 0 then
-			return DARKWOOD, DARKFENCE
-		end
+	function tsm_railcorridors.nodes.corridor_woods_function(pos)
+		local biome_index = minetest.get_biome_data({ x = pos.x, y = 10, z = pos.z }).biome
+		local biome_name = minetest.get_biome_name(biome_index)
+		-- TODO: use some group mapping instead?
+		if string.find(biome_name, "Mesa") then return DARKWOOD, DARKFENCE end
+		if string.find(biome_name, "Desert") then return DARKWOOD, DARKFENCE end
+		if string.find(biome_name, "Roofed") then return DARKWOOD, DARKFENCE end
+		if string.find(biome_name, "Bamboo") then return BAMBOOWOOD, BAMBOOFENCE end
+		if string.find(biome_name, "Jungle") then return JUNGLEWOOD, JUNGLEFENCE end
+		if string.find(biome_name, "Savanna") then return ACACIAWOOD, ACACIAFENCE end
+		if string.find(biome_name, "Birch") then return BIRCHWOOD, BIRCHFENCE end
+		if string.find(biome_name, "Taiga") then return SPRUCEWOOD, SPRUCEFENCE end
+		if string.find(biome_name, "Ice") then return SPRUCEWOOD, SPRUCEFENCE end
 		return WOOD, FENCE
 	end
 end
