@@ -17,6 +17,9 @@ creative_mode (Creative mode) bool false
 # setting is disabled, but they still deal damage to creatures.
 enable_fire (Destructive and spreading fire) bool true
 
+# Height at which clouds appear by default (classic: 65)
+vl_clouds_level (Clouds level) int 128
+
 # If enabled, the weather will change naturally over time.
 mcl_doWeatherCycle (Change weather) bool true
 

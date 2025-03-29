@@ -297,7 +297,7 @@ local function initsky(player)
 		mcl_weather.skycolor.force_update = true
 	end
 
-	player:set_clouds(mcl_worlds:get_cloud_parameters() or {height=mcl_worlds.layer_to_y(127), speed={x=-2, z=0}, thickness=4, color="#FFF0FEF"})
+	player:set_clouds(mcl_worlds:get_cloud_parameters())
 end
 
 minetest.register_on_joinplayer(initsky)

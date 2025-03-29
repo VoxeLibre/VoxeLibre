@@ -153,22 +153,24 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
-function mcl_worlds.get_cloud_parameters()
-	if minetest.get_mapgen_setting("mg_name") == "valleys" then
-		return {
-			height = 384, --valleys has a much higher average elevation thus often "normal" landscape ends up in the clouds
-			speed = {x=-2, z=0},
-			thickness=5,
-			color="#FFF0FEF",
-			ambient = "#201060",
-		}
+local clouds_y = tonumber(core.settings:get("vl_clouds_level"))
+if not clouds_y then
+	local mg_name = core.get_mapgen_setting("mg_name")
+	if mg_name == "valleys" or mg_name == "carpathian" then
+		clouds_y = 384
 	else
-		-- MC-style clouds: Layer 127, thickness 4, fly to the “West”
-		return {
-			height = mcl_worlds.layer_to_y(127),
-			speed = {x=-2, z=0},
-			thickness = 4,
-			color = "#FFF0FEF",
-		}
+		-- used to be 65=mcl_worlds.layer_to_y(127); but we want this to not depend on bedrock level
+		clouds_y = 128
 	end
+end
+
+-- TODO: depend more on weathere etc.?
+function mcl_worlds.get_cloud_parameters()
+	return {
+		height = clouds_y,
+		speed = {x=-2, z=0},
+		thickness = 6,
+		color = "#FFF0FEAA",
+		ambient = "#101020", -- night color
+	}
 end
