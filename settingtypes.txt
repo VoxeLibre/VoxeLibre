@@ -51,6 +51,9 @@ mcl_disabled_events (Disabled events) string
 # Control the relative plant growth speed (default: 1)
 vl_plant_growth (Plant growth factor) float 1.0 0 100
 
+# Depth of the overworld (only on map initialization)
+vl_overworld_min (Overworld depth) int -192 -26000 -1
+
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.

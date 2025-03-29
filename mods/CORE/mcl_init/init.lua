@@ -109,6 +109,20 @@ function mcl_vars.get_chunk_number(pos) -- unsigned int
 		c.x + k_positive
 end
 
+-- Bedrock level, configurable only on world creation
+local vl_overworld_min = tonumber(core.get_mapgen_setting("vl_overworld_min") or "")
+if not vl_overworld_min then
+	if start_time > 0 then
+		vl_overworld_min = -62 -- old worlds prior to 0.90
+	else -- new world, get from settings
+		-- 0.90 default: just below mapgen chunk boundary at -32-80-80-4=-196
+		-- to make lowering the bedrock easier
+		vl_overworld_min = tonumber(core.settings:get("vl_overworld_min")) or -196
+	end
+	core.set_mapgen_setting("vl_overworld_min", tostring(vl_overworld_min), true)
+end
+
+-- Active mapgen version; the user may activate this to use updates on new chunks
 if not superflat and not singlenode then
 	-- Normal mode
 	--[[ Realm stacking (h is for height)
@@ -122,7 +136,8 @@ if not superflat and not singlenode then
 	]]
 
 	-- Overworld
-	mcl_vars.mg_overworld_min = -62
+	mcl_vars.mg_overworld_zero = -62
+	mcl_vars.mg_overworld_min = vl_overworld_min or -62
 	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
 	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
 	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min + 4
@@ -131,7 +146,8 @@ if not superflat and not singlenode then
 	mcl_vars.mg_bedrock_is_rough = true
 
 elseif singlenode then
-	mcl_vars.mg_overworld_min = -66
+	mcl_vars.mg_overworld_zero = -66
+	mcl_vars.mg_overworld_min = vl_overworld_min == -62 and -66 or vl_overworld_min -- old worlds use -66
 	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
 	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
 	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
