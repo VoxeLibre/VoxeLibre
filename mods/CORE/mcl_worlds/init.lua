@@ -14,7 +14,7 @@ function mcl_worlds.is_in_void(pos)
 	local void_deadly = false
 	local deadly_tolerance = 64 -- the player must be this many nodes “deep” into the void to be damaged
 	if void then
-		-- Overworld → Void → End → Void → Nether → Void
+		-- Overworld -> Void -> End -> Void -> Nether -> Void
 		if pos.y < mcl_vars.mg_overworld_min and pos.y > mcl_vars.mg_end_max then
 			void_deadly = pos.y < mcl_vars.mg_overworld_min - deadly_tolerance
 		elseif pos.y < mcl_vars.mg_end_min and pos.y > mcl_vars.mg_nether_max+128 then
@@ -36,7 +36,7 @@ end
 --     nil, "void"
 function mcl_worlds.y_to_layer(y)
 	if y >= mcl_vars.mg_overworld_min then
-		return y - mcl_vars.mg_overworld_min, "overworld", 0
+		return y - mcl_vars.mg_overworld_zero, "overworld", 0
 	elseif y >= mcl_vars.mg_nether_min and y <= mcl_vars.mg_nether_max+128 then
 		return y - mcl_vars.mg_nether_min, "nether", 1
 	elseif y >= mcl_vars.mg_end_min and y <= mcl_vars.mg_end_max then
@@ -61,13 +61,13 @@ local pos_to_dimension = mcl_worlds.pos_to_dimension
 -- VoxeLibre
 -- mc_dimension is one of "overworld", "nether", "end" (default: "overworld").
 function mcl_worlds.layer_to_y(layer, mc_dimension)
-	   if mc_dimension == "overworld" or mc_dimension == nil then
-			   return layer + mcl_vars.mg_overworld_min
-	   elseif mc_dimension == "nether" then
-			   return layer + mcl_vars.mg_nether_min
-	   elseif mc_dimension == "end" then
-			   return layer + mcl_vars.mg_end_min
-	   end
+	if mc_dimension == "overworld" or mc_dimension == nil then
+			return layer + mcl_vars.mg_overworld_zero
+	elseif mc_dimension == "nether" then
+			return layer + mcl_vars.mg_nether_min
+	elseif mc_dimension == "end" then
+			return layer + mcl_vars.mg_end_min
+	end
 end
 
 -- Takes a position and returns true if this position can have weather
