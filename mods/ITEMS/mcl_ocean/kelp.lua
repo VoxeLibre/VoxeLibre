@@ -109,6 +109,12 @@ end
 
 -- Will node fall at that position?
 -- This only checks if a node would fall, meaning that node need not be at pos.
+---@param pos vector.Vector
+---@param node core.Node
+---@param is_falling boolean?
+---@param pos_bottom vector.Vector
+---@param node_bottom core.Node?
+---@param def_bottom core.NodeDef?
 function kelp.is_falling(pos, node, is_falling, pos_bottom, node_bottom, def_bottom)
 	-- Optional params: is_falling, pos_bottom, node_bottom, def_bottom
 
@@ -116,19 +122,19 @@ function kelp.is_falling(pos, node, is_falling, pos_bottom, node_bottom, def_bot
 	-- Please update accordingly.
 	local nodename = node.name
 
-	if is_falling == false or
-		is_falling == nil and mt_get_item_group(nodename, "falling_node") == 0 then
+	if is_falling == false
+	or is_falling == nil and mt_get_item_group(nodename, "falling_node") == 0 then
 		return false
 	end
 
-	local pos_bottom = pos_bottom or vector.offset(pos, 0, -1, 0)
+	pos_bottom = pos_bottom or vector.offset(pos, 0, -1, 0)
 	-- get_node_or_nil: Only fall if node below is loaded
-	local node_bottom = node_bottom or mt_get_node_or_nil(pos_bottom)
+	node_bottom = node_bottom or mt_get_node_or_nil(pos_bottom)
+	if not node_bottom then return false end
+
 	local nodename_bottom = node_bottom.name
-	local def_bottom = def_bottom or node_bottom and mt_registered_nodes[nodename_bottom]
-	if not def_bottom then
-		return false
-	end
+	def_bottom = def_bottom or node_bottom and mt_registered_nodes[nodename_bottom]
+	if not def_bottom then return false end
 
 	local same = nodename == nodename_bottom
 	-- Let leveled nodes fall if it can merge with the bottom node
@@ -139,10 +145,8 @@ function kelp.is_falling(pos, node, is_falling, pos_bottom, node_bottom, def_bot
 	end
 
 	-- Otherwise only if the bottom node is considered "fall through"
-	if not same and
-			(not def_bottom.walkable or def_bottom.buildable_to) and
-			(mt_get_item_group(nodename, "float") == 0 or
-			def_bottom.liquidtype == "none") then
+	if not same and (not def_bottom.walkable or def_bottom.buildable_to)
+	and (mt_get_item_group(nodename, "float") == 0 or def_bottom.liquidtype == "none") then
 		return true
 	end
 
