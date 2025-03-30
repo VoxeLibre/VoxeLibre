@@ -138,7 +138,7 @@ mod.detach_minecart = detach_minecart
 local function try_detach_minecart(staticdata)
 	if not staticdata or not staticdata.connected_at then return end
 	if not mod:is_rail(staticdata.connected_at) then
-		mcl_debug("Detaching minecart #"..tostring(staticdata.uuid))
+		if DEBUG then mcl_debug("Detaching minecart #"..tostring(staticdata.uuid)) end
 		detach_minecart(staticdata)
 	end
 end

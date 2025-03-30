@@ -111,12 +111,14 @@ mod.detach_driver = detach_driver
 
 function mod.kill_cart(staticdata, killer)
 	local pos
-	mcl_log("cart #"..staticdata.uuid.." was killed")
+	if DEBUG then
+		mcl_log("cart #"..staticdata.uuid.." was killed")
+	end
 
 	-- Leave nodes
 	if staticdata.attached_at then
 		movement.handle_cart_leave(staticdata, staticdata.attached_at, staticdata.dir )
-	--else
+	--elseif DEBUG
 		--mcl_log("TODO: handle detatched minecart death")
 	end
 
