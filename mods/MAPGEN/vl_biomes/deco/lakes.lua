@@ -5,6 +5,7 @@
 -- TODO: instead of adding a border outside, shrink the placement area instead as necessary? This is nicer if there is, e.g., a tree in the lake
 
 local mg_name = core.get_mapgen_setting("mg_name")
+local grass_color4dir = core.registered_nodes["mcl_core:dirt_with_grass"].paramtype2 == "color4dir"
 
 local get_node_name = mcl_vars.get_node_name
 local get_node_name_raw = mcl_vars.get_node_name_raw
@@ -90,7 +91,14 @@ local function makelake(pos, size, def_liquid, placein, def_border, def_floor, p
 		local bordern = def_border or { name = biome and biome.node_top or "mcl_core:dirt_with_grass" }
 		local floorn = def_floor or { name = biome and biome.node_filler or biome.node_top or "mcl_core:stone" }
 		if bordern and bordern.name == "mcl_core:dirt_with_grass" and not bordern.param2 then
-			local p2 = biome and biome._mcl_grass_palette_index and biome._mcl_grass_palette_index or nil
+			local p2
+			if biome and biome._mcl_grass_palette_index then
+				if grass_color4dir then -- TODO: randomize each node afterwards, not just once
+					p2 = biome._mcl_grass_palette_index * 4 + math.random(0,3)
+				else
+					p2 = biome._mcl_grass_palette_index
+				end
+			end
 			bordern = { name = bordern.name, param2 = p2 } -- deliberate copy
 		end
 		core.bulk_swap_node(border, bordern)

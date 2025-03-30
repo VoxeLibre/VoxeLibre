@@ -1394,6 +1394,7 @@ function mcl_core.register_snowed_node(itemstring_snowed, itemstring_clear, tile
 	def.tiles = tiles or {"default_snow.png", "default_dirt.png", {name="mcl_core_grass_side_snowed.png", tileable_vertical=false}}
 	if clear_colorization then
 		def.paramtype2 = nil
+		def.groups.randomcolor4dir = nil
 		def.palette = nil
 		def.palette_index = nil
 		def.color = nil
