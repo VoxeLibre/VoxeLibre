@@ -57,6 +57,7 @@ for i = 1, 4 do
 		biomes = {"ExtremeHillsM"},
 		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_" .. i .. ".mts",
 		place_on = {"group:grass_block", "mcl_core:dirt", },
+		place_offset_y = 1,
 		noise_params = {
 			offset = -0.0007,
 			scale = 0.001,
@@ -73,6 +74,7 @@ vl_biomes.register_decoration({
 	biomes = {"ExtremeHillsM"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	place_on = {"group:grass_block", "mcl_core:dirt", },
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.0,
 		scale = 0.002,

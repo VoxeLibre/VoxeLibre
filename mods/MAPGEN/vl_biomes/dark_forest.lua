@@ -55,6 +55,7 @@ vl_biomes.register_decoration({
 	biomes = {"RoofedForest"},
 	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_brown.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = ratio_mushroom_huge,
 	rotation = "0",
 })
@@ -63,6 +64,7 @@ vl_biomes.register_decoration({
 	biomes = {"RoofedForest"},
 	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_brown.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = ratio_mushroom_giant,
 	rotation = "0",
 })
@@ -72,6 +74,7 @@ vl_biomes.register_decoration({
 	biomes = {"RoofedForest"},
 	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_huge_red.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = ratio_mushroom_huge,
 	rotation = "0",
 })
@@ -80,6 +83,7 @@ vl_biomes.register_decoration({
 	biomes = {"RoofedForest"},
 	schematic = mod_mcl_mushrooms .. "/schematics/mcl_mushrooms_giant_red.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = ratio_mushroom_giant,
 	rotation = "0",
 })

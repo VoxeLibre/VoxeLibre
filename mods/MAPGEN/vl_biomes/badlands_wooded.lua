@@ -103,6 +103,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	y_min = 30,
 	place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.015,
 		scale = 0.002,

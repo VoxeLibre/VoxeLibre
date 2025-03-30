@@ -28,10 +28,10 @@ vl_biomes.register_biome({
 })
 
 -- Huge spruce
-vl_biomes.register_spruce_decoration(3000, 0.0030, "mcl_core_spruce_huge_1.mts", {"MegaSpruceTaiga"})
-vl_biomes.register_spruce_decoration(4000, 0.0036, "mcl_core_spruce_huge_2.mts", {"MegaSpruceTaiga"})
-vl_biomes.register_spruce_decoration(6000, 0.0036, "mcl_core_spruce_huge_3.mts", {"MegaSpruceTaiga"})
-vl_biomes.register_spruce_decoration(6600, 0.0036, "mcl_core_spruce_huge_4.mts", {"MegaSpruceTaiga"})
+vl_biomes.register_spruce_decoration(3000, 0.0030, "mcl_core_spruce_huge_1.mts", {"MegaSpruceTaiga"}, nil, 0)
+vl_biomes.register_spruce_decoration(4000, 0.0036, "mcl_core_spruce_huge_2.mts", {"MegaSpruceTaiga"}, nil, 0)
+vl_biomes.register_spruce_decoration(6000, 0.0036, "mcl_core_spruce_huge_3.mts", {"MegaSpruceTaiga"}, nil, 0)
+vl_biomes.register_spruce_decoration(6600, 0.0036, "mcl_core_spruce_huge_4.mts", {"MegaSpruceTaiga"}, nil, 0)
 
 -- Common spruce
 vl_biomes.register_spruce_decoration(2500, 0.00325, "mcl_core_spruce_1.mts", {"MegaSpruceTaiga"})

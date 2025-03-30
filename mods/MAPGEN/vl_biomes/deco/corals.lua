@@ -34,6 +34,7 @@ for _, c in ipairs({ "brain", "horn", "bubble", "tube", "fire" }) do
 		y_min = coral_min,
 		y_max = coral_max,
 		place_on = {"group:sand", "mcl_core:gravel", "mcl_mud:mud"},
+		place_offset_y = 1,
 		spawn_by = "mcl_core:water_source",
 		check_offset = 1,
 		num_spawn_by = 12,
