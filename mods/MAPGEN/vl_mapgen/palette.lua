@@ -1,6 +1,29 @@
 -- Adjust water palette, grass palette, foliage palette, etc.
-
 local mg_name = core.get_mapgen_setting("mg_name")
+
+local mg_4dir = {} -- need 4dir rotation
+
+local function adjust_param2(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
+	local lvm_used = false
+	for i = 0, #data do
+		if mg_4dir[data[i]] then
+			data2[i] = math.random(0, 3) -- we don't force this to be deterministic
+			lvm_used = true
+		end
+	end
+	return lvm_used
+end
+vl_mapgen.register_generator("adjust_param", adjust_param2, nil, 9999, true)
+
+-- Identify nodes that are affected
+core.register_on_mods_loaded(function()
+	for n, def in pairs(core.registered_nodes) do
+		local groups = def.groups or {}
+		if (groups.random4dir or 0) ~= 0 then
+			mg_4dir[core.get_content_id(n)] = true
+		end
+	end
+end)
 
 local function set_grass_palette(minp,maxp,data2,area,nodes)
 	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:

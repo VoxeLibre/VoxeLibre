@@ -101,11 +101,7 @@ end
 -- FIXME: Nodes below glass also count as “outdoor”, this should not be the case.
 function mcl_weather.is_outdoor(pos)
 	local cpos = {x=pos.x, y=pos.y+1, z=pos.z}
-	local dim = mcl_worlds.pos_to_dimension(cpos)
-	if minetest.get_node_light(cpos, 0.5) == 15 and dim == "overworld" then
-		return true
-	end
-	return false
+	return mcl_worlds.pos_to_dimension(cpos) == "overworld" and minetest.get_node_light(cpos, 0.5) == 15
 end
 
 -- checks if player is undewater. This is needed in order to
@@ -117,10 +113,7 @@ function mcl_weather.is_underwater(player)
 				y = ppos.y + offset.y + 1.5,
 				z = ppos.z + offset.z}
 	local node_level = minetest.get_node_level(player_eye_pos)
-	if node_level == 8 or node_level == 7 then
-		return true
-	end
-	return false
+	return node_level == 8 or node_level == 7
 end
 
 local t, wci = 0, mcl_weather.check_interval

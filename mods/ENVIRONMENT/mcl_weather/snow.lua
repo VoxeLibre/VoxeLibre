@@ -150,30 +150,27 @@ minetest.register_abm({
 	chance = 33,
 	min_y = mcl_vars.mg_overworld_min,
 	action = function(pos, node, active_object_count, active_object_count_wider)
+		if node.name == "mcl_core:snowblock" then return end
 		if (mcl_weather.state ~= "rain" and mcl_weather.state ~= "thunder" and mcl_weather.state ~= "snow")
-		or not mcl_weather.has_snow(pos)
-		or node.name == "mcl_core:snowblock" then
+		or not mcl_weather.has_snow(pos) or not mcl_weather.is_outdoor(pos) then
 			return end
 
-		local above = vector.offset(pos,0,1,0)
-		local above_node = minetest.get_node(above)
-
-		if above_node.name == "air" and mcl_weather.is_outdoor(pos) then
-			local nn = nil
-			if node.name:find("snow") then
-				local l = node.name:sub(-1)
-				l = tonumber(l)
-				if node.name == "mcl_core:snow" then
-					nn={name = "mcl_core:snow_2"}
-				elseif l and l < 7 then
-					nn={name="mcl_core:snow_"..tostring(math.min(8,l + 1))}
-				elseif l and l >= 7 then
-					nn={name = "mcl_core:snowblock"}
-				end
-				if nn then minetest.set_node(pos,nn) end
-			else
-				minetest.set_node(above,{name = "mcl_core:snow"})
+		if node.name == "mcl_core:snow" then
+			minetest.set_node(pos, {name = "mcl_core:snow_2", param2 = math.random(0,3)})
+			return
+		end
+		if not node.name:find("mcl_core:snow") then
+			local above = vector.offset(pos,0,1,0)
+			if mcl_vars.get_node_name(above) == "air" then
+				minetest.set_node(above, {name = "mcl_core:snow", param2 = math.random(0,3)})
 			end
+			return
+		end
+		local l = tonumber(node.name:sub(-1))
+		if l and l < 7 then
+			minetest.set_node(pos, {name = "mcl_core:snow_"..tostring(math.min(8,l + 1)), param2 = math.random(0,3)})
+		elseif l and l >= 7 then
+			minetest.set_node(pos, {name = "mcl_core:snowblock", param2=math.random(0,3)})
 		end
 	end
 })
