@@ -715,7 +715,7 @@ local uuid_rng = PcgRandom(bit.bxor(math.random() * 0xFFFFFFFF, os.time()))
 --- Generate a random 128-bit ID that can be assumed to be unique
 --- To have a 1% chance of a collision, there would have to be 1.6x10^76 IDs generated
 --- https://en.wikipedia.org/wiki/Birthday_problem#Probability_table
---- @param len32 integer: length in 32-bit units, optional, default 4 (128 bit)
+--- @param len32? integer: length in 32-bit units, optional, default 4 (128 bit)
 --- @return string: UUID string, 8xlen32 characters, default 32
 function mcl_util.gen_uuid(len32)
 	len32 = (len32 and len32 > 0) and len32 or 4 -- len32 might be nil
@@ -740,6 +740,14 @@ function mcl_util.get_entity_id(entity)
 		return id
 	end
 end
+
+---@class core.LuaEntity
+---@field _removed boolean
+---@field _on_remove fun(self : core.LuaEntity)
+---@field _uuid? string
+---@field _active_object_id? integer
+
+---@param luaentity core.LuaEntity
 function mcl_util.remove_entity(luaentity)
 	if luaentity._removed then return end
 	luaentity._removed = true
