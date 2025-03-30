@@ -925,14 +925,20 @@ minetest.register_node("mcl_core:ice", {
 	tiles = {"default_ice.png"},
 	is_ground_content = true,
 	paramtype = "light",
+	paramtype2 = "4dir",
 	use_texture_alpha = ice_texture_alpha,
 	stack_max = 64,
-	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1},
+	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1, random4dir=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_ice_defaults(),
 	node_dig_prediction = "mcl_core:water_source",
 	after_dig_node = function(pos, oldnode)
 		mcl_core.melt_ice(pos)
+	end,
+	on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		node.param2 = math.random(0,3)
+		minetest.swap_node(pos, node)
 	end,
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
@@ -943,11 +949,17 @@ minetest.register_node("mcl_core:packed_ice", {
 	description = S("Packed Ice"),
 	_doc_items_longdesc = S("Packed ice is a compressed form of ice. It is opaque and solid."),
 	tiles = {"mcl_core_ice_packed.png"},
+	paramtype2 = "4dir",
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1},
+	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1, random4dir=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_ice_defaults(),
+	on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		node.param2 = math.random(0,3)
+		minetest.swap_node(pos, node)
+	end,
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	_mcl_silk_touch_drop = true,
@@ -1120,6 +1132,7 @@ for i=1,8 do
 		wield_scale = { x=1, y=1, z=i },
 		is_ground_content = true,
 		paramtype = "light",
+		paramtype2 = "4dir",
 		sunlight_propagates = true,
 		buildable_to = true,
 		node_placement_prediction = "", -- to prevent client flickering when stacking snow
@@ -1133,7 +1146,7 @@ for i=1,8 do
 			mcl_core.clear_snow_dirt(npos, node)
 		end,
 		node_box = node_box,
-		groups = {shovely=2, supported_node=1, deco_block=1, dig_by_piston=1, snow_cover=1, top_snow=i},
+		groups = {shovely=2, supported_node=1, deco_block=1, dig_by_piston=1, snow_cover=1, top_snow=i, random4dir=1},
 		sounds = mcl_sounds.node_sound_snow_defaults(),
 		on_construct = mcl_core.on_snow_construct,
 		on_place = on_place,
@@ -1151,8 +1164,9 @@ minetest.register_node("mcl_core:snowblock", {
 	_doc_items_hidden = false,
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
+	paramtype2 = "4dir",
 	stack_max = 64,
-	groups = {shovely=2, building_block=1, snow_cover=1},
+	groups = {shovely=2, building_block=1, snow_cover=1, random4dir=1},
 	sounds = mcl_sounds.node_sound_snow_defaults(),
 	on_construct = mcl_core.on_snow_construct,
 	after_destruct = mcl_core.after_snow_destruct,

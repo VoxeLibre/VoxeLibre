@@ -1,6 +1,7 @@
 --Snow layer on snowy dirt
 vl_biomes.register_decoration({
 	decoration = "mcl_core:snow",
+	rank = 10000, -- very late to not prevent other decorations
 	y_min = vl_biomes.overworld_min,
 	y_max = vl_biomes.overworld_max,
 	place_on = {"mcl_core:dirt_with_grass_snow"},
