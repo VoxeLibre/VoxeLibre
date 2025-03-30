@@ -4,7 +4,7 @@ local get_node = core.get_node
 
 local logging = core.settings:get_bool("vl_structures_logging", false)
 local mg_name = core.get_mapgen_setting("mg_name")
-
+local grass_color4dir = core.registered_nodes["mcl_core:dirt_with_grass"].paramtype2 == "color4dir"
 
 -- parse the prepare parameter
 local function parse_prepare(prepare)
@@ -73,7 +73,13 @@ local function emerge_schematics(blockpos, action, calls_remaining, param)
 		local node_filler = b and b.node_filler and { name = b.node_filler } or vl_structures.DEFAULT_FILLER
 		local node_stone  = b and b.node_stone  and { name = b.node_stone  } or vl_structures.DEFAULT_STONE
 		local node_dust   = b and b.node_dust   and { name = b.node_dust   } or dust_mat or vl_structures.DEFAULT_DUST
-		if node_top.name == "mcl_core:dirt_with_grass" and b then node_top.param2 = b._mcl_grass_palette_index end
+		if node_top.name == "mcl_core:dirt_with_grass" and b then
+			if grass_color4dir then -- TODO: randomize each node afterwards, not just once
+				node_top.param2 = b._mcl_grass_palette_index * 4 + math.random(0,3)
+			else
+				node_top.param2 = b._mcl_grass_palette_index
+			end
+		end
 
 		-- Step 2a: clear overhead area
 		local corners, padding = prepare.corners or 1, prepare.padding or 1

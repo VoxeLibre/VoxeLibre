@@ -9,6 +9,7 @@ source.waving = 3
 source.color = "#0084FF"
 source.paramtype2 = nil
 source.palette = nil
+source.groups.water_palette = nil
 source.liquid_alternative_flowing = "mclx_core:river_water_flowing"
 source.liquid_alternative_source = "mclx_core:river_water_source"
 source.liquid_renewable = false
