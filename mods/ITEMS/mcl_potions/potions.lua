@@ -868,14 +868,14 @@ local old_potions_2 = {
 }
 
 for _, name in pairs(old_potions_2) do
-	minetest.register_craftitem("mcl_potions:" .. name .. "_2", compat_def)
-	minetest.register_craftitem("mcl_potions:" .. name .. "_2_splash", compat_def)
-	minetest.register_craftitem("mcl_potions:" .. name .. "_2_lingering", compat_def)
-	minetest.register_craftitem("mcl_potions:" .. name .. "_2_arrow", compat_arrow_def)
+	core.register_craftitem("mcl_potions:" .. name .. "_2", table.copy(compat_def))
+	core.register_craftitem("mcl_potions:" .. name .. "_2_splash", table.copy(compat_def))
+	core.register_craftitem("mcl_potions:" .. name .. "_2_lingering", table.copy(compat_def))
+	core.register_craftitem("mcl_potions:" .. name .. "_2_arrow", table.copy(compat_arrow_def))
 end
 for _, name in pairs(old_potions_plus) do
-	minetest.register_craftitem("mcl_potions:" .. name .. "_plus", compat_def)
-	minetest.register_craftitem("mcl_potions:" .. name .. "_plus_splash", compat_def)
-	minetest.register_craftitem("mcl_potions:" .. name .. "_plus_lingering", compat_def)
-	minetest.register_craftitem("mcl_potions:" .. name .. "_plus_arrow", compat_arrow_def)
+	core.register_craftitem("mcl_potions:" .. name .. "_plus", table.copy(compat_def))
+	core.register_craftitem("mcl_potions:" .. name .. "_plus_splash", table.copy(compat_def))
+	core.register_craftitem("mcl_potions:" .. name .. "_plus_lingering", table.copy(compat_def))
+	core.register_craftitem("mcl_potions:" .. name .. "_plus_arrow", table.copy(compat_arrow_def))
 end
