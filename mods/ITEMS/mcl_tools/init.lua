@@ -219,7 +219,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				end
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path", param2 = math.random(0,3) })
 		end
 	end
 	return itemstack

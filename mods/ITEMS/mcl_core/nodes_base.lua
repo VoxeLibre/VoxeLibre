@@ -413,6 +413,7 @@ minetest.register_node("mcl_core:grass_path", {
 	use_texture_alpha = minetest.features.use_texture_alpha_string_modes and "opaque" or false,
 	drawtype = "nodebox",
 	paramtype = "light",
+	paramtype2 = "4dir",
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -420,10 +421,11 @@ minetest.register_node("mcl_core:grass_path", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = {handy=1,shovely=1, cultivatable=2, dirtifies_below_solid=1, dirtifier=1, deco_block=1, path_remove_possible=1 },
+	groups = {handy=1,shovely=1, cultivatable=2, dirtifies_below_solid=1, dirtifier=1, deco_block=1, path_remove_possible=1, random4dir=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.1},
 	}),
+	on_construct = mcl_core.random4dir,
 	_mcl_blast_resistance = 0.65,
 	_mcl_hardness = 0.65,
 })
@@ -435,13 +437,16 @@ minetest.register_node("mcl_core:mycelium", {
 	tiles = {"mcl_core_mycelium_top.png", "default_dirt.png", {name="mcl_core_mycelium_side.png", tileable_vertical=false}},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = { handy = 1, shovely = 1, dirt = 2, spreading_dirt_type = 1, enderman_takable = 1,  building_block = 1, soil_sapling = 2, path_creation_possible=1, mycelium=1},
+	paramtype2 = "4dir",
+	groups = { handy = 1, shovely = 1, dirt = 2, spreading_dirt_type = 1, enderman_takable = 1,  building_block = 1, soil_sapling = 2, path_creation_possible=1, mycelium=1, random4dir=1},
 	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.1},
 	}),
-
-	on_construct = mcl_core.on_snowable_construct,
+	on_construct = function(pos)
+		mcl_core.random4dir(pos)
+		mcl_core.on_snowable_construct(pos)
+	end,
 	_mcl_snowed = "mcl_core:mycelium_snow",
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
@@ -493,10 +498,14 @@ minetest.register_node("mcl_core:podzol", {
 	tiles = {"mcl_core_dirt_podzol_top.png", "default_dirt.png", {name="mcl_core_dirt_podzol_side.png", tileable_vertical=false}},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,shovely=3, dirt=2,soil=1, soil_sapling=2, soil_sugarcane=1, enderman_takable=1, building_block=1,path_creation_possible=1},
+	paramtype2 = "4dir",
+	groups = {handy=1,shovely=3, dirt=2,soil=1, soil_sapling=2, soil_sugarcane=1, enderman_takable=1, building_block=1,path_creation_possible=1,random4dir=1},
 	drop = "mcl_core:dirt",
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
-	on_construct = mcl_core.on_snowable_construct,
+	on_construct = function(pos)
+		mcl_core.random4dir(pos)
+		mcl_core.on_snowable_construct(pos)
+	end,
 	_mcl_snowed = "mcl_core:podzol_snow",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
@@ -932,14 +941,8 @@ minetest.register_node("mcl_core:ice", {
 	drop = "",
 	sounds = mcl_sounds.node_sound_ice_defaults(),
 	node_dig_prediction = "mcl_core:water_source",
-	after_dig_node = function(pos, oldnode)
-		mcl_core.melt_ice(pos)
-	end,
-	on_construct = function(pos)
-		local node = minetest.get_node(pos)
-		node.param2 = math.random(0,3)
-		minetest.swap_node(pos, node)
-	end,
+	after_dig_node = mcl_core.melt_ice,
+	on_construct = mcl_core.random4dir,
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	_mcl_silk_touch_drop = true,
@@ -955,11 +958,7 @@ minetest.register_node("mcl_core:packed_ice", {
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1, random4dir=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_ice_defaults(),
-	on_construct = function(pos)
-		local node = minetest.get_node(pos)
-		node.param2 = math.random(0,3)
-		minetest.swap_node(pos, node)
-	end,
+	on_construct = mcl_core.random4dir,
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	_mcl_silk_touch_drop = true,

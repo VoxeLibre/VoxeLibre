@@ -24,6 +24,16 @@ local JUNGLE_TREE_ID = 5
 local BIRCH_TREE_ID = 6
 local CHERRY_TREE_ID = 7
 
+-- Randomization for paramtype2="4dir" nodes
+function mcl_core.random4dir(pos)
+	local node = core.get_node(pos)
+	local u = math.random(0,3)
+	if node.param2 ~= u then
+		node.param2 = u
+		core.swap_node(pos, node)
+	end
+end
+
 minetest.register_abm({
 	label = "Lava cooling",
 	nodenames = {"group:lava"},
