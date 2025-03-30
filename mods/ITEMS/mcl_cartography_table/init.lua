@@ -53,7 +53,7 @@ local function update_cartography_table(player)
 
 	local meta
 	local old_zoom
-	if not map:is_empty() then
+	if not map:is_empty() and not mcl_maps.is_empty_map(map) then
 		meta = map:get_meta()
 		old_zoom = meta:get_int("mcl_maps:zoom")
 		if old_zoom < 1 then

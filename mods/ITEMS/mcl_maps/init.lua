@@ -143,6 +143,10 @@ local function emerge_generate_map(id, minp, maxp, callback)
 	end)
 end
 
+function mcl_maps.is_empty_map(itemstack)
+	return itemstack:get_name() == "mcl_maps:empty_map"
+end
+
 function mcl_maps.convert_legacy_map(itemstack, meta)
 	meta = meta or itemstack:get_meta()
 	tt.reload_itemstack_description(itemstack)
