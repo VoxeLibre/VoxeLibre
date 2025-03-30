@@ -111,37 +111,37 @@ minetest.register_on_leaveplayer(function(p)
 end)
 
 minetest.register_chatcommand("debug",{
-	description = S("Set debug bit mask: 0 = disable, 1 = player coords, 2 = coordinates, 3 = biome name, 4 = all"),
-	params = S("<bitmask>"),
+	description = S("Set debug level: 0 = disable, 1 = player coords, 2 = coordinates, 3 = biome name, 4 = all"),
+	params = S("<level>"),
 	privs = { debug = true },
 	func = function(name, params)
 		local player = minetest.get_player_by_name(name)
-		if params == "" then return true, "Debug bitmask is "..player_setting(player) end
+		if params == "" then return true, S("Debug level is @1", player_setting(player)) end
 		local dbg = math.floor(tonumber(params) or default_debug)
-		if dbg < -1 or dbg > 4 then
-			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", -1, 4))
-			return false,"Current bitmask: "..player_setting(player)
+		if dbg < 0 or dbg > 4 then
+			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 4))
+			return false, S("Debug level is @1", player_setting(player))
 		end
-		return true, "Debug bit mask set to "..player_setting(player,dbg)
+		return true, S("Debug level set to @1", player_setting(player,dbg))
 	end
 })
 
 -- register normal user access to debug levels 1 and 0.
 minetest.register_chatcommand("whereami", {
-	description = S("Set location bit mask: 0 = disable, 1 = coordinates"),
-	params = S("<bitmask>"),
+	description = S("Show location: 0 = disable, 1 = coordinates"),
+	params = S("<level>"),
 	-- privs = { },
 	func = function(name, params)
 		local player = minetest.get_player_by_name(name)
 		if params == "" then
-			return true, "Location bitmask is " .. player_setting(player)
+			return true, S("Show location is set to: @1", player_setting(player))
 		end
 		local loc_lev = math.floor(tonumber(params) or default_debug)
-		if loc_lev < 0 or loc_lev > 4 then
+		if loc_lev < 0 or loc_lev > 1 then
 			minetest.chat_send_player(name, S("Error! Possible values are integer numbers from @1 to @2", 0, 1))
-			return false, "Current bitmask: " .. player_setting(player)
+			return false, S("Show location is set to: @1", player_setting(player))
 		end
-		return true, "Location bit mask set to " .. player_setting(player, loc_lev)
+		return true, S("Show location set to @1", player_setting(player, loc_lev))
 	end
 })
 
