@@ -36,6 +36,7 @@ vl_biomes.register_decoration({
 	biomes = {"JungleEdgeM"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = 0.0004,
 })
 
@@ -43,6 +44,7 @@ vl_biomes.register_decoration({
 	biomes = {"JungleEdgeM"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = 0.0045,
 })
 
@@ -51,6 +53,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
 	y_min = 3,
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.0085,
 		scale = 0.025,
