@@ -1,14 +1,61 @@
 -- Adjust water palette, grass palette, foliage palette, etc.
 local mg_name = core.get_mapgen_setting("mg_name")
 
-local mg_4dir = {} -- need 4dir rotation
+local mg_4dir = {} -- paramtype2="4dir" randomization
+local mg_color4dir = {} -- paramtype2="color4dir" randomization
+local mg_water_palette = {} -- set param2 to biome water palette
+
+-- C.f., luanti builtin/game/voxelarea.lua VoxelArea:postion, but with less overhead
+local math_floor = math.floor
+local function position(area, i)
+	local MinEdge = area.MinEdge
+	i = i - 1
+	local z = math_floor(i / area.zstride)
+	i = i - z * area.zstride
+	local y = math_floor(i / area.ystride)
+	i = i - y * area.ystride
+	local x = i
+	return x + MinEdge.x, y + MinEdge.y, z + MinEdge.z
+end
 
 local function adjust_param2(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local lvm_used = false
-	for i = 0, #data do
+	-- We don't use a deterministic random, because this is just cosmetic.
+	-- You could seed a PcgRandom with the blockseed, though, or use coordinate-based pseudorandom.
+	local biomemap = core.get_mapgen_object("biomemap")
+	local barea = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
+	for i in area:iter(minp.x, minp.y, minp.z, maxp.x, maxp.y, maxp.z) do
 		if mg_4dir[data[i]] then
-			data2[i] = math.random(0, 3) -- we don't force this to be deterministic
+			data2[i] = math.random(0, 3)
 			lvm_used = true
+		elseif mg_color4dir[data[i]] then
+			local bid
+			if biomemap then
+				local x, _, z = position(area, i)
+				bid = biomemap[barea:index(x, 0, z)]
+			end
+			bid = bid or core.get_biome_data(area:position(i)).biome
+			local biome = core.registered_biomes[core.get_biome_name(bid)]
+			local pal = biome and biome._mcl_grass_palette_index
+			if pal then
+				data2[i] = pal * 4 + math.random(0, 3)
+			else
+				data2[i] = bit.band(data2[i], 0xFC) + math.random(0, 3)
+			end
+			lvm_used = true
+		elseif mg_water_palette[data[i]] then
+			local bid
+			if biomemap then
+				local x, _, z = position(area, i)
+				bid = biomemap[barea:index(x, 0, z)]
+			end
+			bid = bid or core.get_biome_data(area:position(i)).biome
+			local biome = core.registered_biomes[core.get_biome_name(bid)]
+			local pal = biome and biome._mcl_water_palette_index
+			if pal then
+				data2[i] = pal
+				lvm_used = true
+			end
 		end
 	end
 	return lvm_used
@@ -16,6 +63,7 @@ end
 vl_mapgen.register_generator("adjust_param", adjust_param2, nil, 9999, true)
 
 -- Identify nodes that are affected
+if mg_name ~= "v6" and mg_name ~= "singlenode" then
 core.register_on_mods_loaded(function()
 	for n, def in pairs(core.registered_nodes) do
 		local groups = def.groups or {}
@@ -24,100 +72,19 @@ core.register_on_mods_loaded(function()
 				core.log("warning", "Node "..n.." has group random4dir but paramtype2=\""..(def.paramtype2 or "").."\"")
 			end
 			mg_4dir[core.get_content_id(n)] = true
+		elseif (groups.randomcolor4dir or 0) ~= 0 then
+			if def.paramtype2 ~= "color4dir" or not def.palette then
+				core.log("warning", "Node "..n.." has group randomcolor4dir but paramtype2=\""..(def.paramtype2 or "").."\" palette \""..(palette or "").."\"")
+			end
+			mg_color4dir[core.get_content_id(n)] = true
+		elseif (groups.water_palette or 0) ~= 0 then
+			if def.paramtype2 ~= "color" or not def.palette then
+				core.log("warning", "Node "..n.." has group water_palette but paramtype2=\""..(def.paramtype2 or "").."\" palette \""..(palette or "").."\"")
+			end
+			mg_water_palette[core.get_content_id(n)] = true
 		end
 	end
 end)
-
-local function set_grass_palette(minp,maxp,data2,area,nodes)
-	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
-	local biomemap = core.get_mapgen_object("biomemap")
-	if not biomemap then return end
-	local aream = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
-	local nodes = core.find_nodes_in_area(minp, maxp, nodes)
-	local lvm_used = false
-	for n=1, #nodes do
-		local n = nodes[n]
-		local p_pos = area:index(n.x, n.y, n.z)
-		local b_pos = aream:index(n.x, 0, n.z)
-		local bn = core.get_biome_name(biomemap[b_pos])
-		if bn then
-			local biome = core.registered_biomes[bn]
-			if biome and biome._mcl_biome_type and biome._mcl_grass_palette_index then
-				data2[p_pos] = biome._mcl_grass_palette_index
-				lvm_used = true
-			end
-		end
-	end
-	return lvm_used
-end
-
-local function set_foliage_palette(minp,maxp,data2,area,nodes)
-	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
-	local biomemap = core.get_mapgen_object("biomemap")
-	if not biomemap then return end
-	local aream = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
-	local nodes = core.find_nodes_in_area(minp, maxp, nodes)
-	local lvm_used = false
-	for n=1, #nodes do
-		local n = nodes[n]
-		local p_pos = area:index(n.x, n.y, n.z)
-		local b_pos = aream:index(n.x, 0, n.z)
-		local bn = core.get_biome_name(biomemap[b_pos])
-		if bn then
-			local biome = core.registered_biomes[bn]
-			if biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] <= 1 then
-				data2[p_pos] = biome._mcl_foliage_palette_index
-				lvm_used = true
-			elseif biome and biome._mcl_biome_type and biome._mcl_foliage_palette_index and data2[p_pos] > 1 then
-				data2[p_pos] = (biome._mcl_foliage_palette_index * 8) + data2[p_pos]
-				lvm_used = true
-			end
-		end
-	end
-	return lvm_used
-end
-
-local function set_water_palette(minp,maxp,data2,area,nodes)
-	-- Flat area at y=0 to read biome 3 times faster than 5.3.0.get_biome_data(pos).biome: 43us vs 125us per iteration:
-	local biomemap = core.get_mapgen_object("biomemap")
-	if not biomemap then return end
-	local aream = VoxelArea(vector.new(minp.x, 0, minp.z), vector.new(maxp.x, 0, maxp.z))
-	-- FIXME: this relies on the voxelmanip already being written.
-	local nodes = core.find_nodes_in_area(minp, maxp, nodes)
-	local lvm_used = false
-	for n=1, #nodes do
-		local n = nodes[n]
-		local p_pos = area:index(n.x, n.y, n.z)
-		local b_pos = aream:index(n.x, 0, n.z)
-		local bn = core.get_biome_name(biomemap[b_pos])
-		if bn then
-			local biome = core.registered_biomes[bn]
-			if biome and biome._mcl_biome_type and biome._mcl_water_palette_index then
-				data2[p_pos] = biome._mcl_water_palette_index
-				lvm_used = true
-			end
-		end
-	end
-	return lvm_used
-end
-
--- largely replaced with decoration hack to replace grass nodes
--- BUT this still happens at the famous y=+48 level because of mapgen overgeneration
-local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	-- Set param2 (=color) of nodes which use the grass colour palette.
-	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
-		set_grass_palette(minp,maxp,data2,area,{"group:grass_palette"})
-end
-
-local function block_fixes_water(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	-- Set param2 (=color) of nodes which use the water colour palette.
-	return minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min and
-		set_water_palette(minp,maxp,data2,area,{"group:water_palette"})
-end
-
-if mg_name ~= "v6" and mg_name ~= "singlenode" then
-	vl_mapgen.register_generator("block_fixes_grass", block_fixes_grass, nil, 9999, true)
-	vl_mapgen.register_generator("block_fixes_water", block_fixes_water, nil, 9999, true)
 end
 
 -- LBMs to run on OLD mapblocks

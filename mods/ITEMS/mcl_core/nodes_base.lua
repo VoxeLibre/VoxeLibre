@@ -1,5 +1,8 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
+-- World created with 0.90 or newer
+local mg_090_created = mcl_util.minimum_version(mcl_vars.map_initial_version, {0, 90})
+
 -- Simple solid cubic nodes, most of them are the ground materials and simple building blocks
 
 local translucent_ice = minetest.settings:get_bool("mcl_translucent_ice", false)
@@ -364,7 +367,7 @@ minetest.register_node("mcl_core:diorite_smooth", {
 })
 
 -- Grass Block
-minetest.register_node("mcl_core:dirt_with_grass", {
+local grass_def = {
 	description = S("Grass Block"),
 	_doc_items_longdesc = S("A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt."),
 	_doc_items_hidden = false,
@@ -401,7 +404,14 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 	_mcl_silk_touch_drop = true,
-})
+}
+-- Enable 4dir rotation only on newer maps
+if mg_090_created then
+	grass_def.paramtype2 = "color4dir"
+	grass_def.palette = "mcl_core_palette_grass_color4dir.png"
+	grass_def.groups.randomcolor4dir = 1
+end
+minetest.register_node("mcl_core:dirt_with_grass", grass_def)
 mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", nil, nil, true, S("Dirt with Snow"), 1)
 
 minetest.register_node("mcl_core:grass_path", {
