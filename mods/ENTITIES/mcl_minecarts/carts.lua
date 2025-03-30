@@ -1,5 +1,5 @@
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
 local mod = mcl_minecarts
 
 local mcl_log,DEBUG = mcl_util.make_mcl_logger("mcl_logging_minecarts", "Minecarts")
@@ -12,7 +12,7 @@ local save_cart_data = mod.save_cart_data
 local update_cart_data = mod.update_cart_data
 local destroy_cart_data = mod.destroy_cart_data
 local find_carts_by_block_map = mod.find_carts_by_block_map
-local movement = dofile(modpath.."/movement.lua")
+local movement = dofile(modpath..DIR_DELIM.."movement.lua")
 assert(movement.do_movement)
 assert(movement.do_detached_movement)
 assert(movement.handle_cart_enter)
@@ -21,6 +21,52 @@ assert(movement.handle_cart_leave)
 -- Constants
 local MINECART_MAX_HP = 4
 local TWO_OVER_PI = 2 / math.pi
+
+---@class vl.MinecartStaticData
+---@field inventory table
+---@field node_watches vector.Vector[]
+---@field seq integer
+---@field uuid string
+---@field connected_at vector.Vector
+---@field dir vector.Vector
+---@field distance number
+---@field velocity number
+---@field controls table
+---@field last_regen number
+---@field cart_type string
+---@field hopper_delay? number
+
+---@class vl.MinecartEntityDef : core.EntityDef
+---@field _staticdata nil
+---@field _mcl_minecarts_on_place? fun(self : vl.MinecartLuaEntity, placer : core.Player)
+---@field _mcl_entity_invs_load_items? fun(self : vl.MinecartLuaEntity) : table
+---@field _mcl_entity_invs_save_items? fun(self : vl.MinecartLuaEntity, items : table)
+---@field add_node_watch? fun(self : vl.MinecartLuaEntity, pos : vector.Vector)
+---@field remove_node_watch? fun(self : vl.MinecartLuaEntity, pos : vector.Vector)
+---@field on_activate_by_rail? fun()
+---@field get_cart_position? fun(self : vl.MinecartLuaEntity) : vector.Vector
+---@field drop table
+
+---@class vl.MinecartLuaEntity : core.LuaEntity
+---@field name string
+---@field object core.LuaEntityRef
+---@field drop string
+---@field _mcl_minecarts_on_place? fun(self : vl.MinecartLuaEntity, placer : core.Player)
+---@field _mcl_minecarts_on_step? fun(self : vl.MinecartLuaEntity, dtime : number)
+---@field on_activate_by_rail? fun(self : vl.MinecartLuaEntity)
+---@field _staticdata vl.MinecartStaticData
+---@field _passenger core.LuaEntity
+---@field _seq integer
+---@field _uuid string
+---@field _driver string
+---@field _items nil
+---@field _start_pos vector.Vector
+
+local function delayed_player_move(driver_name, new_pos)
+	local player = core.get_player_by_name(driver_name)
+	if not player then return end
+	player:move_to(new_pos, false)
+end
 
 local function detach_driver(self)
 	local staticdata = self._staticdata
@@ -37,7 +83,7 @@ local function detach_driver(self)
 	end
 	mcl_player.player_attached[driver_name] = nil
 
-	minetest.log("action", driver_name.." left a minecart")
+	core.log("action", driver_name.." left a minecart")
 
 	-- Update cart information
 	self._driver = nil
@@ -46,7 +92,7 @@ local function detach_driver(self)
 	player_meta.attached_to = nil
 
 	-- Detatch the player object from the minecart
-	local player = minetest.get_player_by_name(driver_name)
+	local player = core.get_player_by_name(driver_name)
 	if player then
 		local dir = staticdata.dir or vector.new(1,0,0)
 		local cart_pos = mod.get_cart_position(staticdata) or self.object:get_pos()
@@ -55,15 +101,10 @@ local function detach_driver(self)
 		--print("placing player at "..tostring(new_pos).." from cart at "..tostring(cart_pos)..", old_pos="..tostring(player:get_pos()).."dir="..tostring(dir))
 
 		-- There needs to be a delay here or the player's position won't update
-		minetest.after(0.1,function(driver_name,new_pos)
-			local player = minetest.get_player_by_name(driver_name)
-			player:moveto(new_pos, false)
-		end, driver_name, new_pos)
+		core.after(0.1, delayed_player_move, driver_name, new_pos)
 
 		player:set_eye_offset(vector.zero(),vector.zero())
 		mcl_player.player_set_animation(player, "stand" , 30)
-	--else
-		--print("No player object found for "..driver_name)
 	end
 end
 mod.detach_driver = detach_driver
@@ -81,6 +122,7 @@ function mod.kill_cart(staticdata, killer)
 
 	-- Handle entity-related items
 	local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
+	---@cast le vl.MinecartLuaEntity
 	if le then
 		pos = le.object:get_pos()
 
@@ -101,17 +143,18 @@ function mod.kill_cart(staticdata, killer)
 	-- Drop items
 	if not staticdata.dropped then
 		-- Try to drop the cart
-		local entity_def = minetest.registered_entities[staticdata.cart_type]
+		local entity_def = core.registered_entities[staticdata.cart_type]
+		---@cast entity_def vl.MinecartEntityDef
 		if entity_def then
 			local drop_cart = true
-			if killer and minetest.is_creative_enabled(killer:get_player_name()) then
+			if killer and core.is_creative_enabled(killer:get_player_name()) then
 				drop_cart = false
 			end
 
 			if drop_cart then
 				local drop = entity_def.drop
 				for d=1, #drop do
-					minetest.add_item(pos, drop[d])
+					core.add_item(pos, drop[d])
 				end
 			end
 		end
@@ -120,7 +163,7 @@ function mod.kill_cart(staticdata, killer)
 		local inventory = staticdata.inventory
 		if inventory then
 			for i=1,#inventory do
-				minetest.add_item(pos, inventory[i])
+				core.add_item(pos, inventory[i])
 			end
 		end
 
@@ -148,6 +191,7 @@ local function make_staticdata( _, connected_at, dir )
 	}
 end
 
+---@type vl.MinecartEntityDef
 local DEFAULT_CART_DEF = {
 	initial_properties = {
 		physical = true,
@@ -161,6 +205,8 @@ local DEFAULT_CART_DEF = {
 		minecart = 1,
 	},
 
+	drop = {},
+
 	_driver = nil, -- player who sits in and controls the minecart (only for minecart!)
 	_passenger = nil, -- for mobs
 	_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
@@ -171,11 +217,14 @@ local DEFAULT_CART_DEF = {
 	_old_pos = nil,
 	_staticdata = nil,
 }
-function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
+
+---@param self vl.MinecartLuaEntity
+function DEFAULT_CART_DEF:on_activate(staticdata, _)
 	-- Transfer older data
-	local data = minetest.deserialize(staticdata) or {}
+	local data = core.deserialize(staticdata) or {}
 	if not data.uuid then
 		data.uuid  = mcl_util.assign_uuid(self.object)
+		core.log("warning", "assigned uuid "..data.uuid.." to cart without uuid at"..vector.to_string(self.object:get_pos()))
 
 		if data._items then
 			data.inventory = data._items
@@ -205,28 +254,40 @@ function DEFAULT_CART_DEF:on_activate(staticdata, dtime_s)
 	self._staticdata = data
 
 	-- Activate cart if on powered activator rail
+	local pos = self.object:get_pos()
 	if self.on_activate_by_rail then
-		local pos = self.object:get_pos()
-		local node = minetest.get_node(vector.floor(pos))
+		local node = core.get_node(vector.floor(pos))
 		if node.name == "mcl_minecarts:activator_rail_on" then
 			self:on_activate_by_rail()
 		end
 	end
-end
-function DEFAULT_CART_DEF:get_staticdata()
-	save_cart_data(self._staticdata.uuid)
-	return minetest.serialize({uuid = self._staticdata.uuid, seq=self._seq})
+
+	--core.log("activated "..self._uuid.." at "..vector.to_string(pos))
 end
 
+---@param self vl.MinecartLuaEntity
+function DEFAULT_CART_DEF:get_staticdata()
+	save_cart_data(self._staticdata.uuid)
+	local data = core.serialize({uuid = self._staticdata.uuid, seq=self._seq})
+	--core.log("Got staticdata: "..data.." for "..self.name.." at "..vector.to_string(self.object:get_pos()))
+	return data
+end
+
+---@param self vl.MinecartLuaEntity
 function DEFAULT_CART_DEF:_mcl_entity_invs_load_items()
 	local staticdata = self._staticdata
 	return staticdata.inventory or {}
 end
+
+---@param self vl.MinecartLuaEntity
 function DEFAULT_CART_DEF:_mcl_entity_invs_save_items(items)
 	local staticdata = self._staticdata
 	staticdata.inventory = table.copy(items)
+	mod.save_cart_data(self._uuid)
 end
 
+---@param self vl.MinecartLuaEntity
+---@param pos vector.Vector
 function DEFAULT_CART_DEF:add_node_watch(pos)
 	local staticdata = self._staticdata
 	local watches = staticdata.node_watches or {}
@@ -238,6 +299,9 @@ function DEFAULT_CART_DEF:add_node_watch(pos)
 	watches[#watches+1] = pos
 	staticdata.node_watches = watches
 end
+
+---@param self vl.MinecartLuaEntity
+---@param pos vector.Vector
 function DEFAULT_CART_DEF:remove_node_watch(pos)
 	local staticdata = self._staticdata
 	local watches = staticdata.node_watches or {}
@@ -251,6 +315,8 @@ function DEFAULT_CART_DEF:remove_node_watch(pos)
 	end
 	staticdata.node_watches = new_watches
 end
+
+---@param self vl.MinecartLuaEntity
 function DEFAULT_CART_DEF:get_cart_position()
 	local staticdata = self._staticdata
 
@@ -260,10 +326,13 @@ function DEFAULT_CART_DEF:get_cart_position()
 		return self.object:get_pos()
 	end
 end
-function DEFAULT_CART_DEF:on_punch(puncher, time_from_last_punch, tool_capabilities, dir, damage)
+
+---@param self vl.MinecartLuaEntity
+function DEFAULT_CART_DEF:on_punch(puncher, _, _, dir, damage)
 	if puncher == self._driver then return end
 
 	local staticdata = self._staticdata
+	--core.log("punched "..staticdata.uuid)
 
 	if puncher:get_player_control().sneak then
 		mod.kill_cart(staticdata, puncher)
@@ -282,6 +351,8 @@ function DEFAULT_CART_DEF:on_punch(puncher, time_from_last_punch, tool_capabilit
 	controls.impulse = impulse
 	staticdata.controls = controls
 end
+
+---@param self vl.MinecartLuaEntity
 function DEFAULT_CART_DEF:on_step(dtime)
 	local staticdata = self._staticdata
 	if not staticdata then
@@ -306,15 +377,14 @@ function DEFAULT_CART_DEF:on_step(dtime)
 		if not self._seq then
 			core.log("warning", "Removing minecart entity missing sequence number")
 		end
-		--print("removing cart #"..staticdata.uuid.." with sequence number mismatch")
-		self.object:remove()
-		self._removed = true
+		--core.log("removing cart #"..staticdata.uuid.." with sequence number mismatch at "..(pos and vector.to_string(pos) or "nil"))
+		mcl_util.remove_entity(self)
 		return
 	end
 
 	-- Regen
 	local hp = self.object:get_hp()
-	local time_now = minetest.get_gametime()
+	local time_now = core.get_gametime() ---@cast time_now number
 	if hp < MINECART_MAX_HP and (staticdata.last_regen or 0) <= time_now - 1 then
 		staticdata.last_regen = time_now
 		hp = hp + 1
@@ -331,7 +401,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 
 	-- Controls
 	if self._driver then
-		local player = minetest.get_player_by_name(self._driver)
+		local player = core.get_player_by_name(self._driver)
 		if player then
 			local ctrl = player:get_player_control()
 			-- player detach
@@ -341,7 +411,7 @@ function DEFAULT_CART_DEF:on_step(dtime)
 			end
 
 			-- Experimental controls
-			local now_time = minetest.get_gametime()
+			local now_time = core.get_gametime()
 			local controls = {}
 			if ctrl.up then controls.forward = now_time end
 			if ctrl.down then controls.brake = now_time end
@@ -354,7 +424,6 @@ function DEFAULT_CART_DEF:on_step(dtime)
 			awards.unlock(self._driver, "mcl:onARail")
 		end
 	end
-
 
 	if not staticdata.connected_at then
 		movement.do_detached_movement(self, dtime)
@@ -418,14 +487,16 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 	local uuid = create_minecart(entity_id, railpos, cart_dir)
 
 	-- Create the entity with the staticdata already setup
-	local sd = minetest.serialize({ uuid=uuid, seq=1 })
-	local cart = minetest.add_entity(spawn_pos, entity_id, sd)
+	local sd = core.serialize({ uuid=uuid, seq=1 })
+	local cart = core.add_entity(spawn_pos, entity_id, sd)
+	if not cart then return end
 	local staticdata = get_cart_data(uuid)
 
-	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
+	cart:set_yaw(core.dir_to_yaw(cart_dir))
 
 	-- Call placer
 	local le = cart:get_luaentity()
+	---@cast le vl.MinecartLuaEntity
 	if le._mcl_minecarts_on_place then
 		le._mcl_minecarts_on_place(le, placer)
 	end
@@ -435,7 +506,7 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 	end
 
 	local pname = placer and placer:get_player_name() or ""
-	if not minetest.is_creative_enabled(pname) then
+	if not core.is_creative_enabled(pname) then
 		itemstack:take_item()
 	end
 	return itemstack
@@ -443,8 +514,8 @@ end
 
 local function dropper_place_minecart(dropitem, pos)
 	-- Don't try to place the minecart if pos isn't a rail
-	local node = minetest.get_node(pos)
-	if minetest.get_item_group(node.name, "rail") == 0 then return false end
+	local node = core.get_node(pos)
+	if core.get_item_group(node.name, "rail") == 0 then return false end
 
 	mod.place_minecart(dropitem, {
 		above = pos,
@@ -477,17 +548,17 @@ local function register_minecart_craftitem(itemstring, def)
 
 			return mod.place_minecart(itemstack, pointed_thing, placer)
 		end,
-		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+		_on_dispense = function(stack, _, droppos, dropnode, _)
 			-- Place minecart as entity on rail. If there's no rail, just drop it.
 			local placed
-			if minetest.get_item_group(dropnode.name, "rail") ~= 0 then
+			if core.get_item_group(dropnode.name, "rail") ~= 0 then
 				-- FIXME: This places minecarts even if the spot is already occupied
 				local pointed_thing = { under = droppos, above = vector.new( droppos.x, droppos.y+1, droppos.z ) }
 				placed = mod.place_minecart(stack, pointed_thing)
 			end
 			if placed == nil then
 				-- Drop item
-				minetest.add_item(droppos, stack)
+				core.add_item(droppos, stack)
 			end
 		end,
 		groups = groups,
@@ -498,7 +569,7 @@ local function register_minecart_craftitem(itemstring, def)
 	item_def._doc_items_usagehelp = def.usagehelp
 	item_def.inventory_image = def.icon
 	item_def.wield_image = def.icon
-	minetest.register_craftitem(itemstring, item_def)
+	core.register_craftitem(itemstring, item_def)
 end
 
 --[[
@@ -529,29 +600,30 @@ function mod.register_minecart(def)
 	-- Build cart definition
 	local cart = table.copy(DEFAULT_CART_DEF)
 	table_merge(cart, def)
-	minetest.register_entity(entity_id, cart)
+	core.register_entity(entity_id, cart)
 
 	-- Register item to entity mapping
 	entity_mapping[itemstring] = entity_id
 
 	register_minecart_craftitem(itemstring, def)
-	if minetest.get_modpath("doc_identifier") then
+	if core.get_modpath("doc_identifier") then
 		doc.sub.identifier.register_object(entity_id, "craftitems", itemstring)
 	end
 
 	if craft then
-		minetest.register_craft(craft)
+		core.register_craft(craft)
 	end
 end
 
-dofile(modpath.."/carts/minecart.lua")
-dofile(modpath.."/carts/with_chest.lua")
-dofile(modpath.."/carts/with_commandblock.lua")
-dofile(modpath.."/carts/with_hopper.lua")
-dofile(modpath.."/carts/with_furnace.lua")
-dofile(modpath.."/carts/with_tnt.lua")
+local CART_PATH = modpath..DIR_DELIM.."carts"..DIR_DELIM
+dofile(CART_PATH.."minecart.lua")
+dofile(CART_PATH.."with_chest.lua")
+dofile(CART_PATH.."with_commandblock.lua")
+dofile(CART_PATH.."with_hopper.lua")
+dofile(CART_PATH.."with_furnace.lua")
+dofile(CART_PATH.."with_tnt.lua")
 
-if minetest.get_modpath("mcl_wip") then
+if core.get_modpath("mcl_wip") then
 	mcl_wip.register_wip_item("mcl_minecarts:chest_minecart")
 	mcl_wip.register_wip_item("mcl_minecarts:furnace_minecart")
 	mcl_wip.register_wip_item("mcl_minecarts:command_block_minecart")
@@ -561,7 +633,7 @@ local function respawn_cart(cart)
 	local cart_type = cart.cart_type or "mcl_minecarts:minecart"
 	local pos = mod.get_cart_position(cart)
 
-	local players = minetest.get_connected_players()
+	local players = core.get_connected_players()
 	local distance = nil
 	for _,player in pairs(players) do
 		local d = vector.distance(player:get_pos(), pos)
@@ -569,16 +641,21 @@ local function respawn_cart(cart)
 	end
 	if not distance or distance > 90 then return end
 
-	mcl_log("Respawning cart #"..cart.uuid.." at "..tostring(pos)..",distance="..distance..",node="..minetest.get_node(pos).name)
+	--core.log("Respawning cart #"..cart.uuid.." at "..tostring(pos)..",distance="..distance..",node="..core.get_node(pos).name)
 
 	-- Update sequence so that old cart entities get removed
 	cart.seq = (cart.seq or 1) + 1
 	save_cart_data(cart.uuid)
 
 	-- Create the new entity and refresh caches
-	local sd = minetest.serialize({ uuid=cart.uuid, seq=cart.seq })
-	local entity = minetest.add_entity(pos, cart_type, sd)
+	local sd = core.serialize({ uuid=cart.uuid, seq=cart.seq })
+	local entity = core.add_entity(pos, cart_type, sd)
+	if not entity then
+		core.log("warning", "Unable to recreate cart "..cart.uuid.." at "..vector.to_string(pos))
+		return
+	end
 	local le = entity:get_luaentity()
+	---@cast le vl.MinecartLuaEntity
 	le._staticdata = cart
 	mcl_util.assign_uuid(entity)
 
@@ -589,7 +666,7 @@ end
 local function try_respawn_carts()
 	-- Build a map of blocks near players
 	local block_map = {}
-	local players = minetest.get_connected_players()
+	local players = core.get_connected_players()
 	for _,player in pairs(players) do
 		local pos = player:get_pos()
 		mod.add_blocks_to_map(
@@ -612,14 +689,14 @@ local function try_respawn_carts()
 end
 
 local timer = 0
-minetest.register_globalstep(function(dtime)
-
+core.register_globalstep(function(dtime)
 	-- Periodically respawn carts that come into range of a player
+	-- TODO: move to fixed timestep scheduler after https://git.minetest.land/VoxeLibre/VoxeLibre/pulls/4716 is merged
 	timer = timer - dtime
 	if timer <= 0 then
-		local start_time = minetest.get_us_time()
+		local start_time = core.get_us_time()
 		try_respawn_carts()
-		local stop_time = minetest.get_us_time()
+		local stop_time = core.get_us_time()
 		local duration = (stop_time - start_time) / 1e6
 		timer = duration / 250e-6 -- Schedule 50us per second
 		if timer > 5 then timer = 5 end
@@ -628,7 +705,7 @@ minetest.register_globalstep(function(dtime)
 	-- Handle periodically updating out-of-range carts
 	-- TODO: change how often cart positions are updated based on velocity
 	local start_time
-	if DEBUG then start_time = minetest.get_us_time() end
+	if DEBUG then start_time = core.get_us_time() end
 
 	for _,staticdata in mod.carts() do
 		--[[
@@ -648,12 +725,26 @@ minetest.register_globalstep(function(dtime)
 	end
 
 	if DEBUG then
-		local stop_time = minetest.get_us_time()
+		local stop_time = core.get_us_time()
 		print("Update took "..((stop_time-start_time)*1e-6).." seconds")
 	end
 end)
 
-minetest.register_on_joinplayer(function(player)
+local function reattach_player(player_name, cart_uuid)
+	local player = core.get_player_by_name(player_name)
+	if not player then
+		return
+	end
+
+	local cart = mcl_util.get_luaentity_from_uuid(cart_uuid)
+	if not cart then
+		return
+	end
+
+	mod.attach_driver(cart, player)
+end
+
+core.register_on_joinplayer(function(player)
 	-- Try cart reattachment
 	local player_name = player:get_player_name()
 	local player_meta = mcl_playerinfo.get_mod_meta(player_name, modname)
@@ -671,18 +762,6 @@ minetest.register_on_joinplayer(function(player)
 			return
 		end
 
-		minetest.after(0.2,function(player_name, cart_uuid)
-			local player = minetest.get_player_by_name(player_name)
-			if not player then
-				return
-			end
-
-			local cart = mcl_util.get_luaentity_from_uuid(cart_uuid)
-			if not cart then
-				return
-			end
-
-			mod.attach_driver(cart, player)
-		end, player_name, cart_uuid)
+		core.after(0.2, reattach_player, player_name, cart_uuid)
 	end
 end)
