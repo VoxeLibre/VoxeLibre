@@ -150,8 +150,9 @@ mcl_mobs.register_mob("mobs_mc:slime_big", slime_big)
 local slime_small = table.copy(slime_big)
 slime_small.description = S("Slime - small")
 slime_small.sounds.base_pitch = 1.15
-slime_small.hp_min = 4
-slime_small.hp_max = 4
+slime_small.initial_properties = table.copy(slime_big.initial_properties)
+slime_small.initial_properties.hp_min = 4
+slime_small.initial_properties.hp_max = 4
 slime_small.xp_min = 2
 slime_small.xp_max = 2
 slime_small.initial_properties.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51, rotate = true}
@@ -168,8 +169,9 @@ mcl_mobs.register_mob("mobs_mc:slime_small", slime_small)
 local slime_tiny = table.copy(slime_big)
 slime_tiny.description = S("Slime - tiny")
 slime_tiny.sounds.base_pitch = 1.3
-slime_tiny.hp_min = 1
-slime_tiny.hp_max = 1
+slime_tiny.initial_properties = table.copy(slime_big.initial_properties)
+slime_tiny.initial_properties.hp_min = 1
+slime_tiny.initial_properties.hp_max = 1
 slime_tiny.xp_min = 1
 slime_tiny.xp_max = 1
 slime_tiny.initial_properties.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505, rotate = true}
@@ -388,8 +390,9 @@ local magma_cube_small = table.copy(magma_cube_big)
 magma_cube_small.description = S("Magma Cube - small")
 magma_cube_small.sounds.jump = "mobs_mc_magma_cube_small"
 magma_cube_small.sounds.death = "mobs_mc_magma_cube_small"
-magma_cube_small.hp_min = 4
-magma_cube_small.hp_max = 4
+magma_cube_small.initial_properties = table.copy(magma_cube_big.initial_properties)
+magma_cube_small.initial_properties.hp_min = 4
+magma_cube_small.initial_properties.hp_max = 4
 magma_cube_small.xp_min = 2
 magma_cube_small.xp_max = 2
 magma_cube_small.initial_properties.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51, rotate = true}
@@ -411,8 +414,9 @@ magma_cube_tiny.description = S("Magma Cube - tiny")
 magma_cube_tiny.sounds.jump = "mobs_mc_magma_cube_small"
 magma_cube_tiny.sounds.death = "mobs_mc_magma_cube_small"
 magma_cube_tiny.sounds.base_pitch = 1.25
-magma_cube_tiny.hp_min = 1
-magma_cube_tiny.hp_max = 1
+magma_cube_tiny.initial_properties = table.copy(magma_cube_big.initial_properties)
+magma_cube_tiny.initial_properties.hp_min = 1
+magma_cube_tiny.initial_properties.hp_max = 1
 magma_cube_tiny.xp_min = 1
 magma_cube_tiny.xp_max = 1
 magma_cube_tiny.initial_properties.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505, rotate = true}

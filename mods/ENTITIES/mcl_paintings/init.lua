@@ -132,13 +132,15 @@ local function set_entity(object)
 end
 
 minetest.register_entity("mcl_paintings:painting", {
-	visual = "cube",
-	visual_size = { x=0.999, y=0.999, z=1/32 },
-	selectionbox = { -1/64, -0.5, -0.5, 1/64, 0.5, 0.5 },
-	physical = false,
-	collide_with_objects = false,
-	textures = { wood, wood, wood, wood, wood, wood },
-	hp_max = 1,
+	initial_properties = {
+		textures = { wood, wood, wood, wood, wood, wood },
+		hp_max = 1,
+		visual = "cube",
+		visual_size = { x=0.999, y=0.999, z=1/32 },
+		selectionbox = { -1/64, -0.5, -0.5, 1/64, 0.5, 0.5 },
+		physical = false,
+		collide_with_objects = false,
+	},
 
 	_motive = 0,
 	_pos = nil,

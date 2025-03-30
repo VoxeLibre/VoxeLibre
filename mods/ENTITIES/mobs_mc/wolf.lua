@@ -140,8 +140,9 @@ local dog = table.copy(wolf)
 dog.description = S("Dog")
 dog.can_despawn = false
 dog.passive = true
-dog.hp_min = 20
-dog.hp_max = 20
+dog.initial_properties = table.copy(wolf.initial_properties)
+dog.initial_properties.hp_min = 20
+dog.initial_properties.hp_max = 20
 -- Tamed wolf texture + red collar
 dog.textures = get_dog_textures("unicolor_red")
 dog.owner = ""

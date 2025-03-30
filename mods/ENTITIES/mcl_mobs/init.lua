@@ -159,7 +159,6 @@ function mcl_mobs.register_mob(name, def)
 
 	local collisionbox = def.collisionbox or def.initial_properties.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	local final_def = {
-		use_texture_alpha = def.use_texture_alpha,
 		head_swivel = def.head_swivel or nil, -- bool to activate this function
 		head_yaw_offset = math.rad(def.head_yaw_offset or 0), -- for wonkey model bones
 		head_pitch_multiplier = def.head_pitch_multiplier or 1, --for inverted pitch
@@ -201,6 +200,7 @@ function mcl_mobs.register_mob(name, def)
 			makes_footstep_sound = def.makes_footstep_sound or false,
 			stepheight = def.stepheight or 0.6,
 			automatic_face_movement_max_rotation_per_sec = 300,
+			use_texture_alpha = def.use_texture_alpha,
 		},
 		xp_min = def.xp_min or 0,
 		xp_max = def.xp_max or 0,
@@ -423,10 +423,15 @@ function mcl_mobs.register_arrow(name, def)
 	end
 
 	vl_projectile.register(name, {
-		physical = false,
-		visual = def.visual,
-		visual_size = def.visual_size,
-		textures = def.textures,
+		initial_properties = {
+			physical = false,
+			visual = def.visual,
+			visual_size = def.visual_size,
+			textures = def.textures,
+			collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0}, -- remove box around arrows
+			automatic_face_movement_dir = def.rotate
+				and (def.rotate - (math.pi / 180)) or false,
+		},
 		velocity = def.velocity,
 		hit_player = def.hit_player,
 		hit_node = def.hit_node,
@@ -434,7 +439,6 @@ function mcl_mobs.register_arrow(name, def)
 		hit_object = def.hit_object,
 		homing = def.homing,
 		drop = def.drop or false, -- drops arrow as registered item when true
-		collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0}, -- remove box around arrows
 		timer = 0,
 		switch = 0,
 		_lifetime = def._lifetime or 7,
@@ -492,8 +496,6 @@ function mcl_mobs.register_arrow(name, def)
 			self.object:set_velocity(dir * vel)
 			self._owner = mcl_util.get_entity_id(puncher)
 		end,
-		automatic_face_movement_dir = def.rotate
-			and (def.rotate - (math.pi / 180)) or false,
 
 		on_activate = def.on_activate,
 

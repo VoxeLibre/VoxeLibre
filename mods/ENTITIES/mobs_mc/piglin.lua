@@ -361,10 +361,11 @@ mcl_mobs.register_mob("mobs_mc:baby_pigman", baby_pigman_unused)
 
 local piglin_brute = table.copy(piglin)
 piglin_brute.description = S("Piglin Brute")
+piglin_brute.initial_properties = table.copy(piglin.initial_properties)
+piglin_brute.initial_properties.hp_min = 50
+piglin_brute.initial_properties.hp_max = 50
 piglin_brute.xp_min = 20
 piglin_brute.xp_max = 20
-piglin_brute.hp_min = 50
-piglin_brute.hp_max = 50
 piglin_brute.fire_resistant = false
 piglin_brute.do_custom = function()
 	return

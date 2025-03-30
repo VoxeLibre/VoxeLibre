@@ -12,9 +12,9 @@ local held_item_entity = {
 		static_save = false, -- TODO remove/change later when needed to persist
 		-- WARNING persisting held items not recommended, mob can recreate it after_activate
 		collision_box = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+		visual = "wielditem",
+		textures = { "mcl_core:dirt_with_grass" },
 	},
-	visual = "wielditem",
-	textures = { "mcl_core:dirt_with_grass" },
 }
 function held_item_entity:on_activate(staticdata, dtime_unloaded)
 	local staticdata = minetest.deserialize(staticdata)
