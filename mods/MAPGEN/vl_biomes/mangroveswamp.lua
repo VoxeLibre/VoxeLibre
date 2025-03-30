@@ -67,6 +67,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_1.mts",
 	y_min = 1,
 	place_on = {"mcl_mud:mud"},
+	place_offset_y = 1,
 	fill_ratio = 0.0065,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
@@ -78,6 +79,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_2.mts",
 	y_min = -1,
 	place_on = {"mcl_mud:mud"},
+	place_offset_y = 1,
 	fill_ratio = 0.0045,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
@@ -89,6 +91,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_3.mts",
 	y_min = -1,
 	place_on = {"mcl_mud:mud"},
+	place_offset_y = 1,
 	fill_ratio = 0.023,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
@@ -100,6 +103,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_4.mts",
 	y_min = -1,
 	place_on = {"mcl_mud:mud"},
+	place_offset_y = 1,
 	fill_ratio = 0.023,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
@@ -111,6 +115,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_tree_5.mts",
 	y_min = -1,
 	place_on = {"mcl_mud:mud"},
+	place_offset_y = 1,
 	fill_ratio = 0.023,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement
 	gen_callback = mangrove_root_gennotify,
@@ -121,6 +126,7 @@ vl_biomes.register_decoration({
 	biomes = {"MangroveSwamp"},
 	schematic = mod_mcl_mangrove .. "/schematics/mcl_mangrove_bee_nest.mts",
 	place_on = {"mcl_mud:mud"},
+	place_offset_y = 1,
 	spawn_by = "group:flower",
 	fill_ratio = 0.0005,
 	flags = "place_center_x, place_center_z, force_placement", -- not default. force_placement

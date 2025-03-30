@@ -8,6 +8,7 @@ vl_biomes.register_decoration({
 	y_min = 1,
 	y_max = vl_biomes.overworld_max,
 	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+	place_offset_y = 0, -- TODO: make schematic less tall?
 	noise_params = {
 		offset = 0.00015,
 		scale = 0.001,
@@ -26,6 +27,7 @@ vl_biomes.register_decoration({
 	y_min = 1,
 	y_max = vl_biomes.overworld_max,
 	place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+	place_offset_y = 0, -- TODO: make schematic less tall?
 	noise_params = {
 		offset = 0.001,
 		scale = 0.001,

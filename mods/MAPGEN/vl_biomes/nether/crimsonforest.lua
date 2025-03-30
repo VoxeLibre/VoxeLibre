@@ -49,6 +49,7 @@ vl_biomes.register_decoration({
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 10,
 	place_on = {"mcl_crimson:crimson_nylium"},
+	place_offset_y = 1,
 	fill_ratio = 0.008,
 	flags = "all_floors, place_center_x, place_center_z",
 })
@@ -60,6 +61,7 @@ vl_biomes.register_decoration({
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 15,
 	place_on = {"mcl_crimson:crimson_nylium"},
+	place_offset_y = 1,
 	fill_ratio = 0.006,
 	flags = "all_floors, place_center_x, place_center_z",
 })
@@ -71,6 +73,7 @@ vl_biomes.register_decoration({
 	y_min = vl_biomes.lava_nether_max + 1,
 	y_max = vl_biomes.nether_max - 20,
 	place_on = {"mcl_crimson:crimson_nylium"},
+	place_offset_y = 1,
 	fill_ratio = 0.004,
 	flags = "all_floors, place_center_x, place_center_z",
 })

@@ -50,9 +50,9 @@ core.register_ore({
 })
 
 -- Huge spruce
-vl_biomes.register_spruce_decoration(3000, 0.0008, "mcl_core_spruce_huge_up_1.mts", {"MegaTaiga"})
-vl_biomes.register_spruce_decoration(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"MegaTaiga"})
-vl_biomes.register_spruce_decoration(6000, 0.0008, "mcl_core_spruce_huge_up_3.mts", {"MegaTaiga"})
+vl_biomes.register_spruce_decoration(3000, 0.0008, "mcl_core_spruce_huge_up_1.mts", {"MegaTaiga"}, nil, 0)
+vl_biomes.register_spruce_decoration(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"MegaTaiga"}, nil, 0)
+vl_biomes.register_spruce_decoration(6000, 0.0008, "mcl_core_spruce_huge_up_3.mts", {"MegaTaiga"}, nil, 0)
 
 -- Common spruce
 vl_biomes.register_spruce_decoration(2500, 0.00325, "mcl_core_spruce_1.mts", {"MegaTaiga"})

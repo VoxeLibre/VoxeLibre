@@ -38,6 +38,7 @@ vl_biomes.register_biome({
 vl_biomes.register_decoration({
 	deco_type = "schematic",
 	place_on = {"group:grass_block", "mcl_core:dirt", },
+	place_offset_y = 1,
 	sidelen = 16,
 	noise_params = {
 		offset = 0.0,
@@ -60,6 +61,7 @@ vl_biomes.register_decoration({
 	biomes = {"IcePlains"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_5.mts",
 	place_on = {"group:grass_block"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = -0.00075,
 		scale = -0.0015,
@@ -81,7 +83,7 @@ vl_biomes.register_decoration({
 		},
 	},
 	place_on = {"group:grass_block"},
-	place_y_offset = -1,
+	place_y_offset = 0, ---1,
 	noise_params = {
 		offset = -0.08,
 		scale = 0.09,

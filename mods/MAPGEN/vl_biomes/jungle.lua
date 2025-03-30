@@ -41,6 +41,7 @@ vl_biomes.register_biome({
 vl_biomes.register_decoration({
 	deco_type = "schematic",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = 0.004,
 	biomes = {"Jungle"},
 	y_min = 1,
@@ -70,6 +71,7 @@ vl_biomes.register_decoration({
 	biomes = {"Jungle"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = 0.025,
 })
 
@@ -77,6 +79,7 @@ vl_biomes.register_decoration({
 	biomes = {"Jungle"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_2.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = 0.015,
 })
 
@@ -84,6 +87,7 @@ vl_biomes.register_decoration({
 	biomes = {"Jungle"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_3.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = 0.005,
 })
 
@@ -91,6 +95,7 @@ vl_biomes.register_decoration({
 	biomes = {"Jungle"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_4.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = 0.005,
 })
 
@@ -100,6 +105,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves.mts",
 	y_min = 3,
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.0196,
 		scale = 0.015,
@@ -115,6 +121,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_bush_oak_leaves_2.mts",
 	y_min = 3,
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.0196,
 		scale = 0.005,

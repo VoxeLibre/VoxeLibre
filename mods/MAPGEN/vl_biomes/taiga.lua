@@ -44,6 +44,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_lollipop.mts",
 	y_min = 2,
 	place_on = {"group:grass_block", "mcl_core:podzol"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.004,
 		scale = 0.0022,
@@ -60,6 +61,7 @@ vl_biomes.register_decoration({
 	schematic = mod_mcl_core .. "/schematics/mcl_core_spruce_matchstick.mts",
 	y_min = 3,
 	place_on = {"group:grass_block", "mcl_core:podzol"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = -0.025,
 		scale = 0.025,

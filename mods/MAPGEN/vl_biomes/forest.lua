@@ -43,6 +43,7 @@ for i = 1, 4 do
 		biomes = {"Forest"},
 		schematic = mod_mcl_core .. "/schematics/mcl_core_oak_large_"..i..".mts",
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		place_offset_y = 1,
 		noise_params = {
 			offset = 0.000545,
 			scale = 0.0011,
@@ -59,6 +60,7 @@ vl_biomes.register_decoration({
 	biomes = {"Forest"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.025,
 		scale = 0.0022,
@@ -73,6 +75,7 @@ vl_biomes.register_decoration({
 	biomes = {"Forest"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_classic_bee_nest.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	spawn_by = "group:flower",
 	fill_ratio = 0.00002,
 	rank = 1550, -- after flowers!
@@ -83,6 +86,7 @@ vl_biomes.register_decoration({
 	biomes = {"Forest"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_balloon.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.002083,
 		scale = 0.0022,
@@ -98,6 +102,7 @@ vl_biomes.register_decoration({
 	biomes = {"Forest"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_birch.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.000333,
 		scale = -0.0015,
@@ -111,6 +116,7 @@ vl_biomes.register_decoration({
 	biomes = {"Forest"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_birch_bee_nest.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	spawn_by = "group:flower",
 	fill_ratio = 0.00002,
 	rank = 1550, -- after flowers!

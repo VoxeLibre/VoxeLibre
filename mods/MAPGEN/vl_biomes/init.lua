@@ -282,11 +282,12 @@ end
 
 -- TODO: also add similar helper as below for oaks?
 -- helper for spruce decorations
-function vl_biomes.register_spruce_decoration(seed, offset, sprucename, biomes, y_min)
+function vl_biomes.register_spruce_decoration(seed, offset, sprucename, biomes, y_min, place_offset_y)
 	local mod_mcl_core = core.get_modpath("mcl_core")
 	mcl_mapgen_core.register_decoration({
 		deco_type = "schematic",
 		place_on = {"group:grass_block", "mcl_core:dirt", "mcl_core:podzol"},
+		place_offset_y = place_offset_y or 1,
 		sidelen = 16,
 		noise_params = {
 			offset = offset,
