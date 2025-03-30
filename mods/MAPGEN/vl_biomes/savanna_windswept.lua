@@ -36,6 +36,7 @@ for a = 1, 7 do
 		biomes = {"SavannaM"},
 		schematic = mod_mcl_core .. "/schematics/mcl_core_acacia_" .. a .. ".mts",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+		place_offset_y = 1,
 		fill_ratio = 0.0002,
 	})
 end

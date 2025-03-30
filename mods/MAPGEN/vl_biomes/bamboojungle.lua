@@ -40,5 +40,6 @@ vl_biomes.register_decoration({
 	biomes = {"BambooJungle"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	fill_ratio = 0.025,
 })

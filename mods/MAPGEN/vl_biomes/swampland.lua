@@ -43,6 +43,7 @@ vl_biomes.register_decoration({
 	biomes = {"Swampland", "Swampland_shore"},
 	schematic = mod_mcl_core .. "/schematics/mcl_core_oak_swamp.mts",
 	place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+	place_offset_y = 1,
 	noise_params = {
 		offset = 0.0055,
 		scale = 0.0011,
@@ -68,6 +69,7 @@ for d = 1, 3 do
 			data = lily_schem,
 		},
 		place_on = "mcl_core:dirt",
+		place_offset_y = 0,
 		noise_params = {
 			offset = 0.3 - 0.2 * d, -- more when shallow
 			scale = 0.3,
