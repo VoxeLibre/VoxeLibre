@@ -172,7 +172,6 @@ mcl_structures.register_structure("nether_bulwark",{
 				{ itemstring = "mcl_armor:boots_gold", weight = 1, func = function(stack, pr)mcl_enchanting.enchant_uniform_randomly(stack, {"soul_speed"}, pr) end },
 				{ itemstring = "mcl_nether:ancient_debris", weight = 12 }, -- same values as MCLA for now
 				{ itemstring = "mcl_nether:netherite_scrap", weight = 4 }, -- until this is rebalanced
-				{ itemstring = "mcl_nether:netherite_upgrade_template", weight = 8 },
 			}
 		},
 		{
