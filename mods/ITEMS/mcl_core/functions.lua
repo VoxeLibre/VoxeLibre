@@ -1411,10 +1411,6 @@ function mcl_core.clear_snow_dirt(pos, node)
 	end
 end
 
----- [[[[[ Functions for snowable nodes (nodes that can become snowed). ]]]]] ----
--- Always add these for snowable nodes.
-
--- on_construct
 -- Makes constructed snowable node snowed if placed below a snow cover node.
 function mcl_core.on_snowable_construct(pos)
 	local above = minetest.get_node(vector_offset(pos, 0, 1, 0)).name
@@ -1428,33 +1424,29 @@ function mcl_core.on_snowable_construct(pos)
 	end
 end
 
-
----- [[[[[ Functions for snow cover nodes. ]]]]] ----
-
--- A snow cover node is a node which turns a snowed dirtlike --
+-- A snow cover node is a node which turns a snowed dirtlike
 -- node into its snowed form while it is placed above.
--- MCL2's snow cover nodes are Top Snow (mcl_core:snow) and Snow (mcl_core:snowblock).
-
--- Always add the following functions to snow cover nodes:
-
--- on_construct
 -- Makes snowable node below snowed.
 function mcl_core.on_snow_construct(pos)
+	-- random snow orientation
+	local node = core.get_node(pos)
+	node.param2 = math.random(0,3)
+	core.swap_node(pos, node)
+	-- snow cover below
 	local below = vector_offset(pos, 0, -1, 0)
-	local node = minetest.get_node(below)
-	local def = minetest.registered_nodes[node.name]
+	local node = core.get_node(below)
+	local def = core.registered_nodes[node.name]
 	if def and def._mcl_snowed then
-		minetest.swap_node(below, {name = def._mcl_snowed, param2 = node.param2})
+		core.swap_node(below, {name = def._mcl_snowed, param2 = node.param2})
 	end
 end
--- after_destruct
+
 -- Clears snowed dirtlike node below.
 function mcl_core.after_snow_destruct(pos)
-	if minetest.get_item_group(minetest.get_node(pos).name, "snow_cover") == 1 then return end
+	if core.get_item_group(core.get_node(pos).name, "snow_cover") == 1 then return end
 	local below = vector_offset(pos, 0, -1, 0)
 	mcl_core.clear_snow_dirt(below, minetest.get_node(below))
 end
-
 
 -- Obsidian crying
 local crobby_particle = {
