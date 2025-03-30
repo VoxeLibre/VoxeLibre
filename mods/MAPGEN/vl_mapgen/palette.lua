@@ -20,6 +20,9 @@ core.register_on_mods_loaded(function()
 	for n, def in pairs(core.registered_nodes) do
 		local groups = def.groups or {}
 		if (groups.random4dir or 0) ~= 0 then
+			if def.paramtype2 ~= "4dir" then
+				core.log("warning", "Node "..n.." has group random4dir but paramtype2=\""..(def.paramtype2 or "").."\"")
+			end
 			mg_4dir[core.get_content_id(n)] = true
 		end
 	end
