@@ -156,7 +156,6 @@ function vl_mapgen.register_decoration(def, callback)
 		-- c.f., https://api.luanti.org/definition-tables/#decoration-definition
 		core.log("warning", "Decoration fill_ratio is used only if noise_params is not specified, check "..tostring(def.name))
 	end
-	def = table.copy(def) -- defensive deep copy, needed for water lily
 	if def.gen_callback and not def.name then error("gen_callback requires a named decoration.") end
 	if callback then error("Callbacks have been redesigned.") end
 	if pending_decorations == nil then
@@ -177,7 +176,6 @@ function vl_mapgen.register_decoration(def, callback)
 		return
 	end
 
-	def = table.copy(def) -- defensive deep copy, needed for water lily
 	pending_decorations[#pending_decorations+1] = def
 end
 
