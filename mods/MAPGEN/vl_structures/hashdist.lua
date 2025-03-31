@@ -1,4 +1,5 @@
 local structure_boost = tonumber(core.settings:get("vl_structures_boost")) or 1
+local inv_boost = math.min(1, structure_boost ^ -0.5)
 local logging = core.settings:get_bool("vl_structures_logging", false)
 
 ---- Functionality to prevent structures from spawning too close to each other, by kno10.
@@ -127,7 +128,7 @@ local function spawn_threshold(def, sidelen)
 	local p = def.chunk_probability / 100 * structure_boost
 	if sidelen ~= 80 then p = p * (sidelen * sidelen) / 6400 end -- chunk to sidelen, pretend 2d
 	if def.hash_mindist_2d then
-		local r = def.hash_mindist_2d
+		local r = def.hash_mindist_2d * inv_boost
 		local k = in_radius_2d(max(1, r / sidelen))
 		local p2 = p + p * (k-1) * 0.667
 		if p2 >= 2 then
@@ -146,7 +147,7 @@ local function spawn_threshold(def, sidelen)
 		end
 		return min(p3, 1)
 	elseif def.hash_mindist then
-		local k = in_radius_3d(def.hash_mindist / sidelen)
+		local k = in_radius_3d(def.hash_mindist * inv_boost / sidelen)
 		if p * k >= 2 then
 			if logging and structure_boost == 1 then
 				core.log("warning", "Structure "..def.name.." spawning is limited by distance, not by chunk_probability: "..p.." * "..k)
@@ -224,10 +225,10 @@ function vl_structures.check_hash_distance(def, bx, by, bz, sidelen, seed)
 		def._hash_spawn_threshold = min(p, 1) * 0xFFFFFFFF - 0x80000000 -- map to hash code range
 	end
 	if def.hash_mindist_2d then
-		local r = def.hash_mindist_2d / sidelen
+		local r = def.hash_mindist_2d * inv_boost / sidelen
 		return check_mindist_2d(bx, by, bz, r, seed, def._hash_spawn_threshold) < def._hash_spawn_threshold
 	elseif def.hash_mindist then
-		local r = def.hash_mindist / sidelen
+		local r = def.hash_mindist * inv_boost / sidelen
 		return check_mindist(bx, by, bz, r, seed, def._hash_spawn_threshold) < def._hash_spawn_threshold
 	else
 		return hash_pos(bx, by, bz, seed) < def._hash_spawn_threshold
