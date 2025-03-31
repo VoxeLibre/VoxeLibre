@@ -520,8 +520,10 @@ minetest.register_node("mcl_core:dirt", {
 	tiles = {"default_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,shovely=1, dirt=1,soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, enderman_takable=1, building_block=1, path_creation_possible=1},
+	paramtype2 = "4dir",
+	groups = {handy=1,shovely=1, dirt=1,soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, enderman_takable=1, building_block=1, path_creation_possible=1, random4dir=1},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	on_construct = mcl_core.random4dir,
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
@@ -532,8 +534,10 @@ minetest.register_node("mcl_core:coarse_dirt", {
 	tiles = {"mcl_core_coarse_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = { handy = 1,shovely = 1, dirt = 3, soil = 1, soil_sugarcane = 1, cultivatable = 1, enderman_takable = 1, building_block = 1, soil_sapling = 2, path_creation_possible=1},
+	paramtype2 = "4dir",
+	groups = { handy = 1,shovely = 1, dirt = 3, soil = 1, soil_sugarcane = 1, cultivatable = 1, enderman_takable = 1, building_block = 1, soil_sapling = 2, path_creation_possible=1, random4dir=1},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	on_construct = mcl_core.random4dir,
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
@@ -544,7 +548,8 @@ minetest.register_node("mcl_core:gravel", {
 	tiles = {"default_gravel.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,shovely=1, falling_node=1, enderman_takable=1, building_block=1, material_sand=1},
+	paramtype2 = "4dir",
+	groups = {handy=1,shovely=1, falling_node=1, enderman_takable=1, building_block=1, material_sand=1,random4dir=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -553,6 +558,7 @@ minetest.register_node("mcl_core:gravel", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_gravel_defaults(),
+	on_construct = mcl_core.random4dir,
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 	_mcl_silk_touch_drop = true,
