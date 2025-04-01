@@ -109,6 +109,8 @@ function mcl_weather.snow.make_weather()
 		local pos = player:get_pos()
 		if mcl_weather.has_snow(pos) then
 			make_weather_for_player(player)
+		else
+			mcl_weather.remove_spawners_player(player)
 		end
 	end
 end
