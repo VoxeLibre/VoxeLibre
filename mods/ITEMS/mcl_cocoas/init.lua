@@ -12,20 +12,17 @@ function mcl_cocoas.place(itemstack, placer, pt, plantname)
 		return
 	end
 
+	-- Handle node right-clicking
+	local called
+	itemstack, called = mcl_util.handle_node_rightclick(itemstack, placer, pt)
+	if called then return itemstack end
+
 	local node = minetest.get_node(pt.under)
 
 	-- return if any of the nodes are not registered
 	local def = minetest.registered_nodes[node.name]
 	if not def then
 		return
-	end
-
-	-- Am I right-clicking on something that has a custom on_rightclick set?
-	if placer and not placer:get_player_control().sneak then
-		if def and def.on_rightclick then
-			local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pt)
-			if new_stack and new_stack ~= itemstack then return new_stack end
-		end
 	end
 
 	-- Check if pointing at jungle tree
