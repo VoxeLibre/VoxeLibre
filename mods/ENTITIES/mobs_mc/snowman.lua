@@ -142,7 +142,7 @@ mcl_mobs.register_mob("mobs_mc:snowman", {
 
 local summon_particles = function(obj)
 	local lua = obj:get_luaentity()
-	local cb = lua.initial_properies.collisionbox
+	local cb = lua.initial_properties.collisionbox
 	local min = {x = cb[1], y = cb[2], z = cb[3]}
 	local max = {x = cb[4], y = cb[5], z = cb[6]}
 	local pos = obj:get_pos()
