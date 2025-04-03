@@ -118,9 +118,8 @@ function mod.kill_cart(staticdata, killer)
 	-- Leave nodes
 	if staticdata.attached_at then
 		movement.handle_cart_leave(staticdata, staticdata.attached_at, staticdata.dir )
-	--elseif DEBUG
-		--mcl_log("TODO: handle detatched minecart death")
 	end
+	-- TODO: handle detatched minecart death
 
 	-- Handle entity-related items
 	local le = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
