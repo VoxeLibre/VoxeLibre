@@ -28,11 +28,13 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				lvm_used = lvm_used or lvm_used0
 				shadow = shadow or shadow0
 				if deco and type(deco) == "table" then
+					assert(not deco_table, "Only one generator may currently set a decoration table")
 					deco_table = deco
 				elseif deco then
 					deco_used = true
 				end
 				if ore and type(ore) == "table" then
+					assert(not ore_table, "Only one generator may currently set an ore table")
 					ore_table = ore
 				elseif deco then
 					ore_used = true
@@ -51,19 +53,19 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "set_data", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt1)*1000))
 			end
 			local gt2 = os.clock()
-			if deco_table and #deco_table > 0 then
-				minetest.generate_decorations(vm,vector.new(minp.x,deco_table.min,minp.z),vector.new(maxp.x,deco_table.max,maxp.z))
-			elseif deco_used then
+			if deco_used then
 				minetest.generate_decorations(vm)
+			elseif deco_table then
+				minetest.generate_decorations(vm,vector.new(minp.x,deco_table.min,minp.z),vector.new(maxp.x,deco_table.max,maxp.z))
 			end
 			if log_timing and (deco_table or deco_used) then
 				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "decorations", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt2)*1000))
 			end
 			local gt3 = os.clock()
-			if ore_table and #ore_table > 0 then
-				minetest.generate_ores(vm,vector.new(minp.x,ore_table.min,minp.z),vector.new(maxp.x,ore_table.max,maxp.z))
-			elseif ore_used then
+			if ore_used then
 				minetest.generate_ores(vm)
+			elseif ore_table then
+				minetest.generate_ores(vm,vector.new(minp.x,ore_table.min,minp.z),vector.new(maxp.x,ore_table.max,maxp.z))
 			end
 			if log_timing and (ore_table or ore_used) then
 				minetest.log("action", string.format("[mcl_mapgen_core] %-20s %s ... %s %8.2fms", "ores", minetest.pos_to_string(minp), minetest.pos_to_string(maxp), (os.clock() - gt3)*1000))
