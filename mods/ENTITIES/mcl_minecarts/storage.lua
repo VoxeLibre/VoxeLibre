@@ -1,4 +1,4 @@
-local storage = minetest.get_mod_storage()
+local storage = core.get_mod_storage()
 local mod = mcl_minecarts
 
 -- Imports
@@ -13,7 +13,7 @@ local function get_cart_data(uuid)
 	if cart_data[uuid] then return cart_data[uuid] end
 	if cart_data_fail_cache[uuid] then return nil end
 
-	local data = minetest.deserialize(storage:get_string("cart-"..uuid))
+	local data = core.deserialize(storage:get_string("cart-"..uuid))
 	if not data then
 		cart_data_fail_cache[uuid] = true
 		return nil
@@ -40,7 +40,9 @@ end
 
 local function save_cart_data(uuid)
 	if not cart_data[uuid] then return end
-	storage:set_string("cart-"..uuid,minetest.serialize(cart_data[uuid]))
+	local data = core.serialize(cart_data[uuid])
+	storage:set_string("cart-"..uuid, data)
+	--core.log("saved cart data for uuid "..uuid..": "..data)
 end
 mod.save_cart_data = save_cart_data
 
@@ -86,7 +88,7 @@ function mod.add_blocks_to_map(block_map, min_pos, max_pos)
 	end
 end
 
-minetest.register_on_shutdown(function()
+core.register_on_shutdown(function()
 	for uuid,_ in pairs(cart_data) do
 		save_cart_data(uuid)
 	end

@@ -107,6 +107,7 @@ local function hopper_push_to_mc(mc_ent, dest_pos)
 		mcl_log("No inv")
 		return false
 	end
+	mc_ent._inv = dest_inv
 
 	local meta = minetest.get_meta(dest_pos)
 	local inv = meta:get_inventory()
@@ -129,6 +130,7 @@ local function hopper_push_to_mc(mc_ent, dest_pos)
 				mcl_log("Room so unload")
 				dest_inv:add_item("main", stack:take_item())
 				inv:set_stack("main", i, stack)
+				mcl_entity_invs.save_inv(mc_ent)
 
 				-- Take one item and stop until next time
 				return
@@ -152,6 +154,7 @@ local function hopper_pull_from_mc(mc_ent, dest_pos)
 		mcl_log("No inv")
 		return false
 	end
+	mc_ent._inv = inv
 
 	local dest_meta = minetest.get_meta(dest_pos)
 	local dest_inv = dest_meta:get_inventory()
@@ -174,15 +177,13 @@ local function hopper_pull_from_mc(mc_ent, dest_pos)
 				mcl_log("Room so unload")
 				dest_inv:add_item("main", stack:take_item())
 				inv:set_stack("main", i, stack)
+				mcl_entity_invs.save_inv(mc_ent)
 
 				-- Take one item and stop until next time, report that we took something
 				return true
 			else
 				mcl_log("no Room")
 			end
-
-		else
-			mcl_log("nothing there")
 		end
 	end
 end
