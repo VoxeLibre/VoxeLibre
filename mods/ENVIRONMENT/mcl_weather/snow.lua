@@ -97,6 +97,28 @@ function mcl_weather.snow.clear()
 	mcl_weather.remove_all_spawners()
 end
 
+local function make_weather_for_player(player)
+	mcl_weather.rain.remove_sound(player)
+	mcl_weather.snow.add_player(player)
+	mcl_weather.snow.set_sky_box()
+end
+mcl_weather.snow.make_weather_for_player = make_weather_for_player
+
+function mcl_weather.snow.make_weather()
+	for _, player in pairs(get_connected_players()) do
+		local pos = player:get_pos()
+		if mcl_weather.has_snow(pos) then
+			make_weather_for_player(player)
+		else
+			mcl_weather.remove_spawners_player(player)
+		end
+	end
+end
+
+function mcl_weather.snow.step(_)
+	mcl_weather.snow.make_weather()
+end
+
 function mcl_weather.snow.add_player(player)
 	for i=1,2 do
 		psdef.texture="weather_pack_snow_snowflake"..i..".png"

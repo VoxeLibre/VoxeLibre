@@ -14,11 +14,7 @@ lightning.register_on_strike(function(pos, pos2, objects)
 	if not mcl_weather.has_rain(pos) then return nil, true end
 end)
 
-minetest.register_globalstep(function(dtime)
-	if mcl_weather.get_weather() ~= "thunder" then
-		return false
-	end
-
+function mcl_weather.thunder.step(_)
 	mcl_weather.rain.set_particles_mode("thunder")
 	mcl_weather.rain.make_weather()
 
@@ -43,7 +39,7 @@ minetest.register_globalstep(function(dtime)
 		local delay = math.random(mcl_weather.thunder.min_delay, mcl_weather.thunder.max_delay)
 		mcl_weather.thunder.next_strike = minetest.get_gametime() + delay
 	end
-end)
+end
 
 function mcl_weather.thunder.clear()
 	mcl_weather.rain.clear()
