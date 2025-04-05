@@ -1,5 +1,5 @@
 # Sounds For VoxeLibre
-This documentation explores the process behind making or editing sound asset files within VoxeLibre. 
+This documentation explores the process behind making sound asset files and their implimentation within VoxeLibre. 
 
 ## General Explaination
 Sounds are an undervalued asset that enriches the in-game experience. From regular actions like digging and walking, to the most minor things like button pushes and compost bin filling. When sound is done right, your players will subconciously notice. Voxelibre uses .ogg sound files to play in-game noises to be triggered.
@@ -123,7 +123,7 @@ Always keep your original high quality source audio file. If you ever need to go
 Adding in basic sounds can be easy. Lets take a look at some examples.
 
 ## Default Sound Tables
-Many of the general sounds that nodes and items use are called on from the mcl_sounds tables located in (.minetest/games/voxelibre/mods/CORE/mcl_sounds)
+Many of the general sounds that nodes and items use are called on from the mcl_sounds tables located in (.minetest/games/voxelibre/mods/CORE/mcl_sounds).
 LUA code for cobblestone (found in .minetest/games/voxelibre/mods/ITEMS/mcl_core/nodes_base.lua)
 ```
 minetest.register_node("mcl_core:cobble", {
@@ -163,11 +163,11 @@ This table calls upon three audio files depending on whether the node is walked 
 Several sounds may be randomly choosen to play if they are in the same sound group. To create a sound group simply give all sound files the same name plus a number such as example.1.ogg, example.2.ogg, example.3.ogg . All of these sounds will have an equal 1/X chance to be called upon.
 
 ## Directly calling upon a sound to play for items and nodes
-An individual sound is called upon by the following
+An individual sound is called upon by the following:
 ```
 minetest.sound_play({name="example_sound", pos=pos, gain=1}, true)
 ```
-This is seen more in functions where you want a sound to play after something has happened. Here is an example in the composter code when changing composting level
+This is seen more in functions where you want a sound to play after something has happened. Here is an example in the composter code when changing composting level.
 ```
 local function composter_progress_chance(pos, node, chance)
 	-- calculate leveling up chance
