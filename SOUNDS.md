@@ -78,7 +78,6 @@ You can record your own samples with any microphone, chances are your phone is w
 
 ## Step 1 Open audio files in Audacity
 Open Audacity.
-![Screenshot](link)
 ![Screenshot](https://i.ibb.co/0VhDPQbW/Screenshot-from-2025-02-15-21-05-44.webp)
 Navigate to the top left and select >file > open then choose your high quality music file
 This is what an imported audio file looks like.
@@ -87,12 +86,12 @@ You can use ctrl+mousewheel to zoom in and out, and theres a little slider too t
 
 ## Step 2 Isolate the sample
 Now we are going to find a good sound byte somewhere in this track and select its duration. Zoom in on portion you want to keep and select it by holding in left click.
-![Screenshot](linkhttps://i.ibb.co/6ckL6FnN/Screenshot-from-2025-02-15-21-09-02.webp)
+![Screenshot](https://i.ibb.co/6ckL6FnN/Screenshot-from-2025-02-15-21-09-02.webp)
 this gives a visual idea of where to cut around. Now, time to cut out everything else.
 left click on another part of track to clear out that selection. Now select everything you want to cut.
-![Screenshot](linkhttps://i.ibb.co/zH4759tS/Screenshot-from-2025-02-15-21-10-52.webp)
+![Screenshot](https://i.ibb.co/zH4759tS/Screenshot-from-2025-02-15-21-10-52.webp)
 Now hit the delete button to cut it out.
-![Screenshot](linkhttps://i.ibb.co/Pv0cP3qX/Screenshot-from-2025-02-15-21-11-38.webp)
+![Screenshot](https://i.ibb.co/Pv0cP3qX/Screenshot-from-2025-02-15-21-11-38.webp)
 
 Now you can zoom in to whats left, play it over a few times to trim further or undo and try again if you cut off too much.
 
@@ -111,10 +110,10 @@ Name your ogg file and set the audio quality slider to around 5 then export.
 ### Best Practices
 Always keep your original high quality source audio file. If you ever need to go back and re-edit the sound always use the lossless version. The newly generated .ogg will have lost some quality for the sake of optimization.
 
-#How sounds are implimented in VoxeLibre
+# How sounds are implimented in VoxeLibre
 Adding in basic sounds can be easy. Lets take a look at some examples.
 
-##Default Sound Tables
+## Default Sound Tables
 Many of the general sounds that nodes and items use are called on from the mcl_sounds tables located in (.minetest/games/voxelibre/mods/CORE/mcl_sounds)
 LUA code for cobblestone (found in .minetest/games/voxelibre/mods/ITEMS/mcl_core/nodes_base.lua)
 ```
