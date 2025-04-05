@@ -24,7 +24,7 @@ mcl_structures.register_structure("fallen_tree",{
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = core.get_mapgen_setting("water_level"),
 	place_func = function(pos,def,pr)
-		pos.y = pos.y + 1 -- structures receive the *ground* position, like schematics
+		--currently we have y+1 in mcl_structures API again. pos.y = pos.y + 1 -- structures receive the *ground* position, like schematics
 		local tree = core.find_node_near(pos,15,{"group:tree"})
 		if not tree then return end
 		tree = get_node_name(tree)

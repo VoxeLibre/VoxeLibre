@@ -354,7 +354,8 @@ function mcl_structures.register_structure(name,def,nospawn) --nospawn means it 
 					for _, pos in ipairs(t) do
 						local pr = PcgRandom(minetest.hash_node_position(pos) + worldseed + RANDOM_SEED_OFFSET)
 						if def.chunk_probability == nil or pr:next(0, 1e9) * 1e-9 * def.chunk_probability <= 1 then
-							mcl_structures.place_structure(pos, def, pr, blockseed)
+							-- "pos" is the place_on node, offset y+1 to place schematics onto not into
+							mcl_structures.place_structure(vector.offset(pos, 0, 1, 0), def, pr, blockseed)
 							if def.chunk_probability ~= nil then break end -- allow only one per gennotify, e.g., on multiple surfaces
 						end
 					end
