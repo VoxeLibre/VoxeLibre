@@ -78,19 +78,28 @@ You can record your own samples with any microphone, chances are your phone is w
 
 ## Step 1 Open audio files in Audacity
 Open Audacity.
+
 ![Screenshot](https://i.ibb.co/0VhDPQbW/Screenshot-from-2025-02-15-21-05-44.webp)
+
 Navigate to the top left and select >file > open then choose your high quality music file
 This is what an imported audio file looks like.
+
 ![Screenshot](https://i.ibb.co/9kPg0kGT/Screenshot-from-2025-02-15-21-06-58.webp)
+
 You can use ctrl+mousewheel to zoom in and out, and theres a little slider too that helps navigate the track horizontally.
 
 ## Step 2 Isolate the sample
 Now we are going to find a good sound byte somewhere in this track and select its duration. Zoom in on portion you want to keep and select it by holding in left click.
+
 ![Screenshot](https://i.ibb.co/6ckL6FnN/Screenshot-from-2025-02-15-21-09-02.webp)
+
 this gives a visual idea of where to cut around. Now, time to cut out everything else.
 left click on another part of track to clear out that selection. Now select everything you want to cut.
+
 ![Screenshot](https://i.ibb.co/zH4759tS/Screenshot-from-2025-02-15-21-10-52.webp)
+
 Now hit the delete button to cut it out.
+
 ![Screenshot](https://i.ibb.co/Pv0cP3qX/Screenshot-from-2025-02-15-21-11-38.webp)
 
 Now you can zoom in to whats left, play it over a few times to trim further or undo and try again if you cut off too much.
@@ -154,9 +163,9 @@ This table calls upon three audio files depending on whether the node is walked 
 Several sounds may be randomly choosen to play if they are in the same sound group. To create a sound group simply give all sound files the same name plus a number such as example.1.ogg, example.2.ogg, example.3.ogg . All of these sounds will have an equal 1/X chance to be called upon.
 
 ## Directly calling upon a sound to play for items and nodes
-At its most basic, an individual sound is called upon by the following
+An individual sound is called upon by the following
 ```
-			minetest.sound_play({name="zap_on", pos=pos, gain=1}, true)
+minetest.sound_play({name="example_sound", pos=pos, gain=1}, true)
 ```
 This is seen more in functions where you want a sound to play after something has happened. Here is an example in the composter code when changing composting level
 ```
