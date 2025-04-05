@@ -680,6 +680,13 @@ if not vector.in_area then
 		       (pos.z >= min.z) and (pos.z <= max.z)
 	end
 end
+if not core.bulk_swap_node then
+	function core.bulk_swap_node(positions, node)
+		for _,pos in ipairs(positions) do
+			core.swap_node(pos, node)
+		end
+	end
+end
 
 -- Traces along a line of nodes vertically to find the next possition that isn't an allowed node
 ---@param pos The position to start tracing from
