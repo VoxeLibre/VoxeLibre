@@ -248,7 +248,7 @@ mcl_potions.register_effect({
 		if object:is_player() then
 			object:set_hp(math.min(object:get_properties().hp_max or 20, object:get_hp() + 1), { type = "set_hp", other = "regeneration" })
 		elseif entity and entity.is_mob then
-			entity.health = math.min(entity.hp_max, entity.health + 1)
+			entity.health = math.min(entity.initial_properties.hp_max, entity.health + 1)
 		end
 	end,
 	particle_color = "#CD5CAB",
@@ -1888,7 +1888,7 @@ function mcl_potions.healing_func(object, hp)
 		end
 
 		if ent and ent.is_mob then
-			ent.health = math.min(ent.health + hp, ent.hp_max)
+			ent.health = math.min(ent.health + hp, ent.initial_properties.hp_max)
 		elseif object:is_player() then
 			object:set_hp(math.min(object:get_hp() + hp, object:get_properties().hp_max), { type = "set_hp", other = "healing" })
 		end

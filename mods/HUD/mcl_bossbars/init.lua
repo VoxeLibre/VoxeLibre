@@ -88,7 +88,7 @@ function mcl_bossbars.update_boss(object, name, color)
 	local bardef = {
 		color = color,
 		text = props.nametag,
-		percentage = math.floor(props.health / props.hp_max * 100),
+		percentage = math.floor(props.health / props.initial_properties.hp_max * 100),
 	}
 
 	if not bardef.text or bardef.text == "" then
