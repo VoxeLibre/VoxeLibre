@@ -25,7 +25,7 @@ function on_collide(self, pos, node)
 		mcl_target.hit(vector.round(pos), 0.4) --4 redstone ticks
 	end
 
-	if node.name == "ignore" then
+	if node.name == "ignore" or mcl_worlds.is_in_void(pos) then
 		-- FIXME: This also means the player loses an ender pearl for throwing into unloaded areas
 		return
 	end
