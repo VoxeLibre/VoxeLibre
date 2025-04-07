@@ -342,17 +342,23 @@ minetest.register_on_mods_loaded(function()
     end
 
     -- Process enchanted books
-    for ench, def in pairs(mcl_enchanting.enchantments) do
-        local str = "mcl_enchanting:book_enchanted " .. ench .. " " .. def.max_level
-        if def.inv_tool_tab then
-            table.insert(inventory_lists["tools"], str)
-        end
-        if def.inv_combat_tab then
-            table.insert(inventory_lists["combat"], str)
-        end
-        table.insert(inventory_lists["all"], str)
-    end
+	for ench, def in pairs(mcl_enchanting.enchantments) do
+		local str = "mcl_enchanting:book_enchanted " .. ench .. " " .. def.max_level
+		if def.inv_tool_tab then
+			table.insert(inventory_lists["tools"], str)
+		end
+		if def.inv_combat_tab then
+			table.insert(inventory_lists["combat"], str)
+		end
+		table.insert(inventory_lists["all"], str)
+	end
+
+	for _, to_sort in pairs(inventory_lists) do
+		table.sort(to_sort)
+		replace_enchanted_books(to_sort)
+	end
 end)
+
 ---@param name string
 ---@param description string
 ---@param lang mt.LangCode
