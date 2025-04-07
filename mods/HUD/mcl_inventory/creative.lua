@@ -354,7 +354,6 @@ minetest.register_on_mods_loaded(function()
 	end
 
 	for _, to_sort in pairs(inventory_lists) do
-		table.sort(to_sort)
 		replace_enchanted_books(to_sort)
 	end
 end)
