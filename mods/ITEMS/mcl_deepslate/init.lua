@@ -19,13 +19,14 @@ minetest.register_node("mcl_deepslate:deepslate", {
 	paramtype2 = "facedir",
 	is_ground_content = true,
 	on_place = mcl_util.rotate_axis,
-	groups = { pickaxey = 1, stone = 1, building_block = 1, material_stone = 1 },
+	groups = { pickaxey = 1, stone = 1, building_block = 1, material_stone = 1, changey = 1, },
 	drop = cobble,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rotate = screwdriver.rotate_3way,
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+    _mcl_changey_variant = "mcl_core:stone",	
 })
 
 minetest.register_node("mcl_deepslate:infested_deepslate", {
@@ -198,14 +199,16 @@ local function register_deepslate_variant(item, texture, desc, longdesc, stair, 
 		_doc_items_longdesc = longdesc,
 		_doc_items_hidden = false,
 		tiles = { "mcl_"..texture..".png" },
-		groups = { pickaxey = 1, building_block = 1, material_stone = 1 },
+		groups = { pickaxey = 1, building_block = 1, material_stone = 1, changey = 1, },
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		_mcl_blast_resistance = 6,
 		_mcl_hardness = 3.5,
 		_mcl_silk_touch_drop = true,
+        _mcl_changey_variant = nil,
 	}
 	if item == "cobbled" then
 		def.groups.cobble = 1
+        def._mcl_changey_variant = "mcl_core:cobble"		
 	end
 	minetest.register_node("mcl_deepslate:deepslate_"..item, table.copy(def))
 
