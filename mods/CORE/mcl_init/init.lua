@@ -3,56 +3,7 @@ mcl_vars = {}
 local modpath = core.get_modpath(core.get_current_modname())
 
 minetest.log("action", "World seed = " .. minetest.get_mapgen_setting("seed"))
-
---- Try to read gametime *before* initialization. Primarily to detect when an old world is loaded.
-local start_time = tonumber(Settings(core.get_worldpath() .. "/env_meta.txt"):get("game_time")) or 0
-
---- Get a version number for map generation.
-local function parse_version(str)
-	local parts = {}
-	while str ~= "" do
-		local m, tail = str:match("^(%d+)%.?(.*)$")
-		if m then
-			parts[#parts + 1] = tonumber(m)
-			if tonumber(tail) then
-				parts[#parts + 1] = tonumber(tail)
-				break
-			end
-			str = tail
-		else
-			parts[#parts + 1] = str
-			break
-		end
-	end
-	return parts
-end
--- Active mapgen version; the user may activate this to use updates on new chunks
-local map_version = parse_version(core.get_mapgen_setting("vl_world_version") or "")
--- Initial mapgen version; the user should not modify this, controls which upgrade LBMs are used
-local map_initial_version = parse_version(core.get_mapgen_setting("vl_world_initial_version") or "")
-if #map_version == 0 then
-	if start_time == 0 then
-		local game_version = Settings(core.get_game_info().path .. "/game.conf"):get("version")
-		if game_version then
-			core.set_mapgen_setting("vl_world_version", game_version, true)
-			map_version = parse_version(game_version)
-		end
-	end
-	if #map_version == 0 then -- old world, assume "0.87 or earlier"
-		core.log("warning", "Could not obtain a game version. Fallback to 0.87. "..dump(game_version))
-		core.set_mapgen_setting("vl_world_version", "0.87", true)
-		map_version = {0, 87}
-	end
-end
-if #map_initial_version == 0 then
-	core.set_mapgen_setting("vl_world_initial_version", table.concat(map_version, "."), true)
-	map_initial_version = table.copy(map_version)
-end
--- Export:
-mcl_vars.parse_version = parse_version
-mcl_vars.map_version = map_version -- make available
-mcl_vars.map_initial_version = map_initial_version -- make available
-core.log("action", "VoxeLibre mapgen version = "..table.concat(map_version, ".").." initial version = "..table.concat(map_initial_version, "."))
+dofile(modpath.."/versioning.lua")
 
 mcl_vars.redstone_tick = 0.1
 
