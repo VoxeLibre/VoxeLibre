@@ -27,12 +27,13 @@ minetest.register_node("mcl_core:stone", {
 	tiles = {"default_stone.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
+	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1, changey = 1,},
 	drop = "mcl_core:cobble",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 	_mcl_silk_touch_drop = true,
+    _mcl_changey_variant = "mcl_deepslate:deepslate",
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		if awards and awards.unlock and digger and digger:is_player() then
 			awards.unlock(digger:get_player_name(), "mcl:stoneAge")
@@ -785,12 +786,13 @@ minetest.register_node("mcl_core:cobble", {
 	tiles = {"default_cobble.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	groups = {pickaxey=1, building_block=1, material_stone=1, cobble=1},
+	groups = {pickaxey=1, building_block=1, material_stone=1, cobble=1, changey=1,},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
-	_vl_crushing_drop = { "mcl_core:gravel" }
-})
+	_vl_crushing_drop = { "mcl_core:gravel" },
+    _mcl_changey_variant = "mcl_deepslate:deepslate_cobbled",
+	})
 
 minetest.register_node("mcl_core:mossycobble", {
 	description = S("Mossy Cobblestone"),
