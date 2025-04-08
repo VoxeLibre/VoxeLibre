@@ -108,6 +108,7 @@ mcl_vars.game_version_str = game_version_str
 mcl_vars.map_version = map_version
 mcl_vars.map_initial_version = map_initial_version
 mcl_vars.luanti_initial_version = luanti_initial_version
+mcl_vars.start_time = start_time
 core.log("action", "VoxeLibre mapgen version = "..format_version(map_version, true).." initial version = "..format_version(map_initial_version, true))
 core.log("action", "World created with Luanti version = "..format_version(luanti_initial_version))
 
@@ -118,7 +119,7 @@ core.register_chatcommand("ver", {
 		if not game_info then return true end
 		local game_name = game_info.title ~= "" and game_info.title or "unknown"
 		core.chat_send_player(name, S("Version: @1 @2", game_name, mcl_vars.game_version_str))
-		core.chat_send_player(name, S("Map generator active version: @1", mcl_util.format_version(mcl_vars.map_version, true)))
+		core.chat_send_player(name, S("Map generator active version: @1", format_version(mcl_vars.map_version, true)))
 		return true
 	end
 })
