@@ -166,7 +166,7 @@ core.register_allow_player_inventory_action(function(player, action, inventory, 
 	-- TODO: also allow map texture refresh?
 	if action == "move" or action == "put" then
 		if inventory_info.to_list == "cartography_table_output" then return false end
-		if inventory_info.to_list == "cartograhy_table_input" then
+		if inventory_info.to_list == "cartography_table_input" then
 			local index = inventory_info.to_index
 			local stack = inventory:get_stack("cartography_table_input", index)
 			if index == 1 and stack:get_name() == "mcl_maps:empty_map" then return inventory_info.count end
