@@ -147,6 +147,13 @@ function mcl_maps.is_empty_map(itemstack)
 	return itemstack:get_name() == "mcl_maps:empty_map"
 end
 
+---@param itemstack core.ItemStack
+---@return boolean?
+function mcl_maps.is_map(itemstack)
+	local item_def = core.registered_items[itemstack:get_name()]
+	return (item_def.groups.vl_map or 0) ~= 0
+end
+
 function mcl_maps.convert_legacy_map(itemstack, meta)
 	meta = meta or itemstack:get_meta()
 	tt.reload_itemstack_description(itemstack)
@@ -304,6 +311,7 @@ core.register_craftitem("mcl_maps:empty_map", {
 	inventory_image = "mcl_maps_map_empty.png",
 	on_place = fill_map,
 	on_secondary_use = fill_map,
+	groups = {vl_map = 1},
 })
 
 core.register_craft({
@@ -312,7 +320,7 @@ core.register_craft({
 		{"mcl_core:paper", "mcl_core:paper", "mcl_core:paper"},
 		{"mcl_core:paper", "group:compass",  "mcl_core:paper"},
 		{"mcl_core:paper", "mcl_core:paper", "mcl_core:paper"},
-	}
+	},
 })
 
 local filled_def = {
@@ -321,7 +329,7 @@ local filled_def = {
 	_doc_items_longdesc = S("When created, the map saves the nearby area as an image that can be viewed any time by holding the map."),
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
-	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1},
+	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1, vl_map = 1},
 }
 
 core.register_craftitem("mcl_maps:filled_map", filled_def)
@@ -348,13 +356,13 @@ if mcl_skins_enabled then
 			female._mcl_hand_id = skin.id
 			female.mesh = "mcl_meshhand_female.b3d"
 			female.tiles = {skin.texture}
-			core.register_node("mcl_maps:filled_map_" .. skin.id, female)
+			core.register_node("mcl_maps:filled_map_"..skin.id, female)
 		else
 			local male = table.copy(filled_wield_def)
 			male._mcl_hand_id = skin.id
 			male.mesh = "mcl_meshhand.b3d"
 			male.tiles = {skin.texture}
-			core.register_node("mcl_maps:filled_map_" .. skin.id, male)
+			core.register_node("mcl_maps:filled_map_"..skin.id, male)
 		end
 	end
 else
