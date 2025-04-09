@@ -5,7 +5,7 @@ local F = core.formspec_escape
 local formspec_name = "mcl_cartography_table:cartography_table"
 
 -- Crafting patterns supported:
--- 1. Filled map + paper = zoomed out map, but only ONCE for now (too slow)
+-- 1. Filled map + paper = zoomed out map
 -- 2. Filled map + empty map = two copies of the map
 -- 3. Filled map + glass pane = locked filled map
 -- TODO: allow refreshing a map using the table?
@@ -160,21 +160,23 @@ core.register_allow_player_inventory_action(function(player, action, inventory, 
 			end
 			mcl_maps.regenerate_map(stack, callback) -- new zoom level
 			inventory:set_stack("cartography_table_output", 1, stack)
+			return 1
 		end
+		return 0
 	end
 
 	-- TODO: also allow map texture refresh?
 	if action == "move" or action == "put" then
-		if inventory_info.to_list == "cartography_table_output" then return false end
+		if inventory_info.to_list == "cartography_table_output" then return 0 end
 		if inventory_info.to_list == "cartography_table_input" then
 			local index = inventory_info.to_index
-			local stack = inventory:get_stack("cartography_table_input", index)
-			if index == 1 and stack:get_name() == "mcl_maps:empty_map" then return inventory_info.count end
+			local stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
+			core.log("action", "stack: "..stack:get_name())
 			if index == 1 and stack:get_name():find("mcl_maps:filled_map") then return inventory_info.count end
-			if index == 1 and stack:get_name() == "mcl_core:paper" then return inventory_info.count end
+			if index == 2 and stack:get_name() == "mcl_core:paper" then return inventory_info.count end
 			if index == 2 and stack:get_name() == "mcl_maps:empty_map" then return inventory_info.count end
 			if index == 2 and stack:get_name() == "xpanes:pane_natural_flat" then return inventory_info.count end
-			return false
+			return 0
 		end
 		if inventory_info.from_list == "cartography_table_output" and inventory_info.from_index == 1 then
 			return inventory_info.count
