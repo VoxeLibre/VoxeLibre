@@ -146,6 +146,15 @@ end
 function mcl_maps.is_empty_map(itemstack)
 	return itemstack:get_name() == "mcl_maps:empty_map"
 end
+local is_map = {
+	["mcl_maps:empty_map"] = true,
+	["mcl_maps:filled_map"] = true,
+}
+---@param itemstack core.ItemStack
+---@return boolean?
+function mcl_maps.is_map(itemstack)
+	return is_map[itemstack:get_name()]
+end
 
 function mcl_maps.convert_legacy_map(itemstack, meta)
 	meta = meta or itemstack:get_meta()
@@ -348,13 +357,17 @@ if mcl_skins_enabled then
 			female._mcl_hand_id = skin.id
 			female.mesh = "mcl_meshhand_female.b3d"
 			female.tiles = {skin.texture}
-			core.register_node("mcl_maps:filled_map_" .. skin.id, female)
+			local node_name = "mcl_maps:filled_map_"..skin.id
+			core.register_node(node_name, female)
+			is_map[node_name] = true
 		else
 			local male = table.copy(filled_wield_def)
 			male._mcl_hand_id = skin.id
 			male.mesh = "mcl_meshhand.b3d"
 			male.tiles = {skin.texture}
-			core.register_node("mcl_maps:filled_map_" .. skin.id, male)
+			local node_name = "mcl_maps:filled_map_"..skin.id
+			core.register_node(node_name, male)
+			is_map[node_name] = true
 		end
 	end
 else
