@@ -173,7 +173,7 @@ core.register_allow_player_inventory_action(function(player, action, inventory, 
 			local index = inventory_info.to_index
 			local stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
 			core.log("action", "stack: "..stack:get_name())
-			if index == 1 and stack:get_name():find("mcl_maps:filled_map") then return inventory_info.count end
+			if index == 1 and stack:get_name():find("mcl_maps:filled_map") then return 1 end
 			if index == 2 and stack:get_name() == "mcl_core:paper" then return inventory_info.count end
 			if index == 2 and stack:get_name() == "mcl_maps:empty_map" then return inventory_info.count end
 			if index == 2 and stack:get_name() == "xpanes:pane_natural_flat" then return inventory_info.count end
