@@ -676,7 +676,7 @@ function mcl_util.trace_nodes(pos, dir, allowed_nodes, limit)
 end
 
 -- Make a local random to guard against someone misusing math.randomseed
-local uuid_rng = PcgRandom(bit.bxor(math.random() * 0xFFFFFFFF, os.time()))
+local uuid_rng = PcgRandom(bit.bxor(math.floor(math.random() * 0xFFFFFFFF), os.time()))
 --- Generate a random 128-bit ID that can be assumed to be unique
 --- To have a 1% chance of a collision, there would have to be 1.6x10^76 IDs generated
 --- https://en.wikipedia.org/wiki/Birthday_problem#Probability_table
