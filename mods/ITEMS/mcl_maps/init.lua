@@ -146,14 +146,12 @@ end
 function mcl_maps.is_empty_map(itemstack)
 	return itemstack:get_name() == "mcl_maps:empty_map"
 end
-local is_map = {
-	["mcl_maps:empty_map"] = true,
-	["mcl_maps:filled_map"] = true,
-}
+
 ---@param itemstack core.ItemStack
 ---@return boolean?
 function mcl_maps.is_map(itemstack)
-	return is_map[itemstack:get_name()]
+	local item_def = core.registered_items[itemstack:get_name()]
+	return (item_def.groups.vl_map or 0) ~= 0
 end
 
 function mcl_maps.convert_legacy_map(itemstack, meta)
@@ -313,6 +311,7 @@ core.register_craftitem("mcl_maps:empty_map", {
 	inventory_image = "mcl_maps_map_empty.png",
 	on_place = fill_map,
 	on_secondary_use = fill_map,
+	groups = {vl_map = 1},
 })
 
 core.register_craft({
@@ -321,7 +320,7 @@ core.register_craft({
 		{"mcl_core:paper", "mcl_core:paper", "mcl_core:paper"},
 		{"mcl_core:paper", "group:compass",  "mcl_core:paper"},
 		{"mcl_core:paper", "mcl_core:paper", "mcl_core:paper"},
-	}
+	},
 })
 
 local filled_def = {
@@ -330,7 +329,7 @@ local filled_def = {
 	_doc_items_longdesc = S("When created, the map saves the nearby area as an image that can be viewed any time by holding the map."),
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
-	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1},
+	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1, vl_map = 1},
 }
 
 core.register_craftitem("mcl_maps:filled_map", filled_def)
@@ -359,7 +358,6 @@ if mcl_skins_enabled then
 			female.tiles = {skin.texture}
 			local node_name = "mcl_maps:filled_map_"..skin.id
 			core.register_node(node_name, female)
-			is_map[node_name] = true
 		else
 			local male = table.copy(filled_wield_def)
 			male._mcl_hand_id = skin.id
@@ -367,7 +365,6 @@ if mcl_skins_enabled then
 			male.tiles = {skin.texture}
 			local node_name = "mcl_maps:filled_map_"..skin.id
 			core.register_node(node_name, male)
-			is_map[node_name] = true
 		end
 	end
 else
