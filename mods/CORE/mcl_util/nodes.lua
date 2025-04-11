@@ -53,6 +53,7 @@ function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infini
 	local pos = pointed_thing.above
 	local node = anode
 
+	local undef = core.registered_nodes[unode.name]
 	if undef and undef.buildable_to then
 		pos = pointed_thing.under
 		node = unode
