@@ -160,9 +160,10 @@ core.register_allow_player_inventory_action(function(player, action, inventory, 
 			end
 			mcl_maps.regenerate_map(stack, callback) -- new zoom level
 			inventory:set_stack("cartography_table_output", 1, stack)
-			return 1
 		end
-		return 0
+
+		-- Always allow taking items from the cartography table output
+		return 1
 	end
 
 	-- TODO: also allow map texture refresh?
