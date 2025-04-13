@@ -36,8 +36,8 @@ local difficulty_levels = {
 
 		-- Extinguish parameters
 		-- p(0) = 2.5%, p(255) = 100%
-		C2 = -1.3010, -- log10(1/20)
-		K2 = -5.102e-3, -- log10(1/20) / 255,
+		C2 = math.log(1/20) / math.log(10),
+		K2 = math.log(1/20) / math.log(10) / 255,
 
 		age_min = 0,
 		age_max = 5,
@@ -52,8 +52,8 @@ local difficulty_levels = {
 
 		-- Extinguish parameters
 		-- p(0) = 1%, p(255) = 5%
-		C2 = -2, -- log10(0.01)
-		K2 = 2.741e-3, -- (log10(0.05) + 2) / 255
+		C2 = math.log(0.01) / math.log(10),
+		K2 = (math.log(0.05) / math.log(10) + 2) / 255,
 
 		age_min = 0,
 		age_max = 2,
@@ -78,12 +78,11 @@ local adjacents = {
 table.shuffle(adjacents)
 
 local function has_flammable(pos)
-	local p = vector_zero() -- Only allocate one new table
 	for _,v in pairs(adjacents) do
-		p.x, p.y, p.z = pos.x + v.x, pos.y + v.y, pos.z + v.z
-		local n = get_node_or_nil(p)
-		if n and get_item_group(n.name, "flammable") ~= 0 then
-			return p
+		-- Note: if this position can't be loaded, node_name will be "ignore"
+		local node_name = mcl_vars.get_node_name_raw(pos.x + v.x, pos.y + v.y, pos.z + v.z)
+		if node_name and get_item_group(node_name, "flammable") ~= 0 then
+			return vector.add(pos, v)
 		end
 	end
 end
@@ -275,62 +274,65 @@ if flame_sound then
 			areamin, areamax,
 			{"mcl_fire:fire", "mcl_fire:eternal_fire"}
 		)
+
 		-- Total number of flames in radius
 		local flames = (num["mcl_fire:fire"] or 0) +
 			(num["mcl_fire:eternal_fire"] or 0)
+
 		-- Stop previous sound
 		if handles[player_name] then
 			core.sound_fade(handles[player_name], -0.4, 0.0)
 			handles[player_name] = nil
 		end
-		-- If flames
-		if flames > 0 then
-			-- Find centre of flame positions
-			local fposmid = fpos[1]
 
-			-- If more than 1 flame
-			if #fpos > 1 then
-				local fposmin = areamax
-				local fposmax = areamin
-				for i = 1, #fpos do
-					local fposi = fpos[i]
-					if fposi.x > fposmax.x then
-						fposmax.x = fposi.x
-					end
-					if fposi.y > fposmax.y then
-						fposmax.y = fposi.y
-					end
-					if fposi.z > fposmax.z then
-						fposmax.z = fposi.z
-					end
-					if fposi.x < fposmin.x then
-						fposmin.x = fposi.x
-					end
-					if fposi.y < fposmin.y then
-						fposmin.y = fposi.y
-					end
-					if fposi.z < fposmin.z then
-						fposmin.z = fposi.z
-					end
+		-- Don't play sound if there are no flames
+		if flames == 0 then return end
+
+		-- Find centre of flame positions
+		local fposmid = fpos[1]
+
+		-- If more than 1 flame
+		if #fpos > 1 then
+			local fposmin = areamax
+			local fposmax = areamin
+			for i = 1, #fpos do
+				local fposi = fpos[i]
+				if fposi.x > fposmax.x then
+					fposmax.x = fposi.x
 				end
-				fposmid = (fposmin + fposmax) / 2
+				if fposi.y > fposmax.y then
+					fposmax.y = fposi.y
+				end
+				if fposi.z > fposmax.z then
+					fposmax.z = fposi.z
+				end
+				if fposi.x < fposmin.x then
+					fposmin.x = fposi.x
+				end
+				if fposi.y < fposmin.y then
+					fposmin.y = fposi.y
+				end
+				if fposi.z < fposmin.z then
+					fposmin.z = fposi.z
+				end
 			end
+			fposmid = (fposmin + fposmax) / 2
+		end
 
-			-- Play sound
-			local handle = core.sound_play(
-				"fire_fire",
-				{
-					pos = fposmid,
-					to_player = player_name,
-					gain = min(0.06 * (1 + flames * 0.125), 0.18),
-					max_hear_distance = 32,
-					loop = true, -- In case of lag
-				}
-			)
-			-- Store sound handle for this player
-			if handle then
-				handles[player_name] = handle
-			end
+		-- Play sound
+		local handle = core.sound_play(
+			"fire_fire",
+			{
+				pos = fposmid,
+				to_player = player_name,
+				gain = min(0.06 * (1 + flames * 0.125), 0.18),
+				max_hear_distance = 32,
+				loop = true, -- In case of lag
+			}
+		)
+		-- Store sound handle for this player
+		if handle then
+			handles[player_name] = handle
 		end
 	end
 
@@ -503,7 +505,9 @@ else -- Fire enabled
 
 				if source_node.name == "mcl_fire:fire" then
 					-- Always age the source fire
-					age = min(255, age + random(consts.age_min, consts.age_max + humidity_factor))
+					local age_range = consts.age_max + humidity_factor - consts.age_min
+
+					age = min(255, age + random() * age_range + consts.age_min)
 					source_node.param2 = age
 					set_node(pos, source_node)
 				end
@@ -515,11 +519,14 @@ end
 -- Set pointed_thing on (normal) fire.
 -- * pointed_thing: Pointed thing to ignite
 -- * player: Player who sets fire or nil if nobody
--- * allow_on_fire: If false, can't ignite fire on fire (default: true)
+-- * allow_on_fire: If false, fire is not allowed to be set on top of existing fire nodes (default: true)
 function mcl_fire.set_fire(pointed_thing, player, allow_on_fire)
 	if mcl_util.check_position_protection(pointed_thing.above, player) then return end
 
-	if allow_on_fire == false then
+	-- Default values
+	if allow_on_fire == nil then allow_on_fire = true end
+
+	if not allow_on_fire then
 		local n_pointed = get_node(pointed_thing.under)
 		if get_item_group(n_pointed.name, "fire") ~= 0 then return end
 	end
