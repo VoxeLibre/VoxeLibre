@@ -53,37 +53,14 @@ core.register_on_mods_loaded(function()
 end)
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
-local sea_level = tonumber(minetest.get_mapgen_setting("water_level"))
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
 -- Content IDs
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
-local c_obsidian = minetest.get_content_id("mcl_core:obsidian")
-local c_stone = minetest.get_content_id("mcl_core:stone")
-local c_dirt = minetest.get_content_id("mcl_core:dirt")
-local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
-local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
-local c_reeds = minetest.get_content_id("mcl_core:reeds")
-local c_sand = minetest.get_content_id("mcl_core:sand")
---local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
 local c_void = minetest.get_content_id("mcl_core:void")
 local c_lava = minetest.get_content_id("mcl_core:lava_source")
-local c_water = minetest.get_content_id("mcl_core:water_source")
-local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
-local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
 local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
---local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
 local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
-local c_top_snow = minetest.get_content_id("mcl_core:snow")
-local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
-local c_clay = minetest.get_content_id("mcl_core:clay")
-local c_leaves = minetest.get_content_id("mcl_core:leaves")
-local c_jungleleaves = minetest.get_content_id("mcl_core:jungleleaves")
---local c_jungletree = minetest.get_content_id("mcl_core:jungletree")
-local c_cocoa_1 = minetest.get_content_id("mcl_cocoas:cocoa_1")
-local c_cocoa_2 = minetest.get_content_id("mcl_cocoas:cocoa_2")
-local c_cocoa_3 = minetest.get_content_id("mcl_cocoas:cocoa_3")
-local c_vine = minetest.get_content_id("mcl_core:vine")
 local c_air = minetest.CONTENT_AIR
 
 local mg_flags = minetest.settings:get_flags("mg_flags")
@@ -129,33 +106,6 @@ if string.len(mg_flags_str) > 0 then
 	mg_flags_str = string.sub(mg_flags_str, 1, string.len(mg_flags_str)-1)
 end
 minetest.set_mapgen_setting("mg_flags", mg_flags_str, true)
-
--- Helper function for converting a MC probability to MT, with
--- regards to MapBlocks.
--- Some MC generated structures are generated on per-chunk
--- probability.
--- The MC probability is 1/x per Minecraft chunk (16×16).
-
--- x: The MC probability is 1/x.
--- minp, maxp: MapBlock limits
--- returns: Probability (1/return_value) for a single MT mapblock
-local function minecraft_chunk_probability(x, minp, maxp)
-	-- 256 is the MC chunk height
-	return x * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
-end
-
--- Takes x and z coordinates and minp and maxp of a generated chunk
--- (in on_generated callback) and returns a biomemap index)
--- Inverse function of biomemap_to_xz
-local function xz_to_biomemap_index(x, z, minp, maxp)
-	local xwidth = maxp.x - minp.x + 1
-	local zwidth = maxp.z - minp.z + 1
-	local minix = x % xwidth
-	local miniz = z % zwidth
-
-	return (minix + miniz * zwidth) + 1
-end
-
 
 -- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
 -- Also perform some basic node replacements.
@@ -396,17 +346,14 @@ end
 -- End block fixes:
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	if maxp.y < mcl_vars.mg_end_min or minp.y > mcl_vars.mg_end_max then return end
-	local lvm_used = false
-	local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
+	local nodes = core.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
 	if #nodes > 0 then
-		lvm_used = true
 		for _,n in pairs(nodes) do
 			data[area:index(n.x, n.y, n.z)] = c_air
 		end
 	end
 	vm:set_lighting({day=15,night=0})
-	lvm_used = true -- light is broken otherwise
-	return lvm_used, false
+	return true, false -- always lvm=true to avoid light issues
 end
 
 mcl_mapgen_core.register_generator("world_structure", world_structure, nil, 1, true)

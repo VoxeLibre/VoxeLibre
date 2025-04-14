@@ -172,7 +172,7 @@ if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 			flags = "defaults",
 		}
 	})
-	
+
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_deepslate:infested_deepslate",
