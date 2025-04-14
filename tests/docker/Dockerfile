@@ -12,6 +12,9 @@ RUN apk add --no-cache --virtual=build-dependencies build-base lua5.3-dev luajit
     cd bitop-lua && \
     sed -i 's/"lua >= 5.1, < 5.3"/"lua >= 5.1"/' bitop-lua-1.0-0.rockspec && \
     luarocks-5.3 make && \
+    git clone https://github.com/luanti-org/luanti.git /VoxeLibre/tests/docker/luanti && \
+    git clone https://github.com/minetest/irrlicht.git irrlichtmt /VoxeLibre/tests/docker/luanti && \
+    ( cd /VoxeLibre/tests/docker/; bash build-luanti-versions.sh; bash build-luanti-head.sh ) && \
     apk del --purge build-dependencies && \
     rm /VoxeLibre/Dockerfile
 ENTRYPOINT ["/bin/sh"]
