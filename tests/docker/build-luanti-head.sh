@@ -1,8 +1,10 @@
 #!/bin/bash
 VERSIONS="head head-nojit"
 
-[[ -d luanti ]] || git clone https://github.com/luanti-org/luanti.git
-[[ -d irrlichtmt ]] || git clone https://github.com/minetest/irrlicht.git irrlichtmt
+set -ex
+
+test -e luanti || git clone https://github.com/luanti-org/luanti.git
+test -e irrlichtmt || git clone https://github.com/minetest/irrlichtmt.git irrlichtmt
 (cd luanti; git checkout master; git pull)
 
 build-head()
@@ -27,13 +29,11 @@ for VERSION in $VERSIONS; do
 		cd build/
 		git clone ../luanti/ luanti-$VERSION
 		cd luanti-$VERSION
-		rm -Rvf games
+		rm -Rvf games || true
 		ln -sf ../../games games
-		rm -Rvf worlds
+		rm -Rvf worlds || true
 		ln -sf ../../worlds worlds
-		rm -Rvf mods
-		ln -sf /home/teknomunk/.minetest/mods mods
-		rm /usr/local/bin/luanti-$VERSION
+		rm /usr/local/bin/luanti-$VERSION || true
 		build-$VERSION
 	)
 done
