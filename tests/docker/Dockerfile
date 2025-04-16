@@ -21,8 +21,8 @@ RUN apk add --no-cache --virtual=build-dependencies build-base lua5.3-dev luajit
 
 COPY . /VoxeLibre
 RUN cd /VoxeLibre/tests/docker/ && sh build-luanti-versions.sh
-RUN cd /VoxeLibre/tests/docker/ && sh build-luanti-head.sh
+#RUN cd /VoxeLibre/tests/docker/ && sh build-luanti-head.sh
 
-RUN apk del --purge build-dependencies && \
-    rm /VoxeLibre/Dockerfile
+#RUN apk del --purge build-dependencies && \
+#    rm /VoxeLibre/Dockerfile
 
