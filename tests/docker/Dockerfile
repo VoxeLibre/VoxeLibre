@@ -20,9 +20,9 @@ RUN git clone https://github.com/AlberTajuelo/bitop-lua.git && \
 RUN apk add --no-cache --virtual=build-dependencies build-base lua5.3-dev luajit-dev cmake zlib-dev freetype-dev libjpeg-turbo-dev libpng-dev zstd-dev gettext-dev mesa-dev xorg-server-dev xinput libxi-dev hiredis-dev curl-dev libogg-dev libvorbis-dev openal-soft-dev openssl-dev>3 samurai bzip2-dev sdl2-dev
 
 COPY . /VoxeLibre
-RUN cd /VoxeLibre/tests/docker/ && sh build-luanti-versions.sh
+RUN cd /VoxeLibre/tests/docker/ && sh build-luanti-versions.sh && sh build-luanti-head.sh
 #RUN cd /VoxeLibre/tests/docker/ && sh build-luanti-head.sh
 
-#RUN apk del --purge build-dependencies && \
-#    rm /VoxeLibre/Dockerfile
+RUN apk del --purge build-dependencies && \
+    rm /VoxeLibre/Dockerfile
 
