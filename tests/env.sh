@@ -3,9 +3,9 @@
 which luarocks && eval $(luarocks path)
 which luarocks-5.3 && eval $(luarocks-5.3 path)
 
-if [[ -d /usr/share/minetest ]]; then
+if test /usr/share/minetest; then
 	export LUANTI_PATH=/usr/share/minetest
-elif [[ -d /usr/share/luanti ]]; then
+elif test /usr/share/luanti; then
 	export LUANTI_PATH=/usr/share/luanti
 else
 	echo "Unable to find luanti/minetest path, cannot run tests"
