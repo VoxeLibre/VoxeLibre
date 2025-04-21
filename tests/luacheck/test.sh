@@ -1,9 +1,9 @@
 #!/bin/bash
 
-source tests/env.sh
+. tests/env.sh
 set -e
 
-if [[ -z "$LUA" ]]; then
+if test -z "$LUA"; then
 	echo "Unable to find lua interpreter"
 	exit 1
 fi
