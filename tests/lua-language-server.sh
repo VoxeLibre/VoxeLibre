@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source tests/env.sh
+. tests/env.sh
 set -e
 
 # Make sure luanti lls definitions are up-to-date
@@ -11,7 +11,7 @@ set -e
 	cd luanti-lls-definitions
 	git checkout fill-out-definitions
 	git pull
-	if ! [[ -d /usr/share/luanti/builtin ]]; then
+	if ! test -d /usr/share/luanti/builtin; then
 		ln /usr/share/minetest/builtin /usr/share/luanti/builtin -s
 	fi
 )

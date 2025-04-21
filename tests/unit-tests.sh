@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source tests/env.sh
+. tests/env.sh
 set -e
 
 find ./ -name 'mod.conf' | sort | while read MOD; do
@@ -9,7 +9,7 @@ find ./ -name 'mod.conf' | sort | while read MOD; do
 		DIR=$(dirname $MOD)
 		cd $DIR
 
-		if [[ -d test/ ]]; then
+		if test -d test/; then
 			for TEST in test/*.lua; do
 				busted $TEST
 			done
