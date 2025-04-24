@@ -8,3 +8,5 @@
 .Rproj.user
 prompt.txt
 __pycache__
+tests/luacheck/passed.lst
+tests/luacheck/report.log
