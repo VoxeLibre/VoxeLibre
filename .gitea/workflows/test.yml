@@ -6,7 +6,7 @@ jobs:
       image: 127.0.0.1:5000/voxelibre-test:latest
     steps:
       - name: Checkout
-        run: cd /VoxeLibre && git fetch --depth=1 origin ${{ github.sha }} && git checkout ${{ github.sha }}
+        run: cd /VoxeLibre && git fetch --depth=1 origin ${{ github.sha }} && git checkout ${{ github.sha }} && rm -Rvf /VoxeLibre/./tests/docker/luanti/games/devtest
       - name: Server Startup
         run: cd /VoxeLibre; sh tests/server-startup.sh
       - name: Unit Tests
