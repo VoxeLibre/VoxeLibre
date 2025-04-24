@@ -1,44 +1,84 @@
 #!/bin/sh
 
-# Record version information
-minetest --version
+SUCCESS_FF=$(mktemp)
+LOG=$(mktemp)
+
+set -e
+set -x
+
+GAMES_DIR=/luanti/games
+if ! test -d $GAMES_DIR; then
+	GAMES_DIR=~/.minetest/games
+fi
 
 # Setup minetest/luanti config directory
-mkdir -p ~/.minetest/games
-ln -s /VoxeLibre ~/.minetest/games
+mkdir -p $GAMES_DIR
+unlink $GAMES_DIR/VoxeLibre-Test || true
+ln -s $PWD $GAMES_DIR/VoxeLibre-Test
 
-# Server Startup Test
-((
-	minetest --server --worldname test --gameid VoxeLibre
-) 2>&1 | cat > /tmp/setup.log ) &
-PID=$!
+WORLD=$(mktemp -d)
 
-# Wait for the server to complete startup or timeout after 15 seconds
-DONE=false
-SUCCESS=false
-COUNT=30
-while ! $DONE; do
-	if cat /tmp/setup.log | grep -q 'listening on'; then
-		DONE=true
-		SUCCESS=true
+PORT=30010
+VERSIONS="5.11.0 5.10.0 5.9.1 5.9.0 5.8.0 5.7.0 head head-nojit"
+
+for VERSION in $VERSIONS; do
+	BIN=luanti-$VERSION
+
+	# Record version information
+	$BIN --version
+	PORT=$(( $PORT + 1))
+
+	# Server Startup Test
+	((
+		$BIN --server --world $WORLD --gameid VoxeLibre-Test --port $PORT
+	) 2>&1 | cat > $LOG ) &
+	PID=$!
+
+	# Wait for the server to complete startup or timeout after 15 seconds
+	DONE=false
+	SUCCESS=false
+	COUNT=30
+	set +x
+	while ! $DONE; do
+		if cat $LOG | grep -q 'ERROR'; then
+			DONE=true
+			SUCCESS=false
+		fi
+		if cat $LOG | grep -q 'listening on'; then
+			DONE=true
+			SUCCESS=true
+		fi
+		COUNT=$(( $COUNT - 1 ))
+		if [ "$COUNT" == "0" ]; then
+			DONE=true
+			SUCCESS=false
+		fi
+		sleep 0.5
+	done
+	set -x
+
+	# Stop the server
+	sleep 1
+	kill $PID || true
+	killall $BIN || true
+
+	# Display log contents
+	cat $LOG
+	rm $LOG
+	rm -Rvf $WORLD || true
+
+	echo $SUCCESS
+	if ! $SUCCESS; then
+		rm $SUCCESS_FF || true
 	fi
-	COUNT=$(( $COUNT - 1 ))
-	if [ "$COUNT" == "0" ]; then
-		DONE=true
-		SUCCESS=false
-	fi
-	sleep 0.5
 done
 
-# Stop the server
-kill $PID
-killall minetestserver
+rm $GAMES_DIR/VoxeLibre-Test || true
+rm $LOG || true
 
-# Display log contents
-cat /tmp/setup.log
-rm /tmp/setup.log
-
-echo $SUCCESS
-if ! $SUCCESS; then
+if ! test -f $SUCCESS_FF; then
 	exit 1
+else
+	rm $SUCCESS_FF || true
+	exit 0
 fi
