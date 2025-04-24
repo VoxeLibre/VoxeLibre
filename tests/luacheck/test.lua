@@ -116,7 +116,7 @@ for i = 1,#mod_names do
 	print(			"fi")
 	print(			"echo \""..config.dir.."$FILE\" >> $BASE/luacheck-passed.lst")
 	print(		"else")
-	print(			"if "..luacheck.." $FILE"..cmd_options.." 2>&1 > /tmp/output; then")
+	print(			"if "..luacheck.." $FILE"..cmd_options.." 2>&1 > $LOG; then")
 	print(				"echo \""..config.dir.."$FILE\" >> $BASE/luacheck-passed.lst")
 	print(			"else")
 	print(				"if ! grep -q OK $LOG; then")
