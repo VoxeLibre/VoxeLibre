@@ -89,7 +89,7 @@ local function update_cartography_table(player)
 					"image[5.125,1.5;3,3;mcl_maps_map_background.png]"
 				})
 			end
-			map:set_count(2)
+			map:set_count(1)
 			inv:set_stack("cartography_table_output", 1, map)
 		elseif not map:is_empty() and addon:get_name() == "xpanes:pane_natural_flat" then
 			---- Lock a map
@@ -134,15 +134,18 @@ end)
 
 local function remove_from_input(player, inventory, count)
 	local meta = player:get_meta()
-	local astack = inventory:get_stack("cartography_table_input", 1)
-	if astack then
-		astack:set_count(math.max(0, astack:get_count() - count))
-		inventory:set_stack("cartography_table_input", 1, astack)
-	end
 	local bstack = inventory:get_stack("cartography_table_input", 2)
 	if bstack then
 		bstack:set_count(math.max(0, bstack:get_count() - count))
 		inventory:set_stack("cartography_table_input", 2, bstack)
+		if bstack:get_name() == "mcl_maps:empty_map" then
+			return
+		end
+	end
+	local astack = inventory:get_stack("cartography_table_input", 1)
+	if astack then
+		astack:set_count(math.max(0, astack:get_count() - count))
+		inventory:set_stack("cartography_table_input", 1, astack)
 	end
 end
 
@@ -188,6 +191,7 @@ core.register_on_player_inventory_action(function(player, action, inventory, inv
 	if action == "move" then
 		if inventory_info.from_list == "cartography_table_output" then
 			remove_from_input(player, inventory, inventory_info.count)
+			update_cartography_table(player)
 		end
 		if inventory_info.to_list == "cartography_table_input" or inventory_info.from_list == "cartography_table_input" then
 			update_cartography_table(player)
@@ -199,6 +203,7 @@ core.register_on_player_inventory_action(function(player, action, inventory, inv
 	elseif action == "take" then
 		if inventory_info.listname == "cartography_table_output" then
 			remove_from_input(player, inventory, inventory_info.stack:get_count())
+			update_cartography_table(player)
 		end
 	end
 end)
