@@ -137,7 +137,7 @@ function vl_scheduler.save()
 		local slot = task_ring[1+(task_pos + i)%32]
 		if slot then
 			for j=1,4 do
-				iter = slot[j]
+				local iter = slot[j]
 				while iter do
 					if iter.name then
 						storage:set_string("task_"..sequence.."_"..task_count, serialize_task(iter, 1 + i))
