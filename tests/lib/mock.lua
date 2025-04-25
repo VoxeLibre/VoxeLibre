@@ -148,7 +148,12 @@ function mock.luanti(g)
 		end,
 		get_mod_storage = function()
 			return mock.storage
-		end
+		end,
+		hash_node_position = function(pos)
+			return (pos.z + 0x8000) * 0x100000000 + (pos.y + 0x8000) * 0x10000 + (pos.x + 0x8000)
+		end,
+		register_lbm = function()
+		end,
 	}
 
 	-- Update the specified global environment to act as though the Luanti engine is present
@@ -171,6 +176,9 @@ function mock.luanti(g)
 		end,
 		offset = function(a,x,y,z)
 			return vector.new(a.x + x, a.y + y, a.z + z)
+		end,
+		zero = function()
+			return {x=0, y=0, z=0}
 		end,
 	}
 	vector_metatable.__index = g.vector
