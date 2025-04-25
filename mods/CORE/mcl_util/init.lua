@@ -664,11 +664,15 @@ if not vector.in_area then
 	--luacheck: pop
 end
 if not core.bulk_swap_node then
+	-- compatibility function, can be removed when the minimum version is 5.10.0
+	--luacheck: push ignore 122
+	---@diagnostic disable-next-line: duplicate-set-field
 	function core.bulk_swap_node(positions, node)
 		for _,pos in ipairs(positions) do
 			core.swap_node(pos, node)
 		end
 	end
+	--luacheck: pop
 end
 
 -- Traces along a line of nodes vertically to find the next possition that isn't an allowed node
