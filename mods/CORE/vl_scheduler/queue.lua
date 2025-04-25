@@ -1,6 +1,7 @@
 ---@class amt_queue.Queue
 ---@field mask number
 ---@field size number
+---@field reduce fun(old : amt_queue.Item, item)
 
 ---@class amt_queue.Item
 ---@field next amt_queue.Item?
@@ -42,6 +43,7 @@ local metatable = { __index = amt_queue }
 local zero_schedule = {0}
 
 ---@param size number
+---@param reduce_callback fun(old : amt_queue.Item, item)
 ---@return amt_queue.Queue
 function amt_queue.new(reduce_callback, size)
 	size = size or 30
@@ -128,7 +130,7 @@ local function has_items(self)
 end
 amt_queue.has_items = has_items
 
-local function iterate_items(self, i)
+local function iterate_items(_,_)
 	return nil, nil
 end
 local function items(self)

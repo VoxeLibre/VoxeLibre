@@ -22,7 +22,7 @@ vl_scheduler.PRIORITY_BACKGROUND_MAIN = 4
 
 local start_time = core.get_us_time()
 
-local function noop() end
+local function noop(_) end
 
 local prioritized_globalsteps = {
 	[1] = noop,
@@ -193,6 +193,7 @@ function vl_scheduler.register_serializable(name, func)
 	registered_serializable_from_name[name] = func
 end
 
+---@return fun(dtime : number)
 local function codegen_run_callbacks(list)
 	-- Build function to allow JIT compilation and optimization
 	local code = [[
