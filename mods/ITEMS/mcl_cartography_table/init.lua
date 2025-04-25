@@ -43,14 +43,19 @@ local function update_cartography_table(player)
 
 		mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
 		"list[current_player;main;0.375,9.05;9,1;]",
+
+		"listring[current_player;cartography_table_output]",
+		"listring[current_player;main]",
+		"listring[current_player;cartography_table_input]",
+		"listring[current_player;main]",
 	})
 
 	local inv = player:get_inventory()
 	local map = inv:get_stack("cartography_table_input", 1)
+	inv:set_stack("cartography_table_output", 1, nil)
 	if mcl_maps.is_map(map) then
 		local texture = not map:is_empty() and mcl_maps.load_map_item(map)
 		local addon = inv:get_stack("cartography_table_input", 2)
-		inv:set_stack("cartography_table_output", 1, nil)
 
 		local meta
 		local old_zoom = 999 -- Large number to never allow resizing maps that shouldn't be resizable
@@ -175,7 +180,10 @@ core.register_allow_player_inventory_action(function(player, action, inventory, 
 		if inventory_info.to_list == "cartography_table_input" then
 			local index = inventory_info.to_index
 			local stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
-			if index == 1 and stack:get_name():find("mcl_maps:filled_map") then return 1 end
+			if index == 1 and stack:get_name():find("mcl_maps:filled_map")
+					and inventory:get_stack(inventory_info.to_list, inventory_info.to_index):get_count() == 0 then
+				return 1
+			end
 			if index == 2 and stack:get_name() == "mcl_core:paper" then return inventory_info.count end
 			if index == 2 and stack:get_name() == "mcl_maps:empty_map" then return inventory_info.count end
 			if index == 2 and stack:get_name() == "xpanes:pane_natural_flat" then return inventory_info.count end
@@ -203,6 +211,8 @@ core.register_on_player_inventory_action(function(player, action, inventory, inv
 	elseif action == "take" then
 		if inventory_info.listname == "cartography_table_output" then
 			remove_from_input(player, inventory, inventory_info.stack:get_count())
+			update_cartography_table(player)
+		elseif inventory_info.listname == "cartography_table_input" then
 			update_cartography_table(player)
 		end
 	end
