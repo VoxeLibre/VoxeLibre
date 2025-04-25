@@ -252,7 +252,7 @@ elseif wrap_mode == "word_wrap" then
 				end
 			end
 		end
-		if #lines < NUMBER_OF_LINES and start < #ustr then
+		if #lines < NUMBER_OF_LINES and start <= #ustr then
 			table.insert(lines, subseq(ustr, start, #ustr))
 		end
 
