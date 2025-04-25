@@ -1,17 +1,19 @@
-local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local S = core.get_translator(modname)
 
-local copper_mod = minetest.get_modpath("mcl_copper")
+local copper_mod = core.get_modpath("mcl_copper")
 local cobble = "mcl_deepslate:deepslate_cobbled"
-local stick = "mcl_core:stick"
 
-local function spawn_silverfish(pos, oldnode, oldmetadata, digger)
-	if not minetest.is_creative_enabled("") then
-		minetest.add_entity(pos, "mobs_mc:silverfish")
+-- runtime_depends
+assert(core.get_modpath("mcl_mobs"), "mcl_deepslate requires mcl_mobs at runtime")
+
+local function spawn_silverfish(pos, _,_,_)
+	if not core.is_creative_enabled("") then
+		mcl_mobs.spawn(pos, "mobs_mc:silverfish")
 	end
 end
 
-minetest.register_node("mcl_deepslate:deepslate", {
+core.register_node("mcl_deepslate:deepslate", {
 	description = S("Deepslate"),
 	_doc_items_longdesc = S("Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone."),
 	_doc_items_hidden = false,
@@ -28,7 +30,7 @@ minetest.register_node("mcl_deepslate:deepslate", {
 	_mcl_silk_touch_drop = true,
 })
 
-minetest.register_node("mcl_deepslate:infested_deepslate", {
+core.register_node("mcl_deepslate:infested_deepslate", {
 	description = S("Infested Deepslate"),
 	_doc_items_longdesc = S("An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart."),
 	_tt_help = S("Hides a silverfish"),
@@ -42,7 +44,7 @@ minetest.register_node("mcl_deepslate:infested_deepslate", {
 	_mcl_blast_resistance = 0.75,
 })
 
-minetest.register_node("mcl_deepslate:tuff", {
+core.register_node("mcl_deepslate:tuff", {
 	description = S("Tuff"),
 	_doc_items_longdesc = S("Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y=16."),
 	_doc_items_hidden = false,
@@ -56,7 +58,7 @@ minetest.register_node("mcl_deepslate:tuff", {
 
 local function register_deepslate_ore(item_string, drop, cooked, pick, xp, orename, oredesc)
 	local nodename = "mcl_deepslate:deepslate_with_"..item_string
-	minetest.register_node(nodename, {
+	core.register_node(nodename, {
 		description = orename,
 		_doc_items_longdesc = oredesc,
 		_doc_items_hidden = false,
@@ -72,7 +74,7 @@ local function register_deepslate_ore(item_string, drop, cooked, pick, xp, orena
 		_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 	})
 
-	minetest.register_craft({
+	core.register_craft({
 		type = "cooking",
 		output = cooked,
 		recipe = nodename,
@@ -117,23 +119,23 @@ end
 local redstone_timer = 68.28
 
 local function redstone_ore_activate(pos, node, puncher, pointed_thing)
-	minetest.swap_node(pos, { name = "mcl_deepslate:deepslate_with_redstone_lit" })
-	local t = minetest.get_node_timer(pos)
+	core.swap_node(pos, { name = "mcl_deepslate:deepslate_with_redstone_lit" })
+	local t = core.get_node_timer(pos)
 	t:start(redstone_timer)
 	if puncher and pointed_thing then
-		return minetest.node_punch(pos, node, puncher, pointed_thing)
+		return core.node_punch(pos, node, puncher, pointed_thing)
 	end
 end
 
 local function redstone_ore_reactivate(pos, node, puncher, pointed_thing)
-	local t = minetest.get_node_timer(pos)
+	local t = core.get_node_timer(pos)
 	t:start(redstone_timer)
 	if puncher and pointed_thing then
-		return minetest.node_punch(pos, node, puncher, pointed_thing)
+		return core.node_punch(pos, node, puncher, pointed_thing)
 	end
 end
 
-minetest.register_node("mcl_deepslate:deepslate_with_redstone", {
+core.register_node("mcl_deepslate:deepslate_with_redstone", {
 	description = S("Deepslate Redstone Ore"),
 	_doc_items_longdesc = S("Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs."),
 	tiles = { "mcl_deepslate_redstone_ore.png" },
@@ -160,7 +162,7 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone", {
 	}
 })
 
-minetest.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
+core.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 	description = S("Lit Deepslate Redstone Ore"),
 	_doc_items_create_entry = false,
 	tiles = { "mcl_deepslate_redstone_ore.png" },
@@ -179,7 +181,7 @@ minetest.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 	on_punch = redstone_ore_reactivate,
 	on_walk_over = redstone_ore_reactivate, -- Uses walkover mod
 	on_timer = function(pos, _)
-		minetest.swap_node(pos, { name = "mcl_deepslate:deepslate_with_redstone" })
+		core.swap_node(pos, { name = "mcl_deepslate:deepslate_with_redstone" })
 	end,
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 4.5,
@@ -207,7 +209,7 @@ local function register_deepslate_variant(item, texture, desc, longdesc, stair, 
 	if item == "cobbled" then
 		def.groups.cobble = 1
 	end
-	minetest.register_node("mcl_deepslate:deepslate_"..item, table.copy(def))
+	core.register_node("mcl_deepslate:deepslate_"..item, table.copy(def))
 
 	if stair and slab and dslab then
 		mcl_stairs.register_stair_and_slab_simple("deepslate_"..item, "mcl_deepslate:deepslate_"..item, stair, slab, dslab)
@@ -257,7 +259,7 @@ end
 
 for i = 1, 3 do
 	local s = "mcl_deepslate:deepslate_"..deepslate_variants[i][1]
-	minetest.register_craft({
+	core.register_craft({
 		output = "mcl_deepslate:deepslate_"..deepslate_variants[i+1][1].." 4",
 		recipe = { { s, s }, { s, s } }
 	})
@@ -268,7 +270,7 @@ for i = 1, 3 do
 end
 
 for _, p in pairs({ "bricks", "tiles" }) do
-	minetest.register_craft({
+	core.register_craft({
 		type = "cooking",
 		output = "mcl_deepslate:deepslate_"..p.."_cracked",
 		recipe = "mcl_deepslate:deepslate_"..p,
@@ -276,21 +278,21 @@ for _, p in pairs({ "bricks", "tiles" }) do
 	})
 end
 
-minetest.register_craft({
+core.register_craft({
 	type = "cooking",
 	output = "mesecons:redstone",
 	recipe = "mcl_deepslate:deepslate_with_redstone",
 	cooktime = 10,
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "cooking",
 	output = "mcl_deepslate:deepslate",
 	recipe = cobble,
 	cooktime = 10,
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_deepslate:deepslate_chiseled",
 	recipe = {
 		{ "mcl_stairs:slab_deepslate_cobbled" },
