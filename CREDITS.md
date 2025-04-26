@@ -20,7 +20,6 @@
 * epCode
 * SmokeyDope
 * Faerraven / Michieal
-* rudzik8
 * teknomunk
 * kno10
 * AncientMariner
@@ -38,6 +37,7 @@
 * Codiac
 * chmodsayshello
 * MrRar
+* rudzik8
 
 ## Contributors
 * RandomLegoBrick
