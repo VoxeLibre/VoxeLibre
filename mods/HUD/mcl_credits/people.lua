@@ -22,7 +22,6 @@ return {
 		"epCode",
 		"SmokeyDope",
 		"Faerraven / Michieal",
-		"rudzik8",
 		"teknomunk",
 		"kno10",
 		"AncientMariner",
@@ -40,6 +39,7 @@ return {
 		"Codiac",
 		"chmodsayshello",
 		"MrRar",
+		"rudzik8",
 	}},
 	{S("Contributors"), 0x52FF00, {
 		"RandomLegoBrick",

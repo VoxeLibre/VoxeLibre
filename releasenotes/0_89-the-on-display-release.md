@@ -136,3 +136,10 @@ Bone control code, which had workarounds incompatible with 5.11+ Luanti versions
 * Fixed a rare kelp related crash – by teknomunk
 * Fixed a snowman related crash – by teknomunk
 * Fixed a boss related crash – by kno10
+
+## 0.89.3 patch
+* Fixed infested blocks not using spawning API properly – by teknomunk
+* Fixed XP magnet malfunctioning – by teknomunk
+* Fixed one letter signs not working – by kno10
+* Fixed undefined variable regression – by teknomunk
+* Fixed a few bugs in cartography table interface, including a crash – by teknomunk and Herowl
