@@ -33,7 +33,7 @@ mcl_vars.tool_wield_scale = vector.new(1.8, 1.8, 1)
 
 -- Mapgen variables
 local mg_name = minetest.get_mapgen_setting("mg_name")
-local minecraft_height_limit = 256
+local minecraft_height_limit = 256 -- TODO remove
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 local singlenode = mg_name == "singlenode"
 
@@ -109,6 +109,7 @@ function mcl_vars.get_chunk_number(pos) -- unsigned int
 		c.x + k_positive
 end
 
+-- TODO move to *_worlds as far as possible
 if not superflat and not singlenode then
 	-- Normal mode
 	--[[ Realm stacking (h is for height)
@@ -189,6 +190,7 @@ mcl_vars.mg_end_exit_portal_pos = vector.new(0, mcl_vars.mg_end_min + 71, 0)
 -- Realm barrier used to safely separate the End from the void below the Overworld
 mcl_vars.mg_realm_barrier_overworld_end_max = mcl_vars.mg_end_max
 mcl_vars.mg_realm_barrier_overworld_end_min = mcl_vars.mg_end_max - 11
+-- TODO bottom of to-be-moved stuff
 
 -- Use VoxeLibre-style dungeons
 mcl_vars.mg_dungeons = true
