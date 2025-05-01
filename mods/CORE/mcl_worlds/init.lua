@@ -1,21 +1,5 @@
 mcl_worlds = {}
 
-local registered_worlds = {}
-
-function mcl_worlds.register_world(def)
-	local modname = minetest.get_current_modname()
-	local id = def.id
-	assert(id ~= nil, "Unable to register world: id is nil")
-	assert(type(id) == "string", "Unable to register world: id is not a string")
-	assert(not registered_worlds[id], "World \""..id.."\" already registered!")
-	assert(type(def.name) == "string", "Unable to register world \""..id.."\": name is not a string")
-
-	local wdef = {}
-	wdef.name = name
-
-	registered_worlds[id] = wdef
-end
-
 local get_connected_players = minetest.get_connected_players
 
 -- For a given position, returns a 2-tuple:
