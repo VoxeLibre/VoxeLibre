@@ -3,6 +3,13 @@ by SmokeyDope
 
 The aim of this mod is to introduce a variety of nodes, functions, and entities related to the concept of seasons. The goal is to give voxelibre worlds a more dynamic and lively feeling to them.
 
+## Chat Command usage
+various chat command have been added to help with playtesting and development of things affected by season.
+
+/season gives the current season and effective day.
+/season X sets the effective day to a manual override value. e.g /season 55 for winter, requires server privs
+/season reset disables the override, resets effective day back to being based and updated on real-day.
+
 File Descriptions:
 init.lua for potential LBMs, ABMs, important first initializations, and then triggering other mod files.
 season-cycle.lua contains functions responsible for defining seasonal cycles and the amount of days that fall within them.
