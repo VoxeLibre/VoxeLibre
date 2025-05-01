@@ -11,6 +11,7 @@
 
 ## Previous Maintainers
 * Fleckenstein
+* kay27
 * cora
 * Nicu
 * AncientMariner
@@ -26,9 +27,9 @@
 
 ## Past Developers
 * jordan4ibanez
+* ryvnf
 * iliekprogrammar
 * kabou
-* kay27
 * MysticTempest
 * NO11
 * SumianVoice
@@ -44,7 +45,6 @@
 * Code-Sploit
 * aligator
 * Rootyjr
-* ryvnf
 * bzoss
 * talamh
 * Laurent Rocher
