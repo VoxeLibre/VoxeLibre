@@ -102,7 +102,7 @@ S("• When water is directly below lava, the water turns into stone."),
 	post_effect_color = {a=60, r=24.7, g=46.3, b=89.4},
 	stack_max = 64,
 	groups = { water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1, dig_by_piston=1, water_palette=1, oxidizable=1,},
-    _mcl_oxidized_variant = "mcl_core:ice",
+    _mcl_oxidized_seasonal_variant = "mcl_core:ice",
     _mcl_oxidized_season_disallowed = {"spring", "summer", "fall"},
 	_mcl_blast_resistance = 100,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
