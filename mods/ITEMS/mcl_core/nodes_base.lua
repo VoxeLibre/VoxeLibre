@@ -928,7 +928,7 @@ minetest.register_node("mcl_core:ice", {
 	use_texture_alpha = ice_texture_alpha,
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1, oxidizable=1,},
-    _mcl_oxidized_variant = "mcl_core:water_source",
+    _mcl_oxidized_seasonal_variant = "mcl_core:water_source",
     _mcl_oxidized_season_disallowed = {"fall", "winter"},
 	drop = "",
 	sounds = mcl_sounds.node_sound_ice_defaults(),
