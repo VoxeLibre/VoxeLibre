@@ -824,3 +824,8 @@ function mcl_util.metadata_last_act(meta, name, delay)
 	return true
 end
 
+-- Functions for comparing versions. These better fit mcl_util, but are used early
+mcl_util.parse_version = mcl_vars.parse_version
+mcl_util.minimum_version = mcl_vars.minimum_version
+mcl_util.format_version = mcl_vars.format_version
+
