@@ -72,17 +72,22 @@ minetest.register_node("mcl_core:ladder", {
 	node_placement_prediction = "",
 	-- Restrict placement of ladders
 	on_place = function(itemstack, placer, pointed_thing)
+		local called
+		itemstack, called = mcl_util.handle_node_rightclick(itemstack, placer, pointed_thing)
+		if( called ) then return itemstack end
+
 		if pointed_thing.type ~= "node" then
 			-- no interaction possible with entities
 			return itemstack
 		end
 
-		local under = pointed_thing.under
+		-- Ladders may not be placed on ceiling or floor
+		local under, above = pointed_thing.under, pointed_thing.above
+		if under.y ~= above.y then return itemstack end
+
 		local node = minetest.get_node(under)
 		local def = minetest.registered_nodes[node.name]
-		if not def then
-			return itemstack
-		end
+		if not def then return itemstack end
 		local groups = def.groups
 
 		-- Don't allow to place the ladder at non-solid nodes
@@ -90,27 +95,12 @@ minetest.register_node("mcl_core:ladder", {
 			return itemstack
 		end
 
-		-- Check special rightclick action of pointed node
-		if def and def.on_rightclick then
-			if not placer:get_player_control().sneak then
-				return def.on_rightclick(under, node, placer, itemstack,
-					pointed_thing) or itemstack, false
-			end
-		end
-		local above = pointed_thing.above
-
-		-- Ladders may not be placed on ceiling or floor
-		if under.y ~= above.y then
-			return itemstack
-		end
 		local idef = itemstack:get_definition()
 		local itemstack, pos = minetest.item_place_node(itemstack, placer, pointed_thing)
 
 		-- A non-nil pos indicates the node was placed in a valid position.
-		if pos then
-			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, { pos = above, gain = 1 }, true)
-			end
+		if pos and idef.sounds and idef.sounds.place then
+			minetest.sound_play(idef.sounds.place, { pos = above, gain = 1 }, true)
 		end
 		return itemstack
 	end,
