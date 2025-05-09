@@ -196,3 +196,10 @@ minetest.register_craft({
 	recipe = "mcl_bamboo:scaffolding",
 	burntime = 20
 })
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mcl_core:charcoal_lump",
+	recipe = "mcl_bamboo:bamboo_block",
+	cooktime = 10,
+})
