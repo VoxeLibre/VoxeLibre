@@ -87,7 +87,7 @@ end
 
 
 vl_worlds.dimensional_barrier_size = vl_worlds.MAP_BLOCKSIZE
-vl_worlds.dimensional_void_size = 2 * vl_worlds.chunksize
+vl_worlds.dimensional_void_size = 2 * vl_worlds.chunksize * vl_worlds.MAP_BLOCKSIZE
 
 -- TODO move to *_worlds as far as possible
 if not superflat and not singlenode then
@@ -206,36 +206,31 @@ function vl_worlds.register_world(def)
 		+ vl_worlds.dimensional_barrier_size -- barrier below
 		+ chunk_alignment -- goes into void above the dimension
 	for i, dim in ipairs(world_structure) do
-		local wdef, barrier_start1, void_start1, dim_start, void_start2, barrier_start2
+		local void_start1, new_start
 		if def.forced_start and dim.start < def.forced_start and dim.start + dim.height > def.forced_start then
-			assert(not dim.id, "Tried to force start of dimension \""..id.."\" in space taken by dimension \""..dim.id)
+			assert(not dim.id, "Tried to force start of dimension \""..dump(id).."\" in space taken by dimension \""..dump(dim.id))
 			assert(dim.height - vl_worlds.dimensional_barrier_size >= total_dim_size,
 				   "Not enough space to register dimension \""..id.."\" at designed coordinates")
 
-			wdef = {}
-			wdef.name = name
-
-			barrier_start1 = dim.start
 			void_start1 = def.forced_start - vl_worlds.dimensional_void_size
-			dim_start = def.forced_start
-			void_start2 = dim_start + def.height
-			void_height2 = vl_worlds.dimensional_void_size + chunk_alignment
-			barrier_start2 = barrier_start1 + total_dim_size
+			new_start = def.forced_start
 
 		elseif not dim.id and dim.height - vl_worlds.dimensional_barrier_size >= total_dim_size then
-			wdef = {}
-			wdef.name = name
-
-			barrier_start1 = dim.start
-			void_start1 = barrier_start1 + vl_worlds.dimensional_barrier_size
-			dim_start = void_start1 + vl_worlds.dimensional_void_size
-			void_start2 = dim_start + def.height
-			void_height2 = vl_worlds.dimensional_void_size + chunk_alignment
-			barrier_start2 = barrier_start1 + total_dim_size
+			void_start1 = dim.start + vl_worlds.dimensional_barrier_size
+			new_start = dim.start + vl_worlds.dimensional_void_size
 
 		end
-		if wdef then
+		if new_start then
+			local wdef = {}
+			wdef.name = name
+
 			registered_worlds[id] = wdef
+
+			local barrier_start1 = dim.start
+			local void_start2 = new_start + def.height
+			local void_height2 = vl_worlds.dimensional_void_size + chunk_alignment
+			local barrier_start2 = barrier_start1 + total_dim_size
+
 			dim.start = barrier_start2
 			dim.height = dim.height - vl_worlds.dimensional_barrier_size - total_dim_size
 			table.insert(world_structure, i, {
@@ -245,17 +240,17 @@ function vl_worlds.register_world(def)
 			})
 			table.insert(world_structure, i, {
 				id = id,
-				start = dim_start,
+				start = new_start,
 				height = def.height,
 			})
 			table.insert(world_structure, i, {
 				id = "void",
 				start = void_start1,
-				height = vl_worlds.dimensional_void_size - vl_worlds.dimensional_barrier_size,
+				height = new_start - void_start1,
 			})
 			table.insert(world_structure, i, {
 				start = barrier_start1,
-				height = vl_worlds.dimensional_barrier_size,
+				height = void_start1 - barrier_start1,
 			})
 
 			core.log(dump(world_structure)) -- TODO debug - remove
@@ -281,5 +276,6 @@ vl_worlds.register_world({
 vl_worlds.register_world({
 	id = "overworld",
 	name = S("Overworld"),
-	height = 8192,
+	height = 7550,
+	forced_start = -62,
 })
