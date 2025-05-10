@@ -229,10 +229,10 @@ function vl_worlds.register_world(def)
 			local barrier_start1 = dim.start
 			local void_start2 = new_start + def.height
 			local void_height2 = vl_worlds.dimensional_void_size + chunk_alignment
-			local barrier_start2 = barrier_start1 + total_dim_size
+			local barrier_start2 = void_start2 + void_height2
 
 			dim.start = barrier_start2
-			dim.height = dim.height - vl_worlds.dimensional_barrier_size - total_dim_size
+			dim.height = dim.height - barrier_start2 + barrier_start1
 			table.insert(world_structure, i, {
 				id = "void",
 				start = void_start2,
@@ -262,6 +262,13 @@ function vl_worlds.register_world(def)
 end
 
 vl_worlds.register_world({
+	id = "overworld",
+	name = S("Overworld"),
+	height = 7550,
+	forced_start = -62,
+})
+
+vl_worlds.register_world({
 	id = "underworld",
 	name = S("Underworld"),
 	height = 256,
@@ -271,11 +278,4 @@ vl_worlds.register_world({
 	id = "fringe",
 	name = S("Fringe"),
 	height = 2048,
-})
-
-vl_worlds.register_world({
-	id = "overworld",
-	name = S("Overworld"),
-	height = 7550,
-	forced_start = -62,
 })
