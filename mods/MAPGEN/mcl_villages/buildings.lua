@@ -90,7 +90,7 @@ function settlements.create_site_plan(maxp, minp, pr)
 	-- find center_surface of chunk
 	local center_surface , surface_material = settlements.find_surface(center, true)
 	local chunks = {}
-	chunks[mcl_vars.get_chunk_number(center)] = true
+	chunks[vl_worlds.get_chunk_number(center)] = true
 
 	-- go build settlement around center
 	if not center_surface then
@@ -128,7 +128,7 @@ function settlements.create_site_plan(maxp, minp, pr)
 			ptx = settlements.round(ptx, 0)
 			ptz = settlements.round(ptz, 0)
 			local pos1 = { x=ptx, y=center_surface.y+50, z=ptz}
-			local chunk_number = mcl_vars.get_chunk_number(pos1)
+			local chunk_number = vl_worlds.get_chunk_number(pos1)
 			local pos_surface, surface_material
 			if chunks[chunk_number] then
 				pos_surface, surface_material = settlements.find_surface(pos1)

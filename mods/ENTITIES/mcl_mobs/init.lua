@@ -95,9 +95,9 @@ end
 -- check if within physical map limits (-30911 to 30927)
 local function within_limits(pos, radius)
 	local wmin, wmax = -30912, 30928
-	if mcl_vars then
-		if mcl_vars.mapgen_edge_min and mcl_vars.mapgen_edge_max then
-			wmin, wmax = mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
+	if vl_worlds then
+		if vl_worlds.mapgen_edge_min and vl_worlds.mapgen_edge_max then
+			wmin, wmax = vl_worlds.mapgen_edge_min, vl_worlds.mapgen_edge_max
 		end
 	end
 	if radius then

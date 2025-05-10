@@ -6,7 +6,7 @@ local validate_vector = mcl_util.validate_vector
 local PATHFINDING = "gowp"
 local CRASH_WARN_FREQUENCY = 60
 local LIFETIMER_DISTANCE = 47
-local MAPGEN_LIMIT = mcl_vars.mapgen_limit
+local MAPGEN_LIMIT = vl_worlds.mapgen_limit
 local MAPGEN_MOB_LIMIT = MAPGEN_LIMIT - 90
 -- 30927 seems to be the edge of the world, so could be closer, but this is safer
 
