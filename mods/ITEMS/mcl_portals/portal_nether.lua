@@ -82,7 +82,7 @@ local W_MIN, W_MAX			= 4, 23
 local H_MIN, H_MAX			= 5, 23
 -- Limits to active nodes (mcl_portals:portal)
 local N_MIN, N_MAX			= 6, (W_MAX-2) * (H_MAX-2)
-local LIM_MIN, LIM_MAX			= mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
+local LIM_MIN, LIM_MAX			= vl_worlds.mapgen_edge_min, vl_worlds.mapgen_edge_max
 local PLAYER_COOLOFF, MOB_COOLOFF	= 3, 14 -- for this many seconds they won't teleported again
 local TOUCH_CHATTER_TIME		= 1 -- prevent multiple teleportation attempts caused by multiple portal touches, for this number of seconds
 local CHATTER_US			= TOUCH_CHATTER_TIME * 1000000
@@ -125,7 +125,7 @@ local N_Y_SPAN				= N_Y_MAX - N_Y_MIN
 -- that has a good chance of having "find_nodes_in_area_under_air" return
 -- something (so ideally caves, or surface, not just sky).
 -- For the bottom bound, we try for the first chunk boundary in the negative Ys (-32).
-local O_Y_MIN				= max(mcl_vars.mg_lava_overworld_max + 1, mcl_vars.central_chunk_offset_in_nodes)
+local O_Y_MIN				= max(mcl_vars.mg_lava_overworld_max + 1, vl_worlds.central_chunk_offset_in_nodes)
 -- Since O_Y_MIN is also used as a base for converting coordinates, we need to
 -- make sure the top bound is high enough to encompass entire nether height. In
 -- v7 mapgen nether is flatter than overworld, so this results in a span of
@@ -134,7 +134,7 @@ local O_Y_MIN				= max(mcl_vars.mg_lava_overworld_max + 1, mcl_vars.central_chun
 -- be in the bottom part of the overworld range (in v7 around -32 to 61), and
 -- the high locations will be used as a fallback.  If we see too many
 -- underground portals, we may need to shift just this base upwards (new setting).
-local O_Y_SPAN				= max(N_Y_SPAN, 2 * mcl_vars.chunk_size_in_nodes - 1)
+local O_Y_SPAN				= max(N_Y_SPAN, 2 * vl_worlds.chunk_size_in_nodes - 1)
 local O_Y_MAX				= min(mcl_vars.mg_overworld_max_official, O_Y_MIN + O_Y_SPAN)
 
 log("verbose", string.format("N_Y_MIN=%.1f, N_Y_MAX=%.1f, O_Y_MIN=%.1f, O_Y_MAX=%.1f", N_Y_MIN, N_Y_MAX, O_Y_MIN, O_Y_MAX))
@@ -898,11 +898,11 @@ local function find_build_limits(pos, target_dim)
 	-- According to what people said in minetest discord and couple of docs, mapgen
 	-- works on entire chunks, so we need to limit the search to chunk boundary.
 	-- The goal is to emerge at most two chunks.
-	local chunk_pos = mcl_vars.pos_to_chunk(pos)
-	local chunk_limit1 = vector_new(chunk_pos.x * mcl_vars.chunk_size_in_nodes + mcl_vars.central_chunk_offset_in_nodes,
-	                                chunk_pos.y * mcl_vars.chunk_size_in_nodes + mcl_vars.central_chunk_offset_in_nodes,
-	                                chunk_pos.z * mcl_vars.chunk_size_in_nodes + mcl_vars.central_chunk_offset_in_nodes)
-	local chunk_limit2 = vector_offset(chunk_limit1, mcl_vars.chunk_size_in_nodes - 1, mcl_vars.chunk_size_in_nodes - 1, mcl_vars.chunk_size_in_nodes - 1)
+	local chunk_pos = vl_worlds.pos_to_chunk(pos)
+	local chunk_limit1 = vector_new(chunk_pos.x * vl_worlds.chunk_size_in_nodes + vl_worlds.central_chunk_offset_in_nodes,
+	                                chunk_pos.y * vl_worlds.chunk_size_in_nodes + vl_worlds.central_chunk_offset_in_nodes,
+	                                chunk_pos.z * vl_worlds.chunk_size_in_nodes + vl_worlds.central_chunk_offset_in_nodes)
+	local chunk_limit2 = vector_offset(chunk_limit1, vl_worlds.chunk_size_in_nodes - 1, vl_worlds.chunk_size_in_nodes - 1, vl_worlds.chunk_size_in_nodes - 1)
 	-- Limit search area by using search distances. There is no Y build limit.
 	local build_limit1 = vector_offset(pos,
 		-- minus 1 to account for the pos block being included.
@@ -973,7 +973,7 @@ local function search_for_build_location(blockpos, action, calls_remaining, para
 	if calls_remaining and calls_remaining > 0 then return end
 
 	local target, pos1, pos2, name, obj = param.target, param.pos1, param.pos2, param.name or "", param.obj
-	local chunk = mcl_vars.get_chunk_number(target)
+	local chunk = vl_worlds.get_chunk_number(target)
 
 	-- Portal might still exist in the area even though nothing was found in the table.
 	-- This could be due to bugs, or old worlds (portals added before the exits table).
@@ -1077,13 +1077,13 @@ local function search_for_build_location(blockpos, action, calls_remaining, para
 			log("verbose", "No space found, emerging one chunk below")
 		end
 
-		local new_target = vector_offset(target, 0, direction * mcl_vars.chunk_size_in_nodes, 0)
+		local new_target = vector_offset(target, 0, direction * vl_worlds.chunk_size_in_nodes, 0)
 		pos1, pos2 = find_build_limits(new_target, param.target_dim)
 		local diff = vector_subtract(pos2, pos1)
 
 		-- Only emerge if there is sufficient headroom to actually fit entire portal.
 		if diff.y+1>=H_MIN then
-			local new_chunk = mcl_vars.get_chunk_number(new_target)
+			local new_chunk = vl_worlds.get_chunk_number(new_target)
 			if chunk_building[new_chunk] then
 				log("verbose", string.format("Secondary chunk %s is currently busy, backing off", new_chunk))
 				origin_flush(param.origin, nil)
@@ -1138,7 +1138,7 @@ local function search_for_build_location(blockpos, action, calls_remaining, para
 end
 
 local function create_portal(origin, target, target_dim, name, obj)
-	local chunk = mcl_vars.get_chunk_number(target)
+	local chunk = vl_worlds.get_chunk_number(target)
 	if chunk_building[chunk] then
 		log("verbose", string.format("Primary chunk %s is currently busy, backing off", chunk))
 		origin_flush(origin, nil)
