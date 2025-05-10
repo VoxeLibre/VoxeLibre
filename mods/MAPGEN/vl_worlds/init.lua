@@ -8,7 +8,6 @@ local storage = core.get_mod_storage()
 
 -- Mapgen variables
 local mg_name = core.get_mapgen_setting("mg_name")
-local minecraft_height_limit = 256 -- TODO remove
 local superflat = mg_name == "flat" and core.get_mapgen_setting("mcl_superflat_classic") == "true"
 local singlenode = mg_name == "singlenode"
 
@@ -88,89 +87,6 @@ end
 
 vl_worlds.dimensional_barrier_size = vl_worlds.MAP_BLOCKSIZE
 vl_worlds.dimensional_void_size = 2 * vl_worlds.chunksize * vl_worlds.MAP_BLOCKSIZE
-
--- TODO move to *_worlds as far as possible
-if not superflat and not singlenode then
-	-- Normal mode
-	--[[ Realm stacking (h is for height)
-	- Overworld (h>=256)
-	- Void (h>=1000)
-	- Realm Barrier (h=11), to allow escaping the End
-	- End (h>=256)
-	- Void (h>=1000)
-	- Nether (h=128)
-	- Void (h>=1000)
-	]]
-
-	-- Overworld
-	mcl_vars.mg_overworld_min = -62
-	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
-	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min + 4
-	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min + 10
-	mcl_vars.mg_lava = true
-	mcl_vars.mg_bedrock_is_rough = true
-
-elseif singlenode then
-	mcl_vars.mg_overworld_min = -66
-	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
-	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
-	mcl_vars.mg_lava = false
-	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_is_rough = false
-else
-	-- Classic superflat
-	local ground = tonumber(core.get_mapgen_setting("mgflat_ground_level")) or 8
-
-	mcl_vars.mg_overworld_min = ground - 3
-	mcl_vars.mg_overworld_max_official = mcl_vars.mg_overworld_min + minecraft_height_limit
-	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
-	mcl_vars.mg_lava = false
-	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_is_rough = false
-end
-
-mcl_vars.mg_overworld_max = vl_worlds.mapgen_edge_max
-
--- The Nether (around Y = -29000)
-mcl_vars.mg_nether_min = -29067 -- Carefully chosen to be at a mapchunk border
-mcl_vars.mg_nether_max = mcl_vars.mg_nether_min + 128
-mcl_vars.mg_bedrock_nether_bottom_min = mcl_vars.mg_nether_min
-mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
-mcl_vars.mg_nether_deco_max = mcl_vars.mg_nether_max -11 -- this is so ceiling decorations don't spill into other biomes as bedrock generation calls core.generate_decorations to put netherrack under the bedrock
-if not superflat then
-	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
-	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
-	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
-else
-	-- Thin bedrock in classic superflat mapgen
-	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min
-	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max
-	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 2
-end
-if mg_name == "flat" then
-	if superflat then
-		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_bedrock_nether_bottom_max + 4
-		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_bedrock_nether_bottom_max + 52
-	else
-		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_lava_nether_max + 4
-		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_lava_nether_max + 52
-	end
-end
-
--- The End (surface at ca. Y = -27000)
-mcl_vars.mg_end_min = -27073 -- Carefully chosen to be at a mapchunk border
-mcl_vars.mg_end_max_official = mcl_vars.mg_end_min + minecraft_height_limit
-mcl_vars.mg_end_max = mcl_vars.mg_overworld_min - 2000
-mcl_vars.mg_end_platform_pos = { x = 100, y = mcl_vars.mg_end_min + 64, z = 0 }
-mcl_vars.mg_end_exit_portal_pos = vector.new(0, mcl_vars.mg_end_min + 71, 0)
-
--- Realm barrier used to safely separate the End from the void below the Overworld
-mcl_vars.mg_realm_barrier_overworld_end_max = mcl_vars.mg_end_max
-mcl_vars.mg_realm_barrier_overworld_end_min = mcl_vars.mg_end_max - 11
--- TODO bottom of to-be-moved stuff
 
 
 
@@ -349,3 +265,104 @@ else
 		})
 	end
 end
+
+-- API
+-- id - string - registered dimension
+function vl_worlds.get_dimension_bounds(id)
+	if id == "void" then -- TODO improve the warning, maybe log also for nil id?
+		core.log("warning", "There's more than one void, attempting to check void bounds this way is not recommended")
+	end
+	for i, dim in ipairs(world_structure) do
+		if dim.id == id then
+			return {
+				min = dim.start,
+				max = dim.start + dim.height,
+			}
+		end
+	end
+end
+
+-- API
+-- id - string - registered dimension
+-- diff - integer - negative expands downwards, positive expands upwards
+function vl_worlds.expand_dimension(id, diff)
+	if not id or id == "void" or not diff or diff == 0 then return end -- TODO log a warning
+	for i, dim in ipairs(world_structure) do
+		if dim.id == id then
+			if diff < 0 and world_structure[i-2].height >= vl_worlds.dimensional_barrier_size - diff then
+				world_structure[i-2].height = world_structure[i-2].height + diff
+				world_structure[i-1].start = world_structure[i-1].start + diff
+				dim.start = dim.start + diff
+				dim.height = dim.height - diff
+			elseif diff > 0 and world_structure[i+2].height >= vl_worlds.dimensional_barrier_size + diff then
+				world_structure[i+2].height = world_structure[i+2].height - diff
+				world_structure[i+2].start = world_structure[i+2].start + diff
+				world_structure[i-1].start = world_structure[i-1].start + diff
+				dim.height = dim.height + diff
+			end
+			return -- TODO signal success/failure
+		end
+	end
+end
+
+
+
+-- DEPRECATED
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+mcl_vars.mg_overworld_min = overworld_bounds.min
+mcl_vars.mg_bedrock_overworld_min = overworld_bounds.min
+mcl_vars.mg_bedrock_overworld_max = overworld_bounds.min + 4
+mcl_vars.mg_lava_overworld_max = overworld_bounds.min + 10 -- TODO query layers instead
+mcl_vars.mg_overworld_max = overworld_bounds.max
+if not superflat and not singlenode then
+	mcl_vars.mg_lava = true
+	mcl_vars.mg_bedrock_is_rough = true
+else
+	mcl_vars.mg_lava = false
+	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min
+	mcl_vars.mg_bedrock_is_rough = false
+end
+
+local nether_bounds = vl_worlds.get_dimension_bounds("underworld")
+mcl_vars.mg_nether_min = nether_bounds.min
+mcl_vars.mg_nether_max = nether_bounds.min + 128
+
+local end_bounds = vl_worlds.get_dimension_bounds("fringe")
+mcl_vars.mg_end_min = end_bounds.min
+mcl_vars.mg_end_max = end_bounds.max
+
+for i, dim in ipairs(world_structure) do
+	if dim.id == "fringe" then
+		local barrier = world_structure[i+2]
+		mcl_vars.mg_realm_barrier_overworld_end_min = barrier.start
+		mcl_vars.mg_realm_barrier_overworld_end_max = barrier.start + barrier.height
+		break
+	end
+end
+-- end of DEPRECATED
+
+-- TODO remove
+mcl_vars.mg_bedrock_nether_bottom_min = nether_bounds.min
+mcl_vars.mg_nether_deco_max = mcl_vars.mg_nether_max - 11 -- this is so ceiling decorations don't spill into other biomes as bedrock generation calls core.generate_decorations to put netherrack under the bedrock
+mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
+if not superflat then
+	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
+	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
+	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
+else
+	-- Thin bedrock in classic superflat mapgen
+	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min
+	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max
+	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 2
+end
+if mg_name == "flat" then
+	if superflat then
+		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_bedrock_nether_bottom_max + 4
+		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_bedrock_nether_bottom_max + 52
+	else
+		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_lava_nether_max + 4
+		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_lava_nether_max + 52
+	end
+end
+mcl_vars.mg_end_platform_pos = { x = 100, y = mcl_vars.mg_end_min + 64, z = 0 }
+mcl_vars.mg_end_exit_portal_pos = vector.new(0, mcl_vars.mg_end_min + 71, 0)
