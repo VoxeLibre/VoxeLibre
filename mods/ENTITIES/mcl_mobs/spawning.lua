@@ -59,7 +59,7 @@ local aoc_range = 136
 local MISSING_CAP_DEFAULT = 15
 local MOBS_CAP_CLOSE = 10
 
-local SPAWN_MAPGEN_LIMIT  = mcl_vars.mapgen_limit - 150
+local SPAWN_MAPGEN_LIMIT  = vl_worlds.mapgen_limit - 150
 
 local mob_cap = {
 	hostile = tonumber(core.settings:get("mcl_mob_cap_monster")) or 70,
