@@ -31,24 +31,6 @@ mcl_vars.hud_type_field = core.features["hud_def_type_field"] and "type" or "hud
 -- Tool wield size
 mcl_vars.tool_wield_scale = vector.new(1.8, 1.8, 1)
 
--- TODO Add the following back, dependent on or filled directly by vl_worlds API
--- mcl_vars.mg_bedrock_overworld_max
--- mcl_vars.mg_bedrock_overworld_min
--- mcl_vars.mg_end_max
--- mcl_vars.mg_end_max_official
--- mcl_vars.mg_end_min
--- mcl_vars.mg_lava
--- mcl_vars.mg_lava_overworld_max
--- mcl_vars.mg_nether_max
--- mcl_vars.mg_nether_min
--- mcl_vars.mg_overworld_max
--- mcl_vars.mg_overworld_max_official
--- mcl_vars.mg_overworld_min
--- mcl_vars.mg_realm_barrier_overworld_end_max
--- mcl_vars.mg_realm_barrier_overworld_end_min
--- mcl_vars.overworld_min
-
-
 -- Use VoxeLibre-style dungeons
 mcl_vars.mg_dungeons = true
 
