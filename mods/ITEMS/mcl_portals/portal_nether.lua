@@ -135,7 +135,7 @@ local O_Y_MIN				= max(mcl_vars.mg_lava_overworld_max + 1, vl_worlds.central_chu
 -- the high locations will be used as a fallback.  If we see too many
 -- underground portals, we may need to shift just this base upwards (new setting).
 local O_Y_SPAN				= max(N_Y_SPAN, 2 * vl_worlds.chunk_size_in_nodes - 1)
-local O_Y_MAX				= min(mcl_vars.mg_overworld_max_official, O_Y_MIN + O_Y_SPAN)
+local O_Y_MAX				= min(mcl_vars.mg_overworld_min+256, O_Y_MIN + O_Y_SPAN)
 
 log("verbose", string.format("N_Y_MIN=%.1f, N_Y_MAX=%.1f, O_Y_MIN=%.1f, O_Y_MAX=%.1f", N_Y_MIN, N_Y_MAX, O_Y_MIN, O_Y_MAX))
 log("verbose", string.format("Nether span is %.1f, overworld span is %.1f", N_Y_MAX-N_Y_MIN+1, O_Y_MAX-O_Y_MIN+1))
