@@ -261,21 +261,91 @@ function vl_worlds.register_world(def)
 	error("Failed to register world \""..id.."\": not enough dimensional space")
 end
 
-vl_worlds.register_world({
-	id = "overworld",
-	name = S("Overworld"),
-	height = 7550,
-	forced_start = -62,
-})
+-- test for nonexistent 0.89 patch to allow testing on prerelease versions
+-- TODO migrate to {0, 90} before release
+if mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) then
+	vl_worlds.register_world({
+		id = "overworld",
+		name = S("Overworld"),
+		height = 7550,
+		forced_start = -62,
+	})
 
-vl_worlds.register_world({
-	id = "underworld",
-	name = S("Underworld"),
-	height = 256,
-})
+	vl_worlds.register_world({
+		id = "underworld",
+		name = S("Underworld"),
+		height = 256,
+	})
 
-vl_worlds.register_world({
-	id = "fringe",
-	name = S("Fringe"),
-	height = 2048,
-})
+	vl_worlds.register_world({
+		id = "fringe",
+		name = S("Fringe"),
+		height = 2048,
+	})
+else
+	if not superflat and not singlenode then
+		vl_worlds.register_world({
+			id = "overworld",
+			name = S("Overworld"),
+			height = 30989,
+			forced_start = -62,
+		})
+
+		vl_worlds.register_world({
+			id = "underworld",
+			name = S("Underworld"),
+			height = 256,
+			forced_start = -29067,
+		})
+
+		vl_worlds.register_world({
+			id = "fringe",
+			name = S("Fringe"),
+			height = 25012,
+			forced_start = -27073,
+		})
+	elseif superflat then
+		local ground = tonumber(core.get_mapgen_setting("mgflat_ground_level")) or 8
+		vl_worlds.register_world({
+			id = "overworld",
+			name = S("Overworld"),
+			height = vl_worlds.mapgen_edge_max - ground + 3,
+			forced_start = ground - 3,
+		})
+
+		vl_worlds.register_world({
+			id = "underworld",
+			name = S("Underworld"),
+			height = 256,
+			forced_start = -29067,
+		})
+
+		vl_worlds.register_world({
+			id = "fringe",
+			name = S("Fringe"),
+			height = 25079,
+			forced_start = -27073,
+		})
+	else
+		vl_worlds.register_world({
+			id = "overworld",
+			name = S("Overworld"),
+			height = vl_worlds.mapgen_edge_max + 65,
+			forced_start = -65,
+		})
+
+		vl_worlds.register_world({
+			id = "underworld",
+			name = S("Underworld"),
+			height = 256,
+			forced_start = -29067,
+		})
+
+		vl_worlds.register_world({
+			id = "fringe",
+			name = S("Fringe"),
+			height = 25007,
+			forced_start = -27073,
+		})
+	end
+end
