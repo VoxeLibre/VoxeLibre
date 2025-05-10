@@ -322,7 +322,7 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 	local lvm_used = false
 
 	-- The Void below the Nether:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mapgen_edge_min                     , mcl_vars.mg_nether_min                     -1, minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_void         , nil, vl_worlds.mapgen_edge_min                     , mcl_vars.mg_nether_min                     -1, minp, maxp, pr) or lvm_used
 
 	-- [[ THE NETHER:					mcl_vars.mg_nether_min			       mcl_vars.mg_nether_max							]]
 
