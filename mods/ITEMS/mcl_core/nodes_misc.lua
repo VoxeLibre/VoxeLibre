@@ -229,7 +229,7 @@ minetest.register_node("mcl_core:realm_barrier", {
 	description = S("Realm Barrier"),
 	_doc_items_create_entry = false,
 	drawtype = "airlike",
-	paramtype = "light",
+	paramtype = "none",
 	inventory_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
 	wield_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
 	tiles = {"blank.png"},
