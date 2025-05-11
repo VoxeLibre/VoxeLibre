@@ -22,7 +22,6 @@
 * SmokeyDope
 * Faerraven / Michieal
 * teknomunk
-* kno10
 * AncientMariner
 
 ## Past Developers
@@ -159,6 +158,7 @@
 * grillo-delmal
 * Yoric
 * potatoalienof13
+* kno10
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
