@@ -38,6 +38,7 @@
 * chmodsayshello
 * MrRar
 * rudzik8
+* kno10
 
 ## Contributors
 * RandomLegoBrick
@@ -158,7 +159,6 @@
 * grillo-delmal
 * Yoric
 * potatoalienof13
-* kno10
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
