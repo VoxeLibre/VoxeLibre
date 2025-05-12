@@ -6,6 +6,7 @@ local adjacents = {
 	vector.new(0,1,0),
 	vector.new(0,-1,0)
 }
+
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 assert(overworld_bounds)
 

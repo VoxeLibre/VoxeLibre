@@ -12,7 +12,7 @@ mcl_structures.register_structure("fossil",{
 	chunk_probability = 1000,
 	y_offset = function(pr) return ( pr:next(1,16) * -1 ) -16 end,
 	y_max = 15,
-	y_min = overworld_bounds.min + 35,
+	y_min = overworld_bounds.min + 35, -- TODO make technical layer?
 	biomes = { "Desert" },
 	filenames = {
 		modpath.."/schematics/mcl_structures_fossil_skull_1.mts", -- 4×5×5
