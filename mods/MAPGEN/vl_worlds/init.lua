@@ -144,7 +144,7 @@ function vl_worlds.register_world(def)
 		end
 		if new_start then
 			local wdef = {}
-			wdef.name = name
+			wdef.name = def.name
 
 			registered_worlds[id] = wdef
 
