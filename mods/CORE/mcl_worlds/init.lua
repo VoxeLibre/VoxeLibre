@@ -2,31 +2,17 @@ mcl_worlds = {}
 
 local get_connected_players = minetest.get_connected_players
 
+local deadly_tolerance = 64 -- the player must be this many nodes “deep” into the void to be damaged
 -- For a given position, returns a 2-tuple:
 -- 1st return value: true if pos is in void
 -- 2nd return value: true if it is in the deadly part of the void
 function mcl_worlds.is_in_void(pos)
-	local void =
-		not ((pos.y < mcl_vars.mg_overworld_max and pos.y > mcl_vars.mg_overworld_min) or
-		(pos.y < mcl_vars.mg_nether_max+128 and pos.y > mcl_vars.mg_nether_min) or
-		(pos.y < mcl_vars.mg_end_max and pos.y > mcl_vars.mg_end_min))
+	local dim = vl_worlds.dimension_at_pos(pos)
 
-	local void_deadly = false
-	local deadly_tolerance = 64 -- the player must be this many nodes “deep” into the void to be damaged
-	if void then
-		-- Overworld → Void → End → Void → Nether → Void
-		if pos.y < mcl_vars.mg_overworld_min and pos.y > mcl_vars.mg_end_max then
-			void_deadly = pos.y < mcl_vars.mg_overworld_min - deadly_tolerance
-		elseif pos.y < mcl_vars.mg_end_min and pos.y > mcl_vars.mg_nether_max+128 then
-			-- The void between End and Nether. Like usual, but here, the void
-			-- *above* the Nether also has a small tolerance area, so player
-			-- can fly above the Nether without getting hurt instantly.
-			void_deadly = (pos.y < mcl_vars.mg_end_min - deadly_tolerance) and (pos.y > mcl_vars.mg_nether_max+128 + deadly_tolerance)
-		elseif pos.y < mcl_vars.mg_nether_min then
-			void_deadly = pos.y < mcl_vars.mg_nether_min - deadly_tolerance
-		end
-	end
-	return void, void_deadly
+	if not dim or dim.id ~= "void" then return false, false end
+
+	local distance = math.max( math.abs(dim.start + dim.height - pos.y), math.abs(pos.y - dim.start) )
+	return true, distance > deadly_tolerance
 end
 
 -- Takes an Y coordinate as input and returns:
@@ -34,65 +20,75 @@ end
 -- 2) The corresponding Minecraft dimension ("overworld", "nether" or "end") or "void" if it is in the void
 -- If the Y coordinate is not located in any dimension, it will return:
 --     nil, "void"
+local DIMENSION_IDS = {
+	overworld = 0, underworld = 1, fringe = 2, void = 3
+}
+local DIMENSION_NAME_COMPAT = {
+	overworld = "overworld", underworld = "nether", fringe = "end", void = "void",
+}
+local REVERSE_DIMENSION_NAME_COMPAT = {
+	overworld = "overworld", nether = "underworld", ["end"] = "fringe", void = "void",
+}
+---@deprecated
 function mcl_worlds.y_to_layer(y)
-	if y >= mcl_vars.mg_overworld_min then
-		return y - mcl_vars.mg_overworld_min, "overworld", 0
-	elseif y >= mcl_vars.mg_nether_min and y <= mcl_vars.mg_nether_max+128 then
-		return y - mcl_vars.mg_nether_min, "nether", 1
-	elseif y >= mcl_vars.mg_end_min and y <= mcl_vars.mg_end_max then
-		return y - mcl_vars.mg_end_min, "end", 2
-	else
+	local dim = vl_worlds.dimension_at_pos(vector.new(0,y,0))
+	if not dim or dim.id == "void" then
 		return nil, "void", 3
 	end
-end
 
-local y_to_layer = mcl_worlds.y_to_layer
+	return y - dim.start, DIMENSION_NAME_COMPAT[dim.id] or dim.id, DIMENSION_IDS[dim.id] or -1
+end
 
 -- Takes a pos and returns the dimension it belongs to (same as above)
+---@deprecated
 function mcl_worlds.pos_to_dimension(pos)
-	local _, dim, dim_id = y_to_layer(pos.y)
-	return dim, dim_id
-end
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim or dim.id == "void" then
+		return nil, "void", 3
+	end
 
-local pos_to_dimension = mcl_worlds.pos_to_dimension
+	return DIMENSION_NAME_COMPAT[dim.id] or dim.id, DIMENSION_IDS[dim.id] or -1
+end
 
 -- Takes a Minecraft layer and a “dimension” name
 -- and returns the corresponding Y coordinate for
 -- VoxeLibre
--- mc_dimension is one of "overworld", "nether", "end" (default: "overworld").
-function mcl_worlds.layer_to_y(layer, mc_dimension)
-	   if mc_dimension == "overworld" or mc_dimension == nil then
-			   return layer + mcl_vars.mg_overworld_min
-	   elseif mc_dimension == "nether" then
-			   return layer + mcl_vars.mg_nether_min
-	   elseif mc_dimension == "end" then
-			   return layer + mcl_vars.mg_end_min
-	   end
+-- dimension_name is one of "overworld", "nether", "end" (default: "overworld").
+---@deprecated
+function mcl_worlds.layer_to_y(offset, dimension_name)
+	dimension_name = dimension_name or "overworld"
+
+	local dim = vl_worlds.dimension_by_name(REVERSE_DIMENSION_NAME_COMPAT[dimension_name])
+	assert(dim)
+
+	return dim.start + offset
 end
 
 -- Takes a position and returns true if this position can have weather
 function mcl_worlds.has_weather(pos)
-	-- Weather in the Overworld and the high part of the void below
-	return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim then return false end
+
+	-- Weather in the Overworld
+	return dim.id == "overworld"
 end
 
 -- Takes a position and returns true if this position can have Nether dust
 function mcl_worlds.has_dust(pos)
-	-- Weather in the Overworld and the high part of the void below
-	return pos.y <= mcl_vars.mg_nether_max + 138 and pos.y >= mcl_vars.mg_nether_min - 10
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim then return false end
+
+	-- Dust in the underworld
+	return dim.id == "underworld"
 end
 
+local COMPASS_WORKS = {overworld = true, underworld = false, fringe = false, void = true}
 -- Takes a position (pos) and returns true if compasses are working here
 function mcl_worlds.compass_works(pos)
-	-- It doesn't work in Nether and the End, but it works in the Overworld and in the high part of the void below
-	local _, dim = mcl_worlds.y_to_layer(pos.y)
-	if dim == "nether" or dim == "end" then
-		return false
-	elseif dim == "void" then
-		return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
-	else
-		return true
-	end
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim then return true end
+
+	return COMPASS_WORKS[dim] or true
 end
 
 -- Takes a position (pos) and returns true if clocks are working here
@@ -133,23 +129,37 @@ local dimension_change = mcl_worlds.dimension_change
 local DIM_UPDATE = 1
 local dimtimer = 0
 
+-- Track player dimensions
+---@type {string: vl_worlds.Dimension}
+local player_dimensions = {}
+
 minetest.register_on_joinplayer(function(player)
-	last_dimension[player:get_player_name()] = pos_to_dimension(player:get_pos())
+	local name = player:get_player_name()
+
+	local dim = vl_worlds.dimension_at_pos(player:get_pos())
+	assert(dim)
+
+	player_dimensions[name] = dim
+	last_dimension[name] = REVERSE_DIMENSION_NAME_COMPAT[dim.id] or dim.id
 end)
 
 minetest.register_globalstep(function(dtime)
 	-- regular updates based on iterval
 	dimtimer = dimtimer + dtime;
-	if dimtimer >= DIM_UPDATE then
-		local players = get_connected_players()
-		for p = 1, #players do
-			local dim = pos_to_dimension(players[p]:get_pos())
-			local name = players[p]:get_player_name()
-			if dim ~= last_dimension[name] then
-				dimension_change(players[p], dim)
-			end
+	if dimtimer < DIM_UPDATE then return end
+	dimtimer = 0
+
+	local players = get_connected_players()
+	for _,player in ipairs(players) do
+		local name = player:get_player_name()
+		local curr_dim = player_dimensions[name]
+		local pos  = player:get_pos()
+		if not curr_dim or pos.y < curr_dim.start or pos.y >= curr_dim.start + curr_dim.height then
+			dim = vl_worlds.dimension_at_pos(pos)
+			player_dimensions[name] = dim
+			local compat_name = DIMENSION_NAME_COMPAT[dim.id] or dim.id
+			dimension_change(player, compat_name)
 		end
-		dimtimer = 0
 	end
 end)
 
@@ -163,9 +173,12 @@ function mcl_worlds.get_cloud_parameters()
 			ambient = "#201060",
 		}
 	else
+		local overworld = vl_worlds.dimension_by_name("overworld")
+		assert(overworld)
+
 		-- MC-style clouds: Layer 127, thickness 4, fly to the “West”
 		return {
-			height = mcl_worlds.layer_to_y(127),
+			height = overworld.start + 127,
 			speed = {x=-2, z=0},
 			thickness = 4,
 			color = "#FFF0FEF",
