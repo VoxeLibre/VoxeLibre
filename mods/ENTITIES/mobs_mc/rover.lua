@@ -29,6 +29,12 @@ local take_frequency_min = 235
 local take_frequency_max = 245
 local place_frequency_min = 235
 local place_frequency_max = 245
+local overworld = vl_worlds.dimension_by_name("overworld")
+local underworld = vl_worlds.dimension_by_name("underworld")
+local fringe = vl_worlds.dimension_by_name("fringe")
+assert(overworld)
+assert(underworld)
+assert(fringe)
 
 minetest.register_entity("mobs_mc:ender_eyes", {
 	on_step = function(self)
@@ -505,8 +511,8 @@ mcl_mobs:spawn_setup({
 	chance = 100,
 	interval = 30,
 	aoc = 12,
-	min_height = mcl_vars.mg_end_min,
-	max_height = mcl_vars.mg_end_max
+	min_height = fringe.start,
+	max_height = fringe.start + fringe.height,
 })
 -- Overworld spawn
 mcl_mobs:spawn_setup({
@@ -654,8 +660,8 @@ mcl_mobs:spawn_setup({
 	chance = 100,
 	interval = 30,
 	aoc = 2,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 
 -- Nether spawn (rare)
@@ -672,8 +678,8 @@ mcl_mobs:spawn_setup({
 	chance = 100,
 	interval = 30,
 	aoc = 4,
-	min_height = mcl_vars.mg_nether_min,
-	max_height = mcl_vars.mg_nether_max
+	min_height = underworld.start,
+	max_height = underworld.start + underworld.height,
 })
 
 -- Warped Forest spawn (common)
@@ -689,8 +695,8 @@ mcl_mobs:spawn_setup({
 	chance = 100,
 	interval = 30,
 	aoc = 4,
-	min_height = mcl_vars.mg_nether_min,
-	max_height = mcl_vars.mg_nether_max
+	min_height = underworld.start,
+	max_height = underworld.start + underworld.height,
 })
 
 -- spawn eggs

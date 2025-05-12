@@ -1,6 +1,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 mcl_mobs.register_mob("mobs_mc:pig", {
 	description = S("Pig"),
@@ -260,8 +262,8 @@ mcl_mobs:spawn_setup({
 	chance = 100,
 	interval = 30,
 	aoc = 8,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 
 -- spawn eggs
