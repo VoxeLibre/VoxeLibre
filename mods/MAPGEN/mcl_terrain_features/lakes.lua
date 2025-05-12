@@ -9,6 +9,9 @@ local mg_name = core.get_mapgen_setting("mg_name")
 local get_node_name = mcl_vars.get_node_name
 local get_node_name_raw = mcl_vars.get_node_name_raw
 
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
+
 local adjacents = {
 	vector.new(1,0,0),
 	vector.new(1,0,1),
@@ -111,7 +114,7 @@ mcl_structures.register_structure("lavapool", {
 		persist = 0.001,
 		flags = "absvalue",
 	},
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = overworld.start + overworld.height,
 	y_min = core.get_mapgen_setting("water_level"),
 	place_func = function(pos, _, pr)
 		return makelake(pos, 5, { name = "mcl_core:lava_source" },
@@ -132,7 +135,7 @@ mcl_structures.register_structure("water_lake", {
 		persist = 0.001,
 		flags = "absvalue",
 	},
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = overworld.start + overworld.height,
 	y_min = core.get_mapgen_setting("water_level"),
 	place_func = function(pos, _, pr)
 		return makelake(pos, 5, { name = "mcl_core:water_source" },
@@ -154,7 +157,7 @@ mcl_structures.register_structure("water_lake_mangrove_swamp", {
 		persist = 0.001,
 		flags = "absvalue",
 	},
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = overworld.start + overworld.height,
 	y_min = core.get_mapgen_setting("water_level"),
 	place_func = function(pos, _, pr)
 		return makelake(pos, 3, { name = "mcl_core:water_source" },
