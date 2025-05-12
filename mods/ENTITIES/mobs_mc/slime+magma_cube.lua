@@ -14,6 +14,7 @@ local slime_max_light = (tonumber(minetest.settings:get("slime_max_light")) or m
 local swamp_light_max = 7
 -- maximum height to spawn in slime chunks
 local slime_chunk_spawn_max = mcl_worlds.layer_to_y(40)
+
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
 assert(overworld_bounds)
@@ -446,6 +447,7 @@ mcl_mobs.register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 
 
 local magma_cube_biomes = {"Nether", "BasaltDelta"}
+
 local nether_min = underworld_bounds.min
 local nether_max = underworld_bounds.max
 

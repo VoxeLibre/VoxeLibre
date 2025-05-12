@@ -5,6 +5,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
+
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
 assert(overworld_bounds)
