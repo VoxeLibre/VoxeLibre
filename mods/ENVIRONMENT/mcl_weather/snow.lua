@@ -5,6 +5,8 @@ mcl_weather.snow = {}
 local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 100
 mcl_weather.snow.init_done = false
 local mgname = minetest.get_mapgen_setting("mg_name")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 local snow_biomes = {
 	"ColdTaiga_underground",
@@ -148,7 +150,7 @@ minetest.register_abm({
 	neighbors = {"air"},
 	interval = 27,
 	chance = 33,
-	min_y = mcl_vars.mg_overworld_min,
+	min_y = overworld.start,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		if (mcl_weather.state ~= "rain" and mcl_weather.state ~= "thunder" and mcl_weather.state ~= "snow")
 		or not mcl_weather.has_snow(pos)
