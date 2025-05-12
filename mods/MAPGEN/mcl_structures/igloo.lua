@@ -2,6 +2,9 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
+
 function mcl_structures.generate_igloo_top(pos, pr)
 	-- Furnace does ot work atm because apparently meta is not set. Need a bit of help with fixing this for furnaces, bookshelves, and brewing stands.
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
@@ -53,15 +56,17 @@ function mcl_structures.generate_igloo(pos, def, pr)
 	local r = pr:next(1,2)
 	if r == 1 then
 		-- Select basement depth
-		local dim = mcl_worlds.pos_to_dimension(pos)
+		local dim = vl_worlds.dimension_at_pos(pos)
+		if not dim then return false end
+
 		--local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
 		local buffer
-		if dim == "nether" then
-			buffer = pos.y - (mcl_vars.mg_lava_nether_max + 10)
-		elseif dim == "end" then
-			buffer = pos.y - (mcl_vars.mg_end_min + 1)
-		elseif dim == "overworld" then
-			buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+		if dim.id == "underworld" then
+			buffer = pos.y - (mcl_vars.mg_lava_nether_max + 10) -- TODO: update once layers are available
+		elseif dim.id == "fringe" then
+			buffer = pos.y - (dim.start + 1)
+		elseif dim.id == "overworld" then
+			buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10) -- TODO: update once layers are available
 		else
 			return success
 		end
@@ -151,7 +156,7 @@ mcl_structures.register_structure("igloo",{
 	chunk_probability = 250,
 	solid_ground = true,
 	make_foundation = true,
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = overworld.start + overworld.height,
 	y_min = 0,
 	y_offset = 0,
 	biomes = { 	"ColdTaiga", "IcePlainsSpikes",	"IcePlains" },
