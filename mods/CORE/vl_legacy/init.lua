@@ -47,6 +47,20 @@ function mod.convert_node(pos, node)
 	end
 end
 
+function mod.show_deprecated_field_warnings(tbl, tbl_name, deprecated)
+	local suppress_duplicates = {}
+	setmetatable(mcl_vars, {
+		__index = function(tbl, idx)
+			local caller = debug.getinfo(2).func
+			if not suppress_duplicates[caller] then
+				core.log("warning", "Use of deprecated field "..tbl_name.."."..idx.." from "..debug.traceback())
+				suppress_duplicates[caller] = true
+			end
+			return deprecated[idx]
+		end
+	})
+end
+
 minetest.register_on_joinplayer(function(player)
 	mod.convert_inventory(player:get_inventory())
 end)
