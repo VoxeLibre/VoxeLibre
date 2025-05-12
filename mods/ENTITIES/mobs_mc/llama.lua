@@ -1,4 +1,6 @@
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 --###################
 --################### LLAMA
@@ -294,7 +296,7 @@ mcl_mobs:spawn_setup({
 	chance = 50,
 	aoc = 5,
 	min_height = mobs_mc.water_level+15,
-	max_height = mcl_vars.mg_overworld_max
+	max_height = overworld.start + overworld.height,
 })
 
 -- spawn eggs
