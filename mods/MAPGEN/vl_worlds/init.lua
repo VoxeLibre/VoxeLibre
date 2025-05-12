@@ -308,34 +308,37 @@ end
 
 
 -- DEPRECATED
+local deprecated = {}
+vl_legacy.show_deprecated_field_warnings(mcl_vars, "mcl_vars", deprecated)
+
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
-mcl_vars.mg_overworld_min = overworld_bounds.min
-mcl_vars.mg_bedrock_overworld_min = overworld_bounds.min
-mcl_vars.mg_bedrock_overworld_max = overworld_bounds.min + 4
-mcl_vars.mg_lava_overworld_max = overworld_bounds.min + 10 -- TODO query layers instead
-mcl_vars.mg_overworld_max = overworld_bounds.max
+deprecated.mg_overworld_min = overworld_bounds.min
+deprecated.mg_bedrock_overworld_min = overworld_bounds.min
+deprecated.mg_bedrock_overworld_max = overworld_bounds.min + 4
+deprecated.mg_lava_overworld_max = overworld_bounds.min + 10 -- TODO query layers instead
+deprecated.mg_overworld_max = overworld_bounds.max
 if not superflat and not singlenode then
-	mcl_vars.mg_lava = true
-	mcl_vars.mg_bedrock_is_rough = true
+	deprecated.mg_lava = true
+	deprecated.mg_bedrock_is_rough = true
 else
-	mcl_vars.mg_lava = false
-	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min
-	mcl_vars.mg_bedrock_is_rough = false
+	deprecated.mg_lava = false
+	deprecated.mg_lava_overworld_max = deprecated.mg_overworld_min
+	deprecated.mg_bedrock_is_rough = false
 end
 
 local nether_bounds = vl_worlds.get_dimension_bounds("underworld")
-mcl_vars.mg_nether_min = nether_bounds.min
-mcl_vars.mg_nether_max = nether_bounds.min + 128
+deprecated.mg_nether_min = nether_bounds.min
+deprecated.mg_nether_max = nether_bounds.min + 128
 
 local end_bounds = vl_worlds.get_dimension_bounds("fringe")
-mcl_vars.mg_end_min = end_bounds.min
-mcl_vars.mg_end_max = end_bounds.max
+deprecated.mg_end_min = end_bounds.min
+deprecated.mg_end_max = end_bounds.max
 
 for i, dim in ipairs(world_structure) do
 	if dim.id == "fringe" then
 		local barrier = world_structure[i+2]
-		mcl_vars.mg_realm_barrier_overworld_end_min = barrier.start
-		mcl_vars.mg_realm_barrier_overworld_end_max = barrier.start + barrier.height
+		deprecated.mg_realm_barrier_overworld_end_min = barrier.start
+		deprecated.mg_realm_barrier_overworld_end_max = barrier.start + barrier.height
 		break
 	end
 end
