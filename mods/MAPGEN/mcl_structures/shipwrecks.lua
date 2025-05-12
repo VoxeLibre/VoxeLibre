@@ -4,6 +4,8 @@ local modpath = minetest.get_modpath(modname)
 local seed = minetest.get_mapgen_setting("seed")
 local water_level = minetest.get_mapgen_setting("water_level")
 local pr = PseudoRandom(seed)
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 --schematics by chmodsayshello
 local schems = {
@@ -94,7 +96,7 @@ mcl_structures.register_structure("shipwreck",{
 	flags = "force_placement",
 	biomes = ocean_biomes,
 	y_max = water_level-4,
-	y_min = mcl_vars.mg_overworld_min,
+	y_min = overworld.start,
 	filenames = schems,
 	y_offset = function(pr) return pr:next(-4,-2) end,
 	loot = {

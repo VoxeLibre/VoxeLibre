@@ -2,6 +2,9 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
+
 local function temple_placement_callback(pos,def, pr)
 	local hl = def.sidelen / 2
 	local p1 = vector.offset(pos,-hl,-hl,-hl)
@@ -41,7 +44,7 @@ mcl_structures.register_structure("desert_temple",{
 	sidelen = 18,
 	y_offset = -12,
 	chunk_probability = 300,
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = overworld.start + overworld.height,
 	y_min = 1,
 	biomes = { "Desert" },
 	filenames = { modpath.."/schematics/mcl_structures_desert_temple.mts" },

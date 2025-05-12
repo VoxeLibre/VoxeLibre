@@ -1,4 +1,6 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 mcl_structures.register_structure("desert_well",{
 	place_on = {"group:sand"},
@@ -8,7 +10,7 @@ mcl_structures.register_structure("desert_well",{
 	solid_ground = true,
 	sidelen = 4,
 	chunk_probability = 600,
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = overworld.start + overworld.height,
 	y_min = 1,
 	y_offset = -2,
 	biomes = { "Desert" },

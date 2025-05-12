@@ -2,6 +2,9 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
+
 local cold_oceans = {
 	"RoofedForest_ocean",
 	"BirchForestM_ocean",
@@ -79,7 +82,7 @@ local cold = {
 	solid_ground = true,
 	make_foundation = true,
 	y_offset = -1,
-	y_min = mcl_vars.mg_overworld_min,
+	y_min = overworld.start,
 	y_max = -2,
 	biomes = cold_oceans,
 	chunk_probability = 400,

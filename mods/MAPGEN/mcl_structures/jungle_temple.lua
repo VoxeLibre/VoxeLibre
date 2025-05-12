@@ -2,6 +2,9 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
+
 mcl_structures.register_structure("jungle_temple",{
 	place_on = {"group:grass_block","group:dirt","mcl_core:dirt_with_grass"},
 	fill_ratio = 0.01,
@@ -10,7 +13,7 @@ mcl_structures.register_structure("jungle_temple",{
 	make_foundation = true,
 	y_offset = function(pr) return pr:next(-3,0) -5 end,
 	chunk_probability = 200,
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = overworld.start + overworld.height,
 	y_min = 1,
 	biomes = { "Jungle" },
 	sidelen = 18,
