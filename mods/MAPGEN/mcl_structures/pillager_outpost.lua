@@ -2,6 +2,8 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 local spawnon = {"mcl_core:stripped_oak","mcl_stairs:slab_birchwood_top"}
 
@@ -14,7 +16,7 @@ mcl_structures.register_structure("pillager_outpost",{
 	sidelen = 32,
 	y_offset = 0,
 	chunk_probability = 600,
-	y_max = mcl_vars.mg_overworld_max,
+	y_max = overworld.start + overworld.height,
 	y_min = 1,
 	biomes = { "Desert", "Plains", "Savanna", "IcePlains", "Taiga" },
 	construct_nodes = {"mcl_anvils:anvil_damage_2"},
@@ -79,8 +81,8 @@ mcl_structures.register_structure("pillager_outpost",{
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:pillager",
-	y_min = mcl_vars.mg_overworld_min,
-	y_max = mcl_vars.mg_overworld_max,
+	y_min = overworld.start,
+	y_max = overworld.start + overworld.height,
 	chance = 10,
 	interval = 60,
 	limit = 9,
