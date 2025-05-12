@@ -1,6 +1,8 @@
 
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 local deepslate_max = mcl_worlds.layer_to_y(16)
-local deepslate_min = mcl_vars.mg_overworld_min
+local deepslate_min = overworld.start
 
 local copper_mod = minetest.get_modpath("mcl_copper")
 
@@ -46,8 +48,8 @@ for s=1, #specialstones do
 		clust_scarcity = 15*15*15,
 		clust_num_ores = 33,
 		clust_size     = 5,
-		y_min          = mcl_vars.mg_overworld_min,
-		y_max          = mcl_vars.mg_overworld_max,
+		y_min          = overworld.start,
+		y_max          = overworld.start + overworld.height,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -172,7 +174,7 @@ if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 			flags = "defaults",
 		}
 	})
-	
+
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_deepslate:infested_deepslate",
