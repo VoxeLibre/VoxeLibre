@@ -7,6 +7,7 @@ mcl_weather.snow = {}
 local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 100
 mcl_weather.snow.init_done = false
 local mgname = minetest.get_mapgen_setting("mg_name")
+
 local gamerule_snowAccumulationHeight = 1
 vl_tuning.setting("gamerule:snowAccumulationHeight", "number", {
 	description = S("The maximum number of snow layers that can be accumulated on each block"),
@@ -14,6 +15,7 @@ vl_tuning.setting("gamerule:snowAccumulationHeight", "number", {
 	set = function(val) gamerule_snowAccumulationHeight = val end,
 	get = function() return gamerule_snowAccumulationHeight end,
 })
+
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 assert(overworld_bounds)
 
