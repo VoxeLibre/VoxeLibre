@@ -2,6 +2,7 @@
 --maikerumine
 
 local S = minetest.get_translator("mobs_mc")
+
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 assert(overworld_bounds)
 
