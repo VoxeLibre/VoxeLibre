@@ -176,29 +176,22 @@ mcl_info.register_debug_field("Coords", {
 	end
 })
 
+-- TODO: remove when we can get the name from dimension data
+local DIMENSION_NAMES = {
+	overworld = "Overworld",
+	underworld = "Underworld",
+	fringe = "Fringe",
+	void = "Void",
+}
+
 mcl_info.register_debug_field("Location", {
 	level = 1,
-	func = function(pl, pos)
-		local report_y = 0
-		-- overworld
-		if (pos.y >= mcl_vars.mg_overworld_min) and (pos.y <= mcl_vars.mg_overworld_max) then
-			return format("Overworld: x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
-		end
+	func = function(_, pos)
+		local dim = vl_worlds.dimension_at_pos(pos)
+		local name = dim and (DIMENSION_NAMES[dim.id] or dim.id) or "Unknown"
 
-		-- nether
-		if (pos.y >= mcl_vars.mg_nether_min) and (pos.y <= mcl_vars.mg_nether_max) then
-			report_y = pos.y - mcl_vars.mg_nether_min
-			return format("Nether: x:%.1f y:%.1f z:%.1f", pos.x, report_y, pos.z)
-		end
-
-		-- end
-		if (pos.y >= mcl_vars.mg_end_min) and (pos.y <= mcl_vars.mg_end_max) then
-			report_y = pos.y - mcl_vars.mg_end_min
-			return format("End: x:%.1f y:%.1f z:%.1f", pos.x, report_y, pos.z)
-		end
-
-		-- outside of scoped bounds.
-		return format("Void: x:%.1f y:%.1f z:%.1f", pos.x, pos.y, pos.z)
-
+		-- TODO: get name from dimension data
+		-- TODO: can we use the translation API for this?
+		return format("%s: x:%.1f y:%.1f z:%.1f", name, pos.x, pos.y, pos.z)
 	end
 })
