@@ -5,6 +5,10 @@
 
 local S = minetest.get_translator("mobs_mc")
 local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
+local overworld = vl_worlds.dimension_by_name("overworld")
+local underworld = vl_worlds.dimension_by_name("underworld")
+assert(overworld)
+assert(underworld)
 
 --###################
 --################### SKELETON
@@ -349,8 +353,8 @@ mcl_mobs:spawn_setup({
 	chance = 800,
 	interval = 20,
 	aoc = 2,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 
 -- Nether spawn
@@ -366,8 +370,8 @@ mcl_mobs:spawn_setup({
 	chance = 800,
 	interval = 30,
 	aoc = 3,
-	min_height = mcl_vars.mg_nether_min,
-	max_height = mcl_vars.mg_nether_max
+	min_height = underworld.start,
+	max_height = underworld.start + underworld.height,
 })
 
 -- Stray spawn
@@ -388,7 +392,7 @@ mcl_mobs:spawn_setup({
 	interval = 20,
 	aoc = 2,
 	min_height = mobs_mc.water_level,
-	max_height = mcl_vars.mg_overworld_max
+	max_height = overworld.start + overworld.height,
 })
 
 -- spawn eggs

@@ -1,6 +1,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 local cow_def = {
 	description = S("Cow"),
@@ -220,7 +222,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 10,
 	min_height = mobs_mc.water_level,
-	max_height = mcl_vars.mg_overworld_max
+	max_height = overworld.start + overworld.height,
 })
 
 mcl_mobs:spawn_setup({
@@ -236,8 +238,8 @@ mcl_mobs:spawn_setup({
 	chance = 80,
 	interval = 30,
 	aoc = 5,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 
 -- spawn egg
