@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_blackstone")
+
 local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
 assert(fringe_bounds)
 
