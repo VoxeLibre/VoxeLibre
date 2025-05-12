@@ -124,7 +124,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		hoey = { speed = 3.75, level = 3, uses = 125 }
+		hoey = { speed = 4, level = 3, uses = 132 }
 	},
 })
 
@@ -145,43 +145,6 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_tool("mcl_farming:hoe_deepslate", {
-	description = S("Deepslate Hoe"),
-	_tt_help = hoe_tt,
-	_doc_items_longdesc = hoe_longdesc,
-	_doc_items_usagehelp = hoe_usagehelp,
-	inventory_image = "farming_tool_deepslatehoe.png",
-	wield_scale = mcl_vars.tool_wield_scale,
-	on_place = hoe_on_place_function(uses.stone),
-	groups = { tool=1, hoe=1, enchantability=5 },
-	tool_capabilities = {
-		full_punch_interval = 0.5,
-		damage_groups = { fleshy = 1, },
-		punch_attack_uses = uses.stone,
-	},
-	_repair_material = "mcl_deepslate:deepslate",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		hoey = { speed = 3.75, level = 3, uses = 125 }
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_farmin:hoe_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
-		{"", "mcl_core:stick"},
-		{"", "mcl_core:stick"}
-	}
-})
-minetest.register_craft({
-	output = "mcl_farming:hoe_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
-		{"mcl_core:stick", ""},
-		{"mcl_core:stick", ""}
-	}
-})
 
 minetest.register_tool("mcl_farming:hoe_iron", {
 	description = S("Iron Hoe"),

@@ -17,15 +17,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_tools:pick_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
-		{"", "mcl_core:stick", ""},
-		{"", "mcl_core:stick", ""},
-	}
-})
-
-minetest.register_craft({
 	output = "mcl_tools:pick_iron",
 	recipe = {
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
@@ -65,15 +56,6 @@ minetest.register_craft({
 	output = "mcl_tools:shovel_stone",
 	recipe = {
 		{"group:cobble"},
-		{"mcl_core:stick"},
-		{"mcl_core:stick"},
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_tools:shovel_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate"},
 		{"mcl_core:stick"},
 		{"mcl_core:stick"},
 	}
@@ -136,23 +118,6 @@ minetest.register_craft({
 	recipe = {
 		{"group:cobble", "group:cobble"},
 		{"mcl_core:stick", "group:cobble"},
-		{"mcl_core:stick", ""},
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_tools:axe_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
-		{"mcl_deepslate:deepslate", "mcl_core:stick"},
-		{"", "mcl_core:stick"},
-	}
-})
-minetest.register_craft({
-	output = "mcl_tools:axe_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
-		{"mcl_core:stick", "mcl_deepslate:deepslate"},
 		{"mcl_core:stick", ""},
 	}
 })
@@ -222,15 +187,6 @@ minetest.register_craft({
 	recipe = {
 		{"group:cobble"},
 		{"group:cobble"},
-		{"mcl_core:stick"},
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_tools:sword_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate"},
-		{"mcl_deepslate:deepslate"},
 		{"mcl_core:stick"},
 	}
 })

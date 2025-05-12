@@ -213,7 +213,7 @@ end)
 
 local uses = {
 	wood = 60,
-	stone = 125,
+	stone = 132,
 	deepslate = 150,
 	iron = 251,
 	gold = 33,
@@ -266,39 +266,18 @@ core.register_tool("vl_weaponry:hammer_stone", {
 	tool_capabilities = {
 		full_punch_interval = 1.3,
 		max_drop_level=3,
-		damage_groups = {fleshy=4.75},
+		damage_groups = {fleshy=5},
 		punch_attack_uses = uses.stone,
 	},
 	sound = { breaks = "default_tool_breaks" },
 	_repair_material = "group:cobble",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		pickaxey = { speed = 1.75, level = 3, uses = uses.stone },
-		shovely = { speed = 1.75, level = 3, uses = uses.stone }
+		pickaxey = { speed = 2, level = 3, uses = uses.stone },
+		shovely = { speed = 2, level = 3, uses = uses.stone }
 	},
 })
-core.register_tool("vl_weaponry:hammer_stone", {
-	description = S("Deepslate Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_deepslatehammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=5 },
-	tool_capabilities = {
-		full_punch_interval = 1.3,
-		max_drop_level=3,
-		damage_groups = {fleshy=5.25},
-		punch_attack_uses = uses.deepslate,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		pickaxey = { speed = 2.25, level = 3, uses = uses.deepslate },
-		shovely = { speed = 2.25, level = 3, uses = uses.deepslate }
-	},
-})
+
 core.register_tool("vl_weaponry:hammer_iron", {
 	description = S("Iron Hammer"),
 	_tt_help = hammer_tt,
@@ -433,7 +412,7 @@ core.register_tool("vl_weaponry:spear_stone", {
 	tool_capabilities = {
 		full_punch_interval = 0.75,
 		max_drop_level=3,
-		damage_groups = {fleshy=3.75},
+		damage_groups = {fleshy=4},
 		punch_attack_uses = uses.stone,
 	},
 	sound = { breaks = "default_tool_breaks" },
@@ -446,33 +425,7 @@ core.register_tool("vl_weaponry:spear_stone", {
 	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 6,
 })
-core.register_tool("vl_weaponry:spear_deepslate", {
-	description = S("Deepslate Spear"),
-	_tt_help = spear_tt,
-	_doc_items_longdesc = spear_longdesc,
-	_doc_items_usagehelp = spear_use,
-	inventory_image = "vl_tool_deepslatespear.png",
-	wield_scale = wield_scale,
-	on_place = spear_on_place,
-	on_secondary_use = spear_on_place,
-	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=5 },
-	range = SPEAR_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 0.75,
-		max_drop_level=3,
-		damage_groups = {fleshy=4.25},
-		punch_attack_uses = uses.deepslate,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = uses.deepslate },
-		swordy_cobweb = { speed = 2, level = 1, uses = uses.deepslate }
-	},
-	touch_interaction = "short_dig_long_place",
-	_mcl_spear_thrown_damage = 6,
-})
+
 core.register_tool("vl_weaponry:spear_iron", {
 	description = S("Iron Spear"),
 	_tt_help = spear_tt,
