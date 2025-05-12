@@ -1,4 +1,6 @@
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 --- The lower limit of speed at which a chicken can fall.
 local MIN_Y_VELOCITY = -1.00
@@ -203,7 +205,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 3,
 	min_height = mobs_mc.water_level,
-	max_height = mcl_vars.mg_overworld_max
+	max_height = overworld.start + overworld.height,
 })
 
 mcl_mobs.register_egg("mobs_mc:chicken", S("Chicken"), "#ddc3a8", "#ff0000", 0)

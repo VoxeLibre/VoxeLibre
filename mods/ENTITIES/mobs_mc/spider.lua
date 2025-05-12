@@ -2,6 +2,8 @@
 --maikerumine
 
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 --###################
 --################### SPIDER
@@ -314,8 +316,8 @@ mcl_mobs:spawn_setup({
 	chance = 1000,
 	interval = 30,
 	aoc = 2,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 
 mcl_mobs:non_spawn_specific("mobs_mc:cave_spider","overworld",0,7)

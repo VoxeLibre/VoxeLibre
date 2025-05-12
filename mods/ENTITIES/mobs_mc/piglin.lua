@@ -25,6 +25,8 @@ local trading_items = {
 
 local S = minetest.get_translator("mobs_mc")
 local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
+local underworld = vl_worlds.dimension_by_name("underworld")
+assert(underworld)
 
 function mobs_mc.player_wears_gold(player)
 	for i=1, 6 do
@@ -104,9 +106,10 @@ local piglin = {
 		self.gold_items = 0
 	end,
 	do_custom = function(self)
-		if self.object:get_pos().y > mcl_vars.mg_overworld_min then
+		local dim = vl_worlds.dimension_at_pos(self.object:get_pos())
+		if dim and dim.id == "overworld" then
 			local zog = minetest.add_entity(self.object:get_pos(), "mobs_mc:zombified_piglin")
-			zog:set_rotation(self.object:get_rotation())
+			if zog then zog:set_rotation(self.object:get_rotation()) end
 			self.object:remove()
 			return
 		elseif self.trading == true then
@@ -421,7 +424,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 3,
 	min_height = mcl_vars.mg_lava_nether_max,
-	max_height = mcl_vars.mg_nether_max
+	max_height = underworld.start + underworld.height,
 })
 
 mcl_mobs:spawn_setup({
@@ -438,7 +441,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 3,
 	min_height = mcl_vars.mg_lava_nether_max,
-	max_height = mcl_vars.mg_nether_max
+	max_height = underworld.start + underworld.height,
 })
 
 mcl_mobs:spawn_setup({
@@ -454,8 +457,8 @@ mcl_mobs:spawn_setup({
 	chance = 1000,
 	interval = 30,
 	aoc = 3,
-	min_height = mcl_vars.mg_nether_min,
-	max_height = mcl_vars.mg_nether_max
+	min_height = underworld.start,
+	max_height = underworld.start + underworld.height,
 })
 
 -- Baby zombie is 20 times less likely than regular zombies
@@ -472,8 +475,8 @@ mcl_mobs:spawn_setup({
 	chance = 50,
 	interval = 30,
 	aoc = 4,
-	min_height = mcl_vars.mg_nether_min,
-	max_height = mcl_vars.mg_nether_max
+	min_height = underworld.start,
+	max_height = underworld.start + underworld.height,
 })
 
 mcl_mobs:non_spawn_specific("mobs_mc:piglin","overworld",0,7)

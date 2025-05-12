@@ -2,6 +2,8 @@
 --maikerumine
 
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 --###################
 --################### HORSE
@@ -622,7 +624,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 4,
 	min_height = mobs_mc.water_level+3,
-	max_height = mcl_vars.mg_overworld_max
+	max_height = overworld.start + overworld.height,
 })
 
 mcl_mobs:spawn_setup({
@@ -646,7 +648,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 4,
 	min_height = mobs_mc.water_level+3,
-	max_height = mcl_vars.mg_overworld_max
+	max_height = overworld.start + overworld.height,
 })
 
 -- spawn eggs
