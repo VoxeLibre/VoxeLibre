@@ -2,6 +2,7 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
+
 local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
 assert(underworld_bounds)
 

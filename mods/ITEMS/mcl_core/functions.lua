@@ -7,6 +7,7 @@ local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
+
 local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
 assert(fringe_bounds)
 
