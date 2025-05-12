@@ -5,6 +5,11 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local storage = core.get_mod_storage()
 
 
+---@class vl_worlds.Dimension
+---@field id string?
+---@field start integer
+---@field height integer
+
 
 -- Mapgen variables
 local mg_name = core.get_mapgen_setting("mg_name")
@@ -50,8 +55,8 @@ local function coordinate_to_chunk(x)
 	return math.floor((coordinate_to_block(x) - central_chunk_offset) / vl_worlds.chunksize)
 end
 
----@param pos Vector
----@return Vector
+---@param pos vector.Vector
+---@return vector.Vector
 function vl_worlds.pos_to_block(pos)
 	return vector.new(
 		coordinate_to_block(pos.x),
@@ -60,8 +65,8 @@ function vl_worlds.pos_to_block(pos)
 	)
 end
 
----@param pos Vector
----@return Vector
+---@param pos vector.Vector
+---@return vector.Vector
 function vl_worlds.pos_to_chunk(pos)
 	return vector.new(
 		coordinate_to_chunk(pos.x),
@@ -74,7 +79,7 @@ local k_positive = math.ceil(vl_worlds.MAX_MAP_GENERATION_LIMIT / vl_worlds.chun
 local k_positive_z = k_positive * 2
 local k_positive_y = k_positive_z * k_positive_z
 
----@param pos Vector
+---@param pos vector.Vector
 ---@return integer
 function vl_worlds.get_chunk_number(pos) -- unsigned int
 	local c = vl_worlds.pos_to_chunk(pos)
@@ -91,6 +96,7 @@ vl_worlds.dimensional_void_size = 2 * vl_worlds.chunksize * vl_worlds.MAP_BLOCKS
 
 
 local registered_worlds = {}
+---@type vl_worlds.Dimension[]
 local world_structure = {
 	{
 		start = vl_worlds.mapgen_edge_min,
@@ -175,6 +181,29 @@ function vl_worlds.register_world(def)
 	end
 
 	error("Failed to register world \""..id.."\": not enough dimensional space")
+end
+
+---@param pos vector.Vector
+---@returns vl_worlds.Dimension?
+function vl_worlds.dimension_at_pos(pos)
+	local pos_y = pos.y
+	for _, dim in ipairs(world_structure) do
+		if( pos_y >= dim.start and pos_y <= dim.start + dim.height) then
+			return dim
+		end
+	end
+
+	-- TODO: determine if we can ever reach this
+	return nil
+end
+
+---@param name string
+---@returns vl_worlds.Dimension?
+function vl_worlds.dimension_by_name(name)
+	for _, dim in ipairs(world_structure) do
+		if( dim.id == name ) then return dim end
+	end
+	return nil
 end
 
 -- test for nonexistent 0.89 patch to allow testing on prerelease versions
@@ -272,7 +301,7 @@ function vl_worlds.get_dimension_bounds(id)
 	if id == "void" then -- TODO improve the warning, maybe log also for nil id?
 		core.log("warning", "There's more than one void, attempting to check void bounds this way is not recommended")
 	end
-	for i, dim in ipairs(world_structure) do
+	for _, dim in ipairs(world_structure) do
 		if dim.id == id then
 			return {
 				min = dim.start,
