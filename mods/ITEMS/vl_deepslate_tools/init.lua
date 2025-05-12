@@ -23,6 +23,10 @@ dig_speed_class group:
 
 
 -- Help texts
+local hoe_tt = S("Turns block into farmland")
+local hoe_longdesc = S("Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.")
+local hoe_usagehelp = S("Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.")
+
 local pickaxe_longdesc = S("Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.")
 local axe_longdesc = S("An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.")
 
@@ -54,6 +58,152 @@ local deepslate = {
 }
 
 local SPEAR_RANGE = 4.5
+
+
+local function spear_on_place(itemstack, user, pointed_thing)
+	if pointed_thing.type == "node" then
+		-- Call on_rightclick if the pointed node defines it
+		local node = core.get_node(pointed_thing.under)
+		if user and not user:get_player_control().sneak then
+			if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
+				return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+			end
+		end
+	end
+
+	itemstack:get_meta():set_int("active", 1)
+	return itemstack
+end
+
+local hoe_on_place_function = function(wear_divisor)
+	return function(itemstack, user, pointed_thing)
+		-- Call on_rightclick if the pointed node defines it
+		local node = minetest.get_node(pointed_thing.under)
+		if user and not user:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+			end
+		end
+
+		if minetest.is_protected(pointed_thing.under, user:get_player_name()) then
+			minetest.record_protection_violation(pointed_thing.under, user:get_player_name())
+			return itemstack
+		end
+
+		if create_soil(pointed_thing.under, user:get_inventory()) then
+			if not minetest.is_creative_enabled(user:get_player_name()) then
+				itemstack:add_wear(65535/wear_divisor)
+				tt.reload_itemstack_description(itemstack) -- update tooltip
+			end
+			return itemstack
+		end
+	end
+end
+
+local make_grass_path = function(itemstack, placer, pointed_thing)
+	-- Use pointed node's on_rightclick function first, if present
+	local node = minetest.get_node(pointed_thing.under)
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+		end
+	end
+
+	-- Only make or remove grass path if tool used on side or top of target node
+	if pointed_thing.above.y < pointed_thing.under.y then
+		return itemstack
+	end
+
+	-- Remove grass paths
+	if (minetest.get_item_group(node.name, "path_remove_possible") == 1) and placer:get_player_control().sneak then
+		local above = table.copy(pointed_thing.under)
+		above.y = above.y + 1
+		if minetest.get_node(above).name == "air" then
+			if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
+				minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
+				return itemstack
+			end
+
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
+				-- Add wear (as if digging a shovely node)
+				local toolname = itemstack:get_name()
+				local wear = mcl_autogroup.get_wear(toolname, "shovely")
+				if wear then
+					itemstack:add_wear(wear)
+					tt.reload_itemstack_description(itemstack) -- update tooltip
+				end
+			end
+			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:dirt"})
+		end
+	end
+
+	-- Make grass paths
+	if (minetest.get_item_group(node.name, "path_creation_possible") == 1) and not placer:get_player_control().sneak then
+		local above = table.copy(pointed_thing.under)
+		above.y = above.y + 1
+		if minetest.get_node(above).name == "air" then
+			if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
+				minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
+				return itemstack
+			end
+
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
+				-- Add wear (as if digging a shovely node)
+				local toolname = itemstack:get_name()
+				local wear = mcl_autogroup.get_wear(toolname, "shovely")
+				if wear then
+					itemstack:add_wear(wear)
+					tt.reload_itemstack_description(itemstack) -- update tooltip
+				end
+			end
+			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
+		end
+	end
+	return itemstack
+end
+
+local function make_stripped_trunk(itemstack, placer, pointed_thing)
+	if pointed_thing.type ~= "node" then return end
+
+	local node = minetest.get_node(pointed_thing.under)
+	local node_name = minetest.get_node(pointed_thing.under).name
+
+	local noddef = minetest.registered_nodes[node_name]
+
+	if not noddef then
+		minetest.log("warning", "Trying to right click with an axe the unregistered node: " .. tostring(node_name))
+		return
+	end
+
+	if not placer:get_player_control().sneak and noddef.on_rightclick then
+		return minetest.item_place(itemstack, placer, pointed_thing)
+	end
+	if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
+		minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
+		return itemstack
+	end
+
+	if noddef._mcl_stripped_variant == nil then
+		return itemstack
+	else
+		minetest.swap_node(pointed_thing.under, {name=noddef._mcl_stripped_variant, param2=node.param2})
+		if minetest.get_item_group(node_name, "waxed") ~= 0 then
+			awards.unlock(placer:get_player_name(), "mcl:wax_off")
+		end
+		if not minetest.is_creative_enabled(placer:get_player_name()) then
+			-- Add wear (as if digging a axey node)
+			local toolname = itemstack:get_name()
+			local wear = mcl_autogroup.get_wear(toolname, "axey")
+			if wear then
+				itemstack:add_wear(wear)
+				tt.reload_itemstack_description(itemstack) -- update tooltip
+			end
+		end
+	end
+	return itemstack
+end
 
 
 -- include crafting recipes
