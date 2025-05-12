@@ -1,5 +1,8 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
+
 mcl_structures.register_structure("fossil",{
 	place_on = {"group:material_stone","group:sand"},
 	fill_ratio = 0.01,
@@ -9,7 +12,7 @@ mcl_structures.register_structure("fossil",{
 	chunk_probability = 1000,
 	y_offset = function(pr) return ( pr:next(1,16) * -1 ) -16 end,
 	y_max = 15,
-	y_min = mcl_vars.mg_overworld_min + 35,
+	y_min = overworld.start + 35,
 	biomes = { "Desert" },
 	filenames = {
 		modpath.."/schematics/mcl_structures_fossil_skull_1.mts", -- 4×5×5
