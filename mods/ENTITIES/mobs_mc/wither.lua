@@ -53,14 +53,18 @@ local function wither_unstuck(self)
 	mcl_mobs.mob_class.safe_boom(self, pos, 2)
 end
 
+-- TODO: check that the changes here don't break the wither
 local function get_dim_relative_y(pos)
-		if (pos.y >= mcl_vars.mg_realm_barrier_overworld_end_max) then
-			return pos.y
-		elseif (pos.y <= mcl_vars.mg_nether_max + 200) then
-			return (pos.y - mcl_vars.mg_nether_min - 20)
-		else
-			return (pos.y - mcl_vars.mg_end_min - 50)
-		end
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim then return pos.y end
+
+	if dim.id == "underworld" then
+		return pos.y - dim.start - 20
+	elseif dim.id == "fringe" then
+		return pos.y - dim.start - 50
+	end
+
+	return pos.y - dim.start
 end
 
 mobs_mc.wither_count_overworld = 0

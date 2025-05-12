@@ -4,6 +4,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 --###################
 --################### OCELOT AND CAT
@@ -190,7 +192,7 @@ mcl_mobs:spawn_setup({
 	chance = 300,
 	aoc = 5,
 	min_height = mobs_mc.water_level+15,
-	max_height = mcl_vars.mg_overworld_max
+	max_height = overworld.start + overworld.height,
 })
 --[[
 mobs:spawn({
@@ -202,7 +204,7 @@ mobs:spawn({
 	chance = math.ceil(base_spawn_chance * 1.5), -- emulates 1/3 spawn failure rate
 	active_object_count = 12,
 	min_height = mobs_mc.water_level+1, -- Right above ocean level
-	max_height = mcl_vars.mg_overworld_max,
+	max_height = overworld.start + overworld.height,
 	on_spawn = function(self, pos)
 		 Note: Minecraft has a 1/3 spawn failure rate.
 		In this mod it is emulated by reducing the spawn rate accordingly (see above).

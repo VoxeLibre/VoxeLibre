@@ -1,6 +1,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 --###################
 --################### CHICKEN
@@ -162,7 +164,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 3,
 	min_height = mobs_mc.water_level,
-	max_height = mcl_vars.mg_overworld_max
+	max_height = overworld.start + overworld.height,
 })
 
 -- spawn eggs

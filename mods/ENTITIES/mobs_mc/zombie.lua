@@ -4,6 +4,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
+local overworld = vl_worlds.dimension_by_name("overworld")
+assert(overworld)
 
 --###################
 --################### ZOMBIE
@@ -249,8 +251,8 @@ mcl_mobs:spawn_setup({
 	chance = 1000,
 	interval = 30,
 	aoc = 4,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 -- Baby zombie is 20 times less likely than regular zombies
 mcl_mobs:spawn_setup({
@@ -339,8 +341,8 @@ mcl_mobs:spawn_setup({
 	chance = 50,
 	interval = 30,
 	aoc = 4,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 
 
@@ -356,8 +358,8 @@ mcl_mobs:spawn_setup({
 	chance = 2400,
 	interval = 30,
 	aoc = 4,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 mcl_mobs:spawn_setup({
 	name = "mobs_mc:baby_husk",
@@ -371,8 +373,8 @@ mcl_mobs:spawn_setup({
 	chance = 120,
 	interval = 30,
 	aoc = 4,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld.start,
+	max_height = overworld.start + overworld.height,
 })
 
 -- Spawn eggs
