@@ -4,8 +4,8 @@ local modpath = minetest.get_modpath(modname)
 local seed = minetest.get_mapgen_setting("seed")
 local water_level = minetest.get_mapgen_setting("water_level")
 local pr = PseudoRandom(seed)
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 local ocean_biomes = {
 	"RoofedForest_ocean",
@@ -89,7 +89,7 @@ mcl_structures.register_structure("ocean_temple",{
 	flags = "force_placement",
 	biomes = ocean_biomes,
 	y_max = water_level-4,
-	y_min = overworld.start,
+	y_min = overworld_bounds.min,
 	filenames = {
 		modpath .. "/schematics/mcl_structures_ocean_temple.mts",
 		modpath .. "/schematics/mcl_structures_ocean_temple_2.mts",
@@ -147,8 +147,8 @@ mcl_structures.register_structure("ocean_temple",{
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:guardian",
-	y_min = overworld.start,
-	y_max = overworld.start + overworld.height,
+	y_min = overworld_bounds.min,
+	y_max = overworld_bounds.max,
 	chance = 10,
 	interval = 60,
 	limit = 9,
@@ -157,8 +157,8 @@ mcl_structures.register_structure_spawn({
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:guardian_elder",
-	y_min = overworld.start,
-	y_max = overworld.start + overworld.height,
+	y_min = overworld_bounds.min,
+	y_max = overworld_bounds.max,
 	chance = 100,
 	interval = 60,
 	limit = 4,
