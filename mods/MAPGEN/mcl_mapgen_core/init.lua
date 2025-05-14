@@ -89,12 +89,12 @@ local c_air = minetest.CONTENT_AIR
 local mg_flags = minetest.settings:get_flags("mg_flags")
 
 -- Dimensions
-local dim_overworld = vl_worlds.dimension_by_name("overworld")
-local dim_underworld = vl_worlds.dimension_by_name("underworld")
-local dim_fringe = vl_worlds.dimension_by_name("fringe")
-assert(dim_overworld)
-assert(dim_underworld)
-assert(dim_fringe)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
+assert(overworld_bounds)
+assert(underworld_bounds)
+assert(fringe_bounds)
 
 -- Inform other mods of dungeon setting for MCL2-style dungeons
 mcl_vars.mg_dungeons = mg_flags.dungeons and not superflat
@@ -330,23 +330,23 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 	local lvm_used = false
 
 	-- The Void below the Nether:
-	lvm_used = set_layers(data, area, c_void         , nil, vl_worlds.mapgen_edge_min                     , dim_underworld.start                     -1, minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_void         , nil, vl_worlds.mapgen_edge_min                     , underworld_bounds.min                     -1, minp, maxp, pr) or lvm_used
 
-	-- [[ THE NETHER:					dim_underworld.start			       dim_underworld.start + dim_underworld.height							]]
+	-- [[ THE NETHER:					underworld_bounds.min			       underworld_bounds.max							]]
 
 	-- The Air on the Nether roof, https://git.minetest.land/VoxeLibre/VoxeLibre/issues/1186
-	lvm_used = set_layers(data, area, c_air		 , nil, dim_underworld.start + dim_underworld.height			   +1, dim_underworld.start + dim_underworld.height + 128                 , minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_air		 , nil, underworld_bounds.max			   +1, underworld_bounds.max + 128                 , minp, maxp, pr) or lvm_used
 	-- The Void above the Nether below the End:
-	lvm_used = set_layers(data, area, c_void         , nil, dim_underworld.start + dim_underworld.height + 128               +1, dim_fringe.start                        -1, minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_void         , nil, underworld_bounds.max + 128               +1, fringe_bounds.min                        -1, minp, maxp, pr) or lvm_used
 
-	-- [[ THE END:						dim_fringe.start			       dim_fringe.start + dim_fringe.height							]]
+	-- [[ THE END:						fringe_bounds.min			       fringe_bounds.max							]]
 
 	-- The Void above the End below the Realm barrier:
-	lvm_used = set_layers(data, area, c_void         , nil, dim_fringe.start + dim_fringe.height                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_void         , nil, fringe_bounds.max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, pr) or lvm_used
 	-- Realm barrier between the Overworld void and the End
 	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, pr) or lvm_used
 	-- The Void above Realm barrier below the Overworld:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, dim_overworld.start                  -1, minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, overworld_bounds.min                  -1, minp, maxp, pr) or lvm_used
 
 
 	if mg_name ~= "singlenode" then
@@ -362,48 +362,48 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 
 		-- Big lava seas by replacing air below a certain height
 		if mcl_vars.mg_lava then
-			lvm_used = set_layers(data, area, c_lava, c_air, dim_overworld.start, mcl_vars.mg_lava_overworld_max, minp, maxp, pr) or lvm_used
-			lvm_used = set_layers(data, area, c_nether_lava, c_air, dim_underworld.start, mcl_vars.mg_lava_nether_max, minp, maxp, pr) or lvm_used
+			lvm_used = set_layers(data, area, c_lava, c_air, overworld_bounds.min, mcl_vars.mg_lava_overworld_max, minp, maxp, pr) or lvm_used
+			lvm_used = set_layers(data, area, c_nether_lava, c_air, underworld_bounds.min, mcl_vars.mg_lava_nether_max, minp, maxp, pr) or lvm_used
 		end
 	end
 	local deco, ores = false, false
-	if minp.y >  mcl_vars.mg_nether_deco_max - 64 and maxp.y <  dim_underworld.start + dim_underworld.height + 128 then
-		deco = {min=mcl_vars.mg_nether_deco_max,max=dim_underworld.start + dim_underworld.height}
+	if minp.y >  mcl_vars.mg_nether_deco_max - 64 and maxp.y <  underworld_bounds.max + 128 then
+		deco = {min=mcl_vars.mg_nether_deco_max,max=underworld_bounds.max}
 	end
-	if minp.y <  dim_underworld.start + 10 or maxp.y <  dim_underworld.start + 60 then
-		deco = {min=dim_underworld.start - 10,max=dim_underworld.start + 20}
-		ores = {min=dim_underworld.start - 10,max=dim_underworld.start + 20}
+	if minp.y <  underworld_bounds.min + 10 or maxp.y <  underworld_bounds.min + 60 then
+		deco = {min=underworld_bounds.min - 10,max=underworld_bounds.min + 20}
+		ores = {min=underworld_bounds.min - 10,max=underworld_bounds.min + 20}
 	end
 	return lvm_used, lvm_used, deco, ores
 end
 
 local function block_fixes_grass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 (=color) of nodes which use the grass colour palette.
-	return minp.y <= dim_overworld.start + dim_overworld.height and maxp.y >= dim_overworld.start and
+	return minp.y <= overworld_bounds.max and maxp.y >= overworld_bounds.min and
 		set_grass_palette(minp,maxp,data2,area,{"group:grass_palette"})
 end
 
 local function block_fixes_foliage(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 (=color) of nodes which use the foliage colour palette.
-	return minp.y <= dim_overworld.start + dim_overworld.height and maxp.y >= dim_overworld.start and
+	return minp.y <= overworld_bounds.max and maxp.y >= overworld_bounds.min and
 		set_foliage_palette(minp,maxp,data2,area,{"group:foliage_palette", "group:foliage_palette_wallmounted"})
 end
 
 local function block_fixes_water(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 (=color) of nodes which use the water colour palette.
-	return minp.y <= dim_overworld.start + dim_overworld.height and maxp.y >= dim_overworld.start and
+	return minp.y <= overworld_bounds.max and maxp.y >= overworld_bounds.min and
 		set_water_palette(minp,maxp,data2,area,{"group:water_palette"})
 end
 
 local function block_fixes_seagrass(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	-- Set param2 of seagrass to 3.
-	return minp.y <= dim_overworld.start + dim_overworld.height and maxp.y >= dim_overworld.start and
+	return minp.y <= overworld_bounds.max and maxp.y >= overworld_bounds.min and
 		set_seagrass_param2(minp, maxp, data2, area, {"group:seagrass"})
 end
 
 -- End block fixes:
 local function end_basic(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
-	if maxp.y < dim_fringe.start or minp.y > dim_fringe.start + dim_fringe.height then return end
+	if maxp.y < fringe_bounds.min or minp.y > fringe_bounds.max then return end
 	local lvm_used = false
 	local nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
 	if #nodes > 0 then
