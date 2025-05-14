@@ -2,8 +2,8 @@
 --maikerumine
 
 local S = minetest.get_translator("mobs_mc")
-local underworld = vl_worlds.dimension_by_name("underworld")
-assert(underworld)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 
 --###################
 --################### GHAST
@@ -120,8 +120,8 @@ mcl_mobs:spawn_setup({
 	chance = 400,
 	interval = 30,
 	aoc = 2,
-	min_height = underworld.start,
-	max_height = underworld.start + underworld.height,
+	min_height = underworld_bounds.min,
+	max_height = underworld_bounds.max,
 })
 
 -- fireball (projectile)

@@ -1,6 +1,6 @@
 local S = minetest.get_translator("mobs_mc")
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 local function get_texture(self, prev)
 	local standing_on = minetest.registered_nodes[self.standing_on]
@@ -451,8 +451,8 @@ mcl_mobs:spawn_setup({
 	soft_cap = 5,
 	interval = 20,
 	aoc = 2,
-	min_height = overworld.start,
-	max_height = overworld.start + overworld.height,
+	min_height = overworld_bounds.min,
+	max_height = overworld_bounds.max,
 })
 
 -- spawn eggs
