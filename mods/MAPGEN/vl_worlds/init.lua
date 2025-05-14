@@ -145,6 +145,7 @@ function vl_worlds.register_world(def)
 		if new_start then
 			local wdef = {}
 			wdef.name = def.name
+			wdef.layers = {}
 
 			registered_worlds[id] = wdef
 
@@ -164,6 +165,7 @@ function vl_worlds.register_world(def)
 				id = id,
 				start = new_start,
 				height = def.height,
+				layers = {},
 			})
 			table.insert(world_structure, i, {
 				id = "void",
@@ -373,6 +375,53 @@ function vl_worlds.has_dust(pos)
 	if pos.y > underworld.start + underworld.height + 138 then return false end
 	if pos.y < underworld.start - 10 then return false end
 	return true
+end
+
+-- API
+-- dim_id - string - id of a valid registered dimension
+-- required parameters in def:
+-- id - string - layer ID in code
+-- bottom - integer - start height from the bottom of the dimension (starts from 0)
+-- top - integer - height of the last node of the layer relative to start of dimension
+-- optional parameters in def:
+-- TODO has_separate_biomes - bool - defaults to false
+-- -- determines whether biomes can be registeted as a part of this layer
+function vl_worlds.register_layer(dim_id, def)
+	assert(type(dim_id) == "string", "dim_id must be a string")
+	assert(registered_worlds[dim_id], "Dimension \""..dim_id.."\" is not registered")
+	local id = def.id
+	assert(type(id) == "string", "Layer id must be a string")
+	assert(not registered_worlds[dim_id].layers[id],
+		   "Layer \""..id.."\" in dimension \""..dim_id.."\" already registered")
+	assert(type(def.bottom) == "number" and type(def.top) == "number"
+				and def.bottom == def.bottom and def.top == def.top,
+		   "Unable to register layer \""..id.."\": height of bottom or top of the layer is not a number")
+	assert(def.bottom >= 0 and def.top >= def.bottom,
+		   "Unable to register layer \""..id.."\": layer bounds negative or inverted")
+	for _, dim in ipairs(world_structure) do
+		if dim.id == dim_id then
+			assert(def.top <= dim.height,
+				   "Unable to register layer \""..id.."\" in world \""..dim_id"\": top out of world bounds")
+			local targ_index
+			if #dim.layers == 0 then
+				targ_index = 1
+			else for i, layer in ipairs(dim.layers) do
+				if layer.bottom > def.bottom then
+					targ_index = i
+					break
+				end
+			end end
+			if not targ_index then
+				targ_index = #dim.layers + 1
+			end
+			table.insert(dim.layers, targ_index, {
+				id = id,
+				bottom = def.bottom,
+				top = def.top,
+			})
+			registered_worlds[dim_id].layers[id] = true -- set for now
+		end
+	end
 end
 
 
