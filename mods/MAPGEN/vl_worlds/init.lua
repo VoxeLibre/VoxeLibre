@@ -193,7 +193,7 @@ function vl_worlds.dimension_at_pos(pos)
 		end
 	end
 
-	-- TODO: determine if we can ever reach this
+	-- we can get here if pos is out of the world bounds
 	return nil
 end
 
@@ -296,7 +296,8 @@ else
 end
 
 -- API
--- id - string - registered dimension
+---@paramm id string - registered dimension
+---@returns {min: integer, max: integer}?
 function vl_worlds.get_dimension_bounds(id)
 	if id == "void" then -- TODO improve the warning, maybe log also for nil id?
 		core.log("warning", "There's more than one void, attempting to check void bounds this way is not recommended")
@@ -340,7 +341,7 @@ local VOID_DEADLY_TOLERANCE = 64 -- the player must be this many nodes â€œdeepâ€
 function vl_worlds.is_void(pos)
 	local dim = vl_worlds.dimension_at_pos(pos)
 	if not dim then return true, true end
-	if dim.id != "void" then return false, false end
+	if dim.id ~= "void" then return false, false end
 
 	local distance = math.min( math.abs(dim.start + dim.height - pos.y), math.abs(pos.y - dim.start) )
 	return true, distance > VOID_DEADLY_TOLERANCE
