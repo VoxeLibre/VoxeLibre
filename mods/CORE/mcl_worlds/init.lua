@@ -2,18 +2,7 @@ mcl_worlds = {}
 
 local get_connected_players = minetest.get_connected_players
 
-local deadly_tolerance = 64 -- the player must be this many nodes “deep” into the void to be damaged
--- For a given position, returns a 2-tuple:
--- 1st return value: true if pos is in void
--- 2nd return value: true if it is in the deadly part of the void
-function mcl_worlds.is_in_void(pos)
-	local dim = vl_worlds.dimension_at_pos(pos)
-
-	if not dim or dim.id ~= "void" then return false, false end
-
-	local distance = math.max( math.abs(dim.start + dim.height - pos.y), math.abs(pos.y - dim.start) )
-	return true, distance > deadly_tolerance
-end
+mcl_worlds.is_in_void = vl_worlds.is_void
 
 -- Takes an Y coordinate as input and returns:
 -- 1) The corresponding Minecraft layer (can be nil if void)
@@ -64,23 +53,8 @@ function mcl_worlds.layer_to_y(offset, dimension_name)
 	return dim.start + offset
 end
 
--- Takes a position and returns true if this position can have weather
-function mcl_worlds.has_weather(pos)
-	local dim = vl_worlds.dimension_at_pos(pos)
-	if not dim then return false end
-
-	-- Weather in the Overworld
-	return dim.id == "overworld"
-end
-
--- Takes a position and returns true if this position can have Nether dust
-function mcl_worlds.has_dust(pos)
-	local dim = vl_worlds.dimension_at_pos(pos)
-	if not dim then return false end
-
-	-- Dust in the underworld
-	return dim.id == "underworld"
-end
+mcl_worlds.has_weather = vl_worlds.has_weather
+mcl_worlds.has_dust = vl_worlds.has_dust
 
 local COMPASS_WORKS = {overworld = true, underworld = false, fringe = false, void = true}
 -- Takes a position (pos) and returns true if compasses are working here
