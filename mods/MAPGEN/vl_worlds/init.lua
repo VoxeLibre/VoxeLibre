@@ -43,6 +43,17 @@ local numcmax = math.max(math.floor((mapgen_limit_max - ccfmax) / vl_worlds.chun
 vl_worlds.mapgen_edge_min = central_chunk_min_pos - numcmin * vl_worlds.chunk_size_in_nodes
 vl_worlds.mapgen_edge_max = central_chunk_max_pos + numcmax * vl_worlds.chunk_size_in_nodes
 
+-- Other constants
+local DIMENSION_NAME_COMPAT = {
+	overworld = "overworld", underworld = "nether", fringe = "end", void = "void",
+}
+vl_worlds.DIMENSION_NAME_COMPAT = DIMENSION_NAME_COMPAT
+
+local REVERSE_DIMENSION_NAME_COMPAT = {
+	overworld = "overworld", nether = "underworld", ["end"] = "fringe", void = "void",
+}
+vl_worlds.REVERSE_DIMENSION_NAME_COMPAT = REVERSE_DIMENSION_NAME_COMPAT
+
 ---@param x integer
 ---@return integer
 local function coordinate_to_block(x)
@@ -367,6 +378,74 @@ function vl_worlds.has_dust(pos)
 	if pos.y < underworld_bounds.min - 10 then return false end
 	return true
 end
+
+--- dimension change notifications
+--------------- CALLBACKS ------------------
+local registered_on_dimension_change = {}
+
+-- Register a callback function func(player, dimension).
+-- It will be called whenever a player changes between dimensions.
+-- The void counts as dimension.
+-- * player: The player who changed the dimension
+-- * dimension: The new dimension of the player ("overworld", "nether", "end", "void").
+function vl_worlds.register_on_dimension_change(func)
+	table.insert(registered_on_dimension_change, func)
+end
+
+-- Playername-indexed table containig the name of the last known dimension the
+-- player was in.
+local last_dimension = {}
+
+-- Notifies this mod about a dimension change of a player.
+-- * player: Player who changed the dimension
+-- * dimension: New dimension ("overworld", "nether", "end", "void")
+function vl_worlds.dimension_change(player, dimension)
+	local playername = player:get_player_name()
+	for i=1, #registered_on_dimension_change do
+		registered_on_dimension_change[i](player, dimension, last_dimension[playername])
+	end
+	last_dimension[playername] = dimension
+end
+
+local dimension_change = vl_worlds.dimension_change
+-- Update the dimension callbacks every DIM_UPDATE seconds
+local DIM_UPDATE = 1
+local dimtimer = 0
+
+-- Track player dimensions
+---@type {string: vl_worlds.Dimension}
+local player_dimensions = {}
+
+minetest.register_on_joinplayer(function(player)
+	local name = player:get_player_name()
+
+	local dim = vl_worlds.dimension_at_pos(player:get_pos())
+	assert(dim)
+
+	player_dimensions[name] = dim
+	last_dimension[name] = REVERSE_DIMENSION_NAME_COMPAT[dim.id] or dim.id
+end)
+
+minetest.register_globalstep(function(dtime)
+	-- regular updates based on iterval
+	dimtimer = dimtimer + dtime;
+	if dimtimer < DIM_UPDATE then return end
+	dimtimer = 0
+
+	local players = core.get_connected_players()
+	for _,player in ipairs(players) do
+		local name = player:get_player_name()
+		local curr_dim = player_dimensions[name]
+		local pos  = player:get_pos()
+		if not curr_dim or pos.y < curr_dim.start or pos.y >= curr_dim.start + curr_dim.height then
+			dim = vl_worlds.dimension_at_pos(pos)
+			player_dimensions[name] = dim
+			local compat_name = DIMENSION_NAME_COMPAT[dim.id] or dim.id
+			dimension_change(player, compat_name)
+		end
+	end
+end)
+
 
 -- API
 -- dim_id - string - id of a valid registered dimension

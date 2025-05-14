@@ -4,20 +4,17 @@ local get_connected_players = minetest.get_connected_players
 
 mcl_worlds.is_in_void = vl_worlds.is_void
 
+local DIMENSION_IDS = {
+	overworld = 0, underworld = 1, fringe = 2, void = 3
+}
+local DIMENSION_NAME_COMPAT = vl_worlds.DIMENSION_NAME_COMPAT
+local REVERSE_DIMENSION_NAME_COMPAT = vl_worlds.REVERSE_DIMENSION_NAME_COMPAT
+
 -- Takes an Y coordinate as input and returns:
 -- 1) The corresponding Minecraft layer (can be nil if void)
 -- 2) The corresponding Minecraft dimension ("overworld", "nether" or "end") or "void" if it is in the void
 -- If the Y coordinate is not located in any dimension, it will return:
 --     nil, "void"
-local DIMENSION_IDS = {
-	overworld = 0, underworld = 1, fringe = 2, void = 3
-}
-local DIMENSION_NAME_COMPAT = {
-	overworld = "overworld", underworld = "nether", fringe = "end", void = "void",
-}
-local REVERSE_DIMENSION_NAME_COMPAT = {
-	overworld = "overworld", nether = "underworld", ["end"] = "fringe", void = "void",
-}
 ---@deprecated
 function mcl_worlds.y_to_layer(y)
 	local dim = vl_worlds.dimension_at_pos(vector.new(0,y,0))
@@ -53,8 +50,11 @@ function mcl_worlds.layer_to_y(offset, dimension_name)
 	return dim_bounds.min + offset
 end
 
+-- Compat
 mcl_worlds.has_weather = vl_worlds.has_weather
 mcl_worlds.has_dust = vl_worlds.has_dust
+mcl_worlds.register_on_dimension_change = vl_worlds.register_on_dimension_change
+mcl_worlds.dimension_change = vl_worlds.dimension_change
 
 local COMPASS_WORKS = {overworld = true, underworld = false, fringe = false, void = true}
 -- Takes a position (pos) and returns true if compasses are working here
@@ -67,75 +67,6 @@ end
 
 -- Takes a position (pos) and returns true if clocks are working here
 mcl_worlds.clock_works = mcl_worlds.compass_works
-
---------------- CALLBACKS ------------------
-mcl_worlds.registered_on_dimension_change = {}
-
--- Register a callback function func(player, dimension).
--- It will be called whenever a player changes between dimensions.
--- The void counts as dimension.
--- * player: The player who changed the dimension
--- * dimension: The new dimension of the player ("overworld", "nether", "end", "void").
-function mcl_worlds.register_on_dimension_change(func)
-	table.insert(mcl_worlds.registered_on_dimension_change, func)
-end
-
--- Playername-indexed table containig the name of the last known dimension the
--- player was in.
-local last_dimension = {}
-
--- Notifies this mod about a dimension change of a player.
--- * player: Player who changed the dimension
--- * dimension: New dimension ("overworld", "nether", "end", "void")
-function mcl_worlds.dimension_change(player, dimension)
-	local playername = player:get_player_name()
-	for i=1, #mcl_worlds.registered_on_dimension_change do
-		mcl_worlds.registered_on_dimension_change[i](player, dimension, last_dimension[playername])
-	end
-	last_dimension[playername] = dimension
-end
-
-local dimension_change = mcl_worlds.dimension_change
-
------------------------ INTERNAL STUFF ----------------------
-
--- Update the dimension callbacks every DIM_UPDATE seconds
-local DIM_UPDATE = 1
-local dimtimer = 0
-
--- Track player dimensions
----@type {string: vl_worlds.Dimension}
-local player_dimensions = {}
-
-minetest.register_on_joinplayer(function(player)
-	local name = player:get_player_name()
-
-	local dim = vl_worlds.dimension_at_pos(player:get_pos())
-	assert(dim)
-
-	player_dimensions[name] = dim
-	last_dimension[name] = REVERSE_DIMENSION_NAME_COMPAT[dim.id] or dim.id
-end)
-
-minetest.register_globalstep(function(dtime)
-	-- regular updates based on iterval
-	dimtimer = dimtimer + dtime;
-	if dimtimer < DIM_UPDATE then return end
-	dimtimer = 0
-
-	local players = get_connected_players()
-	for _,player in ipairs(players) do
-		local name = player:get_player_name()
-		local curr_dim = player_dimensions[name]
-		local pos  = player:get_pos()
-		if not curr_dim or pos.y < curr_dim.start or pos.y >= curr_dim.start + curr_dim.height then
-			dim = vl_worlds.dimension_at_pos(pos)
-			player_dimensions[name] = dim
-			local compat_name = DIMENSION_NAME_COMPAT[dim.id] or dim.id
-			dimension_change(player, compat_name)
-		end
-	end
-end)
 
 function mcl_worlds.get_cloud_parameters()
 	if minetest.get_mapgen_setting("mg_name") == "valleys" then
