@@ -2,8 +2,8 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 function mcl_structures.generate_igloo_top(pos, pr)
 	-- Furnace does ot work atm because apparently meta is not set. Need a bit of help with fixing this for furnaces, bookshelves, and brewing stands.
@@ -156,7 +156,7 @@ mcl_structures.register_structure("igloo",{
 	chunk_probability = 250,
 	solid_ground = true,
 	make_foundation = true,
-	y_max = overworld.start + overworld.height,
+	y_max = overworld_bounds.max,
 	y_min = 0,
 	y_offset = 0,
 	biomes = { 	"ColdTaiga", "IcePlainsSpikes",	"IcePlains" },
