@@ -199,15 +199,6 @@ function vl_worlds.dimension_at_pos(pos)
 	return nil
 end
 
----@param name string
----@returns vl_worlds.Dimension?
-function vl_worlds.dimension_by_name(name)
-	for _, dim in ipairs(world_structure) do
-		if( dim.id == name ) then return dim end
-	end
-	return nil
-end
-
 -- test for nonexistent 0.89 patch to allow testing on prerelease versions
 -- TODO migrate to {0, 90} before release
 if mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) then
@@ -355,11 +346,11 @@ function vl_worlds.has_weather(pos)
 	local dim = vl_worlds.dimension_at_pos(pos)
 	if not dim then return false end
 
-	local overworld = vl_worlds.dimension_by_name("overworld")
-	assert(overworld)
+	local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+	assert(overworld_bounds)
 
-	if pos.y > overworld.start + overworld.height then return false end
-	if pos.y < overworld.start - 64 then return false end
+	if pos.y > overworld_bounds.max then return false end
+	if pos.y < overworld_bounds.min - 64 then return false end
 	return true
 end
 
@@ -369,11 +360,11 @@ function vl_worlds.has_dust(pos)
 	local dim = vl_worlds.dimension_at_pos(pos)
 	if not dim then return false end
 
-	local underworld = vl_worlds.dimension_by_name("underworld")
-	assert(underworld)
+	local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+	assert(underworld_bounds)
 
-	if pos.y > underworld.start + underworld.height + 138 then return false end
-	if pos.y < underworld.start - 10 then return false end
+	if pos.y > underworld_bounds.max + 138 then return false end
+	if pos.y < underworld_bounds.min - 10 then return false end
 	return true
 end
 
