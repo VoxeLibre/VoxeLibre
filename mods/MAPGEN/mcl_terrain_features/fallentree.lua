@@ -7,8 +7,8 @@ local vprob, mprob = 0.4, 0.25 -- probability of vines, probability of mushrooms
 local get_node_name = mcl_vars.get_node_name
 local get_node_name_raw = mcl_vars.get_node_name_raw
 
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 mcl_structures.register_structure("fallen_tree",{
 	rank = 1100, -- after regular trees, but we run in gennotify anyway
@@ -24,7 +24,7 @@ mcl_structures.register_structure("fallen_tree",{
 	},
 	spawn_by = "air",
 	num_spawn_by = 2, -- increases success chances below, at low cost
-	y_max = overworld.start + overworld.height,
+	y_max = overworld_bounds.max,
 	y_min = core.get_mapgen_setting("water_level"),
 	place_func = function(pos,def,pr)
 		--currently we have y+1 in mcl_structures API again. pos.y = pos.y + 1 -- structures receive the *ground* position, like schematics
