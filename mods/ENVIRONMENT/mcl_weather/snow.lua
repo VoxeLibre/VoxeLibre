@@ -14,8 +14,8 @@ vl_tuning.setting("gamerule:snowAccumulationHeight", "number", {
 	set = function(val) gamerule_snowAccumulationHeight = val end,
 	get = function() return gamerule_snowAccumulationHeight end,
 })
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 local snow_biomes = {
 	"ColdTaiga_underground",
@@ -159,7 +159,8 @@ minetest.register_abm({
 	neighbors = {"air"},
 	interval = 27,
 	chance = 33,
-	min_y = overworld.start,
+	min_y = overworld_bounds.min,
+	max_y = overworld_bounds.max,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		if (mcl_weather.state ~= "rain" and mcl_weather.state ~= "thunder" and mcl_weather.state ~= "snow")
 		or not mcl_weather.has_snow(pos)
