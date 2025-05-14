@@ -4,8 +4,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 --###################
 --################### WITCH
@@ -111,7 +111,7 @@ mcl_mobs.register_arrow("mobs_mc:potion_arrow", {
 })
 
 -- TODO: Spawn when witch works properly <- eventually -j4i
---mcl_mobs:spawn_specific("mobs_mc:witch", { "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern", "mcl_core:vine" }, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, mobs_mc.water_level-6, overworld.start + overworld.height)
+--mcl_mobs:spawn_specific("mobs_mc:witch", { "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern", "mcl_core:vine" }, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, mobs_mc.water_level-6, overworld_bounds.max)
 
 -- spawn eggs
 mcl_mobs.register_egg("mobs_mc:witch", S("Witch"), "#340000", "#51a03e", 0, true)

@@ -27,8 +27,8 @@ local trading_items = {
 
 local S = minetest.get_translator("mobs_mc")
 local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
-local underworld = vl_worlds.dimension_by_name("underworld")
-assert(underworld)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 
 function mobs_mc.player_wears_gold(player)
 	for i=1, 6 do
@@ -425,7 +425,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 3,
 	min_height = mcl_vars.mg_lava_nether_max,
-	max_height = underworld.start + underworld.height,
+	max_height = underworld_bounds.max,
 })
 
 mcl_mobs:spawn_setup({
@@ -442,7 +442,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 3,
 	min_height = mcl_vars.mg_lava_nether_max,
-	max_height = underworld.start + underworld.height,
+	max_height = underworld_bounds.max,
 })
 
 mcl_mobs:spawn_setup({
@@ -458,8 +458,8 @@ mcl_mobs:spawn_setup({
 	chance = 1000,
 	interval = 30,
 	aoc = 3,
-	min_height = underworld.start,
-	max_height = underworld.start + underworld.height,
+	min_height = underworld_bounds.min,
+	max_height = underworld_bounds.max,
 })
 
 -- Baby zombie is 20 times less likely than regular zombies
@@ -476,8 +476,8 @@ mcl_mobs:spawn_setup({
 	chance = 50,
 	interval = 30,
 	aoc = 4,
-	min_height = underworld.start,
-	max_height = underworld.start + underworld.height,
+	min_height = underworld_bounds.min,
+	max_height = underworld_bounds.max,
 })
 
 mcl_mobs:non_spawn_specific("mobs_mc:piglin","overworld",0,7)

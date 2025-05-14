@@ -3,8 +3,8 @@
 --###################
 
 local S = minetest.get_translator("mobs_mc")
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 mcl_mobs.register_mob("mobs_mc:guardian", {
 	description = S("Guardian"),
@@ -113,7 +113,7 @@ mcl_mobs:spawn_setup({
 	chance = 25000,
 	interval = 30,
 	aoc = 2,
-	min_height = overworld.start,
+	min_height = overworld_bounds.min,
 	max_height = mobs_mc.water_level - 10
 })
 mcl_mobs:non_spawn_specific("mobs_mc:guardian","overworld",0,minetest.LIGHT_MAX+1)

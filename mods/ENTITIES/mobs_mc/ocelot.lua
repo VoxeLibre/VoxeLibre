@@ -4,8 +4,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 --###################
 --################### OCELOT AND CAT
@@ -192,7 +192,7 @@ mcl_mobs:spawn_setup({
 	chance = 300,
 	aoc = 5,
 	min_height = mobs_mc.water_level+15,
-	max_height = overworld.start + overworld.height,
+	max_height = overworld_bounds.max,
 })
 --[[
 mobs:spawn({

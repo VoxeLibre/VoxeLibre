@@ -4,8 +4,8 @@
 -- blaze.lua partial copy of mobs_mc/ghast.lua
 
 local S = minetest.get_translator("mobs_mc")
-local underworld = vl_worlds.dimension_by_name("underworld")
-assert(underworld)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 
 local mod_target = minetest.get_modpath("mcl_target")
 
@@ -157,8 +157,8 @@ mcl_mobs:spawn_setup({
 	chance = 1000,
 	interval = 30,
 	aoc = 3,
-	min_height = underworld.start,
-	max_height = underworld.start + underworld.height,
+	min_height = underworld_bounds.min,
+	max_height = underworld_bounds.max,
 })
 
 -- Blaze fireball

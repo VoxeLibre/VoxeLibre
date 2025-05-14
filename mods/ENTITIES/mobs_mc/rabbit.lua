@@ -1,8 +1,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 local rabbit = {
 	description = S("Rabbit"),
@@ -153,8 +153,8 @@ mcl_mobs:spawn_setup({
 	chance = 40,
 	interval = 30,
 	aoc = 8,
-	min_height = overworld.start,
-	max_height = overworld.start + overworld.height,
+	min_height = overworld_bounds.min,
+	max_height = overworld_bounds.max,
 })
 
 --[[
@@ -165,8 +165,8 @@ local spawn = {
 	active_object_count = 10,
 	min_light = 0,
 	max_light = minetest.LIGHT_MAX+1,
-	min_height = overworld.start,
-	max_height = overworld.start + overworld.height,
+	min_height = overworld_bounds.min,
+	max_height = overworld_bounds.max,
 }
 
 local spawn_desert = table.copy(spawn)

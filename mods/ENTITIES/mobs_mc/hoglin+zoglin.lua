@@ -4,8 +4,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
-local underworld = vl_worlds.dimension_by_name("underworld")
-assert(underworld)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 
 --###################
 --################### hoglin
@@ -140,8 +140,8 @@ mcl_mobs:spawn_setup({
 	chance = 200,
 	interval = 30,
 	aoc = 3,
-	min_height = underworld.start,
-	max_height = underworld.start + underworld.height,
+	min_height = underworld_bounds.min,
+	max_height = underworld_bounds.max,
 })
 
 mcl_mobs:non_spawn_specific("mobs_mc:hoglin","overworld",0,7)
