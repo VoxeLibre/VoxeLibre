@@ -2,8 +2,8 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 local spawnon = {"mcl_deepslate:deepslate","mcl_core:birchwood","mcl_wool:red_carpet","mcl_wool:brown_carpet"}
 
@@ -14,7 +14,7 @@ mcl_structures.register_structure("woodland_cabin",{
 	solid_ground = true,
 	make_foundation = true,
 	chunk_probability = 800,
-	y_max = overworld.start + overworld.height,
+	y_max = overworld_bounds.max,
 	y_min = 1,
 	biomes = { "RoofedForest" },
 	sidelen = 32,
@@ -73,8 +73,8 @@ mcl_structures.register_structure("woodland_cabin",{
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:vindicator",
-	y_min = overworld.start,
-	y_max = overworld.start + overworld.height,
+	y_min = overworld_bounds.min,
+	y_max = overworld_bounds.max,
 	chance = 10,
 	interval = 60,
 	limit = 6,
@@ -83,8 +83,8 @@ mcl_structures.register_structure_spawn({
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:evoker",
-	y_min = overworld.start,
-	y_max = overworld.start + overworld.height,
+	y_min = overworld_bounds.min,
+	y_max = overworld_bounds.max,
 	chance = 50,
 	interval = 60,
 	limit = 6,
