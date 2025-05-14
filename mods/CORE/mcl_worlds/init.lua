@@ -47,10 +47,10 @@ end
 function mcl_worlds.layer_to_y(offset, dimension_name)
 	dimension_name = dimension_name or "overworld"
 
-	local dim = vl_worlds.dimension_by_name(REVERSE_DIMENSION_NAME_COMPAT[dimension_name])
-	assert(dim)
+	local dim_bounds = vl_worlds.get_dimension_bounds(REVERSE_DIMENSION_NAME_COMPAT[dimension_name])
+	assert(dim_bounds)
 
-	return dim.start + offset
+	return dim_bounds.min + offset
 end
 
 mcl_worlds.has_weather = vl_worlds.has_weather
@@ -147,12 +147,12 @@ function mcl_worlds.get_cloud_parameters()
 			ambient = "#201060",
 		}
 	else
-		local overworld = vl_worlds.dimension_by_name("overworld")
-		assert(overworld)
+		local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+		assert(overworld_bounds)
 
 		-- MC-style clouds: Layer 127, thickness 4, fly to the “West”
 		return {
-			height = overworld.start + 127,
+			height = overworld_bounds.min + 127,
 			speed = {x=-2, z=0},
 			thickness = 4,
 			color = "#FFF0FEF",
