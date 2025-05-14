@@ -53,8 +53,8 @@ end
 
 function mod.show_deprecated_field_warnings(tbl, tbl_name, deprecated)
 	local suppress_duplicates = {}
-	setmetatable(mcl_vars, {
-		__index = function(tbl, idx)
+	setmetatable(tbl, {
+		__index = function(_, idx)
 			local caller = debug.getinfo(2).func
 			if not suppress_duplicates[caller] then
 				core.log("warning", "Use of deprecated field "..tbl_name.."."..idx.." from "..debug.traceback())
