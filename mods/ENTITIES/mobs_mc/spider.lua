@@ -4,8 +4,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 --###################
 --################### SPIDER
@@ -318,8 +318,8 @@ mcl_mobs:spawn_setup({
 	chance = 1000,
 	interval = 30,
 	aoc = 2,
-	min_height = overworld.start,
-	max_height = overworld.start + overworld.height,
+	min_height = overworld_bounds.min,
+	max_height = overworld_bounds.max,
 })
 
 mcl_mobs:non_spawn_specific("mobs_mc:cave_spider","overworld",0,7)

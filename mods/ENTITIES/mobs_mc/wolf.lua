@@ -1,8 +1,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 local default_walk_chance = 50
 
@@ -233,7 +233,7 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 7,
 	min_height = mobs_mc.water_level+3,
-	max_height = overworld.start + overworld.height,
+	max_height = overworld_bounds.max,
 })
 
 mcl_mobs.register_egg("mobs_mc:wolf", S("Wolf"), "#d7d3d3", "#ceaf96", 0)

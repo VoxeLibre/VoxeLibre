@@ -4,8 +4,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
-local underworld = vl_worlds.dimension_by_name("underworld")
-assert(underworld)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 
 --###################
 --################### STRIDER
@@ -237,8 +237,8 @@ mcl_mobs:spawn_setup({
 		"CrimsonForest",
 		"SoulsandValley"
 	},
-	min_height = underworld.start,
-	max_height = underworld.start + underworld.height,
+	min_height = underworld_bounds.min,
+	max_height = underworld_bounds.max,
 	chance = 200,
 })
 
@@ -253,8 +253,8 @@ mcl_mobs:spawn_setup({
 		"CrimsonForest",
 		"SoulsandValley"
 	},
-	min_height = underworld.start,
-	max_height = underworld.start + underworld.height,
+	min_height = underworld_bounds.min,
+	max_height = underworld_bounds.max,
 	chance = 20,
 })
 
