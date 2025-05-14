@@ -2,8 +2,8 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
-local underworld = vl_worlds.dimension_by_name("underworld")
-assert(underworld)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 
 local ELEMENTAL_SPAWNER_MAX_LIGHT = 11
 
@@ -17,7 +17,7 @@ mcl_structures.register_structure("nether_outpost",{
 	solid_ground = true,
 	make_foundation = true,
 	y_min = mcl_vars.mg_lava_nether_max - 1,
-	y_max = underworld.start + underworld.height - 30,
+	y_max = underworld_bounds.max - 30,
 	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
 	y_offset = 0,
 	after_place = function(pos)
@@ -40,7 +40,7 @@ mcl_structures.register_structure("nether_bridge",{
 	sidelen = 38,
 	solid_ground = false,
 	make_foundation = false,
-	y_min = underworld.start - 4,
+	y_min = underworld_bounds.min - 4,
 	y_max = mcl_vars.mg_lava_nether_max - 20,
 	filenames = nbridges,
 	y_offset = function(pr) return pr:next(15,20) end,
@@ -61,7 +61,7 @@ mcl_structures.register_structure("nether_outpost_with_bridges",{
 	solid_ground = true,
 	make_foundation = true,
 	y_min = mcl_vars.mg_lava_nether_max - 1,
-	y_max = underworld.start + underworld.height - 30,
+	y_max = underworld_bounds.max - 30,
 	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
 	daughters = {{
 		files = { nbridges[1] },
@@ -108,7 +108,7 @@ mcl_structures.register_structure("nether_outpost_with_bridges",{
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:witherskeleton",
 	y_min = mcl_vars.mg_lava_nether_max,
-	y_max = underworld.start + underworld.height,
+	y_max = underworld_bounds.max,
 	chance = 15,
 	interval = 60,
 	limit = 4,
@@ -125,7 +125,7 @@ mcl_structures.register_structure("nether_bulwark",{
 	solid_ground = true,
 	make_foundation = true,
 	y_min = mcl_vars.mg_lava_nether_max - 1,
-	y_max = underworld.start + underworld.height - 30,
+	y_max = underworld_bounds.max - 30,
 	filenames = {
 		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_1.mts",
 		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_2.mts",
@@ -200,8 +200,8 @@ mcl_structures.register_structure("nether_bulwark",{
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:piglin",
-	y_min = underworld.start,
-	y_max = underworld.start + underworld.height,
+	y_min = underworld_bounds.min,
+	y_max = underworld_bounds.max,
 	chance = 10,
 	interval = 60,
 	limit = 9,
@@ -210,8 +210,8 @@ mcl_structures.register_structure_spawn({
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:piglin_brute",
-	y_min = underworld.start,
-	y_max = underworld.start + underworld.height,
+	y_min = underworld_bounds.min,
+	y_max = underworld_bounds.max,
 	chance = 20,
 	interval = 60,
 	limit = 4,
