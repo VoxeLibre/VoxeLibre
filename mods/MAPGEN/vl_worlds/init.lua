@@ -334,6 +334,45 @@ function vl_worlds.expand_dimension(id, diff)
 	end
 end
 
+local VOID_DEADLY_TOLERANCE = 64 -- the player must be this many nodes “deep” into the void to be damaged
+---@param pos vector.Vector
+---@returns boolean,boolean
+function vl_worlds.is_void(pos)
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim then return true, true end
+	if dim.id != "void" then return false, false end
+
+	local distance = math.min( math.abs(dim.start + dim.height - pos.y), math.abs(pos.y - dim.start) )
+	return true, distance > VOID_DEADLY_TOLERANCE
+end
+
+---@param pos vector.Vector
+---@returns boolean
+function vl_worlds.has_weather(pos)
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim then return false end
+
+	local overworld = vl_worlds.dimension_by_name("overworld")
+	assert(overworld)
+
+	if pos.y > overworld.start + overworld.height then return false end
+	if pos.y < overworld.start - 64 then return false end
+	return true
+end
+
+---@param pos vector.Vector
+---@returns boolean
+function vl_worlds.has_dust(pos)
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim then return false end
+
+	local underworld = vl_worlds.dimension_by_name("underworld")
+	assert(underworld)
+
+	if pos.y > underworld.start + underworld.height + 138 then return false end
+	if pos.y < underworld.start - 10 then return false end
+	return true
+end
 
 
 -- DEPRECATED
