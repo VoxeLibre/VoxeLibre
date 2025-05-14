@@ -10,8 +10,8 @@ local adjacents = {
 	vector.new(0,-1,0)
 }
 
-local underworld = vl_worlds.dimension_by_name("underworld")
-assert(underworld)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 
 mcl_structures.register_structure("basalt_column",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
@@ -28,7 +28,7 @@ mcl_structures.register_structure("basalt_column",{
 		flags = "absvalue",
 	},
 	flags = "all_floors",
-	y_max = underworld.start + underworld.height - 20,
+	y_max = underworld_bounds.max - 20,
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
@@ -71,7 +71,7 @@ mcl_structures.register_structure("basalt_pillar",{
 		flags = "absvalue",
 	},
 	flags = "all_floors",
-	y_max = underworld.start + underworld.height - 40,
+	y_max = underworld_bounds.max - 40,
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
@@ -115,7 +115,7 @@ mcl_structures.register_structure("lavadelta",{
 		flags = "absvalue",
 	},
 	flags = "all_floors",
-	y_max = underworld.start + underworld.height,
+	y_max = underworld_bounds.max,
 	y_min = mcl_vars.mg_lava_nether_max + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
