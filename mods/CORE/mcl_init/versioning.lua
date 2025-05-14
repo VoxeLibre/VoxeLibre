@@ -24,7 +24,7 @@ local function parse_version(str)
 end
 
 -- test is the version v1 is larger or equal v2
-function minimum_version(ver1, ver2)
+local function minimum_version(ver1, ver2)
 	if not ver1 or not ver2 then return false end
 	for i,v1 in ipairs(ver1) do
 		local v2 = ver2[i] or 0 -- treat missing values as zero
@@ -49,15 +49,15 @@ assert(minimum_version({0, 89}, {0, 89}))
 assert(minimum_version(parse_version("0.89.0-SNAPSHOT"), {0, 88}))
 assert(minimum_version(parse_version("0.89.0-SNAPSHOT"), {0, 89}) == false)
 
-function format_version(ver, or_later)
+local function format_version(ver, or_earlier)
 	local v = {}
 	for i, c in ipairs(ver) do
 		c = tostring(c)
 		if i > 1 and c:sub(1,1) ~= "-" then v[#v+1] = "." end
 		v[#v+1] = c
 	end
-	-- append "or later" if the VL version is 0.87, as we cannot differentiate older
-	if or_later and #v == 2 and v[1] == 0 and v[1] == 87 then v[#v+1] = " or later" end
+	-- append "or earlier" if the VL version is 0.87, as we cannot differentiate older
+	if or_earlier and #ver == 2 and ver[1] == 0 and ver[2] == 87 then v[#v+1] = " or earlier" end
 	return table.concat(v)
 end
 
