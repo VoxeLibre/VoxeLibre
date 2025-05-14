@@ -6,8 +6,8 @@ local adjacents = {
 	vector.new(0,1,0),
 	vector.new(0,-1,0)
 }
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 
 local function set_node_no_bedrock(pos, node)
 	if not pos then return end
@@ -91,7 +91,7 @@ mcl_structures.register_structure("geode",{
 	flags = "force_placement",
 	terrain_feature = true,
 	y_max = -24,
-	y_min = overworld.start,
+	y_min = overworld_bounds.min,
 	y_offset = function(pr) return pr:next(-4,-2) end,
 	place_func = makegeode,
 })
