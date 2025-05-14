@@ -3,8 +3,8 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 local spawnon = {"mcl_end:purpur_block"}
-local fringe = vl_worlds.dimension_by_name("fringe")
-assert(fringe)
+local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
+assert(fringe_bounds)
 
 local function spawn_shulkers(pos,def,pr)
 	local p1 = vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2)
@@ -138,8 +138,8 @@ mcl_structures.register_structure("end_boat",{
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:shulker",
-	y_min = fringe.start,
-	y_max = fringe.start + fringe.height,
+	y_min = fringe_bounds.min,
+	y_max = fringe_bounds.max,
 	chance = 10,
 	interval = 60,
 	limit = 6,

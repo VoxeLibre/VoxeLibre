@@ -1,9 +1,9 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
-local overworld = vl_worlds.dimension_by_name("overworld")
-local underworld = vl_worlds.dimension_by_name("underworld")
-assert(overworld)
-assert(underworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(overworld_bounds)
+assert(underworld_bounds)
 
 local function get_replacements(b,c,pr)
 	local r = {}
@@ -21,7 +21,7 @@ local def = {
 	solid_ground = true,
 	make_foundation = true,
 	chunk_probability = 800,
-	y_max = overworld.start + overworld.height,
+	y_max = overworld_bounds.max,
 	y_min = 1,
 	sidelen = 10,
 	y_offset = -5,
@@ -109,6 +109,6 @@ local def = {
 mcl_structures.register_structure("ruined_portal_overworld",def)
 local ndef = table.copy(def)
 ndef.y_min=mcl_vars.mg_lava_nether_max +10
-ndef.y_max = underworld.start + underworld.height - 15
+ndef.y_max = underworld_bounds.max - 15
 ndef.place_on = {"mcl_nether:netherrack","group:soul_block","mcl_blackstone:basalt,mcl_blackstone:blackstone","mcl_crimson:crimson_nylium","mcl_crimson:warped_nylium"},
 mcl_structures.register_structure("ruined_portal_nether",ndef)
