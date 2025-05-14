@@ -1,8 +1,8 @@
 
-local overworld = vl_worlds.dimension_by_name("overworld")
-assert(overworld)
+local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+assert(overworld_bounds)
 local deepslate_max = mcl_worlds.layer_to_y(16)
-local deepslate_min = overworld.start
+local deepslate_min = overworld_bounds.min
 
 local copper_mod = minetest.get_modpath("mcl_copper")
 
@@ -48,8 +48,8 @@ for s=1, #specialstones do
 		clust_scarcity = 15*15*15,
 		clust_num_ores = 33,
 		clust_size     = 5,
-		y_min          = overworld.start,
-		y_max          = overworld.start + overworld.height,
+		y_min          = overworld_bounds.min,
+		y_max          = overworld_bounds.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -68,8 +68,8 @@ for s=1, #specialstones do
 		clust_scarcity = 10*10*10,
 		clust_num_ores = 58,
 		clust_size     = 7,
-		y_min          = mcl_vars.mg_overworld_min,
-		y_max          = mcl_vars.mg_overworld_max,
+		y_min          = overworld_bounds.min,
+		y_max          = overworld_bounds.max,
 		noise_params = {
 			offset  = 0,
 			scale   = 1,
@@ -93,8 +93,8 @@ minetest.register_ore({
 	clust_scarcity = 15*15*15,
 	clust_num_ores = 33,
 	clust_size     = 4,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_vars.mg_overworld_max,
+	y_min          = overworld_bounds.min,
+	y_max          = overworld_bounds.max,
 	noise_params = {
 		offset  = 0,
 		scale   = 1,
@@ -115,7 +115,7 @@ minetest.register_ore({
 	clust_scarcity = 14*14*14,
 	clust_num_ores = 33,
 	clust_size     = 5,
-	y_min          = mcl_vars.mg_overworld_min,
+	y_min          = overworld_bounds.min,
 	y_max          = mcl_worlds.layer_to_y(111),
 	noise_params = {
 		offset  = 0,
@@ -235,7 +235,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 525*3,
 		clust_num_ores = 5,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(50),
 	})
 	minetest.register_ore({
@@ -245,7 +245,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 510*3,
 		clust_num_ores = 8,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(50),
 	})
 	minetest.register_ore({
@@ -255,7 +255,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 500*3,
 		clust_num_ores = 12,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(50),
 	})
 
@@ -333,7 +333,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 830,
 		clust_num_ores = 5,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(39),
 	})
 	minetest.register_ore({
@@ -359,7 +359,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 4775,
 		clust_num_ores = 5,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(30),
 	})
 	minetest.register_ore({
@@ -369,7 +369,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 6560,
 		clust_num_ores = 7,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(30),
 	})
 
@@ -397,7 +397,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 10000,
 		clust_num_ores = 4,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(12),
 	})
 	minetest.register_ore({
@@ -407,7 +407,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 5000,
 		clust_num_ores = 2,
 		clust_size     = 2,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(12),
 	})
 	minetest.register_ore({
@@ -417,7 +417,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 10000,
 		clust_num_ores = 8,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(12),
 	})
 
@@ -495,7 +495,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 500,
 		clust_num_ores = 4,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(13),
 	})
 	minetest.register_ore({
@@ -505,7 +505,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 800,
 		clust_num_ores = 7,
 		clust_size     = 4,
-		y_min          = mcl_vars.mg_overworld_min,
+		y_min          = overworld_bounds.min,
 		y_max          = mcl_worlds.layer_to_y(13),
 	})
 
@@ -532,6 +532,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	})
 
 	--
+
 	-- Lapis Lazuli
 	--
 
@@ -692,7 +693,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 				clust_scarcity = 830,
 				clust_num_ores = 5,
 				clust_size     = 3,
-				y_min          = mcl_vars.mg_overworld_min,
+				y_min          = overworld_bounds.min,
 				y_max          = mcl_worlds.layer_to_y(39),
 			})
 			minetest.register_ore({

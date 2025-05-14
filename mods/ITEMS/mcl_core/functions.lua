@@ -1,7 +1,7 @@
 local modpath = minetest.get_modpath(minetest.get_current_modname())
 local mg_name = minetest.get_mapgen_setting("mg_name")
-local fringe = vl_worlds.dimension_by_name("fringe")
-assert(fringe)
+local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
+assert(fringe_bounds)
 
 local random = math.random
 local sqrt = math.sqrt
@@ -32,7 +32,7 @@ minetest.register_abm({
 	neighbors = {"group:water"},
 	interval = 1,
 	chance = 1,
-	min_y = fringe.start,
+	min_y = fringe_bounds.min,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local water = minetest.find_nodes_in_area(vector_offset(pos, -1, -1, -1), vector_offset(pos, 1, 1, 1), "group:water")
 
