@@ -176,22 +176,20 @@ mcl_info.register_debug_field("Coords", {
 	end
 })
 
--- TODO: remove when we can get the name from dimension data
-local DIMENSION_NAMES = {
-	overworld = "Overworld",
-	underworld = "Underworld",
-	fringe = "Fringe",
-	void = "Void",
-}
 
 mcl_info.register_debug_field("Location", {
 	level = 1,
 	func = function(_, pos)
 		local dim = vl_worlds.dimension_at_pos(pos)
-		local name = dim and (DIMENSION_NAMES[dim.id] or dim.id) or "Unknown"
+		local name = S("Unknown")
+		if dim then
+			if dim.id == "void" then
+				name = S("Void")
+			elseif vl_worlds.registered_worlds[dim.id] then
+				name = vl_worlds.registered_worlds[dim.id].name
+			end
+		end
 
-		-- TODO: get name from dimension data
-		-- TODO: can we use the translation API for this?
-		return format("%s: x:%.1f y:%.1f z:%.1f", name, pos.x, pos.y, pos.z)
+		return S("@1: x:@2 y:@3 z:@4", name, format("%.1f", pos.x), format("%.1f", pos.y), format("%.1f", pos.z))
 	end
 })
