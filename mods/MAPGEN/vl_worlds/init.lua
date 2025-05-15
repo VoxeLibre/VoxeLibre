@@ -5,11 +5,6 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local storage = core.get_mod_storage()
 
 
----@class vl_worlds.Dimension
----@field id string?
----@field start integer
----@field height integer
-
 
 -- Mapgen variables
 local mg_name = core.get_mapgen_setting("mg_name")
@@ -107,6 +102,20 @@ vl_worlds.dimensional_void_size = 2 * vl_worlds.chunksize * vl_worlds.MAP_BLOCKS
 
 
 local registered_worlds = {}
+vl_worlds.registered_worlds = registered_worlds
+
+---@class vl_worlds.Dimension
+---@field id string? - world ID in code and mod storage
+---@field name string? - translated string - world name anywhere it would be displayed
+---@field start integer - lowest y position that is part of this world
+---@field height integer - buildable height of the world, this includes bedrock and such
+---@field layers? vl_worlds.Layer[]
+
+---@class vl_worlds.Layer
+---@field id string
+---@field top integer
+---@field bottom integer
+
 ---@type vl_worlds.Dimension[]
 local world_structure = {
 	{
@@ -117,11 +126,12 @@ local world_structure = {
 
 -- API - attempts to register a world - crashes on failure to prevent damaging the save
 -- required parameters in def:
--- id - string - world ID in code and mod storage
--- name - translated string - world name wherever it would be displayed
--- height - integer - buildable height of the world, this includes bedrock and such
--- optional parameters in def:
--- forced_start - integer - forced start height of the world
+---@class vl_worlds.DimensionDef
+---@field id string - world ID in code and mod storage
+---@field name string - translated string - world name anywhere it would be displayed
+---@field height integer - buildable height of the world, this includes bedrock and such
+---@field forced_start? integer forced start height of the world (optional)
+---@param def vl_worlds.DimensionDef
 -- -- - if a dimension is already registered there or the dimension wouldn't fit, causes an error
 function vl_worlds.register_world(def)
 	local modname = core.get_current_modname()
@@ -189,6 +199,7 @@ function vl_worlds.register_world(def)
 			})
 
 			core.log(dump(world_structure)) -- TODO debug - remove
+			core.log(dump(registered_worlds))
 			return
 		end
 	end
@@ -460,12 +471,14 @@ end)
 -- API
 -- dim_id - string - id of a valid registered dimension
 -- required parameters in def:
--- id - string - layer ID in code
--- bottom - integer - start height from the bottom of the dimension (starts from 0)
--- top - integer - height of the last node of the layer relative to start of dimension
--- optional parameters in def:
--- TODO has_separate_biomes - bool - defaults to false
+---@class vl_worlds.LayerDef
+---@field id string - layer ID in code
+---@field bottom integer - start height from the bottom of the dimension (starts from 0)
+---@field top integer - height of the last node of the layer relative to start of dimension
+---@field has_separate_biomes boolean (optional, defaults to false) TODO
 -- -- determines whether biomes can be registeted as a part of this layer
+---@param dim_id string
+---@param def vl_worlds.LayerDef
 function vl_worlds.register_layer(dim_id, def)
 	assert(type(dim_id) == "string", "dim_id must be a string")
 	assert(registered_worlds[dim_id], "Dimension \""..dim_id.."\" is not registered")
