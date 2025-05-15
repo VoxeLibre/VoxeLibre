@@ -1,7 +1,5 @@
 mcl_worlds = {}
 
-local get_connected_players = minetest.get_connected_players
-
 mcl_worlds.is_in_void = vl_worlds.is_void
 
 local DIMENSION_IDS = {
@@ -56,20 +54,8 @@ mcl_worlds.has_dust = vl_worlds.has_dust
 mcl_worlds.register_on_dimension_change = vl_worlds.register_on_dimension_change
 mcl_worlds.dimension_change = vl_worlds.dimension_change
 
-local COMPASS_WORKS = {overworld = true, underworld = false, fringe = false, void = true}
--- Takes a position (pos) and returns true if compasses are working here
-function mcl_worlds.compass_works(pos)
-	local dim = vl_worlds.dimension_at_pos(pos)
-	if not dim then return true end
-
-	return COMPASS_WORKS[dim] or true
-end
-
--- Takes a position (pos) and returns true if clocks are working here
-mcl_worlds.clock_works = mcl_worlds.compass_works
-
 function mcl_worlds.get_cloud_parameters()
-	if minetest.get_mapgen_setting("mg_name") == "valleys" then
+	if core.get_mapgen_setting("mg_name") == "valleys" then
 		return {
 			height = 384, --valleys has a much higher average elevation thus often "normal" landscape ends up in the clouds
 			speed = {x=-2, z=0},
