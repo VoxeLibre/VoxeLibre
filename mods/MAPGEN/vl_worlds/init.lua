@@ -347,7 +347,17 @@ function vl_worlds.is_void(pos)
 	if not dim then return true, true end
 	if dim.id ~= "void" then return false, false end
 
-	local distance = math.min( math.abs(dim.start + dim.height - pos.y), math.abs(pos.y - dim.start) )
+	-- Check if the registered dimension is above or below pos and calculate the distance into the void
+	local distance
+	local below = vl_worlds.dimension_at_pos(vector.new(0, dim.start - 1, 0 ))
+	if not below or not below.id then
+		-- above the current position
+		distance = dim.start + dim.height - pos.y
+	else
+		-- below the current position
+		distance = pos.y - dim.start
+	end
+
 	return true, distance > VOID_DEADLY_TOLERANCE
 end
 
