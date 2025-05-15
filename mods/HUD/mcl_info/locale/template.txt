@@ -9,3 +9,6 @@ Debug level set to @1=
 Show location: 0 @= disable, 1 @= coordinates=
 Show location is set to: @1=
 Show location set to @1=
+Unknown=
+Void=
+@1: x:@2 y:@3 z:@4=
