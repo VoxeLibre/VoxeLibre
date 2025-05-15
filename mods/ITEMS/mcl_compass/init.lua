@@ -47,8 +47,33 @@ local string_to_pos = minetest.string_to_pos
 local get_connected_players = minetest.get_connected_players
 local get_item_group = minetest.get_item_group
 local setting_get_pos = minetest.setting_get_pos
-local compass_works = mcl_worlds.compass_works
 local y_to_layer = mcl_worlds.y_to_layer
+
+local COMPASS_WORKS = {overworld = true, underworld = false, fringe = false}
+function mcl_compass.register_compass_works(dim)
+	if COMPASS_WORKS[dim] == nil then
+		COMPASS_WORKS[dim] = true
+	end
+end
+
+--- Takes a position (pos) and returns true if compasses should function there
+---@param pos vector.Vector
+---@returns boolean
+local function compass_works(pos)
+	local dim = vl_worlds.dimension_at_pos(pos)
+	if not dim then return true end
+
+	if dim.id ~= "void" then return COMPASS_WORKS[dim.id] end
+
+	-- Check if the adjacent dimension has compasses working
+	local below = vl_worlds.dimension_at_pos(vector.new(0, dim.start - 1, 0))
+	if below and below.id then return COMPASS_WORKS[below.id] end
+
+	local above = vl_worlds.dimension_at_pos(vector.new(0, dim.start + dim.height +1, 0))
+	if above and above.id then return COMPASS_WORKS[above.id] end
+
+	return false
+end
 
 -- Initialize random compass frame for spinning compass.  It is updated in
 -- the compass globalstep function.
