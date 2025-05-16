@@ -31,7 +31,7 @@ The following contains basic digging groups that determine the speed at which th
 
 Refer to the mods "/_mcl_autogroup" and "/mcl_autogroup" to learn more about the technical handling of digging groups defined in "_mcl_diggroups". Also, refer to "mcl_tools/init.lua" for examples on how "_mcl_diggroups" is used in practice.
 
-* `dig_speed_class` The following is an old group family applied to some tools that likely defined dig speed classes before the creation of _mcl_autogroups. It is documented here for posterity but not believed to actually be used in any functional code in modern VoxeLibre:
+* `dig_speed_class` This is a group applied to tools. It informs the tooltip about which helpful message should be to displayed to the player relating to the tools dig speed capabilities. For more information on technical implementation of this group refer to `HELP/mcl_tt/snippets_base.lua` around ln 63.
 
     * `dig_speed_class=1`: Painfully slow
     * `dig_speed_class=2`: Very slow
