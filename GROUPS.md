@@ -31,9 +31,7 @@ The following contains basic digging groups that determine the speed at which th
 
 Refer to the mods "/_mcl_autogroup" and "/mcl_autogroup" to learn more about the technical handling of digging groups defined in "_mcl_diggroups". Also, refer to "mcl_tools/init.lua" for examples on how "_mcl_diggroups" is used in practice.
 
-### Legacy dig speed class groups
-
-*`dig_speed_class` The following is an old group family applied to some tools that likely defined dig speed classes before the creation of _mcl_autogroups. It is documented here for posterity but not believed to actually be used in any functional code in modern VoxeLibre:
+* `dig_speed_class` The following is an old group family applied to some tools that likely defined dig speed classes before the creation of _mcl_autogroups. It is documented here for posterity but not believed to actually be used in any functional code in modern VoxeLibre:
 
     * `dig_speed_class=1`: Painfully slow
     * `dig_speed_class=2`: Very slow
@@ -96,6 +94,7 @@ Refer to the mods "/_mcl_autogroup" and "/mcl_autogroup" to learn more about the
 * `compostability=X`: Item can be used on a composter block; X (1-100) is the % chance of adding a level of compost
 * `leaves=X`: Node will spotaneously decay if no tree trunk nodes remain within 6 blocks distance.
 * `leaves_orphan`: See above, these nodes are in the process of decayed.
+* `oxidizable=1`: nodes with this group will be flagged by mcl_oxidation for potential node swap. Used by copper blocks to oxidize.
 
 #### Footnotes
 
