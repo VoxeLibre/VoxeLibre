@@ -3,6 +3,8 @@ This mod automatically adds groups to items based on item metadata.
 This mod has a few purposes:
 1) Automatically adding some groups like “solid” "opaque" and "creative_breakable" depending on node definitions.
 2) Generating digging groups for variable speed and item drops based on node defintions.
+3) Ensuring that all nodes that are neither liquids nor unbreakable/indestructible can be dug.
+
 
 This mod also requires another mod called “mcl_autogroup” to function properly.
 “mcl_autogroup” exposes the API used to register digging groups, while this mod
