@@ -23,10 +23,25 @@ The following contains basic digging groups that determine the speed at which th
 * `swordy_cobweb=1`: Diggable by sword (any material), and this node is a cobweb
 * `shearsy=1`: Diggable by shears, and this node is *not* wool
 * `shearsy_wool=1`: Diggable by shears, and this node is wool
+
 * `handy=1`: Breakable by hand and this node gives it useful drop when dug by hand. All nodes which are breakable by pickaxe, axe, shovel, sword or shears are also automatically breakable by hand, but not necessary
 * `creative_breakable=1`: Block is breakable by hand in creative mode. This group is implied if the node belongs to any other digging group
+* `indestructible=1`: Block should not be diggable in survival.
+* `unbreakable=1`: Block should not be diggable in survival.
 
 Refer to the mods "/_mcl_autogroup" and "/mcl_autogroup" to learn more about the technical handling of digging groups defined in "_mcl_diggroups". Also, refer to "mcl_tools/init.lua" for examples on how "_mcl_diggroups" is used in practice.
+
+### Legacy dig speed class groups
+
+*`dig_speed_class` The following is an old group family applied to some tools that likely defined dig speed classes before the creation of _mcl_autogroups. It is documented here for posterity but not believed to actually be used in any functional code in modern VoxeLibre:
+
+    * `dig_speed_class=1`: Painfully slow
+    * `dig_speed_class=2`: Very slow
+    * `dig_speed_class=3`: Slow
+    * `dig_speed_class=4`: Fast
+    * `dig_speed_class=5`: Very fast
+    * `dig_speed_class=6`: Extremely fast
+    * `dig_speed_class=7`: Instantaneous
 
 ### Groups for interactions
 
