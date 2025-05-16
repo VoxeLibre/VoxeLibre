@@ -2,8 +2,8 @@
 This mod implements a more sophisticated API method for adjusting the digging times of registered tools.
 the digging time is determined by these variables:
 
-1) The block's hardness
-2) The capabilities of the tool being used (the tool speed and its efficiency level)
+1) The pointed node/block's hardness value
+2) The tools speed multiplier and its efficiency enchantment level if applicable.
 3) Whether the tool is considered as "eligible" for the block (e.g. only diamond pick eligible for obsidian)
 
 How the mod is used
