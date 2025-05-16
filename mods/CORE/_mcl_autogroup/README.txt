@@ -1,8 +1,8 @@
 This mod automatically adds groups to items based on item metadata.
 
-Specifically, this mod has 2 purposes:
-1) Automatically adding the group “solid” for blocks considered “solid” in Minecraft.
-2) Generating digging time group for all nodes based on node metadata (it's complicated)
+This mod has a few purposes:
+1) Automatically adding some groups like “solid” "opaque" and "creative_breakable" depending on node definitions.
+2) Generating digging groups for variable speed and item drops based on node defintions.
 
 This mod also requires another mod called “mcl_autogroup” to function properly.
 “mcl_autogroup” exposes the API used to register digging groups, while this mod
