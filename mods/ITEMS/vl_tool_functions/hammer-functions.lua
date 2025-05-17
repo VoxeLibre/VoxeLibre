@@ -1,0 +1,2 @@
+--HAMMER FUNCTIONS
+-- None exist at the moment.
