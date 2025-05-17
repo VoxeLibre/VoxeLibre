@@ -61,7 +61,7 @@ local function register_classic_superflat_biome()
 	})
 end
 
--- All mapgens except mgv6, flat and singlenode
+-- All mapgens except flat and singlenode
 local function register_biomes()
 	--[[ OVERWORLD ]]
 
@@ -2589,13 +2589,8 @@ local function register_biome_ores()
 	})
 
 	-- Rarely replace stone with stone monster eggs.
-	-- In v6 this can happen anywhere, in other mapgens only in Extreme Hills.
-	local monster_egg_scarcity
-	if mg_name == "v6" then
-		monster_egg_scarcity = 28 * 28 * 28
-	else
-		monster_egg_scarcity = 26 * 26 * 26
-	end
+	-- Only in Extreme Hills.
+	local monster_egg_scarcity = 26 * 26 * 26
 	minetest.register_ore({
 		ore_type = "scatter",
 		ore = "mcl_monster_eggs:monster_egg_stone",
@@ -2613,55 +2608,52 @@ local function register_biome_ores()
 	})
 
 	-- Bonus gold spawn in Mesa
-	if mg_name ~= "v6" then
-		minetest.register_ore({
-			ore_type = "scatter",
-			ore = "mcl_core:stone_with_gold",
-			wherein = stonelike,
-			clust_scarcity = 3333,
-			clust_num_ores = 5,
-			clust_size = 3,
-			y_min = mcl_worlds.layer_to_y(32),
-			y_max = mcl_worlds.layer_to_y(79),
-			biomes = {"Mesa", "Mesa_sandlevel", "Mesa_ocean",
-					  "MesaBryce", "MesaBryce_sandlevel", "MesaBryce_ocean",
-					  "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean",
-					  "MesaPlateauFM", "MesaPlateauFM_sandlevel", "MesaPlateauFM_ocean", },
-		})
-	end
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_core:stone_with_gold",
+		wherein = stonelike,
+		clust_scarcity = 3333,
+		clust_num_ores = 5,
+		clust_size = 3,
+		y_min = mcl_worlds.layer_to_y(32),
+		y_max = mcl_worlds.layer_to_y(79),
+		biomes = {"Mesa", "Mesa_sandlevel", "Mesa_ocean",
+				  "MesaBryce", "MesaBryce_sandlevel", "MesaBryce_ocean",
+				  "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean",
+				  "MesaPlateauFM", "MesaPlateauFM_sandlevel", "MesaPlateauFM_ocean", },
+	})
+
 	--nether gold
-	if mg_name ~= "v6" then
-		minetest.register_ore({
-			ore_type = "scatter",
-			ore = "mcl_blackstone:blackstone_gilded",
-			wherein = "mcl_blackstone:blackstone",
-			clust_scarcity = 4775,
-			clust_num_ores = 2,
-			clust_size = 2,
-			y_min = mcl_vars.mg_nether_min,
-			y_max = mcl_vars.mg_nether_max,
-		})
-		minetest.register_ore({
-			ore_type = "scatter",
-			ore = "mcl_blackstone:nether_gold",
-			wherein = "mcl_nether:netherrack",
-			clust_scarcity = 830,
-			clust_num_ores = 5,
-			clust_size = 3,
-			y_min = mcl_vars.mg_nether_min,
-			y_max = mcl_vars.mg_nether_max,
-		})
-		minetest.register_ore({
-			ore_type = "scatter",
-			ore = "mcl_blackstone:nether_gold",
-			wherein = "mcl_nether:netherrack",
-			clust_scarcity = 1660,
-			clust_num_ores = 4,
-			clust_size = 2,
-			y_min = mcl_vars.mg_nether_min,
-			y_max = mcl_vars.mg_nether_max,
-		})
-	end
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_blackstone:blackstone_gilded",
+		wherein = "mcl_blackstone:blackstone",
+		clust_scarcity = 4775,
+		clust_num_ores = 2,
+		clust_size = 2,
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+	})
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_blackstone:nether_gold",
+		wherein = "mcl_nether:netherrack",
+		clust_scarcity = 830,
+		clust_num_ores = 5,
+		clust_size = 3,
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+	})
+	minetest.register_ore({
+		ore_type = "scatter",
+		ore = "mcl_blackstone:nether_gold",
+		wherein = "mcl_nether:netherrack",
+		clust_scarcity = 1660,
+		clust_num_ores = 4,
+		clust_size = 2,
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+	})
 end
 
 -- Register “fake” ores directly related to the biomes. These are mostly low-level landscape alternations
@@ -3027,9 +3019,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type = "sheet",
 		ore = "mcl_nether:soul_sand",
-		-- Note: Stone is included only for v6 mapgen support. Netherrack is not generated naturally
-		-- in v6, but instead set with the on_generated function in mcl_mapgen_core.
-		wherein = {"mcl_nether:netherrack", "mcl_core:stone"},
+		wherein = {"mcl_nether:netherrack"},
 		clust_scarcity = 13 * 13 * 13,
 		clust_size = 5,
 		y_min = mcl_vars.mg_nether_min,
@@ -3217,15 +3207,8 @@ local function register_dimension_ores()
 
 	-- Generate fake End
 	-- TODO: Remove the "ores" when there's a better End generator
-	-- FIXME: Broken lighting in v6 mapgen
 
-	local end_wherein
-	if mg_name == "v6" then
-		end_wherein = {"air", "mcl_core:stone"}
-	else
-		end_wherein = {"air"}
-	end
-
+	local end_wherein = {"air"}
 	local mult = 1.0
 
 	minetest.register_ore({
@@ -3347,8 +3330,6 @@ local function register_dimension_ores()
 
 end
 
-
--- All mapgens except mgv6
 
 -- Template to register a grass or fern decoration
 local function register_grass_decoration(grasstype, offset, scale, biomes)
@@ -5976,14 +5957,10 @@ end
 --
 if mg_name ~= "singlenode" then
 	if not superflat then
-		if mg_name ~= "v6" then
-			register_biomes()
-			register_biomelike_ores()
-		end
+		register_biomes()
+		register_biomelike_ores()
 		register_biome_ores()
-		if mg_name ~= "v6" then
-			register_decorations()
-		end
+		register_decorations()
 	else
 		-- Implementation of Minecraft's Superflat mapgen, classic style:
 		-- * Perfectly flat land, 1 grass biome, no decorations, no caves

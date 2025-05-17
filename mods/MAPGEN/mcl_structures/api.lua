@@ -197,15 +197,12 @@ local function foundation(ground_p1,ground_p2,pos,sidelen)
 	local node_top = "mcl_core:dirt_with_grass" or minetest.get_node(ground_p1).name
 	local node_dust = nil
 
-	if mg_name ~= "v6" then
-		local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
-		--minetest.log(dump(b.node_top))
-		if b then
-			if b.node_top then node_top = b.node_top end
-			if b.node_filler then node_filler = b.node_filler end
-			if b.node_stone then node_stone = b.node_stone end
-			if b.node_dust then node_dust = b.node_dust end
-		end
+	local b = minetest.registered_biomes[minetest.get_biome_name(minetest.get_biome_data(pos).biome)]
+	if b then
+		if b.node_top then node_top = b.node_top end
+		if b.node_filler then node_filler = b.node_filler end
+		if b.node_stone then node_stone = b.node_stone end
+		if b.node_dust then node_dust = b.node_dust end
 	end
 
 	local stone,filler,top,dust = get_foundation_nodes(ground_p1,ground_p2,pos,sidelen,node_stone)
@@ -388,7 +385,7 @@ function mcl_structures.register_structure_spawn(def)
 				if pname ~= "air" then return end
 			end
 			if minetest.get_meta(pos):get_string("spawnblock") == "" then return end
-			if mg_name ~= "v6" and mg_name ~= "singlenode" and def.biomes then
+			if mg_name ~= "singlenode" and def.biomes then
 				if table.indexof(def.biomes,minetest.get_biome_name(minetest.get_biome_data(p).biome)) == -1 then
 					return
 				end

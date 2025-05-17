@@ -10,7 +10,7 @@ local function water_sky(player, sky_data)
 
 	local pos = player:get_pos()
 	local biome = nil
-	if mg_name ~= "v6" and mg_name ~= "singlenode" then
+	if mg_name ~= "singlenode" then
 		local biome_index = minetest.get_biome_data(pos).biome
 		local biome_name = minetest.get_biome_name(biome_index)
 		biome = minetest.registered_biomes[biome_name]

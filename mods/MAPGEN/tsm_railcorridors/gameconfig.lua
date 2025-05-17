@@ -37,23 +37,12 @@ end
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
-if mg_name == "v6" then
-	-- In v6, wood is chosen randomly.
-	--[[ Wood types for the corridors. Corridors are made out of full wood blocks
-	and posts. For each corridor system, a random wood type is chosen with the chance
-	specified in per mille. ]]
-	tsm_railcorridors.nodes.corridor_woods = {
-		{ wood = "mcl_core:wood", post = "mcl_fences:fence", chance = 900},
-		{ wood = "mcl_core:darkwood", post = "mcl_fences:dark_oak_fence", chance = 100},
-	}
-else
-	-- This generates dark oak wood in mesa biomes and oak wood everywhere else.
-	function tsm_railcorridors.nodes.corridor_woods_function(_, node)
-		if minetest.get_item_group(node.name, "hardened_clay") ~= 0 then
-			return "mcl_core:darkwood", "mcl_fences:dark_oak_fence"
-		else
-			return "mcl_core:wood", "mcl_fences:fence"
-		end
+-- This generates dark oak wood in mesa biomes and oak wood everywhere else.
+function tsm_railcorridors.nodes.corridor_woods_function(_, node)
+	if minetest.get_item_group(node.name, "hardened_clay") ~= 0 then
+		return "mcl_core:darkwood", "mcl_fences:dark_oak_fence"
+	else
+		return "mcl_core:wood", "mcl_fences:fence"
 	end
 end
 
@@ -176,19 +165,5 @@ function tsm_railcorridors.get_treasures(pr)
 	}
 	}
 
-	-- Bonus loot for v6 mapgen: Otherwise unobtainable saplings.
-	if mg_name == "v6" then
-		table.insert(loottable, {
-			stacks_min = 1,
-			stacks_max = 3,
-			items = {
-				{ itemstring = "mcl_core:darksapling", weight = 1, amount_min = 1, amount_max = 3 },
-				{ itemstring = "mcl_core:birchsapling", weight = 1, amount_min = 1, amount_max = 2 },
-				{ itemstring = "", weight = 6 },
-			},
-		})
-	end
-	local items = mcl_loot.get_multi_loot(loottable, pr)
-
-	return items
+	return mcl_loot.get_multi_loot(loottable, pr)
 end

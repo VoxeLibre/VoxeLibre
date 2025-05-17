@@ -29,7 +29,7 @@ function dimension_handlers.overworld(player, sky_data)
 
 	local biomesky
 	local biomefog
-	if mg_name ~= "v6" and mg_name ~= "singlenode" then
+	if mg_name ~= "singlenode" then
 		local biome_index = minetest.get_biome_data(player:get_pos()).biome
 		local biome_name = minetest.get_biome_name(biome_index)
 		local biome = minetest.registered_biomes[biome_name]
@@ -107,7 +107,7 @@ end
 dimension_handlers["end"] = function(player, sky_data)
 	local biomesky = "#000000"
 	local biomefog = "#A080A0"
-	if mg_name ~= "v6" and mg_name ~= "singlenode" then
+	if mg_name ~= "singlenode" then
 		local biome_index = minetest.get_biome_data(player:get_pos()).biome
 		local biome_name = minetest.get_biome_name(biome_index)
 		local biome = minetest.registered_biomes[biome_name]
@@ -131,7 +131,7 @@ end
 function dimension_handlers.nether(player, sky_data)
 	local biomesky = "#6EB1FF"
 	local biomefog = "#330808"
-	if mg_name ~= "v6" and mg_name ~= "singlenode" then
+	if mg_name ~= "singlenode" then
 		local biome_index = minetest.get_biome_data(player:get_pos()).biome
 		local biome_name = minetest.get_biome_name(biome_index)
 		local biome = minetest.registered_biomes[biome_name]

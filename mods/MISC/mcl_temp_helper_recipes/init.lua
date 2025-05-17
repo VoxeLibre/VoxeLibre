@@ -35,21 +35,6 @@ minetest.register_craft({
 	},
 })
 
--- Make red sand, red sandstone and more craftable in v6
--- NOTE: When you change these, also update mcl_craftguide for the "v6" icon in
--- the craft guide!
-if minetest.get_mapgen_setting("mg_name") == "v6" then
-	minetest.register_craft({
-		output = "mcl_core:redsand 8",
-		recipe = {
-			{ "mcl_core:sand", "mcl_core:sand", "mcl_core:sand" },
-			{ "mcl_core:sand", "mcl_nether:nether_wart_item", "mcl_core:sand" },
-			{ "mcl_core:sand", "mcl_core:sand", "mcl_core:sand" },
-		}
-	})
-end
-
-
 minetest.register_craft({
 	output = "mcl_nether:quartz_smooth 4",
 	recipe = {
