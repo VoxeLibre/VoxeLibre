@@ -1,24 +1,17 @@
 --[[
-This mod implements a HACK to make 100% sure the digging times of all tools
-match Minecraft's perfectly.  The digging times system of Luanti is very
-different, so this weird group trickery has to be used.  In Minecraft, each
-block has a hardness and the actual Minecraft digging time is determined by
-this:
+This mod implements a more sophisticated API method for adjusting the digging times of registered tools.
+the digging time is determined by these variables:
 
-1) The block's hardness
-2) The tool being used (the tool speed and its efficiency level)
-3) Whether the tool is considered as "eligible" for the block
-   (e.g. only diamond pick eligible for obsidian)
-
-See Minecraft Wiki <http://minecraft.gamepedia.com/Minecraft_Wiki> for more
-information.
+1) The pointed node/block's hardness value
+2) The tools speed multiplier and its efficiency enchantment level if applicable.
+3) Whether the tool is considered as "eligible" for the block (e.g. only diamond pick eligible for obsidian)
 
 How the mod is used
 ===================
 
 In VoxeLibre, all diggable nodes have the hardness set in the custom field
 "_mcl_hardness" (0 by default).  These values are used together with digging
-groups by this mod to create the correct digging times for nodes.  Digging
+groups by this mod to create the correct digging times for nodes. Digging
 groups are registered using the following code:
 
     mcl_autogroup.register_diggroup("shovely")
@@ -71,8 +64,7 @@ dependency.
 
 assert(minetest.get_modpath("mcl_autogroup"), "This mod requires the mod mcl_autogroup to function")
 
--- Returns a table containing the unique "_mcl_hardness" for nodes belonging to
--- each diggroup.
+-- Returns a table containing the unique "_mcl_hardness" for nodes belonging to each diggroup.
 local function get_hardness_values_for_groups()
 	local maps = {}
 	local values = {}

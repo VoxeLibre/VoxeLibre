@@ -1,5 +1,5 @@
 # `mcl_autogroup`
-This mod emulates digging times from MC.
+This mod adds an API that allows tools to have variable dig speeds and determine item drops based off the tools material level.
 
 ## `mcl_autogroup.can_harvest(nodename, toolname, player)`
 Return true if `nodename` can be dug with `toolname` by `player`.

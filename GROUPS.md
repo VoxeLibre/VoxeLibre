@@ -6,9 +6,9 @@ This document explains all the groups used in this game.
 * `not_in_creative_inventory=1`: Item will not be shown in creative inventory
 * `not_in_craft_guide=1`: Item will not be shown as result or fuel item in crafting guide (but still may be shown as ingredient)
 
-### Digging time groups
+### Digging groups
 
-The basic digging time groups determine by which tools a node can be dug.
+The following contains basic digging groups that determine the speed at which the node is dug, as well as which tool sub-materials a node can be dug by and successfully drop an item.
 
 * `pickaxey`: Diggable by pickaxe. The rating is for the possible tool materials in which the node will make its useful drop:
     * `pickaxey=1`: Wood, gold, stone, iron and diamond
@@ -17,15 +17,29 @@ The basic digging time groups determine by which tools a node can be dug.
     * `pickaxey=4`: Iron and diamond
     * `pickaxey=5`: Diamond
 * `axey`: Axe. Rating is same as for `pickaxey`
+* `hoey`: Hoe. Rating is same as for `pickaxey`
 * `shovely`: Shovel. Rating is same as for `pickaxey`
 * `swordy=1`: Diggable by sword (any material), and this node is *not* a cobweb
 * `swordy_cobweb=1`: Diggable by sword (any material), and this node is a cobweb
 * `shearsy=1`: Diggable by shears, and this node is *not* wool
 * `shearsy_wool=1`: Diggable by shears, and this node is wool
-* `handy=1`: Breakable by hand and this node gives it useful drop when dug by hand. All nodes which are breakable by pickaxe, axe, shovel, sword or shears are also automatically breakable by hand, but not neccess
-* `creative_breakable=1`: Block is breakable by hand in creative mode. This group is implied if the node belongs to any other digging group
 
-Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times work in Minecraft, as VoxeLibre is based on the same system.
+* `handy=1`: Breakable by hand and this node gives it useful drop when dug by hand. All nodes which are breakable by pickaxe, axe, shovel, sword or shears are also automatically breakable by hand, but not necessary
+* `creative_breakable=1`: Block is breakable by hand in creative mode. This group is implied if the node belongs to any other digging group
+* `indestructible=1`: Block should not be diggable in survival.
+* `unbreakable=1`: Block should not be diggable in survival.
+
+Refer to the mods "/_mcl_autogroup" and "/mcl_autogroup" to learn more about the technical handling of digging groups defined in "_mcl_diggroups". Also, refer to "mcl_tools/init.lua" for examples on how "_mcl_diggroups" is used in practice.
+
+* `dig_speed_class` This is a group applied to tools. It informs the tooltip about which helpful message should be displayed to the player relating to the tools dig speed capabilities. For more information on technical implementation of this group refer to `HELP/mcl_tt/snippets_base.lua` around ln 63.
+
+    * `dig_speed_class=1`: Painfully slow
+    * `dig_speed_class=2`: Very slow
+    * `dig_speed_class=3`: Slow
+    * `dig_speed_class=4`: Fast
+    * `dig_speed_class=5`: Very fast
+    * `dig_speed_class=6`: Extremely fast
+    * `dig_speed_class=7`: Instantaneous
 
 ### Groups for interactions
 
@@ -80,6 +94,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `compostability=X`: Item can be used on a composter block; X (1-100) is the % chance of adding a level of compost
 * `leaves=X`: Node will spotaneously decay if no tree trunk nodes remain within 6 blocks distance.
 * `leaves_orphan`: See above, these nodes are in the process of decayed.
+* `oxidizable=1`: nodes with this group will be flagged by mcl_oxidation for potential node swap. Used by copper blocks to oxidize.
 
 #### Footnotes
 
