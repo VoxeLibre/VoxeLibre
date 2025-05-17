@@ -1,0 +1,2 @@
+--BUCKET FUNCTIONS
+--Pretty much the entirety of bucket code would need to be copied over and API-ified in a similar manner to how we handle armor to make new buckets easy to register with a wrapper.
