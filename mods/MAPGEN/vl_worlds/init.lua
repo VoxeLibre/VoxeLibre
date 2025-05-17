@@ -469,15 +469,13 @@ end)
 
 
 -- API
--- dim_id - string - id of a valid registered dimension
--- required parameters in def:
 ---@class vl_worlds.LayerDef
 ---@field id string - layer ID in code
 ---@field bottom integer - start height from the bottom of the dimension (starts from 0)
 ---@field top integer - height of the last node of the layer relative to start of dimension
----@field has_separate_biomes boolean (optional, defaults to false) TODO
--- -- determines whether biomes can be registeted as a part of this layer
----@param dim_id string
+---@field has_separate_biomes boolean? (optional, defaults to false) TODO
+-- -- determines whether biomes can be registered as a part of this layer
+---@param dim_id string - id of a valid registered dimension
 ---@param def vl_worlds.LayerDef
 function vl_worlds.register_layer(dim_id, def)
 	assert(type(dim_id) == "string", "dim_id must be a string")
