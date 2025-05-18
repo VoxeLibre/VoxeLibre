@@ -99,7 +99,7 @@ minetest.register_globalstep(function(dtime)
 		for s, stack in pairs(inv:get_list("main")) do
 			local frame
 			-- Clocks do not work in certain zones
-			if not mcl_worlds.clock_works(player:get_pos()) then
+			if not mcl_compass.compass_works(player:get_pos()) then
 				frame = random_frame
 			else
 				frame = now
