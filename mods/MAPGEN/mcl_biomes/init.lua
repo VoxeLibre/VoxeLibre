@@ -34,6 +34,7 @@ assert(fringe_bounds)
 
 local modpath = core.get_modpath(core.get_current_modname())
 local underworld = {}
+local fringe = {}
 
 --
 -- Register biomes
@@ -2425,11 +2426,7 @@ underworld.register_biomes = function()
 	})
 end
 
--- Register biomes of non-Overworld biomes
-local function register_dimension_biomes()
-	--[[ REALMS ]]
-	underworld.register_biomes()
-
+fringe.register_biomes = function()
 	--[[ THE END ]]
 	minetest.register_biome({
 		name = "End",
@@ -2575,7 +2572,13 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
+end
 
+-- Register biomes of non-Overworld biomes
+local function register_dimension_biomes()
+	--[[ REALMS ]]
+	underworld.register_biomes()
+	fringe.register_biomes()
 end
 
 -- Register ores which are limited by biomes. For all mapgens except flat and singlenode.
@@ -3212,12 +3215,7 @@ underworld.register_ores = function()
 	})
 end
 
--- Non-Overworld ores
-local function register_dimension_ores()
-	underworld.register_ores()
-
-	--[[ THE END ]]
-
+fringe.register_ores = function()
 	-- Generate fake End
 	-- TODO: Remove the "ores" when there's a better End generator
 
@@ -3340,7 +3338,12 @@ local function register_dimension_ores()
 		},
 		clust_scarcity = 1,
 	})
+end
 
+-- Non-Overworld ores
+local function register_dimension_ores()
+	underworld.register_ores()
+	fringe.register_ores()
 end
 
 
@@ -5902,13 +5905,7 @@ underworld.register_decorations = function()
 		flags = "all_floors, force_placement",
 	})
 end
-
--- Decorations in non-Overworld dimensions
-local function register_dimension_decorations()
-	underworld.register_decorations()
-
-	--[[ THE END ]]
-
+fringe.register_decorations = function()
 	-- Chorus plant
 	mcl_mapgen_core.register_decoration({
 		name = "mcl_biomes:chorus",
@@ -5966,6 +5963,12 @@ local function register_dimension_decorations()
 		end,
 	})
 	-- TODO: End cities
+end
+
+-- Decorations in non-Overworld dimensions
+local function register_dimension_decorations()
+	underworld.register_decorations()
+	fringe.register_decorations()
 end
 
 
