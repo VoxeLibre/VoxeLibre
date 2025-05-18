@@ -473,7 +473,7 @@ end)
 ---@field id string - layer ID in code
 ---@field bottom integer - start height from the bottom of the dimension (starts from 0)
 ---@field top integer - height of the last node of the layer relative to start of dimension
----@field has_separate_biomes boolean? (optional, defaults to false) TODO
+---@field has_separate_biomes boolean? defaults to false
 -- -- determines whether biomes can be registered as a part of this layer
 ---@param dim_id string - id of a valid registered dimension
 ---@param def vl_worlds.LayerDef
@@ -492,16 +492,25 @@ function vl_worlds.register_layer(dim_id, def)
 	for _, dim in ipairs(world_structure) do
 		if dim.id == dim_id then
 			assert(def.top <= dim.height,
-				   "Unable to register layer \""..id.."\" in world \""..dim_id"\": top out of world bounds")
+				   "Unable to register layer \""..id.."\" in world \""..dim_id.."\": top out of world bounds")
 			local targ_index
 			if #dim.layers == 0 then
 				targ_index = 1
-			else for i, layer in ipairs(dim.layers) do
-				if layer.bottom > def.bottom then
-					targ_index = i
-					break
+			else
+				if def.has_separate_biomes then
+					for i, layer in ipairs(dim.layers) do
+						assert(not layer.has_separate_biomes
+							or layer.bottom > def.top or layer.top < def.bottom,
+							"Separate biome layers colliding: "..layer.id.." and "..def.id)
+					end
 				end
-			end end
+				for i, layer in ipairs(dim.layers) do
+					if layer.bottom > def.bottom then
+						targ_index = i
+						break
+					end
+				end
+			end
 			if not targ_index then
 				targ_index = #dim.layers + 1
 			end
@@ -509,6 +518,7 @@ function vl_worlds.register_layer(dim_id, def)
 				id = id,
 				bottom = def.bottom,
 				top = def.top,
+				has_separate_biomes = def.has_separate_biomes,
 			})
 			registered_worlds[dim_id].layers[id] = true -- set for now
 		end
