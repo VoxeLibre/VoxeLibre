@@ -22,7 +22,9 @@ RUN apk add --no-cache --virtual=build-dependencies build-base lua5.3-dev luajit
 RUN apk add --no-cache hiredis
 
 COPY . /VoxeLibre
-RUN cd /VoxeLibre/tests/docker/ && \
+RUN mkdir /luanti && \
+    cp -Rvf /VoxeLibre/tests/docker/* /luanti && \
+    cd /luanti && \
     sh build-luanti-versions.sh && \
     sh build-luanti-head.sh && \
     mkdir games worlds && \
