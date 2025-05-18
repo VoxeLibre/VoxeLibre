@@ -525,6 +525,28 @@ function vl_worlds.register_layer(dim_id, def)
 	end
 end
 
+-- API
+---@param string dim_id
+---@param string layer_id
+---@returns {min: integer, max: integer}?
+function vl_worlds.get_layer_bounds(dim_id, layer_id)
+	for _, dim in ipairs(world_structure) do
+		if dim.id == dim_id then
+			for _, layer in ipairs(dim.layers) do
+				if layer.id == layer_id then
+					return {
+						min = dim.start + layer.bottom,
+						max = dim.start + layer.top,
+					}
+				end
+			end
+		end
+	end
+
+	return nil
+end
+
+
 vl_worlds.register_layer("overworld", {
 	id = "underground-sea",
 	bottom = 0,
@@ -547,8 +569,19 @@ vl_worlds.register_layer("overworld", {
 	has_separate_biomes = true,
 })
 
--- TODO allow registering biomes in a layer like the 3 layers above with a generic API
--- -- such a biome definition should closely resemble a Luanti biome def
+-- API
+---@param string dim
+---@param string layer
+---@param core.BiomeDef def - everything except for ymin/ymax
+function vl_worlds.register_biome(dim, layer, def)
+	local bounds = vl_worlds.get_layer_bounds(dim, layer)
+	def.ymin = bounds.min
+	def.ymax = bounds.max
+	-- TODO support minp/maxp as well
+
+	core.register_biome(def)
+end
+
 -- TODO register bedrock, lava and other utility layers from below as has_separate_biomes = false
 
 
