@@ -74,6 +74,7 @@ local function compass_works(pos)
 
 	return false
 end
+mcl_compass.compass_works = compass_works
 
 -- Initialize random compass frame for spinning compass.  It is updated in
 -- the compass globalstep function.
@@ -142,6 +143,7 @@ local function get_compass_frame(pos, dir, itemstack)
 		local _, l_dim = y_to_layer(lpos.y)
 		local _, p_dim = y_to_layer(pos.y)
 		-- compass and lodestone must be in the same dimension
+		-- TODO migrate to new vl_worlds API
 		if l_dim == p_dim then
 			--check if lodestone still exists
 			if get_far_node(lpos, itemstack).name == "mcl_compass:lodestone" then
