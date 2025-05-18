@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 . tests/env.sh
 set -e
