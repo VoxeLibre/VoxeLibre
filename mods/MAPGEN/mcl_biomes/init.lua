@@ -32,6 +32,9 @@ assert(overworld_bounds)
 assert(underworld_bounds)
 assert(fringe_bounds)
 
+local modpath = core.get_modpath(core.get_current_modname())
+local underworld = {}
+
 --
 -- Register biomes
 --
@@ -2183,11 +2186,8 @@ local function register_biomes()
 	end
 end
 
--- Register biomes of non-Overworld biomes
-local function register_dimension_biomes()
-	--[[ REALMS ]]
-
-	--[[ THE NETHER ]]
+-- TODO: move to underworld.lua
+underworld.register_biomes = function()
 	-- the following decoration is a hack to cover exposed bedrock in netherrack - be careful not to put any ceiling decorations in a way that would apply to this (they would get generated regardless of biome)
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
@@ -2423,6 +2423,12 @@ local function register_dimension_biomes()
 			flags = "defaults",
 		}
 	})
+end
+
+-- Register biomes of non-Overworld biomes
+local function register_dimension_biomes()
+	--[[ REALMS ]]
+	underworld.register_biomes()
 
 	--[[ THE END ]]
 	minetest.register_biome({
@@ -3015,11 +3021,8 @@ local function register_biomelike_ores()
 	--[[ END OF DANGER ZONE ]]
 end
 
--- Non-Overworld ores
-local function register_dimension_ores()
-
-	--[[ NETHER GENERATION ]]
-
+-- TODO: move to underworld.lua
+underworld.register_ores = function()
 	-- Soul sand
 	minetest.register_ore({
 		ore_type = "sheet",
@@ -3207,6 +3210,11 @@ local function register_dimension_ores()
 		y_min = mcl_vars.mg_lava_nether_max + 49,
 		y_max = underworld_bounds.max - 13,
 	})
+end
+
+-- Non-Overworld ores
+local function register_dimension_ores()
+	underworld.register_ores()
 
 	--[[ THE END ]]
 
@@ -5549,9 +5557,8 @@ local function register_decorations()
 	register_flower("fourleaf_clover", flower_biomes1, 13, false, -0.002)
 end
 
--- Decorations in non-Overworld dimensions
-local function register_dimension_decorations()
-	--[[ NETHER ]]
+-- TODO: move to underworld.lua
+underworld.register_decorations = function()
 	--NETHER WASTES (Nether)
 	mcl_mapgen_core.register_decoration({
 		deco_type = "simple",
@@ -5894,6 +5901,11 @@ local function register_dimension_decorations()
 		y_max = underworld_bounds.max - 5,
 		flags = "all_floors, force_placement",
 	})
+end
+
+-- Decorations in non-Overworld dimensions
+local function register_dimension_decorations()
+	underworld.register_decorations()
 
 	--[[ THE END ]]
 
