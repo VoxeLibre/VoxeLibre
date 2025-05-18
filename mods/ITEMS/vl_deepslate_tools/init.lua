@@ -55,10 +55,10 @@ local deepslate = {
 	hammerspeed = 2.25,
 	spearspeed = 2,
 	spearlevel = 1,
+	stone = 150
 }
 
 local SPEAR_RANGE = 4.5
-
 
 local function spear_on_place(itemstack, user, pointed_thing)
 	if pointed_thing.type == "node" then
@@ -205,6 +205,12 @@ local function make_stripped_trunk(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
+-- Fix cobble group
+local def = core.registered_nodes["mcl_deepslate:deepslate_cobbled"]
+def.groups.cobble = nil  -- remove from the cobble group
+
+core.override_item("mcl_deepslate:deepslate_cobbled", def)
+
 
 -- include crafting recipes
 dofile(modpath .. "/crafting.lua")
@@ -347,7 +353,7 @@ core.register_tool("vl_deepslate_tools:spear_deepslate", {
 	_tt_help = spear_tt,
 	_doc_items_longdesc = spear_longdesc,
 	_doc_items_usagehelp = spear_use,
-	inventory_image = "vl_tool_deepslatespear.png",
+	inventory_image = "vl_deepslate_tools_deepslatespear",
 	wield_scale = wield_scale,
 	on_place = spear_on_place,
 	on_secondary_use = spear_on_place,
