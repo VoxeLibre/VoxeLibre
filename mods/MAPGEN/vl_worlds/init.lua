@@ -553,11 +553,13 @@ vl_worlds.register_layer("overworld", {
 	top = 58,
 	has_separate_biomes = true,
 })
+
 vl_worlds.register_layer("overworld", {
 	id = "ocean",
 	bottom = 58 + 4 - 15,
 	top = 58 + 4,
 })
+
 vl_worlds.register_layer("overworld", {
 	id = "shore",
 	bottom = 59,
