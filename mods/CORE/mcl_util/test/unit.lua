@@ -10,6 +10,7 @@ describe('mcl_util', function()
 		mock.modpaths["mcl_util"] = "./"
 		mock.modpaths["vl_unit_testing"] = true
 
+		_G.mcl_vars = {}
 		dofile("./init.lua")
 		mcl_util = _G.mcl_util
 	end)
