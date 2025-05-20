@@ -135,49 +135,47 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 })
 
 local function drink_milk_delayed(itemstack, player, pointed_thing)
-	if pointed_thing.type == "node" then
-		local node = minetest.get_node(pointed_thing.under)
-		if player and not player:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, player, itemstack) or itemstack
-			end
-		end
-	elseif pointed_thing.type == "object" then
-		return itemstack
-	end
+    if pointed_thing.type == "node" then
+        local node = minetest.get_node(pointed_thing.under)
+        if player and not player:get_player_control().sneak then
+            if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+                return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, player, itemstack) or itemstack
+            end
+        end
+    elseif pointed_thing.type == "object" then
+        return itemstack
+    end
 
-	local function drink_milk(itemstack, player, pointed_thing)
-		-- Check if we were allowed to drink this (eat delay check)
-		if mcl_hunger.active and (
-			player:get_inventory():get_stack("main", player:get_wield_index(), itemstack) == "mcl_mobitems:milk_bucket" or
-			minetest.is_creative_enabled(player:get_player_name())
-		) then
-			mcl_hunger.stop_poison(player)
-		end
-		mcl_potions._reset_effects(player)
-		mcl_weather.skycolor.update_player_sky_color(player)
-	end
+    -- Check if using a milk bucket
+    local wield_index = player:get_wield_index()
+    local inv = player:get_inventory()
+    local wield_stack = inv:get_stack("main", wield_index)
 
-	-- Wrapper for handling mcl_hunger delayed eating
-	local name = player:get_player_name()
-	local hunger_internal = mcl_hunger.eat_internal[name]
-	hunger_internal._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
-	hunger_internal._custom_var = {
-		itemstack = itemstack,
-		player = player,
-		pointed_thing = pointed_thing,
-	}
-	hunger_internal._custom_func = drink_milk
-	hunger_internal._custom_wrapper = function(name)
-		local hunger_internal2 = mcl_hunger.eat_internal[name]
-		hunger_internal2._custom_func(
-			hunger_internal2._custom_var.itemstack,
-			hunger_internal2._custom_var.player,
-			hunger_internal2._custom_var.pointed_thing
-		)
-	end
-
-	minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
+    if wield_stack:get_name() == "mcl_mobitems:milk_bucket" then
+        local empty_bucket = ItemStack("mcl_buckets:bucket_empty")
+        -- Check for creative mode or sufficient items/space
+        if minetest.is_creative_enabled(player:get_player_name()) or (wield_stack:get_count() > 0 and inv:room_for_item("main", empty_bucket)) then
+            -- Remove milk bucket and add empty one
+            local taken = inv:remove_item("main", "mcl_mobitems:milk_bucket")
+            inv:add_item("main", ItemStack(taken))
+            
+            -- Reset potion effects and weather
+            mcl_potions._reset_effects(player)
+            mcl_weather.skycolor.update_player_sky_color(player)
+			minetest.sound_play("survival_thirst_drink", {
+				max_hear_distance = 12,
+				gain = 1.0,
+				pitch = pitch or 1 + math.random(-10, 10)*0.005,
+				object = user,
+			}, true)            
+            return empty_bucket -- Return the empty bucket
+        else
+            return itemstack -- Keep original stack if can't afford to lose it
+        end
+    else
+        return itemstack -- Not drinking milk, keep as-is
+    end
+        minetest.do_item_eat(0, empty_bucket:to_string(), itemstack, player, pointed_thing)	
 end
 
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
