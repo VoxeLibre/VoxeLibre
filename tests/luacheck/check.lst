@@ -159,7 +159,6 @@
 ./mods/ITEMS/mcl_fire/fire_charge.lua
 ./mods/ITEMS/mcl_fletching_table/init.lua
 ./mods/ITEMS/mcl_flowerpots/init.lua
-./mods/ITEMS/mcl_flowers/bonemealing.lua
 ./mods/ITEMS/mcl_flowers/init.lua
 ./mods/ITEMS/mcl_flowers/register.lua
 ./mods/ITEMS/mcl_furnaces/init.lua
@@ -238,8 +237,6 @@
 ./mods/MAPGEN/mcl_dungeons/init.lua
 ./mods/MAPGEN/mcl_end_island/init.lua
 ./mods/MAPGEN/mcl_structures/geode.lua
-./mods/MAPGEN/tsm_railcorridors/gameconfig.lua
-./mods/MISC/findbiome/init.lua
 ./mods/MISC/mcl_commands/alias.lua
 ./mods/MISC/mcl_commands/init.lua
 ./mods/MISC/mcl_commands/list.lua
