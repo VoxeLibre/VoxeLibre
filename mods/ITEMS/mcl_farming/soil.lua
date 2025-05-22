@@ -15,7 +15,7 @@ minetest.register_node("mcl_farming:soil", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = {handy=1,shovely=1, dirtifies_below_solid=1, dirtifier=1, soil=2, soil_sapling=1, deco_block=1 },
+	groups = {handy=1,shovely=1, dirtifies_below_solid=1, dirtifier=1, soil=2, soil_sapling=1, deco_block=1, cultivatable=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
