@@ -7,7 +7,7 @@
 minetest.register_craft({
 	output = "vl_deepslate_tools:pick_deepslate",
 	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
+		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
 		{"", "mcl_core:stick", ""},
 		{"", "mcl_core:stick", ""},
 	}
@@ -16,7 +16,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "vl_deepslate_tools:shovel_deepslate",
 	recipe = {
-		{"mcl_deepslate:deepslate"},
+		{"mcl_deepslate:deepslate_cobbled"},
 		{"mcl_core:stick"},
 		{"mcl_core:stick"},
 	}
@@ -25,8 +25,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "vl_deepslate_tools:sword_deepslate",
 	recipe = {
-		{"mcl_deepslate:deepslate"},
-		{"mcl_deepslate:deepslate"},
+		{"mcl_deepslate:deepslate_cobbled"},
+		{"mcl_deepslate:deepslate_cobbled"},
 		{"mcl_core:stick"},
 	}
 })
@@ -34,16 +34,16 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "vl_deepslate_tools:axe_deepslate",
 	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
-		{"mcl_deepslate:deepslate", "mcl_core:stick"},
+		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
+		{"mcl_deepslate:deepslate_cobbled", "mcl_core:stick"},
 		{"", "mcl_core:stick"},
 	}
 })
 minetest.register_craft({
 	output = "vl_deepslate_tools:axe_deepslate",
 	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
-		{"mcl_core:stick", "mcl_deepslate:deepslate"},
+		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
+		{"mcl_core:stick", "mcl_deepslate:deepslate_cobbled"},
 		{"mcl_core:stick", ""},
 	}
 })
@@ -51,7 +51,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "vl_deepslate_tools:hoe_deepslate",
 	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
+		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
 		{"", "mcl_core:stick"},
 		{"", "mcl_core:stick"}
 	}
@@ -59,7 +59,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "vl_deepslate_tools:hoe_deepslate",
 	recipe = {
-		{"mcl_deepslate:deepslate", "mcl_deepslate:deepslate"},
+		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
 		{"mcl_core:stick", ""},
 		{"mcl_core:stick", ""}
 	}
@@ -67,7 +67,7 @@ minetest.register_craft({
 
 -- Hammer & spear crafting recipies
 local materials = {
-	deepslate = "mcl_deepslate:deepslate",
+	deepslate = "mcl_deepslate:deepslate_cobbled",
 }
 
 local s = "mcl_core:stick"
