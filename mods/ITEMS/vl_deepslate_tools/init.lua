@@ -75,6 +75,31 @@ local function spear_on_place(itemstack, user, pointed_thing)
 	return itemstack
 end
 
+local function create_soil(pos, inv)
+	if pos == nil then
+		return false
+	end
+	local node = minetest.get_node(pos)
+	local name = node.name
+	local above = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
+	if minetest.get_item_group(name, "cultivatable") == 2 then
+		if above.name == "air" then
+			node.name = "mcl_farming:soil"
+			minetest.set_node(pos, node)
+			minetest.sound_play("default_dig_crumbly", { pos = pos, gain = 0.5 }, true)
+			return true
+		end
+	elseif minetest.get_item_group(name, "cultivatable") == 1 then
+		if above.name == "air" then
+			node.name = "mcl_core:dirt"
+			minetest.set_node(pos, node)
+			minetest.sound_play("default_dig_crumbly", { pos = pos, gain = 0.6 }, true)
+			return true
+		end
+	end
+	return false
+end
+
 local hoe_on_place_function = function(wear_divisor)
 	return function(itemstack, user, pointed_thing)
 		-- Call on_rightclick if the pointed node defines it
@@ -206,11 +231,13 @@ local function make_stripped_trunk(itemstack, placer, pointed_thing)
 end
 
 -- Fix cobble group
-local def = core.registered_nodes["mcl_deepslate:deepslate_cobbled"]
-def.groups.cobble = nil  -- remove from the cobble group
+--local def = core.registered_nodes["mcl_deepslate:deepslate_cobbled"]
+--def.groups.cobble = nil  -- remove from the cobble group
+--core.override_item("mcl_deepslate:deepslate_cobbled", def.groups.cobble=def)
+core.override_item("mcl_deepslate:deepslate_cobbled", {
+	groups = { pickaxey = 1, building_block = 1, material_stone = 1, cobble = 0 },
 
-core.override_item("mcl_deepslate:deepslate_cobbled", def)
-
+})
 
 -- include crafting recipes
 dofile(modpath .. "/crafting.lua")
@@ -231,7 +258,7 @@ minetest.register_tool("vl_deepslate_tools:pick_deepslate", {
 		punch_attack_uses = 66,
 	},
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate",
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		pickaxey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
@@ -253,7 +280,7 @@ minetest.register_tool("vl_deepslate_tools:shovel_deepslate", {
 	},
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate",
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		shovely = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
@@ -274,7 +301,7 @@ minetest.register_tool("vl_deepslate_tools:hoe_deepslate", {
 		damage_groups = { fleshy = 1, },
 		punch_attack_uses = deepslate.stone,
 	},
-	_repair_material = "mcl_deepslate:deepslate",
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		hoey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
@@ -295,7 +322,7 @@ minetest.register_tool("vl_deepslate_tools:axe_deepslate", {
 	},
 	on_place = make_stripped_trunk,
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate",
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		axey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
@@ -317,7 +344,7 @@ minetest.register_tool("vl_deepslate_tools:sword_deepslate", {
 		punch_attack_uses = 132,
 	},
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate",
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		swordy = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses },
@@ -340,7 +367,7 @@ core.register_tool("vl_deepslate_tools:hammer_deepslate", {
 		punch_attack_uses = deepslate.uses,
 	},
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate",
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		pickaxey = { speed = deepslate.hammerspeed, level = deepslate.level, uses = deepslate.uses },
@@ -353,7 +380,7 @@ core.register_tool("vl_deepslate_tools:spear_deepslate", {
 	_tt_help = spear_tt,
 	_doc_items_longdesc = spear_longdesc,
 	_doc_items_usagehelp = spear_use,
-	inventory_image = "vl_deepslate_tools_deepslatespear",
+	inventory_image = "vl_deepslate_tools_deepslatespear.png",
 	wield_scale = wield_scale,
 	on_place = spear_on_place,
 	on_secondary_use = spear_on_place,
@@ -366,7 +393,7 @@ core.register_tool("vl_deepslate_tools:spear_deepslate", {
 		punch_attack_uses = deepslate.uses,
 	},
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate",
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		swordy = { speed = deepslate.spearspeed, level = deepslate.spearlevel, uses = deepslate.uses },
