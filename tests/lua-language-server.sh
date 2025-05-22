@@ -8,10 +8,7 @@ set -e
 	mkdir -p /usr/share/luanti/
 	cd /usr/share/luanti
 	# TODO: change to https://codeberg.org/fgaz/luanti-lls-definitions after https://codeberg.org/fgaz/luanti-lls-definitions/pulls/1 is merged
-	git clone --depth 1 https://codeberg.org/teknomunk/luanti-lls-definitions.git || true
-	cd luanti-lls-definitions
-	git checkout fill-out-definitions
-	git pull
+	git clone --single-branch --branch fill-out-definitions --depth 1 https://codeberg.org/teknomunk/luanti-lls-definitions.git || true
 
 	if ! test -d /usr/share/luanti/builtin; then
 		ln /usr/share/minetest/builtin /usr/share/luanti/builtin -s
