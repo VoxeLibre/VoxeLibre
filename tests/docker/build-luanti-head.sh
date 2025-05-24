@@ -12,28 +12,30 @@ build-head()
 	git checkout master
 	git pull
 	cmake . -DRUN_IN_PLACE=TRUE
-	make -j$(nproc) && ln -sf $PWD/bin/luanti /usr/local/bin/luanti-head
+	make -j$(nproc) && ln -sf $PWD/bin/luanti $INSTALL_BIN/luanti-head
 }
 build-head-nojit()
 {
 	git checkout master
 	git pull
 	cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=OFF
-	make -j$(nproc) && ln -sf $PWD/bin/luanti /usr/local/bin/luanti-head-nojit
+	make -j$(nproc) && ln -sf $PWD/bin/luanti $INSTALL_BIN/luanti-head-nojit
 }
 
 mkdir -p bin build
+INSTALL_BIN=$PWD/bin
 for VERSION in $VERSIONS; do
 	rm -f bin/luanti-$VERSION
 	(
 		cd build/
+		rm -Rvf luanti-$VERSION || true
 		git clone ../luanti/ luanti-$VERSION
 		cd luanti-$VERSION
 		rm -Rvf games || true
 		ln -sf ../../games games
 		rm -Rvf worlds || true
 		ln -sf ../../worlds worlds
-		rm /usr/local/bin/luanti-$VERSION || true
+		rm $INSTALL_BIN/luanti-$VERSION || true
 		build-$VERSION
 	)
 done
