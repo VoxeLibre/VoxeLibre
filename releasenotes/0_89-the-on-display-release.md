@@ -143,3 +143,6 @@ Bone control code, which had workarounds incompatible with 5.11+ Luanti versions
 * Fixed one letter signs not working – by kno10
 * Fixed undefined variable regression – by teknomunk
 * Fixed a few bugs in cartography table interface, including a crash – by teknomunk and Herowl
+
+## 0.89.4 hotfix
+* Fixed a crash occuring with new Luanti 5.12.0 release – by teknomunk

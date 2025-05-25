@@ -89,8 +89,8 @@ If you decided that the current state of the master branch shouldn't be used as 
 
 1. Create release branch from the last release tag, push it:
 ```
-git checkout -b release/0.82.1 0.82.0
-git push origin release/0.82.1
+git checkout -b release/0.89.4 0.89.3
+git push origin release/0.89.4
 ```
 2. Cherry-pick the relevant commits from the master branch, or merge them from other (PR) branches.
 3. Make sure your local copy of the branch contains all the relevant changes, **do not rebase**.
@@ -131,7 +131,7 @@ git commit -m "Update release notes for hotfix v0.87.1"
 git tag 0.87.1
 git push origin 0.87.1
 ```
-8. If you are skipping some changes from the master branch (and thus are using a prepared master branch from the previous section),
+8. If you are skipping some changes from the master branch (and thus are using a prepared branch from the previous section),
 push to the remote and skip the next two steps:
 ```
 git push origin release/0.82.1
@@ -141,6 +141,14 @@ git push origin release/0.82.1
 git commit -m "Post-hotfix reset version 0.88.0-SNAPSHOT"
 ```
 10. If you're releasing master branch, push the above to a new branch, and make the release PR. Merge to finalize release process.
+
+11. Do the following if and only if you're releasing a prepared branch: cherry-pick the release notes commit onto a new branch,
+then push it and open a new PR to update the relase notes in master
+```
+git checkout -b notes/0.89.4 master
+git cherry-pick #insert relevant commit hash here
+git push origin notes/0.89.4
+```
 
 ### Release via ContentDB
 
