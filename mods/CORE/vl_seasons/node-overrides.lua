@@ -55,3 +55,15 @@ core.override_item("vl_seasons:unbloomed_poppy", {
    _mcl_oxidized_seasonal_variant = "mcl_flowers:poppy",
    _mcl_oxidized_season_disallowed = {"fall", "winter"},
 })
+
+--Flower Pot Overrides
+core.override_item("mcl_flowerpots:flower_pot_poppy", {
+   groups = add_groups("mcl_flowerpots:flower_pot_poppy", {oxidizable = 1,}),
+   _mcl_oxidized_seasonal_variant = "mcl_flowerpots:flower_pot_unbloomed_poppy",
+   _mcl_oxidized_season_disallowed = {"spring", "summer"},
+})
+core.override_item("mcl_flowerpots:flower_pot_unbloomed_poppy", {
+   groups = add_groups("mcl_flowers:poppy", {oxidizable = 1,}),
+   _mcl_oxidized_seasonal_variant = "mcl_flowerpots:flower_pot_poppy",
+   _mcl_oxidized_season_disallowed = {"fall", "winter"},
+})
