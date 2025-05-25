@@ -1,6 +1,8 @@
+seasons = {}
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
 dofile(modpath.."/season-cycle.lua")
 dofile(modpath.."/chatcommands.lua")
+dofile(modpath.."/unbloomed-flower-registry.lua")
 dofile(modpath.."/node-overrides.lua")
