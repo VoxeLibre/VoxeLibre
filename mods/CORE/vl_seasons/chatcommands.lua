@@ -1,75 +1,69 @@
-local S = minetest.get_translator("vl_seasons")
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
+local S = core.get_translator(core.get_current_modname())
+local tellplayer = core.chat_send_player
+local get_season = seasons.get_season
 
 core.register_chatcommand("season", {
     description = S("Display or set the current season's effective day count."),
     func = function(name, param)
-        if param ~= "" then
-            local lower_param = param:lower()
+        -- Check if no parameter is provided (display current info)
+        if param == "" then
+            local get_effective_day = seasons.get_effective_day_count
+            tellplayer(name, string.format("The current season is %s, today is %d", get_season(), get_effective_day()))
+            return
+        end
 
-            -- Handle "/season reset" to revert to real-time days
-            if lower_param == "reset" then
-                if minetest.check_player_privs(name, {server=true}) then
-                    seasons.effective_overridden = false
-                    minetest.chat_send_player(name, S("Effective day count reset; now following real days."))
-                else
-                    minetest.chat_send_player(name, S("You lack the privilege to reset the effective day count."))
-                end
-            else
-                -- Handle "/season <season>" to set the effective day to the season's starting day
-                local season_names = seasons.get_season_names()
-                local season_starting_days = seasons.get_starting_days()
+        -- Process non-empty parameters
+        local lower_param = param:lower()
 
-                -- Find the index of the given season name in the list
-                local index = nil
-                for i, name in ipairs(season_names) do
-                    if name == lower_param then
-                        index = i
-                        break
-                    end
-                end
+        -- First check if the player has server privileges for actions requiring it
+        local has_privileges = core.check_player_privs(name, {server=true})
+        if not has_privileges then
+            tellplayer(name, S("You lack the privilege to perform this action."))
+            return  
+        end
 
-                if index then
-                    local start_day = season_starting_days[index]
+        -- Handle "/season reset"
+        if lower_param == "reset" then
+            seasons.effective_overridden = false
+            tellplayer(name, S("Effective day count reset; now following real days."))
+            return  
+        end
 
-                    if minetest.check_player_privs(name, {server=true}) then
-                        if not seasons.set_effective_day_count(start_day) then
-                            minetest.chat_send_player(name, S("Invalid number provided."))
-                        else
-                            local current_season = seasons.get_season()
-                            minetest.chat_send_player(name, string.format(
-                                S("Set effective day count to %d (the current season is %s)."),
-                                start_day,
-                                current_season
-                            ))
-                        end
-                    else
-                        minetest.chat_send_player(name, S("You lack the privilege to set the effective day count."))
-                    end
-                else
-                    -- Check if extra param is a numeric value
-                    local value = tonumber(param)
-                    if value then
-                        if minetest.check_player_privs(name, {server=true}) then
-                            if not seasons.set_effective_day_count(value) then
-                                minetest.chat_send_player(name, S("Invalid number provided."))
-                            else
-                                minetest.chat_send_player(name, "Set effective day count to " .. value)
-                            end
-                        else
-                            minetest.chat_send_player(name, S("You lack the privilege to set the effective day count."))
-                        end
-                    else
-                        minetest.chat_send_player(name, S("Invalid number provided."))
-                    end
+		-- Handle "/season <season>"
+        -- Get season names and starting days
+        local season_names = seasons.get_season_names()
+        local season_starting_days = seasons.get_starting_days()
+
+        -- Check if param is a valid season name
+        local index = nil
+        for i, name in ipairs(season_names) do
+            if name == lower_param then
+                index = i
+                break
+            end
+        end
+
+        if index then
+            local start_day = season_starting_days[index]
+            seasons.set_effective_day_count(start_day)
+            tellplayer(name, string.format(S("Set effective day count to %d (the current season is %s)."),start_day,get_season()))
+            return
+        else
+
+			-- Handle /season <int>
+            -- Check if param is a valid integer (including negative)
+            local value = tonumber(param)
+            if value ~= nil then
+                -- Ensure it's an exact integer
+                local int_value = math.floor(value)
+                if int_value == value then
+                    seasons.set_effective_day_count(int_value)
+                    tellplayer(name, "Set effective day count to " .. int_value)
+                    return
                 end
             end
-        else
-            -- Display current season and effective day count
-            local get_season = seasons.get_season
-            local get_effective_day = seasons.get_effective_day_count
-            minetest.chat_send_player(name, string.format("Player %s is currently in %s! Day %d", name, get_season(), get_effective_day()))
+            -- If neither season nor valid integer, show error
+            tellplayer(name, S("Invalid parameter provided."))
         end
     end
 })
