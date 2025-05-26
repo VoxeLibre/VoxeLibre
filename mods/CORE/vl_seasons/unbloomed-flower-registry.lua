@@ -1,9 +1,6 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 --Copied from mcl_flowers
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
-local S = minetest.get_translator(modname)
 
 local mod_screwdriver = minetest.get_modpath("screwdriver")
 local has_mcl_flowerpots = minetest.get_modpath("mcl_flowerpots")
@@ -91,82 +88,75 @@ end
 
 -- Unbloomed Flower Registry
 seasons.register_simple_flower("unbloomed_poppy", {
-	desc = S("Poppy"),
-	image = "vl_seasons_unbloomed_poppy.png",
+	desc = S("Unbloomed Poppy"),
+	image = "vl_seasons_unbloomed_poppy_stage_0.png",
 	selection_box = { -5/16, -0.5, -5/16, 5/16, 5/16, 5/16 },
 	potted = true,
 })
---[[
-mcl_flowers.register_simple_flower("dandelion", {
-	desc = S("Dandelion"),
-	image = "flowers_dandelion_yellow.png",
-	selection_box = { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_dandelion", {
+    desc = S("Unbloomed Dandelion"),
+    image = "vl_seasons_unbloomed_dandelion_yellow_stage_0.png",
+    selection_box = { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("oxeye_daisy", {
-	desc = S("Oxeye Daisy"),
-	image = "mcl_flowers_oxeye_daisy.png",
-	selection_box = { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_oxeye_daisy", {
+    desc = S("Unbloomed Oxeye Daisy"),
+    image = "vl_seasons_unbloomed_oxeye_daisy_stage_0.png",
+    selection_box = { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("tulip_orange", {
-	desc = S("Orange Tulip"),
-	image = "flowers_tulip.png",
-	selection_box = { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_tulip_orange", {
+    desc = S("Unbloomed Orange Tulip"),
+    image = "vl_seasons_unbloomed_tulip_orange_stage_0.png",
+    selection_box = { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("tulip_pink", {
-	desc = S("Pink Tulip"),
-	image = "mcl_flowers_tulip_pink.png",
-	selection_box = { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_tulip_pink", {
+    desc = S("Unbloomed Pink Tulip"),
+    image = "vl_seasons_unbloomed_tulip_pink_stage_0.png",
+    selection_box = { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("tulip_red", {
-	desc = S("Red Tulip"),
-	image = "mcl_flowers_tulip_red.png",
-	selection_box = { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_tulip_red", {
+    desc = S("Unbloomed Red Tulip"),
+    image = "vl_seasons_unbloomed_tulip_red_stage_0.png",
+    selection_box = { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("tulip_white", {
-	desc = S("White Tulip"),
-	image = "mcl_flowers_tulip_white.png",
-	selection_box = { -3/16, -0.5, -3/16, 3/16, 4/16, 3/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_tulip_white", {
+    desc = S("Unbloomed White Tulip"),
+    image = "vl_seasons_unbloomed_tulip_white_stage_0.png",
+    selection_box = { -3/16, -0.5, -3/16, 3/16, 4/16, 3/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("allium", {
-	desc = S("Allium"),
-	image = "mcl_flowers_allium.png",
-	selection_box = { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_allium", {
+    desc = S("Unbloomed Allium"),
+    image = "vl_seasons_unbloomed_allium_stage_0.png",
+    selection_box = { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("azure_bluet", {
-	desc = S("Azure Bluet"),
-	image = "mcl_flowers_azure_bluet.png",
-	selection_box = { -5/16, -0.5, -5/16, 5/16, 3/16, 5/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_azure_bluet", {
+    desc = S("Unbloomed Azure Bluet"),
+    image = "vl_seasons_unbloomed_azure_bluet_stage_0.png",
+    selection_box = { -5/16, -0.5, -5/16, 5/16, 3/16, 5/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("blue_orchid", {
-	desc = S("Blue Orchid"),
-	image = "mcl_flowers_blue_orchid.png",
-	selection_box = { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_blue_orchid", {
+    desc = S("Unbloomed Blue Orchid"),
+    image = "vl_seasons_unbloomed_blue_orchid_stage_0.png",
+    selection_box = { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("wither_rose", {
-	desc = S("Wither Rose"),
-	image = "mcl_flowers_wither_rose.png",
-	selection_box = { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 },
-	potted = true,
+
+seasons.register_simple_flower("unbloomed_lily_of_the_valley", {
+    desc = S("Unbloomed Lily of the Valley"),
+    image = "vl_seasons_unbloomed_lily_of_the_valley_stage_0.png",
+    selection_box = { -5/16, -0.5, -5/16, 4/16, 5/16, 5/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("lily_of_the_valley", {
-	desc = S("Lily of the Valley"),
-	image = "mcl_flowers_lily_of_the_valley.png",
-	selection_box = { -5/16, -0.5, -5/16, 4/16, 5/16, 5/16 },
-	potted = true,
+seasons.register_simple_flower("unbloomed_cornflower", {
+    desc = S("Unbloomed Cornflower"),
+    image = "vl_seasons_unbloomed_cornflower_stage_0.png",
+    selection_box = { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 },
+    potted = true,
 })
-mcl_flowers.register_simple_flower("cornflower", {
-	desc = S("Cornflower"),
-	image = "mcl_flowers_cornflower.png",
-	selection_box = { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 },
-	potted = true,
-})
-]]
