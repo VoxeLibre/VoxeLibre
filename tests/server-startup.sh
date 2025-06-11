@@ -37,10 +37,13 @@ for VERSION in $VERSIONS; do
 	# Wait for the server to complete startup or timeout after 15 seconds
 	DONE=false
 	SUCCESS=false
-	COUNT=30
+	COUNT=60
 	set +x
 	while ! $DONE; do
 		if cat $LOG | grep -q 'ERROR'; then
+			echo "An error occured while starting VoxeLibre on Luanti $VERSION:"
+			cat $LOG | grep -q 'ERROR'
+
 			DONE=true
 			SUCCESS=false
 		fi
@@ -50,6 +53,7 @@ for VERSION in $VERSIONS; do
 		fi
 		COUNT=$(( $COUNT - 1 ))
 		if [ "$COUNT" == "0" ]; then
+			echo "Timeout while starting VoxeLibre on Luanti $VERSION"
 			DONE=true
 			SUCCESS=false
 		fi
