@@ -19,6 +19,7 @@
     "AreaStore",
     "vector"
   ],
+  "diagnostics.ignoredFiles": "Disabled",
   "workspace.library": ["/usr/share/luanti/luanti-lls-definitions/library", "/usr/share/luanti/builtin"],
-  "workspace.ignoreDir": [".luacheckrc"]
+  "workspace.ignoreDir": [".luacheckrc","bin","build","log"]
 }
