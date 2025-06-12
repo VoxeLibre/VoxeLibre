@@ -3,9 +3,13 @@ VERSIONS="head head-nojit"
 
 set -ex
 
-test -e luanti || git clone https://github.com/luanti-org/luanti.git
-test -e irrlichtmt || git clone https://github.com/minetest/irrlichtmt.git irrlichtmt
-(cd luanti; git checkout master; git pull)
+mkdir -p build
+(
+	cd build
+	test -e luanti || git clone https://github.com/luanti-org/luanti.git
+	test -e irrlichtmt || git clone https://github.com/minetest/irrlichtmt.git irrlichtmt
+	(cd luanti; git checkout master; git pull)
+)
 
 build-head()
 {
@@ -29,13 +33,19 @@ for VERSION in $VERSIONS; do
 	(
 		cd build/
 		rm -Rvf luanti-$VERSION || true
-		git clone ../luanti/ luanti-$VERSION
+
+		# Checkout the specific version desired
+		git clone luanti/ luanti-$VERSION
 		cd luanti-$VERSION
-		rm -Rvf games || true
-		ln -sf ../../games games
-		rm -Rvf worlds || true
-		ln -sf ../../worlds worlds
+
+		# Build the server
 		rm $INSTALL_BIN/luanti-$VERSION || true
 		build-$VERSION
+
+		# Setup games and worlds
+		ln -s ../../ games/VoxeLibre-Test
+		rm -Rvf worlds || true
+		mkdir -p ../worlds
+		ln -s ../worlds worlds
 	)
 done
