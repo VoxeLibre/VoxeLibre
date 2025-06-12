@@ -12,6 +12,8 @@ echo -n > luacheck-passed.lst
 	find ./ -name mod.conf
 	echo EOF
 ) | $LUA tests/luacheck/test.lua | sh
-cat luacheck-passed.lst | sort > check.lst
+cp test/luacheck/check.lst{,.orig}
+cat luacheck-passed.lst test/luacheck/check.lst.orig | sort > test/luacheck/check.lst
+rm test/luacheck/check.lst.org
 rm luacheck-passed.lst
 
