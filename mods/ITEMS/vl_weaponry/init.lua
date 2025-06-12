@@ -93,7 +93,11 @@ local function throw_spear(itemstack, user, power_factor)
 		owner = user,
 		velocity = SPEAR_THROW_POWER * power_factor,
 	})
-	obj:set_properties({textures = {itemstack:get_name()}})
+	local obj_properties = table.copy(spear_entity)
+	table.update(obj_properties, {
+		textures = {itemstack:get_name()}
+	})
+	obj:set_properties(obj_properties)
 	local le = obj:get_luaentity()
 	le._shooter = user
 	le._source_object = user
