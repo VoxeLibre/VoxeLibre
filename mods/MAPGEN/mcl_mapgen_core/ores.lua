@@ -642,7 +642,6 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 	if minetest.settings:get_bool("mcl_generate_deepslate", true) then
 			local stonelike = { "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite" }
 		local function register_ore_mg(ore, scarcity, num, size, y_min, y_max, biomes)
-			biomes = biomes or ""
 			minetest.register_ore({
 				ore_type       = "scatter",
 				ore            = ore,
@@ -652,7 +651,7 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 				clust_size     = size,
 				y_min          = y_min,
 				y_max          = y_max,
-				biomes		   = biomes,
+				biomes         = biomes,
 			})
 		end
 		local ore_mapgen = {
