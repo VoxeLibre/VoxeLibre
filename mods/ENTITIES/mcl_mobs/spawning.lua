@@ -28,6 +28,16 @@ local math_abs       = math.abs
 
 local vector_distance = vector.distance
 
+local easy = {
+	group_roll_probability = 0.95, -- 1 in 20 chance for each additional mob in group
+	fixed_timeslice = 250,
+}
+local hard = { -- Placeholder for when we implement difficulty levels
+	group_roll_probability = 0.80,
+	fixed_timeslice = 1000,
+}
+local rates = easy
+
 local pairs = pairs
 local check_line_of_sight = mcl_mobs.check_line_of_sight
 
@@ -970,12 +980,18 @@ if mobs_spawn then
 				end
 			end
 
+			local probabilities = {}
+			for _,def in ipairs(spawn_list) do
+				probabilities[def.name] = def.chance / cumulative_chance
+			end
+
 			core.log(dump({
 				pos = pos,
 				node = node,
 				state = state,
 				state_hash = state_hash,
 				spawn_names = spawn_names,
+				probabilities = probabilities,
 			}))
 		end
 		spawn_lists[state_hash] = spawn_list
@@ -1059,7 +1075,7 @@ if mobs_spawn then
 
 			local amount_to_spawn = group_min
 			for i = group_min,spawn_in_group do
-				if math_random() > 0.80 then
+				if math_random() > rates.group_roll_probability then
 					amount_to_spawn = amount_to_spawn + 1
 				else
 					break
@@ -1145,7 +1161,7 @@ if mobs_spawn then
 		end
 
 		--note = nil
-		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
+		local next_spawn, took = fixed_timeslice(timer, dtime, rates.fixed_timeslice, attempt_spawn)
 		timer = next_spawn
 
 		if (profile or logging) and took > 0 then
