@@ -357,9 +357,10 @@ function mod.collides_with_solids(self, dtime, entity_def, projectile_def)
 	local node = core.get_node(pos)
 	local node_def = core.registered_nodes[node.name]
 	local collides_with = projectile_def.collides_with
+	local physical = (entity_def.initial_properties and entity_def.initial_properties.physical) or entity_def.physical
 
 	if not collides_with or not mcl_util.match_node_to_filter(node.name, collides_with) then
-		if entity_def.physical then
+		if physical then
 			-- Projectile has stopped in one axis, so it probably hit something.
 			-- This detection is a bit clunky, but sadly, MT does not offer a direct collision detection for us. :-(
 			local vel = self.object:get_velocity()
