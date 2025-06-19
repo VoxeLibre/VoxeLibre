@@ -490,6 +490,7 @@ mcl_mobs:spawn_setup({
 	min_light = 0,
 	max_light = 7,
 	chance = 400,
+	soft_cap = 5,
 	interval = 20,
 	aoc = 2,
 	min_height = mcl_vars.mg_overworld_min,
