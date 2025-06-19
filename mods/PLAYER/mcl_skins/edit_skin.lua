@@ -364,25 +364,30 @@ function mcl_skins.show_formspec(player, active_tab, page_num)
 			end
 		end
 
-		local slot_offset = 0
+		local start_index = 0
+		local end_index = 0
+		local page_index = 1
 
 		if page_num == 1 then
 			formspec = formspec ..
 				"label[6,3;" .. S("(None)") .. "]"..
 				"button[5.5,4.2;2,0.8;nocape;" .. S("Select") .. "]"
-			slot_offset = 1
+			start_index = 1
+			end_index = math.min(#player_capes, 4)
+			page_index = 2
+		else
+			start_index = (4 + ((page_num - 2) * 5) + 1)
+			end_index = math.min(#player_capes, start_index + 5 - 1)
 		end
 
-		local array_start = page_num * 5 - 4
-		local index_offset = page_num == 1 and 1 or 2
-
-		for slot = 1 + slot_offset, page_num ~= page_count and 5 or (#player_capes % 5 == 0 and 1 or #player_capes % 5) + slot_offset do
-			local cape = player_capes[array_start + slot - slot_offset - index_offset]
-			local pos = possize[slot]
+		for cape_index = start_index, end_index do
+			local cape = player_capes[cape_index]
+			local pos = possize[page_index]
 
 			formspec = formspec ..
-				"image[" .. possize[slot][1] .. ";" .. cape.name ..".png]"..
-				"button[" .. possize[slot][2] .. ";" .. cape.name ..";" .. S("Select") .. "]"
+				"image[" .. possize[page_index][1] .. ";" .. cape.name ..".png]"..
+				"button[" .. possize[page_index][2] .. ";" .. cape.name ..";" .. S("Select") .. "]"
+			page_index = page_index + 1
 		end
 
 	elseif mcl_skins[active_tab] then
@@ -574,7 +579,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_skins.show_formspec(player, active_tab, page_num)
 		return true
 	elseif active_tab == "cape" then
-		for cape_index = ((page_num - 1) * 5) + 1, math.min(#mcl_skins.cape, page_num * 5) do
+		local offset = (page_num - 1) * 5
+		if page_num > 1 then
+			offset = offset - 1  -- Adjust for (None) taking a spot on pg 1
+		end
+		for cape_index = offset + 1, math.min(#mcl_skins.cape, offset + 5) do
 			local cape = mcl_skins.cape[cape_index]
 			if fields[cape.name] then
 				local player_skins = get_player_skins(player)
