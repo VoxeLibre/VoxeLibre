@@ -1,4 +1,13 @@
-import tkinter as tk
+try:
+    import tkinter as tk
+except:
+    print("ERROR: Module \"tkinter\" not found. You have to install it manually.\n")
+    print("Arch-based Linux: \t\tsudo pacman -S tk")
+    print("Debian/Ubuntu-based Linux: \tsudo apt install python3-tk")
+    print("Redhat-based Linux: \t\tdnf install python3-tkinter")
+    print("macOS: \t\t\t\tbrew install python-tk")
+    exit(1)
+
 from tkinter import filedialog, messagebox, ttk, font
 from libtextureconverter.utils import handle_default_minecraft_texture, find_all_minecraft_resourcepacks
 from libtextureconverter.config import home, get_minetest_directory
