@@ -1,8 +1,8 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 mcl_observers = {}
 
-local get_node = minetest.get_node
+local get_node = core.get_node
 
 -- Warning! TODO: Remove this message.
 -- 'realtime' is experimental feature! It can slow down everything!
@@ -28,18 +28,18 @@ local rules_up   = {{ x = 0, y = -1, z = 0, spread = true }}
 
 -- Fire the redstone pulse, then rely on the node-timer in each 'on' state to turn it off
 function mcl_observers.observer_activate(pos)
-	minetest.after(mcl_vars.redstone_tick, function(p)
+	core.after(mcl_vars.redstone_tick, function(p)
 		local node = get_node(p)
 		if not node then return end
 		local nn = node.name
 		if     nn == "mcl_observers:observer_off"      then
-			minetest.set_node(p, { name="mcl_observers:observer_on",     param2=node.param2 })
+			core.set_node(p, { name="mcl_observers:observer_on",     param2=node.param2 })
 			mesecon.receptor_on(p, get_rules_flat(node))
 		elseif nn == "mcl_observers:observer_down_off" then
-			minetest.set_node(p, { name="mcl_observers:observer_down_on" })
+			core.set_node(p, { name="mcl_observers:observer_down_on" })
 			mesecon.receptor_on(p, rules_down)
 		elseif nn == "mcl_observers:observer_up_off"   then
-			minetest.set_node(p, { name="mcl_observers:observer_up_on" })
+			core.set_node(p, { name="mcl_observers:observer_up_on" })
 			mesecon.receptor_on(p, rules_up)
 		end
 	end, pos)
@@ -51,11 +51,11 @@ local function observer_scan(pos, initialize)
 	local front
 	if     node.name:find("observer_up")   then front = vector.add(pos, {x=0, y= 1, z=0})
 	elseif node.name:find("observer_down") then front = vector.add(pos, {x=0, y=-1, z=0})
-	else                                        front = vector.add(pos, minetest.facedir_to_dir(node.param2))
+	else                                        front = vector.add(pos, core.facedir_to_dir(node.param2))
 	end
 
 	local frontnode = get_node(front)
-	local meta      = minetest.get_meta(pos)
+	local meta      = core.get_meta(pos)
 	local oldnode   = meta:get_string("node_name")
 	local oldp2     = meta:get_string("node_param2")
 	local changed   = (oldnode == "" or initialize)
@@ -64,13 +64,13 @@ local function observer_scan(pos, initialize)
 	if changed and node.name:find("_off$") then
 		-- Only fire if we're currently in an _off variant
 		if     node.name == "mcl_observers:observer_off"      then
-			minetest.set_node(pos, { name="mcl_observers:observer_on",     param2=node.param2 })
+			core.set_node(pos, { name="mcl_observers:observer_on",     param2=node.param2 })
 			mesecon.receptor_on(pos, get_rules_flat(node))
 		elseif node.name == "mcl_observers:observer_down_off" then
-			minetest.set_node(pos, { name="mcl_observers:observer_down_on" })
+			core.set_node(pos, { name="mcl_observers:observer_down_on" })
 			mesecon.receptor_on(pos, rules_down)
 		elseif node.name == "mcl_observers:observer_up_off"   then
-			minetest.set_node(pos, { name="mcl_observers:observer_up_on" })
+			core.set_node(pos, { name="mcl_observers:observer_up_on" })
 			mesecon.receptor_on(pos, rules_up)
 		end
 	end
@@ -88,9 +88,9 @@ local function observer_orientate(pos, placer)
 	if not placer then return end
 	local pitch = placer:get_look_vertical() * (180 / math.pi)
 	if pitch > 55  then
-		minetest.set_node(pos, { name="mcl_observers:observer_down_off" })
+		core.set_node(pos, { name="mcl_observers:observer_down_off" })
 	elseif pitch < -55 then
-		minetest.set_node(pos, { name="mcl_observers:observer_up_off" })
+		core.set_node(pos, { name="mcl_observers:observer_up_off" })
 	end
 end
 
@@ -145,18 +145,18 @@ mesecon.register_node("mcl_observers:observer", {
 
 	-- Start a node-timer to flip back off after the pulse delay.
 	on_construct = function(pos)
-		minetest.get_node_timer(pos):start(mcl_vars.redstone_tick)
+		core.get_node_timer(pos):start(mcl_vars.redstone_tick)
 	end,
 	on_timer = function(pos)
 		local n = get_node(pos)
 		if     n.name == "mcl_observers:observer_on"      then
-			minetest.set_node(pos, { name="mcl_observers:observer_off",     param2=n.param2 })
+			core.set_node(pos, { name="mcl_observers:observer_off",     param2=n.param2 })
 			mesecon.receptor_off(pos, get_rules_flat(n))
 		elseif n.name == "mcl_observers:observer_down_on" then
-			minetest.set_node(pos, { name="mcl_observers:observer_down_off" })
+			core.set_node(pos, { name="mcl_observers:observer_down_off" })
 			mesecon.receptor_off(pos, rules_down)
 		elseif n.name == "mcl_observers:observer_up_on"   then
-			minetest.set_node(pos, { name="mcl_observers:observer_up_off" })
+			core.set_node(pos, { name="mcl_observers:observer_up_off" })
 			mesecon.receptor_off(pos, rules_up)
 		end
 	end,
@@ -199,11 +199,11 @@ mesecon.register_node("mcl_observers:observer_down", {
 		},
 	},
 	on_construct = function(pos)
-		minetest.get_node_timer(pos):start(mcl_vars.redstone_tick)
+		core.get_node_timer(pos):start(mcl_vars.redstone_tick)
 	end,
 	on_timer = function(pos)
 		local n = get_node(pos)
-		minetest.set_node(pos, { name="mcl_observers:observer_down_off", param2=n.param2 })
+		core.set_node(pos, { name="mcl_observers:observer_down_off", param2=n.param2 })
 		mesecon.receptor_off(pos, rules_down)
 	end,
 })
@@ -245,16 +245,16 @@ mesecon.register_node("mcl_observers:observer_up", {
 		},
 	},
 	on_construct = function(pos)
-		minetest.get_node_timer(pos):start(mcl_vars.redstone_tick)
+		core.get_node_timer(pos):start(mcl_vars.redstone_tick)
 	end,
 	on_timer = function(pos)
-		minetest.set_node(pos, { name="mcl_observers:observer_up_off" })
+		core.set_node(pos, { name="mcl_observers:observer_up_off" })
 		mesecon.receptor_off(pos, rules_up)
 	end,
 })
 
 -- Craft recipes (unchanged)
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_observers:observer_off",
 	recipe = {
 		{ "mcl_core:cobble","mcl_core:cobble","mcl_core:cobble" },
@@ -262,7 +262,7 @@ minetest.register_craft({
 		{ "mcl_core:cobble","mcl_core:cobble","mcl_core:cobble" },
 	},
 })
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_observers:observer_off",
 	recipe = {
 		{ "mcl_core:cobble","mcl_core:cobble","mcl_core:cobble" },
@@ -289,7 +289,7 @@ if realtime then
 			local n = get_node(p)
 			if n and n.name:match(o.match) then
 				if o.axis then
-					local d = minetest.facedir_to_dir(n.param2)
+					local d = core.facedir_to_dir(n.param2)
 					if d[o.axis] == o.dir then
 						mcl_observers.observer_activate(p)
 					end
@@ -300,37 +300,37 @@ if realtime then
 		end
 	end
 
-	local old_add_node = minetest.add_node
+	local old_add_node = core.add_node
 	---@diagnostic disable-next-line: duplicate-set-field
-	function minetest.add_node(pos, node)
+	function core.add_node(pos, node)
 		old_add_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
-	local old_set_node      = minetest.set_node
+	local old_set_node      = core.set_node
 	---@diagnostic disable-next-line: duplicate-set-field
-	function minetest.set_node(pos, node)
+	function core.set_node(pos, node)
 		old_set_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
-	local old_swap_node     = minetest.swap_node
+	local old_swap_node     = core.swap_node
 	---@diagnostic disable-next-line: duplicate-set-field
-	function minetest.swap_node(pos, node)
+	function core.swap_node(pos, node)
 		old_swap_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
-	local old_remove_node   = minetest.remove_node
+	local old_remove_node   = core.remove_node
 	---@diagnostic disable-next-line: duplicate-set-field
-	function minetest.remove_node(pos)
+	function core.remove_node(pos)
 		old_remove_node(pos)
 		notify_observers_of_change(pos)
 	end
 
-	local old_bulk_set_node = minetest.bulk_set_node
+	local old_bulk_set_node = core.bulk_set_node
 	---@diagnostic disable-next-line: duplicate-set-field
-	function minetest.bulk_set_node(list, node)
+	function core.bulk_set_node(list, node)
 		old_bulk_set_node(list, node)
 		for _, p in ipairs(list) do notify_observers_of_change(p) end
 	end
