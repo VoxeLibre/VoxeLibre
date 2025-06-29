@@ -2,7 +2,6 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_observers = {}
 
-local string   = string
 local get_node = minetest.get_node
 
 -- Warning! TODO: Remove this message.
@@ -17,14 +16,14 @@ local rules_flat = {
 }
 local function get_rules_flat(node)
 	local rules = rules_flat
-	for i = 1, node.param2 do
+	for _ = 1,node.param2 do
 		rules = mesecon.rotate_rules_left(rules)
 	end
 	return rules
 end
 
 -- Vertical output rules
-local rules_down = {{ x = 0, y = 1,  z = 0, spread = true }}
+local rules_down = {{ x = 0, y =  1, z = 0, spread = true }}
 local rules_up   = {{ x = 0, y = -1, z = 0, spread = true }}
 
 -- Fire the redstone pulse, then rely on the node-timer in each 'on' state to turn it off
@@ -50,9 +49,9 @@ end
 local function observer_scan(pos, initialize)
 	local node = get_node(pos)
 	local front
-	if     node.name:find("observer_up")   then front = vector.add(pos, {x=0, y=1,  z=0})
+	if     node.name:find("observer_up")   then front = vector.add(pos, {x=0, y= 1, z=0})
 	elseif node.name:find("observer_down") then front = vector.add(pos, {x=0, y=-1, z=0})
-	else                                     front = vector.add(pos, minetest.facedir_to_dir(node.param2))
+	else                                        front = vector.add(pos, minetest.facedir_to_dir(node.param2))
 	end
 
 	local frontnode = get_node(front)
@@ -279,16 +278,16 @@ if realtime then
 	-- helper: test each neighbor for an observer facing this block
 	local function notify_observers_of_change(pos)
 		for _, o in ipairs({
-			{ x= 1, y=0, z=0, axis="x", dir=-1, prefix="observer_o" },
-			{ x=-1, y=0, z=0, axis="x", dir= 1, prefix="observer_o" },
-			{ x=0, y=0, z= 1, axis="z", dir=-1, prefix="observer_o" },
-			{ x=0, y=0, z=-1, axis="z", dir= 1, prefix="observer_o" },
-			{ x=0, y= 1, z=0, prefix="observer_d" },
-			{ x=0, y=-1, z=0, prefix="observer_u" },
+			{ x= 1, y= 0, z= 0, axis="x", dir=-1, match="^mcl_observers:observer_o" },
+			{ x=-1, y= 0, z= 0, axis="x", dir= 1, match="^mcl_observers:observer_o" },
+			{ x= 0, y= 0, z= 1, axis="z", dir=-1, match="^mcl_observers:observer_o" },
+			{ x= 0, y= 0, z=-1, axis="z", dir= 1, match="^mcl_observers:observer_o" },
+			{ x= 0, y= 1, z= 0,                   match="^mcl_observers:observer_d" },
+			{ x= 0, y=-1, z= 0,                   match="^mcl_observers:observer_u" },
 		}) do
 			local p = { x=pos.x+o.x, y=pos.y+o.y, z=pos.z+o.z }
 			local n = get_node(p)
-			if n and n.name:match("^mcl_observers:"..o.prefix) then
+			if n and n.name:match(o.match) then
 				if o.axis then
 					local d = minetest.facedir_to_dir(n.param2)
 					if d[o.axis] == o.dir then
@@ -302,30 +301,35 @@ if realtime then
 	end
 
 	local old_add_node = minetest.add_node
+	---@diagnostic disable-next-line: duplicate-set-field
 	function minetest.add_node(pos, node)
 		old_add_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
 	local old_set_node      = minetest.set_node
+	---@diagnostic disable-next-line: duplicate-set-field
 	function minetest.set_node(pos, node)
 		old_set_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
 	local old_swap_node     = minetest.swap_node
+	---@diagnostic disable-next-line: duplicate-set-field
 	function minetest.swap_node(pos, node)
 		old_swap_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
 	local old_remove_node   = minetest.remove_node
+	---@diagnostic disable-next-line: duplicate-set-field
 	function minetest.remove_node(pos)
 		old_remove_node(pos)
 		notify_observers_of_change(pos)
 	end
 
 	local old_bulk_set_node = minetest.bulk_set_node
+	---@diagnostic disable-next-line: duplicate-set-field
 	function minetest.bulk_set_node(list, node)
 		old_bulk_set_node(list, node)
 		for _, p in ipairs(list) do notify_observers_of_change(p) end
