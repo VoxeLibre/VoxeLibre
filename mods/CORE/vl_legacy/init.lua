@@ -14,19 +14,23 @@ mod.registered_item_conversions = item_conversions
 function mod.register_item_conversion(old, new, func)
 	item_conversions[old] = {new, func}
 end
+---@param core.ItemStack
+---@return nil
+function mod.convert_itemstack(itemstack)
+	local conversion = itemstack and item_conversions[itemstack:get_name()]
+	if conversion then
+		local new_name,func = conversion[1],conversion[2]
+		if func then
+			func(itemstack)
+		else
+			itemstack:set_name(new_name)
+		end
+	end
+end
 function mod.convert_inventory_lists(lists)
 	for _,list in pairs(lists) do
 		for i = 1,#list do
-			local itemstack = list[i]
-			local conversion = itemstack and item_conversions[itemstack:get_name()]
-			if conversion then
-				local new_name,func = conversion[1],conversion[2]
-				if func then
-					func(itemstack)
-				else
-					itemstack:set_name(new_name)
-				end
-			end
+			mod.convert_itemstack(list[i])
 		end
 	end
 end

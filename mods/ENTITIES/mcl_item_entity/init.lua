@@ -988,6 +988,11 @@ minetest.register_entity(":__builtin:item", {
 		else
 			self.itemstring = staticdata
 		end
+
+		local itemstack = ItemStack(self.itemstring)
+		vl_legacy.convert_itemstack(itemstack)
+		self.itemstring = itemstack:to_string()
+
 		if self._removed then
 			self._removed = true
 			self.object:remove()
