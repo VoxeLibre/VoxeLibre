@@ -96,7 +96,7 @@ local function observer_orientate(pos, placer)
 end
 
 --------------------------------------------------------------------------------
--- NODE DEFINITIONS (unchanged from your original, with on_timer hooks)
+-- NODE DEFINITIONS
 --------------------------------------------------------------------------------
 
 mesecon.register_node("mcl_observers:observer", {
@@ -109,8 +109,8 @@ mesecon.register_node("mcl_observers:observer", {
 }, {
 	description          = S("Observer"),
 	_tt_help             = S("Emits redstone pulse when block in front changes"),
-	_doc_items_longdesc  = S("An observer ... sends a very short redstone pulse whenever this block changes."),
-	_doc_items_usagehelp = S("Place the observer directly in front of the block ..."),
+	_doc_items_longdesc  = S("An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes."),
+	_doc_items_usagehelp = S("Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow points to the side of the output, which is at the opposite side of the “face”. You can place your redstone dust or any other component here."),
 
 	groups = { pickaxey=1, material_stone=1, not_opaque=1 },
 	tiles  = {
@@ -273,16 +273,9 @@ minetest.register_craft({
 })
 
 --------------------------------------------------------------------------------
--- REALTIME OVERRIDES (now only “notify neighbors”) 
+-- REALTIME OVERRIDES (now only “notify neighbors”)
 --------------------------------------------------------------------------------
 if realtime then
-	-- keep originals
-	mcl_observers._add_node      = minetest.add_node
-	mcl_observers._set_node      = minetest.set_node
-	mcl_observers._swap_node     = minetest.swap_node
-	mcl_observers._remove_node   = minetest.remove_node
-	mcl_observers._bulk_set_node = minetest.bulk_set_node
-
 	-- helper: test each neighbor for an observer facing this block
 	local function notify_observers_of_change(pos)
 		for _, o in ipairs({
@@ -308,28 +301,33 @@ if realtime then
 		end
 	end
 
+	local old_add_node = minetest.add_node
 	function minetest.add_node(pos, node)
-		mcl_observers._add_node(pos, node)
+		old_add_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
+	local old_set_node      = minetest.set_node
 	function minetest.set_node(pos, node)
-		mcl_observers._set_node(pos, node)
+		old_set_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
+	local old_swap_node     = minetest.swap_node
 	function minetest.swap_node(pos, node)
-		mcl_observers._swap_node(pos, node)
+		old_swap_node(pos, node)
 		notify_observers_of_change(pos)
 	end
 
+	local old_remove_node   = minetest.remove_node
 	function minetest.remove_node(pos)
-		mcl_observers._remove_node(pos)
+		old_remove_node(pos)
 		notify_observers_of_change(pos)
 	end
 
+	local old_bulk_set_node = minetest.bulk_set_node
 	function minetest.bulk_set_node(list, node)
-		mcl_observers._bulk_set_node(list, node)
+		old_bulk_set_node(list, node)
 		for _, p in ipairs(list) do notify_observers_of_change(p) end
 	end
 end
