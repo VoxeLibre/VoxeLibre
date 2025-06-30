@@ -19,7 +19,7 @@
 ## Developers
 * AFCMS
 * epCode
-* SmokeyDope
+* SmokeyDope / Thomas Conway
 * Faerraven / Michieal
 * teknomunk
 * AncientMariner
