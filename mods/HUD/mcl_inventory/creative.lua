@@ -43,32 +43,64 @@ local mod_family_priorities = {
 				["mcl_core:emeraldblock"] = 6.6,
 			}
 		},
-
 		["vl_hollow_logs"] = 9,
 		["mcl_villages"] = 8,
 		["mcl_wool"] = 7,
 	},
 
 	deco = {
+		["mcl_crafting_table"] = 13,
 		["mcl_torches"] = 12,
-		["mcl_lanterns"] = 10,
 		["mcl_blackstone"] = 11,
+		["mcl_lanterns"] = 10,
+		["mcl_anvils"] = 9.9,
+		["mcl_cauldrons"] = 9.8,
+		["mcl_mobspawners"] = 9.8,
+		["mcl_portals"] = 9.8,
+		["mcl_composters"] = 9.78,
+		["mcl_bells"] = 9.75,
+		["mcl_beehives"] = 9.7,
+		["mcl_honey"] = 9.6,
 		["mcl_armor_stand"] = 9,
-		["mcl_anvils"] = 9,
-		["mcl_flowerpots"] = 9,
+		["mcl_books"] = 9,
 		["mcl_jukebox"] = 9,
 		["mcl_itemframes"] = 9,
-		["mcl_barrels"] = 8,
-		["mcl_chests"] = 7,
+		["mcl_enchanting"] = 8.9,
+		["mcl_cartography_table"] = 8.8,
+		["mcl_fletching_table"] = 8.8,
+		["mcl_loom"] = 8.8,
+		["mcl_grindstone"] = 8.8,
+		["mcl_stonecutter"] = 8.8,
+		["mcl_smithing_table"] = 8.8,
+		["mcl_furnaces"] = 7.9,
+		["mcl_blast_furnace"] = 7.8,
+		["mcl_smoker"] = 7.7,
+		["mcl_barrels"] = 7.1,
+		["mcl_chests"] = {
+			mod_priority = 7,
+			items = {
+				["mcl_chests:chest"] = 10,
+				["mcl_chests:ender_chest"] = 10,
+				["mcl_chests:trapped_chest"] = 10,
+			}
+		},
+		["mcl_wool"] = 6.9,
+		["mcl_beds"] = 6.8,
+		["mcl_banners"] = 6.7,
 		["mcl_signs"] = 6,
 		["xpanes"] = 4,
-		["mcl_banners"] = 3,
-		["mcl_beds"] = 3,
+		["mcl_amethyst"] = {
+			mod_priority = 3.8,
+			items = {
+				["mcl_amethyst:tinted_glass"] = 10,
+			}
+		},
 		["mcl_heads"] = 3,
 		["mcl_end"] = 3,
-		["mcl_wool"] = 3,
+		["mcl_flowerpots"] = 2.1,
 		["mcl_flowers"] = 2,
-		["mcl_core"] = 2,
+		["mcl_core"] = 1.9,
+		["mcl_cherry_blossom"] = 1.8,
 		["mcl_fences"] = 1,
 		["mclx_fences"] = 1,
 		["mcl_walls"] = 1,
@@ -80,7 +112,6 @@ local mod_family_priorities = {
 	},
 
 	matr = {
-		["mcl_dye"] = -1,
 		["mcl_copper"] = 11,
 		["mcl_core"] = {
 			mod_priority = 10,
@@ -93,6 +124,7 @@ local mod_family_priorities = {
 				["mcl_core:emerald"] = 9.5,
 			}
 		},
+		["mcl_dye"] = -1,
 	},
 	
 	redstone = {
@@ -128,7 +160,6 @@ local mod_family_priorities = {
 				["mcl_minecarts:golden_rail_v2"] = 9.9,
 				["mcl_minecarts:activator_rail_v2"] = 9.8,
 				["mcl_minecarts:detector_rail_v2"] = 9.7,
-
 			}
 		},
 		["mcl_boats"] = 2,
@@ -164,7 +195,6 @@ local mod_family_priorities = {
 
 	brew = {
 		["mcl_brewing"] = 2,
-
 		["mcl_core"] = 1,
 		["mcl_mobitems"] = 1,
 		["mcl_nether"] = 1,
