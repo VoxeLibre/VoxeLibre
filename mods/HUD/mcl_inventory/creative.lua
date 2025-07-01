@@ -26,10 +26,28 @@ end
 ---NOTE: priority is in descending order for technical reasons (non-numbered mod families at the end are 0) Higher numbered mod families appear first in tab. You can use decimal places too not just integers.
 local mod_family_priorities = {
     blocks = {
-        ["mcl_core"] = 10,
-        ["vl_hollow_logs"] = 10,
-        ["mcl_villages"] = 9,
-        ["mcl_wool"] = 8,
+        ["mcl_core"] = {
+            mod_priority = 10,  -- Mod family priority
+            items = {
+                -- Potion ingredients get higher priority
+               ["mcl_core:dirt_with_grass"] = 10,
+               ["mcl_core:cobble"] = 9,
+               ["mcl_core:diorite"] = 9,
+               ["mcl_core:andersite"] = 9,
+               ["mcl_core:granite"] = 9,
+               ["mcl_core:gravel"] = 8,
+               ["mcl_core:sand"] = 8,
+               ["mcl_core:obsidian"] = 7,
+               ["mcl_core:ironblock"] = 6.9,
+               ["mcl_core:goldblock"] = 6.8,
+               ["mcl_core:diamondblock"] = 6.7,
+               ["mcl_core:emeraldblock"] = 6.6,
+            }
+        },
+
+        ["vl_hollow_logs"] = 9,
+        ["mcl_villages"] = 8,
+        ["mcl_wool"] = 7,
     },
 
     deco = {
@@ -125,7 +143,22 @@ local mod_family_priorities = {
     },
 
     brew = {
+        ["mcl_brewing"] = 2,
+
+        -- Other mod families in brew category
+        ["mcl_fishing"] = 0.3,
         ["mcl_core"] = 1,
+        ["mcl_mobitems"] = 1,
+        ["mcl_farming"] = 0.2,
+        ["mcl_nether"] = 1,
+        ["mcl_potions"] = {
+            mod_priority = 0.1,  -- Mod family priority
+            items = {
+                -- Potion ingredients get higher priority
+                ["mcl_potions:speckled_melon"] = 10,
+               ["mcl_potions:fermented_spider_eye"] = 9,
+            }
+        },
     },
 
     misc = {
@@ -154,13 +187,44 @@ for _, category in ipairs(builtin_filter_ids) do
     temp_inventory_lists[category] = {}
 end
 
---- Helper function to get priority for a mod family in a category
+--- Helper function to get priority for an item in a category
+---@param category string
+---@param item_name string
+---@return integer priority
+local function get_item_priority(category, item_name)
+    local mod_family = item_name:match("^(.-):")
+    
+    -- Check if this category has item-specific priorities
+    if mod_family_priorities[category] and mod_family_priorities[category][mod_family] then
+        local mod_data = mod_family_priorities[category][mod_family]
+        
+        -- Handle new style priority (with item-level granularity)
+        if type(mod_data) == "table" and mod_data.items then
+            return mod_data.items[item_name] or 0
+        -- Handle old style priority (mod-level only)
+        else
+            return 0
+        end
+    end
+    
+    return 0
+end
+
+--- Helper function to get mod priority for a mod family in a category
 ---@param category string
 ---@param mod_family string|nil
 ---@return integer priority
-local function get_priority(category, mod_family)
+local function get_mod_priority(category, mod_family)
     if mod_family and mod_family_priorities[category] then
-        return mod_family_priorities[category][mod_family] or 0
+        local mod_data = mod_family_priorities[category][mod_family]
+        
+        -- Handle new style priority (with item-level granularity)
+        if type(mod_data) == "table" then
+            return mod_data.mod_priority or 0
+        -- Handle old style priority (mod-level only)
+        else
+            return mod_data or 0
+        end
     end
     return 0
 end
@@ -173,7 +237,9 @@ end
 local function process_fireworks(name, def, mod_family, category)
     if not def._vl_fireworks_std_durs_forces then return end
     
-    local priority = get_priority(category, mod_family)
+    local mod_priority = get_mod_priority(category, mod_family)
+    local item_priority = get_item_priority(category, name)
+    local combined_priority = mod_priority * 100 + item_priority
     local generic = core.serialize({{fn="generic"}})
     
     for _, tbl in ipairs(def._vl_fireworks_std_durs_forces) do
@@ -183,14 +249,14 @@ local function process_fireworks(name, def, mod_family, category)
         meta:set_int("vl_fireworks:force", tbl[2])
         local item_str = stack:to_string()
         
-        table.insert(temp_inventory_lists["misc"], {name = item_str, priority = priority})
-        table.insert(temp_inventory_lists["all"], {name = item_str, priority = priority})
+        table.insert(temp_inventory_lists["misc"], {name = item_str, priority = combined_priority})
+        table.insert(temp_inventory_lists["all"], {name = item_str, priority = combined_priority})
         
         meta:set_string("vl_fireworks:stars", generic)
         item_str = stack:to_string()
         
-        table.insert(temp_inventory_lists["misc"], {name = item_str, priority = priority})
-        table.insert(temp_inventory_lists["all"], {name = item_str, priority = priority})
+        table.insert(temp_inventory_lists["misc"], {name = item_str, priority = combined_priority})
+        table.insert(temp_inventory_lists["all"], {name = item_str, priority = combined_priority})
     end
 end
 
@@ -200,6 +266,11 @@ end
 ---@param mod_family string
 local function process_potions(name, def, mod_family)
     if def.groups._mcl_potion ~= 1 then return end
+    
+    -- Get priorities for base item
+    local mod_priority = get_mod_priority("brew", mod_family)
+    local base_item_priority = get_item_priority("brew", name)
+    local base_combined_priority = mod_priority * 100 + base_item_priority
     
     local variants = {}
     if def.has_potent then
@@ -215,15 +286,14 @@ local function process_potions(name, def, mod_family)
         })
     end
     
-    local brew_priority = get_priority("brew", mod_family)
-    local all_priority = get_priority("all", mod_family)
+    local all_priority = get_mod_priority("all", mod_family)
     
     for _, variant in ipairs(variants) do
         local stack = ItemStack(name)
         stack:get_meta():set_int(variant.key, variant.value)
         local item_str = stack:to_string()
         
-        table.insert(temp_inventory_lists["brew"], {name = item_str, priority = brew_priority})
+        table.insert(temp_inventory_lists["brew"], {name = item_str, priority = base_combined_priority})
         table.insert(temp_inventory_lists["all"], {name = item_str, priority = all_priority})
     end
 end
@@ -277,7 +347,7 @@ minetest.register_on_mods_loaded(function()
             local mod_family = name:match("^(.-):")
             local nonmisc = false
             local all_handled = false
-            local priority
+            local mod_priority, item_priority, combined_priority
          	   
             -- Precompute category flags
             local is_redstone_item = is_redstone(def)
@@ -286,53 +356,73 @@ minetest.register_on_mods_loaded(function()
             
             -- Category handlers
             if groups.building_block then
-                priority = get_priority("blocks", mod_family)
-                table.insert(temp_inventory_lists["blocks"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("blocks", mod_family)
+                item_priority = get_item_priority("blocks", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["blocks"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if groups.deco_block then
-                priority = get_priority("deco", mod_family)
-                table.insert(temp_inventory_lists["deco"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("deco", mod_family)
+                item_priority = get_item_priority("deco", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["deco"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if is_redstone_item then
-                priority = get_priority("redstone", mod_family)
-                table.insert(temp_inventory_lists["redstone"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("redstone", mod_family)
+                item_priority = get_item_priority("redstone", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["redstone"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if groups.transport then
-                priority = get_priority("rail", mod_family)
-                table.insert(temp_inventory_lists["rail"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("rail", mod_family)
+                item_priority = get_item_priority("rail", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["rail"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if (groups.food and not groups.brewitem) or groups.eatable then
-                priority = get_priority("food", mod_family)
-                table.insert(temp_inventory_lists["food"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("food", mod_family)
+                item_priority = get_item_priority("food", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["food"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if is_tool_item then
-                priority = get_priority("tools", mod_family)
-                table.insert(temp_inventory_lists["tools"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("tools", mod_family)
+                item_priority = get_item_priority("tools", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["tools"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if is_combat_item then
-                priority = get_priority("combat", mod_family)
-                table.insert(temp_inventory_lists["combat"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("combat", mod_family)
+                item_priority = get_item_priority("combat", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["combat"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if groups.spawn_egg == 1 then
-                priority = get_priority("mobs", mod_family)
-                table.insert(temp_inventory_lists["mobs"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("mobs", mod_family)
+                item_priority = get_item_priority("mobs", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["mobs"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if groups.brewitem then
-                priority = get_priority("brew", mod_family)
-                table.insert(temp_inventory_lists["brew"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("brew", mod_family)
+                item_priority = get_item_priority("brew", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["brew"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             if groups.craftitem then
-                priority = get_priority("matr", mod_family)
-                table.insert(temp_inventory_lists["matr"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("matr", mod_family)
+                item_priority = get_item_priority("matr", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["matr"], {name = name, priority = combined_priority})
                 nonmisc = true
             end
             
@@ -350,14 +440,18 @@ minetest.register_on_mods_loaded(function()
             
             -- Misc category for uncategorized items
             if not nonmisc then
-                priority = get_priority("misc", mod_family)
-                table.insert(temp_inventory_lists["misc"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("misc", mod_family)
+                item_priority = get_item_priority("misc", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["misc"], {name = name, priority = combined_priority})
             end
             
             -- Add to 'all' category if not handled by special cases
             if not all_handled then
-                priority = get_priority("all", mod_family)
-                table.insert(temp_inventory_lists["all"], {name = name, priority = priority})
+                mod_priority = get_mod_priority("all", mod_family)
+                item_priority = get_item_priority("all", name)
+                combined_priority = mod_priority * 100 + item_priority
+                table.insert(temp_inventory_lists["all"], {name = name, priority = combined_priority})
             end
         end
     end
@@ -398,6 +492,7 @@ minetest.register_on_mods_loaded(function()
     temp_inventory_lists = nil
     collectgarbage("collect")
 end)
+
 ---@param name string
 ---@param description string
 ---@param lang mt.LangCode
