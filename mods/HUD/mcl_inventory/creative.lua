@@ -14,177 +14,195 @@ local inventory_lists = {}
 -- Create tables
 ---@type string[]
 local builtin_filter_ids = {
-    "blocks", "deco", "redstone", "rail", "food", "tools", 
-    "combat", "mobs", "brew", "matr", "misc", "all"
+	"blocks", "deco", "redstone", "rail", "food", "tools", 
+	"combat", "mobs", "brew", "matr", "misc", "all"
 }
 
 for _, f in ipairs(builtin_filter_ids) do
-    inventory_lists[f] = {}
+	inventory_lists[f] = {}
 end
 
 --- Define mod family priorities for each category
 ---NOTE: priority is in descending order for technical reasons (non-numbered mod families at the end are 0) Higher numbered mod families appear first in tab. You can use decimal places too not just integers.
 local mod_family_priorities = {
-    blocks = {
-        ["mcl_core"] = {
-            mod_priority = 10,  -- Mod family priority
-            items = {
-                -- Potion ingredients get higher priority
-               ["mcl_core:dirt_with_grass"] = 10,
-               ["mcl_core:cobble"] = 9,
-               ["mcl_core:diorite"] = 9,
-               ["mcl_core:andersite"] = 9,
-               ["mcl_core:granite"] = 9,
-               ["mcl_core:gravel"] = 8,
-               ["mcl_core:sand"] = 8,
-               ["mcl_core:obsidian"] = 7,
-               ["mcl_core:ironblock"] = 6.9,
-               ["mcl_core:goldblock"] = 6.8,
-               ["mcl_core:diamondblock"] = 6.7,
-               ["mcl_core:emeraldblock"] = 6.6,
-            }
-        },
+	blocks = {
+		["mcl_core"] = {
+			mod_priority = 10,  -- Mod family priority
+			items = {
+				["mcl_core:dirt_with_grass"] = 10,
+				["mcl_core:cobble"] = 9,
+				["mcl_core:diorite"] = 9,
+				["mcl_core:andersite"] = 9,
+				["mcl_core:granite"] = 9,
+				["mcl_core:gravel"] = 8,
+				["mcl_core:sand"] = 8,
+				["mcl_core:obsidian"] = 7,
+				["mcl_core:ironblock"] = 6.9,
+				["mcl_core:goldblock"] = 6.8,
+				["mcl_core:diamondblock"] = 6.7,
+				["mcl_core:emeraldblock"] = 6.6,
+			}
+		},
 
-        ["vl_hollow_logs"] = 9,
-        ["mcl_villages"] = 8,
-        ["mcl_wool"] = 7,
-    },
+		["vl_hollow_logs"] = 9,
+		["mcl_villages"] = 8,
+		["mcl_wool"] = 7,
+	},
 
-    deco = {
-        ["mcl_torches"] = 12,
-        ["mcl_lanterns"] = 10,
-        ["mcl_blackstone"] = 11,
-        ["mcl_armor_stand"] = 9,
-        ["mcl_anvils"] = 9,
-        ["mcl_flowerpots"] = 9,
-        ["mcl_jukebox"] = 9,
-        ["mcl_itemframes"] = 9,
-        ["mcl_barrels"] = 8,
-        ["mcl_chests"] = 7,
-        ["mcl_signs"] = 6,
-        ["xpanes"] = 4,
-        ["mcl_banners"] = 3,
-        ["mcl_beds"] = 3,
-        ["mcl_heads"] = 3,
-        ["mcl_end"] = 3,
-        ["mcl_wool"] = 3,
-        ["mcl_flowers"] = 2,       
-        ["mcl_core"] = 2,
-        ["mcl_fences"] = 1,
-        ["mclx_fences"] = 1,
-        ["mcl_walls"] = 1,
-    },
+	deco = {
+		["mcl_torches"] = 12,
+		["mcl_lanterns"] = 10,
+		["mcl_blackstone"] = 11,
+		["mcl_armor_stand"] = 9,
+		["mcl_anvils"] = 9,
+		["mcl_flowerpots"] = 9,
+		["mcl_jukebox"] = 9,
+		["mcl_itemframes"] = 9,
+		["mcl_barrels"] = 8,
+		["mcl_chests"] = 7,
+		["mcl_signs"] = 6,
+		["xpanes"] = 4,
+		["mcl_banners"] = 3,
+		["mcl_beds"] = 3,
+		["mcl_heads"] = 3,
+		["mcl_end"] = 3,
+		["mcl_wool"] = 3,
+		["mcl_flowers"] = 2,       
+		["mcl_core"] = 2,
+		["mcl_fences"] = 1,
+		["mclx_fences"] = 1,
+		["mcl_walls"] = 1,
+	},
 
-    all = {
-        ["doc_identifier"] = 2,
-        ["mcl_core"] = 1,
-    },
+	all = {
+		["doc_identifier"] = 2,
+		["mcl_core"] = 1,
+	},
 
-    matr = {
-        ["mcl_dye"] = 1,
-    },
-    
-    redstone = {
-        ["mesecons"] = 13,
-        ["mcl_hoppers"] = 12.5,
-        ["mesecons_torch"] = 12,
-        ["mesecons_walllever"] = 11,
-        ["mcl_comparators"] = 10,
-        ["mesecons_delayer"] = 10,
-        ["mesecons_solarpanel"] = 10,
-        ["mesecons_pistons"] = 9,
-        ["mcl_observers"] = 9,
-        ["mcl_dispensers"] = 8,
-        ["mcl_droppers"] = 8,
-        ["mcl_tnt"] = 8,
-        ["mcl_chests"] = 8,
-        ["mesecons_noteblock"] = 7,
-        ["mcl_lightning_rods"] = 7,
-        ["mcl_target"] = 7,
-        ["mesecons_commandblock"] = 7,
-        ["mcl_bells"] = 7,
-        ["mcl_minecarts"] = 7,
-        ["mesecons_lightstone"] = 6,
-        ["mesecons_button"] = 5,
-        ["mesecons_pressureplates"] = 5,
-    },
+	matr = {
+		["mcl_dye"] = -1,
+		["mcl_copper"] = 11,
+		["mcl_core"] = {
+			mod_priority = 10,  -- Mod family priority
+			items = {
+				["mcl_core:iron_ingot"] = 10,
+				["mcl_core:iron_nugget"] = 9.9,
+				["mcl_core:gold_ingot"] = 9.8,
+				["mcl_core:gold_nugget"] = 9.7,
+				["mcl_core:diamond"] = 9.6,
+				["mcl_core:emerald"] = 9.5,
+			}
+		},
+	},
+	
+	redstone = {
+		["mesecons"] = 13,
+		["mcl_hoppers"] = 12.5,
+		["mesecons_torch"] = 12,
+		["mesecons_walllever"] = 11,
+		["mcl_comparators"] = 10,
+		["mesecons_delayer"] = 10,
+		["mesecons_solarpanel"] = 10,
+		["mesecons_pistons"] = 9,
+		["mcl_observers"] = 9,
+		["mcl_dispensers"] = 8,
+		["mcl_droppers"] = 8,
+		["mcl_tnt"] = 8,
+		["mcl_chests"] = 8,
+		["mesecons_noteblock"] = 7,
+		["mcl_lightning_rods"] = 7,
+		["mcl_target"] = 7,
+		["mesecons_commandblock"] = 7,
+		["mcl_bells"] = 7,
+		["mcl_minecarts"] = 7,
+		["mesecons_lightstone"] = 6,
+		["mesecons_button"] = 5,
+		["mesecons_pressureplates"] = 5,
+	},
 
-    rail = {
-        ["mcl_minecarts"] = 3,
-        ["mcl_boats"] = 2,
-        ["mcl_mobitems"] = 1,
-    },
+	rail = {
+		["mcl_minecarts"] = {
+			mod_priority = 3,  -- Mod family priority
+			items = {
+				["mcl_minecarts:rail_v2"] = 9.99,
+				["mcl_minecarts:golden_rail_v2"] = 9.9,
+				["mcl_minecarts:activator_rail_v2"] = 9.8,
+				["mcl_minecarts:detector_rail_v2"] = 9.7,
 
-    food = {
-        ["mesecons"] = 2,
-        ["mcl_core"] = 1,
-    },
+			}
+		},
+		["mcl_boats"] = 2,
+		["mcl_mobitems"] = 1,
+	},
 
-    tools = {
-        ["mcl_tools"] = 4,
-        ["mcl_farming"] = 3,
-        ["mcl_clock"] = 2,
-        ["doc_identifier"] = 1,
-    },
+	food = {
+		["mesecons"] = 2,
+		["mcl_core"] = 1,
+	},
 
-    combat = {
-        ["mcl_tools"] = 10,     --swords
-        ["vl_weaponry"] = 9,    --hammer spear
-        ["mcl_shepherd"] = 8,   --shepard staff
-        ["mcl_shields"] = 7,
-        ["mcl_armor"] = 5,   -- armor
-        ["mcl_totems"] = 6,   -- armor
-        ["mcl_mobitems"] = 4,   --horse armor
-    },
+	tools = {
+		["mcl_tools"] = 4,
+		["mcl_farming"] = 3,
+		["mcl_clock"] = 2,
+		["doc_identifier"] = 1,
+	},
 
-    mobs = {
-        ["mesecons"] = 2,
-        ["mcl_core"] = 1,
-    },
+	combat = {
+		["mcl_tools"] = 10,     --swords
+		["vl_weaponry"] = 9,    --hammer spear
+		["mcl_shepherd"] = 8,   --shepard staff
+		["mcl_shields"] = 7,
+		["mcl_armor"] = 5,   -- armor
+		["mcl_totems"] = 6,   -- armor
+		["mcl_mobitems"] = 4,   --horse armor
+	},
 
-    brew = {
-        ["mcl_brewing"] = 2,
+	mobs = {
+		["mesecons"] = 2,
+		["mcl_core"] = 1,
+	},
 
-        -- Other mod families in brew category
-        ["mcl_fishing"] = 0.3,
-        ["mcl_core"] = 1,
-        ["mcl_mobitems"] = 1,
-        ["mcl_farming"] = 0.2,
-        ["mcl_nether"] = 1,
-        ["mcl_potions"] = {
-            mod_priority = 0.1,  -- Mod family priority
-            items = {
-                -- Potion ingredients get higher priority
-                ["mcl_potions:speckled_melon"] = 10,
-               ["mcl_potions:fermented_spider_eye"] = 9,
-            }
-        },
-    },
+	brew = {
+		["mcl_brewing"] = 2,
+		["mcl_fishing"] = 0.3,
+		["mcl_core"] = 1,
+		["mcl_mobitems"] = 1,
+		["mcl_farming"] = 0.2,
+		["mcl_nether"] = 1,
 
-    misc = {
-        ["mcl_buckets"] = 20,
-        ["mcl_jukebox"] = 19,
-        ["mcl_beacons"] = 18,
-        ["mcl_books"] = 17,
-        ["mcl_end"] = 17,
-        ["mcl_campfires"] = 16,
-        ["mcl_compass"] = 15,
-        ["mcl_paintings"] = 14,
-        ["mcl_experience"] = 13,
-        ["mcl_blackstone"] = 12,
-        ["mcl_bamboo"] = 11,
-        ["mcl_spyglass"] = 10,
-        ["mcl_stonecutter"] = 9,
-        ["mcl_lectern"] = 8,
-        ["mcl_maps"] = 7,
-        ["mcl_beds"] = 6,
-    },
+		["mcl_potions"] = {
+			mod_priority = 0.1,
+			items = {
+				["mcl_potions:speckled_melon"] = 10,
+				["mcl_potions:fermented_spider_eye"] = 9,
+			}
+		},
+	},
+
+	misc = {
+		["mcl_buckets"] = 20,
+		["mcl_jukebox"] = 19,
+		["mcl_beacons"] = 18,
+		["mcl_books"] = 17,
+		["mcl_end"] = 17,
+		["mcl_campfires"] = 16,
+		["mcl_compass"] = 15,
+		["mcl_paintings"] = 14,
+		["mcl_experience"] = 13,
+		["mcl_blackstone"] = 12,
+		["mcl_bamboo"] = 11,
+		["mcl_spyglass"] = 10,
+		["mcl_stonecutter"] = 9,
+		["mcl_lectern"] = 8,
+		["mcl_maps"] = 7,
+		["mcl_beds"] = 6,
+	},
 }
 
 --- Temporary storage for items with their priorities
 local temp_inventory_lists = {}
 for _, category in ipairs(builtin_filter_ids) do
-    temp_inventory_lists[category] = {}
+	temp_inventory_lists[category] = {}
 end
 
 --- Helper function to get priority for an item in a category
@@ -192,22 +210,22 @@ end
 ---@param item_name string
 ---@return integer priority
 local function get_item_priority(category, item_name)
-    local mod_family = item_name:match("^(.-):")
-    
-    -- Check if this category has item-specific priorities
-    if mod_family_priorities[category] and mod_family_priorities[category][mod_family] then
-        local mod_data = mod_family_priorities[category][mod_family]
-        
-        -- Handle new style priority (with item-level granularity)
-        if type(mod_data) == "table" and mod_data.items then
-            return mod_data.items[item_name] or 0
-        -- Handle old style priority (mod-level only)
-        else
-            return 0
-        end
-    end
-    
-    return 0
+	local mod_family = item_name:match("^(.-):")
+	
+	-- Check if this category has item-specific priorities
+	if mod_family_priorities[category] and mod_family_priorities[category][mod_family] then
+		local mod_data = mod_family_priorities[category][mod_family]
+		
+		-- Handle new style priority (with item-level granularity)
+		if type(mod_data) == "table" and mod_data.items then
+			return mod_data.items[item_name] or 0
+		-- Handle old style priority (mod-level only)
+		else
+			return 0
+		end
+	end
+	
+	return 0
 end
 
 --- Helper function to get mod priority for a mod family in a category
@@ -215,18 +233,18 @@ end
 ---@param mod_family string|nil
 ---@return integer priority
 local function get_mod_priority(category, mod_family)
-    if mod_family and mod_family_priorities[category] then
-        local mod_data = mod_family_priorities[category][mod_family]
-        
-        -- Handle new style priority (with item-level granularity)
-        if type(mod_data) == "table" then
-            return mod_data.mod_priority or 0
-        -- Handle old style priority (mod-level only)
-        else
-            return mod_data or 0
-        end
-    end
-    return 0
+	if mod_family and mod_family_priorities[category] then
+		local mod_data = mod_family_priorities[category][mod_family]
+		
+		-- Handle new style priority (with item-level granularity)
+		if type(mod_data) == "table" then
+			return mod_data.mod_priority or 0
+		-- Handle old style priority (mod-level only)
+		else
+			return mod_data or 0
+		end
+	end
+	return 0
 end
 
 --- Process fireworks variants efficiently
@@ -235,29 +253,29 @@ end
 ---@param mod_family string
 ---@param category string
 local function process_fireworks(name, def, mod_family, category)
-    if not def._vl_fireworks_std_durs_forces then return end
-    
-    local mod_priority = get_mod_priority(category, mod_family)
-    local item_priority = get_item_priority(category, name)
-    local combined_priority = mod_priority * 100 + item_priority
-    local generic = core.serialize({{fn="generic"}})
-    
-    for _, tbl in ipairs(def._vl_fireworks_std_durs_forces) do
-        local stack = ItemStack(name)
-        local meta = stack:get_meta()
-        meta:set_float("vl_fireworks:duration", tbl[1])
-        meta:set_int("vl_fireworks:force", tbl[2])
-        local item_str = stack:to_string()
-        
-        table.insert(temp_inventory_lists["misc"], {name = item_str, priority = combined_priority})
-        table.insert(temp_inventory_lists["all"], {name = item_str, priority = combined_priority})
-        
-        meta:set_string("vl_fireworks:stars", generic)
-        item_str = stack:to_string()
-        
-        table.insert(temp_inventory_lists["misc"], {name = item_str, priority = combined_priority})
-        table.insert(temp_inventory_lists["all"], {name = item_str, priority = combined_priority})
-    end
+	if not def._vl_fireworks_std_durs_forces then return end
+	
+	local mod_priority = get_mod_priority(category, mod_family)
+	local item_priority = get_item_priority(category, name)
+	local combined_priority = mod_priority * 100 + item_priority
+	local generic = core.serialize({{fn="generic"}})
+	
+	for _, tbl in ipairs(def._vl_fireworks_std_durs_forces) do
+		local stack = ItemStack(name)
+		local meta = stack:get_meta()
+		meta:set_float("vl_fireworks:duration", tbl[1])
+		meta:set_int("vl_fireworks:force", tbl[2])
+		local item_str = stack:to_string()
+		
+		table.insert(temp_inventory_lists["misc"], {name = item_str, priority = combined_priority})
+		table.insert(temp_inventory_lists["all"], {name = item_str, priority = combined_priority})
+		
+		meta:set_string("vl_fireworks:stars", generic)
+		item_str = stack:to_string()
+		
+		table.insert(temp_inventory_lists["misc"], {name = item_str, priority = combined_priority})
+		table.insert(temp_inventory_lists["all"], {name = item_str, priority = combined_priority})
+	end
 end
 
 --- Process potion variants efficiently
@@ -265,232 +283,232 @@ end
 ---@param def mt.ItemDef
 ---@param mod_family string
 local function process_potions(name, def, mod_family)
-    if def.groups._mcl_potion ~= 1 then return end
-    
-    -- Get priorities for base item
-    local mod_priority = get_mod_priority("brew", mod_family)
-    local base_item_priority = get_item_priority("brew", name)
-    local base_combined_priority = mod_priority * 100 + base_item_priority
-    
-    local variants = {}
-    if def.has_potent then
-        table.insert(variants, {
-            key = "mcl_potions:potion_potent",
-            value = def._default_potent_level - 1
-        })
-    end
-    if def.has_plus then
-        table.insert(variants, {
-            key = "mcl_potions:potion_plus",
-            value = def._default_extend_level
-        })
-    end
-    
-    local all_priority = get_mod_priority("all", mod_family)
-    
-    for _, variant in ipairs(variants) do
-        local stack = ItemStack(name)
-        stack:get_meta():set_int(variant.key, variant.value)
-        local item_str = stack:to_string()
-        
-        table.insert(temp_inventory_lists["brew"], {name = item_str, priority = base_combined_priority})
-        table.insert(temp_inventory_lists["all"], {name = item_str, priority = all_priority})
-    end
+	if def.groups._mcl_potion ~= 1 then return end
+	
+	-- Get priorities for base item
+	local mod_priority = get_mod_priority("brew", mod_family)
+	local base_item_priority = get_item_priority("brew", name)
+	local base_combined_priority = mod_priority * 100 + base_item_priority
+	
+	local variants = {}
+	if def.has_potent then
+		table.insert(variants, {
+			key = "mcl_potions:potion_potent",
+			value = def._default_potent_level - 1
+		})
+	end
+	if def.has_plus then
+		table.insert(variants, {
+			key = "mcl_potions:potion_plus",
+			value = def._default_extend_level
+		})
+	end
+	
+	local all_priority = get_mod_priority("all", mod_family)
+	
+	for _, variant in ipairs(variants) do
+		local stack = ItemStack(name)
+		stack:get_meta():set_int(variant.key, variant.value)
+		local item_str = stack:to_string()
+		
+		table.insert(temp_inventory_lists["brew"], {name = item_str, priority = base_combined_priority})
+		table.insert(temp_inventory_lists["all"], {name = item_str, priority = all_priority})
+	end
 end
 
 --- Process enchanted books from enchantment definitions
 local function process_enchanted_books()
-    for ench, def in pairs(mcl_enchanting.enchantments) do
-        local stack = mcl_enchanting.enchant(ItemStack("mcl_enchanting:book_enchanted"), ench, def.max_level)
-        local item_str = stack:to_string()
-        
-        if def.inv_tool_tab then
-            table.insert(inventory_lists["tools"], item_str)
-        end
-        if def.inv_combat_tab then
-            table.insert(inventory_lists["combat"], item_str)
-        end
-        table.insert(inventory_lists["all"], item_str)
-    end
+	for ench, def in pairs(mcl_enchanting.enchantments) do
+		local stack = mcl_enchanting.enchant(ItemStack("mcl_enchanting:book_enchanted"), ench, def.max_level)
+		local item_str = stack:to_string()
+		
+		if def.inv_tool_tab then
+			table.insert(inventory_lists["tools"], item_str)
+		end
+		if def.inv_combat_tab then
+			table.insert(inventory_lists["combat"], item_str)
+		end
+		table.insert(inventory_lists["all"], item_str)
+	end
 end
 
 minetest.register_on_mods_loaded(function()
-    -- Local references for frequently accessed tables
-    local reg_items = minetest.registered_items
-    
-    -- Precompute group checks
-    local function is_redstone(def)
-        return def.mesecons or def.groups.mesecon or 
-               def.groups.mesecon_conductor_craftable or
-               def.groups.mesecon_effector_off
-    end
+	-- Local references for frequently accessed tables
+	local reg_items = minetest.registered_items
+	
+	-- Precompute group checks
+	local function is_redstone(def)
+		return def.mesecons or def.groups.mesecon or
+				def.groups.mesecon_conductor_craftable or
+				def.groups.mesecon_effector_off
+	end
 
-    local function is_tool(def)
-        return def.groups.tool or (def.tool_capabilities and def.tool_capabilities.damage_groups == nil)
-    end
+	local function is_tool(def)
+		return def.groups.tool or (def.tool_capabilities and def.tool_capabilities.damage_groups == nil)
+	end
 
-    local function is_weapon_or_armor(def)
-        return def.groups.weapon or def.groups.weapon_ranged or 
-               def.groups.ammo or def.groups.combat_item or
-               ((def.groups.armor_head or def.groups.armor_torso or 
-                 def.groups.armor_legs or def.groups.armor_feet or
-                 def.groups.horse_armor) and def.groups.non_combat_armor ~= 1)
-    end
+	local function is_weapon_or_armor(def)
+		return def.groups.weapon or def.groups.weapon_ranged or 
+				def.groups.ammo or def.groups.combat_item or
+				((def.groups.armor_head or def.groups.armor_torso or 
+				def.groups.armor_legs or def.groups.armor_feet or
+				def.groups.horse_armor) and def.groups.non_combat_armor ~= 1)
+	end
 
-    -- Process registered items
-    for name, def in pairs(reg_items) do
-        local groups = def.groups
-        local not_in_creative = groups.not_in_creative_inventory or 0
-        local has_description = def.description and def.description ~= ""
-        
-        if not_in_creative == 0 and has_description then
-            local mod_family = name:match("^(.-):")
-            local nonmisc = false
-            local all_handled = false
-            local mod_priority, item_priority, combined_priority
-         	   
-            -- Precompute category flags
-            local is_redstone_item = is_redstone(def)
-            local is_tool_item = is_tool(def)
-            local is_combat_item = is_weapon_or_armor(def)
-            
-            -- Category handlers
-            if groups.building_block then
-                mod_priority = get_mod_priority("blocks", mod_family)
-                item_priority = get_item_priority("blocks", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["blocks"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if groups.deco_block then
-                mod_priority = get_mod_priority("deco", mod_family)
-                item_priority = get_item_priority("deco", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["deco"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if is_redstone_item then
-                mod_priority = get_mod_priority("redstone", mod_family)
-                item_priority = get_item_priority("redstone", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["redstone"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if groups.transport then
-                mod_priority = get_mod_priority("rail", mod_family)
-                item_priority = get_item_priority("rail", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["rail"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if (groups.food and not groups.brewitem) or groups.eatable then
-                mod_priority = get_mod_priority("food", mod_family)
-                item_priority = get_item_priority("food", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["food"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if is_tool_item then
-                mod_priority = get_mod_priority("tools", mod_family)
-                item_priority = get_item_priority("tools", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["tools"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if is_combat_item then
-                mod_priority = get_mod_priority("combat", mod_family)
-                item_priority = get_item_priority("combat", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["combat"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if groups.spawn_egg == 1 then
-                mod_priority = get_mod_priority("mobs", mod_family)
-                item_priority = get_item_priority("mobs", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["mobs"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if groups.brewitem then
-                mod_priority = get_mod_priority("brew", mod_family)
-                item_priority = get_item_priority("brew", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["brew"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            if groups.craftitem then
-                mod_priority = get_mod_priority("matr", mod_family)
-                item_priority = get_item_priority("matr", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["matr"], {name = name, priority = combined_priority})
-                nonmisc = true
-            end
-            
-            -- Special item handling
-            if def._vl_fireworks_std_durs_forces then
-                process_fireworks(name, def, mod_family, "misc")
-                nonmisc = true
-                all_handled = true
-            end
-            
-            -- Potion handling
-            if groups._mcl_potion == 1 then
-                process_potions(name, def, mod_family)
-            end
-            
-            -- Misc category for uncategorized items
-            if not nonmisc then
-                mod_priority = get_mod_priority("misc", mod_family)
-                item_priority = get_item_priority("misc", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["misc"], {name = name, priority = combined_priority})
-            end
-            
-            -- Add to 'all' category if not handled by special cases
-            if not all_handled then
-                mod_priority = get_mod_priority("all", mod_family)
-                item_priority = get_item_priority("all", name)
-                combined_priority = mod_priority * 100 + item_priority
-                table.insert(temp_inventory_lists["all"], {name = name, priority = combined_priority})
-            end
-        end
-    end
+	-- Process registered items
+	for name, def in pairs(reg_items) do
+		local groups = def.groups
+		local not_in_creative = groups.not_in_creative_inventory or 0
+		local has_description = def.description and def.description ~= ""
+		
+		if not_in_creative == 0 and has_description then
+			local mod_family = name:match("^(.-):")
+			local nonmisc = false
+			local all_handled = false
+			local mod_priority, item_priority, combined_priority
+		 	   		   
+			-- Precompute category flags
+			local is_redstone_item = is_redstone(def)
+			local is_tool_item = is_tool(def)
+			local is_combat_item = is_weapon_or_armor(def)
+			
+			-- Category handlers
+			if groups.building_block then
+				mod_priority = get_mod_priority("blocks", mod_family)
+				item_priority = get_item_priority("blocks", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["blocks"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if groups.deco_block then
+				mod_priority = get_mod_priority("deco", mod_family)
+				item_priority = get_item_priority("deco", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["deco"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if is_redstone_item then
+				mod_priority = get_mod_priority("redstone", mod_family)
+				item_priority = get_item_priority("redstone", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["redstone"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if groups.transport then
+				mod_priority = get_mod_priority("rail", mod_family)
+				item_priority = get_item_priority("rail", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["rail"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if (groups.food and not groups.brewitem) or groups.eatable then
+				mod_priority = get_mod_priority("food", mod_family)
+				item_priority = get_item_priority("food", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["food"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if is_tool_item then
+				mod_priority = get_mod_priority("tools", mod_family)
+				item_priority = get_item_priority("tools", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["tools"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if is_combat_item then
+				mod_priority = get_mod_priority("combat", mod_family)
+				item_priority = get_item_priority("combat", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["combat"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if groups.spawn_egg == 1 then
+				mod_priority = get_mod_priority("mobs", mod_family)
+				item_priority = get_item_priority("mobs", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["mobs"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if groups.brewitem then
+				mod_priority = get_mod_priority("brew", mod_family)
+				item_priority = get_item_priority("brew", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["brew"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			if groups.craftitem then
+				mod_priority = get_mod_priority("matr", mod_family)
+				item_priority = get_item_priority("matr", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["matr"], {name = name, priority = combined_priority})
+				nonmisc = true
+			end
+			
+			-- Special item handling
+			if def._vl_fireworks_std_durs_forces then
+				process_fireworks(name, def, mod_family, "misc")
+				nonmisc = true
+				all_handled = true
+			end
+			
+			-- Potion handling
+			if groups._mcl_potion == 1 then
+				process_potions(name, def, mod_family)
+			end
+			
+			-- Misc category for uncategorized items
+			if not nonmisc then
+				mod_priority = get_mod_priority("misc", mod_family)
+				item_priority = get_item_priority("misc", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["misc"], {name = name, priority = combined_priority})
+			end
+			
+			-- Add to 'all' category if not handled by special cases
+			if not all_handled then
+				mod_priority = get_mod_priority("all", mod_family)
+				item_priority = get_item_priority("all", name)
+				combined_priority = mod_priority * 100 + item_priority
+				table.insert(temp_inventory_lists["all"], {name = name, priority = combined_priority})
+			end
+		end
+	end
 
-    -- Sort and populate inventory_lists
-    for category, t in pairs(temp_inventory_lists) do
-        table.sort(t, function(a, b)
-            return a.priority > b.priority or 
-                  (a.priority == b.priority and a.name < b.name)
-        end)
-        
-        -- Convert to final item list
-        for _, entry in ipairs(t) do
-            -- Process enchanted books immediately
-            if entry.name:find("mcl_enchanting:book_enchanted", 1, true) then
-                local _, enchantment, level = entry.name:match("(%a+) ([_%w]+) (%d+)")
-                if enchantment and level then
-                    local stack = mcl_enchanting.enchant(
-                        ItemStack("mcl_enchanting:book_enchanted"), 
-                        enchantment, 
-                        tonumber(level)
-                    )
-                    tt.reload_itemstack_description(stack)
-                    table.insert(inventory_lists[category], stack:to_string())
-                else
-                    table.insert(inventory_lists[category], entry.name)
-                end
-            else
-                table.insert(inventory_lists[category], entry.name)
-            end
-        end
-    end
+	-- Sort and populate inventory_lists
+	for category, t in pairs(temp_inventory_lists) do
+		table.sort(t, function(a, b)
+			return a.priority > b.priority or 
+					(a.priority == b.priority and a.name < b.name)
+		end)
+		
+		-- Convert to final item list
+		for _, entry in ipairs(t) do
+			-- Process enchanted books immediately
+			if entry.name:find("mcl_enchanting:book_enchanted", 1, true) then
+				local _, enchantment, level = entry.name:match("(%a+) ([_%w]+) (%d+)")
+				if enchantment and level then
+					local stack = mcl_enchanting.enchant(
+						ItemStack("mcl_enchanting:book_enchanted"), 
+						enchantment, 
+						tonumber(level)
+					)
+					tt.reload_itemstack_description(stack)
+					table.insert(inventory_lists[category], stack:to_string())
+				else
+					table.insert(inventory_lists[category], entry.name)
+				end
+			else
+				table.insert(inventory_lists[category], entry.name)
+			end
+		end
+	end
 
-    -- Process enchanted books from definitions
-    process_enchanted_books()
+	-- Process enchanted books from definitions
+	process_enchanted_books()
 
-    -- Clean up temporary data
-    temp_inventory_lists = nil
-    collectgarbage("collect")
+	-- Clean up temporary data
+	temp_inventory_lists = nil
+	collectgarbage("collect")
 end)
 
 ---@param name string
@@ -499,110 +517,110 @@ end)
 ---@param filter string
 ---@return integer
 local function filter_item(name, description, lang, filter)
-    local desc
-    if not lang then
-        desc = string.lower(description)
-    else
-        desc = string.lower(minetest.get_translated_string(lang, description))
-    end
-    return string.find(name, filter, nil, true) or string.find(desc, filter, nil, true)
+	local desc
+	if not lang then
+		desc = string.lower(description)
+	else
+		desc = string.lower(minetest.get_translated_string(lang, description))
+	end
+	return string.find(name, filter, nil, true) or string.find(desc, filter, nil, true)
 end
 
 ---@param filter string
 ---@param player mt.PlayerObjectRef
 local function set_inv_search(filter, player)
-    local playername = player:get_player_name()
-    local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. playername })
-    local creative_list = {}
-    local lang = minetest.get_player_information(playername).lang_code
-    
-    -- Process non-book items
-    for _, str in pairs(inventory_lists["all"]) do
-        local stack = ItemStack(str)
-        local name = stack:get_name()
-        
-        -- Skip enchanted books (they'll be handled separately)
-        if name ~= "mcl_enchanting:book_enchanted" then
-            if filter_item(name, minetest.strip_colors(stack:get_description()), lang, filter) then
-                table.insert(creative_list, str)
-            end
-        end
-    end
-    
-    -- Process enchanted books
-    for ench, def in pairs(mcl_enchanting.enchantments) do
-        for i = 1, def.max_level do
-            local stack = mcl_enchanting.enchant(ItemStack("mcl_enchanting:book_enchanted"), ench, i)
-            tt.reload_itemstack_description(stack)  -- Ensure description is updated
-            
-            if filter_item("mcl_enchanting:book_enchanted", 
-                           minetest.strip_colors(stack:get_description()), 
-                           lang, filter) then
-                table.insert(creative_list, stack:to_string())
-            end
-        end
-    end
-    
-    table.sort(creative_list)
-    inv:set_size("main", #creative_list)
-    inv:set_list("main", creative_list)
+	local playername = player:get_player_name()
+	local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. playername })
+	local creative_list = {}
+	local lang = minetest.get_player_information(playername).lang_code
+	
+	-- Process non-book items
+	for _, str in pairs(inventory_lists["all"]) do
+		local stack = ItemStack(str)
+		local name = stack:get_name()
+		
+		-- Skip enchanted books (they'll be handled separately)
+		if name ~= "mcl_enchanting:book_enchanted" then
+			if filter_item(name, minetest.strip_colors(stack:get_description()), lang, filter) then
+				table.insert(creative_list, str)
+			end
+		end
+	end
+	
+	-- Process enchanted books
+	for ench, def in pairs(mcl_enchanting.enchantments) do
+		for i = 1, def.max_level do
+			local stack = mcl_enchanting.enchant(ItemStack("mcl_enchanting:book_enchanted"), ench, i)
+			tt.reload_itemstack_description(stack)  -- Ensure description is updated
+			
+			if filter_item("mcl_enchanting:book_enchanted", 
+							minetest.strip_colors(stack:get_description()), 
+							lang, filter) then
+				table.insert(creative_list, stack:to_string())
+			end
+		end
+	end
+	
+	table.sort(creative_list)
+	inv:set_size("main", #creative_list)
+	inv:set_list("main", creative_list)
 end
 
 ---@param page string
 ---@param player mt.PlayerObjectRef
 local function set_inv_page(page, player)
-    local playername = player:get_player_name()
-    local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. playername })
-    inv:set_size("main", 0)
-    local creative_list = {}
-    
-    if inventory_lists[page] then -- Standard filter
-        creative_list = inventory_lists[page]
-    end
-    
-    inv:set_size("main", #creative_list)
-    players[playername].inv_size = #creative_list
-    inv:set_list("main", creative_list)
+	local playername = player:get_player_name()
+	local inv = minetest.get_inventory({ type = "detached", name = "creative_" .. playername })
+	inv:set_size("main", 0)
+	local creative_list = {}
+	
+	if inventory_lists[page] then -- Standard filter
+		creative_list = inventory_lists[page]
+	end
+	
+	inv:set_size("main", #creative_list)
+	players[playername].inv_size = #creative_list
+	inv:set_list("main", creative_list)
 end
 
 ---@param player mt.PlayerObjectRef
 local function init(player)
-    local playername = player:get_player_name()
-    minetest.create_detached_inventory("creative_" .. playername, {
-        allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-            if minetest.is_creative_enabled(playername) and
-               from_list ~= to_list then
-                return count
-            else
-                return 0
-            end
-        end,
-        allow_put = function(inv, listname, index, stack, player)
-            return 0
-        end,
-        allow_take = function(inv, listname, index, stack, player)
-            if minetest.is_creative_enabled(player:get_player_name()) then
-                return -1
-            else
-                return 0
-            end
-        end,
-    }, playername)
-    set_inv_page("all", player)
+	local playername = player:get_player_name()
+	minetest.create_detached_inventory("creative_" .. playername, {
+		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+			if minetest.is_creative_enabled(playername) and
+			   from_list ~= to_list then
+				return count
+			else
+				return 0
+			end
+		end,
+		allow_put = function(inv, listname, index, stack, player)
+			return 0
+		end,
+		allow_take = function(inv, listname, index, stack, player)
+			if minetest.is_creative_enabled(player:get_player_name()) then
+				return -1
+			else
+				return 0
+			end
+		end,
+	}, playername)
+	set_inv_page("all", player)
 end
 
 -- Create the trash field
 local trash = minetest.create_detached_inventory("trash", {
-    allow_put = function(inv, listname, index, stack, player)
-        if minetest.is_creative_enabled(player:get_player_name()) then
-            return stack:get_count()
-        else
-            return 0
-        end
-    end,
-    on_put = function(inv, listname, index, stack, player)
-        inv:set_stack(listname, index, "")
-    end,
+	allow_put = function(inv, listname, index, stack, player)
+		if minetest.is_creative_enabled(player:get_player_name()) then
+			return stack:get_count()
+		else
+			return 0
+		end
+	end,
+	on_put = function(inv, listname, index, stack, player)
+		inv:set_stack(listname, index, "")
+	end,
 })
 
 trash:set_size("main", 1)
