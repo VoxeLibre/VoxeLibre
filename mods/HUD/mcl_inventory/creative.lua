@@ -67,7 +67,7 @@ local mod_family_priorities = {
 		["mcl_heads"] = 3,
 		["mcl_end"] = 3,
 		["mcl_wool"] = 3,
-		["mcl_flowers"] = 2,       
+		["mcl_flowers"] = 2,
 		["mcl_core"] = 2,
 		["mcl_fences"] = 1,
 		["mclx_fences"] = 1,
@@ -83,7 +83,7 @@ local mod_family_priorities = {
 		["mcl_dye"] = -1,
 		["mcl_copper"] = 11,
 		["mcl_core"] = {
-			mod_priority = 10,  -- Mod family priority
+			mod_priority = 10,
 			items = {
 				["mcl_core:iron_ingot"] = 10,
 				["mcl_core:iron_nugget"] = 9.9,
@@ -122,7 +122,7 @@ local mod_family_priorities = {
 
 	rail = {
 		["mcl_minecarts"] = {
-			mod_priority = 3,  -- Mod family priority
+			mod_priority = 3,
 			items = {
 				["mcl_minecarts:rail_v2"] = 9.99,
 				["mcl_minecarts:golden_rail_v2"] = 9.9,
@@ -164,12 +164,12 @@ local mod_family_priorities = {
 
 	brew = {
 		["mcl_brewing"] = 2,
-		["mcl_fishing"] = 0.3,
+
 		["mcl_core"] = 1,
 		["mcl_mobitems"] = 1,
-		["mcl_farming"] = 0.2,
 		["mcl_nether"] = 1,
-
+		["mcl_fishing"] = 0.3,
+		["mcl_farming"] = 0.2,
 		["mcl_potions"] = {
 			mod_priority = 0.1,
 			items = {
@@ -266,13 +266,11 @@ local function process_fireworks(name, def, mod_family, category)
 		meta:set_float("vl_fireworks:duration", tbl[1])
 		meta:set_int("vl_fireworks:force", tbl[2])
 		local item_str = stack:to_string()
-		
 		table.insert(temp_inventory_lists["misc"], {name = item_str, priority = combined_priority})
 		table.insert(temp_inventory_lists["all"], {name = item_str, priority = combined_priority})
 		
 		meta:set_string("vl_fireworks:stars", generic)
 		item_str = stack:to_string()
-		
 		table.insert(temp_inventory_lists["misc"], {name = item_str, priority = combined_priority})
 		table.insert(temp_inventory_lists["all"], {name = item_str, priority = combined_priority})
 	end
@@ -475,33 +473,42 @@ minetest.register_on_mods_loaded(function()
 	end
 
 	-- Sort and populate inventory_lists
-	for category, t in pairs(temp_inventory_lists) do
+-- Sort and populate inventory_lists
+for category, t in pairs(temp_inventory_lists) do
 		table.sort(t, function(a, b)
-			return a.priority > b.priority or 
-					(a.priority == b.priority and a.name < b.name)
+				return a.priority > b.priority or 
+								(a.priority == b.priority and a.name < b.name)
 		end)
 		
 		-- Convert to final item list
 		for _, entry in ipairs(t) do
-			-- Process enchanted books immediately
-			if entry.name:find("mcl_enchanting:book_enchanted", 1, true) then
-				local _, enchantment, level = entry.name:match("(%a+) ([_%w]+) (%d+)")
-				if enchantment and level then
-					local stack = mcl_enchanting.enchant(
-						ItemStack("mcl_enchanting:book_enchanted"), 
-						enchantment, 
-						tonumber(level)
-					)
-					tt.reload_itemstack_description(stack)
-					table.insert(inventory_lists[category], stack:to_string())
+				-- Process enchanted books immediately
+				if entry.name:find("mcl_enchanting:book_enchanted", 1, true) then
+						local _, enchantment, level = entry.name:match("(%a+) ([_%w]+) (%d+)")
+						if enchantment and level then
+								local stack = mcl_enchanting.enchant(
+										ItemStack("mcl_enchanting:book_enchanted"), 
+										enchantment, 
+										tonumber(level)
+								)
+								tt.reload_itemstack_description(stack)
+								table.insert(inventory_lists[category], stack:to_string())
+						else
+								table.insert(inventory_lists[category], entry.name)
+						end
 				else
-					table.insert(inventory_lists[category], entry.name)
+						-- Handle fireworks to update their tooltip
+						local stack = ItemStack(entry.name)
+						local stack_name = stack:get_name()
+						if stack_name:sub(1, 13) == "vl_fireworks:" then
+								tt.reload_itemstack_description(stack)
+								table.insert(inventory_lists[category], stack:to_string())
+						else
+								table.insert(inventory_lists[category], entry.name)
+						end
 				end
-			else
-				table.insert(inventory_lists[category], entry.name)
-			end
 		end
-	end
+end
 
 	-- Process enchanted books from definitions
 	process_enchanted_books()
