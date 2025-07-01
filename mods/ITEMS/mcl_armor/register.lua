@@ -225,7 +225,7 @@ minetest.register_tool("mcl_armor:elytra", {
 	_doc_items_longdesc = mcl_armor.longdesc,
 	_doc_items_usagehelp = mcl_armor.usage,
 	inventory_image = "mcl_armor_inv_elytra.png",
-	groups = {armor = 1, non_combat_armor = 1, armor_torso = 1, non_combat_torso = 1, mcl_armor_uses = 10, enchantability = -1, elytra = 1},
+	groups = {armor = 1, non_combat_armor = 1, armor_torso = 1, non_combat_torso = 1, mcl_armor_uses = 10, enchantability = -1, elytra = 1, transport=1},
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
 		_mcl_armor_unequip = "mcl_armor_unequip_leather",
