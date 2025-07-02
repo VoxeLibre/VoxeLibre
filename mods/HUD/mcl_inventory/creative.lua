@@ -504,7 +504,6 @@ minetest.register_on_mods_loaded(function()
 		end
 	end
 
-	-- Sort and populate inventory_lists
 -- Sort and populate inventory_lists
 for category, t in pairs(temp_inventory_lists) do
 		table.sort(t, function(a, b)
@@ -529,17 +528,20 @@ for category, t in pairs(temp_inventory_lists) do
 								table.insert(inventory_lists[category], entry.name)
 						end
 				else
-						-- Tooltip reloading for seperately processed items (fireworks, potions)
+
+				-- Tooltip reloading for seperately processed items (fireworks, potions)
 				local stack = ItemStack(entry.name)
 				local stack_name = stack:get_name()
-						if stack_name:sub(1, 13) == "vl_fireworks:" or 
-						(stack_name:sub(1, 12) == "mcl_potions:" and 
-						minetest.registered_items[stack_name] and 
-						minetest.registered_items[stack_name].groups._mcl_potion == 1) then
-						tt.reload_itemstack_description(stack)
-						table.insert(inventory_lists[category], stack:to_string())
+
+
+				if stack_name:sub(1, 13) == "vl_fireworks:" or 
+					(stack_name:sub(1, 12) == "mcl_potions:" and 
+					minetest.registered_items[stack_name] and 
+					minetest.registered_items[stack_name].groups._mcl_potion == 1) then
+					tt.reload_itemstack_description(stack)
+					table.insert(inventory_lists[category], stack:to_string())
 				else
-						table.insert(inventory_lists[category], entry.name)
+					table.insert(inventory_lists[category], entry.name)
 			end
 		end
 	end
