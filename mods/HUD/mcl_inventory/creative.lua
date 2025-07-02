@@ -1,3 +1,5 @@
+-- Original code (circa 2013) released under WTFPL License by BlockMen
+-- Code added for item priority system & major restructuring for performance optimizations by Thomas Conway (c.2025)
 local mod_name = minetest.get_current_modname()
 local S = minetest.get_translator(mod_name)
 local F = minetest.formspec_escape
@@ -21,9 +23,9 @@ local builtin_filter_ids = {
 for _, f in ipairs(builtin_filter_ids) do
 	inventory_lists[f] = {}
 end
--- Creative mode inventory tab item sorting system code created by Thomas Conway
+--- START of item sorting system code by Thomas Conway
 --- Define mod family priorities for each category
----NOTE: priority is in descending order for technical reasons (non-numbered mod families at the end are 0) Higher numbered mod families appear first in tab. You can use decimal places too not just integers.
+--- NOTE: priority is in descending order for technical reasons (non-numbered mod families at the end are 0) Higher numbered mod families appear first in tab. You can use decimal places too not just integers.
 local mod_family_priorities = {
 	blocks = {
 		["mcl_core"] = {
@@ -603,6 +605,8 @@ local function set_inv_search(filter, player)
 	inv:set_list("main", creative_list)
 end
 
+-- END of overhaul code
+-- START of original code by BlockMen
 ---@param page string
 ---@param player mt.PlayerObjectRef
 local function set_inv_page(page, player)
