@@ -530,16 +530,19 @@ for category, t in pairs(temp_inventory_lists) do
 						end
 				else
 						-- Handle fireworks to update their tooltip
-						local stack = ItemStack(entry.name)
-						local stack_name = stack:get_name()
-						if stack_name:sub(1, 13) == "vl_fireworks:" then
-								tt.reload_itemstack_description(stack)
-								table.insert(inventory_lists[category], stack:to_string())
-						else
-								table.insert(inventory_lists[category], entry.name)
-						end
-				end
+				local stack = ItemStack(entry.name)
+				local stack_name = stack:get_name()
+						if stack_name:sub(1, 13) == "vl_fireworks:" or 
+						(stack_name:sub(1, 12) == "mcl_potions:" and 
+						minetest.registered_items[stack_name] and 
+						minetest.registered_items[stack_name].groups._mcl_potion == 1) then
+						tt.reload_itemstack_description(stack)
+						table.insert(inventory_lists[category], stack:to_string())
+				else
+						table.insert(inventory_lists[category], entry.name)
+			end
 		end
+	end
 end
 
 	-- Process enchanted books from definitions
