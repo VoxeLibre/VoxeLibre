@@ -143,7 +143,7 @@ local function get_entity_pos(pos, dir, double)
 end
 
 local function find_entity(pos)
-	for _, obj in pairs(core.get_objects_inside_radius(pos, 0)) do
+	for _, obj in ipairs(core.get_objects_inside_radius(pos, 0)) do
 		local luaentity = obj:get_luaentity()
 		if luaentity and luaentity.name == "mcl_chests:chest" then
 			return luaentity
@@ -506,23 +506,37 @@ local function on_rightclick_double(side, names, d, double_textures) return func
 		end
 	end
 
+	-- Get row count from the chest definition
+	local rows = d.rows or 3
+
+	-- Calculate positions for double chest formspec
+	local first_chest_y = 0.75
+	local second_chest_y = first_chest_y + (rows * 1.25) + 0.25  -- Add spacing between chests
+	local inventory_label_y = second_chest_y + (rows * 1.25) + 0.25
+	local inventory_y = inventory_label_y + 0.4
+	local hotbar_y = inventory_y + 3 + 0.95
+	local total_height = hotbar_y + 1.25 + 0.375
+
 	core.show_formspec(clicker:get_player_name(),
 		sf("mcl_chests:%s_%s_%s_%s", d.canonical_basename, pos.x, pos.y, pos.z),
 		table.concat({
 			"formspec_version[4]",
-			"size[11.75,14.15]",
+			"size[11.75," .. total_height .. "]",
 
 			"label[0.375,0.375;", F(C(mcl_formspec.label_color, name)), "]",
-			mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
-			sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos_left.x, pos_left.y, pos_left.z),
-			mcl_formspec.get_itemslot_bg_v4(0.375, 4.5, 9, 3),
-			sf("list[nodemeta:%s,%s,%s;main;0.375,4.5;9,3;]", pos_right.x, pos_right.y, pos_right.z),
-			"label[0.375,8.45;", F(C(mcl_formspec.label_color, S("Inventory"))), "]",
-			mcl_formspec.get_itemslot_bg_v4(0.375, 8.825, 9, 3),
-			"list[current_player;main;0.375,8.825;9,3;9]",
+			-- First chest (left)
+			mcl_formspec.get_itemslot_bg_v4(0.375, first_chest_y, 9, rows),
+			sf("list[nodemeta:%s,%s,%s;main;0.375,%s;9,%s;]", pos_left.x, pos_left.y, pos_left.z, first_chest_y, rows),
+			-- Second chest (right)
+			mcl_formspec.get_itemslot_bg_v4(0.375, second_chest_y, 9, rows),
+			sf("list[nodemeta:%s,%s,%s;main;0.375,%s;9,%s;]", pos_right.x, pos_right.y, pos_right.z, second_chest_y, rows),
+			-- Player inventory
+			"label[0.375," .. inventory_label_y .. ";", F(C(mcl_formspec.label_color, S("Inventory"))), "]",
+			mcl_formspec.get_itemslot_bg_v4(0.375, inventory_y, 9, 3),
+			"list[current_player;main;0.375," .. inventory_y .. ";9,3;9]",
 
-			mcl_formspec.get_itemslot_bg_v4(0.375, 12.775, 9, 1),
-			"list[current_player;main;0.375,12.775;9,1;]",
+			mcl_formspec.get_itemslot_bg_v4(0.375, hotbar_y, 9, 1),
+			"list[current_player;main;0.375," .. hotbar_y .. ";9,1;]",
 
 			--BEGIN OF LISTRING WORKAROUND
 			"listring[current_player;main]",
@@ -542,7 +556,6 @@ local function on_rightclick_double(side, names, d, double_textures) return func
 
 	player_chest_open(clicker, pos_left, names.left.a, double_textures, node.param2, true, d.sounds[2], "mcl_chests_chest")
 end end
-
 -- Small chests use `protection_check_take` for both put and take actions.
 local function protection_check_put(side) return function(pos, listname, index, stack, player)
 	local name = player:get_player_name()
@@ -577,248 +590,227 @@ end end
 -- This is a helper function to register regular chests (both small and double variants).
 -- Some parameters here are only utilized by trapped chests.
 function mcl_chests.register_chest(basename, d)
-	-- If this passes without crash, we know for a fact that d = {...}
-	assert(d and type(d) == "table", "Second argument to mcl_chests.register_chest must be a table")
+    assert(d and type(d) == "table", "Second argument to mcl_chests.register_chest must be a table")
 
-	-- Fallback for when there is no `title` field
-	if not d.title then d.title = {} end
-	d.title.small = d.title.small or d.desc
-	d.title.double = d.title.double or ("Large " .. d.title.small)
+    -- Fallback for when there is no `title` field
+    if not d.title then d.title = {} end
+    d.title.small = d.title.small or d.desc
+    d.title.double = d.title.double or ("Large " .. d.title.small)
 
-	if not d.drop then
-		d.drop = "mcl_chests:" .. basename
-	else
-		d.drop = "mcl_chests:" .. d.drop
-	end
+    if not d.drop then
+        d.drop = "mcl_chests:" .. basename
+    else
+        d.drop = "mcl_chests:" .. d.drop
+    end
 
-	local drop_items_chest = mcl_util.drop_items_from_meta_container("main")
+    local drop_items_chest = mcl_util.drop_items_from_meta_container("main")
 
-	if not d.groups then d.groups = {} end
+    if not d.groups then d.groups = {} end
 
-	if not d.on_rightclick_left then
-		d.on_rightclick_left = d.on_rightclick
-	end
-	if not d.on_rightclick_right then
-		d.on_rightclick_right = d.on_rightclick
-	end
+    if not d.on_rightclick_left then
+        d.on_rightclick_left = d.on_rightclick
+    end
+    if not d.on_rightclick_right then
+        d.on_rightclick_right = d.on_rightclick
+    end
 
-	if not d.sounds or type(d.sounds) ~= "table" then
-		d.sounds = {nil, "default_chest"}
-	end
+    if not d.sounds or type(d.sounds) ~= "table" then
+        d.sounds = {nil, "default_chest"}
+    end
 
-	if not d.sounds[2] then
-		d.sounds[2] = "default_chest"
-	end
+    if not d.sounds[2] then
+        d.sounds[2] = "default_chest"
+    end
 
-	-- The basename of the "canonical" version of the node, if set (e.g.: trapped_chest_on → trapped_chest).
-	-- Used to get a shared formspec ID and to swap the node back to the canonical version in on_construct.
-	if not d.canonical_basename then
-		d.canonical_basename = basename
-	end
+    if not d.canonical_basename then
+        d.canonical_basename = basename
+    end
 
-	-- Names table
-	-- -----------
-	-- Accessed through names["kind"].x (names.kind.x), where x can be:
-	--  a = "actual"
-	--  c = canonical
-	--  r = reverse (only for double chests)
-	-- cr = canonical, reverse (only for double chests)
-	local names = {
-		small = {
-			a = "mcl_chests:" .. basename .. "_small",
-			c = "mcl_chests:" .. d.canonical_basename .. "_small",
-		},
-		left = {
-			a = "mcl_chests:" .. basename .. "_left",
-			c = "mcl_chests:" .. d.canonical_basename .. "_left",
-		},
-		right = {
-			a = "mcl_chests:" .. basename .. "_right",
-			c = "mcl_chests:" .. d.canonical_basename .. "_right",
-		},
-	}
-	names.left.r = names.right.a
-	names.right.r = names.left.a
-	names.left.cr = names.right.c
-	names.right.cr = names.left.c
+    -- Get row count or default to 3
+    local rows = d.rows or 3
+    local small_inv_size = 9 * rows
 
-	local small_textures = d.tiles.small
-	local double_textures = d.tiles.double
+    -- Names table
+    local names = {
+        small = {
+            a = "mcl_chests:" .. basename .. "_small",
+            c = "mcl_chests:" .. d.canonical_basename .. "_small",
+        },
+        left = {
+            a = "mcl_chests:" .. basename .. "_left",
+            c = "mcl_chests:" .. d.canonical_basename .. "_left",
+        },
+        right = {
+            a = "mcl_chests:" .. basename .. "_right",
+            c = "mcl_chests:" .. d.canonical_basename .. "_right",
+        },
+    }
+    names.left.r = names.right.a
+    names.right.r = names.left.a
+    names.left.cr = names.right.c
+    names.right.cr = names.left.c
 
-	-- Construct groups
-	local groups_inv = table_merge({deco_block = 1}, d.groups)
-	local groups_small = table_merge(groups_inv, {
-		container = 2,
-		deco_block = 1,
-		chest_entity = 1,
-		not_in_creative_inventory = 1
-	}, d.groups)
-	local groups_left = table_merge(groups_small, {
-		double_chest = 1
-	}, d.groups)
-	local groups_right = table_merge(groups_small, {
-		-- In a double chest, the entity is assigned to the left side, but not the right one.
-		chest_entity = 0,
-		double_chest = 2
-	}, d.groups)
+    local small_textures = d.tiles.small
+    local double_textures = d.tiles.double
 
+    -- Construct groups
+    local groups_inv = table_merge({deco_block = 1}, d.groups)
+    local groups_small = table_merge(groups_inv, {
+        container = 2,
+        deco_block = 1,
+        chest_entity = 1,
+        not_in_creative_inventory = 1
+    }, d.groups)
+    local groups_left = table_merge(groups_small, {
+        double_chest = 1
+    }, d.groups)
+    local groups_right = table_merge(groups_small, {
+        chest_entity = 0,
+        double_chest = 2
+    }, d.groups)
 
+    -- Dummy inventory node
+    core.register_node("mcl_chests:" .. basename, {
+        description = d.desc,
+        _tt_help = d.tt_help,
+        _doc_items_longdesc = d.longdesc,
+        _doc_items_usagehelp = d.usagehelp,
+        _doc_items_hidden = d.hidden,
+        drawtype = "mesh",
+        mesh = "mcl_chests_chest.b3d",
+        tiles = small_textures,
+        use_texture_alpha = "opaque",
+        paramtype = "light",
+        paramtype2 = "facedir",
+        sounds = d.sounds[1],
+        groups = groups_inv,
+        on_construct = function(pos)
+            local node = core.get_node(pos)
+            node.name = names.small.a
+            core.set_node(pos, node)
+        end,
+        after_place_node = after_place_chest,
+    })
 
-	-- Dummy inventory node
-	-- Will turn into names.small.a when placed down
-	core.register_node("mcl_chests:" .. basename, {
-		description = d.desc,
-		_tt_help = d.tt_help,
-		_doc_items_longdesc = d.longdesc,
-		_doc_items_usagehelp = d.usagehelp,
-		_doc_items_hidden = d.hidden,
-		drawtype = "mesh",
-		mesh = "mcl_chests_chest.b3d",
-		tiles = small_textures,
-		use_texture_alpha = "opaque",
-		paramtype = "light",
-		paramtype2 = "facedir",
-		sounds = d.sounds[1],
-		groups = groups_inv,
-		on_construct = function(pos)
-			local node = core.get_node(pos)
-			node.name = names.small.a
-			core.set_node(pos, node)
-		end,
-		after_place_node = after_place_chest,
-	})
+    core.register_node(names.small.a, {
+        description = d.desc,
+        _tt_help = d.tt_help,
+        _doc_items_longdesc = d.longdesc,
+        _doc_items_usagehelp = d.usagehelp,
+        _doc_items_hidden = d.hidden,
+        drawtype = "nodebox",
+        node_box = {
+            type = "fixed",
+            fixed = {-0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
+        },
+        tiles = {"blank.png^[resize:16x16"},
+        use_texture_alpha = "blend",
+        _chest_entity_textures = small_textures,
+        _chest_entity_sound = d.sounds[2],
+        _chest_entity_mesh = "mcl_chests_chest",
+        _chest_entity_animation_type = "chest",
+        paramtype = "light",
+        paramtype2 = "facedir",
+        drop = d.drop,
+        groups = groups_small,
+        is_ground_content = false,
+        sounds = d.sounds[1],
+        on_construct = function(pos)
+            local param2 = core.get_node(pos).param2
+            local meta = core.get_meta(pos)
+            meta:set_string("workaround", "ignore_me")
+            meta:set_string("workaround", "")
 
-	core.register_node(names.small.a, {
-		description = d.desc,
-		_tt_help = d.tt_help,
-		_doc_items_longdesc = d.longdesc,
-		_doc_items_usagehelp = d.usagehelp,
-		_doc_items_hidden = d.hidden,
-		drawtype = "nodebox",
-		node_box = {
-			type = "fixed",
-			fixed = {-0.4375, -0.5, -0.4375, 0.4375, 0.375, 0.4375},
-		},
-		tiles = {"blank.png^[resize:16x16"},
-		use_texture_alpha = "blend",
-		_chest_entity_textures = small_textures,
-		_chest_entity_sound = d.sounds[2],
-		_chest_entity_mesh = "mcl_chests_chest",
-		_chest_entity_animation_type = "chest",
-		paramtype = "light",
-		paramtype2 = "facedir",
-		drop = d.drop,
-		groups = groups_small,
-		is_ground_content = false,
-		sounds = d.sounds[1],
-		on_construct = function(pos)
-			local param2 = core.get_node(pos).param2
-			local meta = core.get_meta(pos)
+            local inv = meta:get_inventory()
+            inv:set_size("main", small_inv_size)
+            inv:set_size("input", 1)
 
-			--[[ This is a workaround for Luanti issue 5894
-			<https://github.com/minetest/minetest/issues/5894>.
-			Apparently if we don't do this, large chests initially don't work when
-			placed at chunk borders, and some chests randomly don't work after
-			placing. ]]
-			-- FIXME: Remove this workaround when the bug has been fixed.
-			-- BEGIN OF WORKAROUND --
-			meta:set_string("workaround", "ignore_me")
-			meta:set_string("workaround", "") -- Done to keep metadata clean
-			-- END OF WORKAROUND --
+            -- Optimized neighbor checking: Check right first, then left
+-- Cache neighbor positions/nodes
+            local right_pos = get_double_container_neighbor_pos(pos, param2, "right")
+            local right_node = right_pos and core.get_node(right_pos)
+            if right_node and right_node.name == names.small.c then
+                core.swap_node(pos, {name = names.right.c, param2 = param2})
+                core.swap_node(right_pos, {name = names.left.c, param2 = param2})
+                create_entity(right_pos, names.left.c, double_textures, param2, true, d.sounds[2],
+                    "mcl_chests_chest", "chest")
+            else
+                local left_pos = get_double_container_neighbor_pos(pos, param2, "left")
+                local left_node = left_pos and core.get_node(left_pos)
+                if left_node and left_node.name == names.small.c then
+                    core.swap_node(pos, {name = names.left.c, param2 = param2})
+                    create_entity(pos, names.left.c, double_textures, param2, true, d.sounds[2],
+                        "mcl_chests_chest", "chest")
+                    core.swap_node(left_pos, {name = names.right.a, param2 = param2})
+                else
+                    core.swap_node(pos, {name = names.small.c, param2 = param2})
+                    create_entity(pos, names.small.c, small_textures, param2, false, d.sounds[2],
+                        "mcl_chests_chest", "chest")
+                end
+            end
+        end,
+        after_place_node = after_place_chest,
+        after_dig_node = drop_items_chest,
+        on_blast = on_chest_blast,
+        allow_metadata_inventory_move = protection_check_move,
+        allow_metadata_inventory_take = protection_check_take,
+        allow_metadata_inventory_put = protection_check_take,
+        on_metadata_inventory_move = log_inventory_move,
+        on_metadata_inventory_put = log_inventory_put,
+        on_metadata_inventory_take = log_inventory_take,
+        _mcl_blast_resistance = d.hardness,
+        _mcl_hardness = d.hardness,
 
-			local inv = meta:get_inventory()
-			inv:set_size("main", 9 * 3)
+        on_rightclick = function(pos, node, clicker)
+            local topnode = core.get_node(vector.offset(pos, 0, 1, 0))
+            if topnode and topnode.name and core.registered_nodes[topnode.name]
+                    and core.registered_nodes[topnode.name].groups.opaque == 1 then
+                return false
+            end
+            local name = core.get_meta(pos):get_string("name")
+            if name == "" then
+                name = d.title.small
+            end
 
-			--[[ The "input" list is *another* workaround (hahahaha!) around the fact that Luanti
-			does not support listrings to put items into an alternative list if the first one
-			happens to be full. See <https://github.com/minetest/minetest/issues/5343>.
-			This list is a hidden input-only list and immediately puts items into the appropriate chest.
-			It is only used for listrings and hoppers. This workaround is not that bad because it only
-			requires a simple “inventory allows” check for large chests.]]
-			-- FIXME: Refactor the listrings as soon Luanti supports alternative listrings
-			-- BEGIN OF LISTRING WORKAROUND
-			inv:set_size("input", 1)
-			-- END OF LISTRING WORKAROUND
+            -- Calculate dynamic formspec dimensions
+            local formspec_height = rows + 7.425
+            local player_label_y = 0.75 + rows + 0.95
+            local player_main_y = player_label_y + 0.4
+            local hotbar_y = player_main_y + 3 + 0.95
 
-			-- Combine into a double chest if neighbouring another small chest
-			if core.get_node(get_double_container_neighbor_pos(pos, param2, "right")).name ==
-					names.small.c then
-				core.swap_node(pos, {name = names.right.c, param2 = param2})
-				local p = get_double_container_neighbor_pos(pos, param2, "right")
-				core.swap_node(p, {name = names.left.c, param2 = param2})
-				create_entity(p, names.left.c, double_textures, param2, true, d.sounds[2],
-					"mcl_chests_chest", "chest")
-			elseif core.get_node(get_double_container_neighbor_pos(pos, param2, "left")).name ==
-					names.small.c then
-				core.swap_node(pos, {name = names.left.c, param2 = param2})
-				create_entity(pos, names.left.c, double_textures, param2, true, d.sounds[2],
-					"mcl_chests_chest", "chest")
-				local p = get_double_container_neighbor_pos(pos, param2, "left")
-				core.swap_node(p, {name = names.right.a, param2 = param2})
-			else
-				core.swap_node(pos, {name = names.small.c, param2 = param2})
-				create_entity(pos, names.small.c, small_textures, param2, false, d.sounds[2],
-					"mcl_chests_chest", "chest")
-			end
-		end,
-		after_place_node = after_place_chest,
-		after_dig_node = drop_items_chest,
-		on_blast = on_chest_blast,
-		allow_metadata_inventory_move = protection_check_move,
-		allow_metadata_inventory_take = protection_check_take,
-		allow_metadata_inventory_put = protection_check_take,
-		on_metadata_inventory_move = log_inventory_move,
-		on_metadata_inventory_put = log_inventory_put,
-		on_metadata_inventory_take = log_inventory_take,
-		_mcl_blast_resistance = d.hardness,
-		_mcl_hardness = d.hardness,
+            core.show_formspec(clicker:get_player_name(),
+                sf("mcl_chests:%s_%s_%s_%s", d.canonical_basename, pos.x, pos.y, pos.z),
+                table.concat({
+                    "formspec_version[4]",
+                    "size[11.75," .. formspec_height .. "]",
 
-		on_rightclick = function(pos, node, clicker)
-			local topnode = core.get_node(vector.offset(pos, 0, 1, 0))
-			if topnode and topnode.name and core.registered_nodes[topnode.name]
-					and core.registered_nodes[topnode.name].groups.opaque == 1 then
-				-- won't open if there is no space from the top
-				return false
-			end
-			local name = core.get_meta(pos):get_string("name")
-			if name == "" then
-				name = d.title.small
-			end
+                    "label[0.375,0.375;", F(C(mcl_formspec.label_color, name)), "]",
+                    mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, rows),
+                    sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,%s;]", pos.x, pos.y, pos.z, rows),
+                    "label[0.375," .. player_label_y .. ";", F(C(mcl_formspec.label_color, S("Inventory"))), "]",
+                    mcl_formspec.get_itemslot_bg_v4(0.375, player_main_y, 9, 3),
+                    "list[current_player;main;0.375,"..player_main_y..";9,3;9]",
+                    mcl_formspec.get_itemslot_bg_v4(0.375, hotbar_y, 9, 1),
+                    "list[current_player;main;0.375,"..hotbar_y..";9,1;]",
+                    sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
+                    "listring[current_player;main]",
+                })
+            )
 
-			core.show_formspec(clicker:get_player_name(),
-				sf("mcl_chests:%s_%s_%s_%s", d.canonical_basename, pos.x, pos.y, pos.z),
-				table.concat({
-					"formspec_version[4]",
-					"size[11.75,10.425]",
+            if d.on_rightclick then
+                d.on_rightclick(pos, node, clicker)
+            end
 
-					"label[0.375,0.375;", F(C(mcl_formspec.label_color, name)), "]",
-					mcl_formspec.get_itemslot_bg_v4(0.375, 0.75, 9, 3),
-					sf("list[nodemeta:%s,%s,%s;main;0.375,0.75;9,3;]", pos.x, pos.y, pos.z),
-					"label[0.375,4.7;", F(C(mcl_formspec.label_color, S("Inventory"))), "]",
-					mcl_formspec.get_itemslot_bg_v4(0.375, 5.1, 9, 3),
-					"list[current_player;main;0.375,5.1;9,3;9]",
+            player_chest_open(clicker, pos, names.small.a, small_textures, node.param2, false, d.sounds[2],
+                "mcl_chests_chest")
+        end,
 
-					mcl_formspec.get_itemslot_bg_v4(0.375, 9.05, 9, 1),
-					"list[current_player;main;0.375,9.05;9,1;]",
-					sf("listring[nodemeta:%s,%s,%s;main]", pos.x, pos.y, pos.z),
-					"listring[current_player;main]",
-				})
-			)
-
-			if d.on_rightclick then
-				d.on_rightclick(pos, node, clicker)
-			end
-
-			player_chest_open(clicker, pos, names.small.a, small_textures, node.param2, false, d.sounds[2],
-				"mcl_chests_chest")
-		end,
-
-		on_destruct = function(pos)
-			close_forms(d.canonical_basename, pos)
-		end,
-		mesecons = d.mesecons,
-		on_rotate = simple_rotate,
-	})
+        on_destruct = function(pos)
+            close_forms(d.canonical_basename, pos)
+        end,
+        mesecons = d.mesecons,
+        on_rotate = simple_rotate,
+    })
 
 	core.register_node(names.left.a, {
 		drawtype = "nodebox",
