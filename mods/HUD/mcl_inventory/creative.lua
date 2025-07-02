@@ -919,7 +919,7 @@ function mcl_inventory.set_creative_formspec(player)
 			"tooltip[__mcl_craftguide;" .. F(S("Recipe book")) .. "]",
 
 			-- Help button
-			"image_button[11.575,2.075;1.1,1.1;doc_button_icon_lores.png;__mcl_doc;]",
+			"image_button[11.575,2.075;1.1,1.1;doc_button_icon_hires.png;__mcl_doc;]",
 			"tooltip[__mcl_doc;" .. F(S("Help")) .. "]",
 
 			-- Advancements button
