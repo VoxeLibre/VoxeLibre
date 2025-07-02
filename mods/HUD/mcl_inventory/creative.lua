@@ -529,7 +529,7 @@ for category, t in pairs(temp_inventory_lists) do
 								table.insert(inventory_lists[category], entry.name)
 						end
 				else
-						-- Handle fireworks to update their tooltip
+						-- Tooltip reloading for seperately processed items (fireworks, potions)
 				local stack = ItemStack(entry.name)
 				local stack_name = stack:get_name()
 						if stack_name:sub(1, 13) == "vl_fireworks:" or 
