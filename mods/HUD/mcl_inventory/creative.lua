@@ -21,7 +21,7 @@ local builtin_filter_ids = {
 for _, f in ipairs(builtin_filter_ids) do
 	inventory_lists[f] = {}
 end
-
+-- Creative mode inventory tab item sorting system code created by Thomas Conway
 --- Define mod family priorities for each category
 ---NOTE: priority is in descending order for technical reasons (non-numbered mod families at the end are 0) Higher numbered mod families appear first in tab. You can use decimal places too not just integers.
 local mod_family_priorities = {
