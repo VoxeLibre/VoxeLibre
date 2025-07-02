@@ -8,8 +8,10 @@ The API is documented in `API.md`.
 
 ## License of source code
 
-Copyright (C) 2011-2012 celeron55, Perttu Ahola <celeron55@gmail.com>\
-Copyright (C) 2024-2025 rudzik8, Mikita Wiśniewski <rudzik8@protonmail.com>
+Copyright (C) 2011-2012 celeron55, Perttu Ahola <celeron55@gmail.com>\ - Original mod author
+Copyright (C) 2024-2025 rudzik8, Mikita Wiśniewski <rudzik8@protonmail.com> - API restructuring
+Copyright (C. 2025) SmokeyDope, Thomas Conway <smokey@tilde.team> - dynamic per-container inventory size & small optimization, new containers
+
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
