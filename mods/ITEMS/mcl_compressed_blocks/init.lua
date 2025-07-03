@@ -7,6 +7,9 @@ local function N(s) return s end
 local mod = {}
 mcl_compressed_block = mod
 
+-- Configuration constants
+local COMPRESSION_RATIO = 9
+
 local LABELS = {
 	[0] = N("@1"),
 	N("Compressed @1"),
@@ -18,6 +21,7 @@ local LABELS = {
 	N("Septuple Compressed @1"),
 	N("Octuple Compressed @1"),
 }
+
 local NODE_NAMES = {
 	[0] = "",
 	"compressed_",
@@ -29,94 +33,90 @@ local NODE_NAMES = {
 	"septuple_compressed_",
 	"octuple_compressed_",
 }
-local BLAST_RESISTANCE = {
-	11, 19, 33, 58, 102, 179, 313, 548,
-}
-local HARDNESS = {
-	 3,  4,  5,  7,   9,  12,  16,  21,
-}
 
---local block_name = "Cobblestone"
-function mod.register_block_compression(base_block, block_name, max_levels, final_drops, overlay_color, gem_overlay_color)
-	local base_nodedef = minetest.registered_nodes[base_block]
-	assert(base_nodedef)
+-- Balanced progression formulas
+local function calculate_blast_resistance(level, base_resistance)
+	base_resistance = base_resistance or 6
+	return math.floor(base_resistance * (1.8 ^ level))
+end
 
-	local prev_name = base_block
-	for i = 1,(max_levels-1) do
-		local overlay_level = math.ceil(i/max_levels * 8)
-		local name = "mcl_compressed_blocks:"..NODE_NAMES[i]..block_name
+local function calculate_hardness(level, base_hardness)
+	base_hardness = base_hardness or 2
+	return math.floor(base_hardness * (1.4 ^ level))
+end
 
-		-- Build tile texture with optional overlay colorization
-		local tile_texture = base_nodedef.tiles[1].."^mcl_compressed_blocks_"..tostring(overlay_level).."x_overlay.png"
-		if overlay_color then
-			tile_texture = base_nodedef.tiles[1].."^(mcl_compressed_blocks_"..tostring(overlay_level).."x_overlay.png^[colorize:"..overlay_color..")"
-		end
-
-		minetest.register_node(name,{
-			description = S(LABELS[i], base_nodedef.description),
-			_doc_items_longdesc = S(
-				"@1 is a decorative block made from 9 @2. It is useful for saving space in your inventories.",
-				S(LABELS[i], S(block_name)), S(LABELS[i-1], S(block_name))
-			),
-			_doc_items_hidden = false,
-			tiles = {tile_texture},
-			is_ground_content = true,
-			stack_max = 64,
-			groups = {pickaxey=1, stone=1, building_block=1},
-			sounds = base_nodedef.sounds,
-			_mcl_blast_resistance = BLAST_RESISTANCE[i],
-			_mcl_hardness = HARDNESS[i],
-		})
-
-		minetest.register_craft({
-			output = name,
-			recipe = {
-				{ prev_name, prev_name, prev_name },
-				{ prev_name, prev_name, prev_name },
-				{ prev_name, prev_name, prev_name },
-			},
-		})
-		minetest.register_craft({
-			output = prev_name .. " 9",
-			recipe = {
-				{ name },
-			},
-		})
-		prev_name = name
+-- Utility function to safely get tile texture
+local function get_base_tile(nodedef)
+	if not nodedef.tiles or #nodedef.tiles == 0 then
+		return "unknown_node.png"
 	end
 
-	-- Compression Terminal Block
-	local name = "mcl_compressed_blocks:"..NODE_NAMES[max_levels]..block_name
+	local tile = nodedef.tiles[1]
+	if type(tile) == "table" then
+		return tile.name or tile.image or "unknown_node.png"
+	end
+	return tile
+end
 
-	-- Build terminal block tile texture with optional colorization
-	local terminal_tile = base_nodedef.tiles[1].."^mcl_compressed_blocks_8x_overlay.png"
+-- Build texture with overlay and colorization
+local function build_texture(base_tile, overlay_level, overlay_color, gem_overlay_color, is_terminal)
+	local texture = base_tile .. "^mcl_compressed_blocks_" .. tostring(overlay_level) .. "x_overlay.png"
+
 	if overlay_color then
-		terminal_tile = base_nodedef.tiles[1].."^(mcl_compressed_blocks_8x_overlay.png^[colorize:"..overlay_color..")"
-	end
-	if gem_overlay_color then
-		terminal_tile = terminal_tile.."^(mcl_compressed_blocks_gem_overlay.png^[colorize:"..gem_overlay_color..")"
-	else
-		terminal_tile = terminal_tile.."^mcl_compressed_blocks_gem_overlay.png"
+		texture = base_tile .. "^(mcl_compressed_blocks_" .. tostring(overlay_level) .. "x_overlay.png^[colorize:" .. overlay_color .. ")"
 	end
 
-	minetest.register_node(name,{
-		description = S(LABELS[max_levels], base_nodedef.description),
+	if is_terminal then
+		if gem_overlay_color then
+			texture = texture .. "^(mcl_compressed_blocks_gem_overlay.png^[colorize:" .. gem_overlay_color .. ")"
+		else
+			texture = texture .. "^mcl_compressed_blocks_gem_overlay.png"
+		end
+	end
+
+	return texture
+end
+
+-- Register a single compression level
+local function register_compression_level(base_nodedef, base_tile, level, max_levels, block_name, prev_name, overlay_color, gem_overlay_color, final_drops)
+	local overlay_level = math.ceil(level / max_levels * 8)
+	local name = "mcl_compressed_blocks:" .. NODE_NAMES[level] .. block_name
+	local is_terminal = (level == max_levels)
+
+	-- Calculate dynamic properties
+	local blast_resistance = calculate_blast_resistance(level, base_nodedef._mcl_blast_resistance)
+	local hardness = calculate_hardness(level, base_nodedef._mcl_hardness)
+
+	-- Build texture
+	local tile_texture = build_texture(base_tile, overlay_level, overlay_color, gem_overlay_color, is_terminal)
+
+	-- Create node definition
+	local nodedef = {
+		description = S(LABELS[level], base_nodedef.description),
 		_doc_items_longdesc = S(
 			"@1 is a decorative block made from 9 @2. It is useful for saving space in your inventories.",
-			S(LABELS[max_levels], S(block_name)), S(LABELS[max_levels-1], S(block_name))
+			S(LABELS[level], S(block_name)),
+			level > 1 and S(LABELS[level-1], S(block_name)) or base_nodedef.description
 		),
 		_doc_items_hidden = false,
-		tiles = {terminal_tile},
-
-		is_ground_content = true,
+		tiles = {tile_texture},
+		is_ground_content = base_nodedef.is_ground_content or true,
 		stack_max = 64,
-		groups = {pickaxey=1, stone=1, building_block=1},
-		drop = final_drops,
+		groups = base_nodedef.groups or {pickaxey=1, stone=1, building_block=1},
 		sounds = base_nodedef.sounds,
-		_mcl_blast_resistance = BLAST_RESISTANCE[max_levels],
-		_mcl_hardness = HARDNESS[max_levels],
-		_mcl_silk_touch_drop = true,
-	})
+		_mcl_blast_resistance = blast_resistance,
+		_mcl_hardness = hardness,
+	}
+
+	-- Terminal block specific properties
+	if is_terminal then
+		nodedef.drop = final_drops
+		nodedef._mcl_silk_touch_drop = true
+	end
+
+	minetest.register_node(name, nodedef)
+
+	-- Register crafting recipes
 	minetest.register_craft({
 		output = name,
 		recipe = {
@@ -125,60 +125,153 @@ function mod.register_block_compression(base_block, block_name, max_levels, fina
 			{ prev_name, prev_name, prev_name },
 		},
 	})
+
 	minetest.register_craft({
-		output = prev_name .. " 9",
+		output = prev_name .. " " .. COMPRESSION_RATIO,
 		recipe = {
 			{ name },
 		},
 	})
+
+	return name
 end
 
--- Example registrations with custom colors
-mod.register_block_compression("mcl_core:cobble", "cobblestone", 8, {
-	max_items = 2,
-	items = {
-		{items = {"mcl_core:diamond 9"}},
-		{items = {"mcl_nether:netherite_scrap 18"}},
-	},
-}, nil, "#77cefb:120") -- No overlay colorization, bright blue gem
+-- Main compression registration function
+function mod.register_block_compression(base_block, block_name, max_levels, final_drops, overlay_color, gem_overlay_color)
 
-mod.register_block_compression("mcl_deepslate:deepslate_cobbled", "deepslate_cobbled", 8, {
-	max_items = 2,
-	items = {
-		{items = {"mcl_core:diamond 9"}},
-		{items = {"mcl_nether:netherite_scrap 18"}},
-	},
-}, "#0080FF:120", "#8A2BE2:120") -- Blue overlay, blue-violet gem
+	local base_nodedef = minetest.registered_nodes[base_block]
+	local base_tile = get_base_tile(base_nodedef)
 
-mod.register_block_compression("mcl_core:granite", "granite", 5, {
-	max_items = 2,
-	items = {
-		{items = {"mcl_core:diamond 9"}},
-		{items = {"mcl_nether:netherite_scrap 18"}},
-	},
-}, "#FF4500:120", "#FF6347:120") -- Orange-red overlay, tomato gem
+	local prev_name = base_block
 
-mod.register_block_compression("mcl_core:diorite", "diorite", 6, {
-	max_items = 2,
-	items = {
-		{items = {"mcl_core:diamond 9"}},
-		{items = {"mcl_nether:netherite_scrap 18"}},
-	},
-}, "#C0C0C0:120", "#E6E6FA:120") -- Silver overlay, lavender gem
+	-- Register intermediate compression levels
+	for i = 1, max_levels - 1 do
+		prev_name = register_compression_level(
+			base_nodedef, base_tile, i, max_levels, block_name,
+			prev_name, overlay_color, nil, nil
+		)
+	end
 
-mod.register_block_compression("mcl_core:andesite", "andesite", 6, {
-	max_items = 2,
-	items = {
-		{items = {"mcl_core:diamond 9"}},
-		{items = {"mcl_nether:netherite_scrap 18"}},
-	},
-}, "#696969:120", "#A52A2A:120") -- Dim gray overlay, brown gem
+	-- Register terminal compression level
+	register_compression_level(
+		base_nodedef, base_tile, max_levels, max_levels, block_name,
+		prev_name, overlay_color, gem_overlay_color, final_drops
+	)
+end
 
--- Example: Change only the gem color, keep default overlay
-mod.register_block_compression("mcl_core:stone", "stone", 7, {
-	max_items = 2,
-	items = {
-		{items = {"mcl_core:diamond 9"}},
-		{items = {"mcl_nether:netherite_scrap 18"}},
+-- Default drop configuration for consistency
+local function create_default_drops()
+	return {
+		max_items = 2,
+		items = {
+			{items = {"mcl_core:diamond 9"}},
+			{items = {"mcl_nether:netherite_scrap 18"}},
+		},
+	}
+end
+
+-- Block registrations with improved organization
+local block_configs = {
+	{
+		base = "mcl_core:cobble",
+		name = "cobblestone",
+		levels = 8,
+		overlay_color = nil,
+		gem_color = "#77cefb:120",
+
+		drops = {
+			max_items = 2,
+			items = {
+				{items = {"mcl_core:diamond 9"}},
+				{items = {"mcl_nether:netherite_scrap 18"}},
+			},
+		}
 	},
-}, nil, "#FFD700:120") -- Default overlay, gold gem
+	{
+		base = "mcl_deepslate:deepslate_cobbled",
+		name = "deepslate_cobbled",
+		levels = 8,
+		overlay_color = "#0080FF:120",
+		gem_color = "#8A2BE2:120",
+
+		drops = {
+			max_items = 3,
+			items = {
+				{items = {"mcl_core:diamond 12"}},
+				{items = {"mcl_nether:netherite_scrap 24"}},
+			},
+		}
+	},
+	{
+		base = "mcl_core:granite",
+		name = "granite",
+		levels = 5,
+		overlay_color = "#FF4500:120",
+		gem_color = "#FF6347:120",
+
+		drops = {
+			max_items = 2,
+			items = {
+				{items = {"mcl_core:gold_ingot 16"}},
+				{items = {"mcl_nether:quartz 32"}},
+			},
+		}
+	},
+	{
+		base = "mcl_core:diorite",
+		name = "diorite",
+		levels = 6,
+		overlay_color = "#C0C0C0:120",
+		gem_color = "#E6E6FA:120",
+		drops = {
+			max_items = 2,
+			items = {
+				{items = {"mcl_core:iron_ingot 24"}},
+				{items = {"mcl_core:quartz 20"}},
+			},
+		}
+	},
+	{
+		base = "mcl_core:andesite",
+		name = "andesite",
+		levels = 6,
+		overlay_color = "#696969:120",
+		gem_color = "#A52A2A:120",
+
+		drops = {
+			max_items = 3,
+			items = {
+				{items = {"mcl_core:iron_ingot 18"}},
+				{items = {"mcl_core:copper_ingot 32"}},
+				{items = {"mcl_core:coal_lump 48"}},
+			},
+		}
+	},
+	{
+		base = "mcl_core:stone",
+		name = "stone",
+		levels = 7,
+		overlay_color = nil,
+		gem_color = "#FFD700:120",
+
+		drops = {
+			max_items = 2,
+			items = {
+				{items = {"mcl_core:diamond 15"}},
+				{items = {"mcl_core:emerald 8"}},
+			},
+		}
+	},
+}
+
+-- Register all configured blocks
+for _, config in ipairs(block_configs) do
+	mod.register_block_compression(
+		config.base,
+		config.name,
+		config.levels,
+		config.drops or create_default_drops(), -- Use custom drops or fallback to default
+		config.overlay_color,
+		config.gem_color
+	)
+end
