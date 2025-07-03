@@ -1,3 +1,5 @@
+-- (C. 2024) Thomas Conway <smokey@tilde.team> - original mod author, overlay texture artist, implemented colorizer system
+-- (C. 2024) Teknomunk, - created and optimized the API system to generalize compressed block registry
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
