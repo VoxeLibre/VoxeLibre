@@ -1,7 +1,6 @@
 -- (C. 2024) Thomas Conway <smokey@tilde.team> - original mod author, overlay texture artist, implemented colorizer system
 -- (C. 2024) Teknomunk, - created and optimized the API system to generalize compressed block registry
 local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 local function N(s) return s end
 local mod = {}
@@ -136,29 +135,6 @@ local function register_compression_level(base_nodedef, base_tile, level, max_le
 	return name
 end
 
--- Main compression registration function
-function mod.register_block_compression(base_block, block_name, max_levels, final_drops, overlay_color, gem_overlay_color)
-
-	local base_nodedef = minetest.registered_nodes[base_block]
-	local base_tile = get_base_tile(base_nodedef)
-
-	local prev_name = base_block
-
-	-- Register intermediate compression levels
-	for i = 1, max_levels - 1 do
-		prev_name = register_compression_level(
-			base_nodedef, base_tile, i, max_levels, block_name,
-			prev_name, overlay_color, nil, nil
-		)
-	end
-
-	-- Register terminal compression level
-	register_compression_level(
-		base_nodedef, base_tile, max_levels, max_levels, block_name,
-		prev_name, overlay_color, gem_overlay_color, final_drops
-	)
-end
-
 -- Default drop configuration for consistency
 local function create_default_drops()
 	return {
@@ -170,108 +146,127 @@ local function create_default_drops()
 	}
 end
 
--- Block registrations with improved organization
-local block_configs = {
-	{
-		base = "mcl_core:cobble",
-		name = "cobblestone",
-		levels = 8,
-		overlay_color = nil,
-		gem_color = "#77cefb:120",
+---@class vl_compressed_blocks.Def
+---@field base string
+---@field name string
+---@field levels integer
+---@field drops table
+---@field overlay_color? string
+---@field gem_color? string
 
-		drops = {
-			max_items = 2,
-			items = {
-				{items = {"mcl_core:diamond 9"}},
-				{items = {"mcl_nether:netherite_scrap 18"}},
-			},
-		}
-	},
-	{
-		base = "mcl_deepslate:deepslate_cobbled",
-		name = "deepslate_cobbled",
-		levels = 8,
-		overlay_color = "#0080FF:120",
-		gem_color = "#8A2BE2:120",
+-- Main compression registration function
+---@param def vl_compressed_blocks.Def
+function mod.register_block_compression(def)
+	local final_drops = def.drops or create_default_drops()
 
-		drops = {
-			max_items = 3,
-			items = {
-				{items = {"mcl_core:diamond 12"}},
-				{items = {"mcl_nether:netherite_scrap 24"}},
-			},
-		}
-	},
-	{
-		base = "mcl_core:granite",
-		name = "granite",
-		levels = 5,
-		overlay_color = "#FF4500:120",
-		gem_color = "#FF6347:120",
+	local base_nodedef = minetest.registered_nodes[def.base]
+	local base_tile = get_base_tile(base_nodedef)
 
-		drops = {
-			max_items = 2,
-			items = {
-				{items = {"mcl_core:gold_ingot 16"}},
-				{items = {"mcl_nether:quartz 32"}},
-			},
-		}
-	},
-	{
-		base = "mcl_core:diorite",
-		name = "diorite",
-		levels = 6,
-		overlay_color = "#C0C0C0:120",
-		gem_color = "#E6E6FA:120",
-		drops = {
-			max_items = 2,
-			items = {
-				{items = {"mcl_core:iron_ingot 24"}},
-				{items = {"mcl_core:quartz 20"}},
-			},
-		}
-	},
-	{
-		base = "mcl_core:andesite",
-		name = "andesite",
-		levels = 6,
-		overlay_color = "#696969:120",
-		gem_color = "#A52A2A:120",
+	local prev_name = def.base
 
-		drops = {
-			max_items = 3,
-			items = {
-				{items = {"mcl_core:iron_ingot 18"}},
-				{items = {"mcl_core:copper_ingot 32"}},
-				{items = {"mcl_core:coal_lump 48"}},
-			},
-		}
-	},
-	{
-		base = "mcl_core:stone",
-		name = "stone",
-		levels = 7,
-		overlay_color = nil,
-		gem_color = "#FFD700:120",
+	-- Register intermediate compression levels
+	for i = 1, def.levels - 1 do
+		prev_name = register_compression_level(
+			base_nodedef, base_tile, i, def.levels, def.name,
+			prev_name, def.overlay_color, nil, nil
+		)
+	end
 
-		drops = {
-			max_items = 2,
-			items = {
-				{items = {"mcl_core:diamond 15"}},
-				{items = {"mcl_core:emerald 8"}},
-			},
-		}
-	},
-}
-
--- Register all configured blocks
-for _, config in ipairs(block_configs) do
-	mod.register_block_compression(
-		config.base,
-		config.name,
-		config.levels,
-		config.drops or create_default_drops(), -- Use custom drops or fallback to default
-		config.overlay_color,
-		config.gem_color
+	-- Register terminal compression level
+	register_compression_level(
+		base_nodedef, base_tile, def.levels, def.levels, def.name,
+		prev_name, def.overlay_color, def.gem_color, final_drops
 	)
 end
+
+-- Register included blocks
+mod.register_block_compression({
+	base = "mcl_core:cobble",
+	name = "cobblestone",
+	levels = 8,
+	overlay_color = nil,
+	gem_color = "#77cefb:120",
+
+	drops = {
+		max_items = 2,
+		items = {
+			{items = {"mcl_core:diamond 9"}},
+			{items = {"mcl_nether:netherite_scrap 18"}},
+		},
+	}
+})
+mod.register_block_compression({
+	base = "mcl_deepslate:deepslate_cobbled",
+	name = "deepslate_cobbled",
+	levels = 8,
+	overlay_color = "#292b53:120",
+	gem_color = "#8A2BE2:120",
+
+	drops = {
+		max_items = 3,
+		items = {
+			{items = {"mcl_core:diamond 12"}},
+			{items = {"mcl_nether:netherite_scrap 24"}},
+		},
+	}
+})
+mod.register_block_compression({
+	base = "mcl_core:granite",
+	name = "granite",
+	levels = 5,
+	overlay_color = "#734638:120",
+	gem_color = "#FF6347:120",
+
+	drops = {
+		max_items = 2,
+		items = {
+			{items = {"mcl_core:gold_ingot 16"}},
+			{items = {"mcl_nether:quartz 32"}},
+		},
+	}
+})
+mod.register_block_compression({
+	base = "mcl_core:diorite",
+	name = "diorite",
+	levels = 6,
+	overlay_color = "#5e5468:120",
+	gem_color = "#E6E6FA:120",
+	drops = {
+		max_items = 2,
+		items = {
+			{items = {"mcl_core:iron_ingot 24"}},
+			{items = {"mcl_core:quartz 20"}},
+		},
+	}
+})
+mod.register_block_compression({
+	base = "mcl_core:andesite",
+	name = "andesite",
+	levels = 6,
+	overlay_color = "#243d2b:120",
+	gem_color = "#138834:120",
+
+	drops = {
+		max_items = 3,
+		items = {
+			{items = {"mcl_core:iron_ingot 18"}},
+			{items = {"mcl_core:copper_ingot 32"}},
+			{items = {"mcl_core:coal_lump 48"}},
+		},
+	}
+})
+mod.register_block_compression({
+	base = "mcl_core:stone",
+	name = "stone",
+	levels = 7,
+	overlay_color = "#554c3d",
+	gem_color = "#FFD700:120",
+
+	drops = {
+		max_items = 2,
+		items = {
+			{items = {"mcl_core:diamond 15"}},
+			{items = {"mcl_core:emerald 8"}},
+		},
+	}
+})
