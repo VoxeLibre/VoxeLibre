@@ -392,7 +392,8 @@ minetest.override_item("mcl_end:ender_eye", {
 	end,
 })
 
--- End Portal Wand - Creates a complete end portal structure
+-- End Portal Wand - added by Thomas Conway (c. 2025)
+-- Creates a complete end portal structure
 minetest.register_tool("mcl_portals:end_portal_wand", {
 	description = S("End Portal Wand"),
 	_tt_help = S("Creates a complete End Portal"),
