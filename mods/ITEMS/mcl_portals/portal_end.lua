@@ -391,3 +391,102 @@ minetest.override_item("mcl_end:ender_eye", {
 		return itemstack
 	end,
 })
+
+-- End Portal Wand - Creates a complete end portal structure
+minetest.register_tool("mcl_portals:end_portal_wand", {
+	description = S("End Portal Wand"),
+	_tt_help = S("Creates a complete End Portal"),
+	_doc_items_longdesc = S("This wand instantly creates a complete End Portal structure with all frames and eyes of ender in place. Use in creative mode for easy portal creation."),
+	_doc_items_usagehelp = S("Right-click on the ground to create an End Portal. The portal will be created with the center at the position you click. Make sure there's enough space (5×5 area)."),
+	inventory_image = "default_stick.png^[colorize:#9050a0:200",
+	wield_image = "default_stick.png^[colorize:#9050a0:200",
+	stack_max = 1,
+	groups = {not_in_creative_inventory = 0},
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			return itemstack
+		end
+
+		local pos = pointed_thing.above
+		local player_name = placer:get_player_name()
+
+		-- Check if we have enough space (5x5x2 area)
+		local check_pos = {x = pos.x - 2, y = pos.y, z = pos.z - 2}
+		for x = 0, 4 do
+			for z = 0, 4 do
+				for y = 0, 1 do
+					local p = {x = check_pos.x + x, y = check_pos.y + y, z = check_pos.z + z}
+					if minetest.is_protected(p, player_name) then
+						minetest.chat_send_player(player_name, S("Cannot place portal - area is protected!"))
+						return itemstack
+					end
+				end
+			end
+		end
+
+		-- Clear the area first
+		for x = -2, 2 do
+			for z = -2, 2 do
+				for y = 0, 1 do
+					local p = {x = pos.x + x, y = pos.y + y, z = pos.z + z}
+					if minetest.get_node(p).name ~= "air" then
+						minetest.set_node(p, {name = "air"})
+					end
+				end
+			end
+		end
+
+		-- Place the portal frames with eyes
+		-- The pattern for a complete portal facing inward
+		local frame_positions = {
+			-- Top row (facing south/+Z)
+			{x = -1, z = -2, param2 = 0},
+			{x = 0, z = -2, param2 = 0},
+			{x = 1, z = -2, param2 = 0},
+			-- Right column (facing west/-X)
+			{x = 2, z = -1, param2 = 1},
+			{x = 2, z = 0, param2 = 1},
+			{x = 2, z = 1, param2 = 1},
+			-- Bottom row (facing north/-Z)
+			{x = 1, z = 2, param2 = 2},
+			{x = 0, z = 2, param2 = 2},
+			{x = -1, z = 2, param2 = 2},
+			-- Left column (facing east/+X)
+			{x = -2, z = 1, param2 = 3},
+			{x = -2, z = 0, param2 = 3},
+			{x = -2, z = -1, param2 = 3},
+		}
+
+		-- Place all frames with eyes
+		for _, frame in ipairs(frame_positions) do
+			local frame_pos = {x = pos.x + frame.x, y = pos.y, z = pos.z + frame.z}
+			minetest.set_node(frame_pos, {name = "mcl_portals:end_portal_frame_eye", param2 = frame.param2})
+		end
+
+		-- The portal should automatically generate due to the after_place_node callback but we'll force it just in case
+		minetest.after(0.1, function()
+			local portal_center = {x = pos.x - 1, y = pos.y, z = pos.z - 1}
+			for x = 0, 2 do
+				for z = 0, 2 do
+					local p = {x = portal_center.x + x, y = portal_center.y, z = portal_center.z + z}
+					if minetest.get_node(p).name ~= "mcl_portals:portal_end" then
+						minetest.set_node(p, {name = "mcl_portals:portal_end"})
+					end
+				end
+			end
+		end)
+
+		-- Play sound effect
+		minetest.sound_play("mcl_portals_open_end_portal", {pos = pos, gain = 0.8}, true)
+
+		-- Send success message
+		minetest.chat_send_player(player_name, S("End Portal created successfully!"))
+
+		-- Don't consume the wand in creative mode
+		if not minetest.is_creative_enabled(player_name) then
+			itemstack:take_item()
+		end
+
+		return itemstack
+	end,
+})
