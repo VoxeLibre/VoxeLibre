@@ -1,11 +1,9 @@
 # textdomain: mcl_stairs
-##[ api.lua ]##
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=Ступени нужны для подъема; по ним можно идти, прыгать не обязательно. Размещение ступенек на углах будет создавать угловые ступени. Ступени, устанавливаемые на потолке или на верхней половине боковой части блока, будет перевёрнуты вверх ногами.
 Double @1=Двойная @1
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=Плиты в два раза ниже, чем их блочные аналоги, и занимают либо нижнюю, либо верхнюю часть блока, в зависимости от того, как они размещались. На плиты можно легко подниматься без необходимости прыгать. Когда плита помещается на другую плиту того же типа, создается двойная плита.
 Upper @1=Верхняя @1
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=Двойные плиты это целые блоки, которые создаются путем размещения двух плит одного вида друг на друге.
-##[ register.lua ]##
 Oak Wood Stairs=Дубовые ступени
 Oak Wood Slab=Дубовая плита
 Double Oak Wood Slab=Двойная дубовая плита
@@ -109,6 +107,9 @@ Polished Diorite Stairs=Ступени из полированного диор�
 Mossy Stone Brick Stairs=Ступени из замшелых каменных кирпичей
 Mossy Stone Brick Slab=Плита из замшелых каменных кирпичей
 Double Mossy Stone Brick Slab=Двойная плита из замшелых каменных кирпичей
+Stairs of Polished Gold Block=
+Slab of Polished Gold Block=
+Double Slab of Polished Gold=
 
 
 ##### not used anymore #####

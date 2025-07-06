@@ -4,6 +4,8 @@ Stained glass panes are thin layers of stained glass which neatly connect to the
 Stained Glass Pane=
 Iron Bars=
 Iron bars neatly connect to their neighbors as you build them.=
+Gold Bars=
+Gold bars neatly connect to their neighbors as you build them.=
 Glass Pane=
 Red Stained Glass Pane=
 Green Stained Glass Pane=

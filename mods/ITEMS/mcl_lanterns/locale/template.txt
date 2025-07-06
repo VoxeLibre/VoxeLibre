@@ -1,7 +1,10 @@
 # textdomain: mcl_lanterns
 Chain=
 Chains are metallic decoration blocks.=
-##[ register.lua ]##
+Gold Chain=
+Gold Chains are metallic decoration blocks.=
 Lantern=
 Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
 Soul Lantern=
+Gold Lantern=
+Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=

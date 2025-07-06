@@ -1,11 +1,9 @@
 # textdomain: mcl_stairs
-##[ api.lua ]##
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=
 Double @1=双层@1
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=
 Upper @1=上层@1
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=
-##[ register.lua ]##
 Oak Wood Stairs=橡木楼梯
 Oak Wood Slab=橡木半砖
 Double Oak Wood Slab=双层橡木半砖
@@ -109,6 +107,9 @@ Polished Diorite Stairs=磨制闪长岩楼梯
 Mossy Stone Brick Stairs=苔石砖楼梯
 Mossy Stone Brick Slab=苔石砖半砖
 Double Mossy Stone Brick Slab=双层苔石砖半砖
+Stairs of Polished Gold Block=
+Slab of Polished Gold Block=
+Double Slab of Polished Gold=
 
 
 ##### not used anymore #####

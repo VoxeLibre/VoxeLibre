@@ -852,6 +852,18 @@ minetest.register_node("mcl_core:goldblock", {
 	_mcl_hardness = 3,
 })
 
+minetest.register_node("mcl_core:goldblock_polished", {
+	description = S("Polished Block of Gold"),
+	_doc_items_longdesc = S("A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots."),
+	tiles = {"mcl_gold_block_polished.png"},
+	is_ground_content = false,
+	stack_max = 64,
+	groups = {pickaxey=4, building_block=1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 3,
+})
+
 minetest.register_node("mcl_core:diamondblock", {
 	description = S("Block of Diamond"),
 	_doc_items_longdesc = S("A block of diamond is mostly a shiny decorative block but also useful as a compact storage of diamonds."),

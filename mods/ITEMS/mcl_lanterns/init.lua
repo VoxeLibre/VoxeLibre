@@ -19,7 +19,8 @@ local allowed_non_solid_nodes_floor = {
 	"mcl_end:end_rod",
 	"mcl_end:dragon_egg",
 	"mcl_portals:end_portal_frame_eye",
-	"mcl_lanterns:chain"
+	"mcl_lanterns:chain",
+	"mcl_lanterns:gold_chain",
 }
 -- The function below allows nodes that call it to be included in the 'allowed floor placement' list above. This lets lanterns be placed on top of said nodes. Most useful for modded in nodes.
 function mcl_lanterns.add_allowed_non_solid_nodes_floor (node_name)
@@ -37,7 +38,8 @@ local allowed_non_solid_nodes_ceiling = {
 	"mcl_end:chorus_flower_dead",
 	"mcl_end:end_rod",
 	"mcl_core:grass_path",
-	"mcl_lanterns:chain"
+	"mcl_lanterns:chain",
+	"mcl_lanterns:gold_chain",
 }
 -- The function below allows nodes that call it to be included in the 'allowed ceiling placement' list above. This lets lanterns be placed below said nodes. Most useful for modded in nodes. 
 function mcl_lanterns.add_allowed_non_solid_nodes_ceiling (node_name)
@@ -280,12 +282,85 @@ minetest.register_node("mcl_lanterns:chain", {
 	_mcl_hardness = 5,
 })
 
+minetest.register_node("mcl_lanterns:gold_chain", {
+	description = S("Gold Chain"),
+	_doc_items_longdesc = S("Gold Chains are metallic decoration blocks."),
+	inventory_image = "mcl_lanterns_gold_chain_inv.png",
+	tiles = {"mcl_lanterns_gold_chain.png"},
+	drawtype = "mesh",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	use_texture_alpha = "clip",
+	mesh = "mcl_lanterns_chain.obj",
+	is_ground_content = false,
+	sunlight_propagates = true,
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			{-0.0625, -0.5, -0.0625, 0.0625, 0.5, 0.0625},
+		}
+	},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.0625, -0.5, -0.0625, 0.0625, 0.5, 0.0625},
+		}
+	},
+	groups = {pickaxey = 1, deco_block = 1},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			return itemstack
+		end
+
+		local p0 = pointed_thing.under
+		local p1 = pointed_thing.above
+		local param2 = 0
+
+		local placer_pos = placer:get_pos()
+		if placer_pos then
+			local dir = {
+				x = p1.x - placer_pos.x,
+				y = p1.y - placer_pos.y,
+				z = p1.z - placer_pos.z
+			}
+			param2 = minetest.dir_to_facedir(dir)
+		end
+
+		if p0.y - 1 == p1.y then
+			param2 = 20
+		elseif p0.x - 1 == p1.x then
+			param2 = 16
+		elseif p0.x + 1 == p1.x then
+			param2 = 12
+		elseif p0.z - 1 == p1.z then
+			param2 = 8
+		elseif p0.z + 1 == p1.z then
+			param2 = 4
+		end
+
+		return minetest.item_place(itemstack, placer, pointed_thing, param2)
+	end,
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 5,
+})
+
+
 minetest.register_craft({
 	output = "mcl_lanterns:chain",
 	recipe = {
 		{"mcl_core:iron_nugget"},
 		{"mcl_core:iron_ingot"},
 		{"mcl_core:iron_nugget"},
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_lanterns:gold_chain",
+	recipe = {
+		{"mcl_core:gold_nugget"},
+		{"mcl_core:gold_ingot"},
+		{"mcl_core:gold_nugget"},
 	},
 })
 
