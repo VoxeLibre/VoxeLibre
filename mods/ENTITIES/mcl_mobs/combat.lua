@@ -612,9 +612,14 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			if not v then return end
 			local r = 1.4 - min(punch_interval, 1.4)
 			local kb = r * (abs(v.x)+abs(v.z))
+			local kb_base = kb
+			local kb_timer_ratio
 			local up = 2.625
 
-			if die then kb = kb * 1.25 end
+			if die then
+				kb = kb * 1.25
+				kb_timer_ratio = 1
+			end
 
 			-- if already in air then dont go up anymore when hit
 			if abs(v.y) > 0.1 or self.fly then up = 0 end
@@ -660,7 +665,8 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			end)
 			self.object:add_velocity(vector_new(dir.x * kb, up*2, dir.z * kb ))
 
-			self.pause_timer = 0.25
+			self.pause_timer = (kb_timer_ratio or
+				kb / kb_base) * 0.25
 		end
 	end -- END if damage
 
