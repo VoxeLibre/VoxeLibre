@@ -10,22 +10,28 @@ local S = core.get_translator(modname)
 
 -- Define the dripstone block
 local dripstone_block_definition = {
-  description = S("Dripstone Block"),
-  tiles = {"vl_dripstone_block.png"},
-  material = core.getDefault("stone_material"),
-  groups = {group_stone = 1},
-  drop = "vl_dripstone:dripstone_block",
-  sounds = default.node_sound_stone_defaults(),
+	description = S("Dripstone Block"),
+	tiles = {"vl_dripstone_block.png"},
+	groups = { pickaxey = 1, stone = 1, building_block = 1, material_stone = 1 },
+	_doc_items_longdesc = S("Dripstone is a stone type found deep underground in the Overworld that functions similar to regular stone."),
+	_doc_items_hidden = false,
+	paramtype2 = "facedir",
+	drop = "vl_dripstone:dripstone_block",
+	is_ground_content = true,
+	on_place = mcl_util.rotate_axis,
+	sounds = default.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 6,
+	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 }
 
 -- Define the pointed dripstone
 local pointed_dripstone_definition = {
-  description = S("Pointed Dripstone"),
-  tiles = {"vl_pointed_dripstone.png"},
-  material = core.getDefault("stone_material"),
-  groups = {cracky = 2, falling_node = 1},
-  drop = "vl_dripstone:pointed_dripstone",
-  sounds = default.node_sound_stone_defaults(),
+	description = S("Pointed Dripstone"),
+	tiles = {"vl_pointed_dripstone.png"},
+	groups = {cracky = 2, falling_node = 1},
+	drop = "vl_dripstone:pointed_dripstone",
+	sounds = default.node_sound_stone_defaults(),
 }
 
 -- Crafting recipe for dripstone block
