@@ -254,14 +254,14 @@ else
 		vl_worlds.register_world({
 			id = "underworld",
 			name = S("Underworld"),
-			height = 256,
+			height = 256 - 48,
 			forced_start = -29067,
 		})
 
 		vl_worlds.register_world({
 			id = "fringe",
 			name = S("Fringe"),
-			height = 25012,
+			height = 25012 + 79,
 			forced_start = -27073,
 		})
 	elseif superflat then
