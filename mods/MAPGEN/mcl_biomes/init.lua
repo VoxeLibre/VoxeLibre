@@ -266,7 +266,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "ColdTaiga_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -274,8 +274,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 1,
-		limit_height_top = 10,
+		limit_height_bottom = 10,
 		humidity_point = 58,
 		heat_point = 8,
 		vertical_blend = 1,
@@ -406,7 +405,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "ExtremeHills_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -414,8 +413,7 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		offset_top = 1,
-		limit_height_top = 10,
+		limit_height_bottom = 10,
 		vertical_blend = 1,
 		humidity_point = 10,
 		heat_point = 45,
@@ -554,14 +552,13 @@ local function register_biomes()
 		_mcl_fogcolor = overworld_fogcolor
 	})
 
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "StoneBeach_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 1,
-		offset_top = 4,
-		limit_height_top = 7,
+		limit_height_bottom = 7,
 		vertical_blend = 2,
 		humidity_point = 0,
 		heat_point = 8,
@@ -657,7 +654,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "Plains_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -665,9 +662,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = -3,
-		limit_height_top = 14,
 		humidity_point = 39,
+		limit_height_bottom = 14,
 		heat_point = 58,
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
@@ -814,7 +810,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "Forest_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -822,8 +818,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = -2,
-		limit_height_top = 13,
+		limit_height_bottom = 13,
 		humidity_point = 61,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -875,7 +870,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "FlowerForest_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -883,8 +878,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = -1,
-		limit_height_top = 12,
+		limit_height_bottom = 12,
 		humidity_point = 44,
 		heat_point = 32,
 		_mcl_biome_type = "medium",
