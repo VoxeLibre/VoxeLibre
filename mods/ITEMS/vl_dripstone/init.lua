@@ -5,14 +5,14 @@
 --- Copyright (C) 2025, Michieal. See License.txt
 
 --- LOCALS
-local modname = minetest.get_current_modname()
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local S = core.get_translator(modname)
 
 -- Define the dripstone block
 local dripstone_block_definition = {
   description = S("Dripstone Block"),
   tiles = {"vl_dripstone_block.png"},
-  material = minetest.getDefault("stone_material"),
+  material = core.getDefault("stone_material"),
   groups = {group_stone = 1},
   drop = "vl_dripstone:dripstone_block",
   sounds = default.node_sound_stone_defaults(),
@@ -22,14 +22,14 @@ local dripstone_block_definition = {
 local pointed_dripstone_definition = {
   description = S("Pointed Dripstone"),
   tiles = {"vl_pointed_dripstone.png"},
-  material = minetest.getDefault("stone_material"),
+  material = core.getDefault("stone_material"),
   groups = {cracky = 2, falling_node = 1},
   drop = "vl_dripstone:pointed_dripstone",
   sounds = default.node_sound_stone_defaults(),
 }
 
 -- Crafting recipe for dripstone block
-minetest.register_craft({
+core.register_craft({
   output = "vl_dripstone:dripstone_block",
   recipe = {
     {"vl_dripstone:pointed_dripstone", "vl_dripstone:pointed_dripstone"},
@@ -44,25 +44,25 @@ dripstone_block_definition.on_place = function(itemstack, placer, pointed_thing)
 	end
 
 	local pos = pointed_thing.under
-	local node = minetest.get_node(pos)
+	local node = core.get_node(pos)
 
 	-- Use pointed node's on_rightclick function first, if present
-	if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-		local result = minetest.registered_nodes[node.name].on_rightclick(pos, node, placer, itemstack)
+	if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
+		local result = core.registered_nodes[node.name].on_rightclick(pos, node, placer, itemstack)
 		if result then
 			return result
 		end
 	end
-	if minetest.get_node(pos).name == "air" then
+	if core.get_node(pos).name == "air" then
 		return itemstack
 	end
 
-	local def = minetest.registered_nodes[node.name]
+	local def = core.registered_nodes[node.name]
 	if not (def and def.buildable_to and def.buildable_to()) then
 		return itemstack
 	end
 
-	minetest.set_node(pointed_thing.above, {name = "vl_dripstone:dripstone_block"})
+	core.set_node(pointed_thing.above, {name = "vl_dripstone:dripstone_block"})
 	itemstack:take_item(1)
 
 	return itemstack
@@ -75,11 +75,11 @@ pointed_dripstone_definition.on_place = function(itemstack, placer, pointed_thin
   end
 
   local pos = pointed_thing.under
-  local node = minetest.get_node(pos)
+  local node = core.get_node(pos)
 
   -- Use pointed node's on_rightclick function first, if present
-  if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-    local result = minetest.registered_nodes[node.name].on_rightclick(pos, node, placer, itemstack)
+  if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
+    local result = core.registered_nodes[node.name].on_rightclick(pos, node, placer, itemstack)
     if result then
 		return result
     end
@@ -91,26 +91,26 @@ pointed_dripstone_definition.on_place = function(itemstack, placer, pointed_thin
 	  return itemstack
   end
 
-  if minetest.get_node(pos).name == "air" then
+  if core.get_node(pos).name == "air" then
 	  return itemstack
   end
-  local def = minetest.registered_nodes[node.name]
+  local def = core.registered_nodes[node.name]
   if not (def and def.buildable_to and def.buildable_to()) then
 	  return itemstack
   end
 
-  minetest.set_node(pointed_thing.above, {name = "vl_dripstone:pointed_dripstone"})
+  core.set_node(pointed_thing.above, {name = "vl_dripstone:pointed_dripstone"})
   itemstack:take_item(1)
   return itemstack
 end
 
 -- Register the pointed dripstone node
-minetest.register_node("vl_dripstone:pointed_dripstone", pointed_dripstone_definition)
+core.register_node("vl_dripstone:pointed_dripstone", pointed_dripstone_definition)
 
 -- Register the dripstone block node
-minetest.register_node("vl_dripstone:dripstone_block", dripstone_block_definition)
+core.register_node("vl_dripstone:dripstone_block", dripstone_block_definition)
 
-minetest.register_abm({
+core.register_abm({
   label = "Pointed Dripstone Cauldron Fill",
   nodenames = {"vl_dripstone:pointed_dripstone"},
   interval = 35, -- Average time for Minecraft drip (approximately every 1.75 seconds, so 20 ticks * 1.75)
@@ -119,14 +119,14 @@ minetest.register_abm({
     local above_pos = {x = pos.x, y = pos.y + 2, z = pos.z}
     local below_pos = {x = pos.x, y = pos.y - 1, z = pos.z}
 
-    local above_node = minetest.get_node(above_pos)
-    local below_node = minetest.get_node(below_pos)
+    local above_node = core.get_node(above_pos)
+    local below_node = core.get_node(below_pos)
 
     if below_node.name == "default:cauldron" then
       if above_node.name == "default:water_source" or above_node.name == "default:water_flowing" then
-        minetest.set_node(below_pos, {name = "default:cauldron_water"})
+        core.set_node(below_pos, {name = "default:cauldron_water"})
       elseif above_node.name == "default:lava_source" or above_node.name == "default:lava_flowing" then
-        minetest.set_node(below_pos, {name = "default:cauldron_lava"})
+        core.set_node(below_pos, {name = "default:cauldron_lava"})
       end
     end
   end,
