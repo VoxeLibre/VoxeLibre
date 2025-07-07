@@ -230,15 +230,6 @@ local function make_stripped_trunk(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
--- Fix cobble group
---local def = core.registered_nodes["mcl_deepslate:deepslate_cobbled"]
---def.groups.cobble = nil  -- remove from the cobble group
---core.override_item("mcl_deepslate:deepslate_cobbled", def.groups.cobble=def)
-core.override_item("mcl_deepslate:deepslate_cobbled", {
-	groups = { pickaxey = 1, building_block = 1, material_stone = 1, cobble = 0 },
-
-})
-
 -- include crafting recipes
 dofile(modpath .. "/crafting.lua")
 

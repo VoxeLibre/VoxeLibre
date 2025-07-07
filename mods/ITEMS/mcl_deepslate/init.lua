@@ -206,9 +206,6 @@ local function register_deepslate_variant(item, texture, desc, longdesc, stair, 
 		_mcl_hardness = 3.5,
 		_mcl_silk_touch_drop = true,
 	}
-	if item == "cobbled" then
-		def.groups.cobble = 1
-	end
 	core.register_node("mcl_deepslate:deepslate_"..item, table.copy(def))
 
 	if stair and slab and dslab then
