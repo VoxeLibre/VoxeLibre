@@ -305,6 +305,7 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 		shovely = { speed = 4, level = 3, uses = 132 }
 	},
 })
+
 minetest.register_tool("mcl_tools:shovel_iron", {
 	description = S("Iron Shovel"),
 	_doc_items_longdesc = shovel_longdesc,
@@ -708,7 +709,6 @@ minetest.register_tool("mcl_tools:shears", {
 		shearsy_cobweb = { speed = 15, level = 1, uses = 238 }
 	},
 })
-
 
 dofile(modpath.."/crafting.lua")
 dofile(modpath.."/aliases.lua")

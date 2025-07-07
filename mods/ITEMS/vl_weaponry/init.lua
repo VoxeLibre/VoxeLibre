@@ -214,6 +214,7 @@ end)
 local uses = {
 	wood = 60,
 	stone = 132,
+	deepslate = 150,
 	iron = 251,
 	gold = 33,
 	diamond = 1562,
@@ -222,6 +223,7 @@ local uses = {
 local materials = {
 	wood = "group:wood",
 	stone = "group:cobble",
+	deepslate = "mcl_deepslate:deepslate",
 	iron = "mcl_core:iron_ingot",
 	gold = "mcl_core:gold_ingot",
 	diamond = "mcl_core:diamond",
@@ -275,6 +277,7 @@ core.register_tool("vl_weaponry:hammer_stone", {
 		shovely = { speed = 2, level = 3, uses = uses.stone }
 	},
 })
+
 core.register_tool("vl_weaponry:hammer_iron", {
 	description = S("Iron Hammer"),
 	_tt_help = hammer_tt,
@@ -422,6 +425,7 @@ core.register_tool("vl_weaponry:spear_stone", {
 	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 6,
 })
+
 core.register_tool("vl_weaponry:spear_iron", {
 	description = S("Iron Spear"),
 	_tt_help = spear_tt,
