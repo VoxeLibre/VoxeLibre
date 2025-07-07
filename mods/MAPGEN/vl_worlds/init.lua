@@ -553,7 +553,11 @@ vl_worlds.register_layer("overworld", {
 	top = 58,
 	has_separate_biomes = true,
 })
-
+vl_worlds.register_layer("overworld", {
+	id = "ocean",
+	bottom = 58 + 4 - 15,
+	top = 58 + 4,
+})
 vl_worlds.register_layer("overworld", {
 	id = "shore",
 	bottom = 59,
@@ -579,11 +583,19 @@ function vl_worlds.register_biome(dim, layer, def)
 		error("Unknown dimension layer: "..dim.."."..layer)
 	end
 
-	def.ymin = bounds.min + (def.offset_bottom or 0)
-	def.ymax = bounds.max - (def.offset_top or 0)
-	if def.limit_height then
-		def.ymax = math.min(def.y_max or def.ymin + def.limit_height)
+	def.y_min = bounds.min + (def.offset_bottom or 0)
+	def.y_max = bounds.max - (def.offset_top or 0)
+	if def.limit_height_bottom then
+		def.y_max = math.min(def.y_max, def.y_min + def.limit_height_bottom)
+	elseif def.limit_height_top then
+		def.y_min = math.max(def.y_min, def.y_max - def.limit_height_top)
 	end
+
+	-- Erase these parameters from biome registration data
+	def.offset_bottom = nil
+	def.offset_top = nil
+	def.limit_height_bottom = nil
+	def.limit_height_top = nil
 
 	-- TODO support minp/maxp as well
 
