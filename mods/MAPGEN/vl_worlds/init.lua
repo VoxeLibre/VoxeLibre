@@ -575,8 +575,16 @@ vl_worlds.register_layer("overworld", {
 ---@param core.BiomeDef def - everything except for ymin/ymax
 function vl_worlds.register_biome(dim, layer, def)
 	local bounds = vl_worlds.get_layer_bounds(dim, layer)
-	def.ymin = bounds.min
-	def.ymax = bounds.max
+	if not bounds then
+		error("Unknown dimension layer: "..dim.."."..layer)
+	end
+
+	def.ymin = bounds.min + (def.offset_bottom or 0)
+	def.ymax = bounds.max - (def.offset_top or 0)
+	if def.limit_height then
+		def.ymax = math.min(def.y_max or def.ymin + def.limit_height)
+	end
+
 	-- TODO support minp/maxp as well
 
 	core.register_biome(def)
