@@ -166,6 +166,7 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_bottom = -3,
 		humidity_point = 24,
 		heat_point = -5,
 		_mcl_biome_type = "snowy",
@@ -176,7 +177,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "IcePlainsSpikes_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 2,
@@ -206,7 +207,7 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = 2,
+		offset_bottom = -1,
 		humidity_point = 58,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -231,6 +232,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		offset_top = 1,
+		offset_bottom = 4,
 		humidity_point = 58,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -272,7 +274,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 4,
+		offset_top = 1,
+		limit_height_top = 10,
 		humidity_point = 58,
 		heat_point = 8,
 		vertical_blend = 1,
@@ -294,6 +297,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_bottom = -3,
 		humidity_point = 76,
 		heat_point = 10,
 		_mcl_biome_type = "cold",
@@ -304,7 +308,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7CA3FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "MegaTaiga_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -332,6 +336,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_bottom = -3,
 		humidity_point = 100,
 		heat_point = 8,
 		_mcl_biome_type = "cold",
@@ -342,7 +347,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7DA3FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "MegaSpruceTaiga_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -371,7 +376,6 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		offset_bottom = 3,
 		humidity_point = 10,
 		heat_point = 45,
 		_mcl_biome_type = "cold",
@@ -391,8 +395,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
---		y_min = -4,
---		y_max = 3,
+		offset_bottom = -1,
 		humidity_point = 10,
 		heat_point = 45,
 		_mcl_biome_type = "cold",
@@ -411,7 +414,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		offset_top = 4,
+		offset_top = 1,
+		limit_height_top = 10,
 		vertical_blend = 1,
 		humidity_point = 10,
 		heat_point = 45,
@@ -434,6 +438,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 3,
+		offset_bottom = -3,
 		humidity_point = 0,
 		heat_point = 25,
 		_mcl_biome_type = "cold",
@@ -444,7 +449,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "ExtremeHillsM_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -474,7 +479,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		limit_height = 41,
+		offset_bottom = -3,
+		limit_height_bottom = 40,
 		humidity_point = 24,
 		heat_point = 25,
 		vertical_blend = 6,
@@ -497,7 +503,7 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		offset_bottom = 42,
+		offset_bottom = 38,
 		humidity_point = 24,
 		heat_point = 25,
 		_mcl_biome_type = "cold",
@@ -508,7 +514,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "ExtremeHills+_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -516,7 +522,6 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		y_min = OCEAN_MIN,
 		y_max = 0,
 		humidity_point = 24,
 		heat_point = 25,
@@ -555,7 +560,8 @@ local function register_biomes()
 		depth_top = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 1,
-		offset_top = 8,
+		offset_top = 4,
+		limit_height_top = 7,
 		vertical_blend = 2,
 		humidity_point = 0,
 		heat_point = 8,
@@ -581,6 +587,7 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_bottom = -3,
 		humidity_point = 24,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -591,7 +598,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "IcePlains_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -619,7 +626,7 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = 2,
+		offset_bottom = -1,
 		humidity_point = 39,
 		heat_point = 58,
 		_mcl_biome_type = "medium",
@@ -638,6 +645,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_top = 1,
+		limit_height_top = 2,
 		humidity_point = 39,
 		heat_point = 58,
 		_mcl_biome_type = "medium",
@@ -656,6 +665,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_top = -3,
+		limit_height_top = 14,
 		humidity_point = 39,
 		heat_point = 58,
 		_mcl_biome_type = "medium",
@@ -676,7 +687,6 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = 4,
 		humidity_point = 28,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -687,7 +697,7 @@ local function register_biomes()
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "SunflowerPlains_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -715,7 +725,6 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = 4,
 		humidity_point = 58,
 		heat_point = 22,
 		_mcl_biome_type = "cold",
@@ -746,7 +755,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "underground-sea", {
+	vl_worlds.register_biome("overworld", "ocean", {
 		name = "Taiga_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -774,6 +783,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_bottom = -3,
 		humidity_point = 61,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -792,6 +802,8 @@ local function register_biomes()
 		depth_filler = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_top = 3,
+		limit_height_top = 1,
 		humidity_point = 61,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -810,6 +822,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_top = -2,
+		limit_height_top = 13,
 		humidity_point = 61,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -830,7 +844,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = 3,
+		offset_bottom = -1,
 		humidity_point = 44,
 		heat_point = 32,
 		_mcl_biome_type = "medium",
@@ -849,6 +863,8 @@ local function register_biomes()
 		depth_filler = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		offset_top = 1,
+		offset_bottom = 1,
 		humidity_point = 44,
 		heat_point = 32,
 		_mcl_biome_type = "medium",
@@ -867,7 +883,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
+		offset_top = -1,
+		limit_height_top = 12,
 		humidity_point = 44,
 		heat_point = 32,
 		_mcl_biome_type = "medium",
