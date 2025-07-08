@@ -797,8 +797,10 @@ local function build_state_for_position(pos, parent_state, spawn_hostile, spawn_
 	state.spawn_passive = spawn_passive
 	state.spawn_hostile = spawn_hostile
 
+	if type(dim_id) == "string" then dim_id = 0x79 end
+
 	---@type integer
-	state.hash = biome_id * 8 + dim_id
+	state.hash = biome_id * 0x80 + dim_id
 	           + (is_water and 0x400 or 0) + (is_lava and 0x800 or 0) + (is_ground and 0x1000 or 0)
 	           + (spawn_passive and 0x2000 or 0) + (spawn_hostile and 0x4000 or 0) + 0x8000 * (state.light or 0)
 	return state,node
