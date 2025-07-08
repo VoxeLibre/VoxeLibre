@@ -19,7 +19,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	initial_properties = {
 		hp_min = 10,
 		hp_max = 10,
-		collisionbox = {-2, 0, -2, 2, 4, 2, rotate=true},
+		collisionbox = {-2, -2, -2, 2, 2, 2, rotate=true},
 	},
 	xp_min = 5,
 	xp_max = 5,
