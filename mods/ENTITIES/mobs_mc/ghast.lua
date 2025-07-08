@@ -51,6 +51,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
+	glow = 10,
 	fall_damage = 0,
 	view_range = 64,
 	attack_type = "dogshoot",
@@ -127,6 +128,7 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 5,
 	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
+	glow = 10,
 	_lifetime = 10,
 	_is_fireball = true,
 	_vl_projectile = {
