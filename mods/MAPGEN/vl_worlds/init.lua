@@ -254,14 +254,14 @@ else
 		vl_worlds.register_world({
 			id = "underworld",
 			name = S("Underworld"),
-			height = 256 - 48,
+			height = 256,
 			forced_start = -29067,
 		})
 
 		vl_worlds.register_world({
 			id = "fringe",
 			name = S("Fringe"),
-			height = 25012 + 79,
+			height = 25012,
 			forced_start = -27073,
 		})
 	elseif superflat then
@@ -626,7 +626,7 @@ end
 
 local nether_bounds = vl_worlds.get_dimension_bounds("underworld")
 deprecated.mg_nether_min = nether_bounds.min
-deprecated.mg_nether_max = nether_bounds.min + 128
+deprecated.mg_nether_max = nether_bounds.max
 
 local end_bounds = vl_worlds.get_dimension_bounds("fringe")
 deprecated.mg_end_min = end_bounds.min
