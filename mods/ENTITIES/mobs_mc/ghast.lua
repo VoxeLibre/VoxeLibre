@@ -125,7 +125,7 @@ mcl_mobs:spawn_setup({
 mcl_mobs.register_arrow("mobs_mc:fireball", {
 	visual = "sprite",
 	visual_size = {x = 1, y = 1},
-	textures = {"mcl_fire_fire_charge.png"},
+	textures = {"vl_mobs_soulfire_charge.png"},
 	velocity = 5,
 	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
 	glow = 10,
