@@ -438,6 +438,7 @@ function mcl_mobs.register_arrow(name, def)
 			collisionbox = def.collisionbox or {0, 0, 0, 0, 0, 0}, -- remove box around arrows
 			automatic_face_movement_dir = def.rotate
 				and (def.rotate - (math.pi / 180)) or false,
+			glow = def.glow,
 		},
 		velocity = def.velocity,
 		hit_player = def.hit_player,
