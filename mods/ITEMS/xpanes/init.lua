@@ -234,7 +234,7 @@ xpanes.register_pane("bar", {
 })
 
 -- Gold Bars
-xpanes.register_pane("bar", {
+xpanes.register_pane("gold_bar", {
 	description = S("Gold Bars"),
 	_doc_items_longdesc = S("Gold bars neatly connect to their neighbors as you build them."),
 	textures = {"xpanes_pane_gold.png","xpanes_pane_gold.png","xpanes_top_gold.png"},
