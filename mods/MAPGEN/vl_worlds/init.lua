@@ -583,6 +583,14 @@ vl_worlds.register_layer("overworld", {
 	has_separate_biomes = true,
 })
 
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+vl_worlds.register_layer("underworld", {
+	id = "land",
+	bottom = 0,
+	top = underworld_bounds.max - underworld_bounds.min - 48,
+	has_separate_biomes = true,
+})
+
 -- API
 ---@param string dim
 ---@param string layer
