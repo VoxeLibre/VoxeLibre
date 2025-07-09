@@ -2320,15 +2320,13 @@ local function register_dimension_biomes()
 	})
 
 	--[[ THE END ]]
-	minetest.register_biome({
+	vl_worlds.register_biome("fringe", "islands", {
 		name = "End",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = fringe_bounds.min,
-		y_max = fringe_bounds.max + 79, -- TODO: remove offset before merge
 		heat_point = 1000, --ridiculously high values so End Island always takes precedent
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2340,15 +2338,13 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
-	minetest.register_biome({
+	vl_worlds.register_biome("fringe", "islands", {
 		name = "EndBarrens",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = fringe_bounds.min,
-		y_max = fringe_bounds.max + 79, -- TODO: remove offset before merge
 		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2360,15 +2356,13 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
-	minetest.register_biome({
+	vl_worlds.register_biome("fringe", "islands", {
 		name = "EndMidlands",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = fringe_bounds.min,
-		y_max = fringe_bounds.max + 79, -- TODO: remove offset before merge
 		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2380,15 +2374,13 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
-	minetest.register_biome({
+	vl_worlds.register_biome("fringe", "islands", {
 		name = "EndHighlands",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = fringe_bounds.min,
-		y_max = fringe_bounds.max + 79, -- TODO: remove offset before merge
 		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2400,15 +2392,13 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
-	minetest.register_biome({
+	vl_worlds.register_biome("fringe", "islands", {
 		name = "EndSmallIslands",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = fringe_bounds.min,
-		y_max = fringe_bounds.max + 79, -- TODO: remove offset before merge
 		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2421,15 +2411,13 @@ local function register_dimension_biomes()
 		_mcl_fogcolor = end_fogcolor
 	})
 
-	minetest.register_biome({
+	vl_worlds.register_biome("fringe", "islands", {
 		name = "EndBorder",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = fringe_bounds.min,
-		y_max = fringe_bounds.max + 79, -- TODO: remove offset before merge
 		heat_point = 500,
 		humidity_point = 500,
 		vertical_blend = 16,
@@ -2444,7 +2432,7 @@ local function register_dimension_biomes()
 		_mcl_fogcolor = end_fogcolor
 	})
 
-	minetest.register_biome({
+	vl_worlds.register_biome("fringe", "islands", {
 		name = "EndIsland",
 		node_stone = "air",
 		node_filler = "air",
