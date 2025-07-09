@@ -2119,7 +2119,7 @@ local function register_dimension_biomes()
 		param2 = 0,
 	})
 
-	minetest.register_biome({
+	vl_worlds.register_biome("underworld", "land", {
 		name = "Nether",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2127,8 +2127,6 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = underworld_bounds.min,
-		y_max = underworld_bounds.max - 48, -- TODO: remove offset before merge
 		heat_point = 100,
 		humidity_point = 0,
 		_mcl_biome_type = "hot",
@@ -2153,7 +2151,7 @@ local function register_dimension_biomes()
 		param2 = 0,
 	})
 
-	minetest.register_biome({
+	vl_worlds.register_biome("underworld", "land", {
 		name = "SoulsandValley",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2161,8 +2159,6 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = underworld_bounds.min,
-		y_max = underworld_bounds.max - 48, -- TODO: remove offset before merge
 		heat_point = 77,
 		humidity_point = 33,
 		_mcl_biome_type = "hot",
@@ -2207,7 +2203,7 @@ local function register_dimension_biomes()
 			flags = "defaults",
 		}
 	})
-	minetest.register_biome({
+	vl_worlds.register_biome("underworld", "land", {
 		name = "CrimsonForest",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2215,8 +2211,6 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = underworld_bounds.min,
-		y_max = underworld_bounds.max - 48, -- TODO: remove offset before merge
 		heat_point = 60,
 		humidity_point = 47,
 		_mcl_biome_type = "hot",
@@ -2239,7 +2233,7 @@ local function register_dimension_biomes()
 		flags = "all_floors",
 		param2 = 0,
 	})
-	minetest.register_biome({
+	vl_worlds.register_biome("underworld", "land", {
 		name = "WarpedForest",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2247,8 +2241,6 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
-		y_min = underworld_bounds.min,
-		y_max = underworld_bounds.max - 48, -- TODO: remove offset before merge
 		heat_point = 37,
 		humidity_point = 70,
 		_mcl_biome_type = "hot",
@@ -2271,7 +2263,7 @@ local function register_dimension_biomes()
 		flags = "all_floors",
 		param2 = 0,
 	})
-	minetest.register_biome({
+	vl_worlds.register_biome("underworld", "land", {
 		name = "BasaltDelta",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
