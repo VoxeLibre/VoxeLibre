@@ -46,10 +46,8 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 		{name = "mcl_mobitems:ghast_tear", chance = 10/6, min = 0, max = 1, looting = "common", looting_ignore_chance = true},
 	},
 	animation = {
-		stand_speed = 50, walk_speed = 50, run_speed = 50,
-		stand_start = 0,		stand_end = 40,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
+		stand_speed = 50,
+		stand_start = 1,		stand_end = 40,
 	},
 	glow = 10,
 	fall_damage = 0,
