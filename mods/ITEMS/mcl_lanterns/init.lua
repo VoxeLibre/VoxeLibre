@@ -22,9 +22,10 @@ local allowed_non_solid_nodes_floor = {
 	"mcl_lanterns:chain",
 	"mcl_lanterns:gold_chain",
 }
--- The function below allows nodes that call it to be included in the 'allowed floor placement' list above. This lets lanterns be placed on top of said nodes. Most useful for modded in nodes.
+-- The function below allows nodes that call it to be included in the 'allowed floor placement' list above.
+-- This lets lanterns be placed on top of said nodes. Most useful for modded in nodes.
 function mcl_lanterns.add_allowed_non_solid_nodes_floor (node_name)
-	table.insert (allowed_non_solid_nodes_floor, node_name) 
+	table.insert (allowed_non_solid_nodes_floor, node_name)
 end
 
 local allowed_non_solid_groups_floor = {"anvil", "wall", "glass", "fence", "fence_gate", "pane"}
@@ -41,9 +42,10 @@ local allowed_non_solid_nodes_ceiling = {
 	"mcl_lanterns:chain",
 	"mcl_lanterns:gold_chain",
 }
--- The function below allows nodes that call it to be included in the 'allowed ceiling placement' list above. This lets lanterns be placed below said nodes. Most useful for modded in nodes. 
+-- The function below allows nodes that call it to be included in the 'allowed ceiling placement' list above.
+-- This lets lanterns be placed below said nodes. Most useful for modded in nodes.
 function mcl_lanterns.add_allowed_non_solid_nodes_ceiling (node_name)
-	table.insert (allowed_non_solid_nodes_ceiling, node_name) 
+	table.insert (allowed_non_solid_nodes_ceiling, node_name)
 end
 
 local allowed_non_solid_groups_ceiling = {"anvil", "wall", "glass", "fence", "fence_gate", "soil", "pane", "end_portal_frame"}
@@ -219,6 +221,40 @@ function mcl_lanterns.register_lantern(name, def)
 	})
 end
 
+local function place_chain(itemstack, placer, pointed_thing)
+	if pointed_thing.type ~= "node" then
+		return itemstack
+	end
+
+	local p0 = pointed_thing.under
+	local p1 = pointed_thing.above
+	local param2 = 0
+
+	local placer_pos = placer:get_pos()
+	if placer_pos then
+		local dir = {
+			x = p1.x - placer_pos.x,
+			y = p1.y - placer_pos.y,
+			z = p1.z - placer_pos.z
+		}
+		param2 = core.dir_to_facedir(dir)
+	end
+
+	if p0.y - 1 == p1.y then
+		param2 = 20
+	elseif p0.x - 1 == p1.x then
+		param2 = 16
+	elseif p0.x + 1 == p1.x then
+		param2 = 12
+	elseif p0.z - 1 == p1.z then
+		param2 = 8
+	elseif p0.z + 1 == p1.z then
+		param2 = 4
+	end
+
+	return core.item_place(itemstack, placer, pointed_thing, param2)
+end
+
 minetest.register_node("mcl_lanterns:chain", {
 	description = S("Chain"),
 	_doc_items_longdesc = S("Chains are metallic decoration blocks."),
@@ -245,39 +281,7 @@ minetest.register_node("mcl_lanterns:chain", {
 	},
 	groups = {pickaxey = 1, deco_block = 1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
-			return itemstack
-		end
-
-		local p0 = pointed_thing.under
-		local p1 = pointed_thing.above
-		local param2 = 0
-
-		local placer_pos = placer:get_pos()
-		if placer_pos then
-			local dir = {
-				x = p1.x - placer_pos.x,
-				y = p1.y - placer_pos.y,
-				z = p1.z - placer_pos.z
-			}
-			param2 = minetest.dir_to_facedir(dir)
-		end
-
-		if p0.y - 1 == p1.y then
-			param2 = 20
-		elseif p0.x - 1 == p1.x then
-			param2 = 16
-		elseif p0.x + 1 == p1.x then
-			param2 = 12
-		elseif p0.z - 1 == p1.z then
-			param2 = 8
-		elseif p0.z + 1 == p1.z then
-			param2 = 4
-		end
-
-		return minetest.item_place(itemstack, placer, pointed_thing, param2)
-	end,
+	on_place = place_chain,
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
@@ -308,39 +312,7 @@ minetest.register_node("mcl_lanterns:gold_chain", {
 	},
 	groups = {pickaxey = 1, deco_block = 1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
-			return itemstack
-		end
-
-		local p0 = pointed_thing.under
-		local p1 = pointed_thing.above
-		local param2 = 0
-
-		local placer_pos = placer:get_pos()
-		if placer_pos then
-			local dir = {
-				x = p1.x - placer_pos.x,
-				y = p1.y - placer_pos.y,
-				z = p1.z - placer_pos.z
-			}
-			param2 = minetest.dir_to_facedir(dir)
-		end
-
-		if p0.y - 1 == p1.y then
-			param2 = 20
-		elseif p0.x - 1 == p1.x then
-			param2 = 16
-		elseif p0.x + 1 == p1.x then
-			param2 = 12
-		elseif p0.z - 1 == p1.z then
-			param2 = 8
-		elseif p0.z + 1 == p1.z then
-			param2 = 4
-		end
-
-		return minetest.item_place(itemstack, placer, pointed_thing, param2)
-	end,
+	on_place = place_chain,
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
