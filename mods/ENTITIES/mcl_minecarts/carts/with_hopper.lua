@@ -177,5 +177,5 @@ mod.register_minecart({
 	end,
 	creative = true
 })
-mcl_entity_invs.register_inv("mcl_minecarts:hopper_minecart", "Hopper Minecart", 5, false, true)
+mcl_entity_invs.register_inv("mcl_minecarts:hopper_minecart", S("Hopper Minecart"), 5, false, true)
 

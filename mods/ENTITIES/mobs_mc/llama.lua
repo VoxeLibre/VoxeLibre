@@ -170,7 +170,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 			get_drops(self)
 			return
 		elseif self._has_chest and clicker:get_player_control().sneak then
-			mcl_entity_invs.show_inv_form(self,clicker," - Strength "..math.floor(self._inv_size / 3))
+			mcl_entity_invs.show_inv_form(self,clicker,S(" - Strength @1", math.floor(self._inv_size / 3)))
 			return
 		else
 			-- Feed with anything else
@@ -252,7 +252,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 	end,
 })
 
-mcl_entity_invs.register_inv("mobs_mc:llama","Llama",nil,true)
+mcl_entity_invs.register_inv("mobs_mc:llama",S("Llama"),nil,true)
 
 -- spit arrow (weapon)
 mcl_mobs.register_arrow("mobs_mc:llamaspit", {

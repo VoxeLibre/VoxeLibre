@@ -173,7 +173,7 @@ end
 
 minetest.register_node("mcl_core:lava_source", {
 	description = S("Lava Source"),
-	_doc_items_entry_name = "Lava",
+	_doc_items_entry_name = S("Lava"),
 	_doc_items_longdesc =
 S("Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.").."\n"..
 fire_text.."\n\n"..

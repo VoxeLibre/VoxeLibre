@@ -236,7 +236,16 @@ function mcl_potions.register_potion(def)
 	minetest.register_craftitem(modname..":"..name, pdef)
 
 	if def.has_splash or def.has_splash == nil then
-		local splash_desc = S("Splash @1", pdef.description)
+		local splash_desc
+		if def.desc_prefix and def.desc_suffix then
+			splash_desc = S("Splash @1 Potion @2", def.desc_prefix, def.desc_suffix)
+		elseif def.desc_prefix then
+			splash_desc = S("Splash @1 Potion", def.desc_prefix)
+		elseif def.desc_suffix then
+			splash_desc = S("Splash Potion @1", def.desc_suffix)
+		else
+			splash_desc = S("Splash Strange Potion")
+		end
 		local sdef = {}
 		sdef._tt = def._tt
 		sdef._dynamic_tt = def._dynamic_tt
@@ -257,7 +266,16 @@ function mcl_potions.register_potion(def)
 	end
 
 	if def.has_lingering or def.has_lingering == nil then
-		local ling_desc = S("Lingering @1", pdef.description)
+		local ling_desc
+		if def.desc_prefix and def.desc_suffix then
+			ling_desc = S("Lingering @1 Potion @2", def.desc_prefix, def.desc_suffix)
+		elseif def.desc_prefix then
+			ling_desc = S("Lingering @1 Potion", def.desc_prefix)
+		elseif def.desc_suffix then
+			ling_desc = S("Lingering Potion @1", def.desc_suffix)
+		else
+			ling_desc = S("Lingering Strange Potion")
+		end
 		local ldef = {}
 		ldef._tt = def._tt
 		ldef._dynamic_tt = def._dynamic_tt

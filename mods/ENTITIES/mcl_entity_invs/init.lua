@@ -1,3 +1,5 @@
+local S = minetest.get_translator(minetest.get_current_modname())
+
 mcl_entity_invs = {}
 
 local open_invs = {}
@@ -109,7 +111,7 @@ local function load_default_formspec (ent, text)
 			.. "list[detached:"..ent._inv_id..";main;"..spacing..",0.5;"..cols..","..rows..";]"
 			.. mcl_formspec.get_itemslot_bg(spacing,0.5,cols,rows)
 			.. "label[0,4.0;" .. minetest.formspec_escape(
-			minetest.colorize("#313131", "Inventory")) .. "]"
+			minetest.colorize("#313131", S("Inventory"))) .. "]"
 			.. "list[current_player;main;0,4.5;9,3;9]"
 			.. mcl_formspec.get_itemslot_bg(0,4.5,9,3)
 			.. "list[current_player;main;0,7.74;9,1;]"

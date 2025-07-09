@@ -566,7 +566,7 @@ donkey.jump_height = 3.75 -- can clear 1 block height
 
 
 mcl_mobs.register_mob("mobs_mc:donkey", donkey)
-mcl_entity_invs.register_inv("mobs_mc:donkey","Donkey",15,true)
+mcl_entity_invs.register_inv("mobs_mc:donkey",S("Donkey"),15,true)
 -- Mule
 local m = 0.94
 local mule = table.copy(donkey)
@@ -584,7 +584,7 @@ mule.collisionbox = {
 	horse.initial_properties.collisionbox[6] * m,
 }
 mcl_mobs.register_mob("mobs_mc:mule", mule)
-mcl_entity_invs.register_inv("mobs_mc:mule","Mule",15,true)
+mcl_entity_invs.register_inv("mobs_mc:mule",S("Mule"),15,true)
 
 --===========================
 --Spawn Function

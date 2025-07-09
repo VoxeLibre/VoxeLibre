@@ -816,7 +816,7 @@ mcl_potions.register_effect({
 
 mcl_potions.register_effect({
 	name = "blindness",
-	description = "Blindness",
+	description = S("Blindness"),
 	get_tt = function(factor)
 		return S("impaired sight")
 	end,

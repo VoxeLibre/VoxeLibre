@@ -2,7 +2,12 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 mcl_armor.register_set({
 	name = "gold",
-	description = "Golden",
+	descriptions = {
+		head = S("Golden Helmet"),
+		torso = S("Golden Chestplate"),
+		legs = S("Golden Leggings"),
+		feet = S("Golden Boots"),
+	},
 	durability = 112,
 	enchantability = 25,
 	points = {
@@ -19,7 +24,12 @@ mcl_armor.register_set({
 
 mcl_armor.register_set({
 	name = "chain",
-	description = "Chain",
+	descriptions = {
+		head = S("Chainmail Helmet"),
+		torso = S("Chainmail Chestplate"),
+		legs = S("Chainmail Leggings"),
+		feet = S("Chainmail Boots"),
+	},
 	durability = 240,
 	enchantability = 12,
 	points = {
@@ -36,7 +46,12 @@ mcl_armor.register_set({
 
 mcl_armor.register_set({
 	name = "iron",
-	description = "Iron",
+	descriptions = {
+		head = S("Iron Helmet"),
+		torso = S("Iron Chestplate"),
+		legs = S("Iron Leggings"),
+		feet = S("Iron Boots"),
+	},
 	durability = 240,
 	enchantability = 9,
 	points = {
@@ -53,7 +68,12 @@ mcl_armor.register_set({
 
 mcl_armor.register_set({
 	name = "diamond",
-	description = "Diamond",
+	descriptions = {
+		head = S("Diamond Helmet"),
+		torso = S("Diamond Chestplate"),
+		legs = S("Diamond Leggings"),
+		feet = S("Diamond Boots"),
+	},
 	durability = 528,
 	enchantability = 10,
 	points = {
@@ -72,7 +92,12 @@ mcl_armor.register_set({
 
 mcl_armor.register_set({
 	name = "netherite",
-	description = "Netherite",
+	descriptions = {
+		head = S("Netherite Helmet"),
+		torso = S("Netherite Chestplate"),
+		legs = S("Netherite Leggings"),
+		feet = S("Netherite Boots"),
+	},
 	durability = 555,
 	enchantability = 10,
 	points = {

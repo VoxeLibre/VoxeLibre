@@ -1,3 +1,5 @@
+local S = minetest.get_translator(minetest.get_current_modname())
+
 function mcl_armor.play_equip_sound(stack, obj, pos, unequip)
 	local def = stack:get_definition()
 	local estr = "equip"
@@ -112,7 +114,6 @@ end
 
 function mcl_armor.register_set(def)
 	local modname = minetest.get_current_modname()
-	local S = minetest.get_translator(modname)
 	local descriptions = def.descriptions or {}
 	local groups = def.groups or {}
 	local on_equip_callbacks = def.on_equip_callbacks or {}
@@ -146,7 +147,7 @@ function mcl_armor.register_set(def)
 		end
 
 		minetest.register_tool(itemstring, {
-			description = S(def.description .. " " .. (descriptions[name] or element.description)),
+			description = descriptions[name],
 			_doc_items_longdesc = mcl_armor.longdesc,
 			_doc_items_usagehelp = mcl_armor.usage,
 			inventory_image = modname .. "_inv_" .. itemname .. ".png",
@@ -333,7 +334,8 @@ tt.register_snippet(function(itemstring, toolcaps, stack)
 	-- this is fine here as this code gets only executed when you put armor and a trim in a smithing table
 	local full_overlay = meta:get_string("mcl_armor:trim_overlay")
 	local trim_name = full_overlay:match("%((.-)%_")
-	return "Upgrade:\n " .. trim_name:gsub("^%l", string.upper) .. " Armor Trim"
+	trim_name = trim_name:gsub("^%l", string.upper)
+	return S("Upgrade:") .. "\n " .. S("@1 Armor Trim", S(trim_name))
 end)
 
 function mcl_armor.is_trimmed(itemstack)

@@ -445,7 +445,7 @@ cboat.collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.75, 0.5}
 cboat.selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.75, 0.7}
 
 minetest.register_entity("mcl_boats:chest_boat", cboat)
-mcl_entity_invs.register_inv("mcl_boats:chest_boat","Boat",27)
+mcl_entity_invs.register_inv("mcl_boats:chest_boat",S("Boat"),27)
 
 local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak", "boat_obsidian", "boat_mangrove", "boat_cherry", "chest_boat", "chest_boat_spruce", "chest_boat_birch", "chest_boat_jungle", "chest_boat_acacia", "chest_boat_dark_oak", "chest_boat_mangrove", "chest_boat_cherry" }
 local names = { S("Oak Boat"), S("Spruce Boat"), S("Birch Boat"), S("Jungle Boat"), S("Acacia Boat"), S("Dark Oak Boat"), S("Obsidian Boat"), S("Mangrove Boat"), S("Cherry Boat"), S("Oak Chest Boat"), S("Spruce Chest Boat"), S("Birch Chest Boat"), S("Jungle Chest Boat"), S("Acacia Chest Boat"), S("Dark Oak Chest Boat"), S("Mangrove Chest Boat"), S("Cherry Chest Boat") }

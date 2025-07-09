@@ -130,7 +130,7 @@ doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 		s = s .. S("Hunger points restored: @1", def.groups.eatable)
 	end
 	if def._mcl_saturation and def._mcl_saturation > 0 then
-		s = s .. "\n" .. S("Saturation points restored: @1%.1f", string.format("%.1f", def._mcl_saturation))
+		s = s .. "\n" .. S("Saturation points restored: @1", string.format("%.1f", def._mcl_saturation))
 	end
 	return s
 end)

@@ -5,6 +5,10 @@ local chestusage = S("To access its inventory, rightclick it. When broken, the i
 
 mcl_chests.register_chest("chest", {
 	desc = S("Chest"),
+	title = {
+		small = S("Chest"),
+		double = S("Large Chest")
+	},
 	longdesc = S(
 		"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with " ..
 		"double the capacity by placing two chests next to each other."
