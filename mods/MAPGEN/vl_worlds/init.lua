@@ -531,6 +531,14 @@ end
 ---@returns {min: integer, max: integer}?
 function vl_worlds.get_layer_bounds(dim_id, layer_id)
 	for _, dim in ipairs(world_structure) do
+		-- Treat layer "" as the entire dimension (for biome registration)
+		if layer_id == "" then
+			return {
+				min = dim.start,
+				max = dim.start + dim.height,
+			}
+		end
+
 		if dim.id == dim_id then
 			for _, layer in ipairs(dim.layers) do
 				if layer.id == layer_id then
