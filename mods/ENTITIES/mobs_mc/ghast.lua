@@ -55,7 +55,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	attack_type = "dogshoot",
 	arrow = "mobs_mc:fireball",
 	shoot_interval = 5,
-	shoot_offset = -0.5,
+	shoot_offset = 0.5,
 	shoot_pos = {x = 2, y = -1},
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,
@@ -123,10 +123,10 @@ mcl_mobs:spawn_setup({
 -- fireball (projectile)
 mcl_mobs.register_arrow("mobs_mc:fireball", {
 	visual = "sprite",
-	visual_size = {x = 1, y = 1},
+	visual_size = {x = 2, y = 2},
 	textures = {"vl_mobs_soulfire_charge.png"},
-	velocity = 7,
-	collisionbox = {-.5, -.5, -.5, .5, .5, .5},
+	velocity = 10,
+	collisionbox = {-1, -1, -1, 1, 1, 1},
 	glow = 10,
 	_lifetime = 10,
 	_is_fireball = true,
