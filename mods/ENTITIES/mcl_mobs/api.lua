@@ -146,7 +146,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.base_colbox = self.base_colbox or def.initial_properties.collisionbox
 	self.base_selbox = self.base_selbox or def.initial_properties.selectionbox or self.base_colbox
 	self.base_mesh = self.base_mesh or def.initial_properties.mesh
-	self.base_size = self.base_size or def.initial_properties.visual_size
+	self.base_size = self.base_size or def.initial_properties.visual_size or self.initial_properties.visual_size
 
 	local textures = self.base_texture
 	local mesh = self.base_mesh
