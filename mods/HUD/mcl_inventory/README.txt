@@ -4,7 +4,8 @@ Version: 2.0.1
 
 License of source code and Textures: WTFPL
 ------------------------------------
-copyright (c) 2013-2014 by BlockMen
+Copyright (c. 2013) by BlockMen
+Creative inventory overhaul (c. 2025): Thomas Conway
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it
