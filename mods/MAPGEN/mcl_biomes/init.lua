@@ -46,15 +46,13 @@ Based off <https://minecraft.gamepedia.com/Biomes> ]]
 
 local function register_classic_superflat_biome()
 	-- Classic Superflat: bedrock (not part of biome), 2 dirt, 1 grass block
-	minetest.register_biome({
+	vl_worlds.register_biome("overworld", "", {
 		name = "flat",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
 		node_stone = "mcl_core:dirt",
-		y_min = overworld_bounds.min - 512,
-		y_max = overworld_bounds.max,
 		humidity_point = 50,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
