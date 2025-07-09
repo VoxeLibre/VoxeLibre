@@ -591,6 +591,14 @@ vl_worlds.register_layer("underworld", {
 	has_separate_biomes = true,
 })
 
+local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
+vl_worlds.register_layer("fringe", {
+	id = "islands",
+	bottom = 0,
+	top = fringe_bounds.max - fringe_bounds.min,
+	has_separate_biomes = true,
+})
+
 -- API
 ---@param string dim
 ---@param string layer
