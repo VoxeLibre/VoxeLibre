@@ -243,6 +243,7 @@ function mcl_mobs.register_mob(name, def)
 		passive = def.passive or false,
 		knock_back = def.knock_back ~= false,
 		shoot_offset = def.shoot_offset or 0,
+		shoot_pos = def.shoot_pos or vector.zero(),
 		floats = def.floats or 1, -- floats in water by default
 		floats_on_lava = def.floats_on_lava or 0,
 		replace_rate = def.replace_rate,
