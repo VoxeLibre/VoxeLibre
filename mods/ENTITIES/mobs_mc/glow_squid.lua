@@ -90,6 +90,7 @@ mcl_mobs.register_mob("mobs_mc:glow_squid", {
 })
 
 -- spawning
+local water = mobs_mc.water_level
 mcl_mobs:spawn_setup({
 	name = "mobs_mc:glow_squid",
 	dimension = "overworld",
@@ -240,8 +241,9 @@ mcl_mobs:spawn_setup({
 	chance = 100,
 	interval = 30,
 	aoc = 3,
-	min_height = mobs_mc.water_level - 17,
-	max_height = mobs_mc.water_level - 1
+	min_height = water-17,
+	max_height = water+1
+
 })
 
 -- spawn egg
