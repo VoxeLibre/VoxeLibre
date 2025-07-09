@@ -48,7 +48,9 @@ minetest.register_alias("mapgen_stair_sandstone_block", "mcl_stairs:stair_sandst
 minetest.register_alias("mapgen_stair_desert_stone", "mcl_stairs:stair_sandstone")
 
 dofile(modpath.."/api.lua")
-dofile(modpath.."/ores.lua")
+core.register_on_mods_loaded(function()
+	dofile(modpath.."/ores.lua")
+end)
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local sea_level = tonumber(minetest.get_mapgen_setting("water_level"))
