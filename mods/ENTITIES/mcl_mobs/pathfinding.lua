@@ -9,6 +9,8 @@ local PATHFINDING_SEARCH_DISTANCE = 25 -- How big the square is that pathfinding
 
 local PATHFINDING = "gowp"
 
+local MOBS_OPEN_GATES = core.settings:get_bool("mcl_mobs_open_gates", false)
+
 local plane_adjacents = {
 	vector.new(1,0,0),
 	vector.new(-1,0,0),
@@ -276,7 +278,7 @@ function mob_class:gopath(target, callback_arrived, prioritised)
 				wp[i].pos = vector.offset(wp[i].pos, 0, -1, 0)
 				i = i - 1
 			-- plan opening fence gates
-			elseif bdef and (bdef.groups.fence_gate or 0) > 0 then
+			elseif MOBS_OPEN_GATES and bdef and (bdef.groups.fence_gate or 0) > 0 then
 				wp[i].pos = vector.offset(wp[i].pos, 0, -1, 0)
 				wp[math.max(1,i-1)].action = {type = "door", action = "open", target = wp[i].pos}
 				if i+1 < #wp then
@@ -362,7 +364,7 @@ function mob_class:interact_with_door(action, target)
 				mcl_log("Close door")
 				def.on_rightclick(target,n,self)
 			end
-		elseif n.name:find("_gate") then
+		elseif MOBS_OPEN_GATES and n.name:find("_gate") then
 			local def = minetest.registered_nodes[n.name]
 			local meta = minetest.get_meta(target)
 			local closed = meta:get_int("state") == 0
