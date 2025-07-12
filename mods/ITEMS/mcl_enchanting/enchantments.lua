@@ -1,7 +1,5 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
--- Taken from https://minecraft.gamepedia.com/Enchanting
-
 local function increase_damage(damage_group, factor)
 	return function(itemstack, level)
 		local tool_capabilities = itemstack:get_tool_capabilities()
