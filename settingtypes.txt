@@ -149,6 +149,9 @@ mobs_griefing (Mobs change blocks) bool true
 # If enabled, mobs won't damage particles when they got hurt.
 mobs_disable_blood (Disable mob damage particles) bool false
 
+# If enabled, some mobs (eg. villagers) will be able to open fence gates.
+mcl_mobs_open_gates (Mobs can open gates) bool false
+
 #Percentage of peaceful spawn attempts that succeed (default:30)
 mcl_mob_peaceful_percentage_spawned (Peaceful percentage success) int 30 0 100
 
@@ -238,6 +241,9 @@ slime_ratio (Slime chunk ratio) float 10.0 0.0
 slime_3d_chunks (Slime chunk placement in 3d) bool false
 # Slime chunk maximum light for spawning, default is no limit
 slime_max_light (Maximum light level in slime chunks) int 14 0 14
+
+# Pathfinding visualization
+mcl_mobs_pathfinding_visualize (Visualize pathfinding) bool false
 
 [Audio]
 # Enable flame sound.
