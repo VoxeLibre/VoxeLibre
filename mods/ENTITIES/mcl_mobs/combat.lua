@@ -637,7 +637,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				local player_mag = ((hv.x * hv.x) + (hv.z * hv.z))^0.5
 				local mob_mag = ((v.x * v.x) + (v.z * v.z))^0.5
 				if dir_dot > 0 and mob_mag <= player_mag * 0.625 then
-					kb = kb + (abs(hv.x) + abs(hv.z)) * r
+					kb = kb + (abs(hv.x) + abs(hv.z)) * r * 2
 				end
 			elseif luaentity and luaentity._knockback and die == false then
 				kb = kb + luaentity._knockback
@@ -658,6 +658,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 					self._kb_turn = false
 				end
 			end)
+			kb = kb * 2
 			self.object:add_velocity(vector_new(dir.x * kb, up*2, dir.z * kb ))
 
 			self.pause_timer = 0.25
