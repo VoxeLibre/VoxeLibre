@@ -149,10 +149,10 @@ function vl_sus_stew.register_sus_potion_effect(potion_name, level, duration, ef
 	vl_sus_stew.register_sus_effect(effect_name, on_eat_effect)
 end
 
-vl_sus_stew.register_sus_potion_effect("fire_resistance", 1, 4)
+vl_sus_stew.register_sus_potion_effect("fire_resistance", 1, 12)
 vl_sus_stew.register_sus_potion_effect("blindness",       1, 8)
 vl_sus_stew.register_sus_potion_effect("poison",          1, 12)
-vl_sus_stew.register_sus_potion_effect("saturation",      1, 0.5)
+vl_sus_stew.register_sus_potion_effect("saturation",      1, 10)
 vl_sus_stew.register_sus_potion_effect("leaping",         1, 6, "jump")
 vl_sus_stew.register_sus_potion_effect("regeneration",    1, 8)
 vl_sus_stew.register_sus_potion_effect("withering",       1, 8)
