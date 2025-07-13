@@ -1,4 +1,4 @@
-mcl_sus_stew = {}
+vl_sus_stew = {}
 
 local S = minetest.get_translator(minetest.get_current_modname())
 
@@ -88,7 +88,7 @@ local function eat_stew_delayed(itemstack, user, pointed_thing)
 end
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-	if itemstack:get_name() ~= "mcl_sus_stew:stew" then return end
+	if itemstack:get_name() ~= "vl_sus_stew:stew" then return end
 	for _,it in pairs(old_craft_grid) do
 		local effect = ingredient_effect[it:get_name()]
 		if effect ~= nil then
@@ -100,7 +100,7 @@ end)
 
 --											________________________
 --_________________________________________/	Item Registration	\_________________
-minetest.register_craftitem("mcl_sus_stew:stew",{
+minetest.register_craftitem("vl_sus_stew:stew",{
 	description = S("Suspicious Stew"),
 	inventory_image = "sus_stew.png",
 	stack_max = 1,
@@ -112,60 +112,60 @@ minetest.register_craftitem("mcl_sus_stew:stew",{
 	_mcl_saturation = 7.2,
 })
 
-mcl_hunger.register_food("mcl_sus_stew:stew", 6, "mcl_core:bowl")
+mcl_hunger.register_food("vl_sus_stew:stew", 6, "mcl_core:bowl")
 
 --compat with old (mcl5) sus_stew
-minetest.register_alias("mcl_sus_stew:poison_stew", "mcl_sus_stew:stew")
-minetest.register_alias("mcl_sus_stew:hunger_stew", "mcl_sus_stew:stew")
-minetest.register_alias("mcl_sus_stew:jump_boost_stew", "mcl_sus_stew:stew")
-minetest.register_alias("mcl_sus_stew:regneration_stew", "mcl_sus_stew:stew")
-minetest.register_alias("mcl_sus_stew:night_vision_stew", "mcl_sus_stew:stew")
+minetest.register_alias("mcl_sus_stew:poison_stew", "vl_sus_stew:stew")
+minetest.register_alias("mcl_sus_stew:hunger_stew", "vl_sus_stew:stew")
+minetest.register_alias("mcl_sus_stew:jump_boost_stew", "vl_sus_stew:stew")
+minetest.register_alias("mcl_sus_stew:regneration_stew", "vl_sus_stew:stew")
+minetest.register_alias("mcl_sus_stew:night_vision_stew", "vl_sus_stew:stew")
 
 --										 	____________
 --_________________________________________/	API		\________________________________
 
-function mcl_sus_stew.register_sus_stew(secret_ingredient, effect_name)
+function vl_sus_stew.register_sus_stew(secret_ingredient, effect_name)
 	ingredient_effect[secret_ingredient] = effect_name
 	minetest.register_craft({
 		type = "shapeless",
-		output = "mcl_sus_stew:stew",
+		output = "vl_sus_stew:stew",
 		recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", secret_ingredient},
 	})
 end
 
-function mcl_sus_stew.register_sus_effect(effect_name, effect_func)
+function vl_sus_stew.register_sus_effect(effect_name, effect_func)
 	effects[effect_name] = effect_func
 end
 
-function mcl_sus_stew.register_sus_potion_effect(potion_name, factor, duration, effect_name)
+function vl_sus_stew.register_sus_potion_effect(potion_name, factor, duration, effect_name)
 	if effect_name == nil then effect_name = potion_name end
 	local function on_eat_effect(itemstack, placer, pointed_thing)
 		mcl_potions.give_effect_by_level(potion_name, placer, factor, duration)
 		return eat(itemstack, placer, pointed_thing)
 	end
-	mcl_sus_stew.register_sus_effect(effect_name, on_eat_effect)
+	vl_sus_stew.register_sus_effect(effect_name, on_eat_effect)
 end
 
-mcl_sus_stew.register_sus_potion_effect("fire_resistance", 1, 4)
-mcl_sus_stew.register_sus_potion_effect("blindness",       1, 8)
-mcl_sus_stew.register_sus_potion_effect("poison",          1, 12)
-mcl_sus_stew.register_sus_potion_effect("saturation",      1, 0.5)
-mcl_sus_stew.register_sus_potion_effect("leaping",         1, 6, "jump")
-mcl_sus_stew.register_sus_potion_effect("regeneration",    1, 8)
-mcl_sus_stew.register_sus_potion_effect("withering",       1, 8)
-mcl_sus_stew.register_sus_potion_effect("weakness",        1, 9)
-mcl_sus_stew.register_sus_potion_effect("night_vision",    1, 5)
+vl_sus_stew.register_sus_potion_effect("fire_resistance", 1, 4)
+vl_sus_stew.register_sus_potion_effect("blindness",       1, 8)
+vl_sus_stew.register_sus_potion_effect("poison",          1, 12)
+vl_sus_stew.register_sus_potion_effect("saturation",      1, 0.5)
+vl_sus_stew.register_sus_potion_effect("leaping",         1, 6, "jump")
+vl_sus_stew.register_sus_potion_effect("regeneration",    1, 8)
+vl_sus_stew.register_sus_potion_effect("withering",       1, 8)
+vl_sus_stew.register_sus_potion_effect("weakness",        1, 9)
+vl_sus_stew.register_sus_potion_effect("night_vision",    1, 5)
 
-mcl_sus_stew.register_sus_stew("mcl_flowers:allium",             "fire_resistance")
-mcl_sus_stew.register_sus_stew("mcl_flowers:azure_bluet",        "blindness")
-mcl_sus_stew.register_sus_stew("mcl_flowers:lily_of_the_valley", "poison")
-mcl_sus_stew.register_sus_stew("mcl_flowers:blue_orchid",        "saturation")
-mcl_sus_stew.register_sus_stew("mcl_flowers:dandelion",          "saturation")
-mcl_sus_stew.register_sus_stew("mcl_flowers:cornflower",         "jump")
-mcl_sus_stew.register_sus_stew("mcl_flowers:oxeye_daisy",        "regeneration")
-mcl_sus_stew.register_sus_stew("mcl_flowers:poppy",              "night_vision")
-mcl_sus_stew.register_sus_stew("mcl_flowers:wither_rose",        "withering")
-mcl_sus_stew.register_sus_stew("mcl_flowers:tulip_orange",       "weakness")
-mcl_sus_stew.register_sus_stew("mcl_flowers:tulip_pink",         "weakness")
-mcl_sus_stew.register_sus_stew("mcl_flowers:tulip_red",          "weakness")
-mcl_sus_stew.register_sus_stew("mcl_flowers:tulip_white",        "weakness")
+vl_sus_stew.register_sus_stew("mcl_flowers:allium",             "fire_resistance")
+vl_sus_stew.register_sus_stew("mcl_flowers:azure_bluet",        "blindness")
+vl_sus_stew.register_sus_stew("mcl_flowers:lily_of_the_valley", "poison")
+vl_sus_stew.register_sus_stew("mcl_flowers:blue_orchid",        "saturation")
+vl_sus_stew.register_sus_stew("mcl_flowers:dandelion",          "saturation")
+vl_sus_stew.register_sus_stew("mcl_flowers:cornflower",         "jump")
+vl_sus_stew.register_sus_stew("mcl_flowers:oxeye_daisy",        "regeneration")
+vl_sus_stew.register_sus_stew("mcl_flowers:poppy",              "night_vision")
+vl_sus_stew.register_sus_stew("mcl_flowers:wither_rose",        "withering")
+vl_sus_stew.register_sus_stew("mcl_flowers:tulip_orange",       "weakness")
+vl_sus_stew.register_sus_stew("mcl_flowers:tulip_pink",         "weakness")
+vl_sus_stew.register_sus_stew("mcl_flowers:tulip_red",          "weakness")
+vl_sus_stew.register_sus_stew("mcl_flowers:tulip_white",        "weakness")
