@@ -140,10 +140,10 @@ function vl_sus_stew.register_sus_effect(effect_name, effect_func)
 	effects[effect_name] = effect_func
 end
 
-function vl_sus_stew.register_sus_potion_effect(potion_name, factor, duration, effect_name)
+function vl_sus_stew.register_sus_potion_effect(potion_name, level, duration, effect_name)
 	if effect_name == nil then effect_name = potion_name end
 	local function on_eat_effect(itemstack, placer, pointed_thing)
-		mcl_potions.give_effect_by_level(potion_name, placer, factor, duration)
+		mcl_potions.give_effect_by_level(potion_name, placer, level, duration)
 		return eat(itemstack, placer, pointed_thing)
 	end
 	vl_sus_stew.register_sus_effect(effect_name, on_eat_effect)
