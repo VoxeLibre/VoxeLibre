@@ -11,10 +11,11 @@ mcl_gamemode.gamemodes = {
 ---@param h table
 ---@return boolean
 local function in_table(n, h)
+	local l = string.len(n)
 	for k, v in pairs(h) do
-		if v == n then return true end
+		if string.sub(v, 1, l) == n then return v end
 	end
-	return false
+	return nil
 end
 
 ---@type fun(player: mt.PlayerObjectRef, old_gamemode: '"survival"'|'"creative"', new_gamemode: '"survival"'|'"creative"')[]
@@ -79,10 +80,13 @@ minetest.register_chatcommand("gamemode", {
 		if not p then
 			return false, S("Player not online")
 		end
-		if args[1] ~= nil and not in_table(args[1], mcl_gamemode.gamemodes) then
-			return false, S("Gamemode " .. args[1] .. " does not exist.")
-		elseif args[1] ~= nil then
-			mcl_gamemode.set_gamemode(p, args[1])
+		if args[1] ~= nil then
+			local gmode = in_table(args[1], mcl_gamemode.gamemodes)
+			if not gmode then
+				return false, S("Gamemode " .. args[1] .. " does not exist.")
+			else
+				mcl_gamemode.set_gamemode(p, gmode)
+			end
 		end
 		--Result message - show effective game mode
 		local gm = p:get_meta():get_string("gamemode")
