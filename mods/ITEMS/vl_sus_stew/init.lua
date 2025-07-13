@@ -1,11 +1,11 @@
 vl_sus_stew = {}
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 --                                          ____________________________
 --_________________________________________/    Variables & Functions    \_________
 
-local eat = minetest.item_eat(6, "mcl_core:bowl") --6 hunger points, player receives mcl_core:bowl after eating
+local eat = core.item_eat(6, "mcl_core:bowl") --6 hunger points, player receives mcl_core:bowl after eating
 
 local ingredient_effect = {}
 local effects = {}
@@ -22,10 +22,10 @@ local function eat_stew(itemstack, user, pointed_thing)
 	if pointed_thing.type == "node" then
 		if user and not user:get_player_control().sneak then
 			-- Use pointed node's on_rightclick function first, if present
-			local node = minetest.get_node(pointed_thing.under)
+			local node = core.get_node(pointed_thing.under)
 			if user and not user:get_player_control().sneak then
-				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+				if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
+					return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 				end
 			end
 		end
@@ -48,10 +48,10 @@ local function eat_stew_delayed(itemstack, user, pointed_thing)
 	if pointed_thing.type == "node" then
 		if user and not user:get_player_control().sneak then
 			-- Use pointed node's on_rightclick function first, if present
-			local node = minetest.get_node(pointed_thing.under)
+			local node = core.get_node(pointed_thing.under)
 			if user and not user:get_player_control().sneak then
-				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+				if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
+					return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 				end
 			end
 		end
@@ -78,16 +78,16 @@ local function eat_stew_delayed(itemstack, user, pointed_thing)
 
 		local user = mcl_hunger.eat_internal[name]._custom_var.user
 
-		minetest.after(0, function()
+		core.after(0, function()
 			user:get_inventory():set_stack("main", user:get_wield_index(), "mcl_core:bowl")
 		end)
 	end
 
 	mcl_hunger.eat_internal[name]._custom_do_delayed = true -- Only _custom_wrapper will be executed after holding RMB or LMB within a specified delay
-	--minetest.do_item_eat(0, "mcl_core:bowl", itemstack, user, pointed_thing)
+	--core.do_item_eat(0, "mcl_core:bowl", itemstack, user, pointed_thing)
 end
 
-minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+core.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() ~= "vl_sus_stew:stew" then return end
 	for _,it in pairs(old_craft_grid) do
 		local effect = ingredient_effect[it:get_name()]
@@ -100,7 +100,7 @@ end)
 
 --											________________________
 --_________________________________________/	Item Registration	\_________________
-minetest.register_craftitem("vl_sus_stew:stew",{
+core.register_craftitem("vl_sus_stew:stew",{
 	description = S("Suspicious Stew"),
 	inventory_image = "sus_stew.png",
 	stack_max = 1,
@@ -115,18 +115,18 @@ minetest.register_craftitem("vl_sus_stew:stew",{
 mcl_hunger.register_food("vl_sus_stew:stew", 6, "mcl_core:bowl")
 
 --compat with old (mcl5) sus_stew
-minetest.register_alias("mcl_sus_stew:poison_stew", "vl_sus_stew:stew")
-minetest.register_alias("mcl_sus_stew:hunger_stew", "vl_sus_stew:stew")
-minetest.register_alias("mcl_sus_stew:jump_boost_stew", "vl_sus_stew:stew")
-minetest.register_alias("mcl_sus_stew:regneration_stew", "vl_sus_stew:stew")
-minetest.register_alias("mcl_sus_stew:night_vision_stew", "vl_sus_stew:stew")
+core.register_alias("mcl_sus_stew:poison_stew", "vl_sus_stew:stew")
+core.register_alias("mcl_sus_stew:hunger_stew", "vl_sus_stew:stew")
+core.register_alias("mcl_sus_stew:jump_boost_stew", "vl_sus_stew:stew")
+core.register_alias("mcl_sus_stew:regneration_stew", "vl_sus_stew:stew")
+core.register_alias("mcl_sus_stew:night_vision_stew", "vl_sus_stew:stew")
 
 --										 	____________
 --_________________________________________/	API		\________________________________
 
 function vl_sus_stew.register_sus_stew(secret_ingredient, effect_name)
 	ingredient_effect[secret_ingredient] = effect_name
-	minetest.register_craft({
+	core.register_craft({
 		type = "shapeless",
 		output = "vl_sus_stew:stew",
 		recipe = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:bowl", secret_ingredient},
