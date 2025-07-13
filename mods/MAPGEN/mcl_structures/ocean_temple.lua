@@ -110,7 +110,7 @@ mcl_structures.register_structure("ocean_temple",{
 				stacks_min = 3,
 				stacks_max = 10,
 				items = {
-					{ itemstring = "mcl_sus_stew:stew", weight = 10, amount_min = 1, amount_max = 1 },
+					{ itemstring = "vl_sus_stew:stew", weight = 10, amount_min = 1, amount_max = 1 },
 					{ itemstring = "mcl_core:paper", weight = 8, amount_min = 1, amount_max = 12 },
 					{ itemstring = "mcl_fishing:fish_raw", weight = 5, amount_min = 8, amount_max = 21 },
 					{ itemstring = "mcl_fishing:salmon_raw", weight = 7, amount_min = 4, amount_max = 8 },
