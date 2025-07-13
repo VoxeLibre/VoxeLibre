@@ -114,12 +114,15 @@ core.register_craftitem("vl_sus_stew:stew",{
 
 mcl_hunger.register_food("vl_sus_stew:stew", 6, "mcl_core:bowl")
 
---compat with old (mcl5) sus_stew
+-- compat with old (mcl5) sus_stew
 core.register_alias("mcl_sus_stew:poison_stew", "vl_sus_stew:stew")
 core.register_alias("mcl_sus_stew:hunger_stew", "vl_sus_stew:stew")
 core.register_alias("mcl_sus_stew:jump_boost_stew", "vl_sus_stew:stew")
 core.register_alias("mcl_sus_stew:regneration_stew", "vl_sus_stew:stew")
 core.register_alias("mcl_sus_stew:night_vision_stew", "vl_sus_stew:stew")
+
+-- compat with old mod namespace
+core.register_alias("mcl_sus_stew:stew", "vl_sus_stew:stew")
 
 --										 	____________
 --_________________________________________/	API		\________________________________
