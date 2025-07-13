@@ -97,9 +97,6 @@ dofile(modpath.."/api.lua")
 dofile(modpath.."/hunger.lua")
 dofile(modpath.."/register_foods.lua")
 
---[[ IF HUNGER IS ENABLED ]]
-if mcl_hunger.active == true then
-
 -- Read debug mode setting
 -- The setting should only be read at the beginning, this mod is not
 -- prepared to change this setting later.
@@ -122,13 +119,15 @@ end
 mcl_hunger.poison_hunger = {} -- food poisoning, increasing hunger
 
 -- HUD
-local function init_hud(player)
-	local name = player:get_player_name()
+local function init_hud_bar(player)
 	hb.init_hudbar(player, "hunger", mcl_hunger.get_hunger(player))
 	if mcl_hunger.debug then
 		hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
 		hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
 	end
+end
+local function init_eat_anim_hud(player)
+	local name = player:get_player_name()
 	mcl_hunger.eat_anim_hud[name] = player:hud_add({
 		[mcl_vars.hud_type_field] = "image",
 		text = "blank.png",
@@ -139,6 +138,18 @@ local function init_hud(player)
 		z_index = -200,
 	})
 end
+local init_hud = (function()
+	if mcl_hunger.active then
+		return function(player)
+			init_hud_bar(player)
+			init_eat_anim_hud(player)
+		end
+	else
+		return function(player)
+			init_eat_anim_hud(player)
+		end
+	end
+end)()
 
 -- HUD updating functions for Debug Mode. No-op if not in Debug Mode
 function mcl_hunger.update_saturation_hud(player, saturation, hunger)
@@ -392,14 +403,5 @@ minetest.register_globalstep(function(dtime)
 			clear_eat_internal_and_timers(player, player_name)
 		end
 	end
+
 end)
-
---[[ IF HUNGER IS NOT ENABLED ]]
-else
-
-minetest.register_on_joinplayer(function(player)
-	mcl_hunger.init_player(player)
-	mcl_hunger.last_eat[player:get_player_name()] = -1
-end)
-
-end
