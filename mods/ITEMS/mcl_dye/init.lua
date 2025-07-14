@@ -158,11 +158,10 @@ minetest.register_craft({
 	recipe = {{"mcl_core:lapis"}},
 })
 
---[[ Uncomment when crafting blue dye back into lapis is removed.
 minetest.register_craft({
 	output = "mcl_dye:blue",
 	recipe = {{"mcl_flowers:cornflower"}},
-})]]
+})
 
 minetest.register_craft({
 	output = "mcl_dye:lightblue",
@@ -234,11 +233,10 @@ minetest.register_craft({
 	recipe = {{"mcl_flowers:rose_bush"}},
 })
 
---[[Uncomment when crafting white dye back into bonemeal is removed
 minetest.register_craft({
 	output = "mcl_dye:white",
 	recipe = {{"mcl_flowers:lily_of_the_valley"}},
-})]]
+})
 
 minetest.register_craft({
 	type = "cooking",
@@ -323,29 +321,4 @@ minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:orange 2",
 	recipe = {"mcl_dye:yellow", "mcl_dye:red"},
-})
-
--- Legacy items grace conversion recipes.
---
--- These allow for retrieval of precious items that were converted into
--- dye items after refactoring of the dyes.  Should be removed again in
--- the near future.
-minetest.register_craft({
-	output = "mcl_bone_meal:bone_meal",
-	recipe = {{"mcl_dye:white"}},
-})
-
-minetest.register_craft({
-	output = "mcl_mobitems:ink_sac",
-	recipe = {{"mcl_dye:black"}},
-})
-
-minetest.register_craft({
-	output = "mcl_core:lapis",
-	recipe = {{"mcl_dye:blue"}},
-})
-
-minetest.register_craft({
-	output = "mcl_cocoas:cocoa_beans",
-	recipe = {{"mcl_dye:brown"}},
 })
