@@ -7,15 +7,20 @@ mcl_gamemode.gamemodes = {
 	"creative",
 }
 
----@param n any
+---@param n string
 ---@param h table
 ---@return boolean
 local function in_table(n, h)
 	local l = string.len(n)
+	local found = {}
 	for k, v in pairs(h) do
-		if string.sub(v, 1, l) == n then return v end
+		if string.sub(v, 1, l) == n then
+			table.insert(found, v)
+		end
 	end
-	return nil
+	if #found > 1 then return found
+	elseif #found == 1 then return found[1]
+	else return nil end
 end
 
 ---@type fun(player: mt.PlayerObjectRef, old_gamemode: '"survival"'|'"creative"', new_gamemode: '"survival"'|'"creative"')[]
@@ -83,7 +88,10 @@ minetest.register_chatcommand("gamemode", {
 		if args[1] ~= nil then
 			local gmode = in_table(args[1], mcl_gamemode.gamemodes)
 			if not gmode then
-				return false, S("Gamemode " .. args[1] .. " does not exist.")
+				return false, S("Gamemode @1 does not exist.", args[1])
+			elseif type(gmode) == "table" then
+				return false, S("More than one gamemode fit @1", args[1])
+					.. ": " .. table.concat(gmode, ", ")
 			else
 				mcl_gamemode.set_gamemode(p, gmode)
 			end
