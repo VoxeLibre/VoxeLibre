@@ -13,7 +13,7 @@ mcl_gamemode.gamemodes = {
 local function in_table(n, h)
 	local l = string.len(n)
 	local found = {}
-	for k, v in pairs(h) do
+	for _, v in ipairs(h) do
 		if string.sub(v, 1, l) == n then
 			table.insert(found, v)
 		end
