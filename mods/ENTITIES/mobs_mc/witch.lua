@@ -80,32 +80,23 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	end,
 })
 
--- potion projectile (EXPERIMENTAL)
 mcl_mobs.register_arrow("mobs_mc:potion_arrow", {
 	visual = "sprite",
 	visual_size = {x = 0.5, y = 0.5},
-	--textures = {"vessels_glass_bottle.png"},  --TODO fix to else if default
 	textures = {"mcl_potions_dragon_breath.png"},
-	velocity = 6,
+	velocity = 9,
 
-	-- direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
-		player:punch(self.object, 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 2},
-		}, nil)
+		mcl_util.deal_damage(player, 2, {type = "magic"})
 	end,
 
 	hit_mob = function(self, mob)
-		mob:punch(self.object, 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 2},
-		}, nil)
+		mcl_util.deal_damage(mob, 2, {type = "magic"})
 	end,
 
-	-- node hit, bursts into flame
 	hit_node = function(self, pos, node)
-		--TODO
+		mcl_mobs.mob_class.safe_boom(self, pos, 1)
+		mcl_mobs.effect(pos, 32, "mcl_particles_flame.png", 5, 10, 2, 1, 10)
 	end
 })
 
