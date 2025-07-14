@@ -372,15 +372,6 @@ mcl_potions.register_potion({
 -- ██████╔╝███████╗██║░░░░░██║██║░╚███║██║░░░██║░░░██║╚█████╔╝██║░╚███║██████╔╝
 -- ╚═════╝░╚══════╝╚═╝░░░░░╚═╝╚═╝░░╚══╝╚═╝░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝╚═════╝░
 
-
-minetest.register_craftitem("mcl_potions:dragon_breath", {
-	description = S("Dragon's Breath"),
-	_longdesc = S("This item is used in brewing and can be combined with splash potions to create lingering potions."),
-	image = "mcl_potions_dragon_breath.png",
-	groups = { brewitem = 1, bottle = 1 },
-	stack_max = 64,
-})
-
 mcl_potions.register_potion({
 	name = "awkward",
 	desc_prefix = S("Awkward"),
@@ -861,14 +852,14 @@ local compat = "mcl_potions:compat_potion"
 local compat_arrow = "mcl_potions:compat_arrow"
 local compat_def = {
 	description = S("Unknown Potion") .. "\n" .. minetest.colorize("#ff0", S("Right-click to identify")),
-	image = "mcl_potions_potion_overlay.png^[colorize:#00F:127^mcl_potions_potion_bottle.png^vl_unknown.png",
+	inventory_image = "mcl_potions_potion_overlay.png^[colorize:#00F:127^mcl_potions_potion_bottle.png^vl_unknown.png",
 	groups = {not_in_creative_inventory = 1},
 	on_secondary_use = replace_legacy_potion,
 	on_place = replace_legacy_potion,
 }
 local compat_arrow_def = {
 	description = S("Unknown Tipped Arrow") .. "\n" .. minetest.colorize("#ff0", S("Right-click to identify")),
-	image = "mcl_bows_arrow_inv.png^(mcl_potions_arrow_inv.png^[colorize:#FFF:100)^vl_unknown.png",
+	inventory_image = "mcl_bows_arrow_inv.png^(mcl_potions_arrow_inv.png^[colorize:#FFF:100)^vl_unknown.png",
 	groups = {not_in_creative_inventory = 1},
 	on_secondary_use = replace_legacy_potion,
 	on_place = replace_legacy_potion,

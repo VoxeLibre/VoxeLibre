@@ -31,6 +31,14 @@ dofile(modpath .. "/tipped_arrow.lua")
 dofile(modpath .. "/potions.lua")
 local potions = mcl_potions.registered_potions
 
+minetest.register_craftitem("mcl_potions:dragon_breath", {
+	description = S("Dragon's Breath"),
+	_longdesc = S("This item is used in brewing and can be combined with splash potions to create lingering potions."),
+	inventory_image = "mcl_potions_dragon_breath.png",
+	groups = { brewitem = 1, bottle = 1 },
+	stack_max = 64,
+})
+
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = S("Fermented Spider Eye"),
 	_doc_items_longdesc = S("Try different combinations to create potions."),
