@@ -103,12 +103,13 @@ Conduit Power=潮涌能量
 +@1% mining and attack speed in water=在水中挖掘和攻击速度增加@1%
 ##[ commands.lua ]##
 
-<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]=
+<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART] [<player>]=
 
-Add a status effect to yourself. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART at the end means no particles will be shown for this effect.=给自己添加一个状态效果。参数说明：<效果>：状态效果的名称。将“列表”作为效果名称可列出可用的效果。将“治疗”作为效果名称可按照下一个参数设定的数值进行治疗（或造成伤害）。将“清除”作为效果名称可移除所有效果。将“移除”作为效果名称可移除下一个参数所指定的效果。<持续时间>：以秒为单位的持续时间。将“无限”作为持续时间可使效果变为无限持续。（<治疗量>：当效果为“治疗”时的治疗量，输入负值则会扣除生命值。<效果>：当使用“移除”作为前一个参数时要移除的状态效果名称。）<等级>：效果强度决定因素，对于依赖等级的效果，等级越高效果越强（其他效果不受影响），默认值为1，输入F则使用低级系数。<系数>：效果强度修正值，根据不同效果有不同含义，对于不依赖等级/系数的效果无变化。末尾的“无粒子效果”表示此效果不会显示粒子效果。
+Add a status effect to yourself or another player. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART by the end means no particles will be shown for this effect. Appending a player name to any command will make it try to conduct the operation on that player rather than the command user. If the name doesn't exist, nothing happens.=
 
 Missing effect parameter!=缺少效果参数！
 Missing or invalid heal amount parameter!=缺少或无效的治疗量参数！
+Target player @1 not found!=
 Player @1 healed by @2 HP.=玩家@1回复了@2点生命值。
 Player @1 harmed by @2 HP.=玩家@1损失了@2点生命值。
 Effects cleared for player @1=玩家@1的所有效果已被清除。
@@ -235,6 +236,9 @@ Unknown Tipped Arrow=未知药箭
 
 
 ##### not used anymore #####
+
+
+Add a status effect to yourself. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART at the end means no particles will be shown for this effect.=给自己添加一个状态效果。参数说明：<效果>：状态效果的名称。将“列表”作为效果名称可列出可用的效果。将“治疗”作为效果名称可按照下一个参数设定的数值进行治疗（或造成伤害）。将“清除”作为效果名称可移除所有效果。将“移除”作为效果名称可移除下一个参数所指定的效果。<持续时间>：以秒为单位的持续时间。将“无限”作为持续时间可使效果变为无限持续。（<治疗量>：当效果为“治疗”时的治疗量，输入负值则会扣除生命值。<效果>：当使用“移除”作为前一个参数时要移除的状态效果名称。）<等级>：效果强度决定因素，对于依赖等级的效果，等级越高效果越强（其他效果不受影响），默认值为1，输入F则使用低级系数。<系数>：效果强度修正值，根据不同效果有不同含义，对于不依赖等级/系数的效果无变化。末尾的“无粒子效果”表示此效果不会显示粒子效果。
 
 Splash @1=喷溅型 @1
 Lingering @1=滞留型 @1
