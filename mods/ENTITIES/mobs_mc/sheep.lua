@@ -115,6 +115,90 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 	follow = { "mcl_farming:wheat_item", "mcl_shepherd:shepherd_staff" },
 	view_range = 12,
 
+	-- Save sheep data when chunk unloads
+	get_staticdata = function(self)
+		local tmp = {}
+		for key, value in pairs(self) do
+			local t = type(value)
+			if t ~= 'function' and t ~= 'nil' and t ~= 'userdata' and key ~= '_' then
+				-- Ensure color-related data is preserved
+				if key == 'color' or key == 'initial_color' or key == 'initial_color_set' or 
+				   key == 'gotten' or key == 'base_texture' or key == 'drops' then
+					tmp[key] = value
+				elseif key ~= 'object' and key ~= 'sound' and key ~= 'texture_list' then
+					tmp[key] = value
+				end
+			end
+		end
+		return minetest.serialize(tmp)
+	end,
+
+	-- Restore sheep data when chunk loads
+	activate = function(self, staticdata, dtime_s)
+		if staticdata and staticdata ~= "" then
+			local tmp = minetest.deserialize(staticdata)
+			if tmp then
+				for key, value in pairs(tmp) do
+					self[key] = value
+				end
+			end
+		end
+		
+		-- Ensure color consistency after loading
+		if self.color and colors[self.color] then
+			-- Fix texture if it doesn't match current color
+			if not self.gotten then
+				self.base_texture = sheep_texture(self.color)
+				self.object:set_properties({ textures = self.base_texture })
+			else
+				self.base_texture = gotten_texture
+				self.object:set_properties({ textures = self.base_texture })
+			end
+			
+			-- Ensure drops match the color
+			self.drops = {
+				{name = "mcl_mobitems:mutton",
+				chance = 1,
+				min = 1,
+				max = 2,},
+				{name = colors[self.color][1],
+				chance = 1,
+				min = 1,
+				max = 1,},
+			}
+			
+			-- Ensure initial_color is set for persistence
+			if not self.initial_color then
+				self.initial_color = self.color
+			end
+		else
+			-- Fallback to white if color is corrupted
+			self.color = "unicolor_white"
+			self.initial_color = "unicolor_white"
+			if not self.gotten then
+				self.base_texture = sheep_texture("unicolor_white")
+			else
+				self.base_texture = gotten_texture
+			end
+			self.object:set_properties({ textures = self.base_texture })
+			self.drops = {
+				{name = "mcl_mobitems:mutton",
+				chance = 1,
+				min = 1,
+				max = 2,},
+				{name = colors["unicolor_white"][1],
+				chance = 1,
+				min = 1,
+				max = 1,},
+			}
+		end
+		
+		-- Ensure initial_color_set flag is maintained
+		if self.color then
+			self.initial_color_set = true
+		end
+	end,
+
 	-- Eat grass
 	replace_rate = WOOL_REPLACE_RATE,
 	replace_delay = 1.3,
@@ -201,6 +285,8 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 				max = 1,},
 			}
 			self.initial_color_set = true
+			-- Ensure initial_color is always set for new sheep
+			self.initial_color = self.color
 		end
 
 		local is_kay27 = self.nametag == "kay27"
@@ -217,12 +303,28 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 			else
 				self.color_change_timer = nil
 				self.color_index = nil
-				self.color = self.initial_color
+				-- Add safety check before restoring initial_color
+				if self.initial_color then
+					self.color = self.initial_color
+				end
 			end
 
 			if old_color ~= self.color then
 				self.base_texture = sheep_texture(self.color)
 				self.object:set_properties({textures = self.base_texture})
+				-- Update drops when color changes to ensure consistency
+				if colors[self.color] then
+					self.drops = {
+						{name = "mcl_mobitems:mutton",
+						chance = 1,
+						min = 1,
+						max = 2,},
+						{name = colors[self.color][1],
+						chance = 1,
+						min = 1,
+						max = 1,},
+					}
+				end
 			end
 		elseif is_kay27 then
 			self.initial_color = self.color
@@ -271,6 +373,8 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 						textures = self.base_texture,
 					})
 					self.color = group
+					-- Update initial_color when manually dyed
+					self.initial_color = group
 					self.drops = {
 						{name = "mcl_mobitems:mutton",
 						chance = 1,
@@ -332,6 +436,8 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 			end
 			child:set_properties({textures = ent_c.base_texture})
 			ent_c.initial_color_set = true
+			-- Set initial_color for bred sheep
+			ent_c.initial_color = ent_c.color
 			ent_c.tamed = true
 			ent_c.owner = parent1.owner
 			return false
