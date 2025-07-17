@@ -16,6 +16,7 @@ vl_tuning.setting("gamerule:doFireTick", "bool", {
 	description = S("Whether fire should spread and naturally extinguish"), default = true,
 	set = function(val) gamerule_doFireTick = val end,
 	get = function() return gamerule_doFireTick end,
+})
 
 -- Localized functions
 local set_node = core.set_node
