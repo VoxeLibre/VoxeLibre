@@ -49,7 +49,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 		stand_speed = 50,
 		stand_start = 1,		stand_end = 40,
 	},
-	glow = 10,
+	glow = 3,
 	fall_damage = 0,
 	view_range = 64,
 	attack_type = "dogshoot",
