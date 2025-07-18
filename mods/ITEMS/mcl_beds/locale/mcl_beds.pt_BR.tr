@@ -20,7 +20,7 @@ You will fall asleep when @1% of all players are in bed.=Você cairá no sono qu
 You're in bed.=Você está na cama.
 @1/@2 players currently in bed.=@1/@2 jogadores já estão na cama.
 You exceeded the maximum nurmber of messages per 10 seconds!=Você excedeu o número maximo de mensagens por 10 segundos!
-You are missing the 'shout' privilege! It's required in order to talk in chat...=Você está perdendo o privilegio de 'gritar'! É necessário para falarr no chat... 
+You are missing the 'shout' privilege! It's required in order to talk in chat...=Você está perdendo o privilegio de 'gritar'! É necessário para falar no chat... 
 Sorry, but you have to wait @1 seconds until you may use this button again!=Me desculpe, mas você tem que esperar @1 segundos para usar esse botão novamente!
 Hey! Would you guys mind sleeping?=Ei! Podemos ir dormir? 
 ##[ api.lua ]##
