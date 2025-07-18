@@ -29,7 +29,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	textures = {
 		{"mobs_mc_ghast.png"},
 	},
-	visual_size = {x=12, y=12},
+	visual_size = {x=8, y=8},
 	sounds = {
 		shoot_attack = "mobs_fireball",
 		death = "mobs_mc_zombie_death",
