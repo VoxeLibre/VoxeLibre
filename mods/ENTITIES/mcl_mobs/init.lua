@@ -158,6 +158,11 @@ function mcl_mobs.register_mob(name, def)
 	end
 
 	local collisionbox = def.collisionbox or def.initial_properties.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
+	local avg_radius = 0
+	for _, r in ipairs(collisionbox) do
+		avg_radius = avg_radius + math.abs(r)
+	end
+	avg_radius = avg_radius / 6
 	local final_def = {
 		head_swivel = def.head_swivel or nil, -- bool to activate this function
 		head_yaw_offset = math.rad(def.head_yaw_offset or 0), -- for wonkey model bones
@@ -352,6 +357,7 @@ function mcl_mobs.register_mob(name, def)
 
 		_spawner = def._spawner,
 		_mcl_potions = {},
+		_avg_radius = avg_radius,
 	}
 
 	if minetest.get_modpath("doc_identifier") ~= nil then
