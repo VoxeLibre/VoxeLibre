@@ -9,7 +9,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 
 minetest.register_chatcommand("effect",{
-	params = S("<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART] [<player>]"),
+	params = S("<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART|PART] [<player>]"),
 	description = S("Add a status effect to yourself or another player. Arguments: <effect>: name of status effect. Passing \"list\" as effect name lists available effects. Passing \"heal\" as effect name heals (or harms) by amount designed by the next parameter. Passing \"clear\" as effect name removes all effects. Passing \"remove\" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing \"INF\" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is \"heal\", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using \"remove\" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART by the end means no particles will be shown for this effect. Appending a player name to any command will make it try to conduct the operation on that player rather than the command user. If the name doesn't exist, nothing happens."),
 	privs = {server = true},
 	func = function(name, params)
@@ -73,7 +73,7 @@ minetest.register_chatcommand("effect",{
 			end
 		elseif not tonumber(P[2]) and P[2] ~= "INF" then
 			return false, S("Missing or invalid duration parameter!")
-		elseif P[3] and not tonumber(P[3]) and P[3] ~= "F" and P[3] ~= "NOPART" then
+		elseif P[3] and not tonumber(P[3]) and P[3] ~= "F" and P[3] ~= "NOPART" and P[3] ~= "PART" then
 			return false, S("Invalid level parameter!")
 		elseif P[3] and P[3] == "F" and not P[4] then
 			return false, S("Missing or invalid factor parameter when level is F!")
@@ -82,9 +82,10 @@ minetest.register_chatcommand("effect",{
 		-- Default level = 1
 		if not P[3] then
 			P[3] = 1
-		elseif P[3] == "NOPART" then
+		elseif P[3] == "NOPART" or P[3] == "PART" then
+			P[5] = P[4]
+			P[4] = P[3]
 			P[3] = 1
-			P[4] = "NOPART"
 		end
 
 		local inf = P[2] == "INF"
@@ -92,18 +93,20 @@ minetest.register_chatcommand("effect",{
 		local nopart = false
 		if P[3] == "F" then
 			nopart = P[5] == "NOPART"
+			name = (nopart or P[5] == "PART") and P[6] or P[5] or name
 		else
 			nopart = P[4] == "NOPART"
+			name = (nopart or P[4] == "PART") and P[5] or P[4] or name
+		end
+		
+		local target = core.get_player_by_name(name)
+		if not target then
+			return false, S("Target player @1 not found!", name)
 		end
 
 		local def = mcl_potions.registered_effects[P[1]]
 		if def then
 			if P[3] == "F" then
-				name = P[5] or name
-				local target = core.get_player_by_name(name)
-				if not target then
-					return false, S("Target player @1 not found!", name)
-				end
 				local given = mcl_potions.give_effect(P[1], target, tonumber(P[4]), inf and "INF" or tonumber(P[2]), nopart)
 				if given then
 					if def.uses_factor then
@@ -115,11 +118,6 @@ minetest.register_chatcommand("effect",{
 					return false, S("Giving effect @1 to player @2 failed.", def.description, name)
 				end
 			else
-				name = P[4] or name
-				local target = core.get_player_by_name(name)
-				if not target then
-					return false, S("Target player @1 not found!", name)
-				end
 				local given = mcl_potions.give_effect_by_level(P[1], target, tonumber(P[3]), inf and "INF" or tonumber(P[2]), nopart)
 				if given then
 					if def.uses_factor then
