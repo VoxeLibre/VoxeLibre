@@ -174,19 +174,25 @@ local mod_family_priorities = {
 	},
 
 	tools = {
-		["mcl_tools"] = 4,
-		["mcl_farming"] = 3,
+		["mcl_tools"] = 4, -- axe pickaxe shovel
+		["mcl_farming"] = 3, -- hoe
+		["vl_deepslate_tools"] = 2.9,
+		["mcl_shepherd"] = 2.2, -- shepherd staff
+		["mcl_fishing"] = 2.1, -- fishing rod
+		["mcl_fire"] = 2.05, -- flint and steel
 		["mcl_clock"] = 2,
+		["mcl_compass"] = 1.9,
 		["doc_identifier"] = 1,
 	},
 
 	combat = {
 		["mcl_tools"] = 10,     --swords
 		["vl_weaponry"] = 9,    --hammer spear
-		["mcl_shepherd"] = 8,   --shepard staff
+		["vl_deepslate_tools"] = 8.9,
+		["mcl_shepherd"] = 8,   --shepherd staff
 		["mcl_shields"] = 7,
+		["mcl_totems"] = 6,
 		["mcl_armor"] = 5,   -- armor
-		["mcl_totems"] = 6,   -- armor
 		["mcl_mobitems"] = 4,   --horse armor
 	},
 
@@ -527,19 +533,11 @@ minetest.register_on_mods_loaded(function()
 					table.insert(inventory_lists[category], entry.name)
 				end
 			else
-				-- Tooltip reloading for seperately processed items (fireworks, potions)
+				-- Tooltip reloading for dynamically added text
 				local stack = ItemStack(entry.name)
 				local stack_name = stack:get_name()
-
-				if stack_name:sub(1, 13) == "vl_fireworks:" or (stack_name:sub(1, 12) == "mcl_potions:"
-				   and minetest.registered_items[stack_name]
-				   and minetest.registered_items[stack_name].groups._mcl_potion == 1) then
-
-					tt.reload_itemstack_description(stack)
-					table.insert(inventory_lists[category], stack:to_string())
-				else
-					table.insert(inventory_lists[category], entry.name)
-				end
+				tt.reload_itemstack_description(stack)
+				table.insert(inventory_lists[category], stack:to_string())
 			end
 		end
 	end
