@@ -330,6 +330,15 @@ local function allow_put(pos, listname, index, stack, player)
 	if minetest.is_protected(pos, name) then
 		minetest.record_protection_violation(pos, name)
 		return 0
+	elseif listname == "stand" then
+		local meta = core.get_meta(pos)
+		local inv = meta:get_inventory()
+		local def = stack:get_definition()
+		if def and def.groups and (def.groups._mcl_potion or def.groups.bottle or 0) > 0
+				and inv:get_stack(listname, index):is_empty() then
+			return 1
+		end
+		return 0
 	else
 		return stack:get_count()
 	end
@@ -459,6 +468,7 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
+	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -540,6 +550,7 @@ minetest.register_node("mcl_brewing:stand_100", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
+	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -620,6 +631,7 @@ minetest.register_node("mcl_brewing:stand_010", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
+	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -695,6 +707,7 @@ minetest.register_node("mcl_brewing:stand_001", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
+	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -780,6 +793,7 @@ minetest.register_node("mcl_brewing:stand_110", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
+	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -861,6 +875,7 @@ minetest.register_node("mcl_brewing:stand_101", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
+	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -942,6 +957,7 @@ minetest.register_node("mcl_brewing:stand_011", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
+	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -1030,6 +1046,7 @@ minetest.register_node("mcl_brewing:stand_111", {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
+	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
