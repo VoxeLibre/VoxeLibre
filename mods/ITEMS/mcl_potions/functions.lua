@@ -991,6 +991,7 @@ function mcl_potions.hf_update_internal(hand, object)
 	local meta = hand:get_meta()
 	local h_fac = mcl_potions.get_total_haste(object)
 	local f_fac = mcl_potions.get_total_fatigue(object)
+	meta:set_tool_capabilities()
 	local toolcaps = hand:get_tool_capabilities()
 	meta:set_tool_capabilities(mcl_potions.apply_haste_fatigue(toolcaps, h_fac, f_fac))
 	return hand
