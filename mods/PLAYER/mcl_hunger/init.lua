@@ -320,9 +320,7 @@ local function tick_hunger(player, dtime)
 			mcl_hunger.exhaust(player_name, mcl_hunger.EXHAUST_REGEN)
 			mcl_hunger.update_exhaustion_hud(player)
 		elseif food_level == 0 then
-			-- starvation
-			-- the amount of health at which a player will stop to get
-			-- harmed by starvation (10 for Easy, 1 for Normal, 0 for Hard)
+			-- the amount of health at which a player will stop to get harmed by starvation
 			local maximum_starvation = 1
 
 			-- TODO: implement Minecraft-like difficulty modes and the update maximumStarvation here
