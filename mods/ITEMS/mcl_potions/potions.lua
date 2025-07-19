@@ -183,7 +183,7 @@ function mcl_potions.register_potion(def)
 	end
 	pdef._doc_items_longdesc = potion_longdesc
 	if def.drinkable ~= false then pdef._doc_items_usagehelp = how_to_drink end
-	pdef.stack_max = def.stack_max or 1
+	pdef.stack_max = def.stack_max or 16
 	local color = def.color or "#0000FF"
 	pdef.inventory_image = def.image or potion_image(color)
 	pdef.wield_image = pdef.inventory_image
