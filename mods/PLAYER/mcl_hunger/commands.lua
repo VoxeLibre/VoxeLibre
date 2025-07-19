@@ -73,3 +73,69 @@ core.register_chatcommand("hunger_debug", {
 		end
 	end
 })
+
+core.register_privilege("hunger", {
+	description          = S("Gives the ability to set player hunger level."),
+	give_to_singleplayer = false
+})
+
+--- @param n number?
+--- @return boolean
+local function is_whole(n)
+	if n == nil then
+		return false
+	end
+	return n % 1 == 0
+end
+	
+
+core.register_chatcommand("sethunger", {
+	params      = S("<player> [0-20]"),
+	description = S("Set a player's hunger level."),
+	privs       = { hunger = true },
+	func        = function(name, params)
+		local ps = {}
+		local i = 0
+		for s in string.gmatch(params, "([^ ]+)") do
+			i = i + 1
+			ps[i] = string.lower(s)
+		end
+
+		local pname  = ps[1] --- @type string?
+		local plevel = ps[2] --- @type string?
+		
+		local player --- @type table?
+		local level  --- @type number?
+
+		-- Validate player parameter
+		--
+		if not pname then
+			return false, S("A player name (or 'me') is required.")
+		end
+		if pname == "me" then
+			player = core.get_player_by_name(name)
+		else
+			player = core.get_player_by_name(pname)
+		end
+		if not player then
+			return false, S("Player not found.")
+		end
+
+		-- Validate hunger parameter
+		--
+		if plevel == nil then
+			return false, S("Missing hunger parameter.")
+		end
+		level = tonumber(plevel)
+		if level == nil or not is_whole(level) or level < 0 or level > 20 then
+			return false, S("Hunger parameter must be a whole number from 0 to 20.")
+		end
+
+		-- All parameter validations passed.
+		mcl_hunger.set_hunger(player, level, true)
+		mcl_hunger.set_saturation(player, 0, true)
+		mcl_hunger.set_exhaustion(player, 0, true)
+
+		return true, S("Done!")
+	end
+})
