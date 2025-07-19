@@ -129,6 +129,11 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		for _, stat in pairs(tmp) do self[_] = stat end
 	end
 
+	if self._removed then
+		self.object:remove()
+		return
+	end
+
 	--If textures in definition change, reload textures
 	if not valid_texture(self, def.textures) then
 		if mobs_debug and staticdata ~= "" then
