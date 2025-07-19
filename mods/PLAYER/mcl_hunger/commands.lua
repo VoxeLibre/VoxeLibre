@@ -1,6 +1,6 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
-minetest.register_chatcommand("hunger", {
+core.register_chatcommand("hunger", {
 	params = S("[on|off]"),
 	description = S("Toggle hunger and starvation mechanics"),
 	privs = { server = true },
@@ -12,7 +12,7 @@ minetest.register_chatcommand("hunger", {
 			ps[i] = string.lower(s)
 		end
 
-		local flag = minetest.settings:get_bool("mcl_enable_hunger", true)
+		local flag = core.settings:get_bool("mcl_enable_hunger", true)
 
 		if not ps[1] then
 			if flag then
@@ -23,13 +23,13 @@ minetest.register_chatcommand("hunger", {
 			if flag then
 				return false, S("Hunger is already on.")
 			end
-			minetest.settings:set_bool("mcl_enable_hunger", true)
+			core.settings:set_bool("mcl_enable_hunger", true)
 			return true, S("Hunger enabled.")
 		elseif ps[1] == "off" then
 			if not flag then
 				return false, S("Hunger is already off.")
 			end
-			minetest.settings:set_bool("mcl_enable_hunger", false)
+			core.settings:set_bool("mcl_enable_hunger", false)
 			return true, S("Hunger disabled.")
 		else
 			return false, S("Invalid parameter.")
@@ -37,7 +37,7 @@ minetest.register_chatcommand("hunger", {
 	end
 })
 
-minetest.register_chatcommand("hunger_debug", {
+core.register_chatcommand("hunger_debug", {
 	params = S("[show|hide]"),
 	description = S("Toggle hunger and starvation debug information"),
 	privs = { server = true },
@@ -49,7 +49,7 @@ minetest.register_chatcommand("hunger_debug", {
 			ps[i] = string.lower(s)
 		end
 
-		local flag = minetest.settings:get_bool("mcl_hunger_debug", false)
+		local flag = core.settings:get_bool("mcl_hunger_debug", false)
 
 		if not ps[1] then
 			if flag then
@@ -60,13 +60,13 @@ minetest.register_chatcommand("hunger_debug", {
 			if flag then
 				return false, S("Hunger debug information is already shown.")
 			end
-			minetest.settings:set_bool("mcl_hunger_debug", true)
+			core.settings:set_bool("mcl_hunger_debug", true)
 			return true, S("Hunger debug information shown.")
 		elseif ps[1] == "hide" then
 			if not flag then
 				return false, S("Hunger debug information is already hidden.")
 			end
-			minetest.settings:set_bool("mcl_hunger_debug", false)
+			core.settings:set_bool("mcl_hunger_debug", false)
 			return true, S("Hunger debug information hidden.")
 		else
 			return false, S("Invalid parameter.")

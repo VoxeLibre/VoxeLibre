@@ -75,7 +75,7 @@ function mcl_hunger.exhaust(playername, increase)
 	if not mcl_hunger.active then
 		return false
 	end
-	local player = minetest.get_player_by_name(playername)
+	local player = core.get_player_by_name(playername)
 	if not player then 
 		return false
 	end
@@ -106,7 +106,7 @@ function mcl_hunger.saturate(playername, increase, update_hudbar)
 	if not mcl_hunger.active then
 		return false
 	end
-	local player = minetest.get_player_by_name(playername)
+	local player = core.get_player_by_name(playername)
 	local ok     = mcl_hunger.set_saturation(player, math.min(mcl_hunger.get_saturation(player) + increase, mcl_hunger.get_hunger(player)))
 	if update_hudbar ~= false then
 		mcl_hunger.update_saturation_hud(player, mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))

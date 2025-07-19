@@ -1,6 +1,6 @@
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
+local S = core.get_translator(modname)
 
 mcl_hunger = {}
 
@@ -16,7 +16,7 @@ mcl_hunger.debug = false
 --- Enables or disables mod active state depending on external settings.
 local function update_active_state()
 	local old     = mcl_hunger.active
-	local new     = minetest.settings:get_bool("enable_damage", false) and minetest.settings:get_bool("mcl_enable_hunger", true)
+	local new     = core.settings:get_bool("enable_damage", false) and core.settings:get_bool("mcl_enable_hunger", true)
 	local changed = new ~= old
 
 	mcl_hunger.active = new
@@ -26,14 +26,14 @@ local function update_active_state()
 	end
 	---
 	-- Apply side effects of state change
-	for _, player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(core.get_connected_players()) do
 		mcl_hunger.refresh_player_bars(player)
 	end
 end
 
 local function update_debug_state()
 	local old     = mcl_hunger.debug
-	local new     = minetest.settings:get_bool("mcl_hunger_debug", false)
+	local new     = core.settings:get_bool("mcl_hunger_debug", false)
 	local changed = new ~= old
 
 	mcl_hunger.debug = new
@@ -43,7 +43,7 @@ local function update_debug_state()
 	end
 	---
 	--- Apply side effects of state change
-	for _, player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(core.get_connected_players()) do
 		mcl_hunger.refresh_player_bars(player)
 	end
 end
@@ -65,8 +65,8 @@ mcl_hunger.EXHAUST_DAMAGE      = 100  -- taking damage (protected by armor)
 mcl_hunger.EXHAUST_REGEN       = 6000 -- Regenerate 1 HP
 mcl_hunger.EXHAUST_HUNGER      = 5    -- Hunger status effect at base level.
 mcl_hunger.EXHAUST_LVL         = 4000 -- at what exhaustion player saturation gets lowered
-mcl_hunger.EATING_DELAY        = tonumber(minetest.settings:get("mcl_eating_delay")) or 1.61
-mcl_hunger.EATING_WALK_SPEED   = tonumber(minetest.settings:get("movement_speed_crouch")) / tonumber(minetest.settings:get("movement_speed_walk"))
+mcl_hunger.EATING_DELAY        = tonumber(core.settings:get("mcl_eating_delay")) or 1.61
+mcl_hunger.EATING_WALK_SPEED   = tonumber(core.settings:get("movement_speed_crouch")) / tonumber(core.settings:get("movement_speed_walk"))
 mcl_hunger.EATING_TOUCHSCREEN_DELAY_PADDING = 0.75
 mcl_hunger.SATURATION_INIT     = 5 -- Initial saturation for new/respawning players
 
@@ -93,7 +93,7 @@ mcl_hunger.eat_internal = {}
 mcl_hunger.eat_anim_hud = {}
 
 -- Set per player internal variables for delayed eating
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 
 	mcl_hunger.eat_internal[name] = {
@@ -111,15 +111,15 @@ minetest.register_on_joinplayer(function(player)
 		_custom_itemstack    = nil, -- Used as comparison to make sure _custom_wrapper only executes when the same item is eaten
 		_custom_var          = {}, -- Variables that can be used by _custom_var and _custom_wrapper
 		_custom_func         = nil, -- Can be executed by _custom_wrapper
-		_custom_wrapper      = nil, -- Will execute alongside minetest.do_item_eat if not empty and _custom_itemstack is equal to current player itemstack
-		_custom_do_delayed   = false, -- If true, then will execute only _custom_wrapper after holding RMB or LMB within a delay specified by mcl_hunger.EATING_DELAY (Use to bypass minetest.do_item_eat entirely)
+		_custom_wrapper      = nil, -- Will execute alongside core.do_item_eat if not empty and _custom_itemstack is equal to current player itemstack
+		_custom_do_delayed   = false, -- If true, then will execute only _custom_wrapper after holding RMB or LMB within a delay specified by mcl_hunger.EATING_DELAY (Use to bypass core.do_item_eat entirely)
 	}
 	playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
 	player:hud_set_flags({ wielditem = true })
 end)
 
 -- Clear when player leaves
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 
 	mcl_hunger.eat_internal[name] = nil
@@ -217,7 +217,7 @@ function mcl_hunger.update_exhaustion_hud(player, exhaustion)
 	end
 end
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	mcl_hunger.init_player(player)
 	init_player_hud(player)
 
@@ -227,7 +227,7 @@ minetest.register_on_joinplayer(function(player)
 	mcl_hunger.last_eat[name] = -1
 end)
 
-minetest.register_on_respawnplayer(function(player)
+core.register_on_respawnplayer(function(player)
 	-- reset hunger, related values and poison
 	local name = player:get_player_name()
 
@@ -244,14 +244,14 @@ minetest.register_on_respawnplayer(function(player)
 end)
 
 -- PvP combat exhaustion
-minetest.register_on_punchplayer(function(victim, puncher, time_from_last_punch, tool_capabilities, dir, damage)
+core.register_on_punchplayer(function(victim, puncher, time_from_last_punch, tool_capabilities, dir, damage)
 	if puncher:is_player() then
 		mcl_hunger.exhaust(puncher:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
 	end
 end)
 
 -- Exhaust on taking damage
-minetest.register_on_player_hpchange(function(player, hp_change)
+core.register_on_player_hpchange(function(player, hp_change)
 	if hp_change < 0 then
 		local name = player:get_player_name()
 		mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DAMAGE)
@@ -302,7 +302,7 @@ local function tick_hunger(player, dtime)
 	local food_level            = mcl_hunger.get_hunger(player)
 	local player_name           = player:get_player_name()
 	local player_health         = player:get_hp()
-	local max_tick_timer        = tonumber(minetest.settings:get("mcl_health_regen_delay")) or 0.5
+	local max_tick_timer        = tonumber(core.settings:get("mcl_health_regen_delay")) or 0.5
 	local needs_regen           = player_health > 0 and player_health < player:get_properties().hp_max
 
 	if food_tick_timer > 4 then
@@ -406,7 +406,7 @@ local function tick_eat_delay(player, dtime)
 
 				local pos      = player:get_pos()
 				local itemname = mcl_hunger.eat_internal[player_name].itemname
-				local def      = minetest.registered_items[itemname]
+				local def      = core.registered_items[itemname]
 
 				mcl_hunger.eat_effects(
 					mcl_hunger.eat_internal[player_name].user,
@@ -423,7 +423,7 @@ local function tick_eat_delay(player, dtime)
 				if not mcl_hunger.eat_internal[player_name]._custom_do_delayed then
 					mcl_hunger.eat_internal[player_name].do_item_eat = true
 
-					minetest.do_item_eat(
+					core.do_item_eat(
 						mcl_hunger.eat_internal[player_name].hp_change,
 						mcl_hunger.eat_internal[player_name].replace_with_item,
 						mcl_hunger.eat_internal[player_name].itemstack,
@@ -431,7 +431,7 @@ local function tick_eat_delay(player, dtime)
 						mcl_hunger.eat_internal[player_name].pointed_thing
 					)
 
-					-- bypass minetest.do_item_eat and only execute _custom_wrapper
+					-- bypass core.do_item_eat and only execute _custom_wrapper
 				elseif mcl_hunger.eat_internal[player_name]._custom_itemstack and mcl_hunger.eat_internal[player_name]._custom_wrapper and mcl_hunger.eat_internal[player_name]._custom_itemstack == current_itemstack then
 					mcl_hunger.eat_internal[player_name]._custom_wrapper(player_name)
 
@@ -455,11 +455,11 @@ local function tick_eat_delay(player, dtime)
 	end
 end
 
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 	update_active_state()
 	update_debug_state()
 
-	for _, player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(core.get_connected_players()) do
 		if mcl_hunger.active then
 			tick_hunger(player, dtime)
 		end
