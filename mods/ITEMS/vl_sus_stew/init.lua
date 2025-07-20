@@ -104,8 +104,6 @@ core.register_craftitem("vl_sus_stew:stew",{
 	description = S("Suspicious Stew"),
 	inventory_image = "sus_stew.png",
 	stack_max = 1,
-	--on_place = eat_stew,
-	--on_secondary_use = eat_stew,
 	on_place = eat_stew_delayed,
 	on_secondary_use = eat_stew_delayed,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1, not_in_creative_inventory=1,},
@@ -127,7 +125,13 @@ core.register_alias("mcl_sus_stew:stew", "vl_sus_stew:stew")
 --										 	____________
 --_________________________________________/	API		\________________________________
 
+local forbidden_sec_ingr = {
+	["mcl_mushrooms:mushroom_red"] = true,
+	["mcl_mushrooms:mushroom_brown"] = true,
+	["mcl_core:bowl"] = true
+}
 function vl_sus_stew.register_sus_stew(secret_ingredient, effect_name)
+	assert(not forbidden_sec_ingr[secret_ingredient], "Duplicate ingredient not allowed!")
 	ingredient_effect[secret_ingredient] = effect_name
 	core.register_craft({
 		type = "shapeless",
