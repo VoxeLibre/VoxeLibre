@@ -299,7 +299,6 @@ local function on_put(pos, listname, index, stack, player)
 	end
 	minetest.swap_node(pos, {name = "mcl_brewing:stand_"..str, param2 = oldparam2})
 	minetest.get_node_timer(pos):start(1.0)
-	--some code here to enforce only potions getting placed on stands
 end
 
 local function on_destruct(pos)
@@ -313,10 +312,19 @@ local function allow_take(pos, listname, index, stack, player)
 		minetest.record_protection_violation(pos, name)
 		return 0
 	else
-		if listname == "stand" then
+		local def = stack:get_definition()
+		if listname == "stand" and def and def.groups and (def.groups._mcl_potion or 0) > 0 then
 			awards.unlock(name, "mcl:localBrewery")
 		end
 		return stack:get_count()
+	end
+end
+
+local function allow_move(pos, from_list, from_index, to_list, to_index, count, player)
+	if (from_list == "stand" or to_list == "stand") and from_list ~= to_list then
+		return 0
+	else
+		return count
 	end
 end
 
@@ -402,11 +410,12 @@ local stand_def = {
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 	on_destruct = on_destruct,
-	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
+	allow_metadata_inventory_move = allow_move,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
+	on_metadata_inventory_move = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
