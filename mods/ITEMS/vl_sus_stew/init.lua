@@ -19,20 +19,6 @@ local function get_random_effect()
 end
 
 local function eat_stew(itemstack, user, pointed_thing)
-	if pointed_thing.type == "node" then
-		if user and not user:get_player_control().sneak then
-			-- Use pointed node's on_rightclick function first, if present
-			local node = core.get_node(pointed_thing.under)
-			if user and not user:get_player_control().sneak then
-				if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
-					return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-				end
-			end
-		end
-	elseif pointed_thing.type == "object" then
-		return itemstack
-	end
-
 	local e = itemstack:get_meta():get_string("effect")
 	local f = effects[e]
 	if not f then
@@ -42,19 +28,9 @@ local function eat_stew(itemstack, user, pointed_thing)
 end
 
 local function eat_stew_delayed(itemstack, user, pointed_thing)
-	if pointed_thing.type == "node" then
-		if user and not user:get_player_control().sneak then
-			-- Use pointed node's on_rightclick function first, if present
-			local node = core.get_node(pointed_thing.under)
-			if user and not user:get_player_control().sneak then
-				if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
-					return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-				end
-			end
-		end
-	elseif pointed_thing.type == "object" then
-		return itemstack
-	end
+	local called
+	itemstack, called = mcl_util.handle_node_rightclick(itemstack, user, pointed_thing)
+	if called then return itemstack end
 
 	-- Wrapper for handling mcl_hunger delayed eating
 	local name = user:get_player_name()
