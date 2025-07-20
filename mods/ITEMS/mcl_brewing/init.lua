@@ -1,12 +1,11 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local function active_brewing_formspec(fuel_percent, brew_percent)
-
 	return table.concat({
 		"size[9,8.75]",
 		"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]",
-		"label[4,0;",minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))),"]",
-		"label[0,4.0;",minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))),"]",
+		"label[4,0;",core.formspec_escape(core.colorize("#313131", S("Brewing Stand"))),"]",
+		"label[0,4.0;",core.formspec_escape(core.colorize("#313131", S("Inventory"))),"]",
 		"list[current_player;main;0,4.5;9,3;9]",
 		mcl_formspec.get_itemslot_bg(0,4.5,9,3),
 		"list[current_player;main;0,7.75;9,1;]",
@@ -38,8 +37,8 @@ end
 local brewing_formspec = table.concat({
 	"size[9,8.75]",
 	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]",
-	"label[4,0;",minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))),"]",
-	"label[0,4.0;",minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))),"]",
+	"label[4,0;",core.formspec_escape(core.colorize("#313131", S("Brewing Stand"))),"]",
+	"label[0,4.0;",core.formspec_escape(core.colorize("#313131", S("Inventory"))),"]",
 	"list[current_player;main;0,4.5;9,3;9]",
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3),
 	"list[current_player;main;0,7.75;9,1;]",
@@ -99,7 +98,7 @@ end
 
 local function brewing_stand_timer(pos, elapsed)
 	-- Inizialize metadata
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 
 	local fuel_timer = meta:get_float("fuel_timer") or 0
 	local BREW_TIME = 20 -- all brews brew the same
@@ -134,7 +133,7 @@ local function brewing_stand_timer(pos, elapsed)
 			end
 
 			d = 0.5
-			minetest.add_particlespawner({
+			core.add_particlespawner({
 				amount = 4,
 				time = 1,
 				minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
@@ -164,9 +163,9 @@ local function brewing_stand_timer(pos, elapsed)
 
 				for i=1, inv:get_size("stand") do
 					if brew_output[i] then
-						minetest.sound_play("mcl_brewing_complete", {pos=pos, gain=0.4, max_hear_range=6}, true)
+						core.sound_play("mcl_brewing_complete", {pos=pos, gain=0.4, max_hear_range=6}, true)
 						inv:set_stack("stand", i, brew_output[i])
-						minetest.sound_play("mcl_potions_bottle_pour", {pos=pos, gain=0.6, max_hear_range=6}, true)
+						core.sound_play("mcl_potions_bottle_pour", {pos=pos, gain=0.6, max_hear_range=6}, true)
 					end
 				end
 				stand_timer = 0
@@ -208,7 +207,7 @@ local function brewing_stand_timer(pos, elapsed)
 		formspec = active_brewing_formspec(fuel_percent, brew_percent*1 % 100)
 		result = true
 	else
-		minetest.get_node_timer(pos):stop()
+		core.get_node_timer(pos):stop()
 	end
 
 	meta:set_float("fuel_timer", fuel_timer)
@@ -229,27 +228,27 @@ local function drop_brewing_stand_items(pos, meta)
 	local stack = inv:get_stack("fuel", 1)
 	if not stack:is_empty() then
 		local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-		minetest.add_item(p, stack)
+		core.add_item(p, stack)
 	end
 
 	local stack = inv:get_stack("input", 1)
 	if not stack:is_empty() then
 		local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-		minetest.add_item(p, stack)
+		core.add_item(p, stack)
 	end
 
 	for i=1, inv:get_size("stand") do
 		local stack = inv:get_stack("stand", i)
 		if not stack:is_empty() then
 			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-			minetest.add_item(p, stack)
+			core.add_item(p, stack)
 		end
 	end
 end
 
 
 local on_rotate
-if minetest.get_modpath("screwdriver") then
+if core.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
 end
 
@@ -271,8 +270,8 @@ local tiles = {
 
 local function allow_put(pos, listname, index, stack, player)
 	local name = player:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
+	if core.is_protected(pos, name) then
+		core.record_protection_violation(pos, name)
 		return 0
 	elseif listname == "stand" then
 		local meta = core.get_meta(pos)
@@ -289,11 +288,11 @@ local function allow_put(pos, listname, index, stack, player)
 end
 
 local function on_put(pos, listname, index, stack, player)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 	local str = ""
 	local stack
-	local oldparam2 = minetest.get_node(pos).param2
+	local oldparam2 = core.get_node(pos).param2
 	for i=1, inv:get_size("stand") do
 		stack = inv:get_stack("stand", i)
 		if not stack:is_empty() then
@@ -301,19 +300,19 @@ local function on_put(pos, listname, index, stack, player)
 		else str = str.."0"
 		end
 	end
-	minetest.swap_node(pos, {name = "mcl_brewing:stand_"..str, param2 = oldparam2})
-	minetest.get_node_timer(pos):start(1.0)
+	core.swap_node(pos, {name = "mcl_brewing:stand_"..str, param2 = oldparam2})
+	core.get_node_timer(pos):start(1.0)
 end
 
 local function on_destruct(pos)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	drop_brewing_stand_items(pos, meta)
 end
 
 local function allow_take(pos, listname, index, stack, player)
 	local name = player:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
+	if core.is_protected(pos, name) then
+		core.record_protection_violation(pos, name)
 		return 0
 	else
 		local def = stack:get_definition()
@@ -333,14 +332,14 @@ local function allow_move(pos, from_list, from_index, to_list, to_index, count, 
 end
 
 local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 
 	if math.abs(pos.y - hop_pos.y) > math.abs(pos.x - hop_pos.x) and math.abs(pos.y - hop_pos.y) > math.abs(pos.z - hop_pos.z)
 	then
 		local function filter(stack)
-			return minetest.get_item_group(stack:get_name(), "brewitem") == 1 and
-			       minetest.get_item_group(stack:get_name(), "bottle") == 0
+			return core.get_item_group(stack:get_name(), "brewitem") == 1 and
+			       core.get_item_group(stack:get_name(), "bottle") == 0
 		end
 
 		return inv, "input", mcl_util.select_stack(hop_inv, hop_list, inv, "input", filter, 1)
@@ -353,7 +352,7 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 			return inv, "fuel", stack
 		else
 			local function filter(stack)
-				return minetest.get_item_group(stack:get_name(), "bottle") == 1
+				return core.get_item_group(stack:get_name(), "bottle") == 1
 			end
 			return inv, "stand", mcl_util.select_stack(hop_inv, hop_list, inv, "stand", filter, 1)
 		end
@@ -361,7 +360,7 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 end
 
 local function hoppers_on_try_pull(pos, hop_pos, hop_inv, hop_list)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local stand_timer = meta:get_float("stand_timer") or 0
 	if stand_timer > 0 then
 		return nil, nil, nil
@@ -422,7 +421,7 @@ local stand_def = {
 	on_metadata_inventory_move = on_put,
 
 	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
+		local meta = core.get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
@@ -433,8 +432,8 @@ local stand_def = {
 
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
+		if core.is_protected(pos, sender_name) then
+			core.record_protection_violation(pos, sender_name)
 			return
 		end
 	end,
@@ -666,7 +665,7 @@ local stand_def_111 = table.copy(stand_def_100)
 stand_def_111.node_box =
 core.register_node("mcl_brewing:stand_111", stand_def_111)
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_brewing:stand_000",
 	recipe = {
 		{ "", "mcl_mobitems:blaze_rod", "" },
@@ -674,9 +673,9 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_alias("mcl_brewing:stand", "mcl_brewing:stand_000")
+core.register_alias("mcl_brewing:stand", "mcl_brewing:stand_000")
 
-if minetest.get_modpath("doc") then
+if core.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_001")
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_010")
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_011")
@@ -686,7 +685,7 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_111")
 end
 
-if minetest.get_modpath("mesecons_mvps") then
+if core.get_modpath("mesecons_mvps") then
 	for _, s in ipairs({"000", "001", "010", "011", "100", "101", "110", "111"}) do
 		mesecon.register_mvps_stopper("mcl_brewing:stand_" .. s)
 	end
