@@ -38,7 +38,7 @@ mcl_armor.register_set({
 		legs = 4,
 		feet = 1,
 	},
-	repair_material = "mcl_core:iron_ingot",
+	craft_material = "mcl_lanterns:chain",
 	cook_material = "mcl_core:iron_nugget",
 	sound_equip = "mcl_armor_equip_iron",
 	sound_unequip = "mcl_armor_unequip_iron",
@@ -52,7 +52,7 @@ mcl_armor.register_set({
 		legs = S("Iron Leggings"),
 		feet = S("Iron Boots"),
 	},
-	durability = 240,
+	durability = 340,
 	enchantability = 9,
 	points = {
 		head = 2,
