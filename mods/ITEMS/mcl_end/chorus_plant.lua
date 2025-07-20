@@ -540,12 +540,27 @@ local eat_chorus_fruit = function(itemstack, player, pointed_thing)
 			return minetest.registered_nodes[node_under.name].on_rightclick(pointed_thing.under, node_under, player, itemstack) or itemstack
 		end
 	end
-	local count = itemstack:get_count()
-	local new_itemstack = minetest.do_item_eat(4, nil, itemstack, player, pointed_thing)
-	local new_count = new_itemstack:get_count()
-	if count ~= new_count or new_itemstack:get_name() ~= "mcl_end:chorus_fruit" or (minetest.is_creative_enabled(player:get_player_name()) == true) then
+
+	-- Wrapper for handling mcl_hunger delayed eating
+	local player_name = player:get_player_name()
+	mcl_hunger.eat_internal[player_name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
+	mcl_hunger.eat_internal[player_name]._custom_var = {
+		player = player,
+	}
+	mcl_hunger.eat_internal[player_name]._custom_func = function(itemstack, player)
+		-- This function is called after the item is successfully consumed
 		random_teleport(player)
 	end
+	mcl_hunger.eat_internal[player_name]._custom_wrapper = function(player_name)
+		mcl_hunger.eat_internal[player_name]._custom_func(
+			mcl_hunger.eat_internal[player_name]._custom_itemstack,
+			mcl_hunger.eat_internal[player_name]._custom_var.player
+		)
+	end
+
+	-- Call do_item_eat with the mcl_hunger system
+	local new_itemstack = minetest.do_item_eat(4, nil, itemstack, player, pointed_thing)
+
 	return new_itemstack
 end
 
