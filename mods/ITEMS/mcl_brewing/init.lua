@@ -360,7 +360,7 @@ local function hoppers_on_try_pull(pos, hop_pos, hop_inv, hop_list)
 	return inv, "stand", stack
 end
 
-minetest.register_node("mcl_brewing:stand_000", {
+local stand_def = {
 	description = S("Brewing Stand"),
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
@@ -436,582 +436,222 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
-})
-minetest.register_node("mcl_brewing:stand_100", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = { pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
+}
+core.register_node("mcl_brewing:stand_000", stand_def)
 
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_100 = table.copy(stand_def)
+stand_def_100._doc_items_create_entry = false
+stand_def_100._doc_items_longdesc = nil
+stand_def_100._doc_items_usagehelp = nil
+stand_def_100.groups = { pickaxey = 1, container = 2,
+	not_in_creative_inventory = 1, not_in_craft_guide = 1 }
+stand_def_100.node_box = {
+	type = "fixed",
+	fixed = {
 
-			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
+		{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
+		{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
+		{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
+		{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-minetest.register_node("mcl_brewing:stand_010", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_100", stand_def_100)
 
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_010 = table.copy(stand_def_100)
+stand_def_010.node_box = {
+	type = "fixed",
+	fixed = {
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
 
-			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
+		{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
+		{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
+		{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
+		{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
+		{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_010", stand_def_010)
 
-minetest.register_node("mcl_brewing:stand_001", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_001 = table.copy(stand_def_100)
+stand_def_001.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, --
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
+		{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
+		{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_001", stand_def_001)
 
-minetest.register_node("mcl_brewing:stand_110", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_110 = table.copy(stand_def_100)
+stand_def_110.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
+		{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
+		{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
+		{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
+		{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
+		{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
 
-			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
+		{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
+		{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
+		{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
+		{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
+		{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_110", stand_def_110)
 
-minetest.register_node("mcl_brewing:stand_101", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_101 = table.copy(stand_def_100)
+stand_def_101.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
+		{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
+		{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
+		{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
+		{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
+		{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
+		{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
+		{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_101", stand_def_101)
 
-minetest.register_node("mcl_brewing:stand_011", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_011 = table.copy(stand_def_100)
+stand_def_011.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
+		{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
+		{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
+		{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
+		{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
+		{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
+		{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
+		{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_011", stand_def_011)
 
-minetest.register_node("mcl_brewing:stand_111", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
-
-			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
-
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
-
-
-			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
-
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
-
-			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
-
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+local stand_def_111 = table.copy(stand_def_100)
+stand_def_111.node_box =
+core.register_node("mcl_brewing:stand_111", stand_def_111)
 
 minetest.register_craft({
 	output = "mcl_brewing:stand_000",
