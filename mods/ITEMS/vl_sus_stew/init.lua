@@ -143,15 +143,15 @@ function vl_sus_stew.register_sus_potion_effect(potion_name, level, duration, ef
 	vl_sus_stew.register_sus_effect(effect_name, on_eat_effect)
 end
 
-vl_sus_stew.register_sus_potion_effect("fire_resistance", 1, 12)
-vl_sus_stew.register_sus_potion_effect("blindness",       1, 8)
+vl_sus_stew.register_sus_potion_effect("fire_resistance", 1, 20)
+vl_sus_stew.register_sus_potion_effect("blindness",       1, 10)
 vl_sus_stew.register_sus_potion_effect("poison",          1, 12)
 vl_sus_stew.register_sus_potion_effect("saturation",      1, 10)
-vl_sus_stew.register_sus_potion_effect("leaping",         1, 6, "jump")
-vl_sus_stew.register_sus_potion_effect("regeneration",    1, 8)
+vl_sus_stew.register_sus_potion_effect("leaping",         1, 20, "jump")
+vl_sus_stew.register_sus_potion_effect("regeneration",    1, 15)
 vl_sus_stew.register_sus_potion_effect("withering",       1, 8)
-vl_sus_stew.register_sus_potion_effect("weakness",        1, 9)
-vl_sus_stew.register_sus_potion_effect("night_vision",    1, 5)
+vl_sus_stew.register_sus_potion_effect("weakness",        1, 12)
+vl_sus_stew.register_sus_potion_effect("night_vision",    1, 10)
 
 vl_sus_stew.register_sus_stew("mcl_flowers:allium",             "fire_resistance")
 vl_sus_stew.register_sus_stew("mcl_flowers:azure_bluet",        "blindness")
