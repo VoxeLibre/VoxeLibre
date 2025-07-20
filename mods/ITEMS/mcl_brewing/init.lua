@@ -28,8 +28,11 @@ local function active_brewing_formspec(fuel_percent, brew_percent)
 		(brew_percent),":mcl_brewing_bubbles_active.png]",
 
 		"listring[current_player;main]",
+		"listring[context;distr]]",
 		"listring[context;fuel]",
+		"listring[current_player;main]",
 		"listring[context;input]",
+		"listring[current_player;main]",
 		"listring[context;stand]"
 	})
 end
@@ -58,8 +61,11 @@ local brewing_formspec = table.concat({
 	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png]",
 
 	"listring[current_player;main]",
+	"listring[context;distr]",
 	"listring[context;fuel]",
+	"listring[current_player;main]",
 	"listring[context;input]",
+	"listring[current_player;main]",
 	"listring[context;stand]"
 })
 
@@ -282,6 +288,27 @@ local function allow_put(pos, listname, index, stack, player)
 			return 1
 		end
 		return 0
+	elseif listname == "distr" then
+		core.chat_send_all("distr")
+		local meta = core.get_meta(pos)
+		local inv = meta:get_inventory()
+		local def = stack:get_definition()
+		local fuel_stack = inv:get_stack("fuel", 1)
+		local input_stack = inv:get_stack("input", 1)
+		if def and def.groups and (def.groups._mcl_potion or def.groups.bottle or 0) > 0 then
+			for i=1, inv:get_size("stand") do
+				if inv:get_stack("stand", i):is_empty() then
+					return 1
+				end
+			end
+			return 0
+		elseif not fuel_stack:is_empty() and fuel_stack:item_fits(stack:peek_item()) then
+			return fuel_stack:get_free_space()
+		elseif not input_stack:is_empty() and input_stack:item_fits(stack:peek_item()) then
+			return input_stack:get_free_space()
+		elseif fuel_stack:is_empty() or input_stack:is_empty() then
+			return stack:get_count()
+		end
 	else
 		return stack:get_count()
 	end
@@ -291,11 +318,33 @@ local function on_put(pos, listname, index, stack, player)
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 	local str = ""
-	local stack
+	local s
 	local oldparam2 = core.get_node(pos).param2
+	if listname == "distr" then
+		local def = stack:get_definition()
+		local fuel_stack = inv:get_stack("fuel", 1)
+		if def and def.groups and (def.groups._mcl_potion or def.groups.bottle or 0) > 0 then
+			for i=1, inv:get_size("stand") do
+				if inv:get_stack("stand", i):is_empty() then
+					inv:set_stack("stand", i, stack)
+					inv:set_stack("distr", 1, ItemStack())
+					break
+				end
+			end
+		elseif not fuel_stack:is_empty() and fuel_stack:item_fits(stack) then
+			inv:add_item("fuel", stack)
+			inv:set_stack("distr", 1, ItemStack())
+		elseif inv:room_for_item("input", stack) then
+			inv:add_item("input", stack)
+			inv:set_stack("distr", 1, ItemStack())
+		elseif inv:room_for_item("fuel", stack) then
+			inv:add_item("fuel", stack)
+			inv:set_stack("distr", 1, ItemStack())
+		end
+	end
 	for i=1, inv:get_size("stand") do
-		stack = inv:get_stack("stand", i)
-		if not stack:is_empty() then
+		s = inv:get_stack("stand", i)
+		if not s:is_empty() then
 			str = str.."1"
 		else str = str.."0"
 		end
@@ -324,7 +373,8 @@ local function allow_take(pos, listname, index, stack, player)
 end
 
 local function allow_move(pos, from_list, from_index, to_list, to_index, count, player)
-	if (from_list == "stand" or to_list == "stand") and from_list ~= to_list then
+	if (from_list == "stand" or to_list == "stand") and from_list ~= to_list
+			or from_list == "distr" or to_list == "distr" then
 		return 0
 	else
 		return count
@@ -426,6 +476,7 @@ local stand_def = {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
+		inv:set_size("distr", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
