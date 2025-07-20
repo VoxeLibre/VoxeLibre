@@ -682,7 +682,7 @@ mcl_potions.register_potion({
 	_longdesc = S("Increases luck."),
 	color = "#7BFF42",
 	_effect_list = {
-		luck = {},
+		luck = {dur = 360},
 	},
 	has_arrow = true,
 })
