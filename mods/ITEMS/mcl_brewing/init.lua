@@ -2,63 +2,67 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 local function active_brewing_formspec(fuel_percent, brew_percent)
 
-	return "size[9,8.75]"..
-	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.75;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.75,9,1)..
-	"list[context;fuel;0.5,1.75;1,1;]"..
-	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1).."image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]"..
-	"list[context;input;2.75,0.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
-	"list[context;stand;4.5,2.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1).."image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
-	"list[context;stand;6,2.8;1,1;1]"..
-	mcl_formspec.get_itemslot_bg(6,2.8,1,1).."image[6,2.8;1,1;mcl_brewing_bottle_bg.png]"..
-	"list[context;stand;7.5,2.5;1,1;2]"..
-	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1).."image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
+	return table.concat({
+		"size[9,8.75]",
+		"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]",
+		"label[4,0;",minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))),"]",
+		"label[0,4.0;",minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))),"]",
+		"list[current_player;main;0,4.5;9,3;9]",
+		mcl_formspec.get_itemslot_bg(0,4.5,9,3),
+		"list[current_player;main;0,7.75;9,1;]",
+		mcl_formspec.get_itemslot_bg(0,7.75,9,1),
+		"list[context;fuel;0.5,1.75;1,1;]",
+		mcl_formspec.get_itemslot_bg(0.5,1.75,1,1),"image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]",
+		"list[context;input;2.75,0.5;1,1;]",
+		mcl_formspec.get_itemslot_bg(2.75,0.5,1,1),
+		"list[context;stand;4.5,2.5;1,1;]",
+		mcl_formspec.get_itemslot_bg(4.5,2.5,1,1),"image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]",
+		"list[context;stand;6,2.8;1,1;1]",
+		mcl_formspec.get_itemslot_bg(6,2.8,1,1),"image[6,2.8;1,1;mcl_brewing_bottle_bg.png]",
+		"list[context;stand;7.5,2.5;1,1;2]",
+		mcl_formspec.get_itemslot_bg(7.5,2.5,1,1),"image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]",
 
-	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[lowpart:"..
-	(100-fuel_percent)..":mcl_brewing_burner_active.png^[transformR270]"..
+		"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[lowpart:",
+		(100-fuel_percent),":mcl_brewing_burner_active.png^[transformR270]",
 
-	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png^[lowpart:"..
-	(brew_percent)..":mcl_brewing_bubbles_active.png]"..
+		"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png^[lowpart:",
+		(brew_percent),":mcl_brewing_bubbles_active.png]",
 
-	"listring[current_player;main]"..
-	"listring[context;fuel]"..
-	"listring[context;input]"..
-	"listring[context;stand]"
+		"listring[current_player;main]",
+		"listring[context;fuel]",
+		"listring[context;input]",
+		"listring[context;stand]"
+	})
 end
 
-local brewing_formspec = "size[9,8.75]"..
-	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.75;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.75,9,1)..
-	"list[context;fuel;0.5,1.75;1,1;]"..
-	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1).."image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]"..
-	"list[context;input;2.75,0.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
-	"list[context;stand;4.5,2.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1).."image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
-	"list[context;stand;6,2.8;1,1;1]"..
-	mcl_formspec.get_itemslot_bg(6,2.8,1,1).."image[6,2.8;1,1;mcl_brewing_bottle_bg.png]"..
-	"list[context;stand;7.5,2.5;1,1;2]"..
-	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1).."image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
+local brewing_formspec = table.concat({
+	"size[9,8.75]",
+	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]",
+	"label[4,0;",minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))),"]",
+	"label[0,4.0;",minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))),"]",
+	"list[current_player;main;0,4.5;9,3;9]",
+	mcl_formspec.get_itemslot_bg(0,4.5,9,3),
+	"list[current_player;main;0,7.75;9,1;]",
+	mcl_formspec.get_itemslot_bg(0,7.75,9,1),
+	"list[context;fuel;0.5,1.75;1,1;]",
+	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1),"image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]",
+	"list[context;input;2.75,0.5;1,1;]",
+	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1),
+	"list[context;stand;4.5,2.5;1,1;]",
+	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1),"image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]",
+	"list[context;stand;6,2.8;1,1;1]",
+	mcl_formspec.get_itemslot_bg(6,2.8,1,1),"image[6,2.8;1,1;mcl_brewing_bottle_bg.png]",
+	"list[context;stand;7.5,2.5;1,1;2]",
+	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1),"image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]",
 
-	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[transformR270]"..
-	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png]"..
+	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[transformR270]",
+	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png]",
 
-	"listring[current_player;main]"..
-	"listring[context;fuel]"..
-	"listring[context;input]"..
+	"listring[current_player;main]",
+	"listring[context;fuel]",
+	"listring[context;input]",
 	"listring[context;stand]"
+})
 
 
 
