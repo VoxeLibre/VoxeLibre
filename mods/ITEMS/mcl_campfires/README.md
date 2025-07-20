@@ -13,6 +13,7 @@ DinoNuggies4665 - Cooking logic implemented.
 thunder1035 - Redesigned model and texture tweaks. 
 AncientMariner - Changed smoke to particle spawner and tweaked particle configuration. 
 Michieal - Fixed misc. errors. 
+Chiragon - fixed: model, uvs, textures and campfire_spots positions 
 
 License of media
 ----------------
