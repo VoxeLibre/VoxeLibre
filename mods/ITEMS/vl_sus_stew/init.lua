@@ -38,13 +38,10 @@ local function eat_stew(itemstack, user, pointed_thing)
 	if not f then
 		f = get_random_effect()
 	end
-	if f(itemstack, user, pointed_thing) then
-		return "mcl_core:bowl"
-	end
+	return f(itemstack, user, pointed_thing)
 end
 
 local function eat_stew_delayed(itemstack, user, pointed_thing)
-
 	if pointed_thing.type == "node" then
 		if user and not user:get_player_control().sneak then
 			-- Use pointed node's on_rightclick function first, if present
@@ -63,28 +60,21 @@ local function eat_stew_delayed(itemstack, user, pointed_thing)
 	local name = user:get_player_name()
 	mcl_hunger.eat_internal[name]._custom_itemstack = itemstack -- Used as comparison to make sure the custom wrapper executes only when the same item is eaten
 	mcl_hunger.eat_internal[name]._custom_var = {
-		itemstack = itemstack,
 		user = user,
 		pointed_thing = pointed_thing,
 	}
 	mcl_hunger.eat_internal[name]._custom_func = eat_stew
 	mcl_hunger.eat_internal[name]._custom_wrapper = function(name)
-
 		mcl_hunger.eat_internal[name]._custom_func(
-			mcl_hunger.eat_internal[name]._custom_var.itemstack,
+			mcl_hunger.eat_internal[name]._custom_itemstack,
 			mcl_hunger.eat_internal[name]._custom_var.user,
 			mcl_hunger.eat_internal[name]._custom_var.pointed_thing
 		)
-
-		local user = mcl_hunger.eat_internal[name]._custom_var.user
-
-		core.after(0, function()
-			user:get_inventory():set_stack("main", user:get_wield_index(), "mcl_core:bowl")
-		end)
 	end
 
-	mcl_hunger.eat_internal[name]._custom_do_delayed = true -- Only _custom_wrapper will be executed after holding RMB or LMB within a specified delay
-	--core.do_item_eat(0, "mcl_core:bowl", itemstack, user, pointed_thing)
+	core.do_item_eat(0, "mcl_core:bowl", itemstack, user, pointed_thing)
+
+	return itemstack
 end
 
 core.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
@@ -148,7 +138,7 @@ function vl_sus_stew.register_sus_potion_effect(potion_name, level, duration, ef
 	if effect_name == nil then effect_name = potion_name end
 	local function on_eat_effect(itemstack, placer, pointed_thing)
 		mcl_potions.give_effect_by_level(potion_name, placer, level, duration)
-		return eat(itemstack, placer, pointed_thing)
+		return "mcl_core:bowl"
 	end
 	vl_sus_stew.register_sus_effect(effect_name, on_eat_effect)
 end
