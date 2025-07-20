@@ -5,10 +5,10 @@ local COOK_TIME = 30 -- Time it takes to cook food on a campfire.
 
 local food_entity = {nil, nil, nil, nil}
 local campfire_spots = {
-	vector.new(-0.25, -0.04, -0.25),
-	vector.new( 0.25, -0.04, -0.25),
-	vector.new( 0.25, -0.04,  0.25),
-	vector.new(-0.25, -0.04,  0.25),
+	vector.new(-0.25, -0.03125, -0.25),
+	vector.new( 0.25, -0.03125, -0.25),
+	vector.new( 0.25, -0.03125,  0.25),
+	vector.new(-0.25, -0.03125,  0.25),
 }
 
 local drop_inventory = mcl_util.drop_items_from_meta_container("main")
