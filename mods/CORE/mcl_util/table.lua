@@ -75,3 +75,20 @@ function table.remove_random_element(table)
 	count = count - 1
 	return res
 end
+
+--- Searches for strings beginning with n in array part of the table h
+---@param n string
+---@param h string[]
+---@return boolean|string[]
+function mcl_util.search_in_table(n, h)
+	local l = string.len(n)
+	local found = {}
+	for _, v in ipairs(h) do
+		if string.sub(v, 1, l) == n then
+			table.insert(found, v)
+		end
+	end
+	if #found > 1 then return found
+	elseif #found == 1 then return found[1]
+	else return false end
+end
