@@ -78,8 +78,8 @@ end
 
 --- Searches for strings beginning with n in array part of the table h
 ---@param n string
----@param h table (of strings)
----@return boolean or table
+---@param h string[]
+---@return boolean|string[]
 function mcl_util.search_in_table(n, h)
 	local l = string.len(n)
 	local found = {}
@@ -90,5 +90,5 @@ function mcl_util.search_in_table(n, h)
 	end
 	if #found > 1 then return found
 	elseif #found == 1 then return found[1]
-	else return nil end
+	else return false end
 end
