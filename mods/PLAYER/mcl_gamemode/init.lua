@@ -7,22 +7,6 @@ mcl_gamemode.gamemodes = {
 	"creative",
 }
 
----@param n string
----@param h table
----@return boolean
-local function in_table(n, h)
-	local l = string.len(n)
-	local found = {}
-	for _, v in ipairs(h) do
-		if string.sub(v, 1, l) == n then
-			table.insert(found, v)
-		end
-	end
-	if #found > 1 then return found
-	elseif #found == 1 then return found[1]
-	else return nil end
-end
-
 ---@type fun(player: mt.PlayerObjectRef, old_gamemode: '"survival"'|'"creative"', new_gamemode: '"survival"'|'"creative"')[]
 mcl_gamemode.registered_on_gamemode_change = {}
 
@@ -86,7 +70,7 @@ minetest.register_chatcommand("gamemode", {
 			return false, S("Player not online")
 		end
 		if args[1] ~= nil then
-			local gmode = in_table(args[1], mcl_gamemode.gamemodes)
+			local gmode = mcl_util.search_in_table(args[1], mcl_gamemode.gamemodes)
 			if not gmode then
 				return false, S("Gamemode @1 does not exist.", args[1])
 			elseif type(gmode) == "table" then
