@@ -6,6 +6,7 @@ local gamerule_showDeathMessages = true
 vl_tuning.setting("gamerule:showDeathMessages", "bool", {
 	description = S("Whether death messages are put into chat when a player dies. Also affects whether a message is sent to the pet's owner when the pet dies."),
 	default = minetest.settings:get_bool("mcl_showDeathMessages", true),
+	formspec_desc_lines = 2,
 	set = function(val) gamerule_showDeathMessages = val end,
 	get = function() return gamerule_showDeathMessages end,
 })

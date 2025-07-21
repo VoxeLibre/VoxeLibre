@@ -5,7 +5,9 @@ local mob_class = mcl_mobs.mob_class
 
 local gamerule_doMobSpawning = true
 vl_tuning.setting("gamerule:doMobSpawning", "bool", {
-	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."), default = true,
+	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."),
+	default = true,
+	formspec_desc_lines = 3,
 	set = function(val) gamerule_doMobSpawning = val end,
 	get = function() return gamerule_doMobSpawning end,
 })

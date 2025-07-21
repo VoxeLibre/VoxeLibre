@@ -8,6 +8,7 @@ local gamerule_maxEntityCramming = 24
 vl_tuning.setting("gamerule:maxEntityCramming", "number", {
 	description = S("The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second."),
 	default = 24,
+	formspec_desc_lines = 2,
 	set = function(val) gamerule_maxEntityCramming = val end,
 	get = function() return gamerule_maxEntityCramming end,
 })
