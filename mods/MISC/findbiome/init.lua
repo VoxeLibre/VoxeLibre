@@ -132,7 +132,7 @@ function findbiome.find_biome(pos, biomes, res, checks)
 	end
 
 	pos = vector.round(pos)
-	-- Pos: Starting point for biome DEFAULT_CHECKED_POINTS. This also sets the y co-ordinate for all
+	-- Pos: Starting point for biome checks. This also sets the y co-ordinate for all
 	-- points checked, so the suitable biomes must be active at this y.
 
 	-- Initial variables
@@ -158,7 +158,7 @@ function findbiome.find_biome(pos, biomes, res, checks)
 		end
 
 		local dir = dirs[dir_ind]
-		local move = vector.multiply(dir, DEFAULT_SEARCH_GRID_RESOLUTION)
+		local move = vector.multiply(dir, res)
 
 		edge_dist = edge_dist + 1
 
@@ -169,7 +169,7 @@ function findbiome.find_biome(pos, biomes, res, checks)
 	local function search()
 		local attempt = 1
 		while attempt < 3 do
-			for iter = 1, DEFAULT_CHECKED_POINTS do
+			for iter = 1, checks do
 				local biome_data = minetest.get_biome_data(pos)
 				-- Sometimes biome_data is nil
 				local biome = biome_data and biome_data.biome
