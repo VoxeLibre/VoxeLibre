@@ -7,21 +7,7 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 local water_level = tonumber(minetest.get_mapgen_setting("water_level"))
 
 -- Calculate the playable area of the world
-local playable_limit_min, playable_limit_max
-if minetest.get_mapgen_edges then
-	-- Modern method by just asking Minetest
-	playable_limit_min, playable_limit_max = minetest.get_mapgen_edges()
-else
-	-- Legacy method for older Minetest versions
-	-- by calculating an estimate ourself
-	-- (it's not perfect but close enough)
-	local BLOCKSIZE = 16
-	local mapgen_limit = tonumber(minetest.get_mapgen_setting("mapgen_limit"))
-	local chunksize = tonumber(minetest.get_mapgen_setting("chunksize"))
-	local limit_estimate = math.max(mapgen_limit - (chunksize + 1) * BLOCKSIZE, 0)
-	playable_limit_min = vector.new(-limit_estimate, -limit_estimate, -limit_estimate)
-	playable_limit_max = vector.new(limit_estimate, limit_estimate, limit_estimate)
-end
+local playable_limit_min, playable_limit_max = minetest.get_mapgen_edges()
 
 -- Default parameters
 ---------------------
