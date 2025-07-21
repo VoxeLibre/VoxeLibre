@@ -25,6 +25,7 @@ See `API.md` for details.
 - Jacob Lifshay (MIT License, bugfix)
 - Skivling (MIT License, `list_biomes()` function)
 - rstcxk (MIT License, general cleanups, Polish translation (mod title and description))
+- SkyBuilder1717 (Russian translation (mod title and description))
 
 This mod is free software. See `license.txt` for license information.
 
