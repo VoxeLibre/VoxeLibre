@@ -1,4 +1,10 @@
 # textdomain: findbiome
+# mod title
+Find Biome=Biom finden
+# mod description
+Adds commands to list and find biomes=Fügt Befehle zum Auflisten und Finden von Biomen hinzu
+
+# mod strings
 Find and teleport to biome=Ein Biom finden und hinteleportieren
 <biome>=<Biom>
 No player.=Kein Spieler
