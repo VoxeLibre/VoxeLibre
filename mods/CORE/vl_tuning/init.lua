@@ -43,6 +43,7 @@ local tunable_types = {
 ---@field to_string fun(value : any)
 ---@field on_change? fun(self : vl_tuning.Setting)
 ---@field getter fun()
+---@field formspec_desc_lines? number
 local tunable_class = {}
 
 ---@param self vl_tuning.Setting
@@ -80,6 +81,7 @@ end
 ---@field get fun(): string|boolean|number
 ---@field default any
 ---@field description? string
+---@field formspec_desc_lines? number
 
 ---@param name string
 ---@param p_type? "bool"|"number"|"string"
@@ -106,6 +108,8 @@ function mod.setting(name, p_type, def )
 		get_string = tunable_class.get_string,
 		from_string = tunable_types[p_type].from_string,
 		to_string = tunable_types[p_type].to_string,
+		formspec_desc_lines = def.formspec_desc_lines,
+		default = def.default,
 	}
 	if def.default then
 		tunable:set(def.default)
