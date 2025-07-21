@@ -1,5 +1,5 @@
-License of source code
-----------------------
+License of this mod
+-------------------
 
 The MIT License (MIT)
 Copyright (C) 2018 paramat
