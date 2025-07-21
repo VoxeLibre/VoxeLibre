@@ -1,0 +1,120 @@
+# textdomain: mcl_farming
+##[ soil.lua ]##
+Farmland=Terra Arada
+Surface for crops=Superfície para cultivos
+Can become wet=Pode ficar molhada
+Farmland is used for farming, a necessary surface to plant crops. It is created when a hoe is used on dirt or a similar block. Plants are able to grow on farmland, but slowly. Farmland will become hydrated farmland (on which plants grow faster) when it rains or a water source is nearby. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=Terras aradas são usadas para agricultura, uma superfície necessária para o plantio de cultivos. Elas são criadas quando uma enxada é usada sobre terra ou um bloco similar. As plantas conseguem crescer nas terras aradas, mas lentamente. As terras aradas se tornam terras aradas hidratadas (onde as plantas crescem mais rápido) quando chove ou quando há uma fonte de água próxima. Este bloco volta a ser terra quando um bloco sólido aparece acima dele ou um braço de pistão se estende sobre ele.
+Hydrated Farmland=Terra Arada Hidratada
+Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmland is under rain or near water. Without water, this block will dry out eventually. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=Terras aradas hidratadas são usadas na agricultura, nelas você pode plantar e cultivar algumas plantas. Elas são criadas quando as terras aradas estão sob chuva ou perto de água. Sem água, este bloco acabará secando. Este bloco voltará a ser terra quando um bloco sólido aparecer acima dele ou um braço de pistão se estender sobre ele.
+##[ hoes.lua ]##
+Turns block into farmland=Torna o bloco em terra arada
+Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Enxadas são ferramentas essenciais para o cultivo. São usadas para criar terras aradas e plantar sementes. Em apuros, elas também podem ser usadas como uma arma muito fracas.
+Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Use a enxada em um bloco cultivável (clicando com o botão direito) para o transformar em terra cultivável. Terra, blocos de grama e caminhos de grama são blocos cultiváveis. Usar a enxada em terra grossa a transforma em terra.
+Wood Hoe=Enxada de Madeira
+Stone Hoe=Enxada de Pedra
+Iron Hoe=Enxada de Ferro
+Golden Hoe=Enxada de Ouro
+Diamond Hoe=Enxadada de Diamante
+Netherite Hoe=Enxada de Netherite
+##[ wheat.lua ]##
+Grows on farmland=Cresce na terra arada
+This is a food item which can be eaten.=Esse é um item alimentício que pode ser comido.
+Wheat Seeds=Sementes de Trigo
+Grows into a wheat plant. Chickens like wheat seeds.=Cresce como um pé de trigo. Galinhas gostam de sementes de trigo.
+Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant.=Ponha as sementes de trigo na terra arada (que pode ser criada com uma enxada) para plantar um trigo.
+They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.=Eles crescem com a luz do sol e crescem mais rápido em terras aradas hidratadas. Clique com o botão direito em um animal para o alimentar com sementes de trigo.
+Premature Wheat Plant=Pé de Trigo Prematuro
+Premature wheat plants grow on farmland under sunlight in 8 stages.=Pés de Trigo Prematuros crescem em 8 estágios nas terras aradas e com luz solar.
+On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.=Nas terras aradas, eles crescem mais rápido. Eles podem ser colhidos a qualquer hora, mas apenas geram recompensas quando maduros.
+Premature Wheat Plant (Stage @1)=Pé de Trigo Prematuro (Estágio @1)
+Mature Wheat Plant=Pé de Trigo Maduro
+Mature wheat plants are ready to be harvested for wheat and wheat seeds.=Pés de trigo maduros estão a ponto de serem colhidos em trigo e sementes.
+They won't grow any further.=Eles não crescerão mais que isso.
+Wheat=Trigo
+Wheat is used in crafting. Some animals like wheat.=Trigo é usado para produzir outros itens. Alguns animais gostam de trigo.
+Use the “Place” key on an animal to try to feed it wheat.=Use a tecla "Colocar" em um animal para tentar o alimentar com trigo.
+Cookie=Biscoito
+Bread=Pão
+Hay Bale=Fardo de Feno
+Hay bales are decorative blocks made from wheat.=Fardos de feno são blocos decorativos feitos de trigo.
+##[ pumpkin.lua ]##
+Pumpkin Seeds=Sementes de Abóbora
+Grows into a pumpkin stem which in turn grows pumpkins. Chickens like pumpkin seeds.=Cesce como um caule de abóbora, que por sua vez produz abóboras. Galinhas gostam de sementes de abóbora.
+Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds.=Ponha as sementes de abóbora em uma terra arada (que pode ser criada com uma enxada) para plantar um caule de abóbora. Os caules de abóbora crescem sob a luz do sol e crescem mais rápido em terras aradas hidratadas. Quando maduro, o caule tenta cultivar uma abóbora ao lado. Clique com o botão direito em um animal para o alimentar com sementes de abóbora.
+Premature Pumpkin Stem=Caule de Abóbora Prematuro
+Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins.=Os caules de abóbora crescem em 8 estágios nas terras aradas. Em terras aradas hidratadas, o crescimento é um pouco mais rápido. Caules de abóbora maduros são capazes de produzir abóboras.
+Premature Pumpkin Stem (Stage @1)=Caule de abóbora prematuro (Estágio @1)
+Mature Pumpkin Stem=Caule de abóbora maduro
+A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.=Um caule de abóbora maduro tenta cultivar uma abóbora em um dos seus quatro blocos adjacentes. Uma abóbora só pode crescer sobre terra cultivada, terra ou um bloco de grama. Quando uma abóbora está próxima a um caule de abóbora, este se curva imediatamente e se conecta à abóbora. Um caule de abóbora conectado não pode gerar outra abóbora. Assim que todas as abóboras ao redor do caule forem removidas, ele perde a conexão e estará pronto para gerar outra abóbora.
+Pumpkin=Abóbora
+A pumpkin is a decorative block. It can be carved with shears to obtain a carved pumpkin and pumpkin seeds.=Uma abóbora é um bloco decorativo. Ela pode ser entalhada com tesouras para obter uma abóbora entalhada e sementes de abóbora.
+To carve a pumpkin, use the shears on the side you want the face to appear.=Para entalhar uma cara na abobóra, use as tesouras no lado que deseja que a cara apareça.
+Carved Pumpkin=Abobóra Entalhada
+A carved pumpkin is a decorative block that can be used to summon snow and iron golems. It can also be worn as a helmet. It is made from shearing a pumpkin.=Uma abóbora entalhada é um bloco decorativo que pode ser usado para invocar golens de neve e ferro. Também pode ser usada como capacete. É feita a partir do entalhe de uma abóbora.
+Jack o'Lantern=Abóbora de Halloween
+A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.=Abóbora de Halloween é uma decoração tradicional de Halloween feita de uma abóbora. Ela brilha intensamente.
+Pumpkin Pie=Torta de Abóbora
+A pumpkin pie is a tasty food item which can be eaten.=Uma torta de abobora é um item alimentício saboroso que pode ser comido.
+##[ melon.lua ]##
+Melon Seeds=Sementes de Melancia
+Grows into a melon stem which in turn grows melons. Chickens like melon seeds.=Cresce até virar um caule de melancia, que por sua vez produz melancias. Galinhas gostam de sementes de melancia.
+Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melon stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem will attempt to grow a melon at the side. Rightclick an animal to feed it melon seeds.=Ponha as sementes de melancia em uma terra arada (que pode ser criada com uma enxada) para plantar um caule de melancia. Os caules de melancia crescem com a luz do sol e crescem mais rápido em terras aradas hidratadas. Quando maduro, o caule tentará desenvolver uma melancia lateralmente. Clique com o botão direito em um animal para o alimentar com sementes de melancia.
+Melon=Melancia
+A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices.=Melancia é um bloco que pode ser cultivado a partir de caules de melancia, que por sua vez são cultivados a partir de sementes de melancia. Pode ser colhido em fatias de melancia.
+Premature Melon Stem=Caule de Melancia Prematuro
+Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons.=Caules de melancia crescem em 8 estágios em terras aradas. Em terras aradas hidratadas, o crescimento é um pouco mais rápido. Caules de melancia maduros são capazes de produzir melancias.
+Premature Melon Stem (Stage @1)=Caule de Melancia Prematuro (Estágio @1)
+Mature Melon Stem=Caule de Melancia Maduro
+A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.=Um caule de melancia maduro tenta cultivar uma melancia em um dos seus quatro blocos adjacentes. Uma melancia só pode crescer em terras aradas, terra ou um bloco de grama. Quando uma melancia está próximo a um caule de melancia, ele se curva imediatamente e se conecta à melancia. Enquanto conectado, um caule de melancia não pode desenvolver outra melancia. Assim que todas as melancias ao redor do caule forem removidos, ele perde a conexão e está pronto para gerar outra melancia.
+Melon Slice=Fatia de Melancia
+##[ carrots.lua ]##
+Premature Carrot Plant=Pé de Cenoura Prematuro
+Carrot plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Pés de cenoura são plantas que crescem  em 8 estágios em terras aradas com luz solar, mas só 4 estágios são visualmente distintos. Em terras aradas hidratadas, crescem um pouco mais rápido. Podem ser colhidos em qualquer momento, mas só geram recompensas quando estão maduros.
+Premature Carrot Plant (Stage @1)=Pé de cenoura prematuro (Estágio @1)
+Mature Carrot Plant=Pé de Cenoura Maduro
+Mature carrot plants are ready to be harvested for carrots. They won't grow any further.=Pés de cenoura maduros estão a ponto de terem cenouras colhidas. Eles não crescerão mais que isso.
+Carrot=Cenoura
+Carrots can be eaten and planted. Pigs and rabbits like carrots.=Cenouras podem ser comidas e plantadas. Porcos e coelhos gostam de cenouras.
+Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Segure ela com a mão e clique com o botão direito para comer. Ponha na terra arada para plantar a cenoura. Ela cresce com a luz do sol e cresce mais rápido em terras aradas hidratadas. Clique com o botão direito em um animal para o alimentar.
+Golden Carrot=Cenoura Dourada
+A golden carrot is a precious food item which can be eaten. It is really, really filling!=Uma cenoura dourada é um item alimentício precioso que pode ser comido. Ela é realmente bem, bem saciante!
+##[ potatoes.lua ]##
+Premature Potato Plant=Pé de Batata Prematuro
+Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Pés de batata são plantas que crescem em 8 estágios em terras aradas e com a luz solar, mas só 4 estágios são visualmente distintos. Em terras aradas hidratadas, crescem um pouco mais rápido. Podem ser colhidos a qualquer momento, mas só geram recompensas quando estão maduros.
+Premature Potato Plant (Stage @1)=Pé de Batata Prematuro (Estágio @1)
+Mature Potato Plant=Pé de Batata Maduro
+Mature potato plants are ready to be harvested for potatoes. They won't grow any further.=Pés de batata maduros estão a ponto de serem colhidos. Elas não crescerão mais que isso.
+Potato=Batata
+Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes.=Batatas são itens alimentícios que podem ser comidos, assados na fornalha e plantados. Porcos gostam de batatas.
+Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Segure ele na mão e clique com o botão direito para o comer. Ponha ele sobre uma terra cultivada para plantá-lo. Ele cresce com a luz do sol e cresce mais rápido em terras aradas hidratadas. Clique com o botão direito em um animal para o alimentar.
+Baked Potato=Batata Assada
+Baked potatoes are food items which are more filling than the unbaked ones.=Batatas assadas são itens alimentícios mais saciáveis do que as não assadas.
+Poisonous Potato=Batata Venenosa
+60% chance of poisoning=60% de chance de envenenamento
+This potato doesn't look too healthy. You can eat it to restore hunger points, but there's a 60% chance it will poison you briefly.=Esta batata não parece muito saudável. Você pode a comer para restaurar pontos de fome, mas há 60% de chance de ela te envenenar brevemente.
+##[ beetroot.lua ]##
+Beetroot Seeds=Sementes de Beterraba
+Grows into a beetroot plant. Chickens like beetroot seeds.=Crece como um pé de beterraba. Galinhas gostam das sementes de beterraba.
+Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds.=Ponha as sementes de beterraba em terras aradas (que podem ser criadas com uma enxada) para plantar um pé de beterraba. Crescem com a luz do sol e crescem mais rápido em terras aradas hidratadas. Clique com o botão direito em um animal para o alimentar com sementes de beterraba.
+Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Pés de beterraba são plantas que crescem 4 estágios em terras aradas com a luz solar. Em terras aradas hidratadas, crescem um pouco mais rápido. Podem ser colhidos a qualquer momento, mas só geram recompensas quando estão maduros.
+Premature Beetroot Plant=Pé de beterraba prematuro
+Mature Beetroot Plant=Pé de beterraba maduro
+A mature beetroot plant is a farming plant which is ready to be harvested for a beetroot and some beetroot seeds. It won't grow any further.=Um pé de beterraba maduro é uma planta agrícola a ponto de ser colhido, produzindo uma beterraba e algumas sementes de beterraba. Ela não crescerá mais.
+Beetroot=Beterraba
+Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too.=Beterraba é usada como alimento e como corante. Os porcos também gostam de beterraba.
+Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.=Segure ele na mão e clique com o botão direito para comer. Clique com o botão direito em um animal para o alimentar.
+Beetroot Soup=Sopa de Beterraba
+Beetroot soup is a food item.=Sopa de beterraba é um item alimentício.
+##[ sweet_berry.lua ]##
+Sweet Berry Bush (Stage @1)= Arbusto de Bagas Doces (Estágio @1)
+Sweet Berry= Bagas Doces
+
+
+##### not used anymore #####
+
+Premature Beetroot Plant (Stage 1)=Pé de Beterraba Prematura (Estágio 1)
+Premature Beetroot Plant (Stage 2)=Pé de Beterraba Prematura (Estágio 2)
+Premature Beetroot Plant (Stage 3)=Pé de Beterraba Prematura (Estágio 3)
+Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.=
+Premature wheat plants grow on farmland under sunlight in 8 stages. On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.=
+Mature wheat plants are ready to be harvested for wheat and wheat seeds. They won't grow any further.=
