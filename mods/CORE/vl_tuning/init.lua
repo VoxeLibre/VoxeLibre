@@ -95,6 +95,7 @@ function mod.setting(name, p_type, def )
 	assert(def)
 	assert(type(def.set) == "function", "Tunable requires set method")
 	assert(type(def.get) == "function", "Tunable required get method")
+	assert(tunable_types[p_type])
 
 	-- Setup the tunable data
 	---@type vl_tuning.Setting
