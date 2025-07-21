@@ -20,8 +20,8 @@ and the biome position is returned.
 
 Returns `<biome position>, <success>`.
 
-* `<success>` is `true` on success and `false` on failure.
 * `<biome position>` is the position of a found biome or `nil` if none was found
+* `<success>` is `true` on success and `false` on failure.
 
 ### Additional notes
 

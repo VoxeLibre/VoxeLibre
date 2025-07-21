@@ -24,6 +24,7 @@ See `API.md` for details.
 - Wuzzy (MIT License)
 - Jacob Lifshay (MIT License, bugfix)
 - Skivling (MIT License, `list_biomes()` function)
+- rstcxk (MIT License, general cleanups, Polish translation (mod title and description))
 
 This mod is free software. See `license.txt` for license information.
 

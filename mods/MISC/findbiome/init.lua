@@ -83,7 +83,7 @@ end
 local function find_default_biome()
 	local all_biomes = minetest.registered_biomes
 	local biome_count = 0
-	for b, biome in pairs(all_biomes) do
+	for _, _ in pairs(all_biomes) do
 		biome_count = biome_count + 1
 	end
 	-- Trivial case: No biomes registered, default biome is everywhere.
@@ -92,12 +92,12 @@ local function find_default_biome()
 		if not y then
 			y = 0
 		end
-		return { x = 0, y = y, z = 0 }
+		return vector.new(0, y, 0)
 	end
-	local pos = {}
+	local pos = vector.new()
 	-- Just check a lot of random positions
 	-- It's a crappy algorithm but better than nothing.
-	for i=1, 100 do
+	for _=1, 100 do
 		pos.x = math.random(playable_limit_min.x, playable_limit_max.x)
 		pos.y = math.random(playable_limit_min.y, playable_limit_max.y)
 		pos.z = math.random(playable_limit_min.z, playable_limit_max.z)
@@ -155,7 +155,7 @@ function findbiome.find_biome(pos, biomes, res, checks)
 	local function search()
 		local attempt = 1
 		while attempt < 3 do
-			for iter = 1, checks do
+			for _ = 1, checks do
 				local biome_data = minetest.get_biome_data(pos)
 				-- Sometimes biome_data is nil
 				local biome = biome_data and biome_data.biome
@@ -167,11 +167,11 @@ function findbiome.find_biome(pos, biomes, res, checks)
 						local good_spawn_height = pos.y <= water_level + 16 and pos.y >= water_level
 						local spawn_y = minetest.get_spawn_level(spos.x, spos.z)
 						if spawn_y then
-							spawn_pos = {x = spos.x, y = spawn_y, z = spos.z}
+							spawn_pos = vector.new(spos.x, spawn_y, spos.z)
 						elseif not good_spawn_height then
-							spawn_pos = {x = spos.x, y = spos.y, z = spos.z}
+							spawn_pos = vector.new(spos.x, spawn_y, spos.z)
 						elseif attempt >= 2 then
-							spawn_pos = {x = spos.x, y = spos.y, z = spos.z}
+							spawn_pos = vector.new(spos.x, spawn_y, spos.z)
 						end
 						if spawn_pos then
 							local _,outside = adjust_pos_to_biome_limits(spawn_pos, biome_id)
@@ -216,7 +216,7 @@ function findbiome.list_biomes()
 		return false, biomes
 	end
 	biomes = {}
-	for k,v in pairs(minetest.registered_biomes) do
+	for k, _ in pairs(minetest.registered_biomes) do
 		table.insert(biomes, k)
 		b = b + 1
 	end
@@ -278,17 +278,13 @@ do
 			local success, biomes = findbiome.list_biomes()
 			-- Error checking before sending them in chat
 			if success == false then -- send error message
-				minetest.chat_send_player(name, S(biomes[1]))
-				return false
+				return false, S(biomes[1])
 			else -- it worked, send all biomes
 				if #biomes == 0 then
 					return true, S("No biomes.")
 				end
 				table.sort(biomes)
-				for b=1, #biomes do
-					minetest.chat_send_player(name, biomes[b])
-				end
-				return true
+				return true, table.concat(biomes, "\n")
 			end
 		end,
 	})
