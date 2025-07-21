@@ -124,7 +124,7 @@ end
 
 function findbiome.find_biome(pos, biomes, res, checks)
 	if not res then
-		res = DEFAULT_SEARCH_GRID_SIZE
+		res = DEFAULT_SEARCH_GRID_RESOLUTION
 	end
 	if not checks then
 		checks = DEFAULT_CHECKED_POINTS
