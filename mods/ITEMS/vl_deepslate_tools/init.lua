@@ -254,6 +254,7 @@ minetest.register_tool("vl_deepslate_tools:pick_deepslate", {
 	_mcl_diggroups = {
 		pickaxey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
 	},
+	vl_max_ench_lvl = 2,
 })
 
 minetest.register_tool("vl_deepslate_tools:shovel_deepslate", {
@@ -276,6 +277,7 @@ minetest.register_tool("vl_deepslate_tools:shovel_deepslate", {
 	_mcl_diggroups = {
 		shovely = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
 	},
+	vl_max_ench_lvl = 2,
 })
 
 minetest.register_tool("vl_deepslate_tools:hoe_deepslate", {
@@ -297,6 +299,7 @@ minetest.register_tool("vl_deepslate_tools:hoe_deepslate", {
 	_mcl_diggroups = {
 		hoey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
 	},
+	vl_max_ench_lvl = 2,
 })
 
 minetest.register_tool("vl_deepslate_tools:axe_deepslate", {
@@ -318,6 +321,7 @@ minetest.register_tool("vl_deepslate_tools:axe_deepslate", {
 	_mcl_diggroups = {
 		axey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
 	},
+	vl_max_ench_lvl = 2,
 })
 
 ------------------ weapons
@@ -341,6 +345,7 @@ minetest.register_tool("vl_deepslate_tools:sword_deepslate", {
 		swordy = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses },
 		swordy_cobweb = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
 	},
+	vl_max_ench_lvl = 2,
 })
 
 core.register_tool("vl_deepslate_tools:hammer_deepslate", {
@@ -364,6 +369,7 @@ core.register_tool("vl_deepslate_tools:hammer_deepslate", {
 		pickaxey = { speed = deepslate.hammerspeed, level = deepslate.level, uses = deepslate.uses },
 		shovely = { speed = deepslate.hammerspeed, level = deepslate.level, uses = deepslate.uses }
 	},
+	vl_max_ench_lvl = 2,
 })
 
 core.register_tool("vl_deepslate_tools:spear_deepslate", {
@@ -392,6 +398,7 @@ core.register_tool("vl_deepslate_tools:spear_deepslate", {
 	},
 	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 6,
+	vl_max_ench_lvl = 2,
 })
 
 
