@@ -189,7 +189,7 @@ end
 local old_get_craft = core.get_craft_result
 function core.get_craft_result(input)
 	local output, dec_input = old_get_craft(input)
-	if input.method = "cooking" and input.width == 1
+	if input.method == "cooking" and input.width == 1
 			and not output.item:is_empty() then
 		local stack = input.items[1]
 		local grp = stack:get_definition().groups
