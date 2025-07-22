@@ -234,7 +234,7 @@ mcl_heads.register_head{
 
 mcl_heads.register_head{
 	name = "wither_skeleton",
-	texture = "mcl_heads_wither_skeleton.png",
+	texture = "mcl_heads_skeleton.png^[brighten^[invert:rgb",
 	description = S("Wither Skeleton Skull"),
 	longdesc = S("A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection."),
 }
