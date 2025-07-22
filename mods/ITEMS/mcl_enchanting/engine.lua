@@ -31,7 +31,9 @@ function mcl_enchanting.load_enchantments(itemstack, enchantments)
 		mcl_enchanting.unload_enchantments(itemstack)
 		for enchantment, level in pairs(enchantments or mcl_enchanting.get_enchantments(itemstack)) do
 			local enchantment_def = mcl_enchanting.enchantments[enchantment]
-			if enchantment_def.on_enchant then
+			if not enchantment_def then
+				core.log("error", "Bad enchantments: " .. dump(mcl_enchanting.get_enchantments(itemstack)))
+			elseif enchantment_def.on_enchant then
 				enchantment_def.on_enchant(itemstack, level)
 			end
 		end
