@@ -404,7 +404,10 @@ core.register_tool("vl_deepslate_tools:spear_deepslate", {
 
 local pr = PcgRandom(1234)
 core.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
-	if string.sub(itemstack:get_name(), 1, 18) ~= "vl_deepslate_tools" then return end
+	if string.sub(itemstack:get_name(), 1, 18) ~= "vl_deepslate_tools"
+			or mcl_enchanting.is_enchanted(itemstack:get_name()) then
+		return
+	end
 	local enchantment = mcl_enchanting.get_random_enchantment(itemstack, false, true, {}, pr)
 	mcl_enchanting.enchant(itemstack, enchantment, 1)
 	tt.reload_itemstack_description(itemstack)
