@@ -237,13 +237,15 @@ local function update_anvil_slots(meta)
 			if new_name ~= old_name then
 				-- Save the raw name internally
 				meta:set_string("name", new_name)
-				-- Rename item handled by tt
-				tt.reload_itemstack_description(name_item)
 				new_output = name_item
 			elseif just_rename then
 				new_output = ""
 			end
 		end
+	end
+
+	if type(new_output) == "userdata" then
+		tt.reload_itemstack_description(new_output)
 	end
 
 	-- Set the new output slot

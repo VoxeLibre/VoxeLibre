@@ -31,7 +31,9 @@ function mcl_enchanting.load_enchantments(itemstack, enchantments)
 		mcl_enchanting.unload_enchantments(itemstack)
 		for enchantment, level in pairs(enchantments or mcl_enchanting.get_enchantments(itemstack)) do
 			local enchantment_def = mcl_enchanting.enchantments[enchantment]
-			if enchantment_def.on_enchant then
+			if not enchantment_def then
+				core.log("error", "Bad enchantments: " .. dump(mcl_enchanting.get_enchantments(itemstack)))
+			elseif enchantment_def.on_enchant then
 				enchantment_def.on_enchant(itemstack, level)
 			end
 		end
@@ -185,7 +187,7 @@ function mcl_enchanting.combine(itemstack, combine_with)
 		local enchantment_def = mcl_enchanting.enchantments[enchantment]
 		local enchantment_level = enchantments[enchantment]
 		if enchantment_level then -- The enchantment already exist in the provided item
-			if enchantment_level == combine_level then
+			if enchantment_level == combine_level and enchantment_level < itemstack:get_definition().vl_max_ench_lvl then
 				enchantment_level = math.min(enchantment_level + 1, enchantment_def.max_level)
 			else
 				enchantment_level = math.max(enchantment_level, combine_level)
