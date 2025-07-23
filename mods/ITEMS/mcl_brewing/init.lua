@@ -1,74 +1,74 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local function active_brewing_formspec(fuel_percent, brew_percent)
+	return table.concat({
+		"size[9,8.75]",
+		"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]",
+		"label[4,0;",core.formspec_escape(core.colorize("#313131", S("Brewing Stand"))),"]",
+		"label[0,4.0;",core.formspec_escape(core.colorize("#313131", S("Inventory"))),"]",
+		"list[current_player;main;0,4.5;9,3;9]",
+		mcl_formspec.get_itemslot_bg(0,4.5,9,3),
+		"list[current_player;main;0,7.75;9,1;]",
+		mcl_formspec.get_itemslot_bg(0,7.75,9,1),
+		"list[context;fuel;0.5,1.75;1,1;]",
+		mcl_formspec.get_itemslot_bg(0.5,1.75,1,1),"image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]",
+		"list[context;input;2.75,0.5;1,1;]",
+		mcl_formspec.get_itemslot_bg(2.75,0.5,1,1),
+		"list[context;stand;4.5,2.5;1,1;]",
+		mcl_formspec.get_itemslot_bg(4.5,2.5,1,1),"image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]",
+		"list[context;stand;6,2.8;1,1;1]",
+		mcl_formspec.get_itemslot_bg(6,2.8,1,1),"image[6,2.8;1,1;mcl_brewing_bottle_bg.png]",
+		"list[context;stand;7.5,2.5;1,1;2]",
+		mcl_formspec.get_itemslot_bg(7.5,2.5,1,1),"image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]",
 
-	return "size[9,8.75]"..
-	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.75;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.75,9,1)..
-	"list[context;fuel;0.5,1.75;1,1;]"..
-	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1).."image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]"..
-	"list[context;input;2.75,0.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
-	"list[context;stand;4.5,2.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1).."image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
-	"list[context;stand;6,2.8;1,1;1]"..
-	mcl_formspec.get_itemslot_bg(6,2.8,1,1).."image[6,2.8;1,1;mcl_brewing_bottle_bg.png]"..
-	"list[context;stand;7.5,2.5;1,1;2]"..
-	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1).."image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
+		"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[lowpart:",
+		(100-fuel_percent),":mcl_brewing_burner_active.png^[transformR270]",
 
-	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[lowpart:"..
-	(100-fuel_percent)..":mcl_brewing_burner_active.png^[transformR270]"..
+		"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png^[lowpart:",
+		(brew_percent),":mcl_brewing_bubbles_active.png]",
 
-	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png^[lowpart:"..
-	(brew_percent)..":mcl_brewing_bubbles_active.png]"..
-
-	"listring[current_player;main]"..
-	"listring[context;fuel]"..
-	"listring[context;input]"..
-	"listring[context;stand]"
+		"listring[current_player;main]",
+		"listring[context;distr]]",
+		"listring[context;fuel]",
+		"listring[current_player;main]",
+		"listring[context;input]",
+		"listring[current_player;main]",
+		"listring[context;stand]"
+	})
 end
 
-local brewing_formspec = "size[9,8.75]"..
-	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
-	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-	"list[current_player;main;0,7.75;9,1;]"..
-	mcl_formspec.get_itemslot_bg(0,7.75,9,1)..
-	"list[context;fuel;0.5,1.75;1,1;]"..
-	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1).."image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]"..
-	"list[context;input;2.75,0.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
-	"list[context;stand;4.5,2.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1).."image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
-	"list[context;stand;6,2.8;1,1;1]"..
-	mcl_formspec.get_itemslot_bg(6,2.8,1,1).."image[6,2.8;1,1;mcl_brewing_bottle_bg.png]"..
-	"list[context;stand;7.5,2.5;1,1;2]"..
-	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1).."image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
+local brewing_formspec = table.concat({
+	"size[9,8.75]",
+	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]",
+	"label[4,0;",core.formspec_escape(core.colorize("#313131", S("Brewing Stand"))),"]",
+	"label[0,4.0;",core.formspec_escape(core.colorize("#313131", S("Inventory"))),"]",
+	"list[current_player;main;0,4.5;9,3;9]",
+	mcl_formspec.get_itemslot_bg(0,4.5,9,3),
+	"list[current_player;main;0,7.75;9,1;]",
+	mcl_formspec.get_itemslot_bg(0,7.75,9,1),
+	"list[context;fuel;0.5,1.75;1,1;]",
+	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1),"image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]",
+	"list[context;input;2.75,0.5;1,1;]",
+	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1),
+	"list[context;stand;4.5,2.5;1,1;]",
+	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1),"image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]",
+	"list[context;stand;6,2.8;1,1;1]",
+	mcl_formspec.get_itemslot_bg(6,2.8,1,1),"image[6,2.8;1,1;mcl_brewing_bottle_bg.png]",
+	"list[context;stand;7.5,2.5;1,1;2]",
+	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1),"image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]",
 
-	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[transformR270]"..
-	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png]"..
+	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[transformR270]",
+	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png]",
 
-	"listring[current_player;main]"..
-	"listring[context;fuel]"..
-	"listring[context;input]"..
+	"listring[current_player;main]",
+	"listring[context;distr]",
+	"listring[context;fuel]",
+	"listring[current_player;main]",
+	"listring[context;input]",
+	"listring[current_player;main]",
 	"listring[context;stand]"
+})
 
-
---[[local function swap_node(pos, name)
-	local node = minetest.get_node(pos)
-	if node.name == name then
-		return
-	end
-	node.name = name
-	minetest.swap_node(pos, node)
-end]]
 
 
 local function brewable(inv)
@@ -104,7 +104,7 @@ end
 
 local function brewing_stand_timer(pos, elapsed)
 	-- Inizialize metadata
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 
 	local fuel_timer = meta:get_float("fuel_timer") or 0
 	local BREW_TIME = 20 -- all brews brew the same
@@ -125,20 +125,7 @@ local function brewing_stand_timer(pos, elapsed)
 
 		update = false
 
-		--input_list = inv:get_list("input")
-		--stand_list = inv:get_list("stand")
-		--fuel_list = inv:get_list("fuel")
-
-		-- TODO ... fix this.  Goal is to reset the process if the stand changes
-		-- for i=1, inv:get_size("stand", i) do -- reset the process due to change
-		-- 	local _name = inv:get_stack("stand", i):get_name()
-		-- 	if  _name ~= stand_items[i] then
-		-- 		stand_timer = 0
-		-- 		stand_items[i] = _name
-		-- 		update = true -- need to update the stand with new data
-		--    return 1
-		-- 	end
-		-- end
+		-- TODO reset progress if change detected
 
 		brew_output = brewable(inv)
 		if fuel ~= 0 and brew_output then
@@ -152,7 +139,7 @@ local function brewing_stand_timer(pos, elapsed)
 			end
 
 			d = 0.5
-			minetest.add_particlespawner({
+			core.add_particlespawner({
 				amount = 4,
 				time = 1,
 				minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
@@ -182,9 +169,9 @@ local function brewing_stand_timer(pos, elapsed)
 
 				for i=1, inv:get_size("stand") do
 					if brew_output[i] then
-						minetest.sound_play("mcl_brewing_complete", {pos=pos, gain=0.4, max_hear_range=6}, true)
+						core.sound_play("mcl_brewing_complete", {pos=pos, gain=0.4, max_hear_range=6}, true)
 						inv:set_stack("stand", i, brew_output[i])
-						minetest.sound_play("mcl_potions_bottle_pour", {pos=pos, gain=0.6, max_hear_range=6}, true)
+						core.sound_play("mcl_potions_bottle_pour", {pos=pos, gain=0.6, max_hear_range=6}, true)
 					end
 				end
 				stand_timer = 0
@@ -226,7 +213,7 @@ local function brewing_stand_timer(pos, elapsed)
 		formspec = active_brewing_formspec(fuel_percent, brew_percent*1 % 100)
 		result = true
 	else
-		minetest.get_node_timer(pos):stop()
+		core.get_node_timer(pos):stop()
 	end
 
 	meta:set_float("fuel_timer", fuel_timer)
@@ -238,44 +225,6 @@ local function brewing_stand_timer(pos, elapsed)
 end
 
 
---[[local function allow_metadata_inventory_put(pos, listname, index, stack, player)
-	local name = player:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
-		return 0
-	end
-	local meta = minetest.get_meta(pos)
-	local inv = meta:get_inventory()
-	if listname == "fuel" then
-
-		-- Test stack with size 1 because we burn one fuel at a time
-		local teststack = ItemStack(stack)
-		teststack:set_count(1)
-		local output, decremented_input = minetest.get_craft_result({method="fuel", width=1, items={teststack}})
-		if output.time ~= 0 then
-			-- Only allow to place 1 item if fuel get replaced by recipe.
-			-- This is the case for lava buckets.
-			local replace_item = decremented_input.items[1]
-			if replace_item:is_empty() then
-				-- For most fuels, just allow to place everything
-				return stack:get_count()
-			else
-				if inv:get_stack(listname, index):get_count() == 0 then
-					return 1
-				else
-					return 0
-				end
-			end
-		else
-			return 0
-		end
-	elseif listname == "input" then
-		return stack:get_count()
-	elseif listname == "stand" then
-		return 0
-	end
-end]]
-
 
 -- Drop input items of brewing_stand at pos with metadata meta
 local function drop_brewing_stand_items(pos, meta)
@@ -285,27 +234,27 @@ local function drop_brewing_stand_items(pos, meta)
 	local stack = inv:get_stack("fuel", 1)
 	if not stack:is_empty() then
 		local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-		minetest.add_item(p, stack)
+		core.add_item(p, stack)
 	end
 
 	local stack = inv:get_stack("input", 1)
 	if not stack:is_empty() then
 		local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-		minetest.add_item(p, stack)
+		core.add_item(p, stack)
 	end
 
 	for i=1, inv:get_size("stand") do
 		local stack = inv:get_stack("stand", i)
 		if not stack:is_empty() then
 			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-			minetest.add_item(p, stack)
+			core.add_item(p, stack)
 		end
 	end
 end
 
 
 local on_rotate
-if minetest.get_modpath("screwdriver") then
+if core.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
 end
 
@@ -327,65 +276,123 @@ local tiles = {
 
 local function allow_put(pos, listname, index, stack, player)
 	local name = player:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
+	if core.is_protected(pos, name) then
+		core.record_protection_violation(pos, name)
 		return 0
+	elseif listname == "stand" then
+		local meta = core.get_meta(pos)
+		local inv = meta:get_inventory()
+		local def = stack:get_definition()
+		if def and def.groups and (def.groups._mcl_potion or def.groups.bottle or 0) > 0
+				and inv:get_stack(listname, index):is_empty() then
+			return 1
+		end
+		return 0
+	elseif listname == "distr" then
+		local meta = core.get_meta(pos)
+		local inv = meta:get_inventory()
+		local def = stack:get_definition()
+		local fuel_stack = inv:get_stack("fuel", 1)
+		local input_stack = inv:get_stack("input", 1)
+		if def and def.groups and (def.groups._mcl_potion or def.groups.bottle or 0) > 0 then
+			for i=1, inv:get_size("stand") do
+				if inv:get_stack("stand", i):is_empty() then
+					return 1
+				end
+			end
+			return 0
+		elseif not fuel_stack:is_empty() and fuel_stack:item_fits(stack:peek_item()) then
+			return fuel_stack:get_free_space()
+		elseif not input_stack:is_empty() and input_stack:item_fits(stack:peek_item()) then
+			return input_stack:get_free_space()
+		elseif fuel_stack:is_empty() or input_stack:is_empty() then
+			return stack:get_count()
+		end
 	else
 		return stack:get_count()
 	end
 end
 
 local function on_put(pos, listname, index, stack, player)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 	local str = ""
-	local stack
-	local oldparam2 = minetest.get_node(pos).param2
+	local s
+	local oldparam2 = core.get_node(pos).param2
+	if listname == "distr" then
+		local def = stack:get_definition()
+		local fuel_stack = inv:get_stack("fuel", 1)
+		if def and def.groups and (def.groups._mcl_potion or def.groups.bottle or 0) > 0 then
+			for i=1, inv:get_size("stand") do
+				if inv:get_stack("stand", i):is_empty() then
+					inv:set_stack("stand", i, stack)
+					inv:set_stack("distr", 1, ItemStack())
+					break
+				end
+			end
+		elseif not fuel_stack:is_empty() and fuel_stack:item_fits(stack) then
+			inv:add_item("fuel", stack)
+			inv:set_stack("distr", 1, ItemStack())
+		elseif inv:room_for_item("input", stack) then
+			inv:add_item("input", stack)
+			inv:set_stack("distr", 1, ItemStack())
+		elseif inv:room_for_item("fuel", stack) then
+			inv:add_item("fuel", stack)
+			inv:set_stack("distr", 1, ItemStack())
+		end
+	end
 	for i=1, inv:get_size("stand") do
-		stack = inv:get_stack("stand", i)
-		if not stack:is_empty() then
+		s = inv:get_stack("stand", i)
+		if not s:is_empty() then
 			str = str.."1"
 		else str = str.."0"
 		end
 	end
-	minetest.swap_node(pos, {name = "mcl_brewing:stand_"..str, param2 = oldparam2})
-	minetest.get_node_timer(pos):start(1.0)
-	--some code here to enforce only potions getting placed on stands
+	core.swap_node(pos, {name = "mcl_brewing:stand_"..str, param2 = oldparam2})
+	core.get_node_timer(pos):start(1.0)
 end
 
---[[local function after_dig(pos, oldnode, oldmetadata, digger)
-	local meta = minetest.get_meta(pos)
-	meta:from_table(oldmetadata)
-	drop_brewing_stand_items(pos, meta)
-end]]
-
 local function on_destruct(pos)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	drop_brewing_stand_items(pos, meta)
 end
 
 local function allow_take(pos, listname, index, stack, player)
 	local name = player:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
+	if core.is_protected(pos, name) then
+		core.record_protection_violation(pos, name)
 		return 0
 	else
-		if listname == "stand" then
+		local def = stack:get_definition()
+		if listname == "stand" and def and def.groups and (def.groups._mcl_potion or 0) > 0 then
 			awards.unlock(name, "mcl:localBrewery")
 		end
 		return stack:get_count()
 	end
 end
 
+local function allow_move(pos, from_list, from_index, to_list, to_index, count, player)
+	if (from_list == "stand" or to_list == "stand")
+			and (from_list ~= to_list
+				or not core.get_meta(pos):get_inventory():get_stack(to_list, to_index):is_empty())
+			or from_list == "distr" or to_list == "distr" then
+		return 0
+	elseif from_list == "stand" and to_list == "stand" then
+		return 1
+	else
+		return count
+	end
+end
+
 local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
 
 	if math.abs(pos.y - hop_pos.y) > math.abs(pos.x - hop_pos.x) and math.abs(pos.y - hop_pos.y) > math.abs(pos.z - hop_pos.z)
 	then
 		local function filter(stack)
-			return minetest.get_item_group(stack:get_name(), "brewitem") == 1 and
-			       minetest.get_item_group(stack:get_name(), "bottle") == 0
+			return core.get_item_group(stack:get_name(), "brewitem") == 1 and
+			       core.get_item_group(stack:get_name(), "bottle") == 0
 		end
 
 		return inv, "input", mcl_util.select_stack(hop_inv, hop_list, inv, "input", filter, 1)
@@ -398,7 +405,7 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 			return inv, "fuel", stack
 		else
 			local function filter(stack)
-				return minetest.get_item_group(stack:get_name(), "bottle") == 1
+				return core.get_item_group(stack:get_name(), "bottle") == 1
 			end
 			return inv, "stand", mcl_util.select_stack(hop_inv, hop_list, inv, "stand", filter, 1)
 		end
@@ -406,7 +413,7 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 end
 
 local function hoppers_on_try_pull(pos, hop_pos, hop_inv, hop_list)
-	local meta = minetest.get_meta(pos)
+	local meta = core.get_meta(pos)
 	local stand_timer = meta:get_float("stand_timer") or 0
 	if stand_timer > 0 then
 		return nil, nil, nil
@@ -417,7 +424,7 @@ local function hoppers_on_try_pull(pos, hop_pos, hop_inv, hop_list)
 	return inv, "stand", stack
 end
 
-minetest.register_node("mcl_brewing:stand_000", {
+local stand_def = {
 	description = S("Brewing Stand"),
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
@@ -461,23 +468,26 @@ minetest.register_node("mcl_brewing:stand_000", {
 	on_destruct = on_destruct,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
+	allow_metadata_inventory_move = allow_move,
 	on_metadata_inventory_put = on_put,
 	on_metadata_inventory_take = on_put,
+	on_metadata_inventory_move = on_put,
 
 	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
+		local meta = core.get_meta(pos)
 		local inv = meta:get_inventory()
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
+		inv:set_size("distr", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
 
 	on_receive_fields = function(pos, formname, fields, sender)
 		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
+		if core.is_protected(pos, sender_name) then
+			core.record_protection_violation(pos, sender_name)
 			return
 		end
 	end,
@@ -492,577 +502,262 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
 	end,
-})
-minetest.register_node("mcl_brewing:stand_100", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = { pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
+}
+core.register_node("mcl_brewing:stand_000", stand_def)
 
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_100 = table.copy(stand_def)
+stand_def_100._doc_items_create_entry = false
+stand_def_100._doc_items_longdesc = nil
+stand_def_100._doc_items_usagehelp = nil
+stand_def_100.groups = { pickaxey = 1, container = 2,
+	not_in_creative_inventory = 1, not_in_craft_guide = 1 }
+stand_def_100.node_box = {
+	type = "fixed",
+	fixed = {
 
-			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
+		{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
+		{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
+		{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
+		{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-minetest.register_node("mcl_brewing:stand_010", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_100", stand_def_100)
 
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_010 = table.copy(stand_def_100)
+stand_def_010.node_box = {
+	type = "fixed",
+	fixed = {
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
 
-			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
+		{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
+		{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
+		{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
+		{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
+		{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_010", stand_def_010)
 
-minetest.register_node("mcl_brewing:stand_001", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_001 = table.copy(stand_def_100)
+stand_def_001.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, --
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
+		{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
+		{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_001", stand_def_001)
 
-minetest.register_node("mcl_brewing:stand_110", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_110 = table.copy(stand_def_100)
+stand_def_110.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
+		{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
+		{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
+		{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
+		{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
+		{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
 
-			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
+		{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
+		{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
+		{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
+		{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
+		{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_110", stand_def_110)
 
-minetest.register_node("mcl_brewing:stand_101", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_101 = table.copy(stand_def_100)
+stand_def_101.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
+		{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
+		{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
+		{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
+		{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
+		{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
+		{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
+		{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_101", stand_def_101)
 
-minetest.register_node("mcl_brewing:stand_011", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_011 = table.copy(stand_def_100)
+stand_def_011.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
+		{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
+		{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
+		{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
+		{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
+		{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
+		{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
+		{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_011", stand_def_011)
 
-minetest.register_node("mcl_brewing:stand_111", {
-	description = S("Brewing Stand"),
-	_doc_items_create_entry = false,
-	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container = 2, not_in_creative_inventory = 1, not_in_craft_guide = 1},
-	tiles = tiles,
-	use_texture_alpha = "clip",
-	drop = "mcl_brewing:stand",
-	paramtype = "light",
-	sunlight_propagates = true,
-	is_ground_content = false,
-	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
-			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
-			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
-			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+local stand_def_111 = table.copy(stand_def_100)
+stand_def_111.node_box = {
+	type = "fixed",
+	fixed = {
+		{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
+		{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+		{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+		{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
+		{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
+		{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
+		{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
+		{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
+		{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
 
-			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
-			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
-			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
-			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+		{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+		{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+		{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+		{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
 
-			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
+		{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
+		{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
+		{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
+		{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
+		{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
 
-			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
-			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
-			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
-			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+		{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+		{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+		{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+		{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
+		{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
+		{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
-			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
-			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
-			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
-		}
-	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.5,
-	on_destruct = on_destruct,
-	allow_metadata_inventory_take = allow_take,
-	allow_metadata_inventory_put = allow_put,
-	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_put,
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		inv:set_size("input", 1)
-		inv:set_size("fuel", 1)
-		inv:set_size("stand", 3)
-		local form = brewing_formspec
-		meta:set_string("formspec", form)
-	end,
-	on_receive_fields = function(pos, formname, fields, sender)
-		local sender_name = sender:get_player_name()
-		if minetest.is_protected(pos, sender_name) then
-			minetest.record_protection_violation(pos, sender_name)
-			return
-		end
-	end,
-	on_timer = brewing_stand_timer,
-	on_rotate = on_rotate,
-	_mcl_hoppers_on_try_push = hoppers_on_try_push,
-	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-	_mcl_hoppers_on_after_pull = function(pos)
-		on_put(pos, nil, nil, nil, nil)
-	end,
-})
+		{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+		{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+		{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
+	}
+}
+core.register_node("mcl_brewing:stand_111", stand_def_111)
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_brewing:stand_000",
 	recipe = {
 		{ "", "mcl_mobitems:blaze_rod", "" },
@@ -1070,9 +765,9 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_alias("mcl_brewing:stand", "mcl_brewing:stand_000")
+core.register_alias("mcl_brewing:stand", "mcl_brewing:stand_000")
 
-if minetest.get_modpath("doc") then
+if core.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_001")
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_010")
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_011")
@@ -1082,7 +777,7 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_111")
 end
 
-if minetest.get_modpath("mesecons_mvps") then
+if core.get_modpath("mesecons_mvps") then
 	for _, s in ipairs({"000", "001", "010", "011", "100", "101", "110", "111"}) do
 		mesecon.register_mvps_stopper("mcl_brewing:stand_" .. s)
 	end

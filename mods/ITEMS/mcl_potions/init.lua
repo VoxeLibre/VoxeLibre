@@ -263,7 +263,7 @@ minetest.register_craftitem("mcl_potions:water", {
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("Water bottles can be used to fill cauldrons. Drinking water has no effect."),
 	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron."),
-	stack_max = 1,
+	stack_max = 16,
 	inventory_image = potion_image("#0022FF"),
 	wield_image = potion_image("#0022FF"),
 	groups = {brewitem=1, food=3, can_eat_when_full=1, water_bottle=1, bottle=1},
@@ -280,7 +280,7 @@ minetest.register_craftitem("mcl_potions:river_water", {
 	_doc_items_longdesc = S("River water bottles can be used to fill cauldrons. Drinking it has no effect."),
 	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron."),
 
-	stack_max = 1,
+	stack_max = 16,
 	inventory_image = potion_image("#0044FF"),
 	wield_image = potion_image("#0044FF"),
 	groups = {brewitem=1, food=3, can_eat_when_full=1, water_bottle=1, bottle=1},
