@@ -169,9 +169,9 @@ function findbiome.find_biome(pos, biomes, res, checks)
 						if spawn_y then
 							spawn_pos = vector.new(spos.x, spawn_y, spos.z)
 						elseif not good_spawn_height then
-							spawn_pos = vector.new(spos.x, spawn_y, spos.z)
+							spawn_pos = vector.new(spos.x, spos.y, spos.z)
 						elseif attempt >= 2 then
-							spawn_pos = vector.new(spos.x, spawn_y, spos.z)
+							spawn_pos = vector.new(spos.x, spos.y, spos.z)
 						end
 						if spawn_pos then
 							local _,outside = adjust_pos_to_biome_limits(spawn_pos, biome_id)
