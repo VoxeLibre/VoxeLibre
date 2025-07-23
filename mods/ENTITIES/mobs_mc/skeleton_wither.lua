@@ -33,8 +33,8 @@ mcl_mobs.register_mob("mobs_mc:witherskeleton", {
 	textures = {
 		{
 			"mobs_mc_empty.png", -- armor
-			"default_tool_stonesword.png", -- sword
-			"mobs_mc_wither_skeleton.png", -- wither skeleton
+			"vl_deepslate_tools_deepslatesword.png", -- sword
+			"mobs_mc_skeleton.png^[brighten^[invert:rgb", -- wither skeleton
 		}
 	},
 	visual_size = {x=1.2, y=1.2},
