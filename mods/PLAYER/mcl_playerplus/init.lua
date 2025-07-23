@@ -755,7 +755,8 @@ minetest.register_on_punchplayer(function(player, hitter, time_from_last_punch, 
 		local weapon = hitter:get_wielded_item()
 		local player_pos = player:get_pos()
 		local hitter_pos = hitter:get_pos()
-		if vector.distance(player_pos, hitter_pos) > (weapon:get_definition().range or 3) then
+		-- 0.6 correction factor below is for the difference between player hitbox position and player object origin
+		if (vector.distance(player_pos, hitter_pos) - 0.6) > (weapon:get_definition().range or 3) then
 			damage = 0
 			return damage
 		end
