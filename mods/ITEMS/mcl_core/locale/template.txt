@@ -195,6 +195,7 @@ Water interacts with lava in various ways:=
 Flowing Lava=
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=
 Lava Source=
+Lava=
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=
 Lava interacts with water various ways:=
 • When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=

@@ -33,7 +33,8 @@ Netherite Ingot=Netherittbarre
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=
 Nether Brick=Netherteglstein
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Netherteglstein er den viktigste håndverksingrediensen for å lage nethertegl og nethergjerder.
-##[ nether_wart.lua ]##
+Nether Lava Source=Netherlavakilde
+Flowing Nether Lava=Rennende netherlava
 Premature Nether Wart (Stage 1)=Umoden nethervorte (Stadie 1)
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=En umoden nethervorte har nylig blitt plantet på sjelsand. Nethervorten vokser sakte på sjelsand over 4 stadier (andre og tredje stadie ser identiske ut). Selv om nethervorten hører hjemme i Nether, vokser den i alle dimensjoner.
 Premature Nether Wart (Stage 2)=Umoden nethervorte (Stadie 2)
@@ -44,9 +45,6 @@ Nether Wart=Nethervorte
 Grows on soul sand=Vokser på sjelesand
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=Nethervorter er planter fra Nether. De kan plantes på sjelsand og vokser over 4 stadier.
 Place this item on soul sand to plant it and watch it grow.=Plasser denne gjenstanden på sjelsand for å plante den og se den vokse.
-##[ lava.lua ]##
-Nether Lava Source=Netherlavakilde
-Flowing Nether Lava=Rennende netherlava
 
 
 ##### not used anymore #####

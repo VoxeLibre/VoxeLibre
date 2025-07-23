@@ -1,5 +1,8 @@
 # textdomain: mcl_copper
-##[ nodes.lua ]##
+Copper Ingot=Kupferbarren
+Molten Raw Copper. It is used to craft blocks.=Geschmolzenes Rohkupfer. Es wird verwendet, um Blöcke herzustellen. 
+Raw Copper=Rohkupfer
+Raw Copper. Mine a Copper Ore to get it.=Bauen sie ein Kupfererz ab, um es zu erhalten.
 Copper Ore=Kupfererz
 Some copper contained in stone, it is pretty common and can be found below sea level.=Stein, in dem etwas Kupfer enthalten ist. Es ist ziemlich häufig und kann unter dem Meeresspiegel gefunden werden.
 Block of Raw Copper=Rohkupferblock
@@ -52,8 +55,3 @@ Stairs of Weathered Cut Copper=Verwitterte geschnittene Kupfertreppe
 Waxed Stairs of Weathered Cut Copper=Gewachste verwitterte geschnittene Kupfertreppe
 Stairs of Oxidized Cut Copper=Oxidierte geschnittene Kupfertreppe
 Waxed Stairs of Oxidized Cut Copper=Gewachste oxidierte geschnittene Kupfertreppe
-##[ items.lua ]##
-Copper Ingot=Kupferbarren
-Molten Raw Copper. It is used to craft blocks.=Geschmolzenes Rohkupfer. Es wird verwendet, um Blöcke herzustellen. 
-Raw Copper=Rohkupfer
-Raw Copper. Mine a Copper Ore to get it.=Bauen sie ein Kupfererz ab, um es zu erhalten.

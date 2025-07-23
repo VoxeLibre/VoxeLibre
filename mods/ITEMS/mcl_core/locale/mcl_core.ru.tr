@@ -195,6 +195,7 @@ Water interacts with lava in various ways:=Вода взаимодействуе
 Flowing Lava=Текущая лава
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=Источник лавы поджигает пару воздушных блоков над ним, если они расположены рядом с воспламенимым блоком.
 Lava Source=Источник лавы
+Lava=
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=Лава горячая и довольно опасная. Не прикасайтесь к ней, это нанесет вам урон, и выплыть из неё сложно.
 Lava interacts with water various ways:=Лава взаимодействует с водой по-разному:
 • When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• Когда источник лавы прямо под водой, либо вода сбоку от него, источник лавы превращается в обсидиан.

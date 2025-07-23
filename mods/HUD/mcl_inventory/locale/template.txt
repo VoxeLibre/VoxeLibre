@@ -1,5 +1,4 @@
 # textdomain: mcl_inventory
-##[ creative.lua ]##
 Building Blocks=
 Decoration Blocks=
 Redstone=
@@ -19,6 +18,5 @@ Advancements=
 Switch stack size=
 Select player skin=
 @1 / @2=
-##[ survival.lua ]##
 Crafting=
 Achievements=

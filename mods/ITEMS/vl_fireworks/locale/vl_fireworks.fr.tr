@@ -1,9 +1,7 @@
 # textdomain: vl_fireworks
-##[ star.lua ]##
+Flight Duration:=Durée de vol :
+Firework Rocket=Fusée
 Firework Star=
 A firework star is the key component of a firework rocket which is responsible for the visible explosion.=
 Generic Firework Star=
 Size:=
-##[ rockets.lua ]##
-Flight Duration:=Durée de vol :
-Firework Rocket=Fusée

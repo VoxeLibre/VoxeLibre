@@ -1,41 +1,68 @@
 # textdomain: mobs_mc
-##[ axolotl.lua ]##
 Axolotl=ウーパールーパー
-##[ bat.lua ]##
 Bat=コウモリ
-##[ rabbit.lua ]##
-Rabbit=ウサギ
-Killer Bunny=殺人ウサギ
-##[ chicken.lua ]##
+Blaze=ブレイズ
 Chicken=ニワトリ
-##[ cow+mooshroom.lua ]##
+Cod=タラ
 Cow=ウシ
 Mooshroom=ムーシュルーム
-##[ horse.lua ]##
+Dolphin=イルカ
+Ender Dragon=エンダードラゴン
+Endermite=エンダーマイト
+Ghast=ガスト
+Glow Squid=
+Guardian=ガーディアン
+Elder Guardian=エルダーガーディアン
+Hoglin=
+Zoglin=
+Baby hoglin=
 Horse=ウマ
 Skeleton Horse=スケルトンホース
 Zombie Horse=ゾンビホース
 Donkey=ロバ
 Mule=ラバ
-##[ llama.lua ]##
+Iron Golem=アイアンゴーレム
 Llama=ラマ
-##[ ocelot.lua ]##
+ - Strength @1=
 Ocelot=ヤマネコ
 Cat=
-##[ parrot.lua ]##
 Parrot=オウム
-##[ pig.lua ]##
 Pig=ブタ
-##[ polar_bear.lua ]##
+Piglin=
+Sword Piglin=
+Zombie Piglin=ゾンビピッグマン
+Baby Zombie Piglin=
+Piglin Brute=
+Pillager=ピリジャー
 Polar Bear=シロクマ
-##[ sheep.lua ]##
+Rabbit=ウサギ
+Killer Bunny=殺人ウサギ
+Rover=
+Salmon=サケ
 Sheep=ヒツジ
-##[ wolf.lua ]##
-Wolf=オオカミ
-Dog=
-##[ squid.lua ]##
+Shulker=シュルカー
+Silverfish=シルバーフィッシュ
+Skeleton=スケルトン
+Stray=ストレイ
+Wither Skeleton=ウィザースケルトン
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=マグマキューブ
+Slime=スライム
+Snow Golem=スノーゴーレム
+Spider=クモ
+Cave Spider=洞窟グモ
 Squid=イカ
-##[ villager.lua ]##
+Stalker=
+Overloaded Stalker=
+Strider=
+Baby Strider=
+Tropical fish=クマノミ
+Vex=ヴェックス
 Novice=
 Apprentice=
 Journeyman=
@@ -57,92 +84,18 @@ Cleric=聖職者
 Mason=
 Nitwit=求職者
 Villager=村人
-##[ pillager.lua ]##
-Pillager=ピリジャー
-##[ villager_evoker.lua ]##
 Evoker=エヴォーカー
-##[ villager_vindicator.lua ]##
-Vindicator=ヴィンディケーター
-##[ villager_zombie.lua ]##
-Zombie Villager=村人ゾンビ
-##[ witch.lua ]##
-Witch=魔女
-##[ blaze.lua ]##
-Blaze=ブレイズ
-##[ ender_dragon.lua ]##
-Ender Dragon=エンダードラゴン
-##[ endermite.lua ]##
-Endermite=エンダーマイト
-##[ villager_illusioner.lua ]##
 Illusioner=イリュージョナー
-##[ ghast.lua ]##
-Ghast=ガスト
-##[ guardian.lua ]##
-Guardian=ガーディアン
-##[ guardian_elder.lua ]##
-Elder Guardian=エルダーガーディアン
-##[ snowman.lua ]##
-Snow Golem=スノーゴーレム
-##[ iron_golem.lua ]##
-Iron Golem=アイアンゴーレム
-##[ rover.lua ]##
-Rover=
-##[ shulker.lua ]##
-Shulker=シュルカー
-##[ silverfish.lua ]##
-Silverfish=シルバーフィッシュ
-##[ skeleton+stray.lua ]##
-Skeleton=スケルトン
-Stray=ストレイ
-##[ skeleton_wither.lua ]##
-Wither Skeleton=ウィザースケルトン
-##[ stalker.lua ]##
-Stalker=
-Overloaded Stalker=
-##[ zombie.lua ]##
+Vindicator=ヴィンディケーター
+Zombie Villager=村人ゾンビ
+Witch=魔女
+Wither=ウィザー
+Wolf=オオカミ
+Dog=
 Zombie=ゾンビ
 Baby Zombie=
 Husk=ハスク
 Baby Husk=
-##[ slime+magma_cube.lua ]##
-Slime - big=
-Slime - small=
-Slime - tiny=
-Magma Cube - big=
-Magma Cube - small=
-Magma Cube - tiny=
-Magma Cube=マグマキューブ
-Slime=スライム
-##[ spider.lua ]##
-Spider=クモ
-Cave Spider=洞窟グモ
-##[ vex.lua ]##
-Vex=ヴェックス
-##[ wither.lua ]##
-Wither=ウィザー
-##[ cod.lua ]##
-Cod=タラ
-##[ salmon.lua ]##
-Salmon=サケ
-##[ tropical_fish.lua ]##
-Tropical fish=クマノミ
-##[ dolphin.lua ]##
-Dolphin=イルカ
-##[ glow_squid.lua ]##
-Glow Squid=
-##[ piglin.lua ]##
-Piglin=
-Sword Piglin=
-Zombie Piglin=ゾンビピッグマン
-Baby Zombie Piglin=
-Piglin Brute=
-##[ hoglin+zoglin.lua ]##
-Hoglin=
-Zoglin=
-Baby hoglin=
-##[ strider.lua ]##
-Strider=
-Baby Strider=
 
 
 ##### not used anymore #####

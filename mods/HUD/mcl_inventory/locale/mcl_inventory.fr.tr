@@ -1,5 +1,4 @@
 # textdomain: mcl_inventory
-##[ creative.lua ]##
 Building Blocks=Blocs de construction
 Decoration Blocks=Blocs de décoration
 Redstone=Redstone
@@ -19,7 +18,6 @@ Advancements=Progrès
 Switch stack size=Changer la quantité maximale par pile
 Select player skin=Sélectionnez l'apparence du joueur
 @1 / @2=
-##[ survival.lua ]##
 Crafting=Artisanat
 Achievements=
 

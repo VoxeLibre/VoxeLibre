@@ -1,5 +1,4 @@
 # textdomain: mcl_inventory
-##[ creative.lua ]##
 Building Blocks=Bloques de construcción
 Decoration Blocks=Bloques de decoración
 Redstone=Pedra Vermella
@@ -20,7 +19,6 @@ Switch stack size=Cambiar tamaño de pila
 Select player skin=Selecciona a pel do xogador
 ##TODO: fuzzy matched - verify and remove the comment
 @1 / @2=@1/@2
-##[ survival.lua ]##
 Crafting=Elaboración
 Achievements=Logros
 

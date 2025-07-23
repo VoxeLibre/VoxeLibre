@@ -1,20 +1,45 @@
 # textdomain: mcl_armor
+Upgrade:=
+@1 Armor Trim=
 This is a piece of equippable armor which reduces the amount of damage you receive.=Это часть надеваемой брони, уменьшающая получаемый вами урон.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Чтобы надеть, поместите в соответствующий слот брони в вашем инвентаря.
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
-##[ register.lua ]##
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+Leather Cap=Кожаный шлем
+Leather Tunic=Кожаная кираса
+Leather Pants=Кожаные поножи
+Leather Boots=Кожаные ботинки
+Golden Helmet=Золотой шлем
+Golden Chestplate=Золотая кираса
+Golden Leggings=Золотые поножи
+Golden Boots=Золотые ботинки
+Chainmail Helmet=
+Chainmail Chestplate=
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=Железный шлем
+Iron Chestplate=Железная кираса
+Iron Leggings=Железные поножи
+Iron Boots=Железные ботинки
+Diamond Helmet=Алмазный шлем
+Diamond Chestplate=Алмазная кираса
+Diamond Leggings=Алмазные поножи
+Diamond Boots=Алмазные ботинки
+Netherite Helmet=Незеритовый шлем
+Netherite Chestplate=Незеритовая кираса
+Netherite Leggings=Незеритовые поножи
+Netherite Boots=Незеритовые ботинки
 Projectile Protection=Защита от снарядов
 Reduces projectile damage.=Уменьшает урон от летящих снарядов.
 Blast Protection=Взрывоустойчивость
@@ -33,36 +58,15 @@ Item cannot be removed from armor slots except due to death, breaking or in Crea
 Thorns=Шипы
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Отражает немного полученного урона при ударе ценой снижения прочности при срабатывании.
 Elytra=Элитра
-##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=
 
 
 ##### not used anymore #####
 
-Leather Cap=Кожаный шлем
-Iron Helmet=Железный шлем
-Golden Helmet=Золотой шлем
-Diamond Helmet=Алмазный шлем
 Chain Helmet=Кольчужный шлем
-Netherite Helmet=Незеритовый шлем
-Leather Tunic=Кожаная кираса
-Iron Chestplate=Железная кираса
-Golden Chestplate=Золотая кираса
-Diamond Chestplate=Алмазная кираса
 Chain Chestplate=Кольчуга
-Netherite Chestplate=Незеритовая кираса
-Leather Pants=Кожаные поножи
-Iron Leggings=Железные поножи
-Golden Leggings=Золотые поножи
-Diamond Leggings=Алмазные поножи
 Chain Leggings=Кольчужные поножи
-Netherite Leggings=Незеритовые поножи
-Leather Boots=Кожаные ботинки
-Iron Boots=Железные ботинки
-Golden Boots=Золотые ботинки
-Diamond Boots=Алмазные ботинки
 Chain Boots=Кольчужные ботинки
-Netherite Boots=Незеритовые ботинки
 Shooting consumes no regular arrows.=Для стрельбы не требуются обычные стрелы.
 Shoot 3 arrows at the cost of one.=Стреляет за раз 3 стрелами тратя только одну.

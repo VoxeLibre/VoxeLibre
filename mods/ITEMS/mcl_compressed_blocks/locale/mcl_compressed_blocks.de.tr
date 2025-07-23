@@ -1,5 +1,4 @@
 # textdomain: mcl_compressed_blocks
-##[ nodes.lua ]##
 Compressed Cobblestone=Verdichtetes Kopfsteinpflaster
 Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=Verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
 Double Compressed Cobblestone=Doppelt verdichtetes Kopfsteinpflaster

@@ -195,6 +195,7 @@ Water interacts with lava in various ways:=Vann samhandler med lava på forskjel
 Flowing Lava=Rennende lava
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=En lavakilde setter fyr på et par luftblokker over når de er ved siden av en brennbar blokk.
 Lava Source=Lavakilde
+Lava=
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=Lava er varm og ganske farlig. Ikke rør det, det vil gjøre mye skade og det er vanskelig å komme seg ut.
 Lava interacts with water various ways:=Lava samhandler med vann på forskjellige måter:
 • When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• Når en lavakilde er rett under eller horisontalt ved siden av vann, blir lavaen til obsidian.

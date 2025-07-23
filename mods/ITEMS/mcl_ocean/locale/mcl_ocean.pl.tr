@@ -1,14 +1,4 @@
 # textdomain: mcl_ocean
-##[ prismarine.lua ]##
-Sea Lantern=Latarnia morska
-Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Latarnie morskie to dekoracyjne źródła światła, które wyglądają bardzo dobrze pod wodą, ale mogą być umieszczone gdziekolwiek.
-Prismarine=Pryzmaryn
-Prismarine is used as a building block. It slowly changes its color.=Pryzmaryn jest blokiem budowlanym. Powoli zmienia on swój kolor.
-Prismarine Bricks=Pryzmarynowe cegły
-Dark Prismarine=Ciemny pryzmaryn
-Prismarine Crystals=Pryzmarynowe kryształy
-Prismarine Shard=Pryzmarynowe odłamki
-##[ corals.lua ]##
 Tube Coral Block=Blok rurkowatego koralowca
 Dead Tube Coral Block=Martwy blok rurkowatego koralowca
 Tube Coral=Rurkowaty koralowiec
@@ -44,21 +34,26 @@ Corals grow on top of coral blocks and need to be inside a water source to survi
 Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Wachlarz koralowca rośnie na blokach koralowca i musi być wewnątrz źródła wody aby przeżyć. Bez wody obumiera zarówno on jak i blok koralowca pod nim.
 Needs water to live=Potrzebuje wody do życia.
 Grows on coral block of same species=Rośnie na blokach koralowca tego samego gatunku.
-##[ seagrass.lua ]##
-Grows in water on dirt, sand, gravel=Rośnie w wodzie na ziemi, piasku i żwirze.
-Seagrass=Trawa morska
-Seagrass grows inside water on top of dirt, sand or gravel.=Trawa morska rośnie w wodzie na ziemi, piasku i żwirze.
-##[ kelp.lua ]##
 Kelp=Wodorosty
 Kelp grows inside water on top of dirt, sand or gravel.=Wodorosty rosną w wodzie na ziemi, piasku i żwirze.
+Grows in water on dirt, sand, gravel=Rośnie w wodzie na ziemi, piasku i żwirze.
 Dried Kelp=Suszone wodorosty
 Dried kelp is a food item.=Suszone wodorosty jest przedmiotem do jedzenia.
 Dried Kelp Block=Blok suszonych wodorostów
 A decorative block that serves as a great furnace fuel.=Blok dekoracyjny, który świetnie sprawdza się jako paliwo do pieca.
-##[ sea_pickle.lua ]##
+Sea Lantern=Latarnia morska
+Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Latarnie morskie to dekoracyjne źródła światła, które wyglądają bardzo dobrze pod wodą, ale mogą być umieszczone gdziekolwiek.
+Prismarine=Pryzmaryn
+Prismarine is used as a building block. It slowly changes its color.=Pryzmaryn jest blokiem budowlanym. Powoli zmienia on swój kolor.
+Prismarine Bricks=Pryzmarynowe cegły
+Dark Prismarine=Ciemny pryzmaryn
+Prismarine Crystals=Pryzmarynowe kryształy
+Prismarine Shard=Pryzmarynowe odłamki
 Sea Pickle=Iskrzyłuda
 Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Iskrzyłuda rośnie na martwych blokach mózgowatego koralowca i jest źródłem światła pod wodą.
 It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Może być postawiona tylko na blokach mózgowatego koralowca. Postawienie iskrzyłuda na innej iskrzyłudzie sprawi, że się powiększy i będzie jaśniejsza.
 Glows in the water=Świeci w wodzie
 4 possible sizes=4 możliwe wielkości
 Grows on dead brain coral block=Rośnie na martwych blokach mózgowatego koralowca
+Seagrass=Trawa morska
+Seagrass grows inside water on top of dirt, sand or gravel.=Trawa morska rośnie w wodzie na ziemi, piasku i żwirze.

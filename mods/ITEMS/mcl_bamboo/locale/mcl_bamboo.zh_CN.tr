@@ -1,12 +1,10 @@
 # textdomain: mcl_bamboo
 ### bamboo_base.lua ###
-##[ bamboo_base.lua ]##
 Bamboo=竹子
 Bamboo Block=竹子方块
 Stripped Bamboo Block=去皮竹子方块
 Bamboo Plank=竹木板
 Bamboo Mosaic Plank=竹制马赛克木板
-##[ bamboo_items.lua ]##
 Bamboo Door=竹门
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=木质门是高度为2个方块的障碍物，可以通过手动以及红石信号来打开或关闭。
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=要打开或关闭木质门，可右键点击它或向其下半部分提供红石信号。 

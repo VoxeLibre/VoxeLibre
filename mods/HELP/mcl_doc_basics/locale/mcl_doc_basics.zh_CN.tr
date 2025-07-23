@@ -422,7 +422,6 @@ The values for X, Y and Z work like this:=X、Y和Z的值变化规律如下：
 • Follow the sun, then go left: Z decreases=• 顺着太阳方向走，然后向左走：Z值会减少
 • The side length of a full cube is 1=• 一个完整立方体的边长为1
 You can view your current position in the debug screen (open with [F5]).=你可以在调试屏幕（通过按下[F5]键打开）中查看你当前的位置。
-##[ mcl_extension.lua ]##
 # MCL2 extensions
 # 扩展内容 MCL2
 Creative Mode=创造模式 

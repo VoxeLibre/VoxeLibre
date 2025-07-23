@@ -1,5 +1,4 @@
 # textdomain: mcl_tt
-##[ snippets_base.lua ]##
 Painfully slow=极其缓慢
 Very slow=很慢
 Slow=慢
@@ -31,7 +30,6 @@ Climbable=可攀爬的
 Slippery=滑的
 Bouncy (@1%)=有弹性（@1%）
 Luminance: @1=亮度：@1
-##[ snippets_mcl.lua ]##
 Head armor=头盔
 Torso armor=胸甲
 Legs armor=护腿

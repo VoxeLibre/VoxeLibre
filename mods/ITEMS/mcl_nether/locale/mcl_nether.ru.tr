@@ -33,7 +33,8 @@ Netherite Ingot=Незеритовый слиток
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=
 Nether Brick=Адский кирпич
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Адские кирпичи это главный материал для создания блоков адских кирпичей.
-##[ nether_wart.lua ]##
+Nether Lava Source=Адский источник лавы
+Flowing Nether Lava=Текущая адская лава
 Premature Nether Wart (Stage 1)=Саженец адского нароста (стадия 1)
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Саженец адского нароста был недавно посажен на песке душ. Его медленный рост происходит 4 стадии (вторая и третья стадии неотличимы на глаз). Хотя домом адского нароста является Ад, он растёт в любом измерении.
 Premature Nether Wart (Stage 2)=Саженец адского нароста (стадия 2)
@@ -44,9 +45,6 @@ Nether Wart=Адский нарост
 Grows on soul sand=Растёт на песке душ
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=Адские наросты это растения, домом которых является Незер. Их можно высаживать на песке душ, и они растут в 4 стадии.
 Place this item on soul sand to plant it and watch it grow.=Поместите этот предмет на песок душ, чтобы посадить его для выращивания.
-##[ lava.lua ]##
-Nether Lava Source=Адский источник лавы
-Flowing Nether Lava=Текущая адская лава
 
 
 ##### not used anymore #####

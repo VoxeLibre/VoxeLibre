@@ -1,41 +1,68 @@
 # textdomain: mobs_mc
-##[ axolotl.lua ]##
 Axolotl=Axolotl
-##[ bat.lua ]##
 Bat=Pipistrello
-##[ rabbit.lua ]##
-Rabbit=Coniglio
-Killer Bunny=Coniglio Assassino
-##[ chicken.lua ]##
+Blaze=Blaze
 Chicken=Gallina
-##[ cow+mooshroom.lua ]##
+Cod=Merluzzo
 Cow=Mucca
 Mooshroom=Mooshroom
-##[ horse.lua ]##
+Dolphin=Delfino
+Ender Dragon=Enderdrago
+Endermite=Endermite
+Ghast=Ghast
+Glow Squid=Calamaro luminescente
+Guardian=Guardiano
+Elder Guardian=Guardiano Antico
+Hoglin=Hoglin
+Zoglin=Zoglin
+Baby hoglin=Hoglin Bambino
 Horse=Cavallo
 Skeleton Horse=Cavallo Scheletro
 Zombie Horse=Cavallo Zombi
 Donkey=Asino
 Mule=Mulo
-##[ llama.lua ]##
+Iron Golem=Golem di Ferro
 Llama=Lama
-##[ ocelot.lua ]##
+ - Strength @1=
 Ocelot=Ocelot
 Cat=Gatto
-##[ parrot.lua ]##
 Parrot=Pappagallo
-##[ pig.lua ]##
 Pig=Maiale
-##[ polar_bear.lua ]##
+Piglin=Piglin
+Sword Piglin=Piglin Spadaccino
+Zombie Piglin=Piglin Zombi
+Baby Zombie Piglin=Piglin Zombi Bambino
+Piglin Brute=Piglin Bruto
+Pillager=Predone
 Polar Bear=Orso Polare
-##[ sheep.lua ]##
+Rabbit=Coniglio
+Killer Bunny=Coniglio Assassino
+Rover=
+Salmon=Salmone
 Sheep=Pecora
-##[ wolf.lua ]##
-Wolf=Lupo
-Dog=
-##[ squid.lua ]##
+Shulker=Shulker
+Silverfish=Pesciolino d'argento
+Skeleton=Scheletro
+Stray=Errante
+Wither Skeleton=Scheletro Wither
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=Cubo di Magma
+Slime=Slime
+Snow Golem=Golem di Neve
+Spider=Ragno
+Cave Spider=Ragno delle Caverne
 Squid=Calamaro
-##[ villager.lua ]##
+Stalker=
+Overloaded Stalker=
+Strider=Strider
+Baby Strider=
+Tropical fish=Pesce pagliaccio
+Vex=Vessante
 Novice=
 Apprentice=
 Journeyman=
@@ -57,92 +84,18 @@ Cleric=Chierico
 Mason=
 Nitwit=Fesso
 Villager=Villico
-##[ pillager.lua ]##
-Pillager=Predone
-##[ villager_evoker.lua ]##
 Evoker=Evocatore
-##[ villager_vindicator.lua ]##
-Vindicator=Vendicatore
-##[ villager_zombie.lua ]##
-Zombie Villager=Villico Zombi
-##[ witch.lua ]##
-Witch=Strega
-##[ blaze.lua ]##
-Blaze=Blaze
-##[ ender_dragon.lua ]##
-Ender Dragon=Enderdrago
-##[ endermite.lua ]##
-Endermite=Endermite
-##[ villager_illusioner.lua ]##
 Illusioner=Illusionista
-##[ ghast.lua ]##
-Ghast=Ghast
-##[ guardian.lua ]##
-Guardian=Guardiano
-##[ guardian_elder.lua ]##
-Elder Guardian=Guardiano Antico
-##[ snowman.lua ]##
-Snow Golem=Golem di Neve
-##[ iron_golem.lua ]##
-Iron Golem=Golem di Ferro
-##[ rover.lua ]##
-Rover=
-##[ shulker.lua ]##
-Shulker=Shulker
-##[ silverfish.lua ]##
-Silverfish=Pesciolino d'argento
-##[ skeleton+stray.lua ]##
-Skeleton=Scheletro
-Stray=Errante
-##[ skeleton_wither.lua ]##
-Wither Skeleton=Scheletro Wither
-##[ stalker.lua ]##
-Stalker=
-Overloaded Stalker=
-##[ zombie.lua ]##
+Vindicator=Vendicatore
+Zombie Villager=Villico Zombi
+Witch=Strega
+Wither=Wither
+Wolf=Lupo
+Dog=
 Zombie=Zombi
 Baby Zombie=Zombi Bambino
 Husk=Zombi Secco
 Baby Husk=Zombi Secco Bambino
-##[ slime+magma_cube.lua ]##
-Slime - big=
-Slime - small=
-Slime - tiny=
-Magma Cube - big=
-Magma Cube - small=
-Magma Cube - tiny=
-Magma Cube=Cubo di Magma
-Slime=Slime
-##[ spider.lua ]##
-Spider=Ragno
-Cave Spider=Ragno delle Caverne
-##[ vex.lua ]##
-Vex=Vessante
-##[ wither.lua ]##
-Wither=Wither
-##[ cod.lua ]##
-Cod=Merluzzo
-##[ salmon.lua ]##
-Salmon=Salmone
-##[ tropical_fish.lua ]##
-Tropical fish=Pesce pagliaccio
-##[ dolphin.lua ]##
-Dolphin=Delfino
-##[ glow_squid.lua ]##
-Glow Squid=Calamaro luminescente
-##[ piglin.lua ]##
-Piglin=Piglin
-Sword Piglin=Piglin Spadaccino
-Zombie Piglin=Piglin Zombi
-Baby Zombie Piglin=Piglin Zombi Bambino
-Piglin Brute=Piglin Bruto
-##[ hoglin+zoglin.lua ]##
-Hoglin=Hoglin
-Zoglin=Zoglin
-Baby hoglin=Hoglin Bambino
-##[ strider.lua ]##
-Strider=Strider
-Baby Strider=
 
 
 ##### not used anymore #####

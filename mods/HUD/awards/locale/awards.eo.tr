@@ -1,5 +1,4 @@
 # textdomain:awards
-##[ api.lua ]##
 @1 has made the advancement @2=
 Secret Advancement Made:=
 Goal Completed:=Celo plenumita:
@@ -22,7 +21,6 @@ You've disabled awards. Type /awards enable to reenable.=
 You have not gotten any awards.=Vi ne ricevis ian ajn premiojn.
 @1’s awards:=@1’s premiojn:
 @1: @2=@1: @2
-##[ chat_commands.lua ]##
 [c|clear|disable|enable]=
 Show, clear, disable or enable your advancements.=
 You have enabled your advancements.=
@@ -38,9 +36,7 @@ Invalid action.=Nevalida ago.
 Player is not online.=Ludanto ne enreta.
 Done.=Preta.
 Advancement “@1” does not exist.=
-##[ sfinv.lua ]##
 Awards=Premioj
-##[ triggers.lua ]##
 @1/@2 dug=
 Mine blocks: @1×@2=
 Mine a block: @1=

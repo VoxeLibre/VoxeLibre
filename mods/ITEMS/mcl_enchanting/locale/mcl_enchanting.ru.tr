@@ -1,40 +1,5 @@
 # textdomain: mcl_enchanting
 ### enchantments.lua ###
-Enchant an item=Зачаровать предмет
-<player> <enchantment> [<level>]=<игрок> <зачарование> [<уровень>]
-Usage: /enchant <player> <enchantment> [<level>]=Использование: /enchant <игрок> <зачарование> [<уровень>]
-Player '@1' cannot be found.=Не удалось найти игрока '@1'.
-There is no such enchantment '@1'.=Нет такого зачарования: '@1'.
-The target doesn't hold an item.=Цель не держит предмета.
-The selected enchantment can't be added to the target item.=Выбранное зачарование не может быть добавлено к целевому предмету.
-### init.lua ###
-'@1' is not a valid number='@1' не является допустимым числом
-The number you have entered (@1) is too big, it must be at most @2.=Число, которое вы задали (@1), слишком велико, оно должно быть максимум @2.
-The number you have entered (@1) is too small, it must be at least @2.=Число, которое вы задали (@1), слишком мало, оно должно быть минимум @2.
-@1 can't be combined with @2.=@1 нельзя сочетать с @2.
-Enchanting succeded.=Зачарование выполнено.
-Forcefully enchant an item=Принудительно зачаровать предмет
-Usage: /forceenchant <player> <enchantment> [<level>]=Использование: /forceenchant <игрок> <зачарование> [<уровень>]
-The target item is not enchantable.=Целевой предмет нельзя зачаровать.
-'@1' is not a valid number.='@1' не является допустимым числом.
-Enchanted Book=Зачарованная книга
-Enchanting Table=Стол зачаровывания
-Spend experience, and lapis to enchant various items.=Зачаровывает предметы за опыт и лазурит
-Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Стол зачаровывания позволяет зачаровывать броню, инструменты, оружие и книги разными способностями. Но ценой опыта и лазурита.
-Rightclick the Enchanting Table to open the enchanting menu.=Правый клик по столу зачаровывания, чтобы открыть меню зачаровывания.
-Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Поместите инстумент, броню, оружие или книгу в верхний левый слот, затем поместите 1-3 лазурита в правый слот.
-After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Варианты зачарований будут показаны как только вы разместите предметы в слоты. Наведите, чтобы прочитать что вам доступно.
-These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Эти опции случайны и зависят от уровня опыта; но зачарование может быть усилено.
-To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Чтобы усилить зачарование, поставьте книжные полки вокруг стола зачаровывания. Но вам нужно сохранять 1 блок пустого пространства между столом и полками.
-After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Кликните на выбранное зачарование - ваш опыт и лазурит потратятся, и зачарованный предмет появится слева.
-Enchant=Зачаровать
-##[ engine.lua ]##
-Inventory=Инвентарь
-@1 Lapis Lazuli=@1 лазурит(а)
-### engine.lua ###
-@1 Enchantment Levels=@1 уровень зачаровывания
-Level requirement: @1=Требуемый уровень: @1
-##[ enchantments.lua ]##
 Bane of Arthropods=Бич членистоногих
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Увеличивает урон и применяет Замедление IV к насекомым и членистоногим (паукам, пещерным паукам, чешуйницам и чешуйницам Края).
 Channeling=Громовержец
@@ -95,6 +60,39 @@ Sweeping Edge=Разящий клинок
 Increases sweeping attack damage.=Увеличивает урон по мобам, стоящих рядом с целью.
 Unbreaking=Прочность
 Increases item durability.=Увеличивает прочность предмета.
+Inventory=Инвентарь
+@1 Lapis Lazuli=@1 лазурит(а)
+### engine.lua ###
+@1 Enchantment Levels=@1 уровень зачаровывания
+Level requirement: @1=Требуемый уровень: @1
+Enchant an item=Зачаровать предмет
+<player> <enchantment> [<level>]=<игрок> <зачарование> [<уровень>]
+Usage: /enchant <player> <enchantment> [<level>]=Использование: /enchant <игрок> <зачарование> [<уровень>]
+Player '@1' cannot be found.=Не удалось найти игрока '@1'.
+There is no such enchantment '@1'.=Нет такого зачарования: '@1'.
+The target doesn't hold an item.=Цель не держит предмета.
+The selected enchantment can't be added to the target item.=Выбранное зачарование не может быть добавлено к целевому предмету.
+### init.lua ###
+'@1' is not a valid number='@1' не является допустимым числом
+The number you have entered (@1) is too big, it must be at most @2.=Число, которое вы задали (@1), слишком велико, оно должно быть максимум @2.
+The number you have entered (@1) is too small, it must be at least @2.=Число, которое вы задали (@1), слишком мало, оно должно быть минимум @2.
+@1 can't be combined with @2.=@1 нельзя сочетать с @2.
+Enchanting succeded.=Зачарование выполнено.
+Forcefully enchant an item=Принудительно зачаровать предмет
+Usage: /forceenchant <player> <enchantment> [<level>]=Использование: /forceenchant <игрок> <зачарование> [<уровень>]
+The target item is not enchantable.=Целевой предмет нельзя зачаровать.
+'@1' is not a valid number.='@1' не является допустимым числом.
+Enchanted Book=Зачарованная книга
+Enchanting Table=Стол зачаровывания
+Spend experience, and lapis to enchant various items.=Зачаровывает предметы за опыт и лазурит
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Стол зачаровывания позволяет зачаровывать броню, инструменты, оружие и книги разными способностями. Но ценой опыта и лазурита.
+Rightclick the Enchanting Table to open the enchanting menu.=Правый клик по столу зачаровывания, чтобы открыть меню зачаровывания.
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Поместите инстумент, броню, оружие или книгу в верхний левый слот, затем поместите 1-3 лазурита в правый слот.
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Варианты зачарований будут показаны как только вы разместите предметы в слоты. Наведите, чтобы прочитать что вам доступно.
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Эти опции случайны и зависят от уровня опыта; но зачарование может быть усилено.
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Чтобы усилить зачарование, поставьте книжные полки вокруг стола зачаровывания. Но вам нужно сохранять 1 блок пустого пространства между столом и полками.
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Кликните на выбранное зачарование - ваш опыт и лазурит потратятся, и зачарованный предмет появится слева.
+Enchant=Зачаровать
 
 
 ##### not used anymore #####

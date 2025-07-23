@@ -1,20 +1,45 @@
 # textdomain: mcl_armor
+Upgrade:=
+@1 Armor Trim=
 This is a piece of equippable armor which reduces the amount of damage you receive.=Dies ist ein Teil einer tragbaren Rüstung, die die Menge an Schaden, den Sie erleiden, reduziert.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Um es zu tragen, legen Sie es in den passenden Rüstungsplatz in Ihrem Inventarmenü.
-sentry=Wachen
-dune=Dünen
-coast=Küste
-wild=Wildnis
-tide=Flut
-ward=Bezirk
-vex=Plagegeist
-rib=Rippen
-snout=Schnauze
-eye=Auge
-spire=Turmspitzen
-silence=Stille
-wayfinder=Wegfinder
-##[ register.lua ]##
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+Leather Cap=Lederkappe
+Leather Tunic=Ledertunika
+Leather Pants=Lederhose
+Leather Boots=Lederstiefel
+Golden Helmet=Goldhelm
+Golden Chestplate=Goldbrustpanzer
+Golden Leggings=Goldbeinlinge
+Golden Boots=Goldstiefel
+Chainmail Helmet=
+Chainmail Chestplate=
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=Eisenhelm
+Iron Chestplate=Eisenbrustpanzer
+Iron Leggings=Eisenbeinlinge
+Iron Boots=Eisenstiefel
+Diamond Helmet=Diamanthelm
+Diamond Chestplate=Diamantbrustpanzer
+Diamond Leggings=Diamantbeinlinge
+Diamond Boots=Diamantstiefel
+Netherite Helmet=
+Netherite Chestplate=
+Netherite Leggings=
+Netherite Boots=
 Projectile Protection=Projektilschutz
 Reduces projectile damage.=Reduziert den Schaden von Projektilen.
 Blast Protection=Explosionsschutz
@@ -33,30 +58,26 @@ Item cannot be removed from armor slots except due to death, breaking or in Crea
 Thorns=Dornen
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflektiert einen Teil des erlittenen Schadens, verbraucht dabei Haltbarkeit.
 Elytra=Elytren
-##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=Schmiedevorlage '@1'
 
 
 ##### not used anymore #####
 
-Leather Cap=Lederkappe
-Iron Helmet=Eisenhelm
-Golden Helmet=Goldhelm
-Diamond Helmet=Diamanthelm
+sentry=Wachen
+dune=Dünen
+coast=Küste
+wild=Wildnis
+tide=Flut
+ward=Bezirk
+vex=Plagegeist
+rib=Rippen
+snout=Schnauze
+eye=Auge
+spire=Turmspitzen
+silence=Stille
+wayfinder=Wegfinder
 Chain Helmet=Kettenhelm
-Leather Tunic=Ledertunika
-Iron Chestplate=Eisenbrustpanzer
-Golden Chestplate=Goldbrustpanzer
-Diamond Chestplate=Diamantbrustpanzer
 Chain Chestplate=Kettenbrustpanzer
-Leather Pants=Lederhose
-Iron Leggings=Eisenbeinlinge
-Golden Leggings=Goldbeinlinge
-Diamond Leggings=Diamantbeinlinge
 Chain Leggings=Kettenbeinlinge
-Leather Boots=Lederstiefel
-Iron Boots=Eisenstiefel
-Golden Boots=Goldstiefel
-Diamond Boots=Diamantstiefel
 Chain Boots=Kettenstiefel

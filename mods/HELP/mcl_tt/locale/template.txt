@@ -1,5 +1,4 @@
 # textdomain: mcl_tt
-##[ snippets_base.lua ]##
 Painfully slow=
 Very slow=
 Slow=
@@ -31,7 +30,6 @@ Climbable=
 Slippery=
 Bouncy (@1%)=
 Luminance: @1=
-##[ snippets_mcl.lua ]##
 Head armor=
 Torso armor=
 Legs armor=

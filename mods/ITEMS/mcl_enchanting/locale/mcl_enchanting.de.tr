@@ -1,40 +1,5 @@
 # textdomain: mcl_enchanting
 ### enchantments.lua ###
-Enchant an item=Gegenstand verzaubern
-<player> <enchantment> [<level>]=<Spieler> <Verzauberung> [<Stufe>]
-Usage: /enchant <player> <enchantment> [<level>]=Verwendung: /enchant <Spieler> <Verzauberung> [<Stufe>]
-Player '@1' cannot be found.=Spieler „@1“ kann nicht gefunden werden.
-There is no such enchantment '@1'.=Es gibt keine Verzauberung namens „@1“.
-The target doesn't hold an item.=Das Ziel hält keinen Gegenstand.
-The selected enchantment can't be added to the target item.=Die gewählte Verzauberug kann nicht dem Ziel gegeben werden.
-### init.lua ###
-'@1' is not a valid number='@1' ist keine gültige Zahl
-The number you have entered (@1) is too big, it must be at most @2.=Die eingegebene Zahl (@1) ist zu groß, maximal @1 erlaubt.
-The number you have entered (@1) is too small, it must be at least @2.=Die eingegebene Zahl (@1) ist zu klein, minimal @1 erlaubt.
-@1 can't be combined with @2.=@1 kann nicht mit @2 kombiniert werden.
-Enchanting succeded.=Verzauberug erfolgreich.
-Forcefully enchant an item=Einen Gegenstand zwangsweise verzaubern
-Usage: /forceenchant <player> <enchantment> [<level>]=Verwendung: /forceenchant <Spieler> <Verzauberung> [<Stufe>]
-The target item is not enchantable.=Der Zielgegenstand ist nicht verzauberbar.
-'@1' is not a valid number.='@1' ist keine gültige Zahl.
-Enchanted Book=Verzaubertes Buch
-Enchanting Table=Zaubertisch
-Spend experience, and lapis to enchant various items.=Verbrauche Erfahrungspunkte und Lapislazuli um verschiedene Gegenstände zu verzaubern.
-Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Verzauberungstische lassen Sie Sie Rüstungen, Werkzeuge, Waffen und Bücher mit verschiedenen Fähigkeiten verzaubern. Allerdings auf Kosten etwas Erfahrung und Lapislazuli.
-Rightclick the Enchanting Table to open the enchanting menu.=Rechtsklicken Sie auf den Verzauberungstisch, um das Verzauberungsmenü zu öffnen.
-Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Lege ein Werkzeug, eine Rüstung, eine Waffe oder ein Buch in den oberen linken Slot und platziere dann 1-3 Lapis Lazuli in den Slot rechts davon.
-After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Nachdem Sie Ihre Gegenstände in die Slots gelegt haben, werden die Verzauberungs-Optionen angezeigt. Bewegen Sie den Mauszeiger über die Optionen, um zu sehen, was für Sie verfügbar ist.
-These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Diese Optionen werden zufällig ausgewählt und sind abhängig vom Erfahrungslevel; die Stärke der Verzauberung kann jedoch erhöht werden.
-To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Um die Stärke der Verzauberung zu erhöhen, platzieren Sie Bücherregale um den Verzauberungstisch. Sie müssen jedoch 1 Luftknoten zwischen dem Tisch und den Bücherregalen haben, um den Verzauberungstisch zu stärken.
-After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Nachdem Sie Ihre Verzauberung ausgewählt haben, klicken Sie mit der linken Maustaste auf die Auswahl, und Sie werden sowohl das Lapislazuli als auch Ihre Erfahrungspunkte verbrauchen. Ein verzaubertes Objekt bleibt an seiner Stelle zurück.
-Enchant=Verzaubern
-##[ engine.lua ]##
-Inventory=Inventar
-@1 Lapis Lazuli=@1 Lapislazuli
-### engine.lua ###
-@1 Enchantment Levels=@1 Verzauberungsstufen
-Level requirement: @1=Level benötigt: @1
-##[ enchantments.lua ]##
 Bane of Arthropods=Schrecken der Gliederfüßler
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Erhöht Schaden und gibt Langsamkeit IV an Gliederfüßlern (Spinnen, Höhlenspinenn, Silberfischchen und Endermilben).
 Channeling=Kanalisierung
@@ -95,6 +60,39 @@ Sweeping Edge=Schwungklinge
 Increases sweeping attack damage.=Erhöht Schwungangriffsschaden.
 Unbreaking=Haltbarkeit
 Increases item durability.=Erhöht Haltbarkeit des Gegenstands.
+Inventory=Inventar
+@1 Lapis Lazuli=@1 Lapislazuli
+### engine.lua ###
+@1 Enchantment Levels=@1 Verzauberungsstufen
+Level requirement: @1=Level benötigt: @1
+Enchant an item=Gegenstand verzaubern
+<player> <enchantment> [<level>]=<Spieler> <Verzauberung> [<Stufe>]
+Usage: /enchant <player> <enchantment> [<level>]=Verwendung: /enchant <Spieler> <Verzauberung> [<Stufe>]
+Player '@1' cannot be found.=Spieler „@1“ kann nicht gefunden werden.
+There is no such enchantment '@1'.=Es gibt keine Verzauberung namens „@1“.
+The target doesn't hold an item.=Das Ziel hält keinen Gegenstand.
+The selected enchantment can't be added to the target item.=Die gewählte Verzauberug kann nicht dem Ziel gegeben werden.
+### init.lua ###
+'@1' is not a valid number='@1' ist keine gültige Zahl
+The number you have entered (@1) is too big, it must be at most @2.=Die eingegebene Zahl (@1) ist zu groß, maximal @1 erlaubt.
+The number you have entered (@1) is too small, it must be at least @2.=Die eingegebene Zahl (@1) ist zu klein, minimal @1 erlaubt.
+@1 can't be combined with @2.=@1 kann nicht mit @2 kombiniert werden.
+Enchanting succeded.=Verzauberug erfolgreich.
+Forcefully enchant an item=Einen Gegenstand zwangsweise verzaubern
+Usage: /forceenchant <player> <enchantment> [<level>]=Verwendung: /forceenchant <Spieler> <Verzauberung> [<Stufe>]
+The target item is not enchantable.=Der Zielgegenstand ist nicht verzauberbar.
+'@1' is not a valid number.='@1' ist keine gültige Zahl.
+Enchanted Book=Verzaubertes Buch
+Enchanting Table=Zaubertisch
+Spend experience, and lapis to enchant various items.=Verbrauche Erfahrungspunkte und Lapislazuli um verschiedene Gegenstände zu verzaubern.
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Verzauberungstische lassen Sie Sie Rüstungen, Werkzeuge, Waffen und Bücher mit verschiedenen Fähigkeiten verzaubern. Allerdings auf Kosten etwas Erfahrung und Lapislazuli.
+Rightclick the Enchanting Table to open the enchanting menu.=Rechtsklicken Sie auf den Verzauberungstisch, um das Verzauberungsmenü zu öffnen.
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Lege ein Werkzeug, eine Rüstung, eine Waffe oder ein Buch in den oberen linken Slot und platziere dann 1-3 Lapis Lazuli in den Slot rechts davon.
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Nachdem Sie Ihre Gegenstände in die Slots gelegt haben, werden die Verzauberungs-Optionen angezeigt. Bewegen Sie den Mauszeiger über die Optionen, um zu sehen, was für Sie verfügbar ist.
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Diese Optionen werden zufällig ausgewählt und sind abhängig vom Erfahrungslevel; die Stärke der Verzauberung kann jedoch erhöht werden.
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Um die Stärke der Verzauberung zu erhöhen, platzieren Sie Bücherregale um den Verzauberungstisch. Sie müssen jedoch 1 Luftknoten zwischen dem Tisch und den Bücherregalen haben, um den Verzauberungstisch zu stärken.
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Nachdem Sie Ihre Verzauberung ausgewählt haben, klicken Sie mit der linken Maustaste auf die Auswahl, und Sie werden sowohl das Lapislazuli als auch Ihre Erfahrungspunkte verbrauchen. Ein verzaubertes Objekt bleibt an seiner Stelle zurück.
+Enchant=Verzaubern
 
 
 ##### not used anymore #####

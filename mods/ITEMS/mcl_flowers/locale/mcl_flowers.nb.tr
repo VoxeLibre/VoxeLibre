@@ -23,7 +23,6 @@ Double Tallgrass=Veldig høyt gress
 Large Fern=Stor bregne
 Lily Pad=Vannliljeblad
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Et vannliljeblad er en flat planteblokk som man kan gå på. De kan plasseres på vannkilder, is og frostet is.
-##[ register.lua ]##
 Poppy=Valmue
 Dandelion=Løvetann
 Oxeye Daisy=Prestekrage

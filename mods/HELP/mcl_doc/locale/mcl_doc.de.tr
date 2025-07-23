@@ -22,7 +22,7 @@ To consume it, wield it, then right-click.=Um dies zu konsumieren, halten Sie es
 You cannot consume this when your hunger bar is full.=Sie können dies nicht konsumieren, wenn Ihre Hungerleiste voll ist.
 You have to wait for around 2 seconds before you can eat or drink again.=Sie müssen etwa 2 Sekunden warten, bevor Sie erneut essen oder trinken können.
 Hunger points restored: @1=Wiederhergestellte Hungerpunkte: @1
-Saturation points restored: @1%.1f=Wiederhergestellte Sättigungspunkte: @1
+Saturation points restored: @1=
 It can be worn on the head.=Es kann auf dem Kopf getragen werden.
 It can be worn on the torso.=Es kann am Torso getragen werden.
 It can be worn on the legs.=Es kann an den Beinen getragen werden.
@@ -78,3 +78,8 @@ Block breaking strength: @1=Blockbruchstärke: @1
 This is a melee weapon that deals damage by punching.=Dies ist eine Nahkampfwaffe, die Schaden durch Schläge verursacht.
 Maximum damage: @1 HP=Maximalschaden: @1 TP
 Full punch interval: @1 s=Vollständiges Schlagintervall: @1 s
+
+
+##### not used anymore #####
+
+Saturation points restored: @1%.1f=Wiederhergestellte Sättigungspunkte: @1

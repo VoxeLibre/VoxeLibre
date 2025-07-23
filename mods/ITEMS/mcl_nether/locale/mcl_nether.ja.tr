@@ -33,7 +33,8 @@ Netherite Ingot=ネザライトインゴット
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=
 Nether Brick=ネザーレンガ
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=ネザーレンガは、ネザーレンガブロックやネザーフェンスを製作するための主なクラフト材料です。
-##[ nether_wart.lua ]##
+Nether Lava Source=ネザー溶岩源
+Flowing Nether Lava=流れるネザー溶岩
 Premature Nether Wart (Stage 1)=未成熟なネザーウォート（段階1）
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=未成熟なネザーウォートは、ソウルサンドに植えられたばかりです。ネザーウォートはソウルサンドの上で4段階に分けてゆっくりと成長します（2段階目と3段階目の見た目は同じ）。ネザーウォートはネザーに生息しているものの、どこの次元でも成長します。
 Premature Nether Wart (Stage 2)=未成熟なネザーウォート（段階2）
@@ -44,9 +45,6 @@ Nether Wart=ネザーウォート
 Grows on soul sand=ソウルサンドの上で育つ
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=ネザーウォート（ウォート＝イボ）は、ネザーに生息する植物です。ソウルサンドに植えることができ、4段階に分けて成長します。
 Place this item on soul sand to plant it and watch it grow.=このアイテムをソウルサンドの上に置いて植えると、その成長を見ることができます。
-##[ lava.lua ]##
-Nether Lava Source=ネザー溶岩源
-Flowing Nether Lava=流れるネザー溶岩
 
 
 ##### not used anymore #####

@@ -23,7 +23,6 @@ Double Tallgrass=Doppelhohes Gras
 Large Fern=Großer Farn
 Lily Pad=Seerosenblatt
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Ein Seerosenblatt ist eine flache Pflanze, die eine stabile begehbare Oberfläche ist. Sie kann auf Wasserquellen, auf Eis und brüchigem Eis platziert werden.
-##[ register.lua ]##
 Poppy=Mohn
 Dandelion=Löwenzahn
 Oxeye Daisy=Margerite

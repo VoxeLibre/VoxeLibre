@@ -2,10 +2,9 @@
 An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=
 Sneak to skip=Snik for å hoppe over
 Jump to speed up (additionally sprint)=Hopp for å øke hastigheten (kan bruke "løp" i tillegg)
-##[ people.lua ]##
 Creator of MineClone=Skaperen av MineClone
 Creator of VoxeLibre=Skaperen av VoxeLibre
-Maintainers=Vedlikeholdere
+Maintainer=
 Previous Maintainers=Tidligere vedlikeholdere
 Developers=Utviklere
 Past Developers=Tidligere utviklere
@@ -21,6 +20,7 @@ Special thanks=Ekstra takk til
 
 ##### not used anymore #####
 
+Maintainers=Vedlikeholdere
 A faithful Open Source clone of Minecraft=En trofast åpen kildekode-klone av Minecraft
 MineClone5=MineClone5
 Jordach for the jukebox music compilation from Big Freaking Dig=Jordach for platespillerens musikksamling fra Big Freaking Dig

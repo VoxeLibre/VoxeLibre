@@ -33,14 +33,11 @@
 @1 was roasted in dragon breath by @2=@1 została usmażona przez oddech smoka od @2
 @1 withered away=@1 odeszła na wieki
 @1 withered away whilst fighting @2=@1 odeszła na wieki podczas walki z @2
-@1 was killed by magic=@1 została zabita magią
 @1 was shot by a skull from @2=@1 została zastrzelona czaszką przez @2
 @1 was squashed by a falling anvil=@1 została zmiażdżona spadającym kowadłem
 @1 was squashed by a falling anvil whilst fighting @2=@1 została zmiażdżona spadającym kowadłem podczas walki z @2
 @1 was squashed by a falling block=@1 została zmiażdżona spadającym blokiem
 @1 was squashed by a falling block whilst fighting @2=@1 została zmiażdżona spadającym blokiem podczas walki z @2
-@1 was slain by @2=@1 została zabita przez @2
-@1 was slain by @2 using @3=@1 została zabita przez @2 przy użyciu @3
 @1 was slain by @2=@1 została zabita przez @2
 @1 was slain by @2 using @3=@1 została zabita przez @2 przy użyciu @3
 @1 was shot by @2=@1 została zastrzelona przez @2
@@ -56,4 +53,5 @@
 @1 was squashed by @2=@1 została ściśnięta przez @2
 @1 went off with a bang=@1 odeszła z hukiem
 @1 went off with a bang due to a firework fired by @2 from @3=@1 wybuchł z hukiem z powodu fajerwerków wystrzelonych przez @2 z @3
-
+@1 died a sweet death=
+@1 was poked to death by a sweet berry bush whilst trying to escape @2=

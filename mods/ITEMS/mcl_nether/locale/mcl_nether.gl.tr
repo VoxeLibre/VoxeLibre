@@ -33,7 +33,8 @@ Netherite Ingot=Lingote de Netherite
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=
 Nether Brick=Ladrillos del Nether
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Los ladrillos abisales son o principal ingrediente de elaboración para a elaboración de bloques de ladrillo inferior e vercas do abaixo.
-##[ nether_wart.lua ]##
+Nether Lava Source=Fonte de lava de Nether
+Flowing Nether Lava=Fonte de lava fluida del Nether
 Premature Nether Wart (Stage 1)=Verruga de Nether prematura (Etapa 1)
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Recentemente plantouse unha verruga inferior prematura na area da alma. A verruga inferior crece lentamente na area da alma en 4 etapas (a segunda e terceira etapas parecen idénticas). Aínda que a verruga inferior é o fogar do Nether, crece en calquera dimensión.
 Premature Nether Wart (Stage 2)=Verruga del Nether prematura (Etapa 2)
@@ -44,9 +45,6 @@ Nether Wart=Verruga del Nether
 Grows on soul sand=Medra na area da alma
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=As verrugas do Nether son plantas que albergan o Nether. Pódense plantar sobre area de alma e medrar en 4 etapas.
 Place this item on soul sand to plant it and watch it grow.=Coloque este elemento na area da alma para plantalo e velo medrar.
-##[ lava.lua ]##
-Nether Lava Source=Fonte de lava de Nether
-Flowing Nether Lava=Fonte de lava fluida del Nether
 
 
 ##### not used anymore #####

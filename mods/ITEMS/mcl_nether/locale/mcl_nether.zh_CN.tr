@@ -33,7 +33,8 @@ Netherite Ingot=下界合金锭
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=
 Nether Brick=下界砖
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=下界砖是制作下界砖方块和下界栅栏的主要制作材料。
-##[ nether_wart.lua ]##
+Nether Lava Source=下界熔岩源
+Flowing Nether Lava=流动的下界熔岩
 Premature Nether Wart (Stage 1)=未成熟的下界疣（第一阶段）
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=刚种下在灵魂沙上不久的下界疣就是未成熟的下界疣（第一阶段），下界疣在灵魂沙上会缓慢经历4个生长阶段（第二阶段和第三阶段看起来一样），尽管下界疣原产于下界，但它在任何维度都能生长。
 Premature Nether Wart (Stage 2)=未成熟的下界疣（第二阶段）
@@ -44,9 +45,6 @@ Nether Wart=下界疣
 Grows on soul sand=生长在灵魂沙上
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=下界疣是原产于下界的植物，可以种植在灵魂沙上并经历4个生长阶段。
 Place this item on soul sand to plant it and watch it grow.=把这个物品放置在灵魂沙上进行种植，然后观察它生长。
-##[ lava.lua ]##
-Nether Lava Source=下界熔岩源
-Flowing Nether Lava=流动的下界熔岩
 
 
 ##### not used anymore #####

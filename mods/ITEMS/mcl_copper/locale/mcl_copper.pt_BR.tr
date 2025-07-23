@@ -1,5 +1,8 @@
 # textdomain: mcl_copper
-##[ nodes.lua ]##
+Copper Ingot=Lingote de Cobre
+Molten Raw Copper. It is used to craft blocks.=Minério de Cobre Fundido. É utilizado para fabricar blocos.
+Raw Copper=Cobre Crú
+Raw Copper. Mine a Copper Ore to get it.=Cobre Crú. Minere um minério de cobre para obtê-lo.
 Copper Ore=Minério de Cobre
 Some copper contained in stone, it is pretty common and can be found below sea level.=Um pouco de cobre contido em rocha, é bem comum e pode ser encontrado abaixo do nível do mar.
 Block of Raw Copper=Bloco de Cobre Crú
@@ -52,8 +55,3 @@ Stairs of Weathered Cut Copper=Escadas de Cobre Lapidado Desgastado
 Waxed Stairs of Weathered Cut Copper=Escadas de Cobre Lapidado Desgastado Encerado
 Stairs of Oxidized Cut Copper=Escadas de Cobre Lapidado Oxidado
 Waxed Stairs of Oxidized Cut Copper=Escadas de Cobre Lapidado Oxidado Encerado
-##[ items.lua ]##
-Copper Ingot=Lingote de Cobre
-Molten Raw Copper. It is used to craft blocks.=Minério de Cobre Fundido. É utilizado para fabricar blocos.
-Raw Copper=Cobre Crú
-Raw Copper. Mine a Copper Ore to get it.=Cobre Crú. Minere um minério de cobre para obtê-lo.

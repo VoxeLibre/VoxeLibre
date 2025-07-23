@@ -1,14 +1,4 @@
 # textdomain: mcl_ocean
-##[ prismarine.lua ]##
-Sea Lantern=Lanterna do Mar
-Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Lanternas do mar são fontes de luz decorativas as quais ficam bonitas em baixo d'água mas podem ser posicionadas em qualquer lugar.
-Prismarine=Prismarinho
-Prismarine is used as a building block. It slowly changes its color.=Prismarinho é usado como um bloco de costrução. Muda de cor lentamente.
-Prismarine Bricks=Tijolos de Prismarinho
-Dark Prismarine=Prismarinho Escuro
-Prismarine Crystals=Cristais de Prismarinho
-Prismarine Shard=Fragmentos de Prismarinho
-##[ corals.lua ]##
 Tube Coral Block=Bloco de Coral-de-Tubo
 Dead Tube Coral Block=Bloco de Coral-de-Tubo Morto
 Tube Coral=Coral-de-Tubo
@@ -44,21 +34,26 @@ Corals grow on top of coral blocks and need to be inside a water source to survi
 Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Gorgônias crescem sobre blocos de corais e precisam estar dentro de uma fonte de água para sobreviver. Sem água, elas morrem, assim como o bloco de coral abaixo.
 Needs water to live=Precisa de água para viver
 Grows on coral block of same species=Cresce em blocos de corais da mesma espécie
-##[ seagrass.lua ]##
-Grows in water on dirt, sand, gravel=Cresce na água sobre a terra, areia, cascalho
-Seagrass=Grama Marinha
-Seagrass grows inside water on top of dirt, sand or gravel.=Grama marinha cresce dento da água sobre terra, areia ou cascalho.
-##[ kelp.lua ]##
 Kelp=Alga
 Kelp grows inside water on top of dirt, sand or gravel.=Alga cresce dentro da água sobre terra, areia ou cascalho.
+Grows in water on dirt, sand, gravel=Cresce na água sobre a terra, areia, cascalho
 Dried Kelp=Alga Seca
 Dried kelp is a food item.=Alga seca é um item de comida.
 Dried Kelp Block=Bloco de Alga Seca
 A decorative block that serves as a great furnace fuel.=Um bloco decorativo que serve como uma ótimo combustível de fornalha.
-##[ sea_pickle.lua ]##
+Sea Lantern=Lanterna do Mar
+Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Lanternas do mar são fontes de luz decorativas as quais ficam bonitas em baixo d'água mas podem ser posicionadas em qualquer lugar.
+Prismarine=Prismarinho
+Prismarine is used as a building block. It slowly changes its color.=Prismarinho é usado como um bloco de costrução. Muda de cor lentamente.
+Prismarine Bricks=Tijolos de Prismarinho
+Dark Prismarine=Prismarinho Escuro
+Prismarine Crystals=Cristais de Prismarinho
+Prismarine Shard=Fragmentos de Prismarinho
 Sea Pickle=Pepino-do-Mar
 Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Pepino-do-mar cresce em blocos de coral-de-cérebro mortos e fornecem luz quando estão em baixo d'água. Eles vêm em 4 tamanhos que variam em luminosidade.
 It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Podem ser posicionados apenas sobre blocos de coral-de-cérebro mortos. Posicionar um pepino-do-mar em outro pepino-do-mar o fará crescer e brilhar.
 Glows in the water=Brilha na água
 4 possible sizes=4 tamanhos possíveis
 Grows on dead brain coral block=Cresce no bloco de coral-de-cérebro morto
+Seagrass=Grama Marinha
+Seagrass grows inside water on top of dirt, sand or gravel.=Grama marinha cresce dento da água sobre terra, areia ou cascalho.

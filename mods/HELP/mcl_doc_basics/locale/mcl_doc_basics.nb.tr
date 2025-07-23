@@ -422,7 +422,6 @@ The values for X, Y and Z work like this:=Verdiene for X, Y og Z fungerer slik:
 • Follow the sun, then go left: Z decreases=• Følg solen, og gå deretter til venstre: Z minker
 • The side length of a full cube is 1=• Sidelengden på en full kube er 1
 You can view your current position in the debug screen (open with [F5]).=Du kan se din nåværende posisjon i debug-skjermen (åpnes med [F5]).
-##[ mcl_extension.lua ]##
 # MCL2 extensions
 Creative Mode=Kreativ Modus
 Enabling Creative Mode in VoxeLibre applies the following changes:=

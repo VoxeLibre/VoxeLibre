@@ -1,40 +1,5 @@
 # textdomain: mcl_enchanting
 ### enchantments.lua ###
-Enchant an item=Encantar um item
-<player> <enchantment> [<level>]=<jogador> <encantament> [<nível>]
-Usage: /enchant <player> <enchantment> [<level>]=Uso: /enchant <Jogador> <encantamento> [<nível>]
-Player '@1' cannot be found.=Jogador '@1' não pôde ser encontrado.
-There is no such enchantment '@1'.=Não existe um encantamento '@1'.
-The target doesn't hold an item.=O alvo não está segurando um item.
-The selected enchantment can't be added to the target item.=O encantamento selecionado não pode ser adicionado ao item alvo.
-### init.lua ###
-'@1' is not a valid number='@1' não é um número válido
-The number you have entered (@1) is too big, it must be at most @2.=O número que você inseriu (@1) é muito grande, deve ser no máximo @2.
-The number you have entered (@1) is too small, it must be at least @2.=O número que você inseriu (@1) é muito pequeno, deve ser no mínimo @2.
-@1 can't be combined with @2.=@1 não pode ser combinado com @2.
-Enchanting succeded.=Encantamento sucessido.
-Forcefully enchant an item=Encantamento forçado em um item.
-Usage: /forceenchant <player> <enchantment> [<level>]=Uso: /forceenchant <jogador> <encantamento> [<nível>]
-The target item is not enchantable.=O item alvo não é encantável.
-'@1' is not a valid number.='@1' não é um número válido.
-Enchanted Book=Livro Encantado
-Enchanting Table=Mesa de Encantamento
-Spend experience, and lapis to enchant various items.=Invista experiência, e lápis para encantar vários itens.
-Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=A mesa de encantamentos permitem a você encantar armaduras, ferramentas, armas, e livros com várias habilidades. Mas, ao custo de alguma experiência, e lápis lazuli.
-Rightclick the Enchanting Table to open the enchanting menu.=Clique com o botão direito na mesa de encantamentos para abrir o menu de encantamentos.
-Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Posicione uma ferramenta, armadura, arma ou livro no slot superior esquerdo, e então posicione 1-3 lápis lazuli no slot da direita.
-After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Depois de posicionar seus itens nos slots, as opções de encantamentos serão mostradas. Passe o mouse sobre as opções para ler o que está disponível para você.
-These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Essas opções são aleatorias, e dependentes do nível de experiência; mas a força do encantamento pode ser aumentado.
-To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar a força do encantamento, posicione estantes de livros em volta da mesa de encantamentos. Porém, você precisará manter 1 bloco de ar entre a mesa e as estantes para potencializar a mesa de encantamentos.
-After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Depois de finalmente selecionar seu encantamento; clique com o botão esquerdo na seleção, e você irá ver ambos os lápis lazuli e seus níveis de experiência serem consumidos. E, um item encantado deixado em seu lugar.
-Enchant=Encantar
-##[ engine.lua ]##
-Inventory=Inventário
-@1 Lapis Lazuli=@1 Lápis Lazuli
-### engine.lua ###
-@1 Enchantment Levels=@1 Níveis de Encantamento
-Level requirement: @1=Nível requerido: @1
-##[ enchantments.lua ]##
 Bane of Arthropods=Ruína dos Artrópodes
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Aumenta o dano e aplica Lentidão IV para mobs artrópodes (aranhas, aranhas de cavernas, traças e endermites).
 Channeling=Condutividade
@@ -95,6 +60,39 @@ Sweeping Edge=Alcance
 Increases sweeping attack damage.=
 Unbreaking=Inquebrável
 Increases item durability.=Aumenta a durabilidade do item.
+Inventory=Inventário
+@1 Lapis Lazuli=@1 Lápis Lazuli
+### engine.lua ###
+@1 Enchantment Levels=@1 Níveis de Encantamento
+Level requirement: @1=Nível requerido: @1
+Enchant an item=Encantar um item
+<player> <enchantment> [<level>]=<jogador> <encantament> [<nível>]
+Usage: /enchant <player> <enchantment> [<level>]=Uso: /enchant <Jogador> <encantamento> [<nível>]
+Player '@1' cannot be found.=Jogador '@1' não pôde ser encontrado.
+There is no such enchantment '@1'.=Não existe um encantamento '@1'.
+The target doesn't hold an item.=O alvo não está segurando um item.
+The selected enchantment can't be added to the target item.=O encantamento selecionado não pode ser adicionado ao item alvo.
+### init.lua ###
+'@1' is not a valid number='@1' não é um número válido
+The number you have entered (@1) is too big, it must be at most @2.=O número que você inseriu (@1) é muito grande, deve ser no máximo @2.
+The number you have entered (@1) is too small, it must be at least @2.=O número que você inseriu (@1) é muito pequeno, deve ser no mínimo @2.
+@1 can't be combined with @2.=@1 não pode ser combinado com @2.
+Enchanting succeded.=Encantamento sucessido.
+Forcefully enchant an item=Encantamento forçado em um item.
+Usage: /forceenchant <player> <enchantment> [<level>]=Uso: /forceenchant <jogador> <encantamento> [<nível>]
+The target item is not enchantable.=O item alvo não é encantável.
+'@1' is not a valid number.='@1' não é um número válido.
+Enchanted Book=Livro Encantado
+Enchanting Table=Mesa de Encantamento
+Spend experience, and lapis to enchant various items.=Invista experiência, e lápis para encantar vários itens.
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=A mesa de encantamentos permitem a você encantar armaduras, ferramentas, armas, e livros com várias habilidades. Mas, ao custo de alguma experiência, e lápis lazuli.
+Rightclick the Enchanting Table to open the enchanting menu.=Clique com o botão direito na mesa de encantamentos para abrir o menu de encantamentos.
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Posicione uma ferramenta, armadura, arma ou livro no slot superior esquerdo, e então posicione 1-3 lápis lazuli no slot da direita.
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Depois de posicionar seus itens nos slots, as opções de encantamentos serão mostradas. Passe o mouse sobre as opções para ler o que está disponível para você.
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Essas opções são aleatorias, e dependentes do nível de experiência; mas a força do encantamento pode ser aumentado.
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar a força do encantamento, posicione estantes de livros em volta da mesa de encantamentos. Porém, você precisará manter 1 bloco de ar entre a mesa e as estantes para potencializar a mesa de encantamentos.
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Depois de finalmente selecionar seu encantamento; clique com o botão esquerdo na seleção, e você irá ver ambos os lápis lazuli e seus níveis de experiência serem consumidos. E, um item encantado deixado em seu lugar.
+Enchant=Encantar
 
 
 ##### not used anymore #####

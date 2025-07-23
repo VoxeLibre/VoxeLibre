@@ -1,16 +1,13 @@
 # textdomain: mcl_doors
-##[ api_doors.lua ]##
 This door is a 2-block high barrier which can only be opened by redstone power, not by hand.=Denne døren er en 2-blokker høy barrierer som bare kan åpnes eller lukkes med et rødsteinssignal.
 This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.=Denne døren er en 2-blokker høy barrierer som kan åpnes eller lukkes for hånd eller via et rødsteinssignal.
 To open or close this door, send a redstone signal to its bottom half.=
 To open or close this door, rightclick it or send a redstone signal to its bottom half.=
 Openable by redstone power=Åpnes av rødsteinsignal
 Openable by players and redstone power=Åpnes av spillere og rødsteinsignal
-##[ api_trapdoors.lua ]##
 Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.=
 Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.=
 To open or close this trapdoor, rightclick it or send a redstone signal to it.=
-##[ register.lua ]##
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokker høye barrierer som kan åpnes eller lukkes for hånd eller via et rødsteinssignal.
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å åpne eller lukke en tredør, høyreklikk på den eller forsyn den nedre halvdelen med et rødsteinsignal.
 Oak Door=Eikedør

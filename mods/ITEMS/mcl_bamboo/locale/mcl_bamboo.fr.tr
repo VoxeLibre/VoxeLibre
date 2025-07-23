@@ -1,12 +1,10 @@
 # textdomain: mcl_bamboo
 ### bamboo_base.lua ###
-##[ bamboo_base.lua ]##
 Bamboo=Bambou
 Bamboo Block=Bloc de bambou
 Stripped Bamboo Block=Bloc de bambou écorcé
 Bamboo Plank=Planche de bambou
 Bamboo Mosaic Plank=Planche mosaïque de bambou
-##[ bamboo_items.lua ]##
 Bamboo Door=Porte de bambou
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Les portes en bois sont des barrières hautes à 2 blocs qui peuvent être ouvertes ou fermées à la main et par un signal redstone.
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Pour ouvrir ou fermer une porte en bois, faites un clic droit dessus ou fournissez à sa moitié inférieure un signal redstone.

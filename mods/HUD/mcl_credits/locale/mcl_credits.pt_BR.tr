@@ -2,10 +2,9 @@
 An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=
 Sneak to skip=Agache para pular
 Jump to speed up (additionally sprint)=Pule para acelerar (arrancada adicional)
-##[ people.lua ]##
 Creator of MineClone=Criador do MineClone
 Creator of VoxeLibre=Criador do VoxeLibre
-Maintainers=Mantedores
+Maintainer=
 Previous Maintainers=Mantedores Anteriores
 Developers=Desenvolvedores
 Past Developers=Desenvolvedores Passados
@@ -21,5 +20,6 @@ Special thanks=Agradecimentos especiais
 
 ##### not used anymore #####
 
+Maintainers=Mantedores
 A faithful Open Source clone of Minecraft=Um clone fiel Open Source do Minecraft
 MineClone5=MineClone5

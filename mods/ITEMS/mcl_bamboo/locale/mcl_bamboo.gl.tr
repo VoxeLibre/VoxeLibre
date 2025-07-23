@@ -1,12 +1,10 @@
 # textdomain: mcl_bamboo
 ### bamboo_base.lua ###
-##[ bamboo_base.lua ]##
 Bamboo=Bambú
 Bamboo Block=Bloque de Bambú
 Stripped Bamboo Block=Bloque de bambú sen cortiza
 Bamboo Plank=Madeira de bambú
 Bamboo Mosaic Plank=Madeira de bambú de mosaico
-##[ bamboo_items.lua ]##
 ##TODO: fuzzy matched - verify and remove the comment
 Bamboo Door=Porta de bambú
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=As portas de madeira son barreiras altas de 2 bloques que se poden abrir ou pechar a man e mediante un sinal de pedra vermella.

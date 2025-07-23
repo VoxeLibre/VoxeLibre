@@ -1,5 +1,4 @@
 # textdomain: mcl_tt
-##[ snippets_base.lua ]##
 Painfully slow=Smertelig treg
 Very slow=Svært treg
 Slow=Treg
@@ -31,7 +30,6 @@ Climbable=Klatrbar
 Slippery=Glatt
 Bouncy (@1%)=Sprettende (@1%)
 Luminance: @1=Lysstyrke: @1
-##[ snippets_mcl.lua ]##
 Head armor=Hoderustning
 Torso armor=Overkropprustning
 Legs armor=Beinrustning

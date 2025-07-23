@@ -1,5 +1,8 @@
 # textdomain: mcl_copper
-##[ nodes.lua ]##
+Copper Ingot=Lingot de cuivre
+Molten Raw Copper. It is used to craft blocks.=Cuivre brut fondu. Utilisé pour fabriquer des blocs.
+Raw Copper=Cuivre brut
+Raw Copper. Mine a Copper Ore to get it.=Cuivre brut. Creuser dans du minerai de cuivre pour l'obtenir.
 Copper Ore=Minerai de cuivre
 Some copper contained in stone, it is pretty common and can be found below sea level.=Un peu de cuivre se trouve dans la pierre, il est plutôt répandu et peut être trouvé sous le niveau de la mer.
 Block of Raw Copper=Bloc de cuivre brut
@@ -52,8 +55,3 @@ Stairs of Weathered Cut Copper=Escalier de cuivre taillé érodé
 Waxed Stairs of Weathered Cut Copper=Escalier de cuivre taillé érodé ciré
 Stairs of Oxidized Cut Copper=Escalier de cuivre taillé oxydé 
 Waxed Stairs of Oxidized Cut Copper=Escalier de cuivre taillé oxydé ciré
-##[ items.lua ]##
-Copper Ingot=Lingot de cuivre
-Molten Raw Copper. It is used to craft blocks.=Cuivre brut fondu. Utilisé pour fabriquer des blocs.
-Raw Copper=Cuivre brut
-Raw Copper. Mine a Copper Ore to get it.=Cuivre brut. Creuser dans du minerai de cuivre pour l'obtenir.

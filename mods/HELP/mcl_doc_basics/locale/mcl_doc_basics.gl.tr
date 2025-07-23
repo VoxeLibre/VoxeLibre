@@ -436,7 +436,6 @@ The values for X, Y and Z work like this:=Os valores de X, Y e Z funcionan así:
 • Follow the sun, then go left: Z decreases=• Segue o sol, despois vai á esquerda: Z diminúe
 • The side length of a full cube is 1=• A lonxitude do lado dun cubo completo é 1
 You can view your current position in the debug screen (open with [F5]).=Podes ver a túa posición actual na pantalla de depuración (abre con [F5]).
-##[ mcl_extension.lua ]##
 # MCL2 extensions
 Creative Mode=Modo creativo
 ##TODO: fuzzy matched - verify and remove the comment

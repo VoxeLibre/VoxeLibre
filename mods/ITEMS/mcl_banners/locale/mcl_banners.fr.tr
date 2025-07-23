@@ -37,7 +37,6 @@ Use crafting to draw a pattern on top of the banner. Emblazoned banners can be e
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Vous pouvez copier le motif d'une bannière en plaçant deux bannières de la même couleur dans la grille de fabrication: l'une doit être décorée, l'autre doit être propre. Enfin, vous pouvez utiliser une bannière sur un chaudron avec de l'eau pour laver sa couche la plus haute.
 Preview Banner=Aperçu de la bannière
 Paintable decoration=Décoration à peindre
-##[ patterncraft.lua ]##
 @1 Bordure=Bordure (@1)
 @1 Bricks=Blocs (@1)
 @1 Roundel=Cocarde (@1)

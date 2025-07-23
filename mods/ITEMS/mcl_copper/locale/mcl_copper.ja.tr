@@ -1,5 +1,8 @@
 # textdomain: mcl_copper
-##[ nodes.lua ]##
+Copper Ingot=銅インゴット
+Molten Raw Copper. It is used to craft blocks.=溶けた未処理の銅。ブロックのクラフトに使われます。
+Raw Copper=銅の粗鉱
+Raw Copper. Mine a Copper Ore to get it.=未処理の銅。銅鉱石を採掘すると手に入ります。
 Copper Ore=銅鉱石
 Some copper contained in stone, it is pretty common and can be found below sea level.=石に含まれる銅は ごく一般的で、海面下の高さで見られます。
 Block of Raw Copper=銅の粗鉱ブロック
@@ -52,8 +55,3 @@ Stairs of Weathered Cut Copper=半ば酸化した溝入り銅の階段
 Waxed Stairs of Weathered Cut Copper=半ば酸化した錆止め済み溝入り銅の階段
 Stairs of Oxidized Cut Copper=殆ど酸化した溝入り銅の階段
 Waxed Stairs of Oxidized Cut Copper=殆ど酸化した錆止め済み溝入り銅の階段
-##[ items.lua ]##
-Copper Ingot=銅インゴット
-Molten Raw Copper. It is used to craft blocks.=溶けた未処理の銅。ブロックのクラフトに使われます。
-Raw Copper=銅の粗鉱
-Raw Copper. Mine a Copper Ore to get it.=未処理の銅。銅鉱石を採掘すると手に入ります。

@@ -422,7 +422,6 @@ The values for X, Y and Z work like this:=Les valeurs pour X, Y et Z fonctionnen
 • Follow the sun, then go left: Z decreases=• Suivez le soleil, puis allez à gauche : Z diminue
 • The side length of a full cube is 1=• La longueur latérale d'un cube complet est de 1
 You can view your current position in the debug screen (open with [F5]).=Vous pouvez afficher votre position actuelle dans l'écran de débogage (ouvrir avec [F5]).
-##[ mcl_extension.lua ]##
 # MCL2 extensions
 Creative Mode=Mode créatif
 Enabling Creative Mode in VoxeLibre applies the following changes:=L'activation du mode créatif dans VoxeLibre applique les modifications suivantes :

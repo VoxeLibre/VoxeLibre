@@ -37,7 +37,6 @@ Use crafting to draw a pattern on top of the banner. Emblazoned banners can be e
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=同じ色の旗を2枚並べて、旗の模様を写せます。1枚はエンブレム入りで、もう1枚はまっさらな状態であることが必要です。最後に、旗を大釜の上に置いて使うことで、その一番上のレイヤーを水で洗い流す事もできます。
 Preview Banner=
 Paintable decoration=塗装可能な装飾
-##[ patterncraft.lua ]##
 @1 Bordure=@1 縁取り
 @1 Bricks=@1 レンガ模様
 @1 Roundel=@1 円形

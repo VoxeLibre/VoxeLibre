@@ -1,14 +1,4 @@
 # textdomain: mcl_ocean
-##[ prismarine.lua ]##
-Sea Lantern=
-Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=
-Prismarine=
-Prismarine is used as a building block. It slowly changes its color.=
-Prismarine Bricks=
-Dark Prismarine=
-Prismarine Crystals=
-Prismarine Shard=
-##[ corals.lua ]##
 Tube Coral Block=
 Dead Tube Coral Block=
 Tube Coral=
@@ -44,21 +34,26 @@ Corals grow on top of coral blocks and need to be inside a water source to survi
 Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=
 Needs water to live=
 Grows on coral block of same species=
-##[ seagrass.lua ]##
-Grows in water on dirt, sand, gravel=
-Seagrass=
-Seagrass grows inside water on top of dirt, sand or gravel.=
-##[ kelp.lua ]##
 Kelp=
 Kelp grows inside water on top of dirt, sand or gravel.=
+Grows in water on dirt, sand, gravel=
 Dried Kelp=
 Dried kelp is a food item.=
 Dried Kelp Block=
 A decorative block that serves as a great furnace fuel.=
-##[ sea_pickle.lua ]##
+Sea Lantern=
+Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=
+Prismarine=
+Prismarine is used as a building block. It slowly changes its color.=
+Prismarine Bricks=
+Dark Prismarine=
+Prismarine Crystals=
+Prismarine Shard=
 Sea Pickle=
 Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=
 It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=
 Glows in the water=
 4 possible sizes=
 Grows on dead brain coral block=
+Seagrass=
+Seagrass grows inside water on top of dirt, sand or gravel.=

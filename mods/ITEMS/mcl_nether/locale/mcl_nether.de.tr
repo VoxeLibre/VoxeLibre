@@ -33,7 +33,8 @@ Netherite Ingot=Netheritbarren
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=Netheritbarren können an einer Schmiede verwendet werden, um Gegenstände zu Netherit zu upgraden.
 Nether Brick=Netherziegel
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Netherziegel werden hauptsächlich zur Fertigung von Netherziegelblöcken und Netherzäunen benutzt.
-##[ nether_wart.lua ]##
+Nether Lava Source=Netherlavaquelle
+Flowing Nether Lava=Fließende Netherlava
 Premature Nether Wart (Stage 1)=Junger Netherwurz (1. Stufe)
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Ein junger Netherwurz wurde erst kürzlich auf Seelensand gepflanzt. Netherwurz wächst langsam auf Seelensand in 4 Stufen (die 2. und 3. Stufe sehen identisch aus). Obwohl Netherwurz im Nether beheimatet ist, wächst er in jeder Dimension.
 Premature Nether Wart (Stage 2)=Junger Netherwurz (2. Stufe)
@@ -44,9 +45,6 @@ Nether Wart=Netherwurz
 Grows on soul sand=Wächst auf Seelensand
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=Netherwurze sind Pflanzen, die im Nether beheimatet sind. Sie können auf Seelensand gepflanzt werden und wachsen in 4 Stufen.
 Place this item on soul sand to plant it and watch it grow.=Platzieren Sie den Gegenstand auf Seelensand, um ihn zu pflanzen und sehen Sie dabei zu, wie es wächst.
-##[ lava.lua ]##
-Nether Lava Source=Netherlavaquelle
-Flowing Nether Lava=Fließende Netherlava
 
 
 ##### not used anymore #####

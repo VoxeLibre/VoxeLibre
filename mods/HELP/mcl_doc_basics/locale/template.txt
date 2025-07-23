@@ -422,7 +422,6 @@ The values for X, Y and Z work like this:=
 • Follow the sun, then go left: Z decreases=
 • The side length of a full cube is 1=
 You can view your current position in the debug screen (open with [F5]).=
-##[ mcl_extension.lua ]##
 # MCL2 extensions
 Creative Mode=
 Enabling Creative Mode in VoxeLibre applies the following changes:=

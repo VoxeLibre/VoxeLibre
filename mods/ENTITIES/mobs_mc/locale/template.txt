@@ -1,41 +1,68 @@
 # textdomain: mobs_mc
-##[ axolotl.lua ]##
 Axolotl=
-##[ bat.lua ]##
 Bat=
-##[ rabbit.lua ]##
-Rabbit=
-Killer Bunny=
-##[ chicken.lua ]##
+Blaze=
 Chicken=
-##[ cow+mooshroom.lua ]##
+Cod=
 Cow=
 Mooshroom=
-##[ horse.lua ]##
+Dolphin=
+Ender Dragon=
+Endermite=
+Ghast=
+Glow Squid=
+Guardian=
+Elder Guardian=
+Hoglin=
+Zoglin=
+Baby hoglin=
 Horse=
 Skeleton Horse=
 Zombie Horse=
 Donkey=
 Mule=
-##[ llama.lua ]##
+Iron Golem=
 Llama=
-##[ ocelot.lua ]##
+ - Strength @1=
 Ocelot=
 Cat=
-##[ parrot.lua ]##
 Parrot=
-##[ pig.lua ]##
 Pig=
-##[ polar_bear.lua ]##
+Piglin=
+Sword Piglin=
+Zombie Piglin=
+Baby Zombie Piglin=
+Piglin Brute=
+Pillager=
 Polar Bear=
-##[ sheep.lua ]##
+Rabbit=
+Killer Bunny=
+Rover=
+Salmon=
 Sheep=
-##[ wolf.lua ]##
-Wolf=
-Dog=
-##[ squid.lua ]##
+Shulker=
+Silverfish=
+Skeleton=
+Stray=
+Wither Skeleton=
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=
+Slime=
+Snow Golem=
+Spider=
+Cave Spider=
 Squid=
-##[ villager.lua ]##
+Stalker=
+Overloaded Stalker=
+Strider=
+Baby Strider=
+Tropical fish=
+Vex=
 Novice=
 Apprentice=
 Journeyman=
@@ -57,89 +84,15 @@ Cleric=
 Mason=
 Nitwit=
 Villager=
-##[ pillager.lua ]##
-Pillager=
-##[ villager_evoker.lua ]##
 Evoker=
-##[ villager_vindicator.lua ]##
-Vindicator=
-##[ villager_zombie.lua ]##
-Zombie Villager=
-##[ witch.lua ]##
-Witch=
-##[ blaze.lua ]##
-Blaze=
-##[ ender_dragon.lua ]##
-Ender Dragon=
-##[ endermite.lua ]##
-Endermite=
-##[ villager_illusioner.lua ]##
 Illusioner=
-##[ ghast.lua ]##
-Ghast=
-##[ guardian.lua ]##
-Guardian=
-##[ guardian_elder.lua ]##
-Elder Guardian=
-##[ snowman.lua ]##
-Snow Golem=
-##[ iron_golem.lua ]##
-Iron Golem=
-##[ rover.lua ]##
-Rover=
-##[ shulker.lua ]##
-Shulker=
-##[ silverfish.lua ]##
-Silverfish=
-##[ skeleton+stray.lua ]##
-Skeleton=
-Stray=
-##[ skeleton_wither.lua ]##
-Wither Skeleton=
-##[ stalker.lua ]##
-Stalker=
-Overloaded Stalker=
-##[ zombie.lua ]##
+Vindicator=
+Zombie Villager=
+Witch=
+Wither=
+Wolf=
+Dog=
 Zombie=
 Baby Zombie=
 Husk=
 Baby Husk=
-##[ slime+magma_cube.lua ]##
-Slime - big=
-Slime - small=
-Slime - tiny=
-Magma Cube - big=
-Magma Cube - small=
-Magma Cube - tiny=
-Magma Cube=
-Slime=
-##[ spider.lua ]##
-Spider=
-Cave Spider=
-##[ vex.lua ]##
-Vex=
-##[ wither.lua ]##
-Wither=
-##[ cod.lua ]##
-Cod=
-##[ salmon.lua ]##
-Salmon=
-##[ tropical_fish.lua ]##
-Tropical fish=
-##[ dolphin.lua ]##
-Dolphin=
-##[ glow_squid.lua ]##
-Glow Squid=
-##[ piglin.lua ]##
-Piglin=
-Sword Piglin=
-Zombie Piglin=
-Baby Zombie Piglin=
-Piglin Brute=
-##[ hoglin+zoglin.lua ]##
-Hoglin=
-Zoglin=
-Baby hoglin=
-##[ strider.lua ]##
-Strider=
-Baby Strider=

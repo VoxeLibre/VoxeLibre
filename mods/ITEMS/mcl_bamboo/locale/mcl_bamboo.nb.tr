@@ -1,12 +1,10 @@
 # textdomain: mcl_bamboo
 ### bamboo_base.lua ###
-##[ bamboo_base.lua ]##
 Bamboo=Bambus
 Bamboo Block=Bambusblokk
 Stripped Bamboo Block=Slindet bambusblokk
 Bamboo Plank=Bambusplanker
 Bamboo Mosaic Plank=Bambusmosaikk
-##[ bamboo_items.lua ]##
 Bamboo Door=Bambusdør
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokker høye barrierer som kan åpnes eller lukkes for hånd eller med et rødsteinssignal.
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å åpne eller lukke en tredør, høyreklikk på den eller forsyn den nedre halvdelen med et rødsteinssignal

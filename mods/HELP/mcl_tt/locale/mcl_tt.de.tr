@@ -1,5 +1,4 @@
 # textdomain: mcl_tt
-##[ snippets_base.lua ]##
 Painfully slow=Furchtbar langsam
 Very slow=Sehr langsam
 Slow=Langsam
@@ -31,7 +30,6 @@ Climbable=Erkletterbar
 Slippery=Rutschig
 Bouncy (@1%)=Sprunghaft (@1%)
 Luminance: @1=Lichtstärke: @1
-##[ snippets_mcl.lua ]##
 Head armor=Kopfrüstung
 Torso armor=Torsorüstung
 Legs armor=Beinrüstung

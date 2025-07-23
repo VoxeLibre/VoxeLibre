@@ -23,7 +23,6 @@ Double Tallgrass=丈が倍高い草
 Large Fern=大きなシダ
 Lily Pad=スイレンの葉
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=スイレンの葉は、歩くことができるペラい植物ブロックです。水源や氷、フロストアイスの上に置けます。
-##[ register.lua ]##
 Poppy=ポピー
 Dandelion=タンポポ
 Oxeye Daisy=フランスギク

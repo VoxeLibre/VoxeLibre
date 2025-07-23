@@ -1,5 +1,4 @@
 # textdomain:awards
-##[ api.lua ]##
 @1 has made the advancement @2=@1 hat den Fortschritt @2 erreicht
 Secret Advancement Made:=Geheimer Fortschritt erreicht:
 Goal Completed:=Ziel abgeschlossen:
@@ -22,7 +21,6 @@ You've disabled awards. Type /awards enable to reenable.=Sie haben die Auszeichn
 You have not gotten any awards.=Sie haben noch keine Auszeichnungen.
 @1’s awards:=Auszeichnungen von @1:
 @1: @2=@1: @2
-##[ chat_commands.lua ]##
 [c|clear|disable|enable]=[c|clear|disable|enable]
 Show, clear, disable or enable your advancements.=Zeige, lösche, deaktiviere oder aktiviere deine Fortschritte.
 You have enabled your advancements.=Sie haben Ihre Fortschritte aktiviert.
@@ -38,9 +36,7 @@ Invalid action.=Ungültige Aktion.
 Player is not online.=Spieler ist nicht online.
 Done.=Fertig.
 Advancement “@1” does not exist.=Fortschritt „@1“ existiert nicht.
-##[ sfinv.lua ]##
 Awards=Auszeichnungen
-##[ triggers.lua ]##
 @1/@2 dug=@1/@2 abgebaut
 Mine blocks: @1×@2=Bauen Sie Blöcke ab: @1×@2
 Mine a block: @1=Bauen Sie einen Block ab: @1

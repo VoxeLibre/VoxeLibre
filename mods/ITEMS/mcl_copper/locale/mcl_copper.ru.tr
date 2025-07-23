@@ -1,5 +1,8 @@
 # textdomain: mcl_copper
-##[ nodes.lua ]##
+Copper Ingot=Медный слиток
+Molten Raw Copper. It is used to craft blocks.=Медный слиток. Используется для крафта блоков.
+Raw Copper=Необработанная медь
+Raw Copper. Mine a Copper Ore to get it.=Необработанная медь. Добудьте медную руду, чтобы получить её.
 Copper Ore=Медная руда
 Some copper contained in stone, it is pretty common and can be found below sea level.=Залежи медной руды находятся в камне, медь довольно распространена и может быть найдена ниже уровня моря.
 Block of Raw Copper=Блок необработанной меди
@@ -52,8 +55,3 @@ Stairs of Weathered Cut Copper=Ступени из состаренного ре
 Waxed Stairs of Weathered Cut Copper=Вощёные ступени из состаренного резного медного блока
 Stairs of Oxidized Cut Copper=Ступени из окисленного резного медного блока
 Waxed Stairs of Oxidized Cut Copper=Вощёные ступени из окисленного резного медного блока
-##[ items.lua ]##
-Copper Ingot=Медный слиток
-Molten Raw Copper. It is used to craft blocks.=Медный слиток. Используется для крафта блоков.
-Raw Copper=Необработанная медь
-Raw Copper. Mine a Copper Ore to get it.=Необработанная медь. Добудьте медную руду, чтобы получить её.

@@ -195,6 +195,7 @@ Water interacts with lava in various ways:=Wasser reagiert mit Lava auf untersch
 Flowing Lava=Fließende Lava
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=Eine Lavaquelle zündet einige Luftblöcke über ihr an, wenn sie sich neben einem entzündlichen Block befinden.
 Lava Source=Lavaquelle
+Lava=
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=Lava ist heiß und ziemlich gefährlich. Berühren Sie sie nicht, es wird Sie verletzen und es ist schwierig, ihr zu entkommen.
 Lava interacts with water various ways:=Lava reagiert mit Wasser auf verschiedene Arten:
 • When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• Wenn sich eine Lavaquelle direkt unter oder horizontal neben Wasser befindet, verwandelt sich die Lava zu Obsidian.

@@ -23,7 +23,6 @@ Double Tallgrass=Grande Herbe
 Large Fern=Grande Fougère
 Lily Pad=Nénuphar
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Un nénuphar est un bloc de plante plat sur lequel on peut marcher. Ils peuvent être placés sur des sources d'eau, de la glace et de la glace givrée.
-##[ register.lua ]##
 Poppy=Coquelicot
 Dandelion=Pisselit
 Oxeye Daisy=Marguerite

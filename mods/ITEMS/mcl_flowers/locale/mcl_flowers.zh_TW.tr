@@ -23,7 +23,6 @@ Double Tallgrass=芒草
 Large Fern=高蕨
 Lily Pad=荷葉
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=荷葉是一種平坦的植物方塊，可以在上面行走。它們可以放在水源、冰面和結霜的冰面上。
-##[ register.lua ]##
 Poppy=罌粟
 Dandelion=蒲公英
 Oxeye Daisy=雛菊

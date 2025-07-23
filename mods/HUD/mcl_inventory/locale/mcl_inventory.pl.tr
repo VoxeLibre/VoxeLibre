@@ -1,5 +1,4 @@
 # textdomain: mcl_inventory
-##[ creative.lua ]##
 Building Blocks=Bloki budowlane
 Decoration Blocks=Bloki dekoracyjne
 Redstone=Czerwienit
@@ -19,7 +18,6 @@ Advancements=
 Switch stack size=
 Select player skin=Wybierz skin gracza
 @1 / @2=
-##[ survival.lua ]##
 Crafting=Wytwarzanie
 Achievements=Osiągnięcia
 

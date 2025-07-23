@@ -23,7 +23,6 @@ Double Tallgrass=Двойная высокая трава
 Large Fern=Большой папоротник
 Lily Pad=Кувшинка
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Кувшинка это плоский растительный блок, по которому можно ходить. Он размещается на водных источниках, а также на льду и замороженном льду.
-##[ register.lua ]##
 Poppy=Мак
 Dandelion=Одуванчик
 Oxeye Daisy=Нивяник

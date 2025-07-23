@@ -1,40 +1,5 @@
 # textdomain: mcl_enchanting
 ### enchantments.lua ###
-Enchant an item=アイテムにエンチャントする
-<player> <enchantment> [<level>]=<プレイヤー> <エンチャント> [<レベル>]
-Usage: /enchant <player> <enchantment> [<level>]=使用方法：/enchant <プレイヤー> <エンチャント> [<レベル>]
-Player '@1' cannot be found.=プレイヤー'@1'が見つかりません。
-There is no such enchantment '@1'.='@1'というエンチャントはありません。
-The target doesn't hold an item.=対象がアイテムを保持していません。
-The selected enchantment can't be added to the target item.=選択したエンチャントは、対象アイテムに付加できません。
-### init.lua ###
-'@1' is not a valid number='@1'は有効ではない数字
-The number you have entered (@1) is too big, it must be at most @2.=入力した数値（@1）は大きすぎます、@2以下である必要があります。
-The number you have entered (@1) is too small, it must be at least @2.=入力した数値（@1）は小さすぎます、@2以上である必要があります。
-@1 can't be combined with @2.=@1は@2と組み合わせられません。
-Enchanting succeded.=エンチャントが成功しました。
-Forcefully enchant an item=アイテムに強制的にエンチャント
-Usage: /forceenchant <player> <enchantment> [<level>]=使用方法：/forceenchant <プレイヤー> <エンチャント> [<レベル>]
-The target item is not enchantable.=対象アイテムは、エンチャント不可です。
-'@1' is not a valid number.='@1'は有効な数字ではありません。
-Enchanted Book=エンチャント本
-Enchanting Table=エンチャントテーブル
-Spend experience, and lapis to enchant various items.=経験値とラピスを消費して、様々なアイテムにエンチャントできます。
-Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=エンチャントテーブルでは、防具や道具、武器、本などに様々な能力をエンチャントできます。ただし多少の経験値や、ラピスラズリを費やすことになります。
-Rightclick the Enchanting Table to open the enchanting menu.=エンチャントテーブルを右クリックすると、エンチャント メニューが表示されます。
-Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=左上のスロットに道具、防具、武器、本を入れ、その右のスロットにラピスラズリ1～3個を入れます。
-After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=アイテムをスロットに配置すると、エンチャント オプションが表示されます。オプションにカーソルを合わせると、利用可能なオプションが表示されます。
-These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=これらのオプションはランダム且つ経験値に依存します；しかし、エンチャントを強化できます。
-To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=エンチャントテーブルの周囲に本棚を置くと、エンチャントを強化できます。ただし、テーブルと本棚の間に空気ノードを1つ入れないと、エンチャントテーブルに力を与えられません。
-After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=最終的にエンチャントを決めたら；選ぶ箇所を左クリックすると、ラピスラズリと経験値の両方が消費されているのがわかります。そしてエンチャントしたアイテムがその場に残されます。
-Enchant=エンチャント
-##[ engine.lua ]##
-Inventory=インベントリ
-@1 Lapis Lazuli=@1 ラピスラズリ
-### engine.lua ###
-@1 Enchantment Levels=@1 エンチャントレベル
-Level requirement: @1=必要レベル：@1
-##[ enchantments.lua ]##
 Bane of Arthropods=殺虫力
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=虫系のMOB（クモ、洞窟グモ、シルバーフィッシュ、エンダーマイト）に対してダメージが増加し、鈍化IVを適用します。
 Channeling=召雷
@@ -95,6 +60,39 @@ Sweeping Edge=スイープエッジ
 Increases sweeping attack damage.=なぎ払い攻撃のダメージが増加します。
 Unbreaking=耐久力
 Increases item durability.=アイテムの耐久度が向上します。
+Inventory=インベントリ
+@1 Lapis Lazuli=@1 ラピスラズリ
+### engine.lua ###
+@1 Enchantment Levels=@1 エンチャントレベル
+Level requirement: @1=必要レベル：@1
+Enchant an item=アイテムにエンチャントする
+<player> <enchantment> [<level>]=<プレイヤー> <エンチャント> [<レベル>]
+Usage: /enchant <player> <enchantment> [<level>]=使用方法：/enchant <プレイヤー> <エンチャント> [<レベル>]
+Player '@1' cannot be found.=プレイヤー'@1'が見つかりません。
+There is no such enchantment '@1'.='@1'というエンチャントはありません。
+The target doesn't hold an item.=対象がアイテムを保持していません。
+The selected enchantment can't be added to the target item.=選択したエンチャントは、対象アイテムに付加できません。
+### init.lua ###
+'@1' is not a valid number='@1'は有効ではない数字
+The number you have entered (@1) is too big, it must be at most @2.=入力した数値（@1）は大きすぎます、@2以下である必要があります。
+The number you have entered (@1) is too small, it must be at least @2.=入力した数値（@1）は小さすぎます、@2以上である必要があります。
+@1 can't be combined with @2.=@1は@2と組み合わせられません。
+Enchanting succeded.=エンチャントが成功しました。
+Forcefully enchant an item=アイテムに強制的にエンチャント
+Usage: /forceenchant <player> <enchantment> [<level>]=使用方法：/forceenchant <プレイヤー> <エンチャント> [<レベル>]
+The target item is not enchantable.=対象アイテムは、エンチャント不可です。
+'@1' is not a valid number.='@1'は有効な数字ではありません。
+Enchanted Book=エンチャント本
+Enchanting Table=エンチャントテーブル
+Spend experience, and lapis to enchant various items.=経験値とラピスを消費して、様々なアイテムにエンチャントできます。
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=エンチャントテーブルでは、防具や道具、武器、本などに様々な能力をエンチャントできます。ただし多少の経験値や、ラピスラズリを費やすことになります。
+Rightclick the Enchanting Table to open the enchanting menu.=エンチャントテーブルを右クリックすると、エンチャント メニューが表示されます。
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=左上のスロットに道具、防具、武器、本を入れ、その右のスロットにラピスラズリ1～3個を入れます。
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=アイテムをスロットに配置すると、エンチャント オプションが表示されます。オプションにカーソルを合わせると、利用可能なオプションが表示されます。
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=これらのオプションはランダム且つ経験値に依存します；しかし、エンチャントを強化できます。
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=エンチャントテーブルの周囲に本棚を置くと、エンチャントを強化できます。ただし、テーブルと本棚の間に空気ノードを1つ入れないと、エンチャントテーブルに力を与えられません。
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=最終的にエンチャントを決めたら；選ぶ箇所を左クリックすると、ラピスラズリと経験値の両方が消費されているのがわかります。そしてエンチャントしたアイテムがその場に残されます。
+Enchant=エンチャント
 
 
 ##### not used anymore #####

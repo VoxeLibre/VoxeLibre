@@ -1,4 +1,16 @@
 # textdomain: mesecons_commandblock
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Erro: o comando "@1" non existe; o seu bloque de comandos non se cambiou. Use o comando de chat "axuda" para obter unha lista de comandos dispoñibles.
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Erro: o comando "@1" non existe; o seu bloque de comandos non se cambiou. Use o comando de chat "axuda" para obter unha lista de comandos dispoñibles. Consello: tenta eliminar a barra inclinada inicial.
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Erro: non tes privilexios suficientes para usar o comando "@1" (falta o privilexio: @2)! Non se cambiou o bloque de comandos.
+Error: No commander! Block must be replaced.=Erro: ¡sen dono! O bloque debe ser substituído.
+Commander: @1=Dono: @1
+Submit=Aceptar
+No commands.=Sen comandos.
+Commands:=Comandos:
+Help=Axuda
+Access denied. You need the “maphack” privilege to edit command blocks.=Acceso denegado. Necesitas o privilexio "maphack" para editar bloques de comandos.
+Editing the command block has failed! You can only change the command block in Creative Mode!=¡Produciuse un erro ao editar o bloque de comandos! ¡Só podes cambiar o bloque de comandos no modo creativo!
+Editing the command block has failed! The command block is gone.=Produciuse un erro ao editar o bloque de comandos! O bloque de comandos desapareceu.
 Command blocks are not enabled on this server=Os bloques de comandos non están activados neste servidor
 Placement denied. You need the “maphack” privilege to place command blocks.=Colocación denegada. Necesitas o privilexio "maphack" para colocar bloques de comandos.
 Command Block=Bloque de comandos
@@ -17,16 +29,3 @@ Command blocks support placeholders, insert one of these placeholders and they w
 • “@@@@”: literal “@@” sign=• „@@@@“: literal "@@“ letreiro
 Example 1:@n    time 12000@nSets the game clock to 12:00=Exemplo 1:@n hora 12000@nConfigura o reloxo do xogo ás 12:00
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=Exemplo 2: @n dálle @@n mcl_core:apple 5@nDálle 5 mazás ao xogador máis próximo
-##[ api.lua ]##
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Erro: o comando "@1" non existe; o seu bloque de comandos non se cambiou. Use o comando de chat "axuda" para obter unha lista de comandos dispoñibles.
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Erro: o comando "@1" non existe; o seu bloque de comandos non se cambiou. Use o comando de chat "axuda" para obter unha lista de comandos dispoñibles. Consello: tenta eliminar a barra inclinada inicial.
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Erro: non tes privilexios suficientes para usar o comando "@1" (falta o privilexio: @2)! Non se cambiou o bloque de comandos.
-Error: No commander! Block must be replaced.=Erro: ¡sen dono! O bloque debe ser substituído.
-Commander: @1=Dono: @1
-Submit=Aceptar
-No commands.=Sen comandos.
-Commands:=Comandos:
-Help=Axuda
-Access denied. You need the “maphack” privilege to edit command blocks.=Acceso denegado. Necesitas o privilexio "maphack" para editar bloques de comandos.
-Editing the command block has failed! You can only change the command block in Creative Mode!=¡Produciuse un erro ao editar o bloque de comandos! ¡Só podes cambiar o bloque de comandos no modo creativo!
-Editing the command block has failed! The command block is gone.=Produciuse un erro ao editar o bloque de comandos! O bloque de comandos desapareceu.

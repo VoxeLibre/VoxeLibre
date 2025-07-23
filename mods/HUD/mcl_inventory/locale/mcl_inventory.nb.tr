@@ -1,5 +1,4 @@
 # textdomain: mcl_inventory
-##[ creative.lua ]##
 Building Blocks=Byggeblokker
 Decoration Blocks=Dekorasjonsblokker
 Redstone=Rødstein
@@ -19,7 +18,6 @@ Advancements=Fremskritt
 Switch stack size=Bytt stabelstørrelse
 Select player skin=Velg spillerutseende
 @1 / @2=
-##[ survival.lua ]##
 Crafting=Håndverk
 Achievements=
 

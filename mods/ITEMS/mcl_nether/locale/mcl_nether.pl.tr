@@ -33,7 +33,8 @@ Netherite Ingot=
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=
 Nether Brick=Netherowa cegła
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Netherowe cegły są głównym składnikiem do wytwarzania bloków Netherowej cegły oraz Netherowych ogrodzeń.
-##[ nether_wart.lua ]##
+Nether Lava Source=Netherowe źródło lawy
+Flowing Nether Lava=Płynąca Netherowa lawa
 Premature Nether Wart (Stage 1)=Niedojrzała Netherowa brodawka (Etap 1)
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Niedojrzała Netherowa brodawka to brodawka, która niedawno została zasadzona na piasku dusz. Netherowa brodawka rośnie na piasku dusz w 4 etapach (drugi i trzeci wyglądają identycznie). Pomimo tego, że brodawki te naturalnie występują tylko w Netherze, mogą one rosnąć w każdym wymiarze.
 Premature Nether Wart (Stage 2)=Niedojrzała Netherowa brodawka (Etap 2)
@@ -44,9 +45,6 @@ Nether Wart=Netherowa brodawka
 Grows on soul sand=Rośnie na piasku dusz
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=Netherowe brodawki to rośliny występujące w Netherze. Mogą być posadzone na piasku dusz i wyrosną w 4 fazach.
 Place this item on soul sand to plant it and watch it grow.=Postaw ten przedmiot na piasku dusz aby zasadzić go i patrz jak rośnie.
-##[ lava.lua ]##
-Nether Lava Source=Netherowe źródło lawy
-Flowing Nether Lava=Płynąca Netherowa lawa
 
 
 ##### not used anymore #####

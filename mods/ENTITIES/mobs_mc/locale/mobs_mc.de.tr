@@ -1,41 +1,69 @@
 # textdomain: mobs_mc
-##[ axolotl.lua ]##
 Axolotl=Axolotl
-##[ bat.lua ]##
 Bat=Fledermaus
-##[ rabbit.lua ]##
-Rabbit=Kaninchen
-Killer Bunny=Killerkaninchen
-##[ chicken.lua ]##
+Blaze=Lohe
 Chicken=Huhn
-##[ cow+mooshroom.lua ]##
+Cod=Kabeljau
 Cow=Kuh
 Mooshroom=Pilzkuh
-##[ horse.lua ]##
+Dolphin=Delfin
+Ender Dragon=Enderdrache
+Endermite=Endermilbe
+Ghast=Ghast
+Glow Squid=Leuchttintenfisch
+Guardian=Wächter
+Elder Guardian=Großer Wächter
+Hoglin=Hoglin
+Zoglin=Zoglin
+Baby hoglin=Baby-Hoglin
 Horse=Pferd
 Skeleton Horse=Skelettpferd
 Zombie Horse=Zombiepferd
 Donkey=Esel
 Mule=Maultier
-##[ llama.lua ]##
+Iron Golem=Eisengolem
 Llama=Lama
-##[ ocelot.lua ]##
+ - Strength @1=
 Ocelot=Ozelot
 Cat=Katze
-##[ parrot.lua ]##
 Parrot=Papagei
-##[ pig.lua ]##
 Pig=Schwein
-##[ polar_bear.lua ]##
+Piglin=Piglin
+Sword Piglin=Schwert-Piglin
+Zombie Piglin=Schweinezombie
+Baby Zombie Piglin=Baby-Schweinezombie
+Piglin Brute=Piglin-Grobian
+Pillager=Plünderer
 Polar Bear=Eisbär
-##[ sheep.lua ]##
+Rabbit=Kaninchen
+Killer Bunny=Killerkaninchen
+Rover=Rover
+Salmon=Lachs
 Sheep=Schaf
-##[ wolf.lua ]##
-Wolf=Wolf
-Dog=Hund
-##[ squid.lua ]##
+Shulker=Shulker
+Silverfish=Silberfischchen
+Skeleton=Skelett
+Stray=Eiswanderer
+Wither Skeleton=Witherskelett
+Slime - big=Slime - groß
+Slime - small=Slime - klein
+Slime - tiny=Slime - winzig
+Magma Cube - big=Magmawürfel – groß
+Magma Cube - small=Magmawürfel – klein
+Magma Cube - tiny=Magmawürfel - winzig
+# choose one below
+Magma Cube=Magmakubus
+Slime=Schleim
+Snow Golem=Schneegolem
+Spider=Spinne
+Cave Spider=Höhlenspinne
 Squid=Tintenfisch
-##[ villager.lua ]##
+Stalker=Stalker
+Overloaded Stalker=Geladener Stalker
+Strider=Strider
+Baby Strider=Baby-Strider
+Tropical fish=Tropischer Fisch
+Vex=Plagegeist
 Novice=Anfänger
 Apprentice=Lehrling
 Journeyman=Geselle
@@ -57,93 +85,18 @@ Cleric=Priester
 Mason=Maurer
 Nitwit=Dorftrottel
 Villager=Dorfbewohner
-##[ pillager.lua ]##
-Pillager=Plünderer
-##[ villager_evoker.lua ]##
 Evoker=Magier
-##[ villager_vindicator.lua ]##
-Vindicator=Diener
-##[ villager_zombie.lua ]##
-Zombie Villager=Dorfbewohnerzombie
-##[ witch.lua ]##
-Witch=Hexe
-##[ blaze.lua ]##
-Blaze=Lohe
-##[ ender_dragon.lua ]##
-Ender Dragon=Enderdrache
-##[ endermite.lua ]##
-Endermite=Endermilbe
-##[ villager_illusioner.lua ]##
 Illusioner=Illusionist
-##[ ghast.lua ]##
-Ghast=Ghast
-##[ guardian.lua ]##
-Guardian=Wächter
-##[ guardian_elder.lua ]##
-Elder Guardian=Großer Wächter
-##[ snowman.lua ]##
-Snow Golem=Schneegolem
-##[ iron_golem.lua ]##
-Iron Golem=Eisengolem
-##[ rover.lua ]##
-Rover=Rover
-##[ shulker.lua ]##
-Shulker=Shulker
-##[ silverfish.lua ]##
-Silverfish=Silberfischchen
-##[ skeleton+stray.lua ]##
-Skeleton=Skelett
-Stray=Eiswanderer
-##[ skeleton_wither.lua ]##
-Wither Skeleton=Witherskelett
-##[ stalker.lua ]##
-Stalker=Stalker
-Overloaded Stalker=Geladener Stalker
-##[ zombie.lua ]##
+Vindicator=Diener
+Zombie Villager=Dorfbewohnerzombie
+Witch=Hexe
+Wither=Wither
+Wolf=Wolf
+Dog=Hund
 Zombie=Zombie
 Baby Zombie=Babiezombie
 Husk=Wüstenzombie
 Baby Husk=Baby-Wüstenzombie
-##[ slime+magma_cube.lua ]##
-Slime - big=Slime - groß
-Slime - small=Slime - klein
-Slime - tiny=Slime - winzig
-Magma Cube - big=Magmawürfel – groß
-Magma Cube - small=Magmawürfel – klein
-Magma Cube - tiny=Magmawürfel - winzig
-# choose one below
-Magma Cube=Magmakubus
-Slime=Schleim
-##[ spider.lua ]##
-Spider=Spinne
-Cave Spider=Höhlenspinne
-##[ vex.lua ]##
-Vex=Plagegeist
-##[ wither.lua ]##
-Wither=Wither
-##[ cod.lua ]##
-Cod=Kabeljau
-##[ salmon.lua ]##
-Salmon=Lachs
-##[ tropical_fish.lua ]##
-Tropical fish=Tropischer Fisch
-##[ dolphin.lua ]##
-Dolphin=Delfin
-##[ glow_squid.lua ]##
-Glow Squid=Leuchttintenfisch
-##[ piglin.lua ]##
-Piglin=Piglin
-Sword Piglin=Schwert-Piglin
-Zombie Piglin=Schweinezombie
-Baby Zombie Piglin=Baby-Schweinezombie
-Piglin Brute=Piglin-Grobian
-##[ hoglin+zoglin.lua ]##
-Hoglin=Hoglin
-Zoglin=Zoglin
-Baby hoglin=Baby-Hoglin
-##[ strider.lua ]##
-Strider=Strider
-Baby Strider=Baby-Strider
 
 
 ##### not used anymore #####

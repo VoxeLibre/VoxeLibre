@@ -1,5 +1,4 @@
 # textdomain:awards
-##[ api.lua ]##
 @1 has made the advancement @2=@1 получил(а) достижение @2
 Secret Advancement Made:=Секретное достижение получено:
 Goal Completed:=Цель выполнена:
@@ -22,7 +21,6 @@ You've disabled awards. Type /awards enable to reenable.=Вы отключили
 You have not gotten any awards.=Вы пока не получили никаких наград.
 @1’s awards:=Награды @1:
 @1: @2=@1: @2
-##[ chat_commands.lua ]##
 [c|clear|disable|enable]=[c|clear — очистить|disable — отключить|enable — включить]
 Show, clear, disable or enable your advancements.=Показать, очистить, отключить или включить ваши достижения
 You have enabled your advancements.=Вы включили ваши достижения.
@@ -38,9 +36,7 @@ Invalid action.=Неверное действие.
 Player is not online.=Игрок не в сети.
 Done.=Готово.
 Advancement “@1” does not exist.=Достижения “@1” не существует.
-##[ sfinv.lua ]##
 Awards=Награды
-##[ triggers.lua ]##
 @1/@2 dug=@1/@2 выкопано
 Mine blocks: @1×@2=Добыл(а) блоки: @1×@2
 Mine a block: @1=Добыл(а) блок: @1

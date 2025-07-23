@@ -1,5 +1,4 @@
 # textdomain: mcl_inventory
-##[ creative.lua ]##
 Building Blocks=建筑方块
 Decoration Blocks=装饰方块
 Redstone=红石
@@ -19,7 +18,6 @@ Advancements=
 Switch stack size=切换堆叠数量
 Select player skin=选择玩家皮肤
 @1 / @2=
-##[ survival.lua ]##
 Crafting=制作
 Achievements=成就
 

@@ -1,5 +1,28 @@
 # textdomain: mcl_beds
-##[ functions.lua ]##
+Beds allow you to sleep at night and make the time pass faster.=Senge giver dig mulighed for at sove om natten, og få tiden til at gå hurtigere.
+To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=For at lægge dig til at sove i en seng skal du stå tæt på den og højre-klikke. Man kan kun sove når solen går ned, om natten eller i tordenvejr.
+You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Du har hørt om andre verdener hvor en seng var udgangspunktet for dit næste liv, men denne verden er ikke en af dem.
+By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=Ved at bruge en sætter du udgangspunktet for dit næste liv. Hvis du dør, vil dit næste liv starte i denne seng, medmindre sengen bliver blokeret eller ødelagt.
+In this world, going to bed won't skip the night, but it will skip thunderstorms.=I denne verden, springer det ikke natten over at sove, men det springer tordenvejr over.
+Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Du kan springe natten over ved at sove. Natten bliver sprunget over hvis alle spillere i verdenen sover. Natten bliver sprunget over efter at have sovet i nogle få sekunder. Tordenvejr kan springes over på samme måde.
+Allows you to sleep=Gør dig i stand til at sove.
+Red Bed=Rød seng
+Blue Bed=Blå seng
+Cyan Bed=Cyanblå seng
+Grey Bed=Grå seng
+Light Grey Bed=Lysegrå seng
+Black Bed=Sort senge
+Yellow Bed=Gul senge
+Green Bed=Grøn seng
+Magenta Bed=Magenta seng
+Orange Bed=Orange seng
+Purple Bed=Lilla seng
+Brown Bed=Brun seng
+Pink Bed=Lyserød seng
+Lime Bed=Limegrøn seng
+Light Blue Bed=Lyseblå seng
+White Bed=Hvid seng
+Bed=Seng
 New respawn position set!=Nyt genopståelsespunkt sat!
 You can only sleep at night or during a thunderstorm.=Du kan kun sover om natten eller under et tordenvejr.
 You can't sleep, the bed's too far away!=Du kan ikke gå i seng, sengen er for langt væk!
@@ -23,33 +46,6 @@ You exceeded the maximum number of messages per 10 seconds!=
 You are missing the 'shout' privilege! It's required in order to talk in chat...=
 Sorry, but you have to wait @1 seconds until you may use this button again!=
 Hey! Would you guys mind sleeping?=
-##[ api.lua ]##
-Beds allow you to sleep at night and make the time pass faster.=Senge giver dig mulighed for at sove om natten, og få tiden til at gå hurtigere.
-To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=For at lægge dig til at sove i en seng skal du stå tæt på den og højre-klikke. Man kan kun sove når solen går ned, om natten eller i tordenvejr.
-You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Du har hørt om andre verdener hvor en seng var udgangspunktet for dit næste liv, men denne verden er ikke en af dem.
-By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=Ved at bruge en sætter du udgangspunktet for dit næste liv. Hvis du dør, vil dit næste liv starte i denne seng, medmindre sengen bliver blokeret eller ødelagt.
-In this world, going to bed won't skip the night, but it will skip thunderstorms.=I denne verden, springer det ikke natten over at sove, men det springer tordenvejr over.
-Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Du kan springe natten over ved at sove. Natten bliver sprunget over hvis alle spillere i verdenen sover. Natten bliver sprunget over efter at have sovet i nogle få sekunder. Tordenvejr kan springes over på samme måde.
-Allows you to sleep=Gør dig i stand til at sove.
-##[ beds.lua ]##
-Red Bed=Rød seng
-Blue Bed=Blå seng
-Cyan Bed=Cyanblå seng
-Grey Bed=Grå seng
-Light Grey Bed=Lysegrå seng
-Black Bed=Sort senge
-Yellow Bed=Gul senge
-Green Bed=Grøn seng
-Magenta Bed=Magenta seng
-Orange Bed=Orange seng
-Purple Bed=Lilla seng
-Brown Bed=Brun seng
-Pink Bed=Lyserød seng
-Lime Bed=Limegrøn seng
-Light Blue Bed=Lyseblå seng
-White Bed=Hvid seng
-Bed=Seng
-##[ respawn_anchor.lua ]##
 Respawn Anchor=Genopståelsesanker
 
 

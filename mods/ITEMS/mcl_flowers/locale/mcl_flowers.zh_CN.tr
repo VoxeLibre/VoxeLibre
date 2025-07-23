@@ -23,7 +23,6 @@ Double Tallgrass=巨型草丛
 Large Fern=大型蕨类植物
 Lily Pad=睡莲
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=睡莲是一种扁平的植物方块，可以在上面行走。它们可以放置在水源、冰以及霜冰上。 
-##[ register.lua ]##
 Poppy=罂粟花
 Dandelion=蒲公英
 Oxeye Daisy=滨菊

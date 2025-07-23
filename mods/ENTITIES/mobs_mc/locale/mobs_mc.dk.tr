@@ -1,41 +1,68 @@
 # textdomain: mobs_mc
-##[ axolotl.lua ]##
 Axolotl=Salamander
-##[ bat.lua ]##
 Bat=Flagermus
-##[ rabbit.lua ]##
-Rabbit=Kanin
-Killer Bunny=Dræberkanin
-##[ chicken.lua ]##
+Blaze=Blaze
 Chicken=Kylling
-##[ cow+mooshroom.lua ]##
+Cod=Torsk
 Cow=Ko
 Mooshroom=Svamp
-##[ horse.lua ]##
+Dolphin=Delfin
+Ender Dragon=Enderdrage
+Endermite=Endermide
+Ghast=Ghast
+Glow Squid=
+Guardian=Beskytter
+Elder Guardian=Gammel beskytter
+Hoglin=
+Zoglin=
+Baby hoglin=
 Horse=Hest
 Skeleton Horse=Skelethest
 Zombie Horse=Zombiehest
 Donkey=Æsel
 Mule=Muldyr
-##[ llama.lua ]##
+Iron Golem=Jerngolem
 Llama=Lama
-##[ ocelot.lua ]##
+ - Strength @1=
 Ocelot=Ozelot
 Cat=
-##[ parrot.lua ]##
 Parrot=Papegøje
-##[ pig.lua ]##
 Pig=Gris
-##[ polar_bear.lua ]##
+Piglin=
+Sword Piglin=
+Zombie Piglin=
+Baby Zombie Piglin=
+Piglin Brute=
+Pillager=Plyndrer
 Polar Bear=Isbjørn
-##[ sheep.lua ]##
+Rabbit=Kanin
+Killer Bunny=Dræberkanin
+Rover=
+Salmon=Laks
 Sheep=Får
-##[ wolf.lua ]##
-Wolf=Ulv
-Dog=
-##[ squid.lua ]##
+Shulker=Shulker
+Silverfish=Sølvfisk
+Skeleton=Skelet
+Stray=Omstrejfer
+Wither Skeleton=Wither-skelet
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=Magmakube
+Slime=Slimklump
+Snow Golem=Snegolem
+Spider=Edderkop
+Cave Spider=Huleedderkop
 Squid=Blæksprutte
-##[ villager.lua ]##
+Stalker=Stalker
+Overloaded Stalker=
+Strider=
+Baby Strider=
+Tropical fish=Tropisk fisk
+Vex=Vex
 Novice=
 Apprentice=
 Journeyman=
@@ -57,92 +84,18 @@ Cleric=Gejstlig
 Mason=
 Nitwit=Tåbe
 Villager=Landsbyboer
-##[ pillager.lua ]##
-Pillager=Plyndrer
-##[ villager_evoker.lua ]##
 Evoker=Fremkalder
-##[ villager_vindicator.lua ]##
-Vindicator=Hævner
-##[ villager_zombie.lua ]##
-Zombie Villager=Zombie landsbyboer
-##[ witch.lua ]##
-Witch=Heks
-##[ blaze.lua ]##
-Blaze=Blaze
-##[ ender_dragon.lua ]##
-Ender Dragon=Enderdrage
-##[ endermite.lua ]##
-Endermite=Endermide
-##[ villager_illusioner.lua ]##
 Illusioner=Illusionist
-##[ ghast.lua ]##
-Ghast=Ghast
-##[ guardian.lua ]##
-Guardian=Beskytter
-##[ guardian_elder.lua ]##
-Elder Guardian=Gammel beskytter
-##[ snowman.lua ]##
-Snow Golem=Snegolem
-##[ iron_golem.lua ]##
-Iron Golem=Jerngolem
-##[ rover.lua ]##
-Rover=
-##[ shulker.lua ]##
-Shulker=Shulker
-##[ silverfish.lua ]##
-Silverfish=Sølvfisk
-##[ skeleton+stray.lua ]##
-Skeleton=Skelet
-Stray=Omstrejfer
-##[ skeleton_wither.lua ]##
-Wither Skeleton=Wither-skelet
-##[ stalker.lua ]##
-Stalker=Stalker
-Overloaded Stalker=
-##[ zombie.lua ]##
+Vindicator=Hævner
+Zombie Villager=Zombie landsbyboer
+Witch=Heks
+Wither=Wither
+Wolf=Ulv
+Dog=
 Zombie=Zombie
 Baby Zombie=
 Husk=Udtørretskal
 Baby Husk=
-##[ slime+magma_cube.lua ]##
-Slime - big=
-Slime - small=
-Slime - tiny=
-Magma Cube - big=
-Magma Cube - small=
-Magma Cube - tiny=
-Magma Cube=Magmakube
-Slime=Slimklump
-##[ spider.lua ]##
-Spider=Edderkop
-Cave Spider=Huleedderkop
-##[ vex.lua ]##
-Vex=Vex
-##[ wither.lua ]##
-Wither=Wither
-##[ cod.lua ]##
-Cod=Torsk
-##[ salmon.lua ]##
-Salmon=Laks
-##[ tropical_fish.lua ]##
-Tropical fish=Tropisk fisk
-##[ dolphin.lua ]##
-Dolphin=Delfin
-##[ glow_squid.lua ]##
-Glow Squid=
-##[ piglin.lua ]##
-Piglin=
-Sword Piglin=
-Zombie Piglin=
-Baby Zombie Piglin=
-Piglin Brute=
-##[ hoglin+zoglin.lua ]##
-Hoglin=
-Zoglin=
-Baby hoglin=
-##[ strider.lua ]##
-Strider=
-Baby Strider=
 
 
 ##### not used anymore #####

@@ -1,5 +1,4 @@
 # textdomain: mcl_tt
-##[ snippets_base.lua ]##
 Painfully slow=苦痛レベルで遅い
 Very slow=とても遅い
 Slow=遅い
@@ -31,7 +30,6 @@ Climbable=よじ登れる
 Slippery=滑りやすい
 Bouncy (@1%)=弾力性 (@1%)
 Luminance: @1=発光：@1
-##[ snippets_mcl.lua ]##
 Head armor=頭具
 Torso armor=胴衣
 Legs armor=脚具

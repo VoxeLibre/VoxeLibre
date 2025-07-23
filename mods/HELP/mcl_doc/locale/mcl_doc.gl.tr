@@ -23,7 +23,7 @@ You cannot consume this when your hunger bar is full.=Non podes consumir isto ca
 ##TODO: fuzzy matched - verify and remove the comment
 You have to wait for around 2 seconds before you can eat or drink again.=Ten que esperar uns 2 segundos antes de poder comer ou beber de novo.
 Hunger points restored: @1=Puntos de fame restaurados: @1
-Saturation points restored: @1%.1f=Puntos de saturación restaurados: @1%.1f
+Saturation points restored: @1=
 It can be worn on the head.=Pódese levar na cabeza.
 It can be worn on the torso.=Pódese levar no torso.
 It can be worn on the legs.=Pódese levar nas pernas.
@@ -85,6 +85,7 @@ Full punch interval: @1 s=Intervalo de perforación total: @1 s
 
 ##### not used anymore #####
 
+Saturation points restored: @1%.1f=Puntos de saturación restaurados: @1%.1f
 To eat it, wield it, then rightclick.=Para comelo, mándao e despois fai clic co botón dereito.
 To drink it, wield it, then rightclick.=Para bebelo, mándao e despois fai clic co botón dereito.
 To consume it, wield it, then rightclick.=Para consumilo, úsao e, a continuación, fai clic co botón dereito

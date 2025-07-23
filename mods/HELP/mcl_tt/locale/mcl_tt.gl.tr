@@ -1,5 +1,4 @@
 # textdomain: mcl_tt
-##[ snippets_base.lua ]##
 Painfully slow=Dolorosamente lento
 Very slow=Moi lento
 Slow=Lento
@@ -31,7 +30,6 @@ Climbable=Escalable
 Slippery=Escorregadizo
 Bouncy (@1%)=Rebota (@1%)
 Luminance: @1=Luminancia: @1
-##[ snippets_mcl.lua ]##
 Head armor=Armadura de cabeza
 Torso armor=Armadura do torso
 Legs armor=Armadura de pernas

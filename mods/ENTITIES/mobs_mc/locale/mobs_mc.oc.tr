@@ -1,41 +1,68 @@
 # textdomain: mobs_mc
-##[ axolotl.lua ]##
 Axolotl=Axolòtl
-##[ bat.lua ]##
 Bat=Ratapenada
-##[ rabbit.lua ]##
-Rabbit=Lapin
-Killer Bunny=Lapin Tuaire
-##[ chicken.lua ]##
+Blaze=Flamor
 Chicken=Polet
-##[ cow+mooshroom.lua ]##
+Cod=Merluça
 Cow=Vacha
 Mooshroom=Vachairòla
-##[ horse.lua ]##
+Dolphin=Daufin
+Ender Dragon=Dragon de Finuèit
+Endermite=Finuèibau
+Ghast=Òrra
+Glow Squid=Pofre Lusent
+Guardian=Gardian
+Elder Guardian=Ancian Gardian
+Hoglin=Porcard
+Zoglin=
+Baby hoglin=
 Horse=Ega
 Skeleton Horse=Ega Squeleta
 Zombie Horse=Ega Zombia
 Donkey=Asne
 Mule=Miule
-##[ llama.lua ]##
+Iron Golem=Golem de Fèrre
 Llama=Lamà
-##[ ocelot.lua ]##
+ - Strength @1=
 Ocelot=Ocelòt
 Cat=
-##[ parrot.lua ]##
 Parrot=Papagai
-##[ pig.lua ]##
 Pig=Cochon
-##[ polar_bear.lua ]##
+Piglin=
+Sword Piglin=
+Zombie Piglin=Porcadés Zombia
+Baby Zombie Piglin=
+Piglin Brute=
+Pillager=Pilhard
 Polar Bear=Ors Blanc
-##[ sheep.lua ]##
+Rabbit=Lapin
+Killer Bunny=Lapin Tuaire
+Rover=
+Salmon=Saumon
 Sheep=Moton
-##[ wolf.lua ]##
-Wolf=Lop
-Dog=
-##[ squid.lua ]##
+Shulker=Coirafin
+Silverfish=Peiçon d'Argent
+Skeleton=Squeleta
+Stray=Trainabiaça
+Wither Skeleton=Squeleta Sechaire
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=Cube de Magmà
+Slime=Slime
+Snow Golem=Golem d'Ivèrn
+Spider=Aranha
+Cave Spider=Aranha Venimósa
 Squid=Pofre
-##[ villager.lua ]##
+Stalker=Stalker
+Overloaded Stalker=
+Strider=Trèva
+Baby Strider=
+Tropical fish=Peiçon tropicau
+Vex=Vex
 Novice=
 Apprentice=
 Journeyman=
@@ -57,92 +84,18 @@ Cleric=Clerc
 Mason=
 Nitwit=Simple
 Villager=Vialatgés
-##[ pillager.lua ]##
-Pillager=Pilhard
-##[ villager_evoker.lua ]##
 Evoker=Invocataire
-##[ villager_vindicator.lua ]##
-Vindicator=Vindicataire
-##[ villager_zombie.lua ]##
-Zombie Villager=Vialatgés Zombia
-##[ witch.lua ]##
-Witch=Fachinèira
-##[ blaze.lua ]##
-Blaze=Flamor
-##[ ender_dragon.lua ]##
-Ender Dragon=Dragon de Finuèit
-##[ endermite.lua ]##
-Endermite=Finuèibau
-##[ villager_illusioner.lua ]##
 Illusioner=Fisiciaire
-##[ ghast.lua ]##
-Ghast=Òrra
-##[ guardian.lua ]##
-Guardian=Gardian
-##[ guardian_elder.lua ]##
-Elder Guardian=Ancian Gardian
-##[ snowman.lua ]##
-Snow Golem=Golem d'Ivèrn
-##[ iron_golem.lua ]##
-Iron Golem=Golem de Fèrre
-##[ rover.lua ]##
-Rover=
-##[ shulker.lua ]##
-Shulker=Coirafin
-##[ silverfish.lua ]##
-Silverfish=Peiçon d'Argent
-##[ skeleton+stray.lua ]##
-Skeleton=Squeleta
-Stray=Trainabiaça
-##[ skeleton_wither.lua ]##
-Wither Skeleton=Squeleta Sechaire
-##[ stalker.lua ]##
-Stalker=Stalker
-Overloaded Stalker=
-##[ zombie.lua ]##
+Vindicator=Vindicataire
+Zombie Villager=Vialatgés Zombia
+Witch=Fachinèira
+Wither=Le Sechaire
+Wolf=Lop
+Dog=
 Zombie=Zombia
 Baby Zombie=
 Husk=Zombia Momificat
 Baby Husk=
-##[ slime+magma_cube.lua ]##
-Slime - big=
-Slime - small=
-Slime - tiny=
-Magma Cube - big=
-Magma Cube - small=
-Magma Cube - tiny=
-Magma Cube=Cube de Magmà
-Slime=Slime
-##[ spider.lua ]##
-Spider=Aranha
-Cave Spider=Aranha Venimósa
-##[ vex.lua ]##
-Vex=Vex
-##[ wither.lua ]##
-Wither=Le Sechaire
-##[ cod.lua ]##
-Cod=Merluça
-##[ salmon.lua ]##
-Salmon=Saumon
-##[ tropical_fish.lua ]##
-Tropical fish=Peiçon tropicau
-##[ dolphin.lua ]##
-Dolphin=Daufin
-##[ glow_squid.lua ]##
-Glow Squid=Pofre Lusent
-##[ piglin.lua ]##
-Piglin=
-Sword Piglin=
-Zombie Piglin=Porcadés Zombia
-Baby Zombie Piglin=
-Piglin Brute=
-##[ hoglin+zoglin.lua ]##
-Hoglin=Porcard
-Zoglin=
-Baby hoglin=
-##[ strider.lua ]##
-Strider=Trèva
-Baby Strider=
 
 
 ##### not used anymore #####

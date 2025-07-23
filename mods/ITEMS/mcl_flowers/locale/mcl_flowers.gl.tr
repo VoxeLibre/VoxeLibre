@@ -23,7 +23,6 @@ Double Tallgrass=Doble herba alta
 Large Fern=fieito grande
 Lily Pad=Nenúfar
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Un nenúfar é un bloque de plantas plana que se pode camiñar. Pódense colocar sobre fontes de auga, xeo e xeo xeado.
-##[ register.lua ]##
 Poppy=Amapola
 Dandelion=Dente de león
 Oxeye Daisy=Margarida

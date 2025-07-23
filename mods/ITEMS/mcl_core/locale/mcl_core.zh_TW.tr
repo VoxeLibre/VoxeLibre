@@ -195,6 +195,7 @@ Water interacts with lava in various ways:=水與熔岩的相互作用如下：
 Flowing Lava=流動的熔岩
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=當熔岩源與易燃方塊相鄰時，會將附近點燃。
 Lava Source=熔岩源
+Lava=
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=熔岩很熱並相當危險。不要碰它，它會對你造成很大的傷害，而且很難脫身。
 Lava interacts with water various ways:=熔岩與水的相互作用如下：
 • When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• 當水在熔岩源的正上方或水平旁邊時，熔岩就會變成黑曜石。
