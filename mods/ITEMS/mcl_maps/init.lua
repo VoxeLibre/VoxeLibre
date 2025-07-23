@@ -337,7 +337,6 @@ core.register_craftitem("mcl_maps:filled_map", filled_def)
 -- Only nodes can have meshes, which means that all player hands are nodes
 -- Thus, to render a map over a player hand, we have to register nodes for this too
 local filled_wield_def = table.copy(filled_def)
-filled_wield_def.use_texture_alpha = core.features.use_texture_alpha_string_modes and "opaque" or false
 filled_wield_def.visual_scale = 1
 filled_wield_def.wield_scale = vector.new(1, 1, 1)
 filled_wield_def.paramtype = "light"
