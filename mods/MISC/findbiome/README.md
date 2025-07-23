@@ -24,8 +24,21 @@ See `API.md` for details.
 - Wuzzy (MIT License)
 - Jacob Lifshay (MIT License, bugfix)
 - Skivling (MIT License, `list_biomes()` function)
-- rstcxk (MIT License, general cleanups, Polish translation (mod title and description))
-- SkyBuilder1717 (Russian translation (mod title and description))
+- rstcxk (MIT License, general cleanups)
+- kno10 (MIT License, remove mapgen v6 support)
+
+## Translators
+
+- Rocher Laurent (French translation)
+- kay27 (Russian translation)
+- Marcin Serwin (Polish translation)
+- 1F616EMO (Taiwanese Mandarin translation)
+- Riu Sakura (Japanese translation)
+- JoseDouglas26 (Brazilian Portuguese translation)
+- ethan (Simpified Chinese translation)
+- ninjum (Galician translation)
+- rstcxk (Polish translation - mod title and description added)
+- SkyBuilder1717 (Russian translation - mod title and description added)
 
 This mod is free software. See `license.txt` for license information.
 
