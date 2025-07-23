@@ -938,7 +938,7 @@ function mcl_inventory.set_creative_formspec(player)
 		if core.check_player_privs(player, {server = true}) then
 			main_list = main_list .. table.concat({
 				-- Server Settings
-				"image_button[10.325,0.825;1.1,1.1;vl_tuning_button.png;__vl_tuning;]",
+				"image_button[10.325,0.825;1.1,1.1;screwdriver.png;__vl_tuning;]",
 				--"style_type[image_button;border=;bgimg=;bgimg_pressed=]",
 				"tooltip[__vl_tuning;" .. F(S("Server Settings")) .. "]",
 			})
