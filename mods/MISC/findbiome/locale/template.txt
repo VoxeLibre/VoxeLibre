@@ -1,4 +1,11 @@
 # textdomain: findbiome
+# mod title
+Find Biome=
+# mod description
+Adds commands to list and find biomes=
+
+# mod strings
+Wait until all mods have loaded!=
 Find and teleport to biome=
 <biome>=
 No player.=
