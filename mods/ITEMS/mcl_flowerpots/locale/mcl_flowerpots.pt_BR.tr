@@ -1,19 +1,19 @@
 # textdomain: mcl_flowerpots
-Flower Pot=Vaso
-Can hold a small flower or plant=Pode segurar uma flor ou planta pequenas
-Flower pots are decorative blocks in which flowers and other small plants can be placed.=Vasos são blocos decorativos aos quais flores e plantas pequenas podem ser posicionadas.
-Just place a plant on the flower pot. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.=Apenas posicione uma planta no vaso. Vasos podem segurar flores pequenas (não mais altas que 1 bloco), mudas, samambaias, arbustos mortos, cogumelos e cactos. Clique com o botão direito em uma planta envasada para recolher a planta.
-Cactus=
-Brown Mushroom=
-Red Mushroom=
-Oak Sapling=
-Acacia Sapling=
-Jungle Sapling=
-Dark Oak Sapling=
-Spruce Sapling=
-Birch Sapling=
-Dead Bush=
-Cherry Sapling=
+Flower Pot=Vaso de Planta
+Can hold a small flower or plant=Pode acomodar uma pequena flor ou planta
+Flower pots are decorative blocks in which flowers and other small plants can be placed.=Vasos de plantas são blocos decorativos em que flores e outras plantas pequenas podem ser colocadas.
+Just place a plant on the flower pot. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.=É só pôr uma planta no vaso. Vasos de plantas podem acomodar flores pequenas (até 1 bloco de altura), mudas, samambaias, arbustos mortos, cogumelos e cactos. Clique com o botão direito em uma planta no vaso para a retirar.
+Cactus=Cacto
+Brown Mushroom=Cogumelo Marrom
+Red Mushroom=Cogumelo Vermelho
+Oak Sapling=Muda de Carvalho
+Acacia Sapling=Muda de Acácia
+Jungle Sapling=Muda da Selva
+Dark Oak Sapling=Muda de Carvalho Escuro
+Spruce Sapling=Muda de Pinheiro
+Birch Sapling=Muda de Bétula
+Dead Bush=Arbusto Morto
+Cherry Sapling=Muda de Cerejeira
 
 
 ##### not used anymore #####
