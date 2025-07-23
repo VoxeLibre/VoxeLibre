@@ -372,9 +372,13 @@ local function allow_take(pos, listname, index, stack, player)
 end
 
 local function allow_move(pos, from_list, from_index, to_list, to_index, count, player)
-	if (from_list == "stand" or to_list == "stand") and from_list ~= to_list
+	if (from_list == "stand" or to_list == "stand")
+			and (from_list ~= to_list
+				or not core.get_meta(pos):get_inventory():get_stack(to_list, to_index):is_empty())
 			or from_list == "distr" or to_list == "distr" then
 		return 0
+	elseif from_list == "stand" and to_list == "stand" then
+		return 1
 	else
 		return count
 	end
