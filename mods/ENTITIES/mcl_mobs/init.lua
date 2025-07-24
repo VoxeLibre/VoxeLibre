@@ -113,6 +113,7 @@ end
 mcl_mobs.spawning_mobs = {}
 -- register mob entity
 function mcl_mobs.register_mob(name, def)
+	assert(def.spawn_class, "Every mob needs a spawn class!")
 
 	mcl_mobs.spawning_mobs[name] = true
 	mcl_mobs.registered_mobs[name] = def
