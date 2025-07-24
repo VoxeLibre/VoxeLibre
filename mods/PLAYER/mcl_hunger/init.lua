@@ -74,7 +74,7 @@ mcl_hunger.SATURATION_INIT     = 5 -- Initial saturation for new/respawning play
 mcl_hunger.last_eat = {}
 
 --- Is player eating API
---- @param player string|table
+--- @param player string|core.Player
 function mcl_hunger.is_eating(player)
 	local name
 	local t = type(player)
@@ -153,7 +153,7 @@ if mcl_hunger.debug then
 end
 
 --- Hide and unhide bars depending on current mod state.
----@param player table
+---@param player core.Player
 function mcl_hunger.refresh_player_bars(player)
 	if mcl_hunger.active then
 		hb.unhide_hudbar(player, "hunger")
@@ -170,7 +170,7 @@ function mcl_hunger.refresh_player_bars(player)
 end
 
 ---
----@param player table
+---@param player core.Player
 local function init_player_hud(player)
 	local name = player:get_player_name()
 
@@ -196,7 +196,7 @@ local function init_player_hud(player)
 end
 
 -- HUD updating functions for Debug Mode. No-op if not in Debug Mode
----@param player     table
+---@param player     core.Player
 ---@param saturation number?
 ---@param hunger     number?
 function mcl_hunger.update_saturation_hud(player, saturation, hunger)
@@ -206,7 +206,7 @@ function mcl_hunger.update_saturation_hud(player, saturation, hunger)
 end
 
 ---
----@param player	 table
+---@param player	 core.Player
 ---@param exhaustion number?
 function mcl_hunger.update_exhaustion_hud(player, exhaustion)
 	if mcl_hunger.debug then
@@ -294,7 +294,7 @@ local function clear_eat_internal_and_timers(player, player_name)
 end
 
 ---Hunger ticking code
----@param player table
+---@param player core.Player
 ---@param dtime  number
 local function tick_hunger(player, dtime)
 	local food_tick_timer       = food_tick_timers[player] and food_tick_timers[player] + dtime or 0
@@ -341,7 +341,7 @@ local function tick_hunger(player, dtime)
 end
 
 ---Eating delay code
----@param player table
+---@param player core.Player
 ---@param dtime  number
 local function tick_eat_delay(player, dtime)
 	local player_name = player:get_player_name()
