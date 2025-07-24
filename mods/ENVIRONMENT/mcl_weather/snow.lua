@@ -10,7 +10,7 @@ local mgname = minetest.get_mapgen_setting("mg_name")
 local gamerule_snowAccumulationHeight = 1
 vl_tuning.setting("gamerule:snowAccumulationHeight", "number", {
 	description = S("The maximum number of snow layers that can be accumulated on each block"),
-	default = 1, min = 0, max = 8,
+	default = 8, min = 0, max = 8,
 	set = function(val) gamerule_snowAccumulationHeight = val end,
 	get = function() return gamerule_snowAccumulationHeight end,
 })

@@ -90,8 +90,8 @@ end
 ---@param name string
 ---@param p_type? "bool"|"number"|"string"
 ---@param def? vl_tuning.SettingDef
----@return vl_tuning.Setting?
-function mod.setting(name, p_type, def )
+---@return vl_tuning.Setting
+function mod.setting(name, p_type, def)
 	-- return the existing setting if it was previously registered. Don't update the definition
 	local tunable = tunables[name]
 	if tunable then return tunable end
