@@ -94,7 +94,7 @@ core.register_chatcommand("sethunger", {
 			return false, S("Player name and/or hunger level is required.")
 		elseif #ps == 1 then
 			pname, plevel = name, ps[1]
-		elseif #ps > 1 then
+		else
 			pname, plevel = ps[1], ps[2]
 		end
 		-- Validate player parameter
