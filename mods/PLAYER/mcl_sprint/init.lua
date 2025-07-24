@@ -196,7 +196,7 @@ minetest.register_globalstep(function(dtime)
 			if players[playerName]["shouldSprint"] == true then --Stopped
 				local sprinting
 				-- Prevent sprinting if hungry or sleeping
-				if (mcl_hunger.active and get_hunger(player) <= 6)
+				if (mcl_hunger.get_active() and get_hunger(player) <= 6)
 				or (player:get_meta():get_string("mcl_beds:sleeping") == "true") then
 					sprinting = false
 					cancelClientSprinting(playerName)

@@ -148,7 +148,7 @@ local function drink_milk_delayed(itemstack, player, pointed_thing)
 
 	local function drink_milk(itemstack, player, pointed_thing)
 		-- Check if we were allowed to drink this (eat delay check)
-		if mcl_hunger.active and (
+		if mcl_hunger.get_active() and (
 			player:get_inventory():get_stack("main", player:get_wield_index(), itemstack) == "mcl_mobitems:milk_bucket" or
 			minetest.is_creative_enabled(player:get_player_name())
 		) then

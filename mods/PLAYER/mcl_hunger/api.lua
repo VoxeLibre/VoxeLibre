@@ -14,28 +14,28 @@ function mcl_hunger.init_player(player)
 end
 
 function mcl_hunger.get_hunger(player)
-	if not mcl_hunger.active then
+	if not mcl_hunger.get_active() then
 		return 20
 	end
 	return tonumber(player:get_meta():get_string("mcl_hunger:hunger")) or 20
 end
 
 function mcl_hunger.get_saturation(player)
-	if not mcl_hunger.active then
+	if not mcl_hunger.get_active() then
 		return mcl_hunger.SATURATION_INIT
 	end
 	return tonumber(player:get_meta():get_string("mcl_hunger:saturation")) or mcl_hunger.SATURATION_INIT
 end
 
 function mcl_hunger.get_exhaustion(player)
-	if not mcl_hunger.active then
+	if not mcl_hunger.get_active() then
 		return 0
 	end
 	return tonumber(player:get_meta():get_string("mcl_hunger:exhaustion")) or 0
 end
 
 function mcl_hunger.set_hunger(player, hunger, update_hudbars)
-	if not mcl_hunger.active then
+	if not mcl_hunger.get_active() then
 		return false
 	end
 	hunger = math.min(20, math.max(0, hunger))
@@ -48,7 +48,7 @@ function mcl_hunger.set_hunger(player, hunger, update_hudbars)
 end
 
 function mcl_hunger.set_saturation(player, saturation, update_hudbar)
-	if not mcl_hunger.active then
+	if not mcl_hunger.get_active() then
 		return false
 	end
 	saturation = math.min(mcl_hunger.get_hunger(player), math.max(0, saturation))
@@ -60,7 +60,7 @@ function mcl_hunger.set_saturation(player, saturation, update_hudbar)
 end
 
 function mcl_hunger.set_exhaustion(player, exhaustion, update_hudbar)
-	if not mcl_hunger.active then
+	if not mcl_hunger.get_active() then
 		return false
 	end
 	exhaustion = math.min(mcl_hunger.EXHAUST_LVL, math.max(0.0, exhaustion))
@@ -72,7 +72,7 @@ function mcl_hunger.set_exhaustion(player, exhaustion, update_hudbar)
 end
 
 function mcl_hunger.exhaust(playername, increase)
-	if not mcl_hunger.active then
+	if not mcl_hunger.get_active() then
 		return false
 	end
 	local player = core.get_player_by_name(playername)
@@ -103,7 +103,7 @@ function mcl_hunger.exhaust(playername, increase)
 end
 
 function mcl_hunger.saturate(playername, increase, update_hudbar)
-	if not mcl_hunger.active then
+	if not mcl_hunger.get_active() then
 		return false
 	end
 	local player = core.get_player_by_name(playername)

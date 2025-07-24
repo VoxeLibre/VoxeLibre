@@ -4,45 +4,56 @@ local S = core.get_translator(modname)
 
 mcl_hunger = {}
 
---- If hunger is active. This value is updated on every global step.
+--- If hunger is active.
 --- This value shall be true if damage is enabled
 --- AND the setting "mcl_enable_hunger" is enabled.
-mcl_hunger.active = false
+local active = false
 
---- If debug is active. This value is updated on every global step.
+--- If debug is active.
 --- This value shall be true if the setting "mcl_hunger_debug" is enabled.
-mcl_hunger.debug = false
+local debug = false
 
---- Enables or disables mod active state depending on external settings.
-local function update_active_state()
-	local old     = mcl_hunger.active
-	local new     = core.settings:get_bool("enable_damage", false) and core.settings:get_bool("mcl_enable_hunger", true)
-	local changed = new ~= old
+---Returns true if the hunger mod is enabled.
+---@return boolean
+function mcl_hunger.get_active()
+	return active
+end
 
-	mcl_hunger.active = new
+---Returns true if the hunger mod debug information is shown.
+---@return boolean
+function mcl_hunger.get_debug()
+	return debug
+end
 
-	if not changed then
+---
+---@param state boolean
+function mcl_hunger.set_active(state)
+	local old = active
+	active = state
+	if state == old then
 		return
 	end
 	---
 	-- Apply side effects of state change
+	core.settings:set_bool("mcl_enable_hunger", state)
+	
 	for _, player in pairs(core.get_connected_players()) do
 		mcl_hunger.refresh_player_bars(player)
 	end
 end
 
-local function update_debug_state()
-	local old     = mcl_hunger.debug
-	local new     = core.settings:get_bool("mcl_hunger_debug", false)
-	local changed = new ~= old
-
-	mcl_hunger.debug = new
-
-	if not changed then
+---
+---@param state boolean
+function mcl_hunger.set_debug(state)
+	local old = debug
+	debug = state
+	if state == old then
 		return
 	end
 	---
 	--- Apply side effects of state change
+	core.settings:set_bool("mcl_hunger_debug", state)
+	
 	for _, player in pairs(core.get_connected_players()) do
 		mcl_hunger.refresh_player_bars(player)
 	end
@@ -50,9 +61,8 @@ end
 
 -- First time state update
 ---
-update_active_state()
-update_debug_state()
----
+mcl_hunger.set_active(core.settings:get_bool("mcl_enable_hunger", false))
+mcl_hunger.set_debug(core.settings:get_bool("mcl_hunger_debug", false))
 
 mcl_hunger.HUD_TICK            = 0.1
 mcl_hunger.EXHAUST_DIG         = 5    -- after digging node
@@ -147,7 +157,7 @@ mcl_hunger.poison_hunger = {} -- food poisoning, increasing hunger
 -- HUD
 -- Register hudbars
 hb.register_hudbar("hunger", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png", bar = "hbhunger_bar.png"}, 1, 20, 20, false)
-if mcl_hunger.debug then
+if mcl_hunger.get_debug() then
 	hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "mcl_hunger_icon_saturation.png", bgicon = "mcl_hunger_bgicon_saturation.png", bar = "mcl_hunger_bar_saturation.png" }, 1, mcl_hunger.SATURATION_INIT, 200, false)
 	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png"}, 1, 0, mcl_hunger.EXHAUST_LVL, false)
 end
@@ -155,12 +165,12 @@ end
 --- Hide and unhide bars depending on current mod state.
 ---@param player core.Player
 function mcl_hunger.refresh_player_bars(player)
-	if mcl_hunger.active then
+	if mcl_hunger.get_active() then
 		hb.unhide_hudbar(player, "hunger")
 	else
 		hb.hide_hudbar(player, "hunger")
 	end
-	if mcl_hunger.active and mcl_hunger.debug then
+	if mcl_hunger.get_active() and mcl_hunger.get_debug() then
 		hb.unhide_hudbar(player, "saturation")
 		hb.unhide_hudbar(player, "exhaustion")
 	else
@@ -176,7 +186,7 @@ local function init_player_hud(player)
 
 	-- Init hunger bars
 	hb.init_hudbar(player, "hunger", mcl_hunger.get_hunger(player))
-	if mcl_hunger.debug then
+	if mcl_hunger.get_debug() then
 		hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
 		hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
 	end
@@ -200,7 +210,7 @@ end
 ---@param saturation number?
 ---@param hunger     number?
 function mcl_hunger.update_saturation_hud(player, saturation, hunger)
-	if mcl_hunger.debug then
+	if mcl_hunger.get_debug() then
 		hb.change_hudbar(player, "saturation", saturation, hunger)
 	end
 end
@@ -209,7 +219,7 @@ end
 ---@param player	 core.Player
 ---@param exhaustion number?
 function mcl_hunger.update_exhaustion_hud(player, exhaustion)
-	if mcl_hunger.debug then
+	if mcl_hunger.get_debug() then
 		if not exhaustion then
 			exhaustion = mcl_hunger.get_exhaustion(player)
 		end
@@ -454,11 +464,8 @@ local function tick_eat_delay(player, dtime)
 end
 
 core.register_globalstep(function(dtime)
-	update_active_state()
-	update_debug_state()
-
 	for _, player in pairs(core.get_connected_players()) do
-		if mcl_hunger.active then
+		if mcl_hunger.get_active() then
 			tick_hunger(player, dtime)
 		end
 		-- Players should be able to eat, regardless if hunger is enabled

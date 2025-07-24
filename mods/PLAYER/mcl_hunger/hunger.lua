@@ -33,7 +33,7 @@ function core.do_item_eat(hp_change, replace_with_item, itemstack, user, pointed
 	-- FIXME: In singleplayer, there's a cheat to circumvent this, simply by pausing the game between eats.
 	-- This is because os.time() obviously does not care about the pause. A fix needs a different timer mechanism.
 	if no_eat_delay or (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2) then
-		local can_eat_when_full = creative or (mcl_hunger.active == false)
+		local can_eat_when_full = creative or not mcl_hunger.get_active()
 		or core.get_item_group(itemstack:get_name(), "can_eat_when_full") == 1
 		-- Don't allow eating when player has full hunger bar (some exceptional items apply)
 		if not no_eat_delay and not mcl_hunger.eat_internal[name].is_eating and not mcl_hunger.eat_internal[name].do_item_eat and (can_eat_when_full or (mcl_hunger.get_hunger(user) < 20)) then
@@ -92,7 +92,7 @@ end
 
 function mcl_hunger.reset_bars_poison_hunger(player)
 	hb.change_hudbar(player, "hunger", nil, nil, "hbhunger_icon.png", nil, "hbhunger_bar.png")
-	if mcl_hunger.debug then
+	if mcl_hunger.get_debug() then
 		hb.change_hudbar(player, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_exhaustion.png")
 	end
 end
@@ -115,7 +115,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 	
 			mcl_hunger.eat_effects(user, itemname, pos, hunger_change, def)
 
-			if mcl_hunger.active and hunger_change then
+			if mcl_hunger.get_active() and hunger_change then
 				-- Add saturation (must be defined in item table)
 				local _mcl_saturation = core.registered_items[itemname]._mcl_saturation
 				local saturation
@@ -138,7 +138,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 				mcl_hunger.update_saturation_hud(user, mcl_hunger.get_saturation(user), h)
 			end
 			-- Poison
-			if mcl_hunger.active and poisontime then
+			if mcl_hunger.get_active() and poisontime then
 				local do_poison = false
 				if poisonchance then
 					if poisonrandomizer:next(0,100) < poisonchance then
@@ -216,7 +216,7 @@ function mcl_hunger.eat_effects(user, itemname, pos, hunger_change, item_def, pi
 	end
 end
 
-if mcl_hunger.active then
+if mcl_hunger.get_active() then
 	-- player-action based hunger changes
 	core.register_on_dignode(function(pos, oldnode, player)
 		-- is_fake_player comes from the pipeworks, we are not interested in those
