@@ -7,7 +7,7 @@ core.register_chatcommand("hunger", {
 	func = function(name, params)
 		local ps = {}
 		local i = 0
-		for s in string.gmatch(params, "([^ ]+)") do
+		for s in string.split(params, " ") do
 			i = i + 1
 			ps[i] = string.lower(s)
 		end
@@ -44,7 +44,7 @@ core.register_chatcommand("hunger_debug", {
 	func = function(name, params)
 		local ps = {}
 		local i = 0
-		for s in string.gmatch(params, "([^ ]+)") do
+		for s in string.split(params, " ") do
 			i = i + 1
 			ps[i] = string.lower(s)
 		end
