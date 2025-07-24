@@ -991,6 +991,7 @@ function mcl_potions.hf_update_internal(hand, object)
 	local meta = hand:get_meta()
 	local h_fac = mcl_potions.get_total_haste(object)
 	local f_fac = mcl_potions.get_total_fatigue(object)
+	meta:set_tool_capabilities()
 	local toolcaps = hand:get_tool_capabilities()
 	meta:set_tool_capabilities(mcl_potions.apply_haste_fatigue(toolcaps, h_fac, f_fac))
 	return hand
@@ -1098,7 +1099,7 @@ function mcl_potions.update_haste_and_fatigue(player)
 		else meta:set_string("mcl_potions:fatigue", "") end
 		meta:set_tool_capabilities()
 		meta:set_string("groupcaps_hash","")
-		mcl_enchanting.update_groupcaps(item)
+		mcl_enchanting.load_enchantments(item)
 		if h_fac == 0 and f_fac == 1 then
 			player:set_wielded_item(item)
 			return
@@ -1411,7 +1412,7 @@ function mcl_potions._reset_haste_fatigue_item_meta(player)
 			meta:set_string("mcl_potions:fatigue", "")
 			meta:set_tool_capabilities()
 			meta:set_string("groupcaps_hash","")
-			mcl_enchanting.update_groupcaps(item)
+			mcl_enchanting.load_enchantments(item)
 		end
 	end
 	inv:set_lists(lists)
