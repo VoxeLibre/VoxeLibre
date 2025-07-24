@@ -10,7 +10,7 @@ local explosions_mod = minetest.get_modpath("mcl_explosions")
 local spawn_mod = minetest.get_modpath("mcl_spawn")
 local pos_to_dim = minetest.get_modpath("mcl_worlds") and mcl_worlds.pos_to_dimension or function(pos) return "overworld" end
 
-local gamerule_respawnBlocksExplode = vl_tuning.respawn_blocks_explode
+local gamerule_respawnBlocksExplode = vl_tuning.setting("gamerule:respawnBlocksExplode")
 
 local function mcl_log (message)
 	mcl_util.mcl_log (message, "[Beds]")
@@ -386,7 +386,7 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 
 		minetest.remove_node(pos)
 		minetest.remove_node(string.sub(node.name, -4) == "_top" and vector.subtract(pos, dir) or vector.add(pos, dir))
-		if explosions_mod and gamerule_respawnBlocksExplode[1] then
+		if explosions_mod and gamerule_respawnBlocksExplode.getter() then
 			mcl_explosions.explode(pos, 5, {drop_chance = 1.0, fire = true})
 		end
 		return

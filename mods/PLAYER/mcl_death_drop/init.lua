@@ -18,7 +18,7 @@ mcl_death_drop.register_dropped_list("PLAYER", "armor", true)
 mcl_death_drop.register_dropped_list("PLAYER", "offhand", true)
 
 minetest.register_on_dieplayer(function(player)
-	if not keep_inventory[1] then
+	if not keep_inventory.getter() then
 		-- Drop inventory, crafting grid and armor
 		local playerinv = player:get_inventory()
 		local pos = player:get_pos()
