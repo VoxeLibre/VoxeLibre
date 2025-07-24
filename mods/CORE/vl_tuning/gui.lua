@@ -85,6 +85,7 @@ function vl_tuning.show_formspec(player_name, tab)
 end
 core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= "vl_tuning:settings" then return end
+	if not core.check_player_privs(player, "server") then return end
 
 	for k,value in pairs(fields) do
 		local setting = mod.registered_settings[k]
@@ -103,17 +104,15 @@ core.register_chatcommand("settings",{
 		server = true,
 	},
 	func = function(player_name, _)
-		dofile(modpath.."/gui.lua")
 		mod.show_formspec(player_name)
 	end
 })
 core.register_on_player_receive_fields(function(player, formname, fields)
 	if not fields.__vl_tuning then return end
-	if not core.check_player_privs(player, {server = true}) then return end
 
 	local player_name = player:get_player_name()
+	if not core.check_player_privs(player, {server = true}) then return end
 
-	dofile(modpath.."/gui.lua")
 	mod.show_formspec(player_name)
 end)
 
