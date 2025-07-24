@@ -54,7 +54,7 @@ local function get_circle_center(self)
 	if not self._portal_pos then
 		return self.object:get_pos() -- Fallback to current position
 	end
-	return vector.add(self._portal_pos, vector.new(0, CIRCLE_HEIGHT, 0))
+	return vector.offset(self._portal_pos, 0, CIRCLE_HEIGHT, 0)
 end
 
 -- Make the dragon circle around the portal
