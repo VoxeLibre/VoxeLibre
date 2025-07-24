@@ -9,6 +9,11 @@ local POS_CHECK_FREQUENCY = 15
 local HEAL_INTERVAL = 1
 local HEAL_AMOUNT = 2
 
+-- Movement constants for circling - added by Thomas Conway (c.2025)
+local CIRCLE_RADIUS = 35 -- Radius for circling the portal
+local CIRCLE_HEIGHT = 25 -- Height above portal when circling
+local NORMAL_SPEED = 8 -- Normal flight speed
+
 local function check_beam(self)
 	for _, obj in ipairs(minetest.get_objects_inside_radius(self.object:get_pos(), 80)) do
 		local luaentity = obj:get_luaentity()
@@ -42,6 +47,43 @@ local function check_pos(self)
 			self._last_good_pos = pos
 		end
 	end
+end
+
+-- Get the center point for circling (portal position + height)
+local function get_circle_center(self)
+	if not self._portal_pos then
+		return self.object:get_pos() -- Fallback to current position
+	end
+	return vector.offset(self._portal_pos, 0, CIRCLE_HEIGHT, 0)
+end
+
+-- Make the dragon circle around the portal
+local function do_circle_movement(self)
+	local center = get_circle_center(self)
+	local pos = self.object:get_pos()
+
+	-- Calculate angle based on time for smooth circling
+	self._circle_angle = (self._circle_angle or 0) + 0.015 -- Adjust speed of circling
+	if self._circle_angle > math.pi * 2 then
+		self._circle_angle = self._circle_angle - math.pi * 2
+	end
+
+	-- Calculate target position on circle
+	local target_x = center.x + math.sin(self._circle_angle) * CIRCLE_RADIUS
+	local target_z = center.z + math.cos(self._circle_angle) * CIRCLE_RADIUS
+	local target_y = center.y + math.sin(self._circle_angle * 2) * 3 -- Slight vertical movement
+
+	local target = vector.new(target_x, target_y, target_z)
+
+	-- Move towards target position
+	local dir = vector.direction(pos, target)
+	local vel = vector.multiply(dir, NORMAL_SPEED)
+
+	self.object:set_velocity(vel)
+
+	-- Face movement direction
+	local yaw = math.atan2(vel.x, vel.z)
+	self.object:set_yaw(yaw)
 end
 
 mcl_mobs.register_mob("mobs_mc:enderdragon", {
@@ -123,6 +165,11 @@ mcl_mobs.register_mob("mobs_mc:enderdragon", {
 				self.health = math.min(self.initial_properties.hp_max,self.health + HEAL_AMOUNT)
 				self._heal_timer = self._heal_timer - HEAL_INTERVAL
 			end
+		end
+
+		-- Add circling movement when not actively attacking
+		if not self.attacking then
+			do_circle_movement(self)
 		end
 
 		mcl_bossbars.update_boss(self.object, "Ender Dragon", "light_purple")
