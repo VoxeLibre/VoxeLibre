@@ -18,36 +18,40 @@ local tunable_types = {
 		to_string = tostring,
 		from_string = function(value)
 			return (value == "true")
-		end
+		end,
+		default = false,
 	},
 	number = {
 		to_string = tostring,
 		from_string = tonumber,
+		default = 0,
 	},
 	string = {
 		to_string = function(v) return v end,
 		from_string = function(v) return v end,
+		default = "",
 	},
 }
+
+---@alias vl_tuning.Value string|number|boolean
 
 -- Tunable metatable functions
 ---@class (exact) vl_tuning.Setting
 ---@field name string
 ---@field setting_type "string"|"number"|"bool"
 ---@field description string
----@field default? string|integer|boolean
----@field set fun(self : vl_tuning.Setting, value, no_hook : boolean?)
----@field setter fun(value)
----@field getter fun() : string|boolean|number
----@field from_string fun(value : string)
----@field to_string fun(value : any)
+---@field default vl_tuning.Value
+---@field set fun(self : vl_tuning.Setting, value : vl_tuning.Value, no_hook : boolean?)
+---@field setter fun(value : vl_tuning.Value)
+---@field getter fun() : vl_tuning.Value
+---@field from_string fun(value : string) : vl_tuning.Value
+---@field to_string fun(value : vl_tuning.Value)
 ---@field on_change? fun(self : vl_tuning.Setting)
----@field getter fun()
 ---@field formspec_desc_lines? number
 local tunable_class = {}
 
 ---@param self vl_tuning.Setting
----@param value any
+---@param value vl_tuning.Value
 ---@param no_hook? boolean
 function tunable_class:set(value, no_hook)
 	if type(value) == "string" then
@@ -77,9 +81,9 @@ function tunable_class:get_string()
 end
 
 ---@class vl_tuning.SettingDef
----@field set fun(value : any)
----@field get fun(): string|boolean|number
----@field default any
+---@field set fun(value : vl_tuning.Value)
+---@field get fun(): vl_tuning.Value
+---@field default? vl_tuning.Value
 ---@field description? string
 ---@field formspec_desc_lines? number
 
@@ -110,7 +114,7 @@ function mod.setting(name, p_type, def )
 		from_string = tunable_types[p_type].from_string,
 		to_string = tunable_types[p_type].to_string,
 		formspec_desc_lines = def.formspec_desc_lines,
-		default = def.default,
+		default = def.default or tunable_class.default,
 	}
 	if def.default then
 		tunable:set(def.default)

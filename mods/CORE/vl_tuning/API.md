@@ -2,8 +2,8 @@
 Provides runtime-tunable settings and parameters and a GUI for server admins to change them.
 
 ## `vl_tuning.setting(name, type, definition)`
-Registers a tunable settings.
-* `name`: name of the settings
+Registers a tunable setting.
+* `name`: name of the setting
 * `type`: setting type. Must be one of "bool", "number" or "string"
 * `definition`: setting defintion with the following fields:
   * `set`: a function taking a single parameter. Called when the setting is changed
