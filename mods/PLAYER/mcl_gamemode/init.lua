@@ -83,6 +83,6 @@ minetest.register_chatcommand("gamemode", {
 		--Result message - show effective game mode
 		local gm = p:get_meta():get_string("gamemode")
 		if gm == "" then gm = mcl_gamemode.gamemodes[1] end
-		return true, S("Gamemode for player ") .. n .. S(": " .. gm)
+		return true, S("Gamemode for player ") .. p:get_player_name() .. S(": " .. gm)
 	end
 })
