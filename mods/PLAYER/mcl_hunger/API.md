@@ -8,7 +8,7 @@ This may change in the future development of VoxeLibre. Hopefully.
 ## Mod state
 The hunger mechanic is disabled when damage is disabled
 (setting `enable_damage=false`).
-You can check the hunger state with `mcl_hunger.active`. If it's true,
+You can check the hunger state with `mcl_hunger.get_active()`. If it's true,
 then hunger is active.
 
 If the hunger is disabled, most of the functions are no-ops or return

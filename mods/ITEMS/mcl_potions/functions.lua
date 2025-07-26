@@ -917,13 +917,13 @@ mcl_potions.register_effect({
 	end,
 	on_start = function(object, factor)
 		hb.change_hudbar(object, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
-		if mcl_hunger.debug then
+		if mcl_hunger.get_debug() then
 			hb.change_hudbar(object, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_foodpoison.png")
 		end
 	end,
 	on_load = function(object, factor) -- TODO refactor and add hunger bar modifier API
 		hb.change_hudbar(object, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
-		if mcl_hunger.debug then
+		if mcl_hunger.get_debug() then
 			hb.change_hudbar(object, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_foodpoison.png")
 		end
 	end,
