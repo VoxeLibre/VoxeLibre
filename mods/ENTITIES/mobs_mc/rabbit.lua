@@ -49,7 +49,7 @@ local rabbit = {
 	jump = true,
 	drops = {
 		{name = "mcl_mobitems:rabbit", chance = 1, min = 0, max = 1, looting = "common",},
-		{name = "mcl_mobitems:rabbit_hide", chance = 1, min = 0, max = 1, looting = "common",},
+		{name = "mcl_mobitems:leather_piece", chance = 1, min = 0, max = 1, looting = "common",},
 		{name = "mcl_mobitems:rabbit_foot", chance = 10, min = 0, max = 1, looting = "rare", looting_factor = 0.03,},
 	},
 	fear_height = 4,

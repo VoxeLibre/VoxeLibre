@@ -335,14 +335,15 @@ minetest.register_craftitem("mcl_mobitems:feather", {
 	stack_max = 64,
 })
 
-minetest.register_craftitem("mcl_mobitems:rabbit_hide", {
-	description = S("Rabbit Hide"),
-	_doc_items_longdesc = S("Rabbit hide is used to create leather."),
-	wield_image = "mcl_mobitems_rabbit_hide.png",
-	inventory_image = "mcl_mobitems_rabbit_hide.png",
+minetest.register_craftitem("mcl_mobitems:leather_piece", {
+	description = S("Leather Piece"),
+	_doc_items_longdesc = S("Leather piece is a smaller piece of leather."),
+	wield_image = "mcl_mobitems_leather_piece.png",
+	inventory_image = "mcl_mobitems_leather_piece.png",
 	groups = { craftitem = 1 },
 	stack_max = 64,
 })
+core.register_alias("mcl_mobitems:rabbit_hide", "mcl_mobitems:leather_piece")
 
 minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 	description = S("Rabbit's Foot"),
@@ -499,9 +500,14 @@ minetest.register_craftitem("mcl_mobitems:glow_ink_sac", {
 minetest.register_craft({
 	output = "mcl_mobitems:leather",
 	recipe = {
-		{ "mcl_mobitems:rabbit_hide", "mcl_mobitems:rabbit_hide" },
-		{ "mcl_mobitems:rabbit_hide", "mcl_mobitems:rabbit_hide" },
+		{ "mcl_mobitems:leather_piece", "mcl_mobitems:leather_piece" },
+		{ "mcl_mobitems:leather_piece", "mcl_mobitems:leather_piece" },
 	}
+})
+
+core.register_craft({
+	output = "mcl_mobitems:leather_piece 4",
+	recipe = {{"mcl_mobitems:leather"}},
 })
 
 minetest.register_craft({
