@@ -470,7 +470,7 @@ mcl_potions.register_potion({
 	_longdesc = S("Increases jump strength."),
 	color = "#22FF4C",
 	_effect_list = {
-		leaping = {},
+		leaping = {dur=360},
 	},
 	has_arrow = true,
 })
@@ -506,7 +506,7 @@ mcl_potions.register_potion({
 	_longdesc = S("Regenerates health over time."),
 	color = "#CD5CAB",
 	_effect_list = {
-		regeneration = {dur=mcl_potions.DURATION_POISON},
+		regeneration = {},
 	},
 	has_arrow = true,
 })
@@ -638,7 +638,11 @@ mcl_potions.register_potion({
 	_longdesc = S("Absorbs some incoming damage."),
 	color = "#B59500",
 	_effect_list = {
-		absorption = {},
+		absorption = {
+			level = 2,
+			level_scaling = 2,
+			dur = 360,
+		},
 	},
 	has_arrow = true,
 })
@@ -664,12 +668,12 @@ mcl_potions.register_potion({
 	_effect_list = {
 		resistance = {
 			level = 3,
-			dur = 20,
+			dur = 80,
 		},
 		slowness = {
 			level = 4,
 			level_scaling = 2,
-			dur = 20,
+			dur = 80,
 		},
 	},
 	has_arrow = true,
@@ -746,6 +750,8 @@ mcl_potions.register_potion({
 	color = "#83A061",
 	_effect_list = {
 		food_poisoning = {
+			level = 10,
+			level_scaling = 10,
 			dur = mcl_potions.DURATION_POISON,
 			effect_stacks = true,
 		},
