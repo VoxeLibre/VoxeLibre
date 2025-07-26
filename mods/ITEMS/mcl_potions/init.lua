@@ -565,7 +565,7 @@ function mcl_potions.register_meta_modifier(ingr, mod_func)
 end
 
 local function extend_dur(potionstack)
-	local def = potions[potionstack:get_name()]
+	local def = core.registered_items[potionstack:get_name()]
 	if not def then return false end
 	if not def.has_plus then return false end -- bail out if can't be extended
 	local potionstack = ItemStack(potionstack)
@@ -585,7 +585,7 @@ end
 mcl_potions.register_meta_modifier("mesecons:wire_00000000_off", extend_dur)
 
 local function enhance_pow(potionstack)
-	local def = potions[potionstack:get_name()]
+	local def = core.registered_items[potionstack:get_name()]
 	if not def then return false end
 	if not def.has_potent then return false end -- bail out if has no potent variant
 	local potionstack = ItemStack(potionstack)
