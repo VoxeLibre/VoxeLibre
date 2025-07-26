@@ -225,6 +225,16 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	_mcl_blast_resistance = 0,
 })
 
+core.register_abm({
+	label = "Twisting vines growth",
+	nodenames = "mcl_crimson:twisting_vines",
+	interval = 31,
+	chance = 11,
+	action = function(pos)
+		grow_vines(pos, 1, "mcl_crimson:twisting_vines")
+	end,
+})
+
 minetest.register_node("mcl_crimson:weeping_vines", {
 	description = S("Weeping Vines"),
 	drawtype = "plantlike",
@@ -317,6 +327,16 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		"mcl_crimson:weeping_vines",
 	},
 	_mcl_blast_resistance = 0,
+})
+
+core.register_abm({
+	label = "Weeping vines growth",
+	nodenames = "mcl_crimson:weeping_vines",
+	interval = 31,
+	chance = 11,
+	action = function(pos)
+		grow_vines(pos, 1, "mcl_crimson:weeping_vines", -1)
+	end,
 })
 
 minetest.register_node("mcl_crimson:nether_sprouts", {
