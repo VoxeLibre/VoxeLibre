@@ -41,8 +41,8 @@ local same_id = {
 
 tt.register_snippet(function(itemstring)
 	if not core.settings:get_bool("mcl_item_id_debug", false) then return end
-
 	local def = core.registered_items[itemstring]
+	if not def then return end
 	new_id = def._mcl_item_id
 	return new_id, "#555555"
 end)
