@@ -1,27 +1,21 @@
 # textdomain: mcl_potions
-Fermented Spider Eye=Ollo de araña fermentado
-Try different combinations to create potions.=Proba diferentes combinacións para crear pocións.
-Glass Bottle=Botella de vidro
-Liquid container=Recipiente de líquido
-A glass bottle is used as a container for liquids and can be used to collect water directly.=Unha botella de vidro utilízase como recipiente para líquidos e pódese utilizar para recoller auga directamente.
-To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Para recoller auga, utilízaa nun caldeiro con auga (que elimina un nivel de auga) ou calquera fonte de auga (que non elimina auga).
-Water Bottle=Botella de auga
-No effect=Sen efecto
-Water bottles can be used to fill cauldrons. Drinking water has no effect.=As botellas de auga pódense usar para encher caldeiros. A auga potable non ten efecto.
-Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Use a tecla "Lugar" para beber. Coloca este elemento nun caldeiro para verter a auga no caldeiro.
-River Water Bottle=Botella de auga de río
-River water bottles can be used to fill cauldrons. Drinking it has no effect.=As botellas de auga de río pódense usar para encher caldeiros. Bebero non ten efecto.
-Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=As botellas de auga de río pódense usar para encher caldeiros. Bebero non ten efecto.
-Splash Water Bottle=Botella de auga salpicada
-Extinguishes fire and hurts some mobs=Apaga o lume e fai dano a algunhas turbas
-A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Unha botella de auga arroxable que se romperá no impacto, onde extingue o lume próximo e ferir ás turbas vulnerables á auga.
-Lingering Water Bottle=Botella de auga persistente
-A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Unha botella de auga arroxable que se romperá ao impacto, onde crea unha nube de vapor de auga que permanece no chan durante un tempo. Esta nube apaga o lume e fai dano ás turbas vulnerables á auga.
-Glistering Melon=Melón brillante
-This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Este melón brillante está cheo de pequenas pebidas de ouro e estaría ben nun marco do artigo. Non é comestible e non serve para nada máis.
-##[ functions.lua ]##
-##TODO: fuzzy matched - verify and remove the comment
-Invisiblity=Invisibilidade
+<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]=<efecto>|cura|lista|borrar|eliminar <duración|cantidade de curación|efecto>|INF [<nivel>] [<factor>] [NOPART]
+Add a status effect to yourself. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART at the end means no particles will be shown for this effect.=Engade un efecto de estado para ti. Argumentos: <efecto>: nome do efecto de estado. Pasando "lista" como nome do efecto lista os efectos dispoñibles. Pasar "curar" como nome do efecto cura (ou prexudica) pola cantidade deseñada polo seguinte parámetro. Pasar "clear" como nome do efecto elimina todos os efectos. Ao pasar "remove" como nome do efecto, elimina o efecto nomeado polo seguinte parámetro. <duración>: duración en segundos. Pasar "INF" como duración fai que o efecto sea infinito. (<heal-amount>: cantidade de curación cando o efecto é "curar", pasar un valor negativo resta saúde. <efecto>: nome dun efecto de estado que se eliminará ao usar "remove" como parámetro anterior.) <level >: determinante da potencia do efecto, un maior nivel dá como resultado un efecto máis potente para os efectos que dependen do nivel (sen cambios para outros efectos), o valor predeterminado é 1, pasa F para usar o factor de baixo nivel. <factor>: modificador de forza do efecto, pode significar diferentes cousas dependendo do efecto, sen cambios para efectos que non dependen do nivel/factor. NOPART ao final significa que non se mostrarán partículas para este efecto.
+Missing effect parameter!=¡Falta un parámetro de efecto!
+Missing or invalid heal amount parameter!=¡Falta o parámetro de cantidade de curación ou non é válido!
+Player @1 healed by @2 HP.=O xogador @1 curado por @2 HP.
+Player @1 harmed by @2 HP.=O xogador @1 prexudicado por @2 HP.
+Effects cleared for player @1=Efectos borrados para o xogador @1
+Removed effect @1 from player @2=Eliminouse o efecto @1 do xogador @2
+@1 is not an available status effect.=@1 non é un efecto de estado dispoñible.
+Missing or invalid duration parameter!=¡Falta o parámetro de duración ou non é válido!
+Invalid level parameter!=¡Parámetro de nivel non válido!
+Missing or invalid factor parameter when level is F!=¡Falta un parámetro de factor ou non é válido cando o nivel é F!
+@1 effect given to player @2 for @3 seconds with factor of @4.=@1 efecto dado ao xogador @2 durante @3 segundos cun factor de @4.
+@1 effect given to player @2 for @3 seconds.=@1 efecto dado ao xogador @2 durante @3 segundos.
+Giving effect @1 to player @2 failed.=Fallou o efecto @1 ao xogador @2.
+@1 effect on level @2 given to player @3 for @4 seconds.=@1 efecto no nivel @2 dado ao xogador @3 durante @4 segundos.
+Invisibility=
 body is invisible=o corpo é invisible
 Poison=veleno
 -1 HP / @1 s=-1 HP / @1 s
@@ -70,6 +64,7 @@ Withering=marchito
 -1 HP / @1 s, can kill=-1 HP / @1 s, pode matar
 Frost=Xeada
 -1 HP / 1 s, can kill, -@1% running speed=-1 HP/1 s, pode matar, -@1% velocidade de execución
+Blindness=Cegueira
 impaired sight=visión deteriorada
 Nausea=Náuseas
 not feeling very well...=non sentirse moi ben...
@@ -84,47 +79,50 @@ Fatigue=Fatiga
 -@1% mining and attack speed=-@1% minería e velocidade de ataque
 Conduit Power=Potencia do conduto
 +@1% mining and attack speed in water=+@1% de minería e velocidade de ataque na auga
-##[ commands.lua ]##
-<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]=<efecto>|cura|lista|borrar|eliminar <duración|cantidade de curación|efecto>|INF [<nivel>] [<factor>] [NOPART]
-Add a status effect to yourself. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART at the end means no particles will be shown for this effect.=Engade un efecto de estado para ti. Argumentos: <efecto>: nome do efecto de estado. Pasando "lista" como nome do efecto lista os efectos dispoñibles. Pasar "curar" como nome do efecto cura (ou prexudica) pola cantidade deseñada polo seguinte parámetro. Pasar "clear" como nome do efecto elimina todos os efectos. Ao pasar "remove" como nome do efecto, elimina o efecto nomeado polo seguinte parámetro. <duración>: duración en segundos. Pasar "INF" como duración fai que o efecto sea infinito. (<heal-amount>: cantidade de curación cando o efecto é "curar", pasar un valor negativo resta saúde. <efecto>: nome dun efecto de estado que se eliminará ao usar "remove" como parámetro anterior.) <level >: determinante da potencia do efecto, un maior nivel dá como resultado un efecto máis potente para os efectos que dependen do nivel (sen cambios para outros efectos), o valor predeterminado é 1, pasa F para usar o factor de baixo nivel. <factor>: modificador de forza do efecto, pode significar diferentes cousas dependendo do efecto, sen cambios para efectos que non dependen do nivel/factor. NOPART ao final significa que non se mostrarán partículas para este efecto.
-Missing effect parameter!=¡Falta un parámetro de efecto!
-Missing or invalid heal amount parameter!=¡Falta o parámetro de cantidade de curación ou non é válido!
-Player @1 healed by @2 HP.=O xogador @1 curado por @2 HP.
-Player @1 harmed by @2 HP.=O xogador @1 prexudicado por @2 HP.
-Effects cleared for player @1=Efectos borrados para o xogador @1
-Removed effect @1 from player @2=Eliminouse o efecto @1 do xogador @2
-@1 is not an available status effect.=@1 non é un efecto de estado dispoñible.
-Missing or invalid duration parameter!=¡Falta o parámetro de duración ou non é válido!
-Invalid level parameter!=¡Parámetro de nivel non válido!
-Missing or invalid factor parameter when level is F!=¡Falta un parámetro de factor ou non é válido cando o nivel é F!
-@1 effect given to player @2 for @3 seconds with factor of @4.=@1 efecto dado ao xogador @2 durante @3 segundos cun factor de @4.
-@1 effect given to player @2 for @3 seconds.=@1 efecto dado ao xogador @2 durante @3 segundos.
-Giving effect @1 to player @2 failed.=Fallou o efecto @1 ao xogador @2.
-@1 effect on level @2 given to player @3 for @4 seconds.=@1 efecto no nivel @2 dado ao xogador @3 durante @4 segundos.
-##[ splash.lua ]##
-Use the “Punch” key to throw it.=Use a tecla "Punch" para lanzalo.
-A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Unha poción lanzable que se romperá no momento do impacto, onde dá a todos os xogadores e mobs próximos un efecto de estado ou un conxunto de efectos de estado.
-##[ lingering.lua ]##
+Dragon's Breath=Alento de dragón
+This item is used in brewing and can be combined with splash potions to create lingering potions.=Este artigo úsase na elaboración de cervexa e pódese combinar con pocións de salpicadura para crear pocións persistentes.
+Fermented Spider Eye=Ollo de araña fermentado
+Try different combinations to create potions.=Proba diferentes combinacións para crear pocións.
+Glass Bottle=Botella de vidro
+Liquid container=Recipiente de líquido
+A glass bottle is used as a container for liquids and can be used to collect water directly.=Unha botella de vidro utilízase como recipiente para líquidos e pódese utilizar para recoller auga directamente.
+To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Para recoller auga, utilízaa nun caldeiro con auga (que elimina un nivel de auga) ou calquera fonte de auga (que non elimina auga).
+Water Bottle=Botella de auga
+No effect=Sen efecto
+Water bottles can be used to fill cauldrons. Drinking water has no effect.=As botellas de auga pódense usar para encher caldeiros. A auga potable non ten efecto.
+Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Use a tecla "Lugar" para beber. Coloca este elemento nun caldeiro para verter a auga no caldeiro.
+River Water Bottle=Botella de auga de río
+River water bottles can be used to fill cauldrons. Drinking it has no effect.=As botellas de auga de río pódense usar para encher caldeiros. Bebero non ten efecto.
+Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=As botellas de auga de río pódense usar para encher caldeiros. Bebero non ten efecto.
+Splash Water Bottle=Botella de auga salpicada
+Extinguishes fire and hurts some mobs=Apaga o lume e fai dano a algunhas turbas
+A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Unha botella de auga arroxable que se romperá no impacto, onde extingue o lume próximo e ferir ás turbas vulnerables á auga.
+Lingering Water Bottle=Botella de auga persistente
+A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Unha botella de auga arroxable que se romperá ao impacto, onde crea unha nube de vapor de auga que permanece no chan durante un tempo. Esta nube apaga o lume e fai dano ás turbas vulnerables á auga.
+Glistering Melon=Melón brillante
+This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Este melón brillante está cheo de pequenas pebidas de ouro e estaría ben nun marco do artigo. Non é comestible e non serve para nada máis.
 A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.=Unha poción lanzable que se esnaquizará no impacto, onde crea unha nube máxica que perdura por un tempo. Calquera xogador ou turba dentro da nube recibirá o efecto da poción ou o conxunto de efectos, posiblemente repetidamente.
-##[ tipped_arrow.lua ]##
-This particular arrow is tipped and will give an effect when it hits a player or mob.=Esta frecha en particular está inclinada e dará un efecto cando toque un xogador ou mob.
-##[ potions.lua ]##
+Use the “Punch” key to throw it.=Use a tecla "Punch" para lanzalo.
 Use the “Place” key to drink it.=Use a tecla "Lugar" para beber.
 Drinking a potion gives you a particular effect or set of effects.=Beber unha poción dáche un efecto ou conxunto de efectos en particular.
 @1 Potion @2=@1 Poción @2
 @1 Potion=@1 Poción
 Potion @1=Poción @1
 Strange Potion=Poción estraña
-Splash @1=Splash @1
-Lingering @1=Perdurando @1
+Splash @1 Potion @2=
+Splash @1 Potion=
+Splash Potion @1=
+Splash Strange Potion=
+Lingering @1 Potion @2=
+Lingering @1 Potion=
+Lingering Potion @1=
+Lingering Strange Potion=
 @1 Arrow @2=@1 Frecha @2
 @1 Arrow=@1 Frecha
 Arrow @1=Frecha @1
 Strange Tipped Arrow=Frecha de punta estraña
 Mighty=Poderoso
 of Trolling=de Trolling
-Dragon's Breath=Alento de dragón
-This item is used in brewing and can be combined with splash potions to create lingering potions.=Este artigo úsase na elaboración de cervexa e pódese combinar con pocións de salpicadura para crear pocións persistentes.
 Awkward=Incómodo
 Has an awkward taste and is used for brewing potions.=Ten un sabor incómodo e úsase para preparar pocións.
 Mundane=Mundano
@@ -200,8 +198,13 @@ Attracts danger.=Atrae perigo.
 Unknown Potion=Poción descoñecida
 Right-click to identify=Fai clic co botón dereito para identificar
 Unknown Tipped Arrow=Frecha de punta descoñecida
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Unha poción lanzable que se romperá no momento do impacto, onde dá a todos os xogadores e mobs próximos un efecto de estado ou un conxunto de efectos de estado.
+This particular arrow is tipped and will give an effect when it hits a player or mob.=Esta frecha en particular está inclinada e dará un efecto cando toque un xogador ou mob.
 
 
 ##### not used anymore #####
 
-Blindness=Cegueira
+##TODO: fuzzy matched - verify and remove the comment
+Invisiblity=Invisibilidade
+Splash @1=Splash @1
+Lingering @1=Perdurando @1
