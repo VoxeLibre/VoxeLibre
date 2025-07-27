@@ -17,7 +17,7 @@ mcl_armor.register_set({
 		feet = 1,
 	},
 	craft_material = "mcl_core:gold_ingot",
-	cook_material = "mcl_core:gold_nugget",
+	cook_material = "mcl_core:gold_nugget 9",
 	sound_equip = "mcl_armor_equip_iron",
 	sound_unequip = "mcl_armor_unequip_iron",
 })
@@ -38,8 +38,8 @@ mcl_armor.register_set({
 		legs = 4,
 		feet = 1,
 	},
-	repair_material = "mcl_core:iron_ingot",
-	cook_material = "mcl_core:iron_nugget",
+	craft_material = "mcl_lanterns:chain",
+	cook_material = "mcl_core:iron_nugget 5",
 	sound_equip = "mcl_armor_equip_iron",
 	sound_unequip = "mcl_armor_unequip_iron",
 })
@@ -52,7 +52,7 @@ mcl_armor.register_set({
 		legs = S("Iron Leggings"),
 		feet = S("Iron Boots"),
 	},
-	durability = 240,
+	durability = 340,
 	enchantability = 9,
 	points = {
 		head = 2,
@@ -61,7 +61,7 @@ mcl_armor.register_set({
 		feet = 2,
 	},
 	craft_material = "mcl_core:iron_ingot",
-	cook_material = "mcl_core:iron_nugget",
+	cook_material = "mcl_core:iron_nugget 9",
 	sound_equip = "mcl_armor_equip_iron",
 	sound_unequip = "mcl_armor_unequip_iron",
 })

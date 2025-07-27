@@ -319,7 +319,7 @@ minetest.register_node("mcl_lanterns:gold_chain", {
 
 
 minetest.register_craft({
-	output = "mcl_lanterns:chain",
+	output = "mcl_lanterns:chain 2",
 	recipe = {
 		{"mcl_core:iron_nugget"},
 		{"mcl_core:iron_ingot"},
@@ -328,7 +328,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_lanterns:gold_chain",
+	output = "mcl_lanterns:gold_chain 2",
 	recipe = {
 		{"mcl_core:gold_nugget"},
 		{"mcl_core:gold_ingot"},

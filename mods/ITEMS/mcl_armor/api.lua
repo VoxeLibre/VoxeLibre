@@ -186,6 +186,33 @@ function mcl_armor.register_set(def)
 	end
 end
 
+local old_get_craft = core.get_craft_result
+function core.get_craft_result(input)
+	local output, dec_input = old_get_craft(input)
+	if input.method == "cooking" and input.width == 1
+			and not output.item:is_empty() then
+		local stack = ItemStack(input.items[1])
+		local grp = stack:get_definition().groups
+		local mult = 1
+		if (grp.armor_head or 0) > 0 then
+			mult = 5
+		elseif (grp.armor_torso or 0) > 0 then
+			mult = 8
+		elseif (grp.armor_legs or 0) > 0 then
+			mult = 7
+		elseif (grp.armor_feet or 0) > 0 then
+			mult = 4
+		end
+		if mult > 1 then
+			mult = mult * 0.75
+			local dur = (65536 - stack:get_wear()) / 65536
+			local amount = math.ceil(dur * mult * output.item:get_count())
+			output.item:set_count(amount)
+		end
+	end
+	return output, dec_input
+end
+
 mcl_armor.protection_enchantments = {
 	flags = {},
 	types = {},
