@@ -6,18 +6,18 @@ Slow=Lento
 Fast=Rápido
 Very fast=Muito rápido
 Extremely fast=Extremamente rápido
-Instantaneous=
+Instantaneous=Instantâneo
 @1 uses=@1 usos
 Unlimited uses=Usos ilimitados
 Mining speed: @1=Velocidade de mineração: @1
 Durability: @1=Durabilidade: @1
 Block breaking strength: @1=Força de quebra do bloco: @1
-Damage: @1= Dano: @1
+Damage: @1=Dano: @1
 Healing: @1=Cura: @1
 Full punch interval: @1s=Intervalo completo de batida: @1s
-Food item=
-+@1 food points=
-Contact damage: @1 per second=Dano por contaro: @1 por segundo
+Food item=Item Alimentício
++@1 food points=+@1 pontos de comida
+Contact damage: @1 per second=Dano por contato: @1 por segundo
 Contact healing: @1 per second=Cura por contato: @1 por segundo
 Drowning damage: @1=Dano de afogamento: @1
 Fall damage: +@1%=Dano de queda: +@1%
@@ -29,8 +29,8 @@ No rising=Sem levantamento
 Climbable (only downwards)=Escalável (apenas em descida)
 Climbable=Escalável
 Slippery=Escorregadio
-Bouncy (@1%)=Saltitante (@1%)
-Luminance: @1=Bliho: @1
+Bouncy (@1%)=Quicante (@1%)
+Luminance: @1=Luminância: @1
 ##[ snippets_mcl.lua ]##
 Head armor=Armadura de cabeça
 Torso armor=Armadura de torso
@@ -48,7 +48,7 @@ Flammable=Inflamável
 Zombie view range: -50%=Alcançe de visão do zumbi: -50%
 Skeleton view range: -50%=Alcançe de visão do esqueleto: -50%
 Stalker view range: -50%=Alcançe de visão do stalker: -50%
-...stacks=
+...stacks=...estoca
 
 
 ##### not used anymore #####
