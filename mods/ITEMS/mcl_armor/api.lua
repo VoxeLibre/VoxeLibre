@@ -191,7 +191,7 @@ function core.get_craft_result(input)
 	local output, dec_input = old_get_craft(input)
 	if input.method == "cooking" and input.width == 1
 			and not output.item:is_empty() then
-		local stack = input.items[1]
+		local stack = ItemStack(input.items[1])
 		local grp = stack:get_definition().groups
 		local mult = 1
 		if (grp.armor_head or 0) > 0 then
