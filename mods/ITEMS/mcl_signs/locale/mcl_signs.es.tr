@@ -1,24 +1,22 @@
 # textdomain: mcl_signs
-##[ api.lua ]##
-Can be written=Los letreros se pueden escribir
+Can be written=Los carteles se pueden escribir
 Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Los letreros se pueden escribir y vienen en dos variantes: letrero de muro y letrero en un poste de letrero. Los letreros se pueden colocar en la parte superior y en los costados de otros bloques, pero no debajo de ellos.
 After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=
-Sign text:=
-Close=
-Enter sign text:=Inserte el texto del letrero:
+Sign text:=Texto del cartel:
+Close=Cerrar
+Enter sign text:=Inserte el texto del cartel:
 Maximum line length: @1=Longitud máxima de línea: @1
 Maximum lines: @1=Líneas máximas: @1
 Done=Escribir cartel
-##[ register.lua ]##
-Oak Sign=Signo de roble
-Dark Oak Sign=Signo de roble oscuro
-Acacia Sign= Signo de acacia
-Birch Sign=Signo de abedul
-Jungle Sign= Signo de la selva
-Spruce Sign=Signo de abeto
-Mangrove Sign=Signo de manglar
-Crimson Hyphae Sign=Signo de hifas carmesí
-Warped Hyphae Sign=Signo de hifas deformadas
+Oak Sign=Cartel de roble
+Dark Oak Sign=Cartel de roble oscuro
+Acacia Sign= Cartel de acacia
+Birch Sign=Cartel de abedul
+Jungle Sign= Cartel de la selva
+Spruce Sign=Cartel de abeto
+Mangrove Sign=Cartel de manglar
+Crimson Hyphae Sign=Cartel de hifas carmesí
+Warped Hyphae Sign=Cartel de hifas deformadas
 
 
 ##### not used anymore #####
