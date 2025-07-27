@@ -87,11 +87,11 @@ function mcl_campfires.take_item(pos, node, player, itemstack)
 					campfire_meta:set_string("food_x_"..tostring(space), tostring(food_entity[space]:get_pos().x))
 					campfire_meta:set_string("food_y_"..tostring(space), tostring(food_entity[space]:get_pos().y))
 					campfire_meta:set_string("food_z_"..tostring(space), tostring(food_entity[space]:get_pos().z))
+					timer:start(1) -- Start cook timer
 					break
 				end
 			end
 		end
-		timer:start(1) -- Start cook timer
 	end
 end
 
