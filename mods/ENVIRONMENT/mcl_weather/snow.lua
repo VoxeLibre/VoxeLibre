@@ -172,7 +172,7 @@ minetest.register_abm({
 			if node.name:find("snow") then
 				local l = node.name:sub(-1)
 				l = tonumber(l)
-				if l < gamerule_snowAccumulationHeight then
+				if l and l < gamerule_snowAccumulationHeight then
 					if node.name == "mcl_core:snow" then
 						nn={name = "mcl_core:snow_2"}
 					elseif l and l < 7 then
