@@ -1,47 +1,74 @@
 # textdomain: mobs_mc
-##[ axolotl.lua ]##
 Axolotl=Ajolote
-##[ bat.lua ]##
 Bat=Murciélago
-##[ rabbit.lua ]##
-Rabbit=Conejo
-Killer Bunny=Conejo asesino
-##[ chicken.lua ]##
+Blaze=Blaze
 Chicken=Pollo
-##[ cow+mooshroom.lua ]##
+Cod=Bacalao
 Cow=Vaca
 Mooshroom=Champivaca
-##[ horse.lua ]##
+Dolphin=Delfín
+Ender Dragon=Ender Dragon
+Endermite=Endermite
+Ghast=Ghast
+Glow Squid=Calamar luminoso
+Guardian=Guardián
+Elder Guardian=Guardián Anciano
+Hoglin=Hoglin
+Zoglin=Zoglin
+Baby hoglin=Hoglin bebé
 Horse=Caballo
 Skeleton Horse=Caballo esqueleto
 Zombie Horse=Caballo zombi
 Donkey=Burro
 Mule=Mula
-##[ llama.lua ]##
+Iron Golem=Golem de hierro
 Llama=Llama
-##[ ocelot.lua ]##
+ - Strength @1=
 Ocelot=Ocelote
 Cat=Gato
-##[ parrot.lua ]##
 Parrot=Loro
-##[ pig.lua ]##
 Pig=Cerdo
-##[ polar_bear.lua ]##
+Piglin=Piglin
+Sword Piglin=Piglin espadachín
+Zombie Piglin=Piglin zombi
+Baby Zombie Piglin=Piglin zombi bebé
+Piglin Brute=Piglin bruto
+Pillager=Saqueador
 Polar Bear=Oso polar
-##[ sheep.lua ]##
+Rabbit=Conejo
+Killer Bunny=Conejo asesino
+Rover=
+Salmon=Salmón
 Sheep=Oveja
-##[ wolf.lua ]##
-Wolf=Lobo
-Dog=
-##[ squid.lua ]##
+Shulker=Shulker
+Silverfish=Lepisma
+Skeleton=Esqueleto
+Stray=Esqueleto glacial
+Wither Skeleton=Esqueleto del Wither
+Slime - big=Slime - grande
+Slime - small=Slime - mediano
+Slime - tiny=Slime - pequeño
+Magma Cube - big=Cubo de Magma - grande
+Magma Cube - small=Cubo de Magma - mediano
+Magma Cube - tiny=Cubo de Magma - pequeño
+Magma Cube=Cubo de Magma
+Slime=Slime
+Snow Golem=Golem de nieve
+Spider=Araña
+Cave Spider=Araña de las cuevas
 Squid=Calamar
-##[ villager.lua ]##
-Novice=
-Apprentice=
-Journeyman=
-Expert=
-Master=
-Unemployed=
+Stalker=Stalker
+Overloaded Stalker=
+Strider=Lavagante
+Baby Strider=
+Tropical fish=Pez tropical
+Vex=Ánima
+Novice=Novato
+Apprentice=Aprendiz
+Journeyman=Oficial
+Expert=Experto
+Master=Maestro
+Unemployed=Desempleado
 Farmer=Granjero
 Fisherman=Pescador
 Fletcher=Flechero
@@ -54,95 +81,21 @@ Butcher=Carnicero
 Weapon Smith=Herrero de armas
 Tool Smith=Herrero de herramientas
 Cleric=Clérigo
-Mason=
+Mason=Albañil
 Nitwit=Simplón
 Villager=Aldeano
-##[ pillager.lua ]##
-Pillager=Saqueador
-##[ villager_evoker.lua ]##
 Evoker=Invocador
-##[ villager_vindicator.lua ]##
-Vindicator=Vindicador
-##[ villager_zombie.lua ]##
-Zombie Villager=Aldeano zombi
-##[ witch.lua ]##
-Witch=Bruja
-##[ blaze.lua ]##
-Blaze=Blaze
-##[ ender_dragon.lua ]##
-Ender Dragon=Ender Dragon
-##[ endermite.lua ]##
-Endermite=Endermite
-##[ villager_illusioner.lua ]##
 Illusioner=Illusionista
-##[ ghast.lua ]##
-Ghast=Ghast
-##[ guardian.lua ]##
-Guardian=Guardián
-##[ guardian_elder.lua ]##
-Elder Guardian=Guardián Anciano
-##[ snowman.lua ]##
-Snow Golem=Golem de nieve
-##[ iron_golem.lua ]##
-Iron Golem=Golem de hierro
-##[ rover.lua ]##
-Rover=
-##[ shulker.lua ]##
-Shulker=Shulker
-##[ silverfish.lua ]##
-Silverfish=Lepisma
-##[ skeleton+stray.lua ]##
-Skeleton=Esqueleto
-Stray=Esqueleto glacial
-##[ skeleton_wither.lua ]##
-Wither Skeleton=Esqueleto del Wither
-##[ stalker.lua ]##
-Stalker=Stalker
-Overloaded Stalker=
-##[ zombie.lua ]##
+Vindicator=Vindicador
+Zombie Villager=Aldeano zombi
+Witch=Bruja
+Wither=Wither
+Wolf=Lobo
+Dog=Perro
 Zombie=Zombi
 Baby Zombie=Bebé Zombi
 Husk=Zombi Momificado
 Baby Husk=Bebé Zombi Momificado
-##[ slime+magma_cube.lua ]##
-Slime - big=
-Slime - small=
-Slime - tiny=
-Magma Cube - big=
-Magma Cube - small=
-Magma Cube - tiny=
-Magma Cube=Cubo de Magma
-Slime=Slime
-##[ spider.lua ]##
-Spider=Araña
-Cave Spider=Araña de las cuevas
-##[ vex.lua ]##
-Vex=Ánima
-##[ wither.lua ]##
-Wither=Wither
-##[ cod.lua ]##
-Cod=Bacalao
-##[ salmon.lua ]##
-Salmon=Salmón
-##[ tropical_fish.lua ]##
-Tropical fish=Pez tropical
-##[ dolphin.lua ]##
-Dolphin=Delfín
-##[ glow_squid.lua ]##
-Glow Squid=Calamar luminoso
-##[ piglin.lua ]##
-Piglin=Piglin
-Sword Piglin=Piglin espadachín
-Zombie Piglin=Piglin zombi
-Baby Zombie Piglin=Piglin zombi bebé
-Piglin Brute=Piglin bruto
-##[ hoglin+zoglin.lua ]##
-Hoglin=Hoglin
-Zoglin=Zoglin
-Baby hoglin=Hoglin bebé
-##[ strider.lua ]##
-Strider=Lavagante
-Baby Strider=
 
 
 ##### not used anymore #####

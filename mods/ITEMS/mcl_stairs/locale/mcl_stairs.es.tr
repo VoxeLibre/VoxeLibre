@@ -92,9 +92,9 @@ Prismarine Brick Slab=Losa de ladrillos de prismarina
 Double Prismarine Brick Slab=Losa doble de ladrillos de prismarina
 Dark Prismarine Slab=Losa de prismarina oscura
 Double Dark Prismarine Slab=Losa doble de prismarina oscura
-Mud Brick Stairs=
-Mud Brick Slab=
-Double Mud Brick Slab=
+Mud Brick Stairs=Escaleras de adobe
+Mud Brick Slab=Losa de adobe
+Double Mud Brick Slab=Losa doble de adobe
 Polished Andesite Slab=Losa de andesita pulida
 Double Polished Andesite Slab=Losa doble de andesita pulida
 Polished Andesite Stairs=Escaleras de andesita pulida
@@ -107,9 +107,9 @@ Polished Diorite Stairs=Escaleras de diorita pulida
 Mossy Stone Brick Stairs=Escaleras de ladrillos de piedra musgosos
 Mossy Stone Brick Slab=Losa de ladrillos de piedra musgosos
 Double Mossy Stone Brick Slab=Losa de ladrillo de piedra doble musgo
-Stairs of Polished Gold Block=
-Slab of Polished Gold Block=
-Double Slab of Polished Gold=
+Stairs of Polished Gold Block=Escaleras de oro pulido
+Slab of Polished Gold Block=Losa de oro pulido
+Double Slab of Polished Gold=Losa doble de oro pulido
 
 
 ##### not used anymore #####

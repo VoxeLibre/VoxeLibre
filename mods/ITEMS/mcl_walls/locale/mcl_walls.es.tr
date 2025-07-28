@@ -1,6 +1,5 @@
 # textdomain: mcl_walls
 A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Un pedazo de pared. No se puede saltar con un simple salto. Cuando varios de estos se colocan uno al lado del otro, construirán automáticamente una bonita estructura de pared.
-##[ register.lua ]##
 Cobblestone Wall=Muro de roca
 Mossy Cobblestone Wall=Muro de roca musgosa
 Andesite Wall=Muro de andesita
@@ -15,4 +14,4 @@ Prismarine Wall=Muro de prismarina
 End Stone Brick Wall=Muro de ladrillos de piedra del End
 Nether Brick Wall=Muro de ladrillos del Nether
 Red Nether Brick Wall=Muro de ladrillos del Nether rojos
-Mud Brick Wall=
+Mud Brick Wall=Muro de ladrillos de adobe

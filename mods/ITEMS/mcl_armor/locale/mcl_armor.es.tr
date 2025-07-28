@@ -1,20 +1,45 @@
 # textdomain: mcl_armor
+Upgrade:=Mejora:
+@1 Armor Trim=@1 Diseño
 This is a piece of equippable armor which reduces the amount of damage you receive.=Esta es una pieza de armadura que se puede equipar, la cual reduce la cantidad de daño que recives.
 To equip it, put it on the corresponding armor slot in your inventory menu.=Para equiparla, colocala en la ranura de armadura en el menú de tu inventario.
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
-##[ register.lua ]##
+Sentry=Centinela
+Dune=Duna
+Coast=Costa
+Wild=Salvaje
+Tide=Mareas
+Ward=Guardián
+Vex=Vex
+Rib=Costillas
+Snout=Hocico
+Eye=Ojo
+Spire=Agujas
+Silence=Silencio
+Wayfinder=Buscacaminos
+Leather Cap=Sombrero de cuero
+Leather Tunic=Túnica de cuero
+Leather Pants=Pantalones de cuero
+Leather Boots=Botas de cuero
+Golden Helmet=Casco de oro
+Golden Chestplate=Peto de oro
+Golden Leggings=Grebas de oro
+Golden Boots=Botas de oro
+Chainmail Helmet=Casco de cota de mallas
+Chainmail Chestplate=Peto de cota de mallas
+Chainmail Leggings=Grebas de cota de mallas
+Chainmail Boots=Botas de cota de mallas
+Iron Helmet=Casco de hierro
+Iron Chestplate=Peto de hierro
+Iron Leggings=Grebas de hierro
+Iron Boots=Botas de hierro
+Diamond Helmet=Casco de diamante
+Diamond Chestplate=Peto de diamante
+Diamond Leggings=Grebas de diamante
+Diamond Boots=Botas de diamante
+Netherite Helmet=Casco de netherita
+Netherite Chestplate=Peto de netherita
+Netherite Leggings=Grebas de netherita
+Netherite Boots=Botas de netherita
 Projectile Protection=Protección contra proyectiles
 Reduces projectile damage.=Reduce el daño de proyectiles.
 Blast Protection=Protección contra explosiones
@@ -23,7 +48,7 @@ Fire Protection=Protección contra el fuego
 Reduces fire damage.=Reduce el daño causado por fuego.
 Protection=Protección
 Reduces most types of damage by 4% for each level.=Reduce la mayoría de tipos de daño por 4% por cada nivel.
-Feather Falling=Caída de plumas
+Feather Falling=Caída de pluma
 Reduces fall damage.=Reduce el daño por caída.
 Aqua Affinity=Afinidad acuática
 #Translations of enchantements
@@ -33,36 +58,15 @@ Item cannot be removed from armor slots except due to death, breaking or in Crea
 Thorns=Espinas
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Refleja una parte del daño infligido, a costa de reducir la durabilidad con cada activación.
 Elytra=Élitros
-##[ trims.lua ]##
 #Translations for armor trims
-Smithing Template '@1'=
+Smithing Template '@1'=Molde de Herrería '@1'
 
 
 ##### not used anymore #####
 
-Leather Cap=Sombrero de cuero
-Iron Helmet=Casco de hierro
-Golden Helmet=Casco de oro
-Diamond Helmet=Casco de diamante
 Chain Helmet=Casco de cota de mallas
-Netherite Helmet=Casco de netherita
-Leather Tunic=Túnica de cuero
-Iron Chestplate=Peto de hierro
-Golden Chestplate=Peto de oro
-Diamond Chestplate=Peto de diamante
 Chain Chestplate=Peto de cota de mallas
-Netherite Chestplate=Peto de netherita
-Leather Pants=Pantalones de cuero
-Iron Leggings=Grebas de hierro
-Golden Leggings=Grebas de oro
-Diamond Leggings=Grebas de diamante
 Chain Leggings=Grebas de cota de mallas
-Netherite Leggings=Grebas de netherita
-Leather Boots=Botas de cuero
-Iron Boots=Botas de hierro
-Golden Boots=Botas de oro
-Diamond Boots=Botas de diamante
 Chain Boots=Botas de cota de mallas
-Netherite Boots=Botas de netherita
 Shooting consumes no regular arrows.=Disparar no consume flechas normales.
 Shoot 3 arrows at the cost of one.=Dispara 3 flechas por el costo de una.
