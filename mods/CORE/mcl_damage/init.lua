@@ -170,7 +170,9 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 		if player:get_hp() <= 0 then
 			return 0
 		end
-		hp_change = -mcl_damage.run_modifiers(player, -hp_change, mcl_damage.from_mt(mt_reason))
+		local mcl_reason = mcl_damage.from_mt(mt_reason)
+		if not fire_damage_enabled and mcl_reason.flags.is_fire then return 0 end
+		hp_change = -mcl_damage.run_modifiers(player, -hp_change, mcl_reason)
 	end
 	return hp_change
 end, true)
@@ -178,8 +180,6 @@ end, true)
 minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 	-- Check if damage is enabled
 	if not damage_enabled then return 0 end
-	local mcl_reason = mcl_damage.from_mt(mt_reason)
-	if not fire_damage_enabled and mcl_reason.type == "fire" then return 0 end
 	--if not drowning_damage_enabled and mcl_reason.type == "drown" then return 0 end
 	--if not fall_damage_enabled and mcl_reason.type == "fall" then return 0 end
 
@@ -187,7 +187,7 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 
 	if player:get_hp() > 0 then
 		if hp_change < 0 then
-			mcl_damage.run_damage_callbacks(player, -hp_change, mcl_reason)
+			mcl_damage.run_damage_callbacks(player, -hp_change, mcl_damage.from_mt(mt_reason))
 		end
 	end
 end, false)
