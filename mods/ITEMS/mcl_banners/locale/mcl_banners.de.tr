@@ -32,9 +32,13 @@ Lime=lindgrün
 Light Blue Banner=Hellblaues Banner
 Light Blue=hellblau
 Banner=Banner
+
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Banner sind hohe farbige dekorative Blöcke. Sie können auf dem Boden und an Wände platziert werden. Banner können mit einer Vielzahl von Mustern mit Hilfe von Farbstoffen in der Fertigung bemalt werden.
+
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Benutzen Sie die Fertigung, um ein Muster auf einem Banner zu malen. Bemalte Banner können erneut bemalt werden, um verschiedene Muster zu ergeben. Sie können bis zu 12 Schichten auf einen Banner malen. Wenn ein Banner einen Farbverlauf hat, sind nur 3 Schichten möglich.
+
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Sie können ein Muster eines Banners kopieren, indem Sie zwei Banner der selben Grundfarbe in das Fertigungsgitter platzieren: Das eine muss bemalt sein, das andere leer. Außerdem können Sie ein Banner an einem Kessel mit Wasser benutzen, um seine oberste Schicht abzuwaschen.
+
 Preview Banner=Bannervorschau
 Paintable decoration=Bemalbare Dekoration
 ##[ patterncraft.lua ]##

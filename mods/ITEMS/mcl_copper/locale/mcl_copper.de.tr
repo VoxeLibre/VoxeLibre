@@ -1,7 +1,9 @@
 # textdomain: mcl_copper
 ##[ nodes.lua ]##
 Copper Ore=Kupfererz
+
 Some copper contained in stone, it is pretty common and can be found below sea level.=Stein, in dem etwas Kupfer enthalten ist. Es ist ziemlich häufig und kann unter dem Meeresspiegel gefunden werden.
+
 Block of Raw Copper=Rohkupferblock
 A block used for compact raw copper storage.=Ein Block für die kompakte Lagerung von Rohkupfer.
 Block of Copper=Kupferblock

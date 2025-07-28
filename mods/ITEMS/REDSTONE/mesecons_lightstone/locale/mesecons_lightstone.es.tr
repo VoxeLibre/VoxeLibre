@@ -1,7 +1,9 @@
 # textdomain: mesecons_lightstone
 Redstone Lamp=Lámpara de Redstone
 Glows when powered by redstone power=Brilla cuando recibe energía de redstone
+
 Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.=Las lámparas de redstone son componentes simples de redstone que brillan intensamente (nivel de luz @1) cuando reciben energía de redstone.
+
 White Redstone Lamp=Lámpara de Redstone Blanca
 Grey Redstone Lamp=Lámpara de Redstone Gris
 Light Grey Redstone Lamp=Lámpara de Redstone Gris Claro

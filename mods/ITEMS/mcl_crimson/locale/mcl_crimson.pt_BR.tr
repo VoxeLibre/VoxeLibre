@@ -19,6 +19,7 @@ The stripped hyphae bark of a warped fungus=
 Warped Hyphae Wood=Tábuas de Hifas Distorcidas
 Warped Stairs=Escadas Distorcidas
 Warped Slab=Laje Distorcida
+Double Warped Slab=
 Crimson Fungus=
 Crimson fungus is a mushroom found in the nether's crimson forest.=
 Crimson Roots=Raízes Carmesim
@@ -33,11 +34,17 @@ Crimson Hyphae Wood=Tábuas de Hifas Carmesim
 Crimson Nylium=Nicélio Carmesim
 Crimson Stairs=Escadas Carmesim
 Crimson Slab=Laje Carmesim
+Double Crimson Slab=Laje Dupla Carmesim
 Crimson Door=
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=
+
 Crimson Trapdoor=
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=
 Crimson Fence=
 Crimson Fence Gate=
@@ -53,4 +60,3 @@ Warped Fungus Mushroom=Fungo Distorcido
 Stripped warped hyphae=Hifas Distorcidas Descascadas
 Stripped warped hyphae bark=Caule de Hifas Distorcidas
 Crimson Fungus Mushroom=Fungo Carmesim
-Double Crimson Slab=Laje Dupla Carmesim

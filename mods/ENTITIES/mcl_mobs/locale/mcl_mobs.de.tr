@@ -1,17 +1,26 @@
 # textdomain: mcl_mobs
 This allows you to place a single mob.=Damit kann man einen Mob platzieren.
+
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Platzieren Sie dies einfach dort, wo der Mob auftauchen soll. Tiere werden zahm erscheinen, außer, wenn Sie beim Platzieren die Schlichtaste drücken. Platzieren Sie dies auf einem Mobspawner, um den Mob im Mobspawner zu wechseln.
+
 You need the “maphack” privilege to change the mob spawner.=Sie brauchen das „maphack“-Privileg, um den Mobspawner ändern zu können.
 Only peaceful mobs allowed!=Nur friedliche Mobs erlaubt!
 ##[ api.lua ]##
 Peaceful mode active! No monsters will spawn.=Friedlicher Modus aktiv! Es werden keine Monster auftauchen.
+
 Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player.=Entfernt bestimmte Mobs, außer jenen, die mit einem Namensschild versehen oder gezähmt sind. Für den zweiten Parameter verwenden Sie nametagged/tamed, um nur Namensschild- oder gezähmte Mobs auszuwählen, oder geben Sie eine maximale Entfernung vom Spieler an.
+
 Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=Standardverwendung. Beseitigung feindlicher Mobs. Für weitere Optionen geben Sie den Befehl: /help clearmobs ein
+
 ##[ spawning.lua ]##
+
 spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: @n spawn_mob skeleton:var<passive@=true>:@n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.=
+
 ##[ crafts.lua ]##
 Name Tag=Namensschild
 Give names to mobs=Benennt Mobs
 Set name at anvil=Namen am Amboss setzen
 A name tag is an item to name a mob.=Ein Namensschild ist ein Gegenstand, um einen Mob zu benennen.
+
 Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Bevor Sie ein Namensschild benutzen können, müssen Sie ihn an einem Amboss benennen. Dann können können Sie das Namensschild benutztn, um einen Mob zu benennen. Das wird das Namensschild verbrauchen.
+

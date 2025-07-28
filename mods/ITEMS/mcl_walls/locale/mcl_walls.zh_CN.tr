@@ -1,5 +1,7 @@
 # textdomain: mcl_walls
+
 A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=一段墙体。仅靠简单跳跃无法跃过它。当多个此类墙体部件彼此相邻放置时，它们会自动构建出美观的墙体结构。
+
 ##[ register.lua ]##
 Cobblestone Wall=圆石墙
 Mossy Cobblestone Wall=苔石墙

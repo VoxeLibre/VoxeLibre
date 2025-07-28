@@ -3,10 +3,16 @@ Blast Furnace=Schmelzofen
 Inventory=Inventar
 Recipe book=Rezeptbuch
 Smelts ores faster than furnace=Schmilzt Erze schneller als der Ofen
+
 Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, but twice as fast as a normal furnace.=Schmelzöfen schmelzen nur bestimmte Gegenstände, hauptsächliche Erze und Rüstungen, mit einem Brennstoff, aber doppelt so schnell wie ein normaler Ofen.
+
 Use the blast furnace to open the furnace menu.=Verwenden Sie den Schmelzofen, um das Ofenmenü zu öffnen.
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Gebe Brennstoff in den unteren Platz und das Ausgangsmaterial in den oberen Platz.
+
 The blast furnace will slowly use its fuel to smelt the item.=Der Schmelzofen wird langsam seinen Brennstoff verbrauchen, um das Objekt zu schmelzen.
 The result will be placed into the output slot at the right side.=Das Ergebnis wird in den Ausgabeschacht rechts platziert.
+
 Use the recipe book to see what ores you can smelt, what you can use as fuel and how long it will burn.=Verwende das Rezeptbuch, um zu sehen, welche Erze du schmelzen kannst, was du als Brennstoff verwenden kannst und wie lange es brennt.
+
 Burning Blast Furnace=Brennender Schmelzofen

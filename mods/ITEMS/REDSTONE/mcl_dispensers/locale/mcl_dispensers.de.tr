@@ -3,8 +3,11 @@ Dispenser=Werfer
 Inventory=Inventar
 9 inventory slots=9 Inventarplätze
 Launches item when powered by redstone power=Wirft Gegenstand aus, wenn mit Redstoneenergie versorgt
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=Ein Werfer ist ein Block, der als eine Redstonekomponente fungiert, die, wenn sie mit Redstoneenergie versorgt ist, einen Gegenstand auswirft. Er hat einen Behälter mit 9 Inventarplätzen.
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=Platzieren Sie den Werfer in einer von 6 möglichen Richtungen. Das „Loch“ ist die Stelle, aus der Dinge aus dem Werfer fliegen. Benutzen Sie den Werfer, um auf das Inventar zuzugreifen.
+
 The dispenser will do different things, depending on the dispensed item:=Der Werfer wird, abhängig vom geworfenem Gegenstand, unterschiedliche Dinge tun:
 • Arrows: Are launched=• Pfeile: Werden gefeuert
 • Eggs and snowballs: Are thrown=• Eier und Schneebälle: Werden geworfen

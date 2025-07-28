@@ -1,6 +1,8 @@
 # textdomain: mcl_monster_eggs
 Hides a silverfish=シルバーフィッシュを隠す
+
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=虫喰いブロックは、壊れるとそこからシルバーフィッシュが飛び出してきます。見た目は通常のブロックと同じです。
+
 Infested Stone=虫喰い石
 Infested Cobblestone=虫喰い丸石
 Infested Stone Bricks=虫喰い石レンガ

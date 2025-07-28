@@ -5,8 +5,12 @@ Recipe book=Libro de receitas
 Uses fuel to smelt or cook items=Usa combustible para fundir ou cociñar elementos
 Furnaces cook or smelt several items, using a furnace fuel, into something else.=Os fornos cociñan ou funden varios elementos, utilizando un combustible de forno, noutros elementos.
 Use the furnace to open the furnace menu.=Use o forno para abrir o menú do forno.
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Coloque un combustible de forno na ranura inferior e o material de orixe na ranura superior.
+
 The furnace will slowly use its fuel to smelt the item.=O forno utilizará lentamente o seu combustible para fundir o elemento.
 The result will be placed into the output slot at the right side.=O resultado colocarase na ranura de saída do lado dereito.
+
 Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn.=Usa o libro de receitas para ver o que podes cheirar, o que podes usar como combustible e canto tempo vai arder.
+
 Burning Furnace=Forno ardente

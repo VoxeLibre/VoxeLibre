@@ -19,6 +19,7 @@ Donkey=ロバ
 Mule=ラバ
 ##[ llama.lua ]##
 Llama=ラマ
+ - Strength @1=
 ##[ ocelot.lua ]##
 Ocelot=ヤマネコ
 Cat=

@@ -1,10 +1,16 @@
 # textdomain: mesecons_wires
 Transmits redstone power, powers mechanisms=传输红石能量，为机械装置供电
+
 Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail.=红石是一种用途广泛的导电矿物，可传输红石能量。它可以放置在地面上形成线路。
+
 A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.=红石线路可有两种状态：通电状态和未通电状态。通电的红石线路会为（从而激活）相邻的红石元件提供能量。
+
 Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.=红石能量可从各种红石元件处获取，比如红石方块或者按钮。红石能量用于激活众多机械装置，例如红石灯或者活塞。
+
 Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills.=
+
 Read the help entries on the other redstone components to learn how redstone components interact.=阅读其他红石元件的帮助条目，以了解红石元件之间是如何相互作用的。
+
 Redstone=红石
 Powered Redstone Spot (@1)=通电的红石点（@1）
 Redstone Trail (@1)=红石线路（@1）
@@ -13,4 +19,6 @@ Powered Redstone Trail (@1)=通电的红石线路（@1）
 
 ##### not used anymore #####
 
+
 Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills. An easy way to power a redstone trail is by placing a redstone torch.=将红石放置在地面上来构建红石线路。这些线路会自动相互连接，而且还能跨越山丘。给红石线路通电的一种简便方法就是放置红石火把。
+

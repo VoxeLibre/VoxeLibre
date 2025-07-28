@@ -1,7 +1,9 @@
 # textdomain: mcl_campfires
 ##[ api.lua ]##
 Cooks food and keeps bees happy.=Kocht Essen und hält Bienen bei Laune.
+
 Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap.=Lagerfeuer haben mehrere Funktionen, man kann damit Bienen beruhigen, rohes Fleisch und rohen Fisch kochen, oder sie als Falle verwenden.
+
 ##[ register.lua ]##
 Campfire=Lagerfeuer
 Soul Campfire=Seelenlagerfeuer

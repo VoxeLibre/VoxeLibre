@@ -13,17 +13,24 @@ Done=Feito
 Book and Quill=Libro e pluma
 Write down some notes=Escribe algunhas notas
 This item can be used to write down some notes.=Este elemento podese empregar para escribir algunhas notas.
+
 Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.=Sosteno na man, logo fai clic dereito para leer as notas actuais e logo edite. Pode editar o texto ca frecuencia que desexe. Tambén pode asinar o libro co convirte nun libro escrito que pode apiñar, pero ya no se puede editar.
+
 A book can hold up to 4500 characters. The title length is limited to 64 characters.=Un libro pode conter ata 4500 caracteres. A longitude do título está limitada a 64 caracteres.
+
 Enter book title:=Inserta o título do libro:
 Sign and Close=Asinar e pechar
 Note: The book will no longer be editable after signing=Nota: O libro xa non será editable despois de asinalo
 Cancel=Cancelar
 Nameless Book=Libro sen nome
 Written Book=Libro escrito
+
 Written books contain some text written by someone. They can be read and copied, but not edited.=Os libros escritos conteñen texto escrito por alguén. Poden leerse e copiarse, pero non editarse.
+
 Hold it in your hand, then rightclick to read the book.="Sosteno na man e fai clic dereito para ler o libro."
+
 To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied.=Para copiar o texto do libro escrito, colóqueo na cuadrícula de elaboración xunto cun libro e pluma (ou varios deles) e faga manualidades. O libro escrito non será consumido. As copias das copias non se poden copiar.
+
 Bookshelf=Librería
 Inventory=
 Bookshelves are used for decoration.=As librerías utilizanse para a decoración.

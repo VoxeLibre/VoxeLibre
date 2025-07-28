@@ -1,12 +1,21 @@
 # textdomain: mcl_tools
+
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=镐是用于挖掘如石头这类坚硬方块的挖掘工具。镐也可当作武器使用，但效率相当低。
+
 An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=斧头是你砍伐树木、木质方块及其他一些方块的首选工具。斧头也能造成大量伤害，但攻击速度相当慢。
+
 Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=剑在近战中表现出色，因为它们攻击速度快、伤害高，且能经受无数次战斗。剑也可用于砍伐一些特定的方块，比如蜘蛛网。
+
 To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=
+
 Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=铲子是用于挖掘像泥土、沙子和沙砾这类砂土类方块的工具。它们也可用来将草方块变成草径。铲子可以当作武器使用，但威力很弱。
+
 To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=要将草方块变成草径，手持铲子，然后右键点击草方块的顶部或侧面。只有当草方块上方是空气时，此操作才有效。
+
 Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.=剪刀是用于剪羊毛以及挖掘一些方块类型的工具。剪刀是一种特殊的挖掘工具，可用于从草、树叶以及其他需要剪切的类似方块中获取原始物品。
+
 To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.=要剪羊毛或雕刻无脸南瓜，对它们使用“放置”键。只能在无脸南瓜的侧面雕刻面容。挖掘操作如常，但一些方块的掉落物会有所不同。
+
 Wooden Pickaxe=木镐
 Stone Pickaxe=石镐
 Iron Pickaxe=铁镐
@@ -36,6 +45,9 @@ Shears=剪刀
 
 ##### not used anymore #####
 
+
 You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=当你未手持任何物品时就会使用空手。用空手能挖掘大多数方块，但这是最慢的方法，且只有最脆弱的方块才会掉落有用物品。空手通过击打也能造成少量伤害。使用空手通常是万不得已的办法，因为合适的挖掘工具和武器要好得多。
+
 When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=当你手持的物品不是挖掘工具或武器时，开始挖掘或击打时，它的表现会如同空手一样。
+
 In Creative Mode, the hand is able to break all blocks instantly.=在创造模式中，空手能够瞬间破坏所有方块。

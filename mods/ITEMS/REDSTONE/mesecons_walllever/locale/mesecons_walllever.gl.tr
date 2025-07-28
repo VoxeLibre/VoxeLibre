@@ -1,5 +1,7 @@
 # textdomain: mesecons_walllever
 Lever=Panca
 Provides redstone power while it's turned on=Proporciona enerxía Redstone mentres está acendido
+
 A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state.=Unha panca é un compoñente de pedra vermella que se pode activar e desactivar. Proporciona enerxía Redstone aos bloques adxacentes mentres está no estado "activado".
+
 Use the lever to flip it on or off.=Use a panca para acendelo ou apagalo.

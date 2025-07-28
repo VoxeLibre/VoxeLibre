@@ -3,23 +3,48 @@ This is the help.=Esta é a axuda.
 New help entry unlocked: @1 > @2=Nova entrada de axuda desbloqueada: @1 > @2
 All help entries revealed!=¡Reveláronse todas as entradas de axuda!
 All help entries are already revealed.=Todas as entradas de axuda xa están reveladas.
+Show previous image=Mostrar imaxe anterior
+Show previous gallery page=Mostrar a páxina anterior da galería
+Show next image=Mostrar a seguinte imaxe
+Show next gallery page=Mostrar a seguinte páxina da galería
 Category list=Lista de Categorias
 Entry list=Lista de Entradas
 Entry=Entrada
+Please select a category you wish to learn more about:=Seleccione unha categoría sobre a que desexa obter máis información:
+Show category=Mostrar categoría
+Notify me when new help is available=Notificarme cando hai unha nova axuda dispoñible
+Play notification sound when new help is available=Reproduce un son de notificación cando hai unha nova axuda dispoñible
 Error: No help available.=Erro: Non hai axuda dispoñible.
 No categories have been registered, but they are required to provide help.=Non se rexistraron categorías, pero son necesarias para proporcionar axuda.
+
 The Documentation System [doc] does not come with help contents on its own, it needs additional mods to add help content. Please make sure such mods are enabled on for this world, and try again.=O sistema de documentación [doc] non inclúe contidos de axuda por si só, necesita modificacións adicionais para engadir contido de axuda. Asegúrate de que estes modificacións estean activadas para este mundo e téntao de novo.
+
 Recommended mods: doc_basics, doc_items, doc_identifier, doc_encyclopedia.=Modificacións recomendadas: doc_basics, doc_items, doc_identifier, doc_encyclopedia
+OK=Ben
 Error: Access denied.=Erro: acceso denegado.
+
 Access to the requested entry has been denied; this entry is secret. You may unlock access by progressing in the game. Figure out on your own how to unlock this entry.=O acceso á entrada solicitada foi denegado; esta entrada é secreta. Podes desbloquear o acceso progresando no xogo. Descubra por conta propia como desbloquear esta entrada.
+
 Nameless entry (@1)=Entrada sem nome (@1)
+Help > (No Category)=Axuda > (Sen categoría)
+You haven't chosen a category yet. Please choose one in the category list first.=Aínda non escolliches unha categoría. Escolla primeiro un na lista de categorías.
+Go to category list=Ir á lista de categorías
 Help > @1=Axuda > @1
 Currently all entries in this category are hidden from you.=
 Unlock new entries by progressing in the game.=Desbloquea novas entradas progresando no xogo.
+This category has the following entries:=Esta categoría ten as seguintes entradas:
+Show entry=Mostrar entrada
 Number of entries: @1=Número de entradas: @1
 New entries: @1=Novas entradas: (@1)
 Hidden entries: @1=Entradas ocultas: @1
+All entries read.=Todas as entradas lidas.
+This category is empty.=Esta categoría está baleira.
+Show previous entry=Mostrar entrada anterior
+Show next entry=Mostrar a seguinte entrada
 Help > @1 > (No Entry)=Axuda > @1 > (Sen entrada)
+You haven't chosen an entry yet. Please choose one in the entry list first.=Aínda non escolliches ningunha entrada. Escolla primeiro un na lista de entradas.
+Go to entry list=Ir á lista de entradas
+This category does not have any entries.=Esta categoría non ten entradas.
 Help > @1 > @2=Axuda > @1 > @2
 Open a window providing help entries about Minetest and more=Abre unha ventá que ofrece entradas de axuda sobre Minetest e máis
 Help=Axuda
@@ -30,25 +55,6 @@ Reveal all hidden help entries to you=Mostrarche todas as entradas de axuda ocul
 
 ##### not used anymore #####
 
-All entries read.=Todas as entradas lidas.
+
 Currently all entries in this category are hidden from you.\\nUnlock new entries by progressing in the game.=Actualmente todas as entradas desta categoría están ocultas para ti.
-Go to category list=Ir á lista de categorías
-Go to entry list=Ir á lista de entradas
-Help > (No Category)=Axuda > (Sen categoría)
-OK=Ben
-Please select a category you wish to learn more about:=Seleccione unha categoría sobre a que desexa obter máis información:
-Show entry=Mostrar entrada
-Show category=Mostrar categoría
-Show next entry=Mostrar a seguinte entrada
-Show previous entry=Mostrar entrada anterior
-This category does not have any entries.=Esta categoría non ten entradas.
-This category has the following entries:=Esta categoría ten as seguintes entradas:
-This category is empty.=Esta categoría está baleira.
-You haven't chosen a category yet. Please choose one in the category list first.=Aínda non escolliches unha categoría. Escolla primeiro un na lista de categorías.
-You haven't chosen an entry yet. Please choose one in the entry list first.=Aínda non escolliches ningunha entrada. Escolla primeiro un na lista de entradas.
-Notify me when new help is available=Notificarme cando hai unha nova axuda dispoñible
-Play notification sound when new help is available=Reproduce un son de notificación cando hai unha nova axuda dispoñible
-Show previous image=Mostrar imaxe anterior
-Show previous gallery page=Mostrar a páxina anterior da galería
-Show next image=Mostrar a seguinte imaxe
-Show next gallery page=Mostrar a seguinte páxina da galería
+

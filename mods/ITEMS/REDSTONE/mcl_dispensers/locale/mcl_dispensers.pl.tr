@@ -3,8 +3,11 @@ Dispenser=Dozownik
 Inventory=Ekwipunek
 9 inventory slots=9 miejsc ekwipunku
 Launches item when powered by redstone power=Wystrzela przedmiot gdy zasilony czerwienitem
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=Dozownik jest mechanizmem czerwienitowym, który po zasileniu wystrzeli lub wyrzuci przedmiot. Jest on pojemnikiem z 9 miejscami.
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=Postaw dozownik w jednym z 6 możliwych kierunków. "Dziura" wskazuje z której strony przedmioty będą dozowane. Użyj dozownika, aby zarządzać jego ekwipunkiem. Zasil dozownik czerwienitem aby wyrzucić losowy przedmiot.
+
 The dispenser will do different things, depending on the dispensed item:=Dozownik będzie zachowywał się inaczej w zależności od przedmiotu:
 • Arrows: Are launched=• Strzały: są wystrzelone
 • Eggs and snowballs: Are thrown=• Jaja i śnieżki: są wyrzucane

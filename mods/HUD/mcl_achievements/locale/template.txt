@@ -24,25 +24,39 @@ Pick up a diamond from the floor.=
 Into Fire=
 Pick up a blaze rod from the floor.=
 Cow Tipper=
+
 Pick up leather from the floor.@nHint: Cows and some other animals have a chance to drop leather, when killed.=
+
 Getting Wood=
+
 Pick up a wooden item from the ground.@nHint: Punch a tree trunk until it pops out as an item.=
+
 Who's Cutting Onions?=
 Pick up a crying obsidian from the floor.=
 Hidden in the Depths=
 Pick up an Ancient Debris from the floor.=
 The Next Generation=
+
 Hold the Dragon Egg.@nHint: Pick up the egg from the ground and have it in your inventory.=
+
 Sky's the Limit=
 Find the elytra and prepare to fly above and beyond!=
 Acquire Hardware=
+
 Take an iron ingot from a furnace's output slot.@nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace.=
+
 Delicious Fish=
+
 Take a cooked fish from a furnace.@nHint: Use a fishing rod to catch a fish and cook it in a furnace.=
+
 On A Rail=
+
 Travel by minecart for at least 1000 meters from your starting point in a single ride.=
+
 Sniper Duel=
+
 Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 20 meters.=
+
 We Need to Go Deeper=
 Use obsidian and a fire starter to construct a Nether portal.=
 The End?=
@@ -70,7 +84,9 @@ Catch a fish.@nHint: Catch a fish, salmon, clownfish, or pufferfish.=
 Country Lode, Take Me Home=
 Use a compass on a Lodestone.=
 Serious Dedication=
+
 Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices.=
+
 Local Brewery=
 Brew a Potion.@nHint: Take a potion or glass bottle out of the brewing stand.=
 Enchanter=
@@ -82,7 +98,9 @@ Use a fully powered beacon.=
 The End... Again...=
 Respawn the Ender Dragon.=
 Bee Our Guest=
+
 Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside.=
+
 Total Beelocation=
 Move a bee nest, with 3 bees inside, using a silk touch enchanted tool.=
 Wax On=
@@ -92,7 +110,9 @@ Scrape wax off a copper block.=
 Crafting a New Look=
 Craft a trimmed armor at a smithing table.=
 Smithing with Style=
+
 Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder=
+
 Dispense With This=
 Place a dispenser.=
 Pork Chop=
@@ -116,4 +136,6 @@ Defeat a ghast with his own weapon.=
 Hero of the Village=
 Successfully defend a village from a raid=
 Voluntary Exile=
+
 Kill a raid captain. Maybe consider staying away from the local villages for the time being...=
+

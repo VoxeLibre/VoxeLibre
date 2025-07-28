@@ -6,4 +6,6 @@ Error: No weather specified.=Erro: non se especificou tempo.
 Error: Invalid parameters.=Erro: parámetros non válidos.
 Error: Duration can't be less than 1 second.=Erro: a duración non pode ser inferior a 1 segundo.
 Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.=Erro: tempo especificado non válido. Use "claro", "choiva", "neve" ou "trono".
+
 Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=Alterna entre o tempo claro e o tempo con caída (choiva, treboada ou neve aleatoriamente)
+

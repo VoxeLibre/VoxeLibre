@@ -13,20 +13,31 @@ Mangrove Roots=Raíces de mangle
 Mangrove roots are decorative blocks that form as part of mangrove trees.=As raíces de mangle son bloques decorativos que forman parte dos mangleiros.
 Mangrove Propagule=Propagulo de mangle
 Needs soil and light to grow=Precisa de terra e luz para crecer
+
 When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time.=Cando se coloca no chan (como a terra) e se expón á luz, un propágulo crecerá nun mangle despois dun tempo.
+
 Hanging Propagule=Propagulo colgante
 Grows on Mangrove leaves=Crece nas follas de mangle
 water logged mangrove roots=Raíces de mangle enxaguadas
+
 Mangrove roots, despite being a full block, can be waterlogged and do not flow water out=As raíces dos mangleiros, a pesar de ser un bloque completo, poden estar encharcadas e non saen auga
+
 These cannot be crafted yet only occure when get in contact of water.=Estes non se poden fabricar pero só ocorren cando entran en contacto coa auga.
 Muddy Mangrove Roots=Raíces de mangle barrosas
 Crafted with Mud and Mangrove roots=Elaborado con raíces de barro e mangle
+
 Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it.=Raíces de mangle barrosas e un bloque dos pantanos de mangle. Afoga un pouco o xogador no seu interior
+
 Mangrove Door=Porta de Mangle
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=As portas de madeira son barreiras altas de 2 bloques que se poden abrir ou pechar a man e mediante un sinal de pedra vermella.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Para abrir ou pechar unha porta de madeira, fai clic co botón dereito nela ou proporciona á súa metade inferior un sinal de pedra vermella.
+
 Mangrove Trapdoor=Trapela do mangle
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=As trapelas de madeira son barreiras horizontais que se poden abrir e pechar coa man ou cun sinal de pedra vermella. Ocupan a parte superior ou inferior dun bloque, segundo a súa colocación. Cando están abertas, pódense subir coma unha escaleira.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou pechar a trampilla, fai clic co botón dereito ou envíalle un sinal de pedra vermella.
 Mangrove Wood Fence=Cerca de madeira de mangle
 Mangrove Wood Fence Gate=Porta de cerca de madeira de mangle

@@ -3,23 +3,66 @@ This is the help.=
 New help entry unlocked: @1 > @2=
 All help entries revealed!=
 All help entries are already revealed.=
+##TODO: fuzzy matched - verify and remove the comment
+Show previous image= 显示上一张图片
+##TODO: fuzzy matched - verify and remove the comment
+Show previous gallery page= 显示上一图库页面
+##TODO: fuzzy matched - verify and remove the comment
+Show next image= 显示下一张图片
+##TODO: fuzzy matched - verify and remove the comment
+Show next gallery page= 显示下一图库页面 
 Category list=
 Entry list=
 Entry=
+##TODO: fuzzy matched - verify and remove the comment
+Please select a category you wish to learn more about:= 请选择你想进一步了解的类别：
+##TODO: fuzzy matched - verify and remove the comment
+Show category= 显示类别
+##TODO: fuzzy matched - verify and remove the comment
+Notify me when new help is available= 当有新的帮助可用时通知我。
+##TODO: fuzzy matched - verify and remove the comment
+Play notification sound when new help is available= 当有新的帮助可用时播放通知音效。
 Error: No help available.=
 No categories have been registered, but they are required to provide help.=
+
 The Documentation System [doc] does not come with help contents on its own, it needs additional mods to add help content. Please make sure such mods are enabled on for this world, and try again.=
+
 Recommended mods: doc_basics, doc_items, doc_identifier, doc_encyclopedia.=
+OK=
 Error: Access denied.=
+
 Access to the requested entry has been denied; this entry is secret. You may unlock access by progressing in the game. Figure out on your own how to unlock this entry.=
+
 Nameless entry (@1)=
+##TODO: fuzzy matched - verify and remove the comment
+Help > (No Category)= 帮助 > （无类别）
+You haven't chosen a category yet. Please choose one in the category list first.=
+##TODO: fuzzy matched - verify and remove the comment
+Go to category list= 前往类别列表
 Help > @1=
 Currently all entries in this category are hidden from you.=
 Unlock new entries by progressing in the game.=
+##TODO: fuzzy matched - verify and remove the comment
+This category has the following entries:= 该类别有以下条目：
+##TODO: fuzzy matched - verify and remove the comment
+Show entry= 显示条目
 Number of entries: @1=
 New entries: @1=
 Hidden entries: @1=
+##TODO: fuzzy matched - verify and remove the comment
+All entries read.= 读取所有条目。
+##TODO: fuzzy matched - verify and remove the comment
+This category is empty.= 该类别为空。
+##TODO: fuzzy matched - verify and remove the comment
+Show previous entry= 显示上一条目
+##TODO: fuzzy matched - verify and remove the comment
+Show next entry= 显示下一条目
 Help > @1 > (No Entry)=
+You haven't chosen an entry yet. Please choose one in the entry list first.=
+##TODO: fuzzy matched - verify and remove the comment
+Go to entry list= 前往条目列表
+##TODO: fuzzy matched - verify and remove the comment
+This category does not have any entries.= 该类别没有任何条目。
 Help > @1 > @2=
 Open a window providing help entries about Minetest and more=
 Help=
@@ -32,8 +75,9 @@ Reveal all hidden help entries to you=
 
 <=<
 >=>
+
 Access to the requested entry has been denied; this entry is secret. You may unlock access by progressing in the game. Figure out on your own how to unlock this entry. = 请求的条目访问被拒绝；该条目是机密内容。你可以通过推进游戏进程来解锁访问权限。自行摸索解锁该条目的方法。
-All entries read. = 读取所有条目。
+
 All help entries revealed! = 公开所有帮助条目！
 All help entries are already revealed. = 所有帮助条目都已公开。
 Allows you to reveal all hidden help entries with /help_reveal/ = 允许你使用/help_reveal/命令来显示所有隐藏的帮助条目。
@@ -45,38 +89,25 @@ Entry = 条目
 Entry list = 条目列表
 Error: Access denied. = 错误：访问被拒绝。
 Error: No help available. = 错误：无可用帮助。
-Go to category list = 前往类别列表
-Go to entry list = 前往条目列表
 Help > @1 = 帮助 > @1
 Help > @1 > @2 = 帮助 > @1 > @2
 Help > @1 > (No Entry) = 帮助 > @1 > （无条目）
-Help > (No Category) = 帮助 > （无类别）
 Hidden entries: @1 = 隐藏条目：@1
 Nameless entry (@1) = 无名条目（@1）
 New entries: @1 = 新条目：@1
 New help entry unlocked: @1 > @2 = 新的帮助条目已解锁：@1 > @2
 No categories have been registered, but they are required to provide help. = 尚未注册任何类别，但提供帮助需要有类别。
+
 The Documentation System [doc] does not come with help contents on its own, it needs additional mods to add help content. Please make sure such mods are enabled on for this world, and try again. = 文档系统[doc]本身并不自带帮助内容，它需要额外的模组来添加帮助内容。请确保此类模组在这个世界中已启用，然后再试一次。
+
 Number of entries: @1 = 条目数量：@1
 OK = 确定
 Open a window providing help entries about Minetest and more = 打开一个提供关于《米奈斯特》（Minetest）及更多相关帮助条目的窗口。
-Please select a category you wish to learn more about: = 请选择你想进一步了解的类别：
 Recommended mods: doc_basics, doc_items, doc_identifier, doc_encyclopedia. = 推荐模组：doc_basics、doc_items、doc_identifier、doc_encyclopedia。
 Reveal all hidden help entries to you = 向你显示所有隐藏的帮助条目。
-Show entry = 显示条目
-Show category = 显示类别
-Show next entry = 显示下一条目
-Show previous entry = 显示上一条目
-This category does not have any entries. = 该类别没有任何条目。
-This category has the following entries: = 该类别有以下条目：
-This category is empty. = 该类别为空。
 This is the help. = 这就是帮助内容。
+
 You haven't chosen a category yet. Please choose one in the category list first. = 你还未选择类别。请先从类别列表中选择一个。
+
 You haven't chosen an entry yet. Please choose one in the entry list first. = 你还未选择条目。请先从条目列表中选择一个。
 Collection of help texts = 帮助文本集
-Notify me when new help is available = 当有新的帮助可用时通知我。
-Play notification sound when new help is available = 当有新的帮助可用时播放通知音效。
-Show previous image = 显示上一张图片
-Show previous gallery page = 显示上一图库页面
-Show next image = 显示下一张图片
-Show next gallery page = 显示下一图库页面 

@@ -3,8 +3,13 @@ Chain=cadea
 Chains are metallic decoration blocks.=As cadeas son bloques de decoración metálicos.
 Gold Chain=
 Gold Chains are metallic decoration blocks.=
+##[ register.lua ]##
 Lantern=Lanterna
+
 Lanterns are light sources which can be placed on the top or the bottom of most blocks.=As lanternas son fontes de luz que se poden colocar na parte superior ou na parte inferior da maioría dos bloques.
+
 Soul Lantern=Lanterna da Alma
 Gold Lantern=
+
 Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
+

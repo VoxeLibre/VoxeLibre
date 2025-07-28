@@ -1,30 +1,54 @@
 # textdomain: mcl_deepslate
 Deepslate=Ardoise des abîmes
+
 Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=L'ardoise des abîmes est un type de roche présente dans les profondeurs de l'Overworld qui fonctionne de manière similaire à la roche classique mais en plus dur.
+
 Infested Deepslate=Ardoise des abîmes infestée
+
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Un bloc infesté est un bloc dont va sortir un poisson d'argent lorsqu'il sera cassé. Il a la même apparence que son équivalent normal.
+
 Hides a silverfish=Cache un poisson d'argent
 Tuff=Tuf
+
 Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=Le tuf est une roche ornementale formée de roche volcanique, apparaissant dans des blobs souterrains sous Y@=16.
+
 Deepslate Coal Ore=Minerai de charbon de l'ardoise des abîmes
+
 Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.=Le minerai de charbon de l'ardoise des abîmes est une variante de minerai de charbon qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+
 Deepslate Iron Ore=Minerai de fer de l'ardoise des abîmes
+
 Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=Le minerai de fer de l'ardoise des abîmes est une variante de minerai de fer qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+
 Deepslate Gold Ore=Minerai d'or de l'ardoise des abîmes
+
 Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.=Le minerai d'or de l'ardoise des abîmes est une variante de minerai d'or qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+
 Deepslate Emerald Ore=Minerai d'émeraude de l'ardoise des abîmes
+
 Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.=Le minerai d'émeraude de l'ardoise des abîmes est une variante de minerai d'émeraude qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+
 Deepslate Diamond Ore=Minerai de diamant de l'ardoise des abîmes
+
 Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.=Le minerai de diamant de l'ardoise des abîmes est une variante de minerai de diamant qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+
 Deepslate Lapis Lazuli Ore=Minerai de lapis-lazuli de l'ardoise des abîmes
+
 Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=Le minerai de lapis-lazuli de l'ardoise des abîmes est une variante de minerai de lapis-lazuli qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+
 Deepslate Copper Ore=Minerai de cuivre de l'ardoise des abîmes
+
 Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs.=Le minerai de cuivre de l'ardoise des abîmes est une variante de minerai de cuivre qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+
 Deepslate Redstone Ore=Minerai de Redstone de l'ardoise des abîmes
+
 Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=Le minerai de redstone de l'ardoise des abîmes est une variante de minerai de redstone qui apparaît dans l'ardoise des abîmes et les filons de tuf.
+
 Lit Deepslate Redstone Ore=Minerai de Redstone de l'ardoise des abîmes éclairé
 Cobbled Deepslate=Pierre des abîmes
+
 Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone.=La pierre des abîmes est une variante de roche similaire à la pierre ou la pierre noire.
+
 Cobbled Deepslate Stairs=Escalier de pierre des abîmes
 Cobbled Deepslate Slab=Dalle de pierre des abîmes
 Double Cobbled Deepslate Slab=Dalle double de pierre des abîmes

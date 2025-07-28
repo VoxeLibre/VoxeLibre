@@ -1,7 +1,9 @@
 # textdomain: mcl_ocean
 ##[ prismarine.lua ]##
 Sea Lantern=Lanterna do mar
+
 Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=As lanternas mariñas son fontes de luz decorativas que se ven moi ben baixo a auga pero que se poden colocar en calquera lugar.
+
 Prismarine=Prismarino
 Prismarine is used as a building block. It slowly changes its color.=O prismarino úsase como un bloque de construción. Vai mudando lentamente de cor.
 Prismarine Bricks=Ladrillos Prismarinos 
@@ -39,9 +41,13 @@ Horn Coral=Coral de corno
 Dead Horn Coral=Coral de corno morto
 Horn Coral Fan=Coral de corno desparramado
 Dead Horn Coral Fan=Coral de corno desparramado
+
 Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.=Os bloques de coral viven nos océanos e necesitan unha fonte de auga ao seu carón para sobrevivir. Sen auga morren.
+
 Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Os corais crecen encima dos bloques de coral e necesitan estar dentro dunha fonte de auga para sobrevivir. Sen auga, morrerá, así como o bloque de coral de abaixo.
+
 Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Os fanáticos dos corais crecen encima dos bloques de coral e necesitan estar dentro dunha fonte de auga para sobrevivir. Sen auga, morrerá, así como o bloque de coral de abaixo.
+
 Needs water to live=Necesita auga para vivir
 Grows on coral block of same species=Crece nun bloque de coral da mesma especie
 ##[ seagrass.lua ]##
@@ -57,8 +63,11 @@ Dried Kelp Block=Bloque de algas secas
 A decorative block that serves as a great furnace fuel.=Un bloque decorativo que serve de gran combustible para fornos.
 ##[ sea_pickle.lua ]##
 Sea Pickle=Encurtidos Mariños
+
 Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Os encurtidos mariños crecen en bloques de coral do cerebro morto e proporcionan luz cando están baixo a auga. Veñen en 4 tamaños que varían en brillo.
+
 It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Só se pode colocar encima de bloques de coral do cerebro morto. Poñer un escabeche de mar sobre outro escabeche de mar farao medrar e máis brillante.
+
 Glows in the water=Brilla na auga
 4 possible sizes=4 tamaños posibles
 Grows on dead brain coral block=Crece no bloque de coral do cerebro morto

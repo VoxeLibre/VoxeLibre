@@ -8,11 +8,16 @@ This can happen for the following reasons:=Dies kann aus folgenden Gründen pass
 It appears to originate from the mod “@1”, which is enabled.=Es scheint von der Mod „@1“ zu stammen. Sie ist aktiv.
 It appears to originate from the mod “@1”, which is not enabled!=Es scheint von der Mod „@1“ zu stammen. Sie ist nicht aktiv!
 Its identifier is “@1”.=Der Identifikator ist „@1“.
+
 This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.=Dieser Block kann nicht identifiziert werden, weil sich die Welt an dieser Stelle noch nicht materialisiert hat. Versuchen Sie es in ein paar Sekunden erneut.
+
 No help entry for this object could be found.=Für dieses Objekt konnte kein Hilfseintrag gefunden werden.
 This is a player.=Dies ist ein Spieler.
 OK=OK
 Lookup Tool=Nachschlagewerkzeug
 Show help for pointed thing=Hilfe für das angezeigte Objekt anzeigen
+
 This useful little helper can be used to quickly learn more about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used.=Dieser nützliche kleine Helfer kann verwendet werden, um schnell mehr über die nähere Umgebung zu erfahren. Er identifiziert und analysiert Blöcke, Gegenstände und andere Dinge und zeigt ausführliche Informationen über das, worauf er angewendet wird.
+
 Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case.=Schlagen Sie einen beliebigen Block, Gegenstand oder irgendetwas, worüber Sie mehr erfahren wollen. Das wird den passenden Hilfseintrag öffnen. Das Werkzeug hat zwei Modi, die durch Benutzen gewechselt werden können. Im Flüssigmodus zeigt das Werkzeug auch auf Flüssigkeiten. Im Festmodus ist dies nicht der Fall.
+

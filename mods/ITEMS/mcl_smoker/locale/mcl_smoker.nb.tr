@@ -3,16 +3,24 @@ Smoker=Røykovn
 Inventory=Inventar
 Recipe book=
 Cooks food faster than furnace=Steker mat raskere enn en vanlig ovn
+
 Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace.=Røykere tilbereder flere ting, hovedsakelig rå mat til stekt mat, men dobbelt så raskt som en vanlig ovn.
+
 Use the smoker to open the furnace menu.=Bruk røykovnen for å åpne ovnsmenyen.
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Plasser et ovnsbrensel i det nedre feltet og kildematerialet i det øvre feltet.
+
 The smoker will slowly use its fuel to cook the item.=
 The result will be placed into the output slot at the right side.=Resultatet havner i utdatafeltet på høyre side.
+
 Use the recipe book to see what foods you can cook, what you can use as fuel and how long it will burn.=
+
 Burning Smoker=Brennende røykovn
 
 
 ##### not used anymore #####
 
 The smoker will slowly use its fuel to smelt the item.=Røykeren vil sakte bruke brensel til å steke kildematerialet.
+
 Use the recipe book to see what foods you can smelt, what you can use as fuel and how long it will burn.=Bruk oppskriftsboken for å se hvilken mat du kan steke, hva du kan bruke som brensel og hvor lenge det vil brenne.
+

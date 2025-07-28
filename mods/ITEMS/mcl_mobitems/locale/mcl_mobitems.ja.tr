@@ -1,40 +1,61 @@
 # textdomain: mcl_mobitems
 Rotten Flesh=腐った肉
 80% chance of food poisoning=80％の確率で食中毒
+
 Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it to restore a few hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.=ウッ この肉片は明らかに期限切れです。あなたが差し迫っているというのなら、食べて空腹を紛らわせるのもアリですが、八割方 食中りを起こし、しばらくは空腹感が増します。
+
 Raw Mutton=生の羊肉
+
 Raw mutton is the flesh from a sheep and can be eaten safely. Cooking it will greatly increase its nutritional value.=生の羊の肉なので、安全に食べられます。調理することで栄養価は格段にアップします。
+
 Cooked Mutton=ジンギスカン
 Cooked mutton is the cooked flesh from a sheep and is used as food.=ジンギスカンは羊の肉を調理したもので、食用です。
 Raw Beef=生の牛肉
+
 Raw beef is the flesh from cows and can be eaten safely. Cooking it will greatly increase its nutritional value.=生の牛の肉なので、安全に食べられます。調理することで栄養価が大幅にアップします。
+
 Steak=ステーキ
 Steak is cooked beef from cows and can be eaten.=ステーキは牛肉を調理したもので、食べることができます。
 Raw Chicken=生の鶏肉
 30% chance of food poisoning=30%の確率で食中毒
+
 Raw chicken is a food item which is not safe to consume. You can eat it to restore a few hunger points, but there's a 30% chance to suffer from food poisoning, which increases your hunger rate for a while. Cooking raw chicken will make it safe to eat and increases its nutritional value.=生の鶏肉は、安全に摂取できない食品です。食べると空腹度が少し回復しますが、30%の確率で食中毒になり、しばらくの間は空腹感が増します。生の鶏肉を調理すると、安全に食べることができ、栄養価も高まります。
+
 Cooked Chicken=ヤキトリ
 A cooked chicken is a healthy food item which can be eaten.=ヤキトリは、食べても大丈夫なヘルシー食品です。
 Raw Porkchop=生の豚肉
+
 A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.=生の豚の肉なので、安全に食べられます。調理することで栄養価が大幅にアップします。
+
 Cooked Porkchop=チャーシュー
 Cooked porkchop is the cooked flesh of a pig and is used as food.=チャーシューは豚の肉を調理したもので、食用です。
 Raw Rabbit=生の兎肉
+
 Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it will increase its nutritional value.=死んだウサギ由来の食材です。安全に食べられます。調理することで栄養価が上がります。
+
 Cooked Rabbit=ウサギの丸焼き
 This is a food item which can be eaten.=これは食料品です。
 Milk=牛乳
 Removes all status effects=全ステータス効果を除去
+
 Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=牛乳はとてもさわやかで、バケツを牛に使うことで採れます。これを飲むと全てのステータス効果を除去しますが、お腹は満たせません。
+
 Use the placement key to drink the milk.=配置キーを使うと、牛乳を飲みます。
 Spider Eye=クモの目
 Poisonous=有毒
+
 Spider eyes are used mainly in crafting. If you're really desperate, you can eat a spider eye, but it will poison you briefly.=クモの目は主にクラフトに使われます。あなたがどうしようもなく過酷なら、食べることもできます…が、早い話これは毒です。
+
 Bone=骨
+
 Bones can be used to tame wolves so they will protect you. They are also useful as a crafting ingredient.=骨は、オオカミがあなたを守ってくれるよう馴らすために使えます。また、クラフトの材料としても有用です。
+
 Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it.=骨をオオカミの近くで振り、引き付けます。オオカミに「設置」キーを使うと、骨を与えて手なずけられます。手なずけたオオカミに「設置」キーを使えば、オオカミに号令が出せます。
+
 Squid Ink Sac=
+
 This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye.=
+
 String=糸
 Strings are used in crafting.=糸はクラフトに使えます。
 Spectre Membrane=
@@ -52,19 +73,23 @@ Magma cream is a crafting component.=マグマクリームはクラフトの構�
 Ghast Tear=ガストの涙
 Place this item in an item frame as decoration.=これをアイテムフレームに入れれば、飾りになります。
 Nether Star=ネザースター
+
 A nether star is dropped when the Wither dies. Place it in an item frame to show the world how hardcore you are! Or just as decoration.=ネザースターは、ウィザーが死んだ時にドロップします。アイテムフレームに入れれば、あなたのハードコアぶりを世界にアピールできます！ あるいはただの飾りです。
+
 Leather=革
 Leather is a versatile crafting component.=革は、多用途なクラフトの構成材です。
 Feather=羽
 Feathers are used in crafting and are dropped from chickens.=羽は、クラフトに使うもので、ニワトリからドロップします。
-Rabbit Hide=ウサギの皮
-Rabbit hide is used to create leather.=ウサギの皮は、革の原料として使われます。
+Leather Piece=
+Leather piece is a smaller piece of leather.=
 Rabbit's Foot=ウサギの足
 Must be your lucky day! Place this item in an item frame for decoration.=ラッキーデーに違いない！ これはアイテムフレームに入れて飾ってください。
 Saddle=鞍
 Can be placed on animals to ride them=動物に被せて騎乗可能
 Saddles can be put on some animals in order to mount them.=動物によっては、鞍を装着して騎乗できます。
+
 Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again.=鞍を手にした状態で配置キーを使い、装着させてみましょう。鞍はウマ、ラバ、ロバ、ブタにフィットします。ウマ、ラバ、ロバは先に手なずけておかないと、鞍を拒んでしまいます。鞍をつけた動物には、もう一度配置キーを使えば騎乗できます。
+
 Rabbit Stew=ラビットシチュー
 Rabbit stew is a very nutricious food item.=ラビットシチューは、とても栄養豊富な食品です。
 Shulker Shell=シュルカーの殻
@@ -75,23 +100,42 @@ Gunpowder=火薬
 Carrot on a Stick=ニンジン付きの棒
 Lets you ride a saddled pig=鞍をつけたブタに乗れる
 A carrot on a stick can be used on saddled pigs to ride them.=ニンジン付きの棒を使えば、鞍をつけたブタに騎乗できます。
+
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=鞍をつけたブタの上にそれを掲げます。 これで、ブタに騎乗できること馬のごとしです。 ニンジン付きの棒を振るうだけでも、ブタはあなたに向かって歩いてきます。
+
 Warped fungus on a Stick=
 Lets you ride a strider=
 A warped fungus on a stick can be used on saddled striders to ride them.=
+
 Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=
+
 Nautilus Shell=オウムガイの殻
 Used to craft a conduit=コンジットのクラフトに使用可
+
 The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=オウムガイの殻は、コンジットをクラフトするのに使えます。 釣りをするか、貝を振り回しているドラウンドを殺ると入手できます。
+
 Heart of the Sea=海洋の心
+
 The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=海洋の心は、コンジットをクラフトするのに使えます。 それは埋められた宝箱の中から見つけることで入手できます。
+
 Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=ウマに被せると、馬鎧を着せることができます。ロバとラバには、馬鎧を着せられません。
+
 Iron Horse Armor=鉄の馬鎧
+
 Iron horse armor can be worn by horses to increase their protection from harm a bit.=鉄の馬鎧は、ウマに装着することで、危害から守る力を少し高めることができます。
+
 Golden Horse Armor=金の馬鎧
 Golden horse armor can be worn by horses to increase their protection from harm.=金の馬鎧は、ウマに装着することで、危害から守る力を高めることができます。
 Diamond Horse Armor=ダイヤモンドの馬鎧
+
 Diamond horse armor can be worn by horses to greatly increase their protection from harm.=ダイヤモンドの馬鎧は、ウマに装着することで、危害から守る力を大幅に高めることができます。
+
 Glow Ink Sac=
 Use it to craft the Glow Item Frame.=
 Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=
+
+
+##### not used anymore #####
+
+Rabbit Hide=ウサギの皮
+Rabbit hide is used to create leather.=ウサギの皮は、革の原料として使われます。

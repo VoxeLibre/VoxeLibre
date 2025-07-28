@@ -1,7 +1,9 @@
 # textdomain: mesecons_lightstone
 Redstone Lamp=Lámpara de Pedra Vermella
 Glows when powered by redstone power=Brilla cando está alimentado por enerxía de Pedra Vermella
+
 Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.=As lámpadas Pedra Vermella son compoñentes sinxelos de Pedra Vermella que brillan intensamente (nivel de luz @1) cando reciben enerxía Pedra Vermella.
+
 White Redstone Lamp=Lámpada Pedra Vermella Branca 
 Grey Redstone Lamp=Lámpada de Pedra Vermella gris
 Light Grey Redstone Lamp=Lámpada de Pedra Vermella gris claro

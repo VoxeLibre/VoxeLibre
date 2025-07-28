@@ -1,4 +1,6 @@
 # textdomain: mcl_torches
 ##[ register.lua ]##
 Torch=Fakkel
+
 Torches are light sources which can be placed at the side or on the top of most blocks.=Fakler er lyskilder som kan plasseres på siden eller oppå de fleste blokker.
+

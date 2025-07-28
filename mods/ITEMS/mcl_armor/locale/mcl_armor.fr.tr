@@ -1,20 +1,46 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=Il s'agit d'un morceau d'armure équipable qui réduit la quantité de dégâts que vous recevez.
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=Pour l'équiper, placez-le sur l'emplacement d'armure correspondant dans votre menu d'inventaire.
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=Casque d'or
+Golden Chestplate=Plastron d'or
+Golden Leggings=Jambières d'or
+Golden Boots=Bottes d'or
+Chainmail Helmet=
+##TODO: fuzzy matched - verify and remove the comment
+Chainmail Chestplate=Cotte de mailles
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=Casque de fer
+Iron Chestplate=Plastron de fer
+Iron Leggings=Jambières de fer
+Iron Boots=Bottes de fer
+Diamond Helmet=Casque de diamant
+Diamond Chestplate=Plastron de diamant
+Diamond Leggings=Jambières de diamant
+Diamond Boots=Bottes de diamant
+Netherite Helmet=Casque de netherite
+Netherite Chestplate=Plastron de netherite
+Netherite Leggings=Jambières de netherite
+Netherite Boots=Bottes de netherite
 Projectile Protection=Protection contre les projectiles
 Reduces projectile damage.=Réduit les dégâts causés par les projectiles.
 Blast Protection=Protection contre les explosions
@@ -29,10 +55,19 @@ Aqua Affinity=Affinité aquatique
 #Translations of enchantements
 Increases underwater mining speed.=Augmente la vitesse de minage sous-marine.
 Curse of Binding=Malédiction du lien éternel
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=L'objet ne peut pas être retiré des emplacements d'armure sauf en cas de mort, de rupture ou en mode créatif.
+
 Thorns=Épines
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflète une partie des dégâts subis lors de la frappe, au prix d'une réduction de la durabilité à chaque déclenchement.
+
 Elytra=Élytres
+##[ leather.lua ]##
+Leather Cap=Casquette en cuir
+Leather Tunic=Tunique en cuir
+Leather Pants=Pantalon de cuir
+Leather Boots=Bottes de cuir
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=Modèle à forger '@1'
@@ -40,29 +75,8 @@ Smithing Template '@1'=Modèle à forger '@1'
 
 ##### not used anymore #####
 
-Leather Cap=Casquette en cuir
-Iron Helmet=Casque de fer
-Golden Helmet=Casque d'or
-Diamond Helmet=Casque de diamant
 Chain Helmet=Casque de mailles
-Netherite Helmet=Casque de netherite
-Leather Tunic=Tunique en cuir
-Iron Chestplate=Plastron de fer
-Golden Chestplate=Plastron d'or
-Diamond Chestplate=Plastron de diamant
-Chain Chestplate=Cotte de mailles
-Netherite Chestplate=Plastron de netherite
-Leather Pants=Pantalon de cuir
-Iron Leggings=Jambières de fer
-Golden Leggings=Jambières d'or
-Diamond Leggings=Jambières de diamant
 Chain Leggings=Jambières de mailles
-Netherite Leggings=Jambières de netherite
-Leather Boots=Bottes de cuir
-Iron Boots=Bottes de fer
-Golden Boots=Bottes d'or
-Diamond Boots=Bottes de diamant
 Chain Boots=Bottes de mailles
-Netherite Boots=Bottes de netherite
 Shooting consumes no regular arrows.=Le tir ne consomme pas de flèches standard.
 Shoot 3 arrows at the cost of one.=Tirez 3 flèches pour le prix d'une.

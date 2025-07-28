@@ -1,30 +1,54 @@
 # textdomain: mcl_deepslate
 Deepslate=深板岩
+
 Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=深板岩是一种在主世界地下深处发现的石头类型，其功能与普通石头类似，但比普通石头更坚硬。
+
 Infested Deepslate=被虫蚀的深板岩
+
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=被虫蚀的方块是一种在被破坏时会有蠹虫冒出来的方块，它看上去和其正常形态的方块一模一样。
+
 Hides a silverfish=藏有蠹虫
 Tuff=凝灰岩
+
 Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=凝灰岩是一种由火山灰形成的观赏性岩石，出现在Y坐标值低于16的地下团块中。 
+
 Deepslate Coal Ore=深板岩煤矿石
+
 Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.=深板岩煤矿石是煤矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+
 Deepslate Iron Ore=深板岩铁矿石
+
 Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=深板岩铁矿石是铁矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+
 Deepslate Gold Ore=深板岩金矿石
+
 Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.=深板岩金矿石是金矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+
 Deepslate Emerald Ore=深板岩绿宝石矿石
+
 Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.=深板岩绿宝石矿石是绿宝石矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+
 Deepslate Diamond Ore=深板岩钻石矿石
+
 Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.=深板岩钻石矿石是钻石矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+
 Deepslate Lapis Lazuli Ore=深板岩青金石矿石
+
 Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=深板岩青金石矿石是青金石矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+
 Deepslate Copper Ore=深板岩铜矿石
+
 Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs.=深板岩铜矿石是铜矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+
 Deepslate Redstone Ore=深板岩红石矿石
+
 Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=深板岩红石矿石是红石矿石的一种变种，能在深板岩和凝灰岩团块中生成。
+
 Lit Deepslate Redstone Ore=发光的深板岩红石矿石
 Cobbled Deepslate=圆石深板岩
+
 Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone.=圆石深板岩是一种石头变种，其功能与圆石或黑石类似。
+
 Cobbled Deepslate Stairs=圆石深板岩楼梯
 Cobbled Deepslate Slab=圆石深板岩台阶
 Double Cobbled Deepslate Slab=双层圆石深板岩台阶

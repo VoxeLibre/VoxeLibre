@@ -1,7 +1,11 @@
 # textdomain: mcl_fences
+
 Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.=Cercas são estruturas as quais bloqueiam o caminho. Cercas vão conectar umas nas outras e em blocos sólidos. Não podem ser puladas com um simples pulo.
+
 Openable by players and redstone power=Aberto por jogadores e sinal de redstone
+
 Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.=Portões podem ser abertos ou fechados e não podem ser pulados. As cercas irão se conectar aos portões.
+
 Right-click the fence gate to open or close it.=Clique com o botão direito no portão para abri-lo ou fecha-lo.
 Oak Fence=Cerca de Carvalho
 Oak Fence Gate=Portão de Carvalho

@@ -1,10 +1,15 @@
 # textdomain: mcl_tnt
+
 An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=Un artefacto explosivo. Cando estoupa, ferir os seres vivos e destruír bloques ao seu redor. A Dinamita ten un radio de explosión de @1. Cunha pequena oportunidade, os bloques poden caer como un elemento (como se fosen extraídos) en lugar de ser destruídos. A Dinamita pode ser inflamada por ferramentas, explosións, lume, lava e sinais de pedra vermella.
+
 An explosive device. When it explodes, it will hurt living beings. TNT has an explosion radius of @1. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=
+
 TNT=Dinamita
 Ignited by tools, explosions, fire, lava, redstone power=Acendido por ferramentas, explosións, lume, lava e enerxía de pedra vermella
 Explosion radius: @1=Radio de exposión: @1
+
 Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds.=Coloque a Dinamita e acéndea cun dos métodos anteriores. Ponte rapidamente a distancia segura. A Dinamita comezará a verse afectado pola gravidade e explotará en 4 segundos.
+
 
 
 ##### not used anymore #####

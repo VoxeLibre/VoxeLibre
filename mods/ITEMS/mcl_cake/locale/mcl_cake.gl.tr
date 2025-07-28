@@ -2,8 +2,11 @@
 Cake=Tarta
 With 7 tasty slices!=¡Con 7 deliciosas rebandas!
 Hunger points: +@1 per slice=Puntos de fame: +@1 por rebanda
+
 Cakes can be placed and eaten to restore hunger points. A cake has 7 slices. Each slice restores 2 hunger points and 0.4 saturation points. Cakes will be destroyed when dug or when the block below them is broken.=Os pasteis podense colocar e comer para restaurar os puntos de fame. Un pastel ten 7 anacos. Cada anaco restaura 2 puntos de fame e 0.4 puntos de saturación. Os pasteis destruiranse cando se caven ou cando se rompa o bloque debaixo deles.
+
 Place the cake anywhere, then rightclick it to eat a single slice. You can't eat from the cake when your hunger bar is full.=Coloque o pastel en calquer lugar, despois faga clic dereito para comer un só anaco. Non podes comer do pastel cando a tua barra de fame está chea.
+
 Cake (6 Slices Left)=Pastel (Quedan 6 anacos)
 Cake (5 Slices Left)=Pastel (Quedan 5 anacos)
 Cake (4 Slices Left)=Pastel (Quedan 4 anacos)

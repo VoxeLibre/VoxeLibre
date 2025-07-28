@@ -5,7 +5,8 @@ Jump to speed up (additionally sprint)=Hopp for å øke hastigheten (kan bruke "
 ##[ people.lua ]##
 Creator of MineClone=Skaperen av MineClone
 Creator of VoxeLibre=Skaperen av VoxeLibre
-Maintainers=Vedlikeholdere
+##TODO: fuzzy matched - verify and remove the comment
+Maintainer=Vedlikeholdere
 Previous Maintainers=Tidligere vedlikeholdere
 Developers=Utviklere
 Past Developers=Tidligere utviklere
@@ -21,13 +22,18 @@ Special thanks=Ekstra takk til
 
 ##### not used anymore #####
 
-A faithful Open Source clone of Minecraft=En trofast åpen kildekode-klone av Minecraft
-MineClone5=MineClone5
 Jordach for the jukebox music compilation from Big Freaking Dig=Jordach for platespillerens musikksamling fra Big Freaking Dig
+
 Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube) and Traitor (horizonchris96), which is licensed under https://creativecommons.org/licenses/by-sa/3.0/=Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for hovedmeny-musikken (Calmed Cube) og Traitor (horizonchris96), som er lisensiert under https://creativecommons.org/licenses/by-sa/3.0/
+
 Jester for helping to finely tune VoxeLibre (https://www.youtube.com/@Jester-8-bit). Songs: Hailing Forest, Gift, 0dd BL0ck, Flock of One (License CC BY-SA 4.0)=Jester for å ha bidratt til å finjustere VoxeLibre (https://www.youtube.com/@Jester-8-bit). Sanger: Hailing Forest, Gift, 0dd BL0ck, Flock of One (Lisens CC BY-SA 4.0)
+
 Exhale & Tim Unwin for some wonderful VoxeLibre tracks (https://www.youtube.com/channel/UClFo_JDWoG4NGrPQY0JPD_g). Songs: Valley of Ghosts, Lonely Blossom, Farmer (License CC BY-SA 4.0)=Exhale & Tim Unwin for noen fantastiske VoxeLibre lydspor (https://www.youtube.com/channel/UClFo_JDWoG4NGrPQY0JPD_g). Sanger: Valley of Ghosts, Lonely Blossom, Farmer (Lisens CC BY-SA 4.0)
+
 Diminixed for 3 fantastic tracks and remastering and leveling volumes. Songs: Afternoon Lullaby (pianowtune02), Spooled (ambientwip02), Never Grow Up (License CC BY-SA 4.0)=Diminixed for 3 fantastiske lydspor og for remastring og justering av volum. Sanger: Afternoon Lullaby (pianowtune02), Spooled (ambientwip02), Never Grow Up (Lisens CC BY-SA 4.0)
+
 The Minetest team for making and supporting an engine, and distribution infrastructure that makes this all possible=VoxeLibre-teamet for å lage og støtte en motor og distribusjonsinfrastruktur som gjør alt dette mulig
+
 The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game=Arbeidshestene som brukte altfor mye tid på å utvide Minecraft-wikien. Det er en uvurderlig ressurs for å lage dette spillet
+
 Notch and Jeb for being the major forces behind Minecraft=Notch og Jeb for å være de viktigste kreftene bak Minecraft

@@ -1,10 +1,17 @@
 # textdomain: mcl_sponges
 Sponge=Esponxa
 Removes water on contact=Elimina a auga ao contacto
+
 Sponges are blocks which remove water around them when they are placed or come in contact with water, turning it into a wet sponge.=As esponxas son bloques que eliminan a auga ao seu redor cando se colocan ou entran en contacto coa auga, converténdoa nunha esponxa mollada.
+
 Waterlogged Sponge=Esponxa encharcada
 Can be dried in furnace=Pódese secar no forno
+
 A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, the water will pour into the bucket.=Unha esponxa encharcada pódese secar no forno para convertela en esponxa (seca). Cando hai un balde baleiro na ranura de combustible dun forno, a auga verte no cubo.
+
 Riverwaterlogged Sponge=Esponxa encharcada de río
+
 This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.=Esta é unha esponxa mollada con auga do río. Pódese secar no forno para convertelo en esponxa (seca). Cando hai un balde baleiro na ranura de combustible do forno, a auga do río verterá no balde.
+
 A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water.=Unha esponxa queda encharcada (en lugar de encharcada) se absorbe máis auga do río que a auga (normal).
+

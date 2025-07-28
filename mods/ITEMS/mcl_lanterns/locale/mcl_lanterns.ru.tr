@@ -3,8 +3,13 @@ Chain=Цепь
 Chains are metallic decoration blocks.=Цепи это металлические декоративные блоки.
 Gold Chain=
 Gold Chains are metallic decoration blocks.=
+##[ register.lua ]##
 Lantern=Фонарь
+
 Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Фонари это источники света которые можно поставить сверху или снизу большинства блоков.
+
 Soul Lantern=Фонарь душ
 Gold Lantern=
+
 Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
+

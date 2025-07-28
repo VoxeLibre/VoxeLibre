@@ -19,6 +19,7 @@ Donkey=Burro
 Mule=Mula
 ##[ llama.lua ]##
 Llama=Chama
+ - Strength @1=
 ##[ ocelot.lua ]##
 Ocelot=Ocelote
 Cat=gato

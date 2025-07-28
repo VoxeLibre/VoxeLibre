@@ -3,8 +3,11 @@ Dispenser=Dispensador
 Inventory=Inventario
 9 inventory slots=9 rañuras de inventario
 Launches item when powered by redstone power=Lanza o elemento cando está alimentado por enerxía Pedra vermella
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=Un dispensador é un bloque que actúa como un compoñente Pedra vermella que, cando se alimenta con Pedra vermella Power, dispensa un artigo. Ten un recipiente con 9 ranuras de inventario.
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=Coloque o dispensador nunha das 6 direccións posibles. O "burato" é onde os elementos sairán voando do dispensador. Use o dispensador para acceder ao seu inventario. Insira os elementos que desexa dispensar. Subministre o dispensador con enerxía Pedra vermella unha vez para dispensar un elemento aleatorio:
+
 The dispenser will do different things, depending on the dispensed item:=O dispensador fará diferentes cousas, dependendo do artigo dispensado:
 • Arrows: Are launched=• Frechas: lánzanse
 • Eggs and snowballs: Are thrown=• Ovos e bólas de neve: lánzanse

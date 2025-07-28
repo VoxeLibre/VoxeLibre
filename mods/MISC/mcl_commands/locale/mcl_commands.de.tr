@@ -35,4 +35,6 @@ List clear commands=Liste der Bereinigungsbefehle
 To clear inventory use /clearinv or /clearinventory=Um das Inventar zu leeren, benutze /clearinv oder /clearinventory
 To clear mobs use /clearmobs=Um Mobs zu löschen, benutze /clearmobs
 To clear the weather use /weather clear=Um das Wetter zu löschen, benutze /weather clear
+
 Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=Das Löschen des Chats ist nicht möglich. Du kannst den Chat mit der „Chat-Log umschalten“-Taste (Standard F2) auf dem PC oder dem Chat-Symbol in der mobilen Version ausblenden.
+

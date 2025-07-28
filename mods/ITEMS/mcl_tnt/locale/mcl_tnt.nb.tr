@@ -1,10 +1,15 @@
 # textdomain: mcl_tnt
+
 An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=En eksplosiv enhet. Når den eksploderer, vil den skade levende vesener og ødelegge blokker rundt den. TNT har en eksplosjonsradius på @1. Med en liten sjanse kan blokker slippes som gjenstander (som om de blir utvunnet) i stedet for å bli ødelagt. TNT kan antennes av verktøy, eksplosjoner, brann, lava og rødsteinssignal.
+
 An explosive device. When it explodes, it will hurt living beings. TNT has an explosion radius of @1. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=En eksplosiv enhet. Når det eksploderer, vil det skade levende vesener. TNT har en eksplosjonsradius på @1. TNT kan antennes av verktøy, eksplosjoner, brann, lava og rødsteinssignal.
+
 TNT=TNT
 Ignited by tools, explosions, fire, lava, redstone power=Tennes av verktøy, eksplosjoner, brann, lava, rødsteinskraft
 Explosion radius: @1=Eksplosjonsradius: @1
+
 Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds.=Plasser TNT og tenn den med en av metodene ovenfor. Kom deg raskt på trygg avstand. Aktiv TNT påvirkes av tyngdekraften og eksploderer etter 4 sekunder.
+
 
 
 ##### not used anymore #####

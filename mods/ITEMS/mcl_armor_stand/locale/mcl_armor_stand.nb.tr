@@ -1,5 +1,8 @@
 # textdomain: mcl_armor_stand
 Armor Stand=Rustningsstativ
 Displays pieces of armor=Sett rustningsdeler på visning
+
 An armor stand is a decorative object which can display different pieces of armor. Anything which players can wear as armor can also be put on an armor stand.=Et rustningsstativ er en dekorativ gjenstand som kan vise forskjellige rustningsdeler. Alt som spillere kan bruke som rustning kan også settes på et rustningsstativ.
+
 Just place an armor item on the armor stand. To take the top piece of armor from the armor stand, select your hand and use the place key on the armor stand.=Bare plasser en rustningsdel på rustningsstativet. For å ta den øverste rustningsdelen fra rustningsstativet, velg hånden din og bruk plasseringstasten på rustningsstativet.
+

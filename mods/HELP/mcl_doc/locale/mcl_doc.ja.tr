@@ -7,10 +7,15 @@ This block acts as a soil for all saplings.=このブロックは、あらゆる
 This block acts as a soil for some saplings.=このブロックは、いくつかの苗木の土壌として作用します。
 Sugar canes will grow on this block.=このブロックには、サトウキビが生育します。
 Nether wart will grow on this block.=このブロックには、ネザーウォートが生育します。
+
 This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.=このブロックは、@1の距離内にどの種の木材ブロックもないとき、たちまち腐敗します。 腐敗すると消滅し、通常のドロップを１つ落とすことがあります。ブロックがプレイヤーによって置かれているときは、朽ちることはありません。
+
 This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.=このブロックは、@1の距離内にどの種の木材ブロックもないとき、すぐさま腐敗して消滅します。
+
 This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=この植物は、草原や土の上にしか生育できません。生え抜くためには、上空に遮るものがないか、明るさ8以上で照らされる環境が必要です。
+
 This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=この植物は、草原、ポドゾル、土、粗い土の上に生育できます。生え抜くためには、上空に遮るものがないか、明るさ8以上で照らされる環境が必要です。
+
 This block is flammable.=このブロックは可燃性です。
 This block destroys any item it touches.=このブロックは、それに触れたどんなアイテムも壊します。
 To eat it, wield it, then right-click.=食べるには、手に持ってから右クリックします。
@@ -22,7 +27,8 @@ To consume it, wield it, then right-click.=消費するには、手に持って�
 You cannot consume this when your hunger bar is full.=満腹ゲージが満タンなら、これは消費できません。
 You have to wait for around 2 seconds before you can eat or drink again.=また飲み食いできるようになるまで、2秒くらい待たねばなりません。
 Hunger points restored: @1=満腹度回復：@1
-Saturation points restored: @1%.1f=隠し満腹度回復：@1.1f
+##TODO: fuzzy matched - verify and remove the comment
+Saturation points restored: @1=隠し満腹度回復：@1
 It can be worn on the head.=頭に装着することもできます。
 It can be worn on the torso.=胴体に装着することもできます。
 It can be worn on the legs.=脚部に装着することもできます。
@@ -34,7 +40,9 @@ This item can be repaired at an anvil with any wooden planks.=このアイテム
 This item can be repaired at an anvil with any item in the “@1” group.=このアイテムは、金床と"@1"グループのアイテムで修理できます。
 This item cannot be renamed at an anvil.=このアイテムは、金床で名前を変更できません。
 This block crushes any block it falls into.=このブロックが落ちると、どんなブロックでも潰します。
+
 When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B @= number of blocks fallen. The damage can never be more than 40 HP.=このブロックが1ブロックより深く落ちたとき、当たったプレイヤーにダメージを与えます。受けるダメージは B×2 -2HP と B @=落ちたブロック数。ダメージは40HP以上になることはありません。
+
 Diamond Pickaxe=ダイヤモンドのツルハシ
 Iron Pickaxe=鉄のツルハシ
 Stone Pickaxe=石のツルハシ

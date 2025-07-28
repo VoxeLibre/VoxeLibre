@@ -1,30 +1,49 @@
 # textdomain: mcl_buckets
 Empty Bucket=Cubo vacío
 A bucket can be used to collect and release liquids.=Podese empregar un caldeiro para recoller e liberar líquidos.
+
 Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else.=Golpea unha fonte de líquido para recolleitala. Despois pode empregar o caldeiro che para colocar o líquido noutro lugar.
+
 Collects liquids=Recolle líquidos
 ##[ register.lua ]##
 Lava Bucket=Caldeiro con lava
+
 A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.=Podese empregar un caldeiro para recoller e liberar líquidos. Este está cheo de lava quente, contida de forma segura no interior. Empregar con precaución.
+
 Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!=Alonxate a unha distancia segura e coloca o caldeiro para baleiralo e crea unha fonte de lava nese lugar. ¡Non te queimes!
+
 Places a lava source=Coloca unha fonte de lava
 Water Bucket=Caldeiro con auga
+
 A bucket can be used to collect and release liquids. This one is filled with water.=Podese empregar un caldeiro para recoller e liberar líquidos. Este está cheo de auga.
+
 Place it to empty the bucket and create a water source.=Colócao para baleirar o caldeiro e crear unha fonte de auga.
 Places a water source=Coloca unha fonte de auga
 River Water Bucket=Caldeiro de auga de río
+
 A bucket can be used to collect and release liquids. This one is filled with river water.=Podese empregar un caldeiro para recoller e liberar líquidos. Este está cheo de auga de río.
+
 Place it to empty the bucket and create a river water source.=Colócao para baleirar o caldeiro e crear una fonte de auga de río.
 Places a river water source=Coloca unha fonte de auga fluvial
 ##[ fishbuckets.lua ]##
-Bucket of @1=Caldeiro de @1
-This bucket is filled with water and @1.=Este Caldeiro está cheo de auga e @1.
-Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 with a bucket of water.=Colócao para baleirar o Caldeiro e coloca un @1. Obter facendo clic co botón dereito nun @2 cun Caldeiro de auga.
-Places a water source and a @1.=Coloca unha fonte de auga e un @1.
+Bucket of Cod=
+Bucket of Salmon=
+Bucket of Tropical Fish=
+Bucket of Axolotl=
+Bucket of Pufferfish=
+This bucket is filled with water and contains an aquatic mob.=
+
+##TODO: fuzzy matched - verify and remove the comment
+Place it to empty the bucket and place a mob. Obtain by right clicking on a small aquatic mob with a bucket of water.=Colócao para baleirar o Caldeiro e coloca un @1. Obter facendo clic co botón dereito nun @2 cun Caldeiro de auga.
+
+##TODO: fuzzy matched - verify and remove the comment
+Places a water source and a mob.=Coloca unha fonte de auga e un @1.
 
 
 ##### not used anymore #####
 
+Bucket of @1=Caldeiro de @1
+This bucket is filled with water and @1.=Este Caldeiro está cheo de auga e @1.
 Axolotl=Axolotl
 Cod=Cod
 Salmon=salmón

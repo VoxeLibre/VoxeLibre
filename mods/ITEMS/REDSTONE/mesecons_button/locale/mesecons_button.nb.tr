@@ -1,14 +1,21 @@
 # textdomain: mesecons_button
 Use the button to push it.=Bruk en knapp for å trykke på den.
+
 A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows.=En treknapp er en rødsteinskomponent laget av tre som kan trykkes på for å gi rødsteinskraft. Når den trykkes inn, driver den tilstøtende rødsteinskomponenter i 1,5 sekunder. Treknapper kan også trykkes på med piler.
+
 A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=En knapp er en rødsteinskomponen som kan trykkes på for å gi rødsteinskraft. Når den trykkes inn, driver den tilstøtende rødsteinskomponenter.
+
 Provides redstone power when pushed=Gir rødsteinskraft når den trykkes på
 Push duration: @1s=Trykklengde: @1s
 Pushable by arrow=Piler kan aktivere
 Stone Button=Steinknapp
+
 A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=En steinknapp er en rødsteinskomponent laget av stein som kan trykkes på for å gi rødsteinskraft. Når den trykkes inn, driver den tilstøtende rødsteinskomponenter i 1 sekund.
+
 Polished Blackstone Button=Finslipt svartsteinknapp
+
 A polished blackstone button is a redstone component made out of polished blackstone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=En finslipt svartsteinknapp er en rødsteinskomponent laget av finslipt svartstein som kan trykkes på for å gi rødsteinskraft. Når den trykkes inn, driver den tilstøtende rødsteinskomponenter i 1 sekund.
+
 Oak Button=Eikeknapp
 Acacia Button=Akasieknapp
 Birch Button=Bjørkeknapp

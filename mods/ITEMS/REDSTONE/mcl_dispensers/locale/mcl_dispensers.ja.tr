@@ -3,8 +3,11 @@ Dispenser=ディスペンサー
 Inventory=インベントリ
 9 inventory slots=９つのインベントリスロット
 Launches item when powered by redstone power=レッドストーン動力が来ているとアイテムを発射
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=ディスペンサーはレッドストーン部品として機能するブロックで、レッドストーン動力によってアイテムを放出します。９つのインベントリスロットを備えたコンテナを有しています。
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=ディスペンサーを、限りある６方向のいずれかに設置します。「穴」は、アイテムがディスペンサーから飛び出す場所です。ディスペンサーを使用して、インベントリにアクセスします。放出したいアイテムを入れてください。レッドストーンエネルギーを供給すると、ランダムなアイテムが放出されます。
+
 The dispenser will do different things, depending on the dispensed item:=ディスペンサーは、放出されるアイテムによって振る舞いが異なる：
 • Arrows: Are launched=矢：発射
 • Eggs and snowballs: Are thrown=卵、雪玉：投擲

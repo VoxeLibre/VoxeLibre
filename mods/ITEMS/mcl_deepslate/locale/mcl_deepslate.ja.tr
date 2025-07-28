@@ -1,30 +1,54 @@
 # textdomain: mcl_deepslate
 Deepslate=深層岩
+
 Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=深層岩は、オーバーワールドの地中深くで見られる石種で、機能的には通常の石と同様ながら、石よりも硬いのが特徴です。
+
 Infested Deepslate=虫喰い深層岩
+
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=虫喰いブロックは、壊すとシルバーフィッシュが飛び出してくるブロックです。見た目は通常のブロックと同じです。
+
 Hides a silverfish=シルバーフィッシュが潜む
 Tuff=凝灰岩
+
 Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=
+
 Deepslate Coal Ore=深層石炭鉱石
+
 Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.=深層石炭鉱石は、深層岩や凝灰岩にひとかたまりで生成される、石炭鉱石の変種です。
+
 Deepslate Iron Ore=深層鉄鉱石
+
 Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=深層金鉱石は、深層岩や凝灰岩にひとかたまりで生成される、金鉱石の変種です。
+
 Deepslate Gold Ore=深層金鉱石
+
 Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.=深層エメラルド鉱石は、深層岩や凝灰岩にひとかたまりで生成される、エメラルド鉱石の変種です。
+
 Deepslate Emerald Ore=深層エメラルド鉱石
+
 Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.=深層ダイヤモンド鉱石は、深層岩や凝灰岩にひとかたまりで生成される、ダイヤモンド鉱石の変種です。
+
 Deepslate Diamond Ore=深層ダイヤモンド鉱石
+
 Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.=深層銅鉱石は、深層岩や凝灰岩にひとかたまりで生成される、銅鉱石の変種です。
+
 Deepslate Lapis Lazuli Ore=深層ラピスラズリ鉱石
+
 Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=深層ラピスラズリ鉱石は、深層岩や凝灰岩にひとかたまりで生成される、ラピスラズリ鉱石の変種です。
+
 Deepslate Copper Ore=深層銅鉱石
+
 Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs.=深層石炭鉱石は、深層岩や凝灰岩にひとかたまりで生成される、石炭鉱石の変種です。
+
 Deepslate Redstone Ore=深層レッドストーン鉱石
+
 Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=深層レッドストーン鉱石は、深層岩や凝灰岩にひとかたまりで生成される、レッドストーン鉱石の変種です。
+
 Lit Deepslate Redstone Ore=発光した深層レッドストーン鉱石
 Cobbled Deepslate=深層岩の丸石
+
 Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone.=深層岩の丸石は、丸石やブラックストーンと同様の機能を持つ石の変種です。
+
 Cobbled Deepslate Stairs=深層岩の丸石の階段
 Cobbled Deepslate Slab=深層岩の丸石のスラブ
 Double Cobbled Deepslate Slab=深層岩の丸石の２重スラブ
@@ -57,4 +81,6 @@ Chiseled deepslate is the chiseled version of deepslate.=模様入り深層岩�
 
 ##### not used anymore #####
 
+
 Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y=16.=凝灰岩とは、火山灰から形成される装飾用の岩石で、Y=16以下の深部にかたまって分布しています。
+

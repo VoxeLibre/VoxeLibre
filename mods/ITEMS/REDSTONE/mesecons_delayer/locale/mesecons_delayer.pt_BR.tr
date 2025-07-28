@@ -2,9 +2,13 @@
 Transmits redstone power only in one direction=Transmite carga de redstone em apenas uma direção
 Delays signal=Atrasa o sinal
 Output locks when getting active redstone repeater signal from the side=A saída é travada quando estiver recebendo um sinal de um repetidor de redstone ativo pelas laterais
+
 Redstone repeaters are versatile redstone components with multiple purposes: 1. They only allow signals to travel in one direction. 2. They delay the signal. 3. Optionally, they can lock their output in one state.=Repetidores de redstone são componentes de redstone versáteis com multíplos propósitos: 1. Eles apenas permitem que sinais viajem em uma direção. 2. Eles atrasam o sinal. 3. Opcionalmente, eles podem travar suas saídas em um estado.
+
 To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, use the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.=Para energizar um repetidor de redstone, envie um sinal na direção da "seta" (a entrada). O sinal sairá no lado oposto (a saída) com um atraso. Para mudar o atraso, use o repetidor de redstone. O atraso é entre 0.1 e 0.4 segundos de duração e podem ser mudados em passos de 0.1 segundo. É indicado pela posição da tocha tocha de redstone móvel. 
+
 To lock a repeater, send a signal from an adjacent repeater into one of its sides. While locked, the moving redstone torch disappears, the output doesn't change and the input signal is ignored.=Para travar um repetidor, envie um sinal de um repetidor adjacente para uma de suas laterais. Enquanto travado, a tocha de redstone móvel desaparece, a saída não muda e o sinal de entrada é ignorado.
+
 Redstone Repeater=Repetidor de Redstone
 Redstone Repeater (Delay @1)=Repetidor de Redstone (Atraso @1)
 Redstone Repeater (Delay @1, Powered)=Repetidor de Redstone (Atraso @1, Energizado)

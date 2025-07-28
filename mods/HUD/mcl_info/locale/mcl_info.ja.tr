@@ -1,8 +1,14 @@
 # textdomain: mcl_info
-Set debug bit mask: 0 @= disable, 1 @= player coords, 2 @= coordinates, 3 @= biome name, 4 @= all=
-<bitmask>=
+
+Set debug level: 0 @= disable, 1 @= player coords, 2 @= coordinates, 3 @= biome name, 4 @= all=
+
+<level>=
+Debug level is @1=
 Error! Possible values are integer numbers from @1 to @2=エラー！ 指定できる値は@1〜@2の整数値です。
-Set location bit mask: 0 @= disable, 1 @= coordinates=
+Debug level set to @1=
+Show location: 0 @= disable, 1 @= coordinates=
+Show location is set to: @1=
+Show location set to @1=
 
 
 ##### not used anymore #####

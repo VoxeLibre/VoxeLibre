@@ -1,7 +1,9 @@
 # textdomain: mcl_copper
 ##[ nodes.lua ]##
 Copper Ore=Minerai de cuivre
+
 Some copper contained in stone, it is pretty common and can be found below sea level.=Un peu de cuivre se trouve dans la pierre, il est plutôt répandu et peut être trouvé sous le niveau de la mer.
+
 Block of Raw Copper=Bloc de cuivre brut
 A block used for compact raw copper storage.=Un bloc utilisé pour le stockage compact de cuivre brut.
 Block of Copper=Bloc de cuivre

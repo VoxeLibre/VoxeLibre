@@ -19,6 +19,7 @@ The stripped hyphae bark of a warped fungus=Die abgelöste Hyphenrinde eines Wir
 Warped Hyphae Wood=Wirrhyphenholz
 Warped Stairs=Wirrhyphentreppe
 Warped Slab=Wirrhyphenplatte
+Double Warped Slab=Doppelte Wirrhyphenplatte
 Crimson Fungus=Karmesinpilz
 Crimson fungus is a mushroom found in the nether's crimson forest.=Karmesinpilze wachsen im Karmesinwald des Nethers.
 Crimson Roots=Karmesinwurzeln
@@ -33,11 +34,17 @@ Crimson Hyphae Wood=Karmesinhyphenholz
 Crimson Nylium=Karmesin-Nezel
 Crimson Stairs=Karmesintreppe
 Crimson Slab=Karmesinhyphenplatte
+Double Crimson Slab=Doppelte Karmesinhyphenplatte
 Crimson Door=Karmesinhyphentür
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Holztüren sind zwei Block hohe Barrieren, die sowohl von Hand geöffnet und geschlossen werden können, als auch per Redstone-Signal.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=m eine Holztür zu öffnen oder zu schließen, rechtsklicke auf sie oder lege ein Redstone-Signal an die untere Hälfte an.
+
 Crimson Trapdoor=Karmesinhyphenfalltür
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Falltüren aus Holz sind horizontale Barrieren, die sowohl von Hand geöffnet und geschlossen werden können, als auch per Redstone-Signal. Sie nehmen die obere oder untere Hälfte eines Blocks ein, je nachdem wo sie platziert wurden. Geöffnete Falltüren können wie Leitern beklettert werden.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Um eine Falltür zu öffnen oder zu schließen, rechtsklicke auf sie oder lege ein Redstone-Signal an.
 Crimson Fence=Karmesinhyphenzaun
 Crimson Fence Gate=Karmesinhyphenzauntor
@@ -45,9 +52,3 @@ Warped Door=Wirrhyphentür
 Warped Trapdoor=Wirrhyphenfalltür
 Warped Fence=Wirrhyphenzaun
 Warped Fence Gate=Wirrhyphenzauntor
-
-
-##### not used anymore #####
-
-Double Warped Slab=Doppelte Wirrhyphenplatte
-Double Crimson Slab=Doppelte Karmesinhyphenplatte

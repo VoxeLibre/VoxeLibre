@@ -3,10 +3,16 @@ Smoker=Räucherofen
 Inventory=Inventar
 Recipe book=Rezeptbuch
 Cooks food faster than furnace=Kocht Essen schneller als ein normaler Ofen.
+
 Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace.=Kocht bestimmte Gegenstände, Hauptsächlich rohes Essen, aber doppelt zu schnell wie ein normaler Ofen.
+
 Use the smoker to open the furnace menu.=Verwenden Sie den Räucherofen, um das Ofenmenü zu öffnen.
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Gib einen Brennstoff in den unteren Platz und ein Ausgangsmaterial in den oberen Platz.
+
 The smoker will slowly use its fuel to cook the item.=Der Räucherofen wird langsam den Brennstoff verbrauchen um den Gegenstand zu kochen.
 The result will be placed into the output slot at the right side.=Das Ergebnis wird in den Ausgabeslot auf der rechten Seite gelegt.
+
 Use the recipe book to see what foods you can cook, what you can use as fuel and how long it will burn.=Verwende das Rezeptbuch, um zu sehen, welche Lebensmittel du kochen kannst, welche du als Brennstoff verwenden kannst und wie lange sie brennen werden.
+
 Burning Smoker=Aktiver Räucherofen

@@ -1,6 +1,9 @@
 # textdomain: mcl_itemframes
 Item frames are decorative blocks in which items can be placed.=Los marcos son bloques decorativos en los que se pueden colocar objetos.
+
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Simplemente coloque cualquier objeto en el marco del objeto. Use el marco del objeto nuevamente para recuperar el elemento.
+
+##[ register.lua ]##
 Item Frame=Marco de objetos
 Can hold an item=Puede sostener un objeto
 Glow Item Frame=Marco Luminoso
@@ -18,4 +21,6 @@ Craft a glow item frame.=Crea un marco luminoso.
 Can hold an item.=Puede sostener un objeto.
 Can hold an item and glows.=Puede sostener un objeto y brilla.
 Glowing Item Frame=Marco brillante
+
 Glowing item frames are decorative blocks in which items can be placed and made to glow.=Los marcos de objeto brillantes son bloques decorativos en los que se pueden colocar objetos y hacer que brillen.
+

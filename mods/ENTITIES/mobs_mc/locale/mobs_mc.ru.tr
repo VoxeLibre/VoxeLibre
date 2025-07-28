@@ -19,6 +19,7 @@ Donkey=Ослик
 Mule=Мул
 ##[ llama.lua ]##
 Llama=Лама
+ - Strength @1=
 ##[ ocelot.lua ]##
 Ocelot=Оцелот
 Cat=Кошка

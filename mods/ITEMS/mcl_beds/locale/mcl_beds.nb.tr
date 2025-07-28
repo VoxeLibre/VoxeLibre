@@ -25,11 +25,17 @@ Sorry, but you have to wait @1 seconds until you may use this button again!=Bekl
 Hey! Would you guys mind sleeping?=Hei! Har dere noe imot å sove?
 ##[ api.lua ]##
 Beds allow you to sleep at night and make the time pass faster.=Senger lar deg sove om natten og får tiden til å gå raskere.
+
 To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=For å bruke en seng, stå nær den og høyreklikk på sengen for å sove i den. Å sove fungerer bare når solen går ned, om natten eller under tordenvær. Sengen må også være beskyttet for enhver fare.
+
 You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Du har hørt om andre verdener der en seng ville sette startpunktet for ditt neste liv. Men denne verden er ikke en av dem.
+
 By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=Ved å bruke seng setter du startpunktet for ditt neste liv. Hvis du dør, vil du starte ditt neste liv ved denne sengen, med mindre den blir blokkert eller ødelagt.
+
 In this world, going to bed won't skip the night, but it will skip thunderstorms.=I denne verden vil det å legge seg ikke hoppe over natten, men den vil la deg hoppe over tordenvær.
+
 Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Å sove lar deg hoppe over natten. Natten hoppes over når alle spillere i denne verden sovner. Natten hoppes over etter å ha sovet i noen sekunder. Tordenvær kan hoppes over på samme måte.
+
 Allows you to sleep=Tillater deg å sove
 ##[ beds.lua ]##
 Red Bed=Rød seng
@@ -55,5 +61,7 @@ Respawn Anchor=Livsanker
 
 ##### not used anymore #####
 
+
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Ny startposisjon satt! Men du kan bare sove om natten eller under tordenvær
+
 send!=send!

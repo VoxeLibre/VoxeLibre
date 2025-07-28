@@ -1,18 +1,34 @@
 # textdomain: mcl_compressed_blocks
 ##[ nodes.lua ]##
 Compressed Cobblestone=Verdichtetes Kopfsteinpflaster
+
 Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=Verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
+
 Double Compressed Cobblestone=Doppelt verdichtetes Kopfsteinpflaster
+
 Double Compressed Cobblestone is a decorative block made from 9 Compressed Cobblestone. It is useful for saving space in your inventories.=Doppelt verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 verdichteten Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
+
 Triple Compressed Cobblestone=Dreifach verdichtetes Kopfsteinpflaster
+
 Triple Compressed Cobblestone is a decorative block made from 9 Double Compressed Cobblestone. It is useful for saving space in your inventories.=Dreifach verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 doppelt verdichteten Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
+
 Quadruple Compressed Cobblestone=Vierfach verdichtetes Kopfsteinpflaster
+
 Quadruple Compressed Cobblestone is a decorative block made from 9 Triple Compressed Cobblestone. It is useful for saving space in your inventories.=Vierfach verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 dreifach verdichteten Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
+
 Quintuple Compressed Cobblestone=Fünffach verdichtetes Kopfsteinpflaster
+
 Quintuple Compressed Cobblestone is a decorative block made from 9 Quadruple Compressed Cobblestone. It is useful for saving space in your inventories.=Fünffach verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 vierfach verdichteten Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
+
 Sextuple Compressed Cobblestone=Sechsfach verdichtetes Kopfsteinpflaster
+
 Sextuple Compressed Cobblestone is a decorative block made from 9 Quintuple Compressed Cobblestone. It is useful for saving space in your inventories.=Sechsfacgh verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 fünffach verdichteten Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
+
 Septuple Compressed Cobblestone=Siebenfach verdichtetes Kopfsteinpflaster
+
 Septuple Compressed Cobblestone is a decorative block made from 9 Sextuple Compressed Cobblestone. It is useful for saving space in your inventories.=Siebenfach verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 sechsfach verdichteten Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
+
 Octuple Compressed Cobblestone=Achtfach verdichtetes Kopfsteinpflaster
+
 Octuple Compressed Cobblestone is a decorative block made from 9 Septuple Compressed Cobblestone. It is useful for saving space in your inventories.=Achtfach verdichtetes Kopfsteinpflaster ist ein dekorativer Block, der aus 9 siebenfach verdichteten Kopfsteinpfastersteinen hergestellt wird. Es ist nützlich, um Platz in Ihrem Inventar zu sparen.
+

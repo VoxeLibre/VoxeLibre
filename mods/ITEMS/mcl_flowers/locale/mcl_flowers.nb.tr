@@ -1,28 +1,48 @@
 # textdomain: mcl_flowers
+
 This is a small flower. Small flowers are mainly used for dye production and can also be potted.=
+
 It can only be placed on a block on which it would also survive.=
 Tall Grass=Høyt gress
+
 Tall grass is a small plant which often occurs on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.=Høyt gress er en liten plante som ofte forekommer på overflaten av gressletter. Den kan høstes for hvetefrø. Ved å bruke beinmel kan høyt gress gjøres om til veldig høyt gress som er to blokker høyt.
+
 Fern=Bregne
+
 Ferns are small plants which occur naturally in jungles and taigas. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.=Bregner er små planter som forekommer naturlig i jungel og taiga. De kan høstes for hvetefrø. Ved å bruke beinmel kan en bregne gjøres om til en stor bregne som er to blokker høy.
+
 Clover=Kløver
+
 Clovers are small plants which occur naturally in plains and other temperate biomes. They can be picked up and planted again.=
+
 Four-leaf Clover=Firkløver
 (Top Part)=(øvre del)
 Peony=Pion
+
 A peony is a large plant which occupies two blocks. It is mainly used in dye production.=En pion er en stor plante som opptar to blokker. Det brukes hovedsakelig i fargestoffproduksjon.
+
 Rose Bush=Rosebusk
+
 A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production.=En rosebusk er en stor plante som opptar to blokker. Det er trygt å ta på den. Rosebusker brukes hovedsakelig i fargestoffproduksjon.
+
 Lilac=Syrin
+
 A lilac is a large plant which occupies two blocks. It is mainly used in dye production.=En syrin er en stor plante som opptar to blokker. Det brukes hovedsakelig i fargestoffproduksjon.
+
 Sunflower=Solsikke
+
 A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.=En solsikke er en stor plante som opptar to blokker. Det brukes hovedsakelig i fargestoffproduksjon.
+
 Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.=Veldig høyt gress en variant av høyt gress og opptar to blokker. Den kan høstes for hvetefrø.
+
 Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.=Stor bregne er en variant av bregne og okkuperer to blokker. Den kan høstes for hvetefrø.
+
 Double Tallgrass=Veldig høyt gress
 Large Fern=Stor bregne
 Lily Pad=Vannliljeblad
+
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Et vannliljeblad er en flat planteblokk som man kan gå på. De kan plasseres på vannkilder, is og frostet is.
+
 ##[ register.lua ]##
 Poppy=Valmue
 Dandelion=Løvetann

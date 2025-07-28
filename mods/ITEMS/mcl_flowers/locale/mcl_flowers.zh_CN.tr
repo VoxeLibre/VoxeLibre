@@ -1,28 +1,48 @@
 # textdomain: mcl_flowers
+
 This is a small flower. Small flowers are mainly used for dye production and can also be potted.=这是一种小花。小花主要用于制作染料，也可以种在花盆里。
+
 It can only be placed on a block on which it would also survive.=它只能放置在它能够生长存活的方块上。
 Tall Grass=高草丛
+
 Tall grass is a small plant which often occurs on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.=高草丛是一种常出现在草原表面的小型植物。可以从中收获小麦种子。使用骨粉，高草丛可变成两格高的巨型草丛。
+
 Fern=蕨类植物
+
 Ferns are small plants which occur naturally in jungles and taigas. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.=蕨类植物是自然生长在丛林和针叶林里的小型植物。可以从中收获小麦种子。使用骨粉，蕨类植物可变成两格高的大型蕨类植物。
+
 Clover=三叶草
+
 Clovers are small plants which occur naturally in plains and other temperate biomes. They can be picked up and planted again.=
+
 Four-leaf Clover=四叶草
 (Top Part)=（顶部部分）
 Peony=牡丹
+
 A peony is a large plant which occupies two blocks. It is mainly used in dye production.=牡丹是一种占据两格空间的大型植物。它主要用于制作染料。
+
 Rose Bush=玫瑰丛
+
 A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production.=玫瑰丛是一种占据两格空间的大型植物。触摸它是安全的。玫瑰丛主要用于制作染料。
+
 Lilac=丁香
+
 A lilac is a large plant which occupies two blocks. It is mainly used in dye production.=丁香是一种占据两格空间的大型植物。它主要用于制作染料。
+
 Sunflower=向日葵
+
 A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.=向日葵是一种占据两格空间的大型植物。它主要用于制作染料。
+
 Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.=巨型草丛是高草丛的变种，占据两格空间。可以从中收获小麦种子。
+
 Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.=大型蕨类植物是蕨类植物的变种，占据两格空间。可以从中收获小麦种子。
+
 Double Tallgrass=巨型草丛
 Large Fern=大型蕨类植物
 Lily Pad=睡莲
+
 A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=睡莲是一种扁平的植物方块，可以在上面行走。它们可以放置在水源、冰以及霜冰上。 
+
 ##[ register.lua ]##
 Poppy=罂粟花
 Dandelion=蒲公英

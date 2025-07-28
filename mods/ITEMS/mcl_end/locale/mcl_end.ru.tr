@@ -2,16 +2,25 @@
 ##[ chorus_plant.lua ]##
 Chorus Flower=Цветок коруса
 Grows on end stone=Растёт на камне Края
+
 A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.=Цветок коруса это живая часть растения коруса. Он может шаг за шагом вырасти в высокое растение коруса. Когда он растёт, то может иногда умирать от старости. Он также умирает, если не может расти.
+
 Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem.=Установите его и ждите, пока он вырастет. Его можно помещать только на камень Края, а также на верхнюю часть стебля растения коруса.
+
 Dead Chorus Flower=Мёртвый цветок коруса
+
 This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again.=Это часть растения коруса. Он не растёт. Цветы коруса умирают от старости или когда не могут расти. Мёртвый цветок коруса можно собрать, чтобы получить свежий цветок коруса, который может вырасти вновь.
+
 Chorus Plant Stem=Стебель растения коруса
+
 A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers.=Стебель растения коруса это часть растения коруса, которая связывает всё растение вместе. Ему нужен камень Края как почва. Стебли растут из цветков коруса.
+
 The stem attaches itself to end stone and other chorus blocks.=Стебель присоединяется к камню Края, а также к другим блокам коруса.
 Chorus Fruit=Фрукт коруса
 Randomly teleports you when eaten=Телепортирует случайным образом при употреблении в пищу
+
 A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.=Фрукт коруса это съедобный фрукт растения коруса, домом которого является Край. Употребление его в пищу телепортирует вас к вершине случайного твёрдого блок поблизости. Вы не закончите жизнь внутри жидкого, твёрдого или опасного блока, но телепортация может потерпеть неудачу, если поблизости слишком мало подходящих мест или такие места отсутствуют.
+
 Popped Chorus Fruit=Приготовленный плод коруса
 ##[ building.lua ]##
 End Stone=Камень Края
@@ -41,13 +50,21 @@ A dragon egg is a decorative item which can be placed.=Яйцо дракона �
 ##[ eye_of_ender.lua ]##
 Eye of Ender=Око Края
 Guides the way to the mysterious End dimension=Показывает путь к загадочному измерению Края
+
 This item is used to locate End portal shrines in the Overworld and to activate End portals.=Этот предмет используется для обнаружения храмов с порталами в Верхнем Мире и для активации порталов Края.
+
 NOTE: The End dimension is currently incomplete and might change in future versions.=Предупреждение: Измерение Края в настоящее время не завершено полностью и может измениться в будущих версиях.
+
 Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.=Используйте клавишу [Атаковать], чтобы кинуть око Края. Оно поднимется и полетит в горизонтальном направлении к ближайшему храму с порталом. Если вы очень близко к храму портала Края, то око Края полетит к нему напрямую. Оно остановится через несколько секунд. Оно может превратиться обратно в предмет, но есть 20-процентная вероятность того, что око разобьётся.
+
 To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=Чтобы активировать портал Края, нужно поместить по оку Края на каждый блок всей рамки портала.
+
 ##[ end_crystal.lua ]##
 End Crystal=Кристалл Края
 Ignited by a punch or a hit with an arrow=Взрывается от удара или при попадании стрелы
 Explosion radius: @1=Радиус взрыва: @1
+
 End Crystals are explosive devices. They can be placed on Obsidian or Bedrock. Ignite them by a punch or a hit with an arrow. End Crystals can also be used the spawn the Ender Dragon by placing one at each side of the End Exit Portal.=Кристаллы Края это взрывающиеся устройства. Их можно размещать на обсидиане или бедроке. Подрывайте их ударом или попаданием стрелы. Кристаллы Края также можно использовать для возрождения Дракона Края, для этого их нужно поместить по одной штуке с каждой стороны выходного портала Края.
+
 Place the End Crystal on Obsidian or Bedrock, then punch it or hit it with an arrow to cause an huge and probably deadly explosion. To Spawn the Ender Dragon, place one at each side of the End Exit Portal.=Разместите кристалл Края на обсидиане или бедроке и ударьте по нему или попадите в него стрелой, чтобы вызвать огромный и смертоносный взрыв. Чтобы привызвать Дракона Края, поместите по одной штуке с каждой стороны выходного портала Края.
+

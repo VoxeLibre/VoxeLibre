@@ -19,6 +19,7 @@ The stripped hyphae bark of a warped fungus=Den avbarkede hyfebarken til en forv
 Warped Hyphae Wood=Forvridde hyfeplanker
 Warped Stairs=Forvidd trapp
 Warped Slab=Forvridd helle
+Double Warped Slab=
 Crimson Fungus=Karmosinsopp
 Crimson fungus is a mushroom found in the nether's crimson forest.=Karmosinsopp er en sopp som finnes i nethers karmosinskoger.
 Crimson Roots=Karmosinrøtter
@@ -33,11 +34,17 @@ Crimson Hyphae Wood=Karmosinhyfeplanker
 Crimson Nylium=Karmosinnylium
 Crimson Stairs=Karmosintrapp
 Crimson Slab=Karmosinhelle
+Double Crimson Slab=Dobbel karmosinhelle
 Crimson Door=Karmosindør
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokker høye barrierer som kan åpnes eller lukkes for hånd og med et rødsteinssignal.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å åpne eller lukke en tredør, høyreklikk på den eller forsyn den nedre halvdelen med et rødsteinssignal.
+
 Crimson Trapdoor=Karmosinfallem
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Trefallemer er horisontale barrierer som kan åpnes og lukkes for hånd eller med et rødsteinssignal. De opptar den øvre eller nedre delen av en blokk, avhengig av hvordan de har blitt plassert. Når de er åpne, kan de klatres i som en stige.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å åpne eller lukke fallemen, høyreklikk på den eller send et rødsteinssignal til den.
 Crimson Fence=Karmosingjerde
 Crimson Fence Gate=Karmosinport
@@ -50,5 +57,4 @@ Warped Fence Gate=Forvridd port
 ##### not used anymore #####
 
 Warped Checknode - only to check!=Forvridd kontrollnode - kun for å sjekke!
-Double Crimson Slab=Dobbel karmosinhelle
 Crimson Checknode - only to check!=Karmosin kontrollnode - kun for å sjekke!

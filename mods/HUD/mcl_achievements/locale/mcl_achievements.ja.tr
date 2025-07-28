@@ -24,25 +24,39 @@ Pick up a diamond from the floor.=床からダイヤモンドを拾おう。
 Into Fire=炎の中へ
 Pick up a blaze rod from the floor.=床からブレイズロッドを拾おう。
 Cow Tipper=牛転がし
+
 Pick up leather from the floor.@nHint: Cows and some other animals have a chance to drop leather, when killed.=床から革を拾おう。@nヒント：牛や一部の動物は、仕留めると革を落とすことがあります。
+
 Getting Wood=木を取得
+
 Pick up a wooden item from the ground.@nHint: Punch a tree trunk until it pops out as an item.=地面から木のアイテムを拾おう。@nヒント：アイテムとして飛び出すまで木の幹をパンチします。
+
 Who's Cutting Onions?=タマネギ切ってるの誰？
 Pick up a crying obsidian from the floor.=床から泣く黒曜石を拾おう。
 Hidden in the Depths=未知なる深海
 Pick up an Ancient Debris from the floor.=床から古代の残骸を拾おう。
 The Next Generation=ザ・ネクスト・ジェネレーション
+
 Hold the Dragon Egg.@nHint: Pick up the egg from the ground and have it in your inventory.=ドラゴンの卵を所持しよう。@nヒント：地面から卵を拾って、インベントリにしまいます。
+
 Sky's the Limit=
 Find the elytra and prepare to fly above and beyond!=エリトラを見つけ、空の彼方へ飛び立つ準備をしよう！
 Acquire Hardware=金属を入手
+
 Take an iron ingot from a furnace's output slot.@nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace.=かまどの出力スロットから鉄インゴットを取り出そう。@nヒント：鉄インゴットを製錬するには、かまどに（石炭などの）燃料と鉄の原石を入れます。
+
 Delicious Fish=美味しい魚
+
 Take a cooked fish from a furnace.@nHint: Use a fishing rod to catch a fish and cook it in a furnace.=かまどから焼き魚を取り出そう。@nヒント：釣り竿を使って魚を獲り、かまどに入れて調理します。
+
 On A Rail=レールの上で
+
 Travel by minecart for at least 1000 meters from your starting point in a single ride.=一回のトロッコ乗車で、1000m以上を走り抜けよう。
+
 Sniper Duel=スナイパー対決
+
 Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 20 meters.=20m以上の距離から弓矢を当てよう。 対象：スケルトン、ウィザースケルトン、ストレイ等
+
 We Need to Go Deeper=より深く潜る必要がある
 Use obsidian and a fire starter to construct a Nether portal.=黒曜石と火打ち石を使って、ネザーポータルを構築しよう。
 The End?=
@@ -70,7 +84,9 @@ Catch a fish.@nHint: Catch a fish, salmon, clownfish, or pufferfish.=魚を獲�
 Country Lode, Take Me Home=この道ずっとゆけば 鉱脈につづいてる
 Use a compass on a Lodestone.=ロードストーンにコンパスを使おう。
 Serious Dedication=真摯な取り組み
+
 Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices.=ネザライトインゴットでクワをアップグレードしたら、人生設計の完全な見直しを図ろう。
+
 Local Brewery=地酒処
 Brew a Potion.@nHint: Take a potion or glass bottle out of the brewing stand.=ポーションを醸造しよう。@nヒント：醸造台からポーションかガラス瓶を取り出します。
 Enchanter=エンチャンター
@@ -82,7 +98,9 @@ Use a fully powered beacon.=フルパワーのビーコンを作ろう。
 The End... Again...=おしまい…再び…
 Respawn the Ender Dragon.=エンダードラゴンを復活させよう。
 Bee Our Guest=秘蜜の晩餐会
+
 Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside.=焚き火を使って、ハチの巣の中のハチを怒らせることなく、瓶にハチミツを採ろう。
+
 Total Beelocation=綿蜜に引越し
 Move a bee nest, with 3 bees inside, using a silk touch enchanted tool.=シルクタッチをエンチャントした道具を使って、中に3匹のハチがいるハチの巣を移動させよう。
 Wax On=錆止め
@@ -92,7 +110,9 @@ Scrape wax off a copper block.=銅ブロックから錆止めを削り落とそ�
 Crafting a New Look=
 Craft a trimmed armor at a smithing table.=
 Smithing with Style=
+
 Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder=
+
 Dispense With This=これを省く
 Place a dispenser.=ディスペンサーを置こう。
 Pork Chop=ポークチョップ
@@ -116,7 +136,9 @@ Defeat a ghast with his own weapon.=
 Hero of the Village=
 Successfully defend a village from a raid=
 Voluntary Exile=
+
 Kill a raid captain. Maybe consider staying away from the local villages for the time being...=
+
 
 
 ##### not used anymore #####

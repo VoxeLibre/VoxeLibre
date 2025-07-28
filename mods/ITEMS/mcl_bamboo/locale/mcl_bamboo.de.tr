@@ -8,10 +8,15 @@ Bamboo Plank=Bambusplanken
 Bamboo Mosaic Plank=Bambusmosaikplanken
 ##[ bamboo_items.lua ]##
 Bamboo Door=Bambustür
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Holztüren sind 2-Block-hohe Barrieren, die manuell oder durch ein Redstonesignal geöffnet oder geschlossen werden können.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Um eine Holztür zu öffnen oder zu schließen, klicken Sie sie mit der rechten Maustaste oder senden Sie der unteren Hälfte ein Rotlichtsignal.
+
 Bamboo Trapdoor=Bambusfalltür
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Hölzerne Falltüren sind horizontale Barrieren, die manuell oder durch ein Redstonesignal geöffnet und geschlossen werden können. Je nachdem, wie sie platziert wurden, belegen sie den oberen oder unteren Teil eines Blocks. Wenn sie geöffnet sind, können sie wie eine Leiter bestiegen werden.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Um die Falltür zu öffnen oder zu schließen, klicken Sie sie mit der rechten Maustaste oder senden Sie ihr ein Redstonesignal.
 Bamboo Stairs=Bambustreppe
 Bamboo Slab=Bambusplatte
@@ -23,13 +28,17 @@ Bamboo Plank Stairs=Bambusplankentreppe
 Bamboo Plank Slab=Bambusplatte
 Double Bamboo Plank Slab=Doppelte entrindete Bambusplatte
 Bamboo Pressure Plate=Bambusdruckplatte
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Eine Holzdruckplatte ist eine Redstonekomponente, die die umgebenden Blöcke mit Redstoneenergie versorgt, während sich ein beliebiger beweglicher Gegenstand (einschließlich gefallener Gegenstände, Spieler und Mobs) darauf befindet.
+
 Bamboo Sign=Bambusschild
 Bamboo Fence=Bambuszaun
 Bamboo Fence Gate=Bambuszauntor
 Bamboo Button=Bambusknopf
+
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Ein Bambusknopf ist eine Redstonekomponente aus Bambus, die gedrückt werden kann, um Redstone-Energie zu liefern. Wenn er gedrückt wird, versorgt er die angrenzenden Redstone-Komponenten für 1 Sekunde mit Energie.
+
 Bamboo Mosaic Stairs=Bambusmosaiktreppe
 Bamboo Mosaic Slab=Bambusmosaikplatte
 Double Bamboo Mosaic Slab=Doppelte Bambusmosaikplatte

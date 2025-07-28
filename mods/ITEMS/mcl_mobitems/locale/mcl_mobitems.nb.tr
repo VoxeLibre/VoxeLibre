@@ -1,40 +1,61 @@
 # textdomain: mcl_mobitems
 Rotten Flesh=Råttent kjøtt
 80% chance of food poisoning=80% sjanse for matforgiftning
+
 Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it to restore a few hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.=Æsj! Dette kjøttstykket har helt klart sett bedre dager. Hvis du er virkelig desperat, kan du spise den for å gjenopprette noen få sultpoeng, men det er 80 % sjanse for at det forårsaker matforgiftning, noe som øker sulten en stund.
+
 Raw Mutton=Rått fårekjøtt
+
 Raw mutton is the flesh from a sheep and can be eaten safely. Cooking it will greatly increase its nutritional value.=Rått fårekjøtt er kjøttet fra en sau og kan trygt spises. Å tilberede den vil øke dens ernæringsmessige verdi betraktelig.
+
 Cooked Mutton=Stekt fårekjøtt
 Cooked mutton is the cooked flesh from a sheep and is used as food.=Stekt fårekjøtt er det behandlede kjøttet fra en sau og brukes som mat.
 Raw Beef=Rå biff
+
 Raw beef is the flesh from cows and can be eaten safely. Cooking it will greatly increase its nutritional value.=Rå biff er kjøttet fra en ku og kan trygt spises. Å tilberede den vil øke dens ernæringsmessige verdi betraktelig.
+
 Steak=Stekt biff
 Steak is cooked beef from cows and can be eaten.=Stekt biff kommer fra kuer og kan spises.
 Raw Chicken=Rå kylling
 30% chance of food poisoning=30% sjanse for matforgiftning
+
 Raw chicken is a food item which is not safe to consume. You can eat it to restore a few hunger points, but there's a 30% chance to suffer from food poisoning, which increases your hunger rate for a while. Cooking raw chicken will make it safe to eat and increases its nutritional value.=Rå kylling er en matvare som ikke er trygg å konsumere. Du kan spise det for å gjenopprette noen få sultpoeng, men det er 30 % sjanse for å lide av matforgiftning, noe som øker sultraten en stund. Tilberedning av rå kylling vil gjøre det trygt å spise og øke dens ernæringsmessige verdi.
+
 Cooked Chicken=Stekt kylling
 A cooked chicken is a healthy food item which can be eaten.=Stekt kylling er en sunn matvare som kan spises.
 Raw Porkchop=Rå svinekotelett
+
 A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.=En rå svinekotelett er kjøttet fra en gris og kan trygt spises. Å tilberede den vil øke dens ernæringsmessige verdi betraktelig.
+
 Cooked Porkchop=Stekt svinekotelett
 Cooked porkchop is the cooked flesh of a pig and is used as food.=Stekt svinekotelett er stekt kjøtt fra gris og er en matvare.
 Raw Rabbit=Rå kanin
+
 Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it will increase its nutritional value.=Rå kanin er en matvare fra en død kanin. Den kan trygt spises. Å tilberede den vil øke næringsverdien.
+
 Cooked Rabbit=Stekt kanin
 This is a food item which can be eaten.=Dette er en matvare som kan spises.
 Milk=Melk
 Removes all status effects=Fjerner alle statuseffekter
+
 Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=Melk er veldig forfriskende og kan fås ved å bruke en bøtte på en ku. Å drikke det vil fjerne alle statuseffekter, men gjenoppretter ingen sultpoeng.
+
 Use the placement key to drink the milk.=Bruk plasseringsknappen for å drikke melken.
 Spider Eye=Edderkoppøye
 Poisonous=Giftig
+
 Spider eyes are used mainly in crafting. If you're really desperate, you can eat a spider eye, but it will poison you briefly.=Edderkoppøyne brukes hovedsakelig i håndverk. Hvis du er virkelig desperat, kan du spise et edderkoppøye, men det vil gi en kortvarig forgiftning
+
 Bone=Bein
+
 Bones can be used to tame wolves so they will protect you. They are also useful as a crafting ingredient.=Bein kan brukes til å temme ulver slik at de vil beskytte deg. De er også nyttige som en håndverksingrediens.
+
 Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it.=Hold beinet nærme ulver for å tiltrekke dem. Bruk "Plasser"-tasten på ulven for å gi den et bein og temme den. Du kan deretter gi kommandoer til den temmede ulven ved å bruke "Plasser"-tasten på den.
+
 Squid Ink Sac=Blekksekk
+
 This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye.=Denne gjenstanden slippes av falne blekkspruter. Blekksekker kan brukes som en ingrediens for å lage bok og fjærpenn eller svart fargestoff.
+
 String=Tråd
 Strings are used in crafting.=Tråd brukes i håndverk.
 Spectre Membrane=Fantomhinne
@@ -52,19 +73,23 @@ Magma cream is a crafting component.=Magmakrem er en håndverkskomponent.
 Ghast Tear=Ghasttåre
 Place this item in an item frame as decoration.=Plasser denne gjenstanden i en ramme som dekorasjon.
 Nether Star=Netherstjerne
+
 A nether star is dropped when the Wither dies. Place it in an item frame to show the world how hardcore you are! Or just as decoration.=En netherstjerne slippes når Forvitreren dør. Plasser den i en gjenstandsramme for å vise verden hvor sykt kul du er! Eller bare som pynt.
+
 Leather=Lær
 Leather is a versatile crafting component.=Lær er en allsidig håndverkskomponent.
 Feather=Fjær
 Feathers are used in crafting and are dropped from chickens.=Fjær brukes i håndverk og slippes av kyllinger
-Rabbit Hide=Kaninskinn
-Rabbit hide is used to create leather.=Kaninskinn brukes til å lage lær.
+Leather Piece=
+Leather piece is a smaller piece of leather.=
 Rabbit's Foot=Kaninlabb
 Must be your lucky day! Place this item in an item frame for decoration.=Må være din lykkedag! Plasser denne gjenstanden i en gjenstandsramme for dekorasjon.
 Saddle=Sal
 Can be placed on animals to ride them=Kan plasseres på dyr for å ri dem
 Saddles can be put on some animals in order to mount them.=Saler kan settes på noen dyr for å ri dem.
+
 Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again.=Bruk plasseringsknappen med salen i hånden for å prøve å sette på salen. Saler passer på hester, muldyr, esler og griser. Hester, muldyr og esler må temmes først, ellers vil de avvise salen. Man kan ri dyr med sal ved å bruke plasseringsknappen på dem igjen.
+
 Rabbit Stew=Kaninstuing
 Rabbit stew is a very nutricious food item.=Kaninstuing er en veldig næringsrik matvare.
 Shulker Shell=Shulkerskjell
@@ -75,23 +100,36 @@ Gunpowder=Krutt
 Carrot on a Stick=Gulrot på stang
 Lets you ride a saddled pig=Lar deg ri på en gris med sal
 A carrot on a stick can be used on saddled pigs to ride them.=En gulrot på stang kan brukes på griser med sal for å ri dem.
+
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=Plasser den på en gris med sal for å ri den. Du kan nå ri på grisen som en hest. Griser vil også gå mot deg når du holder denne i hånden.
+
 Warped fungus on a Stick=Forvridd sopp på stang
 Lets you ride a strider=Lar deg ri på en lavavandrer
 A warped fungus on a stick can be used on saddled striders to ride them.=En forvridd sopp på stang brukes på lavavandrere med sal for å ri dem.
+
 Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=Plasser den på en lavavandrer med sal for å ri den. Du kan nå ri på lavavandreren som en hest. Lavavandrere vil også gå mot deg når du holder denne i hånden.
+
 Nautilus Shell=Perlebåtskall
 Used to craft a conduit=Brukes til å bygge en fløder
+
 The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=Perlebåtskall brukes til å lage en fløder. De kan skaffes via fiske eller å drepe en draug som bærer et skjell.
+
 Heart of the Sea=Havets hjerte
+
 The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=Havets hjerte brukes for å lage en fløder. Du finner dem i nedgravde skattekister.
+
 Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=Plasser den på en hest for å ta på hesterustningen. Esler og muldyr kan ikke bruke hesterustning.
+
 Iron Horse Armor=Jernhesterustning
+
 Iron horse armor can be worn by horses to increase their protection from harm a bit.=Jernhesterustning kan brukes av hester for å øke deres beskyttelse mot skade.
+
 Golden Horse Armor=Gullhesterustning
 Golden horse armor can be worn by horses to increase their protection from harm.=Gullhesterustning kan brukes av hester for å øke deres beskyttelse mot skade.
 Diamond Horse Armor=Diamanthesterustning
+
 Diamond horse armor can be worn by horses to greatly increase their protection from harm.=Diamanthesterustning kan brukes av hester for å øke deres beskyttelse mot skade.
+
 Glow Ink Sac=Glødeblekksekk
 Use it to craft the Glow Item Frame.=Bruk den til å lage en gløderamme.
 Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=Bruk glødeblekksekken og en vanlig ramme til å lage gløderammen.
@@ -99,4 +137,8 @@ Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=Bru
 
 ##### not used anymore #####
 
+Rabbit Hide=Kaninskinn
+Rabbit hide is used to create leather.=Kaninskinn brukes til å lage lær.
+
 This item is dropped by dead squids.  Squid ink can be used to as an ingredient to craft book and quill or black dye.=Denne gjenstanden slippes av døde blekksprut. Blekksprutblekk kan brukes som en ingrediens for å lage bok og fjærpenn eller svart fargestoff.
+

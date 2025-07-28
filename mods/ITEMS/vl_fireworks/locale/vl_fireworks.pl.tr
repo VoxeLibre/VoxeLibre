@@ -1,7 +1,9 @@
 # textdomain: vl_fireworks
 ##[ star.lua ]##
 Firework Star=Gwiazdka pirotechniczna
+
 A firework star is the key component of a firework rocket which is responsible for the visible explosion.=Gwiazdka pirotechniczna jest kluczowym składnikiem rakiety fajerwerkowej, odpowiedzialnym za widoczną eksplozję.
+
 Generic Firework Star=Zwyczajna gwiazdka pirotechniczna
 Size:=Rozmiar:
 ##[ rockets.lua ]##

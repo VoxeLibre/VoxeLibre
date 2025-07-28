@@ -3,9 +3,16 @@ Repair & Disenchant=Reparación e desencanto
 Inventory=Inventario
 Grindstone=Moa
 Used to disenchant/fix tools=Usado para desencantar/arranxar ferramentas
+
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Moas desencanta ferramentas e armaduras agás as maldicións, e repara dous elementos do mesmo tipo, tamén é o posto de traballo do ferreiro de armas.
+
 To use the grindstone, rightclick it, Two input slots (on the left) and a single output slot.=Para usar a moa, fai clic co botón dereito nela, Dúas rañuras de entrada (á esquerda) e unha única de saída.
+
 To disenchant an item place enchanted item in one of the input slots and take the disenchanted item from the output.=Para desencantar un elemento, coloque o elemento encantado nun dos espazos de entrada e saque o elemento desencantado da saída.
+
 To repair a tool you need a tool of the same type and material, put both items in the input slot and the output slot will combine two items durabilities with 5% bonus.=Para reparar unha ferramenta precisa unha ferramenta do mesmo tipo e material, coloque os dous elementos na ranura de entrada e a de saída combinará a durabilidade de dous elementos cunha bonificación do 5%.
+
 If both items have enchantments the player will get xp from both items from the disenchant.=Se ambos elementos teñen encantamentos, o xogador obterá xp de ambos elementos do desencantamento.
+
 Curses cannot be removed and will be transfered to the new repaired item, if both items have a different curse the curses will be combined.=As maldicións non se poden eliminar e transferiranse ao novo elemento reparado, se ambos elementos teñen unha maldición diferente, combinaranse.
+

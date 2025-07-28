@@ -1,5 +1,6 @@
 # textdomain: mcl_boats
 Sneak to dismount=
+Boat=
 Oak Boat=
 Spruce Boat=
 Birch Boat=
@@ -18,6 +19,7 @@ Dark Oak Chest Boat=
 Mangrove Chest Boat=
 Cherry Chest Boat=
 Boats are used to travel on the surface of water.=
+
 Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=
-Boat=
+
 Water vehicle=

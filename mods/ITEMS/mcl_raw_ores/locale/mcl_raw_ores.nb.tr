@@ -1,9 +1,13 @@
 # textdomain: mcl_raw_ores
 Raw Iron=Jernerts
-Raw Gold=Gullerts
 Raw iron. Mine an iron ore to get it.=Jernerts. Grav opp jernmalm for å skaffe det.
-Raw gold. Mine a gold ore to get it.=Gullerts. Grav opp gullmalm for å skaffe det.
 Block of Raw Iron=Blokk av jernerts
-Block of Raw Gold=Blokk av gullerts
+
 A block of raw iron is mostly a decorative block but also useful as a compact storage of raw iron.=En blokk av jernerts er stort sett en dekorativ blokk, men også nyttig som en kompakt oppbevaring av jernerts.
+
+Raw Gold=Gullerts
+Raw gold. Mine a gold ore to get it.=Gullerts. Grav opp gullmalm for å skaffe det.
+Block of Raw Gold=Blokk av gullerts
+
 A block of raw gold is mostly a decorative block but also useful as a compact storage of raw gold.=En blokk av gullerts er stort sett en dekorativ blokk, men også nyttig som en kompakt oppbevaring av gullerts.
+

@@ -1,5 +1,8 @@
 # textdomain: mcl_mobspawners
 Mob Spawner=刷怪笼
 Makes mobs appear=使怪物出现
+
 A mob spawner regularily causes mobs to appear around it while a player is nearby. Some mob spawners are disabled while in light.=当玩家在附近时，刷怪笼会定期使怪物在其周围出现，有些刷怪笼在有光照的情况下会失效。
+
 If you have a spawn egg, you can use it to change the mob to spawn. Just place the item on the mob spawner. Player-set mob spawners always spawn mobs regardless of the light level.=如果你有刷怪蛋，可以将其放在刷怪笼上以改变生成的怪物种类。玩家设置过的刷怪笼无论光照等级如何，都会持续生成怪物。
+

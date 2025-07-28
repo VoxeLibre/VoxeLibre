@@ -1,12 +1,21 @@
 # textdomain: mcl_tools
+
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Pioĉoj estas miniloj por minigi malmolajn blokojn, kiel ŝtono. Pioĉo ankaŭ povas esti utiligita kiel armilo, sed ĝi estas tre malefika.
+
 An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=Hakilo estas via elektebla ilo por haki arbojn, ligno-bazitajn blokojn kaj aliajn blokojn. Hakiloj ankaŭ multe damaĝas, sed ili estas tre malrapidaj.
+
 Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=Glavoj estas bonegaj en manbatalo, ĉar ili estas rapidaj, kaŭzas altan damaĝon kaj povas elteni sennombrajn batalojn. Glavoj ankaŭ povas esti uzitaj por tranĉi kelkajn apartajn blokojn, kiel araneaĵoj.
+
 To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=
+
 Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=Ŝoveliloj estas iloj por fosi krudaj blokoj, kiel tero, sablo kaj gruzo. Ili ankaŭ povas esti uzataj por turni herboblokojn al herbpadoj. Ŝoveliloj povas esti uzataj kiel armiloj, sed ili estas tre malfortaj.
+
 To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=Por turni herbblokon en herbpado, tenu la ŝovelilon en via mano, tiam uzu (dekstre alklaku) la supron aŭ flankon de herbbloko. Ĉi tio funkcias nur kiam estas aero super la herbobloko.
+
 Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.=Tondiloj estas iloj por tondi ŝafojn kaj por minigi kelkajn specojn de blokoj. Tondiloj estas speciala minilo kaj povas esti uzata por akiri la originan objekton el herbo, folioj kaj similaj blokoj, kiuj postulas tranĉadon.
+
 To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.=Por tondi ŝafojn aŭ ĉizi senvizaĝajn kukurbojn, uzu la "loki" klavon sur ili. Vizaĝoj povas esti ĉizitaj nur ĉe la flanko de senvizaĝaj kukurboj. Minado funkcias kiel kutime, sed la bloketoj estas malsamaj por kelkaj blokoj.
+
 Wooden Pickaxe=Pioĉo ligna
 Stone Pickaxe=Pioĉo ŝtona
 Iron Pickaxe=Pioĉo fera
@@ -36,6 +45,9 @@ Shears=Tondilo
 
 ##### not used anymore #####
 
+
 You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Uzu vian nudan manon kiam ajn vi havas neniun objekton. Per via mano vi povas akiri plej multajn blokojn, sed ĉi tiu estas la plej malrapida metodo kaj nur la plej malfortaj blokoj donos siajn utilajn bloketojn. La mano ankaŭ kaŭzas negravan damaĝon per pugnobato. Uzi la manon ofte estas lasta rimedo, ĉar taŭgaj miniloj kaj armiloj estas multe pli bonaj.
+
 When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Kiam vi uzas objekton, kiu ne estas minilo aŭ armilo, ĝi kondutos kvazaŭ ĝi estus mano kiam vi komencas minadon aŭ batadon.
+
 In Creative Mode, the hand is able to break all blocks instantly.=En Krea Reĝimo, la mano povas rompi ĉiujn blokojn tuj.

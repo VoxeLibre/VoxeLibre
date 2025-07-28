@@ -19,6 +19,7 @@ The stripped hyphae bark of a warped fungus=
 Warped Hyphae Wood=歪な菌糸の樹
 Warped Stairs=歪な階段
 Warped Slab=歪なスラブ
+Double Warped Slab=
 Crimson Fungus=
 Crimson fungus is a mushroom found in the nether's crimson forest.=
 Crimson Roots=真紅の根
@@ -33,11 +34,17 @@ Crimson Hyphae Wood=真紅の菌糸の樹
 Crimson Nylium=真紅のナイリウム
 Crimson Stairs=真紅の階段
 Crimson Slab=真紅のスラブ
+Double Crimson Slab=真紅の２重スラブ
 Crimson Door=
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=
+
 Crimson Trapdoor=
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=
 Crimson Fence=
 Crimson Fence Gate=
@@ -54,5 +61,4 @@ Stripped warped hyphae=表皮を剥いだ歪な菌糸
 Stripped warped hyphae bark=剥がされた歪な菌糸の表皮
 Warped Checknode - only to check!=歪なチェックノード - チェックのみ！
 Crimson Fungus Mushroom=真紅のキノコ
-Double Crimson Slab=真紅の２重スラブ
 Crimson Checknode - only to check!=真紅のチェックノード - チェックのみ！

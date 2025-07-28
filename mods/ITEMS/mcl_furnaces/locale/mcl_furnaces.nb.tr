@@ -5,8 +5,12 @@ Recipe book=Oppskriftsbok
 Uses fuel to smelt or cook items=Bruker brensel til å smelte eller steke gjenstander.
 Furnaces cook or smelt several items, using a furnace fuel, into something else.=Ovner steker eller smelter flere gjenstander til noe nytt, ved å forbruke brennbart materiale.
 Use the furnace to open the furnace menu.=Bruk en ovn for å åpne ovnmenyen.
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Plasser brensel i det nedre feltet og kildematerialet i det øvre feltet.
+
 The furnace will slowly use its fuel to smelt the item.=Ovnen vil sakte bruke brenselet til å smelte gjenstanden.
 The result will be placed into the output slot at the right side.=Resultatet vil bli plassert i utgangsfeltet på høyre side.
+
 Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn.=Bruk oppskriftsboken for å se hva du kan smelte, hva du kan bruke som brensel og hvor lenge det vil brenne.
+
 Burning Furnace=Brennende ovn

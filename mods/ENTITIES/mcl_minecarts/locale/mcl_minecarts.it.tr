@@ -4,8 +4,11 @@ Sneak to dismount=Accovacciati per scendere
 Minecart=Carrello da miniera
 Vehicle for fast travel on rails=Veicolo per viaggio rapido su binari
 Minecarts can be used for a quick transportion on rails.=I carrelli da miniera possono essere usati per viaggiare rapidamente su binari.
+
 Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.=I carrelli da miniera viaggiano solo su binari e seguono sempre il tracciato. Ad un incrocio a T senza via frontale, girano a sinistra. La velocità è influenzata dal tipo di binari.
+
 You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.=Puoi piazzare il carrello da miniera sui binari. Click destro sul carrello per salire a bordo.
+
 To obtain the minecart, punch it while holding down the sneak key.=Per ottenere il carrello da miniera, colpiscilo mentre premi il pulsante per accovacciarti.
 If it moves over a powered activator rail, you'll get ejected.=
 ##[ carts/with_chest.lua ]##
@@ -14,36 +17,56 @@ Minecart with Chest=Carrello da miniera con Baule
 Minecart with Command Block=Carrello da miniera con Blocco Comandi
 ##[ carts/with_furnace.lua ]##
 Minecart with Furnace=Carrello da miniera con Fornace
+
 A minecart with furnace is a vehicle that travels on rails. It can propel itself with fuel.=Un carrello ca miniera con fornace è un veicolo che viaggia su binari. Può essere alimentato con del carburante.
+
 Place it on rails. If you give it some coal, the furnace will start burning for a long time and the minecart will be able to move itself. Punch it to get it moving.=Piazzalo su binari. Se gli darai del carbone, la fornace inizierà a bruciare per un lungo periodo e il carrello da miniera sarà in grado di muoversi da solo. Colpiscilo per avviarlo.
+
 To obtain the minecart and furnace, punch them while holding down the sneak key.=Per ottenere il carrello e la fornace, colpiscili tenendo premuto il pulsante per accovacciarti.
 ##[ carts/with_hopper.lua ]##
 Minecart with Hopper=Carrello da miniera con Tramoggia
+Hopper Minecart=
 ##[ carts/with_tnt.lua ]##
 Minecart with TNT=Carrello da miniera con TNT
 Can be ignited by tools or powered activator rail=Può essere acceso da strumenti o binari attivatori
 A minecart with TNT is an explosive vehicle that travels on rail.=Un carrello da miniera con la TNT è un veicolo esplosivo che viaggia su binari.
+
 Place it on rails. Punch it to move it. The TNT is ignited with a flint and steel or when the minecart is on an powered activator rail.=Piazzalo sui binari. Colpiscilo per spostarlo. La TNT viene accesa con l'acciarino o quando il carrello passa su un binario attivatore
+
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=Per ottenere il carrello da miniera e la TNT, colpiscili tenendo premuto il tasto per accovacciarti. Non puoi farlo se la TNT è stata accesa.
+
 ##[ rails.lua ]##
+
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Piazzali sul terreno per costruire la tua ferrovia, i binari si collegheranno automaticamente tra di loro, cambiando in curve, incroci a T, incroci e pendenze quando necessario.
+
 Track for minecarts=Tracciato per carrelli da miniera
+
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=I binari possono essere usati per costruire percorsi per i carrelli da miniera. I binari semplici rallentano leggermente i carrelli da miniera per via dell'attrito.
+
 Sloped Rail=
 ##[ rails/activator.lua ]##
 Activator Rail=Binario Attivatore
 Activates minecarts when powered=Attiva i carrelli da miniera quando alimentato
+
 Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.=I binari possono essere usati per costruire percorsi per i carrelli da miniera. I binari attivatori sono usati per attivare particolari carrelli da miniera.
+
 To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.=Per far sì che questo binario attivi i carrelli da miniera, alimentalo con della redstone e manda un carrello da miniera su questo pezzo di binario.
+
 ##[ rails/detector.lua ]##
 Detector Rail=Binario rilevatore
 Emits redstone power when a minecart is detected=Emette energia di redstone quando una carrello da miniera è rilevato
+
 Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=I binari possono essere usati per costruire percorsi per i carrelli da miniera. Un binario rilevatore è in grado di rilevare il passaggio di un carrello da miniera e attivare un circuito di redstone.
+
 To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=Per rilevare un carrello da miniera e fornire energia di redstone, collagalo a delle tracce di redstone o dei meccanismi di redstone e manda un carrello da miniera sopra il binario.
+
 ##[ rails/normal.lua ]##
 Rail=Binario
 ##[ rails/powered.lua ]##
 Powered Rail=Binario Alimentato
 Speed up when powered, slow down when not powered=Accelera quando alimentato, rallenta quando non alimentato
+
 Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.=I binari possono essere usati per costruire percorsi per i carrelli da miniera. I binari alimentati possono accelerare e frenare i carrelli da miniera.
+
 Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power.=Senza alimentazione da redstone, il binario romperà il carrello da miniera. Per far sì che questo binario acceleri i carrelli da miniera, alimentalo con della redstone.
+

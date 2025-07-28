@@ -3,12 +3,18 @@ Blast Furnace=Haut fourneau
 Inventory=Inventaire
 Recipe book=
 Smelts ores faster than furnace=Fond le minerai plus vite que le four
+
 Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, but twice as fast as a normal furnace.=Les hauts fourneaux fondent plusieurs objets, principalement du minerai et des pièces d'armure, mais deux fois plus vite qu'un fourneau normal.
+
 Use the blast furnace to open the furnace menu.=Utiliser le haut fourneau pour ouvrir le menu.
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Placer le combustible dans la case en bas et le matériau source dans la case du haut.
+
 The blast furnace will slowly use its fuel to smelt the item.=Le haut fourneau utilisera son combustible pour fondre lentement l'objet.
 The result will be placed into the output slot at the right side.=Le résultat sera placé dans la case de sortie à droite.           
+
 Use the recipe book to see what ores you can smelt, what you can use as fuel and how long it will burn.=Utiliser le livre de recettes pour voir quels minerais vous pouvez fondre, ce que vous pouvez utiliser comme combustible et combien de temps ça va brûler.
+
 Burning Blast Furnace=
 
 

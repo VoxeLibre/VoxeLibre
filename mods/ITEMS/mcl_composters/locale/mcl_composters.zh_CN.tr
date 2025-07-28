@@ -1,7 +1,9 @@
 # textdomain: mcl_composters
 Composter=堆肥桶
 Composters can convert various organic items into bone meal.=
+
 Use organic items on the composter to fill it with layers of compost. Every time an item is put in the composter, there is a chance that the composter adds another layer of compost.  Some items have a bigger chance of adding an extra layer than other items.  After filling up with 7 layers of compost, the composter is full.  After a delay of approximately one second the composter becomes ready and bone meal can be retrieved from it. Right-clicking the composter takes out the bone meal empties the composter.=将有机物品放入堆肥桶，使其堆满堆肥层。每次往堆肥桶里放入一个物品时，堆肥桶都有一定几率增加一层堆肥。有些物品比其他物品更有可能增加一层堆肥。堆满7层堆肥后，堆肥桶就满了。大约延迟一秒后，堆肥桶准备就绪，就可以从中取出骨粉了。右键点击堆肥桶可取出骨粉并清空堆肥桶。
+
 Converts organic items into bone meal=
 filled=已填满
 ready for harvest=可收获

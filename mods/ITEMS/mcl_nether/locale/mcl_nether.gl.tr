@@ -2,19 +2,27 @@
 Glowstone=Pedra luminosa
 Glowstone is a naturally-glowing block which is home to the Nether.=Pedra luminosa é un bloque que brilla de maneira natural e que alberga o Nether.
 Nether Quartz Ore=Mineral de cuarzo
+
 Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.=O mineral de cuarzo inferior é un mineral que contén cuarzo inferior. Atópase comunmente ao redor do netherrack no Nether.
+
 Ancient Debris=Detritos antigos
 Ancient debris can be found in the nether and is very very rare.=Os restos antigos pódense atopar no fondo e son moi moi raros.
 Netherite Block=Bloque Netherite
 Netherite block is very hard and can be made of 9 netherite ingots.=O bloque de netherita é moi duro e pode estar feito de 9 lingotes de netherita.
 Netherrack=Netherrack
+
 Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.=Netherrack é un bloque semellante á pedra que alberga o Nether. Comezar un lume neste bloque creará un lume eterno.
+
 Magma Block=Bloque de magma
 Burns your feet=Queima os pés
+
 Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire.=Os bloques de magma son bloques sólidos quentes que prexudican a quen estea sobre el, a menos que teñan resistencia ao lume. Comezar un lume neste bloque creará un lume eterno.
+
 Soul Sand=Area de alma
 Reduces walking speed=Reduce a velocidade de marcha
+
 Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block.=La arena del alma está a un bloque do Nether. Un só pode camiñar lentamente sobre a area da alma. O efecto de desaceleración amplícase cando a area da alma está enriba de xeo, xeo compacto ou bloque de limo.
+
 Nether Brick Block=Ladrillos del Nether
 Red Nether Brick Block=Ladrillos del Nether vermellos
 Nether Wart Block=Bloque de verrugas del Nether
@@ -24,25 +32,37 @@ Chiseled Quartz Block=Cuarzo cicelado
 Pillar Quartz Block=Pilar bloque de cuarzo
 Smooth Quartz=Cuarzo liso
 Glowstone Dust=Pó de pedra luminosa
+
 Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.=O po de pedra brillante é o po que sae das pedras luminosas rotas. Úsase principalmente na elaboración artesanal.
+
 Nether Quartz=Infracuarzo
 Nether quartz is a versatile crafting ingredient.=O cuarzo inferior é un versátil ingrediente de elaboración.
 Netherite Scrap=Chatarra Netherite
 Netherite scrap is a crafting ingredient for netherite ingots.=
 Netherite Ingot=Lingote de Netherite
+
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=
+
 Nether Brick=Ladrillos del Nether
+
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Los ladrillos abisales son o principal ingrediente de elaboración para a elaboración de bloques de ladrillo inferior e vercas do abaixo.
+
 ##[ nether_wart.lua ]##
 Premature Nether Wart (Stage 1)=Verruga de Nether prematura (Etapa 1)
+
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Recentemente plantouse unha verruga inferior prematura na area da alma. A verruga inferior crece lentamente na area da alma en 4 etapas (a segunda e terceira etapas parecen idénticas). Aínda que a verruga inferior é o fogar do Nether, crece en calquera dimensión.
+
 Premature Nether Wart (Stage 2)=Verruga del Nether prematura (Etapa 2)
 Premature Nether Wart (Stage 3)=Verruga del Nether prematura (Etapa 3)
 Mature Nether Wart=Verruga del Nether madura
+
 The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.=A verruga inferior madura é unha planta do Nether e alcanzou o seu tamaño completo e non crecerá máis. Está listo para ser collido polos seus elementos.
+
 Nether Wart=Verruga del Nether
 Grows on soul sand=Medra na area da alma
+
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=As verrugas do Nether son plantas que albergan o Nether. Pódense plantar sobre area de alma e medrar en 4 etapas.
+
 Place this item on soul sand to plant it and watch it grow.=Coloque este elemento na area da alma para plantalo e velo medrar.
 ##[ lava.lua ]##
 Nether Lava Source=Fonte de lava de Nether

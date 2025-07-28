@@ -2,6 +2,12 @@
 [<gamemode>] [<player>]=[<Spielmodus>] [<Spieler>]
 Change gamemode (survival/creative) for yourself or player=Spielmodus (Überleben/Kreativ) ändern für sich selbst oder für einen Spieler
 Player not online=Spieler ist nicht online
-Gamemode =Spielmodus 
+Gamemode @1 does not exist.=
+More than one gamemode fit @1=
 Gamemode for player =Spielmodus für Spieler 
 : =: 
+
+
+##### not used anymore #####
+
+Gamemode =Spielmodus 

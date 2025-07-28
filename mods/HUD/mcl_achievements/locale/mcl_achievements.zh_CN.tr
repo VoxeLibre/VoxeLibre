@@ -24,25 +24,39 @@ Pick up a diamond from the floor.=从地上捡起一颗钻石。
 Into Fire=陷入火海
 Pick up a blaze rod from the floor.=从地上捡起一根烈焰棒。
 Cow Tipper=推倒奶牛
+
 Pick up leather from the floor.@nHint: Cows and some other animals have a chance to drop leather, when killed.=从地上捡起皮革。@n提示：牛和一些其他动物被杀死时有几率掉落皮革。
+
 Getting Wood=获取木材
+
 Pick up a wooden item from the ground.@nHint: Punch a tree trunk until it pops out as an item.=从地上捡起一个木制品。@n提示：击打树干直到它作为物品掉落出来。
+
 Who's Cutting Onions?=谁在切洋葱？
 Pick up a crying obsidian from the floor.=从地上捡起哭泣的黑曜石。
 Hidden in the Depths=隐藏在深处
 Pick up an Ancient Debris from the floor.=从地上捡起远古残骸。
 The Next Generation=下一代
+
 Hold the Dragon Egg.@nHint: Pick up the egg from the ground and have it in your inventory.=拿起龙蛋。@n提示：从地上捡起龙蛋并放入你的物品栏中。
+
 Sky's the Limit=天空才是极限
 Find the elytra and prepare to fly above and beyond!=找到鞘翅并准备尽情翱翔！
 Acquire Hardware=打造装备
+
 Take an iron ingot from a furnace's output slot.@nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace.=从熔炉的输出槽中取出一块铁锭。@n提示：要熔炼铁锭，把燃料（比如煤炭）和铁矿石放进熔炉里。
+
 Delicious Fish=美味的鱼
+
 Take a cooked fish from a furnace.@nHint: Use a fishing rod to catch a fish and cook it in a furnace.=从熔炉中取出一条熟鱼。@n提示：用钓鱼竿钓到鱼然后在熔炉里烹饪它。
+
 On A Rail=在铁轨上
+
 Travel by minecart for at least 1000 meters from your starting point in a single ride.=单次乘坐矿车从起始点出发旅行至少1000米。
+
 Sniper Duel=狙击对决
+
 Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 20 meters.=用弓箭从至少20米远的距离射中一个骷髅、凋零骷髅或流浪者。
+
 We Need to Go Deeper=我们需要深入一些
 Use obsidian and a fire starter to construct a Nether portal.=用黑曜石和打火石建造一个下界传送门。
 The End?=终末？
@@ -70,7 +84,9 @@ Catch a fish.@nHint: Catch a fish, salmon, clownfish, or pufferfish.=捕一条�
 Country Lode, Take Me Home=家乡矿脉，带我回家
 Use a compass on a Lodestone.=在磁石上使用指南针。
 Serious Dedication=认真投入
+
 Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices.=用下界合金锭升级一把锄头，然后好好重新审视一下你的人生选择。
+
 Local Brewery=本地酿酒厂
 Brew a Potion.@nHint: Take a potion or glass bottle out of the brewing stand.=酿造一瓶药水。@n提示：从酿造台中取出一瓶药水或玻璃瓶。
 Enchanter=附魔师
@@ -82,7 +98,9 @@ Use a fully powered beacon.=使用一个完全充能的信标。
 The End... Again...=终末……再一次……
 Respawn the Ender Dragon.=重生末影龙。
 Bee Our Guest=成为我们的客人
+
 Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside.=使用营火从蜂巢中收集一瓶蜂蜜而不激怒里面的蜜蜂。
+
 Total Beelocation=蜜蜂大挪移
 Move a bee nest, with 3 bees inside, using a silk touch enchanted tool.=用带有精准采集附魔的工具移动一个里面有3只蜜蜂的蜂巢。
 Wax On=上蜡
@@ -92,7 +110,9 @@ Scrape wax off a copper block.=刮掉铜块上的蜡。
 Crafting a New Look=打造新外观
 Craft a trimmed armor at a smithing table.=在锻造台上制作一件装饰盔甲。
 Smithing with Style=独具风格的锻造
+
 Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder=至少使用一次以下锻造模板：尖顶、口鼻、肋骨、守护、寂静、恼鬼、潮汐、探路者。 
+
 Dispense With This=使用这个分配器
 Place a dispenser.=放置一个分配器。
 Pork Chop=猪排
@@ -116,4 +136,6 @@ Defeat a ghast with his own weapon.=用恶魂自己的武器击败它。
 Hero of the Village=村庄英雄
 Successfully defend a village from a raid=成功抵御村庄的袭击。
 Voluntary Exile=自愿流亡
+
 Kill a raid captain. Maybe consider staying away from the local villages for the time being...=杀死袭击队长。也许暂时要离当地村庄远一点……
+

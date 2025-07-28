@@ -8,7 +8,9 @@ An amethyst shard is a crystalline mineral.=
 Calcite=
 Calcite can be found as part of amethyst geodes.=
 Tinted Glass=
+
 Tinted Glass is a type of glass which blocks lights while it is visually transparent.=
+
 Small Amethyst Bud=
 Small Amethyst Bud is the first growth of amethyst bud.=
 Medium Amethyst Bud=

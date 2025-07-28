@@ -1,6 +1,8 @@
 # textdomain: mcl_monster_eggs
 Hides a silverfish=Esconde un peixe de prata
+
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Un bloque infestado é un bloque do que sairá un peixe prateado cando estea roto. Parece idéntico ao seu homólogo normal.
+
 Infested Stone=Pedra infestada
 Infested Cobblestone=Rocha infestada
 Infested Stone Bricks=Ladrillos de pedra infestados

@@ -1,5 +1,7 @@
 # textdomain: mcl_walls
+
 A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Kawałek ściany. Nie może być przeskoczony pojedynczym skokiem. Gdy kilka z nich jest położonych obok siebie, automatycznie połączą się one w ścianę.
+
 ##[ register.lua ]##
 Cobblestone Wall=Ściana z brukowca
 Mossy Cobblestone Wall=Ściana z zamszonego brukowca

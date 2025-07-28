@@ -32,9 +32,13 @@ Lime=Зелёный лаймовый
 Light Blue Banner=Голубой флаг
 Light Blue=Голубой
 Banner=Флаг
+
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Флаги - высокие цветные декоративные блоки. Их можно размещать на полу и на стенах. Флаги можно украшать разнообразными узорами при помощью красителей во время создания.
+
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Используйте сетку крафта, чтобы нарисовать узор поверх флага. Украшенные флаги можно украсить повторно, чтобы сочетать разные узоры. Таким способом вы можете нарисовать до 12 слоев на одном флаге. Если флаг содержит градиент, возможно только 3 слоя.
+
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Вы можете скопировать рисунок флага, поместив два флага одного цвета в сетку крафта - один должен быть украшенный, другой - чистый. Вы можете использовать флаг на котле с водой, чтобы смыть верхний слой.
+
 Preview Banner=Предпросмотр баннера
 Paintable decoration=Раскрашиваемая декорация
 ##[ patterncraft.lua ]##

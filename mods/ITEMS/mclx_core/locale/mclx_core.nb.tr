@@ -1,5 +1,7 @@
 # textdomain: mclx_core
 River Water Source=Elvevannkilde
+
 River water has the same properties as water, but has a reduced flowing distance and is not renewable.=Elvevann har samme egenskaper som vann, men har redusert strømningsavstand og er ikke fornybart.
+
 River Water=Elvevann
 Flowing River Water=Rennende elvevann

@@ -1,7 +1,9 @@
 # textdomain: mcl_composters
 Composter=Komposter
 Composters can convert various organic items into bone meal.=Kompostierer können verschiedene organische Gegenstände in Knochenmehl umwandeln.
+
 Use organic items on the composter to fill it with layers of compost. Every time an item is put in the composter, there is a chance that the composter adds another layer of compost.  Some items have a bigger chance of adding an extra layer than other items.  After filling up with 7 layers of compost, the composter is full.  After a delay of approximately one second the composter becomes ready and bone meal can be retrieved from it. Right-clicking the composter takes out the bone meal empties the composter.=Wenden Sie organische Gegenstände auf den Kompostierer an, um ihn mit Schichten von Kompost zu füllen. Jedes Mal, wenn ein Gegenstand in den Kompostierer gegeben wird, besteht die Chance, dass der Kompostierer eine weitere Schicht Kompost hinzufügt. Einige Gegenstände haben eine größere Chance, eine zusätzliche Schicht hinzuzufügen, als andere. Nach dem Befüllen mit 7 Schichten Kompost ist der Kompostierer voll. Nach einer Verzögerung von etwa einer Sekunde ist der Kompostierer fertig und es kann Knochenmehl daraus entnommen werden. Das Rechtsklicken auf den Kompostierer entfernt das Knochenmehl und leert den Kompostierer.
+
 Converts organic items into bone meal=Wandelt organische Objekte in Knochenmehl um
 filled=gefüllt
 ready for harvest=erntebereit

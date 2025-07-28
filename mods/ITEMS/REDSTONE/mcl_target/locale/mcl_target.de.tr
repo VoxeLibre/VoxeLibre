@@ -1,4 +1,6 @@
 # textdomain: mcl_target
 Target=Zielblock
+
 A target is a block that provides a temporary redstone charge when hit by a projectile.=Ein Ziel ist ein Block, der eine temporäres Redstone-Signal ausgibt, wenn er von einem Projektil getroffen wird.
+
 Throw a projectile on the target to activate it.=Feuer ein Projektil auf das Ziel um es zu aktivieren.

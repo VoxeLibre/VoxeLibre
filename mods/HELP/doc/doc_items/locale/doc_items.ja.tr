@@ -3,8 +3,11 @@ This is a decorative block.=これは装飾用のブロックです。
 This block is a building block for creating various buildings.=このブロックは、さまざまな建物を作るための建築ブロックです。
 This item is primarily used for crafting other items.=このアイテムは主に、他のアイテムのクラフトに使われます。
 Hold it in your hand, then left-click to eat it.=手に持って、左クリックで食べます。
+
 Hold it in your hand, then left-click to eat it. But why would you want to do this?=手に持って、左クリックで食べます。しかし、なぜこんなことをしたいのでしょうか？
+
 This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=このブロックの回転は、置き方に影響されます：床や天井に置くと垂直方向、横に置くと水平方向になります。スニークしながら置くと、代わって直角の方向に向きます。
+
 Hand=手
 Air=空気
 Yes=はい
@@ -34,7 +37,9 @@ This block cannot be mined by ordinary mining tools.=このブロックは、通
 This block can be destroyed by any mining tool in half a second.=このブロックは、どの採掘道具でもコンマ5秒で壊せます。
 This block can be destroyed by any mining tool immediately.=このブロックは、どの採掘道具でも即座に壊せます。
 This block cannot be destroyed by ordinary mining tools.=このブロックは、通常の採掘道具では壊せません。
+
 This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=このブロックは、以下の採掘レートとタフネスレベルのいずれかに合致する採掘道具で掘れます。
+
 Mining ratings:=採掘レート：
 Toughness level: @1=タフネスレベル：@1
 Range: @1=範囲：@1
@@ -52,9 +57,13 @@ Maximum stack size: @1=最大スタックサイズ：@1
 This block points to liquids.=このブロックは液体を指します。
 This tool points to liquids.=この道具は液体を指します。
 This item points to liquids.=このアイテムは液体を指します。
+
 Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=このブロックでのパンチは、普段通りには機能しません：近接戦闘と採掘は不可能か、動作が異なります。
+
 Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=この道具でのパンチは、普段通りには機能しません：近接戦闘と採掘は不可能か、動作が異なります。
+
 Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=このアイテムでのパンチは、普段通りには機能しません：近接戦闘と採掘は不可能か、動作が異なります。
+
 This block belongs to the @1 group.=このブロックは、@1グループに属しています。
 This tool belongs to the @1 group.=この道具は、@1グループに属しています。
 This item belongs to the @1 group.=このアイテムは、@1グループに属しています。
@@ -75,8 +84,11 @@ This block is a liquid with these properties:=このブロックは、こうし�
 • Viscosity: @1=・粘度：@1
 This block causes a damage of @1 hit points per second.=このブロックは、毎秒@1HPのダメージを生じます。
 This block causes a damage of @1 hit point per second.=このブロックは、毎秒@1HPのダメージを生じます。
+
 This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=このブロックは呼吸を減少させ, 2秒毎に@1HPの窒息ダメージを与えます.
+
 This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=このブロックは呼吸を減少させ, 2秒毎に@1HPの窒息ダメージを与えます.
+
 The fall damage on this block is increased by @1%.=このブロックでの落下ダメージが@1%増加する。
 This block cancels any fall damage.=このブロックは、すべての落下ダメージを無効化します。
 The fall damage on this block is reduced by @1%.=このブロックでの落下ダメージが@1%軽減する。
@@ -99,7 +111,9 @@ This block will drop as an item when no collidable block is below it.=このブ�
 Liquids can flow into this block and destroy it.=このブロックに液体が流れ込み、破壊されることがあります。
 This block is a light source with a light level of @1.=このブロックは、明るさ@1の光源です。
 This block glows faintly with a light level of @1.=このブロックは、明るさ@1でぼんやりと光ります。
+
 This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly.=このブロックは、明るさのロスが少ない光の伝搬を可能にし、太陽光であればロスなしで通過することさえできます。
+
 This block allows light to propagate with a small loss of brightness.=このブロックは、明るさのロスが少ない光の伝搬を可能にします。
 This block allows sunlight to propagate without loss in brightness.=このブロックは、太陽光を明るさのロスなしで伝搬させることができます。
 Unknown Node=不明なノード
@@ -112,7 +126,9 @@ This block will drop the following when mined: @1×@2.=このブロックを掘�
 This block will drop the following when mined: @1.=このブロックを掘ると、次のものをドロップします：@1
 This block will drop the following items when mined: @1.=このブロックを掘ると、次のアイテムをドロップします：@1
 This block will randomly drop one of the following when mined: @1.=このブロックを掘ると、次のいずれかがランダムにドロップされます：@1
+
 This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=このブロックを掘ると、次の可能なドロップのうち、最大@1個をランダムにドロップします：@2
+
 # Final list separator (e.g. “One, two and three”)
  and =＆
 # Item count times item name
@@ -128,7 +144,9 @@ Item reference of all wieldable tools and weapons=すべての携行可能な道
 Durability: @1 uses=耐久度：@1回 使用
 Durability: @1=耐久度：@1
 Miscellaneous items=その他の雑多なアイテム
+
 Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=ブロックでも道具でも武器でもないアイテム（特にクラフトアイテム）の、アイテム参照
+
 Mobs=
 different mobs=
 Type: @1=
@@ -137,8 +155,11 @@ Can Jump=
 Can Fly=
 drops: =
 follows player when these items are held:=
+
 A transparent block, basically empty space. It is usually left behind after digging something.=透明なブロックで、基本的には何もない空間です。たいていは何かを掘った後に残ります。
+
 Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=アイテムを手に持っていない時は、なんどきでも素手を道具として使えます。採掘道具でも武器でもないアイテムを手に持っている時は、あたかも素手であるかのように振る舞います。
+
 
 
 ##### not used anymore #####

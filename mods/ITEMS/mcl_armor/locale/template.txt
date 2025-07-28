@@ -1,20 +1,45 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=
+Golden Chestplate=
+Golden Leggings=
+Golden Boots=
+Chainmail Helmet=
+Chainmail Chestplate=
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=
+Iron Chestplate=
+Iron Leggings=
+Iron Boots=
+Diamond Helmet=
+Diamond Chestplate=
+Diamond Leggings=
+Diamond Boots=
+Netherite Helmet=
+Netherite Chestplate=
+Netherite Leggings=
+Netherite Boots=
 Projectile Protection=
 Reduces projectile damage.=
 Blast Protection=
@@ -29,10 +54,19 @@ Aqua Affinity=
 #Translations of enchantements
 Increases underwater mining speed.=
 Curse of Binding=
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+
 Thorns=
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
+
 Elytra=
+##[ leather.lua ]##
+Leather Cap=
+Leather Tunic=
+Leather Pants=
+Leather Boots=
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=

@@ -1,10 +1,17 @@
 # textdomain: mcl_sponges
 Sponge=Svamp
 Removes water on contact=Fjerner vann ved berøring
+
 Sponges are blocks which remove water around them when they are placed or come in contact with water, turning it into a wet sponge.=Svamper er blokker som fjerner vann rundt seg når de plasseres eller kommer i kontakt med vann, og gjør det om til en våt svamp.
+
 Waterlogged Sponge=Vannmettet svamp
 Can be dried in furnace=Kan tørkes i en ovn
+
 A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, the water will pour into the bucket.=En vannmettet svamp kan tørkes i ovnen for å gjøre den om til en (tørr) svamp. Når det er en tom bøtte i brenselfeltet til en ovn, vil vannet renne nedi bøtta
+
 Riverwaterlogged Sponge=Elvevannmettet svamp
+
 This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.=Dette er en svamp som er gjennomvåt med elvevann. Den kan tørkes i ovnen for å gjøre den om til (tørr) svamp. Når det er en tom bøtte i brenselfeltet til en ovn, vil elvevannet renne nedi bøtta
+
 A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water.=En svamp blir elvevannmettet (i stedet for vannmettet) hvis den suger opp mer elvevann enn (normalt) vann.
+

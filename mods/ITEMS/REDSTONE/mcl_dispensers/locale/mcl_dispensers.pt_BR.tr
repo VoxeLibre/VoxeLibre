@@ -3,8 +3,11 @@ Dispenser=Ejetor
 Inventory=Inventário
 9 inventory slots=Inventário de 9 slots
 Launches item when powered by redstone power=Lança itens quando energizados por carga de redstone
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=Um ejetor é um bloco ao qual age como um componente de redstone ao qual, quando energizado com carga de redstone, ejeta um item. Tem um recipiente com 9 slots de inventário.
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=Posicione o ejetor em uma das 6 direções possíveis. O "buraco" é por onde os itens irão voar para fora do ejetor. Use o ejetor para acessar seu inventário. Insira os itens que você deseja ejetar. Alimente o ejetor com carga de redstone uma vez para ejetar um item aleatório.
+
 The dispenser will do different things, depending on the dispensed item:=O ejetor irá fazer coisas diferentes, dependendo do item ejetado:
 • Arrows: Are launched=• Flechas: Serão lançadas
 • Eggs and snowballs: Are thrown=• Ovos e bolas de neve: São arremessadas

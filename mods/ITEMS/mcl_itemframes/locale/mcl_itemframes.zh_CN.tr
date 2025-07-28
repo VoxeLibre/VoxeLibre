@@ -1,6 +1,8 @@
 # textdomain: mcl_itemframes
 Item frames are decorative blocks in which items can be placed.=物品展示框是一种装饰性方块，可在其中放置物品。
+
 Just place any item on the item frame. Use the item frame again to retrieve the item.=只需将任意物品放置在物品展示框上。再次使用物品展示框可取回物品。
+
 ##[ register.lua ]##
 Item Frame=物品展示框
 Can hold an item=

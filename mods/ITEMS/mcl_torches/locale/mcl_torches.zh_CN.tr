@@ -1,4 +1,6 @@
 # textdomain: mcl_torches
 ##[ register.lua ]##
 Torch=火把
+
 Torches are light sources which can be placed at the side or on the top of most blocks.=火把是一种光源，能够放置在大多数方块的侧面或者顶部。 
+

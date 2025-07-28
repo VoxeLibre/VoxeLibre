@@ -1,5 +1,7 @@
 # textdomain: mcl_walls
+
 A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Un morceau de mur. Il ne peut pas être sauté par un simple saut. Lorsque plusieurs d'entre eux sont placés les uns à côté des autres, ils construiront automatiquement une belle structure de mur.
+
 ##[ register.lua ]##
 Cobblestone Wall=Muret de Pierres
 Mossy Cobblestone Wall=Muret de Pierres Moussu

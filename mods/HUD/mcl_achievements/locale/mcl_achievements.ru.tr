@@ -24,25 +24,39 @@ Pick up a diamond from the floor.=Поднимите алмаз.
 Into Fire=Огненные недра
 Pick up a blaze rod from the floor.=Поднимите огненный стержень.
 Cow Tipper=Мясник
+
 Pick up leather from the floor.@nHint: Cows and some other animals have a chance to drop leather, when killed.=Поднимите кожу.@nПодсказка: Коровы и некоторые другие животные могут оставлять кожу, если их убить.
+
 Getting Wood=Нарубить древесины
+
 Pick up a wooden item from the ground.@nHint: Punch a tree trunk until it pops out as an item.=Поднимите бревно с земли.@nПодсказка: Бейте по стволу, пока он не выпадёт на землю, превратившись в предмет.
+
 Who's Cutting Onions?=Обсидиановы слёзы
 Pick up a crying obsidian from the floor.=Добудьте плачущий обсидиан.
 Hidden in the Depths=Осколки прошлого
 Pick up an Ancient Debris from the floor.=Добудьте древние обломки.
 The Next Generation=Новое поколение
+
 Hold the Dragon Egg.@nHint: Pick up the egg from the ground and have it in your inventory.=Подберите яйцо дракона.@nПодсказка: Подберите яйцо с земли в инвентарь.
+
 Sky's the Limit=Где твои крылья?
 Find the elytra and prepare to fly above and beyond!=Найдите элитры.
 Acquire Hardware=Куй железо...
+
 Take an iron ingot from a furnace's output slot.@nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace.=Получите слиток железа из печи.@nПодсказка: чтобы переплавить железную руду, нужно положить в печь руду и топливо (например, уголь).
+
 Delicious Fish=Вкусная рыбка
+
 Take a cooked fish from a furnace.@nHint: Use a fishing rod to catch a fish and cook it in a furnace.=Приготовьте рыбу в печи.@nПодсказка: Поймайте рыбу удочкой и приготовьте её в печи.
+
 On A Rail=Стук колёс
+
 Travel by minecart for at least 1000 meters from your starting point in a single ride.=Прокатитесь на вагонетке минимум на 1000 метров от стартовой точки за один раз.
+
 Sniper Duel=Снайперская дуэль
+
 Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 20 meters.=Попадите по скелету, скелету-иссушителю или страннику стрелой из лука на расстоянии не менее 20 метров.
+
 We Need to Go Deeper=В глубь
 Use obsidian and a fire starter to construct a Nether portal.=Создайте портала в Незер при помощи обсидиана и огнива.
 The End?=Конец?
@@ -70,7 +84,9 @@ Catch a fish.@nHint: Catch a fish, salmon, clownfish, or pufferfish.=Пойма�
 Country Lode, Take Me Home=Путеводный камень
 Use a compass on a Lodestone.=Настройте компас на магнетит.
 Serious Dedication=Заявка на победу
+
 Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices.=Улучшите мотыгу с помощью незеритового слитка, а потом попробуйте переосмыслить свою жизнь.
+
 Local Brewery=Местный зельевар
 Brew a Potion.@nHint: Take a potion or glass bottle out of the brewing stand.=Сварите зелье.@nПодсказка: Заберите зелье или пузырёк из варочной стойки.
 Enchanter=Чародей
@@ -82,7 +98,9 @@ Use a fully powered beacon.=Доведите маяк до полной мощн
 The End... Again...=Дежавю
 Respawn the Ender Dragon.=Возродите Дракона Края.
 Bee Our Guest=Пора подкрепиться
+
 Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside.=Поставьте костёр под ульем и соберите мёд в бутылочку, не разозлив пчёл.
+
 Total Beelocation=Полосатый груз
 Move a bee nest, with 3 bees inside, using a silk touch enchanted tool.=С помощью “шёлкового касания” переместите пчелиное гнездо с 3 пчёлами внутри.
 Wax On=Навести воск
@@ -92,7 +110,9 @@ Scrape wax off a copper block.=Соскребите воск с медного �
 Crafting a New Look=
 Craft a trimmed armor at a smithing table.=
 Smithing with Style=
+
 Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder=
+
 Dispense With This=Раздайте с этим
 Place a dispenser.=Поставьте раздатчик.
 Pork Chop=Свиная отбивная
@@ -116,4 +136,6 @@ Defeat a ghast with his own weapon.=
 Hero of the Village=Герой деревни
 Successfully defend a village from a raid=Успешно отразите нападение на деревню.
 Voluntary Exile=Добровольное изгнание
+
 Kill a raid captain. Maybe consider staying away from the local villages for the time being...=Убейте главаря разбойников. Может, стоит пока держаться подальше от деревень... 
+

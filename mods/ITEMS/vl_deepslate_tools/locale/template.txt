@@ -1,20 +1,39 @@
 # textdomain: vl_deepslate_tools
-Deepslate Pickaxe=
-Deepslate Shovel=
-Deepslate Axe=
-Deepslate Sword=
-Deepslate Hoe=
+Turns block into farmland=
+
+Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=
+
+Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=
+
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=
+
 An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=
+
 Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=
+
 To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=
+
 Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=
+
 To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=
+
 Can crush blocks=
 Increased knockback=
+
 Hammers are great in melee combat, as they deal high damage with increased knockback and can endure countless battles. Hammers can also be used to crush things.=
+
 To crush a block, dig the block with the hammer. This only works with some blocks.=
+
 Reaches farther=
 Can be thrown=
+
 Spears are great in melee combat, as they have an increased reach. They can also be thrown.=
+
 To throw a spear, hold it in your hand, then hold use (rightclick) in the air.=
+Deepslate Pickaxe=
+Deepslate Shovel=
+Deepslate Hoe=
+Deepslate Axe=
+Deepslate Sword=
+Deepslate Hammer=
+Deepslate Spear=

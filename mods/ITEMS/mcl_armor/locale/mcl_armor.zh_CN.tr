@@ -1,20 +1,46 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=这是一件可穿戴的盔甲，能减少你所受到的伤害量。
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=要装备它，将其放置在物品栏菜单中对应的盔甲栏位上。
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=金头盔
+Golden Chestplate=金胸甲
+Golden Leggings=金护腿
+Golden Boots=金靴子
+Chainmail Helmet=
+##TODO: fuzzy matched - verify and remove the comment
+Chainmail Chestplate=锁链胸甲
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=铁头盔
+Iron Chestplate=铁胸甲
+Iron Leggings=铁护腿
+Iron Boots=铁靴子
+Diamond Helmet=钻石头盔
+Diamond Chestplate=钻石胸甲
+Diamond Leggings=钻石护腿
+Diamond Boots=钻石靴子
+Netherite Helmet=下界合金头盔
+Netherite Chestplate=下界合金胸甲
+Netherite Leggings=下界合金护腿
+Netherite Boots=下界合金靴子
 Projectile Protection=弹射物保护
 Reduces projectile damage.=减少弹射物伤害。
 Blast Protection=爆炸保护
@@ -29,10 +55,19 @@ Aqua Affinity=水下速掘
 #Translations of enchantements
 Increases underwater mining speed.=增加水下挖掘速度。
 Curse of Binding=绑定诅咒
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=除了死亡、物品损坏或处于创造模式外，该物品无法从盔甲栏位上移除。
+
 Thorns=荆棘
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=受到攻击时能反弹部分伤害，但每次触发会消耗自身耐久度。
+
 Elytra=鞘翅
+##[ leather.lua ]##
+Leather Cap=皮革帽子
+Leather Tunic=皮革外套
+Leather Pants=皮革裤子
+Leather Boots=皮革靴子
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=锻造模板“@1” 
@@ -40,29 +75,8 @@ Smithing Template '@1'=锻造模板“@1”
 
 ##### not used anymore #####
 
-Leather Cap=皮革帽子
-Iron Helmet=铁头盔
-Golden Helmet=金头盔
-Diamond Helmet=钻石头盔
 Chain Helmet=锁链头盔
-Netherite Helmet=下界合金头盔
-Leather Tunic=皮革外套
-Iron Chestplate=铁胸甲
-Golden Chestplate=金胸甲
-Diamond Chestplate=钻石胸甲
-Chain Chestplate=锁链胸甲
-Netherite Chestplate=下界合金胸甲
-Leather Pants=皮革裤子
-Iron Leggings=铁护腿
-Golden Leggings=金护腿
-Diamond Leggings=钻石护腿
 Chain Leggings=锁链护腿
-Netherite Leggings=下界合金护腿
-Leather Boots=皮革靴子
-Iron Boots=铁靴子
-Golden Boots=金靴子
-Diamond Boots=钻石靴子
 Chain Boots=锁链靴子
-Netherite Boots=下界合金靴子
 Shooting consumes no regular arrows.=射击时不消耗普通箭矢。
 Shoot 3 arrows at the cost of one.=以消耗1支箭的代价射出3支箭。

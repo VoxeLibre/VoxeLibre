@@ -1,8 +1,11 @@
 # textdomain: mcl_signs
 ##[ api.lua ]##
 Can be written=Kann beschriftet werden
+
 Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Schilder können beschrieben werden und kommen in zwei Varianten: Wandschild und stehendes Schild. Sie können auf und an den Seiten von anderen Blöclen platziert werden, aber nicht unter ihnen.
+
 After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=Nachdem das Schild platziert wurde, kann man es beschriften. Es ist Platz für @1 Zeilen zu jeweils @2 Zeichen; was darüber hinaus geht wird abgeschnitten. Nicht alle Zeichen werden unterstützt. Der Text kann nachträglich verändert werden, indem man mit der rechten Maustaste auf das Schild klickt. Das Schild kann gefärbt und beleuchtet werden. Mit Knochenmehl kann die Farbe und Beleuchtung entfernt werden.
+
 Sign text:=Beschriftung:
 Close=Schließen
 Enter sign text:=Schildtext eingeben:

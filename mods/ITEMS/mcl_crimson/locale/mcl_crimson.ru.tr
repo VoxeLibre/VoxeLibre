@@ -19,6 +19,7 @@ The stripped hyphae bark of a warped fungus=Обтёсанные гифы иск
 Warped Hyphae Wood=Искажённые доски
 Warped Stairs=Искажённые ступени
 Warped Slab=Искажённая плита
+Double Warped Slab=
 Crimson Fungus=Багровый грибок
 Crimson fungus is a mushroom found in the nether's crimson forest.=Багровый грибок можно найти в багровых лесах Незера
 Crimson Roots=Багровые корни
@@ -33,11 +34,17 @@ Crimson Hyphae Wood=Багровые доски
 Crimson Nylium=Багровый нилий
 Crimson Stairs=Багровые ступени
 Crimson Slab=Багровая плита
+Double Crimson Slab=Двойная багровая плита
 Crimson Door=Багровая дверь
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Деревянные двери это преграды высотой в 2 блока, которые можно открывать и закрывать вручную и по сигналу редстоуна.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Чтобы открыть или закрыть деревянную дверь, кликните правой либо подайте к её нижней части сигнал редстоуна.
+
 Crimson Trapdoor=Багровый люк
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Деревянные люки это горизонтальные преграды, которые можно открывать и закрывать вручную и по сигналу редстоуна. Они занимают верхнюю или нижнюю часть блока, в зависимости от того, как они были установлены. В открытом состоянии по ним можно карабкаться, как по лестницам.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Чтобы открыть или закрыть деревянный люк, кликните по нему правой кнопкой либо подайте на него сигнал редстоуна.
 Crimson Fence=Багровый забор
 Crimson Fence Gate=Багровая калитка
@@ -50,5 +57,4 @@ Warped Fence Gate=Искажённая калитка
 ##### not used anymore #####
 
 Warped Checknode - only to check!=Искажённый тестовый блок
-Double Crimson Slab=Двойная багровая плита
 Crimson Checknode - only to check!=Багровый тестовый блок

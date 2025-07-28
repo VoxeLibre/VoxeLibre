@@ -1,56 +1,32 @@
 # textdomain: mcl_core
-Stick=Graveto
-Sticks are a very versatile crafting material; used in countless crafting recipes.=Gravetos são materiais de fabricação muito versáteis; usados em inumeráveis receitas de fabricação.
-Paper=Papel
-Paper is used to craft books and maps.=Papel é utilizado para fabricar livros e mapas.
-Coal=Carvão
-“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.="Carvão" se refere a pedaços de carvão obtidos quando escavados minérios de carvão, que podem ser encontrados no subsolo. Carvão é seu combustível de fornalha padrão, mas também pode ser usado para fazer tochas, blocos de carvão e outras coisas.
-Charcoal=Carvão Vegetal
-Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks.=Carvão vegetal é um combustível alternativo de fornalha produzido ao cozinhar madeira em uma fornalha. Possui o mesmo tempo de queima que o carvão e também compartilha diversas receitas de fabricação, mas não pode ser usado para fabricar blocos de carvão.
-Iron Nugget=Pepita de Ferro
-Iron nuggets are very small pieces of molten iron; the main purpose is to create iron ingots.=Pepitas de ferro são pequenas peças de ferro fundido; seu principal propósito é na criação de lingotes de ferro.
-Gold Nugget=Pepita de Ouro
-Gold nuggets are very small pieces of molten gold; the main purpose is to create gold ingots.=Pepitas de ouro são pequenas peças de ouro fundido; sua principal finalidade é criar lingotes de ouro.
-Diamond=Diamante
-Diamonds are precious minerals and useful to create the highest tier of armor and tools.=Diamantes são minerais preciosos e úteis para criar as armaduras e ferramentas do mais alto nível.
-Clay Ball=Bola de Argila
-Clay balls are a raw material, mainly used to create bricks in the furnace.=Bolas de argila são materiais não processados, principalmente utilizados para fabricar tijolos quando cozidos.
-Iron Ingot=Lingote de Ferro
-Molten iron. It is used to craft armor, tools, and whatnot.=Ferro fundido. É usado para fabricar armaduras, ferramentas e o que não.
-Gold Ingot=Lingote de Ouro
-Molten gold. It is used to craft armor, tools, and whatnot.=Ouro fundido. É usado para fabricar armaduras, ferramentas e o que não.
-Emerald=Esmeralda
-Emeralds are used in villager trades as currency.=Esmeraldas são utilizadas nas trocas como aldeões na forme de moeda.
-Lapis Lazuli=Lápis-lazúli
-Lapis Lazuli are required for enchanting items on an enchanting table.=Os Lápis-lazúli são necessários para encantar itens em uma mesa de encantamento.
-Brick=Tijolo
-Bricks are used to craft brick blocks.=Tijolos são usados para fabricar blocos de tijolo.
-Flint=Sílex
-Flint is a raw material.=Sílex é um material não processado.
-Sugar=Açúcar
-Sugar comes from sugar canes and is used to make sweet foods.=Açúcar vem de canas de açúcar e é utilizado para fazer doces comidas.
-Bowl=Tigela
-Bowls are mainly used to hold tasty soups.=Tigelas são utilizadas principalmente para segurar sopas deliciosas.
-Apple=Maçã
-Apples are food items which can be eaten.=Maçãs são itens alimentícios que podem ser comidos.
-Golden Apple=Maçã Dourada
-Golden apples are precious food items which can be eaten.=Maçãs douradas são alimentos preciosos que podem ser consumidos.
-Enchanted Golden Apple=Maçã Dourada Encantada
+##[ nodes_base.lua ]##
 Stone=Rocha
+
 One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava.=Um dos blocos mais comuns do mundo, o subsolo consiste quase que na integridade de rocha. Algumas vezes contém minérios. Rochas podem ser criadas quando a água entra em contato com a lava.
+
 Coal Ore=Minério de Carvão
+
 Some coal contained in stone, it is very common and can be found inside stone in medium to large clusters at nearly every height.=Algum carvão contigo na rocha, é bem comum e pode ser encontrado dentro de rochas em aglomerados médios a grantes a praticamente qualquer altitude.
+
 Iron Ore=Minério de Ferro
+
 Some iron contained in stone, it is prety common and can be found below sea level.=Algum ferro contido na rocha, é relativamente comum e pode ser encontrado abaixo do nível do mar.
+
 Gold Ore=Minério de Ouro
 This stone contains pure gold, a rare metal.=Essa rocha contem ouro puro, um metal raro.
 Redstone Ore=Minério de Redstone
+
 Redstone ore is commonly found near the bottom of the world. It glows when it is punched or walked upon.=Minério de redstone é comumente encontrado próximo a superfície do mundo.
+
 Lit Redstone Ore=Minério de Redstone Aceso
 Lapis Lazuli Ore=Minério de Lápis-lazuli
+
 Lapis lazuli ore is the ore of lapis lazuli. It can be rarely found in clusters near the bottom of the world.=Minerios de lápis-lazuli são o minério que contém lápis-lazuli. Pode ser encontrado raramente em aglomerados perto do fundo do mundo.
+
 Emerald Ore=Minério de Esmeralda
+
 Emerald ore is the ore of emeralds. It is very rare and can be found alone, not in clusters.=Minério de esmeralda é o minério das esmeraldas. É raro e podem ser encontrados solitários, não em aglomerados.
+
 Diamond Ore=Minério de Diamante
 Diamond ore is rare and can be found in clusters near the bottom of the world.=Minérios de diamante são raros e podem ser encontrados em aglomerados perto do fundo do mundo.
 Stone Bricks=Tijolo de Rocha
@@ -71,20 +47,32 @@ Diorite is an igneous rock.=Diorito é uma rocha ígnea.
 Polished Diorite=Diorito Polido
 Polished diorite is a decorative building block made from diorite.=Diorito polido é um bloco de construção decorativo feito a partir de diorito.
 Grass Block=Bloco de Grama
+
 A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.=Um bloco de grama é um bloco de terra com cobertura de grama. Blocos de gramas são recursos que permitem o crescimento de qualquer tipo de planta. Eles podem se tornar terras aradas com uma enxada e em caminhos com uma pá. Sob a luz, a grama se espalha lentamente em blocos de terra próximos. Sob um bloco opaco ou um líquido, um bloco de grama pode se tornar em um bloco de terra.
+
 Dirt with Snow=Terra com Neve
 Grass Path=Caminho de Grama
+
 Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=Caminhos de grama são uma variante decorativa dos blocos de grama. Seu topo tem uma cor diferente e são um pouco mais baixos que os blocos de grama, os tornando úteis para construir trilhas. Eles podem ser criados clicando no Botão Direito com uma pá em um bloco de grama. Um caminho de grama se transforma em terra quando está abaixo de um bloco sólido ou clicando Shift + Botão Direito nele com a pá.
+
 Mycelium=Micélio
+
 Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.=Micélio é um tipo de terra e é o solo ideal para cogumelos. Diferente de outros tipos de blocos de terra, ele não pode ser convertido em terra arada com uma enxada. Sob a luz, micélio lentamente se espalha sobre outros blocos de terra próximos. Sob um bloco opaco ou um líquido, eventualmente se torna terra.
+
 Mycelium with Snow=Micélio com Neve
 Podzol=Podzol
+
 Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.=Podzol é um tpo de terra encontrado em florestas de taiga. Apenas algumas plantas conseguem sobreviver nele.
+
 Podzol with Snow=Podzol com Neve
 Dirt=Terra
+
 Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby.=Terra atua como solo para algumas plantas. Quando sob a luz, esse bloco pode crescer grama ou uma cobertura de micélio se tais blocos estão próximos.
+
 Coarse Dirt=Terra Infértil
+
 Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never grow a cover.=Terra infértil age como solo para algums plantas e é similar à terra, mas nunca crescerá uma cobertura.
+
 Gravel=Cascalho
 This block consists of a couple of loose stones and can't support itself.=Esse bloco é composto por fragmentos de rochas e não consegue se manter suspenso.
 Grey Sand=Areia Cinza
@@ -112,110 +100,123 @@ Smooth red sandstone is a decorative building block.=Arenito vemelho liso é um 
 Clay=Argila
 Clay is a versatile kind of earth commonly found at beaches underwater.=Argila é um tipo de terra versátil comumente encontrado em praias e submerso.
 Brick Block=Bloco de Tijolo
+
 Brick blocks are a good building material for building solid houses and can take quite a punch.=Blocos de tijolo são bons materiais de construção para a construção de casas sólidas e que podem aguentar a porrada.
+
 Bedrock=Rocha Matriz
+
 Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.=Rochas-mãe são um tipo muito duro de rochas. Elas não podem ser quebradas, destruídas, coletadas ou movidas por meios normais, a não ser no Modo Criativo.
+
 In the End dimension, starting a fire on this block will create an eternal fire.=Na dimensão do End, começar um fogo nesse bloco criará um fogo eterno.
 Cobblestone=Pedregulho
 Mossy Cobblestone=Pedregulho Musgoso
 Block of Coal=Bloco de Carvão
+
 Blocks of coal are useful as a compact storage of coal and very useful as a furnace fuel. A block of coal is as efficient as 10 coal.=Blocos de carvão são úteis para armzenad carvão de forma compacta e muito úteis como combustível de fornalas. Um bloco de carvão é tão eficiente quanto 10 carvões.
+
 Block of Charcoal=Bloco de Carvão Vegetal
+
 Blocks of charcoal are useful as a compact storage of charcoal and very useful as a furnace fuel. A block of charcoal is as efficient as 10 charcoal.=Blocos de carvão vegetal são úteis como armazenamento compacto de carvão e muito úteis como combustível para fornalhas. Um bloco de carvão vegetal é tão eficiente quanto 10 carvões vegetais.
+
 Block of Iron=Bloco de Ferro
+
 A block of iron is mostly a decorative block but also useful as a compact storage of iron ingots.=Um bloco de ferro é principalmente um bloco decorativo brilhante, mas também é útil para armazenar ferro de forma compacta.
+
 Block of Gold=Bloco de Ouro
+
 A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Um bloco de ouro é principalmente um bloco decorativo brilhante, mas também é útil para armazenar ouro de forma compacta.
+
 Polished Block of Gold=Bloco de Ouro Polido
+
 A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=O bloco de ouro polido é principalmente um bloco decorativo brilhante, mas também é útil para armazenar lingotes de ouro de forma compacta.
+
 Block of Diamond=Bloco de Diamante
+
 A block of diamond is mostly a shiny decorative block but also useful as a compact storage of diamonds.=Um bloco de diamante é principalmente um bloco decorativo brilhante, mas também é útil para armazenar diamantes de forma compacta.
+
 Lapis Lazuli Block=Bloco de Lápis-lazuli
+
 A lapis lazuli block is mostly a decorative block but also useful as a compact storage of lapis lazuli.=Um bloco de lápis-lazuli é principalmente um bloco decorativo brilhante, mas também é útil para armazenar lápis-lazuli de forma compacta.
+
 Block of Emerald=Bloco de Esmeralda
+
 A block of emerald is mostly a shiny decorative block but also useful as a compact storage of emeralds.=Um bloco de esmeralda é principalmente um bloco decorativo brilhante, mas também é útil para armazenar esmeraldas de forma compacta.
+
 Obsidian=Obsidiana
+
 Obsidian is an extremely hard mineral with an enourmous blast-resistance. Obsidian is formed when water meets lava.=Obsidiana é um mineral extremamente duro com uma enorme resistência a explosões. Obsidiana é formada quando a água encontra com a lava.
+
 Crying Obsidian=Obsidiana Chorona
+
 Crying obsidian is a luminous obsidian that can generate as part of ruined portals.=Obsidiana chorona é uma obsidiana luminosa que pode ser gerada como parte de portais arruinados.
+
 Ice=Gelo
+
 Ice is a solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source.=Gelo é um bloco sólido normamente encontrado em áreas frias. Ele derrete quando próximo de um bloco luminoso sob um nível de luz 12 ou superior. Quando derrete ou é quebrado enquanto acima de um bloco, se torna em uma fonte de água.
+
 Packed Ice=Gelo Compactado
 Packed ice is a compressed form of ice. It is opaque and solid.=Gelo compactado é uma forma comprimida de gelo. É um bloco opaco e sólido.
+
 Frosted ice is a short-lived solid block. It melts into a water source within a few seconds.=Gelo fosco é um bloco sólido de vida curta. Ele derrete em uma fonte de água após alguns segundos.
+
 Frosted Ice=Gelo Fosco
 Top Snow=Cobertura de Neve
 Stackable=Empilhável
+
 Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.=A cobertura de neve é uma camada de neve. Ela derrete próxima de fontes luminosas além do sol quando o nível de luz for 12 ou superior.
+
 Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.=Cobertura de neve pode ser empilhada e possui 8 diferentes níveis de altura. Aos níveis 2-8, a cobertura de neve é colisional. Cobertura de neve derruba 2-9 bolas de neve, dependendo de sua altura.
+
 This block can only be placed on full solid blocks and on another top snow (which increases its height).=Esse bloco só pode ser colocado em blocos sólidos e em outras coberturas de neve (o que aumenta sua altura).
+
 Snow=Neve
+
 This is a full block of snow. Snow of this thickness is usually found in areas of extreme cold.=Esse é um bloco cheio de neve. Neve dessa espessura geralmente é encontrada em áreas de frio extremo.
-Cactus=Cacto
-Grows on sand=Cresce na areia
-Contact damage: @1 per half second=Dano de contato: @1 por meio segundo
-This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.=Esse é um pedaço de cacto comumente encontrado em áreas secas, especialmente desertos. Com o passar do tempo, cactos crescerão até 3 blocos de altura em areia ou areia vermelha. Um cacto machuca seres vivos que o encostarem com o dano de 1 HP a cada meio segundo. Quando um cacto é quebrado, todo bloco de cacto conectado acima também será quebrado.
-A cactus can only be placed on top of another cactus or any sand.=Um cacto só pode ser colocado em cima de outro cacto ou em qualquer areia.
-Sugar Canes=Cana de Açúcar
-Grows on sand or dirt next to water=Cresce na areia ou em terra próximo a água
-Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.=Canas de açúcar são plantas que possui alguns usos em fabricações. Canas de açúcar crescerão lentamente até 3 blocos quando estão próximas da água e são colocadas em blocos de grama, terra, areia, areia vermelha, podzol ou terra infértil. Quando uma cana de açúcar é quebrada, todas as canas de açúcar conectadas acima também se quebrarão.
-Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.=Canas de açúcar só podem ser colocados emcima de outras canas de açúcar ou sobre blocos em qual elas podem crescer.
-Ladder=Escada
-A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=
-Vines=Vinhas
-Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread.=Vinhas são blocos escaláveis que podem ser colocadas ao lado de blocos sólidos. Vinhas crescem lentamente e se espalham.
-Glass=Vidro
-A decorative and mostly transparent block.=Um bloco decorativo e na maior parte transparente.
-Stained glass is a decorative and mostly transparent block which comes in various different colors.=Vidro tingido é um bloco decorativo majoritariamente transparente e que possui diferentes colorações.
-Stained Glass=Vidro Tingido
-Red Stained Glass=Vidro Tingido de Vermelho
-Green Stained Glass=Vidro Tingido de Verde
-Blue Stained Glass=Vidro Tingido de Azul
-Light Blue Stained Glass=Vidro Tingido de Azul Claro
-Black Stained Glass=Vidro Tingido de Preto
-White Stained Glass=Vidro Tingido de Branco
-Yellow Stained Glass=Vidro Tingido de Amarelo
-Brown Stained Glass=Vidro Tingido de Marrom
-Orange Stained Glass=Vidro Tingido de Laranja
-Pink Stained Glass=Vidro Tingido de Rosa
-Grey Stained Glass=Vidro Tingido de Cinza
-Lime Stained Glass=Vidro Tingido de Lima
-Light Grey Stained Glass=Vidro Tingido de Cinza Claro
-Magenta Stained Glass=Vidro Tingido de Magenta
-Purple Stained Glass=Vidro Tingido de Roxo
-Cyan Stained Glass=Vidro Tingido de Ciano
+
+##[ nodes_liquid.lua ]##
 Flowing Water=Água Corrente
 Water Source=Fonte de Água
 Water=Água
+
 Water is abundant in oceans and also appears in a few springs in the ground. You can swim easily in water, but you need to catch your breath from time to time.=Água é abundante em oceanos e também aparece em algumas nascentes no solo. Você pode nadar facilmente na água, mas é preciso tomar fôlego de tempo em tempo.
+
 Water interacts with lava in various ways:=A água interage com a lava de várias formas:
+
 • When water is directly above or horizontally next to a lava source, the lava turns into obsidian.=• Quando a água está diretamente acima ou horizontalmente próxima de uma fonte de lava, a lava se torna obsidiana.
+
 • When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.=• Quando água fluindo toca em lava fluindo tanto por cima quanto horizontalmente, a lava se torna pedregulho.
+
 • When water is directly below lava, the water turns into stone.=• Quando a água está diretamente abaixo da lava, a água se torna rocha.
 Flowing Lava=Lava Corrente
+
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=Uma fonte de lava incendeia alguns blocos de ar acima quando estão próximos de um bloco inflamável.
+
 Lava Source=Fonte de Lava
+Lava=
+
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=A lava é quente e um tanto quanto perigosa. Não a toque, irá te queimar muito e será dificil sair.
+
 Lava interacts with water various ways:=A lava interage com a água de várias maneiras:
+
 • When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• Quando uma fonte de lava está diretamente abaixo ou horizontalmente perto da água, a lava se torna obsidiana.
+
 • When lava is directly above water, the water turns into stone.=• Quando a lava está diretamente acima da água, a água se torna rocha.
-Bone Block=Bloco de Osso
-Bone blocks are decorative blocks and a compact storage of bone meal.=Blocos de osso são blocos decorativos e uma forma compacta de armazenar farinha de osso.
-Slime Block=Bloco de Slime
-Slime blocks are very bouncy and prevent fall damage.=Blocos de slime são bastante saltitantes e previnem dano de queda.
-Cobweb=Teia de Aranha
-Slows down movement=Diminui a velocidade de movimento
-Cobwebs can be walked through, but significantly slow you down.=Teias de aranha podem ser atravessadas, mas reduzindo significativamente sua velocidade.
-Dead Bush=Arbusto Morto
-Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.=Arbustos mortos são plantas normais comumente encontradas em áreas secas. Podem ser colhidas na forma de gravetos.
-Barrier=Barreira
-Barriers are invisible walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.=
-When you hold a barrier in hand, you reveal all placed barriers in a short distance around you.=Quando você segura uma barreira na mão, lhe é revelado todas as barreiras posicionadas próximas de você.
-Realm Barrier=Barreira de Mundo
-Light=Luz
-Lights are invisible blocks. They are used to light up adventure maps and the like.=Luzes são blocos invisíveis. Eles são usados para iluminar mapas de aventura e similares.
-When you hold a light in hand, you reveal all placed lights in a short distance around you.=Quando você segura uma luz na mão, você revela todas as luzes colocadas a uma curta distância ao seu redor.
-Void=Vazio
+##[ nodes_cactuscane.lua ]##
+Cactus=Cacto
+Grows on sand=Cresce na areia
+Contact damage: @1 per half second=Dano de contato: @1 por meio segundo
+
+This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.=Esse é um pedaço de cacto comumente encontrado em áreas secas, especialmente desertos. Com o passar do tempo, cactos crescerão até 3 blocos de altura em areia ou areia vermelha. Um cacto machuca seres vivos que o encostarem com o dano de 1 HP a cada meio segundo. Quando um cacto é quebrado, todo bloco de cacto conectado acima também será quebrado.
+
+A cactus can only be placed on top of another cactus or any sand.=Um cacto só pode ser colocado em cima de outro cacto ou em qualquer areia.
+Sugar Canes=Cana de Açúcar
+Grows on sand or dirt next to water=Cresce na areia ou em terra próximo a água
+
+Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.=Canas de açúcar são plantas que possui alguns usos em fabricações. Canas de açúcar crescerão lentamente até 3 blocos quando estão próximas da água e são colocadas em blocos de grama, terra, areia, areia vermelha, podzol ou terra infértil. Quando uma cana de açúcar é quebrada, todas as canas de açúcar conectadas acima também se quebrarão.
+
+Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.=Canas de açúcar só podem ser colocados emcima de outras canas de açúcar ou sobre blocos em qual elas podem crescer.
+
+##[ nodes_trees.lua ]##
 This is a decorative block surrounded by the bark of a tree trunk.=Este é um bloco decorativo envolto das cascas de uma árvore.
 Needs soil and light to grow=Necessita de solo e luz para crescer
 Oak Wood=Madeira de Carvalho
@@ -268,18 +269,30 @@ Acacia Wood Planks=Tábuas de Acácia
 Birch Wood Planks=Tábuas de Bétula
 2×2 saplings @= large tree=2x2 de mudas @= árvore grande
 Oak Sapling=Muda de Carvalho
+
 When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time.=Quando colocada no solo (como na terra) e exposta a luz, a muda de carvalho rescerá em uma árvore após algum tempo.
+
 Dark Oak Sapling=Muda de Carvalho Escuro
+
 Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.=Mudas de carvalho escuro podem se tornar carvalhos escuro, mas apenas em grupo. Uma muda de carvalho escuro solitária não crescerá. Um grupo de quatro mudas de carvalho escuro crescem em uma árvore de carvalho escuro após um tempo em um quadrado de 2x2 sendo expostas à luz.
+
 2×2 saplings required=Requer mudas 2x2
 Jungle Sapling=Mudas da Selva
+
 When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.=Quando colocada no solo (como na terra) e exposta a luz, a muda da selva crescerá em uma árvore após algum tempo. Quando há 4 mudas da selva em um quadrado de 2x2, elas crescerão em uma enorme árvore da selva.
+
 Acacia Sapling=Muda de Acácia
+
 When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time.=Quando colocada no solo (como na terra) e exposta a luz, a muda de acácia crescerá em uma árvore após algum tempo.
+
 Spruce Sapling=Muda de Pinheiro
+
 When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.=Quando colocada no solo (como na terra) e exposta a luz, a muda de pinheiro crescerá em uma árvore após algum tempo. Quando há 4 mudas de pinheiro em um quadrado de 2x2, elas crescerão em um enorme pinheiro.
+
 Birch Sapling=Muda de Bétula
+
 When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time.=Quando colocada no solo (como na terra) e exposta a luz, a muda de bétula crescerá em uma árvore após algum tempo.
+
 Oak Leaves=Folhas de Carvalho
 Oak leaves are grown from oak trees.=Folhas de carvalho crescem a partir de árvores de carvalho.
 Dark Oak Leaves=Folhas de Carvalho Escuro
@@ -292,6 +305,114 @@ Spruce Leaves=Folhas de Pinheiro
 Spruce leaves are grown from spruce trees.=Folhas de pinheiro crescem a partir de árvores de pinheiro.
 Birch Leaves=Folhas de Bétula
 Birch leaves are grown from birch trees.=Folhas de bétula crescem a partir de árvores de bétula.
+##[ nodes_glass.lua ]##
+Glass=Vidro
+A decorative and mostly transparent block.=Um bloco decorativo e na maior parte transparente.
+
+Stained glass is a decorative and mostly transparent block which comes in various different colors.=Vidro tingido é um bloco decorativo majoritariamente transparente e que possui diferentes colorações.
+
+Stained Glass=Vidro Tingido
+Red Stained Glass=Vidro Tingido de Vermelho
+Green Stained Glass=Vidro Tingido de Verde
+Blue Stained Glass=Vidro Tingido de Azul
+Light Blue Stained Glass=Vidro Tingido de Azul Claro
+Black Stained Glass=Vidro Tingido de Preto
+White Stained Glass=Vidro Tingido de Branco
+Yellow Stained Glass=Vidro Tingido de Amarelo
+Brown Stained Glass=Vidro Tingido de Marrom
+Orange Stained Glass=Vidro Tingido de Laranja
+Pink Stained Glass=Vidro Tingido de Rosa
+Grey Stained Glass=Vidro Tingido de Cinza
+Lime Stained Glass=Vidro Tingido de Lima
+Light Grey Stained Glass=Vidro Tingido de Cinza Claro
+Magenta Stained Glass=Vidro Tingido de Magenta
+Purple Stained Glass=Vidro Tingido de Roxo
+Cyan Stained Glass=Vidro Tingido de Ciano
+##[ nodes_climb.lua ]##
+Ladder=Escada
+
+A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=
+
+Vines=Vinhas
+
+Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread.=Vinhas são blocos escaláveis que podem ser colocadas ao lado de blocos sólidos. Vinhas crescem lentamente e se espalham.
+
+##[ nodes_misc.lua ]##
+Bone Block=Bloco de Osso
+Bone blocks are decorative blocks and a compact storage of bone meal.=Blocos de osso são blocos decorativos e uma forma compacta de armazenar farinha de osso.
+Slime Block=Bloco de Slime
+Slime blocks are very bouncy and prevent fall damage.=Blocos de slime são bastante saltitantes e previnem dano de queda.
+Cobweb=Teia de Aranha
+Slows down movement=Diminui a velocidade de movimento
+Cobwebs can be walked through, but significantly slow you down.=Teias de aranha podem ser atravessadas, mas reduzindo significativamente sua velocidade.
+Dead Bush=Arbusto Morto
+
+Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.=Arbustos mortos são plantas normais comumente encontradas em áreas secas. Podem ser colhidas na forma de gravetos.
+
+Barrier=Barreira
+
+Barriers are invisible walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.=
+
+When you hold a barrier in hand, you reveal all placed barriers in a short distance around you.=Quando você segura uma barreira na mão, lhe é revelado todas as barreiras posicionadas próximas de você.
+
+Realm Barrier=Barreira de Mundo
+Light=Luz
+
+Lights are invisible blocks. They are used to light up adventure maps and the like.=Luzes são blocos invisíveis. Eles são usados para iluminar mapas de aventura e similares.
+
+When you hold a light in hand, you reveal all placed lights in a short distance around you.=Quando você segura uma luz na mão, você revela todas as luzes colocadas a uma curta distância ao seu redor.
+
+Void=Vazio
+##[ craftitems.lua ]##
+Stick=Graveto
+
+Sticks are a very versatile crafting material; used in countless crafting recipes.=Gravetos são materiais de fabricação muito versáteis; usados em inumeráveis receitas de fabricação.
+
+Paper=Papel
+Paper is used to craft books and maps.=Papel é utilizado para fabricar livros e mapas.
+Coal=Carvão
+
+“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.="Carvão" se refere a pedaços de carvão obtidos quando escavados minérios de carvão, que podem ser encontrados no subsolo. Carvão é seu combustível de fornalha padrão, mas também pode ser usado para fazer tochas, blocos de carvão e outras coisas.
+
+Charcoal=Carvão Vegetal
+
+Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks.=Carvão vegetal é um combustível alternativo de fornalha produzido ao cozinhar madeira em uma fornalha. Possui o mesmo tempo de queima que o carvão e também compartilha diversas receitas de fabricação, mas não pode ser usado para fabricar blocos de carvão.
+
+Iron Nugget=Pepita de Ferro
+
+Iron nuggets are very small pieces of molten iron; the main purpose is to create iron ingots.=Pepitas de ferro são pequenas peças de ferro fundido; seu principal propósito é na criação de lingotes de ferro.
+
+Gold Nugget=Pepita de Ouro
+
+Gold nuggets are very small pieces of molten gold; the main purpose is to create gold ingots.=Pepitas de ouro são pequenas peças de ouro fundido; sua principal finalidade é criar lingotes de ouro.
+
+Diamond=Diamante
+
+Diamonds are precious minerals and useful to create the highest tier of armor and tools.=Diamantes são minerais preciosos e úteis para criar as armaduras e ferramentas do mais alto nível.
+
+Clay Ball=Bola de Argila
+Clay balls are a raw material, mainly used to create bricks in the furnace.=Bolas de argila são materiais não processados, principalmente utilizados para fabricar tijolos quando cozidos.
+Iron Ingot=Lingote de Ferro
+Molten iron. It is used to craft armor, tools, and whatnot.=Ferro fundido. É usado para fabricar armaduras, ferramentas e o que não.
+Gold Ingot=Lingote de Ouro
+Molten gold. It is used to craft armor, tools, and whatnot.=Ouro fundido. É usado para fabricar armaduras, ferramentas e o que não.
+Emerald=Esmeralda
+Emeralds are used in villager trades as currency.=Esmeraldas são utilizadas nas trocas como aldeões na forme de moeda.
+Lapis Lazuli=Lápis-lazúli
+Lapis Lazuli are required for enchanting items on an enchanting table.=Os Lápis-lazúli são necessários para encantar itens em uma mesa de encantamento.
+Brick=Tijolo
+Bricks are used to craft brick blocks.=Tijolos são usados para fabricar blocos de tijolo.
+Flint=Sílex
+Flint is a raw material.=Sílex é um material não processado.
+Sugar=Açúcar
+Sugar comes from sugar canes and is used to make sweet foods.=Açúcar vem de canas de açúcar e é utilizado para fazer doces comidas.
+Bowl=Tigela
+Bowls are mainly used to hold tasty soups.=Tigelas são utilizadas principalmente para segurar sopas deliciosas.
+Apple=Maçã
+Apples are food items which can be eaten.=Maçãs são itens alimentícios que podem ser comidos.
+Golden Apple=Maçã Dourada
+Golden apples are precious food items which can be eaten.=Maçãs douradas são alimentos preciosos que podem ser consumidos.
+Enchanted Golden Apple=Maçã Dourada Encantada
 
 
 ##### not used anymore #####
@@ -300,8 +421,12 @@ Birch leaves are grown from birch trees.=Folhas de bétula crescem a partir de �
 @1 died in lava.=@1 morreu na lava.
 @1 melted in lava.=@1 foi derretido na lava.
 @1 took a bath in a hot lava tub.=@1 tomo um banho em uma banheira de lava quente.
+
 A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns.=Um pedaço de escada que lhe permite escalar verticalmente. Escadas só podem ser colocadas na face de um bloco sólido e naão em vidros, folhas, gelo, lajes, glowstone e nem em lanternas marinhas.
+
 Barriers are invisble walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.=Barreiras são blocos invisíveis que podem ser caminhados. Eles são usados para criar barreiras em mapas de aventura e similares. Monstros ou animais não aparecerão nas barreiras e cercas não se conectarão com elas. Outros blocos podem ser construídos sob barreiras como qualquer outro bloco.
+
 Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel. A grass path turns into dirt when it is below a solid block.=Caminhos de gramas são variantes decorativas do bloco de grama. Seu topo possui diferentes cores e são um pouco mais baixos que blocos de grama, tornando-os úteis para construír trilhas. Caminhos de grama se tornam terra quando é colocado abaixo de um bloco sólido.
+
 This is a decorative block.=Este é um bloco decorativo.
 Needs soil and water to grow=Necessita de solo e água para crescer

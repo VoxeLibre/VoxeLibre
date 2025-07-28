@@ -1,7 +1,9 @@
 # textdomain: mcl_campfires
 ##[ api.lua ]##
 Cooks food and keeps bees happy.=烹制食物并让蜜蜂保持愉悦。
+
 Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap.=营火有多种用途，包括让蜜蜂保持愉悦、烹制生肉和鱼，还能当作陷阱来使用。 
+
 ##[ register.lua ]##
 Campfire=营火
 Soul Campfire=灵魂营火

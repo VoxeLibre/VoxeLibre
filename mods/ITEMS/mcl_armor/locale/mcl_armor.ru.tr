@@ -1,20 +1,46 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=Это часть надеваемой брони, уменьшающая получаемый вами урон.
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=Чтобы надеть, поместите в соответствующий слот брони в вашем инвентаря.
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=Золотой шлем
+Golden Chestplate=Золотая кираса
+Golden Leggings=Золотые поножи
+Golden Boots=Золотые ботинки
+Chainmail Helmet=
+##TODO: fuzzy matched - verify and remove the comment
+Chainmail Chestplate=Кольчуга
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=Железный шлем
+Iron Chestplate=Железная кираса
+Iron Leggings=Железные поножи
+Iron Boots=Железные ботинки
+Diamond Helmet=Алмазный шлем
+Diamond Chestplate=Алмазная кираса
+Diamond Leggings=Алмазные поножи
+Diamond Boots=Алмазные ботинки
+Netherite Helmet=Незеритовый шлем
+Netherite Chestplate=Незеритовая кираса
+Netherite Leggings=Незеритовые поножи
+Netherite Boots=Незеритовые ботинки
 Projectile Protection=Защита от снарядов
 Reduces projectile damage.=Уменьшает урон от летящих снарядов.
 Blast Protection=Взрывоустойчивость
@@ -29,10 +55,19 @@ Aqua Affinity=Подводник
 #Translations of enchantements
 Increases underwater mining speed.=Увеличивает скорость добычи под водой.
 Curse of Binding=Проклятие несъёмности
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Броню нельзя снять из слота, кроме как умерев, сломав или в режиме творчества.
+
 Thorns=Шипы
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Отражает немного полученного урона при ударе ценой снижения прочности при срабатывании.
+
 Elytra=Элитра
+##[ leather.lua ]##
+Leather Cap=Кожаный шлем
+Leather Tunic=Кожаная кираса
+Leather Pants=Кожаные поножи
+Leather Boots=Кожаные ботинки
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=
@@ -40,29 +75,8 @@ Smithing Template '@1'=
 
 ##### not used anymore #####
 
-Leather Cap=Кожаный шлем
-Iron Helmet=Железный шлем
-Golden Helmet=Золотой шлем
-Diamond Helmet=Алмазный шлем
 Chain Helmet=Кольчужный шлем
-Netherite Helmet=Незеритовый шлем
-Leather Tunic=Кожаная кираса
-Iron Chestplate=Железная кираса
-Golden Chestplate=Золотая кираса
-Diamond Chestplate=Алмазная кираса
-Chain Chestplate=Кольчуга
-Netherite Chestplate=Незеритовая кираса
-Leather Pants=Кожаные поножи
-Iron Leggings=Железные поножи
-Golden Leggings=Золотые поножи
-Diamond Leggings=Алмазные поножи
 Chain Leggings=Кольчужные поножи
-Netherite Leggings=Незеритовые поножи
-Leather Boots=Кожаные ботинки
-Iron Boots=Железные ботинки
-Golden Boots=Золотые ботинки
-Diamond Boots=Алмазные ботинки
 Chain Boots=Кольчужные ботинки
-Netherite Boots=Незеритовые ботинки
 Shooting consumes no regular arrows.=Для стрельбы не требуются обычные стрелы.
 Shoot 3 arrows at the cost of one.=Стреляет за раз 3 стрелами тратя только одну.

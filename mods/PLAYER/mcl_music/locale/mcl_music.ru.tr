@@ -1,6 +1,8 @@
 # textdomain: mcl_music
 Turn music for yourself or another player on or off.=Включить или выключить музыку для себе или другого игрока.
+
 You need the debug privilege in order to turn in-game music on or off for somebody else!=Вам нужна привилегия “debug”, чтобы переключать внутриигровую музыку для кого-то другого!
+
 Could not find player @1!=Игрок @1 не найден!
 off=выкл
 on=вкл

@@ -2,14 +2,23 @@
 Repair and Name=Reparar e Nomear
 Repair and rename items=Reparar e renomear obxetos
 Anvil=Zafra
+
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=A zafra permiteche reparar ferramentas e armaduras, e dar nomes aos elementos. Sen embargo, ten unha durabilidade limitada. Non a deixes caer sobre a tua cabeza, ¡podería ser bastante doloroso!
+
 To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.=Para usar unha zafra, faga clic dereito sobre ela. Unha zafra ten 2 rañuras de entrada (a esquerda) e unha rañura de saida.
+
 To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.=Para trocar o nome dos elementos, coloque unha pila de elementos nunha das rañuras de elementos mentras mantés Baleira a outra rañura de entrada. Escriba un nombre, presione enter o "Establecer nombre", luego obtenga el elemento renombrado en la ranura de salida.
+
 There are two possibilities to repair tools (and armor):=Hai duas posibilidades para reparar ferramentas (e armaduras):
+
 • Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.=• Ferramenta + Ferramenta: Coloque duas ferramentas do mesmo tipo nas rañuras de entrada. A "saude" da ferramenta reparada e a suma da "saude" de ambas ferramentas, cun bono do 12%.
+
 • Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.=• Ferramienta + Material: Algunhas ferramentas tamén poden repararse combinándoas cun elemento do que está feita. Por exemplo, os picos de ferro poden repararse con lingotes de ferro. Isto repara a ferramenta nun 25%.
+
 Armor counts as a tool. It is possible to repair and rename a tool in a single step.=A armadura conta como unha ferramenta. E posible reparar e trocar o nome dunha ferramenta nun só paso.
+
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=A zafra ten unha durabilidade limitada e 3 niveis de dano: sen danos, lixeiramente danada e moi danado. Cada vez que reparas ou trocas o nome de algo, hai un 12% de posibilidades de ca zafra se dane. As zafras tamén teñen a posibilidade de danarse cando caen en máis de 1 bloque. Se unha zafra moi danado se dana novamente, se destrue.
+
 Slightly Damaged Anvil=Zafra lixeiramente danada
 Very Damaged Anvil=Zafra moi danada
 

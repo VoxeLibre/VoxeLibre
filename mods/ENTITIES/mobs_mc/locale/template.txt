@@ -19,6 +19,7 @@ Donkey=
 Mule=
 ##[ llama.lua ]##
 Llama=
+ - Strength @1=
 ##[ ocelot.lua ]##
 Ocelot=
 Cat=

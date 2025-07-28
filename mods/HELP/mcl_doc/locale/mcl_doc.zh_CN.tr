@@ -7,10 +7,15 @@ This block acts as a soil for all saplings.=这个方块可充当所有树苗的
 This block acts as a soil for some saplings.=这个方块可充当部分树苗的土壤。
 Sugar canes will grow on this block.=甘蔗会在这个方块上生长。
 Nether wart will grow on this block.=地狱疣会在这个方块上生长。
+
 This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.=当在距离此方块@1范围内没有任何种类的木头方块时，这个方块会迅速腐朽。腐朽时，它会消失，并且可能掉落其常规掉落物之一。若该方块是由玩家放置的，则不会腐朽。
+
 This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.=当在距离此方块@1范围内没有任何种类的木头方块时，这个方块会迅速腐朽并消失。若该方块是由玩家放置的，则不会腐朽。
+
 This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=这种植物只能生长在草方块和泥土上。为了存活，它需要上方视野无遮挡，或者处于8级及以上光照等级环境中。
+
 This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=这种植物可以生长在草方块、灰化土、泥土和砂土上。为了存活，它需要上方视野无遮挡，或者处于8级及以上光照等级环境中。
+
 This block is flammable.=这个方块是可燃的。
 This block destroys any item it touches.=这个方块会破坏它接触到的任何物品。
 To eat it, wield it, then right-click.=要食用它，将其拿在手中，然后右键点击。
@@ -22,7 +27,7 @@ To consume it, wield it, then right-click.=要使用它，将其拿在手中，�
 You cannot consume this when your hunger bar is full.=当你的饥饿值条已满时，你不能使用这个物品。
 You have to wait for around 2 seconds before you can eat or drink again.=你需要等待大约2秒才能再次进食或饮水。
 Hunger points restored: @1=恢复饥饿值点数：@1
-Saturation points restored: @1%.1f=恢复饱和度点数：@1
+Saturation points restored: @1=恢复饱和度点数：@1
 It can be worn on the head.=它可以佩戴在头上。
 It can be worn on the torso.=它可以穿戴在躯干上。
 It can be worn on the legs.=它可以穿戴在腿上。
@@ -34,7 +39,9 @@ This item can be repaired at an anvil with any wooden planks.=这个物品可以
 This item can be repaired at an anvil with any item in the “@1” group.=这个物品可以在铁砧上使用“@1”组中的任何物品进行修复。
 This item cannot be renamed at an anvil.=这个物品不能在铁砧上重命名。
 This block crushes any block it falls into.=这个方块会压碎它落入的任何方块。
+
 When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B @= number of blocks fallen. The damage can never be more than 40 HP.=当这个方块下落深度超过1格时，它会对撞到的任何玩家造成伤害。造成的伤害按照（下落方块数量×2 - 2）点生命值来计算，伤害永远不会超过40点生命值。
+
 Diamond Pickaxe=钻石镐
 Iron Pickaxe=铁镐
 Stone Pickaxe=石镐

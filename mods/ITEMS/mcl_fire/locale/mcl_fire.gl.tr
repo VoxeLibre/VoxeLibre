@@ -1,20 +1,30 @@
 # textdomain: mcl_fire
+
 Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=O lume é un tipo de bloque daniño e destrutivo pero de curta duración. Destruirase e estenderase cara a preto de bloques inflamables, pero o lume desaparecerá cando non quede nada que queimar. Apagarase pola auga e a choiva próximas. O lume pódese destruír de forma segura golpeándoo, pero é ferinte se estás directamente nel. Se se inicia un lume por riba do netherrack ou dun bloque de magma, converterase inmediatamente nun lume eterno.
+
 Fire is a damaging but non-destructive short-lived kind of block. It will disappear when there is no flammable block around. Fire does not destroy blocks, at least not in this world. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=O lume é un tipo de bloque de curta duración daniño pero non destrutivo. Desaparecerá cando non haxa ningún bloque inflamable ao redor. O lume non destrúe bloques, polo menos non neste mundo. Apagarase pola auga e a choiva próximas. O lume pódese destruír de forma segura golpeándoo, pero é ferinte se estás directamente nel. Se se inicia un lume por riba do netherrack ou dun bloque de magma, converterase inmediatamente nun lume eterno.
+
 Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.=O lume eterno é un bloque daniño que pode crear máis lume. Creará lume ao seu redor cando hai bloques inflamables preto. O lume eterno pódese extinguir mediante golpes e bloques de auga próximos. Ademais do lume (normal), o lume eterno non se apaga por si só e tamén segue ardendo baixo a choiva. Golpear lume eterno é seguro, pero doe se te quedas dentro.
+
 Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.=O lume eterno é un bloque daniño. O lume eterno pódese extinguir mediante golpes e bloques de auga próximos. Ademais do lume (normal), o lume eterno non se apaga por si só e tamén segue ardendo baixo a choiva. Golpear lume eterno é seguro, pero doe se te quedas dentro.
+
 Fire=Lume 
 Eternal Fire=Lume Eterno
-##[ flint_and_steel.lua ]##
-Starts fires and ignites blocks=Comeza lumes e acende bloques
-Flint and Steel=Pedra e Aceiro
-Flint and steel is a tool to start fires and ignite blocks.=Pedra e Aceiro  é unha ferramenta para prender lumes e prender bloques.
-Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.=Fai clic co botón dereito na superficie dun bloque para intentar prender lume diante del ou prender o bloque. Algúns bloques teñen unha reacción única cando se acenden.
 ##[ fire_charge.lua ]##
 Fire Charge=Carga de lume
 Dispenser projectile=Dispensador de Proxectis
+Starts fires and ignites blocks=Comeza lumes e acende bloques
+
 Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly.=As cargas de lume son principalmente proxectís que poden ser lanzados desde os dispensadores, voarán en liña recta e estalarán nun incendio ao impactar. Alternativamente, pódense usar para acender lumes directamente.
+
 Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up.=Coloque a carga de lume nun dispensador e fornéceo de enerxía Redstone para lanzala. Para acender un lume directamente, basta con colocar a carga de lume no chan, que a usa.
+
+##[ flint_and_steel.lua ]##
+Flint and Steel=Pedra e Aceiro
+Flint and steel is a tool to start fires and ignite blocks.=Pedra e Aceiro  é unha ferramenta para prender lumes e prender bloques.
+
+Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.=Fai clic co botón dereito na superficie dun bloque para intentar prender lume diante del ou prender o bloque. Algúns bloques teñen unha reacción única cando se acenden.
+
 
 
 ##### not used anymore #####

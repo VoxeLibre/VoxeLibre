@@ -1,20 +1,46 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=這是一件可裝備的盔甲，可以減少你受到的傷害。
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=要裝備它，就把它放在你的物品欄中相應的盔甲插槽上。
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=黃金頭盔
+Golden Chestplate=黃金胸甲
+Golden Leggings=黃金護腿
+Golden Boots=黃金靴子
+Chainmail Helmet=
+##TODO: fuzzy matched - verify and remove the comment
+Chainmail Chestplate=鎖鏈胸甲
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=鐵製頭盔
+Iron Chestplate=鐵製胸甲
+Iron Leggings=鐵製護腿
+Iron Boots=鐵製靴子
+Diamond Helmet=鑽石頭盔
+Diamond Chestplate=鑽石胸甲
+Diamond Leggings=鑽石護腿
+Diamond Boots=鑽石靴子
+Netherite Helmet=
+Netherite Chestplate=
+Netherite Leggings=
+Netherite Boots=
 Projectile Protection=
 Reduces projectile damage.=
 Blast Protection=
@@ -29,10 +55,19 @@ Aqua Affinity=
 #Translations of enchantements
 Increases underwater mining speed.=
 Curse of Binding=
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+
 Thorns=
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
+
 Elytra=
+##[ leather.lua ]##
+Leather Cap=皮革帽子
+Leather Tunic=皮革上衣
+Leather Pants=皮革褲子
+Leather Boots=皮革靴子
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=
@@ -40,23 +75,6 @@ Smithing Template '@1'=
 
 ##### not used anymore #####
 
-Leather Cap=皮革帽子
-Iron Helmet=鐵製頭盔
-Golden Helmet=黃金頭盔
-Diamond Helmet=鑽石頭盔
 Chain Helmet=鎖鏈頭盔
-Leather Tunic=皮革上衣
-Iron Chestplate=鐵製胸甲
-Golden Chestplate=黃金胸甲
-Diamond Chestplate=鑽石胸甲
-Chain Chestplate=鎖鏈胸甲
-Leather Pants=皮革褲子
-Iron Leggings=鐵製護腿
-Golden Leggings=黃金護腿
-Diamond Leggings=鑽石護腿
 Chain Leggings=鎖鏈護腿
-Leather Boots=皮革靴子
-Iron Boots=鐵製靴子
-Golden Boots=黃金靴子
-Diamond Boots=鑽石靴子
 Chain Boots=鎖鏈靴子

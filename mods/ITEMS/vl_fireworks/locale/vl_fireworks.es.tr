@@ -1,7 +1,11 @@
 # textdomain: vl_fireworks
-Flight Duration:=Duración del vuelo:
-Firework Rocket=Cohete de fuegos artificiales
+##[ star.lua ]##
 Firework Star=Estrella de fuegos artificiales
+
 A firework star is the key component of a firework rocket which is responsible for the visible explosion.=Una estrella de fuegos artificiales es el componente clave de un cohete de fuegos artificiales y es responsable de la explosión visible.
+
 Generic Firework Star=Estrella de fuegos artificiales genérica
 Size:=Tamaño:
+##[ rockets.lua ]##
+Flight Duration:=Duración del vuelo:
+Firework Rocket=Cohete de fuegos artificiales

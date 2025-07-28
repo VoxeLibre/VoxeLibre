@@ -1,8 +1,11 @@
 # textdomain: mcl_flowerpots
 Flower Pot=Blomsterpotte
 Can hold a small flower or plant=Kan huse en liten blomst eller plante
+
 Flower pots are decorative blocks in which flowers and other small plants can be placed.=Blomsterpotter er dekorative blokker som blomster og andre små planter kan plasseres i.
+
 Just place a plant on the flower pot. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.=Bare plasser en plante i blomsterpotten. Blomsterpotter kan inneholde små blomster (ikke høyere enn 1 blokk), spirer, bregner, døde busker, sopp og kaktus. Høyreklikk på en potteplante for å ta planten.
+
 Cactus=
 Brown Mushroom=
 Red Mushroom=

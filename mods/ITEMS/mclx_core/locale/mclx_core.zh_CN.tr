@@ -1,5 +1,7 @@
 # textdomain: mclx_core
 River Water Source=河水源头
+
 River water has the same properties as water, but has a reduced flowing distance and is not renewable.=河水有着和普通水一样的性质，不过其流动距离更短，并且是不可再生的。
+
 River Water=河水
 Flowing River Water=流动的河水

@@ -2,7 +2,11 @@
 This block can have one of 6 possible orientations.=这个方块可以朝向6个可能方向中的某一个方向摆放。
 Piston=活塞
 Pushes block when powered by redstone power=在由红石能量驱动时推动方块
+
 A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however.=活塞是一种带有推杆的红石元件，当有红石能量驱动时，它会推动其前方的一个或多个方块。不过，并非所有方块都能被推动。
+
 Sticky Piston=粘性活塞
 Pushes or pulls block when powered by redstone power=在由红石能量驱动时推动或拉动方块
+
 A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled.=粘性活塞是一种带有粘性推杆的红石元件，其推杆可以伸出和缩回。当有红石能量驱动时，推杆会伸出，在伸出时它会推动其前方的一个或多个方块；当推杆缩回时，它会拉回其前方的单个方块。需要注意的是，并非所有方块都能被推动或拉动。
+

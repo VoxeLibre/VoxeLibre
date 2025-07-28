@@ -1,5 +1,7 @@
 # textdomain: mcl_walls
+
 A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Et stykke mur. Den kan ikke hoppes over med et enkelt hopp. Når flere av disse plasseres ved siden av hverandre, vil de automatisk bygge en sammenkoblet murstruktur.
+
 ##[ register.lua ]##
 Cobblestone Wall=Brosteinmur
 Mossy Cobblestone Wall=Mosete brosteinmur

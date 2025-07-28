@@ -1,5 +1,8 @@
 # textdomain: mcl_observers
 Observer=Observador
 Emits redstone pulse when block in front changes=Emite pulso de pedra vermella cando o bloque de diante cambia
+
 An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes.=Un observador é un compoñente de pedra vermella que observa o bloque diante del e envía un pulso de pedra vermella moi breve sempre que este bloque cambia.
+
 Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow points to the side of the output, which is at the opposite side of the “face”. You can place your redstone dust or any other component here.=Coloca o observador directamente diante do bloque que queres observar coa "cara" mirando o bloque. A frecha apunta ao lado da saída, que está no lado oposto da "cara". Podes colocar aquí o teu po de pedra vermella ou calquera outro compoñente.
+

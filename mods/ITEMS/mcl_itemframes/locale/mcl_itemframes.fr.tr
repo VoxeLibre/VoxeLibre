@@ -1,6 +1,8 @@
 # textdomain: mcl_itemframes
 Item frames are decorative blocks in which items can be placed.=Les cadres d'objets sont des blocs décoratifs dans lesquels des objets peuvent être placés.
+
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Placez simplement n'importe quel élément sur le cadre de l'élément. Utilisez à nouveau le cadre de l'objet pour récupérer l'objet.
+
 ##[ register.lua ]##
 Item Frame=Cadre de l'article
 Can hold an item=

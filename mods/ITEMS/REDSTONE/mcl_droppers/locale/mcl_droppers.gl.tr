@@ -3,7 +3,10 @@ Dropper=Contagotas
 Inventory=Inventario
 9 inventory slots=9 rañuras de inventario
 Drops item when powered by redstone power=Cae o elemento cando está alimentado por enerxía Pedra Vermella
+
 A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.=Un contagotas é un compoñente Pedra Vermella e un recipiente con 9 rañuras de inventario que, cando se lle proporciona enerxía Pedra Vermella, deixa caer un artigo ou colócao nun recipiente diante del.
+
 Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.=Os contagotas pódense colocar en 6 direccións posibles, os elementos deixaranse fóra do burato. Use o contagotas para acceder ao seu inventario. Proporcionalle enerxía de pedra vermella unha vez para facer caer o contagotas ou transferir un elemento aleatorio.
+
 Downwards-Facing Dropper=Contagotas cara abaixo
 Upwards-Facing Dropper=Contagotas cara arriba

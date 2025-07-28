@@ -1,4 +1,6 @@
 # textdomain: mcl_target
 Target=Alvo
+
 A target is a block that provides a temporary redstone charge when hit by a projectile.=Um alvo é um bloco que fornece uma carga temporária de redstone quando atingido por um projétil.
+
 Throw a projectile on the target to activate it.=Arremesse um projétil no alvo para ativá-lo.

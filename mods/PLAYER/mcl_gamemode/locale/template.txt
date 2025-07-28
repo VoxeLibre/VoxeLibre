@@ -2,6 +2,7 @@
 [<gamemode>] [<player>]=
 Change gamemode (survival/creative) for yourself or player=
 Player not online=
-Gamemode =
+Gamemode @1 does not exist.=
+More than one gamemode fit @1=
 Gamemode for player =
 : =

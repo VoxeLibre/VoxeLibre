@@ -1,6 +1,9 @@
 # textdomain: mesecons_pressureplates
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Eine Holzdruckplatte ist eine Redstonekomponente, die ihre benachbarten Blöcke mit Redstoneenergie versorgt, solange sich ein beliebiges bewegliches Objekt (wie Gegenstände, Spieler und Mobs) auf ihm befindet.
+
 A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=Eine Druckplatte ist eine Redstonekomponente, die ihre benachbarten Blöcke mit Redstoneenergie versorgt, wenn sich jemand oder etwas auf ihr befindet.
+
 Provides redstone power when pushed=Gibt Redstoneenergie aus, wenn gedrückt
 Pushable by players, mobs and objects=Kann durch Spielern, Mobs und Objekten gedrückt werden
 Pushable by players and mobs=Kann durch Spielern und Mobs gedrückt werden
@@ -16,6 +19,10 @@ Mangrove Pressure Plate=Mangrovenholzdruckplatte
 Crimson Pressure Plate=Karmesinholzdruckplatte
 Warped Pressure Plate=Wirrholzdruckplatte
 Stone Pressure Plate=Steindruckplatte
+
 A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Eine Steindruckplatte ist eine Redstonekomponente, die ihre benachbarten Blöcke mit Redstoneenergie versorgt, solange sich ein Spieler oder Mob auf ihm befindet. Sie wird von nichts anderem ausgelöst.
+
 Polished Blackstone Pressure Plate=Polierte Schwarzsteindruckplatte
+
 A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Eine polierte Schwarzsteindruckplatte ist eine Redstonekomponente, die ihre benachbarten Blöcke mit Redstoneenergie versorgt, solange sich ein Spieler oder Mob auf ihm befindet. Sie wird von nichts anderem ausgelöst.
+

@@ -3,8 +3,13 @@ Chain=锁链
 Chains are metallic decoration blocks.=锁链是金属制的装饰性方块。
 Gold Chain=
 Gold Chains are metallic decoration blocks.=
+##[ register.lua ]##
 Lantern=灯笼
+
 Lanterns are light sources which can be placed on the top or the bottom of most blocks.=灯笼是一种光源，可以放置在大多数方块的顶部或底部。
+
 Soul Lantern=灵魂灯笼
 Gold Lantern=
+
 Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
+

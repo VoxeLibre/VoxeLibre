@@ -1,6 +1,8 @@
 # textdomain: mcl_music
 Turn music for yourself or another player on or off.=Slår musikk for deg selv eller en annen spiller av eller på.
+
 You need the debug privilege in order to turn in-game music on or off for somebody else!=Du trenger feilsøkingsprivilegiet for å slå spillmusikk av eller på for noen andre!
+
 Could not find player @1!=Kunne ikke finne spiller @1!
 off=av
 on=på

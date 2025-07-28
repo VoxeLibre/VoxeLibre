@@ -32,9 +32,13 @@ Lime=Vert clair
 Light Blue Banner=Bannière bleue clair
 Light Blue=Bleu clair
 Banner=Bannière
+
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Les bannières sont de grands blocs décoratifs colorés. Ils peuvent être placés au sol et aux murs. Les bannières peuvent arborées une variété de motifs en utilisant beaucoup de colorant dans l'artisanat.
+
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Utilisez l'artisanat pour dessiner un motif sur le dessus de la bannière. Les bannières blasonnées peuvent être à nouveau blasonnées pour combiner différents motifs. Vous pouvez dessiner jusqu'à 12 couches sur une bannière de cette façon. Si la bannière comprend un dégradé, seulement 3 couches sont possibles.
+
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Vous pouvez copier le motif d'une bannière en plaçant deux bannières de la même couleur dans la grille de fabrication: l'une doit être décorée, l'autre doit être propre. Enfin, vous pouvez utiliser une bannière sur un chaudron avec de l'eau pour laver sa couche la plus haute.
+
 Preview Banner=Aperçu de la bannière
 Paintable decoration=Décoration à peindre
 ##[ patterncraft.lua ]##

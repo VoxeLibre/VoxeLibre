@@ -1,7 +1,9 @@
 # textdomain: mcl_ocean
 ##[ prismarine.lua ]##
 Sea Lantern=Sjølanterne
+
 Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=
+
 Prismarine=Prismarin
 Prismarine is used as a building block. It slowly changes its color.=Prismarine brukes som en byggeblokk. Den endrer sakte farge.
 Prismarine Bricks=Prismarinmur
@@ -39,9 +41,13 @@ Horn Coral=Hornkorall
 Dead Horn Coral=Død hornkorall
 Horn Coral Fan=Hornkorallvifte
 Dead Horn Coral Fan=Død hornkorallvifte
+
 Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.=Korallblokker lever i havene og trenger vann for å overleve. Uten vann dør de.
+
 Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Koraller vokser på korallblokker og må være i vann for å overleve. Uten vann dør de, så vel som korallblokken under.
+
 Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Korallvifter vokser på korallblokker og må være i vann for å overleve. Uten vann dør de, så vel som korallblokken under
+
 Needs water to live=Trenger vann for å leve
 Grows on coral block of same species=Vokser på korallblokker av samme art
 ##[ seagrass.lua ]##
@@ -57,8 +63,11 @@ Dried Kelp Block=Tørket tareblokk
 A decorative block that serves as a great furnace fuel.=En dekorativ blokk som kan brukes som ovnsbrensel.
 ##[ sea_pickle.lua ]##
 Sea Pickle=Sjøagurk
+
 Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Sjøagurk vokser på døde hjernekorallblokker og gir lys når de er under vann. De finnes i 4 størrelser som varierer i lysstyrke.
+
 It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Den kan bare plasseres på toppen av døde hjernekorallblokker. Om du plasserer en sjøagurk på en annen sjøagurk vil den vokse og bli lysere.
+
 Glows in the water=Vokser i vann
 4 possible sizes=4 mulige størrelser
 Grows on dead brain coral block=Vokser på død hjernekorallblokk

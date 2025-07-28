@@ -1,5 +1,6 @@
 # textdomain: mcl_boats
 Sneak to dismount=Snik for å gå av
+Boat=Båt
 Oak Boat=Eikebåt
 Spruce Boat=Granbåt
 Birch Boat=Bjørkebåt
@@ -18,6 +19,7 @@ Dark Oak Chest Boat=Mørkeikbåt med kiste
 Mangrove Chest Boat=Mangrovebåt med kiste
 Cherry Chest Boat=Kirsebærtrebåt med kiste
 Boats are used to travel on the surface of water.=Båter brukes for å reise på overflaten av vann.
+
 Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=Høyreklikk på en vannkilde for å plassere båten. Høyreklikk på båten for å sitte oppi. Bruk [Venstre] og [Høyre] for å styre, [Fremover] for å øke hastigheten og [Backwards] for å slakke ned eller bevege deg baklengs.
-Boat=Båt
+
 Water vehicle=Vannkjøretøy

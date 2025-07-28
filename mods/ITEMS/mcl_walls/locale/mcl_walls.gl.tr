@@ -1,5 +1,7 @@
 # textdomain: mcl_walls
+
 A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Un anaco de parede. Non se pode saltar cun simple salto. Cando varios destes se coloquen un ao carón do outro, crearán automaticamente unha bonita estrutura de parede.
+
 ##[ register.lua ]##
 Cobblestone Wall=Muro de rocha
 Mossy Cobblestone Wall=Muro de rocha musgosa

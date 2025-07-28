@@ -1,11 +1,18 @@
 # textdomain: mcl_comparators
 Redstone comparators are multi-purpose redstone components.=Rødsteinssammenlignere er flerbruks rødsteinskomponenter.
+
 They can transmit a redstone signal, detect whether a block contains any items and compare multiple signals.=De kan overføre et rødsteinssignal, oppdage om en blokk inneholder gjenstander, og sammenligne flere signaler.
+
 A redstone comparator has 1 main input, 2 side inputs and 1 output. The output is in arrow direction, the main input is in the opposite direction. The other 2 sides are the side inputs.=En rødsteinssammenligner har 1 hovedinngang, 2 sideinnganger og 1 utgang. Utgangen er i pilens retning, hovedinngangen er i motsatt retning. De andre 2 sidene er sideinngangene.
+
 The main input can powered in 2 ways: First, it can be powered directly by redstone power like any other component. Second, it is powered if, and only if a container (like a chest) is placed in front of it and the container contains at least one item.=Hovedinngangen kan aktiveres på 2 måter: For det første kan den aktiveres direkte med rødsteinskraft som alle andre komponenter. For det andre aktiveres den hvis, og bare hvis, en beholder (som en kiste) plasseres foran den og beholderen inneholder minst én gjenstand.
+
 The side inputs are only powered by normal redstone power. The redstone comparator can operate in two modes: Transmission mode and subtraction mode. It starts in transmission mode and the mode can be changed by using the block.=Sideinngangene aktiveres kun av vanlig rødsteinskraft. Rødsteinssammenlignere kan operere i to moduser: Overføringsmodus og subtraksjonsmodus. Den starter i overføringsmodus, og modusen kan endres ved å bruke blokken.
+
 Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=Overføringsmodus:@nFrontfaklen er slukket og senket. Utgangen er aktivert hvis, og bare hvis, hovedinngangen er aktivert. De to sideinngangene ignoreres.
+
 Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=Subtraksjonsmodus:@nFrontfaklen er tent. Utgangen er aktivert hvis, og bare hvis, hovedinngangen er aktivert og ingen av sideinngangene er aktivert.
+
 Redstone Comparator=Rødsteinssammenligner
 Redstone Comparator (Powered)=Rødsteinssammenligner (Aktivert)
 Redstone Comparator (Subtract)=Rødsteinssammenligner (Subtraksjon)

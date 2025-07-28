@@ -32,9 +32,13 @@ Lime=酸橙绿
 Light Blue Banner=浅蓝色旗帜
 Light Blue=浅蓝色
 Banner=旗帜
+
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=旗帜是高大的彩色装饰方块。它们可以放置在地面和墙壁上。旗帜可以通过在工艺中使用大量染料来绘制各种图案。
+
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=使用工艺在旗帜上方绘制图案。已绘制的旗帜可以再次绘制，以组合各种图案。通过这种方式，您可以在一个旗帜上绘制多达12层。如果旗帜包含渐变效果，则只能绘制3层。
+
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=您可以通过在工艺网格中放置两个相同颜色的旗帜来复制旗帜的图案——一个需要已绘制，另一个必须是干净的。最后，您可以将旗帜放在装有水的大锅中，以洗掉其最上层。
+
 Preview Banner=旗帜预览
 Paintable decoration=可绘制的装饰
 ##[ patterncraft.lua ]##

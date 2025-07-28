@@ -25,11 +25,17 @@ Sorry, but you have to wait @1 seconds until you may use this button again!=Pard
 Hey! Would you guys mind sleeping?=Hej! Ĉu vi ĝenus dormi?
 ##[ api.lua ]##
 Beds allow you to sleep at night and make the time pass faster.=Litoj permesas vin dormi nokte kaj plirapidigi la tempon.
+
 To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=Por uzi liton, staru proksime al ĝi kaj dekstre alklaku la liton por dormi sur ĝi. Dormi nur funkcias kiam la suno subiras, nokte aŭ dum fulmotondro. La lito ankaŭ devas esti libera de ajna danĝero.
+
 You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Vi aŭdis pri aliaj mondoj en kiuj lito fiksos la komencpunkton por via venonta vivo. Sed ĉi tiu mondo ne estas unu el ili.
+
 By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=Uzante liton, vi fiksas la komencpunkton por via venonta vivo. Se vi mortas, vi komencos vian venontan vivon ĉe ĉi tiu lito, krom se ĝi estas obstrukcita aŭ detruita.
+
 In this world, going to bed won't skip the night, but it will skip thunderstorms.=En ĉi tiu mondo, enlitiĝi ne saltos la nokton, sed ĝi saltos fulmotondrojn.
+
 Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Dormado permesas salti la nokton. La nokto estas saltita kiam ĉiuj ludantoj en ĉi tiu mondo iras dormi. La nokto estas saltita post dormado dum kelkaj sekundoj. Fulmotondroj povas esti saltitaj per la sama maniero.
+
 Allows you to sleep=Permesas vin dormi
 ##[ beds.lua ]##
 Red Bed=Lito ruĝa
@@ -55,5 +61,7 @@ Respawn Anchor=Ankro de reapero
 
 ##### not used anymore #####
 
+
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Nova reapero pozicio fiksita! Sed vi povas dormi nure dum nokto aŭ fulmotondro.
+
 send!=Sendi!

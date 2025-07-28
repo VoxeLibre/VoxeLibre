@@ -20,13 +20,21 @@ The target item is not enchantable.=O item alvo não é encantável.
 Enchanted Book=Livro Encantado
 Enchanting Table=Mesa de Encantamento
 Spend experience, and lapis to enchant various items.=Invista experiência, e lápis para encantar vários itens.
+
 Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=A mesa de encantamentos permitem a você encantar armaduras, ferramentas, armas, e livros com várias habilidades. Mas, ao custo de alguma experiência, e lápis lazuli.
+
 Rightclick the Enchanting Table to open the enchanting menu.=Clique com o botão direito na mesa de encantamentos para abrir o menu de encantamentos.
+
 Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Posicione uma ferramenta, armadura, arma ou livro no slot superior esquerdo, e então posicione 1-3 lápis lazuli no slot da direita.
+
 After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Depois de posicionar seus itens nos slots, as opções de encantamentos serão mostradas. Passe o mouse sobre as opções para ler o que está disponível para você.
+
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Essas opções são aleatorias, e dependentes do nível de experiência; mas a força do encantamento pode ser aumentado.
+
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar a força do encantamento, posicione estantes de livros em volta da mesa de encantamentos. Porém, você precisará manter 1 bloco de ar entre a mesa e as estantes para potencializar a mesa de encantamentos.
+
 After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Depois de finalmente selecionar seu encantamento; clique com o botão esquerdo na seleção, e você irá ver ambos os lápis lazuli e seus níveis de experiência serem consumidos. E, um item encantado deixado em seu lugar.
+
 Enchant=Encantar
 ##[ engine.lua ]##
 Inventory=Inventário
@@ -36,9 +44,13 @@ Inventory=Inventário
 Level requirement: @1=Nível requerido: @1
 ##[ enchantments.lua ]##
 Bane of Arthropods=Ruína dos Artrópodes
+
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Aumenta o dano e aplica Lentidão IV para mobs artrópodes (aranhas, aranhas de cavernas, traças e endermites).
+
 Channeling=Condutividade
+
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Canaliza um relâmpago em direção ao alvo. Funciona apenas durante tempestades e se o alvo estiver desobistruido por blocos opacos.
+
 Curse of Vanishing=Maldição do Desaparecimento
 Item destroyed on death.=Item é destruído na morte.
 Depth Strider=Passos Profundos
@@ -52,7 +64,9 @@ Arrows set target on fire.=Flechas colocam fogo no alvo.
 Fortune=Fortuna
 Increases certain block drops.=Aumenta o drop de certos blocos.
 Frost Walker=Passos Gelados
+
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Transforma a água abaixo do jogador em gelo e previne o dano dos blocos de magma.
+
 Impaling=Penetração
 Trident deals additional damage to ocean mobs.=Tridente dá dano adicional em mobs oceanicos.
 Infinity=Infinidade
@@ -105,7 +119,9 @@ Increases underwater mining speed.=Aumenta a velocidade de mineração em baixo 
 Blast Protection=Proteção Contra Explosões
 Reduces explosion damage and knockback.=Reduz dano de explosão e repulsão.
 Curse of Binding=Maldição do Ligamento
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Item não pode ser removido dos slots de armadura exceto em caso de morte, quebra ou no Modo Criativo.
+
 Feather Falling=Peso-Pena
 Reduces fall damage.=Reduz o dano de queda.
 Fire Protection=Proteção Contra Fogo
@@ -115,4 +131,6 @@ Reduces projectile damage.=Reduz danos de projéteis.
 Protection=Proteção
 Reduces most types of damage by 4% for each level.=Reduz a maioria dos tipos de danos em 4% para cada nível.
 Thorns=Espinhos
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflete parte do dano recebido quando acertado, ao custo de reduzir a durabilidade em cada processo.
+

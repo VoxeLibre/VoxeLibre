@@ -1,20 +1,52 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=Dies ist ein Teil einer tragbaren Rüstung, die die Menge an Schaden, den Sie erleiden, reduziert.
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=Um es zu tragen, legen Sie es in den passenden Rüstungsplatz in Ihrem Inventarmenü.
-sentry=Wachen
-dune=Dünen
-coast=Küste
-wild=Wildnis
-tide=Flut
-ward=Bezirk
-vex=Plagegeist
-rib=Rippen
-snout=Schnauze
-eye=Auge
-spire=Turmspitzen
-silence=Stille
-wayfinder=Wegfinder
+##TODO: fuzzy matched - verify and remove the comment
+Sentry=Wachen
+Dune=
+##TODO: fuzzy matched - verify and remove the comment
+Coast=Küste
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+##TODO: fuzzy matched - verify and remove the comment
+Snout=Schnauze
+Eye=
+##TODO: fuzzy matched - verify and remove the comment
+Spire=Turmspitzen
+##TODO: fuzzy matched - verify and remove the comment
+Silence=Stille
+##TODO: fuzzy matched - verify and remove the comment
+Wayfinder=Wegfinder
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=Goldhelm
+Golden Chestplate=Goldbrustpanzer
+Golden Leggings=Goldbeinlinge
+Golden Boots=Goldstiefel
+Chainmail Helmet=
+##TODO: fuzzy matched - verify and remove the comment
+Chainmail Chestplate=Kettenbrustpanzer
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=Eisenhelm
+Iron Chestplate=Eisenbrustpanzer
+Iron Leggings=Eisenbeinlinge
+Iron Boots=Eisenstiefel
+Diamond Helmet=Diamanthelm
+Diamond Chestplate=Diamantbrustpanzer
+Diamond Leggings=Diamantbeinlinge
+Diamond Boots=Diamantstiefel
+Netherite Helmet=
+Netherite Chestplate=
+Netherite Leggings=
+Netherite Boots=
 Projectile Protection=Projektilschutz
 Reduces projectile damage.=Reduziert den Schaden von Projektilen.
 Blast Protection=Explosionsschutz
@@ -29,10 +61,19 @@ Aqua Affinity=Wasseranziehung
 #Translations of enchantements
 Increases underwater mining speed.=Erhöht die Geschwindigkeit beim Abbau unter Wasser.
 Curse of Binding=Fluch der Bindung
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Der Gegenstand kann nicht aus dem Rüstungsslot entfernt werden, außer durch Sterben, Zerbrechen, oder im Kreativmodus.
+
 Thorns=Dornen
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflektiert einen Teil des erlittenen Schadens, verbraucht dabei Haltbarkeit.
+
 Elytra=Elytren
+##[ leather.lua ]##
+Leather Cap=Lederkappe
+Leather Tunic=Ledertunika
+Leather Pants=Lederhose
+Leather Boots=Lederstiefel
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=Schmiedevorlage '@1'
@@ -40,23 +81,13 @@ Smithing Template '@1'=Schmiedevorlage '@1'
 
 ##### not used anymore #####
 
-Leather Cap=Lederkappe
-Iron Helmet=Eisenhelm
-Golden Helmet=Goldhelm
-Diamond Helmet=Diamanthelm
+dune=Dünen
+wild=Wildnis
+tide=Flut
+ward=Bezirk
+vex=Plagegeist
+rib=Rippen
+eye=Auge
 Chain Helmet=Kettenhelm
-Leather Tunic=Ledertunika
-Iron Chestplate=Eisenbrustpanzer
-Golden Chestplate=Goldbrustpanzer
-Diamond Chestplate=Diamantbrustpanzer
-Chain Chestplate=Kettenbrustpanzer
-Leather Pants=Lederhose
-Iron Leggings=Eisenbeinlinge
-Golden Leggings=Goldbeinlinge
-Diamond Leggings=Diamantbeinlinge
 Chain Leggings=Kettenbeinlinge
-Leather Boots=Lederstiefel
-Iron Boots=Eisenstiefel
-Golden Boots=Goldstiefel
-Diamond Boots=Diamantstiefel
 Chain Boots=Kettenstiefel

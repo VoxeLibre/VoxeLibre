@@ -9,10 +9,15 @@ Bamboo Plank=Bambusplanke
 Bamboo Mosaic Plank=
 ##[ bamboo_items.lua ]##
 Bamboo Door=
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=
+
 Bamboo Trapdoor=
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Træfaldlemme er horisontale barrierer som kan åbnes og lukkes med håndkraft eller med rødstensenergi. De kan udgøre den øverste eller den nederste del af en blok afhængigt af hvordan de placeres. Når de er åbne, kan man bruge dem ligesom en stige.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Højre-klik eller send rødstensenergi til en faldlem for at åbne eller lukke den,
 Bamboo Stairs=Bambustrappe
 Bamboo Slab=Bambusplade
@@ -24,13 +29,17 @@ Bamboo Plank Stairs=Bambusplanketrappe
 Bamboo Plank Slab=Bambusplankeplade
 Double Bamboo Plank Slab=Dobbelbambusplanke
 Bamboo Pressure Plate=Bambustrykplade
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=En trætrykplade er en rødstenskomponent som forsyner omkringliggende blokke med rødstensenergi når et bevægeligt objekt (inklusiv tabte genstande, spillere og monstre) er ovenpå den.
+
 Bamboo Sign=Bambusskilt
 Bamboo Fence=Bambushegn
 Bamboo Fence Gate=Bambushegnslåge
 Bamboo Button=Bambusknap
+
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=En bambusknap er en rødstenskomponent lavet af sten som giver rødstensenergi når den aktiveres. Når den aktiveres forsyner den tilstøende rødstenskomponenter i 1 sekund.
+
 Bamboo Mosaic Stairs=
 Bamboo Mosaic Slab=
 Double Bamboo Mosaic Slab=

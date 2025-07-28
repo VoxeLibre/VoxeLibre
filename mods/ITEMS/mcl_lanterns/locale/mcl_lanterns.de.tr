@@ -3,8 +3,13 @@ Chain=Kette
 Chains are metallic decoration blocks.=Ketten sind metallische Dekorationsblöcke.
 Gold Chain=
 Gold Chains are metallic decoration blocks.=
+##[ register.lua ]##
 Lantern=Laterne
+
 Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Laternen sind Lichtquellen, die oben oder unten auf den meisten Blöcken platziert werden können.
+
 Soul Lantern=Seelenlaterne
 Gold Lantern=
+
 Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
+

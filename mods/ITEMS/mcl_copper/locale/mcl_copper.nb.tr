@@ -1,7 +1,9 @@
 # textdomain: mcl_copper
 ##[ nodes.lua ]##
 Copper Ore=Kobbermalm
+
 Some copper contained in stone, it is pretty common and can be found below sea level.=Litt kobber blandet i stein, det er ganske vanlig og kan finnes under havnivå.
+
 Block of Raw Copper=Rå kobberblokk
 A block used for compact raw copper storage.=En blokk som brukes for å komprimere kobbererts til lagring.
 Block of Copper=Kobberblokk

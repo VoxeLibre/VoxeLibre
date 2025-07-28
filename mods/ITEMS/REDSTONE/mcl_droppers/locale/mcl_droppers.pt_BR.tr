@@ -3,7 +3,10 @@ Dropper=Liberador
 Inventory=Inventário
 9 inventory slots=Inventário de 9 slots
 Drops item when powered by redstone power=Libera itens quando energizados por carga de redstone
+
 A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.=Um liberador é um componente de redstone e um recipiente com 9 slots de inventário ao qual, quando alimentado com carga de redstone, libera um item ou coloca-o em um recipiente em sua frente.
+
 Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.=Liberadores podem ser posicionados em 6 direções possíveis, os itens serão liberados pelo buraco. Use o liberador para acessar seu inventário. Alimente-o com carga de redstone uma vez para fazer o liberador liberar ou transferir um item aleatório.
+
 Downwards-Facing Dropper=Liberador Virado Para Baixo
 Upwards-Facing Dropper=Liberador Virado Para Cima

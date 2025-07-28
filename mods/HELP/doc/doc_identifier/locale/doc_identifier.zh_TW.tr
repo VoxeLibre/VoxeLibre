@@ -8,11 +8,16 @@ This can happen for the following reasons:=發生這種情況的原因有機會�
 It appears to originate from the mod “@1”, which is enabled.=它似乎來自以啟用的mod「@1」。
 It appears to originate from the mod “@1”, which is not enabled!=它似乎來自沒啟用的mod「@1」！
 Its identifier is “@1”.=其標識符為「@1」。
+
 This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.=方塊所在的區塊未加載，請等一下在試一次。
+
 No help entry for this object could be found.=找不到此實體的幫助條目。
 This is a player.=這是一個玩家。
 OK=OK
 Lookup Tool=幫助工具
 Show help for pointed thing=顯示選中方塊的資訊
+
 This useful little helper can be used to quickly learn more about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used.=這個有用的小幫手可以用來快速了解自己所處的近距離環境。它可以識別和分析區塊、物品和其他事物。當你對着一個方塊、物品或實體使用它時，可以顯示出那個事物的大量信息。
+
 Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case.=擊打任何你想了解更多的方塊、物品或其他事情。這將打開相應的幫助條目。該工具有兩種模式，可以通過使用來改變。在液體模式下，這個工具也會指向液體，而在固體模式下則不會這樣。
+

@@ -1,5 +1,8 @@
 # textdomain: mcl_mobspawners
 Mob Spawner=Xerador de criaturas
 Makes mobs appear=Fai aparecer criaturas
+
 A mob spawner regularily causes mobs to appear around it while a player is nearby. Some mob spawners are disabled while in light.=Un xerador de criaturas regularmente fai que aparezan mobs o seu redor mentras un xogador está cerca. Alguns reproductores das criaturas están deshabilitados mentras están a luz.
+
 If you have a spawn egg, you can use it to change the mob to spawn. Just place the item on the mob spawner. Player-set mob spawners always spawn mobs regardless of the light level.=Se tes un ovo de desove, podes usalo para trocar as criaturas a desovar. Simplemente coloque o elemento no xerador de criaturas. Os xeradores de criaturas establecidos polo xogador sempre xeran monstros independentemente do nivel de luz.
+

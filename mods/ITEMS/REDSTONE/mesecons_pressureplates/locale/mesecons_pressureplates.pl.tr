@@ -1,6 +1,9 @@
 # textdomain: mesecons_pressureplates
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Drewniana płyta naciskowa jest mechanizmem czerwienitowym, który zasila otaczające bloki energią czerwienitowym, gdy ruchomy obiekt (włączając w to upuszczone przedmioty, graczy, moby) spoczywa na niej.
+
 A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=Płyta naciskowa jest mechanizmem czerwienitowym, który zasila otaczające bloki energią czerwienitową gdy ktoś lub coś na niej spoczywa.
+
 Provides redstone power when pushed=Dostarcza energię czerwienitową gdy naciśnięta
 Pushable by players, mobs and objects=Możliwa do naciśnięcia przez graczy, moby i obiekty
 Pushable by players and mobs=Możliwa do naciśnięcia przez graczy i moby 
@@ -16,6 +19,10 @@ Mangrove Pressure Plate=
 Crimson Pressure Plate=
 Warped Pressure Plate=
 Stone Pressure Plate=Kamienna płyta naciskowa
+
 A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Kamienna płyta naciskowa jest mechanizmem czerwienitowym, która zasila otaczające bloki energią czerwienitową gdy gracz lub mob na niej stoi. Nie jest aktywowana niczym innym.
+
 Polished Blackstone Pressure Plate=
+
 A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=
+

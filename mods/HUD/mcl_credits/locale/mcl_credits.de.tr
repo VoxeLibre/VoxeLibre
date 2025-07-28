@@ -5,7 +5,8 @@ Jump to speed up (additionally sprint)=Springen, um zu beschleunigen (zusätzlic
 ##[ people.lua ]##
 Creator of MineClone=Schöpfer von MineClone
 Creator of VoxeLibre=Schöpfer von VoxeLibre
-Maintainers=Betreuer
+##TODO: fuzzy matched - verify and remove the comment
+Maintainer=Betreuer
 Previous Maintainers=Frühere Betreuer
 Developers=Entwickler
 Past Developers=Frühere Entwickler
@@ -17,8 +18,3 @@ Textures=Texturen
 Translations=Übersetzungen
 Funders=Spender
 Special thanks=Spezialdank
-
-
-##### not used anymore #####
-
-A faithful Open Source clone of Minecraft=Ein treuer Open-Source-Klon von Minecraft

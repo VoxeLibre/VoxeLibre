@@ -1,5 +1,7 @@
 # textdomain: mcl_clock
 Clocks are tools which shows the current time of day in the Overworld.=Os reloxos son ferramentas que amosan a hora do día no mundo.
+
 The clock contains a rotating disc with a sun symbol (yellow disc) and moon symbol and a little “pointer” which shows the current time of day by estimating the real position of the sun and the moon in the sky. Noon is represented by the sun symbol and midnight is represented by the moon symbol.=O reloxo conten un disco xiratorio cun símbolo do sol (disco amarelo) e un símbolo da lua e un pequeno "punteiro" que amosa a hora actual do día ao estimala posición real do sol e a lua no ceo. O mediodía está representado polo símbolo do sol e a medianoite está representada polo símbolo da lua.
+
 Displays the time of day in the Overworld=Amosa a hora do día no mundo.
 Clock=Reloxo

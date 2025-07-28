@@ -20,13 +20,21 @@ The target item is not enchantable.=Docelowego przedmiotu nie można zaczarować
 Enchanted Book=Zaklęta książka
 Enchanting Table=Stół do zaklinania
 Spend experience, and lapis to enchant various items.=
+
 Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=
+
 Rightclick the Enchanting Table to open the enchanting menu.=
+
 Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=
+
 After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=
+
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=
+
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=
+
 After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=
+
 Enchant=Zaczaruj
 ##[ engine.lua ]##
 Inventory=Ekwipunek
@@ -36,9 +44,13 @@ Inventory=Ekwipunek
 Level requirement: @1=Wymagany poziom: @1
 ##[ enchantments.lua ]##
 Bane of Arthropods=Zmora stawonogów
+
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Zwiększa obrażenia i aplikuje Spowolnienie IV stawonogom (pająkom, pająkom jaskiniowym, rybikom cukrowym i endermitom)
+
 Channeling=Przekierowanie
+
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Przekierowuje błyskawicę w stronę celu. Działa tylko podczas burz jeśli cel nie jest zasłonięty przez nieprzezroczyste bloki.
+
 Curse of Vanishing=Klątwa znikania
 Item destroyed on death.=Przedmiot niszczony przy śmierci
 Depth Strider=Głębinowy wędrowiec
@@ -52,7 +64,9 @@ Arrows set target on fire.=Strzały podpalają cel.
 Fortune=Fortuna
 Increases certain block drops.=Zwiększa prawdopodobieństwo wypadnięcia przedmiotów z niektórych bloków.
 Frost Walker=Mroźny piechur
+
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Zamienia wodę pod graczem w oszroniony lód i pozwala uniknąć obrażeń od bloków magmy.
+
 Impaling=Przebicie
 Trident deals additional damage to ocean mobs.=Trójząb zadaje dodatkowe obrażenia podwodnym stworzeniom.
 Infinity=Nieskończoność
@@ -104,7 +118,9 @@ Increases underwater mining speed.=Przyspiesza wydobywanie pod wodą.
 Blast Protection=Ochrona od wybuchów
 Reduces explosion damage and knockback.=Zmniejsza obrażenia od wybuchów i odrzut.
 Curse of Binding=Klątwa wiązania
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Przedmiotu nie można zdjąć z miejsc na zbroję inaczej niż przez śmierć, zepsucie bądź w trybie kreatywnym.
+
 Feather Falling=Powolne opadanie
 Reduces fall damage.=Zmniejsza obrażenia od upadku.
 Fire Protection=Ochrona przed ogniem
@@ -115,4 +131,6 @@ Protection=Obrona
 Reduces most types of damage by 4% for each level.=Zmniejsza obrażenia większości typów o 4% za każdy poziom. 
 Increases walking speed on soul sand.=Zwiększa szybkość chodzenia po piasku dusz.
 Thorns=Ciernie
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Odbija część zadanych obrażeń kosztem utraty wytrzymałości zbroi.
+

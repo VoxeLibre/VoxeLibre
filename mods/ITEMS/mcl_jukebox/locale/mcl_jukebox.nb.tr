@@ -1,10 +1,15 @@
 # textdomain: mcl_jukebox
 Music Disc=Musikkplate
+
 A music disc holds a single music track which can be used in a jukebox to play music.=En musikkplate inneholder et enkelt musikkspor som kan brukes i en platespiller for å spille musikk.
+
 Place a music disc into an empty jukebox to play the music. Use the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players.=
+
 @1—@2=@1-@2
 Now playing: @1—@2=Spiller nå: @1-@2
 Jukebox=Platespiller
 Uses music discs to play music=Bruker musikkplater til å spille musikk
 Jukeboxes play music when they're supplied with a music disc.=Platespillere spiller musikk når de gis en musikkplate.
+
 Place a music disc into an empty jukebox to insert the music disc and play music. If the jukebox already has a music disc, you will retrieve this music disc first. The music can only be heard by you, not by other players.=Plasser en musikkplate i en tom platespiller for å sette inn musikkplaten og spille av musikk. Hvis platespilleren allerede har en musikkplate, vil du hente ut musikkplaten først. Musikken kan bare høres av deg, ikke av andre spillere.
+

@@ -1,7 +1,9 @@
 # textdomain: mcl_ocean
 ##[ prismarine.lua ]##
 Sea Lantern=シーランタン
+
 Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=シーランタンは、水中で映える装飾的な光源ですが、どこにでも設置できます。
+
 Prismarine=プリズマリン
 Prismarine is used as a building block. It slowly changes its color.=プリズマリンは、建築ブロックとして使用されます。 それはゆっくりと色を変えます。
 Prismarine Bricks=プリズマリンレンガ
@@ -39,9 +41,13 @@ Horn Coral=角サンゴ
 Dead Horn Coral=死した角サンゴ
 Horn Coral Fan=角ウチワサンゴ
 Dead Horn Coral Fan=死した角ウチワサンゴ
+
 Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.=サンゴのブロックは海に生息しており、生きていくためには隣に水源が必要です。水がないと死んでしまうのです。
+
 Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=サンゴはサンゴブロックの上で成長し、生きていくためには水源の中にいる必要があります。 水がなければ、下のサンゴブロックと同様に死んでしまいます。
+
 Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=ウチワサンゴはサンゴブロックの上で成長し、生きていくためには水源の中にいる必要があります。 水がなければ、下のサンゴブロックと同様に死んでしまいます。
+
 Needs water to live=生きるために水が必要
 Grows on coral block of same species=同種のサンゴブロックに生育
 ##[ seagrass.lua ]##
@@ -57,8 +63,11 @@ Dried Kelp Block=乾燥コンブブロック
 A decorative block that serves as a great furnace fuel.=炉の燃料として最適な装飾ブロック。
 ##[ sea_pickle.lua ]##
 Sea Pickle=ヒカリボヤ
+
 Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=死した脳サンゴブロックに生え、水中での光源となるヒカリボヤ。明るさの異なる4種類のサイズがあります。
+
 It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=死した脳サンゴブロックの上にしか置けません。ヒカリボヤを別のヒカリボヤの上に置くと成長し、明るくなります。
+
 Glows in the water=水中で成長
 4 possible sizes=4種類のサイズが可能
 Grows on dead brain coral block=死した脳サンゴブロックに生育

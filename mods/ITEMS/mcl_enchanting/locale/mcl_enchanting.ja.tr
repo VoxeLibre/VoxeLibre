@@ -20,13 +20,21 @@ The target item is not enchantable.=対象アイテムは、エンチャント�
 Enchanted Book=エンチャント本
 Enchanting Table=エンチャントテーブル
 Spend experience, and lapis to enchant various items.=経験値とラピスを消費して、様々なアイテムにエンチャントできます。
+
 Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=エンチャントテーブルでは、防具や道具、武器、本などに様々な能力をエンチャントできます。ただし多少の経験値や、ラピスラズリを費やすことになります。
+
 Rightclick the Enchanting Table to open the enchanting menu.=エンチャントテーブルを右クリックすると、エンチャント メニューが表示されます。
+
 Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=左上のスロットに道具、防具、武器、本を入れ、その右のスロットにラピスラズリ1～3個を入れます。
+
 After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=アイテムをスロットに配置すると、エンチャント オプションが表示されます。オプションにカーソルを合わせると、利用可能なオプションが表示されます。
+
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=これらのオプションはランダム且つ経験値に依存します；しかし、エンチャントを強化できます。
+
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=エンチャントテーブルの周囲に本棚を置くと、エンチャントを強化できます。ただし、テーブルと本棚の間に空気ノードを1つ入れないと、エンチャントテーブルに力を与えられません。
+
 After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=最終的にエンチャントを決めたら；選ぶ箇所を左クリックすると、ラピスラズリと経験値の両方が消費されているのがわかります。そしてエンチャントしたアイテムがその場に残されます。
+
 Enchant=エンチャント
 ##[ engine.lua ]##
 Inventory=インベントリ
@@ -36,9 +44,13 @@ Inventory=インベントリ
 Level requirement: @1=必要レベル：@1
 ##[ enchantments.lua ]##
 Bane of Arthropods=殺虫力
+
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=虫系のMOB（クモ、洞窟グモ、シルバーフィッシュ、エンダーマイト）に対してダメージが増加し、鈍化IVを適用します。
+
 Channeling=召雷
+
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=ターゲットに向けて稲妻を落とします。雷雨の時、且つターゲットが不透明なブロックで遮られていない場合のみ有効です。
+
 Curse of Vanishing=消滅の呪い
 Item destroyed on death.=死亡時にアイテムが消滅します。
 Depth Strider=水中移動
@@ -52,7 +64,9 @@ Arrows set target on fire.=矢がターゲットを燃やします。
 Fortune=幸運
 Increases certain block drops.=特定のブロックのドロップが増加します。
 Frost Walker=氷結歩行
+
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=プレイヤーの下の水を薄氷に変え、また、マグマブロックからのダメージを防ぎます。
+
 Impaling=串刺し
 Trident deals additional damage to ocean mobs.=トライデントは水生系のMOBに追加ダメージを与えます。
 Infinity=無限
@@ -104,7 +118,9 @@ Increases underwater mining speed.=水中での採掘速度が向上します。
 Blast Protection=爆風耐性
 Reduces explosion damage and knockback.=爆発ダメージとノックバックを軽減します。
 Curse of Binding=束縛の呪い
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=次の場合を除き、防具スロットからアイテムを外せません；アイテムが破損／自身が死亡／クリエイティブモード中
+
 Feather Falling=落下耐性
 Reduces fall damage.=落下ダメージを軽減します。
 Fire Protection=炎上耐性
@@ -114,4 +130,6 @@ Reduces projectile damage.=飛来物ダメージを軽減します。
 Protection=外傷耐性
 Reduces most types of damage by 4% for each level.=体の外からのダメージ全般を軽減します（レベル毎に+4%）。
 Thorns=イバラ
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=受けたダメージの一部を与え返せますが、その代わり耐久度が余計に削られます。
+

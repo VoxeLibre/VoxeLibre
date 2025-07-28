@@ -19,6 +19,7 @@ The stripped hyphae bark of a warped fungus=诡异菌的去皮菌丝皮
 Warped Hyphae Wood=诡异菌丝木板
 Warped Stairs=诡异楼梯
 Warped Slab=诡异台阶
+Double Warped Slab=
 Crimson Fungus=绯红菌
 Crimson fungus is a mushroom found in the nether's crimson forest.=绯红菌是一种能在下界的绯红森林中找到的蘑菇。
 Crimson Roots=绯红菌索
@@ -33,11 +34,17 @@ Crimson Hyphae Wood=绯红菌丝木板
 Crimson Nylium=绯红菌岩
 Crimson Stairs=绯红楼梯
 Crimson Slab=绯红台阶
+Double Crimson Slab=双层绯红台阶
 Crimson Door=绯红门
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=木门是高2格的障碍物，可通过手动操作以及红石信号来打开或关闭。
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=要打开或关闭一扇木门，可右键点击它，或者给它的下半部分提供红石信号。
+
 Crimson Trapdoor=绯红活板门
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=木制活板门是水平的障碍物，可通过手动操作或红石信号来打开和关闭。它们会根据放置方式占据方块的上半部分或下半部分。打开时，它们可以像梯子一样供人攀爬。
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=要打开或关闭活板门，可右键点击它，或者向它发送红石信号。 
 Crimson Fence=绯红栅栏
 Crimson Fence Gate=绯红栅栏门
@@ -50,4 +57,3 @@ Warped Fence Gate=诡异栅栏门
 ##### not used anymore #####
 
 Warped Checknode - only to check!=诡异测试方块（仅用于测试！）
-Double Crimson Slab=双层绯红台阶

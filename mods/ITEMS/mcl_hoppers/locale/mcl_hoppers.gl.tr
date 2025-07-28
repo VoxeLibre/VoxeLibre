@@ -4,13 +4,20 @@ Inventory=Inventario
 5 inventory slots=5 rañuras de inventario
 Collects items from above, moves items to container below=Recolle elementos de arriba, move os elementos ao contedor inferior
 Can be disabled with redstone power=Pódese desactivar con enerxía de pedra vermella
+
 Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.=As tolvas son recipientes con 5 rañuras de inventario. Recollen os elementos caídos desde arriba, levan elementos dun recipiente de arriba e tentan colocalos nun recipiente adxacente. As tolvas poden ir cara abaixo ou de lado. As tolvas interactúan con cofres, contagotas, dispensadores, caixas de shulker, fornos e tolvas.
+
 Hoppers interact with containers the following way:=As tolvas interactúan cos recipientes do seguinte xeito:
+
 • Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers that point to the furnace put items into the fuel slot=
+
 • Ender chests: No interaction.=• Cofres Ender: Sen interacción.
 • Other containers: Normal interaction.=• Outros recipientes: Interacción normal.
+
 Hoppers can be disabled when supplied with redstone power. Disabled hoppers don't move items.=As tolvas pódense desactivar cando se subministran con enerxía Redstone. As tolvas desactivadas non moven elementos.
+
 To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Use the hopper to access its inventory.=Para colocar unha tolva verticalmente, colócaa no chan ou no teito. Para colocalo de lado, colócao ao lado dun bloque. Use a tolva para acceder ao seu inventario.Use la tolva para acceder a su inventario.
+
 Disabled Hopper=Tolva desactivada
 Side Hopper=Tolva lateral
 Disabled Side Hopper=Tolva lateral desactivada

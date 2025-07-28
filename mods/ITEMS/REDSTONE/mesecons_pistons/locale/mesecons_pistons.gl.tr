@@ -2,7 +2,11 @@
 This block can have one of 6 possible orientations.=Este bloque pode ter unha das 6 orientacións posibles.
 Piston=Pistón
 Pushes block when powered by redstone power=Empuxa o bloque cando está alimentado por enerxía pedra vermella
+
 A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however.=Un pistón é un compoñente de pedra vermella cun empurrador que empurra o bloque ou bloques diante del cando recibe enerxía de pedra vermella. Non obstante, non todos os bloques poden ser empuxados.
+
 Sticky Piston=Pistón pegajoso
 Pushes or pulls block when powered by redstone power=Empuxa ou tira do bloque cando está alimentado por enerxía pedra vermella
+
 A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled.=Un pistón pegajoso é un compoñente de pedra vermella cun impulsor pegajoso que se pode estender e retraer. Esténdese cando recibe enerxía Pedra Vermella. Cando o empurrador se estende, empurra o bloque ou bloques diante del. Cando se retrae, tira cara atrás o único bloque diante del. Teña en conta que non todos os bloques poden ser empurrados ou tirados.
+

@@ -1,6 +1,9 @@
 # textdomain: mesecons_pressureplates
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Uma placa de pressão de madeira é um componente de redstone ao qual alimenta os blocos ao seu redor com carga de redstone enquanto qualquer objeto móvel (incluindo itens largados, jogadores e mobs) descansarem em cima dela.
+
 A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=Uma placa de pressão é um componente de redstone ao qual alimenta os blocos ao seu redor com carga de redstone enquanto alguém ou alguma coisa descansa em cima dela.
+
 Provides redstone power when pushed=Fornece carga de redstone quando pressionada
 Pushable by players, mobs and objects=Pressionável por jogadores, mobs e objetos
 Pushable by players and mobs=Pressionável por jogadores e mobs
@@ -16,6 +19,10 @@ Mangrove Pressure Plate=Placa de Pressão de Mangue
 Crimson Pressure Plate=Placa de Pressão de Hifas Carmesim
 Warped Pressure Plate=Placa de Pressão de Hifas Distorcidas
 Stone Pressure Plate=Placa de Pressão de Pedra
+
 A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Uma placa de pressão de pedra é um componente de redstone ao qual alimenta os blocos ao seu redor com carga de redstone enquanto um jogador ou mob estiver em pé em cima dela. Não é acionada por outras coisas.
+
 Polished Blackstone Pressure Plate=Placa de Pressão de Rocha Negra Polida
+
 A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Uma placa de pressão de pedra negra polida é um componente de redstone ao qual alimenta os blocos ao seu redor com carga de redstone enquanto um jogador ou mob estiver em pé em cima dela. Não é acionada por outras coisas.
+

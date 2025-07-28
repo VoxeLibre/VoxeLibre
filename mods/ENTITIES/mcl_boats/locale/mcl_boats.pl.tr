@@ -1,5 +1,6 @@
 # textdomain: mcl_boats
 Sneak to dismount=Skradaj się by opuścić łódź
+Boat=Łódź
 Oak Boat=Dębowa łódź
 Spruce Boat=Świerkowa łódź
 Birch Boat=Brzozowa łódź
@@ -18,6 +19,7 @@ Dark Oak Chest Boat=
 Mangrove Chest Boat=
 Cherry Chest Boat=
 Boats are used to travel on the surface of water.=Łodzie są wykorzystywane do podróżowania po powierzchni wody.
+
 Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=Kliknij prawym przyciskiem myszy na źródło wody by postawić łódź. Kliknij prawym przyciskiem myszy by w nią wsiąść. Użyj przycisków [Lewy] oraz [Prawy] by sterować, [Naprzód] by przyspieszyć i [W tył] by zwolnić lub się cofać. Kliknij [Skradanie] by z niej wyjść, uderz ją by wziąć ją jako przedmiot.
-Boat=Łódź
+
 Water vehicle=Pojazd wodny
