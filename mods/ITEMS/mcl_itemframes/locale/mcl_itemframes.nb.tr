@@ -3,13 +3,13 @@ Item frames are decorative blocks in which items can be placed.=Rammer er dekora
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Bare plasser et hvilket som helst gjenstand i rammen. Bruk rammen igjen for å hente ut gjenstanden.
 ##[ register.lua ]##
 Item Frame=Ramme
-Can hold an item=
-Glow Item Frame=
-Can hold an item and glows=
-Invisible Item Frame=
-Can hold an item but is invisible=
-Invisible Glow Item Frame=
-Can hold an item and glows but is invisible=
+Can hold an item=Kan holde én gjenstand
+Glow Item Frame=Gløderamme
+Can hold an item and glows=Kan holde én gjenstand og den gløder
+Invisible Item Frame=Usynlig ramme
+Can hold an item but is invisible=Kan holde én gjenstand men rammen er usynlig
+Invisible Glow Item Frame=Usynlig gløderamme
+Can hold an item and glows but is invisible=Kan holde én gjenstand og den gløder, men rammen er usynlig
 Glow and Behold!=Glødende bevaring!
 Craft a glow item frame.=Lag en gløderamme.
 
