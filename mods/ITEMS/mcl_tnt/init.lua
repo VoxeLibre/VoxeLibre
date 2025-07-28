@@ -152,6 +152,10 @@ local TNT = {
 }
 
 function TNT:on_activate(_, _)
+	if self._removed then
+		self.object:remove()
+		return
+	end
 	local phi = math.random(0, 65535) / 65535 * 2 * math.pi
 	local hdir_x = math.cos(phi) * 0.02
 	local hdir_z = math.sin(phi) * 0.02
