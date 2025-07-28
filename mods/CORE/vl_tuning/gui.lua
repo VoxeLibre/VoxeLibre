@@ -109,9 +109,9 @@ core.register_chatcommand("settings",{
 })
 core.register_on_player_receive_fields(function(player, formname, fields)
 	if not fields.__vl_tuning then return end
+	if not core.check_player_privs(player, {server = true}) then return end
 
 	local player_name = player:get_player_name()
-	if not core.check_player_privs(player, {server = true}) then return end
 
 	mod.show_formspec(player_name)
 end)
