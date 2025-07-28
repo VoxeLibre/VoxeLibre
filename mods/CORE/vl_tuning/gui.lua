@@ -47,19 +47,25 @@ end
 function vl_tuning.show_formspec(player_name, tab)
 	if not tab then tab = "1" end
 
-	local settings = {}
+	local settings_sort = {}
+	for name, _ in pairs(vl_tuning.registered_settings) do
+		table.insert(settings_sort, name)
+	end
+	table.sort(settings_sort)
+
+	local settings_forms = {}
 	local y = 0.5
-	for name,_ in pairs(vl_tuning.registered_settings) do
+	for _, name in ipairs(settings_sort) do
 		if name:sub(0,#"gamerule:") == "gamerule:" then
 			if tab == "1" then
 				local fs,dy = formspec_for_setting(y, name)
-				table.insert(settings, fs)
+				table.insert(settings_forms, fs)
 				y = y + dy
 			end
 		else
 			if tab == "2" then
 				local fs,dy = formspec_for_setting(y,name)
-				table.insert(settings, fs)
+				table.insert(settings_forms, fs)
 				y = y + dy
 			end
 		end
@@ -75,7 +81,7 @@ function vl_tuning.show_formspec(player_name, tab)
 		"field[0,0;0,0;old_tab;;"..tab.."]",
 
 		"scroll_container[1,0.5;18,9.25;settings;vertical;]",
-		table.concat(settings),
+		table.concat(settings_forms),
 		"scroll_container_end[]",
 		"scrollbaroptions[min=0;max="..tostring(10 * math.max(y - 9, 0))..";smallstep=1;largestep=1]",
 		"scrollbar[18.75,0.75;0.75,9.25;vertical;settings;0]",
