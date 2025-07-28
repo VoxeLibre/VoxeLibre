@@ -74,7 +74,7 @@ function tunable_class:set(value, no_hook)
 	end
 
 	-- Persist value
-	storage:set_string(self.name,self.to_string(self.getter()))
+	storage:set_string(self.name, self.to_string(self.getter()))
 end
 function tunable_class:get_string()
 	return self.to_string(self.getter())
@@ -116,10 +116,6 @@ function mod.setting(name, p_type, def)
 		formspec_desc_lines = def.formspec_desc_lines,
 		default = def.default or tunable_class.default,
 	}
-	if def.default then
-		tunable:set(def.default)
-	end
-	setmetatable(tunable, {__index=tunable_class})
 
 	-- Load the setting value from mod storage
 	local setting_value = storage:get_string(name)
@@ -128,7 +124,11 @@ function mod.setting(name, p_type, def)
 		if DEBUG then
 			core.log("action", "[vl_tuning] Loading "..name.." = "..dump(setting_value).." ("..dump(tunable.getter())..")")
 		end
+	elseif def.default then
+		tunable:set(def.default)
 	end
+
+	setmetatable(tunable, {__index=tunable_class})
 
 	-- Add to the list of all available settings
 	tunables[name] = tunable
