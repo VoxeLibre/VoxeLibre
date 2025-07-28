@@ -3,15 +3,6 @@ local math, vector, core, mcl_mobs = math, vector, core, mcl_mobs
 local S = core.get_translator("mcl_mobs")
 local mob_class = mcl_mobs.mob_class
 
-local gamerule_doMobSpawning = true
-vl_tuning.setting("gamerule:doMobSpawning", "bool", {
-	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."),
-	default = true,
-	formspec_desc_lines = 3,
-	set = function(val) gamerule_doMobSpawning = val end,
-	get = function() return gamerule_doMobSpawning end,
-})
-
 local modern_lighting = core.settings:get_bool("mcl_mobs_modern_lighting", true)
 local nether_threshold = tonumber(core.settings:get("mcl_mobs_nether_threshold")) or 11
 local end_threshold = tonumber(core.settings:get("mcl_mobs_end_threshold")) or 0
@@ -98,7 +89,15 @@ mcl_log("Percentage of peaceful spawns are group: " .. peaceful_group_percentage
 mcl_log("Percentage of hostile spawns are group: " .. hostile_group_percentage_spawned)
 
 --do mobs spawn?
-local mobs_spawn = core.settings:get_bool("mobs_spawn", true) ~= false
+local gamerule_doMobSpawning = true
+vl_tuning.setting("gamerule:doMobSpawning", "bool", {
+	description = S("Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems."),
+	default = core.settings:get_bool("mobs_spawn", true),
+	formspec_desc_lines = 3,
+	set = function(val) gamerule_doMobSpawning = val end,
+	get = function() return gamerule_doMobSpawning end,
+})
+
 local spawn_protected = core.settings:get_bool("mobs_spawn_protected") ~= false
 
 -- count how many mobs are in an area
@@ -246,7 +245,7 @@ local spawn_dictionary = {}
 local non_spawn_dictionary = {}
 
 function mcl_mobs:spawn_setup(def)
-	if not mobs_spawn then return end
+	if not gamerule_doMobSpawning then return end
 
 	-- Validate required definition fields are present
 	assert(def, "Missing spawn definition")
@@ -868,301 +867,300 @@ core.register_chatcommand("spawn_mob",{
 	end
 })
 
-if mobs_spawn then
-	local function mob_cap_space(mob_type, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
-		-- Some mob examples
-		--type = "monster", spawn_class = "hostile",
-		--type = "animal", spawn_class = "passive",
-		--local cod = { type = "animal", spawn_class = "water",
+local function mob_cap_space(mob_type, mob_counts_close, mob_counts_wide, cap_space_hostile, cap_space_non_hostile)
+	-- Some mob examples
+	--type = "monster", spawn_class = "hostile",
+	--type = "animal", spawn_class = "passive",
+	--local cod = { type = "animal", spawn_class = "water",
 
-		local type_cap = mob_cap[mob_type] or MISSING_CAP_DEFAULT
-		local close_zone_cap = MOBS_CAP_CLOSE
+	local type_cap = mob_cap[mob_type] or MISSING_CAP_DEFAULT
+	local close_zone_cap = MOBS_CAP_CLOSE
 
-		local mob_total_wide = mob_counts_wide[mob_type]
-		if not mob_total_wide then
-			mob_total_wide = 0
-		end
-
-		local cap_space_wide = math_max(type_cap - mob_total_wide, 0)
-
-		local cap_space_available
-		if mob_type == "hostile" then
-			cap_space_available = math_min(cap_space_hostile, cap_space_wide)
-		else
-			cap_space_available = math_min(cap_space_non_hostile, cap_space_wide)
-		end
-
-		local mob_total_close = mob_counts_close[mob_type]
-		if not mob_total_close then
-			mob_total_close = 0
-		end
-
-		local cap_space_close = math_max(close_zone_cap - mob_total_close, 0)
-		cap_space_available = math_min(cap_space_available, cap_space_close)
-
-		return cap_space_available
+	local mob_total_wide = mob_counts_wide[mob_type]
+	if not mob_total_wide then
+		mob_total_wide = 0
 	end
 
-	local function select_random_mob_def(spawn_table)
-		if #spawn_table == 0 then return nil end
+	local cap_space_wide = math_max(type_cap - mob_total_wide, 0)
 
-		local mob_chance_offset = math_random() * spawn_table.cumulative_chance
-		-- Deliberately one less that the table size. The last item will always
-		-- be chosen when all others aren't selected
-		for i = 1,(#spawn_table-1) do
-			local mob_def = spawn_table[i]
-			local mob_chance = mob_def.chance
-			if mob_chance_offset <= mob_chance then
-				return mob_def
-			end
-
-			mob_chance_offset = mob_chance_offset - mob_chance
-		end
-
-		-- If we get here, return the last element in the spawn table
-		return spawn_table[#spawn_table]
+	local cap_space_available
+	if mob_type == "hostile" then
+		cap_space_available = math_min(cap_space_hostile, cap_space_wide)
+	else
+		cap_space_available = math_min(cap_space_non_hostile, cap_space_wide)
 	end
 
-	local spawn_lists = {}
-	local function get_spawn_list(pos, hostile_limit, passive_limit)
-		-- Check capacity
-		local mob_counts_close, mob_counts_wide = count_mobs_all("spawn_class", pos)
-		local cap_space_hostile = mob_cap_space("hostile", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
-		local spawn_hostile = cap_space_hostile > 0
+	local mob_total_close = mob_counts_close[mob_type]
+	if not mob_total_close then
+		mob_total_close = 0
+	end
 
-		local cap_space_passive = mob_cap_space("passive", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
-		local spawn_passive = cap_space_passive > 0 and math_random(100) < peaceful_percentage_spawned
+	local cap_space_close = math_max(close_zone_cap - mob_total_close, 0)
+	cap_space_available = math_min(cap_space_available, cap_space_close)
 
-		-- Merge light level checks with cap checks
-		local state, node = build_state_for_position(pos, nil, spawn_hostile, spawn_passive)
-		if not state then
-			--note = note or "no valid state for position"
-			return
+	return cap_space_available
+end
+
+local function select_random_mob_def(spawn_table)
+	if #spawn_table == 0 then return nil end
+
+	local mob_chance_offset = math_random() * spawn_table.cumulative_chance
+	-- Deliberately one less that the table size. The last item will always
+	-- be chosen when all others aren't selected
+	for i = 1,(#spawn_table-1) do
+		local mob_def = spawn_table[i]
+		local mob_chance = mob_def.chance
+		if mob_chance_offset <= mob_chance then
+			return mob_def
 		end
 
-		-- Make sure it is possible to spawn a mob here
-		if not state.spawn_hostile and not state.spawn_passive then
-			return
-		end
+		mob_chance_offset = mob_chance_offset - mob_chance
+	end
 
-		-- Check the cache to see if we have already built a spawn list for this state
-		local state_hash = state.hash
-		local spawn_list = spawn_lists[state_hash]
-		state.cap_space_hostile = cap_space_hostile
-		state.cap_space_passive = cap_space_passive
-		if spawn_list then
-			return spawn_list, state, node
-		end
+	-- If we get here, return the last element in the spawn table
+	return spawn_table[#spawn_table]
+end
 
-		-- Build a spawn list for this state
-		spawn_list = {}
-		for i = 1,#spawn_dictionary do
-			local def = spawn_dictionary[i]
-			if initial_spawn_check(state, def) then
-				spawn_list[#spawn_list + 1] = def
-			end
-		end
+local spawn_lists = {}
+local function get_spawn_list(pos, hostile_limit, passive_limit)
+	-- Check capacity
+	local mob_counts_close, mob_counts_wide = count_mobs_all("spawn_class", pos)
+	local cap_space_hostile = mob_cap_space("hostile", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
+	local spawn_hostile = cap_space_hostile > 0
 
-		-- Calculate cumulative chance value
-		local cumulative_chance = 0
-		for i = 1,#spawn_list do
-			cumulative_chance = cumulative_chance + spawn_list[i].chance
-		end
-		spawn_list.cumulative_chance = cumulative_chance
+	local cap_space_passive = mob_cap_space("passive", mob_counts_close, mob_counts_wide, hostile_limit, passive_limit )
+	local spawn_passive = cap_space_passive > 0 and math_random(100) < peaceful_percentage_spawned
 
-		if logging then
-			local spawn_names = {}
-			for _,def in pairs(spawn_dictionary) do
-				if initial_spawn_check(state, def) then
-					spawn_names[#spawn_names + 1] = def.name
-				end
-			end
+	-- Merge light level checks with cap checks
+	local state, node = build_state_for_position(pos, nil, spawn_hostile, spawn_passive)
+	if not state then
+		--note = note or "no valid state for position"
+		return
+	end
 
-			core.log(dump({
-				pos = pos,
-				node = node,
-				state = state,
-				state_hash = state_hash,
-				spawn_names = spawn_names,
-			}))
-		end
-		spawn_lists[state_hash] = spawn_list
+	-- Make sure it is possible to spawn a mob here
+	if not state.spawn_hostile and not state.spawn_passive then
+		return
+	end
+
+	-- Check the cache to see if we have already built a spawn list for this state
+	local state_hash = state.hash
+	local spawn_list = spawn_lists[state_hash]
+	state.cap_space_hostile = cap_space_hostile
+	state.cap_space_passive = cap_space_passive
+	if spawn_list then
 		return spawn_list, state, node
 	end
 
-	-- Spawns one mob or one group of mobs
-	local fail_count = 0
-	local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
-		local spawning_position = get_next_mob_spawn_pos(pos)
-		if not spawning_position then
-			fail_count = fail_count + 1
-			if logging and fail_count > 16 then
-				core.log("action", "[Mobs spawn] Could not find a valid spawn position in last 16 attempts")
-			end
-			--note = "no valid spawn position"
-			return
-		end
-		fail_count = 0
-
-		-- Spawning prohibited in protected areas
-		if spawn_protected and core.is_protected(spawning_position, "") then
-			--note = "position protected"
-			return
-		end
-
-		-- Select a mob
-		local spawn_list, state, node = get_spawn_list(spawning_position, cap_space_hostile, cap_space_non_hostile)
-		if not spawn_list or not state then
-			--note = note or "no spawnable mobs for pos"
-			return
-		end
-		local mob_def = select_random_mob_def(spawn_list)
-		if not mob_def or not mob_def.name then
-			--note = "no mob definition"
-			return
-		end
-		local mob_def_ent = core.registered_entities[mob_def.name]
-
-		local cap_space_available = mob_def_ent.type == "monster" and state.cap_space_hostile or state.cap_space_passive
-
-		-- Move up one node for lava spawns
-		if mob_def.type_of_spawning == "lava" then
-			spawning_position.y = spawning_position.y + 1
-			node = core.get_node(spawning_position)
-		end
-
-		-- Make sure we would be spawning a mob
-		if not spawn_check(spawning_position, state, node, mob_def) then
-			if logging then mcl_log("Spawn check failed") end
-			--note = "spawn check failed"
-			return
-		end
-
-		-- Water mob special case
-		if mob_def.type_of_spawning == "water" then
-			spawning_position = get_water_spawn(spawning_position)
-			if not spawning_position then
-				if logging then
-					mcl_log("[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..core.pos_to_string(vector.round(pos)))
-				end
-				--note = "no water"
-				return
-			end
-		end
-
-		if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
-			if logging then
-				mcl_log("[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..core.pos_to_string(vector.round(spawning_position)))
-			end
-			--note = "mob refused to spawn"
-			return
-		end
-
-		--everything is correct, spawn mob
-		local spawn_in_group = mob_def_ent.spawn_in_group or 4
-
-		if spawn_in_group then
-			local group_min = mob_def_ent.spawn_in_group_min or 1
-			if not group_min then group_min = 1 end
-
-			local amount_to_spawn = group_min
-			for i = group_min,spawn_in_group do
-				if math_random() > 0.80 then
-					amount_to_spawn = amount_to_spawn + 1
-				else
-					break
-				end
-			end
-			amount_to_spawn = math_min(amount_to_spawn, cap_space_available)
-
-			if amount_to_spawn > 1 then
-				if logging then
-					core.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name ..
-						" mob spawns on " ..get_node(vector.offset(spawning_position,0,-1,0)).name ..
-						" at " .. core.pos_to_string(spawning_position, 1)
-					)
-				end
-				return spawn_group(spawning_position,mob_def,{get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn, state)
-			end
-		end
-
-		if logging then
-			core.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..
-				get_node(vector.offset(spawning_position,0,-1,0)).name .." at "..
-				core.pos_to_string(spawning_position, 1)
-			)
-		end
-		return mcl_mobs.spawn(spawning_position, mob_def.name)
-	end
-
-	local count = 0
-	local function attempt_spawn()
-		count = count + 1
-		local players = get_connected_players()
-		local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
-
-		local cap_space_hostile = math_max(mob_cap.global_hostile - total_hostile, 0)
-		local cap_space_non_hostile =  math_max(mob_cap.global_non_hostile - total_non_hostile, 0)
-
-		if total_mobs > mob_cap.total or total_mobs >= #players * mob_cap.player then
-			if logging then
-				core.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
-			end
-			--note = "global mob cap reached"
-			return
-		end --mob cap per player
-
-		for i = 1,#players do
-			local player = players[i]
-			if player then
-				local pos = player:get_pos()
-				local dimension = mcl_worlds.pos_to_dimension(pos)
-				-- ignore void and unloaded area
-				if dimension ~= "void" and dimension ~= "default" then
-					spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
-				end
-			end
+	-- Build a spawn list for this state
+	spawn_list = {}
+	for i = 1,#spawn_dictionary do
+		local def = spawn_dictionary[i]
+		if initial_spawn_check(state, def) then
+			spawn_list[#spawn_list + 1] = def
 		end
 	end
 
-	local function fixed_timeslice(timer, dtime, timeslice_us, handler)
-		timer = timer + dtime * timeslice_us * 1e-6
-		if timer <= 0 then return timer, 0 end
-
-		-- Time the function
-		local start_time_us = core.get_us_time()
-		handler()
-		local stop_time_us = core.get_us_time() + 1
-
-		-- Measure how long this took and calculate the time until the next call
-		local took = stop_time_us - start_time_us
-		timer = timer - took * 1e-6
-
-		return timer, took
+	-- Calculate cumulative chance value
+	local cumulative_chance = 0
+	for i = 1,#spawn_list do
+		cumulative_chance = cumulative_chance + spawn_list[i].chance
 	end
+	spawn_list.cumulative_chance = cumulative_chance
 
-	--MAIN LOOP
-	local timer = 0
-	local start = true
-	local start_time
-	local total_time = 0
-	core.register_globalstep(function(dtime)
-		if start then
-			start = false
-			start_time = core.get_us_time()
+	if logging then
+		local spawn_names = {}
+		for _,def in pairs(spawn_dictionary) do
+			if initial_spawn_check(state, def) then
+				spawn_names[#spawn_names + 1] = def.name
+			end
 		end
 
-		--note = nil
-		local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
-		timer = next_spawn
-
-		if (profile or logging) and took > 0 then
-			total_time = total_time + took
-			core.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time) * 100).."% count="..count..
-				", "..tostring(total_time/count).."us per spawn attempt, took="..took.." us, note="..(note or ""))
-		end
-	end)
+		core.log(dump({
+			pos = pos,
+			node = node,
+			state = state,
+			state_hash = state_hash,
+			spawn_names = spawn_names,
+		}))
+	end
+	spawn_lists[state_hash] = spawn_list
+	return spawn_list, state, node
 end
+
+-- Spawns one mob or one group of mobs
+local fail_count = 0
+local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
+	local spawning_position = get_next_mob_spawn_pos(pos)
+	if not spawning_position then
+		fail_count = fail_count + 1
+		if logging and fail_count > 16 then
+			core.log("action", "[Mobs spawn] Could not find a valid spawn position in last 16 attempts")
+		end
+		--note = "no valid spawn position"
+		return
+	end
+	fail_count = 0
+
+	-- Spawning prohibited in protected areas
+	if spawn_protected and core.is_protected(spawning_position, "") then
+		--note = "position protected"
+		return
+	end
+
+	-- Select a mob
+	local spawn_list, state, node = get_spawn_list(spawning_position, cap_space_hostile, cap_space_non_hostile)
+	if not spawn_list or not state then
+		--note = note or "no spawnable mobs for pos"
+		return
+	end
+	local mob_def = select_random_mob_def(spawn_list)
+	if not mob_def or not mob_def.name then
+		--note = "no mob definition"
+		return
+	end
+	local mob_def_ent = core.registered_entities[mob_def.name]
+
+	local cap_space_available = mob_def_ent.type == "monster" and state.cap_space_hostile or state.cap_space_passive
+
+	-- Move up one node for lava spawns
+	if mob_def.type_of_spawning == "lava" then
+		spawning_position.y = spawning_position.y + 1
+		node = core.get_node(spawning_position)
+	end
+
+	-- Make sure we would be spawning a mob
+	if not spawn_check(spawning_position, state, node, mob_def) then
+		if logging then mcl_log("Spawn check failed") end
+		--note = "spawn check failed"
+		return
+	end
+
+	-- Water mob special case
+	if mob_def.type_of_spawning == "water" then
+		spawning_position = get_water_spawn(spawning_position)
+		if not spawning_position then
+			if logging then
+				mcl_log("[mcl_mobs] no water spawn for mob "..mob_def.name.." found at "..core.pos_to_string(vector.round(pos)))
+			end
+			--note = "no water"
+			return
+		end
+	end
+
+	if mob_def_ent.can_spawn and not mob_def_ent.can_spawn(spawning_position) then
+		if logging then
+			mcl_log("[mcl_mobs] mob "..mob_def.name.." refused to spawn at "..core.pos_to_string(vector.round(spawning_position)))
+		end
+		--note = "mob refused to spawn"
+		return
+	end
+
+	--everything is correct, spawn mob
+	local spawn_in_group = mob_def_ent.spawn_in_group or 4
+
+	if spawn_in_group then
+		local group_min = mob_def_ent.spawn_in_group_min or 1
+		if not group_min then group_min = 1 end
+
+		local amount_to_spawn = group_min
+		for i = group_min,spawn_in_group do
+			if math_random() > 0.80 then
+				amount_to_spawn = amount_to_spawn + 1
+			else
+				break
+			end
+		end
+		amount_to_spawn = math_min(amount_to_spawn, cap_space_available)
+
+		if amount_to_spawn > 1 then
+			if logging then
+				core.log("action", "[mcl_mobs] A group of " ..amount_to_spawn .. " " .. mob_def.name ..
+					" mob spawns on " ..get_node(vector.offset(spawning_position,0,-1,0)).name ..
+					" at " .. core.pos_to_string(spawning_position, 1)
+				)
+			end
+			return spawn_group(spawning_position,mob_def,{get_node(vector.offset(spawning_position,0,-1,0)).name}, amount_to_spawn, state)
+		end
+	end
+
+	if logging then
+		core.log("action", "[mcl_mobs] Mob " .. mob_def.name .. " spawns on " ..
+			get_node(vector.offset(spawning_position,0,-1,0)).name .." at "..
+			core.pos_to_string(spawning_position, 1)
+		)
+	end
+	return mcl_mobs.spawn(spawning_position, mob_def.name)
+end
+
+local count = 0
+local function attempt_spawn()
+	count = count + 1
+	local players = get_connected_players()
+	local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
+
+	local cap_space_hostile = math_max(mob_cap.global_hostile - total_hostile, 0)
+	local cap_space_non_hostile =  math_max(mob_cap.global_non_hostile - total_non_hostile, 0)
+
+	if total_mobs > mob_cap.total or total_mobs >= #players * mob_cap.player then
+		if logging then
+			core.log("action","[mcl_mobs] global mob cap reached. no cycle spawning.")
+		end
+		--note = "global mob cap reached"
+		return
+	end --mob cap per player
+
+	for i = 1,#players do
+		local player = players[i]
+		if player then
+			local pos = player:get_pos()
+			local dimension = mcl_worlds.pos_to_dimension(pos)
+			-- ignore void and unloaded area
+			if dimension ~= "void" and dimension ~= "default" then
+				spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
+			end
+		end
+	end
+end
+
+local function fixed_timeslice(timer, dtime, timeslice_us, handler)
+	timer = timer + dtime * timeslice_us * 1e-6
+	if timer <= 0 then return timer, 0 end
+
+	-- Time the function
+	local start_time_us = core.get_us_time()
+	handler()
+	local stop_time_us = core.get_us_time() + 1
+
+	-- Measure how long this took and calculate the time until the next call
+	local took = stop_time_us - start_time_us
+	timer = timer - took * 1e-6
+
+	return timer, took
+end
+
+--MAIN LOOP
+local timer = 0
+local start = true
+local start_time
+local total_time = 0
+core.register_globalstep(function(dtime)
+	if not gamerule_doMobSpawning then return end
+	if start then
+		start = false
+		start_time = core.get_us_time()
+	end
+
+	--note = nil
+	local next_spawn, took = fixed_timeslice(timer, dtime, 1000, attempt_spawn)
+	timer = next_spawn
+
+	if (profile or logging) and took > 0 then
+		total_time = total_time + took
+		core.log("Totals: "..tostring(total_time / (core.get_us_time() - start_time) * 100).."% count="..count..
+			", "..tostring(total_time/count).."us per spawn attempt, took="..took.." us, note="..(note or ""))
+	end
+end)
 
 local function despawn_allowed(self)
 	local nametag = self.nametag and self.nametag ~= ""
