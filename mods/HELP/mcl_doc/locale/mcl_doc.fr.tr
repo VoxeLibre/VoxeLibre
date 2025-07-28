@@ -27,8 +27,7 @@ To consume it, wield it, then right-click.=Pour le consommer, maniez-le, puis fa
 You cannot consume this when your hunger bar is full.=Vous ne pouvez pas consommer cela lorsque votre barre de faim est pleine.
 You have to wait for around 2 seconds before you can eat or drink again.=Vous devez attendre environ 2 secondes avant de pouvoir à nouveau manger ou boire.
 Hunger points restored: @1=Points de faim restaurés: @1
-##TODO: fuzzy matched - verify and remove the comment
-Saturation points restored: @1=Points de saturation restaurés: @1%.1f
+Saturation points restored: @1=Points de saturation restaurés: @1
 It can be worn on the head.=Il peut être porté sur la tête.
 It can be worn on the torso.=Il peut être porté au torse.
 It can be worn on the legs.=Il peut être porté aux jambes.

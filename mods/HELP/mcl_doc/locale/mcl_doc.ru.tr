@@ -27,7 +27,6 @@ To consume it, wield it, then right-click.=Чтобы употребить эт�
 You cannot consume this when your hunger bar is full.=Вы не можете употребить это, когда ваша полоска голода заполнена.
 You have to wait for around 2 seconds before you can eat or drink again.=Вам нужно подождать 2 секунды, прежде чем снова пить или есть.
 Hunger points restored: @1=Восстанавливает очков голода: @1
-##TODO: fuzzy matched - verify and remove the comment
 Saturation points restored: @1=Восстанавливает очков насыщения: @1
 It can be worn on the head.=Это можно носить на голове.
 It can be worn on the torso.=Это можно носить на торсе.

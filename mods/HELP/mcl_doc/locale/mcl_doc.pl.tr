@@ -27,8 +27,7 @@ To consume it, wield it, then right-click.=Aby to skonsumować, weź to, następ
 You cannot consume this when your hunger bar is full.=Nie możesz tego skonsumować gdy twój pasek nasycenia jest pełny.
 You have to wait for around 2 seconds before you can eat or drink again.=Musisz poczekać przez 2 sekundy zanim znów będziesz mogła jeść lub pić.
 Hunger points restored: @1=Przywrócone punkty głodu: @1
-##TODO: fuzzy matched - verify and remove the comment
-Saturation points restored: @1=Przywrócone punkty nasycenia: @1%.1f
+Saturation points restored: @1=Przywrócone punkty nasycenia: @1
 It can be worn on the head.=Może być noszony na głowie.
 It can be worn on the torso.=Może być noszone na piersi.
 It can be worn on the legs.=Może być noszony na nogach.

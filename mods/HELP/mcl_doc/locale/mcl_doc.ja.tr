@@ -28,7 +28,7 @@ You cannot consume this when your hunger bar is full.=満腹ゲージが満タ�
 You have to wait for around 2 seconds before you can eat or drink again.=また飲み食いできるようになるまで、2秒くらい待たねばなりません。
 Hunger points restored: @1=満腹度回復：@1
 ##TODO: fuzzy matched - verify and remove the comment
-Saturation points restored: @1=隠し満腹度回復：@1.1f
+Saturation points restored: @1=隠し満腹度回復：@1
 It can be worn on the head.=頭に装着することもできます。
 It can be worn on the torso.=胴体に装着することもできます。
 It can be worn on the legs.=脚部に装着することもできます。

@@ -27,8 +27,7 @@ To consume it, wield it, then right-click.=For at indtage det skal du bære det 
 You cannot consume this when your hunger bar is full.=Du kan ikke indtage dette når din sultbjælke er fuld.
 You have to wait for around 2 seconds before you can eat or drink again.=Du er nødt til at vente omkring 2 sekunder før du kan drikke eller spise igen.
 Hunger points restored: @1=Sultpoint genvundet: @1
-##TODO: fuzzy matched - verify and remove the comment
-Saturation points restored: @1=Mæthedspoint genvundet: @1%.1f
+Saturation points restored: @1=Mæthedspoint genvundet: @1
 It can be worn on the head.=Den kan bæres på hovedet.
 It can be worn on the torso.=Den kan bæres på kroppen.
 It can be worn on the legs.=De kan bæres på benene.

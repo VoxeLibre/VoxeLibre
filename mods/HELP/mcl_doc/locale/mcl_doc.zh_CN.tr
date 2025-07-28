@@ -27,7 +27,6 @@ To consume it, wield it, then right-click.=要使用它，将其拿在手中，�
 You cannot consume this when your hunger bar is full.=当你的饥饿值条已满时，你不能使用这个物品。
 You have to wait for around 2 seconds before you can eat or drink again.=你需要等待大约2秒才能再次进食或饮水。
 Hunger points restored: @1=恢复饥饿值点数：@1
-##TODO: fuzzy matched - verify and remove the comment
 Saturation points restored: @1=恢复饱和度点数：@1
 It can be worn on the head.=它可以佩戴在头上。
 It can be worn on the torso.=它可以穿戴在躯干上。
