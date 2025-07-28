@@ -32,9 +32,13 @@ Lime=Limegrønn
 Light Blue Banner=Lyseblått banner
 Light Blue=Lyseblå
 Banner=Banner
+
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Bannere er høye fargerike dekorative blokker. De kan plasseres på gulv og vegger. Bannere kan utsmykkes med en rekke mønstre ved å bruke mye fargestoff i håndverksmenyen.
+
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Bruk håndverksmenyen til å tegne et mønster på banneret. Utsmykkede bannere kan utsmykkes igjen for å kombinere ulike mønstre. Du kan tegne opptil 12 lag på et banner på denne måten. Hvis banneret inneholder en gradientfarge, er bare 3 lag mulig.
+
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Du kan kopiere mønsteret til et banner ved å plassere to bannere med samme grunnfarge i håndverksrutenettet – det ene må være utsmykket, det andre må være rent. Du kan også bruke et banner på en gryte med vann for å vaske av det øverste laget.
+
 Preview Banner=Forhåndsvis banner
 Paintable decoration=Malbar dekorasjon
 ##[ patterncraft.lua ]##

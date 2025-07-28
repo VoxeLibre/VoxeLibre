@@ -20,13 +20,21 @@ The target item is not enchantable.=Målgjenstanden kan ikke fortrylles
 Enchanted Book=Fortryllet bok
 Enchanting Table=Trolldomsbord
 Spend experience, and lapis to enchant various items.=Bruk erfaringspoeng og lasurstein for å fortrylle ulike gjenstander.
+
 Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Trolldomsbord lar deg fortrylle rustninger, verktøy, våpen og bøker med ulike evner. Men på bekostning av litt erfaringspoeng og lasurstein.
+
 Rightclick the Enchanting Table to open the enchanting menu.=Høyreklikk på trolldomsbordet for å åpne fortryllingsmenyen-
+
 Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Plasser et verktøy, rustning, våpen eller en bok i det øvre venstre feltet, og plasser deretter 1-3 lasurstein i feltet til høyre.
+
 After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=etter å ha plassert gjenstandene dine i feltene, vil fortryllingsalternativene vises. Hold markøren over alternativene for å lese hva som er tilgjengelig for deg.
+
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Disse alternativene er tilfeldige, og avhengig av erfaringsnivå; men fortryllelsesstyrken kan økes.
+
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=For å øke fortryllelsesstyrken, plasser bokhyller rundt trolldomsbordet. Du må imidlertid ha 1 luftblokk mellom bordet og bokhyllene for å styrke trolldomsbordet.
+
 After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Etter endelig å ha valgt fortryllelsen din; venstreklikk på resultatet, og du vil se både lasurstein og erfaringsnivåene dine bli konsumert. Og en fortryllet gjenstand tar deres plass.
+
 Enchant=Fortryll
 ##[ engine.lua ]##
 Inventory=Inventar
@@ -36,9 +44,13 @@ Inventory=Inventar
 Level requirement: @1=Nivåkrav: @1
 ##[ enchantments.lua ]##
 Bane of Arthropods=Leddyrets skrekk
+
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Øker skade og kaster Treghet IV på leddyrmobber (edderkopper, huledderkopper, sølvkre og endermidd).
+
 Channeling=Lynleder
+
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Kanaliserer et lyn mot et mål. Fungerer kun under tordenvær og hvis målet er uhindret av ugjennomsiktige blokker.
+
 Curse of Vanishing=Forsvinnelsesforbannelse
 Item destroyed on death.=Gjenstand ødelegges ved dødsfall.
 Depth Strider=Vannløper
@@ -52,7 +64,9 @@ Arrows set target on fire.=Piler setter målet på fyr.
 Fortune=Formue
 Increases certain block drops.=Øker visse blokkers slipprate.
 Frost Walker=Frostvandrer
+
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Gjør om vann under spillere til frostet is, og forhindrer skade fra magmablokker.
+
 Impaling=Spidding
 Trident deals additional damage to ocean mobs.=Trefork deler ytterligre skade til havskapninger.
 Infinity=Evig

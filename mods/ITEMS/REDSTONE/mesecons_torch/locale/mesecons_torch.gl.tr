@@ -2,9 +2,14 @@
 Redstone Torch (off)=Facho Pedra Vermella (Apagada)
 Redstone Torch (overheated)=Facho Pedra Vermella (sobrequentado)
 Redstone Torch=Facho Pedra Vermella
+
 A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything.=Un facho de pedra vermella é un compoñente de pedra vermella que se pode usar para inverter un sinal de pedra vermella. Fornece os seus bloques circundantes con enerxía de pedra vermella, agás o bloque ao que está unido. Normalmente acendese un facho de pedra vermella, pero tamén se pode apagar alimentando o bloque ao que está conectado. Mentres non se acende, un facho de pedra vermella non alimenta nada.
+
 Redstone torches can be placed at the side and on the top of full solid opaque blocks.=Os fachos Pedra Vermella pódense colocar ao lado e na parte superior dos bloques opacos sólidos completos.
+
 Provides redstone power when it's not powered itself=
 Block of Redstone=Bloque de Pedra Vermella
 Provides redstone power=Proporciona enerxía Pedra Vermella
+
 A block of redstone permanently supplies redstone power to its surrounding blocks.=Un bloque de pedra Vermella fornece permanentemente enerxía de pedra Vermella aos seus bloques circundantes.
+

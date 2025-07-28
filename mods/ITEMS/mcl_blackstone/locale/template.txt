@@ -25,4 +25,6 @@ Polished Blackstone Brick Slab=
 Double Polished Blackstone Brick Slab=
 Blackstone Wall=
 Soul Torch=
+
 Torches are light sources which can be placed at the side or on the top of most blocks.=
+

@@ -1,5 +1,6 @@
 # textdomain: mcl_boats
 Sneak to dismount=Schleichen zum Aussteigen
+Boat=Boot
 Oak Boat=Eichenboot
 Spruce Boat=Fichtenboot
 Birch Boat=Birkenboot
@@ -18,6 +19,7 @@ Dark Oak Chest Boat=Schwarzeichentruhenboot
 Mangrove Chest Boat=Mangroventruhenboot
 Cherry Chest Boat=Kirschtruhenboot
 Boats are used to travel on the surface of water.=Boote werden benutzt, um sich auf der Wasseroberfläche zu bewegen.
+
 Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=Rechtsklicken Sie auf eine Wasserquelle, um das Boot zu platzieren. Rechtsklicken Sie auf das Boot, um es zu betreten. Mit [Links] und [Rechts] lenken, mit [Vorwärts] und [Rückwärts] Geschwindigkeit regeln oder rückwärts fahren. Nutzen sie [Schleichen], um das Boot zu verlassen, schlagen Sie das Boot, um es als Gegenstand fallen zu lassen.
-Boat=Boot
+
 Water vehicle=Wasserfahrzeug

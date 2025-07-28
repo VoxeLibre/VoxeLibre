@@ -1,18 +1,29 @@
 # textdomain: mcl_doors
 ##[ api_doors.lua ]##
+
 This door is a 2-block high barrier which can only be opened by redstone power, not by hand.=这扇门是两格高的屏障，只能通过红石能量打开，无法手动打开。
+
 This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.=这扇门是两格高的屏障，可通过手动操作或红石能量来打开或关闭。 
+
 To open or close this door, send a redstone signal to its bottom half.=
+
 To open or close this door, rightclick it or send a redstone signal to its bottom half.=
+
 Openable by redstone power=可由红石能量打开
 Openable by players and redstone power=可由玩家和红石能量打开
 ##[ api_trapdoors.lua ]##
+
 Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.=
+
 Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.=
+
 To open or close this trapdoor, rightclick it or send a redstone signal to it.=
 ##[ register.lua ]##
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=木门是两格高的屏障，可通过手动操作以及红石信号来打开或关闭。
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=要打开或关闭木门，可右键点击它或给其下半部分提供红石信号。
+
 Oak Door=橡木门
 Acacia Door=金合欢木门
 Birch Door=白桦木门
@@ -20,7 +31,9 @@ Dark Oak Door=深色橡木门
 Jungle Door=丛林木门
 Spruce Door=云杉木门
 Iron Door=铁门
+
 Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.=铁门是两格高的屏障，只能通过红石信号来打开或关闭，无法手动操作。
+
 To open or close an iron door, supply its lower half with a redstone signal.=要打开或关闭铁门，需给其下半部分提供红石信号。
 Oak Trapdoor=橡木活板门
 Acacia Trapdoor=金合欢木活板门
@@ -28,7 +41,11 @@ Birch Trapdoor=白桦木活板门
 Spruce Trapdoor=云杉木活板门
 Dark Oak Trapdoor=深色橡木活板门
 Jungle Trapdoor=丛林木活板门
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=木质活板门是水平的屏障，可通过手动操作或红石信号来打开和关闭。它们会根据放置方式占据方块的上半部分或下半部分。打开时，可像爬梯子一样攀爬它们。
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=要打开或关闭活板门，可右键点击它或向它发送红石信号。
 Iron Trapdoor=铁活板门
+
 Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=铁活板门是水平的屏障，只能通过红石信号来打开和关闭，无法手动操作。它们会根据放置方式占据方块的上半部分或下半部分。打开时，可像爬梯子一样攀爬它们。
+

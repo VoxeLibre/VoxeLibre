@@ -1,9 +1,13 @@
 # textdomain: mcl_raw_ores
 Raw Iron=Roheisen
-Raw Gold=Rohgold
 Raw iron. Mine an iron ore to get it.=Rohes Eisen. Baue Eisenerz ab um es zu erhalten.
-Raw gold. Mine a gold ore to get it.=Rohes Gold. Baue Golderz ab um es zu erhalten.
 Block of Raw Iron=Roheisenblock
-Block of Raw Gold=Rohgoldblock
+
 A block of raw iron is mostly a decorative block but also useful as a compact storage of raw iron.=Ein Block aus Roheisen ist hauptsächlich ein dekorativer Block, aber auch nützlich als kompakte Speicherung von Roheisen.
+
+Raw Gold=Rohgold
+Raw gold. Mine a gold ore to get it.=Rohes Gold. Baue Golderz ab um es zu erhalten.
+Block of Raw Gold=Rohgoldblock
+
 A block of raw gold is mostly a decorative block but also useful as a compact storage of raw gold.=Ein Block aus Rohgold ist hauptsächlich ein dekorativer Block, aber auch nützlich als kompakte Speicherung von Rohgold.
+

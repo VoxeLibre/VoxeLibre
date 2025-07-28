@@ -2,16 +2,25 @@
 ##[ chorus_plant.lua ]##
 Chorus Flower=紫颂花
 Grows on end stone=生长在末地石上
+
 A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.=紫颂花是紫颂植物有生命的部分。它可以一步步生长成高大的紫颂植物。在生长过程中，它最终可能会因生长周期结束而死亡。当无法生长时，它也会死亡。
+
 Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem.=放置它然后等待其生长。它只能放置在末地石顶部、紫颂植物茎的顶部或者正好挨着一根紫颂植物茎的侧面。
+
 Dead Chorus Flower=凋零紫颂花
+
 This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again.=这是紫颂植物的一部分，它不会生长。紫颂花会因生长周期结束或无法生长而死亡。凋零紫颂花可以被采集以获得能够再次生长的新鲜紫颂花。
+
 Chorus Plant Stem=紫颂植物茎
+
 A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers.=紫颂植物茎是将整个紫颂植物连接在一起的部分。它需要末地石作为生长的基底。茎是由紫颂花生长而来的。
+
 The stem attaches itself to end stone and other chorus blocks.=茎会附着在末地石和其他紫颂方块上。
 Chorus Fruit=紫颂果
 Randomly teleports you when eaten=食用时随机传送你
+
 A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.=紫颂果是产自末地紫颂植物的一种可食用果实。食用它会将你传送到附近随机一个固体方块的顶部，前提是你不会被传送到液体、固体障碍物或有害方块内部。如果可传送的位置非常少或根本没有，传送可能会失败。
+
 Popped Chorus Fruit=爆裂紫颂果
 ##[ building.lua ]##
 End Stone=末地石
@@ -41,13 +50,21 @@ A dragon egg is a decorative item which can be placed.=龙蛋是一种可放置�
 ##[ eye_of_ender.lua ]##
 Eye of Ender=末影之眼
 Guides the way to the mysterious End dimension=指引前往神秘末地维度的道路
+
 This item is used to locate End portal shrines in the Overworld and to activate End portals.=此物品用于在主世界定位末地传送门遗迹以及激活末地传送门。
+
 NOTE: The End dimension is currently incomplete and might change in future versions.=注意：末地维度目前尚不完整，在未来版本中可能会有所变化。
+
 Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.=使用攻击键来释放末影之眼。它会升起并朝着最近的末地传送门遗迹的水平方向飞去。如果你离得很近，末影之眼则会直接飞向末地传送门遗迹。几秒钟后，它会停止。它可能会作为物品掉落，但有20%的几率会破碎。
+
 To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=要激活末地传送门，需要将末影之眼放置到完整的末地传送门框架的每个方块中。
+
 ##[ end_crystal.lua ]##
 End Crystal=末影水晶
 Ignited by a punch or a hit with an arrow=通过击打或用箭射中点燃
 Explosion radius: @1=爆炸半径：@1
+
 End Crystals are explosive devices. They can be placed on Obsidian or Bedrock. Ignite them by a punch or a hit with an arrow. End Crystals can also be used the spawn the Ender Dragon by placing one at each side of the End Exit Portal.=末影水晶是爆炸装置。它们可放置在黑曜石或基岩上。通过击打或用箭射中可将其点燃。末影水晶也可通过放置在末地出口传送门的每一侧来召唤末影龙。
+
 Place the End Crystal on Obsidian or Bedrock, then punch it or hit it with an arrow to cause an huge and probably deadly explosion. To Spawn the Ender Dragon, place one at each side of the End Exit Portal.=将末影水晶放置在黑曜石或基岩上，然后击打它或用箭射中它，就会引发一场巨大且很可能致命的爆炸。要召唤末影龙，需在末地出口传送门的每一侧各放置一个末影水晶。 
+

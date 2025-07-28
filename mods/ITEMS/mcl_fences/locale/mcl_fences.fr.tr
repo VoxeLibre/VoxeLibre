@@ -1,7 +1,11 @@
 # textdomain: mcl_fences
+
 Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.=Les barrières sont des structures qui bloquent le chemin. Les barrières se connecteront les unes aux autres et aux blocs solides. Elles ne peuvent pas être sautées par un simple saut.
+
 Openable by players and redstone power=Ouvrable par les joueurs et la puissance redstone
+
 Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.=Les portillons peuvent être ouverts ou fermés et ne peuvent pas être sautés. Les barrières se connecteront bien aux portillons.
+
 Right-click the fence gate to open or close it.=Cliquez avec le bouton droit sur le portillon pour l'ouvrir ou le fermer.
 Oak Fence=Barrière en bois de chêne
 Oak Fence Gate=Portillon en bois de chêne

@@ -2,16 +2,25 @@
 ##[ chorus_plant.lua ]##
 Chorus Flower=コーラスフラワー
 Grows on end stone=エンドストーンに生育
+
 A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.=コーラスフラワーは、コーラスプラントの生きた部分です。徐々に成長し、背の高いコーラスプラントになれます。やがて老衰が訪れ、成長した時に枯れることもあります。また、成長できなくなった時にも枯れてしまいます。
+
 Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem.=それを置き、成長を待ちます。置ける所は、エンドストーンかコーラスプラントの茎の上、または きっちり１本分あるコーラスプラントの茎の側面に限られます。
+
 Dead Chorus Flower=枯れたコーラスフラワー
+
 This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again.=これはコーラスプラントの一部です。成長はしません。コーラスフラワーは、老衰や成長できなくなった場合に枯れてしまうのです。枯れたコーラスフラワーを収穫することで、再び成長できる新鮮なコーラスフラワーが得られます。
+
 Chorus Plant Stem=コーラスプラントの茎
+
 A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers.=コーラスプラントの茎は、コーラスプラント全体を支えている部分です。その土壌としてエンドストーンを要します。コーラスフラワーから茎が育ちます。
+
 The stem attaches itself to end stone and other chorus blocks.=茎は、エンドストーンや他のコーラスブロックに取り付けられます。
 Chorus Fruit=コーラスフルーツ
 Randomly teleports you when eaten=食べるとランダムにテレポート
+
 A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.=コーラスフルーツはエンドを原産地とする食用の果実で、コーラスプラントから取れます。食べると、近くのランダムな固体のブロックの上にテレポートします。ただし、液体、固体、有害なブロックの中に入ってしまわない場合のみです。テレポート先が殆ど又は全くない場合、テレポートに失敗することがあります。
+
 Popped Chorus Fruit=爆ぜたコーラスフルーツ
 ##[ building.lua ]##
 End Stone=エンドストーン
@@ -41,13 +50,21 @@ A dragon egg is a decorative item which can be placed.=ドラゴンの卵は、�
 ##[ eye_of_ender.lua ]##
 Eye of Ender=エンダーアイ
 Guides the way to the mysterious End dimension=神秘的なエンド次元への道案内
+
 This item is used to locate End portal shrines in the Overworld and to activate End portals.=これはオーバーワールドにあるエンドポータルの場所を探すのに使い、また、ポータルを起動する場合にも使うアイテムです。
+
 NOTE: The End dimension is currently incomplete and might change in future versions.=注：エンド次元は現在未完成であり、将来のバージョンで変更される可能性があります。
+
 Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.=攻撃キーでエンダーアイを放ちます。それは上昇した後、最も近いエンドポータルに向かって水平に飛んでいきます。非常に近くにいる場合はその代わりに、エンドポータルへの直進経路をとるようになり、エンダーアイは数秒後に停止します。使用後はアイテムとしてドロップしますが、それは粉々になる確率20%を通過できた場合です。
+
 To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=エンドポータルを起動するには、手付かずのエンドポータルフレームの各ブロックに、エンダーアイを配置する必要があります。
+
 ##[ end_crystal.lua ]##
 End Crystal=エンドクリスタル
 Ignited by a punch or a hit with an arrow=パンチか矢を当てると着火
 Explosion radius: @1=爆発範囲：@1
+
 End Crystals are explosive devices. They can be placed on Obsidian or Bedrock. Ignite them by a punch or a hit with an arrow. End Crystals can also be used the spawn the Ender Dragon by placing one at each side of the End Exit Portal.=エンドクリスタルは爆発装置です。黒曜石や 岩盤の上に置けます。パンチか矢を当てると着火されます。エンドクリスタルは、エンドの出口ポータルの左右に1つずつ配置することで、エンダードラゴンを出現させることもできます。
+
 Place the End Crystal on Obsidian or Bedrock, then punch it or hit it with an arrow to cause an huge and probably deadly explosion. To Spawn the Ender Dragon, place one at each side of the End Exit Portal.=エンドクリスタルを黒曜石や岩盤の上に置き、パンチか矢を当てると、おそらく致命的であろう大爆発を起こします。エンダードラゴンを出現させるには、エンドの出口ポータルの左右に1つずつ配置します。
+

@@ -1,5 +1,7 @@
 # textdomain: mesecons_walllever
 Lever=Alavanca
 Provides redstone power while it's turned on=Fornece carga de redstone enquanto estiver ligada
+
 A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state.=Uma alavanca é um componente de redstone ao qual pode ser comutado em ligado ou desligado. Fornecerá carga de redstone para blocos adjacentes enquanto estiver no estado "ligado".
+
 Use the lever to flip it on or off.=Use a alavanca para comutá-la em ligado ou desligado.

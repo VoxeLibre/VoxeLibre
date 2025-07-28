@@ -1,6 +1,8 @@
 # textdomain: mcl_itemframes
 Item frames are decorative blocks in which items can be placed.=Ramki na przedmioty to klocki ozdobne, w których można umieszczać przedmioty.
+
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Wystarczy umieścić dowolny przedmiot na ramie przedmiotu. Użyj ponownie ramki elementu, aby pobrać element.
+
 ##[ register.lua ]##
 Item Frame=Rama przedmiotu
 Can hold an item=Może przetrzymywać przedmiot
@@ -19,4 +21,6 @@ Craft a glow item frame.=
 Can hold an item.=Może pomieścić przedmiot.
 Can hold an item and glows.=Może trzymać przedmiot i świeci.
 Glowing Item Frame=Świecąca ramka na przedmiot
+
 Glowing item frames are decorative blocks in which items can be placed and made to glow.=Świecące ramki na przedmioty to ozdobne bloki, w których można umieścić przedmioty i sprawić, by świeciły.
+

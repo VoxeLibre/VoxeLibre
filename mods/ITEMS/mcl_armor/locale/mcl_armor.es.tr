@@ -1,7 +1,7 @@
 # textdomain: mcl_armor
-Upgrade:=Mejora:
-@1 Armor Trim=@1 Diseño
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=Esta es una pieza de armadura que se puede equipar, la cual reduce la cantidad de daño que recives.
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=Para equiparla, colocala en la ranura de armadura en el menú de tu inventario.
 Sentry=Centinela
 Dune=Duna
@@ -16,10 +16,10 @@ Eye=Ojo
 Spire=Agujas
 Silence=Silencio
 Wayfinder=Buscacaminos
-Leather Cap=Sombrero de cuero
-Leather Tunic=Túnica de cuero
-Leather Pants=Pantalones de cuero
-Leather Boots=Botas de cuero
+##[ api.lua ]##
+Upgrade:=Mejora:
+@1 Armor Trim=@1 Diseño
+##[ register.lua ]##
 Golden Helmet=Casco de oro
 Golden Chestplate=Peto de oro
 Golden Leggings=Grebas de oro
@@ -54,10 +54,20 @@ Aqua Affinity=Afinidad acuática
 #Translations of enchantements
 Increases underwater mining speed.=Aumenta la velocidad de minado bajo el agua.
 Curse of Binding=Maldicón de ligamiento
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=El objeto no puede ser removido de las ranuras de inventario excepto al morir, al romperse, o en Modo Creativo.
+
 Thorns=Espinas
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Refleja una parte del daño infligido, a costa de reducir la durabilidad con cada activación.
+
 Elytra=Élitros
+##[ leather.lua ]##
+Leather Cap=Sombrero de cuero
+Leather Tunic=Túnica de cuero
+Leather Pants=Pantalones de cuero
+Leather Boots=Botas de cuero
+##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=Molde de Herrería '@1'
 

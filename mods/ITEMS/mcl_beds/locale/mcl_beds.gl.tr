@@ -25,11 +25,17 @@ Sorry, but you have to wait @1 seconds until you may use this button again!=¡Se
 Hey! Would you guys mind sleeping?=¡Ei! ¿Importaríavos durmir?
 ##[ api.lua ]##
 Beds allow you to sleep at night and make the time pass faster.=As camas te permiten durmir pola noite e facer co tempo pase máis axiña.
+
 To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=Para usar unha cama, párate preto dela e fai clic dereito na cama para durmir nela. Durmir só funciona cando se agocha o sol pola noite ou durante unha tormenta eléctrica. A cama tamén ten que estar libre de calquer perigo.
+
 You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Oiches falar doutros mundos nos que unha cama establecería o punto de partida para a tua vindeira vida. Pero este mundo non e un deles.
+
 By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=Ao usar unha cama, esta establecese como o punto de partida para a tua vindeira vida. Se morres, comenzarás a tua vindeira vida nesa cama, a menos que esté obstruida ou destruida.
+
 In this world, going to bed won't skip the night, but it will skip thunderstorms.=En este mundo, ir a la cama no se saltará la noche, pero se saltará las tormentas eléctricas.
+
 Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Durmir permite saltarte a noite. Omitese a noite cando todos os xogadores neste mundo foron a durmir. A noite saltase despois de durmir durante uns segundos. As tormentas eléctricas podense omitir da mesma maneira.
+
 Allows you to sleep=Permíteche durmir
 ##[ beds.lua ]##
 Red Bed=Cama vermella
@@ -55,5 +61,7 @@ Respawn Anchor=Áncora de reaparición
 
 ##### not used anymore #####
 
+
 New respawn position set! But you can only sleep at night or during a thunderstorm.=¡Nova posición de reaparición establecida! Pero só podes durmir pola noite ou durante tormentas eléctricas.
+
 send!=¡enviar!

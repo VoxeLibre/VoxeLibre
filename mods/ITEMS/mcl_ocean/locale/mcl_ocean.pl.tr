@@ -1,7 +1,9 @@
 # textdomain: mcl_ocean
 ##[ prismarine.lua ]##
 Sea Lantern=Latarnia morska
+
 Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Latarnie morskie to dekoracyjne źródła światła, które wyglądają bardzo dobrze pod wodą, ale mogą być umieszczone gdziekolwiek.
+
 Prismarine=Pryzmaryn
 Prismarine is used as a building block. It slowly changes its color.=Pryzmaryn jest blokiem budowlanym. Powoli zmienia on swój kolor.
 Prismarine Bricks=Pryzmarynowe cegły
@@ -39,9 +41,13 @@ Horn Coral=Rogaty koralowiec
 Dead Horn Coral=Martwy rogaty koralowiec
 Horn Coral Fan=Wachlarz rogatego koralowca
 Dead Horn Coral Fan=Martwy wachlarz rogatego koralowca
+
 Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.=Bloki koralowca żyją w oceanach i potrzebują źródła wody obok aby przeżyć. Bez wody obumierają.
+
 Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Koralowiec rośnie na blokach koralowca i musi być wewnątrz źródła wody aby przeżyć. Bez wody obumiera.
+
 Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Wachlarz koralowca rośnie na blokach koralowca i musi być wewnątrz źródła wody aby przeżyć. Bez wody obumiera zarówno on jak i blok koralowca pod nim.
+
 Needs water to live=Potrzebuje wody do życia.
 Grows on coral block of same species=Rośnie na blokach koralowca tego samego gatunku.
 ##[ seagrass.lua ]##
@@ -57,8 +63,11 @@ Dried Kelp Block=Blok suszonych wodorostów
 A decorative block that serves as a great furnace fuel.=Blok dekoracyjny, który świetnie sprawdza się jako paliwo do pieca.
 ##[ sea_pickle.lua ]##
 Sea Pickle=Iskrzyłuda
+
 Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Iskrzyłuda rośnie na martwych blokach mózgowatego koralowca i jest źródłem światła pod wodą.
+
 It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Może być postawiona tylko na blokach mózgowatego koralowca. Postawienie iskrzyłuda na innej iskrzyłudzie sprawi, że się powiększy i będzie jaśniejsza.
+
 Glows in the water=Świeci w wodzie
 4 possible sizes=4 możliwe wielkości
 Grows on dead brain coral block=Rośnie na martwych blokach mózgowatego koralowca

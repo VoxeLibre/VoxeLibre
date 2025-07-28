@@ -1,30 +1,49 @@
 # textdomain: mcl_buckets
 Empty Bucket=空桶
 A bucket can be used to collect and release liquids.=桶可用于收集和释放液体。
+
 Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else.=击打液体源来收集液体，然后你可以使用装满液体的桶将液体放置到其他地方。
+
 Collects liquids=收集液体
 ##[ register.lua ]##
 Lava Bucket=岩浆桶
+
 A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.=桶可用于收集和释放液体。这个桶里装满了滚烫的岩浆，被安全地装在里面。使用时要小心。
+
 Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!=站到安全距离外，放置桶来倒出岩浆，在此处生成一个岩浆源。别烫伤自己！
+
 Places a lava source=放置一个岩浆源
 Water Bucket=水桶
+
 A bucket can be used to collect and release liquids. This one is filled with water.=桶可用于收集和释放液体。这个桶里装满了水。
+
 Place it to empty the bucket and create a water source.=放置它来倒空水桶并生成一个水源。
 Places a water source=放置一个水源
 River Water Bucket=河水桶
+
 A bucket can be used to collect and release liquids. This one is filled with river water.=桶可用于收集和释放液体。这个桶里装满了河水。
+
 Place it to empty the bucket and create a river water source.=放置它来倒空桶并生成一个河水水源。
 Places a river water source=放置一个河水水源
 ##[ fishbuckets.lua ]##
-Bucket of @1=装有@1的桶
-This bucket is filled with water and @1.=这个桶里装满了水和@1。
-Place it to empty the bucket and place a @1. Obtain by right clicking on a @2 with a bucket of water.=放置它来倒空桶并放置一个@1。通过用水桶右键点击@2来获取。
-Places a water source and a @1.=放置一个水源和一个@1。 
+Bucket of Cod=
+Bucket of Salmon=
+Bucket of Tropical Fish=
+Bucket of Axolotl=
+Bucket of Pufferfish=
+This bucket is filled with water and contains an aquatic mob.=
+
+##TODO: fuzzy matched - verify and remove the comment
+Place it to empty the bucket and place a mob. Obtain by right clicking on a small aquatic mob with a bucket of water.=放置它来倒空桶并放置一个@1。通过用水桶右键点击@2来获取。
+
+##TODO: fuzzy matched - verify and remove the comment
+Places a water source and a mob.=放置一个水源和一个@1。 
 
 
 ##### not used anymore #####
 
+Bucket of @1=装有@1的桶
+This bucket is filled with water and @1.=这个桶里装满了水和@1。
 Axolotl=美西螈
 Cod=鳕鱼
 Salmon=鲑鱼

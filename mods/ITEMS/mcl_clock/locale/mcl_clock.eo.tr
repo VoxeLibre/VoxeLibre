@@ -1,5 +1,7 @@
 # textdomain: mcl_clock
 Clocks are tools which shows the current time of day in the Overworld.=Horloĝoj estas iloj kiuj montras la nunan horon de la tago en la mondo.
+
 The clock contains a rotating disc with a sun symbol (yellow disc) and moon symbol and a little “pointer” which shows the current time of day by estimating the real position of the sun and the moon in the sky. Noon is represented by the sun symbol and midnight is represented by the moon symbol.=La horloĝo enhavas rotacian diskon kun suna simbolo (flava disko) kaj luno simbolo kaj malgranda "montrilo" kiu montras la nunan horon de tago taksante la realan pozicion de la suno kaj la luno sur la ĉielo. Tagmezo estas reprezentita per la suna simbolo kaj noktomezo estas reprezentita per la luna simbolo.
+
 Displays the time of day in the Overworld=Montras la horon de la tago en la mondo.
 Clock=Horloĝo

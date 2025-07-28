@@ -1,30 +1,54 @@
 # textdomain: mcl_deepslate
 Deepslate=Ardósia
+
 Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=Ardósia é um tipo de rocha encontrado nas profundezas do subterrâneo que possui funções similares às rochas comuns, mas é mais dura que elas.
+
 Infested Deepslate=Ardósia Infestada
+
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Um bloco infestado é um bloco no qual um silverfish surgirá quando quebrado. Parece idêntico à sua contraparte normal.
+
 Hides a silverfish=Esconde um silverfish
 Tuff=Tufo
+
 Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=Tufo é uma rocha ornamental formada a partir de cinzas vulcânicas, ocorrendo em bolhas no subsolo abaixo de Y@=16.
+
 Deepslate Coal Ore=Minério de Carvão em Ardósia
+
 Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.=Minério de carvão em ardósia é a variante do minério de carvão que pode ser gerado em ardósias e bolhas de tufo.
+
 Deepslate Iron Ore=Minério de Ferro em Ardósia
+
 Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=Minério de ferro em ardósia é a variante do minério de ferro que pode ser gerado em ardósias e bolhas de tufo.
+
 Deepslate Gold Ore=Minério de Ouro em Ardósia
+
 Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.=Minério de ouro em ardósia é a variante do minério de ouro que pode ser gerado em ardósias e bolhas de tufo.
+
 Deepslate Emerald Ore=Minério de Esmeralda em Ardósia
+
 Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.=Minério de esmeralda em ardósia é a variante do minério de esmeralda que pode ser gerado em ardósias e bolhas de tufo.
+
 Deepslate Diamond Ore=Minério de Diamante em Ardósia
+
 Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.=Minério de diamante em ardósia é a variante do minério de diamante que pode ser gerado em ardósias e bolhas de tufo.
+
 Deepslate Lapis Lazuli Ore=Minério de Lápis-lazuli em Ardósia
+
 Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=Minério de lápis-lazuli em ardósia é a variante do minério de lápis-lazuli que pode ser gerado em ardósias e bolhas de tufo.
+
 Deepslate Copper Ore=Minério de Cobre em Ardósia
+
 Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs.=Minério de cobre em ardósia é a variante do minério de cobre que pode ser gerado em ardósias e bolhas de tufo.
+
 Deepslate Redstone Ore=Minério de Redstone em Ardósia
+
 Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=Minério de redstone em ardósia é a variante do minério de redstone que pode ser gerado em ardósias e bolhas de tufo.
+
 Lit Deepslate Redstone Ore=Minério de Redstone em Ardósia Aceso
 Cobbled Deepslate=Pedregulhos de Ardósia
+
 Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone.=Pedregulhos de ardósia é uma variante de rocha que possui funções similares aos pedregulhos ou rochas-negra.
+
 Cobbled Deepslate Stairs=Escadas de Pedregulhos de Ardósia
 Cobbled Deepslate Slab=Laje de Pedregulhos de Ardósia
 Double Cobbled Deepslate Slab=Laje Dupla de Pedregulhos de Ardósia

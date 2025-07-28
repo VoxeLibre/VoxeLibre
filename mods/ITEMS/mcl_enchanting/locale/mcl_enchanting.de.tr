@@ -20,13 +20,21 @@ The target item is not enchantable.=Der Zielgegenstand ist nicht verzauberbar.
 Enchanted Book=Verzaubertes Buch
 Enchanting Table=Zaubertisch
 Spend experience, and lapis to enchant various items.=Verbrauche Erfahrungspunkte und Lapislazuli um verschiedene Gegenstände zu verzaubern.
+
 Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Verzauberungstische lassen Sie Sie Rüstungen, Werkzeuge, Waffen und Bücher mit verschiedenen Fähigkeiten verzaubern. Allerdings auf Kosten etwas Erfahrung und Lapislazuli.
+
 Rightclick the Enchanting Table to open the enchanting menu.=Rechtsklicken Sie auf den Verzauberungstisch, um das Verzauberungsmenü zu öffnen.
+
 Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Lege ein Werkzeug, eine Rüstung, eine Waffe oder ein Buch in den oberen linken Slot und platziere dann 1-3 Lapis Lazuli in den Slot rechts davon.
+
 After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Nachdem Sie Ihre Gegenstände in die Slots gelegt haben, werden die Verzauberungs-Optionen angezeigt. Bewegen Sie den Mauszeiger über die Optionen, um zu sehen, was für Sie verfügbar ist.
+
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Diese Optionen werden zufällig ausgewählt und sind abhängig vom Erfahrungslevel; die Stärke der Verzauberung kann jedoch erhöht werden.
+
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Um die Stärke der Verzauberung zu erhöhen, platzieren Sie Bücherregale um den Verzauberungstisch. Sie müssen jedoch 1 Luftknoten zwischen dem Tisch und den Bücherregalen haben, um den Verzauberungstisch zu stärken.
+
 After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Nachdem Sie Ihre Verzauberung ausgewählt haben, klicken Sie mit der linken Maustaste auf die Auswahl, und Sie werden sowohl das Lapislazuli als auch Ihre Erfahrungspunkte verbrauchen. Ein verzaubertes Objekt bleibt an seiner Stelle zurück.
+
 Enchant=Verzaubern
 ##[ engine.lua ]##
 Inventory=Inventar
@@ -36,9 +44,13 @@ Inventory=Inventar
 Level requirement: @1=Level benötigt: @1
 ##[ enchantments.lua ]##
 Bane of Arthropods=Schrecken der Gliederfüßler
+
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Erhöht Schaden und gibt Langsamkeit IV an Gliederfüßlern (Spinnen, Höhlenspinenn, Silberfischchen und Endermilben).
+
 Channeling=Kanalisierung
+
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Kanalisiert einen Blitz zu einem Ziel. Funktioniert nur während Gewitterstürmen und solange kein undurchsichtiger Block im Weg ist.
+
 Curse of Vanishing=Fluch des Verschwindens
 Item destroyed on death.=Gegenstand wird bei Tod zerstört.
 Depth Strider=Tiefenstreicher
@@ -52,7 +64,9 @@ Arrows set target on fire.=Pfeile zünden Ziel an.
 Fortune=Glück
 Increases certain block drops.=Erhöht bestimmte Blockabwürfe.
 Frost Walker=Frostläufer
+
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Verwandelt Wasser unter dem Spieler zu brüchigem Eis und verhindert Schaden von Magmablöcken.
+
 Impaling=Aufspießen
 Trident deals additional damage to ocean mobs.=Dreizack richtet Zusatzschaden an Ozeanmobs an.
 Infinity=Unendlichkeit
@@ -104,7 +118,9 @@ Increases underwater mining speed.=Erhöht Unterwassergrabegeschwindigkeit.
 Blast Protection=Explosionsschutz
 Reduces explosion damage and knockback.=Reduziert Explosionsschaden und -rückschlag.
 Curse of Binding=Fluch der Bindung
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Gegenstand kann nicht von den Rüstungsplätzen entfernt werden, außer beim Tod, Zerbrechen oder im Kreativmodus.
+
 Feather Falling=Federfall
 Reduces fall damage.=Reduziert Fallschaden.
 Fire Protection=Feuerschutz
@@ -114,4 +130,6 @@ Reduces projectile damage.=Reduziert Projektilschaden.
 Protection=Schutz
 Reduces most types of damage by 4% for each level.=Reduziert die meisten Schadensarten um 4% je Stufe.
 Thorns=Dornen
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflektiert etwas des Schadens beim Erleiden eines Treffers, auf Kosten der Haltbarkeit.
+

@@ -4,15 +4,21 @@ Inventory=Inventario
 ##[ chests.lua ]##
 To access its inventory, rightclick it. When broken, the items will drop out.=Para acceder ao seu inventario, fai clic co botón dereito nel. Cando se rompan, os elementos caerán.
 Chest=Cofre
+Large Chest=Cofre grande
+
 Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.=Os cofres son recipientes que ofrecen 27 ranuras de inventario. Os cofres pódense converter en cofres grandes co dobre de capacidade colocando dous cofres un ao carón do outro.
+
 27 inventory slots=27 espazos de inventario
 Can be combined to a large chest=Pódese combinar a un cofre grande
 Trapped Chest=Cofre trampa
-Large Chest=Cofre grande
+
 A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.=Un cofre trampa é un recipiente que ofrece 27 espazos de inventario. Cando se abre, envía un sinal de pedra vermella aos seus bloques adxacentes mentres permaneza aberto. Os cofres trampa pódense converter en grandes cofres trampa con o dobre de capacidade colocando dous cofres trampa un ao carón do outro.
+
 Emits a redstone signal when opened=Emite un sinal de pedra vermella cando se abre
 ##[ ender.lua ]##
+
 Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players.=Os cofres Ender danche acceso a un único inventario interdimensional persoal con 27 espazos. Este inventario é o mesmo sen importar o cofre desde o que accedas a el. Se metes un elemento nun cofre ender, atoparao en todos os outros cofres ender. Cada xogador só verá os seus propios elementos, pero non os dos outros xogadores.
+
 Ender Chest=Cofre de ender
 27 interdimensional inventory slots=27 rañuras de inventario interdimensional
 Put items inside, retrieve them from any ender chest=Coloca elementos dentro, recuperaos de calqueira cofre de ender
@@ -35,18 +41,25 @@ Red Shulker Box=Caixa shulker vermella
 Grey Shulker Box=Caixa shulker gris
 Black Shulker Box=Caixa shulker negra
 Shulker Box=Caixa Shulker
+
 A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.=Unha caixa de shulker é un recipiente portátil que ofrece 27 espazos de inventario para calquera artigo, excepto caixas shulker. As caixas de shulker manteñen o seu inventario cando se rompen, polo que as caixas de shulker e o seu contido pódense tomar como un único elemento. As caixas Shulker veñen en moitas cores diferentes.
+
 To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.=
+
 Can be carried around with its contents=Pódese transportar co seu contido
 ##[ example.lua ]##
 Stone Chest=
 Large Stone Chest=
+
 ##TODO: fuzzy matched - verify and remove the comment
 Stone Chests are containers which provide 27 inventory slots. Stone Chests can be turned intolarge stone chests with double the capacity by placing two stone chests next to each other.=Os cofres son recipientes que ofrecen 27 ranuras de inventario. Os cofres pódense converter en cofres grandes co dobre de capacidade colocando dous cofres un ao carón do outro.
+
 ##TODO: fuzzy matched - verify and remove the comment
 Can be combined to a large stone chest=Pódese combinar a un cofre grande
 
 
 ##### not used anymore #####
 
+
 To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out.=Para acceder ao inventario dunha caixa de shulker, colócaa e fai clic co botón dereito. Para levar unha caixa shulker e o seu contido contigo, só tes que rompela e recollela, os elementos non se caerán. Coloca de novo a caixa shulker para poder recuperar o seu contido.
+

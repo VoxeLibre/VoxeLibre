@@ -1,20 +1,46 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=Jest to część możliwej do założenia zbroi, która zmniejsza otrzymywane obrażenia.
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=Aby ją założyć, upuść ją na odpowiadającym miejscu na zbroję na ekranie ekwipunku.
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=Złoty hełm
+Golden Chestplate=Złoty napierśnik
+Golden Leggings=Złote nogawice
+Golden Boots=Złote buty
+Chainmail Helmet=
+##TODO: fuzzy matched - verify and remove the comment
+Chainmail Chestplate=Kolczy napierśnik
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=Żelazny hełm
+Iron Chestplate=Żelazny napierśnik
+Iron Leggings=Żelazne nogawice
+Iron Boots=Żelazne buty
+Diamond Helmet=Diamentowy hełm
+Diamond Chestplate=Diamentowy napierśnik
+Diamond Leggings=Diamentowe nogawice
+Diamond Boots=Diamentowe buty
+Netherite Helmet=
+Netherite Chestplate=
+Netherite Leggings=
+Netherite Boots=
 Projectile Protection=
 Reduces projectile damage.=
 Blast Protection=
@@ -29,10 +55,19 @@ Aqua Affinity=
 #Translations of enchantements
 Increases underwater mining speed.=
 Curse of Binding=
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+
 Thorns=
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=
+
 Elytra=
+##[ leather.lua ]##
+Leather Cap=Skórzana czapka
+Leather Tunic=Skórzana tunika
+Leather Pants=Skórzane spodnie
+Leather Boots=Skórzane buty
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=
@@ -40,23 +75,6 @@ Smithing Template '@1'=
 
 ##### not used anymore #####
 
-Leather Cap=Skórzana czapka
-Iron Helmet=Żelazny hełm
-Golden Helmet=Złoty hełm
-Diamond Helmet=Diamentowy hełm
 Chain Helmet=Kolczy hełm
-Leather Tunic=Skórzana tunika
-Iron Chestplate=Żelazny napierśnik
-Golden Chestplate=Złoty napierśnik
-Diamond Chestplate=Diamentowy napierśnik
-Chain Chestplate=Kolczy napierśnik
-Leather Pants=Skórzane spodnie
-Iron Leggings=Żelazne nogawice
-Golden Leggings=Złote nogawice
-Diamond Leggings=Diamentowe nogawice
 Chain Leggings=Kolcze nogawice
-Leather Boots=Skórzane buty
-Iron Boots=Żelazne buty
-Golden Boots=Złote buty
-Diamond Boots=Diamentowe buty
 Chain Boots=Kolcze buty

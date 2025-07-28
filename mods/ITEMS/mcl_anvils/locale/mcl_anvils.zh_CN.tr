@@ -2,14 +2,23 @@
 Repair and Name=修复与命名
 Repair and rename items=修复与命名物品 
 Anvil=铁砧
+
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=铁砧能让你修理工具和盔甲，还可以给物品命名。不过，它的耐久度是有限的。可别让它砸到你头上，那会相当疼的！
+
 To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.=要使用铁砧，右键点击它就行。一个铁砧有两个输入槽（在左边）以及一个输出槽。
+
 To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.=要重命名物品，把一组物品放到其中一个物品槽中，同时让另一个输入槽保持为空，输入名称，按下回车键或点击“设置名称”，然后从输出槽中取出重命名后的物品。
+
 There are two possibilities to repair tools (and armor):=有两种修理工具（和盔甲）的方法：
+
 • Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.=• 工具+工具：在输入槽中放置两个相同类型的工具，修复后工具的“耐久值”是两个输入工具“耐久值”之和，再加上12%的加成。
+
 • Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.=• 工具+材料：有些工具也可以通过与制造它的材料相结合来进行修复，例如，铁镐可以用铁锭来修复，这样能修复工具25%的耐久度。
+
 Armor counts as a tool. It is possible to repair and rename a tool in a single step.=盔甲也算作一种工具，有可能在一个步骤中对工具进行修复和重命名。
+
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=铁砧的耐久度有限，有3个损坏等级：未损坏、轻微损坏和严重损坏。每次你修复或重命名物品时，铁砧都有12%的概率会受损，铁砧从超过1格的高度掉落时也有受损的可能，如果一个严重损坏的铁砧再次受损，它就会被摧毁。
+
 Slightly Damaged Anvil=轻微损坏的铁砧
 Very Damaged Anvil=严重损坏的铁砧
 

@@ -3,10 +3,17 @@ Repair & Disenchant=Reparieren & Entzaubern
 Inventory=Inventar
 Grindstone=Schleifstein
 Used to disenchant/fix tools=Verwendet, um Zauber zu lösen oder Werkzeuge zu reparieren
+
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Schleifsteine entzaubern Werkzeuge und Rüstungen (außer von Flüchen) und reparieren zwei Gegenstände der gleichen Art. Es ist auch der Arbeitsplatz des Waffenschmieds.
+
 To use the grindstone, rightclick it, Two input slots (on the left) and a single output slot.=Um den Schleifstein zu verwenden, klicken Sie ihn mit der rechten Maustaste an. Es gibt zwei Eingabefelder (auf der linken Seite) und ein einziges Ausgabefeld.
+
 To disenchant an item place enchanted item in one of the input slots and take the disenchanted item from the output.=Um einen Gegenstand zu entzaubern, geben Sie den verzauberten Gegenstand in eines der Eingabefelder und nehmen Sie den entzauberten Gegenstand aus dem Ausgabefeld.
+
 # choose one below
 To repair a tool you need a tool of the same type and material, put both items in the input slot and the output slot will combine two items durabilities with 5% bonus.=Um ein Werkzeug zu reparieren, benötigen Sie ein zweites Werkzeug des gleichen Typs und Materials, legen Sie beide Gegenstände in den Eingabefach und die Ausgabefach kombiniert die Widerstandsfähigkeit der beiden Gegenstände mit einer 5%-Prämie.
+
 If both items have enchantments the player will get xp from both items from the disenchant.=Wenn beide Gegenstände Verzauberungen haben, erhält der Spieler Erfahrungspunkte von beiden Gegenständen durch das Entzaubern.
+
 Curses cannot be removed and will be transfered to the new repaired item, if both items have a different curse the curses will be combined.=Flüche können nicht entfernt werden und werden auf das neue reparierte Objekt übertragen. Wenn beide Objekte unterschiedliche Flüche haben, werden die Flüche kombiniert.
+

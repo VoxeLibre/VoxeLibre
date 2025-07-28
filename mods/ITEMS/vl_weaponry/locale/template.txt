@@ -1,11 +1,16 @@
 # textdomain: vl_weaponry
 Can crush blocks=
 Increased knockback=
+
 Hammers are great in melee combat, as they deal high damage with increased knockback and can endure countless battles. Hammers can also be used to crush things.=
+
 To crush a block, dig the block with the hammer. This only works with some blocks.=
+
 Reaches farther=
 Can be thrown=
+
 Spears are great in melee combat, as they have an increased reach. They can also be thrown.=
+
 To throw a spear, hold it in your hand, then hold use (rightclick) in the air.=
 Wooden Hammer=
 Stone Hammer=

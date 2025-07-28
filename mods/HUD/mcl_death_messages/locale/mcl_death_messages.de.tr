@@ -33,14 +33,11 @@
 @1 was roasted in dragon breath by @2=@1 wurde in Drachenatem von @2 geröstet
 @1 withered away=@1 ist verdörrt
 @1 withered away whilst fighting @2=@1 ist während einem Kampf mit @2 verdörrt
-@1 was killed by magic=@1 wurde von Magie getötet
 @1 was shot by a skull from @2=@1 wurde von einem Schädel von @2 erschossen
 @1 was squashed by a falling anvil=@1 wurde von einem fallenden Amboss zerquetscht
 @1 was squashed by a falling anvil whilst fighting @2=@1 wurde während einem Kampf mit @2 von einem fallenden Amboss zerquetscht
 @1 was squashed by a falling block=@1 wurde von einem fallenden Block zerquetscht
 @1 was squashed by a falling block whilst fighting @2=@1 wurde während einem Kampf mit @2 von einem fallenden Block zerquetscht
-@1 was slain by @2=@1 wurde von @2 erschlagen
-@1 was slain by @2 using @3=@1 wurde von @2 mit @3 erschlagen
 @1 was slain by @2=@1 wurde von @2 erschlagen
 @1 was slain by @2 using @3=@1 wurde von @2 mit @3 erschlagen
 @1 was shot by @2=@1 wurde von @2 erschossen
@@ -56,3 +53,5 @@
 @1 was squashed by @2=@1 wurde von @2 zerquetscht
 @1 went off with a bang=@1 ging mit einem Knall ab
 @1 went off with a bang due to a firework fired by @2 from @3=@1 ging mit einem Knall los aufgrund eines Feuerwerks, das von @2 von @3 abgefeuert wurde
+@1 died a sweet death=
+@1 was poked to death by a sweet berry bush whilst trying to escape @2=

@@ -2,19 +2,27 @@
 Glowstone=Gøldestein
 Glowstone is a naturally-glowing block which is home to the Nether.=Glødestein er en naturlig glødende blokk som hører hjemme i Nether
 Nether Quartz Ore=Netherkvartsmalm
+
 Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.=Netherkvartsmalm er malm som inneholder kvarts. Du finner de ofte rundt netherrack i Nether.
+
 Ancient Debris=Eldgammelt skrap
 Ancient debris can be found in the nether and is very very rare.=Eldgammelt skrap finnes i Nether og er svært svært sjelden.
 Netherite Block=Netherittblokk
 Netherite block is very hard and can be made of 9 netherite ingots.=Netherittblokken er veldig hard og lages av 9 netherittbarrer.
 Netherrack=Netherrack
+
 Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.=Netherrack er en steinlignende blokk fra Nether. Om du tenner på denne blokken vil det skape en evig ild.
+
 Magma Block=Magmablokk
 Burns your feet=Brenner føttene dine
+
 Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire.=Magmablokker er varme solide blokker som skader alle som står på den, med mindre de har brannmotstand. Å starte en ild på denne blokken vil skape en evig ild.
+
 Soul Sand=Sjelesand
 Reduces walking speed=Reduserer gangehastighet
+
 Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block.=Sjelesand er en blokk fra Nether. Man går tregere på sjelesand. Bremseeffekten forsterkes når sjelesanden ligger på is, pakket is eller en slimblokk.
+
 Nether Brick Block=Nethertegl
 Red Nether Brick Block=Rødt nethertegl
 Nether Wart Block=Nethervorteblokk
@@ -24,25 +32,37 @@ Chiseled Quartz Block=Uthugget kvartsblokk
 Pillar Quartz Block=Kvartssøyle
 Smooth Quartz=Jevn kvartsblokk
 Glowstone Dust=Glødesteinpulver
+
 Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.=Glødesteinpulver er støvet som kommer ut av ødelagte glødesteiner. Den brukes hovedsakelig i håndverk.
+
 Nether Quartz=Kvarts
 Nether quartz is a versatile crafting ingredient.=Kvarts er en allsidig håndverksingrediens.
 Netherite Scrap=Netherittskrap
 Netherite scrap is a crafting ingredient for netherite ingots.=
 Netherite Ingot=Netherittbarre
+
 Netherite ingots can be used with a smithing table to upgrade items to netherite.=
+
 Nether Brick=Netherteglstein
+
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Netherteglstein er den viktigste håndverksingrediensen for å lage nethertegl og nethergjerder.
+
 ##[ nether_wart.lua ]##
 Premature Nether Wart (Stage 1)=Umoden nethervorte (Stadie 1)
+
 A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=En umoden nethervorte har nylig blitt plantet på sjelsand. Nethervorten vokser sakte på sjelsand over 4 stadier (andre og tredje stadie ser identiske ut). Selv om nethervorten hører hjemme i Nether, vokser den i alle dimensjoner.
+
 Premature Nether Wart (Stage 2)=Umoden nethervorte (Stadie 2)
 Premature Nether Wart (Stage 3)=Umoden nethervorte (Stadie 3)
 Mature Nether Wart=Moden nethervorte
+
 The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.=Den modne nethervorten er en plante fra Nether og har nådd sitt siste stadie og vokser ikke lenger. Den er klar til å høstes for mere nethervorter.
+
 Nether Wart=Nethervorte
 Grows on soul sand=Vokser på sjelesand
+
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=Nethervorter er planter fra Nether. De kan plantes på sjelsand og vokser over 4 stadier.
+
 Place this item on soul sand to plant it and watch it grow.=Plasser denne gjenstanden på sjelsand for å plante den og se den vokse.
 ##[ lava.lua ]##
 Nether Lava Source=Netherlavakilde

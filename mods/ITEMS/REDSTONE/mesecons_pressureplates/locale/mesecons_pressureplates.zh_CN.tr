@@ -1,6 +1,9 @@
 # textdomain: mesecons_pressureplates
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=木质压力板是一种红石元件，当任何可移动的物体（包括掉落的物品、玩家和生物）位于其上方时，它会为周围的方块提供红石能量。
+
 A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=压力板是一种红石元件，当有某人或某物位于其上方时，它会为周围的方块提供红石能量。
+
 Provides redstone power when pushed=被按下时提供红石能量
 Pushable by players, mobs and objects=可被玩家、生物和物体按下
 Pushable by players and mobs=可被玩家和生物按下
@@ -16,6 +19,10 @@ Mangrove Pressure Plate=红树压力板
 Crimson Pressure Plate=绯红压力板
 Warped Pressure Plate=诡异压力板
 Stone Pressure Plate=石质压力板
+
 A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=石质压力板是一种红石元件，当玩家或生物站在其上方时，它会为周围的方块提供红石能量，它不会被其他任何东西触发。
+
 Polished Blackstone Pressure Plate=磨制黑石压力板
+
 A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=磨制黑石压力板是一种红石元件，当玩家或生物站在其上方时，它会为周围的方块提供红石能量，它不会被其他任何东西触发。
+

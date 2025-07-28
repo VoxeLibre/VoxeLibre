@@ -1,4 +1,6 @@
 # textdomain: mcl_torches
 ##[ register.lua ]##
 Torch=Torche
+
 Torches are light sources which can be placed at the side or on the top of most blocks.=Les torches sont des sources lumineuses qui peuvent être placées sur le côté ou sur le dessus de la plupart des blocs.
+

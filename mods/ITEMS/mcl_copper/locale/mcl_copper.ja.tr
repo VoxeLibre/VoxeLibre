@@ -1,7 +1,9 @@
 # textdomain: mcl_copper
 ##[ nodes.lua ]##
 Copper Ore=銅鉱石
+
 Some copper contained in stone, it is pretty common and can be found below sea level.=石に含まれる銅は ごく一般的で、海面下の高さで見られます。
+
 Block of Raw Copper=銅の粗鉱ブロック
 A block used for compact raw copper storage.=銅の粗鉱をコンパクトに保管するのに使えるブロックです。
 Block of Copper=銅ブロック

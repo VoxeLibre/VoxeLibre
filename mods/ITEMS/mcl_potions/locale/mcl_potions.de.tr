@@ -1,20 +1,42 @@
 # textdomain: mcl_potions
-<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]=<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]
-Add a status effect to yourself. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART at the end means no particles will be shown for this effect.=Füge dir selbst einen Status-Effekt hinzu. Argumente: <effect>: Name des Status-Effekts. Wenn "list" als Effektname übergeben wird, werden die verfügbaren Effekte aufgelistet. Wenn "heal" als Effektname übergeben wird, heilt (oder schädigt) es um die Menge, die durch den nächsten Parameter angegeben wird. Wenn "clear" als Effektname übergeben wird, werden alle Effekte entfernt. Wenn "remove" als Effektname übergeben wird, wird der Effekt entfernt, der durch den nächsten Parameter benannt wird. <duration>: Dauer in Sekunden. Wenn "INF" als Dauer übergeben wird, wird der Effekt unendlich. (<heal-amount>: Menge an Heilung, wenn der Effekt "heal" ist, eine negative Zahl zieht Gesundheit ab. <effect>: Name eines Status-Effekts, der entfernt wird, wenn "remove" der vorherige Parameter war.) <level>: Bestimmt die Stärke des Effekts, ein höheres Level führt zu einem stärkeren Effekt für Effekte, die vom Level abhängen (keine Änderungen für andere Effekte), Standard ist 1, übergebe F, um einen niedrigen Level-Faktor zu verwenden. <factor>: Effektstärkemodifikator, kann je nach Effekt unterschiedliche Bedeutungen haben, keine Änderungen für Effekte, die nicht vom Level/Faktor abhängen. NOPART am Ende bedeutet, dass keine Partikel für diesen Effekt angezeigt werden.
-Missing effect parameter!=Fehlender Effektparameter!
-Missing or invalid heal amount parameter!=Fehlender oder ungültiger Heilmenge-Parameter!
-Player @1 healed by @2 HP.=Spieler @1 wurde um @2 LP geheilt.
-Player @1 harmed by @2 HP.=Spieler @1 wurde um @2 LP geschädigt.
-Effects cleared for player @1=Effekte für Spieler @1 aufgehoben
-Removed effect @1 from player @2=Effekt @1 von Spieler @2 entfernt
-@1 is not an available status effect.=@1 ist kein verfügbarer Statuseffekt.
-Missing or invalid duration parameter!=Fehlender oder ungültiger Dauerparameter!
-Invalid level parameter!=Ungültiger Levelparameter!
-Missing or invalid factor parameter when level is F!=Fehlender oder ungültiger Faktor-Parameter, wenn der Level F ist!
-@1 effect given to player @2 for @3 seconds with factor of @4.=Effekt @1 an Spieler @2 für @3 Sekunden mit Faktor @4 vergeben.
-@1 effect given to player @2 for @3 seconds.=Effekt @1 an Spieler @2 für @3 Sekunden vergeben.
-Giving effect @1 to player @2 failed.=Vergabe des Effekts @1 an Spieler @2 fehlgeschlagen.
-@1 effect on level @2 given to player @3 for @4 seconds.=Effekt @1 auf Stufe @2 an Spieler @3 für @4 Sekunden vergeben.
+Dragon's Breath=Drachenatem
+
+This item is used in brewing and can be combined with splash potions to create lingering potions.=Dieser Gegenstand wird für die Trankherstellung verwendet und kann mit Wurftränken kombiniert werden, um Verweiltränke zu erschaffen.
+
+Fermented Spider Eye=Fermentiertes Spinnenauge
+Try different combinations to create potions.=Probiere verschiedene Kombinationen aus, um Tränke herzustellen.
+Glass Bottle=Glasflasche
+Liquid container=Flüssigkeitsbehälter
+
+A glass bottle is used as a container for liquids and can be used to collect water directly.=Eine Glasflasche wird als Behälter für Flüssigkeiten verwendet und kann Wasser direkt auffangen.
+
+To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Um Wasser aufzusammeln, benutze sie an einem Kessel mit Wasser (was eine Stufe Wasser entfernt) oder einer Wasserquelle (was kein Wasser entfernt).
+
+Water Bottle=Wasserflasche
+No effect=Keine Wirkung
+Water bottles can be used to fill cauldrons. Drinking water has no effect.=Wasserflaschen können verwendet werden, um Kessel aufzufüllen. Das Trinken von Wasser hat keine Wirkung.
+
+Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Benutze die „Platzieren“-Taste, um zu trinken. Platziere diesen Gegenstand auf einen Kessel, um das Wasser in den Kessel zu schütten.
+
+River Water Bottle=Flusswasserflasche
+River water bottles can be used to fill cauldrons. Drinking it has no effect.=Flusswasserflaschen können verwendet werden, um Kessel aufzufüllen. Das Trinken hat keine Wirkung.
+
+Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Benutze die „Platzieren“-Taste zum Trinken. Platziere diesen Gegenstand auf einen Kessel, um das Flusswasser in den Kessel zu schütten.
+
+Splash Water Bottle=Wurfwasserflasche
+Extinguishes fire and hurts some mobs=Löscht Feuer und verletzt einige Mobs
+
+A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Eine werfbare Wasserflasche, die beim Aufprall zerbricht und nahes Feuer löscht und Mobs verletzt, die empfindlich auf Wasser reagieren.
+
+Lingering Water Bottle=Verweilwasserflasche
+
+A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Eine werfbare Wasserflasche, die beim Aufprall zerbricht und eine Wolke aus Wasserdampf erzeugt, die eine Weile am Boden verweilt. Diese Wolke löscht Feuer und verletzt Mobs, die empfindlich auf Wasser reagieren.
+
+Glistering Melon=Glitzermelone
+
+This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Diese glänzende Melone ist voller winziger Goldnuggets und würde sich gut in einem Bilderrahmen machen. Sie ist nicht essbar und für nichts anderes nützlich.
+
+##[ functions.lua ]##
 Invisibility=Unsichtbarkeit
 body is invisible=Der Körper ist unsichtbar
 Poison=Vergiftung
@@ -79,30 +101,40 @@ Fatigue=Müdigkeit
 -@1% mining and attack speed=-@1% Abbau- und Angriffsgeschwindigkeit
 Conduit Power=Meereskraft
 +@1% mining and attack speed in water=+@1% Abbau- und Angriffsgeschwindigkeit im Wasser
-Dragon's Breath=Drachenatem
-This item is used in brewing and can be combined with splash potions to create lingering potions.=Dieser Gegenstand wird für die Trankherstellung verwendet und kann mit Wurftränken kombiniert werden, um Verweiltränke zu erschaffen.
-Fermented Spider Eye=Fermentiertes Spinnenauge
-Try different combinations to create potions.=Probiere verschiedene Kombinationen aus, um Tränke herzustellen.
-Glass Bottle=Glasflasche
-Liquid container=Flüssigkeitsbehälter
-A glass bottle is used as a container for liquids and can be used to collect water directly.=Eine Glasflasche wird als Behälter für Flüssigkeiten verwendet und kann Wasser direkt auffangen.
-To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Um Wasser aufzusammeln, benutze sie an einem Kessel mit Wasser (was eine Stufe Wasser entfernt) oder einer Wasserquelle (was kein Wasser entfernt).
-Water Bottle=Wasserflasche
-No effect=Keine Wirkung
-Water bottles can be used to fill cauldrons. Drinking water has no effect.=Wasserflaschen können verwendet werden, um Kessel aufzufüllen. Das Trinken von Wasser hat keine Wirkung.
-Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Benutze die „Platzieren“-Taste, um zu trinken. Platziere diesen Gegenstand auf einen Kessel, um das Wasser in den Kessel zu schütten.
-River Water Bottle=Flusswasserflasche
-River water bottles can be used to fill cauldrons. Drinking it has no effect.=Flusswasserflaschen können verwendet werden, um Kessel aufzufüllen. Das Trinken hat keine Wirkung.
-Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Benutze die „Platzieren“-Taste zum Trinken. Platziere diesen Gegenstand auf einen Kessel, um das Flusswasser in den Kessel zu schütten.
-Splash Water Bottle=Wurfwasserflasche
-Extinguishes fire and hurts some mobs=Löscht Feuer und verletzt einige Mobs
-A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Eine werfbare Wasserflasche, die beim Aufprall zerbricht und nahes Feuer löscht und Mobs verletzt, die empfindlich auf Wasser reagieren.
-Lingering Water Bottle=Verweilwasserflasche
-A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Eine werfbare Wasserflasche, die beim Aufprall zerbricht und eine Wolke aus Wasserdampf erzeugt, die eine Weile am Boden verweilt. Diese Wolke löscht Feuer und verletzt Mobs, die empfindlich auf Wasser reagieren.
-Glistering Melon=Glitzermelone
-This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Diese glänzende Melone ist voller winziger Goldnuggets und würde sich gut in einem Bilderrahmen machen. Sie ist nicht essbar und für nichts anderes nützlich.
-A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.=Ein werfbarer Trank, der bei Aufprall zerbricht und eine magische Wolke erzeugt, die eine Weile bleibt. Jeder Spieler oder Mob in der Wolke erhält den Effekt oder die Effekte des Tranks, möglicherweise wiederholt.
+##[ commands.lua ]##
+
+<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]=<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART]
+
+Add a status effect to yourself. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART at the end means no particles will be shown for this effect.=Füge dir selbst einen Status-Effekt hinzu. Argumente: <effect>: Name des Status-Effekts. Wenn "list" als Effektname übergeben wird, werden die verfügbaren Effekte aufgelistet. Wenn "heal" als Effektname übergeben wird, heilt (oder schädigt) es um die Menge, die durch den nächsten Parameter angegeben wird. Wenn "clear" als Effektname übergeben wird, werden alle Effekte entfernt. Wenn "remove" als Effektname übergeben wird, wird der Effekt entfernt, der durch den nächsten Parameter benannt wird. <duration>: Dauer in Sekunden. Wenn "INF" als Dauer übergeben wird, wird der Effekt unendlich. (<heal-amount>: Menge an Heilung, wenn der Effekt "heal" ist, eine negative Zahl zieht Gesundheit ab. <effect>: Name eines Status-Effekts, der entfernt wird, wenn "remove" der vorherige Parameter war.) <level>: Bestimmt die Stärke des Effekts, ein höheres Level führt zu einem stärkeren Effekt für Effekte, die vom Level abhängen (keine Änderungen für andere Effekte), Standard ist 1, übergebe F, um einen niedrigen Level-Faktor zu verwenden. <factor>: Effektstärkemodifikator, kann je nach Effekt unterschiedliche Bedeutungen haben, keine Änderungen für Effekte, die nicht vom Level/Faktor abhängen. NOPART am Ende bedeutet, dass keine Partikel für diesen Effekt angezeigt werden.
+
+Missing effect parameter!=Fehlender Effektparameter!
+Missing or invalid heal amount parameter!=Fehlender oder ungültiger Heilmenge-Parameter!
+Player @1 healed by @2 HP.=Spieler @1 wurde um @2 LP geheilt.
+Player @1 harmed by @2 HP.=Spieler @1 wurde um @2 LP geschädigt.
+Effects cleared for player @1=Effekte für Spieler @1 aufgehoben
+Removed effect @1 from player @2=Effekt @1 von Spieler @2 entfernt
+@1 is not an available status effect.=@1 ist kein verfügbarer Statuseffekt.
+Missing or invalid duration parameter!=Fehlender oder ungültiger Dauerparameter!
+Invalid level parameter!=Ungültiger Levelparameter!
+Missing or invalid factor parameter when level is F!=Fehlender oder ungültiger Faktor-Parameter, wenn der Level F ist!
+@1 effect given to player @2 for @3 seconds with factor of @4.=Effekt @1 an Spieler @2 für @3 Sekunden mit Faktor @4 vergeben.
+@1 effect given to player @2 for @3 seconds.=Effekt @1 an Spieler @2 für @3 Sekunden vergeben.
+Giving effect @1 to player @2 failed.=Vergabe des Effekts @1 an Spieler @2 fehlgeschlagen.
+@1 effect on level @2 given to player @3 for @4 seconds.=Effekt @1 auf Stufe @2 an Spieler @3 für @4 Sekunden vergeben.
+##[ splash.lua ]##
 Use the “Punch” key to throw it.=Benutze die „Schlagen“-Taste, um ihn zu werfen.
+
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Ein werfbarer Trank, der bei Aufprall zerbricht und allen nahegelegenen Spielern und Mobs einen Status-Effekt oder eine Reihe von Status-Effekten verleiht.
+
+##[ lingering.lua ]##
+
+A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.=Ein werfbarer Trank, der bei Aufprall zerbricht und eine magische Wolke erzeugt, die eine Weile bleibt. Jeder Spieler oder Mob in der Wolke erhält den Effekt oder die Effekte des Tranks, möglicherweise wiederholt.
+
+##[ tipped_arrow.lua ]##
+
+This particular arrow is tipped and will give an effect when it hits a player or mob.=Dieser Pfeil ist mit einer Spitze versehen und verleiht einen Effekt, wenn er einen Spieler oder Mob trifft.
+
+##[ potions.lua ]##
 Use the “Place” key to drink it.=Benutze die „Platzieren“-Taste, um ihn zu trinken.
 Drinking a potion gives you a particular effect or set of effects.=Das Trinken eines Tranks verleiht dir einen bestimmten Effekt oder eine Reihe von Effekten.
 @1 Potion @2=@1 Trank @2
@@ -144,7 +176,9 @@ Decreases walking speed.=Verringert die Gehgeschwindigkeit.
 of Leaping=der Sprungkraft
 Increases jump strength.=Erhöht die Sprungkraft.
 of Withering=des Verfalls
+
 Applies the withering effect which deals damage at a regular interval and can kill.=Wendet den Verdörrungseffekt an, der regelmäßig Schaden verursacht und töten kann.
+
 of Poison=der Vergiftung
 Applies the poison effect which deals damage at a regular interval.=Verursacht den Vergiftungseffekt, der regelmäßig Schaden anrichtet.
 of Regeneration=der Regeneration
@@ -198,8 +232,6 @@ Attracts danger.=Zieht Gefahr an.
 Unknown Potion=Unbekannter Trank
 Right-click to identify=Rechtsklick zum Identifizieren
 Unknown Tipped Arrow=Unbekannter getränkter Pfeil
-A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Ein werfbarer Trank, der bei Aufprall zerbricht und allen nahegelegenen Spielern und Mobs einen Status-Effekt oder eine Reihe von Status-Effekten verleiht.
-This particular arrow is tipped and will give an effect when it hits a player or mob.=Dieser Pfeil ist mit einer Spitze versehen und verleiht einen Effekt, wenn er einen Spieler oder Mob trifft.
 
 
 ##### not used anymore #####
@@ -208,9 +240,13 @@ Invisiblity=Unsichtbarkeit
 Splash @1=Wurftrank @1
 Lingering @1=Verweilender Trank
 <effect> <duration> [<factor>]=<Effekt> <Dauer> [<Faktor>]
+
 Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 @= 100%)=Ihnen einen Statuseffekt geben. Parameter: <Effekt>: Name des Statuseffekts, z.B. „poison“. <Dauer>: Dauer in Sekunden. <Faktor>: Effektstärkenmultiplikator (1 @= 100%)
+
 Invalid factor parameter!=Ungültiger Faktorparameter!
+
 A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect, possibly repeatedly.=Ein werfbarer Trank, der bei Kollision zerbrechen wird, wo er eine magische Wolke erzeugt, die für eine gewisse Zeit verweilen wird. Jeder Spieler und jede Mob in der Wolke wird die Trankwirkung erhalten, möglicherweise mehrmals.
+
 Drinking a potion gives you a particular effect.=Das Trinken eines Tranks gibt Ihnen einen bestimmten Effekt.
 1 HP/@1s | @2=1 TP/@1s | @2
 @1 HP=@1 TP
@@ -245,4 +281,6 @@ Harming=Verletzung
 Weakness +=Schwäche +
 Strength II=Stärke II
 Strength +=Stärke +
+
 A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.=Ein werfbarer Trank, der bei Kollision zerbrechen wird, wo er allen nahen Spielern und Mobs einen Statuseffekt geben wird.
+

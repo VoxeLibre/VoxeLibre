@@ -1,8 +1,11 @@
 # textdomain: mcl_flowerpots
 Flower Pot=Maceta
 Can hold a small flower or plant=Pode albergar unha pequena flor ou planta
+
 Flower pots are decorative blocks in which flowers and other small plants can be placed.=As macetas son bloques decorativos nos que se poden colocar flores e outras pequenas plantas.
+
 Just place a plant on the flower pot. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.=Simplemente coloque unha planta na maceta. As macetas poden albergar pequenas flores (non superiores a 1 bloque), mudas, fentos, arbustos mortos, cogomelos e cactos. Fai clic co botón dereito nunha planta en maceta para recuperar a planta
+
 Cactus=
 Brown Mushroom=
 Red Mushroom=

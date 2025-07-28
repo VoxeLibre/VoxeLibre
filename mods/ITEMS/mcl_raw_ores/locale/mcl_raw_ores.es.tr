@@ -1,9 +1,24 @@
 # textdomain: mcl_raw_ores
 Raw Iron=Hierro en bruto
-Raw Gold=Oro en bruto
-Raw Iron. Mine an Iron ore to get it.=Hierro en bruto. Mina una mena de hierro para conseguirlo.
-Raw Gold. Mine a Gold ore to get it.=Oro en bruto. Mina una mena de oro para conseguirlo.
+##TODO: fuzzy matched - verify and remove the comment
+Raw iron. Mine an iron ore to get it.=Hierro en bruto. Mina una mena de hierro para conseguirlo.
 Block of Raw Iron=Bloque de hierro en bruto
+
+A block of raw iron is mostly a decorative block but also useful as a compact storage of raw iron.=
+
+Raw Gold=Oro en bruto
+##TODO: fuzzy matched - verify and remove the comment
+Raw gold. Mine a gold ore to get it.=Oro en bruto. Mina una mena de oro para conseguirlo.
 Block of Raw Gold=Bloque de oro en bruto
+
+A block of raw gold is mostly a decorative block but also useful as a compact storage of raw gold.=
+
+
+
+##### not used anymore #####
+
+
 A block of raw Iron is mostly a decorative block but also useful as a compact storage of raw Iron.=Un bloque de hierro en bruto es sobre todo un bloque decorativo pero tambíen es útil como almacenamiento compacto de hierro en bruto.
+
 A block of raw Gold is mostly a decorative block but also useful as a compact storage of raw Gold.=Un bloque de oro en bruto es sobre todo un bloque decorativo pero tambíen es útil como almacenamiento compacto de oro en bruto.
+

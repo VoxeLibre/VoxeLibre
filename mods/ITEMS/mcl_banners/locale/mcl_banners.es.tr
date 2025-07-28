@@ -32,11 +32,16 @@ Lime=Verde lima
 Light Blue Banner=Estandarte azul claro
 Light Blue=Azul claro
 Banner=Estandarte
+
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Los estandartes son bloques decorativos altos y coloridos. Se pueden colocar en el suelo y en las paredes. Los estandartes se pueden estampar con una variedad de patrones usando mucho tinte en la elaboración.
+
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Usa la elaboración para dibujar un patrón en la parte superior del estandarte. Los estandartes estampados pueden volver a estamparse para combinar varios patrones. Puede dibujar hasta 12 capas en un estandarte de esa manera. Si la pancarta incluye un degradado, solo son posibles 3 capas.
+
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Puede copiar el patrón de un estandarte colocando dos estandartes del mismo color en la cuadrícula de fabricación: una debe ser estampada, la otra debe estar limpia. Finalmente, puede usar un estandarte en un caldero con agua para lavar su capa superior.
+
 Preview Banner=Vista previa del estandarte
 Paintable decoration=Decoración pintable
+##[ patterncraft.lua ]##
 @1 Bordure=Borde (@1)
 @1 Bricks=Bloque (@1)
 @1 Roundel=Medallón (@1)

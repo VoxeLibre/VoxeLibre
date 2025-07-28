@@ -1,9 +1,17 @@
 # textdomain: mcl_stairs
+##[ api.lua ]##
+
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=Trapper er nyttige for å nå høyere steder ved å gå over dem; hopping er ikke nødvendig. Plassering av trapper i et hjørnemønster vil skape hjørnetrapper. Trapper plassert i taket eller på øvre halvdel av siden av en blokk vil bli plassert opp ned.
+
 Double @1=Dobbel @1
+
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=Heller er halvparten så høye som sine fullblokksvarianter og okkuperer enten den nedre eller øvre delen av en blokk, avhengig av hvordan den ble plassert. Heller kan enkelt tråkkes på uten å måtte hoppe. Når en helle legges på en annen helle av samme type, lages en dobbelhelle.
+
 Upper @1=Øvre @1
+
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=Dobbelheller er helblokker som lages ved å legge to heller av samme type på hverandre.
+
+##[ register.lua ]##
 Oak Wood Stairs=Eiketrapp
 Oak Wood Slab=Eikehelle
 Double Oak Wood Slab=Dobbel eikehelle

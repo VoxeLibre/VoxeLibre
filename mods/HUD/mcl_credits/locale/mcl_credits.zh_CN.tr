@@ -5,7 +5,8 @@ Jump to speed up (additionally sprint)=跳跃来加速（另外还可疾跑）
 ##[ people.lua ]##
 Creator of MineClone=《我的世界克隆版》（MineClone）的创作者
 Creator of VoxeLibre=《沃克斯利布尔》（VoxeLibre）的创作者
-Maintainers=维护者
+##TODO: fuzzy matched - verify and remove the comment
+Maintainer=维护者
 Previous Maintainers=前任维护者
 Developers=开发者
 Past Developers=前任开发者

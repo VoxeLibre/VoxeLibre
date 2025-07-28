@@ -1,8 +1,11 @@
 # textdomain: mcl_flowerpots
 Flower Pot=Vaso de Planta
 Can hold a small flower or plant=Pode acomodar uma pequena flor ou planta
+
 Flower pots are decorative blocks in which flowers and other small plants can be placed.=Vasos de plantas são blocos decorativos em que flores e outras plantas pequenas podem ser colocadas.
+
 Just place a plant on the flower pot. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.=É só pôr uma planta no vaso. Vasos de plantas podem acomodar flores pequenas (até 1 bloco de altura), mudas, samambaias, arbustos mortos, cogumelos e cactos. Clique com o botão direito em uma planta no vaso para a retirar.
+
 Cactus=Cacto
 Brown Mushroom=Cogumelo Marrom
 Red Mushroom=Cogumelo Vermelho

@@ -3,8 +3,12 @@ Premature Cocoa Pod=
 Cocoa pods grow on the side of jungle trees in 3 stages.=
 Medium Cocoa Pod=
 Mature Cocoa Pod=
+
 A mature cocoa pod grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further.=
+
 Grows at the side of jungle trees=
 Cocoa beans can be used to plant cocoa, bake cookies or craft brown dye.=
+
 Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa.=
+
 Cocoa Beans=

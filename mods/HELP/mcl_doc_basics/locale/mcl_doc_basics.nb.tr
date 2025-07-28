@@ -20,7 +20,9 @@ This is a very brief introduction to the basic gameplay:=Dette er en veldig kort
 • [Esc] to close this window=• [Esc] for å lukke dette vinduet
 How to play:=Hvordan spille:
 • Punch a tree trunk until it breaks and collect wood=• Slå på et trestamme til den brekker og samle ved
+
 • Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=• Plasser veden i 2×2 rutenettet (ditt “håndverksrutenett”) i inventarmenyen og lag 4 planker
+
 • Place them in a 2×2 shape in the crafting grid to craft a crafting table=• Plasser dem i et 2×2 mønster i håndverksrutenettet for å lage et arbeidsbord
 • Place the crafting table on the ground=• Plasser arbeidsbordet på bakken
 • Rightclick it for a 3×3 crafting grid=• Høyreklikk for å få et 3×3 håndverksrutenett
@@ -29,17 +31,29 @@ How to play:=Hvordan spille:
 • Different tools break different kinds of blocks. Try them out!=• Ulike verktøy bryter forskjellige typer blokker. Prøv dem ut!
 • Continue playing as you wish. There's no goal. Have fun!=• Fortsett å spille som du vil. Det er ingen mål. Ha det gøy!
 Minetest=Minetest
+
 Minetest is a free software game engine for games based on voxel gameplay, inspired by InfiniMiner, Minecraft, and the like. Minetest was originally created by Perttu Ahola (alias “celeron55”).=Minetest er en fri spillmotor for spill basert på voxel-spillmekanikk, inspirert av InfiniMiner, Minecraft og lignende. Minetest ble opprinnelig laget av Perttu Ahola (alias “celeron55”).
+
 The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest can, however, be much more complex than this.=Spilleren kastes inn i en enorm verden laget av kuber eller blokker. Disse kubene utgjør vanligvis landskapet, og blokkene kan fjernes og plasseres nesten helt fritt. Med de samlede gjenstandene kan nye verktøy og andre ting lages. Spill i Minetest kan imidlertid være mye mer komplekse enn dette.
+
 A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorative blocks or be very complex by, e.g., introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.=En kjernefunksjon i Minetest er den innebygde modifikasjonsevnen. Mods endrer eksisterende spillmekanikk. De kan være så enkle som å legge til noen få dekorasjonsblokker, eller svært komplekse ved for eksempel å introdusere helt nye spillkonsepter, generere en helt annen type verden og mange andre ting.
+
 Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.=Minetest kan spilles alene eller online sammen med flere spillere. Online-spilling fungerer umiddelbart med alle mods, uten behov for ekstra programvare siden de leveres fullstendig av serveren.
+
 Minetest is usually bundled with a simple default game, named “Minetest Game” (shown in images 1 and 2). You probably already have it. Other games for Minetest can be downloaded from the official Minetest forums <https://forum.minetest.net/viewforum.php?f@=48>.=Minetest kommer vanligvis med et enkelt standardspill, kalt “Minetest Game” (vist i bilder 1 og 2). Du har det sannsynligvis allerede. Andre spill for Minetest kan lastes ned fra det offisielle Minetest-forumet <https://forum.minetest.net/viewforum.php?f@=48>.
+
 Sneaking=Snike
+
 Sneaking makes you walk slower and prevents you from falling off the edge of a block.=Snike gjør at du går saktere og hindrer deg i å falle av kanten av en blokk.
+
 To sneak, hold down the sneak key (default: [Shift]). When you release it, you stop sneaking. Careful: When you release the sneak key at a ledge, you might fall!=For å snike deg, hold nede snik-knappen (standard: [Shift]). Når du slipper den, slutter du å snike. Forsiktig: Når du slipper snik-knappen på en kant, kan du falle!
+
 • Sneak: [Shift]=• Snik: [Shift]
+
 Sneaking only works when you stand on solid ground, are not in a liquid and don't climb.=Snike fungerer bare når du står på fast grunn, ikke er i en væske og ikke klatrer.
+
 Sneaking might be disabled by mods. In this case, you still walk slower by sneaking, but you will no longer be stopped at ledges.=Snike kan være deaktivert av mods. I så fall går du fortsatt saktere ved å snike, men du vil ikke lenger bli stoppet ved kanter.
+
 Controls=Kontroller
 These are the default controls:=Dette er standardkontrollene:
 Basic movement:=Grunnleggende bevegelse:
@@ -57,8 +71,11 @@ While on a ladder, swimming in a liquid or fly mode is active=Mens du er på en 
 • Shift: Move down=• Shift: Gå ned
 Extended movement (requires privileges):=Utvidet bevegelse (krever privilegier):
 • J: Toggle fast mode, makes you run or fly fast (requires “fast” privilege)=• J: Veksle hurtigmodus, gjør at du løper eller flyr raskt (krever “fast”-privilegium)
+
 • K: Toggle fly mode, makes you move freely in all directions (requires “fly” privilege)=• K: Veksle flymodus, gjør at du beveger deg fritt i alle retninger (krever “fly”-privilegium)
+
 • H: Toggle noclip mode, makes you go through walls in fly mode (requires “noclip” privilege)=• H: Veksle noclip-modus, gjør at du kan gå gjennom vegger i flymodus (krever “noclip”-privilegium)
+
 • E: Walk fast in fast mode=• E: Gå raskt i hurtigmodus
 World interaction:=Verdensinteraksjon:
 • Left mouse button: Punch / mine blocks=• Venstre museknapp: Slå / grave blokker
@@ -72,7 +89,9 @@ World interaction:=Verdensinteraksjon:
 Inventory interaction:=Inventarinteraksjon:
 See the entry “Basics > Inventory”.=Se oppføringen “Grunnleggende > Inventar”.
 Hunger/Eating:=Sult/Spising:
+
 • While holding food, hold the right mouse button (PC) or double-tap and hold the second tap (Android) to eat=• Mens du holder mat, hold høyre museknapp (PC) eller dobbelttrykk og hold andre trykk (Android) for å spise
+
 Camera:=Kamera:
 • Z: Zoom=• Z: Zoom
 • F7: Toggle camera mode=• F7: Veksle kameramodus
@@ -88,7 +107,9 @@ Server interaction:=Serverinteraksjon:
 • T: Open chat window (chat requires the “shout” privilege)=• T: Åpne chatvindu (chat krever “shout”-privilegium)
 • /: Start issuing a server command=• /: Begynn å utføre en serverkommando
 Technical:=Teknisk:
+
 • R: Toggle far view (disables all fog and allows viewing far away, can make game very slow)=• R: Veksle fjernvisning (deaktiverer all tåke og tillater fjernsyn, kan gjøre spillet svært tregt)
+
 • +: Increase minimal viewing distance=• +: Øk minimal visningsavstand
 • -: Decrease minimal viewing distance=• -: Reduser minimal visningsavstand
 • F3: Enable/disable fog=• F3: Aktiver/deaktiver tåke
@@ -96,8 +117,11 @@ Technical:=Teknisk:
 • F6: Only useful for developers. Enables/disables profiler=• F6: Kun nyttig for utviklere. Aktiverer/deaktiverer profilering
 Players=Spillere
 Players (actually: “player characters”) are the characters which users control.=Spillere (egentlig: “spillerkarakterer”) er figurene som brukere kontrollerer.
+
 Players are living beings. They start with a number of health points (HP) and a number of breath points (BP).=Spillere er levende vesener. De starter med et antall helsepoeng (HP) og pustepoeng (BP).
+
 Players are capable of walking, sneaking, jumping, climbing, swimming, diving, mining, building, fighting and using tools and blocks.=Spillere kan gå, snike, hoppe, klatre, svømme, dykke, grave, bygge, kjempe og bruke verktøy og blokker.
+
 Players can take damage for a variety of reasons, here are some:=Spillere kan ta skade av ulike grunner, her er noen:
 • Taking fall damage=• Tar fallskade
 • Touching a block which causes direct damage=• Berører en blokk som gir direkte skade
@@ -105,111 +129,192 @@ Players can take damage for a variety of reasons, here are some:=Spillere kan ta
 • Being attacked by another player=• Blir angrepet av en annen spiller
 • Being attacked by a computer enemy=• Blir angrepet av en datastyrt fiende
 At a health of 0, the player dies. The player can just respawn in the world.=Når helsen er 0, dør spilleren. Spilleren kan da gjenoppstå i verden.
+
 Other consequences of death depend on the game. The player could lose all items, or lose the round in a competitive game.=Andre konsekvenser av døden avhenger av spillet. Spilleren kan miste alle gjenstander, eller tape runden i et konkurransespill.
+
 Some blocks reduce breath. While being with the head in a block which causes drowning, the breath points are reduced by 1 for every 2 seconds. When all breath is gone, the player starts to suffer drowning damage. Breath is quickly restored in any other block.=Noen blokker reduserer pust. Mens hodet er i en blokk som forårsaker drukning, reduseres pustepoengene med 1 hvert 2. sekund. Når all pust er borte, begynner spilleren å ta drukningsskade. Pusten gjenopprettes raskt i andre blokker.
+
 Damage can be disabled on any world. Without damage, players are immortal and health and breath are unimportant.=Skade kan deaktiveres i enhver verden. Uten skade er spillere udødelige, og helse og pust er uviktig.
+
 In multi-player mode, the name of other players is written above their head.=I flerspillermodus står navnet på andre spillere over hodet deres.
 Items=Gjenstander
+
 Items are things you can carry along and store in inventories. They can be used for crafting, smelting, building, mining, and more. Types of items include blocks, tools, weapons and items only used for crafting.=Gjenstander er ting du kan bære med deg og lagre i inventarer. De kan brukes til håndverk, smelting, bygging, graving og mer. Typer av gjenstander inkluderer blokker, verktøy, våpen og gjenstander kun brukt til håndverk.
+
 An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=En gjenstandsstabel er en samling av gjenstander av samme type som passer i en enkelt gjenstandsplass. Gjenstandsstabler kan slippes på bakken. Gjenstander som slippes på samme koordinater vil danne en gjenstandsstabel.
+
 Items have several properties, including the following:=Gjenstander har flere egenskaper, inkludert følgende:
 • Maximum stack size: Number of items which fit on 1 item stack=• Maksimal stabbelstørrelse: Antall gjenstander som passer på 1 gjenstandsstabel
+
 • Pointing range: How close things must be to be pointed while wielding this item=• Pekerekkevidde: Hvor nær ting må være for å kunne peke mens denne gjenstanden brukes
+
 • Group memberships: See “Basics > Groups”=• Gruppetilhørighet: Se “Grunnleggende > Grupper”
 • May be used for crafting or cooking=• Kan brukes til håndverk eller matlaging
 Tools=Verktøy
+
 Some items may serve as a tool when wielded. Any item which has some special use which can be directly used by its wielder is considered a tool.=Noen gjenstander kan fungere som et verktøy når de brukes. Enhver gjenstand med en spesiell bruk som kan brukes direkte av brukeren anses som et verktøy.
+
 A common subset of tools is mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.=En vanlig undergruppe av verktøy er gruveverktøy. Disse er viktige for å bryte alle typer blokker. Våpen er en type verktøy. Det finnes selvsagt mange andre mulige verktøy. Spesialhandlinger med verktøy gjøres vanligvis med venstreklikk eller høyreklikk.
+
 When nothing is wielded, players use their hand which may act as tool and weapon.=Når ingenting holdes, bruker spilleren hånden som kan fungere som verktøy og våpen.
+
 Many tools will wear off when using them and may eventually get destroyed. The damage is displayed in a damage bar below the tool icon. If no damage bar is shown, the tool is in mint condition. Tools may be repairable by crafting, see “Basics > Crafting”.=Mange verktøy vil slites ut ved bruk og kan til slutt bli ødelagt. Skaden vises i en skadeindikator under verktøyikonet. Hvis ingen skadeindikator vises, er verktøyet i perfekt stand. Verktøy kan repareres ved hjelp av håndverk, se “Grunnleggende > Håndverk”.
+
 Weapons=Våpen
+
 Some items are usable as a melee weapon when wielded. Weapons share most of the properties of tools.=Noen gjenstander kan brukes som nærkampvåpen når de holdes. Våpen deler de fleste egenskapene med verktøy.
+
 Melee weapons deal damage by punching players and other animate objects. There are two ways to attack:=Nærkampvåpen gir skade ved å slå spillere og andre bevegelige objekter. Det finnes to måter å angripe på:
+
 • Single punch: Left-click once to deal a single punch=• Enkelt slag: Venstreklikk én gang for å slå en gang
 • Quick punching: Hold down the left mouse button to deal quick repeated punches=• Rask slag: Hold nede venstre museknapp for å utføre raske, gjentatte slag
 There are two core attributes of melee weapons:=Det er to kjerneegenskaper for nærkampvåpen:
+
 • Maximum damage: Damage which is dealt after a hit when the weapon was fully recovered=• Maksimal skade: Skaden som påføres etter et slag når våpenet er fullt restituert
+
 • Full punch interval: Time it takes for fully recovering from a punch=• Fullt slagintervall: Tiden det tar å komme seg helt etter et slag
+
 A weapon only deals full damage when it has fully recovered from a previous punch. Otherwise, the weapon will deal only reduced damage. This means, quick punching is very fast, but also deals rather low damage. Note the full punch interval does not limit how fast you can attack.=Et våpen gir bare full skade når det har kommet seg helt etter et forrige slag. Ellers vil våpenet kun gi redusert skade. Dette betyr at rask slag er veldig raskt, men gir også relativt lav skade. Merk at fullt slagintervall ikke begrenser hvor raskt du kan angripe.
+
 There is a rule which sometimes makes attacks impossible: Players, animate objects and weapons belong to damage groups. A weapon only deals damage to those who share at least one damage group with it. So if you're using the wrong weapon, you might not deal any damage at all.=Det finnes en regel som noen ganger gjør angrep umulige: Spillere, bevegelige objekter og våpen tilhører skadegrupper. Et våpen gir bare skade på de som deler minst én skadegruppe med det. Så hvis du bruker feil våpen, kan det hende du ikke påfører noen skade i det hele tatt.
+
 Pointing=Peke
+
 “Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, players, computer enemies and objects.=“Peking” betyr å se på noe innen rekkevidde med siktet. Peking er nødvendig for interaksjon, som graving, slåing, bruk osv. Pekbare ting inkluderer blokker, spillere, datastyrte fiender og objekter.
+
 To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.=For å peke på noe, må det være innenfor pekeavstanden (også kalt “rekkevidde”) til din holdte gjenstand. Det er en standard rekkevidde når du ikke holder noe. En utpekt ting vil bli omrisset eller markert (avhengig av innstillingene dine). Peking er ikke mulig med 3. person frontkamera.
+
 A few things cannot be pointed. Most blocks are pointable. A few blocks, like air, can never be pointed. Other blocks, like liquids can only be pointed by special items.=Noen få ting kan ikke pekes på. De fleste blokker er pekbare. Noen blokker, som luft, kan aldri pekes på. Andre blokker, som væsker, kan bare pekes på med spesielle gjenstander.
+
 Camera=Kamera
+
 There are 3 different views which determine the way you see the world. The modes are:=Det finnes 3 forskjellige visninger som bestemmer hvordan du ser verden. Modusene er:
+
 • 1: First-person view (default)=• 1: Førstepersonsvisning (standard)
 • 2: Third-person view from behind=• 2: Tredjepersonsvisning bakfra
 • 3: Third-person view from the front=• 3: Tredjepersonsvisning forfra
 You can change the camera mode by pressing [F7].=Du kan endre kameramodus ved å trykke på [F7].
+
 You might be able to zoom with [Z] to zoom the view at the crosshair. This allows you to look further.=Du kan zoome med [Z] for å zoome inn på siktet. Dette lar deg se lenger.
+
 Zooming is a gameplay feature that might be enabled or disabled by the game. By default, zooming is enabled when in Creative Mode but disabled otherwise.=Zooming er en spillfunksjon som kan være aktivert eller deaktivert i spillet. Som standard er zooming aktivert i Kreativ Modus, men deaktivert ellers.
+
 • Switch camera mode: [F7]=• Bytt kameramodus: [F7]
 • Zoom: [Z]=• Zoom: [Z]
 Blocks=Blokker
+
 The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Verden er laget fullstendig av blokker (voxels, for å være presis). Blokker kan legges til eller fjernes med de riktige verktøyene.
+
 Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:=Blokker kan ha et bredt spekter av forskjellige egenskaper som bestemmer gravingstid, oppførsel, utseende, form og mye mer. Egenskapene deres inkluderer:
+
 • Collidable: Collidable blocks cannot be passed through; players can walk on them. Non-collidable blocks can be passed through freely=• Sammenstøtbar: Sammenstøtbare blokker kan ikke passeres gjennom; spillere kan gå på dem. Ikke-sammenstøtbare blokker kan passeres gjennom fritt
+
 • Pointable: Pointable blocks show a wireframe or a halo box when pointed. But you will just point through non-pointable blocks. Liquids are usually non-pointable but they can be pointed at by some special tools=• Pekbar: Pekbare blokker viser en trådramme eller en halo-boks når de pekes på. Men du vil bare peke gjennom ikke-pekbare blokker. Væsker er vanligvis ikke-pekbare, men de kan pekes på med noen spesialverktøy
+
 • Mining properties: By which tools it can be mined, how fast and how much it wears off tools=• Graveegenskaper: Hvilke verktøy den kan graves med, hvor raskt og hvor mye den sliter ut verktøyene
+
 • Climbable: While you are at a climbable block, you won't fall and you can move up and down with the jump and sneak keys=• Klatrebar: Mens du er ved en klatrebar blokk, vil du ikke falle, og du kan bevege deg opp og ned med hopp- og snik-knappene
+
 • Drowning damage: See the entry “Basics > Player”=• Drukningsskade: Se oppføringen “Grunnleggende > Spiller”
 • Liquids: See the entry “Basics > Liquids”=• Væsker: Se oppføringen “Grunnleggende > Væsker”
+
 • Group memberships: Group memberships are used to determine mining properties, crafting, interactions between blocks and more=• Gruppetilhørighet: Gruppetilhørighet brukes til å bestemme graveegenskaper, håndverk, interaksjoner mellom blokker og mer
+
 Mining=Graving
+
 Mining (or digging) is the process of breaking blocks to remove them. To mine a block, point it and hold down the left mouse button until it breaks.=Graving (eller utgraving) er prosessen med å bryte blokker for å fjerne dem. For å grave en blokk, pek på den og hold nede venstre museknapp til den brekker.
+
 Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks cannot be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.=Blokker krever et gruveverktøy for å graves. Ulike blokker graves av forskjellige gruveverktøy, og noen blokker kan ikke graves av noen verktøy. Blokker varierer i hardhet, og verktøy varierer i styrke. Gruveverktøy vil slites over tid. Gravetiden og verktøyslitasjen avhenger av blokken og gruveverktøyet. Den raskeste måten å finne ut hvor effektive dine gruveverktøy er på, er ved å prøve dem på forskjellige blokker. Gjenstander du samler ved graving vil falle på bakken, klare til å bli samlet opp.
+
 After mining, a block may leave a “drop” behind. This is a number of items you get after mining. Most commonly, you will get the block itself. There are other possibilities for a drop which depends on the block type. The following drops are possible:=Etter graving kan en blokk etterlate et “fall” bak seg. Dette er et antall gjenstander du får etter graving. Vanligvis får du selve blokken. Det er andre muligheter for fall som avhenger av blokktype. Følgende fall er mulig:
+
 • Always drops itself (the usual case)=• Faller alltid seg selv (vanlig tilfelle)
 • Always drops the same items=• Faller alltid de samme gjenstandene
 • Drops items based on probability=• Faller gjenstander basert på sannsynlighet
 • Drops nothing=• Faller ingenting
 Building=Bygging
+
 Almost all blocks can be built (or placed). Building is very simple and has no delay.=Nesten alle blokker kan bygges (eller plasseres). Bygging er veldig enkelt og har ingen forsinkelse.
+
 To build your wielded block, point at a block in the world and right-click. If this is not possible because the pointed block has a special right-click action, hold down the sneak key before right-clicking.=For å bygge med den holdte blokken, pek på en blokk i verden og høyreklikk. Hvis dette ikke er mulig fordi blokken har en spesiell høyreklikk-handling, hold nede snik-knappen før du høyreklikker.
+
 Blocks can almost always be built at pointable blocks. One exception are blocks attached to the floor; these can only be built on the floor.=Blokker kan nesten alltid bygges ved pekbare blokker. Et unntak er blokker som er festet til gulvet; disse kan bare bygges på gulvet.
+
 Normally, blocks are built in front of the pointed side of the pointed block. A few blocks are different: When you try to build at them, they are replaced.=Normalt bygges blokker foran den utpekte siden av den utpekte blokken. Noen få blokker er forskjellige: Når du prøver å bygge ved dem, blir de erstattet.
+
 Liquids=Væsker
+
 Liquids are special dynamic blocks. Liquids like to spread and flow to their surrounding blocks. Players can swim and drown in them.=Væsker er spesielle dynamiske blokker. Væsker liker å spre seg og flyte til de omkringliggende blokkene. Spillere kan svømme og drukne i dem.
+
 Liquids usually come in two forms: In source form (S) and in flowing form (F).=Væsker kommer vanligvis i to former: I kildeform (S) og i flytende form (F).
+
 Liquid sources have the shape of a full cube. A liquid source will generate flowing liquids around it from time to time, and, if the liquid is renewable, it also generates liquid sources. A liquid source can sustain itself. As long it is left alone, a liquid source will normally keep its place and does not drain out.=Væskekilder har formen av en full kube. En væskekilde vil generere flytende væsker rundt seg fra tid til annen, og hvis væsken er fornybar, genererer den også væskekilder. En væskekilde kan opprettholde seg selv. Så lenge den står alene, vil en væskekilde vanligvis holde sin plass og ikke renne ut.
+
 Flowing liquids take a sloped form. Flowing liquids spread around the world until they drain. A flowing liquid cannot sustain itself and always comes from a liquid source, either directly or indirectly. Without a liquid source, a flowing liquid will eventually drain out and disappear.=Flytende væsker tar en skrånende form. Flytende væsker sprer seg rundt i verden til de dreneres. En flytende væske kan ikke opprettholde seg selv og kommer alltid fra en væskekilde, enten direkte eller indirekte. Uten en væskekilde vil en flytende væske til slutt renne ut og forsvinne.
+
 All liquids share the following properties:=Alle væsker deler følgende egenskaper:
 • All properties of blocks (including drowning damage)=• Alle egenskaper til blokker (inkludert drukningsskade)
 • Renewability: Renewable liquids can create new sources=• Fornybarhet: Fornybare væsker kan lage nye kilder
+
 • Flowing range: How many flowing liquids are created at maximum per liquid source, it determines how far the liquid will spread. Possible are ranges from 0 to 8. At 0, no flowing liquids will be created. Image 5 shows a liquid of flowing range 2=• Flyteområde: Hvor mange flytende væsker som maks kan opprettes per væskekilde, bestemmer hvor langt væsken vil spre seg. Mulige områder er fra 0 til 8. Ved 0 vil ingen flytende væsker opprettes. Bilde 5 viser en væske med flyteområde 2.
+
 • Viscosity: How slow players move through it and how slow the liquid spreads=• Viskositet: Hvor sakte spillere beveger seg gjennom det, og hvor sakte væsken sprer seg
+
 Renewable liquids create new liquid sources at open spaces (image 2). A new liquid source is created when:=Fornybare væsker lager nye væskekilder i åpne rom (bilde 2). En ny væskekilde opprettes når:
+
 • Two renewable liquid blocks of the same type touch each other diagonally=• To fornybare væskeblokker av samme type berører hverandre diagonalt
 • These blocks are also on the same height=• Disse blokkene er også på samme høyde
 • One of the two “corners” is open space which allows liquids to flow in=• En av de to “hjørnene” er åpent rom som tillater væsker å flyte inn
+
 When those criteria are met, the open space is filled with a new liquid source of the same type (image 3).=Når disse kriteriene er oppfylt, fylles det åpne rommet med en ny væskekilde av samme type (bilde 3).
+
 Swimming in a liquid is fairly straightforward: The usual direction keys for basic movement, the jump key for rising and the sneak key for sinking.=Svømming i en væske er ganske enkelt: De vanlige retningsknappene for grunnleggende bevegelse, hopp-knappen for å stige og snik-knappen for å synke.
+
 The physics for swimming and diving in a liquid are:=Fysikken for svømming og dykking i en væske er:
 • The higher the viscosity, the slower you move=• Jo høyere viskositet, jo saktere beveger du deg
 • If you rest, you'll slowly sink=• Hvis du hviler, vil du sakte synke
 • There is no fall damage for falling into a liquid as such=• Det er ingen fallskade ved å falle ned i en væske som sådan
+
 • If you fall into a liquid, you will be slowed down on impact (but don't stop instantly). Your impact depth is determined by your speed and the liquid viscosity. For a safe high drop into a liquid, make sure there is enough liquid above the ground, otherwise you might hit the ground and take fall damage=• Hvis du faller i en væske, blir du bremset ved sammenstøtet (men stopper ikke umiddelbart). Dybden på sammenstøtet bestemmes av hastigheten og væskens viskositet. For et trygt høyt fall i en væske, sørg for at det er nok væske over bakken, ellers kan du treffe bakken og ta fallskade.
+
 Liquids are often not pointable. But some special items are able to point all liquids.=Væsker kan ofte ikke pekes på. Men noen spesielle gjenstander kan peke på alle væsker.
+
 Crafting=Håndverk
 Crafting is the task of combining several items to form a new item.=Håndverk er oppgaven med å kombinere flere gjenstander for å lage en ny gjenstand.
+
 To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=For å lage noe trenger du en eller flere gjenstander, et håndverksrutenett (C) og en håndverksoppskrift. Et håndverksrutenett er som et vanlig inventar som også kan brukes til håndverk. Gjenstandene må plasseres i et bestemt mønster i håndverksrutenettet. Ved siden av håndverksrutenettet er en utgangs-slot (O). Her vises resultatet når du har plassert gjenstandene riktig. Dette er bare en forhåndsvisning, ikke selve gjenstanden. Håndverksrutenett kan komme i forskjellige størrelser som begrenser mulige oppskrifter du kan lage.
+
 To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.=For å fullføre håndverket, ta resultatgjenstanden fra utgangssloten, som vil forbruke gjenstander fra håndverksrutenettet og lage en ny gjenstand. Det er ikke mulig å plassere gjenstander i utgangssloten.
+
 A description on how to craft an item is called a “crafting recipe”. You need this knowledge to craft. There are multiple ways to learn crafting recipes. One way is by using a crafting guide, which contains a list of available crafting recipes. Some games provide crafting guides. There are also some mods which you can download online for installing a crafting guide. Another way is by reading the online manual of the game (if one is available).=En beskrivelse av hvordan man lager en gjenstand kalles en “håndverksoppskrift”. Du trenger denne kunnskapen for å håndverke. Det er flere måter å lære håndverksoppskrifter på. En måte er å bruke en håndverksguide, som inneholder en liste over tilgjengelige håndverksoppskrifter. Noen spill tilbyr håndverksguider. Det finnes også noen mods som du kan laste ned på nettet for å installere en håndverksguide. En annen måte er å lese den nettbaserte manualen for spillet (om en er tilgjengelig).
+
 Crafting recipes consist of at least one input item and exactly one stack of output items. When performing a single craft, it will consume exactly one item from each stack of the crafting grid, unless the crafting recipe defines replacements.=Håndverksoppskrifter består av minst én inngangsgjenstand og nøyaktig én stabel med utgangsgjenstander. Når du utfører et enkelt håndverk, vil det forbruke nøyaktig én gjenstand fra hver stabel i håndverksrutenettet, med mindre håndverksoppskriften definerer erstatninger.
+
 There are multiple types of crafting recipes:=Det finnes flere typer håndverksoppskrifter:
 • Shaped (image 2): Items need to be placed in a particular shape=• Formet (bilde 2): Gjenstandene må plasseres i en bestemt form
+
 • Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=• Formløs (bilder 3 og 4): Gjenstandene må plasseres et sted i inngangen (begge bildene viser samme oppskrift)
+
 • Cooking: Explained in “Basics > Cooking”=• Matlaging: Forklart i “Grunnleggende > Matlaging”
+
 • Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%=• Reparasjon (bilde 5): Plasser to ødelagte verktøy i håndverksrutenettet for å få et verktøy som er reparert med 5 %
+
 In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=I noen håndverksoppskrifter trenger noen inngangsgjenstander ikke å være en bestemt gjenstand, men i stedet må de tilhøre en gruppe (se “Grunnleggende > Grupper”). Disse oppskriftene gir litt mer frihet i inngangsgjenstandene. Bildene 6-8 viser samme gruppebaserte oppskrift. Her kreves 8 gjenstander fra “stein”-gruppen, som gjelder for alle de viste gjenstandene.
+
 Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item.=Sjelden har håndverksoppskrifter erstatninger. Dette betyr at hver gang du utfører et håndverk, vil noen gjenstander i håndverksrutenettet ikke bli forbrukt, men i stedet erstattes av en annen gjenstand.
+
 Cooking=Matlaging
+
 Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), a cookable item, a fuel item and time in order to yield a new item.=Matlaging (eller smelting) er en form for håndverk som ikke involverer et håndverksrutenett. Matlaging utføres med en spesiell blokk (som en ovn), en kokbar gjenstand, en drivstoffgjenstand og tid for å oppnå en ny gjenstand.
+
 Each fuel item has a burning time. This is the time a single item of the fuel keeps a furnace burning.=Hver drivstoffgjenstand har en brennetid. Dette er tiden en enkelt drivstoffgjenstand holder ovnen brennende.
+
 Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.=Hver kokbar gjenstand trenger tid for å bli kokt. Denne tiden er spesifikk for gjenstandstypen, og gjenstanden må være “på ild” hele koketiden for å faktisk gi resultatet.
+
 Hotbar=Hurtigtilgang
+
 At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Nederst på skjermen ser du noen firkanter. Dette kalles “hurtigtilgang”. Hurtigtilgangen lar deg raskt få tilgang til de første gjenstandene fra spillerens inventar.
+
 You can change the selected item with the mouse wheel or the keyboard.=Du kan bytte valgt gjenstand med musehjulet eller tastaturet.
 • Select previous item in hotbar: [Mouse wheel up] or [B]=• Velg forrige gjenstand i hurtigtilgang: [Musehjul opp] eller [B]
 • Select next item in hotbar: [Mouse wheel down] or [N]=• Velg neste gjenstand i hurtigtilgang: [Musehjul ned] eller [N]
@@ -217,17 +322,26 @@ You can change the selected item with the mouse wheel or the keyboard.=Du kan by
 The selected item is also your wielded item.=Den valgte gjenstanden er også gjenstanden du holder.
 Minimap=Minikart
 If you have a map item in any of your hotbar slots, you can use the minimap.=Hvis du har et kartobjekt i noen av hurtigtilgangens spor, kan du bruke minimap.
+
 Press [F9] to make a minimap appear on the top right. The minimap helps you to find your way around the world. Press it again to select different minimap modes and zoom levels. The minimap also shows the positions of other players.=Trykk på [F9] for å få minikartet til å vises øverst til høyre. Minikartet hjelper deg å finne veien rundt i verden. Trykk på det igjen for å velge ulike minikartmoduser og zoomnivåer. Minikartet viser også posisjonene til andre spillere.
+
 There are 2 minimap modes and 3 zoom levels.=Det finnes 2 minikartmoduser og 3 zoomnivåer.
+
 Surface mode (image 1) is a top-down view of the world, roughly resembling the colors of the blocks this world is made of. It only shows the topmost blocks, everything below is hidden, like a satellite photo. Surface mode is useful if you got lost.=Overflatemodus (bilde 1) er en topp-til-bunn-visning av verden, som grovt sett ligner på fargene til blokkene denne verdenen er laget av. Den viser kun de øverste blokkene, alt nedenfor er skjult, som et satellittbilde. Overflatemodus er nyttig hvis du går deg vill.
+
 Radar mode (image 2) is more complicated. It displays the “denseness” of the area around you and changes with your height. Roughly, the more green an area is, the less “dense” it is. Black areas have many blocks. Use the radar to find caverns, hidden areas, walls and more. The rectangular shapes in image 2 clearly expose the position of a dungeon.=Radarmodus (bilde 2) er mer komplisert. Den viser “tettheten” av området rundt deg og endrer seg med høyden din. Grovt sett, jo grønnere et område er, jo mindre “tett” er det. Svarte områder har mange blokker. Bruk radaren for å finne grotter, skjulte områder, vegger og mer. De rektangulære formene i bilde 2 avslører tydelig posisjonen til et fangehull.
+
 There are also two different rotation modes. In “square mode”, the rotation of the minimap is fixed. If you press [Shift]+[F9] to switch to “circle mode”, the minimap will instead rotate with your looking direction, so “up” is always your looking direction.=Det finnes også to forskjellige rotasjonsmoduser. I “kvadratmodus” er rotasjonen av minikartet fast. Hvis du trykker [Shift]+[F9] for å bytte til “sirkelmodus”, vil minikartet i stedet rotere med din synsretning, slik at “oppover” alltid er synsretningen din.
+
 In some games, the minimap may be disabled.=I noen spill kan minikartet være deaktivert.
 • Toggle minimap mode: [F9]=• Bytt minikartmodus: [F9]
 • Toggle minimap rotation mode: [Shift]+[F9]=• Bytt minikartrotasjonsmodus: [Shift]+[F9]
 Inventory=Inventar
+
 Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=Inventarer brukes til å lagre gjenstandsstabler. Det finnes andre bruksområder, som håndverk. Et inventar består av et rektangulært rutenett med gjenstandsplasser. Hver plass kan enten være tom eller inneholde en gjenstandsstabel. Gjenstandsstabler kan flyttes fritt mellom de fleste plassene.
+
 You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Du har ditt eget inventar som kalles ditt “spillerinventar”, du kan åpne det med inventartasten (standard: [I]). De første inventarplassene brukes også som spor i hurtigtilgangen.
+
 Blocks can also have their own inventory, e.g. chests and furnaces.=Blokker kan også ha sitt eget inventar, for eksempel kister og ovner.
 Inventory controls:=Inventarkontroller:
 Taking: You can take items from an occupied slot if the cursor holds nothing.=Hente: Du kan ta gjenstander fra en opptatt plass hvis markøren ikke holder noe.
@@ -235,31 +349,50 @@ Taking: You can take items from an occupied slot if the cursor holds nothing.=He
 • Right click: take half from the item stack (rounded up)=• Høyreklikk: ta halvparten fra gjenstandsstabelen (avrundet opp)
 • Middle click: take 10 items from the item stack=• Midtklikk: ta 10 gjenstander fra gjenstandsstabelen
 • Mouse wheel down: take 1 item from the item stack=• Musehjul ned: ta 1 gjenstand fra gjenstandsstabelen
+
 Putting: You can put items onto a slot if the cursor holds 1 or more items and the slot is either empty or contains an item stack of the same item type.=Legge: Du kan legge gjenstander i en plass hvis markøren holder 1 eller flere gjenstander, og plassen enten er tom eller inneholder en gjenstandsstabel av samme type.
+
 • Left click: put entire item stack=• Venstreklikk: legg hele gjenstandsstabelen
 • Right click or mouse wheel up: put 1 item of the item stack=• Høyreklikk eller musehjul opp: legg 1 gjenstand av gjenstandsstabelen
 • Middle click: put 10 items of the item stack=• Midtklikk: legg 10 gjenstander av gjenstandsstabelen
+
 Exchanging: You can exchange items if the cursor holds 1 or more items and the destination slot is occupied by a different item type.=Bytte: Du kan bytte gjenstander hvis markøren holder 1 eller flere gjenstander, og målplassen er opptatt av en annen gjenstandstype.
+
 • Click: exchange item stacks=• Klikk: bytt gjenstandsstabler
+
 Throwing away: If you hold an item stack and click with it somewhere outside the menu, the item stack gets thrown away into the environment.=Kaste bort: Hvis du holder en gjenstandsstabel og klikker med den et sted utenfor menyen, blir gjenstandsstabelen kastet bort i omgivelsene.
+
 Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=Rask overføring: Du kan raskt overføre en gjenstandsstabel til/fra spillerens inventar til/fra en annen gjenstands inventarplass som en ovn, kiste eller en annen gjenstand med inventarplass når inventaret til denne gjenstanden er åpnet. Målinventaret er generelt det mest relevante inventaret i denne sammenhengen.
+
 • Sneak+Left click: Automatically transfer item stack=• Snik+Venstreklikk: Overfør gjenstandsstabel automatisk
 Online help=Nettbasert hjelp
 You may want to check out these online resources related to Minetest:=Du kan sjekke ut disse nettressursene relatert til Minetest:
 Official homepage of Minetest: <https://minetest.net/>=Offisiell hjemmeside for Minetest: <https://minetest.net/>
 The main place to find the most recent version of Minetest.=Hovedstedet for å finne den nyeste versjonen av Minetest.
 Community wiki: <https://wiki.minetest.net/>=Fellesskapswiki: <https://wiki.minetest.net/>
+
 A community-based documentation website for Minetest. Anyone with an account can edit it! It also features a documentation of Minetest Game.=Et fellesskapsbasert dokumentasjonsnettsted for Minetest. Alle med en konto kan redigere det! Det inneholder også dokumentasjon for Minetest Game.
+
 Web forums: <https://forums.minetest.net/>=
+
 A web-based discussion platform where you can discuss everything related to Minetest. This is also a place where player-made mods and games are published and discussed. The discussions are mainly in English, but there is also space for discussion in other languages.=En nettbasert diskusjonsplattform hvor du kan diskutere alt relatert til Minetest. Dette er også et sted hvor spillerskapte mods og spill publiseres og diskuteres. Diskusjonene foregår hovedsakelig på engelsk, men det er også rom for diskusjon på andre språk.
+
 Chat: <irc://irc.freenode.net#minetest>=Chat: <irc://irc.freenode.net#minetest>
+
 A generic Internet Relay Chat channel for everything related to Minetest where people can meet to discuss in real-time. If you do not understand IRC, see the Community Wiki for help.=En generell Internet Relay Chat-kanal for alt relatert til Minetest hvor folk kan møtes for å diskutere i sanntid. Hvis du ikke forstår IRC, se fellesskapswiki for hjelp.
+
 Groups=Grupper
+
 Items, players and objects (animate and inanimate) can be members of any number of groups. Groups serve multiple purposes:=Gjenstander, spillere og objekter (levende og ikke-levende) kan være medlemmer av et vilkårlig antall grupper. Grupper tjener flere formål:
+
 • Crafting recipes: Slots in a crafting recipe may not require a specific item, but instead an item which is a member of a particular group, or multiple groups=• Håndverksoppskrifter: Spor i en håndverksoppskrift kan kreve en gjenstand som er medlem av en bestemt gruppe eller flere grupper, i stedet for en spesifikk gjenstand.
+
 • Digging times: Diggable blocks belong to groups which are used to determine digging times. Mining tools are capable of digging blocks belonging to certain groups=• Gravetider: Gravbare blokker tilhører grupper som brukes til å bestemme gravetider. Gruveverktøy kan grave blokker som tilhører bestemte grupper.
+
 • Block behavior: Blocks may show a special behaviour and interact with other blocks when they belong to a particular group=• Blokkatferd: Blokker kan vise en spesiell oppførsel og samhandle med andre blokker når de tilhører en bestemt gruppe.
+
 • Damage and armor: Objects and players have armor groups, weapons have damage groups. These groups determine damage. See also: “Basics > Weapons”=• Skade og rustning: Objekter og spillere har rustningsgrupper, våpen har skadegrupper. Disse gruppene bestemmer skade. Se også: “Grunnleggende > Våpen”
+
 • Other uses=• Andre bruksområder
 In the item help, many important groups are usually mentioned and explained.=I gjenstandshjelpen nevnes og forklares vanligvis mange viktige grupper.
 Glossary=Ordliste
@@ -308,45 +441,71 @@ Interface=Grensesnitt
 Online multiplayer:=
 • PvP: Player vs Player. If active, players can deal damage to each other=• PvP: Spiller mot spiller. Hvis aktivert, kan spillere skade hverandre
 • Griefing: Destroying the buildings of other players against their will=• Griefing: Ødelegge bygningene til andre spillere mot deres vilje
+
 • Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=• Beskyttelse: Mekanisme for å eie områder av verden, som bare lar eierne endre blokker inni
+
 Technical terms:=
 • Minetest: This game engine=• Minetest: Denne spillmotoren
 • Minetest Game: A game for Minetest by the Minetest developers=• Minetest Game: Et spill for Minetest laget av Minetest-utviklerne
+
 • Game: A complete playing experience to be used in Minetest; such as a game or sandbox or similar=• Spill: En komplett spilleopplevelse brukt i Minetest, som et spill, sandkasse eller lignende
+
 • Mod: A single subsystem which adds or modifies functionality; is the basic building block of games and can be used to further enhance or modify them=• Mod: Et enkelt delsystem som legger til eller endrer funksjonalitet; er den grunnleggende byggesteinen i spill og kan brukes til å videreutvikle eller endre dem
+
 • Privilege: Allows a player to do something=• Privilegium: Tillater en spiller å gjøre noe
 • Node: Other word for “block”=• Node: Et annet ord for “blokk”
 Settings=Innstillinger
+
 There is a large variety of settings to configure Minetest. Pretty much every aspect can be changed that way.=Det er et bredt spekter av innstillinger for å konfigurere Minetest. Nesten alle aspekter kan endres på denne måten.
+
 These are a few of the most important gameplay settings:=Dette er noen av de viktigste spillinnstillingene:
+
 • Damage enabled (enable_damage): Enables the health and breath attributes for all players. If disabled, players are immortal=• Skade aktivert (enable_damage): Aktiverer helse- og pustverdier for alle spillere. Hvis deaktivert, er spillerne udødelige
+
 • Creative Mode (creative_mode): Enables sandbox-style gameplay focusing on creativity rather than a challenging gameplay. The meaning depends on the game; usual changes are: Reduced dig times, easy access to almost all items, tools never wear off, etc.=• Kreativ modus (creative_mode): Aktiverer sandkassestil spill som fokuserer på kreativitet i stedet for utfordrende spill. Betydningen avhenger av spillet; vanlige endringer er: Redusert gravetid, enkel tilgang til nesten alle gjenstander, verktøy blir ikke slitt, osv.
+
 • PvP (enable_pvp): Short for “Player vs Player”. If enabled, players can deal damage to each other=• PvP (enable_pvp): Kort for “Spiller mot spiller”. Hvis aktivert, kan spillere skade hverandre
+
 For a full list of all available settings, use the “All Settings” dialog in the main menu.=For en fullstendig liste over alle tilgjengelige innstillinger, bruk dialogen “Alle innstillinger” i hovedmenyen.
+
 Movement modes=Bevegelsesmoduser
 You can enable some special movement modes that change how you move.=Du kan aktivere noen spesielle bevegelsesmoduser som endrer måten du beveger deg på.
 Pitch movement mode:=Vippemodus:
+
 • Description: If this mode is activated, the movement keys will move you relative to your current view pitch (vertical look angle) when you're in a liquid or in fly mode.=• Beskrivelse: Hvis denne modusen er aktivert, vil bevegelsestastene bevege deg i forhold til din nåværende visningsvinkel (vertikal synsvinkel) når du er i en væske eller i flymodus.
+
 • Default key: [L]=• Standardtast: [L]
 • No privilege required=• Ingen privilegier kreves
 Fast mode:=Hurtigmodus:
+
 • Description: Allows you to move much faster. Hold down the the “Use” key [E] to move faster. In the client configuration, you can further customize fast mode.=• Beskrivelse: Lar deg bevege deg mye raskere. Hold nede “Bruk”-tasten [E] for å bevege deg raskere. I klientkonfigurasjonen kan du tilpasse hurtigmodus ytterligere.
+
 • Default key: [J]=• Standardtast: [J]
 • Required privilege: fast=• Krever privilegiet: fast
 Fly mode:=Flymodus:
+
 • Description: Gravity doesn't affect you and you can move freely in all directions. Use the jump key to rise and the sneak key to sink.=• Beskrivelse: Tyngdekraften påvirker deg ikke, og du kan bevege deg fritt i alle retninger. Bruk hoppetasten for å stige og sniketasten for å synke.
+
 • Default key: [K]=• Standardtast: [K]
 • Required privilege: fly=• Krever privilegiet: fly
 Noclip mode:=Noclip-modus:
+
 • Description: Allows you to move through walls. Only works when fly mode is enabled, too.=• Beskrivelse: Lar deg bevege deg gjennom vegger. Fungerer kun når flymodus også er aktivert.
+
 • Default key: [H]=• Standardtast: [H]
 • Required privilege: noclip=• Krever privilegiet: noclip
 Console=Konsoll
+
 With [F10] you can open and close the console. The main use of the console is to show the chat log and enter chat messages or server commands.=Med [F10] kan du åpne og lukke konsollen. Hovedbruken av konsollen er å vise chatloggen og skrive inn chatmeldinger eller serverkommandoer.
+
 Using the chat or server command key also opens the console, but it is smaller and will be closed after you sent a message.=Bruk av chat- eller serverkommando-tasten åpner også konsollen, men den er mindre og vil lukkes etter at du har sendt en melding.
+
 Use the chat to communicate with other players. This requires you to have the “shout” privilege.=Bruk chatten for å kommunisere med andre spillere. Dette krever at du har “shout”-privilegiet.
+
 Just type in the message and hit [Enter]. Public chat messages cannot begin with “/”.=Bare skriv inn meldingen og trykk [Enter]. Offentlige chatmeldinger kan ikke begynne med “/”.
+
 You can send private messages: Say “/msg <player> <message>” in chat to send “<message>” which can only be seen by <player>.=Du kan sende private meldinger: Skriv “/msg <spiller> <melding>” i chatten for å sende “<melding>” som bare kan sees av <spiller>.
+
 There are some special controls for the console:=Det er noen spesielle kontroller for konsollen:
 • [F10] Open/close console=• [F10] Åpne/lukk konsollen
 • [Enter]: Send message or command=• [Enter]: Send melding eller kommando
@@ -359,35 +518,60 @@ There are some special controls for the console:=Det er noen spesielle kontrolle
 • [Ctrl]+[K]: Delete all text after the cursor=• [Ctrl]+[K]: Slett all tekst etter markøren
 • [Page up]: Scroll up=• [Page up]: Rull opp
 • [Page down]: Scroll down=• [Page down]: Rull ned
+
 There is also an input history. Minetest saves your previous console inputs which you can quickly access later:=Det finnes også en inntastingshistorikk. Minetest lagrer tidligere konsollkommandoer som du raskt kan få tilgang til senere:
+
 • [Up]: Go to previous entry in history=• [Opp]: Gå til forrige oppføring i historikken
 • [Down]: Go to next entry in history=• [Ned]: Gå til neste oppføring i historikken
 Server commands=Serverkommandoer
+
 Server commands (also called “chat commands”) are little helpers for advanced users. You don't need to use these commands when playing. But they might come in handy to perform some more technical tasks. Server commands work both in multi-player and single-player mode.=Serverkommandoer (også kalt “chat-kommandoer”) er små hjelpere for avanserte brukere. Du trenger ikke å bruke disse kommandoene under spill. Men de kan være nyttige for å utføre noen mer tekniske oppgaver. Serverkommandoer fungerer både i flerspiller- og enkeltspillermodus.
+
 Server commands can be entered by players using the chat to perform a special server action. There are a few commands which can be issued by everyone, but some commands only work if you have certain privileges granted on the server. There is a small set of basic commands which are always available, other commands can be added by mods.=Serverkommandoer kan skrives inn av spillere ved å bruke chatten for å utføre en spesiell serverhandling. Det finnes noen kommandoer som alle kan bruke, men enkelte kommandoer fungerer kun hvis du har visse privilegier på serveren. Det finnes et lite sett med grunnleggende kommandoer som alltid er tilgjengelige; andre kommandoer kan legges til av mods.
+
 To issue a command, simply type it like a chat message or press Minetest's command key (default: [/]). All commands have to begin with “/”, for example “/mods”. The Minetest command key does the same as the chat key, except that the slash is already entered.=For å utføre en kommando, skriv den inn som en chatmelding eller trykk på Minetests kommando-tast (standard: [/]). Alle kommandoer må begynne med “/”, for eksempel “/mods”. Kommando-tasten i Minetest gjør det samme som chat-tasten, bortsett fra at skråstreken allerede er angitt.
+
 Commands may or may not give a response in the chat log, but errors will generally be shown in the chat. Try it for yourselves: Close this window and type in the “/mods” command. This will give you the list of available mods on this server.=Kommandoer kan gi en tilbakemelding i chatloggen, men feil vil vanligvis bli vist i chatten. Prøv selv: Lukk dette vinduet og skriv inn “/mods”-kommandoen. Dette vil gi deg en liste over tilgjengelige mods på denne serveren.
+
 “/help all” is a very important command: You get a list of all available commands on the server, a short explanation and the allowed parameters. This command is also important because the available commands often differ per server.=“/help all” er en veldig viktig kommando: Du får en liste over alle tilgjengelige kommandoer på serveren, en kort forklaring og tillatte parametere. Denne kommandoen er også viktig fordi de tilgjengelige kommandoene ofte varierer fra server til server.
+
 Commands are followed by zero or more parameters.=Kommandoer etterfølges av null eller flere parametere.
+
 In the command reference, you see some placeholders which you need to replace with an actual value. Here's an explanation:=I kommandooversikten ser du noen plassholdere som må erstattes med en faktisk verdi. Her er en forklaring:
+
 • Text in greater-than and lower-than signs (e.g. “<param>”): Placeholder for a parameter=• Tekst i mindre-enn og større-enn-tegn (f.eks. “<parameter>”): Plassholder for en parameter
+
 • Anything in square brackets (e.g. “[text]”) is optional and can be omitted=• Alt i hakeparenteser (f.eks. “[tekst]”) er valgfritt og kan utelates
+
 • Pipe or slash (e.g. “text1 | text2 | text3”): Alternation. One of multiple texts must be used (e.g. “text2”)=• Pipe eller skråstrek (f.eks. “tekst1 | tekst2 | tekst3”): Alternativ. En av flere tekster må brukes (f.eks. “tekst2”)
+
 • Parenthesis: (e.g. “(word1 word2) | word3”): Groups multiple words together, used for alternations=• Parenteser: (f.eks. “(ord1 ord2) | ord3”): Grupperer flere ord sammen, brukes for alternativer
+
 • Everything else is to be read as literal text=• Alt annet leses som bokstavelig tekst
 Here are some examples to illustrate the command syntax:=Her er noen eksempler som illustrerer kommandosyntaksen:
 • /mods: No parameters. Just enter “/mods”=• /mods: Ingen parametere. Bare skriv inn “/mods”
+
 • /me <action>: 1 parameter. You have to enter “/me ” followed by any text, e.g. “/me orders pizza”=• /me <handling>: 1 parameter. Du må skrive “/me ” etterfulgt av tekst, f.eks. “/me bestiller pizza”
+
 • /give <name> <ItemString>: Two parameters. Example: “/give Player default:apple”=• /give <navn> <GjenstandsStreng>: To parametere. Eksempel: “/give Spiller default:apple”
+
 • /help [all|privs|<cmd>]: Valid inputs are “/help”, “/help all”, “/help privs”, or “/help ” followed by a command name, like “/help time”=• /help [all|privs|<cmd>]: Gyldige input er “/help”, “/help all”, “/help privs”, eller “/help ” etterfulgt av et kommandonavn, som “/help time”
+
 • /spawnentity <EntityName> [<X>,<Y>,<Z>]: Valid inputs include “/spawnentity boats:boat” and “/spawnentity boats:boat 0,0,0”=• /spawnentity <EnhetsNavn> [<X>,<Y>,<Z>]: Gyldige input inkluderer “/spawnentity boats:boat” og “/spawnentity boats:boat 0,0,0”
+
 Some final remarks:=Noen siste merknader:
+
 • For /give and /giveme, you need an itemstring. This is an internally used unique item identifier which you may find in the item help if you have the “give” or “debug” privilege=• For /give og /giveme trenger du en gjenstandsstreng. Dette er en unik gjenstandsidentifikator som brukes internt, og som du kan finne i gjenstandshjelpen hvis du har “give” eller “debug”-privilegiet
+
 • For /spawnentity you need an entity name, which is another identifier=• For /spawnentity trenger du et enhetsnavn, som er en annen identifikator
 Privileges=Privilegier
+
 Each player has a set of privileges, which differs from server to server. Your privileges determine what you can and can't do. Privileges can be granted and revoked from other players by any player who has the privilege called “privs”.=Hver spiller har et sett med privilegier, som varierer fra server til server. Dine privilegier avgjør hva du kan og ikke kan gjøre. Privilegier kan gis og fjernes fra andre spillere av en hvilken som helst spiller som har “privs”-privilegiet.
+
 On a multiplayer server with the default configuration, new players start with the privileges called “interact” and “shout”. The “interact” privilege is required for the most basic gameplay actions such as building, mining, using, etc. The “shout” privilege allows to chat.=På en flerspiller-server med standardkonfigurasjon starter nye spillere med privilegiene “interact” og “shout”. “Interact”-privilegiet er nødvendig for de mest grunnleggende spillhandlingene som bygging, graving, bruk osv. “Shout”-privilegiet tillater chatting.
+
 There is a small set of core privileges which you'll find on every server, other privileges might be added by mods.=Det finnes et lite sett med kjerneprivilegier som du finner på alle servere, andre privilegier kan legges til av mods.
+
 To view your own privileges, issue the server command “/privs”.=For å se dine egne privilegier, skriv serverkommandoen “/privs”.
 Here are a few basic privilege-related commands:=Her er noen grunnleggende kommandoer relatert til privilegier:
 • /privs: Lists your privileges=• /privs: Viser dine privilegier
@@ -398,21 +582,36 @@ Players with the “privs” privilege can modify privileges at will:=Spillere m
 • /revoke <player> <privilege>: Revoke <privilege> from <player>=• /revoke <spiller> <privilegium>: Fjerner <privilegium> fra <spiller>
 In single-player mode, you can use “/grantme all” to unlock all abilities.=I enkeltspillermodus kan du bruke “/grantme all” for å låse opp alle ferdigheter.
 Light=Lys
+
 As the world is entirely block-based, so is the light in the world. Each block has its own brightness. The brightness of a block is expressed in a “light level” which ranges from 0 (total darkness) to 15 (as bright as the sun).=Ettersom verdenen er helt blokkbasert, er lyset i verden også det. Hver blokk har sin egen lysstyrke. Lysstyrken til en blokk uttrykkes i et “lysnivå” som varierer fra 0 (total mørke) til 15 (så lyst som solen).
+
 There are two types of light: Sunlight and artificial light.=Det finnes to typer lys: sollys og kunstig lys.
+
 Artificial light is emitted by luminous blocks. Artificial light has a light level from 1-14.=Kunstig lys utstråles av lysende blokker. Kunstig lys har et lysnivå fra 1-14.
+
 Sunlight is the brightest light and always goes perfectly straight down from the sky at each time of the day. At night, the sunlight will become moonlight instead, which still provides a small amount of light. The light level of sunlight is 15.=Sollys er det sterkeste lyset og går alltid rett ned fra himmelen til alle døgnets tider. Om natten blir sollyset til måneskinn, som fortsatt gir litt lys. Sollyset har et lysnivå på 15.
+
 Blocks have 3 levels of transparency:=Blokker har tre nivåer av gjennomsiktighet:
+
 • Transparent: Sunlight goes through limitless, artificial light goes through with losses=• Transparent: Sollys går gjennom uten begrensning, kunstig lys går gjennom med tap
+
 • Semi-transparent: Sunlight and artificial light go through with losses=• Semi-transparent: Sollys og kunstig lys går gjennom med tap
 • Opaque: No light passes through=• Ugjennomsiktig: Ingen lys passerer gjennom
+
 Artificial light will lose one level of brightness for each transparent or semi-transparent block it passes through, until only darkness remains (image 1).=Kunstig lys mister ett nivå av lysstyrke for hver transparente eller semi-transparente blokk det passerer gjennom, til det kun er mørke igjen (bilde 1).
+
 Sunlight will preserve its brightness as long it only passes fully transparent blocks. When it passes through a semi-transparent block, it turns to artificial light. Image 2 shows the difference.=Sollys vil beholde sin lysstyrke så lenge det kun passerer helt transparente blokker. Når det passerer gjennom en semi-transparent blokk, blir det til kunstig lys. Bilde 2 viser forskjellen.
+
 Note that “transparency” here only means that the block is able to carry brightness from its neighboring blocks. It is possible for a block to be transparent to light but you can't see trough the other side.=Merk at “gjennomsiktighet” her bare betyr at blokken kan videreføre lysstyrke fra sine naboblokker. En blokk kan være gjennomsiktig for lys, men du kan ikke nødvendigvis se gjennom den.
+
 Coordinates=Koordinater
+
 The world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.=Verden er en stor kube. Derfor kan en posisjon i verden enkelt uttrykkes med kartesiske koordinater. For hver posisjon i verden er det tre verdier: X, Y og Z.
+
 Like this: (5, 45, -12)=Slik som dette: (5, 45, -12)
+
 This refers to the position where X@=5, Y@=45 and Z@=-12. The 3 letters are called “axes”: Y is for the height. X and Z are for the horizontal position.=Dette refererer til posisjonen der X@=5, Y@=45 og Z@=-12. De tre bokstavene kalles “akser”: Y er for høyden. X og Z er for horisontal posisjon.
+
 The values for X, Y and Z work like this:=Verdiene for X, Y og Z fungerer slik:
 • If you go up, Y increases=• Hvis du går opp, øker Y
 • If you go down, Y decreases=• Hvis du går ned, minker Y
@@ -438,25 +637,43 @@ Enabling Creative Mode in VoxeLibre applies the following changes:=
 Damage is not affected by Creative Mode, it needs to be disabled separately.=Skade påvirkes ikke av Kreativ Modus, det må deaktiveres separat.
 Mobs=Fiender
 Mobs are the living beings in the world. This includes animals and monsters.=Fiender er levende vesener i verden. Dette inkluderer dyr og monstre.
+
 Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some mobs only spawn on particular blocks (like grass blocks).=Fiender dukker opp tilfeldig rundt i verden. Dette kalles “fremkomst”. Hver type fiende dukker opp på spesifikke blokker ved bestemte lysnivåer. Høyden spiller også en rolle. Fredelige fiender har en tendens til å dukke opp i dagslys, mens fiendtlige foretrekker mørke. De fleste fiender kan dukke opp på faste blokker, men noen bare på spesifikke blokker (som gressblokker).
+
 Like players, mobs have hit points and sometimes armor points, too (which means you need better weapons to deal any damage at all). Also like players, hostile mobs can attack directly or at a distance. Mobs may drop random items after they die.=Akkurat som spillere har fiender livspoeng og noen ganger rustningspoeng (som betyr at du trenger bedre våpen for å påføre noen skade). Akkurat som spillere kan fiendtlige fiender angripe direkte eller på avstand. Fiender kan slippe tilfeldige gjenstander etter at de dør.
+
 Most animals roam the world aimlessly while most hostile mobs hunt players. Animals can be fed, tamed and bred.=De fleste dyr vandrer målløst rundt i verden, mens de fleste fiendtlige fiender jakter på spillere. Dyr kan mates, temmes og avles.
+
 Animals=Dyr
+
 Animals are peaceful beings which roam the world aimlessly. You can feed, tame and breed them.=Dyr er fredelige vesener som vandrer målløst rundt i verden. Du kan mate, temme og avle dem.
+
 Feeding:=Mating:
+
 Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and right-click the animal.=Hvert dyr har sin egen smak for mat og aksepterer ikke hvilken som helst mat. For å mate, hold en gjenstand i hånden og høyreklikk på dyret.
+
 Animals are attracted to the food they like and follow you as long you hold the food item in hand.=Dyr tiltrekkes av maten de liker og følger deg så lenge du holder matgjenstanden i hånden.
+
 Feeding an animal has three uses: Taming, healing and breeding.=Mating har tre funksjoner: Temming, helbredelse og avl.
 Feeding heals animals instantly, depending on the quality of the food item.=Mating helbreder dyr umiddelbart, avhengig av matgjenstandens kvalitet.
 Taming:=Temming:
+
 A few animals can be tamed. You can generally do more things with tamed animals and use other items on them. For example, tame horses can be saddled and tame wolves fight on your side.=Noen få dyr kan temmes. Du kan generelt gjøre flere ting med temmede dyr og bruke andre gjenstander på dem. For eksempel kan temmede hester få sal, og temmede ulver kjemper på din side.
+
 Breeding:=Avl:
+
 When you have fed an animal up to its maximum health, then feed it again, you will activate “Love Mode” and many hearts appear around the animal.=Når du har matet et dyr opp til dets maksimale helse, og deretter mater det igjen, aktiverer du “Kjærlighetsmodus” og mange hjerter dukker opp rundt dyret.
+
 Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.=To dyr av samme art vil begynne å pare seg hvis de er i Kjærlighetsmodus og nær hverandre. Snart vil et baby-dyr dukke opp.
+
 Baby animals:=Baby-dyr:
+
 Baby animals are just like their adult counterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.=Baby-dyr er akkurat som sine voksne motparter, men de kan ikke temmes eller avles og slipper ikke noe når de dør. De vokser til voksne etter kort tid. Når de mates, vokser de til voksne raskere.
+
 Hunger=Sult
+
 Hunger affects your health and your ability to sprint. Hunger is not in effect when damage is disabled.=Sult påvirker helsen din og din evne til å sprinte. Sult er ikke i bruk når skade er deaktivert.
+
 Core hunger rules:=Kjerne-regler for sult:
 • You start with 20/20 hunger points (more points @= less hungry)=• Du starter med 20/20 sultpoeng (flere poeng @= mindre sulten)
 • Actions like combat, jumping, sprinting, etc. decrease hunger points=• Handlinger som kamp, hopping, sprinting osv. reduserer sultpoeng
@@ -467,14 +684,23 @@ Core hunger rules:=Kjerne-regler for sult:
 • At 0 hunger points, you lose 1 HP every 4 seconds (down to 1 HP)=• Ved 0 sultpoeng mister du 1 HP hvert 4. sekund (ned til 1 HP)
 • Poisonous food decreases your health=• Giftig mat reduserer helsen din
 Details:=Detaljer:
+
 You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=Du har 0-20 sultpoeng, indikert med 20 halve trommestikkeikoner over hurtigtilgangen. Du har også en usynlig egenskap: Metning.
+
 Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.=Sultpoeng viser hvor mett du er, mens metningspoeng viser hvor lenge det tar før du blir sulten igjen.
+
 Each food item increases both your hunger level as well your saturation.=Hver matgjenstand øker både sultnivået ditt og metningen din.
+
 Food with a high saturation boost has the advantage that it will take longer until you get hungry again.=Mat med høy metningsboost har fordelen at det tar lenger tid før du blir sulten igjen.
+
 A few food items might induce food poisoning by chance. When you're poisoned, the health and hunger symbols turn sickly green. Food poisoning drains your health by 1 HP per second, down to 1 HP. Food poisoning also drains your saturation. Food poisoning goes away after a while or when you drink milk.=Noen matvarer kan tilfeldigvis føre til matforgiftning. Når du er forgiftet, blir helse- og sults-ymbolene sykelig grønne. Matforgiftning tapper helsen din med 1 HP per sekund, ned til 1 HP. Matforgiftning reduserer også metningen din. Forgiftningen forsvinner etter en stund eller når du drikker melk.
+
 You start with 5 saturation points. The maximum saturation is equal to your current hunger level. So with 20 hunger points your maximum saturation is 20. What this means is that food items which restore many saturation points are more effective the more hunger points you have. This is because at low hunger levels, a lot of the saturation boost will be lost due to the low saturation cap.=Du starter med 5 metningspoeng. Maksimal metning tilsvarer ditt nåværende sultnivå. Så med 20 sultpoeng er maksimal metning 20. Dette betyr at matvarer som gir mange metningspoeng er mer effektive jo flere sultpoeng du har. Ved lavt sultnivå vil mye av metningsboosten gå tapt på grunn av lavt metningsmaksimum.
+
 If your saturation reaches 0, you're hungry and start to lose hunger points. Whenever you see the hunger bar decrease, it is a good time to eat.=Hvis metningen din når 0, er du sulten og begynner å miste sultpoeng. Når sultindikatoren minker, er det en god tid å spise.
+
 Saturation decreases by doing things which exhaust you (highest exhaustion first):=Metning reduseres ved å gjøre ting som gjør deg utmattet (høyest utmattelse først):
+
 • Regenerating 1 HP=• Regenerere 1 HP
 • Suffering food poisoning=• Få matforgiftning
 • Sprint-jumping=• Sprint-hopping
@@ -491,28 +717,43 @@ Other actions, like walking, do not exhaust you.=Andre handlinger, som å gå, u
 
 Basic controls:=Grunnleggende kontroller:
 • Lowest row in inventory appears in hotbar below=• Nederste rad i inventaret vises i hurtigtilgangen nederst
+
 Minetest as well as Minetest Game are both unfinished at the moment, so please forgive us when not everything works out perfectly.=Minetest og Minetest Game er begge uferdige for øyeblikket, så vi håper på forståelse om ikke alt fungerer perfekt.
+
 If you jump while holding the sneak key, you also jump slightly higher than usual.=Hvis du hopper mens du holder snik-knappen, hopper du også litt høyere enn vanlig.
+
 • E: Move even faster when in fast mode=• E: Beveg deg enda raskere i hurtigmodus
 • Left mouse button: Punch / mine blocks / take items=• Venstre museknapp: Slå / grave blokker / ta gjenstander
 • Roll mouse wheel: Select next/previous item in hotbar=• Rull musehjulet: Velg neste/forrige gjenstand i hurtigtilgangen
 • F8: Toggle cinematic mode=• F8: Veksle kinomodus
 • P: Only useful for developers. Writes current stack traces=• P: Kun nyttig for utviklere. Skriver nåværende stack-spor
+
 Dropped item stacks will be collected automatically when you stand close to them.=Slippede gjenstandsstabler blir automatisk samlet opp når du står nær dem.
+
 Mining tools are important to break all kinds of blocks. Weapons are another kind of tool. There are some other more specialized tools. Special actions of tools are usually done by right-click.=Gruveverktøy er viktige for å bryte alle slags blokker. Våpen er en annen type verktøy. Det finnes også noen mer spesialiserte verktøy. Spesialhandlinger med verktøy utføres vanligvis med høyreklikk.
+
 When nothing is wielded, players use their hand which may act as tool and weapon. The hand is capable of punching and deals minimum damage.=Når ingenting holdes, bruker spilleren hånden som kan fungere som verktøy og våpen. Hånden kan slå og gir minimal skade.
+
 There is also Cinematic Mode which can be toggled with [F8]. With Cinematic Mode enabled, the camera movements become more smooth. Some players don't like it, it is a matter of taste.=Det finnes også Kinomodus som kan slås av og på med [F8]. Med Kinomodus aktivert blir kamerabevegelsene jevnere. Noen spillere liker det ikke; det er en smakssak.
+
 By holding down [Z], you can zoom the view at your crosshair. You need the “zoom” privilege to do this.=Ved å holde nede [Z], kan du zoome inn på siktet. Du trenger “zoom”-privilegiet for å gjøre dette.
+
 • Toggle Cinematic Mode: [F8]=• Veksle Kinomodus: [F8]
+
 The world of MineClone 2 is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Verden i MineClone 2 er laget fullstendig av blokker (voxels, for å være presis). Blokker kan legges til eller fjernes med de riktige verktøyene.
+
 • Right click: put 1 item of the item stack=• Høyreklikk: legg 1 gjenstand av gjenstandsstabelen
 You may want to check out these online resources related to MineClone 2.=Du kan sjekke ut disse nettressursene relatert til MineClone 2.
+
 MineClone 2 download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=MineClone 2 nedlasting og forumdiskusjon: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>
+
 Here you find the most recent version of MineClone 2 and can discuss it.=Her finner du den nyeste versjonen av MineClone 2 og kan diskutere den.
 Bug tracker: <https://github.com/Wuzzy2/MineClone2-Bugs>=Feilsporingssystem: <https://github.com/Wuzzy2/MineClone2-Bugs>
 Report bugs here.=Rapporter feil her.
 Minetest links:=Minetest-lenker:
+
 The main place to find the most recent version of Minetest, the engine used by MineClone 2.=Hovedstedet for å finne den nyeste versjonen av Minetest, motoren brukt av MineClone 2.
+
 Minetest forums: <https://forums.minetest.net/>=Minetest-forum: <https://forums.minetest.net/>
 Online multiplayer=Flerspiller online
 Technical terms=Tekniske begreper

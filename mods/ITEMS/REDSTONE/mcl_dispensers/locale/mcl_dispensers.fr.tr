@@ -3,8 +3,11 @@ Dispenser=Distributeur
 Inventory=Inventaire
 9 inventory slots=9 emplacements d'inventaire
 Launches item when powered by redstone power=Lance un objet lorsqu'il est alimenté par la puissance Redstone
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=Un distributeur est un bloc qui agit comme un composant redstone qui, lorsqu'il est alimenté avec une puissance redstone, distribue un article. Il a un conteneur avec 9 emplacements d'inventaire.
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=Placez le distributeur dans l'une des 6 directions possibles. Le "trou" est l'endroit où les articles sortiront du distributeur. Utilisez le distributeur pour accéder à son inventaire. Insérez les articles que vous souhaitez distribuer. Fournissez au distributeur de l'énergie de redstone une fois pour distribuer un objet aléatoire.
+
 The dispenser will do different things, depending on the dispensed item:=Le distributeur fera différentes choses, selon l'article distribué:
 • Arrows: Are launched=• Flèches: Sont lancées
 • Eggs and snowballs: Are thrown=• Oeufs et boules de neige: Sont jetés

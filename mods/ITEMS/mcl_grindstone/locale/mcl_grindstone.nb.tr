@@ -3,9 +3,16 @@ Repair & Disenchant=Reparer og avfortryll
 Inventory=Inventar
 Grindstone=Slipestein
 Used to disenchant/fix tools=Brukes for å avfortrylle/reparere verktøy
+
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Slipestein avfortryller verktøy og rustningsdeler bortsett fra forbannelser, og reparerer to gjenstander av samme type. Den er også våpensmedens arbeidsstasjon.
+
 To use the grindstone, rightclick it, Two input slots (on the left) and a single output slot.=For å bruke slipesteinen, høyreklikk på den, To inngangsfelt (til venstre) og et enkelt utgangsfelt.
+
 To disenchant an item place enchanted item in one of the input slots and take the disenchanted item from the output.=For å avfortrylle en gjenstand, plasser den fortryllede gjenstanden i en av inngangsfeltene og ta den ut igjen via utgangsfeltet.
+
 To repair a tool you need a tool of the same type and material, put both items in the input slot and the output slot will combine two items durabilities with 5% bonus.=For å reparere verktøy trenger du et verktøy av samme type og materiale, legg begge gjenstandene i inngangsfeltene og utgangsfeltet vil kombinere de to gjenstandenes holdbarhet med 5 % bonus.
+
 If both items have enchantments the player will get xp from both items from the disenchant.=Hvis begge gjenstandene har fortryllelser vil spilleren få EP fra begge gjenstandene fra avfortryllelsen.
+
 Curses cannot be removed and will be transfered to the new repaired item, if both items have a different curse the curses will be combined.=Forbannelser kan ikke fjernes og vil bli overført til den nye reparerte gjenstanden, hvis begge gjenstandene har en forbannelse hver vil forbannelsene kombineres.
+

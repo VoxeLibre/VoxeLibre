@@ -1,7 +1,9 @@
 # textdomain: mcl_copper
 ##[ nodes.lua ]##
 Copper Ore=Медная руда
+
 Some copper contained in stone, it is pretty common and can be found below sea level.=Залежи медной руды находятся в камне, медь довольно распространена и может быть найдена ниже уровня моря.
+
 Block of Raw Copper=Блок необработанной меди
 A block used for compact raw copper storage.=Блок используется для компактного хранения необработанной меди.
 Block of Copper=Медный блок

@@ -20,13 +20,21 @@ The target item is not enchantable.=目标物品无法附魔。
 Enchanted Book=附魔书
 Enchanting Table=附魔台
 Spend experience, and lapis to enchant various items.=消耗经验值和青金石为各种物品附魔。
+
 Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=附魔台可让你用各种能力为盔甲、工具、武器和书籍附魔，但需要消耗一定的经验值和青金石。
+
 Rightclick the Enchanting Table to open the enchanting menu.=右键点击附魔台以打开附魔菜单。
+
 Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=将工具、盔甲、武器或书籍放入左上角的槽位，然后在右侧槽位放入1 - 3个青金石。
+
 After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=将物品放入槽位后，附魔选项就会显示出来。将鼠标悬停在选项上可查看你能使用的附魔内容。
+
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=这些选项是随机的，且取决于经验等级，但可以增强附魔强度。
+
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=要增强附魔强度，可在附魔台周围放置书架。不过，你需要在附魔台和书架之间保留1格空气方块来强化附魔台的效果。
+
 After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=最终选好附魔后，左键点击所选内容，你会看到青金石和你的经验等级都会被消耗，然后一个附魔后的物品会出现在原位置。
+
 Enchant=附魔
 ##[ engine.lua ]##
 Inventory=物品栏
@@ -36,9 +44,13 @@ Inventory=物品栏
 Level requirement: @1=等级要求：@1
 ##[ enchantments.lua ]##
 Bane of Arthropods=节肢克星
+
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=增加对节肢生物（蜘蛛、洞穴蜘蛛、蠹虫和末影螨）的伤害，并使其陷入缓慢IV效果。
+
 Channeling=引雷
+
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=向目标引导一道闪电。仅在雷暴天气且目标未被不透明方块阻挡时生效。
+
 Curse of Vanishing=消失诅咒
 Item destroyed on death.=物品在死亡时会被摧毁。
 Depth Strider=深海探索者
@@ -52,7 +64,9 @@ Arrows set target on fire.=箭可使目标着火。
 Fortune=时运
 Increases certain block drops.=增加特定方块的掉落物数量。
 Frost Walker=冰霜行者
+
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=将玩家下方的水变成霜冰，并防止岩浆块造成的伤害。
+
 Impaling=穿刺
 Trident deals additional damage to ocean mobs.=三叉戟对海洋生物造成额外伤害。
 Infinity=无限
@@ -105,7 +119,9 @@ Increases underwater mining speed.=增加水下挖掘速度。
 Blast Protection=爆炸保护
 Reduces explosion damage and knockback.=减少爆炸伤害和击退效果。
 Curse of Binding=绑定诅咒
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=除了死亡、物品损坏或在创造模式下，物品无法从盔甲栏位中移除。
+
 Feather Falling=摔落保护
 Reduces fall damage.=减少摔落伤害。
 Fire Protection=火焰保护
@@ -115,4 +131,6 @@ Reduces projectile damage.=减少弹射物伤害。
 Protection=保护
 Reduces most types of damage by 4% for each level.=每级减少大多数类型伤害的4%。
 Thorns=荆棘
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=受到攻击时反弹部分伤害，但每次触发会降低自身耐久度。 
+

@@ -2,14 +2,23 @@
 Repair and Name=Reparer og navngi
 Repair and rename items=Reparer og navngi gjenstander
 Anvil=Ambolt
+
 The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. Don't let it fall on your head, it could be quite painful!=Ambolten lar deg reparere verktøy og rustninger, og gi navn til gjenstander. Den har imidlertid begrenset holdbarhet. Ikke la det falle i hodet ditt, det kan være ganske smertefullt!
+
 To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.=For å bruke en ambolt, høyreklikk på den. En ambolt har 2 inngangsfelt (til venstre) og ett utgangsfelt.
+
 To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.=For å gi nytt navn til gjenstander, legg en gjenstandsstabel i ett av gjenstandsfeltene mens du holder det andre gjenstandsfeltet tomt. Skriv inn et navn, trykk enter eller "Velg navn", og ta deretter den omdøpte gjenstanden fra utgangsfeltet.
+
 There are two possibilities to repair tools (and armor):=Det er to muligheter for å reparere verktøy (og rustninger):
+
 • Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.=• Verktøy + Verktøy: Plasser to verktøy av samme type i inngangsfeltene. "Helsen" til det reparerte verktøyet er summen av "helsen" til begge inndataverktøyene, pluss en bonus på 12 %.
+
 • Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.=• Verktøy + Materiale: Noen verktøy kan også repareres ved å kombinere dem med en gjenstand den er laget av. For eksempel kan jernhakker repareres med jernbarrer. Dette reparerer verktøyet med 25 %.
+
 Armor counts as a tool. It is possible to repair and rename a tool in a single step.=Rustning teller som et verktøy. Det er mulig å reparere og gi nytt navn til et verktøy i ett enkelt trinn.
+
 The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.=Ambolten har begrenset holdbarhet og 3 skadenivåer: uskadet, lett skadet og svært skadet. Hver gang du reparerer eller gir nytt navn, er det 12 % sjanse for at ambolten blir skadet. Ambolter har også en sjanse for å bli skadet når de faller med mer enn 1 blokk. Hvis en svært skadet ambolt skades igjen, blir den ødelagt.
+
 Slightly Damaged Anvil=Lett skadet ambolt
 Very Damaged Anvil=Svært skadet ambolt
 

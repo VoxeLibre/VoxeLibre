@@ -1,7 +1,9 @@
 # textdomain: mcl_composters
 Composter=Kompostbinge
 Composters can convert various organic items into bone meal.=
+
 Use organic items on the composter to fill it with layers of compost. Every time an item is put in the composter, there is a chance that the composter adds another layer of compost.  Some items have a bigger chance of adding an extra layer than other items.  After filling up with 7 layers of compost, the composter is full.  After a delay of approximately one second the composter becomes ready and bone meal can be retrieved from it. Right-clicking the composter takes out the bone meal empties the composter.=Bruk organiske gjenstander på kompostbingen for å fylle den gradvis med kompost. Hver gang en gjenstand legges i kompostbingen, er det en sjanse for at kompostbingen legger til et lag med kompost. Noen elementer har større sjanse for å legge til et ekstra lag enn andre elementer. Etter å ha fylt opp med 7 lag kompost er kompostbingen full. Etter en forsinkelse på ca. ett sekund blir kompostbingen klar og benmel kan hentes fra den. Å høyreklikke på kompostbingen tar ut beinmelet, og tømmer kompostbingen.
+
 Converts organic items into bone meal=
 filled=fyllt
 ready for harvest=klar for å høstes

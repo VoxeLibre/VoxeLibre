@@ -1,6 +1,9 @@
 # textdomain: mesecons_pressureplates
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Unha placa de presión de madeira é un compoñente de pedra vermella que proporciona aos seus bloques circundantes poder de pedra vermella mentres calquera obxecto móbil (incluídos os elementos caídos, os xogadores e as turbas) descansa sobre el.
+
 A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=Unha placa de presión é un compoñente de pedra vermella que proporciona aos seus bloques circundantes poder de pedra vermella mentres alguén ou algo descansa sobre el.
+
 Provides redstone power when pushed=Proporciona enerxía Pedra Vermella cando se empurra
 Pushable by players, mobs and objects=Empuxable por xogadores, mobs e obxectos
 Pushable by players and mobs=Empuxable por xogadores e mobs
@@ -16,6 +19,10 @@ Mangrove Pressure Plate=Placa de presión de mangle
 Crimson Pressure Plate=Placa de presión carmesí
 Warped Pressure Plate=Placa de presión deformada
 Stone Pressure Plate=Placa de presión de pedra
+
 A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Unha placa de presión de pedra é un compoñente de pedra vermella que proporciona aos seus bloques circundantes poder de pedra vermella mentres un xogador ou inimigo está enriba dela. Non é desencadeado por outra cousa.
+
 Polished Blackstone Pressure Plate=Placa de presión de Pedra negra pulida
+
 A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Unha placa de presión de pedra negra pulida é un compoñente de pedra vermella que proporciona aos seus bloques circundantes poder de pedra vermella mentres un xogador ou inimigo está enriba dela. Non é desencadeado por outra cousa.
+

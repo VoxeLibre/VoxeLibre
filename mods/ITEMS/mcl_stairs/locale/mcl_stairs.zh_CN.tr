@@ -1,9 +1,17 @@
 # textdomain: mcl_stairs
+##[ api.lua ]##
+
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=
+
 Double @1=双层@1
+
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=
+
 Upper @1=上层@1
+
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=
+
+##[ register.lua ]##
 Oak Wood Stairs=橡木楼梯
 Oak Wood Slab=橡木半砖
 Double Oak Wood Slab=双层橡木半砖
@@ -115,6 +123,8 @@ Double Slab of Polished Gold=
 ##### not used anymore #####
 
 楼梯可用于行走以到达更高的地方，无需跳跃。将楼梯按角落样式摆放会形成转角楼梯。放置在天花板或方块侧面上半部分的楼梯会上下颠倒放置。=楼梯有助于人们通过行走到达更高处，不需要跳跃就能上去。把楼梯按角落样式放置能造出转角楼梯，安放在天花板或者方块侧面上半部分的楼梯会呈现倒置状态。
+
 半砖的高度是其对应完整方块的一半，根据放置方式的不同，它们会占据方块的下半部分或上半部分。无需跳跃就能轻松踏上半砖。当一块半砖放置在同类型的另一块半砖上时，就会形成双层半砖。=板砖的高度是其对应完整方块的一半，依据放置情况，它们会占据方块的下部或者上部。不用跳跃就能轻松站上去，当一块板砖放在同类型的另一块板砖上时，就会形成双层板砖。
+
 双层半砖是完整的方块，由两块相同类型的半砖相互叠放而成。=双层板砖是完整的方块，由两块相同种类的板砖相互叠放而形成。
 Dark Prismarine Stairs=暗海晶石楼梯

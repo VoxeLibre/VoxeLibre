@@ -8,10 +8,15 @@ Bamboo Plank=竹木板
 Bamboo Mosaic Plank=竹制马赛克木板
 ##[ bamboo_items.lua ]##
 Bamboo Door=竹门
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=木质门是高度为2个方块的障碍物，可以通过手动以及红石信号来打开或关闭。
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=要打开或关闭木质门，可右键点击它或向其下半部分提供红石信号。 
+
 Bamboo Trapdoor=竹制活板门
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=木质活板门是水平的障碍物，可以通过手动或红石信号来打开和关闭，它们会根据放置方式占据方块的上半部分或下半部分，打开时，可以像爬梯子一样攀爬它们。
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=要打开或关闭活板门，可右键点击它或向其发送红石信号。
 Bamboo Stairs=竹制楼梯
 Bamboo Slab=竹制台阶
@@ -23,13 +28,17 @@ Bamboo Plank Stairs=竹木板楼梯
 Bamboo Plank Slab=竹木板台阶
 Double Bamboo Plank Slab=双层竹木板台阶
 Bamboo Pressure Plate=竹制压力板
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=木质压力板是一种红石元件，当任何可移动的物体（包括掉落的物品、玩家和生物）放置在其上方时，它会为周围的方块提供红石信号。
+
 Bamboo Sign=竹制标识牌
 Bamboo Fence=竹栅栏
 Bamboo Fence Gate=竹栅栏门
 Bamboo Button=竹制按钮
+
 ### bamboo_items.lua ###
 A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=竹制按钮是一种由竹子制成的红石元件，按下它可以提供红石信号，按下时，它能为相邻的红石元件供电1秒。
+
 Bamboo Mosaic Stairs=竹制马赛克楼梯
 Bamboo Mosaic Slab=竹制马赛克台阶
 Double Bamboo Mosaic Slab=双层竹制马赛克台阶

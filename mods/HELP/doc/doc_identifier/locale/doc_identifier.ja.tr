@@ -8,11 +8,16 @@ This can happen for the following reasons:=これは、次のような理由で�
 It appears to originate from the mod “@1”, which is enabled.=有効になっているMOD“@1”から発生しているようです。
 It appears to originate from the mod “@1”, which is not enabled!=有効化されていないMOD“@1”から発生しているようです！
 Its identifier is “@1”.=その識別子は“@1”です。.
+
 This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.=
+
 No help entry for this object could be found.=このオブジェクトのヘルプエントリーは見つかりませんでした。
 This is a player.=このブロックは、この時点ではまだ世界が具現化されていないため、識別できません。数秒後に再試行してください。
 OK=OK
 Lookup Tool=検索ツール
 Show help for pointed thing=ポイントしたものをヘルプで表示する
+
 This useful little helper can be used to quickly learn more about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used.=この便利な小さいヘルプ機能は、自分の身近な環境について手っ取り早く知るために使えます。ブロックやアイテムなどを識別して分析し、使用されているものに関する幅広い情報を表示します。
+
 Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case.=ブロックやアイテムなど、詳しく知りたいものをパンチしてください。すると適切なヘルプエントリーが表示されます。この道具には2つのモードがあり、使用することで変更されます。液体モードでは、この道具は液体もポイントしますが、固体モードではそのようなことはありません。
+

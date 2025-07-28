@@ -1,16 +1,21 @@
 # textdomain: findbiome
 # mod title
-Find Biome=
-# mod description
-Adds commands to list and find biomes=
-
+# mod strings
+# mod title
+Wait until all mods have loaded!=
 # mod strings
 Find and teleport to biome=寻找并传送到生物群系
 <biome>=<生物群系>
 No player.=没有玩家。
-Not supported. The “biomeinfo” mod is required for v6 mapgen support!=不支持。v6地图生成需要“生物群系信息”模组。 
 Biome found at @1.=在@1处发现生物群系。
 No biome found!=未找到生物群系！
 Biome does not exist!=生物群系不存在！
 List all biomes=列出所有生物群系
 No biomes.=没有生物群系。
+
+
+##### not used anymore #####
+
+# mod description
+Adds commands to list and find biomes=
+Not supported. The “biomeinfo” mod is required for v6 mapgen support!=不支持。v6地图生成需要“生物群系信息”模组。 

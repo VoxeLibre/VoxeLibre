@@ -3,16 +3,24 @@ Smoker=烟熏炉
 Inventory=物品栏
 Recipe book=
 Cooks food faster than furnace=烹饪食物比熔炉更快。
+
 Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace.=烟熏炉可将若干物品（主要是生食）烹饪成熟食，速度是普通熔炉的两倍。
+
 Use the smoker to open the furnace menu.=使用烟熏炉来打开熔炉菜单。
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=将熔炉燃料放在下方的槽位，将原料放在上方的槽位。
+
 The smoker will slowly use its fuel to cook the item.=
 The result will be placed into the output slot at the right side.=结果会被放置到右侧的输出槽位中。
+
 Use the recipe book to see what foods you can cook, what you can use as fuel and how long it will burn.=
+
 Burning Smoker=正在燃烧的烟熏炉
 
 
 ##### not used anymore #####
 
 The smoker will slowly use its fuel to smelt the item.=烟熏炉会缓慢地使用其燃料来熔炼物品。
+
 Use the recipe book to see what foods you can smelt, what you can use as fuel and how long it will burn.=使用配方书来查看你可以熔炼哪些食物、可以用什么作为燃料以及燃料能燃烧多长时间。
+

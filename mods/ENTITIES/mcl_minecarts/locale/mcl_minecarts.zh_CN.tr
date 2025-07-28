@@ -4,8 +4,11 @@ Sneak to dismount=潜行下车
 Minecart=矿车
 Vehicle for fast travel on rails=在轨道上快速行驶的车辆
 Minecarts can be used for a quick transportion on rails.=矿车可以在轨道上快速运输。
+
 Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.=矿车只在轨道上行驶，并始终沿着轨道行驶。在前面没有直路的丁字路口，他们向左转。速度受轨道类型的影响。
+
 You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.=你可以把矿车放在轨道上。右键单击以输入它。击打它，让它动起来。
+
 To obtain the minecart, punch it while holding down the sneak key.=要获得矿车，按住潜行键击打它。
 If it moves over a powered activator rail, you'll get ejected.=
 ##[ carts/with_chest.lua ]##
@@ -14,36 +17,56 @@ Minecart with Chest=带有箱子的矿车
 Minecart with Command Block=带有命令方块的矿车
 ##[ carts/with_furnace.lua ]##
 Minecart with Furnace=带有熔炉的矿车
+
 A minecart with furnace is a vehicle that travels on rails. It can propel itself with fuel.=带熔炉的矿车是一种在铁轨上行驶的车辆。它可以用燃料推动自己。
+
 Place it on rails. If you give it some coal, the furnace will start burning for a long time and the minecart will be able to move itself. Punch it to get it moving.=把它放在轨道上。如果你给它一些煤，炉子就会开始燃烧很长一段时间，矿车就能自己移动。击打它，让它动起来。
+
 To obtain the minecart and furnace, punch them while holding down the sneak key.=要获得矿车和熔炉，请在按住潜行键的同时击打它们。
 ##[ carts/with_hopper.lua ]##
 Minecart with Hopper=漏斗矿车
+Hopper Minecart=
 ##[ carts/with_tnt.lua ]##
 Minecart with TNT=矿车和TNT炸药
 Can be ignited by tools or powered activator rail=可以通过工具和运行中的激活器轨道点火
 A minecart with TNT is an explosive vehicle that travels on rail.=装有TNT炸药的矿车是一种在铁路上行驶的爆炸物运输工具。
+
 Place it on rails. Punch it to move it. The TNT is ignited with a flint and steel or when the minecart is on an powered activator rail.=把它放在轨道上。击打它来移动它。TNT炸药是用火石和钢铁点燃的，或者当矿车在动力激活器轨道上时。
+
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=要获得矿车和TNT，按住潜行键击打它们。如果炸药被点燃了，你就不能这么做。
+
 ##[ rails.lua ]##
+
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=把它们放在地上来建造你的铁路，铁轨会自动连接起来，并根据需要变成曲线、T形路口、交叉路口和斜坡。
+
 Track for minecarts=矿车的轨道
+
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=铁轨可以用来建造矿车的运输轨道。正常轨道由于摩擦会使矿车稍微减速。
+
 Sloped Rail=
 ##[ rails/activator.lua ]##
 Activator Rail=激活器轨道
 Activates minecarts when powered=通电时激活矿车
+
 Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.=铁轨可以用来建造矿车的运输轨道。激活轨道用于激活特殊矿车。
+
 To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.=要使这条轨道激活矿车，请用红石动力为其供电，然后把矿车送到这条轨道上。
+
 ##[ rails/detector.lua ]##
 Detector Rail=探测器轨道
 Emits redstone power when a minecart is detected=当探测到矿车时发射红石能量
+
 Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=铁轨可以用来建造矿车的运输轨道。探测轨道能够探测到其上方的矿车并为红石机械提供动力。
+
 To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=要探测矿车并提供红石动力，请将其连接到红石轨道或红石机制上，并将任何矿车发送到轨道上。
+
 ##[ rails/normal.lua ]##
 Rail=轨道
 ##[ rails/powered.lua ]##
 Powered Rail=动力轨道
 Speed up when powered, slow down when not powered=通电时加速，不通电时减速
+
 Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.=铁轨可以用来建造矿车的运输轨道。动力轨道能够加速和制动矿车。
+
 Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power.=没有红石动力，铁轨会使矿车刹车。要让这条轨道加速矿车，就要用红石动力。
+

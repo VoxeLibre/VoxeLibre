@@ -4,8 +4,11 @@ Sneak to dismount=Snik for å gå ut
 Minecart=Gruvevogn
 Vehicle for fast travel on rails=Kjøretøy for rask reise langs skinner
 Minecarts can be used for a quick transportion on rails.=Gruvevogner kan brukes som rask transport via skinner
+
 Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.=Gruvevogner kan bare kjøre på skinner og følger alltid sporet. I et T-kryss uten en rett vei forran seg, tar de til venstre. Farten anfektes av skinnetypen.
+
 You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.=Du kan plassere gruvevogner på skinner. Høyreklikk for å gå oppi. Slå den for å få den til å gå fremover.
+
 To obtain the minecart, punch it while holding down the sneak key.=For å plukke opp gruvevogna, slå den imenst du holder snikeknappen.
 If it moves over a powered activator rail, you'll get ejected.=
 ##[ carts/with_chest.lua ]##
@@ -14,36 +17,56 @@ Minecart with Chest=Gruvevogn med kiste
 Minecart with Command Block=Gruvevogn med kommandoblokk
 ##[ carts/with_furnace.lua ]##
 Minecart with Furnace=Gruvevogn med ovn
+
 A minecart with furnace is a vehicle that travels on rails. It can propel itself with fuel.=En gruvevogn med ovn er et kjøretøy som reiser langs skinner. Den kan drive seg selv med drivstoff.
+
 Place it on rails. If you give it some coal, the furnace will start burning for a long time and the minecart will be able to move itself. Punch it to get it moving.=Plasser den på skinner. Hvis du gir den litt kull, vil ovnen begynne å brenne i lang tid og gruvevognen vil kunne bevege seg selv. Slå den for å få den i bevegelse.
+
 To obtain the minecart and furnace, punch them while holding down the sneak key.=For å plukke opp gruvevogna og ovnen, slå den imenst du holder snikeknappen.
 ##[ carts/with_hopper.lua ]##
 Minecart with Hopper=Gruvevogn med trakt
+Hopper Minecart=
 ##[ carts/with_tnt.lua ]##
 Minecart with TNT=Gruvevogn med TNT
 Can be ignited by tools or powered activator rail=Kan antennes med verktøy eller en aktiv aktiveringsskinne
 A minecart with TNT is an explosive vehicle that travels on rail.=En gruvevogn med TNT er et eksplosivt kjøretøy som kjører langs skinner.
+
 Place it on rails. Punch it to move it. The TNT is ignited with a flint and steel or when the minecart is on an powered activator rail.=Plasser den på skinner. Slå den for å bevege den. TNTen antennes med tennstål eller når gruvevognen kjører over en aktiv aktiveringsskinne.
+
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=For å plukke opp gruvevognen og TNTen, slå dem imenst du holder snikeknappen.
+
 ##[ rails.lua ]##
+
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Plasser dem på bakken for å bygge en jernbane, skinnene kobles automatisk til hverandre og blir til kurver, kryss og bakker etter behov.
+
 Track for minecarts=Spor for gruvevogner
+
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=Skinner kan brukes til å bygge transportspor for gruvevogner. Normale skinner bremser litt ned gruvevogner på grunn av friksjon.
+
 Sloped Rail=
 ##[ rails/activator.lua ]##
 Activator Rail=Aktiveringsskinne
 Activates minecarts when powered=Aktiverer gruvevogner når tilført strøm
+
 Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.= Skinner kan brukes til å bygge transportspor for gruvevogner. Aktiveringsskinner brukes til å aktivere spesielle gruvevogner.
+
 To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.=For å få denne skinnen til å aktivere gruvevogner, tilfør aktiv rødsteinkraft og send en gruvevogn over denne delen av sporet.
+
 ##[ rails/detector.lua ]##
 Detector Rail=Detektorskinne
 Emits redstone power when a minecart is detected=Gir fra seg rødsteinkraft når den oppdager en gruvevogn
+
 Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=Skinner kan brukes til å bygge transportspor for gruvevogner. En detektorskinne er i stand til å oppdage en gruvevogn over seg og aktivere rødsteinsmekanismer
+
 To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=For å oppdage en gruvevogn og gi rødsteinkraft, koble den til et rødsteinspor eller rødsteinsmekanismer og send enhver gruvevogn over skinnen.
+
 ##[ rails/normal.lua ]##
 Rail=Skinne
 ##[ rails/powered.lua ]##
 Powered Rail=Strømskinne
 Speed up when powered, slow down when not powered=Øker hastighet når aktivert, bremser ned når ikke aktivert
+
 Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.=Skinner kan brukes til å bygge transportspor for gruvevogner. Elektriske skinner er i stand til å akselerere og bremse gruvevogner.
+
 Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power.=Uten rødsteinkraft vil skinnen bremse gruvevogner. For å få denne skinnen til å akselerere gruvevognen, tilfør aktiv røsteinkraft.
+

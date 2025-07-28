@@ -7,10 +7,15 @@ This block acts as a soil for all saplings.=Ce bloc agit comme un sol pour tous 
 This block acts as a soil for some saplings.=Ce bloc agit comme un sol pour certains pousses arbres.
 Sugar canes will grow on this block.=Les cannes à sucre pousseront sur ce bloc.
 Nether wart will grow on this block.=La verrue du Nether se développera sur ce bloc.
+
 This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.=Ce bloc se désintègre rapidement lorsqu'il n'y a aucun bloc de bois de n'importe quel espèce à une distance de @1. En décomposition, il disparaît et peut lâcher un des ses objets habituels. Le bloc ne se désintègre pas lorsque le bloc a été placé par un joueur.
+
 This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.=Ce bloc se désintègre rapidement et disparaît lorsqu'il n'y a aucun bloc de bois de n'importe quel espèce à une distance de @1. Le bloc ne se désintègre pas lorsque le bloc a été placé par un joueur.
+
 This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Cette plante ne peut pousser que sur des blocs d'herbe et de terre. Pour survivre, il doit avoir une vue dégagée sur le ciel au-dessus ou être exposé à un niveau de lumière de 8 ou plus.
+
 This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Cette plante peut pousser sur des blocs d'herbe, du podzol, de la terre et de la terre grossière. Pour survivre, il doit avoir une vue dégagée sur le ciel au-dessus ou être exposé à un niveau de lumière de 8 ou plus.
+
 This block is flammable.=Ce bloc est inflammable.
 This block destroys any item it touches.=Ce bloc détruit tout élément qu'il touche.
 To eat it, wield it, then right-click.=Pour le manger, maniez-le, puis faites un clic droit.
@@ -22,7 +27,8 @@ To consume it, wield it, then right-click.=Pour le consommer, maniez-le, puis fa
 You cannot consume this when your hunger bar is full.=Vous ne pouvez pas consommer cela lorsque votre barre de faim est pleine.
 You have to wait for around 2 seconds before you can eat or drink again.=Vous devez attendre environ 2 secondes avant de pouvoir à nouveau manger ou boire.
 Hunger points restored: @1=Points de faim restaurés: @1
-Saturation points restored: @1%.1f=Points de saturation restaurés: @1%.1f
+##TODO: fuzzy matched - verify and remove the comment
+Saturation points restored: @1=Points de saturation restaurés: @1%.1f
 It can be worn on the head.=Il peut être porté sur la tête.
 It can be worn on the torso.=Il peut être porté au torse.
 It can be worn on the legs.=Il peut être porté aux jambes.
@@ -34,7 +40,9 @@ This item can be repaired at an anvil with any wooden planks.=Cet article peut �
 This item can be repaired at an anvil with any item in the “@1” group.=Cet article peut être réparé sur une enclume avec n'importe quel article du groupe “@1”.
 This item cannot be renamed at an anvil.=Cet objet ne peut pas être renommé sur une enclume.
 This block crushes any block it falls into.=Ce bloc écrase tout bloc dans lequel il tombe.
+
 When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B @= number of blocks fallen. The damage can never be more than 40 HP.=Lorsque ce bloc tombe plus profondément que 1 bloc, il inflige des dégâts à tout joueur qu'il frappe. Les dégâts infligés sont B×2−2 points de vie avec B @= nombre de blocs tombés. Les dégâts ne peuvent jamais dépasser 40 PV.
+
 Diamond Pickaxe=Pioche en diamant
 Iron Pickaxe=Pioche en fer
 Stone Pickaxe=Pioche en pierre

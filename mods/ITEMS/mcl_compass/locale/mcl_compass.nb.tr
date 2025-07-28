@@ -1,14 +1,22 @@
 # textdomain: mcl_compass
 Compass=Kompass
 Points to the world origin=Peker mot verdens sentrum
+
 Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Kompass er verktøy som peker til verdens opprinnelse (X@=0, Z@=0) eller spawn-punktet i oververdenen
+
 A Compass always points to the world spawn point when the player is in the overworld.  In other dimensions, it spins randomly.=Et kompass peker alltid på verdens spawn-punkt når spilleren er i oververdenen. I andre dimensjoner snurrer nålen tilfeldig rundt.
+
 Lodestone Compass=Ledesteinkompass
 Points to a lodestone=Peker mot en ledestein
+
 Lodestone compasses resemble regular compasses, but they point to a specific lodestone.=Ledesteinkompasser ligner vanlige kompasser, men de peker mot én bestemt ledestein.
+
 A Lodestone compass can be made from an ordinary compass by using it on a lodestone.  After becoming a lodestone compass, it always points to its linked lodestone, provided that they are in the same dimension.  If not in the same dimension, the lodestone compass spins randomly, similarly to a regular compass when outside the overworld.  A lodestone compass can be relinked with another lodestone.=Et ledesteinkomass kan lages av et vanlig kompass ved å bruke det på en ledestein. Etter å ha blitt et ledesteinkompass, peker det alltid på dets koblede ledestein, forutsatt at de er i samme dimensjon. Hvis ikke i samme dimensjon, snurrer nålen tilfeldig, på samme måte som et vanlig kompass når det er utenfor oververdenen. Et ledesteinkompass kan kobles sammen med en annen ledestein.
+
 Recovery Compass=Gjenfinnerkmopass
 Points to your last death location=Peker mot ditt siste dødssted
 Recovery Compasses are compasses that point to your last death location=Gjenfinnerkmopasser er kompasser som peker mot ditt siste dødssted
+
 Recovery Compasses always point to the location of your last death, in case you haven't died yet, it will just randomly spin around=Gjenfinnerkmopasser peker alltid mot ditt siste dødssted, i tilfeller der du ikke har dødd enda, vil nålen bare snurre tilfeldig rundt.
+
 Lodestone=Ledestein

@@ -1,6 +1,8 @@
 # textdomain: mcl_itemframes
 Item frames are decorative blocks in which items can be placed.=Molduras são blocos decorativos aos quais itens podem ser posicionadas.
+
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Apenas posicione qualquer item na moldura. Use a moldura de novo para pegar o item de volta.
+
 ##[ register.lua ]##
 Item Frame=Moldura
 Can hold an item=

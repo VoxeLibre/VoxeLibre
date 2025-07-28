@@ -5,7 +5,8 @@ Jump to speed up (additionally sprint)=Ir para acelerar (adicionalmente sprint)
 ##[ people.lua ]##
 Creator of MineClone=Un fiel clon de código aberto de Minecraft
 Creator of VoxeLibre=Creador de VoxeLibre
-Maintainers=Ir para acelerar (adicionalmente sprint)
+##TODO: fuzzy matched - verify and remove the comment
+Maintainer=Ir para acelerar (adicionalmente sprint)
 Previous Maintainers=
 Developers=Desenvolvedores
 Past Developers=

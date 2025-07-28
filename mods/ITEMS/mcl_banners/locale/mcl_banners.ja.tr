@@ -32,9 +32,13 @@ Lime=黄緑色
 Light Blue Banner=空色の旗
 Light Blue=空色
 Banner=
+
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=旗は、背の高いカラフルな装飾ブロックです。床や壁に配置できます。クラフトで染料を多用すると、さまざまな模様のエンブレムが作れます。
+
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=クラフトによって、旗の面に模様を描きます。エンブレム入りの旗を再度エンブレム化することで、様々なパターンを組み合わせられます。この方法では、旗に最大12枚のレイヤー（重ねられる層）が描けます。グラデーションを含む場合は、3レイヤーまでとなります。
+
 You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=同じ色の旗を2枚並べて、旗の模様を写せます。1枚はエンブレム入りで、もう1枚はまっさらな状態であることが必要です。最後に、旗を大釜の上に置いて使うことで、その一番上のレイヤーを水で洗い流す事もできます。
+
 Preview Banner=
 Paintable decoration=塗装可能な装飾
 ##[ patterncraft.lua ]##

@@ -3,16 +3,24 @@ Smoker=Fumoir
 Inventory=Inventaire
 Recipe book=
 Cooks food faster than furnace=Cuit la nourriture plus vite qu'un fourneau
+
 Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace.=Les fumoirs cuisent plusieurs objets, surtout de la nourriture crue, en de la nourriture cuite, mais deux fois plus vite qu'un fourneau normal.
+
 Use the smoker to open the furnace menu.=Utiliser le fumoir pour ouvrir le menu.
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Placer le combustible dans la case en bas et le matériau source dans la case du haut.
+
 The smoker will slowly use its fuel to cook the item.=
 The result will be placed into the output slot at the right side.=Le résultat sera placé dans la case de sortie à droite.
+
 Use the recipe book to see what foods you can cook, what you can use as fuel and how long it will burn.=
+
 Burning Smoker=Fumoir actif
 
 
 ##### not used anymore #####
 
 The smoker will slowly use its fuel to smelt the item.=Le fumoir utilisera son combustible pour fondre lentement l'objet.
+
 Use the recipe book to see what foods you can smelt, what you can use as fuel and how long it will burn.=Utiliser le livre de recettes pour voir quels aliments vous pouvez cuire, ce que vous pouvez utiliser comme combustible et combien de temps ça va brûler.
+

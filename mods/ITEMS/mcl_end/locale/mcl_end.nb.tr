@@ -2,16 +2,25 @@
 ##[ chorus_plant.lua ]##
 Chorus Flower=Refrengblomst
 Grows on end stone=Vokser på endestein
+
 A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.=En refrengblomst er den levende delen av en refrengplante. Den kan vokse til en høy refrengplante, steg for steg. Når den vokser, kan den til slutt dø av alderdom. Den dør også når den ikke klarer å vokse.
+
 Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem.=Plasser den og vent til den vokser. Den kan bare plasseres oppå endestein, på toppen av en refrengplantestamme, eller ved siden av nøyaktig én refrengplantestamme.
+
 Dead Chorus Flower=Død refrengblomst
+
 This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again.=Dette er en del av en refrengplante. Det vokser ikke. Refrengblomster dør av alderdom eller når de ikke klarer å vokse. En død refrengblomst kan høstes for å få en frisk refrengblomst som er i stand til å vokse igjen.
+
 Chorus Plant Stem=Refrengplantestamme
+
 A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers.=En refrengplantestamme er den delen av en refrengplante som holder hele planten sammen. Den trenger endestein som jordsmonn. Stengler dyrkes fra refrengblomster
+
 The stem attaches itself to end stone and other chorus blocks.=Stammen fester seg til endestein og andre refrengblokker.
 Chorus Fruit=Refrengfrukt
 Randomly teleports you when eaten=Teleporterer deg tilfeldig når den spises
+
 A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.=En refrengfrukt er en spiselig frukt fra refrengplanten som hører hjemme i Enden. Å spise den teleporterer deg til toppen av en tilfeldig solid blokk i nærheten, forutsatt at du ikke havner inne i en flytende, fast eller skadelig blokk. Teleportering kan mislykkes hvis det er svært få eller ingen steder å teleportere til.
+
 Popped Chorus Fruit=Poppet refrengfrukt
 ##[ building.lua ]##
 End Stone=Endestein
@@ -41,13 +50,21 @@ A dragon egg is a decorative item which can be placed.=Et drageegg er en dekorat
 ##[ eye_of_ender.lua ]##
 Eye of Ender=Enderøye
 Guides the way to the mysterious End dimension=Viser vei til den mystiske Endedimensjonen
+
 This item is used to locate End portal shrines in the Overworld and to activate End portals.=Denne gjenstanden brukes til å finne helligdommer med endeportaler i oververdenen, og til å aktivere endeportaler.
+
 NOTE: The End dimension is currently incomplete and might change in future versions.=MERK: Endedimensjonen er for øyeblikket ufullstendig og kan endres i fremtidige versjoner.
+
 Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.=Bruk angrepstasten for å frigjøre enderøyet. Det vil stige og fly i horisontal retning mot den nærmeste helligdommen. Hvis du er veldig nærme, vil endeøyet ta den direkte veien til endeportal-helligdommen i stedet. Etter noen sekunder stopper det. Det kan falle som en gjenstand, men det er 20 % sjanse for at det knuses.
+
 To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=For å aktivere en endeportal, må enderøyne plasseres i hver blokk av en intakt endeportalramme.
+
 ##[ end_crystal.lua ]##
 End Crystal=Endekrystall
 Ignited by a punch or a hit with an arrow=Antennes ved direkte slag eller treff med en pil
 Explosion radius: @1=Eksplosjonsradius: @1
+
 End Crystals are explosive devices. They can be placed on Obsidian or Bedrock. Ignite them by a punch or a hit with an arrow. End Crystals can also be used the spawn the Ender Dragon by placing one at each side of the End Exit Portal.=Endekrystaller er eksplosive enheter. De kan plasseres på obsidian eller berggrunn. Antenne dem med et slag eller et treff med en pil. Endekrystaller kan også brukes for å mane frem Endedragen ved å plassere en på hver side av utgangsportalen til Enden.
+
 Place the End Crystal on Obsidian or Bedrock, then punch it or hit it with an arrow to cause an huge and probably deadly explosion. To Spawn the Ender Dragon, place one at each side of the End Exit Portal.=Plasser endekrystallen på obsidian eller berggrunn, og slå den eller skyt den med en pil for å forårsake en enorm og sannsynligvis dødelig eksplosjon. For å skape Endedragen, plasser én på hver side av utgangsportalen til Enden.
+

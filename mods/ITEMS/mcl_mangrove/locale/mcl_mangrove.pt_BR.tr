@@ -13,20 +13,31 @@ Mangrove Roots=Raízes de Mangue
 Mangrove roots are decorative blocks that form as part of mangrove trees.=Raízes de mangue são blocos decorativos que se formam como parte das árvores de mangue.
 Mangrove Propagule=Propágulo de Mangue
 Needs soil and light to grow=Precisa de solo e luz para crescer
+
 When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time.=Quando posicionado em solo (como em terra) e exposto à luz, um propágulo irá crescer uma árvore de mangue depois de algum tempo.
+
 Hanging Propagule=Propágulo Pendurado
 Grows on Mangrove leaves=Cresce em folhas de mangue
 water logged mangrove roots=Raízes de Mangue Alagadas
+
 Mangrove roots, despite being a full block, can be waterlogged and do not flow water out=Raízes de mangue, mesmo sendo um bloco inteiro, podem ser alagadas e não escorre água delas.
+
 These cannot be crafted yet only occure when get in contact of water.=Essas não podem ser fabricadas ainda ocorrendo apenas quando tem contato com a água.
 Muddy Mangrove Roots=Raízes Barrentas de Mangue
 Crafted with Mud and Mangrove roots=Fabricadas com barro e raízes de mangue
+
 Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it.=Raízes barrentas de mangue é um bloco dos pântanos de mangue. Afunda o jogador um pouco para dentro de si.
+
 Mangrove Door=Porta de Mangue
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Portas de madeira são barreiras de 2 blocos de altura as quais podem ser abertas ou fechadas pela mão e por um sinal de redstone.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Para abrir ou fechar uma porta de madeira, clique com o botão direito nela ou alimente-a em sua metade inferior com um sinal de redstone.
+
 Mangrove Trapdoor=Alçapão de Mangue
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Alçapões de madeira são barreiras horizontais as quais podem ser abertas ou fechadas com a mão ou um sinal de redstone. Eles ocupam a parte superior ou inferior de um bloco, dependendo de como eles foram posicionados. Quando abertos, eles podem ser escalados como uma escada.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir e fechar o alçapão, clique com o botão direito nele ou envie um sinal de redstone para ele.
 Mangrove Wood Fence=Cerca de Mangue
 Mangrove Wood Fence Gate=Portão de Mangue

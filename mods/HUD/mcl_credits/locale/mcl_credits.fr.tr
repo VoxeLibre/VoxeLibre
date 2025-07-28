@@ -5,7 +5,8 @@ Jump to speed up (additionally sprint)=Saut pour accélérer (peut être combin�
 ##[ people.lua ]##
 Creator of MineClone=Créateur de MineClone
 Creator of VoxeLibre=Créateur de VoxeLibre
-Maintainers=Mainteneurs
+##TODO: fuzzy matched - verify and remove the comment
+Maintainer=Mainteneurs
 Previous Maintainers=Anciens Mainteneurs
 Developers=Développeurs
 Past Developers=Anciens Développeurs

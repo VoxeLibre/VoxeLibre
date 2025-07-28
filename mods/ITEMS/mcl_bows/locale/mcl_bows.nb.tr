@@ -5,22 +5,34 @@ Ammunition=Ammunisjon
 Damage from bow: 1-10=Skade fra bue: 1-10
 Damage from dispenser: 3=Skade fra utskyter: 3
 Arrows are ammunition for bows and dispensers.=Piler er ammunisjon for buer og utskytere.
+
 An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.=En pil avfyrt fra en bue har en vanlig skade på 1-9. Ved full lading er det 20 % sjanse for et kritisk treff, som i stedet gjør 10 skade. En pil avfyrt fra en dispenser gjør alltid 3 skade.
+
 Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons.=Piler kan sette seg fast på solide blokker og kan plukkes opp igjen. De er også i stand til å trykke på treknapper.
+
 To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it.=For å bruke piler som ammunisjon til en bue, legg dem bare hvor som helst i inventaret ditt, de vil bli brukt opp automatisk. For å bruke piler som ammunisjon til en dispenser, plasser dem i dispenserens inventar. For å hente frem en pil som fester seg i en blokk, gå ganske enkelt nær den.
+
 ##[ bow.lua ]##
 Bow=Bue
 Launches arrows=Skyter piler
 Bows are ranged weapons to shoot arrows at your foes.=Buer er avstandsvåpen som kan skyte piler mot fiendene dine.
+
 The speed and damage of the arrow increases the longer you charge. The regular damage of the arrow is between 1 and 9. At full charge, there's also a 20% of a critical hit, dealing 10 damage instead.=Hastigheten og skaden på pilen øker jo lenger du lader. Den vanlige skaden på pilen er mellom 1 og 9. Ved full ladning er det også 20 % sjangs for et kritisk treff, som i stedet gir 10 skade.
+
 To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button (or the zoom key) to charge, release to shoot.=
+
 ##[ crossbow.lua ]##
 Crossbow=Armbrøst
 Crossbows are ranged weapons to shoot arrows at your foes.=Armbrøst er avstandsvåpen som skyter piler mot fiendene dine.
+
 To use the crossbow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button (or zoom key) to charge, release to load an arrow into the chamber, then to shoot press left mouse.=
+
 To use the crossbow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to load an arrow into the chamber, then to shoot press left mouse.=For å bruke armbrøsten må du først ha minst én pil hvor som helst i inventaret ditt (med mindre du er i kreativ modus). Hold nede høyre museknapp for å lade, slipp for å laste en pil inn i kammeret, og trykk deretter venstre museknapp for å skyte.
+
 
 
 ##### not used anymore #####
 
+
 To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to shoot.=For å bruke buen, må du først ha minst én pil hvor som helst i inventaret ditt (med mindre du er i kreativ modus). Hold nede høyre museknapp for å lade, slipp for å skyte.
+

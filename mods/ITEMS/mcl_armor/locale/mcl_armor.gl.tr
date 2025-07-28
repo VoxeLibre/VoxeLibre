@@ -1,20 +1,46 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=Esta é unha peza de armadura que se pode equipar, a cal reduce o dano que recibes.
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=Para equipala, colocaa na rañura da armadura do menú do teu inventario.
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=Casco de Ouro
+Golden Chestplate=Cota de Ouro
+Golden Leggings=Mallas de Ouro
+Golden Boots=Botas de Ouro
+Chainmail Helmet=
+##TODO: fuzzy matched - verify and remove the comment
+Chainmail Chestplate=Cota de Cadeas
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=Casco de Ferro
+Iron Chestplate=Cota de Ferro
+Iron Leggings=Mallas de Ferro
+Iron Boots=Botas de Ferro
+Diamond Helmet=Casco de Diamante
+Diamond Chestplate=Cota de Diamante
+Diamond Leggings=Mallas de Diamante
+Diamond Boots=Botas de diamante
+Netherite Helmet=Casco de Netherita
+Netherite Chestplate=Cota de Netherita
+Netherite Leggings=Mallas de Netherita
+Netherite Boots=Botas de Netherita
 Projectile Protection=Protección contra proxectís
 Reduces projectile damage.=Reduce o dano do proxectís.
 Blast Protection=Protección contra explosions
@@ -29,10 +55,19 @@ Aqua Affinity=Afinidade acuática
 #Translations of enchantements
 Increases underwater mining speed.=Aumenta a velocidade de minado baixo a agua.
 Curse of Binding=Maldición de ligazón
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=O obxeto non pode ser removido das rañuras do inventario excepto ao morrer, ao romperse, ou en Modo Creativo.
+
 Thorns=Espiñas
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflexa unha parte do dano inflixido, a costa de reducir a durabilidade con cada activación.
+
 Elytra=Élitros
+##[ leather.lua ]##
+Leather Cap=Sombreiro de Coiro
+Leather Tunic=Túnica de Coiro
+Leather Pants=Pantalons de Coiro
+Leather Boots=Botas de Coiro
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=Modelo de forxería '@1'
@@ -40,29 +75,8 @@ Smithing Template '@1'=Modelo de forxería '@1'
 
 ##### not used anymore #####
 
-Leather Cap=Sombreiro de Coiro
-Iron Helmet=Casco de Ferro
-Golden Helmet=Casco de Ouro
-Diamond Helmet=Casco de Diamante
 Chain Helmet=casco de Cadeas
-Netherite Helmet=Casco de Netherita
-Leather Tunic=Túnica de Coiro
-Iron Chestplate=Cota de Ferro
-Golden Chestplate=Cota de Ouro
-Diamond Chestplate=Cota de Diamante
-Chain Chestplate=Cota de Cadeas
-Netherite Chestplate=Cota de Netherita
-Leather Pants=Pantalons de Coiro
-Iron Leggings=Mallas de Ferro
-Golden Leggings=Mallas de Ouro
-Diamond Leggings=Mallas de Diamante
 Chain Leggings=Mallas de Cadeas
-Netherite Leggings=Mallas de Netherita
-Leather Boots=Botas de Coiro
-Iron Boots=Botas de Ferro
-Golden Boots=Botas de Ouro
-Diamond Boots=Botas de diamante
 Chain Boots=Botas de Cadeas
-Netherite Boots=Botas de Netherita
 Shooting consumes no regular arrows.=Disparar non consume frechas normais.
 Shoot 3 arrows at the cost of one.=Dispara 3 frechas polo custo dunha.

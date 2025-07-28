@@ -1,18 +1,29 @@
 # textdomain: mcl_doors
 ##[ api_doors.lua ]##
+
 This door is a 2-block high barrier which can only be opened by redstone power, not by hand.=
+
 This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.=
+
 To open or close this door, send a redstone signal to its bottom half.=
+
 To open or close this door, rightclick it or send a redstone signal to its bottom half.=
+
 Openable by redstone power=
 Openable by players and redstone power=
 ##[ api_trapdoors.lua ]##
+
 Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.=
+
 Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.=
+
 To open or close this trapdoor, rightclick it or send a redstone signal to it.=
 ##[ register.lua ]##
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=
+
 Oak Door=
 Acacia Door=
 Birch Door=
@@ -20,7 +31,9 @@ Dark Oak Door=
 Jungle Door=
 Spruce Door=
 Iron Door=
+
 Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.=
+
 To open or close an iron door, supply its lower half with a redstone signal.=
 Oak Trapdoor=
 Acacia Trapdoor=
@@ -28,7 +41,11 @@ Birch Trapdoor=
 Spruce Trapdoor=
 Dark Oak Trapdoor=
 Jungle Trapdoor=
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=
 Iron Trapdoor=
+
 Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
+

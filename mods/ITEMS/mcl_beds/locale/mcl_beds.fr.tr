@@ -25,11 +25,17 @@ Sorry, but you have to wait @1 seconds until you may use this button again!=Dés
 Hey! Would you guys mind sleeping?=Eh, vous ne voulez pas dormir ?
 ##[ api.lua ]##
 Beds allow you to sleep at night and make the time pass faster.=Les lits vous permettent de dormir la nuit et de faire passer le temps plus rapidement.
+
 To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=Pour utiliser un lit, tenez-vous près de lui et faites un clic droit sur le lit pour y dormir. Dormir ne fonctionne que lorsque le soleil se couche, la nuit ou pendant un orage. Le lit doit également être à l'abri de tout danger.
+
 You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Vous avez entendu parler d'autres mondes dans lesquels un lit serait le point de départ de votre prochaine vie. Mais ce monde n'en fait pas partie.
+
 By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=En utilisant un lit, vous définissez le point de départ de votre prochaine vie. Si vous mourez, vous commencerez votre prochaine vie dans ce lit, à moins qu'il ne soit obstrué ou détruit.
+
 In this world, going to bed won't skip the night, but it will skip thunderstorms.=Dans ce monde, aller au lit ne sautera pas la nuit, mais cela évitera les orages.
+
 Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Dormir vous permet de sauter la nuit. La nuit est sautée lorsque tous les joueurs de ce monde se sont endormis. La nuit est sautée après avoir dormi quelques secondes. Les orages peuvent être évités de la même manière.
+
 Allows you to sleep=Vous permet de dormir
 ##[ beds.lua ]##
 Red Bed=Lit rouge
@@ -55,5 +61,7 @@ Respawn Anchor=Ancre de réapparition
 
 ##### not used anymore #####
 
+
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Nouvelle position de réapparition définie ! Mais vous ne pouvez dormir que la nuit ou pendant un orage.
+
 send!=envoyé !

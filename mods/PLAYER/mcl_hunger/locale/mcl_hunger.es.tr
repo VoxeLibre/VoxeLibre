@@ -1,4 +1,8 @@
 # textdomain: mcl_hunger
+Food=Comida
+Saturation=Saturación
+Exhaust.=Cansado.
+##[ commands.lua ]##
 [on|off]=
 Toggle hunger and starvation mechanics=Alternar las mecánicas de hambre e inanición
 Hunger is currently enabled.=El hambre está actualmente habilitado.
@@ -24,9 +28,6 @@ Player not found.=Jugador no encontrado.
 Hunger level is required.=Se requiere nivel de hambre.Se requiere el nombre del jugador y/o el nivel de hambre.
 Hunger parameter must be a whole number from 0 to 20.=El parámetro de hambre debe ser un número entero entre 0 y 20.
 Done!=¡Hecho!
-Food=Comida
-Saturation=Saturación
-Exhaust.=Cansado.
 
 
 ##### not used anymore #####

@@ -1,5 +1,7 @@
 # textdomain: mesecons_walllever
 Lever=Spake
 Provides redstone power while it's turned on=Gir rødsteinskraft når den er slått på
+
 A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state.=En spak er en rødsteinskomponent som kan slås av og på. Den gir rødsteinskraft til tilstøtende blokker når den er i “på”-tilstand.
+
 Use the lever to flip it on or off.=Bruk spaken for å slå den på eller av.

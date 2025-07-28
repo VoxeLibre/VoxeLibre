@@ -3,8 +3,11 @@ Dispenser=发射器
 Inventory=物品栏
 9 inventory slots=9个物品栏位
 Launches item when powered by redstone power=在由红石能量驱动时发射物品
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=发射器是一种作为红石元件的方块，当有红石能量驱动时，它会发射出一个物品。它带有一个有9个物品栏位的容器。
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=将发射器朝向6个可能方向中的一个放置。“开口”处就是物品会从发射器射出的地方。使用发射器来打开它的物品栏，放入你想要发射的物品。给发射器提供一次红石能量，它就会随机发射出一个物品。
+
 The dispenser will do different things, depending on the dispensed item:=发射器会根据所发射的物品做出不同的行为：
 • Arrows: Are launched=• 箭：会被发射出去
 • Eggs and snowballs: Are thrown=• 鸡蛋和雪球：会被投掷出去

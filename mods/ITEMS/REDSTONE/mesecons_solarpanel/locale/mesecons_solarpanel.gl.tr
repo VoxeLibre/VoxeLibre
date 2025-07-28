@@ -2,7 +2,10 @@
 Daylight Sensor=Sensor de luz diurna
 Provides redstone power when in sunlight=Proporciona enerxía vermella cando está á luz solar
 Can be inverted=Pódese invertir
+
 Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.=Os sensores de luz diurna son compoñentes Pedra Vermella que proporcionan enerxía Pedra Vermella cando están baixo a luz solar e non hai enerxía doutro xeito. Tamén se poden invertir.
+
 In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=En estado invertido, proporcionan enerxía de Pedra Vermella cando non están á luz do sol e non hai enerxía doutro xeito.
+
 Use the daylight sensor to toggle its state.=Use o sensor de luz diurna para cambiar o seu estado.
 Inverted Daylight Sensor=Sensor de luz diurna invertida

@@ -5,9 +5,12 @@ This block is a building block for creating various buildings.=Este bloque é un
 This item is primarily used for crafting other items.=Este elemento úsase principalmente para elaborar outros elementos.
 ##TODO: fuzzy matched - verify and remove the comment
 Hold it in your hand, then left-click to eat it.=Mantéñao na man e, a continuación, prema co botón esquerdo para comelo.
+
 ##TODO: fuzzy matched - verify and remove the comment
 Hold it in your hand, then left-click to eat it. But why would you want to do this?=Mantéñao na man e, a continuación, prema co botón esquerdo para comelo. ¿Pero por que queres facer isto?
+
 This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=A rotación deste bloque vese afectada pola forma de colocalo: colócao no chan ou no teito para unha orientación vertical; colócao ao lado para unha orientación horizontal. Colarse mentres o coloca leva a unha orientación perpendicular no seu lugar.
+
 Hand=Man
 Air=Aire
 Yes=Si
@@ -37,7 +40,9 @@ This block cannot be mined by ordinary mining tools.=
 This block can be destroyed by any mining tool in half a second.=Este bloque pode ser destruído por calquera ferramenta de minería en medio segundo.
 This block can be destroyed by any mining tool immediately.=Este bloque pode ser destruído por calquera ferramenta de minería inmediatamente.
 This block cannot be destroyed by ordinary mining tools.=
+
 This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Este bloque pódese extraer mediante ferramentas de minería que coincidan con calquera das seguintes clasificacións de minería e o seu nivel de dureza.
+
 Mining ratings:=Clasificación mineira:
 Toughness level: @1=Nivel de tenacidade: @1
 Range: @1=Alcance: @1
@@ -55,9 +60,13 @@ Maximum stack size: @1=Tamaño máximo da pila: @1
 This block points to liquids.=Este bloque apunta a líquidos.
 This tool points to liquids.=Esta ferramenta apunta a líquidos.
 This item points to liquids.=Este elemento apunta a líquidos.
+
 Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con este bloque non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de forma diferente.
+
 Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con esta ferramenta non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de forma diferente.
+
 Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con este elemento non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de forma diferente.
+
 This block belongs to the @1 group.=Este bloque pertence ao grupo @1.
 This tool belongs to the @1 group.=Esta ferramenta pertence ao grupo @1.
 This item belongs to the @1 group.=Este elemento pertence ao grupo @1.
@@ -78,8 +87,11 @@ This block is a liquid with these properties:=Este bloque é un líquido con est
 • Viscosity: @1=• Viscosidade: @1
 This block causes a damage of @1 hit points per second.=Este bloque causa un dano de @1 puntos de vida por segundo.
 This block causes a damage of @1 hit point per second.=Este bloque causa un dano de @1 punto de golpe por segundo.
+
 This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=Este bloque diminúe a túa respiración e causa un dano por afogamento de @1 punto de golpe cada 2 segundos..
+
 This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=Este bloque diminúe a túa respiración e causa un dano por afogamento de @1 punto de golpe cada 2 segundos.
+
 The fall damage on this block is increased by @1%.=O dano por caída neste bloque aumenta nun @1%..
 This block cancels any fall damage.=
 The fall damage on this block is reduced by @1%.=O dano por caída neste bloque redúcese nun @1%.
@@ -103,7 +115,9 @@ This block will drop as an item when no collidable block is below it.=Este bloqu
 Liquids can flow into this block and destroy it.=Os líquidos poden fluír neste bloque e destruílo.
 This block is a light source with a light level of @1.=Este bloque é unha fonte de luz cun nivel de luz de @1.
 This block glows faintly with a light level of @1.=Este bloque brilla débilmente cun nivel de luz de @1.
+
 This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly.=Este bloque permite que a luz se propague cunha pequena perda de brillo, e incluso a luz solar pode pasar sen perdas.
+
 This block allows light to propagate with a small loss of brightness.=Este bloque permite que a luz se propague cunha pequena perda de brillo.
 This block allows sunlight to propagate without loss in brightness.=Este bloque permite que a luz solar se propague sen perda de brillo.
 Unknown Node=Nodo descoñecido
@@ -117,8 +131,10 @@ This block will drop the following when mined: @1.=Este bloque eliminará o segu
 This block will drop the following items when mined: @1.=
 ##TODO: fuzzy matched - verify and remove the comment
 This block will randomly drop one of the following when mined: @1.=Este bloque soltará aleatoriamente un dos seguintes cando se extrae: @1.
+
 ##TODO: fuzzy matched - verify and remove the comment
 This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Este bloque caerá aleatoriamente ata @1 gotas das seguintes posibles caídas cando se extrae: @2.
+
 # Final list separator (e.g. “One, two and three”)
  and = e
 # Item count times item name ##TODO: fuzzy matched - verify and remove the comment
@@ -134,7 +150,9 @@ Item reference of all wieldable tools and weapons=Referencia do elemento de toda
 Durability: @1 uses=Durabilidade: @1 usos
 Durability: @1=Durabilidade: @1
 Miscellaneous items=Elementos varios
+
 Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=Referencia de elementos de elementos que non son nin bloques, ferramentas nin armas (especialmente artigos de elaboración)
+
 Mobs=
 different mobs=
 Type: @1=
@@ -143,8 +161,11 @@ Can Jump=
 Can Fly=
 drops: =
 follows player when these items are held:=
+
 A transparent block, basically empty space. It is usually left behind after digging something.=Un bloque transparente, basicamente espazo baleiro. Adoita quedar atrás despois de cavar algo.
+
 Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Sempre que non manexas ningún elemento, utilizas a man que actúa como unha ferramenta coas súas propias capacidades. Cando manexas un elemento que non é unha ferramenta de minería ou unha arma, comportarase coma se fose a man.
+
 
 
 ##### not used anymore #####

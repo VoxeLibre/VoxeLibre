@@ -19,6 +19,7 @@ Donkey=Âne
 Mule=Mule
 ##[ llama.lua ]##
 Llama=Lama
+ - Strength @1=
 ##[ ocelot.lua ]##
 Ocelot=Ocelot
 Cat=Chat

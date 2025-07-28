@@ -2,6 +2,32 @@
 Food=食料
 Saturation=満腹状態
 Exhaust.=尽きた。
+##[ commands.lua ]##
+[on|off]=
+Toggle hunger and starvation mechanics=
+Hunger is currently enabled.=
+Hunger is currently disabled.=
+Hunger is already on.=
+Hunger enabled.=
+Hunger is already off.=
+Hunger disabled.=
+Invalid parameter.=
+[show|hide]=
+Toggle hunger and starvation debug information=
+Hunger debug information is currently enabled.=
+Hunger debug information is currently disabled.=
+Hunger debug information is already shown.=
+Hunger debug information shown.=
+Hunger debug information is already hidden.=
+Hunger debug information hidden.=
+Gives the ability to set player hunger level.=
+[player] [0-20]=
+Set a player's hunger level.=
+Player name and/or hunger level is required.=
+Player not found.=
+Hunger level is required.=
+Hunger parameter must be a whole number from 0 to 20.=
+Done!=
 
 
 ##### not used anymore #####

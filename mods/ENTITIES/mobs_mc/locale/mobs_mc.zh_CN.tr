@@ -19,6 +19,7 @@ Donkey=驴
 Mule=骡
 ##[ llama.lua ]##
 Llama=羊驼
+ - Strength @1=
 ##[ ocelot.lua ]##
 Ocelot=豹猫
 Cat=猫

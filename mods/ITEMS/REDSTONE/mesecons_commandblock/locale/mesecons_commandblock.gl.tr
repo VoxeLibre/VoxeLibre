@@ -3,13 +3,20 @@ Command blocks are not enabled on this server=Os bloques de comandos non están 
 Placement denied. You need the “maphack” privilege to place command blocks.=Colocación denegada. Necesitas o privilexio "maphack" para colocar bloques de comandos.
 Command Block=Bloque de comandos
 Executes server commands when powered by redstone power=Executa os comandos do servidor cando está alimentado por enerxía Pedra Vermella
+
 Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power.=Os bloques de comando son poderosos compoñentes de pedra vermella que son capaces de alterar a propia realidade. Noutras palabras, fan que o servidor execute comandos do servidor cando se lles proporciona enerxía Pedra Vermella.
+
 Everyone can activate a command block and look at its commands, but not everyone can edit and place them.=Todo o mundo pode activar un bloque de comandos e mirar os seus comandos, pero non todos poden editalos e colocalos.
+
 To view the commands in a command block, use it. To activate the command block, just supply it with redstone power. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.=Para ver os comandos nun bloque de comandos, utilízao. Para activar o bloque de comandos, só tes que proporcionarlle enerxía Pedra vermella. Isto executará os comandos unha vez. Para executar os comandos de novo, apaga a Pedra vermella e acende de novo.
+
 To be able to place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Use the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced usage > Server Commands” to understand how commands work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.=Para poder colocar un bloque de comandos e cambiar os comandos, cómpre estar en modo creativo e ter o privilexio "maphack". Un novo bloque de comandos non ten ningún comando e non fai nada. Use o bloque de comandos (en modo creativo!) para editar os seus comandos. Le a entrada de axuda "Uso avanzado > Comandos do servidor" para comprender como funcionan os comandos. Cada liña contén un único comando. Introdúceos como o faría na consola, pero sen a barra inclinada. Os comandos executaranse de arriba a abaixo.
+
 # ^ OLD TRANSLATION: Para poder colocar un bloque de comandos y cambiar los comandos, debe estar en modo creativo y debe tener el privilegio de "maphack". Un nuevo bloque de comandos no tiene ningún comando y no hace nada. Use el bloque de comandos (en modo creativo) para editar sus comandos. Lea la entrada de ayuda "Temas avanzados> Comandos del servidor" para comprender cómo funcionan los comandos. Cada línea contiene un solo comando. Los ingresas como lo harías en la consola, pero sin la barra inclinada. Los comandos se ejecutarán de arriba a abajo.
 All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.=Todas as ordes executaranse en nome do xogador que colocou o bloque de comandos, coma se o xogador teclease as ordes. Dise que este xogador é o "dono" do bloque.
+
 Command blocks support placeholders, insert one of these placeholders and they will be replaced by some other text:=Os bloques de comandos admiten marcadores de posición, insira un destes marcadores de posición e substituirase por outro texto:
+
 • “@@c”: commander of this command block=• "@@c“: dono deste bloque de comandos
 • “@@n” or “@@p”: nearest player from the command block=• "@@n“ o "@@p“: xogador máis próximo do bloque de comandos
 • “@@f” farthest player from the command block=• "@@f“: jugador máis afastado do bloque de comandos
@@ -18,9 +25,13 @@ Command blocks support placeholders, insert one of these placeholders and they w
 Example 1:@n    time 12000@nSets the game clock to 12:00=Exemplo 1:@n hora 12000@nConfigura o reloxo do xogo ás 12:00
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=Exemplo 2: @n dálle @@n mcl_core:apple 5@nDálle 5 mazás ao xogador máis próximo
 ##[ api.lua ]##
+
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Erro: o comando "@1" non existe; o seu bloque de comandos non se cambiou. Use o comando de chat "axuda" para obter unha lista de comandos dispoñibles.
+
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Erro: o comando "@1" non existe; o seu bloque de comandos non se cambiou. Use o comando de chat "axuda" para obter unha lista de comandos dispoñibles. Consello: tenta eliminar a barra inclinada inicial.
+
 Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Erro: non tes privilexios suficientes para usar o comando "@1" (falta o privilexio: @2)! Non se cambiou o bloque de comandos.
+
 Error: No commander! Block must be replaced.=Erro: ¡sen dono! O bloque debe ser substituído.
 Commander: @1=Dono: @1
 Submit=Aceptar
@@ -28,5 +39,7 @@ No commands.=Sen comandos.
 Commands:=Comandos:
 Help=Axuda
 Access denied. You need the “maphack” privilege to edit command blocks.=Acceso denegado. Necesitas o privilexio "maphack" para editar bloques de comandos.
+
 Editing the command block has failed! You can only change the command block in Creative Mode!=¡Produciuse un erro ao editar o bloque de comandos! ¡Só podes cambiar o bloque de comandos no modo creativo!
+
 Editing the command block has failed! The command block is gone.=Produciuse un erro ao editar o bloque de comandos! O bloque de comandos desapareceu.

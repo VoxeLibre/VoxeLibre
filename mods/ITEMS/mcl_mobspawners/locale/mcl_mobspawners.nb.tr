@@ -1,5 +1,8 @@
 # textdomain: mcl_mobspawners
 Mob Spawner=Skapningsmaner
 Makes mobs appear=Maner frem skapninger
+
 A mob spawner regularily causes mobs to appear around it while a player is nearby. Some mob spawners are disabled while in light.=En skapningsmaner får jevnlig mobs til å dukke opp rundt den mens en spiller er i nærheten. Noen skapningsmanere deaktiveres når de er i lys.
+
 If you have a spawn egg, you can use it to change the mob to spawn. Just place the item on the mob spawner. Player-set mob spawners always spawn mobs regardless of the light level.=Hvis du har et fremkallingsegg, kan du bruke det til å endre skapningen som fremmanes. Bare plasser egget på i skapningsmaneren. Spillerskapte skapningsmanere maner alltid frem skapninger uavhengig av lysnivået.
+

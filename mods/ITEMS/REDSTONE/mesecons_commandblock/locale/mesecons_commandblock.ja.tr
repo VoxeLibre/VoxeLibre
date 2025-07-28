@@ -3,12 +3,19 @@ Command blocks are not enabled on this server=このサーバーではコマン�
 Placement denied. You need the “maphack” privilege to place command blocks.=配置が拒否されました。コマンドブロックを配置するには "maphack" 権限が必要です。
 Command Block=コマンドブロック
 Executes server commands when powered by redstone power=レッドストーン動力が来るとサーバーコマンドを実行
+
 Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power.=コマンドブロックは、現実そのものを変換できる、強大なレッドストーン部品です。言い換えると、レッドストーン動力が供給されたときに、サーバーにサーバーコマンドを実行させるもの、です。
+
 Everyone can activate a command block and look at its commands, but not everyone can edit and place them.=コマンドブロックは誰でも起動でき、そのコマンドを見れますが、編集や配置は誰にでも出来るわけではありません。
+
 To view the commands in a command block, use it. To activate the command block, just supply it with redstone power. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.=コマンドブロックのコマンドを表示するには、コマンドブロックを使用します。コマンドブロックを起動するには、レッドストーン動力を供給するだけです。これにより、コマンドが一回実行されます。コマンドを再度実行するには、レッドストーン動力を一旦オフにし、再度オンにしてください。
+
 To be able to place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Use the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced usage > Server Commands” to understand how commands work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.=コマンドブロックを配置してコマンドを変更するには、クリエイティブモード且つ「maphack」権限が必要です。新しいコマンドブロックはコマンドを持たず、何もしません。コマンドブロックを使って（クリエイティブモードで！）そのコマンドを編集してください。コマンドの動作について知るには、ヘルプの "Advanced usage > Server Commands" をお読みください。各行は単一のコマンドを含んでいます。コンソールと同じように入力しますが、先頭のスラッシュを除きます。コマンドは上から順に実行されます。
+
 All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.=すべてのコマンドは、コマンドブロックを配置したプレイヤーに代わって、あたかもそのプレイヤーがコマンドを入力したかのように実行されます。このプレイヤーを、そのブロックの「コマンダー」と呼びます。
+
 Command blocks support placeholders, insert one of these placeholders and they will be replaced by some other text:=コマンドブロックはプレースホルダーをサポートしており、いずれかのプレースホルダーを挿入すると、他のテキストに置き換わります：
+
 • “@@c”: commander of this command block=• "@@c"：このコマンドブロックのコマンダー
 • “@@n” or “@@p”: nearest player from the command block=• "@@n" か "@@p"：コマンドブロックから最も近いプレイヤー
 • “@@f” farthest player from the command block=• "@@f"：ブロックから最も遠いプレイヤー
@@ -17,9 +24,13 @@ Command blocks support placeholders, insert one of these placeholders and they w
 Example 1:@n    time 12000@nSets the game clock to 12:00=例1：@n    time 12000@nゲームクロックを12:00に設定
 Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=例2：@n    give @@n mcl_core:apple 5@n最も近いプレイヤーにリンゴを５個与える
 ##[ api.lua ]##
+
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=エラー：コマンド「@1」は存在しません：コマンドブロックは変更されていません。使用可能なコマンドのリストについては、チャットコマンドの "help" を使用してください。
+
 Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=エラー：コマンド「@1」は存在しません：コマンドブロックは変更されていません。使用可能なコマンドのリストについては、チャットコマンドの "help" を使用してください。 ヒント：先頭のスラッシュを削除してみてください。
+
 Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=エラー：コマンド "@1" を使用するには権限不足です！（足りない権限: @2） コマンドブロックは変更されていません。
+
 Error: No commander! Block must be replaced.=エラー：コマンダーがいません！ ブロックは交換しなければなりません。
 Commander: @1=コマンダー： @1
 Submit=提出
@@ -27,5 +38,7 @@ No commands.=コマンドはありません。
 Commands:=コマンド：
 Help=ヘルプ
 Access denied. You need the “maphack” privilege to edit command blocks.=アクセスが拒否されました。コマンドブロックの編集には "maphack" 権限が必要です。
+
 Editing the command block has failed! You can only change the command block in Creative Mode!=コマンドブロックの編集に失敗しました！ コマンドブロックの変更ができるのは、クリエイティブモードでのみ！です。
+
 Editing the command block has failed! The command block is gone.=コマンドブロックの編集に失敗しました！ コマンドブロックがどこかいきました。

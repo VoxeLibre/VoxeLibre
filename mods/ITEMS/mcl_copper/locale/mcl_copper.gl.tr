@@ -1,7 +1,9 @@
 # textdomain: mcl_copper
 ##[ nodes.lua ]##
 Copper Ore=Mineral de cobre
+
 Some copper contained in stone, it is pretty common and can be found below sea level.=Algún cobre contido en pedra, é bastante común e pódese atopar por debaixo do nivel do mar.
+
 Block of Raw Copper=Bloque de cobre bruto
 A block used for compact raw copper storage.=Un bloque usado para o almacenamento compacto de cobre bruto.
 Block of Copper=Bloque de cobre

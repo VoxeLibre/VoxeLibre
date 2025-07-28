@@ -3,7 +3,10 @@ Dropper=投掷器
 Inventory=物品栏
 9 inventory slots=9个物品栏位
 Drops item when powered by redstone power=在由红石能量驱动时掉落物品
+
 A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.=投掷器是一种红石元件，也是一个带有9个物品栏位的容器，当接收到红石能量时，它会掉落出一个物品，或者将物品推送至其前方的容器内。
+
 Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.=投掷器可以朝着6个可能的方向放置，物品会从相应方向的开口处掉落。使用投掷器来打开它的物品栏，给它提供一次红石能量，就能让投掷器掉落或者推送出一个随机物品。
+
 Downwards-Facing Dropper=朝下的投掷器
 Upwards-Facing Dropper=朝上的投掷器

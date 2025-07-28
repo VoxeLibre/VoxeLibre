@@ -1,14 +1,21 @@
 # textdomain: mesecons_button
 Use the button to push it.=Use o botón para pulsalo.
+
 A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows.=Un botón de madeira é un compoñente de pedra vermella feito de madeira que se pode presionar para proporcionar enerxía vermella. Cando se empurra, alimenta os compoñentes de pedra vermella adxacentes durante 1,5 segundos. Os botóns de madeira tamén se poden empurrar mediante frechas.
+
 A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=Un botón é un compoñente Pedra Vermella que se pode premer para proporcionar enerxía Pedra Vermella. Cando se empurra, alimenta os compoñentes de pedra vermella adxacentes durante @1 segundo.
+
 Provides redstone power when pushed=Proporciona enerxía pedra Vermella cando se pulsa
 Push duration: @1s=
 Pushable by arrow=Pulsable pola frecha
 Stone Button=Botón de pedra
+
 A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Un botón de pedra é un compoñente de pedra vermella feito de pedra que se pode presionar para proporcionar enerxía vermella. Cando se empurra, alimenta os compoñentes de pedra vermella adxacentes durante 1 segundo.
+
 Polished Blackstone Button=Botón Pedra negra pulido
+
 A polished blackstone button is a redstone component made out of polished blackstone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Un botón de pedra negra pulida é un compoñente de pedra vermella feito de pedra negra pulida que se pode presionar para proporcionar potencia de pedra vermella. Cando se empurra, alimenta os compoñentes de pedra vermella adxacentes durante 1 segundo.
+
 Oak Button=Botón de carballo
 Acacia Button=Botón de acacia
 Birch Button=Botón de bidueiro

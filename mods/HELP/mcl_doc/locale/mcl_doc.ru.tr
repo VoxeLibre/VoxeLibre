@@ -7,10 +7,15 @@ This block acts as a soil for all saplings.=Этот блок служит по�
 This block acts as a soil for some saplings.=Этот блок служит почвой для некоторых саженцев.
 Sugar canes will grow on this block.=На этом блоке будет расти сахарный тростник.
 Nether wart will grow on this block.=На этом блоке будет расти адский нарост.
+
 This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.=Этот блок быстро саморазрушается, если на дистанции @1 метров отсутствуют блоки дерева любого типа. При разрушении может выпасть его обычный дроп. Блок не саморазрушается если он был поставлен игроком.
+
 This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.=Этот блок быстро саморазрушается и исчезает, если на дистанции @1 метров отсутствуют блоки дерева любого типа. Блок не саморазрушается если он был поставлен игроком.
+
 This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Это растение может расти только на блоках дёрна и грязи. Для жизни ему нужно иметь беспрепятственный обзор на небо сверху, либо уровень света 8 и выше.
+
 This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Это растение может расти только на блоках дёрна, грязи, подзола и твёрдой земли. Для жизни ему нужно иметь беспрепятственный обзор на небо сверху, либо уровень света 8 и выше.
+
 This block is flammable.=Этот блок воспламеним.
 This block destroys any item it touches.=Этот блок уничтожает любой предмет, который его касается.
 To eat it, wield it, then right-click.=Чтобы съесть это, возьмите в руки и кликните правой кнопкой мыши.
@@ -22,7 +27,8 @@ To consume it, wield it, then right-click.=Чтобы употребить эт�
 You cannot consume this when your hunger bar is full.=Вы не можете употребить это, когда ваша полоска голода заполнена.
 You have to wait for around 2 seconds before you can eat or drink again.=Вам нужно подождать 2 секунды, прежде чем снова пить или есть.
 Hunger points restored: @1=Восстанавливает очков голода: @1
-Saturation points restored: @1%.1f=Восстанавливает очков насыщения: @1
+##TODO: fuzzy matched - verify and remove the comment
+Saturation points restored: @1=Восстанавливает очков насыщения: @1
 It can be worn on the head.=Это можно носить на голове.
 It can be worn on the torso.=Это можно носить на торсе.
 It can be worn on the legs.=Это можно носить на ногах.
@@ -34,7 +40,9 @@ This item can be repaired at an anvil with any wooden planks.=Этот пред�
 This item can be repaired at an anvil with any item in the “@1” group.=Этот предмет можно починить на наковальне с помощью любого предмета из группы “@1”.
 This item cannot be renamed at an anvil.=Этот предмет нельзя переименовать на наковальне.
 This block crushes any block it falls into.=Этот блок ломает любой блок, на который падает.
+
 When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B @= number of blocks fallen. The damage can never be more than 40 HP.=Когда этот блок падает вниз на 1 блок, он наносит урон игроку, который заденет этот блок. Урон рассчитывается как Z×2–2 единиц здоровья, где Z это высота полета в блоках. Урон не может превышать 40 единиц здоровья.
+
 Diamond Pickaxe=Алмазная кирка
 Iron Pickaxe=Железная кирка
 Stone Pickaxe=Каменная кирка

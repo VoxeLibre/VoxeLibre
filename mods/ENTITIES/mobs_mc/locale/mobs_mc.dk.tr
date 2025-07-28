@@ -19,6 +19,7 @@ Donkey=Æsel
 Mule=Muldyr
 ##[ llama.lua ]##
 Llama=Lama
+ - Strength @1=
 ##[ ocelot.lua ]##
 Ocelot=Ozelot
 Cat=

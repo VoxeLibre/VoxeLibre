@@ -5,7 +5,8 @@ Jump to speed up (additionally sprint)=ジャンプでスピードアップ（�
 ##[ people.lua ]##
 Creator of MineClone=MineClone の創始者
 Creator of VoxeLibre=VoxeLibre の創始者
-Maintainers=メンテナンス
+##TODO: fuzzy matched - verify and remove the comment
+Maintainer=メンテナンス
 Previous Maintainers=
 Developers=開発者
 Past Developers=

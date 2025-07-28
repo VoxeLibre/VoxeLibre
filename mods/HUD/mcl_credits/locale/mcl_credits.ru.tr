@@ -5,7 +5,8 @@ Jump to speed up (additionally sprint)=[Прыжок] или [Спринт] дл
 ##[ people.lua ]##
 Creator of MineClone=Создатель MineClone
 Creator of VoxeLibre=Создатель VoxeLibre
-Maintainers=Мейнтейнеры
+##TODO: fuzzy matched - verify and remove the comment
+Maintainer=Мейнтейнеры
 Previous Maintainers=Бывшие мейнтейнеры
 Developers=Разработчики
 Past Developers=Бывшие разработчики

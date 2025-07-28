@@ -3,12 +3,18 @@ Blast Furnace=Masovn
 Inventory=Inventar
 Recipe book=
 Smelts ores faster than furnace=Smelter erts raskere en vanlige ovner
+
 Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, but twice as fast as a normal furnace.=Masovner smeltet flere gjenstander, hovedsakelig malm og rustninger, ved å bruke ovnsbrensel. Det gjøres dobbelt så raskt som en vanlig ovn.
+
 Use the blast furnace to open the furnace menu.=Bruk masovnen for å åpne ovnmenyen.
+
 Place a furnace fuel in the lower slot and the source material in the upper slot.=Plasser et ovnsbrensel i det nedre feltet og kildematerialet i det øvre feltet.
+
 The blast furnace will slowly use its fuel to smelt the item.=Masovnen vil sakte bruke brenselet sitt til å smelte gjenstanden.
 The result will be placed into the output slot at the right side.=Resultatet vil bli plassert i utgangsfeltet på høyre side.
+
 Use the recipe book to see what ores you can smelt, what you can use as fuel and how long it will burn.=Bruk oppskriftsboken for å se hvilke erts du kan smelte, hva du kan bruke som drivstoff og hvor lenge det vil brenne.
+
 Burning Blast Furnace=
 
 

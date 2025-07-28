@@ -12,17 +12,24 @@ Done=Ferdig
 Book and Quill=Bok og fjærpenn
 Write down some notes=Skriv ned noen notater
 This item can be used to write down some notes.=Denne gjenstandenkan brukes til å skrive ned notater.
+
 Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.=Hold den i hånden, og høyreklikk for å lese gjeldende notater og deretter redigere. Du kan redigere teksten så ofte du vil. Du kan også signere boken som gjør den til en skrevet bok som du kan stable, men da kan den ikke redigeres lenger.
+
 A book can hold up to 4500 characters. The title length is limited to 64 characters.=En bok kan inneholde opptil 4500 tegn. Tittellengden er begrenset til 64 tegn.
+
 Enter book title:=Skriv inn boktittel:
 Sign and Close=Signer og lukk
 Note: The book will no longer be editable after signing=Merk: Boken vil ikke lenger kunne endres etter signering
 Cancel=Avbryt
 Nameless Book=Navnløs bok
 Written Book=Skrevet bok
+
 Written books contain some text written by someone. They can be read and copied, but not edited.=Skrevne bøker inneholder tekst skrevet av noen. De kan leses og kopieres, men ikke redigeres.
+
 Hold it in your hand, then rightclick to read the book.=Hold den i hånden, og høyreklikk deretter for å lese boken.
+
 To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied.=For å kopiere teksten til den skrevne boken, plasser den i arbeidsfeltet sammen med en bok og fjærpenn (eller flere av dem). Den skrevne boken vil ikke bli konsumert. Kopier av kopier kan ikke kopieres.
+
 Bookshelf=Bokhylle
 Inventory=
 Bookshelves are used for decoration.=Bokhyller bruker som dekorasjon.

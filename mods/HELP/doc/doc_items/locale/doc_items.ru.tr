@@ -3,8 +3,11 @@ This is a decorative block.=Это декоративный блок.
 This block is a building block for creating various buildings.=Это строительный блок для создания разных конструкций.
 This item is primarily used for crafting other items.=Этот предмет в основном используется для крафта других предметов.
 Hold it in your hand, then left-click to eat it.=Возьмите это в руку и кликните левой кнопкой мыши, чтобы съесть.
+
 Hold it in your hand, then left-click to eat it. But why would you want to do this?=Возьмите это в руку и кликните левой кнопкой мыши, чтобы съесть. Но зачем вы хотите это сделать?
+
 This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=Поворот этого блока зависит от того как вы его ставите: поставьте его на пол или потолок для вертикальной ориентации; поместите на стену для горизонтальной ориентации. Удерживайте [Красться] при размещении для перпендикулярной ориентации.
+
 Hand=Рука
 Air=Воздух
 Yes=Да
@@ -34,7 +37,9 @@ This block cannot be mined by ordinary mining tools.=Этот блок нель�
 This block can be destroyed by any mining tool in half a second.=Этот блок можно уничтожить любым добывающим инструментом за полсекунды.
 This block can be destroyed by any mining tool immediately.=Этот блок можно мгновенно уничтожить любым добывающим инструментом.
 This block cannot be destroyed by ordinary mining tools.=Этот блок нельзя уничтожить добывающим инструментом.
+
 This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Этот блок можно добыть любым добывающим инструментом, соответствующим одному из следующих рейтингов и его уровню твёрдости.
+
 Mining ratings:=Рейтинг добывания:
 Toughness level: @1=Уровень твёрдости: @1
 Range: @1=Дальность: @1
@@ -52,9 +57,13 @@ Maximum stack size: @1=Максимальный размер стака: @1
 This block points to liquids.=Этот блок указывает на жидкости.
 This tool points to liquids.=Этот инструмент указывает на жидкости.
 This item points to liquids.=Этот предмет указывает на жидкости.
+
 Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Удар этим блоком работает не так, как обычно; ближний бой и копание либо невозможны, либо работают по-другому.
+
 Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Удар этим инструментом работает не так, как обычно; ближний бой и копание либо невозможны, либо работают по-другому.
+
 Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Удар этим предметом работает не так, как обычно; ближний бой и копание либо невозможны, либо работают по-другому.
+
 This block belongs to the @1 group.=Этот блок принадлежит группе @1.
 This tool belongs to the @1 group.=Этот инструмент относится к группе @1.
 This item belongs to the @1 group.=Этот предмет относится к группе @1.
@@ -75,8 +84,11 @@ This block is a liquid with these properties:=Это жидкий блок со 
 • Viscosity: @1=• Вязкость: @1
 This block causes a damage of @1 hit points per second.=Этот блок наносит урон в @1 единиц здоровья в секунду.
 This block causes a damage of @1 hit point per second.=Этот блок наносит урон в @1 единицу здоровья в секунду.
+
 This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=Этот блок уменьшает ваш запас кислорода и наносит урон от утопления в @1 единиц здоровья каждые 2 секунды.
+
 This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=Этот блок уменьшает ваш запас кислорода и наносит урон от утопления в @1 единицу здоровья каждые 2 секунды.
+
 The fall damage on this block is increased by @1%.=При падении на этот блок получаемый урон увеличивается на @1%.
 This block cancels any fall damage.=Этот блок отменяет весь урон от падения.
 The fall damage on this block is reduced by @1%.=При падении на этот блок получаемый урон уменьшается на @1%.
@@ -99,7 +111,9 @@ This block will drop as an item when no collidable block is below it.=Этот �
 Liquids can flow into this block and destroy it.=Жидкости могут затекать в этот блок, уничтожая его.
 This block is a light source with a light level of @1.=Этот блок является источником света уровня @1.
 This block glows faintly with a light level of @1.=Этот блок мерцает с уровнем света: @1.
+
 This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly.=Этот блок позволяет свету распространяться с небольшой потерей яркости, а солнечный свет может проходить без потерь.
+
 This block allows light to propagate with a small loss of brightness.=Этот блок позволяет свету распространяться с небольшой потерей яркости.
 This block allows sunlight to propagate without loss in brightness.=Этот блок позволяет солнечному свету распространяться без потери яркости.
 Unknown Node=Неизвестный блок
@@ -112,7 +126,9 @@ This block will drop the following when mined: @1×@2.=При добыче из 
 This block will drop the following when mined: @1.=При добыче из этого блока выпадет следующее: @1.
 This block will drop the following items when mined: @1.=При добыче из этого блока выпадут следующие предметы: @1.
 This block will randomly drop one of the following when mined: @1.=При добыче из этого блока случайным образом выпадает что-то одно из списка: @1.
+
 This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=При добыче из этого блока случайным образом выпадает до @1 из следующих возможных выдач: @2.
+
 # Final list separator (e.g. “One, two and three”)
  and = и 
 # Item count times item name
@@ -128,7 +144,9 @@ Item reference of all wieldable tools and weapons=Справка по всем �
 Durability: @1 uses=Прочность: @1 использований
 Durability: @1=Прочность: @1
 Miscellaneous items=Дополнительные предметы
+
 Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=Справка по остальным предметам - не блокам, не инструментам и не оружию (так называемые материалы для крафта)
+
 Mobs=
 different mobs=
 Type: @1=
@@ -137,8 +155,11 @@ Can Jump=
 Can Fly=
 drops: =
 follows player when these items are held:=
+
 A transparent block, basically empty space. It is usually left behind after digging something.=Прозрачный блок, проще говоря, пустое пространство. Обычно оно остаётся, если выкопать что-то.
+
 Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Даже если вы не держите никакого предмета, ваша рука - сама по себе инструмент, обладающий определёнными свойствами. Когда в вашей руке предмет, не являющийся инструментом добычи или оружием, он будет иметь свойства вашей пустой руки.
+
 
 
 ##### not used anymore #####

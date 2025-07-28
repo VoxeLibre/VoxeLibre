@@ -1,20 +1,30 @@
 # textdomain: mcl_fire
+
 Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=Brann er en skadelig og destruktiv, men kortvarig type blokk. Den vil ødelegge og spre seg mot nærliggende brennbare blokker, men brann vil forsvinne når det ikke er noe å brenne igjen. Den vil bli slukket av nærliggende vann og regn. Brann kan ødelegges trygt ved å slå den, men det er vondt hvis du står i den. Hvis en brann startes over netherrack eller en magmablokk, vil den umiddelbart bli til en evig brann.
+
 Fire is a damaging but non-destructive short-lived kind of block. It will disappear when there is no flammable block around. Fire does not destroy blocks, at least not in this world. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=Brann er en skadelig, men ikke-destruktiv, kortvarig type blokk. Det vil forsvinne når det ikke er noen brennbare blokk rundt. Brann ødelegger ikke blokker, i hvert fall ikke i denne verden. Den kan slukkes av nærliggende vann og regn. Brann kan ødelegges trygt ved å slå den, men det er vondt hvis du står i den. Hvis en brann startes over netherrack eller en magmablokk, vil den umiddelbart bli til en evig brann.
+
 Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.=Evig ild er en skadelig blokk som kan skape mer ild. Den vil skape brann rundt seg når brennbare blokker er i nærheten. Evig brann kan slukkes med slag og nærliggende vannblokker. Ulikt fra(normal) ild, slukkes ikke evig ild av seg selv og fortsetter også å brenne i regnet. Å slå evig ild er trygt, men det gjør vondt hvis du står i den.
+
 Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.=Evig ild er en skadelig blokk.  Evig brann kan slukkes med slag og nærliggende vannblokker. Ulikt fra(normal) ild, slukkes ikke evig ild av seg selv og fortsetter også å brenne i regnet. Å slå evig ild er trygt, men det gjør vondt hvis du står i den.
+
 Fire=Ild
 Eternal Fire=Evig ild
-##[ flint_and_steel.lua ]##
-Starts fires and ignites blocks=Starter brann og antenner blokker
-Flint and Steel=Tennstål
-Flint and steel is a tool to start fires and ignite blocks.=Tennstål er et verktøy som brukes for å skape ild og tenne på blokker.
-Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.=Høyreklikk på overflaten av en blokk for å prøve å tenne en ild foran den eller antenne blokken. Noen få blokker har en unik reaksjon når de tennes.
 ##[ fire_charge.lua ]##
 Fire Charge=Ildladning
 Dispenser projectile=Utskyterprosjektil
+Starts fires and ignites blocks=Starter brann og antenner blokker
+
 Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly.=Ildladninger er først og fremst prosjektiler som kan skytes ut fra dispensere, de vil fly i en rett linje og bryte ut i brann ved sammenstøt. Alternativt kan de brukes til å tenne branner direkte.
+
 Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up.=Sett ildladningen i en utskyter og forsyn den med rødsteinkraft for å starte den. For å tenne en brann direkte, plasser ganske enkelt ildladningen på bakken, som bruker den opp.
+
+##[ flint_and_steel.lua ]##
+Flint and Steel=Tennstål
+Flint and steel is a tool to start fires and ignite blocks.=Tennstål er et verktøy som brukes for å skape ild og tenne på blokker.
+
+Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.=Høyreklikk på overflaten av en blokk for å prøve å tenne en ild foran den eller antenne blokken. Noen få blokker har en unik reaksjon når de tennes.
+
 
 
 ##### not used anymore #####

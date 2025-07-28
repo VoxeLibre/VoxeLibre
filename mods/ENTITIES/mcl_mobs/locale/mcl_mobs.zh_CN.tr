@@ -1,17 +1,26 @@
 # textdomain: mcl_mobs
 This allows you to place a single mob.=这允许你放置单个生物。
+
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=只需将其放置在你希望生物出现的地方。动物生成时会是已被驯服的状态，除非你在放置时按住潜行键。如果你将这个放在生物生成器上，你可以改变它生成的生物种类。
+
 You need the “maphack” privilege to change the mob spawner.=你需要“地图作弊”权限才能改变生物生成器。
 Only peaceful mobs allowed!=只允许和平生物！
 ##[ api.lua ]##
 Peaceful mode active! No monsters will spawn.=和平模式已开启！不会生成怪物。
+
 Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player.=移除指定的生物，已命名标签的和已驯服的生物除外。对于第二个参数，使用“已命名标签的/已驯服的”来仅选择已命名标签的/已驯服的生物，或者使用一个范围来指定与玩家的最大距离。
+
 Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=默认用法。清除敌对生物。如需更多选项，请输入：/help clearmobs 
+
 ##[ spawning.lua ]##
+
 spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: @n spawn_mob skeleton:var<passive@=true>:@n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.=
+
 ##[ crafts.lua ]##
 Name Tag=名称标签
 Give names to mobs=给生物命名
 Set name at anvil=在铁砧上设置名字
 A name tag is an item to name a mob.=名称标签是用于给生物命名的物品。
+
 Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=在使用名称标签前，你需要在铁砧上设置一个名字。然后你就能用名称标签给生物命名了。这会消耗掉名称标签。
+

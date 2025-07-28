@@ -1,5 +1,6 @@
 # textdomain: mcl_boats
 Sneak to dismount=潜行以离开
+Boat=船
 Oak Boat=橡木船
 Spruce Boat=云杉木船
 Birch Boat=白桦木船
@@ -18,6 +19,7 @@ Dark Oak Chest Boat=深色橡木箱船
 Mangrove Chest Boat=红树木箱船
 Cherry Chest Boat=樱桃木箱船 
 Boats are used to travel on the surface of water.=船用于在水面上航行。
+
 Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=右键点击水源来放置船，右键点击船进入船内。使用【左】和【右】键操控方向，使用【前】键加速，使用【后】键减速或向后移动。使用【潜行】键离开船，击打船使其变为物品掉落。
-Boat=船
+
 Water vehicle=水上交通工具

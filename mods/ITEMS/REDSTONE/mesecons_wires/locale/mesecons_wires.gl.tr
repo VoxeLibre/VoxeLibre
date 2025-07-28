@@ -1,10 +1,16 @@
 # textdomain: mesecons_wires
 Transmits redstone power, powers mechanisms=Transmite enerxía Pedra Vermella, potencia mecanismos
+
 Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail.=Pedra Vermella é un mineral condutor versátil que transmite a enerxía de Pedra Vermella. Pódese colocar no chan a modo de rastro.
+
 A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.=Unha ruta Redstone pode estar en dous estados: alimentado ou sen alimentación. Un rastro de Pedra Vermella alimentado alimentará (e así activará) os compoñentes adxacentes de Pedra Vermella.
+
 Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.=A enerxía de Pedra Vermella pódese recibir de varios compoñentes de Pedra Vermella, como un bloque de Pedra Vermella ou un botón. A enerxía Pedra Vermella úsase para activar numerosos mecanismos, como lámpadas ou pistóns Pedra Vermella.
+
 Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills.=Coloca Pedra Vermella no chan para construír unha pista de Pedra Vermella. Os camiños conectaranse entre si automaticamente e tamén poden pasar por outeiros.
+
 Read the help entries on the other redstone components to learn how redstone components interact.=Le as entradas de axuda sobre os outros compoñentes de Pedra Vermella para saber como interactúan os compoñentes de Pedra Vermella.
+
 Redstone=Pedra Vermella
 Powered Redstone Spot (@1)=Punto de Pedra Vermella accionado (@1)
 Redstone Trail (@1)=Sendeiro de Pedra Vermella (@1)

@@ -3,8 +3,11 @@ Dispenser=Раздатчик
 Inventory=Инвентарь
 9 inventory slots=9 слотов инвентаря
 Launches item when powered by redstone power=Выдаёт предметы при подаче сигнала редстоуна
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=Раздатчик это компонент редстоуна, который при подаче сигнала редстоуна выбрасывает предмет. В нём есть контейнер из 9 слотов инвентаря.
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=Направьте раздатчик в одном из 6 возможных направлений. Предметы будут вылетать из отверстия. Используйте раздатчик для доступа к его инвентарю. Загрузите туда предметы, которые должны из него выбрасываться. Подайте однократно на раздатчик сигнал редстоуна, чтобы он раздал случайный предмет.
+
 The dispenser will do different things, depending on the dispensed item:=Раздатчик будет делать разные вещи, в зависимости от выдаваемых предметов:
 • Arrows: Are launched=• Стрелы: выстреливают
 • Eggs and snowballs: Are thrown=• Яйца и снежки: бросаются

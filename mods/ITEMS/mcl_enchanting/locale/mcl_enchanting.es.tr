@@ -20,13 +20,21 @@ The target item is not enchantable.=El objeto del jugador no se puede encantar.
 Enchanted Book=Libro Encantado
 Enchanting Table=Mesa de Encantamientos
 Spend experience, and lapis to enchant various items.=Experiencia y Lapis para encantar varios objetos.
+
 Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=La mesa de Encantamientos dara a tus herramientas, armas o armadura algunas habilidades magicas. Pero a coste de algo de experiencia y lapis lázuli.
+
 Rightclick the Enchanting Table to open the enchanting menu.=Clic derecho sobre la mesa de encantamientos para abrir la interfaz.
+
 Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Coloca una herramienta, arma, armadura o libro sobre la ranura izquierda, coloca de 1 a 3 Lapis lázulis en la ranura derecha.
+
 After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Coloca el objeto en su ranura yse mostraran los encantamientos a elegir.
+
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Las opciones seran aleatorias dependiendo del nivel de experiencia, los niveles de encantamiento pueden ser aumentados.
+
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar los niveles de encantamientos, coloca librerias alrededor y cerca de la mesa de encantamientos.
+
 After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Despues elige tu encantamiento, los niveles de experiencia y el lapis lázuli seran consumidos y el encantamiento aplicado al objeto.
+
 Enchant=Encantamiento
 ##[ engine.lua ]##
 Inventory=Inventario
@@ -36,9 +44,13 @@ Inventory=Inventario
 Level requirement: @1=Nivel requerido: @1
 ##[ enchantments.lua ]##
 Bane of Arthropods=Perdición de los Artrópodos
+
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Incrementa el daño y ralentiza a los artrópodos. (arañas, lepismas, endermitas, etc)
+
 Channeling=Conductividad
+
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Canaliza los rayos de una tormenta hacia el enemigo.
+
 Curse of Vanishing=Maldición de Desaparición
 Item destroyed on death.=El objeto se destruye tras tu muerte.
 Depth Strider=Agilidad acuática
@@ -52,7 +64,9 @@ Arrows set target on fire.=Las flechas prenderan los enemigos.
 Fortune=Fortuna
 Increases certain block drops.=Incrementa la cantidad de objetos que sueltan los bloques.
 Frost Walker=Paso Helado
+
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Congela el agua bajo tus pies y evita el daño de los bloques de magma.
+
 Impaling=Empalamiento
 Trident deals additional damage to ocean mobs.=Incrementa el daño del tridente sobre criaturas acuáticas.
 Infinity=Infinidad

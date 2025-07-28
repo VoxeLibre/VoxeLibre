@@ -1,56 +1,32 @@
 # textdomain: mcl_core
-Stick=Палка
-Sticks are a very versatile crafting material; used in countless crafting recipes.=Палки это универсальный материал, используемый для крафта различных предметов, присутствует во многих рецептах.
-Paper=Бумага
-Paper is used to craft books and maps.=Бумага используется для создания книг и карт.
-Coal=Уголь
-“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.=“Уголь” относится к угольным кускам, добываемым из угольной руды, которую можно встретить под землёй. Уголь это стандартное печное топливо, но он также нужен, чтобы сделать факелы, угольные блоки и некоторые другие предметы.
-Charcoal=Древесный уголь
-Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks.=Древесный уголь это альтернативное печное топливо, получаемое путём сжигания древесины в качестве ингредиента в печи. Оно имеет такую же длительность горения, как и каменный уголь, но из него нельзя сделать угольные блоки.
-Iron Nugget=Железный самородок
-Iron nuggets are very small pieces of molten iron; the main purpose is to create iron ingots.=Железные самородки это маленькие частички чистого железа, которые можно объединять в железные слитки.
-Gold Nugget=Золотой самородок
-Gold nuggets are very small pieces of molten gold; the main purpose is to create gold ingots.=Золотые самородки это мелкие частички чистого золота, которые можно объединять в золотые слитки.
-Diamond=Алмаз
-Diamonds are precious minerals and useful to create the highest tier of armor and tools.=Алмазы это драгоценные камни, используемые для создания брони и инструментов высшего качества.
-Clay Ball=Глина
-Clay balls are a raw material, mainly used to create bricks in the furnace.=Глина это необработанный материал, в основном используемый для создания кирпичей при помощи печи.
-Iron Ingot=Железный слиток
-Molten iron. It is used to craft armor, tools, and whatnot.=Железный слиток. Используется для создания брони, инструментов и прочего.
-Gold Ingot=Золотой слиток
-Molten gold. It is used to craft armor, tools, and whatnot.=Золотой слиток. Используется для создания брони, инструментов и прочего.
-Emerald=Изумруд
-Emeralds are used in villager trades as currency.=Изумруды используют деревенские жители в качестве валюты.
-Lapis Lazuli=Лазурит
-Lapis Lazuli are required for enchanting items on an enchanting table.=Лазурит требуется для зачарования предметов на столе зачарований.
-Brick=Кирпич
-Bricks are used to craft brick blocks.=Кирпичи используются для создания кирпичных блоков.
-Flint=Кремень
-Flint is a raw material.=Кремень это необработанный материал.
-Sugar=Сахар
-Sugar comes from sugar canes and is used to make sweet foods.=Сахар добывают из сахарного тростника и используют для приготовления сладких продуктов.
-Bowl=Миска
-Bowls are mainly used to hold tasty soups.=Миски используются для крафта вкусных супов.
-Apple=Яблоко
-Apples are food items which can be eaten.=Яблоки это съедобный продукт.
-Golden Apple=Золотое яблоко
-Golden apples are precious food items which can be eaten.=Золотые яблоки это ценный съедобный продукт.
-Enchanted Golden Apple=Зачарованное золотое яблоко
+##[ nodes_base.lua ]##
 Stone=Камень
+
 One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava.=Один из самых распространённых блоков в мире, почти вся подземная часть состоит из камня. Иногда он содержит руду. Камень может создаться при встрече воды с лавой.
+
 Coal Ore=Угольная руда
+
 Some coal contained in stone, it is very common and can be found inside stone in medium to large clusters at nearly every height.=Уголь содержится в камне, он весьма распространён, скопления таких блоков встречаются около возвышенностей.
+
 Iron Ore=Железная руда
+
 Some iron contained in stone, it is prety common and can be found below sea level.=Железо содержится в камне, оно весьма распространено, такие блоки встречаются ниже уровня моря.
+
 Gold Ore=Золотая руда
 This stone contains pure gold, a rare metal.=Этот камень содержит чистое золото, редкий металл.
 Redstone Ore=Редстоуновая руда
+
 Redstone ore is commonly found near the bottom of the world. It glows when it is punched or walked upon.=Редстоуновая руда обычно содержится в нижних слоях мира.
+
 Lit Redstone Ore=Светящаяся руда редстоуна
 Lapis Lazuli Ore=Лазуритовая руда
+
 Lapis lazuli ore is the ore of lapis lazuli. It can be rarely found in clusters near the bottom of the world.=Лазуритовая руда это руда лазурита. Она изредка встречается в виде скоплений в нижних слоях мира.
+
 Emerald Ore=Изумрудная руда
+
 Emerald ore is the ore of emeralds. It is very rare and can be found alone, not in clusters.=Изумрудная руда встречается очень редко и всегда по одному блоку, а не в кластерах.
+
 Diamond Ore=Алмазная руда
 Diamond ore is rare and can be found in clusters near the bottom of the world.=Алмазная руда встречается редко, в виде скоплений в нижних слоях мира.
 Stone Bricks=Каменные кирпичи
@@ -71,20 +47,32 @@ Diorite is an igneous rock.=Диорит это камень вулканиче�
 Polished Diorite=Полированный диорит
 Polished diorite is a decorative building block made from diorite.=Гладкий диорит это декоративный строительный блок из диорита.
 Grass Block=Дёрн
+
 A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.=Дёрн это блок земли, покрытый травой. Дёрн удобен тем, что на нём могут расти разнообразные растения. Дёрн можно превратить в грядку при помощи мотыги или в тропинку при помощи лопаты. При наличии света дёрн понемногу распространяется на блоки земли по соседству. Под непрозрачным блоком или жидкостью дёрн может превратиться обратно в землю.
+
 Dirt with Snow=
 Grass Path=Тропинка
+
 Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=
+
 Mycelium=Мицелий
+
 Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.=Мицелий это идеальная почва для грибов. В отличие от других земляных блоков, он не может быть превращён в грядку при помощи мотыги. При наличии освещения мицелий медленно распространяется по соседствующие с ним блоки земли. Под непрозрачным блоком или жидкостью со временем превращается обратно в землю.
+
 Mycelium with Snow=
 Podzol=Подзол
+
 Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.=Подзол это тип земли, встречающийся в таёжных лесах. Только несколько растений имеют способность выжить на нём.
+
 Podzol with Snow=
 Dirt=Земля
+
 Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby.=Земля это почва для некоторых растений. Под освещением на этом блоке может прорасти трава или мицелий, если такие блоки уже есть поблизости.
+
 Coarse Dirt=Каменистая земля
+
 Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never grow a cover.=Каменистая земля это почва для некоторых растений и похожа на обычную землю, но на ней никогда не растёт трава.
+
 Gravel=Гравий
 This block consists of a couple of loose stones and can't support itself.=Этот блок рыхлый и не может поддерживать себя.
 Grey Sand=
@@ -112,110 +100,123 @@ Smooth red sandstone is a decorative building block.=Гладкий красны
 Clay=Глиняный блок
 Clay is a versatile kind of earth commonly found at beaches underwater.=Глиняный блок это тип почвы, часто встречающийся на побережьях под водой.
 Brick Block=Кирпичный блок
+
 Brick blocks are a good building material for building solid houses and can take quite a punch.=Кирпичные блоки это отличный строительный материал для создания прочных домов, они выдерживают довольно сильные удары.
+
 Bedrock=Бедрок
+
 Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.=Бедрок это очень твёрдый камень. Его невозможно сломать, добыть или сдвинуть обычным способом, за исключением творческого режима.
+
 In the End dimension, starting a fire on this block will create an eternal fire.=В измерении Края разжигание огня на этом блоке создаст вечный огонь.
 Cobblestone=Булыжник
 Mossy Cobblestone=Замшелый булыжник
 Block of Coal=Угольный блок
+
 Blocks of coal are useful as a compact storage of coal and very useful as a furnace fuel. A block of coal is as efficient as 10 coal.=Угольный блок удобен для компактного хранения угля, а также полезен как топливо для печи.
+
 Block of Charcoal=Блок древесного угля
+
 Blocks of charcoal are useful as a compact storage of charcoal and very useful as a furnace fuel. A block of charcoal is as efficient as 10 charcoal.=Блок древесного угля удобен для компактного хранения древесного угля, а также полезен как топливо для печи.
+
 Block of Iron=Железный блок
+
 A block of iron is mostly a decorative block but also useful as a compact storage of iron ingots.=Железный блок это, прежде всего, декоративный блок, но он также удобен для компактного хранения железных слитков.
+
 Block of Gold=Золотой блок
+
 A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Золотой блок это, прежде всего, декоративный блок, но он также удобен для компактного хранения золотых слитков.
+
 Polished Block of Gold=
+
 A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=
+
 Block of Diamond=Алмазный блок
+
 A block of diamond is mostly a shiny decorative block but also useful as a compact storage of diamonds.=Алмазный блок это, прежде всего, декоративный блок, но он также удобен для компактного хранения алмазов.
+
 Lapis Lazuli Block=Блок лазурита
+
 A lapis lazuli block is mostly a decorative block but also useful as a compact storage of lapis lazuli.=Блок лазурита это, прежде всего, декоративный блок, но он также удобен для компактного хранения лазурита.
+
 Block of Emerald=Изумрудный блок
+
 A block of emerald is mostly a shiny decorative block but also useful as a compact storage of emeralds.=Изумрудный блок это, прежде всего, декоративный блок, но он также удобен для компактного хранения изумрудов.
+
 Obsidian=Обсидиан
+
 Obsidian is an extremely hard mineral with an enourmous blast-resistance. Obsidian is formed when water meets lava.=Обсидиан это чрезвычайно твёрдый минерал с высочайшей взрывоустойчивостью.
+
 Crying Obsidian=Плачущий обсидиан
+
 Crying obsidian is a luminous obsidian that can generate as part of ruined portals.=Плачущий обсидиан это светящийся обсидиан который может сгенерироваться как часть разрушенных порталов.
+
 Ice=Лёд
+
 Ice is a solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source.=Лёд это твёрдый блок, обычно встречающийся в холодных областях. Он тает, когда рядом имеется источник света уровня 12 и выше. Если он тает или ломается, будучи расположенным на другом блоке, то превращается в источник воды.
+
 Packed Ice=Плотный лёд
 Packed ice is a compressed form of ice. It is opaque and solid.=Плотный лёд это сжатая форма льда. Он непрозрачный и твёрдый.
+
 Frosted ice is a short-lived solid block. It melts into a water source within a few seconds.=Подмороженный лёд это быстро исчезающий твёрдый блок. Он растает через несколько секунд, превратившись в источник воды.
+
 Frosted Ice=Подмороженный лёд
 Top Snow=Слой снега
 Stackable=Наслаивается
+
 Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.=Слой снега. Он тает вблизи источников света с яркостью уровня 12 и выше.
+
 Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.=Слои снега могут наслаиваться друг на друга и иметь один из 8 разных уровней высоты. При уровнях 2-8 слой снега становится непроходиымы. Слой снега дропает 2-9 снежков, в зависимости от его высоты.
+
 This block can only be placed on full solid blocks and on another top snow (which increases its height).=Этот блок можно поместить только на целый твёрдый блок либо на другой слой (что увеличит его высоту).
+
 Snow=Снег
+
 This is a full block of snow. Snow of this thickness is usually found in areas of extreme cold.=Это блок снега. Снег такой толщины обычно встречается в экстремально холодных зонах.
-Cactus=Кактус
-Grows on sand=Растёт на песке
-Contact damage: @1 per half second=Урон при контакте: @1 HP/0.5 с
-This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.=Это кактус, обычно встречающийся в засушливых регионах, особенно в пустынях. Со временем кактусы вырастают до 3 блоков вверх на песке или красном песке. Кактус колет живых существ, касающихся его, причиняя урон в 1 единицу здоровья каждые полсекунды. Если сломать кактус, все вышестоящие блоки сломаются также.
-A cactus can only be placed on top of another cactus or any sand.=Кактус можно поставить только на верхушку другого кактуса или на любой песок.
-Sugar Canes=Сахарный тростник
-Grows on sand or dirt next to water=Растёт на песке или земле рядом с водой
-Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.=Сахарный тростник это растение, используемое в крафте. Если тростник находится по соседству с водой на дёрне, земле, песке, красном песке, подзоле или каменистой земле, он будет медленно расти вверх до 3 блоков. Если сломать тростник, все верхние части также сломаются.
-Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.=Сахарный тростник может быть помещён только на верхушку другого сахарного тростника, либо на верхнюю часть другого блока, на котором он может расти.
-Ladder=Лестница
-A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=
-Vines=Лоза
-Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread.=Лоза это блок, по которому можно карабкаться, он может быть помещён по сторонам твёрдого блока.
-Glass=Стекло
-A decorative and mostly transparent block.=Декоративный и преимущественно прозрачный блок.
-Stained glass is a decorative and mostly transparent block which comes in various different colors.=Окрашенное стекло это декоративный прозрачный блок, встречающийся в различных расцветках.
-Stained Glass=Окрашенное стекло
-Red Stained Glass=Красное стекло
-Green Stained Glass=Зелёное стекло
-Blue Stained Glass=Синее стекло
-Light Blue Stained Glass=Голубое стекло
-Black Stained Glass=Чёрное стекло
-White Stained Glass=Белое стекло
-Yellow Stained Glass=Жёлтое стекло
-Brown Stained Glass=Коричневое стекло
-Orange Stained Glass=Оранжевое стекло
-Pink Stained Glass=Розовое стекло
-Grey Stained Glass=Серое стекло
-Lime Stained Glass=Лаймовое стекло
-Light Grey Stained Glass=Светло-серое стекло
-Magenta Stained Glass=Сиреневое стекло
-Purple Stained Glass=Фиолетовое стекло
-Cyan Stained Glass=Бирюзовое стекло
+
+##[ nodes_liquid.lua ]##
 Flowing Water=Текущая вода
 Water Source=Источник воды
 Water=Вода
+
 Water is abundant in oceans and also appears in a few springs in the ground. You can swim easily in water, but you need to catch your breath from time to time.=Вода изобилует в океанах и также встречается в виде ключей под землёй.
+
 Water interacts with lava in various ways:=Вода взаимодействует с лавой по-разному:
+
 • When water is directly above or horizontally next to a lava source, the lava turns into obsidian.=• Если вода прямо над источником лавы или соседствует с ним в горизонтальном направлении, источник лавы превращается в обсидиан.
+
 • When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.=• Если текущая вода прикасается к текущей лаве сверху или сбоку, текущая лава превращается в булыжник.
+
 • When water is directly below lava, the water turns into stone.=• Если вода попадает прямо под лаву, этот источник воды превращается в камень.
 Flowing Lava=Текущая лава
+
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=Источник лавы поджигает пару воздушных блоков над ним, если они расположены рядом с воспламенимым блоком.
+
 Lava Source=Источник лавы
+Lava=
+
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=Лава горячая и довольно опасная. Не прикасайтесь к ней, это нанесет вам урон, и выплыть из неё сложно.
+
 Lava interacts with water various ways:=Лава взаимодействует с водой по-разному:
+
 • When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• Когда источник лавы прямо под водой, либо вода сбоку от него, источник лавы превращается в обсидиан.
+
 • When lava is directly above water, the water turns into stone.=• Когда лава прямо над водой, источник воды превращается в камень.
-Bone Block=Костный блок
-Bone blocks are decorative blocks and a compact storage of bone meal.=Костные блоки это декоративные блоки, а также способ компактного хранения костной муки.
-Slime Block=Блок слизи
-Slime blocks are very bouncy and prevent fall damage.=Блок слизи очень упругий и спасает от повреждений при падении.
-Cobweb=Паутина
-Slows down movement=Замедляет перемещение
-Cobwebs can be walked through, but significantly slow you down.=Паутину можно пройти насквозь, но она ощутимо снижает вашу скорость.
-Dead Bush=Мёртвый куст
-Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.=Мёртвые кусты это непримечательные растения, часто встречающиеся в засушливых областях. Их можно собирать, чтобы сделать из них палки.
-Barrier=Барьер
-Barriers are invisible walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.=Барьеры это невидимые блоки-препятствия. Они могут использоваться, например, для создания границ карты. Монстры и животные не будут спауниться на барьерах. Заборы с барьерами не соединяются. Другие блоки могут строиться на барьерах, как на любых других блоках.
-When you hold a barrier in hand, you reveal all placed barriers in a short distance around you.=Когда вы держите барьер в руке, вы видите все барьеры, размещённые вокруг вас вблизи.
-Realm Barrier=Барьер области
-Light=Свет
-Lights are invisible blocks. They are used to light up adventure maps and the like.=Свет это невидимые блоки. Используются для подсветки приключенческих карт и всё в этом роде.
-When you hold a light in hand, you reveal all placed lights in a short distance around you.=Когда вы держите свет в руке, вы видите все расставленные блоки света на небольшой дистанции от вас.
-Void=Пустота
+##[ nodes_cactuscane.lua ]##
+Cactus=Кактус
+Grows on sand=Растёт на песке
+Contact damage: @1 per half second=Урон при контакте: @1 HP/0.5 с
+
+This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.=Это кактус, обычно встречающийся в засушливых регионах, особенно в пустынях. Со временем кактусы вырастают до 3 блоков вверх на песке или красном песке. Кактус колет живых существ, касающихся его, причиняя урон в 1 единицу здоровья каждые полсекунды. Если сломать кактус, все вышестоящие блоки сломаются также.
+
+A cactus can only be placed on top of another cactus or any sand.=Кактус можно поставить только на верхушку другого кактуса или на любой песок.
+Sugar Canes=Сахарный тростник
+Grows on sand or dirt next to water=Растёт на песке или земле рядом с водой
+
+Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.=Сахарный тростник это растение, используемое в крафте. Если тростник находится по соседству с водой на дёрне, земле, песке, красном песке, подзоле или каменистой земле, он будет медленно расти вверх до 3 блоков. Если сломать тростник, все верхние части также сломаются.
+
+Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.=Сахарный тростник может быть помещён только на верхушку другого сахарного тростника, либо на верхнюю часть другого блока, на котором он может расти.
+
+##[ nodes_trees.lua ]##
 This is a decorative block surrounded by the bark of a tree trunk.=Это декоративный блок из древесной коры.
 Needs soil and light to grow=Нуждается в почве и свете, чтобы расти
 Oak Wood=Дубовая древесина
@@ -268,18 +269,30 @@ Acacia Wood Planks=Акациевые доски
 Birch Wood Planks=Берёзовые доски
 2×2 saplings @= large tree=2×2 саженца @= большое дерево
 Oak Sapling=Саженец дуба
+
 When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time.=После посадки на почву (например, на землю) при наличии света саженец дуба вырастет в дуб через некоторое время.
+
 Dark Oak Sapling=Саженец тёмного дуба
+
 Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.=Из саженцев тёмного дуба могут вырастать деревья, но для этого надо высаживать их группами. Одинарные саженцы не будут расти. Группа из четырёх саженцев станет деревом через некоторое время после высадки на освещённый участок почвы в виде квадрата 2×2.
+
 2×2 saplings required=Высаживается по схеме 2×2
 Jungle Sapling=Саженец тропического дерева
+
 When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.=После посадки на почву (например, на землю) при наличии света саженец тропического дерева вырастет в тропическое дерево через некоторое время. Если высадить 4 саженца по схеме 2×2, вырастет огромное тропическое дерево.
+
 Acacia Sapling=Саженец акации
+
 When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time.=После посадки на почву (например, на землю) при наличии света саженец акации вырастет в акацию через некоторое время.
+
 Spruce Sapling=Саженец ели
+
 When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.=После посадки на почву (например, на землю) при наличии света саженец ели вырастет в ель через некоторое время. Если высадить 4 саженца по схеме 2×2, вырастет огромная ель.
+
 Birch Sapling=Саженец берёзы
+
 When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time.=После посадки на почву (например, на землю) при наличии света саженец берёзы вырастет в берёзу через некоторое время.
+
 Oak Leaves=Дубовая листва
 Oak leaves are grown from oak trees.=Листва дуба произрастает на дубовых деревьях.
 Dark Oak Leaves=Листва тёмного дуба
@@ -292,6 +305,114 @@ Spruce Leaves=Еловая хвоя
 Spruce leaves are grown from spruce trees.=Хвоя растёт на еловых деревьях.
 Birch Leaves=Берёзовая листва
 Birch leaves are grown from birch trees.=Листва берёзы произрастает на берёзах.
+##[ nodes_glass.lua ]##
+Glass=Стекло
+A decorative and mostly transparent block.=Декоративный и преимущественно прозрачный блок.
+
+Stained glass is a decorative and mostly transparent block which comes in various different colors.=Окрашенное стекло это декоративный прозрачный блок, встречающийся в различных расцветках.
+
+Stained Glass=Окрашенное стекло
+Red Stained Glass=Красное стекло
+Green Stained Glass=Зелёное стекло
+Blue Stained Glass=Синее стекло
+Light Blue Stained Glass=Голубое стекло
+Black Stained Glass=Чёрное стекло
+White Stained Glass=Белое стекло
+Yellow Stained Glass=Жёлтое стекло
+Brown Stained Glass=Коричневое стекло
+Orange Stained Glass=Оранжевое стекло
+Pink Stained Glass=Розовое стекло
+Grey Stained Glass=Серое стекло
+Lime Stained Glass=Лаймовое стекло
+Light Grey Stained Glass=Светло-серое стекло
+Magenta Stained Glass=Сиреневое стекло
+Purple Stained Glass=Фиолетовое стекло
+Cyan Stained Glass=Бирюзовое стекло
+##[ nodes_climb.lua ]##
+Ladder=Лестница
+
+A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=
+
+Vines=Лоза
+
+Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread.=Лоза это блок, по которому можно карабкаться, он может быть помещён по сторонам твёрдого блока.
+
+##[ nodes_misc.lua ]##
+Bone Block=Костный блок
+Bone blocks are decorative blocks and a compact storage of bone meal.=Костные блоки это декоративные блоки, а также способ компактного хранения костной муки.
+Slime Block=Блок слизи
+Slime blocks are very bouncy and prevent fall damage.=Блок слизи очень упругий и спасает от повреждений при падении.
+Cobweb=Паутина
+Slows down movement=Замедляет перемещение
+Cobwebs can be walked through, but significantly slow you down.=Паутину можно пройти насквозь, но она ощутимо снижает вашу скорость.
+Dead Bush=Мёртвый куст
+
+Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.=Мёртвые кусты это непримечательные растения, часто встречающиеся в засушливых областях. Их можно собирать, чтобы сделать из них палки.
+
+Barrier=Барьер
+
+Barriers are invisible walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.=Барьеры это невидимые блоки-препятствия. Они могут использоваться, например, для создания границ карты. Монстры и животные не будут спауниться на барьерах. Заборы с барьерами не соединяются. Другие блоки могут строиться на барьерах, как на любых других блоках.
+
+When you hold a barrier in hand, you reveal all placed barriers in a short distance around you.=Когда вы держите барьер в руке, вы видите все барьеры, размещённые вокруг вас вблизи.
+
+Realm Barrier=Барьер области
+Light=Свет
+
+Lights are invisible blocks. They are used to light up adventure maps and the like.=Свет это невидимые блоки. Используются для подсветки приключенческих карт и всё в этом роде.
+
+When you hold a light in hand, you reveal all placed lights in a short distance around you.=Когда вы держите свет в руке, вы видите все расставленные блоки света на небольшой дистанции от вас.
+
+Void=Пустота
+##[ craftitems.lua ]##
+Stick=Палка
+
+Sticks are a very versatile crafting material; used in countless crafting recipes.=Палки это универсальный материал, используемый для крафта различных предметов, присутствует во многих рецептах.
+
+Paper=Бумага
+Paper is used to craft books and maps.=Бумага используется для создания книг и карт.
+Coal=Уголь
+
+“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.=“Уголь” относится к угольным кускам, добываемым из угольной руды, которую можно встретить под землёй. Уголь это стандартное печное топливо, но он также нужен, чтобы сделать факелы, угольные блоки и некоторые другие предметы.
+
+Charcoal=Древесный уголь
+
+Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks.=Древесный уголь это альтернативное печное топливо, получаемое путём сжигания древесины в качестве ингредиента в печи. Оно имеет такую же длительность горения, как и каменный уголь, но из него нельзя сделать угольные блоки.
+
+Iron Nugget=Железный самородок
+
+Iron nuggets are very small pieces of molten iron; the main purpose is to create iron ingots.=Железные самородки это маленькие частички чистого железа, которые можно объединять в железные слитки.
+
+Gold Nugget=Золотой самородок
+
+Gold nuggets are very small pieces of molten gold; the main purpose is to create gold ingots.=Золотые самородки это мелкие частички чистого золота, которые можно объединять в золотые слитки.
+
+Diamond=Алмаз
+
+Diamonds are precious minerals and useful to create the highest tier of armor and tools.=Алмазы это драгоценные камни, используемые для создания брони и инструментов высшего качества.
+
+Clay Ball=Глина
+Clay balls are a raw material, mainly used to create bricks in the furnace.=Глина это необработанный материал, в основном используемый для создания кирпичей при помощи печи.
+Iron Ingot=Железный слиток
+Molten iron. It is used to craft armor, tools, and whatnot.=Железный слиток. Используется для создания брони, инструментов и прочего.
+Gold Ingot=Золотой слиток
+Molten gold. It is used to craft armor, tools, and whatnot.=Золотой слиток. Используется для создания брони, инструментов и прочего.
+Emerald=Изумруд
+Emeralds are used in villager trades as currency.=Изумруды используют деревенские жители в качестве валюты.
+Lapis Lazuli=Лазурит
+Lapis Lazuli are required for enchanting items on an enchanting table.=Лазурит требуется для зачарования предметов на столе зачарований.
+Brick=Кирпич
+Bricks are used to craft brick blocks.=Кирпичи используются для создания кирпичных блоков.
+Flint=Кремень
+Flint is a raw material.=Кремень это необработанный материал.
+Sugar=Сахар
+Sugar comes from sugar canes and is used to make sweet foods.=Сахар добывают из сахарного тростника и используют для приготовления сладких продуктов.
+Bowl=Миска
+Bowls are mainly used to hold tasty soups.=Миски используются для крафта вкусных супов.
+Apple=Яблоко
+Apples are food items which can be eaten.=Яблоки это съедобный продукт.
+Golden Apple=Золотое яблоко
+Golden apples are precious food items which can be eaten.=Золотые яблоки это ценный съедобный продукт.
+Enchanted Golden Apple=Зачарованное золотое яблоко
 
 
 ##### not used anymore #####
@@ -300,7 +421,10 @@ Birch leaves are grown from birch trees.=Листва берёзы произр�
 @1 died in lava.=@1 погиб(ла) в лаве.
 @1 melted in lava.=@1 был(а) расплавлен(а) в лаве.
 @1 took a bath in a hot lava tub.=@1 принял(а) ванну с горячей лавой.
+
 A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns.=Лестница позволяет вам карабкаться вертикально. Лестницы можно устанавливать только сбоку на твёрдые блокои. Их нельзя разместить на стекле, листьях, льду, светящемся камне и морских фонарях.
+
 Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel. A grass path turns into dirt when it is below a solid block.=Тропинки это декоративная разновидность травяных блоков. Их верхняя часть окрашена другим цветом, а они сами чуть ниже, чтобы это смотрелось как притоптанная трава. Такие блоки можно создать при помощи лопаты. При помещении под твёрдый блок данные блоки превращаются в землю.
+
 This is a decorative block.=Это декоративный блок.
 Needs soil and water to grow=Нуждается в почве и воде, чтобы расти

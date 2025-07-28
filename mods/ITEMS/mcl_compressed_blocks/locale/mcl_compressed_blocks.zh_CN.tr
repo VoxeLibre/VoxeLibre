@@ -1,18 +1,34 @@
 # textdomain: mcl_compressed_blocks
 ##[ nodes.lua ]##
 Compressed Cobblestone=压缩圆石
+
 Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=压缩圆石是一种由9个圆石合成的装饰性方块，它有助于节省你的物品栏空间。
+
 Double Compressed Cobblestone=双重压缩圆石
+
 Double Compressed Cobblestone is a decorative block made from 9 Compressed Cobblestone. It is useful for saving space in your inventories.=双重压缩圆石是一种由9个压缩圆石合成的装饰性方块，它有助于节省你的物品栏空间。
+
 Triple Compressed Cobblestone=三重压缩圆石
+
 Triple Compressed Cobblestone is a decorative block made from 9 Double Compressed Cobblestone. It is useful for saving space in your inventories.=三重压缩圆石是一种由9个双重压缩圆石合成的装饰性方块，它有助于节省你的物品栏空间。
+
 Quadruple Compressed Cobblestone=四重压缩圆石
+
 Quadruple Compressed Cobblestone is a decorative block made from 9 Triple Compressed Cobblestone. It is useful for saving space in your inventories.=四重压缩圆石是一种由9个三重压缩圆石合成的装饰性方块，它有助于节省你的物品栏空间。
+
 Quintuple Compressed Cobblestone=五重压缩圆石
+
 Quintuple Compressed Cobblestone is a decorative block made from 9 Quadruple Compressed Cobblestone. It is useful for saving space in your inventories.=五重压缩圆石是一种由9个四重压缩圆石合成的装饰性方块，它有助于节省你的物品栏空间。
+
 Sextuple Compressed Cobblestone=六重压缩圆石
+
 Sextuple Compressed Cobblestone is a decorative block made from 9 Quintuple Compressed Cobblestone. It is useful for saving space in your inventories.=六重压缩圆石是一种由9个五重压缩圆石合成的装饰性方块，它有助于节省你的物品栏空间。
+
 Septuple Compressed Cobblestone=七重压缩圆石
+
 Septuple Compressed Cobblestone is a decorative block made from 9 Sextuple Compressed Cobblestone. It is useful for saving space in your inventories.=七重压缩圆石是一种由9个六重压缩圆石合成的装饰性方块，它有助于节省你的物品栏空间。
+
 Octuple Compressed Cobblestone=八重压缩圆石
+
 Octuple Compressed Cobblestone is a decorative block made from 9 Septuple Compressed Cobblestone. It is useful for saving space in your inventories.=八重压缩圆石是一种由9个七重压缩圆石合成的装饰性方块，它有助于节省你的物品栏空间。 
+

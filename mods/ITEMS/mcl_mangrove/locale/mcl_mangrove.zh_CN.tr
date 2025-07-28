@@ -13,20 +13,31 @@ Mangrove Roots=红树林树根
 Mangrove roots are decorative blocks that form as part of mangrove trees.=红树林树根是作为红树林树木一部分形成的装饰性方块。
 Mangrove Propagule=红树林繁殖体
 Needs soil and light to grow=需要土壤和光照才能生长。
+
 When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time.=当放置在土壤（比如泥土）上并暴露在光照下，一段时间后红树林繁殖体将会长成一棵红树林。
+
 Hanging Propagule=悬挂式红树林繁殖体
 Grows on Mangrove leaves=生长在红树林树叶上。
 water logged mangrove roots=浸水的红树林树根
+
 Mangrove roots, despite being a full block, can be waterlogged and do not flow water out=红树林树根尽管是完整方块，但可以浸水且不会向外流水。
+
 These cannot be crafted yet only occure when get in contact of water.=这些目前还无法制作，只有接触水时才会出现。
 Muddy Mangrove Roots=泥泞的红树林树根
 Crafted with Mud and Mangrove roots=用泥巴和红树林树根制作而成。
+
 Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it.=泥泞的红树林树根是来自红树林沼泽的方块，玩家站在里面会稍稍下陷。
+
 Mangrove Door=红树林门
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=木门是高两格的屏障，可以手动打开或关闭，也可以通过红石信号控制开关。
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=要打开或关闭一扇木门，可右键点击它，或者给它的下半部分提供红石信号。
+
 Mangrove Trapdoor=红树林活板门
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=木制活板门是水平的屏障，可以手动打开或关闭，也可以通过红石信号控制开关。它们根据放置方式占据方块的上半部分或下半部分，打开时可以像爬梯子一样攀爬。
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=要打开或关闭活板门，可右键点击它，或者给它发送红石信号。
 Mangrove Wood Fence=红树林栅栏
 Mangrove Wood Fence Gate=红树林栅栏门

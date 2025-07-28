@@ -1,14 +1,22 @@
 # textdomain: mcl_compass
 Compass=Brújula
 Points to the world origin=Apunta hacia el punto de generación del mundo
+
 Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Las brújulas son herramientas que apuntan al origen del mundo (X@=0, Z@=0) o al punto de generación en la superficie.
+
 A Compass always points to the world spawn point when the player is in the overworld.  In other dimensions, it spins randomly.=Una brújula siempre apunta al punto de generación del mundo cuando el jugador está en la superficie.  En otras dimensiones, gira aleatoriamente.
+
 Lodestone Compass=Brújula magnetizada 
 Points to a lodestone=Apunta hacia una magnetita
+
 Lodestone compasses resemble regular compasses, but they point to a specific lodestone.=Las brújulas magnetizadas se parecen a las brújulas normales, pero apuntan a una magnetita específica.
+
 A Lodestone compass can be made from an ordinary compass by using it on a lodestone.  After becoming a lodestone compass, it always points to its linked lodestone, provided that they are in the same dimension.  If not in the same dimension, the lodestone compass spins randomly, similarly to a regular compass when outside the overworld.  A lodestone compass can be relinked with another lodestone.=Una brújula magnetizada puede fabricarse a partir de una brújula normal, siempre que estén en la misma dimensión.  Si no están en la misma dimensión, la brújula magnetizada girará aleatoriamente, de forma similar a una brújula normal cuando está fuera de la superficie. Una brújula magnetizada puede volver a enlazarse con otra magnetita.
+
 Recovery Compass=Brújula de recuperación
 Points to your last death location=Apunta hacia la ubicación de tu última muerte
 Recovery Compasses are compasses that point to your last death location=Las brújulas de recuperación son brújulas que apuntan hacia la ubicación de tu última muerte
+
 Recovery Compasses always point to the location of your last death, in case you haven't died yet, it will just randomly spin around=Las brújulas de recuperación siempre apuntan hacia la ubicación de tu última muerte, en caso de que aún no hayas muerto, simplemente girará aleatoriamente
+
 Lodestone=Magnetita

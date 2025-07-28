@@ -1,14 +1,21 @@
 # textdomain: mesecons_button
 Use the button to push it.=Use o botão para pressioná-lo.
+
 A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows.=Um botão de madeira é um componente de redstone feito de madeira ao qual pode ser pressionado para fornecer carga de redstone. Quando pressionado, irá energizar componentes de redstone adjacentes por 1.5 segundo. Botões de madeira também podem ser pressionados por flechas.
+
 A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=Um botão é um componente de redstone ao qual pode ser pressionado para fornecer carga de redstone. Quando pressionado, irá energizar componentes de redstone adjacentes por @1 segundos.
+
 Provides redstone power when pushed=Fornece carga de redstone quando é pressionado
 Push duration: @1s=Duração de pressão: @1s
 Pushable by arrow=Pressionável por flecha
 Stone Button=Botão de Pedra
+
 A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Um botão de pedra é um componente de redstone feito de pedra ao qual pode ser pressionado para fornecer carga de redstone. Quando pressionado, irá energizar componentes de redstone adjacentes por 1 segundo.
+
 Polished Blackstone Button=Botão de Rocha Negra Polida
+
 A polished blackstone button is a redstone component made out of polished blackstone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Um botão de rocha negra polida é um componente de redstone feito de pedra negra polida ao qual pode ser pressionado para fornecer carga de redstone. Quando pressionado, irá energizar componentes de redstone adjacentes por 1 segundo.
+
 Oak Button=Botão de Carvalho
 Acacia Button=Botão de Acácia
 Birch Button=Botão de Bétula

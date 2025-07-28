@@ -1,25 +1,40 @@
 # textdomain: mcl_mushrooms
 ##[ small.lua ]##
+
 Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=Brun sopp vokser og sprer seg i mørke, men er følsomme for lys. De er uspiselige som sådan, men de kan brukes til å lage matvarer.
+
 Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=Rød sopp vokser og sprer seg i mørke, men er følsomme for lys. De er uspiselige som sådan, men de kan brukes til å lage matvarer.
+
 A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.=En enkelt sopp av denne arten vil sakte spre seg over tid mot en tilfeldig solid heldekkenden blokk med et lysnivå på 12 eller lavere i en 3×3×3 kube rundt soppen. Den slutter å spre seg når det er 5 eller flere sopp av samme art innenfor et område på 9×3×9 blokker rundt soppen.
+
 Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.=Sopp vil automatisk rykkes opp fra jorden ved et lysnivå på 12 eller høyere. På mycel eller podsol overlever de og sprer seg uavhengig av lysnivå.
+
 Grows on podzol, mycelium and other blocks=Vokser på podsol, mycel og andre blokker
 Spreads in darkness=Sprer seg i mørket
+
 This mushroom can be placed on mycelium and podzol at any light level. It can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.=Denne soppen kan plasseres på mycel og podsol ved alle lysnivåer. Den kan også plasseres på blokker som er både solide og heldekkende, så lenge lysnivået på dagtid ikke er høyere enn 12.
+
 Brown Mushroom=Brun sopp
 Red Mushroom=Rød sopp
 Mushroom Stew=Soppstuing
+
 Mushroom stew is a healthy soup which can be consumed to restore some hunger points.=Soppstuing er en sunn suppe som kan spises for å gjenopprette noen sultpoeng.
+
 ##[ huge.lua ]##
+
 This decorative block is like a huge mushroom stem, but with the stem texture on all sides.=Denne dekorative blokken er som en enorm soppstamme, men med stilktekstur på alle sider.
+
 By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.=Ved å plassere soppblokker av samme art ved siden av hverandre, vil sidene som berører hverandre bli til porer permanent.
+
 Huge red mushroom blocks are the cap parts of huge red mushrooms. It consists of a red skin and can have pores on each of its sides.=Rød soppblokk er hettedelene til store røde sopper. Den består av en rød overflate og kan ha porer på hver side.
+
 The stem part of a huge red mushroom.=Stilkdelen til en stor rød sopp.
 Huge Red Mushroom Block=Rød soppblokk
 Huge Red Mushroom Stem=Rød soppstilk
 Huge Red Mushroom All-Faces Stem=Rød heldekket soppstilk
+
 Huge brown mushroom blocks are the cap parts of huge brown mushrooms. It consists of a brown skin and can have pores on each of its sides.=Brun soppblokk er hettedelene til store brune sopper. Den består av en brun overflate og kan ha porer på hver side
+
 The stem part of a huge brown mushroom.=Stilkdelen til en stor brun sopp.
 Huge Brown Mushroom Block=Brun soppblokk
 Huge Brown Mushroom Stem=Brun soppstilk

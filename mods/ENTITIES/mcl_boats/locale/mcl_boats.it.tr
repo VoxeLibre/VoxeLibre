@@ -1,5 +1,6 @@
 # textdomain: mcl_boats
 Sneak to dismount=Accovacciati per scendere
+Boat=Barca
 Oak Boat=Barca di Quercia
 Spruce Boat=Barca d'Abete
 Birch Boat=Barca di Betulla
@@ -18,6 +19,7 @@ Dark Oak Chest Boat=Barca di Quercia Scura con Baule
 Mangrove Chest Boat=Barca di Mangrovia con Baule
 Cherry Chest Boat=Barca di Ciliegio con Baule
 Boats are used to travel on the surface of water.=Le barche vengono usate per viaggiare sulla superficie dell'acqua.
+
 Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=Click Destro su una fonte d'acqua per piazzare la barca. Click Destro sulla barca per salire a bordo. Usa [Sinistra] e [Destra] per girare, [Avanti] per accelerare e [Indietro] per rallentare o muoverti indietro. Usa [Accovacciati] per scendere dalla barca, colpisci la barca per rilasciarla come oggetto.
-Boat=Barca
+
 Water vehicle=Veicolo acquatico

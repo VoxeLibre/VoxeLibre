@@ -4,8 +4,11 @@ Sneak to dismount=Coarse para desmontar
 Minecart=Vagoneta
 Vehicle for fast travel on rails=Vehículo para desprazamentos rápidos sobre carrís
 Minecarts can be used for a quick transportion on rails.=As vagonetas pódense usar para un transporte rápido sobre carrís.
+
 Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.=Las vagonetas só circulan sobre carrís e seguen sempre as pistas. Nun cruce en T sen camiño recto, xiran á esquerda. A velocidade vese afectada polo tipo de carril.
+
 You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.=Podes colocar a vagoneta sobre carrís. Fai clic co botón dereito nel para ingresalo. Golpea para que se mova.
+
 To obtain the minecart, punch it while holding down the sneak key.=Para obter a vagoneta, golpeao mentres mantés premida a tecla furtiva.
 If it moves over a powered activator rail, you'll get ejected.=
 ##[ carts/with_chest.lua ]##
@@ -14,36 +17,56 @@ Minecart with Chest=Vagoneta con cofre
 Minecart with Command Block=Vagoneta con bloque de comandos
 ##[ carts/with_furnace.lua ]##
 Minecart with Furnace=Vagoneta con forno
+
 A minecart with furnace is a vehicle that travels on rails. It can propel itself with fuel.=Unha vagoneta con forno é un vehículo que circula sobre carrís. Pode impulsarse con combustible.
+
 Place it on rails. If you give it some coal, the furnace will start burning for a long time and the minecart will be able to move itself. Punch it to get it moving.=Colócalo en raíles. Se lle dás algo de carbón, o forno comezará a arder durante moito tempo e a vagoneta poderá moverse por si mesmo. Golpea para que se mova.
+
 To obtain the minecart and furnace, punch them while holding down the sneak key.=Para obter a vagoneta e o forno, pécheos mentres mantén premida a tecla furtiva.
 ##[ carts/with_hopper.lua ]##
 Minecart with Hopper=Vagoneta con tolva
+Hopper Minecart=
 ##[ carts/with_tnt.lua ]##
 Minecart with TNT=Vagoneta con dinamita
 Can be ignited by tools or powered activator rail=Pódese acender con ferramentas ou carril activador eléctrico
 A minecart with TNT is an explosive vehicle that travels on rail.=
+
 Place it on rails. Punch it to move it. The TNT is ignited with a flint and steel or when the minecart is on an powered activator rail.=Colócalo en raíles. Golpea para movelo. A dinamita encéndese cun pedernal e aceiro ou cando a vagoneta está nun carril activador motorizado.
+
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=Para obter a vagoneta e a dinamita, pégueos mentres mantén premida a tecla furtiva. Non podes facelo se a dinamita estaba acendido.
+
 ##[ rails.lua ]##
+
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Colócaos no chan para construír o teu ferrocarril, os carrís conectaranse automaticamente entre si e converteranse en curvas, cruces en T, cruces e pendentes segundo sexa necesario.
+
 Track for minecarts=Pista para carros de mina
+
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=Os carrís pódense usar para construír vías de transporte para carros de minas. Os carrís normais ralentizan lixeiramente os carros de minas debido á fricción.
+
 Sloped Rail=
 ##[ rails/activator.lua ]##
 Activator Rail=Carril activador
 Activates minecarts when powered=Activa os minecarts cando se alimenta
+
 Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.=Os carrís pódense usar para construír vías de transporte para carros de minas. Os carrís activadores utilízanse para activar vagonetas especiais.
+
 To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.=Para que este carril active os carros de minas, enciéndao con enerxía Redstone e envía unha vagoneta sobre este anaco de carril.
+
 ##[ rails/detector.lua ]##
 Detector Rail=Carril detector
 Emits redstone power when a minecart is detected=Emite poder de pedra vermella cando se detecta unha vagoneta
+
 Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=Os carrís pódense usar para construír vías de transporte para carros de minas. Un carril detector é capaz de detectar a vagpneta enriba dela e alimenta os mecanismos de pedra vermella.
+
 To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=Para detectar unha vagoneta e proporcionar enerxía de pedra vermella, conéctao a pistas de pedra vermella ou mecanismos de pedra vermella e envía calquera vagoneta sobre o carril.
+
 ##[ rails/normal.lua ]##
 Rail=Carril
 ##[ rails/powered.lua ]##
 Powered Rail=Carril propulsor
 Speed up when powered, slow down when not powered=Acelera cando está alimentado, reduce a velocidade cando non está alimentado
+
 Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.=Os carrís pódense usar para construír vías de transporte para carros de minas. Os carrís motorizados son capaces de acelerar e frear os carros de minas.
+
 Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power.=Sen enerxía Pedra Vermella, o carril freará as vagonetas. Para que este carril acelere os carros de minas, aliméntalo con enerxía Pedra Vermella.
+

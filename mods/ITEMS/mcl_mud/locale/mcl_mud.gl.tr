@@ -1,6 +1,8 @@
 # textdomain: mcl_mud
 Mud=Barro
+
 Mud is a decorative block that generates in mangrove swamps. Mud can also be obtained by using water bottles on dirt or coarse dirt.=O barro é un bloque decorativo que se xera nos manglares. O barro tamén se pode obter usando botellas de auga sobre terra ou terra estéril.
+
 Packed Mud=Barro embalado
 Packed mud is a decorative block used to craft mud bricks.=O barro embalado é un bloque decorativo usado para elaborar ladrillos de barro.
 Mud Bricks=Ladrillos de barro 

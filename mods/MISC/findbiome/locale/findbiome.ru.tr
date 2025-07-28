@@ -1,16 +1,22 @@
 # textdomain: findbiome
 # mod title
-Find Biome=Найти Биом
-# mod description
-Adds commands to list and find biomes=Добавляет команды для списка и нахождения биомов
-
+# mod strings
+# mod title
+Wait until all mods have loaded!=
 # mod strings
 Find and teleport to biome=Найти и телепортироваться к биому
 <biome>=<биом>
 No player.=Нет игрока.
-Not supported. The “biomeinfo” mod is required for v6 mapgen support!=Не поддерживается. Для поддержки мапгена v6 требуется мод “biomeinfo”!
 Biome found at @1.=Биом найден в @1.
 No biome found!=Биом не найден!
 Biome does not exist!=Биом не существует!
 List all biomes=Список всех биомов
 No biomes.=Нет биомов.
+
+
+##### not used anymore #####
+
+Find Biome=Найти Биом
+# mod description
+Adds commands to list and find biomes=Добавляет команды для списка и нахождения биомов
+Not supported. The “biomeinfo” mod is required for v6 mapgen support!=Не поддерживается. Для поддержки мапгена v6 требуется мод “biomeinfo”!

@@ -20,13 +20,21 @@ The target item is not enchantable.=O elemento de destino non se pode encantar.
 Enchanted Book=Libro Encantado
 Enchanting Table=Mesa de Encantadora
 Spend experience, and lapis to enchant various items.=Emprega experiencia e lapis para encantar varios elementos.
+
 Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Enchanting Tables permitirache encantar armaduras, ferramentas, armas e libros con varias habilidades. Pero, a costa dalgunha experiencia, e lapislázuli.
+
 Rightclick the Enchanting Table to open the enchanting menu.=Fai clic co botón dereito na táboa encantadora para abrir o menú encantador.
+
 Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Coloque unha ferramenta, armadura, arma ou libro na rañura superior esquerda e, a continuación, coloque 1-3 Lapislázuli na rañura da dereita.
+
 After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Despois de colocar os teus artigos nas rañuras, mostraranse as opcións encantadoras. Pasa o rato sobre as opcións para ler o que tes dispoñible.
+
 These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Estas opcións son aleatorias e dependen do nivel de experiencia; pero a forza do encantamento pódese aumentar.
+
 To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar a forza do encantamento, coloca estantes arredor da mesa encantadora. Non obstante, terás que manter 1 nodo de aire entre a mesa e as estanterías para potenciar a mesa encantadora.
+
 After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Despois de seleccionar finalmente o teu encantamento; Fai clic co botón esquerdo na selección e verás tanto o lapislázuli como os teus niveis de experiencia consumidos. E, un elemento encantado deixado no seu lugar.
+
 Enchant=Encantar
 ##[ engine.lua ]##
 Inventory=Inventario
@@ -36,9 +44,13 @@ Inventory=Inventario
 Level requirement: @1=Nivel precisado: @1
 ##[ enchantments.lua ]##
 Bane of Arthropods=Perdición dos Artrópodos
+
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Aumenta o dano e aplica a Lentitude aos artrópodos (arañas, arañas das covas, peixes de prata e endermitas).
+
 Channeling=Canalización
+
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Envía un raio cara a un obxectivo. Funciona só durante as treboadas e se o obxectivo está sen obstáculos con bloques opacos.
+
 Curse of Vanishing=Maldición de Desaparición
 Item destroyed on death.=Elemento destruído despois da sua morte.
 Depth Strider=Axilidade acuática
@@ -52,7 +64,9 @@ Arrows set target on fire.=As frechas incendian o obxectivo.
 Fortune=Fortuna
 Increases certain block drops.=Aumenta certas caídas de bloque.
 Frost Walker=Paso Xeado
+
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Converte a auga debaixo do xogador en xeo xeado e evita o dano dos bloques de magma.
+
 Impaling=Empalamento
 Trident deals additional damage to ocean mobs.=Tridente causa dano adicional ás turbas oceánicas
 Infinity=Infinidad

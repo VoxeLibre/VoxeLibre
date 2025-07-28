@@ -25,11 +25,17 @@ Sorry, but you have to wait @1 seconds until you may use this button again!=抱�
 Hey! Would you guys mind sleeping?=嘿！你们介意睡一觉吗？
 ##[ api.lua ]##
 Beds allow you to sleep at night and make the time pass faster.=床能让你在夜晚入睡并使时间过得更快。
+
 To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=要使用床，站在它附近并右键点击床便可在床上睡觉。只有在日落、夜晚或雷暴期间才能睡觉。床周围也必须没有任何危险。
+
 You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=你听说过在其他世界里，床会设定你下一次生命的起始点，但这个世界并非如此。
+
 By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=通过使用床，你可以设定下一次生命的起始点。如果你死亡，除非床被阻挡或被破坏，否则你将在此床处重生。
+
 In this world, going to bed won't skip the night, but it will skip thunderstorms.=在这个世界里，上床睡觉不会跳过夜晚，但会跳过雷暴天气。
+
 Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=睡觉能让你跳过夜晚。当这个世界里的所有玩家都入睡后，夜晚就会被跳过。入睡几秒后夜晚就会被跳过，雷暴天气也可用同样的方式跳过。
+
 Allows you to sleep=允许你睡觉
 ##[ beds.lua ]##
 Red Bed=红色床
@@ -55,5 +61,7 @@ Respawn Anchor=重生锚
 
 ##### not used anymore #####
 
+
 New respawn position set! But you can only sleep at night or during a thunderstorm.=新的重生位置已设定！但你只能在夜晚或雷暴天气时睡觉。
+
 send!=发送！

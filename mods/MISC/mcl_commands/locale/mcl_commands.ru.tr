@@ -35,7 +35,9 @@ List clear commands=
 To clear inventory use /clearinv or /clearinventory=
 To clear mobs use /clearmobs=
 To clear the weather use /weather clear=
+
 Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+
 
 
 ##### not used anymore #####

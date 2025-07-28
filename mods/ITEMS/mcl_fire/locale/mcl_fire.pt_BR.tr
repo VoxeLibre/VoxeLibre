@@ -1,20 +1,30 @@
 # textdomain: mcl_fire
+
 Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=Fogo é um tipo de bloco danoso e destrutivo de vida curta. Destruirá e se espalhará para blocos inflamáveis próximos, mas o fogo vai desaparecer quando não restar mais nada para queimar. Será extinguido por água próxima ou pela chuva. O fogo pode ser destruído em segurança socando-o, mas é doloroso se você ficar em pé diretamente nele. Se um fogo for iniciado sobre netherrack ou bloco de magma, será transformado imediatamente em fogo eterno.
+
 Fire is a damaging but non-destructive short-lived kind of block. It will disappear when there is no flammable block around. Fire does not destroy blocks, at least not in this world. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=Fogo é um tipo de bloco danoso mas não destrutivo de vida curta. Irá desaparecer quando não houver mais blocos inflamáveis por perto. O fogo não destrói blocos, pelo menos não nesse mundo. Será extinguido por água próxima ou chuva. O fogo pode ser destruído em segurança socando-o, mas é doloroso se você ficar em pé diretamente nele. Se um fogo for iniciado sobre netherrack ou bloco de magma, será transformado imediatamente em fogo eterno.
+
 Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.=Fogo eterno é um bloco danoso que pode criar mais fogo. Irá criar fogo em volta quando blocos inflamáveis estão por perto. O fogo eterno pode ser extinguido por socos ou blocos de água próximos. Diferente do fogo (normal), o fogo eterno não se extingue sozinho e também continua queimando sob chuvas. Socar o fogo eterno é seguro, mas machuca se você ficar em pé dentro.
+
 Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.=Fogo eterno é um bloco danoso. O fogo eterno pode ser extinguido por socos ou blocos de água próximos. Diferente do fogo (normal), o fogo eterno não se extingue sozinho e também continua queimando sob chuvas. Socar o fogo eterno é seguro, mas machuca se você ficar em pé dentro.
+
 Fire=Fogo
 Eternal Fire=Fogo Eterno
-##[ flint_and_steel.lua ]##
-Starts fires and ignites blocks=Põe fogo e acende blocos
-Flint and Steel=Isqueiro
-Flint and steel is a tool to start fires and ignite blocks.=Isqueiro é uma ferramenta que põe fogo e acende blocos.
-Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.=Clique com o botão direito na superfície de um bloco para tentar acender um fogo em frente ou acender um bloco. Poucos blocos têm uma reação única quando acesos.
 ##[ fire_charge.lua ]##
 Fire Charge=Bola de Fogo
 Dispenser projectile=Projétil do Ejetor
+Starts fires and ignites blocks=Põe fogo e acende blocos
+
 Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly.=Bolas de fogo são primariamente Projéteis aos quais podem ser lançados por ejetores, eles voarão em linha reta e explodirão em chamas no impacto. Alternativamente, elas podem ser usadas para acender fogos diretamente.
+
 Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up.=Ponha a bola de fogo em um ejetor e forneça-o uma carga de redstone para lança-la. Para acender um fogo diretamente, simplesmente posicione a bola de fogo no chão, o que a consumirá.
+
+##[ flint_and_steel.lua ]##
+Flint and Steel=Isqueiro
+Flint and steel is a tool to start fires and ignite blocks.=Isqueiro é uma ferramenta que põe fogo e acende blocos.
+
+Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.=Clique com o botão direito na superfície de um bloco para tentar acender um fogo em frente ou acender um bloco. Poucos blocos têm uma reação única quando acesos.
+
 
 
 ##### not used anymore #####

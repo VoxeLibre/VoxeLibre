@@ -13,20 +13,31 @@ Mangrove Roots=Mangroverøtter
 Mangrove roots are decorative blocks that form as part of mangrove trees.=Mangroverøtter er dekorative blokker som oppstår som del av mangrovetrær.
 Mangrove Propagule=Mangrovebulbill
 Needs soil and light to grow=Trenger jordsmonn og lys for å vokse
+
 When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time.=Når den plasseres på jordsmonn (som jord) og utsettes for lys, vil en bulbill vokse til et mangrovetre etter en stund.
+
 Hanging Propagule=Hengende bulbill
 Grows on Mangrove leaves=Vokser på mangroveblader
 water logged mangrove roots=Vannmettede mangroverøtter
+
 Mangrove roots, despite being a full block, can be waterlogged and do not flow water out=Mangroverøtter, til tross for at de er en full blokk, kan være vannfylte og vannet strømmer ikke ut
+
 These cannot be crafted yet only occure when get in contact of water.=Disse kan ikke lages enda og forekommer bare i kontakt med vann.
 Muddy Mangrove Roots=Gjørmete mangroverøtter
 Crafted with Mud and Mangrove roots=
+
 Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it.=Gjørmete mangroverøtter er en blokk fra mangrovesumpen. Spilleren synker litt nedi den.
+
 Mangrove Door=Mangrovedører
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokker høye barrierer som kan åpnes eller lukkes for hånd eller via et rødsteinssignal.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å åpne eller lukke en tredør, høyreklikk på den eller forsyn den nedre halvdelen med et rødsteinsignal.
+
 Mangrove Trapdoor=Mangrovefallem
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Trefallemer er horisontale barrierer som kan åpnes og lukkes for hånd eller via et rødsteinssignal. De opptar den øvre eller nedre delen av en blokk, avhengig av hvordan de har blitt plassert. Når de er åpne, kan de klatres i som en stige.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å åpne eller lukke fallemen, høyreklikk på den eller send et rødsteinssignal til den.
 Mangrove Wood Fence=Mangrovegjerde
 Mangrove Wood Fence Gate=Mangroveport

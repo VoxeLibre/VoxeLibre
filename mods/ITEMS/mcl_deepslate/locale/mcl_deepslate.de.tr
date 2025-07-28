@@ -1,30 +1,54 @@
 # textdomain: mcl_deepslate
 Deepslate=Tiefenschiefer
+
 Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=Tiefenschiefer ist eine Gesteinsart. Er kann als dekorativer Block verwendet und in viele Varianten weiterverarbeitet werden.
+
 Infested Deepslate=Befallener Tiefenschiefer
+
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Ein befallener Block ist ein Block, aus dem ein Silberfisch herausspringt, wenn er abgebaut wird. Er sieht genauso aus wie sein normales Gegenstück.
+
 Hides a silverfish=Versteckt einen Silberfisch
 Tuff=Tuffstein
+
 Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=Tuff ist ein Ziergestein, das aus Vulkasche besteht und in Form von Untergrundklumpen unter Y@=16 vorkommt.
+
 Deepslate Coal Ore=Tiefenschiefer-Steinkohle
+
 Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Steinkohle ist eine Variante von Steinkohle, die in Tiefenschiefer und Tuff generiert werden kann.
+
 Deepslate Iron Ore=Tiefenschiefer-Eisenerz
+
 Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Eisenerz ist eine Variante von Eisenerz, die in Tiefenschiefer und Tuff generiert werden kann.
+
 Deepslate Gold Ore=Tiefenschiefer-Golderz
+
 Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Golderz ist eine Variante von Golderz, die in Tiefenschiefer und Tuff generiert werden kann.
+
 Deepslate Emerald Ore=Tiefenschiefer-Smaragderz
+
 Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Smaragderz ist eine Variante von Smaragderz, die in Tiefenschiefer und Tuff generiert werden kann.
+
 Deepslate Diamond Ore=Tiefenschiefer-Diamanterz
+
 Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Diamanterz ist eine Variante von Diamanterz, die in Tiefenschiefer und Tuff generiert werden kann.
+
 Deepslate Lapis Lazuli Ore=Tiefenschiefer-Lapislazulierz
+
 Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Lapislazulierz ist eine Variante von Lapislazulierz, die in Tiefenschiefer und Tuff generiert werden kann.
+
 Deepslate Copper Ore=Tiefenschiefer-Kupfererz
+
 Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Kupfererz ist eine Variante von Kupfererz, die in Tiefenschiefer und Tuff generiert werden kann.
+
 Deepslate Redstone Ore=Tiefenschiefer-Redstone-Erz
+
 Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=Tiefenschiefer-Redstone-Erz ist eine Variante von Redstone-Erz, die in Tiefenschiefer und Tuff generiert werden kann.
+
 Lit Deepslate Redstone Ore=Leuchtendes Tiefschiefer-Redstone-Erz
 Cobbled Deepslate=Bruchtiefenschiefer
+
 Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone.=Bruchtiefenschiefer funktioniert ähnlich wie Bruchstein, hat jedoch eine längere Abbauzeit.
+
 Cobbled Deepslate Stairs=Bruchtiefenschiefertreppe
 Cobbled Deepslate Slab=Bruchtiefenschieferplatte
 Double Cobbled Deepslate Slab=Doppelte Bruchtiefenschieferplatte

@@ -1,6 +1,8 @@
 # textdomain: mcl_itemframes
 Item frames are decorative blocks in which items can be placed.=アイテムフレームは、アイテムを配置することができる装飾ブロックです。
+
 Just place any item on the item frame. Use the item frame again to retrieve the item.=アイテムフレームに任意のアイテムを置くだけです。アイテムを取り出すには、再度アイテムフレームに触ります。
+
 ##[ register.lua ]##
 Item Frame=アイテムフレーム
 Can hold an item=アイテムを保持可能

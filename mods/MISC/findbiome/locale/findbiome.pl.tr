@@ -1,16 +1,22 @@
 # textdomain: findbiome
 # mod title
-Find Biome=Znajdź biom
-# mod description
-Adds commands to list and find biomes=Dodaje komendy do znajdowania i wypisywania biomów
-
+# mod strings
+# mod title
+Wait until all mods have loaded!=
 # mod strings
 Find and teleport to biome=Znajdź i teleportuj do biomu
 <biome>=<biom>
 No player.=Brak gracza.
-Not supported. The “biomeinfo” mod is required for v6 mapgen support!=Nie wspierane. Aby wspierać generator map v6 wymagany jest mod "biomeinfo"!
 Biome found at @1.=Nie znaleziono biomu w @1. 
 No biome found!=Nie znaleziono biomu!
 Biome does not exist!=Biom nie istnieje!
 List all biomes=Lista biomów.
 No biomes.=Brak biomów.
+
+
+##### not used anymore #####
+
+Find Biome=Znajdź biom
+# mod description
+Adds commands to list and find biomes=Dodaje komendy do znajdowania i wypisywania biomów
+Not supported. The “biomeinfo” mod is required for v6 mapgen support!=Nie wspierane. Aby wspierać generator map v6 wymagany jest mod "biomeinfo"!

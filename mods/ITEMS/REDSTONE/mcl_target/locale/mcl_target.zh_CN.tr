@@ -1,4 +1,6 @@
 # textdomain: mcl_target
 Target=靶子
+
 A target is a block that provides a temporary redstone charge when hit by a projectile.=靶子是一种方块，当被弹射物击中时会产生临时的红石信号。
+
 Throw a projectile on the target to activate it.=向靶子投掷弹射物来激活它。 

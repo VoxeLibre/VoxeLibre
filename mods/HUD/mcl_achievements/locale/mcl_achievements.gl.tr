@@ -26,27 +26,41 @@ Pick up a diamond from the floor.=Colle un diamante do chan.
 Into Fire=No lume
 Pick up a blaze rod from the floor.=Colle unha vara de lume do chan.
 Cow Tipper=Volquete de vacas
+
 Pick up leather from the floor.@nHint: Cows and some other animals have a chance to drop leather, when killed.=Colle coiro do chan.@nSuxestión: as vacas e algúns outros animais teñen a oportunidade de soltar coiro cando os matan.
+
 Getting Wood=Conseguindo madeira 
+
 ##TODO: fuzzy matched - verify and remove the comment
 Pick up a wooden item from the ground.@nHint: Punch a tree trunk until it pops out as an item.=Colle un obxecto de madeira do chan.@nSuxestión: golpea o tronco dunha árbore ata que saia como elemento.
+
 ##TODO: fuzzy matched - verify and remove the comment
 Who's Cutting Onions?=¿Quen está cortando cebolas?
 Pick up a crying obsidian from the floor.=Colle unha obsidiana chorando do chan.
 Hidden in the Depths=Oculto nas profundidades
 Pick up an Ancient Debris from the floor.=Colle un restos antigos do chan.
 The Next Generation=A próxima xeración
+
 Hold the Dragon Egg.@nHint: Pick up the egg from the ground and have it in your inventory.=Manteña o ovo de dragón.@nConsello: colle o ovo do chan e téñao no teu inventario.
+
 Sky's the Limit=O ceo é o límite 
 Find the elytra and prepare to fly above and beyond!=¡Busca os élitros e prepárate para voar máis aló!
 Acquire Hardware=Adquirir hardware
+
 Take an iron ingot from a furnace's output slot.@nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace.=Colle un lingote de ferro da ranura de saída dun forno.@nSuxestión: para fundir un lingote de ferro, pon un combustible (como o carbón) e mineral de ferro nun forno.
+
 Delicious Fish=Peixe delicioso
+
 Take a cooked fish from a furnace.@nHint: Use a fishing rod to catch a fish and cook it in a furnace.=Saca un peixe cocido dun forno.@nSuxestión: usa unha cana de pescar para coller un peixe e cociñalo nun forno.
+
 On A Rail=Nun carril
+
 Travel by minecart for at least 1000 meters from your starting point in a single ride.=Viaxa en carretilla durante polo menos 1000 metros desde o punto de partida nun só paseo.
+
 Sniper Duel=Duelo de arqueiros
+
 Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 20 meters.=Golpear un esqueleto, murchar o esqueleto ou desviarse con arco e frecha desde unha distancia de polo menos 20 metros.
+
 We Need to Go Deeper=Necesitamos Afondar
 Use obsidian and a fire starter to construct a Nether portal.=Usa obsidiana e un iniciador de lume para construír un portal Nether.
 The End?=¿O fin?
@@ -74,7 +88,9 @@ Catch a fish.@nHint: Catch a fish, salmon, clownfish, or pufferfish.=Atrapa un p
 Country Lode, Take Me Home=Magnetita lévame ao lar
 Use a compass on a Lodestone.=Usa un compás sobre una magnetita
 Serious Dedication=Dedicación seria
+
 Use a Netherite Ingot to upgrade a hoe, and then completely reevaluate your life choices.=Usa un lingote de Netherite para actualizar unha aixada e, a continuación, reavalia completamente as túas opcións de vida.
+
 Local Brewery=Cervexaría local
 Brew a Potion.@nHint: Take a potion or glass bottle out of the brewing stand.=PPrepara unha poción.@nSuxestión: Saca unha poción ou unha botella de vidro do posto de elaboración.
 Enchanter=Encantador
@@ -86,7 +102,9 @@ Use a fully powered beacon.=Utiliza unha baliza a máxima potencia.
 The End... Again...=O final... de novo...
 Respawn the Ender Dragon.=Volta a invocar ao dragón final.
 Bee Our Guest=Abelante, este e o teu fogar
+
 Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside.=Usa unha fogueira para recoller unha botella de mel dunha colmea sen agravar as abellas dentro.
+
 Total Beelocation=Abellémonos de aquí
 Move a bee nest, with 3 bees inside, using a silk touch enchanted tool.=Move un niño de abellas, con 3 abellas dentro, usando unha ferramenta encantada de toque de seda.
 Wax On=Encerando ando
@@ -98,7 +116,9 @@ Crafting a New Look=Creando un novo aspecto
 ##TODO: fuzzy matched - verify and remove the comment
 Craft a trimmed armor at a smithing table.=Elabora unha armadura recortada nunha mesa de forxa
 Smithing with Style=Forxando con estilo
+
 Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder=Aplica polo menos unha vez estes modelos de ferraxe: agullas, fuciño, costelas, gardián, silencio, vex, mareas, pionero
+
 Dispense With This=Prescindir disto
 Place a dispenser.=Coloca un dispensador.
 Pork Chop=Costela de porco
@@ -123,7 +143,9 @@ Defeat a ghast with his own weapon.=
 Hero of the Village=Heroe da aldea
 Successfully defend a village from a raid=Defende con éxito unha aldea dunha incursión
 Voluntary Exile=Exilio Voluntario
+
 Kill a raid captain. Maybe consider staying away from the local villages for the time being...=Mata a un capitán de ataque. Quizais considere manterse lonxe das aldeas locais polo momento..
+
 
 
 ##### not used anymore #####

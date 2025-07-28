@@ -1,8 +1,11 @@
 # textdomain: mcl_cauldrons
 Cauldron=Caldeiro
 Stores water=Almacena auga
+
 Cauldrons are used to store water and slowly fill up under rain. They can also be used to wash off banners.=
+
 Place a water bucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water. Use an emblazoned banner on a cauldron with water to wash off its top layer.=
+
 Cauldron (@1/3 Water)=Caldeiro (@1/3 de agua)
 Cauldron (@1/3 Lava)=
 Cauldron (@1/3 River Water)=Caldeiro (@1/3 de auga de río)
@@ -11,4 +14,6 @@ Cauldron (@1/3 River Water)=Caldeiro (@1/3 de auga de río)
 ##### not used anymore #####
 
 Cauldrons are used to store water and slowly fill up under rain.=Os caldeiros empreganse para almacenar auga e énchense lentamente coa choiva.
+
 Place a water bucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water.=Os caldeiros empréganse para almacenar auga e énchense lentamente coa choiva. Coloca un caldeiro de auga no caldeiro para enchelo de auga. Coloca un caldeiro baleiro nun caldeiro cheo para recoller a auga. Coloca unha botella de auga no caldeiro para enchelo nun terzo de auga. Coloca unha botella de vidro nun caldeiro con auga para recoller un terzo da auga.
+

@@ -3,9 +3,16 @@ Repair & Disenchant=Reparar & Desencantar
 Inventory=Inventário
 Grindstone=Rebolo
 Used to disenchant/fix tools=Usado para desencantar/consertar ferramentas
+
 Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Rebolos desencantam ferramentas e armaduras exceto as maldições, e consertam dois itens do mesmo tipo e ainda é a estação de trabalho do armeiro.
+
 To use the grindstone, rightclick it, Two input slots (on the left) and a single output slot.=Para usar o rebolo, clique com o botão direito nele.
+
 To disenchant an item place enchanted item in one of the input slots and take the disenchanted item from the output.=Para desencantar um item posicione o item encantado em um dos slots de entrada e pegue o item desencantado na saída.
+
 To repair a tool you need a tool of the same type and material, put both items in the input slot and the output slot will combine two items durabilities with 5% bonus.=Para consertar uma ferramenta você precisará de uma ferramenta do mesmo tipo e material, ponha ambos os itens nos slots de entrada e o slot de saída irá combinar a durabilidade dos dois itens com um bônus de 5%.
+
 If both items have enchantments the player will get xp from both items from the disenchant.=Se ambos itens possuem encantamentos o jogador receberá XP de ambos os itens no desencanto.
+
 Curses cannot be removed and will be transfered to the new repaired item, if both items have a different curse the curses will be combined.=Maldições não podem ser removidas e serão transferidas para o novo item reparado, se ambos os itens tiverem maldições diferentes, as maldições serão combinadas.
+

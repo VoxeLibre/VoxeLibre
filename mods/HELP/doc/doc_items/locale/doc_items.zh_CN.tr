@@ -3,8 +3,11 @@ This is a decorative block.=
 This block is a building block for creating various buildings.=
 This item is primarily used for crafting other items.=
 Hold it in your hand, then left-click to eat it.=
+
 Hold it in your hand, then left-click to eat it. But why would you want to do this?=
+
 This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=
+
 Hand=
 Air=
 Yes=
@@ -34,7 +37,9 @@ This block cannot be mined by ordinary mining tools.=
 This block can be destroyed by any mining tool in half a second.=
 This block can be destroyed by any mining tool immediately.=
 This block cannot be destroyed by ordinary mining tools.=
+
 This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=
+
 Mining ratings:=
 Toughness level: @1=
 Range: @1=
@@ -52,9 +57,13 @@ Maximum stack size: @1=
 This block points to liquids.=
 This tool points to liquids.=
 This item points to liquids.=
+
 Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=
+
 Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=
+
 Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=
+
 This block belongs to the @1 group.=
 This tool belongs to the @1 group.=
 This item belongs to the @1 group.=
@@ -75,8 +84,11 @@ This block is a liquid with these properties:=
 • Viscosity: @1=
 This block causes a damage of @1 hit points per second.=
 This block causes a damage of @1 hit point per second.=
+
 This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=
+
 This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=
+
 The fall damage on this block is increased by @1%.=
 This block cancels any fall damage.=
 The fall damage on this block is reduced by @1%.=
@@ -99,7 +111,9 @@ This block will drop as an item when no collidable block is below it.=
 Liquids can flow into this block and destroy it.=
 This block is a light source with a light level of @1.=
 This block glows faintly with a light level of @1.=
+
 This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly.=
+
 This block allows light to propagate with a small loss of brightness.=
 This block allows sunlight to propagate without loss in brightness.=
 Unknown Node=
@@ -113,8 +127,10 @@ This block will drop the following when mined: @1.=
 This block will drop the following items when mined: @1.=
 ##TODO: fuzzy matched - verify and remove the comment
 This block will randomly drop one of the following when mined: @1.= 挖掘这个方块时，会随机掉落以下物品中的一个：@1。
+
 ##TODO: fuzzy matched - verify and remove the comment
 This block will randomly drop up to @1 drops of the following possible drops when mined: @2.= 挖掘这个方块时，会随机掉落多达@1个以下可能掉落的物品：@2。
+
 # Final list separator (e.g. “One, two and three”)
  and = 和
 # Item count times item name
@@ -130,7 +146,9 @@ Item reference of all wieldable tools and weapons=
 Durability: @1 uses=
 Durability: @1=
 Miscellaneous items=
+
 Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=
+
 Mobs=
 different mobs=
 Type: @1=
@@ -139,8 +157,11 @@ Can Jump=
 Can Fly=
 drops: =
 follows player when these items are held:=
+
 A transparent block, basically empty space. It is usually left behind after digging something.=
+
 Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=
+
 
 
 ##### not used anymore #####
@@ -156,7 +177,9 @@ Using it as fuel turns it into: @1. = 将其用作燃料会使其变成：@1。
 # Itemname (ca. 25%)
 @1 (ca. @2%) = @1（约@2%）
 1 second = 1秒
+
 A transparent block, basically empty space. It is usually left behind after digging something. = 一种透明方块，基本就是空白空间。通常在挖掘某些东西后会留下它。
+
 Air = 空气
 Blocks = 方块
 Building another block at this block will place it inside and replace it. = 在这个方块上放置另一个方块时，会将其置于内部并替换它。
@@ -167,10 +190,14 @@ Falling blocks can go through this block; they destroy it when doing so. = 下�
 Full punch interval: @1 s = 完整击打间隔：@1秒
 Hand = 手
 Hold it in your hand, then left-click to eat it. = 把它拿在手里，然后左键点击来食用它。
+
 Hold it in your hand, then left-click to eat it. But why would you want to do this? = 把它拿在手里，然后左键点击来食用它。但你为什么要这么做呢？
+
 Item reference of all wieldable tools and weapons = 所有可手持工具及武器的物品参考信息
 Item reference of blocks and other things which are capable of occupying space = 所有能够占据空间的方块及其他物品的参考信息
+
 Item reference of items which are neither blocks, tools or weapons (esp. crafting items) = 既不是方块、工具也不是武器的物品（尤其是制作材料类物品）的参考信息
+
 Liquids can flow into this block and destroy it. = 液体可以流入这个方块并破坏它。
 Maximum stack size: @1 = 最大堆叠数量：@1
 Mining level: @1 = 挖掘等级：@1
@@ -184,9 +211,13 @@ No = 否
 Pointable: No = 可指向的：否
 Pointable: Only by special items = 可指向的：仅能被特殊物品指向
 Pointable: Yes = 可指向的：是
+
 Punches with this block don't work as usual; melee combat and mining are either not possible or work differently. = 用这个方块进行击打不像通常那样起作用；近战和挖掘要么无法进行，要么运作方式不同。
+
 Punches with this item don't work as usual; melee combat and mining are either not possible or work differently. = 用这个物品进行击打不像通常那样起作用；近战和挖掘要么无法进行，要么运作方式不同。
+
 Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently. = 用这个工具进行击打不像通常那样起作用；近战和挖掘要么无法进行，要么运作方式不同。
+
 Range: @1 = 范围：@1
 # Range: <Hand> (<Range>)
 Range: @1 (@2) = 范围：@1（@2）
@@ -197,7 +228,9 @@ Rating @1 = 挖掘速度@1
 Rating @1-@2 = 挖掘速度@1 - @2
 The fall damage on this block is increased by @1%. = 在这个方块上受到的坠落伤害会增加@1%。
 The fall damage on this block is reduced by @1%. = 在这个方块上受到的坠落伤害会减少@1%。
+
 This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly. = 这个方块允许光线传播，亮度会有少量损耗，而太阳光甚至可以无损耗地穿过。
+
 This block allows light to propagate with a small loss of brightness. = 这个方块允许光线传播，亮度会有少量损耗。
 This block allows sunlight to propagate without loss in brightness. = 这个方块允许太阳光无亮度损耗地传播。
 This block belongs to the @1 group. = 这个方块属于@1组。
@@ -207,7 +240,9 @@ This block can be destroyed by any mining tool immediately. = 这个方块可以
 This block can be destroyed by any mining tool in half a second. = 这个方块可以在半秒钟内被任何挖掘工具破坏。
 This block can be mined by any mining tool immediately. = 这个方块可以立即被任何挖掘工具挖掘。
 This block can be mined by any mining tool in half a second. = 这个方块可以在半秒钟内被任何挖掘工具挖掘。
+
 This block can be mined by mining tools which match any of the following mining ratings and its toughness level. = 这个方块可以被符合以下任何挖掘评级及其硬度等级的挖掘工具挖掘。
+
 This block cannot be destroyed by ordinary mining tools. = 这个方块无法被普通挖掘工具破坏。
 This block cannot be mined by ordinary mining tools. = 这个方块无法被普通挖掘工具挖掘。
 This block can serve as a smelting fuel with a burning time of @1. = 这个方块可以用作熔炼燃料，燃烧时间为@1。
@@ -217,8 +252,11 @@ This block connects to blocks of the @1 group. = 这个方块与@1组的方块�
 This block connects to blocks of the following groups: @1. = 这个方块与以下这些组的方块相连接：@1。
 This block connects to these blocks: @1. = 这个方块与这些方块相连接：@1。
 This block connects to this block: @1. = 这个方块与这个方块相连接：@1。
+
 This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds. = 这个方块会减少你的氧气量，并且每2秒造成@1点溺水伤害。
+
 This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds. = 这个方块会减少你的氧气量，并且每2秒造成@1点生命值的溺水伤害。
+
 This block is a light source with a light level of @1. = 这个方块是一个亮度等级为@1的光源。
 This block glows faintly with a light level of @1. = 这个方块以亮度等级为@1的微弱光线发光。
 This block is a building block for creating various buildings. = 这个方块是用于建造各种建筑的建筑方块。
@@ -255,7 +293,9 @@ Tools and weapons = 工具和武器
 Unknown Node = 未知方块
 Usage help: @1 = 使用帮助：@1
 Walking on this block is completely silent. = 在这个方块上行走时完全没有声音。
+
 Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand. = 无论何时你没有手持任何物品，你使用的手就相当于一个有自身功能的工具。当你手持的物品不是挖掘工具或武器时，它的作用就如同空手时一样。
+
 Yes = 是
 You cannot jump while standing on this block. = 站在这个方块上时你无法跳跃。
 any level = 任何等级
@@ -277,6 +317,8 @@ Durability: @1 = 耐久度：@1
 Durability: = 耐久度：
 • @1, level @2: @3 uses = • @1，等级@2：@3次使用
 • @1, level @2: Unlimited = • @1，等级@2：无限制
+
 This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead. = 这个方块的旋转受放置方式影响：将其放置在地板或天花板上可使其呈垂直方向；放置在侧面则呈水平方向。放置时潜行会使其呈垂直方向。
+
 Toughness level: @1 = 硬度等级：@1
 This block is slippery. = 这个方块很滑。 

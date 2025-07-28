@@ -1,6 +1,8 @@
 # textdomain: mcl_music
 Turn music for yourself or another player on or off.=为自己或其他玩家开启或关闭音乐。
+
 You need the debug privilege in order to turn in-game music on or off for somebody else!=你需要调试权限才能为其他人开启或关闭游戏内音乐！
+
 Could not find player @1!=找不到玩家@1！
 off=关闭
 on=开启

@@ -4,4 +4,6 @@ Inventory=Inventar
 Zooming a map may take several seconds to generate the world, please wait.=Eine Karte zu vergrößern kann einige Sekunden benötigen, bitte warten.
 The zoomed map is now ready.=Die vergrößerte Karte ist jetzt bereit.
 Used to copy, lock, and zoom maps=Kann Karten kopieren, sperren und vergrößern.
+
 A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and the maximum zoom level may be restricted by server settings to limit the performance impact.=Ein Kartentisch ermöglicht es, Karten zu kopieren, zu sperren, oder zu vergrößern. Sperren ist noch nicht nützlich, und der maximale Zoomlevel kann in den Servereinstellungen begrenzt sein, um die Rechenzeit zu begrenzen.
+

@@ -20,7 +20,9 @@ This is a very brief introduction to the basic gameplay:=基本的なゲーム�
 • [Esc] to close this window=・[Esc]でこのウィンドウを閉じる
 How to play:=プレイ方法
 • Punch a tree trunk until it breaks and collect wood=・木の幹が折れるまで叩き、木材を集める
+
 • Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=・インベントリメニューの2×2グリッド（クラフト用グリッド）に木を置き、板材を4枚クラフト
+
 • Place them in a 2×2 shape in the crafting grid to craft a crafting table=・それらをクラフトグリッドに2×2の形で配置し、作業台をクラフト
 • Place the crafting table on the ground=・作業台を地面に置く
 • Rightclick it for a 3×3 crafting grid=・それを右クリックで、3×3のクラフトグリッドが表示される
@@ -29,17 +31,29 @@ How to play:=プレイ方法
 • Different tools break different kinds of blocks. Try them out!=・道具によって壊せるブロックの種類が異なる。試してみよう！
 • Continue playing as you wish. There's no goal. Have fun!=・思いのままにプレイを続けよう。ゴールはありません。楽しんで！
 Minetest=Minetest（マインテスト）
+
 Minetest is a free software game engine for games based on voxel gameplay, inspired by InfiniMiner, Minecraft, and the like. Minetest was originally created by Perttu Ahola (alias “celeron55”).=Minetestは、InfiniMinerやMinecraftなどに影響を受けた、ボクセルゲームプレイに基づいたゲームのためのフリーソフトウェア・ゲームエンジンです。Minetestのオリジナルは、Perttu Ahola (別名"celeron55") によって作成されました。
+
 The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest can, however, be much more complex than this.=プレイヤーは、立方体やブロックでできた巨大な世界に放り込まれます。これらのキューブは大抵、ほぼ自由にブロックを削除・配置でき、景観を作りあげます。収集したアイテムを使って、新しい道具や他のアイテムを作れます。Minetestのゲームは、しかし、これよりもはるかに複雑にできます。
+
 A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorative blocks or be very complex by, e.g., introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.=Minetestの中核を成すのは、組み込みのMOD（モディファイ）機能です。MODとは、既存のゲームプレイを改造するものです。装飾ブロックを追加するだけの簡単なものから、全く新しいゲームプレイコンセプトを導入したり、全く異なる種類の世界を生成したりする非常に複雑なものまで、多岐にわたります。
+
 Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.=Minetestは、一人でプレイすることも、複数のプレイヤーと一緒にオンラインでプレイすることも可能です。サーバーが全てを提供するため、どんなMODでもオンラインプレイはそのまま動作し、追加のソフトウェアも要りません。
+
 Minetest is usually bundled with a simple default game, named “Minetest Game” (shown in images 1 and 2). You probably already have it. Other games for Minetest can be downloaded from the official Minetest forums <https://forum.minetest.net/viewforum.php?f@=48>.=Minetestには通常、「Minetest Game」という名前のシンプルな基本のゲームが同梱されています（画像1、2のとおり）。おそらく、すでにお持ちでしょう。Minetest用の他のゲームは、Minetestの公式フォーラム <https://forum.minetest.net/viewforum.php?f@=48> からダウンロードできます。
+
 Sneaking=スニーキング
+
 Sneaking makes you walk slower and prevents you from falling off the edge of a block.=スニークすると遅く歩くようになり、またブロックの端から落下するのを防ぐ効果もあります。
+
 To sneak, hold down the sneak key (default: [Shift]). When you release it, you stop sneaking. Careful: When you release the sneak key at a ledge, you might fall!=スニークするには、スニークキー（デフォルト：[Shift]）を押してください。離すとスニーキングをやめます。注：崖っぷちでスニークキーを離すと、落ちるかもしれません！
+
 • Sneak: [Shift]=・スニーク：[Shift]
+
 Sneaking only works when you stand on solid ground, are not in a liquid and don't climb.=スニーキングは、固い地面の上に立ち、液体の中におらず、よじ登ったりしていない場合にのみ有効です。
+
 Sneaking might be disabled by mods. In this case, you still walk slower by sneaking, but you will no longer be stopped at ledges.=スニーキングはMODによって無効化される場合があります。この場合、歩行の鈍化は残りますが、崖っぷちに留まる機能は無くなっています。
+
 Controls=操作
 These are the default controls:=デフォルトの操作：
 Basic movement:=基本的な移動：
@@ -57,8 +71,11 @@ While on a ladder, swimming in a liquid or fly mode is active=ハシゴに登上
 • Shift: Move down=・Shift：下降
 Extended movement (requires privileges):=拡張移動（要権限）：
 • J: Toggle fast mode, makes you run or fly fast (requires “fast” privilege)=・J：高速モードに切替えで、走行・飛行が速くなる（要 "fast" 権限）
+
 • K: Toggle fly mode, makes you move freely in all directions (requires “fly” privilege)=・K：飛行モードに切替えで、全方向に自由移動が可能（要 "fly" 権限）
+
 • H: Toggle noclip mode, makes you go through walls in fly mode (requires “noclip” privilege)=・H：壁抜けモードに切替えで、飛行モード中に壁抜けが可能（要 "noclip" 権限）
+
 • E: Walk fast in fast mode=・E：高速モードで早歩き
 World interaction:=ワールドでの作用：
 • Left mouse button: Punch / mine blocks=・左クリック：叩く ／ ブロック採掘
@@ -72,7 +89,9 @@ World interaction:=ワールドでの作用：
 Inventory interaction:=インベントリでの作用：
 See the entry “Basics > Inventory”.=エントリー“Basics > Inventory”を参照の事。
 Hunger/Eating:=
+
 • While holding food, hold the right mouse button (PC) or double-tap and hold the second tap (Android) to eat=
+
 Camera:=カメラ：
 • Z: Zoom=・Z：ズーム
 • F7: Toggle camera mode=・F7：カメラモード切替
@@ -88,7 +107,9 @@ Server interaction:=サーバーでの作用：
 • T: Open chat window (chat requires the “shout” privilege)=・T：チャットウィンドウを開く（チャットには "shout" 権限が必要）
 • /: Start issuing a server command=・/：サーバーコマンドの発行開始
 Technical:=技術的なやつ：
+
 • R: Toggle far view (disables all fog and allows viewing far away, can make game very slow)=・R：遠景の切替え（すべてのフォグを無効にして遠景を望めるが、ゲームを非常に遅くする場合あり）
+
 • +: Increase minimal viewing distance=・+：最短視野距離の拡大
 • -: Decrease minimal viewing distance=・-：最短視野距離の縮小
 • F3: Enable/disable fog=・F3：フォグの有効/無効
@@ -96,8 +117,11 @@ Technical:=技術的なやつ：
 • F6: Only useful for developers. Enables/disables profiler=・F6：開発者のみに有用。プロファイラの有効化/無効化
 Players=プレイヤー
 Players (actually: “player characters”) are the characters which users control.=プレイヤー（正しくは「プレイヤーキャラクター」）とは、ユーザーが操作するキャラクターを指します。
+
 Players are living beings. They start with a number of health points (HP) and a number of breath points (BP).=プレイヤーは生きている存在です。多数のHP（ヘルスポイント）とBP（ブレスポイント）でスタートします。
+
 Players are capable of walking, sneaking, jumping, climbing, swimming, diving, mining, building, fighting and using tools and blocks.=プレイヤーは、歩く、忍び寄る、ジャンプする、よじ登る、泳ぐ、潜る、採掘する、建てる、戦う、そして道具やブロックを使うことができます。
+
 Players can take damage for a variety of reasons, here are some:=プレイヤーはさまざまな理由でダメージを受けますが、いくつか紹介します：
 • Taking fall damage=・落下ダメージを受ける
 • Touching a block which causes direct damage=・直接ダメージを与えるブロックに触れる
@@ -105,111 +129,192 @@ Players can take damage for a variety of reasons, here are some:=プレイヤー
 • Being attacked by another player=・他のプレイヤーから攻撃される
 • Being attacked by a computer enemy=・コンピュータの敵から攻撃される
 At a health of 0, the player dies. The player can just respawn in the world.=体力が0になると、プレイヤーは死亡します。プレイヤーはワールドにただリスポーンします。
+
 Other consequences of death depend on the game. The player could lose all items, or lose the round in a competitive game.=その他、死亡した場合の結果はゲームによって異なります。プレイヤーはすべてのアイテムを失ったり、対戦ゲームでは失点する可能性があります。
+
 Some blocks reduce breath. While being with the head in a block which causes drowning, the breath points are reduced by 1 for every 2 seconds. When all breath is gone, the player starts to suffer drowning damage. Breath is quickly restored in any other block.=いくつかの溺れる効果のあるブロックに頭を入れている間は、2秒ごとにBP（ブレスポイント）が1ずつ減少します。息がなくなると、溺水ダメージを受けるようになります。そのほかのブロックではすぐに呼吸が回復します。
+
 Damage can be disabled on any world. Without damage, players are immortal and health and breath are unimportant.=ダメージはどのワールドでも無効にできます。 ダメージがなければプレイヤーは不死であり、ヘルスやブレスは重要ではありません。
+
 In multi-player mode, the name of other players is written above their head.=マルチプレイモードでは、他のプレイヤーの頭上に名前が表示されます。
 Items=アイテム
+
 Items are things you can carry along and store in inventories. They can be used for crafting, smelting, building, mining, and more. Types of items include blocks, tools, weapons and items only used for crafting.=アイテムは、携行したりインベントリに格納したりできるものです。クラフト、製錬、建築、採掘などに使えます。アイテムの分類としては、ブロック、ツール、武器、そしてクラフト専用アイテム等があります。
+
 An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=アイテムスタックとは、１つのアイテムスロットに入る、同一種アイテムのまとまりです。アイテムスタックは地面に落とせます。同じ座標にドロップしたアイテムは、アイテムスタックを形成します。
+
 Items have several properties, including the following:=アイテムには、次のようないくつかのプロパティが含まれます：
 • Maximum stack size: Number of items which fit on 1 item stack=・最大スタックサイズ：1アイテムスタックに収まるアイテム数
+
 • Pointing range: How close things must be to be pointed while wielding this item=・ポイント範囲：このアイテムを手に持っている時、モノがどのくらい近くにあればポイントできるか
+
 • Group memberships: See “Basics > Groups”=・グループのメンバーシップ：“Basics > Groups”参照
 • May be used for crafting or cooking=・クラフトや調理に使えるかも
 Tools=道具
+
 Some items may serve as a tool when wielded. Any item which has some special use which can be directly used by its wielder is considered a tool.=アイテムによっては、手に持つことで道具として役目を果たすことがあります。使い手が直接使用できる何らかの特有な用途を持つアイテムは、道具とみなされます。
+
 A common subset of tools is mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.=道具の中の分類で一般的なのは、採掘道具です。これらは、あらゆるブロックを壊すために重要です。武器も道具の一種です。もちろん、他にも多くの道具があります。道具の特殊な操作は、通常、左クリックか右クリックで行います。
+
 When nothing is wielded, players use their hand which may act as tool and weapon.=何も手に持っていないとき、プレイヤーは、道具や武器としても振る舞う自分の手を使います。
+
 Many tools will wear off when using them and may eventually get destroyed. The damage is displayed in a damage bar below the tool icon. If no damage bar is shown, the tool is in mint condition. Tools may be repairable by crafting, see “Basics > Crafting”.=多くの道具は使っていると消耗していき、ついには壊れてしまうこともあります。ダメージは、道具のアイコンの下にあるダメージバーで表示されます。ダメージバーが表示されていない場合、その道具は新品同様です。道具はクラフトで修理できる場合があります。“Basics > Crafting”を参照してください。
+
 Weapons=武器
+
 Some items are usable as a melee weapon when wielded. Weapons share most of the properties of tools.=一部のアイテムは、手に持つと近接武器として使えます。武器は、道具のプロパティのほとんどを共有しています。
+
 Melee weapons deal damage by punching players and other animate objects. There are two ways to attack:=近接武器は、プレイヤーや他のMOBを叩くことでダメージを与えることができます。攻撃方法は次の２つ：
+
 • Single punch: Left-click once to deal a single punch=・単発攻撃：左クリック１回で、単一の攻撃
 • Quick punching: Hold down the left mouse button to deal quick repeated punches=・連続攻撃：マウスの左ボタンを押したままで、攻撃を素早く繰り返す
 There are two core attributes of melee weapons:=近接武器の核となる性質は次の２つ：
+
 • Maximum damage: Damage which is dealt after a hit when the weapon was fully recovered=・最大ダメージ：武器の力が完全に復帰している場合の、ヒット後の与ダメージ
+
 • Full punch interval: Time it takes for fully recovering from a punch=・全力攻撃間隔：攻撃後、力が完全に復帰するまでの時間
+
 A weapon only deals full damage when it has fully recovered from a previous punch. Otherwise, the weapon will deal only reduced damage. This means, quick punching is very fast, but also deals rather low damage. Note the full punch interval does not limit how fast you can attack.=武器は、前の攻撃から完全に復帰したときのみ、全力でダメージを与えます。そうでない場合、武器が与えられるダメージは減少します。つまり、連続攻撃は非常に速いですが、与えるダメージはむしろ低くなります。なお、全力攻撃の間隔は、攻撃できる速さを制限するものではありません。
+
 There is a rule which sometimes makes attacks impossible: Players, animate objects and weapons belong to damage groups. A weapon only deals damage to those who share at least one damage group with it. So if you're using the wrong weapon, you might not deal any damage at all.=時々、攻撃が不可能になるルール：プレイヤー、MOB、武器はダメージグループに属します。武器は、少なくとも１つのダメージグループを共有している相手にしか、ダメージを与えません。なので使う武器が悪いと、なんのダメージも与えられないことがあります。
+
 Pointing=ポイントする
+
 “Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, players, computer enemies and objects.=「ポイントする」とは、 十字線で範囲内の何かを指すことです。採掘、攻撃、使う、等といった相互作用に必要です。ポイント可能なものには、ブロック、プレイヤー、コンピュータの敵やオブジェクトがあります。
+
 To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.=何かをポイントするためには、その何かが、手に持っているアイテムのポイント範囲（単に「範囲」とも呼ばれます）内にある必要があります。何も手に持っていない時のデフォルトの範囲もあります。ポイントされたものは、輪郭が強調されるか、またはハイライトされます（設定による）。3人称視点のフロントカメラでは、ポイントする事はできません。
+
 A few things cannot be pointed. Most blocks are pointable. A few blocks, like air, can never be pointed. Other blocks, like liquids can only be pointed by special items.=いくつかのものはポイントできません。ほとんどのブロックはポイント可能です。空気のようないくつかのブロックは、決して指すことができません。液体のような他のブロックは、特別なアイテムによってのみ指さすことができます。
+
 Camera=カメラ
+
 There are 3 different views which determine the way you see the world. The modes are:=ワールドの見方を決める3つの視点があります。モードは次のとおり：
+
 • 1: First-person view (default)=・1：一人称視点（デフォルト）
 • 2: Third-person view from behind=・：背後からの三人称視点
 • 3: Third-person view from the front=・：前面からの三人称視点
 You can change the camera mode by pressing [F7].=[F7]を押すと、カメラモードを変更できます。
+
 You might be able to zoom with [Z] to zoom the view at the crosshair. This allows you to look further.=[Z]を押すと十字線に沿った視界をズームできる、かもしれません。これによって、より遠くを望めます。
+
 Zooming is a gameplay feature that might be enabled or disabled by the game. By default, zooming is enabled when in Creative Mode but disabled otherwise.=ズーム操作は、ゲームによって有効または無効になる可能性のあるゲームプレイ機能です。デフォルトでは、ズームが有効なのはクリエイティブモードのみで、それ以外なら無効化されています。
+
 • Switch camera mode: [F7]=・カメラモードの切替：[F7]
 • Zoom: [Z]=・ズーム：[Z]
 Blocks=ブロック
+
 The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=ワールドは、すべてがブロック（正確にはボクセル）で構成されています。ブロックは、適切なツールで追加や削除ができます。
+
 Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:=ブロックは幅広く多様なプロパティを持つことができ、採掘時間、動作、外観、形状などが定まります。プロパティは次のとおり：
+
 • Collidable: Collidable blocks cannot be passed through; players can walk on them. Non-collidable blocks can be passed through freely=・衝突性：衝突性ブロックは通過できず、プレイヤーはその上を歩ける。非衝突性ブロックは、自由に通り抜けられる
+
 • Pointable: Pointable blocks show a wireframe or a halo box when pointed. But you will just point through non-pointable blocks. Liquids are usually non-pointable but they can be pointed at by some special tools=・ポイント可能なブロックは、ポイントするとワイヤーフレームまたはハイライトボックスが表示される。しかしポイント不可能なブロックでは、判定がただ通り抜ける。液体はたいていポイント不可能だが、いくつかの特殊な道具ならポイントできる
+
 • Mining properties: By which tools it can be mined, how fast and how much it wears off tools=・採掘のプロパティ：どのような道具で採掘できるか、道具の消耗はどの程度か、など
+
 • Climbable: While you are at a climbable block, you won't fall and you can move up and down with the jump and sneak keys=・よじ登り可能：よじ登り可能なブロックにいる間は落下せず、ジャンプキーとスニークキーで上下に移動できる
+
 • Drowning damage: See the entry “Basics > Player”=・溺水ダメージ：エントリー“Basics > Player”参照
 • Liquids: See the entry “Basics > Liquids”=・液体：エントリー“Basics > Liquids”参照
+
 • Group memberships: Group memberships are used to determine mining properties, crafting, interactions between blocks and more=・グループの帰属関係：グループの帰属関係は、採掘のプロパティ、クラフト、ブロック間の相互作用などを定めるために用いられる
+
 Mining=採掘
+
 Mining (or digging) is the process of breaking blocks to remove them. To mine a block, point it and hold down the left mouse button until it breaks.=採掘（または掘削）とは、ブロックを掘り壊して取り除く工程のことです。ブロックを掘るには、ブロックをポイントし、それが壊れるまでマウスの左ボタンを押し続けます。
+
 Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks cannot be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.=ブロックを掘るには、採掘道具を要します。採掘道具によって掘れるブロックが異なり、どんな道具でも掘れないブロックもあります。ブロックの硬さはさまざまで、道具の強さもさまざまです。採掘道具は使用時間に応じて消耗します。採掘時間と道具の消耗は、ブロックと採掘道具によって異なります。採掘道具の効率を知るには、様々なブロックで試してみるのが一番早いでしょう。アイテムは採掘によって地面に落ちるので、すぐに収集できます。
+
 After mining, a block may leave a “drop” behind. This is a number of items you get after mining. Most commonly, you will get the block itself. There are other possibilities for a drop which depends on the block type. The following drops are possible:=採掘後、ブロックが「ドロップ」を残すことがあります。これは、採掘後に得られるアイテムの数々です。最も一般的なのは、そのブロックそのものを入手することです。その他にも、ブロックの種類によってドロップの可能性があります。考えられるドロップは次の通り：
+
 • Always drops itself (the usual case)=・常にそれ自身をドロップ（大抵の場合）
 • Always drops the same items=・常に同じアイテムをドロップ
 • Drops items based on probability=・確率でアイテムをドロップ
 • Drops nothing=・ドロップなし
 Building=構築
+
 Almost all blocks can be built (or placed). Building is very simple and has no delay.=ほぼすべてのブロックが構築（配置）可能です。構築はとてもシンプルで、遅延もありません。
+
 To build your wielded block, point at a block in the world and right-click. If this is not possible because the pointed block has a special right-click action, hold down the sneak key before right-clicking.=手に持ったブロックを構築するには、ワールド内のブロックをポイントして右クリックします。これができない場合は、ポイントしたブロックが特殊な右クリックアクションを持っているせいである為、スニークキーを押しながら右クリックしてください。
+
 Blocks can almost always be built at pointable blocks. One exception are blocks attached to the floor; these can only be built on the floor.=ブロックは、ほとんどの場合、ポイント可能なブロックに構築できます。例外として、床に付属するブロックは、床の上にしか構築できません。
+
 Normally, blocks are built in front of the pointed side of the pointed block. A few blocks are different: When you try to build at them, they are replaced.=通常、ブロックはポイントした側を前にして構築されます。一部の違うブロック：そのブロックに向かって構築しようとすると、置き換えられます。
+
 Liquids=液体
+
 Liquids are special dynamic blocks. Liquids like to spread and flow to their surrounding blocks. Players can swim and drown in them.=液体は特殊な動的ブロックです。液体は周囲のブロックに広がり、流れていく習性があります。プレイヤーはその中で泳いだり、溺れたりできます。
+
 Liquids usually come in two forms: In source form (S) and in flowing form (F).=液体が通常取りうる２つの形態：源泉型（S）と流動型（F）である。
+
 Liquid sources have the shape of a full cube. A liquid source will generate flowing liquids around it from time to time, and, if the liquid is renewable, it also generates liquid sources. A liquid source can sustain itself. As long it is left alone, a liquid source will normally keep its place and does not drain out.=液体源は完全な立方体の形を持っています。液体源は時々その周りに流動液体を発生させ、もし液体が再生可能であれば、液体源も発生させます。液体源は自身を維持できます。放っておく限り、液体源は通常その場所を保ち、流出しません。
+
 Flowing liquids take a sloped form. Flowing liquids spread around the world until they drain. A flowing liquid cannot sustain itself and always comes from a liquid source, either directly or indirectly. Without a liquid source, a flowing liquid will eventually drain out and disappear.=流動液体は、傾斜した形状をとります。それらは枯渇するまでワールド中に広がります。流動液体は自身を維持できず、常に直接的または間接的に液体源から生じます。液体源がなければ、流動液体はやがて流出しきって消えます。
+
 All liquids share the following properties:=すべての液体に共通するプロパティは次のとおり：
 • All properties of blocks (including drowning damage)=・ブロックのプロパティ全般（溺水ダメージ含む）
 • Renewability: Renewable liquids can create new sources=・再生可能性：再生可能な液体は、新たな源泉を生み出せる
+
 • Flowing range: How many flowing liquids are created at maximum per liquid source, it determines how far the liquid will spread. Possible are ranges from 0 to 8. At 0, no flowing liquids will be created. Image 5 shows a liquid of flowing range 2=・流動範囲：液体源１つにつき、最大でどれだけの流動液体を生むか、液体がどこまで広がるかの設定。可能な範囲は0から8まで。0の場合、流動液体は発生しない。画像5は、流動範囲2の液体
+
 • Viscosity: How slow players move through it and how slow the liquid spreads=・粘性：プレイヤーがその中を移動する際の遅さ、液体が広がる際の遅さ
+
 Renewable liquids create new liquid sources at open spaces (image 2). A new liquid source is created when:=再生可能な液体は、空きスペースに新たな液体源を生み出します（画像2）。新しい液体源ができる時は次のとおり：
+
 • Two renewable liquid blocks of the same type touch each other diagonally=・同じ種類の再生可能な液体ブロック2個が、斜めに接する
 • These blocks are also on the same height=・これらのブロックも同じ高さにある
 • One of the two “corners” is open space which allows liquids to flow in=・２つの「かど」のうち１つは、液体が流れ込む空きスペース
+
 When those criteria are met, the open space is filled with a new liquid source of the same type (image 3).=それらの条件を満たすと、空きスペースに同じ種類の新しい液体源が充填されます（画像3）。
+
 Swimming in a liquid is fairly straightforward: The usual direction keys for basic movement, the jump key for rising and the sneak key for sinking.=液体の中を泳ぐのはとても直感的：基本的な動きは通常の方向キー、浮上はジャンプキー、潜水はスニークキーで行います。
+
 The physics for swimming and diving in a liquid are:=液体の中を泳いだり潜ったりするときの物理は：
 • The higher the viscosity, the slower you move=・粘度が高いほど、動きが遅くなる
 • If you rest, you'll slowly sink=・休んでいると、じわじわと沈む
 • There is no fall damage for falling into a liquid as such=・このように、液体に落下しても落下ダメージはない
+
 • If you fall into a liquid, you will be slowed down on impact (but don't stop instantly). Your impact depth is determined by your speed and the liquid viscosity. For a safe high drop into a liquid, make sure there is enough liquid above the ground, otherwise you might hit the ground and take fall damage=液中に落ちると衝撃で速度が落ちる（但し瞬時には止まらない）。衝撃の深さは、速度と液体の粘性によって決まる。液体へ安全に高飛び込みするには、地面より上に十分な液体があることを確認する。そうでなければ、地面に衝突して落下ダメージを受ける可能性がある
+
 Liquids are often not pointable. But some special items are able to point all liquids.=液体は往々にしてポイント不可能です。しかし一部の特殊なアイテムは、すべての液体をポイントすることができます。
+
 Crafting=クラフト
 Crafting is the task of combining several items to form a new item.=クラフトとは、複数のアイテムを組み合わせて新しいアイテムを作りだす作業です。
+
 To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=何かをクラフトするには、１つ以上のアイテム、クラフトグリッド（C）、クラフトレシピが必要です。クラフトグリッドは通常のインベントリのようなもので、クラフトにも使えます。アイテムは、クラフトグリッドに一定のパターンで配置する必要があります。クラフトグリッドの隣には、アウトプットスロット（O）があります。ここにアイテムを正しく配置すると、結果が表示されます。これはあくまでプレビューであり、実際のアイテムではありません。クラフトグリッドの大きさはまちまちなため、クラフトできるレシピが制限されたりもします。
+
 To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.=クラフトを完成させるには、出力スロットから結果のアイテムを取ります。このとき、クラフトグリッドからアイテムが消費され、新しいアイテムが作成されます。出力スロットにはアイテムを配置できません。
+
 A description on how to craft an item is called a “crafting recipe”. You need this knowledge to craft. There are multiple ways to learn crafting recipes. One way is by using a crafting guide, which contains a list of available crafting recipes. Some games provide crafting guides. There are also some mods which you can download online for installing a crafting guide. Another way is by reading the online manual of the game (if one is available).=アイテムのクラフト方法を記したものを「クラフトレシピ」と呼びます。この知識は、クラフトをするのに必要です。クラフトレシピを覚えるには、複数の方法があります。1つは、クラフトレシピの使用可能なリストを含むクラフトガイドを使用する方法です。いくつかのゲームではクラフトガイドを提供しています。また、クラフトガイドをインストールするために、オンラインでダウンロードできるMODがいくつかあります。もう1つの方法は、ゲームのオンラインマニュアルを読むことです（利用可能な場合）。
+
 Crafting recipes consist of at least one input item and exactly one stack of output items. When performing a single craft, it will consume exactly one item from each stack of the crafting grid, unless the crafting recipe defines replacements.=クラフトレシピは、少なくとも1つの入力アイテムと、ちょうど1つの出力アイテムのスタックから成ります。1つのクラフトを実行するとき、クラフトレシピが置換を定義していない限り、クラフトグリッドの各スタックから正確に1つのアイテムを消費します。
+
 There are multiple types of crafting recipes:=クラフトレシピは次のような複数の種類がある：
 • Shaped (image 2): Items need to be placed in a particular shape=・整形（画像2）：アイテムは特定の形に配置する必要がある
+
 • Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=形なし（画像3、4）：アイテムは入力のどこかしらに置く必要がある（両画像とも同じレシピを表示）
+
 • Cooking: Explained in “Basics > Cooking”=・調理：“Basics > Cooking”に解説あり
+
 • Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%=修復（画像5）：損傷した道具を2つ、任意のクラフトグリッドに置くと、5%修復された道具が手に入る
+
 In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=・クラフトレシピの中には、入力アイテムが具体的でなくてもよいものがあり、その代わりグループに属している必要があります（“Basics > Groups”参照）。これらのレシピでは、入力アイテムにいくらか自由度があります。画像6-8は、同じグループ基準のレシピを示したものです。ここでは"stone "グループのアイテムが8つ必要であり、これは表示されているすべてのアイテムに当てはまります。
+
 Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item.=まれに、クラフトレシピには置換があります。これは、クラフトを実行するたびに、クラフトグリッド内の一部のアイテムが消費されず、代わりに別のアイテムに置き換わることを意味します。
+
 Cooking=調理
+
 Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), a cookable item, a fuel item and time in order to yield a new item.=調理(または製錬)は、クラフトグリッドを使用しないクラフトの一形態です。調理は、新しいアイテムを作るために、特別なブロック（かまどみたいな）、調理可能なアイテム、燃料アイテム、時間を使って行われます。
+
 Each fuel item has a burning time. This is the time a single item of the fuel keeps a furnace burning.=各燃料には燃焼時間があります。これは、1つの燃料がかまどの燃焼を維持する時間です。
+
 Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.=調理可能な各アイテムは、調理するために時間を要します。この時間はアイテムの種類によって異なり、実際に結果を得るためには、調理時間全体にわたってアイテムに「火が通って」いなければいけません。
+
 Hotbar=ホットバー
+
 At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=画面の下に、いくつか四角いものが見えます。これは「ホットバー」と呼ばれるものです。ホットバーを使うと、インベントリの初段のアイテムに素早くアクセスできます。
+
 You can change the selected item with the mouse wheel or the keyboard.=選択した項目は、マウスホイールやキーボードで変更できます。
 • Select previous item in hotbar: [Mouse wheel up] or [B]=・ホットバーの選択項目を前へ：[マウスホイール上] or [B]
 • Select next item in hotbar: [Mouse wheel down] or [N]=・ホットバーの選択項目を次へ：[マウスホイール下] or [N]
@@ -217,17 +322,26 @@ You can change the selected item with the mouse wheel or the keyboard.=選択し
 The selected item is also your wielded item.=選択したアイテムは、手に持ったアイテムでもあります。
 Minimap=ミニマップ
 If you have a map item in any of your hotbar slots, you can use the minimap.=いずれかのホットバースロットにマップアイテムがあれば、ミニマップが使えます。
+
 Press [F9] to make a minimap appear on the top right. The minimap helps you to find your way around the world. Press it again to select different minimap modes and zoom levels. The minimap also shows the positions of other players.=[F9]を押すと、右上にミニマップが表示されます。ミニマップは世界各地での道しるべになります。もう一度押すと、ミニマップモードやズームレベルが切替わります。ミニマップには、他のプレイヤーの位置も表示されます。
+
 There are 2 minimap modes and 3 zoom levels.=2つのミニマップモードと、3つのズームレベルがあります。
+
 Surface mode (image 1) is a top-down view of the world, roughly resembling the colors of the blocks this world is made of. It only shows the topmost blocks, everything below is hidden, like a satellite photo. Surface mode is useful if you got lost.=表層モード（画像1）はワールドを見下ろした光景で、このワールドを形作っているブロックの色に似通っています。一番上のブロックだけが表示され、その下は衛星写真のように隠れています。表層モードは、迷子になったときに便利です。
+
 Radar mode (image 2) is more complicated. It displays the “denseness” of the area around you and changes with your height. Roughly, the more green an area is, the less “dense” it is. Black areas have many blocks. Use the radar to find caverns, hidden areas, walls and more. The rectangular shapes in image 2 clearly expose the position of a dungeon.=レーダーモード（画像2）はもっと複雑です。これはあなたの周りのエリアの「密集度」を表示し、あなたの高度に応じて変化します。大雑把に言うと、緑色の部分が多いほど「密集」していない事になります。黒いエリアはブロックがたくさんあります。レーダーを使って、洞窟や隠し場所、壁などを発見してみましょう。画像2の四角い形は、ダンジョンの位置を明確に表しています。
+
 There are also two different rotation modes. In “square mode”, the rotation of the minimap is fixed. If you press [Shift]+[F9] to switch to “circle mode”, the minimap will instead rotate with your looking direction, so “up” is always your looking direction.=また、2種類の回転モードがあります。「正方形モード」では、ミニマップの回転は固定されています。[Shift] + [F9]を押して「円形モード」に切り替えると、ミニマップはあなたの視線方向に合わせて回転し、常に「上」があなたの視線方向となります。
+
 In some games, the minimap may be disabled.=ゲームによっては、ミニマップが無効になっている場合があります。
 • Toggle minimap mode: [F9]=・ミニマップのモードを切替：[F9]
 • Toggle minimap rotation mode: [Shift]+[F9]=・ミニマップの回転モードを切替：[Shift] + [F9]
 Inventory=インベントリ
+
 Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=インベントリは、アイテムスタックを収納するために使います。他にもクラフトなどの用途があります。インベントリは、アイテムスロットの四角いグリッドで構成されています。各アイテムスロットは、空の状態か、1つのアイテムスタックを保持できます。アイテムのスタックは、ほとんどのスロット間で自由に移動できます。
+
 You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=「プレイヤーインベントリ」と呼ばれる自分専用のインベントリがあり、インベントリキー（デフォルト：[I]）で開けます。インベントリの初段スロットは、ホットバーのスロットとしても機能します。
+
 Blocks can also have their own inventory, e.g. chests and furnaces.=ブロックは、独自のインベントリを持つこともできます。例えばチェストやかまどです。
 Inventory controls:=インベントリの操作：
 Taking: You can take items from an occupied slot if the cursor holds nothing.=取る：カーソルが何も保持していない場合、占有されているスロットからアイテムを取れます。
@@ -235,31 +349,50 @@ Taking: You can take items from an occupied slot if the cursor holds nothing.=�
 • Right click: take half from the item stack (rounded up)=・右クリック：アイテムをスタックから半分取る（切り上げ）
 • Middle click: take 10 items from the item stack=・中クリック：アイテムをスタックから10個取る
 • Mouse wheel down: take 1 item from the item stack=・マウスホイール下：アイテムをスタックから1個取る
+
 Putting: You can put items onto a slot if the cursor holds 1 or more items and the slot is either empty or contains an item stack of the same item type.=置く：カーソルに1つ以上のアイテムを保持し、目的のスロットが空か、同種のアイテムがスタックされている場合、そのアイテムを置けます。
+
 • Left click: put entire item stack=・左クリック：アイテムをスタック丸ごと置く
 • Right click or mouse wheel up: put 1 item of the item stack=・右クリック または マウスホイール上：アイテムをスタックから1個置く
 • Middle click: put 10 items of the item stack=・中クリック：アイテムをスタックから10個置く
+
 Exchanging: You can exchange items if the cursor holds 1 or more items and the destination slot is occupied by a different item type.=交換する：カーソルに1つ以上のアイテムを保持し、目的のスロットが別種のアイテムで占有されている場合、アイテムを交換できます。
+
 • Click: exchange item stacks=・クリック：アイテムスタックを交換
+
 Throwing away: If you hold an item stack and click with it somewhere outside the menu, the item stack gets thrown away into the environment.=捨てる：アイテムスタックを保持し、メニュー外のどこかをクリックすると、アイテムスタックがその辺に投げ捨てられます。
+
 Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=直送する：炉やチェストなどのインベントリスロットに対しては、プレイヤーインベントリからアイテムスタックを直送できます。この場合対象となるのは、一般的に最も関連性の高いインベントリスロットです。
+
 • Sneak+Left click: Automatically transfer item stack=・スニークキー + 左クリック：アイテムスタックの自動転送
 Online help=オンラインヘルプ
 You may want to check out these online resources related to Minetest:=Minetest に関連するオンライン資料もチェックしてみてください：
 Official homepage of Minetest: <https://minetest.net/>=Minetest の公式ホームページ：<https://minetest.net/>
 The main place to find the most recent version of Minetest.=Minetest の最新版を入手できるメインサイトです。
 Community wiki: <https://wiki.minetest.net/>=コミュニティ wiki：<https://wiki.minetest.net/>
+
 A community-based documentation website for Minetest. Anyone with an account can edit it! It also features a documentation of Minetest Game.=Minetest のための、コミュニティベースの文書サイトです。アカウントがあれば誰でも編集可能です！ また、Minetest Game の資料も掲載されています。
+
 Web forums: <https://forums.minetest.net/>=
+
 A web-based discussion platform where you can discuss everything related to Minetest. This is also a place where player-made mods and games are published and discussed. The discussions are mainly in English, but there is also space for discussion in other languages.=Minetest に関連するあらゆることを話し合える、Webベースの議論場です。また、プレイヤーが作成したMODやゲームを公開し、議論する場でもあります。議論は主に英語で行われますが、他言語で議論するスペースもあります。
+
 Chat: <irc://irc.freenode.net#minetest>=チャット：<irc://irc.freenode.net#minetest>
+
 A generic Internet Relay Chat channel for everything related to Minetest where people can meet to discuss in real-time. If you do not understand IRC, see the Community Wiki for help.=Minetest に関連するあらゆることをリアルタイムで議論するために人々が集う、IRC（インターネット・リレー・チャット）の汎用チャンネルです。IRCが分からない場合は、コミュニティWikiを参照してください。
+
 Groups=グループ
+
 Items, players and objects (animate and inanimate) can be members of any number of groups. Groups serve multiple purposes:=アイテム、プレイヤー、オブジェクト（生物と無生物）は、任意の数のグループに属することができます。グループには、次のようなさまざまな役割があります：
+
 • Crafting recipes: Slots in a crafting recipe may not require a specific item, but instead an item which is a member of a particular group, or multiple groups=・クラフトレシピ：クラフトレシピのスロットには、特定のアイテムである必要がない代わりに、特定のグループまたは複数のグループに属しているアイテムを要する場合がある
+
 • Digging times: Diggable blocks belong to groups which are used to determine digging times. Mining tools are capable of digging blocks belonging to certain groups=・掘削時間：掘削可能なブロックが属するグループで、掘削時間の設定に使われる。採掘道具は、所定のグループに属するブロックが掘れる。
+
 • Block behavior: Blocks may show a special behaviour and interact with other blocks when they belong to a particular group=・ブロックの挙動：ブロックは特定のグループに属している場合、特別な挙動を示し、他のブロックと相互作用することがある
+
 • Damage and armor: Objects and players have armor groups, weapons have damage groups. These groups determine damage. See also: “Basics > Weapons”=ダメージと防具：オブジェクトとプレイヤーは防具グループ、武器はダメージグループを持つ。これらのグループによってダメージが定まる。次も参考に：“Basics > Weapons”
+
 • Other uses=・その他の用途
 In the item help, many important groups are usually mentioned and explained.=アイテムヘルプでは、通常、多くの重要なグループに言及し、説明されています。
 Glossary=用語集
@@ -308,45 +441,71 @@ Interface=インターフェイス
 Online multiplayer:=オンライン マルチプレイヤー
 • PvP: Player vs Player. If active, players can deal damage to each other=・PvP：プレイヤー・バーサス・プレイヤー。有効な場合、プレイヤーはお互いにダメージを与えることができる
 • Griefing: Destroying the buildings of other players against their will=・グリーフィング：他のプレイヤーの意思に反して建物を破壊すること（要するに嫌がらせ）
+
 • Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=・保護：ワールドの各エリアを所有する仕組み。エリア内部のブロックは、所有者のみが変更可能となる
+
 Technical terms:=技術的な用語：
 • Minetest: This game engine=・Minetest：マインテスト。本ゲームエンジン
 • Minetest Game: A game for Minetest by the Minetest developers=・Minetest Game：Minetest 開発者による、Minetest のためのゲーム
+
 • Game: A complete playing experience to be used in Minetest; such as a game or sandbox or similar=・Game：ゲームやサンドボックスなど、Minetest で使用される完全なプレイ体験
+
 • Mod: A single subsystem which adds or modifies functionality; is the basic building block of games and can be used to further enhance or modify them=・Mod：モッド。機能を追加または変更する１つのサブシステム。ゲームの基本的な構成要素であり、ゲームをさらに強化または変更するために使用できる
+
 • Privilege: Allows a player to do something=・権限：プレイヤーにかかる何らかの制限を解除するための許可
 • Node: Other word for “block”=・ノード：「ブロック」を表す他の語句
 Settings=設定
+
 There is a large variety of settings to configure Minetest. Pretty much every aspect can be changed that way.=Minetest を構成するために、多種多様な設定があります。ほとんどの局面をその方法で変更できます。
+
 These are a few of the most important gameplay settings:=これらは、最も重要なゲームプレイの設定の一部です：
+
 • Damage enabled (enable_damage): Enables the health and breath attributes for all players. If disabled, players are immortal=・ダメージを有効化（enable_damage）：全プレイヤーのヘルスと呼吸の設定を有効にする。無効の場合、プレイヤーは不死身になる
+
 • Creative Mode (creative_mode): Enables sandbox-style gameplay focusing on creativity rather than a challenging gameplay. The meaning depends on the game; usual changes are: Reduced dig times, easy access to almost all items, tools never wear off, etc.=・クリエイティブモード（creative_mode）：挑戦的なゲームプレイではなく、創造性に焦点を当てたサンドボックススタイルのゲームプレイを可能にする。意味はゲームによるが、通常の変更は次の通り：掘る時間が短くなる、ほぼ全てのアイテムが入手しやすくなる、道具が消耗しなくなる、など
+
 • PvP (enable_pvp): Short for “Player vs Player”. If enabled, players can deal damage to each other=・PvP（enable_pvp）：“Player vs Player”の略。有効にすると、プレイヤー同士がダメージを与え合うことが可能になる
+
 For a full list of all available settings, use the “All Settings” dialog in the main menu.=利用可能なすべての設定の一覧は、メインメニューの「すべての設定」ダイアログを使用してください。
+
 Movement modes=移動モード
 You can enable some special movement modes that change how you move.=移動方法を変更する、いくつかの特殊な移動モードを有効化できます。
 Pitch movement mode:=ピッチ移動モード：
+
 • Description: If this mode is activated, the movement keys will move you relative to your current view pitch (vertical look angle) when you're in a liquid or in fly mode.=・説明：このモードが有効になっている場合、液中や飛行モードの時に移動キーを使うと、現在のビューピッチ（垂直方向の視線角）に対して相対的に移動します。
+
 • Default key: [L]=・デフォルトキー：[L]
 • No privilege required=・権限は不要
 Fast mode:=高速モード：
+
 • Description: Allows you to move much faster. Hold down the the “Use” key [E] to move faster. In the client configuration, you can further customize fast mode.=・説明：より高速な移動が可能になります。「使う」キー[E]を押しながら移動すると、より速く動けます。クライアント設定にて、高速モードをさらにカスタマイズできます。
+
 • Default key: [J]=・デフォルトキー：[J]
 • Required privilege: fast=・必要な権限：fast
 Fly mode:=飛行モード：
+
 • Description: Gravity doesn't affect you and you can move freely in all directions. Use the jump key to rise and the sneak key to sink.=・説明：重力に影響されず、全方向へ自由に動けます。ジャンプキーで上昇し、スニークキーで下降します。
+
 • Default key: [K]=・デフォルトキー：[K]
 • Required privilege: fly=・必要な権限：fly
 Noclip mode:=壁抜けモード：
+
 • Description: Allows you to move through walls. Only works when fly mode is enabled, too.=・説明：壁を通過して移動できるようになります。飛行モードも有効な場合のみ機能します。
+
 • Default key: [H]=・デフォルトキー：[H]
 • Required privilege: noclip=・必要な権限：noclip
 Console=コンソール
+
 With [F10] you can open and close the console. The main use of the console is to show the chat log and enter chat messages or server commands.=[F10]でコンソールを開いたり閉じたりできます。コンソールの主な用途は、チャットログの表示や、チャットメッセージ及びサーバーコマンドの入力です。
+
 Using the chat or server command key also opens the console, but it is smaller and will be closed after you sent a message.=チャットやサーバーのコマンドキーを使ってもコンソールを開けますが、サイズが小さく、メッセージ送信後に閉じられることになります。
+
 Use the chat to communicate with other players. This requires you to have the “shout” privilege.=他のプレイヤーとの連絡には、チャットを利用します。これには、“shout”権限が必要です。
+
 Just type in the message and hit [Enter]. Public chat messages cannot begin with “/”.=メッセージを入力し、[Enter]キーを押すだけです。公開チャットのメッセージは、先頭に“/”をつけることはできません。
+
 You can send private messages: Say “/msg <player> <message>” in chat to send “<message>” which can only be seen by <player>.=個人的なメッセージを送信できます：チャットで“/msg <player> <message>”と言うと、<player>だけが見ることができる“<message>”を送れます。
+
 There are some special controls for the console:=これらは、コンソール専用の操作方法です：
 • [F10] Open/close console=・[F10]：コンソールの開/閉
 • [Enter]: Send message or command=・[Enter]：メッセージ送信 または コマンド
@@ -359,35 +518,60 @@ There are some special controls for the console:=これらは、コンソール�
 • [Ctrl]+[K]: Delete all text after the cursor=・[Ctrl]+[K]：カーソルより後のテキストをすべて削除
 • [Page up]: Scroll up=・[Page up]：上にスクロール
 • [Page down]: Scroll down=・[Page down]：下にスクロール
+
 There is also an input history. Minetest saves your previous console inputs which you can quickly access later:=また、入力履歴もあります。Minetest は以前のコンソール入力を保存し、後ですぐにアクセスできるようにしています：
+
 • [Up]: Go to previous entry in history=・[Up]：履歴の、前のエントリに移動
 • [Down]: Go to next entry in history=・[Down]：履歴の、次のエントリに移動
 Server commands=サーバーコマンド
+
 Server commands (also called “chat commands”) are little helpers for advanced users. You don't need to use these commands when playing. But they might come in handy to perform some more technical tasks. Server commands work both in multi-player and single-player mode.=サーバーコマンド（「チャットコマンド」とも呼ばれます）は、上級者向けのちょっとした ヘルプ要素です。プレイ中にこれらのコマンドを使う必要はありません。しかし、より技術的なタスクを実行するのに便利かもしれません。サーバーコマンドは、マルチプレイヤーでもシングルプレイヤーでも使えます。
+
 Server commands can be entered by players using the chat to perform a special server action. There are a few commands which can be issued by everyone, but some commands only work if you have certain privileges granted on the server. There is a small set of basic commands which are always available, other commands can be added by mods.=サーバーコマンドは、プレイヤーがチャットを使って入力することで、特別なサーバーアクションを実行できます。いくつかのコマンドは誰でも出すことができますが、中にはサーバーに与えられた特定の権限を持っている場合にのみ動作するコマンドもあります。基本的なコマンドは常に利用可能で、その他のコマンドはMODによって追加できます。
+
 To issue a command, simply type it like a chat message or press Minetest's command key (default: [/]). All commands have to begin with “/”, for example “/mods”. The Minetest command key does the same as the chat key, except that the slash is already entered.=コマンドを出すには、単純にチャットメッセージのように入力するか、Minetest のコマンドキー（デフォルト：[/]）を押してください。すべてのコマンドは、“/mods”のように“/”で始まる必要があります。Minetest のコマンドキーは、スラッシュがすでに入力されていることを除いて、チャットキーと同じように動作します。
+
 Commands may or may not give a response in the chat log, but errors will generally be shown in the chat. Try it for yourselves: Close this window and type in the “/mods” command. This will give you the list of available mods on this server.=コマンドは、チャットログで応答したりしなかったりますが、エラーは基本的にチャットで表示されます。自分自身で試してみてください：このウィンドウを閉じて、“/mods”コマンドを入力してください。このサーバーで利用可能なMODのリストが表示されます。
+
 “/help all” is a very important command: You get a list of all available commands on the server, a short explanation and the allowed parameters. This command is also important because the available commands often differ per server.=“/help all”は非常に重要なコマンドです。サーバ上で利用可能なすべてのコマンドのリスト、簡単な説明、そして許可されたパラメータを得ることができます。利用可能なコマンドはサーバーごとに異なることが多いので、このコマンドも重要です。
+
 Commands are followed by zero or more parameters.=コマンドの後には、いくつかのパラメータが続くことがあります。
+
 In the command reference, you see some placeholders which you need to replace with an actual value. Here's an explanation:=コマンドリファレンスには、実際の値に置き換える必要があるプレースホルダーがいくつか表示されています。次に説明します：
+
 • Text in greater-than and lower-than signs (e.g. “<param>”): Placeholder for a parameter=・大なりと小なり記号で挟まれたテキスト（例：“<param>”）：パラメータのプレースホルダー
+
 • Anything in square brackets (e.g. “[text]”) is optional and can be omitted=・角括弧内のもの（例：“[text]”）：任意であり、省略が可能
+
 • Pipe or slash (e.g. “text1 | text2 | text3”): Alternation. One of multiple texts must be used (e.g. “text2”)=・パイプまたはスラッシュ（例：“text1｜text2｜text3”）：択一。 区切られたテキストのうちの１つを使用する必要あり（例："text2")
+
 • Parenthesis: (e.g. “(word1 word2) | word3”): Groups multiple words together, used for alternations=・半角の括弧（例：“(word1 word2) | word3”）：複数の単語をグループ化し、交互に使う
+
 • Everything else is to be read as literal text=・それ以外はすべて、文字通りのテキストとして読める
 Here are some examples to illustrate the command syntax:=次は、コマンドの構文を説明するための例です：
 • /mods: No parameters. Just enter “/mods”=・/mods: パラメータなし。単に“/mods”とだけ入力する
+
 • /me <action>: 1 parameter. You have to enter “/me ” followed by any text, e.g. “/me orders pizza”=・/me <action>：1つのパラメータ。“/me ”の後に、任意のテキストを入力する。例：“/me orders pizza”
+
 • /give <name> <ItemString>: Two parameters. Example: “/give Player default:apple”=・/give <name> <ItemString>：2つのパラメータ。例“/give Player default:apple”
+
 • /help [all|privs|<cmd>]: Valid inputs are “/help”, “/help all”, “/help privs”, or “/help ” followed by a command name, like “/help time”=・/help [all|privs|<cmd>]：有効な入力は“/help”,“/help all”,“/help privs”, または“/help time”のように、“/help ”の後にコマンド名を続けたもの
+
 • /spawnentity <EntityName> [<X>,<Y>,<Z>]: Valid inputs include “/spawnentity boats:boat” and “/spawnentity boats:boat 0,0,0”=・/spawnentity <EntityName> [<X>,<Y>,<Z>]：有効な入力は“/spawnentity boats:boat”および“/spawnentity boats:boat 0,0,0”
+
 Some final remarks:=最後に一言：
+
 • For /give and /giveme, you need an itemstring. This is an internally used unique item identifier which you may find in the item help if you have the “give” or “debug” privilege=・give と /giveme では、itemstring が必要です。これは内部で使われる固有のアイテム識別子で、“give”または“debug”権限を持っていれば、アイテムのヘルプに記載されているはずです
+
 • For /spawnentity you need an entity name, which is another identifier=・/spawnentity にはエンティティ名が必要で、これは別の識別子です
 Privileges=権限
+
 Each player has a set of privileges, which differs from server to server. Your privileges determine what you can and can't do. Privileges can be granted and revoked from other players by any player who has the privilege called “privs”.=各プレイヤーは、サーバーによって異なる一連の権限を持ちます。権限は、あなたができること、できないことを規定します。“privs”という権限を持っているプレイヤーであれば、権限を他のプレイヤーに付与したり、取り消したりできます。
+
 On a multiplayer server with the default configuration, new players start with the privileges called “interact” and “shout”. The “interact” privilege is required for the most basic gameplay actions such as building, mining, using, etc. The “shout” privilege allows to chat.=デフォルト設定のマルチプレイヤーサーバーでは、新規プレイヤーは“interact”と“shout”と呼ばれる権限でスタートします。“interact”権限は、建築、採掘、使用など、最も基本的なゲームプレイに必要なものです。“shout”権限は、チャットを行うためのものです。
+
 There is a small set of core privileges which you'll find on every server, other privileges might be added by mods.=すべてのサーバーで見られる主要な権限の小セットがあり、その他の権限はModによって追加される場合があります。
+
 To view your own privileges, issue the server command “/privs”.=自分の権限を表示するには、サーバーコマンド“/privs”を実行します。
 Here are a few basic privilege-related commands:=基本的な権限関連のコマンドをいくつか紹介します：
 • /privs: Lists your privileges=・/privs：あなたの権限の一覧
@@ -398,21 +582,36 @@ Players with the “privs” privilege can modify privileges at will:=“privs�
 • /revoke <player> <privilege>: Revoke <privilege> from <player>=・/revoke <player> <privilege>：<player> から <privilege> を取り消す
 In single-player mode, you can use “/grantme all” to unlock all abilities.=シングルプレイでは、“/grantme all”ですべての能力が解放されます。
 Light=光
+
 As the world is entirely block-based, so is the light in the world. Each block has its own brightness. The brightness of a block is expressed in a “light level” which ranges from 0 (total darkness) to 15 (as bright as the sun).=世界がすべてブロックベースである以上、世界の光もまた然りです。各ブロックはそれぞれの明るさを持ちます。ブロックの明るさは“light level”（＝明るさ）で表され、0（真っ暗）から15（太陽と同じ明るさ）までの範囲で設定できます。
+
 There are two types of light: Sunlight and artificial light.=光には２つの種類があります：太陽光と人工光です。
+
 Artificial light is emitted by luminous blocks. Artificial light has a light level from 1-14.=人工光は発光ブロックから放射されます。人工光は1～14の明るさを持ちます。
+
 Sunlight is the brightest light and always goes perfectly straight down from the sky at each time of the day. At night, the sunlight will become moonlight instead, which still provides a small amount of light. The light level of sunlight is 15.=太陽光は最も明るい光であり、日中のどの時間帯でも、常に空から完全にまっすぐ降り注いでいます。夜になると、太陽光は代わりに月明かりになりますが、これはまだわずかな光量しか提供しません。太陽光の明るさは15です。
+
 Blocks have 3 levels of transparency:=ブロックは3段階の透明度を持ちます：
+
 • Transparent: Sunlight goes through limitless, artificial light goes through with losses=・透明：太陽光は無限に通過し、人工光は損失を伴って通過する
+
 • Semi-transparent: Sunlight and artificial light go through with losses=・半透明：太陽光と人工光は損失を伴って通過する
 • Opaque: No light passes through=・不透明：光を通さない
+
 Artificial light will lose one level of brightness for each transparent or semi-transparent block it passes through, until only darkness remains (image 1).=人工光は、透明または半透明のブロックを通過するたびに明るさが1段階下がり、やがて暗闇だけが残ります（画像1）。
+
 Sunlight will preserve its brightness as long it only passes fully transparent blocks. When it passes through a semi-transparent block, it turns to artificial light. Image 2 shows the difference.=太陽光は、完全に透明なブロックだけを通過する限り、その明るさを保てます。半透明のブロックを通過すると、人工光に変化します。画像2 はその違いを示しています。
+
 Note that “transparency” here only means that the block is able to carry brightness from its neighboring blocks. It is possible for a block to be transparent to light but you can't see trough the other side.=なお、ここでいう「透明度」とは、隣接するブロックの明るさを伝達できるという意味でしかありません。ブロックが光に対して透明でも、あなたは向こう側が見通せないということはあり得ます。
+
 Coordinates=座標
+
 The world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.=世界は大きな立方体です。そのため、世界における位置は直交座標で簡単に表せます。つまり、世界の各位置には、X、Y、Zの3つの値が存在します。
+
 Like this: (5, 45, -12)=こんな感じで：(5, 45, -12)
+
 This refers to the position where X@=5, Y@=45 and Z@=-12. The 3 letters are called “axes”: Y is for the height. X and Z are for the horizontal position.=これは、X@=5、Y@=45、Z@=12 の位置を指します。この3文字を“軸”と呼びます：Yは高さ、XとZは水平方向の位置を表します。
+
 The values for X, Y and Z work like this:=X、Y、Zの値は次のように動きます：
 • If you go up, Y increases=・上昇すると、Yが増加
 • If you go down, Y decreases=・下降すると、Yが減少
@@ -438,25 +637,43 @@ Enabling Creative Mode in VoxeLibre applies the following changes:=VoxeLibre で
 Damage is not affected by Creative Mode, it needs to be disabled separately.=ダメージはクリエイティブモードの影響を受けないので、別途無効化する必要があります。
 Mobs=MOB
 Mobs are the living beings in the world. This includes animals and monsters.=MOBとは、世界に存在する生き物のことです。動物やモンスターも含まれます。
+
 Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some mobs only spawn on particular blocks (like grass blocks).=MOBは世界各地にランダムに出現します。これを「スポーンする」と言います。各MOBは特定のブロックに、特定の明るさにおいて出現します。また、高さも重要な要素です。平和的なMOBは昼間に出現し、敵対的なMOBは暗闇を好む傾向があります。ほとんどのMOBはどの固体ブロックにもスポーンできますが、特定のブロック（草原のような）にしかスポーンしないMOBもいます。
+
 Like players, mobs have hit points and sometimes armor points, too (which means you need better weapons to deal any damage at all). Also like players, hostile mobs can attack directly or at a distance. Mobs may drop random items after they die.=プレイヤーと同様に、MOBにもヒットポイントがあり、時にはアーマーポイントもあります（ということは、ダメージを与えるにはより良い武器が必要です）。また、プレイヤーと同様に、敵対するMOBは直接攻撃することも距離を取って攻撃することもできます。MOBは死んだ後、ランダムなアイテムをドロップすることがあります。
+
 Most animals roam the world aimlessly while most hostile mobs hunt players. Animals can be fed, tamed and bred.=ほとんどの動物があてもなく世界をさまよい、ほとんどの敵対的なMOBがプレイヤーを狩ります。動物には餌を与え、飼いならし、繁殖させることができます。
+
 Animals=動物
+
 Animals are peaceful beings which roam the world aimlessly. You can feed, tame and breed them.=動物たちは、世界をあてもなく歩き回る平和な存在です。餌をあげたり、飼いならしたり、繁殖させたりすることができます。
+
 Feeding:=餌やり：
+
 Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and right-click the animal.=動物にはそれぞれ食べ物の好みがあり、どんな食べ物でもいいというわけではありません。餌を与えるには、アイテムを手に持ち、動物を右クリックします。
+
 Animals are attracted to the food they like and follow you as long you hold the food item in hand.=動物は好きな食べ物に惹かれ、餌を手にしている間はついてきます。
+
 Feeding an animal has three uses: Taming, healing and breeding.=動物の給餌には3つの用途があります：飼いならす、癒す、繁殖させる
 Feeding heals animals instantly, depending on the quality of the food item.=餌を与えると、餌の質にもよりますが、動物がすぐに回復します。
 Taming:=手懐ける：
+
 A few animals can be tamed. You can generally do more things with tamed animals and use other items on them. For example, tame horses can be saddled and tame wolves fight on your side.=いくつかの動物は手懐けることができます。一般的に、手懐けた動物にはより多くのことができ、他のアイテムも使用できます。例えば、飼いならされた馬には鞍を付けることができ、飼いならされた狼は側で戦ってくれます。
+
 Breeding:=繁殖
+
 When you have fed an animal up to its maximum health, then feed it again, you will activate “Love Mode” and many hearts appear around the animal.=動物の体力を最大まで回復させてから、再びエサを与えると「ラブモード」が発動し、動物のまわりにたくさんのハートが現れます。
+
 Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.=同じ種の2匹の動物は、ラブモード状態で近くにいると交配を始めます。すぐに動物の赤ちゃんが飛び出します。
+
 Baby animals:=動物の仔
+
 Baby animals are just like their adult counterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.=動物の仔は成体と同じですが、飼いならしたり繁殖させたりすることはできず、死んでも何もドロップしません。短期間で成体になります。餌を与えると、より早く成体になります。
+
 Hunger=満腹度
+
 Hunger affects your health and your ability to sprint. Hunger is not in effect when damage is disabled.=満腹度はヘルスと走る能力に影響します。ダメージ無効モードでは、満腹度は効果を及ぼしません。
+
 Core hunger rules:=満腹度の基礎：
 • You start with 20/20 hunger points (more points @= less hungry)=・20/20 の満腹度でスタート（ポイントが多い @= 空腹に長く耐えられる）
 • Actions like combat, jumping, sprinting, etc. decrease hunger points=・戦闘、ジャンプ、走るなどのアクションは、満腹度が減少
@@ -467,14 +684,23 @@ Core hunger rules:=満腹度の基礎：
 • At 0 hunger points, you lose 1 HP every 4 seconds (down to 1 HP)=・満腹度が0になると、4秒ごとにHPが1減少（HP1まで）
 • Poisonous food decreases your health=・毒のある食べ物は、ヘルスが減少
 Details:=詳細：
+
 You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=あなたは 0〜20 の満腹度を持っており、ホットバーの上にある20個分の骨付き肉（アイコン半分で1個分）がそれを示しています。また、見えない属性も持っています：隠し満腹度
+
 Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.=満腹度は「空腹に耐えられる時間」と「腹持ちの許容量」を反映し、隠し満腹度は、再び空腹になるまでの「腹持ちする時間」が反映（見えませんが）されています。
+
 Each food item increases both your hunger level as well your saturation.=食べ物は、満腹度と隠し満腹度の両方を増加させます。
+
 Food with a high saturation boost has the advantage that it will take longer until you get hungry again.=隠し満腹度増加の高い食品は、再び空腹になるまでの時間が長くなるという利点があります。
+
 A few food items might induce food poisoning by chance. When you're poisoned, the health and hunger symbols turn sickly green. Food poisoning drains your health by 1 HP per second, down to 1 HP. Food poisoning also drains your saturation. Food poisoning goes away after a while or when you drink milk.=いくつかの食べ物で、偶然にも食中毒を誘発することがあります。食中毒にかかると、ヘルスと満腹ゲージが病的な緑色になります。食中毒になると毎秒1HPずつ消耗しますが、減るのは1HPまでで0にはなりません。また、食中毒は隠し満腹度も消耗します。食中毒はミルクを飲むか、しばらく経つと治ります。
+
 You start with 5 saturation points. The maximum saturation is equal to your current hunger level. So with 20 hunger points your maximum saturation is 20. What this means is that food items which restore many saturation points are more effective the more hunger points you have. This is because at low hunger levels, a lot of the saturation boost will be lost due to the low saturation cap.=隠し満腹度は5からスタートします。隠し満腹度の最大値は現在の満腹度と同じです。つまり、満腹度が20ある時は、最大隠し満腹度も20となります。このことは、隠し満腹度を多く回復させる食べ物は、満腹度が高い時ほど効果的であることを意味します。例えば、満腹度が低い場合は隠し満腹度の上限も低いため、それを超える量の隠し満腹度回復は損をしていることになります。
+
 If your saturation reaches 0, you're hungry and start to lose hunger points. Whenever you see the hunger bar decrease, it is a good time to eat.=隠し満腹度が0になると、「空腹」状態となり満腹度が減少しはじめます。満腹ゲージの減少を確認したらいつでも、食事する良いタイミングです。
+
 Saturation decreases by doing things which exhaust you (highest exhaustion first):=消耗する行動によって、隠し満腹度が低下（一番目が最も消耗する）：
+
 • Regenerating 1 HP=・HPが回復する
 • Suffering food poisoning=・食中毒を起こす
 • Sprint-jumping=・走りながらジャンプする
@@ -491,27 +717,42 @@ Other actions, like walking, do not exhaust you.=歩くなどの他の行動で�
 
 Basic controls:=基本操作：
 • Lowest row in inventory appears in hotbar below=・インベントリ最後尾のアイテムが、下のホットバーに表示される
+
 Minetest as well as Minetest Game are both unfinished at the moment, so please forgive us when not everything works out perfectly.=MinetestもMinetest Gameも現在未完成なので、すべてが完璧とは言えませんが、ご容赦を。
+
 If you jump while holding the sneak key, you also jump slightly higher than usual.=スニークキーを押しながらジャンプすると、通常より少し高くジャンプするようにもなっています。
+
 • E: Move even faster when in fast mode=・E：高速モードではさらに速く移動
 • Left mouse button: Punch / mine blocks / take items=・左クリック：叩く ／ ブロック採掘 ／ アイテム取得
 • Roll mouse wheel: Select next/previous item in hotbar=・マウスホイール回転：ホットバーのアイテム選択 次/前
 • F8: Toggle cinematic mode=・F8：シネマティックモード切替
 • P: Only useful for developers. Writes current stack traces=・P：開発者のみに有用。現在のスタックトレースを書き込む
+
 Dropped item stacks will be collected automatically when you stand close to them.=ドロップしたアイテムスタックは、近くに立つと自動的に回収されます。
+
 Mining tools are important to break all kinds of blocks. Weapons are another kind of tool. There are some other more specialized tools. Special actions of tools are usually done by right-click.=採掘道具は、あらゆるブロックを壊すために重要な道具です。武器も道具の一種です。その他にも、より専門的な道具があります。道具の特殊な動作は、たいてい右クリックで行います。
+
 When nothing is wielded, players use their hand which may act as tool and weapon. The hand is capable of punching and deals minimum damage.=何も手に持っていないとき、プレイヤーは、道具や武器としても機能する自分の手を使います。手は、最小限のダメージを与える攻撃ができます。
+
 There is also Cinematic Mode which can be toggled with [F8]. With Cinematic Mode enabled, the camera movements become more smooth. Some players don't like it, it is a matter of taste.=また、[F8]で切替え可能なシネマティックモードもあります。シネマティックモードを有効にすると、カメラの動きがより滑らかになります。好みによりますが、苦手なプレイヤーもいるようです。
+
 By holding down [Z], you can zoom the view at your crosshair. You need the “zoom” privilege to do this.=[Z]を押していると、 十字線に沿った視界をズームできます。このためには“zoom”権限が必要です。
+
 • Toggle Cinematic Mode: [F8]=・シネマティックモードの切替：[F8]
+
 The world of VoxeLibre is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=VoxeLibreのワールドは、すべてがブロック（正確にはボクセル）で構成されています。ブロックは、適切なツールで追加や削除ができます。
+
 • Right click: put 1 item of the item stack=・右クリック：アイテムをスタックから1個置く
 You may want to check out these online resources related to VoxeLibre.=VoxeLibre に関連するオンライン資料もチェックしてみてください。
+
 VoxeLibre download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=VoxeLibre のダウンロードと掲示板での意見交換：<https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>
+
 Here you find the most recent version of VoxeLibre and can discuss it.=ここでは VoxeLibre の最新バージョンを確認し、意見を交換できます。
 Bug tracker: <https://github.com/Wuzzy2/MineClone2-Bugs>=バグ追跡：<https://github.com/Wuzzy2/MineClone2-Bugs>
 Report bugs here.=バグの報告はこちら。
 Minetest links:=Minetest リンク：
+
 The main place to find the most recent version of Minetest, the engine used by VoxeLibre.=VoxeLibre で使用されているエンジン、Minetest の最新版を入手できるメインサイトです。
+
 Minetest forums: <https://forums.minetest.net/>=Minetest の掲示板：<https://forums.minetest.net/>
 • VoxeLibre: What you play right now=・VoxeLibre：マインクローン2。今、プレイしているもの

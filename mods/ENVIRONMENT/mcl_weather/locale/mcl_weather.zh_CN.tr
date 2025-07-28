@@ -6,4 +6,6 @@ Error: No weather specified.=错误：没有指定天气。
 Error: Invalid parameters.=错误：无效参数。
 Error: Duration can't be less than 1 second.=错误：持续时间不能少于1秒。
 Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.=错误：指定的天气无效。使用“clear”，“rain”，“snow”或“thunder”。
+
 Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=在晴天和雨天之间切换（随机下雨，雷暴或下雪）
+

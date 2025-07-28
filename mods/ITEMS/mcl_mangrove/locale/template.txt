@@ -13,20 +13,31 @@ Mangrove Roots=
 Mangrove roots are decorative blocks that form as part of mangrove trees.=
 Mangrove Propagule=
 Needs soil and light to grow=
+
 When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time.=
+
 Hanging Propagule=
 Grows on Mangrove leaves=
 water logged mangrove roots=
+
 Mangrove roots, despite being a full block, can be waterlogged and do not flow water out=
+
 These cannot be crafted yet only occure when get in contact of water.=
 Muddy Mangrove Roots=
 Crafted with Mud and Mangrove roots=
+
 Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it.=
+
 Mangrove Door=
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=
+
 Mangrove Trapdoor=
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=
 Mangrove Wood Fence=
 Mangrove Wood Fence Gate=

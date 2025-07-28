@@ -3,8 +3,13 @@ Chain=Corrente
 Chains are metallic decoration blocks.=Correntes são blocos de decoração metálicos.
 Gold Chain=
 Gold Chains are metallic decoration blocks.=
+##[ register.lua ]##
 Lantern=Lanterna
+
 Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Lanternas são fontes de luz as quais podem ser posicionadas na parte superior ou inferior da maioria blocos.
+
 Soul Lantern=Lanterna das Almas
 Gold Lantern=
+
 Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
+

@@ -20,7 +20,9 @@ This is a very brief introduction to the basic gameplay:=这是对基础游戏�
 • [Esc] to close this window=• 按[Esc]键关闭该窗口
 How to play:=玩法：
 • Punch a tree trunk until it breaks and collect wood=• 击打树干直至其被破坏，然后收集木材
+
 • Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=• 将木材放入背包菜单里的2×2网格（你的“制作网格”）中，制作出4块木板
+
 • Place them in a 2×2 shape in the crafting grid to craft a crafting table=• 将它们以2×2的形状放置在制作网格中，制作出一个工作台
 • Place the crafting table on the ground=• 将工作台放置在地面上
 • Rightclick it for a 3×3 crafting grid=• 右键点击它，就能使用3×3的制作网格
@@ -29,17 +31,29 @@ How to play:=玩法：
 • Different tools break different kinds of blocks. Try them out!=• 不同的工具能破坏不同种类的方块，去试试吧！
 • Continue playing as you wish. There's no goal. Have fun!=• 按你所想继续游戏吧，游戏没有特定目标，玩得开心！
 Minetest=迷你测试
+
 Minetest is a free software game engine for games based on voxel gameplay, inspired by InfiniMiner, Minecraft, and the like. Minetest was originally created by Perttu Ahola (alias “celeron55”).=《迷你测试》（Minetest）是一款基于体素游戏玩法的免费软件游戏引擎，其灵感来源于《无限矿工》（InfiniMiner）、《我的世界》（Minecraft）等类似游戏。《迷你测试》最初是由佩尔图·阿霍拉（别名“celeron55”）创建的。
+
 The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest can, however, be much more complex than this.=玩家会置身于一个由立方体或方块构成的巨大世界中。这些方块通常组成了地貌景观，它们几乎可以完全自由地被移除和放置。利用收集到的物品，能够制作出新的工具及其他物品。不过，《迷你测试》中的游戏可以比这复杂得多。
+
 A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorative blocks or be very complex by, e.g., introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.=《迷你测试》的一个核心特性是内置的模组功能。模组会改变现有的游戏玩法，它们可以简单到只是添加几个装饰性方块，也可以非常复杂，比如引入全新的游戏玩法概念、生成一种完全不同类型的世界以及其他诸多情况。
+
 Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.=《迷你测试》既可以单人游玩，也可以与多名玩家在线联机游玩。在线联机游玩时，任何模组都能即开即用，无需额外的软件，因为所需的一切都是由服务器提供的。
+
 Minetest is usually bundled with a simple default game, named “Minetest Game” (shown in images 1 and 2). You probably already have it. Other games for Minetest can be downloaded from the official Minetest forums <https://forum.minetest.net/viewforum.php?f@=48>.=《迷你测试》通常会附带一款名为“《迷你测试》游戏”（如图片1和2所示）的简单默认游戏。你很可能已经拥有它了。其他适用于《迷你测试》的游戏可以从《迷你测试》官方论坛<https://forum.minetest.net/viewforum.php?f@=48>下载。
+
 Sneaking=潜行
+
 Sneaking makes you walk slower and prevents you from falling off the edge of a block.=潜行会让你行走速度变慢，并防止你从方块边缘掉落下去。
+
 To sneak, hold down the sneak key (default: [Shift]). When you release it, you stop sneaking. Careful: When you release the sneak key at a ledge, you might fall!=要进行潜行，需按住潜行键（默认是[Shift]键）。当你松开该键时，就会停止潜行。注意：当你在悬崖边缘松开潜行键时，可能会掉落下去！
+
 • Sneak: [Shift]=• [Shift]键 - 潜行
+
 Sneaking only works when you stand on solid ground, are not in a liquid and don't climb.=潜行只有在你站在坚实地面上、不在液体中且没有攀爬时才有效。
+
 Sneaking might be disabled by mods. In this case, you still walk slower by sneaking, but you will no longer be stopped at ledges.=潜行功能可能会被模组禁用。在这种情况下，潜行时你仍然会走得更慢，但在悬崖边缘就不会再被阻挡了。
+
 Controls=操作控制
 These are the default controls:=以下是默认操作控制：
 Basic movement:=基本移动：
@@ -57,8 +71,11 @@ While on a ladder, swimming in a liquid or fly mode is active=在梯子上、在
 • Shift: Move down=• [Shift]键：向下移动
 Extended movement (requires privileges):=扩展移动（需要权限）：
 • J: Toggle fast mode, makes you run or fly fast (requires “fast” privilege)=• [J]键：切换快速模式，让你快速奔跑或飞行（需要“快速”权限）
+
 • K: Toggle fly mode, makes you move freely in all directions (requires “fly” privilege)=• [K]键：切换飞行模式，使你能向各个方向自由移动（需要“fly”权限）
+
 • H: Toggle noclip mode, makes you go through walls in fly mode (requires “noclip” privilege)=• [H]键：切换穿墙模式，让你在飞行模式下能穿过墙壁（需要“noclip”权限）
+
 • E: Walk fast in fast mode=• [E]键：在快速模式下快速行走
 World interaction:=与世界交互：
 • Left mouse button: Punch / mine blocks=• 鼠标左键：击打/挖掘方块
@@ -72,7 +89,9 @@ World interaction:=与世界交互：
 Inventory interaction:=背包交互：
 See the entry “Basics > Inventory”.=参见“基础 > 背包”条目。
 Hunger/Eating:=
+
 • While holding food, hold the right mouse button (PC) or double-tap and hold the second tap (Android) to eat=
+
 Camera:=摄像机：
 • Z: Zoom=• [Z]键：放大
 • F7: Toggle camera mode=• [F7]键：切换摄像机模式
@@ -88,7 +107,9 @@ Server interaction:=与服务器交互：
 • T: Open chat window (chat requires the “shout” privilege)=• [T]键：打开聊天窗口（聊天需要“喊话”权限）
 • /: Start issuing a server command=• [/]键：开始输入服务器命令
 Technical:=技术相关：
+
 • R: Toggle far view (disables all fog and allows viewing far away, can make game very slow)=• [R]键：切换远视功能（禁用所有雾效并能看到远处，可能会使游戏变得很慢）
+
 • +: Increase minimal viewing distance=• [+]键：增加最小可视距离
 • -: Decrease minimal viewing distance=• [-]键：减小最小可视距离
 • F3: Enable/disable fog=• [F3]键：开启/关闭雾效
@@ -96,8 +117,11 @@ Technical:=技术相关：
 • F6: Only useful for developers. Enables/disables profiler=• [F6]键：仅对开发者有用，用于启用/禁用性能分析器
 Players=玩家
 Players (actually: “player characters”) are the characters which users control.=玩家（实际上是“玩家角色”）是由用户操控的角色。
+
 Players are living beings. They start with a number of health points (HP) and a number of breath points (BP).=玩家是有生命的个体，他们初始时拥有一定数量的生命值（HP）和呼吸值（BP）。
+
 Players are capable of walking, sneaking, jumping, climbing, swimming, diving, mining, building, fighting and using tools and blocks.=玩家能够行走、潜行、跳跃、攀爬、游泳、潜水、挖掘、建造、战斗以及使用工具和方块。
+
 Players can take damage for a variety of reasons, here are some:=玩家可能会因多种原因受到伤害，以下是一些例子：
 • Taking fall damage=• 受到掉落伤害
 • Touching a block which causes direct damage=• 触碰会造成直接伤害的方块
@@ -105,111 +129,192 @@ Players can take damage for a variety of reasons, here are some:=玩家可能会
 • Being attacked by another player=• 被其他玩家攻击
 • Being attacked by a computer enemy=• 被电脑控制的敌人攻击
 At a health of 0, the player dies. The player can just respawn in the world.=当生命值降为0时，玩家死亡，不过玩家可以在这个世界中重生。
+
 Other consequences of death depend on the game. The player could lose all items, or lose the round in a competitive game.=死亡的其他后果取决于游戏本身，玩家可能会丢失所有物品，或者在竞技游戏中输掉这一局。
+
 Some blocks reduce breath. While being with the head in a block which causes drowning, the breath points are reduced by 1 for every 2 seconds. When all breath is gone, the player starts to suffer drowning damage. Breath is quickly restored in any other block.=有些方块会减少呼吸值，当头部处于会导致溺水的方块中时，每2秒呼吸值就会减少1点，当呼吸值耗尽时，玩家就会开始受到溺水伤害，而在其他任何方块中呼吸值都能快速恢复。
+
 Damage can be disabled on any world. Without damage, players are immortal and health and breath are unimportant.=在任何世界中都可以关闭伤害机制，若关闭伤害，玩家就是无敌的，生命值和呼吸值也就不重要了。
+
 In multi-player mode, the name of other players is written above their head.=在多人游戏模式下，其他玩家的名字会显示在他们头顶上方。
 Items=物品
+
 Items are things you can carry along and store in inventories. They can be used for crafting, smelting, building, mining, and more. Types of items include blocks, tools, weapons and items only used for crafting.=物品是你可以随身携带并存储在背包里的东西，它们可用于制作、熔炼、建造、挖掘等等，物品类型包括方块、工具、武器以及仅用于制作的物品。
+
 An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=物品堆叠是同一类型物品的集合，能放置在一个物品栏位中，物品堆叠可以被丢弃在地面上，掉落在同一坐标位置的物品会形成一个物品堆叠。
+
 Items have several properties, including the following:=物品有若干属性，包括以下这些：
 • Maximum stack size: Number of items which fit on 1 item stack=• 最大堆叠数量：一个物品堆叠中能容纳的物品数量
+
 • Pointing range: How close things must be to be pointed while wielding this item=• 瞄准范围：手持该物品时，目标需要距离多近才能被瞄准
+
 • Group memberships: See “Basics > Groups”=• 所属群组：见“基础 > 群组”部分
 • May be used for crafting or cooking=• 可用于制作或烹饪
 Tools=工具
+
 Some items may serve as a tool when wielded. Any item which has some special use which can be directly used by its wielder is considered a tool.=有些物品在手持时可当作工具使用，任何有着特定用途且能被持有者直接使用的物品都可被视作工具。
+
 A common subset of tools is mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.=工具中常见的一类是挖掘工具，它们对于破坏各类方块很重要，武器也是一种工具，当然还有许多其他类型的工具，工具的特殊操作通常通过点击鼠标左键或右键来执行。
+
 When nothing is wielded, players use their hand which may act as tool and weapon.=当手中未持有任何物品时，玩家会使用自己的手，手可充当工具和武器。
+
 Many tools will wear off when using them and may eventually get destroyed. The damage is displayed in a damage bar below the tool icon. If no damage bar is shown, the tool is in mint condition. Tools may be repairable by crafting, see “Basics > Crafting”.=许多工具在使用时会磨损，最终可能会损坏，其损耗情况会通过工具图标下方的损伤条显示出来，如果没有显示损伤条，那就说明工具处于完好状态，工具可以通过制作来修复，详见“基础 > 制作”部分。
+
 Weapons=武器
+
 Some items are usable as a melee weapon when wielded. Weapons share most of the properties of tools.=有些物品在手持时可当作近战武器使用。武器与工具在大部分属性上是相通的。
+
 Melee weapons deal damage by punching players and other animate objects. There are two ways to attack:=近战武器通过击打玩家及其他有生命的物体来造成伤害，有两种攻击方式：
+
 • Single punch: Left-click once to deal a single punch=• 单次击打：点击鼠标左键一次，进行单次击打
 • Quick punching: Hold down the left mouse button to deal quick repeated punches=• 快速连击：按住鼠标左键，进行快速的连续击打
 There are two core attributes of melee weapons:=近战武器有两个核心属性：
+
 • Maximum damage: Damage which is dealt after a hit when the weapon was fully recovered=• 最大伤害：武器完全恢复后进行击打所能造成的伤害值
+
 • Full punch interval: Time it takes for fully recovering from a punch=• 完整击打间隔：一次击打后完全恢复所需的时间
+
 A weapon only deals full damage when it has fully recovered from a previous punch. Otherwise, the weapon will deal only reduced damage. This means, quick punching is very fast, but also deals rather low damage. Note the full punch interval does not limit how fast you can attack.=武器只有在前一次击打后完全恢复了，才能造成全额伤害，否则，武器只会造成较低的伤害。这意味着，快速击打速度虽快，但造成的伤害也相当低。请注意，完整击打间隔并不限制攻击速度。
+
 There is a rule which sometimes makes attacks impossible: Players, animate objects and weapons belong to damage groups. A weapon only deals damage to those who share at least one damage group with it. So if you're using the wrong weapon, you might not deal any damage at all.=有一条规则有时会导致攻击无法奏效：玩家、有生命的物体以及武器都属于伤害群组，一件武器只会对与其至少有一个共同伤害群组的对象造成伤害，所以如果使用了“错误”的武器，可能根本无法造成任何伤害。
+
 Pointing=瞄准
+
 “Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, players, computer enemies and objects.=“瞄准”指的是通过准星看向射程范围内的某个物体，在进行诸如挖掘、击打、使用等交互操作时需要进行瞄准，可瞄准的物体包括方块、玩家、电脑控制的敌人以及各类物件。
+
 To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.=要瞄准某个物体，它必须处于你所持物品的瞄准范围（也简称为“射程”）内，当你未持有任何物品时，有一个默认的瞄准范围。被瞄准的物体将会被勾勒轮廓或高亮显示（取决于你的设置），使用第三人称正面视角摄像机时无法进行瞄准。
+
 A few things cannot be pointed. Most blocks are pointable. A few blocks, like air, can never be pointed. Other blocks, like liquids can only be pointed by special items.=有些物体无法被瞄准，大多数方块是可以被瞄准的，但有少数方块，比如空气，永远无法被瞄准，而像液体这类方块，只有通过特殊物品才能瞄准。
+
 Camera=摄像机
+
 There are 3 different views which determine the way you see the world. The modes are:=有三种不同的视角，它们决定了你观察世界的方式，模式如下：
+
 • 1: First-person view (default)=• 1：第一人称视角（默认）
 • 2: Third-person view from behind=• 2：从后方的第三人称视角
 • 3: Third-person view from the front=• 3：从前方的第三人称视角
 You can change the camera mode by pressing [F7].=你可以按下[F7]键来切换摄像机模式。
+
 You might be able to zoom with [Z] to zoom the view at the crosshair. This allows you to look further.=你或许可以按下[Z]键来对准星处的画面进行缩放，这样能让你看得更远。
+
 Zooming is a gameplay feature that might be enabled or disabled by the game. By default, zooming is enabled when in Creative Mode but disabled otherwise.=缩放是一项游戏功能，可能会被游戏启用或禁用，默认情况下，在创造模式中缩放功能是启用的，在其他模式下则是禁用的。
+
 • Switch camera mode: [F7]=• [F7]键 - 切换摄像机模式
 • Zoom: [Z]=• [Z]键 - 缩放
 Blocks=方块
+
 The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=世界完全是由方块（准确地说是体素）构成的，使用合适的工具就能对方块进行添加或移除操作。
+
 Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:=方块可以有各种各样不同的属性，这些属性决定了挖掘时间、行为表现、外观、形状等等，其属性包括：
+
 • Collidable: Collidable blocks cannot be passed through; players can walk on them. Non-collidable blocks can be passed through freely=• 可碰撞的：可碰撞的方块无法穿过，玩家可以在上面行走，不可碰撞的方块则可以自由穿过
+
 • Pointable: Pointable blocks show a wireframe or a halo box when pointed. But you will just point through non-pointable blocks. Liquids are usually non-pointable but they can be pointed at by some special tools=• 可瞄准的：可瞄准的方块在被瞄准时会显示线框或光晕框，但是对于不可瞄准的方块，准星会直接穿过它们，液体通常是不可瞄准的，但通过一些特殊工具可以瞄准它们
+
 • Mining properties: By which tools it can be mined, how fast and how much it wears off tools=• 挖掘属性：可以用哪些工具进行挖掘、挖掘速度如何以及会对工具造成多大程度的磨损
+
 • Climbable: While you are at a climbable block, you won't fall and you can move up and down with the jump and sneak keys=• 可攀爬的：当你处在可攀爬的方块上时，你不会掉落，并且可以通过跳跃键和潜行键来上下移动
+
 • Drowning damage: See the entry “Basics > Player”=• 溺水伤害：见“基础 > 玩家”条目
 • Liquids: See the entry “Basics > Liquids”=• 液体：见“基础 > 液体”条目
+
 • Group memberships: Group memberships are used to determine mining properties, crafting, interactions between blocks and more=• 所属群组：所属群组用于确定挖掘属性、制作、方块之间的相互作用等等
+
 Mining=挖掘
+
 Mining (or digging) is the process of breaking blocks to remove them. To mine a block, point it and hold down the left mouse button until it breaks.=挖掘（或挖矿）是破坏方块以便将其移除的过程，要挖掘一个方块，需瞄准它并按住鼠标左键，直至方块被破坏。
+
 Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks cannot be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.=方块需要用挖掘工具来进行挖掘，不同的方块要用不同的挖掘工具挖掘，有些方块无法用任何工具挖掘。方块的硬度各不相同，工具的挖掘能力也各有差异，挖掘工具会随着时间的推移而磨损，挖掘时间以及工具的磨损程度取决于方块和挖掘工具，要想最快了解你的挖掘工具效率如何，只需用它们在各种方块上试试就行，通过挖掘获取的任何物品都会掉落在地面上，可随时收集起来。 
+
 After mining, a block may leave a “drop” behind. This is a number of items you get after mining. Most commonly, you will get the block itself. There are other possibilities for a drop which depends on the block type. The following drops are possible:=挖掘后，一个方块可能会留下“掉落物”，这是你挖掘后获得的一些物品。最常见的情况是，你会获得方块本身，但根据方块类型的不同，掉落物也有其他几种可能情况，以下是几种可能的掉落情况：
+
 • Always drops itself (the usual case)=• 总是掉落其自身（常见情况）
 • Always drops the same items=• 总是掉落相同的物品
 • Drops items based on probability=• 按一定概率掉落物品
 • Drops nothing=• 什么都不掉落
 Building=建造
+
 Almost all blocks can be built (or placed). Building is very simple and has no delay.=几乎所有方块都可以用于建造（或放置），建造过程非常简单，且没有延迟。
+
 To build your wielded block, point at a block in the world and right-click. If this is not possible because the pointed block has a special right-click action, hold down the sneak key before right-clicking.=要放置你手中持有的方块，需瞄准世界中的一个方块，然后点击鼠标右键。如果因为所瞄准的方块有特殊的右键点击操作而无法进行放置，那么在点击鼠标右键前先按住潜行键。
+
 Blocks can almost always be built at pointable blocks. One exception are blocks attached to the floor; these can only be built on the floor.=方块几乎总是可以放置在可瞄准的方块上，但有一个例外，那就是附着在地面上的方块，这类方块只能放置在地面上。
+
 Normally, blocks are built in front of the pointed side of the pointed block. A few blocks are different: When you try to build at them, they are replaced.=通常情况下，方块会建造在所瞄准方块的瞄准面的前方，但有少数方块有所不同：当你尝试在它们上面进行建造时，它们会被替换掉。
+
 Liquids=液体
+
 Liquids are special dynamic blocks. Liquids like to spread and flow to their surrounding blocks. Players can swim and drown in them.=液体是特殊的动态方块，它们会向周围的方块扩散和流动，玩家可以在其中游泳，也可能溺水。
+
 Liquids usually come in two forms: In source form (S) and in flowing form (F).=液体通常有两种形态：源头形态（S）和流动形态（F）。
+
 Liquid sources have the shape of a full cube. A liquid source will generate flowing liquids around it from time to time, and, if the liquid is renewable, it also generates liquid sources. A liquid source can sustain itself. As long it is left alone, a liquid source will normally keep its place and does not drain out.=液体源头呈完整的立方体形状，液体源头会时不时地在其周围生成流动的液体，如果该液体是可再生的，它还会生成新的液体源头，液体源头能够自我维持，只要不去动它，通常情况下它会保持原位，不会流干。
+
 Flowing liquids take a sloped form. Flowing liquids spread around the world until they drain. A flowing liquid cannot sustain itself and always comes from a liquid source, either directly or indirectly. Without a liquid source, a flowing liquid will eventually drain out and disappear.=流动的液体呈现倾斜的形态，它们会在世界中四处扩散，直至流干。流动的液体无法自我维持，总是直接或间接地来源于液体源头，没有液体源头的话，流动的液体最终会流干并消失。
+
 All liquids share the following properties:=所有液体都具备以下属性：
 • All properties of blocks (including drowning damage)=• 具备方块的所有属性（包括溺水伤害）
 • Renewability: Renewable liquids can create new sources=• 可再生性：可再生的液体能够生成新的源头
+
 • Flowing range: How many flowing liquids are created at maximum per liquid source, it determines how far the liquid will spread. Possible are ranges from 0 to 8. At 0, no flowing liquids will be created. Image 5 shows a liquid of flowing range 2=• 流动范围：每个液体源头最多能生成多少流动的液体，这决定了液体将会扩散多远，其范围可能是从0到8，若为0，则不会生成任何流动的液体，图5展示的是流动范围为2的一种液体
+
 • Viscosity: How slow players move through it and how slow the liquid spreads=• 黏度：玩家在其中移动的速度有多慢以及液体扩散的速度有多慢
+
 Renewable liquids create new liquid sources at open spaces (image 2). A new liquid source is created when:=可再生液体在开阔空间中会生成新的液体源头（图2），当出现以下情况时会生成新的液体源头：
+
 • Two renewable liquid blocks of the same type touch each other diagonally=• 两个相同类型的可再生液体方块彼此对角接触
 • These blocks are also on the same height=• 且这些方块处于同一高度
 • One of the two “corners” is open space which allows liquids to flow in=• 两个“角”中的一个是可供液体流入的开阔空间
+
 When those criteria are met, the open space is filled with a new liquid source of the same type (image 3).=当满足这些条件时，开阔空间就会被同种类型的新液体源头填满（图3）。
+
 Swimming in a liquid is fairly straightforward: The usual direction keys for basic movement, the jump key for rising and the sneak key for sinking.=在液体中游泳相当简单：使用基本移动的常规方向键，按跳跃键上浮，按潜行键下沉。
+
 The physics for swimming and diving in a liquid are:=液体中游泳和潜水的物理特性如下：
 • The higher the viscosity, the slower you move=• 黏度越高，你移动的速度就越慢
 • If you rest, you'll slowly sink=• 如果你静止不动，就会慢慢下沉
 • There is no fall damage for falling into a liquid as such=• 掉入液体中本身不会造成掉落伤害
+
 • If you fall into a liquid, you will be slowed down on impact (but don't stop instantly). Your impact depth is determined by your speed and the liquid viscosity. For a safe high drop into a liquid, make sure there is enough liquid above the ground, otherwise you might hit the ground and take fall damage=• 如果你掉入液体中，撞击时会减速（但不会立即停止），撞击深度由你的速度和液体黏度决定，为了能安全地从高处掉入液体中，要确保地面上方有足够的液体，否则你可能会撞到地面并受到掉落伤害
+
 Liquids are often not pointable. But some special items are able to point all liquids.=液体通常是不可瞄准的，但有些特殊物品能够瞄准所有液体。
+
 Crafting=制作
 Crafting is the task of combining several items to form a new item.=制作就是将若干物品组合起来以形成一个新物品的任务。
+
 To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=要制作某样东西，你需要一件或多件物品、一个制作栏（C）以及一个制作配方。制作栏就如同一个普通的背包，也可用于制作，物品需要按照特定的样式放入制作栏中，制作栏旁边有一个输出栏位（O），当你正确放置物品后，结果就会在此处显示出来，不过这只是一个预览，并非实际物品，制作栏可能有不同的尺寸，尺寸会限制你所能制作的配方种类。
+
 To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.=要完成制作，需从输出栏位中取出制作好的物品，这会消耗制作栏中的物品并生成一个新物品，无法将物品放入输出栏位中。
+
 A description on how to craft an item is called a “crafting recipe”. You need this knowledge to craft. There are multiple ways to learn crafting recipes. One way is by using a crafting guide, which contains a list of available crafting recipes. Some games provide crafting guides. There are also some mods which you can download online for installing a crafting guide. Another way is by reading the online manual of the game (if one is available).=关于如何制作某一物品的说明被称作“制作配方”，你需要这些知识来进行制作，有多种途径来学习制作配方，一种方式是使用制作指南，其中包含了可用制作配方的列表，有些游戏会提供制作指南，也有一些模组可供你在网上下载并安装以获取制作指南，另一种方式是阅读游戏的在线手册（如果有的话）。
+
 Crafting recipes consist of at least one input item and exactly one stack of output items. When performing a single craft, it will consume exactly one item from each stack of the crafting grid, unless the crafting recipe defines replacements.=制作配方至少包含一个输入物品以及恰好一组输出物品，在进行单次制作时，除非制作配方规定了替换情况，否则会从制作栏的每组物品中正好消耗一个物品。
+
 There are multiple types of crafting recipes:=制作配方有多种类型：
 • Shaped (image 2): Items need to be placed in a particular shape=• 有形状要求的（图2）：物品需要按照特定形状摆放
+
 • Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=• 无形状要求的（图3和图4）：物品只需放置在输入栏位中的某个位置（两张图展示的是同一个配方）
+
 • Cooking: Explained in “Basics > Cooking”=• 烹饪：在“基础 > 烹饪”部分有相关说明
+
 • Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%=• 修复（图5）：将两个受损的工具放置在制作栏的任意位置，就能得到修复了5%的工具
+
 In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=在一些制作配方中，部分输入物品不需要是特定的某一物品，而是需要属于某一物品群组（见“基础 > 群组”部分），这些配方在输入物品方面提供了更多一点的自由，图6 - 8展示了同一个基于群组的配方，这里需要8个属于“石头”群组的物品，图中所示的所有物品都符合这一要求。
+
 Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item.=很少见的情况是，制作配方中会有替换情况，这意味着，每当你进行制作时，制作栏中的某些物品不会被消耗，而是会被另一个物品替换。
+
 Cooking=烹饪
+
 Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), a cookable item, a fuel item and time in order to yield a new item.=烹饪（或熔炼）是一种不需要制作栏的制作形式，烹饪需要借助一个特殊的方块（比如熔炉）、一个可烹饪的物品、一个燃料物品以及一定的时间来产出一个新物品。
+
 Each fuel item has a burning time. This is the time a single item of the fuel keeps a furnace burning.=每种燃料物品都有一个燃烧时间，这就是单个燃料物品能让熔炉持续燃烧的时长。
+
 Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.=每种可烹饪的物品都需要一定的烹饪时间，这个时间因物品类型而异，并且物品必须在整个烹饪时间内都处于“着火”状态才能真正得到烹饪结果。
+
 Hotbar=快捷栏 
+
 At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=在屏幕底部你会看到一些方格，这被称作“快捷栏”，快捷栏能让你快速获取玩家背包里靠前的物品。
+
 You can change the selected item with the mouse wheel or the keyboard.=你可以通过鼠标滚轮或键盘来切换所选物品。
 • Select previous item in hotbar: [Mouse wheel up] or [B]=• [鼠标滚轮向上滚动]或[B]键 - 选择快捷栏中的上一个物品
 • Select next item in hotbar: [Mouse wheel down] or [N]=• [鼠标滚轮向下滚动]或[N]键 - 选择快捷栏中的下一个物品
@@ -217,17 +322,26 @@ You can change the selected item with the mouse wheel or the keyboard.=你可以
 The selected item is also your wielded item.=所选物品同时也是你手持的物品。
 Minimap=小地图
 If you have a map item in any of your hotbar slots, you can use the minimap.=如果你的快捷栏任意栏位中有地图物品，你就可以使用小地图。 
+
 Press [F9] to make a minimap appear on the top right. The minimap helps you to find your way around the world. Press it again to select different minimap modes and zoom levels. The minimap also shows the positions of other players.=按下[F9]键可使小地图出现在右上角，小地图能帮你在世界中找路，再次按下该键可选择不同的小地图模式和缩放级别，小地图还会显示其他玩家的位置。
+
 There are 2 minimap modes and 3 zoom levels.=小地图有2种模式和3个缩放级别。
+
 Surface mode (image 1) is a top-down view of the world, roughly resembling the colors of the blocks this world is made of. It only shows the topmost blocks, everything below is hidden, like a satellite photo. Surface mode is useful if you got lost.=地表模式（图1）是世界的俯视视角，大致呈现出这个世界由之构成的方块的颜色，它只显示最上面的方块，下方的一切都被隐藏，就像卫星照片一样，如果你迷路了，地表模式会很有用。
+
 Radar mode (image 2) is more complicated. It displays the “denseness” of the area around you and changes with your height. Roughly, the more green an area is, the less “dense” it is. Black areas have many blocks. Use the radar to find caverns, hidden areas, walls and more. The rectangular shapes in image 2 clearly expose the position of a dungeon.=雷达模式（图2）更复杂一些，它会显示你周围区域的“疏密程度”，并且会随你的高度变化而变化，大致来说，一个区域绿色越多，就越“稀疏”，黑色区域则有很多方块，利用雷达可以寻找洞穴、隐藏区域、墙壁等等，图2中的矩形形状清晰地显示出了地牢的位置。
+
 There are also two different rotation modes. In “square mode”, the rotation of the minimap is fixed. If you press [Shift]+[F9] to switch to “circle mode”, the minimap will instead rotate with your looking direction, so “up” is always your looking direction.=还有两种不同的旋转模式，在“方形模式”下，小地图的旋转是固定的，如果你按下[Shift] + [F9]键切换到“圆形模式”，小地图就会随你的视角方向旋转，这样“上方”就始终是你所看的方向。
+
 In some games, the minimap may be disabled.=在某些游戏中，小地图可能是被禁用的。
 • Toggle minimap mode: [F9]=• [F9]键 - 切换小地图模式
 • Toggle minimap rotation mode: [Shift]+[F9]=• [Shift] + [F9]键 - 切换小地图旋转模式
 Inventory=背包
+
 Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=背包用于存放物品堆叠，还有其他用途，比如制作，背包由一个长方形的物品栏位网格构成，每个物品栏位要么是空的，要么可以存放一个物品堆叠，物品堆叠可以在大多数栏位之间自由移动。
+
 You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=你有自己的背包，被称作“玩家背包”，你可以按下背包键（默认是[I]键）来打开它，背包靠前的栏位也会作为快捷栏中的栏位使用。
+
 Blocks can also have their own inventory, e.g. chests and furnaces.=方块也可以有自己的背包，比如箱子和熔炉。
 Inventory controls:=背包操作：
 Taking: You can take items from an occupied slot if the cursor holds nothing.=拿取：如果光标未持有物品，你可以从有物品的栏位中拿取物品。
@@ -235,31 +349,50 @@ Taking: You can take items from an occupied slot if the cursor holds nothing.=�
 • Right click: take half from the item stack (rounded up)=• [鼠标右键] - 拿取物品堆叠中的一半（向上取整）
 • Middle click: take 10 items from the item stack=• [鼠标中键] - 拿取物品堆叠中的10个物品
 • Mouse wheel down: take 1 item from the item stack=• [鼠标滚轮向下滚动] - 拿取物品堆叠中的1个物品
+
 Putting: You can put items onto a slot if the cursor holds 1 or more items and the slot is either empty or contains an item stack of the same item type.=放置：如果光标持有1个或多个物品，且目标栏位是空的或者包含相同类型物品的堆叠，你就可以将物品放置到栏位中。
+
 • Left click: put entire item stack=• [鼠标左键] - 放置整个物品堆叠
 • Right click or mouse wheel up: put 1 item of the item stack=• [鼠标右键]或[鼠标滚轮向上滚动] - 放置物品堆叠中的1个物品
 • Middle click: put 10 items of the item stack=• [鼠标中键] - 放置物品堆叠中的10个物品
+
 Exchanging: You can exchange items if the cursor holds 1 or more items and the destination slot is occupied by a different item type.=交换：如果光标持有1个或多个物品，且目标栏位被不同类型的物品占据，你就可以交换物品。
+
 • Click: exchange item stacks=• [鼠标左键] - 交换物品堆叠
+
 Throwing away: If you hold an item stack and click with it somewhere outside the menu, the item stack gets thrown away into the environment.=丢弃：如果你拿着一个物品堆叠，并在菜单外的地方点击，该物品堆叠就会被丢弃到环境中。
+
 Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=快速转移：当访问某个物品（如熔炉、箱子或其他带有背包栏位的物品）的背包时，你可以在玩家背包和该物品的背包栏位之间快速转移物品堆叠，目标背包通常是在此情境下最相关的背包。
+
 • Sneak+Left click: Automatically transfer item stack=• [潜行键] + [鼠标左键] - 自动转移物品堆叠
 Online help=在线帮助
 You may want to check out these online resources related to Minetest:=你可能想查看一下这些与《迷你测试》相关的在线资源。
 Official homepage of Minetest: <https://minetest.net/>=《迷你测试》官方主页：<https://minetest.net/>
 The main place to find the most recent version of Minetest.=这是查找《迷你测试》最新版本的主要地方。
 Community wiki: <https://wiki.minetest.net/>=社区维基：<https://wiki.minetest.net/>
+
 A community-based documentation website for Minetest. Anyone with an account can edit it! It also features a documentation of Minetest Game.=这是一个基于社区的《迷你测试》文档网站，任何有账号的人都可以编辑它！它还包含《迷你测试》游戏的相关文档。
+
 Web forums: <https://forums.minetest.net/>=
+
 A web-based discussion platform where you can discuss everything related to Minetest. This is also a place where player-made mods and games are published and discussed. The discussions are mainly in English, but there is also space for discussion in other languages.=这是一个基于网络的讨论平台，你可以在这里讨论与《迷你测试》相关的所有内容，这里也是玩家制作的模组和游戏发布、讨论的地方，讨论主要使用英语进行，但也有空间用于其他语言的讨论。
+
 Chat: <irc://irc.freenode.net#minetest>=聊天频道：<irc://irc.freenode.net#minetest>
+
 A generic Internet Relay Chat channel for everything related to Minetest where people can meet to discuss in real-time. If you do not understand IRC, see the Community Wiki for help.=这是一个通用的与《迷你测试》相关的互联网中继聊天频道，人们可以在这里实时交流讨论，如果你不懂IRC，可以查看社区维基寻求帮助。
+
 Groups=群组
+
 Items, players and objects (animate and inanimate) can be members of any number of groups. Groups serve multiple purposes:=物品、玩家以及物体（有生命的和无生命的）都可以成为任意数量群组的成员，群组有多种用途：
+
 • Crafting recipes: Slots in a crafting recipe may not require a specific item, but instead an item which is a member of a particular group, or multiple groups=• 制作配方：制作配方中的栏位可能不要求特定的物品，而是要求属于某个特定群组或多个群组的物品
+
 • Digging times: Diggable blocks belong to groups which are used to determine digging times. Mining tools are capable of digging blocks belonging to certain groups=• 挖掘时间：可挖掘的方块属于用于确定挖掘时间的群组，挖掘工具能够挖掘属于特定群组的方块
+
 • Block behavior: Blocks may show a special behaviour and interact with other blocks when they belong to a particular group=• 方块行为：当方块属于某个特定群组时，它们可能会表现出特殊的行为，并与其他方块相互作用
+
 • Damage and armor: Objects and players have armor groups, weapons have damage groups. These groups determine damage. See also: “Basics > Weapons”=• 伤害与护甲：物体和玩家有护甲群组，武器有伤害群组，这些群组决定了伤害情况，另见“基础 > 武器”部分
+
 • Other uses=• 其他用途
 In the item help, many important groups are usually mentioned and explained.=在物品相关的帮助内容中，通常会提及并解释许多重要的群组。
 Glossary=术语表 
@@ -308,45 +441,71 @@ Interface=界面
 Online multiplayer:=在线多人游戏：
 • PvP: Player vs Player. If active, players can deal damage to each other=• PvP：玩家对战玩家。如果开启此功能，玩家之间可互相造成伤害
 • Griefing: Destroying the buildings of other players against their will=• 恶意破坏（Griefing）：违背其他玩家意愿破坏他们的建筑
+
 • Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=• 保护机制：拥有世界中某些区域的机制，只允许所有者修改区域内的方块
+
 Technical terms:=技术术语：
 • Minetest: This game engine=• 《迷你测试》（Minetest）：这款游戏的引擎
 • Minetest Game: A game for Minetest by the Minetest developers=• 《迷你测试》游戏（Minetest Game）：由《迷你测试》开发者制作的适用于《迷你测试》的游戏
+
 • Game: A complete playing experience to be used in Minetest; such as a game or sandbox or similar=• 游戏：在《迷你测试》中完整的游戏体验，比如常规游戏、沙盒游戏或类似的形式
+
 • Mod: A single subsystem which adds or modifies functionality; is the basic building block of games and can be used to further enhance or modify them=• 模组：可添加或修改功能的单个子系统，是游戏的基本构建模块，可用于进一步增强或修改游戏功能
+
 • Privilege: Allows a player to do something=• 权限：允许玩家做某事
 • Node: Other word for “block”=• 节点（Node）：“方块”的另一种说法
 Settings=设置 
+
 There is a large variety of settings to configure Minetest. Pretty much every aspect can be changed that way.=《迷你测试》（Minetest）有各种各样的设置可供配置，几乎游戏的各个方面都能通过这种方式来更改。
+
 These are a few of the most important gameplay settings:=以下是一些最重要的游戏玩法设置：
+
 • Damage enabled (enable_damage): Enables the health and breath attributes for all players. If disabled, players are immortal=• 伤害启用（enable_damage）：为所有玩家启用生命值和呼吸值属性。如果禁用此设置，玩家将处于无敌状态。
+
 • Creative Mode (creative_mode): Enables sandbox-style gameplay focusing on creativity rather than a challenging gameplay. The meaning depends on the game; usual changes are: Reduced dig times, easy access to almost all items, tools never wear off, etc.=• 创造模式（creative_mode）：开启沙盒式游戏玩法，侧重于创造力而非具有挑战性的玩法，其具体含义因游戏而异，通常的变化有：挖掘时间缩短、几乎能轻松获取所有物品、工具永不磨损等等。
+
 • PvP (enable_pvp): Short for “Player vs Player”. If enabled, players can deal damage to each other=• 玩家对战玩家（PvP，enable_pvp）：如果启用该功能，玩家之间可互相造成伤害。
+
 For a full list of all available settings, use the “All Settings” dialog in the main menu.=如需获取所有可用设置的完整列表，请使用主菜单中的“所有设置”对话框。
+
 Movement modes=移动模式
 You can enable some special movement modes that change how you move.=你可以启用一些特殊的移动模式，它们会改变你的移动方式。
 Pitch movement mode:=视角俯仰移动模式：
+
 • Description: If this mode is activated, the movement keys will move you relative to your current view pitch (vertical look angle) when you're in a liquid or in fly mode.=• 描述：如果此模式被激活，当你处于液体中或飞行模式下时，移动按键将根据你当前的视角俯仰（垂直视角角度）来移动你。
+
 • Default key: [L]=• 默认按键：[L]
 • No privilege required=• 无需权限
 Fast mode:=快速模式：
+
 • Description: Allows you to move much faster. Hold down the the “Use” key [E] to move faster. In the client configuration, you can further customize fast mode.=• 描述：能让你移动得更快，按住“使用”键（[E]键）可加快移动速度，在客户端配置中，你还可以进一步自定义快速模式。
+
 • Default key: [J]=• 默认按键：[J]
 • Required privilege: fast=• 所需权限：快速（fast）
 Fly mode:=飞行模式：
+
 • Description: Gravity doesn't affect you and you can move freely in all directions. Use the jump key to rise and the sneak key to sink.=• 描述：重力不会对你产生影响，你可以向各个方向自由移动，使用跳跃键上升，使用潜行键下降。
+
 • Default key: [K]=• 默认按键：[K]
 • Required privilege: fly=• 所需权限：飞行（fly）
 Noclip mode:=穿墙模式：
+
 • Description: Allows you to move through walls. Only works when fly mode is enabled, too.=• 描述：允许你穿过墙壁移动，但该模式只有在飞行模式也启用的情况下才有效。
+
 • Default key: [H]=• 默认按键：[H]
 • Required privilege: noclip=• 所需权限：穿墙（noclip）
 Console=控制台
+
 With [F10] you can open and close the console. The main use of the console is to show the chat log and enter chat messages or server commands.=通过按下[F10]键，你可以打开和关闭控制台，控制台的主要用途是显示聊天记录以及输入聊天消息或服务器命令。
+
 Using the chat or server command key also opens the console, but it is smaller and will be closed after you sent a message.=使用聊天或服务器命令按键也会打开控制台，但这个控制台尺寸较小，且在你发送消息后就会关闭。
+
 Use the chat to communicate with other players. This requires you to have the “shout” privilege.=使用聊天功能与其他玩家交流，这需要你拥有“喊话”权限。
+
 Just type in the message and hit [Enter]. Public chat messages cannot begin with “/”.=只需输入消息然后按下[Enter]键即可，公共聊天消息不能以“/”开头。
+
 You can send private messages: Say “/msg <player> <message>” in chat to send “<message>” which can only be seen by <player>.=你可以发送私人消息：在聊天中输入“/msg <玩家名称> <消息内容>”，这样发送的“<消息内容>”就只有<玩家名称>所指的玩家能够看到。
+
 There are some special controls for the console:=控制台有一些特殊的控制操作：
 • [F10] Open/close console=• [F10]键 - 打开/关闭控制台
 • [Enter]: Send message or command=• [Enter]键 - 发送消息或命令
@@ -359,35 +518,60 @@ There are some special controls for the console:=控制台有一些特殊的控�
 • [Ctrl]+[K]: Delete all text after the cursor=• [Ctrl] + [K]键 - 删除光标后的所有文本
 • [Page up]: Scroll up=• [Page Up]键 - 向上滚动
 • [Page down]: Scroll down=• [Page Down]键 - 向下滚动
+
 There is also an input history. Minetest saves your previous console inputs which you can quickly access later:=还有输入历史记录功能，《迷你测试》会保存你之前在控制台输入的内容，之后你可以快速访问这些内容：
+
 • [Up]: Go to previous entry in history=• [向上箭头键] - 转到历史记录中的上一条记录
 • [Down]: Go to next entry in history=• [向下箭头键] - 转到历史记录中的下一条记录
 Server commands=服务器命令 
+
 Server commands (also called “chat commands”) are little helpers for advanced users. You don't need to use these commands when playing. But they might come in handy to perform some more technical tasks. Server commands work both in multi-player and single-player mode.=服务器命令（也称作“聊天命令”）是为高级用户提供的小帮手，玩游戏时你并非一定要使用这些命令，但在执行一些更具技术性的任务时它们可能会派上用场，服务器命令在多人模式和单人模式下均可使用。
+
 Server commands can be entered by players using the chat to perform a special server action. There are a few commands which can be issued by everyone, but some commands only work if you have certain privileges granted on the server. There is a small set of basic commands which are always available, other commands can be added by mods.=玩家可以通过聊天输入服务器命令来执行特殊的服务器操作，有一些命令任何人都能使用，但有些命令只有在服务器授予你特定权限时才有效，有一小部分基本命令始终可用，其他命令可由模组添加。
+
 To issue a command, simply type it like a chat message or press Minetest's command key (default: [/]). All commands have to begin with “/”, for example “/mods”. The Minetest command key does the same as the chat key, except that the slash is already entered.=要发出命令，只需像输入聊天消息一样输入它，或者按下《迷你测试》（Minetest）的命令键（默认是[/]键），所有命令都必须以“/”开头，例如“/mods”，《迷你测试》的命令键与聊天键作用相同，只是它已经自带了斜杠（“/”）。
+
 Commands may or may not give a response in the chat log, but errors will generally be shown in the chat. Try it for yourselves: Close this window and type in the “/mods” command. This will give you the list of available mods on this server.=命令可能会也可能不会在聊天记录中给出回复，但通常错误信息会显示在聊天中，你可以自己试试：关闭这个窗口，然后输入“/mods”命令，这样你就能得到此服务器上可用模组的列表了。
+
 “/help all” is a very important command: You get a list of all available commands on the server, a short explanation and the allowed parameters. This command is also important because the available commands often differ per server.=“/help all”是一个非常重要的命令：你会得到服务器上所有可用命令的列表、简短的解释以及允许使用的参数，这个命令很重要还因为可用命令往往因服务器而异。
+
 Commands are followed by zero or more parameters.=命令后面可跟零个或多个参数。
+
 In the command reference, you see some placeholders which you need to replace with an actual value. Here's an explanation:=在命令参考中，你会看到一些占位符，需要用实际的值来替换它们，以下是相关解释：
+
 • Text in greater-than and lower-than signs (e.g. “<param>”): Placeholder for a parameter=• 用大于号和小于号括起来的文本（例如“<参数>”）：参数的占位符
+
 • Anything in square brackets (e.g. “[text]”) is optional and can be omitted=• 方括号内的任何内容（例如“[文本]”）是可选的，可以省略
+
 • Pipe or slash (e.g. “text1 | text2 | text3”): Alternation. One of multiple texts must be used (e.g. “text2”)=• 竖线或斜线（例如“文本1 | 文本2 | 文本3”）：表示可选择项，必须使用多个文本中的某一个（例如“文本2”）
+
 • Parenthesis: (e.g. “(word1 word2) | word3”): Groups multiple words together, used for alternations=• 括号（例如“(单词1 单词2) | 单词3”）：将多个单词组合在一起，用于表示可选择项
+
 • Everything else is to be read as literal text=• 其他所有内容都按字面文本解读
 Here are some examples to illustrate the command syntax:=以下是一些示例，用于说明命令语法：
 • /mods: No parameters. Just enter “/mods”=• /mods：没有参数，只需输入“/mods”
+
 • /me <action>: 1 parameter. You have to enter “/me ” followed by any text, e.g. “/me orders pizza”=• /me <动作>：1个参数，你必须输入“/me ”，然后跟上任意文本，例如“/me orders pizza”
+
 • /give <name> <ItemString>: Two parameters. Example: “/give Player default:apple”=• /give <名称> <物品字符串>：两个参数，例如：“/give 玩家 mcl_core:apple”
+
 • /help [all|privs|<cmd>]: Valid inputs are “/help”, “/help all”, “/help privs”, or “/help ” followed by a command name, like “/help time”=• /help [全部|权限| <命令>]：有效的输入包括“/help”、“/help all”、“/help privs”，或者“/help ”后接命令名称，比如“/help time”
+
 • /spawnentity <EntityName> [<X>,<Y>,<Z>]: Valid inputs include “/spawnentity boats:boat” and “/spawnentity boats:boat 0,0,0”=• /spawnentity <实体名称> [<X>，<Y>，<Z>]：有效的输入包括“/spawnentity mcl_boats:boat”和“/spawnentity mcl_boats:boat 0,0,0”
+
 Some final remarks:=一些最后的说明：
+
 • For /give and /giveme, you need an itemstring. This is an internally used unique item identifier which you may find in the item help if you have the “give” or “debug” privilege=• 对于/give和/giveme命令，你需要物品字符串，这是一个供内部使用的唯一物品标识符，如果你拥有“给予”或“调试”权限，就可以在物品帮助信息中找到它
+
 • For /spawnentity you need an entity name, which is another identifier=• 对于/spawnentity命令，你需要实体名称，这也是一种标识符
 Privileges=权限
+
 Each player has a set of privileges, which differs from server to server. Your privileges determine what you can and can't do. Privileges can be granted and revoked from other players by any player who has the privilege called “privs”.=每个玩家都有一组权限，不同服务器上的权限有所不同，你的权限决定了你能做什么和不能做什么，拥有“权限管理（privs）”权限的任何玩家都可以授予或撤销其他玩家的权限。
+
 On a multiplayer server with the default configuration, new players start with the privileges called “interact” and “shout”. The “interact” privilege is required for the most basic gameplay actions such as building, mining, using, etc. The “shout” privilege allows to chat.=在默认配置的多人服务器上，新玩家初始拥有“交互（interact）”和“喊话（shout）”权限，“交互”权限是进行诸如建造、挖掘、使用等最基本游戏操作所必需的，“喊话”权限则允许进行聊天。
+
 There is a small set of core privileges which you'll find on every server, other privileges might be added by mods.=每个服务器上都有一小部分核心权限，其他权限可能由模组添加。
+
 To view your own privileges, issue the server command “/privs”.=要查看你自己的权限，可执行服务器命令“/privs”。
 Here are a few basic privilege-related commands:=以下是一些与权限相关的基本命令：
 • /privs: Lists your privileges=• /privs：列出你的权限
@@ -398,21 +582,36 @@ Players with the “privs” privilege can modify privileges at will:=拥有“�
 • /revoke <player> <privilege>: Revoke <privilege> from <player>=• /revoke <玩家> <权限>：从<玩家>那里撤销<权限>
 In single-player mode, you can use “/grantme all” to unlock all abilities.=在单人模式下，你可以使用“/grantme all”命令来解锁所有能力。
 Light=光照
+
 As the world is entirely block-based, so is the light in the world. Each block has its own brightness. The brightness of a block is expressed in a “light level” which ranges from 0 (total darkness) to 15 (as bright as the sun).=由于整个世界完全基于方块构建，世界中的光照也是如此，每个方块都有自己的亮度，方块的亮度通过“光照等级”来表示，其范围从0（完全黑暗）到15（和太阳一样亮）。
+
 There are two types of light: Sunlight and artificial light.=有两种类型的光：太阳光和人造光。
+
 Artificial light is emitted by luminous blocks. Artificial light has a light level from 1-14.=人造光由发光方块发出，人造光的光照等级范围是1 - 14。
+
 Sunlight is the brightest light and always goes perfectly straight down from the sky at each time of the day. At night, the sunlight will become moonlight instead, which still provides a small amount of light. The light level of sunlight is 15.=太阳光是最亮的光，在一天中的任何时候它总是从天空笔直向下照射，到了夜晚，太阳光会变成月光，不过月光仍会提供少量的光，太阳光的光照等级是15。
+
 Blocks have 3 levels of transparency:=方块有3个透明度级别：
+
 • Transparent: Sunlight goes through limitless, artificial light goes through with losses=• 透明：太阳光可无限制穿过，人造光穿过时会有损耗
+
 • Semi-transparent: Sunlight and artificial light go through with losses=• 半透明：太阳光和人造光穿过时都会有损耗
 • Opaque: No light passes through=• 不透明：任何光都无法穿过
+
 Artificial light will lose one level of brightness for each transparent or semi-transparent block it passes through, until only darkness remains (image 1).=人造光每穿过一个透明或半透明方块就会损失一级亮度，直至只剩下黑暗（图1）。
+
 Sunlight will preserve its brightness as long it only passes fully transparent blocks. When it passes through a semi-transparent block, it turns to artificial light. Image 2 shows the difference.=只要太阳光穿过的都是完全透明的方块，它就能保持自身亮度，当它穿过半透明方块时，就会变成人造光，图2展示了其中的区别。
+
 Note that “transparency” here only means that the block is able to carry brightness from its neighboring blocks. It is possible for a block to be transparent to light but you can't see trough the other side.=请注意，这里的“透明度”仅意味着方块能够传递来自相邻方块的亮度，有可能某个方块对光是透明的，但你无法透过它看到另一侧。
+
 Coordinates=坐标 
+
 The world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.=世界是一个巨大的立方体，正因如此，世界中的位置可以很容易地用笛卡尔坐标来表示，也就是说，对于世界中的每个位置，都有X、Y和Z这3个值。
+
 Like this: (5, 45, -12)=像这样：(5, 45, -12)。
+
 This refers to the position where X@=5, Y@=45 and Z@=-12. The 3 letters are called “axes”: Y is for the height. X and Z are for the horizontal position.=这指的是X等于5、Y等于45且Z等于 - 12的位置，这3个字母被称作“坐标轴”：Y代表高度，X和Z代表水平位置。
+
 The values for X, Y and Z work like this:=X、Y和Z的值变化规律如下：
 • If you go up, Y increases=• 如果你向上走，Y值会增加
 • If you go down, Y decreases=• 如果你向下走，Y值会减少
@@ -439,25 +638,43 @@ Enabling Creative Mode in VoxeLibre applies the following changes:=在沃克斯�
 Damage is not affected by Creative Mode, it needs to be disabled separately.=创造模式不影响伤害效果，伤害需要单独进行禁用设置。
 Mobs=怪物
 Mobs are the living beings in the world. This includes animals and monsters.=怪物是世界中的生物，包括动物和怪物。
+
 Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some mobs only spawn on particular blocks (like grass blocks).=怪物会在世界中随机出现，这被称作“生成”。每种怪物会在特定光照等级下出现在特定类型的方块上，高度也有影响，和平型怪物通常在白天生成，而敌对型怪物更喜欢在黑暗中生成，大多数怪物可以在任何固体方块上生成，但有些怪物只在特定方块（比如草地方块）上生成。
+
 Like players, mobs have hit points and sometimes armor points, too (which means you need better weapons to deal any damage at all). Also like players, hostile mobs can attack directly or at a distance. Mobs may drop random items after they die.=和玩家一样，怪物也有生命值，有时也有护甲值（这意味着你需要更好的武器才能对它们造成伤害），同样和玩家一样，敌对型怪物可以近距离或远距离攻击，怪物死后可能会掉落随机物品。
+
 Most animals roam the world aimlessly while most hostile mobs hunt players. Animals can be fed, tamed and bred.=大多数动物在世界中漫无目的地游荡，而大多数敌对型怪物会追捕玩家，动物可以被喂食、驯服和繁殖。
+
 Animals=动物
+
 Animals are peaceful beings which roam the world aimlessly. You can feed, tame and breed them.=动物是在世界中漫无目的地游荡的和平型生物，你可以给它们喂食、驯服和繁殖。
+
 Feeding:=喂食：
+
 Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and right-click the animal.=每种动物都有自己的食物偏好，不会随便接受任何食物，要喂食的话，手里拿着物品然后右键点击动物即可。
+
 Animals are attracted to the food they like and follow you as long you hold the food item in hand.=动物会被它们喜欢的食物吸引，只要你手里拿着食物，它们就会跟着你。
+
 Feeding an animal has three uses: Taming, healing and breeding.=给动物喂食有三个用途：驯服、治疗和繁殖。
 Feeding heals animals instantly, depending on the quality of the food item.=根据食物的品质不同，喂食能立即治愈动物。
 Taming:=驯服：
+
 A few animals can be tamed. You can generally do more things with tamed animals and use other items on them. For example, tame horses can be saddled and tame wolves fight on your side.=有几种动物可以被驯服，通常你可以用被驯服的动物做更多事，还可以在它们身上使用其他物品，例如，被驯服的马可以装上马鞍，被驯服的狼会帮你战斗。
+
 Breeding:=繁殖：
+
 When you have fed an animal up to its maximum health, then feed it again, you will activate “Love Mode” and many hearts appear around the animal.=当你把动物喂到满血状态后再喂一次，就会激活“恋爱模式”，动物周围会出现很多爱心。
+
 Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.=同种类的两只处于“恋爱模式”且彼此靠近的动物就会开始繁殖，很快就会有幼崽出现。
+
 Baby animals:=幼崽动物
+
 Baby animals are just like their adult counterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.=幼崽动物和成年动物很相似，但它们不能被驯服或繁殖，死后也不会掉落任何东西，它们会在短时间内成长为成年动物，喂食的话能让它们更快成长为成年动物。
+
 Hunger=饥饿
+
 Hunger affects your health and your ability to sprint. Hunger is not in effect when damage is disabled.=饥饿会影响你的健康以及冲刺能力，当伤害被禁用时，饥饿效果不起作用。
+
 Core hunger rules:=饥饿核心规则：
 • You start with 20/20 hunger points (more points @= less hungry)=• 你开始游戏时有20/20的饥饿值（饥饿值越高，就越不饿）
 • Actions like combat, jumping, sprinting, etc. decrease hunger points=• 像战斗、跳跃、冲刺等行为会减少饥饿值
@@ -468,14 +685,23 @@ Core hunger rules:=饥饿核心规则：
 • At 0 hunger points, you lose 1 HP every 4 seconds (down to 1 HP)=• 在0点饥饿值时，你每4秒损失1点生命值（直至生命值降到1点为止）
 • Poisonous food decreases your health=• 有毒食物会降低你的生命值 
 Details:=详情：
+
 You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=你拥有0 - 20的饥饿值，由快捷栏上方20个鸡腿半图标来表示，你还有一个不可见的属性：饱和度。
+
 Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.=饥饿值反映你有多饱，而饱和度则反映距离你再次感到饥饿还需要多长时间。
+
 Each food item increases both your hunger level as well your saturation.=每种食物都会增加你的饥饿值以及饱和度。
+
 Food with a high saturation boost has the advantage that it will take longer until you get hungry again.=具有高饱和度加成的食物有个优势，就是能让你在更长时间内不会再次感到饥饿。
+
 A few food items might induce food poisoning by chance. When you're poisoned, the health and hunger symbols turn sickly green. Food poisoning drains your health by 1 HP per second, down to 1 HP. Food poisoning also drains your saturation. Food poisoning goes away after a while or when you drink milk.=有一些食物可能会偶然引发食物中毒，当你中毒时，生命值和饥饿值的图标会变成病态的绿色，食物中毒会使你的生命值每秒减少1点，直至降到1点为止，食物中毒也会消耗你的饱和度，一段时间后或者你喝下牛奶时，食物中毒状态就会消失。
+
 You start with 5 saturation points. The maximum saturation is equal to your current hunger level. So with 20 hunger points your maximum saturation is 20. What this means is that food items which restore many saturation points are more effective the more hunger points you have. This is because at low hunger levels, a lot of the saturation boost will be lost due to the low saturation cap.=你初始有5个饱和度点数，最大饱和度等于你当前的饥饿值，所以如果你的饥饿值是20，那最大饱和度就是20，这意味着能恢复较多饱和度点数的食物，在你饥饿值越高时就越有效，这是因为在饥饿值较低时，由于饱和度上限较低，很多饱和度加成会丢失。
+
 If your saturation reaches 0, you're hungry and start to lose hunger points. Whenever you see the hunger bar decrease, it is a good time to eat.=如果你的饱和度达到0，你就会感到饥饿并开始损失饥饿值，每当你看到饥饿值条减少时，就是吃东西的好时机了。
+
 Saturation decreases by doing things which exhaust you (highest exhaustion first):=做那些让你疲惫的事会使饱和度降低（按疲惫程度从高到低排序）：
+
 • Regenerating 1 HP=• 恢复1点生命值
 • Suffering food poisoning=• 遭受食物中毒
 • Sprint-jumping=• 疾跑中跳跃
@@ -492,27 +718,42 @@ Other actions, like walking, do not exhaust you.=其他行为，比如走路，�
 
 Basic controls:=基本操作：
 • Lowest row in inventory appears in hotbar below=• 背包的最下面一行就是快捷栏
+
 Minetest as well as Minetest Game are both unfinished at the moment, so please forgive us when not everything works out perfectly.=目前，《迷你测试》以及《迷你测试》游戏都尚未完成，所以如果并非一切都能完美运行，请您谅解。
+
 If you jump while holding the sneak key, you also jump slightly higher than usual.=如果你在按住潜行键的同时进行跳跃，你也会比平常跳得稍高一点。
+
 • E: Move even faster when in fast mode=• [E]键：在快速模式下移动得更快
 • Left mouse button: Punch / mine blocks / take items=• 鼠标左键：击打/挖掘方块/拾取物品
 • Roll mouse wheel: Select next/previous item in hotbar=• 滚动鼠标滚轮：选择快捷栏中的下一个/上一个物品
 • F8: Toggle cinematic mode=• [F8]键：切换电影模式
 • P: Only useful for developers. Writes current stack traces=• [P]键：仅对开发者有用，用于记录当前的堆栈跟踪信息
+
 Dropped item stacks will be collected automatically when you stand close to them.=当你靠近被丢弃的物品堆叠时，它们会被自动收集起来。
+
 Mining tools are important to break all kinds of blocks. Weapons are another kind of tool. There are some other more specialized tools. Special actions of tools are usually done by right-click.=挖掘工具对于破坏各类方块很重要，武器是另一种工具，还有一些其他更具专业性的工具，工具的特殊操作通常通过点击鼠标右键来执行。
+
 When nothing is wielded, players use their hand which may act as tool and weapon. The hand is capable of punching and deals minimum damage.=当手中未持有任何物品时，玩家会使用自己的手，手能够进行击打并造成最低限度的伤害。
+
 There is also Cinematic Mode which can be toggled with [F8]. With Cinematic Mode enabled, the camera movements become more smooth. Some players don't like it, it is a matter of taste.=还有电影模式，可通过按下[F8]键来切换开启或关闭，开启电影模式后，摄像机的移动会变得更流畅，有些玩家不喜欢这种模式，这因人而异。
+
 By holding down [Z], you can zoom the view at your crosshair. You need the “zoom” privilege to do this.=按住[Z]键，你可以对准星处的画面进行缩放，不过你需要有“缩放”权限才能这么做。
+
 • Toggle Cinematic Mode: [F8]=• [F8]键 - 切换电影模式
+
 The world of VoxeLibre is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=沃克斯利布尔（VoxeLibre）世界完全是由方块（准确地说是体素）构成的，使用合适的工具就能对方块进行添加或移除操作。
+
 • Right click: put 1 item of the item stack=• [鼠标右键] - 放置物品堆叠中的1个物品
 You may want to check out these online resources related to VoxeLibre.=你可能想查看一下这些与沃克斯利布尔（VoxeLibre）相关的在线资源。
+
 VoxeLibre download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=沃克斯利布尔（VoxeLibre）下载及论坛讨论：<https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>
+
 Here you find the most recent version of VoxeLibre and can discuss it.=在这里你可以找到沃克斯利布尔（VoxeLibre）的最新版本并进行讨论。
 Bug tracker: <https://github.com/Wuzzy2/MineClone2-Bugs>=漏洞追踪器：<https://github.com/Wuzzy2/MineClone2-Bugs>
 Report bugs here.=在这里报告你发现的漏洞。
 Minetest links:=《迷你测试》相关链接：
+
 The main place to find the most recent version of Minetest, the engine used by VoxeLibre.=这是查找《迷你测试》（沃克斯利布尔所使用的引擎）最新版本的主要地方。
+
 Minetest forums: <https://forums.minetest.net/>=《迷你测试》论坛：<https://forums.minetest.net/>
 • VoxeLibre: What you play right now=• 沃克斯利布尔（VoxeLibre）：你正在玩的游戏内容

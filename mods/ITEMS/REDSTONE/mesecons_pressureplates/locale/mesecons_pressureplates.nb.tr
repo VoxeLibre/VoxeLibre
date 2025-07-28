@@ -1,6 +1,9 @@
 # textdomain: mesecons_pressureplates
+
 A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=En tretrykkplate er en rødsteinskomponent som gir de omkringliggende blokkene rødsteinskraft når et bevegelig objekt (inkludert kastede gjenstander, spillere og skapninger) befinner seg oppå den.
+
 A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=
+
 Provides redstone power when pushed=
 Pushable by players, mobs and objects=Kan trykkes ned av spillere, skapninger og objekter
 Pushable by players and mobs=Kan trykkes ned av spillere og skapninger
@@ -16,6 +19,10 @@ Mangrove Pressure Plate=Mangrovetrykkplate
 Crimson Pressure Plate=Karmosintrykkplate
 Warped Pressure Plate=Forvridd trykkplate
 Stone Pressure Plate=Steintrykkplate
+
 A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=En steintrykkplate er en rødsteinskomponent som gir de omkringliggende blokkene rødsteinskraft når en spiller eller en skapning står oppå den. Den utløses ikke av noe annet.
+
 Polished Blackstone Pressure Plate=Trykkplate av finslipt svartstein
+
 A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=utløses ikke av noe annet.
+

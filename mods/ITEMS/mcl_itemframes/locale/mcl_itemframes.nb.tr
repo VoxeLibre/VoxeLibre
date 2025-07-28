@@ -1,6 +1,8 @@
 # textdomain: mcl_itemframes
 Item frames are decorative blocks in which items can be placed.=Rammer er dekorative blokker som gjenstander kan plasseres i.
+
 Just place any item on the item frame. Use the item frame again to retrieve the item.=Bare plasser et hvilket som helst gjenstand i rammen. Bruk rammen igjen for å hente ut gjenstanden.
+
 ##[ register.lua ]##
 Item Frame=Ramme
 Can hold an item=Kan holde én gjenstand

@@ -19,6 +19,7 @@ The stripped hyphae bark of a warped fungus=A casca de hifas desposuídas dun fu
 Warped Hyphae Wood=Madeira de hifas deformadas
 Warped Stairs=Escaleira deformada
 Warped Slab=Lousa deformada
+Double Warped Slab=
 Crimson Fungus=Fungo carmesí 
 Crimson fungus is a mushroom found in the nether's crimson forest.=O fungo carmesí é un cogomelo que se atopa no bosque carmesí do Nether.
 Crimson Roots=Raíces carmesí
@@ -33,11 +34,17 @@ Crimson Hyphae Wood=Madeira de hifas carmesí
 Crimson Nylium=Carmesí Nylio
 Crimson Stairs=Escaleira carmesí
 Crimson Slab=Lousa carmesí
+Double Crimson Slab=Dobre Lousa Carmesí
 Crimson Door=Porta Carmesí
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=As portas de madeira son barreiras altas de 2 bloques que se poden abrir ou pechar a man e mediante un sinal de pedra vermella.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Para abrir ou pechar unha porta de madeira, fai clic co botón dereito nela ou proporciona á súa metade inferior un sinal de pedra vermella.
+
 Crimson Trapdoor=Trampa carmesí
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=As trampillas de madeira son barreiras horizontais que se poden abrir e pechar coa man ou cun sinal de pedra vermella. Ocupan a parte superior ou inferior dun bloque, segundo a súa colocación. Cando están abertas, pódense subir coma unha escaleira.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou pechar a trapela, fai clic co botón dereito ou envíalle un sinal de pedra vermella.
 Crimson Fence=Cerca Carmesí
 Crimson Fence Gate=Porta de Cerca Carmesí 
@@ -50,5 +57,4 @@ Warped Fence Gate=Porta de cerca deformada
 ##### not used anymore #####
 
 Warped Checknode - only to check!=Warped Checknode - só para comprobar!
-Double Crimson Slab=Dobre Lousa Carmesí
 Crimson Checknode - only to check!=Carmesí Checknode - só para comprobar!

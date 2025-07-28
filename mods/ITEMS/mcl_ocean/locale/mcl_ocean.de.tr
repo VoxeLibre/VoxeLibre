@@ -1,7 +1,9 @@
 # textdomain: mcl_ocean
 ##[ prismarine.lua ]##
 Sea Lantern=Seelaterne
+
 Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Seelaternen sind dekorative Lichtquellen, die im Wasser schick aussehen, aber sie können überall platziert werden.
+
 Prismarine=Prismarin
 Prismarine is used as a building block. It slowly changes its color.=Prismarin wird aus Baumaterial benutzt. Er verändert langsam seine Farbe.
 Prismarine Bricks=Prismarinziegel
@@ -39,9 +41,13 @@ Horn Coral=Hornkoralle
 Dead Horn Coral=Tote Hornkoralle
 Horn Coral Fan=Hornkorallenfächer
 Dead Horn Coral Fan=Toter Hornkorallenfächer
+
 Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.=Korallenblöcke leben im Ozean und benötigen eine Wasserquelle neben ihnen, um zu überleben. Ohne Wasser sterben sie ab.
+
 Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Korallen wachsen auf Korallenblöcken und müssen sich in einer Wasserquelle befinden, um zu überleben. Ohne Wasser sterben sie gemeinsam mit dem Korallenblock ab.
+
 Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Korallenfächer wachsen auf Korallenblöcken und müssen sich in einer Wasserquelle befinden, um zu überleben. Ohne Wasser sterben sie gemeinsam mit dem Korallenblock ab.
+
 Needs water to live=Benötigt Wasser zum Leben
 Grows on coral block of same species=Wächst auf Korallenblock der gleichen Art
 ##[ seagrass.lua ]##
@@ -57,8 +63,11 @@ Dried Kelp Block=Getrockneter Seetangblock
 A decorative block that serves as a great furnace fuel.=Ein dekorativer Block, der sich gut als Ofenbrennstoff eignet.
 ##[ sea_pickle.lua ]##
 Sea Pickle=Meeresgurke
+
 Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Meeresgurken wachsen auf toten Gehirnkorallenblöcken und spenden Licht, wenn sie unter Wasser sind. Sie gibt es in 4 Größen, die sich in der Helligkeit unterscheiden.
+
 It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Es kann nur auf toten Gehirnkorallensteinen platziert werden. Wenn man eine Meeresgurke auf eine andere Meeresgurke legt, wächst sie und wird heller.
+
 Glows in the water=Leuchtet im Wasser
 4 possible sizes=4 mögliche Größen
 Grows on dead brain coral block=Wächst auf totem Hirnkorallenblock

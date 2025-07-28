@@ -1,9 +1,17 @@
 # textdomain: mcl_stairs
+##[ api.lua ]##
+
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=As escaleiras son útiles para chegar a lugares máis altos camiñando sobre elas; non é necesario saltar. Colocar escaleiras nun patrón de esquina creará escaleiras de esquina. As escaleiras colocadas no teito ou na metade superior do lado dun bloque colocaranse boca abaixo.
+
 Double @1=Dobre @1
+
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=As lousas teñen a metade de altura que as súas contrapartes de bloque completo e ocupan a parte inferior ou superior dun bloque, dependendo de como se colocou. As lousas pódense pisar facilmente sen necesidade de saltar. Cando se coloca unha lousa sobre outra lousa do mesmo tipo, créase unha lousa dobre.
+
 Upper @1=Superior @1
+
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=As lousas dobres son bloques completos que se crean colocando dúas lousas do mesmo tipo entre si.
+
+##[ register.lua ]##
 Oak Wood Stairs=Escaleiras de madeira de carballo
 Oak Wood Slab=Lousa de madeira de carballo
 Double Oak Wood Slab=Lousa de madeira de carballo dobre

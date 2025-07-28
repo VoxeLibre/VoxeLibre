@@ -1,12 +1,21 @@
 # textdomain: mcl_tools
+
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Hakker er verktøy for å utvinne harde blokker, for eksempel stein. En hakke kan også brukes som våpen, men det er ganske ueffektivt.
+
 An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=En øks er ditt foretrukne verktøy for å hugge ned trær, trebaserte blokker og andre blokker. Økser gjør mye skade også, men de er ganske trege.
+
 Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=Sverd er gode i nærkamp, siden de er raske, gjør stor skade og tåler utallige kamper. Sverd kan også brukes til å kutte ned noen få bestemte blokker, for eksempel spindelvev.
+
 To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=
+
 Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=Spader er verktøy for å grave grove blokker, som jord, sand og grus. De kan også brukes til å gjøre gressblokker til gresstier. Spader kan brukes som våpen, men de er veldig svake.
+
 To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=For å gjøre en gressblokk til en gressti, hold spaden i hånden, og bruk (høyreklikk) oppå eller på siden av en gressblokk. Dette fungerer bare når det er luft over gressblokken.
+
 Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.=Sakser er verktøy for å klippe sauer og til å utvinne noen få blokktyper. Sakser er et spesielle verktøy og kan brukes til å skaffe den originale gjenstanden fra gress, løv og lignende blokker som krever klipping.
+
 To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.=For å klippe sauer eller skjære ansiktsløse gresskar, bruk "plasser"-tasten på dem. Ansikter kan bare utskjæres på siden av ansiktsløse gresskar. Knusing av blokker fungerer som vanlig, men slippene er forskjellige for noen få blokker.
+
 Wooden Pickaxe=Trehakke
 Stone Pickaxe=Steinhakke
 Iron Pickaxe=Jernhakke
@@ -36,6 +45,9 @@ Shears=Saks
 
 ##### not used anymore #####
 
+
 You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Du bruker bare hånden når du ikke holder noe. Med hånden din kan du knuse de fleste blokker. Men dette er den tregeste metoden, og bare de svakeste blokkene vil gi fra seg noe nyttig. Hånden gjør også mindre skade når du slår. Å bruke hånden er ofte en siste utvei, ettersom riktige verktøy og våpen er mye bedre.
+
 When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Når du bruker en gjenstand som ikke er et verktøy eller et våpen, vil det oppføre seg som om det var hånden når du begynner å grave eller slå.
+
 In Creative Mode, the hand is able to break all blocks instantly.=I kreativ modus er hånden i stand til å knuse alle blokker umiddelbart.

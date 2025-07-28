@@ -1,5 +1,6 @@
 # textdomain: mcl_boats
 Sneak to dismount=Se baisser pour descendre
+Boat=Bateau
 Oak Boat=Bateau en chêne
 Spruce Boat=Bateau en sapin
 Birch Boat=Bateau en bouleau
@@ -18,6 +19,7 @@ Dark Oak Chest Boat=Bateau en chêne noir avec coffre
 Mangrove Chest Boat=Bateau en palétuvier avec coffre
 Cherry Chest Boat=Bateau en cerisier avec coffre
 Boats are used to travel on the surface of water.=Les bateaux sont utilisés pour voyager à la surface de l'eau.
+
 Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=Faites un clic droit sur une source d'eau pour placer le bateau. Faites un clic droit sur le bateau pour y entrer. Utilisez [Gauche] et [Droite] pour diriger, [Avant] pour accélérer et [Arrière] pour ralentir ou reculer. Utilisez [Sneak] pour le quitter, frappez le bateau pour le faire tomber en tant qu'objet.
-Boat=Bateau
+
 Water vehicle=Véhicule aquatique

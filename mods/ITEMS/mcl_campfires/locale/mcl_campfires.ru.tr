@@ -1,7 +1,9 @@
 # textdomain: mcl_campfires
 ##[ api.lua ]##
 Cooks food and keeps bees happy.=Готовит еду и выкуривает пчёл
+
 Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap.=Костры имеют несколько применений, включая выкуривание пчёл, готовка сырого мяса и рыбы, и как ловушка.
+
 ##[ register.lua ]##
 Campfire=Костёр
 Soul Campfire=Костёр душ

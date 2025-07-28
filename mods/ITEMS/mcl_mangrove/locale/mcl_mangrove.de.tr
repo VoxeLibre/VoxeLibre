@@ -13,20 +13,31 @@ Mangrove Roots=Mangrovenwurzeln
 Mangrove roots are decorative blocks that form as part of mangrove trees.=Die Wurzeln der Mangroven sind dekorative Blöcke, die als Teil der Mangrovenbäume entstehen.
 Mangrove Propagule=Mangrovenkeimling
 Needs soil and light to grow=Braucht Nährboden und Licht, um zu wachsen
+
 When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time.=Wenn ein Mangrovenkeimling auf Nährboden (wie Erde) gesetzt und dem Licht ausgesetzt wird, wächst es nach einer Weile zu einem Mangrovenbaum.
+
 Hanging Propagule=Hängender Mangrovenkeimling
 Grows on Mangrove leaves=Wächst auf den Mangrovenblättern
 water logged mangrove roots=durchtränkte Mangrovenwurzeln
+
 Mangrove roots, despite being a full block, can be waterlogged and do not flow water out=Die Wurzeln von Mangroven, obwohl sie einen vollständigen Block bilden, können mit Wasser vollgesogen sein und geben kein Wasser ab
+
 These cannot be crafted yet only occure when get in contact of water.=Diese können noch nicht hergestellt werden und treten nur dann auf, wenn sie mit Wasser in Kontakt kommen.
 Muddy Mangrove Roots=Schlammige Mangrovenwurzeln
 Crafted with Mud and Mangrove roots=Mit Schlamm und Mangrovenwurzeln hergestellt
+
 Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it.=Schlammige Mangrovenwurzeln sind ein Block aus dem Mangroven-Sumpf. Der Spieler versinkt ein wenig darin.
+
 Mangrove Door=Mangrovenholztür
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Holztüren sind 2-Block-hohe Barriere, die manuell oder durch ein Redstonesignal geöffnet oder geschlossen werden können.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Um eine Holztür zu öffnen oder zu schließen, klicken Sie sie mit der rechten Maustaste oder geben Sie der unteren Hälfte ein Redstonesignal.
+
 Mangrove Trapdoor=Mangrovenholzfalltür
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Holzfalltüren sind horizontale Barrieren, die manuell oder durch ein Redstone-Signal geöffnet und geschlossen werden können. Sie belegen den oberen oder unteren Teil eines Blocks, je nachdem, wie sie platziert wurden. Wenn sie geöffnet sind, können sie wie eine Leiter bestiegen werden.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Um die Falltür zu öffnen oder zu schließen, klicken Sie sie mit der rechten Maustaste oder senden Sie ihr ein Redstonesignal.
 Mangrove Wood Fence=Mangrovenholzzaun
 Mangrove Wood Fence Gate=Mangrovenholz-Zauntor

@@ -1,10 +1,16 @@
 # textdomain: mesecons_wires
 Transmits redstone power, powers mechanisms=Overfører rødsteinskraft, driver mekanismer
+
 Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail.=Rødstein er et allsidig ledende mineral som overfører rødsteinskraft. Det kan plasseres på bakken som et spor.
+
 A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.=Et rødsteinspor kan være i to tilstander: Med kraft eller uten kraft. Et rødsteinspor med kraft vil gi kraft (og dermed aktivere) tilstøtende rødsteinskomponenter.
+
 Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.=Rødsteinskraft kan mottas fra ulike rødsteinskomponenter, som en rødsteinblokk eller en knapp. Rødsteinskraft brukes til å aktivere en rekke mekanismer, som rødsteinlamper eller stempler.
+
 Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills.=
+
 Read the help entries on the other redstone components to learn how redstone components interact.=Les hjelpeinnleggene om de andre rødsteinskomponentene for å lære hvordan rødsteinskomponentene samhandler.
+
 Redstone=Rødstein
 Powered Redstone Spot (@1)=Rødsteinsflekk med kraft (@1)
 Redstone Trail (@1)=Rødsteinspor (@1)
@@ -13,4 +19,6 @@ Powered Redstone Trail (@1)=Rødsteinspor med kraft (@1)
 
 ##### not used anymore #####
 
+
 Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills. An easy way to power a redstone trail is by placing a redstone torch.=Plasser rødstein på bakken for å bygge et rødsteinspor. Sporene vil koble seg til hverandre automatisk, og de kan også gå over skråninger. En enkel måte å gi kraft til et rødsteinspor på er ved å plassere en rødsteinfakkel.
+

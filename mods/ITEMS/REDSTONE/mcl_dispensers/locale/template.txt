@@ -3,8 +3,11 @@ Dispenser=
 Inventory=
 9 inventory slots=
 Launches item when powered by redstone power=
+
 A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=
+
 Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=
+
 The dispenser will do different things, depending on the dispensed item:=
 • Arrows: Are launched=
 • Eggs and snowballs: Are thrown=

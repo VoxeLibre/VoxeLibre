@@ -1,18 +1,34 @@
 # textdomain: mcl_compressed_blocks
 ##[ nodes.lua ]##
 Compressed Cobblestone=Komprimert Brostein
+
 Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=Komprimert Brostein er en dekorativ blokk laget av 9 Brostein. Den er nyttig for å spare plass i inventaret ditt.
+
 Double Compressed Cobblestone=Dobbelt Komprimert Brostein
+
 Double Compressed Cobblestone is a decorative block made from 9 Compressed Cobblestone. It is useful for saving space in your inventories.=Dobbelt Komprimert Brostein er en dekorativ blokk laget av 9 Komprimert Brostein. Den er nyttig for å spare plass i inventaret ditt.
+
 Triple Compressed Cobblestone=Trippel Komprimert Brostein
+
 Triple Compressed Cobblestone is a decorative block made from 9 Double Compressed Cobblestone. It is useful for saving space in your inventories.=Trippel Komprimert Brostein er en dekorativ blokk laget av 9 Dobbelt Komprimert Brostein. Den er nyttig for å spare plass i inventaret ditt.
+
 Quadruple Compressed Cobblestone=Firedobbelt Komprimert Brostein
+
 Quadruple Compressed Cobblestone is a decorative block made from 9 Triple Compressed Cobblestone. It is useful for saving space in your inventories.=Firedobbelt Komprimert Brostein er en dekorativ blokk laget av 9 Trippel Komprimert Brostein. Den er nyttig for å spare plass i inventaret ditt.
+
 Quintuple Compressed Cobblestone=Femdobbelt Komprimert Brostein
+
 Quintuple Compressed Cobblestone is a decorative block made from 9 Quadruple Compressed Cobblestone. It is useful for saving space in your inventories.=Femdobbelt Komprimert Brostein er en dekorativ blokk laget av 9 Firedobbel Komprimert Brostein. Den er nyttig for å spare plass i inventaret ditt.
+
 Sextuple Compressed Cobblestone=Seksdobbelt Komprimert Brostein
+
 Sextuple Compressed Cobblestone is a decorative block made from 9 Quintuple Compressed Cobblestone. It is useful for saving space in your inventories.=Seksdobbelt Komprimert Brostein er en dekorativ blokk laget av 9 Femdobbel Komprimert Brostein. Den er nyttig for å spare plass i inventaret ditt.
+
 Septuple Compressed Cobblestone=Sjudobbelt Komprimert Brostein
+
 Septuple Compressed Cobblestone is a decorative block made from 9 Sextuple Compressed Cobblestone. It is useful for saving space in your inventories.=Sjudobbelt Komprimert Brostein er en dekorativ blokk laget av 9 Seksdobbel Komprimert Brostein. Den er nyttig for å spare plass i inventaret ditt.
+
 Octuple Compressed Cobblestone=Åttedobbelt Komprimert Brostein
+
 Octuple Compressed Cobblestone is a decorative block made from 9 Septuple Compressed Cobblestone. It is useful for saving space in your inventories.=Åttedobbelt Komprimert Brostein er en dekorativ blokk laget av 9 Sjudobbel Komprimert Brostein. Den er nyttig for å spare plass i inventaret ditt.
+

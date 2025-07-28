@@ -19,6 +19,7 @@ The stripped hyphae bark of a warped fungus=La tige dénudée d'un champignon g�
 Warped Hyphae Wood=Planches tordues
 Warped Stairs=Escalier tordu
 Warped Slab=Dalle tordue
+Double Warped Slab=
 Crimson Fungus=Champignon écarlate
 Crimson fungus is a mushroom found in the nether's crimson forest.=Les champignons écarlates se trouvent dans la forêt écarlate du nether.
 Crimson Roots=Racines écarlates
@@ -33,11 +34,17 @@ Crimson Hyphae Wood=Planches écarlates
 Crimson Nylium=Nylium écarlate
 Crimson Stairs=Escalier écarlate
 Crimson Slab=Dalle écarlate
+Double Crimson Slab=Dalle double écarlate
 Crimson Door=Porte écarlate
+
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Les portes en bois sont des barrières hautes à 2 blocs qui peuvent être ouvertes ou fermées à la main et par un signal redstone.
+
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Pour ouvrir ou fermer une porte en bois, faites un clic droit dessus ou fournissez à sa moitié inférieure un signal redstone.
+
 Crimson Trapdoor=Trappe écarlate
+
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=es trappes en bois sont des barrières horizontales qui peuvent être ouvertes et fermées à la main ou par un signal redstone. Ils occupent la partie supérieure ou inférieure d'un bloc, selon la façon dont ils ont été placés. Lorsqu'elles sont ouvertes, elles peuvent être montées comme une échelle.
+
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Pour ouvrir ou fermer la trappe, faites un clic droit dessus ou envoyez-lui un signal redstone.
 Crimson Fence=Barrière écarlate
 Crimson Fence Gate=Portillon écarlate
@@ -50,5 +57,4 @@ Warped Fence Gate=Portillon tordu
 ##### not used anymore #####
 
 Warped Checknode - only to check!=Bloc de vérification tordu - seulement pour vérifier !
-Double Crimson Slab=Dalle double écarlate
 Crimson Checknode - only to check!=Bloc de vérification écarlate - seulement pour vérifier !

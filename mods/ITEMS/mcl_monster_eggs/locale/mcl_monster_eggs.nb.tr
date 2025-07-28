@@ -1,6 +1,8 @@
 # textdomain: mcl_monster_eggs
 Hides a silverfish=Skjuler et sølvkre
+
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=
+
 Infested Stone=Befengt stein
 Infested Cobblestone=Befengt brostein
 Infested Stone Bricks=Befengt steinmur

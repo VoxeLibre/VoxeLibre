@@ -4,14 +4,20 @@ Use the punch key to throw.=Usa a tecla de perforación para lanzar.
 Egg=Ovo
 Throwable=Lanzable
 Chance to hatch chicks when broken=Posibilidade de eclosionar pitos cando se rompen
+
 Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chicks will pop out of the egg.=Os ovos pódense lanzar ou lanzar desde un dispensador e rompen ao impacto. Hai unha pequena probabilidade de que 1 ou incluso 4 pitos saian do ovo.
+
 ##[ ender_pearl.lua ]##
 Ender Pearl=Perla de ender
 Teleports you on impact for cost of 5 HP=Teletransportache ao impacto por un custo de 5 HP
+
 An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block or a plant. Each teleportation hurts the user by 5 hit points.=Unha perla de ender é un artigo que se pode usar para teletransportarse a costa da saúde. Pódese lanzar e teletransportar o lanzador ao seu lugar de impacto cando golpea un bloque sólido ou unha planta. Cada teletransportación prexudica ao usuario con 5 puntos de vida.
+
 ##[ snowball.lua ]##
 Snowball=Bola de neve
+
 Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing.=As bólas de neve pódense lanzar ou lanzar desde un dispensador para divertirse. Golpear algo cunha bola de neve non fai nada.
+
 
 
 ##### not used anymore #####

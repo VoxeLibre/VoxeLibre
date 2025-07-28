@@ -1,20 +1,46 @@
 # textdomain: mcl_armor
+
 This is a piece of equippable armor which reduces the amount of damage you receive.=Dette er et stykke rustning som reduserer mengden skade du mottar.
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=For å utstyre den, plasser den i det tilsvarende rustningsfeltet i inventarmenyen.
-sentry=
-dune=
-coast=
-wild=
-tide=
-ward=
-vex=
-rib=
-snout=
-eye=
-spire=
-silence=
-wayfinder=
+Sentry=
+Dune=
+Coast=
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+Snout=
+Eye=
+Spire=
+Silence=
+Wayfinder=
+##[ api.lua ]##
+Upgrade:=
+@1 Armor Trim=
 ##[ register.lua ]##
+Golden Helmet=Gullhjelm
+Golden Chestplate=Gullbrystplate
+Golden Leggings=Gullbenplater
+Golden Boots=Gullstøvler
+Chainmail Helmet=
+##TODO: fuzzy matched - verify and remove the comment
+Chainmail Chestplate=Ringbrynje
+Chainmail Leggings=
+Chainmail Boots=
+Iron Helmet=Jernhjelm
+Iron Chestplate=Jernbrystplate
+Iron Leggings=Jernbenplater
+Iron Boots=Jernstøvler
+Diamond Helmet=Diamanthjelm
+Diamond Chestplate=Diamantbrystplate
+Diamond Leggings=Diamantbenplater
+Diamond Boots=Diamantstøvler
+Netherite Helmet=Netheritthjelm
+Netherite Chestplate=Netherittbrystplate
+Netherite Leggings=Netherittbenplate
+Netherite Boots=Netherittstøvler
 Projectile Protection=Prosjektilbeskyttelse
 Reduces projectile damage.=Reduserer prosjektilskade
 Blast Protection=Eksplosjonsbeskyttelse
@@ -29,10 +55,19 @@ Aqua Affinity=Vannarbeider
 #Translations of enchantements
 Increases underwater mining speed.=Øker arbeidshastighet under vann.
 Curse of Binding=Bindelsesforbannelse
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+
 Thorns=Torner
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Gjenspeiler noe av skaden som ble tatt når truffet, på bekostning av redusert holdbarhet per aktivering.
+
 Elytra=Elytra
+##[ leather.lua ]##
+Leather Cap=Lærhatt
+Leather Tunic=Lærtrøye
+Leather Pants=Lærbukser
+Leather Boots=Lærstøvler
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=Smimal '@1'
@@ -40,29 +75,8 @@ Smithing Template '@1'=Smimal '@1'
 
 ##### not used anymore #####
 
-Leather Cap=Lærhatt
-Iron Helmet=Jernhjelm
-Golden Helmet=Gullhjelm
-Diamond Helmet=Diamanthjelm
 Chain Helmet=Brynjehette
-Netherite Helmet=Netheritthjelm
-Leather Tunic=Lærtrøye
-Iron Chestplate=Jernbrystplate
-Golden Chestplate=Gullbrystplate
-Diamond Chestplate=Diamantbrystplate
-Chain Chestplate=Ringbrynje
-Netherite Chestplate=Netherittbrystplate
-Leather Pants=Lærbukser
-Iron Leggings=Jernbenplater
-Golden Leggings=Gullbenplater
-Diamond Leggings=Diamantbenplater
 Chain Leggings=Brynjehose
-Netherite Leggings=Netherittbenplate
-Leather Boots=Lærstøvler
-Iron Boots=Jernstøvler
-Golden Boots=Gullstøvler
-Diamond Boots=Diamantstøvler
 Chain Boots=Brynjestøvler
-Netherite Boots=Netherittstøvler
 Shooting consumes no regular arrows.=Å skyte forbruker ingen vanlige piler
 Shoot 3 arrows at the cost of one.=Skyt tre piler på bekostning av én.

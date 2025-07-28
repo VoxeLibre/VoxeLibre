@@ -1,8 +1,11 @@
 # textdomain: mcl_cauldrons
 Cauldron=Gryte
 Stores water=Lagrer vann
+
 Cauldrons are used to store water and slowly fill up under rain. They can also be used to wash off banners.=Gryter brukes til å lagre vann og fylles sakte opp under regn. De kan også brukes til å vaske av bannere.
+
 Place a water bucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water. Use an emblazoned banner on a cauldron with water to wash off its top layer.=Plasser en vannbøtte i gryten for å fylle den med vann. Plasser en tom bøtte på en full gryte for å hente vannet. Plasser en vannflaske i gryten for å fylle gryten til en tredjedel med vann. Plasser en glassflaske i en gryte med vann for å hente en tredjedel av vannet. Bruk et utsmykket banner på en gryte med vann for å vaske av det øverste laget.
+
 Cauldron (@1/3 Water)=Gryte (@1/3 vann)
 Cauldron (@1/3 Lava)=
 Cauldron (@1/3 River Water)=Gryte (@1/3 elvevann)

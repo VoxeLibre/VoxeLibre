@@ -1,6 +1,8 @@
 # textdomain: mcl_mud
 Mud=Schlamm
+
 Mud is a decorative block that generates in mangrove swamps. Mud can also be obtained by using water bottles on dirt or coarse dirt.=Schlamm ist ein dekorativer Block, der in Mangrovenwäldern generiert wird. Schlamm kann auch durch das Benutzen von Wasserflaschen auf Lehm oder grobem Lehm gewonnen werden.
+
 Packed Mud=Fester Schlamm
 Packed mud is a decorative block used to craft mud bricks.=Fester Schlamm ist ein dekorativer Block, der zum Herstellen von Lehmziegeln verwendet wird.
 Mud Bricks=Lehmziegel

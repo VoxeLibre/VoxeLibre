@@ -2,9 +2,14 @@
 Redstone Torch (off)=Rødsteinfakkel (av)
 Redstone Torch (overheated)=Rødsteinfakkel (overopphetet)
 Redstone Torch=Rødsteinfakkel
+
 A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything.=En rødsteinfakkel er en rødsteinskomponent som kan brukes til å invertere et rødsteinsignal. Den gir rødsteinskraft til de omkringliggende blokkene, unntatt blokken den er festet til. En rødsteinfakkel er normalt tent, men kan slukkes ved å gi kraft til blokken den er festet til. Når den er slukket, gir rødsteinfakkelen ikke kraft til noe.
+
 Redstone torches can be placed at the side and on the top of full solid opaque blocks.=Rødsteinfakler kan plasseres på siden og på toppen av helfaste, ugjennomsiktige blokker.
+
 Provides redstone power when it's not powered itself=Gir rødsteinskraft når den ikke får kraft selv
 Block of Redstone=Rødsteinblokk
 Provides redstone power=Gir rødsteinskraft
+
 A block of redstone permanently supplies redstone power to its surrounding blocks.=En rødsteinblokk gir permanent rødsteinskraft til de omkringliggende blokkene.
+

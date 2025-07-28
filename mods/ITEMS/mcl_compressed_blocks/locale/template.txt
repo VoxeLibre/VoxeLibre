@@ -1,18 +1,34 @@
 # textdomain: mcl_compressed_blocks
 ##[ nodes.lua ]##
 Compressed Cobblestone=
+
 Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=
+
 Double Compressed Cobblestone=
+
 Double Compressed Cobblestone is a decorative block made from 9 Compressed Cobblestone. It is useful for saving space in your inventories.=
+
 Triple Compressed Cobblestone=
+
 Triple Compressed Cobblestone is a decorative block made from 9 Double Compressed Cobblestone. It is useful for saving space in your inventories.=
+
 Quadruple Compressed Cobblestone=
+
 Quadruple Compressed Cobblestone is a decorative block made from 9 Triple Compressed Cobblestone. It is useful for saving space in your inventories.=
+
 Quintuple Compressed Cobblestone=
+
 Quintuple Compressed Cobblestone is a decorative block made from 9 Quadruple Compressed Cobblestone. It is useful for saving space in your inventories.=
+
 Sextuple Compressed Cobblestone=
+
 Sextuple Compressed Cobblestone is a decorative block made from 9 Quintuple Compressed Cobblestone. It is useful for saving space in your inventories.=
+
 Septuple Compressed Cobblestone=
+
 Septuple Compressed Cobblestone is a decorative block made from 9 Sextuple Compressed Cobblestone. It is useful for saving space in your inventories.=
+
 Octuple Compressed Cobblestone=
+
 Octuple Compressed Cobblestone is a decorative block made from 9 Septuple Compressed Cobblestone. It is useful for saving space in your inventories.=
+

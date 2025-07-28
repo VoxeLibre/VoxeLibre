@@ -2,9 +2,14 @@
 Redstone Torch (off)=Tocha de Redstone (apagada)
 Redstone Torch (overheated)=Tocha de Redstone (sobrecarregada)
 Redstone Torch=Tocha de Redstone
+
 A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything.=Uma tocha de redstone é um item de redstone que pode ser usado para inverter um sinal de redstone. Ela fornece energia de redstone aos blocos ao redor, exceto ao bloco em que está conectada. Uma tocha de redstone normalmente fica acesa, mas também pode ser desligada ao energizar o bloco em que está conectada. Enquanto estiver apagada, uma tocha de redstone não energiza nada.
+
 Redstone torches can be placed at the side and on the top of full solid opaque blocks.=Tochas de redstone podem ser colocadas nas laterais e no topo de blocos sólidos opacos.
+
 Provides redstone power when it's not powered itself=Fornece energia de redstone quando não recebe energia
 Block of Redstone=Bloco de Redstone
 Provides redstone power=Fornece energia de redstone
+
 A block of redstone permanently supplies redstone power to its surrounding blocks.=Um bloco de redstone fornece energia de redstone de forma pemanente aos blocos ao redor.
+
