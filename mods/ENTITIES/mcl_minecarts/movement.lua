@@ -1,4 +1,5 @@
 local modname = minetest.get_current_modname()
+local S = core.get_translator(modname)
 local mod = mcl_minecarts
 local submod = {}
 local ENABLE_TRAINS = core.settings:get_bool("mcl_minecarts_enable_trains",true)
@@ -17,12 +18,19 @@ end
 local FRICTION = mod.FRICTION
 local OFF_RAIL_FRICTION = mod.OFF_RAIL_FRICTION
 local MAX_TRAIN_LENGTH = mod.MAX_TRAIN_LENGTH
-local SPEED_MAX = mod.SPEED_MAX
+local SPEED_MAX = 10
 local train_length = mod.train_length
 local update_train = mod.update_train
 local reverse_train = mod.reverse_train
 local link_cart_ahead = mod.link_cart_ahead
 local get_cart_data = mod.get_cart_data
+
+vl_tuning.setting("gamerule:minecartMaxSpeed", "number", {
+	set = function(value) SPEED_MAX = value end,
+	get = function() return SPEED_MAX end,
+	default = 10,
+	description = S("The maximum speed a minecart may reach.")
+})
 
 local function reverse_direction(staticdata)
 	if staticdata.behind or staticdata.ahead then
