@@ -117,7 +117,7 @@ mcl_armor.register_set({
 		legs = get_texture_function("mcl_armor_leggings_leather.png"),
 		feet = get_texture_function("mcl_armor_boots_leather.png"),
 	},
-	craft_material = "mcl_mobitems:leather",
+	craft_material = "mcl_mobitems:leather_piece",
 })
 
 tt.register_priority_snippet(function(_, _, itemstack)

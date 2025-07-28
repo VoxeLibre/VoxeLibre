@@ -441,7 +441,7 @@ local professions = {
 		jobsite = "group:cauldron",
 		trades = {
 			{
-			{ { "mcl_mobitems:leather", 6, 6 }, E1 },
+			{ { "mcl_mobitems:leather", 12, 12 }, E1 },
 			{ { "mcl_core:emerald", 3, 3 }, { "mcl_armor:leggings_leather", 1, 1 } },
 			{ { "mcl_core:emerald", 7, 7 }, { "mcl_armor:chestplate_leather", 1, 1 } },
 			},
@@ -453,7 +453,7 @@ local professions = {
 			},
 
 			{
-			{ { "mcl_mobitems:rabbit_hide", 9, 9 }, E1 },
+			{ { "mcl_mobitems:leather_piece", 9, 9 }, E1 },
 			{ { "mcl_core:emerald", 7, 7 }, { "mcl_armor:chestplate_leather", 1, 1 } },
 			},
 
