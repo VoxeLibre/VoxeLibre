@@ -245,8 +245,6 @@ local spawn_dictionary = {}
 local non_spawn_dictionary = {}
 
 function mcl_mobs:spawn_setup(def)
-	if not gamerule_doMobSpawning then return end
-
 	-- Validate required definition fields are present
 	assert(def, "Missing spawn definition")
 	assert(def.name, "Spawn definition missing entity name")
