@@ -406,6 +406,7 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 		else
 			local function filter(stack)
 				return core.get_item_group(stack:get_name(), "bottle") == 1
+					or core.get_item_group(stack:get_name(), "_mcl_potion") == 1
 			end
 
 			-- Don't use distr inventory for sorting out bottles if there is something already there
