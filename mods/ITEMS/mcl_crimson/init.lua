@@ -175,26 +175,26 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		return itemstack
 	end,
 	on_place = function(itemstack, placer, pointed_thing)
-		local under = pointed_thing.under
-		local unode = core.get_node(under)
-		local unode_def = core.registered_nodes[unode.name]
+		-- Handle node right-click handlers
+		local called
+		itemstack, called = mcl_util.handle_node_rightclick(itemstack, placer, pointed_thing)
+		if called then return itemstack end
 
+		-- Only place on top of nodes
 		local above = pointed_thing.above
+		if pointed_thing.under.y >= above.y then return end
+
+		-- Don't replace unknown nodes or nodes that are not buildable to
 		local anode = minetest.get_node(above)
 		local anode_def = minetest.registered_nodes[anode.name]
+		if not anode_def or not anode_def.buildable_to then return end
 
-		if under.y < above.y then
-			if anode_def and anode_def.buildable_to then
-				core.set_node(above, {name = "mcl_crimson:twisting_vines"})
-				if not core.is_creative_enabled(placer:get_player_name()) then
-					itemstack:take_item()
-				end
-			end
-		elseif unode_def and unode_def.on_rightclick then
-			return unode_def.on_rightclick(under, unode, placer, itemstack, pointed_thing)
-		elseif anode_def and anode_def.on_rightclick then
-			return anode_def.on_rightclick(above, anode, placer, itemstack, pointed_thing)
-		end
+		-- Place the vine
+		core.set_node(above, {name = itemstack:get_name()})
+
+		-- Take one item if not in creative mode
+		if core.is_creative_enabled(placer:get_player_name()) then return end
+		itemstack:take_item()
 		return itemstack
 	end,
 	on_dig = function(pos, node, digger)
@@ -282,26 +282,26 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 		return itemstack
 	end,
 	on_place = function(itemstack, placer, pointed_thing)
-		local under = pointed_thing.under
-		local unode = core.get_node(under)
-		local unode_def = core.registered_nodes[unode.name]
+		-- Handle node right-click handlers
+		local called
+		itemstack, called = mcl_util.handle_node_rightclick(itemstack, placer, pointed_thing)
+		if called then return itemstack end
 
+		-- Only place under nodes
 		local above = pointed_thing.above
-		local anode = core.get_node(above)
-		local anode_def = core.registered_nodes[anode.name]
+		if pointed_thing.under.y <= above.y then return end
 
-		if under.y > above.y then
-			if anode_def and anode_def.buildable_to then
-				core.set_node(above, {name = "mcl_crimson:weeping_vines"})
-				if not core.is_creative_enabled(placer:get_player_name()) then
-					itemstack:take_item()
-				end
-			end
-		elseif unode_def and unode_def.on_rightclick then
-			return unode_def.on_rightclick(under, unode, placer, itemstack, pointed_thing)
-		elseif anode_def and anode_def.on_rightclick then
-			return anode_def.on_rightclick(above, anode, placer, itemstack, pointed_thing)
-		end
+		-- Don't replace unknown nodes or nodes that are not buildable to
+		local anode = minetest.get_node(above)
+		local anode_def = minetest.registered_nodes[anode.name]
+		if not anode_def or not anode_def.buildable_to then return end
+
+		-- Place the vine
+		core.set_node(above, {name = itemstack:get_name()})
+
+		-- Take one item if not in creative mode
+		if core.is_creative_enabled(placer:get_player_name()) then return end
+		itemstack:take_item()
 		return itemstack
 	end,
 	on_dig = function(pos, node, digger)
