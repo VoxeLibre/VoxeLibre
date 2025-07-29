@@ -549,6 +549,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		punch_interval = tool_capabilities.full_punch_interval or 1.4
 	end
 
+	if not tflp then
+		tflp = punch_interval
+	end
+
 	-- add weapon wear manually
 	-- Required because we have custom health handling ("health" property)
 	if minetest.is_creative_enabled("") ~= true
@@ -604,46 +608,42 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			end
 		end
 		-- knock back effect (only on full punch)
-		if self.knock_back and tflp >= punch_interval then
+		if self.knock_back then
 			-- direction error check
 			dir = dir or vector_zero()
 
 			local v = self.object:get_velocity()
 			if not v then return end
-			local r = 1.4 - min(punch_interval, 1.4)
-			local kb = r * (abs(v.x)+abs(v.z))
-			local up = 2.625
-
-			if die then kb = kb * 1.25 end
-
-			-- if already in air then dont go up anymore when hit
-			if abs(v.y) > 0.1 or self.fly then up = 0 end
-
-			-- check if tool already has specific knockback value
+			local rate = min(tflp, punch_interval) / punch_interval
+			local kb = 1.25
 			if tool_capabilities.damage_groups["knockback"] then
 				kb = tool_capabilities.damage_groups["knockback"]
-			else
-				kb = kb * 1.25
 			end
-
 			local luaentity = hitter and hitter:get_luaentity()
 			if hitter and is_player then
 				local wielditem = hitter:get_wielded_item()
-				kb = kb + 9 * mcl_enchanting.get_enchantment(wielditem, "knockback")
-				kb = kb + 9 * minetest.get_item_group(wielditem:get_name(), "hammer")
+				kb = kb + 3 * core.get_item_group(wielditem:get_name(), "hammer")
 				-- add player velocity to mob knockback
 				local hv = hitter:get_velocity()
 				local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
 				local player_mag = ((hv.x * hv.x) + (hv.z * hv.z))^0.5
 				local mob_mag = ((v.x * v.x) + (v.z * v.z))^0.5
 				if dir_dot > 0 and mob_mag <= player_mag * 0.625 then
-					kb = kb + (abs(hv.x) + abs(hv.z)) * r * 2
+					kb = kb + player_mag / 2 -- experimentally derived constant
 				end
+				kb = kb * rate
+				kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
 			elseif luaentity and luaentity._knockback and die == false then
 				kb = kb + luaentity._knockback
 			elseif luaentity and luaentity._knockback and die == true then
 				kb = kb + luaentity._knockback * 0.25
 			end
+			if die then kb = kb * 1.25 end
+
+			local up = 5.25
+			-- if already in air then dont go up anymore when hit
+			if abs(v.y) > 0.1 or self.fly then up = 0 end
+
 			self._kb_turn = true
 			self:turn_by(HALFPI, .1) -- knockback turn
 			self.frame_speed_multiplier=2.3
@@ -658,8 +658,8 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 					self._kb_turn = false
 				end
 			end)
-			kb = kb * 2
-			self.object:add_velocity(vector_new(dir.x * kb, up*2, dir.z * kb ))
+			kb = kb * 20 -- experimentally derived constant
+			self.object:add_velocity(vector_new(dir.x * kb, up, dir.z * kb ))
 
 			self.pause_timer = 0.25
 		end
