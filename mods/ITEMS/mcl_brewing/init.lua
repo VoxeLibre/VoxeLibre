@@ -405,11 +405,13 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 			return inv, "fuel", stack
 		else
 			local function filter(stack)
-				return core.get_item_group(stack:get_name(), "bottle") == 1
-					or core.get_item_group(stack:get_name(), "_mcl_potion") == 1
+				local stack_name = stack:get_name()
+				return core.get_item_group(stack_name, "bottle") == 1
+				    or core.get_item_group(stack_name, "_mcl_potion") == 1
 			end
 
 			-- Don't use distr inventory for sorting out bottles if there is something already there
+			inv:set_size("distr", 1)
 			if not inv:get_stack("distr", 1):is_empty() then return end
 
 			-- Allow a bottle to go into the distr inventory if there is an empty bottle position
