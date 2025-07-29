@@ -50,7 +50,7 @@ Grass Block=Gressblokk
 
 A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.=En gressblokk er jord med et gressdekke. Gressblokker er ressurssterke blokker som tillater vekst av alle slags planter. De kan gjøres om til jordbruksland med en grafse og gjøres om til en gressti med en spade. I lys sprer gresset seg sakte på jord i nærheten. Under en ugjennomsiktig blokk eller en væske kan en gressblokk gå tilbake til jord.
 
-Dirt with Snow=
+Dirt with Snow=Jord med snø
 Grass Path=Gressti
 
 Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=
@@ -59,12 +59,12 @@ Mycelium=Mycel
 
 Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.=Mycel er en type jord og den ideelle jordtypen for sopp. I motsetning til andre jordblokker, kan det ikke gjøres om til jordbruksland med et grev. I lys sprer mycelet seg sakte over nærliggende jord. Under en ugjennomsiktig blokk eller en væske, omdannes det til slutt tilbake til jord.
 
-Mycelium with Snow=
+Mycelium with Snow=Mycel
 Podzol=Podsol
 
 Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.=Podsol er en type jord som finnes i taigaskoger. Bare noen få planter er i stand til å overleve på den.
 
-Podzol with Snow=
+Podzol with Snow=Podsol med snø
 Dirt=Jord
 
 Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby.=Jord fungerer som jordsmonn for de fleste plantetyper. Når den er i lys, kan denne blokken vokse gress eller mycelium-lag hvis slike blokker er i nærheten.
@@ -75,8 +75,8 @@ Coarse dirt acts as a soil for some plants and is similar to dirt, but it will n
 
 Gravel=Grus
 This block consists of a couple of loose stones and can't support itself.=Denne blokken består av et par løse steiner og kan ikke støtte seg selv.
-Grey Sand=
-Grey sand is found where stone erosion takes place.=
+Grey Sand=Grå sand
+Grey sand is found where stone erosion takes place.=Grå sand forekommer der erosjon av stein finner sted.
 Sand=Sand
 Sand is found in large quantities at beaches and deserts.=Sand finnes i store mengder langs strender eller i ørkener.
 Sandstone=Sandstein
@@ -126,9 +126,9 @@ Block of Gold=Gullblokk
 
 A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=En gullblokk er for det meste en skinnende dekorativ blokk, men også nyttig som en kompakt lagring av gullbarrer.
 
-Polished Block of Gold=
+Polished Block of Gold=Finslipt gullblokk
 
-A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=
+A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=En finslipt gullblokk er for det meste en skinnende dekorativ blokk, men også nyttig som en kompakt lagring av gullbarrer.
 
 Block of Diamond=Diamantblokk
 
@@ -192,7 +192,7 @@ Flowing Lava=Rennende lava
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=En lavakilde setter fyr på et par luftblokker over når de er ved siden av en brennbar blokk.
 
 Lava Source=Lavakilde
-Lava=
+Lava=Lava
 
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=Lava er varm og ganske farlig. Ikke rør det, det vil gjøre mye skade og det er vanskelig å komme seg ut.
 

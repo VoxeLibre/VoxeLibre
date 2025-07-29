@@ -3,32 +3,31 @@
 This is a piece of equippable armor which reduces the amount of damage you receive.=Dette er et stykke rustning som reduserer mengden skade du mottar.
 
 To equip it, put it on the corresponding armor slot in your inventory menu.=For å utstyre den, plasser den i det tilsvarende rustningsfeltet i inventarmenyen.
-Sentry=
-Dune=
-Coast=
-Wild=
-Tide=
-Ward=
-Vex=
-Rib=
-Snout=
-Eye=
-Spire=
-Silence=
-Wayfinder=
+Sentry=Plyndret
+Dune=Dynens
+Coast=Forlist
+Wild=Vill
+Tide=Fjærens
+Ward=Forvart
+Vex=Plageåndens
+Rib=Ribbeinsaktig
+Snout=Snuteaktig
+Eye=Skarpsynt
+Spire=Spirens
+Silence=Stillhetens
+Wayfinder=Veiviserens
 ##[ api.lua ]##
-Upgrade:=
-@1 Armor Trim=
+Upgrade:=Oppgradering:
+@1 Armor Trim=@1 rustningspryd
 ##[ register.lua ]##
 Golden Helmet=Gullhjelm
 Golden Chestplate=Gullbrystplate
 Golden Leggings=Gullbenplater
 Golden Boots=Gullstøvler
-Chainmail Helmet=
-##TODO: fuzzy matched - verify and remove the comment
+Chainmail Helmet=Brynjehette
 Chainmail Chestplate=Ringbrynje
-Chainmail Leggings=
-Chainmail Boots=
+Chainmail Leggings=Brynjehose
+Chainmail Boots=Brynjestøvler
 Iron Helmet=Jernhjelm
 Iron Chestplate=Jernbrystplate
 Iron Leggings=Jernbenplater
@@ -56,7 +55,7 @@ Aqua Affinity=Vannarbeider
 Increases underwater mining speed.=Øker arbeidshastighet under vann.
 Curse of Binding=Bindelsesforbannelse
 
-Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Gjenstand kan ikke fjernes fra rustningsfelter utenom ved død, ødeleggelse eller kreativ modus.
 
 Thorns=Torner
 
@@ -75,8 +74,5 @@ Smithing Template '@1'=Smimal '@1'
 
 ##### not used anymore #####
 
-Chain Helmet=Brynjehette
-Chain Leggings=Brynjehose
-Chain Boots=Brynjestøvler
 Shooting consumes no regular arrows.=Å skyte forbruker ingen vanlige piler
 Shoot 3 arrows at the cost of one.=Skyt tre piler på bekostning av én.

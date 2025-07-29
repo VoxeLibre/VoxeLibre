@@ -6,13 +6,11 @@ Signs can be written and come in two variants: Wall sign and sign on a sign post
 
 After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=
 
-Sign text:=
-Close=
+Sign text:=Skilttekst:
+Close=Lukk
 Enter sign text:=Skriv inn skilttekst
-##TODO: fuzzy matched - verify and remove the comment
-Maximum line length: @1=Maks tegn per linje: 15
-##TODO: fuzzy matched - verify and remove the comment
-Maximum lines: @1=Maks linjer: 4
+Maximum line length: @1=Maks tegn per linje: @1
+Maximum lines: @1=Maks linjer: @1
 Done=Ferdig
 ##[ register.lua ]##
 Oak Sign=Eikeskilt

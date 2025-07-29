@@ -6,7 +6,7 @@ Slow=Treg
 Fast=Rask
 Very fast=Svært rask
 Extremely fast=Ekstremt rask
-Instantaneous=
+Instantaneous=Umiddelbar
 @1 uses=@1 bruk
 Unlimited uses=Ubegrenset bruk
 Mining speed: @1=Gravehastighet: @1
@@ -15,8 +15,8 @@ Block breaking strength: @1=Blokkbrytingsstyrke: @1
 Damage: @1=Skade: @1
 Healing: @1=Helbredelse: @1
 Full punch interval: @1s=Fullt slagintervall: @1s
-Food item=
-+@1 food points=
+Food item=Matvare
++@1 food points=+@1 matpoeng
 Contact damage: @1 per second=Kontaktskade: @1 per sekund
 Contact healing: @1 per second=Kontakthelbredelse: @1 per sekund
 Drowning damage: @1=Drukningsskade: @1
@@ -36,11 +36,11 @@ Head armor=Hoderustning
 Torso armor=Overkropprustning
 Legs armor=Beinrustning
 Feet armor=Fotrustning
-Armor points: @1=Rustningverdi: @1
+Armor points: @1=Rustningspoeng: @1
 Armor durability: @1=Rustningholdbarhet: @1
 Protection: @1%=Beskyttelse: @1%
 Hunger points: +@1=Sultpoeng: +@1
-Saturation points: +@1=Metthetsgrad: +@1
+Saturation points: +@1=Metthetspoeng: +@1
 Deals damage when falling=Gir skade ved fall
 Grows on grass blocks or dirt=Vokser på gressblokker eller jord
 Grows on grass blocks, podzol, dirt or coarse dirt=Vokser på gressblokker, podsol, jord eller grov jord
@@ -48,10 +48,4 @@ Flammable=Brennbar
 Zombie view range: -50%=Zombie siktrekkevidde: -50%
 Skeleton view range: -50%=Skjelett siktrekkevidde: -50%
 Stalker view range: -50%=Sniker siktrekkevidde: -50%
-...stacks=...stabler
-
-
-##### not used anymore #####
-
-Damage (@1): @2=Skade (@1): @2
-Healing (@1): @2=Helbredelse (@1): @2
+...stacks=...additiv

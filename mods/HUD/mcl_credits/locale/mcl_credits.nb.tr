@@ -1,12 +1,11 @@
 # textdomain: mcl_credits
-An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=
+An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=Et åpen kildekode overlevelses sandkassespill i ånden til Infiniminer og Minecraft
 Sneak to skip=Snik for å hoppe over
 Jump to speed up (additionally sprint)=Hopp for å øke hastigheten (kan bruke "løp" i tillegg)
 ##[ people.lua ]##
 Creator of MineClone=Skaperen av MineClone
 Creator of VoxeLibre=Skaperen av VoxeLibre
-##TODO: fuzzy matched - verify and remove the comment
-Maintainer=Vedlikeholdere
+Maintainer=Vedlikeholder
 Previous Maintainers=Tidligere vedlikeholdere
 Developers=Utviklere
 Past Developers=Tidligere utviklere

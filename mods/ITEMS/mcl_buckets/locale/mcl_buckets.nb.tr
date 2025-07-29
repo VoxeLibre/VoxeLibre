@@ -26,18 +26,14 @@ A bucket can be used to collect and release liquids. This one is filled with riv
 Place it to empty the bucket and create a river water source.=Plasser den for å tømme bøtte og lage en elvevannkilde.
 Places a river water source=Plasserer en elvevannkilde
 ##[ fishbuckets.lua ]##
-Bucket of Cod=
-Bucket of Salmon=
-Bucket of Tropical Fish=
-Bucket of Axolotl=
-Bucket of Pufferfish=
-This bucket is filled with water and contains an aquatic mob.=
-
-##TODO: fuzzy matched - verify and remove the comment
-Place it to empty the bucket and place a mob. Obtain by right clicking on a small aquatic mob with a bucket of water.=Plasser for å tømme bøtten med @1. Plukk opp ved å høyreklikke på en @2 med en bøtte vann
-
-##TODO: fuzzy matched - verify and remove the comment
-Places a water source and a mob.=Plasser en vannkilde og en @1.
+Bucket of Cod=Bøtte med torsk
+Bucket of Salmon=Bøtte med laks
+Bucket of Tropical Fish=Bøtte med tropisk fisk
+Bucket of Axolotl=Bøtte med axolotl
+Bucket of Pufferfish=Bøtte med kulefisk
+This bucket is filled with water and contains an aquatic mob.=Denne bøtten er fylt med vann og inneholder en vannskapning.
+Place it to empty the bucket and place a mob. Obtain by right clicking on a small aquatic mob with a bucket of water.=Plasser for å tømme bøtten og plassere skapningen. Plukk opp ved å høyreklikke på en vannskapning med en bøtte vann
+Places a water source and a mob.=Plasser en vannkilde og en skapning.
 
 
 ##### not used anymore #####

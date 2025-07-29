@@ -9,7 +9,7 @@ Slabs are half as high as their full block counterparts and occupy either the lo
 
 Upper @1=Øvre @1
 
-Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=Dobbelheller er helblokker som lages ved å legge to heller av samme type på hverandre.
+Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=Dobbelheller er hele blokker som lages ved å legge to heller av samme type på hverandre.
 
 ##[ register.lua ]##
 Oak Wood Stairs=Eiketrapp
@@ -56,18 +56,18 @@ Double Brick Slab=Dobbel teglhelle
 Sandstone Stairs=Sandsteintrapp
 Sandstone Slab=Sandsteinhelle
 Double Sandstone Slab=Dobbel sandsteinhelle
-Cut Sandstone Stairs=
-Cut Sandstone Slab=
-Double Cut Sandstone Slab=
+Cut Sandstone Stairs=Skåret sandsteintrapp
+Cut Sandstone Slab=Skåret sandsteinhelle
+Double Cut Sandstone Slab=Dobbel skåret sandsteinhelle
 Smooth Sandstone Stairs=Jevn sandsteintrapp
 Smooth Sandstone Slab=Jevn sandsteinhelle
 Double Smooth Sandstone Slab=Dobbel jevn sandsteinhelle
 Red Sandstone Stairs=Rød sandsteintrapp
 Red Sandstone Slab=Rød sandsteinhelle
 Double Red Sandstone Slab=Dobbel rød sandsteinhelle
-Cut Red Sandstone Stairs=
-Cut Red Sandstone Slab=
-Double Cut Red Sandstone Slab=
+Cut Red Sandstone Stairs=Skåret rød sandstein
+Cut Red Sandstone Slab=Skåret rød sandsteinhelle
+Double Cut Red Sandstone Slab=Dobbel skåret rød sandsteinhelle
 Smooth Red Sandstone Stairs=Jevn rød sandsteintrapp
 Smooth Red Sandstone Slab=Jevn rød sandsteinhelle
 Double Smooth Red Sandstone Slab=Dobbel jevn rød sandsteinhelle
@@ -115,9 +115,9 @@ Polished Diorite Stairs=Finslipt diorittrapp
 Mossy Stone Brick Stairs=Mosete steinmurstrapp
 Mossy Stone Brick Slab=Mosete steinmurshelle
 Double Mossy Stone Brick Slab=Dobbel mosete steinmurshelle
-Stairs of Polished Gold Block=
-Slab of Polished Gold Block=
-Double Slab of Polished Gold=
+Stairs of Polished Gold Block=Trapp av finslipt gullblokk
+Slab of Polished Gold Block=Helle av finslipt gullblokk
+Double Slab of Polished Gold=Dobbelhelle av finslipt gull
 
 
 ##### not used anymore #####
