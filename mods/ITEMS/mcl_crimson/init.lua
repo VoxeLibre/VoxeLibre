@@ -191,7 +191,7 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		elseif unode_def and unode_def.on_rightclick then
 			return unode_def.on_rightclick(under, unode, placer, itemstack, pointed_thing)
 		elseif anode_def and anode_def.on_rightclick then
-			return unode_def.on_rightclick(above, anode, placer, itemstack, pointed_thing)
+			return anode_def.on_rightclick(above, anode, placer, itemstack, pointed_thing)
 		end
 		return itemstack
 	end,
