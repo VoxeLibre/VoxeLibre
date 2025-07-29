@@ -176,17 +176,19 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	end,
 	on_place = function(itemstack, placer, pointed_thing)
 		local under = pointed_thing.under
-		local unode = minetest.get_node(under)
-		local unode_def = minetest.registered_nodes[unode.name]
+		local unode = core.get_node(under)
+		local unode_def = core.registered_nodes[unode.name]
 
 		local above = pointed_thing.above
 		local anode = minetest.get_node(above)
 		local anode_def = minetest.registered_nodes[anode.name]
 
 		if under.y < above.y then
-			minetest.set_node(above, {name = "mcl_crimson:twisting_vines"})
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item()
+			if anode_def and anode_def.buildable_to then
+				core.set_node(above, {name = "mcl_crimson:twisting_vines"})
+				if not core.is_creative_enabled(placer:get_player_name()) then
+					itemstack:take_item()
+				end
 			end
 		elseif unode_def and unode_def.on_rightclick then
 			return unode_def.on_rightclick(under, unode, placer, itemstack, pointed_thing)
@@ -281,22 +283,24 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 	end,
 	on_place = function(itemstack, placer, pointed_thing)
 		local under = pointed_thing.under
-		local unode = minetest.get_node(under)
-		local unode_def = minetest.registered_nodes[unode.name]
+		local unode = core.get_node(under)
+		local unode_def = core.registered_nodes[unode.name]
 
 		local above = pointed_thing.above
-		local anode = minetest.get_node(above)
-		local anode_def = minetest.registered_nodes[anode.name]
+		local anode = core.get_node(above)
+		local anode_def = core.registered_nodes[anode.name]
 
 		if under.y > above.y then
-			minetest.set_node(above, {name = "mcl_crimson:weeping_vines"})
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
-				itemstack:take_item()
+			if anode_def and anode_def.buildable_to then
+				core.set_node(above, {name = "mcl_crimson:weeping_vines"})
+				if not core.is_creative_enabled(placer:get_player_name()) then
+					itemstack:take_item()
+				end
 			end
 		elseif unode_def and unode_def.on_rightclick then
 			return unode_def.on_rightclick(under, unode, placer, itemstack, pointed_thing)
 		elseif anode_def and anode_def.on_rightclick then
-			return unode_def.on_rightclick(above, anode, placer, itemstack, pointed_thing)
+			return anode_def.on_rightclick(above, anode, placer, itemstack, pointed_thing)
 		end
 		return itemstack
 	end,
