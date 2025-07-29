@@ -407,7 +407,16 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 			local function filter(stack)
 				return core.get_item_group(stack:get_name(), "bottle") == 1
 			end
-			return inv, "stand", mcl_util.select_stack(hop_inv, hop_list, inv, "stand", filter, 1)
+
+			-- Don't use distr inventory for sorting out bottles if there is something already there
+			if not inv:get_stack("distr", 1):is_empty() then return end
+
+			-- Allow a bottle to go into the distr inventory if there is an empty bottle position
+			for i=1,inv:get_size("stand") do
+				if inv:get_stack("stand", i):is_empty() then
+					return inv, "distr", mcl_util.select_stack(hop_inv, hop_list, inv, "stand", filter, 1)
+				end
+			end
 		end
 	end
 end
@@ -496,8 +505,8 @@ local stand_def = {
 	on_rotate = on_rotate,
 	_mcl_hoppers_on_try_push = hoppers_on_try_push,
 	_mcl_hoppers_on_try_pull = hoppers_on_try_pull,
-	_mcl_hoppers_on_after_push = function(pos)
-		on_put(pos, nil, nil, nil, nil)
+	_mcl_hoppers_on_after_push = function(pos, listname, stack)
+		on_put(pos, listname, nil, stack, nil)
 	end,
 	_mcl_hoppers_on_after_pull = function(pos)
 		on_put(pos, nil, nil, nil, nil)
