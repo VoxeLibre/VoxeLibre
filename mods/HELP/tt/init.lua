@@ -78,3 +78,6 @@ function tt.reload_itemstack_description(itemstack)
 		meta:set_string("description", desc)
 	end
 end
+
+core.register_craft_predict(tt.reload_itemstack_description)
+core.register_on_craft(tt.reload_itemstack_description)

@@ -209,6 +209,7 @@ function core.get_craft_result(input)
 			local amount = math.ceil(dur * mult * output.item:get_count())
 			output.item:set_count(amount)
 		end
+		tt.reload_itemstack_description(output.item)
 	end
 	return output, dec_input
 end
