@@ -19,7 +19,7 @@
 ## Developers
 * AFCMS
 * epCode
-* SmokeyDope
+* TomCon / SmokeyDope
 * Faerraven / Michieal
 * teknomunk
 * AncientMariner
@@ -159,6 +159,15 @@
 * grillo-delmal
 * Yoric
 * potatoalienof13
+* HalfShadow111
+* cyberonkel
+* oku
+* fancyfinn9
+* Chiragon
+* Archie
+* newrizen
+* wrrrzr
+* antimundo
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -213,6 +222,7 @@
 * SumianVoice
 * thunder1035
 * Herowl
+* Chiragon
 
 ## Textures
 * XSSheep
@@ -237,6 +247,7 @@
 * NovaWostra
 * rudzik8
 * kno10
+* Chiragon
 
 ## Translations
 * Wuzzy
@@ -269,6 +280,9 @@
 * Laudrin
 * chmodsayshello
 * ninjum
+* HalfShadow111
+* newrizen
+* antimundo
 
 ## Funders
 * 40W
