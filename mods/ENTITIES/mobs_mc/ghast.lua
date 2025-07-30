@@ -21,6 +21,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 		hp_max = 10,
 		collisionbox = {-2, 0, -2, 2, 4, 2, rotate=true},
 	},
+	armor = { fleshy = 50, ghost = 100 },
 	xp_min = 5,
 	xp_max = 5,
 	visual = "mesh",
@@ -58,7 +59,9 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	shoot_offset = 0.5,
 	shoot_pos = {x = 2, y = -1},
 	dogshoot_switch = 1,
-	dogshoot_count_max =1,
+	dogshoot_count_max = 1,
+	shooter_avoid_enemy = true,
+	avoid_distance = 32,
 	passive = false,
 	jump = true,
 	jump_height = 4,
@@ -125,13 +128,13 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	visual = "sprite",
 	visual_size = {x = 2, y = 2},
 	textures = {"vl_mobs_soulfire_charge.png"},
-	velocity = 10,
+	velocity = 15,
 	collisionbox = {-1, -1, -1, 1, 1, 1},
 	glow = 10,
 	_lifetime = 10,
 	_is_fireball = true,
 	_vl_projectile = {
-		damage_groups = {fleshy = 6}
+		damage_groups = {fleshy = 6, ghost = 20}
 	},
 
 	hit_player = function(self, player)
