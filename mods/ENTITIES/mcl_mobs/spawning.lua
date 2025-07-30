@@ -31,7 +31,7 @@ local vector_distance = vector.distance
 
 local easy = {
 	group_roll_probability = 0.95, -- 1 in 20 chance for each additional mob in group
-	fixed_timeslice = 250,
+	fixed_timeslice = 500,
 }
 local hard = { -- Placeholder for when we implement difficulty levels
 	group_roll_probability = 0.80,
@@ -181,10 +181,12 @@ local function count_mobs_total_cap(mob_type)
 	local num = 0
 	local hostile = 0
 	local non_hostile = 0
+	local mob_counts_by_name = {}
 	for _,l in pairs(core.luaentities) do
 		if l.is_mob then
 			local nametagged = l.nametag and l.nametag ~= ""
 			if ( mob_type == nil or l.type == mob_type ) and not nametagged then
+				mob_counts_by_name[l.name] = (mob_counts_by_name[l.name] or 0) + 1
 				if l.spawn_class == "hostile" then
 					hostile = hostile + 1
 				else
@@ -194,7 +196,7 @@ local function count_mobs_total_cap(mob_type)
 			end
 		end
 	end
-	return num, non_hostile, hostile
+	return num, non_hostile, hostile, mob_counts_by_name
 end
 
 local function output_mob_stats(mob_counts, total_mobs, chat_display)
@@ -1004,7 +1006,7 @@ end
 
 -- Spawns one mob or one group of mobs
 local fail_count = 0
-local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
+local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile, mob_counts_by_name)
 	local spawning_position = get_next_mob_spawn_pos(pos)
 	if not spawning_position then
 		fail_count = fail_count + 1
@@ -1034,6 +1036,9 @@ local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
 		return
 	end
 	local mob_def_ent = core.registered_entities[mob_def.name]
+
+	-- Abort if we spawning this mob would put us over the mob's soft count
+	if mob_def.soft_cap and (mob_counts_by_name[mob_def.name] or 0) >= mob_def.soft_cap then return end
 
 	local cap_space_available = mob_def_ent.type == "monster" and state.cap_space_hostile or state.cap_space_passive
 
@@ -1078,12 +1083,14 @@ local function spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
 		if not group_min then group_min = 1 end
 
 		local amount_to_spawn = group_min
-		for i = group_min,spawn_in_group do
-			if math_random() > rates.group_roll_probability then
-				amount_to_spawn = amount_to_spawn + 1
-			else
-				break
+		for _ = group_min,spawn_in_group do
+			-- Don't add mobs to groups if it would push that mob over the soft cap
+			if mob_def.soft_cap then
+				if (mob_counts_by_name[mob_def.name] or 0) + amount_to_spawn >= mob_def.soft_cap then break end
 			end
+			if math_random() <= rates.group_roll_probability then break end
+
+			amount_to_spawn = amount_to_spawn + 1
 		end
 		amount_to_spawn = math_min(amount_to_spawn, cap_space_available)
 
@@ -1111,7 +1118,7 @@ local count = 0
 local function attempt_spawn()
 	count = count + 1
 	local players = get_connected_players()
-	local total_mobs, total_non_hostile, total_hostile = count_mobs_total_cap()
+	local total_mobs, total_non_hostile, total_hostile, mob_counts_by_name = count_mobs_total_cap()
 
 	local cap_space_hostile = math_max(mob_cap.global_hostile - total_hostile, 0)
 	local cap_space_non_hostile =  math_max(mob_cap.global_non_hostile - total_non_hostile, 0)
@@ -1131,7 +1138,7 @@ local function attempt_spawn()
 			local dimension = mcl_worlds.pos_to_dimension(pos)
 			-- ignore void and unloaded area
 			if dimension ~= "void" and dimension ~= "default" then
-				spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile)
+				spawn_a_mob(pos, cap_space_hostile, cap_space_non_hostile, mob_counts_by_name)
 			end
 		end
 	end
