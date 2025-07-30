@@ -18,6 +18,21 @@ local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
+-- Tunable parameters
+local notif_delay = 3
+vl_tuning.setting("award_display_time", "number", {
+	description = S("Amount of time award notification are displayed"), default = 3, min = 2, max = 10,
+	set = function(val) notif_delay = val end,
+	get = function() return notif_delay end,
+})
+local announce_in_chat = true
+vl_tuning.setting("gamerule:announceAdvancements", "bool", {
+	description = S("Whether advancements should be announced in chat"),
+	default = minetest.settings:get_bool("mcl_showAdvancementMessages", true),
+	set = function(val) announce_in_chat = val end,
+	get = function() return announce_in_chat end,
+})
+
 -- The global award namespace
 awards = {
 	show_mode = "hud",
@@ -217,7 +232,7 @@ function awards.unlock(name, award)
 
 	-- Get award
 	minetest.log("action", name.." has gotten award "..award)
-	if minetest.settings:get_bool("mcl_showAdvancementMessages", true) then
+	if announce_in_chat then
 		minetest.chat_send_all(S("@1 has made the advancement @2", name, minetest.colorize(mcl_colors.GREEN, "[" .. (awdef.title or award) .. "]")))
 	end
 	data.unlocked[award] = award
@@ -362,7 +377,7 @@ function awards.unlock(name, award)
 			direction = 0,
 			z_index = 102,
 		})
-		minetest.after(3, function(name)
+		minetest.after(notif_delay, function(name)
 			local player = minetest.get_player_by_name(name)
 			if not player then
 				return

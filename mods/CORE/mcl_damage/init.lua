@@ -34,7 +34,30 @@ mcl_damage = {
 	}
 }
 
-local damage_enabled = minetest.settings:get_bool("enabled_damage",true)
+local damage_enabled = true
+vl_tuning.setting("damage_enabled", "bool",{
+	default = minetest.settings:get_bool("enabled_damage",true),
+	set = function(val) damage_enabled = val end,
+	get = function() return damage_enabled end,
+})
+local fall_damage_enabled = true
+vl_tuning.setting("gamerule:fallDamage", "bool", {
+	default = true,
+	set = function(val) fall_damage_enabled = val end,
+	get = function() return fall_damage_enabled end,
+})
+local drowning_damage_enabled = true
+vl_tuning.setting("gamerule:drowningDamage", "bool", {
+	default = true,
+	set = function(val) drowning_damage_enabled = val end,
+	get = function() return drowning_damage_enabled end,
+})
+local fire_damage_enabled
+vl_tuning.setting("gamerule:fireDamage", "bool", {
+	default = true,
+	set = function(val) fire_damage_enabled = val end,
+	get = function() return fire_damage_enabled end,
+})
 
 function mcl_damage.register_modifier(func, priority)
 	table.insert(mcl_damage.modifiers, {func = func, priority = priority or 0})
@@ -147,13 +170,21 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 		if player:get_hp() <= 0 then
 			return 0
 		end
-		hp_change = -mcl_damage.run_modifiers(player, -hp_change, mcl_damage.from_mt(mt_reason))
+		local mcl_reason = mcl_damage.from_mt(mt_reason)
+		if not fire_damage_enabled and mcl_reason.flags.is_fire then return 0 end
+		if not drowning_damage_enabled and mcl_reason.type == "drown" then return 0 end
+		if not fall_damage_enabled and mcl_reason.type == "fall" then return 0 end
+		hp_change = -mcl_damage.run_modifiers(player, -hp_change, mcl_reason)
 	end
 	return hp_change
 end, true)
 
 minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
+	-- Check if damage is enabled
 	if not damage_enabled then return 0 end
+
+-- 	minetest.log("action", "mcl_reason = "..dump(mcl_reason)..", mt_reason = "..dump(mt_reason))
+
 	if player:get_hp() > 0 then
 		if hp_change < 0 then
 			mcl_damage.run_damage_callbacks(player, -hp_change, mcl_damage.from_mt(mt_reason))

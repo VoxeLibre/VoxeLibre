@@ -1,10 +1,19 @@
 local get_connected_players = minetest.get_connected_players
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
 
 mcl_weather.snow = {}
 
 local PARTICLES_COUNT_SNOW = tonumber(minetest.settings:get("mcl_weather_snow_particles")) or 100
 mcl_weather.snow.init_done = false
 local mgname = minetest.get_mapgen_setting("mg_name")
+local gamerule_snowAccumulationHeight = 1
+vl_tuning.setting("gamerule:snowAccumulationHeight", "number", {
+	description = S("The maximum number of snow layers that can be accumulated on each block"),
+	default = 8, min = 0, max = 8,
+	set = function(val) gamerule_snowAccumulationHeight = val end,
+	get = function() return gamerule_snowAccumulationHeight end,
+})
 
 local snow_biomes = {
 	"ColdTaiga_underground",
@@ -163,14 +172,16 @@ minetest.register_abm({
 			if node.name:find("snow") then
 				local l = node.name:sub(-1)
 				l = tonumber(l)
-				if node.name == "mcl_core:snow" then
-					nn={name = "mcl_core:snow_2"}
-				elseif l and l < 7 then
-					nn={name="mcl_core:snow_"..tostring(math.min(8,l + 1))}
-				elseif l and l >= 7 then
-					nn={name = "mcl_core:snowblock"}
+				if l and l < gamerule_snowAccumulationHeight then
+					if node.name == "mcl_core:snow" then
+						nn={name = "mcl_core:snow_2"}
+					elseif l and l < 7 then
+						nn={name="mcl_core:snow_"..tostring(math.min(8,l + 1))}
+					elseif l and l >= 7 then
+						nn={name = "mcl_core:snowblock"}
+					end
+					if nn then minetest.set_node(pos,nn) end
 				end
-				if nn then minetest.set_node(pos,nn) end
 			else
 				minetest.set_node(above,{name = "mcl_core:snow"})
 			end

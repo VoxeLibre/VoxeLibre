@@ -163,7 +163,16 @@ mcl_inventory.register_survival_inventory_tab({
 		if inv:get_stack("offhand", 1):is_empty() then
 			armor_slot_imgs = armor_slot_imgs .. "image[5.375,4.125;1,1;mcl_inventory_empty_armor_slot_shield.png]"
 		end
-		return main_page_static .. armor_slot_imgs .. mcl_player.get_player_formspec_model(player, 1.57, 0.4, 3.62, 4.85, "")
+		local main_list = main_page_static .. armor_slot_imgs .. mcl_player.get_player_formspec_model(player, 1.57, 0.4, 3.62, 4.85, "")
+		if core.check_player_privs(player, {server = true}) then
+			main_list = main_list .. table.concat({
+				-- Server Settings
+				"image_button[10.325,2.825;1.1,1.1;screwdriver.png;__vl_tuning;]",
+				--"style_type[image_button;border=;bgimg=;bgimg_pressed=]",
+				"tooltip[__vl_tuning;" .. F(S("Server Settings")) .. "]",
+			})
+		end
+		return main_list
 	end,
 	handle = function() end,
 })

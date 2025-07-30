@@ -1,8 +1,25 @@
+local modname = minetest.get_current_modname()
+local S = minetest.get_translator(modname)
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local validate_vector = mcl_util.validate_vector
 
-local ENTITY_CRAMMING_MAX = 24
+local gamerule_maxEntityCramming = 24
+vl_tuning.setting("gamerule:maxEntityCramming", "number", {
+	description = S("The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second."),
+	default = 24,
+	formspec_desc_lines = 2,
+	set = function(val) gamerule_maxEntityCramming = val end,
+	get = function() return gamerule_maxEntityCramming end,
+})
+local gamerule_doMobLoot
+vl_tuning.setting("gamerule:doMobLoot", "bool", {
+	description = S("Whether mobs should drop items and experience orbs."),
+	default = true,
+	set = function(val) gamerule_doMobLoot = val end,
+	get = function() return gamerule_doMobLoot end,
+})
+
 local CRAMMING_DAMAGE = 3
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -9.81*1.5
@@ -359,6 +376,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 		-- TODO other env damage shouldn't drop xp
 		-- "rain", "water", "drowning", "suffocation"
 
+		if not gamerule_doMobLoot then return end
+
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
 			self:item_drop(true, 0)
@@ -388,13 +407,10 @@ function mob_class:check_for_death(cause, cmi_cause)
 				end
 			end
 		end
-
-
 	end
 
 	-- execute custom death function
 	if self.on_die then
-
 		local pos = self.object:get_pos()
 		local on_die_exit = self.on_die(self, pos, cmi_cause)
 		if on_die_exit ~= true then
@@ -782,7 +798,7 @@ function mob_class:check_entity_cramming()
 		local l = o:get_luaentity()
 		if l and l.is_mob and l.health > 0 then table.insert(mobs,l) end
 	end
-	local clear = #mobs < ENTITY_CRAMMING_MAX
+	local clear = #mobs < gamerule_maxEntityCramming
 	local ncram = {}
 	for _,l in pairs(mobs) do
 		if l then
@@ -796,7 +812,7 @@ function mob_class:check_entity_cramming()
 		end
 	end
 	for i,l in pairs(ncram) do
-		if i > ENTITY_CRAMMING_MAX then
+		if i > gamerule_maxEntityCramming then
 			l.cram = true
 		else
 			l.cram = nil

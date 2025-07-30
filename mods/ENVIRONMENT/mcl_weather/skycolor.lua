@@ -1,14 +1,49 @@
 -- Constants
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
+local S = minetest.get_translator(modname)
+
 local NIGHT_VISION_RATIO = 0.45
 local DEBUG = false
 
 -- Settings
-local minimum_update_interval = { 250e3 }
+local minimum_update_interval = 250e3
+vl_tuning.setting("minimum_sky_update_interval", "number", {
+	default = 0.25,
+	set = function(val) minimum_update_interval = val * 1e6 end,
+	get = function() return minimum_update_interval * 1e-6 end,
+})
 
 -- Module state
 local mods_loaded = false
+
+-- Daylight cycle handling
+local fixed_time = 0.5
+local fixed_time_setting = vl_tuning.setting("fixed_daylight_time", "number", {
+	description = S("Time of day to use when gamerule:doDaylightCycle == false"),
+	default = 0.5,
+	set = function(val) fixed_time = val end,
+	get = function() return fixed_time end,
+})
+local gamerule_doDaylightCycle = true
+vl_tuning.setting("gamerule:doDaylightCycle", "bool",{
+	description = S("Whether the daylight cycle and moon phases progress"),
+	default = true,
+	set = function(val) gamerule_doDaylightCycle = val end,
+	get = function() return gamerule_doDaylightCycle end,
+	on_change = function(self)
+		if not self[1] then
+			fixed_time_setting:set(minetest.get_timeofday())
+		end
+	end
+})
+local function daylightCycle()
+	if not gamerule_doDaylightCycle and fixed_time then
+		minetest.set_timeofday(fixed_time)
+	end
+	minetest.after(1, daylightCycle)
+end
+minetest.after(1, daylightCycle)
 
 function mcl_weather.set_sky_box_clear(player, sky, fog)
 	-- Make sure the player's head isn't in water before changing the skybox
@@ -145,7 +180,7 @@ function skycolor.update_player_sky_color(player)
 	local skycolor_data = get_skycolor_info(player)
 	local last_update = skycolor_data.last_update or 0
 	local now_us = minetest.get_us_time()
-	if (now_us - last_update) < minimum_update_interval[1] then return end
+	if (now_us - last_update) < minimum_update_interval then return end
 	skycolor_data.last_update = now_us
 
 	local sky_data = {

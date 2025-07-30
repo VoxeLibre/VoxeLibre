@@ -1,11 +1,11 @@
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
+local S = core.get_translator(modname)
 mcl_minecarts = {}
 local mod = mcl_minecarts
 mcl_minecarts.modpath = modpath
 
 -- Constants
-mod.SPEED_MAX = 10
 mod.FRICTION = 0.4
 mod.OFF_RAIL_FRICTION = 1.2
 mod.MAX_TRAIN_LENGTH = 4

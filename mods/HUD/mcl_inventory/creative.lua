@@ -935,6 +935,15 @@ function mcl_inventory.set_creative_formspec(player)
 			"tooltip[__mcl_skins;" .. F(S("Select player skin")) .. "]",
 		})
 
+		if core.check_player_privs(player, {server = true}) then
+			main_list = main_list .. table.concat({
+				-- Server Settings
+				"image_button[10.325,0.825;1.1,1.1;screwdriver.png;__vl_tuning;]",
+				--"style_type[image_button;border=;bgimg=;bgimg_pressed=]",
+				"tooltip[__vl_tuning;" .. F(S("Server Settings")) .. "]",
+			})
+		end
+
 		-- For shortcuts
 		listrings = listrings ..
 			"listring[detached:" .. playername .. "_armor;armor]" ..

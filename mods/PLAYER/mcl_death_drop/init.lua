@@ -6,6 +6,8 @@ mcl_death_drop = {}
 
 mcl_death_drop.registered_dropped_lists = {}
 
+local keep_inventory = vl_tuning.setting("gamerule:keepInventory")
+
 function mcl_death_drop.register_dropped_list(inv, listname, drop)
 	table.insert(mcl_death_drop.registered_dropped_lists, {inv = inv, listname = listname, drop = drop})
 end
@@ -16,8 +18,7 @@ mcl_death_drop.register_dropped_list("PLAYER", "armor", true)
 mcl_death_drop.register_dropped_list("PLAYER", "offhand", true)
 
 minetest.register_on_dieplayer(function(player)
-	local keep = minetest.settings:get_bool("mcl_keepInventory", false)
-	if keep == false then
+	if not keep_inventory.getter() then
 		-- Drop inventory, crafting grid and armor
 		local playerinv = player:get_inventory()
 		local pos = player:get_pos()
