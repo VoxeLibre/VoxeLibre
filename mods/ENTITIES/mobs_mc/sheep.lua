@@ -11,21 +11,21 @@ local WOOL_REPLACE_RATE = 80
 local colors = {
 	-- group = { wool, textures }
 	unicolor_white = { "mcl_wool:white", "#FFFFFF00" },
-	unicolor_dark_orange = { "mcl_wool:brown", "#502A00D0" },
-	unicolor_grey = { "mcl_wool:silver", "#5B5B5BD0" },
+	unicolor_dark_orange = { "mcl_wool:brown", "#451A0FD0" },
+	unicolor_grey = { "mcl_wool:silver", "#7B7B7BD0" },
 	unicolor_darkgrey = { "mcl_wool:grey", "#303030D0" },
-	unicolor_blue = { "mcl_wool:blue", "#0000CCD0" },
-	unicolor_dark_green = { "mcl_wool:green", "#005000D0" },
-	unicolor_green = { "mcl_wool:lime", "#50CC00D0" },
-	unicolor_violet = { "mcl_wool:purple" , "#5000CCD0" },
-	unicolor_light_red = { "mcl_wool:pink", "#FF5050D0" },
-	unicolor_yellow = { "mcl_wool:yellow", "#CCCC00D0" },
+	unicolor_blue = { "mcl_wool:blue", "#001A9CD0" },
+	unicolor_dark_green = { "mcl_wool:green", "#004000D0" },
+	unicolor_green = { "mcl_wool:lime", "#308C20D0" },
+	unicolor_violet = { "mcl_wool:purple" , "#30107CD0" },
+	unicolor_light_red = { "mcl_wool:pink", "#BB5060D0" },
+	unicolor_yellow = { "mcl_wool:yellow", "#AC7C00D0" },
 	unicolor_orange = { "mcl_wool:orange", "#CC5000D0" },
-	unicolor_red = { "mcl_wool:red", "#CC0000D0" },
-	unicolor_cyan  = { "mcl_wool:cyan", "#00CCCCD0" },
-	unicolor_red_violet = { "mcl_wool:magenta", "#CC0050D0" },
-	unicolor_black = { "mcl_wool:black", "#000000D0" },
-	unicolor_light_blue = { "mcl_wool:light_blue", "#5050FFD0" },
+	unicolor_red = { "mcl_wool:red", "#800000D0" },
+	unicolor_cyan  = { "mcl_wool:cyan", "#004C5CD0" },
+	unicolor_red_violet = { "mcl_wool:magenta", "#90309AD0" },
+	unicolor_black = { "mcl_wool:black", "#000000E0" },
+	unicolor_light_blue = { "mcl_wool:light_blue", "#5070FFD0" },
 }
 
 local rainbow_colors = {
@@ -369,6 +369,11 @@ mcl_mobs.register_mob("mobs_mc:sheep", {
 			ent_c.owner = parent1.owner
 			return false
 		end
+	end,
+	after_activate = function(self)
+		if self.gotten then return end
+		self.base_texture = sheep_texture(self.color)
+		self.object:set_properties({textures = self.base_texture})
 	end,
 })
 mcl_mobs:spawn_setup({
