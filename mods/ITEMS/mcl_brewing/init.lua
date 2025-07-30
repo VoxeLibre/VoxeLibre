@@ -307,6 +307,8 @@ local function allow_put(pos, listname, index, stack, player)
 			return input_stack:get_free_space()
 		elseif fuel_stack:is_empty() or input_stack:is_empty() then
 			return stack:get_count()
+		else
+			return 0
 		end
 	else
 		return stack:get_count()
