@@ -322,9 +322,9 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 		local sl = self.object:get_pos() - side_cor -- position of side left head
 		-- height corrections
 		local cb = self.initial_properties.collisionbox
-		m.y = m.y + self.cb[5]
-		sr.y = sr.y + self.cb[5] - 0.3
-		sl.y = sl.y + self.cb[5] - 0.3
+		m.y = m.y + cb[5]
+		sr.y = sr.y + cb[5] - 0.3
+		sl.y = sl.y + cb[5] - 0.3
 		local rand_pos = math.random(1,3)
 		if rand_pos == 1 then m = sr
 		elseif rand_pos == 2 then m = sl end
