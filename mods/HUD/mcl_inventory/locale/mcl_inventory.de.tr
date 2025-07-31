@@ -18,6 +18,7 @@ Help=Hilfe
 Advancements=Fortschritte
 Switch stack size=Stapelgröße ändern
 Select player skin=Spieleraussehen ändern
+Server Settings=
 @1 / @2=@1 / @2
 ##[ survival.lua ]##
 Crafting=Fertigen

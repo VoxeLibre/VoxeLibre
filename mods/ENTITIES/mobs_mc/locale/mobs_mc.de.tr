@@ -68,8 +68,8 @@ Vindicator=Diener
 Zombie Villager=Dorfbewohnerzombie
 ##[ witch.lua ]##
 Witch=Hexe
-##[ blaze.lua ]##
-Blaze=Lohe
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=Enderdrache
 ##[ endermite.lua ]##
@@ -149,5 +149,6 @@ Baby Strider=Baby-Strider
 
 ##### not used anymore #####
 
+Blaze=Lohe
 Agent=Akteur
 Enderman=Enderman

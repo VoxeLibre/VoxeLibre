@@ -1,109 +1,109 @@
 # textdomain: mobs_mc
 ##[ axolotl.lua ]##
-Axolotl=Salamander
+Axolotl=Aksolotl
 ##[ bat.lua ]##
-Bat=Flagermus
+Bat=Nietoperz
 ##[ rabbit.lua ]##
-Rabbit=Kanin
-Killer Bunny=Dræberkanin
+Rabbit=Królik
+Killer Bunny=Zając zabójca
 ##[ chicken.lua ]##
-Chicken=Kylling
+Chicken=Kurczak
 ##[ cow+mooshroom.lua ]##
-Cow=Ko
-Mooshroom=Svamp
+Cow=Krowa
+Mooshroom=Muuchomor
 ##[ horse.lua ]##
-Horse=Hest
-Skeleton Horse=Skelethest
-Zombie Horse=Zombiehest
-Donkey=Æsel
-Mule=Muldyr
+Horse=Koń
+Skeleton Horse=Szkielet konia
+Zombie Horse=Koń zombie
+Donkey=Osioł
+Mule=Muł
 ##[ llama.lua ]##
 Llama=Lama
- - Strength @1=
+ - Strength @1= - Siła @1
 ##[ ocelot.lua ]##
-Ocelot=Ozelot
-Cat=
+Ocelot=Ocelot
+Cat=Kot
 ##[ parrot.lua ]##
-Parrot=Papegøje
+Parrot=Papuga
 ##[ pig.lua ]##
-Pig=Gris
+Pig=Świnia
 ##[ polar_bear.lua ]##
-Polar Bear=Isbjørn
+Polar Bear=Niedźwiedź polarny
 ##[ sheep.lua ]##
-Sheep=Får
+Sheep=Owca
 ##[ wolf.lua ]##
-Wolf=Ulv
-Dog=
+Wolf=Wilk
+Dog=Pies
 ##[ squid.lua ]##
-Squid=Blæksprutte
+Squid=Kałamarnica
 ##[ villager.lua ]##
-Novice=
-Apprentice=
-Journeyman=
-Expert=
-Master=
-Unemployed=
-Farmer=Landmand
-Fisherman=Fisker
-Fletcher=Pilemager
-Shepherd=Fårehyrde
-Librarian=Bibliotikar
+Novice=Nowicjusz
+Apprentice=Uczeń
+Journeyman=Czeladnik
+Expert=Ekspert
+Master=Mistrz
+Unemployed=Bezrobotny
+Farmer=Farmer
+Fisherman=Rybak
+Fletcher=Strzałorób
+Shepherd=Pasterz
+Librarian=Bibliotekarz
 Cartographer=Kartograf
-Armorer=Rustningesmed
-Leatherworker=Læderarbejder
-Butcher=Slagter
-Weapon Smith=Våbensmed
-Tool Smith=Værktøjssmed
-Cleric=Gejstlig
-Mason=
-Nitwit=Tåbe
-Villager=Landsbyboer
+Armorer=Płatnerz
+Leatherworker=Garbarz
+Butcher=Rzeźnik
+Weapon Smith=Kowal broni
+Tool Smith=Kowal narzędzi
+Cleric=Kleryk
+Mason=Kamieniarz
+Nitwit=
+Villager=Osadnik
 ##[ pillager.lua ]##
-Pillager=Plyndrer
+Pillager=Rozbójnik
 ##[ villager_evoker.lua ]##
-Evoker=Fremkalder
+Evoker=Przywoływacz
 ##[ villager_vindicator.lua ]##
-Vindicator=Hævner
+Vindicator=Zbójca
 ##[ villager_zombie.lua ]##
-Zombie Villager=Zombie landsbyboer
+Zombie Villager=Osadnik zombie
 ##[ witch.lua ]##
-Witch=Heks
+Witch=Wiedźma
 ##[ elementals.lua ]##
-Fire Elemental=
+Fire Elemental=Żywiołak ognia
 ##[ ender_dragon.lua ]##
-Ender Dragon=Enderdrage
+Ender Dragon=Smok
 ##[ endermite.lua ]##
-Endermite=Endermide
+Endermite=Roztocze kresu
 ##[ villager_illusioner.lua ]##
-Illusioner=Illusionist
+Illusioner=Iluzjonista
 ##[ ghast.lua ]##
 Ghast=Ghast
 ##[ guardian.lua ]##
-Guardian=Beskytter
+Guardian=
 ##[ guardian_elder.lua ]##
-Elder Guardian=Gammel beskytter
+Elder Guardian=
 ##[ snowman.lua ]##
-Snow Golem=Snegolem
+Snow Golem=Bałœan
 ##[ iron_golem.lua ]##
-Iron Golem=Jerngolem
+Iron Golem=Żelazny golem
 ##[ rover.lua ]##
-Rover=
+Rover=Rover
 ##[ shulker.lua ]##
-Shulker=Shulker
+Shulker=
 ##[ silverfish.lua ]##
-Silverfish=Sølvfisk
+Silverfish=Rybik cukrowy
 ##[ skeleton+stray.lua ]##
-Skeleton=Skelet
-Stray=Omstrejfer
+Skeleton=Szkielet
+Stray=
 ##[ skeleton_wither.lua ]##
-Wither Skeleton=Wither-skelet
+Wither Skeleton=Mroczny szkielet
 ##[ stalker.lua ]##
 Stalker=Stalker
-Overloaded Stalker=
+Overloaded Stalker=Przeładowany Stalker
 ##[ zombie.lua ]##
 Zombie=Zombie
-Baby Zombie=
-Husk=Udtørretskal
+Baby Zombie=Małe zombie
+Husk=
 Baby Husk=
 ##[ slime+magma_cube.lua ]##
 Slime - big=
@@ -112,25 +112,25 @@ Slime - tiny=
 Magma Cube - big=
 Magma Cube - small=
 Magma Cube - tiny=
-Magma Cube=Magmakube
-Slime=Slimklump
+Magma Cube=
+Slime=
 ##[ spider.lua ]##
-Spider=Edderkop
-Cave Spider=Huleedderkop
+Spider=Pająk
+Cave Spider=Pająk jaskiniowy
 ##[ vex.lua ]##
-Vex=Vex
+Vex=
 ##[ wither.lua ]##
-Wither=Wither
+Wither=
 ##[ cod.lua ]##
-Cod=Torsk
+Cod=Dorsz
 ##[ salmon.lua ]##
-Salmon=Laks
+Salmon=Łosoś
 ##[ tropical_fish.lua ]##
-Tropical fish=Tropisk fisk
+Tropical fish=
 ##[ dolphin.lua ]##
 Dolphin=Delfin
 ##[ glow_squid.lua ]##
-Glow Squid=
+Glow Squid=Świecąca kałamarnica
 ##[ piglin.lua ]##
 Piglin=
 Sword Piglin=
@@ -144,11 +144,3 @@ Baby hoglin=
 ##[ strider.lua ]##
 Strider=
 Baby Strider=
-
-
-##### not used anymore #####
-
-Blaze=Blaze
-Agent=Agent
-Enderman=Enderman
-Zombie Pigman=Zombificeret piglin

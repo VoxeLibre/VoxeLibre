@@ -180,11 +180,11 @@ local function brewing_stand_timer(pos, elapsed)
 
 		elseif fuel == 0 then  --get more fuel from fuel_list
 
-			-- only allow blaze powder fuel
+			-- only allow flaming powder fuel
 			fuel_name = inv:get_stack("fuel",1):get_name()
 			fuel_count = inv:get_stack("fuel",1):get_count()
 
-			if fuel_name == "mcl_mobitems:blaze_powder" then -- Grab another fuel
+			if fuel_name == "mcl_mobitems:flaming_powder" then -- Grab another fuel
 
 				if (fuel_count-1) ~= 0 then
 					inv:set_stack("fuel",1,fuel_name.." "..(fuel_count-1))
@@ -260,8 +260,8 @@ end
 
 local doc_string =
 	S("To use a brewing stand, rightclick it.").."\n"..
-	S("To brew, you need blaze powder as fuel, a brewing material and at least 1 glass bottle filled with a liquid.").."\n"..
-	S("Place the blaze powder in the left slot, the brewing material in the middle slot and 1-3 bottles in the remaining slots.").."\n"..
+	S("To brew, you need flaming powder as fuel, a brewing material and at least 1 glass bottle filled with a liquid.").."\n"..
+	S("Place the flaming powder in the left slot, the brewing material in the middle slot and 1-3 bottles in the remaining slots.").."\n"..
 	S("When you have found a good combination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.").."\n"..
 	S("Different combinations of brewing materials and liquids will give different results. Try to experiment!")
 
@@ -400,7 +400,7 @@ local function hoppers_on_try_push(pos, hop_pos, hop_inv, hop_list)
 		return inv, "input", mcl_util.select_stack(hop_inv, hop_list, inv, "input", filter, 1)
 	else
 		local filter = function(stack)
-			return stack:get_name() == "mcl_mobitems:blaze_powder"
+			return stack:get_name() == "mcl_mobitems:flaming_powder"
 		end
 		local stack = mcl_util.select_stack(hop_inv, hop_list, inv, "fuel", filter, 1 )
 		if stack then
@@ -774,7 +774,7 @@ core.register_node("mcl_brewing:stand_111", stand_def_111)
 core.register_craft({
 	output = "mcl_brewing:stand_000",
 	recipe = {
-		{ "", "mcl_mobitems:blaze_rod", "" },
+		{ "", "mcl_mobitems:flaming_rod", "" },
 		{ "group:cobble", "group:cobble", "group:cobble" },
 	}
 })

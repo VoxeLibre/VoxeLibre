@@ -68,8 +68,8 @@ Vindicator=Поборник
 Zombie Villager=Зомби-житель
 ##[ witch.lua ]##
 Witch=Ведьма
-##[ blaze.lua ]##
-Blaze=Ифрит
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=Дракон Края
 ##[ endermite.lua ]##
@@ -148,6 +148,7 @@ Baby Strider=
 
 ##### not used anymore #####
 
+Blaze=Ифрит
 Agent=Агент
 Enderman=Эндермен
 Baby Piglin=Пиглин-ребёнок

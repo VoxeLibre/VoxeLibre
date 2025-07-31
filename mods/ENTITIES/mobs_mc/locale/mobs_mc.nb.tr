@@ -68,8 +68,8 @@ Vindicator=Forsvarer
 Zombie Villager=Vandød landsbyboer
 ##[ witch.lua ]##
 Witch=Heks
-##[ blaze.lua ]##
-Blaze=Ildvette
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=Enderdrage
 ##[ endermite.lua ]##
@@ -148,6 +148,7 @@ Baby Strider=Babylavavandrer
 
 ##### not used anymore #####
 
+Blaze=Ildvette
 Agent=Agent
 Wither spawning=Forvitrer fremmanes
 Baby Piglin=Babygrisling

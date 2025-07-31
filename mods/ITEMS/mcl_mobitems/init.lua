@@ -272,23 +272,25 @@ minetest.register_craftitem("mcl_mobitems:earthen_ash",{
 	stack_max = 64,
 })
 
-minetest.register_craftitem("mcl_mobitems:blaze_rod", {
-	description = S("Blaze Rod"),
-	_doc_items_longdesc = S("This is a crafting component dropped from dead blazes."),
-	wield_image = "mcl_mobitems_blaze_rod.png",
-	inventory_image = "mcl_mobitems_blaze_rod.png",
+minetest.register_craftitem("mcl_mobitems:flaming_rod", {
+	description = S("Flaming Rod"),
+	_doc_items_longdesc = S("This is a crafting component dropped from dead fire elementals."),
+	wield_image = "vl_mobitems_flaming_rod.png",
+	inventory_image = "vl_mobitems_flaming_rod.png",
 	groups = { craftitem = 1 },
 	stack_max = 64,
 })
+core.register_alias("mcl_mobitems:blaze_rod", "mcl_mobitems:flaming_rod")
 
-minetest.register_craftitem("mcl_mobitems:blaze_powder", {
-	description = S("Blaze Powder"),
+minetest.register_craftitem("mcl_mobitems:flaming_powder", {
+	description = S("Flaming Powder"),
 	_doc_items_longdesc = S("This item is mainly used for crafting."),
-	wield_image = "mcl_mobitems_blaze_powder.png",
-	inventory_image = "mcl_mobitems_blaze_powder.png",
+	wield_image = "vl_mobitems_flaming_powder.png",
+	inventory_image = "vl_mobitems_flaming_powder.png",
 	groups = { craftitem = 1, brewitem = 1 },
 	stack_max = 64,
 })
+core.register_alias("mcl_mobitems:blaze_powder", "mcl_mobitems:flaming_powder")
 
 minetest.register_craftitem("mcl_mobitems:magma_cream", {
 	description = S("Magma Cream"),
@@ -511,8 +513,8 @@ core.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_mobitems:blaze_powder 2",
-	recipe = {{"mcl_mobitems:blaze_rod"}},
+	output = "mcl_mobitems:flaming_powder 2",
+	recipe = {{"mcl_mobitems:flaming_rod"}},
 })
 
 minetest.register_craft({
@@ -568,7 +570,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_mobitems:magma_cream",
-	recipe = {"mcl_mobitems:blaze_powder", "mcl_mobitems:slimeball"},
+	recipe = {"mcl_mobitems:flaming_powder", "mcl_mobitems:slimeball"},
 })
 
 minetest.register_craft({
@@ -608,7 +610,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "mcl_mobitems:blaze_rod",
+	recipe = "mcl_mobitems:flaming_rod",
 	burntime = 120,
 })
 

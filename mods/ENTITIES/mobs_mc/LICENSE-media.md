@@ -148,8 +148,8 @@ Origin of those models:
 * Blender Foundation (CC BY 3.0)
     * `mobs_sheep.ogg`,
 * daufinsyd (MIT License)
-    * `mobs_mc_blaze_breath.ogg`
-    * `mobs_mc_blaze_died.ogg`
+    * `vl_elemental_fire_breath.ogg`
+    * `vl_elemental_fire_died.ogg`
 * [qubodup](https://opengameart.org/content/slime-monster)
     * `mobs_mc_squid_hurt.*.ogg` (CC BY 3.0)
     * `mobs_mc_squid_death.*.ogg` (CC BY 3.0)
@@ -161,7 +161,7 @@ Origin of those models:
     * `mobs_mc_snowman_hurt.1.ogg` (CC0)
         * Source: <https://freesound.org/people/kyles/sounds/450848/>
 * [thefilmbakery](https://freesound.org/people/thefilmbakery/) (CC0)
-    * `mobs_mc_blaze_hurt.ogg`
+    * `vl_elemental_fire_hurt.ogg`
 	* Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>
 * TenPlus1, from `mobs_monster` or `mobs_animal` mod (MIT License)
     * `mobs_fireball.ogg`

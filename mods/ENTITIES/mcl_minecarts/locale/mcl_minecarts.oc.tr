@@ -35,6 +35,8 @@ Place it on rails. Punch it to move it. The TNT is ignited with a flint and stee
 
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=Per obtenèr le vagonet e la TNT, tustatz z-o embei la tocha sneak enfonçada. Podètz pas faire quo si la TNT z-es atubada.
 
+##[ movement.lua ]##
+The maximum speed a minecart may reach.=
 ##[ rails.lua ]##
 
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Plaçatz z-o per sòu per construrre vostre chamin de fèrre, los ralhs se conectaron entre ilhs e faron de las corbas, de las junccions en T, en traversadas et en pentas au besonh.

@@ -1,4 +1,5 @@
 # textdomain: mcl_tnt
+Whether TNT explodes after activation.=
 
 An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=Wybuchowy materiał. Gdy wybucha rani żywe istoty w pobliżu i niszczy pobliskie bloki. Trotyl ma promień wybuchu równy @1. Trotyl może być zapalony narzędziami, eksplozjami, ogniem, lawą i energią z czerwienitu.
 

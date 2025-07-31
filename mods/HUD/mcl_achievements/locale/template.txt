@@ -21,8 +21,8 @@ Isn't It Iron Pick=
 Craft an iron pickaxe using sticks and iron.=
 DIAMONDS!=
 Pick up a diamond from the floor.=
-Into Fire=
-Pick up a blaze rod from the floor.=
+Playing with Fire=
+Pick up a flaming rod from the floor.=
 Cow Tipper=
 
 Pick up leather from the floor.@nHint: Cows and some other animals have a chance to drop leather, when killed.=

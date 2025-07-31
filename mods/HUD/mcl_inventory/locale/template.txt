@@ -18,6 +18,7 @@ Help=
 Advancements=
 Switch stack size=
 Select player skin=
+Server Settings=
 @1 / @2=
 ##[ survival.lua ]##
 Crafting=

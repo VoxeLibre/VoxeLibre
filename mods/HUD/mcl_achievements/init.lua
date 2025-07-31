@@ -140,10 +140,10 @@ awards.register_achievement("mcl:diamonds", {
 	icon = "mcl_core_diamond_ore.png",
 	type = "Advancement",
 })
-awards.register_achievement("mcl:blazeRod", {
-	title = S("Into Fire"),
-	description = S("Pick up a blaze rod from the floor."),
-	icon = "mcl_mobitems_blaze_rod.png",
+awards.register_achievement("mcl:flaming_rod", {
+	title = S("Playing with Fire"),
+	description = S("Pick up a flaming rod from the floor."),
+	icon = "vl_mobitems_flaming_rod.png",
 	type = "Advancement",
 	group = "Nether",
 })

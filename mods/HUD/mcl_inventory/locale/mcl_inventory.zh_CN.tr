@@ -18,6 +18,7 @@ Help=帮助
 Advancements=
 Switch stack size=切换堆叠数量
 Select player skin=选择玩家皮肤
+Server Settings=
 @1 / @2=
 ##[ survival.lua ]##
 Crafting=制作

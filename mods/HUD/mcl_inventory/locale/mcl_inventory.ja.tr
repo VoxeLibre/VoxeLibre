@@ -18,6 +18,7 @@ Help=ヘルプ
 Advancements=進捗
 Switch stack size=
 Select player skin=プレイヤースキン選択
+Server Settings=
 @1 / @2=
 ##[ survival.lua ]##
 Crafting=クラフト

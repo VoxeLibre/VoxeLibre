@@ -1,4 +1,5 @@
 # textdomain: mcl_fire
+Whether fire should spread and naturally extinguish=
 
 Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=Le feu est un type de bloc dommageable et destructeur mais de courte durée. Il se détruira et se propagera vers des blocs proches de produits inflammables, mais le feu disparaîtra lorsqu'il n'y aura plus rien à brûler. Il sera éteint par l'eau et la pluie à proximité. Le feu peut être détruit en toute sécurité en le frappant, mais il est blessant si vous vous tenez directement dedans. Si un feu est déclenché au-dessus d'un netherrack ou d'un bloc de magma, il se transformera immédiatement en un feu éternel.
 

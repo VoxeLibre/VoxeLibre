@@ -1,5 +1,7 @@
 # textdomain:awards
 ##[ api.lua ]##
+Amount of time award notification are displayed=
+Whether advancements should be announced in chat=
 @1 has made the advancement @2=@1 a obtenu le progrès @2
 Secret Advancement Made:=Progrès secret réalisé :
 Goal Completed:=Objectif atteint :

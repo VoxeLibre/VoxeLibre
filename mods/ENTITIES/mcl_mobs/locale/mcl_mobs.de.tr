@@ -5,6 +5,11 @@ Just place it where you want the mob to appear. Animals will spawn tamed, unless
 
 You need the “maphack” privilege to change the mob spawner.=Sie brauchen das „maphack“-Privileg, um den Mobspawner ändern zu können.
 Only peaceful mobs allowed!=Nur friedliche Mobs erlaubt!
+##[ physics.lua ]##
+
+The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=
+
+Whether mobs should drop items and experience orbs.=
 ##[ api.lua ]##
 Peaceful mode active! No monsters will spawn.=Friedlicher Modus aktiv! Es werden keine Monster auftauchen.
 
@@ -13,6 +18,8 @@ Removes specified mobs except nametagged and tamed ones. For the second paramete
 Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=Standardverwendung. Beseitigung feindlicher Mobs. Für weitere Optionen geben Sie den Befehl: /help clearmobs ein
 
 ##[ spawning.lua ]##
+
+Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems.=
 
 spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: @n spawn_mob skeleton:var<passive@=true>:@n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.=
 

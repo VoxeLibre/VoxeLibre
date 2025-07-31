@@ -68,8 +68,8 @@ Vindicator=卫道士
 Zombie Villager=僵尸村民
 ##[ witch.lua ]##
 Witch=女巫
-##[ blaze.lua ]##
-Blaze=烈焰人
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=末影龙
 ##[ endermite.lua ]##
@@ -148,6 +148,7 @@ Baby Strider=
 
 ##### not used anymore #####
 
+Blaze=烈焰人
 Agent=智能体
 Enderman=末影人
 Baby Piglin=小猪灵

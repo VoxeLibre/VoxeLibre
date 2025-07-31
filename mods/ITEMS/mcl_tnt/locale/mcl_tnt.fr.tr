@@ -1,4 +1,5 @@
 # textdomain: mcl_tnt
+Whether TNT explodes after activation.=
 
 An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=Un engin explosif. Quand il explose, il blessera les êtres vivants et détruira les blocs autour de lui. La TNT a un rayon d'explosion de @1. Avec une petite chance, les blocs peuvent tomber comme un objet (comme s'ils étaient minés) plutôt que d'être détruits. La TNT peut être enflammée par des outils, des explosions, des feux d'incendie, de la lave et de la redstone.
 

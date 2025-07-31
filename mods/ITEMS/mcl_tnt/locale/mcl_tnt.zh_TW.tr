@@ -1,4 +1,5 @@
 # textdomain: mcl_tnt
+Whether TNT explodes after activation.=
 
 An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=一個爆炸性裝置。當它爆炸時，會傷害生物，並摧毀周圍的方塊。TNT的爆炸半徑為@1。有很小的機率，方塊可能會作為物品掉落（就像被開採一樣）而不是被摧毀。TNT可以被工具、爆炸、火、熔岩和紅石信號點燃。
 

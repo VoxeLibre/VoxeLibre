@@ -65,9 +65,9 @@ This item is mainly used for crafting.=Cet objet est principalement utilisé pou
 Aery Charge=
 Crystalline Drop=
 Earthen Ash=
-Blaze Rod=Bâton de Blaze
-This is a crafting component dropped from dead blazes.=Il s'agit d'un composant d'artisanat tombé des Blazes morts.
-Blaze Powder=Poudre de Blaze
+Flaming Rod=
+This is a crafting component dropped from dead fire elementals.=
+Flaming Powder=
 Magma Cream=Crème de Magma
 Magma cream is a crafting component.=La crème de magma est un composant artisanal.
 Ghast Tear=Larme de Ghast
@@ -137,6 +137,9 @@ Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=Uti
 
 ##### not used anymore #####
 
+Blaze Rod=Bâton de Blaze
+This is a crafting component dropped from dead blazes.=Il s'agit d'un composant d'artisanat tombé des Blazes morts.
+Blaze Powder=Poudre de Blaze
 Rabbit Hide=Peau de lapin
 Rabbit hide is used to create leather.=La peau de lapin est utilisée pour créer du cuir.
 

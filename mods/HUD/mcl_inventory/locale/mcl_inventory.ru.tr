@@ -18,6 +18,7 @@ Help=Справка
 Advancements=Достижения
 Switch stack size=Изменить размер стака
 Select player skin=Выбор скина
+Server Settings=
 @1 / @2=
 ##[ survival.lua ]##
 Crafting=Создание
