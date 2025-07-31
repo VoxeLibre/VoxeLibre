@@ -68,8 +68,8 @@ Vindicator=ヴィンディケーター
 Zombie Villager=村人ゾンビ
 ##[ witch.lua ]##
 Witch=魔女
-##[ blaze.lua ]##
-Blaze=ブレイズ
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=エンダードラゴン
 ##[ endermite.lua ]##
@@ -148,6 +148,7 @@ Baby Strider=
 
 ##### not used anymore #####
 
+Blaze=ブレイズ
 Agent=エージェント
 Creeper=クリーパー
 Enderman=エンダーマン

@@ -1,4 +1,7 @@
 # textdomain: mcl_death_messages
+
+Whether death messages are put into chat when a player dies. Also affects whether a message is sent to the pet's owner when the pet dies.=
+
 @1 went up in flames=@1 pegou fogo
 @1 walked into fire whilst fighting @2=@1 caminhou no fogo enquanto lutava contra @2
 @1 was struck by lightning=@1 foi atingido(a) por um raio

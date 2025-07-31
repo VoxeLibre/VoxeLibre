@@ -65,9 +65,9 @@ This item is mainly used for crafting.=Dieser Gegenstand wird hauptsächlich in 
 Aery Charge=Luftige Ladung
 Crystalline Drop=Kristallträne
 Earthen Ash=Erdenasche
-Blaze Rod=Lohenrute
-This is a crafting component dropped from dead blazes.=Dies ist eine Fertigungskomponente, die von toten Lohen abgeworfen wird.
-Blaze Powder=Lohenstaub
+Flaming Rod=
+This is a crafting component dropped from dead fire elementals.=
+Flaming Powder=
 Magma Cream=Magmacreme
 Magma cream is a crafting component.=Magmacreme ist eine Fertigungskomponente.
 Ghast Tear=Ghast-Träne
@@ -137,5 +137,8 @@ Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=Ver
 
 ##### not used anymore #####
 
+Blaze Rod=Lohenrute
+This is a crafting component dropped from dead blazes.=Dies ist eine Fertigungskomponente, die von toten Lohen abgeworfen wird.
+Blaze Powder=Lohenstaub
 Rabbit Hide=Kaninchenfell
 Rabbit hide is used to create leather.=Kaninchenfell wird zur Herstellung von Leder benutzt.

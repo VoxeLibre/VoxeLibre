@@ -68,8 +68,8 @@ Vindicator=Vindicador
 Zombie Villager=Aldeabo Zombi
 ##[ witch.lua ]##
 Witch=Bruxa
-##[ blaze.lua ]##
-Blaze=Blaze
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=Ender Dragon
 ##[ endermite.lua ]##
@@ -148,6 +148,7 @@ Baby Strider=
 
 ##### not used anymore #####
 
+Blaze=Blaze
 Agent=Axente
 Enderman=Enderman 
 Baby Piglin=Bebé Piglin

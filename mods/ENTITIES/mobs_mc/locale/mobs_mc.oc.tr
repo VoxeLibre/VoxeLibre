@@ -68,8 +68,8 @@ Vindicator=Vindicataire
 Zombie Villager=Vialatgés Zombia
 ##[ witch.lua ]##
 Witch=Fachinèira
-##[ blaze.lua ]##
-Blaze=Flamor
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=Dragon de Finuèit
 ##[ endermite.lua ]##
@@ -148,5 +148,6 @@ Baby Strider=
 
 ##### not used anymore #####
 
+Blaze=Flamor
 Agent=Agent
 Enderman=Finuèairi

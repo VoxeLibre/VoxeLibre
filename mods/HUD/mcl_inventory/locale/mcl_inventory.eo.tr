@@ -18,6 +18,7 @@ Help=Helpo
 Advancements=Atingoj
 Switch stack size=Ŝanĝi stakgrandecon
 Select player skin=Elektu ludantoŝajno.
+Server Settings=
 ##TODO: fuzzy matched - verify and remove the comment
 @1 / @2=@1/@2
 ##[ survival.lua ]##

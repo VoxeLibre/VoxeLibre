@@ -65,9 +65,9 @@ This item is mainly used for crafting.=烈焰粉主要用于制作，也是熔�
 Aery Charge=空灵电荷
 Crystalline Drop=晶状水滴
 Earthen Ash=土灰
-Blaze Rod=烈焰棒
-This is a crafting component dropped from dead blazes.=这是从死去的烈焰人身上掉落的制作材料。
-Blaze Powder=烈焰粉
+Flaming Rod=
+This is a crafting component dropped from dead fire elementals.=
+Flaming Powder=
 Magma Cream=岩浆膏
 Magma cream is a crafting component.=岩浆膏是一种制作材料。
 Ghast Tear=恶魂之泪
@@ -137,6 +137,9 @@ Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=使
 
 ##### not used anymore #####
 
+Blaze Rod=烈焰棒
+This is a crafting component dropped from dead blazes.=这是从死去的烈焰人身上掉落的制作材料。
+Blaze Powder=烈焰粉
 Rabbit Hide=兔子皮
 Rabbit hide is used to create leather.=兔子皮用于制作皮革。
 

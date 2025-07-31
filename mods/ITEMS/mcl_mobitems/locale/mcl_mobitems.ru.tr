@@ -65,9 +65,9 @@ This item is mainly used for crafting.=Огненный порошок это м
 Aery Charge=
 Crystalline Drop=
 Earthen Ash=
-Blaze Rod=Огненный стержень
-This is a crafting component dropped from dead blazes.=Это материал для крафта, выпадающий из ифрита.
-Blaze Powder=Огненный порошок
+Flaming Rod=
+This is a crafting component dropped from dead fire elementals.=
+Flaming Powder=
 Magma Cream=Лавовый крем
 Magma cream is a crafting component.=Лавовый крем это материал для крафта.
 Ghast Tear=Слеза гаста
@@ -137,6 +137,9 @@ Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=И�
 
 ##### not used anymore #####
 
+Blaze Rod=Огненный стержень
+This is a crafting component dropped from dead blazes.=Это материал для крафта, выпадающий из ифрита.
+Blaze Powder=Огненный порошок
 Rabbit Hide=Кроличья шкурка
 Rabbit hide is used to create leather.=Кроличья шкурка используется для создания кожи.
 

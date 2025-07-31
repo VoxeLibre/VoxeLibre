@@ -1,4 +1,5 @@
 # textdomain: mcl_fire
+Whether fire should spread and naturally extinguish=
 
 Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=火是一種具有傷害性和破壞性的方塊，但持續時間很短。它將破壞並向附近的易燃區塊蔓延，但當沒有什麼可燃燒的東西時，火就會消失。它將被附近的水和雨所熄滅。火可以通過打它來安全地摧毀，但如果你直接站在它裡面，它是有傷害的。如果火是在地獄石或岩漿塊上面點燃的，它將立即變成永恆的火。
 

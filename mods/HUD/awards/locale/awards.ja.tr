@@ -1,5 +1,7 @@
 # textdomain:awards
 ##[ api.lua ]##
+Amount of time award notification are displayed=
+Whether advancements should be announced in chat=
 @1 has made the advancement @2=@1は進捗@2を更新
 Secret Advancement Made:=隠し進捗 更新：
 Goal Completed:=目標達成：

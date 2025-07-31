@@ -35,6 +35,8 @@ Place it on rails. Punch it to move it. The TNT is ignited with a flint and stee
 
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=For at få minevognen med TNT i din oppakning skal du slå den mens du holder snigeknappen nede. Du kan ikke gøre dette hvis TNTen er antændt.
 
+##[ movement.lua ]##
+The maximum speed a minecart may reach.=
 ##[ rails.lua ]##
 
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Placér dem på jorden for at bygge din jerbane. Sporene kobler sig automatisk sammen med hinanden og laver sving, T-kryds, kryds og skråninger efter behov.

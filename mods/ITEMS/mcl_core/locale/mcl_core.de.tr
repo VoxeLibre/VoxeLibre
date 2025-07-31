@@ -1,4 +1,8 @@
 # textdomain: mcl_core
+##[ functions.lua ]##
+
+Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=
+
 ##[ nodes_base.lua ]##
 Stone=Stein
 

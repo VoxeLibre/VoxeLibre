@@ -68,8 +68,8 @@ Vindicator=
 Zombie Villager=
 ##[ witch.lua ]##
 Witch=
-##[ blaze.lua ]##
-Blaze=
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=
 ##[ endermite.lua ]##

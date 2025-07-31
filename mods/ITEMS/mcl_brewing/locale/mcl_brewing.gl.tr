@@ -3,9 +3,11 @@ Brewing Stand=Stand de elaboración de cervexa
 Inventory=Inventario
 To use a brewing stand, rightclick it.=Para usar un soporte de elaboración, fai clic co botón dereito nel.
 
-To brew, you need blaze powder as fuel, a brewing material and at least 1 glass bottle filled with a liquid.=Para elaborar a cervexa, necesitas po de lume como combustible, un material de elaboración e polo menos 1 botella de vidro chea dun líquido.
+##TODO: fuzzy matched - verify and remove the comment
+To brew, you need flaming powder as fuel, a brewing material and at least 1 glass bottle filled with a liquid.=Para elaborar a cervexa, necesitas po de lume como combustible, un material de elaboración e polo menos 1 botella de vidro chea dun líquido.
 
-Place the blaze powder in the left slot, the brewing material in the middle slot and 1-3 bottles in the remaining slots.=Coloque o po de lume na rañura esquerda, o material de cervexa na rañura central e 1-3 botellas nas rañuras restantes.
+##TODO: fuzzy matched - verify and remove the comment
+Place the flaming powder in the left slot, the brewing material in the middle slot and 1-3 bottles in the remaining slots.=Coloque o po de lume na rañura esquerda, o material de cervexa na rañura central e 1-3 botellas nas rañuras restantes.
 
 When you have found a good combination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.=Cando atopes unha boa combinación, a elaboración comezará automaticamente e comeza a aparecer vapor, esgotando o combustible e o material de elaboración. As pocións pronto estarán listas.
 

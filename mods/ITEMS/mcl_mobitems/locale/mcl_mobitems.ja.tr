@@ -65,9 +65,9 @@ This item is mainly used for crafting.=このアイテムは主にクラフト�
 Aery Charge=
 Crystalline Drop=
 Earthen Ash=
-Blaze Rod=ブレイズロッド
-This is a crafting component dropped from dead blazes.=これは死んだブレイズから落ちた、クラフトの構成材です。
-Blaze Powder=ブレイズパウダー
+Flaming Rod=
+This is a crafting component dropped from dead fire elementals.=
+Flaming Powder=
 Magma Cream=マグマクリーム
 Magma cream is a crafting component.=マグマクリームはクラフトの構成材です。
 Ghast Tear=ガストの涙
@@ -137,5 +137,8 @@ Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=
 
 ##### not used anymore #####
 
+Blaze Rod=ブレイズロッド
+This is a crafting component dropped from dead blazes.=これは死んだブレイズから落ちた、クラフトの構成材です。
+Blaze Powder=ブレイズパウダー
 Rabbit Hide=ウサギの皮
 Rabbit hide is used to create leather.=ウサギの皮は、革の原料として使われます。

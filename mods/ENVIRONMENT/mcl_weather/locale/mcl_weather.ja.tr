@@ -1,5 +1,11 @@
 # textdomain: mcl_weather
+##[ skycolor.lua ]##
+Time of day to use when gamerule:doDaylightCycle @=@= false=
+Whether the daylight cycle and moon phases progress=
 ##[ weather_core.lua ]##
+
+Whether the weather can change naturally. The /weather command can still change weather.=
+
 Gives ability to control weather=天候操作能力を付与
 Changes the weather to the specified parameter.=指定されたパラメータの天気を変更します。
 Error: No weather specified.=エラー：天候が指定されていません。
@@ -9,3 +15,5 @@ Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “
 
 Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=晴天と荒天（ランダムに降雨・雷雨・降雪）を切替
 
+##[ snow.lua ]##
+The maximum number of snow layers that can be accumulated on each block=

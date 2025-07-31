@@ -18,6 +18,7 @@ Help=Ajuda
 Advancements=Progressos
 Switch stack size=Trocar tamanho da pilha
 Select player skin=Selecionar skin do jogador
+Server Settings=
 @1 / @2=
 ##[ survival.lua ]##
 Crafting=Fabricação

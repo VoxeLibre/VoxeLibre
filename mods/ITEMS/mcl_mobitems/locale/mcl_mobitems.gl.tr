@@ -67,9 +67,9 @@ This item is mainly used for crafting.=Este elemento úsase principalmente para 
 Aery Charge=
 Crystalline Drop=
 Earthen Ash=
-Blaze Rod=Vara de blaze
-This is a crafting component dropped from dead blazes.=Este é un compoñente de artesanía caído de lumes mortos.
-Blaze Powder=Polvo de blaze
+Flaming Rod=
+This is a crafting component dropped from dead fire elementals.=
+Flaming Powder=
 Magma Cream=Crema de magma
 Magma cream is a crafting component.=A crema de magma é un compoñente de elaboración
 Ghast Tear=Bagoa espectral
@@ -139,6 +139,9 @@ Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.= Us
 
 ##### not used anymore #####
 
+Blaze Rod=Vara de blaze
+This is a crafting component dropped from dead blazes.=Este é un compoñente de artesanía caído de lumes mortos.
+Blaze Powder=Polvo de blaze
 Rabbit Hide=Pel de coello
 Rabbit hide is used to create leather.=A pel de coello úsase para crear coiro.
 

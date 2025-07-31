@@ -68,8 +68,8 @@ Vindicator=Hævner
 Zombie Villager=Zombie landsbyboer
 ##[ witch.lua ]##
 Witch=Heks
-##[ blaze.lua ]##
-Blaze=Blaze
+##[ elementals.lua ]##
+Fire Elemental=
 ##[ ender_dragon.lua ]##
 Ender Dragon=Enderdrage
 ##[ endermite.lua ]##
@@ -148,6 +148,7 @@ Baby Strider=
 
 ##### not used anymore #####
 
+Blaze=Blaze
 Agent=Agent
 Enderman=Enderman
 Zombie Pigman=Zombificeret piglin

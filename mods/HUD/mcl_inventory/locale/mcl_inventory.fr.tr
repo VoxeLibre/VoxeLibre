@@ -18,6 +18,7 @@ Help=Aide
 Advancements=Progrès
 Switch stack size=Changer la quantité maximale par pile
 Select player skin=Sélectionnez l'apparence du joueur
+Server Settings=
 @1 / @2=
 ##[ survival.lua ]##
 Crafting=Artisanat

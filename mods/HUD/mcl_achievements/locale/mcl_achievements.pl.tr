@@ -21,8 +21,8 @@ Isn't It Iron Pick=
 Craft an iron pickaxe using sticks and iron.=
 DIAMONDS!=DIAMENTY!
 Pick up a diamond from the floor.=Ponieś diament z podłogi.
-Into Fire=W ogień
-Pick up a blaze rod from the floor.=Podnieś płomienną różdżkę z podłogi.
+Playing with Fire=
+Pick up a flaming rod from the floor.=
 Cow Tipper=Raz krowie śmierć
 
 Pick up leather from the floor.@nHint: Cows and some other animals have a chance to drop leather, when killed.=Podnieś skórkę z ziemi.@nPodpowiedź: Krowy i inne zwierzęta mają szansę upuścić skórę gdy zostaną zabite.
@@ -143,4 +143,6 @@ Kill a raid captain. Maybe consider staying away from the local villages for the
 
 ##### not used anymore #####
 
+Into Fire=W ogień
+Pick up a blaze rod from the floor.=Podnieś płomienną różdżkę z podłogi.
 Into the Nether=W Nether

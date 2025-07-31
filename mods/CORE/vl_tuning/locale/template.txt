@@ -1,0 +1,13 @@
+# textdomain: vl_tuning
+Admin tool to tune settings and game rules=
+<setting> <value>=
+Usage: /tune <setting> <value>=
+Setting @1 doesn't exist=
+Admin tool to view settings and game rules=
+<setting>=
+Display or set customizable options=
+<rule> [<value>]=
+Usage: /gamerule <rule> [<value>]=
+Game rule @1 doesn't exist=
+##[ settings.lua ]##
+Prevents beds/respawn anchors from exploding in other dimensions.=

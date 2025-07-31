@@ -35,6 +35,8 @@ Place it on rails. Punch it to move it. The TNT is ignited with a flint and stee
 
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=Para obter a vagoneta e a dinamita, pégueos mentres mantén premida a tecla furtiva. Non podes facelo se a dinamita estaba acendido.
 
+##[ movement.lua ]##
+The maximum speed a minecart may reach.=
 ##[ rails.lua ]##
 
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Colócaos no chan para construír o teu ferrocarril, os carrís conectaranse automaticamente entre si e converteranse en curvas, cruces en T, cruces e pendentes segundo sexa necesario.
