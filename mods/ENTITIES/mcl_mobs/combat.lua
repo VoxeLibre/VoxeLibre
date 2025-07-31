@@ -577,6 +577,37 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local die = false
 
 	if damage >= 0 then
+		local hv = hitter:get_velocity() or vector.zero()
+		if hv.y < 0 then
+			self:crit_effect()
+			minetest.sound_play("mcl_criticals_hit", {object = self.object})
+			local crit_mod
+			local CRIT_MIN = 1.5
+			local CRIT_DIFF = 1
+			if is_player then
+				local luck = mcl_luck.get_luck(hitter:get_player_name())
+				if luck ~= 0 then
+					local a, d
+					if luck > 0 then
+						d = -0.5
+						a = d - math.abs(luck)
+					elseif luck < 0 then
+						a = -0.5
+						d = a - math.abs(luck)
+					else
+						minetest.log("warning", "[mcl_mobs] luck is not a number") -- this technically can't happen, but want to catch such cases
+					end
+					if a then
+						local x = math.random()
+						crit_mod = CRIT_DIFF * (a * x) / (d - luck * x) + CRIT_MIN
+					end
+				end
+			end
+			if not crit_mod then
+				crit_mod = math.random(CRIT_MIN, CRIT_MIN + CRIT_DIFF)
+			end
+			damage = damage * crit_mod
+		end
 		-- only play hit sound and show blood effects if damage is 1 or over; lower to 0.1 to ensure armor works appropriately.
 		if damage >= 0.1 then
 			-- weapon sounds
@@ -624,7 +655,6 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				local wielditem = hitter:get_wielded_item()
 				kb = kb + 3 * core.get_item_group(wielditem:get_name(), "hammer")
 				-- add player velocity to mob knockback
-				local hv = hitter:get_velocity()
 				local dir_dot = (hv.x * dir.x) + (hv.z * dir.z)
 				local player_mag = ((hv.x * hv.x) + (hv.z * hv.z))^0.5
 				local mob_mag = ((v.x * v.x) + (v.z * v.z))^0.5

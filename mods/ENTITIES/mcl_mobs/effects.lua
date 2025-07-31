@@ -205,6 +205,12 @@ function mob_class:damage_effect(damage)
 	end
 end
 
+function mob_class:crit_effect()
+	local pos = mcl_util.get_object_center(self.object)
+	local texture = "mcl_particles_crit.png^[colorize:#bc7a57:127"
+	mcl_mobs.effect(pos, 8, texture, 2, 2, 1.75, 0, nil, true)
+end
+
 function mob_class:remove_particlespawners(pn)
 	if not active_particlespawners[pn] then return end
 	if not active_particlespawners[pn][self.object] then return end
