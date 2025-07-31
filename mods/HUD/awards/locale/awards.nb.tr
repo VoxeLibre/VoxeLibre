@@ -1,7 +1,7 @@
 # textdomain:awards
 ##[ api.lua ]##
-Amount of time award notification are displayed=
-Whether advancements should be announced in chat=
+Amount of time award notification are displayed=Mengden tid fremskrittsnotifikasjoner vises
+Whether advancements should be announced in chat=Om fremskritt skal annonseres i chatten
 @1 has made the advancement @2=@1 har gjort fremskrittet @2
 Secret Advancement Made:=Hemmelig fremskritt oppnådd:
 Goal Completed:=Mål fullført:

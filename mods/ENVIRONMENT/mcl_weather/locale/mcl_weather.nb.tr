@@ -1,10 +1,10 @@
 # textdomain: mcl_weather
 ##[ skycolor.lua ]##
-Time of day to use when gamerule:doDaylightCycle @=@= false=
-Whether the daylight cycle and moon phases progress=
+Time of day to use when gamerule:doDaylightCycle @=@= false=Tidspunkt på dagen som brukes når gamerule:doDaylightCycle @=@= false
+Whether the daylight cycle and moon phases progress=Hvorvidt dagslyssyklusen og månefasene utvikler seg
 ##[ weather_core.lua ]##
 
-Whether the weather can change naturally. The /weather command can still change weather.=
+Whether the weather can change naturally. The /weather command can still change weather.=Hvorvidt været kan endre seg naturlig. Kommandoen /weather kan fremdeles endre været.
 
 Gives ability to control weather=Gir evnen til å kontrollere været
 Changes the weather to the specified parameter.=Endrer været til det gitte parameteret.
@@ -16,4 +16,4 @@ Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “
 Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=Veksler mellom opplett og vær med nedbør (tilfeldig regn, storm eller snø)
 
 ##[ snow.lua ]##
-The maximum number of snow layers that can be accumulated on each block=
+The maximum number of snow layers that can be accumulated on each block=Maksimalt antall snølag som kan akkumuleres på hver blokk

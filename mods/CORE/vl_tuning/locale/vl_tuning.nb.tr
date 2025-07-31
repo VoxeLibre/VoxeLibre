@@ -1,0 +1,13 @@
+# textdomain: vl_tuning
+Admin tool to tune settings and game rules=Adminverktøy for å finjustere innstillinger og spillregler
+<setting> <value>=<innstilling> <verdi>
+Usage: /tune <setting> <value>=Bruk: /tune <innstilling> <verdi>
+Setting @1 doesn't exist=Innstilling @1 finnes ikke
+Admin tool to view settings and game rules=Adminverktøy for å se innstillinger og spillregler
+<setting>=<innstilling>
+Display or set customizable options=Vis eller sett justerbare innstillinger
+<rule> [<value>]=<regel> [<verdi>]
+Usage: /gamerule <rule> [<value>]=Bruk: /gamerule <regel> [<verdi>]
+Game rule @1 doesn't exist=Spillregel @1 finnes ikke
+##[ settings.lua ]##
+Prevents beds/respawn anchors from exploding in other dimensions.=Forhindrer senger/livsanker fra å eksplodere i andre dimensjoner.

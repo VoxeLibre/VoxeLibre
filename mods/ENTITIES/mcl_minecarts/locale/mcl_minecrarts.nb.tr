@@ -36,7 +36,7 @@ Place it on rails. Punch it to move it. The TNT is ignited with a flint and stee
 To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=For å plukke opp gruvevognen og TNTen, slå dem imenst du holder snikeknappen.
 
 ##[ movement.lua ]##
-The maximum speed a minecart may reach.=
+The maximum speed a minecart may reach.=Den maksimale hastigheten en gruvevogn kan oppnå.
 ##[ rails.lua ]##
 
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Plasser dem på bakken for å bygge en jernbane, skinnene kobles automatisk til hverandre og blir til kurver, kryss og bakker etter behov.
@@ -45,7 +45,7 @@ Track for minecarts=Spor for gruvevogner
 
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=Skinner kan brukes til å bygge transportspor for gruvevogner. Normale skinner bremser litt ned gruvevogner på grunn av friksjon.
 
-Sloped Rail=
+Sloped Rail=Skrånende skinne
 ##[ rails/activator.lua ]##
 Activator Rail=Aktiveringsskinne
 Activates minecarts when powered=Aktiverer gruvevogner når tilført strøm
