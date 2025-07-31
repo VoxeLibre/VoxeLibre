@@ -60,14 +60,14 @@ String=Nić
 Strings are used in crafting.=Nić jest użyteczna w wytwarzaniu.
 Spectre Membrane=Błona Widma
 This is a crafting component dropped from dead spectres.=Jest to materiał do wytwarzania wypadający z martwych widm.
-Shiny Ice Crystal=Lśniący Kryształ Lodu
+Shiny Ice Crystal=Lśniący kryształ lodu
 This item is mainly used for crafting.=Ten przedmiot jest użyteczny w wytwarzaniu.
-Aery Charge=Powietrzny Ładunek
-Crystalline Drop=Krystaliczna Kropla
-Earthen Ash=Ziemny Popiół
-Flaming Rod=
-This is a crafting component dropped from dead fire elementals.=
-Flaming Powder=
+Aery Charge=Powietrzny ładunek
+Crystalline Drop=Krystaliczna kropla
+Earthen Ash=Ziemny popiół
+Flaming Rod=Płomienna różdżka
+This is a crafting component dropped from dead fire elementals.=Jest to materiał do wytwarzania wypadający z martwych żywiołaków ognia.
+Flaming Powder=Płomienny proszek
 Magma Cream=Magmowy krem
 Magma cream is a crafting component.=Magmowy krem to materiał do wytwarzania.
 Ghast Tear=Łza Ghasta
@@ -80,8 +80,8 @@ Leather=Skóra
 Leather is a versatile crafting component.=Skóra jest wszechstronnym materiałem do wytwarzania.
 Feather=Pióro
 Feathers are used in crafting and are dropped from chickens.=Pióra są używane w wytwarzaniu i wypadają z kurczaków.
-Leather Piece=
-Leather piece is a smaller piece of leather.=
+Leather Piece=Kawałek skóry
+Leather piece is a smaller piece of leather.=To mniejszy kawałek skóry.
 Rabbit's Foot=Królicza łapka
 Must be your lucky day! Place this item in an item frame for decoration.=To musi być twój szczęśliwy dzień! Umieść ten przedmiot w ramce jako dekorację.
 Saddle=Siodło
@@ -134,11 +134,3 @@ Glow Ink Sac=
 Use it to craft the Glow Item Frame.=
 Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=
 
-
-##### not used anymore #####
-
-Blaze Rod=Płomienna różdżka
-This is a crafting component dropped from dead blazes.=Jest to materiał do wytwarzania wypadający z martwych płomyków.
-Blaze Powder=Płomienny proszek
-Rabbit Hide=Królicza skóra
-Rabbit hide is used to create leather.=Królicza skóra jest wykorzystywana do tworzenia skóry.

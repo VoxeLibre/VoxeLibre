@@ -1,0 +1,146 @@
+# textdomain: mobs_mc
+##[ axolotl.lua ]##
+Axolotl=Aksolotl
+##[ bat.lua ]##
+Bat=Nietoperz
+##[ rabbit.lua ]##
+Rabbit=Królik
+Killer Bunny=Zając zabójca
+##[ chicken.lua ]##
+Chicken=Kurczak
+##[ cow+mooshroom.lua ]##
+Cow=Krowa
+Mooshroom=Muuchomor
+##[ horse.lua ]##
+Horse=Koń
+Skeleton Horse=Szkielet konia
+Zombie Horse=Koń zombie
+Donkey=Osioł
+Mule=Muł
+##[ llama.lua ]##
+Llama=Lama
+ - Strength @1= - Siła @1
+##[ ocelot.lua ]##
+Ocelot=Ocelot
+Cat=Kot
+##[ parrot.lua ]##
+Parrot=Papuga
+##[ pig.lua ]##
+Pig=Świnia
+##[ polar_bear.lua ]##
+Polar Bear=Niedźwiedź polarny
+##[ sheep.lua ]##
+Sheep=Owca
+##[ wolf.lua ]##
+Wolf=Wilk
+Dog=Pies
+##[ squid.lua ]##
+Squid=Kałamarnica
+##[ villager.lua ]##
+Novice=Nowicjusz
+Apprentice=Uczeń
+Journeyman=Czeladnik
+Expert=Ekspert
+Master=Mistrz
+Unemployed=Bezrobotny
+Farmer=Farmer
+Fisherman=Rybak
+Fletcher=Strzałorób
+Shepherd=Pasterz
+Librarian=Bibliotekarz
+Cartographer=Kartograf
+Armorer=Płatnerz
+Leatherworker=Garbarz
+Butcher=Rzeźnik
+Weapon Smith=Kowal broni
+Tool Smith=Kowal narzędzi
+Cleric=Kleryk
+Mason=Kamieniarz
+Nitwit=
+Villager=Osadnik
+##[ pillager.lua ]##
+Pillager=Rozbójnik
+##[ villager_evoker.lua ]##
+Evoker=Przywoływacz
+##[ villager_vindicator.lua ]##
+Vindicator=Zbójca
+##[ villager_zombie.lua ]##
+Zombie Villager=Osadnik zombie
+##[ witch.lua ]##
+Witch=Wiedźma
+##[ elementals.lua ]##
+Fire Elemental=Żywiołak ognia
+##[ ender_dragon.lua ]##
+Ender Dragon=Smok
+##[ endermite.lua ]##
+Endermite=Roztocze kresu
+##[ villager_illusioner.lua ]##
+Illusioner=Iluzjonista
+##[ ghast.lua ]##
+Ghast=Ghast
+##[ guardian.lua ]##
+Guardian=
+##[ guardian_elder.lua ]##
+Elder Guardian=
+##[ snowman.lua ]##
+Snow Golem=Bałœan
+##[ iron_golem.lua ]##
+Iron Golem=Żelazny golem
+##[ rover.lua ]##
+Rover=Rover
+##[ shulker.lua ]##
+Shulker=
+##[ silverfish.lua ]##
+Silverfish=Rybik cukrowy
+##[ skeleton+stray.lua ]##
+Skeleton=Szkielet
+Stray=
+##[ skeleton_wither.lua ]##
+Wither Skeleton=Mroczny szkielet
+##[ stalker.lua ]##
+Stalker=Stalker
+Overloaded Stalker=Przeładowany Stalker
+##[ zombie.lua ]##
+Zombie=Zombie
+Baby Zombie=Małe zombie
+Husk=
+Baby Husk=
+##[ slime+magma_cube.lua ]##
+Slime - big=
+Slime - small=
+Slime - tiny=
+Magma Cube - big=
+Magma Cube - small=
+Magma Cube - tiny=
+Magma Cube=
+Slime=
+##[ spider.lua ]##
+Spider=Pająk
+Cave Spider=Pająk jaskiniowy
+##[ vex.lua ]##
+Vex=
+##[ wither.lua ]##
+Wither=
+##[ cod.lua ]##
+Cod=Dorsz
+##[ salmon.lua ]##
+Salmon=Łosoś
+##[ tropical_fish.lua ]##
+Tropical fish=
+##[ dolphin.lua ]##
+Dolphin=Delfin
+##[ glow_squid.lua ]##
+Glow Squid=Świecąca kałamarnica
+##[ piglin.lua ]##
+Piglin=
+Sword Piglin=
+Zombie Piglin=
+Baby Zombie Piglin=
+Piglin Brute=
+##[ hoglin+zoglin.lua ]##
+Hoglin=
+Zoglin=
+Baby hoglin=
+##[ strider.lua ]##
+Strider=
+Baby Strider=
