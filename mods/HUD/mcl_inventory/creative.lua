@@ -203,9 +203,10 @@ local mod_family_priorities = {
 
 	brew = {
 		["mcl_brewing"] = 2,
-		["mcl_core"] = 1,
-		["mcl_mobitems"] = 1,
-		["mcl_nether"] = 1,
+		["mcl_core"] = 1.2,
+		["mcl_mobitems"] = 1.1,
+		["mesecons"] = 1,
+		["mcl_nether"] = 0.9,
 		["mcl_fishing"] = 0.3,
 		["mcl_farming"] = 0.2,
 		["mcl_potions"] = {
@@ -213,6 +214,17 @@ local mod_family_priorities = {
 			items = {
 				["mcl_potions:speckled_melon"] = 10,
 				["mcl_potions:fermented_spider_eye"] = 9,
+				["mcl_potions:water"] = 8,
+				["mcl_potions:river_water"] = 7,
+				["mcl_potions:awkward"] = 6.3,
+				["mcl_potions:awkward_splash"] = 6.2,
+				["mcl_potions:awkward_lingering"] = 6.1,
+				["mcl_potions:thick"] = 5.3,
+				["mcl_potions:thick_splash"] = 5.2,
+				["mcl_potions:thick_lingering"] = 5.1,
+				["mcl_potions:mundane"] = 4.3,
+				["mcl_potions:mundane_splash"] = 4.2,
+				["mcl_potions:mundane_lingering"] = 4.1,
 			}
 		},
 	},

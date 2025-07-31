@@ -143,7 +143,7 @@ function mcl_util.move_item(source_inventory, source_list, source_stack_id, dest
 	stack:take_item()
 	source_inventory:set_stack(source_list, source_stack_id, stack)
 	destination_inventory:add_item(destination_list, new_stack)
-	return true
+	return true, new_stack
 end
 
 --- Try pushing item from hopper inventory to destination inventory
@@ -174,9 +174,9 @@ function mcl_util.hopper_push(pos, dst_pos)
 	if not stack_id then return false end
 
 	-- Move the item
-	local ok = mcl_util.move_item(hop_inv, hop_list, stack_id, dst_inv, dst_list)
-	if dst_def._mcl_hoppers_on_after_push then
-		dst_def._mcl_hoppers_on_after_push(dst_pos)
+	local ok, stack = mcl_util.move_item(hop_inv, hop_list, stack_id, dst_inv, dst_list)
+	if ok and dst_def._mcl_hoppers_on_after_push then
+		dst_def._mcl_hoppers_on_after_push(dst_pos, dst_list, stack)
 	end
 
 	return ok
