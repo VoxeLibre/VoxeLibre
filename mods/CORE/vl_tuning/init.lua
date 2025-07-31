@@ -140,7 +140,7 @@ end
 core.register_chatcommand("set_setting", {
 	description = S("Admin tool to tune settings and game rules"),
 	params = S("<setting> <value>"),
-	privs = { debug = true },
+	privs = { server = true },
 	func = function(name, params_raw)
 		-- Split apart the params
 		local params = {}
@@ -167,7 +167,7 @@ core.register_chatcommand("set_setting", {
 core.register_chatcommand("get_setting", {
 	description = S("Admin tool to view settings and game rules"),
 	params = S("<setting>"),
-	privs = { debug = true },
+	privs = { server = true },
 	func = function(_, param)
 		local tunable = tunables[param]
 		if tunable then
