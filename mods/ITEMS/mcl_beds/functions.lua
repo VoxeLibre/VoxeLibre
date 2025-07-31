@@ -80,7 +80,7 @@ function mcl_beds.is_night(tod)
 		tod = minetest.get_timeofday()
 	end
 	tod = ( tod * 24000 ) % 24000
-	return  tod > 18541 or tod < 5458
+	return  tod > 18000 or tod < 5458
 end
 
 local function lay_down(player, pos, bed_pos, state, skip)
