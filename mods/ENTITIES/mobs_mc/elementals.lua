@@ -1,22 +1,21 @@
 -- daufinsyd
 -- My work is under the LGPL terms
--- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models -hi 22i ~jordan4ibanez
--- blaze.lua partial copy of mobs_mc/ghast.lua
+-- Model and textures see https://github.com/22i/minecraft-voxel-blender-models -hi 22i ~jordan4ibanez
 
 local S = minetest.get_translator("mobs_mc")
 
 local mod_target = minetest.get_modpath("mcl_target")
 
 --###################
---################### BLAZE
+--################### FIRE
 --###################
 
 local function spawn_check(pos, environmental_light, artificial_light, sky_light)
 	return artificial_light <= 11
 end
 
-mcl_mobs.register_mob("mobs_mc:blaze", {
-	description = S("Blaze"),
+mcl_mobs.register_mob("mobs_mc:elemental_fire", {
+	description = S("Fire Elemental"),
 	type = "monster",
 	spawn_class = "hostile",
 	spawn_in_group_min = 2,
@@ -31,21 +30,21 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 	rotate = 180,
 	head_yaw_offset = 180,
 	visual = "mesh",
-	mesh = "mobs_mc_blaze.b3d",
+	mesh = "vl_elemental_fire.b3d",
 	head_swivel = "head.control",
 	head_eye_height = 1.4,
 	head_bone_position = vector.new( 0, 3.9, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	head_pitch_multiplier=-1,
 	textures = {
-		{"mobs_mc_blaze.png"},
+		{"vl_mobs_elemental_fire.png"},
 	},
 	armor = { fleshy = 100, snowball_vulnerable = 100, water_vulnerable = 100 },
 	visual_size = {x=3, y=3},
 	sounds = {
-		random = "mobs_mc_blaze_breath",
-		death = "mobs_mc_blaze_died",
-		damage = "mobs_mc_blaze_hurt",
+		random = "vl_elemental_fire_breath",
+		death = "vl_elemental_fire_died",
+		damage = "vl_elemental_fire_hurt",
 		distance = 16,
 	},
 	walk_velocity = .8,
@@ -54,7 +53,7 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 	reach = 2,
 	pathfinding = 1,
 	drops = {
-		{name = "mcl_mobitems:blaze_rod",
+		{name = "mcl_mobitems:flaming_rod",
 		chance = 1,
 		min = 0,
 		max = 1,
@@ -80,7 +79,7 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 	light_damage = 0,
 	view_range = 16,
 	attack_type = "dogshoot",
-	arrow = "mobs_mc:blaze_fireball",
+	arrow = "mobs_mc:small_fireball",
 	shoot_interval = 3.5,
 	shoot_offset = 1.0,
 	passive = false,
@@ -144,9 +143,11 @@ mcl_mobs.register_mob("mobs_mc:blaze", {
 	end,
 	spawn_check = spawn_check,
 })
+mcl_mobs.register_conversion("mobs_mc:blaze", "mobs_mc:elemental_fire")
+core.register_alias("mobs_mc:blaze", "mobs_mc:elemental_fire")
 
 mcl_mobs:spawn_setup({
-	name = "mobs_mc:blaze",
+	name = "mobs_mc:elemental_fire",
 	dimension = "nether",
 	type_of_spawning = "ground",
 	biomes = {"Nether"},
@@ -159,8 +160,8 @@ mcl_mobs:spawn_setup({
 	max_height = mcl_vars.mg_nether_max
 })
 
--- Blaze fireball
-mcl_mobs.register_arrow("mobs_mc:blaze_fireball", {
+-- Elemental's fireball
+mcl_mobs.register_arrow("mobs_mc:small_fireball", {
 	visual = "sprite",
 	visual_size = {x = 0.3, y = 0.3},
 	textures = {"mcl_fire_fire_charge.png"},
@@ -209,6 +210,6 @@ mcl_mobs.register_arrow("mobs_mc:blaze_fireball", {
 	end
 })
 
-mcl_mobs:non_spawn_specific("mobs_mc:blaze", "overworld", 0, 11)
+mcl_mobs:non_spawn_specific("mobs_mc:elemental_fire", "overworld", 0, 11)
 -- spawn eggs.
-mcl_mobs.register_egg("mobs_mc:blaze", S("Blaze"), "#f6b201", "#fff87e", 0)
+mcl_mobs.register_egg("mobs_mc:elemental_fire", S("Fire Elemental"), "#f6b201", "#fff87e", 0)

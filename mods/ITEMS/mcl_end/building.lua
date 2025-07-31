@@ -244,7 +244,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_end:end_rod 4",
 	recipe = {
-		{"mcl_mobitems:blaze_rod"},
+		{"mcl_mobitems:flaming_rod"},
 		{"mcl_end:chorus_fruit_popped"},
 	},
 })

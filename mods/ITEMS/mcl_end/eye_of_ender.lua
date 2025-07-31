@@ -157,5 +157,5 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_end:ender_eye",
-	recipe = {"mcl_mobitems:blaze_powder", "mcl_throwing:ender_pearl"},
+	recipe = {"mcl_mobitems:flaming_powder", "mcl_throwing:ender_pearl"},
 })

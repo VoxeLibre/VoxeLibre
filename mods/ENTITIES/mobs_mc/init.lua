@@ -123,7 +123,7 @@ dofile(path .. "/villager_zombie.lua") -- Mesh and animation by toby109tt  / htt
 dofile(path .. "/witch.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 
 --Monsters
-dofile(path .. "/blaze.lua") -- Animation by daufinsyd
+dofile(path .. "/elementals.lua") -- Animation by daufinsyd
 dofile(path .. "/ender_dragon.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/endermite.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/villager_illusioner.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
