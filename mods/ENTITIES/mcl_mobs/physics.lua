@@ -216,6 +216,14 @@ end
 
 -- move mob in facing direction
 function mob_class:set_velocity(v)
+	-- Don't allow walking if not standing on something and can't fly
+	if not self.fly and v ~= 0 then
+		local pos = self.object:get_pos()
+		local node_below = node_ok(vector.offset(pos, 0, -0.4, 0))
+		local nbdef = minetest.registered_nodes[node_below.name]
+		if nbdef and nbdef.walkable == false and not in_water then return false end
+	end
+
 	local c_x, c_z = 0, 0
 	-- can mob be pushed, if so calculate direction
 	if self.pushable then

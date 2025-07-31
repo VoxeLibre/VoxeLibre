@@ -659,6 +659,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				end
 			end)
 			kb = kb * 20 -- experimentally derived constant
+			self:set_velocity(0)
 			self.object:add_velocity(vector_new(dir.x * kb, up, dir.z * kb ))
 
 			self.pause_timer = 0.25
