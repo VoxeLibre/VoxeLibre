@@ -61,7 +61,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	dogshoot_switch = 1,
 	dogshoot_count_max = 1,
 	shooter_avoid_enemy = true,
-	avoid_distance = 32,
+	avoid_distance = 24,
 	passive = false,
 	jump = true,
 	jump_height = 4,
