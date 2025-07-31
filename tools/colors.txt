@@ -175,10 +175,10 @@ mcl_cake:cake_5 242 228 226
 mcl_cake:cake_6 242 228 226
 
 # mcl_campfires
-mcl_campfires:campfire 77 67 65
-mcl_campfires:campfire_lit 207 101 35 89
-mcl_campfires:soul_campfire 77 67 65
-mcl_campfires:soul_campfire_lit 19 186 192 89
+mcl_campfires:campfire 124 93 69 175
+mcl_campfires:campfire_lit 209 103 37 89
+mcl_campfires:soul_campfire 124 93 69 175
+mcl_campfires:soul_campfire_lit 79 166 166 89
 
 # mcl_cartography_table
 mcl_cartography_table:cartography_table 112 95 80
@@ -196,31 +196,30 @@ mcl_cauldrons:cauldron_3_lava 125 50 33
 mcl_cauldrons:cauldron_3r 28 64 97
 
 # mcl_cherry_blossom
-mcl_cherry_blossom:cherry_door_b_1 216 136 127 96
-mcl_cherry_blossom:cherry_door_b_2 216 136 127 96
-mcl_cherry_blossom:cherry_door_b_3 220 131 123
-mcl_cherry_blossom:cherry_door_b_4 216 136 127 96
-mcl_cherry_blossom:cherry_door_t_1 216 140 131 96
-mcl_cherry_blossom:cherry_door_t_2 216 140 131 96
-mcl_cherry_blossom:cherry_door_t_3 216 140 131 96
-mcl_cherry_blossom:cherry_door_t_4 216 140 131 96
-mcl_cherry_blossom:cherry_fence 217 144 136
-mcl_cherry_blossom:cherry_fence_gate 217 144 136
-mcl_cherry_blossom:cherry_fence_gate_open 217 144 136
-mcl_cherry_blossom:cherry_trapdoor 210 130 122 167
-mcl_cherry_blossom:cherry_trapdoor_ladder 223 138 128
-mcl_cherry_blossom:cherry_trapdoor_open 223 138 128
-mcl_cherry_blossom:cherryleaves 213 154 155
-mcl_cherry_blossom:cherryleaves_orphan 213 154 155
-mcl_cherry_blossom:cherrysapling 151 81 121 114
-mcl_cherry_blossom:cherrytree 194 97 86
-mcl_cherry_blossom:cherrytree_bark 190 87 77
-mcl_cherry_blossom:cherrywood 217 144 136
-mcl_cherry_blossom:pink_petals 245 181 199 84
-mcl_cherry_blossom:pressure_plate_cherrywood_off 217 144 136
-mcl_cherry_blossom:pressure_plate_cherrywood_on 217 144 136
-mcl_cherry_blossom:stripped_cherrytree 206 114 104
-mcl_cherry_blossom:stripped_cherrytree_bark 209 122 112
+mcl_cherry_blossom:cherry_door_b_1 212 133 123 96
+mcl_cherry_blossom:cherry_door_b_2 212 133 123 96
+mcl_cherry_blossom:cherry_door_b_3 212 134 125
+mcl_cherry_blossom:cherry_door_b_4 212 133 123 96
+mcl_cherry_blossom:cherry_door_t_1 212 133 123 96
+mcl_cherry_blossom:cherry_door_t_2 212 133 123 96
+mcl_cherry_blossom:cherry_door_t_3 212 133 123 96
+mcl_cherry_blossom:cherry_door_t_4 212 133 123 96
+mcl_cherry_blossom:cherry_fence 222 141 129
+mcl_cherry_blossom:cherry_fence_gate 222 141 129
+mcl_cherry_blossom:cherry_fence_gate_open 222 141 129
+mcl_cherry_blossom:cherry_trapdoor 212 134 124
+mcl_cherry_blossom:cherry_trapdoor_ladder 224 140 128
+mcl_cherry_blossom:cherry_trapdoor_open 224 140 128
+mcl_cherry_blossom:cherryleaves 236 174 194
+mcl_cherry_blossom:cherryleaves_orphan 236 174 194
+mcl_cherry_blossom:cherrysapling 193 144 159 103
+mcl_cherry_blossom:cherrytree 191 125 115
+mcl_cherry_blossom:cherrytree_bark 70 47 48
+mcl_cherry_blossom:cherrywood 222 141 129
+mcl_cherry_blossom:pressure_plate_cherrywood_off 222 141 129
+mcl_cherry_blossom:pressure_plate_cherrywood_on 222 141 129
+mcl_cherry_blossom:stripped_cherrytree 215 140 129
+mcl_cherry_blossom:stripped_cherrytree_bark 234 147 134
 
 # mcl_chests
 mcl_chests:black_shulker_box 79 76 77
@@ -470,10 +469,12 @@ mcl_core:glass_silver 153 153 153 64 16
 mcl_core:glass_white 255 255 255 64 16
 mcl_core:glass_yellow 229 229 51 64 16
 mcl_core:goldblock 192 147 59
+mcl_core:goldblock_polished 206 162 65
 mcl_core:granite 154 122 111
 mcl_core:granite_smooth 150 121 110
 mcl_core:grass_path 125 101 50
 mcl_core:gravel 112 106 100
+mcl_core:greysand 178 178 178
 mcl_core:ice 145 198 227
 mcl_core:ironblock 159 151 151
 mcl_core:jungleleaves 50 88 54
@@ -928,7 +929,7 @@ mcl_flowerpots:flower_pot_bamboo_plant 98 78 43
 mcl_flowerpots:flower_pot_birchsapling 109 71 55 144
 mcl_flowerpots:flower_pot_blue_orchid 101 65 58 144
 mcl_flowerpots:flower_pot_cactus 110 84 52
-mcl_flowerpots:flower_pot_cherrysapling 130 64 71 144
+mcl_flowerpots:flower_pot_cherrysapling 141 82 80 144
 mcl_flowerpots:flower_pot_cornflower 104 63 61 144
 mcl_flowerpots:flower_pot_crimson_fungus 134 59 45 144
 mcl_flowerpots:flower_pot_crimson_roots 121 50 45 144
@@ -992,14 +993,14 @@ mcl_furnaces:furnace_active 148 138 133
 mcl_grindstone:grindstone 210 209 208
 
 # mcl_heads
-mcl_heads:skeleton 125 125 125
-mcl_heads:skeleton_wall 128 128 128 167
+mcl_heads:skeleton 217 200 169
+mcl_heads:skeleton_wall 211 193 163 167
 mcl_heads:stalker 181 195 168
 mcl_heads:stalker_wall 177 199 177 175
 mcl_heads:steve 108 76 60
 mcl_heads:steve_wall 108 77 60 175
-mcl_heads:wither_skeleton 50 50 50
-mcl_heads:wither_skeleton_wall 51 51 51 167
+mcl_heads:wither_skeleton 34 35 35
+mcl_heads:wither_skeleton_wall 38 40 41 167
 mcl_heads:zombie 68 106 71
 mcl_heads:zombie_wall 71 109 73 175
 
@@ -1014,14 +1015,17 @@ mcl_hoppers:hopper_side 49 49 49
 mcl_hoppers:hopper_side_disabled 49 49 49
 
 # mcl_itemframes
-mcl_itemframes:glow_item_frame 176 126 76
-mcl_itemframes:item_frame 123 90 63
+mcl_itemframes:frame 136 105 76
+mcl_itemframes:glow_frame 177 132 86
 
 # mcl_jukebox
 mcl_jukebox:jukebox 72 56 44
 
 # mcl_lanterns
 mcl_lanterns:chain 41 41 41 56
+mcl_lanterns:gold_chain 196 152 55 56
+mcl_lanterns:gold_lantern_ceiling 211 161 67 105
+mcl_lanterns:gold_lantern_floor 211 161 67 105
 mcl_lanterns:lantern_ceiling 73 59 48 105
 mcl_lanterns:lantern_floor 73 59 48 105
 mcl_lanterns:soul_lantern_ceiling 50 67 68 105
@@ -1109,11 +1113,53 @@ mcl_meshhand:mcl_skins_character_1_female_surv 93 91 78
 # mcl_minecarts
 mcl_minecarts:activator_rail 79 64 56 149
 mcl_minecarts:activator_rail_on 87 63 55 149
+mcl_minecarts:activator_rail_v2 79 64 56 149
+mcl_minecarts:activator_rail_v2_corner 67 57 53 86
+mcl_minecarts:activator_rail_v2_cross 66 57 53 167
+mcl_minecarts:activator_rail_v2_on 87 63 55 149
+mcl_minecarts:activator_rail_v2_on_corner 75 55 52 86
+mcl_minecarts:activator_rail_v2_on_cross 73 56 52 167
+mcl_minecarts:activator_rail_v2_on_sloped 87 63 55 149
+mcl_minecarts:activator_rail_v2_on_tee_off 77 62 56 164
+mcl_minecarts:activator_rail_v2_on_tee_on 77 62 56 164
+mcl_minecarts:activator_rail_v2_sloped 79 64 56 149
+mcl_minecarts:activator_rail_v2_tee_off 73 62 57 164
+mcl_minecarts:activator_rail_v2_tee_on 73 62 57 164
 mcl_minecarts:detector_rail 86 75 68 166
 mcl_minecarts:detector_rail_on 88 74 67 160
+mcl_minecarts:detector_rail_v2 86 75 68 166
+mcl_minecarts:detector_rail_v2_corner 78 70 67 118
+mcl_minecarts:detector_rail_v2_cross 77 70 65 187
+mcl_minecarts:detector_rail_v2_on 88 74 67 160
+mcl_minecarts:detector_rail_v2_on_corner 82 68 65 117
+mcl_minecarts:detector_rail_v2_on_cross 78 69 64 181
+mcl_minecarts:detector_rail_v2_on_sloped 88 74 67 160
+mcl_minecarts:detector_rail_v2_on_tee_off 77 67 62 175
+mcl_minecarts:detector_rail_v2_on_tee_on 77 67 62 175
+mcl_minecarts:detector_rail_v2_sloped 86 75 68 166
+mcl_minecarts:detector_rail_v2_tee_off 74 66 61 175
+mcl_minecarts:detector_rail_v2_tee_on 74 66 61 175
 mcl_minecarts:golden_rail 92 78 61 148
 mcl_minecarts:golden_rail_on 95 78 60 148
+mcl_minecarts:golden_rail_v2 92 78 61 148
+mcl_minecarts:golden_rail_v2_corner 86 73 58 99
+mcl_minecarts:golden_rail_v2_cross 83 71 55
+mcl_minecarts:golden_rail_v2_on 95 78 60 148
+mcl_minecarts:golden_rail_v2_on_corner 89 72 57 99
+mcl_minecarts:golden_rail_v2_on_cross 86 70 54
+mcl_minecarts:golden_rail_v2_on_sloped 95 78 60 148
+mcl_minecarts:golden_rail_v2_on_tee_off 82 70 59 166
+mcl_minecarts:golden_rail_v2_on_tee_on 82 70 59 166
+mcl_minecarts:golden_rail_v2_sloped 92 78 61 148
+mcl_minecarts:golden_rail_v2_tee_off 81 70 59 166
+mcl_minecarts:golden_rail_v2_tee_on 81 70 59 166
 mcl_minecarts:rail 84 71 61 124
+mcl_minecarts:rail_v2 84 71 61 124
+mcl_minecarts:rail_v2_corner 76 67 61 85
+mcl_minecarts:rail_v2_cross 80 68 60
+mcl_minecarts:rail_v2_sloped 84 71 61 124
+mcl_minecarts:rail_v2_tee_off 79 69 61 159
+mcl_minecarts:rail_v2_tee_on 79 69 61 159
 
 # mcl_mobspawners
 mcl_mobspawners:spawner 40 40 40 167
@@ -1357,39 +1403,6 @@ mcl_portals:portal 74 25 172 178
 mcl_portals:portal_end 15 15 15
 mcl_portals:portal_gateway 15 15 15
 
-# mcl_potions
-mcl_potions:absorption_arrow_box 152 128 65 72
-mcl_potions:bad_luck_arrow_box 134 115 92 72
-mcl_potions:blindness_arrow_box 115 111 106 72
-mcl_potions:darkness_arrow_box 81 70 65 72
-mcl_potions:fatigue_arrow_box 120 109 89 72
-mcl_potions:fire_resistance_arrow_box 170 130 88 72
-mcl_potions:food_poisoning_arrow_box 132 133 104 72
-mcl_potions:frost_arrow_box 116 119 132 72
-mcl_potions:harming_arrow_box 107 74 69 72
-mcl_potions:haste_arrow_box 181 170 65 72
-mcl_potions:healing_arrow_box 178 84 79 72
-mcl_potions:health_boost_arrow_box 155 80 75 72
-mcl_potions:invisibility_arrow_box 131 121 123 72
-mcl_potions:leaping_arrow_box 94 170 95 72
-mcl_potions:levitation_arrow_box 107 76 115 72
-mcl_potions:luck_arrow_box 129 170 91 72
-mcl_potions:nausea_arrow_box 125 106 115 72
-mcl_potions:night_vision_arrow_box 93 82 129 72
-mcl_potions:poison_arrow_box 111 128 85 72
-mcl_potions:regeneration_arrow_box 161 106 133 72
-mcl_potions:resistance_arrow_box 95 102 130 72
-mcl_potions:saturation_arrow_box 162 138 82 72
-mcl_potions:slow_falling_arrow_box 148 150 165 72
-mcl_potions:slowness_arrow_box 116 112 116 72
-mcl_potions:stone_cloak_arrow_box 95 102 86 72
-mcl_potions:strength_arrow_box 138 84 79 72
-mcl_potions:swiftness_arrow_box 129 139 143 72
-mcl_potions:trolling_arrow_box 81 137 65 72
-mcl_potions:water_breathing_arrow_box 99 102 125 72
-mcl_potions:weakness_arrow_box 109 100 94 72
-mcl_potions:withering_arrow_box 97 86 82 72
-
 # mcl_raw_ores
 mcl_raw_ores:raw_gold_block 208 167 77
 mcl_raw_ores:raw_iron_block 194 173 156
@@ -1400,61 +1413,28 @@ mcl_sculk:sculk 5 15 21
 mcl_sculk:vein 6 18 24 141
 
 # mcl_signs
-mcl_signs:standing_sign 114 90 69
-mcl_signs:standing_sign22_5 114 90 69
-mcl_signs:standing_sign22_5_acaciawood 105 40 33
-mcl_signs:standing_sign22_5_bamboo 218 200 151
-mcl_signs:standing_sign22_5_birchwood 127 109 83
-mcl_signs:standing_sign22_5_cherrywood 212 131 122
-mcl_signs:standing_sign22_5_crimson_hyphae_wood 97 47 40
-mcl_signs:standing_sign22_5_darkwood 66 49 33
-mcl_signs:standing_sign22_5_junglewood 60 34 19
-mcl_signs:standing_sign22_5_mangrove_wood 82 36 16
-mcl_signs:standing_sign22_5_sprucewood 82 60 35
-mcl_signs:standing_sign22_5_warped_hyphae_wood 79 62 103
-mcl_signs:standing_sign45 114 90 69
-mcl_signs:standing_sign45_acaciawood 105 40 33
-mcl_signs:standing_sign45_bamboo 218 200 151
-mcl_signs:standing_sign45_birchwood 127 109 83
-mcl_signs:standing_sign45_cherrywood 212 131 122
-mcl_signs:standing_sign45_crimson_hyphae_wood 97 47 40
-mcl_signs:standing_sign45_darkwood 66 49 33
-mcl_signs:standing_sign45_junglewood 60 34 19
-mcl_signs:standing_sign45_mangrove_wood 82 36 16
-mcl_signs:standing_sign45_sprucewood 82 60 35
-mcl_signs:standing_sign45_warped_hyphae_wood 79 62 103
-mcl_signs:standing_sign67_5 114 90 69
-mcl_signs:standing_sign67_5_acaciawood 105 40 33
-mcl_signs:standing_sign67_5_bamboo 218 200 151
-mcl_signs:standing_sign67_5_birchwood 127 109 83
-mcl_signs:standing_sign67_5_cherrywood 212 131 122
-mcl_signs:standing_sign67_5_crimson_hyphae_wood 97 47 40
-mcl_signs:standing_sign67_5_darkwood 66 49 33
-mcl_signs:standing_sign67_5_junglewood 60 34 19
-mcl_signs:standing_sign67_5_mangrove_wood 82 36 16
-mcl_signs:standing_sign67_5_sprucewood 82 60 35
-mcl_signs:standing_sign67_5_warped_hyphae_wood 79 62 103
-mcl_signs:standing_sign_acaciawood 105 40 33
+mcl_signs:standing_sign_acacia 114 65 42
 mcl_signs:standing_sign_bamboo 218 200 151
-mcl_signs:standing_sign_birchwood 127 109 83
-mcl_signs:standing_sign_cherrywood 212 131 122
-mcl_signs:standing_sign_crimson_hyphae_wood 97 47 40
-mcl_signs:standing_sign_darkwood 66 49 33
-mcl_signs:standing_sign_junglewood 60 34 19
-mcl_signs:standing_sign_mangrove_wood 82 36 16
-mcl_signs:standing_sign_sprucewood 82 60 35
-mcl_signs:standing_sign_warped_hyphae_wood 79 62 103
-mcl_signs:wall_sign 114 90 69
-mcl_signs:wall_sign_acaciawood 105 40 33
+mcl_signs:standing_sign_birch 129 109 93
+mcl_signs:standing_sign_cherry 180 115 108
+mcl_signs:standing_sign_crimson 98 0 0
+mcl_signs:standing_sign_dark_oak 74 61 54
+mcl_signs:standing_sign_jungle 100 68 51
+mcl_signs:standing_sign_mangrove 108 41 37
+mcl_signs:standing_sign_oak 110 85 65
+mcl_signs:standing_sign_spruce 73 51 40
+mcl_signs:standing_sign_warped 10 58 58
+mcl_signs:wall_sign_acacia 114 65 42
 mcl_signs:wall_sign_bamboo 218 200 151
-mcl_signs:wall_sign_birchwood 127 109 83
-mcl_signs:wall_sign_cherrywood 212 131 122
-mcl_signs:wall_sign_crimson_hyphae_wood 97 47 40
-mcl_signs:wall_sign_darkwood 66 49 33
-mcl_signs:wall_sign_junglewood 60 34 19
-mcl_signs:wall_sign_mangrove_wood 82 36 16
-mcl_signs:wall_sign_sprucewood 82 60 35
-mcl_signs:wall_sign_warped_hyphae_wood 79 62 103
+mcl_signs:wall_sign_birch 129 109 93
+mcl_signs:wall_sign_cherry 180 115 108
+mcl_signs:wall_sign_crimson 98 0 0
+mcl_signs:wall_sign_dark_oak 74 61 54
+mcl_signs:wall_sign_jungle 100 68 51
+mcl_signs:wall_sign_mangrove 108 41 37
+mcl_signs:wall_sign_oak 110 85 65
+mcl_signs:wall_sign_spruce 73 51 40
+mcl_signs:wall_sign_warped 10 58 58
 
 # mcl_smithing_table
 mcl_smithing_table:table 48 46 44
@@ -1514,9 +1494,9 @@ mcl_stairs:slab_blackstone_top 30 29 32
 mcl_stairs:slab_brick_block 140 88 76
 mcl_stairs:slab_brick_block_double 140 88 76
 mcl_stairs:slab_brick_block_top 140 88 76
-mcl_stairs:slab_cherrywood 217 144 136
-mcl_stairs:slab_cherrywood_double 217 144 136
-mcl_stairs:slab_cherrywood_top 217 144 136
+mcl_stairs:slab_cherrywood 222 141 129
+mcl_stairs:slab_cherrywood_double 222 141 129
+mcl_stairs:slab_cherrywood_top 222 141 129
 mcl_stairs:slab_cobble 113 107 104
 mcl_stairs:slab_cobble_double 113 107 104
 mcl_stairs:slab_cobble_top 113 107 104
@@ -1610,6 +1590,9 @@ mcl_stairs:slab_diorite_top 153 150 147
 mcl_stairs:slab_end_bricks 194 188 123
 mcl_stairs:slab_end_bricks_double 194 188 123
 mcl_stairs:slab_end_bricks_top 194 188 123
+mcl_stairs:slab_gold_polished 206 162 65
+mcl_stairs:slab_gold_polished_double 206 162 65
+mcl_stairs:slab_gold_polished_top 206 162 65
 mcl_stairs:slab_goldblock 192 147 59
 mcl_stairs:slab_goldblock_double 192 147 59
 mcl_stairs:slab_goldblock_top 192 147 59
@@ -1763,9 +1746,9 @@ mcl_stairs:stair_blackstone_polished_outer 44 41 46
 mcl_stairs:stair_brick_block 140 88 76
 mcl_stairs:stair_brick_block_inner 140 88 76
 mcl_stairs:stair_brick_block_outer 140 88 76
-mcl_stairs:stair_cherrywood 217 144 136
-mcl_stairs:stair_cherrywood_inner 217 144 136
-mcl_stairs:stair_cherrywood_outer 217 144 136
+mcl_stairs:stair_cherrywood 222 141 129
+mcl_stairs:stair_cherrywood_inner 222 141 129
+mcl_stairs:stair_cherrywood_outer 222 141 129
 mcl_stairs:stair_cobble 113 107 104
 mcl_stairs:stair_cobble_inner 113 107 104
 mcl_stairs:stair_cobble_outer 113 107 104
@@ -1859,6 +1842,9 @@ mcl_stairs:stair_diorite_smooth_outer 157 154 151
 mcl_stairs:stair_end_bricks 194 188 123
 mcl_stairs:stair_end_bricks_inner 194 188 123
 mcl_stairs:stair_end_bricks_outer 194 188 123
+mcl_stairs:stair_gold_polished 206 162 65
+mcl_stairs:stair_gold_polished_inner 206 162 65
+mcl_stairs:stair_gold_polished_outer 206 162 65
 mcl_stairs:stair_goldblock 192 147 57
 mcl_stairs:stair_goldblock_inner 192 147 57
 mcl_stairs:stair_goldblock_outer 192 147 57
@@ -2485,8 +2471,8 @@ mesecons_button:button_bamboo_off 243 220 170
 mesecons_button:button_bamboo_on 243 220 170
 mesecons_button:button_birchwood_off 146 114 89
 mesecons_button:button_birchwood_on 146 114 89
-mesecons_button:button_cherrywood_off 217 144 136
-mesecons_button:button_cherrywood_on 217 144 136
+mesecons_button:button_cherrywood_off 222 141 129
+mesecons_button:button_cherrywood_on 222 141 129
 mesecons_button:button_crimson_hyphae_wood_off 116 24 15
 mesecons_button:button_crimson_hyphae_wood_on 116 24 15
 mesecons_button:button_darkwood_off 88 75 62
@@ -2626,29 +2612,51 @@ mesecons_walllever:wall_lever_on 108 97 91
 
 # vl_hollow_logs
 vl_hollow_logs:acaciatree_hollow 121 87 64
+vl_hollow_logs:acaciatree_hollow_ladder 109 82 62
 vl_hollow_logs:birchtree_hollow 183 163 146
-vl_hollow_logs:cherrytree_hollow 195 98 87
+vl_hollow_logs:birchtree_hollow_ladder 166 149 134
+vl_hollow_logs:cherrytree_hollow 143 92 86
+vl_hollow_logs:cherrytree_hollow_ladder 116 77 72
 vl_hollow_logs:crimson_hyphae_hollow 116 57 57
+vl_hollow_logs:crimson_hyphae_hollow_ladder 110 61 58
 vl_hollow_logs:darktree_hollow 80 67 60
+vl_hollow_logs:darktree_hollow_ladder 78 64 56
 vl_hollow_logs:jungletree_hollow 121 82 62
+vl_hollow_logs:jungletree_hollow_ladder 104 72 55
 vl_hollow_logs:mangrove_stripped_hollow 135 66 57
+vl_hollow_logs:mangrove_stripped_hollow_ladder 126 65 56
 vl_hollow_logs:mangrove_tree_hollow 110 67 51
+vl_hollow_logs:mangrove_tree_hollow_ladder 100 67 50
 vl_hollow_logs:sprucetree_hollow 85 64 53
+vl_hollow_logs:sprucetree_hollow_ladder 80 61 50
 vl_hollow_logs:stripped_acacia_hollow 154 92 58
+vl_hollow_logs:stripped_acacia_hollow_ladder 141 87 57
 vl_hollow_logs:stripped_birch_hollow 178 143 114
-vl_hollow_logs:stripped_cherrytree_hollow 208 119 110
+vl_hollow_logs:stripped_birch_hollow_ladder 161 128 102
+vl_hollow_logs:stripped_cherrytree_hollow 227 144 131
+vl_hollow_logs:stripped_cherrytree_hollow_ladder 200 129 117
 vl_hollow_logs:stripped_crimson_hyphae_hollow 131 47 52
+vl_hollow_logs:stripped_crimson_hyphae_hollow_ladder 124 51 53
 vl_hollow_logs:stripped_dark_oak_hollow 90 78 69
+vl_hollow_logs:stripped_dark_oak_hollow_ladder 88 75 65
 vl_hollow_logs:stripped_jungle_hollow 175 117 86
+vl_hollow_logs:stripped_jungle_hollow_ladder 158 107 79
 vl_hollow_logs:stripped_oak_hollow 160 121 83
+vl_hollow_logs:stripped_oak_hollow_ladder 146 110 77
 vl_hollow_logs:stripped_spruce_hollow 109 82 67
+vl_hollow_logs:stripped_spruce_hollow_ladder 104 78 63
 vl_hollow_logs:stripped_warped_hyphae_hollow 72 67 99
-vl_hollow_logs:tree_hollow 122 95 69
+vl_hollow_logs:stripped_warped_hyphae_hollow_ladder 75 67 91
+vl_hollow_logs:tree_hollow 124 95 69
+vl_hollow_logs:tree_hollow_ladder 109 85 63
 vl_hollow_logs:warped_hyphae_hollow 59 62 82
+vl_hollow_logs:warped_hyphae_hollow_ladder 61 61 75
 
 # xpanes
 xpanes:bar 155 146 146 64 16
 xpanes:bar_flat 155 146 146 64 16
+xpanes:gold_bar 207 163 69 64 16
+xpanes:gold_bar_flat 207 163 69 64 16
 xpanes:pane_black 25 25 25 64 16
 xpanes:pane_black_flat 25 25 25 64 16
 xpanes:pane_blue 51 76 178 64 16
