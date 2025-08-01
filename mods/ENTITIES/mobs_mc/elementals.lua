@@ -28,7 +28,7 @@ mcl_mobs.register_mob("mobs_mc:elemental_fire", {
 	xp_min = 10,
 	xp_max = 10,
 	rotate = 180,
-	head_yaw_offset = 180,
+	head_yaw_offset = 60,
 	visual = "mesh",
 	mesh = "vl_elemental_fire.b3d",
 	head_swivel = "head.control",
@@ -91,10 +91,23 @@ mcl_mobs.register_mob("mobs_mc:elemental_fire", {
 	glow = 14,
 	fire_resistant = true,
 	do_custom = function(self)
-		if self.state == "attack" and self.attack:get_pos() and vector.distance(self.object:get_pos(), self.attack:get_pos()) < 1.2 then
-			mcl_burning.set_on_fire(self.attack, 5)
+		local obj = self.object
+		local pos = obj:get_pos()
+		local falling = true
+		if self.state == "attack" and self.attack:get_pos()
+				and (not self.attack:get_luaentity() or self.attack:get_luaentity().name ~= "mobs_mc:elemental_fire") then
+			local apos = self.attack:get_pos()
+			if pos.y - apos.y < 10 then
+				obj:add_velocity(vector.offset(-self.object:get_velocity(), 0, 1, 0))
+				falling = false
+			end
+			if vector.distance(pos, apos) < 1.2 then
+				mcl_burning.set_on_fire(self.attack, 5)
+			end
 		end
-		local pos = self.object:get_pos()
+		if falling then
+			obj:add_velocity(vector.offset(-self.object:get_velocity(), 0, -1, 0))
+		end
 		minetest.add_particle({
 			pos = {x=pos.x+(math.random()*0.7-0.35)*math.random(),y=pos.y+0.7+math.random()*0.5,z=pos.z+(math.random()*0.7-0.35)*math.random()},
 			velocity = {x=0, y=1, z=0},
