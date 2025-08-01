@@ -216,6 +216,11 @@ end
 
 -- move mob in facing direction
 function mob_class:set_velocity(v)
+	-- Don't allow walking if not standing on something and can't fly
+	if not self.fly and v ~= 0 and not self._grounded and not self.in_water then
+		return false
+	end
+
 	local c_x, c_z = 0, 0
 	-- can mob be pushed, if so calculate direction
 	if self.pushable then
@@ -849,8 +854,10 @@ function mob_class:falling(pos, moveresult)
 				-- when touching ground, retain a minimal gravity to keep the touching_ground flag
 				-- but also to not get upwards acceleration with large dtime when on bouncy ground
 				self.object:set_acceleration(vector.new(0, self.fall_speed * 0.01, 0))
+				self._grounded = true
 			else
 				self.object:set_acceleration(vector.new(0, self.fall_speed, 0))
+				self._grounded = false
 			end
 		else
 			-- stop accelerating once max fall speed hit

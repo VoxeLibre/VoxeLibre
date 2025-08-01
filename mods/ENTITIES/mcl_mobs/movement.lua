@@ -334,6 +334,7 @@ function mob_class:do_jump()
 	local cbox = self.initial_properties.collisionbox
 
 	local in_water = minetest.get_item_group(node_ok(pos).name, "water") > 0
+	self.in_water = in_water
 	-- what is mob standing on?
 	pos.y = pos.y + cbox[2]
 

@@ -248,14 +248,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 		-- Ignore items to lower lag
 		if (obj:is_player() or (ent and ent.name ~= "__builtin.item")) and obj:get_hp() > 0 then
 			local opos = obj:get_pos()
-			local collisionbox = nil
-
-			if obj:is_player() then
-				collisionbox = { -0.3, 0.0, -0.3, 0.3, 1.77, 0.3 }
-			elseif ent.name then
-				local def = minetest.registered_entities[ent.name]
-				collisionbox = def.collisionbox
-			end
+			local collisionbox = obj:get_properties().collisionbox
 
 			if collisionbox then
 				-- Create rays from random points in the collision box
