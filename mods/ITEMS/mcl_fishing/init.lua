@@ -4,13 +4,15 @@ local S = minetest.get_translator(minetest.get_current_modname())
 local FISHING_ROD_DURABILITY = 65
 
 local bobber_ENTITY={
-	physical = false,
+	initial_properties = {
+		physical = false,
+		collisionbox = {0.45,0.45,0.45,0.45,0.45,0.45},
+		pointable = false,
+		visual_size = {x=0.5, y=0.5},
+		textures = {"mcl_fishing_bobber.png"},
+		static_save = false,
+	},
 	timer=0,
-	textures = {"mcl_fishing_bobber.png"},
-	visual_size = {x=0.5, y=0.5},
-	collisionbox = {0.45,0.45,0.45,0.45,0.45,0.45},
-	pointable = false,
-	static_save = false,
 
 	_lastpos={},
 	_dive = false,
@@ -308,13 +310,15 @@ bobber_ENTITY.on_step = bobber_on_step
 core.register_entity("mcl_fishing:bobber_entity", bobber_ENTITY)
 
 vl_projectile.register("mcl_fishing:flying_bobber_entity", {
-	physical = true,
-	collide_with_objects = false,
+	initial_properties = {
+		physical = true,
+		collide_with_objects = false,
+		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
+		pointable = false,
+		visual_size = {x=0.5, y=0.5},
+		textures = {"mcl_fishing_bobber.png"}, --FIXME: Replace with correct texture.
+	},
 	timer=0,
-	textures = {"mcl_fishing_bobber.png"}, --FIXME: Replace with correct texture.
-	visual_size = {x=0.5, y=0.5},
-	collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
-	pointable = false,
 
 	get_staticdata = mcl_throwing.get_staticdata,
 	on_activate = mcl_throwing.on_activate,
