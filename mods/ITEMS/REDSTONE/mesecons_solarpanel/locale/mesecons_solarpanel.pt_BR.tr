@@ -1,0 +1,11 @@
+# textdomain: mesecons_solarpanel
+Daylight Sensor=Sensor de Luz Solar
+Provides redstone power when in sunlight=Produz energia de redstone quando tem luz do sol
+Can be inverted=Pode ser invertido
+
+Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.=Sensores de luz solar são itens de redstone que fornecem energia de redstone quando expostos à luz solar e não fornecem de noite. Eles também podem ser invertidos.
+
+In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=No estado invertido, eles fornecem energia de redstone quando não estão na luz do sol e não fornecem de dia.
+
+Use the daylight sensor to toggle its state.=Use o sensor de luz solar para alterar o estado dele.
+Inverted Daylight Sensor=Sensor de Luz Solar Invertido
