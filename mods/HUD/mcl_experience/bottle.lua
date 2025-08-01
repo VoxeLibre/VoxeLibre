@@ -4,7 +4,9 @@ local mod_target = minetest.get_modpath("mcl_target")
 
 minetest.register_entity("mcl_experience:bottle",{
 	textures = {"mcl_experience_bottle.png"},
-	hp_max = 1,
+	initial_properties = {
+		hp_max = 1,
+	},
 	visual_size = {x = 0.35, y = 0.35},
 	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
 	pointable = false,
