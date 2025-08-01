@@ -156,6 +156,20 @@ function mob_class:item_drop(cooked, looting_level)
 	end
 
 	self.drops = {}
+
+	if not self.armor_list then return end
+
+	for _, item in pairs(self.armor_list) do
+		local stack = ItemStack(item)
+		if not stack:is_empty() then
+			obj = core.add_item(pos, stack)
+			if obj and obj:get_luaentity() then
+				obj:set_velocity(vector.new((random() - 0.5) * 1.5, 6, (random() - 0.5) * 1.5))
+			elseif obj then
+				obj:remove() -- item does not exist
+			end
+		end
+	end
 end
 
 -- collision function borrowed amended from jordan4ibanez open_ai mod
