@@ -1070,6 +1070,11 @@ function mob_class:do_states_attack(dtime)
 			if minetest.registered_entities[self.arrow] then
 				local arrow, ent
 				local v = 1
+				local corr = vector.new(vec.x, 0, vec.z)
+				corr = corr / corr:length()
+				p = p + self.shoot_pos.x * corr
+				p.y = p.y + self.shoot_pos.y
+
 				if not self.shoot_arrow then
 					self.firing = true
 					minetest.after(1, function()
