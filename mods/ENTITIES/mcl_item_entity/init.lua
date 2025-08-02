@@ -4,6 +4,16 @@ local minetest, math, vector, ipairs, pairs = minetest, math, vector, ipairs, pa
 --this is used for the player pool in the sound buffer
 local pool = {}
 
+---@class mcl_item_entity : core.LuaEntity
+---@field itemstring string
+---@field _magnet_timer number
+---@field _magnet_distance number
+---@field _insta_collect boolean
+---@field collector string
+---@field collected boolean
+---@field physical_state boolean
+---@field random_velocity number
+
 local tick = false
 
 core.register_on_joinplayer(function(player)
@@ -69,19 +79,22 @@ mcl_item_entity.register_pickup_achievement("mcl_armor:elytra", "mcl:skysTheLimi
 ---@param object core.LuaEntityRef
 ---@param player core.PlayerObjectRef
 local function check_pickup_achievements(object, player)
-	if has_awards then
-		local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
-		local playername = player:get_player_name()
-		for name, award in pairs(mcl_item_entity.registered_pickup_achievement) do
-			if itemname == name or core.get_item_group(itemname, name) ~= 0 then
-				awards.unlock(playername, award)
-			end
+	if not has_awards then return end
+
+	local ie = object:get_luaentity()
+	---@cast ie mcl_item_entity
+
+	local itemname = ItemStack(ie.itemstring):get_name()
+	local playername = player:get_player_name()
+	for name, award in pairs(mcl_item_entity.registered_pickup_achievement) do
+		if itemname == name or core.get_item_group(itemname, name) ~= 0 then
+			awards.unlock(playername, award)
 		end
 	end
 end
 
----@param object core.ObjectRef
----@param luaentity core.LuaEntity
+---@param object core.LuaEntityRef
+---@param luaentity mcl_item_entity
 ---@param ignore_check? boolean
 local function enable_physics(object, luaentity, ignore_check)
 	if luaentity.physical_state == false or ignore_check == true then
@@ -93,8 +106,8 @@ local function enable_physics(object, luaentity, ignore_check)
 	end
 end
 
----@param object core.ObjectRef
----@param luaentity core.LuaEntity
+---@param object core.LuaEntityRef
+---@param luaentity mcl_item_entity
 ---@param ignore_check? boolean
 ---@param reset_movement? boolean
 local function disable_physics(object, luaentity, ignore_check, reset_movement)
@@ -197,19 +210,21 @@ core.register_globalstep(function(_)
 
 			--magnet and collection
 			for _, object in pairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.xp_radius_magnet)) do
+				local ie = object:get_luaentity()
+				---@cast ie mcl_item_entity
+
 				local distance = vector.distance(checkpos, object:get_pos())
 				if not object:is_player() and distance < item_drop_settings.radius_magnet and
-					object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity()._magnet_timer
-					and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
+					ie and ie.name == "__builtin:item" and ie._magnet_timer
+					and (ie._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
 
 					try_object_pickup( player, inv, object, checkpos )
-				elseif not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mcl_experience:orb" then
-					local entity = object:get_luaentity()
-					local magnet_distance = entity._magnet_distance
+				elseif not object:is_player() and ie and ie.name == "mcl_experience:orb" then
+					local magnet_distance = ie._magnet_distance
 					if not magnet_distance or distance < magnet_distance then
-						entity.collector = player:get_player_name()
-						entity.collected = true
-						entity._magnet_distance = distance
+						ie.collector = player:get_player_name()
+						ie.collected = true
+						ie._magnet_distance = distance
 					end
 				end
 			end
@@ -451,7 +466,7 @@ function core.handle_node_drops(pos, drops, digger)
 		end
 		local drop_item = ItemStack(item)
 		drop_item:set_count(1)
-		for i = 1, count do
+		for _ = 1, count do
 			local dpos = table.copy(pos)
 			-- Apply offset for plantlike_rooted nodes because of their special shape
 			if nodedef and nodedef.drawtype == "plantlike_rooted" and nodedef.walkable then
@@ -460,15 +475,17 @@ function core.handle_node_drops(pos, drops, digger)
 			-- Spawn item and apply random speed
 			local obj = core.add_item(dpos, drop_item)
 			if obj then
+				local ie = obj:get_luaentity()
+				---@cast ie mcl_item_entity
+
 				-- set the velocity multiplier to the stored amount or if the game dug this node, apply a bigger velocity
-				local v = 1
 				if digger and digger:is_player() then
-					obj:get_luaentity().random_velocity = 1
+					ie.random_velocity = 1
 				else
-					obj:get_luaentity().random_velocity = 1.6
+					ie.random_velocity = 1.6
 				end
-				obj:get_luaentity().age = item_drop_settings.dug_buffer
-				obj:get_luaentity()._insta_collect = false
+				ie.age = item_drop_settings.dug_buffer
+				ie._insta_collect = false
 			end
 		end
 	end
@@ -775,11 +792,11 @@ local function move_items_in_water (self, p, def, node, is_floating, is_in_water
 		if is_in_water and def.liquidtype == "source" then
 			local cur_vec = self.object:get_velocity()
 			-- apply some acceleration in the opposite direction so it doesn't slide forever
-			local vec = {
-				x = 0 - cur_vec.x * 0.9,
-				y = 3 - cur_vec.y * 0.9,
-				z = 0 - cur_vec.z * 0.9
-			}
+			vec = vector.new(
+				0 - cur_vec.x * 0.9,
+				3 - cur_vec.y * 0.9,
+				0 - cur_vec.z * 0.9
+			)
 			self.object:set_acceleration(vec)
 			-- slow down the item in water
 			local vel = self.object:get_velocity()
@@ -967,7 +984,7 @@ core.register_entity(":__builtin:item", {
 		return data
 	end,
 
-	on_activate = function(self, staticdata, dtime_s)
+	on_activate = function(self, staticdata)
 		if string.sub(staticdata, 1, string.len("return")) == "return" then
 			local data = core.deserialize(staticdata)
 			if data and type(data) == "table" then
@@ -1153,8 +1170,8 @@ core.register_entity(":__builtin:item", {
 		if move_items_in_water (self, p, def, node, is_floating, is_in_water) then return end
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
-		local nn = core.get_node(vector.offset(p, 0, -0.5, 0)).name
-		local def = core.registered_nodes[nn]
+		nn = core.get_node(vector.offset(p, 0, -0.5, 0)).name
+		def = core.registered_nodes[nn]
 		local v = self.object:get_velocity()
 		local is_on_floor = def and (def.walkable
 			and not def.groups.slippery and v.y == 0)
@@ -1165,8 +1182,9 @@ core.register_entity(":__builtin:item", {
 			-- Merge with close entities of the same item
 			for _, object in pairs(core.get_objects_inside_radius(p, 0.8)) do
 				local obj = object:get_luaentity()
-				if obj and obj.name == "__builtin:item" and obj.physical_state == false then
-					if self:try_merge_with(own_stack, object, obj) then
+				if obj and obj.name == "__builtin:item" then
+					---@cast obj mcl_item_entity
+					if obj.physical_state == false and self:try_merge_with(own_stack, object, obj) then
 						return
 					end
 				end
