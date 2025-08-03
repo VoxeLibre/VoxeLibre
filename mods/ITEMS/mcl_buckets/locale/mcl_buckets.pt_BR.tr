@@ -1,8 +1,8 @@
 # textdomain: mcl_buckets
 Empty Bucket=Balde Vazio
-A bucket can be used to collect and release liquids.=Um balde pode ser utilizado para coletar e soltar líquidos.
+A bucket can be used to collect and release liquids.=Um balde pode ser usado para coletar e soltar líquidos.
 
-Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else.=Soque uma fonte de líquido para coletá-la. Voce pode usar um balde cheio para colocar o líquido em algum outro lugar.
+Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else.=Use em uma fonte de líquido para o coletar. Você pode usar um balde cheio para colocar o líquido em algum outro lugar.
 
 Collects liquids=Coleta líquidos
 ##[ register.lua ]##
@@ -10,32 +10,32 @@ Lava Bucket=Balde com Lava
 
 A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.=Um balde pode ser utilizado para coletar e soltar líquidos. Este está preenchido com lava quente, contido seguramente dentro. Utilize com cautela.
 
-Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!=Tome uma distância segura e coloque o balde para esvaziá-lo e criar uma fonte de lava no local. Não se queime!
+Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!=Tome uma distância segura e use o balde para o esvaziar e criar uma fonte de lava no local. Não se queime!
 
-Places a lava source=Coloca uma fonte de lava
+Places a lava source=Põe uma fonte de lava
 Water Bucket=Balde com Água
 
 A bucket can be used to collect and release liquids. This one is filled with water.=Um balde pode ser utilizado para coletar e soltar líquidos. Este está preenchido com água.
 
-Place it to empty the bucket and create a water source.=Coloque-o para esvaziar o balde e criar uma fonte de água.
-Places a water source=Coloca uma fonte de água
+Place it to empty the bucket and create a water source.=Use ele para esvaziar o balde e criar uma fonte de água.
+Places a water source=Põe uma fonte de água
 River Water Bucket=Balde com Água de Rio
 
 A bucket can be used to collect and release liquids. This one is filled with river water.=Um balde pode ser utilizado para coletar e soltar líquidos. Este está preenchido com água de rio.
 
-Place it to empty the bucket and create a river water source.=Coloque-o para esvaziar o balde e criar uma fonte de água de rio.
-Places a river water source=Coloca uma fonte de água de rio
+Place it to empty the bucket and create a river water source.=Use ele para esvaziar o balde e criar uma fonte de água de rio.
+Places a river water source=Põe uma fonte de água de rio
 ##[ fishbuckets.lua ]##
-Bucket of Cod=
-Bucket of Salmon=
-Bucket of Tropical Fish=
-Bucket of Axolotl=
-Bucket of Pufferfish=
-This bucket is filled with water and contains an aquatic mob.=
+Bucket of Cod=Balde com Bacalhau
+Bucket of Salmon=Balde com Salmão
+Bucket of Tropical Fish=Balde com Peixe Tropical
+Bucket of Axolotl=Balde com Axolote
+Bucket of Pufferfish=Balde com Baiacu
+This bucket is filled with water and contains an aquatic mob.=Este balde está cheio de água e contém um mob aquático.
 
-Place it to empty the bucket and place a mob. Obtain by right clicking on a small aquatic mob with a bucket of water.=
+Place it to empty the bucket and place a mob. Obtain by right clicking on a small aquatic mob with a bucket of water.=Use ele para esvaziar o balde e colocar um mob. Obtido com um balde de água, clicando com o botão direito em um pequeno mob aquático.
 
-Places a water source and a mob.=
+Places a water source and a mob.=Põe uma fonte de água e um mob.
 
 
 ##### not used anymore #####
