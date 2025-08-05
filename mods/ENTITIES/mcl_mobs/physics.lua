@@ -103,7 +103,7 @@ function mob_class:item_drop(cooked, looting_level)
 	end
 
 	local obj, item, num
-	local pos = self.object:get_pos()
+	local pos = self.vl_drops_pos or self.object:get_pos()
 
 	self.drops = self.drops or {}
 

@@ -638,7 +638,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				die = true
 			end
 		end
-		-- knock back effect (only on full punch)
+		-- knock back effect
 		if self.knock_back then
 			-- direction error check
 			dir = dir or vector_zero()
@@ -691,6 +691,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			kb = kb * 20 -- experimentally derived constant
 			self:set_velocity(0)
 			self.object:add_velocity(vector_new(dir.x * kb, up, dir.z * kb ))
+			self.vl_drops_pos = mob_pos
 
 			self.pause_timer = 0.25
 		end
