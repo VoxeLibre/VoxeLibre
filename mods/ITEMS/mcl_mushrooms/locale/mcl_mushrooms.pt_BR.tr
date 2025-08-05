@@ -1,0 +1,41 @@
+# textdomain: mcl_mushrooms
+##[ small.lua ]##
+
+Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=Cogumelos marrons são fungos que crescem e se espalham no escuro, mas são sensíveis à luz. Não são comestíveis, mas podem ser usados para criar alimentos.
+
+Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=Cogumelos vermelhos são fungos que crescem e se espalham no escuro, mas são sensíveis à luz. Não são comestíveis, mas podem ser usados para criar itens alimentícios.
+
+A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.=Um único cogumelo desta espécie se espalhará lentamente ao longo do tempo em direção a um bloco sólido opaco aleatório com um nível de luminosidade de 12 ou menos em um cubo 3×3×3 ao redor do cogumelo. Ele para de se espalhar quando há 5 ou mais cogumelos da mesma espécie em uma área de 9 blocos 9×3×9 ao redor do cogumelo.
+
+Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.=Os cogumelos eventualmente se desenraizarão com um nível de luz de 12 ou superior. Em micélio ou podzol, eles sobrevivem e se espalham em qualquer nível de luz.
+
+Grows on podzol, mycelium and other blocks=Cresce no podzol, micélio e outros blocos
+Spreads in darkness=Se espalha no escuro
+
+This mushroom can be placed on mycelium and podzol at any light level. It can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.=Este cogumelo pode ser colocado sobre micélio e podzol em qualquer nível de luminosidade. Também pode ser colocado sobre blocos sólidos e opacos, desde que o nível de luminosidade durante o dia não seja superior a 12.
+
+Brown Mushroom=Cogumelo Marrom
+Red Mushroom=Cogumelo Vermelho
+Mushroom Stew=Sopa de Cogumelos
+
+Mushroom stew is a healthy soup which can be consumed to restore some hunger points.=Sopa de cogumelos é um alimento saudável que pode ser consumido para restaurar alguns pontos de fome.
+
+##[ huge.lua ]##
+
+This decorative block is like a huge mushroom stem, but with the stem texture on all sides.=Este bloco decorativo é como um enorme caule de cogumelo, mas com textura de caule em todos os lados.
+
+By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.=Ao colocar enormes blocos de cogumelos da mesma espécie próximos uns dos outros, os lados que se tocam se transformarão em poros permanentemente.
+
+Huge red mushroom blocks are the cap parts of huge red mushrooms. It consists of a red skin and can have pores on each of its sides.=Blocos enormes de cogumelos vermelhos são as partes do chapéu de cogumelos vermelhos enormes. Consistem em uma casca vermelha e podem ter poros em cada um dos lados.
+
+The stem part of a huge red mushroom.=A parte do caule de um enorme cogumelo vermelho.
+Huge Red Mushroom Block=Bloco de Cogumelo Vermelho Gigante
+Huge Red Mushroom Stem=Caule de Cogumelo Vermelho Gigante
+Huge Red Mushroom All-Faces Stem=Caule de Cogumelo Vermelho Gigante com Todas as Faces
+
+Huge brown mushroom blocks are the cap parts of huge brown mushrooms. It consists of a brown skin and can have pores on each of its sides.=Blocos de cogumelos marrons gigantes são as partes do chapéu de cogumelos marrons gigantes. Consistem em uma casca marrom e podem ter poros em cada um dos lados.
+
+The stem part of a huge brown mushroom.=A parte do caule de um cogumelo marrom gigante.
+Huge Brown Mushroom Block=Bloco de Cogumelo Marrom Gigante
+Huge Brown Mushroom Stem=Caule de Cogumelo marrom Gigante
+Huge Brown Mushroom All-Faces Stem=Caule de Cogumelo Marrom Gigante com Todas as Faces
