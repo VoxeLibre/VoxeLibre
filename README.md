@@ -75,7 +75,7 @@ issues, head over there.
 * Discord: <https://discord.gg/xE4z8EEpDC>
 * Matrix space: <https://app.element.io/#/room/#voxelibre:matrix.org>
 * Mastodon: <https://fosstodon.org/@VoxeLibre>
-* Lemmy: <https://lemm.ee/c/voxelibre>
+* Lemmy: <https://programming.dev/c/VoxeLibre>
 * Reddit: <https://www.reddit.com/r/VoxeLibre/>
 * YouTube: <https://www.youtube.com/channel/UClI_YcsXMF3KNeJtoBfnk9A>
 * OpenCollective: <https://opencollective.com/voxelibre>
