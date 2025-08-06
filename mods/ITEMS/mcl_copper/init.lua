@@ -1,4 +1,4 @@
-local path = minetest.get_modpath("mcl_copper")
+local path = core.get_modpath("mcl_copper")
 
 mcl_copper = {} -- initialize global variable.
 

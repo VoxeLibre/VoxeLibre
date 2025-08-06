@@ -1,6 +1,6 @@
-local S = minetest.get_translator("mcl_copper")
+local S = core.get_translator("mcl_copper")
 
-minetest.register_node("mcl_copper:stone_with_copper", {
+core.register_node("mcl_copper:stone_with_copper", {
 	description = S("Copper Ore"),
 	_doc_items_longdesc = S("Some copper contained in stone, it is pretty common and can be found below sea level."),
 	tiles = {"default_stone.png^mcl_copper_ore.png"},
@@ -14,7 +14,7 @@ minetest.register_node("mcl_copper:stone_with_copper", {
 	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
-minetest.register_node("mcl_copper:block_raw", {
+core.register_node("mcl_copper:block_raw", {
 	description = S("Block of Raw Copper"),
 	_doc_items_longdesc = S("A block used for compact raw copper storage."),
 	tiles = {"mcl_copper_block_raw.png"},
@@ -25,7 +25,7 @@ minetest.register_node("mcl_copper:block_raw", {
 	_mcl_hardness = 5,
 })
 
-minetest.register_node("mcl_copper:block", {
+core.register_node("mcl_copper:block", {
 	description = S("Block of Copper"),
 	_doc_items_longdesc = S("A block of copper is mostly a decorative block."),
 	tiles = {"mcl_copper_block.png"},
@@ -38,7 +38,7 @@ minetest.register_node("mcl_copper:block", {
 	_mcl_waxed_variant = "mcl_copper:waxed_block",
 })
 
-minetest.register_node("mcl_copper:waxed_block", {
+core.register_node("mcl_copper:waxed_block", {
 	description = S("Waxed Block of Copper"),
 	_doc_items_longdesc = S("A block of copper is mostly a decorative block."),
 	tiles = {"mcl_copper_block.png"},
@@ -50,7 +50,7 @@ minetest.register_node("mcl_copper:waxed_block", {
 	_mcl_stripped_variant = "mcl_copper:block",
 })
 
-minetest.register_node("mcl_copper:block_exposed", {
+core.register_node("mcl_copper:block_exposed", {
 	description = S("Exposed Copper"),
 	_doc_items_longdesc = S("Exposed copper is a decorative block."),
 	tiles = {"mcl_copper_exposed.png"},
@@ -64,7 +64,7 @@ minetest.register_node("mcl_copper:block_exposed", {
 	_mcl_stripped_variant = "mcl_copper:block",
 })
 
-minetest.register_node("mcl_copper:waxed_block_exposed", {
+core.register_node("mcl_copper:waxed_block_exposed", {
 	description = S("Waxed Exposed Copper"),
 	_doc_items_longdesc = S("Exposed copper is a decorative block."),
 	tiles = {"mcl_copper_exposed.png"},
@@ -76,7 +76,7 @@ minetest.register_node("mcl_copper:waxed_block_exposed", {
 	_mcl_stripped_variant = "mcl_copper:block_exposed",
 })
 
-minetest.register_node("mcl_copper:block_weathered", {
+core.register_node("mcl_copper:block_weathered", {
 	description = S("Weathered Copper"),
 	_doc_items_longdesc = S("Weathered copper is a decorative block."),
 	tiles = {"mcl_copper_weathered.png"},
@@ -90,7 +90,7 @@ minetest.register_node("mcl_copper:block_weathered", {
 	_mcl_stripped_variant = "mcl_copper:block_exposed",
 })
 
-minetest.register_node("mcl_copper:waxed_block_weathered", {
+core.register_node("mcl_copper:waxed_block_weathered", {
 	description = S("Waxed Weathered Copper"),
 	_doc_items_longdesc = S("Weathered copper is a decorative block."),
 	tiles = {"mcl_copper_weathered.png"},
@@ -102,7 +102,7 @@ minetest.register_node("mcl_copper:waxed_block_weathered", {
 	_mcl_stripped_variant = "mcl_copper:block_weathered",
 })
 
-minetest.register_node("mcl_copper:block_oxidized", {
+core.register_node("mcl_copper:block_oxidized", {
 	description = S("Oxidized Copper"),
 	_doc_items_longdesc = S("Oxidized copper is a decorative block."),
 	tiles = {"mcl_copper_oxidized.png"},
@@ -115,7 +115,7 @@ minetest.register_node("mcl_copper:block_oxidized", {
 	_mcl_stripped_variant = "mcl_copper:block_weathered",
 })
 
-minetest.register_node("mcl_copper:waxed_block_oxidized", {
+core.register_node("mcl_copper:waxed_block_oxidized", {
 	description = S("Waxed Oxidized Copper"),
 	_doc_items_longdesc = S("Oxidized copper is a decorative block."),
 	tiles = {"mcl_copper_oxidized.png"},
@@ -127,7 +127,7 @@ minetest.register_node("mcl_copper:waxed_block_oxidized", {
 	_mcl_stripped_variant = "mcl_copper:block_oxidized",
 })
 
-minetest.register_node("mcl_copper:block_cut", {
+core.register_node("mcl_copper:block_cut", {
 	description = S("Cut Copper"),
 	_doc_items_longdesc = S("Cut copper is a decorative block."),
 	tiles = {"mcl_copper_block_cut.png"},
@@ -140,7 +140,7 @@ minetest.register_node("mcl_copper:block_cut", {
 	_mcl_waxed_variant = "mcl_copper:waxed_block_cut",
 })
 
-minetest.register_node("mcl_copper:waxed_block_cut", {
+core.register_node("mcl_copper:waxed_block_cut", {
 	description = S("Waxed Cut Copper"),
 	_doc_items_longdesc = S("Cut copper is a decorative block."),
 	tiles = {"mcl_copper_block_cut.png"},
@@ -152,7 +152,7 @@ minetest.register_node("mcl_copper:waxed_block_cut", {
 	_mcl_stripped_variant = "mcl_copper:block_cut",
 })
 
-minetest.register_node("mcl_copper:block_exposed_cut", {
+core.register_node("mcl_copper:block_exposed_cut", {
 	description = S("Exposed Cut Copper"),
 	_doc_items_longdesc = S("Exposed cut copper is a decorative block."),
 	tiles = {"mcl_copper_exposed_cut.png"},
@@ -166,7 +166,7 @@ minetest.register_node("mcl_copper:block_exposed_cut", {
 	_mcl_stripped_variant = "mcl_copper:block_cut",
 })
 
-minetest.register_node("mcl_copper:waxed_block_exposed_cut", {
+core.register_node("mcl_copper:waxed_block_exposed_cut", {
 	description = S("Waxed Exposed Cut Copper"),
 	_doc_items_longdesc = S("Exposed cut copper is a decorative block."),
 	tiles = {"mcl_copper_exposed_cut.png"},
@@ -178,7 +178,7 @@ minetest.register_node("mcl_copper:waxed_block_exposed_cut", {
 	_mcl_stripped_variant = "mcl_copper:block_exposed_cut",
 })
 
-minetest.register_node("mcl_copper:block_weathered_cut", {
+core.register_node("mcl_copper:block_weathered_cut", {
 	description = S("Weathered Cut Copper"),
 	_doc_items_longdesc = S("Weathered cut copper is a decorative block."),
 	tiles = {"mcl_copper_weathered_cut.png"},
@@ -192,7 +192,7 @@ minetest.register_node("mcl_copper:block_weathered_cut", {
 	_mcl_waxed_variant = "mcl_copper:waxed_block_weathered_cut",
 })
 
-minetest.register_node("mcl_copper:waxed_block_weathered_cut", {
+core.register_node("mcl_copper:waxed_block_weathered_cut", {
 	description = S("Waxed Weathered Cut Copper"),
 	_doc_items_longdesc = S("Weathered cut copper is a decorative block."),
 	tiles = {"mcl_copper_weathered_cut.png"},
@@ -204,7 +204,7 @@ minetest.register_node("mcl_copper:waxed_block_weathered_cut", {
 	_mcl_stripped_variant = "mcl_copper:block_weathered_cut",
 })
 
-minetest.register_node("mcl_copper:block_oxidized_cut", {
+core.register_node("mcl_copper:block_oxidized_cut", {
 	description = S("Oxidized Cut Copper"),
 	_doc_items_longdesc = S("Oxidized cut copper is a decorative block."),
 	tiles = {"mcl_copper_oxidized_cut.png"},
@@ -217,7 +217,7 @@ minetest.register_node("mcl_copper:block_oxidized_cut", {
 	_mcl_waxed_variant = "mcl_copper:waxed_block_oxidized_cut",
 })
 
-minetest.register_node("mcl_copper:waxed_block_oxidized_cut", {
+core.register_node("mcl_copper:waxed_block_oxidized_cut", {
 	description = S("Waxed Oxidized Cut Copper"),
 	_doc_items_longdesc = S("Oxidized cut copper is a decorative block."),
 	tiles = {"mcl_copper_oxidized_cut.png"},
