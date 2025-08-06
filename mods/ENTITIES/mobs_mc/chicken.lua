@@ -1,12 +1,42 @@
---License for code WTFPL and otherwise stated in readmes
-
 local S = minetest.get_translator("mobs_mc")
 
---###################
---################### CHICKEN
---###################
+---
+---@param self any
+---@param dtime number
+local function lay_egg(self, dtime)
+	self.egg_timer = (self.egg_timer or 0) + dtime
+	if self.egg_timer < 10 then
+		return
+	end
+	self.egg_timer = 0
 
+	if self.child
+		or math.random(1, 100) > 1 then
+		return
+	end
 
+	local pos = self.object:get_pos()
+
+	core.add_item(pos, "mcl_throwing:egg")
+
+	core.sound_play("mobs_mc_chicken_lay_egg", {
+		pos = pos,
+		gain = 1.0,
+		max_hear_distance = 16,
+	}, true)
+end
+
+---
+---@param self any
+local function flap(self)
+	if self._current_animation == "flap" then
+		return
+	end
+	local v = self.object:get_velocity()
+	if v and (v.y < -0.01 or v.y > 0.01) then
+		self:set_animation("flap")
+	end
+end
 
 mcl_mobs.register_mob("mobs_mc:chicken", {
 	description = S("Chicken"),
@@ -68,11 +98,13 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 		stand_start = 0, stand_end = 0,
 		walk_start = 0, walk_end = 20, walk_speed = 25,
 		run_start = 0, run_end = 20, run_speed = 50,
+		flap_start = 20, flap_end = 26,
 	},
 	child_animations = {
 		stand_start = 31, stand_end = 31,
 		walk_start = 31, walk_end = 51, walk_speed = 37,
 		run_start = 31, run_end = 51, run_speed = 75,
+		flap_start = 51, flap_end = 57,
 	},
 	follow = {
 		"mcl_farming:wheat_seeds",
@@ -90,32 +122,11 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 	end,
 
 	do_custom = function(self, dtime)
-
-		self.egg_timer = (self.egg_timer or 0) + dtime
-		if self.egg_timer < 10 then
-			return
-		end
-		self.egg_timer = 0
-
-		if self.child
-		or math.random(1, 100) > 1 then
-			return
-		end
-
-		local pos = self.object:get_pos()
-
-		minetest.add_item(pos, "mcl_throwing:egg")
-
-		minetest.sound_play("mobs_mc_chicken_lay_egg", {
-			pos = pos,
-			gain = 1.0,
-			max_hear_distance = 16,
-		}, true)
+		lay_egg(self, dtime)
+		flap(self)
 	end,
-
 })
 
---spawn
 mcl_mobs:spawn_setup({
 	name = "mobs_mc:chicken",
 	dimension = "overworld",
@@ -165,5 +176,4 @@ mcl_mobs:spawn_setup({
 	max_height = mcl_vars.mg_overworld_max
 })
 
--- spawn eggs
 mcl_mobs.register_egg("mobs_mc:chicken", S("Chicken"), "#ddc3a8", "#ff0000", 0)
