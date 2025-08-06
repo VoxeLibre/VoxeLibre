@@ -29,9 +29,6 @@ end
 ---
 ---@param self any
 local function flap(self)
-	if self._current_animation == "flap" then
-		return
-	end
 	local v = self.object:get_velocity()
 	if v and (v.y < -0.01 or v.y > 0.01) then
 		self:set_animation("flap")
