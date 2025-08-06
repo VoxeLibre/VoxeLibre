@@ -1,5 +1,8 @@
 local S = minetest.get_translator("mobs_mc")
 
+--- The lower limit of speed at which a chicken can fall.
+local MIN_Y_VELOCITY = -1.00
+
 ---
 ---@param self any
 ---@param dtime number
@@ -30,8 +33,14 @@ end
 ---@param self any
 local function flap(self)
 	local v = self.object:get_velocity()
-	if v and (v.y < -0.01 or v.y > 0.01) then
+	if not v then
+		return
+	end
+	if v.y < -0.01 or v.y > 0.01 then
 		self:set_animation("flap")
+	end
+	if v.y < MIN_Y_VELOCITY then
+		self.object:set_acceleration(vector.zero())
 	end
 end
 
@@ -44,7 +53,7 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 	initial_properties = {
 		hp_min = 4,
 		hp_max = 4,
-		collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.69, 0.2},
+		collisionbox = { -0.2, -0.01, -0.2, 0.2, 0.69, 0.2 },
 	},
 	xp_min = 1,
 	xp_max = 3,
@@ -53,30 +62,33 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 	head_eye_height = 0.5,
 	head_bone_position = vector.new(0, 3.72, -.472), -- for minetest <= 5.8
 	curiosity = 10,
-	head_yaw="z",
-	visual_size = {x=1,y=1},
+	head_yaw = "z",
+	visual_size = { x = 1, y = 1 },
 	visual = "mesh",
 	mesh = "mobs_mc_chicken.b3d",
 	textures = {
-		{"mobs_mc_chicken.png"},
+		{ "mobs_mc_chicken.png" },
 	},
 
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	drops = {
-		{name = "mcl_mobitems:chicken",
-		chance = 1,
-		min = 1,
-		max = 1,
-		looting = "common",},
-		{name = "mcl_mobitems:feather",
-		chance = 1,
-		min = 0,
-		max = 2,
-		looting = "common",},
+		{
+			name = "mcl_mobitems:chicken",
+			chance = 1,
+			min = 1,
+			max = 1,
+			looting = "common",
+		},
+		{
+			name = "mcl_mobitems:feather",
+			chance = 1,
+			min = 0,
+			max = 2,
+			looting = "common",
+		},
 	},
 	fall_damage = 0,
-	fall_speed = -2.25,
 	sounds = {
 		random = "mobs_mc_chicken_buck",
 		damage = "mobs_mc_chicken_hurt",
@@ -92,16 +104,28 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 		distance = 16,
 	},
 	animation = {
-		stand_start = 0, stand_end = 0,
-		walk_start = 0, walk_end = 20, walk_speed = 25,
-		run_start = 0, run_end = 20, run_speed = 50,
-		flap_start = 20, flap_end = 26,
+		stand_start = 0,
+		stand_end = 0,
+		walk_start = 0,
+		walk_end = 20,
+		walk_speed = 25,
+		run_start = 0,
+		run_end = 20,
+		run_speed = 50,
+		flap_start = 20,
+		flap_end = 26,
 	},
 	child_animations = {
-		stand_start = 31, stand_end = 31,
-		walk_start = 31, walk_end = 51, walk_speed = 37,
-		run_start = 31, run_end = 51, run_speed = 75,
-		flap_start = 51, flap_end = 57,
+		stand_start = 31,
+		stand_end = 31,
+		walk_start = 31,
+		walk_end = 51,
+		walk_speed = 37,
+		run_start = 31,
+		run_end = 51,
+		run_speed = 75,
+		flap_start = 51,
+		flap_end = 57,
 	},
 	follow = {
 		"mcl_farming:wheat_seeds",
