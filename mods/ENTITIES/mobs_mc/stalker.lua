@@ -69,6 +69,10 @@ end
 ---@param clicker core.Player
 local function stalker_on_rightclick(self, clicker)
 	-- Force-ignite stalker with flint and steel.
+	--
+	if self:is_fuse_triggered() then
+		return
+	end
 	local item = clicker:get_wielded_item()
 	if not item or item:get_name() ~= "mcl_fire:flint_and_steel" then
 		return
