@@ -110,36 +110,23 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
-	-- Force-ignite stalker with flint and steel and explode after 1.5 seconds.
-	-- TODO: Make stalker flash after doing this as well.
-	-- TODO: Test and debug this code.
+	---
+	--- @param self    any
+	--- @param clicker core.Player
 	on_rightclick = function(self, clicker)
-		if self._forced_explosion_countdown_timer ~= nil then
+		-- Force-ignite stalker with flint and steel.
+		local item = clicker:get_wielded_item()
+		if not item or item:get_name() ~= "mcl_fire:flint_and_steel" then
 			return
 		end
-		local item = clicker:get_wielded_item()
-		if item:get_name() == "mcl_fire:flint_and_steel" then
-			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				-- Wear tool
-				local wdef = item:get_definition()
-				item:add_wear(1000)
-				-- Tool break sound
-				if item:get_count() == 0 and wdef.sound and wdef.sound.breaks then
-					minetest.sound_play(wdef.sound.breaks, {pos = clicker:get_pos(), gain = 0.5}, true)
-				end
-				clicker:set_wielded_item(item)
-			end
-			self._forced_explosion_countdown_timer = self.explosion_timer
-			minetest.sound_play(self.sounds.attack, {pos = self.object:get_pos(), gain = 1, max_hear_distance = 16}, true)
-		end
+		self.allow_fuse_reset = false
+		self:start_fuse()
 	end,
+
+	---
+	---@param self  any
+	---@param dtime number
 	do_custom = function(self, dtime)
-		if self._forced_explosion_countdown_timer ~= nil then
-			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
-			if self._forced_explosion_countdown_timer <= 0 then
-				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
-			end
-		end
 		local new_texture = get_texture(self, self._stalker_texture)
 		if self._stalker_texture ~= new_texture then
 			self.object:set_properties({textures={new_texture, "mobs_mc_empty.png"}})
@@ -247,40 +234,33 @@ mcl_mobs.register_mob("mobs_mc:stalker_overloaded", {
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
-	-- Force-ignite stalker with flint and steel and explode after 1.5 seconds.
-	-- TODO: Make stalker flash after doing this as well.
-	-- TODO: Test and debug this code.
+	--- @param self    any
+	--- @param clicker core.Player
 	on_rightclick = function(self, clicker)
-		if self._forced_explosion_countdown_timer ~= nil then
+		-- Force-ignite stalker with flint and steel.
+		local item = clicker:get_wielded_item()
+		if not item or item:get_name() ~= "mcl_fire:flint_and_steel" then
 			return
 		end
-		local item = clicker:get_wielded_item()
-		if item:get_name() == "mcl_fire:flint_and_steel" then
-			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				-- Wear tool
-				local wdef = item:get_definition()
-				item:add_wear(1000)
-				-- Tool break sound
-				if item:get_count() == 0 and wdef.sound and wdef.sound.breaks then
-					minetest.sound_play(wdef.sound.breaks, {pos = clicker:get_pos(), gain = 0.5}, true)
-				end
-				clicker:set_wielded_item(item)
-			end
-			self._forced_explosion_countdown_timer = self.explosion_timer
-			minetest.sound_play(self.sounds.attack, {pos = self.object:get_pos(), gain = 1, max_hear_distance = 16}, true)
-		end
+		self.allow_fuse_reset = false
+		self:start_fuse()
 	end,
+
+	---
+	---@param self  any
+	---@param dtime number
 	do_custom = function(self, dtime)
-		if self._forced_explosion_countdown_timer ~= nil then
-			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
-			if self._forced_explosion_countdown_timer <= 0 then
-				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
-			end
-		end
 		if not self._aura_timer or self._aura_timer > 1 then self._aura_timer = 0 end
 		self._aura_timer = self._aura_timer + dtime
-		self.object:set_properties({textures={get_texture(self), get_overloaded_aura(self._aura_timer)}})
+		self.object:set_properties({ textures = { get_texture(self), get_overloaded_aura(self._aura_timer) } })
+
+		local new_texture = get_texture(self, self._stalker_texture)
+		if self._stalker_texture ~= new_texture then
+			self.object:set_properties({ textures = { new_texture, "mobs_mc_empty.png" } })
+			self._stalker_texture = new_texture
+		end
 	end,
+	
 	on_die = function(self, pos, cmi_cause)
 		-- Drop a random music disc when killed by skeleton or stray
 		if cmi_cause and cmi_cause.type == "punch" then

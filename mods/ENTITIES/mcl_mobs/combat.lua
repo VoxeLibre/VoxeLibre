@@ -805,6 +805,14 @@ local function clear_aggro(self)
 	self.path.way = nil
 end
 
+function mob_class:start_fuse()
+	self.v_start    = true
+	self.timer      = 0
+	self.blinktimer = 0
+	self:mob_sound("fuse", nil, false)
+	self:set_animation("fuse")
+end
+
 function mob_class:do_states_attack(dtime)
 	self.timer = self.timer + dtime
 	if self.timer > 100 then self.timer = 1 end
@@ -856,11 +864,7 @@ function mob_class:do_states_attack(dtime)
 
 		-- start timer when in reach and line of sight
 		if not self.v_start and dist <= self.reach and target_line_of_sight then
-			self.v_start = true
-			self.timer = 0
-			self.blinktimer = 0
-			self:mob_sound("fuse", nil, false)
-			self:set_animation("fuse")
+			self:start_fuse()
 
 			-- stop timer if out of reach or direct line of sight
 		elseif self.allow_fuse_reset and self.v_start
