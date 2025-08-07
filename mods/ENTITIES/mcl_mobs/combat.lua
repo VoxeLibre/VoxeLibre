@@ -858,6 +858,7 @@ function mob_class:do_states_attack(dtime)
 			self.timer = 0
 			self.blinktimer = 0
 			self:mob_sound("fuse", nil, false)
+			self:set_animation("fuse")
 
 			-- stop timer if out of reach or direct line of sight
 		elseif self.allow_fuse_reset and self.v_start
@@ -876,16 +877,17 @@ function mob_class:do_states_attack(dtime)
 			self:set_velocity(self.run_velocity)
 		end
 
-		if self.animation and self.animation.run_start then
-			self:set_animation("run")
-		else
-			self:set_animation("walk")
+		if not self.v_start then
+			if self.animation and self.animation.run_start then
+				self:set_animation("run")
+			else
+				self:set_animation("walk")
+			end
 		end
 
 		if self.v_start then
 			self.timer = self.timer + dtime
 			self.blinktimer = (self.blinktimer or 0) + dtime
-			self:set_animation("fuse")
 
 			if self.blinktimer > 0.2 then
 				self.blinktimer = 0
