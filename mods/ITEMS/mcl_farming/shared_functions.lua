@@ -4,6 +4,7 @@
 -- * switch to exponentially-weighted moving average for light instead using a single variable to conserve IO
 --
 local math = math
+
 local vector = vector
 local random = math.random
 local floor = math.floor
@@ -13,7 +14,7 @@ mcl_farming.plant_lists = plant_lists -- export
 local plant_nodename_to_id = {} -- map nodes to plants
 local plant_step_from_name = {} -- map nodes to growth steps
 
-local growth_factor = tonumber(minetest.settings:get("vl_plant_growth")) or 1.0
+local growth_factor = tonumber(core.settings:get("vl_plant_growth")) or 1.0
 
 -- wetness of the surroundings
 -- dry farmland = 1 point
@@ -27,7 +28,7 @@ local function get_moisture_level(pos)
 		n.z = pos.z + z
 		for x = -1,1 do
 			n.x = pos.x + x
-			local ndef = minetest.registered_nodes[minetest.get_node(n).name]
+			local ndef = core.registered_nodes[core.get_node(n).name]
 			local soil = ndef and ndef.groups.soil
 			if soil and soil >= 2 then
 				local m = soil > 2 and 3 or 1
@@ -46,32 +47,32 @@ end
 -- 1.0 otherwise
 -- we cannot use the names directly, because growth is encoded in the names
 local function get_same_crop_penalty(pos)
-	local name = minetest.get_node(pos).name
+	local name = core.get_node(pos).name
 	local plant = plant_nodename_to_id[name]
 	if not plant then return 1 end
 	local n = vector.copy(pos)
 	-- check adjacent positions, avoid vector allocations and reduce node accesses
 	n.x = pos.x - 1
-	local dx = plant_nodename_to_id[minetest.get_node(n).name] == plant
+	local dx = plant_nodename_to_id[core.get_node(n).name] == plant
 	n.x = pos.x + 1
-	dx = dx or plant_nodename_to_id[minetest.get_node(n).name] == plant
+	dx = dx or plant_nodename_to_id[core.get_node(n).name] == plant
 	if dx then -- no need to check z otherwise
 		n.x = pos.x
 		n.z = pos.z - 1
-		local dz = plant_nodename_to_id[minetest.get_node(n).name] == plant
+		local dz = plant_nodename_to_id[core.get_node(n).name] == plant
 		n.z = pos.z + 1
-		dz = dz or plant_nodename_to_id[minetest.get_node(n).name] == plant
+		dz = dz or plant_nodename_to_id[core.get_node(n).name] == plant
 		if dz then return 0.5 end
 	end
 	-- check diagonals, clockwise
 	n.x, n.z = pos.x - 1, pos.z - 1
-	if plant_nodename_to_id[minetest.get_node(n).name] == plant then return 0.5 end
+	if plant_nodename_to_id[core.get_node(n).name] == plant then return 0.5 end
 	n.x = pos.x + 1
-	if plant_nodename_to_id[minetest.get_node(n).name] == plant then return 0.5 end
+	if plant_nodename_to_id[core.get_node(n).name] == plant then return 0.5 end
 	n.z = pos.z + 1
-	if plant_nodename_to_id[minetest.get_node(n).name] == plant then return 0.5 end
+	if plant_nodename_to_id[core.get_node(n).name] == plant then return 0.5 end
 	n.x = pos.x - 1
-	if plant_nodename_to_id[minetest.get_node(n).name] == plant then return 0.5 end
+	if plant_nodename_to_id[core.get_node(n).name] == plant then return 0.5 end
 	return 1
 end
 
@@ -91,7 +92,7 @@ function mcl_farming:add_plant(identifier, full_grown, names, interval, chance)
 	end
 	plant_lists[identifier] = plant_info
 	if interval == 0 then return end -- growth disabled
-	minetest.register_abm({
+	core.register_abm({
 		label = string.format("Farming plant growth (%s)", identifier),
 		nodenames = names,
 		interval = interval,
@@ -115,7 +116,7 @@ function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light_wate
 	local plant_info = plant_lists[identifier]
 	if not plant_info then return end
 	if not ignore_light_water then
-		if (minetest.get_node_light(pos, 0.5) or 0) < 0 then return false end -- day light
+		if (core.get_node_light(pos, 0.5) or 0) < 0 then return false end -- day light
 		local odds = floor(25 / (get_moisture_level(pos) * get_same_crop_penalty(pos))) + 1
 		for i = 1,stages do
 			-- compared to info from the MC wiki, our ABM runs a third as often, hence we use triple the chance
@@ -126,7 +127,7 @@ function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light_wate
 	if stages == 0 then return false end
 	local step = plant_step_from_name[node.name]
 	if step == nil then return false end
-	minetest.set_node(pos, {
+	core.set_node(pos, {
 		name = plant_info.names[step + stages] or plant_info.full_grown,
 		param = node.param,
 		param2 = node.param2,
@@ -139,20 +140,20 @@ function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
 	if not pt or pt.type ~= "node" then return end
 
 	-- Use pointed node's on_rightclick function first, if present
-	local node = minetest.get_node(pt.under)
+	local node = core.get_node(pt.under)
 	if placer and not placer:get_player_control().sneak then
-		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-			return minetest.registered_nodes[node.name].on_rightclick(pt.under, node, placer, itemstack) or itemstack
+		if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
+			return core.registered_nodes[node.name].on_rightclick(pt.under, node, placer, itemstack) or itemstack
 		end
 	end
 
-	if minetest.get_node(pt.above).name ~= "air" then return end
-	local farmland = minetest.registered_nodes[minetest.get_node(vector.offset(pt.above, 0, -1, 0)).name]
+	if core.get_node(pt.above).name ~= "air" then return end
+	local farmland = core.registered_nodes[core.get_node(vector.offset(pt.above, 0, -1, 0)).name]
 	if not farmland or (farmland.groups.soil or 0) < 2 then return end
-	minetest.sound_play(minetest.registered_nodes[plantname].sounds.place, { pos = pt.above }, true)
-	minetest.add_node(pt.above, { name = plantname, param2 = minetest.registered_nodes[plantname].place_param2 })
+	core.sound_play(core.registered_nodes[plantname].sounds.place, { pos = pt.above }, true)
+	core.add_node(pt.above, { name = plantname, param2 = core.registered_nodes[plantname].place_param2 })
 
-	if not minetest.is_creative_enabled(placer:get_player_name()) then itemstack:take_item() end
+	if not core.is_creative_enabled(placer:get_player_name()) then itemstack:take_item() end
 	return itemstack
 end
 
@@ -187,24 +188,24 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			-- four directions, but avoid using a table
 			-- opposite directions to above, as we go from groud to stem now!
 			local stempos = vector.offset(blockpos, -1, 0, 0)
-			if minetest.get_node(stempos).name == connected_stem_names[1] then
-				minetest.swap_node(stempos, { name = full_unconnected_stem })
+			if core.get_node(stempos).name == connected_stem_names[1] then
+				core.swap_node(stempos, { name = full_unconnected_stem })
 			end
 			local stempos = vector.offset(blockpos, 1, 0, 0)
-			if minetest.get_node(stempos).name == connected_stem_names[2] then
-				minetest.swap_node(stempos, { name = full_unconnected_stem })
+			if core.get_node(stempos).name == connected_stem_names[2] then
+				core.swap_node(stempos, { name = full_unconnected_stem })
 			end
 			local stempos = vector.offset(blockpos, 0, 0, -1)
-			if minetest.get_node(stempos).name == connected_stem_names[3] then
-				minetest.swap_node(stempos, { name = full_unconnected_stem })
+			if core.get_node(stempos).name == connected_stem_names[3] then
+				core.swap_node(stempos, { name = full_unconnected_stem })
 			end
 			local stempos = vector.offset(blockpos, 0, 0, 1)
-			if minetest.get_node(stempos).name == connected_stem_names[4] then
-				minetest.swap_node(stempos, { name = full_unconnected_stem })
+			if core.get_node(stempos).name == connected_stem_names[4] then
+				core.swap_node(stempos, { name = full_unconnected_stem })
 			end
 		end
 	end
-	minetest.register_node(gourd_itemstring, gourd_def)
+	core.register_node(gourd_itemstring, gourd_def)
 
 	-- Register unconnected stem
 
@@ -219,7 +220,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	stem_def.drop = stem_def.drop or stem_drop
 	stem_def.groups = stem_def.groups or { dig_immediate = 3, not_in_creative_inventory = 1, plant = 1, attached_node = 1, dig_by_water = 1, destroy_by_lava_flow = 1 }
 	stem_def.sounds = stem_def.sounds or mcl_sounds.node_sound_leaves_defaults()
-	minetest.register_node(stem_itemstring, stem_def)
+	core.register_node(stem_itemstring, stem_def)
 	plant_nodename_to_id[stem_itemstring] = stem_itemstring
 
 	-- Register connected stems
@@ -268,7 +269,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	}
 
 	for i = 1, 4 do
-		minetest.register_node(connected_stem_names[i], {
+		core.register_node(connected_stem_names[i], {
 			_doc_items_create_entry = false,
 			paramtype = "light",
 			sunlight_propagates = true,
@@ -285,20 +286,20 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		})
 		plant_nodename_to_id[connected_stem_names[i]] = stem_itemstring
 
-		if minetest.get_modpath("doc") then
+		if core.get_modpath("doc") then
 			doc.add_entry_alias("nodes", full_unconnected_stem, "nodes", connected_stem_names[i])
 		end
 	end
 
 	if grow_interval == 0 then return end
-	minetest.register_abm({
+	core.register_abm({
 		label = "Grow gourd stem to gourd (" .. full_unconnected_stem .. " → " .. gourd_itemstring .. ")",
 		nodenames = { full_unconnected_stem },
 		neighbors = { "air" },
 		interval = grow_interval,
 		chance = grow_chance,
 		action = function(stempos)
-			local light = minetest.get_node_light(stempos, 0.5)
+			local light = core.get_node_light(stempos, 0.5)
 			if not light or light < 9 then return end
 			-- Pick one neighbor and check if it can be used to grow
 			local dir = random(1, 4) -- pick direction at random
@@ -306,11 +307,11 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 				or (dir == 2 and vector.offset(stempos, -1, 0, 0))
 				or (dir == 3 and vector.offset(stempos, 0, 0, 1))
 				or  vector.offset(stempos, 0, 0, -1)
-			if minetest.get_node(neighbor).name ~= "air" then return end -- occupied
+			if core.get_node(neighbor).name ~= "air" then return end -- occupied
 			-- check for suitable floor -- in contrast to MC, we think everything solid is fine
 			local floorpos = vector.offset(neighbor, 0, -1, 0)
-			local floorname = minetest.get_node(floorpos).name
-			local floordef = minetest.registered_nodes[floorname]
+			local floorname = core.get_node(floorpos).name
+			local floordef = core.registered_nodes[floorname]
 			if not floordef or not floordef.walkable then return end
 
 			-- check moisture level
@@ -318,17 +319,17 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			-- we triple the odds, and rather call the ABM less often
 			if random() * odds >= 3 then return end
 
-			minetest.swap_node(stempos, { name = connected_stem_names[dir] })
+			core.swap_node(stempos, { name = connected_stem_names[dir] })
 			if gourd_def.paramtype2 == "facedir" then
 				local p2 = (dir == 1 and 3) or (dir == 2 and 1) or (dir == 3 and 2) or 0
-				minetest.add_node(neighbor, { name = gourd_itemstring, param2 = p2 })
+				core.add_node(neighbor, { name = gourd_itemstring, param2 = p2 })
 			else
-				minetest.add_node(neighbor, { name = gourd_itemstring })
+				core.add_node(neighbor, { name = gourd_itemstring })
 			end
 
 			-- Reset farmland, etc. to dirt when the gourd grows on top
 			if (floordef.groups.dirtifies_below_solid or 0) > 0 then
-				minetest.set_node(floorpos, { name = "mcl_core:dirt" })
+				core.set_node(floorpos, { name = "mcl_core:dirt" })
 			end
 		end,
 	})
@@ -354,11 +355,11 @@ Used for on_place callbacks for craft items which are seeds that can also be con
 function mcl_farming:get_seed_or_eat_callback(plantname, hp_change)
 	return function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
-		or minetest.do_item_eat(hp_change, nil, itemstack, placer, pointed_thing)
+		or core.do_item_eat(hp_change, nil, itemstack, placer, pointed_thing)
 	end
 end
 
-minetest.register_lbm({
+core.register_lbm({
 	label = "Add growth for unloaded farming plants",
 	name = "mcl_farming:growth",
 	nodenames = { "group:plant" },

@@ -1,4 +1,4 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 -- Premature potato plants
 
@@ -22,12 +22,12 @@ for i=1, 7 do
 		longdesc = S("Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.")
 	else
 		create = false
-		if minetest.get_modpath("doc") then
+		if core.get_modpath("doc") then
 			doc.add_entry_alias("nodes", "mcl_farming:potato_1", "nodes", "mcl_farming:potato_"..i)
 		end
 	end
 
-	minetest.register_node("mcl_farming:potato_"..i, {
+	core.register_node("mcl_farming:potato_"..i, {
 		description = S("Premature Potato Plant (Stage @1)", i),
 		_doc_items_create_entry = create,
 		_doc_items_entry_name = name,
@@ -51,7 +51,7 @@ for i=1, 7 do
 		_mcl_blast_resistance = 0,
 		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
-			local n = minetest.get_node(pos)
+			local n = core.get_node(pos)
 			local stages = math.random(2, 5)
 			return mcl_farming:grow_plant("plant_potato", pos, n, stages, true)
 		end
@@ -59,7 +59,7 @@ for i=1, 7 do
 end
 
 -- Mature plant
-minetest.register_node("mcl_farming:potato", {
+core.register_node("mcl_farming:potato", {
 	description = S("Mature Potato Plant"),
 	_doc_items_longdesc = S("Mature potato plants are ready to be harvested for potatoes. They won't grow any further."),
 	paramtype = "light",
@@ -98,7 +98,7 @@ minetest.register_node("mcl_farming:potato", {
 	}
 })
 
-minetest.register_craftitem("mcl_farming:potato_item", {
+core.register_craftitem("mcl_farming:potato_item", {
 	description = S("Potato"),
 	_tt_help = S("Grows on farmland"),
 	_doc_items_longdesc = S("Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes."),
@@ -107,34 +107,34 @@ minetest.register_craftitem("mcl_farming:potato_item", {
 	groups = {food = 2, eatable = 1, compostability = 65, smoker_cookable = 1},
 	_mcl_saturation = 0.6,
 	stack_max = 64,
-	on_secondary_use = minetest.item_eat(1),
+	on_secondary_use = core.item_eat(1),
 	on_place = mcl_farming:get_seed_or_eat_callback("mcl_farming:potato_1", 1),
 })
 
-minetest.register_craftitem("mcl_farming:potato_item_baked", {
+core.register_craftitem("mcl_farming:potato_item_baked", {
 	description = S("Baked Potato"),
 	_doc_items_longdesc = S("Baked potatoes are food items which are more filling than the unbaked ones."),
 	stack_max = 64,
 	inventory_image = "farming_potato_baked.png",
-	on_place = minetest.item_eat(5),
-	on_secondary_use = minetest.item_eat(5),
+	on_place = core.item_eat(5),
+	on_secondary_use = core.item_eat(5),
 	groups = {food = 2, eatable = 5, compostability = 85},
 	_mcl_saturation = 6.0,
 })
 
-minetest.register_craftitem("mcl_farming:potato_item_poison", {
+core.register_craftitem("mcl_farming:potato_item_poison", {
 	description = S("Poisonous Potato"),
-	_tt_help = minetest.colorize(mcl_colors.YELLOW, S("60% chance of poisoning")),
+	_tt_help = core.colorize(mcl_colors.YELLOW, S("60% chance of poisoning")),
 	_doc_items_longdesc = S("This potato doesn't look too healthy. You can eat it to restore hunger points, but there's a 60% chance it will poison you briefly."),
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",
-	on_place = minetest.item_eat(2),
-	on_secondary_use = minetest.item_eat(2),
+	on_place = core.item_eat(2),
+	on_secondary_use = core.item_eat(2),
 	groups = { food = 2, eatable = 2 },
 	_mcl_saturation = 1.2,
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "cooking",
 	output = "mcl_farming:potato_item_baked",
 	recipe = "mcl_farming:potato_item",
@@ -143,7 +143,7 @@ minetest.register_craft({
 
 mcl_farming:add_plant("plant_potato", "mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2", "mcl_farming:potato_3", "mcl_farming:potato_4", "mcl_farming:potato_5", "mcl_farming:potato_6", "mcl_farming:potato_7"}, 5.8016, 35)
 
-minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
+core.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
 
 	-- 60% chance of poisoning with poisonous potato
 	if itemstack:get_name() == "mcl_farming:potato_item_poison" then
