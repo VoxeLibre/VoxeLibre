@@ -813,6 +813,10 @@ function mob_class:start_fuse()
 	self:set_animation("fuse")
 end
 
+function mob_class:is_fuse_triggered()
+	return self.v_start == true
+end
+
 function mob_class:do_states_attack(dtime)
 	self.timer = self.timer + dtime
 	if self.timer > 100 then self.timer = 1 end
