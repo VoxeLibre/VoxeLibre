@@ -1,15 +1,15 @@
 # textdomain: mcl_lanterns
 Chain=Corrente
 Chains are metallic decoration blocks.=Correntes são blocos de decoração metálicos.
-Gold Chain=
-Gold Chains are metallic decoration blocks.=
+Gold Chain=Corrente de Ouro
+Gold Chains are metallic decoration blocks.=Corentes de Ouro são blocos de decoração metálicos.
 ##[ register.lua ]##
 Lantern=Lanterna
 
 Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Lanternas são fontes de luz as quais podem ser posicionadas na parte superior ou inferior da maioria blocos.
 
 Soul Lantern=Lanterna das Almas
-Gold Lantern=
+Gold Lantern=Lanterna de Ouro
 
-Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
+Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Lanternas de Ouro são fontes de luz que podem ser colocadas em cima ou embaixo da maioria dos blocos.
 
