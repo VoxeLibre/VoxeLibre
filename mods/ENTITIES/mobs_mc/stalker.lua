@@ -50,14 +50,14 @@ end
 --- @param cmi_cause any
 --- @return boolean
 local function should_drop_music_disc(cmi_cause)
-	if not cmi_cause or not cmi_cause.puncher or cmi_cause.type ~= "punch" then
+	if not cmi_cause or cmi_cause.type ~= "punch" then
 		return false
 	end
-	local e = cmi_cause.puncher:get_luaentity()
-	if not e or not e.name or not e._shooter or not e.name:find("arrow") then
+	local e = cmi_cause.puncher and cmi_cause.puncher:get_luaentity()
+	if not e or not e.name:find("arrow") then
 		return false
 	end
-	local s = e._shooter:get_luaentity()
+	local s = e._source_object and e._source_object:get_luaentity()
 	if not s then
 		return false
 	end
