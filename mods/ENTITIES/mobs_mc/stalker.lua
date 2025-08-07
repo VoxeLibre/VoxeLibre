@@ -79,6 +79,17 @@ local function stalker_on_rightclick(self, clicker)
 	end
 	self.allow_fuse_reset = false
 	self:start_fuse()
+
+	-- Damage player's Flint and Steel.
+	-- FIXME: Move tool wear logic to a more appropriate place.
+	if not minetest.is_creative_enabled(clicker:get_player_name()) then
+		local wdef = item:get_definition()
+		item:add_wear(1000)
+		if item:get_count() == 0 and wdef.sound and wdef.sound.breaks then
+			core.sound_play(wdef.sound.breaks, { pos = clicker:get_pos(), gain = 0.5 }, true)
+		end
+		clicker:set_wielded_item(item)
+	end
 end
 
 ---
