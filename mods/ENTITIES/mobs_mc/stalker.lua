@@ -36,7 +36,8 @@ local function get_texture(self, prev)
 		texture = "vl_stalker_default.png"
 	else
 		texture = texture:gsub("([\\^:\\[])", "\\%1") -- escape texture modifiers
-		texture = "(vl_stalker_default.png^[combine:16x24:0,0=(" .. texture .. "):0,16=(" .. texture .. ")" .. texture_suff .. ")"
+		texture = "(vl_stalker_default.png^[combine:16x24:0,0=(" ..
+			texture .. "):0,16=(" .. texture .. ")" .. texture_suff .. ")"
 	end
 	if self.attack then
 		texture = texture .. "^vl_mobs_stalker_overlay_angry.png"
@@ -116,15 +117,14 @@ end
 
 local AURA = "vl_stalker_overloaded_aura.png"
 local function get_overloaded_aura(timer)
-	local frame = math.floor(timer*16)
+	local frame = math.floor(timer * 16)
 	local f = tostring(frame)
-	local nf = tostring(16-f)
-	return "[combine:16x24:-" .. nf ..",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
+	local nf = tostring(16 - f)
+	return "[combine:16x24:-" .. nf .. ",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
 end
 
 
-
-mcl_mobs.register_mob("mobs_mc:stalker", {
+local stalker = {
 	description = S("Stalker"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -132,22 +132,24 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	initial_properties = {
 		hp_min = 20,
 		hp_max = 20,
-		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
+		collisionbox = { -0.3, -0.01, -0.3, 0.3, 1.69, 0.3 },
 	},
 	xp_min = 5,
 	xp_max = 5,
 	pathfinding = 1,
 	visual = "mesh",
 	mesh = "vl_stalker.b3d",
--- 	head_swivel = "Head_Control",
-	head_eye_height = 1.2;
-	head_bone_position = vector.new( 0, 2.35, 0 ), -- for minetest <= 5.8
+	head_eye_height = 1.2,
+	head_bone_position = vector.new(0, 2.35, 0), -- for minetest <= 5.8
 	curiosity = 2,
-	textures = {
-		{get_texture({}),
-		"mobs_mc_empty.png"},
-	},
-	visual_size = {x=2, y=2},
+	textures = { { get_texture({}), "mobs_mc_empty.png" } },
+	visual_size = { x = 2, y = 2 },
+	walk_velocity = 1.05,
+	run_velocity = 2.0,
+	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
+	attack_type = "explode",
+
+	makes_footstep_sound = true,
 	sounds = {
 		attack = "tnt_ignite",
 		death = "mobs_mc_creeper_death",
@@ -156,13 +158,6 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 		explode = "tnt_explode",
 		distance = 16,
 	},
-	makes_footstep_sound = true,
-	walk_velocity = 1.05,
-	run_velocity = 2.0,
-	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
-	attack_type = "explode",
-
-	--hssssssssssss
 
 	explosion_strength = 3,
 	explosion_radius = 3.5,
@@ -178,20 +173,25 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	on_die = stalker_on_die,
 
 	maxdrops = 2,
-	drops = {
-		{name = "mcl_mobitems:gunpowder",
-		chance = 1,
-		min = 0,
-		max = 2,
-		looting = "common",},
 
+	drops = {
+		{
+			name = "mcl_mobitems:gunpowder",
+			chance = 1,
+			min = 0,
+			max = 2,
+			looting = "common",
+		},
 		-- Head
 		-- TODO: Only drop if killed by charged stalker
-		{name = "mcl_heads:stalker",
-		chance = 200, -- 0.5%
-		min = 1,
-		max = 1,},
+		{
+			name = "mcl_heads:stalker",
+			chance = 200, -- 0.5%
+			min = 1,
+			max = 1,
+		},
 	},
+
 	animation = {
 		speed_normal = 30,
 		speed_run = 60,
@@ -204,130 +204,62 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 		fuse_start = 49,
 		fuse_end = 80,
 	},
+
 	floats = 1,
 	fear_height = 4,
 	view_range = 16,
 
 	_on_after_convert = function(obj)
 		obj:set_properties({
-			visual_size = {x=2, y=2},
+			visual_size = { x = 2, y = 2 },
 			mesh = "vl_stalker.b3d",
-			textures = {
-				{get_texture({}),
-				"mobs_mc_empty.png"},
-			},
+			textures = { { get_texture({}), "mobs_mc_empty.png" }, },
 		})
 	end,
-}) -- END mcl_mobs.register_mob("mobs_mc:stalker", {
+}
 
-mcl_mobs.register_mob("mobs_mc:stalker_overloaded", {
+local function table_merge(t, ...)
+	local t2 = table.copy(t)
+	return table.update(t2, ...)
+end
+
+local stalker_overloaded = table_merge(stalker, {
 	description = S("Overloaded Stalker"),
-	type = "monster",
-	spawn_class = "hostile",
-	initial_properties = {
-		hp_min = 20,
-		hp_max = 20,
-		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
-	},
-	xp_min = 5,
-	xp_max = 5,
-	pathfinding = 1,
-	visual = "mesh",
-	mesh = "vl_stalker.b3d",
-
-	--BOOM
-
-	textures = {
-		{get_texture({}),
-		AURA},
-	},
+	textures = { { get_texture({}), AURA } },
 	use_texture_alpha = true,
-	visual_size = {x=2, y=2},
-	sounds = {
-		attack = "tnt_ignite",
-		death = "mobs_mc_creeper_death",
-		damage = "mobs_mc_creeper_hurt",
-		fuse = "tnt_ignite",
-		explode = "tnt_explode",
-		distance = 16,
-	},
-	makes_footstep_sound = true,
-	walk_velocity = 1.05,
-	run_velocity = 2.1,
-	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
-	attack_type = "explode",
-
 	explosion_strength = 6,
 	explosion_radius = 8,
 	explosion_damage_radius = 8,
-	explosiontimer_reset_radius = 3,
-	reach = 3,
-	explosion_timer = 1.5,
-	allow_fuse_reset = true,
-	stop_to_explode = true,
+	fire_resistant = true,
+	glow = 3,
 
-	on_rightclick = stalker_on_rightclick,
-
-	---
-	---@param self  any
-	---@param dtime number
 	do_custom = function(self, dtime)
-		if not self._aura_timer or self._aura_timer > 1 then self._aura_timer = 0 end
+		if not self._aura_timer or self._aura_timer > 1 then
+			self._aura_timer = 0
+		end
 		self._aura_timer = self._aura_timer + dtime
 		self.object:set_properties({ textures = { get_texture(self), get_overloaded_aura(self._aura_timer) } })
 
 		stalker_camouflage(self, dtime)
 	end,
-	
-	on_die = stalker_on_die,
 
-	maxdrops = 2,
-	drops = {
-		{name = "mcl_mobitems:gunpowder",
-		chance = 1,
-		min = 0,
-		max = 2,
-		looting = "common",},
-
-		-- Head
-		-- TODO: Only drop if killed by overloaded stalker
-		{name = "mcl_heads:stalker",
-		chance = 200, -- 0.5%
-		min = 1,
-		max = 1,},
-	},
-	animation = {
-		speed_normal = 30,
-		speed_run = 60,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 49,
-		run_start = 24,
-		run_end = 49,
-		fuse_start = 49,
-		fuse_end = 80,
-	},
-	floats = 1,
-	fear_height = 4,
-	view_range = 16,
-	--Having trouble when fire is placed with lightning
-	fire_resistant = true,
-	glow = 3,
+	on_lightning_strike = function(self, pos, pos2, objects)
+		mcl_util.replace_mob(self.object, "mobs_mc:stalker_overloaded")
+		return true
+	end,
 
 	_on_after_convert = function(obj)
 		obj:set_properties({
-			visual_size = {x=2, y=2},
+			visual_size = { x = 2, y = 2 },
 			mesh = "vl_stalker.b3d",
-			textures = {
-				{get_texture({}),
-				AURA},
-			},
+			textures = { { get_texture({}), AURA } },
 		})
 	end,
-}) -- END mcl_mobs.register_mob("mobs_mc:stalker_overloaded", {
+})
 
--- compat
+mcl_mobs.register_mob("mobs_mc:stalker", stalker)
+mcl_mobs.register_mob("mobs_mc:stalker_overloaded", stalker_overloaded)
+
 mcl_mobs.register_conversion("mobs_mc:creeper", "mobs_mc:stalker")
 mcl_mobs.register_conversion("mobs_mc:creeper_charged", "mobs_mc:stalker_overloaded")
 
