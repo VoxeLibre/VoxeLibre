@@ -206,7 +206,7 @@ local stalker = {
 			looting = "common",
 		},
 		-- Head
-		-- TODO: Only drop if killed by charged stalker
+		-- TODO: This drop should be guaranteed when it's killed by an Overloaded Stalker
 		{
 			name = "mcl_heads:stalker",
 			chance = 200, -- 0.5%
