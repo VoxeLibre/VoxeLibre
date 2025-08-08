@@ -65,6 +65,7 @@ end
 ---@field upgradeable boolean?
 ---@field upgrade_item string?
 ---@field dig_group {speed:integer, level: integer, uses: integer}
+---@field damage_groups {[string]: integer}
 ---@field craftable boolean?
 ---@field burn_time integer?
 
@@ -90,6 +91,7 @@ function mcl_farming:register_hoe(material, def)
 	local upgrade = def.upgradeable or false
 	local craftable = (def.craftable ~= nil and def.craftable) or true
 	local burn_time = def.burn_time or 0
+	local damage_groups = def.damage_groups or {fleshy = 1}
 	assert(def.place_uses, "Hoe definition requires place_uses to be set")
 	assert(def.punch_uses, "Hoe definition requires punch_uses to be set")
 	assert(def.enchantability, "Hoe definition requires enchantability to be set")
@@ -107,7 +109,7 @@ function mcl_farming:register_hoe(material, def)
 		groups = { tool = 1, hoe = 1, enchantability = def.enchantability },
 		tool_capabilities = {
 			full_punch_interval = 1,
-			damage_groups = { fleshy = 1, },
+			damage_groups = damage_groups,
 			punch_attack_uses = def.punch_uses,
 		},
 		_repair_material = def.repair_material,
@@ -204,7 +206,8 @@ local crafts = {
 		crafting_material = "mcl_nether:netherite_ingot",
 		repair_material = "mcl_nether:netherite_ingot",
 		craftable = false,
-		dig_group = { speed = 8, level = 5, uses = 2031 }
+		dig_group = { speed = 8, level = 5, uses = 2031 },
+		damage_groups = { fleshy = 4 }
 	},
 }
 
