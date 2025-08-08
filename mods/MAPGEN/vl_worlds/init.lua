@@ -223,7 +223,7 @@ end
 
 -- test for nonexistent 0.89 patch to allow testing on prerelease versions
 -- TODO migrate to {0, 90} before release
-if mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) then
+if false and mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) then
 	vl_worlds.register_world({
 		id = "overworld",
 		name = S("Overworld"),
@@ -587,8 +587,51 @@ local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
 vl_worlds.register_layer("underworld", {
 	id = "land",
 	bottom = 0,
-	top = underworld_bounds.max - underworld_bounds.min - 48,
+	top = 127,
 	has_separate_biomes = true,
+})
+if not superflat then
+	vl_worlds.register_layer("underworld", {
+		id = "floor",
+		top = 4,
+		bottom = 0,
+		has_separate_biomes = false,
+	})
+	vl_worlds.register_layer("underworld", {
+		id = "roof",
+		top = 127,
+		bottom = 123,
+		has_separate_biomes = false,
+	})
+	vl_worlds.register_layer("underworld", {
+		id = "lava",
+		bottom = 0,
+		top = 31,
+	})
+else
+	vl_worlds.register_layer("underworld", {
+		id = "floor",
+		top = 0,
+		bottom = 0,
+		has_separate_biomes = false,
+	})
+	vl_worlds.register_layer("underworld", {
+		id = "roof",
+		top = 127,
+		bottom = 127,
+		has_separate_biomes = false,
+	})
+	vl_worlds.register_layer("underworld", {
+		id = "lava",
+		bottom = 0,
+		top = 2,
+	})
+end
+vl_worlds.register_layer("underworld", {
+	id = "air_over_roof",
+	bottom = 128,
+	top = 255,
+	has_separate_biomes = false,
 })
 
 local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
@@ -648,7 +691,7 @@ else
 	deprecated.mg_bedrock_is_rough = false
 end
 
-local nether_bounds = vl_worlds.get_dimension_bounds("underworld")
+local nether_bounds = vl_worlds.get_layer_bounds("underworld", "land")
 deprecated.mg_nether_min = nether_bounds.min
 deprecated.mg_nether_max = nether_bounds.max
 
@@ -667,19 +710,17 @@ end
 -- end of DEPRECATED
 
 -- TODO remove
-mcl_vars.mg_bedrock_nether_bottom_min = nether_bounds.min
+local underworld_roof_bounds  = vl_worlds.get_layer_bounds("underworld", "roof")
+local underworld_floor_bounds = vl_worlds.get_layer_bounds("underworld", "floor")
+local underworld_lava_bounds  = vl_worlds.get_layer_bounds("underworld", "lava")
+
+mcl_vars.mg_bedrock_nether_bottom_min = underworld_floor_bounds.min
 mcl_vars.mg_nether_deco_max = mcl_vars.mg_nether_max - 11 -- this is so ceiling decorations don't spill into other biomes as bedrock generation calls core.generate_decorations to put netherrack under the bedrock
-mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
-if not superflat then
-	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
-	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
-	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
-else
-	-- Thin bedrock in classic superflat mapgen
-	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min
-	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max
-	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 2
-end
+mcl_vars.mg_bedrock_nether_top_max = underworld_roof_bounds.max
+mcl_vars.mg_bedrock_nether_bottom_max = underworld_floor_bounds.max
+mcl_vars.mg_bedrock_nether_top_min = underworld_roof_bounds.min
+mcl_vars.mg_lava_nether_max = underworld_lava_bounds.max
+
 if mg_name == "flat" then
 	if superflat then
 		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_bedrock_nether_bottom_max + 4
