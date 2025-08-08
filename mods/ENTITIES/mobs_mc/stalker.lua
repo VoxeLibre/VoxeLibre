@@ -241,12 +241,8 @@ local stalker = {
 	end,
 }
 
-local function table_merge(t, ...)
-	local t2 = table.copy(t)
-	return table.update(t2, ...)
-end
-
-local stalker_overloaded = table_merge(stalker, {
+local stalker_overloaded = table.copy(stalker)
+stalker_overloaded = mcl_util.table_merge(stalker_overloaded, {
 	description = S("Overloaded Stalker"),
 	textures = { { get_texture({}), AURA_TEXTURE } },
 	use_texture_alpha = true,
