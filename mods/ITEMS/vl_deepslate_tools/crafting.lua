@@ -4,7 +4,7 @@
 --- DateTime: 5/11/25 7:13 PM
 ---
 
-minetest.register_craft({
+core.register_craft({
 	output = "vl_deepslate_tools:pick_deepslate",
 	recipe = {
 		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
@@ -13,7 +13,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "vl_deepslate_tools:shovel_deepslate",
 	recipe = {
 		{"mcl_deepslate:deepslate_cobbled"},
@@ -22,7 +22,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "vl_deepslate_tools:sword_deepslate",
 	recipe = {
 		{"mcl_deepslate:deepslate_cobbled"},
@@ -31,7 +31,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "vl_deepslate_tools:axe_deepslate",
 	recipe = {
 		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
@@ -39,7 +39,7 @@ minetest.register_craft({
 		{"", "mcl_core:stick"},
 	}
 })
-minetest.register_craft({
+core.register_craft({
 	output = "vl_deepslate_tools:axe_deepslate",
 	recipe = {
 		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
@@ -48,7 +48,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "vl_deepslate_tools:hoe_deepslate",
 	recipe = {
 		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
@@ -56,7 +56,7 @@ minetest.register_craft({
 		{"", "mcl_core:stick"}
 	}
 })
-minetest.register_craft({
+core.register_craft({
 	output = "vl_deepslate_tools:hoe_deepslate",
 	recipe = {
 		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
@@ -113,7 +113,7 @@ core.register_craft({
 })
 
 -- Piston
-minetest.register_craft({
+core.register_craft({
 	output = "mesecons_pistons:piston_normal_off",
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
@@ -123,7 +123,7 @@ minetest.register_craft({
 })
 
 -- Dropper
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_droppers:dropper",
 	recipe = {
 		{ d, d, d, },
