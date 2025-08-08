@@ -64,8 +64,9 @@ end
 ---@field repair_material string
 ---@field upgradeable boolean?
 ---@field upgrade_item string?
----@field craftable boolean?
 ---@field dig_group {speed:integer, level: integer, uses: integer}
+---@field craftable boolean?
+---@field burn_time integer?
 
 local hoe_tt = S("Turns block into farmland")
 local hoe_longdesc = S(
@@ -88,6 +89,7 @@ function mcl_farming:register_hoe(material, def)
 	local tool_name = "mcl_farming:hoe_" .. material
 	local upgrade = def.upgradeable or false
 	local craftable = (def.craftable ~= nil and def.craftable) or true
+	local burn_time = def.burn_time or 0
 	assert(def.place_uses, "Hoe definition requires place_uses to be set")
 	assert(def.punch_uses, "Hoe definition requires punch_uses to be set")
 	assert(def.enchantability, "Hoe definition requires enchantability to be set")
@@ -117,11 +119,13 @@ function mcl_farming:register_hoe(material, def)
 		_mcl_upgrade_item = def.upgrade_item
 	})
 
-	core.register_craft({
-		type = "fuel",
-		recipe = tool_name,
-		burntime = 10,
-	})
+	if def.burn_time > 0 then
+		core.register_craft({
+			type = "fuel",
+			recipe = tool_name,
+			burntime = burn_time,
+		})
+	end
 
 	if craftable then
 		core.register_craft({
@@ -151,7 +155,8 @@ local crafts = {
 		enchantability = 15,
 		crafting_material = "group:wood",
 		repair_material = "group:wood",
-		dig_group = { speed = 2, level = 1, uses = 60 }
+		dig_group = { speed = 2, level = 1, uses = 60 },
+		burntime = 10
 	},
 	stone = {
 		description = S("Stone Hoe"),
