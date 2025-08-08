@@ -324,20 +324,27 @@ local function set_seagrass_param2(minp,maxp,data2,area,nodes)
 	return lvm_used
 end
 
+local underworld_roof_bounds  = vl_worlds.get_layer_bounds("underworld", "roof")
+local underworld_floor_bounds = vl_worlds.get_layer_bounds("underworld", "floor")
+local underworld_roof_air_bounds = vl_worlds.get_layer_bounds("underworld", "air_over_roof")
+
 -- Below the bedrock, generate air/void
 local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, blockseed)
 	local pr = PseudoRandom(blockseed)
 	local lvm_used = false
 
 	-- The Void below the Nether:
-	lvm_used = set_layers(data, area, c_void         , nil, vl_worlds.mapgen_edge_min                     , underworld_bounds.min                     -1, minp, maxp, pr) or lvm_used
+	-- TODO: use bounds of void layer directly below underworld
+	lvm_used = set_layers(data, area, c_void, nil, vl_worlds.mapgen_edge_min                     , underworld_bounds.min                     -1, minp, maxp, pr) or lvm_used
 
 	-- [[ THE NETHER:					underworld_bounds.min			       underworld_bounds.max							]]
 
 	-- The Air on the Nether roof, https://git.minetest.land/VoxeLibre/VoxeLibre/issues/1186
-	lvm_used = set_layers(data, area, c_air		 , nil, underworld_bounds.max			   +1, underworld_bounds.max + 128                 , minp, maxp, pr) or lvm_used
-	-- The Void above the Nether below the End:
-	lvm_used = set_layers(data, area, c_void         , nil, underworld_bounds.max + 128               +1, fringe_bounds.min                        -1, minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_air, nil, underworld_roof_air_bounds.min, underworld_roof_air_bounds.max, minp, maxp, pr) or lvm_used
+
+	-- The Void above the Nether below the Fringe:
+	-- TODO: use bounds of void layer directly below fringe
+	lvm_used = set_layers(data, area, c_void, nil, underworld_bounds.max + 128 + 1, fringe_bounds.min - 1, minp, maxp, pr) or lvm_used
 
 	-- [[ THE END:						fringe_bounds.min			       fringe_bounds.max							]]
 
@@ -352,8 +359,8 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 	if mg_name ~= "singlenode" then
 		-- Bedrock
 		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_overworld_min, mcl_vars.mg_bedrock_overworld_max, minp, maxp, pr) or lvm_used
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_bottom_max, minp, maxp, pr) or lvm_used
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_top_min, mcl_vars.mg_bedrock_nether_top_max, minp, maxp, pr) or lvm_used
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, underworld_floor_bounds.min, underworld_floor_bounds.max, minp, maxp, pr) or lvm_used
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, underworld_roof_bounds.min, underworld_roof_bounds.max, minp, maxp, pr) or lvm_used
 
 		-- Flat Nether
 		if mg_name == "flat" then
