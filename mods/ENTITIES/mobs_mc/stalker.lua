@@ -93,16 +93,39 @@ local function stalker_on_rightclick(self, clicker)
 	end
 end
 
+local AURA_TEXTURE = "vl_stalker_overloaded_aura.png"
+
+local function get_overloaded_aura(timer)
+	local frame = math.floor(timer * 16)
+	local f = tostring(frame)
+	local nf = tostring(16 - f)
+	return "[combine:16x24:-" .. nf .. ",0=" .. AURA_TEXTURE .. ":" .. f .. ",0=" .. AURA_TEXTURE
+end
+
+---@class camouflage_opts
+---@field aura_timer number? If provided, the stalker will have an overload aura.
+
 ---
 ---@param self  any
----@param dtime number
-local function stalker_camouflage(self, dtime)
+---@param opts  camouflage_opts?
+local function stalker_camouflage(self, opts)
+	local changed = true
 	local new_texture = get_texture(self, self._stalker_texture)
+	
 	if self._stalker_texture == new_texture then
-		return
+		if not opts or not opts.aura_timer then
+			return
+		end
+		changed = false
+	else
+		self._stalker_texture = new_texture
 	end
-	self.object:set_properties({ textures = { new_texture, "mobs_mc_empty.png" } })
-	self._stalker_texture = new_texture
+
+	if opts and opts.aura_timer then
+		self.object:set_properties({ textures = { new_texture, get_overloaded_aura(opts.aura_timer) } })
+	elseif changed then
+		self.object:set_properties({ textures = { new_texture, "mobs_mc_empty.png" } })
+	end
 end
 
 ---
@@ -114,15 +137,6 @@ local function stalker_on_die(self, pos, cmi_cause)
 		core.add_item({ x = pos.x, y = pos.y + 1, z = pos.z }, "mcl_jukebox:record_" .. math.random(9))
 	end
 end
-
-local AURA = "vl_stalker_overloaded_aura.png"
-local function get_overloaded_aura(timer)
-	local frame = math.floor(timer * 16)
-	local f = tostring(frame)
-	local nf = tostring(16 - f)
-	return "[combine:16x24:-" .. nf .. ",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
-end
-
 
 local stalker = {
 	description = S("Stalker"),
@@ -139,6 +153,7 @@ local stalker = {
 	pathfinding = 1,
 	visual = "mesh",
 	mesh = "vl_stalker.b3d",
+	-- 	head_swivel = "Head_Control",
 	head_eye_height = 1.2,
 	head_bone_position = vector.new(0, 2.35, 0), -- for minetest <= 5.8
 	curiosity = 2,
@@ -169,8 +184,16 @@ local stalker = {
 	stop_to_explode = true,
 
 	on_rightclick = stalker_on_rightclick,
-	do_custom = stalker_camouflage,
 	on_die = stalker_on_die,
+
+	do_custom = function(self, _ --[[dtime]])
+		stalker_camouflage(self)
+	end,
+
+	on_lightning_strike = function(self, _ --[[pos]], _ --[[pos2]], _ --[[objects]])
+		mcl_util.replace_mob(self.object, "mobs_mc:stalker_overloaded")
+		return true
+	end,
 
 	maxdrops = 2,
 
@@ -225,7 +248,7 @@ end
 
 local stalker_overloaded = table_merge(stalker, {
 	description = S("Overloaded Stalker"),
-	textures = { { get_texture({}), AURA } },
+	textures = { { get_texture({}), AURA_TEXTURE } },
 	use_texture_alpha = true,
 	explosion_strength = 6,
 	explosion_radius = 8,
@@ -234,25 +257,20 @@ local stalker_overloaded = table_merge(stalker, {
 	glow = 3,
 
 	do_custom = function(self, dtime)
+		--- Tick aura timer
 		if not self._aura_timer or self._aura_timer > 1 then
 			self._aura_timer = 0
 		end
 		self._aura_timer = self._aura_timer + dtime
-		self.object:set_properties({ textures = { get_texture(self), get_overloaded_aura(self._aura_timer) } })
-
-		stalker_camouflage(self, dtime)
-	end,
-
-	on_lightning_strike = function(self, pos, pos2, objects)
-		mcl_util.replace_mob(self.object, "mobs_mc:stalker_overloaded")
-		return true
+		
+		stalker_camouflage(self, { aura_timer = self._aura_timer })
 	end,
 
 	_on_after_convert = function(obj)
 		obj:set_properties({
 			visual_size = { x = 2, y = 2 },
 			mesh = "vl_stalker.b3d",
-			textures = { { get_texture({}), AURA } },
+			textures = { { get_texture({}), AURA_TEXTURE } },
 		})
 	end,
 })
