@@ -70,6 +70,7 @@ end
 ---@field craftable boolean?
 ---@field burn_time integer?
 ---@field max_enchant_level integer?
+---@field gives_fireproof integer?
 
 local hoe_tt = S("Turns block into farmland")
 local hoe_longdesc = S(
@@ -100,6 +101,10 @@ function mcl_farming:register_hoe(material, def)
 	assert(def.enchantability, "Hoe definition requires enchantability to be set")
 	assert(def.repair_material, "Hoe definition requires repair_material to be set")
 	assert(def.dig_group, "Hoe definition requires dig_group to be set")
+	local groups = { tool = 1, hoe = 1, enchantability = def.enchantability }
+	if def.gives_fireproof then
+		groups.fire_immune = 1
+	end
 	core.register_tool(tool_name, {
 		description = description,
 		_tt_help = help_text,
@@ -109,7 +114,7 @@ function mcl_farming:register_hoe(material, def)
 		inventory_image = image,
 		wield_scale = mcl_vars.tool_wield_scale,
 		on_place = hoe_on_place_function(def.place_uses),
-		groups = { tool = 1, hoe = 1, enchantability = def.enchantability },
+		groups = groups,
 		tool_capabilities = {
 			full_punch_interval = full_punch_interval,
 			damage_groups = damage_groups,
@@ -218,7 +223,8 @@ local crafts = {
 		craftable = false,
 		dig_group = { speed = 8, level = 5, uses = 2031 },
 		damage_groups = { fleshy = 4 },
-		full_punch_interval = 0.25
+		full_punch_interval = 0.25,
+		gives_fireproof = true
 	},
 }
 
