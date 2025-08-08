@@ -11,6 +11,7 @@
 * newrizen
 * wrrrzr
 * antimundo
+* farfind
 
 ### Dynamic settings
 A new dynamic settings and game rules tuning system has been built by teknomunk with some fixes from Herowl, allowing you (as long as you have the "server" privilege) to change various aspects of the game while playing, both with commands and from a handy GUI accessible from inventory (when you have the privilege). Now that the system is up, you can expect more settings and rules to come in future updates!
@@ -108,3 +109,15 @@ Ghast has been reworked by Herowl, with new model and texture, new ghast firebal
 ### Crash fixes
 * Fixed a crash when entering a world with corrupted entities – by teknomunk
 * Fixed a rare crash and a few related bugs when placing underworld vines – by teknomunk
+
+
+##  0.90.1 hotfix
+* Made mobs drop loot at their death position despite knockback – by Herowl
+* Fixed minecarts driven by players grabbing mobs – by farfind
+* Fixed mob armor texture usage – by Herowl
+* Fixed chicken and llama heads "disappearing" – by Archie
+* Fixed stalker fuse animation – by Herowl
+* Fixed deprecation warnings – by teknomunk
+* Updated Brazilian Portuguese translation – by newrizen
+* Updated official Lemmy link – by Herowl
+* Fixed a crash related to anvil – by Herowl
