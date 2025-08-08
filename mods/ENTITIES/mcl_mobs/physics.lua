@@ -413,7 +413,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 			self:item_drop(cooked, looting)
 
 			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
-				local pos = self.object:get_pos()
+				local pos = self.vl_drops_pos or self.object:get_pos()
 				local xp_amount = random(self.xp_min, self.xp_max)
 
 				if not mcl_sculk.handle_death(pos, xp_amount) then

@@ -668,7 +668,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			elseif luaentity and luaentity._knockback and die == true then
 				kb = kb + luaentity._knockback * 0.25
 			end
-			if die then kb = kb * 1.25 end
+			if die then
+				kb = kb * 1.25
+				self.vl_drops_pos = mob_pos
+			end
 
 			local up = 5.25
 			-- if already in air then dont go up anymore when hit
@@ -691,7 +694,6 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			kb = kb * 20 -- experimentally derived constant
 			self:set_velocity(0)
 			self.object:add_velocity(vector_new(dir.x * kb, up, dir.z * kb ))
-			self.vl_drops_pos = mob_pos
 
 			self.pause_timer = 0.25
 		end
