@@ -58,7 +58,7 @@ end
 ---@field usage_help string?
 ---@field image string?
 ---@field place_uses integer
----@field full_punch_interval integer?
+---@field full_punch_interval number?
 ---@field punch_uses integer
 ---@field enchantability integer
 ---@field crafting_material string?
