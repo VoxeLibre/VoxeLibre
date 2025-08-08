@@ -82,7 +82,7 @@ mod.register_minecart({
 	on_activate_by_rail = activate_normal_minecart,
 	_mcl_minecarts_on_step = function(self, dtime)
 		-- Grab mob
-		if math.random(1,20) > 15 and not self._passenger then
+		if math.random(1,20) > 15 and not (self._passenger or self._driver) then
 			local mobsnear = minetest.get_objects_inside_radius(self.object:get_pos(), 1.3)
 			for n=1, #mobsnear do
 				local mob = mobsnear[n]
