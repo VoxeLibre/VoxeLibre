@@ -58,6 +58,7 @@ end
 ---@field usage_help string?
 ---@field image string?
 ---@field place_uses integer
+---@field full_punch_interval integer?
 ---@field punch_uses integer
 ---@field enchantability integer
 ---@field crafting_material string?
@@ -68,6 +69,7 @@ end
 ---@field damage_groups {[string]: integer}
 ---@field craftable boolean?
 ---@field burn_time integer?
+---@field max_enchant_level integer?
 
 local hoe_tt = S("Turns block into farmland")
 local hoe_longdesc = S(
@@ -92,6 +94,7 @@ function mcl_farming:register_hoe(material, def)
 	local craftable = (def.craftable ~= nil and def.craftable) or true
 	local burn_time = def.burn_time or 0
 	local damage_groups = def.damage_groups or {fleshy = 1}
+	local full_punch_interval = def.full_punch_interval or 1
 	assert(def.place_uses, "Hoe definition requires place_uses to be set")
 	assert(def.punch_uses, "Hoe definition requires punch_uses to be set")
 	assert(def.enchantability, "Hoe definition requires enchantability to be set")
@@ -108,7 +111,7 @@ function mcl_farming:register_hoe(material, def)
 		on_place = hoe_on_place_function(def.place_uses),
 		groups = { tool = 1, hoe = 1, enchantability = def.enchantability },
 		tool_capabilities = {
-			full_punch_interval = 1,
+			full_punch_interval = full_punch_interval,
 			damage_groups = damage_groups,
 			punch_attack_uses = def.punch_uses,
 		},
@@ -118,7 +121,8 @@ function mcl_farming:register_hoe(material, def)
 			hoey = def.dig_group
 		},
 		_mcl_upgradable = upgrade,
-		_mcl_upgrade_item = def.upgrade_item
+		_mcl_upgrade_item = def.upgrade_item,
+		vl_max_ench_lvl = def.max_enchant_level
 	})
 
 	if def.burn_time > 0 then

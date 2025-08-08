@@ -23,9 +23,6 @@ dig_speed_class group:
 
 
 -- Help texts
-local hoe_tt = S("Turns block into farmland")
-local hoe_longdesc = S("Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.")
-local hoe_usagehelp = S("Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.")
 
 local pickaxe_longdesc = S("Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.")
 local axe_longdesc = S("An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.")
@@ -75,55 +72,6 @@ local function spear_on_place(itemstack, user, pointed_thing)
 	return itemstack
 end
 
-local function create_soil(pos, inv)
-	if pos == nil then
-		return false
-	end
-	local node = core.get_node(pos)
-	local name = node.name
-	local above = core.get_node({x=pos.x, y=pos.y+1, z=pos.z})
-	if core.get_item_group(name, "cultivatable") == 2 then
-		if above.name == "air" then
-			node.name = "mcl_farming:soil"
-			core.set_node(pos, node)
-			core.sound_play("default_dig_crumbly", { pos = pos, gain = 0.5 }, true)
-			return true
-		end
-	elseif core.get_item_group(name, "cultivatable") == 1 then
-		if above.name == "air" then
-			node.name = "mcl_core:dirt"
-			core.set_node(pos, node)
-			core.sound_play("default_dig_crumbly", { pos = pos, gain = 0.6 }, true)
-			return true
-		end
-	end
-	return false
-end
-
-local hoe_on_place_function = function(wear_divisor)
-	return function(itemstack, user, pointed_thing)
-		-- Call on_rightclick if the pointed node defines it
-		local node = core.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
-				return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
-
-		if core.is_protected(pointed_thing.under, user:get_player_name()) then
-			core.record_protection_violation(pointed_thing.under, user:get_player_name())
-			return itemstack
-		end
-
-		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not core.is_creative_enabled(user:get_player_name()) then
-				itemstack:add_wear(65535/wear_divisor)
-				tt.reload_itemstack_description(itemstack) -- update tooltip
-			end
-			return itemstack
-		end
-	end
-end
 
 local make_grass_path = function(itemstack, placer, pointed_thing)
 	-- Use pointed node's on_rightclick function first, if present
@@ -280,27 +228,19 @@ core.register_tool("vl_deepslate_tools:shovel_deepslate", {
 	vl_max_ench_lvl = 2,
 })
 
-core.register_tool("vl_deepslate_tools:hoe_deepslate", {
-	description = S("Deepslate Hoe"),
-	_tt_help = hoe_tt,
-	_doc_items_longdesc = hoe_longdesc,
-	_doc_items_usagehelp = hoe_usagehelp,
-	inventory_image = "vl_deepslate_tools_deepslatehoe.png",
-	wield_scale = mcl_vars.tool_wield_scale,
-	on_place = hoe_on_place_function(deepslate.stone),
-	groups = { tool = 1, hoe = 1, enchantability = 5 },
-	tool_capabilities = {
+mcl_farming:register_hoe("deepslate", {
+		description = S("Deepslate Hoe"),
+		place_uses = deepslate.stone,
 		full_punch_interval = 0.5,
+		punch_uses = deepslate.stone,
+		enchantability = 5,
+		crafting_material = "mcl_deepslate:deepslate_cobbled",
+		repair_material = "mcl_deepslate:deepslate_cobbled",
+		dig_group = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses },
 		damage_groups = { fleshy = 1, },
-		punch_attack_uses = deepslate.stone,
-	},
-	_repair_material = "mcl_deepslate:deepslate_cobbled",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		hoey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
-	},
-	vl_max_ench_lvl = 2,
-})
+		max_enchant_level = 2
+	})
+
 
 core.register_tool("vl_deepslate_tools:axe_deepslate", {
 	description = S("Deepslate Axe"),

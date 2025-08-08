@@ -48,22 +48,6 @@ core.register_craft({
 	}
 })
 
-core.register_craft({
-	output = "vl_deepslate_tools:hoe_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
-		{"", "mcl_core:stick"},
-		{"", "mcl_core:stick"}
-	}
-})
-core.register_craft({
-	output = "vl_deepslate_tools:hoe_deepslate",
-	recipe = {
-		{"mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_cobbled"},
-		{"mcl_core:stick", ""},
-		{"mcl_core:stick", ""}
-	}
-})
 
 -- Hammer & spear crafting recipies
 local materials = {
