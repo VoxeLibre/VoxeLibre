@@ -170,6 +170,7 @@ return {
 		"newrizen",
 		"wrrrzr",
 		"antimundo",
+		"farfind",
 	}},
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",
