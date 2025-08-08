@@ -116,7 +116,7 @@ for s=1, #surfaces do
 		tiles = def.tiles,
 		special_tiles = {
 			{
-			image = "mcl_ocean_seagrass.png",
+			name = "mcl_ocean_seagrass.png",
 			animation = {type="vertical_frames", aspect_w=16, aspect_h=16, length=1.0},
 			}
 		},

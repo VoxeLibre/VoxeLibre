@@ -100,7 +100,7 @@ for s=1,4 do
 		tiles = { "mcl_ocean_"..ontop..".png" },
 		special_tiles = {
 			{
-			image = "mcl_ocean_sea_pickle_"..s.."_anim.png",
+			name = "mcl_ocean_sea_pickle_"..s.."_anim.png",
 			animation = {type="vertical_frames", aspect_w=16, aspect_h=16, length=1.7},
 			}
 		},

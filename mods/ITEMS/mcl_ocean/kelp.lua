@@ -527,7 +527,7 @@ kelp.surface_deftemplate = {
 	--tiles = def.tiles,
 	special_tiles = {
 		{
-		image = "mcl_ocean_kelp_plant.png",
+		name = "mcl_ocean_kelp_plant.png",
 		animation = {type="vertical_frames", aspect_w=16, aspect_h=16, length=2.0},
 		tileable_vertical = true,
 		}

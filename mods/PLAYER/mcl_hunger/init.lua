@@ -40,7 +40,7 @@ end
 
 ---
 ---@param state boolean
-function mcl_hunger.set_active(state)
+function mcl_hunger.set_active(state, skip_player_refresh)
 	local old = active
 	active = state
 	if state == old then
@@ -49,7 +49,9 @@ function mcl_hunger.set_active(state)
 	---
 	-- Apply side effects of state change
 	core.settings:set_bool("mcl_enable_hunger", state)
-	
+
+	if skip_player_refresh then return end
+
 	for _, player in pairs(core.get_connected_players()) do
 		mcl_hunger.refresh_player_bars(player)
 	end
@@ -66,7 +68,7 @@ function mcl_hunger.set_debug(state)
 	---
 	--- Apply side effects of state change
 	core.settings:set_bool("mcl_hunger_debug", state)
-	
+
 	for _, player in pairs(core.get_connected_players()) do
 		mcl_hunger.refresh_player_bars(player)
 	end
@@ -74,7 +76,7 @@ end
 
 -- First time state update
 ---
-mcl_hunger.set_active(core.settings:get_bool("mcl_enable_hunger", true))
+mcl_hunger.set_active(core.settings:get_bool("mcl_enable_hunger", true), true)
 mcl_hunger.set_debug(core.settings:get_bool("mcl_hunger_debug", false))
 
 mcl_hunger.HUD_TICK            = 0.1

@@ -118,7 +118,7 @@ minetest.register_node("mcl_mangrove:hanging_propagule_1", {
 			destroy_by_lava_flow = 1, compostability = 30
 		},
 	paramtype = "light",
-	paramtype2 = "",
+	paramtype2 = "none",
 	on_rotate = false,
 	walkable = false,
 	drop = "mcl_mangrove:propagule",

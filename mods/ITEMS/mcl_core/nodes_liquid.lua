@@ -18,12 +18,12 @@ minetest.register_node("mcl_core:water_flowing", {
 	tiles = {"mcl_core_water_flow_animation.png^[verticalframe:64:0"},
 	special_tiles = {
 		{
-			image="mcl_core_water_flow_animation.png",
+			name="mcl_core_water_flow_animation.png",
 			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=1.5}
 		},
 		{
-			image="mcl_core_water_flow_animation.png",
+			name="mcl_core_water_flow_animation.png",
 			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=1.5}
 		},
@@ -120,12 +120,12 @@ minetest.register_node("mcl_core:lava_flowing", {
 	tiles = {"mcl_core_lava_flow_animation.png^[verticalframe:64:0"},
 	special_tiles = {
 		{
-			image="mcl_core_lava_flow_animation.png",
+			name="mcl_core_lava_flow_animation.png",
 			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=6.6}
 		},
 		{
-			image="mcl_core_lava_flow_animation.png",
+			name="mcl_core_lava_flow_animation.png",
 			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=6.6}
 		},
