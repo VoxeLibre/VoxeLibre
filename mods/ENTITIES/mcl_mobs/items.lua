@@ -33,6 +33,11 @@ function mob_class:set_armor_texture()
 				table.insert(textures_fixed, el)
 			end
 		end
+		if #textures_fixed > 1 then
+			for i=1, #textures_fixed do
+				textures_fixed[i] = "("..textures_fixed[i]..")"
+			end
+		end
 		local texture = table.concat(textures_fixed, "^")
 		if texture == "" then texture = "blank.png" end
 		if self.textures[self.wears_armor] then
