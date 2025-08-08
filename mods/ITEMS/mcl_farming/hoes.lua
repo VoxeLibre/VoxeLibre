@@ -171,7 +171,8 @@ local crafts = {
 		enchantability = 5,
 		crafting_material = "group:cobble",
 		repair_material = "group:cobble",
-		dig_group = { speed = 4, level = 3, uses = 132 }
+		dig_group = { speed = 4, level = 3, uses = 132 },
+		full_punch_interval = 0.5
 	},
 	iron = {
 		description = S("Iron Hoe"),
@@ -180,7 +181,9 @@ local crafts = {
 		enchantability = 14,
 		crafting_material = "mcl_core:iron_ingot",
 		repair_material = "mcl_core:iron_ingot",
-		dig_group = { speed = 6, level = 4, uses = 251 }
+		dig_group = { speed = 6, level = 4, uses = 251 },
+		damage_groups = { fleshy = 2 },
+		full_punch_interval = 0.33333333
 	},
 	gold = {
 		description = S("Gold Hoe"),
@@ -189,7 +192,8 @@ local crafts = {
 		enchantability = 22,
 		crafting_material = "mcl_core:gold_ingot",
 		repair_material = "mcl_core:gold_ingot",
-		dig_group = { speed = 12, level = 2, uses = 33 }
+		dig_group = { speed = 12, level = 2, uses = 33 },
+		full_punch_interval = 0.25
 	},
 	diamond = {
 		description = S("Diamond Hoe"),
@@ -199,8 +203,10 @@ local crafts = {
 		crafting_material = "mcl_core:diamond",
 		repair_material = "mcl_core:diamond",
 		dig_group = { speed = 8, level = 5, uses = 1562 },
+		damage_groups = { fleshy = 3 },
 		upgradable = true,
-		upgrade_item = "mcl_farming:hoe_netherite"
+		upgrade_item = "mcl_farming:hoe_netherite",
+		full_punch_interval = 0.25
 	},
 	netherite = {
 		description = S("Netherite Hoe"),
@@ -211,7 +217,8 @@ local crafts = {
 		repair_material = "mcl_nether:netherite_ingot",
 		craftable = false,
 		dig_group = { speed = 8, level = 5, uses = 2031 },
-		damage_groups = { fleshy = 4 }
+		damage_groups = { fleshy = 4 },
+		full_punch_interval = 0.25
 	},
 }
 
