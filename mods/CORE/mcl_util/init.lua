@@ -339,6 +339,8 @@ function mcl_util.use_item_durability(itemstack, n)
 	tt.reload_itemstack_description(itemstack) -- update tooltip
 end
 
+---
+--- @param target core.ObjectRef
 function mcl_util.deal_damage(target, damage, mcl_reason)
 	local luaentity = target:get_luaentity()
 
@@ -347,11 +349,13 @@ function mcl_util.deal_damage(target, damage, mcl_reason)
 			luaentity:deal_damage(damage, mcl_reason or {type = "generic"})
 			return
 		elseif luaentity.is_mob then
-			-- local puncher = mcl_reason and mcl_reason.direct or target
-			-- target:punch(puncher, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy = damage}}, vector.direction(puncher:get_pos(), target:get_pos()), damage)
-			if luaentity.health > 0 then
-				luaentity.health = luaentity.health - damage
-			end
+			local puncher              = mcl_reason and mcl_reason.direct or target
+			local time_from_last_punch = 1.0
+			local tool_capabilities    = { full_punch_interval = 1.0, damage_groups = { fleshy = damage } }
+			local dir                  = vector.direction(puncher:get_pos(), target:get_pos())
+
+			target:punch(puncher, time_from_last_punch, tool_capabilities, dir, damage)
+			
 			return
 		end
 	elseif not target:is_player() then return end
