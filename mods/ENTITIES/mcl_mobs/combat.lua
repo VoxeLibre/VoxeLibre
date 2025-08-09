@@ -45,31 +45,6 @@ function mob_class:do_attack(object)
 	--end
 end
 
--- blast damage to entities nearby
-local function entity_physics(pos, radius)
-	radius = radius * 2
-
-	local objs = minetest.get_objects_inside_radius(pos, radius)
-	local obj_pos, dist
-	for n = 1, #objs do
-		obj_pos = objs[n]:get_pos()
-
-		dist = vector_distance(pos, obj_pos)
-		if dist < 1 then dist = 1 end
-
-		local damage = floor((4 / dist) * radius)
-		local ent = objs[n]:get_luaentity()
-
-		-- punches work on entities AND players
-		objs[n]:punch(objs[n], 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = damage},
-		}, pos)
-	end
-end
-
-function mob_class:entity_physics(pos,radius) return entity_physics(pos,radius) end
-
 local los_switcher = false
 local height_switcher = false
 
@@ -421,26 +396,20 @@ function mob_class:dogswitch(dtime)
 	return self.dogshoot_switch
 end
 
--- no damage to nodes explosion
-function mob_class:safe_boom(pos, strength)
-	minetest.sound_play(self.sounds and self.sounds.explode or "tnt_explode", {
-		pos = pos,
-		gain = 1.0,
-		max_hear_distance = self.sounds and self.sounds.distance or 32
-	}, true)
-	local radius = strength
-	entity_physics(pos, radius)
-	mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", radius * 3, radius * 5, radius, 1, 0)
-end
-
-
--- make explosion with protection and tnt mod check
-function mob_class:boom(pos, strength, fire)
-	if mobs_griefing and not minetest.is_protected(pos, "") then
-		mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
-	else
-		mcl_mobs.mob_class.safe_boom(self, pos, strength) --need to call it this way bc self is the "arrow" object here
+--- make explosion with protection and tnt mod check
+---@param pos            {x: number, y: number, z: number}
+---@param strength       number
+---@param info_overrides table?
+function mob_class:boom(pos, strength, info_overrides)
+	local info = {
+		drop_chance     = 1.0,
+		griefing        = mobs_griefing == true,
+		grief_protected = false,
+	}
+	if info_overrides then
+		mcl_util.table_merge(info, info_overrides)
 	end
+	mcl_explosions.explode(pos, strength, info, self.object)
 
 	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
 	mcl_util.remove_entity(self)
