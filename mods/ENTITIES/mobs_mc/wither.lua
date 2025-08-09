@@ -497,7 +497,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mcl_mobs.mob_class.boom(self,pos, 1)
+		mcl_mobs.mob_class.boom(self, pos, 1)
 	end
 })
 mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
@@ -527,7 +527,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 12},
 		}, nil)
-		mcl_mobs.mob_class.boom(pos, 1, { max_blast_resistance = 0 })
+		mcl_mobs.mob_class.boom(self, pos, 1, { max_blast_resistance = 0 })
 
 		if player:get_hp() <= 0 then
 			local shooter = self._shooter:get_luaentity()
@@ -544,7 +544,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 			damage_groups = {fleshy = 12},
 		}, nil)
 		
-		mcl_mobs.mob_class.boom(pos, 1, { max_blast_resistance = 0 })
+		mcl_mobs.mob_class.boom(self, pos, 1, { max_blast_resistance = 0 })
 
 		local l = mob:get_luaentity()
 		if l and l.health - 8 <= 0 then
