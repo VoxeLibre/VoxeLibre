@@ -92,20 +92,20 @@ function mob_class:object_in_range(object)
 	return p1 and p2 and (vector.distance(p1, p2) <= dist)
 end
 
----Calculates the final drop chance of an item drop event.
+---Calculates the final drop chance of an item drop.
 ---Returns the final drop chance or an error.
 ---@param dropdef 	    table
 ---@param looting_level number
----@param killer        core.EntityDef|{name: string}?
+---@param attacker_name string?
 ---@return number, string?
-local function calculate_drop_chance(dropdef, looting_level, killer)
+local function calculate_drop_chance(dropdef, looting_level, attacker_name)
 	local chance = dropdef.chance
 	if type(chance) ~= "number" then
 		return 0, string.format("unsupported chance value %q", chance)
 	end
-	if dropdef.conditions and dropdef.conditions.guarantee_if_killed_by and killer then
+	if dropdef.conditions and dropdef.conditions.guarantee_if_killed_by and attacker_name then
 		for _, name in ipairs(dropdef.conditions.guarantee_if_killed_by) do
-			if name == killer.name then
+			if name == attacker_name then
 				return 1, nil
 			end
 		end
@@ -124,13 +124,12 @@ local function calculate_drop_chance(dropdef, looting_level, killer)
 	return chance, nil
 end
 
----@class item_drop_params 
----@field cooked		boolean?        If the items should drop cooked (default: false)
----@field looting_level number?         The looting level to be applied to the drops (default: 0)
----@field killer		core.ObjectRef? An object that killed this mob (default: nil)
-
 ---Calculate and drop items.
----@param params item_drop_params
+---@param params {
+---    cooked       : boolean?,
+---    looting_level: number?,
+---    attacker_name: string?,
+---}
 function mob_class:item_drop(params)
 	if not mobs_drop_items then return end
 
@@ -140,8 +139,7 @@ function mob_class:item_drop(params)
 
 	local looting_level = params.looting_level or 0
 	local cooked        = params.cooked or false
-	local killer        = params.killer
-	local killer_entity = killer and killer:get_luaentity()
+	local attacker_name = params.attacker_name or nil
 
 	local pos = self.vl_drops_pos or self.object:get_pos()
 	
@@ -149,10 +147,12 @@ function mob_class:item_drop(params)
 
 	for n = 1, #self.drops do
 		local dropdef = self.drops[n]
-		
-		local chance, error = calculate_drop_chance(dropdef, looting_level, killer_entity)
+
+		local chance, error = calculate_drop_chance(dropdef, looting_level, attacker_name)
 		if error then
-			core.log("error", string.format("error calculating drop chance of drop #%d for entity %q, falling back to 1: %s", n, self.name, error))
+			core.log("error", string.format(
+				"error calculating drop chance of drop #%d for entity %q, falling back to 1: %s",
+				n, self.name, error))
 			chance = 1
 		end
 
@@ -367,8 +367,17 @@ function mob_class:flight_check()
 	return not not self.fly_in[nod] -- force boolean
 end
 
--- check if mob is dead or only hurt
-function mob_class:check_for_death(cause, cmi_cause)
+-- Check if mob is dead or only hurt
+---@param cause     string
+---@param cmi_cause {
+--- 	type   : string?,
+--- 	pos    : {x: number, y: number, z: number}?,
+--- 	node   : core.Node?,
+--- 	puncher: core.ObjectRef?,
+---}?
+---@param info {attacker_name: string?}?
+---@return boolean
+function mob_class:check_for_death(cause, cmi_cause, info)
 	if self.state == "die" then
 		return true
 	end
@@ -405,9 +414,7 @@ function mob_class:check_for_death(cause, cmi_cause)
 			self.nametag2 = self.nametag or ""
 		end
 
-		if show_health
-		and (cmi_cause and cmi_cause.type == "punch") then
-
+		if show_health and (cmi_cause and cmi_cause.type == "punch") then
 			self.htimer = 2
 			self.nametag = "♥ " .. self.health .. " / " .. self.initial_properties.hp_max
 
@@ -420,11 +427,6 @@ function mob_class:check_for_death(cause, cmi_cause)
 	self:mob_sound("death")
 
 	local function death_handle(self)
-		if cmi_cause and cmi_cause["type"] then
-			--minetest.log("cmi_cause: " .. tostring(cmi_cause["type"]))
-		end
-		--minetest.log("cause: " .. tostring(cause))
-
 		-- TODO other env damage shouldn't drop xp
 		-- "rain", "water", "drowning", "suffocation"
 
@@ -444,9 +446,9 @@ function mob_class:check_for_death(cause, cmi_cause)
 		end
 
 		self:item_drop({
-			cooked  = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect"),
-			looting = mcl_enchanting.get_enchantment(wielditem, "looting"),
-			killer  = cmi_cause and cmi_cause.puncher
+			cooked        = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect"),
+			looting       = mcl_enchanting.get_enchantment(wielditem, "looting"),
+			attacker_name = info and info.attacker_name
 		})
 		
 		if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
@@ -825,7 +827,12 @@ function mob_class:step_damage (dtime, pos)
 	end
 end
 
-function mob_class:damage_mob(reason,damage)
+---
+---@param reason string
+---@param damage number
+---@param info   {attacker_name: string?}?
+---@return boolean
+function mob_class:damage_mob(reason, damage, info)
 	if not self.health then return end
 	damage = floor(damage)
 	if damage > 0 then
@@ -833,7 +840,7 @@ function mob_class:damage_mob(reason,damage)
 
 		mcl_mobs.effect(self.object:get_pos(), 5, "mcl_particles_smoke.png", 1, 2, 2, nil)
 
-		if self:check_for_death(reason, {type = reason}) then
+		if self:check_for_death(reason, { type = reason }, info) then
 			return true
 		end
 	end
