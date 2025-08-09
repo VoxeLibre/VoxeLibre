@@ -910,22 +910,15 @@ function mob_class:do_states_attack(dtime)
 			end
 
 			if self.timer > self.explosion_timer then
-				local pos = self.object:get_pos()
-
-				if mobs_griefing and not minetest.is_protected(pos, "") then
-					mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { drop_chance = 1.0 }, self.object)
-				else
-					minetest.sound_play(self.sounds.explode, {
-						pos = pos,
-						gain = 1.0,
-						max_hear_distance = self.sounds.distance or 32
-					}, true)
-					self:entity_physics(pos,entity_damage_radius)
-					mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
-				end
+				local pos = mcl_util.get_object_center(self.object)
+				local info = {
+					drop_chance     = 1.0,
+					griefing        = mobs_griefing == true,
+					grief_protected = false,
+				}
+				mcl_explosions.explode(pos, self.explosion_strength, info, self.object)
 				mcl_burning.extinguish(self.object)
 				mcl_util.remove_entity(self)
-
 				return true
 			end
 		end
