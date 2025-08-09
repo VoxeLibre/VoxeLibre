@@ -162,10 +162,13 @@ functions needed for the mob to work properly which contains the following:
 	The pitch of children is 50% higher.
 
 	'drops'	 table of items that are dropped when mob is killed, fields are:
-	'name'	name of item to drop.
-	'chance' chance of drop, 1 for always, 2 for 1-in-2 chance etc.
-	'min'	minimum number of items dropped.
-	'max'	maximum number of items dropped.
+		'name'	      name of item to drop.
+		'chance'      chance of drop, 1 for always, 2 for 1-in-2 chance etc.
+		'min'	      minimum number of items dropped.
+		'max'	      maximum number of items dropped.
+		'conditions'  table of conditions that may affect the drop, fields are:
+			'guarantee_if_killed_by'  list of mob ids. if any of the mobs in this list killed this mob
+			                          then the drop is guaranteed
 
 	'visual'			holds the look of the mob you wish to create:
 	'cube'				looks like a normal node
