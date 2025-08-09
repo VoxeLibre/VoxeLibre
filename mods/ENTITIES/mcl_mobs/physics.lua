@@ -414,7 +414,9 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 			self.nametag2 = self.nametag or ""
 		end
 
-		if show_health and (cmi_cause and cmi_cause.type == "punch") then
+		if show_health
+		and (cmi_cause and cmi_cause.type == "punch") then
+
 			self.htimer = 2
 			self.nametag = "♥ " .. self.health .. " / " .. self.initial_properties.hp_max
 
@@ -427,6 +429,11 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 	self:mob_sound("death")
 
 	local function death_handle(self)
+		if cmi_cause and cmi_cause["type"] then
+			--minetest.log("cmi_cause: " .. tostring(cmi_cause["type"]))
+		end
+		--minetest.log("cause: " .. tostring(cause))
+
 		-- TODO other env damage shouldn't drop xp
 		-- "rain", "water", "drowning", "suffocation"
 
