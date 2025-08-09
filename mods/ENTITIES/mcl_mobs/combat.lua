@@ -400,7 +400,8 @@ end
 ---@param pos            {x: number, y: number, z: number}
 ---@param strength       number
 ---@param info_overrides table?
-function mob_class:boom(pos, strength, info_overrides)
+---@param preserve_self  boolean? If after the explosion, the entity should continue existing
+function mob_class:boom(pos, strength, info_overrides, preserve_self)
 	local info = {
 		drop_chance     = 1.0,
 		griefing        = mobs_griefing == true,
@@ -411,8 +412,10 @@ function mob_class:boom(pos, strength, info_overrides)
 	end
 	mcl_explosions.explode(pos, strength, info, self.object)
 
-	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
-	mcl_util.remove_entity(self)
+	if not preserve_self then
+		-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
+		mcl_util.remove_entity(self)
+	end
 end
 
 -- deal damage and effects when mob punched

@@ -50,7 +50,7 @@ local function wither_unstuck(self)
 			end
 		end end end
 	end
-	mcl_mobs.mob_class.boom(self, pos, 2)
+	mcl_mobs.mob_class.boom(self, pos, 2, {}, true)
 end
 
 local function get_dim_relative_y(pos)
@@ -162,7 +162,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 
 			-- when fully spawned, explode
 			if self._spawning <= 0 then
-				mcl_mobs.mob_class.boom(self, pos, WITHER_INIT_BOOM)
+				mcl_mobs.mob_class.boom(self, pos, WITHER_INIT_BOOM, {}, true)
 				self.object:set_texture_mod("")
 				self._spawning = nil
 				self._spw_max = nil
