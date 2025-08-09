@@ -92,37 +92,72 @@ function mob_class:object_in_range(object)
 	return p1 and p2 and (vector.distance(p1, p2) <= dist)
 end
 
-function mob_class:item_drop(cooked, looting_level)
+---Calculates the final drop chance of an item drop event.
+---Returns the final drop chance or an error.
+---@param dropdef 	    table
+---@param looting_level number
+---@param killer        core.EntityDef|{name: string}?
+---@return number, string?
+local function calculate_drop_chance(dropdef, looting_level, killer)
+	local chance = dropdef.chance
+	if type(chance) ~= "number" then
+		return 0, string.format("unsupported chance value %q", chance)
+	end
+	if dropdef.conditions and dropdef.conditions.guarantee_if_killed_by and killer then
+		for _, name in ipairs(dropdef.conditions.guarantee_if_killed_by) do
+			if name == killer.name then
+				return 1, nil
+			end
+		end
+	end
+	if dropdef.chance ~= 0 then
+		chance = 1 / chance
+	end
+	if looting_level > 0 then
+		local chance_function = dropdef.looting_chance_function
+		if chance_function then
+			chance = chance_function(looting_level)
+		elseif dropdef.looting == "rare" then
+			chance = chance + (dropdef.looting_factor or 0.01) * looting_level
+		end
+	end
+	return chance, nil
+end
 
+---@class item_drop_params 
+---@field cooked		boolean?        If the items should drop cooked (default: false)
+---@field looting_level number?         The looting level to be applied to the drops (default: 0)
+---@field killer		core.ObjectRef? An object that killed this mob (default: nil)
+
+---Calculate and drop items.
+---@param params item_drop_params
+function mob_class:item_drop(params)
 	if not mobs_drop_items then return end
-
-	looting_level = looting_level or 0
 
 	if (self.child and self.type ~= "monster") then
 		return
 	end
 
-	local obj, item, num
-	local pos = self.vl_drops_pos or self.object:get_pos()
+	local looting_level = params.looting_level or 0
+	local cooked        = params.cooked or false
+	local killer        = params.killer
+	local killer_entity = killer and killer:get_luaentity()
 
+	local pos = self.vl_drops_pos or self.object:get_pos()
+	
 	self.drops = self.drops or {}
 
 	for n = 1, #self.drops do
 		local dropdef = self.drops[n]
-		local chance = 1 / dropdef.chance
-		local looting_type = dropdef.looting
-
-		if looting_level > 0 then
-			local chance_function = dropdef.looting_chance_function
-			if chance_function then
-				chance = chance_function(looting_level)
-			elseif looting_type == "rare" then
-				chance = chance + (dropdef.looting_factor or 0.01) * looting_level
-			end
+		
+		local chance, error = calculate_drop_chance(dropdef, looting_level, killer_entity)
+		if error then
+			core.log("error", string.format("error calculating drop chance of drop #%d for entity %q, falling back to 1: %s", n, self.name, error))
+			chance = 1
 		end
 
 		local num = 0
-		local do_common_looting = (looting_level > 0 and looting_type == "common")
+		local do_common_looting = (looting_level > 0 and dropdef.looting == "common")
 		if random() < chance then
 			num = random(dropdef.min or 1, dropdef.max or 1)
 		elseif not dropdef.looting_ignore_chance then
@@ -134,7 +169,7 @@ function mob_class:item_drop(cooked, looting_level)
 		end
 
 		if num > 0 then
-			item = dropdef.name
+			local item = dropdef.name
 
 			if cooked then
 				local output = minetest.get_craft_result({method = "cooking", width = 1, items = {item}})
@@ -144,8 +179,7 @@ function mob_class:item_drop(cooked, looting_level)
 			end
 
 			for x = 1, num do
-				obj = minetest.add_item(pos, ItemStack(item .. " " .. 1))
-
+				local obj = minetest.add_item(pos, ItemStack(item .. " " .. 1))
 				if obj and obj:get_luaentity() then
 					obj:set_velocity(vector.new((random() - 0.5) * 1.5, 6, (random() - 0.5) * 1.5))
 				elseif obj then
@@ -162,7 +196,7 @@ function mob_class:item_drop(cooked, looting_level)
 	for _, item in pairs(self.armor_list) do
 		local stack = ItemStack(item)
 		if not stack:is_empty() then
-			obj = core.add_item(pos, stack)
+			local obj = core.add_item(pos, stack)
 			if obj and obj:get_luaentity() then
 				obj:set_velocity(vector.new((random() - 0.5) * 1.5, 6, (random() - 0.5) * 1.5))
 			elseif obj then
@@ -335,7 +369,6 @@ end
 
 -- check if mob is dead or only hurt
 function mob_class:check_for_death(cause, cmi_cause)
-
 	if self.state == "die" then
 		return true
 	end
@@ -399,31 +432,29 @@ function mob_class:check_for_death(cause, cmi_cause)
 
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
-			self:item_drop(true, 0)
+			self:item_drop({ cooked = true })
+			return
+		end
+
+		local wielditem
+		if cause == "hit" and cmi_cause and cmi_cause.puncher then
+			wielditem = cmi_cause.puncher:get_wielded_item()
 		else
-			local wielditem = ItemStack()
-			if cause == "hit" then
-				local puncher = cmi_cause.puncher
-				if puncher then
-					wielditem = puncher:get_wielded_item()
-				end
-			end
-			local cooked = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
-			local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
-			self:item_drop(cooked, looting)
+			wielditem = ItemStack()
+		end
 
-			if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
-				local pos = self.vl_drops_pos or self.object:get_pos()
-				local xp_amount = random(self.xp_min, self.xp_max)
+		self:item_drop({
+			cooked  = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect"),
+			looting = mcl_enchanting.get_enchantment(wielditem, "looting"),
+			killer  = cmi_cause and cmi_cause.puncher
+		})
+		
+		if ((not self.child) or self.type ~= "animal") and (minetest.get_us_time() - self.xp_timestamp <= math.huge) then
+			local pos = self.vl_drops_pos or self.object:get_pos()
+			local xp_amount = random(self.xp_min, self.xp_max)
 
-				if not mcl_sculk.handle_death(pos, xp_amount) then
-					--minetest.log("Xp not thrown")
-					if minetest.is_creative_enabled("") ~= true then
-						mcl_experience.throw_xp(pos, xp_amount)
-					end
-				else
-					--minetest.log("xp thrown")
-				end
+			if not mcl_sculk.handle_death(pos, xp_amount) and minetest.is_creative_enabled("") ~= true then
+				mcl_experience.throw_xp(pos, xp_amount)
 			end
 		end
 	end

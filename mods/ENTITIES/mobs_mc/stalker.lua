@@ -171,13 +171,14 @@ local stalker = {
 			max = 2,
 			looting = "common",
 		},
-		-- Head
-		-- TODO: Only drop if killed by charged stalker
 		{
 			name = "mcl_heads:stalker",
 			chance = 200, -- 0.5%
 			min = 1,
 			max = 1,
+			conditions = {
+				guarantee_if_killed_by = { "mobs_mc:stalker_overloaded" }
+			}
 		},
 	},
 
