@@ -6,7 +6,7 @@ local description = S("Firework Rocket")
 local TAU = 2*math.pi
 
 local function explode(self, pos, stars)
-	mcl_mobs.mob_class.safe_boom(self, pos, 1)
+	mcl_mobs.mob_class.boom(self, pos, 1, { griefing = false }, true)
 	if not stars then return end
 	for _, effect in pairs(stars) do
 		if type(effect) == "string" then effect = core.deserialize(effect) end

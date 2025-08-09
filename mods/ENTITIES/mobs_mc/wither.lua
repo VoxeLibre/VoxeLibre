@@ -50,7 +50,7 @@ local function wither_unstuck(self)
 			end
 		end end end
 	end
-	mcl_mobs.mob_class.safe_boom(self, pos, 2)
+	mcl_mobs.mob_class.boom(self, pos, 2, {}, true)
 end
 
 local function get_dim_relative_y(pos)
@@ -162,11 +162,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 
 			-- when fully spawned, explode
 			if self._spawning <= 0 then
-				if mobs_griefing and not minetest.is_protected(pos, "") then
-					mcl_explosions.explode(pos, WITHER_INIT_BOOM, { drop_chance = 1.0 }, self.object)
-				else
-					mcl_mobs.mob_class.safe_boom(self, pos, WITHER_INIT_BOOM)
-				end
+				mcl_mobs.mob_class.boom(self, pos, WITHER_INIT_BOOM, {}, true)
 				self.object:set_texture_mod("")
 				self._spawning = nil
 				self._spw_max = nil
@@ -501,7 +497,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mcl_mobs.mob_class.boom(self,pos, 1)
+		mcl_mobs.mob_class.boom(self, pos, 1)
 	end
 })
 mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
@@ -531,11 +527,8 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 12},
 		}, nil)
-		if mobs_griefing and not minetest.is_protected(pos, "") then
-			mcl_explosions.explode(pos, 1, { drop_chance = 1.0, max_blast_resistance = 0, }, self.object)
-		else
-			mcl_mobs.mob_class.safe_boom(self, pos, 1) --need to call it this way bc self is the "arrow" object here
-		end
+		mcl_mobs.mob_class.boom(self, pos, 1, { max_blast_resistance = 0 })
+
 		if player:get_hp() <= 0 then
 			local shooter = self._shooter:get_luaentity()
 			if shooter then shooter.health = shooter.health + 5 end
@@ -550,11 +543,9 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 12},
 		}, nil)
-		if mobs_griefing and not minetest.is_protected(pos, "") then
-			mcl_explosions.explode(pos, 1, { drop_chance = 1.0, max_blast_resistance = 0, }, self.object)
-		else
-			mcl_mobs.mob_class.safe_boom(self, pos, 1) --need to call it this way bc self is the "arrow" object here
-		end
+		
+		mcl_mobs.mob_class.boom(self, pos, 1, { max_blast_resistance = 0 })
+
 		local l = mob:get_luaentity()
 		if l and l.health - 8 <= 0 then
 			local shooter = self._shooter:get_luaentity()
@@ -565,11 +556,7 @@ mcl_mobs.register_arrow("mobs_mc:wither_skull_strong", {
 
 	-- node hit, explode
 	hit_node = function(self, pos, node)
-		if mobs_griefing and not minetest.is_protected(pos, "") then
-			mcl_explosions.explode(pos, 1, { drop_chance = 1.0, max_blast_resistance = 0, }, self.object)
-		else
-			mcl_mobs.mob_class.safe_boom(self, pos, 1) --need to call it this way bc self is the "arrow" object here
-		end
+		mcl_mobs.mob_class.boom(self, pos, 1, { max_blast_resistance = 0 })
 	end
 })
 

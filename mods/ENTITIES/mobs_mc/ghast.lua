@@ -140,19 +140,19 @@ mcl_mobs.register_arrow("mobs_mc:fireball", {
 	hit_player = function(self, player)
 		local p = self.object:get_pos()
 		if p then
-			mcl_mobs.mob_class.boom(self,p, 1, true)
+			mcl_mobs.mob_class.boom(self, p, 1, { fire = true })
 		else
-			mcl_mobs.mob_class.boom(self,player:get_pos(), 1, true)
+			mcl_mobs.mob_class.boom(self, player:get_pos(), 1, { fire = true })
 		end
 	end,
 
 	hit_mob = function(self, mob)
 		local name = mob:get_luaentity().name
-		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, true)
+		mcl_mobs.mob_class.boom(self,self.object:get_pos(), 1, { fire = true })
 	end,
 
 	hit_node = function(self, pos, node)
-		mcl_mobs.mob_class.boom(self,pos, 1, true)
+		mcl_mobs.mob_class.boom(self,pos, 1, { fire = true })
 	end
 })
 

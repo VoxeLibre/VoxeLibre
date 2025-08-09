@@ -243,6 +243,11 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 
 	-- Trace rays for entity damage
 	for _, obj in pairs(objs) do
+		if obj == source or obj == direct then
+			-- Don't apply explosion damage to the causer itself
+			goto continue
+		end
+
 		local ent = obj:get_luaentity()
 
 		-- Ignore items to lower lag
@@ -362,6 +367,7 @@ local function trace_explode(pos, strength, raydirs, radius, info, direct, sourc
 				ent.object:remove() -- Node exploded the end crystal, remove it.
 			end
 		end
+	    ::continue::
 	end
 
 	local airs, fires = {}, {}
