@@ -418,6 +418,32 @@ function mob_class:boom(pos, strength, info_overrides, preserve_self)
 	end
 end
 
+---Returns the name of an attacker.
+local function get_attacker_name(hitter)
+	if not hitter then
+		return nil
+	end
+	if hitter:is_player() then
+		return "player"
+	end
+	local e = hitter.get_luaentity and hitter:get_luaentity()
+	if e then
+		if e._source_object then
+			if e._source_object:is_player() then
+				return "player"
+			end
+			local se = e._source_object:get_luaentity()
+			if se and se.name then
+				return se.name
+			end
+		end
+		if e.name then
+			return e.name
+		end
+	end
+	return nil
+end
+
 -- deal damage and effects when mob punched
 function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local is_player = hitter:is_player()
@@ -606,7 +632,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			self.invul_timestamp = time_now
 
 			-- skip future functions if dead, except alerting others
-			if self:check_for_death( "hit", {type = "punch", puncher = hitter}) then
+			local cause     = "hit"
+			local cmi_cause = { type = "punch", puncher = hitter }
+			local info      = { attacker_name = get_attacker_name(hitter) }
+			if self:check_for_death(cause, cmi_cause, info) then
 				die = true
 			end
 		end
