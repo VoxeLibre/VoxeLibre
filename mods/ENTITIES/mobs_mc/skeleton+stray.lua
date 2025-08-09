@@ -75,13 +75,13 @@ local skeleton = {
 		min = 0,
 		max = 2,
 		looting = "common",},
-
-		-- Head
-		-- TODO: Only drop if killed by charged stalker
 		{name = "mcl_heads:skeleton",
 		chance = 200, -- 0.5% chance
 		min = 1,
-		max = 1,},
+		max = 1,
+		conditions = {
+			guarantee_if_killed_by = { "mobs_mc:stalker_overloaded" }
+		}},
 	},
 	animation = {
 		stand_speed = 15,

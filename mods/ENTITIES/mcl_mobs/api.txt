@@ -162,10 +162,13 @@ functions needed for the mob to work properly which contains the following:
 	The pitch of children is 50% higher.
 
 	'drops'	 table of items that are dropped when mob is killed, fields are:
-	'name'	name of item to drop.
-	'chance' chance of drop, 1 for always, 2 for 1-in-2 chance etc.
-	'min'	minimum number of items dropped.
-	'max'	maximum number of items dropped.
+		'name'	      name of item to drop.
+		'chance'      chance of drop, 1 for always, 2 for 1-in-2 chance etc.
+		'min'	      minimum number of items dropped.
+		'max'	      maximum number of items dropped.
+		'conditions'  table of conditions that may affect the drop, fields are:
+			'guarantee_if_killed_by'  list of mob ids. if any of the mobs in this list killed this mob
+			                          then the drop is guaranteed
 
 	'visual'			holds the look of the mob you wish to create:
 	'cube'				looks like a normal node
@@ -513,14 +516,31 @@ This function registers a spawn egg which can be used by admin to properly spawn
 Explosion Function
 ------------------
 
-mobs:boom(self, pos, radius)
-	'self' mob entity
-	'pos' centre position of explosion
-	'radius' radius of explosion (typically set to 3)
+mobs:boom(self, pos, radius, info_overrides, preserve_self)
+    'self'              mob entity
+    'pos'               centre position of explosion
+    'radius'            blast radius of explosion (typically set to 3)
+    'info_overrides'	is a table of parametric information to override the
+                        default values passed to the explosions API
+    'preserve_self'		will prevent the mob entity from deleting itself after
+                        the explosion (default is false)
 
-This function generates an explosion which removes nodes in a specific radius
-and damages any entity caught inside the blast radius.Protection will limit
-node destruction but not entity damage.
+This function generates an explosion that:
+    1. Damages any entity caught inside the blast radius;
+    2. Will remove nodes in the blast radius if:
+        a. Mob griefing is enabled or 'info_overrides.griefing == true', and;
+        b. The nodes are not protected, or;
+        c. The nodes are protected and 'info_overrides.grief_protected == true'.
+        
+The mob will then delete itself unless 'preserve_self' is passed.
+
+The default 'info' values passed to the Explosions API are:
+{ 
+    drop_chance = 1.0, 
+    griefing = mobs_griefing == true,
+    grief_protected = false 
+}
+See mcl_explosion.explode for a list of parameters that can be overriden.
 
 
 mobs:capture_mob
