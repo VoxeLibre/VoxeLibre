@@ -48,7 +48,7 @@ local function get_texture(self, prev)
 end
 
 --- Returns true if the cause of death should cause a music disc to drop.
---- @param cmi_cause any
+--- @param cmi_cause {type: string?, puncher: core.ObjectRef?}?
 --- @return boolean
 local function should_drop_music_disc(cmi_cause)
 	if not cmi_cause or cmi_cause.type ~= "punch" then
@@ -66,7 +66,7 @@ local function should_drop_music_disc(cmi_cause)
 end
 
 ---
----@param self any
+---@param self
 ---@param clicker core.Player
 local function stalker_on_rightclick(self, clicker)
 	-- Force-ignite stalker with flint and steel.
@@ -93,8 +93,7 @@ local function stalker_on_rightclick(self, clicker)
 	end
 end
 
----
----@param self  any
+---Update a stalker's texture to camouflage.
 ---@param dtime number
 local function stalker_camouflage(self, dtime)
 	local new_texture = get_texture(self, self._stalker_texture)
@@ -105,25 +104,15 @@ local function stalker_camouflage(self, dtime)
 	self._stalker_texture = new_texture
 end
 
----
---- @param self      any
 --- @param pos       {x: number, y: number, z: number}
---- @param cmi_cause any
+--- @param cmi_cause {type: string?, puncher: core.ObjectRef?}?
 local function stalker_on_die(self, pos, cmi_cause)
 	if should_drop_music_disc(cmi_cause) then
 		core.add_item({ x = pos.x, y = pos.y + 1, z = pos.z }, "mcl_jukebox:record_" .. math.random(9))
 	end
 end
 
-local AURA = "vl_stalker_overloaded_aura.png"
-local function get_overloaded_aura(timer)
-	local frame = math.floor(timer * 16)
-	local f = tostring(frame)
-	local nf = tostring(16 - f)
-	return "[combine:16x24:-" .. nf .. ",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
-end
-
-
+---Stalker mob definition
 local stalker = {
 	description = S("Stalker"),
 	type = "monster",
@@ -218,32 +207,45 @@ local stalker = {
 	end,
 }
 
-local function table_merge(t, ...)
-	local t2 = table.copy(t)
-	return table.update(t2, ...)
+local overloaded_aura_texture = "vl_stalker_overloaded_aura.png"
+
+---Returns the overloaded stalker overlay texture.
+---@param timer number The frame time of the aura (for animation)
+---@return string
+function get_overloaded_aura(timer)
+	local frame = math.floor(timer * 16)
+	local f     = tostring(frame)
+	local nf    = tostring(16 - f)
+
+	return "[combine:16x24:-" .. nf .. ",0=" .. overloaded_aura_texture .. ":" .. f .. ",0=" .. overloaded_aura_texture
 end
 
-local stalker_overloaded = table_merge(stalker, {
+---Overloaded Stalker mob definition
+local stalker_overloaded = mcl_util.table_merge(table.copy(stalker), {
 	description = S("Overloaded Stalker"),
-	textures = { { get_texture({}), AURA } },
+	textures = { { get_texture({}), overloaded_aura_texture } },
 	use_texture_alpha = true,
 	explosion_strength = 6,
 	explosion_radius = 8,
 	explosion_damage_radius = 8,
 	fire_resistant = true,
 	glow = 3,
-
+	_aura_timer = nil,
+	
+	---@param dtime number
 	do_custom = function(self, dtime)
 		if not self._aura_timer or self._aura_timer > 1 then
 			self._aura_timer = 0
 		end
 		self._aura_timer = self._aura_timer + dtime
-		self.object:set_properties({ textures = { get_texture(self), get_overloaded_aura(self._aura_timer) } })
-
+		self.object:set_properties({
+			textures = { get_texture(self), get_overloaded_aura(self._aura_timer) }
+		})
 		stalker_camouflage(self, dtime)
 	end,
 
-	on_lightning_strike = function(self, pos, pos2, objects)
+	---@return boolean
+	on_lightning_strike = function(self, _ --[[pos]], _ --[[pos2]], _ --[[objects]])
 		mcl_util.replace_mob(self.object, "mobs_mc:stalker_overloaded")
 		return true
 	end,
@@ -252,7 +254,7 @@ local stalker_overloaded = table_merge(stalker, {
 		obj:set_properties({
 			visual_size = { x = 2, y = 2 },
 			mesh = "vl_stalker.b3d",
-			textures = { { get_texture({}), AURA } },
+			textures = { { get_texture({}), overloaded_aura_texture } },
 		})
 	end,
 })

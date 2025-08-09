@@ -341,6 +341,8 @@ end
 
 ---
 --- @param target core.ObjectRef
+--- @param damage number
+--- @param mcl_reason {type: string, direct: any?, source: any?}?
 function mcl_util.deal_damage(target, damage, mcl_reason)
 	local luaentity = target:get_luaentity()
 
