@@ -57,7 +57,7 @@ end
 ---@field help_text string?
 ---@field long_description string?
 ---@field usage_help string?
----@field image string?
+---@field image string
 ---@field place_uses integer
 ---@field full_punch_interval number?
 ---@field punch_uses integer
@@ -89,19 +89,21 @@ function mcl_farming:register_hoe(material, def)
 	local help_text = def.help_text or hoe_tt
 	local long_description = def.long_description or hoe_longdesc
 	local usage_help = def.usage_help or hoe_usagehelp
-	local image = def.image or ("farming_tool_" .. material .. "hoe.png")
 	local m = def.crafting_material or def.repair_material
-	local tool_name = MOD_NAME..":hoe_"..material
+	local tool_name = MOD_NAME .. ":hoe_" .. material
 	local upgrade = def.upgradeable or false
 	local craftable = (def.craftable ~= nil and def.craftable) or true
 	local burn_time = def.burn_time or 0
-	local damage_groups = def.damage_groups or {fleshy = 1}
+	local damage_groups = def.damage_groups or { fleshy = 1 }
 	local full_punch_interval = def.full_punch_interval or 1
+
+	assert(def.image, "Hoe definition requires image to be set")
 	assert(def.place_uses, "Hoe definition requires place_uses to be set")
 	assert(def.punch_uses, "Hoe definition requires punch_uses to be set")
 	assert(def.enchantability, "Hoe definition requires enchantability to be set")
 	assert(def.repair_material, "Hoe definition requires repair_material to be set")
 	assert(def.dig_group, "Hoe definition requires dig_group to be set")
+
 	local groups = { tool = 1, hoe = 1, enchantability = def.enchantability }
 	if def.gives_fireproof then
 		groups.fire_immune = 1
@@ -112,7 +114,7 @@ function mcl_farming:register_hoe(material, def)
 		_doc_items_longdesc = long_description,
 		_doc_items_usagehelp = usage_help,
 		_doc_items_hidden = false,
-		inventory_image = image,
+		inventory_image = def.image,
 		wield_scale = mcl_vars.tool_wield_scale,
 		on_place = hoe_on_place_function(def.place_uses),
 		groups = groups,
@@ -161,6 +163,7 @@ end
 
 local crafts = {
 	wood = {
+		image = "farming_tool_woodhoe",
 		description = S("Wood Hoe"),
 		place_uses = 60,
 		punch_uses = 60,
@@ -171,6 +174,7 @@ local crafts = {
 		burntime = 10
 	},
 	stone = {
+		image = "farming_tool_stonehoe",
 		description = S("Stone Hoe"),
 		place_uses = 132,
 		punch_uses = 132,
@@ -181,6 +185,7 @@ local crafts = {
 		full_punch_interval = 0.5
 	},
 	iron = {
+		image = "farming_tool_ironhoe",
 		description = S("Iron Hoe"),
 		place_uses = 251,
 		punch_uses = 251,
@@ -192,6 +197,7 @@ local crafts = {
 		full_punch_interval = 0.33333333
 	},
 	gold = {
+		image = "farming_tool_goldhoe",
 		description = S("Gold Hoe"),
 		place_uses = 33,
 		punch_uses = 33,
@@ -202,6 +208,7 @@ local crafts = {
 		full_punch_interval = 0.25
 	},
 	diamond = {
+		image = "farming_tool_diamondhoe",
 		description = S("Diamond Hoe"),
 		place_uses = 1562,
 		punch_uses = 1562,
@@ -215,6 +222,7 @@ local crafts = {
 		full_punch_interval = 0.25
 	},
 	netherite = {
+		image = "farming_tool_netheritehoe",
 		description = S("Netherite Hoe"),
 		place_uses = 2031,
 		punch_uses = 2031,
