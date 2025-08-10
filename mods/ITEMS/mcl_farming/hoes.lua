@@ -189,7 +189,7 @@ local crafts = {
 	},
 	iron = {
 		mod_name = MOD_NAME,
-		image = "farming_tool_ironhoe.png",
+		image = "farming_tool_steelhoe.png",
 		description = S("Iron Hoe"),
 		place_uses = 251,
 		punch_uses = 251,
