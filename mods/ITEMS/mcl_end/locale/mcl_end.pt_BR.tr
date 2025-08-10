@@ -1,0 +1,69 @@
+# textdomain: mcl_end
+##[ chorus_plant.lua ]##
+Chorus Flower=Flor do Coral
+Grows on end stone=Cresce na rocha do fim
+
+A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.=Uma flor de coral é a parte viva de uma planta de coral. Aos poucos pode se transformar em uma planta do coral alta. Quando cresce, pode eventualmente morrer de velhice. Também morre quando não consegue crescer.
+
+Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem.=Ponha e espere que cresça. Ele só pode ser colocado em cima da rocha do fim, em cima de um caule de planta do coral ou exatamente ao lado de um caule de planta do coral.
+
+Dead Chorus Flower=Flor do Coral Morta
+
+This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again.=Isso faz parte de uma planta do coral. Não cresce. As flores do coral morrem da velhice ou quando não conseguem crescer. Uma flor do coral morto pode ser colhida para obter uma flor do coral fresca, capaz de crescer novamente.
+
+Chorus Plant Stem=Caule de Planta do Coral
+
+A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers.=O caule de planta do coral é a parte de uma planta de coral que mantém toda a planta unida. Precisa que a rocha do fim como seu solo. Os caules são cultivados a partir de flores do coral.
+
+The stem attaches itself to end stone and other chorus blocks.=O caule se prende à rocha do fim e outros blocos do coral.
+Chorus Fruit=Fruta do Coral
+Randomly teleports you when eaten=Te teletransporta aleatoriamente quando comida
+
+A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.=Uma fruta de coral é uma fruta comestível da planta do coral, nativa do Fim. Ao comer, te teletransporta para o topo de um bloco sólido aleatório nas proximidades, desde que você não termine dentro de um bloco líquido, sólido ou nocivo. O teletransporte pode falhar se houver bem poucos ou nenhum lugar para se teletransportar.
+
+Popped Chorus Fruit=Fruta do Coral Estourada
+##[ building.lua ]##
+End Stone=Rocha do Fim
+End Stone Bricks=Tijolos de Rocha do Fim
+Purpur Block=Bloco Púrpura
+Purpur Pillar=Pilar Púrpura
+End Rod=Bastão do Fim
+End rods are decorative light sources.=Bastões do fim são fontes decorativas de luz.
+White End Rod=Bastão do Fim Branco
+Grey End Rod=Bastão do Fim Cinza
+Light Grey End Rod=Bastão do Fim Cinza Claro
+Black End Rod=Bastão do Fim Preto
+Red End Rod=Bastão do Fim Vermelho
+Yellow End Rod=Bastão do Fim Amarelo
+Green End Rod=Bastão do Fim Verde
+Cyan End Rod=Bastão do Fim Ciano
+Blue End Rod=Bastão do Fim Azul
+Magenta End Rod=Bastão do Fim Magenta
+Orange End Rod=Bastão do Fim Laranja
+Purple End Rod=Bastão do Fim Roxo
+Brown End Rod=Bastão do Fim Marrom
+Pink End Rod=Bastão do Fim Rosa
+Lime End Rod=Bastão do Fim Lima
+Light Blue End Rod=Bastão do Fim Azul Claro
+Dragon Egg=Ovo do Dragão
+A dragon egg is a decorative item which can be placed.=Um ovo do dragão é um item decorativo que pode ser colocado.
+##[ eye_of_ender.lua ]##
+Eye of Ender=Olho do Fim
+Guides the way to the mysterious End dimension=Guia o caminho para a misteriosa dimenção do Fim
+
+This item is used to locate End portal shrines in the Overworld and to activate End portals.=Este item é usado para localizar os santuários do Portal do Fim no Mundo Superior (mundo inicial) e para ativar os portais do Fim.
+
+NOTE: The End dimension is currently incomplete and might change in future versions.=NOTA: A dimenção do Fim está atualmente incompleta e pode ser alterada em versões futuras.
+
+Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.=Use a tecla de ataque para liberar o Olho do Fim. Ele subirá e voará na direção horizontal do santuário do Portal do Fim mais próximo. Se você estiver muito próximo, o Olho do Fim seguirá o caminho direto para o santuário do Portal do Fim. Depois de alguns segundos, ele para. Pode cair como um item, mas há 20% de chance de quebrar.
+
+To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=Para ativar um Portal do Fim, olhos do fim precisam ser colocados em cada quadrado vazio de um bloco do Portal do Fim.
+
+##[ end_crystal.lua ]##
+End Crystal=Cristal do Fim
+Ignited by a punch or a hit with an arrow=Ignicionado por um soco ou atingido por uma flecha
+Explosion radius: @1=Raio de Explosão: @1
+
+End Crystals are explosive devices. They can be placed on Obsidian or Bedrock. Ignite them by a punch or a hit with an arrow. End Crystals can also be used the spawn the Ender Dragon by placing one at each side of the End Exit Portal.=Cristais do Fim são dispositivos explosivos. Eles podem ser colocados na obsidiana ou na rocha. Acenda eles por um soco ou atinjindo com uma flecha. Os cristais do fim também podem ser usados para o resurgimento do Dragão Final, colocando um em cada lado do portal de saída do Fim.
+
+Place the End Crystal on Obsidian or Bedrock, then punch it or hit it with an arrow to cause an huge and probably deadly explosion. To Spawn the Ender Dragon, place one at each side of the End Exit Portal.=Ponha o Cristal do Fim na obsidiana ou na rocha, depois dê um soco ou atinja com uma flecha para causar uma explosão enorme e provavelmente mortal. Para gerar o Dragão Final, coloque um em cada lado do portal de saída do Fim.
