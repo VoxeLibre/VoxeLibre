@@ -229,6 +229,7 @@ core.register_tool("vl_deepslate_tools:shovel_deepslate", {
 })
 
 mcl_farming:register_hoe("deepslate", {
+	    mod_name = modname,
 		description = S("Deepslate Hoe"),
 		place_uses = deepslate.stone,
 		full_punch_interval = 0.5,

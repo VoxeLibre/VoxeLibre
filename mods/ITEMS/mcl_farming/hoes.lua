@@ -72,6 +72,7 @@ end
 ---@field burn_time integer?
 ---@field max_enchant_level integer?
 ---@field gives_fireproof integer?
+---@field mod_name string 
 
 local hoe_tt = S("Turns block into farmland")
 local hoe_longdesc = S(
@@ -90,7 +91,7 @@ function mcl_farming:register_hoe(material, def)
 	local long_description = def.long_description or hoe_longdesc
 	local usage_help = def.usage_help or hoe_usagehelp
 	local m = def.crafting_material or def.repair_material
-	local tool_name = MOD_NAME .. ":hoe_" .. material
+	local tool_name = def.mod_name .. ":hoe_" .. material
 	local upgrade = def.upgradeable or false
 	local craftable = (def.craftable ~= nil and def.craftable) or true
 	local burn_time = def.burn_time or 0
@@ -163,6 +164,7 @@ end
 
 local crafts = {
 	wood = {
+		mod_name = MOD_NAME,
 		image = "farming_tool_woodhoe",
 		description = S("Wood Hoe"),
 		place_uses = 60,
@@ -174,6 +176,7 @@ local crafts = {
 		burntime = 10
 	},
 	stone = {
+		mod_name = MOD_NAME,
 		image = "farming_tool_stonehoe",
 		description = S("Stone Hoe"),
 		place_uses = 132,
@@ -185,6 +188,7 @@ local crafts = {
 		full_punch_interval = 0.5
 	},
 	iron = {
+		mod_name = MOD_NAME,
 		image = "farming_tool_ironhoe",
 		description = S("Iron Hoe"),
 		place_uses = 251,
@@ -197,6 +201,7 @@ local crafts = {
 		full_punch_interval = 0.33333333
 	},
 	gold = {
+		mod_name = MOD_NAME,
 		image = "farming_tool_goldhoe",
 		description = S("Gold Hoe"),
 		place_uses = 33,
@@ -208,6 +213,7 @@ local crafts = {
 		full_punch_interval = 0.25
 	},
 	diamond = {
+		mod_name = MOD_NAME,
 		image = "farming_tool_diamondhoe",
 		description = S("Diamond Hoe"),
 		place_uses = 1562,
@@ -222,6 +228,7 @@ local crafts = {
 		full_punch_interval = 0.25
 	},
 	netherite = {
+		mod_name = MOD_NAME,
 		image = "farming_tool_netheritehoe",
 		description = S("Netherite Hoe"),
 		place_uses = 2031,
