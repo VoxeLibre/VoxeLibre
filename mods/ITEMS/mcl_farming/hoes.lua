@@ -1,4 +1,5 @@
-local S = core.get_translator(core.get_current_modname())
+local MOD_NAME = core.get_current_modname()
+local S = core.get_translator(MOD_NAME)
 
 local function create_soil(pos, inv)
 	if pos == nil then
@@ -90,7 +91,7 @@ function mcl_farming:register_hoe(material, def)
 	local usage_help = def.usage_help or hoe_usagehelp
 	local image = def.image or ("farming_tool_" .. material .. "hoe.png")
 	local m = def.crafting_material or def.repair_material
-	local tool_name = "mcl_farming:hoe_" .. material
+	local tool_name = MOD_NAME..":hoe_"..material
 	local upgrade = def.upgradeable or false
 	local craftable = (def.craftable ~= nil and def.craftable) or true
 	local burn_time = def.burn_time or 0
@@ -130,7 +131,7 @@ function mcl_farming:register_hoe(material, def)
 		vl_max_ench_lvl = def.max_enchant_level
 	})
 
-	if def.burn_time > 0 then
+	if def.burn_time then
 		core.register_craft({
 			type = "fuel",
 			recipe = tool_name,
