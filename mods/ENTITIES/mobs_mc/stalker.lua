@@ -109,21 +109,18 @@ end
 ---@param self  any
 ---@param opts  camouflage_opts?
 local function stalker_camouflage(self, opts)
-	local changed = true
+	local has_aura    = opts and opts.aura_timer
 	local new_texture = get_texture(self, self._stalker_texture)
 	
-	if self._stalker_texture == new_texture then
-		if not opts or not opts.aura_timer then
-			return
-		end
-		changed = false
-	else
-		self._stalker_texture = new_texture
+	if self._stalker_texture == new_texture and not has_aura then
+		return
 	end
+	self._stalker_texture = new_texture
 
-	if opts and opts.aura_timer then
+	if has_aura then
+		assert(opts)
 		self.object:set_properties({ textures = { new_texture, get_overloaded_aura(opts.aura_timer) } })
-	elseif changed then
+	else
 		self.object:set_properties({ textures = { new_texture, "mobs_mc_empty.png" } })
 	end
 end
@@ -134,7 +131,12 @@ end
 --- @param cmi_cause any
 local function stalker_on_die(self, pos, cmi_cause)
 	if should_drop_music_disc(cmi_cause) then
-		core.add_item({ x = pos.x, y = pos.y + 1, z = pos.z }, "mcl_jukebox:record_" .. math.random(9))
+		table.insert(self.drops, {
+			name   = "mcl_jukebox:record_" .. math.random(9),
+			chance = 1,
+			min    = 1,
+			max    = 1
+		})
 	end
 end
 
@@ -241,8 +243,7 @@ local stalker = {
 	end,
 }
 
-local stalker_overloaded = table.copy(stalker)
-stalker_overloaded = mcl_util.table_merge(stalker_overloaded, {
+local stalker_overloaded = table.update(table.copy(stalker), {
 	description = S("Overloaded Stalker"),
 	textures = { { get_texture({}), AURA_TEXTURE } },
 	use_texture_alpha = true,
