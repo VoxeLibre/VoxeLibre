@@ -233,6 +233,7 @@ mcl_farming:register_hoe("deepslate", {
 		place_uses = deepslate.stone,
 		full_punch_interval = 0.5,
 		punch_uses = deepslate.stone,
+		image = "vl_deepslate_tools_deepslatehoe.png",
 		enchantability = 5,
 		crafting_material = "mcl_deepslate:deepslate_cobbled",
 		repair_material = "mcl_deepslate:deepslate_cobbled",
