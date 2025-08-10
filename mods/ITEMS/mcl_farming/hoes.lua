@@ -165,7 +165,7 @@ end
 local crafts = {
 	wood = {
 		mod_name = MOD_NAME,
-		image = "farming_tool_woodhoe",
+		image = "farming_tool_woodhoe.png",
 		description = S("Wood Hoe"),
 		place_uses = 60,
 		punch_uses = 60,
@@ -177,7 +177,7 @@ local crafts = {
 	},
 	stone = {
 		mod_name = MOD_NAME,
-		image = "farming_tool_stonehoe",
+		image = "farming_tool_stonehoe.png",
 		description = S("Stone Hoe"),
 		place_uses = 132,
 		punch_uses = 132,
@@ -189,7 +189,7 @@ local crafts = {
 	},
 	iron = {
 		mod_name = MOD_NAME,
-		image = "farming_tool_ironhoe",
+		image = "farming_tool_ironhoe.png",
 		description = S("Iron Hoe"),
 		place_uses = 251,
 		punch_uses = 251,
@@ -202,7 +202,7 @@ local crafts = {
 	},
 	gold = {
 		mod_name = MOD_NAME,
-		image = "farming_tool_goldhoe",
+		image = "farming_tool_goldhoe.png",
 		description = S("Gold Hoe"),
 		place_uses = 33,
 		punch_uses = 33,
@@ -214,7 +214,7 @@ local crafts = {
 	},
 	diamond = {
 		mod_name = MOD_NAME,
-		image = "farming_tool_diamondhoe",
+		image = "farming_tool_diamondhoe.png",
 		description = S("Diamond Hoe"),
 		place_uses = 1562,
 		punch_uses = 1562,
@@ -229,7 +229,7 @@ local crafts = {
 	},
 	netherite = {
 		mod_name = MOD_NAME,
-		image = "farming_tool_netheritehoe",
+		image = "farming_tool_netheritehoe.png",
 		description = S("Netherite Hoe"),
 		place_uses = 2031,
 		punch_uses = 2031,
