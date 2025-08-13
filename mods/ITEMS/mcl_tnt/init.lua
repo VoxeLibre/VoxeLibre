@@ -120,7 +120,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	end,
 	_vl_projectile = {
 		on_collide = function(projectile, pos, node, node_def)
-			if mcl_burning.is_burning(projectile) then
+			if mcl_burning.is_burning(projectile.object) then
 				tnt.ignite(pos)
 			end
 		end
