@@ -222,7 +222,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.texture_mods = {}
 	self.object:set_texture_mod("")
 
-	self.v_start = false
+	self.force_attack = false
+	self.fuse = false
 	self.timer = 0
 	self.blinktimer = 0
 	self.blinkstatus = false

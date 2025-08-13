@@ -71,15 +71,16 @@ end
 local function stalker_on_rightclick(self, clicker)
 	-- Force-ignite stalker with flint and steel.
 	--
-	if self:is_fuse_triggered() then
+	if self:fuse_is_triggered() then
+		-- Fuse already triggered
+		self.allow_fuse_reset = false
 		return
 	end
 	local item = clicker:get_wielded_item()
 	if not item or item:get_name() ~= "mcl_fire:flint_and_steel" then
 		return
 	end
-	self.allow_fuse_reset = false
-	self:start_fuse()
+	self:fuse_start({ force = true })
 
 	-- Damage player's Flint and Steel.
 	-- FIXME: Move tool wear logic to a more appropriate place.
