@@ -132,12 +132,14 @@ end
 --- @param cmi_cause any
 local function stalker_on_die(self, pos, cmi_cause)
 	if should_drop_music_disc(cmi_cause) then
-		table.insert(self.drops, {
+		local drops = table.copy(self.drops)
+		table.insert(drops, {
 			name   = "mcl_jukebox:record_" .. math.random(9),
 			chance = 1,
 			min    = 1,
 			max    = 1
 		})
+		self.drops = drops
 	end
 end
 
