@@ -69,6 +69,7 @@ mcl_mobs.register_mob("mobs_mc:chicken", {
 	textures = {
 		{ "mobs_mc_chicken.png" },
 	},
+	fall_speed = -8,
 
 	makes_footstep_sound = true,
 	walk_velocity = 1,
