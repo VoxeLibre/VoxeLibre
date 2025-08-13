@@ -378,6 +378,8 @@ for each mob.
 								(for swimming mobs that have stranded)
 						"die": during death
 	'self.nametag'		contains the name of the mob which it can show above
+	'self.force_attack' set to true to forcefully enable attack AI if its disabled
+						through game settings
 
 
 Spawning Mobs in World

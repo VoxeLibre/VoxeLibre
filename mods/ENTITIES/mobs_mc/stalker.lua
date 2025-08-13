@@ -2,11 +2,6 @@
 
 local S = minetest.get_translator("mobs_mc")
 
---###################
---################### STALKER
---###################
-
-
 local function get_texture(self, prev)
 	local standing_on = minetest.registered_nodes[self.standing_on]
 	-- TODO: we do not have access to param2 here (color palette index) yet
@@ -41,7 +36,8 @@ local function get_texture(self, prev)
 		texture = "vl_stalker_default.png"
 	else
 		texture = texture:gsub("([\\^:\\[])", "\\%1") -- escape texture modifiers
-		texture = "(vl_stalker_default.png^[combine:16x24:0,0=(" .. texture .. "):0,16=(" .. texture .. ")" .. texture_suff .. ")"
+		texture = "(vl_stalker_default.png^[combine:16x24:0,0=(" ..
+			texture .. "):0,16=(" .. texture .. ")" .. texture_suff .. ")"
 	end
 	if self.attack then
 		texture = texture .. "^vl_mobs_stalker_overlay_angry.png"
@@ -51,17 +47,103 @@ local function get_texture(self, prev)
 	return texture
 end
 
-local AURA = "vl_stalker_overloaded_aura.png"
-local function get_overloaded_aura(timer)
-	local frame = math.floor(timer*16)
-	local f = tostring(frame)
-	local nf = tostring(16-f)
-	return "[combine:16x24:-" .. nf ..",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
+--- Returns true if the cause of death should cause a music disc to drop.
+--- @param cmi_cause any
+--- @return boolean
+local function should_drop_music_disc(cmi_cause)
+	if not cmi_cause or cmi_cause.type ~= "punch" then
+		return false
+	end
+	local e = cmi_cause.puncher and cmi_cause.puncher:get_luaentity()
+	if not e or not e.name:find("arrow") then
+		return false
+	end
+	local s = e._source_object and e._source_object:get_luaentity()
+	if not s then
+		return false
+	end
+	return s.name == "mobs_mc:skeleton" or s.name == "mobs_mc:stray"
 end
 
+---
+---@param self any
+---@param clicker core.Player
+local function stalker_on_rightclick(self, clicker)
+	-- Force-ignite stalker with flint and steel.
+	--
+	if self:fuse_is_triggered() then
+		-- Fuse already triggered
+		self.allow_fuse_reset = false
+		return
+	end
+	local item = clicker:get_wielded_item()
+	if not item or item:get_name() ~= "mcl_fire:flint_and_steel" then
+		return
+	end
+	self:fuse_start({ force = true })
 
+	-- Damage player's Flint and Steel.
+	-- FIXME: Move tool wear logic to a more appropriate place.
+	if not minetest.is_creative_enabled(clicker:get_player_name()) then
+		local wdef = item:get_definition()
+		item:add_wear(1000)
+		if item:get_count() == 0 and wdef.sound and wdef.sound.breaks then
+			core.sound_play(wdef.sound.breaks, { pos = clicker:get_pos(), gain = 0.5 }, true)
+		end
+		clicker:set_wielded_item(item)
+	end
+end
 
-mcl_mobs.register_mob("mobs_mc:stalker", {
+local AURA_TEXTURE = "vl_stalker_overloaded_aura.png"
+
+local function get_overloaded_aura(timer)
+	local frame = math.floor(timer * 16)
+	local f = tostring(frame)
+	local nf = tostring(16 - f)
+	return "[combine:16x24:-" .. nf .. ",0=" .. AURA_TEXTURE .. ":" .. f .. ",0=" .. AURA_TEXTURE
+end
+
+---@class camouflage_opts
+---@field aura_timer number? If provided, the stalker will have an overload aura.
+
+---
+---@param self  any
+---@param opts  camouflage_opts?
+local function stalker_camouflage(self, opts)
+	local has_aura    = opts and opts.aura_timer
+	local new_texture = get_texture(self, self._stalker_texture)
+	
+	if self._stalker_texture == new_texture and not has_aura then
+		return
+	end
+	self._stalker_texture = new_texture
+
+	if has_aura then
+		assert(opts)
+		self.object:set_properties({ textures = { new_texture, get_overloaded_aura(opts.aura_timer) } })
+	else
+		self.object:set_properties({ textures = { new_texture, "mobs_mc_empty.png" } })
+	end
+end
+
+---
+--- @param self      any
+--- @param pos       {x: number, y: number, z: number}
+--- @param cmi_cause any
+local function stalker_on_die(self, pos, cmi_cause)
+	if should_drop_music_disc(cmi_cause) then
+		local drops = table.copy(self.drops)
+		table.insert(drops, {
+			name   = "mcl_jukebox:record_" .. math.random(9),
+			chance = 1,
+			min    = 1,
+			max    = 1
+		})
+		self.drops = drops
+	end
+end
+
+local stalker = {
 	description = S("Stalker"),
 	type = "monster",
 	spawn_class = "hostile",
@@ -69,22 +151,25 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	initial_properties = {
 		hp_min = 20,
 		hp_max = 20,
-		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
+		collisionbox = { -0.3, -0.01, -0.3, 0.3, 1.69, 0.3 },
 	},
 	xp_min = 5,
 	xp_max = 5,
 	pathfinding = 1,
 	visual = "mesh",
 	mesh = "vl_stalker.b3d",
--- 	head_swivel = "Head_Control",
-	head_eye_height = 1.2;
-	head_bone_position = vector.new( 0, 2.35, 0 ), -- for minetest <= 5.8
+	-- 	head_swivel = "Head_Control",
+	head_eye_height = 1.2,
+	head_bone_position = vector.new(0, 2.35, 0), -- for minetest <= 5.8
 	curiosity = 2,
-	textures = {
-		{get_texture({}),
-		"mobs_mc_empty.png"},
-	},
-	visual_size = {x=2, y=2},
+	textures = { { get_texture({}), "mobs_mc_empty.png" } },
+	visual_size = { x = 2, y = 2 },
+	walk_velocity = 1.05,
+	run_velocity = 2.0,
+	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
+	attack_type = "explode",
+
+	makes_footstep_sound = true,
 	sounds = {
 		attack = "tnt_ignite",
 		death = "mobs_mc_creeper_death",
@@ -93,13 +178,6 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 		explode = "tnt_explode",
 		distance = 16,
 	},
-	makes_footstep_sound = true,
-	walk_velocity = 1.05,
-	run_velocity = 2.0,
-	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
-	attack_type = "explode",
-
-	--hssssssssssss
 
 	explosion_strength = 3,
 	explosion_radius = 3.5,
@@ -110,69 +188,38 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 	allow_fuse_reset = true,
 	stop_to_explode = true,
 
-	-- Force-ignite stalker with flint and steel and explode after 1.5 seconds.
-	-- TODO: Make stalker flash after doing this as well.
-	-- TODO: Test and debug this code.
-	on_rightclick = function(self, clicker)
-		if self._forced_explosion_countdown_timer ~= nil then
-			return
-		end
-		local item = clicker:get_wielded_item()
-		if item:get_name() == "mcl_fire:flint_and_steel" then
-			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				-- Wear tool
-				local wdef = item:get_definition()
-				item:add_wear(1000)
-				-- Tool break sound
-				if item:get_count() == 0 and wdef.sound and wdef.sound.breaks then
-					minetest.sound_play(wdef.sound.breaks, {pos = clicker:get_pos(), gain = 0.5}, true)
-				end
-				clicker:set_wielded_item(item)
-			end
-			self._forced_explosion_countdown_timer = self.explosion_timer
-			minetest.sound_play(self.sounds.attack, {pos = self.object:get_pos(), gain = 1, max_hear_distance = 16}, true)
-		end
-	end,
-	do_custom = function(self, dtime)
-		if self._forced_explosion_countdown_timer ~= nil then
-			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
-			if self._forced_explosion_countdown_timer <= 0 then
-				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
-			end
-		end
-		local new_texture = get_texture(self, self._stalker_texture)
-		if self._stalker_texture ~= new_texture then
-			self.object:set_properties({textures={new_texture, "mobs_mc_empty.png"}})
-			self._stalker_texture = new_texture
-		end
-	end,
-	on_die = function(self, pos, cmi_cause)
-		-- Drop a random music disc when killed by skeleton or stray
-		if cmi_cause and cmi_cause.type == "punch" then
-			local luaentity = cmi_cause.puncher and cmi_cause.puncher:get_luaentity()
-			if luaentity and luaentity.name:find("arrow") then
-				local shooter_luaentity = luaentity._shooter and luaentity._shooter:get_luaentity()
-				if shooter_luaentity and (shooter_luaentity.name == "mobs_mc:skeleton" or shooter_luaentity.name == "mobs_mc:stray") then
-					minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, "mcl_jukebox:record_" .. math.random(9))
-				end
-			end
-		end
-	end,
-	maxdrops = 2,
-	drops = {
-		{name = "mcl_mobitems:gunpowder",
-		chance = 1,
-		min = 0,
-		max = 2,
-		looting = "common",},
+	on_rightclick = stalker_on_rightclick,
+	on_die = stalker_on_die,
 
+	do_custom = function(self, _ --[[dtime]])
+		stalker_camouflage(self)
+	end,
+
+	on_lightning_strike = function(self, _ --[[pos]], _ --[[pos2]], _ --[[objects]])
+		mcl_util.replace_mob(self.object, "mobs_mc:stalker_overloaded")
+		return true
+	end,
+
+	maxdrops = 2,
+
+	drops = {
+		{
+			name = "mcl_mobitems:gunpowder",
+			chance = 1,
+			min = 0,
+			max = 2,
+			looting = "common",
+		},
 		-- Head
-		-- TODO: Only drop if killed by charged stalker
-		{name = "mcl_heads:stalker",
-		chance = 200, -- 0.5%
-		min = 1,
-		max = 1,},
+		-- TODO: This drop should be guaranteed when it's killed by an Overloaded Stalker
+		{
+			name = "mcl_heads:stalker",
+			chance = 200, -- 0.5%
+			min = 1,
+			max = 1,
+		},
 	},
+
 	animation = {
 		speed_normal = 30,
 		speed_run = 60,
@@ -185,165 +232,52 @@ mcl_mobs.register_mob("mobs_mc:stalker", {
 		fuse_start = 49,
 		fuse_end = 80,
 	},
+
 	floats = 1,
 	fear_height = 4,
 	view_range = 16,
 
 	_on_after_convert = function(obj)
 		obj:set_properties({
-			visual_size = {x=2, y=2},
+			visual_size = { x = 2, y = 2 },
 			mesh = "vl_stalker.b3d",
-			textures = {
-				{get_texture({}),
-				"mobs_mc_empty.png"},
-			},
+			textures = { { get_texture({}), "mobs_mc_empty.png" }, },
 		})
 	end,
-}) -- END mcl_mobs.register_mob("mobs_mc:stalker", {
+}
 
-mcl_mobs.register_mob("mobs_mc:stalker_overloaded", {
+local stalker_overloaded = table.update(table.copy(stalker), {
 	description = S("Overloaded Stalker"),
-	type = "monster",
-	spawn_class = "hostile",
-	initial_properties = {
-		hp_min = 20,
-		hp_max = 20,
-		collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
-	},
-	xp_min = 5,
-	xp_max = 5,
-	pathfinding = 1,
-	visual = "mesh",
-	mesh = "vl_stalker.b3d",
-
-	--BOOM
-
-	textures = {
-		{get_texture({}),
-		AURA},
-	},
+	textures = { { get_texture({}), AURA_TEXTURE } },
 	use_texture_alpha = true,
-	visual_size = {x=2, y=2},
-	sounds = {
-		attack = "tnt_ignite",
-		death = "mobs_mc_creeper_death",
-		damage = "mobs_mc_creeper_hurt",
-		fuse = "tnt_ignite",
-		explode = "tnt_explode",
-		distance = 16,
-	},
-	makes_footstep_sound = true,
-	walk_velocity = 1.05,
-	run_velocity = 2.1,
-	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
-	attack_type = "explode",
-
 	explosion_strength = 6,
 	explosion_radius = 8,
 	explosion_damage_radius = 8,
-	explosiontimer_reset_radius = 3,
-	reach = 3,
-	explosion_timer = 1.5,
-	allow_fuse_reset = true,
-	stop_to_explode = true,
-
-	-- Force-ignite stalker with flint and steel and explode after 1.5 seconds.
-	-- TODO: Make stalker flash after doing this as well.
-	-- TODO: Test and debug this code.
-	on_rightclick = function(self, clicker)
-		if self._forced_explosion_countdown_timer ~= nil then
-			return
-		end
-		local item = clicker:get_wielded_item()
-		if item:get_name() == "mcl_fire:flint_and_steel" then
-			if not minetest.is_creative_enabled(clicker:get_player_name()) then
-				-- Wear tool
-				local wdef = item:get_definition()
-				item:add_wear(1000)
-				-- Tool break sound
-				if item:get_count() == 0 and wdef.sound and wdef.sound.breaks then
-					minetest.sound_play(wdef.sound.breaks, {pos = clicker:get_pos(), gain = 0.5}, true)
-				end
-				clicker:set_wielded_item(item)
-			end
-			self._forced_explosion_countdown_timer = self.explosion_timer
-			minetest.sound_play(self.sounds.attack, {pos = self.object:get_pos(), gain = 1, max_hear_distance = 16}, true)
-		end
-	end,
-	do_custom = function(self, dtime)
-		if self._forced_explosion_countdown_timer ~= nil then
-			self._forced_explosion_countdown_timer = self._forced_explosion_countdown_timer - dtime
-			if self._forced_explosion_countdown_timer <= 0 then
-				self:boom(mcl_util.get_object_center(self.object), self.explosion_strength)
-			end
-		end
-		if not self._aura_timer or self._aura_timer > 1 then self._aura_timer = 0 end
-		self._aura_timer = self._aura_timer + dtime
-		self.object:set_properties({textures={get_texture(self), get_overloaded_aura(self._aura_timer)}})
-	end,
-	on_die = function(self, pos, cmi_cause)
-		-- Drop a random music disc when killed by skeleton or stray
-		if cmi_cause and cmi_cause.type == "punch" then
-			local luaentity = cmi_cause.puncher and cmi_cause.puncher:get_luaentity()
-			if luaentity and luaentity.name:find("arrow") then
-				local shooter_luaentity = luaentity._shooter and luaentity._shooter:get_luaentity()
-				if shooter_luaentity and (shooter_luaentity.name == "mobs_mc:skeleton" or shooter_luaentity.name == "mobs_mc:stray") then
-					minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, "mcl_jukebox:record_" .. math.random(9))
-				end
-			end
-		end
-	end,
-	on_lightning_strike = function(self, pos, pos2, objects)
-		 mcl_util.replace_mob(self.object, "mobs_mc:stalker_overloaded")
-		 return true
-	end,
-	maxdrops = 2,
-	drops = {
-		{name = "mcl_mobitems:gunpowder",
-		chance = 1,
-		min = 0,
-		max = 2,
-		looting = "common",},
-
-		-- Head
-		-- TODO: Only drop if killed by overloaded stalker
-		{name = "mcl_heads:stalker",
-		chance = 200, -- 0.5%
-		min = 1,
-		max = 1,},
-	},
-	animation = {
-		speed_normal = 30,
-		speed_run = 60,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 49,
-		run_start = 24,
-		run_end = 49,
-		fuse_start = 49,
-		fuse_end = 80,
-	},
-	floats = 1,
-	fear_height = 4,
-	view_range = 16,
-	--Having trouble when fire is placed with lightning
 	fire_resistant = true,
 	glow = 3,
 
+	do_custom = function(self, dtime)
+		--- Tick aura timer
+		if not self._aura_timer or self._aura_timer > 1 then
+			self._aura_timer = 0
+		end
+		self._aura_timer = self._aura_timer + dtime
+		
+		stalker_camouflage(self, { aura_timer = self._aura_timer })
+	end,
+
 	_on_after_convert = function(obj)
 		obj:set_properties({
-			visual_size = {x=2, y=2},
+			visual_size = { x = 2, y = 2 },
 			mesh = "vl_stalker.b3d",
-			textures = {
-				{get_texture({}),
-				AURA},
-			},
+			textures = { { get_texture({}), AURA_TEXTURE } },
 		})
 	end,
-}) -- END mcl_mobs.register_mob("mobs_mc:stalker_overloaded", {
+})
 
--- compat
+mcl_mobs.register_mob("mobs_mc:stalker", stalker)
+mcl_mobs.register_mob("mobs_mc:stalker_overloaded", stalker_overloaded)
+
 mcl_mobs.register_conversion("mobs_mc:creeper", "mobs_mc:stalker")
 mcl_mobs.register_conversion("mobs_mc:creeper_charged", "mobs_mc:stalker_overloaded")
 

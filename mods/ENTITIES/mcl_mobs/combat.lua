@@ -1,8 +1,8 @@
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 
-local damage_enabled = minetest.settings:get_bool("enable_damage")
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+local damage_enabled = core.settings:get_bool("enable_damage")
+local mobs_griefing = core.settings:get_bool("mobs_griefing") ~= false
 
 -- pathfinding settings
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
@@ -33,8 +33,12 @@ end
 
 -- get this mob to attack the object
 function mob_class:do_attack(object)
-	if self.state == "attack" or self.state == "die" then return end
-	if object:is_player() and not minetest.settings:get_bool("enable_damage") then return end
+	if self.state == "attack" or self.state == "die" then
+		return
+	end
+	if object:is_player() and not damage_enabled and not self.force_attack then
+		return
+	end
 
 	self.attack = object
 	self.state = "attack"
@@ -274,7 +278,12 @@ end
 
 -- find someone to attack
 function mob_class:monster_attack()
-	if not damage_enabled or self.passive ~= false or self.state == "attack" or self:day_docile() then return end
+	if not damage_enabled and not self.force_attack then
+		return
+	end
+	if self.passive ~= false or self.state == "attack" or self:day_docile() then
+		return
+	end
 
 	local s = self.object:get_pos()
 	local p, sp, dist
@@ -799,10 +808,41 @@ local function clear_aggro(self)
 	self.attack = nil
 	self._aggro = nil
 
-	self.v_start = false
+	self.force_attack = false
+	self.fuse = false
 	self.timer = 0
 	self.blinktimer = 0
 	self.path.way = nil
+end
+
+---Starts an explosion attack.
+---@param opts { force: boolean? }?
+function mob_class:fuse_start(opts)
+	self.fuse       = true
+	self.timer      = 0
+	self.blinktimer = 0
+	self:mob_sound("fuse", nil, false)
+	self:set_animation("fuse")
+
+	if opts and opts.force == true then
+		self.allow_fuse_reset = false
+		self.force_attack     = true
+	end
+end
+
+---Returns true if the fuse for this mob is triggered.
+---@return boolean
+function mob_class:fuse_is_triggered()
+	return self.fuse == true
+end
+
+---Resets fuse.
+function mob_class:fuse_reset()
+	self.fuse = false
+	self.timer = 0
+	self.blinktimer = 0
+	self.blinkstatus = false
+	self:remove_texture_mod("^[brighten")
 end
 
 function mob_class:do_states_attack(dtime)
@@ -847,7 +887,7 @@ function mob_class:do_states_attack(dtime)
 	local dist = vector_distance(p, s)
 
 	if self.attack_type == "explode" then
-		if target_line_of_sight then
+		if target_line_of_sight and self.allow_fuse_reset then
 			self:turn_in_direction(p.x - s.x, p.z - s.z, 1)
 		end
 
@@ -855,31 +895,23 @@ function mob_class:do_states_attack(dtime)
 		local entity_damage_radius = self.explosion_damage_radius or (node_break_radius * 2)
 
 		-- start timer when in reach and line of sight
-		if not self.v_start and dist <= self.reach and target_line_of_sight then
-			self.v_start = true
-			self.timer = 0
-			self.blinktimer = 0
-			self:mob_sound("fuse", nil, false)
-			self:set_animation("fuse")
-
+		if not self:fuse_is_triggered() and dist <= self.reach and target_line_of_sight then
+			self:fuse_start()
 			-- stop timer if out of reach or direct line of sight
-		elseif self.allow_fuse_reset and self.v_start
-				and (dist >= self.explosiontimer_reset_radius or not target_line_of_sight) then
-			self.v_start = false
-			self.timer = 0
-			self.blinktimer = 0
-			self.blinkstatus = false
-			self:remove_texture_mod("^[brighten")
+		elseif self:fuse_is_triggered() and self.allow_fuse_reset
+			and (dist >= self.explosiontimer_reset_radius or not target_line_of_sight)
+		then
+			self:fuse_reset()
 		end
 
 		-- walk right up to player unless the timer is active
-		if self.v_start and (self.stop_to_explode or dist < self.reach) or not target_line_of_sight then
+		if self:fuse_is_triggered() and (self.stop_to_explode or dist < self.reach) or not target_line_of_sight then
 			self:set_velocity(0)
 		else
 			self:set_velocity(self.run_velocity)
 		end
 
-		if not self.v_start then
+		if not self:fuse_is_triggered() then
 			if self.animation and self.animation.run_start then
 				self:set_animation("run")
 			else
@@ -887,7 +919,7 @@ function mob_class:do_states_attack(dtime)
 			end
 		end
 
-		if self.v_start then
+		if self:fuse_is_triggered() then
 			self.timer = self.timer + dtime
 			self.blinktimer = (self.blinktimer or 0) + dtime
 

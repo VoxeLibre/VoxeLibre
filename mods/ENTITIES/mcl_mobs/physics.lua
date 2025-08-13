@@ -457,7 +457,8 @@ function mob_class:check_for_death(cause, cmi_cause)
 
 	self.state = "die"
 	self.attack = nil
-	self.v_start = false
+	self.force_attack = false
+	self.fuse = false
 	self.fall_speed = DEFAULT_FALL_SPEED
 	self.timer = 0
 	self.blinktimer = 0
