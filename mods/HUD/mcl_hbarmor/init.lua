@@ -34,30 +34,27 @@ end
 
 local function custom_hud(player)
 	local name = player:get_player_name()
-
-	if minetest.settings:get_bool("enable_damage") then
-		local ret = mcl_hbarmor.get_armor(player)
-		if ret == false then
-			minetest.log("error", "[mcl_hbarmor] Call to mcl_hbarmor.get_armor in custom_hud returned with false!")
-			return
-		end
-		local arm = tonumber(mcl_hbarmor.armor[name])
-		if not arm then
-			arm = 0
-		end
-		local hide
-		if mcl_hbarmor.autohide then
-			hide = must_hide(name, arm)
-		else
-			hide = false
-		end
-		vl_hudbars.init_hudbar(player, "armor")
-		if hide then
-			vl_hudbars.hide(player, "armor")
-		else
-			vl_hudbars.change_value(player, "armor", arm_printable(arm))
-			vl_hudbars.show(player, "armor")
-		end
+	local ret = mcl_hbarmor.get_armor(player)
+	if ret == false then
+		minetest.log("error", "[mcl_hbarmor] Call to mcl_hbarmor.get_armor in custom_hud returned with false!")
+		return
+	end
+	local arm = tonumber(mcl_hbarmor.armor[name])
+	if not arm then
+		arm = 0
+	end
+	local hide
+	if mcl_hbarmor.autohide then
+		hide = must_hide(name, arm)
+	else
+		hide = false
+	end
+	vl_hudbars.init_hudbar(player, "armor")
+	if hide then
+		vl_hudbars.hide(player, "armor")
+	else
+		vl_hudbars.change_value(player, "armor", arm_printable(arm))
+		vl_hudbars.show(player, "armor")
 	end
 end
 
