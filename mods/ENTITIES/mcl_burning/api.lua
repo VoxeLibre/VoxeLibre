@@ -1,5 +1,3 @@
-local enable_damage = minetest.settings:get_bool("enable_damage")
-
 function mcl_burning.get_storage(obj)
 	return obj:is_player() and mcl_burning.storage[obj] or obj:get_luaentity()
 end
@@ -114,7 +112,7 @@ function mcl_burning.set_on_fire(obj, burn_time)
 		return
 	end
 
-	if obj:is_player() and not enable_damage then
+	if obj:is_player() and not core.settings:get_bool("enable_damage") then
 		burn_time = 0
 		return
 	else

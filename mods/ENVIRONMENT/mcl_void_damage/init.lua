@@ -1,5 +1,4 @@
 local S = minetest.get_translator(minetest.get_current_modname())
---local enable_damage = minetest.settings:get_bool("enable_damage")
 
 local pos_to_dim = mcl_worlds.pos_to_dimension
 local dim_change = mcl_worlds.dimension_change

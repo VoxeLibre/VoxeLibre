@@ -29,7 +29,6 @@ minetest.register_entity("mobs_mc:ender_eyes", {
 })
 
 local S = minetest.get_translator("mobs_mc")
-local enable_damage = minetest.settings:get_bool("enable_damage")
 
 local telesound = function(pos, is_source)
 	local snd
@@ -219,7 +218,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			--	self:teleport(nil)
 			--	self.state = ""
 			--else
-				if self.attack ~= nil and enable_damage then
+				if self.attack ~= nil and core.settings:get_bool("enable_damage") then
 					self.state = 'attack'
 				end
 			--end
