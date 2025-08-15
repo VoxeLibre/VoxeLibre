@@ -1,0 +1,69 @@
+# textdomain: mcl_nether
+Glowstone=Pedra Luminosa
+Glowstone is a naturally-glowing block which is home to the Nether.=A pedra luminosa é um bloco natural do Nether.
+Nether Quartz Ore=Minério de Quartzo do Nether
+
+Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.=Minério de Quartzo do Nether é um minério que contém quartzo do Nether. É comumente encontrado entre rochas do Nether.
+
+Ancient Debris=Detritos Ancestrais
+Ancient debris can be found in the nether and is very very rare.=Os Detritos Ancestrais podem ser encontrados no Nether e são raríssimos.
+Netherite Block=Bloco de Netherita
+Netherite block is very hard and can be made of 9 netherite ingots.=O Bloco de Netherita é muito robusto que pode ser criado com 9 barras de Netherita.
+Netherrack=Rocha do Nether
+
+Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.=Rocha do Nether é o solo natural do Nether. Qualquer fogo acendido neste bloco será eterno.
+
+Magma Block=Bloco de Magma
+Burns your feet=Queima os pés
+
+Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire.=Blocos de magma são blocos sólidos que machucam a todos em cima deles, menos àqueles que tiverem resistência a fogo. Qualquer fogo acendido neste bloco será eterno.
+
+Soul Sand=Areia Sombria
+Reduces walking speed=Reduz velocidade de movimento
+
+Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block.=A areia sombria é um bloco natural do Nether. Essa areia faz andar mais devagar. Esse efeito é intensificado quando a areia sombria é colocada em cima de gelo, gelo compactado ou um bloco de slime.
+
+Nether Brick Block=Bloco de Tijolo do Nether
+Red Nether Brick Block=Bloco de Tijolo Vermelho do Nether
+Nether Wart Block=Bloco de Fungo do Nether
+A nether wart block is a purely decorative block made from nether wart.=O Bloco de Fungo do Nether é um bloco apenas decorativo feito de fungos do Nether.
+Block of Quartz=Bloco de Quartzo
+Chiseled Quartz Block=Bloco de Quartzo Cinzelado
+Pillar Quartz Block=Bloco de Pilar de Quartzo
+Smooth Quartz=Bloco de Quartzo Liso
+Glowstone Dust=Pó de Pedra Luminosa
+
+Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.=O Pó de Pedra Luminosa é o pó de pedras luminosas quebradas. É comumente utilizado como um componente de produção.
+
+Nether Quartz=Quartzo do Nether
+Nether quartz is a versatile crafting ingredient.=O Quartzo do Nether é um ingrediente de produção versátil.
+Netherite Scrap=Restos de Netherita
+Netherite scrap is a crafting ingredient for netherite ingots.=Os Restos de Netherita são ingredientes de barras de netherita.
+Netherite Ingot=Barra de Netherita
+
+Netherite ingots can be used with a smithing table to upgrade items to netherite.=Barras de Netherita podem ser usados com uma mesa de ferraria para criar itens de netherita.
+
+Nether Brick=Tijolo do Nether
+
+Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Tijolos do Nether são os principais ingredientes de blocos de tijolo e cercas do Nether.
+
+##[ nether_wart.lua ]##
+Premature Nether Wart (Stage 1)=Fungo do Nether Prematuro (Fase 1)
+
+A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Um fungo do nether prematuro foi recentemente plantado em areia sombria. O fungo do nether cresce lentamente na areia em 4 fases (a segunda e terceira fase são visualmente idênticas). Embora que estes fungos sejam nativos do Nether, eles podem ser cultivados em qualquer dimensão.
+
+Premature Nether Wart (Stage 2)=Fungo do Nether Prematuro (Fase 2)
+Premature Nether Wart (Stage 3)=Fungo do Nether Prematuro (Fase 3)
+Mature Nether Wart=Fungo do Nether Maduro
+
+The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.=O fungo do nether maduro é uma planta do Nether que atingiu o seu tamanho máximo. Está pronto para ser cultivado.
+
+Nether Wart=Fungo do Nether
+Grows on soul sand=Cresce na areia sombria
+
+Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=Fungos do Nether são plantas nativas do Nether.
+
+Place this item on soul sand to plant it and watch it grow.=Ponha este item em areia sombria para plantá-lo e veja-o crescer.
+##[ lava.lua ]##
+Nether Lava Source=Fonte de Lava do Nether
+Flowing Nether Lava=Lava Corrente do Nether
