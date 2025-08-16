@@ -68,7 +68,7 @@ awards.register_trigger("place", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = S("@1/@2 placed"), itemcount, tmp.target
+			label = S("@1/@2 placed", itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
