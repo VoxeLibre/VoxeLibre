@@ -7,6 +7,8 @@ if test -d /usr/share/minetest; then
 	export LUANTI_PATH=/usr/share/minetest
 elif test -d /usr/share/luanti; then
 	export LUANTI_PATH=/usr/share/luanti
+elif test -d /opt/luanti-HEAD; then
+	export LUANTI_PATH=/opt/luanti-HEAD
 else
 	echo "Unable to find luanti/minetest path, cannot run tests"
 	exit 1
