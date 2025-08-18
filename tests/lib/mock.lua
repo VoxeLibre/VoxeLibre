@@ -156,13 +156,16 @@ function mock.luanti(g)
 
 	g.core = luanti_core
 	g.minetest = luanti_core
-	g.bit = require('bitop.funcs')
+	g.bit = require('bit')
 	g.loadstring = loadstring or load
 	g.unpack = table.unpack
 	g.dump = dump
 	g.math.round = function(x) return math.floor(x + 0.5) end
 	g.PcgRandom = function() end
 	g.DIR_DELIM = "/"
+	g.vl_tuning = {
+		setting = function() end
+	}
 
 	-- Interface to mock luanti engine
 	return mock
