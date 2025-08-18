@@ -9,22 +9,22 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Server Startup
-        run: cd /VoxeLibre; sh tests/server-startup.sh
+        run: sh tests/server-startup.sh
         env:
           FORGEJO_TOKEN: override
           GITHUB_TOKEN: override
       - name: Unit Tests
-        run: cd /VoxeLibre; sh tests/unit-tests.sh
+        run: sh tests/unit-tests.sh
         env:
           FORGEJO_TOKEN: override
           GITHUB_TOKEN: override
       - name: Luacheck
-        run: cd /VoxeLibre; sh tests/luacheck/test.sh
+        run: sh tests/luacheck/test.sh
         env:
           FORGEJO_TOKEN: override
           GITHUB_TOKEN: override
       - name: Lua Language Server Checks
-        run: cd /VoxeLibre; sh tests/lua-language-server.sh
+        run: sh tests/lua-language-server.sh
         env:
           FORGEJO_TOKEN: override
           GITHUB_TOKEN: override
