@@ -8,11 +8,23 @@ jobs:
       - name: Checkout Source
         uses: actions/checkout@v4
 
-      - name: Unit Tests
-        run: sh tests/unit-tests.sh
-      - name: Luacheck
-        run: sh tests/luacheck/test.sh
-      - name: Lua Language Server Checks
-        run: sh tests/lua-language-server.sh
       - name: Server Startup
-        run: sh tests/server-startup.sh
+        run: cd /VoxeLibre; sh tests/server-startup.sh
+        env:
+          FORGEJO_TOKEN: override
+          GITHUB_TOKEN: override
+      - name: Unit Tests
+        run: cd /VoxeLibre; sh tests/unit-tests.sh
+        env:
+          FORGEJO_TOKEN: override
+          GITHUB_TOKEN: override
+      - name: Luacheck
+        run: cd /VoxeLibre; sh tests/luacheck/test.sh
+        env:
+          FORGEJO_TOKEN: override
+          GITHUB_TOKEN: override
+      - name: Lua Language Server Checks
+        run: cd /VoxeLibre; sh tests/lua-language-server.sh
+        env:
+          FORGEJO_TOKEN: override
+          GITHUB_TOKEN: override
