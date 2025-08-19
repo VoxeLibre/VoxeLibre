@@ -94,22 +94,22 @@ local function stalker_on_rightclick(self, clicker)
 	end
 end
 
-local AURA_TEXTURE = "vl_stalker_overloaded_aura.png"
-
+local AURA = "vl_stalker_overloaded_aura.png"
 local function get_overloaded_aura(timer)
 	local frame = math.floor(timer * 16)
 	local f = tostring(frame)
 	local nf = tostring(16 - f)
-	return "[combine:16x24:-" .. nf .. ",0=" .. AURA_TEXTURE .. ":" .. f .. ",0=" .. AURA_TEXTURE
+	return "[combine:16x24:-" .. nf .. ",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
 end
 
 ---@class camouflage_opts
 ---@field aura_timer number? If provided, the stalker will have an overload aura.
 
 ---
----@param self  any
----@param dtime number
-local function stalker_camouflage(self, dtime)
+---@param self any
+---@param opts camouflage_opts?
+local function stalker_camouflage(self, opts)
+	local has_aura = opts and opts.aura_timer ~= nil
 	local new_texture = get_texture(self, self._stalker_texture)
 	
 	if self._stalker_texture == new_texture and not has_aura then
@@ -139,15 +139,6 @@ local function stalker_on_die(self, pos, cmi_cause)
 		self.drops = drops
 	end
 end
-
-local AURA = "vl_stalker_overloaded_aura.png"
-local function get_overloaded_aura(timer)
-	local frame = math.floor(timer * 16)
-	local f = tostring(frame)
-	local nf = tostring(16 - f)
-	return "[combine:16x24:-" .. nf .. ",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
-end
-
 
 local stalker = {
 	description = S("Stalker"),
@@ -253,12 +244,7 @@ local stalker = {
 	end,
 }
 
-local function table_merge(t, ...)
-	local t2 = table.copy(t)
-	return table.update(t2, ...)
-end
-
-local stalker_overloaded = table_merge(stalker, {
+local stalker_overloaded = table.update(table.copy(stalker), {
 	description = S("Overloaded Stalker"),
 	textures = { { get_texture({}), AURA } },
 	use_texture_alpha = true,
@@ -267,7 +253,6 @@ local stalker_overloaded = table_merge(stalker, {
 	explosion_damage_radius = 8,
 	fire_resistant = true,
 	glow = 3,
-	_aura_timer = nil,
 	
 	---@param dtime number
 	do_custom = function(self, dtime)
@@ -276,9 +261,8 @@ local stalker_overloaded = table_merge(stalker, {
 			self._aura_timer = 0
 		end
 		self._aura_timer = self._aura_timer + dtime
-		self.object:set_properties({ textures = { get_texture(self), get_overloaded_aura(self._aura_timer) } })
 
-		stalker_camouflage(self, dtime)
+		stalker_camouflage(self, { aura_timer = self._aura_timer })
 	end,
 
 	on_lightning_strike = function(self, pos, pos2, objects)
