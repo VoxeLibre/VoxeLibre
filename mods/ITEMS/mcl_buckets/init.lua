@@ -133,12 +133,24 @@ local function get_bucket_drop(itemstack, user, take_bucket)
 		return itemstack
 	end
 end
+---@param player core.Player
+---@return any pointed_thing
+local function bucket_get_pointed_thing(player)
+	local start = player:get_pos()
+	start.y = start.y + player:get_properties().eye_height
+	
+	local look_dir = player:get_look_dir()
+	local range, err = mcl_meshhand.get_player_hand_range(player)
+	if err then
+		core.log("error", string.format(
+			"[mcl_buckets] Could not find range for player %q, " 
+			.. "using fallback: %q",
+			player:get_player_name(), err))
+		range = mcl_meshhand.get_default_hand_range(player)
+	end
+	assert(range)
 
-local function bucket_get_pointed_thing(user)
-	local start = user:get_pos()
-	start.y = start.y + user:get_properties().eye_height
-	local look_dir = user:get_look_dir()
-	local _end = vector.add(start, vector.multiply(look_dir, 5))
+	local _end = vector.add(start, vector.multiply(look_dir, range))
 
 	local ray = raycast(start, _end, false, true)
 	for pointed_thing in ray do
