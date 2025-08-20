@@ -50,7 +50,7 @@ local function wither_unstuck(self)
 			end
 		end end end
 	end
-	mcl_mobs.mob_class.boom(self, pos, 2, {}, true)
+	mcl_mobs.mob_class.boom(self, pos, 2, { griefing = false }, true)
 end
 
 local function get_dim_relative_y(pos)
