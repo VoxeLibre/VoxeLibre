@@ -260,6 +260,7 @@ for _, mode in pairs{"comp", "sub"} do
 				type = "fixed",
 				fixed = node_boxes[mode],
 			},
+			use_texture_alpha = "clip",
 			groups = groups,
 			paramtype = "light",
 			paramtype2 = "facedir",
