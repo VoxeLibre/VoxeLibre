@@ -171,6 +171,7 @@ function mcl_heads.register_head(head_def)
 		_doc_items_longdesc = head_def.longdesc,
 
 		tiles = { head_def.texture },
+		use_texture_alpha = "clip",
 
 		_mcl_armor_mob_range_mob = head_def.range_mob,
 		_mcl_armor_mob_range_factor = head_def.range_factor,
@@ -191,6 +192,7 @@ function mcl_heads.register_head(head_def)
 			-- This is required for skeleton skull and wither skeleton skull.
 			{ name = "([combine:16x16:-36,0=" ..head_def.texture ..")^([combine:16x16:-44,8=" ..head_def.texture..")", align_style = "node" }, -- bottom
 		},
+		use_texture_alpha = "clip",
 		drop = name,
 	}))
 end
