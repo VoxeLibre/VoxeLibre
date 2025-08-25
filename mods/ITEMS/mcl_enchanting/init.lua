@@ -239,6 +239,7 @@ minetest.register_node("mcl_enchanting:table", {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, 0.25, 0.5},
 	},
+	use_texture_alpha = "clip",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	groups = {pickaxey = 2, deco_block = 1},
 	on_rotate = rotate,
