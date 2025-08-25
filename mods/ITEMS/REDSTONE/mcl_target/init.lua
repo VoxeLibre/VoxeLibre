@@ -2,11 +2,15 @@ local S = minetest.get_translator("mcl_target")
 
 local mod_farming = minetest.get_modpath("mcl_farming")
 
+local receptor_on  = vl_circuitry.mesecon.receptor_on
+local receptor_off = vl_circuitry.mesecon.receptor_off
+local all_dirs = vl_circuitry.mesecon.rules.alldirs
+
 mcl_target = {}
 
 function mcl_target.hit(pos, time)
 	minetest.set_node(pos, {name="mcl_target:target_on"})
-	mesecon.receptor_on(pos, mesecon.rules.alldirs)
+	receptor_on(pos, all_dirs)
 
 	local timer = minetest.get_node_timer(pos)
 	timer:start(time)
@@ -23,8 +27,8 @@ minetest.register_node("mcl_target:target_off", {
 	}),
 	mesecons = {
 		receptor = {
-			state = mesecon.state.off,
-			rules = mesecon.rules.alldirs,
+			state = vl_circuitry.mesecon.off_state,
+			rules = vl_circuitry.mesecon.rules.alldirs,
 		},
 	},
 	_vl_projectile = {
@@ -49,13 +53,13 @@ minetest.register_node("mcl_target:target_on", {
 		local node = minetest.get_node(pos)
 		if node.name == "mcl_target:target_on" then --has not been dug
 			minetest.set_node(pos, {name="mcl_target:target_off"})
-			mesecon.receptor_off(pos, mesecon.rules.alldirs)
+			receptor_off(pos, all_dirs)
 		end
 	end,
 	mesecons = {
 		receptor = {
-			state = mesecon.state.on,
-			rules = mesecon.rules.alldirs,
+			state = vl_circuitry.mesecon.on_state,
+			rules = vl_circuitry.mesecon.rules.alldirs,
 		},
 	},
 	_mcl_blast_resistance = 0.5,
@@ -64,12 +68,14 @@ minetest.register_node("mcl_target:target_on", {
 
 
 if mod_farming then
+	local rs = "mesecons:redstone"
+	local hb = "mcl_farming:hay_block"
 	minetest.register_craft({
 		output = "mcl_target:target_off",
 		recipe = {
-			{"",                  "mesecons:redstone",     ""},
-			{"mesecons:redstone", "mcl_farming:hay_block", "mesecons:redstone"},
-			{"",                  "mesecons:redstone",     ""},
+			{"", rs, ""},
+			{rs, hb, rs},
+			{"", rs, ""},
 		},
 	})
 end
