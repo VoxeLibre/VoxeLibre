@@ -213,6 +213,7 @@ function mcl_beds.register_bed(name, def)
 		sounds = def.sounds or default_sounds,
 		selection_box = common_box,
 		collision_box = common_box,
+		use_texture_alpha = "clip",
 		_mcl_beds_drop = def.recipe and name or "",
 		drop = "",
 		node_placement_prediction = "",
@@ -291,6 +292,7 @@ function mcl_beds.register_bed(name, def)
 		drop = "",
 		selection_box = common_box,
 		collision_box = common_box,
+		use_texture_alpha = "clip",
 		
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 			mcl_beds.on_rightclick(pos, clicker, true)
