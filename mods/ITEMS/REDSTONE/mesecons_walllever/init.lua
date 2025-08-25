@@ -1,6 +1,29 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
-local lever_get_output_rules = mesecon.rules.buttonlike_get
+local base_rules =
+{{x = 0,  y = 0, z =-1},
+ {x = 0,  y = 0, z = 1},
+ {x = 0,  y =-1, z = 0},
+ {x = 0,  y = 1, z = 0},
+ {x =-1,  y = 0, z = 0},
+ {x = 1,  y = 0, z = 0, spread = true}}
+
+local rules_xp = base_rules
+local rules_xn = mesecon.rotate_rules_right(mesecon.rotate_rules_right(base_rules))
+local rules_yp = mesecon.rotate_rules_down(base_rules)
+local rules_yn = mesecon.rotate_rules_up(base_rules)
+local rules_zp = mesecon.rotate_rules_right(base_rules)
+local rules_zn = mesecon.rotate_rules_left(base_rules)
+
+local function lever_get_output_rules(node)
+	local dir = core.facedir_to_dir(node.param2)
+	if dir.x ==  1 then return rules_xp end
+	if dir.y ==  1 then return rules_yp end
+	if dir.z ==  1 then return rules_zp end
+	if dir.x == -1 then return rules_xn end
+	if dir.y == -1 then return rules_yn end
+	if dir.z == -1 then return rules_zn end
+end
 
 local function on_rotate(pos, node, user, mode)
 	if mode == screwdriver.ROTATE_FACE then
