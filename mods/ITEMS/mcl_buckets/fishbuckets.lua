@@ -29,6 +29,12 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 		n = minetest.get_node(pointed_thing.under)
 	end
 
+	local placername = placer:get_player_name()
+	if core.is_protected(pos, placername) then
+		core.record_protection_violation(pos, placername)
+		return itemstack
+	end
+
 	local fish = itemstack:get_definition()._mcl_buckets_fish
 	if bucket_names[fish] then
 		local o = minetest.add_entity(pos, "mobs_mc:" .. fish)
