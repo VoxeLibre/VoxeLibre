@@ -75,6 +75,52 @@ else
 	minetest.register_node("mcl_meshhand:hand_crea", node_def)
 end
 
+---Gets a player's hand range.
+---@param player core.Player
+---@return number? range, string? err
+---@nodiscard
+function mcl_meshhand.get_player_hand_range(player)
+	local hand = mcl_meshhand.get_hand(player)
+	if not hand then
+		return nil, "no hand"
+	end
+	local def = hand:get_definition()
+	if not def then
+		return nil, "no hand definition"
+	end
+	return def.range, nil
+end
+
+---Get the default hand range for the specified player's gamemode.
+---@param player core.Player
+---@return number
+---@nodiscard
+function mcl_meshhand.get_default_hand_range(player)
+	if core.is_creative_enabled(player:get_player_name()) then
+		return mcl_meshhand.get_creative_hand_range()
+	end
+	return mcl_meshhand.get_survival_hand_range()
+end
+
+---@return number
+---@nodiscard
+function mcl_meshhand.get_creative_hand_range()
+	return creative_hand_range
+end
+
+---@return number
+---@nodiscard
+function mcl_meshhand.get_survival_hand_range()
+	return node_def.range
+end
+
+---@param player core.Player
+---@return core.ItemStack?
+---@nodiscard
+function mcl_meshhand.get_hand(player)
+	return player:get_inventory():get_stack("hand", 1)
+end
+
 function mcl_meshhand.update_player(player)
 	local hand
 	if mcl_skins_enabled then
