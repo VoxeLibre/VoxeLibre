@@ -55,6 +55,47 @@ local function on_blast(pos)
 	minetest.remove_node(pos)
 end
 
+---Attempts to extinguish a campfire.
+---@param pos vector.Vector Position of campfire node
+---@return boolean success
+function mcl_campfires.extinguish(pos)
+	local node = core.get_node(pos) or {}
+	local nodedef = core.registered_nodes[node.name]
+	if not nodedef then
+		core.log("error", "no nodedef for node \""
+			.. tostring(node.name)
+			.. "\"")
+		return false
+	end
+	local smothered = nodedef["_mcl_campfires_smothered_form"]
+	if type(smothered) ~= "string" then
+		core.log("error",
+			"cannot extinguish campfire: no smothered form for \""
+			.. tostring(node.name)
+			.. "\"")
+		return false
+	end
+	node.name = smothered
+	core.set_node(pos, node)
+	local sounddata = {
+		pos = pos,
+		gain = 0.25,
+		max_hear_distance = 16,
+	}
+	core.sound_play("fire_extinguish_flame", sounddata, true)
+	return true
+end
+---Extinguishes the campfire at the position if the block above it
+---is a water block.
+---@param pos vector.Vector
+local function extinguish_if_below_water(pos)
+	local above = vector.offset(pos, 0, 1, 0)
+	if not flowlib.is_water(above) then
+		return
+	end
+	mcl_campfires.extinguish(pos)
+end
+
 function mcl_campfires.light_campfire(pos)
 	local campfire = minetest.get_node(pos)
 	local name = campfire.name .. "_lit"
@@ -228,8 +269,6 @@ local function create_smoke_partspawner (pos, constructor)
 	meta:set_int("particle_spawner_id", spawner_id)
 end
 
-
-
 function mcl_campfires.register_campfire(name, def)
 	-- Define Campfire
 	minetest.register_node(name, {
@@ -313,6 +352,7 @@ function mcl_campfires.register_campfire(name, def)
 			local inv = meta:get_inventory()
 			inv:set_size("main", 4)
 			create_smoke_partspawner (pos, true)
+			extinguish_if_below_water(pos)
 		end,
 		on_destruct = function(pos)
 			destroy_particle_spawner (pos)
@@ -334,9 +374,7 @@ function mcl_campfires.register_campfire(name, def)
 							tt.reload_itemstack_description(itemstack) -- update tooltip
 						end
 					end
-					node.name = name
-					minetest.set_node(pos, node)
-					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
+					mcl_campfires.extinguish(pos)
 				end
 			elseif minetest.get_item_group(itemstack:get_name(), "campfire_cookable") ~= 0 then
 				mcl_campfires.take_item(pos, node, player, itemstack)
@@ -368,6 +406,11 @@ function mcl_campfires.register_campfire(name, def)
 			campfire_drops(pos, digger, def.drops, name.."_lit")
 		end,
 		_mcl_campfires_smothered_form = name,
+
+		--- @type mcl_core.ExtinguishFn
+		_mcl_core_extinguish_fn = function(pos, _)
+			return mcl_campfires.extinguish(pos)
+		end
 	})
 end
 
