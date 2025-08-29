@@ -31,27 +31,28 @@ local function make_pattern_setter(block_update_pattern)
 			vl_block_update.updated[pos_hash] = true
 			mod_internal.has_block_updates = true
 			lookaside_cache[pos_hash] = nil
+			local pending_block_updates = mod_internal.pending_block_updates
 	]]
 
 	if type(core.hash_node_position(vector.zero())) == "number" then
 		for i = 1,#block_update_pattern do
 			local hash_diff = core.hash_node_position(block_update_pattern[i]) - core.hash_node_position(vector.zero())
 			if hash_diff < 0 then
-				code = code.. "mod_internal.pending_block_updates[pos_hash-"..tostring(-hash_diff).."]=true\n"
+				code = code.. "pending_block_updates[pos_hash-"..tostring(-hash_diff).."]=true\n"
 			else
-				code = code.. "mod_internal.pending_block_updates[pos_hash+"..tostring(hash_diff).."]=true\n"
+				code = code.. "pending_block_updates[pos_hash+"..tostring(hash_diff).."]=true\n"
 			end
 		end
 	else
 		local p = block_update_pattern[1]
-		code = code .. "local np = vector.offset(pos,"..p.x..","..p.y..","..p.z..")\n"
-		code = code .. "mod_internal.pending_block_updates[core.hash_node_position(np)]=true\n"
+		code = code .. "local np = vector.offset(pos,"..(tonumber(p.x) or 0)..","..(tonumber(p.y) or 0)..","..(tonumber(p.z) or 0)..")\n"
+		code = code .. "pending_block_updates[core.hash_node_position(np)]=true\n"
 		for i = 2,#block_update_pattern do
 			p = block_update_pattern[i]
-			code = code .. "np.x = pos.x+("..p.x..")\n"
-			code = code .. "np.y = pos.y+("..p.x..")\n"
-			code = code .. "np.z = pos.z+("..p.x..")\n"
-			code = code .. "mod_internal.pending_block_updates[core.hash_node_position(np)]=true\n"
+			code = code .. "np.x = pos.x+("..(tonumber(p.x) or 0)..")\n"
+			code = code .. "np.y = pos.y+("..(tonumber(p.y) or 0)..")\n"
+			code = code .. "np.z = pos.z+("..(tonumber(p.z) or 0)..")\n"
+			code = code .. "pending_block_updates[core.hash_node_position(np)]=true\n"
 		end
 	end
 
