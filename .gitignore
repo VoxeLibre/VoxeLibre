@@ -14,3 +14,4 @@ bin/
 build/
 luanti-lls-definitions/
 log/
+*.tar.gz
