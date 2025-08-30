@@ -9,6 +9,8 @@ The files here allow building a VoxeLibre-specific docker image for use in autom
 # Building Image
 1. Checkout the latest copy of VoxeLibre onto the machine with the forgejo runner.
 2. Ensure you are in the base directory of the VoxeLibre checkout.
+3. Create the file ~/.config/voxelibre-docker.sh and add `USER=` followed by the Docker Hub account to upload to.
+4. Run "docker login -u $USER" with the username from step 3, then provide the account password.
 3. Run "./build.sh"
-4. Wait. This will take a while to run as multiple versions of luanti are built clean from source.
-5. The completed image will be tagged as "127.0.0.1:5000/voxelibre-test:latest" to permit sharing the image between machines with a local registry on a docker swarm, if so desired.
+4. Wait. This will take a while to run as multiple versions of luanti are built clean from source and the docker
+   images are created and uploaded to Docker Hub.

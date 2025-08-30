@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ~/.config/voxelibre-docker.sh
+. ~/.config/voxelibre-docker.sh
 
 LUANTI_VERSION=5.13.0
 VOXELIBRE_VERSION=0.90.1
@@ -10,7 +10,8 @@ if test -z "$USER"; then
 	exit 1
 fi
 
-# TODO: build packages
+./build-packages.sh
+cp luanti-ci/luanti-5.13.0-1.tar.gz luanti-server/
 
 (
 	cd luanti-server
