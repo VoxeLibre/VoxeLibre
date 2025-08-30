@@ -314,7 +314,7 @@ function mcl_campfires.register_campfire(name, def)
 	})
 
 	--Define Lit Campfire
-	minetest.register_node(name.."_lit", {
+	core.register_node(name.."_lit", {
 		description = def.description,
 		_tt_help = S("Cooks food and keeps bees happy."),
 		_doc_items_longdesc = S("Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap."),
@@ -407,8 +407,7 @@ function mcl_campfires.register_campfire(name, def)
 		end,
 		_mcl_campfires_smothered_form = name,
 
-		--- @type mcl_core.ExtinguishFn
-		_mcl_core_extinguish_fn = function(pos, _)
+		_mcl_extinguish_fn = function(pos, _)
 			return mcl_campfires.extinguish(pos)
 		end
 	})

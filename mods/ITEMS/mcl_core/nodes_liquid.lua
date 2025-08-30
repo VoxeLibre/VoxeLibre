@@ -10,18 +10,19 @@ local WATER_VISC = 1
 local LAVA_VISC = 7
 local LIGHT_LAVA = minetest.LIGHT_MAX
 
+---@class core.NodeDef
 ---A function that extinguishes a node.
 ---
 ---Parameters:
 ---    nodepos:         Position of the node being extinguished
 ---    extinguisherpos: Position of the node causing the extinguishing (optional)
----@alias mcl_core.ExtinguishFn fun(nodepos: vector.Vector, extinguisherpos: vector.Vector?): boolean
-
+---@field _mcl_extinguish_fn (fun(nodepos: vector.Vector, extinguisherpos: vector.Vector?): boolean)?
+---
 ---A function that is called whenever a liquid node is transformed.
 ---
 ---Parameters:
 ---    nodepos: Position of the liquid node that was transformed
----@alias mcl_core.OnLiquidTransformedFn fun(nodepos: vector.Vector)
+---@field _mcl_on_liquid_transform fun(nodepos: vector.Vector)?
 
 --- Extinguishes the node at the specified position.
 --- 
@@ -34,8 +35,7 @@ local function extinguish(pos, liquidpos)
 	if not nodedef then
 		return false
 	end
-	--- @type mcl_core.ExtinguishFn?
-	local fn = nodedef._mcl_core_extinguish_fn
+	local fn = nodedef._mcl_extinguish_fn
 	if type(fn) == "function" then
 		return fn(pos, liquidpos)
 	end
@@ -88,8 +88,7 @@ minetest.register_node("mcl_core:water_flowing", {
 		-- when they are created
 		extinguish(vector.offset(pos, 0, -1, 0), pos)
 	end,
-	--- @type mcl_core.OnLiquidTransformedFn
-	_mcl_on_liquid_transformed = function(pos)
+	_mcl_on_liquid_transform = function(pos)
 		-- Flowing water nodes should extinguish any blocks below it
 		-- when they are created
 		extinguish(vector.offset(pos, 0, -1, 0), pos)
@@ -156,8 +155,7 @@ S("• When water is directly below lava, the water turns into stone."),
 		-- when they are created
 		extinguish(vector.offset(pos, 0, -1, 0), pos)
 	end,
-	--- @type mcl_core.OnLiquidTransformedFn
-	_mcl_on_liquid_transformed = function(pos)
+	_mcl_on_liquid_transform = function(pos)
 		-- Flowing water nodes should extinguish any blocks below it
 		-- when they are created
 		extinguish(vector.offset(pos, 0, -1, 0), pos)
@@ -316,7 +314,7 @@ local function adjust_water_palette(fwpos)
 	for _, wpos in pairs(water) do
 		local wnode         = core.get_node(wpos)
 		local palette_index = mcl_util.get_palette_indexes_from_pos(wpos).water_palette_index
-		if wnode.param2 ~= palette_index then
+		if wnode.param2 == palette_index then
 			goto continue
 		end
 		wnode.param2 = palette_index
@@ -337,8 +335,7 @@ local function on_liquid_transformed(fwpos)
 	if not fwnodedef then
 		return
 	end
-	--- @type mcl_core.OnLiquidTransformedFn?
-	local fn = fwnodedef._mcl_on_liquid_transformed
+	local fn = fwnodedef._mcl_on_liquid_transform
 	if type(fn) == "function" then
 		fn(fwpos)
 	end
