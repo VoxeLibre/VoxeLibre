@@ -147,6 +147,12 @@ function core.bulk_set_node(lst, node)
 	end
 end
 
+core.register_on_liquid_transformed(function(pos_list, _)
+	for _,pos in pairs(pos_list) do
+		node_changed(pos)
+	end
+end)
+
 core.register_lbm({
 	label = "Call _onload() when blocks load",
 	name = "vl_block_update:handle_onload",
