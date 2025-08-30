@@ -611,22 +611,37 @@ local function spawn_check(pos, state, node, spawn_def)
 	return true
 end
 
-function mcl_mobs.spawn(pos,id)
-	if not pos or not id then return false end
-	local def = core.registered_entities[id] or core.registered_entities["mobs_mc:"..id] or core.registered_entities["extra_mobs:"..id]
-	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then return false end
-	if not has_room(def, pos) then
+---@class mcl_mobs.SpawnOpts
+---@field ignore_room_check boolean? If a mob should spawn regardless if there is room for it.
+
+---Spawn a mob of the specified ID at the specified position.
+---If pos or id are nil, the function is a no-op.
+---
+---@param pos  vector.Vector?      Mob spawn position
+---@param id   string?             Mob ID
+---@param opts mcl_mobs.SpawnOpts? Additional options
+---
+---@return boolean|core.LuaEntity? result The spawned mob, or false/nil if it failed to spawn a mob
+function mcl_mobs.spawn(pos, id, opts)
+	if not pos or not id then
+		return false
+	end
+	local def = core.registered_entities[id] or core.registered_entities["mobs_mc:" .. id] or core.registered_entities["extra_mobs:" .. id]
+	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then
+		return false
+	end
+	if not (opts and opts.ignore_room_check) and not has_room(def, pos) then
 		local cb = def.spawnbox or def.initial_properties.collisionbox
 		-- simple position adjustment for 2x2 mobs until we add something better for asymmetric cases
 		-- e.g., when spawning next to a fence on one side, the 0.5 offset may not be optimal.
 		local wx, wz = cb[4] - cb[1], cb[6] - cb[3]
 		local retry = false
 		if (wx > 1 and wx <= 2) then
-			pos.x = pos.x + math_random(0,1) - 0.5
+			pos.x = pos.x + math_random(0, 1) - 0.5
 			retry = true
 		end
 		if (wz > 1 and wz <= 2) then
-			pos.z = pos.z + math_random(0,1) - 0.5
+			pos.z = pos.z + math_random(0, 1) - 0.5
 			retry = true
 		end
 		if not retry or not has_room(def, pos) then
@@ -634,12 +649,14 @@ function mcl_mobs.spawn(pos,id)
 			return false
 		end
 	end
-	if math_round(pos.y) == pos.y then -- node spawn
+	if math_round(pos.y) == pos.y then                                 -- node spawn
 		pos.y = pos.y - 0.495 - def.initial_properties.collisionbox[2] -- spawn just above ground below
 	end
 	local start_time = core.get_us_time()
 	local obj = core.add_entity(pos, def.name)
-	if not obj then return end
+	if not obj then
+		return
+	end
 
 	--note = "spawned a mob"
 	exclude_time = exclude_time + core.get_us_time() - start_time

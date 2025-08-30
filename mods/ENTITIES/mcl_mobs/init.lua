@@ -551,127 +551,173 @@ function mcl_mobs.register_arrow(name, def)
 	})
 end
 
--- Register spawn eggs
+---@param spawner vector.Vector
+---@param player  core.Player
+---@param eggs    core.ItemStack
+---@return core.ItemStack egg
+local function configure_spawner_with_egg(spawner, player, eggs)
+	local playername = player:get_player_name()
+	local privs = core.get_player_privs(playername)
+	local mobname = eggs:get_name()
 
--- Note: This also introduces the “spawn_egg” group:
--- * spawn_egg=1: Spawn egg (generic mob, no metadata)
--- * spawn_egg=2: Spawn egg (captured/tamed mob, metadata)
-function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, addegg, no_creative)
-
-	local grp = {spawn_egg = 1}
-
-	-- do NOT add this egg to creative inventory (e.g. dungeon master)
-	if no_creative == true then
-		grp.not_in_creative_inventory = 1
+	if core.is_protected(spawner, playername) then
+		core.record_protection_violation(spawner, playername)
+		return eggs
+	end
+	if not privs.maphack then
+		core.chat_send_player(playername, S("You need the “maphack” privilege to change the mob spawner."))
+		return eggs
 	end
 
-	local invimg = "(spawn_egg.png^[multiply:" .. background_color ..")^(spawn_egg_overlay.png^[multiply:" .. overlay_color .. ")"
+	-- mob conversion may be required for some eggs
+	local convertto = (core.registered_entities[mobname] or {})._convert_to
+	if convertto then
+		mobname = convertto
+	end
+
+	local dim = mcl_worlds.pos_to_dimension(player:get_pos())
+	local minlight = mcl_mobs:mob_light_lvl(mobname, dim)
+	mcl_mobspawners.setup_spawner(spawner, mobname, minlight)
+	
+	if not core.is_creative_enabled(playername) then
+		eggs:take_item()
+	end
+	return eggs
+end
+
+---@param eggs          core.ItemStack
+---@param placer        core.Player
+---@param pointed_thing any
+---@return core.ItemStack eggs
+local function on_place_egg(eggs, placer, pointed_thing)
+	local playername = placer:get_player_name()
+	local mobname = eggs:get_name()
+
+	-- if the player is right-clicking something with an on_rightclick function,
+	-- they should interact with that thing instead
+	local under = core.get_node(pointed_thing.under)
+	local itemstack, called = mcl_util.handle_node_rightclick(eggs, placer,
+		pointed_thing)
+	if called then
+		return itemstack
+	end
+
+	-- the player shouldn't be able to place mobs outside of map bounds
+	-- or protected regions
+	local pos = pointed_thing.above
+	if not pos
+		or not within_limits(pos, 0)
+		or core.is_protected(pos, placer:get_player_name())
+	then
+		return eggs
+	end
+
+	-- the mob needs to be placed in a transparent block
+	-- so it can't be placed inside of a block while noclipping
+	local node = core.get_node(pos)
+	local nodedef = core.registered_nodes[node.name]
+	if nodedef.groups.opaque and not nodedef.groups.not_opaque then
+		return eggs
+	end
+
+	-- players can configure mob spawners by right clicking them
+	-- with eggs
+	if under.name == "mcl_mobspawners:spawner" then
+		return configure_spawner_with_egg(pointed_thing.under, placer, eggs)
+	end
+
+	-- invalid egg?
+	if not core.registered_entities[mobname] then
+		return eggs
+	end
+
+	-- shouldn't allow monsters to be spawned in peaceful mode
+	if core.settings:get_bool("only_peaceful_mobs", false)
+	   and core.registered_entities[mobname].type == "monster"
+	then
+		core.chat_send_player(playername, S("Only peaceful mobs allowed!"))
+		return eggs
+	end
+
+	local mob = mcl_mobs.spawn(pos, mobname, { ignore_room_check = true })
+	if not mob then
+		return eggs
+	end
+
+	core.log("action", 
+		"Player " .. playername .. " spawned " .. mobname ..
+		" at " .. core.pos_to_string(pos))
+	
+	-- if a player spawns a friendly tameable mob without sneaking
+	-- then they should spawn in already tamed to that player
+	local ent = mob:get_luaentity()
+	if ent.type ~= "monster" and not placer:get_player_control().sneak then
+		ent.owner = placer:get_player_name()
+		ent.tamed = true
+	end
+
+	-- eggs can be named and the name should be transferred onto the mobs
+	-- that they spawn
+	local nametag = eggs:get_meta():get_string("name")
+	if nametag ~= "" then
+		if string.len(nametag) > MAX_MOB_NAME_LENGTH then
+			nametag = string.sub(nametag, 1, MAX_MOB_NAME_LENGTH)
+		end
+		ent.nametag = nametag
+		ent:update_tag()
+	end
+
+	-- items should only be taken if the player isn't in creative mode
+	if not core.is_creative_enabled(placer:get_player_name()) then
+		eggs:take_item()
+	end
+
+	return eggs
+end
+
+--- Register spawn eggs
+--- 
+--- Note: This also introduces the “spawn_egg” group:
+--- * spawn_egg=1: Spawn egg (generic mob, no metadata)
+--- * spawn_egg=2: Spawn egg (captured/tamed mob, metadata)
+---
+---@param mob_id           string	Egg mob ID
+---@param desc             string	Egg description
+---@param background_color string	Egg item background color
+---@param overlay_color    string	Egg item overlay color
+---@param addegg           number?
+---@param no_creative      boolean? If true, the egg item will not appear in the creative inventory.
+function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, addegg, no_creative)
+	local group = { spawn_egg = 1 }
+
+	if no_creative then
+		group.not_in_creative_inventory = 1
+	end
+
+	local invimg = "(spawn_egg.png^[multiply:" .. background_color ..
+		")^(spawn_egg_overlay.png^[multiply:" .. overlay_color
+		.. ")"
 	if old_spawn_icons then
-		local mobname = mob_id:gsub("mobs_mc:","")
-		local fn = "mobs_mc_spawn_icon_"..mobname..".png"
-		if mcl_util.file_exists(minetest.get_modpath("mobs_mc").."/textures/"..fn) then
+		local mobname = mob_id:gsub("mobs_mc:", "")
+		local fn = "mobs_mc_spawn_icon_" .. mobname .. ".png"
+		local txpath = core.get_modpath("mobs_mc") .. "/textures/" .. fn
+		if mcl_util.file_exists(txpath) then
 			invimg = fn
 		end
 	end
 	if addegg == 1 then
-		invimg = "mobs_chicken_egg.png^(" .. invimg ..
-			"^[mask:mobs_chicken_egg_overlay.png)"
+		invimg = "mobs_chicken_egg.png^(" .. invimg
+			.. "^[mask:mobs_chicken_egg_overlay.png)"
 	end
 
-	-- register old stackable mob egg
-	minetest.register_craftitem(mob_id, {
-
-		description = desc,
+	core.register_craftitem(mob_id, {
+		description     = desc,
 		inventory_image = invimg,
-		groups = grp,
+		groups          = group,
 
-		_doc_items_longdesc = S("This allows you to place a single mob."),
+		_doc_items_longdesc  = S("This allows you to place a single mob."),
 		_doc_items_usagehelp = S("Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns."),
 
-		on_place = function(itemstack, placer, pointed_thing)
-			local pos = pointed_thing.above
-
-			-- am I clicking on something with existing on_rightclick function?
-			local under = minetest.get_node(pointed_thing.under)
-			local def = minetest.registered_nodes[under.name]
-			if def and def.on_rightclick then
-				return def.on_rightclick(pointed_thing.under, under, placer, itemstack)
-			end
-
-			local mob_name = itemstack:get_name()
-
-			if pos and within_limits(pos, 0)  and not minetest.is_protected(pos, placer:get_player_name()) then
-				local name = placer:get_player_name()
-				local privs = minetest.get_player_privs(name)
-
-				if under.name == "mcl_mobspawners:spawner" then
-					if minetest.is_protected(pointed_thing.under, name) then
-						minetest.record_protection_violation(pointed_thing.under, name)
-						return itemstack
-					end
-					if not privs.maphack then
-						minetest.chat_send_player(name, S("You need the “maphack” privilege to change the mob spawner."))
-						return itemstack
-					end
-
-					local dim = mcl_worlds.pos_to_dimension(placer:get_pos())
-					local mob_light_lvl = {mcl_mobs:mob_light_lvl(itemstack:get_name(),dim)}
-
-					--minetest.log("min light: " .. mob_light_lvl[1])
-					--minetest.log("max light: " .. mob_light_lvl[2])
-
-					-- Handle egg conversion
-					local convert_to = (minetest.registered_entities[mob_name] or {})._convert_to
-					if convert_to then mob_name = convert_to end
-
-					mcl_mobspawners.setup_spawner(pointed_thing.under, mob_name, mob_light_lvl[1], mob_light_lvl[2])
-					if not minetest.is_creative_enabled(name) then
-						itemstack:take_item()
-					end
-					return itemstack
-				end
-
-				if not minetest.registered_entities[mob_name] then
-					return itemstack
-				end
-
-				if minetest.settings:get_bool("only_peaceful_mobs", false)
-						and minetest.registered_entities[mob_name].type == "monster" then
-					minetest.chat_send_player(name, S("Only peaceful mobs allowed!"))
-					return itemstack
-				end
-
-				local mob = mcl_mobs.spawn(pos, mob_name)
-				if not mob then return end
-
-				local entityname = itemstack:get_name()
-				minetest.log("action", "Player " ..name.." spawned "..entityname.." at "..minetest.pos_to_string(pos))
-				local ent = mob:get_luaentity()
-
-				-- don't set owner if monster or sneak pressed
-				if ent.type ~= "monster"
-				and not placer:get_player_control().sneak then
-					ent.owner = placer:get_player_name()
-					ent.tamed = true
-				end
-
-				-- set nametag
-				local nametag = itemstack:get_meta():get_string("name")
-				if nametag ~= "" then
-					if string.len(nametag) > MAX_MOB_NAME_LENGTH then
-						nametag = string.sub(nametag, 1, MAX_MOB_NAME_LENGTH)
-					end
-					ent.nametag = nametag
-					ent:update_tag()
-				end
-
-				-- if not in creative then take item
-				if not minetest.is_creative_enabled(placer:get_player_name()) then
-					itemstack:take_item()
-				end
-			end
-
-			return itemstack
-		end,
+		on_place = on_place_egg,
 	})
 end
