@@ -150,7 +150,7 @@ function mob_class:item_drop(params)
 
 		local chance, error = calculate_drop_chance(dropdef, looting_level, attacker_name)
 		if error then
-			core.log("error", string.format(
+			core.log("warning", string.format(
 				"error calculating drop chance of drop #%d for entity %q, falling back to 1: %s",
 				n, self.name, error))
 			chance = 1
