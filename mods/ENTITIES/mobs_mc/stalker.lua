@@ -48,7 +48,7 @@ local function get_texture(self, prev)
 end
 
 --- Returns true if the cause of death should cause a music disc to drop.
---- @param cmi_cause any
+--- @param cmi_cause {type: string?, puncher: core.ObjectRef?}?
 --- @return boolean
 local function should_drop_music_disc(cmi_cause)
 	if not cmi_cause or cmi_cause.type ~= "punch" then
@@ -66,7 +66,7 @@ local function should_drop_music_disc(cmi_cause)
 end
 
 ---
----@param self any
+---@param self
 ---@param clicker core.Player
 local function stalker_on_rightclick(self, clicker)
 	-- Force-ignite stalker with flint and steel.
@@ -94,23 +94,22 @@ local function stalker_on_rightclick(self, clicker)
 	end
 end
 
-local AURA_TEXTURE = "vl_stalker_overloaded_aura.png"
-
+local AURA = "vl_stalker_overloaded_aura.png"
 local function get_overloaded_aura(timer)
 	local frame = math.floor(timer * 16)
 	local f = tostring(frame)
 	local nf = tostring(16 - f)
-	return "[combine:16x24:-" .. nf .. ",0=" .. AURA_TEXTURE .. ":" .. f .. ",0=" .. AURA_TEXTURE
+	return "[combine:16x24:-" .. nf .. ",0=" .. AURA .. ":" .. f .. ",0=" .. AURA
 end
 
 ---@class camouflage_opts
 ---@field aura_timer number? If provided, the stalker will have an overload aura.
 
 ---
----@param self  any
----@param opts  camouflage_opts?
+---@param self any
+---@param opts camouflage_opts?
 local function stalker_camouflage(self, opts)
-	local has_aura    = opts and opts.aura_timer
+	local has_aura = opts and opts.aura_timer ~= nil
 	local new_texture = get_texture(self, self._stalker_texture)
 	
 	if self._stalker_texture == new_texture and not has_aura then
@@ -126,10 +125,8 @@ local function stalker_camouflage(self, opts)
 	end
 end
 
----
---- @param self      any
 --- @param pos       {x: number, y: number, z: number}
---- @param cmi_cause any
+--- @param cmi_cause {type: string?, puncher: core.ObjectRef?}?
 local function stalker_on_die(self, pos, cmi_cause)
 	if should_drop_music_disc(cmi_cause) then
 		local drops = table.copy(self.drops)
@@ -210,13 +207,14 @@ local stalker = {
 			max = 2,
 			looting = "common",
 		},
-		-- Head
-		-- TODO: This drop should be guaranteed when it's killed by an Overloaded Stalker
 		{
 			name = "mcl_heads:stalker",
 			chance = 200, -- 0.5%
 			min = 1,
 			max = 1,
+			conditions = {
+				guarantee_if_killed_by = { "mobs_mc:stalker_overloaded" }
+			}
 		},
 	},
 
@@ -248,29 +246,35 @@ local stalker = {
 
 local stalker_overloaded = table.update(table.copy(stalker), {
 	description = S("Overloaded Stalker"),
-	textures = { { get_texture({}), AURA_TEXTURE } },
+	textures = { { get_texture({}), AURA } },
 	use_texture_alpha = true,
 	explosion_strength = 6,
 	explosion_radius = 8,
 	explosion_damage_radius = 8,
 	fire_resistant = true,
 	glow = 3,
-
+	
+	---@param dtime number
 	do_custom = function(self, dtime)
 		--- Tick aura timer
 		if not self._aura_timer or self._aura_timer > 1 then
 			self._aura_timer = 0
 		end
 		self._aura_timer = self._aura_timer + dtime
-		
+
 		stalker_camouflage(self, { aura_timer = self._aura_timer })
+	end,
+
+	on_lightning_strike = function(self, pos, pos2, objects)
+		mcl_util.replace_mob(self.object, "mobs_mc:stalker_overloaded")
+		return true
 	end,
 
 	_on_after_convert = function(obj)
 		obj:set_properties({
 			visual_size = { x = 2, y = 2 },
 			mesh = "vl_stalker.b3d",
-			textures = { { get_texture({}), AURA_TEXTURE } },
+			textures = { { get_texture({}), AURA } },
 		})
 	end,
 })

@@ -49,31 +49,6 @@ function mob_class:do_attack(object)
 	--end
 end
 
--- blast damage to entities nearby
-local function entity_physics(pos, radius)
-	radius = radius * 2
-
-	local objs = minetest.get_objects_inside_radius(pos, radius)
-	local obj_pos, dist
-	for n = 1, #objs do
-		obj_pos = objs[n]:get_pos()
-
-		dist = vector_distance(pos, obj_pos)
-		if dist < 1 then dist = 1 end
-
-		local damage = floor((4 / dist) * radius)
-		local ent = objs[n]:get_luaentity()
-
-		-- punches work on entities AND players
-		objs[n]:punch(objs[n], 1.0, {
-			full_punch_interval = 1.0,
-			damage_groups = {fleshy = damage},
-		}, pos)
-	end
-end
-
-function mob_class:entity_physics(pos,radius) return entity_physics(pos,radius) end
-
 local los_switcher = false
 local height_switcher = false
 
@@ -430,29 +405,52 @@ function mob_class:dogswitch(dtime)
 	return self.dogshoot_switch
 end
 
--- no damage to nodes explosion
-function mob_class:safe_boom(pos, strength)
-	minetest.sound_play(self.sounds and self.sounds.explode or "tnt_explode", {
-		pos = pos,
-		gain = 1.0,
-		max_hear_distance = self.sounds and self.sounds.distance or 32
-	}, true)
-	local radius = strength
-	entity_physics(pos, radius)
-	mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", radius * 3, radius * 5, radius, 1, 0)
+--- make explosion with protection and tnt mod check
+---@param pos            {x: number, y: number, z: number}
+---@param strength       number
+---@param info_overrides table?
+---@param preserve_self  boolean? If after the explosion, the entity should continue existing
+function mob_class:boom(pos, strength, info_overrides, preserve_self)
+	local info = {
+		drop_chance     = 1.0,
+		griefing        = mobs_griefing == true,
+		grief_protected = false,
+	}
+	if info_overrides then
+		mcl_util.table_merge(info, info_overrides)
+	end
+	mcl_explosions.explode(pos, strength, info, self.object)
+
+	if not preserve_self then
+		-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
+		mcl_util.remove_entity(self)
+	end
 end
 
-
--- make explosion with protection and tnt mod check
-function mob_class:boom(pos, strength, fire)
-	if mobs_griefing and not minetest.is_protected(pos, "") then
-		mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
-	else
-		mcl_mobs.mob_class.safe_boom(self, pos, strength) --need to call it this way bc self is the "arrow" object here
+---Returns the name of an attacker.
+local function get_attacker_name(hitter)
+	if not hitter then
+		return nil
 	end
-
-	-- delete the object after it punched the player to avoid nil entities in e.g. mcl_shields!!
-	mcl_util.remove_entity(self)
+	if hitter:is_player() then
+		return "player"
+	end
+	local e = hitter.get_luaentity and hitter:get_luaentity()
+	if e then
+		if e._source_object then
+			if e._source_object:is_player() then
+				return "player"
+			end
+			local se = e._source_object:get_luaentity()
+			if se and se.name then
+				return se.name
+			end
+		end
+		if e.name then
+			return e.name
+		end
+	end
+	return nil
 end
 
 -- deal damage and effects when mob punched
@@ -643,7 +641,10 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			self.invul_timestamp = time_now
 
 			-- skip future functions if dead, except alerting others
-			if self:check_for_death( "hit", {type = "punch", puncher = hitter}) then
+			local cause     = "hit"
+			local cmi_cause = { type = "punch", puncher = hitter }
+			local info      = { attacker_name = get_attacker_name(hitter) }
+			if self:check_for_death(cause, cmi_cause, info) then
 				die = true
 			end
 		end
@@ -934,22 +935,15 @@ function mob_class:do_states_attack(dtime)
 			end
 
 			if self.timer > self.explosion_timer then
-				local pos = self.object:get_pos()
-
-				if mobs_griefing and not minetest.is_protected(pos, "") then
-					mcl_explosions.explode(mcl_util.get_object_center(self.object), self.explosion_strength, { drop_chance = 1.0 }, self.object)
-				else
-					minetest.sound_play(self.sounds.explode, {
-						pos = pos,
-						gain = 1.0,
-						max_hear_distance = self.sounds.distance or 32
-					}, true)
-					self:entity_physics(pos,entity_damage_radius)
-					mcl_mobs.effect(pos, 32, "mcl_particles_smoke.png", nil, nil, node_break_radius, 1, 0)
-				end
+				local pos = mcl_util.get_object_center(self.object)
+				local info = {
+					drop_chance     = 1.0,
+					griefing        = mobs_griefing == true,
+					grief_protected = false,
+				}
+				mcl_explosions.explode(pos, self.explosion_strength, info, self.object)
 				mcl_burning.extinguish(self.object)
 				mcl_util.remove_entity(self)
-
 				return true
 			end
 		end
