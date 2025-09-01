@@ -1,57 +1,57 @@
 # textdomain: mcl_crimson
-Warped Fungus=
-Warped fungus is a mushroom found in the nether's warped forest.=
+Warped Fungus=Fungo Distorcido 
+Warped fungus is a mushroom found in the nether's warped forest.=Fungos Distorcidos são cogumelos encontrados na floresta distorcida do Nether.
 Twisting Vines=Trepadeiras Distorcidas
-Weeping Vines=
+Weeping Vines=Trepadeiras Choronas
 Nether Sprouts=Brotos do Nether
 Warped Roots=Raízes Distorcidas
 Warped Wart Block=Bloco de Fungos Distorcidos
 Shroomlight=Cogubrilho
 Warped Hyphae=Hifas Distorcidas
-The stem of a warped hyphae=
+The stem of a warped hyphae=O caule de uma hifa deformada
 Warped Nylium=Nicélio Distorcido
 Warped Hyphae Bark=Cascas de Hifas Distorcidas
-This is a decorative block surrounded by the bark of an hyphae.=
-Stripped Warped Hyphae=
-The stripped hyphae of a warped fungus=
-Stripped Warped Hyphae Bark=
-The stripped hyphae bark of a warped fungus=
+This is a decorative block surrounded by the bark of an hyphae.=Este é um bloco decorativo cercado pela casca de uma hifa.
+Stripped Warped Hyphae=Hifas Distorcidas Descascadas
+The stripped hyphae of a warped fungus=As hifas descascadas de um fungo distorcido
+Stripped Warped Hyphae Bark=Casca de hifa deformada descascada
+The stripped hyphae bark of a warped fungus=A casca da hifa descascada de um fungo distorcido
 Warped Hyphae Wood=Tábuas de Hifas Distorcidas
 Warped Stairs=Escadas Distorcidas
 Warped Slab=Laje Distorcida
-Double Warped Slab=
-Crimson Fungus=
-Crimson fungus is a mushroom found in the nether's crimson forest.=
+Double Warped Slab=Laje Dupla Distorcida
+Crimson Fungus=Fungo Carmesim
+Crimson fungus is a mushroom found in the nether's crimson forest.=Fungo carmesim é um cogumelo encontrado na floresta carmesim do Nether.
 Crimson Roots=Raízes Carmesim
 Crimson Hyphae=Hifas Carmesim
-The stem of a crimson hyphae=
+The stem of a crimson hyphae=O caule de uma hifa carmesim
 Crimson Hyphae Bark=Cascas de Hifas Carmesim
 Stripped Crimson Hyphae=Hifas Carmesim Descascadas
-The stripped stem of a crimson hyphae=
+The stripped stem of a crimson hyphae=O caule descascado de uma hifa carmesim
 Stripped Crimson Hyphae Bark=Caule de Hifas Carmesim
-The stripped wood of a crimson hyphae=
+The stripped wood of a crimson hyphae=A madeira descascada de uma hifa carmesim
 Crimson Hyphae Wood=Tábuas de Hifas Carmesim
 Crimson Nylium=Nicélio Carmesim
 Crimson Stairs=Escadas Carmesim
 Crimson Slab=Laje Carmesim
 Double Crimson Slab=Laje Dupla Carmesim
-Crimson Door=
+Crimson Door=Porta Carmesim
 
-Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Portas de madeira são barreiras de dois blocos de altura que podem ser abertas ou fechadas manualmente e por um sinal de redstone.
 
-To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Para abrir ou fechar uma porta de madeira, clique com o botão direito ou forneça um sinal de redstone à sua metade inferior.
 
-Crimson Trapdoor=
+Crimson Trapdoor=Alçapão Carmesim
 
-Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Alçapões de madeira são barreiras horizontais que podem ser abertas e fechadas manualmente ou por um sinal de redstone. Eles ocupam o topo ou base de um bloco, dependendo de como foram colocadas. Quando abertos, podem ser escalados como uma escada.
 
-To open or close the trapdoor, rightclick it or send a redstone signal to it.=
-Crimson Fence=
-Crimson Fence Gate=
-Warped Door=
-Warped Trapdoor=
-Warped Fence=
-Warped Fence Gate=
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou fechar o alçapão, clique com o botão direito ou forneça um sinal de redstone para ele.
+Crimson Fence=Cerca Carmesim
+Crimson Fence Gate=Portinhola Carmesim
+Warped Door=Porta Distorcida
+Warped Trapdoor=Alçapão Distorcido
+Warped Fence=Cerca Distorcida
+Warped Fence Gate=Portinhola Distorcida
 
 
 ##### not used anymore #####
