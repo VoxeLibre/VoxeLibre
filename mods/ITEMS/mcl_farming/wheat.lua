@@ -1,6 +1,6 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
-minetest.register_craftitem("mcl_farming:wheat_seeds", {
+core.register_craftitem("mcl_farming:wheat_seeds", {
 	-- Original Minecraft name: “Seeds”
 	description = S("Wheat Seeds"),
 	_tt_help = S("Grows on farmland"),
@@ -35,7 +35,7 @@ for i=1,7 do
 		create = false
 	end
 
-	minetest.register_node("mcl_farming:wheat_"..i, {
+	core.register_node("mcl_farming:wheat_"..i, {
 		description = S("Premature Wheat Plant (Stage @1)", i),
 		_doc_items_create_entry = create,
 		_doc_items_entry_name = name,
@@ -62,14 +62,14 @@ for i=1,7 do
 		_mcl_blast_resistance = 0,
 		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
-			local n = minetest.get_node(pos)
+			local n = core.get_node(pos)
 			local stages = math.random(2, 5)
 			return mcl_farming:grow_plant("plant_wheat", pos, n, stages, true)
 		end
 	})
 end
 
-minetest.register_node("mcl_farming:wheat", {
+core.register_node("mcl_farming:wheat", {
 	description = S("Mature Wheat Plant"),
 	_doc_items_longdesc = S("Mature wheat plants are ready to be harvested for wheat and wheat seeds.").."\n"..
 		                  S("They won't grow any further."),
@@ -107,7 +107,7 @@ minetest.register_node("mcl_farming:wheat", {
 
 mcl_farming:add_plant("plant_wheat", "mcl_farming:wheat", {"mcl_farming:wheat_1", "mcl_farming:wheat_2", "mcl_farming:wheat_3", "mcl_farming:wheat_4", "mcl_farming:wheat_5", "mcl_farming:wheat_6", "mcl_farming:wheat_7"}, 5.8020, 35)
 
-minetest.register_craftitem("mcl_farming:wheat_item", {
+core.register_craftitem("mcl_farming:wheat_item", {
 	description = S("Wheat"),
 	_doc_items_longdesc = S("Wheat is used in crafting. Some animals like wheat."),
 	_doc_items_usagehelp = S("Use the “Place” key on an animal to try to feed it wheat."),
@@ -115,48 +115,48 @@ minetest.register_craftitem("mcl_farming:wheat_item", {
 	groups = {craftitem = 1, compostability = 65},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_farming:bread",
 	recipe = {
 		{"mcl_farming:wheat_item", "mcl_farming:wheat_item", "mcl_farming:wheat_item"},
 	}
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_farming:cookie 8",
 	recipe = {
 		{"mcl_farming:wheat_item", "mcl_cocoas:cocoa_beans", "mcl_farming:wheat_item"},
 	}
 })
 
-minetest.register_craftitem("mcl_farming:cookie", {
+core.register_craftitem("mcl_farming:cookie", {
 	description = S("Cookie"),
 	_doc_items_longdesc = S("This is a food item which can be eaten."),
 	inventory_image = "farming_cookie.png",
 	groups = {food = 2, eatable = 2, compostability = 85},
 	_mcl_saturation = 0.4,
-	on_place = minetest.item_eat(2),
-	on_secondary_use = minetest.item_eat(2),
+	on_place = core.item_eat(2),
+	on_secondary_use = core.item_eat(2),
 })
 
 
-minetest.register_craftitem("mcl_farming:bread", {
+core.register_craftitem("mcl_farming:bread", {
 	description = S("Bread"),
 	_doc_items_longdesc = S("This is a food item which can be eaten."),
 	inventory_image = "farming_bread.png",
 	groups = {food = 2, eatable = 5, compostability = 85},
 	_mcl_saturation = 6.0,
-	on_place = minetest.item_eat(5),
-	on_secondary_use = minetest.item_eat(5),
+	on_place = core.item_eat(5),
+	on_secondary_use = core.item_eat(5),
 })
 
-local mod_screwdriver = minetest.get_modpath("screwdriver")
+local mod_screwdriver = core.get_modpath("screwdriver")
 local on_rotate
 if mod_screwdriver then
 	on_rotate = screwdriver.rotate_3way
 end
 
-minetest.register_node("mcl_farming:hay_block", {
+core.register_node("mcl_farming:hay_block", {
 	description = S("Hay Bale"),
 	_doc_items_longdesc = S("Hay bales are decorative blocks made from wheat."),
 	tiles = {"mcl_farming_hayblock_top.png", "mcl_farming_hayblock_top.png", "mcl_farming_hayblock_side.png"},
@@ -175,7 +175,7 @@ minetest.register_node("mcl_farming:hay_block", {
 	_mcl_hardness = 0.5,
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_farming:hay_block",
 	recipe = {
 		{"mcl_farming:wheat_item", "mcl_farming:wheat_item", "mcl_farming:wheat_item"},
@@ -184,14 +184,14 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_farming:wheat_item 9",
 	recipe = {
 		{"mcl_farming:hay_block"},
 	}
 })
 
-if minetest.get_modpath("doc") then
+if core.get_modpath("doc") then
 	for i=2,7 do
 		doc.add_entry_alias("nodes", "mcl_farming:wheat_1", "nodes", "mcl_farming:wheat_"..i)
 	end

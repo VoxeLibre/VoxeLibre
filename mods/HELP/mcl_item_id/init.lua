@@ -37,7 +37,7 @@ local same_id = {
 }
 
 ---@class core.ItemDef
----@field _mcl_item_id string
+---@field _mcl_item_id string?
 
 tt.register_snippet(function(itemstring)
 	if not core.settings:get_bool("mcl_item_id_debug", false) then return end

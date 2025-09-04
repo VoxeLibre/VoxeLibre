@@ -1,6 +1,6 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
-minetest.register_craftitem("mcl_farming:beetroot_seeds", {
+core.register_craftitem("mcl_farming:beetroot_seeds", {
 	description = S("Beetroot Seeds"),
 	_tt_help = S("Grows on farmland"),
 	_doc_items_longdesc = S("Grows into a beetroot plant. Chickens like beetroot seeds."),
@@ -16,7 +16,7 @@ minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 local size = {[0]=-5, -4, -3}
 
 for i = 0, 2 do
-	minetest.register_node("mcl_farming:beetroot_".. i, {
+	core.register_node("mcl_farming:beetroot_".. i, {
 		description = S("Premature Beetroot Plant (Stage ".. i + 1 ..")"),
 		_doc_items_longdesc = S("Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature."),
 		_doc_items_entry_name = S("Premature Beetroot Plant"),
@@ -43,7 +43,7 @@ for i = 0, 2 do
 		_mcl_blast_resistance = 0,
 		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
-			local n = minetest.get_node(pos)
+			local n = core.get_node(pos)
 			-- 75% chance to advance to next stage
 			if math.random(1, 100) <= 75 then
 				return mcl_farming:grow_plant("plant_beetroot", pos, n, 1, true)
@@ -52,7 +52,7 @@ for i = 0, 2 do
 	})
 end
 
-minetest.register_node("mcl_farming:beetroot", {
+core.register_node("mcl_farming:beetroot", {
 	description = S("Mature Beetroot Plant"),
 	_doc_items_longdesc = S("A mature beetroot plant is a farming plant which is ready to be harvested for a beetroot and some beetroot seeds. It won't grow any further."),
 	_doc_items_create_entry = true,
@@ -104,31 +104,31 @@ minetest.register_node("mcl_farming:beetroot", {
 	_mcl_blast_resistance = 0,
 })
 
-minetest.register_craftitem("mcl_farming:beetroot_item", {
+core.register_craftitem("mcl_farming:beetroot_item", {
 	description = S("Beetroot"),
 	_doc_items_longdesc = S("Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too."),
 	_doc_items_usagehelp = S("Hold it in your hand and right-click to eat it. Rightclick an animal to feed it."),
 	inventory_image = "mcl_farming_beetroot.png",
 	wield_image = "mcl_farming_beetroot.png",
-	on_place = minetest.item_eat(1),
-	on_secondary_use = minetest.item_eat(1),
+	on_place = core.item_eat(1),
+	on_secondary_use = core.item_eat(1),
 	groups = {food = 2, eatable = 1, compostability = 65},
 	_mcl_saturation = 1.2,
 })
 
-minetest.register_craftitem("mcl_farming:beetroot_soup", {
+core.register_craftitem("mcl_farming:beetroot_soup", {
 	description = S("Beetroot Soup"),
 	_doc_items_longdesc = S("Beetroot soup is a food item."),
 	stack_max = 1,
 	inventory_image = "mcl_farming_beetroot_soup.png",
 	wield_image = "mcl_farming_beetroot_soup.png",
-	on_place = minetest.item_eat(6, "mcl_core:bowl"),
-	on_secondary_use = minetest.item_eat(6, "mcl_core:bowl"),
+	on_place = core.item_eat(6, "mcl_core:bowl"),
+	on_secondary_use = core.item_eat(6, "mcl_core:bowl"),
 	groups = { food = 2, eatable = 6 },
 	_mcl_saturation = 7.2,
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_farming:beetroot_soup",
 	recipe = {
 		{ "mcl_farming:beetroot_item","mcl_farming:beetroot_item","mcl_farming:beetroot_item", },
@@ -140,11 +140,11 @@ minetest.register_craft({
 -- beetroots grow at 2/3rd of the default speed
 mcl_farming:add_plant("plant_beetroot", "mcl_farming:beetroot", {"mcl_farming:beetroot_0", "mcl_farming:beetroot_1", "mcl_farming:beetroot_2"}, 8.7012, 35)
 
-if minetest.get_modpath("doc") then
+if core.get_modpath("doc") then
 	for i = 1, 2 do
 		doc.add_entry_alias("nodes", "mcl_farming:beetroot_0", "nodes", "mcl_farming:beetroot_" .. i)
 	end
 end
 
-minetest.register_alias("beetroot_seeds", "mcl_farming:beetroot_seeds")
-minetest.register_alias("beetroot", "mcl_farming:beetroot_item")
+core.register_alias("beetroot_seeds", "mcl_farming:beetroot_seeds")
+core.register_alias("beetroot", "mcl_farming:beetroot_item")

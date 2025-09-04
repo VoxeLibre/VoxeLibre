@@ -32,18 +32,18 @@ for i = 1, #stair_oxidization do
 	-- stairs
 	def = "mcl_stairs:stair_copper_" .. stair_oxidization[i][1]
 	def_variant_oxidized = "mcl_stairs:stair_copper_" .. stair_oxidization[i][2]
-	minetest.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
+	core.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
 
 	def_variant_waxed = "mcl_stairs:stair_waxed_copper_" .. stair_oxidization[i][1]
-	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
+	core.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
 
 	-- slabs
 	def = "mcl_stairs:slab_copper_" .. slab_oxidization[i][1]
 	def_variant_oxidized = "mcl_stairs:slab_copper_" .. slab_oxidization[i][2]
-	minetest.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
+	core.override_item(def, { _mcl_oxidized_variant = def_variant_oxidized })
 
 	def_variant_waxed = "mcl_stairs:slab_waxed_copper_" .. slab_oxidization[i][1]
-	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
+	core.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
 end
 
 -- Set up scraped variants.
@@ -52,20 +52,20 @@ for i = 1, #stair_oxidization do
 	if i > 3 then
 		def = "mcl_stairs:stair_copper_" .. stair_oxidization[i][1]
 		def_variant_scraped = "mcl_stairs:stair_copper_" .. stair_oxidization[i - 3][1]
-		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+		core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 
 		def = "mcl_stairs:slab_copper_" .. slab_oxidization[i][1]
 		def_variant_scraped = "mcl_stairs:slab_copper_" .. slab_oxidization[i - 3][1]
-		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+		core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 	end
 	if i > 6 then
 		def = "mcl_stairs:stair_copper_" .. stair_oxidization[i][2]
 		def_variant_scraped = "mcl_stairs:stair_copper_" .. stair_oxidization[i][1]
-		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+		core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 
 		def = "mcl_stairs:slab_copper_" .. slab_oxidization[i][2]
 		def_variant_scraped = "mcl_stairs:slab_copper_" .. slab_oxidization[i][1]
-		minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+		core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 	end
 end
 
@@ -81,28 +81,28 @@ for i = 1, #waxed_variants do
 	-- stairs
 	def = "mcl_stairs:stair_" .. waxed_variants[i][1]
 	def_variant_scraped = "mcl_stairs:stair_" .. waxed_variants[i][2]
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 
 	def = "mcl_stairs:stair_" .. waxed_variants[i][1] .. "_inner"
 	def_variant_scraped = "mcl_stairs:stair_" .. waxed_variants[i][2] .. "_inner"
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 
 	def = "mcl_stairs:stair_" .. waxed_variants[i][1] .. "_outer"
 	def_variant_scraped = "mcl_stairs:stair_" .. waxed_variants[i][2] .. "_outer"
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 
 	-- slab
 	def = "mcl_stairs:slab_" .. waxed_variants[i][1]
 	def_variant_scraped = "mcl_stairs:slab_" .. waxed_variants[i][2]
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 
 	def = "mcl_stairs:slab_" .. waxed_variants[i][1] .. "_top"
 	def_variant_scraped = "mcl_stairs:slab_" .. waxed_variants[i][2] .. "_top"
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 
 	def = "mcl_stairs:slab_" .. waxed_variants[i][1] .. "_double"
 	def_variant_scraped = "mcl_stairs:slab_" .. waxed_variants[i][2] .. "_double"
-	minetest.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
+	core.override_item(def, { _mcl_stripped_variant = def_variant_scraped })
 
 end
 
@@ -116,7 +116,7 @@ local oxidized_slabs = {
 for i = 1, #oxidized_slabs do
 	def = "mcl_stairs:slab_copper_" .. oxidized_slabs[i]
 	def_variant_waxed = "mcl_stairs:slab_waxed_copper_" .. oxidized_slabs[i]
-	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
+	core.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
 end
 
 local oxidized_stairs = {
@@ -128,5 +128,5 @@ local oxidized_stairs = {
 for i = 1, #oxidized_stairs do
 	def = "mcl_stairs:stair_copper_" .. oxidized_stairs[i]
 	def_variant_waxed = "mcl_stairs:stair_waxed_copper_" .. oxidized_stairs[i]
-	minetest.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
+	core.override_item(def, { _mcl_waxed_variant = def_variant_waxed })
 end

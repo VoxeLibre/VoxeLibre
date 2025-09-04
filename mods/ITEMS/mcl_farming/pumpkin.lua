@@ -1,6 +1,6 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
-local mod_screwdriver = minetest.get_modpath("screwdriver")
+local mod_screwdriver = core.get_modpath("screwdriver")
 
 local on_rotate
 if mod_screwdriver then
@@ -8,7 +8,7 @@ if mod_screwdriver then
 end
 
 -- Seeds
-minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
+core.register_craftitem("mcl_farming:pumpkin_seeds", {
 	description = S("Pumpkin Seeds"),
 	_tt_help = S("Grows on farmland"),
 	_doc_items_longdesc = S("Grows into a pumpkin stem which in turn grows pumpkins. Chickens like pumpkin seeds."),
@@ -57,7 +57,7 @@ for s=1,7 do
 	end
 	local colorstring = mcl_farming:stem_color(startcolor, endcolor, s, 8)
 	local texture = "([combine:16x16:0,"..((8-s)*2).."=mcl_farming_pumpkin_stem_disconnected.png)^[colorize:"..colorstring..":127"
-	minetest.register_node("mcl_farming:pumpkin_"..s, {
+	core.register_node("mcl_farming:pumpkin_"..s, {
 		description = S("Premature Pumpkin Stem (Stage @1)", s),
 		_doc_items_entry_name = entry_name,
 		_doc_items_create_entry = doc,
@@ -81,7 +81,7 @@ for s=1,7 do
 		_mcl_blast_resistance = 0,
 		_on_bone_meal = function(itemstack, placer, pointed_thing)
 			local pos = pointed_thing.under
-			local n = minetest.get_node(pos)
+			local n = core.get_node(pos)
 			local stages = math.random(2, 5)
 			return mcl_farming:grow_plant("plant_pumpkin_stem", pos, n, stages, true)
 		end
@@ -136,7 +136,7 @@ pumpkin_face_base_def.on_construct = function(pos)
 	mobs_mc.check_snow_golem_summon(pos)
 end
 
-if minetest.get_modpath("mcl_armor") then
+if core.get_modpath("mcl_armor") then
 	local pumpkin_hud = {}
 	local function add_pumpkin_hud(player)
 		pumpkin_hud[player] = {
@@ -170,18 +170,18 @@ if minetest.get_modpath("mcl_armor") then
 	pumpkin_face_base_def._on_equip = add_pumpkin_hud
 	pumpkin_face_base_def._on_unequip = remove_pumpkin_hud
 
-	minetest.register_on_joinplayer(function(player)
+	core.register_on_joinplayer(function(player)
 		if player:get_inventory():get_stack("armor", 2):get_name() == "mcl_farming:pumpkin_face" then
 			add_pumpkin_hud(player)
 		end
 	end)
 	local keep_inventory = vl_tuning.setting("gamerule:keepInventory")
-	minetest.register_on_dieplayer(function(player)
+	core.register_on_dieplayer(function(player)
 		if not keep_inventory.getter() then
 			remove_pumpkin_hud(player)
 		end
 	end)
-	minetest.register_on_leaveplayer(function(player)
+	core.register_on_leaveplayer(function(player)
 		pumpkin_hud[player] = nil
 	end)
 end
@@ -193,18 +193,18 @@ mcl_farming:add_plant("plant_pumpkin_stem", "mcl_farming:pumpkintige_unconnect",
 mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin", pumpkin_base_def, 5.8018, 35, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127")
 
 -- Steal function to properly disconnect a carved pumpkin
-pumpkin_face_base_def.after_destruct = minetest.registered_nodes["mcl_farming:pumpkin"].after_destruct
-minetest.register_node("mcl_farming:pumpkin_face", pumpkin_face_base_def)
+pumpkin_face_base_def.after_destruct = core.registered_nodes["mcl_farming:pumpkin"].after_destruct
+core.register_node("mcl_farming:pumpkin_face", pumpkin_face_base_def)
 
 -- Jack o'Lantern
-minetest.register_node("mcl_farming:pumpkin_face_light", {
+core.register_node("mcl_farming:pumpkin_face_light", {
 	description = S("Jack o'Lantern"),
 	_doc_items_longdesc = S("A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly."),
 	is_ground_content = false,
 	stack_max = 64,
 	paramtype = "light",
 	paramtype2 = "facedir",
-	light_source = minetest.LIGHT_MAX,
+	light_source = core.LIGHT_MAX,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
 	groups = {handy=1, axey=1, pumpkin=1, building_block=1, dig_by_piston=1 },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -220,37 +220,37 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 
 -- Crafting
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_farming:pumpkin_face_light",
 	recipe = {{"mcl_farming:pumpkin_face"},
 	{"mcl_torches:torch"}}
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_farming:pumpkin_seeds 4",
 	recipe = {{"mcl_farming:pumpkin"}}
 })
 
-minetest.register_craftitem("mcl_farming:pumpkin_pie", {
+core.register_craftitem("mcl_farming:pumpkin_pie", {
 	description = S("Pumpkin Pie"),
 	_doc_items_longdesc = S("A pumpkin pie is a tasty food item which can be eaten."),
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_pie.png",
 	wield_image = "mcl_farming_pumpkin_pie.png",
-	on_place = minetest.item_eat(8),
-	on_secondary_use = minetest.item_eat(8),
+	on_place = core.item_eat(8),
+	on_secondary_use = core.item_eat(8),
 	groups = {food = 2, eatable = 8, compostability = 100},
 	_mcl_saturation = 4.8,
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_farming:pumpkin_pie",
 	recipe = {"mcl_farming:pumpkin", "mcl_core:sugar", "mcl_throwing:egg"},
 })
 
 
-if minetest.get_modpath("doc") then
+if core.get_modpath("doc") then
 	for i=2,8 do
 		doc.add_entry_alias("nodes", "mcl_farming:pumpkin_1", "nodes", "mcl_farming:pumpkin_"..i)
 	end
