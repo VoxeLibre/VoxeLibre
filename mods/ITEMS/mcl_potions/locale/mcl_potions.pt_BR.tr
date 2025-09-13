@@ -1,0 +1,235 @@
+# textdomain: mcl_potions
+Dragon's Breath=Bafo do Dragão
+
+This item is used in brewing and can be combined with splash potions to create lingering potions.=Este item é usado na alquimia e pode ser combinado com poções arremessáveis para criar poções persistentes.
+
+Fermented Spider Eye=Olho de Aranha Fermentado
+Try different combinations to create potions.=Experimente combinações diferentes para criar poções.
+Glass Bottle=Frasco de Vidro
+Liquid container=Recipiente para líquidos
+
+A glass bottle is used as a container for liquids and can be used to collect water directly.=Um frasco de vidro é usado como recipiente para líquidos e pode ser usado para coletar água diretamente.
+
+To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Para coletar água, use em um caldeirão com água (diminuindo o nível de água) ou em qualquer fonte de água (não removendo água).
+
+Water Bottle=Frasco de Água
+No effect=Sem efeito
+Water bottles can be used to fill cauldrons. Drinking water has no effect.=Frascos de água podem ser usados para encher caldeirões. Beber água não tem efeito.
+
+Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Use a tecla de "Colocar" para beber. Coloque este item em um caldeirão para despejar a água nele.
+
+River Water Bottle=Frasco de Água de Rio
+River water bottles can be used to fill cauldrons. Drinking it has no effect.=Frascos de água de rio podem ser usados para encher caldeirões. Beber não causa efeito.
+
+Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Use a tecla de "Colocar" para beber. Coloque este item em um caldeirão para despejar a água do rio nele.
+
+Splash Water Bottle=Frasco de Água Arremessável
+Extinguishes fire and hurts some mobs=Apaga fogo e fere alguns mobs
+
+A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Um frasco de água arremessável que se estilhaça com o impacto, extinguindo o fogo próximo e ferindo mobs vulneráveis ​​à água.
+
+Lingering Water Bottle=Frasco de Água Persistente
+
+A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Um frasco de água arremessável que se estilhaça com o impacto, criando uma nuvem de vapor d'água que permanece no chão por um tempo. Essa nuvem apaga fogo e fere mobs vulneráveis ​​à água.
+
+Glistering Melon=Melão Brilhante
+
+This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Este melão brilhante está cheio de pequenas pepitas de ouro e ficaria ótimo em uma moldura de item. Não é comestível e não serve para mais nada.
+
+##[ functions.lua ]##
+Invisibility=Invisibilidade
+body is invisible=o corpo fica invisível
+Poison=Veneno
+-1 HP / @1 s=-1 PV / @1 s
+Regeneration=Regeneração
++1 HP / @1 s=+1 PV / @1 s
+Strength=Força
++@1% melee damage=+@1% de dano corpo a corpo
+Weakness=Fraqueza
+-@1% melee damage=-@1% de dano corpo a corpo
+Water Breathing=Respiração Aquática
+limitless breathing under water=respiração ilimitada debaixo d'água
+Dolphin's Grace=Graça Marinha
+swimming gracefully=nadar graciosamente
+Leaping=Saltar
++@1% jumping power=+@1% de poder de salto
+-@1% jumping power=-@1% de poder de salto
+Slow Falling=Queda Lenta
+decreases gravity effects=diminui os efeitos da gravidade
+Swiftness=Rapidez
++@1% running speed=+@1% de velocidade de corrida
+Slowness=Lentidão
+-@1% running speed=-@1% de velocidade de corrida
+Levitation=Levitação
+moves body upwards at @1 nodes/s=move o corpo para cima a @1 nó/s
+Night Vision=Visão Noturna
+improved vision during the night=visão melhorada durante a noite
+Darkness=Escuridão
+surrounded by darkness=cercado por escuridão
+not seeing anything beyond @1 nodes=não enxerga nada além de @1 nó
+Glowing=Brilhante
+more visible at all times=mais visível o tempo todo
+Health Boost=Aumento de Vida
+HP increased by @1=PV aumentado em @1
+Absorption=Absorção
+absorbs up to @1 incoming damage=absorve até @1 de dano recebido
+Fire Resistance=Resistência ao Fogo
+resistance to fire damage=resistência a dano de fogo
+Resistance=Resistência
+resist @1% of incoming damage=resiste a @1% do dano recebido
+Luck=Sorte
+Bad Luck=Má Sorte
+Bad Omen=Mau Presságio
+danger is imminent=o perigo é iminente
+Hero of the Village=Herói da Vila
+Withering=Definhamento
+-1 HP / @1 s, can kill=-1 PV / @1 s, pode matar
+Frost=Congelamento
+-1 HP / 1 s, can kill, -@1% running speed=-1 PV / 1 s, pode matar, -@1% de velocidade de corrida
+Blindness=Cegueira
+impaired sight=visão prejudicada
+Nausea=Náusea
+not feeling very well...=não se sentir bem...
+frequency: @1 / 1 s=frequência: @1 / 1 s
+Food Poisoning=Intoxicação Alimentar
+exhausts by @1 per second=exaustão em @1 por segundo
+Saturation=Saturação
+saturates by @1 per second=satura em @1 por segundo
+Haste=Aceleração
++@1% mining and attack speed=+@1% de velocidade de mineração e ataque
+Fatigue=Fadiga
+-@1% mining and attack speed=-@1% de velocidade de mineração e ataque
+Conduit Power=Potência do Conduíte
++@1% mining and attack speed in water=+@1% de velocidade de mineração e ataque na água
+##[ commands.lua ]##
+
+<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART] [<player>]=<efeito>|cura|lista|limpar|remover <duração|nivel-cura|efeito>|INF [<nível>] [<fator>] [SEMPART] [<jogador>]
+
+Add a status effect to yourself or another player. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART by the end means no particles will be shown for this effect. Appending a player name to any command will make it try to conduct the operation on that player rather than the command user. If the name doesn't exist, nothing happens.=Adiciona um efeito de status a você mesmo ou a outro jogador. Opções: <efeito>: nome do efeito de status. Usar "lista" como nome do efeito lista os efeitos disponíveis. Usar "cura" como nome do efeito cura (ou causa dano) pela quantidade definida pelo próximo parâmetro. Usar "limpar" como nome do efeito remove todos os efeitos. Usar "remover" como nome do efeito remove o efeito nomeado pelo próximo parâmetro. <duração>: duração em segundos. Usar "INF" como duração torna o efeito infinito. (<nivel-cura>: quantidade de cura quando o efeito é "cura", usar um valor negativo subtrai vida. <efeito>: nome de um efeito de status a ser removido ao usar "remover" como parâmetro anterior.) <nivel>: determinante para o poder do efeito, níveis maiores resultam em efeitos mais poderosos para efeitos que dependem do nível (sem alterações para outros efeitos), o padrão é 1, repasse F para usar o fator de baixo nível. <fator>: modificador de força do efeito, pode significar coisas diferentes dependendo do efeito, sem alterações para efeitos que não dependem de nível/fator. SEMPART no final significa que nenhuma partícula será mostrada para este efeito. Adicionar um nome de jogador a qualquer comando fará com que ele tente conduzir a operação naquele jogador em vez do usuário do comando. Se o nome não existir, nada acontece.
+
+Missing effect parameter!=Parâmetro de efeito ausente!
+Missing or invalid heal amount parameter!=Parâmetro de quantidade de cura ausente ou inválido!
+Target player @1 not found!=Jogador alvo @1 não encontrado!
+Player @1 healed by @2 HP.=Jogador @1 curado em @2 PV.
+Player @1 harmed by @2 HP.=Jogador @1 ferido em @2 PV.
+Effects cleared for player @1=Efeitos removidos para o jogador @1
+Removed effect @1 from player @2=Efeito @1 removido do jogador @2
+@1 is not an available status effect.=@1 não é um efeito de status disponível.
+Missing or invalid duration parameter!=Parâmetro de duração ausente ou inválido!
+Invalid level parameter!=Parâmetro de nível inválido!
+Missing or invalid factor parameter when level is F!=Parâmetro de fator ausente ou inválido quando o nível é F!
+@1 effect given to player @2 for @3 seconds with factor of @4.=Efeito @1 dado ao jogador @2 por @3 segundos com fator de @4.
+@1 effect given to player @2 for @3 seconds.=Efeito @1 dado ao jogador @2 por @3 segundos.
+Giving effect @1 to player @2 failed.=Falha ao dar o efeito @1 ao jogador @2.
+@1 effect on level @2 given to player @3 for @4 seconds.=Efeito @1 no nível @2 dado ao jogador @3 por @4 segundos.
+##[ splash.lua ]##
+Use the “Punch” key to throw it.=Use a tecla de "Soco" para lançar.
+
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Uma poção arremessável que irá se estilhaçar com o impacto, dando a todos os jogadores e mobs próximos um efeito de status ou um conjunto de efeitos de status.
+
+##[ lingering.lua ]##
+
+A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.=Uma poção arremessável que se estilhaça com o impacto, criando uma nuvem mágica que permanece no local por um tempo. Qualquer jogador ou criatura dentro da nuvem receberá o efeito ou conjunto de efeitos da poção, possivelmente repetidamente.
+
+##[ tipped_arrow.lua ]##
+
+This particular arrow is tipped and will give an effect when it hits a player or mob.=Esta flecha em particular é encantada e produzirá um efeito ao atingir um jogador ou criatura.
+
+##[ potions.lua ]##
+Use the “Place” key to drink it.=Use a tecla de "Colocar" para beber.
+Drinking a potion gives you a particular effect or set of effects.=Beber uma poção te dá um efeito ou conjunto de efeitos específico.
+@1 Potion @2=@1 Poção @2
+@1 Potion=@1 Poção
+Potion @1=Poção @1
+Strange Potion=Poção Estranha
+Splash @1 Potion @2=Poção @2 Arremessável @1
+Splash @1 Potion=Arremesso @1 de Poção
+Splash Potion @1=Poção Arremessável @1
+Splash Strange Potion=Poção Estranha Arremessável
+Lingering @1 Potion @2=Poção @2 Persistente @1 
+Lingering @1 Potion=Poção Persistente @1
+Lingering Potion @1=Poção Persistente @1
+Lingering Strange Potion=Poção Estranha Persistente
+@1 Arrow @2=@1 Flecha @2
+@1 Arrow=@1 Flecha
+Arrow @1=Flecha @1
+Strange Tipped Arrow=Flecha com Efeito Estranho
+Mighty=Poderoso
+of Trolling=de Trolagem
+Awkward=Esquisita
+Has an awkward taste and is used for brewing potions.=Tem um gosto esquisito e é usado para preparar poções.
+Mundane=Mundana
+Has a terrible taste and is not really useful for brewing potions.=Tem um gosto horrível e não é muito útil para preparar poções.
+Thick=Espesso
+Has a bitter taste and may be useful for brewing potions.=Tem um gosto amargo e pode ser útil para preparar poções.
+of Healing=de Cura
++@1 HP=+@1 PV
+Instantly heals.=Cura instantaneamente.
+of Harming=de Dano
+-@1 HP=-@1 PV
+Instantly deals damage.=Causa dano instantaneamente.
+of Night Vision=de Visão Noturna
+Increases the perceived brightness of light under a dark sky.=Aumenta a percepção de luminosidade em um céu escuro.
+of Swiftness=de Rapidez
+Increases walking speed.=Aumenta a velocidade de caminhada.
+of Slowness=de Lentidão
+Decreases walking speed.=Diminui a velocidade de caminhada.
+of Leaping=de Salto
+Increases jump strength.=Aumenta a força do salto.
+of Withering=de Definhamento
+
+Applies the withering effect which deals damage at a regular interval and can kill.=Aplica o efeito de definhamento, que causa dano em intervalos regulares e pode matar.
+
+of Poison=Venenosa
+Applies the poison effect which deals damage at a regular interval.=Aplica o efeito de veneno, que causa dano em intervalos regulares.
+of Regeneration=de Regeneração
+Regenerates health over time.=Regenera vida ao longo do tempo.
+of Invisibility=de Invisibilidade
+Grants invisibility.=Concede invisibilidade.
+of Water Breathing=de Respiração Aquática
+Grants limitless breath underwater.=Concede respiração ilimitada debaixo d'água.
+of Fire Resistance=de Resistência ao Fogo
+Grants immunity to damage from heat sources like fire.=Concede imunidade a danos de fontes de calor, como fogo.
+of Strength=de Força
+Increases attack power.=Aumenta o poder de ataque.
+of Weakness=de Fraqueza
+Decreases attack power.=Diminui o poder de ataque.
+of Slow Falling=de Queda Lenta
+Instead of falling, you descend gracefully.=Em vez de cair, você desce graciosamente.
+of Levitation=de Levitação
+Floats body slowly upwards.=Flutua o corpo lentamente para cima.
+of Darkness=de Escuridão
+Surrounds with darkness.=Se cerca de escuridão.
+of Glowing=de Brilho
+Highlights for others to see.=Destaca para os outros verem.
+of Health Boost=de Aumento de Vida
+Increases health.=Aumenta a vida.
+of Absorption=de Absorção
+Absorbs some incoming damage.=Absorve parte do dano recebido.
+of Resistance=de Resistência
+Decreases damage taken.=Diminui o dano recebido.
+of Stone Cloak=de Manto Rochoso
+Decreases damage taken at the cost of speed.=Diminui o dano sofrido em detrimento da velocidade.
+of Luck=de Sorte
+Increases luck.=Aumenta a sorte.
+of Bad Luck=de Má Sorte
+Decreases luck.=Diminui a sorte.
+of Frost=de Congelamento
+Freezes...=Congela...
+of Blindness=de Cegueira
+Impairs sight.=Prejudica a visão.
+of Nausea=de Náusea
+Disintegrates senses.=Desintegra os sentidos.
+of Food Poisoning=de Intoxicação Alimentar
+Moves bowels too fast.=Remexe com o intestino.
+of Saturation=de Saturação
+Satisfies hunger.=Satisfaz a fome.
+of Haste=de Aceleração
+Increases digging and attack speed.=Aumenta a velocidade de escavação e ataque.
+of Fatigue=de Fadiga
+Decreases digging and attack speed.=Diminui a velocidade de escavação e ataque.
+Ominous=Mal Agouro
+Attracts danger.=Atrai perigo.
+Unknown Potion=Poção Desconhecida
+Right-click to identify=Clique com o botão direito para identificar
+Unknown Tipped Arrow=Flecha com Efeito Desconhecido
