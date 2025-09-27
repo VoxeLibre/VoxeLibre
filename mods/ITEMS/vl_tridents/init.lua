@@ -11,6 +11,24 @@ table.update(trident_entity, {
 	_on_remove = function(self)
 		vl_projectile.replace_with_item_drop(self, self.object:get_pos())
 	end,
+
+	-- Pickup trident if player is nearby
+	on_step = function(self, dtime)
+		vl_projectile.update_projectile(self, dtime)
+
+		if not self._last_pos or not self._stuck then return end
+
+		local pos = self.object:get_pos()
+		if not pos then return end			-- if already picked up by vl_projectile.update_projectile
+
+		local objects = core.get_objects_inside_radius(pos, 1)
+		for _,obj in ipairs(objects) do
+			if obj:is_player() then
+				vl_projectile.replace_with_item_drop(self, pos)
+				return
+			end
+		end
+	end,
 })
 table.update(trident_entity.initial_properties, {
 	physical = true,
@@ -36,7 +54,7 @@ table.update(trident_entity._vl_projectile,{
 
 		-- Drop tridents that are sliding
 		function(self, dtime)
-		if not self._last_pos then return end
+			if not self._last_pos then return end
 
 			local pos = self.object:get_pos()
 			local y_diff = math.abs(self._last_pos.y - pos.y)
@@ -91,11 +109,6 @@ local function throw_trident(itemstack, user, power_factor)
 		owner = user,
 		velocity = TRIDENT_THROW_POWER * power_factor,
 	})
-	--local obj_properties = table.copy(trident_entity)
-	--table.update(obj_properties, {
-	--	textures = {itemstack:get_name()}
-	--})
-	--obj:set_properties(obj_properties)
 	local le = obj:get_luaentity()
 	le._shooter = user
 	le._source_object = user
