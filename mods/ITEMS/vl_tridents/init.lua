@@ -7,25 +7,6 @@ local TRIDENT_FULL_CHARGE_TIME = 1000000 -- time until full charge in microsecon
 local TRIDENT_RANGE = 4.5
 
 local trident_entity = table.copy(vl_weaponry.spear_entity)
-table.update(trident_entity, {
-	-- Pickup trident if player is nearby
-	on_step = function(self, dtime)
-		vl_projectile.update_projectile(self, dtime)
-
-		if not self._last_pos or not self._stuck then return end
-
-		local pos = self.object:get_pos()
-		if not pos then return end			-- if already picked up by vl_projectile.update_projectile
-
-		local objects = core.get_objects_inside_radius(pos, 1)
-		for _,obj in ipairs(objects) do
-			if obj:is_player() then
-				vl_projectile.replace_with_item_drop(self, pos)
-				return
-			end
-		end
-	end,
-})
 table.update(trident_entity.initial_properties, {
 	physical = true,
 	pointable = false,
@@ -38,7 +19,7 @@ table.update(trident_entity.initial_properties, {
 })
 table.update(trident_entity._vl_projectile, {
 	survive_collision = true,
-	sticks_in_players = true,
+	sticks_in_players = false,
 	creative_collectable = true,
 	pitch_offset = 0,
 })
