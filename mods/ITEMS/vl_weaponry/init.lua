@@ -1,3 +1,5 @@
+vl_weaponry = {}
+
 local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
 local S = core.get_translator(modname)
@@ -55,6 +57,9 @@ table.update(spear_entity._vl_projectile,{
 	},
 	pitch_offset = math.pi / 4,
 })
+
+-- Make the spear entity available to other mods as a template
+vl_weaponry.spear_entity = table.copy(spear_entity)
 
 vl_projectile.register("vl_weaponry:spear_entity", spear_entity)
 

@@ -6,12 +6,8 @@ local TRIDENT_THROW_POWER = 30
 local TRIDENT_FULL_CHARGE_TIME = 1000000 -- time until full charge in microseconds
 local TRIDENT_RANGE = 4.5
 
-local trident_entity = table.copy(mcl_bows.arrow_entity)
+local trident_entity = table.copy(vl_weaponry.spear_entity)
 table.update(trident_entity, {
-	_on_remove = function(self)
-		vl_projectile.replace_with_item_drop(self, self.object:get_pos())
-	end,
-
 	-- Pickup trident if player is nearby
 	on_step = function(self, dtime)
 		vl_projectile.update_projectile(self, dtime)
@@ -40,38 +36,11 @@ table.update(trident_entity.initial_properties, {
 	collisionbox = {-.1, -.1, -1, .1, .1, 0.5},
 	_damage=9,
 })
-table.update(trident_entity._vl_projectile,{
+table.update(trident_entity._vl_projectile, {
 	survive_collision = true,
 	sticks_in_players = true,
 	creative_collectable = true,
-	behaviors = {
-		vl_projectile.sticks,
-		vl_projectile.burns,
-		vl_projectile.has_tracer,
-		vl_projectile.has_owner_grace_distance,
-		vl_projectile.collides_with_solids,
-		vl_projectile.raycast_collides_with_entities,
-
-		-- Drop tridents that are sliding
-		function(self, dtime)
-			if not self._last_pos then return end
-
-			local pos = self.object:get_pos()
-			local y_diff = math.abs(self._last_pos.y - pos.y)
-			if y_diff > 0.0001 then
-				self._flat_time = 0
-				return
-			end
-
-			local flat_time = (self._flat_time or 0) + dtime
-			self._flat_time = flat_time
-
-			if flat_time < 0.25 then return end
-
-			mcl_util.remove_entity(self)
-			return true
-		end,
-	},
+	pitch_offset = 0,
 })
 
 vl_projectile.register("vl_tridents:trident_entity", trident_entity)
