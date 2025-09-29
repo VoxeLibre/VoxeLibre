@@ -96,8 +96,8 @@ local function throw_trident(itemstack, user, power_factor)
 		mcl_util.use_item_durability(itemstack, 1)
 	end
 	local meta = itemstack:get_meta()
-	--meta:set_string("inventory_image", "")
-	--meta:set_int("active", 0)
+	meta:set_string("inventory_image", "")
+	meta:set_int("active", 0)
 
 	local pos = user:get_pos()
 	pos.y = pos.y + 1.5
