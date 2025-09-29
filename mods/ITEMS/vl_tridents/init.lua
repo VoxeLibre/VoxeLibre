@@ -8,13 +8,9 @@ local TRIDENT_RANGE = 4.5
 
 local trident_entity = table.copy(vl_weaponry.spear_entity)
 table.update(trident_entity.initial_properties, {
-	physical = true,
-	pointable = false,
 	visual = "mesh",
 	mesh = "vl_tridents.obj",
-	visual_size = {x=-1, y=1},
 	textures = {"vl_tridents.png"},
-	collisionbox = {-.1, -.1, -1, .1, .1, 0.5},
 	_damage=9,
 })
 table.update(trident_entity._vl_projectile, {
