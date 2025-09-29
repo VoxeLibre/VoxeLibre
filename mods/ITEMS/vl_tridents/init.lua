@@ -18,9 +18,6 @@ table.update(trident_entity.initial_properties, {
 	_damage=9,
 })
 table.update(trident_entity._vl_projectile, {
-	survive_collision = true,
-	sticks_in_players = false,
-	creative_collectable = true,
 	pitch_offset = 0,
 })
 
