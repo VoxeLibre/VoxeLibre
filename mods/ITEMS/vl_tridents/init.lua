@@ -176,7 +176,7 @@ core.register_tool("vl_tridents:trident", {
 	tool_capabilities = {
 		full_punch_interval = 0.75,
 		max_drop_level=1,
-		damage_groups = {fleshy=3},
+		damage_groups = {fleshy=9},
 		punch_attack_uses = 251, -- like iron, TODO: should be like iron sword
 	},
 	sound = { breaks = "default_tool_breaks" },
