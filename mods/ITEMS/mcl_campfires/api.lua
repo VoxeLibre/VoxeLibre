@@ -109,7 +109,7 @@ function mcl_campfires.cook_item(pos, elapsed)
 		local food_y = tonumber(meta:get_string("food_y_"..tostring(i)))
 		local food_z = tonumber(meta:get_string("food_z_"..tostring(i)))
 		if food_x and food_y and food_z then
-			local entites = minetest.get_objects_inside_radius(vector.new(food_x, food_y, food_z), 0)
+			local entites = minetest.get_objects_inside_radius(vector.new(food_x, food_y, food_z), 0.01)
 			if entites then
 				for _, entity in ipairs(entites) do
 					if entity then
