@@ -629,22 +629,13 @@ core.register_globalstep(function(dtime)
 end)
 
 core.register_lbm({
-	label = "Campfire Smoke",
-	name = "mcl_campfires:campfire_smoke",
+	label = "Load lit campfires",
+	name = "mcl_campfires:lit_on_load",
 	nodenames = { "group:lit_campfire" },
 	run_at_every_load = true,
 	action = function(pos, _)
-		create_smoke_partspawner(pos)
-	end,
-})
-
-core.register_lbm({
-	label = "Load campfire entity visuals",
-	name = "mcl_campfires:entity_load_visuals",
-	nodenames = { "group:lit_campfire" },
-	run_at_every_load = true,
-	action = function(pos)
 		local c = mcl_campfires.CampfireRef.new(pos)
 		c:update_all_entity_visuals()
+		create_smoke_partspawner(pos)
 	end
 })
