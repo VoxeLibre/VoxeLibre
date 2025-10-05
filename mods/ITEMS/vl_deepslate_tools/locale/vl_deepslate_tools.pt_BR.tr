@@ -1,0 +1,39 @@
+# textdomain: vl_deepslate_tools
+Turns block into farmland=Torna o bloco em terra de cultivo
+
+Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Enxadas são ferramentas essenciais para o cultivo. São usadas para tornar os solos cultiváveis e plantar sementes. Em casos de emergência, elas também podem ser usadas como armas muito fracas.
+
+Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Use a enxada em um bloco cultivável (clicando com o botão direito) para o transformar em terra cultivável. Terra, blocos de grama e caminhos de grama são blocos cultiváveis. Usar uma enxada em terra infértil a transforma em terra.
+
+Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Picaretas são ferramentas de mineração para extrair blocos duros, como pedras. Uma picareta também pode ser usada como arma, mas é bastante ineficiente.
+
+An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=Um machado é a ferramenta ideal para cortar árvores, blocos de madeira e outros blocos. Machados também causam muito dano, mas são bastante lentos.
+
+Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=Espadas são ótimas em combate corpo a corpo, pois são rápidas, causam muito dano e podem suportar inúmeras batalhas. Espadas também podem ser usadas para cortar alguns blocos específicos, como teias de aranha.
+
+To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=Para cortar vários inimigos, segure a espada na mão e use (clique com o botão direito) em um inimigo.
+
+Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=Pás são ferramentas para cavar blocos granulados, como terra, areia e cascalho. Elas também podem ser usadas para transformar blocos de grama em caminhos de grama. Pás podem ser usadas como armas, mas são muito fracas.
+
+To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=Para transformar um bloco de grama em um caminho de grama, segure a pá na mão e use (clique com o botão direito) a parte superior ou lateral de um bloco de grama. Isso só funcionará se estiver vazio acima do bloco de grama.
+
+Can crush blocks=Pode esmagar blocos
+Increased knockback=Alta repulsão
+
+Hammers are great in melee combat, as they deal high damage with increased knockback and can endure countless battles. Hammers can also be used to crush things.=Martelos são ótimos em combate corpo a corpo, pois causam grandes danos e alta repulsão, e podem suportar inúmeras batalhas. Os martelos também podem ser usados para esmagar coisas.
+
+To crush a block, dig the block with the hammer. This only works with some blocks.=Para esmagar um bloco, cave o bloco com o martelo. Isso só funciona com alguns blocos.
+
+Reaches farther=Alto alcance
+Can be thrown=Pode ser arremessada
+
+Spears are great in melee combat, as they have an increased reach. They can also be thrown.=Lanças são ótimas em combate corpo a corpo, pois têm maior alcance. Também podem ser arremessadas.
+
+To throw a spear, hold it in your hand, then hold use (rightclick) in the air.=Para arremessar uma lança, ponha na sua mão e segure o arremesso (clique no botão direito).
+Deepslate Pickaxe=Picareta de Ardósia
+Deepslate Shovel=Pá de Ardósia
+Deepslate Hoe=Enxada de Ardósia
+Deepslate Axe=Machado de Ardósia
+Deepslate Sword=Espada de Ardósia
+Deepslate Hammer=Martelo de Ardósia
+Deepslate Spear=Lança de Ardósia
