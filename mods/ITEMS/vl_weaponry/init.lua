@@ -76,6 +76,11 @@ local function spear_on_place(itemstack, user, pointed_thing)
 end
 
 local function throw_spear(itemstack, user, power_factor)
+	-- These values are not available when the spear is broken (itemstack is empty).
+	-- Retrieve them before adding wear to prevent issues on final throw.
+	local texture_name = itemstack:get_name()
+	local damage = itemstack:get_definition()._mcl_spear_thrown_damage * power_factor
+
 	if not core.is_creative_enabled(user:get_player_name()) then
 		mcl_util.use_item_durability(itemstack, 1)
 	end
@@ -95,13 +100,13 @@ local function throw_spear(itemstack, user, power_factor)
 	})
 	local obj_properties = table.copy(spear_entity)
 	table.update(obj_properties, {
-		textures = {itemstack:get_name()}
+		textures = {texture_name}
 	})
 	obj:set_properties(obj_properties)
 	local le = obj:get_luaentity()
 	le._shooter = user
 	le._source_object = user
-	le._damage = itemstack:get_definition()._mcl_spear_thrown_damage * power_factor
+	le._damage = damage
 	le._is_critical = false -- TODO get from luck?
 	le._startpos = pos
 	le._collectable = true
