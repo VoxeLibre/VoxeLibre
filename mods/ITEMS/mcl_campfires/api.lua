@@ -12,16 +12,16 @@ local CAMPFIRE_SPOTS = {
 
 --- @class mcl_campfires.CampfireRef
 ---
---- @field pos  _ Position vector
---- @field node _ Node
---- @field meta _ Node metadata table
---- @field inv  _ Node metadata inventory
+--- @field pos  Vector
+--- @field node core.Node
+--- @field meta core.MetaDataRef
+--- @field inv  core.InvRef
 mcl_campfires.CampfireRef = {}
 mcl_campfires.CampfireRef.__index = mcl_campfires.CampfireRef
 
 --- Creates a new campfire reference.
 ---
---- @param pos _ Position vector
+--- @param pos Vector
 --- @return mcl_campfires.CampfireRef
 function mcl_campfires.CampfireRef.new(pos)
 	local meta = core.get_meta(pos)
@@ -56,7 +56,7 @@ end
 ---
 --- @private
 --- @param food_index integer
---- @return _ pos Position vector (or nil if not found)
+--- @return Vector? pos
 function mcl_campfires.CampfireRef:get_food_pos(food_index)
 	local foodv = {}
 	for i, axis in pairs({ "x", "y", "z" }) do
@@ -76,7 +76,7 @@ end
 ---
 --- @private
 --- @param index integer
---- @return _ entity An Entity (or nil if not found)
+--- @return core.LuaEntityRef?
 function mcl_campfires.CampfireRef:get_food_entity(index)
 	local fpos = self:get_food_pos(index)
 	if not fpos then
@@ -95,6 +95,7 @@ function mcl_campfires.CampfireRef:get_food_entity(index)
 			goto continue
 		end
 		if le.name == "mcl_campfires:food_entity" then
+			--- @cast e core.LuaEntityRef
 			return e
 		end
 		::continue::
@@ -105,9 +106,9 @@ end
 ---
 --- @private
 --- @param i integer Item index
---- @return _?       item_stack An ItemStack (or nil if not not found)
---- @return _?       entity     An Entity (or nil if not found)
---- @return integer? cook_time  Remaining cook time (or nil if not found)
+--- @return core.ItemStack?    item_stack
+--- @return core.LuaEntityRef? entity
+--- @return integer?           cook_time
 --- @nodiscard
 function mcl_campfires.CampfireRef:find_item(i)
 	local st = self.inv:get_stack("main", i)
@@ -159,8 +160,8 @@ end
 
 ---
 --- @private
---- @param entity  _      Entity
---- @param item_id string Item ID
+--- @param entity  core.LuaEntityRef
+--- @param item_id string
 function mcl_campfires.CampfireRef:update_food_entity_visual(entity, item_id)
 	local id = string.sub(item_id, 14)
 	local wield_image = string.format("mcl_mobitems_%s_raw.png", id)
@@ -171,7 +172,7 @@ function mcl_campfires.CampfireRef:update_food_entity_visual(entity, item_id)
 	entity:set_properties(props)
 end
 
---- @param stack _ An ItemStack
+--- @param stack core.ItemStack
 --- @return boolean cookable
 function mcl_campfires.CampfireRef:can_cook(stack)
 	local in_group = core.get_item_group(stack:get_name(), "campfire_cookable") ~= 0
@@ -186,16 +187,16 @@ function mcl_campfires.CampfireRef:can_cook(stack)
 	return not output.item:is_empty()
 end
 
---- @param object _ ObjectRef
+--- @param object core.ObjectRef
 local function is_creative(object)
 	return core.is_creative_enabled(object:get_player_name())
 end
 
 ---
---- @param object    _            An ObjectRef
---- @param itemstack _            An ItemStack
---- @return _       stack         Leftover ItemStack
---- @return string? error_message An error message if an error occurred
+--- @param object    core.ObjectRef
+--- @param itemstack core.ItemStack
+--- @return core.ItemStack  stack Leftover itemstack
+--- @return string?         error_message
 function mcl_campfires.CampfireRef:take_item(object, itemstack)
 	if not self:can_cook(itemstack) then
 		return itemstack
@@ -274,10 +275,10 @@ function mcl_campfires.CampfireRef:update_all_entity_visuals()
 	end
 end
 
---- @param pos      _      A position vector
---- @param digger   _      An ObjectRef
---- @param drops    _      A list of ItemStack
---- @param nodename string An ItemString
+--- @param pos Vector
+--- @param digger core.ObjectRef
+--- @param drops core.ItemStack[]
+--- @param nodename core.ItemString
 local function do_campfire_drop(pos, digger, drops, nodename)
 	if is_creative(digger) then
 		local inv = digger:get_inventory()
@@ -298,9 +299,9 @@ local function do_campfire_drop(pos, digger, drops, nodename)
 	end
 end
 
----@param pos     _ A position vector
----@param node    _ A Node
----@param oldmeta _ A Node metadata table (optional)
+---@param pos Vector
+---@param node core.Node
+---@param oldmeta core.NodeMetaRef?
 local function do_campfire_drop_items(pos, node, oldmeta)
 	local meta = core.get_meta(pos)
 	mcl_util.drop_items_from_meta_container("main")(pos, node, oldmeta)
@@ -325,14 +326,13 @@ local function do_campfire_drop_items(pos, node, oldmeta)
 	end
 end
 
---- @param pos _ A position vector
+--- @param pos Vector
 local function on_blast(pos)
 	local node = core.get_node(pos)
 	do_campfire_drop_items(pos, node)
 	core.remove_node(pos)
 end
 
---- @param pos _ A position vector
 function mcl_campfires.light_campfire(pos)
 	local campfire = core.get_node(pos)
 	local name = campfire.name .. "_lit"
@@ -341,10 +341,8 @@ end
 
 --- on_rightclick function to take items that are cookable in a campfire,
 --- and put them in the campfire inventory
---- 
---- @param pos       _ Position vector
---- @param clicker   _ An ObjectRef
---- @param itemstack _ An ItemStack
+---
+--- @type core.NodeDef.OnRightClickFunc
 function mcl_campfires.take_item(pos, _, clicker, itemstack)
 	local campfire = mcl_campfires.CampfireRef.new(pos)
 	local stack, err = campfire:take_item(clicker, itemstack)
@@ -354,12 +352,12 @@ function mcl_campfires.take_item(pos, _, clicker, itemstack)
 	return stack or itemstack
 end
 
---- @param pos _ Position vector
+--- @type core.NodeDef.OnTimerFunc
 function mcl_campfires.cook_items(pos)
 	return mcl_campfires.CampfireRef.new(pos):cook_items()
 end
 
---- @param pos _ Position vector
+--- @param pos Vector
 local function destroy_particle_spawner(pos)
 	local meta = core.get_meta(pos)
 	local part_spawn_id = meta:get_int("particle_spawner_id")
@@ -368,7 +366,7 @@ local function destroy_particle_spawner(pos)
 	end
 end
 
---- @param pos _ Position vector
+--- @param pos Vector
 --- @param constructor boolean?
 local function create_smoke_partspawner(pos, constructor)
 	if not constructor then
@@ -427,8 +425,8 @@ local function create_smoke_partspawner(pos, constructor)
 	meta:set_int("particle_spawner_id", spawner_id)
 end
 
---- @param name string
---- @param def  _ A node definition table
+---@param name string
+---@param def core.NodeDef
 function mcl_campfires.register_campfire(name, def)
 	-- Define Campfire
 	core.register_node(name, {
@@ -474,7 +472,7 @@ function mcl_campfires.register_campfire(name, def)
 		end,
 	})
 
-	-- Define Lit Campfire
+	--Define Lit Campfire
 	core.register_node(name .. "_lit", {
 		description = def.description,
 		_tt_help = S("Cooks food and keeps bees happy."),
@@ -575,7 +573,7 @@ function mcl_campfires.register_campfire(name, def)
 	})
 end
 
---- @param p _ A player ObjectRef
+--- @param p core.PlayerRef
 --- @return boolean
 local function should_campfire_burn_player(p)
 	local is_sneaking = p:get_player_control().sneak
@@ -598,7 +596,7 @@ local function should_campfire_burn_player(p)
 	return true
 end
 
---- @param obj _ An ObjectRef
+--- @param obj core.ObjectRef
 local function burn_in_campfire(obj)
 	local p = obj:get_pos()
 	if not p then
