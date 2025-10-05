@@ -1,0 +1,13 @@
+# textdomain: vl_tuning
+Admin tool to tune settings and game rules=Ferramenta de administração para ajustar configurações e regras do jogo
+<setting> <value>=<configuracao> <valor>
+Usage: /tune <setting> <value>=Uso: /tune <configuracao> <valor>
+Setting @1 doesn't exist=A configuração @1 não existe
+Admin tool to view settings and game rules=Ferramenta de administração para visualizar configurações e regras do jogo
+<setting>=<configuracao>
+Display or set customizable options=Exibir ou definir opções personalizáveis
+<rule> [<value>]=<regra> [<valor>]
+Usage: /gamerule <rule> [<value>]=Uso: /gamerule <regra> [<valor>]
+Game rule @1 doesn't exist=A regra do jogo @1 não existe
+##[ settings.lua ]##
+Prevents beds/respawn anchors from exploding in other dimensions.=Evita que camas/âncoras de renascimento explodam em outras dimensões.
