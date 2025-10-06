@@ -84,7 +84,8 @@ function CampfireRef:get_food_pos(food_index)
 		local val   = self.meta:get_string(field)
 		local n     = tonumber(val)
 		if not n then
-			core.log("warning", string.format("field %q has no number value, has: %q", field, val))
+			core.log("warning", string.format(
+				"field %q has no number value, has: %q", field, val))
 			return nil
 		end
 		foodv[i] = n
@@ -147,27 +148,44 @@ end
 ---
 --- @private
 --- @param index integer
-function CampfireRef:drop_cooked_item(index)
-	local ent = self:get_food_entity(index)
+--- @param cook  boolean? If the item should drop as cooked (default: false)
+function CampfireRef:drop_item(index, cook)
+	if not cook then
+		cook = false
+	end
+	local item, ent = self:find_item(index)
+	if not item then
+		return
+	end
 	if ent then
 		ent:remove()
 	end
 
-	local item   = self.inv:get_stack("main", index)
-	local cooked = core.get_craft_result({
-		method = "cooking",
-		width  = 1,
-		items  = { item }
-	})
-	if not cooked then
-		return
+	local drop_item = item
+	if cook then
+		local cook_result = core.get_craft_result({
+			method = "cooking",
+			width  = 1,
+			items  = { item }
+		})
+		if not cook_result then
+			local errm = string.format(
+				"campfire at %q tried to drop cooked item %q, but a cooked "
+				.. "version couldn't be found",
+				self.pos,
+				item:get_name()
+			)
+			core.log("error", errm)
+			return
+		end
+		drop_item = cook_result.item
 	end
 
 	self.meta:set_string("food_x_" .. tostring(index), "")
 	self.meta:set_string("food_y_" .. tostring(index), "")
 	self.meta:set_string("food_z_" .. tostring(index), "")
 
-	core.add_item(self.pos, cooked.item)
+	core.add_item(self.pos, drop_item)
 
 	local dir = vector.divide(
 		core.facedir_to_dir(core.get_node(self.pos).param2),
@@ -224,7 +242,15 @@ function CampfireRef:take_item(object, itemstack)
 	if not e then
 		return ItemStack(), "failed to spawn entity"
 	end
-	self.inv:set_stack("main", spot, itemstack)
+	
+	local item
+	if is_creative(object) then
+		item = itemstack:peek_item(1)
+	else
+		item = itemstack:take_item(1)
+	end
+
+	self.inv:set_stack("main", spot, item)
 	self.meta:set_int("cooktime_" .. tostring(spot), COOK_TIME)
 	self.meta:set_string("food_x_" .. tostring(spot), tostring(e:get_pos().x))
 	self.meta:set_string("food_y_" .. tostring(spot), tostring(e:get_pos().y))
@@ -237,9 +263,6 @@ function CampfireRef:take_item(object, itemstack)
 			"_raw.png"
 	})
 	core.get_node_timer(self.pos):start(1)
-	if not is_creative(object) then
-		itemstack = itemstack:take_item(1)
-	end
 	return itemstack
 end
 
@@ -256,7 +279,7 @@ function CampfireRef:cook_item(index)
 		self:update_food_entity_visual(entity, stack:get_name())
 	end
 	if cook_time <= 0 then
-		self:drop_cooked_item(index)
+		self:drop_item(index, true)
 		return true
 	end
 	self.meta:set_int("cooktime_" .. index, cook_time - 1)
@@ -314,9 +337,11 @@ function CampfireRef:extinguish()
 		core.log("warning", m)
 		return false
 	end
-	local n2 = table.copy(self.node)
-	n2.name = smothered
-	core.set_node(self.pos, n2)
+	for i = 1, 4 do
+		self:drop_item(i)
+	end
+	self.node.name = smothered
+	core.set_node(self.pos, self.node)
 	self:play_extinguish_sound()
 	return true
 end
@@ -328,9 +353,9 @@ function CampfireRef:extinguish_if_below_water()
 	end
 end
 
---- @param pos Vector
---- @param digger core.ObjectRef
---- @param drops core.ItemStack[]
+--- @param pos      Vector
+--- @param digger   core.ObjectRef
+--- @param drops    core.ItemStack[]
 --- @param nodename core.ItemString
 local function do_campfire_drop(pos, digger, drops, nodename)
 	if is_creative(digger) then
@@ -610,7 +635,7 @@ function mcl_campfires.register_campfire(name, def)
 			CampfireRef.new(pos):destroy_particle_spawner()
 		end,
 		on_rightclick = function(pos, _, player, itemstack, pointed_thing)
-			CampfireRef
+			return CampfireRef
 				.new(pos)
 				:on_right_click(player, itemstack, pointed_thing)
 		end,
