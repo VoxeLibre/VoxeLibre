@@ -2,24 +2,24 @@ local S = minetest.get_translator(minetest.get_current_modname())
 
 -- Register Plain Campfire
 mcl_campfires.register_campfire("mcl_campfires:campfire", {
-	description = S("Campfire"),
-	inv_texture = "mcl_campfires_campfire_inv.png",
-	fire_texture = "mcl_campfires_campfire_fire.png",
+	description      = S("Campfire"),
+	inv_texture      = "mcl_campfires_campfire_inv.png",
+	fire_texture     = "mcl_campfires_campfire_fire.png",
 	lit_logs_texture = "mcl_campfires_campfire_log_lit.png",
-	drops = "mcl_core:charcoal_lump 2",
-	lightlevel = 14,
-	damage = 1,
+	drops            = "mcl_core:charcoal_lump 2",
+	lightlevel       = 14,
+	damage           = 1,
 })
 
 -- Register Soul Campfire
 mcl_campfires.register_campfire("mcl_campfires:soul_campfire", {
-	description = S("Soul Campfire"),
-	inv_texture = "mcl_campfires_soul_campfire_inv.png",
-	fire_texture = "mcl_campfires_soul_campfire_fire.png",
+	description      = S("Soul Campfire"),
+	inv_texture      = "mcl_campfires_soul_campfire_inv.png",
+	fire_texture     = "mcl_campfires_soul_campfire_fire.png",
 	lit_logs_texture = "mcl_campfires_soul_campfire_log_lit.png",
-	drops = "mcl_blackstone:soul_soil",
-	lightlevel = 10,
-	damage = 2,
+	drops            = "mcl_blackstone:soul_soil",
+	lightlevel       = 10,
+	damage           = 2,
 })
 
 -- Register Campfire Crafting
@@ -41,18 +41,64 @@ minetest.register_craft({
 	}
 })
 
+--- @param e core.LuaEntity
+local function remove_food_entity_if_orphaned(e)
+	local obj = e.object
+	local pos = obj:get_pos()
+	local n   = core.find_node_near(pos, 0.1, { "group:lit_campfire" }, true)
+	if not n then
+		obj:remove()
+	end
+end
+
+
+--- @class mcl_campfires.FoodEntityTable.Item
+--- 
+--- How many seconds have elapsed since the last orphan check.
+--- @field time number
+
+
+--- @type table<core.LuaEntity, mcl_campfires.FoodEntityTable.Item>
+local food_entities = {}
+
+
+--- How many seconds between checks for orphaned food entities.
+local FOOD_ENTITY_ORPHAN_CHECK_INTERVAL = 10
+
+
 -- Register Visual Food Entity
-minetest.register_entity("mcl_campfires:food_entity", {
+core.register_entity("mcl_campfires:food_entity", {
 	initial_properties = {
-		physical = false,
-		visual = "wielditem",
-		wield_item = "mcl_mobitems:mutton",
-		wield_image = "mcl_mobitems_mutton_raw.png",
-		visual_size = {x=0.25, y=0.25},
-		collisionbox = {0,0,0,0,0,0},
-		pointable = false,
+		physical     = false,
+		visual       = "wielditem",
+		wield_item   = "mcl_mobitems:mutton",
+		wield_image  = "mcl_mobitems_mutton_raw.png",
+		visual_size  = { x = 0.25, y = 0.25 },
+		collisionbox = { 0, 0, 0, 0, 0, 0 },
+		pointable    = false,
 	},
-	on_activate = function(self, staticdata)
+	on_activate = function(self, _)
+		if not food_entities[self] then
+			food_entities[self] = {
+				time = 0,
+			}
+		end
 		self.object:set_rotation({x = math.pi / -2, y = 0, z = 0})
 	end,
+	on_deactivate = function (self, _)
+		food_entities[self] = nil
+	end,
+	on_death = function (self, _)
+		food_entities[self] = nil
+	end,
+	on_step = function (self, dtime, _)
+		local t = food_entities[self]
+		if t.time < FOOD_ENTITY_ORPHAN_CHECK_INTERVAL then
+			t.time = t.time + dtime
+			return
+		end
+		t.time = 0
+		remove_food_entity_if_orphaned(self)
+	end
+
 })
