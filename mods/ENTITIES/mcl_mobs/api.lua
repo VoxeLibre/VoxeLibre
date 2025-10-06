@@ -256,7 +256,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 
 	if def.after_activate then def.after_activate(self, staticdata, def, dtime) end
 
-	self._player_hit_time = nil
+	self.xp_timestamp = 0
 end
 
 -- execute current state (stand, walk, run, attacks)
