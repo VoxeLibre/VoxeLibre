@@ -336,7 +336,7 @@ function mcl_mobs.register_mob(name, def)
 			if (reason.direct and reason.direct:is_player()) or
 			   (reason.source and reason.source:is_player())
 			then
-				self._player_hit_time = core.get_us_time()
+				self.xp_timestamp = core.get_us_time()
 			end
 
 			if def.deal_damage then
