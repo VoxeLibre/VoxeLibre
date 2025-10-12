@@ -283,7 +283,6 @@ core.register_craftitem("mcl_potions:river_water", {
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("River water bottles can be used to fill cauldrons. Drinking it has no effect."),
 	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron."),
-
 	stack_max = 16,
 	inventory_image = potion_image("#0044FF"),
 	wield_image = potion_image("#0044FF"),
@@ -314,18 +313,20 @@ local function water_splash(obj, damage)
 end
 
 mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {
-	tt=S("Extinguishes fire and hurts some mobs"),
-	longdesc=S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
-	no_effect=true,
-	potion_fun=water_splash,
-	effect=1
+	_tt = S("Extinguishes fire and hurts some mobs"),
+	_longdesc = S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
+	no_effect = true,
+	stack_max = 16,
+	custom_effect = water_splash,
+	on_splash = mcl_potions._extinguish_nearby_fire,
 })
 mcl_potions.register_lingering("water", S("Lingering Water Bottle"), "#0022FF", {
-	tt=S("Extinguishes fire and hurts some mobs"),
-	longdesc=S("A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water."),
-	no_effect=true,
-	potion_fun=water_splash,
-	effect=1
+	_tt = S("Extinguishes fire and hurts some mobs"),
+	_longdesc = S("A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water."),
+	no_effect = true,
+	stack_max = 16,
+	custom_effect = water_splash,
+	while_lingering = mcl_potions._extinguish_nearby_fire,
 })
 
 core.register_craftitem("mcl_potions:speckled_melon", {
