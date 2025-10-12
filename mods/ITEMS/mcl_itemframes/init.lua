@@ -160,6 +160,7 @@ function tpl_node.on_destruct(pos)
 	local n = core.get_node(pos)
 	local m = core.get_meta(pos)
 	mcl_util.drop_items_from_meta_container("main")(pos, n, m)
+	remove_entity(pos)
 end
 
 function tpl_node.on_rightclick(pos, _node, clicker, ostack, _pointed_thing)
