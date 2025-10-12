@@ -49,7 +49,6 @@ local tpl_node = {
 	_mcl_blast_resistance = 0.5,
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usagehelp,
-	after_dig_node = mcl_util.drop_items_from_meta_container("main"),
 	allow_metadata_inventory_move = function() return 0 end,
 	allow_metadata_inventory_put = function() return 0 end,
 	allow_metadata_inventory_take = function() return 0 end,
@@ -156,6 +155,12 @@ local function update_entity(pos)
 	return l
 end
 mcl_itemframes.update_entity = update_entity
+
+function tpl_node.on_destruct(pos)
+	local n = core.get_node(pos)
+	local m = core.get_meta(pos)
+	mcl_util.drop_items_from_meta_container("main")(pos, n, m)
+end
 
 function tpl_node.on_rightclick(pos, _node, clicker, ostack, _pointed_thing)
 	local pname = clicker:get_player_name()
