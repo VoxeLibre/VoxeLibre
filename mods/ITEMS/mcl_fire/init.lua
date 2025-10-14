@@ -3,9 +3,9 @@
 mcl_fire = {}
 local DEBUG = false
 
----@class core.NodeDef
+---@class (partial) core.NodeDef
 ---@field _on_burn? fun(pos : vector.Vector)
----@field _on_ignite? fun(user : core.PlayerObjectRef, pointed_thing : core.PointedThing) : boolean|nil
+---@field _on_ignite? fun(user : core.PlayerRef, pointed_thing : core.PointedThing) : boolean?
 
 local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)

@@ -5,7 +5,7 @@ local S = minetest.get_translator("mcl_lightning_rods")
 mcl_lightning_rods = {}
 local mod = mcl_lightning_rods
 
----@class core.NodeDef
+---@class (partial) core.NodeDef
 ---@field _on_lightning_strike? fun(pos : vector.Vector, node : core.Node)
 
 dofile(modpath.."/api.lua")

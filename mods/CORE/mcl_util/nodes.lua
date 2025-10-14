@@ -397,14 +397,33 @@ function mcl_util.bypass_buildable_to(func)
 	end
 end
 
-local DEFAULT_PALETTE_INDEXES = {grass_palette_index = 0, foliage_palette_index = 0, water_palette_index = 0}
+---@class mcl_util.PaletteIndices
+---@field grass_palette_index integer
+---@field foliage_palette_index integer
+---@field water_palette_index integer
+
+---@type mcl_util.PaletteIndices
+local DEFAULT_PALETTE_INDEXES = {
+	grass_palette_index = 0,
+	foliage_palette_index = 0,
+	water_palette_index = 0
+}
+
+---@param pos Vector
+---@return mcl_util.PaletteIndices
 function mcl_util.get_palette_indexes_from_pos(pos)
 	local biome_data = core.get_biome_data(pos)
+	if not biome_data then
+		return DEFAULT_PALETTE_INDEXES
+	end
 	local biome = biome_data.biome
 	local biome_name = core.get_biome_name(biome)
 	local reg_biome = core.registered_biomes[biome_name]
-	if reg_biome and reg_biome._mcl_grass_palette_index and reg_biome._mcl_foliage_palette_index
-	and reg_biome._mcl_water_palette_index then
+	if reg_biome
+		and reg_biome._mcl_grass_palette_index 
+		and reg_biome._mcl_foliage_palette_index
+		and reg_biome._mcl_water_palette_index
+	then
 		return {
 			grass_palette_index = reg_biome._mcl_grass_palette_index,
 			foliage_palette_index = reg_biome._mcl_foliage_palette_index,
@@ -415,6 +434,7 @@ function mcl_util.get_palette_indexes_from_pos(pos)
 	end
 end
 
+---@param pos Vector
 function mcl_util.get_colorwallmounted_rotation(pos)
 	local colorwallmounted_node = core.get_node(pos)
 	for i = 0, 32, 1 do

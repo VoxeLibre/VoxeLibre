@@ -10,31 +10,97 @@ local CAMPFIRE_SPOTS = {
 	vector.new(-0.25, -0.03125, 0.25),
 }
 
+
+--- @enum mcl_campfires.CampfireKind
+local CAMPFIRE_KIND = {
+	LIT = 1,
+	UNLIT = 2,
+	NA = 3
+}
+
+local function is_food_entity(e)
+	if not e or not e.get_luaentity then
+		return false
+	end
+	return e:get_luaentity().name == "mcl_campfires:food_entity"
+end
+
+--- @param object core.ObjectRef
+local function is_creative(object)
+	return core.is_creative_enabled(object:get_player_name())
+end
+
+
+--- @param stack core.ItemStack
+--- @return boolean
+local function is_shovel(stack)
+	return core.get_item_group(stack:get_name(), "shovel") ~= 0
+end
+
+
+--- @param stack core.ItemStack
+--- @return boolean
+local function is_cookable_in_campfire(stack)
+	return core.get_item_group(stack:get_name(), "campfire_cookable") ~= 0
+end
+
+
+--- @param pos Vector
+--- @return mcl_campfires.CampfireKind
+local function get_campfire_kind(pos)
+	local node = core.get_node(pos)
+	local nodename = node.name
+	if core.get_item_group(nodename, "lit_campfire") ~= 0 then
+		return CAMPFIRE_KIND.LIT
+	elseif core.get_item_group(nodename, "campfire") ~= 0 then
+		return CAMPFIRE_KIND.UNLIT
+	else
+		return CAMPFIRE_KIND.NA
+	end
+end
+
+
 --- @class mcl_campfires.CampfireRef
 ---
---- @field pos  Vector
+--- @field pos Vector
 --- @field node core.Node
---- @field meta core.MetaDataRef
---- @field inv  core.InvRef
-mcl_campfires.CampfireRef = {}
-mcl_campfires.CampfireRef.__index = mcl_campfires.CampfireRef
+--- @field nodedef core.NodeDef
+--- @field meta core.NodeMetaRef
+--- @field inv core.InvRef
+--- @field kind mcl_campfires.CampfireKind
+local CampfireRef = {}
+CampfireRef.__index = CampfireRef
+
 
 --- Creates a new campfire reference.
 ---
 --- @param pos Vector
 --- @return mcl_campfires.CampfireRef
-function mcl_campfires.CampfireRef.new(pos)
+function CampfireRef.new(pos)
 	local meta = core.get_meta(pos)
 	local node = core.get_node(pos)
-	local inv  = meta:get_inventory()
-	local o    = {
-		pos  = pos,
+	local nodedef = core.registered_nodes[node.name]
+	local inv = meta:get_inventory()
+	local kind = get_campfire_kind(pos)
+	local o = {
+		pos = pos,
 		node = node,
+		nodedef = nodedef,
 		meta = meta,
-		inv  = inv,
+		inv = inv,
+		kind = kind,
 	}
-	o = setmetatable(o, mcl_campfires.CampfireRef)
+	o = setmetatable(o, CampfireRef)
 	return o
+end
+
+--- @private
+function CampfireRef:update()
+	self.node = core.get_node(self.pos)
+	self.nodedef = core.registered_nodes[self.node.name]
+	self.meta = core.get_meta(self.pos)
+	self.inv = self.meta:get_inventory()
+	self.kind = get_campfire_kind(self.pos)
 end
 
 --- Finds the first empty space in a campfire inventory.
@@ -43,7 +109,10 @@ end
 --- @private
 --- @return integer?
 --- @nodiscard
-function mcl_campfires.CampfireRef:find_empty_spot()
+function CampfireRef:find_empty_index()
+	if self.kind ~= CAMPFIRE_KIND.LIT then
+		return
+	end
 	for i = 1, 4 do
 		local stack = self.inv:get_stack("main", i)
 		if not stack or stack:is_empty() then
@@ -55,21 +124,19 @@ end
 --- Gets the X, Y, Z coordinates of a food item.
 ---
 --- @private
---- @param food_index integer
+--- @param index integer Food index
 --- @return Vector? pos
-function mcl_campfires.CampfireRef:get_food_pos(food_index)
-	local foodv = {}
-	for i, axis in pairs({ "x", "y", "z" }) do
-		local field = string.format("food_%s_%d", axis, food_index)
-		local val   = self.meta:get_string(field)
-		local n     = tonumber(val)
-		if not n then
-			core.log("warning", string.format("field %q has no number value, has: %q", field, val))
-			return nil
-		end
-		foodv[i] = n
+function CampfireRef:get_food_pos(index)
+	if index < 1 or index > 4 then
+		local errm = string.format(
+			"mcl_campfires: campfire at pos %q: unexpected food index: %d. "
+			.. "expected value between 1 and 4 (inclusive)",
+			self.pos, index
+		)
+		core.log("error", errm)
+		return
 	end
-	return vector.new(foodv[1], foodv[2], foodv[3])
+	return self.pos + CAMPFIRE_SPOTS[index] --[[@as Vector]]
 end
 
 --- Returns the food entity at the index, or nil if it doesn't exist.
@@ -77,7 +144,7 @@ end
 --- @private
 --- @param index integer
 --- @return core.LuaEntityRef?
-function mcl_campfires.CampfireRef:get_food_entity(index)
+function CampfireRef:get_food_entity(index)
 	local fpos = self:get_food_pos(index)
 	if not fpos then
 		return
@@ -87,18 +154,10 @@ function mcl_campfires.CampfireRef:get_food_entity(index)
 		return
 	end
 	for _, e in ipairs(entities) do
-		if not e then
-			goto continue
-		end
-		local le = e:get_luaentity()
-		if not le then
-			goto continue
-		end
-		if le.name == "mcl_campfires:food_entity" then
+		if is_food_entity(e) then
 			--- @cast e core.LuaEntityRef
 			return e
 		end
-		::continue::
 	end
 end
 
@@ -106,48 +165,62 @@ end
 ---
 --- @private
 --- @param i integer Item index
---- @return core.ItemStack?    item_stack
+--- @return core.ItemStack? item_stack
 --- @return core.LuaEntityRef? entity
---- @return integer?           cook_time
+--- @return integer? cook_time
 --- @nodiscard
-function mcl_campfires.CampfireRef:find_item(i)
+function CampfireRef:find_item(i)
 	local st = self.inv:get_stack("main", i)
 	if not st or st:is_empty() then
 		return
 	end
 	local ent = self:get_food_entity(i)
 	if not ent then
-		core.log("warning",
-			"campfire entity for index " .. tostring(i)
-			.. " not found at position " .. tostring(self.pos))
+		local wmsg = string.format(
+			"campfire entity for index %d not found at position %s",
+			i, self.pos
+		)
+		core.log("warning", wmsg)
 	end
-	return st, ent, self.meta:get_int("cooktime_" .. tostring(i))
+	local cook_time_field = string.format("cooktime_%d", i)
+	local cook_time = self.meta:get_int(cook_time_field)
+	return st, ent, cook_time
 end
 
----
---- @private
 --- @param index integer
-function mcl_campfires.CampfireRef:drop_cooked_item(index)
-	local ent = self:get_food_entity(index)
+--- @param cook boolean? If the item should drop as cooked (default: false)
+function CampfireRef:drop_item(index, cook)
+	if not cook then
+		cook = false
+	end
+	local item, ent = self:find_item(index)
+	if not item then
+		return
+	end
 	if ent then
 		ent:remove()
 	end
 
-	local item   = self.inv:get_stack("main", index)
-	local cooked = core.get_craft_result({
-		method = "cooking",
-		width  = 1,
-		items  = { item }
-	})
-	if not cooked then
-		return
+	local drop_item = item
+	if cook then
+		local cook_result = core.get_craft_result({
+			method = "cooking",
+			width = 1,
+			items = { item }
+		})
+		if not cook_result then
+			local errm = string.format(
+				"campfire at %q tried to drop cooked item %q, but a cooked "
+				.. "version couldn't be found",
+				self.pos, item:get_name()
+			)
+			core.log("error", errm)
+			return
+		end
+		drop_item = cook_result.item
 	end
 
-	self.meta:set_string("food_x_" .. tostring(index), "")
-	self.meta:set_string("food_y_" .. tostring(index), "")
-	self.meta:set_string("food_z_" .. tostring(index), "")
-
-	core.add_item(self.pos, cooked.item)
+	core.add_item(self.pos, drop_item)
 
 	local dir = vector.divide(
 		core.facedir_to_dir(core.get_node(self.pos).param2),
@@ -160,13 +233,13 @@ end
 
 ---
 --- @private
---- @param entity  core.LuaEntityRef
+--- @param entity core.LuaEntityRef
 --- @param item_id string
-function mcl_campfires.CampfireRef:update_food_entity_visual(entity, item_id)
+function CampfireRef:update_food_entity_visual(entity, item_id)
 	local id = string.sub(item_id, 14)
 	local wield_image = string.format("mcl_mobitems_%s_raw.png", id)
 	local props = {
-		wield_item  = item_id,
+		wield_item = item_id,
 		wield_image = wield_image,
 	}
 	entity:set_properties(props)
@@ -174,58 +247,53 @@ end
 
 --- @param stack core.ItemStack
 --- @return boolean cookable
-function mcl_campfires.CampfireRef:can_cook(stack)
-	local in_group = core.get_item_group(stack:get_name(), "campfire_cookable") ~= 0
-	if not in_group then
+function CampfireRef:can_cook(stack)
+	if self.kind ~= CAMPFIRE_KIND.LIT then
+		return false
+	end
+	if not is_cookable_in_campfire(stack) then
 		return false
 	end
 	local output, _ = core.get_craft_result({
 		method = "cooking",
-		width  = 1,
-		items  = { stack }
+		width = 1,
+		items = { stack }
 	})
 	return not output.item:is_empty()
 end
 
---- @param object core.ObjectRef
-local function is_creative(object)
-	return core.is_creative_enabled(object:get_player_name())
-end
-
 ---
---- @param object    core.ObjectRef
+--- @param object core.ObjectRef
 --- @param itemstack core.ItemStack
---- @return core.ItemStack  stack Leftover itemstack
---- @return string?         error_message
-function mcl_campfires.CampfireRef:take_item(object, itemstack)
+--- @return core.ItemStack stack Leftover itemstack
+--- @return string? error_message
+function CampfireRef:take_item(object, itemstack)
 	if not self:can_cook(itemstack) then
 		return itemstack
 	end
-	local spot = self:find_empty_spot()
-	if not spot then
+	local index = self:find_empty_index()
+	if not index then
 		return itemstack
 	end
-	local epos = self.pos + CAMPFIRE_SPOTS[spot]
+	local epos = self:get_food_pos(index)
 	local e = core.add_entity(epos, "mcl_campfires:food_entity")
 	if not e then
 		return ItemStack(), "failed to spawn entity"
 	end
-	self.inv:set_stack("main", spot, itemstack)
-	self.meta:set_int("cooktime_" .. tostring(spot), COOK_TIME)
-	self.meta:set_string("food_x_" .. tostring(spot), tostring(e:get_pos().x))
-	self.meta:set_string("food_y_" .. tostring(spot), tostring(e:get_pos().y))
-	self.meta:set_string("food_z_" .. tostring(spot), tostring(e:get_pos().z))
-	e:set_properties({
-		wield_item  = self.inv:get_stack("main", spot):get_name(),
-		wield_image =
-			"mcl_mobitems_" ..
-			string.sub(self.inv:get_stack("main", spot):get_name(), 14) ..
-			"_raw.png"
-	})
-	core.get_node_timer(self.pos):start(1)
-	if not is_creative(object) then
-		itemstack = itemstack:take_item(1)
+
+	local item
+	if is_creative(object) then
+		item = itemstack:peek_item(1)
+	else
+		item = itemstack:take_item(1)
 	end
+
+	self.inv:set_stack("main", index, item)
+	self.meta:set_int("cooktime_" .. tostring(index), COOK_TIME)
+
+	e:set_properties({ wield_item = item:get_name() })
+
+	core.get_node_timer(self.pos):start(1)
 	return itemstack
 end
 
@@ -233,7 +301,13 @@ end
 --- @private
 --- @param index integer
 --- @return boolean empty
-function mcl_campfires.CampfireRef:cook_item(index)
+function CampfireRef:cook_item(index)
+	if self.kind ~= CAMPFIRE_KIND.LIT then
+		local errm = string.format(
+			"campfire at %q is not lit: cannot cook", self.pos)
+		core.log("error", errm)
+		return true
+	end
 	local stack, entity, cook_time = self:find_item(index)
 	if not stack or stack:is_empty() then
 		return true
@@ -241,8 +315,8 @@ function mcl_campfires.CampfireRef:cook_item(index)
 	if entity then
 		self:update_food_entity_visual(entity, stack:get_name())
 	end
-	if cook_time <= 0 then
-		self:drop_cooked_item(index)
+	if not cook_time or cook_time <= 0 then
+		self:drop_item(index, true)
 		return true
 	end
 	self.meta:set_int("cooktime_" .. index, cook_time - 1)
@@ -253,7 +327,7 @@ end
 ---
 --- @return boolean continue_timer
 --- @nodiscard
-function mcl_campfires.CampfireRef:cook_items()
+function CampfireRef:cook_items()
 	local empty_count = 0
 	for i = 1, 4 do
 		local empty = self:cook_item(i)
@@ -264,7 +338,7 @@ function mcl_campfires.CampfireRef:cook_items()
 	return empty_count ~= 4
 end
 
-function mcl_campfires.CampfireRef:update_all_entity_visuals()
+function CampfireRef:update_all_entity_visuals()
 	for i = 1, 4 do
 		local stack, entity = self:find_item(i)
 		if not stack or not entity then
@@ -275,11 +349,55 @@ function mcl_campfires.CampfireRef:update_all_entity_visuals()
 	end
 end
 
+--- Play the sound of the campfire being extinguished.
+---
+--- @private
+function CampfireRef:play_extinguish_sound()
+	local sounddata = {
+		pos = self.pos,
+		gain = 0.25,
+		max_hear_distance = 16,
+	}
+	core.sound_play("fire_extinguish_flame", sounddata, true)
+end
+
+--- Extinguishes a campfire.
+---
+--- @return boolean extinguished
+function CampfireRef:extinguish()
+	local smothered = self.nodedef._mcl_campfires_smothered_form
+	if type(smothered) ~= "string" then
+		local wmsg = string.format(
+			"cannot extinguish campfire: no smothered form for %q",
+			self.node.name)
+		core.log("warning", wmsg)
+		return false
+	end
+	for i = 1, 4 do
+		self:drop_item(i)
+	end
+	core.set_node(self.pos, {
+		name = smothered,
+		param1 = self.node.param1,
+		param2 = self.node.param2,
+	})
+	self:update()
+	self:play_extinguish_sound()
+	return true
+end
+
+function CampfireRef:extinguish_if_below_water()
+	local above = vector.offset(self.pos, 0, 1, 0)
+	if flowlib.is_water(above) then
+		self:extinguish()
+	end
+end
+
 --- @param pos Vector
 --- @param digger core.ObjectRef
 --- @param drops core.ItemStack[]
 --- @param nodename core.ItemString
-local function do_campfire_drop(pos, digger, drops, nodename)
+local function drop_campfire_items(pos, digger, drops, nodename)
 	if is_creative(digger) then
 		local inv = digger:get_inventory()
 		if inv
@@ -299,81 +417,47 @@ local function do_campfire_drop(pos, digger, drops, nodename)
 	end
 end
 
----@param pos Vector
----@param node core.Node
----@param oldmeta core.NodeMetaRef?
-local function do_campfire_drop_items(pos, node, oldmeta)
-	local meta = core.get_meta(pos)
+--- Drop a campfire's items even after it has been destroyed.
+---
+--- @param pos Vector
+--- @param node core.Node
+--- @param oldmeta core.NodeMetaRef.Table?
+local function drop_campfire_food(pos, node, oldmeta)
 	mcl_util.drop_items_from_meta_container("main")(pos, node, oldmeta)
-	local entities = core.get_objects_inside_radius(pos, 0.5)
-	if not entities then
+	local es = core.get_objects_inside_radius(pos, 0.5)
+	if not es then
 		return
 	end
-	for _, food_entity in ipairs(entities) do
-		if not food_entity then
-			goto continue
+	for _, e in ipairs(es) do
+		if is_food_entity(e) then
+			e:remove()
 		end
-		if food_entity:get_luaentity().name ~= "mcl_campfires:food_entity" then
-			goto continue
-		end
-		food_entity:remove()
-		for i = 1, 4 do
-			meta:set_string("food_x_" .. tostring(i), "")
-			meta:set_string("food_y_" .. tostring(i), "")
-			meta:set_string("food_z_" .. tostring(i), "")
-		end
-		::continue::
 	end
 end
 
---- @param pos Vector
-local function on_blast(pos)
-	local node = core.get_node(pos)
-	do_campfire_drop_items(pos, node)
-	core.remove_node(pos)
-end
 
 function mcl_campfires.light_campfire(pos)
 	local campfire = core.get_node(pos)
-	local name = campfire.name .. "_lit"
-	core.set_node(pos, { name = name, param2 = campfire.param2 })
+	core.set_node(pos, {
+		name = campfire.name .. "_lit",
+		param2 = campfire.param2
+	})
 end
 
---- on_rightclick function to take items that are cookable in a campfire,
---- and put them in the campfire inventory
----
---- @type core.NodeDef.OnRightClickFunc
-function mcl_campfires.take_item(pos, _, clicker, itemstack)
-	local campfire = mcl_campfires.CampfireRef.new(pos)
-	local stack, err = campfire:take_item(clicker, itemstack)
-	if err then
-		core.log("error", "mcl_campfires.take_item error: " .. err)
-	end
-	return stack or itemstack
-end
-
---- @type core.NodeDef.OnTimerFunc
-function mcl_campfires.cook_items(pos)
-	return mcl_campfires.CampfireRef.new(pos):cook_items()
-end
-
---- @param pos Vector
-local function destroy_particle_spawner(pos)
-	local meta = core.get_meta(pos)
-	local part_spawn_id = meta:get_int("particle_spawner_id")
-	if part_spawn_id and part_spawn_id > 0 then
-		core.delete_particlespawner(part_spawn_id)
+function CampfireRef:destroy_particle_spawner()
+	local id = self.meta:get_int("particle_spawner_id")
+	if id and id > 0 then
+		core.delete_particlespawner(id)
 	end
 end
 
---- @param pos Vector
 --- @param constructor boolean?
-local function create_smoke_partspawner(pos, constructor)
+function CampfireRef:create_smoke_partspawner(constructor)
 	if not constructor then
-		destroy_particle_spawner(pos)
+		self:destroy_particle_spawner()
 	end
 
-	local node_below = vector.offset(pos, 0, -1, 0)
+	local node_below = vector.offset(self.pos, 0, -1, 0)
 	local haybale = false
 	if core.get_node(node_below).name == "mcl_farming:hay_block" then
 		haybale = true
@@ -387,8 +471,8 @@ local function create_smoke_partspawner(pos, constructor)
 	local spawner_id = core.add_particlespawner({
 		amount = 3,
 		time = 0,
-		minpos = vector.add(pos, vector.new(-0.25, 0, -0.25)),
-		maxpos = vector.add(pos, vector.new(0.25, 0, 0.25)),
+		minpos = vector.add(self.pos, vector.new(-0.25, 0, -0.25)),
+		maxpos = vector.add(self.pos, vector.new(0.25, 0, 0.25)),
 		minvel = vector.new(-0.2, 0.5, -0.2),
 		maxvel = vector.new(0.2, 1, 0.2),
 		minacc = vector.new(0, 0.5, 0),
@@ -421,32 +505,91 @@ local function create_smoke_partspawner(pos, constructor)
 		core.log("error", "failed to create particle spawner")
 		return
 	end
-	local meta = core.get_meta(pos)
-	meta:set_int("particle_spawner_id", spawner_id)
+	self.meta:set_int("particle_spawner_id", spawner_id)
+end
+
+function CampfireRef:on_construct()
+	self.inv:set_size("main", 4)
+	self:create_smoke_partspawner(true)
+	self:extinguish_if_below_water()
+end
+
+--- Handle the campfire being right-clicked with a shovel.
+---
+--- @private
+--- @param clicker core.ObjectRef
+--- @param stack core.ItemStack
+--- @return core.ItemStack
+function CampfireRef:on_shovel(clicker, stack)
+	local name = clicker:get_player_name()
+	if not name then
+		return stack
+	end
+	local protected = core.is_protected(self.pos, name)
+	if protected then
+		core.record_protection_violation(self.pos, name)
+		return stack
+	end
+	if not is_creative(clicker) then
+		-- Add wear (as if digging a shovely node)
+		-- TODO: Centralize tool wear
+		local toolname = stack:get_name()
+		local wear = mcl_autogroup.get_wear(toolname, "shovely")
+		if wear then
+			stack:add_wear(wear)
+			tt.reload_itemstack_description(stack) -- update tooltip
+		end
+	end
+	self:extinguish()
+	return stack
+end
+
+--- @param player core.ObjectRef
+--- @param stack core.ItemStack
+--- @param pointed_thing core.PointedThing
+--- @return core.ItemStack
+function CampfireRef:on_right_click(player, stack, pointed_thing)
+	if is_shovel(stack) then
+		self:on_shovel(player, stack)
+		return stack
+	end
+	if is_cookable_in_campfire(stack) then
+		local stack2, err = self:take_item(player, stack)
+		if err then
+			core.log("error", "mcl_campfires: take_item error: " .. err)
+		end
+		return stack2 or stack
+	end
+	if not pointed_thing then
+		return stack
+	end
+	core.item_place_node(stack, player, pointed_thing)
+	return stack
 end
 
 ---@param name string
 ---@param def core.NodeDef
 function mcl_campfires.register_campfire(name, def)
-	-- Define Campfire
 	core.register_node(name, {
 		description = def.description,
 		_tt_help = S("Cooks food and keeps bees happy."),
 		_doc_items_longdesc = S(
-			"Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap."),
+		"Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap."),
 		inventory_image = def.inv_texture,
 		wield_image = def.inv_texture,
 		drawtype = "mesh",
 		mesh = "mcl_campfires_campfire.obj",
 		tiles = { { name = "mcl_campfires_log.png" }, },
 		use_texture_alpha = "clip",
-		groups = { handy = 1, axey = 1, material_wood = 1, not_in_creative_inventory = 1, campfire = 1, },
+		groups = {
+			handy = 1,
+			axey = 1,
+			material_wood = 1,
+			not_in_creative_inventory = 1,
+			campfire = 1,
+		},
 		paramtype = "light",
 		paramtype2 = "4dir",
-		_on_ignite = function(_ --[[player]], node)
-			mcl_campfires.light_campfire(node.under)
-			return true
-		end,
 		drop = "",
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		selection_box = {
@@ -459,25 +602,29 @@ function mcl_campfires.register_campfire(name, def)
 		},
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
+		_on_ignite = function(_, node)
+			mcl_campfires.light_campfire(node.under)
+			return true
+		end,
 		_vl_projectile = {
 			on_collide = function(projectile, pos, _, _)
-				-- Ignite Campfires
-				if mcl_burning.is_burning(projectile) then
+				if projectile.name == "mobs_mc:small_fireball"
+					or mcl_burning.is_burning(projectile.object)
+				then
 					mcl_campfires.light_campfire(pos)
 				end
 			end
 		},
 		after_dig_node = function(pos, _, _, digger)
-			do_campfire_drop(pos, digger, def.drops, name .. "_lit")
+			drop_campfire_items(pos, digger, def.drops, name .. "_lit")
 		end,
 	})
 
-	--Define Lit Campfire
 	core.register_node(name .. "_lit", {
 		description = def.description,
 		_tt_help = S("Cooks food and keeps bees happy."),
 		_doc_items_longdesc = S(
-		"Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap."),
+			"Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap."),
 		inventory_image = def.inv_texture,
 		wield_image = def.inv_texture,
 		drawtype = "mesh",
@@ -505,71 +652,65 @@ function mcl_campfires.register_campfire(name, def)
 			},
 		},
 		use_texture_alpha = "clip",
-		groups = { handy = 1, axey = 1, material_wood = 1, lit_campfire = 1 },
+		groups = {
+			handy = 1,
+			axey = 1,
+			material_wood = 1,
+			lit_campfire = 1
+		},
 		paramtype = "light",
 		paramtype2 = "4dir",
-		on_construct = function(pos)
-			local meta = core.get_meta(pos)
-			local inv  = meta:get_inventory()
-			inv:set_size("main", 4)
-			create_smoke_partspawner(pos, true)
-		end,
-		on_destruct = function(pos)
-			destroy_particle_spawner(pos)
-		end,
-		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
-			local meta = core.get_meta(pos)
-			local inv  = meta:get_inventory()
-			if not inv then
-				inv:set_size("main", 4)
-			end
-
-			if core.get_item_group(itemstack:get_name(), "shovel") ~= 0 then
-				local protected = mcl_util.check_position_protection(pos, player)
-				if not protected then
-					if not core.is_creative_enabled(player:get_player_name()) then
-						-- Add wear (as if digging a shovely node)
-						local toolname = itemstack:get_name()
-						local wear = mcl_autogroup.get_wear(toolname, "shovely")
-						if wear then
-							itemstack:add_wear(wear)
-							tt.reload_itemstack_description(itemstack) -- update tooltip
-						end
-					end
-					node.name = name
-					core.set_node(pos, node)
-					core.sound_play("fire_extinguish_flame", { pos = pos, gain = 0.25, max_hear_distance = 16 }, true)
-				end
-			elseif core.get_item_group(itemstack:get_name(), "campfire_cookable") ~= 0 then
-				mcl_campfires.take_item(pos, node, player, itemstack)
-			else
-				if not pointed_thing then
-					return itemstack
-				end
-				core.item_place_node(itemstack, player, pointed_thing)
-			end
-		end,
-		on_timer = mcl_campfires.cook_items,
 		drop = "",
 		light_source = def.lightlevel,
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		selection_box = {
 			type = "fixed",
-			fixed = { -.5, -.5, -.5, .5, -.05, .5 }, --left, bottom, front, right, top
+			-- left, bottom, front, right, top
+			fixed = { -.5, -.5, -.5, .5, -.05, .5 },
 		},
 		collision_box = {
 			type = "fixed",
 			fixed = { -.5, -.5, -.5, .5, -.05, .5 },
 		},
+		-- FIXME: Once entity burning is fixed, this needs to be removed.
+		damage_per_second = def.damage,
+
 		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
-		damage_per_second = def.damage, -- FIXME: Once entity burning is fixed, this needs to be removed.
-		on_blast = on_blast,
-		after_dig_node = function(pos, node, oldmeta, digger)
-			do_campfire_drop_items(pos, node, oldmeta)
-			do_campfire_drop(pos, digger, def.drops, name .. "_lit")
-		end,
 		_mcl_campfires_smothered_form = name,
+
+		on_construct = function(pos)
+			CampfireRef.new(pos):on_construct()
+		end,
+
+		on_destruct = function(pos)
+			CampfireRef.new(pos):destroy_particle_spawner()
+		end,
+
+		on_rightclick = function(pos, _, player, itemstack, pointed_thing)
+			return CampfireRef
+				.new(pos)
+				:on_right_click(player, itemstack, pointed_thing)
+		end,
+
+		on_timer = function(pos)
+			return CampfireRef.new(pos):cook_items()
+		end,
+
+		on_blast = function(pos)
+			local node = core.get_node(pos)
+			drop_campfire_food(pos, node)
+			core.remove_node(pos)
+		end,
+
+		after_dig_node = function(pos, node, oldmeta, digger)
+			drop_campfire_food(pos, node, oldmeta)
+			drop_campfire_items(pos, digger, def.drops, name .. "_lit")
+		end,
+
+		_mcl_extinguish_fn = function(pos)
+			return CampfireRef.new(pos):extinguish()
+		end
 	})
 end
 
@@ -634,8 +775,8 @@ core.register_lbm({
 	nodenames = { "group:lit_campfire" },
 	run_at_every_load = true,
 	action = function(pos, _)
-		local c = mcl_campfires.CampfireRef.new(pos)
+		local c = CampfireRef.new(pos)
 		c:update_all_entity_visuals()
-		create_smoke_partspawner(pos)
+		c:create_smoke_partspawner()
 	end
 })

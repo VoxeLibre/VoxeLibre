@@ -41,8 +41,23 @@ minetest.register_craft({
 	}
 })
 
+--- @param e core.LuaEntity
+local function remove_food_entity_if_orphaned(e)
+	local obj = e.object
+	local pos = obj:get_pos()
+	local n = core.find_node_near(pos, 0.1, { "group:lit_campfire" }, true)
+	if not n then
+		obj:remove()
+	end
+end
+
+
+--- How many seconds between checks for orphaned food entities.
+local FOOD_ENTITY_ORPHAN_CHECK_INTERVAL = 10
+
+
 -- Register Visual Food Entity
-minetest.register_entity("mcl_campfires:food_entity", {
+core.register_entity("mcl_campfires:food_entity", {
 	initial_properties = {
 		physical = false,
 		visual = "wielditem",
@@ -52,7 +67,17 @@ minetest.register_entity("mcl_campfires:food_entity", {
 		collisionbox = {0,0,0,0,0,0},
 		pointable = false,
 	},
-	on_activate = function(self, staticdata)
-		self.object:set_rotation({x = math.pi / -2, y = 0, z = 0})
+	on_activate = function(self)
+		self._time = 0
+		self.object:set_rotation({ x = math.pi / -2, y = 0, z = 0 })
 	end,
+	on_step = function(self, dtime)
+		if self._time < FOOD_ENTITY_ORPHAN_CHECK_INTERVAL then
+			self._time = self._time + dtime
+			return
+		end
+		self._time = 0
+		remove_food_entity_if_orphaned(self)
+	end
+
 })
