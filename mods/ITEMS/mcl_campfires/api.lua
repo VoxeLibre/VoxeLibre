@@ -87,18 +87,11 @@ function mcl_campfires.CampfireRef:get_food_entity(index)
 		return
 	end
 	for _, e in ipairs(entities) do
-		if not e then
-			goto continue
-		end
-		local le = e:get_luaentity()
-		if not le then
-			goto continue
-		end
-		if le.name == "mcl_campfires:food_entity" then
+		local le = e and e:get_luaentity()
+		if le and le.name == "mcl_campfires:food_entity" then
 			--- @cast e core.LuaEntityRef
 			return e
 		end
-		::continue::
 	end
 end
 
@@ -267,11 +260,9 @@ end
 function mcl_campfires.CampfireRef:update_all_entity_visuals()
 	for i = 1, 4 do
 		local stack, entity = self:find_item(i)
-		if not stack or not entity then
-			goto continue
+		if stack and entity then
+			self:update_food_entity_visual(entity, stack:get_name())
 		end
-		self:update_food_entity_visual(entity, stack:get_name())
-		::continue::
 	end
 end
 
@@ -301,7 +292,7 @@ end
 
 ---@param pos Vector
 ---@param node core.Node
----@param oldmeta core.NodeMetaRef?
+---@param oldmeta core.NodeMetaRef.Table?
 local function do_campfire_drop_items(pos, node, oldmeta)
 	local meta = core.get_meta(pos)
 	mcl_util.drop_items_from_meta_container("main")(pos, node, oldmeta)
@@ -310,19 +301,15 @@ local function do_campfire_drop_items(pos, node, oldmeta)
 		return
 	end
 	for _, food_entity in ipairs(entities) do
-		if not food_entity then
-			goto continue
+		local le = food_entity and food_entity:get_luaentity()
+		if le and le.name == "mcl_campfires:food_entity" then
+			food_entity:remove()
+			for i = 1, 4 do
+				meta:set_string("food_x_" .. tostring(i), "")
+				meta:set_string("food_y_" .. tostring(i), "")
+				meta:set_string("food_z_" .. tostring(i), "")
+			end
 		end
-		if food_entity:get_luaentity().name ~= "mcl_campfires:food_entity" then
-			goto continue
-		end
-		food_entity:remove()
-		for i = 1, 4 do
-			meta:set_string("food_x_" .. tostring(i), "")
-			meta:set_string("food_y_" .. tostring(i), "")
-			meta:set_string("food_z_" .. tostring(i), "")
-		end
-		::continue::
 	end
 end
 
