@@ -11,6 +11,14 @@ local sounds = {
 	dug      = {name = "mcl_sculk_block", },
 }
 
+local gamerule_doSculkSpreading = true
+vl_tuning.setting("gamerule:doSculkSpreading", "bool", {
+	description = S("Whether sculk catalysts can spread sculk."),
+	default = true,
+	set = function(val) gamerule_doSculkSpreading = val end,
+	get = function() return gamerule_doSculkSpreading end,
+})
+
 local SPREAD_RANGE = 8
 local SENSOR_RANGE = 8
 local SENSOR_DELAY = 0.5
@@ -120,6 +128,7 @@ local function retrieve_close_spreadable_nodes (p)
 end
 
 local function spread_sculk (p, xp_amount)
+	if not gamerule_doSculkSpreading then return false end
 	local c = minetest.find_node_near(p,SPREAD_RANGE,{"mcl_sculk:catalyst"})
 	if c then
 		local nn = retrieve_close_spreadable_nodes (p)
