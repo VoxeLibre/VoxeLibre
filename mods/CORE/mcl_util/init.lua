@@ -222,21 +222,21 @@ local function drop_item_stack(pos, stack)
 end
 
 function mcl_util.drop_items_from_meta_container(listname)
-	return function(pos, oldnode, oldmetadata)
-		if oldmetadata and oldmetadata.inventory then
-			-- process in after_dig_node callback
-			local main = oldmetadata.inventory.main
-			if not main then return end
+	return function(pos, _, oldmeta)
+		if oldmeta and oldmeta.inventory then
+			local main = oldmeta.inventory[listname]
+			if not main then
+				return
+			end
 			for _, stack in pairs(main) do
 				drop_item_stack(pos, stack)
 			end
-		else
-			local meta = minetest.get_meta(pos)
-			local inv = meta:get_inventory()
-			for i = 1, inv:get_size("main") do
-				drop_item_stack(pos, inv:get_stack("main", i))
-			end
-			meta:from_table()
+			return
+		end
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		for i = 1, inv:get_size("main") do
+			drop_item_stack(pos, inv:get_stack("main", i))
 		end
 	end
 end
