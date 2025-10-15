@@ -4,6 +4,9 @@ local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 local validate_vector = mcl_util.validate_vector
 
+--- @type number Amount of time after a player attacks a mob for it to drop XP
+local PLAYER_KILL_TIME_US = 5e6
+
 local gamerule_maxEntityCramming = 24
 vl_tuning.setting("gamerule:maxEntityCramming", "number", {
 	description = S("The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second."),
@@ -446,7 +449,7 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 
 		if not gamerule_doMobLoot then return end
 
-		local player_kill = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp) < 5e6
+		local player_kill = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp) < PLAYER_KILL_TIME_US
 
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
@@ -467,9 +470,9 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 			attacker_name = info and info.attacker_name,
 			player_kill   = player_kill,
 		})
-		
+
 		-- Award XP
-		local player_hit = self.xp_timestamp and (minetest.get_us_time() - self.xp_timestamp <= 5e6)
+		local player_hit = self.xp_timestamp and (minetest.get_us_time() - self.xp_timestamp <= PLAYER_KILL_TIME_US)
 		if player_hit and ((not self.child) or self.type ~= "animal") then
 			local pos = self.vl_drops_pos or self.object:get_pos()
 			local xp_amount = random(self.xp_min, self.xp_max)

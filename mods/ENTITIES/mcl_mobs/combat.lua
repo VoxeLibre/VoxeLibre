@@ -7,6 +7,7 @@ local mobs_griefing = core.settings:get_bool("mobs_griefing") ~= false
 -- pathfinding settings
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
 local stuck_path_timeout = 10 -- how long will mob follow path before giving up
+local INVULNERABILITY_TIME_US = 500000
 
 local enable_pathfinding = true
 
@@ -463,7 +464,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	-- check for invulnerability time in microseconds (0.5 second)
 	local time_diff = time_now - self.invul_timestamp
-	if time_diff <= 500000 and time_diff >= 0 then return end
+	if time_diff <= INVULNERABILITY_TIME_US and time_diff >= 0 then return end
 
 	if is_player then
 		-- is mob out of reach?
