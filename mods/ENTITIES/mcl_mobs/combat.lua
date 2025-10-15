@@ -460,7 +460,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local mob_pos = self.object:get_pos()
 	local player_pos = hitter:get_pos()
 	local weapon = hitter:get_wielded_item()
-	local time_now = minetest.get_us_time()
+	local time_now = core.get_us_time()
 
 	-- check for invulnerability time in microseconds (0.5 second)
 	local time_diff = time_now - self.invul_timestamp
@@ -505,7 +505,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	if is_player then
 		-- Instant kill mobs in creative
-		if minetest.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
+		if core.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
 
 		-- exhaust attacker
 		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
