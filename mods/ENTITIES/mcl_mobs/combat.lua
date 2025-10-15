@@ -481,7 +481,8 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	else
 		-- set/update 'drop xp' timestamp if hit by a player's projectiles
 		local hitter_le = hitter:get_luaentity()
-		if hitter_le._vl_projectile and core.get_player_by_name(hitter_le._owner) then
+		local hitter_le_owner = hitter_le and hitter_le._owner
+		if hitter_le_owner and core.get_player_by_name(hitter_le_owner) then
 			self.xp_timestamp = time_now
 		end
 	end
