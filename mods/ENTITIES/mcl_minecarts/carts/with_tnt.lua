@@ -4,7 +4,7 @@ local S = minetest.get_translator(modname)
 
 local function detonate_tnt_minecart(self)
 	local pos = self.object:get_pos()
-	mcl_explosions.explode(pos, 6, { drop_chance = 1.0}, core.get_player_by_name(self._owner or ""))
+	mcl_explosions.explode(pos, 6, { drop_chance = 1.0}, core.get_player_by_name(self._owner or ""), self.object)
 	self.object:remove()
 end
 
