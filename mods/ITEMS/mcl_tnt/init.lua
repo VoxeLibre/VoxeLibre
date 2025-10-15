@@ -238,8 +238,8 @@ function TNT:on_step(dtime, _)
 	end
 	if self.timer > tnt.BOOMTIMER then
 		if gamerule_tntExplodes then
-			local source = (self._owner and core.get_player_by_name(self._owner)) or self.object
-			mcl_explosions.explode(self.object:get_pos(), 4, {}, source)
+			--local source = (self._owner and core.get_player_by_name(self._owner)) or self.object
+			mcl_explosions.explode(self.object:get_pos(), 4, {}, source, self.object)
 		end
 		mcl_util.remove_entity(self)
 	end
