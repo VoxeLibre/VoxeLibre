@@ -38,7 +38,7 @@ end
 function tnt.ignite(pos, owner)
 	minetest.remove_node(pos)
 	local e = spawn_tnt(pos, "mcl_tnt:tnt", owner)
-	minetest.check_for_falling(pos, owner)
+	core.check_for_falling(pos)
 	return e
 end
 

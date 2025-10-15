@@ -472,7 +472,7 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 		})
 
 		-- Award XP
-		local player_hit = self.xp_timestamp and (minetest.get_us_time() - self.xp_timestamp <= PLAYER_KILL_TIME_US)
+		local player_hit = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp <= PLAYER_KILL_TIME_US)
 		if player_hit and ((not self.child) or self.type ~= "animal") then
 			local pos = self.vl_drops_pos or self.object:get_pos()
 			local xp_amount = random(self.xp_min, self.xp_max)
