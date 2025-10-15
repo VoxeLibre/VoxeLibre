@@ -760,7 +760,7 @@ minetest.register_chatcommand("spawnportal", {
 			-- Portal node will appear above the pointed node. The pointed node will turn into obsidian.
 			exit = mcl_portals.spawn_nether_portal(vector_offset(pos, -1, 0, -1), orientation, nil, name)
 		elseif #params==3 or #params==4 then
-			pos = vector_new(tonumber(params[1]), tonumber(params[2]), tonumber(params[3]))
+			local pos = vector_new(tonumber(params[1]), tonumber(params[2]), tonumber(params[3]))
 
 			local orientation = 0
 			if #params==4 then
