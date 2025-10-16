@@ -6,7 +6,13 @@ jobs:
       image: teknomunk/luanti-ci
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v4
+        run: |
+          mkdir VoxeLibre
+          cd VoxeLibre
+          git init .
+          git remote add origin https://git.minetest.land/VoxeLibre/VoxeLibre.git
+          git fetch --depth=1 origin ${{ github.sha }}
+          git checkout ${{ github.sha }}
 
       - name: Server Startup
         run: sh tests/server-startup.sh
