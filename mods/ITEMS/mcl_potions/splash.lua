@@ -116,15 +116,15 @@ function mcl_potions.register_splash(name, descr, color, def)
 			texture = particle_texture,
 		})
 
+		local potency = self._potency or 0
+		local plus = self._plus or 0
+
+		if def.on_splash then def.on_splash(pos, potency+1) end
+
 		for _,obj in pairs(core.get_objects_inside_radius(pos, range)) do
 			-- Make sure the potion can interact with this object
 			local entity = obj:get_luaentity()
 			if obj:is_player() or entity and entity.is_mob then
-				local potency = self._potency or 0
-				local plus = self._plus or 0
-
-				if def.on_splash then def.on_splash(pos, potency+1) end
-
 				local pos2 = obj:get_pos()
 				local rad = math.floor(math.sqrt((pos2.x-pos.x)^2 + (pos2.y-pos.y)^2 + (pos2.z-pos.z)^2))
 
