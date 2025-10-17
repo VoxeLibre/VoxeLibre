@@ -22,7 +22,11 @@ local function is_food_entity(e)
 	if not e or not e.get_luaentity then
 		return false
 	end
-	return e:get_luaentity().name == "mcl_campfires:food_entity"
+	local le = e:get_luaentity()
+	if not le or type(le) ~= "table" then
+		return false
+	end
+	return le.name == "mcl_campfires:food_entity"
 end
 
 --- @param object core.ObjectRef
