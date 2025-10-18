@@ -1,10 +1,10 @@
 # textdomain: mcl_weather
 ##[ skycolor.lua ]##
-Time of day to use when gamerule:doDaylightCycle @=@= false=
-Whether the daylight cycle and moon phases progress=
+Time of day to use when gamerule:doDaylightCycle @=@= false=Hora do dia a ser usada quando gamerule:doDaylightCycle @=@= false
+Whether the daylight cycle and moon phases progress=Se o ciclo do dia e das fases da lua estiverem passando
 ##[ weather_core.lua ]##
 
-Whether the weather can change naturally. The /weather command can still change weather.=
+Whether the weather can change naturally. The /weather command can still change weather.=Se o clima estiver mudando naturalmente. O comando /weather ainda pode alterar o clima.
 
 Gives ability to control weather=Dá a habilidade de controlar o clima
 Changes the weather to the specified parameter.=Muda o clima para o parâmetro especificado.
@@ -16,4 +16,4 @@ Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “
 Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=Alterna entre clima limpo e clima com quedas (aleatoriamente chuva, tempestade ou neve)
 
 ##[ snow.lua ]##
-The maximum number of snow layers that can be accumulated on each block=
+The maximum number of snow layers that can be accumulated on each block=O número máximo de camadas de neve que podem ser acumuladas em cada bloco
