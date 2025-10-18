@@ -345,11 +345,9 @@ end
 function CampfireRef:update_all_entity_visuals()
 	for i = 1, 4 do
 		local stack, entity = self:find_item(i)
-		if not stack or not entity then
-			goto continue
+		if stack and entity then
+			self:update_food_entity_visual(entity, stack:get_name())
 		end
-		self:update_food_entity_visual(entity, stack:get_name())
-		::continue::
 	end
 end
 
@@ -768,7 +766,7 @@ core.register_globalstep(function(dtime)
 	end
 	for _, ent in pairs(core.luaentities) do
 		if ent.is_mob then
-			burn_in_campfire(ent.object) -- FIXME: Mobs don't seem to burn properly anymore.
+			burn_in_campfire(ent.object)
 		end
 	end
 end)
