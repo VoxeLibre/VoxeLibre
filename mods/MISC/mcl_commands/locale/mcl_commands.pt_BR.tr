@@ -24,19 +24,19 @@ Invalid usage, see /help say.=Uso inválido, veja /help say.
 ##[ list.lua ]##
 Show who is logged on=Mostra quem está logado
 ##[ sound.lua ]##
-<sound> <target>=
-Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
-Sound name is invalid!=
-Target is invalid!=
+<sound> <target>=<som> <alvo>
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=Reproduza um som. Argumentos: <som>: nome do som. <alvo>: alvo.
+Sound name is invalid!=Nome de som inválido!
+Target is invalid!=Alvo inválido!
 ##[ alias.lua ]##
 List bans=Lista banimentos
 Ban list: @1=Lista de banimento: @1
-List clear commands=
-To clear inventory use /clearinv or /clearinventory=
-To clear mobs use /clearmobs=
-To clear the weather use /weather clear=
+List clear commands=Listar comandos de limpeza
+To clear inventory use /clearinv or /clearinventory=Para limpar o inventário, use /clearinv ou /clearinventory
+To clear mobs use /clearmobs=Para limpar mobs use /clearmobs
+To clear the weather use /weather clear=Para limpar o tempo chuvoso use /weather clear
 
-Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=Não é possível limpar o chat, você pode o ocultar usando a tecla "Alternar registro do chat" (padrão F2) no PC ou no ícone do chat na versão mobile
 
 
 
