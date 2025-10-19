@@ -5,7 +5,7 @@
 --
 -- Example of one shapeless recipe using a color group:
 -- Note: As this uses basecolor_*, you'd need 9 of these.
--- minetest.register_craft({
+-- core.register_craft({
 --     type = "shapeless",
 --     output = "<mod>:item_yellow",
 --     recipe = {"<mod>:item_no_color", "group:basecolor_yellow"},
@@ -13,7 +13,7 @@
 
 mcl_dye = {}
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local string = string
 
@@ -105,7 +105,7 @@ end
 --
 for _, row in pairs(dyes) do
 	local name, desc, grps = unpack(row)
-	minetest.register_craftitem("mcl_dye:" .. name, {
+	core.register_craftitem("mcl_dye:" .. name, {
 		inventory_image = "mcl_dye_" .. name .. ".png",
 		description = desc,
 		_doc_items_longdesc = S("This item is a dye which is used for dyeing and crafting."),
@@ -118,134 +118,134 @@ end
 -- These shims will at some time in the future be removed.
 --
 function mcl_dye.add_bone_meal_particle(pos, def)
-	minetest.log("warning", "mcl_dye.add_bone_meal_particles() is deprecated.  Read mcl_bone_meal/API.md!")
+	core.log("warning", "mcl_dye.add_bone_meal_particles() is deprecated.  Read mcl_bone_meal/API.md!")
 	local lines = string.split(debug.traceback(),"\n")
 	for _,line in ipairs(lines) do
-		minetest.log("warning",line)
+		core.log("warning",line)
 	end
 	mcl_bone_meal.add_bone_meal_particle(pos, def)
 end
 
 function mcl_dye.register_on_bone_meal_apply(func)
-	minetest.log("warning", "mcl_dye.register_on_bone_meal_apply() is deprecated.  Read mcl_bone_meal/API.md!")
+	core.log("warning", "mcl_dye.register_on_bone_meal_apply() is deprecated.  Read mcl_bone_meal/API.md!")
 	mcl_bone_meal.register_on_bone_meal_apply(func)
 end
 
 -- Dye creation recipes.
 --
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:white",
 	recipe = {{"mcl_bone_meal:bone_meal"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:black",
 	recipe = {{"mcl_mobitems:ink_sac"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:yellow",
 	recipe = {{"mcl_flowers:dandelion"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:yellow 2",
 	recipe = {{"mcl_flowers:sunflower"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:blue",
 	recipe = {{"mcl_core:lapis"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:blue",
 	recipe = {{"mcl_flowers:cornflower"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:lightblue",
 	recipe = {{"mcl_flowers:blue_orchid"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:grey",
 	recipe = {{"mcl_flowers:azure_bluet"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:grey",
 	recipe = {{"mcl_flowers:oxeye_daisy"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:grey",
 	recipe = {{"mcl_flowers:tulip_white"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:magenta",
 	recipe = {{"mcl_flowers:allium"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:magenta 2",
 	recipe = {{"mcl_flowers:lilac"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:orange",
 	recipe = {{"mcl_flowers:tulip_orange"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:brown",
 	recipe = {{"mcl_cocoas:cocoa_beans"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:pink",
 	recipe = {{"mcl_flowers:tulip_pink"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:pink 2",
 	recipe = {{"mcl_flowers:peony"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:red",
 	recipe = {{"mcl_farming:beetroot_item"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:red",
 	recipe = {{"mcl_flowers:poppy"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:red",
 	recipe = {{"mcl_flowers:tulip_red"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:red 2",
 	recipe = {{"mcl_flowers:rose_bush"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_dye:white",
 	recipe = {{"mcl_flowers:lily_of_the_valley"}},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "cooking",
 	output = "mcl_dye:dark_green",
 	recipe = "mcl_core:cactus",
 	cooktime = 10,
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "cooking",
 	output = "mcl_dye:green",
 	recipe = "group:sea_pickle",
@@ -254,71 +254,82 @@ minetest.register_craft({
 
 -- Dye mixing recipes.
 --
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:dark_grey 2",
 	recipe = {"mcl_dye:black", "mcl_dye:white"},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:lightblue 2",
 	recipe = {"mcl_dye:blue", "mcl_dye:white"},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:grey 3",
 	recipe = {"mcl_dye:black", "mcl_dye:white", "mcl_dye:white"},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:grey 2",
 	recipe = {"mcl_dye:dark_grey", "mcl_dye:white"},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:green 2",
 	recipe = {"mcl_dye:dark_green", "mcl_dye:white"},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:magenta 4",
 	recipe = {"mcl_dye:blue", "mcl_dye:white", "mcl_dye:red", "mcl_dye:red"},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:magenta 3",
 	recipe = {"mcl_dye:pink", "mcl_dye:red", "mcl_dye:blue"},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:magenta 2",
 	recipe = {"mcl_dye:violet", "mcl_dye:pink"},
 })
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:pink 2",
 	recipe = {"mcl_dye:red", "mcl_dye:white"},
 })
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:cyan 2",
 	recipe = {"mcl_dye:blue", "mcl_dye:dark_green"},
 })
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:violet 2",
 	recipe = {"mcl_dye:blue", "mcl_dye:red"},
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_dye:orange 2",
 	recipe = {"mcl_dye:yellow", "mcl_dye:red"},
 })
+
+-- Wool dyeing recipes
+--
+
+for d = 1, #dyes do
+	core.register_craft({
+		type = "shapeless",
+		output = "mcl_wool:" .. dyes[d][1],
+		recipe = {"group:wool", "mcl_dye:" .. dyes[d][1]},
+	})
+end
