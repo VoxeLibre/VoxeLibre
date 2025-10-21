@@ -674,7 +674,6 @@ function mcl_mobs.spawn(pos, id, opts)
 		pos.y = pos.y - 0.495 - def.initial_properties.collisionbox[2] -- spawn just above ground below
 	end
 	
-	local start_time = core.get_us_time()
 	--
 	-- Mob spawning happens here
 	--
@@ -685,19 +684,13 @@ function mcl_mobs.spawn(pos, id, opts)
 		return false
 	end
 
-	exclude_time = exclude_time + core.get_us_time() - start_time
-	-- initialize head bone
+	-- Initialize head bone
 	if def.head_swivel and def.head_bone_position then
+		---@diagnostic disable-next-line: unnecessary-if
 		if obj.get_bone_override then -- minetest >= 5.9
 			obj:set_bone_override(def.head_swivel, {
-				position = {
-					vec = def.head_bone_position,
-					absolute = true 
-				},
-				rotation = {
-					vec = vector.zero(),
-					absolute = true
-				}
+				position = {vec = def.head_bone_position, absolute = true},
+				rotation = {vec = vector.zero(), absolute = true}
 			})
 		else -- minetest < 5.9
 			obj:set_bone_position(def.head_swivel, def.head_bone_position, vector.zero())
@@ -705,6 +698,7 @@ function mcl_mobs.spawn(pos, id, opts)
 	end
 	return obj
 end
+
 
 ---@class mcl_mobs.SpawnState
 ---@field cap_space_hostile integer
@@ -719,6 +713,7 @@ end
 ---@field dimension string
 ---@field light integer
 ---@field hash integer
+
 
 ---@param pos vector.Vector
 ---@param parent_state mcl_mobs.SpawnState?
