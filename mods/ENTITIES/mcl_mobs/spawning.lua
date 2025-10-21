@@ -630,11 +630,24 @@ function mcl_mobs.spawn(pos, id, opts)
 	local def = core.registered_entities[id] 
 			or core.registered_entities["mobs_mc:" .. id]
 			or core.registered_entities["extra_mobs:" .. id]
-	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then
+	if not def then
 		core.log("warning", string.format(
 				"cannot spawn mob id %s: definition not found", id))
 		return false
 	end
+	if not def.is_mob then
+		core.log("warning", string.format(
+				"cannot spawn mob id %s: not a mob (according to def.is_mob)",
+				id))
+		return false
+	end
+	if def.can_spawn and not def.can_spawn(pos) then
+		core.log("verbose", string.format(
+				"did not spawn mob %q at pos %q: can_spawn returned false",
+				id, pos))
+		return false
+	end
+
 	if not (opts and opts.ignore_room_check) and not has_room(def, pos) then
 		local cb = def.spawnbox or def.initial_properties.collisionbox
 		-- simple position adjustment for 2x2 mobs until we add something better 
