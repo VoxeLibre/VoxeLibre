@@ -585,9 +585,9 @@ local function configure_spawner_with_egg(spawner, player, eggs)
 	return eggs
 end
 
----@param eggs          core.ItemStack
----@param placer        core.Player
----@param pointed_thing any
+---@param eggs core.ItemStack
+---@param placer core.ObjectRef
+---@param pointed_thing core.PointedThing
 ---@return core.ItemStack eggs
 local function on_place_egg(eggs, placer, pointed_thing)
 	local playername = placer:get_player_name()
@@ -595,9 +595,8 @@ local function on_place_egg(eggs, placer, pointed_thing)
 
 	-- if the player is right-clicking something with an on_rightclick function,
 	-- they should interact with that thing instead
-	local under = core.get_node(pointed_thing.under)
 	local itemstack, called = mcl_util.handle_node_rightclick(eggs, placer,
-		pointed_thing)
+			pointed_thing)
 	if called then
 		return itemstack
 	end
@@ -605,10 +604,11 @@ local function on_place_egg(eggs, placer, pointed_thing)
 	-- the player shouldn't be able to place mobs outside of map bounds
 	-- or protected regions
 	local pos = pointed_thing.above
-	if not pos
-		or not within_limits(pos, 0)
-		or core.is_protected(pos, placer:get_player_name())
-	then
+	if not pos or not within_limits(pos, 0) then
+		return eggs
+	end
+	if core.is_protected(pos, playername) then
+		core.record_protection_violation(pos, playername)
 		return eggs
 	end
 
@@ -616,37 +616,44 @@ local function on_place_egg(eggs, placer, pointed_thing)
 	-- so it can't be placed inside of a block while noclipping
 	local node = core.get_node(pos)
 	local nodedef = core.registered_nodes[node.name]
-	if nodedef.groups.opaque and not nodedef.groups.not_opaque then
+	if nodedef and nodedef.groups and nodedef.groups.opaque 
+			and not nodedef.groups.not_opaque then
 		return eggs
 	end
 
 	-- players can configure mob spawners by right clicking them
 	-- with eggs
-	if under.name == "mcl_mobspawners:spawner" then
+	if pointed_thing
+			and pointed_thing.under
+			and core.get_node(pointed_thing.under).name == "mcl_mobspawners:spawner" then
 		return configure_spawner_with_egg(pointed_thing.under, placer, eggs)
 	end
 
 	-- invalid egg?
 	if not core.registered_entities[mobname] then
+		core.log("warning", "egg corresponds to non-existing entity: " 
+				.. tostring(mobname))
 		return eggs
 	end
 
 	-- shouldn't allow monsters to be spawned in peaceful mode
 	if core.settings:get_bool("only_peaceful_mobs", false)
-	   and core.registered_entities[mobname].type == "monster"
-	then
+			and core.registered_entities[mobname].type == "monster" then
 		core.chat_send_player(playername, S("Only peaceful mobs allowed!"))
 		return eggs
 	end
 
+	local pos_str = core.pos_to_string(pos)
 	local mob = mcl_mobs.spawn(pos, mobname, { ignore_room_check = true })
 	if not mob then
+		core.log("verbose", string.format(
+				"placing mob egg (mob %s) at pos %s: room check did not pass", 
+				mobname, pos_str))
 		return eggs
 	end
 
-	core.log("action", 
-		"Player " .. playername .. " spawned " .. mobname ..
-		" at " .. core.pos_to_string(pos))
+	core.log("action", string.format("player %s spawned %s at %s", playername,
+			mobname, pos_str))
 	
 	-- if a player spawns a friendly tameable mob without sneaking
 	-- then they should spawn in already tamed to that player
@@ -694,20 +701,22 @@ function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, ad
 		group.not_in_creative_inventory = 1
 	end
 
-	local invimg = "(spawn_egg.png^[multiply:" .. background_color ..
-		")^(spawn_egg_overlay.png^[multiply:" .. overlay_color
-		.. ")"
+	local invimg = table.concat({ 
+		"(spawn_egg.png^[multiply:", background_color, 
+		")^(spawn_egg_overlay.png^[multiply:", overlay_color, ")"
+	})
 	if old_spawn_icons then
-		local mobname = mob_id:gsub("mobs_mc:", "")
-		local fn = "mobs_mc_spawn_icon_" .. mobname .. ".png"
-		local txpath = core.get_modpath("mobs_mc") .. "/textures/" .. fn
-		if mcl_util.file_exists(txpath) then
-			invimg = fn
+		local mob_name     = mob_id:gsub("mobs_mc:", "")
+		local mod_path     = core.get_modpath("mobs_mc")
+		local icon_name    = string.format("mobs_mc_spawn_icon_%s.png", mob_name)
+		local texture_path = string.format("%s/textures/%s", mod_path, icon_name)
+		if mcl_util.file_exists(texture_path) then
+			invimg = icon_name
 		end
 	end
 	if addegg == 1 then
 		invimg = "mobs_chicken_egg.png^(" .. invimg
-			.. "^[mask:mobs_chicken_egg_overlay.png)"
+				.. "^[mask:mobs_chicken_egg_overlay.png)"
 	end
 
 	core.register_craftitem(mob_id, {

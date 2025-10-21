@@ -611,29 +611,36 @@ local function spawn_check(pos, state, node, spawn_def)
 	return true
 end
 
+
 ---@class mcl_mobs.SpawnOpts
 ---@field ignore_room_check boolean? If a mob should spawn regardless if there is room for it.
+
 
 ---Spawn a mob of the specified ID at the specified position.
 ---If pos or id are nil, the function is a no-op.
 ---
----@param pos  vector.Vector?      Mob spawn position
----@param id   string?             Mob ID
+---@param pos Vector? Mob spawn position
+---@param id string? Mob ID
 ---@param opts mcl_mobs.SpawnOpts? Additional options
----
 ---@return boolean|core.LuaEntity? result The spawned mob, or false/nil if it failed to spawn a mob
 function mcl_mobs.spawn(pos, id, opts)
 	if not pos or not id then
 		return false
 	end
-	local def = core.registered_entities[id] or core.registered_entities["mobs_mc:" .. id] or core.registered_entities["extra_mobs:" .. id]
+	local def = core.registered_entities[id] 
+			or core.registered_entities["mobs_mc:" .. id]
+			or core.registered_entities["extra_mobs:" .. id]
 	if not def or not def.is_mob or (def.can_spawn and not def.can_spawn(pos)) then
+		core.log("warning", string.format(
+				"cannot spawn mob id %s: definition not found", id))
 		return false
 	end
 	if not (opts and opts.ignore_room_check) and not has_room(def, pos) then
 		local cb = def.spawnbox or def.initial_properties.collisionbox
-		-- simple position adjustment for 2x2 mobs until we add something better for asymmetric cases
-		-- e.g., when spawning next to a fence on one side, the 0.5 offset may not be optimal.
+		-- simple position adjustment for 2x2 mobs until we add something better 
+		-- for asymmetric cases
+		-- e.g., when spawning next to a fence on one side, the 0.5 offset may
+		-- not be optimal.
 		local wx, wz = cb[4] - cb[1], cb[6] - cb[3]
 		local retry = false
 		if (wx > 1 and wx <= 2) then
@@ -645,17 +652,20 @@ function mcl_mobs.spawn(pos, id, opts)
 			retry = true
 		end
 		if not retry or not has_room(def, pos) then
-			--note = "no room for mob"
+			core.log("verbose", string.format("no room for mob %q at %q", id, 
+					pos))
 			return false
 		end
 	end
-	if math_round(pos.y) == pos.y then                                 -- node spawn
+	if math_round(pos.y) == pos.y then -- node spawn
 		pos.y = pos.y - 0.495 - def.initial_properties.collisionbox[2] -- spawn just above ground below
 	end
 	local start_time = core.get_us_time()
 	local obj = core.add_entity(pos, def.name)
 	if not obj then
-		return
+		core.log("warning", string.format(
+				"failed to spawn mob %s: entity spawning failed", id))
+		return false
 	end
 
 	--note = "spawned a mob"
@@ -664,8 +674,14 @@ function mcl_mobs.spawn(pos, id, opts)
 	if def.head_swivel and def.head_bone_position then
 		if obj.get_bone_override then -- minetest >= 5.9
 			obj:set_bone_override(def.head_swivel, {
-				position = { vec = def.head_bone_position, absolute = true },
-				rotation = { vec = vector.zero(), absolute = true }
+				position = {
+					vec = def.head_bone_position,
+					absolute = true 
+				},
+				rotation = {
+					vec = vector.zero(),
+					absolute = true
+				}
 			})
 		else -- minetest < 5.9
 			obj:set_bone_position(def.head_swivel, def.head_bone_position, vector.zero())
