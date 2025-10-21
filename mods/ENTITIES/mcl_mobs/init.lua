@@ -644,7 +644,7 @@ local function on_place_egg(eggs, placer, pointed_thing)
 	end
 
 	local pos_str = core.pos_to_string(pos)
-	local mob = mcl_mobs.spawn(pos, mobname, { ignore_room_check = true })
+	local mob = mcl_mobs.spawn(pos, mobname, {force = true})
 	if not mob then
 		core.log("verbose", string.format(
 				"placing mob egg (mob %s) at pos %s: room check did not pass", 

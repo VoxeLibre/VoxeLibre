@@ -613,7 +613,7 @@ end
 
 
 ---@class mcl_mobs.SpawnOpts
----@field ignore_room_check boolean? If a mob should spawn regardless if there is room for it.
+---@field force boolean? If a mob should spawn regardless if it meets natural conditions.
 
 
 ---Spawn a mob of the specified ID at the specified position.
@@ -641,14 +641,14 @@ function mcl_mobs.spawn(pos, id, opts)
 				id))
 		return false
 	end
-	if def.can_spawn and not def.can_spawn(pos) then
+	local force = opts and opts.force
+	if not force and def.can_spawn and not def.can_spawn(pos) then
 		core.log("verbose", string.format(
 				"did not spawn mob %q at pos %q: can_spawn returned false",
 				id, pos))
 		return false
 	end
-
-	if not (opts and opts.ignore_room_check) and not has_room(def, pos) then
+	if not force and not has_room(def, pos) then
 		local cb = def.spawnbox or def.initial_properties.collisionbox
 		-- simple position adjustment for 2x2 mobs until we add something better 
 		-- for asymmetric cases
@@ -673,7 +673,11 @@ function mcl_mobs.spawn(pos, id, opts)
 	if math_round(pos.y) == pos.y then -- node spawn
 		pos.y = pos.y - 0.495 - def.initial_properties.collisionbox[2] -- spawn just above ground below
 	end
+	
 	local start_time = core.get_us_time()
+	--
+	-- Mob spawning happens here
+	--
 	local obj = core.add_entity(pos, def.name)
 	if not obj then
 		core.log("warning", string.format(
@@ -681,7 +685,6 @@ function mcl_mobs.spawn(pos, id, opts)
 		return false
 	end
 
-	--note = "spawned a mob"
 	exclude_time = exclude_time + core.get_us_time() - start_time
 	-- initialize head bone
 	if def.head_swivel and def.head_bone_position then
