@@ -172,6 +172,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 			},
+			use_texture_alpha = "clip",
 			drawtype = "nodebox",
 			is_ground_content = false,
 			tiles = tiles,
@@ -200,6 +201,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
+		use_texture_alpha = "clip",
 		tiles = tiles,
 		paramtype = "light",
 		sunlight_propagates = true,
@@ -225,6 +227,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
+		use_texture_alpha = "clip",
 		tiles = tiles,
 		paramtype = "light",
 		sunlight_propagates = true,
@@ -264,6 +267,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
+		use_texture_alpha = "clip",
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
 		on_construct = update_wall,
 		sounds = sounds,

@@ -258,6 +258,7 @@ for i = 1, 4 do
 			type = "fixed",
 			fixed = boxes
 		},
+		use_texture_alpha = "clip",
 		groups = groups,
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -323,6 +324,7 @@ for i = 1, 4 do
 			type = "fixed",
 			fixed = boxes
 		},
+		use_texture_alpha = "clip",
 		groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, redstone_repeater=i, not_in_creative_inventory = 1},
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -402,6 +404,7 @@ minetest.register_node("mesecons_delayer:delayer_off_locked", {
 			{ -6/16, -6/16, -1/16, 6/16, -4/16, 1/16}, -- lock
 		}
 	},
+	use_texture_alpha = "clip",
 	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, redstone_repeater=5, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -453,6 +456,7 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 			{ -6/16, -6/16, -1/16, 6/16, -4/16, 1/16}, -- lock
 		}
 	},
+	use_texture_alpha = "clip",
 	after_dig_node = function(pos, oldnode)
 		check_unlock_repeater(pos, oldnode)
 	end,

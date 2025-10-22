@@ -355,12 +355,14 @@ if mcl_skins_enabled then
 			female._mcl_hand_id = skin.id
 			female.mesh = "mcl_meshhand_female.b3d"
 			female.tiles = {skin.texture}
+			female.use_texture_alpha = "clip"
 			core.register_node("mcl_maps:filled_map_"..skin.id, female)
 		else
 			local male = table.copy(filled_wield_def)
 			male._mcl_hand_id = skin.id
 			male.mesh = "mcl_meshhand.b3d"
 			male.tiles = {skin.texture}
+			male.use_texture_alpha = "clip"
 			core.register_node("mcl_maps:filled_map_"..skin.id, male)
 		end
 	end
@@ -368,6 +370,7 @@ else
 	filled_wield_def._mcl_hand_id = "hand"
 	filled_wield_def.mesh = "mcl_meshhand.b3d"
 	filled_wield_def.tiles = {"character.png"}
+	filled_wield_def.use_texture_alpha = "clip"
 	core.register_node("mcl_maps:filled_map_hand", filled_wield_def)
 end
 

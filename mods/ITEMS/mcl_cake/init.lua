@@ -50,6 +50,7 @@ minetest.register_node("mcl_cake:cake", {
 		type = "fixed",
 		fixed = full_cake
 	},
+	use_texture_alpha = "clip",
 	stack_max = 1,
 	groups = {
 		handy = 1, attached_node = 1, dig_by_piston = 1, comparator_signal = 14,
@@ -125,7 +126,8 @@ local register_slice = function(level, nodebox, desc)
 		node_box = {
 			type = "fixed",
 			fixed = nodebox,
-			},
+		},
+		use_texture_alpha = "clip",
 		groups = {
 			handy = 1, attached_node = 1, not_in_creative_inventory = 1,
 			dig_by_piston = 1, cake = level, comparator_signal = level * 2,

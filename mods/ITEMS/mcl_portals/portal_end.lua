@@ -290,6 +290,7 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 		type = "fixed",
 		fixed = { -0.5, -0.5, -0.5, 0.5, 5/16, 0.5 },
 	},
+	use_texture_alpha = "clip",
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	paramtype = "light",
@@ -319,6 +320,7 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 			{ -4/16, 5/16, -4/16, 4/16, 0.5, 4/16 }, -- Eye
 		},
 	},
+	use_texture_alpha = "clip",
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	paramtype = "light",
