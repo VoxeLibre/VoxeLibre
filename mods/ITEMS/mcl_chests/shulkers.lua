@@ -270,13 +270,7 @@ for color, desc in pairs(boxtypes) do
 			boxitem_meta:set_string("name", meta:get_string("name"))
 			boxitem_meta:set_string("inv", data)
 
-			if core.is_creative_enabled("") then
-				if not inv:is_empty("main") then
-					core.add_item(pos, boxitem)
-				end
-			else
-				core.add_item(pos, boxitem)
-			end
+			core.add_item(pos, boxitem)
 		end,
 		allow_metadata_inventory_move = mcl_chests.protection_check_move,
 		allow_metadata_inventory_take = mcl_chests.protection_check_put_take,
