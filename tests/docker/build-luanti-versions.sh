@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSIONS="5.12.0 5.11.0 5.10.0 5.9.1 5.9.0 5.8.0 5.7.0"
+VERSIONS="5.14.0 5.13.0 5.12.0 5.11.0 5.10.0 5.9.1 5.9.0 5.8.0 5.7.0"
 
 set -ex
 
@@ -10,6 +10,18 @@ mkdir -p build
 	test -e irrlichtmt || git clone https://github.com/minetest/irrlicht.git irrlichtmt
 )
 
+build-5.14.0()
+{
+	git checkout tags/5.14.0
+	cmake . -DRUN_IN_PLACE=TRUE
+	make -j$(nproc) && ln -sf $PWD/bin/luanti $INSTALL_BIN/luanti-5.14.0
+}
+build-5.13.0()
+{
+	git checkout tags/5.13.0
+	cmake . -DRUN_IN_PLACE=TRUE
+	make -j$(nproc) && ln -sf $PWD/bin/luanti $INSTALL_BIN/luanti-5.13.0
+}
 build-5.12.0()
 {
 	git checkout tags/5.12.0
