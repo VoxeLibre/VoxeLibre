@@ -21,7 +21,7 @@ fi
 WORLD=$(mktemp -d)
 
 PORT=30010
-VERSIONS="HEAD HEAD-nojit 5.13.0 5.12.0 5.11.0 5.10.0 5.9.1 5.9.0 5.8.0 5.7.0"
+VERSIONS="HEAD HEAD-nojit 5.14.0 5.13.0 5.12.0 5.11.0 5.10.0 5.9.1 5.9.0 5.8.0 5.7.0"
 
 for VERSION in $VERSIONS; do
 	BIN=$BUILD_DIR/luanti-$VERSION/bin/luanti
@@ -47,6 +47,7 @@ if test -f $SUCCESS_FF; then
 		PORT=$(( $PORT + 1))
 
 		# Setup game link
+		rm $BUILD_DIR/luanti-$VERSION/games/VoxeLibre-Test || true
 		ln -s $PWD $BUILD_DIR/luanti-$VERSION/games/VoxeLibre-Test
 
 		# Server Startup Test
@@ -89,7 +90,7 @@ if test -f $SUCCESS_FF; then
 
 		# Display log contents
 		cat $LOG
-		rm $LOG
+		rm $LOG || true
 		rm -Rvf $WORLD || true
 
 		echo $SUCCESS
@@ -99,10 +100,10 @@ if test -f $SUCCESS_FF; then
 	done
 fi
 
-rm $GAMES_DIR/VoxeLibre-Test || true
 rm $LOG || true
 
 if ! test -f $SUCCESS_FF; then
+	echo "Startup test failed"
 	exit 1
 else
 	rm $SUCCESS_FF || true

@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSIONS="head head-nojit"
+VERSIONS="HEAD HEAD-nojit"
 
 set -ex
 
@@ -11,19 +11,19 @@ mkdir -p build
 	(cd luanti; git checkout master; git pull)
 )
 
-build-head()
+build-HEAD()
 {
 	git checkout master
 	git pull
 	cmake . -DRUN_IN_PLACE=TRUE
-	make -j$(nproc) && ln -sf $PWD/bin/luanti $INSTALL_BIN/luanti-head
+	make -j$(nproc) && ln -sf $PWD/bin/luanti $INSTALL_BIN/luanti-HEAD
 }
-build-head-nojit()
+build-HEAD-nojit()
 {
 	git checkout master
 	git pull
 	cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=OFF
-	make -j$(nproc) && ln -sf $PWD/bin/luanti $INSTALL_BIN/luanti-head-nojit
+	make -j$(nproc) && ln -sf $PWD/bin/luanti $INSTALL_BIN/luanti-HEAD-nojit
 }
 
 mkdir -p bin build
