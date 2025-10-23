@@ -326,10 +326,12 @@ core.register_craft({
 -- Wool dyeing recipes
 --
 
-for d = 1, #dyes do
-	core.register_craft({
-		type = "shapeless",
-		output = "mcl_wool:" .. dyes[d][1],
-		recipe = {"group:wool", "mcl_dye:" .. dyes[d][1]},
-	})
+if core.get_modpath("mcl_wool") then
+	for d = 1, #dyes do
+		core.register_craft({
+			type = "shapeless",
+			output = "mcl_wool:" .. dyes[d][1],
+			recipe = {"group:wool", "mcl_dye:" .. dyes[d][1]},
+		})
+	end
 end
