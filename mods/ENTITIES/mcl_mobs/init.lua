@@ -552,7 +552,7 @@ function mcl_mobs.register_arrow(name, def)
 end
 
 ---@param spawner vector.Vector
----@param player  core.Player
+---@param player  core.ObjectRef
 ---@param eggs    core.ItemStack
 ---@return core.ItemStack egg
 local function configure_spawner_with_egg(spawner, player, eggs)
@@ -578,7 +578,7 @@ local function configure_spawner_with_egg(spawner, player, eggs)
 	local dim = mcl_worlds.pos_to_dimension(player:get_pos())
 	local minlight = mcl_mobs:mob_light_lvl(mobname, dim)
 	mcl_mobspawners.setup_spawner(spawner, mobname, minlight)
-	
+
 	if not core.is_creative_enabled(playername) then
 		eggs:take_item()
 	end
@@ -616,7 +616,7 @@ local function on_place_egg(eggs, placer, pointed_thing)
 	-- so it can't be placed inside of a block while noclipping
 	local node = core.get_node(pos)
 	local nodedef = core.registered_nodes[node.name]
-	if nodedef and nodedef.groups and nodedef.groups.opaque 
+	if nodedef and nodedef.groups and nodedef.groups.opaque
 			and not nodedef.groups.not_opaque then
 		return eggs
 	end
@@ -654,7 +654,7 @@ local function on_place_egg(eggs, placer, pointed_thing)
 
 	core.log("action", string.format("player %s spawned %s at %s", playername,
 			mobname, pos_str))
-	
+
 	-- if a player spawns a friendly tameable mob without sneaking
 	-- then they should spawn in already tamed to that player
 	local ent = mob:get_luaentity()
