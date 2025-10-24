@@ -6,6 +6,19 @@ dofile(modpath.."/roman_numerals.lua")
 dofile(modpath.."/nodes.lua")
 dofile(modpath.."/table.lua")
 dofile(modpath.."/hashing.lua")
+dofile(modpath.."/compat.lua")
+
+-- Setup Alternative environments
+if core.register_mapgen_script then
+	core.register_mapgen_script(modpath.."/alt_env_init.lua")
+	core.register_mapgen_script(modpath.."/hashing.lua")
+	core.register_mapgen_script(modpath.."/compat.lua")
+end
+if core.register_async_dofile then
+	core.register_async_dofile(modpath.."/alt_env_init.lua")
+	core.register_async_dofile(modpath.."/hashing.lua")
+	core.register_async_dofile(modpath.."/compat.lua")
+end
 
 local LOGGING_ON = minetest.settings:get_bool("mcl_logging_default", false)
 local LOG_MODULE = "[MCL2]"
@@ -688,22 +701,6 @@ end
 function mcl_util.to_bool(val)
 	if not val then return false end
 	return true
-end
-
-if not vector.in_area then
-	-- backport from minetest 5.8, can be removed when the minimum version is 5.8
-	vector.in_area = function(pos, min, max)
-		return (pos.x >= min.x) and (pos.x <= max.x) and
-		       (pos.y >= min.y) and (pos.y <= max.y) and
-		       (pos.z >= min.z) and (pos.z <= max.z)
-	end
-end
-if not core.bulk_swap_node then
-	function core.bulk_swap_node(positions, node)
-		for _,pos in ipairs(positions) do
-			core.swap_node(pos, node)
-		end
-	end
 end
 
 -- Traces along a line of nodes vertically to find the next possition that isn't an allowed node
