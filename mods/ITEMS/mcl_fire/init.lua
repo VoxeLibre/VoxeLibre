@@ -189,6 +189,9 @@ core.register_node("mcl_fire:fire", {
 			core.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 		end
 	end,
+	on_punch = function(pos)
+		core.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.15, max_hear_distance = 16}, true)
+	end,
 	drop = "",
 	sounds = {},
 	-- Turn into eternal fire on special blocks, light Nether portal (if possible), start burning timer
@@ -241,6 +244,9 @@ core.register_node("mcl_fire:eternal_fire", {
 		if get_item_group(newnode.name, "water") ~= 0 then
 			core.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 		end
+	end,
+	on_punch = function(pos)
+		core.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.15, max_hear_distance = 16}, true)
 	end,
 	-- Start burning timer and light Nether portal (if possible)
 	on_construct = function(pos)

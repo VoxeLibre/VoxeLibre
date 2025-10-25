@@ -175,6 +175,9 @@ minetest.register_node("mcl_blackstone:soul_fire", {
 			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 		end
 	end,
+	on_punch = function(pos)
+		minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.15, max_hear_distance = 16}, true)
+	end,
 	on_construct=function(pos)
 		local under = minetest.get_node(vector.offset(pos,0,-1,0)).name
 		if minetest.get_item_group(under,"soul_block") > 0 then
