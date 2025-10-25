@@ -188,7 +188,7 @@ function mcl_hunger.eat_effects(user, itemname, pos, hunger_change, item_def, pi
 				texture = def.wield_image
 			end
 			-- Special item definition field: _food_particles
-			-- If false, force item to not spawn any food partiles when eaten
+			-- If false, force item to not spawn any food particles when eaten
 			if def._food_particles ~= false and texture and texture ~= "" then
 				local v = user:get_velocity() or user:get_player_velocity()
 				for i = 0, math.min(math.max(8, hunger_change*2), 25) do
@@ -206,7 +206,7 @@ function mcl_hunger.eat_effects(user, itemname, pos, hunger_change, item_def, pi
 			end
 			core.sound_play("mcl_hunger_bite", {
 				max_hear_distance = 12,
-				gain = 1.0,
+				gain = 0.33,
 				pitch = pitch or 1 + math.random(-10, 10)*0.005,
 				object = user,
 			}, true)
