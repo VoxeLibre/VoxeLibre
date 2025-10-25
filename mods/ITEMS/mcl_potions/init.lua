@@ -260,8 +260,6 @@ local function water_bottle_on_place(itemstack, placer, pointed_thing)
 	return core.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
 end
 
--- Itemstring of potions is “mcl_potions:<NBT Potion Tag>”
-
 core.register_craftitem("mcl_potions:water", {
 	description = S("Water Bottle"),
 	_tt_help = S("No effect"),
