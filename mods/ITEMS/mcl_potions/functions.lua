@@ -306,8 +306,8 @@ mcl_potions.register_effect({
 		return (not object:is_player()) -- TODO add support for breath setting for mobs
 	end,
 	on_step = function(dtime, object, factor, duration)
-		if object:get_breath() then
-			if object:get_breath() < 10 then object:set_breath(10) end
+		if object:get_breath() and object:get_breath() < 10 then
+			object:set_breath(10)
 		end
 	end,
 	particle_color = "#2E5299",
@@ -1138,7 +1138,7 @@ end)
 -- Register HP bar icon changes based on potion effects
 vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
-	part = "absorption",
+	part = "health_main",
 	predicate = function(player)
 		if mcl_potions.has_effect(player, "withering") and mcl_potions.has_effect(player, "regeneration") then return true end
 	end,
@@ -1148,7 +1148,7 @@ vl_hudbars.register_hudbar_modifier{
 
 vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
-	part = "absorption",
+	part = "health_main",
 	predicate = function(player)
 		if mcl_potions.has_effect(player, "withering") then return true end
 	end,
@@ -1158,7 +1158,7 @@ vl_hudbars.register_hudbar_modifier{
 
 vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
-	part = "absorption",
+	part = "health_main",
 	predicate = function(player)
 		if mcl_potions.has_effect(player, "poison") and mcl_potions.has_effect(player, "regeneration") then return true end
 	end,
@@ -1168,7 +1168,7 @@ vl_hudbars.register_hudbar_modifier{
 
 vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
-	part = "absorption",
+	part = "health_main",
 	predicate = function(player)
 		if mcl_potions.has_effect(player, "poison") then return true end
 	end,
@@ -1178,7 +1178,7 @@ vl_hudbars.register_hudbar_modifier{
 
 vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
-	part = "absorption",
+	part = "health_main",
 	predicate = function(player)
 		if mcl_potions.has_effect(player, "frost") and mcl_potions.has_effect(player, "regeneration") then return true end
 	end,
@@ -1188,7 +1188,7 @@ vl_hudbars.register_hudbar_modifier{
 
 vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
-	part = "absorption",
+	part = "health_main",
 	predicate = function(player)
 		if mcl_potions.has_effect(player, "frost") then return true end
 	end,
@@ -1198,7 +1198,7 @@ vl_hudbars.register_hudbar_modifier{
 
 vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
-	part = "absorption",
+	part = "health_main",
 	predicate = function(player)
 		if mcl_potions.has_effect(player, "regeneration") then return true end
 	end,
@@ -1208,7 +1208,7 @@ vl_hudbars.register_hudbar_modifier{
 
 vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
-	part = "absorption",
+	part = "health_main",
 	predicate = function(player)
 		return true
 	end,
