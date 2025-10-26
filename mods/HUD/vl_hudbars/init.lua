@@ -1,6 +1,11 @@
 local modname = minetest.get_current_modname()
 local modpath = minetest.get_modpath(modname)
 
+local math_min = math.min
+local math_max = math.max
+local math_ceil = math.ceil
+local math_floor = math.floor
+
 vl_hudbars = {
 	hudbar_defs = {},
 	players = {},
@@ -51,7 +56,7 @@ local function get_squished_layer_gap(max_gap, texture_height_y, layers)
 	-- work out proportion to squish by
 	local squish_proportion = (layers - vl_hudbars.settings.max_unsquished_layers)/vl_hudbars.settings.squish_duration
 	-- clamp between 0 and 1 so there is a maximum squish
-	squish_proportion = math.min(math.max(squish_proportion, 0), 1)
+	squish_proportion = math_min(math_max(squish_proportion, 0), 1)
 	-- linear interpolate squishage
 	return max_gap - (max_gap - min_gap) * squish_proportion
 end
@@ -156,10 +161,10 @@ local function draw_proportional_hudbar_part(player, part_state, part_def,
 		local total_parts = part_def.layers * bar_length
 		local value_parts = total_parts * part_state.state.value / part_state.state.max_val
 		-- Use ceil so that a value of 0 is only displayed when value is actually 0
-		value_parts = math.ceil(value_parts)
+		value_parts = math_ceil(value_parts)
 
 		for i=1,part_def.layers do
-			local current_layer_value = math.min(math.max(value_parts, 0), bar_length)
+			local current_layer_value = math_min(math_max(value_parts, 0), bar_length)
 			value_parts = value_parts - current_layer_value
 			-- Reuse existing layers if possible
 			if part_state.layer_ids[i] ~= nil then
@@ -206,7 +211,7 @@ end
 local function draw_proportional_hudbar(player, hudbar_state, hudbar_def,
 										offset_y, offset_x_left, offset_x_right)
 	local scale_x = vl_hudbars.settings.scale_x
-	local texture_height_y = math.floor((hudbar_def.scale_y) * scale_x + 0.5)
+	local texture_height_y = math_floor((hudbar_def.scale_y) * scale_x + 0.5)
 	local z_index = hudbar_def.z_index
 
 	local old_offset_y = offset_y
@@ -327,7 +332,7 @@ local function draw_absolute_hudbar_part(player, part_state, part_def,
 	local max_allowed_parts = vl_hudbars.settings.max_rendered_layers * vl_hudbars.settings.bar_length
 	if max_val_parts > max_allowed_parts then
 		max_val_parts = max_allowed_parts
-		value_parts = math.min(value_parts, max_allowed_parts)
+		value_parts = math_min(value_parts, max_allowed_parts)
 	end
 
 	if not part_state.state.hidden then
@@ -335,12 +340,12 @@ local function draw_absolute_hudbar_part(player, part_state, part_def,
 		-- Draw continuation layer if applicable
 		if below_layer_parts and below_layer_parts < bar_length then
 			-- Calculate value, max_val for continuation layer
-			local current_max_val_parts = math.min(max_val_parts, bar_length - below_layer_parts)
+			local current_max_val_parts = math_min(max_val_parts, bar_length - below_layer_parts)
 			if hudbar_def.round_to_full_texture and current_max_val_parts % 2 == 1 then
 				current_max_val_parts = current_max_val_parts + 1
 			end
 			max_val_parts = max_val_parts - current_max_val_parts
-			local current_value_parts = math.min(value_parts, current_max_val_parts)
+			local current_value_parts = math_min(value_parts, current_max_val_parts)
 			value_parts = value_parts - current_value_parts
 			top_layer_parts = below_layer_parts + current_max_val_parts
 
@@ -382,12 +387,12 @@ local function draw_absolute_hudbar_part(player, part_state, part_def,
 
 		while max_val_parts > 0 do
 			-- Calculate value, max_val for layer
-			local current_max_val_parts = math.min(max_val_parts, bar_length)
+			local current_max_val_parts = math_min(max_val_parts, bar_length)
 			if hudbar_def.round_to_full_texture and current_max_val_parts % 2 == 1 then
 				current_max_val_parts = current_max_val_parts + 1
 			end
 			max_val_parts = max_val_parts - current_max_val_parts
-			local current_value_parts = math.min(math.max(value_parts, 0), current_max_val_parts)
+			local current_value_parts = math_min(math_max(value_parts, 0), current_max_val_parts)
 			value_parts = value_parts - current_value_parts
 			-- Store the max number of parts in this layer
 			top_layer_parts = current_max_val_parts
@@ -448,7 +453,7 @@ end
 local function draw_absolute_hudbar(player, hudbar_state, hudbar_def, offset_y, offset_x_left, offset_x_right)
 	local bar_length = vl_hudbars.settings.bar_length
 	local scale_x = vl_hudbars.settings.scale_x
-	local texture_height_y = math.floor((hudbar_def.scale_y) * scale_x + 0.5)
+	local texture_height_y = math_floor((hudbar_def.scale_y) * scale_x + 0.5)
 	local z_index = hudbar_def.z_index
 
 	-- If all of the parts are hidden then this hudbar will be hidden
@@ -464,7 +469,7 @@ local function draw_absolute_hudbar(player, hudbar_state, hudbar_def, offset_y, 
 			local part_state = hudbar_state.parts[part_id]
 			total_parts = total_parts + part_state.state.max_val
 		end
-		local total_layers = math.ceil(total_parts / hudbar_def.value_scale / bar_length)
+		local total_layers = math_ceil(total_parts / hudbar_def.value_scale / bar_length)
 		squished_layer_gap = get_squished_layer_gap(hudbar_def.layer_gap, texture_height_y, total_layers)
 
 		for _, part_id in pairs(hudbar_state.parts_order) do
@@ -484,7 +489,7 @@ local function draw_absolute_hudbar(player, hudbar_state, hudbar_def, offset_y, 
 		is_hidden = hudbar_state.state.hidden
 
 		-- work out how much to squish by
-		local total_layers = math.ceil(hudbar_state.state.max_val / hudbar_def.value_scale / bar_length)
+		local total_layers = math_ceil(hudbar_state.state.max_val / hudbar_def.value_scale / bar_length)
 		squished_layer_gap = get_squished_layer_gap(hudbar_def.layer_gap, texture_height_y, total_layers)
 		offset_y = draw_absolute_hudbar_part(player, hudbar_state, hudbar_def,
 			hudbar_def, offset_y, offset_x_left,
