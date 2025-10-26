@@ -43,6 +43,7 @@ local function on_place_fish(itemstack, placer, pointed_thing)
 			if props ~= "" then
 				o:set_properties(minetest.deserialize(props))
 			end
+			o:get_luaentity().persistent = true
 			local water = "mcl_core:water_source"
 			if n.name == "mclx_core:river_water_source" then
 				water = n.name
