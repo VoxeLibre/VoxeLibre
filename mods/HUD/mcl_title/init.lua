@@ -88,7 +88,7 @@ minetest.register_on_joinplayer(function(player)
 		alignment     = mcl_title.layout.title.alignment,
 		text          = "",
 		style         = no_style,
-		size          = { x = mcl_title.layout.title.size },
+		size          = { x = mcl_title.layout.title.size, y = 0 },
 		number        = hex_color,
 		z_index       = 100,
 	})
@@ -98,7 +98,7 @@ minetest.register_on_joinplayer(function(player)
 		alignment     = mcl_title.layout.subtitle.alignment,
 		text          = "",
 		style         = no_style,
-		size          = { x = mcl_title.layout.subtitle.size },
+		size          = { x = mcl_title.layout.subtitle.size, y = 0 },
 		number        = hex_color,
 		z_index       = 100,
 	})
@@ -109,7 +109,7 @@ minetest.register_on_joinplayer(function(player)
 		alignment     = mcl_title.layout.actionbar.alignment,
 		style         = no_style,
 		text          = "",
-		size          = { x = mcl_title.layout.actionbar.size },
+		size          = { x = mcl_title.layout.actionbar.size, y = 0 },
 		number        = hex_color,
 		z_index       = 100,
 	})

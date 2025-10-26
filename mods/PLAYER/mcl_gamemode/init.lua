@@ -47,7 +47,7 @@ end
 
 function minetest.is_creative_enabled(name)
 	if mt_is_creative_enabled(name) then return true end
-	if not name then return false end
+	if not name or name == "" then return false end
 	local p = minetest.get_player_by_name(name)
 	if p then
 		return p:get_meta():get_string("gamemode") == "creative"
