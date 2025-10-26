@@ -505,7 +505,7 @@ minetest.register_chatcommand("clearmobs", {
 					--minetest.log("No match - mob_type = ".. tostring(mob_name))
 				end
 
-				if mob_match then
+				if mob_match and not (default and o.persistent) then
 					local in_range = (not range or range <= 0) or vector.distance(p:get_pos(), o.object:get_pos()) <= range
 					if nametagged then
 						if o.nametag then o.object:remove() end
