@@ -285,15 +285,19 @@ function mob_class:get_velocity()
 	return (v.x*v.x + v.z*v.z)^0.5
 end
 
-function mob_class:update_roll()
+function mob_class:update_roll(dtime)
 	local is_Fleckenstein = self.nametag == "Fleckenstein"
-	if not is_Fleckenstein and not self.is_Fleckenstein then return end
+	if not is_Fleckenstein and not self.is_Fleckenstein and not self.shaking then return end
 
 	local rot = self.object:get_rotation()
 	rot.z = is_Fleckenstein and PI or 0
+	if self.shaking then
+		self.shaking_timer = (self.shaking_timer or 0) + (random() * 2 - 1) * 5 * dtime
+		rot.z = rot.z + math.sin(self.shaking_timer) / 5
+	end
 	self.object:set_rotation(rot)
 
-	if is_Fleckenstein ~= self.is_Fleckenstein then
+	if is_Fleckenstein ~= not not self.is_Fleckenstein then
 		local pos = self.object:get_pos()
 		local cbox = is_Fleckenstein and table.copy(self.initial_properties.collisionbox) or self.object:get_properties().collisionbox
 		pos.y = pos.y + (cbox[2] + cbox[5])
@@ -348,16 +352,13 @@ function mob_class:check_smooth_rotation(dtime)
 		yaw = self.target_yaw
 	end
 
-	if self.shaking then
-		yaw = yaw + (random() * 2 - 1) / 72 * dtime
-	end
 	--[[ needed? if self.acc then
 		local change = yaw - initial_yaw
 		local si, co = sin(change), cos(change)
 		self.acc.x, self.acc.y = co * self.acc.x - si * self.acc.y, si * self.acc.x + co * self.acc.y
 	end ]]--
 	self.object:set_yaw(yaw)
-	self:update_roll()
+	self:update_roll(dtime)
 end
 
 -- are we flying in what we are suppose to? (taikedz)
