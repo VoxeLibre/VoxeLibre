@@ -443,7 +443,7 @@ end
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "group:bow",
+	recipe = "group:crossbow",
 	burntime = 15,
 })
 
