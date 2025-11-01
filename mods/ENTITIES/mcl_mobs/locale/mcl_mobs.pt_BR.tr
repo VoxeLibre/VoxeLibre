@@ -1,15 +1,15 @@
 # textdomain: mcl_mobs
-This allows you to place a single mob.=Isso permite você posicionar um único mob.
+This allows you to place a single mob.=Isso te permite colocar um único mob.
 
-Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Posicione-o onde você deseja que o mob apareça. Animais serão gerados domesticados, a menos que você segure pressionada a tecla de agachar enquanto posiciona. Se você posicionar em um gerador de mobs, você muda o mob que será gerado.
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Apenas coloque onde você deseja que o mob apareça. Animais serão gerados domesticados, a menos que você segure a tecla de agachar enquanto coloca. Se você colocar em um gerador de mobs, você muda o mob que será gerado.
 
 You need the “maphack” privilege to change the mob spawner.=Você precisa do privilégio "maphack" para mudar o gerador de mobs.
 Only peaceful mobs allowed!=Apenas mobs pacíficos permitidos!
 ##[ physics.lua ]##
 
-The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=
+The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=O número máximo de entidades empurráveis que um mob ou jogador pode empurrar antes de sofrer 6♥♥♥ de dano de acúmulo de entidades a cada meio segundo.
 
-Whether mobs should drop items and experience orbs.=
+Whether mobs should drop items and experience orbs.=Se os mobs devem soltar itens e orbes de experiência.
 ##[ api.lua ]##
 Peaceful mode active! No monsters will spawn.=Modo pacífico ativado! Nenhum monstro será gerado.
 
@@ -19,15 +19,15 @@ Default usage. Clearing hostile mobs. For more options please type: /help clearm
 
 ##[ spawning.lua ]##
 
-Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems.=
+Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems.=Se os mobs devem ser gerados naturalmente ou por meio de uma lógica de geração global, como para gatos, fantasmas, patrulhas, vendedores ambulantes ou invasões de zumbis. Não afeta tentativas especiais de geração, como em invasões, golens de ferro ou geradores de monstros.
 
-spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: @n spawn_mob skeleton:var<passive@=true>:@n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.=
+spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: @n spawn_mob skeleton:var<passive@=true>:@n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.=spawn_mob é um comando de bate-papo que permite que você digite o nome de um mob sem 'digitar mobs_mc:' o tempo todo, como em: 'spawn_mob spider'. No entanto, há mais que você pode fazer com esse comando especial. Atualmente, você pode editar qualquer variável numérica, booleana e string que escolher com este formato: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob sendo seu mob de escolha, mobs_variable sendo a variável e variable_value sendo o valor da variável escolhida. Um exemplo deste formato: @n spawn_mob skeleton:var<passive@=true>:@n Isso geraria um esqueleto que não atacaria você. LEMBRE-SE DISSO> ao alterar um valor numérico, sempre o prefixe com 'NUM', como por exemplo: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n isso define a altura do salto do esqueleto para 10. Se você quiser fazer várias alterações em um mob, você pode, como por exemplo: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.
 
 ##[ crafts.lua ]##
 Name Tag=Etiqueta
 Give names to mobs=Dá nome aos mobs
-Set name at anvil=Determine um nome em uma bigorna
+Set name at anvil=Defina o nome na bigorna
 A name tag is an item to name a mob.=Uma etiqueta é um item para nomear um mob.
 
-Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Antes de você usar a etiqueta, você precisa determinar um nome em uma bigorna. Assim você pode usar a etiqueta para nomear um mob. Isso consumirá a etiqueta.
+Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Antes de você usar a etiqueta, você precisa inserir um nome nela em uma bigorna. Assim você pode usar a etiqueta para nomear um mob. Isso consumirá a etiqueta.
 
