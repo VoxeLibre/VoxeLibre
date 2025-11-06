@@ -706,39 +706,22 @@ function mob_class:do_env_damage()
 			return true
 		end
 	else
-		local near = minetest.find_node_near(pos, 1, "mcl_core:cactus")
-		if near then
-			-- is mob touching the cactus?
-			local dist = vector.distance(pos, near)
-			local threshold  = 1.04 -- small mobs
-			-- medium mobs
-			if self.name == "mobs_mc:spider" or
-				self.name == "mobs_mc:iron_golem" or
-				self.name == "mobs_mc:horse" or
-				self.name == "mobs_mc:donkey" or
-				self.name == "mobs_mc:mule" or
-				self.name == "mobs_mc:polar_bear" or
-				self.name == "mobs_mc:cave_spider" or
-				self.name == "mobs_mc:skeleton_horse" or
-				self.name == "mobs_mc:zombie_horse" or
-				self.name == "mobs_mc:strider" or
-				self.name == "mobs_mc:hoglin" or
-				self.name == "mobs_mc:zoglin" then
-				threshold = 1.165
-			elseif self.name == "mobs_mc:slime_big" or
-				self.name == "mobs_mc:magma_cube_big" or
-				self.name == "mobs_mc:ghast" or
-				self.name == "mobs_mc:guardian_elder" or
-				self.name == "mobs_mc:wither" or
-				self.name == "mobs_mc:ender_dragon" then
-				threshold = 1.25
+		local cb = self.initial_properties.collisionbox
+		local width = -cb[1] + cb[4] + 0.5
+
+		-- Is mob touching the cactus?
+		local cacTouchWidth = .75 - width
+		local cactiPos = core.find_nodes_in_area(
+			vector.offset(pos, cacTouchWidth, 0, cacTouchWidth),
+			vector.offset(pos, -cacTouchWidth, 0, -cacTouchWidth),
+			"mcl_core:cactus"
+		)
+		for _,cactusPos in ipairs(cactiPos) do
+			self:damage_mob("cactus", 2)
+			if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
+				return true
 			end
-			if dist < threshold then
-				self:damage_mob("cactus", 2)
-				if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
-					return true
-				end
-			end
+			break
 		end
 	end
 
