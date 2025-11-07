@@ -581,19 +581,18 @@ minetest.register_globalstep(function(dtime)
 			mcl_util.deal_damage(player, 1, {type = "in_wall"})
 		end
 
-		-- Am I near a cactus?
+		-- Cactus damage
 		if node_stand == "mcl_core:cactus" or node_feet == "mcl_core:cactus" or node_head == "mcl_core:cactus" then
 			mcl_util.deal_damage(player, 1, {type = "cactus"})
 		else
-			-- Am I touching the cactus? If so, it hurts
-			local cacTouchWidth = 1 - .75 -- FIXME: Player collision box width is defined earlier as .75 - use common variable for this at some point
-			local cactiPos = core.find_nodes_in_area(
-				vector.offset(pos, cacTouchWidth, 0, cacTouchWidth),
-				vector.offset(pos, -cacTouchWidth, 0, -cacTouchWidth),
+			-- Touching cactus from the side
+			local node_collide_width = 1 - .75 -- FIXME: Player collision box width is defined earlier as .75 - use common variable for this at some point
+			local cacti_pos = core.find_nodes_in_area(
+				vector.offset(pos, node_collide_width, 0, node_collide_width),
+				vector.offset(pos, -node_collide_width, 0, -node_collide_width),
 				"mcl_core:cactus"
 			)
-			for _,cactusPos in ipairs(cactiPos) do
-				local dist = vector.distance(pos, cactusPos)
+			for _,_ in ipairs(cacti_pos) do
 				mcl_util.deal_damage(player, 1, {type = "cactus"})
 				break
 			end
