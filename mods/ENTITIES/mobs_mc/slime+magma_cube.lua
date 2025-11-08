@@ -28,16 +28,16 @@ local function is_slime_chunk(pos)
 end
 
 -- Returns a function that spawns children in a circle around pos.
--- To be used as on_die callback.
+-- To be used as on_poof callback.
 -- self: mob reference
 -- pos: position of "mother" mob
 -- child_mod: Mob to spawn
 -- spawn_distance: Spawn distance from "mother" mob
 -- eject_speed: Initial speed of child mob away from "mother" mob
-local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
+local spawn_children_on_poof = function(child_mob, spawn_distance, eject_speed)
 	return function(self, pos)
 		eject_speed = eject_speed or 1
-		local mndef = minetest.registered_nodes[minetest.get_node(pos).name]
+		local mndef = core.registered_nodes[core.get_node(pos).name]
 		local mother_stuck = mndef and mndef.walkable
 		local angle = math.random() * math.pi * 2
 		local children = {}
@@ -48,13 +48,13 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 			-- If child would end up in a wall, use position of the "mother", unless
 			-- the "mother" was stuck as well
 			if not mother_stuck then
-				local cndef = minetest.registered_nodes[minetest.get_node(newpos).name]
+				local cndef = core.registered_nodes[core.get_node(newpos).name]
 				if cndef and cndef.walkable then
 					newpos = pos
 					eject_speed = eject_speed * 0.5
 				end
 			end
-			local mob = mcl_mobs.spawn(newpos, child_mob)
+			local mob = mcl_mobs.spawn(newpos, child_mob, { force = true })
 			if mob then
 				if not mother_stuck then
 					mob:set_velocity(dir * eject_speed)
@@ -66,7 +66,7 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 		end
 		-- If mother was murdered, children attack the killer after 1 second
 		if self.state == "attack" then
-			minetest.after(1.0, function(children, enemy)
+			core.after(1.0, function(children, enemy)
 				local le
 				for c = 1, #children do
 					le = children[c]:get_luaentity()
@@ -141,7 +141,7 @@ local slime_big = {
 	jump_height = 5.2,
 	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:slime_small",
-	on_die = spawn_children_on_die("mobs_mc:slime_small", 1.0, 1.5),
+	on_poof = spawn_children_on_poof("mobs_mc:slime_small", 1.0, 1.5),
 	use_texture_alpha = true,
 	spawn_check = slime_spawn_check,
 }
@@ -164,7 +164,7 @@ slime_small.walk_velocity = 1.8
 slime_small.run_velocity = 1.8
 slime_small.jump_height = 4.3
 slime_small.spawn_small_alternative = "mobs_mc:slime_tiny"
-slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 0.6, 1.0)
+slime_small.on_poof = spawn_children_on_poof("mobs_mc:slime_tiny", 0.6, 1.0)
 mcl_mobs.register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
@@ -191,7 +191,7 @@ slime_tiny.walk_velocity = 1.7
 slime_tiny.run_velocity = 1.7
 slime_tiny.jump_height = 3
 slime_tiny.spawn_small_alternative = nil
-slime_tiny.on_die = nil
+slime_tiny.on_poof = nil
 
 mcl_mobs.register_mob("mobs_mc:slime_tiny", slime_tiny)
 
@@ -387,7 +387,7 @@ local magma_cube_big = {
 	walk_chance = 0,
 	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:magma_cube_small",
-	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 0.8, 1.5),
+	on_poof = spawn_children_on_poof("mobs_mc:magma_cube_small", 0.8, 1.5),
 	fire_resistant = true,
 }
 mcl_mobs.register_mob("mobs_mc:magma_cube_big", magma_cube_big)
@@ -412,7 +412,7 @@ magma_cube_small.damage = 4
 magma_cube_small.reach = 2.75
 magma_cube_small.armor = 66
 magma_cube_small.spawn_small_alternative = "mobs_mc:magma_cube_tiny"
-magma_cube_small.on_die = spawn_children_on_die("mobs_mc:magma_cube_tiny", 0.6, 1.0)
+magma_cube_small.on_poof = spawn_children_on_poof("mobs_mc:magma_cube_tiny", 0.6, 1.0)
 mcl_mobs.register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 
 local magma_cube_tiny = table.copy(magma_cube_big)
@@ -435,7 +435,7 @@ magma_cube_tiny.reach = 2
 magma_cube_tiny.armor = 50
 magma_cube_tiny.drops = {}
 magma_cube_tiny.spawn_small_alternative = nil
-magma_cube_tiny.on_die = nil
+magma_cube_tiny.on_poof = nil
 
 mcl_mobs.register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 

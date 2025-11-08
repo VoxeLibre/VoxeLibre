@@ -197,6 +197,7 @@ function mcl_mobs.register_mob(name, def)
 		owner = def.owner or "",
 		order = def.order or "",
 		on_die = def.on_die,
+		on_poof = def.on_poof,
 		spawn_small_alternative = def.spawn_small_alternative,
 		do_custom = def.do_custom,
 		detach_child = def.detach_child,

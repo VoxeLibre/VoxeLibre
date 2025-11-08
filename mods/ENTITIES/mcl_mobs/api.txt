@@ -338,7 +338,9 @@ enhance mob functionality and have them do many interesting things:
 					false to stop punch damage and knockback from taking place.
 	'custom_attack'when set this function is called instead of the normal mob
 					melee attack, parameters are (self, to_attack).
-	'on_die'		 a function that is called when mob is killed (self, pos)
+	'on_die'		a function that is called when mob is killed (self, pos)
+	'on_poof'		a function that is called when a mob's body poofs after
+					it dies (self, pos)
 	'do_custom'	a custom function that is called every tick while mob is
 					active and which has access to all of the self.* variables
 					e.g. (self.health for health or self.standing_in for node
