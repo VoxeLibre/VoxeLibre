@@ -377,6 +377,70 @@ function mob_class:flight_check()
 	return not not self.fly_in[nod] -- force boolean
 end
 
+
+local function is_baby_animal(mob)
+	return mob and mob.child and mob.type == "animal"
+end
+
+local function is_player_kill(mob)
+	return mob.xp_timestamp and (core.get_us_time() - mob.xp_timestamp) <= PLAYER_KILL_TIME_US
+end
+
+local function can_mob_drop_xp(mob)
+	return not is_baby_animal(mob) and is_player_kill(mob)
+end
+
+local function drop_mob_xp(mob, _death_cause, _cmi_cause, _info)
+	if not can_mob_drop_xp(mob) then return end
+
+	local pos = mob.vl_drops_pos or mob.object:get_pos()
+	local amount = random(mob.xp_min, mob.xp_max)
+
+	if mcl_sculk.handle_death(pos, amount) then
+		return
+	end
+	if core.is_creative_enabled("") ~= true then
+		mcl_experience.throw_xp(pos, amount)
+	end
+end
+
+
+local function drop_mob_items(mob, death_cause, cmi_cause, info)
+	local player_kill = is_player_kill(mob)
+	-- dropped cooked item if mob died in fire or lava
+	if death_cause == "lava" or death_cause == "fire" then
+		mob:item_drop({ cooked = true, player_kill = player_kill })
+		return
+	end
+
+	local wielditem
+	if death_cause == "hit" and cmi_cause and cmi_cause.puncher then
+		wielditem = cmi_cause.puncher:get_wielded_item()
+	else
+		wielditem = ItemStack()
+	end
+
+	local cooked  = mcl_burning.is_burning(mob.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
+	local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
+
+	mob:item_drop({
+		cooked        = cooked,
+		looting       = looting,
+		attacker_name = info and info.attacker_name,
+		player_kill   = player_kill,
+	})
+end
+
+
+local function do_mob_loot(mob, death_cause, cmi_cause, info)
+	if not gamerule_doMobLoot then
+		return
+	end
+	drop_mob_items(mob, death_cause, cmi_cause, info)
+	drop_mob_xp(mob, death_cause, cmi_cause, info)
+end
+
+
 -- Check if mob is dead or only hurt
 ---@param cause     string
 ---@param cmi_cause {
@@ -402,16 +466,13 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 
 	-- still got some health?
 	if self.health > 0 then
-
 		-- make sure health isn't higher than max
-		if self.health > self.initial_properties.hp_max then
-			self.health = self.initial_properties.hp_max
-		end
+		self.health = min(self.health, self.initial_properties.hp_max)
 
 		-- play damage sound if health was reduced and make mob flash red.
 		if damaged then
 			self:add_texture_mod("^[colorize:#d42222:175")
-			minetest.after(1, function(self)
+			core.after(1, function(self)
 				if self and self.object then
 					self:remove_texture_mod("^[colorize:#d42222:175")
 				end
@@ -424,9 +485,7 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 			self.nametag2 = self.nametag or ""
 		end
 
-		if show_health
-		and (cmi_cause and cmi_cause.type == "punch") then
-
+		if show_health and (cmi_cause and cmi_cause.type == "punch") then
 			self.htimer = 2
 			self.nametag = "♥ " .. self.health .. " / " .. self.initial_properties.hp_max
 
@@ -437,59 +496,12 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 	end
 
 	self:mob_sound("death")
-
-	local function death_handle(self)
-		if cmi_cause and cmi_cause["type"] then
-			--minetest.log("cmi_cause: " .. tostring(cmi_cause["type"]))
-		end
-		--minetest.log("cause: " .. tostring(cause))
-
-		-- TODO other env damage shouldn't drop xp
-		-- "rain", "water", "drowning", "suffocation"
-
-		if not gamerule_doMobLoot then return end
-
-		local player_kill = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp) <= PLAYER_KILL_TIME_US
-
-		-- dropped cooked item if mob died in fire or lava
-		if cause == "lava" or cause == "fire" then
-			self:item_drop({ cooked = true, player_kill = player_kill })
-			return
-		end
-
-		local wielditem
-		if cause == "hit" and cmi_cause and cmi_cause.puncher then
-			wielditem = cmi_cause.puncher:get_wielded_item()
-		else
-			wielditem = ItemStack()
-		end
-
-		self:item_drop({
-			cooked        = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect"),
-			looting       = mcl_enchanting.get_enchantment(wielditem, "looting"),
-			attacker_name = info and info.attacker_name,
-			player_kill   = player_kill,
-		})
-
-		-- Award XP
-		local player_hit = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp <= PLAYER_KILL_TIME_US)
-		if player_hit and ((not self.child) or self.type ~= "animal") then
-			local pos = self.vl_drops_pos or self.object:get_pos()
-			local xp_amount = random(self.xp_min, self.xp_max)
-
-			if not mcl_sculk.handle_death(pos, xp_amount) and minetest.is_creative_enabled("") ~= true then
-				mcl_experience.throw_xp(pos, xp_amount)
-			end
-		end
-	end
+	do_mob_loot(self, cause, cmi_cause, info)
 
 	-- execute custom death function
 	if self.on_die then
 		local pos = self.object:get_pos()
 		local on_die_exit = self.on_die(self, pos, cmi_cause)
-		if on_die_exit ~= true then
-			death_handle(self)
-		end
 
 		if on_die_exit == true then
 			self.state = "die"
@@ -548,12 +560,11 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 	end
 
 
-	-- Remove body after a few seconds and drop stuff
+	-- Remove body after a few seconds
 	local kill = function(self)
-		if not self.object:get_luaentity() then
+		if not self.object:is_valid() or not self.object:get_luaentity() then
 			return
 		end
-		death_handle(self)
 		local dpos = self.object:get_pos()
 		local cbox = self.initial_properties.collisionbox
 		local yaw = self.object:get_rotation().y
@@ -565,7 +576,7 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 	if length <= 0 then
 		kill(self)
 	else
-		minetest.after(length, kill, self)
+		core.after(length, kill, self)
 	end
 
 	return true
