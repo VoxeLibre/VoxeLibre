@@ -441,6 +441,28 @@ local function do_mob_loot(mob, death_cause, cmi_cause, info)
 end
 
 
+--- Executes the final stage of a mob's death. The mob "poofs" from existence.
+local function do_mob_body_poof(mob)
+	if not mob then return end
+	if not mob.object:is_valid() or not mob.object:get_luaentity() then
+		return
+	end
+	local dpos   = mob.object:get_pos()
+	local cbox   = mob.initial_properties.collisionbox
+	local yaw    = mob.object:get_rotation().y
+	local rotate = not mob.instant_death
+
+	local on_poof = mob.on_poof
+	if type(on_poof) == "function" then
+		on_poof(mob, dpos)
+	end
+
+	mcl_burning.extinguish(mob.object)
+	mcl_util.remove_entity(mob)
+	mcl_mobs.death_effect(dpos, yaw, cbox, rotate)
+end
+
+
 -- Check if mob is dead or only hurt
 ---@param cause     string
 ---@param cmi_cause {
@@ -561,22 +583,11 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 
 
 	-- Remove body after a few seconds
-	local kill = function(self)
-		if not self.object:is_valid() or not self.object:get_luaentity() then
-			return
-		end
-		local dpos = self.object:get_pos()
-		local cbox = self.initial_properties.collisionbox
-		local yaw = self.object:get_rotation().y
-		mcl_burning.extinguish(self.object)
-		mcl_util.remove_entity(self)
-		mcl_mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
-	end
 
 	if length <= 0 then
-		kill(self)
+		do_mob_body_poof(self)
 	else
-		core.after(length, kill, self)
+		core.after(length, do_mob_body_poof, self)
 	end
 
 	return true
