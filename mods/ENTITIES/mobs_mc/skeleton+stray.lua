@@ -97,7 +97,7 @@ local skeleton = {
 		jockey_end = 172,
 		die_start = 160,
 		die_end = 170,
-		die_speed = 15,
+		die_speed = 60,
 		die_loop = false,
 	},
 	on_spawn = function(self)
