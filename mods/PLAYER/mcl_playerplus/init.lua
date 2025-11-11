@@ -330,29 +330,29 @@ minetest.register_globalstep(function(dtime)
 			local left_arm_rot = vector.new(pitch + 1.57, 0.75, pitch * .35)
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, left_arm_rot)
-		-- controls right and left arms pitch when holing a loaded crossbow
+			-- controls right and left arms pitch when holing a loaded crossbow
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_loaded") then
 			local right_arm_rot = vector.new(pitch + 1.57, -0.524, pitch * -1 * .35)
 			local left_arm_rot = vector.new(pitch + 1.57, 0.75, pitch * .35)
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, left_arm_rot)
-		-- controls arm for spear throwing
+			-- controls arm for spear throwing
 		elseif core.get_item_group(wielded:get_name(), "spear") > 0 and control.RMB then
 			local right_arm_rot = vector.new(pitch + 1.8, 0, pitch * -1 * .35)
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, right_arm_rot)
-		-- controls right and left arms pitch when loading a crossbow
+			-- controls right and left arms pitch when loading a crossbow
 		elseif string.find(wielded:get_name(), "mcl_bows:crossbow_") then
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(0.786, -0.35, 0.47))
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.new(0.96, 0.35, -0.786))
-		-- when punching
+			-- when punching
 		elseif control.LMB and not parent then
 			set_bone_pos(player,"Arm_Right_Pitch_Control", nil, vector.new(pitch, 0, 0))
 			set_bone_pos(player,"Arm_Left_Pitch_Control", nil, vector.zero())
-		-- when holding an item.
+			-- when holding an item.
 		elseif wielded:get_name() ~= "" then
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.new(0.35, 0, 0))
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.zero())
-		-- resets arms pitch
+			-- resets arms pitch
 		else
 			set_bone_pos(player, "Arm_Left_Pitch_Control", nil, vector.zero())
 			set_bone_pos(player, "Arm_Right_Pitch_Control", nil, vector.zero())
@@ -360,8 +360,8 @@ minetest.register_globalstep(function(dtime)
 
 		if elytra.active then
 			-- set head pitch and yaw when flying
-			local head_rot = vector.new(pitch - dir_to_pitch(player_velocity) + 0.87, player_vel_yaw - yaw, 0)
-			set_bone_pos(player, "Head_Control", nil, head_rot)
+			-- local head_rot = vector.new(pitch - dir_to_pitch(player_velocity) + 0.87, player_vel_yaw - yaw, 0)
+			-- set_bone_pos(player, "Head_Control", nil, head_rot)
 
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_elytra)
@@ -371,14 +371,14 @@ minetest.register_globalstep(function(dtime)
 			set_bone_pos(player, "Body_Control", nil, body_rot, vector.new(-1, 1, 1))
 		elseif parent then
 			set_properties(player, player_props_riding)
-			local parent_yaw = parent:get_yaw()
-			local head_rot = vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0)
-			set_bone_pos(player, "Head_Control", nil, head_rot)
-			set_bone_pos(player,"Body_Control", nil, vector.zero())
+			-- local parent_yaw = parent:get_yaw()
+			-- local head_rot = vector.new(pitch, -limit_vel_yaw(yaw, parent_yaw) + parent_yaw, 0)
+			-- set_bone_pos(player, "Head_Control", nil, head_rot)
+			set_bone_pos(player, "Body_Control", nil, vector.zero())
 		elseif control.sneak then
 			-- controls head pitch when sneaking
-			local head_rot = vector.new(pitch, player_vel_yaw - yaw, player_vel_yaw - yaw)
-			set_bone_pos(player, "Head_Control", nil, head_rot)
+			-- local head_rot = vector.new(pitch, player_vel_yaw - yaw, 0)
+			-- set_bone_pos(player, "Head_Control", nil, head_rot)
 
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_sneaking)
@@ -388,8 +388,8 @@ minetest.register_globalstep(function(dtime)
 		elseif get_item_group(mcl_playerinfo[name].node_head, "water") ~= 0 and is_sprinting(name) == true then
 			-- set head pitch and yaw when swimming
 			is_swimming = true
-			local head_rot = vector.new(pitch - dir_to_pitch(player_velocity) + 0.35, player_vel_yaw - yaw, 0)
-			set_bone_pos(player, "Head_Control", nil, head_rot)
+			-- local head_rot = vector.new(pitch - dir_to_pitch(player_velocity) + 0.35, player_vel_yaw - yaw, 0)
+			-- set_bone_pos(player, "Head_Control", nil, head_rot)
 
 			-- sets eye height, and nametag color accordingly
 			set_properties(player, player_props_swimming)
@@ -398,13 +398,13 @@ minetest.register_globalstep(function(dtime)
 			local body_rot = vector.new((1.3 + dir_to_pitch(player_velocity)), player_vel_yaw - yaw, 3.1415)
 			set_bone_pos(player, "Body_Control", nil, body_rot, vector.new(-1, 1, 1))
 		elseif get_item_group(mcl_playerinfo[name].node_head, "solid") == 0
-		and get_item_group(mcl_playerinfo[name].node_head_top, "solid") == 0 then
+			and get_item_group(mcl_playerinfo[name].node_head_top, "solid") == 0 then
 			-- sets eye height, and nametag color accordingly
 			is_swimming = false
 			set_properties(player, player_props_normal)
 
-			set_bone_pos(player,"Head_Control", nil, vector.new(pitch, player_vel_yaw - yaw, 0))
-			set_bone_pos(player,"Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
+			-- set_bone_pos(player, "Head_Control", nil, vector.new(pitch, player_vel_yaw - yaw, 0))
+			set_bone_pos(player, "Body_Control", nil, vector.new(0, -player_vel_yaw + yaw, 0))
 		end
 
 		local playerinfo = mcl_playerinfo[name] or {}
@@ -447,10 +447,10 @@ minetest.register_globalstep(function(dtime)
 				return
 			end
 			if (not minetest.registered_nodes[node_stand]
-			or not minetest.registered_nodes[node_stand_below]
-			or not minetest.registered_nodes[node_head]
-			or not minetest.registered_nodes[node_feet]
-			or not minetest.registered_nodes[node_head_top]) then
+					or not minetest.registered_nodes[node_stand_below]
+					or not minetest.registered_nodes[node_head]
+					or not minetest.registered_nodes[node_feet]
+					or not minetest.registered_nodes[node_head_top]) then
 				return
 			end
 
@@ -468,23 +468,31 @@ minetest.register_globalstep(function(dtime)
 			]]
 
 			if get_item_group(node_feet, "liquid") == 0 and
-					get_item_group(node_stand, "liquid") == 0 and
-					not minetest.registered_nodes[node_feet].climbable and
-					not minetest.registered_nodes[node_stand].climbable and
-					(minetest.registered_nodes[node_stand].walkable or minetest.registered_nodes[node_stand_below].walkable)
-					and get_item_group(node_stand, "disable_jump") == 0
-					and get_item_group(node_stand_below, "disable_jump") == 0 then
-			-- Cause exhaustion for jumping
-			if is_sprinting(name) then
-				exhaust(name, mcl_hunger.EXHAUST_SPRINT_JUMP)
-			else
-				exhaust(name, mcl_hunger.EXHAUST_JUMP)
-			end
+				get_item_group(node_stand, "liquid") == 0 and
+				not minetest.registered_nodes[node_feet].climbable and
+				not minetest.registered_nodes[node_stand].climbable and
+				(minetest.registered_nodes[node_stand].walkable or minetest.registered_nodes[node_stand_below].walkable)
+				and get_item_group(node_stand, "disable_jump") == 0
+				and get_item_group(node_stand_below, "disable_jump") == 0 then
+				-- Cause exhaustion for jumping
+				if is_sprinting(name) then
+					exhaust(name, mcl_hunger.EXHAUST_SPRINT_JUMP)
+				else
+					exhaust(name, mcl_hunger.EXHAUST_JUMP)
+				end
 
-			-- Reset cooldown timer
+				-- Reset cooldown timer
 				mcl_playerplus_internal[name].jump_cooldown = 0.45
 			end
 		end
+
+		player:set_bone_override("Head", {
+			rotation = {
+				vec = vector.new(pitch, player_vel_yaw - yaw, 0),
+				absolute = true,
+				interpolation = 0.1
+			}
+		})
 	end
 
 	-- Run the rest of the code every 0.5 seconds
@@ -561,12 +569,12 @@ minetest.register_globalstep(function(dtime)
 			ndef = minetest.registered_nodes[node_feet]
 		end
 		if (ndef.walkable == nil or ndef.walkable == true)
-		and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
-		and (ndef.node_box == nil or ndef.node_box.type == "regular")
-		and (ndef.groups.disable_suffocation ~= 1)
-		and (ndef.groups.opaque == 1)
-		and (node_head ~= "ignore")
-		-- Check privilege, too
+			and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
+			and (ndef.node_box == nil or ndef.node_box.type == "regular")
+			and (ndef.groups.disable_suffocation ~= 1)
+			and (ndef.groups.opaque == 1)
+			and (node_head ~= "ignore")
+			-- Check privilege, too
 		and (not check_player_privs(name, {noclip = true})) then
 			mcl_util.deal_damage(player, 1, {type = "in_wall"})
 		end
@@ -639,29 +647,29 @@ minetest.register_globalstep(function(dtime)
 			for y=pos.y-r, pos.y+r do
 			for z=pos.z-r, pos.z+r do
 				local vi = area:indexp({x=x, y=y, z=z})
-				local nodename = get_name_from_content_id(data[vi])
-				local light_block_group = minetest.get_item_group(nodename, "light_block")
+						local nodename = get_name_from_content_id(data[vi])
+						local light_block_group = minetest.get_item_group(nodename, "light_block")
 
-				local tex
-				if nodename == "mcl_core:barrier" then
-					tex = "mcl_core_barrier.png"
-				elseif nodename == "mcl_core:realm_barrier" then
-					tex = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX"
-				elseif light_block_group ~= 0 then
-					tex = "mcl_core_light_" .. (light_block_group - 1) .. ".png"
-				end
-				if tex then
-					add_particle({
+						local tex
+						if nodename == "mcl_core:barrier" then
+							tex = "mcl_core_barrier.png"
+						elseif nodename == "mcl_core:realm_barrier" then
+							tex = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX"
+						elseif light_block_group ~= 0 then
+							tex = "mcl_core_light_" .. (light_block_group - 1) .. ".png"
+						end
+						if tex then
+							add_particle({
 						pos = {x=x, y=y, z=z},
-						expirationtime = 1,
-						size = 8,
-						texture = tex,
-						glow = 14,
-						playername = name
-					})
+								expirationtime = 1,
+								size = 8,
+								texture = tex,
+								glow = 14,
+								playername = name
+							})
+						end
+					end
 				end
-			end
-			end
 			end
 		end
 

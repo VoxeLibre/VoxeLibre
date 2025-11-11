@@ -1,0 +1,22 @@
+# Blender 3.6.12 MTL File: 'mcl_armor_character.blend'
+# www.blender.org
+
+newmtl Armor
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 1
+map_Kd C:/Other Programs/Luanti (Dev)/games/VoxeLibre/mods/ITEMS/mcl_armor/textures/mcl_armor_elytra.png
+map_d C:/Other Programs/Luanti (Dev)/games/VoxeLibre/mods/ITEMS/mcl_armor/textures/mcl_armor_elytra.png
+
+newmtl Skin
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+illum 1
+map_Kd C:/Other Programs/Luanti (Dev)/games/MineClone2/mods/PLAYER/mcl_player/models/character.png
+map_d C:/Other Programs/Luanti (Dev)/games/MineClone2/mods/PLAYER/mcl_player/models/character.png

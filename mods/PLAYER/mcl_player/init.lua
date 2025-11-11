@@ -185,7 +185,7 @@ function mcl_player.player_set_animation(player, anim_name, speed)
 	end
 	local anim = model.animations[anim_name]
 	player_anim[name] = anim_name
-	player:set_animation(anim, speed or model.animation_speed, animation_blend)
+	player:set_animation(anim, speed or anim.speed or model.animation_speed, animation_blend)
 end
 
 -- Update appearance when the player joins

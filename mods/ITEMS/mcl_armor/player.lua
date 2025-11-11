@@ -6,7 +6,7 @@ mcl_player.player_register_model("mcl_armor_character.b3d", {
 		"blank.png",
 	},
 	animations = {
-		stand = {x=0, y=79},
+		stand = {x=0, y=79, speed=10},
 		lay = {x=162, y=166},
 		walk = {x=168, y=187},
 		mine = {x=189, y=198},
