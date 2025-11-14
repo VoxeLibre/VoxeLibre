@@ -18,10 +18,10 @@ local valley_of_ghosts = "exhale_and_tim_unwin-valley_of_ghosts"
 local farmer = "exhale_and_tim_unwin-farmer"
 
 local scenario_to_base_track = {
-	["overworld"]	= {pianowtune, never_grow_up, flock_of_one, gift, hailing_forest, lonely_blossom, farmer},
-	["nether"]		= {nether_tune, valley_of_ghosts},
-	["end"]			= {end_tune},
-	["mining"]		= {odd_block},
+	["overworld"] = {pianowtune, never_grow_up, flock_of_one, gift, hailing_forest, lonely_blossom, farmer},
+	["nether"]	  = {nether_tune, valley_of_ghosts},
+	["end"]		  = {end_tune},
+	["mining"]	  = {odd_block},
 }
 
 local listeners = {}
@@ -41,7 +41,7 @@ local function pick_track(scenario)
 
 		return chosen_track
 	else
-		minetest.log("error", "[mcl_music] No tracks found for this scenario!")
+		minetest.log("warning", "[mcl_music] No tracks found for this scenario!")
 	end
 
 	return nil
@@ -56,7 +56,7 @@ local function stop_music_for_listener_name(listener_name)
 	if not handle then return end
 
 	minetest.log("action", "[mcl_music] Stopping music")
-	minetest.sound_stop(handle)
+	minetest.sound_fade(handle, -.025, 0)
 	listeners[listener_name].handle = nil
 end
 
@@ -89,14 +89,8 @@ end
 
 local function play()
 	local time = minetest.get_timeofday()
-	-- Night time
-	if time < 0.25 or time >= 0.75 then
-		stop_music_for_all()
-		minetest.after(10, play)
-		return
-	end
-
 	local day_count = minetest.get_day_count()
+
 	for _, player in pairs(minetest.get_connected_players()) do
 		if not player:get_meta():get("mcl_music:disable") then
 
@@ -107,8 +101,18 @@ local function play()
 
 			-- Find current scenario
 			local scenario = dimension
-			if (dimension == "overworld" and pos and pos.y < 0) then
-				scenario = "mining"
+			if (dimension == "overworld") then
+				-- Night time
+				if time < 0.25 or time >= 0.75 then
+					stop_music_for_listener_name(player_name)
+					minetest.after(10, play)
+					return
+				end
+
+				-- Underground
+				if (pos and pos.y < 0) then
+					scenario = "mining"
+				end
 			end
 
 			local listener = listeners[player_name]
