@@ -5,7 +5,7 @@ set -e
 
 # Make sure luanti lls definitions are up-to-date
 (
-	git clone --single-branch --depth 1 https://git.minetest.land/archie/luanti-api.git || true
+	git clone --single-branch --depth 1 https://git.minetest.land/andro/luanti-api.git || true
 
 #	if ! test -d /usr/share/luanti/builtin; then
 #		ln /usr/share/minetest/builtin /usr/share/luanti/builtin -s
