@@ -90,13 +90,6 @@ function get_deps_for_mod(mod, mods)
 end
 
 local mods,mod_names = read_mod_data()
-print("set -e")
-print("BASE=$(pwd)")
-print("PASSED=$(mktemp)")
-print("FAILING=$(mktemp)")
-print("REPORT=$BASE/tests/luacheck/report.log")
-print("PASS_LIST=$BASE/tests/luacheck/passed.lst")
-print("echo > $PASS_LIST")
 for i = 1,#mod_names do
 	local mod = mod_names[i]
 	local config = mods[mod]
@@ -108,33 +101,6 @@ for i = 1,#mod_names do
 		cmd_options = cmd_options .. " --globals "..deps[j]
 	end
 
-	print("echo Checking "..config.name.." located at "..config.dir)
-	print("LOG=$(mktemp)")
-	print("(")
-	print(	"cd "..config.dir)
-	print(	"for FILE in *.lua; do")
-	print(		"if grep -q \""..config.dir.."$FILE\" $BASE/tests/luacheck/check.lst; then")
-	print(			"if ! "..luacheck.." $FILE "..cmd_options.." 2>&1 >$LOG; then")
-	print(				"cat $LOG | sed -e 's/warning/error/'")
-	print(				"cat $LOG >> $REPORT")
-	print(				"rm $PASSED || true")
-	print(				"echo \""..config.dir.."/$FILE [FAILED]\"")
-	print(			"fi")
-	print(			"echo \""..config.dir.."$FILE\" >> $PASS_LIST")
-	print(		"else")
-	print(			"if "..luacheck.." $FILE"..cmd_options.." 2>&1 > $LOG; then")
-	print(				"echo \""..config.dir.."$FILE\" >> $PASS_LIST")
-	print(			"else")
-	print(				"if ! grep -q OK $LOG; then")
-	print(					"cat $LOG")
-	print(					"cat $LOG >> $REPORT")
-	print(				"fi")
-	print(				"echo \"Checks for $FILE are currently advisory only\"")
-	print(			"fi")
-	print(		"fi")
-	print(	"done")
-	print(")")
-	print("rm $LOG")
+	print(config.name.."|"..cmd_options.."|"..config.dir)
 end
-print("if ! test -f $PASSED; then cat $FAILING; exit 1; fi")
 
