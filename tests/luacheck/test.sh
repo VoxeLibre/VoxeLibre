@@ -30,13 +30,13 @@ echo > $PASS_LIST
 	LOG=$TMPDIR/log
 	touch $LOG
 	(
-		SHOULD_PASS=false
-		if grep -q "$DIR$FILE" $BASE/tests/luacheck/check.lst; then
-			SHOULD_PASS=true
-		fi
-
 		cd $DIR
 		for FILE in *.lua; do
+			SHOULD_PASS=false
+			if grep -q "$DIR$FILE" $BASE/tests/luacheck/check.lst; then
+				SHOULD_PASS=true
+			fi
+
 			if luacheck $FILE $OPTS 2>&1 >$LOG; then
 				PASSED=true
 			else
@@ -64,6 +64,7 @@ done
 
 if test -f $FAILED; then
 	rm -Rvf $TMPDIR
+	rm luacheck-passed.lst
 	echo "luacheck test failed"
 	exit 1
 fi
