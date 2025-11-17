@@ -300,6 +300,10 @@ local function water_splash(obj, damage)
 	if not damage or (damage > 0 and damage < 1) then
 		damage = 1
 	end
+
+	-- Extinguish burning mobs
+	mcl_burning.extinguish(obj)
+
 	-- Damage mobs that are vulnerable to water
 	local lua = obj:get_luaentity()
 	if lua and lua.is_mob then
@@ -308,6 +312,7 @@ local function water_splash(obj, damage)
 			damage_groups = {water_vulnerable=damage},
 		}, nil)
 	end
+
 end
 
 mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {
