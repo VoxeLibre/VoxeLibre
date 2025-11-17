@@ -6,31 +6,31 @@ local math_max = math.max
 local math_ceil = math.ceil
 local math_floor = math.floor
 
+local TYPE_FIELD_NAME = mcl_vars.hud_type_field
+
 vl_hudbars = {
 	hudbar_defs = {},
 	players = {},
-	settings = {},
+	settings = {
+		start_offset_left = {x = -16, y = -90},
+		start_offset_right = {x = 16, y = -90},
+		scale_x = 24,
+		hudbar_height_gap = 4,
+		bar_length = 20,
+		base_pos = {x=0.5, y=1},
+		max_rendered_layers = 100, -- per part, to prevent lag due to too many layers rendered
+									--Only applies to absolute hudbars
+
+		-- Squish settings
+		min_layer_offset = 8, -- 'most squished possible' offset from layer below
+		max_unsquished_layers = 3, -- number of layers allowed before squishing kicks in
+		squish_duration = 12, -- number of layers to squish over before reaching max squish
+
+		forceload_default_hudbars = true,
+		autohide_breath = true,
+		tick = 0.1,
+	},
 }
-
-table.update(vl_hudbars.settings, {
-	start_offset_left = {x = -16, y = -90},
-	start_offset_right = {x = 16, y = -90},
-	scale_x = 24,
-	hudbar_height_gap = 4,
-	bar_length = 20,
-	base_pos = {x=0.5, y=1},
-	max_rendered_layers = 100, -- per part, to prevent lag due to too many layers rendered
-								--Only applies to absolute hudbars
-
-	-- Squish settings
-	min_layer_offset = 8, -- 'most squished possible' offset from layer below
-	max_unsquished_layers = 3, -- number of layers allowed before squishing kicks in
-	squish_duration = 12, -- number of layers to squish over before reaching max squish
-
-	forceload_default_hudbars = true,
-	autohide_breath = true,
-	tick = 0.1,
-})
 
 if minetest.get_modpath("mcl_experience") and not minetest.is_creative_enabled("") then
 	-- reserve some space for experience bar:
@@ -40,7 +40,7 @@ end
 
 -- Add player `name` to the players with tracked hudbars in vl_hudbars.players, if not already tracked
 local function init_player_hudtracking(name)
-	if vl_hudbars.players[name] == nil then
+	if not vl_hudbars.players[name] then
 		vl_hudbars.players[name] = {
 			hudbar_order_left = {},
 			hudbar_order_right = {},
@@ -123,16 +123,8 @@ local function add_new_proportional_layer(player, hudbar_def, part_state,
 		offset_x = offset_x_right
 	end
 
-	-- Minetest changed the name of the 'hud_elem_type' field for 5.9.0
-	local type_field_name
-	if minetest.features.hud_def_type_field then
-		type_field_name = "type"
-	else
-		type_field_name = "hud_elem_type"
-	end
-
 	local layer_id = player:hud_add({
-		[type_field_name] = "statbar",
+		[TYPE_FIELD_NAME] = "statbar",
 		position = vl_hudbars.settings.base_pos,
 		text = part_state.icon,
 		text2 = part_state.bgicon,
@@ -291,16 +283,8 @@ local function add_new_absolute_layer(player, hudbar_def, part_state,
 		alignment = {x=1, y=-1}
 	end
 
-	-- Minetest changed the name of the 'hud_elem_type' field for 5.9.0
-	local type_field_name
-	if minetest.features.hud_def_type_field then
-		type_field_name = "type"
-	else
-		type_field_name = "hud_elem_type"
-	end
-
 	local layer_id = player:hud_add({
-		[type_field_name] = "statbar",
+		[TYPE_FIELD_NAME] = "statbar",
 		position = vl_hudbars.settings.base_pos,
 		text = part_state.icon,
 		text2 = part_state.bgicon,
@@ -620,16 +604,8 @@ local default_compound_part_params = {
 	z_index_step = -1,
 }
 
-local function populate_from_defaults(params, defaults)
-	for k, v in pairs(defaults) do
-		if params[k] == nil then
-			params[k] = v
-		end
-	end
-end
-
 function vl_hudbars.register_hudbar(hudbar_params)
-	populate_from_defaults(hudbar_params, default_hudbar_params)
+	table.update_nil(hudbar_params, default_hudbar_params)
 
 	local identifier = hudbar_params.identifier
 	local hudtable = {
@@ -647,7 +623,7 @@ function vl_hudbars.register_hudbar(hudbar_params)
 		z_index = hudbar_params.z_index, -- starting z-index of hudbar
 	}
 	if not hudbar_params.is_compound then
-		populate_from_defaults(hudbar_params, default_simple_hudbar_params)
+		table.update_nil(hudbar_params, default_simple_hudbar_params)
 		hudtable.default_max_val = hudbar_params.default_max_val
 		hudtable.default_value = hudbar_params.default_value
 		hudtable.default_hidden = hudbar_params.default_hidden
@@ -659,7 +635,7 @@ function vl_hudbars.register_hudbar(hudbar_params)
 		-- Compound bars have their parts stored in hudbar_def.parts[part_name]
 		hudtable.parts = {}
 		for id, def in pairs(hudbar_params.parts) do
-			populate_from_defaults(def, default_compound_part_params)
+			table.update_nil(def, default_compound_part_params)
 			hudtable.parts[id] = {
 				default_value = def.default_value,
 				default_max_val = def.default_max_val,

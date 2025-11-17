@@ -1140,7 +1140,7 @@ vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
 	part = "health_main",
 	predicate = function(player)
-		if mcl_potions.has_effect(player, "withering") and mcl_potions.has_effect(player, "regeneration") then return true end
+		return mcl_potions.has_effect(player, "withering") and mcl_potions.has_effect(player, "regeneration")
 	end,
 	icon = "mcl_potions_icon_regen_wither.png",
 	priority = -30,
@@ -1150,7 +1150,7 @@ vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
 	part = "health_main",
 	predicate = function(player)
-		if mcl_potions.has_effect(player, "withering") then return true end
+		return mcl_potions.has_effect(player, "withering")
 	end,
 	icon = "mcl_potions_icon_wither.png",
 	priority = -20,
@@ -1160,7 +1160,7 @@ vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
 	part = "health_main",
 	predicate = function(player)
-		if mcl_potions.has_effect(player, "poison") and mcl_potions.has_effect(player, "regeneration") then return true end
+		return mcl_potions.has_effect(player, "poison") and mcl_potions.has_effect(player, "regeneration")
 	end,
 	icon = "hbhunger_icon_regen_poison.png",
 	priority = -10,
@@ -1170,7 +1170,7 @@ vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
 	part = "health_main",
 	predicate = function(player)
-		if mcl_potions.has_effect(player, "poison") then return true end
+		return mcl_potions.has_effect(player, "poison")
 	end,
 	icon = "hbhunger_icon_health_poison.png",
 	priority = 0,
@@ -1180,7 +1180,7 @@ vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
 	part = "health_main",
 	predicate = function(player)
-		if mcl_potions.has_effect(player, "frost") and mcl_potions.has_effect(player, "regeneration") then return true end
+		return mcl_potions.has_effect(player, "frost") and mcl_potions.has_effect(player, "regeneration")
 	end,
 	icon = "mcl_potions_icon_regen_frost.png",
 	priority = 10,
@@ -1190,7 +1190,7 @@ vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
 	part = "health_main",
 	predicate = function(player)
-		if mcl_potions.has_effect(player, "frost") then return true end
+		return mcl_potions.has_effect(player, "frost")
 	end,
 	icon = "mcl_potions_icon_frost.png",
 	priority = 20,
@@ -1200,20 +1200,10 @@ vl_hudbars.register_hudbar_modifier{
 	identifier = "health",
 	part = "health_main",
 	predicate = function(player)
-		if mcl_potions.has_effect(player, "regeneration") then return true end
+		return mcl_potions.has_effect(player, "regeneration")
 	end,
 	icon = "hudbars_icon_regenerate.png",
 	priority = 30,
-}
-
-vl_hudbars.register_hudbar_modifier{
-	identifier = "health",
-	part = "health_main",
-	predicate = function(player)
-		return true
-	end,
-	icon = "hudbars_icon_health.png",
-	priority = 40,
 }
 
 local icon_ids = {}
