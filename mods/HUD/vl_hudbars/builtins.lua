@@ -12,24 +12,25 @@ if minetest.settings:get_bool("enable_damage") or vl_hudbars.settings.forceload_
 		value_scale = 1,
 		round_to_full_texture = true,
 		default_hidden = false,
-		parts = {health_main = {
-			default_max_val = 20,
-			default_value = 20,
-			icon = "hudbars_icon_health.png",
-			bgicon = "hudbars_bgicon_health.png",
-			part_sort_index = 10,
-			take_up_space = true,
-			z_index_offset = 0,
+		parts = {
+			health_main = {
+				default_max_val = 20,
+				default_value = 20,
+				icon = "hudbars_icon_health.png",
+				bgicon = "hudbars_bgicon_health.png",
+				part_sort_index = 10,
+				take_up_space = true,
+				z_index_offset = 0,
 			},
 			absorption = {
-			default_max_val = 0,
-			default_value = 0,
-			icon = "mcl_potions_icon_absorb.png",
-			bgicon = "hudbars_bgicon_health.png",
-			z_index_step = -1,
-			part_sort_index = 8,
-			take_up_space = true,
-			z_index_offset = -1,
+				default_max_val = 0,
+				default_value = 0,
+				icon = "mcl_potions_icon_absorb.png",
+				bgicon = "hudbars_bgicon_health.png",
+				z_index_step = -1,
+				part_sort_index = 8,
+				take_up_space = true,
+				z_index_offset = -1,
 			}
 		}
 	})
