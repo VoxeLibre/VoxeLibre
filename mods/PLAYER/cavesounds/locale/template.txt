@@ -1,0 +1,9 @@
+# textdomain: cavesounds
+Turn cave sounds for yourself or another player on or off.=
+
+You need the debug privilege in order to turn cave sounds on or off for somebody else!=
+
+Could not find player @1!=
+off=
+on=
+Set cave sounds for @1 to: @2=
