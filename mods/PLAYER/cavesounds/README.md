@@ -25,3 +25,9 @@ cave5.ogg:
 - by Gobusto (license: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/))
 - Source: <https://opengameart.org/content/scary-breath>
 - Changes: Spliced
+
+cave6.ogg:
+- by MouthlessGames (license: [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/))
+- based on creepyDrums.mp3
+- Source: <https://opengameart.org/content/creepy-piano-sfx>
+- Changes: Spliced and faded out
