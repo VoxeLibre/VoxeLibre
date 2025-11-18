@@ -1,9 +1,9 @@
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
 
-local music_enabled = minetest.settings:get_bool("mcl_game_music", true)
+local music_enabled = core.settings:get_bool("mcl_game_music", true)
 
 local pianowtune  = "diminixed-pianowtune02"
 local end_tune    = "diminixed-ambientwip02"
@@ -18,11 +18,13 @@ local valley_of_ghosts = "exhale_and_tim_unwin-valley_of_ghosts"
 local farmer = "exhale_and_tim_unwin-farmer"
 
 local scenario_to_base_track = {
-	["overworld"] = {pianowtune, never_grow_up, flock_of_one, gift, hailing_forest, lonely_blossom, farmer},
-	["nether"]	  = {nether_tune, valley_of_ghosts},
-	["end"]		  = {end_tune},
-	["mining"]	  = {odd_block},
+	["overworld"]	= {pianowtune, never_grow_up, flock_of_one, gift, hailing_forest, lonely_blossom, farmer},
+	["nether"]	= {nether_tune, valley_of_ghosts},
+	["end"]		= {end_tune},
+	["mining"]	= {odd_block},
 }
+
+local min_scenario_change_music_time = 5 * 60 -- Seconds
 
 local listeners = {}
 
@@ -36,38 +38,48 @@ local function pick_track(scenario)
 		end
 
 		local chosen_track = scenario_tracks[index]
-		--minetest.log("chosen_track: " .. chosen_track)
-		minetest.log("action", "[mcl_music] Playing track: " .. chosen_track .. ", for scenario: " .. scenario)
+		core.log("action", "[mcl_music] Playing track: " .. chosen_track .. ", for scenario: " .. scenario)
 
 		return chosen_track
 	else
-		minetest.log("warning", "[mcl_music] No tracks found for this scenario!")
+		core.log("warning", "[mcl_music] No tracks found for this scenario!")
 	end
 
 	return nil
 end
 
+local function stop_music_for_listener(player_name)
 
-local function stop_music_for_listener_name(listener_name)
-	if not listener_name then return end
-	local listener = listeners[listener_name]
-	if not listener then return end
-	local handle = listener.handle
-	if not handle then return end
+	local handle = listeners[player_name].handle
 
-	minetest.log("action", "[mcl_music] Stopping music")
-	minetest.sound_fade(handle, -.025, 0)
-	listeners[listener_name].handle = nil
+	if handle then
+		core.log("action", "[mcl_music] Stopping music")
+		core.sound_fade(handle, -.025, 0)
+		listeners[player_name].handle = nil
+	end
 end
 
 local function stop_music_for_all()
-	for _, player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(core.get_connected_players()) do
 		local player_name = player:get_player_name()
 		stop_music_for_listener_name(player_name)
 	end
 end
 
-local function play_song(track, player_name, scenario, day_count)
+local function initialize_listener(player_name)
+	listeners[player_name] = {
+		handle    = nil,
+		scenario  = nil,
+		sc_time   = -1,
+		day_count = -1,
+	}
+end
+
+local function remove_listener(player_name)
+	listeners[player_name] = nil
+end
+
+local function play_song(player_name, track)
 	local spec = {
 		name  = track,
 		gain  = 0.3,
@@ -79,95 +91,101 @@ local function play_song(track, player_name, scenario, day_count)
 		fade      = 0.0,
 		pitch     = 1.0,
 	}
-	local handle = minetest.sound_play(spec, parameters, false)
-	listeners[player_name] = {
-		handle     = handle,
-		scenario   = scenario,
-		day_count  = day_count,
-	}
+
+	local handle = core.sound_play(spec, parameters, false)
+	listeners[player_name].handle = handle
 end
 
 local function play()
-	local time = minetest.get_timeofday()
-	local day_count = minetest.get_day_count()
+	local time = core.get_timeofday()
+	local day_count = core.get_day_count()
 
-	for _, player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(core.get_connected_players()) do
 		if not player:get_meta():get("mcl_music:disable") then
 
 			local player_name = player:get_player_name()
-			--local hp        = player:get_hp()
 			local pos         = player:get_pos()
 			local dimension   = mcl_worlds.pos_to_dimension(pos)
 
 			-- Find current scenario
 			local scenario = dimension
 			if (dimension == "overworld") then
-				-- Night time
-				if time < 0.25 or time >= 0.75 then
-					stop_music_for_listener_name(player_name)
-					minetest.after(10, play)
-					return
-				end
 
 				-- Underground
 				if (pos and pos.y < 0) then
 					scenario = "mining"
+				-- Night time
+				elseif time < 0.25 or time >= 0.75 then
+					stop_music_for_listener(player_name)
+					goto continue
 				end
 			end
 
 			local listener = listeners[player_name]
-			local handle   = listener and listener.handle
 
-			-- Compare with previous scenario
-			--local old_hp		   = listener and listener.hp
-			--local is_hp_changed 	   = old_hp and (math.abs(old_hp - hp) > 0.00001) or false
-			local old_scenario	   = listener and listener.scenario
-			local has_scenario_changed = old_scenario and (old_scenario ~= scenario) or false
+			-- Scenario changed
+			if listener.scenario and scenario ~= listener.scenario then
 
-			-- minetest.log("handle: " .. dump (handle))
-			if has_scenario_changed then
-				stop_music_for_listener_name(player_name)
-				if not listeners[player_name] then
-					listeners[player_name] = {}
+				stop_music_for_listener(player_name)
+
+				local sc_time = os.time()
+				-- Only play new music if scenario change was a little while ago
+				if (sc_time - listener.sc_time) > min_scenario_change_music_time then
+					local track = pick_track(scenario)
+					if track then
+						core.after(15, function()
+							stop_music_for_listener(player_name) -- For when scenario change is repeated quickly
+							play_song(player_name, track)
+						end, player_name, track)
+					end
+					listeners[player_name].scenario = scenario
+					listeners[player_name].sc_time  = sc_time
 				end
-				--listeners[player_name].hp     = hp
-				listeners[player_name].scenario = scenario
 
-			-- Decide if music should be played
-			elseif not handle and (not listener or (listener.day_count ~= day_count)) then
+			-- Scenario is the same, play music once a day
+			elseif day_count ~= listener.day_count then
+
+				listeners[player_name].scenario  = scenario -- To set scenario initially
+
+				stop_music_for_listener(player_name)
+
 				local track = pick_track(scenario)
 				if track then
-					play_song(track, player_name, scenario, day_count)
+					core.after(15, function()
+						stop_music_for_listener(player_name) -- For when time changed is repeated quickly
+						play_song(player_name, track)
+					end, player_name, track)
 				end
+				listeners[player_name].day_count = day_count
 			end
 		end
+
+		::continue::
 	end
 
-	minetest.after(7, play)
+	core.after(5, play)
 end
 
 if music_enabled then
-	minetest.log("action", "[mcl_music] In-game music is activated")
-	minetest.after(15, play)
+	core.log("action", "[mcl_music] In-game music is activated")
+	core.after(5, play)
 
-	minetest.register_on_joinplayer(function(player, last_login)
-		local player_name = player:get_player_name()
-		stop_music_for_listener_name(player_name)
+	core.register_on_joinplayer(function(player, last_login)
+		initialize_listener(player:get_player_name())
 	end)
 
-	minetest.register_on_leaveplayer(function(player, timed_out)
-		listeners[player:get_player_name()] = nil
+	core.register_on_leaveplayer(function(player, timed_out)
+		remove_listener(player:get_player_name())
 	end)
 
-	minetest.register_on_respawnplayer(function(player)
-		local player_name = player:get_player_name()
-		stop_music_for_listener_name(player_name)
+	core.register_on_respawnplayer(function(player)
+		stop_music_for_listener(player:get_player_name())
 	end)
 else
-	minetest.log("action", "[mcl_music] In-game music is deactivated")
+	core.log("action", "[mcl_music] In-game music is deactivated")
 end
 
-minetest.register_chatcommand("music", {
+core.register_chatcommand("music", {
 	params = "[on|off|invert [<player name>]]",
 	description = S("Turn music for yourself or another player on or off."),
 	func = function(sender_name, params)
@@ -179,7 +197,7 @@ minetest.register_chatcommand("music", {
 		local action = argtable[1]
 		local playername = argtable[2]
 
-		local sender = minetest.get_player_by_name(sender_name)
+		local sender = core.get_player_by_name(sender_name)
 		local target_player = nil
 
 		if not action or action == "" then action = "invert" end
@@ -187,15 +205,15 @@ minetest.register_chatcommand("music", {
 		if not playername or playername == "" or sender_name == playername then
 			target_player = sender
 			playername =sender_name
-		elseif not minetest.check_player_privs(sender, "debug") then -- Self-use handled above
-			minetest.chat_send_player(sender_name, S("You need the debug privilege in order to turn in-game music on or off for somebody else!"))
+		elseif not core.check_player_privs(sender, "debug") then -- Self-use handled above
+			core.chat_send_player(sender_name, S("You need the debug privilege in order to turn in-game music on or off for somebody else!"))
 			return
 		else -- Admin
-			target_player = minetest.get_player_by_name(playername)
+			target_player = core.get_player_by_name(playername)
 		end
 
 		if not target_player then
-			minetest.chat_send_player(sender_name, S("Could not find player @1!", playername))
+			core.chat_send_player(sender_name, S("Could not find player @1!", playername))
 			return
 		end
 
@@ -218,7 +236,7 @@ minetest.register_chatcommand("music", {
 			display_new_state = S("off")
 		end
 
-		stop_music_for_listener_name(playername)
-		minetest.chat_send_player(sender_name, S("Set music for @1 to: @2", playername, display_new_state))
+		stop_music_for_listener(playername)
+		core.chat_send_player(sender_name, S("Set music for @1 to: @2", playername, display_new_state))
 	end,
 })
