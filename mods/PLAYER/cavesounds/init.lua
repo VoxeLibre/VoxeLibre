@@ -71,11 +71,9 @@ local function play()
 
 			if (dimension == "overworld") then
 
-				-- Above ground
-				if pos1.y >= 0 then
-					reset_fear(player1_name)
-				else
-					local fear     = listeners[player1_name].fear
+				-- Underground
+				if pos1.y < 0 then
+					local fear      = listeners[player1_name].fear
 					local light_lvl = core.get_node_light(pos1)
 
 					-- Mapping light level to extra fear
