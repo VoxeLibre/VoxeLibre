@@ -449,7 +449,7 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 
 		if not gamerule_doMobLoot then return end
 
-		local player_kill = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp) < PLAYER_KILL_TIME_US
+		local player_kill = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp) <= PLAYER_KILL_TIME_US
 
 		-- dropped cooked item if mob died in fire or lava
 		if cause == "lava" or cause == "fire" then
