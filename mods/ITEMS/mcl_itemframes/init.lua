@@ -15,22 +15,22 @@ end
 
 local fbox = {
 	type = "fixed",
-	fixed = {-6/16, -1/2, -6/16, 6/16, -7/16, 6/16}
+	fixed = { -6 / 16, -1 / 2, -6 / 16, 6 / 16, -7 / 16, 6 / 16 }
 }
 
 local base_props = {
 	visual = "wielditem",
-	visual_size = {x = 0.3, y = 0.3},
+	visual_size = { x = 0.3, y = 0.3 },
 	physical = false,
 	pointable = false,
-	textures = {"blank.png"},
+	textures = { "blank.png" },
 }
 
 local map_props = {
 	visual = "upright_sprite",
-	visual_size = {x = 1, y = 1},
+	visual_size = { x = 1, y = 1 },
 	collide_with_objects = false,
-	textures = {"blank.png"},
+	textures = { "blank.png" },
 }
 
 local tpl_node = {
@@ -49,9 +49,15 @@ local tpl_node = {
 	_mcl_blast_resistance = 0.5,
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usagehelp,
-	allow_metadata_inventory_move = function() return 0 end,
-	allow_metadata_inventory_put = function() return 0 end,
-	allow_metadata_inventory_take = function() return 0 end,
+	allow_metadata_inventory_move = function()
+		return 0
+	end,
+	allow_metadata_inventory_put = function()
+		return 0
+	end,
+	allow_metadata_inventory_take = function()
+		return 0
+	end,
 }
 
 local tpl_entity = {
@@ -87,7 +93,7 @@ local function find_or_create_entity(pos)
 	if not obj then
 		core.log("error",
 			"failed to spawn entity (itemframe at pos " ..
-			tostring(pos) .. ")"
+				tostring(pos) .. ")"
 		)
 		return
 	end
@@ -95,7 +101,7 @@ local function find_or_create_entity(pos)
 	if not le then
 		core.log("error",
 			"failed to get luaentity (itemframe at pos " ..
-			tostring(pos) .. ")"
+				tostring(pos) .. ")"
 		)
 		return
 	end
@@ -156,6 +162,33 @@ local function update_entity(pos)
 end
 mcl_itemframes.update_entity = update_entity
 
+local function rotate(pos, name, user)
+	if not pos then
+		return
+	end
+	local player_name = user and user:get_player_name() or ""
+	if core.is_protected(pos, player_name) then
+		core.record_protection_violation(pos, player_name)
+		return
+	end
+
+	local inv = core.get_meta(pos):get_inventory()
+	local stack = inv:get_stack("main", 1)
+	if not stack then -- no inventory, then short circuit.
+		return
+	end
+	local itemstring = stack:get_name()
+	if not itemstring or itemstring == "" then
+		return
+	else
+		-- remove the item and clear the entity.
+		drop_item(pos)
+		remove_entity(pos)
+	end
+end
+mcl_itemframes.on_rotate = rotate
+tpl_node.on_rotate = rotate
+
 function tpl_node.on_destruct(pos)
 	local n = core.get_node(pos)
 	local m = core.get_meta(pos)
@@ -167,6 +200,11 @@ function tpl_node.on_rightclick(pos, _node, clicker, ostack, _pointed_thing)
 	local pname = clicker:get_player_name()
 	if core.is_protected(pos, pname) then
 		core.record_protection_violation(pos, pname)
+		return ostack
+	end
+
+	if ostack.get_name == "screwdriver:screwdriver" then
+		update_entity(pos)
 		return ostack
 	end
 
@@ -186,7 +224,6 @@ function tpl_node.on_rightclick(pos, _node, clicker, ostack, _pointed_thing)
 	return ostack
 end
 
-
 function tpl_node.on_construct(pos)
 	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
@@ -200,7 +237,6 @@ function tpl_node.after_place_node(pos, placer, itemstack, pointed_thing)
 		core.sound_play(idef.sounds.place, { pos = pos }, true)
 	end
 end
-
 
 local function run_map_support(e)
 	local unran_callback = true
@@ -224,6 +260,10 @@ function tpl_entity:set_item(itemstack, pos)
 		self.object:remove()
 		update_entity(pos)
 		return
+	end
+
+	if itemstack.get_name == "screwdriver:screwdriver" then
+		return itemstack
 	end
 
 	if pos then
@@ -288,7 +328,7 @@ function tpl_entity:on_activate(staticdata, dtime_s)
 	local s = core.deserialize(staticdata)
 	if (type(staticdata) == "string" and dtime_s and dtime_s > 0) then
 		-- try to re-initialize items without proper staticdata
-		local p = core.find_node_near(self.object:get_pos(), 1, {"group:itemframe"})
+		local p = core.find_node_near(self.object:get_pos(), 1, { "group:itemframe" })
 		self.object:remove()
 		if p then
 			update_entity(p)
@@ -306,7 +346,9 @@ end
 
 function tpl_entity:on_step(dtime)
 	self._timer = (self._timer and self._timer - dtime) or 1
-	if self._timer > 0 then return end
+	if self._timer > 0 then
+		return
+	end
 	self._timer = 1
 
 	if core.get_item_group(core.get_node(self._itemframe_pos).name, "itemframe") <= 0 then
@@ -316,16 +358,18 @@ function tpl_entity:on_step(dtime)
 
 	-- update clock if present
 	if core.get_item_group(self._item, "clock") > 0 then
-		self:set_item(ItemStack("mcl_clock:clock_"..mcl_clock.get_clock_frame()))
+		self:set_item(ItemStack("mcl_clock:clock_" .. mcl_clock.get_clock_frame()))
 	end
 end
 
 function mcl_itemframes.register_itemframe(name, def)
-	if not def.node then return end
-	local nodename = "mcl_itemframes:"..name
+	if not def.node then
+		return
+	end
+	local nodename = "mcl_itemframes:" .. name
 	table.insert(mcl_itemframes.registered_nodes, nodename)
 	mcl_itemframes.registered_itemframes[name] = def
-	core.register_node(":"..nodename, table_merge(tpl_node, def.node, {
+	core.register_node(":" .. nodename, table_merge(tpl_node, def.node, {
 		_mcl_itemframe = name,
 		groups = table_merge(tpl_groups, def.node.groups)
 	}))
@@ -336,7 +380,7 @@ core.register_entity("mcl_itemframes:item", tpl_entity)
 core.register_lbm({
 	label = "Respawn item frame item entities",
 	name = "mcl_itemframes:respawn_entities",
-	nodenames = {"group:itemframe"},
+	nodenames = { "group:itemframe" },
 	run_at_every_load = true,
 	action = function(pos)
 		update_entity(pos)
