@@ -185,8 +185,7 @@ minetest.register_node("mcl_smithing_table:table", {
 			and		mcl_smithing_table.is_smithing_mineral(stackname)
 
 			or 		listname == "template"
-			and 	string.find(stackname, "mcl_armor")
-			and not def._mcl_armor_element
+			and 	def._mcl_armor_template
 		then
 			return stack:get_count()
 		end
