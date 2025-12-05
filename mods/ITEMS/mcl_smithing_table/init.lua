@@ -180,8 +180,10 @@ minetest.register_node("mcl_smithing_table:table", {
 			and 	(def._mcl_armor_element
 			and not mcl_armor.trims.blacklisted[stackname] -- allow any armor piece to go in (in case the player wants to trim them)
 			or 		def._mcl_upgradable) -- for diamond tools
+
 			or 		listname == "mineral"
 			and 	mcl_smithing_table.is_smithing_mineral(stackname)
+
 			or 		listname == "template"
 			and 	def._mcl_armor_template
 		then
