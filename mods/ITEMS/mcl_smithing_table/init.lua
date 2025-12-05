@@ -106,7 +106,7 @@ function mcl_smithing_table.upgrade_trimmed(itemstack, color_mineral, template)
 	local material_name = color_mineral:get_name()
 	material_name = smithing_materials[material_name]
 
-	local overlay = template:get_name():gsub("mcl_armor:","")
+	local overlay = template:get_definition()._mcl_armor_template_name
 
 	--trimming process
 	mcl_armor.trim(itemstack, overlay, material_name)
@@ -123,10 +123,11 @@ end
 local function reset_upgraded_item(pos)
 	local inv = minetest.get_meta(pos):get_inventory()
 	local upgraded_item
-	local original_itemname = inv:get_stack("upgrade_item", 1):get_name()
+	local upgrade_stack = inv:get_stack("upgrade_item", 1)
+	local upgrade_def = upgrade_stack:get_definition()
 	local template_present = inv:get_stack("template",1):get_name() ~= ""
-	local is_armor = original_itemname:find("mcl_armor:") ~= nil
-	local is_trimmed = original_itemname:find("_trimmed") ~= nil
+	local is_armor = upgrade_def._mcl_armor_element ~= nil
+	local is_trimmed = mcl_armor.is_trimmed(upgrade_stack)
 
 	if inv:get_stack("mineral", 1):get_name() == "mcl_nether:netherite_ingot" and not template_present then
 		upgraded_item = mcl_smithing_table.upgrade_item_netherite(inv:get_stack("upgrade_item", 1))

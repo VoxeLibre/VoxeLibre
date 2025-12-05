@@ -7,6 +7,7 @@ for _, template_name in pairs(mcl_armor.trims.overlays) do
 		inventory_image  = template_name .. "_armor_trim_smithing_template.png",
 		groups           = { armor_trim_template = 1 },
 		_mcl_armor_template = true,
+		_mcl_armor_template_name = template_name,
 	})
 
 	minetest.register_craft({
