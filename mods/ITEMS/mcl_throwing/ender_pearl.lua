@@ -124,6 +124,7 @@ vl_projectile.register("mcl_throwing:ender_pearl_entity",{
 			"mcl_core:vine", "mcl_core:deadbush",
 			"group:flower", "group:sapling",
 			"group:plant", "group:mushroom",
+			"mcl_portals:portal_gateway",
 		},
 		allow_punching = function(self, _, _, object)
 			if self.timer < 1 and self._owner == mcl_util.get_entity_id(object) then return false end

@@ -50,7 +50,7 @@ gateway_def._doc_items_usagehelp = S("Throw an ender pearl into the portal to te
 gateway_def.after_destruct = nil
 gateway_def.drawtype = "normal"
 gateway_def.node_box = nil
-gateway_def.walkable = true
+gateway_def.walkable = false
 gateway_def.tiles[3] = nil
 gateway_def.collision_box = nil
 minetest.register_node("mcl_portals:portal_gateway", gateway_def)
