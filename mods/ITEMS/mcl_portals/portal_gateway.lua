@@ -53,7 +53,6 @@ gateway_def.node_box = nil
 gateway_def.walkable = false
 gateway_def.tiles[3] = nil
 gateway_def.collision_box = nil
-minetest.register_node("mcl_portals:portal_gateway", gateway_def)
 
 local function find_destination_pos(minp, maxp)
 	for y = maxp.y, minp.y, -1 do
@@ -100,6 +99,20 @@ local function teleport(pos, obj)
 	end)
 end
 
+-- Handle ender pearl collision with gateway portal for immediate teleportation
+gateway_def._vl_projectile = {
+	on_collide = function(self, pos, node, node_def)
+		if self.name == "mcl_throwing:ender_pearl_entity" then
+			local thrower = self._owner and minetest.get_player_by_name(self._owner)
+			if thrower then
+				self.object:remove()
+				teleport(pos, thrower)
+			end
+		end
+	end,
+}
+minetest.register_node("mcl_portals:portal_gateway", gateway_def)
+
 minetest.register_abm({
 	label = "End gateway portal teleportation",
 	nodenames = {"mcl_portals:portal_gateway"},
@@ -109,11 +122,6 @@ minetest.register_abm({
 		if preparing[minetest.pos_to_string(pos)] then return end
 		for _, obj in pairs(minetest.get_objects_inside_radius(pos, 1)) do
 			if obj:get_hp() > 0 then
-				local luaentity = obj:get_luaentity()
-				if luaentity and luaentity.name == "mcl_throwing:ender_pearl" then
-					obj:remove()
-					obj = luaentity._thrower
-				end
 				teleport(pos, obj)
 				return
 			end
