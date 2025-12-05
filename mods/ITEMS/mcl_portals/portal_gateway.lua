@@ -52,6 +52,7 @@ gateway_def.drawtype = "normal"
 gateway_def.node_box = nil
 gateway_def.walkable = true
 gateway_def.tiles[3] = nil
+gateway_def.collision_box = nil
 minetest.register_node("mcl_portals:portal_gateway", gateway_def)
 
 local function find_destination_pos(minp, maxp)
