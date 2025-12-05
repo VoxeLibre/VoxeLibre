@@ -56,13 +56,13 @@ function mcl_enchanting.has_enchantment(itemstack, enchantment)
 end
 
 function mcl_enchanting.get_enchantment_description(enchantment, level)
-	local enchantment_def = mcl_enchanting.enchantments[enchantment]
+	local enchantment_def = mcl_enchanting.enchantments[enchantment] or {name = enchantment}
 	return enchantment_def.name ..
 		(enchantment_def.max_level == 1 and "" or " " .. mcl_util.to_roman(level))
 end
 
 function mcl_enchanting.get_colorized_enchantment_description(enchantment, level)
-	return minetest.colorize(mcl_enchanting.enchantments[enchantment].curse and mcl_colors.RED or mcl_colors.GRAY,
+	return minetest.colorize((mcl_enchanting.enchantments[enchantment] or {}).curse and mcl_colors.RED or mcl_colors.GRAY,
 		mcl_enchanting.get_enchantment_description(enchantment, level))
 end
 
