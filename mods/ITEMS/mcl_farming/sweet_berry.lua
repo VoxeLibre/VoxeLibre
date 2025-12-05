@@ -108,7 +108,7 @@ core.register_craftitem("mcl_farming:sweet_berry", {
 			end
 			return itemstack
 		end
-		return core.do_item_eat(1, nil, itemstack, placer, pointed_thing)
+		return core.do_item_eat(2, nil, itemstack, placer, pointed_thing)
 	end,
 })
 core.register_alias("mcl_sweet_berry:sweet_berry", "mcl_farming:sweet_berry")
