@@ -127,11 +127,10 @@ local function reset_upgraded_item(pos)
 	local upgrade_def = upgrade_stack:get_definition()
 	local template_present = inv:get_stack("template",1):get_name() ~= ""
 	local is_armor = upgrade_def._mcl_armor_element ~= nil
-	local is_trimmed = mcl_armor.is_trimmed(upgrade_stack)
 
 	if inv:get_stack("mineral", 1):get_name() == "mcl_nether:netherite_ingot" and not template_present then
 		upgraded_item = mcl_smithing_table.upgrade_item_netherite(inv:get_stack("upgrade_item", 1))
-	elseif template_present and is_armor and not is_trimmed and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
+	elseif template_present and is_armor and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
 		upgraded_item = mcl_smithing_table.upgrade_trimmed(inv:get_stack("upgrade_item", 1),inv:get_stack("mineral", 1),inv:get_stack("template", 1))
 	end
 
