@@ -292,6 +292,10 @@ minetest.register_alias("mcl_compass:compass", "mcl_compass:" .. stereotype_fram
 
 minetest.register_node("mcl_compass:lodestone",{
 	description=S("Lodestone"),
+	_tt_help = S("Use with a compass"),
+	_doc_items_longdesc = S("Lodestone is a block that can be used with a compass, after which the compass points to its position."),
+	_doc_items_usagehelp = S("Rightclick the lodestone with a compass to let the compass point to its position."),
+	_doc_items_hidden = false,
 	on_rightclick = function(pos, node, player, itemstack)
 		local name = itemstack.get_name(itemstack)
 		if string_find(name,"mcl_compass:") then
