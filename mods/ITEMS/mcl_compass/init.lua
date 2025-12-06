@@ -249,6 +249,9 @@ for _, item in pairs(compass_types) do
 			wield_image = string.format(img_fmt, i),
 			groups = {compass = i + 1, tool = 1, disable_repair = 1},
 		}
+		if item.name == "compass" then
+			def.groups._mcl_compass = 1
+		end
 		if i == stereotype_frame then
 			def._doc_items_longdesc = item.longdesc
 			def._doc_items_usagehelp = item.usagehelp
@@ -281,7 +284,7 @@ minetest.register_craft({ --TODO: update once echo shards are a thing
 	output = "mcl_compass:" .. random_frame .. "_recovery",
 	recipe = {
 		{"","mcl_nether:netherite_ingot",""},
-		{"mcl_core:diamondblock","mcl_compass:" .. stereotype_frame ,"mcl_core:diamondblock"},
+		{"mcl_core:diamondblock","group:_mcl_compass","mcl_core:diamondblock"},
 		{"mcl_core:diamondblock","mcl_core:diamondblock","mcl_core:diamondblock"}
 
 	}

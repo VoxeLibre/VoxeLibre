@@ -228,6 +228,7 @@ You should not add custom items to these groups for no good reason, this is like
 
 * `clock`: Clock (rating indicates the “frame”)
 * `compass`: Compass (rating indicates the “frame”)
+* `_mcl_compass`: Regular compass (not recovery or lodestone)
 
 This has the following implication: If you want to use a compass or clock in a crafting recipe, you *must*
 use `group:compass` or `group:clock`, respectively.
