@@ -212,17 +212,22 @@ end
 
 -- used for water bottles and river water bottles
 local function dispense_water_bottle(stack, pos, droppos)
-	local node = minetest.get_node(droppos)
-	if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
-		-- convert dirt/coarse dirt to mud
-		minetest.set_node(droppos, {name = "mcl_mud:mud"})
-		minetest.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
-		return ItemStack("mcl_potions:glass_bottle")
+    local node = minetest.get_node(droppos)
+    local nodedef = minetest.registered_nodes[node.name]
 
-	elseif node.name == "mcl_mud:mud" then
-		-- dont dispense into mud
-		return stack
-	end
+    if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
+		minetest.set_node(droppos, {name = "mcl_mud:mud"})
+        minetest.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
+        return ItemStack("mcl_potions:glass_bottle")
+    elseif nodedef and not nodedef.walkable then
+        -- Only drop into non-solid spaces (air, flowers, etc.)
+        minetest.add_item(droppos, stack)
+        stack:take_item()
+        return stack
+    else
+        -- Solid block - do nothing, keep item in dispenser
+        return stack
+    end
 end
 
 -- on_place function for `mcl_potions:water` and `mcl_potions:river_water`
