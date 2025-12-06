@@ -336,13 +336,28 @@ function mcl_mobs.register_mob(name, def)
 			if (reason.direct and reason.direct:is_player()) or
 			   (reason.source and reason.source:is_player())
 			then
+				-- Flag the mob as taking damage from a player to drop XP and rare loot
 				self.xp_timestamp = core.get_us_time()
 			end
 
 			if def.deal_damage then
 				def.deal_damage(self, damage, reason)
 			else
-				self.health = self.health - damage
+				-- Duplicated from mcl_util/init.lua, find_attacker_name() expanded inline
+				-- Without this logic, self:damage_mob() won't be called when mcl_init.deal_damage()
+				-- calls this damage handler, breaking things like burning damage
+				local reason = (reason and reason.type) or "generic"
+				local attacker_name = nil
+				local e = reason.direct and reason.direct:get_luaentity()
+				if e and e.name then
+					attacker_name = e.name
+				else
+					e = reason.source and reason.source:get_luaentity()
+					if e and e.name then
+						attacker_name = e.name
+					end
+				end
+				self:damage_mob(reason, damage, { attacker_name = attacker_name })
 			end
 		end,
 		on_breed = def.on_breed,
