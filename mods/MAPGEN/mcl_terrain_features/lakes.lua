@@ -135,7 +135,7 @@ mcl_structures.register_structure("water_lake", {
 	y_max = mcl_vars.mg_overworld_max,
 	y_min = core.get_mapgen_setting("water_level"),
 	place_func = function(pos, _, pr)
-		return makelake(pos, 5, { name = "mclx_core:river_water_source" },
+		return makelake(pos, 5, { name = "mcl_core:water_source" },
 			{ "group:material_stone", "group:sand", "group:dirt", "group:grass_block"},
 			nil, { name = "mcl_core:sand" }, pr)
 	end
