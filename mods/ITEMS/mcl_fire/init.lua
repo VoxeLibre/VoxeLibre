@@ -444,6 +444,8 @@ else -- Fire enabled
 
 			-- Always age the source fire
 			local humidity_factor = consts.humidity_factor * core.get_humidity(pos)
+			if humidity_factor < 0 then humidity_factor = 0 end
+
 			age = min(255, age + random(consts.age_min, humidity_factor + consts.age_max))
 			node.param2 = age
 
