@@ -136,25 +136,16 @@ local function reset_upgraded_item(pos)
 	end
 
 	inv:set_stack("upgraded_item", 1, upgraded_item)
-	-- show a dynamic warning formspec when trimming an armor piece
+
 	if template_present and is_armor and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
-		local template_stack = inv:get_stack("template", 1)
-		local template_def = template_stack:get_definition()
-		local template_desc = template_def and (template_def.description or template_def._mcl_armor_template_name) or template_stack:get_name()
-
-		local mineral_stack = inv:get_stack("mineral", 1)
-		local mineral_def = mineral_stack:get_definition()
-		local mineral_desc = mineral_def and (mineral_def.description or smithing_materials[mineral_stack:get_name()] or mineral_stack:get_name()) or mineral_stack:get_name()
-
-		local msg = S("Warning: the input armor will be trimmed.")
-
-		-- If the input armor already has a trim, warn that it will be overridden
+		-- Show a warning only if the input armor is already trimmed
 		local upgrade_stack = inv:get_stack("upgrade_item", 1)
 		if mcl_armor.is_trimmed(upgrade_stack) then
-			msg = msg .. " " .. S("The current trim will be overridden.")
+			local msg = S("Warning: Current trim will be overridden")
+			meta:set_string("formspec", formspec .. "label[4.125,1.05;" .. F(C(mcl_colors.RED, msg)) .. "]")
+		else
+			meta:set_string("formspec", formspec)
 		end
-
-		meta:set_string("formspec", formspec .. "label[4.125,1.05;" .. F(C(mcl_colors.RED, msg)) .. "]")
 	else
 		meta:set_string("formspec", formspec)
 	end
