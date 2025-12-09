@@ -106,7 +106,7 @@ function mcl_smithing_table.upgrade_trimmed(itemstack, color_mineral, template)
 	local material_name = color_mineral:get_name()
 	material_name = smithing_materials[material_name]
 
-	local overlay = template:get_name():gsub("mcl_armor:","")
+	local overlay = template:get_definition()._mcl_armor_template_name
 
 	--trimming process
 	mcl_armor.trim(itemstack, overlay, material_name)
@@ -121,20 +121,34 @@ end
 
 ---@param pos Vector
 local function reset_upgraded_item(pos)
-	local inv = minetest.get_meta(pos):get_inventory()
+	local meta = core.get_meta(pos)
+	local inv = meta:get_inventory()
 	local upgraded_item
-	local original_itemname = inv:get_stack("upgrade_item", 1):get_name()
+	local upgrade_stack = inv:get_stack("upgrade_item", 1)
+	local upgrade_def = upgrade_stack:get_definition()
 	local template_present = inv:get_stack("template",1):get_name() ~= ""
-	local is_armor = original_itemname:find("mcl_armor:") ~= nil
-	local is_trimmed = original_itemname:find("_trimmed") ~= nil
+	local is_armor = upgrade_def._mcl_armor_element ~= nil
 
 	if inv:get_stack("mineral", 1):get_name() == "mcl_nether:netherite_ingot" and not template_present then
 		upgraded_item = mcl_smithing_table.upgrade_item_netherite(inv:get_stack("upgrade_item", 1))
-	elseif template_present and is_armor and not is_trimmed and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
+	elseif template_present and is_armor and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
 		upgraded_item = mcl_smithing_table.upgrade_trimmed(inv:get_stack("upgrade_item", 1),inv:get_stack("mineral", 1),inv:get_stack("template", 1))
 	end
 
 	inv:set_stack("upgraded_item", 1, upgraded_item)
+
+	if template_present and is_armor and mcl_smithing_table.is_smithing_mineral(inv:get_stack("mineral", 1):get_name()) then
+		-- Show a warning only if the input armor is already trimmed
+		local upgrade_stack = inv:get_stack("upgrade_item", 1)
+		if mcl_armor.is_trimmed(upgrade_stack) then
+			local msg = S("Warning: Current trim will be overridden")
+			meta:set_string("formspec", formspec .. "label[4.125,1.05;" .. F(C(mcl_colors.RED, msg)) .. "]")
+		else
+			meta:set_string("formspec", formspec)
+		end
+	else
+		meta:set_string("formspec", formspec)
+	end
 end
 
 minetest.register_node("mcl_smithing_table:table", {
@@ -175,18 +189,11 @@ minetest.register_node("mcl_smithing_table:table", {
 
 		local stackname = stack:get_name()
 		local def = stack:get_definition()
-		if 			
-					listname == "upgrade_item"  
-			and	 	def._mcl_armor_element -- allow any armor piece to go in (in case the player wants to trim them)
-			and not mcl_armor.trims.blacklisted[stackname]
-			or 		def._mcl_upgradable -- for diamond tools
-
-			or		listname == "mineral" 
-			and		mcl_smithing_table.is_smithing_mineral(stackname)
-
-			or 		listname == "template"
-			and		string.find(stackname, "mcl_armor") 
-		then
+		if listname == "upgrade_item"
+				and (def._mcl_armor_element and not mcl_armor.trims.blacklisted[stackname]
+					or def._mcl_upgradable) -- Upgradable tools/armor or trimmable armor
+				or listname == "mineral" and mcl_smithing_table.is_smithing_mineral(stackname)
+				or listname == "template" and def._mcl_armor_template then
 			return stack:get_count()
 		end
 
