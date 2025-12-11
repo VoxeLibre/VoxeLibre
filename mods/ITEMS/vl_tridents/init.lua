@@ -4,14 +4,14 @@ local wield_scale = mcl_vars.tool_wield_scale
 
 local TRIDENT_THROW_POWER = 30
 local TRIDENT_FULL_CHARGE_TIME = 1000000 -- time until full charge in microseconds
-local TRIDENT_RANGE = 4.5
+local TRIDENT_MELEE_RANGE = 4.5
 
 local trident_entity = table.copy(vl_weaponry.spear_entity)
 table.update(trident_entity.initial_properties, {
 	visual = "mesh",
 	mesh = "vl_tridents.obj",
 	textures = {"vl_tridents.png"},
-	_damage=9,
+	liquid_drag = false
 })
 table.update(trident_entity._vl_projectile, {
 	pitch_offset = 0,
@@ -172,7 +172,7 @@ core.register_tool("vl_tridents:trident", {
 	on_place = trident_on_place,
 	on_secondary_use = trident_on_place,
 	groups = { weapon=1, weapon_ranged=1, dig_speed_class=2, trident=1, enchantability=15 },
-	range = TRIDENT_RANGE,
+	range = TRIDENT_MELEE_RANGE,
 	tool_capabilities = {
 		full_punch_interval = 0.75,
 		max_drop_level=1,
