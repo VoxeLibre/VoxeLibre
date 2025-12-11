@@ -70,7 +70,7 @@ local function throw_trident(itemstack, user, power_factor)
 	user:set_wielded_item(ItemStack())
 end
 
--- Factor to multiply with player speed while player uses bow
+-- Factor to multiply with player speed while player uses trident
 -- This emulates the sneak speed.
 local AIMING_MOVEMENT_SPEED =
 	tonumber(core.settings:get("movement_speed_crouch"))
