@@ -12,7 +12,7 @@ local allsounds = {
 	},
 	["env_sounds_lava"] = {
 		trigger = {
-            "mcl_core:lava_source", 
+            "mcl_core:lava_source",
             "mcl_core:lava_flowing"
         },
 		base_volume = 0.08,
@@ -26,7 +26,7 @@ local allsounds = {
 	},
 }
 
-if minetest.settings:get_bool("river_source_sounds") then
+if core.settings:get_bool("river_source_sounds") then
 	table.insert(allsounds["env_sounds_water"].trigger,
 		"default:river_water_source")
 end
@@ -52,7 +52,7 @@ local function update_sound(player)
 	local areamin = vector.subtract(ppos, radius)
 	local areamax = vector.add(ppos, radius)
 
-	local pos = minetest.find_nodes_in_area(areamin, areamax, cache_triggers, true)
+	local pos = core.find_nodes_in_area(areamin, areamax, cache_triggers, true)
 	if next(pos) == nil then -- If table empty
 		return
 	end
@@ -88,7 +88,7 @@ local function update_sound(player)
 			end
 			gain = math.min(gain, def.max_volume)
 
-			minetest.sound_play(sound, {
+			core.sound_play(sound, {
 				pos = posav,
 				to_player = player_name,
 				gain = gain,
@@ -100,7 +100,7 @@ end
 
 -- Update sound when player joins
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	update_sound(player)
 end)
 
@@ -108,10 +108,10 @@ end)
 -- Cyclic sound update
 
 local function cyclic_update()
-	for _, player in pairs(minetest.get_connected_players()) do
+	for _, player in pairs(core.get_connected_players()) do
 		update_sound(player)
 	end
-	minetest.after(3.5, cyclic_update)
+	core.after(3.5, cyclic_update)
 end
 
-minetest.after(0, cyclic_update)
+core.after(0, cyclic_update)

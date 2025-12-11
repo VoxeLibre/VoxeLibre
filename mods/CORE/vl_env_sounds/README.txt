@@ -6,6 +6,7 @@ Authors of source code
 ----------------------
 paramat, wrote original env_sounds for Minetest Game (MIT)
 SmokeyDope, updated env_sounds code for Voxelibre compatability.
+FaerRaven, updated api calls, and other misc fixes.
 
 Authors of media (sounds)
 -------------------------
