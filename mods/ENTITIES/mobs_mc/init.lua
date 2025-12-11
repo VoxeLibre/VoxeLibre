@@ -62,6 +62,7 @@ mobs_mc.make_owner_teleport_function = function(dist, teleport_check_interval)
 							trybelownode and trybelownode.walkable then
 						-- Correct position found! Let's teleport.
 						self.object:set_pos(telepos)
+						self.old_y = telepos.y -- mcl_mobs uses this variable for fall damage. This disables it while teleporting
 						return
 					end
 				end
