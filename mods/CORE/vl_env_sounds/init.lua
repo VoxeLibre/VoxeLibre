@@ -102,11 +102,7 @@ end
 
 
 -- Update sound when player joins
-
-core.register_on_joinplayer(function(player)
-	update_sound(player)
-end)
-
+core.register_on_joinplayer(update_sound)
 
 -- Cyclic sound update
 
@@ -118,3 +114,5 @@ local function cyclic_update()
 end
 
 core.after(0, cyclic_update)
+
+-- TODO: profile this code on a MP server to see if it causes lag.
