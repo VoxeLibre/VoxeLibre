@@ -3,6 +3,9 @@
 -- Node search radius around player
 local radius = 8
 
+-- cache local copy of pairs to reduce call time.
+local pairs = pairs
+
 local allsounds = {
 	["env_sounds_water"] = {
 		trigger = {"mcl_core:water_flowing"},
