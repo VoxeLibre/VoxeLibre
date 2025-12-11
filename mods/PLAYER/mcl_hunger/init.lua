@@ -170,37 +170,78 @@ dofile(modpath .. "/commands.lua")
 mcl_hunger.poison_hunger = {} -- food poisoning, increasing hunger
 
 -- HUD
--- Register hudbars
-hb.register_hudbar("hunger", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png", bar = "hbhunger_bar.png"}, 1, 20, 20, false)
-hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "mcl_hunger_icon_saturation.png", bgicon = "mcl_hunger_bgicon_saturation.png", bar = "mcl_hunger_bar_saturation.png" }, 1, mcl_hunger.SATURATION_INIT, 200, false)
-hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png"}, 1, 0, mcl_hunger.EXHAUST_LVL, false)
+-- Register built-in HUD bars
+vl_hudbars.register_hudbar({
+	identifier = "hunger",
+	sort_index = 6,
+	on_right = true,
+	direction = 1,
+	layer_gap = 4,
+	scale_y = 1,
+	value_type = "proportional",
+	default_max_val = 20,
+	default_value = 20,
+	icon = "hbhunger_icon.png",
+	bgicon = "hbhunger_bgicon.png",
+	layers = 1,
+})
+vl_hudbars.register_hudbar({
+	identifier = "saturation",
+	sort_index = 2,
+	on_right = true,
+	direction = 0,
+	layer_gap = 4,
+	scale_y = 1,
+	value_type = "proportional",
+	default_max_val = 200,
+	default_value = mcl_hunger.SATURATION_INIT,
+	icon = "mcl_hunger_icon_saturation.png",
+	bgicon = "mcl_hunger_bgicon_saturation.png",
+	layers = 1,
+})
+vl_hudbars.register_hudbar({
+	identifier = "exhaustion",
+	sort_index = 2,
+	on_right = false,
+	direction = 1,
+	layer_gap = 4,
+	scale_y = 1,
+	value_type = "proportional",
+	default_max_val = mcl_hunger.EXHAUST_LVL,
+	default_value = 0,
+	icon = "mcl_hunger_icon_exhaustion.png",
+	bgicon = "mcl_hunger_bgicon_exhaustion.png",
+	layers = 1,
+})
 
 --- Hide and unhide bars depending on current mod state.
 ---@param player core.Player
 function mcl_hunger.refresh_player_bars(player)
 	if mcl_hunger.get_active() then
-		hb.unhide_hudbar(player, "hunger")
+		vl_hudbars.show(player, "hunger")
 	else
-		hb.hide_hudbar(player, "hunger")
+		vl_hudbars.hide(player, "hunger")
 	end
 	if mcl_hunger.get_active() and mcl_hunger.get_debug() then
-		hb.unhide_hudbar(player, "saturation")
-		hb.unhide_hudbar(player, "exhaustion")
+		vl_hudbars.show(player, "saturation")
+		vl_hudbars.show(player, "exhaustion")
 	else
-		hb.hide_hudbar(player, "saturation")
-		hb.hide_hudbar(player, "exhaustion")
+		vl_hudbars.hide(player, "saturation")
+		vl_hudbars.hide(player, "exhaustion")
 	end
 end
 
----
 ---@param player core.Player
 local function init_player_hud(player)
 	local name = player:get_player_name()
 
 	-- Init hunger bars
-	hb.init_hudbar(player, "hunger", mcl_hunger.get_hunger(player))
-	hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
-	hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
+	vl_hudbars.init_hudbar(player, "hunger")
+	vl_hudbars.change_value(player, "hunger", mcl_hunger.get_hunger(player))
+	vl_hudbars.init_hudbar(player, "saturation")
+	vl_hudbars.change_value(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
+	vl_hudbars.init_hudbar(player, "exhaustion")
+	vl_hudbars.change_value(player, "exhaustion", mcl_hunger.get_exhaustion(player))
 
 	-- Init eating animation
 	mcl_hunger.eat_anim_hud[name] = player:hud_add({
@@ -222,7 +263,7 @@ end
 ---@param hunger     number?
 function mcl_hunger.update_saturation_hud(player, saturation, hunger)
 	if mcl_hunger.get_debug() then
-		hb.change_hudbar(player, "saturation", saturation, hunger)
+		vl_hudbars.change_value(player, "saturation", saturation, hunger)
 	end
 end
 
@@ -234,7 +275,7 @@ function mcl_hunger.update_exhaustion_hud(player, exhaustion)
 		if not exhaustion then
 			exhaustion = mcl_hunger.get_exhaustion(player)
 		end
-		hb.change_hudbar(player, "exhaustion", exhaustion)
+		vl_hudbars.change_value(player, "exhaustion", exhaustion)
 	end
 end
 
@@ -259,7 +300,7 @@ core.register_on_respawnplayer(function(player)
 	mcl_hunger.set_hunger(player, h, false)
 	mcl_hunger.set_saturation(player, s, false)
 	mcl_hunger.set_exhaustion(player, e, false)
-	hb.change_hudbar(player, "hunger", h)
+	vl_hudbars.change_value(player, "hunger", h)
 	mcl_hunger.update_saturation_hud(player, s, h)
 	mcl_hunger.update_exhaustion_hud(player, e)
 end)

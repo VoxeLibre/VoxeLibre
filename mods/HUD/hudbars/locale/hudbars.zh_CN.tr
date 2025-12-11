@@ -1,6 +1,0 @@
-# textdomain: hudbars
-# Default format string for progress bar-style HUD bars, e.g. “Health 5/20”
-# 用于进度条样式平视显示器（HUD）条的默认格式字符串，例如“生命值5/20” ##TODO: fuzzy matched - verify and remove the comment
-@1: @2/@3=@1：@2/@3
-Health=生命值
-Breath=氧气值
