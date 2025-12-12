@@ -14,6 +14,7 @@ end
 
 mcl_death_drop.register_dropped_list("PLAYER", "main", true)
 mcl_death_drop.register_dropped_list("PLAYER", "craft", true)
+mcl_death_drop.register_dropped_list("PLAYER", "craftresult", true)
 mcl_death_drop.register_dropped_list("PLAYER", "armor", true)
 mcl_death_drop.register_dropped_list("PLAYER", "offhand", true)
 
