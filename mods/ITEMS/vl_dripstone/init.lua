@@ -19,7 +19,7 @@ local dripstone_block_definition = {
 	drop = "vl_dripstone:dripstone_block",
 	is_ground_content = true,
 	on_place = mcl_util.rotate_axis,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
@@ -31,7 +31,7 @@ local pointed_dripstone_definition = {
 	tiles = {"vl_pointed_dripstone.png"},
 	groups = {cracky = 2, falling_node = 1},
 	drop = "vl_dripstone:pointed_dripstone",
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 }
 
 -- Crafting recipe for dripstone block
