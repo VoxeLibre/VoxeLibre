@@ -1,7 +1,7 @@
 # textdomain: mcl_core
 ##[ functions.lua ]##
-
-Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=
+	
+Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=Se as enredadeiras poden estenderse a outros bloques. As enredadeiras de cova, as enredadeiras choronas e as enredadeiras retortas non se ven afectadas.
 
 ##[ nodes_base.lua ]##
 Stone=Pedra
@@ -10,19 +10,19 @@ One of the most common blocks in the world, almost the entire underground consis
 
 Coal Ore=Mineral de Carbón
 
-Some coal contained in stone, it is very common and can be found inside stone in medium to large clusters at nearly every height.=Algo de carbón contido na pedra, e moi común e podese atopar dentro da pedra en grupos medianos a grandes en casi todas as alturas.
+Some coal contained in stone, it is very common and can be found inside stone in medium to large clusters at nearly every height.=Algo de carbón contido na pedra, e moi común e podese atopar dentro da pedra agrupacións medianas ou grandes en casi todas as alturas.
 
 Iron Ore=Mineral de ferro
 
-Some iron contained in stone, it is prety common and can be found below sea level.=Algo de ferro contido en pedra, e bastante común e podese atopar debaixo do nivel do mar.
+Some iron contained in stone, it is prety common and can be found below sea level.=Algo de ferro contido na pedra, e bastante común e podese atopar debaixo do nivel do mar.
 
 Gold Ore=Mineral de ouro
 This stone contains pure gold, a rare metal.=Esta pedra contén ouro puro, un metal raro.
 Redstone Ore=Mineral de Pedra Vermella
 
-Redstone ore is commonly found near the bottom of the world. It glows when it is punched or walked upon.=O mineral Pedra Vermella atopase comúnmente preto do fondo do mundo. Brilla cando e golpeado o pisado.
+Redstone ore is commonly found near the bottom of the world. It glows when it is punched or walked upon.=O mineral de Pedra Vermella atopase comúnmente preto do fondo do mundo. Brilla cando e golpeado ou pisado.
 
-Lit Redstone Ore=Mineral de pedra vermella encendido
+Lit Redstone Ore=Mineral de pedra vermella incandescente
 Lapis Lazuli Ore=Mineral de lapislázuli
 
 Lapis lazuli ore is the ore of lapis lazuli. It can be rarely found in clusters near the bottom of the world.=O mineral de lapislázuli e o mineral de lapislázuli. Rara vez se pode atopar en grupos, atopase preto do fondo do mundo.
@@ -34,8 +34,8 @@ Emerald ore is the ore of emeralds. It is very rare and can be found alone, not 
 Diamond Ore=Mineral de diamante
 Diamond ore is rare and can be found in clusters near the bottom of the world.=O mineral de diamante e raro e pode atoparse en grupos preto do fondo do mundo.
 Stone Bricks=Ladrillos de pedra
-Chiseled Stone Bricks=Ladrillo de pedra cincelado
-Cracked Stone Bricks=Ladrillo de pedra fendido
+Chiseled Stone Bricks=Ladrillo de pedra tallado
+Cracked Stone Bricks=Ladrillo de pedra gretado
 Mossy Stone Bricks=Ladrillo de pedra musgoso
 Polished Stone=Pedra pulida
 Granite=Granito
@@ -52,77 +52,77 @@ Polished Diorite=Diorita pulida
 Polished diorite is a decorative building block made from diorite.=A diorita pulida e un bloque de construcción decorativo feito de diorita.
 Grass Block=Bloque de herba
 
-A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.=Un bloque de herba é terra cunha cuberta de herba. Os bloques de herba son bloques con recursos que permiten o crecemento de todo tipo de plantas. Pódense converter en terras de cultivo cunha aixada e converterse en camiños de herba cunha pa. Á luz, a herba esténdese lentamente na terra próxima. Baixo un bloque opaco ou un líquido, un bloque de herba pode volverse lixo.
+A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.=Un bloque de herba é terra cunha capa de herba. Son bloques útiles que permiten o crecemento de todo tipo de plantas. Pódense converter en terras de cultivo cunha aixada e converterse en camiños de herba cunha pa. Coa luz, a herba esténdese lentamente á terra próxima. Baixo un bloque opaco ou un líquido, pode volverse terra.
 
-Dirt with Snow=
+Dirt with Snow=Terra con neve
 Grass Path=Camiño de herba
 
-##TODO: fuzzy matched - verify and remove the comment
-Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=Os camiños de herba son unha variante decorativa dos bloques de herba. A súa parte superior ten unha cor diferente e son un pouco máis baixas que os bloques de herba, polo que son útiles para construír carreiros. Os camiños de herba pódense crear cunha pa. Un camiño de herba convértese en terra cando está debaixo dun bloque sólido.
+
+Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=Os camiños de herba son unha variante decorativa dos bloques de herba. A súa parte superior ten unha cor diferente e son un pouco máis baixos que os bloques de herba, o que os fai útiles para construír sendeiros. Os camiños de herba pódense crear facendo clic dereioto cunha pa. Un camiño de herba convértese en terra cando está debaixo dun bloque sólido ou cando se fai clic con maiúsculas + botón dereito cunha pa..
 
 Mycelium=Micelio
 
 Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.=O micelio e un tipo de terra e o chan ideal para os fungos. A diferencia doutros bloques de tipo de terra, non se poden convertir en terras de cultivo cunha aixada. A luz, o micelio extendese lentamente sobre a terra cercana. Debaixo dun bloque opaco ou un líquido, eventualmente se converte novamente en terra.
 
-Mycelium with Snow=
+Mycelium with Snow=Micelio con neve
 Podzol=Podzol
 
 Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.=O podzol e un tipo de terra que se atopa nos bosques de taiga. Só unhas pocas plantas poden sobrevivir nel.
 
-Podzol with Snow=
+Podzol with Snow=Podzol con neve
 Dirt=Terra
 
-Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby.=A terra actúa como un chan para algunhas plantas. Cando está a luz, este bloque pode medrar unha cuberta de herba ou micelio si tales bloques están preto.
+Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby.=A terra actúa como solo para algunhas plantas. Cando está á luz, este bloque pode cubrirse de herba ou micelio se hai bloques dese tipo preto.
 
 Coarse Dirt=Terra estéril
 
-Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never grow a cover.=A terra estéril actúa como un chan para algunas prantas, e similar a terra, pero xamais crecerá unha cuberta.
+Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never grow a cover.=A terra estéril actúa como un solo para algunas prantas, e é semellante á terra, pero nunca desenvolverá unha coberta.
 
 Gravel=Grava
-This block consists of a couple of loose stones and can't support itself.=Este bloque está formado por un par de pedras soltas e non se pode soster.
-Grey Sand=
-Grey sand is found where stone erosion takes place.=
+This block consists of a couple of loose stones and can't support itself.=Este bloque está composto por un par de pedras soltas e non se pode soster por si só.
+Grey Sand=Area gris
+Grey sand is found where stone erosion takes place.=A area gris atópase onde se produce a erosión das pedras.
 Sand=Area
 Sand is found in large quantities at beaches and deserts.=A arena atopase en grandes cantidades en praias e desertos.
-Sandstone=Arenisca
-Sandstone is compressed sand and is a rather soft kind of stone.=A arenisca e area comprimida, e un tipo de pedra bastante suave.
-Cut Sandstone=Arenisca cortada
-Cut sandstone is a decorative building block.=A arenisca cortada e un elemento decorativo.
-Chiseled Sandstone=Arenisca cincelada
-Chiseled sandstone is a decorative building block.=A pedra arenisca cincelada e un bloque de construcción decorativo.
-Smooth Sandstone=Arenisca lisa
-Smooth sandstone is compressed sand and is a rather soft kind of stone.=A arenisca lisa e area comprimida, e un tipo de pedra bastante branda.
+Sandstone=Arenito
+Sandstone is compressed sand and is a rather soft kind of stone.=O arenito e area comprimida, e un tipo de pedra bastante branda.
+Cut Sandstone=Arenito cortado
+Cut sandstone is a decorative building block.=O arenito cortado e un obxecto decorativo.
+Chiseled Sandstone=Arenito cincelada
+Chiseled sandstone is a decorative building block.=A pedra de arenito tallado e un bloque de construcción decorativo.
+Smooth Sandstone=Arenito lisa
+Smooth sandstone is compressed sand and is a rather soft kind of stone.=O arenito liso e area comprimida, e un tipo de pedra bastante branda.
 Red Sand=Area vermella
 Red sand is found in large quantities in mesa biomes.=A area Vermella atopase en grandes cantidades nos desertos.
-Red Sandstone=Arenisca Vermella
-Red sandstone is compressed red sand and is a rather soft kind of stone.=A arenisca Vermella e area Vermella comprimida, e un tipo de pedra bastante suave.
-Cut Red Sandstone=Arenisca vermella cortada
-Cut red sandstone is a decorative building block.=A arenisca vermella cortada e un elemento decorativo.
-Chiseled Red Sandstone=Arenisca vermella Cincelada
-Chiseled red sandstone is a decorative building block.=A pedra arenisca vermella cincelada e un elemento decorativo.
-Smooth Red Sandstone=Arenisca vermella lisa
-Smooth red sandstone is a decorative building block.=A pedra arenisca Vermella lisa e un elemento decorativo.
+Red Sandstone=Arenito Vermello
+Red sandstone is compressed red sand and is a rather soft kind of stone.=O arenito Vermello e area Vermella comprimida, e un tipo de pedra bastante branda.
+Cut Red Sandstone=Arenito vermello cortado
+Cut red sandstone is a decorative building block.=O arenito vermello cortado e un obxecto decorativo.
+Chiseled Red Sandstone=Arenito vermello tallado
+Chiseled red sandstone is a decorative building block.=A pedra de arenito vermello tallado e un obxecto decorativo.
+Smooth Red Sandstone=Arenito vermello liso
+Smooth red sandstone is a decorative building block.=A pedra de arenito vermello liso e un obxecto decorativo.
 Clay=Arxila
 Clay is a versatile kind of earth commonly found at beaches underwater.=A arxila e un tipo de terra versátil que se atopa comúnmente nas praias baixo a auga.
 Brick Block=Bloque de ladrillo
 
-Brick blocks are a good building material for building solid houses and can take quite a punch.=Os bloques de ladrillos son un bo material de construción para construír casas sólidas e poden levar un gran golpe.
+Brick blocks are a good building material for building solid houses and can take quite a punch.=Os bloques de ladrillos son un bo material de construción para construír casas sólidas e poden aguantar ben os golpes.
 
-Bedrock=Cama de rocha
+Bedrock=Rocha Base
 
-Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.=A Cama de Rocha é un tipo de rocha moi dura. Non se pode romper, destruír, recoller ou mover polos medios normais, a non ser que estea no modo creativo.
+Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.=A Rocha Base é un tipo de rocha moi dura. Non se pode romper, destruir, recoller nin mover por medios normais, agás en modo Creativo.
 
 In the End dimension, starting a fire on this block will create an eternal fire.=Na dimensión Final, iniciar un lume neste bloque creará un lume eterno.
-Cobblestone=Pedra irregular
-Mossy Cobblestone=Rocha musgosa
+Cobblestone=Croio
+Mossy Cobblestone=Croio musgoso
 Block of Coal=Bloque de carbón
 
 Blocks of coal are useful as a compact storage of coal and very useful as a furnace fuel. A block of coal is as efficient as 10 coal.=Os bloques de carbón son útiles como un almacenamento compacto de carbón e moi útiles como combustible de fornos. Un bloque de carbón é tan eficiente como 10 carbón.
 
-Block of Charcoal=
+Block of Charcoal=Bloque de carbón vexetal
 
-##TODO: fuzzy matched - verify and remove the comment
-Blocks of charcoal are useful as a compact storage of charcoal and very useful as a furnace fuel. A block of charcoal is as efficient as 10 charcoal.=Os bloques de carbón son útiles como un almacenamento compacto de carbón e moi útiles como combustible de fornos. Un bloque de carbón é tan eficiente como 10 carbón.
+
+Blocks of charcoal are useful as a compact storage of charcoal and very useful as a furnace fuel. A block of charcoal is as efficient as 10 charcoal.=Os bloques de carbón vexetal son útiles como almacenamento compacto de carbón vexetal e moi útiles como combustible para fornos. Un bloque de carbón vexetal é tan eficiente como 10 de carbón vexetal.
 
 Block of Iron=Bloque de ferro
 
@@ -132,9 +132,9 @@ Block of Gold=Bloque de ouro
 
 A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Un bloque de ouro é principalmente un bloque decorativo brillante pero tamén é útil como almacenamento compacto de lingotes de ouro.
 
-Polished Block of Gold=
-
-A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=
+Polished Block of Gold=Bloque de ouro pulido
+	
+A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Un bloque de ouro pulido é principalmente un bloque decorativo brillante, pero tamén serve como almacenamento compacto de lingotes de ouro.
 
 Block of Diamond=Bloque de diamante
 
@@ -152,13 +152,13 @@ Obsidian=Obsidiana
 
 Obsidian is an extremely hard mineral with an enourmous blast-resistance. Obsidian is formed when water meets lava.=A obsidiana e un mineral extremadamente duro cunha enorme resistencia a explosión. A obsidiana formase cando a auga se aatopa ca lava.
 
-Crying Obsidian=Obsidiana chorando
+Crying Obsidian=Obsidiana chorosa
 
-Crying obsidian is a luminous obsidian that can generate as part of ruined portals.=A obsidiana choradora é unha obsidiana luminosa que pode xerar como parte de portais en ruínas.
+Crying obsidian is a luminous obsidian that can generate as part of ruined portals.=A obsidiana chorosa é unha obsidiana luminosa que pode xerarse como parte de portais en ruínas.
 
 Ice=Xeo
 
-Ice is a solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source.=O xeo é un bloque sólido que adoita atoparse en zonas frías. Derrete preto de fontes de luz de bloque a un nivel de luz de 12 ou superior. Cando se derrita ou se rompa mentres descansa sobre outro bloque, converterase nunha fonte de auga.
+Ice is a solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source.=O xeo é un bloque sólido que normalmente se atopa en zonas frías. Derrétese preto de fontes de luz con nivel 12 ou superior. Cando se derrete ou se rompe estando sobre outro bloque, convértese nunha fonte de auga.
 
 Packed Ice=Xeo Compacto
 Packed ice is a compressed form of ice. It is opaque and solid.=O xeo compacto é unha forma de xeo comprimido. É opaco e sólido.
@@ -167,13 +167,13 @@ Frosted ice is a short-lived solid block. It melts into a water source within a 
 
 Frosted Ice=Xeo Xeado
 Top Snow=Neve
-Stackable=Apilable
+Stackable=Amoreable
 
-Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.=A neve e unha capa de neve. Derrétese preto de fontes de luz distintas do sol cun nivel de luz de 12 ou superior.
+Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.=A neve de superficie e unha capa de neve. Derrétese preto de fontes de luz distintas das do sol, cun nivel de luz de 12 ou maior.
 
-Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.=A neve superior pódese apilar e ten un dos 8 niveis de altura diferentes. Nos niveis 2-8, a neve superior é colizable. A neve superior cae 2-9 bólas de neve, dependendo da súa altura.
+Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.=A neve de superficie pódese amorear e ten un dos 8 niveis de altura diferentes. Nos niveis 2-8, a neve de superficie é colidible. Cando se rompe, solta entre 2 e 9 bólas de neve, segundo a súa altura.
 
-This block can only be placed on full solid blocks and on another top snow (which increases its height).=Este bloque só se pode colocar sobre bloques sólidos completos e sobre outra neve superior (que aumenta a súa altura).
+This block can only be placed on full solid blocks and on another top snow (which increases its height).=Este bloque só se pode colocar sobre bloques sólidos completos e sobre outra neve de superficie (o que aumenta a súa altura).
 
 Snow=Bloque de Neve
 
@@ -190,15 +190,15 @@ Water interacts with lava in various ways:=A auga interactúa coa lava de varias
 
 • When water is directly above or horizontally next to a lava source, the lava turns into obsidian.=• Cando a auga está directamente encima ou horizontalmente xunto a unha fonte de lava, a lava transfórmase en obsidiana.
 
-• When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.=• Cando a auga que flúe toca a lava que flúe desde arriba ou horizontalmente, a lava convértese en Rocha.
+• When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.=• Cando a auga que flúe toca a lava que flúe desde arriba ou horizontalmente, a lava convértese en Croio.
 
 • When water is directly below lava, the water turns into stone.=• Cando a auga está directamente debaixo da lava, a auga convértese en pedra.
 Flowing Lava=Lava fluindo
 
-A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=Unha fonte de lava prende lume a un par de bloques de aire arriba cando están xunto a un bloque inflamable.
+A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=Unha fonte de lava prende lume nalgúns bloques de aire por enriba cando están xunto a un bloque inflamable.
 
 Lava Source=Fonte de lava
-Lava=
+Lava=Lava
 
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=A lava e quente e bastante perigosa. No a toques, doerache moito e é difícil sair.
 
@@ -216,18 +216,18 @@ This is a piece of cactus commonly found in dry areas, especially deserts. Over 
 
 A cactus can only be placed on top of another cactus or any sand.=Un cacto só se pode colocar encima doutro cacto ou na area.
 Sugar Canes=Cana de Azucre
-Grows on sand or dirt next to water=Crece sobre area ou terra estéril xunto á auga
+Grows on sand or dirt next to water=Madra sobre area ou terra estéril xunto á auga
 
-Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.=As canas de azucre son unha planta que ten alguns usos na elaboración. As canas de azucre medrarán lentamente ata 3 bloques cando estén preto da auga e se colocan nun bloque de herba, terra, area, area vermella, podzol o terra estéril. Cando se rompe una cana de azucre, todas as canas de azucre conectadas arriba tamén se romperán.
+Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.=As canas de azucre son unha planta que ten alguns usos na elaboración. As canas de azucre medrarán lentamente ata 3 bloques cando estén preto da auga e se colocan nun bloque de herba, terra, area, area vermella, podzol o terra estéril. Cando se rompe una cana de azucre, todas as canas de azucre conectadas por riba tamén se romperán.
 
-Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.=As canas de azucre só se poden colocar encima doutras canas de azucre e enriba dos bloques nos que crecerían.
+Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.=As canas de azucre só se poden colocar encima doutras canas de azucre e enriba dos bloques nos que medrarían.
 
 ##[ nodes_trees.lua ]##
 This is a decorative block surrounded by the bark of a tree trunk.=Trátase dun bloque decorativo rodeado pola cortiza dun tronco dunha árbore.
-Needs soil and light to grow=Necesita terra e luz para crecer
+Needs soil and light to grow=Precisa terra e luz para medrar
 Oak Wood=Tronco de Carballo
 Oak Bark=Cortiza de Carballo
-The trunk of an oak tree.=O tronco dun carballo.
+The trunk of an oak tree.=O tronco dunha árbore de carballo.
 Dark Oak Wood=Tronco de Carballo escuro
 Dark Oak Bark=Madeira de Carballo escuro sen cortiza
 The trunk of a dark oak tree.=O tronco dun carballo escuro.
@@ -239,53 +239,53 @@ Spruce Bark=Cortiza de abeto
 The trunk of a spruce tree.=O tronco dunha árbore de abeto.
 Birch Wood=Tronco de bidueiro
 Birch Bark=Cortiza de bidueiro
-The trunk of a birch tree.=O tronco dun abedul.
+The trunk of a birch tree.=O tronco dunha árbore de bidueiro.
 Jungle Wood=Tronco de Xungla
 Jungle Bark=Cortiza de Xungla
 The trunk of a jungle tree.=O tronco dunha árbore de xungla.
-Stripped Oak Log=Tronco de carballo pelado
-Stripped Oak Wood=Madeira de carballo pelada
-The stripped trunk of an oak tree.=O tronco desposuído dun carballo.
-The stripped wood of an oak tree.=A madeira despexada dun carballo.
-Stripped Acacia Log=Tronco de acacia pelado
-Stripped Acacia Wood=Madeira de acacia pelada
-The stripped trunk of an acacia tree.=O tronco desposuído dunha acacia.
-The stripped wood of an acacia tree.=A madeira despexada dunha acacia.
-Stripped Dark Oak Log=Tronco de carballo escuro pelado
-Stripped Dark Oak Wood=Madeira de carballo escuro pelada
-The stripped trunk of a dark oak tree.=O tronco desposuído dun carballo escuro.
-The stripped wood of a dark oak tree.=A madeira despexada dun carballo escuro.
-Stripped Birch Log=Tronco de bidueiro pelado
-Stripped Birch Wood=Madeira de bidueiro pelada
-The stripped trunk of a birch tree.=O tronco desposuído dun bidueiro.
-The stripped wood of a birch tree.=A madeira despexada dun bidueiro.
-Stripped Spruce Log=Tronco de abeto pelado
-Stripped Spruce Wood=Madeira de abeto pelada
-The stripped trunk of a spruce tree.=O tronco desposuído dun abeto.
-The stripped wood of a spruce tree.=A madeira despexada dun abeto.
-Stripped Jungle Log=Tronco de xungla pelado
-Stripped Jungle Wood=Madeira de xungla pelada
-The stripped trunk of a jungle tree.=O tronco desposuído dunha árbore da xungla.
-The stripped wood of a jungle tree.=A madeira despexada dunha árbore da xungla.
+Stripped Oak Log=Tronco de carballo descortizado
+Stripped Oak Wood=Madeira de carballo descortizado
+The stripped trunk of an oak tree.=O tronco descortizado dun carballo.
+The stripped wood of an oak tree.=A madeira descortizada dun carballo.
+Stripped Acacia Log=Tronco de acacia descortizado
+Stripped Acacia Wood=Madeira de acacia descortizada
+The stripped trunk of an acacia tree.=O tronco descortizado dunha acacia.
+The stripped wood of an acacia tree.=A madeira descortizada dunha acacia.
+Stripped Dark Oak Log=Tronco de carballo escuro descortizado
+Stripped Dark Oak Wood=Madeira de carballo escuro descortizado
+The stripped trunk of a dark oak tree.=O tronco descortizado dun carballo escuro.
+The stripped wood of a dark oak tree.=A madeira descortizada dun carballo escuro.
+Stripped Birch Log=Tronco de bidueiro descortizado
+Stripped Birch Wood=Madeira de bidueiro descortizado
+The stripped trunk of a birch tree.=O tronco descortizado dun bidueiro.
+The stripped wood of a birch tree.=A madeira descortizada dun bidueiro.
+Stripped Spruce Log=Tronco de abeto descortizado
+Stripped Spruce Wood=Madeira de abeto descortizado
+The stripped trunk of a spruce tree.=O tronco descortizado dun abeto.
+The stripped wood of a spruce tree.=A madeira descortizada dun abeto.
+Stripped Jungle Log=Tronco de xungla descortizado
+Stripped Jungle Wood=Madeira de xungla descortizado
+The stripped trunk of a jungle tree.=O tronco descortizado dunha árbore da xungla.
+The stripped wood of a jungle tree.=A madeira descortizada dunha árbore da xungla.
 Oak Wood Planks=Taboas de Madeira de Carballo
 Dark Oak Wood Planks=Madeira de Carballo escuro
 Jungle Wood Planks=Taboas de Madeira de Xungla
 Spruce Wood Planks=Taboas de Madeira de abeto
 Acacia Wood Planks=Táboas de madeira de acácia 
 Birch Wood Planks=Taboas de madeira de bidueiro
-2×2 saplings @= large tree=
+2×2 saplings @= large tree=2×2 gromos @= árbore grande
 Oak Sapling=Gromo de Carballo
 
 When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time.=Cando se coloca no chan (como a terra) e se expón á luz, un gromo de carballo converterase nun carballo despois dun tempo.
 
 Dark Oak Sapling=Gromo de Carballo escuro
 
-Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.=Os gromos de carballo escuro poden convertirse en carballos escuros, pero só en grupos. Unha árbore solitaria de carballo escuro no medrará. Un grupo de catro árbores xovenes de carballo escuro conviertese nun carballo escuro despois dun tempo cando se colocan no chan (como a terra) nun cadrado de 2 × 2 e expoñense a luz.
+Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.=Os gromos de carballo escuro poden convertirse en carballos escuros, pero só en grupos. Unha árbore solitaria de carballo escuro non medrará. Un grupo de catro árbores novos de carballo escuro convertense nun carballo escuro despois dun tempo cando se colocan no chan (como a terra) nun cadrado de 2×2 e expoñense a luz.
 
-2×2 saplings required=Requírense 2×2 gromos
+2×2 saplings required=Requírense 2×2 de gromos 
 Jungle Sapling=Gromo de Xungla
 
-When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.=Cando se coloca no chan (como a terra) e se expón á luz, un arbusto da xungla medrará nunha árbore da xungla despois dun tempo. Cando hai 4 gromos da xungla nun cadrado de 2×2, medrará ata converterse nunha enorme árbore da xungla.
+When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.=Cando se coloca no chan (como a terra) e se expón á luz, un arbusto da xungla medrará nunha árbore da xungla despois dun tempo. Cando hai 4 gromos da xungla nun cadrado de 2×2, medran ata formar unha árbore de selva xigante.
 
 Acacia Sapling=Gromo de acacia
 
@@ -293,25 +293,25 @@ When placed on soil (such as dirt) and exposed to light, an acacia sapling will 
 
 Spruce Sapling=Gromo de abeto
 
-##TODO: fuzzy matched - verify and remove the comment
-When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.=Cando se coloca no chan (como a terra) e se expón á luz, un arbusto da xungla medrará nunha árbore da xungla despois dun tempo. Cando hai 4 gromos da xungla nun cadrado de 2×2, medrará ata converterse nunha enorme árbore da xungla.
+
+When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.=Cando se coloca sobre solo (como terra) e está exposta á luz, unha muda de abeto medrará nun abeto co tempo. Cando hai 4 mudas de abeto nun cadrado de 2×2, medran ata formar un abeto xigante.
 
 Birch Sapling=Gromo de bidueiro
 
 When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time.=Cando se coloca no chan (como a terra) e se expón á luz, un gromo de bidueiro convertirase nun bidueiro despois dun tempo.
 
 Oak Leaves=Follas de Carballo
-Oak leaves are grown from oak trees.=As follas de Carballo cultivanse a partir de carballos.
+Oak leaves are grown from oak trees.=As follas de carballo medran das árbores de carballo.
 Dark Oak Leaves=Follas de Carballo escuro
-Dark oak leaves are grown from dark oak trees.=As follas de Carballo escuro cultivanse a partir de carballos escuros.
+Dark oak leaves are grown from dark oak trees.=As follas de Carballo escuro medran das árbores de carballo escuro.
 Jungle Leaves=Follas de Xungla
-Jungle leaves are grown from jungle trees.=as follas de Xungla cultivanse dos árbores de Xungla.
+Jungle leaves are grown from jungle trees.=as follas de Xungla medran das árbores de Xungla.
 Acacia Leaves=Follas de acacia
-Acacia leaves are grown from acacia trees.=As follas de acacia cultivanse a partir de acacias.
+Acacia leaves are grown from acacia trees.=As follas de acacia medran das árbores de acacias.
 Spruce Leaves=Follas de abeto
-Spruce leaves are grown from spruce trees.=As follas de abeto cultivanse a partir de abetos.
+Spruce leaves are grown from spruce trees.=As follas de abeto medran das árbores de abeto.
 Birch Leaves=Follas de bidueiro
-Birch leaves are grown from birch trees.=As follas de bidueiro son cultivadas a partir de bidueiros.
+Birch leaves are grown from birch trees.=As follas de bidueiro medran das árbores de bidueiros.
 ##[ nodes_glass.lua ]##
 Glass=Cristal
 A decorative and mostly transparent block.=Un bloque decorativo e na súa maioría transparente.
@@ -319,42 +319,42 @@ A decorative and mostly transparent block.=Un bloque decorativo e na súa maior�
 Stained glass is a decorative and mostly transparent block which comes in various different colors.=As vidreiras son un bloque decorativo e na súa maioría transparente que se presenta en varias cores diferentes.
 
 Stained Glass=Cristal tinguido
-Red Stained Glass=Cristal tinguido Vermello
-Green Stained Glass=Cristal tinguido verde
+Red Stained Glass=Cristal tinguido de vermello
+Green Stained Glass=Cristal tinguido de verde
 Blue Stained Glass=Cristal tinguido de azul
 Light Blue Stained Glass=Cristal tinguido azul claro
 Black Stained Glass=Cristal tinguido de negro
-White Stained Glass=Cristal tinguido branco
-Yellow Stained Glass=Cristal tinguido amarelo
+White Stained Glass=Cristal tinguido de branco
+Yellow Stained Glass=Cristal tinguido de amarelo
 Brown Stained Glass=Cristal tinguido de marrón
-Orange Stained Glass=Cristal tinguido Laranxa
-Pink Stained Glass=Cristal tinguido rosa
-Grey Stained Glass=Cristal tinguido gris
-Lime Stained Glass=Cristal tinguido amarelo verdoso
-Light Grey Stained Glass=Cristal tinguido gris claro
+Orange Stained Glass=Cristal tinguido de laranxa
+Pink Stained Glass=Cristal tinguido de rosa
+Grey Stained Glass=Cristal tinguido de gris
+Lime Stained Glass=Cristal tinguido de amarelo verdoso
+Light Grey Stained Glass=Cristal tinguido de gris claro
 Magenta Stained Glass=Cristal tinguido de maxenta
-Purple Stained Glass=Cristal tinguido morado
+Purple Stained Glass=Cristal tinguido de morado
 Cyan Stained Glass=Cristal tinguido de cian
 ##[ nodes_climb.lua ]##
 Ladder=Escaleira
 
-A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=
+A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=Un anaco de escaleira que che permite subir verticalmente. As escaleiras só se poden colocar no lado dos bloques sólidos.
 
 Vines=Enredadeira
 
-Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread.=As enredadeiras son bloques escalables que se poden colocar aos lados de bloques sólidos de cubo completo. As enredadeiras medran e extendense lentamente
+Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread.=As enredadeiras son bloques escalables que se poden colocar aos lados de bloques sólidos de cubo completo. As enredadeiras medran e espallanse lentamente.
 
 ##[ nodes_misc.lua ]##
-Bone Block=Bloque de óseo
+Bone Block=Bloque de óso
 Bone blocks are decorative blocks and a compact storage of bone meal.=Os bloques de ósos son bloques decorativos e un almacenamento compacto de fariña de ósos.
 Slime Block=Bloque de Limo
-Slime blocks are very bouncy and prevent fall damage.=Os bloques de limo son moi inchables e evitan o dano por caída.
+Slime blocks are very bouncy and prevent fall damage.=Os bloques de limo son moi elasticos e evitan o dano por caída.
 Cobweb=Arañeira
 Slows down movement=Ralentiza o movemento
 Cobwebs can be walked through, but significantly slow you down.=As Arañeiras podense atravesar, pero diminuen significativamente a velocidade.
-Dead Bush=Arbusto morto
+Dead Bush=Arbusto seco
 
-Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.=Os arbustos mortos son plantas pouco comuns que a miudo se atopan en áreas secas. Poden colleitarse para obter paus.
+Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.=Os arbustos secos son plantas pouco comuns que a miudo se atopan en áreas secas. Poden colleitarse para obter paus.
 
 Barrier=Barreira
 
@@ -405,8 +405,8 @@ Gold Ingot=Lingote de ouro
 Molten gold. It is used to craft armor, tools, and whatnot.=Ouro fundido Empregase para fabricar armaduras, ferramentas e outras cousas.
 Emerald=Esmeralda
 Emeralds are used in villager trades as currency.=As esmeraldas utilízanse nos comercios dos aldeáns como moeda.
-Lapis Lazuli=Lapislázuli
-Lapis Lazuli are required for enchanting items on an enchanting table.=Os lapislázuli precisanse para encantar obxetos nunha mesa de encantamento.
+Lapis Lazuli=Lapis lázuli
+Lapis Lazuli are required for enchanting items on an enchanting table.=Os lapis lázuli precisanse para encantar obxetos nunha mesa de encantamento.
 Brick=Ladrillo
 Bricks are used to craft brick blocks.=Os ladrillos úsanse para fabricar bloques de ladrillos.
 Flint=Sílex

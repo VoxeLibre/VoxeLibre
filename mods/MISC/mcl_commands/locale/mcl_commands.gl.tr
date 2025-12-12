@@ -1,6 +1,6 @@
 # textdomain: mcl_commands
 ##[ kill.lua ]##
-Players can't be killed right now, damage has been disabled.=Os xogadores non se poden matar agora mesmo, o dano desactivouse.
+Players can't be killed right now, damage has been disabled.=Os xogadores non se poden morrer agora mesmo, o dano está desactivado.
 Player @1 does not exist.=O xogador @1 non existe.
 You are already dead=Xa estás morto
 @1 is already dead=@1 xa está morto
@@ -8,37 +8,35 @@ You are already dead=Xa estás morto
 Kill player or yourself=Mata ao xogador ou a ti mesmo
 ##[ setblock.lua ]##
 <X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <ID nodo>
-Set node at given position=tablecer nodo nunha posición determinada
+Set node at given position=Colocar un nodo nunha posición dada
 Invalid node=Nodo non válido
-@1 spawned.=@1 xerou.
+@1 spawned.=@1 xerouse.
 Invalid parameters (see /help setblock)=Parámetros non válidos (consulte /help setblock)
 ##[ seed.lua ]##
-Displays the world seed=Mostra a semente mundial
+Displays the world seed=Amosa a semente do mundo
 ##[ summon.lua ]##
-Only peaceful mobs allowed!=¡Só se permiten mobs pacíficos!
+Only peaceful mobs allowed!=Só se permiten criaturas pacíficas!
 ##[ say.lua ]##
 Can use /say=Pode usar /say
 <message>=<Mensaxe>
-Send a message to every player=Enviar unha mensaxe a cada xogador
-##TODO: fuzzy matched - verify and remove the comment
-Invalid usage, see /help say.=Uso non válido, consulte /help say.
+Send a message to every player=Enviar unha mensaxe a todos os xogadores
+Invalid usage, see /help say.=Uso incorrecto, consulte /help say.
 ##[ list.lua ]##
-Show who is logged on=Mostrar quen está conectado
+Show who is logged on=Amosar quen está conectado
 ##[ sound.lua ]##
 <sound> <target>=
-Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=
-Sound name is invalid!=
-Target is invalid!=
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=Reproducir un son. Argumentos: <son>: nome do son. <obxectivo>: destinatario.
+Sound name is invalid!=O nome do son non é válido!
+Target is invalid!=O obxectivo non é válido!
 ##[ alias.lua ]##
-List bans=Lista de prohibicións
-Ban list: @1=Lista de baneados: @1
-List clear commands=
-To clear inventory use /clearinv or /clearinventory=
-To clear mobs use /clearmobs=
-To clear the weather use /weather clear=
+List bans=Lista de bloqueos
+Ban list: @1=Lista de bloqueados: @1
+List clear commands=Listar comandos de limpeza
+To clear inventory use /clearinv or /clearinventory=Para limpar o inventario usa /clearinv ou /clearinventory
+To clear mobs use /clearmobs=ara eliminar as criaturas usa /clearmobs
+To clear the weather use /weather clear=Para limpar o tempo usa /weather clear
 
-Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=
-
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=Non é posible limpar o chat, pero podes agochalo coa tecla "Alternar rexistro do chat" (F2 por defecto) en PC ou coa icona do chat na versión móbil
 
 
 ##### not used anymore #####

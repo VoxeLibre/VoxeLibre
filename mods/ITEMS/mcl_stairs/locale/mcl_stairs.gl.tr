@@ -1,35 +1,35 @@
 # textdomain: mcl_stairs
 ##[ api.lua ]##
 
-Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=As escaleiras son útiles para chegar a lugares máis altos camiñando sobre elas; non é necesario saltar. Colocar escaleiras nun patrón de esquina creará escaleiras de esquina. As escaleiras colocadas no teito ou na metade superior do lado dun bloque colocaranse boca abaixo.
+Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=As escaleiras son útiles para chegar a lugares máis altos camiñando por riba delas; non é preciso saltar. Colocar escaleiras nun patrón de curruncho creará escaleiras de curruncho. As escaleiras colocadas no teito ou na metade superior do lado dun bloque colocaranse boca abaixo.
 
 Double @1=Dobre @1
 
-Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=As lousas teñen a metade de altura que as súas contrapartes de bloque completo e ocupan a parte inferior ou superior dun bloque, dependendo de como se colocou. As lousas pódense pisar facilmente sen necesidade de saltar. Cando se coloca unha lousa sobre outra lousa do mesmo tipo, créase unha lousa dobre.
+Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=As lousas teñen a metade de altura que as súas contrapartes de bloque completo e ocupan a parte inferior ou superior dun bloque, dependendo de como se coloque. As lousas pódense pisar facilmente sen necesidade de saltar. Cando se coloca unha lousa sobre outra lousa do mesmo tipo, créase unha lousa dobre.
 
 Upper @1=Superior @1
 
-Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=As lousas dobres son bloques completos que se crean colocando dúas lousas do mesmo tipo entre si.
+Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=As lousas dobres son bloques completos que se crean colocando dúas lousas do mesmo tipo unha sobre a outra.
 
 ##[ register.lua ]##
 Oak Wood Stairs=Escaleiras de madeira de carballo
 Oak Wood Slab=Lousa de madeira de carballo
-Double Oak Wood Slab=Lousa de madeira de carballo dobre
+Double Oak Wood Slab=Lousa dobre de madeira de carballo
 Jungle Wood Stairs=Escaleiras de madeira da xungla
 Jungle Wood Slab=Lousa de madeira da xungla
-Double Jungle Wood Slab=Lousa de madeira dobre da xungla
+Double Jungle Wood Slab=Lousa dobre de madeira da xungla
 Acacia Wood Stairs=Escaleiras de madeira de acacia
 Acacia Wood Slab=Lousa de madeira de acacia
-Double Acacia Wood Slab=Lousa de madeira de acacia dobre
+Double Acacia Wood Slab=Lousa dobre de madeira de acacia
 Spruce Wood Stairs=Escaleiras de madeira de abeto
 Spruce Wood Slab=Lousa de madeira de abeto
-Double Spruce Wood Slab=Lousa de madeira de abeto dobre
+Double Spruce Wood Slab=Lousa dobre de madeira de abeto
 Birch Wood Stairs=Escaleiras de madeira de bidueiro
 Birch Wood Slab=Lousa de madeira de bidueiro
-Double Birch Wood Slab=Lousa de madeira de bidueiro dobre
+Double Birch Wood Slab=Lousa dobre de madeira de bidueiro
 Dark Oak Wood Stairs=Escaleiras de madeira de carballo escuro
 Dark Oak Wood Slab=Lousa de madeira de carballo escuro
-Double Dark Oak Wood Slab=Lousa de madeira de carballo escuro dobre
+Double Dark Oak Wood Slab=Lousa dobre de madeira de carballo escuro
 Stone Slab=Lousa de pedra
 Double Stone Slab=Lousa dobre de pedra
 Stone Stairs=Escaleiras de pedra
@@ -44,34 +44,34 @@ Double Granite Slab=Lousa dobre de granito
 Diorite Stairs=Escaleiras de diorita
 Diorite Slab=Lousa de diorita
 Double Diorite Slab=Lousa dobre de diorita
-Cobblestone Stairs=Escaleiras de rocha
-Cobblestone Slab=Lousa de rocha
-Double Cobblestone Slab=Lousa dobre de rocha
-Mossy Cobblestone Stairs=Escaleiras de rocha musgosa
-Mossy Cobblestone Slab=Lousa de rocha musgosa
-Double Mossy Cobblestone Slab=Lousa dobre de rocha musgosa
+Cobblestone Stairs=Escaleiras de croio
+Cobblestone Slab=Lousa de croio
+Double Cobblestone Slab=Lousa dobre de croio
+Mossy Cobblestone Stairs=Escaleiras de croio musgoso
+Mossy Cobblestone Slab=Lousa de croio musgosa
+Double Mossy Cobblestone Slab=Lousa dobre de croio musgoso
 Brick Stairs=Escaleiras de ladrillos
 Brick Slab=Lousa de ladrillos
 Double Brick Slab=Lousa dobre de ladrillos
-Sandstone Stairs=Escaleiras de arenisca
-Sandstone Slab=Lousa de arenisca
-Double Sandstone Slab=Lousa dobre de arenisca
-Cut Sandstone Stairs=
-##TODO: fuzzy matched - verify and remove the comment
-Cut Sandstone Slab=Lousa de arenisca vermella
-Double Cut Sandstone Slab=
-Smooth Sandstone Stairs=Escaleiras de arenisca lisa
-Smooth Sandstone Slab=Lousa de arenisca lisa
-Double Smooth Sandstone Slab=Lousa dobre de arenisca lisa
-Red Sandstone Stairs=Escaleiras de arenisca vermella
-Red Sandstone Slab=Lousa de arenisca vermella
-Double Red Sandstone Slab=Lousa dobre de arenisca vermella
-Cut Red Sandstone Stairs=
-Cut Red Sandstone Slab=
-Double Cut Red Sandstone Slab=
-Smooth Red Sandstone Stairs=Escaleiras de arenisca vermella lisa
-Smooth Red Sandstone Slab=Lousa de arenisca vermella lisa
-Double Smooth Red Sandstone Slab=Lousa dobre  de arenisca vermella lisa
+Sandstone Stairs=Escaleiras de arenito
+Sandstone Slab=Lousa de arenito
+Double Sandstone Slab=Lousa dobre de arenito
+Cut Sandstone Stairs=Escaleiras de arenito tallado
+
+Cut Sandstone Slab=Lousa de arenito tallado
+Double Cut Sandstone Slab=Lousa dobre de arenito tallado
+Smooth Sandstone Stairs=Escaleiras de arenito liso
+Smooth Sandstone Slab=Lousa de arenito liso
+Double Smooth Sandstone Slab=Lousa dobre de arenito liso
+Red Sandstone Stairs=Escaleiras de arenito vermello
+Red Sandstone Slab=Lousa de arenito vermello
+Double Red Sandstone Slab=Lousa dobre de arenito vermello
+Cut Red Sandstone Stairs=Escaleiras de arenito vermello tallado
+Cut Red Sandstone Slab=Lousa de arenito vermello tallado
+Double Cut Red Sandstone Slab=Lousa dobre de arenito vermello tallado
+Smooth Red Sandstone Stairs=Escaleiras de arenito vermello liso
+Smooth Red Sandstone Slab=Lousa de arenito vermello liso
+Double Smooth Red Sandstone Slab=Lousa dobre  de arenito vermello liso
 Stone Bricks Stairs=Escaleiras de ladrillos de pedra
 Stone Bricks Slab=Lousa de ladrillos de pedra
 Double Stone Bricks Slab=Lousa dobre de ladrillos de pedra
@@ -81,30 +81,30 @@ Double Quartz Slab=Lousa dobre de cuarzo
 Smooth Quartz Stairs=Escaleiras de cuarzo liso
 Smooth Quartz Slab=Lousa de cuarzo liso
 Double Smooth Quartz Slab=Lousa dobre de cuarzo liso
-Nether Brick Stairs=Escaleiras de ladrillos del Nether
-Nether Brick Slab=Lousa de ladrillos del Nether
-Double Nether Brick Slab=Lousa dobre de ladrillos de Nether
-Red Nether Brick Stairs=Escaleiras de ladrillos de Nether vermellos
-Red Nether Brick Slab=Lousa de ladrillos de Nether vermella
-Double Red Nether Brick Slab=Lousa dobre de ladrillos del Nether vermella
-End Stone Brick Stairs=Escaleiras de ladrillos de pedra final
-End Stone Brick Slab=Lousa de ladrillos de pedra final
-Double End Stone Brick Slab=Lousa dobre de ladrillos de pedra final
-Purpur Stairs=Escaleiras de púrpur
-Purpur Slab=Lousa de púrpur
-Double Purpur Slab=Lousa dobre de púrpur
-Prismarine Stairs=Escaleiras de prismarina
-Prismarine Slab=Lousa de prismarina
-Double Prismarine Slab=Lousa dobre de prismarina
-Prismarine Brick Stairs=Escaleiras de ladrillos de prismarina
-Prismarine Brick Slab=Lousa de ladrillos de prismarina
-Double Prismarine Brick Slab=Lousa dobre  de ladrillos de prismarina
-Dark Prismarine Slab=Lousa de prismarina escura
-Double Dark Prismarine Slab=Lousa dobre de prismarina escura
-Mud Brick Stairs=
-Mud Brick Slab=
-##TODO: fuzzy matched - verify and remove the comment
-Double Mud Brick Slab=Lousa dobre de ladrillos
+Nether Brick Stairs=Escaleiras de ladrillos do inframundo
+Nether Brick Slab=Lousa de ladrillos do inframundo
+Double Nether Brick Slab=Lousa dobre de ladrillos do inframundo
+Red Nether Brick Stairs=Escaleiras de ladrillos do inframundo vermellas
+Red Nether Brick Slab=Lousa de ladrillos do inframundo vermella
+Double Red Nether Brick Slab=Lousa dobre de ladrillos do inframundo vermella
+End Stone Brick Stairs=Escaleiras de ladrillos de pedra do fin
+End Stone Brick Slab=Lousa de ladrillos de pedra do fin
+Double End Stone Brick Slab=Lousa dobre de ladrillos de pedra do fin
+Purpur Stairs=Escaleiras de purpur
+Purpur Slab=Lousa de purpur
+Double Purpur Slab=Lousa dobre de purpur
+Prismarine Stairs=Escaleiras de prismariña
+Prismarine Slab=Lousa de prismariña
+Double Prismarine Slab=Lousa dobre de prismariña
+Prismarine Brick Stairs=Escaleiras de ladrillos de prismariña
+Prismarine Brick Slab=Lousa de ladrillos de prismariña
+Double Prismarine Brick Slab=Lousa dobre  de ladrillos de prismariña
+Dark Prismarine Slab=Lousa de prismariña escura
+Double Dark Prismarine Slab=Lousa dobre de prismariña escura
+Mud Brick Stairs=Escaleiras de ladrillo de barro
+Mud Brick Slab=Lousa de ladrillo de barro
+
+Double Mud Brick Slab=Lousa dobre de ladrillo de barro
 Polished Andesite Slab=Lousa de andesita pulida
 Double Polished Andesite Slab=Lousa dobre de andesita pulida
 Polished Andesite Stairs=Escaleiras de andesita pulida
@@ -114,14 +114,13 @@ Polished Granite Stairs=Escaleiras de granito pulido
 Polished Diorite Slab=Lousa de diorita pulida
 Double Polished Diorite Slab=Lousa dobre de diorita pulida
 Polished Diorite Stairs=Escaleiras de diorita pulida
-Mossy Stone Brick Stairs=Escaleiras de ladrillos de pedra musgosos
-Mossy Stone Brick Slab=Lousa de ladrillos de pedra musgosos
-Double Mossy Stone Brick Slab=Lousa de ladrillo de pedra dobre musgo
-Stairs of Polished Gold Block=
-Slab of Polished Gold Block=
-Double Slab of Polished Gold=
-
+Mossy Stone Brick Stairs=Escaleiras de ladrillos de pedra con musgo
+Mossy Stone Brick Slab=Lousa de ladrillos de pedra con musgo
+Double Mossy Stone Brick Slab=Lousa dobre de ladrillo de pedra con musgo
+Stairs of Polished Gold Block=Bloque de escaleiras de ouro pulido
+Slab of Polished Gold Block=Bloque de lousa de ouro pulido
+Double Slab of Polished Gold=Lousa dobre de ouro pulido
 
 ##### not used anymore #####
 
-Dark Prismarine Stairs=Escaleiras de prismarina escura
+Dark Prismarine Stairs=Escaleiras de prismarina escura 

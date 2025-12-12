@@ -1,19 +1,19 @@
 # textdomain: mcl_weather
 ##[ skycolor.lua ]##
-Time of day to use when gamerule:doDaylightCycle @=@= false=
-Whether the daylight cycle and moon phases progress=
+Time of day to use when gamerule:doDaylightCycle @=@= false=Hora do día que se usará cando a regra de xogo:doDaylightCycle @=@= false
+Whether the daylight cycle and moon phases progress=Indica se o ciclo da luz do día e as fases da lúa progresan
 ##[ weather_core.lua ]##
 
-Whether the weather can change naturally. The /weather command can still change weather.=
+Whether the weather can change naturally. The /weather command can still change weather.=Indica se o tempo pode cambiar de forma natural. O comando /weather aínda pode seguir a cambiar o tempo igualmente.
 
-Gives ability to control weather=
-Changes the weather to the specified parameter.=
-Error: No weather specified.=
-Error: Invalid parameters.=
-Error: Duration can't be less than 1 second.=
-Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.=
+Gives ability to control weather=Permite controlar o tempo
+Changes the weather to the specified parameter.=Troca o tempo ao parámetro especificado.
+Error: No weather specified.=Erro: non se especificou tempo.
+Error: Invalid parameters.=Erro: parámetros non válidos.
+Error: Duration can't be less than 1 second.=Erro: a duración non pode ser inferior a 1 segundo.
+Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.=Erro: tempo especificado non válido. Use "clear", "rain", "snow" ou "thunder".
 
-Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=
+Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=Alterna entre o tempo despexado clima con precipitacións (choiva, treboada ou neve ao chou)
 
 ##[ snow.lua ]##
-The maximum number of snow layers that can be accumulated on each block=
+The maximum number of snow layers that can be accumulated on each block=O número máximo de capas de neve que se poden acumular en cada bloque

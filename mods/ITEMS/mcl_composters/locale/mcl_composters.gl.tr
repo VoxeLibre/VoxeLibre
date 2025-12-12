@@ -1,11 +1,11 @@
 # textdomain: mcl_composters
-Composter=Compostador
-##TODO: fuzzy matched - verify and remove the comment
+Composter=Composteiro
+
 Composters can convert various organic items into bone meal.=Os composteiros poden converter varios elementos orgánicos en fariña de ósos.
 
-Use organic items on the composter to fill it with layers of compost. Every time an item is put in the composter, there is a chance that the composter adds another layer of compost.  Some items have a bigger chance of adding an extra layer than other items.  After filling up with 7 layers of compost, the composter is full.  After a delay of approximately one second the composter becomes ready and bone meal can be retrieved from it. Right-clicking the composter takes out the bone meal empties the composter.=Use elementos orgánicos no composteiro para enchelo con capas de compost. Cada vez que se coloca un elemento no composteiro, existe a posibilidade de que o composteiro engada outra capa de compost. Algúns elementos teñen máis posibilidades de engadir unha capa adicional que outros. Despois de encher 7 capas de compost, o composteiro está cheo. Despois dun retraso de aproximadamente un segundo, o composteiro está listo e pódese recuperar a fariña de ósos. Facendo clic co botón dereito no composteiro sácase a fariña de ósos baleira o composteiro.
+Use organic items on the composter to fill it with layers of compost. Every time an item is put in the composter, there is a chance that the composter adds another layer of compost.  Some items have a bigger chance of adding an extra layer than other items.  After filling up with 7 layers of compost, the composter is full.  After a delay of approximately one second the composter becomes ready and bone meal can be retrieved from it. Right-clicking the composter takes out the bone meal empties the composter.=Use elementos orgánicos no composteiro para enchelo con capas de compost. Cada vez que se coloca un elemento no composteiro, existe a posibilidade de que o composteiro engada outra capa de compost. Algúns elementos teñen máis posibilidades de engadir unha capa adicional que outros. Despois de encher 7 capas de compost, o composteiro está cheo. Despois dun retraso de aproximadamente un segundo, o composteiro está listo e pódese recuperar a fariña de ósos del. Facendo clic co botón dereito no composteiro sácase a fariña de ósos e o composteiro baleirase.
 
-##TODO: fuzzy matched - verify and remove the comment
-Converts organic items into bone meal=Converte elementos orgánicos en fariña de ósos
+
+Converts organic items into bone meal=Converte os elementos orgánicos en fariña de ósos
 filled=cheo
 ready for harvest=listo para a colleita

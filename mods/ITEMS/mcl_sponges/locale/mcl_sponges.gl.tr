@@ -7,11 +7,10 @@ Sponges are blocks which remove water around them when they are placed or come i
 Waterlogged Sponge=Esponxa encharcada
 Can be dried in furnace=Pódese secar no forno
 
-A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, the water will pour into the bucket.=Unha esponxa encharcada pódese secar no forno para convertela en esponxa (seca). Cando hai un balde baleiro na ranura de combustible dun forno, a auga verte no cubo.
+A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, the water will pour into the bucket.=Unha esponxa encharcada pódese secar no forno para convertela en esponxa (seca). Cando hai un caldeiro baleiro na ranura de combustible dun forno, a auga verterase no caldeiro.
 
-Riverwaterlogged Sponge=Esponxa encharcada de río
+Riverwaterlogged Sponge=Esponxa encharcada de auga de río
 
-This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.=Esta é unha esponxa mollada con auga do río. Pódese secar no forno para convertelo en esponxa (seca). Cando hai un balde baleiro na ranura de combustible do forno, a auga do río verterá no balde.
+This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.=Esta é unha esponxa mollada con auga do río. Pódese secar no forno para convertelo en esponxa (seca). Cando hai un caldeiro baleiro na ranura de combustible do forno, a auga do río verterase no caldeiro.
 
-A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water.=Unha esponxa queda encharcada (en lugar de encharcada) se absorbe máis auga do río que a auga (normal).
-
+A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water.=Unha esponxa convertese en  encharcada de río (no canto de encharcada normal) se absorbe máis auga do río que auga común.

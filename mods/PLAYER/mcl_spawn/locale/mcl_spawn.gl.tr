@@ -1,6 +1,5 @@
 # textdomain: mcl_spawn
-Respawn position cleared!=¡Posición de reaparición borrada!
-New respawn position set!=¡Nova posición de reaparición definida!
-Couldn't get level of your respawn anchor!=¡Non se puido obter o nivel da súa áncora de reaparición!
-##TODO: fuzzy matched - verify and remove the comment
-Your spawn bed was missing or blocked, and you had no charged respawn anchor!=Faltaba o teu leito de aparición ou estaba bloqueado e non tiñas ningunha áncora de reaparición cargada!
+Respawn position cleared!=Posición de reaparición borrada!
+New respawn position set!=Nova posición de reaparición gardada!
+Couldn't get level of your respawn anchor!=Non se puido obter o nivel da súa áncora de reaparición!
+Your spawn bed was missing or blocked, and you had no charged respawn anchor!=A túa cama de reaparición non estaba ou estaba bloqueada, e non tiñas ningunha áncora de reaparición cargada!

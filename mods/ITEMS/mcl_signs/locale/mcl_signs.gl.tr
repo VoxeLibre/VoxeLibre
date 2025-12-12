@@ -1,0 +1,24 @@
+# textdomain: mcl_signs
+##[ api.lua ]##
+Can be written=Pódese escribir
+
+Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Os carteis poden escribirse e veñen en dúas variantes: cartel de parede e cartel sobre pau. Os carteis poden colocarse enriba ou nos lados doutros bloques, pero non debaixo. 
+
+After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=Despois de colocar o cartel, podes escribir algo nel. Tes @1 liñas de texto con até @2 caracteres por liña; o que pase deses límites pérdese. Non todos os caracteres son compatibles. O texto pode modificarse despois de ser escrito facendo clic dereito sobre o cartel. Pode colorearse e facerse brillante. Usa fariña de óso para quitar a cor e o brillo. 
+
+Sign text:=Texto do cartel:
+Close=Pechar
+Enter sign text:=Introducir texto do cartel:
+Maximum line length: @1=Lonxitude máxima por liña: @1
+Maximum lines: @1=Número máximo de liñas: @1
+Done=Feito
+##[ register.lua ]##
+Oak Sign=Cartel de carballo
+Dark Oak Sign=Cartel de carballo escuro
+Acacia Sign=Cartel de acacia
+Birch Sign=Cartel de bidueiro
+Jungle Sign=Cartel de xungla
+Spruce Sign=Cartel de abeto
+Mangrove Sign=Cartel de mangle
+Crimson Hyphae Sign=Cartel de hifas carmesís
+Warped Hyphae Sign=Cartel de hifas distorcido

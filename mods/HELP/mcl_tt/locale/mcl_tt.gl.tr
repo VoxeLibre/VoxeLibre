@@ -6,7 +6,7 @@ Slow=Lento
 Fast=Rápido
 Very fast=Moi rápido
 Extremely fast=Extremadamente rápido
-Instantaneous=
+Instantaneous=Instantáneo
 @1 uses=@1 usos
 Unlimited uses=Usos ilimitados
 Mining speed: @1=Velocidade de minería: @1
@@ -15,43 +15,44 @@ Block breaking strength: @1=Forza para romper bloques: @1
 Damage: @1=Dano: @1
 Healing: @1=Curación: @1
 Full punch interval: @1s=Intervalo de golpe completo: @1s
-Food item=
-+@1 food points=
+Food item=Comida
++@1 food points=+@1 puntos de comida=
 Contact damage: @1 per second=Dano por contacto: @1 por segundo
 Contact healing: @1 per second=Curación por contacto: @1 por segundo
 Drowning damage: @1=Dano por afogamento: @1
 Fall damage: +@1%=Dano por caída: @1%
 No fall damage=Sen dano por caída
 Fall damage: @1%=Dano por caída: @1% 
-No jumping=Non saltar
-No swimming upwards=Non nadar cara arriba
-No rising=Non erguer
+No jumping=Sen saltos
+No swimming upwards=Sen nadar cara arriba
+No rising=Sen ascenso
 Climbable (only downwards)=Escalable (só cara abaixo)
 Climbable=Escalable
 Slippery=Escorregadizo
-Bouncy (@1%)=Rebota (@1%)
+Bouncy (@1%)=Rebotante (@1%)
 Luminance: @1=Luminancia: @1
 ##[ snippets_mcl.lua ]##
-Head armor=Armadura de cabeza
+Head armor=Armadura da cabeza
 Torso armor=Armadura do torso
-Legs armor=Armadura de pernas
-Feet armor=Armadura de pés
+Legs armor=Armadura das pernas
+Feet armor=Armadura dos pés
 Armor points: @1=Puntos de armadura: @1
 Armor durability: @1=Durabilidade da armadura: @1
 Protection: @1%=Protección: @1%
 Hunger points: +@1=Puntos de fame: +@1
 Saturation points: +@1=Puntos de saturación: +@1
-Deals damage when falling=Causa dano ao caer
-Grows on grass blocks or dirt=Crece en bloques de herba ou terra estéril
-Grows on grass blocks, podzol, dirt or coarse dirt=Crece en bloques de herba, podzol, sucidade ou terra estéril
+Deals damage when falling=Inflinxe dano ao caer
+Grows on grass blocks or dirt=Crece en bloques de herba ou terra
+Grows on grass blocks, podzol, dirt or coarse dirt=Crece en bloques de herba, podzol, terra ou terra estéril
 Flammable=Inflamable
 Zombie view range: -50%=Rango de visión zombi: -50%
 Skeleton view range: -50%=Rango de visión de esqueleto: -50%
 Stalker view range: -50%=Rango de visión de acosador: -50%
-...stacks=...pilas
+...stacks=...moreas
 
 
 ##### not used anymore #####
 
 Damage (@1): @2=Dano (@1): @2
 Healing (@1): @2=Curación (@1): @2
+

@@ -1,70 +1,69 @@
 # textdomain: mcl_end
 ##[ chorus_plant.lua ]##
 Chorus Flower=Flor de coro
-Grows on end stone=Medra na pedra final
+Grows on end stone=Medra na pedra do fin
 
-A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.=Unha flor de coro é a parte viva dunha planta de coro. Pode crecer paso a paso ata converterse nunha planta de coro alto. Cando crece, pode morrer á vellez. Tamén morre cando non pode medrar.
+A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.=Unha flor de coro é a parte viva dunha planta de coro. Pode medrar paso a paso ata converterse nunha planta de coro alto. Co tempo, pode morrer de vellez. Tamén morre cando non pode seguir medrando.
 
-Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem.=Colócao e agarda a que medre. Só se pode colocar encima da pedra final, encima dun talo da planta de coro ou ao lado de exactamente un talo da planta de coro.
+Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem.=Plántaa e agarda a que medre. Só se pode colocar enriba dunha pedra do fin, enriba dun talo de planta de coro, ou ao lado dun único talo de planta de coro.
 
-Dead Chorus Flower=Flor de coro morto
+Dead Chorus Flower=Flor de coro morta
 
-This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again.=Esta é unha parte dunha planta de coro. Non medra. As flores do coro morren de vellez ou cando non poden crecer. Unha flor de coro morta pódese coller para obter unha flor de coro fresca que poida crecer de novo.
+This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again.=Esta é unha parte dunha planta de coro. Non medra. As flores do coro morren de vellez ou cando non poden crecer. Unha flor de coro morta pódese recoller para conseguir unha flor fresca que poida volver medrar.
 
 Chorus Plant Stem=Talo de planta de coro
 
-A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers.=Un talo da planta de coro é a parte dunha planta de coro que mantén unida a toda a planta. Necesita pedra final como terra. Os talos son cultivados a partir de flores de coro
+A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers.=Un talo da planta de coro é a parte que mantén unida a toda a planta. Necesita pedra do fin como terra. Os talos son cultivados a partir de flores de coro
 
-The stem attaches itself to end stone and other chorus blocks.=O talo únese á pedra final e outros bloques de coro.
+The stem attaches itself to end stone and other chorus blocks.=O talo únese á pedra do fin e outros bloques de coro.
 Chorus Fruit=Froito do coro
-Randomly teleports you when eaten=Teletransportache aleatoriamente cando se come
+Randomly teleports you when eaten=eletranspórtate ao chou cando a comes.
 
-A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.=Un froito do coro é un froito comestible da planta do coro que alberga o Fin. Coméndoo, teletransportate á parte superior dun bloque sólido aleatorio próximo, sempre que non acabes dentro dun bloque líquido, sólido ou daniño. A teletransportación pode fallar se hai moi poucos ou ningún lugares onde teletransportarse.
+A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.=Un froito do coro é un froito comestible da planta do coro, orixinaria do Fin. Ao Comela, teletransportate á parte superior dun bloque sólido próximo ao chou, sempre que non acabes dentro dun bloque líquido, sólido ou perigoso. O teletransporte pode fallar se hai moi poucos ou ningún lugar ao que se poida ir.
 
 Popped Chorus Fruit=Froito do coro estourado
 ##[ building.lua ]##
-End Stone=fin de Pedra
-End Stone Bricks=Fin de Ladrillos de pedra
+End Stone=Pedra do Fin
+End Stone Bricks=Ladrillos de pedra do Fin
 Purpur Block=Bloque púrpura
 Purpur Pillar=Pilar púrpura
-End Rod=Barra final
-End rods are decorative light sources.=As varas finales son fontes de luz decorativas.
+End Rod=Vara do fin
+End rods are decorative light sources.=As varas do fin son fontes de luz decorativas.
 White End Rod=Vara de extremo branco
 Grey End Rod=Vara de extremo gris
 Light Grey End Rod=Vara de extremo gris claro
 Black End Rod=Vara de extremo negro
-Red End Rod=Vara final vermella 
-Yellow End Rod=Vara final amarela
-Green End Rod=Vara final verde
-Cyan End Rod=Vara final cian
-Blue End Rod=Vara final azul
-Magenta End Rod=Vara final maxenta
-Orange End Rod=Vara final laranxa 
-Purple End Rod=Vara final púrpura
-Brown End Rod=Vara final marrón 
-Pink End Rod=Varra final rosa
-Lime End Rod=Vara final lima
-Light Blue End Rod=Vara final azul claro
+Red End Rod=Vara do fin vermella 
+Yellow End Rod=Vara do fin amarela
+Green End Rod=Vara do fin verde
+Cyan End Rod=Vara do fin cian
+Blue End Rod=Vara do fin azul
+Magenta End Rod=Vara do fin maxenta
+Orange End Rod=Vara do fin laranxa 
+Purple End Rod=Vara do fin púrpura
+Brown End Rod=Vara do fin marrón 
+Pink End Rod=Varra do fin rosa
+Lime End Rod=Vara do fin lima
+Light Blue End Rod=Vara do fin azul claro
 Dragon Egg=Ovo de dragón
-A dragon egg is a decorative item which can be placed.=Un ovo de dragón e un elemento decorativo que se pode colocar.
+A dragon egg is a decorative item which can be placed.=O ovo de dragón é un obxecto decorativo que se pode colocar.
 ##[ eye_of_ender.lua ]##
 Eye of Ender=Ollo de Ender
-Guides the way to the mysterious End dimension=Guía o camiño cara á misteriosa dimensión final
+Guides the way to the mysterious End dimension=Guía o camiño cara á misteriosa dimensión do fin
 
-This item is used to locate End portal shrines in the Overworld and to activate End portals.=Este elemento utilízase para localizar os santuarios de portais do final no Mundo superior e para activar os portais do final.
+This item is used to locate End portal shrines in the Overworld and to activate End portals.=Este obxecto úsase para atopar os santuarios co portal ao Fin no Mundo superficial e para activar os portais ao Fin.
 
-NOTE: The End dimension is currently incomplete and might change in future versions.=NOTA: a dimensión Final está incompleta actualmente e pode cambiar en versións futuras.
+NOTE: The End dimension is currently incomplete and might change in future versions.=AVISO: A dimensión do End aínda está incompleta e pode cambiar en futuras versións.
 
-Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.=Usa a tecla de ataque para liberar o ollo de Ender. Levantarase e voará na dirección horizontal do santuario do portal final máis próximo. Se estás moi preto, o ollo de Ender tomará o camiño directo ata o santuario do portal Final. Despois duns segundos, detense. Pode caer como elemento, pero hai un 20 % de posibilidades de que se rompa.
+Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.=Preme a tecla de atacar para lanzar o ollo de Ender. Este elevarase e voará na dirección horizontal do santuario co portal ao Fin máis próximo. Se estás moi preto, o ollo de Ender seguirá o camiño directo ao santuario. Despois duns segundos, para. Pode caer como obxecto, pero hai un 20% de probabilidades de que se parta.
 
-To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=Para activar un portal final, hai que colocar os ollos de ender en cada bloque dun marco de portal final intacto.
+To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=Para activar un portal ao Fin, hai que colocar ollos de Ender en cada bloque dun marco de portal ao Fin completo.
 
 ##[ end_crystal.lua ]##
-End Crystal=Cristal final 
-Ignited by a punch or a hit with an arrow=Acendido por un golpe ou un golpe cunha frecha
+End Crystal=Cristal do fin 
+Ignited by a punch or a hit with an arrow=Préndese cun golpe ou cun disparo de frecha.
 Explosion radius: @1=Radio de explosión: @1
 
-End Crystals are explosive devices. They can be placed on Obsidian or Bedrock. Ignite them by a punch or a hit with an arrow. End Crystals can also be used the spawn the Ender Dragon by placing one at each side of the End Exit Portal.=Os cristais finais son artefactos explosivos. Pódense colocar en Obsidiana ou Rocha de cama. Encéndeos cun golpe ou cunha frecha. Os cristais finais tamén se poden usar para xerar o dragón Ender colocando un a cada lado do portal de saída final.
+End Crystals are explosive devices. They can be placed on Obsidian or Bedrock. Ignite them by a punch or a hit with an arrow. End Crystals can also be used the spawn the Ender Dragon by placing one at each side of the End Exit Portal.=Os cristais do Fin son dispositivos explosivos. Pódense colocar sobre obsidiana ou rocha base. Préndelos cun golpe ou cun disparo de frecha. Tamén se usan para facer aparecer ao Dragón do Fin, colocando un en cada lado do portal de saída do Fin.
 
-Place the End Crystal on Obsidian or Bedrock, then punch it or hit it with an arrow to cause an huge and probably deadly explosion. To Spawn the Ender Dragon, place one at each side of the End Exit Portal.=Coloca o cristal final sobre Obsidiana ou rocha de cama, a continuación, péllao ou golpeao cunha frecha para provocar unha explosión enorme e probablemente mortal. Para xerar o dragón Ender, coloque un a cada lado do Portal de saída final.
-
+Place the End Crystal on Obsidian or Bedrock, then punch it or hit it with an arrow to cause an huge and probably deadly explosion. To Spawn the Ender Dragon, place one at each side of the End Exit Portal.=Coloca o Cristal do Fin sobre obsidiana ou rocha base, e logo dálle un golpe ou acertarlle cunha frecha para provocar unha explosión grande e posiblemente mortal. Para facer aparecer ao Dragón do Fin, coloca un en cada lado do portal de saída do Fin.

@@ -9,31 +9,31 @@ Tall grass is a small plant which often occurs on the surface of grasslands. It 
 
 Fern=Fieito
 
-Ferns are small plants which occur naturally in jungles and taigas. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.=Os fieitos son pequenas plantas que se atopan naturalmente nas selvas e nas taigas. Pódense coller para sementes de trigo. Usando fariña de ósos, un fento pódese converter nun fento grande de dous bloques de altura.
+Ferns are small plants which occur naturally in jungles and taigas. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.=Os fieitos son pequenas plantas que se atopan naturalmente nas selvas e nas taigas. Pódense coller para sementes de trigo. Usando fariña de ósos, un fieito pódese converter nun fieito grande de dous bloques de altura.
 
-Clover=
+Clover=Trevo
 
-Clovers are small plants which occur naturally in plains and other temperate biomes. They can be picked up and planted again.=
+Clovers are small plants which occur naturally in plains and other temperate biomes. They can be picked up and planted again.=Os trevos son plantas pequenas que se atopan de forma natural nas chairas e noutros biomas temperados. Pódense recoller e plantar de novo.
 
-Four-leaf Clover=
+Four-leaf Clover=Trevo de catro follas
 (Top Part)=(Parte superior)
 Peony=Peonía
 
-A peony is a large plant which occupies two blocks. It is mainly used in dye production.=A peonía é unha planta grande que ocupa dous bloques. Emprégase principalmente na produción de tintes.
+A peony is a large plant which occupies two blocks. It is mainly used in dye production.=A peonía é unha planta grande que ocupa dous bloques. Emprégase principalmente na produción de tinguiduras.
 
 Rose Bush=Roseira
 
-A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production.=Un roseiro é unha planta grande que ocupa dous bloques. É seguro tocalo. Os roseiros empréganse principalmente na produción de tintes.
+A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production.=A roseira é unha planta grande que ocupa dous bloques. É seguro tocala. As roseiras empréganse principalmente na produción de tinguiduras.
 
 Lilac=Lila
 
-A lilac is a large plant which occupies two blocks. It is mainly used in dye production.=Unha lila é unha planta grande que ocupa dous bloques. Emprégase principalmente na produción de tintes.
+A lilac is a large plant which occupies two blocks. It is mainly used in dye production.=Unha lila é unha planta grande que ocupa dous bloques. Emprégase principalmente na produción de tinguiduras.
 
 Sunflower=Xirasol 
 
-A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.=Un xirasol é unha planta grande que ocupa dous bloques. Emprégase principalmente na produción de tintes.
+A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.=Un xirasol é unha planta grande que ocupa dous bloques. Emprégase principalmente na produción de tinguiduras.
 
-Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.=Dobre herba alta unha variante da herba alta e ocupa dous bloques. Pódese colleitar para sementes de trigo.
+Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.=Dobre herba alta e unha variante da herba alta e ocupa dous bloques. Pódese colleitar para sementes de trigo.
 
 Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.=O fieito grande é unha variante do fieito e ocupa dous bloques. Pódese colleitar para sementes de trigo.
 
@@ -41,7 +41,7 @@ Double Tallgrass=Doble herba alta
 Large Fern=fieito grande
 Lily Pad=Nenúfar
 
-A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Un nenúfar é un bloque de plantas plana que se pode camiñar. Pódense colocar sobre fontes de auga, xeo e xeo xeado.
+A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Un nenúfar é un bloque de planta plano polo que se pode camiñar. Pódese colocar sobre fontes de auga, xeo e xeo xeado.
 
 ##[ register.lua ]##
 Poppy=Amapola
@@ -52,7 +52,7 @@ Pink Tulip=Tulipán rosa
 Red Tulip=Tulipán vermello
 White Tulip=Tulipán branco
 Allium=Porro
-Azure Bluet=Azul celeste
+Azure Bluet=Azuriña
 Blue Orchid=Orquídea azul
 Wither Rose=Rosa murcha
 Lily of the Valley=Lirio dos vales

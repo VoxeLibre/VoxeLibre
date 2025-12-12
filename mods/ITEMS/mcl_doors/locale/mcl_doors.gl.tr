@@ -1,27 +1,27 @@
 # textdomain: mcl_doors
 ##[ api_doors.lua ]##
 
-This door is a 2-block high barrier which can only be opened by redstone power, not by hand.=Esta porta é unha barreira alta de 2 bloques que só se pode abrir coa enerxía Redstone, non coa man.
+This door is a 2-block high barrier which can only be opened by redstone power, not by hand.=Esta porta é unha barreira de 2 bloques de altura que só se pode abrir coa enerxía Pedra vermella, non a man.
 
-This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.=Esta porta é unha barreira alta de 2 bloques que se pode abrir ou pechar coa man ou coa enerxía Redstone.
+This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.=Esta porta é unha barreira de 2 bloques de altura que se pode abrir ou pechar coa man ou coa enerxía Pedra vermella.
 
-To open or close this door, send a redstone signal to its bottom half.=
+To open or close this door, send a redstone signal to its bottom half.=Para abrir ou pechar esta porta, envía un sinal de pedra vermella á súa metade inferior.
 
-To open or close this door, rightclick it or send a redstone signal to its bottom half.=
+To open or close this door, rightclick it or send a redstone signal to its bottom half.=Para abrir ou pechar esta porta, fai clic co botón dereito ou envía un sinal de pedra vermella á súa metade inferior.
 
 Openable by redstone power=Podese abrir por enerxía de pedra vermella
-Openable by players and redstone power=Podese abrirpor xogadores e enerxía de pedra vermella
+Openable by players and redstone power=Podese abrir por xogadores e enerxía de pedra vermella
 ##[ api_trapdoors.lua ]##
 
-Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.=
+Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.=As trapelas son barreiras horizontais que se poden abrir ou pechar e subir como unha escaleira cando están abertas. Ocupan a parte superior ou inferior dun bloque, dependendo de como se colocaran. Esta trapela só se pode abrir ou pechar co poder da pedra vermella.
 
-Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.=
+Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.=As trapelas son barreiras horizontais que se poden abrir ou pechar e subir como unha escaleira cando están abertas. Ocupan a parte superior ou inferior dun bloque, dependendo de como se colocaran. Esta trapela pódese abrir ou pechar coa man ou co poder da pedra vermella.
 
-##TODO: fuzzy matched - verify and remove the comment
+
 To open or close this trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou pechar a trapela, fai clic co botón dereito ou envíalle un sinal de pedra vermella.
 ##[ register.lua ]##
 
-Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=As portas de madeira son barreiras altas de 2 bloques que se poden abrir ou pechar a man e mediante un sinal de pedra vermella.
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=As portas de madeira son barreiras de 2 bloques altura que se poden abrir ou pechar a man e mediante un sinal de pedra vermella.
 
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Para abrir ou pechar unha porta de madeira, fai clic co botón dereito nela ou proporciona á súa metade inferior un sinal de pedra vermella.
 
@@ -33,20 +33,20 @@ Jungle Door=Porta de xungla
 Spruce Door=Porta de abeto
 Iron Door=Porta de ferro
 
-Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.=As portas de ferro son barreiras altas de 2 bloques que só se poden abrir ou pechar mediante un sinal de pedra vermella, pero non coa man.
+Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.=As portas de ferro son barreiras de 2 bloques de altura que só se poden abrir ou pechar mediante un sinal de pedra vermella, pero non a man.
 
-To open or close an iron door, supply its lower half with a redstone signal.=Para abrir ou pechar unha porta de ferro, subministre a súa metade inferior cun sinal de pedra vermella.
+To open or close an iron door, supply its lower half with a redstone signal.=Para abrir ou pechar unha porta de ferro, subministre a súa metade inferior un sinal de pedra vermella.
 Oak Trapdoor=Trapela de carballo
-Acacia Trapdoor=Trampela de acacia
-Birch Trapdoor=Trampela de bidueiro
-Spruce Trapdoor=Trampela de abeto
-Dark Oak Trapdoor=Trampela de carballo escuro
-Jungle Trapdoor=Trampela de xungla
+Acacia Trapdoor=Trapela de acacia
+Birch Trapdoor=Trapela de bidueiro
+Spruce Trapdoor=Trmpela de abeto
+Dark Oak Trapdoor=Trapela de carballo escuro
+Jungle Trapdoor=Trapela de xungla
 
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=As trapelas de madeira son barreiras horizontais que se poden abrir e pechar coa man ou cun sinal de pedra vermella. Ocupan a parte superior ou inferior dun bloque, segundo a súa colocación. Cando están abertas, pódense subir coma unha escaleira.
 
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou pechar a trapela, fai clic co botón dereito ou envíalle un sinal de pedra vermella.
-Iron Trapdoor=Trampela de ferro
+Iron Trapdoor=Trapela de ferro
 
 Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=As trapelas de ferro son barreiras horizontais que só se poden abrir e pechar mediante sinais de pedra vermella, pero non coa man. Ocupan a parte superior ou inferior dun bloque, segundo a súa colocación. Cando están abertas, pódense subir coma unha escaleira.
 

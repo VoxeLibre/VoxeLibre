@@ -1,17 +1,17 @@
 # textdomain: mcl_raw_ores
-Raw Iron=Ferro bruto
-##TODO: fuzzy matched - verify and remove the comment
-Raw iron. Mine an iron ore to get it.=Ferro bruto. Extrae un mineral de ferro para conseguilo.
-Block of Raw Iron=Bloque de ferro bruto
+Raw Iron=Ferro en bruto
 
-A block of raw iron is mostly a decorative block but also useful as a compact storage of raw iron.=
+Raw Iron. Mine an Iron ore to get it.=Ferro en bruto. Extrae un mineral de ferro para conseguilo.
+Block of Raw Iron=Bloque de ferro en bruto
 
-Raw Gold=Ouro bruto
-##TODO: fuzzy matched - verify and remove the comment
-Raw gold. Mine a gold ore to get it.=Ouro bruto. Extrae un mineral de ouro para conseguilo.
-Block of Raw Gold=Bloque de ouro bruto
+A block of raw Iron is mostly a decorative block but also useful as a compact storage of raw Iron.=Un bloque de ferro en bruto é principalmente un bloque decorativo, pero tamén é útil como un almacenamento compacto de ferro en bruto.
 
-A block of raw gold is mostly a decorative block but also useful as a compact storage of raw gold.=
+Raw Gold=Ouro en bruto
+
+Raw Gold. Mine a Gold ore to get it.=Ouro en bruto. Extrae un mineral de ouro para conseguilo.
+Block of Raw Gold=Bloque de ouro en bruto
+
+A block of raw Gold is mostly a decorative block but also useful as a compact storage of raw Gold.=Un bloque de ouro en bruto é principalmente un bloque decorativo, pero tamén é útil como almacenamento compacto de ouro en bruto.
 
 
 
@@ -21,4 +21,3 @@ A block of raw gold is mostly a decorative block but also useful as a compact st
 A block of raw Iron is mostly a decorative block but also useful as a compact storage of raw Iron.=Un bloque de ferro bruto é principalmente un bloque decorativo, pero tamén é útil como un almacenamento compacto de ferro bruto.
 
 A block of raw Gold is mostly a decorative block but also useful as a compact storage of raw Gold.=Un bloque de ouro bruto é principalmente un bloque decorativo, pero tamén é útil como almacenamento compacto de ouro bruto.
-

@@ -1,50 +1,50 @@
 # textdomain: mcl_deepslate
 Deepslate=Lousa Profunda
 
-Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=A lousa profunda é un tipo de pedra que se atopa no fondo subterráneo no Overworld que funciona de forma similar á pedra normal pero é máis dura que a pedra.
+Deepslate is a stone type found deep underground in the Overworld that functions similar to regular stone but is harder than the stone.=A lousa profunda é un tipo de pedra que se atopa nas profundidades do subsolo na superficie e que funciona de xeito similar á pedra normal, pero é máis dura que ela.
 
 Infested Deepslate=Lousa profunda infestada
 
-An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Un bloque infestado é un bloque do que sairá un peixe prateado cando estea roto. Parece idéntico ao seu homólogo normal.
+An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Un bloque infestado é un bloque do que sairá un peixe prateado cando estea roto. Semella idéntico ao seu homólogo normal.
 
 Hides a silverfish=Agocha un peixe de prata
 Tuff=Toba
 
-Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=A toba é unha rocha ornamental formada a partir de cinzas volcánicas, que se produce en burbullas subterráneas por debaixo de Y@=16.
+Tuff is an ornamental rock formed from volcanic ash, occurring in underground blobs below Y@=16.=A toba é unha rocha ornamental formada a partir de cinzas volcánicas, que se produce en bolsas subterráneas por debaixo de Y@=16.
 
 Deepslate Coal Ore=Mineral de carbón de lousa profunda
 
-Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.=O mineral de carbón Deepslate é unha variante do mineral de carbón que se pode xerar en burbullas de lousa e toba.
+Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.=O mineral de carbón de Lousa Profunda é unha variante do mineral de carbón que se pode xerar en bolsas de lousa e toba.
 
 Deepslate Iron Ore=Mineral de Ferro de Lousa profunda
 
-Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=O mineral de ferro de lousa profunda é unha variante do mineral de ferro que se pode xerar en burbullas de lousa e toba.
+Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.=O mineral de ferro de lousa profunda é unha variante do mineral de ferro que se pode xerar en bolsas de lousa e toba.
 
 Deepslate Gold Ore=Mineral de Ouro de Lousa profunda
 
-Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.=O mineral de ouro de lousa profunda é unha variante do mineral de ouro que se pode xerar en burbullas de lousa e toba.
+Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.=O mineral de ouro de lousa profunda é unha variante do mineral de ouro que se pode xerar en bolsas de lousa e toba.
 
 Deepslate Emerald Ore=Mineral de Esmeralda de Lousa profunda
 
-Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.=O mineral de esmeralda de lousa profunda é unha variante do mineral de esmeralda que se pode xerar en burbullas de lousa e toba.
+Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.=O mineral de esmeralda de lousa profunda é unha variante do mineral de esmeralda que se pode xerar en bolsas de lousa e toba.
 
 Deepslate Diamond Ore=Mineral de diamante lousa profunda
 
-Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.=O mineral de diamante Deepslate é unha variante do mineral de diamante que se pode xerar en burbullas de lousa e toba.
+Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.=O mineral de diamante Deepslate é unha variante do mineral de diamante que se pode xerar en bolsas de lousa e toba.
 
 Deepslate Lapis Lazuli Ore=Mineral de Lapislázuli de Lousa profunda
 
-Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=O mineral de lapislázuli de lousa profunda é unha variante do mineral de lapislázuli que pode xerarse en burbullas de lousa e toba.
+Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.=O mineral de lapislázuli de lousa profunda é unha variante do mineral de lapislázuli que pode xerarse en bolsas de lousa e toba.
 
 Deepslate Copper Ore=Mineral de Cobre lousa profunda
 
-Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs.=O mineral de cobre Deepslate é unha variante do mineral de cobre que se pode xerar en burbullas de lousa e toba.
+Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs.=O mineral de cobre Deepslate é unha variante do mineral de cobre que se pode xerar en bolsas de lousa e toba.
 
 Deepslate Redstone Ore=Mineral de Pedra Vermella de Lousa profunda
 
-Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=O mineral de pedra vermella de lousa profunda é unha variante do mineral de pedra vermella que se pode xerar en burbullas de lousa e toba.
+Deepslate redstone ore is a variant of redstone ore that can generate in deepslate and tuff blobs.=O mineral de pedra vermella de lousa profunda é unha variante do mineral de pedra vermella que se pode xerar en bolsas de lousa e toba.
 
-Lit Deepslate Redstone Ore=Mineral Lousa profunda aceso de pedra vermella
+Lit Deepslate Redstone Ore=Mineral Lousa profunda de pedra vermella incandescente
 Cobbled Deepslate=Lousa profunda empedrada
 
 Cobbled deepslate is a stone variant that functions similar to cobblestone or blackstone.=A lousa profunda empedrada é unha variante de pedra que funciona de xeito similar ao empedrado ou pedra negra.
@@ -71,9 +71,9 @@ Deepslate Tiles Stairs=Escaleiras de azulexos de lousa profunda
 Deepslate Tiles Slab=Lousa de azulexos de lousa profunda
 Double Deepslate Tiles Slab=Lousa dobre de azulexos de lousa profunda
 Deepslate Tiles Wall=Muro de azulexos de lousa profunda
-Cracked Deepslate Bricks=Ladrillos de Lousa profunda rachados
-Cracked deepslate bricks are a cracked brick version of deepslate.=
-Cracked Deepslate Tiles=Azulexos de Lousa profunda rachados
-Cracked deepslate tiles are a cracked decorative variant of deepslate.=
-Chiseled Deepslate=Lousa profunda cincelada
-Chiseled deepslate is the chiseled version of deepslate.=Lousa profunda cicelada é a versión cicelada de lousa profunda.
+Cracked Deepslate Bricks=Ladrillos de Lousa profunda gretados
+Cracked deepslate bricks are a cracked brick version of deepslate.=Os ladrillos de lousa profunda gretados son unha versión de ladrillo gretado da lousa profunda.
+Cracked Deepslate Tiles=Azulexos de Lousa profunda gretados
+Cracked deepslate tiles are a cracked decorative variant of deepslate.=As tellas de lousa profunda gretadas son unha variante decorativa gretada da lousa profunda.
+Chiseled Deepslate=Lousa profunda tallada
+Chiseled deepslate is the chiseled version of deepslate.=Lousa profunda tallada é a versión tallada de lousa profunda.

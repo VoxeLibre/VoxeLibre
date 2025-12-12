@@ -1,53 +1,50 @@
 # textdomain: mcl_tools
 
-Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Os picos son ferramentas de minería para extraer bloques duros, como a pedra. Un pico tambén se pode empregar como arma, pero e bastante ineficiente.
+Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Os picos son ferramentas de minería para extraer bloques duros, como a pedra. Un pico tamén se pode empregar como arma, pero e bastante ineficiente.
 
-An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=Unha machada e a sua ferramenta de elección para cortar árbores, bloques a base de madeira e outros bloques. As machadas tambén causan moito dano, pero son bastante lentas.
+An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=Unha machada é a túa ferramenta de elección para cortar árbores, bloques de madeira e outros bloques. As machadas tamén causan moito dano, pero son bastante lentas.
 
-Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=As espadas son excelentes no combate corpo a corpo, xa que son rápidas, inflixen moito dano e poden soportar innumerables batallas. As espadas tambén se poden usar para cortar alguns bloques en particular, como arañeiras.
+Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=As espadas son ideais no combate corpo a corpo, xa que son rápidas, causan moito dano e poden soportar innumerables batallas. As espadas tamén se poden usar para cortar alguns bloques concretos, como arañeiras.
 
-To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=
+To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=Para cortar múltiples inimigos, sostén a espada na man e logo usa o botón dereito (clic dereito) sobre un inimigo.
 
-Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=As pas son ferramentas para cavar bloques grosos, como terra, area e grava. Tamén se poden usar para convertir bloques de herba en sendeiros de herba. As pas poden empregarse como armas, pero son moi febles.
+Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=As pas son ferramentas para escavar bloques estériles, como terra, area e grava. Tamén se poden usar para convertir bloques de herba en camiños de herba. As pas poden empregarse como armas, pero son moi febles.
 
-To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=Para convertir un bloque de herba nun camiño de herba, sosteña a pa coa man e despois faga (clic dereito) na parte superior ou lateral dun bloque de herba. Isto só funciona cando hai aire sobre o bloque de herba.
+To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=Para converter un bloque de herba nun camiño de herba, sosteña a pa coa man e despois faga (clic dereito) na parte superior ou lateral dun bloque de herba. Isto só funciona cando hai aire sobre o bloque de herba.
 
-Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.=As tesoiras son ferramentas para esquilar ovellas e extraer alguns tipos de bloques. As tesoiras son unha ferramenta de minería especial e podense empegar para obter o artículo orixinal de herba, follas e bloques similares que requiren corte.
+Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.=As tesoiras son ferramentas para rapar ovellas e extraer alguns tipos de bloques. As tesoiras son unha ferramenta de minería especial e podense empregar para obter o abxecto orixinal de herba, follas e bloques similares que requiren corte.
 
-To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.=Para esquilar ovellas ou tallar cabazas sen rostro, use a tecla "colocar" nelas. As caras só se poden tallar a carón das cabazas sen rostro. A minería funciona como de costume, pero as gotas son diferentes para alguns bloques.
+To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.=Para rapar ovellas ou tallar cabazas sen rostro, use a tecla "colocar" nelas. As caras só se poden tallar a carón das cabazas sen rostro. A minería funciona como de costume, pero os obxectos son diferentes para alguns bloques.
 
 Wooden Pickaxe=Pico de madeira
 Stone Pickaxe=Pico de pedra
 Iron Pickaxe=Pico de ferro
 Golden Pickaxe=Pico de ouro
 Diamond Pickaxe=Pico de diamante
-Netherite Pickaxe=
-Wooden Shovel=Pala de madeira
+Netherite Pickaxe=Pico de Netherita
+Wooden Shovel=Pa de madeira
 Stone Shovel=Pa de pedra
 Iron Shovel=Pa de ferro
 Golden Shovel=Pa de ouro
-Diamond Shovel=iamante
-Netherite Shovel=Pa de Netherite
+Diamond Shovel=Pa de diamante
+Netherite Shovel=Pa de Netherita
 Wooden Axe=Machada de madeira
 Stone Axe=Machada de pedra
 Iron Axe=Machada de ferro
 Golden Axe=Machada de ouro
 Diamond Axe=Machada de diamante
-Netherite Axe=
+Netherite Axe=Machada de Netherita
 Wooden Sword=Espada de madeira
 Stone Sword=Espada de pedra
 Iron Sword=Espada de ferro
 Golden Sword=Espada de ouro
 Diamond Sword=Espada de diamante
-Netherite Sword=Espada de Netherite
+Netherite Sword=Espada de Netherita
 Shears=Tesoiras
 
 
 ##### not used anymore #####
 
 
-You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Emprega a tua man espida sempre que non estés empuñando ningún obxeto. Ca tua man podes extraer a maioría dos bloques, pero este e o método máis lento e só os bloques máis febles producirán a sua caída útil. A man tambén causa danos menores ao golpear. O uso da man e a menudo un último recurso, xa cas ferramentas e armas de minería axeitadas son moito mellores.
-
 When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Cando empuñas un obxeto que non e unha ferramenta de minería ou unha arma, comportarase como se fora a man cando comeces a minar ou golpear.
-
 In Creative Mode, the hand is able to break all blocks instantly.=No modo creativo, a man pode romper todolos bloques ao instante.

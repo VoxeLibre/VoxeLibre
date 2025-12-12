@@ -8,7 +8,7 @@ Light Grey=Gris claro
 Black Banner=Estandarte negro
 Black=Negro
 Red Banner=Estandarte vermello
-Red=Rojo
+Red=vermello
 Yellow Banner=Estandarte amarelo
 Yellow=Amarelo
 Green Banner=Estandarte verde
@@ -21,8 +21,8 @@ Magenta Banner=Estandarte maxenta
 Magenta=Maxenta
 Orange Banner=Estandarte laranxa
 Orange=Laranxa
-Violet Banner=
-Violet=
+Violet Banner=Estandarte violeta
+Violet=violeta
 Brown Banner=Estandarte marrón
 Brown=Marrón
 Pink Banner=Estandarte rosa
@@ -33,25 +33,25 @@ Light Blue Banner=Estandarte azul claro
 Light Blue=Azul claro
 Banner=Estandarte
 
-Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Los estandartes son bloques decorativos altos y coloridos. Se pueden colocar en el suelo y en las paredes. Los estandartes se pueden estampar con una variedad de patrones usando mucho tinte en la elaboración.
+Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Os estandartes son bloques decorativos altos e coloridos. Pódense colocar no chan e nas paredes. Pódense decorar con unha variedade de patróns usando tinguidura na fabricación.
 
-Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Usa la elaboración para dibujar un patrón en la parte superior del estandarte. Los estandartes estampados pueden volver a estamparse para combinar varios patrones. Puede dibujar hasta 12 capas en un estandarte de esa manera. Si la pancarta incluye un degradado, solo son posibles 3 capas.
+Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Usa a elaboración para debuxar un patrón enriba do estandarte. Os estandartes estampados pódense volver estampar para combinar varios patróns. Pódense debuxar ata 12 capas nun estandarte deste xeito. Se o estandarte inclúe un degradado, só son posibles 3 capas.
 
-You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Puede copiar el patrón de un estandarte colocando dos estandartes del mismo color en la cuadrícula de fabricación: una debe ser estampada, la otra debe estar limpia. Finalmente, puede usar un estandarte en un caldero con agua para lavar su capa superior.
+You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Podes copiar o patrón dun estandarte colocando dous estandartes da mesma cor na grade de elaboración: un debe estar estampado e o outro debe estar limpo. Por último, podes usar un estandarte nunha caldeira con auga para borrar a súa capa superior.
 
 Preview Banner=Vista previa do Estandarte
 Paintable decoration=Decoración pintable
 ##[ patterncraft.lua ]##
 @1 Bordure=Bordo (@1)
-@1 Bricks=Bloque (@1)
+@1 Bricks=Ladrillos (@1)
 @1 Roundel=Medallón (@1)
 @1 Creeper Charge=Carga de enredadeira (@1)
 @1 Saltire=Aspa (@1)
 @1 Bordure Indented=Bordura dentada (@1)
-@1 Per Bend Inverted=Por banda invertida (@1)
-@1 Per Bend Sinister Inverted=Por banda sinistra invertida (@1)
-@1 Per Bend=Por Banda (@1)
-@1 Per Bend Sinister=Por banda sinistra (@1)
+@1 Per Bend Inverted=Partido en banda invertida (@1)
+@1 Per Bend Sinister Inverted=Partido en banda sinistra invertida (@1)
+@1 Per Bend=Partido en banda (@1)
+@1 Per Bend Sinister=Partido en banda invertida (@1)
 @1 Flower Charge=Carga de flor (@1)
 @1 Gradient=Degradado (@1)
 @1 Base Gradient=Degradado de base (@1)
@@ -88,3 +88,4 @@ And @1 additional layers=E @1 capas adicionais
 
 Purple Banner=Estandarte morado
 Purple=Morado
+

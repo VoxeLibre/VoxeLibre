@@ -2,21 +2,21 @@
 Compass=Compás
 Points to the world origin=Apunta á orixe do mundo
 
-Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Os compás son ferramentas que sinalan a orixe do mundo (X@=0, Z@=0) ou o punto de xeración na superficie.
+Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Os compases son ferramentas que sinalan a orixe do mundo (X@=0, Z@=0) ou o punto de aparición na superficie.
 
-A Compass always points to the world spawn point when the player is in the overworld.  In other dimensions, it spins randomly.=Un Compás sempre apunta ao punto de xeración do mundo cando o xogador está na superficie.  Noutras dimensions, xira o chou.
+A Compass always points to the world spawn point when the player is in the overworld.  In other dimensions, it spins randomly.=Un Compás sempre apunta ao punto de aparición do mundo cando o xogador está na superficie. Noutras dimensions, xira ao chou.
 
 Lodestone Compass=Compás magnetizado 
 Points to a lodestone=Apunta cara unha magnetita
 
-Lodestone compasses resemble regular compasses, but they point to a specific lodestone.=Os compás magnetizados parecense aos compás normais, pero apuntan a unha magnetita específica.
+Lodestone compasses resemble regular compasses, but they point to a specific lodestone.=Os compases magnetizados parecense aos compases normais, pero apuntan a unha magnetita específica.
 
-A Lodestone compass can be made from an ordinary compass by using it on a lodestone.  After becoming a lodestone compass, it always points to its linked lodestone, provided that they are in the same dimension.  If not in the same dimension, the lodestone compass spins randomly, similarly to a regular compass when outside the overworld.  A lodestone compass can be relinked with another lodestone.=Un compás magnetizado pode fabricarse a partir dun compás normal, sempre que estén na mesma dimensión.  Se no están na mesma dimensión, o compás magnetizado xirará o chou, de forma semellante a un compás normal cando está fora da superficie. Un compás magnetizado pode voltar a enlazarse con outra magnetita.
+A Lodestone compass can be made from an ordinary compass by using it on a lodestone.  After becoming a lodestone compass, it always points to its linked lodestone, provided that they are in the same dimension.  If not in the same dimension, the lodestone compass spins randomly, similarly to a regular compass when outside the overworld.  A lodestone compass can be relinked with another lodestone.=Un compás magnetizado pode fabricarse a partir dun compás normal, sempre que estén na mesma dimensión. Se non están na mesma dimensión, o compás magnetizado xirará o chou, de forma semellante a un compás normal cando está fora da superficie. Un compás magnetizado pode voltar a enlazarse con outra magnetita.
 
 Recovery Compass=Compás de recuperación
 Points to your last death location=Apunta cara a ubicación da tua deradeira morte
-Recovery Compasses are compasses that point to your last death location=Os compás de recuperación son compás que apuntan cara a ubicación da tua derradeira morte
+Recovery Compasses are compasses that point to your last death location=Os compases de recuperación son compases que apuntan cara a ubicación da tua derradeira morte
 
-Recovery Compasses always point to the location of your last death, in case you haven't died yet, it will just randomly spin around=Os compás de recuperación sempre apuntan cara a ubicación da tua derradeira morte, no caso de que ainda nopn morreras, simplemente xirará ao chou
+Recovery Compasses always point to the location of your last death, in case you haven't died yet, it will just randomly spin around=Os compases de recuperación sempre apuntan cara a ubicación da tua derradeira morte, no caso de que ainda non morreras, simplemente xirará ao chou
 
 Lodestone=Magnetita

@@ -1,26 +1,25 @@
 # textdomain: mcl_boats
 Sneak to dismount=Agáchate para desmontar
-Boat=Barco
-Oak Boat=Barco de carballo
-Spruce Boat=Barco de abeto
-Birch Boat=Barco de bidueiro
-Jungle Boat=Barco da xungla
-Acacia Boat=Barco de acacia
-Dark Oak Boat=Barco de carballo escuro
-Obsidian Boat=Barco de obsidiana
-Mangrove Boat=Barco de mangle
-Cherry Boat=Barco cereixa
-Oak Chest Boat=Barco cofre de carballo
-Spruce Chest Boat=Barco de cofre de abeto
-Birch Chest Boat=Barco de cofre de bidueiro
-Jungle Chest Boat=Barco cofre da xungla
-Acacia Chest Boat=Barco cofre de acacia
-Dark Oak Chest Boat=Barco de cofre de carballo escuro
-Mangrove Chest Boat=Barco cofre de mangle
-Cherry Chest Boat=Barco de cofre de cereixa
-Boats are used to travel on the surface of water.=Os barcos úsanse para viaxar pola superficie da auga.
+Boat=Barca
+Oak Boat=Barca de carballo
+Spruce Boat=Barca de abeto
+Birch Boat=Barca de bidueiro
+Jungle Boat=Barca de xungla
+Acacia Boat=Barca de acacia
+Dark Oak Boat=Barca de carballo escuro
+Obsidian Boat=Barca de obsidiana
+Mangrove Boat=Barca de mangle
+Cherry Boat=Barca de cereixa
+Oak Chest Boat=Barca de carballo con cofre
+Spruce Chest Boat=Barca de abeto con cofre
+Birch Chest Boat=Barca de bidueiro con cofre
+Jungle Chest Boat=Barca de xungla con cofre
+Acacia Chest Boat=Barca de acacia con cofre
+Dark Oak Chest Boat=Barca de carballo escuro con cofre
+Mangrove Chest Boat=Barca de mangle con cofre
+Cherry Chest Boat=Barca de cereixa con cofre
+Boats are used to travel on the surface of water.=As barcas úsanse para viaxar pola superficie da auga.
 
-##TODO: fuzzy matched - verify and remove the comment
-Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=Fai clic co botón dereito nunha fonte de auga para colocar o barco. Fai clic co botón dereito no barco para entrar nel. Use [Esquerda] e [Dereita] para dirixir, [Adiante] para acelerar e [Atrás] para desacelerar ou retroceder. Usa [Sneak] para deixar o barco, golpea o barco para que caia como elemento.
+Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=Fai clic co botón dereito nunha fonte de auga para colocar a barca. Fai clic dereito na barca para entrar nela. Usa [Esquerda] e [Dereita] para xirar, [Adiante] para acelerar e [Atrás] para frear ou recuar. Usa [agacharse] para sair da barca, golpea a barca para recollela como elemento.
 
 Water vehicle=Vehículo acuático

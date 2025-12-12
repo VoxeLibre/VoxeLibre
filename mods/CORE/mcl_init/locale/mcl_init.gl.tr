@@ -1,0 +1,5 @@
+# textdomain: mcl_init
+##[ versioning.lua ]##
+Display the game version.=Amosar a versión do xogo.
+Version: @1 @2=Versión: @1 @2
+Map generator active version: @1=Versión activa do xerador de mapas: @1

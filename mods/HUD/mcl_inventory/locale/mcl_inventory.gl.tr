@@ -9,18 +9,17 @@ Search Items=Buscar elementos
 Foodstuffs=Alimentos
 Tools=Ferramentas
 Combat=Combate
-Mobs=Mobs
-Brewing=elaboración de cervexa
+Mobs=Criaturas
+Brewing=Alquimia
 Materials=Materiais
 Survival Inventory=Inventario de supervivencia
 Recipe book=Libro de receitas
 Help=Axuda
-Advancements=
-Switch stack size=Cambiar tamaño de pila
-Select player skin=Selecciona a pel do xogador
-Server Settings=
-##TODO: fuzzy matched - verify and remove the comment
-@1 / @2=@1/@2
+Advancements=Progresos
+Switch stack size=Cambiar tamaño do lote
+Select player skin=Seleccionar a aparencia do xogador
+Server Settings=Configuración do servidor
+@1 / @2=@1 / @2
 ##[ survival.lua ]##
 Crafting=Elaboración
 Achievements=Logros

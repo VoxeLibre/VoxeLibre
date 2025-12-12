@@ -1,6 +1,6 @@
 # textdomain: mcl_target
 Target=Obxectivo
 
-A target is a block that provides a temporary redstone charge when hit by a projectile.=Un obxectivo é un bloque que proporciona unha carga de pedra vermella temporal cando golpea un proxectil.
+A target is a block that provides a temporary redstone charge when hit by a projectile.=Un obxectivo é un bloque que proporciona unha carga de pedra vermella temporal cando e golpeado por un proxectil.
 
 Throw a projectile on the target to activate it.=Lanza un proxectil sobre o obxectivo para activalo.

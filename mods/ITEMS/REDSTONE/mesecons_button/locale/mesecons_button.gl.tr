@@ -6,7 +6,7 @@ A wooden button is a redstone component made out of wood which can be pushed to 
 A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=Un botón é un compoñente Pedra Vermella que se pode premer para proporcionar enerxía Pedra Vermella. Cando se empurra, alimenta os compoñentes de pedra vermella adxacentes durante @1 segundo.
 
 Provides redstone power when pushed=Proporciona enerxía pedra Vermella cando se pulsa
-Push duration: @1s=
+Push duration: @1s=Duración pulso: @1s 
 Pushable by arrow=Pulsable pola frecha
 Stone Button=Botón de pedra
 
@@ -22,11 +22,7 @@ Birch Button=Botón de bidueiro
 Dark Oak Button=Botón de carballo escuro
 Spruce Button=Botón de abeto
 Jungle Button=Botón de xungla
-Mangrove Button=Botón de mangle
+Mangrove Button=Botón de mangleiro
 Crimson Button=Botón carmesí
-Warped Button=Botón deformado
+Warped Button=Botón distorto
 
-
-##### not used anymore #####
-
-Push duration: @1s=Duración pulso: @1s= 

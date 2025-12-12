@@ -1,7 +1,7 @@
 # textdomain: mcl_heads
 Zombie Head=Cabeza de zombi
 
-A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet, which reduces the detection range of zombies by 50%.=Unha cabeza de zombie é un pequeno bloque decorativo que se asemella á cabeza dun zombie. Tamén se pode usar como casco, o que reduce o rango de detección de zombies nun 50%.
+A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet, which reduces the detection range of zombies by 50%.=Unha cabeza de zombi é un pequeno bloque decorativo que se asemella á cabeza dun zombi. Tamén se pode usar como casco, o que reduce o rango de detección de zombis nun 50%.
 
 Stalker Head=cabeza de acosador 
 
@@ -11,11 +11,11 @@ Human Head=Cabeza humana
 
 A human head is a small decorative block which resembles the head of a human (i.e. a player character). It can also be worn as a helmet for fun, but does not offer any protection.=Unha cabeza humana é un pequeno bloque decorativo que se asemella á cabeza dun humano (é dicir, un personaxe do xogador). Tamén se pode usar como casco para divertirse, pero non ofrece ningunha protección.
 
-Skeleton Skull=Cráneo de esqueleto
+Skeleton Skull=Caveira de esqueleto
 
-A skeleton skull is a small decorative block which resembles the skull of a skeleton. It can also be worn as a helmet, which reduces the detection range of skeletons by 50%.=Unha caveira esquelética é un pequeno bloque decorativo que se asemella ao cranio dun esqueleto. Tamén se pode usar como casco, o que reduce o rango de detección dos esqueletos nun 50%.
+A skeleton skull is a small decorative block which resembles the skull of a skeleton. It can also be worn as a helmet, which reduces the detection range of skeletons by 50%.=Unha caveira esquelética é un pequeno bloque decorativo que se asemella a caveira dun esqueleto. Tamén se pode usar como casco, o que reduce o rango de detección dos esqueletos nun 50%.
 
-Wither Skeleton Skull=Cráneo de esqueleto murcho
+Wither Skeleton Skull=Caveira de esqueleto murcho
 
-A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection.=Un cranio de esqueleto murcho é un pequeno bloque decorativo que se asemella ao cranio dun esqueleto de murcho. Tamén se pode usar como casco para divertirse, pero non ofrece ningunha protección.
+A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection.=Unha caveira de esqueleto murcho é un pequeno bloque decorativo que se asemella a caveira dun esqueleto murcho. Tamén se pode usar como casco para divertirse, pero non ofrece ningunha protección.
 

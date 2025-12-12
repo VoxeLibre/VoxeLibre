@@ -1,24 +1,24 @@
 # textdomain: mcl_books
 Book=Libro
 Books are used to make bookshelves and book and quills.=Os libros utilízanse para facer estanterías, libros e plumas.
-“@1”="@1“
-Copy of “@1”=Copia de "@1“
-Copy of Copy of “@1”=Copia da copia de "@1"
-##TODO: fuzzy matched - verify and remove the comment
+“@1”=“@1”
+Copy of “@1”=Copia de “@1”
+Copy of Copy of “@1”=Copia da copia de “@1”
+
 Tattered Book=Libro esfarrapado
 by @1=por @1
 # as in “to sign a book”
 Sign=Asinar
 Done=Feito
 Book and Quill=Libro e pluma
-Write down some notes=Escribe algunhas notas
-This item can be used to write down some notes.=Este elemento podese empregar para escribir algunhas notas.
+Write down some notes=Escrebe algunhas notas
+This item can be used to write down some notes.=Este obxecto podese empregar para escribir algunhas notas.
 
-Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.=Sosteno na man, logo fai clic dereito para leer as notas actuais e logo edite. Pode editar o texto ca frecuencia que desexe. Tambén pode asinar o libro co convirte nun libro escrito que pode apiñar, pero ya no se puede editar.
+Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.=Sosteno na man, logo fai clic dereito para leer as notas actuais e logo edita. Podes editar o texto ca frecuencia que desexes. Tambén podes asinar o libro o co convirte nun libro escrito que pode amontoar, pero xa non se pode editar.
 
-A book can hold up to 4500 characters. The title length is limited to 64 characters.=Un libro pode conter ata 4500 caracteres. A longitude do título está limitada a 64 caracteres.
+A book can hold up to 4500 characters. The title length is limited to 64 characters.=Un libro pode conter ata 4500 caracteres. A lonxitude do título está limitada a 64 caracteres.
 
-Enter book title:=Inserta o título do libro:
+Enter book title:=Insire o título do libro:
 Sign and Close=Asinar e pechar
 Note: The book will no longer be editable after signing=Nota: O libro xa non será editable despois de asinalo
 Cancel=Cancelar
@@ -27,10 +27,10 @@ Written Book=Libro escrito
 
 Written books contain some text written by someone. They can be read and copied, but not edited.=Os libros escritos conteñen texto escrito por alguén. Poden leerse e copiarse, pero non editarse.
 
-Hold it in your hand, then rightclick to read the book.="Sosteno na man e fai clic dereito para ler o libro."
+Hold it in your hand, then rightclick to read the book.=Sosteno na man e fai clic dereito para ler o libro.
 
-To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied.=Para copiar o texto do libro escrito, colóqueo na cuadrícula de elaboración xunto cun libro e pluma (ou varios deles) e faga manualidades. O libro escrito non será consumido. As copias das copias non se poden copiar.
+To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied.=Para copiar o texto dun libro escrito, colócao na grade de elaboración xunto cun libro con pluma (ou varios) e fabricao. O libro escrito non se consume. As copias das copias non se poden copiar.
 
 Bookshelf=Librería
-Inventory=
+Inventory=Inventario
 Bookshelves are used for decoration.=As librerías utilizanse para a decoración.

@@ -1,15 +1,12 @@
 # textdomain:doc_items
-##TODO: fuzzy matched - verify and remove the comment
 This is a decorative block.=Este é un bloque decorativo.
 This block is a building block for creating various buildings.=Este bloque é un bloque para crear varios edificios.
 This item is primarily used for crafting other items.=Este elemento úsase principalmente para elaborar outros elementos.
-##TODO: fuzzy matched - verify and remove the comment
-Hold it in your hand, then left-click to eat it.=Mantéñao na man e, a continuación, prema co botón esquerdo para comelo.
+Hold it in your hand, then left-click to eat it.=Suxeitao coa man e fai clic esquerdo para comelo.
 
-##TODO: fuzzy matched - verify and remove the comment
-Hold it in your hand, then left-click to eat it. But why would you want to do this?=Mantéñao na man e, a continuación, prema co botón esquerdo para comelo. ¿Pero por que queres facer isto?
+Hold it in your hand, then left-click to eat it. But why would you want to do this?=Suxeitao coa man e fai clic esquerdo para comelo. Pero para que quererías facer isto?
 
-This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=A rotación deste bloque vese afectada pola forma de colocalo: colócao no chan ou no teito para unha orientación vertical; colócao ao lado para unha orientación horizontal. Colarse mentres o coloca leva a unha orientación perpendicular no seu lugar.
+This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=A rotación deste bloque depende da forma de colocalo: colócao no chan ou no teito para unha orientación vertical; colócao nun lateral para unha orientación horizontal. Se te agachas ao colocalo quedará en posición perpendicular.
 
 Hand=Man
 Air=Aire
@@ -20,31 +17,31 @@ No=Non
 Unknown item (@1)=Elemento descoñecido (@1)
 unknown=descoñecido
 1 second=1 segundo
-@1 seconds=@1 segundo
+@1 seconds=@1 segundos
 • @1: @2=
-• @1, rating @2: @3 s - @4 s=• @1, clasificación @2: @3 s - @4 s
-• @1, rating @2: @3 s=• @1, clasificación @2: @3 s
+• @1, rating @2: @3 s - @4 s=• @1, valoración @2: @3 s - @4 s
+• @1, rating @2: @3 s=• @1, valoración @2: @3 s
 • @1, level @2: @3 uses=• @1, nivel @2: @3 usos
 • @1, level @2: Unlimited=• @1, nivel @2: ilimitado
 This tool is capable of mining.=Esta ferramenta é capaz de minar.
-Maximum toughness levels:=Niveis máximos de tenacidade:
+Maximum toughness levels:=Niveis máximos de dureza:
 Mining times:=Tempos de minería:
 Durability:=Durabilidade:
 This is a melee weapon which deals damage by punching.=Esta é unha arma corpo a corpo que fai dano ao golpear.
 Maximum damage per hit:=Dano máximo por golpe:
-• @1: @2 HP=
-Full punch interval: @1 s=Intervalo completo de golpe: @1 s
-This block can be mined by any mining tool in half a second.=Este bloque pode ser extraído por calquera ferramenta de minería en medio segundo.
+• @1: @2 HP=@1: @2 PV
+Full punch interval: @1 s=Intervalo de golpe completo: @1 s
+This block can be mined by any mining tool in half a second.=Este bloque pode ser minado por calquera ferramenta de minería en medio segundo.
 This block can be mined by any mining tool immediately.=Este bloque pode ser minado por calquera ferramenta de minería inmediatamente.
-This block cannot be mined by ordinary mining tools.=
+This block cannot be mined by ordinary mining tools.=Este bloque non pode ser minado con ferramentas de minaría comúns.
 This block can be destroyed by any mining tool in half a second.=Este bloque pode ser destruído por calquera ferramenta de minería en medio segundo.
 This block can be destroyed by any mining tool immediately.=Este bloque pode ser destruído por calquera ferramenta de minería inmediatamente.
-This block cannot be destroyed by ordinary mining tools.=
+This block cannot be destroyed by ordinary mining tools.=Este bloque non pode ser destruído con ferramentas de minaría comúns.
 
-This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Este bloque pódese extraer mediante ferramentas de minería que coincidan con calquera das seguintes clasificacións de minería e o seu nivel de dureza.
+This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Este bloque pode ser minado por ferramentas de minería que coincidan con calquera das seguintes valoracións de minería e o seu nivel de dureza.
 
-Mining ratings:=Clasificación mineira:
-Toughness level: @1=Nivel de tenacidade: @1
+Mining ratings:=Valoración de mineira:
+Toughness level: @1=Nivel de dureza: @1
 Range: @1=Alcance: @1
 Range: 4=Alcance: 4
 # Range: <Hand> (<Range>)
@@ -52,20 +49,20 @@ Range: @1 (@2)=Alcance: @1 (@2)
 This tool can serve as a smelting fuel with a burning time of @1.=Esta ferramenta pode servir como combustible de fundición cun tempo de combustión de @1.
 This block can serve as a smelting fuel with a burning time of @1.=Este bloque pode servir como combustible de fundición cun tempo de combustión de @1.
 This item can serve as a smelting fuel with a burning time of @1.=Este elemento pode servir como combustible de fundición cun tempo de combustión de @1.
- Using it as fuel turns it into: @1.= Usalo como combustible convérteo en: @1.
+ Using it as fuel turns it into: @1.= Ao usalo como combustible convértese en: @1.
 Itemstring: "@1"=Cadea de elementos: "@1"
 Description: @1=Descrición: @1
-Usage help: @1=Como usar: @1
+Usage help: @1=Axuda de uso: @1
 Maximum stack size: @1=Tamaño máximo da pila: @1
 This block points to liquids.=Este bloque apunta a líquidos.
 This tool points to liquids.=Esta ferramenta apunta a líquidos.
 This item points to liquids.=Este elemento apunta a líquidos.
 
-Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con este bloque non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de forma diferente.
+Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con este bloque non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de xeito diferente.
 
-Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con esta ferramenta non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de forma diferente.
+Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con esta ferramenta non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de xeito diferente.
 
-Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con este elemento non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de forma diferente.
+Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Os golpes con este elemento non funcionan como de costume; o combate corpo a corpo e a minería non son posibles ou funcionan de xeito diferente.
 
 This block belongs to the @1 group.=Este bloque pertence ao grupo @1.
 This tool belongs to the @1 group.=Esta ferramenta pertence ao grupo @1.
@@ -74,46 +71,45 @@ This block belongs to these groups: @1.=Este bloque pertence a estes grupos: @1.
 This tool belongs to these groups: @1.=Esta ferramenta pertence a estes grupos: @1.
 This item belongs to these groups: @1.=Este elemento pertence a estes grupos: @1.
 Blocks=Bloques
-Item reference of blocks and other things which are capable of occupying space=Referencia de elementos de bloques e outras cousas que son capaces de ocupar espazo
-Collidable: @1=Colisible: @1
-Pointable: Yes=Puntual: Si
-Pointable: Only by special items=Puntable: só por elementos especiais
-Pointable: No=Puntual: Non
+Item reference of blocks and other things which are capable of occupying space=Referencia de elementos de bloques e outras cousas que poden ocupar espazo
+Collidable: @1=Colidable: @1
+Pointable: Yes=Apuntable: Si
+Pointable: Only by special items=Apuntable: só con elementos especiais
+Pointable: No=Apuntable: Non
 This block is a liquid with these properties:=Este bloque é un líquido con estas propiedades:
-• Renewable=• • Renovable
-• Not renewable=• Non renovable
-• No flowing=• Non fluír
-• Flowing range: @1=• Rango de fluxo: @1
+• Renewable=• • Renovábel
+• Not renewable=• Non renovábel
+• No flowing=• Sen fluír
+• Flowing range: @1=• Alcance de fluido: @1
 • Viscosity: @1=• Viscosidade: @1
 This block causes a damage of @1 hit points per second.=Este bloque causa un dano de @1 puntos de vida por segundo.
-This block causes a damage of @1 hit point per second.=Este bloque causa un dano de @1 punto de golpe por segundo.
+This block causes a damage of @1 hit point per second.=Este bloque causa un dano de @1 punto de vida por segundo.
 
-This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=Este bloque diminúe a túa respiración e causa un dano por afogamento de @1 punto de golpe cada 2 segundos..
+This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=Este bloque diminúe a túa respiración e causa un dano por afogamento de @1 punto de vida cada 2 segundos..
 
-This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=Este bloque diminúe a túa respiración e causa un dano por afogamento de @1 punto de golpe cada 2 segundos.
+This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=Este bloque diminúe a túa respiración e causa un dano por afogamento de @1 punto de vida cada 2 segundos.
 
 The fall damage on this block is increased by @1%.=O dano por caída neste bloque aumenta nun @1%..
-This block cancels any fall damage.=
+This block cancels any fall damage.=Este bloque cancela o dano por caída.
 The fall damage on this block is reduced by @1%.=O dano por caída neste bloque redúcese nun @1%.
-##TODO: fuzzy matched - verify and remove the comment
-You cannot jump while standing on this block.=Non podes saltar mentres estás de pé neste bloque.
+You cannot jump while standing on this block.=Non podes saltar mentres estás enriba deste bloque.
 This block can be climbed.=Este bloque pódese escalar.
 This block will make you bounce off with an elasticity of @1%.=Este bloque farache rebotar cunha elasticidade de @1%.
 This block is slippery.=Este bloque é esvaradío.
-This block is completely silent when walked on, mined or built.=Este bloque é completamente silencioso cando se pisa, se extrae ou se constrúe.
-This block is completely silent when mined or built.=Este bloque é completamente silencioso cando se extrae ou se constrúe.
-Walking on this block is completely silent.=Camiñar por este bloque é completamente silencioso.
+This block is completely silent when walked on, mined or built.=Este bloque é completamente silencioso cando ao pisalo, minalo ou construilo.
+This block is completely silent when mined or built.=Este bloque é completamente silencioso cando mina ou se constrúe.
+Walking on this block is completely silent.=Camiñar sobre este bloque é completamente silencioso.
 Mining this block is completely silent.=A minería deste bloque é completamente silenciosa.
 Building this block is completely silent.=Construír este bloque é completamente silencioso.
-This block is affected by gravity and can fall.=Este bloque está afectado pola gravidade e pode caer.
-Building another block at this block will place it inside and replace it.=Construír outro bloque neste bloque colocarao dentro e substituirase.
+This block is affected by gravity and can fall.=Este bloque vese afectado pola gravidade e pode caer.
+Building another block at this block will place it inside and replace it.=Construír outro bloque enriba deste colocarao dentro e substituírao.
 Falling blocks can go through this block; they destroy it when doing so.=Os bloques que caen poden pasar por este bloque; destrúeno ao facelo.
-This block will drop as an item when a falling block ends up inside it.=Este bloque caerá como elemento cando un bloque caendo acabe dentro del.
+This block will drop as an item when a falling block ends up inside it.=Este bloque caerá como un obxecto cando un bloque caendo acabe dentro del.
 This block is destroyed when a falling block ends up inside it.=Este bloque destrúese cando un bloque que cae acaba dentro del.
-This block will drop as an item when it is not attached to a surrounding block.=Este bloque caerá como elemento cando non estea ligado a un bloque circundante.
-This block will drop as an item when no collidable block is below it.=Este bloque caerá como elemento cando ningún bloque colizable estea debaixo del.
-Liquids can flow into this block and destroy it.=Os líquidos poden fluír neste bloque e destruílo.
-This block is a light source with a light level of @1.=Este bloque é unha fonte de luz cun nivel de luz de @1.
+This block will drop as an item when it is not attached to a surrounding block.=ste bloque soltarase como un obxecto se non está unido a un bloque veciño.
+This block will drop as an item when no collidable block is below it.=Este bloque soltarase como un obxecto se non hai un bloque colidable debaixo.
+Liquids can flow into this block and destroy it.=Os líquidos poden fluír a este bloque e destruílo.
+This block is a light source with a light level of @1.=Este bloque brilla lixeiramente cun nivel de luz de @1.
 This block glows faintly with a light level of @1.=Este bloque brilla débilmente cun nivel de luz de @1.
 
 This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly.=Este bloque permite que a luz se propague cunha pequena perda de brillo, e incluso a luz solar pode pasar sen perdas.
@@ -125,20 +121,18 @@ This block connects to this block: @1.=Este bloque conéctase a este bloque: @1.
 This block connects to these blocks: @1.=Este bloque conéctase a estes bloques: @1.
 This block connects to blocks of the @1 group.=Este bloque conéctase a bloques do grupo @1.
 This block connects to blocks of the following groups: @1.=Este bloque conéctase a bloques dos seguintes grupos: @1.
-This block won't drop anything when mined.=Este bloque non soltará nada cando se extrae.
-This block will drop the following when mined: @1×@2.=Este bloque eliminará o seguinte cando se extrae: @1×@2.
-This block will drop the following when mined: @1.=Este bloque eliminará o seguinte cando se extrae: @1.
+This block won't drop anything when mined.=Este bloque non soltará nada ao minalo.
+This block will drop the following when mined: @1×@2.=Este bloque eliminará o seguinte cando se mina: @1×@2.
+This block will drop the following when mined: @1.=Este bloque eliminará o seguinte cando se mina: @1.
 This block will drop the following items when mined: @1.=
-##TODO: fuzzy matched - verify and remove the comment
-This block will randomly drop one of the following when mined: @1.=Este bloque soltará aleatoriamente un dos seguintes cando se extrae: @1.
+This block will randomly drop one of the following when mined: @1.=Este bloque soltará ao chou un dos seguintes ao ser minado: @1.
 
-##TODO: fuzzy matched - verify and remove the comment
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Este bloque caerá aleatoriamente ata @1 gotas das seguintes posibles caídas cando se extrae: @2.
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Este bloque soltará ao chou ata @1 recompensas das seguintes posibles ao ser minado: @2.
 
 # Final list separator (e.g. “One, two and three”)
  and = e
-# Item count times item name ##TODO: fuzzy matched - verify and remove the comment
-@1×@2=%@1×@2
+# Item count times item name
+@1×@2=@1×@2
 # Itemname (<0.5%)
 @1 (<0.5%)=@1 (<0.5%)
 # Itemname (ca. 25%)
@@ -146,26 +140,25 @@ This block will randomly drop up to @1 drops of the following possible drops whe
 # Itemname (25%)
 @1 (@2%)=@1 (@2%)
 Tools and weapons=Ferramentas e armas
-Item reference of all wieldable tools and weapons=Referencia do elemento de todas as ferramentas e armas manexables
+Item reference of all wieldable tools and weapons=Referencia do obxecto de todas as ferramentas e armas manexables
 Durability: @1 uses=Durabilidade: @1 usos
 Durability: @1=Durabilidade: @1
-Miscellaneous items=Elementos varios
+Miscellaneous items=Obxectos varios
 
-Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=Referencia de elementos de elementos que non son nin bloques, ferramentas nin armas (especialmente artigos de elaboración)
+Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=Referencia de obxectos de obxectos que non son nin bloques, nin ferramentas, nin armas (especialmente artigos de elaboración)
 
-Mobs=
-different mobs=
-Type: @1=
-spawn class: @1=
-Can Jump=
-Can Fly=
-drops: =
-follows player when these items are held:=
+Mobs=Criaturas
+different mobs=Criaturas diferentes
+Type: @1=Tipo: @1
+spawn class: @1=Clase de aparición: @1
+Can Jump=Pode saltar
+Can Fly=Pode voar
+drops: =recompensas:
+follows player when these items are held:=segue ao xogador se se sosteñen estes elementos:
 
 A transparent block, basically empty space. It is usually left behind after digging something.=Un bloque transparente, basicamente espazo baleiro. Adoita quedar atrás despois de cavar algo.
 
-Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Sempre que non manexas ningún elemento, utilizas a man que actúa como unha ferramenta coas súas propias capacidades. Cando manexas un elemento que non é unha ferramenta de minería ou unha arma, comportarase coma se fose a man.
-
+Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Sempre que non manexes ningún obxecto, usarás a man que actúa como unha ferramenta coas súas propias capacidades. Ao empuñar un obxecto que non é unha ferramenta de minería ou unha arma, comportarase coma se fose a man.
 
 
 ##### not used anymore #####

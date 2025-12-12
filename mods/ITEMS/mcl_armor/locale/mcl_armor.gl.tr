@@ -2,33 +2,33 @@
 
 This is a piece of equippable armor which reduces the amount of damage you receive.=Esta é unha peza de armadura que se pode equipar, a cal reduce o dano que recibes.
 
-To equip it, put it on the corresponding armor slot in your inventory menu.=Para equipala, colocaa na rañura da armadura do menú do teu inventario.
-Sentry=
-Dune=
-Coast=
-Wild=
-Tide=
-Ward=
-Vex=
-Rib=
-Snout=
-Eye=
-Spire=
-Silence=
-Wayfinder=
+To equip it, put it on the corresponding armor slot in your inventory menu.=Para equipala, colócaa no espazo correspondente da armadura no menú do teu inventario.
+sentry=sentinela
+dune=duna
+coast=costa
+wild=salvaxe
+tide=marea
+ward=gardián
+vex=vex
+rib=costela
+snout=fociño
+eye=ollo
+spire=agulla
+silence=silencio
+wayfinder=Explorador
 ##[ api.lua ]##
-Upgrade:=
-@1 Armor Trim=
+Upgrade:=Mellora:
+@1 Armor Trim=@1 Revestimento de armadura
 ##[ register.lua ]##
 Golden Helmet=Casco de Ouro
 Golden Chestplate=Cota de Ouro
 Golden Leggings=Mallas de Ouro
 Golden Boots=Botas de Ouro
-Chainmail Helmet=
-##TODO: fuzzy matched - verify and remove the comment
-Chainmail Chestplate=Cota de Cadeas
-Chainmail Leggings=
-Chainmail Boots=
+Chain Helmet=casco de Cadeas
+
+Chainmail Chestplate=Mallas de Cota de Cadeas
+Chainmail Leggings=Mallas de cota de malla
+Chainmail Boots=Botas de cota de malla
 Iron Helmet=Casco de Ferro
 Iron Chestplate=Cota de Ferro
 Iron Leggings=Mallas de Ferro
@@ -42,7 +42,7 @@ Netherite Chestplate=Cota de Netherita
 Netherite Leggings=Mallas de Netherita
 Netherite Boots=Botas de Netherita
 Projectile Protection=Protección contra proxectís
-Reduces projectile damage.=Reduce o dano do proxectís.
+Reduces projectile damage.=Reduce o dano dos proxectís.
 Blast Protection=Protección contra explosions
 Reduces explosion damage and knockback.=Reduce o dano de explosions e o seu empuxe.
 Fire Protection=Protección contra o lume
@@ -50,17 +50,17 @@ Reduces fire damage.=Reduce o dano causado polo lume.
 Protection=Protección
 Reduces most types of damage by 4% for each level.=Reduce a maioría de tipos de dano por 4% por cada nivel.
 Feather Falling=Caída de plumaxe
-Reduces fall damage.=Reduce o daño por caída.
+Reduces fall damage.=Reduce o dano por caída.
 Aqua Affinity=Afinidade acuática
 #Translations of enchantements
 Increases underwater mining speed.=Aumenta a velocidade de minado baixo a agua.
 Curse of Binding=Maldición de ligazón
 
-Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=O obxeto non pode ser removido das rañuras do inventario excepto ao morrer, ao romperse, ou en Modo Creativo.
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=O obxeto non pode ser removido dos espazos do inventario excepto ao morrer, ao romperse, ou en Modo Creativo.
 
 Thorns=Espiñas
 
-Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflexa unha parte do dano inflixido, a costa de reducir a durabilidade con cada activación.
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Reflicte unha parte do dano recibido, a costa de reducir a durabilidade con cada activación.
 
 Elytra=Élitros
 ##[ leather.lua ]##
@@ -70,10 +70,11 @@ Leather Pants=Pantalons de Coiro
 Leather Boots=Botas de Coiro
 ##[ trims.lua ]##
 #Translations for armor trims
-Smithing Template '@1'=Modelo de forxería '@1'
+Smithing Template '@1'=Modelo de forxaría '@1'
 
 
 ##### not used anymore #####
+
 
 Chain Helmet=casco de Cadeas
 Chain Leggings=Mallas de Cadeas

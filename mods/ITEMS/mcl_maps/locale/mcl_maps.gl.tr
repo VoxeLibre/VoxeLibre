@@ -1,16 +1,16 @@
 # textdomain: mcl_maps
-It may take a moment for the map to be ready.=
-The new map is now ready.=
+It may take a moment for the map to be ready.=O mapa pode tardar un intre en estar listo.
+The new map is now ready.=O novo mapa xa está listo.
 Empty Map=Mapa baleiro
 
-Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.=Os mapas baleiros non son útiles como mapas, pero pódense apilar e converter en mapas que se poden usar.
+Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.=Os mapas baleiros non son útiles como mapas, pero pódense amorear e converter en mapas que si se poden usar.
 
-##TODO: fuzzy matched - verify and remove the comment
-Rightclick to create a filled map (which cannot be stacked anymore).=Fai clic co botón dereito para crear un mapa cheo (que xa non se pode apilar).
+
+Rightclick to create a filled map (which cannot be stacked anymore).=Fai clic dereito para crear un mapa cheo (que xa non se pode amorear).
 Map=Mapa
 Shows a map image.=Mostra unha imaxe de mapa.
 
-When created, the map saves the nearby area as an image that can be viewed any time by holding the map.=Cando se crea, o mapa garda a zona próxima como unha imaxe que se pode ver en calquera momento mantendo pulsado o mapa.
+When created, the map saves the nearby area as an image that can be viewed any time by holding the map.=Ao crearse, o mapa garda a área próxima como unha imaxe que se pode ver en calquera momento mantendo o mapa na man.
 
-Hold the map in your hand. This will display a map on your screen.=Manteña o mapa na man. Isto amosará un mapa na súa pantalla.
-Level @1=
+Hold the map in your hand. This will display a map on your screen.=Sostén o mapa na man. Isto amosará un mapa na pantalla.
+Level @1=Nivel @1

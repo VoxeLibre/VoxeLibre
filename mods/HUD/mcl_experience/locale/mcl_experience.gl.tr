@@ -2,9 +2,9 @@
 ##[ command.lua ]##
 [[<player>] <xp>]=[[<xogador>] <xp>]
 Gives a player some XP=Dálle a un xogador algo de XP
-Error: Too many parameters!=¡Erro: demasiados parámetros!
+Error: Too many parameters!=Erro: demasiados parámetros!
 Error: Incorrect value of XP=Erro: valor incorrecto de XP
 Error: Player not found=Erro: Non se atopou o xogador
 Added @1 XP to @2, total: @3, experience level: @4=Engadido @1 XP a @2, total: @3, nivel de experiencia: @4
 ##[ bottle.lua ]##
-Bottle o' Enchanting=Botella de Encanto
+Bottle o' Enchanting=Botella de Encantamento

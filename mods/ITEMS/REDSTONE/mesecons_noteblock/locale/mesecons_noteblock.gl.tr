@@ -2,17 +2,17 @@
 Note Block=Bloque de notas
 Plays a musical note when powered by redstone power=Reproduce unha nota musical cando está alimentado por enerxía Pedra vermella
 
-A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power.=Un bloque de notas é un bloque musical que toca unha das moitas notas musicais e diferentes instrumentos cando se lle perfora ou recibe enerxía Pedra Vermella.
+A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power.=Un bloque de notas é un bloque musical que reproduce unha das moitas notas musicais e diferentes instrumentos cando se golpea ou recibe enerxía Pedra Vermella.
 
 Use the note block to choose the next musical note (there are 25 semitones, or 2 octaves). The intrument played depends on the material of the block below the note block:=Use o bloque de notas para escoller a seguinte nota musical (hai 25 semitonos ou 2 oitavas). O instrumento tocado depende do material do bloque debaixo do bloque de notas:
 
-• Glass: Sticks=• Cristal: Paus
+• Glass: Sticks=• Vidro: Paus
 • Wood: Bass guitar=• Madeira: Baixo
-• Stone: Bass drum=
-• Sand or gravel: Snare drum=
-• Block of Gold: Bell=• Bloque de Ouro: Campana
+• Stone: Bass drum=• Pedra: tambor grave
+• Sand or gravel: Snare drum=• Area ou grava: caixa
+• Block of Gold: Bell=• Bloque de Ouro: Campá
 • Clay: Flute=• Arxila: Frauta
-• Packed Ice: Chime=• Xeo empacado: Chime
+• Packed Ice: Chime=• Xeo empacado: Repicar
 • Wool: Guitar=• La: Guitarra
 • Bone Block: Xylophne=• Bloque óseo: Xilofono
 • Block of Iron: Iron xylophne=• Bloque de Ferro: Ferro xilofono
@@ -21,7 +21,6 @@ Use the note block to choose the next musical note (there are 25 semitones, or 2
 • Block of Emerald: Square wave=• Bloque de Esmeralda: Onda cadrada
 • Hay Bale: Banjo= Bale de pao: Banjo
 • Glowstone: Electric piano=• Pedra Brillante: Piano eléctrico
-• Anything else: Piano=
+• Anything else: Piano=• Calquera outra cousa: Piano
 
 The note block will only play a note when it is below air, otherwise, it stays silent.=O bloque de notas só reproducirá unha nota cando estea debaixo do aire, se non, permanece en silencio.
-

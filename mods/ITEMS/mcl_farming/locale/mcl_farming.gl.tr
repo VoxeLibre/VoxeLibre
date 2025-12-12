@@ -4,34 +4,34 @@ Farmland=Terra de cultivo
 Surface for crops=Superficie para cultivos
 Can become wet=Pode mollarse
 
-Farmland is used for farming, a necessary surface to plant crops. It is created when a hoe is used on dirt or a similar block. Plants are able to grow on farmland, but slowly. Farmland will become hydrated farmland (on which plants grow faster) when it rains or a water source is nearby. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=As terras de cultivo úsanse para a agricultura, unha superficie necesaria para plantar cultivos. Créase cando se usa unha aixada sobre terra ou un bloque similar. As plantas poden crecer nas terras de cultivo, pero lentamente. As terras de cultivo converteranse en terras de cultivo hidratadas (nas que as plantas crecen máis rápido) cando chove ou se atope unha fonte de auga nas proximidades. Este bloque volverá ser lixo cando apareza un bloque sólido enriba del ou un brazo de pistón se estenda por riba del.
+Farmland is used for farming, a necessary surface to plant crops. It is created when a hoe is used on dirt or a similar block. Plants are able to grow on farmland, but slowly. Farmland will become hydrated farmland (on which plants grow faster) when it rains or a water source is nearby. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=A terra de cultivo úsase para cultivar, sendo unha superficie necesaria para plantar colleitas. Créase ao usar unha aixada sobre terra ou un bloque similar. As plantas poden medrar sobre terra de cultivo, pero lentamente. Esta converterase en terra de cultivo hidratada (onde as plantas medran máis rápido) cando chova ou haxa unha fonte de auga preto. O bloque volverá a ser terra común se aparece un bloque sólido enriba ou se un pistón se estende sobre ela.
 
 Hydrated Farmland=Terra de cultivo hidratada
 
-Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmland is under rain or near water. Without water, this block will dry out eventually. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=As terras de cultivo hidratadas utilízanse na agricultura, aquí é onde se poden plantar e cultivar algunhas plantas. Créase cando as terras de cultivo están baixo a choiva ou preto da auga. Sen auga, este bloque acabarase secando. Este bloque volverá ser estéril cando apareza un bloque sólido enriba del ou un brazo de pistón se estenda por riba del.
+Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmland is under rain or near water. Without water, this block will dry out eventually. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=A terra de cultivo hidratada úsase na agricultura; é onde podes plantar e facer medrar certas plantas. Créase cando a terra de cultivo está baixo a choiva ou preto da auga. Sen auga, este bloque acabará por secarse. Volverá converterse en terra común se aparece un bloque sólido enriba ou se un pistón se estende por riba del.
 
 ##[ hoes.lua ]##
-Turns block into farmland=
+Turns block into farmland=Converte o bloque en terra de cultivo
 
-Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=As aixadas son ferramentas esenciais para o cultivo. Utilízanse para crear terras de cultivo para plantar nelas sementes. As aixadas tamén se poden empregar como armas pero son moi débiles.
+Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=As aixadas son ferramentas esenciais para o cultivo. Utilízanse para crear terras de cultivo para plantar nelas sementes. As aixadas tamén se poden empregar como armas pero son moi febles.
 
-Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Use a aixada nun bloque cultivable (facendo clic co botón dereito nel) para convertelo en terras de cultivo. A terra, os bloques de herba e os camiños de herba son bloques cultivables. Usar unha aixada sobre terra esteril convértea en terra.
+Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Use a aixada nun bloque cultivable (facendo clic co botón dereito nel) para convertelo en terra de cultivo. A terra, os bloques de herba e os camiños de herba son bloques cultivables. Usar unha aixada sobre terra esteril convértea en terra común.
 
 Wood Hoe=Aixada de madeira
 Stone Hoe=Aixada de pedra
 Iron Hoe=Aixada de ferro
 Golden Hoe=Aixada de ouro
 Diamond Hoe=Aixada de diamante
-Netherite Hoe=Aixada de Netherita
+Netherite Hoe=Aixada de pedra do inframundo
 ##[ wheat.lua ]##
 Grows on farmland=Medra en terras de cultivo
 This is a food item which can be eaten.=Este é un alimento que se pode comer.
 Wheat Seeds=Sementes de trigo
-Grows into a wheat plant. Chickens like wheat seeds.=Crece nunha planta de trigo. As galiñas gustanlles as sementes de trigo.
+Grows into a wheat plant. Chickens like wheat seeds.=Medra ata converterse nunha planta de trigo. Ás galiñas gústanlles as sementes de trigo.
 
 Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant.=Coloque as sementes de trigo en terras de cultivo (que se poden crear cunha aixada) para plantar unha planta de trigo.
 
-They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.=Crecen á luz solar e medran máis rápido nas terras de cultivo hidratadas. Fai clic co botón dereito nun animal para alimentalo con sementes de trigo.
+They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.=Medran á luz do sol e medran máis rápido nas terras de cultivo hidratadas. Fai clic co botón dereito nun animal para darlle de comer sementes de trigo.
 
 Premature Wheat Plant=Planta de trigo prematura
 Premature wheat plants grow on farmland under sunlight in 8 stages.=As plantas de trigo prematuras medran nas terras de cultivo baixo a luz solar en 8 etapas.
@@ -44,7 +44,7 @@ Mature wheat plants are ready to be harvested for wheat and wheat seeds.=As plan
 They won't grow any further.=Non medrarán máis.
 Wheat=Trigo
 Wheat is used in crafting. Some animals like wheat.=O trigo úsase na elaboración. Algúns animais gustalles o trigo.
-Use the “Place” key on an animal to try to feed it wheat.=
+Use the “Place” key on an animal to try to feed it wheat.=Usa a tecla "colocar" nun animal para tentar darlle trigo.
 Cookie=Galleta
 Bread=Pan
 Hay Bale=Paca de feo
@@ -52,29 +52,29 @@ Hay bales are decorative blocks made from wheat.=As Pacas de feo son bloques dec
 ##[ pumpkin.lua ]##
 Pumpkin Seeds=Sementes de cabaza
 
-Grows into a pumpkin stem which in turn grows pumpkins. Chickens like pumpkin seeds.=Crece nun talo de cabaza que á súa vez crece cabazas. Ás galiñas gústalles as sementes de cabaza.
+Grows into a pumpkin stem which in turn grows pumpkins. Chickens like pumpkin seeds.=Medra ata converterse nun talo de cabaza que á súa vez produce cabazas. Ás galiñas gústanlles as sementes de cabaza.
 
-Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds.=Coloque as sementes de cabaza en terras de cultivo (que se poden crear cunha aixada) para plantar un talo de cabaza. Os talos de cabaza medran á luz solar e medran máis rápido nas terras de cultivo hidratadas. Cando madura, o talo tenta facer crecer unha cabaza ao seu carón. Fai clic co botón dereito nun animal para alimentalo con sementes de cabaza.
+Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds.=Coloca as sementes de cabaza sobre terra de cultivo (que se pode crear cunha aixada) para plantar un talo de cabaza. Os talos de cabaza medran coa luz do sol e fano máis rápido sobre terra de cultivo hidratada. Cando madura, o talo tenta facer medrar unha cabaza ao seu carón. Fai clic dereito sobre un animal para alimentalo con sementes de cabaza.
 
 Premature Pumpkin Stem=Talo de cabaza prematuro
 
-Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins.=Os talos de cabaza medran nas terras de cultivo en 8 etapas. Nas terras de cultivo hidratadas, o crecemento é un pouco máis rápido. Os talos de cabaza maduros son capaces de cultivar cabazas.
+Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins.=Os talos de cabaza medran sobre terra de cultivo en 8 fases. En terra de cultivo hidratada, o crecemento é un pouco máis rápido. Os talos maduros poden facer medrar cabazas.
 
 Premature Pumpkin Stem (Stage @1)=Talo prematuro de cabaza (etapa @1)
 Mature Pumpkin Stem=Talo maduro de cabaza
 
-A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.=Un talo de cabaza maduro intenta cultivar unha cabaza nun dos seus catro bloques adxacentes. Unha cabaza só pode crecer encima de terras de cultivo, terra ou un bloque de herba. Cando unha cabaza está ao lado dun talo de cabaza, o talo da cabaza dobra inmediatamente e conéctase á cabaza. Un talo de cabaza conectado non pode cultivar outra cabaza. En canto se eliminaron todas as cabazas ao redor do talo, este perde a conexión e está listo para cultivar outra cabaza.
+A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.=Un talo de cabaza maduro tenta facer medrar unha cabaza nalgún dos seus catro bloques adxacentes. A cabaza só pode medrar sobre terra de cultivo, terra común ou un bloque de herba. Cando unha cabaza aparece xunto ao talo, este inclínase e conéctase inmediatamente a ela. Un talo conectado non pode facer medrar outra cabaza. En canto se retiren todas as cabazas arredor do talo, este perde a conexión e queda listo para facer medrar unha nova.
 
 Pumpkin=Cabaza
 
-A pumpkin is a decorative block. It can be carved with shears to obtain a carved pumpkin and pumpkin seeds.=
+A pumpkin is a decorative block. It can be carved with shears to obtain a carved pumpkin and pumpkin seeds.=Unha cabaza é un bloque decorativo. Pódese tallar con tesoiras para obter unha cabaza tallada e sementes de cabaza.
 
-To carve a pumpkin, use the shears on the side you want the face to appear.=
-Carved Pumpkin=
+To carve a pumpkin, use the shears on the side you want the face to appear.=Para tallar unha cabaza, usa as tesoiras no lado onde queiras que apareza a cara.
+Carved Pumpkin=Cabaza Tallada
 
-A carved pumpkin is a decorative block that can be used to summon snow and iron golems. It can also be worn as a helmet. It is made from shearing a pumpkin.=
+A carved pumpkin is a decorative block that can be used to summon snow and iron golems. It can also be worn as a helmet. It is made from shearing a pumpkin.=Unha cabaza tallada é un bloque decorativo que se pode usar para invocar gólems de neve e de ferro. Tamén se pode levar posta como casco. Obtense ao cortar unha cabaza con tesoiras.
 
-Jack o'Lantern=Calabaza de Samain
+Jack o'Lantern=Cabaza de Samain
 
 A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.=A cabaza de Samain e unha decoración tradicional de samain feita dunha cabaza. Brilla intensamente.
 
@@ -82,88 +82,88 @@ Pumpkin Pie=Empanada de cabaza
 A pumpkin pie is a tasty food item which can be eaten.=Unha empanada de cabaza é un alimento saboroso que se pode comer.
 ##[ melon.lua ]##
 Melon Seeds=Sementes de melón
-Grows into a melon stem which in turn grows melons. Chickens like melon seeds.=Crece nun talo de melón que á súa vez produce melóns. Ás galiñas gústalles as sementes de melón.
+Grows into a melon stem which in turn grows melons. Chickens like melon seeds.=Medra nun talo de melón que á súa vez produce melóns. Ás galiñas gústalles as sementes de melón.
 
-Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melon stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem will attempt to grow a melon at the side. Rightclick an animal to feed it melon seeds.=Coloque as sementes de melón en terras de cultivo (que se poden crear cunha aixada) para plantar un talo de melón. Os talos do melón medran á luz solar e medran máis rápido nas terras de cultivo hidratadas. Cando estea maduro, o talo tentará crecer un melón ao lado. Fai clic co botón dereito nun animal para alimentalo con sementes de melón.
+Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melon stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem will attempt to grow a melon at the side. Rightclick an animal to feed it melon seeds.=Coloque as sementes de melón en terras de cultivo (que se poden crear cunha aixada) para plantar un talo de melón. Os talos do melón medran á luz do sol e medran máis rápido nas terras de cultivo hidratadas. Cando madura, o talo intentará cultivar un melón ao carón. Fai clic co botón dereito nun animal para alimentalo con sementes de melón.
 
 Melon=Melón
 
-A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices.=Un melón é un bloque que se pode cultivar a partir de talos de melón, que á súa vez se cultivan a partir de sementes de melón. Pódese coller para as rodajas de melón
+A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices.=Un melón é un bloque que pode medrar a partir de talos de melón, que á súa vez se obteñen a partir de sementes de melón. Pódese colleitar para obter anacos de melón.
 
 Premature Melon Stem=Talo de melón prematuro
 
-Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons.=Os talos do melón crecen nas terras de cultivo en 8 etapas. Nas terras de cultivo hidratadas, o crecemento é un pouco máis rápido. Os talos de melón maduros son capaces de cultivar melóns.
+Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons.=Os talos do melón medran nas terras de cultivo en 8 etapas. Nas terras de cultivo hidratadas, o crecemento é un pouco máis rápido. Os talos de melón maduros son capaces de cultivar melóns.
 
 Premature Melon Stem (Stage @1)=Talo de melón prematuro (etapa @1)
 Mature Melon Stem=Talo de melón maduro 
 
-A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.=Un talo de melón maduro tenta cultivar un melón nun dos seus catro bloques adxacentes. Un melón só pode crecer encima de terras de cultivo, terra ou un bloque de herba. Cando un melón está xunto a un talo de melón, o talo do melón dobra inmediatamente e conéctase co melón. Mentres está conectado, un talo de melón non pode cultivar outro melón. En canto se eliminaron todos os melóns arredor do talo, este perde a conexión e está listo para cultivar outro melón.
+A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.=UUn talo de melón maduro tenta facer medrar un melón nalgún dos seus catro bloques adxacentes. O melón só pode medrar sobre terra de cultivo, terra común ou un bloque de herba. Cando un melón aparece xunto ao talo, este inclínase e conéctase inmediatamente a el. Mentres estea conectado, o talo non pode facer medrar outro melón. En canto se retiren todos os melóns arredor do talo, este perde a conexión e queda listo para facer medrar outro.
 
 Melon Slice=Rebanda de melón
 ##[ carrots.lua ]##
 Premature Carrot Plant=Planta de cenoria prematura
 
-Carrot plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=As plantas de cenoria son plantas que crecen nas terras de cultivo baixo a luz solar en 8 etapas, pero só se poden distinguir visualmente 4 etapas. Nas terras de cultivo hidratadas, medran un pouco máis rápido. Pódense coller en calquera momento pero só darán un beneficio cando maduren.
+Carrot plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=As plantas de cenoria son plantas que medran nas terras de cultivo baixo a luz do sol en 8 etapas, pero só se poden distinguir visualmente 4 etapas. Nas terras de cultivo hidratadas, medran un pouco máis rápido. Pódense colleitarse en calquera momento pero só darán un beneficio cando maduren.
 
 Premature Carrot Plant (Stage @1)=Planta de cenoria prematura (Etapa @1)
 Mature Carrot Plant=Planta de cenoria madura
 
-Mature carrot plants are ready to be harvested for carrots. They won't grow any further.=As plantas de cenoria maduras están listas para ser collidas para as cenorias. Non medrarán máis.
+Mature carrot plants are ready to be harvested for carrots. They won't grow any further.=As plantas de cenoria maduras están listas para ser colleitadas. Non crecerán máis.
 
 Carrot=Cenoria
-Carrots can be eaten and planted. Pigs and rabbits like carrots.=As cenorias pódense comer e plantar. Porcos e coellos coma cenorias.
+Carrots can be eaten and planted. Pigs and rabbits like carrots.=As cenorias pódense comer e plantar. Aos porcos e aos coellos gústanlles as cenorias.
 
-##TODO: fuzzy matched - verify and remove the comment
-Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Mantéñao na man e fai clic co botón dereito para comelo. Colócao enriba das terras de cultivo para plantalo. Crece á luz solar e crece máis rápido nas terras de cultivo hidratadas. Fai clic co botón dereito nun animal para alimentalo.
+
+Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Mantéñao na man e fai clic co botón dereito para comelo. Colóqueo enriba dunha terra de cultivo para plantar a cenoria. Crece á luz do sol e crece máis rápido en terras de cultivo hidratadas. Prema co botón dereito nun animal para darlla de comer.
 
 Golden Carrot=Cenoria dourada
 
-A golden carrot is a precious food item which can be eaten. It is really, really filling!=Unha cenoria dourada é un alimento precioso que se pode comer. ¡É realmente, moi enchente!
+A golden carrot is a precious food item which can be eaten. It is really, really filling!=Unha cenoria dourada é un alimento precioso que se pode comer. É moi, moi saciante!
 
 ##[ potatoes.lua ]##
-Premature Potato Plant=Planta prematura de pataca
+Premature Potato Plant=Planta de pataca prematura
 
-Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=As plantas de pataca son plantas que crecen nas terras de cultivo baixo a luz solar en 8 etapas, pero só se poden distinguir visualmente 4 etapas. Nas terras de cultivo hidratadas, medran un pouco máis rápido. Pódense coller en calquera momento pero só darán un beneficio cando maduren.
+Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=As plantas de pataca son plantas que medran sobre terra de cultivo baixo a luz do sol en 8 etapas, aínda que só se poden distinguir visualmente 4 delas. En terra de cultivo hidratada, crecen un pouco máis rápido. Pódense colleitar en calquera momento, pero só dan beneficios cando están maduras.
 
 Premature Potato Plant (Stage @1)=Planta prematura de pataca (etapa @1)
 Mature Potato Plant=Planta de pataca madura
 
-Mature potato plants are ready to be harvested for potatoes. They won't grow any further.=As plantas de pataca maduras están listas para ser collidas para as patacas. Non medrarán máis.
+Mature potato plants are ready to be harvested for potatoes. They won't grow any further.=As plantas de pataca maduras están listas para ser colleitadas para patacas. Non medrarán máis.
 
 Potato=Pataca
 
-Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes.=As patacas son alimentos que se poden comer, cociñar no forno e plantar. Porcos coma as patacas.
+Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes.=As patacas son alimentos que se poden comer, cociñar no forno e plantar. Aos porcos gústanlles as patacas.
 
-Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Mantéñao na man e fai clic co botón dereito para comelo. Colócao enriba das terras de cultivo para plantalo. Crece á luz solar e crece máis rápido nas terras de cultivo hidratadas. Fai clic co botón dereito nun animal para alimentalo.
+Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Collea na man e fai clic co botón dereito para comela. Colócaa enriba da terra de cultivo para plantala. Medra coa luz do sol e crece máis rápido sobre terra de cultivo hidratada. Fai clic dereito nun animal para alimentalo.
 
 Baked Potato=Pataca ao forno
 Baked potatoes are food items which are more filling than the unbaked ones.=As patacas ao forno son alimentos que enchen mais cas sen cocer.
 Poisonous Potato=Pataca velenosa
 60% chance of poisoning=60% de posibilidades de intoxicación
 
-This potato doesn't look too healthy. You can eat it to restore hunger points, but there's a 60% chance it will poison you briefly.=Esta pataca non parece demasiado saudable. Podes comelo para restaurar os puntos de fame, pero hai un 60 % de posibilidades de que te envelene brevemente.
+This potato doesn't look too healthy. You can eat it to restore hunger points, but there's a 60% chance it will poison you briefly.=Esta pataca non parece demasiado saudable. Podes comela para restaurar os puntos de fame, pero hai un 60 % de posibilidades de que te envelene brevemente.
 
 ##[ beetroot.lua ]##
 Beetroot Seeds=Sementes de remolacha
-Grows into a beetroot plant. Chickens like beetroot seeds.=Crece nunha planta de remolacha. Ás galiñas gústalles as sementes de remolacha.
+Grows into a beetroot plant. Chickens like beetroot seeds.=Medra ata converterse nunha planta de remolacha. Ás galiñas gústanlles as sementes de remolacha.
 
-Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds.=Coloque as sementes de remolacha en terras de cultivo (que se poden crear cunha aixada) para plantar unha planta de remolacha. Crecen á luz solar e medran máis rápido nas terras de cultivo hidratadas. Fai clic co botón dereito nun animal para alimentalo con sementes de remolacha.
+Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds.=Coloca as sementes de remolacha en terras de cultivo (que se poden crear cunha aixada) para plantar unha planta de remolacha. Medran á luz do sol e medran máis rápido en terras de cultivo hidratadas. Fai clic co botón dereito nun animal para darlle sementes de remolacha.
 
-Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=As plantas de remolacha son plantas que crecen nas terras de cultivo baixo a luz solar en 4 etapas. Nas terras de cultivo hidratadas, medran un pouco máis rápido. Pódense coller en calquera momento pero só darán un beneficio cando maduren.
+Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=As plantas de remolacha son plantas que medran en terras de cultivo baixo a luz solar en 4 etapas. En terras de cultivo hidratadas, medran un pouco máis rápido. Pódense colleitar en calquera momento, pero só producirán beneficios cando maduren.
 
 Premature Beetroot Plant=Planta prematura de remolacha
 Mature Beetroot Plant=Planta madura de remolacha
 
-A mature beetroot plant is a farming plant which is ready to be harvested for a beetroot and some beetroot seeds. It won't grow any further.=Unha planta de remolacha madura é unha planta de cultivo que está lista para ser colleita para unha remolacha e algunhas sementes de remolacha. Non medrará máis.
+A mature beetroot plant is a farming plant which is ready to be harvested for a beetroot and some beetroot seeds. It won't grow any further.=Unha planta de remolacha madura é unha planta agrícola que está lista para ser colleitada para obter unha remolacha e algunhas sementes de remolacha. Non medrará máis.
 
 Beetroot=Remolacha
 
-Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too.=As remolachas úsanse tanto como alimento como como colorante. Aos porcos tamén lles gustan as remolachas.
+Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too.=As remolachas úsanse tanto como alimento ou como ingrediente para tinguiduras. Tamén lles gustan aos porcos.
 
-Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.=Manter na man e fai clic co botón dereito para comelo. Fai clic co botón dereito nun animal para alimentalo.
+Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.=Mantena na man e fai clic co botón dereito para comela. Fai clic dereito nun animal para alimentalo.
 Beetroot Soup=Sopa de remolacha
 Beetroot soup is a food item.=A sopa de remolacha e un alimento.
-##[ sweet_berry.lua ]##
+##[ sweet_berry.lua ]##3
 Sweet Berry Bush (Stage @1)=Arbusto de Baga Doce
 Sweet Berry=Baga Doce
 

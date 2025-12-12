@@ -2,39 +2,39 @@
 ##[ functions.lua ]##
 New respawn position set!=¡Nova posición de reaparición establecida!
 You can only sleep at night or during a thunderstorm.=Só podes durmir pola noite ou durante tormentas eléctricas.
-You can't sleep, the bed's too far away!=¡Non podes durmir, a cama está moi lonxe!
-This bed is already occupied!=¡A cama xa está ocupada!
-You have to stop moving before going to bed!=¡Tes que deixar de moverte antes de deitarte!
-You can't sleep now, monsters are nearby!=No podes durmir agora, ¡hai monstros preto!
-You can't sleep, the bed is obstructed!=¡Non podes durmir, a cama está obstruida!
-It's too dangerous to sleep here!=¡E moi perigoso durmir aquí!
-Leave bed=Sair da cama
+You can't sleep, the bed's too far away!=Non podes durmir, a cama está moi lonxe!
+This bed is already occupied!=A cama xa está ocupada!
+You have to stop moving before going to bed!=Tes que deixar de moverte antes de deitarte!
+You can't sleep now, monsters are nearby!=Non podes durmir agora, ¡hai monstros preto!
+You can't sleep, the bed is obstructed!=Non podes durmir, a cama está obstruida!
+It's too dangerous to sleep here!=E moi perigoso durmir aquí!
+Leave bed=Deixar a cama
 Abort sleep=Erguerse
 Chat:=Chat:
-Send=
-Players in bed: @1/@2=Jugadores en la cama: @1/@2
-Note: Night skip is disabled.=Nota: O salto nocturno está deshabilitado.
+Send=Enviar
+Players in bed: @1/@2=Xogadores na cama: @1/@2
+Note: Night skip is disabled.=Nota: O salto da noite está desactivado.
 You're sleeping.=Estás durmindo.
-You will fall asleep when all players are in bed.=Te quedarás durmido cando todos os xogadores estén na cama.
+You will fall asleep when all players are in bed.=Quedarás durmido cando todos os xogadores estean na cama.
 You will fall asleep when @1% of all players are in bed.=Quedarás durmido cando o @1% de todos os xogadores estean na cama.
 You're in bed.=Estas na cama.
 @1/@2 players currently in bed.=@1/@2 xogadores actualmente na cama.
-You exceeded the maximum number of messages per 10 seconds!=¡Superou o número máximo de mensaxes por 10 segundos!
-You are missing the 'shout' privilege! It's required in order to talk in chat...=¡Estás perdendo o privilexio de "berrar"! É necesario para falar no chat...
-Sorry, but you have to wait @1 seconds until you may use this button again!=¡Sentímolo, pero tes que esperar @1 segundo ata que poidas usar este botón de novo!
-Hey! Would you guys mind sleeping?=¡Ei! ¿Importaríavos durmir?
+You exceeded the maximum number of messages per 10 seconds!=Superou o número máximo de mensaxes por 10 segundos!
+You are missing the 'shout' privilege! It's required in order to talk in chat...=Fáltache o privilexio de 'berrar'! É necesario para falar no chat...
+Sorry, but you have to wait @1 seconds until you may use this button again!=Sentímolo, pero tes que agardar @1 segundos ata que poidas usar este botón de novo!
+Hey! Would you guys mind sleeping?=Ei! Importaríavos durmir?
 ##[ api.lua ]##
-Beds allow you to sleep at night and make the time pass faster.=As camas te permiten durmir pola noite e facer co tempo pase máis axiña.
+Beds allow you to sleep at night and make the time pass faster.=As camas permiten durmir pola noite e facer co tempo pase axiña.
 
-To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=Para usar unha cama, párate preto dela e fai clic dereito na cama para durmir nela. Durmir só funciona cando se agocha o sol pola noite ou durante unha tormenta eléctrica. A cama tamén ten que estar libre de calquer perigo.
+To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=Para usar unha cama, coclocate preto dela e fai clic dereito na cama para durmir nela. Durmir só funciona cando se agocha o sol pola noite ou durante unha tronada. A cama tamén ten que estar libre de calquer perigo.
 
-You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Oiches falar doutros mundos nos que unha cama establecería o punto de partida para a tua vindeira vida. Pero este mundo non e un deles.
+You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Xa escoitaches falar doutros mundos nos que unha cama marcaría o punto de partida para a túa próxima vida. Pero este mundo non é un deles.
 
-By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=Ao usar unha cama, esta establecese como o punto de partida para a tua vindeira vida. Se morres, comenzarás a tua vindeira vida nesa cama, a menos que esté obstruida ou destruida.
+By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=Ao usar unha cama, estableces o punto de partida para a tua vindeira vida. Se morres, comenzarás a tua vindeira vida nesa cama, a menos que esté obstruida ou destruida.
 
-In this world, going to bed won't skip the night, but it will skip thunderstorms.=En este mundo, ir a la cama no se saltará la noche, pero se saltará las tormentas eléctricas.
+In this world, going to bed won't skip the night, but it will skip thunderstorms.=Neste mundo, ir para a cama non evitará a noite, pero si as tronadas.
 
-Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Durmir permite saltarte a noite. Omitese a noite cando todos os xogadores neste mundo foron a durmir. A noite saltase despois de durmir durante uns segundos. As tormentas eléctricas podense omitir da mesma maneira.
+Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Durmir permíteche saltar a noite. A noite sáltase cando todos os xogadores deste mundo se deitaron. A noite sáltase despois de durmir uns segundos. As treboadas pódense saltar do mesmo xeito.
 
 Allows you to sleep=Permíteche durmir
 ##[ beds.lua ]##
@@ -60,7 +60,6 @@ Respawn Anchor=Áncora de reaparición
 
 
 ##### not used anymore #####
-
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=¡Nova posición de reaparición establecida! Pero só podes durmir pola noite ou durante tormentas eléctricas.
 

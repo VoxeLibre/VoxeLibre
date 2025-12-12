@@ -1,11 +1,11 @@
 # textdomain: mcl_enchanting
 ### enchantments.lua ###
-Enchant an item=Encantar obxeto
+Enchant an item=Encantar obxecto
 <player> <enchantment> [<level>]=<xogador> <encantamento> [<nivel>]]
 Usage: /enchant <player> <enchantment> [<level>]=Usa: /enchant <xogador> <encantamento> [<nivel>]
 Player '@1' cannot be found.=Non se pode atopar o xogador '@1'.
 There is no such enchantment '@1'.=Non existe tal encantamento '@1'.
-The target doesn't hold an item.=O obxectivo non contén un elemento.
+The target doesn't hold an item.=O obxectivo non contén ningún elemento.
 The selected enchantment can't be added to the target item.=O encantamento seleccionado non se pode engadir ao elemento de destino.
 ### init.lua ###
 '@1' is not a valid number='@1' non é un número válido
@@ -18,32 +18,32 @@ Usage: /forceenchant <player> <enchantment> [<level>]=Usa /forceenchant <xogador
 The target item is not enchantable.=O elemento de destino non se pode encantar.
 '@1' is not a valid number.='@1' non é un número válido.
 Enchanted Book=Libro Encantado
-Enchanting Table=Mesa de Encantadora
+Enchanting Table=Mesa de encantamentos
 Spend experience, and lapis to enchant various items.=Emprega experiencia e lapis para encantar varios elementos.
 
-Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Enchanting Tables permitirache encantar armaduras, ferramentas, armas e libros con varias habilidades. Pero, a costa dalgunha experiencia, e lapislázuli.
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=A mesa de encantamentos permitirache encantar armaduras, ferramentas, armas e libros con varias habilidades. Pero, a costa dalgunha experiencia, e lapis lázuli.
 
-Rightclick the Enchanting Table to open the enchanting menu.=Fai clic co botón dereito na táboa encantadora para abrir o menú encantador.
+Rightclick the Enchanting Table to open the enchanting menu.=Fai clic co botón dereito na mesa de encantamentos para abrir o menú de encantamentos.
 
-Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Coloque unha ferramenta, armadura, arma ou libro na rañura superior esquerda e, a continuación, coloque 1-3 Lapislázuli na rañura da dereita.
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Coloca unha ferramenta, armadura, arma ou libro na rañura superior esquerda e, a continuación, coloque 1-3 Lapis lázuli na rañura da dereita.
 
-After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Despois de colocar os teus artigos nas rañuras, mostraranse as opcións encantadoras. Pasa o rato sobre as opcións para ler o que tes dispoñible.
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Despois de colocar os teus obxectos nas rañuras, amosaranse as opcións de encantamento. Pasa o rato por enriba delas para ver que está dispoñíbel
 
-These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Estas opcións son aleatorias e dependen do nivel de experiencia; pero a forza do encantamento pódese aumentar.
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Estas opcións son aleatorias e dependen do teu nivel de experiencia; porén, pódese aumentar a forza do encantamento.
 
-To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar a forza do encantamento, coloca estantes arredor da mesa encantadora. Non obstante, terás que manter 1 nodo de aire entre a mesa e as estanterías para potenciar a mesa encantadora.
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Para aumentar a forza dos encantamentos, coloca andeis arredor da mesa de encantamentos. Porén, debes deixar un espazo de aire entre a mesa e os andeis para que a mesa reciba o seu poder.
 
-After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Despois de seleccionar finalmente o teu encantamento; Fai clic co botón esquerdo na selección e verás tanto o lapislázuli como os teus niveis de experiencia consumidos. E, un elemento encantado deixado no seu lugar.
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Unha vez escollido o encantamento, preme co botón esquerdo sobre a opción, e verás como se consomen o lápis lazuli e os teus niveis de experiencia. No seu lugar, quedará o obxecto encantado.
 
 Enchant=Encantar
 ##[ engine.lua ]##
 Inventory=Inventario
 @1 Lapis Lazuli=@1 Lapis Lázuli
 ### engine.lua ###
-@1 Enchantment Levels=Nivel de encantamiento: @1
-Level requirement: @1=Nivel precisado: @1
+@1 Enchantment Levels=Nivel de encantamento: @1
+Level requirement: @1=Requirimento de nivel: @1
 ##[ enchantments.lua ]##
-Bane of Arthropods=Perdición dos Artrópodos
+Bane of Arthropods=Perda dos artrópodos
 
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Aumenta o dano e aplica a Lentitude aos artrópodos (arañas, arañas das covas, peixes de prata e endermitas).
 
@@ -51,34 +51,34 @@ Channeling=Canalización
 
 Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Envía un raio cara a un obxectivo. Funciona só durante as treboadas e se o obxectivo está sen obstáculos con bloques opacos.
 
-Curse of Vanishing=Maldición de Desaparición
-Item destroyed on death.=Elemento destruído despois da sua morte.
-Depth Strider=Axilidade acuática
+Curse of Vanishing=Maldición do Esvaemento
+Item destroyed on death.=Obxecto destruído ao morrer.
+Depth Strider=camiñalava das profundidades
 Increases underwater movement speed.=Aumenta a velocidade de movemento submarino.
 Efficiency=Eficiencia
 Increases mining speed.=Aumenta a velocidade de minería.
 Fire Aspect=Aspecto de lume
-Sets target on fire.=Pomn lume ao obxetivo.
+Sets target on fire.=Prende lume ao obxectivo.
 Flame=Chama
 Arrows set target on fire.=As frechas incendian o obxectivo.
 Fortune=Fortuna
-Increases certain block drops.=Aumenta certas caídas de bloque.
-Frost Walker=Paso Xeado
+Increases certain block drops.=Aumenta as caídas dalgúns bloques.
+Frost Walker=Camiñante de xeo
 
 Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Converte a auga debaixo do xogador en xeo xeado e evita o dano dos bloques de magma.
 
 Impaling=Empalamento
-Trident deals additional damage to ocean mobs.=Tridente causa dano adicional ás turbas oceánicas
-Infinity=Infinidad
+Trident deals additional damage to ocean mobs.=Tridente causa dano adicional ás criaturas oceánicas
+Infinity=Infinidade
 Shooting consumes no regular arrows.=Disparar non consume frechas regulares.
 Knockback=Retroceso
 Increases knockback.=Aumenta o retroceso.
 Looting=Botín
 Increases mob loot.=Aumenta o botín dos inimigos.
 Loyalty=Lealdade 
-Trident returns after being thrown. Higher levels reduce return time.=Tridente volve despois de ser lanzado. Os niveis máis altos reducen o tempo de retorno.
+Trident returns after being thrown. Higher levels reduce return time.=O tridente volve despois de ser lanzado. Os niveis máis altos reducen o tempo de retorno.
 Luck of the Sea=Sorte do mar
-Increases rate of good loot (enchanting books, etc.)=Aumenta a taxa de bo botín (libros encantadores, etc.)
+Increases rate of good loot (enchanting books, etc.)=Aumenta a taxa de bo botín (libros encantamentos, etc.)
 Lure=Atracción
 Decreases time until rod catches something.=Disminue o tempo que tardan en picar os cebos na pesca.
 Mending=Reparación
@@ -92,25 +92,26 @@ Increases arrow damage.=Aumenta o dano das frechas.
 Punch=Retroceso
 Increases arrow knockback.=Aumenta  o retroceso das frechas.
 Quick Charge=Carga Rápida
-Decreases crossbow charging time.=Diminúe o tempo de carga da ballesta.
+Decreases crossbow charging time.=Diminúe o tempo de carga da bésta.
 Respiration=Respiración
 Extends underwater breathing time.=Aumenta o tempo de respiración submarina.
 Riptide=Propulsión acuática
-Trident launches player with itself when thrown. Works only in water or rain.=Trident lanza o xogador consigo mesmo cando o lanza. Funciona só en auga ou choiva.
+Trident launches player with itself when thrown. Works only in water or rain.=O tridente lanza o xogador consigo mesmo ao ser lanzado. Só funciona en auga ou choiva.
 Sharpness=O afiado
-Increases damage.=Aumenta  o dano.
+Increases damage.=Aumenta o dano.
 Silk Touch=Toque de Seda
-Mined blocks drop themselves.=Os bloques minados caen eles mesmos.
+Mined blocks drop themselves.=Os bloques minados caen sós.
 Smite=Golpeo
-Increases damage to undead mobs.=Aumenta  o dano contra os non-mortos.
+Increases damage to undead mobs.=Aumenta o dano as criaturas mortas viventes.
 Soul Speed=Velocidade da Alma
-Increases walking speed on soul sand and soul soil.=
-Sweeping Edge=Filo barrido
-Increases sweeping attack damage.=Aumenta  o dano de efecto area.
+Increases walking speed on soul sand and soul soil.=Aumenta a velocidade de camiñar na area e no solo das almas.
+Sweeping Edge=Filo varrido
+Increases sweeping attack damage.=Aumenta o dano dos ataques de varrido.
 Unbreaking=Irrompible
-Increases item durability.=Aumenta a durabilidade do elemento.
+Increases item durability.=Aumenta a durabilidade do obxecto.
 
 
 ##### not used anymore #####
 
 Increases walking speed on soul sand.=Aumenta a velocidade de marcha sobre a area da alma.
+

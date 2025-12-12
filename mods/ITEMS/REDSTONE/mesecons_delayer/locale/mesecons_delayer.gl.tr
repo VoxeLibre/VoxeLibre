@@ -1,11 +1,11 @@
 # textdomain: mesecons_delayer
 Transmits redstone power only in one direction=Transmite o poder de Pedra Vermella só nunha dirección
 Delays signal=Sinal de atraso
-Output locks when getting active redstone repeater signal from the side=Bloqueas de saída ao recibir o sinal de repetidor Redstone activo desde o lado
+Output locks when getting active redstone repeater signal from the side=A saída bloquéase ao recibir un sinal de repetidor Pedra vermella activo desde o lateral.
 
 Redstone repeaters are versatile redstone components with multiple purposes: 1. They only allow signals to travel in one direction. 2. They delay the signal. 3. Optionally, they can lock their output in one state.=Os repetidores Redstone son compoñentes versátiles de Redstone con múltiples propósitos: 1. Só permiten que os sinais viaxan nunha dirección. 2. Retrasan o sinal. 3. Opcionalmente, poden bloquear a súa saída nun estado.
 
-To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, use the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.=Para alimentar un repetidor Redstone, envíe un sinal na dirección da "frecha" (a entrada). O sinal sae no lado oposto (a saída) cun atraso. Para cambiar o atraso, usa o repetidor Redstone. O atraso é de entre 0,1 e 0,4 segundos e pódese cambiar en pasos de 0,1 segundos. Indícase pola posición do facho de pedra vermella en movemento.
+To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, use the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.=Para alimentar un repetidor Pedra vermella, envíe un sinal na dirección da "frecha" (a entrada). O sinal sae no lado oposto (a saída) cun atraso. Para cambiar o atraso, usa o repetidor Pedra vermella. O atraso é de entre 0,1 e 0,4 segundos e pódese cambiar en pasos de 0,1 segundos. Indícase pola posición do facho de pedra vermella en movemento.
 
 To lock a repeater, send a signal from an adjacent repeater into one of its sides. While locked, the moving redstone torch disappears, the output doesn't change and the input signal is ignored.=Para bloquear un repetidor, envíe un sinal desde un repetidor adxacente a un dos seus lados. Mentres está bloqueado, o facho de pedra vermella en movemento desaparece, a saída non cambia e o sinal de entrada é ignorado.
 
@@ -19,3 +19,4 @@ Redstone Repeater (Locked, Powered)=Repetidor de Pedra Vermella (Bloqueado, Alim
 ##### not used anymore #####
 
 Redstone Repeater (Powered)=Repetidor de Pedra Vermella (Alimentado)
+

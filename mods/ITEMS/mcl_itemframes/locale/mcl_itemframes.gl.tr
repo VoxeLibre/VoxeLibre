@@ -5,15 +5,15 @@ Just place any item on the item frame. Use the item frame again to retrieve the 
 
 ##[ register.lua ]##
 Item Frame=Marco de elemento
-Can hold an item=
-Glow Item Frame=
-Can hold an item and glows=
-Invisible Item Frame=
-Can hold an item but is invisible=
-Invisible Glow Item Frame=
-Can hold an item and glows but is invisible=
-Glow and Behold!=¡Brillo e Velaí!
-Craft a glow item frame.=Elabora un marco de elementos brillantes.
+Can hold an item=Pode conter un obxecto
+Glow Item Frame=Marco de obxecto brillante
+Can hold an item and glows=Pode conter un obxecto e brilla
+Invisible Item Frame=Marco de obxecto invisible
+Can hold an item but is invisible=Pode conter un obxecto pero é invisible
+Invisible Glow Item Frame=Marco de obxecto brillante invisible
+Can hold an item and glows but is invisible=Pode conter un obxecto e brilla pero é invisible
+Glow and Behold!=Brilla e Velaí!
+Craft a glow item frame.=Elabora un marco de obxectos brillantes.
 
 
 ##### not used anymore #####
@@ -23,4 +23,3 @@ Can hold an item and glows.=Pode conter un elemento e brilla.
 Glowing Item Frame=Marco de elementos brillantes
 
 Glowing item frames are decorative blocks in which items can be placed and made to glow.=Os marcos de elementos brillantes son bloques decorativos nos que se poden colocar elementos.
-

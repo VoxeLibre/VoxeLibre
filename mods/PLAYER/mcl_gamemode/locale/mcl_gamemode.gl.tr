@@ -1,0 +1,8 @@
+# textdomain: mcl_gamemode
+[<gamemode>] [<player>]= [<modo de xogo>] [<xogador>]
+Change gamemode (survival/creative) for yourself or player=Cambia o modo de xogo (supervivencia/creativo) para ti ou outro xogador
+Player not online=O xogador non está conectado
+Gamemode @1 does not exist.=O modo de xogo @1 non existe.
+More than one gamemode fit @1=Máis dun modo de xogo coincide con @1.
+Gamemode for player =Modo de xogo para o xogador
+: =:

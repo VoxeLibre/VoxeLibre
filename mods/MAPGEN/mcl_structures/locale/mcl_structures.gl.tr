@@ -1,10 +1,9 @@
 # textdomain: mcl_structures
 Generate a pre-defined structure near your position.=Xera unha estrutura predefinida preto da túa posición.
 Structure placed.=Estrutura colocada.
-Error: No structure type given. Please use “/spawnstruct <type>”.=Erro: non se indica ningún tipo de estrutura. Use "/spawnstruct <tipo>".
-Error: Unknown structure type. Please use “/spawnstruct <type>”.=Erro: tipo de estrutura descoñecido. Use "/spawnstruct <tipo>".
-##TODO: fuzzy matched - verify and remove the comment
-Use /help spawnstruct to see a list of available types.=Use /help spawnstruct para ver unha lista de tipos dispoñibles.
+Error: No structure type given. Please use “/spawnstruct <type>”.=Erro: non se indica ningún tipo de estrutura. Usa "/spawnstruct <type>".
+Error: Unknown structure type. Please use “/spawnstruct <type>”.=Erro: tipo de estrutura descoñecido. Usa "/spawnstruct <type>".
+Use /help spawnstruct to see a list of available types.=Usa /help spawnstruct para ver unha lista de tipos dispoñibles.
 
 
 ##### not used anymore #####

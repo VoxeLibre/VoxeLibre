@@ -1,0 +1,33 @@
+# textdomain: mcl_compressed_blocks
+##[ nodes.lua ]##
+Compressed Cobblestone=Croio Comprimido
+
+Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=O croio comprimido é un bloque decorativo feito de croio de nivel 9. É útil para aforrar espazo nos teus inventarios.
+
+Double Compressed Cobblestone=Croio dobre Comprimido
+
+Double Compressed Cobblestone is a decorative block made from 9 Compressed Cobblestone. It is useful for saving space in your inventories.=O croio dobre comprimido é un bloque decorativo feito de croio comprimido de nivel 9. É útil para aforrar espazo nos teus inventarios.
+
+Triple Compressed Cobblestone=Croio triplo Comprimido
+
+Triple Compressed Cobblestone is a decorative block made from 9 Double Compressed Cobblestone. It is useful for saving space in your inventories.=O croio comprimido triplo é un bloque decorativo feito de croio dobre comprimido de 9 unidades. É útil para aforrar espazo nos teus inventarios.
+
+Quadruple Compressed Cobblestone=Croio comprimido cuádruplo
+
+Quadruple Compressed Cobblestone is a decorative block made from 9 Triple Compressed Cobblestone. It is useful for saving space in your inventories.=O croio comprimido cuádruplo é un bloque decorativo feito de croio comprimido triplo de 9 unidades. É útil para aforrar espazo nos teus inventarios.
+
+Quintuple Compressed Cobblestone=Croio comprimido quíntuplo
+
+Quintuple Compressed Cobblestone is a decorative block made from 9 Quadruple Compressed Cobblestone. It is useful for saving space in your inventories.=O croio comprimido quíntuplo é un bloque decorativo feito de croio comprimido cuádruplo 9. É útil para aforrar espazo nos teus inventarios.
+
+Sextuple Compressed Cobblestone=Croio comprimido séxtuplo
+
+Sextuple Compressed Cobblestone is a decorative block made from 9 Quintuple Compressed Cobblestone. It is useful for saving space in your inventories.=O croio comprimido séxtuplo é un bloque decorativo feito de croio comprimido quíntuplo 9. É útil para aforrar espazo nos teus inventarios.
+
+Septuple Compressed Cobblestone=croio comprimido séptuplo
+
+Septuple Compressed Cobblestone is a decorative block made from 9 Sextuple Compressed Cobblestone. It is useful for saving space in your inventories.=O croio comprimido séptuplo é un bloque decorativo feito de croio comprimido séxtuplo 9. É útil para aforrar espazo nos teus inventarios.
+
+Octuple Compressed Cobblestone=Croio comprimido óctuplo
+
+Octuple Compressed Cobblestone is a decorative block made from 9 Septuple Compressed Cobblestone. It is useful for saving space in your inventories.=O croio comprimido óctuplo é un bloque decorativo feito de croio comprimido séptuplo 9. É útil para aforrar espazo nos teus inventarios.

@@ -3,58 +3,60 @@ Warped Fungus=Fungo deformado
 Warped fungus is a mushroom found in the nether's warped forest.=O fungo deformado é un cogomelo que se atopa no bosque.
 Twisting Vines=Enredadeiras Retortas
 Weeping Vines=Enredadeira Lacrimosa
-Nether Sprouts=Restrollo de Nether
-Warped Roots=Raices Distorsionadas
-Warped Wart Block=Bloque de verruga deformada
-Shroomlight=Luz de cogomelo
-Warped Hyphae=Hifas deformadas
-The stem of a warped hyphae=O talo dunha hifa deformada
-Warped Nylium=Nylio deformado 
-Warped Hyphae Bark=Cortiza de hifas deformadas
+Nether Sprouts=Restrollo de Inframundo
+Warped Roots=Raices Distortas
+Warped Wart Block=Bloque de verruga distorta
+Shroomlight=Cogomelo de luz
+Warped Hyphae=Hifas distortas
+The stem of a warped hyphae=O talo dunha hifa distorta
+Warped Nylium=Nilio distorto 
+Warped Hyphae Bark=Cortiza de hifas distortas
 This is a decorative block surrounded by the bark of an hyphae.=Trátase dun bloque decorativo rodeado pola cortiza dunha hifa.
-Stripped Warped Hyphae=Hifas deformadas peladas
-The stripped hyphae of a warped fungus=As hifas desposuídas dun fungo deformado
+Stripped Warped Hyphae=Hifas distortas peladas
+The stripped hyphae of a warped fungus=As hifas desposuídas dun fungo distoto
 Stripped Warped Hyphae Bark=Cortiza de hifas deformadas peladas
-The stripped hyphae bark of a warped fungus=A casca de hifas desposuídas dun fungo deformado
-Warped Hyphae Wood=Madeira de hifas deformadas
-Warped Stairs=Escaleira deformada
-Warped Slab=Lousa deformada
-Double Warped Slab=
+The stripped hyphae bark of a warped fungus=A casca de hifas desposuídas dun fungo distorto
+Warped Hyphae Wood=Madeira de hifas distortas
+Warped Stairs=Escaleira distorta
+Warped Slab=Lousa distorta
+Double Warped Slab=Lousa distorta dobre
 Crimson Fungus=Fungo carmesí 
-Crimson fungus is a mushroom found in the nether's crimson forest.=O fungo carmesí é un cogomelo que se atopa no bosque carmesí do Nether.
+Crimson fungus is a mushroom found in the nether's crimson forest.=O fungo carmesí é un cogomelo que se atopa no bosque carmesí do Inframundo.
 Crimson Roots=Raíces carmesí
 Crimson Hyphae=Hifas carmesí 
 The stem of a crimson hyphae=O talo dunha hifa carmesí
 Crimson Hyphae Bark=Cortiza de hifas carmesí 
-Stripped Crimson Hyphae=Hifas carmesí despoxadas
-The stripped stem of a crimson hyphae=O talo desposuído dunha hifa carmesí
-Stripped Crimson Hyphae Bark=Cortiza de hifas carmesí pelada
-The stripped wood of a crimson hyphae=A madeira despexada dunha hifa carmesí
+Stripped Crimson Hyphae=Hifas carmesí descortizadas
+The stripped stem of a crimson hyphae=O talo descortizado dunha hifa carmesí
+Stripped Crimson Hyphae Bark=Cortiza de hifas carmesí descortizadas
+The stripped wood of a crimson hyphae=A madeira Stripped Crimson Hyphae Bark dunha hifa carmesí
 Crimson Hyphae Wood=Madeira de hifas carmesí
-Crimson Nylium=Carmesí Nylio
+Crimson Nylium=Nilio Carmesí 
 Crimson Stairs=Escaleira carmesí
 Crimson Slab=Lousa carmesí
 Double Crimson Slab=Dobre Lousa Carmesí
 Crimson Door=Porta Carmesí
 
-Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=As portas de madeira son barreiras altas de 2 bloques que se poden abrir ou pechar a man e mediante un sinal de pedra vermella.
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=As portas de madeira son barreiras de 2 bloques de altura que se poden abrir ou pechar a man e mediante un sinal de pedra vermella.
 
 To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Para abrir ou pechar unha porta de madeira, fai clic co botón dereito nela ou proporciona á súa metade inferior un sinal de pedra vermella.
 
-Crimson Trapdoor=Trampa carmesí
+Crimson Trapdoor=Trapela carmesí
 
-Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=As trampillas de madeira son barreiras horizontais que se poden abrir e pechar coa man ou cun sinal de pedra vermella. Ocupan a parte superior ou inferior dun bloque, segundo a súa colocación. Cando están abertas, pódense subir coma unha escaleira.
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=As trapelas de madeira son barreiras horizontais que se poden abrir e pechar coa man ou cun sinal de pedra vermella. Ocupan a parte superior ou inferior dun bloque, segundo a súa colocación. Cando están abertas, pódense subir coma unha escaleira.
 
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou pechar a trapela, fai clic co botón dereito ou envíalle un sinal de pedra vermella.
 Crimson Fence=Cerca Carmesí
 Crimson Fence Gate=Porta de Cerca Carmesí 
 Warped Door=Porta deformada
-Warped Trapdoor=Trampa deformada
-Warped Fence=Cerca deformada
-Warped Fence Gate=Porta de cerca deformada
+Warped Trapdoor=Trapela distorta
+Warped Fence=Cerca distorta
+Warped Fence Gate=Porta de cerca distorta
 
 
 ##### not used anymore #####
 
 Warped Checknode - only to check!=Warped Checknode - só para comprobar!
 Crimson Checknode - only to check!=Carmesí Checknode - só para comprobar!
+
+

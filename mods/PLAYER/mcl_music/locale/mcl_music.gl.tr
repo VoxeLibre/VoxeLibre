@@ -1,12 +1,9 @@
 # textdomain: mcl_music
-##TODO: fuzzy matched - verify and remove the comment
-Turn music for yourself or another player on or off.=Activa ou desactiva a música para ti ou para outro reprodutor.
+Turn music for yourself or another player on or off.=Activa ou desactiva a música para ti ou para outro xogador.
 
-##TODO: fuzzy matched - verify and remove the comment
-You need the debug privilege in order to turn in-game music on or off for somebody else!=¡Necesitas o privilexio de depuración para activar ou desactivar a música do xogo para outra persoa!
+You need the debug privilege in order to turn in-game music on or off for somebody else!=Precisas o privilexio de depuración para activar ou desactivar a música do xogo para outra persoa!
 
-##TODO: fuzzy matched - verify and remove the comment
-Could not find player @1!=¡Non se puido atopar o xogador @1!
-off=Apagado
-on=Aceso
-Set music for @1 to: @2=Establece a música para @1 a: @2
+Could not find player @1!=Non se puido atopar ao xogador @1!
+off=desactivado
+on=activado
+Set music for @1 to: @2=Música para @1 establecida en: @2

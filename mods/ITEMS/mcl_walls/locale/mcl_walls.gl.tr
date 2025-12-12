@@ -1,6 +1,6 @@
 # textdomain: mcl_walls
 
-A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Un anaco de parede. Non se pode saltar cun simple salto. Cando varios destes se coloquen un ao carón do outro, crearán automaticamente unha bonita estrutura de parede.
+A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Un anaco de muro. Non se pode saltar cun salto simple. Cando varios destes se coloquen un ao carón do outro, crearán automaticamente unha fermosa estrutura de muro.
 
 ##[ register.lua ]##
 Cobblestone Wall=Muro de rocha
@@ -8,13 +8,13 @@ Mossy Cobblestone Wall=Muro de rocha musgosa
 Andesite Wall=Muro de andesita
 Granite Wall=Muro de granito
 Diorite Wall=Muro de diorita
-Brick Wall=Muro de ladrillos
-Sandstone Wall=Muro de arenisca
-Red Sandstone Wall=Muro de arenisca vermella
-Stone Brick Wall=Muro de ladrillos de pedra
-Mossy Stone Brick Wall=Muro de ladrillos de pedra musgosos
-Prismarine Wall=Muro de prismarina
-End Stone Brick Wall=Muro de ladrillos de pedra final
-Nether Brick Wall=Muro de ladrillos del Nether
-Red Nether Brick Wall=Muro de ladrillos del Nether vermellos
-Mud Brick Wall=Muro de ladrillo de limo
+Brick Wall=Muro de ladrillo
+Sandstone Wall=Muro de arenito
+Red Sandstone Wall=Muro de arenito vermello
+Stone Brick Wall=Muro de ladrillo de pedra
+Mossy Stone Brick Wall=Muro de ladrillo de pedra musgosos
+Prismarine Wall=Muro de prismariña
+End Stone Brick Wall=Muro de ladrillo de pedra do fin
+Nether Brick Wall=Muro de ladrillo do inframundo
+Red Nether Brick Wall=Muro de ladrillo do inframundo vermello
+Mud Brick Wall=Muro de ladrillo de barro

@@ -1,9 +1,8 @@
 # textdomain: mcl_cartography_table
 Cartography Table=Mesa de Cartografia
-Inventory=
-Zooming a map may take several seconds to generate the world, please wait.=
-The zoomed map is now ready.=
-Used to copy, lock, and zoom maps=
+Inventory=Inventario
+Zooming a map may take several seconds to generate the world, please wait.=A ampliación dun mapa pode levar varios segundos para xerar o mundo, agarde.
+The zoomed map is now ready.=O mapa ampliado xa está listo.
+Used to copy, lock, and zoom maps=Usado para copiar, bloquear e ampliar mapas
 
-A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and the maximum zoom level may be restricted by server settings to limit the performance impact.=
-
+A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and the maximum zoom level may be restricted by server settings to limit the performance impact.=As mesas de cartografía permiten copiar, bloquear e ampliar mapas. O bloqueo aínda non é útil e o nivel máximo de ampliación pode estar restrinxido pola configuración do servidor para limitar o impacto no rendemento.

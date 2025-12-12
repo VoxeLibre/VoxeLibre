@@ -1,46 +1,46 @@
 # textdomain: mcl_mobitems
-Rotten Flesh=Carne podrida
+Rotten Flesh=Carne podre
 80% chance of food poisoning=80% de posibilidades de intoxicación alimentaria
 
-Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it to restore a few hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.=Caramba! Este anaco de carne claramente viu días mellores. Se estás realmente desesperado, podes comelo para restaurar algúns puntos de fame, pero hai un 80 % de posibilidades de que cause intoxicación alimentaria, o que aumenta a túa fame durante un tempo.
+Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it to restore a few hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.=Puaj! Este anaco de carne claramente viu días mellores. Se estás realmente desesperado, podes comela para restaurar algúns puntos de fame, pero hai un 80 % de posibilidades de que cause intoxicación alimentaria, o que aumenta a túa fame durante un tempo.
 
-Raw Mutton=Carneiro cru
+Raw Mutton=Carne de Ovella Crúa
 
-Raw mutton is the flesh from a sheep and can be eaten safely. Cooking it will greatly increase its nutritional value.=O carneiro cru é a carne dunha ovella e pódese comer con seguridade. Cocelo aumentará moito o seu valor nutricional.
+Raw mutton is the flesh from a sheep and can be eaten safely. Cooking it will greatly increase its nutritional value.=Carne de Ovella Crúa é a carne dunha ovella e pódese comer con seguridade. Cocelo aumentará moito o seu valor nutricional.
 
 Cooked Mutton=Carneiro cocido
 Cooked mutton is the cooked flesh from a sheep and is used as food.=O carneiro cocido é a carne cocida dunha ovella e úsase como alimento.
-Raw Beef=Carne crua
+Raw Beef=Carne de Vacún Crúa
 
-Raw beef is the flesh from cows and can be eaten safely. Cooking it will greatly increase its nutritional value.=A carne crúa é a carne das vacas e pódese comer con seguridade. Cocelo aumentará moito o seu valor nutricional.
+Raw beef is the flesh from cows and can be eaten safely. Cooking it will greatly increase its nutritional value.=Carne de Vacún Crúa é a carne das vacas e pódese comer con seguridade. Cocelo aumentará moito o seu valor nutricional.
 
 Steak=Bisté 
-Steak is cooked beef from cows and can be eaten.=O bisté é carne de vaca cocida e pódese comer.
+Steak is cooked beef from cows and can be eaten.=O bisté é carne de vaca cociñada e pódese comer.
 Raw Chicken=Polo cru
 30% chance of food poisoning=30% de probabilidade de intoxicación alimentaria
 
-Raw chicken is a food item which is not safe to consume. You can eat it to restore a few hunger points, but there's a 30% chance to suffer from food poisoning, which increases your hunger rate for a while. Cooking raw chicken will make it safe to eat and increases its nutritional value.=O polo cru é un alimento que non é seguro de consumir. Podes comelo para restaurar algúns puntos de fame, pero hai un 30 % de posibilidades de sufrir unha intoxicación alimentaria, o que aumenta a túa taxa de fame durante un tempo. Cociñar polo cru fará que sexa seguro para comer e aumenta o seu valor nutricional.
+Raw chicken is a food item which is not safe to consume. You can eat it to restore a few hunger points, but there's a 30% chance to suffer from food poisoning, which increases your hunger rate for a while. Cooking raw chicken will make it safe to eat and increases its nutritional value.=O polo cru é un alimento que non é seguro para consumir. Podes comelo para recuperar algúns puntos de fame, pero hai un 30 % de probabilidade de sufrir unha intoxicación alimentaria, o que fará que aumente a túa fame máis rapido durante un tempo. Cociñar polo cru fará que sexa seguro para comer e aumenta o seu valor nutricional.
 
 Cooked Chicken=Polo cocido
 A cooked chicken is a healthy food item which can be eaten.=Un polo cocido é un alimento saudable que se pode comer.
-Raw Porkchop=Chuleta de porco crua
+Raw Porkchop=Costeleta de porco crua
 
-A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.=Unha chuleta de porco crúa é a carne dun porco e pódese comer con seguridade. Cocelo aumentará moito o seu valor nutricional.
+A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.=Unha costeleta de porco crúa é a carne dun porco e pódese comer con seguridade. Cociñala aumentará moito o seu valor nutricional.
 
-Cooked Porkchop=Chuleta de porco cocida
-Cooked porkchop is the cooked flesh of a pig and is used as food.=A chuleta de porco cocida é a carne cocida dun porco e úsase como alimento.
+Cooked Porkchop=Costeleta de porco cociñada
+Cooked porkchop is the cooked flesh of a pig and is used as food.=A costeleta de porco cociñada é a carne cociñada dun porco e úsase como alimento.
 Raw Rabbit=Coello cru
 
-Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it will increase its nutritional value.=O coello cru é un alimento dun coello morto. Pódese comer con seguridade. Cocindoo aumentará o seu valor nutricional.
+Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it will increase its nutritional value.=O coello cru é un alimento dun coello morto. Pódese comer con seguridade. cociñalo aumentará o seu valor nutricional.
 
-Cooked Rabbit=Coello cocido
+Cooked Rabbit=Coello cociñado
 This is a food item which can be eaten.=Este é un alimento que se pode comer.
 Milk=Leite
 Removes all status effects=Elimina todos os efectos de estado
 
-Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=O leite é moi refrescante e pódese obter usando un balde nunha vaca. Bebelo eliminará todos os efectos de estado, pero non restaurará ningún punto de fame.
+Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=O leite é moi refrescante e pódese obter usando un caldeiro nunha vaca. Bebelo eliminará todos os efectos de estado, pero non restaurará ningún punto de fame.
 
-Use the placement key to drink the milk.=Use a clave de colocación para beber o leite.
+Use the placement key to drink the milk.=Use a tecla de colocar para beber o leite.
 Spider Eye=Ollo de araña
 Poisonous=velenoso
 
@@ -48,83 +48,83 @@ Spider eyes are used mainly in crafting. If you're really desperate, you can eat
 
 Bone=Óso
 
-Bones can be used to tame wolves so they will protect you. They are also useful as a crafting ingredient.=Os ósos pódense usar para domar os lobos para que te protexan. Tamén son útiles como ingrediente de elaboración
+Bones can be used to tame wolves so they will protect you. They are also useful as a crafting ingredient.=Os ósos pódense usar para domar os lobos para que te protexan. Tamén son útiles como ingrediente de elaboración.
 
-Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it.=Mantén o óso preto dos lobos para atraelos. Usa a tecla "Colocar" no lobo para darlle un óso e domalo. Despois podes dar ordes ao lobo domesticado usando a tecla "Colocar" nel.
+Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it.=Mantén o óso preto dos lobos para atraelos. Usa a tecla "Colocar" no lobo para darllo a un óso e domalo. Despois podes dar ordes ao lobo domesticado usando a tecla "Colocar" nel.
 
 Squid Ink Sac=Saco de tinta de lura
 
-##TODO: fuzzy matched - verify and remove the comment
-This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye.=Este elemento é caído por luras mortos. A tinta de lura pódese usar como ingrediente para elaborar libros e plumas ou tintura negra.
+
+This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye.=Este elemento é soltado por luras mortas. A tinta de lura pódese usar como ingrediente para fabricar un libro con pluma ou tintura negra.
 
 String=Corda
 Strings are used in crafting.=As cordas usanse na elaboración.
-Spectre Membrane=
-##TODO: fuzzy matched - verify and remove the comment
-This is a crafting component dropped from dead spectres.=Este é un compoñente de artesanía caído de lumes mortos.
-Shiny Ice Crystal=
+Spectre Membrane=Menbrana espectral
+
+This is a crafting component dropped from dead spectres.=Este é un compoñente de elaboracion caído de espectros mortos.
+Shiny Ice Crystal=Cristal de xeo brillante
 This item is mainly used for crafting.=Este elemento úsase principalmente para a elaboración.
-Aery Charge=
-Crystalline Drop=
-Earthen Ash=
-Flaming Rod=
-This is a crafting component dropped from dead fire elementals.=
-Flaming Powder=
+Aery Charge=Carga aérea
+Crystalline Drop=Gota cristalina
+Earthen Ash=Cinza Terreal
+Blaze Rod=Vara de lumeiro
+This is a crafting component dropped from dead blazes.=Este é un compoñente de elaboración caído de lumeiros mortos.
+Blaze Powder=Polvo de lumeiro
 Magma Cream=Crema de magma
 Magma cream is a crafting component.=A crema de magma é un compoñente de elaboración
-Ghast Tear=Bagoa espectral
+Ghast Tear=Bagoa de espantallo
 Place this item in an item frame as decoration.=Coloque este elemento nun marco do elemento como decoración.
-Nether Star=Estrela de Nether
+Nether Star=Estrela do Inframundo
 
-A nether star is dropped when the Wither dies. Place it in an item frame to show the world how hardcore you are! Or just as decoration.=Se cae una estrela cando morre un Wither. ¡Colócao nun marco de artigos para mostrar ao mundo o duro que eres! Ou só como decoración.
+A nether star is dropped when the Wither dies. Place it in an item frame to show the world how hardcore you are! Or just as decoration.=Unna estrela é soltada cando morre un Murcho. Pódela colócar nun marco para amosar ao mundo o duro que es! Ou só como decoración.
 
 Leather=Coiro
 Leather is a versatile crafting component.=O coiro é un compoñente de elaboración versátil.
 Feather=Pluma
-Feathers are used in crafting and are dropped from chickens.=As plumas utilízanse na elaboración e cátanse das galiñas.
-Leather Piece=
-Leather piece is a smaller piece of leather.=
+Feathers are used in crafting and are dropped from chickens.=As plumas utilízanse na elaboración e caen das galiñas.
+Rabbit Hide=Pel de coello
+Rabbit hide is used to create leather.=A pel de coello úsase para crear coiro.
 Rabbit's Foot=Pata de coello
-Must be your lucky day! Place this item in an item frame for decoration.=¡Debe ser o teu día de sorte! Coloque este elemento nun marco de artigo para decoración.
+Must be your lucky day! Place this item in an item frame for decoration.=Debe ser o teu día de sorte! Coloque este elemento nun marco de elemento para decoración.
 Saddle=Sela
 Can be placed on animals to ride them=Pódese colocar sobre animais para montarlos
-Saddles can be put on some animals in order to mount them.=Algúns animais pódense poñer selas para montalos.
+Saddles can be put on some animals in order to mount them.=Algúns animais pódenselles poñer selas para montalos.
 
-Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again.=Usa a chave de colocación coa sela na man para tentar poñer a sela. As selas caben en cabalos, mulas, burros e porcos. Os cabalos, as mulas e os burros deben ser domesticados primeiro, se non, rexeitarán a sela. Os animais ensillados pódense montar usando de novo a tecla de colocación.
+Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again.=Usa a tecla de colocar coa sela na man para tentar poñela. As selas serven para cabalos, mulas, burros e porcos. Os cabalos, as mulas e os burros deben ser domesticados primeiro, se non, rexeitarán a sela. Os animais enselados pódense montar usando de novo a tecla de colocar.
 
 Rabbit Stew=Guiso de coello
 Rabbit stew is a very nutricious food item.=O guiso de coello é un alimento moi nutritivo.
-Shulker Shell=Cunchas de shulker
-Shulker shells are used in crafting. They are dropped from dead shulkers.=As cunchas Shulker úsanse na artesanía. Son caídos de shulkers mortos.
+Shulker Shell=Cunchas chuchadeira
+Shulker shells are used in crafting. They are dropped from dead shulkers.=As cunchas chuchadeira úsanse na elaboración. Caen de chuchadeiras mortas.
 Slimeball=Bola de limo
-Slimeballs are used in crafting. They are dropped from slimes.=Las bolas de limo usanse na elaboración. Se obteñen de limos.
+Slimeballs are used in crafting. They are dropped from slimes.=As bolas de limo usanse na elaboración. Obteñense de limos.
 Gunpowder=Pólvora
 Carrot on a Stick=Cana con cenoria
 Lets you ride a saddled pig=Permíteche montar un porco enselado
 A carrot on a stick can be used on saddled pigs to ride them.=A cana con cenoria pódese usar nos porcos enselados para montar neles.
 
-Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=Colócao nun porco ensillado para montalo. Agora podes montar o porco coma un cabalo. Os porcos tamén camiñarán cara a ti cando só levas a cenoria nun pau.
+Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=Colócaa nun porco enselado para montalo. Agora podes montar o porco coma un cabalo. Os porcos tamén camiñarán cara a ti cando só levas a cenoria nun pau.
 
-Warped fungus on a Stick=Fungo deformado nun pau
-Lets you ride a strider=Permíteche andar a zancada
-A warped fungus on a stick can be used on saddled striders to ride them.=Pódese usar un fungo deformado nun pau en camiñantes ensillados para montalos.
+Warped fungus on a Stick=Fungo distorto nun pau
+Lets you ride a strider=Permíteche montar un camiñalava
+A warped fungus on a stick can be used on saddled striders to ride them.=Pódese usar un fungo distorto nun pau en camiñalavas enselados para montalos.
 
-Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=Colócao nun strider ensillado para montalo. Agora podes montar a zancada coma un cabalo. Striders tamén camiñarán cara a ti cando só esgrimes o fungo nun pau.
+Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=Colócao nun camiñalava enselado para montalo. Agora podes montar o camiñalava coma un cabalo. Os camiñalava tamén camiñarán cara a ti cando só empuñas o fungo nun pau.
 
-Nautilus Shell=Cuncha de Nautilus
+Nautilus Shell=Cuncha de Náutilo
 Used to craft a conduit=Úsase para elaborar un conduto
 
-The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=O Nautilus Shell úsase para fabricar un conduto. Pódense obter pescando ou matando a un afogado que empuña unha cuncha.
+The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=A Cuncha de Náutilo úsase para fabricar un conduto. Pódense obter pescando ou matando a un afogado que empuña unha cuncha.
 
 Heart of the Sea=Corazón do mar
 
-The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=O Corazón do Mar úsase para fabricar un conduto. Pódense obter encontrándoos nun cofre do tesouro enterrado.
+The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=O Corazón do Mar úsase para fabricar un conduto. Pódense conseguir atopándoos nun cofre do tesouro soterrado.
 
-Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=Colócao nun cabalo para poñer a armadura do cabalo. Os burros e as mulas non poden levar armadura de cabalo.
+Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=Colócao nun cabalo para poñerlle a armadura. Os burros e as mulas non poden levar armadura.
 
 Iron Horse Armor=Armadura de ferro para cabalo
 
-Iron horse armor can be worn by horses to increase their protection from harm a bit.=A armadura de cabalo de ferro pode ser usada polos cabalos para aumentar un pouco a súa protección contra danos.
+Iron horse armor can be worn by horses to increase their protection from harm a bit.=A armadura de ferro para cabalo  pode ser usada polos cabalos para aumentar un pouco a súa protección contra danos.
 
 Golden Horse Armor=Armadura de  ouro para cabalo
 Golden horse armor can be worn by horses to increase their protection from harm.=Os cabalos poden usar armadura de cabalo de ouro para aumentar a súa protección contra danos.
@@ -133,8 +133,8 @@ Diamond Horse Armor=Armadura de diamante para cabalo
 Diamond horse armor can be worn by horses to greatly increase their protection from harm.=A armadura de cabalo de diamante pode ser usada polos cabalos para aumentar moito a súa protección contra danos.
 
 Glow Ink Sac=Saco de tinta brillante
-Use it to craft the Glow Item Frame.=Utilízao para crear o marco do elemento luminoso.
-Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.= Usa o Saco de tinta brillante e o marco normal do elemento para crear o marco do elemento luminoso.
+Use it to craft the Glow Item Frame.=Utilízao para crear o marco do elemento brillante.
+Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.= Usa o Saco de tinta brillante e o marco normal do elemento para crear o marco do elemento brillante.
 
 
 ##### not used anymore #####
@@ -146,4 +146,3 @@ Rabbit Hide=Pel de coello
 Rabbit hide is used to create leather.=A pel de coello úsase para crear coiro.
 
 Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning, but restores no hunger points.=O leite é moi refrescante e pódese obter usando un balde nunha vaca. Bebelo curará todas as formas de intoxicación, pero non restaurará ningún punto de fame.
-

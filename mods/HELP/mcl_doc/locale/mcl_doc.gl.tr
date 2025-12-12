@@ -1,75 +1,73 @@
 # textdomain: mcl_doc
-Water can flow into this block and cause it to drop as an item.=A auga pode fluír neste bloque e facer que caia como elemento.
+Water can flow into this block and cause it to drop as an item.=A auga pode fluír neste bloque e facer que caia como obxecto.
 This block can be turned into dirt with a hoe.=Este bloque pódese converter en terra cunha aixada.
-This block can be turned into farmland with a hoe.=Este bloque pódese converter en terra de cultivo cunha aixada.
-This block can be turned into grass path with a shovel.=Este bloque pódese converter en camiño de herba cunha pa.
-This block acts as a soil for all saplings.=Este bloque actúa como chan para todos os mudos.
-This block acts as a soil for some saplings.=Este bloque fai de chan para algunhas mudas.
-Sugar canes will grow on this block.=Neste bloque crecerán canas de azucre.
-Nether wart will grow on this block.=A verruga inferior crecerá neste bloque.
+This block can be turned into farmland with a hoe.=Este bloque pode converterse en terra de cultivo cunha aixada.
+This block can be turned into grass path with a shovel.=Este bloque pode converterse en camiño de herba cunha pa.
+This block acts as a soil for all saplings.=Este bloque actúa como chan para todos os gromos.
+This block acts as a soil for some saplings.=Este bloque fai de chan para algúns gromos.
+Sugar canes will grow on this block.=Neste bloque medrarán canas de azucre.
+Nether wart will grow on this block.=A verruga do nether medrará neste bloque.
 
-This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.=Este bloque decae rapidamente cando non hai un bloque de madeira de ningunha especie a unha distancia de @1. Cando se deteriora, desaparece e pode caer unha das súas gotas habituais. O bloque non decae cando o bloqueo foi colocado por un xogador.
+This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.=Este bloque descomponse rapidamente cando non hai un bloque de madeira de calquera tipo a unha distancia de @1. Ao descompoñerse, desaparece e pode soltar un dos seus obxectos habituais. Non se descompón se foi colocado por un xogador.
 
-This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.=Este bloque decae rapidamente e desaparece cando non hai un bloque de madeira de ningunha especie a unha distancia de @1. O bloque non decae cando o bloqueo foi colocado por un xogador.
+This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.=Este bloque descomponse e desaparece rapidamente cando non hai un bloque de madeira de calquera tipo a unha distancia de @1. Non se decompón se foi colocado por un xogador.
 
-This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Esta planta só pode crecer en bloques de herba e terra. Para sobrevivir, ten que ter unha vista sen obstáculos do ceo enriba ou estar exposto a un nivel de luz de 8 ou superior.
+This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Esta planta só pode medrar en bloques de herba e terra. Para sobrevivir, precisa ter unha vista sen obstáculos do ceo ou estar exposta a un nivel de luz de 8 ou superior.
 
-This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Esta planta pode crecer en bloques de herba, podzol, sucidade e sucidade grosa. Para sobrevivir, ten que ter unha vista sen obstáculos do ceo enriba ou estar exposto a un nivel de luz de 8 ou superior.
+This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Esta planta pode medrar en bloques de herba, podzol, terra e terra brava. Para sobrevivir, precisa ter unha vista sen obstáculos do ceo ou estar exposta a un nivel de luz de 8 ou superior.
 
 This block is flammable.=Este bloque é inflamable.
-This block destroys any item it touches.=Este bloque destrúe calquera elemento que toque.
-To eat it, wield it, then right-click.=
+This block destroys any item it touches.=Este bloque destrúe calquera obxecto que toque.
+To eat it, wield it, then right-click.=Para comelo, témolo que empuñar e facer clic dereito.
 You can eat this even when your hunger bar is full.=Podes comer isto mesmo cando a túa barra de fame estea chea.
 You cannot eat this when your hunger bar is full.=Non podes comer isto cando a túa barra de fame estea chea.
-To drink it, wield it, then right-click.=
+To drink it, wield it, then right-click.=Para bebelo, témolo que empuñar e facer clic dereito.
 You cannot drink this when your hunger bar is full.=Non podes beber isto cando a túa barra de fame estea chea.
-To consume it, wield it, then right-click.=
+To consume it, wield it, then right-click.=Para consumilo, témolo que empuñar e facer clic dereito.
 You cannot consume this when your hunger bar is full.=Non podes consumir isto cando a túa barra de fame estea chea.
-##TODO: fuzzy matched - verify and remove the comment
-You have to wait for around 2 seconds before you can eat or drink again.=Ten que esperar uns 2 segundos antes de poder comer ou beber de novo.
+You have to wait for around 2 seconds before you can eat or drink again.=Tes que agardar uns 2 segundos antes de poder comer ou beber de novo.
 Hunger points restored: @1=Puntos de fame restaurados: @1
-Saturation points restored: @1=Puntos de saturación restaurados: @1
+Saturation points restored: @1%.1f=Puntos de saturación restaurados: @1%.1f
 It can be worn on the head.=Pódese levar na cabeza.
 It can be worn on the torso.=Pódese levar no torso.
 It can be worn on the legs.=Pódese levar nas pernas.
 It can be worn on the feet.=Pódese levar nos pés.
 Armor points: @1=Puntos de armadura: @1
 Armor durability: @1=Durabilidade da armadura: @1
-This item can be repaired at an anvil with: @1.=Este elemento pódese reparar nunha zafra con: @1.
-This item can be repaired at an anvil with any wooden planks.=Este elemento pódese reparar nunha zafra con calquera táboa de madeira.
-This item can be repaired at an anvil with any item in the “@1” group.=Este elemento pódese reparar nunha zafra con calquera elemento do grupo "@1".
-This item cannot be renamed at an anvil.=Este elemento non se pode renomear nunha zafra.
-This block crushes any block it falls into.=Este bloque esmaga calquera bloque no que caia.
+This item can be repaired at an anvil with: @1.=Este obxecto pódese reparar nunha bigornia con: @1.
+This item can be repaired at an anvil with any wooden planks.=Este obxecto pódese reparar nunha bigornia con calquera táboa de madeira.
+This item can be repaired at an anvil with any item in the “@1” group.=Este obxecto pódese reparar nunha bigornia con calquera elemento do grupo "@1".
+This item cannot be renamed at an anvil.=Este obxecto non se pode renomear nunha bigornia.
+This block crushes any block it falls into.=Este bloque tritura calquera bloque no que caia.
 
-When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B @= number of blocks fallen. The damage can never be more than 40 HP.=Cando este bloque cae máis de 1 bloque, causa danos a calquera xogador ao que choque. O dano causado é de B×2−2 puntos de golpe con B @= número de bloques caídos. O dano nunca pode ser superior a 40 HP.
+When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B @= number of blocks fallen. The damage can never be more than 40 HP.=Se este bloque cae máis de 1 bloquede altura, causa danos a calquera xogador ao que golpea. O dano causado é de B×2−2 puntos de vida, sendo B @= número de bloques caídos. O dano nunca pode ser superior a 40 PV.
 
 Diamond Pickaxe=Pico de diamante
 Iron Pickaxe=Pico de ferro
 Stone Pickaxe=Pico de pedra
 Golden Pickaxe=Pico de Ouro
-Wooden Pickaxe=Pico de Ouro
+Wooden Pickaxe=Pico de madeira
 Diamond Axe=Machado de diamante
 Iron Axe=Machado de ferro
 Stone Axe=Machado de pedra
 Golden Axe=Machado de ouro
 Wooden Axe=Machado de madeira
-Diamond Shovel=Pala de diamante
-Iron Shovel=Pala de ferro
-Stone Shovel=Pala de pedra
-Golden Shovel=Pala de ouro
-Wooden Shovel=Pala de madeira
-This block can be mined instantly by any tool.=
+Diamond Shovel=Pa de diamante
+Iron Shovel=Pa de ferro
+Stone Shovel=Pa de pedra
+Golden Shovel=Pa de ouro
+Wooden Shovel=Pa de madeira
+This block can be mined instantly by any tool.=Este bloque pode ser minado con calquera ferramenta.
 • Shears=• Tesoiras
 • Sword=• Espada
 • Hand=• Man
-This block can be mined by:=Este bloque pódese extraer mediante:
+This block can be mined by:=Este bloque pode ser minado por:
 Hardness: ∞=Dureza: ∞
 Hardness: @1=Dureza: @1
 This block will not be destroyed by TNT explosions.=Este bloque non será destruído polas explosións de Dinamita.
-This block drops itself when mined by shears.=Este bloque cae por si mesmo cando é extraído por tesoiras.
+This block drops itself when mined by shears.=Este bloque cae por si mesmo cando é minado con tesoiras.
 @1×@2=@1×@2
-##TODO: fuzzy matched - verify and remove the comment
-This block drops the following when mined by shears: @1=Este bloque elimina o seguinte cando se extrae con tesoiras: @1
+This block drops the following when mined by shears: @1=Este bloque deixa caer o seguinte ao ser minado con tesoiras: @1
 , =, 
 Painfully slow=Dolorosamente lento
 Very slow=Moi lento
@@ -84,10 +82,9 @@ Mining speed: @1=Velocidade de minería: @1
 Durability: @1=Durabilidade: @1
 This tool is capable of mining.=Esta ferramenta é capaz de minar.
 Block breaking strength: @1=Resistencia á rotura do bloque: @1
-##TODO: fuzzy matched - verify and remove the comment
-This is a melee weapon that deals damage by punching.=Esta é unha arma corpo a corpo que fai dano ao golpear.
-Maximum damage: @1 HP=Dano máximo: @1 HP
-Full punch interval: @1 s=Intervalo de perforación total: @1 s
+This is a melee weapon that deals damage by punching.=Esta é unha arma corpo a corpo que causa dano ao golpear.
+Maximum damage: @1 HP=Dano máximo: @1 PV
+Full punch interval: @1 s=Intervalo completo de golpe: @1 s
 
 
 ##### not used anymore #####
@@ -96,3 +93,4 @@ To eat it, wield it, then rightclick.=Para comelo, mándao e despois fai clic co
 To drink it, wield it, then rightclick.=Para bebelo, mándao e despois fai clic co botón dereito.
 To consume it, wield it, then rightclick.=Para consumilo, úsao e, a continuación, fai clic co botón dereito
 This block can be mined by any tool instantly.=Este bloque pode ser extraído por calquera ferramenta ao instante.
+

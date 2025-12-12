@@ -1,58 +1,58 @@
 # textdomain: mcl_ocean
 ##[ prismarine.lua ]##
-Sea Lantern=Lanterna do mar
+Sea Lantern=Farol do mar
 
-Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=As lanternas mariñas son fontes de luz decorativas que se ven moi ben baixo a auga pero que se poden colocar en calquera lugar.
+Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Os faroiss mariñas son fontes de luz decorativas que se ven moi ben baixo a auga pero que se poden colocar en calquera lugar.
 
-Prismarine=Prismarino
-Prismarine is used as a building block. It slowly changes its color.=O prismarino úsase como un bloque de construción. Vai mudando lentamente de cor.
-Prismarine Bricks=Ladrillos Prismarinos 
-Dark Prismarine=Prismarino escuro
-Prismarine Crystals=Cristais prismarinos
-Prismarine Shard=Fragmento de Prismarino
+Prismarine=Prismariña
+Prismarine is used as a building block. It slowly changes its color.=A prismariña úsase como un bloque de construción. Vai mudando lentamente de cor.
+Prismarine Bricks=Ladrillos de Prismariña 
+Dark Prismarine=Prismariña escuro
+Prismarine Crystals=Cristais de prismariña
+Prismarine Shard=Fragmento de Prismariña
 ##[ corals.lua ]##
 Tube Coral Block=Bloque de coral de tubo
 Dead Tube Coral Block=Bloque de coral de tubo morto
 Tube Coral=Coral de tubo
-Dead Tube Coral=Coral de tubo morto
-Tube Coral Fan=Coral de tubo desparramado
-Dead Tube Coral Fan=Coral de tubo desparramado
+Dead Tube Coral=Tubo de coral morto
+Tube Coral Fan=Abano de tubo de Coral
+Dead Tube Coral Fan=Abano de tubo de coral morto
 Brain Coral Block=Bloque de coral de cerebro
 Dead Brain Coral Block=Bloque de coral morto
 Brain Coral=Coral de cerebro
 Dead Brain Coral=Coral de cerebro morto
-Brain Coral Fan=Coral de cerebro desparramado
-Dead Brain Coral Fan=Coral desparramado
+Brain Coral Fan=Abano de coral de cerebro
+Dead Brain Coral Fan=Abano de Coral de cerebro morto
 Bubble Coral Block=Bloque de coral de burbulla
 Dead Bubble Coral Block=Bloque de coral de burbulla morto
 Bubble Coral=Coral de burbulla
 Dead Bubble Coral=Coral de burbulla morto
-Bubble Coral Fan=Coral de burbulla desparramado
-Dead Bubble Coral Fan=Coral de burbulla desparramado
+Bubble Coral Fan=Abano de coral de burbulla
+Dead Bubble Coral Fan=Abano de coral de burbulla morto
 Fire Coral Block=Bloque de coral de lume
 Dead Fire Coral Block=Bloque de coral de lume morto
 Fire Coral=Coral de lume
 Dead Fire Coral=Coral de lume morto
-Fire Coral Fan=Coral de lume desparramado
-Dead Fire Coral Fan=Coral de lume desparramado
+Fire Coral Fan=Abano de coral de lume
+Dead Fire Coral Fan=Abano de coral de lume
 Horn Coral Block=Bloque de coral de corno
 Dead Horn Coral Block=Bloque de coral de corno morto
 Horn Coral=Coral de corno
 Dead Horn Coral=Coral de corno morto
-Horn Coral Fan=Coral de corno desparramado
-Dead Horn Coral Fan=Coral de corno desparramado
+Horn Coral Fan=Abano de coral de corno
+Dead Horn Coral Fan=Abano de coral de corno morto
 
 Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.=Os bloques de coral viven nos océanos e necesitan unha fonte de auga ao seu carón para sobrevivir. Sen auga morren.
 
 Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Os corais crecen encima dos bloques de coral e necesitan estar dentro dunha fonte de auga para sobrevivir. Sen auga, morrerá, así como o bloque de coral de abaixo.
 
-Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Os fanáticos dos corais crecen encima dos bloques de coral e necesitan estar dentro dunha fonte de auga para sobrevivir. Sen auga, morrerá, así como o bloque de coral de abaixo.
+Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Os abanos de corais crecen enriba dos bloques de coral e necesitan estar dentro dunha fonte de auga para sobrevivir. Sen auga, morrerá, así como o bloque de coral de abaixo.
 
 Needs water to live=Necesita auga para vivir
 Grows on coral block of same species=Crece nun bloque de coral da mesma especie
 ##[ seagrass.lua ]##
 Grows in water on dirt, sand, gravel=Crece en auga sobre terra, area, grava
-Seagrass=Herba marina
+Seagrass=Herba mariña
 Seagrass grows inside water on top of dirt, sand or gravel.=A herba mariña medra dentro da auga enriba de terra, area ou grava.
 ##[ kelp.lua ]##
 Kelp=Alga
@@ -60,13 +60,13 @@ Kelp grows inside water on top of dirt, sand or gravel.=As algas medran dentro d
 Dried Kelp=Algas secas
 Dried kelp is a food item.=As algas secas son un alimento.
 Dried Kelp Block=Bloque de algas secas
-A decorative block that serves as a great furnace fuel.=Un bloque decorativo que serve de gran combustible para fornos.
+A decorative block that serves as a great furnace fuel.=Un bloque decorativo que serve como un gran combustible para fornos.
 ##[ sea_pickle.lua ]##
-Sea Pickle=Encurtidos Mariños
+Sea Pickle=Cogombro Mariño
 
-Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Os encurtidos mariños crecen en bloques de coral do cerebro morto e proporcionan luz cando están baixo a auga. Veñen en 4 tamaños que varían en brillo.
+Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Os cogombros mariños crecen en bloques de coral do cerebro morto e proporcionan luz cando están baixo a auga. Veñen en 4 tamaños que varían en brillo.
 
-It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Só se pode colocar encima de bloques de coral do cerebro morto. Poñer un escabeche de mar sobre outro escabeche de mar farao medrar e máis brillante.
+It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Só se pode colocar encima de bloques de coral do cerebro morto. Poñer un cogombro mariño sobre outro cogombro mariño farao medrar e máis brillante.
 
 Glows in the water=Brilla na auga
 4 possible sizes=4 tamaños posibles

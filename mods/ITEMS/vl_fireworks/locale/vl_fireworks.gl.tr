@@ -1,11 +1,11 @@
 # textdomain: mcl_fireworks
 ##[ star.lua ]##
-Firework Star=
+Firework Star=Estrela de fogos artificiais
 
-A firework star is the key component of a firework rocket which is responsible for the visible explosion.=
+A firework star is the key component of a firework rocket which is responsible for the visible explosion.=Unha estrela de fogos artificiais é o compoñente clave dun foguete de fogos artificiais, responsable da explosión visible.
 
-Generic Firework Star=
-Size:=
+Generic Firework Star=Estrela xenérica de fogos artificiais
+Size:=Tamaño:
 ##[ rockets.lua ]##
 Flight Duration:=Duración do voo: 
 Firework Rocket=Foguete de fogos artificiais

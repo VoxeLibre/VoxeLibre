@@ -1,22 +1,22 @@
 # textdomain: mcl_fences
 
-Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.=As cercas son estruturas que bloquean o camiño. As cercas conectaranse entre si e bloques sólidos. Non se poden saltar cun simple salto. No se pueden saltar con un simple salto.
+Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.=As cercas son estruturas que bloquean o camiño. As cercas conectanse entre si e con bloques sólidos. Non se poden saltar cun simple salto.
 
-Openable by players and redstone power=Abribles polos xogadores e por enerxía pedra vermella
+Openable by players and redstone power=Pódese abrir por xogadores e mediante enerxía de pedra vermella
 
-Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.=As portas das cercas pódense abrir ou pechar e non se poden saltar. As cercas conectaranse moi ben coas portas.
+Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.=As portas das cercas pódense abrir ou pechar e non se poden saltar. As cercas conectaranse moi ben coas portas das cercas.
 
 Right-click the fence gate to open or close it.=Fai clic co botón dereito na porta da cerca para abrila ou pechala.
 Oak Fence=Cerca de carballo
-Oak Fence Gate=Porta de carballo
+Oak Fence Gate=Porta de cerca de carballo
 Spruce Fence=Cerca de abeto
 Spruce Fence Gate=Porta de cerca de abeto 
 Birch Fence=Cerca de bidueiro
-Birch Fence Gate=Porta de valado de bidueiro
+Birch Fence Gate=Porta de cerca de bidueiro
 Jungle Fence=Cerca de xungla
-Jungle Fence Gate=Porta da cerca da xungla
+Jungle Fence Gate=Porta da cerca de xungla
 Dark Oak Fence=Cerca de carballo escuro
 Dark Oak Fence Gate=Porta de cerca de carballo escuro
 Acacia Fence=Cerca de acacia
 Acacia Fence Gate=Porta de cerca de acacia
-Nether Brick Fence=Cerca de ladrillo inferior
+Nether Brick Fence=Cerca de ladrillo de inframundo

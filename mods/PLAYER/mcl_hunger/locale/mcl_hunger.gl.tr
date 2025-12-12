@@ -3,34 +3,34 @@ Food=Comida
 Saturation=Saturación
 Exhaust.=Canso.
 ##[ commands.lua ]##
-[on|off]=
-Toggle hunger and starvation mechanics=
-Hunger is currently enabled.=
-Hunger is currently disabled.=
-Hunger is already on.=
-Hunger enabled.=
-Hunger is already off.=
-Hunger disabled.=
-Invalid parameter.=
-[show|hide]=
-Toggle hunger and starvation debug information=
-Hunger debug information is currently enabled.=
-Hunger debug information is currently disabled.=
-Hunger debug information is already shown.=
-Hunger debug information shown.=
-Hunger debug information is already hidden.=
-Hunger debug information hidden.=
-Gives the ability to set player hunger level.=
-[player] [0-20]=
-Set a player's hunger level.=
-Player name and/or hunger level is required.=
-Player not found.=
-Hunger level is required.=
-Hunger parameter must be a whole number from 0 to 20.=
-Done!=
+[on|off]=[activar|desactivar]
+Toggle hunger and starvation mechanics=Alterna as mecánicas de fame e inanición.
+Hunger is currently enabled.=A fame está activada actualmente.
+Hunger is currently disabled.=A fame está desactivada actualmente.
+Hunger is already on.=A fame xa está activada.
+Hunger enabled.=Fame activada.
+Hunger is already off.=A fame xa está desactivada.
+Hunger disabled.=Fame desactivada.
+Invalid parameter.=Parámetro non válido.
+[show|hide]=[amosar|agochar]
+Toggle hunger and starvation debug information=Alterna a información de depuración da fame e da inanición.
+Hunger debug information is currently enabled.=A información de depuración da fame está activada actualmente.
+Hunger debug information is currently disabled.=A información de depuración da fame está desactivada actualmente.
+Hunger debug information is already shown.=A información de depuración da fame xa está a amosarse.
+Hunger debug information shown.=Información de depuración da fame amosada.
+Hunger debug information is already hidden.=A información de depuración da fame xa está agochada.
+Hunger debug information hidden.=Información de depuración da fame agochada.
+Gives the ability to set player hunger level.=Permite establecer o nivel de fame dun xogador.
+[player] [0-20]=[xogador] [0-20]
+Set a player's hunger level.=Define o nivel de fame dun xogador.
+Player name and/or hunger level is required.=Requírese o nome do xogador e/ou o nivel de fame.
+Player not found.=Non se atopou o xogador.
+Hunger level is required.=Requírese o nivel de fame.
+Hunger parameter must be a whole number from 0 to 20.=O parámetro de fame debe ser un número enteiro entre 0 e 20.
+Done!=Feito!
 
 
-##### not used anymore #####
+##### xa non se usa #####
 
 @1 succumbed to the poison.=@1 sucumbiu ao veleno.
 %s: %.1f/%d=%s: %.1f

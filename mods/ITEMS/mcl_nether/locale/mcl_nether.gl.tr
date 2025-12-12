@@ -1,17 +1,17 @@
 # textdomain: mcl_nether
 Glowstone=Pedra luminosa
-Glowstone is a naturally-glowing block which is home to the Nether.=Pedra luminosa é un bloque que brilla de maneira natural e que alberga o Nether.
+Glowstone is a naturally-glowing block which is home to the Nether.=Pedra luminosa é un bloque que brilla de maneira natural e que alberga o Inframundo.
 Nether Quartz Ore=Mineral de cuarzo
 
-Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.=O mineral de cuarzo inferior é un mineral que contén cuarzo inferior. Atópase comunmente ao redor do netherrack no Nether.
+Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.=O mineral de cuarzo do Inframundo é un mineral que contén cuarzo do inframundo. Atópase comunmente ao redor da pedra do inframundo  no Inframundo.
 
-Ancient Debris=Detritos antigos
-Ancient debris can be found in the nether and is very very rare.=Os restos antigos pódense atopar no fondo e son moi moi raros.
-Netherite Block=Bloque Netherite
-Netherite block is very hard and can be made of 9 netherite ingots.=O bloque de netherita é moi duro e pode estar feito de 9 lingotes de netherita.
-Netherrack=Netherrack
+Ancient Debris=Escombros ancestrais
+Ancient debris can be found in the nether and is very very rare.=Os Escombros ancestrais pódense atopar no Inframundo e son moi moi raros.
+Netherite Block=Bloque de inframundiana
+Netherite block is very hard and can be made of 9 netherite ingots.=O bloque de inframundiana é moi duro e pode estar feito de 9 lingotes de inframundiana.
+Netherrack=Pedra do inframundo
 
-Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.=Netherrack é un bloque semellante á pedra que alberga o Nether. Comezar un lume neste bloque creará un lume eterno.
+Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.=A pedra do inframundo é un bloque semellante á pedra que alberga o Inframundo. Comezar un lume neste bloque creará un lume eterno.
 
 Magma Block=Bloque de magma
 Burns your feet=Queima os pés
@@ -21,52 +21,52 @@ Magma blocks are hot solid blocks which hurt anyone standing on it, unless they 
 Soul Sand=Area de alma
 Reduces walking speed=Reduce a velocidade de marcha
 
-Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block.=La arena del alma está a un bloque do Nether. Un só pode camiñar lentamente sobre a area da alma. O efecto de desaceleración amplícase cando a area da alma está enriba de xeo, xeo compacto ou bloque de limo.
+Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block.=A arena de alma está a un bloque do inframundo. Un só pode camiñar lentamente sobre a area de alma. O efecto de desaceleración amplícase cando a area de alma está enriba de xeo, xeo compacto ou bloque de limo.
 
-Nether Brick Block=Ladrillos del Nether
-Red Nether Brick Block=Ladrillos del Nether vermellos
-Nether Wart Block=Bloque de verrugas del Nether
-A nether wart block is a purely decorative block made from nether wart.=Un bloque de verruga inferior é un bloque puramente decorativo feito de verruga inferior.
+Nether Brick Block=Ladrillos de inframundo
+Red Nether Brick Block=Ladrillos de inframundo vermellos
+Nether Wart Block=Bloque de verrugas de inframundo
+A nether wart block is a purely decorative block made from nether wart.=Un bloque de verruga de inframundo é un bloque puramente decorativo feito de verruga de inframundo.
 Block of Quartz=Bloque de cuarzo
 Chiseled Quartz Block=Cuarzo cicelado
-Pillar Quartz Block=Pilar bloque de cuarzo
+Pillar Quartz Block=Pilar de bloque de cuarzo
 Smooth Quartz=Cuarzo liso
-Glowstone Dust=Pó de pedra luminosa
+Glowstone Dust=Pó de pedra brillante
 
-Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.=O po de pedra brillante é o po que sae das pedras luminosas rotas. Úsase principalmente na elaboración artesanal.
+Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.=O po de pedra brillante é o po que sae das pedras brillantes rotas. Úsase principalmente na elaboración artesanal.
 
-Nether Quartz=Infracuarzo
-Nether quartz is a versatile crafting ingredient.=O cuarzo inferior é un versátil ingrediente de elaboración.
-Netherite Scrap=Chatarra Netherite
-Netherite scrap is a crafting ingredient for netherite ingots.=
-Netherite Ingot=Lingote de Netherite
+Nether Quartz=cuarzo de inframundo
+Nether quartz is a versatile crafting ingredient.=O cuarzo de inframundo é un versátil ingrediente de elaboración.
+Netherite Scrap=Chatarra inframundiana
+Netherite scrap is a crafting ingredient for netherite ingots.=O anaco de inframundiana é un ingrediente de fabricación para lingotes de inframundiana.
+Netherite Ingot=Lingote de inframundiana
 
-Netherite ingots can be used with a smithing table to upgrade items to netherite.=
+Netherite ingots can be used with a smithing table to upgrade items to netherite.=Os lingotes de inframundiana poden usarse nunha mesa de ferreiro para mellorar obxectos a inframundiana.
 
-Nether Brick=Ladrillos del Nether
+Nether Brick=Ladrillos do Inframundo
 
-Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Los ladrillos abisales son o principal ingrediente de elaboración para a elaboración de bloques de ladrillo inferior e vercas do abaixo.
+Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Os ladrillos abisaIs son o principal ingrediente de elaboración para a elaboración de bloques de ladrillo de inframundo e cercas do inframundo.
 
 ##[ nether_wart.lua ]##
-Premature Nether Wart (Stage 1)=Verruga de Nether prematura (Etapa 1)
+Premature Nether Wart (Stage 1)=Verruga de Inframundo prematura (Etapa 1)
 
-A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Recentemente plantouse unha verruga inferior prematura na area da alma. A verruga inferior crece lentamente na area da alma en 4 etapas (a segunda e terceira etapas parecen idénticas). Aínda que a verruga inferior é o fogar do Nether, crece en calquera dimensión.
+A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Recentemente plantouse unha verruga de inframundo prematura na area da alma. A verruga de inframundo medra lentamente na area da alma en 4 etapas (a segunda e terceira etapas parecen idénticas). Aínda que a verruga de inframundo é o fogar do Inframundo, crece en calquera dimensión.
 
-Premature Nether Wart (Stage 2)=Verruga del Nether prematura (Etapa 2)
-Premature Nether Wart (Stage 3)=Verruga del Nether prematura (Etapa 3)
-Mature Nether Wart=Verruga del Nether madura
+Premature Nether Wart (Stage 2)=Verruga de Inframundo prematura (Etapa 2)
+Premature Nether Wart (Stage 3)=Verruga de Inframundo prematura (Etapa 3)
+Mature Nether Wart=Verruga de Inframundo madura
 
-The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.=A verruga inferior madura é unha planta do Nether e alcanzou o seu tamaño completo e non crecerá máis. Está listo para ser collido polos seus elementos.
+The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.=A verruga de Inframundo madura é unha planta do Inframundo que alcanzou o seu tamaño completo e non crecerá máis. Está lista para ser colleitada polos seus obxectos.
 
 Nether Wart=Verruga del Nether
 Grows on soul sand=Medra na area da alma
 
-Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=As verrugas do Nether son plantas que albergan o Nether. Pódense plantar sobre area de alma e medrar en 4 etapas.
+Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=As verrugas do Inframundo son plantas que albergan o Inframundo. Pódense plantar sobre area de alma e medrar en 4 etapas.
 
 Place this item on soul sand to plant it and watch it grow.=Coloque este elemento na area da alma para plantalo e velo medrar.
 ##[ lava.lua ]##
-Nether Lava Source=Fonte de lava de Nether
-Flowing Nether Lava=Fonte de lava fluida del Nether
+Nether Lava Source=Fonte de lava de Inframundo
+Flowing Nether Lava=Fonte de lava fluida de Inframundo
 
 
 ##### not used anymore #####

@@ -1,0 +1,12 @@
+# textdomain: mcl_cozy
+Sit down=Sentarse
+@1 sits=@1 séntase
+You can't sit, the block's too far away!=Non te podes sentar, o bloque está demasiado lonxe!
+You have to stop moving before sitting down!=Tes que deixar de moverte antes de sentarte!
+Lie down=Deitarse
+@1 lies=@1 déitase
+You can't lay, the block's too far away!=Non te podes deitar, o bloque está demasiado lonxe!
+You have to stop moving before lying down!=Tes que deixar de moverte antes de deitarte!
+@1 stands up=@1 stands up
+Move to stand up=Móvete para erguerte
+This block is already occupied!=Este bloque xa está ocupado!

@@ -1,15 +1,15 @@
 # textdomain: mcl_lanterns
 Chain=cadea
 Chains are metallic decoration blocks.=As cadeas son bloques de decoración metálicos.
-Gold Chain=
-Gold Chains are metallic decoration blocks.=
+Gold Chain=Cadea de ouro
+Gold Chains are metallic decoration blocks.=As cadeas de ouro son bloques de decoración metálicos.
 ##[ register.lua ]##
-Lantern=Lanterna
+Lantern=farol
 
-Lanterns are light sources which can be placed on the top or the bottom of most blocks.=As lanternas son fontes de luz que se poden colocar na parte superior ou na parte inferior da maioría dos bloques.
+Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Os farois son fontes de luz que se poden colocar na parte superior ou na parte inferior da maioría dos bloques.
 
-Soul Lantern=Lanterna da Alma
-Gold Lantern=
+Soul Lantern=Farol da Alma
+Gold Lantern=Farol Dourado
 
-Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=
+Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Os farois dourados son fontes de luz que se poden colocar na parte superior ou inferior da maioría dos bloques.
 
