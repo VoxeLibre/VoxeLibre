@@ -1,6 +1,6 @@
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
+local S = core.get_translator(modname)
 
 mcl_potions = {}
 
@@ -31,7 +31,7 @@ dofile(modpath .. "/tipped_arrow.lua")
 dofile(modpath .. "/potions.lua")
 local potions = mcl_potions.registered_potions
 
-minetest.register_craftitem("mcl_potions:dragon_breath", {
+core.register_craftitem("mcl_potions:dragon_breath", {
 	description = S("Dragon's Breath"),
 	_longdesc = S("This item is used in brewing and can be combined with splash potions to create lingering potions."),
 	inventory_image = "mcl_potions_dragon_breath.png",
@@ -39,7 +39,7 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 	stack_max = 64,
 })
 
-minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
+core.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = S("Fermented Spider Eye"),
 	_doc_items_longdesc = S("Try different combinations to create potions."),
 	wield_image = "mcl_potions_spider_eye_fermented.png",
@@ -48,13 +48,13 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	stack_max = 64,
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "shapeless",
 	output = "mcl_potions:fermented_spider_eye",
 	recipe = { "mcl_mushrooms:mushroom_brown", "mcl_core:sugar", "mcl_mobitems:spider_eye" },
 })
 
-minetest.register_craftitem("mcl_potions:glass_bottle", {
+core.register_craftitem("mcl_potions:glass_bottle", {
 	description = S("Glass Bottle"),
 	_tt_help = S("Liquid container"),
 	_doc_items_longdesc = S("A glass bottle is used as a container for liquids and can be used to collect water directly."),
@@ -65,8 +65,8 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 	liquids_pointable = true,
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type == "node" then
-			local node = minetest.get_node(pointed_thing.under)
-			local def = minetest.registered_nodes[node.name]
+			local node = core.get_node(pointed_thing.under)
+			local def = core.registered_nodes[node.name]
 
 			-- Call on_rightclick if the pointed node defines it
 			local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
@@ -86,31 +86,31 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 			-- Or reduce water level of cauldron by 1
 			elseif string.sub(node.name, 1, 14) == "mcl_cauldrons:" then
 				local pname = placer:get_player_name()
-				if minetest.is_protected(pointed_thing.under, pname) then
-					minetest.record_protection_violation(pointed_thing.under, pname)
+				if core.is_protected(pointed_thing.under, pname) then
+					core.record_protection_violation(pointed_thing.under, pname)
 					return itemstack
 				end
 				if node.name == "mcl_cauldrons:cauldron_3" then
 					get_water = true
-					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2"})
+					core.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2"})
 				elseif node.name == "mcl_cauldrons:cauldron_2" then
 					get_water = true
-					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1"})
+					core.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1"})
 				elseif node.name == "mcl_cauldrons:cauldron_1" then
 					get_water = true
-					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+					core.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
 				elseif node.name == "mcl_cauldrons:cauldron_3r" then
 					get_water = true
 					river_water = true
-					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2r"})
+					core.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2r"})
 				elseif node.name == "mcl_cauldrons:cauldron_2r" then
 					get_water = true
 					river_water = true
-					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1r"})
+					core.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1r"})
 				elseif node.name == "mcl_cauldrons:cauldron_1r" then
 					get_water = true
 					river_water = true
-					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+					core.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
 				end
 			end
 			if get_water then
@@ -123,8 +123,8 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 				-- Replace with water bottle, if possible, otherwise
 				-- place the water potion at a place where's space
 				local inv = placer:get_inventory()
-				minetest.sound_play("mcl_potions_bottle_fill", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
-				if minetest.is_creative_enabled(placer:get_player_name()) then
+				core.sound_play("mcl_potions_bottle_fill", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
+				if core.is_creative_enabled(placer:get_player_name()) then
 					-- Don't replace empty bottle in creative for convenience reasons
 					if not inv:contains_item("main", water_bottle) then
 						inv:add_item("main", water_bottle)
@@ -135,7 +135,7 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 					if inv:room_for_item("main", water_bottle) then
 						inv:add_item("main", water_bottle)
 					else
-						minetest.add_item(placer:get_pos(), water_bottle)
+						core.add_item(placer:get_pos(), water_bottle)
 					end
 					itemstack:take_item()
 				end
@@ -145,7 +145,7 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 	end,
 })
 
-minetest.register_craft( {
+core.register_craft( {
 	output = "mcl_potions:glass_bottle 3",
 	recipe = {
 		{ "mcl_core:glass", "", "mcl_core:glass" },
@@ -191,19 +191,19 @@ end
 -- function to set node and empty water bottle (used for cauldrons and mud)
 local function set_node_empty_bottle(itemstack, placer, pointed_thing, newitemstring)
 	local pname = placer:get_player_name()
-	if minetest.is_protected(pointed_thing.under, pname) then
-		minetest.record_protection_violation(pointed_thing.under, pname)
+	if core.is_protected(pointed_thing.under, pname) then
+		core.record_protection_violation(pointed_thing.under, pname)
 		return itemstack
 	end
 
 	-- set the node to `itemstring`
-	minetest.set_node(pointed_thing.under, {name=newitemstring})
+	core.set_node(pointed_thing.under, {name=newitemstring})
 
 	-- play sound
-	minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
+	core.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 
 	--
-	if minetest.is_creative_enabled(placer:get_player_name()) then
+	if core.is_creative_enabled(placer:get_player_name()) then
 		return itemstack
 	else
 		return "mcl_potions:glass_bottle"
@@ -214,7 +214,6 @@ end
 local function dispense_water_bottle(stack, pos, droppos)
     local node = core.get_node(droppos)
     local nodedef = core.registered_nodes[node.name]
-
     if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
 		core.set_node(droppos, {name = "mcl_mud:mud"})
         core.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
@@ -234,8 +233,8 @@ end
 
 local function water_bottle_on_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type == "node" then
-		local node = minetest.get_node(pointed_thing.under)
-		local def = minetest.registered_nodes[node.name]
+		local node = core.get_node(pointed_thing.under)
+		local def = core.registered_nodes[node.name]
 
 		-- Call on_rightclick if the pointed node defines it
 		local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
@@ -258,12 +257,10 @@ local function water_bottle_on_place(itemstack, placer, pointed_thing)
 	end
 
 	-- Drink the water by default
-	return minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
+	return core.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
 end
 
--- Itemstring of potions is “mcl_potions:<NBT Potion Tag>”
-
-minetest.register_craftitem("mcl_potions:water", {
+core.register_craftitem("mcl_potions:water", {
 	description = S("Water Bottle"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("Water bottles can be used to fill cauldrons. Drinking water has no effect."),
@@ -275,16 +272,15 @@ minetest.register_craftitem("mcl_potions:water", {
 	on_place = water_bottle_on_place,
 	_on_dispense = dispense_water_bottle,
 	_dispense_into_walkable = true,
-	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+	on_secondary_use = core.item_eat(0, "mcl_potions:glass_bottle"),
 })
 
 
-minetest.register_craftitem("mcl_potions:river_water", {
+core.register_craftitem("mcl_potions:river_water", {
 	description = S("River Water Bottle"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("River water bottles can be used to fill cauldrons. Drinking it has no effect."),
 	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron."),
-
 	stack_max = 16,
 	inventory_image = potion_image("#0044FF"),
 	wield_image = potion_image("#0044FF"),
@@ -292,7 +288,7 @@ minetest.register_craftitem("mcl_potions:river_water", {
 	on_place = water_bottle_on_place,
 	_on_dispense = dispense_water_bottle,
 	_dispense_into_walkable = true,
-	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+	on_secondary_use = core.item_eat(0, "mcl_potions:glass_bottle"),
 
 })
 
@@ -304,32 +300,40 @@ local function water_splash(obj, damage)
 	if not damage or (damage > 0 and damage < 1) then
 		damage = 1
 	end
+
+	-- Extinguish burning mobs
+	mcl_burning.extinguish(obj)
+
 	-- Damage mobs that are vulnerable to water
 	local lua = obj:get_luaentity()
-	if lua and lua.is_mob then
+	if lua and lua.is_mob
+			and type(lua.armor) == "table" and (lua.armor.water_vulnerable or 0) > 0 then
 		obj:punch(obj, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {water_vulnerable=damage},
 		}, nil)
 	end
+
 end
 
 mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {
-	tt=S("Extinguishes fire and hurts some mobs"),
-	longdesc=S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
-	no_effect=true,
-	potion_fun=water_splash,
-	effect=1
+	_tt = S("Extinguishes fire and hurts some mobs"),
+	_longdesc = S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
+	no_effect = true,
+	stack_max = 16,
+	custom_effect = water_splash,
+	on_splash = mcl_potions._extinguish_nearby_fire,
 })
 mcl_potions.register_lingering("water", S("Lingering Water Bottle"), "#0022FF", {
-	tt=S("Extinguishes fire and hurts some mobs"),
-	longdesc=S("A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water."),
-	no_effect=true,
-	potion_fun=water_splash,
-	effect=1
+	_tt = S("Extinguishes fire and hurts some mobs"),
+	_longdesc = S("A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water."),
+	no_effect = true,
+	stack_max = 16,
+	custom_effect = water_splash,
+	while_lingering = mcl_potions._extinguish_nearby_fire,
 })
 
-minetest.register_craftitem("mcl_potions:speckled_melon", {
+core.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),
 	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
@@ -337,7 +341,7 @@ minetest.register_craftitem("mcl_potions:speckled_melon", {
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_potions:speckled_melon",
 	recipe = {
 		{"mcl_core:gold_nugget", "mcl_core:gold_nugget", "mcl_core:gold_nugget"},
@@ -535,7 +539,7 @@ local function fill_inversion_table() -- autofills with splash and lingering inv
 	table.update(inversion_table, filling_table)
 	mcl_potions.register_table_modifier("mcl_potions:fermented_spider_eye", inversion_table)
 end
-minetest.register_on_mods_loaded(fill_inversion_table)
+core.register_on_mods_loaded(fill_inversion_table)
 
 local splash_table = {}
 local lingering_table = {}
@@ -646,13 +650,13 @@ end
 
 -- give withering to players in a wither rose
 local etime = 0
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 	etime = dtime + etime
 	if etime < 0.5 then return end
 	etime = 0
-	for _,pl in pairs(minetest.get_connected_players()) do
+	for _,pl in pairs(core.get_connected_players()) do
 		local npos = vector.offset(pl:get_pos(), 0, 0.2, 0)
-		local n = minetest.get_node(npos)
+		local n = core.get_node(npos)
 		if n.name == "mcl_flowers:wither_rose" then mcl_potions.withering_func(pl, 1, 2) end
 	end
 end)

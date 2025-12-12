@@ -1979,6 +1979,9 @@ function mcl_potions._extinguish_nearby_fire(pos, radius)
 			exting = true
 		end
 	end
+	for obj in core.objects_inside_radius(pos, radius or 1) do
+		mcl_burning.extinguish(obj)
+	end
 	return exting
 end
 
