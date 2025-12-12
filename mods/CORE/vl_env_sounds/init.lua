@@ -8,7 +8,10 @@ local pairs = pairs
 
 local allsounds = {
 	["env_sounds_water"] = {
-		trigger = {"mcl_core:water_flowing"},
+		trigger = {
+			"mcl_core:water_flowing",
+			"mclx_core:river_water_flowing"
+		},
 		base_volume = 0.04,
 		max_volume = 0.4,
 		per_node = 0.004,
@@ -29,14 +32,8 @@ local allsounds = {
 	},
 }
 
-if core.settings:get_bool("river_source_sounds") then
-	table.insert(allsounds["env_sounds_water"].trigger,
-		"default:river_water_source")
-end
-
 
 -- Cache the union of all trigger nodes
-
 local cache_triggers = {}
 
 for sound, def in pairs(allsounds) do
