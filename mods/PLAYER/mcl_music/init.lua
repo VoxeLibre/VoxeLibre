@@ -50,6 +50,7 @@ end
 
 local function stop_music_for_listener(player_name)
 
+	if not listeners and not listeners[player_name] then return end
 	local handle = listeners[player_name].handle
 
 	if handle then
@@ -92,8 +93,7 @@ local function play_song(player_name, track)
 		pitch     = 1.0,
 	}
 
-	local handle = core.sound_play(spec, parameters, false)
-	listeners[player_name].handle = handle
+	listeners[player_name].handle = core.sound_play(spec, parameters, false)
 end
 
 local function play()
@@ -101,6 +101,7 @@ local function play()
 	local day_count = core.get_day_count()
 
 	for _, player in pairs(core.get_connected_players()) do
+		repeat
 		if not player:get_meta():get("mcl_music:disable") then
 
 			local player_name = player:get_player_name()
@@ -117,7 +118,7 @@ local function play()
 				-- Night time
 				elseif time < 0.25 or time >= 0.75 then
 					stop_music_for_listener(player_name)
-					goto continue
+					break
 				end
 			end
 
@@ -128,12 +129,12 @@ local function play()
 
 				stop_music_for_listener(player_name)
 
-				local sc_time = os.time()
+				local sc_time = core.get_us_time()
 				-- Only play new music if scenario change was a little while ago
 				if (sc_time - listener.sc_time) > min_scenario_change_music_time then
 					local track = pick_track(scenario)
 					if track then
-						core.after(15, function()
+						core.after(15, function(player_name, track)
 							stop_music_for_listener(player_name) -- For when scenario change is repeated quickly
 							play_song(player_name, track)
 						end, player_name, track)
@@ -151,7 +152,7 @@ local function play()
 
 				local track = pick_track(scenario)
 				if track then
-					core.after(15, function()
+					core.after(15, function(player_name, track)
 						stop_music_for_listener(player_name) -- For when time changed is repeated quickly
 						play_song(player_name, track)
 					end, player_name, track)
@@ -159,8 +160,7 @@ local function play()
 				listeners[player_name].day_count = day_count
 			end
 		end
-
-		::continue::
+		until true
 	end
 
 	core.after(5, play)
