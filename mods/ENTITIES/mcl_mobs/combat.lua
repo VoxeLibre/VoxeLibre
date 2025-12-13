@@ -50,9 +50,6 @@ function mob_class:do_attack(object)
 	--end
 end
 
-local los_switcher = false
-local height_switcher = false
-
 -- path finding and smart mob routine by rnd, line_of_sight and other edits by Elkien3
 function mob_class:smart_mobs(s, p, dist, dtime)
 	local s1 = self.path.lastpos
@@ -72,13 +69,13 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 
 	-- im stuck, search for path
 	if not has_lineofsight then
-		if los_switcher == true then
+		if self.path.los_switcher == true then
 			use_pathfind = true
-			los_switcher = false
+			self.path.los_switcher = false
 		end -- cannot see target!
 	else
-		if los_switcher == false then
-			los_switcher = true
+		if self.path.los_switcher == false then
+			self.path.los_switcher = true
 			use_pathfind = false
 			minetest.after(1, function(self)
 				if not self.object:get_luaentity() then return end
@@ -106,14 +103,14 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 	end
 
 	if abs(s.y - target_pos.y) > self.initial_properties.stepheight then
-		if height_switcher then
+		if self.path.height_switcher then
 			use_pathfind = true
-			height_switcher = false
+			self.path.height_switcher = false
 		end
 	else
-		if not height_switcher then
+		if not self.path.height_switcher then
 			use_pathfind = false
-			height_switcher = true
+			self.path.height_switcher = true
 		end
 	end
 

@@ -192,6 +192,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	self.path.stuck = false
 	self.path.following = false -- currently following path?
 	self.path.stuck_timer = 0 -- if stuck for too long search for path
+	self.path.los_switcher = false -- line of sight state for pathfinding edge detection
+	self.path.height_switcher = false -- height difference state for pathfinding edge detection
 
 	-- Armor groups
 	-- immortal=1 because we use custom health
