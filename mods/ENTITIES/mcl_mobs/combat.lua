@@ -53,7 +53,7 @@ end
 -- path finding and smart mob routine by rnd, line_of_sight and other edits by Elkien3
 function mob_class:smart_mobs(s, p, dist, dtime)
 	local s1 = self.path.lastpos
-	local target_pos = self.attack:get_pos()
+	local target_pos = p -- p is the target position (either current attack position or last_seen_target_pos)
 
 	-- is it becoming stuck?
 	if abs(s1.x - s.x) + abs(s1.z - s.z) < .5 then
@@ -815,6 +815,7 @@ local function clear_aggro(self)
 	self.timer = 0
 	self.blinktimer = 0
 	self.path.way = nil
+	self.path.last_seen_target_pos = nil
 end
 
 ---Starts an explosion attack.
@@ -870,23 +871,38 @@ function mob_class:do_states_attack(dtime)
 
 	local target_line_of_sight = self:target_visible(s)
 
-	if not target_line_of_sight then
-		if self.target_time_lost then
-			local time_since_seen = os.time() - self.target_time_lost
-			if time_since_seen > TIME_TO_FORGET_TARGET then
+	if target_line_of_sight then
+		self.path.last_seen_target_pos = vector_copy(p)
+		self.target_time_lost = nil
+	else
+		if not self.target_time_lost then
+			self.target_time_lost = os.time()
+		end
+
+		-- Check if we should give up pursuit
+		local time_since_seen = os.time() - self.target_time_lost
+		if time_since_seen > TIME_TO_FORGET_TARGET then
+			self.target_time_lost = nil
+			clear_aggro(self)
+			return
+		end
+
+		if self.path.last_seen_target_pos then
+			local dist_to_last_seen = vector_distance(s, self.path.last_seen_target_pos)
+			if dist_to_last_seen < 0.5 then
 				self.target_time_lost = nil
 				clear_aggro(self)
 				return
 			end
-		else
-			self.target_time_lost = os.time()
+			-- Pursue last seen position
+			p = self.path.last_seen_target_pos
 		end
-	else
-		self.target_time_lost = nil
 	end
 
-	-- calculate distance from mob and enemy
+	-- calculate distance from mob to enemy and last seen position
 	local dist = vector_distance(p, s)
+	local actual_target_pos = self.attack:get_pos()
+	local actual_dist = actual_target_pos and vector_distance(actual_target_pos, s) or math.huge
 
 	if self.attack_type == "explode" then
 		if target_line_of_sight and self.allow_fuse_reset then
@@ -907,8 +923,12 @@ function mob_class:do_states_attack(dtime)
 		end
 
 		-- walk right up to player unless the timer is active
-		if self:fuse_is_triggered() and (self.stop_to_explode or dist < self.reach) or not target_line_of_sight then
+		if self:fuse_is_triggered() and (self.stop_to_explode or dist < self.reach) then
 			self:set_velocity(0)
+		elseif not target_line_of_sight and self.path.last_seen_target_pos then
+			-- Lost sight but have last seen position, keep pursuing
+			self:set_velocity(self.run_velocity)
+			self:turn_in_direction(p.x - s.x, p.z - s.z, 4)
 		else
 			self:set_velocity(self.run_velocity)
 		end
@@ -1021,12 +1041,13 @@ function mob_class:do_states_attack(dtime)
 					self:set_animation("walk")
 				end
 			end
-		else -- rnd: if inside reach range
+		elseif target_line_of_sight and actual_dist <= self.reach then
+			-- rnd: if inside reach range and visible
 			self.path.stuck = false
 			self.path.stuck_timer = 0
 			self.path.following = false -- not stuck anymore
 
-			self:set_velocity( 0)
+			self:set_velocity(0)
 
 			local attack_frequency = self.attack_frequency or 1
 
@@ -1040,7 +1061,7 @@ function mob_class:do_states_attack(dtime)
 						self:set_animation("punch")
 					end
 
-					if self:line_of_sight(vector_offset(p, 0, .5, 0), vector_offset(s, 0, .5, 0)) == true then
+					if self:line_of_sight(vector_offset(actual_target_pos, 0, .5, 0), vector_offset(s, 0, .5, 0)) == true then
 						self:mob_sound("attack")
 
 						-- punch player (or what player is attached to)
@@ -1058,7 +1079,7 @@ function mob_class:do_states_attack(dtime)
 						end
 					end
 				else
-					self.custom_attack(self, p)
+					self.custom_attack(self, actual_target_pos)
 				end
 			end
 		end
