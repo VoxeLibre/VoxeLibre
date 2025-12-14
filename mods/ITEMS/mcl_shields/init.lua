@@ -276,7 +276,8 @@ end
 
 local function handle_blocking(player)
 	local player_shield = mcl_shields.players[player]
-	local rmb = player:get_player_control().RMB
+	local ctrl = player:get_player_control()
+	local rmb = ctrl.place or ctrl.zoom
 	if not rmb then
 		player_shield.blocking = 0
 		return
