@@ -51,9 +51,10 @@ function mob_class:do_attack(object)
 end
 
 -- path finding and smart mob routine by rnd, line_of_sight and other edits by Elkien3
+---@param s vector mob's current position
+---@param p vector target's position or last known position of target
 function mob_class:smart_mobs(s, p, dist, dtime)
 	local s1 = self.path.lastpos
-	local target_pos = p -- p is the target position (either current attack position or last_seen_target_pos)
 
 	-- is it becoming stuck?
 	if abs(s1.x - s.x) + abs(s1.z - s.z) < .5 then
@@ -65,7 +66,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 	self.path.lastpos = vector_copy(s)
 
 	local use_pathfind = false
-	local has_lineofsight = minetest.line_of_sight(vector_offset(s, 0, .5, 0), vector_offset(target_pos, 0, 1.5, 0), .2)
+	local has_lineofsight = self.target_visible(self.object, self.attack)
 
 	-- im stuck, search for path
 	if not has_lineofsight then
@@ -102,7 +103,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 		end, self)
 	end
 
-	if abs(s.y - target_pos.y) > self.initial_properties.stepheight then
+	if abs(s.y - p.y) > self.initial_properties.stepheight then
 		if self.path.height_switcher then
 			use_pathfind = true
 			self.path.height_switcher = false
@@ -129,7 +130,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 		-- determine node above ground
 		if not ssight then s.y = sground.y + 1 end
 
-		local p1 = vector_new(floor(target_pos.x + 0.5), floor(target_pos.y + 0.5), floor(target_pos.z + 0.5))
+		local p1 = vector_new(floor(p.x + 0.5), floor(p.y + 0.5), floor(p.z + 0.5))
 
 		local dropheight = 12
 		if self.fear_height ~= 0 then dropheight = self.fear_height end
@@ -148,7 +149,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 		if not self.path.way then
 			self.path.following = false
 
-			 -- lets make way by digging/building if not accessible
+			-- lets make way by digging/building if not accessible
 			if self.pathfinding == 2 and mobs_griefing then
 				-- is player higher than mob?
 				if s.y < p1.y then
@@ -323,7 +324,7 @@ function mob_class:monster_attack()
 			end
 
 			-- choose closest player to attack
-			local line_of_sight = self:line_of_sight( sp, p, 2) == true
+			local line_of_sight = self:target_visible(sp, player) == true
 			if dist < min_dist and not attacked_p and line_of_sight then
 				min_dist = dist
 				min_player = player
@@ -366,7 +367,7 @@ function mob_class:npc_attack()
 			p.y = p.y + 1
 			sp.y = sp.y + 1
 
-			if dist < min_dist and self:line_of_sight( sp, p, 2) == true then
+			if dist < min_dist and self:target_visible(sp, obj.object) then
 				min_dist = dist
 				min_player = obj.object
 			end

@@ -64,102 +64,18 @@ function mob_class:is_node_waterhazard(nodename)
 end
 
 
-function mob_class:target_visible(origin)
-	if not origin then return end
-	if not self.attack then return end
-	local target_pos = self.attack:get_pos()
-	if not target_pos then return end
+function mob_class:target_visible(origin, target)
+	if not origin then return false end
+	-- Use provided target, or fall back to self.attack
+	target = target or self.attack
+	if not target then return false end
 
-	local origin_eye_pos = vector_offset(origin, 0, self.head_eye_height, 0)
-
-	--minetest.log("origin: " .. dump(origin))
-	--minetest.log("origin_eye_pos: " .. dump(origin_eye_pos))
-
-	local targ_head_height, targ_feet_height
-	local cbox = self.initial_properties.collisionbox
-	if self.attack:is_player() then
-		targ_head_height = vector_offset(target_pos, 0, cbox[5], 0)
-		targ_feet_height = target_pos -- Cbox would put feet under ground which interferes with ray
-	else
-		targ_head_height = vector_offset(target_pos, 0, cbox[5], 0)
-		targ_feet_height = vector_offset(target_pos, 0, cbox[2], 0)
-	end
-
-	--minetest.log("start targ_head_height: " .. dump(targ_head_height))
-	if raycast_line_of_sight (origin_eye_pos, targ_head_height) then
-		return true
-	end
-
-	--minetest.log("Start targ_feet_height: " .. dump(targ_feet_height))
-	if raycast_line_of_sight (origin_eye_pos, targ_feet_height) then
-		return true
-	end
-
-	-- TODO mid way between feet and head
-
-	return false
+	return mcl_mobs.target_visible(origin, target)
 end
 
--- check line of sight (BrunoMine)
+-- check line of sight using collision box-aware raycasting
 function mob_class:line_of_sight(pos1, pos2, stepsize)
-	stepsize = stepsize or 1
-
-	local s, pos = minetest.line_of_sight(pos1, pos2, stepsize)
-
-	-- normal walking and flying mobs can see you through air
-	if s == true then
-		return true
-	end
-
-	-- New pos1 to be analyzed
-	local npos1 = vector_copy(pos1)
-	local r, pos = minetest.line_of_sight(npos1, pos2, stepsize)
-
-	-- Checks the return
-	if r == true then return true end
-
-	-- Nodename found
-	local nn = minetest.get_node(pos).name
-
-	-- Target Distance (td) to travel
-	local td = vector_distance(pos1, pos2)
-
-	-- Actual Distance (ad) traveled
-	local ad = 0
-
-	-- It continues to advance in the line of sight in search of a real
-	-- obstruction which counts as 'normal' nodebox.
-	while minetest.registered_nodes[nn] and minetest.registered_nodes[nn].walkable == false do
-		-- Check if you can still move forward
-		if td < ad + stepsize then return true end -- Reached the target
-
-		-- Moves the analyzed pos
-		local d = vector_distance(pos1, pos2)
-
-		npos1.x = ((pos2.x - pos1.x) / d * stepsize) + pos1.x
-		npos1.y = ((pos2.y - pos1.y) / d * stepsize) + pos1.y
-		npos1.z = ((pos2.z - pos1.z) / d * stepsize) + pos1.z
-
-		-- NaN checks
-		if d == 0
-		or npos1.x ~= npos1.x
-		or npos1.y ~= npos1.y
-		or npos1.z ~= npos1.z then
-			return false
-		end
-
-		ad = ad + stepsize
-
-		-- scan again
-		r, pos = minetest.line_of_sight(npos1, pos2, stepsize)
-
-		if r == true then return true end
-
-		-- New Nodename found
-		nn = minetest.get_node(pos).name
-	end
-
-	return false
+	return mcl_mobs.check_line_of_sight(pos1, pos2)
 end
 
 function mob_class:can_jump_cliff()
