@@ -27,6 +27,8 @@ local vector_new = vector.new
 local vector_copy = vector.copy
 local vector_distance = vector.distance
 
+local DIRECT_SIGHT_ANGLE = PI / 3 -- 60 degrees
+
 -- check if daytime and also if mob is docile during daylight hours
 function mob_class:day_docile()
 	return self.docile_by_day == true and self.time_of_day > 0.2 and self.time_of_day < 0.8
@@ -249,6 +251,40 @@ local specific_attack = function(list, what)
 	return false
 end
 
+-- Check if target is within mob's direct sight cone
+function mob_class:target_in_direct_sight(target_pos)
+	local s = self.object:get_pos()
+	if not s or not target_pos then return false end
+
+	local yaw = self.object:get_yaw() or 0
+	local dir_to_target = atan2(target_pos.z - s.z, target_pos.x - s.x)
+	-- Convert mob yaw to same coordinate system (mob yaw 0 = +Z, we need +X based)
+	local mob_facing = yaw - HALFPI
+
+	local angle_diff = abs(dir_to_target - mob_facing)
+	-- Normalize to [0, PI]
+	while angle_diff > PI do
+		angle_diff = angle_diff - 2 * PI
+	end
+	angle_diff = abs(angle_diff)
+	
+	return angle_diff <= DIRECT_SIGHT_ANGLE
+end
+
+-- schedule an attack after a delay with some random jitter
+function mob_class:delayed_attack(target, base_delay, jitter)
+	local base = base_delay or 0.5
+	local j = jitter or 0.3
+	local delay = base + random() * j
+	minetest.after(delay, function(self, target)
+		if not self.object:get_luaentity() then return end
+		if not target or not target:get_pos() then return end
+		if self.state == "attack" then return end -- already attacking something
+		if not self:target_visible(self.object, target) then return end
+		self:do_attack(target)
+	end, self, target)
+end
+
 -- find someone to attack
 function mob_class:monster_attack()
 	if not damage_enabled and not self.force_attack then
@@ -336,7 +372,14 @@ function mob_class:monster_attack()
 	end
 	-- attack player
 	if min_player then
-		self:do_attack(min_player)
+		local target_pos = min_player:get_pos()
+		if self:target_in_direct_sight(target_pos) then
+			-- Target in direct sight, attack immediately
+			self:do_attack(min_player)
+		else
+			-- Target not in direct sight, schedule delayed attack by 0.5-1.0 seconds
+			self:delayed_attack(min_player, 0.5, 0.5)
+		end
 	end
 end
 
@@ -375,7 +418,14 @@ function mob_class:npc_attack()
 	end
 
 	if min_player then
-		self:do_attack(min_player)
+		local target_pos = min_player:get_pos()
+		if self:target_in_direct_sight(target_pos) then
+			-- Target in direct sight, attack immediately
+			self:do_attack(min_player)
+		else
+			-- Target not in direct sight, delay attack by 0.2-0.5 seconds
+			self:delayed_attack(min_player, 0.2, 0.3)
+		end
 	end
 end
 
