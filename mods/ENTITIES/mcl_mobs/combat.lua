@@ -132,7 +132,7 @@ function mob_class:smart_mobs(s, p, dist, dtime)
 		-- determine node above ground
 		if not ssight then s.y = sground.y + 1 end
 
-		local p1 = vector_new(floor(p.x + 0.5), floor(p.y + 0.5), floor(p.z + 0.5))
+		local p1 = vector_offset(p, 0.5, 0.5, 0.5)
 
 		local dropheight = 12
 		if self.fear_height ~= 0 then dropheight = self.fear_height end
