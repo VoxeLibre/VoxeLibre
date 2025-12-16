@@ -1,7 +1,7 @@
-local S = core.get_translator(core.get_current_modname())
-
 local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
+
+local S = core.get_translator(modname)
 
 local music_enabled = core.settings:get_bool("mcl_game_music", true)
 
@@ -50,7 +50,7 @@ end
 
 local function stop_music_for_listener(player_name)
 
-	if not listeners and not listeners[player_name] then return end
+	if not listeners or not listeners[player_name] then return end
 	local handle = listeners[player_name].handle
 
 	if handle then
