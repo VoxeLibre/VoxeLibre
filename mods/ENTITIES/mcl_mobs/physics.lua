@@ -706,38 +706,17 @@ function mob_class:do_env_damage()
 			return true
 		end
 	else
-		local near = minetest.find_node_near(pos, 1, "mcl_core:cactus")
-		if near then
-			-- is mob touching the cactus?
-			local dist = vector.distance(pos, near)
-			local threshold  = 1.04 -- small mobs
-			-- medium mobs
-			if self.name == "mobs_mc:spider" or
-				self.name == "mobs_mc:iron_golem" or
-				self.name == "mobs_mc:horse" or
-				self.name == "mobs_mc:donkey" or
-				self.name == "mobs_mc:mule" or
-				self.name == "mobs_mc:polar_bear" or
-				self.name == "mobs_mc:cave_spider" or
-				self.name == "mobs_mc:skeleton_horse" or
-				self.name == "mobs_mc:zombie_horse" or
-				self.name == "mobs_mc:strider" or
-				self.name == "mobs_mc:hoglin" or
-				self.name == "mobs_mc:zoglin" then
-				threshold = 1.165
-			elseif self.name == "mobs_mc:slime_big" or
-				self.name == "mobs_mc:magma_cube_big" or
-				self.name == "mobs_mc:ghast" or
-				self.name == "mobs_mc:guardian_elder" or
-				self.name == "mobs_mc:wither" or
-				self.name == "mobs_mc:ender_dragon" then
-				threshold = 1.25
-			end
-			if dist < threshold then
-				self:damage_mob("cactus", 2)
-				if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
-					return true
-				end
+		local cb = self.initial_properties.collisionbox
+
+		-- Touching cactus from the side
+		if core.find_nodes_in_area(
+			vector.offset(pos, cb[1], 0, cb[3]),
+			vector.offset(pos, cb[4], 0, cb[6]),
+			"mcl_core:cactus"
+		)[1] then
+			self:damage_mob("cactus", 2)
+			if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
+				return true
 			end
 		end
 	end
