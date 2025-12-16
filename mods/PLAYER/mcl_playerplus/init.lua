@@ -587,14 +587,12 @@ minetest.register_globalstep(function(dtime)
 		else
 			-- Touching cactus from the side
 			local node_collide_width = 1 - .75 -- FIXME: Player collision box width is defined earlier as .75 - use common variable for this at some point
-			local cacti_pos = core.find_nodes_in_area(
+			if core.find_nodes_in_area(
 				vector.offset(pos, node_collide_width, 0, node_collide_width),
 				vector.offset(pos, -node_collide_width, 0, -node_collide_width),
 				"mcl_core:cactus"
-			)
-			for _,_ in ipairs(cacti_pos) do
+			)[1] then
 				mcl_util.deal_damage(player, 1, {type = "cactus"})
-				break
 			end
 		end
 

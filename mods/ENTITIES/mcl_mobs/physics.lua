@@ -709,17 +709,15 @@ function mob_class:do_env_damage()
 		local cb = self.initial_properties.collisionbox
 
 		-- Touching cactus from the side
-		local cacti_pos = core.find_nodes_in_area(
+		if core.find_nodes_in_area(
 			vector.offset(pos, cb[1], 0, cb[3]),
 			vector.offset(pos, cb[4], 0, cb[6]),
 			"mcl_core:cactus"
-		)
-		for _,_ in ipairs(cacti_pos) do
+		)[1] then
 			self:damage_mob("cactus", 2)
 			if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
 				return true
 			end
-			break
 		end
 	end
 
