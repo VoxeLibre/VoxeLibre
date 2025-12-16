@@ -1,4 +1,4 @@
-# textdomain: cavesounds
+# textdomain: vl_cavesounds
 Turn cave sounds for yourself or another player on or off.=
 
 You need the debug privilege in order to turn cave sounds on or off for somebody else!=

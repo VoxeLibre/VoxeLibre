@@ -253,7 +253,7 @@ flame_sound (Flame sound) bool true
 mcl_game_music (In-game music) bool true
 
 # Enable cave sounds.
-cavesounds (Cave sounds) bool true
+vl_cavesounds (Cave sounds) bool true
 
 [Graphics]
 # How many vertical animation frames the fire texture (fire_basic_flame_animated.png) has.
