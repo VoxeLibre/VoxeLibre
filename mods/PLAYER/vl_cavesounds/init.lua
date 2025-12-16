@@ -7,7 +7,7 @@ local cave_sounds_enabled = core.settings:get_bool("vl_cavesounds", true)
 
 -- Can be tweaked
 
-local seconds_in_pitch_black_before_sound = 15      -- Seconds
+local seconds_in_pitch_black_before_sound = 300      -- Seconds
 local interval = 3 			             -- Seconds
 local max_same_sound_for_other_players_distance = 50 -- Nodes
 
