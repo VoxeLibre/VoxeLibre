@@ -34,46 +34,44 @@ function mcl_mobs.check_line_of_sight(origin, target, seethru)
 			and axis_slab(origin.z, dir.z, minp.z, maxp.z)
 	end
 
-	-- Note: raycasts intersect *selection boxes*, not collision boxes.
-	-- Therefore we need to manually check collision boxes along the ray.
-	for hit in core.raycast(origin, target, false, true) do
-		if hit.type ~= "node" then
-			goto continue
-		end
+	-- Check if a node at the given position blocks line of sight
+    local function node_blocks_los(node_pos)
+        local node = core.get_node(node_pos)
+        if seethru[node.name] then
+            return false
+        end
 
-		local node_pos = hit.under
-		local node = core.get_node(node_pos)
+        local def = core.registered_nodes[node.name]
+        if not (def and def.walkable) then
+            return false
+        end
 
-		if seethru[node.name] then
-			goto continue
-		end
+        local boxes = core.get_node_boxes and core.get_node_boxes("collision_box", node_pos, node) or nil
+        if not boxes or #boxes == 0 then
+            return true
+        end
 
-		local def = core.registered_nodes[node.name]
-		if not (def and def.walkable) then
-			goto continue
-		end
-
-		local boxes = core.get_node_boxes and core.get_node_boxes("collision_box", node_pos, node) or nil
-		if not boxes or #boxes == 0 then
-			return false
-		end
-
-		for _, box in ipairs(boxes) do
-			-- Convert box to world coordinates
+        for _, box in ipairs(boxes) do
 			local minp = vector.new(node_pos.x + box[1], node_pos.y + box[2], node_pos.z + box[3])
 			local maxp = vector.new(node_pos.x + box[4], node_pos.y + box[5], node_pos.z + box[6])
-
-			
 			if minp.x > maxp.x then minp.x, maxp.x = maxp.x, minp.x end
 			if minp.y > maxp.y then minp.y, maxp.y = maxp.y, minp.y end
 			if minp.z > maxp.z then minp.z, maxp.z = maxp.z, minp.z end
+            if segment_intersects_aabb(minp, maxp) then
+                return true
+            end
+        end
 
-			if segment_intersects_aabb(minp, maxp) then
-				return false
-			end
-		end
-		::continue::
-	end
+        return false
+    end
+
+	-- Note: raycasts intersect *selection boxes*, not collision boxes.
+	-- Therefore we need to manually check collision boxes along the ray.
+    for hit in core.raycast(origin, target, false, true) do
+        if hit.type == "node" and node_blocks_los(hit.under) then
+            return false
+        end
+    end
 
 	return true
 end
