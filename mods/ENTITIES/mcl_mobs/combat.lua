@@ -276,7 +276,7 @@ function mob_class:delayed_attack(target, base_delay, jitter)
 	local base = base_delay or 0.5
 	local j = jitter or 0.3
 	local delay = base + random() * j
-	minetest.after(delay, function(self, target)
+	core.after(delay, function(self, target)
 		if not self.object:get_luaentity() then return end
 		if not target or not target:get_pos() then return end
 		if self.state == "attack" then return end -- already attacking something
