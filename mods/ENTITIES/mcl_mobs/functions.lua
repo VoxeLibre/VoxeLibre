@@ -52,8 +52,8 @@ function mcl_mobs.check_line_of_sight(origin, target, seethru)
         end
 
         for _, box in ipairs(boxes) do
-			local minp = vector.new(node_pos.x + box[1], node_pos.y + box[2], node_pos.z + box[3])
-			local maxp = vector.new(node_pos.x + box[4], node_pos.y + box[5], node_pos.z + box[6])
+			local minp = vector.offset(node_pos, box[1], box[2], box[3])
+			local maxp = vector.offset(node_pos, box[4], box[5], box[6])
 			if minp.x > maxp.x then minp.x, maxp.x = maxp.x, minp.x end
 			if minp.y > maxp.y then minp.y, maxp.y = maxp.y, minp.y end
 			if minp.z > maxp.z then minp.z, maxp.z = maxp.z, minp.z end
