@@ -18,6 +18,7 @@ mcl_mobs.register_mob("mobs_mc:guardian_elder", {
 	},
 	xp_min = 10,
 	xp_max = 10,
+	head_eye_height = 1,
 	passive = false,
 	attack_type = "dogfight",
 	pathfinding = 1,

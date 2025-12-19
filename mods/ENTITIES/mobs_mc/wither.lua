@@ -78,6 +78,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 	},
 	xp_min = 50,
 	xp_max = 50,
+	head_eye_height = 2.2,
 	armor = {undead = 80, fleshy = 100},
 	-- This deviates from MC Wiki's size, which makes no sense
 	visual = "mesh",

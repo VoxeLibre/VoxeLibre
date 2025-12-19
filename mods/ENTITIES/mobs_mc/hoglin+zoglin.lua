@@ -21,6 +21,7 @@ local hoglin = {
 	},
 	xp_min = 9,
 	xp_max = 9,
+	head_eye_height = 0.9,
 	armor = {fleshy = 90},
 	attack_type = "dogfight",
 	attack_frequency = 3;

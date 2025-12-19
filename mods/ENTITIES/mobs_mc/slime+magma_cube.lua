@@ -102,6 +102,7 @@ local slime_big = {
 	},
 	xp_min = 4,
 	xp_max = 4,
+	head_eye_height = 1.0,
 	visual_size = {x=12.5, y=12.5},
 	textures = {{"mobs_mc_slime.png", "mobs_mc_slime.png"}},
 	visual = "mesh",
@@ -155,6 +156,7 @@ slime_small.initial_properties.hp_min = 4
 slime_small.initial_properties.hp_max = 4
 slime_small.xp_min = 2
 slime_small.xp_max = 2
+slime_small.head_eye_height = 0.5
 slime_small.initial_properties.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51, rotate = true}
 slime_small.visual_size = {x=6.25, y=6.25}
 slime_small.damage = 3
@@ -174,6 +176,7 @@ slime_tiny.initial_properties.hp_min = 1
 slime_tiny.initial_properties.hp_max = 1
 slime_tiny.xp_min = 1
 slime_tiny.xp_max = 1
+slime_tiny.head_eye_height = 0.25
 slime_tiny.initial_properties.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505, rotate = true}
 slime_tiny.visual_size = {x=3.125, y=3.125}
 slime_tiny.damage = 1

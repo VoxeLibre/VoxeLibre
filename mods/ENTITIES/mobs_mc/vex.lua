@@ -24,6 +24,7 @@ mcl_mobs.register_mob("mobs_mc:vex", {
 	},
 	xp_min = 6,
 	xp_max = 6,
+	head_eye_height = 0.8,
 	visual = "mesh",
 	mesh = "mobs_mc_vex.b3d",
 	textures = {
