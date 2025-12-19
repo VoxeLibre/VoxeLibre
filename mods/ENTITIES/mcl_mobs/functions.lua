@@ -77,13 +77,17 @@ function mcl_mobs.check_line_of_sight(origin, target, seethru)
 end
 
 
---- Get the collision box for an object (player or entity)
+--- Get the collision box for an object (player or entity), adjust feet and eye height for player
 ---@param obj ObjectRef
 ---@return table|nil collisionbox {x1, y1, z1, x2, y2, z2} or nil if unavailable
 local function get_object_collisionbox(obj)
 	if obj:is_player() then
 		local props = obj:get_properties()
-		return props and props.collisionbox
+		local cb = props and props.collisionbox
+		local cb_copy = { unpack(cb) }
+		cb_copy[2] = cb_copy[2] + 1.01
+		cb_copy[5] = cb_copy[5] + 1.0
+		return cb_copy
 	else
 		local luaentity = obj:get_luaentity()
 		if luaentity and luaentity.initial_properties then
@@ -122,7 +126,7 @@ function mcl_mobs.target_visible(origin, target, seethru)
 			local origin_cbox = get_object_collisionbox(origin)
 			if origin_cbox then
 				local box_height = origin_cbox[5] - origin_cbox[2]
-				eye_height = origin_cbox[2] + (box_height * 0.8)
+				eye_height = origin_cbox[2] + (box_height * 0.85)
 				origin_pos = vector.offset(origin_pos, 0, eye_height, 0)
 			end
 		end
@@ -137,10 +141,8 @@ function mcl_mobs.target_visible(origin, target, seethru)
 	end
 
 	-- Target points to check
-	local target_box_height = target_cbox[5] - target_cbox[2]
 	local target_feet = vector.offset(target_pos, 0, target_cbox[2], 0)
-	-- Approximate head position at 80% of box height, it doesn't have to be exact for LOS checks
-	local target_head = vector.offset(target_pos, 0, target_cbox[2] + (target_box_height * 0.8), 0)
+	local target_head = vector.offset(target_pos, 0, target_cbox[5], 0)
 
 	return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
 		or mcl_mobs.check_line_of_sight(origin_pos, target_feet, seethru)
