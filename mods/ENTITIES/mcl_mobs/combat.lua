@@ -295,7 +295,7 @@ function mob_class:monster_attack()
 	end
 
 	local s = self.object:get_pos()
-	local p, sp, dist
+	local p, dist
 	local player, obj, min_player
 	local type, name = "", ""
 	local min_dist = self.view_range + 1
@@ -344,13 +344,7 @@ function mob_class:monster_attack()
 				or (type == "animal" and self.attack_animals == true)
 				or (self.extra_hostile and not self.attack_exception(player))) then
 			p = player:get_pos()
-			sp = s
-
 			dist = vector_distance(p, s)
-
-			-- aim higher to make looking up hills more realistic
-			p.y = p.y + 1
-			sp.y = sp.y + 1
 
 			local attacked_p = false
 			for c=1, #blacklist_attack do
@@ -360,7 +354,7 @@ function mob_class:monster_attack()
 			end
 
 			-- choose closest player to attack
-			local line_of_sight = self:target_visible(sp, player) == true
+			local line_of_sight = self:target_visible(self.object, player) == true
 			if dist < min_dist and not attacked_p and line_of_sight then
 				min_dist = dist
 				min_player = player
@@ -392,7 +386,7 @@ function mob_class:npc_attack()
 		return
 	end
 
-	local p, sp, obj, min_player
+	local p, obj, min_player
 	local s = self.object:get_pos()
 	local min_dist = self.view_range + 1
 	local objs = minetest.get_objects_inside_radius(s, self.view_range)
@@ -402,15 +396,9 @@ function mob_class:npc_attack()
 
 		if obj and obj.type == "monster" then
 			p = obj.object:get_pos()
-			sp = s
-
 			local dist = vector_distance(p, s)
 
-			-- aim higher to make looking up hills more realistic
-			p.y = p.y + 1
-			sp.y = sp.y + 1
-
-			if dist < min_dist and self:target_visible(sp, obj.object) then
+			if dist < min_dist and self:target_visible(self.object, obj.object) then
 				min_dist = dist
 				min_player = obj.object
 			end
@@ -919,7 +907,7 @@ function mob_class:do_states_attack(dtime)
 		return
 	end
 
-	local target_line_of_sight = self:target_visible(s)
+	local target_line_of_sight = self:target_visible(self.object, self.attack)
 
 	if target_line_of_sight then
 		self.path.last_seen_target_pos = vector_copy(p)
