@@ -83,11 +83,7 @@ end
 local function get_object_collisionbox(obj)
 	if obj:is_player() then
 		local props = obj:get_properties()
-		local cb = props and props.collisionbox
-		local cb_copy = { unpack(cb) }
-		cb_copy[2] = cb_copy[2] + 1.01
-		cb_copy[5] = cb_copy[5] + 1.0
-		return cb_copy
+		return props and props.collisionbox
 	else
 		local luaentity = obj:get_luaentity()
 		if luaentity and luaentity.initial_properties then
