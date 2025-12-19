@@ -7,11 +7,13 @@ local TRIDENT_FULL_CHARGE_TIME = 1000000 -- time until full charge in microsecon
 local TRIDENT_MELEE_RANGE = 4.5
 
 local trident_entity = table.copy(vl_weaponry.spear_entity)
+table.update(trident_entity, {
+	liquid_drag = false
+})
 table.update(trident_entity.initial_properties, {
 	visual = "mesh",
 	mesh = "vl_tridents.obj",
-	textures = {"vl_tridents.png"},
-	liquid_drag = false
+	textures = {"vl_tridents.png"}
 })
 table.update(trident_entity._vl_projectile, {
 	pitch_offset = 0,
@@ -35,6 +37,8 @@ local function trident_on_place(itemstack, user, pointed_thing)
 end
 
 local function throw_trident(itemstack, user, power_factor)
+	local damage = itemstack:get_definition()._mcl_spear_thrown_damage * power_factor
+
 	if not core.is_creative_enabled(user:get_player_name()) then
 		mcl_util.use_item_durability(itemstack, 1)
 	end
@@ -55,7 +59,7 @@ local function throw_trident(itemstack, user, power_factor)
 	local le = obj:get_luaentity()
 	le._shooter = user
 	le._source_object = user
-	le._damage = itemstack:get_definition()._vl_tridents_thrown_damage * power_factor
+	le._damage = damage
 	le._is_critical = false -- TODO get from luck?
 	le._startpos = pos
 	le._collectable = true
@@ -163,29 +167,29 @@ end)
 
 core.register_tool("vl_tridents:trident", {
 	description = S("Trident"),
-	_tt_help = S("Throwable").."\n"..S("Damage from trident: 1-9"),
-	_doc_items_longdesc = S(""),
-	_doc_items_usagehelp = S("Use the punch key to throw."),
+	_tt_help = S("Water element") .. "\n" .. vl_weaponry.spear_tt,
+	_doc_items_longdesc = S("Tridents are great in melee combat, as they have an increased reach. They can also be thrown."),
+	_doc_items_usagehelp = S("To throw a trident, hold it in your hand, then hold use (rightclick) in the air."),
 	inventory_image = "vl_tridents_inv.png",
 	stack_max = 1,
 	wield_scale = wield_scale,
 	on_place = trident_on_place,
 	on_secondary_use = trident_on_place,
-	groups = { weapon=1, weapon_ranged=1, dig_speed_class=2, trident=1, enchantability=15 },
+	groups = { weapon=1, weapon_ranged=1, dig_speed_class=2, trident=1, enchantability=15, spear=2 },
 	range = TRIDENT_MELEE_RANGE,
 	tool_capabilities = {
 		full_punch_interval = 0.75,
-		max_drop_level=1,
+		max_drop_level=5,
 		damage_groups = {fleshy=9},
-		punch_attack_uses = 251, -- like iron, TODO: should be like iron sword
+		punch_attack_uses = 400,
 	},
 	sound = { breaks = "default_tool_breaks" },
-	--_repair_material = "group:wood", -- TODO
+	--_repair_material = "mcl_mobitems:watery_rod", -- TODO material?
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = 251 },
-		swordy_cobweb = { speed = 2, level = 1, uses = 251 }
+		swordy = { speed = 2, level = 1, uses = 400 },
+		swordy_cobweb = { speed = 2, level = 1, uses = 400 }
 	},
 	touch_interaction = "short_dig_long_place",
-	_vl_tridents_thrown_damage = 5,
+	_vl_tridents_thrown_damage = 9,
 })

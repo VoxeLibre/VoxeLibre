@@ -14,7 +14,8 @@ local spear_use = S("To throw a spear, hold it in your hand, then hold use (righ
 
 local wield_scale = mcl_vars.tool_wield_scale
 
-
+vl_weaponry.hammer_tt = hammer_tt
+vl_weaponry.spear_tt = spear_tt
 
 local spear_entity = table.copy(mcl_bows.arrow_entity)
 table.update(spear_entity,{
@@ -164,7 +165,7 @@ end
 controls.register_on_release(function(player, key, time)
 	if key~="RMB" and key~="zoom" then return end
 	local wielditem = player:get_wielded_item()
-	if core.get_item_group(wielditem:get_name(), "spear") < 1 then return end
+	if core.get_item_group(wielditem:get_name(), "spear") ~= 1 then return end
 	local meta = wielditem:get_meta()
 	if not core.is_yes(meta:get("active")) then
 		reset_spear_state(player)
