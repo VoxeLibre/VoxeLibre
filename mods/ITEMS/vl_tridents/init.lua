@@ -37,7 +37,7 @@ local function trident_on_place(itemstack, user, pointed_thing)
 end
 
 local function throw_trident(itemstack, user, power_factor)
-	local damage = itemstack:get_definition()._mcl_spear_thrown_damage * power_factor
+	local damage = itemstack:get_definition()._vl_tridents_thrown_damage * power_factor
 
 	if not core.is_creative_enabled(user:get_player_name()) then
 		mcl_util.use_item_durability(itemstack, 1)
