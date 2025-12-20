@@ -180,7 +180,7 @@ core.register_tool("vl_tridents:trident", {
 	tool_capabilities = {
 		full_punch_interval = 0.75,
 		max_drop_level=5,
-		damage_groups = {fleshy=9},
+		damage_groups = {fleshy=6},
 		punch_attack_uses = 400,
 	},
 	sound = { breaks = "default_tool_breaks" },
