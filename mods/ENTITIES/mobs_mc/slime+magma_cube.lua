@@ -225,7 +225,11 @@ local cave_biomes = {
 	"JungleM_underground",
 	"ExtremeHillsM_underground",
 	"JungleEdgeM_underground",
-	"MangroveSwamp_underground"
+	"MangroveSwamp_underground",
+	"BambooJungle_underground",
+	"BambooJungleM_underground",
+	"BambooJungleEdge_underground",
+	"BambooJungleEdgeM_underground",
 }
 
 local cave_min = mcl_vars.mg_overworld_min
