@@ -1,0 +1,3 @@
+# textdomain: vl_tridents
+Trident=
+Launches a trident when you rightclick and it is in your hand=
