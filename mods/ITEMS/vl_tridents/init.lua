@@ -178,9 +178,9 @@ core.register_tool("vl_tridents:trident", {
 	groups = { weapon=1, weapon_ranged=1, dig_speed_class=2, trident=1, enchantability=15, spear=2 },
 	range = TRIDENT_MELEE_RANGE,
 	tool_capabilities = {
-		full_punch_interval = 0.75,
+		full_punch_interval = 0.85,
 		max_drop_level=5,
-		damage_groups = {fleshy=6},
+		damage_groups = {fleshy=7},
 		punch_attack_uses = 400,
 	},
 	sound = { breaks = "default_tool_breaks" },
