@@ -7,6 +7,7 @@ local mobs_griefing = core.settings:get_bool("mobs_griefing") ~= false
 -- pathfinding settings
 local stuck_timeout = 3 -- how long before mob gets stuck in place and starts searching
 local stuck_path_timeout = 10 -- how long will mob follow path before giving up
+local INVULNERABILITY_TIME_US = 500000
 
 local enable_pathfinding = true
 
@@ -459,23 +460,32 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	local mob_pos = self.object:get_pos()
 	local player_pos = hitter:get_pos()
 	local weapon = hitter:get_wielded_item()
+	local time_now = core.get_us_time()
+
+	-- check for invulnerability time in microseconds (0.5 second)
+	local time_diff = time_now - self.invul_timestamp
+	if time_diff <= INVULNERABILITY_TIME_US and time_diff >= 0 then return end
 
 	if is_player then
 		-- is mob out of reach?
 		if (vector.distance(mob_pos, player_pos) - self._avg_radius) > (weapon:get_definition().range or 3) then
 			return
 		end
+
 		-- is mob protected?
 		if self.protected and minetest.is_protected(mob_pos, hitter:get_player_name()) then return end
 
 		mcl_potions.update_haste_and_fatigue(hitter)
+
+		self.xp_timestamp = time_now
+	else
+		-- set/update 'drop xp' timestamp if hit by a player's projectiles
+		local hitter_le = hitter:get_luaentity()
+		local hitter_le_owner = hitter_le and hitter_le._owner
+		if hitter_le_owner and core.get_player_by_name(hitter_le_owner) then
+			self.xp_timestamp = time_now
+		end
 	end
-
-	local time_now = minetest.get_us_time()
-	local time_diff = time_now - self.invul_timestamp
-
-	-- check for invulnerability time in microseconds (0.5 second)
-	if time_diff <= 500000 and time_diff >= 0 then return end
 
 	-- custom punch function
 	if self.do_punch then
@@ -491,19 +501,14 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		return
 	end
 
-	local time_now = minetest.get_us_time()
-
-	if is_player then
-		if minetest.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
-		-- set/update 'drop xp' timestamp if hitted by player
-		self.xp_timestamp = time_now
-	end
-
 	-- punch interval
 	local punch_interval = 1.4
 
-	-- exhaust attacker
 	if is_player then
+		-- Instant kill mobs in creative
+		if core.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
+
+		-- exhaust attacker
 		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
 	end
 
@@ -516,7 +521,6 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	if tflp == 0 then
 		tflp = 0.2
 	end
-
 
 	for group,_ in pairs((tool_capabilities.damage_groups or {}) ) do
 		tmp = tflp / (tool_capabilities.full_punch_interval or 1.4)

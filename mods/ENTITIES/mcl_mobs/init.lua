@@ -332,7 +332,37 @@ function mcl_mobs.register_mob(name, def)
 			return false, true, {}
 		end,
 		do_punch = def.do_punch,
-		deal_damage = def.deal_damage,
+		--- @param self core.ObjectRef
+		--- @param damage number
+		--- @param reason {type: string, direct: any?, source: any?}
+		deal_damage = function(self, damage, reason)
+			if (reason.direct and reason.direct:is_player()) or
+			   (reason.source and reason.source:is_player())
+			then
+				-- Flag the mob as taking damage from a player to drop XP and rare loot
+				self.xp_timestamp = core.get_us_time()
+			end
+
+			if def.deal_damage then
+				def.deal_damage(self, damage, reason)
+			else
+				-- Duplicated from mcl_util/init.lua, find_attacker_name() expanded inline
+				-- Without this logic, self:damage_mob() won't be called when mcl_init.deal_damage()
+				-- calls this damage handler, breaking things like burning damage
+				local reason_type = reason and reason.type or "generic"
+				local attacker_name = nil
+				local e = reason.direct and reason.direct:get_luaentity()
+				if e and e.name then
+					attacker_name = e.name
+				else
+					e = reason.source and reason.source:get_luaentity()
+					if e and e.name then
+						attacker_name = e.name
+					end
+				end
+				self:damage_mob(reason_type, damage, { attacker_name = attacker_name })
+			end
+		end,
 		on_breed = def.on_breed,
 		on_grown = def.on_grown,
 		on_pick_up = def.on_pick_up,
@@ -631,7 +661,7 @@ local function on_place_egg(eggs, placer, pointed_thing)
 
 	-- invalid egg?
 	if not core.registered_entities[mobname] then
-		core.log("warning", "egg corresponds to non-existing entity: " 
+		core.log("warning", "egg corresponds to non-existing entity: "
 				.. tostring(mobname))
 		return eggs
 	end
@@ -647,7 +677,7 @@ local function on_place_egg(eggs, placer, pointed_thing)
 	local mob = mcl_mobs.spawn(pos, mobname, {force = true})
 	if not mob then
 		core.log("verbose", string.format(
-				"placing mob egg (mob %s) at pos %s: room check did not pass", 
+				"placing mob egg (mob %s) at pos %s: room check did not pass",
 				mobname, pos_str))
 		return eggs
 	end
@@ -683,7 +713,7 @@ local function on_place_egg(eggs, placer, pointed_thing)
 end
 
 --- Register spawn eggs
---- 
+---
 --- Note: This also introduces the “spawn_egg” group:
 --- * spawn_egg=1: Spawn egg (generic mob, no metadata)
 --- * spawn_egg=2: Spawn egg (captured/tamed mob, metadata)
@@ -701,8 +731,8 @@ function mcl_mobs.register_egg(mob_id, desc, background_color, overlay_color, ad
 		group.not_in_creative_inventory = 1
 	end
 
-	local invimg = table.concat({ 
-		"(spawn_egg.png^[multiply:", background_color, 
+	local invimg = table.concat({
+		"(spawn_egg.png^[multiply:", background_color,
 		")^(spawn_egg_overlay.png^[multiply:", overlay_color, ")"
 	})
 	if old_spawn_icons then

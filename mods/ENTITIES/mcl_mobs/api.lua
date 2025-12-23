@@ -255,6 +255,8 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	mcl_potions._load_entity_effects(self)
 
 	if def.after_activate then def.after_activate(self, staticdata, def, dtime) end
+
+	self.xp_timestamp = 0
 end
 
 -- execute current state (stand, walk, run, attacks)
