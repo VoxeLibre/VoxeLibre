@@ -309,3 +309,35 @@ minetest.register_chatcommand("spawnpoint", {
 		return true, S("Set respawn point for @1 to @2", target_name, minetest.pos_to_string(pos))
 	end
 })
+
+minetest.register_chatcommand("clearspawn", {
+	description = S("Resets the spawn point for a player."),
+	params = S("[<player>]"),
+	privs = {server = true},
+	func = function(name, param)
+		-- Try different patterns
+		local target_name
+		while true do
+			-- Input has no parameters:
+			if param == "" then
+				target_name = name
+				break
+			end
+
+			-- Input has player name:
+			target_name = string.match(param, "^(%S+)$")
+			if target_name then break end
+
+			-- Invalid input
+			return false, S("Invalid parameters (see /help clearspawn)")
+		end
+
+		local target = minetest.get_player_by_name(target_name)
+		if not target then
+			return false, S("Invalid target player")
+		end
+
+		mcl_spawn.set_player_spawn_pos(target, nil, false, true)
+		return true, S("Cleared respawn point for @1", target_name)
+	end
+})
