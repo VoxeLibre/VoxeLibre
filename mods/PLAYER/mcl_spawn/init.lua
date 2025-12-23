@@ -254,3 +254,53 @@ end
 
 -- Respawn player at specified respawn position
 minetest.register_on_respawnplayer(mcl_spawn.spawn)
+
+minetest.register_chatcommand("spawnpoint", {
+	description = S("Sets the spawn point for a player, works in all dimensions."),
+	params = S("[<player>] [<x> <y> <z>]"),
+	privs = {server = true},
+	func = function(name, param)
+		-- Try different patterns
+		local target_name
+		local pos = {}
+		while true do
+			-- Input has no parameters:
+			if param == "" then
+				target_name = name
+				break
+			end
+
+			-- Input has all parameters:
+			target_name, pos.x, pos.y, pos.z = string.match(param, "^(%S+) +([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+)$")
+			if target_name and pos.x and pos.y and pos.z then break end
+
+			-- Input has position but no player name:
+			target_name = name
+			pos.x, pos.y, pos.z = string.match(param, "^([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+)$")
+			if pos.x and pos.y and pos.z then break end
+
+			-- Input has player name but no position:
+			target_name = string.match(param, "^(%S+)$")
+			if target_name then break end
+
+			-- Invalid input
+			return false, S("Invalid parameters (see /help spawnpoint)")
+		end
+
+		local target = minetest.get_player_by_name(target_name)
+		if not target then
+			return false, S("Invalid target player")
+		end
+
+		if pos.x and pos.y and pos.z then
+			pos.x, pos.y, pos.z = tonumber(pos.x), tonumber(pos.y), tonumber(pos.z)
+		else
+			-- Position is not specified, use command executor's position
+			pos = minetest.get_player_by_name(name):get_pos()
+		end
+
+		--mcl_spawn.set_spawn_pos(target, pos, nil)
+		minetest.chat_send_player(target_name, S("New respawn position set!"))
+		return true, S("Set respawn point for @1 to @2", target_name, minetest.pos_to_string(pos))
+	end
+})
