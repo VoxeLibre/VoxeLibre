@@ -217,23 +217,39 @@ local function spawn_mobs(pos, elapsed)
 		return
 	end
 
-	-- find air blocks within 8×3×8 nodes of spawner
+	-- find valid spawn nodes within 8×3×8 nodes of spawner
 	local yof = meta:get_int("YOffset")
-	local air = minetest.find_nodes_in_area(
+	local mobinfo = core.registered_entities[mob]
+	local spawn_nodes = { "air" }
+
+	if mobinfo and mobinfo.fly_in then
+		spawn_nodes = {}
+		for nodename, allowed in pairs(mobinfo.fly_in) do
+			if allowed then
+				table.insert(spawn_nodes, nodename)
+			end
+		end
+	end
+
+	local spawn_positions = core.find_nodes_in_area(
 		{x = pos.x - 4, y = pos.y - 1 + yof, z = pos.z - 4},
 		{x = pos.x + 4, y = pos.y + 1 + yof, z = pos.z + 4},
-		{"air"})
+		spawn_nodes)
 
-	-- spawn mobs in random air blocks. Default max of 4
-	if air then
+	-- Spawn mobs in random valid nodes. Default max of 4
+	if spawn_positions then
 		local num_to_spawn = spawn_count_overrides[mob] or 4
 		local mlig = meta:get_int("MinLight")
 		local xlig = meta:get_int("MaxLight")
 
-		while #air > 0 do
-			local pos2 = table.remove_random_element(air)
+		while #spawn_positions > 0 do
+			local pos2 = table.remove_random_element(spawn_positions)
+			if not pos2 then
+				break
+			end
+
 			-- only if light levels are within range
-			local lig = minetest.get_node_light(pos2) or 0
+			local lig = core.get_node_light(pos2) or 0
 			if lig >= mlig and lig <= xlig then
 				if mcl_mobs.spawn(pos2, mob) then
 					num_to_spawn = num_to_spawn - 1
