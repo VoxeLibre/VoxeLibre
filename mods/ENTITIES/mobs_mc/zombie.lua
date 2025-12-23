@@ -59,7 +59,7 @@ local zombie = {
 	xp_min = 5,
 	xp_max = 5,
 	head_swivel = "head.control",
-	head_eye_height = 1.4,
+	head_eye_height = 1.55,
 	head_bone_position = vector.new( 0, 6.3, 0 ), -- for minetest <= 5.8
 	curiosity = 7,
 	head_pitch_multiplier=-1,

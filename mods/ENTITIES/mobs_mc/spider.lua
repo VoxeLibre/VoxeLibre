@@ -68,7 +68,7 @@ local spider = {
 		end
 	end,
 	head_swivel = "Head_Control",
-	head_eye_height = 0.6,
+	head_eye_height = 0.8,
 	head_bone_position = vector.new( 0, 1, 0 ), -- for minetest <= 5.8
 	curiosity = 10,
 	head_yaw="z",
@@ -125,6 +125,7 @@ cave_spider.initial_properties.hp_min = 1
 cave_spider.initial_properties.hp_max = 12
 cave_spider.initial_properties.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.46, 0.35}
 cave_spider.visual_size = {x=0.55,y=0.5}
+cave_spider.head_eye_height = 0.4
 cave_spider.on_spawn = function(self)
 	self.object:set_properties({visual_size={x=0.55,y=0.5}})
 	local spider_eyes=false

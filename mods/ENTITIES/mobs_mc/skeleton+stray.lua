@@ -28,7 +28,7 @@ local skeleton = {
 	pathfinding = 1,
 	group_attack = true,
 	head_swivel = "Head_Control",
-	head_eye_height = 1.5,
+	head_eye_height = 1.6,
 	head_bone_position = vector.new( 0, 2.38, 0 ), -- for minetest <= 5.8
 	curiosity = 6,
 	visual = "mesh",

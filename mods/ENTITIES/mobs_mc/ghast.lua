@@ -24,6 +24,7 @@ mcl_mobs.register_mob("mobs_mc:ghast", {
 	armor = { fleshy = 50, ghost = 100 },
 	xp_min = 5,
 	xp_max = 5,
+	head_eye_height = 2.0,
 	visual = "mesh",
 	mesh = "mobs_mc_ghast.b3d",
 	spawn_in_group = 1,

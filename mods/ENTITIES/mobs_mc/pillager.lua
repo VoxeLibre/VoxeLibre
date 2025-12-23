@@ -27,7 +27,7 @@ pillager = {
 	},
 	xp_min = 6,
 	xp_max = 6,
-	eye_height = 1.5,
+	head_eye_height = 1.5,
 	shoot_interval = 3,
 	shoot_offset = 1.5,
 	armor = {fleshy = 100},

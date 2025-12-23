@@ -123,6 +123,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 	},
 	xp_min = 5,
 	xp_max = 5,
+	head_eye_height = 2.55,
 	visual = "mesh",
 	mesh = "vl_rover.b3d",
 	textures = { "vl_mobs_rover.png^vl_mobs_rover_face.png" },
