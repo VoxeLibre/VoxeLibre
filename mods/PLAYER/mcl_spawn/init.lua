@@ -264,7 +264,7 @@ minetest.register_on_respawnplayer(mcl_spawn.spawn)
 minetest.register_chatcommand("spawnpoint", {
 	description = S("Sets the spawn point for a player, works in all dimensions."),
 	params = S("[<player>] [<x> <y> <z>]"),
-	privs = {server = true},
+	privs = {},
 	func = function(name, param)
 		-- Try different patterns
 		local target_name
@@ -293,6 +293,10 @@ minetest.register_chatcommand("spawnpoint", {
 			return false, S("Invalid parameters (see /help spawnpoint)")
 		end
 
+		if not minetest.check_player_privs(name, {server = true}) and target_name ~= name then
+			return false, S("You need the 'server' privilege in order to set spawn point for somebody else!")
+		end
+
 		local target = minetest.get_player_by_name(target_name)
 		if not target then
 			return false, S("Invalid target player")
@@ -313,7 +317,7 @@ minetest.register_chatcommand("spawnpoint", {
 minetest.register_chatcommand("clearspawn", {
 	description = S("Resets the spawn point for a player."),
 	params = S("[<player>]"),
-	privs = {server = true},
+	privs = {},
 	func = function(name, param)
 		-- Try different patterns
 		local target_name
@@ -330,6 +334,10 @@ minetest.register_chatcommand("clearspawn", {
 
 			-- Invalid input
 			return false, S("Invalid parameters (see /help clearspawn)")
+		end
+
+		if not minetest.check_player_privs(name, {server = true}) and target_name ~= name then
+			return false, S("You need the 'server' privilege in order to reset spawn point for somebody else!")
 		end
 
 		local target = minetest.get_player_by_name(target_name)
