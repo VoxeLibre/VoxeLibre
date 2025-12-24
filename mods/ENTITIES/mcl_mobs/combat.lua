@@ -593,6 +593,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	if tool_capabilities then
 		punch_interval = tool_capabilities.full_punch_interval or 1.4
+		if punch_interval == 0 then punch_interval = 0.001 end -- minimal interval, needed to avoid crash due to 0/0 NaN
 	end
 
 	if not tflp then
