@@ -22,7 +22,7 @@ mcl_vars.gui_nonbg = table.concat({
 })
 
 -- Background stuff must be manually added by mods (no formspec prepend)
-mcl_vars.gui_bg_color = "bgcolor[#00000000]"
+mcl_vars.gui_bg_color = "bgcolor[#00000000;true]"
 mcl_vars.gui_bg_img = "background9[1,1;1,1;mcl_base_textures_background9.png;true;7]"
 
 -- HUD element type field, stored separately to avoid deprecation warnings (5.9+)
