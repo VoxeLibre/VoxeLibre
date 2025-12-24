@@ -254,7 +254,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self._run_armor_init = true
 	end
 
-	if not self._mcl_potions then self._mcl_potions = {} end
+	if not tmp or not tmp._mcl_potions then self._mcl_potions = {} end
 	mcl_potions._load_entity_effects(self)
 
 	if def.after_activate then def.after_activate(self, staticdata, def, dtime) end
