@@ -227,7 +227,10 @@ function mcl_core.register_leaves(subname, description, longdesc, tiles, color, 
 		after_place_node = function(pos)
 			mcl_core.make_player_leaves(pos) -- Leaves placed by the player should always be player leaves.
 		end,
-		}
+	}
+	if subname == "spruceleaves" and mcl_util.is_it_christmas() then
+		l_def.light_source = 1
+	end
 
 	minetest.register_node(mod .. ":" .. subname, l_def)
 
@@ -349,7 +352,7 @@ mcl_core.register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from
 mcl_core.register_leaves("darkleaves", S("Dark Oak Leaves"), S("Dark oak leaves are grown from dark oak trees."), {"mcl_core_leaves_big_oak.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:darksapling", true, {20, 16, 12, 10}, 1)
 mcl_core.register_leaves("jungleleaves", S("Jungle Leaves"), S("Jungle leaves are grown from jungle trees."), {"default_jungleleaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:junglesapling", false, {40, 26, 32, 24, 10}, 1)
 mcl_core.register_leaves("acacialeaves", S("Acacia Leaves"), S("Acacia leaves are grown from acacia trees."), {"default_acacia_leaves.png"}, "#48B518", "color", "mcl_core_palette_foliage.png", "mcl_core:acaciasapling", false, {20, 16, 12, 10}, 1)
-mcl_core.register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {"mcl_core_leaves_spruce.png"}, "#619961", "none", nil, "mcl_core:sprucesapling", false, {20, 16, 12, 10}, 0)
+mcl_core.register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {mcl_util.is_it_christmas() and "mcl_core_leaves_spruce.png^mcl_core_leaves_spruce_overlay.png" or "mcl_core_leaves_spruce.png"}, "#619961", "none", nil, "mcl_core:sprucesapling", false, {20, 16, 12, 10}, 0)
 mcl_core.register_leaves("birchleaves", S("Birch Leaves"), S("Birch leaves are grown from birch trees."), {"mcl_core_leaves_birch.png"}, "#80A755", "none", nil, "mcl_core:birchsapling", false, {20, 16, 12, 10}, 0)
 
 
