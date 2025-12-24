@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=木製のクワ
 Stone Hoe=石のクワ
 Iron Hoe=鉄のクワ
-Golden Hoe=金のクワ
+Gold Hoe=
 Diamond Hoe=ダイヤモンドのクワ
 Netherite Hoe=
 ##[ wheat.lua ]##
@@ -169,6 +169,7 @@ Sweet Berry=
 
 ##### not used anymore #####
 
+Golden Hoe=金のクワ
 Uses: @1=使用：@1
 Premature Beetroot Plant (Stage 1)=未成熟なビートルートの苗（1段階目）
 Premature Beetroot Plant (Stage 2)=未成熟なビートルートの苗（2段階目）

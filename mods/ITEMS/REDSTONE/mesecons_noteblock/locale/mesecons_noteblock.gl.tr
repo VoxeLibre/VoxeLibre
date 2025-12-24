@@ -24,3 +24,4 @@ Use the note block to choose the next musical note (there are 25 semitones, or 2
 • Anything else: Piano=• Calquera outra cousa: Piano
 
 The note block will only play a note when it is below air, otherwise, it stays silent.=O bloque de notas só reproducirá unha nota cando estea debaixo do aire, se non, permanece en silencio.
+

@@ -20,3 +20,9 @@ Recovery Compasses are compasses that point to your last death location=回溯�
 Recovery Compasses always point to the location of your last death, in case you haven't died yet, it will just randomly spin around=回溯指南针总是指向你上次死亡的位置，如果你还未曾死亡，它就只会随机旋转。 
 
 Lodestone=磁石
+Use with a compass=
+
+Lodestone is a block that can be used with a compass, after which the compass points to its position.=
+
+Rightclick the lodestone with a compass to let the compass point to its position.=
+

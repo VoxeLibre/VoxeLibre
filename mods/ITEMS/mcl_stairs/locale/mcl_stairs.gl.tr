@@ -57,7 +57,6 @@ Sandstone Stairs=Escaleiras de arenito
 Sandstone Slab=Lousa de arenito
 Double Sandstone Slab=Lousa dobre de arenito
 Cut Sandstone Stairs=Escaleiras de arenito tallado
-
 Cut Sandstone Slab=Lousa de arenito tallado
 Double Cut Sandstone Slab=Lousa dobre de arenito tallado
 Smooth Sandstone Stairs=Escaleiras de arenito liso
@@ -103,7 +102,6 @@ Dark Prismarine Slab=Lousa de prismariña escura
 Double Dark Prismarine Slab=Lousa dobre de prismariña escura
 Mud Brick Stairs=Escaleiras de ladrillo de barro
 Mud Brick Slab=Lousa de ladrillo de barro
-
 Double Mud Brick Slab=Lousa dobre de ladrillo de barro
 Polished Andesite Slab=Lousa de andesita pulida
 Double Polished Andesite Slab=Lousa dobre de andesita pulida
@@ -120,6 +118,7 @@ Double Mossy Stone Brick Slab=Lousa dobre de ladrillo de pedra con musgo
 Stairs of Polished Gold Block=Bloque de escaleiras de ouro pulido
 Slab of Polished Gold Block=Bloque de lousa de ouro pulido
 Double Slab of Polished Gold=Lousa dobre de ouro pulido
+
 
 ##### not used anymore #####
 

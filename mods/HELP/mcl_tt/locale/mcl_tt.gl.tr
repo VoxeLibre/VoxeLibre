@@ -16,7 +16,7 @@ Damage: @1=Dano: @1
 Healing: @1=Curación: @1
 Full punch interval: @1s=Intervalo de golpe completo: @1s
 Food item=Comida
-+@1 food points=+@1 puntos de comida=
++@1 food points=
 Contact damage: @1 per second=Dano por contacto: @1 por segundo
 Contact healing: @1 per second=Curación por contacto: @1 por segundo
 Drowning damage: @1=Dano por afogamento: @1
@@ -55,4 +55,3 @@ Stalker view range: -50%=Rango de visión de acosador: -50%
 
 Damage (@1): @2=Dano (@1): @2
 Healing (@1): @2=Curación (@1): @2
-

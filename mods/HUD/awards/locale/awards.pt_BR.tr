@@ -44,15 +44,18 @@ Advancement “@1” does not exist.=O avanço “@1” não existe.
 Awards=Avanços
 ##[ triggers.lua ]##
 @1/@2 dug=@1/@2 cavou
-	Mine blocks: @1×@2=	Blocos de mina: @1×@2
+##TODO: fuzzy matched - verify and remove the comment
+Mine blocks: @1×@2=	Blocos de mina: @1×@2
 Mine a block: @1=Minere um bloco: @1
 Mine @1 block(s).=Minere @1 bloco(s).
 @1/@2 placed=@1/@2 colocados
-	Place blocks: @1×@2=	Place blocks: @1×@2
+##TODO: fuzzy matched - verify and remove the comment
+Place blocks: @1×@2=	Place blocks: @1×@2
 Place a block: @1=Ponha um bloco: @1
 Place @1 block(s).=Ponha @1 bloco(s).
 @1/@2 eaten=@1/@2 comidos
-	Eat: @1×@2=	Coma: @1×@2
+##TODO: fuzzy matched - verify and remove the comment
+Eat: @1×@2=	Coma: @1×@2
 Eat: @1=Coma: @1
 Eat @1 item(s).=Coma @1 item(ns).
 @1/@2 deaths=@1/@2 mortes
@@ -65,6 +68,7 @@ Write something in chat.=Escreva algo no bate-papo.
 Join the game @1 times.=Entre no jogo @1 vez.
 Join the game.=Entre no jogo.
 @1/@2 crafted=@1/@2 produzido
-	Craft: @1×@2=	Produza: @1×@2
+##TODO: fuzzy matched - verify and remove the comment
+Craft: @1×@2=	Produza: @1×@2
 Craft: @1=Produza: @1
 Craft @1 item(s).=Produza @1 item(ns).

@@ -1,7 +1,4 @@
 # textdomain: mcl_hunger
-Food=
-Saturation=
-Exhaust.=
 ##[ commands.lua ]##
 [on|off]=
 Toggle hunger and starvation mechanics=

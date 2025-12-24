@@ -76,7 +76,8 @@ Increases knockback.=Augmente le recul.
 Looting=Butin
 Increases mob loot.=Augmente le butin des mobs.
 Loyalty=Loyauté
-Trident returns after being thrown. Higher levels reduce return time.=Le trident revient après avoir été jeté. Des niveaux plus élevés réduisent le temps de retour.
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=Le trident revient après avoir été jeté. Des niveaux plus élevés réduisent le temps de retour.
 Luck of the Sea=Chance de la mer
 Increases rate of good loot (enchanting books, etc.)=Augmente le taux de bon butin (livres enchanteurs, etc.)
 Lure=Appât
@@ -109,6 +110,8 @@ Sweeping Edge=Affilage
 Increases sweeping attack damage.=Augmente les dégâts de l'épée
 Unbreaking=Solidité
 Increases item durability.=Augmente la durabilité des objets.
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####

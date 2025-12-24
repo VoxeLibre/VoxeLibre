@@ -76,7 +76,8 @@ Increases knockback.=Aumenta a repulsão.
 Looting=Saque
 Increases mob loot.=Aumenta o saque de mobs.
 Loyalty=Lealdade
-Trident returns after being thrown. Higher levels reduce return time.=Tridente retorna depois de ser arremessado. Níveis altos reduzem o tempo de retorno.
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=Tridente retorna depois de ser arremessado. Níveis altos reduzem o tempo de retorno.
 Luck of the Sea=Sorte do Mar
 Increases rate of good loot (enchanting books, etc.)=Aumenta a taxa de bons saques (livros encantados, etc.)
 Lure=Isca
@@ -109,6 +110,8 @@ Sweeping Edge=Alcance
 Increases sweeping attack damage.=
 Unbreaking=Inquebrável
 Increases item durability.=Aumenta a durabilidade do item.
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####

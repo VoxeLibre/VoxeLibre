@@ -76,7 +76,8 @@ Increases knockback.=Zwiększa odrzut.
 Looting=Grabież
 Increases mob loot.=Zwiększa liczbę przedmiotów wypadających z mobów.
 Loyalty=Lojalność
-Trident returns after being thrown. Higher levels reduce return time.=Trydent wraca do gracza po rzuceniu. Większy poziom zmniejsza czas powrotu.
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=Trydent wraca do gracza po rzuceniu. Większy poziom zmniejsza czas powrotu.
 Luck of the Sea=Morska fortuna
 Increases rate of good loot (enchanting books, etc.)=Zwiększa szansę na wypadnięcie dobrych przedmiotów (zaklętych książek itp.)
 Lure=Przynęta
@@ -109,6 +110,8 @@ Sweeping Edge=Szerokie ostrze
 Increases sweeping attack damage.=Zwiększa obrażenia przy ataku z zamachu.
 Unbreaking=Niezniszczalność
 Increases item durability.=Zwiększa wytrzymałość przedmiotu.
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####

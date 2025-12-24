@@ -54,22 +54,20 @@ Wield the bone near wolves to attract them. Use the “Place” key on the wolf 
 
 Squid Ink Sac=Saco de tinta de lura
 
-
 This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye.=Este elemento é soltado por luras mortas. A tinta de lura pódese usar como ingrediente para fabricar un libro con pluma ou tintura negra.
 
 String=Corda
 Strings are used in crafting.=As cordas usanse na elaboración.
 Spectre Membrane=Menbrana espectral
-
 This is a crafting component dropped from dead spectres.=Este é un compoñente de elaboracion caído de espectros mortos.
 Shiny Ice Crystal=Cristal de xeo brillante
 This item is mainly used for crafting.=Este elemento úsase principalmente para a elaboración.
 Aery Charge=Carga aérea
 Crystalline Drop=Gota cristalina
 Earthen Ash=Cinza Terreal
-Blaze Rod=Vara de lumeiro
-This is a crafting component dropped from dead blazes.=Este é un compoñente de elaboración caído de lumeiros mortos.
-Blaze Powder=Polvo de lumeiro
+Flaming Rod=
+This is a crafting component dropped from dead fire elementals.=
+Flaming Powder=
 Magma Cream=Crema de magma
 Magma cream is a crafting component.=A crema de magma é un compoñente de elaboración
 Ghast Tear=Bagoa de espantallo
@@ -82,8 +80,8 @@ Leather=Coiro
 Leather is a versatile crafting component.=O coiro é un compoñente de elaboración versátil.
 Feather=Pluma
 Feathers are used in crafting and are dropped from chickens.=As plumas utilízanse na elaboración e caen das galiñas.
-Rabbit Hide=Pel de coello
-Rabbit hide is used to create leather.=A pel de coello úsase para crear coiro.
+Leather Piece=
+Leather piece is a smaller piece of leather.=
 Rabbit's Foot=Pata de coello
 Must be your lucky day! Place this item in an item frame for decoration.=Debe ser o teu día de sorte! Coloque este elemento nun marco de elemento para decoración.
 Saddle=Sela
@@ -122,6 +120,10 @@ The Heart of the Sea is used to craft a conduit. They can be obtained by finding
 
 Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=Colócao nun cabalo para poñerlle a armadura. Os burros e as mulas non poden levar armadura.
 
+Leather Horse Armor=
+
+Leather horse armor can be worn by horses to increase their protection from harm a little.=
+
 Iron Horse Armor=Armadura de ferro para cabalo
 
 Iron horse armor can be worn by horses to increase their protection from harm a bit.=A armadura de ferro para cabalo  pode ser usada polos cabalos para aumentar un pouco a súa protección contra danos.
@@ -146,3 +148,4 @@ Rabbit Hide=Pel de coello
 Rabbit hide is used to create leather.=A pel de coello úsase para crear coiro.
 
 Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning, but restores no hunger points.=O leite é moi refrescante e pódese obter usando un balde nunha vaca. Bebelo curará todas as formas de intoxicación, pero non restaurará ningún punto de fame.
+

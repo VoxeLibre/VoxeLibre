@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=Деревянная мотыга
 Stone Hoe=Каменная мотыга
 Iron Hoe=Железная мотыга
-Golden Hoe=Золотая мотыга
+Gold Hoe=
 Diamond Hoe=Алмазная мотыга
 Netherite Hoe=Незеритовая мотыга
 ##[ wheat.lua ]##
@@ -169,6 +169,7 @@ Sweet Berry=Сладкая ягода
 
 ##### not used anymore #####
 
+Golden Hoe=Золотая мотыга
 Uses: @1=Использований: @1
 Premature Beetroot Plant (Stage 1)=Рассада молодой свёклы (стадия 1)
 Premature Beetroot Plant (Stage 2)=Рассада молодой свёклы (стадия 2)

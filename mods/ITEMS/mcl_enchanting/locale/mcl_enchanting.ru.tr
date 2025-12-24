@@ -76,7 +76,8 @@ Increases knockback.=Увеличивает отдачу.
 Looting=Добыча
 Increases mob loot.=Увеличивает добычу от мобов.
 Loyalty=Верность
-Trident returns after being thrown. Higher levels reduce return time.=Возвращает трезубец после броска. Более высокие уровни сокращают время возврата.
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=Возвращает трезубец после броска. Более высокие уровни сокращают время возврата.
 Luck of the Sea=Везучий рыбак
 Increases rate of good loot (enchanting books, etc.)=Увеличивает шанс поймать сокровище (зачарованные книги и т.п.)
 Lure=Приманка
@@ -109,6 +110,8 @@ Sweeping Edge=Разящий клинок
 Increases sweeping attack damage.=Увеличивает урон по мобам, стоящих рядом с целью.
 Unbreaking=Прочность
 Increases item durability.=Увеличивает прочность предмета.
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####

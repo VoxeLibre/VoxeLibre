@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=Holzharke
 Stone Hoe=Steinharke
 Iron Hoe=Eisenharke
-Golden Hoe=Goldharke
+Gold Hoe=
 Diamond Hoe=Diamantharke
 Netherite Hoe=Netheritharke
 ##[ wheat.lua ]##
@@ -169,6 +169,7 @@ Sweet Berry=Süßbeere
 
 ##### not used anymore #####
 
+Golden Hoe=Goldharke
 Uses: @1=Verwendungen: @1
 Premature Beetroot Plant (Stage 1)=Junge Rote Beete (1. Stufe)
 Premature Beetroot Plant (Stage 2)=Junge Rote Beete (2. Stufe)

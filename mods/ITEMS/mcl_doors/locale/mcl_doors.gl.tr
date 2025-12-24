@@ -17,7 +17,6 @@ Trapdoors are horizontal barriers which can be opened or closed and climbed like
 
 Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.=As trapelas son barreiras horizontais que se poden abrir ou pechar e subir como unha escaleira cando están abertas. Ocupan a parte superior ou inferior dun bloque, dependendo de como se colocaran. Esta trapela pódese abrir ou pechar coa man ou co poder da pedra vermella.
 
-
 To open or close this trapdoor, rightclick it or send a redstone signal to it.=Para abrir ou pechar a trapela, fai clic co botón dereito ou envíalle un sinal de pedra vermella.
 ##[ register.lua ]##
 

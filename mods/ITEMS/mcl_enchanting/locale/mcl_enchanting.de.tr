@@ -76,7 +76,8 @@ Increases knockback.=Verstärkt Rückschlag.
 Looting=Plünderer
 Increases mob loot.=Erhöht Abwürfe von Mobs.
 Loyalty=Loyalität
-Trident returns after being thrown. Higher levels reduce return time.=Dreizack kehrt nach Wurf zurück. Höhere Stufen reduzieren die Rückkehrzeit.
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=Dreizack kehrt nach Wurf zurück. Höhere Stufen reduzieren die Rückkehrzeit.
 Luck of the Sea=Glück des Meeres
 Increases rate of good loot (enchanting books, etc.)=Erhöht die Rate von guten Abwürfen (verzauberte Bücher, usw.)
 Lure=Köder
@@ -109,6 +110,8 @@ Sweeping Edge=Schwungklinge
 Increases sweeping attack damage.=Erhöht Schwungangriffsschaden.
 Unbreaking=Haltbarkeit
 Increases item durability.=Erhöht Haltbarkeit des Gegenstands.
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####

@@ -1,10 +1,10 @@
 # textdomain: mcl_mobs
+You need the “maphack” privilege to change the mob spawner.=Du skal have "maphack" privilegier for at ændre monsterspawneren.
+Only peaceful mobs allowed!=Kun fredelige monstre er tilladt!
 This allows you to place a single mob.=Dette gør dig i stand til at placere et enkelt monster.
 
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Placér det blot der hvor du ønsker, at monsteret skal komme. Dyr vil spawne tamme, medmindre du holder snige-knappen nede mens du placerer dem. Hvis du placerer denne på et monsterspawn, ændrer du hvilket monster det spawner.
 
-You need the “maphack” privilege to change the mob spawner.=Du skal have "maphack" privilegier for at ændre monsterspawneren.
-Only peaceful mobs allowed!=Kun fredelige monstre er tilladt!
 ##[ physics.lua ]##
 
 The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=

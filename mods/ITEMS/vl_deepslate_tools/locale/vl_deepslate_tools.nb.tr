@@ -1,9 +1,4 @@
 # textdomain: vl_deepslate_tools
-Turns block into farmland=Gjør blokk om til dyrkbar mark
-
-Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=
-
-Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=
 
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Hakker er verktøy for å utvinne harde blokker, som for eksempel stein. En hakke kan også brukes som våpen, men det er ikke særlig effektivt.
 
@@ -37,3 +32,8 @@ Deepslate Axe=Dypskiferøks
 Deepslate Sword=Dypskifersverd
 Deepslate Hammer=Dypskiferhammer
 Deepslate Spear=Dypskiferspyd
+
+
+##### not used anymore #####
+
+Turns block into farmland=Gjør blokk om til dyrkbar mark

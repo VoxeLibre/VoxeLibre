@@ -76,7 +76,8 @@ Increases knockback.=ノックバックを強化します。
 Looting=奪取
 Increases mob loot.=MOBの戦利品が増加します。
 Loyalty=忠誠
-Trident returns after being thrown. Higher levels reduce return time.=投擲したトライデントが手に戻ってきます。レベルが高いほど戻る時間が短縮されます。
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=投擲したトライデントが手に戻ってきます。レベルが高いほど戻る時間が短縮されます。
 Luck of the Sea=宝釣り
 Increases rate of good loot (enchanting books, etc.)=釣果の質が良くなります（エンチャントの本など）。
 Lure=入れ食い
@@ -109,6 +110,8 @@ Sweeping Edge=スイープエッジ
 Increases sweeping attack damage.=なぎ払い攻撃のダメージが増加します。
 Unbreaking=耐久力
 Increases item durability.=アイテムの耐久度が向上します。
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####

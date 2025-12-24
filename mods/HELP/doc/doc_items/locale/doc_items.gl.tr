@@ -161,6 +161,7 @@ A transparent block, basically empty space. It is usually left behind after digg
 Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Sempre que non manexes ningún obxecto, usarás a man que actúa como unha ferramenta coas súas propias capacidades. Ao empuñar un obxecto que non é unha ferramenta de minería ou unha arma, comportarase coma se fose a man.
 
 
+
 ##### not used anymore #####
 
 Mining level: @1=Nivel de minería: @1

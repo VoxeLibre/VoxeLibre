@@ -76,7 +76,8 @@ Increases knockback.=Aumenta o retroceso.
 Looting=Botín
 Increases mob loot.=Aumenta o botín dos inimigos.
 Loyalty=Lealdade 
-Trident returns after being thrown. Higher levels reduce return time.=O tridente volve despois de ser lanzado. Os niveis máis altos reducen o tempo de retorno.
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=O tridente volve despois de ser lanzado. Os niveis máis altos reducen o tempo de retorno.
 Luck of the Sea=Sorte do mar
 Increases rate of good loot (enchanting books, etc.)=Aumenta a taxa de bo botín (libros encantamentos, etc.)
 Lure=Atracción
@@ -109,9 +110,10 @@ Sweeping Edge=Filo varrido
 Increases sweeping attack damage.=Aumenta o dano dos ataques de varrido.
 Unbreaking=Irrompible
 Increases item durability.=Aumenta a durabilidade do obxecto.
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####
 
 Increases walking speed on soul sand.=Aumenta a velocidade de marcha sobre a area da alma.
-
