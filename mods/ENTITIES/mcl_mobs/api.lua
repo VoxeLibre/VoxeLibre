@@ -148,10 +148,10 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	end
 
 	-- Fix entity fields if missing
-	self.base_colbox = self.base_colbox or def.initial_properties.collisionbox
-	self.base_selbox = self.base_selbox or def.initial_properties.selectionbox or self.base_colbox
+	self.base_colbox = self.base_colbox or table.copy(def.initial_properties.collisionbox)
+	self.base_selbox = self.base_selbox or table.copy(def.initial_properties.selectionbox) or self.base_colbox
 	self.base_mesh = self.base_mesh or def.initial_properties.mesh
-	self.base_size = self.base_size or def.initial_properties.visual_size or self.initial_properties.visual_size
+	self.base_size = self.base_size or table.copy(def.initial_properties.visual_size or self.initial_properties.visual_size) or vector.new(1,1,1)
 
 	local textures = self.base_texture
 	local mesh = self.base_mesh
@@ -162,7 +162,9 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	if self.gotten and def.gotten_texture then textures = def.gotten_texture end
 	if self.gotten and def.gotten_mesh then mesh = def.gotten_mesh end
 	if self.child then
-		vis_size = { x = self.base_size.x * .5, y = self.base_size.y * .5 }
+		vis_size.x = vis_size.x * .5
+		vis_size.y = vis_size.y * .5
+		if vis_size.z then vis_size.z = vis_size.z * .5 end
 		if def.child_texture then textures = def.child_texture[1] end
 
 		colbox = {
@@ -233,7 +235,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 
 	self.nametag = self.nametag or def.nametag
 
-	self.object:set_properties(self)
+	self.object:set_properties(self) -- FIXME consider explicitly setting properties, this may cause bugs
 	self:set_yaw(math.random() * math.pi * 2, 6)
 	self:update_tag()
 	self._current_animation = nil
@@ -254,7 +256,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 		self._run_armor_init = true
 	end
 
-	if not self._mcl_potions then self._mcl_potions = {} end
+	if not tmp or not tmp._mcl_potions then self._mcl_potions = {} end
 	mcl_potions._load_entity_effects(self)
 
 	if def.after_activate then def.after_activate(self, staticdata, def, dtime) end
