@@ -93,6 +93,7 @@ local function play_song(player_name, track)
 		pitch     = 1.0,
 	}
 
+	if not listeners or not listeners[player_name] then return end
 	listeners[player_name].handle = core.sound_play(spec, parameters, false)
 end
 
@@ -129,7 +130,8 @@ local function play()
 
 				stop_music_for_listener(player_name)
 
-				local sc_time = core.get_us_time()
+				local sc_time = core.get_us_time() / 1e6 -- Microseconds to seconds
+
 				-- Only play new music if scenario change was a little while ago
 				if (sc_time - listener.sc_time) > min_scenario_change_music_time then
 					local track = pick_track(scenario)
