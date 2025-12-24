@@ -65,7 +65,7 @@ local function place_liquid(pos, itemstring)
 	set_node(pos, {name=itemstring})
 end
 
-local function give_bucket(new_bucket, itemstack, user)
+function mcl_buckets.give_bucket(new_bucket, itemstack, user)
 	local inv = user:get_inventory()
 	if is_creative_enabled(user:get_player_name()) then
 		--TODO: is a full bucket added if inv doesn't contain one?
@@ -84,6 +84,7 @@ local function give_bucket(new_bucket, itemstack, user)
 		end
 	end
 end
+local give_bucket = mcl_buckets.give_bucket
 
 local pointable_sources = {}
 
@@ -111,7 +112,7 @@ local function get_extra_check(check, pos, user)
 	return result, take_bucket
 end
 
-local function get_bucket_drop(itemstack, user, take_bucket)
+function mcl_buckets.get_bucket_drop(itemstack, user, take_bucket)
 	-- Handle bucket item and inventory stuff
 	if take_bucket and not is_creative_enabled(user:get_player_name()) then
 		-- Add empty bucket and put it into inventory, if possible.
@@ -133,17 +134,18 @@ local function get_bucket_drop(itemstack, user, take_bucket)
 		return itemstack
 	end
 end
+local get_bucket_drop = mcl_buckets.get_bucket_drop
 ---@param player core.Player
 ---@return any pointed_thing
-local function bucket_get_pointed_thing(player)
+function mcl_buckets.bucket_get_pointed_thing(player)
 	local start = player:get_pos()
 	start.y = start.y + player:get_properties().eye_height
-	
+
 	local look_dir = player:get_look_dir()
 	local range, err = mcl_meshhand.get_player_hand_range(player)
 	if err then
 		core.log("error", string.format(
-			"[mcl_buckets] Could not find range for player %q, " 
+			"[mcl_buckets] Could not find range for player %q, "
 			.. "using fallback: %q",
 			player:get_player_name(), err))
 		range = mcl_meshhand.get_default_hand_range(player)
@@ -161,6 +163,7 @@ local function bucket_get_pointed_thing(player)
 		end
 	end
 end
+local bucket_get_pointed_thing = mcl_buckets.bucket_get_pointed_thing
 
 local function on_place_bucket(itemstack, user, pointed_thing)
 	if not use_select_box then
