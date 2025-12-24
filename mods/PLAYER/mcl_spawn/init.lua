@@ -310,7 +310,7 @@ minetest.register_chatcommand("spawnpoint", {
 		end
 
 		mcl_spawn.set_player_spawn_pos(target, pos, false, true)
-		return true, S("Set respawn point for @1 to @2", target_name, minetest.pos_to_string(pos))
+		return true, S("Set respawn point for @1 to @2", target_name, minetest.pos_to_string(pos, 1))
 	end
 })
 
