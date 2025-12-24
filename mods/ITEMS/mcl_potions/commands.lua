@@ -93,10 +93,10 @@ minetest.register_chatcommand("effect",{
 		local nopart = false
 		if P[3] == "F" then
 			nopart = P[5] == "NOPART"
-			name = (nopart or P[5] == "PART") and P[6] or P[5] or name
+			name = (nopart or P[5] == "PART") and (P[6] or name) or P[5] or name
 		else
 			nopart = P[4] == "NOPART"
-			name = (nopart or P[4] == "PART") and P[5] or P[4] or name
+			name = (nopart or P[4] == "PART") and (P[5] or name) or P[4] or name
 		end
 		
 		local target = core.get_player_by_name(name)
