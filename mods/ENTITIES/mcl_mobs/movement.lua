@@ -412,53 +412,40 @@ function mob_class:check_runaway_from()
 	if not self.runaway_from and self.state ~= "flop" then return end
 
 	local s = self.object:get_pos()
-	local p, sp, dist
-	local player, obj, min_player
-	local type, name = "", ""
+	local lp
 	local min_dist = self.view_range + 1
-	local objs = minetest.get_objects_inside_radius(s, self.view_range)
 
-	for n = 1, #objs do
-		if objs[n]:is_player() then
-			if mcl_mobs.invis[ objs[n]:get_player_name() ]
-			or self.owner == objs[n]:get_player_name()
-			or (not self:object_in_range(objs[n])) then
-				type = ""
+	for obj in core.objects_inside_radius(s, self.view_range) do
+		local name = ""
+		if not mcl_potions.has_effect(obj, "invisibility") and self:object_in_range(obj) then
+			if obj:is_player() then
+				if self.owner ~= obj:get_player_name() then
+					name = "player"
+				end
 			else
-				player = objs[n]
-				type = "player"
-				name = "player"
+				local ent = obj:get_luaentity()
+				if ent then
+					name = ent.name or ""
+				end
 			end
-		else
-			obj = objs[n]:get_luaentity()
-			if obj then
-				player = obj.object
-				type = obj.type
-				name = obj.name or ""
-			end
-		end
 
-		-- find specific mob to runaway from
-		if name ~= "" and name ~= self.name
-		and specific_runaway(self.runaway_from, name) then
-			p = player:get_pos()
-			sp = s
-			dist = vector_distance(p, s)
-			-- choose closest player/mpb to runaway from
-			if dist < min_dist
-			and self:line_of_sight(vector_offset(sp, 0, 1, 0), vector_offset(p, 0, 1, 0), 2) == true then
-				-- aim higher to make looking up hills more realistic
-				min_dist = dist
-				min_player = player
+			-- find specific mob to runaway from
+			if name ~= "" and name ~= self.name
+					and specific_runaway(self.runaway_from, name) then
+				local p = obj:get_pos()
+				local dist = vector_distance(p, s)
+				if dist < min_dist and self:line_of_sight(vector_offset(s, 0, 1, 0), vector_offset(p, 0, 1, 0), 2) == true then
+					min_dist = dist
+					lp = p
+				end
 			end
 		end
 	end
 
-	if min_player then
-		local lp = player:get_pos()
+	if lp then
 		self:turn_in_direction(s.x - lp.x, s.z - lp.z, 4) -- away from player
 		self.state = "runaway"
-		self.runaway_timer = 3
+		self.runaway_timer = 0
 		self.following = nil
 	end
 end
@@ -725,8 +712,8 @@ function mob_class:do_states_runaway()
 		self:stand()
 		self:turn_by(PI * (random() + 0.5), 8)
 	else
-		self:set_velocity( self.run_velocity)
-		self:set_animation( "run")
+		self:set_velocity(self.run_velocity)
+		self:set_animation("run")
 	end
 end
 

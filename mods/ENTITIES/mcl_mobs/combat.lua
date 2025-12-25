@@ -36,7 +36,7 @@ end
 
 -- get this mob to attack the object
 function mob_class:do_attack(object)
-	if self.state == "attack" or self.state == "die" then
+	if self.state == "attack" or self.state == "die" or self.state == "runaway" then
 		return
 	end
 	if object:is_player() and not damage_enabled and not self.force_attack then
