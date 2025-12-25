@@ -575,6 +575,13 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		if fire_aspect_level > 0 then
 			mcl_burning.set_on_fire(self.object, fire_aspect_level * 4)
 		end
+
+		if (self.armor.arthropod or 0) > 0 then
+			local bane_level = mcl_enchanting.get_enchantment(weapon, "bane_of_arthropods")
+			if bane_level > 0 then
+				mcl_potions.give_effect_by_level("slowness", self.object, 4, 1 + 0.5 * bane_level)
+			end
+		end
 	end
 
 	-- check for tool immunity or special damage

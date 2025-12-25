@@ -18,6 +18,7 @@ mcl_mobs.register_mob("mobs_mc:guardian", {
 	},
 	xp_min = 10,
 	xp_max = 10,
+	armor = {fleshy = 100, ocean = 100},
 	head_eye_height = 0.42,
 	passive = false,
 	attack_type = "dogfight",

@@ -42,7 +42,7 @@ mcl_mobs.register_mob("mobs_mc:glow_squid", {
 	},
 	xp_min = 1,
 	xp_max = 3,
-	armor = 100,
+	armor = {fleshy = 100, ocean = 100},
 	rotate = 0,
 	-- tilt_swim breaks the animations.
 	--tilt_swim = true,

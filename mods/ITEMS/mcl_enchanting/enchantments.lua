@@ -8,18 +8,18 @@ local function increase_damage(damage_group, factor)
 	end
 end
 
--- implemented via on_enchant and additions in mobs_mc; Slowness IV part unimplemented
+-- implemented via on_enchant, additions in mobs_mc and in combat.lua
 mcl_enchanting.enchantments.bane_of_arthropods = {
 	name = S("Bane of Arthropods"),
 	max_level = 5,
 	primary = {sword = true, spear = true},
 	secondary = {axe = true, hammer = true},
 	disallow = {},
-	incompatible = {smite = true, sharpness = true},
+	incompatible = {smite = true, sharpness = true, impaling = true},
 	weight = 5,
 	description = S("Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites)."),
 	curse = false,
-	on_enchant = increase_damage("anthropod", 2.5),
+	on_enchant = increase_damage("arthropod", 2.5),
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{5, 25}, {13, 33}, {21, 41}, {29, 49}, {37, 57}},
@@ -27,7 +27,7 @@ mcl_enchanting.enchantments.bane_of_arthropods = {
 	inv_tool_tab = false,
 }
 
--- requires missing MineClone2 feature
+-- TODO adjust, fix and improve lightning to support this (and feel powerful)
 --[[mcl_enchanting.enchantments.channeling = {
 	name = S("Channeling"),
 	max_level = 1,
@@ -215,24 +215,24 @@ walkover.register_global(function(pos, _, player)
 	end
 end)
 
--- requires missing MineClone2 feature
---[[mcl_enchanting.enchantments.impaling = {
+-- implemented via on_enchant
+mcl_enchanting.enchantments.impaling = {
 	name = S("Impaling"),
 	max_level = 5,
 	primary = {trident = true},
 	secondary = {},
 	disallow = {},
-	incompatible = {},
+	incompatible = {smite = true, sharpness = true, bane_of_arthropods = true},
 	weight = 2,
 	description = S("Trident deals additional damage to ocean mobs."),
 	curse = false,
-	on_enchant = function() end,
+	on_enchant = increase_damage("ocean", 2.5),
 	requires_tool = false,
 	treasure = false,
 	power_range_table = {{1, 21}, {9, 29}, {17, 37}, {25, 45}, {33, 53}},
 	inv_combat_tab = true,
 	inv_tool_tab = false,
-}]]--
+}
 
 -- implemented in mcl_bows
 mcl_enchanting.enchantments.infinity = {
@@ -370,16 +370,16 @@ mcl_enchanting.enchantments.looting = {
 	inv_tool_tab = false,
 }
 
--- requires missing MineClone2 feature
+-- TODO deduplicate code in vl_tridents, then implement this in vl_weaponry
 --[[mcl_enchanting.enchantments.loyalty = {
 	name = S("Loyalty"),
 	max_level = 3,
-	primary = {trident = true},
+	primary = {spear = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {riptide = true},
 	weight = 5,
-	description = S("Trident returns after being thrown. Higher levels reduce return time."),
+	description = S("Spear returns after being thrown. Higher levels reduce return time."),
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -632,7 +632,7 @@ mcl_enchanting.enchantments.sharpness = {
 	primary = {sword = true, spear = true},
 	secondary = {axe = true, hammer = true},
 	disallow = {},
-	incompatible = {bane_of_arthropods = true, smite = true},
+	incompatible = {bane_of_arthropods = true, smite = true, impaling = true},
 	weight = 5,
 	description = S("Increases damage."),
 	curse = false,
@@ -670,7 +670,7 @@ mcl_enchanting.enchantments.smite = {
 	primary = {sword = true, hammer = true},
 	secondary = {axe = true, spear = true},
 	disallow = {},
-	incompatible = {bane_of_arthropods = true, sharpness = true},
+	incompatible = {bane_of_arthropods = true, sharpness = true, impaling = true},
 	weight = 5,
 	description = S("Increases damage to undead mobs."),
 	curse = false,

@@ -126,6 +126,7 @@ mcl_structures.register_structure("ocean_temple",{
 					{ itemstring = "mcl_experience:bottle", weight = 5, amount_min = 1, amount_max = 1 },
 					{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 1 },
 					{ itemstring = "mcl_fishing:fishing_rod", weight = 1, amount_min = 1, amount_max = 1 },
+					{ itemstring = "vl_tridents:trident", weight = 0.25, amount_min = 1, amount_max = 1 },
 				}
 			},
 			{

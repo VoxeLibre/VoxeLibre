@@ -70,7 +70,7 @@ local tropical_fish = {
 	},
 	xp_min = 1,
 	xp_max = 3,
-	armor = 100,
+	armor = {fleshy = 100, ocean = 100},
 	spawn_in_group = 4, -- was 9. nerfed until aquatics use own cap rather than animal, and it represents pack size, not per spawn attempt
 	tilt_swim = true,
 	visual = "mesh",

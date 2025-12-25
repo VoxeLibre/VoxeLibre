@@ -19,7 +19,7 @@ mcl_mobs.register_mob("mobs_mc:squid", {
 		},
     xp_min = 1,
     xp_max = 3,
-    armor = 100,
+	armor = {fleshy = 100, ocean = 100},
     -- FIXME: If the squid is near the floor, it turns black
     visual = "mesh",
     mesh = "mobs_mc_squid.b3d",
