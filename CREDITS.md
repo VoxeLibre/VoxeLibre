@@ -20,9 +20,10 @@
 * AFCMS
 * epCode
 * TomCon / SmokeyDope
-* Faerraven / Michieal
 * teknomunk
 * AncientMariner
+* Archie / andro
+* ralisv / Nixprland
 
 ## Past Developers
 * jordan4ibanez
@@ -39,6 +40,7 @@
 * MrRar
 * rudzik8
 * kno10
+* Faerraven / Michieal
 
 ## Contributors
 * RandomLegoBrick
@@ -164,11 +166,17 @@
 * oku
 * fancyfinn9
 * Chiragon
-* Archie
 * newrizen
 * wrrrzr
 * antimundo
 * farfind
+* WolfySoy
+* sled314
+* Skivling
+* Delta
+* TANGaming
+* SecretVoxelPlayer
+* olivia-may
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
