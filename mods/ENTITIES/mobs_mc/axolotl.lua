@@ -21,7 +21,7 @@ local axolotl = {
 	head_yaw="z",
 	head_scale = vector.new(-1,-1,1),
 
-	armor = 100,
+	armor = {fleshy = 100, ocean = 100},
 	rotate = 180,
 	spawn_in_group_min = 1,
 	spawn_in_group = 4,

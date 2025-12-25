@@ -22,7 +22,7 @@ local salmon = {
 	},
 	xp_min = 1,
 	xp_max = 3,
-	armor = 100,
+	armor = {fleshy = 100, ocean = 100},
 	spawn_in_group = 5,
 	tilt_swim = true,
 	visual = "mesh",
