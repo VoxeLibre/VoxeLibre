@@ -1,7 +1,4 @@
 # textdomain: mcl_hunger
-Food=食物
-Saturation=飽食度
-Exhaust.=飢餓值
 ##[ commands.lua ]##
 [on|off]=
 Toggle hunger and starvation mechanics=
@@ -32,4 +29,7 @@ Done!=
 
 ##### not used anymore #####
 
+Food=食物
+Saturation=飽食度
+Exhaust.=飢餓值
 @1 starved to death.=@1 餓死了。

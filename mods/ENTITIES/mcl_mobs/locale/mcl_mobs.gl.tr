@@ -1,10 +1,10 @@
 # textdomain: mcl_mobs
+You need the “maphack” privilege to change the mob spawner.=Precisas o privilexio "maphack" para trocar o xerador de criaturas.
+Only peaceful mobs allowed!=Só se permiten criaturas pacíficas!
 This allows you to place a single mob.=Isto permíteche colocar unha única criatura.
 
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Só tes que colocala onde queiras que apareza a criatura. Os animais aparecerán domesticados, agás que manteñas premida a tecla de agocharte ao colocala. Se colocas isto nun xerador de criaturas, trocarás a criatura que xera.
 
-You need the “maphack” privilege to change the mob spawner.=Precisas o privilexio "maphack" para trocar o xerador de criaturas.
-Only peaceful mobs allowed!=Só se permiten criaturas pacíficas!
 ##[ physics.lua ]##
 
 The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=
@@ -20,7 +20,6 @@ Default usage. Clearing hostile mobs. For more options please type: /help clearm
 ##[ spawning.lua ]##
 
 Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems.=Indica se as criaturas deben aparecer de forma natural ou mediante a lóxica global de xeración, como no caso dos gatos, pantasmas, patrullas, comerciantes errantes ou as invasións de zombis.
-Non afecta aos intentos de xeración especiais, como os xeradores de monstros, as incursións ou os golems de ferro.
 
 spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: @n spawn_mob skeleton:var<passive@=true>:@n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.=spawn_mob é un comando de chat que che permite escribir directamente o nome dunha criatura sen ter que "escribir mobs_mc:" cada vez, por exemplo: "spawn_mob spider". porén, este comando especial permite facer moito máis. Actualmente, podes modificar calquera variable de tipo número, booleano ou texto co seguinte formato: spawn_mob "any_mob:var<mobs_variable@=variable_value>:". Any_mob é a túa criatura escollida, mobs_variable é a variable que queres trocar e variable value é o novo valor da variable escollida. Un exemplo deste formato: @n spawn_mob skeleton:var<passive@=true>:@n Isto xerará un esqueleto que non te atacará. LEMBRA ISTO> ao trocar un valor numérico, debes engadir o prefixo 'NUM' antes do número, exemplo: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n isto establece a altura de salto do squeleto a 10. se queres facer varios trocos nunha criatura, podes facelo, exemplo: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.
 
@@ -31,3 +30,4 @@ Set name at anvil=Poñer o nome na bigornia
 A name tag is an item to name a mob.=Unha etiqueta de nome é un obxecto para nomear a unha criatura.
 
 Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Antes de usar a etiqueta de nome, tes que establecer un nome nunha bigornia. Despois podes usar a etiqueta de nome para nomear a unha criatura. Isto gasta a etiqueta de nome.
+

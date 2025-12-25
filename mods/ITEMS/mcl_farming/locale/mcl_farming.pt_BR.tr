@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=Enxada de Madeira
 Stone Hoe=Enxada de Pedra
 Iron Hoe=Enxada de Ferro
-Golden Hoe=Enxada de Ouro
+Gold Hoe=
 Diamond Hoe=Enxadada de Diamante
 Netherite Hoe=Enxada de Netherite
 ##[ wheat.lua ]##
@@ -169,6 +169,7 @@ Sweet Berry= Bagas Doces
 
 ##### not used anymore #####
 
+Golden Hoe=Enxada de Ouro
 Premature Beetroot Plant (Stage 1)=Pé de Beterraba Prematura (Estágio 1)
 Premature Beetroot Plant (Stage 2)=Pé de Beterraba Prematura (Estágio 2)
 Premature Beetroot Plant (Stage 3)=Pé de Beterraba Prematura (Estágio 3)

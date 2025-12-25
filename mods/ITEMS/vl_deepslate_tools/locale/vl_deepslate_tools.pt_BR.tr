@@ -1,9 +1,4 @@
 # textdomain: vl_deepslate_tools
-Turns block into farmland=Torna o bloco em terra de cultivo
-
-Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Enxadas são ferramentas essenciais para o cultivo. São usadas para tornar os solos cultiváveis e plantar sementes. Em casos de emergência, elas também podem ser usadas como armas muito fracas.
-
-Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Use a enxada em um bloco cultivável (clicando com o botão direito) para o transformar em terra cultivável. Terra, blocos de grama e caminhos de grama são blocos cultiváveis. Usar uma enxada em terra infértil a transforma em terra.
 
 Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Picaretas são ferramentas de mineração para extrair blocos duros, como pedras. Uma picareta também pode ser usada como arma, mas é bastante ineficiente.
 
@@ -37,3 +32,13 @@ Deepslate Axe=Machado de Ardósia
 Deepslate Sword=Espada de Ardósia
 Deepslate Hammer=Martelo de Ardósia
 Deepslate Spear=Lança de Ardósia
+
+
+##### not used anymore #####
+
+Turns block into farmland=Torna o bloco em terra de cultivo
+
+Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Enxadas são ferramentas essenciais para o cultivo. São usadas para tornar os solos cultiváveis e plantar sementes. Em casos de emergência, elas também podem ser usadas como armas muito fracas.
+
+Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Use a enxada em um bloco cultivável (clicando com o botão direito) para o transformar em terra cultivável. Terra, blocos de grama e caminhos de grama são blocos cultiváveis. Usar uma enxada em terra infértil a transforma em terra.
+

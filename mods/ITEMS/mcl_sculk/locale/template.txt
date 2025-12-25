@@ -1,4 +1,5 @@
 # textdomain: mcl_sculk
+Whether sculk catalysts can spread sculk.=
 Sculk=
 Sculk Vein=
 Sculk vein.=

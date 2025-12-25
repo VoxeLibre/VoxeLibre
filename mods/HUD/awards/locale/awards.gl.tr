@@ -1,7 +1,7 @@
 # textdomain:awards
 ##[ api.lua ]##
 Amount of time award notification are displayed=Tempo que se amosan as notificacións de logros
-Whether advancements should be announced in chat=Indica se os progresos deben anunciarse na conversa=
+Whether advancements should be announced in chat=
 @1 has made the advancement @2=@1 conseguiu o Progreso @2						   
 Secret Advancement Made:=Progreso secreto feito:
 Goal Completed:=Obxectivo completado:
@@ -79,4 +79,3 @@ Achievement not found.=Non se atopou o logro.
 Get the achievements statistics for the given player or yourself=Obtén as estatísticas de logros para o xogador ou ti mesmo
 List awards in chat (deprecated)=Únete ao xogo.
 Show details of an achievement=Mostrar detalles dun logro
-

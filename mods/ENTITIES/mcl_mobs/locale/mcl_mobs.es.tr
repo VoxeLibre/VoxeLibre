@@ -1,10 +1,10 @@
 # textdomain: mcl_mobs
+You need the “maphack” privilege to change the mob spawner.=Necesita el privilegio "maphack" para cambiar el generador de animales.
+Only peaceful mobs allowed!=¡Solo se permiten mobs pacíficos!
 This allows you to place a single mob.=Esto le permite colocar un solo animal.
 
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Simplemente colóquelo donde desea que aparezcan los animales. Los animales aparecerán domesticados, a menos que mantenga presionada la tecla de sigilo mientras coloca. Si coloca esto en un engendrador de animales, cambia el animal que genera.
 
-You need the “maphack” privilege to change the mob spawner.=Necesita el privilegio "maphack" para cambiar el generador de animales.
-Only peaceful mobs allowed!=¡Solo se permiten mobs pacíficos!
 ##[ physics.lua ]##
 
 The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=

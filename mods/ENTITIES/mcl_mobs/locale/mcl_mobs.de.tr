@@ -1,10 +1,10 @@
 # textdomain: mcl_mobs
+You need the “maphack” privilege to change the mob spawner.=Sie brauchen das „maphack“-Privileg, um den Mobspawner ändern zu können.
+Only peaceful mobs allowed!=Nur friedliche Mobs erlaubt!
 This allows you to place a single mob.=Damit kann man einen Mob platzieren.
 
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Platzieren Sie dies einfach dort, wo der Mob auftauchen soll. Tiere werden zahm erscheinen, außer, wenn Sie beim Platzieren die Schlichtaste drücken. Platzieren Sie dies auf einem Mobspawner, um den Mob im Mobspawner zu wechseln.
 
-You need the “maphack” privilege to change the mob spawner.=Sie brauchen das „maphack“-Privileg, um den Mobspawner ändern zu können.
-Only peaceful mobs allowed!=Nur friedliche Mobs erlaubt!
 ##[ physics.lua ]##
 
 The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=

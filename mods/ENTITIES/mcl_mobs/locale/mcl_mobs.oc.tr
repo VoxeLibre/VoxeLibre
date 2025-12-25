@@ -1,10 +1,10 @@
 # textdomain: mcl_mobs
+You need the “maphack” privilege to change the mob spawner.=Avètz besonh dau privilègi "maphack" per chamjar le generator de creaturas.
+Only peaceful mobs allowed!=Mas las creaturas pacificas son autorizadas!
 This allows you to place a single mob.=Quo permet de plaça una creatura.
 
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Plaçatz z-o a l'endreit que volètz veire la creatura aparèisser. Las bèstias seron dejà domesticadas, defòra si laissatz la tocha se baissar enfonçada. Si z-o plaçatz sobre un generator de creaturas, chamjatz la creatura generada.
 
-You need the “maphack” privilege to change the mob spawner.=Avètz besonh dau privilègi "maphack" per chamjar le generator de creaturas.
-Only peaceful mobs allowed!=Mas las creaturas pacificas son autorizadas!
 ##[ physics.lua ]##
 
 The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=

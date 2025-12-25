@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=Aixada de madeira
 Stone Hoe=Aixada de pedra
 Iron Hoe=Aixada de ferro
-Golden Hoe=Aixada de ouro
+Gold Hoe=
 Diamond Hoe=Aixada de diamante
 Netherite Hoe=Aixada de pedra do inframundo
 ##[ wheat.lua ]##
@@ -113,7 +113,6 @@ Mature carrot plants are ready to be harvested for carrots. They won't grow any 
 Carrot=Cenoria
 Carrots can be eaten and planted. Pigs and rabbits like carrots.=As cenorias pódense comer e plantar. Aos porcos e aos coellos gústanlles as cenorias.
 
-
 Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Mantéñao na man e fai clic co botón dereito para comelo. Colóqueo enriba dunha terra de cultivo para plantar a cenoria. Crece á luz do sol e crece máis rápido en terras de cultivo hidratadas. Prema co botón dereito nun animal para darlla de comer.
 
 Golden Carrot=Cenoria dourada
@@ -163,6 +162,7 @@ Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, 
 Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.=Mantena na man e fai clic co botón dereito para comela. Fai clic dereito nun animal para alimentalo.
 Beetroot Soup=Sopa de remolacha
 Beetroot soup is a food item.=A sopa de remolacha e un alimento.
+##[ sweet_berry.lua ]##
 ##[ sweet_berry.lua ]##3
 Sweet Berry Bush (Stage @1)=Arbusto de Baga Doce
 Sweet Berry=Baga Doce
@@ -170,6 +170,7 @@ Sweet Berry=Baga Doce
 
 ##### not used anymore #####
 
+Golden Hoe=Aixada de ouro
 Premature Beetroot Plant (Stage 1)=Planta prematura de remolacha (etapa 1)
 Premature Beetroot Plant (Stage 2)=Planta prematura de remolacha (Etapa 2)
 Premature Beetroot Plant (Stage 3)=Planta prematura de remolacha (Etapa 3)

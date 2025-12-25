@@ -1,6 +1,7 @@
 # textdomain: mcl_info
+##TODO: fuzzy matched - verify and remove the comment
 
-Set debug bit mask: 0 @= disable, 1 @= player coords, 2 @= coordinates, 3 @= biome name, 4 @= all=Establecer máscara de depuración: 0 @= desactivar, 1 @= coordenadas do xogador, 2 @= coordenadas, 3 @= nome do bioma, 4 @= todo
+Set debug level: 0 @= disable, 1 @= player coords, 2 @= coordinates, 3 @= biome name, 4 @= all=Establecer máscara de depuración: 0 @= desactivar, 1 @= coordenadas do xogador, 2 @= coordenadas, 3 @= nome do bioma, 4 @= todo
 
 <level>=<nivel>
 Debug level is @1=O nivel de depuración é @1
@@ -9,7 +10,6 @@ Debug level set to @1=Nivel de depuración definido en @1
 Show location: 0 @= disable, 1 @= coordinates=Amosar localización: 0 @= desactivar, 1 @= coordenadas
 Show location is set to: @1=Amosar localización está definido en: @1
 Show location set to @1=Amosar localización definido en @1
-
 
 
 ##### not used anymore #####

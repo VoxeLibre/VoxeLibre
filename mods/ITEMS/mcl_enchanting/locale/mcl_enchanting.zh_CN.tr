@@ -76,7 +76,8 @@ Increases knockback.=增加击退效果。
 Looting=抢夺
 Increases mob loot.=增加生物掉落物数量。
 Loyalty=忠诚
-Trident returns after being thrown. Higher levels reduce return time.=三叉戟在投掷后会返回，等级越高返回时间越短。
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=三叉戟在投掷后会返回，等级越高返回时间越短。
 Luck of the Sea=海之眷顾
 Increases rate of good loot (enchanting books, etc.)=增加获得优质战利品（附魔书等）的概率。
 Lure=诱饵
@@ -109,6 +110,8 @@ Sweeping Edge=横扫之刃
 Increases sweeping attack damage.=增加横扫攻击的伤害。
 Unbreaking=耐久
 Increases item durability.=增加物品耐久度。
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####

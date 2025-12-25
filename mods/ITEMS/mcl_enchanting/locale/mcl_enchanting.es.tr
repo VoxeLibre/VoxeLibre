@@ -76,7 +76,8 @@ Increases knockback.=Incrementa el empuje.
 Looting=Botín
 Increases mob loot.=Incrementa el botín de los enemigos.
 Loyalty=Lealtad
-Trident returns after being thrown. Higher levels reduce return time.=El tridente regresa al portador tras lanzarlo.
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=El tridente regresa al portador tras lanzarlo.
 Luck of the Sea=Suerte Marina
 Increases rate of good loot (enchanting books, etc.)=Incrementa la probabilidad de encontrar tesoros.
 Lure=Atracción
@@ -109,3 +110,5 @@ Sweeping Edge=Filo Arrasador
 Increases sweeping attack damage.=Incrementa el daño de efecto area.
 Unbreaking=Irrompibilidad
 Increases item durability.=Incrementa la durabilidad de una herramienta.
+Swift Sneak=
+Increases movement speed while sneaking.=

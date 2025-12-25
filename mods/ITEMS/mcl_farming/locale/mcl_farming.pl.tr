@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=Drewniana motyka
 Stone Hoe=Kamienna motyka
 Iron Hoe=Żelazna motyka
-Golden Hoe=Złota motyka
+Gold Hoe=
 Diamond Hoe=Diamentowa motyka
 Netherite Hoe=
 ##[ wheat.lua ]##
@@ -169,6 +169,7 @@ Sweet Berry=
 
 ##### not used anymore #####
 
+Golden Hoe=Złota motyka
 Uses: @1=Wykorzystuje: @1
 Premature Beetroot Plant (Stage 1)=Niedojrzała roślina buraka (etap 1)
 Premature Beetroot Plant (Stage 2)=Niedojrzała roślina buraka (etap 2)

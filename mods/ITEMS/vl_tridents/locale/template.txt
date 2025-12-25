@@ -1,3 +1,7 @@
 # textdomain: vl_tridents
 Trident=
-Launches a trident when you rightclick and it is in your hand=
+Water element=
+
+Tridents are great in melee combat, as they have an increased reach. They can also be thrown.=
+
+To throw a trident, hold it in your hand, then hold use (rightclick) in the air.=

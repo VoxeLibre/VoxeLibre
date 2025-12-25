@@ -7,7 +7,6 @@ Stripped Bamboo Block=Bloque de bambú sen cortiza
 Bamboo Plank=Táboa de bambú
 Bamboo Mosaic Plank=Táboa de bambú de mosaico
 ##[ bamboo_items.lua ]##
-
 Bamboo Door=Porta de bambú
 
 Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=As portas de madeira son barreiras altas de 2 bloques que se poden abrir ou pechar a man e mediante un sinal de pedra vermella.

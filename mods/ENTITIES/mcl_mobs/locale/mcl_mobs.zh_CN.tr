@@ -1,10 +1,10 @@
 # textdomain: mcl_mobs
+You need the “maphack” privilege to change the mob spawner.=你需要“地图作弊”权限才能改变生物生成器。
+Only peaceful mobs allowed!=只允许和平生物！
 This allows you to place a single mob.=这允许你放置单个生物。
 
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=只需将其放置在你希望生物出现的地方。动物生成时会是已被驯服的状态，除非你在放置时按住潜行键。如果你将这个放在生物生成器上，你可以改变它生成的生物种类。
 
-You need the “maphack” privilege to change the mob spawner.=你需要“地图作弊”权限才能改变生物生成器。
-Only peaceful mobs allowed!=只允许和平生物！
 ##[ physics.lua ]##
 
 The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=

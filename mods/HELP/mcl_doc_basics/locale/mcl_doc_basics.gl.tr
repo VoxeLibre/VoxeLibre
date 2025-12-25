@@ -20,7 +20,9 @@ This is a very brief introduction to the basic gameplay:=Esta é unha introduci�
 • [Esc] to close this window=• [Esc] para pechar esta xanela
 How to play:=Como xogar:
 • Punch a tree trunk until it breaks and collect wood=• Golpea un tronco de árbore ata que se rompa e colle madeira
+
 • Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=• Coloca a madeira na grade 2×2 (a túa “grade de elaboración”) do inventario e crea 4 táboas de madeira
+
 • Place them in a 2×2 shape in the crafting grid to craft a crafting table=• Colócaas en forma de 2×2 na grade de elaboración para crear unha mesa de elaboración
 • Place the crafting table on the ground=• Coloca a mesa de elaboración no chan
 • Rightclick it for a 3×3 crafting grid=• Fai clic dereito nela para obter unha grade de elaboración 3×3
@@ -29,17 +31,29 @@ How to play:=Como xogar:
 • Different tools break different kinds of blocks. Try them out!=• Diferentes ferramentas rompen diferentes tipos de bloques. ¡Próbaos!
 • Continue playing as you wish. There's no goal. Have fun!=• Continúa xogando como queiras. Non hai obxectivo. ¡Divírtete!
 Minetest=
+
 Minetest is a free software game engine for games based on voxel gameplay, inspired by InfiniMiner, Minecraft, and the like. Minetest was originally created by Perttu Ahola (alias “celeron55”).=Minetest é un motor de xogos de software gratuíto para xogos baseado en voxel, inspirado en InfiniMiner, Minecraft e similares. Minetest foi creado orixinalmente por Perttu Ahola (alias “celeron55”).
+
 The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest can, however, be much more complex than this.=O xogador é situado nun mundo enorme feito de cubos ou bloques. Estes cubos compoñen a paisaxe e poden ser eliminados e colocados con gran liberdade. Cos obxectos recollidos, pódense fabricar novas ferramentas e outros elementos. Non obstante, os xogos en Minetest poden ser moito máis complexos que isto.
+
 A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorative blocks or be very complex by, e.g., introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.=Unha característica principal de Minetest é a capacidade de modificación integrada. As modificacións modifican o xogo existente. Poden ser tan sinxelos como engadir uns cantos bloques decorativos ou ser moi complexos, por exemplo. introducindo conceptos de xogo completamente novos, xerando un tipo de mundo completamente diferente e moitas outras cousas.
+
 Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.=Minetest pódese xogar só ou en liña xunto con varios xogadores. O xogo en liña funcionará fóra da caixa con calquera modificación, sen necesidade de software adicional, xa que son proporcionados enteiramente polo servidor.
+
 Minetest is usually bundled with a simple default game, named “Minetest Game” (shown in images 1 and 2). You probably already have it. Other games for Minetest can be downloaded from the official Minetest forums <https://forum.minetest.net/viewforum.php?f@=48>.=Minetest adoita incluír un xogo predeterminado sinxelo, chamado "Xogo Minetest" (mostrado nas imaxes 1 e 2). Probablemente xa o teñas. Outros xogos para Minetest pódense descargar dos foros oficiais de Minetest <https://forum.minetest.net/viewforum.php?f@=48>.
+
 Sneaking=agocharse
+
 Sneaking makes you walk slower and prevents you from falling off the edge of a block.=Agocharse fai que te movas máis amodo e evita que caias dende o bordo dun bloque.
+
 To sneak, hold down the sneak key (default: [Shift]). When you release it, you stop sneaking. Careful: When you release the sneak key at a ledge, you might fall!=Para agocharte, mantén premida a tecla de agocharse (por defecto: [Maiús]). Cando a soltas, deixas de agocharte. Coidado: Se a soltas preto dun bordo, podes caer!
+
 • Sneak: [Shift]=• Agocharse: [Maiús]
+
 Sneaking only works when you stand on solid ground, are not in a liquid and don't climb.=Agocharse só funciona cando estás sobre terreo sólido, non estás nun líquido e non estás trepando.
+
 Sneaking might be disabled by mods. In this case, you still walk slower by sneaking, but you will no longer be stopped at ledges.=As modificacións poden desactivar agocharse. Nese caso, seguirás andando máis amodo, pero non pararás no bordo dos bloques.
+
 Controls=Controis
 These are the default controls:=Estes son os controis predeterminados:
 Basic movement:=Movemento básico:
@@ -57,8 +71,11 @@ While on a ladder, swimming in a liquid or fly mode is active=Se estás nunha es
 • Shift: Move down=• Maiús: Baixar
 Extended movement (requires privileges):=Movemento estendido (require privilexios):
 • J: Toggle fast mode, makes you run or fly fast (requires “fast” privilege)=• J: Activar/desactivar modo rápido, para correr ou voar rápido (require permiso “fast”)
+
 • K: Toggle fly mode, makes you move freely in all directions (requires “fly” privilege)=• K: Activar/desactivar modo de voo, para moverte libremente (require permiso “fly”)
+
 • H: Toggle noclip mode, makes you go through walls in fly mode (requires “noclip” privilege)=• H: Activar/desactivar modo noclip, para atravesar paredes no modo de voo (require permiso “noclip”)
+
 • E: Walk fast in fast mode=• E: Camiñar rápido no modo rápido
 World interaction:=Interacción co mundo:
 • Left mouse button: Punch / mine blocks=• Botón esquerdo do rato: Golpear / picar bloques
@@ -72,7 +89,9 @@ World interaction:=Interacción co mundo:
 Inventory interaction:=Interacción co inventario:
 See the entry “Basics > Inventory”.=Consulta a entrada “Conceptos básicos > Inventario”
 Hunger/Eating:=Fame/Comer:
+
 • While holding food, hold the right mouse button (PC) or double-tap and hold the second tap (Android) to eat=• Cando sosteñas comida, mantén premido o botón dereito (PC) ou toca dúas veces e mantén a segunda pulsación (Android) para comer
+
 Camera:=Cámara:
 • Z: Zoom=• Z: Zoom
 • F7: Toggle camera mode=• F7: alternar modo de cámara
@@ -88,7 +107,9 @@ Server interaction:=Interacción co servidor:
 • T: Open chat window (chat requires the “shout” privilege)=• T: Abrir xanela de chat (o chat require o privilexio “shout”)
 • /: Start issuing a server command=• /: Comeza a emitir un comando do servidor
 Technical:=Técnico:
+
 • R: Toggle far view (disables all fog and allows viewing far away, can make game very slow)=• R: Alternar vista afastada (desactiva toda a néboa e permite ver lonxe, pode facer que o xogo vaia moi amodo)
+
 • +: Increase minimal viewing distance=• +: Aumenta a distancia mínima de visualización
 • -: Decrease minimal viewing distance=• -: Diminuír a distancia mínima de visualización
 • F3: Enable/disable fog=• F3: Activar/desactivar néboa
@@ -96,8 +117,11 @@ Technical:=Técnico:
 • F6: Only useful for developers. Enables/disables profiler=• F6: Só útil para desenvolvedores. Activa/desactiva o perfilador
 Players=Xogadores
 Players (actually: “player characters”) are the characters which users control.=Os xogadores (en realidade: "personaxes xogadores") son a personaxes que controlan os usuarios.
+
 Players are living beings. They start with a number of health points (HP) and a number of breath points (BP).=Os xogadores son seres vivos. Comezan cun número de puntos de saúde (PS) e un número de puntos de respiración (PR).
+
 Players are capable of walking, sneaking, jumping, climbing, swimming, diving, mining, building, fighting and using tools and blocks.=Os xogadores son capaces de camiñar, agochar, saltar, escalar, nadar, mergullarse, minar, construír, loitar e usar ferramentas e bloques.
+
 Players can take damage for a variety of reasons, here are some:=Os xogadores poden sufrir danos por varias razóns, aquí tes algunhas:
 • Taking fall damage=• Danos por caída
 • Touching a block which causes direct damage=• Tocar un bloque que causa dano directo
@@ -105,120 +129,195 @@ Players can take damage for a variety of reasons, here are some:=Os xogadores po
 • Being attacked by another player=• Ser atacado por outro xogador
 • Being attacked by a computer enemy=• Ser atacado por un inimigo controlado polo computador
 At a health of 0, the player dies. The player can just respawn in the world.=Cando a saúde chega a 0, o xogador morre. Entón pode reaparecer no mundo.
+
 Other consequences of death depend on the game. The player could lose all items, or lose the round in a competitive game.=Outras consecuencias da morte dependen do xogo. O xogador podería perder todos os elementos ou perder a rolda nun xogo competitivo.
+
 Some blocks reduce breath. While being with the head in a block which causes drowning, the breath points are reduced by 1 for every 2 seconds. When all breath is gone, the player starts to suffer drowning damage. Breath is quickly restored in any other block.=Algúns bloques reducen a respiración. Mentres está coa cabeza nun bloque que provoca afogamento, os puntos de respiración redúcense 1 por cada 2 segundos. Cando todo o alento desaparece, o xogador comeza a sufrir danos por afogamento. A respiración restablece rapidamente en calquera outro bloque.
+
 Damage can be disabled on any world. Without damage, players are immortal and health and breath are unimportant.=Os danos pódense desactivar en calquera mundo. Sen danos, os xogadores son inmortais e a saúde e a respiración non teñen importancia.
+
 In multi-player mode, the name of other players is written above their head.=No modo multixogador, o nome dos outros xogadores está escrito enriba da súa cabeza.
 Items=Elementos
+
 Items are things you can carry along and store in inventories. They can be used for crafting, smelting, building, mining, and more. Types of items include blocks, tools, weapons and items only used for crafting.=Os obxectos son cousas que podes levar e almacenar nos inventarios. Pódense usar para artesanía, fundición, construción, minería e moito máis. Os tipos de elementos inclúen bloques, ferramentas, armas e elementos que só se usan para a elaboración.
+
 An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=Unha morea de obxectos é unha colección de elementos do mesmo tipo que caben nun único espazo para elementos. As moreas de obxectos pódense deixar caer ao chan. Os elementos que caen nas mesmas coordenadas formarán unha morea de elementos.
+
 Items have several properties, including the following:=Os elementos teñen varias propiedades, incluíndo as seguintes:
 • Maximum stack size: Number of items which fit on 1 item stack=• Tamaño máximo da morea: número de elementos que caben nunha morea de elementos
+
 • Pointing range: How close things must be to be pointed while wielding this item=• Rango de apuntamento: ata que punto deben estar as cousas para ser apuntadas mentres se manexa este elemento
+
 • Group memberships: See “Basics > Groups”=• Pertenzas a grupos: consulte “Aspectos básicos > Grupos”
 • May be used for crafting or cooking=• Podese usar para fabricar ou cociñar
 Tools=Ferramentas
+
 Some items may serve as a tool when wielded. Any item which has some special use which can be directly used by its wielder is considered a tool.=Algúns elementos poden servir como ferramenta cando se manexan. Calquera elemento que teña algún uso especial que poida ser usado directamente polo seu portador considérase unha ferramenta.
+
 A common subset of tools is mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.=Un subconxunto común de ferramentas son as ferramentas de minería. Estes son importantes para romper todo tipo de bloques. As armas son unha especie de ferramenta. Por suposto, hai moitas outras ferramentas posibles. As accións especiais das ferramentas adoitan facerse facendo clic co botón esquerdo ou co botón dereito.
+
 When nothing is wielded, players use their hand which may act as tool and weapon.=Cando non se manexa nada, os xogadores usan a súa man que pode actuar como ferramenta e arma.
+
 Many tools will wear off when using them and may eventually get destroyed. The damage is displayed in a damage bar below the tool icon. If no damage bar is shown, the tool is in mint condition. Tools may be repairable by crafting, see “Basics > Crafting”.=Moitas ferramentas desgastaranse ao usalas e poden acabar destruíndose. O dano móstrase nunha barra de danos debaixo da icona da ferramenta. Se non se mostra ningunha barra de danos, a ferramenta está en perfecto estado. As ferramentas pódense reparar elaborando, consulte "Conceptos básicos > Elaboración".
+
 Weapons=Armas
+
 Some items are usable as a melee weapon when wielded. Weapons share most of the properties of tools.=Algúns elementos poden usarse como arma corpo a corpo cando se manexan. As armas comparten a maioría das propiedades das ferramentas.
+
 Melee weapons deal damage by punching players and other animate objects. There are two ways to attack:=As armas corpo a corpo causan dano golpeando aos xogadores e outros obxectos animados. Hai dúas formas de atacar:
+
 • Single punch: Left-click once to deal a single punch=• Golpe único: fai clic co botón esquerdo unha vez para dar un só golpe
 • Quick punching: Hold down the left mouse button to deal quick repeated punches=• Perforación rápida: Manteña premido o botón esquerdo do rato para facer golpes rápidos repetidos
 There are two core attributes of melee weapons:=Hai dous atributos fundamentais das armas corpo a corpo:
+
 • Maximum damage: Damage which is dealt after a hit when the weapon was fully recovered=• Dano máximo: dano que se inflixe despois dun golpe cando a arma foi totalmente recuperada
+
 • Full punch interval: Time it takes for fully recovering from a punch=• Intervalo de golpe completo: tempo que tarda en recuperarse completamente dun golpe
+
 A weapon only deals full damage when it has fully recovered from a previous punch. Otherwise, the weapon will deal only reduced damage. This means, quick punching is very fast, but also deals rather low damage. Note the full punch interval does not limit how fast you can attack.=Unha arma só causa dano total cando se recuperou completamente dun golpe anterior. En caso contrario, a arma só causará un dano reducido. Isto significa que o golpe rápido é moi rápido, pero tamén causa un dano bastante baixo. Teña en conta que o intervalo de golpe completo non limita a rapidez coa que pode atacar.
+
 There is a rule which sometimes makes attacks impossible: Players, animate objects and weapons belong to damage groups. A weapon only deals damage to those who share at least one damage group with it. So if you're using the wrong weapon, you might not deal any damage at all.=Hai unha regra que ás veces imposibilita os ataques: os xogadores, os obxectos animados e as armas pertencen a grupos de danos. Unha arma só causa dano a aqueles que comparten polo menos un grupo de danos con ela. Polo tanto, se estás a usar a arma incorrecta, pode que non causes ningún dano.
+
 Pointing=Apuntando
+
 “Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, players, computer enemies and objects.="Apuntar" significa mirar algo dentro do alcance co punto de mira. Apuntar é necesario para a interacción, como minar, perforar, usar, etc. As cousas salientables inclúen bloques, xogadores, inimigos de ordenador e obxectos.
+
 To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.=Para apuntar algo, debe estar no intervalo de apuntamento (tamén chamado "rango") do teu elemento esgrimido. Hai un intervalo predeterminado cando non manexas nada. Destacarase ou resaltarase unha cousa sinalada (dependendo da súa configuración). Non é posible apuntar coa cámara frontal de 3a persoa.
+
 ##TODO: fuzzy matched - verify and remove the comment
 A few things cannot be pointed. Most blocks are pointable. A few blocks, like air, can never be pointed. Other blocks, like liquids can only be pointed by special items.=Algunhas cousas non se poden sinalar. A maioría dos bloques son puntuables. Uns cantos bloques, como o aire, nunca se poden apuntar. Outros bloques, como os líquidos, só poden ser sinalados por elementos especiais.
+
 Camera=Cámara
+
 There are 3 different views which determine the way you see the world. The modes are:=Hai 3 puntos de vista diferentes que determinan a forma de ver o mundo. Os modos son:
+
 • 1: First-person view (default)=• 1: Vista en primeira persoa (predeterminado)
 • 2: Third-person view from behind=• 2: Vista en terceira persoa desde atrás
 • 3: Third-person view from the front=• 3: Vista en terceira persoa de fronte
 You can change the camera mode by pressing [F7].=Pode cambiar o modo da cámara premendo [F7].
+
 You might be able to zoom with [Z] to zoom the view at the crosshair. This allows you to look further.=Podes facer zoom con [Z] para ampliar a vista no punto de mira. Isto permítelle mirar máis alá.
+
 Zooming is a gameplay feature that might be enabled or disabled by the game. By default, zooming is enabled when in Creative Mode but disabled otherwise.=O zoom é unha función de xogo que pode estar activada ou desactivada polo xogo. De forma predeterminada, o zoom está activado cando está en modo creativo, pero en caso contrario está desactivado.
+
 • Switch camera mode: [F7]=• Cambiar modo de cámara: [F7]
 • Zoom: [Z]=• Zoom: [Z]
 Blocks=Bloques
+
 The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=O mundo está feito enteiramente de bloques (voxels, para ser precisos). Pódense engadir ou eliminar bloques coas ferramentas correctas.
+
 Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:=Os bloques poden ter unha ampla gama de propiedades diferentes que determinan os tempos de minería, o comportamento, o aspecto, a forma e moito máis. As súas propiedades inclúen:
+
 ##TODO: fuzzy matched - verify and remove the comment
 • Collidable: Collidable blocks cannot be passed through; players can walk on them. Non-collidable blocks can be passed through freely=• Colidable: os bloques colidábeis non se poden atravesar; os xogadores poden andar sobre eles. Os bloques non colisionables pódense pasar libremente
+
 • Pointable: Pointable blocks show a wireframe or a halo box when pointed. But you will just point through non-pointable blocks. Liquids are usually non-pointable but they can be pointed at by some special tools=• Puntável: os bloques apuntables mostran unha armazón ou unha caixa de halo cando se apuntan. Pero só apuntarás a través de bloques non puntuables. Os líquidos adoitan ser insensibles, pero pódense sinalar con algunhas ferramentas especiais
+
 • Mining properties: By which tools it can be mined, how fast and how much it wears off tools=• Propiedades mineiras: con que ferramentas se pode extraer, a que velocidade e canto gasta as ferramentas
+
 • Climbable: While you are at a climbable block, you won't fall and you can move up and down with the jump and sneak keys=• Escalable: mentres estás nun bloque escalable, non caerás e podes moverte cara arriba e abaixo coas teclas de salto e agochar
+
 • Drowning damage: See the entry “Basics > Player”=• Danos por afogamento: consulte a entrada “Básicos > Xogador”
 • Liquids: See the entry “Basics > Liquids”=• Líquidos: Consulte a entrada “Básicos > Líquidos”
+
 • Group memberships: Group memberships are used to determine mining properties, crafting, interactions between blocks and more=• Pertenzas a grupos: as pertenzas a grupos úsanse para determinar as propiedades de minería, a elaboración, as interaccións entre bloques e moito máis
+
 Mining=minería
+
 Mining (or digging) is the process of breaking blocks to remove them. To mine a block, point it and hold down the left mouse button until it breaks.=A minería (ou cavar) é o proceso de romper bloques para eliminalos. Para minar un bloque, apunto e manteña premido o botón esquerdo do rato ata que se rompa.
+
 ##TODO: fuzzy matched - verify and remove the comment
 Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks cannot be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.=Os bloques requiren unha ferramenta de minería para ser minados. Diferentes bloques son extraídos por diferentes ferramentas de minería, e algúns bloques non poden ser extraídos por ningunha ferramenta. Os bloques varían en dureza e as ferramentas varían en forza. As ferramentas de minería desaparecerán co paso do tempo. O tempo de minería e o desgaste da ferramenta dependen do bloque e da ferramenta de minería. A forma máis rápida de descubrir a eficiencia das túas ferramentas de minería é probalas en varios bloques. Calquera elemento que recolla coa minería caerá no chan, listo para ser recollido.
+
 After mining, a block may leave a “drop” behind. This is a number of items you get after mining. Most commonly, you will get the block itself. There are other possibilities for a drop which depends on the block type. The following drops are possible:=Despois da minería, un bloque pode deixar unha "gota" atrás. Esta é unha serie de elementos que obtén despois da minería. Máis comúnmente, obterás o propio bloque. Existen outras posibilidades de caída que dependen do tipo de bloque. Son posibles as seguintes caídas:
+
 • Always drops itself (the usual case)=• Sempre cae a si mesmo (o caso habitual)
 • Always drops the same items=• Sempre solta os mesmos elementos
 • Drops items based on probability=• Elimina elementos en función da probabilidade
 • Drops nothing=• Non cae nada
 Building=Edificio
+
 Almost all blocks can be built (or placed). Building is very simple and has no delay.=Case todos os bloques pódense construír (ou colocar). A construción é moi sinxela e non ten demora.
+
 To build your wielded block, point at a block in the world and right-click. If this is not possible because the pointed block has a special right-click action, hold down the sneak key before right-clicking.=Para construír o teu bloque, apunta a un bloque do mundo e fai clic co botón dereito. Se isto non é posible porque o bloque apuntado ten unha acción especial de clic co botón dereito, manteña premida a tecla furtiva antes de facer clic co botón dereito.
+
 Blocks can almost always be built at pointable blocks. One exception are blocks attached to the floor; these can only be built on the floor.=Case sempre pódense construír bloques en bloques puntuables. Unha excepción son os bloques pegados ao chan; estes só poden construírse no chan.
+
 Normally, blocks are built in front of the pointed side of the pointed block. A few blocks are different: When you try to build at them, they are replaced.=Normalmente, os bloques constrúense diante do lado apuntado do bloque puntiagudo. Algúns bloques son diferentes: cando intentas construír neles, substitúense.
+
 Liquids=Líquidos
+
 Liquids are special dynamic blocks. Liquids like to spread and flow to their surrounding blocks. Players can swim and drown in them.=Os líquidos son bloques dinámicos especiais. Aos líquidos gústalles estenderse e fluír aos seus bloques circundantes. Os xogadores poden nadar e afogar neles.
+
 Liquids usually come in two forms: In source form (S) and in flowing form (F).=Os líquidos adoitan presentarse en dúas formas: en forma fonte (S) e en forma fluída (F).
+
 Liquid sources have the shape of a full cube. A liquid source will generate flowing liquids around it from time to time, and, if the liquid is renewable, it also generates liquid sources. A liquid source can sustain itself. As long it is left alone, a liquid source will normally keep its place and does not drain out.=As fontes líquidas teñen a forma dun cubo cheo. Unha fonte líquida xerará líquidos ao seu redor de cando en vez e, se o líquido é renovable, tamén xera fontes líquidas. Unha fonte líquida pode manterse por si mesma. Mentres se deixa só, unha fonte líquida normalmente manterá o seu lugar e non escorre.
 
 Flowing liquids take a sloped form. Flowing liquids spread around the world until they drain. A flowing liquid cannot sustain itself and always comes from a liquid source, either directly or indirectly. Without a liquid source, a flowing liquid will eventually drain out and disappear.=Os líquidos que flúen adoptan unha forma inclinada. Os líquidos que flúen esténdense polo mundo ata que drenan. Un líquido que flúe non pode sosterse e sempre provén dunha fonte líquida, ben directa ou indirectamente. Sen unha fonte de líquido, un líquido que flúe eventualmente drenarase e desaparecerá.
+
 All liquids share the following properties:=Todos os líquidos comparten as seguintes propiedades:
 • All properties of blocks (including drowning damage)=• Todas as propiedades dos bloques (incluíndo danos por afogamento)
 • Renewability: Renewable liquids can create new sources=• Renovabilidade: os líquidos renovables poden crear novas fontes
+
 • Flowing range: How many flowing liquids are created at maximum per liquid source, it determines how far the liquid will spread. Possible are ranges from 0 to 8. At 0, no flowing liquids will be created. Image 5 shows a liquid of flowing range 2=• Rango de fluxo: cantos líquidos fluídos se crean como máximo por fonte de líquido, determina ata onde se espallará o líquido. Posibles son os rangos de 0 a 8. Ao 0, non se crearán líquidos fluídos. A imaxe 5 mostra un líquido de intervalo fluído 2
+
 • Viscosity: How slow players move through it and how slow the liquid spreads=• Viscosidade: o lento que se move os xogadores por el e o lento que se espalla o líquido
+
 Renewable liquids create new liquid sources at open spaces (image 2). A new liquid source is created when:=Os líquidos renovables crean novas fontes líquidas en espazos abertos (imaxe 2). Créase unha nova fonte de líquido cando:
+
 • Two renewable liquid blocks of the same type touch each other diagonally=• Dous bloques de líquidos renovables do mesmo tipo tócanse en diagonal
 • These blocks are also on the same height=• Estes bloques tamén están á mesma altura
 • One of the two “corners” is open space which allows liquids to flow in=• Un dos dous “esquinas” é un espazo aberto que permite que os líquidos flúen
+
 When those criteria are met, the open space is filled with a new liquid source of the same type (image 3).=Cando se cumpren eses criterios, o espazo aberto énchese cunha nova fonte de líquido do mesmo tipo (imaxe 3).
+
 Swimming in a liquid is fairly straightforward: The usual direction keys for basic movement, the jump key for rising and the sneak key for sinking.=Nadar nun líquido é bastante sinxelo: as teclas de dirección habituais para o movemento básico, a tecla de salto para subir e a tecla agochar para afundir.
+
 The physics for swimming and diving in a liquid are:=A física para nadar e mergullar nun líquido son:
 • The higher the viscosity, the slower you move=• Canto maior sexa a viscosidade, máis lento te moves
 • If you rest, you'll slowly sink=• Se descansas, afundirase lentamente
 • There is no fall damage for falling into a liquid as such=• Non hai danos por caída por caer nun líquido como tal
+
 • If you fall into a liquid, you will be slowed down on impact (but don't stop instantly). Your impact depth is determined by your speed and the liquid viscosity. For a safe high drop into a liquid, make sure there is enough liquid above the ground, otherwise you might hit the ground and take fall damage=• Se caes nun líquido, reducirás a velocidade no impacto (pero non pares ao instante). A súa profundidade de impacto está determinada pola súa velocidade e a viscosidade do líquido. Para unha caída segura e alta nun líquido, asegúrate de que haxa suficiente líquido sobre o chan, se non, podes golpear o chan e sufrir danos por caída 
+
 Liquids are often not pointable. But some special items are able to point all liquids.=Os líquidos moitas veces non son útiles. Pero algúns elementos especiais son capaces de apuntar todos os líquidos.
+
 Crafting=Elaboración
 Crafting is the task of combining several items to form a new item.=A elaboración é a tarefa de combinar varios elementos para formar un novo elemento.
 
 To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=Para elaborar algo, necesitas un ou máis elementos, unha grade de elaboración (C) e unha receita de elaboración. Unha grade de elaboración é como un inventario normal que tamén se pode usar para elaborar. Os elementos deben colocarse nun patrón determinado na grade de elaboración. Xunto á grade de elaboración hai unha rañura de saída (O). Aquí aparecerá o resultado cando coloques os elementos correctamente. Isto é só unha vista previa, non o elemento real. As grades de elaboración poden ter diferentes tamaños, o que limita as posibles receitas que podes elaborar.
 
 To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.=Para completar a elaboración, toma o elemento do resultado da rañura de saída, que consumirá elementos da grade de elaboración e creará un novo elemento. Non é posible colocar elementos na rañura de saída.
+
 A description on how to craft an item is called a “crafting recipe”. You need this knowledge to craft. There are multiple ways to learn crafting recipes. One way is by using a crafting guide, which contains a list of available crafting recipes. Some games provide crafting guides. There are also some mods which you can download online for installing a crafting guide. Another way is by reading the online manual of the game (if one is available).=Unha descrición sobre como elaborar un obxecto chámase "receita de elaboración". Necesitas estes coñecementos para elaborar. Hai varias formas de aprender receitas artesanais. Unha forma é usar unha guía de elaboración, que contén unha lista de receitas de elaboración dispoñibles. Algúns xogos ofrecen guías de elaboración. Tamén hai algúns mods que podes descargar en liña para instalar unha guía de elaboración. Outra forma é lendo o manual en liña do xogo (se está dispoñible).
+
 Crafting recipes consist of at least one input item and exactly one stack of output items. When performing a single craft, it will consume exactly one item from each stack of the crafting grid, unless the crafting recipe defines replacements.=As receitas de elaboración consisten en polo menos un elemento de entrada e exactamente unha morea de elementos de saída. Ao realizar unha única artesanía, consumirá exactamente un elemento de cada morea da grella de elaboración, a menos que a receita de elaboración defina substitucións.
+
 There are multiple types of crafting recipes:=Hai varios tipos de receitas de elaboración:
 • Shaped (image 2): Items need to be placed in a particular shape=• En forma (imaxe 2): os elementos deben colocarse nunha forma determinada
+
 • Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=• Sen forma (imaxes 3 e 4): os elementos deben colocarse nalgún lugar da entrada (ambas imaxes mostran a mesma receita)
+
 • Cooking: Explained in “Basics > Cooking”=• Cociñar: Explícase en “Básicos > Cociñar”
+
 • Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%=• Reparación (imaxe 5): coloque dúas ferramentas danadas na grade de elaboración en calquera lugar para conseguir unha ferramenta que se repara nun 5%
+
 In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=Nalgunhas receitas de elaboración, algúns elementos de entrada non precisan ser un elemento concreto, senón que deben ser membros dun grupo (consulta "Aspectos básicos > Grupos"). Estas receitas ofrecen un pouco máis de liberdade nos elementos de entrada. As imaxes 6-8 mostran a mesma receita baseada en grupo. Aquí, son necesarios 8 elementos do grupo "pedra", o que é certo para todos os elementos mostrados.
 
 Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item.=Poucas veces, as receitas de elaboración teñen substitutos. Isto significa que, sempre que realices unha elaboración, algúns elementos da grade de elaboración non se consumirán, senón que se substituirán por outro.
+
 Cooking=Cociñar
 
 Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), a cookable item, a fuel item and time in order to yield a new item.=Cociñar (ou fundir) é unha forma de elaboración que non implica unha grade de elaboración. A cociña realízase cun bloque especial (como un forno), un elemento cocibel, un elemento de combustible e tempo para producir un novo elemento.
+
 Each fuel item has a burning time. This is the time a single item of the fuel keeps a furnace burning.=Cada elemento de combustible ten un tempo de combustión. Este é o momento en que un só elemento do combustible mantén aceso un forno.
 
 Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.=Cada elemento cociñable require tempo para ser cociñado. Este tempo é específico para o tipo de elemento e o elemento debe estar "aceso" durante todo o tempo de cocción para obter realmente o resultado.
+
 Hotbar=Barra de Acceso
+
 At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Na parte inferior da pantalla ves algúns cadrados. Isto chámase "barra de acceso". A barra de acceso rápido permíteche acceder rapidamente aos primeiros elementos do inventario do teu reprodutor.
+
 You can change the selected item with the mouse wheel or the keyboard.=Pode cambiar o elemento seleccionado coa roda do rato ou o teclado.
 • Select previous item in hotbar: [Mouse wheel up] or [B]=• Seleccione o elemento anterior na barra de acceso: [Roda cara arriba] ou [B]
 • Select next item in hotbar: [Mouse wheel down] or [N]=• Seleccione o seguinte elemento na barra de acceso: [Roda do rato cara abaixo] ou [N]
@@ -226,17 +325,26 @@ You can change the selected item with the mouse wheel or the keyboard.=Pode camb
 The selected item is also your wielded item.=O elemento escollido tamén é o teu elemento usado.
 Minimap=Minimapa
 If you have a map item in any of your hotbar slots, you can use the minimap.=Se tes un elemento do mapa nalgunha das túas ranuras da barra activa, podes usar o minimapa.
+
 Press [F9] to make a minimap appear on the top right. The minimap helps you to find your way around the world. Press it again to select different minimap modes and zoom levels. The minimap also shows the positions of other players.=Preme [F9] para que apareza un minimapa na parte superior dereita. O minimapa axúdache a buscar o teu camiño polo mundo. Preme de novo para seleccionar diferentes modos de minimapa e niveis de zoom. O minimapa tamén mostra as posicións doutros xogadores.
+
 There are 2 minimap modes and 3 zoom levels.=Hai 2 modos de minimapa e 3 niveis de zoom.
+
 Surface mode (image 1) is a top-down view of the world, roughly resembling the colors of the blocks this world is made of. It only shows the topmost blocks, everything below is hidden, like a satellite photo. Surface mode is useful if you got lost.=O modo de superficie (imaxe 1) é unha vista de arriba abaixo do mundo, que se asemella aproximadamente ás cores dos bloques dos que está feito este mundo. Só mostra os bloques superiores, todo o que está abaixo está oculto, como unha foto de satélite. O modo de superficie é útil se te perdes.
+
 Radar mode (image 2) is more complicated. It displays the “denseness” of the area around you and changes with your height. Roughly, the more green an area is, the less “dense” it is. Black areas have many blocks. Use the radar to find caverns, hidden areas, walls and more. The rectangular shapes in image 2 clearly expose the position of a dungeon.=O modo radar (imaxe 2) é máis complicado. Mostra a "densidade" da área que te rodea e cambia coa túa altura. Aproximadamente, canto máis verde é unha zona, menos "densa" é. As áreas negras teñen moitos bloques. Usa o radar para atopar cavernas, áreas escondidas, muros e moito máis. As formas rectangulares da imaxe 2 expoñen claramente a posición dun calabozo.
+
 There are also two different rotation modes. In “square mode”, the rotation of the minimap is fixed. If you press [Shift]+[F9] to switch to “circle mode”, the minimap will instead rotate with your looking direction, so “up” is always your looking direction.=Tamén hai dous modos de rotación diferentes. No "modo cadrado", a rotación do minimapa está fixada. Se premes [Maiús]+[F9] para cambiar ao "modo círculo", o minimapa xirará na dirección da túa mirada, polo que "arriba" é sempre a túa dirección de mira.
+
 In some games, the minimap may be disabled.=Nalgúns xogos, o minimapa pode estar desactivado.
 • Toggle minimap mode: [F9]=• Alternar o modo minimapa: [F9]
 • Toggle minimap rotation mode: [Shift]+[F9]=• Alternar o modo de rotación do minimapa: [Maiús]+[F9]
 Inventory=Inventario
+
 Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=Os inventarios úsanse para almacenar moreas de obxectos. Hai outros usos, como a artesanía. Un inventario consiste nunha cuadrícula rectangular de espazos para elementos. Cada espazo para elementos pode estar baleiro ou albergar unha morea de elementos. As moreas de elementos pódense mover libremente entre a maioría dos espazos.
+
 You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Tes o teu propio inventario que se chama o teu "inventario de xogadores", podes abrilo coa clave de inventario (predeterminado: [I]). Os primeiros espazos de inventario tamén se usan como espazos na súa barra de acceso rápido.
+
 Blocks can also have their own inventory, e.g. chests and furnaces.=Os bloques tamén poden ter o seu propio inventario, p. ex. cofres e fornos.
 Inventory controls:=Controis de inventario:
 Taking: You can take items from an occupied slot if the cursor holds nothing.=Tomando: podes sacar elementos dun slot ocupado se o cursor non contén nada.
@@ -244,32 +352,50 @@ Taking: You can take items from an occupied slot if the cursor holds nothing.=To
 • Right click: take half from the item stack (rounded up)=• Fai clic co botón dereito: toma a metade da morea de elementos (redondeado cara arriba)
 • Middle click: take 10 items from the item stack=• Prema central: toma 10 elementos da morea de elementos
 • Mouse wheel down: take 1 item from the item stack=• Roda do rato cara abaixo: colle 1 elemento da morea de elementos
+
 Putting: You can put items onto a slot if the cursor holds 1 or more items and the slot is either empty or contains an item stack of the same item type.=Poñer: podes poñer elementos nunha ranura se o cursor contén 1 ou máis elementos e o espazo está baleiro ou contén unha morea de elementos do mesmo tipo.
+
 • Left click: put entire item stack=• Fai clic co botón esquerdo: pon todo a morea de elementos
 • Right click or mouse wheel up: put 1 item of the item stack=• Fai clic co botón dereito do rato ou a roda do rato cara arriba: pon 1 elemento da morea de elementos
 • Middle click: put 10 items of the item stack=• Clic central: pon 10 elementos da morea de elementos
+
 Exchanging: You can exchange items if the cursor holds 1 or more items and the destination slot is occupied by a different item type.=Intercambiar: podes intercambiar elementos se o cursor ten 1 ou máis elementos e o espazo de destino está ocupado por un tipo de elemento diferente.
+
 • Click: exchange item stacks=• Fai clic: intercambia moreas de elementos
+
 Throwing away: If you hold an item stack and click with it somewhere outside the menu, the item stack gets thrown away into the environment.=Tirar ao lixo: se gardas unha morea de elementos e fai clic con ela nalgún lugar fóra do menú, a morea de elementos bótase ao ambiente.
+
 Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=Transferencia rápida: podes transferir rapidamente unha morea de obxectos ao inventario dos xogadores a/desde o espazo de inventario doutro obxecto, como un forno, un cofre ou calquera outro elemento cun espazo de inventario cando se accede ao inventario dese obxecto. O inventario de destino é xeralmente o inventario máis relevante neste contexto.
+
 • Sneak+Left click: Automatically transfer item stack=• Agochar+clic esquerdo: transferir automaticamente morea de elementos
 Online help=Axuda en liña
 You may want to check out these online resources related to Minetest:=Quizais queiras consultar estes recursos en liña relacionados con Minetest:
 Official homepage of Minetest: <https://minetest.net/>=Páxina oficial de Minetest: <https://minetest.net/>
 The main place to find the most recent version of Minetest.=O lugar principal para atopar a versión máis recente de Minetest.
 Community wiki: <https://wiki.minetest.net/>=Wiki da comunidade: <https://wiki.minetest.net/>
+
 A community-based documentation website for Minetest. Anyone with an account can edit it! It also features a documentation of Minetest Game.=Un sitio web de documentación baseado na comunidade para Minetest. Calquera persoa que teña unha conta pode editala. Tamén presenta unha documentación de Minetest Game.
 
 Web forums: <https://forums.minetest.net/>=Foros web: <https://forums.minetest.net/>
+
 A web-based discussion platform where you can discuss everything related to Minetest. This is also a place where player-made mods and games are published and discussed. The discussions are mainly in English, but there is also space for discussion in other languages.=Unha plataforma de debate baseada na web onde podes discutir todo o relacionado con Minetest. Este tamén é un lugar onde se publican e discuten as modificacións e os xogos feitos polo xogador. Os debates son principalmente en inglés, pero tamén hai espazo para debater noutros idiomas.
+
 Chat: <irc://irc.freenode.net#minetest>=Chat: <irc://irc.freenode.net#minetest>
+
 A generic Internet Relay Chat channel for everything related to Minetest where people can meet to discuss in real-time. If you do not understand IRC, see the Community Wiki for help.=Unha canle xenérica de Internet Relay Chat para todo o relacionado con Minetest onde a xente pode reunirse para discutir en tempo real. Se non entendes IRC, consulta a Wiki da comunidade para obter axuda.
+
 Groups=Grupos
+
 Items, players and objects (animate and inanimate) can be members of any number of groups. Groups serve multiple purposes:=Os elementos, xogadores e obxectos (animados e inanimados) poden ser membros de calquera número de grupos. Os grupos teñen varios propósitos:
+
 • Crafting recipes: Slots in a crafting recipe may not require a specific item, but instead an item which is a member of a particular group, or multiple groups=• Receitas de elaboración: os espazos nunha receita de elaboración poden non requirir un elemento específico, senón un elemento que é membro dun grupo determinado, ou de varios grupos
+
 • Digging times: Diggable blocks belong to groups which are used to determine digging times. Mining tools are capable of digging blocks belonging to certain groups=• Tempos de escavación: os bloques escavables pertencen a grupos que se utilizan para determinar os tempos de escavación. As ferramentas de minería son capaces de cavar bloques pertencentes a determinados grupos
+
 • Block behavior: Blocks may show a special behaviour and interact with other blocks when they belong to a particular group=• Comportamento do bloque: os bloques poden mostrar un comportamento especial e interactuar con outros bloques cando pertencen a un determinado grupo
+
 • Damage and armor: Objects and players have armor groups, weapons have damage groups. These groups determine damage. See also: “Basics > Weapons”=• Danos e armaduras: os obxectos e os xogadores teñen grupos de armaduras, as armas teñen grupos de danos. Estes grupos determinan os danos. Vexa tamén: "Básico > Armas"
+
 • Other uses=• Outros usos
 In the item help, many important groups are usually mentioned and explained.=Na axuda do elemento, adoitan mencionarse e explicar moitos grupos importantes.
 Glossary=Glosario
@@ -318,46 +444,71 @@ Interface=Interface
 Online multiplayer:=Multixogador en liña:
 • PvP: Player vs Player. If active, players can deal damage to each other=• PvP: Xogador contra xogador. Se están activos, os xogadores poden facerse dano entre eles
 • Griefing: Destroying the buildings of other players against their will=• Griefing: Destruír os edificios doutros xogadores contra a súa vontade
+
 • Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=• Protección: Mecanismo para posuír zonas do mundo, que só permite aos propietarios modificar bloques no seu interior
+
 Technical terms:=Termos técnicos:
 • Minetest: This game engine=• Minetest: este motor de xogo
 • Minetest Game: A game for Minetest by the Minetest developers=• Minetest Game: un xogo para Minetest dos desenvolvedores de Minetest
+
 • Game: A complete playing experience to be used in Minetest; such as a game or sandbox or similar=• Xogo: unha experiencia de xogo completa para usar en Minetest; como un xogo ou unha caixa de area ou semellante
+
 • Mod: A single subsystem which adds or modifies functionality; is the basic building block of games and can be used to further enhance or modify them=• Mod: un único subsistema que engade ou modifica funcionalidades; é o bloque básico dos xogos e pódese usar para melloralos ou modificalos aínda máis
+
 • Privilege: Allows a player to do something=• Privilexio: Permítelle a un xogador facer algo
 • Node: Other word for “block”=• Nodo: outra palabra para “bloque”
 Settings=Configuración
+
 There is a large variety of settings to configure Minetest. Pretty much every aspect can be changed that way.=Hai unha gran variedade de opcións para configurar Minetest. Case todos os aspectos pódense cambiar dese xeito.
+
 These are a few of the most important gameplay settings:=Estas son algunhas das opcións de xogo máis importantes:
+
 • Damage enabled (enable_damage): Enables the health and breath attributes for all players. If disabled, players are immortal=• Damage enabled (enable_damage): activa os atributos de saúde e respiración para todos os xogadores. Se está desactivado, os xogadores son inmortais
+
 • Creative Mode (creative_mode): Enables sandbox-style gameplay focusing on creativity rather than a challenging gameplay. The meaning depends on the game; usual changes are: Reduced dig times, easy access to almost all items, tools never wear off, etc.=• Modo creativo (creative_mode): permite un xogo estilo sandbox centrándose na creatividade en vez de nun xogo desafiante. O significado depende do xogo; Os cambios habituais son: tempos de escavación reducidos, fácil acceso a case todos os elementos, ferramentas que nunca se desgastan, etc.
+
 • PvP (enable_pvp): Short for “Player vs Player”. If enabled, players can deal damage to each other=• PvP (enable_pvp): abreviatura de "Xogador contra xogador". Se está activado, os xogadores poden causar dano entre eles
+
 For a full list of all available settings, use the “All Settings” dialog in the main menu.=Para obter unha lista completa de todas as opcións dispoñibles, use o diálogo "Todas as opcións" no menú principal.
+
 Movement modes=Modos de movemento
 You can enable some special movement modes that change how you move.=Podes activar algúns modos de movemento especiais que cambian a forma de moverte.
 Pitch movement mode:=Modo de movemento de ton:
+
 • Description: If this mode is activated, the movement keys will move you relative to your current view pitch (vertical look angle) when you're in a liquid or in fly mode.=• Descrición: se este modo está activado, as teclas de movemento moveránche en relación ao teu tono de vista actual (ángulo de mirada vertical) cando esteas nun líquido ou no modo voo.
+
 • Default key: [L]=• Tecla predeterminada: [L]
 • No privilege required=• Non se require ningún privilexio
 Fast mode:=Modo rápido:
+
 • Description: Allows you to move much faster. Hold down the the “Use” key [E] to move faster. In the client configuration, you can further customize fast mode.=• Descrición: Permíteche moverte moito máis rápido. Manteña premida a tecla "Usar" [E] para moverse máis rápido. Na configuración do cliente, pode personalizar aínda máis o modo rápido.
+
 • Default key: [J]=• Tecla predeterminada: [J]
 • Required privilege: fast=• Privilexio necesario: rápido
 Fly mode:=Modo voo:
+
 • Description: Gravity doesn't affect you and you can move freely in all directions. Use the jump key to rise and the sneak key to sink.=• Descrición: a gravidade non che afecta e podes moverte libremente en todas as direccións. Usa a tecla de salto para subir e a tecla agochar para afundir.
+
 • Default key: [K]=• Tecla predeterminada: [K]
 • Required privilege: fly=• Privilexio necesario: fly
 Noclip mode:=Modo Noclip:
+
 • Description: Allows you to move through walls. Only works when fly mode is enabled, too.=• Descrición: Permíteche moverte por paredes. Só funciona cando o modo voo tamén está activado.
+
 • Default key: [H]=• Tecla predeterminada: [H]
 • Required privilege: noclip=• Privilexios necesarios: noclip
 Console=Consola
+
 With [F10] you can open and close the console. The main use of the console is to show the chat log and enter chat messages or server commands.=Con [F10] pode abrir e pechar a consola. O uso principal da consola é mostrar o rexistro de chat e introducir mensaxes de chat ou comandos do servidor.
+
 Using the chat or server command key also opens the console, but it is smaller and will be closed after you sent a message.=Ao usar a tecla de comando do chat ou do servidor tamén se abre a consola, pero é máis pequena e pecharase despois de enviar unha mensaxe.
+
 Use the chat to communicate with other players. This requires you to have the “shout” privilege.=Usa o chat para comunicarte con outros xogadores. Isto require que teñas o privilexio de "berrar".
 
 Just type in the message and hit [Enter]. Public chat messages cannot begin with “/”.=Só tes que escribir a mensaxe e premer [Intro]. As mensaxes de chat público non poden comezar por “/”.
+
 You can send private messages: Say “/msg <player> <message>” in chat to send “<message>” which can only be seen by <player>.=Podes enviar mensaxes privadas: Di "/msg <player> <mensaxe>" no chat para enviar "<mensaxe>" que só pode ver <player>.
+
 There are some special controls for the console:=Hai algúns controis especiais para a consola:
 • [F10] Open/close console=• [F10] Abrir/pechar consola
 • [Enter]: Send message or command=• [Intro]: enviar mensaxe ou comando
@@ -370,35 +521,60 @@ There are some special controls for the console:=Hai algúns controis especiais 
 • [Ctrl]+[K]: Delete all text after the cursor=• [Ctrl]+[K]: elimina todo o texto despois do cursor
 • [Page up]: Scroll up=• [Arriba páxina]: Desprácese cara arriba
 • [Page down]: Scroll down=• [Abaixo páxina]: Desprácese cara abaixo
+
 There is also an input history. Minetest saves your previous console inputs which you can quickly access later:=Tamén hai un historial de entradas. Minetest garda as súas entradas de consola anteriores ás que pode acceder rapidamente máis tarde:
+
 • [Up]: Go to previous entry in history=• [Arriba]: vai á entrada anterior do historial
 • [Down]: Go to next entry in history=• [Abaixo]: vai á seguinte entrada do historial
 Server commands=Comandos do servidor
+
 Server commands (also called “chat commands”) are little helpers for advanced users. You don't need to use these commands when playing. But they might come in handy to perform some more technical tasks. Server commands work both in multi-player and single-player mode.=Os comandos do servidor (tamén chamados "comandos de chat") son pequenas axudas para os usuarios avanzados. Non necesitas usar estes comandos cando xogas. Pero poden ser útiles para realizar algunhas tarefas máis técnicas. Os comandos do servidor funcionan tanto no modo multixogador como no modo dun xogador.
+
 Server commands can be entered by players using the chat to perform a special server action. There are a few commands which can be issued by everyone, but some commands only work if you have certain privileges granted on the server. There is a small set of basic commands which are always available, other commands can be added by mods.=Os xogadores poden introducir comandos do servidor mediante o chat para realizar unha acción especial do servidor. Hai algúns comandos que poden ser emitidos por todos, pero algúns só funcionan se tes certos privilexios concedidos no servidor. Hai un pequeno conxunto de comandos básicos que sempre están dispoñibles, outros comandos pódense engadir mediante mods.
+
 To issue a command, simply type it like a chat message or press Minetest's command key (default: [/]). All commands have to begin with “/”, for example “/mods”. The Minetest command key does the same as the chat key, except that the slash is already entered.=Para emitir un comando, simplemente escríbeo como unha mensaxe de chat ou prema a tecla de comando de Minetest (predeterminado: [/]). Todos os comandos deben comezar por "/", por exemplo "/mods". A tecla de comando de Minetest fai o mesmo que a tecla de chat, excepto que a barra inclinada xa está introducida.
+
 Commands may or may not give a response in the chat log, but errors will generally be shown in the chat. Try it for yourselves: Close this window and type in the “/mods” command. This will give you the list of available mods on this server.=Os comandos poden ou non dar unha resposta no rexistro de chat, pero os erros xeralmente mostraranse no chat. Probeo por vós mesmos: pecha esta xanela e escriba o comando "/mods". Isto darache a lista de modificacións dispoñibles neste servidor.
+
 “/help all” is a very important command: You get a list of all available commands on the server, a short explanation and the allowed parameters. This command is also important because the available commands often differ per server.="/help all" é un comando moi importante: obtén unha lista de todos os comandos dispoñibles no servidor, unha pequena explicación e os parámetros permitidos. Este comando tamén é importante porque os comandos dispoñibles a miúdo difiren por servidor.
+
 Commands are followed by zero or more parameters.=Os comandos van seguidos de cero ou máis parámetros.
+
 In the command reference, you see some placeholders which you need to replace with an actual value. Here's an explanation:=Na referencia do comando, ves algúns marcadores de posición que debes substituír por un valor real. Aquí tes unha explicación:
+
 • Text in greater-than and lower-than signs (e.g. “<param>”): Placeholder for a parameter=• Texto en signos de maior e menor que (por exemplo, “<param>”): marcador de posición para un parámetro
+
 • Anything in square brackets (e.g. “[text]”) is optional and can be omitted=• Calquera cousa entre corchetes (por exemplo, “[texto]”) é opcional e pódese omitir
+
 • Pipe or slash (e.g. “text1 | text2 | text3”): Alternation. One of multiple texts must be used (e.g. “text2”)=• Tubo ou barra (por exemplo, "texto1 | texto2 | texto3"): alternancia. Debe utilizarse un dos varios textos (por exemplo, "text2")
+
 • Parenthesis: (e.g. “(word1 word2) | word3”): Groups multiple words together, used for alternations=• Paréntese: (p. ex. “(palabra1 palabra2) | palabra3”): agrupa varias palabras, usadas para alternar
+
 • Everything else is to be read as literal text=• Todo o demais debe ser lido como texto literal
 Here are some examples to illustrate the command syntax:=Aquí tes algúns exemplos para ilustrar a sintaxe do comando:
 • /mods: No parameters. Just enter “/mods”=• /mods: sen parámetros. Só tes que introducir "/mods"
+
 • /me <action>: 1 parameter. You have to enter “/me ” followed by any text, e.g. “/me orders pizza”=• /me <acción>: 1 parámetro. Tes que introducir "/me" seguido de calquera texto, p. ex. "/pido pizza"
+
 • /give <name> <ItemString>: Two parameters. Example: “/give Player default:apple”=• /give <nome> <ItemString>: dous parámetros. Exemplo: "/dar o predeterminado do reprodutor: apple"
+
 • /help [all|privs|<cmd>]: Valid inputs are “/help”, “/help all”, “/help privs”, or “/help ” followed by a command name, like “/help time”=• /help [all|privs|<cmd>]: as entradas válidas son “/help”, “/help all”, “/help privs” ou “/help ” seguidas dun nome de comando, como “/help time”
+
 • /spawnentity <EntityName> [<X>,<Y>,<Z>]: Valid inputs include “/spawnentity boats:boat” and “/spawnentity boats:boat 0,0,0”=• /spawnentity <EntityName> [<X>,<Y>,<Z>]: as entradas válidas inclúen “/spawnentity boats:boat” e “/spawnentity boats:boat 0,0,0”
+
 Some final remarks:=Algunhas observacións finais:
+
 • For /give and /giveme, you need an itemstring. This is an internally used unique item identifier which you may find in the item help if you have the “give” or “debug” privilege=• Para /give e /giveme, necesitas unha cadea de elementos. Este é un identificador de elemento único de uso interno que podes atopar na axuda do elemento se tes o privilexio de "dar" ou "depurar"
+
 • For /spawnentity you need an entity name, which is another identifier=• Para /spawnentity necesitas un nome de entidade, que é outro identificador
 Privileges=Privilexios
+
 Each player has a set of privileges, which differs from server to server. Your privileges determine what you can and can't do. Privileges can be granted and revoked from other players by any player who has the privilege called “privs”.=Cada xogador ten un conxunto de privilexios, que varían dun servidor a outro. Os teus privilexios determinan o que podes e non podes facer. Os privilexios poden ser concedidos e revogados a outros xogadores por calquera xogador que teña o privilexio chamado "privs".
+
 On a multiplayer server with the default configuration, new players start with the privileges called “interact” and “shout”. The “interact” privilege is required for the most basic gameplay actions such as building, mining, using, etc. The “shout” privilege allows to chat.=Nun servidor multixogador coa configuración predeterminada, os novos xogadores comezan cos privilexios chamados "interactuar" e "gritar". O privilexio de "interactuar" é necesario para as accións de xogo máis básicas, como construír, minar, usar, etc. O privilexio de "gritar" permite chatear.
+
 There is a small set of core privileges which you'll find on every server, other privileges might be added by mods.=Hai un pequeno conxunto de privilexios principais que atoparás en cada servidor, outros privilexios poden ser engadidos por mods.
+
 To view your own privileges, issue the server command “/privs”.=Para ver os seus propios privilexios, emita o comando do servidor "/privs".
 Here are a few basic privilege-related commands:=Aquí tes algúns comandos básicos relacionados cos privilexios:
 • /privs: Lists your privileges=• /privs: enumera os teus privilexios
@@ -409,21 +585,36 @@ Players with the “privs” privilege can modify privileges at will:=Os xogador
 • /revoke <player> <privilege>: Revoke <privilege> from <player>=• /revoke <xogador> <privilexio>: revoga <privilexio> de <xogador>
 In single-player mode, you can use “/grantme all” to unlock all abilities.=No modo para un xogador, podes usar "/grantme all" para desbloquear todas as habilidades.
 Light=Luz
+
 As the world is entirely block-based, so is the light in the world. Each block has its own brightness. The brightness of a block is expressed in a “light level” which ranges from 0 (total darkness) to 15 (as bright as the sun).=Como o mundo está totalmente baseado en bloques, tamén o é a luz do mundo. Cada bloque ten o seu propio brillo. O brillo dun bloque exprésase nun "nivel de luz" que varía de 0 (escuridade total) a 15 (tan brillante como o sol).
+
 There are two types of light: Sunlight and artificial light.=Hai dous tipos de luz: luz solar e luz artificial.
+
 Artificial light is emitted by luminous blocks. Artificial light has a light level from 1-14.=A luz artificial é emitida por bloques luminosos. A luz artificial ten un nivel de luz de 1-14.
+
 Sunlight is the brightest light and always goes perfectly straight down from the sky at each time of the day. At night, the sunlight will become moonlight instead, which still provides a small amount of light. The light level of sunlight is 15.=A luz do sol é a luz máis brillante e sempre baixa perfectamente directamente desde o ceo a cada hora do día. Pola noite, a luz solar converterase en luz da lúa, que aínda proporciona unha pequena cantidade de luz. O nivel luminoso da luz solar é 15.
+
 Blocks have 3 levels of transparency:=Os bloques teñen 3 niveis de transparencia:
+
 • Transparent: Sunlight goes through limitless, artificial light goes through with losses=• Transparente: a luz solar pasa sen límites, a artificial pasa con perdas
+
 • Semi-transparent: Sunlight and artificial light go through with losses=• Semitransparente: a luz solar e artificial atravesan con perdas
 • Opaque: No light passes through=• Opaco: non pasa luz
+
 Artificial light will lose one level of brightness for each transparent or semi-transparent block it passes through, until only darkness remains (image 1).=A luz artificial perderá un nivel de brillo por cada bloque transparente ou semitransparente polo que atravesa, ata que só quede escuridade (imaxe 1).
+
 Sunlight will preserve its brightness as long it only passes fully transparent blocks. When it passes through a semi-transparent block, it turns to artificial light. Image 2 shows the difference.=A luz solar conservará o seu brillo mentres só pase bloques totalmente transparentes. Cando pasa por un bloque semitransparente, convértese en luz artificial. A imaxe 2 mostra a diferenza.
+
 Note that “transparency” here only means that the block is able to carry brightness from its neighboring blocks. It is possible for a block to be transparent to light but you can't see trough the other side.=Teña en conta que "transparencia" aquí só significa que o bloque é capaz de levar o brillo dos seus bloques veciños. É posible que un bloque sexa transparente á luz pero non se ve polo outro lado.
+
 Coordinates=Coordenadas
+
 The world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.=O mundo é un gran cubo. E por iso, unha posición no mundo pódese expresar facilmente con coordenadas cartesianas. É dicir, para cada posición no mundo, hai 3 valores X, Y e Z.
+
 Like this: (5, 45, -12)=Así: (5, 45, -12)
+
 This refers to the position where X@=5, Y@=45 and Z@=-12. The 3 letters are called “axes”: Y is for the height. X and Z are for the horizontal position.=Isto refírese á posición onde X@=5, Y@=45 e Z@=-12. As 3 letras chámanse "eixes": Y é para a altura. X e Z son para a posición horizontal.
+
 The values for X, Y and Z work like this:=Os valores de X, Y e Z funcionan así:
 • If you go up, Y increases=• Se sobes, Y aumenta
 • If you go down, Y decreases=• Se baixas, Y diminúe
@@ -530,27 +721,41 @@ Other actions, like walking, do not exhaust you.=Outras accións, como camiñar,
 Everything you need to know about Minetest to get started with playing=Todo o que necesitas saber para comezar a xogar
 Basic controls:=Controis básicos:
 • Lowest row in inventory appears in hotbar below=• A fila máis baixa do inventario aparece na barra de acceso abaixo
+
 Minetest as well as Minetest Game are both unfinished at the moment, so please forgive us when not everything works out perfectly.=Minetest e Minetest Game están sen rematar polo momento, así que perdóanos cando non todo funcione perfectamente.
+
 If you jump while holding the sneak key, you also jump slightly higher than usual.=Se saltas mantendo pulsada a tecla agochar, tamén saltas lixeiramente máis alto do habitual.
+
 • E: Move even faster when in fast mode=• E: Móvese aínda máis rápido cando está en modo rápido
 • Left mouse button: Punch / mine blocks / take items=• Botón esquerdo do rato: perforar / minar bloques / levar elementos
 • Roll mouse wheel: Select next/previous item in hotbar=• Rodar a roda do rato: seleccione o elemento seguinte/anterior na barra de acceso
 • F8: Toggle cinematic mode=• F8: alternar modo cinematográfico
 • P: Only useful for developers. Writes current stack traces=• P: Só útil para desenvolvedores. Escribe trazos de morea actual
+
 Dropped item stacks will be collected automatically when you stand close to them.=As moreas de elementos soltados recolleranse automaticamente cando esteas preto delas.
+
 Mining tools are important to break all kinds of blocks. Weapons are another kind of tool. There are some other more specialized tools. Special actions of tools are usually done by right-click.=As ferramentas de minería son importantes para romper todo tipo de bloques. As armas son outro tipo de ferramenta. Hai outras ferramentas máis especializadas. As accións especiais das ferramentas adoitan facerse facendo clic co botón dereito.
+
 When nothing is wielded, players use their hand which may act as tool and weapon. The hand is capable of punching and deals minimum damage.=Cando non se manexa nada, os xogadores usan a súa man, que pode actuar como ferramenta e arma. A man é capaz de golpear e causa un dano mínimo.
+
 There is also Cinematic Mode which can be toggled with [F8]. With Cinematic Mode enabled, the camera movements become more smooth. Some players don't like it, it is a matter of taste.=Tamén hai un modo cinematográfico que se pode alternar con [F8]. Co modo cinematográfico activado, os movementos da cámara fanse máis suaves. A algúns xogadores non lles gusta, é cuestión de gustos.
+
 By holding down [Z], you can zoom the view at your crosshair. You need the “zoom” privilege to do this.=Mantendo premido [Z], podes ampliar a vista no punto de mira. Necesitas o privilexio de "zoom" para facelo.
+
 • Toggle Cinematic Mode: [F8]=• Alterna o modo cinematográfico: [F8]
+
 The world of MineClone 2 is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=O mundo de MineClone 2 está feito enteiramente de bloques (voxels, para ser precisos). Pódense engadir ou eliminar bloques coas ferramentas correctas.
+
 • Right click: put 1 item of the item stack=• Fai clic co botón dereito: pon 1 elemento da morea de elementos
 You may want to check out these online resources related to MineClone 2.=Pode querer consultar estes recursos en liña relacionados con MineClone 2.
+
 MineClone 2 download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=Descarga de MineClone 2 e discusión do foro: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>
+
 Here you find the most recent version of MineClone 2 and can discuss it.=Aquí atoparás a versión máis recente de MineClone 2 e podes discutilo.
 Bug tracker: <https://github.com/Wuzzy2/MineClone2-Bugs>=Rastreador de erros: <https://github.com/Wuzzy2/MineClone2-Bugs>
 Report bugs here.=Informa de erros aquí.
 Minetest links:=Ligazóns Minetest:
-The main place to find the most recent version of Minetest, the engine used by MineClone 2.=O lugar principal para atopar a versión máis recente de Minetest, o motor empregado por MineClone 2.
-• MineClone 2: What you play right now=• MineClone 2: o que xogas agora
 
+The main place to find the most recent version of Minetest, the engine used by MineClone 2.=O lugar principal para atopar a versión máis recente de Minetest, o motor empregado por MineClone 2.
+
+• MineClone 2: What you play right now=• MineClone 2: o que xogas agora

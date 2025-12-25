@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=
 Stone Hoe=
 Iron Hoe=
-Golden Hoe=
+Gold Hoe=
 Diamond Hoe=
 Netherite Hoe=
 ##[ wheat.lua ]##

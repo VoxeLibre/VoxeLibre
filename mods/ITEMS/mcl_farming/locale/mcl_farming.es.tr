@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=Azada de madera
 Stone Hoe=Azada de piedra
 Iron Hoe=Azada de hierro
-Golden Hoe=Azada de oro
+Gold Hoe=
 Diamond Hoe=Azada de diamante
 Netherite Hoe=Azada de netherita
 ##[ wheat.lua ]##
@@ -169,6 +169,7 @@ Sweet Berry=Bayas Dulces
 
 ##### not used anymore #####
 
+Golden Hoe=Azada de oro
 Premature Beetroot Plant (Stage 1)=Planta de remolacha prematura (Etapa 1)
 Premature Beetroot Plant (Stage 2)=Planta de remolacha prematura (Etapa 2)
 Premature Beetroot Plant (Stage 3)=Planta de remolacha prematura (Etapa 3)

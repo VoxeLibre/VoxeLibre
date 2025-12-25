@@ -21,11 +21,14 @@ This is a very brief introduction to the basic gameplay:=Esta é uma breve intro
 How to play:=Como jogar:
 • Punch a tree trunk until it breaks and collect wood=• Dê um soco no tronco de uma árvore até que ele quebre e colete madeira
 
-	• Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=	• Coloque a madeira na grade 2x2 (sua "grade de produção") no menu do seu inventário e crie 4 tábuas de madeira
+##TODO: fuzzy matched - verify and remove the comment
+• Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=	• Coloque a madeira na grade 2x2 (sua "grade de produção") no menu do seu inventário e crie 4 tábuas de madeira
 
-	• Place them in a 2×2 shape in the crafting grid to craft a crafting table=	• As coloque em um formato 2x2 na grade de produção para criar uma bancada de trabalho.
+##TODO: fuzzy matched - verify and remove the comment
+• Place them in a 2×2 shape in the crafting grid to craft a crafting table=	• As coloque em um formato 2x2 na grade de produção para criar uma bancada de trabalho.
 • Place the crafting table on the ground=• Coloque a bancada de trabalho no chão
-	• Rightclick it for a 3×3 crafting grid=• Clique com o botão direito nela para criar uma grade de produção 3x3
+##TODO: fuzzy matched - verify and remove the comment
+• Rightclick it for a 3×3 crafting grid=• Clique com o botão direito nela para criar uma grade de produção 3x3
 • Use the crafting guide (book icon) to learn all the possible crafting recipes=• Use o guia de produção (ícone de livro) para aprender todas as receitas de produção possíveis
 • Craft a wooden pickaxe so you can dig stone=• Fabrique uma picareta de madeira para poder cavar pedras.
 • Different tools break different kinds of blocks. Try them out!=• Diferentes ferramentas quebram diferentes tipos de blocos. Experimente!
@@ -84,7 +87,7 @@ World interaction:=Interação com o mundo:
 • Roll mouse wheel / B / N: Select next/previous item in hotbar=• Rolar a roda do mouse / B / N: Selecionar o próximo/anterior item na barra de acesso rápido
 • 1-9: Select item in hotbar directly=• 1-9: Selecionar item diretamente na barra de acesso rápido
 • Q: Drop item stack=• Q: Soltar montante de itens
-• Shift+Q: Drop 1 item=• Shift+Q: Soltar 1 item=
+• Shift+Q: Drop 1 item=
 • I: Show/hide inventory menu=• I: Mostrar/ocultar menu de inventário
 Inventory interaction:=Interação com o inventário
 See the entry “Basics > Inventory”.=Veja a entrada “Noções básicas > Inventário”.
@@ -144,7 +147,6 @@ Items are things you can carry along and store in inventories. They can be used 
 An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=Uma montante de itens é uma coleção de itens do mesmo tipo que cabem em uma única vaga de item. Montantes de itens podem ser descartados no chão. Itens que caem nas mesmas coordenadas formarão um montante de itens.
 
 Items have several properties, including the following:=Os itens possuem diversas propriedades, incluindo as seguintes:
-
 • Maximum stack size: Number of items which fit on 1 item stack=• Montante máximo: Número de itens que cabem em um montante de itens
 
 • Pointing range: How close things must be to be pointed while wielding this item=• Alcance de apontamento: A que distância os objetos precisam estar para serem apontados enquanto o item está empunhando
@@ -233,7 +235,6 @@ After mining, a block may leave a “drop” behind. This is a number of items y
 • Always drops the same items=• Sempre solta os mesmos itens
 • Drops items based on probability=• Solta itens com base na probabilidade
 • Drops nothing=• Não solta nada
-
 Building=Construção
 
 Almost all blocks can be built (or placed). Building is very simple and has no delay.=Quase todos os blocos podem ser construídos (ou colocados). A construção é muito direta, não tem espera.
@@ -596,6 +597,7 @@ Sunlight is the brightest light and always goes perfectly straight down from the
 Blocks have 3 levels of transparency:=Os blocos têm 3 níveis de transparência:
 
 • Transparent: Sunlight goes through limitless, artificial light goes through with losses=• Transparente: a luz solar passa sem limites, a luz artificial passa com perdas
+
 • Semi-transparent: Sunlight and artificial light go through with losses=• Semitransparente: A luz solar e a luz artificial passam com perdas
 • Opaque: No light passes through=• Opaco: nenhuma luz passa
 

@@ -76,7 +76,8 @@ Increases knockback.=Økter tilbakeslag.
 Looting=Plyndring
 Increases mob loot.=Øker monsterslipp.
 Loyalty=Lojalitet
-Trident returns after being thrown. Higher levels reduce return time.=Treforken kommer tilbake etter et kast. Høyere nivå reduserer tilbakekallingstiden.
+##TODO: fuzzy matched - verify and remove the comment
+Spear returns after being thrown. Higher levels reduce return time.=Treforken kommer tilbake etter et kast. Høyere nivå reduserer tilbakekallingstiden.
 Luck of the Sea=Havets hell
 Increases rate of good loot (enchanting books, etc.)=Øker frekvensen av gode gjenstandsslipp(fortryllende bøker, o.l.)
 Lure=Agn
@@ -109,6 +110,8 @@ Sweeping Edge=Sveipende knivsegg
 Increases sweeping attack damage.=Øker sveipeskade.
 Unbreaking=Uknuselig
 Increases item durability.=Øker gjenstandsvarighet.
+Swift Sneak=
+Increases movement speed while sneaking.=
 
 
 ##### not used anymore #####

@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=木锄
 Stone Hoe=石锄
 Iron Hoe=铁锄
-Golden Hoe=金锄
+Gold Hoe=
 Diamond Hoe=钻石锄
 Netherite Hoe=下界合金锄
 ##[ wheat.lua ]##
@@ -169,6 +169,7 @@ Sweet Berry=甜浆果
 
 ##### not used anymore #####
 
+Golden Hoe=金锄
 Uses: @1=用途：@1
 Premature Beetroot Plant (Stage 1)=未成熟甜菜植株（第一阶段）
 Premature Beetroot Plant (Stage 2)=未成熟甜菜植株（第二阶段）

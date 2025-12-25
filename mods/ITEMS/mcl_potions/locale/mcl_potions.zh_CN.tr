@@ -103,7 +103,7 @@ Conduit Power=潮涌能量
 +@1% mining and attack speed in water=在水中挖掘和攻击速度增加@1%
 ##[ commands.lua ]##
 
-<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART] [<player>]=
+<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART|PART] [<player>]=
 
 Add a status effect to yourself or another player. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART by the end means no particles will be shown for this effect. Appending a player name to any command will make it try to conduct the operation on that player rather than the command user. If the name doesn't exist, nothing happens.=
 

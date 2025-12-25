@@ -3,19 +3,25 @@
 This is a piece of equippable armor which reduces the amount of damage you receive.=Esta é unha peza de armadura que se pode equipar, a cal reduce o dano que recibes.
 
 To equip it, put it on the corresponding armor slot in your inventory menu.=Para equipala, colócaa no espazo correspondente da armadura no menú do teu inventario.
-sentry=sentinela
-dune=duna
-coast=costa
-wild=salvaxe
-tide=marea
-ward=gardián
-vex=vex
-rib=costela
-snout=fociño
-eye=ollo
-spire=agulla
-silence=silencio
-wayfinder=Explorador
+##TODO: fuzzy matched - verify and remove the comment
+Sentry=sentinela
+Dune=
+##TODO: fuzzy matched - verify and remove the comment
+Coast=costa
+Wild=
+Tide=
+Ward=
+Vex=
+Rib=
+##TODO: fuzzy matched - verify and remove the comment
+Snout=fociño
+Eye=
+##TODO: fuzzy matched - verify and remove the comment
+Spire=agulla
+##TODO: fuzzy matched - verify and remove the comment
+Silence=silencio
+##TODO: fuzzy matched - verify and remove the comment
+Wayfinder=Explorador
 ##[ api.lua ]##
 Upgrade:=Mellora:
 @1 Armor Trim=@1 Revestimento de armadura
@@ -24,8 +30,7 @@ Golden Helmet=Casco de Ouro
 Golden Chestplate=Cota de Ouro
 Golden Leggings=Mallas de Ouro
 Golden Boots=Botas de Ouro
-Chain Helmet=casco de Cadeas
-
+Chainmail Helmet=
 Chainmail Chestplate=Mallas de Cota de Cadeas
 Chainmail Leggings=Mallas de cota de malla
 Chainmail Boots=Botas de cota de malla
@@ -75,7 +80,13 @@ Smithing Template '@1'=Modelo de forxaría '@1'
 
 ##### not used anymore #####
 
-
+dune=duna
+wild=salvaxe
+tide=marea
+ward=gardián
+vex=vex
+rib=costela
+eye=ollo
 Chain Helmet=casco de Cadeas
 Chain Leggings=Mallas de Cadeas
 Chain Boots=Botas de Cadeas

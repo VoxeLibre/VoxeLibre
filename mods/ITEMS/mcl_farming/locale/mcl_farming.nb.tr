@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=Tregrev
 Stone Hoe=Steingrev
 Iron Hoe=Jerngrev
-Golden Hoe=Gullgrev
+Gold Hoe=
 Diamond Hoe=Diamantgrev
 Netherite Hoe=Nethereittgrev
 ##[ wheat.lua ]##
@@ -169,6 +169,7 @@ Sweet Berry=Søtbær
 
 ##### not used anymore #####
 
+Golden Hoe=Gullgrev
 Uses: @1=Bruk: @1
 Premature Beetroot Plant (Stage 1)=Umoden rødbeteplante (stadie 1)
 Premature Beetroot Plant (Stage 2)=Umoden rødbeteplante (stadie 2)

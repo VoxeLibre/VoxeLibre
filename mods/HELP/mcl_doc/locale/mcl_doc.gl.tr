@@ -27,7 +27,8 @@ To consume it, wield it, then right-click.=Para consumilo, témolo que empuñar 
 You cannot consume this when your hunger bar is full.=Non podes consumir isto cando a túa barra de fame estea chea.
 You have to wait for around 2 seconds before you can eat or drink again.=Tes que agardar uns 2 segundos antes de poder comer ou beber de novo.
 Hunger points restored: @1=Puntos de fame restaurados: @1
-Saturation points restored: @1%.1f=Puntos de saturación restaurados: @1%.1f
+##TODO: fuzzy matched - verify and remove the comment
+Saturation points restored: @1=Puntos de saturación restaurados: @1%.1f
 It can be worn on the head.=Pódese levar na cabeza.
 It can be worn on the torso.=Pódese levar no torso.
 It can be worn on the legs.=Pódese levar nas pernas.
@@ -93,4 +94,3 @@ To eat it, wield it, then rightclick.=Para comelo, mándao e despois fai clic co
 To drink it, wield it, then rightclick.=Para bebelo, mándao e despois fai clic co botón dereito.
 To consume it, wield it, then rightclick.=Para consumilo, úsao e, a continuación, fai clic co botón dereito
 This block can be mined by any tool instantly.=Este bloque pode ser extraído por calquera ferramenta ao instante.
-

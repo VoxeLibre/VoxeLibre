@@ -1,6 +1,6 @@
 # textdomain: mcl_core
 ##[ functions.lua ]##
-	
+
 Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=Se as enredadeiras poden estenderse a outros bloques. As enredadeiras de cova, as enredadeiras choronas e as enredadeiras retortas non se ven afectadas.
 
 ##[ nodes_base.lua ]##
@@ -56,7 +56,6 @@ A grass block is dirt with a grass cover. Grass blocks are resourceful blocks wh
 
 Dirt with Snow=Terra con neve
 Grass Path=Camiño de herba
-
 
 Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=Os camiños de herba son unha variante decorativa dos bloques de herba. A súa parte superior ten unha cor diferente e son un pouco máis baixos que os bloques de herba, o que os fai útiles para construír sendeiros. Os camiños de herba pódense crear facendo clic dereioto cunha pa. Un camiño de herba convértese en terra cando está debaixo dun bloque sólido ou cando se fai clic con maiúsculas + botón dereito cunha pa..
 
@@ -121,7 +120,6 @@ Blocks of coal are useful as a compact storage of coal and very useful as a furn
 
 Block of Charcoal=Bloque de carbón vexetal
 
-
 Blocks of charcoal are useful as a compact storage of charcoal and very useful as a furnace fuel. A block of charcoal is as efficient as 10 charcoal.=Os bloques de carbón vexetal son útiles como almacenamento compacto de carbón vexetal e moi útiles como combustible para fornos. Un bloque de carbón vexetal é tan eficiente como 10 de carbón vexetal.
 
 Block of Iron=Bloque de ferro
@@ -133,7 +131,7 @@ Block of Gold=Bloque de ouro
 A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Un bloque de ouro é principalmente un bloque decorativo brillante pero tamén é útil como almacenamento compacto de lingotes de ouro.
 
 Polished Block of Gold=Bloque de ouro pulido
-	
+
 A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Un bloque de ouro pulido é principalmente un bloque decorativo brillante, pero tamén serve como almacenamento compacto de lingotes de ouro.
 
 Block of Diamond=Bloque de diamante
@@ -292,7 +290,6 @@ Acacia Sapling=Gromo de acacia
 When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time.=Cando se coloca no chan (como a terra) e se expón á luz, un gromo de acacia crecerá nunha acacia despois dun tempo.
 
 Spruce Sapling=Gromo de abeto
-
 
 When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.=Cando se coloca sobre solo (como terra) e está exposta á luz, unha muda de abeto medrará nun abeto co tempo. Cando hai 4 mudas de abeto nun cadrado de 2×2, medran ata formar un abeto xigante.
 

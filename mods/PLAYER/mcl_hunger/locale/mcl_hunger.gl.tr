@@ -1,7 +1,4 @@
 # textdomain: mcl_hunger
-Food=Comida
-Saturation=Saturación
-Exhaust.=Canso.
 ##[ commands.lua ]##
 [on|off]=[activar|desactivar]
 Toggle hunger and starvation mechanics=Alterna as mecánicas de fame e inanición.
@@ -30,8 +27,12 @@ Hunger parameter must be a whole number from 0 to 20.=O parámetro de fame debe 
 Done!=Feito!
 
 
-##### xa non se usa #####
+##### not used anymore #####
 
+Food=Comida
+Saturation=Saturación
+Exhaust.=Canso.
+##### xa non se usa #####
 @1 succumbed to the poison.=@1 sucumbiu ao veleno.
 %s: %.1f/%d=%s: %.1f
 %s: %d/%d=%s: %d/%d

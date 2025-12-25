@@ -1,3 +1,4 @@
 # textdomain: mcl_smithing_table
 Upgrade Gear=
+Warning: Current trim will be overridden=
 Smithing table=
