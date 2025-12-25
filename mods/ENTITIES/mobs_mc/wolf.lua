@@ -99,7 +99,7 @@ local wolf = {
 	jump = true,
 	attacks_monsters = true,
 	attack_animals = true,
-	specific_attack = { "player", "mobs_mc:sheep" },
+	specific_attack = { "player", "mobs_mc:sheep", "mobs_mc:rabbit" },
 }
 
 mcl_mobs.register_mob("mobs_mc:wolf", wolf)
