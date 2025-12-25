@@ -46,7 +46,7 @@ local arrow_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "vl_projectile", "collectable", "arrow_item", "itemstring"
+		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "collectable", "arrow_item", "itemstring"
 	},
 
 	_damage=1,	-- Damage on impact
@@ -155,7 +155,10 @@ local arrow_entity = {
 		local save_fields = self._save_fields
 		for i = 1,#save_fields do
 			local field = save_fields[i]
-			out[field] = self["_"..field]
+			local val = self["_"..field]
+			if type(val) ~= "function" and type(val) ~= "userdata" then
+				out[field] = val
+			end
 		end
 
 		-- Preserve entity properties
