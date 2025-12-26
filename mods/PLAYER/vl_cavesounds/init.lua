@@ -76,7 +76,7 @@ local function play()
 					local light_lvl = core.get_node_light(pos1)
 
 					-- Mapping light level to extra fear
-					new_fear = fear + slope * (max_light_lvl - light_lvl)
+					local new_fear = fear + slope * (max_light_lvl - light_lvl)
 
 					-- Nothing special, just set new fear
 					if (new_fear < seconds_in_pitch_black_before_sound) then
