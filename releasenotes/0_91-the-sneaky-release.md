@@ -30,7 +30,7 @@ A new decorative trophy, the decorative star, has been added by Herowl. Craftabl
 ### Sounds
 Environmental sounds of water and lava were added by TomCon. Now you can detect the proximity of lava and flowing water by their sounds.
 
-Fire extinguishing and sculk sounds were fixed by TAMGaming.
+Fire extinguishing and sculk sounds were fixed by TANGaming.
 
 Eating sound was quietened by Delta.
 
@@ -39,10 +39,10 @@ Music fading and handling was improved by Delta.
 A cave sounds system was added by Delta, playing ambient sounds when spending time underground in darkness.
 
 ### Horse armor changes
-Leather horse armor waz added by WolfySoy and TomCon and was accompanied by some rebalancing to horse armor in general. Now you can armor a horse even when you're out of the more expensive materials!
+Leather horse armor was added by WolfySoy and TomCon and was accompanied by some rebalancing to horse armor in general. Now you can armor a horse even when you're out of the more expensive materials!
 
 ### Mob changes
-Thanks to changes by teknomunk, mobs that die when not fighting a player will not drop experience and will not drop some items. This reduces the amount of drops appearing in detached places without player kmowledge, which decreases lag.
+Thanks to changes by teknomunk, mobs that die when not fighting a player will not drop experience and will not drop some items. This reduces the amount of drops appearing in detached places without player knowledge, which decreases lag.
 
 Chickens were improved by andro, now their jumping works and looks better.
 
@@ -112,3 +112,8 @@ Shields can now be used with zoom key too, thanks to Herowl, to support their us
 * Fixed crashes when entering world with Luanti version without JIT – by teknomunk
 * Fixed a crash when disabling some mods – by teknomunk
 * Fixed a crash during combat with infinite-power attack speed effects (like haste) – by Herowl
+
+
+## 0.91.1 hotfix
+* Fixed a crash when punching mobs – by Herowl
+* Fixed an undeclared variable warning – by Herowl
