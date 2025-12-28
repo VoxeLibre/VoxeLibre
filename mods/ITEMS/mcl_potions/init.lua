@@ -203,11 +203,23 @@ local function set_node_empty_bottle(itemstack, placer, pointed_thing, newitemst
 	core.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 
 	--
-	if core.is_creative_enabled(placer:get_player_name()) then
+	if core.is_creative_enabled(pname) then
 		return itemstack
-	else
-		return "mcl_potions:glass_bottle"
 	end
+
+	local empty_bottle = ItemStack("mcl_potions:glass_bottle")
+	if itemstack:get_count() == 1 then
+		return empty_bottle
+	end
+
+	itemstack:take_item(1)
+	local inv = placer:get_inventory()
+	if inv and inv:room_for_item("main", empty_bottle) then
+		inv:add_item("main", empty_bottle)
+	else
+		core.add_item(placer:get_pos(), empty_bottle)
+	end
+	return itemstack
 end
 
 -- used for water bottles and river water bottles
