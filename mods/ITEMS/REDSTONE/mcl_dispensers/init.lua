@@ -281,15 +281,18 @@ local dispenserdef = {
 									inv:add_item("main", od_ret)
 								else
 									local pos_variation = 100
+									local speed = 3
+									local droppos = vector.add(pos, {x = 0.5, y = 0.5, z = 0.5})
+									droppos = vector.add(droppos, vector.multiply(dropdir, 0.49))
 									droppos = {
 										x = droppos.x + math.random(-pos_variation, pos_variation) / 1000,
 										y = droppos.y + math.random(-pos_variation, pos_variation) / 1000,
 										z = droppos.z + math.random(-pos_variation, pos_variation) / 1000,
 									}
-									local item_entity = minetest.add_item(droppos, dropitem)
-									local drop_vel = vector.subtract(droppos, pos)
-									local speed = 3
-									item_entity:set_velocity(vector.multiply(drop_vel, speed))
+									local item_entity = core.add_item(droppos, od_ret)
+									if item_entity then
+										item_entity:set_velocity(vector.multiply(dropdir, speed))
+									end
 								end
 							else
 								stack:take_item()
