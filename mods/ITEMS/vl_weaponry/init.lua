@@ -352,7 +352,7 @@ core.register_tool("vl_weaponry:hammer_diamond", {
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		pickaxey = { speed = 4, level = 5, uses = uses.diamond },
-		pickaxey = { speed = 4, level = 5, uses = uses.diamond }
+		shovely = { speed = 4, level = 5, uses = uses.diamond }
 	},
 	_mcl_upgradable = true,
 	_mcl_upgrade_item = "vl_weaponry:hammer_netherite"
