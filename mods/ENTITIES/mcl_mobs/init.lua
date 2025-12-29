@@ -260,6 +260,7 @@ function mcl_mobs.register_mob(name, def)
 		hornytimer = 0,
 		gotten = false,
 		health = 0,
+		old_health = 0,
 		frame_speed_multiplier = 1,
 		reach = def.reach or 3,
 		htimer = 0,
