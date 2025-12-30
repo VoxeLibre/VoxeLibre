@@ -151,7 +151,13 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 			end
 
 			if not creative then
-				itemstack:add_item(replace_with_item)
+				local leftover = itemstack:add_item(replace_with_item)
+				if not leftover:is_empty() then
+					leftover = user:get_inventory():add_item("main", leftover)
+					if not leftover:is_empty() then
+						core.add_item(user:get_pos(), leftover)
+					end
+				end
 			end
 		end
 		return itemstack
