@@ -106,6 +106,8 @@ tt.register_snippet(function(itemstring)
 
 	if def.groups.flammable then
 		return S("Flammable")
+	elseif def.groups.collectible then
+		return S("Collectible")
 	end
 end)
 
