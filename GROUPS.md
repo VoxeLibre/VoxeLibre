@@ -215,6 +215,7 @@ These groups are used mostly for informational purposes
 * `craftitem=1`: Item is primarily (!) used for crafting
 * `brewitem=1`: Item is primarily (!) used in brewing
 * `transport=1`: Item is used for transportation
+* `collectible=1`: Item or node is not needed for progress and can only be found throughout the world
 * `building_block=1`: Block is a building block
 * `deco_block=1`: Block is a decorational block
 
