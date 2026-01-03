@@ -8,7 +8,7 @@ local music_enabled = core.settings:get_bool("mcl_game_music", true)
 local pianowtune  = "diminixed-pianowtune02"
 local end_tune    = "diminixed-ambientwip02"
 local never_grow_up = "diminixed-nevergrowup04"
-local nether_tune = "horizonchris96-traitor"
+local nether_tune = "DarkReaven-traitor"
 local odd_block = "Jester-0dd-BL0ck"
 local flock_of_one = "Jester-Flock-of-One"
 local gift = "Jester-Gift"
@@ -16,12 +16,36 @@ local hailing_forest = "Jester-Hailing_Forest"
 local lonely_blossom = "exhale_and_tim_unwin-lonely_blossom"
 local valley_of_ghosts = "exhale_and_tim_unwin-valley_of_ghosts"
 local farmer = "exhale_and_tim_unwin-farmer"
+local wildhome = "Herowl-Home_in_the_Wilderness"
+local memories = "DarkReaven-memories_from_bellow"
+local maintheme = "DarkReaven-calmed_cube"
+local alttheme = "DarkReaven-calmed_cube_in_space"
+local cube_beat = "DarkReaven-cube_beat"
+local cube_waltz = "DarkReaven-cube_waltz"
+local cube_waltz2 = "DarkReaven-cube_waltz_2"
+local genna = "DarkReaven-genna"
+local kuru = "DarkReaven-kuru"
+local magic_of_forest = "DarkReaven-magic_of_the_forest"
+local nostalgic = "DarkReaven-nostalgic_block"
+local slow_in_cubic = "DarkReaven-slow_in_cubic_mode"
+local piano_cubico = "DarkReaven-slow_piano_cubico"
+local starry_sky = "DarkReaven-starry_sky_at_winter"
+local sweet_piano = "DarkReaven-sweet_piano_8bit"
+local what_will_we = "DarkReaven-what_we_will_buid_next"
+local nightfall_beat = "DarkReaven-beat_at_nightfall"
+local deep_mining = "DarkReaven-deep_mining"
+local watchful = "DarkReaven-watchful"
 
 local scenario_to_base_track = {
-	["overworld"]	= {pianowtune, never_grow_up, flock_of_one, gift, hailing_forest, lonely_blossom, farmer},
-	["nether"]	= {nether_tune, valley_of_ghosts},
+	["overworld"]	= {
+		pianowtune, never_grow_up, flock_of_one, gift, hailing_forest,
+		lonely_blossom, farmer, wildhome, maintheme, alttheme, cube_beat,
+		cube_waltz, cube_waltz2, genna, kuru, magic_of_forest, nostalgic,
+		slow_in_cubic, piano_cubico, starry_sky, sweet_piano, what_will_we
+	},
+	["nether"]	= {nether_tune, valley_of_ghosts, memories},
 	["end"]		= {end_tune},
-	["mining"]	= {odd_block},
+	["mining"]	= {odd_block, nightfall_beat, deep_mining, watchful},
 }
 
 local min_scenario_change_music_time = 5 * 60 -- Seconds
@@ -54,8 +78,9 @@ local function stop_music_for_listener(player_name)
 	local handle = listeners[player_name].handle
 
 	if handle then
+		core.log(dump(handle))
 		core.log("action", "[mcl_music] Stopping music")
-		core.sound_fade(handle, -.025, 0)
+		core.sound_fade(handle, .25, 0)
 		listeners[player_name].handle = nil
 	end
 end
@@ -83,7 +108,7 @@ end
 local function play_song(player_name, track)
 	local spec = {
 		name  = track,
-		gain  = 0.3,
+		gain  = 30,
 		pitch = 1.0,
 	}
 	local parameters = {
@@ -95,6 +120,12 @@ local function play_song(player_name, track)
 
 	if not listeners or not listeners[player_name] then return end
 	listeners[player_name].handle = core.sound_play(spec, parameters, false)
+	core.log(dump(listeners[player_name].handle))
+end
+
+function vl_play_song(player_name, track)
+	stop_music_for_listener(player_name)
+	play_song(player_name, track)
 end
 
 local function play()
@@ -102,6 +133,7 @@ local function play()
 	local day_count = core.get_day_count()
 
 	for _, player in pairs(core.get_connected_players()) do
+		core.log(player:get_player_name())
 		repeat
 		if not player:get_meta():get("mcl_music:disable") then
 
