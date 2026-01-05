@@ -57,6 +57,8 @@ local enter_exit_checks = {
 
 local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 	local luaentity = mcl_util.get_luaentity_from_uuid(staticdata.uuid)
+	if not luaentity then return end
+
 	local dir = staticdata.dir
 	local right = vector.new( dir.z, dir.y, -dir.x)
 	local up = vector.new(0,1,0)
@@ -69,6 +71,9 @@ local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 		if node_def then
 			-- node-specific hook
 			local hook_name = "_mcl_minecarts_"..event..check[4]
+
+			--- @type fun(pos : vector.Vector, entity : core.LuaEntity, dir : vector.Vector,pos : vector.Vector,
+			---           static_data : table)?
 			local hook = node_def[hook_name]
 			if hook then hook(check_pos, luaentity, next_dir, pos, staticdata) end
 
@@ -79,12 +84,8 @@ local function handle_cart_enter_exit(staticdata, pos, next_dir, event)
 	end
 
 	-- Handle cart-specific behaviors
-	if luaentity then
-		local hook = luaentity["_mcl_minecarts_"..event]
-		if hook then hook(luaentity, pos, staticdata) end
-	--else
-		--minetest.log("warning", "TODO: change _mcl_minecarts_"..event.." calling so it is not dependent on the existence of a luaentity")
-	end
+	local hook = luaentity["_mcl_minecarts_"..event]
+	if hook then hook(luaentity, pos, staticdata) end
 end
 local function set_metadata_cart_status(pos, uuid, state)
 	local meta = minetest.get_meta(pos)
