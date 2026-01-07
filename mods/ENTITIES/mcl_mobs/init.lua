@@ -305,7 +305,7 @@ function mcl_mobs.register_mob(name, def)
 		is_mob = true,
 		pushable = def.pushable or true,
 
-		-- MCL2 extensions
+		-- VoxeLibre extensions
 		shooter_avoid_enemy = def.shooter_avoid_enemy,
 		strafes = def.strafes,
 		avoid_distance = def.avoid_distance or 9,
@@ -334,7 +334,8 @@ function mcl_mobs.register_mob(name, def)
 		particlespawners = def.particlespawners,
 		spawn_check = def.spawn_check,
 		_vl_projectile = def._vl_projectile,
-		-- End of MCL2 extensions
+		attack = def.attack or nil,
+		-- End of VoxeLibre extensions
 		on_spawn = def.on_spawn,
 		on_blast = def.on_blast or function(self,damage)
 			self.object:punch(self.object, 1.0, {
