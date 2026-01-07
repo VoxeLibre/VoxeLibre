@@ -122,7 +122,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 				local def = minetest.registered_entities[mobname]
 
 				if def.is_mob and def.type == "monster" and ent.attack == player then
-					return false, S("You can't sleep now, monsters are nearby!")
+					return false, S("You can't sleep now, there are monsters attacking you!")
 				end
 
 			end
