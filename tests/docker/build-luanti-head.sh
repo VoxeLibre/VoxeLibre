@@ -7,7 +7,6 @@ mkdir -p build
 (
 	cd build
 	test -e luanti || git clone https://github.com/luanti-org/luanti.git
-	test -e irrlichtmt || git clone https://github.com/minetest/irrlichtmt.git irrlichtmt
 	(cd luanti; git checkout master; git pull)
 )
 

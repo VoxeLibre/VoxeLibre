@@ -2,8 +2,8 @@
 
 . ~/.config/voxelibre-docker.sh
 
-LUANTI_VERSION=5.13.0
-VOXELIBRE_VERSION=0.90.1
+LUANTI_VERSION=5.14.0
+VOXELIBRE_VERSION=0.91.1
 
 if test -z "$USER"; then
 	echo "\$USER must be set for docker image build and uploads to function"
@@ -11,7 +11,7 @@ if test -z "$USER"; then
 fi
 
 ./build-packages.sh
-cp luanti-ci/luanti-5.13.0-1.tar.gz luanti-server/
+cp luanti-ci/luanti-$LUANTI_VERSION-1.tar.gz luanti-server/
 
 (
 	cd luanti-server
@@ -37,13 +37,3 @@ cp luanti-ci/luanti-5.13.0-1.tar.gz luanti-server/
 	docker image push $USER/voxelibre:$VOXELIBRE_VERSION
 	docker image push $USER/voxelibre:latest
 )
-
-
-#(
-#	cd tests/docker
-#	test -e luanti && ( cd luanti; git checkout master; git pull ) || git clone https://github.com/luanti-org/luanti.git luanti
-#	test -e irrlichtmt && ( cd irrlichtmt; git checkout master; git pull ) || git clone https://github.com/minetest/irrlicht.git irrlichtmt
-#)
-#cp tests/docker/Dockerfile .
-#docker build . -t 127.0.0.1:5000/voxelibre-test:latest
-#docker build . -t voxelibre-test

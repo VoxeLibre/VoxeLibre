@@ -43,8 +43,9 @@ build_head()
 	VERSION=HEAD-nojit
 
 	(
-		cd /opt/luanti-$VERSION-nojit
-		cmake . -DRUN_IN_PLACE=TRUE
+		cd /opt/luanti-$VERSION
+		ls -l
+		cmake . -DRUN_IN_PLACE=TRUE -DENABLE_LUAJIT=OFF
 		make -j$(nproc)
 		git rev-parse HEAD > LAST_BUILT
 
@@ -66,7 +67,7 @@ build_new()
 	if tar xvf /opt/luanti-ci/luanti-$VERSION-1.tar.gz; then return; fi
 
 	set -x
-	git clone --depth 1 --branch $VERSION https://github.com/luanti-org/luanti.git /opt/luanti-$VERSION
+	git clone --depth 1 --branch $VERSION $LUANTI_REPO /opt/luanti-$VERSION
 
 	(
 		cd /opt/luanti-$VERSION
@@ -91,7 +92,7 @@ build_new()
 
 
 build_head
-for VERSION in 5.13.0 5.12.0 5.11.0 5.10.0 5.9.1 5.9.0; do
+for VERSION in 5.14.0 5.13.0 5.12.0 5.11.0 5.10.0 5.9.1 5.9.0; do
 	build_new $VERSION
 done
 

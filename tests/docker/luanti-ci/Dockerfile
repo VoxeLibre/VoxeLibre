@@ -7,6 +7,7 @@ ADD luanti-5.9.1-1.tar.gz /opt/
 ADD luanti-5.10.0-1.tar.gz /opt/
 ADD luanti-5.11.0-1.tar.gz /opt/
 ADD luanti-5.12.0-1.tar.gz /opt/
+ADD luanti-5.13.0-1.tar.gz /opt/
 
 RUN apk add --no-cache luarocks5.3 git lua-language-server x11vnc xdotool
 
