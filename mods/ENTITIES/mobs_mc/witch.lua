@@ -26,11 +26,11 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	xp_max = 5,
 	head_eye_height = 1.5,
 	visual = "mesh",
-	mesh = "mobs_mc_witch.b3d",
+	mesh = "vl_witch.b3d",
 	textures = {
-		{"mobs_mc_witch.png"},
+		{"vl_witch.png"},
 	},
-	visual_size = {x=2.75, y=2.75},
+	visual_size = {x=2.2, y=2.2},
 	makes_footstep_sound = true,
 	damage = 2,
 	reach = 2,
@@ -56,20 +56,24 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	},
 	-- TODO: sounds
 	animation = {
-		speed_normal = 30,
-		speed_run = 60,
-		stand_start = 0,
-		stand_end = 0,
-		walk_start = 0,
-		walk_end = 40,
-		run_start = 0,
-		run_end = 40,
-		hurt_start = 85,
-		hurt_end = 115,
-		death_start = 117,
-		death_end = 145,
-		shoot_start = 50,
-		shoot_end = 82,
+		stand_start = 60,
+		stand_end = 70,
+		stand_speed = 5,
+		walk_start = 10,
+		walk_end = 50,
+		walk_speed = 30,
+		run_start = 10,
+		run_end = 50,
+		run_speed = 60,
+		drink_start = 70,
+		drink_end = 90,
+		drink_speed = 30,
+		throw_start = 90,
+		throw_end = 100,
+		throw_speed = 30,
+		cast_start = 100,
+		cast_end = 115,
+		cast_speed = 30,
 	},
 	view_range = 16,
 	fear_height = 4,
@@ -95,7 +99,7 @@ mcl_mobs.register_arrow("mobs_mc:potion_arrow", {
 	end,
 
 	hit_node = function(self, pos, node)
-		mcl_mobs.mob_class.safe_boom(self, pos, 1)
+		mcl_mobs.mob_class.boom(self, pos, 1, {griefing=false})
 		mcl_mobs.effect(pos, 32, "mcl_particles_flame.png", 5, 10, 2, 1, 10)
 	end
 })
