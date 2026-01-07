@@ -9,8 +9,43 @@ local S = minetest.get_translator("mobs_mc")
 --################### WITCH
 --###################
 
+local witch_potions = {
+	"mcl_potions:slowness_splash",
+	"mcl_potions:poison_splash",
+	"mcl_potions:weakness_splash",
+	"mcl_potions:harming_splash",
+}
 
+local function witch_throw_potion(self, target_pos)
+	local pos = self.object:get_pos()
+	if not pos or not target_pos then return end
 
+	local potion_item = witch_potions[math.random(#witch_potions)]
+	local potion_entity = potion_item .. "_flying"
+
+	-- Throw from witch's hand area
+	local throw_pos = vector.offset(pos, 0, 1.5, 0)
+
+	-- Calculate direction to target with arc compensation
+	local dir = vector.direction(throw_pos, target_pos)
+	local dist = vector.distance(throw_pos, target_pos)
+
+	-- Add upward arc for the throw
+	local arc_factor = math.min(dist / 20, 0.5)
+	dir.y = dir.y + arc_factor
+
+	dir = vector.normalize(dir)
+	local velocity = 10
+
+	core.sound_play("mcl_throwing_throw", {pos = throw_pos, gain = 0.4, max_hear_distance = 16}, true)
+
+	vl_projectile.create(potion_entity, {
+		pos = throw_pos,
+		owner = self.object,
+		dir = dir,
+		velocity = velocity,
+	})
+end
 
 mcl_mobs.register_mob("mobs_mc:witch", {
 	description = S("Witch"),
@@ -39,11 +74,22 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	pathfinding = 1,
 	group_attack = true,
 	attack_type = "dogshoot",
-	arrow = "mobs_mc:potion_arrow",
+	arrow = "mcl_potions:harming_splash_flying",
 	shoot_interval = 2.5,
 	shoot_offset = 1,
 	dogshoot_switch = 1,
-	dogshoot_count_max =1.8,
+	dogshoot_count_max = 1.8,
+	shoot_arrow = function(self, pos, dir)
+		local target_pos
+		if self.attack and self.attack:get_pos() then
+			target_pos = self.attack:get_pos()
+			target_pos.y = target_pos.y + 1
+		else
+			-- Throw in the direction we're facing
+			target_pos = vector.add(pos, vector.multiply(dir, 10))
+		end
+		witch_throw_potion(self, target_pos)
+	end,
 	max_drops = 3,
 	drops = {
 		{name = "mcl_potions:glass_bottle", chance = 8, min = 0, max = 2, looting = "common",},
@@ -82,26 +128,6 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 		if mcl_reason.type == "magic" then factor = 0.15 end
 		self.health = self.health - factor*damage
 	end,
-})
-
-mcl_mobs.register_arrow("mobs_mc:potion_arrow", {
-	visual = "sprite",
-	visual_size = {x = 0.5, y = 0.5},
-	textures = {"mcl_potions_dragon_breath.png"},
-	velocity = 9,
-
-	hit_player = function(self, player)
-		mcl_util.deal_damage(player, 2, {type = "magic"})
-	end,
-
-	hit_mob = function(self, mob)
-		mcl_util.deal_damage(mob, 2, {type = "magic"})
-	end,
-
-	hit_node = function(self, pos, node)
-		mcl_mobs.mob_class.boom(self, pos, 1, {griefing=false})
-		mcl_mobs.effect(pos, 32, "mcl_particles_flame.png", 5, 10, 2, 1, 10)
-	end
 })
 
 -- TODO: Spawn when witch works properly <- eventually -j4i
