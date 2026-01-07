@@ -158,6 +158,17 @@ function mcl_mobs.register_mob(name, def)
 		}
 	end
 
+	-- Initialize drops
+	local drops = {}
+	for _, drop in ipairs(def.drops or {}) do
+		drop = table.copy(drop)
+		drop.chance = drop.chance or 1
+		drop.looting = drop.looting or "common"
+		drop.min = drop.min or 1
+		drop.max = drop.max or drop.min
+		table.insert(drops, drop)
+	end
+
 	local collisionbox = def.collisionbox or def.initial_properties.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	local avg_radius = 0
 	for _, r in ipairs(collisionbox) do
@@ -226,7 +237,7 @@ function mcl_mobs.register_mob(name, def)
 		suffocation = def.suffocation or true,
 		fall_damage = def.fall_damage or 1,
 		fall_speed = def.fall_speed or DEFAULT_FALL_SPEED, -- must be lower than -2
-		drops = def.drops or {},
+		drops = drops,
 		armor = def.armor or 100,
 		on_rightclick = create_mob_on_rightclick(def.on_rightclick),
 		arrow = def.arrow,

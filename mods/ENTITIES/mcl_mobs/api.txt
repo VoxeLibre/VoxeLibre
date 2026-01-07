@@ -163,9 +163,12 @@ functions needed for the mob to work properly which contains the following:
 
 	'drops'	 table of items that are dropped when mob is killed, fields are:
 		'name'	      name of item to drop.
-		'chance'      chance of drop, 1 for always, 2 for 1-in-2 chance etc.
-		'min'	      minimum number of items dropped.
-		'max'	      maximum number of items dropped.
+		'chance'      chance of drop, 1 for always, 2 for 1-in-2 chance etc., defaults to 1
+		'min'	      minimum number of items dropped, defaults to 1
+		'max'	      maximum number of items dropped, defaults to drop.min
+		'looting'      controls player-kill and looting behaviour. Options:
+			- "common" (default): allowed on non-player deaths; looting increases quantity.
+			- "rare": disallowed on non-player deaths; looting increases chance.
 		'conditions'  table of conditions that may affect the drop, fields are:
 			'guarantee_if_killed_by'  list of mob ids. if any of the mobs in this list killed this mob
 			                          then the drop is guaranteed
