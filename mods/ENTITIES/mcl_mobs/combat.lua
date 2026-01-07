@@ -367,12 +367,14 @@ function mob_class:monster_attack()
 	-- attack player
 	if min_player then
 		local target_pos = min_player:get_pos()
-		if self:target_in_direct_sight(target_pos) then
-			-- Target in direct sight, attack immediately
-			self:do_attack(min_player)
-		else
-			-- Target not in direct sight, schedule delayed attack by 0.5-1.0 seconds
-			self:delayed_attack(min_player, 0.5, 0.5)
+		if target_pos and self:target_visible(self.object, min_player) then
+			if self:target_in_direct_sight(target_pos) then
+				-- Target in direct sight, attack immediately
+				self:do_attack(min_player)
+			else
+				-- Target not in direct sight, schedule delayed attack by 0.5-1.0 seconds
+				self:delayed_attack(min_player, 0.5, 0.5)
+			end
 		end
 	end
 end
