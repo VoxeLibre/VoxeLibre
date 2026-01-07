@@ -387,6 +387,11 @@ for each mob.
 	'self.force_attack' set to true to forcefully enable attack AI if its disabled
 						through game settings
 
+VoxeLibre extensions
+------------------
+
+	'self.attack' the object that is currently being attacked by this mob
+
 
 Spawning Mobs in World
 ----------------------
