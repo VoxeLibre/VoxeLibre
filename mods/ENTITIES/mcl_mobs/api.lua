@@ -1,6 +1,7 @@
 local mob_class = mcl_mobs.mob_class
 local mob_class_meta = {__index = mcl_mobs.mob_class}
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
+local validate_vector = mcl_util.validate_vector
 
 local PATHFINDING = "gowp"
 local CRASH_WARN_FREQUENCY = 60
@@ -343,6 +344,9 @@ local function on_step_work(self, dtime, moveresult)
 
 	if player_in_active_range then
 		self:set_animation_speed() -- set animation speed relative to velocity
+		if validate_vector(self.acc) then
+			self.object:add_velocity(self.acc)
+		end
 		self:check_head_swivel(dtime)
 
 		if mcl_util.check_dtime_timer(self, dtime, "onstep_engage", 0.2) then
