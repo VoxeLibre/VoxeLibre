@@ -202,35 +202,45 @@ local function set_node_empty_bottle(itemstack, placer, pointed_thing, newitemst
 	-- play sound
 	core.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 
-	--
-	if core.is_creative_enabled(placer:get_player_name()) then
+	if core.is_creative_enabled(pname) then
 		return itemstack
-	else
-		return "mcl_potions:glass_bottle"
 	end
+
+	local empty_bottle = ItemStack("mcl_potions:glass_bottle")
+	if itemstack:get_count() == 1 then
+		return empty_bottle
+	end
+
+	itemstack:take_item(1)
+	local inv = placer:get_inventory()
+	if inv and inv:room_for_item("main", empty_bottle) then
+		inv:add_item("main", empty_bottle)
+	else
+		core.add_item(placer:get_pos(), empty_bottle)
+	end
+	return itemstack
 end
 
 -- used for water bottles and river water bottles
 local function dispense_water_bottle(stack, pos, droppos)
-    local node = core.get_node(droppos)
-    local nodedef = core.registered_nodes[node.name]
-    if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
-		core.set_node(droppos, {name = "mcl_mud:mud"})
-        core.sound_play("mcl_potions_bottle_pour", {pos=droppos, gain=0.5, max_hear_range=16}, true)
-        return ItemStack("mcl_potions:glass_bottle")
-    elseif nodedef and not nodedef.walkable then
-        -- Only drop into non-solid spaces (air, flowers, etc.)
-        core.add_item(droppos, stack)
-        stack:take_item()
-        return stack
-    else
-        -- Solid block - do nothing, keep item in dispenser
-        return stack
-    end
+	local node = core.get_node(droppos)
+	local nodedef = core.registered_nodes[node.name]
+	if node.name == "mcl_core:dirt" or node.name == "mcl_core:coarse_dirt" then
+		core.set_node(droppos, { name = "mcl_mud:mud" })
+		core.sound_play("mcl_potions_bottle_pour", { pos = droppos, gain = 0.5, max_hear_range = 16 }, true)
+		return ItemStack("mcl_potions:glass_bottle")
+	elseif nodedef and not nodedef.walkable then
+		-- Only drop into non-solid spaces (air, flowers, etc.)
+		core.add_item(droppos, stack)
+		stack:take_item()
+		return stack
+	else
+		-- Solid block - do nothing, keep item in dispenser
+		return stack
+	end
 end
 
 -- on_place function for `mcl_potions:water` and `mcl_potions:river_water`
-
 local function water_bottle_on_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type == "node" then
 		local node = core.get_node(pointed_thing.under)
