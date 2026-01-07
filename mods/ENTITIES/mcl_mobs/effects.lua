@@ -1,6 +1,5 @@
 local math, tonumber, vector, minetest, mcl_mobs = math, tonumber, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
-local validate_vector = mcl_util.validate_vector
 
 local active_particlespawners = {}
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
@@ -254,6 +253,27 @@ function mob_class:check_particlespawners(dtime)
 	self._particle_timer = self._particle_timer + dtime
 end
 
+function mob_class:get_animation_speed(anim)
+	if not self.animation then return end
+
+	if not anim then
+		anim = self._current_animation
+	end
+
+	local speed = self.animation[anim .. "_speed"] or self.animation.speed_normal or 15
+	if self.frame_speed_multiplier then
+		speed = speed * self.frame_speed_multiplier
+	end
+	if anim == "walk" or anim == "run" or anim == "fly" then
+		local v = self.object:get_velocity()
+		local v_val = math.hypot(v.x, v.z)
+		if v_val > 0.05 then
+			speed = speed * (v_val / math.max(1, self.run_velocity or 1))
+		end
+	end
+
+	return speed
+end
 
 -- set defined animation
 function mob_class:set_animation(anim, fixed_frame)
@@ -285,9 +305,13 @@ function mob_class:set_animation(anim, fixed_frame)
 		self.object:set_animation({
 			x = a_start,
 			y = a_end},
-			self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
+			self:get_animation_speed(anim),
 			0, self.animation[anim .. "_loop"] ~= false)
 		end
+end
+
+function mob_class:set_animation_speed()
+	self.object:set_animation_frame_speed(self:get_animation_speed())
 end
 
 local function who_are_you_looking_at (self, dtime)
@@ -401,28 +425,6 @@ function mob_class:check_head_swivel(dtime)
 	else -- minetest < 5.9
 		-- old API uses degrees not radians and absolute positions
 		self.object:set_bone_position(self.head_swivel, self.head_bone_position, vector.apply(newr, math.deg))
-	end
-end
-
-
-function mob_class:set_animation_speed()
-	local v = self.object:get_velocity()
-	if v then
-		if self.frame_speed_multiplier then
-			local v2 = math.abs(v.x)+math.abs(v.z)*.833
-			if not self.animation.walk_speed then
-				self.animation.walk_speed = 25
-			end
-			if math.abs(v.x)+math.abs(v.z) > 0.5 then
-				self.object:set_animation_frame_speed((v2/math.max(1,self.run_velocity))*self.animation.walk_speed*self.frame_speed_multiplier)
-			else
-				self.object:set_animation_frame_speed(25)
-			end
-		end
-		--set_speed
-		if validate_vector(self.acc) then
-			self.object:add_velocity(self.acc)
-		end
 	end
 end
 
