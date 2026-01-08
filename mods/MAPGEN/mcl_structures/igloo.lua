@@ -38,6 +38,7 @@ function mcl_structures.generate_igloo_basement(pos, orientation, loot, pr)
 	-- TODO: Add monster eggs
 	local path = modpath.."/schematics/mcl_structures_igloo_basement.mts"
 	mcl_structures.place_schematic(pos, path, orientation, nil, true, nil, function()
+		local pos = vector.offset(pos, 3, 0, 3)
 		local p1 = vector.offset(pos,-5,-5,-5)
 		local p2 = vector.offset(pos,5,5,5)
 		mcl_structures.fill_chests(p1,p2,loot,pr)
