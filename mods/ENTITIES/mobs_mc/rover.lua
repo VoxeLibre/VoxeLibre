@@ -90,6 +90,27 @@ local select_rover_animation = function(animation_type)
 	end
 end
 
+-- Check if the rover is in eye contact with the player
+local function is_eye_contact(rover, player, tolerance)
+	local player_pos = player:get_pos()
+	local look_dir_not_normalized = player:get_look_dir()
+	local player_eye_height = player:get_properties().eye_height
+
+	if not player_eye_height then
+		core.log("warning", "[mobs_mc:rover] Player "..player:get_player_name().." has no eye height property; defaulting to 1.5")
+		player_eye_height = 1.5
+	end
+
+	local look_dir = vector.normalize(look_dir_not_normalized)
+	local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
+	local rover_eye_pos = vector.offset(rover.object:get_pos(), 0, rover.head_eye_height, 0)
+	local eye_distance_from_player = vector.distance(rover_eye_pos, look_pos)
+	look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
+
+	return mcl_mobs.target_visible(rover.object, player)
+			and vector.distance(look_pos, rover_eye_pos) <= tolerance
+end
+
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local psdefs = {{
 	amount = 5,
@@ -160,8 +181,8 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 	end,
 	do_custom = function(self, dtime)
 		-- RAIN DAMAGE / EVASIVE WARP BEHAVIOUR HERE.
-		local enderpos = self.object:get_pos()
-		local dim = mcl_worlds.pos_to_dimension(enderpos)
+		local rover_pos = self.object:get_pos()
+		local dim = mcl_worlds.pos_to_dimension(rover_pos)
 		if dim == "overworld" and mcl_burning.is_affected_by_rain(self.object) then
 			self.state = ""
 			--rain hurts rovers
@@ -180,7 +201,8 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 				local target = self.attack
 				local pos = target:get_pos()
 				if pos ~= nil then
-					if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
+					local distance = vector.distance(rover_pos, pos)
+					if self.view_range >= distance and distance > 10 then
 						self:teleport(target)
 					end
 				end
@@ -188,7 +210,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		else --if not attacking try to tp to the dark
 			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face.png"}})
 			if dim == 'overworld' then
-				local light = minetest.get_node_light(enderpos)
+				local light = minetest.get_node_light(rover_pos)
 				if light and light > minetest.LIGHT_MAX then
 					self:teleport(nil)
 				end
@@ -197,9 +219,9 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
 		-- Check for arrows and people nearby.
 
-		enderpos = self.object:get_pos()
-		enderpos.y = enderpos.y + 1.5
-		local objs = minetest.get_objects_inside_radius(enderpos, 2)
+		rover_pos = self.object:get_pos()
+		rover_pos.y = rover_pos.y + 1.5
+		local objs = minetest.get_objects_inside_radius(rover_pos, 2)
 		for n = 1, #objs do
 			local obj = objs[n]
 			if obj then
@@ -220,27 +242,24 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		end
 
 		-- PROVOKED BEHAVIOUR HERE.
-		local enderpos = self.object:get_pos()
-		if self.provoked == "broke_contact" then
-			self.provoked = nil
-			self._provoking_player = nil
-			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-			--	self:teleport(nil)
-			--	self.state = ""
-			--else
-				if self.attack and self.attack:get_pos() and enable_damage then
-					self.state = 'attack'
-				end
-			--end
-		end
-
-		-- Check if the provoking player disconnected while we were in "staring" state
-		if self.provoked == "staring" and self._provoking_player then
-			local provoker = minetest.get_player_by_name(self._provoking_player)
+		if self.is_stared_at then
+			local provoker = core.get_player_by_name(self._provoking_player)
+			
+			-- Check if the provoking player disconnected while we were in "staring" state
 			if not provoker then
-				-- Player disconnected, treat as broke contact
-				self.provoked = "broke_contact"
+				-- Player disconnected, reset to normal
+				self.is_stared_at = false
+				self._provoking_player = nil
+				self.state = "stand"
+			elseif not is_eye_contact(self, provoker, 0.8) then
+				-- Player looked away, attack
+				self.is_stared_at = false
+				self.attack = provoker
+				self.state = "attack"
 			end
+
+			-- Do nothing else while being provoked
+			return
 		end
 
 		-- Check to see if people are near by enough to look at us.
@@ -249,42 +268,11 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			--check if they are within radius
 			local player_pos = obj:get_pos()
 			if player_pos then -- prevent crashing in 1 in a million scenario
-
-				local ender_distance = vector.distance(enderpos, player_pos)
-				if ender_distance <= 64 then
-
-					-- Check if they are looking at us.
-					local look_dir_not_normalized = obj:get_look_dir()
-					local look_dir = vector.normalize(look_dir_not_normalized)
-					local player_eye_height = obj:get_properties().eye_height
-
-					--skip player if they have no data - log it
-					if not player_eye_height then
-						minetest.log("error", "Enderman at location: ".. dump(enderpos).." has indexed a null player!")
-					else
-
-						--calculate very quickly the exact location the player is looking
-						--within the distance between the two "heads" (player and enderman)
-						local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
-						local ender_eye_pos = vector.offset(enderpos, 0, self.head_eye_height, 0)
-						local eye_distance_from_player = vector.distance(ender_eye_pos, look_pos)
-						look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
-
-						--if looking in general head position, turn hostile
-						if mcl_mobs.target_visible(self.object, obj) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
-							self.provoked = "staring"
-							self._provoking_player = obj:get_player_name()
-							self.attack = obj
-							break
-						else
-							-- Only trigger broke_contact if this is the same player who was staring
-							if self.provoked == "staring" and self._provoking_player == obj:get_player_name() then
-								self.provoked = "broke_contact"
-								self._provoking_player = nil
-							end
-						end
-
-					end
+				--if looking in general head position, turn hostile
+				if is_eye_contact(self, obj, 0.4) then
+					self.is_stared_at = true
+					self._provoking_player = obj:get_player_name()
+					break
 				end
 			end
 		end
@@ -463,9 +451,6 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			if pr:next(1, 8) == 8 then --FIXME: real mc rate
 				self:teleport(hitter)
 			end
-			self.attack=hitter
-			self.state="attack"
-			--end
 		end
 	end,
 	after_activate = function(self, staticdata, def, dtime)
