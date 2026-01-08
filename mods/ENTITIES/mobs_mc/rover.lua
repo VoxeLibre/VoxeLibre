@@ -222,16 +222,27 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		-- PROVOKED BEHAVIOUR HERE.
 		local enderpos = self.object:get_pos()
 		if self.provoked == "broke_contact" then
-			self.provoked = "false"
+			self.provoked = nil
+			self._provoking_player = nil
 			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
 			--	self:teleport(nil)
 			--	self.state = ""
 			--else
-				if self.attack ~= nil and enable_damage then
+				if self.attack and self.attack:get_pos() and enable_damage then
 					self.state = 'attack'
 				end
 			--end
 		end
+
+		-- Check if the provoking player disconnected while we were in "staring" state
+		if self.provoked == "staring" and self._provoking_player then
+			local provoker = minetest.get_player_by_name(self._provoking_player)
+			if not provoker then
+				-- Player disconnected, treat as broke contact
+				self.provoked = "broke_contact"
+			end
+		end
+
 		-- Check to see if people are near by enough to look at us.
 		for _,obj in pairs(minetest.get_connected_players()) do
 
@@ -255,19 +266,21 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 						--calculate very quickly the exact location the player is looking
 						--within the distance between the two "heads" (player and enderman)
 						local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
-						local look_pos_base = look_pos
-						local ender_eye_pos = vector.new(enderpos.x, enderpos.y + 2.75, enderpos.z)
+						local ender_eye_pos = vector.offset(enderpos, 0, self.head_eye_height, 0)
 						local eye_distance_from_player = vector.distance(ender_eye_pos, look_pos)
 						look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
 
 						--if looking in general head position, turn hostile
-						if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
+						if mcl_mobs.target_visible(self.object, obj) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
 							self.provoked = "staring"
-							self.attack = minetest.get_player_by_name(obj:get_player_name())
+							self._provoking_player = obj:get_player_name()
+							self.attack = obj
 							break
-						else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
-							if self.provoked == "staring" then
+						else
+							-- Only trigger broke_contact if this is the same player who was staring
+							if self.provoked == "staring" and self._provoking_player == obj:get_player_name() then
 								self.provoked = "broke_contact"
+								self._provoking_player = nil
 							end
 						end
 
