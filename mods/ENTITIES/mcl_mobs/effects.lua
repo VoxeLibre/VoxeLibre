@@ -309,7 +309,8 @@ local function who_are_you_looking_at (self, dtime)
 		if mcl_util.check_dtime_timer(self, dtime, "step_look_for_someone", 0.2) then
 			local pos = self.object:get_pos()
 			for _, obj in pairs(minetest.get_objects_inside_radius(pos, 8)) do
-				if obj:is_player() and vector.distance(pos, obj:get_pos()) < 4 then
+				if obj:is_player() and vector.distance(pos, obj:get_pos()) < 4
+						and mcl_mobs.target_visible(self.object, obj, false, mcl_mobs.see_through_nodes) then
 					self._locked_object = obj
 					break
 				elseif obj:is_player() or (obj:get_luaentity() and self ~= obj:get_luaentity() and obj:get_luaentity().name == self.name) then
@@ -317,7 +318,8 @@ local function who_are_you_looking_at (self, dtime)
 					-- but frequency of check isn't good as it is costly. Making others too infrequent requires testing
 					-- was 5000 but called in loop based on entities. so div by 12 as estimate avg of entities found,
 					-- then div by 20 as less freq lookup
-					if math.random() * 150 <= self.curiosity then
+					if math.random() * 150 <= self.curiosity
+							and mcl_mobs.target_visible(self.object, obj, false, mcl_mobs.see_through_nodes) then
 						self._locked_object = obj
 						break
 					end

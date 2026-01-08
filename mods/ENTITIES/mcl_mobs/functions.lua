@@ -1,4 +1,105 @@
-local default_seethru = {air = true}
+local default_seethru = {["air"] = true}
+
+-- Set of seethru blocks for mob curiosity line-of-sight checks
+-- Includes transparent, semi-transparent, and blocks with holes that mobs can see through
+mcl_mobs.see_through_nodes = {
+	["air"] = true,
+
+	["mcl_core:glass"] = true,
+	["mcl_core:glass_black"] = true,
+	["mcl_core:glass_blue"] = true,
+	["mcl_core:glass_brown"] = true,
+	["mcl_core:glass_cyan"] = true,
+	["mcl_core:glass_gray"] = true,
+	["mcl_core:glass_green"] = true,
+	["mcl_core:glass_light_blue"] = true,
+	["mcl_core:glass_lime"] = true,
+	["mcl_core:glass_magenta"] = true,
+	["mcl_core:glass_orange"] = true,
+	["mcl_core:glass_pink"] = true,
+	["mcl_core:glass_purple"] = true,
+	["mcl_core:glass_red"] = true,
+	["mcl_core:glass_silver"] = true,
+	["mcl_core:glass_white"] = true,
+	["mcl_core:glass_yellow"] = true,
+	["mcl_amethyst:tinted_glass"] = true,
+
+	["xpanes:pane_natural_flat"] = true,
+	["xpanes:pane_natural"] = true,
+	["xpanes:pane_black_flat"] = true,
+	["xpanes:pane_black"] = true,
+	["xpanes:pane_blue_flat"] = true,
+	["xpanes:pane_blue"] = true,
+	["xpanes:pane_brown_flat"] = true,
+	["xpanes:pane_brown"] = true,
+	["xpanes:pane_cyan_flat"] = true,
+	["xpanes:pane_cyan"] = true,
+	["xpanes:pane_gray_flat"] = true,
+	["xpanes:pane_gray"] = true,
+	["xpanes:pane_green_flat"] = true,
+	["xpanes:pane_green"] = true,
+	["xpanes:pane_light_blue_flat"] = true,
+	["xpanes:pane_light_blue"] = true,
+	["xpanes:pane_lime_flat"] = true,
+	["xpanes:pane_lime"] = true,
+	["xpanes:pane_magenta_flat"] = true,
+	["xpanes:pane_magenta"] = true,
+	["xpanes:pane_orange_flat"] = true,
+	["xpanes:pane_orange"] = true,
+	["xpanes:pane_pink_flat"] = true,
+	["xpanes:pane_pink"] = true,
+	["xpanes:pane_purple_flat"] = true,
+	["xpanes:pane_purple"] = true,
+	["xpanes:pane_red_flat"] = true,
+	["xpanes:pane_red"] = true,
+	["xpanes:pane_silver_flat"] = true,
+	["xpanes:pane_silver"] = true,
+	["xpanes:pane_white_flat"] = true,
+	["xpanes:pane_white"] = true,
+	["xpanes:pane_yellow_flat"] = true,
+	["xpanes:pane_yellow"] = true,
+
+	["xpanes:bar_flat"] = true,
+	["xpanes:bar"] = true,
+	["xpanes:gold_bar_flat"] = true,
+	["xpanes:gold_bar"] = true,
+
+	["mcl_fences:fence"] = true,
+	["mcl_fences:spruce_fence"] = true,
+	["mcl_fences:birch_fence"] = true,
+	["mcl_fences:jungle_fence"] = true,
+	["mcl_fences:dark_oak_fence"] = true,
+	["mcl_fences:acacia_fence"] = true,
+	["mcl_fences:nether_brick_fence"] = true,
+	["mcl_fences:crimson_fence"] = true,
+	["mcl_fences:warped_fence"] = true,
+	["mcl_fences:mangrove_fence"] = true,
+	["mcl_fences:cherry_blossom_fence"] = true,
+	["mcl_fences:bamboo_fence"] = true,
+
+	["mcl_fences:fence_gate"] = true,
+	["mcl_fences:fence_gate_open"] = true,
+	["mcl_fences:spruce_fence_gate"] = true,
+	["mcl_fences:spruce_fence_gate_open"] = true,
+	["mcl_fences:birch_fence_gate"] = true,
+	["mcl_fences:birch_fence_gate_open"] = true,
+	["mcl_fences:jungle_fence_gate"] = true,
+	["mcl_fences:jungle_fence_gate_open"] = true,
+	["mcl_fences:dark_oak_fence_gate"] = true,
+	["mcl_fences:dark_oak_fence_gate_open"] = true,
+	["mcl_fences:acacia_fence_gate"] = true,
+	["mcl_fences:acacia_fence_gate_open"] = true,
+	["mcl_fences:crimson_fence_gate"] = true,
+	["mcl_fences:crimson_fence_gate_open"] = true,
+	["mcl_fences:warped_fence_gate"] = true,
+	["mcl_fences:warped_fence_gate_open"] = true,
+	["mcl_fences:mangrove_fence_gate"] = true,
+	["mcl_fences:mangrove_fence_gate_open"] = true,
+	["mcl_fences:cherry_blossom_fence_gate"] = true,
+	["mcl_fences:cherry_blossom_fence_gate_open"] = true,
+	["mcl_fences:bamboo_fence_gate"] = true,
+	["mcl_fences:bamboo_fence_gate_open"] = true,
+}
 
 --- Check if there is a clear line of sight between two points using the slab method https://en.wikipedia.org/wiki/Slab_method
 ---@param origin vector.Vector
@@ -99,9 +200,10 @@ end
 --- Casts rays to both the feet and head of the target's collision box
 ---@param origin vector.Vector|ObjectRef Origin position or object
 ---@param target ObjectRef Target object to check visibility of
+---@param check_feet? boolean Whether to check line of sight to the target's feet (default: true)
 ---@param seethru? {[string]: boolean} Set of nodes to treat as seethrough
 ---@return boolean True if target is visible (any ray succeeds)
-function mcl_mobs.target_visible(origin, target, seethru)
+function mcl_mobs.target_visible(origin, target, check_feet, seethru)
 	if not target then return false end
 
 	local target_pos = target:get_pos()
@@ -136,10 +238,13 @@ function mcl_mobs.target_visible(origin, target, seethru)
 		return mcl_mobs.check_line_of_sight(origin_pos, target_pos, seethru)
 	end
 
-	-- Target points to check
-	local target_feet = vector.offset(target_pos, 0, target_cbox[2], 0)
 	local target_head = vector.offset(target_pos, 0, target_cbox[5], 0)
-
-	return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
-		or mcl_mobs.check_line_of_sight(origin_pos, target_feet, seethru)
+	
+	if check_feet == false then
+		return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
+	else
+		local target_feet = vector.offset(target_pos, 0, target_cbox[2], 0)
+		return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
+			or mcl_mobs.check_line_of_sight(origin_pos, target_feet, seethru)
+	end
 end
