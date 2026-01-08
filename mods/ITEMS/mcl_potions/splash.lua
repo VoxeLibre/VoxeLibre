@@ -16,6 +16,21 @@ local function splash_image(colorstring, opacity)
 	return "mcl_potions_splash_overlay.png^[colorize:"..colorstring..":"..tostring(opacity).."^mcl_potions_splash_bottle.png"
 end
 
+local function throw_splash(item, thrower, pos, dir, velocity)
+	minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
+	local obj = vl_projectile.create(item:get_name().."_flying",{
+		pos = vector.offset(pos, dir.x, dir.y, dir.z),
+		owner = thrower,
+		dir = dir,
+		velocity = velocity,
+	})
+	local ent = obj:get_luaentity()
+	ent._potency = item:get_meta():get_int("mcl_potions:potion_potent")
+	ent._plus = item:get_meta():get_int("mcl_potions:potion_plus")
+	ent._effect_list = item:get_definition()._effect_list
+end
+mcl_potions.throw_splash = throw_splash
+
 function mcl_potions.register_splash(name, descr, color, def)
 	local id = minetest.get_current_modname()..":"..name.."_splash"
 	local longdesc = def._longdesc
@@ -44,39 +59,14 @@ function mcl_potions.register_splash(name, descr, color, def)
 		inventory_image = splash_image(color),
 		groups = groups,
 		on_use = function(item, placer, pointed_thing)
-			local velocity = 10
-			local dir = placer:get_look_dir();
-			local pos = placer:get_pos();
-			minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
-			local obj = vl_projectile.create(id.."_flying",{
-				pos = vector.offset(pos, dir.x, dir.y + PLAYER_HEIGHT_OFFSET, dir.z),
-				owner = placer,
-				dir = dir,
-				velocity = velocity,
-			})
-			local ent = obj:get_luaentity()
-			ent._thrower = placer:get_player_name()
-			ent._potency = item:get_meta():get_int("mcl_potions:potion_potent")
-			ent._plus = item:get_meta():get_int("mcl_potions:potion_plus")
-			ent._effect_list = def._effect_list
+			mcl_potions.throw_splash(item, placer, vector.offset(placer:get_pos(), 0, PLAYER_HEIGHT_OFFSET, 0), placer:get_look_dir(), 10)
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				item:take_item()
 			end
 			return item
 		end,
-		stack_max = 1,
 		_on_dispense = function(stack, dispenserpos, droppos, dropnode, dropdir)
-			local s_pos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
-			local pos = {x=s_pos.x+dropdir.x,y=s_pos.y+dropdir.y,z=s_pos.z+dropdir.z}
-			minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
-			local obj = minetest.add_entity(pos, id.."_flying")
-			local velocity = 22
-			obj:set_velocity({x=dropdir.x*velocity,y=dropdir.y*velocity,z=dropdir.z*velocity})
-			obj:set_acceleration({x=dropdir.x*-3, y=-9.8, z=dropdir.z*-3})
-			local ent = obj:get_luaentity()
-			ent._potency = stack:get_meta():get_int("mcl_potions:potion_potent")
-			ent._plus = stack:get_meta():get_int("mcl_potions:potion_plus")
-			ent._effect_list = def._effect_list
+			mcl_potions.throw_splash(stack, nil, dispenserpos + dropdir*0.51, dropdir, 22)
 		end
 	})
 
