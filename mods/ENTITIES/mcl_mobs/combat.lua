@@ -361,18 +361,24 @@ function mob_class:monster_attack()
 			end
 		end
 	end
+
 	if not min_player and #blacklist_attack > 0 then
-		min_player=blacklist_attack[random(#blacklist_attack)]
+		local candidate = blacklist_attack[random(#blacklist_attack)]
+		if self:target_visible(self.object, candidate) then
+			min_player = candidate
+		end
 	end
 	-- attack player
 	if min_player then
 		local target_pos = min_player:get_pos()
-		if self:target_in_direct_sight(target_pos) then
-			-- Target in direct sight, attack immediately
-			self:do_attack(min_player)
-		else
-			-- Target not in direct sight, schedule delayed attack by 0.5-1.0 seconds
-			self:delayed_attack(min_player, 0.5, 0.5)
+		if target_pos then
+			if self:target_in_direct_sight(target_pos) then
+				-- Target in direct sight, attack immediately
+				self:do_attack(min_player)
+			else
+				-- Target not in direct sight, schedule delayed attack by 0.5-1.0 seconds
+				self:delayed_attack(min_player, 0.5, 0.5)
+			end
 		end
 	end
 end
