@@ -44,11 +44,10 @@ This mod is free software.
 
 ### Textures and sounds
 
-* `hbhunger_icon.png`—PilzAdam ([WTFPL](http://www.wtfpl.net/txt/copying/)), modified by BlockMen
-* `hbhunger_bgicon.png`—PilzAdam (WTFPL), modified by BlockMen
-* `hbhunger_bar.png—Wuzzy` (WTFPL)
+* `hbhunger_icon.png`—PilzAdam, modified by BlockMen
+* `hbhunger_bgicon.png`—PilzAdam, modified by BlockMen
+* `hbhunger_bar.png—Wuzzy`
 * `hbhunger_icon_health_poison.png`—celeron55 ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)), modified by BlockMen, modified again by Wuzzy
-* `mcl_hunger_bite.1.ogg`, `mcl_hungr_bite.2.ogg`: WTFPL
-* `survival_thirst_drink.ogg`: WTFPL
-* Everything else: WTFPL, by BlockMen and Wuzzy
+* `mcl_hunger_bite.1.ogg`, `mcl_hungr_bite.2.ogg`
+* `survival_thirst_drink.ogg`
 

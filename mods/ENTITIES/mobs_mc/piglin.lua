@@ -1,7 +1,5 @@
 --MCmobs v0.4
 --maikerumine
---made for MC like Survival game
---License for code WTFPL and otherwise stated in readmes
 
 local trading_items = {
 	{ itemstring = "mcl_core:obsidian", amount_min = 1, amount_max = 1 },

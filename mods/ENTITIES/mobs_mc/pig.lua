@@ -1,5 +1,3 @@
---License for code WTFPL and otherwise stated in readmes
-
 local S = minetest.get_translator("mobs_mc")
 
 mcl_mobs.register_mob("mobs_mc:pig", {

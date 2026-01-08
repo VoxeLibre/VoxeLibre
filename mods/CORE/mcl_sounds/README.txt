@@ -102,5 +102,5 @@ Alecia Shepherd (CC BY-SA 4.0):
   mcl_sounds_cloth.*.ogg
     Source: SnowSong sound and music pack <https://opengameart.org/content/snowsong-sound-and-music-pack>
 
-Unknown authors (WTFPL):
+Unknown authors (CC BY-SA 3.0):
   pedology_snow_soft_footstep.*.ogg

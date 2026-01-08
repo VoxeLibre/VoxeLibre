@@ -1,13 +1,5 @@
 --MCmobs v0.4
 --maikerumine
---made for MC like Survival game
---License for code WTFPL and otherwise stated in readmes
-
--- ENDERMAN BEHAVIOUR (OLD):
--- In this game, endermen attack the player on sight, like other monsters do.
--- However, they have a reduced viewing range to make them less dangerous.
--- This differs from MC, in which endermen only become hostile when provoked,
--- and they are provoked by looking directly at them.
 
 -- Rootyjr
 -----------------------------
@@ -15,7 +7,7 @@
 -- implemented teleport to avoid arrows.
 -- implemented teleport to avoid rain.
 -- implemented teleport to chase.
--- added enderman particles.
+-- added particles.
 -- drew mcl_portal_particle1.png
 -- drew mcl_portal_particle2.png
 -- drew mcl_portal_particle3.png

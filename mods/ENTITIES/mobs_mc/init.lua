@@ -1,7 +1,5 @@
 --MCmobs v0.4
 --maikerumine
---made for MC like Survival game
---License for code WTFPL and otherwise stated in readmes
 mobs_mc = {}
 
 local pr = PseudoRandom(os.time()*5)

@@ -1,4 +1,3 @@
---License for code WTFPL and otherwise stated in readmes
 local S = minetest.get_translator("mobs_mc")
 
 local MAPBLOCK_SIZE = 16 -- size for slime chunk logic

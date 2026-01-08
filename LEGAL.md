@@ -33,7 +33,7 @@ project by davedevils.
 Mod credits:\
 See `README.txt` or `README.md` in each mod directory for information about other authors.
 For mods that do not have such a file, the license is the source code license
-of VoxeLibre and the author is Wuzzy.
+of VoxeLibre and the author is given by the git commit log.
 
 ## License of media (textures and sounds)
 
@@ -67,4 +67,4 @@ All other files, unless mentioned otherwise, fall under:\
 Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 <https://creativecommons.org/licenses/by-sa/3.0/>
 
-See README.txt in each mod directory for detailed information about other authors.
+See README.txt or mod.conf in each mod directory for detailed information about other authors. Complete information is in the git commit log.

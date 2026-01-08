@@ -1,4 +1,4 @@
--- Original code (circa 2013) released under WTFPL License by BlockMen
+-- Original code (circa 2013) by BlockMen, refined by VoxeLibre contributors
 -- Code added for item priority system & major restructuring for performance optimizations by Thomas Conway (c.2025)
 local mod_name = minetest.get_current_modname()
 local S = minetest.get_translator(mod_name)

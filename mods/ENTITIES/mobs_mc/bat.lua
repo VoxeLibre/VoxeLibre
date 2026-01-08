@@ -1,5 +1,3 @@
---License for code WTFPL and otherwise stated in readmes
-
 local S = minetest.get_translator("mobs_mc")
 
 local function spawn_check(pos, environmental_light, artificial_light, sky_light)
