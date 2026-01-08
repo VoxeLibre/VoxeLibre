@@ -18,6 +18,7 @@ end
 
 local function throw_splash(item, thrower, pos, dir, velocity)
 	minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
+	if type(item) == "string" then item = ItemStack(item) end
 	local obj = vl_projectile.create(item:get_name().."_flying",{
 		pos = vector.offset(pos, dir.x, dir.y, dir.z),
 		owner = thrower,
@@ -59,14 +60,14 @@ function mcl_potions.register_splash(name, descr, color, def)
 		inventory_image = splash_image(color),
 		groups = groups,
 		on_use = function(item, placer, pointed_thing)
-			mcl_potions.throw_splash(item, placer, vector.offset(placer:get_pos(), 0, PLAYER_HEIGHT_OFFSET, 0), placer:get_look_dir(), 10)
+			throw_splash(item, placer, vector.offset(placer:get_pos(), 0, PLAYER_HEIGHT_OFFSET, 0), placer:get_look_dir(), 10)
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				item:take_item()
 			end
 			return item
 		end,
 		_on_dispense = function(stack, dispenserpos, droppos, dropnode, dropdir)
-			mcl_potions.throw_splash(stack, nil, dispenserpos + dropdir*0.51, dropdir, 22)
+			throw_splash(stack, nil, dispenserpos + dropdir*0.51, dropdir, 22)
 		end
 	})
 
