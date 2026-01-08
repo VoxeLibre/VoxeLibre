@@ -99,10 +99,13 @@ end
 --- Casts rays to both the feet and head of the target's collision box
 ---@param origin vector.Vector|ObjectRef Origin position or object
 ---@param target ObjectRef Target object to check visibility of
+---@param check_feet? boolean If true, also check visibility to target's feet (default: true)
 ---@param seethru? {[string]: boolean} Set of nodes to treat as seethrough
 ---@return boolean True if target is visible (any ray succeeds)
-function mcl_mobs.target_visible(origin, target, seethru)
+function mcl_mobs.target_visible(origin, target, check_feet, seethru)
 	if not target then return false end
+
+	check_feet = check_feet ~= false
 
 	local target_pos = target:get_pos()
 	if not target_pos then return false end
@@ -136,10 +139,12 @@ function mcl_mobs.target_visible(origin, target, seethru)
 		return mcl_mobs.check_line_of_sight(origin_pos, target_pos, seethru)
 	end
 
-	-- Target points to check
-	local target_feet = vector.offset(target_pos, 0, target_cbox[2], 0)
 	local target_head = vector.offset(target_pos, 0, target_cbox[5], 0)
-
-	return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
-		or mcl_mobs.check_line_of_sight(origin_pos, target_feet, seethru)
+	if check_feet then
+		return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
+	else
+		local target_feet = vector.offset(target_pos, 0, target_cbox[2], 0)
+		return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
+			or mcl_mobs.check_line_of_sight(origin_pos, target_feet, seethru)
+	end
 end
