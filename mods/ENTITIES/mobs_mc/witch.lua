@@ -16,37 +16,6 @@ local witch_potions = {
 	"mcl_potions:harming_splash",
 }
 
-local function witch_throw_potion(self, target_pos)
-	local pos = self.object:get_pos()
-	if not pos or not target_pos then return end
-
-	local potion_item = witch_potions[math.random(#witch_potions)]
-	local potion_entity = potion_item .. "_flying"
-
-	-- Throw from witch's hand area
-	local throw_pos = vector.offset(pos, 0, 1.5, 0)
-
-	-- Calculate direction to target with arc compensation
-	local dir = vector.direction(throw_pos, target_pos)
-	local dist = vector.distance(throw_pos, target_pos)
-
-	-- Add upward arc for the throw
-	local arc_factor = math.min(dist / 20, 0.5)
-	dir.y = dir.y + arc_factor
-
-	dir = vector.normalize(dir)
-	local velocity = 10
-
-	core.sound_play("mcl_throwing_throw", {pos = throw_pos, gain = 0.4, max_hear_distance = 16}, true)
-
-	vl_projectile.create(potion_entity, {
-		pos = throw_pos,
-		owner = self.object,
-		dir = dir,
-		velocity = velocity,
-	})
-end
-
 mcl_mobs.register_mob("mobs_mc:witch", {
 	description = S("Witch"),
 	type = "monster",
@@ -88,7 +57,26 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 			-- Throw in the direction we're facing
 			target_pos = vector.add(pos, vector.multiply(dir, 10))
 		end
-		witch_throw_potion(self, target_pos)
+
+		local pos = self.object:get_pos()
+
+		if not pos or not target_pos then return end
+
+		local potion_item = witch_potions[math.random(#witch_potions)] -- TODO chances, levels, etc.
+
+		-- Throw from witch's hand area
+		local throw_pos = vector.offset(pos, 0, 1.5, 0)
+
+		-- Calculate direction to target with arc compensation
+		local dir = vector.direction(throw_pos, target_pos)
+		local dist = vector.distance(throw_pos, target_pos)
+
+		-- Add upward arc for the throw
+		local arc_factor = math.min(dist / 20, 0.5)
+		dir.y = dir.y + arc_factor
+		dir = vector.normalize(dir)
+
+		mcl_potions.throw_splash(potion_item, self.object, throw_pos, dir, 10)
 	end,
 	max_drops = 3,
 	drops = {
