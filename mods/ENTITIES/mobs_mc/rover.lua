@@ -216,20 +216,21 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 				end
 			end
 		end
-		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
-		-- Check for arrows and people nearby.
 
+		-- Check for arrows and people nearby and teleport away if found.
 		rover_pos = self.object:get_pos()
 		rover_pos.y = rover_pos.y + 1.5
-		local objs = minetest.get_objects_inside_radius(rover_pos, 2)
+		local objs = core.get_objects_inside_radius(rover_pos, 2)
 		for n = 1, #objs do
 			local obj = objs[n]
 			if obj then
-				if minetest.is_player(obj) then
-					-- Warp from players during day.
-					--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-					--	self:teleport(nil)
-					--end
+				if core.is_player(obj) then
+					if self.is_stared_at then
+						-- log it so that it's visible
+						self:teleport(obj)
+					else
+						self:teleport(nil)
+					end
 				else
 					local lua = obj:get_luaentity()
 					if lua then
@@ -244,8 +245,6 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		-- PROVOKED BEHAVIOUR HERE.
 		if self.is_stared_at then
 			local provoker = core.get_player_by_name(self._provoking_player)
-			-- Custom state which makes rover completely motionless
-			self.state = "staring"
 
 			-- Check if the provoking player disconnected while we were in "staring" state
 			if not provoker then
@@ -253,7 +252,10 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 				self.is_stared_at = false
 				self._provoking_player = nil
 				self.state = "stand"
-			elseif not is_eye_contact(self, provoker, 0.8) then
+			elseif is_eye_contact(self, provoker, 0.8) then
+				local player_pos = provoker:get_pos()
+				self:turn_in_direction(player_pos.x - rover_pos.x, player_pos.z - rover_pos.z, 1)
+			else
 				-- Player looked away, attack
 				self.is_stared_at = false
 				self.attack = provoker
@@ -261,6 +263,11 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			end
 
 			-- Do nothing else while being provoked
+			return
+		end
+
+		if self.state == "attack" then
+			-- Already attacking, do nothing else
 			return
 		end
 
