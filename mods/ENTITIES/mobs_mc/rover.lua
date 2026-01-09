@@ -225,8 +225,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			local obj = objs[n]
 			if obj then
 				if core.is_player(obj) then
-					if self.is_stared_at then
-						-- log it so that it's visible
+					if self.state == "staring" or self.state == "attack" then
 						self:teleport(obj)
 					else
 						self:teleport(nil)
@@ -243,13 +242,12 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		end
 
 		-- PROVOKED BEHAVIOUR HERE.
-		if self.is_stared_at then
+		if self.state == "staring" then
 			local provoker = core.get_player_by_name(self._provoking_player)
 
 			-- Check if the provoking player disconnected while we were in "staring" state
 			if not provoker then
 				-- Player disconnected, reset to normal
-				self.is_stared_at = false
 				self._provoking_player = nil
 				self.state = "stand"
 			elseif is_eye_contact(self, provoker, 0.8) then
@@ -257,7 +255,6 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 				self:turn_in_direction(player_pos.x - rover_pos.x, player_pos.z - rover_pos.z, 1)
 			else
 				-- Player looked away, attack
-				self.is_stared_at = false
 				self.attack = provoker
 				self.state = "attack"
 			end
@@ -279,7 +276,6 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			if player_pos then -- prevent crashing in 1 in a million scenario
 				-- Rovers become motionless on eye contact
 				if is_eye_contact(self, obj, 0.4) then
-					self.is_stared_at = true
 					self._provoking_player = obj:get_player_name()
 					self:set_velocity(0)
 					self:set_animation("stand", true)
