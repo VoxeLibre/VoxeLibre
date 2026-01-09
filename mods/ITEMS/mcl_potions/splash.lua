@@ -20,7 +20,7 @@ local function throw_splash(item, thrower, pos, dir, velocity)
 	minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
 	if type(item) == "string" then item = ItemStack(item) end
 	local obj = vl_projectile.create(item:get_name().."_flying",{
-		pos = vector.offset(pos, dir.x, dir.y, dir.z),
+		pos = pos + 0.5*dir,
 		owner = thrower,
 		dir = dir,
 		velocity = velocity,

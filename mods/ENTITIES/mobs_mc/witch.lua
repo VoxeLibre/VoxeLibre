@@ -9,6 +9,8 @@ local S = minetest.get_translator("mobs_mc")
 --################### WITCH
 --###################
 
+local UP = vector.new(0, 1, 0)
+
 local witch_potions = {
 	"mcl_potions:slowness_splash",
 	"mcl_potions:poison_splash",
@@ -65,7 +67,7 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 		local potion_item = witch_potions[math.random(#witch_potions)] -- TODO chances, levels, etc.
 
 		-- Throw from witch's hand area
-		local throw_pos = vector.offset(pos, 0, 1.5, 0)
+		local throw_pos = vector.offset(pos + 0.4*vector.normalize(vector.cross(vector.direction(pos, target_pos), UP)), 0, .2, 0)
 
 		-- Calculate direction to target with arc compensation
 		local dir = vector.direction(throw_pos, target_pos)
@@ -76,7 +78,14 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 		dir.y = dir.y + arc_factor
 		dir = vector.normalize(dir)
 
-		mcl_potions.throw_splash(potion_item, self.object, throw_pos, dir, 10)
+		self:set_animation("throw")
+		self.anim_locked = true
+		core.after(0.2, function(pi, o, tp, d)
+			mcl_potions.throw_splash(pi, o, tp, d, 10)
+		end, potion_item, self.object, throw_pos, dir)
+		core.after(0.4, function(self)
+			self.anim_locked = false
+		end, self)
 	end,
 	max_drops = 3,
 	drops = {
@@ -105,7 +114,7 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 		drink_loop = false,
 		throw_start = 90,
 		throw_end = 100,
-		throw_speed = 30,
+		throw_speed = 20,
 		throw_loop = false,
 		cast_start = 100,
 		cast_end = 115,
