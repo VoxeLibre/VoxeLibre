@@ -257,6 +257,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 				-- Player looked away, attack
 				self.attack = provoker
 				self.state = "attack"
+				self:teleport(provoker)
 			end
 
 			-- Do nothing else while being provoked
