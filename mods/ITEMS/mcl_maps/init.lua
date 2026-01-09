@@ -292,7 +292,10 @@ local function fill_map(itemstack, placer, pointed_thing)
 			mcl_title.set(placer, "actionbar", {text=S("The new map is now ready."), color="green", stay=3*20})
 		end)
 
-		itemstack:take_item()
+		local is_creative = core.is_creative_enabled(placer:get_player_name())
+		if not is_creative then
+			itemstack:take_item()
+		end
 		if itemstack:is_empty() then return new_map end
 		local inv = placer:get_inventory()
 		if inv:room_for_item("main", new_map) then
