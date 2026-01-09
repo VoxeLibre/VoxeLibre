@@ -244,7 +244,9 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		-- PROVOKED BEHAVIOUR HERE.
 		if self.is_stared_at then
 			local provoker = core.get_player_by_name(self._provoking_player)
-			
+			-- Custom state which makes rover completely motionless
+			self.state = "staring"
+
 			-- Check if the provoking player disconnected while we were in "staring" state
 			if not provoker then
 				-- Player disconnected, reset to normal
@@ -268,10 +270,14 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			--check if they are within radius
 			local player_pos = obj:get_pos()
 			if player_pos then -- prevent crashing in 1 in a million scenario
-				--if looking in general head position, turn hostile
+				-- Rovers become motionless on eye contact
 				if is_eye_contact(self, obj, 0.4) then
 					self.is_stared_at = true
 					self._provoking_player = obj:get_player_name()
+					self:set_velocity(0)
+					self:set_animation("stand", true)
+					self.state = "staring"
+					self:turn_in_direction(player_pos.x - rover_pos.x, player_pos.z - rover_pos.z, 1)
 					break
 				end
 			end
