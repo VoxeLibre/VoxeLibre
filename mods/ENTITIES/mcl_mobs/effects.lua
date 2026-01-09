@@ -260,7 +260,7 @@ function mob_class:get_animation_speed(anim)
 		anim = self._current_animation
 	end
 
-	local speed = self.animation[anim .. "_speed"] or self.animation.speed_normal or 15
+	local speed = anim and self.animation[anim .. "_speed"] or self.animation.speed_normal or 15
 	if self.frame_speed_multiplier then
 		speed = speed * self.frame_speed_multiplier
 	end
@@ -277,7 +277,7 @@ end
 
 -- set defined animation
 function mob_class:set_animation(anim, fixed_frame)
-	if not self.animation or not anim then return end
+	if self.anim_locked or not self.animation or not anim then return end
 
 	if self.jockey and self.object:get_attach() then
 		anim = "jockey"
