@@ -46,7 +46,7 @@ local arrow_entity = {
 	_fire_damage_resistant = true,
 
 	_save_fields = {
-		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "stuckin_player", "time_in_air", "vl_projectile", "collectable", "arrow_item", "itemstring"
+		"last_pos", "startpos", "damage", "is_critical", "stuck", "stuckin", "in_player", "time_in_air", "vl_projectile", "collectable", "arrow_item", "itemstring"
 	},
 
 	_damage=1,	-- Damage on impact
@@ -170,17 +170,22 @@ local arrow_entity = {
 		local data = core.deserialize(staticdata)
 		if not data then return end
 
-		-- Restore entity properties
-		if data.properties then
-			self.object:set_properties(data.properties)
-			data.properties = nil
-		end
-
 		-- Restore arrow state
 		local save_fields = self._save_fields
 		for i = 1,#save_fields do
 			local field = save_fields[i]
 			self["_"..field] = data[field]
+		end
+
+		if self._in_player then
+			mcl_util.remove_entity(self)
+			return
+		end
+
+		-- Restore entity properties
+		if data.properties then
+			self.object:set_properties(data.properties)
+			data.properties = nil
 		end
 
 		if not self._vl_projectile then
@@ -192,10 +197,6 @@ local arrow_entity = {
 			if shooter and shooter:is_player() then
 				self._shooter = shooter
 			end
-		end
-
-		if data.stuckin_player then
-			mcl_util.remove_entity(self)
 		end
 	end,
 }
