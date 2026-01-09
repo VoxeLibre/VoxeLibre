@@ -141,10 +141,10 @@ function mcl_mobs.target_visible(origin, target, check_feet, seethru)
 
 	local target_head = vector.offset(target_pos, 0, target_cbox[5], 0)
 	if check_feet then
-		return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
-	else
 		local target_feet = vector.offset(target_pos, 0, target_cbox[2], 0)
 		return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
 			or mcl_mobs.check_line_of_sight(origin_pos, target_feet, seethru)
+	else
+		return mcl_mobs.check_line_of_sight(origin_pos, target_head, seethru)
 	end
 end
