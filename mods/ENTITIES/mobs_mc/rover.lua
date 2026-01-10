@@ -251,11 +251,11 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		if self.state == "staring" then
 			local provoker = core.get_player_by_name(self._provoking_player)
 
-			-- Check if the provoking player disconnected while we were in "staring" state
-			if not provoker then
-				-- Player disconnected, reset to normal
+			-- Check if the provoking player disconnected or has gotten too far away
+			if not provoker or vector.distance(rover_pos, provoker:get_pos()) > self.view_range then
 				self._provoking_player = nil
 				self.state = "stand"
+				self:teleport(nil)
 			elseif is_eye_contact(self, provoker, 0.8) then
 				local player_pos = provoker:get_pos()
 				self:turn_in_direction(player_pos.x - rover_pos.x, player_pos.z - rover_pos.z, 1)
