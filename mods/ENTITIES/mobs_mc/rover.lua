@@ -184,19 +184,18 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		local rover_pos = self.object:get_pos()
 		local dim = mcl_worlds.pos_to_dimension(rover_pos)
 		if dim == "overworld" and mcl_burning.is_affected_by_rain(self.object) then
-			self.state = ""
+			self.state = "stand"
 			self.object:punch(self.object, 1.0, {
 				full_punch_interval=1.0,
 				damage_groups={fleshy=self.rain_damage},
 			}, nil)
 			-- Try to teleport to safety
-			self.state = ""
 			self:teleport(nil)
 		end
 
 		-- If burning and not in attack state, try to teleport to safety
 		if mcl_burning.is_burning(self.object) and self.state ~= "attack" then
-			self.state = ""
+			self.state = "stand"
 			self:teleport(nil)
 		end
 
