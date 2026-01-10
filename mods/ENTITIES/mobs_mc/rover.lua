@@ -460,14 +460,16 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.
-		if hitter ~= self.object and hitter ~= nil then
-			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-			--	self:teleport(nil)
-			--else
-			if pr:next(1, 8) == 8 then --FIXME: real mc rate
-				self:teleport(hitter)
-			end
-		end
+        if hitter ~= self.object and hitter ~= nil then
+            if self.state ~= "attack" then
+                self.state = "attack"
+                self.attack = hitter
+                self:teleport(hitter)
+            elseif pr:next(1, 5) == 1 then
+                -- Teleport with 20% chance
+                self:teleport(hitter)
+            end
+        end
 	end,
 	after_activate = function(self, staticdata, def, dtime)
 		if not self._taken_node or self._taken_node == "" then
