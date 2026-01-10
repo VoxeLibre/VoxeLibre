@@ -114,14 +114,14 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			return false, S("You have to stop moving before going to bed!")
 		end
 
-		-- No sleeping if monsters are attacking.
-		for _, obj in pairs(minetest.get_objects_inside_radius(bed_pos, 8)) do
+		-- No sleeping if mobs are attacking.
+		for _, obj in pairs(minetest.get_objects_inside_radius(bed_pos, 16)) do
 			if obj and not obj:is_player() then
 				local ent = obj:get_luaentity()
 				local mobname = ent.name
 				local def = minetest.registered_entities[mobname]
 
-				if def.is_mob and def.type == "monster" and ent.attack == player then
+				if def.is_mob and ent.attack == player then
 					return false, S("You can't sleep now, there are monsters attacking you!")
 				end
 
