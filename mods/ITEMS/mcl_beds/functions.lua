@@ -118,11 +118,10 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		for obj in core.objects_inside_radius(bed_pos, 16) do
 			if obj and not obj:is_player() then
 				local ent = obj:get_luaentity()
-				local mobname = ent.name
-				local def = core.registered_entities[mobname]
+				local def = core.registered_entities[ent.name]
 
 				if def.is_mob and ent.attack == player then
-					return false, S("You can't sleep now, there are monsters attacking you!")
+					return false, S("You can't sleep now, you are under attack!")
 				end
 
 			end
