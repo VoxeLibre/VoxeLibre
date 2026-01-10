@@ -10,6 +10,8 @@ local S = minetest.get_translator("mobs_mc")
 --###################
 
 local UP = vector.new(0, 1, 0)
+local wand_rotation = vector.new(0, 0, 45)
+local part_spawn_range = { min = -.2, max = .2 }
 
 local witch_potions = {
 	"mcl_potions:slowness_splash",
@@ -49,14 +51,16 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	shoot_interval = 2.5,
 	shoot_offset = 1,
 	dogshoot_switch = 1,
-	dogshoot_count_max = 1.8,
+	dogshoot_count_max = 1,
+	shooter_avoid_enemy = true,
+	avoid_distance = 8,
 	shoot_arrow = function(self, pos, dir)
 		local target_pos
 		if self.attack and self.attack:get_pos() then
 			target_pos = self.attack:get_pos()
 			target_pos.y = target_pos.y + 1
 		else
-			-- Throw in the direction we're facing
+			-- Attack in the direction we're facing
 			target_pos = vector.add(pos, vector.multiply(dir, 10))
 		end
 
@@ -64,28 +68,77 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 
 		if not pos or not target_pos then return end
 
-		local potion_item = witch_potions[math.random(#witch_potions)] -- TODO chances, levels, etc.
+		if math.random() > 0.5 then
+			self:set_animation("cast")
+			self.anim_locked = true
+			core.after(0.3, function()
+				core.add_particlespawner({
+					amount = 32,
+					time = 0.3,
+					size = 3,
+					attached = self._wand,
+					pos = part_spawn_range,
+					glow = 5,
+					texture = {
+						name = "mcl_particles_instant_effect.png^[colorize:#AF00FF",
+						scale_tween = { 0.2, 1 },
+						blend = "clip"
+					},
+					exptime = 2,
+					attract = {
+						kind = "point",
+						strength = 2,
+						origin = UP,
+						origin_attached = self.attack,
+					},
+				})
+			end)
+			core.after(0.6, function(s)
+				s.anim_locked = false
+				local sp = s.object:get_pos()
+				local ap = s.attack:get_pos()
+				if not sp or not ap then return end
+				s.attack:punch(s.object, 1.0, {
+					full_punch_interval = 1.0,
+					damage_groups = { fleshy = 1 }
+				}, vector.direction(sp, ap))
+				mcl_util.deal_damage(s.attack, 4, {type = "magic"})
+			end, self)
+		else
+			local potion_item = witch_potions[math.random(#witch_potions)] -- TODO chances, levels, etc.
 
-		-- Throw from witch's hand area
-		local throw_pos = vector.offset(pos + 0.4*vector.normalize(vector.cross(vector.direction(pos, target_pos), UP)), 0, .2, 0)
+			-- Throw from witch's hand area
+			local throw_pos = vector.offset(pos + 0.4*vector.normalize(vector.cross(vector.direction(pos, target_pos), UP)), 0, .2, 0)
 
-		-- Calculate direction to target with arc compensation
-		local dir = vector.direction(throw_pos, target_pos)
-		local dist = vector.distance(throw_pos, target_pos)
+			-- Calculate direction to target with arc compensation
+			local dir = vector.direction(throw_pos, target_pos)
+			local dist = vector.distance(throw_pos, target_pos)
 
-		-- Add upward arc for the throw
-		local arc_factor = math.min(dist / 20, 0.5)
-		dir.y = dir.y + arc_factor
-		dir = vector.normalize(dir)
+			-- Add upward arc for the throw
+			local arc_factor = math.min(dist / 20, 0.5)
+			dir.y = dir.y + arc_factor
+			dir = vector.normalize(dir)
 
-		self:set_animation("throw")
-		self.anim_locked = true
-		core.after(0.2, function(pi, o, tp, d)
-			mcl_potions.throw_splash(pi, o, tp, d, 10)
-		end, potion_item, self.object, throw_pos, dir)
-		core.after(0.4, function(self)
-			self.anim_locked = false
-		end, self)
+			self:set_animation("throw")
+			self.anim_locked = true
+			core.after(0.2, function(pi, o, tp, d)
+				mcl_potions.throw_splash(pi, o, tp, d, 10)
+			end, potion_item, self.object, throw_pos, dir)
+			core.after(0.4, function(s)
+				s.anim_locked = false
+			end, self)
+		end
+	end,
+	do_custom = function(self, dtime)
+
+	end,
+	after_activate = function(self)
+		local wand = vl_held_item.create_item_entity(self.object:get_pos(), "mcl_core:stick")
+		if wand then
+			wand:set_properties({ static_save = false, visual_size={x=0.1, y=0.1} })
+			wand:set_attach(self.object, "Wield_R", UP, wand_rotation)
+			self._wand = wand
+		end
 	end,
 	max_drops = 3,
 	drops = {
