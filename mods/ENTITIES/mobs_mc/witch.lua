@@ -14,11 +14,16 @@ local wand_rotation = vector.new(0, 0, 45)
 local part_spawn_range = { min = -.2, max = .2 }
 
 local witch_potions = {
-	"mcl_potions:slowness_splash",
-	"mcl_potions:poison_splash",
-	"mcl_potions:weakness_splash",
-	"mcl_potions:harming_splash",
+	{ "mcl_potions:slowness_splash", 2 },
+	{ "mcl_potions:poison_splash", 1 },
+	{ "mcl_potions:weakness_splash", 5 },
+	{ "mcl_potions:harming_splash", 2 },
 }
+local witch_total_weights = 0
+for _, p in ipairs(witch_potions) do
+	witch_total_weights = witch_total_weights + p[2]
+	p[3] = witch_total_weights
+end
 
 mcl_mobs.register_mob("mobs_mc:witch", {
 	description = S("Witch"),
@@ -68,7 +73,7 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 
 		if not pos or not target_pos then return end
 
-		if math.random() > 0.5 then
+		if math.random() > 0.8 then
 			self:set_animation("cast")
 			self.anim_locked = true
 			core.after(0.3, function()
@@ -105,7 +110,15 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 				mcl_util.deal_damage(s.attack, 4, {type = "magic"})
 			end, self)
 		else
-			local potion_item = witch_potions[math.random(#witch_potions)] -- TODO chances, levels, etc.
+			local potion_item
+			local pick = math.random()*witch_total_weights
+			for _, p in ipairs(witch_potions) do
+				if pick < p[3] then
+					potion_item = p[1]
+					break
+				end
+			end
+			-- TODO levels?, usecases
 
 			-- Throw from witch's hand area
 			local throw_pos = vector.offset(pos + 0.4*vector.normalize(vector.cross(vector.direction(pos, target_pos), UP)), 0, .2, 0)
