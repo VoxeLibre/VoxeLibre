@@ -334,7 +334,6 @@ function mcl_mobs.register_mob(name, def)
 		particlespawners = def.particlespawners,
 		spawn_check = def.spawn_check,
 		_vl_projectile = def._vl_projectile,
-		attack = def.attack or nil,
 		-- End of VoxeLibre extensions
 		on_spawn = def.on_spawn,
 		on_blast = def.on_blast or function(self,damage)
