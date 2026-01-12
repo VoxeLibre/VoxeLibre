@@ -30,14 +30,6 @@ local take_frequency_max = 245
 local place_frequency_min = 235
 local place_frequency_max = 245
 
--- Calculate teleport probability per second based on light level
--- Uses exponential distribution: P(teleport in dt) = dt / expected_time
--- Light level 15: expected 0.1s, 14: 2s, 13: 4s, ..., 0: 30s
-local function get_light_teleport_probability(light_level, dtime)
-	local expected_time = (core.LIGHT_MAX * 2 - light_level * 2) + 0.1
-
-	return 1 - math.exp(-dtime / expected_time)
-end
 
 minetest.register_entity("mobs_mc:ender_eyes", {
 	on_step = function(self)
@@ -118,6 +110,15 @@ local function is_eye_contact(rover, player, tolerance)
 
 	return mcl_mobs.target_visible(rover.object, player)
 			and vector.distance(look_pos, rover_eye_pos) <= tolerance
+end
+
+-- Calculate teleport probability per second based on light level
+local function get_light_teleport_probability(light_level, dtime)
+	-- Uses exponential distribution: P(teleport in dt) = dt / expected_time
+	-- Light level 15: expected 0.1s, 14: 2s, 13: 4s, ..., 0: 30s
+	local expected_time = (core.LIGHT_MAX * 2 - light_level * 2) + 0.1
+
+	return 1 - math.exp(-dtime / expected_time)
 end
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
