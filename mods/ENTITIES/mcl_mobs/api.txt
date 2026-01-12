@@ -316,35 +316,35 @@ Custom Definition Functions
 Along with the above mob registry settings we can also use custom functions to
 enhance mob functionality and have them do many interesting things:
 
-	'on_die'		 a function that is called when the mob is killed; the
-					parameters are (self, pos). Return true to skip the builtin
-					death animation and death effects
-	'on_rightclick'its same as in minetest.register_entity()
-	'on_blast'		is called when an explosion happens near mob when using TNT
-					functions, parameters are (object, damage) and returns
-					(do_damage, do_knockback, drops)
-	'on_spawn'		is a custom function that runs on mob spawn with 'self' as
-					variable, return true at end of function to run only once.
-	'after_activate' is a custom function that runs once mob has been activated
-					with these paramaters (self, staticdata, def, dtime)
-	'on_breed'		called when two similar mobs breed, paramaters are
-					(parent1, parent2) objects, return false to stop child from
-					being resized and owner/tamed flags and child textures being
-					applied.Function itself must spawn new child mob.
-	'on_grown'		is called when a child mob has grown up, only paramater is
-					(self).
-	'do_punch'		called when mob is punched with paramaters (self, hitter,
-					time_from_last_punch, tool_capabilities, direction), return
-					false to stop punch damage and knockback from taking place.
-	'custom_attack'when set this function is called instead of the normal mob
-					melee attack, parameters are (self, to_attack).
-	'on_die'		a function that is called when mob is killed (self, pos)
-	'on_poof'		a function that is called when a mob's body poofs after
-					it dies (self, pos)
-	'do_custom'	a custom function that is called every tick while mob is
-					active and which has access to all of the self.* variables
-					e.g. (self.health for health or self.standing_in for node
-					status), return with 'false' to skip remainder of mob API.
+	'on_die'			a function that is called when the mob is killed; the
+						parameters are (self, pos). Return true to skip the builtin
+						death animation and death effects
+	'on_rightclick'		its same as in minetest.register_entity()
+	'on_blast'			is called when an explosion happens near mob when using TNT
+						functions, parameters are (object, damage) and returns
+						(do_damage, do_knockback, drops)
+	'on_spawn'			is a custom function that runs on mob spawn with 'self' as
+						variable, return true at end of function to run only once.
+	'after_activate' 	is a custom function that runs once mob has been activated
+						with these paramaters (self, staticdata, def, dtime)
+	'on_breed'			called when two similar mobs breed, paramaters are
+						(parent1, parent2) objects, return false to stop child from
+						being resized and owner/tamed flags and child textures being
+						applied.Function itself must spawn new child mob.
+	'on_grown'			is called when a child mob has grown up, only paramater is
+						(self).
+	'do_punch'			called when mob is punched with paramaters (self, hitter,
+						time_from_last_punch, tool_capabilities, direction), return
+						false to stop punch damage and knockback from taking place.
+	'custom_attack'		when set this function is called instead of the normal mob
+						melee attack, parameters are (self, to_attack).
+	'on_die'			a function that is called when mob is killed (self, pos)
+	'on_corpse_remove'	a function that is called when a mob's body disappears
+						after it dies (self, pos)
+	'do_custom'			a custom function that is called every tick while mob is
+						active and which has access to all of the self.* variables
+						e.g. (self.health for health or self.standing_in for node
+						status), return with 'false' to skip remainder of mob API.
 
 
 Internal Variables
