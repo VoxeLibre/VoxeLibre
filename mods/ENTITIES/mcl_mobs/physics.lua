@@ -441,8 +441,8 @@ local function do_mob_loot(mob, death_cause, cmi_cause, info)
 end
 
 
---- Executes the final stage of a mob's death. The mob "poofs" from existence.
-local function do_mob_body_poof(mob)
+--- Executes the final stage of a mob's death. The mob's corpse is removed from existence.
+local function do_mob_corpse_remove(mob)
 	if not mob then return end
 	if not mob.object:is_valid() or not mob.object:get_luaentity() then
 		return
@@ -452,9 +452,9 @@ local function do_mob_body_poof(mob)
 	local yaw    = mob.object:get_rotation().y
 	local rotate = not mob.instant_death
 
-	local on_poof = mob.on_poof
-	if type(on_poof) == "function" then
-		on_poof(mob, dpos)
+	local on_corpse_remove = mob.on_corpse_remove
+	if type(on_corpse_remove) == "function" then
+		on_corpse_remove(mob, dpos)
 	end
 
 	mcl_burning.extinguish(mob.object)
@@ -585,9 +585,9 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 	-- Remove body after a few seconds
 
 	if length <= 0 then
-		do_mob_body_poof(self)
+		do_mob_corpse_remove(self)
 	else
-		core.after(length, do_mob_body_poof, self)
+		core.after(length, do_mob_corpse_remove, self)
 	end
 
 	return true
