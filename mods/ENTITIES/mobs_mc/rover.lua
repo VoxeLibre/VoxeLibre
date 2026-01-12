@@ -189,7 +189,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		return #minetest.find_nodes_in_area(vector.offset(pos,0,1,0),vector.offset(pos,0,3,0),{"air"}) > 2
 	end,
 	do_custom = function(self, dtime)
-		-- RAIN DAMAGE / EVASIVE WARP BEHAVIOUR HERE.
+		-- Handle damage and teleportation when standing in rain
 		local rover_pos = self.object:get_pos()
 		local dim = mcl_worlds.pos_to_dimension(rover_pos)
 		if dim == "overworld" and mcl_burning.is_affected_by_rain(self.object) then
@@ -206,35 +206,6 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		if mcl_burning.is_burning(self.object) and self.state ~= "attack" then
 			self.state = "stand"
 			self:teleport(nil)
-		end
-
-		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
-		if self.state == "attack" then
-			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face_angry.png"}})
-			if self.attack then
-				local target = self.attack
-				local pos = target:get_pos()
-				if pos ~= nil then
-					local distance = vector.distance(rover_pos, pos)
-					if self.view_range >= distance and distance > 10 then
-						self:teleport(target)
-					end
-				end
-			end
-		end
-
-		-- LIGHT LEVEL BASED WARP BEHAVIOUR HERE.
-		if self.state ~= "staring" and self.state ~= "attack" then
-			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face.png"}})
-			if dim == 'overworld' then
-				local light = core.get_node_light(rover_pos)
-				if light then
-					local prob = get_light_teleport_probability(light, dtime)
-					if math.random() < prob then
-						self:teleport(nil)
-					end
-				end
-			end
 		end
 
 		-- Check for arrows and people nearby and teleport away if found.
@@ -261,7 +232,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			end
 		end
 
-		-- PROVOKED BEHAVIOUR HERE.
+		-- State management
 		if self.state == "staring" then
 			local provoker = core.get_player_by_name(self._provoking_player)
 
@@ -282,11 +253,38 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 
 			-- Do nothing else while being provoked
 			return
-		end
 
-		if self.state == "attack" then
+		elseif self.state == "attack" then
+			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face_angry.png"}})
+
+			-- Warp aggresively towards target if too far away
+			if self.attack then
+				local target = self.attack
+				local pos = target:get_pos()
+				if pos ~= nil then
+					local distance = vector.distance(rover_pos, pos)
+					if self.view_range >= distance and distance > 10 then
+						self:teleport(target)
+					end
+				end
+			end
+
 			-- Already attacking, do nothing else
 			return
+
+		else
+			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face.png"}})
+
+			-- Spontaneous teleport based on light level in overworld
+			if dim == 'overworld' then
+				local light = core.get_node_light(rover_pos)
+				if light then
+					local prob = get_light_teleport_probability(light, dtime)
+					if math.random() < prob then
+						self:teleport(nil)
+					end
+				end
+			end
 		end
 
 		-- Check to see if people are near by enough to look at us.
