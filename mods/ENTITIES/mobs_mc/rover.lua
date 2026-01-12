@@ -30,6 +30,15 @@ local take_frequency_max = 245
 local place_frequency_min = 235
 local place_frequency_max = 245
 
+-- Calculate teleport probability per second based on light level
+-- Uses exponential distribution: P(teleport in dt) = dt / expected_time
+-- Light level 15: expected 0.1s, 14: 2s, 13: 4s, ..., 0: 30s
+local function get_light_teleport_probability(light_level, dtime)
+	local expected_time = (core.LIGHT_MAX * 2 - light_level * 2) + 0.1
+
+	return 1 - math.exp(-dtime / expected_time)
+end
+
 minetest.register_entity("mobs_mc:ender_eyes", {
 	on_step = function(self)
 		self.object:remove()
@@ -212,12 +221,18 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 					end
 				end
 			end
-		else --if not attacking try to tp to the dark
+		end
+
+		-- LIGHT LEVEL BASED WARP BEHAVIOUR HERE.
+		if self.state ~= "staring" and self.state ~= "attack" then
 			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face.png"}})
 			if dim == 'overworld' then
-				local light = minetest.get_node_light(rover_pos)
-				if light and light > minetest.LIGHT_MAX then
-					self:teleport(nil)
+				local light = core.get_node_light(rover_pos)
+				if light then
+					local prob = get_light_teleport_probability(light, dtime)
+					if math.random() < prob then
+						self:teleport(nil)
+					end
 				end
 			end
 		end
