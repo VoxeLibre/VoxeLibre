@@ -21,6 +21,7 @@
 ./mods/CORE/vl_tuning/init.lua
 ./mods/ENTITIES/mcl_burning/init.lua
 ./mods/ENTITIES/mcl_dripping/init.lua
+./mods/ENTITIES/mcl_item_entity/init.lua
 ./mods/ENTITIES/mcl_minecarts/functions.lua
 ./mods/ENTITIES/mcl_minecarts/rails.lua
 ./mods/ENTITIES/mcl_minecarts/storage.lua
