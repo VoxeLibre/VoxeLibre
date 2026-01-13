@@ -5,14 +5,23 @@ local minetest, math, vector, ipairs, pairs = minetest, math, vector, ipairs, pa
 local pool = {}
 
 ---@class mcl_item_entity : core.LuaEntity
----@field itemstring string
----@field _magnet_timer number
----@field _magnet_distance number
----@field _insta_collect boolean
----@field collector string
+---@field always_collect boolean
 ---@field collected boolean
+---@field collector string
+---@field is_clock boolean?
+---@field itemstring string
 ---@field physical_state boolean
 ---@field random_velocity number
+---@field _collector_timer number?
+---@field _insta_collect boolean
+---@field _magnet_active boolean
+---@field _magnet_distance number
+---@field _magnet_timer number
+---@field _immortal boolean
+---@field _flowing boolean
+---@field _force boolean
+---@field _forcestart boolean
+---@field _forcetimer number
 
 local tick = false
 
@@ -76,8 +85,8 @@ mcl_item_entity.register_pickup_achievement("mcl_nether:ancient_debris", "mcl:hi
 mcl_item_entity.register_pickup_achievement("mcl_end:dragon_egg", "mcl:PickUpDragonEgg")
 mcl_item_entity.register_pickup_achievement("mcl_armor:elytra", "mcl:skysTheLimit")
 
----@param object core.LuaEntityRef
----@param player core.PlayerObjectRef
+---@param object core.ObjectRef
+---@param player core.ObjectRef
 local function check_pickup_achievements(object, player)
 	if not has_awards then return end
 
@@ -93,7 +102,7 @@ local function check_pickup_achievements(object, player)
 	end
 end
 
----@param object core.LuaEntityRef
+---@param object core.ObjectRef
 ---@param luaentity mcl_item_entity
 ---@param ignore_check? boolean
 local function enable_physics(object, luaentity, ignore_check)
@@ -106,7 +115,7 @@ local function enable_physics(object, luaentity, ignore_check)
 	end
 end
 
----@param object core.LuaEntityRef
+---@param object core.ObjectRef
 ---@param luaentity mcl_item_entity
 ---@param ignore_check? boolean
 ---@param reset_movement? boolean
@@ -127,10 +136,11 @@ local function try_object_pickup(player, inv, object, checkpos)
 	if not inv then return end
 
 	local le = object:get_luaentity()
+	--- @cast le mcl_item_entity
 
 	-- Check magnet timer
-	if not (le._magnet_timer >= 0) then return end
-	if not (le._magnet_timer < item_drop_settings.magnet_time) then return end
+	if le._magnet_timer < 0 then return end
+	if le._magnet_timer >= item_drop_settings.magnet_time then return end
 
 	-- Don't try to collect again
 	if le._removed then return end
@@ -148,7 +158,6 @@ local function try_object_pickup(player, inv, object, checkpos)
 	if leftovers:is_empty() then
 		-- Destroy entity
 		-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
-		le.target = checkpos
 		le.itemstring = ""
 		le._removed = true
 
@@ -323,10 +332,10 @@ function get_node_drops(drop, param2, ptype, toolname)
 end
 -- END Copied from luanti/builtin/game/item.lua, then patched
 
----@param drop string|drop_definition
+---@param drop string|core.NodeDef.DropTable
 ---@param toolname string
 ---@param param2 integer
----@param paramtype2 core.ParamType2
+---@param paramtype2 core.NodeParamType2
 ---@return string[]
 local function get_drops(drop, toolname, param2, paramtype2)
 	return get_node_drops(drop, param2, paramtype2, toolname)
@@ -358,6 +367,10 @@ end
 
 local doTileDrops = core.settings:get_bool("mcl_doTileDrops", true)
 
+---@param pos vector.Vector
+---@param drops (core.ItemString|core.ItemStack)[]
+---@param digger? core.ObjectRef
+---@diagnostic disable-next-line: duplicate-set-field
 function core.handle_node_drops(pos, drops, digger)
 	-- NOTE: This function override allows digger to be nil.
 	-- This means there is no digger. This is a special case which allows this function to be called
@@ -501,6 +514,10 @@ end
 local function make_log(name)
 	return name ~= "" and core.log or function() end
 end
+---@param pos vector.Vector
+---@param node core.Node
+---@param digger? core.ObjectRef
+---@diagnostic disable-next-line: duplicate-set-field
 function core.node_dig(pos, node, digger)
 	local diggername = user_name(digger)
 	local log = make_log(diggername)
@@ -565,7 +582,9 @@ function core.node_dig(pos, node, digger)
 			end
 		end
 		tt.reload_itemstack_description(wielded) -- update tooltip
-		digger:set_wielded_item(wielded)
+		if digger then
+			digger:set_wielded_item(wielded)
+		end
 	end
 
 	local oldmetadata = nil
@@ -589,12 +608,15 @@ function core.node_dig(pos, node, digger)
 		-- Copy pos and node because callback can modify them
 		local pos_copy = vector.copy(pos)
 		local node_copy = {name=node.name, param1=node.param1, param2=node.param2}
-		def.after_dig_node(pos_copy, node_copy, oldmetadata, digger)
+		--- FIXME: after_dig_node currently expects the last parameter to be non-nil
+		---@diagnostic disable-next-line: param-type-mismatch
+		def.after_dig_node(pos_copy, node_copy, oldmetadata or {}, digger)
 	end
 
 	-- Run script hook
 	for _, callback in ipairs(core.registered_on_dignodes) do
 		local origin = core.callback_origins[callback]
+		---@diagnostic disable-next-line: redundant-parameter
 		core.set_last_run_mod(origin.mod)
 
 		-- Copy pos and node because callback can modify them
@@ -608,6 +630,7 @@ end
 -- end of code pulled from Luanti
 
 -- Drop single items by default
+---@diagnostic disable-next-line: duplicate-set-field
 function core.item_drop(itemstack, dropper, pos)
 	if dropper and dropper:is_player() then
 		local v = dropper:get_look_dir()
@@ -624,10 +647,13 @@ function core.item_drop(itemstack, dropper, pos)
 			v.z = v.z * 4
 			obj:set_velocity(v)
 			-- Force collection delay
-			obj:get_luaentity()._insta_collect = false
-			return itemstack
+			local ie = obj:get_luaentity()
+			---@cast ie mcl_item_entity
+			ie._insta_collect = false
 		end
 	end
+
+	return itemstack
 end
 
 --modify builtin:item
@@ -820,6 +846,353 @@ local function move_items_in_water (self, p, def, node, is_floating, is_in_water
 	end
 end
 
+-- Function to apply a random velocity
+function mcl_item_entity:apply_random_vel(speed)
+	if not self or not self.object or not self.object:get_luaentity() then
+		return
+	end
+	-- if you passed a value then use that for the velocity multiplier
+	if speed ~= nil then self.random_velocity = speed end
+
+	local vel = self.object:get_velocity()
+
+	-- There is perhaps a cleverer way of making this physical so it bounces off the wall like swords.
+	local max_vel = 6.5 -- Faster than this and it throws it into the wall / floor and turns black because of clipping.
+
+	if vel and vel.x == 0 and vel.z == 0 and self.random_velocity > 0 then
+		local v = self.random_velocity
+		local x = math.random(5, max_vel) / 10 * v
+		if math.random(0, 10) < 5 then x = -x end
+		local z = math.random(5, max_vel) / 10 * v
+		if math.random(0, 10) < 5 then z = -z end
+		local y = math.random(1, 2)
+		self.object:set_velocity(vector.new(x, y, z))
+	end
+	self.random_velocity = 0
+end
+
+function mcl_item_entity:set_item(itemstring)
+	self.itemstring = itemstring
+	if self.itemstring == "" then
+		-- item not yet known
+		return
+	end
+	local stack = ItemStack(itemstring)
+	if core.get_item_group(stack:get_name(), "compass") > 0 then
+		if string.find(stack:get_name(), "_lodestone") then
+			stack:set_name("mcl_compass:18_lodestone")
+		else
+			stack:set_name("mcl_compass:18")
+		end
+		itemstring = stack:to_string()
+		self.itemstring = itemstring
+	end
+	if core.get_item_group(stack:get_name(), "clock") > 0 then
+		self.is_clock = true
+	end
+	local count = stack:get_count()
+	local max_count = stack:get_stack_max()
+	if count > max_count then
+		count = max_count
+		self.itemstring = stack:get_name() .. " " .. max_count
+	end
+	local itemtable = stack:to_table()
+	local itemname = nil
+	local description = ""
+	if itemtable then
+		itemname = stack:to_table().name
+	end
+	local glow
+	local def = core.registered_items[itemname]
+	if def then
+		description = def.description
+		glow = def.light_source
+	end
+	local s = 0.2 + 0.1 * (count / max_count)
+	local wield_scale = (def and def.wield_scale and def.wield_scale.x) or 1
+	local c = s
+	s = s / wield_scale
+	local prop = {
+		is_visible = true,
+		visual = "wielditem",
+		textures = { itemname },
+		visual_size = { x = s, y = s },
+		collisionbox = { -c, -c, -c, c, c, c },
+		automatic_rotate = math.pi * 0.5,
+		infotext = description,
+		glow = glow,
+	}
+	self.object:set_properties(prop)
+	if item_drop_settings.random_item_velocity == true and self.age < 1 then
+		core.after(0, self.apply_random_vel, self)
+	end
+end
+
+function mcl_item_entity:get_staticdata()
+	local data = core.serialize({
+		itemstring = self.itemstring,
+		always_collect = self.always_collect,
+		age = self.age,
+		_insta_collect = self._insta_collect,
+		_flowing = self._flowing,
+		_removed = self._removed,
+		_immortal = self._immortal,
+	})
+	-- sfan5 guessed that the biggest serializable item
+	-- entity would have a size of 65530 bytes. This has
+	-- been experimentally verified to be still too large.
+	--
+	-- anon5 has calculated that the biggest serializable
+	-- item entity has a size of exactly 65487 bytes:
+	--
+	-- 1. serializeString16 can handle max. 65535 bytes.
+	-- 2. The following engine metadata is always saved:
+	--    • 1 byte (version)
+	--    • 2 byte (length prefix)
+	--    • 14 byte “__builtin:item”
+	--    • 4 byte (length prefix)
+	--    • 2 byte (health)
+	--    • 3 × 4 byte = 12 byte (position)
+	--    • 4 byte (yaw)
+	--    • 1 byte (version 2)
+	--    • 2 × 4 byte = 8 byte (pitch and roll)
+	-- 3. This leaves 65487 bytes for the serialization.
+	if #data > 65487 then -- would crash the engine
+		local stack = ItemStack(self.itemstring)
+
+		-- Clear item's metadata to make it smaller
+		local meta = stack:get_meta()
+		meta:from_table({fields={}})
+		self.itemstring = stack:to_string()
+
+		core.log(
+			"warning",
+			"Overlong item entity metadata removed: “" ..
+			self.itemstring ..
+			"” had serialized length of " ..
+			#data
+		)
+		return self:get_staticdata()
+	end
+	return data
+end
+
+function mcl_item_entity:on_activate(staticdata)
+	if string.sub(staticdata, 1, string.len("return")) == "return" then
+		local data = core.deserialize(staticdata)
+		if data and type(data) == "table" then
+			self.itemstring = data.itemstring
+			self.always_collect = data.always_collect
+			if data.age then
+				self.age = data.age
+			else
+				self.age = self.age
+			end
+			--remember collection data
+			-- If true, can collect item without delay
+			self._insta_collect = data._insta_collect
+			self._flowing = data._flowing
+			self._removed = data._removed
+			self._immortal = data._immortal
+		end
+	else
+		self.itemstring = staticdata
+	end
+
+	local itemstack = ItemStack(self.itemstring)
+	vl_legacy.convert_itemstack(itemstack)
+	self.itemstring = itemstack:to_string()
+
+	if self._removed then
+		self._removed = true
+		self.object:remove()
+		return
+	end
+	if self._insta_collect == nil then
+		-- Intentionally default, since delayed collection is rare
+		self._insta_collect = true
+	end
+	if self._flowing == nil then
+		self._flowing = false
+	end
+	self._magnet_timer = 0
+	self._magnet_active = false
+	-- How long ago the last possible collector was detected. nil = none in this session
+	self._collector_timer = nil
+	-- Used to apply additional force
+	self._force = nil
+	self._forcestart = nil
+	self._forcetimer = 0
+
+	self.object:set_armor_groups({ immortal = 1 })
+	-- self.object:set_velocity(vector.new(0, 2, 0))
+	self.object:set_acceleration(vector.new(0, -get_gravity(), 0))
+	self:set_item(self.itemstring)
+end
+
+--- @param own_stack core.ItemStack
+--- @param object core.ObjectRef
+--- @param entity mcl_item_entity
+function mcl_item_entity:try_merge_with(own_stack, object, entity)
+	if self.age == entity.age or entity._removed then
+		-- Can not merge with itself and remove entity
+		return false
+	end
+
+	local stack = ItemStack(entity.itemstring)
+	local name = stack:get_name()
+	if own_stack:get_name() ~= name or
+		own_stack:get_meta() ~= stack:get_meta() or
+		own_stack:get_wear() ~= stack:get_wear() or
+		own_stack:get_free_space() == 0 then
+		-- Can not merge different or full stack
+		return false
+	end
+
+	local count = own_stack:get_count()
+	local total_count = stack:get_count() + count
+	local max_count = stack:get_stack_max()
+
+	if total_count > max_count then
+		return false
+	end
+
+	-- Merge the remote stack into this one
+	local self_pos = self.object:get_pos()
+	local pos = object:get_pos()
+
+	--local y = pos.y + ((total_count - count) / max_count) * 0.15
+	local x_diff = (self_pos.x - pos.x) / 2
+	local z_diff = (self_pos.z - pos.z) / 2
+
+	local new_pos = vector.offset(pos, x_diff, 0, z_diff)
+	new_pos.y = math.max(self_pos.y, pos.y) + 0.1
+
+	self.object:move_to(new_pos)
+
+	self.age = 0 -- Handle as new entity
+	own_stack:set_count(total_count)
+	self.random_velocity = 0
+	self:set_item(own_stack:to_string())
+
+	entity.itemstring = ""
+	entity._removed = true
+	object:remove()
+	return true
+end
+
+function mcl_item_entity:on_step(dtime, moveresult)
+	if self._removed then
+		self.object:set_properties({
+			physical = false
+		})
+		self.object:set_velocity(vector.zero())
+		self.object:set_acceleration(vector.zero())
+		return
+	end
+
+	self.age = self.age + dtime
+	if self._collector_timer then
+		self._collector_timer = self._collector_timer + dtime
+	end
+	if time_to_live > 0 and ( self.age > time_to_live and not self._immortal ) then
+		self._removed = true
+		self.object:remove()
+		return
+	end
+	-- Delete corrupted item entities. The itemstring MUST be non-empty on its first step,
+	-- otherwise there might have some data corruption.
+	if self.itemstring == "" then
+		core.log("warning",
+			"Item entity with empty itemstring found and being deleted at: " .. core.pos_to_string(self.object:get_pos()))
+		self._removed = true
+		self.object:remove()
+		return
+	end
+
+	local p = self.object:get_pos()
+	local node = core.get_node(p)
+	local in_unloaded = node.name == "ignore"
+
+	if in_unloaded then
+		-- Don't infinetly fall into unloaded map
+		disable_physics(self.object, self)
+		return
+	end
+
+	if self.is_clock then
+		self.object:set_properties({
+			textures = { "mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame) }
+		})
+	end
+
+	local nn = node.name
+	local is_in_water = (core.get_item_group(nn, "liquid") ~= 0)
+	local nn_above = core.get_node(vector.offset(p, 0, 0.1, 0)).name
+	--  make sure it's more or less stationary and is at water level
+	local sleep_threshold = 0.3
+	local is_floating = false
+	local is_stationary = math.abs(self.object:get_velocity().x) < sleep_threshold
+		and math.abs(self.object:get_velocity().y) < sleep_threshold
+		and math.abs(self.object:get_velocity().z) < sleep_threshold
+	if is_in_water and is_stationary then
+		is_floating = (is_in_water
+			and (core.get_item_group(nn_above, "liquid") == 0))
+	end
+
+	if is_floating and self.physical_state == true then
+		self.object:set_velocity(vector.zero())
+		self.object:set_acceleration(vector.zero())
+		disable_physics(self.object, self)
+	end
+	-- If no collector was found for a long enough time, declare the magnet as disabled
+	if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
+		self._magnet_active = false
+		enable_physics(self.object, self)
+		return
+	end
+
+	-- Destroy item in lava, fire or special nodes
+
+	local def = core.registered_nodes[nn]
+
+	if nodes_destroy_items(self, moveresult, def, nn) then return end
+
+	if push_out_item_stuck_in_solid(self, dtime, p, def, is_in_water) then return end
+
+	if move_items_in_water (self, p, def, node, is_floating, is_in_water) then return end
+
+	-- If node is not registered or node is walkably solid and resting on nodebox
+	nn = core.get_node(vector.offset(p, 0, -0.5, 0)).name
+	def = core.registered_nodes[nn]
+	local v = self.object:get_velocity()
+	local is_on_floor = def and (def.walkable
+		and not def.groups.slippery and v.y == 0)
+
+	if not core.registered_nodes[nn] or is_floating or is_on_floor then
+		local own_stack = ItemStack(self.itemstring)
+		-- Merge with close entities of the same item
+		for _, object in pairs(core.get_objects_inside_radius(p, 0.8)) do
+			local obj = object:get_luaentity()
+			if obj and obj.name == "__builtin:item" then
+				---@cast obj mcl_item_entity
+				if obj.physical_state == false and self:try_merge_with(own_stack, object, obj) then
+					return
+				end
+			end
+			-- don't disable if underwater
+			if not is_in_water then
+				disable_physics(self.object, self)
+			end
+		end
+	else
+		if self._magnet_active == false and not is_floating then
+			enable_physics(self.object, self)
+		end
+	end
+
+end
+
 core.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
@@ -857,349 +1230,12 @@ core.register_entity(":__builtin:item", {
 	-- How old it has become in the collection animation
 	collection_age = 0,
 
-	-- Function to apply a random velocity
-	apply_random_vel = function(self, speed)
-		if not self or not self.object or not self.object:get_luaentity() then
-			return
-		end
-		-- if you passed a value then use that for the velocity multiplier
-		if speed ~= nil then self.random_velocity = speed end
-
-		local vel = self.object:get_velocity()
-
-		-- There is perhaps a cleverer way of making this physical so it bounces off the wall like swords.
-		local max_vel = 6.5 -- Faster than this and it throws it into the wall / floor and turns black because of clipping.
-
-		if vel and vel.x == 0 and vel.z == 0 and self.random_velocity > 0 then
-			local v = self.random_velocity
-			local x = math.random(5, max_vel) / 10 * v
-			if math.random(0, 10) < 5 then x = -x end
-			local z = math.random(5, max_vel) / 10 * v
-			if math.random(0, 10) < 5 then z = -z end
-			local y = math.random(1, 2)
-			self.object:set_velocity(vector.new(x, y, z))
-		end
-		self.random_velocity = 0
-	end,
-
-	set_item = function(self, itemstring)
-		self.itemstring = itemstring
-		if self.itemstring == "" then
-			-- item not yet known
-			return
-		end
-		local stack = ItemStack(itemstring)
-		if core.get_item_group(stack:get_name(), "compass") > 0 then
-			if string.find(stack:get_name(), "_lodestone") then
-				stack:set_name("mcl_compass:18_lodestone")
-			else
-				stack:set_name("mcl_compass:18")
-			end
-			itemstring = stack:to_string()
-			self.itemstring = itemstring
-		end
-		if core.get_item_group(stack:get_name(), "clock") > 0 then
-			self.is_clock = true
-		end
-		local count = stack:get_count()
-		local max_count = stack:get_stack_max()
-		if count > max_count then
-			count = max_count
-			self.itemstring = stack:get_name() .. " " .. max_count
-		end
-		local itemtable = stack:to_table()
-		local itemname = nil
-		local description = ""
-		if itemtable then
-			itemname = stack:to_table().name
-		end
-		local glow
-		local def = core.registered_items[itemname]
-		if def then
-			description = def.description
-			glow = def.light_source
-		end
-		local s = 0.2 + 0.1 * (count / max_count)
-		local wield_scale = (def and def.wield_scale and def.wield_scale.x) or 1
-		local c = s
-		s = s / wield_scale
-		local prop = {
-			is_visible = true,
-			visual = "wielditem",
-			textures = { itemname },
-			visual_size = { x = s, y = s },
-			collisionbox = { -c, -c, -c, c, c, c },
-			automatic_rotate = math.pi * 0.5,
-			infotext = description,
-			glow = glow,
-		}
-		self.object:set_properties(prop)
-		if item_drop_settings.random_item_velocity == true and self.age < 1 then
-			core.after(0, self.apply_random_vel, self)
-		end
-	end,
-
-	get_staticdata = function(self)
-		local data = core.serialize({
-			itemstring = self.itemstring,
-			always_collect = self.always_collect,
-			age = self.age,
-			_insta_collect = self._insta_collect,
-			_flowing = self._flowing,
-			_removed = self._removed,
-			_immortal = self._immortal,
-		})
-		-- sfan5 guessed that the biggest serializable item
-		-- entity would have a size of 65530 bytes. This has
-		-- been experimentally verified to be still too large.
-		--
-		-- anon5 has calculated that the biggest serializable
-		-- item entity has a size of exactly 65487 bytes:
-		--
-		-- 1. serializeString16 can handle max. 65535 bytes.
-		-- 2. The following engine metadata is always saved:
-		--    • 1 byte (version)
-		--    • 2 byte (length prefix)
-		--    • 14 byte “__builtin:item”
-		--    • 4 byte (length prefix)
-		--    • 2 byte (health)
-		--    • 3 × 4 byte = 12 byte (position)
-		--    • 4 byte (yaw)
-		--    • 1 byte (version 2)
-		--    • 2 × 4 byte = 8 byte (pitch and roll)
-		-- 3. This leaves 65487 bytes for the serialization.
-		if #data > 65487 then -- would crash the engine
-			local stack = ItemStack(self.itemstring)
-			stack:get_meta():from_table(nil)
-			self.itemstring = stack:to_string()
-			core.log(
-				"warning",
-				"Overlong item entity metadata removed: “" ..
-				self.itemstring ..
-				"” had serialized length of " ..
-				#data
-			)
-			return self:get_staticdata()
-		end
-		return data
-	end,
-
-	on_activate = function(self, staticdata)
-		if string.sub(staticdata, 1, string.len("return")) == "return" then
-			local data = core.deserialize(staticdata)
-			if data and type(data) == "table" then
-				self.itemstring = data.itemstring
-				self.always_collect = data.always_collect
-				if data.age then
-					self.age = data.age
-				else
-					self.age = self.age
-				end
-				--remember collection data
-				-- If true, can collect item without delay
-				self._insta_collect = data._insta_collect
-				self._flowing = data._flowing
-				self._removed = data._removed
-				self._immortal = data._immortal
-			end
-		else
-			self.itemstring = staticdata
-		end
-
-		local itemstack = ItemStack(self.itemstring)
-		vl_legacy.convert_itemstack(itemstack)
-		self.itemstring = itemstack:to_string()
-
-		if self._removed then
-			self._removed = true
-			self.object:remove()
-			return
-		end
-		if self._insta_collect == nil then
-			-- Intentionally default, since delayed collection is rare
-			self._insta_collect = true
-		end
-		if self._flowing == nil then
-			self._flowing = false
-		end
-		self._magnet_timer = 0
-		self._magnet_active = false
-		-- How long ago the last possible collector was detected. nil = none in this session
-		self._collector_timer = nil
-		-- Used to apply additional force
-		self._force = nil
-		self._forcestart = nil
-		self._forcetimer = 0
-
-		self.object:set_armor_groups({ immortal = 1 })
-		-- self.object:set_velocity(vector.new(0, 2, 0))
-		self.object:set_acceleration(vector.new(0, -get_gravity(), 0))
-		self:set_item(self.itemstring)
-	end,
-
-	try_merge_with = function(self, own_stack, object, entity)
-		if self.age == entity.age or entity._removed then
-			-- Can not merge with itself and remove entity
-			return false
-		end
-
-		local stack = ItemStack(entity.itemstring)
-		local name = stack:get_name()
-		if own_stack:get_name() ~= name or
-			own_stack:get_meta() ~= stack:get_meta() or
-			own_stack:get_wear() ~= stack:get_wear() or
-			own_stack:get_free_space() == 0 then
-			-- Can not merge different or full stack
-			return false
-		end
-
-		local count = own_stack:get_count()
-		local total_count = stack:get_count() + count
-		local max_count = stack:get_stack_max()
-
-		if total_count > max_count then
-			return false
-		end
-
-		-- Merge the remote stack into this one
-		local self_pos = self.object:get_pos()
-		local pos = object:get_pos()
-
-		--local y = pos.y + ((total_count - count) / max_count) * 0.15
-		local x_diff = (self_pos.x - pos.x) / 2
-		local z_diff = (self_pos.z - pos.z) / 2
-
-		local new_pos = vector.offset(pos, x_diff, 0, z_diff)
-		new_pos.y = math.max(self_pos.y, pos.y) + 0.1
-
-		self.object:move_to(new_pos)
-
-		self.age = 0 -- Handle as new entity
-		own_stack:set_count(total_count)
-		self.random_velocity = 0
-		self:set_item(own_stack:to_string())
-
-		entity.itemstring = ""
-		entity._removed = true
-		object:remove()
-		return true
-	end,
-
-	on_step = function(self, dtime, moveresult)
-		if self._removed then
-			self.object:set_properties({
-				physical = false
-			})
-			self.object:set_velocity(vector.zero())
-			self.object:set_acceleration(vector.zero())
-			return
-		end
-
-		self.age = self.age + dtime
-		if self._collector_timer then
-			self._collector_timer = self._collector_timer + dtime
-		end
-		if time_to_live > 0 and ( self.age > time_to_live and not self._immortal ) then
-			self._removed = true
-			self.object:remove()
-			return
-		end
-		-- Delete corrupted item entities. The itemstring MUST be non-empty on its first step,
-		-- otherwise there might have some data corruption.
-		if self.itemstring == "" then
-			core.log("warning",
-				"Item entity with empty itemstring found and being deleted at: " .. core.pos_to_string(self.object:get_pos()))
-			self._removed = true
-			self.object:remove()
-			return
-		end
-
-		local p = self.object:get_pos()
-		local node = core.get_node(p)
-		local in_unloaded = node.name == "ignore"
-
-		if in_unloaded then
-			-- Don't infinetly fall into unloaded map
-			disable_physics(self.object, self)
-			return
-		end
-
-
-
-
-		if self.is_clock then
-			self.object:set_properties({
-				textures = { "mcl_clock:clock_" .. (mcl_worlds.clock_works(p) and mcl_clock.old_time or mcl_clock.random_frame) }
-			})
-		end
-
-		local nn = node.name
-		local is_in_water = (core.get_item_group(nn, "liquid") ~= 0)
-		local nn_above = core.get_node(vector.offset(p, 0, 0.1, 0)).name
-		--  make sure it's more or less stationary and is at water level
-		local sleep_threshold = 0.3
-		local is_floating = false
-		local is_stationary = math.abs(self.object:get_velocity().x) < sleep_threshold
-			and math.abs(self.object:get_velocity().y) < sleep_threshold
-			and math.abs(self.object:get_velocity().z) < sleep_threshold
-		if is_in_water and is_stationary then
-			is_floating = (is_in_water
-				and (core.get_item_group(nn_above, "liquid") == 0))
-		end
-
-		if is_floating and self.physical_state == true then
-			self.object:set_velocity(vector.zero())
-			self.object:set_acceleration(vector.zero())
-			disable_physics(self.object, self)
-		end
-		-- If no collector was found for a long enough time, declare the magnet as disabled
-		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
-			self._magnet_active = false
-			enable_physics(self.object, self)
-			return
-		end
-
-		-- Destroy item in lava, fire or special nodes
-
-		local def = core.registered_nodes[nn]
-
-		if nodes_destroy_items(self, moveresult, def, nn) then return end
-
-		if push_out_item_stuck_in_solid(self, dtime, p, def, is_in_water) then return end
-
-		if move_items_in_water (self, p, def, node, is_floating, is_in_water) then return end
-
-		-- If node is not registered or node is walkably solid and resting on nodebox
-		nn = core.get_node(vector.offset(p, 0, -0.5, 0)).name
-		def = core.registered_nodes[nn]
-		local v = self.object:get_velocity()
-		local is_on_floor = def and (def.walkable
-			and not def.groups.slippery and v.y == 0)
-
-		if not core.registered_nodes[nn] or is_floating or is_on_floor then
-
-			local own_stack = ItemStack(self.object:get_luaentity().itemstring)
-			-- Merge with close entities of the same item
-			for _, object in pairs(core.get_objects_inside_radius(p, 0.8)) do
-				local obj = object:get_luaentity()
-				if obj and obj.name == "__builtin:item" then
-					---@cast obj mcl_item_entity
-					if obj.physical_state == false and self:try_merge_with(own_stack, object, obj) then
-						return
-					end
-				end
-				-- don't disable if underwater
-				if not is_in_water then
-					disable_physics(self.object, self)
-				end
-			end
-		else
-			if self._magnet_active == false and not is_floating then
-				enable_physics(self.object, self)
-			end
-		end
-
-	end,
+	apply_random_vel = mcl_item_entity.apply_random_vel,
+	set_item = mcl_item_entity.set_item,
+	get_staticdata = mcl_item_entity.get_staticdata,
+	on_activate = mcl_item_entity.on_activate,
+	try_merge_with = mcl_item_entity.try_merge_with,
+	on_step = mcl_item_entity.on_step,
 
 	-- Note: on_punch intentionally left out. The player should *not* be able to collect items by punching
 })

@@ -723,6 +723,9 @@ function mcl_util.get_entity_id(entity)
 		return id
 	end
 end
+
+---@class core.LuaEntity
+---@field _removed boolean
 function mcl_util.remove_entity(luaentity)
 	if luaentity._removed then return end
 	luaentity._removed = true
