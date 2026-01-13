@@ -19,8 +19,9 @@ end
 
 -- Display findings
 local has_finding = false
+local cwd = "file://"..os.getenv("PWD").."/"
 for file,findings in pairs(data) do
-	file = file:gsub("file://","")
+	file = file:gsub(cwd,"")
 	for _,finding in ipairs(findings) do
 		local prefix = "Warning"
 		if allow_findings and allow_findings[file] then
