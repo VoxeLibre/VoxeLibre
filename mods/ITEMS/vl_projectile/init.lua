@@ -307,29 +307,43 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	-- Pickup arrow if player is nearby (not in Creative Mode)
 	if self._removed then return end
 
-	local objects = core.get_objects_inside_radius(pos, 1)
-	for i = 1,#objects do
-		local obj = objects[i]
-		if obj:is_player() then
-			local player_name = obj:get_player_name()
-			local creative = core.is_creative_enabled(player_name)
-			if self._collectable and not creative then
-				local arrow_item = self._itemstring or self._arrow_item
-				if arrow_item and core.registered_items[arrow_item]
-				and obj:get_inventory():room_for_item("main", arrow_item) then
-					obj:get_inventory():add_item("main", arrow_item)
-					self._picked_up = true
-				end
+	local function try_pickup_from_player(self, obj, pos)
+		if not obj:is_player() then
+			return false
+		end
+
+		local player_pos = obj:get_pos()
+		local cb = obj:get_properties().collisionbox
+
+		local minp = vector.offset(player_pos, cb[1] - 0.1, cb[2] - 0.1, cb[3] - 0.1)
+		local maxp = vector.offset(player_pos, cb[4] + 0.1, cb[5] + 0.1, cb[6] + 0.1)
+
+		if not (pos.x >= minp.x and pos.x <= maxp.x
+				and pos.y >= minp.y and pos.y <= maxp.y
+				and pos.z >= minp.z and pos.z <= maxp.z) then
+			return false
+		end
+
+		local player_name = obj:get_player_name()
+		local creative = core.is_creative_enabled(player_name)
+
+		if self._collectable and not creative then
+			local arrow_item = self._itemstring or self._arrow_item
+			if arrow_item and core.registered_items[arrow_item]
+					and obj:get_inventory():room_for_item("main", arrow_item) then
+				obj:get_inventory():add_item("main", arrow_item)
+				self._picked_up = true
 			end
+		end
 
-			core.sound_play("item_drop_pickup", {
-				pos = pos,
-				max_hear_distance = 16,
-				gain = 1.0,
-			}, true)
+		core.sound_play("item_drop_pickup", { pos = pos, max_hear_distance = 16, gain = 1.0 }, true)
+		mcl_burning.extinguish(self.object)
+		mcl_util.remove_entity(self)
+		return true
+	end
 
-			mcl_burning.extinguish(self.object)
-			mcl_util.remove_entity(self)
+	for obj in core.objects_inside_radius(pos, 2) do
+		if try_pickup_from_player(self, obj, pos) then
 			return true
 		end
 	end
