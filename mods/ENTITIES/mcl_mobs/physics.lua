@@ -584,6 +584,53 @@ function mob_class:deal_light_damage(pos, damage)
 	end
 end
 
+-- check for environmental hits (water, lava, fire, cactus, wither rose)
+local function get_env_hits(self)
+    local pos = self.object:get_pos()
+
+    local cb = self.base_colbox or self.initial_properties.collisionbox
+
+    -- Area around the entity
+    local minp = vector.offset(pos, cb[1], cb[2], cb[3])
+    local maxp = vector.offset(pos, cb[4], cb[5], cb[6])
+
+    local query = {"group:water", "group:lava", "group:fire", "mcl_core:cactus", "mcl_flowers:wither_rose"}
+
+    local hits = core.find_nodes_in_area(minp, maxp, query, true)
+
+    local out = {
+        water = false,
+        lava = false,
+        fire = false,
+        cactus = false,
+        wither_rose = false,
+        raw_hits = hits
+    }
+
+    for nodename, positions in pairs(hits) do
+        if positions and #positions > 0 then
+            if nodename == "mcl_core:cactus" then
+                out.cactus = true
+            end
+            if nodename == "mcl_flowers:wither_rose" then
+                out.wither_rose = true
+            end
+
+            if core.get_item_group(nodename, "water") ~= 0 then
+                out.water = true
+            end
+            if core.get_item_group(nodename, "lava") ~= 0 then
+                out.lava = true
+            end
+            if core.get_item_group(nodename, "fire") ~= 0 then
+                out.fire = true
+            end
+        end
+    end
+
+    return out
+end
+
 -- environmental damage (water, lava, fire, light etc.)
 function mob_class:do_env_damage()
 	-- feed/tame text timer (so mob 'full' messages dont spam chat)
@@ -648,41 +695,35 @@ function mob_class:do_env_damage()
 	-- don't fall when on ignore, just stand still
 	if self.standing_in == "ignore" then
 		self.object:set_velocity(vector.zero())
-	-- wither rose effect
-	elseif self.standing_in == "mcl_flowers:wither_rose" then
-		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
-
+	
 	local feet_nodef = minetest.registered_nodes[self.standing_in]
 	local below_nodef = minetest.registered_nodes[self.standing_on]
 	local above_nodef = minetest.registered_nodes[self.standing_under]
-
+	
 	-- rain
 	if self.rain_damage > 0 and mcl_burning.is_affected_by_rain(self.object) then
 		self.health = self.health - self.rain_damage
-
+		
 		if self:check_for_death("rain", {type = "environment",
-				pos = pos, node = self.standing_in}) then
+		pos = pos, node = self.standing_in}) then
 			return true
 		end
 	end
-
+	
 	pos.y = pos.y + 1 -- for particle effect position
 
-	-- Check for hazardous nodes throughout the entity's collision box
-	local in_water = #mcl_burning.get_touching_nodes(self.object, "group:water", self) > 0
-	local in_lava = #mcl_burning.get_touching_nodes(self.object, "group:lava", self) > 0
-	local in_fire = #mcl_burning.get_touching_nodes(self.object, "group:fire", self) > 0
-	local in_cactus = #mcl_burning.get_touching_nodes(self.object, "mcl_core:cactus", self) > 0
+	local env_hits = get_env_hits(self)
+	if not env_hits then return end
 
-	if self.water_damage > 0 and in_water then
+	if self.water_damage > 0 and env_hits.water then
 		self.health = self.health - self.water_damage
 		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png", nil, nil, 1, nil)
 		if self:check_for_death("water", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
 
-	elseif self.lava_damage > 0 and in_lava then
+	elseif self.lava_damage > 0 and env_hits.lava then
 		self.health = self.health - self.lava_damage
 		mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 		mcl_burning.set_on_fire(self.object, 10)
@@ -691,14 +732,13 @@ function mob_class:do_env_damage()
 			return true
 		end
 
-	elseif self.fire_damage > 0 and (below_nodef.groups.fire) then
-		-- magma damage
+	elseif self.fire_damage > 0 and self.standing_on == "mcl_core:magma" then
 		self.health = self.health - self.fire_damage
 		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
 
-	elseif self.fire_damage > 0 and in_fire then
+	elseif self.fire_damage > 0 and env_hits.fire then
 		self.health = self.health - self.fire_damage
 		mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 		mcl_burning.set_on_fire(self.object, 5)
@@ -715,11 +755,16 @@ function mob_class:do_env_damage()
 	end
 
 	-- Cactus damage
-	if in_cactus or self.standing_on == "mcl_core:cactus" then
+	if env_hits.cactus then
 		self:damage_mob("cactus", 2)
 		if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
+	end
+
+	-- Wither Rose damage
+	if env_hits.wither_rose then
+		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
 
 	-- Drowning damage
