@@ -671,27 +671,16 @@ function mob_class:do_env_damage()
 
 	pos.y = pos.y + 1 -- for particle effect position
 
-	local cb = self.base_colbox or self.initial_properties.collisionbox
-	local base_pos = self.object:get_pos()
-
-	-- Checks if any node of a type touches the mob's collision box
-	local function touching_node_type(group_name)
-		if not base_pos then return false end
-		local minp = vector.offset(base_pos, cb[1], cb[2], cb[3])
-		local maxp = vector.offset(base_pos, cb[4], cb[5], cb[6])
-		local nodes = core.find_nodes_in_area(minp, maxp, "group:" .. group_name)
-		return #nodes > 0, nodes[1]
-	end
-
 	-- Check for hazardous nodes throughout the entity's collision box
-	local in_water, water_pos = touching_node_type("water")
-	local in_lava, lava_pos = touching_node_type("lava")
-	local in_fire, fire_pos = touching_node_type("fire")
+	local in_water = #mcl_burning.get_touching_nodes(self.object, "group:water", self) > 0
+	local in_lava = #mcl_burning.get_touching_nodes(self.object, "group:lava", self) > 0
+	local in_fire = #mcl_burning.get_touching_nodes(self.object, "group:fire", self) > 0
+	local in_cactus = #mcl_burning.get_touching_nodes(self.object, "mcl_core:cactus", self) > 0
 
 	if self.water_damage > 0 and in_water then
 		self.health = self.health - self.water_damage
 		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png", nil, nil, 1, nil)
-		if self:check_for_death("water", {type = "environment", pos = water_pos or pos, node = self.standing_in}) then
+		if self:check_for_death("water", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
 
@@ -700,7 +689,7 @@ function mob_class:do_env_damage()
 		mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 		mcl_burning.set_on_fire(self.object, 10)
 
-		if self:check_for_death("lava", {type = "environment", pos = lava_pos or pos, node = self.standing_in}) then
+		if self:check_for_death("lava", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
 
@@ -715,7 +704,7 @@ function mob_class:do_env_damage()
 		self.health = self.health - self.fire_damage
 		mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 		mcl_burning.set_on_fire(self.object, 5)
-		if self:check_for_death("fire", {type = "environment", pos = fire_pos or pos, node = self.standing_in}) then
+		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
 	elseif nodef.damage_per_second ~= 0 and not nodef.groups.lava and not nodef.groups.fire then
@@ -728,24 +717,10 @@ function mob_class:do_env_damage()
 	end
 
 	-- Cactus damage
-	if self.standing_on == "mcl_core:cactus" or self.standing_in == "mcl_core:cactus" or self.standing_under == "mcl_core:cactus" then
+	if in_cactus then
 		self:damage_mob("cactus", 2)
 		if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
-		end
-	else
-		local cb = self.initial_properties.collisionbox
-
-		-- Touching cactus from the side
-		if core.find_nodes_in_area(
-			vector.offset(pos, cb[1], 0, cb[3]),
-			vector.offset(pos, cb[4], 0, cb[6]),
-			"mcl_core:cactus"
-		)[1] then
-			self:damage_mob("cactus", 2)
-			if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
-				return true
-			end
 		end
 	end
 
