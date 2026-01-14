@@ -632,20 +632,18 @@ function mob_class:do_env_damage()
 		end
 	end
 
-	local y_level = self.initial_properties.collisionbox[2]
+	local cb = self.base_colbox or self.initial_properties.collisionbox
 
-	if self.child then
-		y_level = self.initial_properties.collisionbox[2] * 0.5
-	end
+	local eye_height = (self.head_eye_height or ((cb[5] - cb[2]) * 0.9))
+	local feet_height = (self.feet_height or -cb[2])
 
-	-- what is mob standing in?
-	pos.y = pos.y + y_level + 0.25 -- foot level
-	local pos2 = vector.new(pos.x, pos.y-1, pos.z)
-	self.standing_in = node_ok(pos, "air").name
-	self.standing_on = node_ok(pos2, "air").name
+	local feet_pos = vector.offset(pos, 0, feet_height + 0.25, 0)
+	local under_pos = vector.offset(feet_pos, 0, -1 , 0)
+	local eye_pos = vector.offset(pos, 0, eye_height, 0)
 
-	local pos3 = vector.offset(pos, 0, 1, 0)
-	self.standing_under = node_ok(pos3, "air").name
+	self.standing_in = node_ok(feet_pos, "air").name
+	self.standing_on = node_ok(under_pos, "air").name
+	self.standing_under = node_ok(eye_pos, "air").name
 
 	-- don't fall when on ignore, just stand still
 	if self.standing_in == "ignore" then
@@ -655,9 +653,9 @@ function mob_class:do_env_damage()
 		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
 
-	local nodef = minetest.registered_nodes[self.standing_in]
-	local nodef2 = minetest.registered_nodes[self.standing_on]
-	local nodef3 = minetest.registered_nodes[self.standing_under]
+	local feet_nodef = minetest.registered_nodes[self.standing_in]
+	local below_nodef = minetest.registered_nodes[self.standing_on]
+	local above_nodef = minetest.registered_nodes[self.standing_under]
 
 	-- rain
 	if self.rain_damage > 0 and mcl_burning.is_affected_by_rain(self.object) then
@@ -693,7 +691,7 @@ function mob_class:do_env_damage()
 			return true
 		end
 
-	elseif self.fire_damage > 0 and (nodef2.groups.fire) then
+	elseif self.fire_damage > 0 and (below_nodef.groups.fire) then
 		-- magma damage
 		self.health = self.health - self.fire_damage
 		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
@@ -707,9 +705,9 @@ function mob_class:do_env_damage()
 		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
-	elseif nodef.damage_per_second ~= 0 and not nodef.groups.lava and not nodef.groups.fire then
+	elseif feet_nodef.damage_per_second ~= 0 and not feet_nodef.groups.lava and not feet_nodef.groups.fire then
 		-- damage_per_second node check
-		self.health = self.health - nodef.damage_per_second
+		self.health = self.health - feet_nodef.damage_per_second
 		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
 		if self:check_for_death("dps", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
@@ -717,7 +715,7 @@ function mob_class:do_env_damage()
 	end
 
 	-- Cactus damage
-	if in_cactus then
+	if in_cactus or self.standing_on == "mcl_core:cactus" then
 		self:damage_mob("cactus", 2)
 		if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
@@ -732,7 +730,7 @@ function mob_class:do_env_damage()
 			if minetest.get_item_group(self.standing_in, "water") == 0 then
 				drowning = true
 			end
-		elseif nodef.drowning > 0 and nodef3.drowning > 0 then
+		elseif feet_nodef.drowning > 0 and above_nodef.drowning > 0 then
 			drowning = true
 		end
 
@@ -741,8 +739,8 @@ function mob_class:do_env_damage()
 			mcl_mobs.effect(pos, 2, "bubble.png", nil, nil, 1, nil)
 			if self.breath <= 0 then
 				local dmg
-				if nodef.drowning > 0 then
-					dmg = nodef.drowning
+				if feet_nodef.drowning > 0 then
+					dmg = feet_nodef.drowning
 				else
 					dmg = 4
 				end
@@ -758,14 +756,13 @@ function mob_class:do_env_damage()
 		end
 	end
 
-	--- suffocation inside solid node
-	-- FIXME: Redundant with mcl_playerplus
+	--- Suffocation inside solid node
 	if (self.suffocation == true)
-	and (nodef.walkable == nil or nodef.walkable == true)
-	and (nodef.collision_box == nil or nodef.collision_box.type == "regular")
-	and (nodef.node_box == nil or nodef.node_box.type == "regular")
-	and (nodef.groups.disable_suffocation ~= 1)
-	and (nodef.groups.opaque == 1) then
+			and (feet_nodef.walkable == nil or feet_nodef.walkable == true)
+			and (feet_nodef.collision_box == nil or feet_nodef.collision_box.type == "regular")
+			and (feet_nodef.node_box == nil or feet_nodef.node_box.type == "regular")
+			and (feet_nodef.groups.disable_suffocation ~= 1)
+			and (feet_nodef.groups.opaque == 1) then
 
 		-- Short grace period before starting to take suffocation damage.
 		-- This is different from players, who take damage instantly.
