@@ -732,7 +732,7 @@ function mob_class:do_env_damage()
 			return true
 		end
 
-	elseif self.fire_damage > 0 and self.standing_on == "mcl_core:magma" then
+	elseif self.fire_damage > 0 and below_nodef.name == "mcl_nether:magma" then
 		self.health = self.health - self.fire_damage
 		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
