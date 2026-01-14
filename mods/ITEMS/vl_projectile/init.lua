@@ -307,7 +307,7 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	-- Pickup arrow if player is nearby (not in Creative Mode)
 	if self._removed then return end
 
-	local function try_pickup_from_player(self, obj, pos)
+	local function try_pickup_from_player(obj)
 		if not obj:is_player() then
 			return false
 		end
@@ -343,7 +343,7 @@ local function stuck_on_step(self, dtime, entity_def, projectile_def)
 	end
 
 	for obj in core.objects_inside_radius(pos, 2) do
-		if try_pickup_from_player(self, obj, pos) then
+		if try_pickup_from_player(obj) then
 			return true
 		end
 	end
