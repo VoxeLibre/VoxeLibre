@@ -209,6 +209,13 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			self:teleport(nil)
 		end
 
+		-- If standing in liquid, teleport to safety
+		local standing_nodef = core.registered_nodes[self.standing_in]
+		if standing_nodef.groups.liquid then
+			self.state = "stand"
+			self:teleport(nil)
+		end
+
 		-- Check for arrows and people nearby and teleport away if found.
 		rover_pos = self.object:get_pos()
 		rover_pos.y = rover_pos.y + 1.5
