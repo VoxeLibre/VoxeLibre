@@ -116,7 +116,7 @@ end
 local function get_light_teleport_probability(light_level, dtime)
 	-- Uses exponential distribution: P(teleport in dt) = dt / expected_time
 	-- Light level 15: expected 0.1s, 14: 2s, 13: 4s, ..., 0: 30s
-	local expected_time = (core.LIGHT_MAX * 2 - light_level * 2) + 0.1
+	local expected_time = (core.LIGHT_MAX - light_level) * 2 + 0.1
 
 	return 1 - math.exp(-dtime / expected_time)
 end
@@ -269,7 +269,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			if self.attack then
 				local target = self.attack
 				local pos = target:get_pos()
-				if pos ~= nil then
+				if pos then
 					local distance = vector.distance(rover_pos, pos)
 					if self.view_range >= distance and distance > 10 then
 						self:teleport(target)
