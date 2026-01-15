@@ -216,6 +216,15 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 			self:teleport(nil)
 		end
 
+		-- If standing in any lingering cloud, teleport to safety
+		if mcl_potions and mcl_potions.get_lingering_clouds_at then
+			local clouds = mcl_potions.get_lingering_clouds_at(rover_pos)
+			if #clouds > 0 then
+				self.state = "stand"
+				self:teleport(nil)
+			end
+		end
+
 		-- Check for arrows and people nearby and teleport away if found.
 		rover_pos = self.object:get_pos()
 		rover_pos.y = rover_pos.y + 1.5
@@ -231,8 +240,11 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 					end
 				else
 					local lua = obj:get_luaentity()
-					if lua then
-						if lua.name == "mcl_bows:arrow_entity" or lua.name == "mcl_throwing:snowball_entity" then
+					if lua and lua.name then
+						if lua.name == "mcl_bows:arrow_entity"
+								or lua.name == "mcl_throwing:snowball_entity"
+								or lua.name:find("^mcl_potions:.*_splash_flying$")
+								or lua.name:find("^mcl_potions:.*_lingering_flying$") then
 							self:teleport(nil)
 						end
 					end
