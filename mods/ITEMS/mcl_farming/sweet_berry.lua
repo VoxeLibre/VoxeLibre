@@ -90,8 +90,8 @@ core.register_craftitem("mcl_farming:sweet_berry", {
 	description = S("Sweet Berry"),
 	inventory_image = "mcl_farming_sweet_berry.png",
 	_mcl_saturation = 0.4,
-	groups = { food = 2, eatable = 1, compostability=30 },
-	on_secondary_use = core.item_eat(1),
+	groups = { food = 2, eatable = 2, compostability=30 },
+	on_secondary_use = core.item_eat(2),
 	on_place = function(itemstack, placer, pointed_thing)
 		local pn = placer:get_player_name()
 		if placer:is_player() and core.is_protected(pointed_thing.above, pn or "") then
