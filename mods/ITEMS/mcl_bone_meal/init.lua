@@ -80,7 +80,7 @@ function mcl_bone_meal.use_bone_meal(itemstack, placer, pointed_thing)
 		local pos = positions[i]
 
 		-- Check protection
-		if mcl_util.check_area_protection(pos, pointed_thing.above, placer) then return false end
+		if mcl_util.check_area_protection(pos, pointed_thing.above, placer) then return itemstack end
 
 		local node = minetest.get_node(pos)
 		local ndef = minetest.registered_nodes[node.name]
