@@ -114,7 +114,7 @@ local function play()
 			if (dimension == "overworld") then
 
 				-- Underground
-				if (pos and pos.y < 0) then
+				if (pos and pos.y < -10) then
 					scenario = "mining"
 				-- Night time
 				elseif time < 0.25 or time >= 0.75 then
