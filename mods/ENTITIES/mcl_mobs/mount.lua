@@ -79,12 +79,12 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
         local ctrl = entity.driver:get_player_control()
 
         local speed_change = 0
-	local velocity_change = 0.1 * entity.run_velocity * 0.385
+        local velocity_change = 0.1 * entity.run_velocity * 0.385
         if ctrl.up then -- forward
             speed_change = entity.accel * velocity_change
         elseif ctrl.down then -- backward
             speed_change = -entity.accel * velocity_change
-	else -- nothing pressed, reset speed
+        else -- nothing pressed, reset speed
 	    horizontal_speed = 0 
 	end
 
