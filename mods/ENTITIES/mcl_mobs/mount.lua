@@ -35,6 +35,7 @@ minetest.register_on_dieplayer(function(player)
 end)
 
 function mcl_mobs.attach(entity, player)
+    entity.player_rotation = entity.player_rotation or vector.zero()
     entity.driver_attach_at = entity.driver_attach_at or vector.zero()
     entity.driver_eye_offset = entity.driver_eye_offset or vector.zero()
     entity.driver_scale = entity.driver_scale or {x = 1, y = 1}
@@ -43,7 +44,7 @@ function mcl_mobs.attach(entity, player)
 
     force_detach(player)
 
-    player:set_attach(entity.object, "", entity.driver_attach_at, {x=0, y=0, z=0})
+    player:set_attach(entity.object, "", entity.driver_attach_at, entity.player_rotation)
     mcl_player.player_attached[player:get_player_name()] = true
 
     -- set eye offset and visual scale
@@ -109,7 +110,7 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
             z = dir.z * horizontal_speed
         }
 
-	-- handle jumping / flying separately
+        -- handle jumping / flying separately
         if can_fly then
             -- vertical fly input
             if ctrl.jump then
