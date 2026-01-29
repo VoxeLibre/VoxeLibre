@@ -910,12 +910,14 @@ function mob_class:do_states_attack(dtime)
 	local p = self.attack:get_pos() or s
 	local yaw = self.object:get_yaw() or 0
 
-	-- stop attacking if player invisible or out of range
+	-- stop attacking if the player is invisible, out of range, or creative
 	if not self.attack
 			or not self.attack:get_pos()
 			or not self:object_in_range(self.attack)
 			or self.attack:get_hp() <= 0
-			or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ]) then
+			or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ])
+			or (self.attack:is_player() and core.is_creative_enabled(self.attack:get_player_name()))
+			then
 
 		clear_aggro(self)
 		return
