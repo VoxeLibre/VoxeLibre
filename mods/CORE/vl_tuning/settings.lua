@@ -6,7 +6,7 @@ vl_tuning.setting("gamerule:creativeInstantKill", "bool", {
 	description = S("Allows creative players to kill mobs with only a single punch."),
 	default = true,
 	set = function(val) core.settings:set_bool("vl_creative_instant_kill", val) end,
-	get = function() core.settings:get_bool("vl_creative_instant_kill", true) end,
+	get = function() return core.settings:get_bool("vl_creative_instant_kill", true) end,
 })
 local keep_inventory
 vl_tuning.setting("gamerule:keepInventory", "bool", {
