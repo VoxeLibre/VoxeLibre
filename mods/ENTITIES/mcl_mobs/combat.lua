@@ -547,7 +547,11 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	if is_player then
 		-- Instant kill mobs in creative
-		if core.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
+		if core.settings:get_bool("vl_creative_instant_kill", true)
+				and core.is_creative_enabled(hitter:get_player_name())
+				then
+			self.health = 0
+		end
 
 		-- exhaust attacker
 		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
