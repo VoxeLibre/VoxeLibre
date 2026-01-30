@@ -2,15 +2,11 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local mod = vl_tuning
 
-local creative_instant_kill
 vl_tuning.setting("gamerule:creativeInstantKill", "bool", {
 	description = S("Allows creative players to kill mobs with only a single punch."),
-	default = core.settings:get_bool("vl_creative_instant_kill", true),
-	set = function(val)
-		creative_instant_kill = val
-		core.settings:set_bool("vl_creative_instant_kill", val)
-	end,
-	get = function() return creative_instant_kill end,
+	default = true,
+	set = function(val) core.settings:set_bool("vl_creative_instant_kill", val) end,
+	get = function() core.settings:get_bool("vl_creative_instant_kill", true) end,
 })
 local keep_inventory
 vl_tuning.setting("gamerule:keepInventory", "bool", {
