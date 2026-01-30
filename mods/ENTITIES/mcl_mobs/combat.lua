@@ -319,18 +319,23 @@ function mob_class:monster_attack()
 	end
 
 	for n = 1, #objs do
-		if objs[n]:is_player() then
-			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not self:object_in_range(objs[n])) then
+		local obj_ref = objs[n]
+		if obj_ref:is_player() then
+			local player_name = obj_ref:get_player_name()
+			if mcl_mobs.invis[player_name]
+					or (not self:object_in_range(obj_ref))
+					or core.is_creative_enabled(player_name)
+					then
 				type = ""
 			elseif (self.type == "monster" or self._aggro) then
 				-- self.aggro made player be attacked by npc again if out of range then back in again
 				-- Does it serve a purpose other than that?
-				player = objs[n]
+				player = obj_ref
 				type = "player"
 				name = "player"
 			end
 		else
-			obj = objs[n]:get_luaentity()
+			obj = obj_ref:get_luaentity()
 			if obj then
 				player = obj.object
 				type = obj.type
