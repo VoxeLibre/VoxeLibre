@@ -171,6 +171,11 @@ minetest.register_on_player_hpchange(function(player, hp_change, mt_reason)
 			return 0
 		end
 		local mcl_reason = mcl_damage.from_mt(mt_reason)
+		if core.is_creative_enabled(player:get_player_name())
+				and mcl_reason.type ~= "out_of_world"  -- fall out of the world, or the kill command
+				then
+			return 0
+		end
 		if not fire_damage_enabled and mcl_reason.flags.is_fire then return 0 end
 		if not drowning_damage_enabled and mcl_reason.type == "drown" then return 0 end
 		if not fall_damage_enabled and mcl_reason.type == "fall" then return 0 end
