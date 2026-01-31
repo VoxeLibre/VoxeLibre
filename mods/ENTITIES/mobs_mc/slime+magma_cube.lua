@@ -27,6 +27,51 @@ local function is_slime_chunk(pos)
 	return mcl_util.hash_pos(x, y, z, world_seed) / 0x100000000 * slime_ratio < 1
 end
 
+-- Enhanced position validation for better spawning
+local function validate_spawn_position(pos, mob_type)
+	if not pos then return false end
+	
+	-- Get the node at spawn position and below
+	local node_at_pos = minetest.get_node(pos)
+	local node_below = minetest.get_node(vector.new(pos.x, pos.y - 1, pos.z))
+	
+	if not node_at_pos or not node_below then return false end
+	
+	-- Get node definitions
+	local def_at = minetest.registered_nodes[node_at_pos.name]
+	local def_below = minetest.registered_nodes[node_below.name]
+	
+	if not def_at or not def_below then return false end
+	
+	-- Check if spawn position is valid (not solid)
+	if def_at.walkable then return false end
+	
+	-- For slimes, ensure they don't spawn in water
+	if mob_type == "slime" then
+		if node_at_pos.name:match("water") or node_below.name:match("water") then
+			return false
+		end
+		-- Slimes need solid ground below
+		if not def_below.walkable then return false end
+	end
+	
+	-- For magma cubes, they can spawn on lava
+	if mob_type == "magma_cube" then
+		-- They need either solid ground or lava below
+		if not def_below.walkable and not node_below.name:match("lava") then
+			return false
+		end
+	end
+	
+	return true
+end
+
+-- Enhanced slime chunk validation
+local function enhanced_slime_chunk_check(pos)
+	if not is_slime_chunk(pos) then return false end
+	return validate_spawn_position(pos, "slime")
+end
+
 -- Returns a function that spawns children in a circle around pos.
 -- To be used as on_die callback.
 -- self: mob reference
@@ -54,13 +99,17 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 					eject_speed = eject_speed * 0.5
 				end
 			end
-			local mob = mcl_mobs.spawn(newpos, child_mob)
-			if mob then
-				if not mother_stuck then
-					mob:set_velocity(dir * eject_speed)
+			-- Validate spawn position for children
+			local mob_type = child_mob:match("slime") and "slime" or "magma_cube"
+			if validate_spawn_position(newpos, mob_type) then
+				local mob = mcl_mobs.spawn(newpos, child_mob)
+				if mob then
+					if not mother_stuck then
+						mob:set_velocity(dir * eject_speed)
+					end
+					mob:set_yaw(angle - math.pi/2)
+					table.insert(children, mob)
 				end
-				mob:set_yaw(angle - math.pi/2)
-				table.insert(children, mob)
 			end
 			angle = angle + (math.pi*2) / spawn_count
 		end
@@ -69,10 +118,12 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 			minetest.after(1.0, function(children, enemy)
 				local le
 				for c = 1, #children do
-					le = children[c]:get_luaentity()
-					if le then
-						le.state = "attack"
-						le.attack = enemy
+					if children[c] and children[c]:get_luaentity then
+						le = children[c]:get_luaentity()
+						if le then
+							le.state = "attack"
+							le.attack = enemy
+						end
 					end
 				end
 			end, children, self.attack)
@@ -80,12 +131,36 @@ local spawn_children_on_die = function(child_mob, spawn_distance, eject_speed)
 	end
 end
 
--- two different rules, underground slime chunks and regular swamp spawning
+-- Enhanced spawn check for slimes with better biome validation
 local function slime_spawn_check(pos, environmental_light, artificial_light, sky_light)
-	if pos.y <= slime_chunk_spawn_max and is_slime_chunk(pos) then
-		return max(artificial_light, sky_light) <= slime_max_light
+	if not pos then return false end
+	
+	-- Check if position is valid first
+	if not validate_spawn_position(pos, "slime") then return false end
+	
+	-- Get biome at position
+	local biome_data = minetest.get_biome_data(pos)
+	if not biome_data then return false end
+	
+	local biome_name = minetest.get_biome_name(biome_data.biome)
+	if not biome_name then return false end
+	
+	-- Check for swamp spawning
+	local is_swamp = biome_name:match("Swampland") or biome_name:match("MangroveSwamp")
+	if is_swamp and pos.y >= (mobs_mc.water_level or 62) and pos.y <= (mobs_mc.water_level or 62) + 27 then
+		return max(artificial_light, sky_light) <= swamp_light_max
 	end
-	return max(artificial_light, sky_light) <= swamp_light_max
+	
+	-- Check for underground slime chunk spawning
+	if pos.y <= slime_chunk_spawn_max and is_slime_chunk(pos) then
+		-- Ensure it's actually underground (not in swamp biomes above ground)
+		local is_underground = biome_name:match("_underground")
+		if is_underground then
+			return max(artificial_light, sky_light) <= slime_max_light
+		end
+	end
+	
+	return false
 end
 
 -- Slime
@@ -241,6 +316,7 @@ local swampy_biomes = {"Swampland", "MangroveSwamp"}
 local swamp_min = water_level
 local swamp_max = water_level + 27
 
+-- Enhanced spawn setups with better validation
 mcl_mobs:spawn_setup({
 	name = "mobs_mc:slime_tiny",
 	dimension = "overworld",
@@ -253,7 +329,7 @@ mcl_mobs:spawn_setup({
 	aoc = 4,
 	min_height = cave_min,
 	max_height = cave_max,
-	check_position = is_slime_chunk
+	check_position = enhanced_slime_chunk_check
 })
 
 mcl_mobs:spawn_setup({
@@ -267,7 +343,8 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 4,
 	min_height = swamp_min,
-	max_height = swamp_max
+	max_height = swamp_max,
+	check_position = function(pos) return validate_spawn_position(pos, "slime") end
 })
 
 mcl_mobs:spawn_setup({
@@ -282,7 +359,7 @@ mcl_mobs:spawn_setup({
 	aoc = 4,
 	min_height = cave_min,
 	max_height = cave_max,
-	check_position = is_slime_chunk
+	check_position = enhanced_slime_chunk_check
 })
 
 mcl_mobs:spawn_setup({
@@ -296,7 +373,8 @@ mcl_mobs:spawn_setup({
 	chance = 1000,
 	aoc = 4,
 	min_height = swamp_min,
-	max_height = swamp_max
+	max_height = swamp_max,
+	check_position = function(pos) return validate_spawn_position(pos, "slime") end
 })
 
 mcl_mobs:spawn_setup({
@@ -311,7 +389,7 @@ mcl_mobs:spawn_setup({
 	aoc = 4,
 	min_height = cave_min,
 	max_height = cave_max,
-	check_position = is_slime_chunk
+	check_position = enhanced_slime_chunk_check
 })
 
 mcl_mobs:spawn_setup({
@@ -325,7 +403,8 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 4,
 	min_height = swamp_min,
-	max_height = swamp_max
+	max_height = swamp_max,
+	check_position = function(pos) return validate_spawn_position(pos, "slime") end
 })
 
 -- Magma cube
@@ -376,7 +455,7 @@ local magma_cube_big = {
 	},
 	water_damage = 0,
 	lava_damage = 0,
-        fire_damage = 0,
+	fire_damage = 0,
 	light_damage = 0,
 	fall_damage = 0,
 	view_range = 16,
@@ -444,6 +523,7 @@ local magma_cube_biomes = {"Nether", "BasaltDelta"}
 local nether_min = mcl_vars.mg_nether_min
 local nether_max = mcl_vars.mg_nether_max
 
+-- Enhanced magma cube spawning with position validation
 mcl_mobs:spawn_setup({
 	name = "mobs_mc:magma_cube_tiny",
 	dimension = "nether",
@@ -455,7 +535,8 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 4,
 	min_height = nether_min,
-	max_height = nether_max
+	max_height = nether_max,
+	check_position = function(pos) return validate_spawn_position(pos, "magma_cube") end
 })
 
 mcl_mobs:spawn_setup({
@@ -469,7 +550,8 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 4,
 	min_height = nether_min,
-	max_height = nether_max
+	max_height = nether_max,
+	check_position = function(pos) return validate_spawn_position(pos, "magma_cube") end
 })
 
 mcl_mobs:spawn_setup({
@@ -483,7 +565,8 @@ mcl_mobs:spawn_setup({
 	interval = 30,
 	aoc = 4,
 	min_height = nether_min,
-	max_height = nether_max
+	max_height = nether_max,
+	check_position = function(pos) return validate_spawn_position(pos, "magma_cube") end
 })
 
 -- spawn eggs
@@ -497,4 +580,3 @@ mcl_mobs:non_spawn_specific("mobs_mc:magma_cube_big","overworld",0, minetest.LIG
 mcl_mobs.register_egg("mobs_mc:slime_big", S("Slime"), "#52a03e", "#7ebf6d")
 
 -- FIXME: add spawn eggs for small and tiny slimes and magma cubes
-
