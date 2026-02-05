@@ -557,7 +557,7 @@ end)
 
 function mcl_hunger.on_gamemode_change(player, _, new_gamemode)
 	local new_hunger_enabled = new_gamemode ~= "creative"
-	player:get_meta():set("vl_hunger:enabled", new_hunger_enabled and "1" or "0")
+	player:get_meta():set_string("vl_hunger:enabled", new_hunger_enabled and "1" or "0")
 	mcl_hunger.refresh_player_bars(player)
 end
 
