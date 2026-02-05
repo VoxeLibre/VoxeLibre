@@ -214,15 +214,31 @@ vl_hudbars.register_hudbar({
 	layers = 1,
 })
 
+
+--- Returns true iff player is subject to hunger.
+---@param player core.Player
+---@return boolean
+function mcl_hunger.get_hunger_enabled(player)
+	return active and player:get_meta():get_bool("vl_hunger:enabled", true)
+end
+
+--- Returns true iff player should see the hunger bar.
+---@param player core.Player
+---@return boolean
+function mcl_hunger.get_hudbar_enabled(player)
+	return active and player:get_meta():get_bool("vl_hunger:hudbar_enabled", mcl_hunger.get_hunger_enabled(player))
+end
+
 --- Hide and unhide bars depending on current mod state.
 ---@param player core.Player
 function mcl_hunger.refresh_player_bars(player)
-	if mcl_hunger.get_active() then
+	local hudbar_enabled = mcl_hunger.get_hudbar_enabled(player)
+	if hudbar_enabled then
 		vl_hudbars.show(player, "hunger")
 	else
 		vl_hudbars.hide(player, "hunger")
 	end
-	if mcl_hunger.get_active() and mcl_hunger.get_debug() then
+	if hudbar_enabled and mcl_hunger.get_debug() then
 		vl_hudbars.show(player, "saturation")
 		vl_hudbars.show(player, "exhaustion")
 	else
