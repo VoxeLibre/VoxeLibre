@@ -53,6 +53,9 @@ function mcl_hunger.set_active(state, skip_player_refresh)
 	if skip_player_refresh then return end
 
 	for _, player in pairs(core.get_connected_players()) do
+		-- Handle potentially unhandled gamemode changes
+		mcl_hunger.on_gamemode_change(player, nil, mcl_gamemode.get_gamemode(player))
+		
 		mcl_hunger.refresh_player_bars(player)
 	end
 end
@@ -543,4 +546,14 @@ core.register_globalstep(function(dtime)
 		-- Players should be able to eat, regardless if hunger is enabled
 		tick_eat_delay(player, dtime)
 	end
+end)
+
+function mcl_hunger.on_gamemode_change(player, _, new_gamemode)
+	local new_hunger_enabled = new_gamemode ~= "creative"
+	player:get_meta():set_bool("vl_hunger:enabled", new_hunger_enabled)
+	mcl_hunger.refresh_player_bars(player)
+end
+
+mcl_gamemode.register_on_gamemode_change(function(player, old_gamemode, new_gamemode)
+	mcl_hunger.on_gamemode_change(player, old_gamemode, new_gamemode)
 end)
