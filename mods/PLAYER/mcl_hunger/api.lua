@@ -79,6 +79,9 @@ function mcl_hunger.exhaust(playername, increase)
 	if not player then 
 		return false
 	end
+	if not mcl_hunger.get_hunger_enabled(player) then
+		return false
+	end
 	mcl_hunger.set_exhaustion(player, mcl_hunger.get_exhaustion(player) + increase)
 	if mcl_hunger.get_exhaustion(player) >= mcl_hunger.EXHAUST_LVL then
 		mcl_hunger.set_exhaustion(player, 0.0)
