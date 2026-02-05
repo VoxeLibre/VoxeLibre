@@ -222,14 +222,21 @@ vl_hudbars.register_hudbar({
 ---@param player core.Player
 ---@return boolean
 function mcl_hunger.get_hunger_enabled(player)
-	return active and player:get_meta():get_bool("vl_hunger:enabled", true)
+	if not active then return false end
+	local value = player:get_meta():get("vl_hunger:enabled") or "1"
+	return value == "1"
 end
 
 --- Returns true iff player should see the hunger bar.
 ---@param player core.Player
 ---@return boolean
 function mcl_hunger.get_hudbar_enabled(player)
-	return active and player:get_meta():get_bool("vl_hunger:hudbar_enabled", mcl_hunger.get_hunger_enabled(player))
+	if not active then return false end
+	local value = player:get_meta():get("vl_hunger:hudbar_enabled")
+	if not value then
+		return mcl_hunger.get_hunger_enabled(player)
+	end
+	return value == "1"
 end
 
 --- Hide and unhide bars depending on current mod state.
@@ -550,7 +557,7 @@ end)
 
 function mcl_hunger.on_gamemode_change(player, _, new_gamemode)
 	local new_hunger_enabled = new_gamemode ~= "creative"
-	player:get_meta():set_bool("vl_hunger:enabled", new_hunger_enabled)
+	player:get_meta():set("vl_hunger:enabled", new_hunger_enabled and "1" or "0")
 	mcl_hunger.refresh_player_bars(player)
 end
 
