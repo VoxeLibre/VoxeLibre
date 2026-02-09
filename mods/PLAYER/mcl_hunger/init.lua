@@ -53,9 +53,6 @@ function mcl_hunger.set_active(state, skip_player_refresh)
 	if skip_player_refresh then return end
 
 	for _, player in pairs(core.get_connected_players()) do
-		-- Handle potentially unhandled gamemode changes
-		mcl_hunger.on_gamemode_change(player, nil, mcl_gamemode.get_gamemode(player))
-		
 		mcl_hunger.refresh_player_bars(player)
 	end
 end
@@ -217,26 +214,32 @@ vl_hudbars.register_hudbar({
 	layers = 1,
 })
 
+--- A list of filters [(player)->boolean?] to determine if a player
+--- is subject to hunger mechanics or not.
+mcl_hunger.hunger_enabled_checks = {
+	function(player)
+		if not active then return false end
+	end
+}
 
 --- Returns true iff player is subject to hunger.
 ---@param player core.Player
 ---@return boolean
 function mcl_hunger.get_hunger_enabled(player)
-	if not active then return false end
-	local value = player:get_meta():get("vl_hunger:enabled") or "1"
-	return value == "1"
+	for _, filter in ipairs(mcl_hunger.hunger_enabled_checks) do
+		local result = filter(player)
+		if result ~= nil then
+			return result
+		end
+	end
+	return true
 end
 
 --- Returns true iff player should see the hunger bar.
 ---@param player core.Player
 ---@return boolean
 function mcl_hunger.get_hudbar_enabled(player)
-	if not active then return false end
-	local value = player:get_meta():get("vl_hunger:hudbar_enabled")
-	if not value then
-		return mcl_hunger.get_hunger_enabled(player)
-	end
-	return value == "1"
+	return mcl_hunger.get_hunger_enabled(player)
 end
 
 --- Hide and unhide bars depending on current mod state.
@@ -555,12 +558,14 @@ core.register_globalstep(function(dtime)
 	end
 end)
 
-function mcl_hunger.on_gamemode_change(player, _, new_gamemode)
-	local new_hunger_enabled = new_gamemode ~= "creative"
-	player:get_meta():set_string("vl_hunger:enabled", new_hunger_enabled and "1" or "0")
-	mcl_hunger.refresh_player_bars(player)
-end
+-- mcl_gamemode integration
+if core.get_modpath("mcl_gamemode") then
+	table.insert(mcl_hunger.hunger_enabled_checks, function(player)
+		local gamemode = mcl_gamemode.get_gamemode(player)
+		if gamemode == "creative" then return false end
+	end)
 
-mcl_gamemode.register_on_gamemode_change(function(player, old_gamemode, new_gamemode)
-	mcl_hunger.on_gamemode_change(player, old_gamemode, new_gamemode)
-end)
+	mcl_gamemode.register_on_gamemode_change(function(player, _, _)
+		mcl_hunger.refresh_player_bars(player)
+	end)
+end
