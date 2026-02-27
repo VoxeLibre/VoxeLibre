@@ -644,8 +644,8 @@ function mcl_mobs.spawn(pos, id, opts)
 	local force = opts and opts.force
 	if not force and def.can_spawn and not def.can_spawn(pos) then
 		core.log("verbose", string.format(
-				"did not spawn mob %q at pos %q: can_spawn returned false",
-				id, pos))
+				"did not spawn mob %s at pos %s: can_spawn returned false",
+				id, core.pos_to_string(pos)))
 		return false
 	end
 	if not force and not has_room(def, pos) then
@@ -665,8 +665,8 @@ function mcl_mobs.spawn(pos, id, opts)
 			retry = true
 		end
 		if not retry or not has_room(def, pos) then
-			core.log("verbose", string.format("no room for mob %q at %q", id, 
-					pos))
+			core.log("verbose", string.format("no room for mob %s at %s", id,
+				core.pos_to_string(pos)))
 			return false
 		end
 	end
