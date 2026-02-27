@@ -88,7 +88,7 @@ end
 
 function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	local velo = entity.object:get_velocity()
-	local v = math.sqrt(velo.x * velo.x + velo.y * velo.y)
+	local v = math.sqrt(velo.x * velo.x + velo.z * velo.z)
 	local acce_y = GRAVITY
 
 	-- process controls
