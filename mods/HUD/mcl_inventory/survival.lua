@@ -44,6 +44,7 @@ end
 
 minetest.register_on_joinplayer(function(player, last_login)
 	get_player_tab(player)
+	player:get_inventory():set_size("distr", 1)
 end)
 
 minetest.register_on_leaveplayer(function(player, timed_out)
@@ -135,9 +136,9 @@ local main_page_static = table.concat({
 	"tooltip[__mcl_achievements;" .. F(S("Achievements")) .. "]",
 
 	--Listring
-	"listring[current_player;main]",
 	"listring[current_player;craft]",
 	"listring[current_player;main]",
+	"listring[current_player;distr]",
 	"listring[current_player;armor]",
 	"listring[current_player;main]",
 })
@@ -234,3 +235,55 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 	end
 end)
+
+core.register_allow_player_inventory_action(function (player, action, inventory, inventory_info)
+	if inventory_info.to_list ~= "distr" or action ~= "move" then
+		return
+	end
+
+	local fit_stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
+	local lim = mcl_armor.pub_limit_put(player, inventory, inventory_info.to_index, fit_stack, inventory_info.count)
+	if lim > 0 then
+		return lim
+	end
+
+	-- If stack can fit as a whole
+	if inventory:room_for_item("craft", fit_stack) then
+		return fit_stack:get_count()
+	end
+
+	-- Otherwise, count how much of it can fit
+	local can_fit_amount = 0
+	fit_stack:set_count(1)
+	for i=1, inventory:get_size("craft") do
+		local craft_stack = inventory:get_stack("craft", i)
+		local free_space = craft_stack:get_free_space()
+		craft_stack:set_count(1)
+		if craft_stack:equals(fit_stack) then
+			can_fit_amount = can_fit_amount + free_space
+		end
+	end
+
+	return can_fit_amount
+end)
+
+core.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
+	if inventory_info.to_list ~= "distr" or action ~= "move" then
+		return
+	end
+	
+	local stack = inventory:get_stack(inventory_info.to_list, inventory_info.to_index)
+	if mcl_armor.pub_limit_put(player, inventory, inventory_info.to_index, stack, inventory_info.count) > 0 then
+		mcl_armor.equip(stack, player)
+		inventory:set_stack("distr", 1, nil)
+		return
+	end
+
+	local leftover = inventory:add_item("craft", stack)
+	if not leftover:is_empty() then
+		core.add_item(player:get_pos(), leftover)
+		core.log("warning", "Distribution overflow! If repeats - report a bug!")
+	end
+	inventory:set_stack("distr", 1, nil)
+end)
+

@@ -96,11 +96,15 @@ local function limit_put(player, inventory, index, stack, count)
 
 	local old_stack = inventory:get_stack("armor", element_index)
 
-	if old_stack:is_empty() or index ~= 1 and old_stack:get_name() ~= stack:get_name() and count <= 1 then
+	if old_stack:is_empty() or index ~= 1 and count <= 1 then
 		return count
 	else
 		return 0
 	end
+end
+
+function mcl_armor.pub_limit_put(player, inventory, index, stack, count)
+	return limit_put(player, inventory, index, stack, count)
 end
 
 local function limit_take(player, inventory, index, stack, count)

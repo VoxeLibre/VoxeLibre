@@ -17,6 +17,7 @@ mcl_death_drop.register_dropped_list("PLAYER", "craft", true)
 mcl_death_drop.register_dropped_list("PLAYER", "craftresult", true)
 mcl_death_drop.register_dropped_list("PLAYER", "armor", true)
 mcl_death_drop.register_dropped_list("PLAYER", "offhand", true)
+mcl_death_drop.register_dropped_list("PLAYER", "distr", true)
 
 minetest.register_on_dieplayer(function(player)
 	if not keep_inventory.getter() then
