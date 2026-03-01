@@ -6,21 +6,6 @@ local enable_crash = false
 local crash_threshold = 6.5 -- ignored if enable_crash=false
 local GRAVITY = -9.8
 
-local node_ok = mcl_mobs.node_ok
-local sign = math.sign -- minetest extension
-
-local function node_is(pos)
-	local node = node_ok(pos)
-	if node.name == "air" then return "air" end
-	local ndef = minetest.registered_nodes[node.name]
-	if not ndef then return "other" end -- unknown/ignore
-	if ndef.groups.lava then return "lava" end
-	if ndef.groups.liquid then return "liquid" end
-	if ndef.walkable then return "walkable" end
-	return "other"
-end
-
-
 local function force_detach(player)
 	local attached_to = player:get_attach()
 	if not attached_to then return end
@@ -50,34 +35,33 @@ minetest.register_on_dieplayer(function(player)
 end)
 
 function mcl_mobs.attach(entity, player)
-	entity.player_rotation = entity.player_rotation or vector.zero()
-	entity.driver_attach_at = entity.driver_attach_at or vector.zero()
-	entity.driver_eye_offset = entity.driver_eye_offset or vector.zero()
-	entity.driver_scale = entity.driver_scale or {x = 1, y = 1}
+    entity.player_rotation = entity.player_rotation or vector.zero()
+    entity.driver_attach_at = entity.driver_attach_at or vector.zero()
+    entity.driver_eye_offset = entity.driver_eye_offset or vector.zero()
+    entity.driver_scale = entity.driver_scale or {x = 1, y = 1}
 
-	local rot_view = entity.player_rotation.y == 90 and math.pi/2 or 0
-	local attach_at = entity.driver_attach_at
-	local eye_offset = entity.driver_eye_offset
-	entity.driver = player
+    entity.driver = player
 
-	force_detach(player)
+    force_detach(player)
 
-	player:set_attach(entity.object, "", attach_at, entity.player_rotation)
-	mcl_player.player_attached[player:get_player_name()] = true
-	player:set_eye_offset(eye_offset, vector.zero())
+    player:set_attach(entity.object, "", entity.driver_attach_at, entity.player_rotation)
+    mcl_player.player_attached[player:get_player_name()] = true
 
-	player:set_properties({ visual_size = entity.driver_scale })
+    -- set eye offset and visual scale
+    player:set_eye_offset(entity.driver_eye_offset, vector.zero())
+    player:set_properties({ visual_size = entity.driver_scale })
 
-	minetest.after(0.2, function(name)
-		local player = minetest.get_player_by_name(name)
-		if player then
-			mcl_player.player_set_animation(player, "sit_mount" , 30)
-		end
-	end, player:get_player_name())
+    -- play sitting/mount animation after short delay
+    minetest.after(0.2, function(name)
+        local player = minetest.get_player_by_name(name)
+        if player then
+            mcl_player.player_set_animation(player, "sit_mount", 30)
+        end
+    end, player:get_player_name())
 
-	player:set_look_horizontal(entity.object:get_yaw() - rot_view)
+    -- align player look with entity yaw
+    player:set_look_horizontal(entity.object:get_yaw())
 end
-
 
 function mcl_mobs.detach(player, offset)
 	force_detach(player)
@@ -85,137 +69,89 @@ function mcl_mobs.detach(player, offset)
 	player:add_velocity(vector.new(math.random()*12-6,math.random()*3+5,math.random()*12-6)) --throw the rider off
 end
 
-
 function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
-	local velo = entity.object:get_velocity()
-	local v = math.sqrt(velo.x * velo.x + velo.z * velo.z)
-	local acce_y = GRAVITY
+    local velo = entity.object:get_velocity()
+    local new_velo = velo
+    local acce_y = GRAVITY
+    local horizontal_speed = math.sqrt(velo.x^2 + velo.z^2)   
 
-	-- process controls
-	if entity.driver then
-		local ctrl = entity.driver:get_player_control()
-		if ctrl.up then -- forward
-			v = v + entity.accel * 0.1 * entity.run_velocity * 0.385
-		elseif ctrl.down then -- backwards
-			if entity.max_speed_reverse == 0 and v == 0 then return end
-			v = v - entity.accel * 0.1 * entity.run_velocity * 0.385
-		end
+    -- process player controls
+    if entity.driver and entity.driver:is_player() then
+        local ctrl = entity.driver:get_player_control()
 
-		entity:set_yaw(entity.driver:get_look_horizontal() - entity.rotate, 2)
-
-		if can_fly then
-			-- FIXME: use acce_y instead?
-			-- fly up
-			if ctrl.jump then
-				velo.y = math.min(velo.y + 1, entity.accel)
-			elseif velo.y > 0.1 then
-				velo.y = velo.y - 0.1
-			elseif velo.y > 0 then
-				velo.y = 0
-			end
-
-			-- fly down
-			if ctrl.sneak then
-				velo.y = math.max(velo.y - 1, -entity.accel)
-			elseif velo.y < -0.1 then
-				velo.y = velo.y + 0.1
-			elseif velo.y < 0 then
-				velo.y = 0
-			end
-		else
-			-- jump
-			if ctrl.jump then
-				if velo.y == 0 then
-					velo.y = velo.y + entity.jump_height
-					acce_y = acce_y + 1
-				end
-			end
-		end
+        local speed_change = 0
+        local velocity_change = 0.1 * entity.run_velocity * 0.385
+        if ctrl.up then -- forward
+            speed_change = entity.accel * velocity_change
+        elseif ctrl.down then -- backward
+            speed_change = -entity.accel * velocity_change
+        else -- nothing pressed, reset speed
+	    horizontal_speed = 0 
 	end
 
-	if math.abs(v) < 0.02 then -- stop
-		entity.object:set_velocity(vector.zero())
-		v = 0
-	else
-		v = v - 0.02 * sign(v) -- slow down
-	end
+        horizontal_speed = horizontal_speed + speed_change
 
-	-- if not moving then set animation and return
-	if v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
-		entity:set_animation(stand_anim)
-		return
-	else
-		entity:set_animation(moving_anim)
-	end
+        -- enforce speed limits
+        horizontal_speed = math.max(-entity.max_speed_reverse,
+                                    math.min(horizontal_speed, entity.max_speed_forward))
 
-	-- enforce speed limit forward and reverse
-	v = math.max(-entity.max_speed_reverse, math.min(v, entity.max_speed_forward))
+        -- update entity yaw to match driver look
+        local yaw = entity.driver:get_look_horizontal()
+        entity:set_yaw(yaw, 2)
 
-	-- Set position, velocity and acceleration
-	local p = entity.object:get_pos()
-	p.y = p.y - 0.5
+        -- compute horizontal movement vector
+        local dir = { x = -math.sin(yaw), y = 0, z = math.cos(yaw) }
+        dir = vector.normalize(dir)
 
-	local ni = node_is(p)
-	if ni == "air" then
-		if can_fly then acce_y = acce_y - GRAVITY end
-	elseif ni == "liquid" or ni == "lava" then
-		if ni == "lava" and entity.lava_damage ~= 0 then
-			entity.lava_counter = (entity.lava_counter or 0) + dtime
-			if entity.lava_counter > 1 then
-				minetest.sound_play("default_punch", {
-					object = entity.object,
-					max_hear_distance = 5
-				}, true)
+        -- prepare new velocity vector
+        new_velo = {
+            x = dir.x * horizontal_speed,
+            y = velo.y,
+            z = dir.z * horizontal_speed
+        }
 
-				entity.object:punch(entity.object, 1.0, {
-					full_punch_interval = 1.0,
-					damage_groups = {fleshy = entity.lava_damage}
-				}, nil)
+        -- handle jumping / flying separately
+        if can_fly then
+            -- vertical fly input
+            if ctrl.jump then
+                new_velo.y = math.min(new_velo.y + 1, entity.accel)
+            elseif ctrl.sneak then
+                new_velo.y = math.max(new_velo.y - 1, -entity.accel)
+            end
+        else
+            -- jump
+            if ctrl.jump and velo.y == 0 then
+                new_velo.y = new_velo.y + entity.jump_height
+                acce_y = acce_y + 1
+            end
+        end
+    else
+        -- no driver: stop horizontal movement
+        new_velo = {
+            x = 0,
+            y = velo.y,
+            z = 0
+        }
+    end
 
-				entity.lava_counter = 0
-			end
-		end
+    -- apply new velocity and acceleration
+    entity.object:set_velocity(new_velo)       
+    entity.object:set_acceleration({ x = 0, y = acce_y, z = 0 })
 
-		if entity.terrain_type == 2
-		or entity.terrain_type == 3 then
-			acce_y = 0
-			p.y = p.y + 1
-			if node_is(p) == "liquid" then
-				if velo.y >= 5 then
-					velo.y = 5
-				elseif velo.y < 0 then
-					acce_y = 20
-				else
-					acce_y = 5
-				end
-			else
-				if math.abs(velo.y) < 1 then
-					local pos = entity.object:get_pos()
-					pos.y = math.floor(pos.y) + 0.5
-					entity.object:set_pos(pos)
-					velo.y = 0
-				end
-			end
-		else
-			v = v * 0.25
-		end
-	end
+    -- set animation
+    if horizontal_speed > 0.01 then
+        entity:set_animation(moving_anim)
+    else
+        entity:set_animation(stand_anim)
+    end
 
-	local rot_view = entity.player_rotation.y == 90 and math.pi/2 or 0
-	local new_yaw = entity.object:get_yaw() - rot_view
-	local new_velo = vector.new(-math.sin(new_yaw) * v, velo.y, math.cos(new_yaw) * v)
-
-	entity.object:set_velocity(new_velo)
-	entity.object:set_acceleration(vector.new(0, acce_y, 0))
-
-	if enable_crash then
-		if v >= crash_threshold then
-			entity.object:punch(entity.object, 1.0, {
-				full_punch_interval = 1.0,
-				damage_groups = {fleshy = v}
-			}, nil)
-		end
-	end
+    -- optional crash handling when exceeding horizontal speed
+    if enable_crash and horizontal_speed >= crash_threshold then
+        entity.object:punch(entity.object, 1.0, {
+            full_punch_interval = 1.0,
+            damage_groups = { fleshy = horizontal_speed }
+        }, nil)
+    end
 end
 
 -- directional flying routine by D00Med (edited by TenPlus1)
