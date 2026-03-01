@@ -161,6 +161,8 @@ local dispenserdef = {
 					local iname = stack:get_name()
 					local igroups = stackdef.groups
 
+					local not_infinite = node.param2 < 128
+
 					--[===[ Dispense item ]===]
 
 					-- Hardcoded dispensions --
@@ -187,7 +189,7 @@ local dispenserdef = {
 							if igroups.head or iname == "mcl_farming:pumpkin_face" then
 								if dropnodedef.buildable_to then
 									minetest.set_node(droppos, { name = iname, param2 = node.param2 })
-									stack:take_item()
+									if not_infinite then stack:take_item() end
 								end
 							end
 						end
@@ -234,7 +236,7 @@ local dispenserdef = {
 									entity = obj:get_luaentity()
 									used = true
 								end
-								if used then
+								if used and not_infinite then
 									obj:set_properties({ textures = texture })
 									entity.gotten = true
 									minetest.sound_play("mcl_tools_shears_cut", { pos = pos }, true)
@@ -253,7 +255,7 @@ local dispenserdef = {
 							--pointed_thing = { above = droppos, under = { x=droppos.x, y=droppos.y-1, z=droppos.z } }
 							minetest.add_entity(droppos, stack:get_name())
 
-							stack:take_item()
+							if not_infinite then stack:take_item() end
 							inv:set_stack("main", stack_id, stack)
 						end
 
@@ -273,7 +275,7 @@ local dispenserdef = {
 							local od_ret = stackdef._on_dispense(dropitem, pos, droppos, dropnode, dropdir)
 							if od_ret then
 								local newcount = stack:get_count() - 1
-								stack:set_count(newcount)
+								if not_infinite then stack:set_count(newcount) end
 								inv:set_stack("main", stack_id, stack)
 								if newcount == 0 then
 									inv:set_stack("main", stack_id, od_ret)
@@ -295,7 +297,7 @@ local dispenserdef = {
 									end
 								end
 							else
-								stack:take_item()
+								if not_infinite then stack:take_item() end
 								inv:set_stack("main", stack_id, stack)
 							end
 						else
@@ -310,7 +312,7 @@ local dispenserdef = {
 							local drop_vel = vector.subtract(droppos, pos)
 							local speed = 3
 							item_entity:set_velocity(vector.multiply(drop_vel, speed))
-							stack:take_item()
+							if not_infinite then stack:take_item() end
 							inv:set_stack("main", stack_id, stack)
 						end
 					end
@@ -400,6 +402,19 @@ minetest.register_craft({
 		{ "mcl_core:cobble", "mesecons:redstone", "mcl_core:cobble", },
 	}
 })
+
+core.register_craftitem("mcl_dispensers:infinite_tool", {
+	description = S("Infinite dispenser tool"),
+	inventory_image = "default_tool_woodpick.png",
+	on_place = function(itemstack, placer, pointed_thing)
+		if not pointed_thing.under then return end
+
+		local node = core.get_node(pointed_thing.under)
+		node.param2 = node.param2 + 128
+		core.swap_node(pointed_thing.under, node)
+	end
+})
+mcl_wip.register_experimental_item("mcl_dispensers:infinite_tool")
 
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
