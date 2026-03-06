@@ -75,7 +75,8 @@ minetest.register_globalstep(function(dtime)
 		local offhand_hud = offhand.hud
 		local item = minetest.registered_items[offhand_item]
 		if offhand_item ~= "" and item then
-			local item_texture = item.inventory_image .. "^[resize:" .. max_offhand_px .. "x" .. max_offhand_px
+			local meta_image = itemstack:get_meta():get_string("inventory_image")
+			local item_texture = (meta_image ~= "" and meta_image or item.inventory_image) .. "^[resize:" .. max_offhand_px .. "x" .. max_offhand_px
 			local position = {x = 0.5, y = 1}
 			local offset = {x = -320, y = -32}
 
