@@ -40,6 +40,7 @@ local function active_formspec(fuel_percent, item_percent)
 
 		"listring[context;dst]",
 		"listring[current_player;main]",
+		"listring[context;distr]",
 		"listring[context;src]",
 		"listring[current_player;main]",
 		"listring[context;fuel]",
@@ -77,6 +78,7 @@ local inactive_formspec = table.concat({
 
 	"listring[context;dst]",
 	"listring[current_player;main]",
+	"listring[context;distr]",
 	"listring[context;src]",
 	"listring[current_player;main]",
 	"listring[context;fuel]",
@@ -84,10 +86,20 @@ local inactive_formspec = table.concat({
 })
 
 
-local receive_fields = function(pos, formname, fields, sender)
+local function receive_fields(pos, formname, fields, sender)
 	if fields.__mcl_craftguide then
 		mcl_craftguide.show(sender:get_player_name())
 	end
+
+	local node = core.get_node(pos)
+	local meta = core.get_meta(pos)
+	-- Active furnaces update themselves
+	if (node.name == "mcl_blast_furnace:blast_furnace") then
+		meta:set_string("formspec", inactive_formspec)
+	end
+
+	local inv = meta:get_inventory()
+	inv:set_size("distr", 1)
 end
 
 local function give_xp(pos, player)
@@ -109,40 +121,61 @@ end
 --
 
 local function allow_metadata_inventory_put(pos, listname, index, stack, player)
-	local name = player:get_player_name()
-	if minetest.is_protected(pos, name) then
-		minetest.record_protection_violation(pos, name)
+	if listname == "dst" then
 		return 0
 	end
-	local meta = minetest.get_meta(pos)
+
+	local name = player:get_player_name()
+	if core.is_protected(pos, name) then
+		core.record_protection_violation(pos, name)
+		return 0
+	end
+
+	local meta = core.get_meta(pos)
 	local inv = meta:get_inventory()
-	if listname == "fuel" then
-		-- Test stack with size 1 because we burn one fuel at a time
-		local teststack = ItemStack(stack)
-		teststack:set_count(1)
-		local output, decremented_input = minetest.get_craft_result({ method = "fuel", width = 1, items = { teststack } })
+
+	local test_stack = ItemStack(stack)
+	test_stack:set_count(1)
+	local fuel_stack = inv:get_stack("fuel", 1)
+	local src_stack = inv:get_stack("src", 1)
+	
+	-- Source not empty - fill it up
+	if (listname == "src" or listname == "distr")
+			and not src_stack:is_empty() and src_stack:item_fits(test_stack) then
+		return src_stack:get_free_space()
+	end
+
+	-- Source is empty -- allow if cookable
+	if (listname == "src" or listname == "distr") and src_stack:is_empty() then
+		local output, _ = core.get_craft_result({method = "cooking", width = 1, items = {test_stack}})
+		if output.time ~= 0 and core.get_item_group(stack:get_name(), "blast_furnace_smeltable") == 1 then
+			return stack:get_count()
+		end
+	end
+
+	-- Fuel is not empty - fill it up
+	if (listname == "fuel" or listname == "distr")
+			and not fuel_stack:is_empty() and fuel_stack:item_fits(test_stack) then
+		return fuel_stack:get_free_space()
+	end
+
+	-- Fuel is empty - allow if burnable
+	if (listname == "fuel" or listname == "distr") and fuel_stack:is_empty() then
+		local output, decremented_input =
+			core.get_craft_result({method = "fuel", width = 1, items = {test_stack}})
 		if output.time ~= 0 then
-			-- Only allow to place 1 item if fuel get replaced by recipe.
-			-- This is the case for lava buckets.
-			local replace_item = decremented_input.items[1]
-			if replace_item:is_empty() then
+			if decremented_input.items[1]:is_empty() then
 				-- For most fuels, just allow to place everything
 				return stack:get_count()
 			else
-				if inv:get_stack(listname, index):get_count() == 0 then
-					return 1
-				else
-					return 0
-				end
+				-- Only allow to place 1 item if fuel get replaced by recipe.
+				-- This is the case for lava buckets.
+				return 1
 			end
-		else
-			return 0
 		end
-	elseif listname == "src" then
-		return stack:get_count()
-	elseif listname == "dst" then
-		return 0
 	end
+
+	return 0
 end
 
 local function allow_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
@@ -175,6 +208,39 @@ local function on_metadata_inventory_move(pos, from_list, from_index, to_list, t
 	if from_list == "dst" then
 		give_xp(pos, player)
 	end
+end
+
+local function on_metadata_inventory_put(pos, listname, index, stack, player)
+	if listname ~= "distr" then
+		return
+	end
+
+	local meta = core.get_meta(pos)
+	local inv = meta:get_inventory()
+	local fuel_stack = inv:get_stack("fuel", 1)
+	local source_stack = inv:get_stack("src", 1)
+	local test_stack = ItemStack(stack)
+	test_stack:set_count(1)
+	local output, _ = core.get_craft_result({method = "cooking", width = 1, items = {test_stack}})
+	local leftover = ItemStack()
+	if source_stack:is_empty() and not output.item:is_empty()
+			and core.get_item_group(stack:get_name(), "blast_furnace_smeltable") == 1 then
+		leftover = inv:add_item("src", stack)
+	elseif not source_stack:is_empty() and source_stack:item_fits(stack) then
+		leftover = inv:add_item("src", stack)
+	else
+		leftover = inv:add_item("fuel", stack)
+	end
+	if not leftover:is_empty() then
+		local node = core.get_node(pos)
+		core.add_item(player:get_pos(), leftover)
+		core.log("warning", "Distribution overflow! Node: " .. node.name
+			.. "; leftover: " .. leftover:get_name() .. " " .. leftover:get_count()
+			.. "; fuel_stack: " .. fuel_stack:get_name() .. " " .. fuel_stack:get_count()
+			.. "; source_stack: " .. source_stack:get_name() .. " " .. source_stack:get_count()
+		)
+	end
+	inv:set_stack("distr", 1, nil)
 end
 
 local function spawn_flames(pos, param2)
@@ -477,6 +543,7 @@ minetest.register_node("mcl_blast_furnace:blast_furnace", {
 		inv:set_size("src", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("dst", 1)
+		inv:set_size("distr", 1)
 	end,
 	on_destruct = function(pos)
 		mcl_particles.delete_node_particlespawners(pos)
@@ -490,11 +557,13 @@ minetest.register_node("mcl_blast_furnace:blast_furnace", {
 
 		on_metadata_inventory_move(pos, from_list, from_index, to_list, to_index, count, player)
 	end,
-	on_metadata_inventory_put = function(pos)
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		-- Reset accumulated game time when player works with furnace:
 		blast_furnace_reset_delta_time(pos)
 		-- start timer function, it will sort out whether furnace can burn or not.
 		minetest.get_node_timer(pos):start(1.0)
+
+		on_metadata_inventory_put(pos, listname, index, stack, player)
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		-- Reset accumulated game time when player works with furnace:
@@ -570,6 +639,7 @@ minetest.register_node("mcl_blast_furnace:blast_furnace_active", {
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
+	on_metadata_inventory_put = on_metadata_inventory_put,
 	on_metadata_inventory_move = on_metadata_inventory_move,
 	on_metadata_inventory_take = on_metadata_inventory_take,
 	on_receive_fields = receive_fields,
