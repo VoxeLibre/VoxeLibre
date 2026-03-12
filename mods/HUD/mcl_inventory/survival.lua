@@ -2,6 +2,56 @@
 local S = minetest.get_translator("mcl_inventory")
 local F = minetest.formspec_escape
 
+-- "craft": shift-click routes items to the craft grid (default).
+-- "main": shift-click moves items between hotbar (1-9) and inventory rows (10-36).
+local distr_fallback = minetest.settings:get("mcl_player_distr_fallback") or "craft"
+
+local function count_room_in_main_range(inventory, stack, start_idx, end_idx)
+	local total = 0
+	local max_stack = stack:get_stack_max()
+	for i = start_idx, end_idx do
+		local slot = inventory:get_stack("main", i)
+		if slot:is_empty() then
+			total = total + max_stack
+		elseif slot:get_name() == stack:get_name() then
+			total = total + slot:get_free_space()
+		end
+		if total >= stack:get_count() then
+			return stack:get_count()
+		end
+	end
+	return math.min(total, stack:get_count())
+end
+
+local function move_to_main_range(inventory, stack, start_idx, end_idx)
+	-- Fill matching stacks first
+	for i = start_idx, end_idx do
+		if stack:is_empty() then return stack end
+		local slot = inventory:get_stack("main", i)
+		if not slot:is_empty() and slot:get_name() == stack:get_name() then
+			local moved = math.min(stack:get_count(), slot:get_free_space())
+			if moved > 0 then
+				slot:set_count(slot:get_count() + moved)
+				inventory:set_stack("main", i, slot)
+				stack:set_count(stack:get_count() - moved)
+			end
+		end
+	end
+	-- Then fill empty slots
+	for i = start_idx, end_idx do
+		if stack:is_empty() then return stack end
+		local slot = inventory:get_stack("main", i)
+		if slot:is_empty() then
+			local moved = math.min(stack:get_count(), stack:get_stack_max())
+			local new_slot = ItemStack(stack)
+			new_slot:set_count(moved)
+			inventory:set_stack("main", i, new_slot)
+			stack:set_count(stack:get_count() - moved)
+		end
+	end
+	return stack
+end
+
 ---@type {id: string, description: string, item_icon: string, build: (fun(player: ObjectRef): string), handle: fun(player: ObjectRef, fields: table), access: (fun(player): boolean), show_inventory: boolean}[]
 mcl_inventory.registered_survival_inventory_tabs = {}
 
@@ -254,6 +304,15 @@ core.register_allow_player_inventory_action(function (player, action, inventory,
 		return fit_stack:get_count()
 	end
 
+	if distr_fallback == "main" then
+		local from_index = inventory_info.from_index
+		if inventory_info.from_list == "main" and from_index <= 9 then
+			return count_room_in_main_range(inventory, fit_stack, 10, 36)
+		else
+			return count_room_in_main_range(inventory, fit_stack, 1, 9)
+		end
+	end
+
 	-- If stack can fit as a whole
 	if inventory:room_for_item("craft", fit_stack) then
 		return fit_stack:get_count()
@@ -291,6 +350,27 @@ core.register_on_player_inventory_action(function(player, action, inventory, inv
 		inventory:set_stack("offhand", 1, stack)
 		inventory:set_stack("distr", 1, nil)
 		mcl_inventory.update_inventory_formspec(player)
+		return
+	end
+
+	if distr_fallback == "main" then
+		local from_index = inventory_info.from_index
+		local primary_start, primary_end, fallback_start, fallback_end
+		if inventory_info.from_list == "main" and from_index <= 9 then
+			primary_start, primary_end = 10, 36
+			fallback_start, fallback_end = 1, 9
+		else
+			primary_start, primary_end = 1, 9
+			fallback_start, fallback_end = 10, 36
+		end
+		local leftover = move_to_main_range(inventory, stack, primary_start, primary_end)
+		if not leftover:is_empty() then
+			leftover = move_to_main_range(inventory, leftover, fallback_start, fallback_end)
+		end
+		if not leftover:is_empty() then
+			core.add_item(player:get_pos(), leftover)
+		end
+		inventory:set_stack("distr", 1, nil)
 		return
 	end
 
