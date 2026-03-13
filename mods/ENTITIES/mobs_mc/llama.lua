@@ -130,7 +130,7 @@ mcl_mobs.register_mob("mobs_mc:llama", {
 		-- if driver present allow control of llama
 		if self.driver then
 
-			mcl_mobs.drive(self, "walk", "stand", false, dtime)
+			mcl_mobs.drive(self, "walk", "stand", dtime)
 
 			return false -- skip rest of mob functions
 		end

@@ -106,7 +106,7 @@ local strider = {
 			local pos = self.object:get_pos()
 			local v = self.object:get_velocity()
 			self.object:set_velocity(vector.new(v.x,0,v.z))
-			mcl_mobs.drive(self, "walk", "stand", false, dtime)
+			mcl_mobs.drive(self, "walk", "stand", dtime)
 			local l = minetest.find_node_near(pos,2,{"group:lava"})
 			if l then self.object:set_pos(vector.new(pos.x,l.y+0.5,pos.z)) end
 			return false -- skip rest of mob functions
