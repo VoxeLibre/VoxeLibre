@@ -2,14 +2,14 @@
 So you want to contribute to VoxeLibre?
 Wow, thank you! :-)
 
-VoxeLibre is maintained by AncientMariner and Herowl. If you have any
+VoxeLibre is maintained by Herowl. If you have any
 problems or questions, contact us on Discord/Matrix (See Links section below).
 
 You can help with VoxeLibre's development in many different ways,
 whether you're a programmer or not.
 
 ## VoxeLibre's development target is to...
-- Create a stable, peformant, moddable, free/libre game inspired by Minecraft
+- Create a stable, performant, moddable, free/libre game inspired by Minecraft
 using the Luanti engine, usable in both singleplayer and multiplayer.
 - Currently, a lot of features are already implemented.
 Polishing existing features is always welcome.
@@ -62,7 +62,7 @@ instead.
 an issue, feel free to ask on the Discord or Matrix space.
 
 The link to the mesehub registration page is: https://git.minetest.land/user/sign_up
-(It appears to sometimes get lost on the page itsself)
+(It appears to sometimes get lost on the page itself)
 
 ### Reporting bugs
 * A bug is an unintended behavior or, in the worst case, a crash.
@@ -103,16 +103,13 @@ reporting bugs that are the mainline (See Reporting bugs section). You
 can find currently open pull requests here:
 <https://git.minetest.land/VoxeLibre/VoxeLibre/pulls>. Note that pull
 requests that start with a `WIP:` are not done yet and therefore could
-still undergo substantial change. Testing these is still helpful however
-because that is the reason developers put them up as WIP so other people
-can have a look at the PR. The wiki has an article with instructions
+still undergo substantial change. Testing these is still helpful however,
+because that is the reason developers put them up as WIP – so other people
+can have a look at the PR early. The wiki has an article with instructions
 on how to test Pull Requests:
 <https://git.minetest.land/VoxeLibre/VoxeLibre/wiki/Testing-Pull-Requests>.
 
 ### Contributing assets
-Due to license problems, VoxeLibre cannot use Minecraft's assets,
-therefore we are always looking for asset contributions.
-
 To contribute assets, it can be useful to learn git basics and read
 the section for Programmers of this document, however this is not required.
 It's also a good idea to join the Discord server and/or Matrix space.
@@ -123,16 +120,16 @@ Pixel Perfection texture pack contributions. Be warned many of the newer
 textures in it are copies or slight modifications of the original MC textures 
 so great caution needs to be taken when using any textures coming from 
 Minecraft texture packs.
-If you want to make such contributions, join our Discord server. Demands
-for textures will be communicated there.
+If you want to make such contributions, join our Discord server or Matrix space.
+Demands for textures will be communicated there.
 
 #### Sounds
 VoxeLibre currently does not have a consistent way to handle sounds.
 The sounds in the game come from different sources, like the SnowZone
 resource pack or minetest_game. Unfortunately, VoxeLibre does not play
 a sound in every situation you would get one in Minecraft. Any help with
-sounds is greatly appreciated, however if you add new sounds you should
-probably work together with a programmer, to write the code to actually
+sounds is greatly appreciated, however, if you add new sounds, you should
+probably work together with a programmer to write the code to actually
 play these sounds in game. All sounds should be released under an open
 source license with clear information on the source, licencing and any
 changes made by the contributor. Use the README files in the mod to
@@ -142,8 +139,8 @@ communicate this information.
 Many of the 3D Models in VoxeLibre come from
 [22i's repository](https://github.com/22i/minecraft-voxel-blender-models).
 Similar to the textures, we need people that can make 3D Models with
-Blender on demand. Many of the models have to be patched, some new
-animations have to be added etc.
+Blender on demand. For example, adding a new original mob requires creation
+of a model for it, along with animations.
 
 #### Crediting
 Asset contributions will be credited in their mods and their own respective 
@@ -167,9 +164,13 @@ the translation files for the language you are working on with the
 template files, to see what is missing and what is out of date with
 the template file. However, template files are often incomplete and/or
 out of date, sometimes they don't match the code. You can update the
-translation files if that is required, you can also modify the code in
-your translation PR if it's related to translation. You can also work on
-multiple languages at the same time in one PR.
+translation files if that is required, either manually or by running
+```
+tools/mod_translation_updater.py -b -p -d -j
+```
+(requires Jellyfish library)
+You can also modify the code in your translation PR if it's related to translation.
+You can also work on multiple languages at the same time in one PR.
 
 #### Crediting
 Translation contributions will be credited in their own in CREDITS.md.
@@ -198,11 +199,12 @@ results".
 ### Let us know your opinion
 It is always encouraged to actively contribute to issue discussions on
 MeseHub, let us know what you think about a topic and help us make
-decisions. Also, note that a lot of discussion takes place on the
-Discord server, so it's definitely worth checking it out.
+decisions. Also, note that a lot of discussion takes place on
+Discord/Matrix (both are bridged to each other), so
+it's definitely worth checking it out.
 
 ### Funding
-You can help pay for our infrastructure (Mesehub) and other unforeseen
+You can help pay for our infrastructure and other unforeseen
 expenses (in the last few years, only payments for Mesehub have been done)
 by donating to our OpenCollective link (See Links section).
 
@@ -234,7 +236,7 @@ branch.
 merger hasn't done this already.
 
 ### Discuss first
-If you feel like a problem needs to fixed or you want to make a new
+If you feel like a problem needs to be fixed or you want to make a new
 feature, you could start writing the code right away and notifying us
 when you're done, but it never hurts to discuss things first. If there
 is no issue on the topic, open one. If there is an issue, tell us that
@@ -256,7 +258,7 @@ work causes problems, we ask you fix the issues as soon as possible.
 ### Changing Gameplay
 Pull Requests that change gameplay are always subject to discussion.
 Opinions from the community on such PRs are valued, and Maintainer
-should approve the concept (which is usually granted) as well as
+should approve the concept (which is often granted) as well as
 the implementation (for which changes are often requested for either
 code quality or game design reasons).
 
@@ -274,8 +276,7 @@ excessive git bureaucracy commits in master)
 * Smaller PRs may be squashed before merging (especially if the commit history
 on them isn't valuable), but when in doubt prefer merging
 * Manual merging may be done by a Maintainer if there are technical problems
-with the branch, with Gitea, or the PR had been merged to from master and
-the author can't fix it for whatever reason
+with the branch, with Gitea, or other good reasons
 * PR from a fork (usually the author has no contributor/developer privileges)
 can be retargeted and merged first into a buffer (normal new) branch on the repo
 when adopted by a Developer, and only later into master
@@ -371,6 +372,16 @@ function my_mod.some_func()
 end
 ```
 
+* Use double indent when breaking long conditions up into several lines,
+and don't put `then` on its own line, e.g.
+
+```lua
+if some_very_long_variable_name and some_very_long_predicate_name(x)
+		or another_very_long_predicate_name(x) then
+	do_something()
+end
+```
+
 ### Developer status
 Active and trusted contributors are often granted write access to the
 VoxeLibre repository as a contributor. This means that they can push
@@ -401,7 +412,7 @@ Maintainers carry the main responsibility for the project.
 
 #### Maintainer responsibilities
 - Making sure issues are addressed and pull requests are reviewed and
-merged.
+merged
 - Making releases
 - Making project decisions based on community feedback
 - Granting/revoking developer access
@@ -410,11 +421,12 @@ merged.
 - Resolving conflicts and problems within the community
 
 #### Current maintainers
-* AncientMariner - responsible for gameplay review, publishing releases
 * Herowl - responsible for gameplay review, publishing releases,
 technical guidelines
 
-#### Release process
+#### Release process (short version)
+*for the full version, see RELEASE.md*
+
 * Run `tools/generate_ingame_credits.lua` to update the ingame credits
 from `CREDITS.md` and commit the result (if anything changed)
 * Launch VoxeLibre to make sure it still runs
