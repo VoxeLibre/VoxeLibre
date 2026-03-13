@@ -82,7 +82,7 @@ mcl_mobs.register_mob("mobs_mc:pig", {
 		-- if driver present allow control of horse
 		if self.driver and self.driver:get_wielded_item():get_name() == "mcl_mobitems:carrot_on_a_stick" then
 
-			mcl_mobs.drive(self, "walk", "stand", false, dtime)
+			mcl_mobs.drive(self, "walk", "stand", dtime)
 
 			return false -- skip rest of mob functions
 		end
