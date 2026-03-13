@@ -437,7 +437,12 @@ local function tick_eat_delay(player, dtime)
 			eat_tick_timers[player]      = eat_tick_timers[player] + dtime
 			eat_effects_cooldown[player] = eat_effects_cooldown[player] + dtime
 
-			playerphysics.add_physics_factor(player, "speed", "mcl_hunger:eating_speed", mcl_hunger.EATING_WALK_SPEED)
+			-- only slow player if they are actually moving
+			if control.left or control.right or control.up or control.down then
+				playerphysics.add_physics_factor(player, "speed", "mcl_hunger:eating_speed", mcl_hunger.EATING_WALK_SPEED)
+			else
+				playerphysics.remove_physics_factor(player, "speed", "mcl_hunger:eating_speed")
+			end
 
 			player:hud_set_flags({ wielditem = false })
 			local itemstackdef = current_itemstack:get_definition()
