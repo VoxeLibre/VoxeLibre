@@ -5,11 +5,16 @@ local ipairs = ipairs
 mcl_death_drop = {}
 
 mcl_death_drop.registered_dropped_lists = {}
+mcl_death_drop.on_death_drop_per_stack = {}
 
 local keep_inventory = vl_tuning.setting("gamerule:keepInventory")
 
 function mcl_death_drop.register_dropped_list(inv, listname, drop)
 	table.insert(mcl_death_drop.registered_dropped_lists, {inv = inv, listname = listname, drop = drop})
+end
+
+function mcl_death_drop.register_on_death_drop_per_stack(func)
+	table.insert(mcl_death_drop.on_death_drop_per_stack, func)
 end
 
 mcl_death_drop.register_dropped_list("PLAYER", "main", true)
@@ -42,18 +47,25 @@ minetest.register_on_dieplayer(function(player)
 			end
 			if inv then
 				for i, stack in ipairs(inv:get_list(listname)) do
-					local p = vector.offset(dropspots[math.random(#dropspots)],math.random()-0.5,math.random()-0.5,math.random()-0.5)
-					if not void_deadly and drop and not mcl_enchanting.has_enchantment(stack, "curse_of_vanishing") then
-						local def = minetest.registered_items[stack:get_name()]
-						if def and def.on_drop then
-							stack = def.on_drop(stack, player, p)
+					local was_handled = false
+					for _, on_death_drop in ipairs(mcl_death_drop.on_death_drop_per_stack) do
+						if on_death_drop ~= nil and on_death_drop(player, inv, listname, i, stack) then
+							was_handled = true
 						end
-						minetest.add_item(p, stack)
+					end
+					if not was_handled then
+						local p = vector.offset(dropspots[math.random(#dropspots)],math.random()-0.5,math.random()-0.5,math.random()-0.5)
+						if not void_deadly and drop then
+							local def = minetest.registered_items[stack:get_name()]
+							if def and def.on_drop then
+								stack = def.on_drop(stack, player, p)
+							end
+							core.add_item(p, stack)
+						end
+						inv:set_stack(listname, i, nil)
 					end
 				end
-				inv:set_list(listname, {})
 			end
 		end
-		mcl_armor.update(player)
 	end
 end)

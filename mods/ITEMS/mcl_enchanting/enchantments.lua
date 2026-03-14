@@ -65,6 +65,15 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	inv_tool_tab = true,
 }
 
+mcl_death_drop.register_on_death_drop_per_stack(function (player, inv, listname, idx, stack)
+	if mcl_enchanting.has_enchantment(stack, "curse_of_vanishing") then
+		inv:set_stack(listname, idx, nil)
+		return true
+	end
+	return false
+end)
+
+
 -- implemented in mcl_playerplus
 mcl_enchanting.enchantments.depth_strider = {
 	name = S("Depth Strider"),

@@ -177,3 +177,7 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	mcl_armor.player_view_range_factors[player] = nil
 end)
+
+core.register_on_respawnplayer(function(player)
+	mcl_armor.update(player)
+end)
