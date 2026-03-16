@@ -205,7 +205,6 @@ function mcl_spawn.get_player_spawn_pos(player)
 		local bgroup = minetest.get_item_group(node_bed.name, "bed")
 		if bgroup ~= 1 and bgroup ~= 2 then
 			-- Bed is destroyed:
-			assert(player and player:is_player(), "player must be valid")
 			local checknode = minetest.get_node(pos)
 			if (string.match(checknode.name, "mcl_beds:respawn_anchor_charged_")) then
 				local charge_level = tonumber(string.sub(checknode.name, -1))
