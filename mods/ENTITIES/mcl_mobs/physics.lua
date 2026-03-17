@@ -699,7 +699,7 @@ function mob_class:do_env_damage()
 	
 	local feet_nodef = minetest.registered_nodes[self.standing_in]
 	local below_nodef = minetest.registered_nodes[self.standing_on]
-	local above_nodef = minetest.registered_nodes[self.standing_under]
+	local head_nodef = minetest.registered_nodes[self.standing_under]
 	
 	-- rain
 	if self.rain_damage > 0 and mcl_burning.is_affected_by_rain(self.object) then
@@ -772,10 +772,10 @@ function mob_class:do_env_damage()
 		local drowning = false
 
 		if self.breathes_in_water then
-			if minetest.get_item_group(self.standing_in, "water") == 0 then
+			if core.get_item_group(self.standing_in, "water") == 0 and core.get_item_group(self.standing_under, "water") == 0 then
 				drowning = true
 			end
-		elseif feet_nodef.drowning > 0 and above_nodef.drowning > 0 then
+		elseif head_nodef.drowning > 0 then
 			drowning = true
 		end
 
@@ -784,8 +784,8 @@ function mob_class:do_env_damage()
 			mcl_mobs.effect(pos, 2, "bubble.png", nil, nil, 1, nil)
 			if self.breath <= 0 then
 				local dmg
-				if feet_nodef.drowning > 0 then
-					dmg = feet_nodef.drowning
+				if head_nodef.drowning > 0 then
+					dmg = head_nodef.drowning
 				else
 					dmg = 4
 				end
@@ -793,7 +793,7 @@ function mob_class:do_env_damage()
 				self.health = self.health - dmg
 			end
 			if self:check_for_death("drowning", {type = "environment",
-					pos = pos, node = self.standing_in}) then
+					pos = pos, node = self.standing_under}) then
 				return true
 			end
 		else
