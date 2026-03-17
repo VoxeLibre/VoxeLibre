@@ -115,6 +115,20 @@ function mcl_spawn.get_player_spawnpoint(player)
 	return pos, on_bed
 end
 
+-- DEPRECATED: Returns a spawn position of player.
+-- If player is nil or not a player, a world spawn point is returned.
+-- The second return value is true if returned spawn point is player-chosen,
+-- false otherwise.
+function mcl_spawn.get_bed_spawn_pos(player)
+	local spawn = mcl_spawn.get_player_spawnpoint(player)
+	local custom_spawn = true
+	if not spawn then
+		spawn = mcl_spawn.get_world_spawn_pos()
+		custom_spawn = false
+	end
+	return spawn, custom_spawn
+end
+
 -- Sets the player's spawn position to pos.
 -- Set pos to nil to clear the spawn position.
 -- Set on_bed to true if the spawn position is set from a bed or a respawn anchor,
@@ -195,6 +209,16 @@ function mcl_spawn.set_player_spawn_pos(player, pos, on_bed, message)
 		mcl_log("No old bed meta to remove or same as current")
 	end
 	return spawn_changed
+end
+
+-- DEPRECATED: Sets the player's spawn position to pos.
+-- Set pos to nil to clear the spawn position.
+-- If message is set to true, informs the player with a chat message when the
+-- spawn position changed, otherwise set to false.
+-- The spawn position set using this function will always be marked as on bed
+-- for compatibility.
+function mcl_spawn.set_spawn_pos(player, pos, message)
+	return mcl_spawn.set_player_spawn_pos(player, pos, true, message)
 end
 
 function mcl_spawn.get_player_spawn_pos(player)
