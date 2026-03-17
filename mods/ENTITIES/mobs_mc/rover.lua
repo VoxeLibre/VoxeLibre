@@ -121,6 +121,21 @@ local function get_light_teleport_probability(light_level, dtime)
 	return 1 - math.exp(-dtime / expected_time)
 end
 
+-- Decide how rover reacts to being interrupted when provoked
+local function react_to_threat(rover)
+	if rover.state == "staring" or rover.state == "attack" then
+		local provoker = core.get_player_by_name(rover._provoking_player)
+		if provoker then
+			rover.attack = provoker
+			rover.state = "attack"
+			rover:teleport(provoker)
+		end
+		return
+	end
+
+	rover:teleport(nil)
+end
+
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local psdefs = {{
 	amount = 5,
@@ -205,15 +220,13 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 
 		-- If burning and not in attack state, try to teleport to safety
 		if mcl_burning.is_burning(self.object) and self.state ~= "attack" then
-			self.state = "stand"
-			self:teleport(nil)
+			react_to_threat(self)
 		end
 
 		-- If standing in liquid, teleport to safety
 		local standing_nodef = core.registered_nodes[self.standing_in]
 		if standing_nodef.groups.liquid then
-			self.state = "stand"
-			self:teleport(nil)
+			react_to_threat(self)
 		end
 
 		-- Check for arrows and people nearby and teleport away if found.
@@ -233,7 +246,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 					local lua = obj:get_luaentity()
 					if lua then
 						if lua.name == "mcl_bows:arrow_entity" or lua.name == "mcl_throwing:snowball_entity" then
-							self:teleport(nil)
+							react_to_threat(self)
 						end
 					end
 				end
