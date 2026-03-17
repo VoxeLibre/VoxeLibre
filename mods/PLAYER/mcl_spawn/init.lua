@@ -104,11 +104,11 @@ function mcl_spawn.get_player_spawnpoint(player)
 	if player and player:is_player() then
 		local params = string.split(player:get_meta():get_string("mcl_spawn:spawnpoint"), ";")
 		if params[1] and params[2] then
-			pos = minetest.string_to_pos(params[1])
+			pos = core.string_to_pos(params[1])
 			on_bed = params[2] == "true"
 		elseif player:get_meta():get_string("mcl_beds:spawn") ~= "" then
 			-- For compatibility with old worlds
-			pos = minetest.string_to_pos(player:get_meta():get_string("mcl_beds:spawn"))
+			pos = core.string_to_pos(player:get_meta():get_string("mcl_beds:spawn"))
 			on_bed = true
 		end
 	end
@@ -147,20 +147,20 @@ function mcl_spawn.set_player_spawn_pos(player, pos, on_bed, message)
 		if oldpos then
 			spawn_changed = true
 			if message then
-				minetest.chat_send_player(player:get_player_name(), S("Respawn position cleared!"))
+				core.chat_send_player(player:get_player_name(), S("Respawn position cleared!"))
 			end
 		end
 	else
-		meta:set_string("mcl_spawn:spawnpoint", minetest.pos_to_string(pos) .. ";" .. tostring(on_bed))
+		meta:set_string("mcl_spawn:spawnpoint", core.pos_to_string(pos) .. ";" .. tostring(on_bed))
 		meta:set_string("mcl_beds:spawn", "") -- For compatibility
 
 		if on_bed then
 			-- Set player ownership on bed
-			local bed_node = minetest.get_node(pos)
-			local bed_meta = minetest.get_meta(pos)
+			local bed_node = core.get_node(pos)
+			local bed_meta = core.get_meta(pos)
 
 			local bed_bottom = mcl_beds.get_bed_bottom(pos)
-			local bed_bottom_meta = minetest.get_meta(bed_bottom)
+			local bed_bottom_meta = core.get_meta(bed_bottom)
 
 			reset_old_bed = false
 			if bed_meta then
@@ -193,12 +193,12 @@ function mcl_spawn.set_player_spawn_pos(player, pos, on_bed, message)
 			spawn_changed = true
 		end
 		if spawn_changed and message then
-			minetest.chat_send_player(player:get_player_name(), S("New respawn position set!"))
+			core.chat_send_player(player:get_player_name(), S("New respawn position set!"))
 		end
 	end
 
 	if reset_old_bed and oldpos then
-		local old_bed_meta = minetest.get_meta(oldpos)
+		local old_bed_meta = core.get_meta(oldpos)
 		if old_bed_meta and old_bed_meta:get_string("player") == player:get_player_name() then
 			mcl_log("Removing old bed meta")
 			old_bed_meta:set_string("player", "")
@@ -226,31 +226,31 @@ function mcl_spawn.get_player_spawn_pos(player)
 	if pos and on_bed then
 		-- Check if bed is still there
 		local node_bed = get_far_node(pos)
-		local bgroup = minetest.get_item_group(node_bed.name, "bed")
+		local bgroup = core.get_item_group(node_bed.name, "bed")
 		if bgroup ~= 1 and bgroup ~= 2 then
 			-- Bed is destroyed:
-			local checknode = minetest.get_node(pos)
+			local checknode = core.get_node(pos)
 			if (string.match(checknode.name, "mcl_beds:respawn_anchor_charged_")) then
 				local charge_level = tonumber(string.sub(checknode.name, -1))
 				if not charge_level and return_spawn then
-					minetest.log("warning","could not get level of players respawn anchor, sending him back to spawn!")
+					core.log("warning","could not get level of players respawn anchor, sending him back to spawn!")
 					mcl_spawn.set_player_spawn_pos(player, nil, false, false)
-					minetest.chat_send_player(player:get_player_name(), S("Couldn't get level of your respawn anchor!"))
+					core.chat_send_player(player:get_player_name(), S("Couldn't get level of your respawn anchor!"))
 					return mcl_spawn.get_world_spawn_pos(), false
 				elseif charge_level ~= 1 then
-					minetest.set_node(pos, {name="mcl_beds:respawn_anchor_charged_".. charge_level-1})
+					core.set_node(pos, {name="mcl_beds:respawn_anchor_charged_".. charge_level-1})
 				else
-					minetest.set_node(pos, {name="mcl_beds:respawn_anchor"})
+					core.set_node(pos, {name="mcl_beds:respawn_anchor"})
 				end
 			elseif return_spawn then
 				mcl_spawn.set_player_spawn_pos(player, nil, false, false)
-				minetest.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked, and you had no charged respawn anchor!"))
+				core.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked, and you had no charged respawn anchor!"))
 				return mcl_spawn.get_world_spawn_pos(), false
 			end
 		end
 
 		-- Find spawning position on/near the bed free of solid or damaging blocks iterating a square spiral 15x15:
-		local dir = minetest.facedir_to_dir(minetest.get_node(pos).param2)
+		local dir = core.facedir_to_dir(core.get_node(pos).param2)
 		local offset
 		for _, o in ipairs(node_search_list) do
 			if dir.z == -1 then
@@ -282,9 +282,9 @@ function mcl_spawn.spawn(player)
 end
 
 -- Respawn player at specified respawn position
-minetest.register_on_respawnplayer(mcl_spawn.spawn)
+core.register_on_respawnplayer(mcl_spawn.spawn)
 
-minetest.register_chatcommand("spawnpoint", {
+core.register_chatcommand("spawnpoint", {
 	description = S("Sets the spawn point for a player, works in all dimensions."),
 	params = S("[<player>] [<x> <y> <z>]"),
 	privs = {},
@@ -316,11 +316,11 @@ minetest.register_chatcommand("spawnpoint", {
 			return false, S("Invalid parameters (see /help spawnpoint)")
 		end
 
-		if not minetest.check_player_privs(name, {server = true}) and target_name ~= name then
+		if not core.check_player_privs(name, {server = true}) and target_name ~= name then
 			return false, S("You need the 'server' privilege in order to set spawn point for somebody else!")
 		end
 
-		local target = minetest.get_player_by_name(target_name)
+		local target = core.get_player_by_name(target_name)
 		if not target then
 			return false, S("Invalid target player")
 		end
@@ -329,15 +329,15 @@ minetest.register_chatcommand("spawnpoint", {
 			pos.x, pos.y, pos.z = tonumber(pos.x), tonumber(pos.y), tonumber(pos.z)
 		else
 			-- Position is not specified, use command executor's position
-			pos = minetest.get_player_by_name(name):get_pos()
+			pos = core.get_player_by_name(name):get_pos()
 		end
 
 		mcl_spawn.set_player_spawn_pos(target, pos, false, true)
-		return true, S("Set respawn point for @1 to @2", target_name, minetest.pos_to_string(pos, 1))
+		return true, S("Set respawn point for @1 to @2", target_name, core.pos_to_string(pos, 1))
 	end
 })
 
-minetest.register_chatcommand("clearspawn", {
+core.register_chatcommand("clearspawn", {
 	description = S("Resets the spawn point for a player."),
 	params = S("[<player>]"),
 	privs = {},
@@ -359,11 +359,11 @@ minetest.register_chatcommand("clearspawn", {
 			return false, S("Invalid parameters (see /help clearspawn)")
 		end
 
-		if not minetest.check_player_privs(name, {server = true}) and target_name ~= name then
+		if not core.check_player_privs(name, {server = true}) and target_name ~= name then
 			return false, S("You need the 'server' privilege in order to reset spawn point for somebody else!")
 		end
 
-		local target = minetest.get_player_by_name(target_name)
+		local target = core.get_player_by_name(target_name)
 		if not target then
 			return false, S("Invalid target player")
 		end
