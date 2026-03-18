@@ -118,7 +118,7 @@ Block of Coal=煤炭磚
 
 Blocks of coal are useful as a compact storage of coal and very useful as a furnace fuel. A block of coal is as efficient as 10 coal.=煤炭磚作為煤炭的省位存儲方式，作為熔爐燃料非常有用。一個煤炭磚的燃燒時間相當於10塊煤炭。
 
-Block of Charcoal=
+Block of Charcoal=木炭磚
 
 Blocks of charcoal are useful as a compact storage of charcoal and very useful as a furnace fuel. A block of charcoal is as efficient as 10 charcoal.=
 
@@ -196,7 +196,7 @@ Flowing Lava=流動的熔岩
 A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=當熔岩源與易燃方塊相鄰時，會將附近點燃。
 
 Lava Source=熔岩源
-Lava=
+Lava=熔岩
 
 Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=熔岩很熱並相當危險。不要碰它，它會對你造成很大的傷害，而且很難脫身。
 
@@ -230,7 +230,7 @@ Dark Oak Wood=黑橡木原木
 Dark Oak Bark=黑橡木樹皮
 The trunk of a dark oak tree.=黑橡樹的樹幹。
 Acacia Wood=相思木原木
-Acacia Bark=
+Acacia Bark=相思木樹皮
 The trunk of an acacia.=相思木的樹幹。
 Spruce Wood=杉木原木
 Spruce Bark=杉木樹皮
@@ -414,9 +414,9 @@ Bowl=碗
 Bowls are mainly used to hold tasty soups.=碗主要用來盛湯。
 Apple=蘋果
 Apples are food items which can be eaten.=蘋果是一種可以被食用的食物
-Golden Apple=進蘋果
+Golden Apple=金蘋果
 Golden apples are precious food items which can be eaten.=金蘋果是可以吃的珍貴食品。
-Enchanted Golden Apple=
+Enchanted Golden Apple=附魔金蘋果
 
 
 ##### not used anymore #####
