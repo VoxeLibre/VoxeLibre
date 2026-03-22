@@ -157,7 +157,7 @@ function mob_class:mob_activate(staticdata, def, dtime)
 			self.base_colbox = {-.5, 0, -.5, .5, 2, .5} -- assumption: probably humanoid
 		end
 	end
-	if not self.base_selbox then
+	if not self.base_selbox or #self.base_selbox ~= 6 then
 		if def.initial_properties.selectionbox then
 			core.log("verbose", "Assigned selectionbox from initial properties to: " .. dump(self))
 			self.base_selbox = table.copy(def.initial_properties.selectionbox)
