@@ -408,6 +408,11 @@ function mod.place_minecart(itemstack, pointed_thing, placer)
 		else
 			cart_dir = cart_dir2
 		end
+
+		-- Set cart direction to be flat if the rail isn't sloped
+		if core.get_item_group(core.get_node(railpos).name, "rail_slope") == 0 then
+			cart_dir.y = 0
+		end
 	end
 
 	-- Make sure to always go down slopes
