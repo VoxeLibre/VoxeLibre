@@ -584,6 +584,53 @@ function mob_class:deal_light_damage(pos, damage)
 	end
 end
 
+-- check for environmental hits (water, lava, fire, cactus, wither rose)
+local function get_env_hits(self)
+    local pos = self.object:get_pos()
+
+    local cb = self.base_colbox or self.initial_properties.collisionbox
+
+    -- Area around the entity
+    local minp = vector.offset(pos, cb[1], cb[2], cb[3])
+    local maxp = vector.offset(pos, cb[4], cb[5], cb[6])
+
+    local query = {"group:water", "group:lava", "group:fire", "mcl_core:cactus", "mcl_flowers:wither_rose"}
+
+    local hits = core.find_nodes_in_area(minp, maxp, query, true)
+
+    local out = {
+        water = false,
+        lava = false,
+        fire = false,
+        cactus = false,
+        wither_rose = false,
+        raw_hits = hits
+    }
+
+    for nodename, positions in pairs(hits) do
+        if positions and #positions > 0 then
+            if nodename == "mcl_core:cactus" then
+                out.cactus = true
+            end
+            if nodename == "mcl_flowers:wither_rose" then
+                out.wither_rose = true
+            end
+
+            if core.get_item_group(nodename, "water") ~= 0 then
+                out.water = true
+            end
+            if core.get_item_group(nodename, "lava") ~= 0 then
+                out.lava = true
+            end
+            if core.get_item_group(nodename, "fire") ~= 0 then
+                out.fire = true
+            end
+        end
+    end
+
+    return out
+end
+
 -- environmental damage (water, lava, fire, light etc.)
 function mob_class:do_env_damage()
 	-- feed/tame text timer (so mob 'full' messages dont spam chat)
@@ -632,81 +679,75 @@ function mob_class:do_env_damage()
 		end
 	end
 
-	local y_level = self.initial_properties.collisionbox[2]
+	local cb = self.base_colbox or self.initial_properties.collisionbox
 
-	if self.child then
-		y_level = self.initial_properties.collisionbox[2] * 0.5
-	end
+	local eye_height = (self.head_eye_height or ((cb[5] - cb[2]) * 0.9))
+	local feet_height = (self.feet_height or -cb[2])
 
-	-- what is mob standing in?
-	pos.y = pos.y + y_level + 0.25 -- foot level
-	local pos2 = vector.new(pos.x, pos.y-1, pos.z)
-	self.standing_in = node_ok(pos, "air").name
-	self.standing_on = node_ok(pos2, "air").name
+	local feet_pos = vector.offset(pos, 0, feet_height + 0.25, 0)
+	local under_pos = vector.offset(feet_pos, 0, -1 , 0)
+	local eye_pos = vector.offset(pos, 0, eye_height, 0)
 
-	local pos3 = vector.offset(pos, 0, 1, 0)
-	self.standing_under = node_ok(pos3, "air").name
+	self.standing_in = node_ok(feet_pos, "air").name
+	self.standing_on = node_ok(under_pos, "air").name
+	self.standing_under = node_ok(eye_pos, "air").name
 
 	-- don't fall when on ignore, just stand still
 	if self.standing_in == "ignore" then
 		self.object:set_velocity(vector.zero())
-	-- wither rose effect
-	elseif self.standing_in == "mcl_flowers:wither_rose" then
-		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
-
-	local nodef = minetest.registered_nodes[self.standing_in]
-	local nodef2 = minetest.registered_nodes[self.standing_on]
-	local nodef3 = minetest.registered_nodes[self.standing_under]
-
+	
+	local feet_nodef = minetest.registered_nodes[self.standing_in]
+	local below_nodef = minetest.registered_nodes[self.standing_on]
+	local head_nodef = minetest.registered_nodes[self.standing_under]
+	
 	-- rain
 	if self.rain_damage > 0 and mcl_burning.is_affected_by_rain(self.object) then
 		self.health = self.health - self.rain_damage
-
+		
 		if self:check_for_death("rain", {type = "environment",
-				pos = pos, node = self.standing_in}) then
+		pos = pos, node = self.standing_in}) then
 			return true
 		end
 	end
-
+	
 	pos.y = pos.y + 1 -- for particle effect position
 
-	-- water damage
-	if self.water_damage > 0 and nodef.groups.water then
+	local env_hits = get_env_hits(self)
+	if not env_hits then return end
+
+	if self.water_damage > 0 and env_hits.water then
 		self.health = self.health - self.water_damage
 		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png", nil, nil, 1, nil)
 		if self:check_for_death("water", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
-	elseif self.lava_damage > 0 and (nodef.groups.lava) then
-		-- lava damage
-		if self.lava_damage ~= 0 then
-			self.health = self.health - self.lava_damage
-			mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
-			mcl_burning.set_on_fire(self.object, 10)
 
-			if self:check_for_death("lava", {type = "environment",
-					pos = pos, node = self.standing_in}) then
-				return true
-			end
+	elseif self.lava_damage > 0 and env_hits.lava then
+		self.health = self.health - self.lava_damage
+		mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+		mcl_burning.set_on_fire(self.object, 10)
+
+		if self:check_for_death("lava", {type = "environment", pos = pos, node = self.standing_in}) then
+			return true
 		end
-	elseif self.fire_damage > 0 and (nodef2.groups.fire) then
-		-- magma damage
+
+	elseif self.fire_damage > 0 and below_nodef.name == "mcl_nether:magma" then
 		self.health = self.health - self.fire_damage
 		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
-	elseif self.fire_damage > 0 and (nodef.groups.fire) then
-		-- fire damage
+
+	elseif self.fire_damage > 0 and env_hits.fire then
 		self.health = self.health - self.fire_damage
 		mcl_mobs.effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 		mcl_burning.set_on_fire(self.object, 5)
 		if self:check_for_death("fire", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
-	elseif nodef.damage_per_second ~= 0 and not nodef.groups.lava and not nodef.groups.fire then
+	elseif feet_nodef.damage_per_second ~= 0 and not feet_nodef.groups.lava and not feet_nodef.groups.fire then
 		-- damage_per_second node check
-		self.health = self.health - nodef.damage_per_second
+		self.health = self.health - feet_nodef.damage_per_second
 		mcl_mobs.effect(pos, 5, "mcl_particles_smoke.png")
 		if self:check_for_death("dps", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
@@ -714,25 +755,16 @@ function mob_class:do_env_damage()
 	end
 
 	-- Cactus damage
-	if self.standing_on == "mcl_core:cactus" or self.standing_in == "mcl_core:cactus" or self.standing_under == "mcl_core:cactus" then
+	if env_hits.cactus then
 		self:damage_mob("cactus", 2)
 		if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
 			return true
 		end
-	else
-		local cb = self.initial_properties.collisionbox
+	end
 
-		-- Touching cactus from the side
-		if core.find_nodes_in_area(
-			vector.offset(pos, cb[1], 0, cb[3]),
-			vector.offset(pos, cb[4], 0, cb[6]),
-			"mcl_core:cactus"
-		)[1] then
-			self:damage_mob("cactus", 2)
-			if self:check_for_death("cactus", {type = "environment", pos = pos, node = self.standing_in}) then
-				return true
-			end
-		end
+	-- Wither Rose damage
+	if env_hits.wither_rose then
+		mcl_potions.give_effect_by_level("withering", self.object, 2, 2)
 	end
 
 	-- Drowning damage
@@ -740,10 +772,10 @@ function mob_class:do_env_damage()
 		local drowning = false
 
 		if self.breathes_in_water then
-			if minetest.get_item_group(self.standing_in, "water") == 0 then
+			if core.get_item_group(self.standing_in, "water") == 0 and core.get_item_group(self.standing_under, "water") == 0 then
 				drowning = true
 			end
-		elseif nodef.drowning > 0 and nodef3.drowning > 0 then
+		elseif head_nodef.drowning > 0 then
 			drowning = true
 		end
 
@@ -752,8 +784,8 @@ function mob_class:do_env_damage()
 			mcl_mobs.effect(pos, 2, "bubble.png", nil, nil, 1, nil)
 			if self.breath <= 0 then
 				local dmg
-				if nodef.drowning > 0 then
-					dmg = nodef.drowning
+				if head_nodef.drowning > 0 then
+					dmg = head_nodef.drowning
 				else
 					dmg = 4
 				end
@@ -761,7 +793,7 @@ function mob_class:do_env_damage()
 				self.health = self.health - dmg
 			end
 			if self:check_for_death("drowning", {type = "environment",
-					pos = pos, node = self.standing_in}) then
+					pos = pos, node = self.standing_under}) then
 				return true
 			end
 		else
@@ -769,14 +801,13 @@ function mob_class:do_env_damage()
 		end
 	end
 
-	--- suffocation inside solid node
-	-- FIXME: Redundant with mcl_playerplus
+	--- Suffocation inside solid node
 	if (self.suffocation == true)
-	and (nodef.walkable == nil or nodef.walkable == true)
-	and (nodef.collision_box == nil or nodef.collision_box.type == "regular")
-	and (nodef.node_box == nil or nodef.node_box.type == "regular")
-	and (nodef.groups.disable_suffocation ~= 1)
-	and (nodef.groups.opaque == 1) then
+			and (feet_nodef.walkable == nil or feet_nodef.walkable == true)
+			and (feet_nodef.collision_box == nil or feet_nodef.collision_box.type == "regular")
+			and (feet_nodef.node_box == nil or feet_nodef.node_box.type == "regular")
+			and (feet_nodef.groups.disable_suffocation ~= 1)
+			and (feet_nodef.groups.opaque == 1) then
 
 		-- Short grace period before starting to take suffocation damage.
 		-- This is different from players, who take damage instantly.
