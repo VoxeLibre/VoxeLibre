@@ -107,6 +107,10 @@ local function disable_physics(object, luaentity, ignore_check, reset_movement)
 			object:set_velocity(vector.zero())
 			object:set_acceleration(vector.zero())
 		end
+		-- Reset smooth drop sliding state
+		luaentity._slide_timer = 0
+		luaentity._slide_vx = 0
+		luaentity._slide_vz = 0
 	end
 end
 
@@ -1013,6 +1017,10 @@ minetest.register_entity(":__builtin:item", {
 		self._force = nil
 		self._forcestart = nil
 		self._forcetimer = 0
+		-- Smooth drop sliding state
+		self._slide_vx = 0
+		self._slide_vz = 0
+		self._slide_timer = 0
 
 		self.object:set_armor_groups({ immortal = 1 })
 		-- self.object:set_velocity(vector.new(0, 2, 0))
@@ -1075,6 +1083,25 @@ minetest.register_entity(":__builtin:item", {
 			})
 			self.object:set_velocity(vector.zero())
 			self.object:set_acceleration(vector.zero())
+			return
+		end
+
+		-- Smooth drop: slide with friction after landing
+		if self._slide_timer and self._slide_timer > 0 then
+			self._slide_timer = self._slide_timer - dtime
+			-- Exponential friction decay
+			local friction = math.pow(0.002, dtime)
+			self._slide_vx = self._slide_vx * friction
+			self._slide_vz = self._slide_vz * friction
+			-- Stop sliding when velocity is negligible
+			if math.abs(self._slide_vx) < 0.01 and math.abs(self._slide_vz) < 0.01 then
+				self._slide_timer = 0
+				self._slide_vx = 0
+				self._slide_vz = 0
+				self.object:set_velocity(vector.zero())
+			else
+				self.object:set_velocity(vector.new(self._slide_vx, 0, self._slide_vz))
+			end
 			return
 		end
 
@@ -1170,8 +1197,20 @@ minetest.register_entity(":__builtin:item", {
 						return
 					end
 				end
-				-- don't disable if underwater
-				if not is_in_water then
+			end
+			-- don't disable if underwater
+			if not is_in_water then
+				-- Smooth drop: if item has horizontal velocity, start sliding instead of snapping
+				local horiz_speed = math.sqrt(v.x * v.x + v.z * v.z)
+				if is_on_floor and horiz_speed > 0.15 then
+					self._slide_vx = v.x
+					self._slide_vz = v.z
+					self._slide_timer = 0.6
+					self.object:set_velocity(vector.new(v.x, 0, v.z))
+					self.object:set_acceleration(vector.zero())
+					self.object:set_properties({ physical = false })
+					self.physical_state = false
+				else
 					disable_physics(self.object, self)
 				end
 			end
