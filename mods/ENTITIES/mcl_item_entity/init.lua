@@ -1093,8 +1093,6 @@ minetest.register_entity(":__builtin:item", {
 			local friction = math.max(0, 1 - 4 * dtime)
 			self._slide_vx = self._slide_vx * friction
 			self._slide_vz = self._slide_vz * friction
-			self._slide_vx = self._slide_vx * friction
-			self._slide_vz = self._slide_vz * friction
 			-- Stop sliding when velocity is negligible
 			if math.abs(self._slide_vx) < 0.01 and math.abs(self._slide_vz) < 0.01 then
 				self._slide_timer = 0
