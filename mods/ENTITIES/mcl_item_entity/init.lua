@@ -1089,9 +1089,10 @@ minetest.register_entity(":__builtin:item", {
 		-- Smooth drop: slide with friction after landing
 		if self._slide_timer and self._slide_timer > 0 then
 			self._slide_timer = self._slide_timer - dtime
-			-- Fixed friction multiplier per frame (avoids math.pow)
-			-- 0.92/frame at ~60fps decays to ~5% in 0.6s
-			local friction = 0.92
+			-- Frame-rate independent friction (1 - k*dtime), no math.pow needed
+			local friction = math.max(0, 1 - 4 * dtime)
+			self._slide_vx = self._slide_vx * friction
+			self._slide_vz = self._slide_vz * friction
 			self._slide_vx = self._slide_vx * friction
 			self._slide_vz = self._slide_vz * friction
 			-- Stop sliding when velocity is negligible
