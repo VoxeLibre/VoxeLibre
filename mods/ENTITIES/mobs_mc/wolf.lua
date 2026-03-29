@@ -173,6 +173,7 @@ dog.state = "stand"
 dog.walk_chance = 0
 dog.owner_loyal = true
 dog.follow_velocity = 3.2
+dog.run_velocity = dog.follow_velocity
 -- Automatically teleport dog to owner
 local dog_teleport = mobs_mc.make_owner_teleport_function(24)
 dog.do_custom = function(self, dtime)
@@ -263,3 +264,145 @@ mcl_mobs:spawn_setup({
 })
 
 mcl_mobs.register_egg("mobs_mc:wolf", S("Wolf"), "#d7d3d3", "#ceaf96", 0)
+
+
+local tele_offsets = {}
+for x = -2, 2 do
+	for z = -2, 2 do
+		table.insert(tele_offsets, {x = x, y = 0, z = z})
+	end
+end
+
+local function resolve_actual_hitter(hitter)
+	if not hitter then
+		return nil
+	end
+	local hitter_le = hitter.get_luaentity and hitter:get_luaentity()
+	local actual_hitter = (hitter_le and (hitter_le._shooter or hitter_le._source_object or hitter_le._owner)) or hitter
+	if type(actual_hitter) == "string" then
+		actual_hitter = core.get_player_by_name(actual_hitter)
+	end
+	return actual_hitter
+end
+
+local function teleport_near_owner(self, owner_pos)
+	local check_offsets = table.copy(tele_offsets)
+	while #check_offsets > 0 do
+		local r = pr:next(1, #check_offsets)
+		local telepos = vector.add(owner_pos, check_offsets[r])
+		local telepos_below = {x = telepos.x, y = telepos.y - 1, z = telepos.z}
+		table.remove(check_offsets, r)
+
+		local trynode = minetest.registered_nodes[minetest.get_node(telepos).name]
+		local trybelownode = minetest.registered_nodes[minetest.get_node(telepos_below).name]
+		if trynode and not trynode.walkable and trybelownode and trybelownode.walkable then
+			self.object:set_pos(telepos)
+			self.old_y = telepos.y
+			return true
+		end
+	end
+	return false
+end
+
+local old_dog_do_custom = dog.do_custom
+dog.do_custom = function(self, dtime)
+	local owner = self.owner and minetest.get_player_by_name(self.owner)
+	local owner_pos = owner and owner:get_pos()
+	local mob_pos = self.object and self.object:get_pos()
+
+	if owner and owner_pos and mob_pos and self.following == owner then
+		local dist = vector.distance(owner_pos, mob_pos)
+		if dist > 3 and (self:is_at_cliff_or_danger() or self:is_at_water_danger()) then
+			self:set_velocity(0)
+			self:set_animation("stand")
+			self._follow_blocked_by_hazard = true
+			self._hazard_teleport_timer = (self._hazard_teleport_timer or 1) - dtime
+			if self._hazard_teleport_timer <= 0 then
+				self._hazard_teleport_timer = 1
+				if dist > 3 then
+					teleport_near_owner(self, owner_pos)
+				end
+			end
+		else
+			self._follow_blocked_by_hazard = nil
+			self._hazard_teleport_timer = nil
+		end
+	else
+		self._follow_blocked_by_hazard = nil
+		self._hazard_teleport_timer = nil
+	end
+
+	return old_dog_do_custom(self, dtime)
+end
+local dog_def = minetest.registered_entities["mobs_mc:dog"]
+if dog_def then
+	dog_def.run_velocity = dog.run_velocity
+	dog_def.do_custom = dog.do_custom
+end
+
+local mob_class = mcl_mobs.mob_class
+local old_smart_mobs = mob_class.smart_mobs
+function mob_class:smart_mobs(s, p, dist, dtime)
+	old_smart_mobs(self, s, p, dist, dtime)
+	if self.owner_loyal and self.path and self.path.following and self.attack
+	and self:target_visible(self.object, self.attack) then
+		self.path.following = false
+	end
+end
+
+local old_on_punch = mob_class.on_punch
+function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
+	old_on_punch(self, hitter, tflp, tool_capabilities, dir)
+
+	local actual_hitter = resolve_actual_hitter(hitter)
+	if not actual_hitter or actual_hitter == hitter or not actual_hitter:is_player() then
+		return
+	end
+
+	local name = actual_hitter:get_player_name()
+	if name == "" or self.owner == name then
+		return
+	end
+
+	local alert_pos = (hitter and hitter.get_pos and hitter:get_pos()) or (self.object and self.object:get_pos())
+	if not alert_pos then
+		return
+	end
+
+	local objs = minetest.get_objects_inside_radius(alert_pos, self.view_range or 16)
+	for _, objref in ipairs(objs) do
+		local ent = objref:get_luaentity()
+		if ent and ent.owner == name and ent.owner_loyal and ent.order ~= "sit"
+		and ent.object ~= self.object and self.owner ~= name then
+			ent:do_attack(self.object)
+		end
+	end
+end
+
+minetest.register_on_punchplayer(function(player, hitter)
+	if not player or not hitter then return end
+
+	local actual_hitter = resolve_actual_hitter(hitter)
+	if not actual_hitter or actual_hitter == player then
+		return
+	end
+
+	local name = player:get_player_name()
+	local pos = player:get_pos()
+	if not pos then
+		return
+	end
+
+	local objs = minetest.get_objects_inside_radius(pos, 16)
+	for _, obj in ipairs(objs) do
+		local ent = obj:get_luaentity()
+		if ent and ent.is_mob and ent.owner == name and ent.owner_loyal and ent.order ~= "sit" then
+			if actual_hitter ~= obj then
+				local h_le = actual_hitter.get_luaentity and actual_hitter:get_luaentity()
+				if not (h_le and h_le.owner == name) then
+					ent:do_attack(actual_hitter)
+				end
+			end
+		end
+	end
+end)
