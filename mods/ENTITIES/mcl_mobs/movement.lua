@@ -771,7 +771,16 @@ function mob_class:do_states_runaway(dtime)
 			local score = -math.abs(angle_offset) * 0.5 - (yaw_diff * 0.25) + (math.random() * 1.5 - 0.75)
 
 			if not free_fall then
-				score = score - 10 -- Path blocked
+				-- If blocked, check if we can jump over it
+				local jump_free_fall = minetest.line_of_sight(
+					vector.new(pos.x, ypos + 1.1, pos.z),
+					vector.new(test_pos.x, ypos + 1.1, test_pos.z)
+				)
+				if jump_free_fall then
+					score = score - 2 -- Penalty for jumping
+				else
+					score = score - 10 -- Path truly blocked
+				end
 			else
 				-- Check for cliffs/hazards at the test position
 				local test_ypos = test_pos.y

@@ -247,7 +247,7 @@ end
 function mob_class:check_death_and_slow_mob()
 	local d = 0.7
 	local dying = self:check_dying()
-	if dying then d = 0.92 end
+	if dying then d = 0.50 end
 
 	local v = self.object:get_velocity()
 	if v then
