@@ -150,7 +150,7 @@ dog.state = "stand"
 dog.owner_loyal = true
 dog.follow_velocity = 3.2
 -- Automatically teleport dog to owner
-dog.do_custom = mobs_mc.make_owner_teleport_function(12)
+dog.do_custom = mobs_mc.make_owner_teleport_function(24)
 dog.follow = {
 	"mcl_mobitems:rabbit", "mcl_mobitems:cooked_rabbit",
 	"mcl_mobitems:mutton", "mcl_mobitems:cooked_mutton",

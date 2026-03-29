@@ -120,7 +120,7 @@ cat.tamed = true
 cat.runaway = false
 cat.follow_velocity = 2.4
 -- Automatically teleport cat to owner
-cat.do_custom = mobs_mc.make_owner_teleport_function(12)
+cat.do_custom = mobs_mc.make_owner_teleport_function(24)
 cat.sounds = {
 	random = "mobs_mc_cat_idle",
 	damage = "mobs_mc_cat_hiss",
@@ -142,16 +142,8 @@ cat.on_rightclick = function(self, clicker)
 		self.owner = clicker:get_player_name()
 	end
 
-	if not self.order or self.order == "" or self.order == "sit" then
-		self.order = "roam"
-		self.walk_chance = default_walk_chance
-		self.jump = true
-	else
-		-- “Sit!”
-		-- TODO: Add sitting model
-		self.order = "sit"
-		self.walk_chance = 0
-		self.jump = false
+	if not minetest.settings:get_bool("mcl_extended_pet_control", true) then
+		self:toggle_sit(clicker, -0.4)
 	end
 
 end

@@ -409,7 +409,7 @@ end
 
 -- find someone to runaway from
 function mob_class:check_runaway_from()
-	if not self.runaway_from and self.state ~= "flop" then return end
+	if (not self.runaway_from and self.state ~= "flop") or self.order == "sit" then return end
 
 	local s = self.object:get_pos()
 	local lp
@@ -457,16 +457,28 @@ end
 -- follow player if owner or holding item
 function mob_class:check_follow()
 	-- find player to follow
-	if (self.follow ~= "" or self.order == "follow") and not self.following
+	if not self.following
 	and self.state ~= "attack"
 	and self.order ~= "sit"
 	and self.state ~= "runaway" then
 		local s = self.object:get_pos()
-		local players = minetest.get_connected_players()
-		for n = 1, #players do
-			if (self:object_in_range(players[n])) and not mcl_mobs.invis[ players[n]:get_player_name() ] then
-				self.following = players[n]
-				break
+
+		-- 1. If tamed, check for owner first
+		if self.tamed and self.owner and self.owner ~= "" then
+			local player = minetest.get_player_by_name(self.owner)
+			if player and self:object_in_range(player) and not mcl_mobs.invis[self.owner] then
+				self.following = player
+			end
+		end
+
+		-- 2. If still not following, check for players holding food or with follow order
+		if not self.following and (self.follow ~= "" or self.order == "follow") then
+			local players = minetest.get_connected_players()
+			for n = 1, #players do
+				if (self:object_in_range(players[n])) and not mcl_mobs.invis[ players[n]:get_player_name() ] then
+					self.following = players[n]
+					break
+				end
 			end
 		end
 	end
@@ -479,9 +491,11 @@ function mob_class:check_follow()
 	else
 		-- stop following player if not holding specific item,
 		-- mob is horny, fleeing or attacking
-		if self.following and self.following:is_player()
-				and (self:follow_holding(self.following) == false or self.horny or self.state == "runaway") then
-			self.following = nil
+		if self.following and self.following:is_player() then
+			local is_owner = self.tamed and self.owner and self.following:get_player_name() == self.owner
+			if (not is_owner and self:follow_holding(self.following) == false) or self.horny or self.state == "runaway" then
+				self.following = nil
+			end
 		end
 	end
 

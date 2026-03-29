@@ -379,7 +379,14 @@ function mob_class:toggle_sit(clicker,p)
 	else
 		particle = "mobs_mc_wolf_icon_sit.png"
 		self.order = "sit"
-		self.state = "stand"
+		self:stand()
+		self.acc = vector.zero()
+		self.attack = nil
+		self.following = nil
+		self._target = nil
+		self.current_target = nil
+		self.waypoints = nil
+
 		self.walk_chance = 0
 		self.jump = false
 		if self.animation.sit_start then
