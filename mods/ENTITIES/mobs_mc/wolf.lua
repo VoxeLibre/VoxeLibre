@@ -144,9 +144,11 @@ dog.initial_properties.hp_max = 20
 -- Tamed wolf texture + red collar
 dog.textures = get_dog_textures("unicolor_red")
 dog.owner = ""
+dog._walk_chance_roam = 50
 -- TODO: Start sitting by default
 dog.order = "sit"
 dog.state = "stand"
+dog.walk_chance = 0
 dog.owner_loyal = true
 dog.follow_velocity = 3.2
 -- Automatically teleport dog to owner

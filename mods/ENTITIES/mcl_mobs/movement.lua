@@ -463,11 +463,15 @@ function mob_class:check_follow()
 	and self.state ~= "runaway" then
 		local s = self.object:get_pos()
 
-		-- 1. If tamed, check for owner first
-		if self.tamed and self.owner and self.owner ~= "" then
+		-- 1. If tamed and owner-loyal (companion), check for owner first
+		-- We use a larger distance (24) for owners to close the dead zone before teleport fallback
+		if self.tamed and self.owner_loyal and self.owner and self.owner ~= "" then
 			local player = minetest.get_player_by_name(self.owner)
-			if player and self:object_in_range(player) and not mcl_mobs.invis[self.owner] then
-				self.following = player
+			if player and not mcl_mobs.invis[self.owner] then
+				local p = player:get_pos()
+				if p and vector_distance(s, p) <= 24 then
+					self.following = player
+				end
 			end
 		end
 
@@ -506,7 +510,11 @@ function mob_class:check_follow()
 			or self.following.object and self.following.object:get_pos()
 
 		if p then
-			if (not self:object_in_range(self.following)) then
+			local is_owner = self.tamed and self.owner_loyal and self.owner and self.following:get_player_name() == self.owner
+			local dist = vector_distance(p, s)
+			local out_of_range = is_owner and dist > 24 or not is_owner and not self:object_in_range(self.following)
+
+			if out_of_range then
 				self.following = nil
 			else
 				self:turn_in_direction(p.x - s.x, p.z - s.z, 2.35)

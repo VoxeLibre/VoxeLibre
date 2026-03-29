@@ -114,6 +114,7 @@ cat.description = S("Cat")
 cat.textures = {{"mobs_mc_cat_black.png"}, {"mobs_mc_cat_red.png"}, {"mobs_mc_cat_siamese.png"}}
 cat.can_despawn = false
 cat.owner = ""
+cat._walk_chance_roam = default_walk_chance
 cat.order = "roam" -- "sit" or "roam"
 cat.owner_loyal = true
 cat.tamed = true
