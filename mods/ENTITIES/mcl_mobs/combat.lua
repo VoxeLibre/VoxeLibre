@@ -36,7 +36,7 @@ end
 
 -- get this mob to attack the object
 function mob_class:do_attack(object)
-	if self.state == "attack" or self.state == "die" or self.state == "runaway" then
+	if self.state == "attack" or self.state == "die" or self.state == "runaway" or self.order == "sit" then
 		return
 	end
 	if object:is_player() and not damage_enabled and not self.force_attack then
@@ -290,7 +290,7 @@ function mob_class:monster_attack()
 	if not damage_enabled and not self.force_attack then
 		return
 	end
-	if self.passive ~= false or self.state == "attack" or self:day_docile() then
+	if self.passive ~= false or self.state == "attack" or self:day_docile() or self.order == "sit" then
 		return
 	end
 
@@ -388,7 +388,8 @@ end
 function mob_class:npc_attack()
 	if self.type ~= "npc"
 	or not self.attacks_monsters
-	or self.state == "attack" then
+	or self.state == "attack"
+	or self.order == "sit" then
 		return
 	end
 

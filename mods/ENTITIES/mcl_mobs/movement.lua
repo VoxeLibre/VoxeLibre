@@ -409,7 +409,7 @@ end
 
 -- find someone to runaway from
 function mob_class:check_runaway_from()
-	if not self.runaway_from and self.state ~= "flop" then return end
+	if (not self.runaway_from and self.state ~= "flop") or self.order == "sit" then return end
 
 	local s = self.object:get_pos()
 	local lp
@@ -457,16 +457,32 @@ end
 -- follow player if owner or holding item
 function mob_class:check_follow()
 	-- find player to follow
-	if (self.follow ~= "" or self.order == "follow") and not self.following
+	if not self.following
 	and self.state ~= "attack"
 	and self.order ~= "sit"
 	and self.state ~= "runaway" then
 		local s = self.object:get_pos()
-		local players = minetest.get_connected_players()
-		for n = 1, #players do
-			if (self:object_in_range(players[n])) and not mcl_mobs.invis[ players[n]:get_player_name() ] then
-				self.following = players[n]
-				break
+
+		-- 1. If tamed and owner-loyal (companion), check for owner first
+		-- We use a larger distance (24) for owners to close the dead zone before teleport fallback
+		if self.tamed and self.owner_loyal and self.owner and self.owner ~= "" then
+			local player = minetest.get_player_by_name(self.owner)
+			if player and not mcl_mobs.invis[self.owner] then
+				local p = player:get_pos()
+				if p and vector_distance(s, p) <= 24 then
+					self.following = player
+				end
+			end
+		end
+
+		-- 2. If still not following, check for players holding food or with follow order
+		if not self.following and (self.follow ~= "" or self.order == "follow") then
+			local players = minetest.get_connected_players()
+			for n = 1, #players do
+				if (self:object_in_range(players[n])) and not mcl_mobs.invis[ players[n]:get_player_name() ] then
+					self.following = players[n]
+					break
+				end
 			end
 		end
 	end
@@ -479,9 +495,11 @@ function mob_class:check_follow()
 	else
 		-- stop following player if not holding specific item,
 		-- mob is horny, fleeing or attacking
-		if self.following and self.following:is_player()
-				and (self:follow_holding(self.following) == false or self.horny or self.state == "runaway") then
-			self.following = nil
+		if self.following and self.following:is_player() then
+			local is_owner = self.tamed and self.owner and self.following:get_player_name() == self.owner
+			if (not is_owner and self:follow_holding(self.following) == false) or self.horny or self.state == "runaway" then
+				self.following = nil
+			end
 		end
 	end
 
@@ -492,7 +510,11 @@ function mob_class:check_follow()
 			or self.following.object and self.following.object:get_pos()
 
 		if p then
-			if (not self:object_in_range(self.following)) then
+			local is_owner = self.tamed and self.owner_loyal and self.owner and self.following:get_player_name() == self.owner
+			local dist = vector_distance(p, s)
+			local out_of_range = is_owner and dist > 24 or not is_owner and not self:object_in_range(self.following)
+
+			if out_of_range then
 				self.following = nil
 			else
 				self:turn_in_direction(p.x - s.x, p.z - s.z, 2.35)

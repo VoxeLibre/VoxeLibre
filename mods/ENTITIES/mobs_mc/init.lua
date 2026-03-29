@@ -27,7 +27,7 @@ mobs_mc.make_owner_teleport_function = function(dist, teleport_check_interval)
 			teleport_check_interval = 4
 		end
 		if not dist then
-			dist = 12
+			dist = 24
 		end
 		if self._teleport_timer == nil then
 			self._teleport_timer = teleport_check_interval

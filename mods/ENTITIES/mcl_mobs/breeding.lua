@@ -372,14 +372,30 @@ function mob_class:toggle_sit(clicker,p)
 		particle = "mobs_mc_wolf_icon_roam.png"
 		self.order = "roam"
 		self.state = "stand"
-		self.walk_chance = 50
+		self.walk_chance = self._walk_chance_roam or 50
 		self.jump = true
 		self:set_animation("stand")
 		-- TODO: Add sitting model
 	else
 		particle = "mobs_mc_wolf_icon_sit.png"
 		self.order = "sit"
-		self.state = "stand"
+		self:stand()
+		self.acc = vector.zero()
+		self.object:set_acceleration(vector.zero())
+		self.attack = nil
+		self.following = nil
+		self._target = nil
+		self.current_target = nil
+		self.waypoints = nil
+
+		if self.path then
+			self.path.way = nil
+			self.path.following = false
+			self.path.stuck = false
+			self.path.stuck_timer = 0
+			self.path.last_seen_target_pos = nil
+		end
+
 		self.walk_chance = 0
 		self.jump = false
 		if self.animation.sit_start then
