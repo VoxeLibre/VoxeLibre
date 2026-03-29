@@ -761,9 +761,12 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 	-- if skittish then run away
 	if hitter and not die and self.runaway == true and self.state ~= "flop" then
 		local hitter_le = hitter:get_luaentity()
-		local actual_hitter = (hitter_le and (hitter_le._owner or hitter_le._shooter)) or hitter
+		local actual_hitter = (hitter_le and (hitter_le._shooter or hitter_le._source_object or hitter_le._owner)) or hitter
+		if type(actual_hitter) == "string" then
+			actual_hitter = core.get_player_by_name(actual_hitter)
+		end
 
-		if actual_hitter and (type(actual_hitter) ~= "string") and actual_hitter.get_pos and actual_hitter:get_pos() then
+		if actual_hitter and actual_hitter.get_pos and actual_hitter:get_pos() then
 			self.state = "runaway"
 			self.runaway_timer = 0
 			self.runaway_source_pos = actual_hitter:get_pos()

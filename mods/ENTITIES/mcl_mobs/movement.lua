@@ -721,7 +721,7 @@ function mob_class:do_states_runaway(dtime)
 	if not pos then return end
 
 	-- dynamically update threat position if the object is still around
-	if self.runaway_source_object and self.runaway_source_object:get_pos() then
+	if self.runaway_source_object and self.runaway_source_object:get_pos and self.runaway_source_object:get_pos() then
 		self.runaway_source_pos = self.runaway_source_object:get_pos()
 	end
 
