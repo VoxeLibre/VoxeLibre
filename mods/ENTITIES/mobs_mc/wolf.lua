@@ -4,6 +4,17 @@ local default_walk_chance = 50
 
 local pr = PseudoRandom(os.time()*10)
 
+local update_tail = function(self)
+	if not self.object or not self.object:get_pos() then return end
+	local max_hp = self.initial_properties and self.initial_properties.hp_max or 1
+	if max_hp <= 0 then max_hp = 1 end
+	local health = self.health or max_hp
+	local ratio = math.min(1, math.max(0, health / max_hp))
+	-- Tail angle: -0.7 radians (up, healthy) to 0.7 radians (down, hurt)
+	local pitch = 0.7 - (ratio * 1.4)
+	mcl_util.set_bone_position(self.object, "tail", nil, vector.new(pitch, 0, 0))
+end
+
 -- Wolf
 local wolf = {
 	description = S("Wolf"),
@@ -50,6 +61,7 @@ local wolf = {
 	reach = 2,
 	attack_type = "dogfight",
 	fear_height = 4,
+	do_custom = update_tail,
 	follow = { "mcl_mobitems:bone" },
 	on_rightclick = function(self, clicker)
 		-- Try to tame wolf (intentionally does NOT use mcl_mobs:feed_tame)
@@ -74,7 +86,12 @@ local wolf = {
 				ent:set_animation("sit")
 				ent.walk_chance = 0
 				ent.jump = false
-				ent.health = self.health
+				local wolf_max = self.initial_properties and self.initial_properties.hp_max or 1
+				local dog_max = ent.initial_properties and ent.initial_properties.hp_max or wolf_max
+				if wolf_max <= 0 then wolf_max = 1 end
+				if dog_max <= 0 then dog_max = wolf_max end
+				ent.health = math.max(1, math.floor((self.health / wolf_max) * dog_max + 0.5))
+				update_tail(ent)
 				-- cornfirm taming
 				minetest.sound_play("mobs_mc_wolf_bark", {object=dog, max_hear_distance=16}, true)
 				-- Replace wolf
@@ -97,6 +114,7 @@ local wolf = {
 	jump = true,
 	_on_tame_convert_to = "mobs_mc:dog",
 	after_activate = function(self)
+		update_tail(self)
 		self:check_tame_conversion()
 	end,
 	attacks_monsters = true,
@@ -156,7 +174,12 @@ dog.walk_chance = 0
 dog.owner_loyal = true
 dog.follow_velocity = 3.2
 -- Automatically teleport dog to owner
-dog.do_custom = mobs_mc.make_owner_teleport_function(24)
+local dog_teleport = mobs_mc.make_owner_teleport_function(24)
+dog.do_custom = function(self, dtime)
+	update_tail(self)
+	return dog_teleport(self, dtime)
+end
+dog.after_activate = update_tail
 dog.follow = {
 	"mcl_mobitems:rabbit", "mcl_mobitems:cooked_rabbit",
 	"mcl_mobitems:mutton", "mcl_mobitems:cooked_mutton",
@@ -176,6 +199,7 @@ dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
 	if self:feed_tame(clicker, 1, true, false) then
+		update_tail(self)
 		return
 	elseif mcl_mobs:protect(self, clicker) then
 		return
