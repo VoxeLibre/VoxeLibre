@@ -95,6 +95,10 @@ local wolf = {
 		sit_start = 91, sit_end = 91,
 	},
 	jump = true,
+	_on_tame_convert_to = "mobs_mc:dog",
+	after_activate = function(self)
+		self:check_tame_conversion()
+	end,
 	attacks_monsters = true,
 	attack_animals = true,
 	specific_attack = { "player", "mobs_mc:sheep", "mobs_mc:rabbit" },

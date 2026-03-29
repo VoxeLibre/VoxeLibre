@@ -306,6 +306,7 @@ function mcl_mobs.register_mob(name, def)
 		facing_fence = false,
 		is_mob = true,
 		pushable = def.pushable or true,
+		_on_tame_convert_to = def._on_tame_convert_to,
 
 		-- MCL2 extensions
 		shooter_avoid_enemy = def.shooter_avoid_enemy,
@@ -705,6 +706,10 @@ local function on_place_egg(eggs, placer, pointed_thing)
 	if ent.type ~= "monster" and not placer:get_player_control().sneak then
 		ent.owner = placer:get_player_name()
 		ent.tamed = true
+		if ent.check_tame_conversion then
+			mob = ent:check_tame_conversion() or mob
+			ent = mob:get_luaentity()
+		end
 	end
 
 	-- eggs can be named and the name should be transferred onto the mobs

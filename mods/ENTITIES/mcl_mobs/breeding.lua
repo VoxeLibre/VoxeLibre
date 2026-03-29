@@ -45,6 +45,7 @@ function mob_class:feed_tame(clicker, feed_count, breed, tame, notake)
 			if not self.owner or self.owner == "" then
 				self.tamed = true
 				self.owner = clicker:get_player_name()
+				self:check_tame_conversion()
 				consume_food = true
 			end
 		end
@@ -352,6 +353,7 @@ function mob_class:check_breeding()
 					-- tamed and owned by parents' owner
 					ent_c.tamed = true
 					ent_c.owner = parent1.owner
+					ent_c:check_tame_conversion()
 				end, self, ent, pos)
 
 				num = 0
