@@ -77,6 +77,10 @@ local ocelot = {
 	passive = true,
 	attack_type = "dogfight",
 	pathfinding = 1,
+	_on_tame_convert_to = "mobs_mc:cat",
+	after_activate = function(self)
+		self:check_tame_conversion()
+	end,
 	damage = 2,
 	reach = 1,
 	attack_animals = true,

@@ -28,6 +28,29 @@ if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	end)
 end
 
+function mob_class:check_tame_conversion()
+	if self.tamed and self._on_tame_convert_to and self.name ~= self._on_tame_convert_to then
+		local pos = self.object:get_pos()
+		if not pos then return end
+		local new_obj = minetest.add_entity(pos, self._on_tame_convert_to)
+		if not new_obj then return end
+
+		local new_ent = new_obj:get_luaentity()
+		new_ent.owner = self.owner
+		new_ent.tamed = true
+		new_ent.nametag = self.nametag
+		new_ent.child = self.child
+		new_ent.health = self.health
+		new_ent.hornytimer = self.hornytimer
+		new_ent.horny = self.horny
+		new_ent.order = self.order
+		new_ent:update_tag()
+
+		self.object:remove()
+		return new_obj
+	end
+end
+
 function mob_class:update_tag() --update nametag and/or the debug box
 	local tag
 	if mobs_debug then
