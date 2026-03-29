@@ -767,6 +767,7 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 		self.state = "runaway"
 		self.runaway_timer = 0
 		self.runaway_source_pos = hitter:get_pos()
+		self.runaway_source_object = hitter
 		self.following = nil
 	end
 

@@ -413,6 +413,7 @@ function mob_class:check_runaway_from()
 
 	local s = self.object:get_pos()
 	local lp
+	local lobj
 	local min_dist = self.view_range + 1
 
 	for obj in core.objects_inside_radius(s, self.view_range) do
@@ -437,6 +438,7 @@ function mob_class:check_runaway_from()
 				if dist < min_dist and self:line_of_sight(vector_offset(s, 0, 1, 0), vector_offset(p, 0, 1, 0), 2) == true then
 					min_dist = dist
 					lp = p
+					lobj = obj
 				end
 			end
 		end
@@ -446,6 +448,7 @@ function mob_class:check_runaway_from()
 		self.state = "runaway"
 		self.runaway_timer = 0
 		self.runaway_source_pos = lp
+		self.runaway_source_object = lobj
 		self.following = nil
 	end
 end
@@ -709,12 +712,18 @@ function mob_class:do_states_runaway(dtime)
 	if self.runaway_timer > 5 then
 		self.runaway_timer = 0
 		self.runaway_source_pos = nil
+		self.runaway_source_object = nil
 		self:stand()
 		return
 	end
 
 	local pos = self.object:get_pos()
 	if not pos then return end
+
+	-- dynamically update threat position if the object is still around
+	if self.runaway_source_object and self.runaway_source_object:get_pos() then
+		self.runaway_source_pos = self.runaway_source_object:get_pos()
+	end
 
 	local source = self.runaway_source_pos
 	local current_yaw = self.object:get_yaw() or 0
@@ -730,6 +739,7 @@ function mob_class:do_states_runaway(dtime)
 		if dist_sq > 400 then
 			self.runaway_timer = 0
 			self.runaway_source_pos = nil
+			self.runaway_source_object = nil
 			self:stand()
 			return
 		end
@@ -755,7 +765,10 @@ function mob_class:do_states_runaway(dtime)
 				vector.new(test_pos.x, ypos, test_pos.z)
 			)
 
-			local score = -math.abs(angle_offset) -- Penalize diverging from straight away
+			-- Add slight lateral randomness to prevent strict straight line fleeing on open terrain
+			-- and bias slightly towards current yaw for smoother turning
+			local yaw_diff = math.abs((test_yaw - current_yaw + math.pi) % (2*math.pi) - math.pi)
+			local score = -math.abs(angle_offset) * 0.5 - (yaw_diff * 0.25) + (math.random() * 1.5 - 0.75)
 
 			if not free_fall then
 				score = score - 10 -- Path blocked

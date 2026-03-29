@@ -283,6 +283,7 @@ function mcl_mobs.register_mob(name, def)
 		runaway = def.runaway,
 		runaway_timer = 0,
 		runaway_source_pos = nil,
+		runaway_source_object = nil,
 		pathfinding = def.pathfinding,
 		immune_to = def.immune_to or {},
 		explosion_radius = def.explosion_radius, -- LEGACY
