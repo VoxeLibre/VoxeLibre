@@ -10,8 +10,8 @@ local update_tail = function(self)
 	if max_hp <= 0 then max_hp = 1 end
 	local health = self.health or max_hp
 	local ratio = math.min(1, math.max(0, health / max_hp))
-	-- Tail angle: -0.7 radians (up, healthy) to 0.7 radians (down, hurt)
-	local pitch = 0.7 - (ratio * 1.4)
+	-- Tail angle: backward and UP (healthy) to backward and DOWN (hurt)
+	local pitch = math.pi - 0.7 + (ratio * 1.4)
 	mcl_util.set_bone_position(self.object, "tail", nil, vector.new(pitch, 0, 0))
 end
 
