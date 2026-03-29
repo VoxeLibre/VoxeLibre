@@ -726,17 +726,11 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 				end
 				kb = kb * rate
 				kb = kb + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
-			elseif luaentity and luaentity._knockback and die == false then
+			elseif luaentity and luaentity._knockback then
 				kb = kb + luaentity._knockback
-			elseif luaentity and luaentity._knockback and die == true then
-				kb = kb + luaentity._knockback * 0.25
-			end
-			if die then
-				kb = kb * 1.25
-				self.vl_drops_pos = mob_pos
 			end
 
-			local up = 5.25
+			local up = 3.0
 			-- if already in air then dont go up anymore when hit
 			if abs(v.y) > 0.1 or self.fly then up = 0 end
 
@@ -754,21 +748,28 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 					self._kb_turn = false
 				end
 			end)
-			kb = kb * 20 -- experimentally derived constant
-			self:set_velocity(0)
+			kb = kb * 10 -- experimentally derived constant
 			self.object:add_velocity(vector_new(dir.x * kb, up, dir.z * kb ))
 
-			self.pause_timer = 0.25
+			self.pause_timer = 0.10
 		end
 	end -- END if damage
 
 	-- if skittish then run away
-	if hitter and is_player and hitter:get_pos() and not die and self.runaway == true and self.state ~= "flop" then
-		self.state = "runaway"
-		self.runaway_timer = 0
-		self.runaway_source_pos = hitter:get_pos()
-		self.runaway_source_object = hitter
-		self.following = nil
+	if hitter and not die and self.runaway == true and self.state ~= "flop" then
+		local hitter_le = hitter:get_luaentity()
+		local actual_hitter = (hitter_le and (hitter_le._shooter or hitter_le._source_object or hitter_le._owner)) or hitter
+		if type(actual_hitter) == "string" then
+			actual_hitter = core.get_player_by_name(actual_hitter)
+		end
+
+		if actual_hitter and actual_hitter.get_pos and actual_hitter:get_pos() then
+			self.state = "runaway"
+			self.runaway_timer = 0
+			self.runaway_source_pos = actual_hitter:get_pos()
+			self.runaway_source_object = actual_hitter
+			self.following = nil
+		end
 	end
 
 	local name = hitter:get_player_name() or ""

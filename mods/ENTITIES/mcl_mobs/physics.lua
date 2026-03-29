@@ -24,7 +24,7 @@ vl_tuning.setting("gamerule:doMobLoot", "bool", {
 })
 
 local CRAMMING_DAMAGE = 3
-local DEATH_DELAY = 0.5
+local DEATH_DELAY = 0.0
 local DEFAULT_FALL_SPEED = -9.81*1.5
 local PI = math.pi
 local HALFPI = 0.5 * PI
@@ -146,7 +146,7 @@ function mob_class:item_drop(params)
 	local attacker_name = params.attacker_name or nil
 	local player_kill   = params.player_kill or false
 
-	local pos = self.vl_drops_pos or self.object:get_pos()
+	local pos = self.object:get_pos()
 	local drops = self.drops or {}
 
 	for n = 1, #drops do
@@ -247,7 +247,7 @@ end
 function mob_class:check_death_and_slow_mob()
 	local d = 0.7
 	local dying = self:check_dying()
-	if dying then d = 0.92 end
+	if dying then d = 0.50 end
 
 	local v = self.object:get_velocity()
 	if v then
@@ -474,7 +474,7 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 		-- Award XP
 		local player_hit = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp <= PLAYER_KILL_TIME_US)
 		if player_hit and ((not self.child) or self.type ~= "animal") then
-			local pos = self.vl_drops_pos or self.object:get_pos()
+			local pos = self.object:get_pos()
 			local xp_amount = random(self.xp_min, self.xp_max)
 
 			if not mcl_sculk.handle_death(pos, xp_amount) and minetest.is_creative_enabled("") ~= true then
