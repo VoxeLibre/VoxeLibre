@@ -708,8 +708,8 @@ end
 
 function mob_class:do_states_runaway(dtime)
 	-- self.runaway_timer is incremented in api.lua
-	-- stop after 5 seconds
-	if self.runaway_timer > 5 then
+	-- stop after 10 seconds
+	if self.runaway_timer > 10 then
 		self.runaway_timer = 0
 		self.runaway_source_pos = nil
 		self.runaway_source_object = nil
