@@ -729,9 +729,6 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 			elseif luaentity and luaentity._knockback then
 				kb = kb + luaentity._knockback
 			end
-			if die then
-				self.vl_drops_pos = mob_pos
-			end
 
 			local up = 3.0
 			-- if already in air then dont go up anymore when hit
