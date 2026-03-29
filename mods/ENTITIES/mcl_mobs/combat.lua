@@ -764,19 +764,9 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	-- if skittish then run away
 	if hitter and is_player and hitter:get_pos() and not die and self.runaway == true and self.state ~= "flop" then
-		local hp, sp = hitter:get_pos(), self.object:get_pos()
-		self:turn_in_direction(sp.x - hp.x, sp.z - hp.z, 1)
-		minetest.after(0.2,function()
-			if self and self.object and hitter and is_player then
-				local hp, sp = hitter:get_pos(), self.object:get_pos()
-				if hp and sp then
-					self:turn_in_direction(sp.x - hp.x, sp.z - hp.z, 1)
-					self:set_velocity(self.run_velocity)
-				end
-			end
-		end)
 		self.state = "runaway"
 		self.runaway_timer = 0
+		self.runaway_source_pos = hitter:get_pos()
 		self.following = nil
 	end
 

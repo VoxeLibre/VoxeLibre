@@ -309,13 +309,16 @@ function mob_class:do_states(dtime, player_in_active_range)
 	elseif self.state == "attack" then
 		if self:do_states_attack(dtime) then return true end
 	else
-		if mcl_util.check_dtime_timer(self, dtime, "onstep_dostates", 1) then
+		if self.state == "runaway" then
+			self.runaway_timer = self.runaway_timer + dtime
+			if mcl_util.check_dtime_timer(self, dtime, "onstep_runaway", 0.25) then
+				self:do_states_runaway(dtime)
+			end
+		elseif mcl_util.check_dtime_timer(self, dtime, "onstep_dostates", 1) then
 			if self.state == "stand" then
 				self:do_states_stand(player_in_active_range)
 			elseif self.state == "walk" then
 				self:do_states_walk()
-			elseif self.state == "runaway" then
-				self:do_states_runaway()
 			end
 		end
 	end

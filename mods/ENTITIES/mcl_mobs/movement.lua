@@ -443,9 +443,9 @@ function mob_class:check_runaway_from()
 	end
 
 	if lp then
-		self:turn_in_direction(s.x - lp.x, s.z - lp.z, 4) -- away from player
 		self.state = "runaway"
 		self.runaway_timer = 0
+		self.runaway_source_pos = lp
 		self.following = nil
 	end
 end
@@ -703,17 +703,98 @@ function mob_class:do_states_stand(player_in_active_range)
 	end
 end
 
-function mob_class:do_states_runaway()
-	self.runaway_timer = self.runaway_timer + 1
-	-- stop after 5 seconds or when at cliff
-	if self.runaway_timer > 5
-			or self:is_at_cliff_or_danger() then
+function mob_class:do_states_runaway(dtime)
+	-- self.runaway_timer is incremented in api.lua
+	-- stop after 5 seconds
+	if self.runaway_timer > 5 then
 		self.runaway_timer = 0
+		self.runaway_source_pos = nil
 		self:stand()
-		self:turn_by(PI * (random() + 0.5), 8)
-	else
-		self:set_velocity(self.run_velocity)
-		self:set_animation("run")
+		return
 	end
+
+	local pos = self.object:get_pos()
+	if not pos then return end
+
+	local source = self.runaway_source_pos
+	local current_yaw = self.object:get_yaw() or 0
+	local best_yaw = current_yaw
+
+	if source then
+		-- Direction strictly away from threat
+		local dx = pos.x - source.x
+		local dz = pos.z - source.z
+		local dist_sq = dx * dx + dz * dz
+
+		-- Stop running away if threat is too far
+		if dist_sq > 400 then
+			self.runaway_timer = 0
+			self.runaway_source_pos = nil
+			self:stand()
+			return
+		end
+
+		local optimal_yaw = -math.atan2(dx, dz) - (self.rotate or 0)
+
+		local angles = { 0, math.pi/4, -math.pi/4, math.pi/2, -math.pi/2, 3*math.pi/4, -3*math.pi/4, math.pi }
+		local best_score = -9999
+
+		local cbox = self.initial_properties.collisionbox or {-0.5, 0, -0.5, 0.5, 1, 0.5}
+
+		for _, angle_offset in ipairs(angles) do
+			local test_yaw = optimal_yaw + angle_offset
+			local dir_x = -math.sin(test_yaw)
+			local dir_z = math.cos(test_yaw)
+
+			local check_dist = 2
+			local test_pos = vector.add(pos, {x = dir_x * check_dist, y = 0, z = dir_z * check_dist})
+			local ypos = pos.y + cbox[2] + 0.1
+
+			local free_fall, blocker = minetest.line_of_sight(
+				vector.new(pos.x, ypos, pos.z),
+				vector.new(test_pos.x, ypos, test_pos.z)
+			)
+
+			local score = -math.abs(angle_offset) -- Penalize diverging from straight away
+
+			if not free_fall then
+				score = score - 10 -- Path blocked
+			else
+				-- Check for cliffs/hazards at the test position
+				local test_ypos = test_pos.y
+				local drop_free_fall, drop_blocker = minetest.line_of_sight(
+					vector.new(test_pos.x, ypos, test_pos.z),
+					vector.new(test_pos.x, math.floor(ypos - (self.fear_height > 0 and self.fear_height or 2)), test_pos.z)
+				)
+
+				if drop_free_fall and self.fear_height > 0 then
+					score = score - 20 -- Free fall cliff
+				else
+					local blocker_node = minetest.get_node(drop_blocker or {x=test_pos.x, y=test_pos.y-1, z=test_pos.z})
+					if self:is_node_dangerous(blocker_node.name) then
+						score = score - 50
+					end
+					if self:is_node_waterhazard(blocker_node.name) then
+						score = score - 50
+					end
+				end
+			end
+
+			if score > best_score then
+				best_score = score
+				best_yaw = test_yaw
+			end
+		end
+
+		self:set_yaw(best_yaw, 2, dtime)
+	else
+		-- Just in case we entered runaway without a specific source
+		if self:is_at_cliff_or_danger() then
+			self:turn_by(math.pi * (math.random() + 0.5), 8)
+		end
+	end
+
+	self:set_velocity(self.run_velocity)
+	self:set_animation("run")
 end
 

@@ -282,6 +282,7 @@ function mcl_mobs.register_mob(name, def)
 		fear_height = def.fear_height or 0,
 		runaway = def.runaway,
 		runaway_timer = 0,
+		runaway_source_pos = nil,
 		pathfinding = def.pathfinding,
 		immune_to = def.immune_to or {},
 		explosion_radius = def.explosion_radius, -- LEGACY
