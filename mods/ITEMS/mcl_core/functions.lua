@@ -634,10 +634,10 @@ minetest.register_abm({
 	interval = 8,
 	chance = 50,
 	action = function(pos, node)
-		local above = minetest.get_node(vector_offset(pos, 0, 1, 0)).name
+		local above = core.get_node(vector_offset(pos, 0, 1, 0)).name
 		if above == "ignore" then return end
 		if mcl_util.is_solid_block(above) then
-			minetest.set_node(pos, {name = "mcl_core:dirt"})
+			core.set_node(pos, {name = "mcl_core:dirt"})
 		end
 	end,
 })
@@ -1311,7 +1311,7 @@ minetest.register_abm({
 	interval = 5,
 	chance = 10,
 	action = function(pos, node)
-		local below = minetest.get_node(vector.offset(pos, 0, -1, 0))
+		local below = core.get_node(vector.offset(pos, 0, -1, 0))
 		if below.name == "ignore" then return end
 		if mcl_util.is_solid_block(below.name) then
 			return -- completely solid block
