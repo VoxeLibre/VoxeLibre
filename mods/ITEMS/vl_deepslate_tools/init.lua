@@ -91,7 +91,8 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 	if (core.get_item_group(node.name, "path_remove_possible") == 1) and placer:get_player_control().sneak then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
-		if core.get_node(above).name == "air" then
+		local above_name = core.get_node(above).name
+		if above_name ~= "ignore" and not mcl_util.is_solid_block(above_name) then
 			if core.is_protected(pointed_thing.under, placer:get_player_name()) then
 				core.record_protection_violation(pointed_thing.under, placer:get_player_name())
 				return itemstack
@@ -115,7 +116,8 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 	if (core.get_item_group(node.name, "path_creation_possible") == 1) and not placer:get_player_control().sneak then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
-		if core.get_node(above).name == "air" then
+		local above_name = core.get_node(above).name
+		if above_name ~= "ignore" and not mcl_util.is_solid_block(above_name) then
 			if core.is_protected(pointed_thing.under, placer:get_player_name()) then
 				core.record_protection_violation(pointed_thing.under, placer:get_player_name())
 				return itemstack
