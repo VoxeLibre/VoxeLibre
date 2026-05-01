@@ -9,6 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 
 local UP = vector.new(0, 1, 0)
 local wand_rotation = vector.new(0, 0, 45)
+local potion_rotation = vector.new(90, 45, 90)
 local part_spawn_range = { min = -.2, max = .2 }
 
 local witch_potions = {
@@ -58,6 +59,7 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	shooter_avoid_enemy = true,
 	avoid_distance = 8,
 	shoot_arrow = function(self, pos, dir)
+		if self.anim_locked then return end
 		local target_pos
 		if self.attack and self.attack:get_pos() then
 			target_pos = self.attack:get_pos()
@@ -71,7 +73,7 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 
 		if not pos or not target_pos then return end
 
-		if math.random() > 0.8 then
+		if math.random() > 0.8 then -- cast hex
 			self:set_animation("cast")
 			self.anim_locked = true
 			core.after(0.3, function()
@@ -97,6 +99,7 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 				})
 			end)
 			core.after(0.6, function(s)
+				if not s or not s.attack then return end
 				s.anim_locked = false
 				local sp = s.object:get_pos()
 				local ap = s.attack:get_pos()
@@ -107,7 +110,7 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 				}, vector.direction(sp, ap))
 				mcl_util.deal_damage(s.attack, 4, {type = "magic"})
 			end, self)
-		else
+		else -- throw a potion
 			local potion_item
 			local pick = math.random()*witch_total_weights
 			for _, p in ipairs(witch_potions) do
@@ -141,7 +144,28 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 		end
 	end,
 	do_custom = function(self, dtime)
-
+		if self.heal_cd then
+			self.heal_cd = self.heal_cd - dtime
+			if self.heal_cd <= 0 then self.heal_cd = nil end
+		end
+		if self.health < self.initial_properties.hp_max/2 and not self.heal_cd and not self.anim_locked then
+			local potion = vl_held_item.create_item_entity(self.object:get_pos(), "mcl_potions:healing")
+			if potion then
+				potion:set_properties({ static_save = false, visual_size={x=0.1, y=0.1} })
+				potion:set_attach(self.object, "Wield_L", UP, potion_rotation)
+				self:set_animation("drink")
+				self.anim_locked = true
+				core.after(0.6, function()
+					self.anim_locked = false
+					self.health = self.health + 4
+					if self.health > self.initial_properties.hp_max then
+						self.health = self.initial_properties.hp_max
+					end
+					potion:remove()
+				end)
+				self.heal_cd = 5
+			end
+		end
 	end,
 	after_activate = function(self)
 		local wand = vl_held_item.create_item_entity(self.object:get_pos(), "mcl_core:stick")
