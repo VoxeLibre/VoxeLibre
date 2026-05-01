@@ -19,7 +19,7 @@ local witch_potions = {
 	{ "mcl_potions:harming_splash", 2 },
 }
 local witch_total_weights = 0
-for _, p in ipairs(witch_potions) do
+for _, p in ipairs(witch_potions) do -- calculate cumulative weight (CDF)
 	witch_total_weights = witch_total_weights + p[2]
 	p[3] = witch_total_weights
 end
