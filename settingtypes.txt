@@ -121,9 +121,6 @@ mcl_health_regen_delay (Health regen delay) float 0.5 0
 mcl_eating_delay (Eating delay) float 1.61 0
 
 # Controls where items go when shift-clicking in the survival inventory.
-# "craft": items go to the 2x2 craft grid (default).
-# "main": items move between hotbar and main inventory rows.
-mcl_player_distr_fallback (Inventory shift-click fallback) enum craft craft,main
 
 [Mobs]
 # If enabled, mobs will spawn naturally. This does not affect

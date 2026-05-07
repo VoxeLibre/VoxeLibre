@@ -4,7 +4,21 @@ local F = minetest.formspec_escape
 
 -- "craft": shift-click routes items to the craft grid (default).
 -- "main": shift-click moves items between hotbar (1-9) and inventory rows (10-36).
-local distr_fallback = minetest.settings:get("mcl_player_distr_fallback") or "craft"
+local distr_fallback_setting
+if vl_tuning and vl_tuning.player_setting then
+	distr_fallback_setting = vl_tuning.player_setting("mcl_inventory:shift_click_to_inventory", "bool", {
+		default = false,
+		description = S("When enabled, shift-click moves items between hotbar and inventory rows instead of routing them into the crafting grid."),
+		formspec_desc_lines = 2,
+	})
+end
+
+local function use_main_distr_fallback(player)
+	if distr_fallback_setting then
+		return distr_fallback_setting:get(player)
+	end
+	return false
+end
 
 local function count_room_in_main_range(inventory, stack, start_idx, end_idx)
 	local total = 0
@@ -304,7 +318,7 @@ core.register_allow_player_inventory_action(function (player, action, inventory,
 		return fit_stack:get_count()
 	end
 
-	if distr_fallback == "main" then
+	if use_main_distr_fallback(player) then
 		local from_index = inventory_info.from_index
 		if inventory_info.from_list == "main" and from_index <= 9 then
 			return count_room_in_main_range(inventory, fit_stack, 10, 36)
@@ -353,7 +367,7 @@ core.register_on_player_inventory_action(function(player, action, inventory, inv
 		return
 	end
 
-	if distr_fallback == "main" then
+	if use_main_distr_fallback(player) then
 		local from_index = inventory_info.from_index
 		local primary_start, primary_end, fallback_start, fallback_end
 		if inventory_info.from_list == "main" and from_index <= 9 then
@@ -403,4 +417,3 @@ core.register_on_player_inventory_action(function(player, action, inventory, inv
 	end
 	inventory:set_stack("distr", 1, nil)
 end)
-
