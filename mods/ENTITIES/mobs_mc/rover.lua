@@ -22,6 +22,7 @@ local take_frequency_max = 245
 local place_frequency_min = 235
 local place_frequency_max = 245
 
+
 minetest.register_entity("mobs_mc:ender_eyes", {
 	on_step = function(self)
 		self.object:remove()
@@ -80,6 +81,51 @@ local select_rover_animation = function(animation_type)
 			punch_end = 120,
 		}
 	end
+end
+
+-- Check if the rover is in eye contact with the player
+local function is_eye_contact(rover, player, tolerance)
+	local player_pos = player:get_pos()
+	local look_dir_not_normalized = player:get_look_dir()
+	local player_eye_height = player:get_properties().eye_height
+
+	if not player_eye_height then
+		core.log("warning", "[mobs_mc:rover] Player "..player:get_player_name().." has no eye height property; defaulting to 1.5")
+		player_eye_height = 1.5
+	end
+
+	local look_dir = vector.normalize(look_dir_not_normalized)
+	local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
+	local rover_eye_pos = vector.offset(rover.object:get_pos(), 0, rover.head_eye_height, 0)
+	local eye_distance_from_player = vector.distance(rover_eye_pos, look_pos)
+	look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
+
+	return mcl_mobs.target_visible(rover.object, player)
+			and vector.distance(look_pos, rover_eye_pos) <= tolerance
+end
+
+-- Calculate teleport probability per second based on light level
+local function get_light_teleport_probability(light_level, dtime)
+	-- Uses exponential distribution: P(teleport in dt) = dt / expected_time
+	-- Light level 15: expected 0.1s, 14: 2s, 13: 4s, ..., 0: 30s
+	local expected_time = (core.LIGHT_MAX - light_level) * 2 + 0.1
+
+	return 1 - math.exp(-dtime / expected_time)
+end
+
+-- Decide how rover reacts to being interrupted when provoked
+local function react_to_threat(rover)
+	if rover.state == "staring" or rover.state == "attack" then
+		local provoker = core.get_player_by_name(rover._provoking_player)
+		if provoker then
+			rover.attack = provoker
+			rover.state = "attack"
+			rover:teleport(provoker)
+		end
+		return
+	end
+
+	rover:teleport(nil)
 end
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
@@ -151,119 +197,123 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		return #minetest.find_nodes_in_area(vector.offset(pos,0,1,0),vector.offset(pos,0,3,0),{"air"}) > 2
 	end,
 	do_custom = function(self, dtime)
-		-- RAIN DAMAGE / EVASIVE WARP BEHAVIOUR HERE.
-		local enderpos = self.object:get_pos()
-		local dim = mcl_worlds.pos_to_dimension(enderpos)
+		-- Handle damage and teleportation when standing in rain
+		local rover_pos = self.object:get_pos()
+		local dim = mcl_worlds.pos_to_dimension(rover_pos)
 		if dim == "overworld" and mcl_burning.is_affected_by_rain(self.object) then
-			self.state = ""
-			--rain hurts rovers
+			self.state = "stand"
 			self.object:punch(self.object, 1.0, {
 				full_punch_interval=1.0,
 				damage_groups={fleshy=self.rain_damage},
 			}, nil)
-			--randomly teleport hopefully under something.
+			-- Try to teleport to safety
 			self:teleport(nil)
 		end
 
-		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
-		if self.state == "attack" then
-			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face_angry.png"}})
-			if self.attack then
-				local target = self.attack
-				local pos = target:get_pos()
-				if pos ~= nil then
-					if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
-						self:teleport(target)
-					end
-				end
-			end
-		else --if not attacking try to tp to the dark
-			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face.png"}})
-			if dim == 'overworld' then
-				local light = minetest.get_node_light(enderpos)
-				if light and light > minetest.LIGHT_MAX then
-					self:teleport(nil)
-				end
-			end
+		-- If burning and not in attack state, try to teleport to safety
+		if mcl_burning.is_burning(self.object) and self.state ~= "attack" then
+			react_to_threat(self)
 		end
-		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
-		-- Check for arrows and people nearby.
 
-		enderpos = self.object:get_pos()
-		enderpos.y = enderpos.y + 1.5
-		local objs = minetest.get_objects_inside_radius(enderpos, 2)
+		-- If standing in liquid, teleport to safety
+		local standing_nodef = core.registered_nodes[self.standing_in]
+		if standing_nodef.groups.liquid then
+			react_to_threat(self)
+		end
+
+		-- Check for arrows and people nearby and teleport away if found.
+		rover_pos = self.object:get_pos()
+		rover_pos.y = rover_pos.y + 1.5
+		local objs = core.get_objects_inside_radius(rover_pos, 2)
 		for n = 1, #objs do
 			local obj = objs[n]
 			if obj then
-				if minetest.is_player(obj) then
-					-- Warp from players during day.
-					--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-					--	self:teleport(nil)
-					--end
+				if core.is_player(obj) then
+					if self.state == "staring" or self.state == "attack" then
+						self:teleport(obj)
+					else
+						self:teleport(nil)
+					end
 				else
 					local lua = obj:get_luaentity()
 					if lua then
 						if lua.name == "mcl_bows:arrow_entity" or lua.name == "mcl_throwing:snowball_entity" then
-							self:teleport(nil)
+							react_to_threat(self)
 						end
 					end
 				end
 			end
 		end
 
-		-- PROVOKED BEHAVIOUR HERE.
-		local enderpos = self.object:get_pos()
-		if self.provoked == "broke_contact" then
-			self.provoked = "false"
-			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-			--	self:teleport(nil)
-			--	self.state = ""
-			--else
-				if self.attack ~= nil and enable_damage then
-					self.state = 'attack'
+		-- State management
+		if self.state == "staring" then
+			local provoker = core.get_player_by_name(self._provoking_player)
+
+			-- Check if the provoking player disconnected or has gotten too far away
+			if not provoker or vector.distance(rover_pos, provoker:get_pos()) > self.view_range then
+				self._provoking_player = nil
+				self.state = "stand"
+				self:teleport(nil)
+			elseif is_eye_contact(self, provoker, 0.8) then
+				local player_pos = provoker:get_pos()
+				self:turn_in_direction(player_pos.x - rover_pos.x, player_pos.z - rover_pos.z, 1)
+			else
+				-- Player looked away, attack
+				self.attack = provoker
+				self.state = "attack"
+				self:teleport(provoker)
+			end
+
+			-- Do nothing else while being provoked
+			return
+
+		elseif self.state == "attack" then
+			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face_angry.png"}})
+
+			-- Warp aggresively towards target if too far away
+			if self.attack then
+				local target = self.attack
+				local pos = target:get_pos()
+				if pos then
+					local distance = vector.distance(rover_pos, pos)
+					if self.view_range >= distance and distance > 10 then
+						self:teleport(target)
+					end
 				end
-			--end
+			end
+
+			-- Already attacking, do nothing else
+			return
+
+		else
+			self.object:set_properties({textures={"vl_mobs_rover.png^vl_mobs_rover_face.png"}})
+
+			-- Spontaneous teleport based on light level in overworld
+			if dim == 'overworld' then
+				local light = core.get_node_light(rover_pos)
+				if light then
+					local prob = get_light_teleport_probability(light, dtime)
+					if math.random() < prob then
+						self:teleport(nil)
+					end
+				end
+			end
 		end
+
 		-- Check to see if people are near by enough to look at us.
 		for _,obj in pairs(minetest.get_connected_players()) do
 
 			--check if they are within radius
 			local player_pos = obj:get_pos()
 			if player_pos then -- prevent crashing in 1 in a million scenario
-
-				local ender_distance = vector.distance(enderpos, player_pos)
-				if ender_distance <= 64 then
-
-					-- Check if they are looking at us.
-					local look_dir_not_normalized = obj:get_look_dir()
-					local look_dir = vector.normalize(look_dir_not_normalized)
-					local player_eye_height = obj:get_properties().eye_height
-
-					--skip player if they have no data - log it
-					if not player_eye_height then
-						minetest.log("error", "Enderman at location: ".. dump(enderpos).." has indexed a null player!")
-					else
-
-						--calculate very quickly the exact location the player is looking
-						--within the distance between the two "heads" (player and enderman)
-						local look_pos = vector.new(player_pos.x, player_pos.y + player_eye_height, player_pos.z)
-						local look_pos_base = look_pos
-						local ender_eye_pos = vector.new(enderpos.x, enderpos.y + 2.75, enderpos.z)
-						local eye_distance_from_player = vector.distance(ender_eye_pos, look_pos)
-						look_pos = vector.add(look_pos, vector.multiply(look_dir, eye_distance_from_player))
-
-						--if looking in general head position, turn hostile
-						if minetest.line_of_sight(ender_eye_pos, look_pos_base) and vector.distance(look_pos, ender_eye_pos) <= 0.4 then
-							self.provoked = "staring"
-							self.attack = minetest.get_player_by_name(obj:get_player_name())
-							break
-						else -- I'm not sure what this part does, but I don't want to break anything - jordan4ibanez
-							if self.provoked == "staring" then
-								self.provoked = "broke_contact"
-							end
-						end
-
-					end
+				-- Rovers become motionless on eye contact
+				if is_eye_contact(self, obj, 0.4) then
+					self._provoking_player = obj:get_player_name()
+					self:set_velocity(0)
+					self:set_animation("stand", true)
+					self.state = "staring"
+					self:turn_in_direction(player_pos.x - rover_pos.x, player_pos.z - rover_pos.z, 1)
+					break
 				end
 			end
 		end
@@ -422,7 +472,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 					end
 				end
 				if node_ok then
-					 break
+					break
 				end
 			end
 		end
@@ -435,17 +485,16 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.
-		if hitter ~= self.object and hitter ~= nil then
-			--if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
-			--	self:teleport(nil)
-			--else
-			if pr:next(1, 8) == 8 then --FIXME: real mc rate
-				self:teleport(hitter)
-			end
-			self.attack=hitter
-			self.state="attack"
-			--end
-		end
+        if hitter ~= self.object and hitter ~= nil then
+            if self.state ~= "attack" then
+                self.state = "attack"
+                self.attack = hitter
+                self:teleport(hitter)
+            elseif pr:next(1, 5) == 1 then
+                -- Teleport with 20% chance
+                self:teleport(hitter)
+            end
+        end
 	end,
 	after_activate = function(self, staticdata, def, dtime)
 		if not self._taken_node or self._taken_node == "" then
