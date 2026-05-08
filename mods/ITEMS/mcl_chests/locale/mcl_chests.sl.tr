@@ -1,0 +1,56 @@
+# textdomain: mcl_chests
+##[ api.lua ]##
+Inventory=Inventar
+##[ chests.lua ]##
+To access its inventory, rightclick it. When broken, the items will drop out.=Za dostop do inventarja desno kliknite nanjo. Ko je uničena, predmeti izpadejo.
+Chest=Skrinja
+Large Chest=Velika skrinja
+
+Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.=Skrinje so zabojniki, ki nudijo 27 mest v inventarju. Skrinje se lahko spremenijo v velike skrinje z dvojno kapaciteto, če postavite dve skrinji eno poleg druge.
+
+27 inventory slots=27 mest v inventarju
+Can be combined to a large chest=Lahko se združi v veliko skrinjo
+Trapped Chest=Skrinja s pastjo
+
+A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.=Skrinja s pastjo je zabojnik, ki nudi 27 mest v inventarju. Ko je odprta, pošilja signal rdečega kamna v sosednje bloke, dokler ostane odprta. Skrinje s pastjo se lahko spremenijo v velike skrinje s pastjo z dvojno kapaciteto, če postavite dve skrinji s pastjo eno poleg druge.
+
+Emits a redstone signal when opened=Oddaja signal rdečega kamna, ko je odprta
+##[ ender.lua ]##
+
+Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players.=Ender skrinje vam omogočajo dostop do enotnega osebnega meddimenzijskega inventarja s 27 mesti. Ta inventar je enak ne glede na to, iz katere ender skrinje dostopate do njega. Če daš predmet v eno ender skrinjo, ga boš našel v vseh drugih ender skrinjah. Vsak igralec vidi le svoje predmete, ne pa predmetov drugih igralcev.
+
+Ender Chest=Ender skrinja
+27 interdimensional inventory slots=27 meddimenzijskih mest v inventarju
+Put items inside, retrieve them from any ender chest=Položi predmete noter in jih vzemi iz katere koli ender skrinje
+Rightclick the ender chest to access your personal interdimensional inventory.=Desno kliknite na ender skrinjo za dostop do osebnega meddimenzijskega inventarja.
+##[ shulkers.lua ]##
+White Shulker Box=Bela Školjkarjeva škatla
+Light Grey Shulker Box=Svetlo siva Školjkarjeva škatla
+Orange Shulker Box=Oranžna Školjkarjeva škatla
+Cyan Shulker Box=Sinje modra Školjkarjeva škatla
+Magenta Shulker Box=Škrlatna Školjkarjeva škatla
+Purple Shulker Box=Vijolična Školjkarjeva škatla
+Light Blue Shulker Box=Svetlo modra Školjkarjeva škatla
+Blue Shulker Box=Modra Školjkarjeva škatla
+Yellow Shulker Box=Rumena Školjkarjeva škatla
+Brown Shulker Box=Rjava Školjkarjeva škatla
+Lime Shulker Box=Svetlo zelena Školjkarjeva škatla
+Green Shulker Box=Zelena Školjkarjeva škatla
+Pink Shulker Box=Roza Školjkarjeva škatla
+Red Shulker Box=Rdeča Školjkarjeva škatla
+Grey Shulker Box=Siva Školjkarjeva škatla
+Black Školjkarjeva Box=Črna shulker škatla
+Shulker Box=Školjkarjeva škatla
+
+A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.=Školjkarjeva škatla je prenosni zabojnik, ki nudi 27 mest v inventarju za kateri koli predmet razen shulker škatel. Shulker škatle ohranijo svoj inventar, ko so uničene, tako da lahko shulker škatle in njihovo vsebino vzameš kot en predmet. Školjkarjeve škatle so na voljo v številnih različnih barvah.
+
+To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.=Za dostop do inventarja shulker škatle jo postavite in desno kliknite nanjo. Če želite vzeti Školjkarjevo škatlo in njeno vsebino s seboj, jo preprosto uničite in poberite; predmeti ne bodo izpadli. Ponovno postavite Školjkarjevo škatlo, da lahko vzamete njeno vsebino.
+
+Can be carried around with its contents=Lahko se prenaša z vsebino vred
+##[ example.lua ]##
+Stone Chest=Kamnita skrinja
+Large Stone Chest=Velika kamnita skrinja
+
+Stone Chests are containers which provide 27 inventory slots. Stone Chests can be turned intolarge stone chests with double the capacity by placing two stone chests next to each other.=Kamnite skrinje so zabojniki, ki nudijo 27 mest v inventarju. Kamnite skrinje se lahko spremenijo v velike kamnite skrinje z dvojno kapaciteto, če postavite dve kamniti skrinji eno poleg druge.
+
+Can be combined to a large stone chest=Lahko se združi v veliko kamnito skrinjo

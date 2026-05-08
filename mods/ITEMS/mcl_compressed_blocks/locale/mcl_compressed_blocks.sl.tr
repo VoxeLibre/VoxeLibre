@@ -1,0 +1,33 @@
+# textdomain: mcl_compressed_blocks
+##[ nodes.lua ]##
+Compressed Cobblestone=Stisnjen tlakovec
+
+Compressed Cobblestone is a decorative block made from 9 Cobblestone. It is useful for saving space in your inventories.=Stisnjen tlakovec je okrasni blok, izdelan iz 9 tlakovcev. Uporaben je za varčevanje s prostorom v vaših inventarjih.
+
+Double Compressed Cobblestone=Dvojno stisnjen tlakovec
+
+Double Compressed Cobblestone is a decorative block made from 9 Compressed Cobblestone. It is useful for saving space in your inventories.=Dvojno stisnjen tlakovec je okrasni blok, izdelan iz 9 stisnjenih tlakovcev. Uporaben je za varčevanje s prostorom v vaših inventarjih.
+
+Triple Compressed Cobblestone=Trojno stisnjen tlakovec
+
+Triple Compressed Cobblestone is a decorative block made from 9 Double Compressed Cobblestone. It is useful for saving space in your inventories.=Trojno stisnjen tlakovec je okrasni blok, izdelan iz 9 dvojno stisnjenih tlakovcev. Uporaben je za varčevanje s prostorom v vaših inventarjih.
+
+Quadruple Compressed Cobblestone=Štirikratno stisnjen tlakovec
+
+Quadruple Compressed Cobblestone is a decorative block made from 9 Triple Compressed Cobblestone. It is useful for saving space in your inventories.=Štirikratno stisnjen tlakovec je okrasni blok, izdelan iz 9 trojno stisnjenih tlakovcev. Uporaben je za varčevanje s prostorom v vaših inventarjih.
+
+Quintuple Compressed Cobblestone=Petkratno stisnjen tlakovec
+
+Quintuple Compressed Cobblestone is a decorative block made from 9 Quadruple Compressed Cobblestone. It is useful for saving space in your inventories.=Petkratno stisnjen tlakovec je okrasni blok, izdelan iz 9 štirikratno stisnjenih tlakovcev. Uporaben je za varčevanje s prostorom v vaših inventarjih.
+
+Sextuple Compressed Cobblestone=Šestkratno stisnjen tlakovec
+
+Sextuple Compressed Cobblestone is a decorative block made from 9 Quintuple Compressed Cobblestone. It is useful for saving space in your inventories.=Šestkratno stisnjen tlakovec je okrasni blok, izdelan iz 9 petkratno stisnjenih tlakovcev. Uporaben je za varčevanje s prostorom v vaših inventarjih.
+
+Septuple Compressed Cobblestone=Sedemkratno stisnjen tlakovec
+
+Septuple Compressed Cobblestone is a decorative block made from 9 Sextuple Compressed Cobblestone. It is useful for saving space in your inventories.=Sedemkratno stisnjen tlakovec je okrasni blok, izdelan iz 9 šestkratno stisnjenih tlakovcev. Uporaben je za varčevanje s prostorom v vaših inventarjih.
+
+Octuple Compressed Cobblestone=Osemkratno stisnjen tlakovec
+
+Octuple Compressed Cobblestone is a decorative block made from 9 Septuple Compressed Cobblestone. It is useful for saving space in your inventories.=Osemkratno stisnjen tlakovec je okrasni blok, izdelan iz 9 sedemkratno stisnjenih tlakovcev. Uporaben je za varčevanje s prostorom v vaših inventarjih.

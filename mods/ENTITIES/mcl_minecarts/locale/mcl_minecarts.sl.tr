@@ -1,0 +1,72 @@
+# textdomain: mcl_minecarts
+##[ carts/minecart.lua ]##
+Sneak to dismount=Prikradite se da sestopite
+Minecart=Rudarski vožiček
+Vehicle for fast travel on rails=Vozilo za hitro potovanje po tirnicah
+Minecarts can be used for a quick transportion on rails.=Rudarski vožički se lahko uporabljajo za hiter prevoz po tirnicah.
+
+Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.=Rudarski vožički vozijo samo po tirnicah in jim vedno sledijo. V T križiščih vedno zavijejo levo, ko ni ravne poti. Hitrost je odvisna od vrste tirnic.
+You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.=Rudarski vožiček postavite na tirnice. Kliknite ga z desno miškino tipko, da vstopite vanj.Za premik, ga udarite.
+
+To obtain the minecart, punch it while holding down the sneak key.=Za pridobitev rudarskega vožička kot predmeta, ga udarite medtem ko ste prikradeni.
+If it moves over a powered activator rail, you'll get ejected.=Če se premakne čez aktivatorske tirniče, ki so napajane vas vrže ven.
+##[ carts/with_chest.lua ]##
+Minecart with Chest=Rudarski vožiček s skrinjo.
+##[ carts/with_commandblock.lua ]##
+Minecart with Command Block=Rudarski vožiček s ukaznim blokom.
+##[ carts/with_furnace.lua ]##
+Minecart with Furnace=Rudarski vožiček s pečjo.
+
+A minecart with furnace is a vehicle that travels on rails. It can propel itself with fuel.=Rudarski vožiček s pečjo je vozilo, za potovanje po tirnicah. Lahko se sam poganja s gorivom.
+
+Place it on rails. If you give it some coal, the furnace will start burning for a long time and the minecart will be able to move itself. Punch it to get it moving.=Postavite ga na tirnice. Če mu daste nekaj premoga, se lahko premika sam. Za premikanje ga udarite.
+
+To obtain the minecart and furnace, punch them while holding down the sneak key.=Za pridobitev rudniškega vožička se pečjo kot predmeta, ga udarite medtem ko ste prikradeni.
+##[ carts/with_hopper.lua ]##
+Minecart with Hopper=Rudniški vožiček z lijakom
+Hopper Minecart=Rudniški vožiček z lijakom
+##[ carts/with_tnt.lua ]##
+Minecart with TNT=Rudniški vožiček s TNT
+Can be ignited by tools or powered activator rail=Lahko se vžge z orodjem ali napajano aktivatorsko tirnico.
+A minecart with TNT is an explosive vehicle that travels on rail.=Rudniški vožiček s TNT je eksplozivno vozilo, ki potuje po tirnicah.
+
+Place it on rails. Punch it to move it. The TNT is ignited with a flint and steel or when the minecart is on an powered activator rail.=Postavite ga na tirnice. Za premikanje, ga udarite. TNT se vne z vžigalnikom ali ko je nad napajano aktivatorsko tirnico.
+
+To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited.=Za pridobitev rudniškega vožička se TNT-jem kot predmeta, ga udarite medtem ko ste prikradeni.
+
+##[ movement.lua ]##
+The maximum speed a minecart may reach.=Največja hitrost, ki jo lahko rudniški vožiček doseže.
+##[ rails.lua ]##
+
+Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Postavite jih na tla, da zgradite svojo železnico. Tirnice se bodo samodejno povezale medseboj in se bodo po potrebi spremenile v ovinke, T križišča, prehode in naklone.
+Track for minecarts=Tirnica za rudarski vožiček
+
+Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=Tirnice se uporabljajo za gradnjo tirov za rudniške vožičke. Navadne tirnice zaradi trenja, nekoliko upočasnijo rudniški vožiček.
+
+Sloped Rail=
+##[ rails/activator.lua ]##
+Activator Rail=Aktivatorska tirnica
+Activates minecarts when powered=Ko je vklopljena, aktivira rudniške vožičke.
+
+Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.=Tirnice se lahko uporabljajo za gradnjo železnice za rudniške vožičke. Aktivatorske tirnice se uporabljajo za aktivacijo posebnih vožičkov.
+
+To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.=Da bi ta tirnica aktivirala rudniške vozičke, jo napajajte z energijo rdečega kamna in pošljite rudniški voziček čez ta kos tirnice
+
+##[ rails/detector.lua ]##
+Detector Rail=Detektorska tirnica
+Emits redstone power when a minecart is detected=Odajal energijo rdečega kamna ko je zaznan rudniški vožiček
+
+Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=Tirnice se lahko uporabljajo za gradnjo železnice za rudniške vozičke. Detektorska tirnica zazna rudniški voziček nad njo in napaja mehanizme rdečega kamna
+
+To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=Če želite zaznati rudniški voziček in zagotoviti energijo rdečega kamna, ga priključite na žiče ali mehanizme rdečega kamna in pošljite kateri koli voziček čez tirnico.
+
+##[ rails/normal.lua ]##
+Rail=Tirnica
+##[ rails/powered.lua ]##
+Powered Rail=Pogonska tirnica
+Speed up when powered, slow down when not powered=Pospešike ko je napajana in upočasnuje ko ni.
+
+Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.=Tirnice se lahko uporabljajo za gradnjo železnic za rudniške vozičke. Pogonske tirnice lahko pospešujejo in zavirajo vozičke.
+
+Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power.=Brez moči rdečega kamna bo tirnica zavirala rudniške vozičke. Da bi ta tirnica pospešila vozičke, jo poganjajte z močjo rdečega kamna.
+

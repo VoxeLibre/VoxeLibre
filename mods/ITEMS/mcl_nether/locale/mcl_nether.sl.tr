@@ -1,0 +1,50 @@
+# textdomain: mcl_nether
+Glowstone=Svetleči kamen
+Glowstone is a naturally-glowing block which is home to the Nether.=Svetleči kamen je naravno sijoč blok, ki je doma v Netherju.
+Nether Quartz Ore=Nether kremenova ruda
+Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.=Nether kremenova ruda je ruda, ki vsebuje Nether kremen. Običajno jo najdemo okoli netherracka v Netherju.
+Ancient Debris=Starodavne razbitine
+Ancient debris can be found in the nether and is very very rare.=Starodavne razbitine lahko najdete v Netherju in so zelo, zelo redke.
+Netherite Block=Blok netherita
+Netherite block is very hard and can be made of 9 netherite ingots.=Blok netherita je zelo trd in je izdelan iz 9 netheritnih palic.
+Netherrack=Netherrack
+Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.=Netherrack je kamnu podoben blok, ki je doma v Netherju. Če na tem bloku zanetite ogenj, bo gorel večno.
+Magma Block=Magma blok
+Burns your feet=Opeče vaše noge
+Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire.=Magma bloki so vroči trdni bloki, ki poškodujejo vsakogar, ki stoji na njih, razen če ima odpornost na ogenj. Če na tem bloku zanetite ogenj, bo gorel večno.
+Soul Sand=Dušni pesek
+Reduces walking speed=Zmanjša hitrost hoje
+Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block.=Dušni pesek je blok iz Netherja. Po dušnem pesku lahko hodite le počasi. Učinek upočasnitve se poveča, če je dušni pesek na ledu, zbitem ledu ali bloku sluzi.
+Nether Brick Block=Blok nether opeke
+Red Nether Brick Block=Blok rdeče nether opeke
+Nether Wart Block=Blok nether bradavic
+A nether wart block is a purely decorative block made from nether wart.=Blok nether bradavic je povsem okrasni blok, izdelan iz nether bradavic.
+Block of Quartz=Blok kremena
+Chiseled Quartz Block=Izklesan blok kremena
+Pillar Quartz Block=Stebrni blok kremena
+Smooth Quartz=Gladek kremen
+Glowstone Dust=Prah svetlečega kamna
+Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.=Prah svetlečega kamna je prah, ki izpade iz uničenih svetlečih kamnov. Uporablja se predvsem pri izdelovanju.
+Nether Quartz=Nether kremen
+Nether quartz is a versatile crafting ingredient.=Nether kremen je vsestranska sestavina za izdelovanje.
+Netherite Scrap=Ostanek netherita
+Netherite scrap is a crafting ingredient for netherite ingots.=Ostanek netherita je sestavina za izdelavo netheritnih palic.
+Netherite Ingot=Netheritna palica
+Netherite ingots can be used with a smithing table to upgrade items to netherite.=Netheritne palice se lahko uporabijo s kovaško mizo za nadgradnjo predmetov v netheritne.
+Nether Brick=Nether opeka
+Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Nether opeke so glavna sestavina za izdelavo blokov nether opek in nether ograj.
+
+##[ nether_wart.lua ]##
+Premature Nether Wart (Stage 1)=Nedozorela nether bradavica (1. stopnja)
+A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Nedozorela nether bradavica je bila pravkar posajena na dušni pesek. Nether bradavica počasi raste na dušnem pesku v 4 stopnjah (druga in tretja stopnja sta videti enaki). Čeprav je nether bradavica doma v Netherju, raste v kateri koli dimenziji.
+Premature Nether Wart (Stage 2)=Nedozorela nether bradavica (2. stopnja)
+Premature Nether Wart (Stage 3)=Nedozorela nether bradavica (3. stopnja)
+Mature Nether Wart=Zrela nether bradavica
+The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.=Zrela nether bradavica je rastlina iz Netherja, ki je dosegla svojo polno velikost in ne bo več rasla. Pripravljena je za žetev.
+Nether Wart=Nether bradavica
+Grows on soul sand=Raste na dušnem pesku
+Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=Nether bradavice so rastline, ki so doma v Netherju. Lahko se posadijo na dušni pesek in rastejo v 4 stopnjah.
+Place this item on soul sand to plant it and watch it grow.=Postavite ta predmet na dušni pesek, da ga posadite, in opazujte, kako raste.
+##[ lava.lua ]##
+Nether Lava Source=Izvir nether lave
+Flowing Nether Lava=Tekoča nether lava

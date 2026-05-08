@@ -1,0 +1,28 @@
+# Sprostite se s glasbo!
+
+# textdomain: mesecons_noteblock
+Note Block=Glasbeni blok
+Plays a musical note when powered by redstone power=Zaigra glasbeno noto, ko je napajan z energijo rdečega kamna
+
+A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power.=Glasbeni blok je glasbeni blok, ki zaigra eno od mnogih glasbenih not in različnih instrumentov, ko ga udarite ali mu dovedete energijo rdečega kamna.
+
+Use the note block to choose the next musical note (there are 25 semitones, or 2 octaves). The intrument played depends on the material of the block below the note block:=Uporabite glasbeni blok, da izberete naslednjo glasbeno noto (na voljo je 25 poltonov ali 2 oktavi). Zaigrani instrument je odvisen od materiala bloka pod glasbenim blokom:
+
+• Glass: Sticks=• Steklo: Palčke
+• Wood: Bass guitar=• Les: Bas kitara
+• Stone: Bass drum=• Kamen: Bas boben
+• Sand or gravel: Snare drum=• Pesek ali prod: Mali boben
+• Block of Gold: Bell=• Blok zlata: Zvon
+• Clay: Flute=• Glina: Flavta
+• Packed Ice: Chime=• Zbit led: Zvončki
+• Wool: Guitar=• Volna: Kitara
+• Bone Block: Xylophne=• Kostni blok: Ksilofon
+• Block of Iron: Iron xylophne=• Blok železa: Železni ksilofon
+• Soul Sand: Cow bell=• Dušni pesek: Kravji zvonec
+• Pumpkin: Didgeridoo=• Buča: Didžeridu
+• Block of Emerald: Square wave=• Blok smaragda: Kvadratni val
+• Hay Bale: Banjo=• Bala sena: Banjo
+• Glowstone: Electric piano=• Svetleči kamen: Električni klavir
+• Anything else: Piano=• Vse ostalo: Klavir
+
+The note block will only play a note when it is below air, otherwise, it stays silent.=Glasbeni blok bo zaigral noto le, če je nad njim zrak, sicer ostane tiho.

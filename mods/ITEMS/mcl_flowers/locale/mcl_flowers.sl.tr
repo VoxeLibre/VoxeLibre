@@ -1,0 +1,59 @@
+# textdomain: mcl_flowers
+
+This is a small flower. Small flowers are mainly used for dye production and can also be potted.=To je majhna cvetlica. Majhne cvetlice se uporabljajo predvsem za proizvodnjo barvil in se lahko posadijo v lončke.
+
+It can only be placed on a block on which it would also survive.=Postavite jo lahko le na blok, na katerem bi tudi preživela.
+Tall Grass=Visoka trava
+
+Tall grass is a small plant which often occurs on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.=Visoka trava je majhna rastlina, ki se pogosto pojavlja na površini travišč. Ob žetvi daje semena pšenice. Z uporabo kostne moke lahko visoko travo spremenite v dvojno visoko travo, ki je visoka dva bloka.
+
+Fern=Praprot
+
+Ferns are small plants which occur naturally in jungles and taigas. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.=Praproti so majhne rastline, ki se naravno pojavljajo v džunglah in tajgah. Ob žetvi dajejo semena pšenice. Z uporabo kostne moke lahko praprot spremenite v veliko praprot, ki je visoka dva bloka.
+
+Clover=Detelja
+
+Clovers are small plants which occur naturally in plains and other temperate biomes. They can be picked up and planted again.=Detelje so majhne rastline, ki se naravno pojavljajo na planjavah in v drugih zmernih biomih. Lahko jih poberete in znova posadite.
+
+Four-leaf Clover=Štiriperesna detelja
+(Top Part)=(Zgornji del)
+Peony=Potonika
+
+A peony is a large plant which occupies two blocks. It is mainly used in dye production.=Potonika je velika rastlina, ki zavzema dva bloka. Uporablja se predvsem za proizvodnjo barvil.
+
+Rose Bush=Rožni grm
+
+A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production.=Rožni grm je velika rastlina, ki zavzema dva bloka. Dotikanje je varno. Rožni grmi se uporabljajo predvsem za proizvodnjo barvil.
+
+Lilac=Španski bezeg
+
+A lilac is a large plant which occupies two blocks. It is mainly used in dye production.=Španski bezeg je velika rastlina, ki zavzema dva bloka. Uporablja se predvsem za proizvodnjo barvil.
+
+Sunflower=Sončnica
+
+A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.=Sončnica je velika rastlina, ki zavzema dva bloka. Uporablja se predvsem za proizvodnjo barvil.
+
+Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.=Dvojna visoka trava je različica visoke trave in zavzema dva bloka. Ob žetvi daje semena pšenice.
+
+Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.=Velika praprot je različica praproti in zavzema dva bloka. Ob žetvi daje semena pšenice.
+
+Double Tallgrass=Dvojna visoka trava
+Large Fern=Velika praprot
+Lily Pad=Lokvanj
+
+A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Lokvanj je ploščat rastlinski blok, po katerem se da hoditi. Lahko se postavi na vodne vire, led in zmrznjen led.
+
+##[ register.lua ]##
+Poppy=Mak
+Dandelion=Regrat
+Oxeye Daisy=Ivanjščica
+Orange Tulip=Oranžni tulipan
+Pink Tulip=Roza tulipan
+Red Tulip=Rdeči tulipan
+White Tulip=Beli tulipan
+Allium=Okrasni luk
+Azure Bluet=Houstonska mačina
+Blue Orchid=Modra orhideja
+Wither Rose=Wither vrtnica
+Lily of the Valley=Šmarnica
+Cornflower=Glavinec

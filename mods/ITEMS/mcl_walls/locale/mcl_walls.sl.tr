@@ -1,0 +1,19 @@
+# textdomain: mcl_walls
+A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Kos zidu. S preprostim skokom ga ni mogoče preskočiti. Če jih postavite več drug ob drugega, bodo samodejno tvorili lepo strukturo zidu.
+
+##[ register.lua ]##
+Cobblestone Wall=Zid iz tlakovca
+Mossy Cobblestone Wall=Zid iz mahovitega tlakovca
+Andesite Wall=Andezitni zid
+Granite Wall=Granitni zid
+Diorite Wall=Dioritni zid
+Brick Wall=Opečni zid
+Sandstone Wall=Peščenjakov zid
+Red Sandstone Wall=Zid iz rdečega peščenjaka
+Stone Brick Wall=Zid iz kamnite opeke
+Mossy Stone Brick Wall=Zid iz mahovite kamnite opeke
+Prismarine Wall=Prizmarinski zid
+End Stone Brick Wall=Zid iz opeke ender kamna
+Nether Brick Wall=Zid iz nether opeke
+Red Nether Brick Wall=Zid iz rdeče nether opeke
+Mud Brick Wall=Zid iz blatne opeke

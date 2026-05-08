@@ -1,0 +1,19 @@
+# textdomain: mcl_credits
+An open-source survival sandbox game in the spirit of Infiniminer and Minecraft=Odprtokodna peskovniška igra preživetja, navdihnjena z Infinminer-jem in Minecraftom.
+Sneak to skip=Pritisnite tipko za prikradenje da preskočite
+Jump to speed up (additionally sprint)=Pritisnite tipko za skok za pohitritev (hitreje gre)
+##[ people.lua ]##
+Creator of MineClone=Ustvarjalec MineClone-ta
+Creator of VoxeLibre=Ustvarjalec VoxeLibre-ta
+Maintainer=Vzdrževaleč
+Previous Maintainers=Nekdanji vzdrževalci
+Developers=Razvijalci
+Past Developers=Nekdanji razvijalci
+Contributors=Sodelavci
+Music=Glasba
+Original Mod Authors=Avtorji originalnih modov
+3D Models=3D Modeli
+Textures=Teksture
+Translations=Prevajalci
+Funders=Financerji
+Special thanks=Posebne zahvale

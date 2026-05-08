@@ -1,0 +1,54 @@
+# textdomain:doc
+This is the help.=To je pomoč.
+New help entry unlocked: @1 > @2=Nov vnos pomoči je odklenjen: @1 > @2
+All help entries revealed!=Vsi vnosi pomoči so razkriti!
+All help entries are already revealed.=Vsi vnosi pomoči so že razkriti.
+Show previous image=Prikaži prejšno sliko
+Show previous gallery page=Prikaži prejšnjo stran galerije
+Show next image=Prikaži naslednjo sliko
+Show next gallery page=Prikaži naslednjo stran galerije
+Category list=Seznam kategorij
+Entry list=Seznam vnosov
+Entry=Vnos
+Please select a category you wish to learn more about:=Izberite kategorijo, o kateri želite izvedeti več
+Show category=Prikaži kategorijo
+Notify me when new help is available=Obvesti me, ko je nova pomoč na voljo
+Play notification sound when new help is available=Predvajaj zvok obvestila, ko je nova pomoč na voljo
+Error: No help available.=Napaka: Pomoč ni na voljo
+No categories have been registered, but they are required to provide help.=Nobena kategorija ni bila registrirana, vendar so potrebne za zagotavljanje pomoči.
+
+The Documentation System [doc] does not come with help contents on its own, it needs additional mods to add help content. Please make sure such mods are enabled on for this world, and try again.=Sistem dokumentacije [doc] sam po sebi ne vsebuje vsebine pomoči, temveč potrebuje dodatne mode za dodajanje vsebine. Prepričajte se, da so takšni modi omogočeni za ta svet, in poskusite znova.
+
+
+Recommended mods: doc_basics, doc_items, doc_identifier, doc_encyclopedia.=Priporočwni modi: doc_basics, doc_items, doc_identifier, doc_encyclopedia.
+OK=V redu
+Error: Access denied.=Napaka: Dostop zavrnjen
+
+Access to the requested entry has been denied; this entry is secret. You may unlock access by progressing in the game. Figure out on your own how to unlock this entry.=Dostop do zahtevanega vnosa je bil zavrnjen; ta vnos je skriven. Dostop lahko odklenete z napredovanjem v igri. Sami ugotovite, kako odkleniti ta vnos.
+
+Nameless entry (@1)=Neimenovan vnos (@1)
+Help > (No Category)=Pomoč > (Brez kategorije)
+You haven't chosen a category yet. Please choose one in the category list first.=Prosimo, najprej izberite eno na seznamu kategorij.
+Go to category list=Pojdi na seznam kategorij
+Help > @1=Pomoč > @1
+Currently all entries in this category are hidden from you.=Trenutno so vsi vnosi v kategoriji skriti pred vami.
+Unlock new entries by progressing in the game.=Odklenite Nov vnos s napredovanjem v igri.
+This category has the following entries:=Ta kategorija vsebuje naslednje vnose:
+Show entry=Prikaži vnose
+Number of entries: @1=Število vnosov: @1
+New entries: @1=Novi vnosi: @1
+Hidden entries: @1=Skriti vnosi: @1
+All entries read.=Vsi vnosi so prebrani.
+This category is empty.=Ta kategorija je prazna.
+Show previous entry=Prikaži prejšnji vnos
+Show next entry=Prikaži naslednjo vnos
+Help > @1 > (No Entry)=Pomoč > @1 > (Ni vnosa)
+You haven't chosen an entry yet. Please choose one in the entry list first.=Niste še izbrali nobenega vnosa. Prosimo, najprej izberite enega na seznamu vnosov.
+Go to entry list=Pojdite na seznam vnosov
+This category does not have any entries.=Ta kategorija nima nobenega vnosa
+Help > @1 > @2=Pomoč > @1 > @2
+Open a window providing help entries about Minetest and more=Odpri okno z vnosi pomoči o Minetestu in več
+Help=Pomoč
+Collection of help texts=Zbirka besedil o pomoči
+Allows you to reveal all hidden help entries with /help_reveal=Omogoča razkritje vseh skritih vnosov pomoči z /help_reveal
+Reveal all hidden help entries to you=Razkroj vse skrite vnose o pomoči

@@ -1,0 +1,12 @@
+# textdomain: mcl_smoker
+Smoker=Prekajevalnik
+Inventory=Inventar
+Recipe book=Knjiga receptov
+Cooks food faster than furnace=Speče hrano hitreje kot peč
+Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace.=Prekajevalniki spečejo več predmetov, predvsem surovo hrano, v pečeno hrano, vendar dvakrat hitreje kot navadna peč.
+Use the smoker to open the furnace menu.=Uporabite prekajevalnik, da odprete meni peči.
+Place a furnace fuel in the lower slot and the source material in the upper slot.=Postavite gorivo za peč v spodnjo režo in surovi material v zgornjo režo.
+The smoker will slowly use its fuel to cook the item.=Prekajevalnik bo počasi porabljal gorivo za peko predmeta.
+The result will be placed into the output slot at the right side.=Rezultat bo postavljen v izhodno režo na desni strani.
+Use the recipe book to see what foods you can cook, what you can use as fuel and how long it will burn.=Uporabite knjigo receptov, da vidite, katero hrano lahko spečete, kaj lahko uporabite kot gorivo in kako dolgo bo gorelo.
+Burning Smoker=Goreč prekajevalnik

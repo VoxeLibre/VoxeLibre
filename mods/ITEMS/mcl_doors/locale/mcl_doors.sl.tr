@@ -1,0 +1,50 @@
+# textdomain: mcl_doors
+##[ api_doors.lua ]##
+
+This door is a 2-block high barrier which can only be opened by redstone power, not by hand.=Ta vrata so 2 bloka visoka pregrada, ki se lahko odpre le z energijo rdečega kamna, ne pa z roko.
+
+This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.=Ta vrata so 2 bloka visoka pregrada, ki se lahko odpre ali zapre z roko ali z energijo rdečega kamna.
+
+To open or close this door, send a redstone signal to its bottom half.=Za odpiranje ali zapiranje teh vrat dovedite signal rdečega kamna v njihovo spodnjo polovico.
+
+To open or close this door, rightclick it or send a redstone signal to its bottom half.=Za odpiranje ali zapiranje teh vrat desno kliknite nanje ali dovedite signal rdečega kamna v njihovo spodnjo polovico.
+
+Openable by redstone power=Odpre se z energijo rdečega kamna
+Openable by players and redstone power=Odprejo igralci in energija rdečega kamna
+##[ api_trapdoors.lua ]##
+
+Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.=Lopute so vodoravne pregrade, ki jih je mogoče odpreti ali zapreti, ko so odprte, pa se po njih da plezati kot po lestvi. Zasedajo zgornji ali spodnji del bloka, odvisno od tega, kako so bile postavljene. To loputo je mogoče odpreti ali zapreti le z energijo rdečega kamna.
+
+Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.=Lopute so vodoravne pregrade, ki jih je mogoče odpreti ali zapreti, ko so odprte, pa se po njih da plezati kot po lestvi. Zasedajo zgornji ali spodnji del bloka, odvisno od tega, kako so bile postavljene. To loputo je mogoče odpreti ali zapreti z roko ali energijo rdečega kamna.
+
+To open or close this trapdoor, rightclick it or send a redstone signal to it.=Za odpiranje ali zapiranje te lopute desno kliknite nanjo ali ji pošljite signal rdečega kamna.
+##[ register.lua ]##
+
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Lesena vrata so 2 bloka visoke pregrade, ki jih je mogoče odpreti ali zapreti z roko ali s signalom rdečega kamna.
+
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Za odpiranje ali zapiranje lesenih vrat desno kliknite nanje ali dovedite signal rdečega kamna v njihovo spodnjo polovico.
+
+Oak Door=Hrastova vrata
+Acacia Door=Akacijeva vrata
+Birch Door=Brezova vrata
+Dark Oak Door=Vrata iz temnega hrasta
+Jungle Door=Vrata džungle
+Spruce Door=Smrekova vrata
+Iron Door=Železna vrata
+
+Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.=Železna vrata so 2 bloka visoke pregrade, ki jih je mogoče odpreti ali zapreti le s signalom rdečega kamna, ne pa z roko.
+
+To open or close an iron door, supply its lower half with a redstone signal.=Za odpiranje ali zapiranje železnih vrat dovedite signal rdečega kamna v njihovo spodnjo polovico.
+Oak Trapdoor=Hrastova loputa
+Acacia Trapdoor=Akacijeva loputa
+Birch Trapdoor=Brezova loputa
+Spruce Trapdoor=Smrekova loputa
+Dark Oak Trapdoor=Loputa iz temnega hrasta
+Jungle Trapdoor=Loputa iz lesa džungle
+
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Lesene lopute so vodoravne pregrade, ki jih je mogoče odpreti in zapreti z roko ali s signalom rdečega kamna. Zasedajo zgornji ali spodnji del bloka, odvisno od tega, kako so bile postavljene. Ko so odprte, se po njih da plezati kot po lestvi.
+
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=Za odpiranje ali zapiranje lopute desno kliknite nanjo ali ji pošljite signal rdečega kamna.
+Iron Trapdoor=Železna loputa
+
+Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Železne lopute so vodoravne pregrade, ki jih je mogoče odpreti in zapreti le s signali rdečega kamna, ne pa z roko. Zasedajo zgornji ali spodnji del bloka, odvisno od tega, kako so bile postavljene. Ko so odprte, se po njih da plezati kot po lestvi.

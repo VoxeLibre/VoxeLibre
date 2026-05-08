@@ -1,0 +1,5 @@
+# textdomain: mcl_mobspawners
+Mob Spawner=Mrestilnik pošasti
+Makes mobs appear=Povzroči pojavljanje pošasti
+A mob spawner regularily causes mobs to appear around it while a player is nearby. Some mob spawners are disabled while in light.=Mrestilnik pošasti redno povzroča pojavljanje pošasti v svoji okolici, ko je igralec v bližini. Nekateri mrestilniki pošasti so na svetlobi onemogočeni.
+If you have a spawn egg, you can use it to change the mob to spawn. Just place the item on the mob spawner. Player-set mob spawners always spawn mobs regardless of the light level.=Če imate mrestilno jajce, ga lahko uporabite za spremembo vrste pošasti, ki se mresti. Preprosto uporabite predmet na mrestilniku pošasti. Mrestilniki pošasti, ki jih nastavi igralec, vedno mrestijo pošasti ne glede na raven svetlobe.

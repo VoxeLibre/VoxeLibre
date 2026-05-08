@@ -1,0 +1,4 @@
+# textdomain: mcl_torches
+##[ register.lua ]##
+Torch=Bakla
+Torches are light sources which can be placed at the side or on the top of most blocks.=Bakle so viri svetlobe, ki jih je mogoče postaviti na stranico ali na vrh večine blokov.

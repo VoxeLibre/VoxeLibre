@@ -1,0 +1,27 @@
+# textdomain: mcl_fire
+Whether fire should spread and naturally extinguish=Ali naj se ogenj širi in naravno ugasne
+
+Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=Ogenj je škodljiv in uničevalen, a kratkotrajen blok. Uničil bo bližnje vnetljive bloke in se razširil nanje, vendar bo izginil, ko ne bo več česa za kurjenje. Ugasnila ga bosta bližnja voda in dež. Ogenj lahko varno uničite z udarcem, vendar vas bo poškodoval, če stojite neposredno v njem. Če ogenj prižgete nad neter kamnom ali blokom magme, se bo takoj spremenil v večni ogenj.
+
+Fire is a damaging but non-destructive short-lived kind of block. It will disappear when there is no flammable block around. Fire does not destroy blocks, at least not in this world. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.=Ogenj je škodljiv, a neuničevalen kratkotrajen blok. Izginil bo, ko v bližini ne bo vnetljivih blokov. Ogenj ne uničuje blokov, vsaj ne v tem svetu. Ugasnila ga bosta bližnja voda in dež. Ogenj lahko varno uničite z udarcem, vendar vas bo poškodoval, če stojite neposredno v njem. Če ogenj prižgete nad neter kamnom ali blokom magme, se bo takoj spremenil v večni ogenj.
+
+Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.=Večni ogenj je škodljiv blok, ki lahko ustvari več ognja. Ustvaril bo ogenj okoli sebe, če so v bližini vnetljivi bloki. Večni ogenj lahko ugasnete z udarci in bližnjimi vodnimi bloki. Za razliko od (navadnega) ognja večni ogenj ne ugasne sam od sebe in gori tudi v dežju. Udarjanje večnega ognja je varno, vendar vas bo poškodoval, če stojite v njem.
+
+Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.=Večni ogenj je škodljiv blok. Večni ogenj lahko ugasnete z udarci in bližnjimi vodnimi bloki. Za razliko od (navadnega) ognja večni ogenj ne ugasne sam od sebe in gori tudi v dežju. Udarjanje večnega ognja je varno, vendar vas bo poškodoval, če stojite v njem.
+
+Fire=Ogenj
+Eternal Fire=Večni ogenj
+##[ fire_charge.lua ]##
+Fire Charge=Ognjeni naboj
+Dispenser projectile=Izstrelek podajalnika
+Starts fires and ignites blocks=Zaneti požare in prižge bloke
+
+Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly.=Ognjeni naboji so predvsem izstrelki, ki jih je mogoče izstreliti iz podajalnikov; letijo v ravni črti in ob trku izbruhnejo v ogenj. Lahko pa se uporabljajo tudi za neposredno netenje ognja.
+
+Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up.=Vstavite ognjeni naboj v podajalnik in mu dovedite energijo rdečega kamna, da ga izstrelite. Če želite neposredno zanetiti ogenj, preprosto položite ognjeni naboj na tla, kar ga porabi.
+
+##[ flint_and_steel.lua ]##
+Flint and Steel=Vžigalnik
+Flint and steel is a tool to start fires and ignite blocks.=Vžigalnik je orodje za netenje ognja in prižiganje blokov.
+
+Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.=Z desnim klikom kliknite na površino bloka, da poskusite pred njim prižgati ogenj ali prižgati sam blok. Nekaj blokov ima edinstven odziv, ko so prižgani.

@@ -1,0 +1,5 @@
+# textdomain: mcl_beacons
+Beacon=Svetilnik
+Beacon:=Svetilnik:
+Primary Power:=Primarna moč:
+Inventory:=Inventar:

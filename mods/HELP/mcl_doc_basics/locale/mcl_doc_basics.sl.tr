@@ -1,0 +1,711 @@
+# textdomain: mcl_doc_basics
+Basics=Osnove
+Everything you need to know to get started with playing=Vse, kar morate vedeti za začetek igranja
+Advanced usage=Napredna uporaba
+Advanced information which may be nice to know, but is not crucial to gameplay=Napredne informacije, ki jih je dobro vedeti, a niso ključne za igranje
+Quick start=Hiter začetek
+This is a very brief introduction to the basic gameplay:=To je zelo kratek uvod v osnovno igranje:
+• Move mouse to look=• Premaknite miško za pogled
+• [W], [A], [S] and [D] to move=• [W], [A], [S] in [D] za premikanje
+• [E] to sprint=• [E] za šprint
+• [Space] to jump or move upwards=• [Preslednica] za skok ali premik navzgor
+• [Shift] to sneak or move downwards=• [Shift] za plazenje ali premik navzdol
+• Mouse wheel or [1]-[9] to select item=• Kolesce miške ali [1]-[9] za izbiro predmeta
+• Left-click to mine blocks or attack=• Levi klik za rudarjenje blokov ali napad
+• Recover from swings to deal full damage=• Počakajte, da se orožje po zamahu povrne, da povzročite polno škodo
+• Right-click to build blocks and use things=• Desni klik za gradnjo blokov in uporabo stvari
+• [I] for the inventory=• [I] za inventar
+• First items in inventory appear in hotbar below=• Prvi predmeti v inventarju se pojavijo v hitri vrstici spodaj
+• Read entries in this help to learn the rest=• Preberite vnose v tej pomoči, da se naučite ostalo
+• [Esc] to close this window=• [Esc] za zaprtje tega okna
+How to play:=Kako igrati:
+• Punch a tree trunk until it breaks and collect wood=• Udarjajte po drevesnem deblu, dokler se ne zlomi, in poberite les
+
+• Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=• Postavite les v mrežo 2×2 (vaša »mreža za ustvarjanje«) v meniju inventarja in ustvarite 4 lesene deske
+
+• Place them in a 2×2 shape in the crafting grid to craft a crafting table=• Postavite jih v obliko 2×2 v mreži za ustvarjanje, da ustvarite delovno mizo
+• Place the crafting table on the ground=• Postavite delovno mizo na tla
+• Rightclick it for a 3×3 crafting grid=• Desno jo kliknite za mrežo za ustvarjanje 3×3
+• Use the crafting guide (book icon) to learn all the possible crafting recipes=• Uporabite vodnik za ustvarjanje (ikona knjige), da se naučite vseh možnih receptov za ustvarjanje
+• Craft a wooden pickaxe so you can dig stone=• Ustvarite lesen kramp, da boste lahko kopali kamen
+• Different tools break different kinds of blocks. Try them out!=• Različna orodja lomijo različne vrste blokov. Preizkusite jih!
+• Continue playing as you wish. There's no goal. Have fun!=• Nadaljujte z igranjem po lastni želji. Ni nobenega cilja. Zabavajte se!
+Minetest=Minetest
+
+Minetest is a free software game engine for games based on voxel gameplay, inspired by InfiniMiner, Minecraft, and the like. Minetest was originally created by Perttu Ahola (alias “celeron55”).=Minetest je prosto programje, pogon za igre, ki temeljijo na igranju z voksli, in so ga navdihnili InfiniMiner, Minecraft in podobni. Minetest je prvotno ustvaril Perttu Ahola (znan kot »celeron55«).
+
+The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest can, however, be much more complex than this.=Igralec je postavljen v ogromen svet, narejen iz kock ali blokov. Te kocke običajno sestavljajo pokrajino; bloke je mogoče skoraj popolnoma svobodno odstranjevati in postavljati. Z zbranimi predmeti lahko ustvarite nova orodja in druge predmete. Igre v Minetestu pa so seveda lahko veliko bolj zapletene od tega.
+
+A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorative blocks or be very complex by, e.g., introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.=Ključna lastnost Minetesta je vgrajena podpora za spreminjanje z modi. Modi spremenijo obstoječe igranje. Lahko so povsem preprosti in dodajo le nekaj okrasnih blokov, ali pa so zelo zapleteni ter na primer uvedejo popolnoma nove koncepte igranja, ustvarijo povsem drugačen svet in še veliko več.
+
+Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.=Minetest lahko igrate sami ali na spletu skupaj z več igralci. Spletno igranje bo delovalo takoj po namestitvi s katerimi koli modi, brez potrebe po dodatni programski opremi, saj jo v celoti zagotovi strežnik.
+
+Minetest is usually bundled with a simple default game, named “Minetest Game” (shown in images 1 and 2). You probably already have it. Other games for Minetest can be downloaded from the official Minetest forums <https://forum.minetest.net/viewforum.php?f@=48>.=Minetest je običajno na voljo s preprosto privzeto igro, poimenovano »Minetest Game« (prikazano na slikah 1 in 2). Verjetno jo že imate. Druge igre za Minetest lahko prenesete z uradnih forumov Minetest <https://forum.minetest.net/viewforum.php?f@=48>.
+
+Sneaking=Plazenje
+
+Sneaking makes you walk slower and prevents you from falling off the edge of a block.=Zaradi plazenja hodite počasneje in vas zaustavi pred padcem z roba bloka.
+
+To sneak, hold down the sneak key (default: [Shift]). When you release it, you stop sneaking. Careful: When you release the sneak key at a ledge, you might fall!=Za plazenje držite tipko za plazenje (privzeto: [Shift]). Ko jo spustite, se prenehate plaziti. Previdno: Če tipko za plazenje spustite na robu, lahko padete!
+
+• Sneak: [Shift]=• Plazenje: [Shift]
+
+Sneaking only works when you stand on solid ground, are not in a liquid and don't climb.=Plazenje deluje le, ko stojite na trdnih tleh, niste v tekočini in ne plezate.
+
+Sneaking might be disabled by mods. In this case, you still walk slower by sneaking, but you will no longer be stopped at ledges.=Modi lahko onemogočijo plazenje. V tem primeru zaradi plazenja še vedno hodite počasneje, vendar vas na robovih ne bo več zaustavilo.
+
+Controls=Kontrole
+These are the default controls:=To so privzete kontrole:
+Basic movement:=Osnovno premikanje:
+• Moving the mouse around: Look around=• Premikanje miške: Pogled naokoli
+• W: Move forwards=• W: Premik naprej
+• A: Move to the left=• A: Premik v levo
+• D: Move to the right=• D: Premik v desno
+• S: Move backwards=• S: Premik nazaj
+• E: Sprint=• E: Šprint
+While standing on solid ground:=Medtem ko stojite na trdnih tleh:
+• Space: Jump=• Preslednica: Skok
+• Shift: Sneak=• Shift: Plazenje
+While on a ladder, swimming in a liquid or fly mode is active=Ko ste na lestvi, plavate v tekočini ali ko je aktiven način letenja:
+• Space: Move up=• Preslednica: Premik navzgor
+• Shift: Move down=• Shift: Premik navzdol
+Extended movement (requires privileges):=Razširjeno premikanje (zahteva privilegije):
+• J: Toggle fast mode, makes you run or fly fast (requires “fast” privilege)=• J: Preklopite hitri način, omogoča hiter tek ali letenje (zahteva privilegij »fast«)
+
+• K: Toggle fly mode, makes you move freely in all directions (requires “fly” privilege)=• K: Preklopite način letenja, omogoča prosto premikanje v vse smeri (zahteva privilegij »fly«)
+
+• H: Toggle noclip mode, makes you go through walls in fly mode (requires “noclip” privilege)=• H: Preklopite način brez trkov (noclip), omogoča prehajanje skozi stene v načinu letenja (zahteva privilegij »noclip«)
+
+• E: Walk fast in fast mode=• E: Hiter tek v hitrem načinu
+World interaction:=Interakcija s svetom:
+• Left mouse button: Punch / mine blocks=• Levi gumb miške: Udarite / rudarite bloke
+• Right mouse button: Build or use pointed block=• Desni gumb miške: Gradnja ali uporaba pokazanega bloka
+• Shift+Right mouse button: Build=• Shift+Desni gumb miške: Gradnja
+• Roll mouse wheel / B / N: Select next/previous item in hotbar=• Kolesce miške / B / N: Izberite naslednji/prejšnji predmet v hitri vrstici
+• 1-9: Select item in hotbar directly=• 1-9: Neposredno izberite predmet v hitri vrstici
+• Q: Drop item stack=• Q: Odvrzite sklad predmetov
+• Shift+Q: Drop 1 item=• Shift+Q: Odvrzite 1 predmet
+• I: Show/hide inventory menu=• I: Pokažite/skrijte meni inventarja
+Inventory interaction:=Interakcija z inventarjem:
+See the entry “Basics > Inventory”.=Oglejte si vnos »Osnove > Inventar«.
+Hunger/Eating:=Lakota/Prehranjevanje:
+
+• While holding food, hold the right mouse button (PC) or double-tap and hold the second tap (Android) to eat=• Medtem ko držite hrano, držite desni gumb miške (PC) ali dvakrat tapnite in držite ob drugem dotiku (Android), da jo pojeste
+
+Camera:=Kamera:
+• Z: Zoom=• Z: Povečava
+• F7: Toggle camera mode=• F7: Preklop načina kamere
+Interface:=Vmesnik:
+• Esc: Open menu window (pauses in single-player mode) or close window=• Esc: Odprite okno menija (začasno ustavi igro v enoigralskem načinu) ali zaprite okno
+• F1: Show/hide HUD=• F1: Pokažite/skrijte vmesnik (HUD)
+• F2: Show/hide chat=• F2: Pokažite/skrijte klepet
+• F9: Toggle minimap=• F9: Preklopite mini-zemljevid
+• Shift+F9: Toggle minimap rotation mode=• Shift+F9: Preklopite način vrtenja mini-zemljevida
+• F10: Open/close console/chat log=• F10: Odprite/zaprite konzolo oz. dnevnik klepeta
+• F12: Take a screenshot=• F12: Naredite posnetek zaslona
+Server interaction:=Interakcija s strežnikom:
+• T: Open chat window (chat requires the “shout” privilege)=• T: Odprite okno za klepet (klepet zahteva privilegij »shout«)
+• /: Start issuing a server command=• /: Začnite vpisovati strežniški ukaz
+Technical:=Tehnično:
+
+• R: Toggle far view (disables all fog and allows viewing far away, can make game very slow)=• R: Preklopite pogled na daleč (onemogoči vso meglo in omogoči pogled zelo daleč, lahko zelo upočasni igro)
+
+• +: Increase minimal viewing distance=• +: Povečajte minimalno razdaljo gledanja
+• -: Decrease minimal viewing distance=• -: Zmanjšajte minimalno razdaljo gledanja
+• F3: Enable/disable fog=• F3: Omogočite/onemogočite meglo
+• F5: Enable/disable debug screen which also shows your coordinates=• F5: Omogočite/onemogočite zaslon za razhroščevanje, ki prikazuje tudi vaše koordinate
+• F6: Only useful for developers. Enables/disables profiler=• F6: Uporabno samo za razvijalce. Omogoči/onemogoči profilirnik
+Players=Igralci
+Players (actually: “player characters”) are the characters which users control.=Igralci (pravzaprav: »igralni liki«) so liki, ki jih nadzirajo uporabniki.
+
+Players are living beings. They start with a number of health points (HP) and a number of breath points (BP).=Igralci so živa bitja. Začnejo z določenim številom točk zdravja (HP) in točk dihanja (BP).
+
+Players are capable of walking, sneaking, jumping, climbing, swimming, diving, mining, building, fighting and using tools and blocks.=Igralci lahko hodijo, se plazijo, skakajo, plezajo, plavajo, se potapljajo, rudarijo, gradijo, se borijo ter uporabljajo orodja in bloke.
+
+Players can take damage for a variety of reasons, here are some:=Igralci lahko utrpijo škodo iz različnih razlogov; tukaj je nekaj primerov:
+• Taking fall damage=• Utrpijo škodo pri padcu
+• Touching a block which causes direct damage=• Se dotaknejo bloka, ki povzroča neposredno škodo
+• Drowning=• Utapljanje
+• Being attacked by another player=• Napad drugega igralca
+• Being attacked by a computer enemy=• Napad računalniškega sovražnika
+At a health of 0, the player dies. The player can just respawn in the world.=Pri zdravju 0 igralec umre. Igralec se nato lahko ponovno pojavi v svetu.
+
+Other consequences of death depend on the game. The player could lose all items, or lose the round in a competitive game.=Druge posledice smrti so odvisne od igre. Igralec lahko izgubi vse predmete ali pa izgubi krog v tekmovalni igri.
+
+Some blocks reduce breath. While being with the head in a block which causes drowning, the breath points are reduced by 1 for every 2 seconds. When all breath is gone, the player starts to suffer drowning damage. Breath is quickly restored in any other block.=Nekateri bloki zmanjšujejo dihanje. Ko imate glavo v bloku, ki povzroča utapljanje, se točke dihanja zmanjšajo za 1 vsaki 2 sekundi. Ko dihanja zmanjka, igralec začne trpeti škodo zaradi utapljanja. Dihanje se hitro obnovi v katerem koli drugem bloku.
+
+Damage can be disabled on any world. Without damage, players are immortal and health and breath are unimportant.=Škodo je mogoče onemogočiti v katerem koli svetu. Brez škode so igralci nesmrtni, točke zdravja in dihanja pa postanejo nepomembne.
+
+In multi-player mode, the name of other players is written above their head.=V večigralskem načinu je ime drugih igralcev napisano nad njihovimi glavami.
+Items=Predmeti
+
+Items are things you can carry along and store in inventories. They can be used for crafting, smelting, building, mining, and more. Types of items include blocks, tools, weapons and items only used for crafting.=Predmeti so stvari, ki jih lahko nosite s seboj in shranjujete v inventarjih. Uporabite jih lahko za ustvarjanje, taljenje, gradnjo, rudarjenje in še več. Vrste predmetov vključujejo bloke, orodja, orožje in predmete, ki se uporabljajo samo za ustvarjanje.
+
+An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=Sklad predmetov je zbirka predmetov iste vrste, ki se prilega v eno režo inventarja. Sklade predmetov je mogoče odvreči na tla. Predmeti, ki padejo na iste koordinate, bodo oblikovali sklad predmetov.
+
+Items have several properties, including the following:=Predmeti imajo več lastnosti, vključno z naslednjimi:
+• Maximum stack size: Number of items which fit on 1 item stack=• Največja velikost sklada: Število predmetov, ki gredo v 1 sklad predmetov
+
+• Pointing range: How close things must be to be pointed while wielding this item=• Doseg kazanja: Kako blizu morajo biti stvari, da jih lahko pokažete, medtem ko držite ta predmet
+
+• Group memberships: See “Basics > Groups”=• Članstvo v skupinah: Glejte »Osnove > Skupine«
+• May be used for crafting or cooking=• Lahko se uporablja za ustvarjanje ali kuhanje
+Tools=Orodja
+
+Some items may serve as a tool when wielded. Any item which has some special use which can be directly used by its wielder is considered a tool.=Nekateri predmeti lahko ob držanju služijo kot orodje. Vsak predmet, ki ima neko posebno rabo in ga lahko neposredno uporabi tisti, ki ga drži, velja za orodje.
+
+A common subset of tools is mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.=Pogosta podskupina orodij so orodja za rudarjenje. Ta so pomembna za lomljenje vseh vrst blokov. Orožja so tudi vrsta orodja. Obstaja pa seveda še veliko drugih možnih orodij. Posebna dejanja orodij se običajno izvedejo z levim ali desnim klikom.
+
+When nothing is wielded, players use their hand which may act as tool and weapon.=Ko ne držite ničesar, igralci uporabljajo roko, ki lahko deluje kot orodje in orožje.
+
+Many tools will wear off when using them and may eventually get destroyed. The damage is displayed in a damage bar below the tool icon. If no damage bar is shown, the tool is in mint condition. Tools may be repairable by crafting, see “Basics > Crafting”.=Mnoga orodja se ob uporabi obrabijo in se sčasoma lahko uničijo. Škoda je prikazana v vrstici škode pod ikono orodja. Če vrstica škode ni prikazana, je orodje v brezhibnem stanju. Orodja je včasih mogoče popraviti z ustvarjanjem, glejte »Osnove > Ustvarjanje«.
+
+Weapons=Orožja
+
+Some items are usable as a melee weapon when wielded. Weapons share most of the properties of tools.=Nekatere predmete je med držanjem mogoče uporabiti kot orožje za boj od blizu. Orožja imajo večino lastnosti orodij.
+
+Melee weapons deal damage by punching players and other animate objects. There are two ways to attack:=Orožja za boj od blizu povzročajo škodo z udarjanjem igralcev in drugih živih bitij. Obstajata dva načina napada:
+
+• Single punch: Left-click once to deal a single punch=• Posamezen udarec: Enkrat kliknite z levim gumbom, da izvedete posamezen udarec
+• Quick punching: Hold down the left mouse button to deal quick repeated punches=• Hitro udarjanje: Držite levi gumb miške, da izvedete hitre, ponavljajoče se udarce
+There are two core attributes of melee weapons:=Obstajata dva ključna atributa orožij za boj od blizu:
+
+• Maximum damage: Damage which is dealt after a hit when the weapon was fully recovered=• Največja škoda: Škoda, ki je povzročena po zadetku, ko se je orožje popolnoma povrnilo po zamahu
+
+• Full punch interval: Time it takes for fully recovering from a punch=• Interval polnega udarca: Čas, potreben, da se orožje po udarcu popolnoma povrne
+
+A weapon only deals full damage when it has fully recovered from a previous punch. Otherwise, the weapon will deal only reduced damage. This means, quick punching is very fast, but also deals rather low damage. Note the full punch interval does not limit how fast you can attack.=Orožje povzroči polno škodo le, ko se je po prejšnjem udarcu popolnoma povrnilo. V nasprotnem primeru bo orožje povzročilo le zmanjšano škodo. To pomeni, da je hitro udarjanje zelo hitro, a povzroča precej majhno škodo. Upoštevajte, da interval polnega udarca ne omejuje, kako hitro lahko napadate.
+
+There is a rule which sometimes makes attacks impossible: Players, animate objects and weapons belong to damage groups. A weapon only deals damage to those who share at least one damage group with it. So if you're using the wrong weapon, you might not deal any damage at all.=Obstaja pravilo, ki včasih onemogoči napade: Igralci, živa bitja in orožja pripadajo skupinam škode. Orožje povzroča škodo le tistim, s katerimi si deli vsaj eno skupino škode. Če torej uporabljate napačno orožje, morda sploh ne boste povzročili nobene škode.
+
+Pointing=Kazanje
+
+“Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, players, computer enemies and objects.=»Kazanje« pomeni gledanje v nekaj, kar je v dosegu, z namerilnim križem. Kazanje je potrebno za interakcijo, kot je rudarjenje, udarjanje, uporaba itd. Stvari, na katere je mogoče pokazati, vključujejo bloke, igralce, računalniške sovražnike in druge objekte.
+
+To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.=Če želite pokazati na nekaj, mora to biti v dosegu kazanja (imenovanem tudi zgolj »doseg«) predmeta, ki ga držite. Ko ne držite ničesar, velja privzeti doseg. Pokazana stvar bo obrobljena ali poudarjena (odvisno od vaših nastavitev). Kazanje ni mogoče s sprednjo kamero v tretji osebi.
+
+Camera=Kamera
+
+There are 3 different views which determine the way you see the world. The modes are:=Obstajajo 3 različni pogledi, ki določajo način, kako vidite svet. Načini so:
+
+• 1: First-person view (default)=• 1: Pogled iz prve osebe (privzeto)
+• 2: Third-person view from behind=• 2: Pogled iz tretje osebe od zadaj
+• 3: Third-person view from the front=• 3: Pogled iz tretje osebe od spredaj
+You can change the camera mode by pressing [F7].=Način kamere lahko spremenite s pritiskom na [F7].
+
+You might be able to zoom with [Z] to zoom the view at the crosshair. This allows you to look further.=Morda boste lahko z [Z] povečali pogled pri namerilnem križu. To vam omogoča, da vidite dlje.
+
+Zooming is a gameplay feature that might be enabled or disabled by the game. By default, zooming is enabled when in Creative Mode but disabled otherwise.=Povečava je funkcija igranja, ki jo igra lahko omogoči ali onemogoči. Privzeto je povečava omogočena v ustvarjalnem načinu, sicer pa je onemogočena.
+
+• Switch camera mode: [F7]=• Preklop načina kamere: [F7]
+• Zoom: [Z]=• Povečava: [Z]
+Blocks=Bloki
+
+The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Svet je v celoti sestavljen iz blokov (natančneje vokselov). Bloke je mogoče dodati ali odstraniti s pravimi orodji.
+
+Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:=Bloki imajo lahko zelo različne lastnosti, ki določajo čase rudarjenja, obnašanje, videz, obliko in še veliko več. Njihove lastnosti vključujejo:
+
+• Collidable: Collidable blocks cannot be passed through; players can walk on them. Non-collidable blocks can be passed through freely=• Trkljivo: Skozi trkljive bloke ni mogoče preiti; igralci lahko hodijo po njih. Skozi bloke brez trkov pa je mogoče prosto prehajati
+
+• Pointable: Pointable blocks show a wireframe or a halo box when pointed. But you will just point through non-pointable blocks. Liquids are usually non-pointable but they can be pointed at by some special tools=• Kažljivo: Kažljivi bloki prikažejo žični model ali svetleč okvir, ko nanje pokažete. Skozi nekažljive bloke pa boste le pokazali naprej. Tekočine običajno niso kažljive, a z nekaterimi posebnimi orodji je mogoče pokazati tudi nanje
+
+• Mining properties: By which tools it can be mined, how fast and how much it wears off tools=• Lastnosti rudarjenja: S katerimi orodji ga je mogoče rudariti, kako hitro ter kako močno obrabi orodja
+
+• Climbable: While you are at a climbable block, you won't fall and you can move up and down with the jump and sneak keys=• Plezalno: Dokler ste na plezalnem bloku, ne boste padli in se lahko premikate gor in dol s tipkama za skok in plazenje
+
+• Drowning damage: See the entry “Basics > Player”=• Škoda zaradi utapljanja: Glejte vnos »Osnove > Igralci«
+• Liquids: See the entry “Basics > Liquids”=• Tekočine: Glejte vnos »Osnove > Tekočine«
+
+• Group memberships: Group memberships are used to determine mining properties, crafting, interactions between blocks and more=• Članstvo v skupinah: Članstvo v skupinah se uporablja za določanje lastnosti rudarjenja, ustvarjanja, interakcij med bloki in več
+
+Mining=Rudarjenje
+
+Mining (or digging) is the process of breaking blocks to remove them. To mine a block, point it and hold down the left mouse button until it breaks.=Rudarjenje (ali kopanje) je postopek lomljenja blokov, da jih odstranite. Za rudarjenje bloka pokažite nanj in držite levi gumb miške, dokler se ne zlomi.
+
+Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks cannot be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.=Bloki zahtevajo orodje za rudarjenje, da jih lahko rudarite. Različne bloke se rudari z različnimi orodji za rudarjenje, nekaterih blokov pa sploh ni mogoče rudariti z nobenim orodjem. Bloki se razlikujejo po trdoti in orodja po moči. Orodja za rudarjenje se sčasoma obrabijo. Čas rudarjenja in obraba orodja sta odvisna od bloka in orodja za rudarjenje. Najhitrejši način, da ugotovite, kako učinkovita so vaša orodja, je, da jih preprosto preizkusite na različnih blokih. Vsi predmeti, ki jih naberete z rudarjenjem, bodo padli na tla in so pripravljeni, da jih poberete.
+
+After mining, a block may leave a “drop” behind. This is a number of items you get after mining. Most commonly, you will get the block itself. There are other possibilities for a drop which depends on the block type. The following drops are possible:=Po rudarjenju lahko blok za seboj pusti »izplen«. To je število predmetov, ki jih dobite po rudarjenju. Najpogosteje boste dobili sam blok. Obstajajo tudi druge možnosti za izplen, kar je odvisno od vrste bloka. Možni so naslednji izpleni:
+
+• Always drops itself (the usual case)=• Vedno izpleni samega sebe (običajen primer)
+• Always drops the same items=• Vedno izpleni iste predmete
+• Drops items based on probability=• Izpleni predmete na podlagi verjetnosti
+• Drops nothing=• Ne izpleni ničesar
+Building=Gradnja
+
+Almost all blocks can be built (or placed). Building is very simple and has no delay.=Skoraj vse bloke je mogoče zgraditi (ali postaviti). Gradnja je zelo preprosta in nima zamika.
+
+To build your wielded block, point at a block in the world and right-click. If this is not possible because the pointed block has a special right-click action, hold down the sneak key before right-clicking.=Za gradnjo bloka, ki ga držite, pokažite na blok v svetu in kliknite z desnim gumbom. Če to ni mogoče, ker ima pokazani blok posebno dejanje za desni klik, pred desnim klikom držite tipko za plazenje.
+
+Blocks can almost always be built at pointable blocks. One exception are blocks attached to the floor; these can only be built on the floor.=Bloke je skoraj vedno mogoče graditi ob kažljivih blokih. Ena izjema so bloki, pritrjeni na tla; te je mogoče graditi le na tleh.
+
+Normally, blocks are built in front of the pointed side of the pointed block. A few blocks are different: When you try to build at them, they are replaced.=Običajno se bloki zgradijo pred pokazano stranjo pokazanega bloka. Nekaj blokov je drugačnih: Ko poskušate graditi ob njih, se nadomestijo.
+
+Liquids=Tekočine
+
+Liquids are special dynamic blocks. Liquids like to spread and flow to their surrounding blocks. Players can swim and drown in them.=Tekočine so posebni dinamični bloki. Tekočine se rade širijo in tečejo v sosednje bloke. Igralci lahko v njih plavajo in se utopijo.
+
+Liquids usually come in two forms: In source form (S) and in flowing form (F).=Tekočine so običajno v dveh oblikah: v obliki izvora (S) in v obliki toka (F).
+
+Liquid sources have the shape of a full cube. A liquid source will generate flowing liquids around it from time to time, and, if the liquid is renewable, it also generates liquid sources. A liquid source can sustain itself. As long it is left alone, a liquid source will normally keep its place and does not drain out.=Izvori tekočine imajo obliko polne kocke. Izvor tekočine bo občasno okoli sebe ustvarjal oblike toka in, če je tekočina obnovljiva, tudi nove izvore tekočine. Izvor tekočine se lahko vzdržuje sam. Dokler je pri miru, izvor tekočine običajno ohrani svoje mesto in ne odteče.
+
+Flowing liquids take a sloped form. Flowing liquids spread around the world until they drain. A flowing liquid cannot sustain itself and always comes from a liquid source, either directly or indirectly. Without a liquid source, a flowing liquid will eventually drain out and disappear.=Oblike toka zavzamejo nagnjeno obliko. Tekočine v toku se širijo po svetu, dokler ne odtečejo. Tekočina v toku se ne more vzdrževati sama in vedno, neposredno ali posredno, prihaja iz izvora tekočine. Brez izvora tekočine bo tekočina v toku sčasoma odtekla in izginila.
+
+All liquids share the following properties:=Vse tekočine imajo naslednje lastnosti:
+• All properties of blocks (including drowning damage)=• Vse lastnosti blokov (vključno s škodo zaradi utapljanja)
+• Renewability: Renewable liquids can create new sources=• Obnovljivost: Obnovljive tekočine lahko ustvarijo nove izvore
+
+• Flowing range: How many flowing liquids are created at maximum per liquid source, it determines how far the liquid will spread. Possible are ranges from 0 to 8. At 0, no flowing liquids will be created. Image 5 shows a liquid of flowing range 2=• Doseg toka: Koliko tekočin v toku se največ ustvari na en izvor tekočine, kar določa, kako daleč se bo tekočina razširila. Možni so dosegi od 0 do 8. Pri 0 se tekočine v toku ne bodo ustvarile. Slika 5 prikazuje tekočino z dosegom toka 2
+
+• Viscosity: How slow players move through it and how slow the liquid spreads=• Viskoznost: Kako počasi se igralci premikajo skozi njo in kako počasi se tekočina širi
+
+Renewable liquids create new liquid sources at open spaces (image 2). A new liquid source is created when:=Obnovljive tekočine ustvarijo nove izvore tekočin na odprtih prostorih (slika 2). Nov izvor tekočine se ustvari, ko:
+
+• Two renewable liquid blocks of the same type touch each other diagonally=• Se dva bloka obnovljive tekočine iste vrste dotikata diagonalno
+• These blocks are also on the same height=• Sta ta bloka prav tako na isti višini
+• One of the two “corners” is open space which allows liquids to flow in=• Je eden od obeh »vogalov« odprt prostor, ki omogoča tekočinam, da vanj stečejo
+
+When those criteria are met, the open space is filled with a new liquid source of the same type (image 3).=Ko so ti kriteriji izpolnjeni, se odprt prostor napolni z novim izvorom tekočine iste vrste (slika 3).
+
+Swimming in a liquid is fairly straightforward: The usual direction keys for basic movement, the jump key for rising and the sneak key for sinking.=Plavanje v tekočini je dokaj preprosto: uporabite običajne smerne tipke za osnovno premikanje, tipko za skok za dviganje in tipko za plazenje za potapljanje.
+
+The physics for swimming and diving in a liquid are:=Fizika plavanja in potapljanja v tekočini je sledeča:
+• The higher the viscosity, the slower you move=• Višja kot je viskoznost, počasneje se premikate
+• If you rest, you'll slowly sink=• Če mirujete, se boste počasi potopili
+• There is no fall damage for falling into a liquid as such=• Padci v tekočino kot taki ne povzročajo škode
+
+• If you fall into a liquid, you will be slowed down on impact (but don't stop instantly). Your impact depth is determined by your speed and the liquid viscosity. For a safe high drop into a liquid, make sure there is enough liquid above the ground, otherwise you might hit the ground and take fall damage=• Če padete v tekočino, se boste ob trku upočasnili (vendar se ne ustavite takoj). Vašo globino trka določata vaša hitrost in viskoznost tekočine. Za varen visok padec v tekočino se prepričajte, da je nad tlemi dovolj tekočine, sicer lahko udarite ob tla in utrpite škodo zaradi padca
+
+Liquids are often not pointable. But some special items are able to point all liquids.=Tekočine pogosto niso kažljive. Nekateri posebni predmeti pa lahko pokažejo na vse tekočine.
+
+Crafting=Ustvarjanje
+Crafting is the task of combining several items to form a new item.=Ustvarjanje je naloga združevanja več predmetov, da se tvori nov predmet.
+
+To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=Če želite nekaj ustvariti, potrebujete enega ali več predmetov, mrežo za ustvarjanje (C) in recept za ustvarjanje. Mreža za ustvarjanje je kot običajen inventar, ki se lahko uporablja tudi za ustvarjanje. Predmete je treba v mrežo postaviti po določenem vzorcu. Zraven mreže za ustvarjanje je izhodna reža (O). Tu se bo pojavil rezultat, ko predmete pravilno razporedite. To je zgolj predogled in ne dejanski predmet. Mreže za ustvarjanje imajo lahko različne velikosti, kar omejuje možne recepte, ki jih lahko ustvarite.
+
+To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.=Da dokončate ustvarjanje, vzemite dobljeni predmet iz izhodne reže; s tem boste porabili predmete iz mreže za ustvarjanje in ustvarili nov predmet. Predmetov v izhodno režo ni mogoče postaviti.
+
+A description on how to craft an item is called a “crafting recipe”. You need this knowledge to craft. There are multiple ways to learn crafting recipes. One way is by using a crafting guide, which contains a list of available crafting recipes. Some games provide crafting guides. There are also some mods which you can download online for installing a crafting guide. Another way is by reading the online manual of the game (if one is available).=Opis, kako ustvariti predmet, se imenuje »recept za ustvarjanje«. Za ustvarjanje potrebujete to znanje. Receptov za ustvarjanje se lahko naučite na več načinov. Eden od načinov je uporaba vodnika za ustvarjanje, ki vsebuje seznam razpoložljivih receptov. Nekatere igre ponujajo vodnike za ustvarjanje. Obstajajo tudi modi, ki jih lahko prenesete prek spleta in z njimi namestite vodnik za ustvarjanje. Drug način je branje spletnega priročnika igre (če je ta na voljo).
+
+Crafting recipes consist of at least one input item and exactly one stack of output items. When performing a single craft, it will consume exactly one item from each stack of the crafting grid, unless the crafting recipe defines replacements.=Recepti za ustvarjanje so sestavljeni iz vsaj enega vhodnega predmeta in natanko enega sklada izhodnih predmetov. Pri izvedbi posameznega ustvarjanja se porabi natanko en predmet iz vsakega sklada v mreži za ustvarjanje, razen če recept za ustvarjanje ne določa nadomestitev.
+
+There are multiple types of crafting recipes:=Obstaja več vrst receptov za ustvarjanje:
+• Shaped (image 2): Items need to be placed in a particular shape=• Z obliko (slika 2): Predmete je treba postaviti v točno določeno obliko
+
+• Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=• Brez oblike (sliki 3 in 4): Predmete je treba postaviti nekam v vnosno mrežo (obe sliki prikazujeta isti recept)
+
+• Cooking: Explained in “Basics > Cooking”=• Kuhanje: Razloženo v »Osnove > Kuhanje«
+
+• Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%=• Popravilo (slika 5): Kamor koli v mrežo za ustvarjanje postavite dve poškodovani orodji, da dobite orodje, ki je popravljeno za 5 %
+
+In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=V nekaterih receptih za ustvarjanje ni nujno, da je vnos konkretni predmet, temveč zadostuje, da je član skupine (glejte »Osnove > Skupine«). Ti recepti ponujajo nekoliko več svobode pri vnosnih predmetih. Slike 6–8 prikazujejo isti recept, ki temelji na skupini. Tukaj je potrebnih 8 predmetov iz skupine »stone« (kamen), kar velja za vse prikazane predmete.
+
+Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item.=Redko imajo recepti za ustvarjanje nadomestitve. To pomeni, da kadar koli ustvarjate, se določeni predmeti v mreži za ustvarjanje ne porabijo, temveč se namesto tega nadomestijo z drugim predmetom.
+
+Cooking=Kuhanje
+
+Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), a cookable item, a fuel item and time in order to yield a new item.=Kuhanje (ali taljenje) je oblika ustvarjanja, ki ne vključuje mreže za ustvarjanje. Kuhanje se izvede s posebnim blokom (na primer s pečjo), predmetom za kuhanje, predmetom za gorivo in nekaj časa, da se pridobi nov predmet.
+
+Each fuel item has a burning time. This is the time a single item of the fuel keeps a furnace burning.=Vsak predmet za gorivo ima čas gorenja. To je čas, kolikor en sam predmet goriva vzdržuje gorenje v peči.
+
+Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.=Vsak predmet za kuhanje zahteva nekaj časa, da je skuhan. Ta čas je specifičen za vrsto predmeta in predmet mora biti celoten čas kuhanja »v ognju«, da dejansko da rezultat.
+
+Hotbar=Hitra vrstica
+
+At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Na dnu zaslona vidite nekaj kvadratkov. To se imenuje »hitra vrstica«. Hitra vrstica vam omogoča hiter dostop do prvih predmetov iz inventarja igralca.
+
+You can change the selected item with the mouse wheel or the keyboard.=Izbrani predmet lahko spremenite s kolescem miške ali tipkovnico.
+• Select previous item in hotbar: [Mouse wheel up] or [B]=• Izbira prejšnjega predmeta v hitri vrstici:[Kolesce miške gor] ali [B]
+• Select next item in hotbar: [Mouse wheel down] or [N]=• Izbira naslednjega predmeta v hitri vrstici: [Kolesce miške dol] ali [N]
+• Select item in hotbar directly: [1]-[9]=• Neposredna izbira predmeta v hitri vrstici: [1]-[9]
+The selected item is also your wielded item.=Izbrani predmet je tudi predmet, ki ga držite v roki.
+Minimap=Mini-zemljevid
+If you have a map item in any of your hotbar slots, you can use the minimap.=Če imate v kateri koli od rež v hitri vrstici predmet zemljevid, lahko uporabite mini-zemljevid.
+
+Press [F9] to make a minimap appear on the top right. The minimap helps you to find your way around the world. Press it again to select different minimap modes and zoom levels. The minimap also shows the positions of other players.=Pritisnite [F9], da se zgoraj desno prikaže mini-zemljevid. Mini-zemljevid vam pomaga najti pot v svetu. Ponovno ga pritisnite za izbiro različnih načinov in ravni povečave mini-zemljevida. Na njem so prikazani tudi položaji drugih igralcev.
+
+There are 2 minimap modes and 3 zoom levels.=Obstajata 2 načina mini-zemljevida in 3 ravni povečave.
+
+Surface mode (image 1) is a top-down view of the world, roughly resembling the colors of the blocks this world is made of. It only shows the topmost blocks, everything below is hidden, like a satellite photo. Surface mode is useful if you got lost.=Površinski način (slika 1) je pogled na svet od zgoraj navzdol in se grobo ujema z barvami blokov, iz katerih je ta svet narejen. Prikazuje samo najvišje bloke, vse spodaj je skrito, kot pri satelitskem posnetku. Površinski način je uporaben, če se izgubite.
+
+Radar mode (image 2) is more complicated. It displays the “denseness” of the area around you and changes with your height. Roughly, the more green an area is, the less “dense” it is. Black areas have many blocks. Use the radar to find caverns, hidden areas, walls and more. The rectangular shapes in image 2 clearly expose the position of a dungeon.=Radarski način (slika 2) je nekoliko bolj zapleten. Prikazuje »gostoto« območja okoli vas in se spreminja glede na vašo višino. Grobo rečeno velja: bolj kot je območje zeleno, manj je »gosto«. Črna območja imajo veliko blokov. Z radarjem lahko iščete jame, skrita območja, stene in drugo. Pravokotne oblike na sliki 2 jasno razkrivajo položaj ječe.
+
+There are also two different rotation modes. In “square mode”, the rotation of the minimap is fixed. If you press [Shift]+[F9] to switch to “circle mode”, the minimap will instead rotate with your looking direction, so “up” is always your looking direction.=Obstajata tudi dva različna načina vrtenja. V »kvadratnem načinu« je vrtenje mini-zemljevida fiksno. Če pritisnete [Shift]+[F9], da preklopite na »krožni način«, se bo mini-zemljevid namesto tega vrtel z vašo smerjo pogleda, tako da je »gor« vedno tja, kamor gledate.
+
+In some games, the minimap may be disabled.=V nekaterih igrah je mini-zemljevid lahko onemogočen.
+• Toggle minimap mode: [F9]=• Preklop načina mini-zemljevida: [F9]
+• Toggle minimap rotation mode: [Shift]+[F9]=• Preklop načina vrtenja mini-zemljevida: [Shift]+[F9]
+Inventory=Inventar
+
+Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=Inventarji se uporabljajo za shranjevanje skladov predmetov. Imajo tudi druge namene, kot je denimo ustvarjanje. Inventar je sestavljen iz pravokotne mreže rež za predmete. Vsaka reža je lahko prazna ali pa vsebuje en sklad predmetov. Sklade predmetov je večinoma mogoče prosto premikati med režami.
+
+You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default:[I]). The first inventory slots are also used as slots in your hotbar.=Imate svoj lasten inventar, ki se imenuje »inventar igralca«, odprete pa ga lahko s tipko za inventar (privzeto: [I]). Prve reže v inventarju se uporabljajo tudi kot reže v vaši hitri vrstici.
+
+Blocks can also have their own inventory, e.g. chests and furnaces.=Tudi bloki imajo lahko svoj inventar, npr. skrinje in peči.
+Inventory controls:=Kontrole inventarja:
+Taking: You can take items from an occupied slot if the cursor holds nothing.=Jemanje: Predmete lahko vzamete iz zasedene reže, če na kazalcu ne držite ničesar.
+• Left click: take entire item stack=• Levi klik: vzemite celoten sklad predmetov
+• Right click: take half from the item stack (rounded up)=• Desni klik: vzemite polovico sklada predmetov (zaokroženo navzgor)
+• Middle click: take 10 items from the item stack=• Sredinski klik: vzemite 10 predmetov iz sklada
+• Mouse wheel down: take 1 item from the item stack=• Kolesce miške navzdol: vzemite 1 predmet iz sklada
+
+Putting: You can put items onto a slot if the cursor holds 1 or more items and the slot is either empty or contains an item stack of the same item type.=Odlaganje: Predmete lahko odložite v režo, če na kazalcu držite 1 ali več predmetov, reža pa je bodisi prazna bodisi vsebuje sklad predmetov iste vrste.
+
+• Left click: put entire item stack=• Levi klik: odložite celoten sklad predmetov
+• Right click or mouse wheel up: put 1 item of the item stack=• Desni klik ali kolesce miške navzgor: odložite 1 predmet iz sklada
+• Middle click: put 10 items of the item stack=• Sredinski klik: odložite 10 predmetov iz sklada
+
+Exchanging: You can exchange items if the cursor holds 1 or more items and the destination slot is occupied by a different item type.=Zamenjava: Predmete lahko zamenjate, če na kazalcu držite 1 ali več predmetov in je ciljna reža zasedena z drugo vrsto predmeta.
+
+• Click: exchange item stacks=• Klik: zamenjajte sklada predmetov
+
+Throwing away: If you hold an item stack and click with it somewhere outside the menu, the item stack gets thrown away into the environment.=Odmetavanje: Če držite sklad predmetov in z njim kliknete nekam zunaj menija, se sklad predmetov odvrže v okolje.
+
+Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=Hitri prenos: Sklad predmetov lahko hitro prenesete iz inventarja igralca ali vanj, v ali iz reže inventarja drugega predmeta, kot je peč, skrinja ali kateri koli drug predmet z režo za inventar, ko dostopate do inventarja tega predmeta. Ciljni inventar je v tem kontekstu na splošno najbolj ustrezen inventar.
+
+• Sneak+Left click: Automatically transfer item stack=• Plazenje+Levi klik: Samodejni prenos sklada predmetov
+Online help=Spletna pomoč
+You may want to check out these online resources related to Minetest:=Morda boste želeli preveriti te spletne vire v povezavi z Minetestom:
+Official homepage of Minetest: <https://minetest.net/>=Uradna spletna stran Minetest: <https://minetest.net/>
+The main place to find the most recent version of Minetest.=Glavno mesto, kjer najdete najnovejšo različico Minetesta.
+Community wiki: <https://wiki.minetest.net/>=Wiki skupnosti: <https://wiki.minetest.net/>
+
+A community-based documentation website for Minetest. Anyone with an account can edit it! It also features a documentation of Minetest Game.=Dokumentacijska spletna stran skupnosti za Minetest. Kdor koli z računom jo lahko ureja! Vsebuje tudi dokumentacijo o privzeti igri Minetest Game.
+
+Web forums: <https://forums.minetest.net/>=Spletni forumi: <https://forums.minetest.net/>
+
+A web-based discussion platform where you can discuss everything related to Minetest. This is also a place where player-made mods and games are published and discussed. The discussions are mainly in English, but there is also space for discussion in other languages.=Spletna platforma za razprave, kjer lahko debatirate o vsem, kar je povezano z Minetestom. To je tudi prostor, kjer so objavljeni in razpravljani uporabniški modi in igre. Razprave potekajo pretežno v angleščini, vendar je na voljo tudi prostor za razprave v drugih jezikih.
+
+Chat: <irc://irc.freenode.net#minetest>=Klepet: <irc://irc.freenode.net#minetest>
+
+A generic Internet Relay Chat channel for everything related to Minetest where people can meet to discuss in real-time. If you do not understand IRC, see the Community Wiki for help.=Splošni kanal Internet Relay Chat (IRC) za vse, kar je povezano z Minetestom, kjer se lahko srečujete in razpravljate v realnem času. Če ne poznate IRC-a, poiščite pomoč na wikiju skupnosti.
+
+Groups=Skupine
+
+Items, players and objects (animate and inanimate) can be members of any number of groups. Groups serve multiple purposes:=Predmeti, igralci in objekti (živi in neživi) so lahko člani poljubnega števila skupin. Skupine imajo več namenov:
+
+• Crafting recipes: Slots in a crafting recipe may not require a specific item, but instead an item which is a member of a particular group, or multiple groups=• Recepti za ustvarjanje: V režah za recept za ustvarjanje ni nujno potreben točno določen predmet, temveč zadošča, da je predmet član določene skupine ali več skupin
+
+• Digging times: Diggable blocks belong to groups which are used to determine digging times. Mining tools are capable of digging blocks belonging to certain groups=• Časi kopanja: Bloki, ki jih je mogoče rudariti, pripadajo skupinam, ki določajo čase kopanja. Orodja za rudarjenje lahko kopljejo bloke, ki pripadajo določenim skupinam
+
+• Block behavior: Blocks may show a special behaviour and interact with other blocks when they belong to a particular group=• Obnašanje blokov: Bloki lahko kažejo posebno obnašanje in so v interakciji z drugimi bloki, kadar pripadajo določeni skupini
+
+• Damage and armor: Objects and players have armor groups, weapons have damage groups. These groups determine damage. See also: “Basics > Weapons”=• Škoda in oklep: Objekti in igralci imajo skupine oklepa, orožja imajo skupine škode. Te skupine določajo škodo. Glejte tudi: »Osnove > Orožja«
+
+• Other uses=• Druge uporabe
+In the item help, many important groups are usually mentioned and explained.=V pomoči za predmete so običajno omenjene in pojasnjene številne pomembne skupine.
+Glossary=Slovarček
+This is a list of commonly used terms:=To je seznam pogosto uporabljenih izrazov:
+Controls:=Kontrole:
+• Wielding: Holding an item in hand=• Držanje: Držanje predmeta v roki
+• Pointing: Looking with the crosshair at something in range=• Kazanje: Gledanje z namerilnim križem v nekaj, kar je v dosegu
+• Dropping: Throwing an item or item stack to the ground=• Odmetavanje: Metanje predmeta ali sklada predmetov na tla
+• Punching: Attacking with left-click, is also used on blocks=• Udarjanje: Napad z levim klikom, uporablja se tudi na blokih
+• Sneaking: Walking slowly while (usually) avoiding to fall over edges=• Plazenje: Počasna hoja, pri čemer se (običajno) izognete padcem z robov
+• Climbing: Moving up or down a climbable block=• Plezanje: Premikanje gor ali dol po plezalnem bloku
+Blocks:=Bloki:
+• Block: Cubes that the worlds are made of=• Blok: Kocke, iz katerih so zgrajeni svetovi
+• Mining/digging: Using a mining tool to break a block=• Rudarjenje/kopanje: Uporaba orodja za rudarjenje za razbitje bloka
+• Building/placing: Putting a block somewhere=• Gradnja/postavljanje: Postavitev bloka na določeno mesto
+• Drop: Items you get after mining a block=• Izplen: Predmeti, ki jih dobite po rudarjenju bloka
+• Using a block: Right-clicking a block to access its special function=• Uporaba bloka: Desni klik na blok za dostop do njegove posebne funkcije
+Items:=Predmeti:
+• Item: A single thing that players can possess=• Predmet: Ena sama stvar, ki jo igralec lahko poseduje
+• Item stack: A collection of items of the same kind=• Sklad predmetov: Zbirka predmetov iste vrste
+• Maximum stack size: Maximum amount of items in an item stack=• Največja velikost sklada: Največja količina predmetov v enem skladu predmetov
+• Slot / inventory slot: Can hold one item stack=• Reža / reža inventarja: Prostor, ki lahko drži en sklad predmetov
+• Inventory: Provides several inventory slots for storage=• Inventar: Zagotavlja več rež za shranjevanje
+• Player inventory: The main inventory of a player=• Inventar igralca: Glavni inventar igralca
+• Tool: An item which you can use to do special things with when wielding=• Orodje: Predmet, s katerim lahko med držanjem izvajate posebne stvari
+• Range: How far away things can be to be pointed by an item=• Doseg: Kako daleč so lahko stvari, da lahko nanje pokažete s predmetom
+• Mining tool: A tool which allows to break blocks=• Orodje za rudarjenje: Orodje, ki omogoča lomljenje blokov
+• Craftitem: An item which is (primarily or only) used for crafting=• Predmet za ustvarjanje: Predmet, ki se (predvsem ali izključno) uporablja za ustvarjanje
+Gameplay:=Igranje:
+• “heart”: A single health symbol, indicates 2 HP=• »Srce«: Posamezen simbol zdravja, označuje 2 HP
+• “bubble”: A single breath symbol, indicates 1 BP=• »Mehurček«: Posamezen simbol dihanja, označuje 1 BP
+• HP: Hit point (equals half 1 “heart”)=• HP: Točka zdravja (enaka pol 1 »srca«)
+• BP: Breath point, indicates breath when diving=• BP: Točka dihanja, označuje zalogo zraka pri potapljanju
+• Mob: Computer-controlled enemy=• Mob: Računalniško voden sovražnik
+• Crafting: Combining multiple items to create new ones=• Ustvarjanje: Združevanje več predmetov za ustvarjanje novih
+• Crafting guide: A helper which shows available crafting recipes=• Vodnik za ustvarjanje: Pomočnik, ki prikazuje razpoložljive recepte za ustvarjanje
+• Spawning: Appearing in the world=• Pojavljanje: Prikaz v svetu
+• Respawning: Appearing again in the world after death=• Ponovno pojavljanje: Ponoven prikaz v svetu po smrti
+• Group: Puts similar things together, often affects gameplay=• Skupina: Združuje podobne stvari, pogosto vpliva na igranje
+• noclip: Allows to fly through walls=• Brez trkov (noclip): Omogoča letenje skozi stene
+Interface=Vmesnik
+• Hotbar: Inventory slots at the bottom=• Hitra vrstica: Reže inventarja na dnu zaslona
+• Statbar: Indicator made out of half-symbols, used for health and breath=• Vrstica stanja: Kazalnik, sestavljen iz pol-simbolov, ki se uporablja za zdravje in dihanje
+• Minimap: The map or radar at the top right=• Mini-zemljevid: Zemljevid ali radar zgoraj desno
+• Crosshair: Seen in the middle, used to point at things=• Namerilni križ: Viden na sredini, uporablja se za kazanje na stvari
+Online multiplayer:=Spletno večigralstvo:
+• PvP: Player vs Player. If active, players can deal damage to each other=• PvP: Igralec proti igralcu (Player vs Player). Če je to aktivno, lahko igralci poškodujejo drug drugega
+• Griefing: Destroying the buildings of other players against their will=• Kvarjenje igre (Griefing): Uničevanje zgradb drugih igralcev proti njihovi volji
+
+• Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=• Zaščita: Mehanizem za lastništvo območij sveta, ki le lastnikom omogoča spreminjanje blokov znotraj njih
+
+Technical terms:=Tehnični izrazi:
+• Minetest: This game engine=• Minetest: Ta igralni pogon
+• Minetest Game: A game for Minetest by the Minetest developers=• Minetest Game: Igra za Minetest, ki so jo ustvarili razvijalci Minetesta
+
+• Game: A complete playing experience to be used in Minetest; such as a game or sandbox or similar=• Igra: Popolna igralna izkušnja, ki se uporablja v Minetestu, kot je igra, peskovnik ali podobno
+
+• Mod: A single subsystem which adds or modifies functionality; is the basic building block of games and can be used to further enhance or modify them=• Mod: Posamezen podsistem, ki doda ali spremeni funkcionalnost; je osnovni gradnik iger in se lahko uporablja za njihovo nadaljnjo izboljšavo ali spremembo
+
+• Privilege: Allows a player to do something=• Privilegij: Dovoljuje igralcu določena dejanja
+• Node: Other word for “block”=• Vozlišče (Node): Druga beseda za »blok«
+Settings=Nastavitve
+
+There is a large variety of settings to configure Minetest. Pretty much every aspect can be changed that way.=Na voljo je veliko različnih nastavitev za konfiguracijo Minetesta. Na ta način je mogoče spremeniti skoraj vsak vidik.
+
+These are a few of the most important gameplay settings:=Tukaj je nekaj najpomembnejših nastavitev igranja:
+
+• Damage enabled (enable_damage): Enables the health and breath attributes for all players. If disabled, players are immortal=• Škoda omogočena (enable_damage): Omogoči atribute zdravja in dihanja za vse igralce. Če je to onemogočeno, so igralci nesmrtni
+
+• Creative Mode (creative_mode): Enables sandbox-style gameplay focusing on creativity rather than a challenging gameplay. The meaning depends on the game; usual changes are: Reduced dig times, easy access to almost all items, tools never wear off, etc.=• Ustvarjalni način (creative_mode): Omogoča igranje v slogu peskovnika, ki se osredotoča na ustvarjalnost in ne na zahtevno preživetje. Pomen je odvisen od igre; običajne spremembe so: skrajšani časi kopanja, enostaven dostop do skoraj vseh predmetov, orodja se nikoli ne obrabijo itd.
+
+• PvP (enable_pvp): Short for “Player vs Player”. If enabled, players can deal damage to each other=• PvP (enable_pvp): Okrajšava za »Player vs Player« (Igralec proti igralcu). Če je to omogočeno, lahko igralci poškodujejo drug drugega
+
+For a full list of all available settings, use the “All Settings” dialog in the main menu.=Za celoten seznam vseh razpoložljivih nastavitev uporabite pogovorno okno »Vse nastavitve« v glavnem meniju.
+
+Movement modes=Načini premikanja
+You can enable some special movement modes that change how you move.=Omogočite lahko nekatere posebne načine premikanja, ki spremenijo način vašega gibanja.
+Pitch movement mode:=Način premikanja po naklonu:
+
+• Description: If this mode is activated, the movement keys will move you relative to your current view pitch (vertical look angle) when you're in a liquid or in fly mode.=• Opis: Če je ta način aktiviran, vas bodo tipke za premikanje premikale glede na vaš trenutni naklon pogleda (navpični kot gledanja), ko ste v tekočini ali v načinu letenja.
+
+• Default key: [L]=• Privzeta tipka: [L]
+• No privilege required=• Privilegij ni potreben
+Fast mode:=Hitri način:
+
+• Description: Allows you to move much faster. Hold down the the “Use” key [E] to move faster. In the client configuration, you can further customize fast mode.=• Opis: Omogoča vam veliko hitrejše premikanje. Držite tipko »Uporabi« [E] za hitrejše premikanje. V konfiguraciji odjemalca lahko dodatno prilagodite hitri način.
+
+• Default key: [J]=• Privzeta tipka: [J]
+• Required privilege: fast=• Zahtevan privilegij: fast
+Fly mode:=Način letenja:
+
+• Description: Gravity doesn't affect you and you can move freely in all directions. Use the jump key to rise and the sneak key to sink.=• Opis: Gravitacija ne vpliva na vas in prosto se lahko premikate v vse smeri. Uporabite tipko za skok, da se dvignete, in tipko za plazenje, da se spustite.
+
+• Default key: [K]=• Privzeta tipka: [K]
+• Required privilege: fly=• Zahtevan privilegij: fly
+Noclip mode:=Način brez trkov (noclip):
+
+• Description: Allows you to move through walls. Only works when fly mode is enabled, too.=• Opis: Omogoča premikanje skozi stene. Deluje le, če je hkrati omogočen način letenja.
+
+• Default key: [H]=• Privzeta tipka: [H]
+• Required privilege: noclip=• Zahtevan privilegij: noclip
+Console=Konzola
+
+With [F10] you can open and close the console. The main use of the console is to show the chat log and enter chat messages or server commands.=S tipko [F10] lahko odprete in zaprete konzolo. Glavna uporaba konzole je prikaz dnevnika klepeta ter vnos sporočil v klepet ali strežniških ukazov.
+
+Using the chat or server command key also opens the console, but it is smaller and will be closed after you sent a message.=Uporaba tipke za klepet ali strežniški ukaz prav tako odpre konzolo, vendar je ta manjša in se po pošiljanju sporočila zapre.
+
+Use the chat to communicate with other players. This requires you to have the “shout” privilege.=Za komunikacijo z drugimi igralci uporabite klepet. To zahteva, da imate privilegij »shout«.
+
+Just type in the message and hit [Enter]. Public chat messages cannot begin with “/”.=Preprosto vpišite sporočilo in pritisnite [Enter]. Javna sporočila v klepetu se ne smejo začeti z »/«.
+
+You can send private messages: Say “/msg <player> <message>” in chat to send “<message>” which can only be seen by <player>.=Pošljete lahko tudi zasebna sporočila: V klepet vpišite »/msg <igralec> <sporočilo>«, da pošljete »<sporočilo>«, ki ga lahko vidi le <igralec>.
+
+There are some special controls for the console:=Za konzolo veljajo nekatere posebne kontrole:
+• [F10] Open/close console=• [F10] Odpri/zapri konzolo
+• [Enter]: Send message or command=• [Enter]: Pošlji sporočilo ali ukaz
+• [Tab]: Try to auto-complete a partially-entered player name=• [Tab]: Poskus samodejnega dokončanja delno vnesenega imena igralca
+• [Ctrl]+[Left]: Move cursor to the beginning of the previous word=• [Ctrl]+[Levo]: Premik kazalca na začetek prejšnje besede
+• [Ctrl]+[Right]: Move cursor to the beginning of the next word=• [Ctrl]+[Desno]: Premik kazalca na začetek naslednje besede
+• [Ctrl]+[Backspace]: Delete previous word=• [Ctrl]+[Backspace]: Izbriši prejšnjo besedo
+• [Ctrl]+[Delete]: Delete next word=• [Ctrl]+[Delete]: Izbriši naslednjo besedo
+• [Ctrl]+[U]: Delete all text before the cursor=• [Ctrl]+[U]: Izbriši vse besedilo pred kazalcem
+• [Ctrl]+[K]: Delete all text after the cursor=• [Ctrl]+[K]: Izbriši vse besedilo za kazalcem
+• [Page up]: Scroll up=• [Page up]: Pomik navzgor
+• [Page down]: Scroll down=• [Page down]: Pomik navzdol
+
+There is also an input history. Minetest saves your previous console inputs which you can quickly access later:=Obstaja tudi zgodovina vnosov. Minetest shrani vaše prejšnje vnose v konzolo, do katerih lahko kasneje hitro dostopate:
+
+• [Up]: Go to previous entry in history=• [Gor]: Pojdi na prejšnji vnos v zgodovini
+• [Down]: Go to next entry in history=• [Dol]: Pojdi na naslednji vnos v zgodovini
+Server commands=Strežniški ukazi
+
+Server commands (also called “chat commands”) are little helpers for advanced users. You don't need to use these commands when playing. But they might come in handy to perform some more technical tasks. Server commands work both in multi-player and single-player mode.=Strežniški ukazi (imenovani tudi »ukazi v klepetu«) so majhni pomočniki za napredne uporabnike. Teh ukazov vam med igranjem ni treba uporabljati. Lahko pa pridejo prav za izvajanje nekaterih bolj tehničnih nalog. Strežniški ukazi delujejo tako v večigralskem kot v enoigralskem načinu.
+
+Server commands can be entered by players using the chat to perform a special server action. There are a few commands which can be issued by everyone, but some commands only work if you have certain privileges granted on the server. There is a small set of basic commands which are always available, other commands can be added by mods.=Igralci lahko strežniške ukaze vnesejo v klepet za izvedbo posebnega dejanja na strežniku. Obstaja nekaj ukazov, ki jih lahko izdajo vsi, nekateri ukazi pa delujejo le, če imate na strežniku dodeljene določene privilegije. Obstaja majhen nabor osnovnih ukazov, ki so vedno na voljo, druge ukaze pa lahko dodajo modi.
+
+To issue a command, simply type it like a chat message or press Minetest's command key (default: [/]). All commands have to begin with “/”, for example “/mods”. The Minetest command key does the same as the chat key, except that the slash is already entered.=Če želite izdati ukaz, ga preprosto vpišite kot sporočilo v klepetu ali pa pritisnite tipko za ukaz Minetest (privzeto: [/]). Vsi ukazi se morajo začeti z »/«, na primer »/mods«. Tipka za ukaz v Minetestu naredi isto kot tipka za klepet, le da je poševnica že vnesena.
+
+Commands may or may not give a response in the chat log, but errors will generally be shown in the chat. Try it for yourselves: Close this window and type in the “/mods” command. This will give you the list of available mods on this server.=Ukazi se lahko v dnevniku klepeta odzovejo ali pa tudi ne, vendar bodo napake običajno prikazane v klepetu. Preizkusite sami: Zaprite to okno in vpišite ukaz »/mods«. To vam bo dalo seznam razpoložljivih modov na tem strežniku.
+
+“/help all” is a very important command: You get a list of all available commands on the server, a short explanation and the allowed parameters. This command is also important because the available commands often differ per server.=»/help all« je zelo pomemben ukaz: Dobite seznam vseh razpoložljivih ukazov na strežniku, kratko pojasnilo in dovoljene parametre. Ta ukaz je pomemben tudi zato, ker se razpoložljivi ukazi med strežniki pogosto razlikujejo.
+
+Commands are followed by zero or more parameters.=Ukazom sledi nič ali več parametrov.
+
+In the command reference, you see some placeholders which you need to replace with an actual value. Here's an explanation:=V referenci za ukaze boste videli nekaj oznak, ki jih morate nadomestiti z dejansko vrednostjo. Tu je pojasnilo:
+
+• Text in greater-than and lower-than signs (e.g. “<param>”): Placeholder for a parameter=• Besedilo v znakih za večje in manjše (npr. »<param>«): Oznaka za parameter
+
+• Anything in square brackets (e.g. “[text]”) is optional and can be omitted=• Vse v oglatih oklepajih (npr. »[besedilo]«) je neobvezno in ga lahko izpustite
+
+• Pipe or slash (e.g. “text1 | text2 | text3”): Alternation. One of multiple texts must be used (e.g. “text2”)=• Navpičnica ali poševnica (npr. »besedilo1 | besedilo2 | besedilo3«): Izbira. Uporabiti je treba eno izmed več besedil (npr. »besedilo2«)
+
+• Parenthesis: (e.g. “(word1 word2) | word3”): Groups multiple words together, used for alternations=• Oklepaji: (npr. »(beseda1 beseda2) | beseda3«): Združi več besed skupaj, uporablja se za izbire
+
+• Everything else is to be read as literal text=• Vse ostalo se prebere kot dobesedno besedilo
+Here are some examples to illustrate the command syntax:=Tukaj je nekaj primerov za ponazoritev sintakse ukazov:
+• /mods: No parameters. Just enter “/mods”=• /mods: Brez parametrov. Preprosto vnesite »/mods«
+
+• /me <action>: 1 parameter. You have to enter “/me ” followed by any text, e.g. “/me orders pizza”=• /me <dejanje>: 1 parameter. Vnesti morate »/me « in mu sledi poljubno besedilo, npr. »/me naroči pico«
+
+• /give <name> <ItemString>: Two parameters. Example: “/give Player default:apple”=• /give <ime> <nizPredmeta>: Dva parametra. Primer: »/give Igralec default:apple«
+
+• /help [all|privs|<cmd>]: Valid inputs are “/help”, “/help all”, “/help privs”, or “/help ” followed by a command name, like “/help time”=• /help [all|privs|<ukaz>]: Veljavni vnosi so »/help«, »/help all«, »/help privs« ali pa »/help «, ki mu sledi ime ukaza, kot na primer »/help time«
+
+• /spawnentity <EntityName>[<X>,<Y>,<Z>]: Valid inputs include “/spawnentity boats:boat” and “/spawnentity boats:boat 0,0,0”=• /spawnentity <imeEntitete>[<X>,<Y>,<Z>]: Veljavni vnosi vključujejo »/spawnentity boats:boat« in »/spawnentity boats:boat 0,0,0«
+
+Some final remarks:=Nekaj zaključnih opomb:
+
+• For /give and /giveme, you need an itemstring. This is an internally used unique item identifier which you may find in the item help if you have the “give” or “debug” privilege=• Za /give in /giveme potrebujete niz predmeta (itemstring). To je interno uporabljen edinstven identifikator predmeta, ki ga lahko najdete v pomoči predmeta, če imate privilegij »give« ali »debug«
+
+• For /spawnentity you need an entity name, which is another identifier=• Za /spawnentity potrebujete ime entitete, kar je še en identifikator
+Privileges=Privilegiji
+
+Each player has a set of privileges, which differs from server to server. Your privileges determine what you can and can't do. Privileges can be granted and revoked from other players by any player who has the privilege called “privs”.=Vsak igralec ima nabor privilegijev, ki se razlikuje od strežnika do strežnika. Vaši privilegiji določajo, kaj lahko in česa ne morete početi. Privilegije lahko drugim igralcem dodeli in odvzame kateri koli igralec s privilegijem »privs«.
+
+On a multiplayer server with the default configuration, new players start with the privileges called “interact” and “shout”. The “interact” privilege is required for the most basic gameplay actions such as building, mining, using, etc. The “shout” privilege allows to chat.=Na večigralskem strežniku s privzeto konfiguracijo novi igralci začnejo s privilegijema »interact« in »shout«. Privilegij »interact« je potreben za najosnovnejša dejanja pri igranju, kot so gradnja, rudarjenje, uporaba itd. Privilegij »shout« omogoča klepetanje.
+
+There is a small set of core privileges which you'll find on every server, other privileges might be added by mods.=Obstaja majhen nabor osnovnih privilegijev, ki jih boste našli na vsakem strežniku, ostale privilegije pa lahko dodajo modi.
+
+To view your own privileges, issue the server command “/privs”.=Za ogled lastnih privilegijev vnesite strežniški ukaz »/privs«.
+Here are a few basic privilege-related commands:=Tu je nekaj osnovnih ukazov, povezanih s privilegiji:
+• /privs: Lists your privileges=• /privs: Izpiše vaše privilegije
+• /privs <player>: Lists the privileges of <player>=• /privs <igralec>: Izpiše privilegije igralca <igralec>
+• /help privs: Shows a list and description about all privileges=• /help privs: Prikaže seznam in opis o vseh privilegijih
+Players with the “privs” privilege can modify privileges at will:=Igralci s privilegijem »privs« lahko poljubno spreminjajo privilegije:
+• /grant <player> <privilege>: Grant <privilege> to <player>=• /grant <igralec> <privilegij>: Dodeli privilegij <privilegij> igralcu <igralec>
+• /revoke <player> <privilege>: Revoke <privilege> from <player>=• /revoke <igralec> <privilegij>: Odvzame privilegij <privilegij> igralcu <igralec>
+In single-player mode, you can use “/grantme all” to unlock all abilities.=V enoigralskem načinu lahko uporabite »/grantme all«, da odklenete vse zmožnosti.
+Light=Svetloba
+
+As the world is entirely block-based, so is the light in the world. Each block has its own brightness. The brightness of a block is expressed in a “light level” which ranges from 0 (total darkness) to 15 (as bright as the sun).=Ker svet v celoti temelji na blokih, to velja tudi za svetlobo v njem. Vsak blok ima svojo svetlost. Svetlost bloka je izražena v »stopnji svetlobe«, ki sega od 0 (popolna tema) do 15 (tako svetlo kot sonce).
+
+There are two types of light: Sunlight and artificial light.=Obstajata dve vrsti svetlobe: Sončna svetloba in umetna svetloba.
+
+Artificial light is emitted by luminous blocks. Artificial light has a light level from 1-14.=Umetno svetlobo oddajajo svetleči bloki. Umetna svetloba ima stopnjo svetlobe od 1-14.
+
+Sunlight is the brightest light and always goes perfectly straight down from the sky at each time of the day. At night, the sunlight will become moonlight instead, which still provides a small amount of light. The light level of sunlight is 15.=Sončna svetloba je najsvetlejša in vedno prihaja popolnoma naravnost z neba v vsakem delu dneva. Ponoči sončna svetloba postane mesečina, ki še vedno zagotavlja majhno količino svetlobe. Stopnja svetlobe sončne svetlobe je 15.
+
+Blocks have 3 levels of transparency:=Bloki imajo 3 stopnje prosojnosti:
+
+• Transparent: Sunlight goes through limitless, artificial light goes through with losses=• Prosojno: Sončna svetloba gre skozi neomejeno, umetna svetloba gre skozi z izgubami
+
+• Semi-transparent: Sunlight and artificial light go through with losses=• Polprosojno: Sončna svetloba in umetna svetloba gresta skozi z izgubami
+• Opaque: No light passes through=• Neprosojno: Svetloba ne preide skozi
+
+Artificial light will lose one level of brightness for each transparent or semi-transparent block it passes through, until only darkness remains (image 1).=Umetna svetloba bo izgubila eno stopnjo svetlosti za vsak prosojen ali polprosojen blok, skozi katerega preide, dokler ne ostane samo tema (slika 1).
+
+Sunlight will preserve its brightness as long it only passes fully transparent blocks. When it passes through a semi-transparent block, it turns to artificial light. Image 2 shows the difference.=Sončna svetloba bo ohranila svojo svetlost, dokler prehaja samo skozi popolnoma prosojne bloke. Ko gre skozi polprosojen blok, se spremeni v umetno svetlobo. Slika 2 prikazuje razliko.
+
+Note that “transparency” here only means that the block is able to carry brightness from its neighboring blocks. It is possible for a block to be transparent to light but you can't see trough the other side.=Upoštevajte, da »prosojnost« tu pomeni le to, da lahko blok prenaša svetlost od sosednjih blokov. Možno je, da je blok prosojen za svetlobo, a skozenj ni mogoče videti na drugo stran.
+
+Coordinates=Koordinate
+
+The world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.=Svet je velika kocka. In zaradi tega se položaj v svetu lahko preprosto izrazi s kartezičnimi koordinatami. To pomeni, da so za vsak položaj v svetu določene 3 vrednosti: X, Y in Z.
+
+Like this: (5, 45, -12)=Tako: (5, 45, -12)
+
+This refers to the position where X@=5, Y@=45 and Z@=-12. The 3 letters are called “axes”: Y is for the height. X and Z are for the horizontal position.=To se nanaša na položaj, kjer je X@=5, Y@=45 in Z@=-12. Te 3 črke se imenujejo »osi«: Y je za višino, X in Z pa sta za vodoravni položaj.
+
+The values for X, Y and Z work like this:=Vrednosti za X, Y in Z delujejo takole:
+• If you go up, Y increases=• Če greste navzgor, se Y poveča
+• If you go down, Y decreases=• Če greste navzdol, se Y zmanjša
+• If you follow the sun, X increases=• Če sledite soncu, se X poveča
+• If you go to the reverse direction, X decreases=• Če greste v nasprotno smer, se X zmanjša
+• Follow the sun, then go right: Z increases=• Če sledite soncu in greste nato desno: Z se poveča
+• Follow the sun, then go left: Z decreases=• Če sledite soncu in greste nato levo: Z se zmanjša
+• The side length of a full cube is 1=• Dolžina stranice polne kocke je 1
+You can view your current position in the debug screen (open with [F5]).=Svoj trenutni položaj lahko vidite na zaslonu za razhroščevanje (odprete ga s tipko[F5]).
+##[ mcl_extension.lua ]##
+# MCL2 extensions
+Creative Mode=Ustvarjalni način
+Enabling Creative Mode in VoxeLibre applies the following changes:=Omogočanje ustvarjalnega načina v igri VoxeLibre prinaša naslednje spremembe:
+• You keep the things you've placed=• Obdržite stvari, ki ste jih postavili
+• Creative inventory is available to obtain most items easily=• Na voljo je ustvarjalni inventar za preprosto pridobivanje večine predmetov
+• Hand breaks all default blocks instantly=• Roka v trenutku zlomi vse privzete bloke
+• Greatly increased hand pointing range=• Močno povečan doseg kazanja z roko
+• Mined blocks don't drop items=• Izkopani bloki ne izplenijo predmetov
+• Items don't get used up=• Predmeti se ne porabijo
+• Tools don't wear off=• Orodja se ne obrabijo
+• You can eat food whenever you want=• Hrano lahko jeste kadar koli želite
+• You can always use the minimap (including radar mode)=• Vedno lahko uporabljate mini-zemljevid (vključno z radarskim načinom)
+Damage is not affected by Creative Mode, it needs to be disabled separately.=Ustvarjalni način ne vpliva na škodo; to je treba onemogočiti posebej.
+Mobs=Mobi
+Mobs are the living beings in the world. This includes animals and monsters.=Mobi so živa bitja v svetu. Sem spadajo živali in pošasti.
+
+Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some mobs only spawn on particular blocks (like grass blocks).=Mobi se naključno pojavljajo po celem svetu. To se imenuje »pojavljanje« (spawning). Vsaka vrsta moba se pojavi na določenih vrstah blokov in pri določeni stopnji svetlobe. Pomembno vlogo igra tudi višina. Miroljubni mobi se pogosteje pojavljajo podnevi, medtem ko imajo sovražni raje temo. Večina mobov se lahko pojavi na katerem koli trdnem bloku, nekatere vrste pa le na točno določenih (na primer na travnatih blokih).
+
+Like players, mobs have hit points and sometimes armor points, too (which means you need better weapons to deal any damage at all). Also like players, hostile mobs can attack directly or at a distance. Mobs may drop random items after they die.=Tako kot igralci imajo tudi mobi točke zdravja in včasih točke oklepa (kar pomeni, da potrebujete boljša orožja, da jim sploh prizadanete kakšno škodo). Enako kot igralci lahko sovražni mobi napadejo neposredno ali na daljavo. Po smrti lahko izplenijo naključne predmete.
+
+Most animals roam the world aimlessly while most hostile mobs hunt players. Animals can be fed, tamed and bred.=Večina živali brezciljno tava po svetu, medtem ko večina sovražnih mobov lovi igralce. Živali je mogoče hraniti, udomačiti in pariti.
+
+Animals=Živali
+
+Animals are peaceful beings which roam the world aimlessly. You can feed, tame and breed them.=Živali so miroljubna bitja, ki brezciljno tavajo po svetu. Lahko jih hranite, udomačite in parite.
+
+Feeding:=Hranjenje:
+
+Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and right-click the animal.=Vsaka žival ima svoj okus in ne sprejme katere koli hrane. Če jo želite nahraniti, v roki držite predmet s hrano in jo desno kliknite.
+
+Animals are attracted to the food they like and follow you as long you hold the food item in hand.=Živali privlači hrana, ki jim je všeč, in vam sledijo, dokler hrano držite v roki.
+
+Feeding an animal has three uses: Taming, healing and breeding.=Hranjenje živali ima tri namene: udomačitev, zdravljenje in parjenje.
+Feeding heals animals instantly, depending on the quality of the food item.=Hranjenje živali takoj pozdravi, kar pa je odvisno od kakovosti hrane.
+Taming:=Udomačitev:
+
+A few animals can be tamed. You can generally do more things with tamed animals and use other items on them. For example, tame horses can be saddled and tame wolves fight on your side.=Nekatere živali je mogoče udomačiti. Z udomačenimi živalmi na splošno lahko počnete več stvari in na njih uporabite druge predmete. Udomačene konje je denimo mogoče osedlati, udomačeni volkovi pa se borijo na vaši strani.
+
+Breeding:=Parjenje:
+
+When you have fed an animal up to its maximum health, then feed it again, you will activate “Love Mode” and many hearts appear around the animal.=Ko žival nahranite do največjega zdravja in jo nato ponovno nahranite, boste aktivirali »ljubezenski način« in okoli nje se bo pojavilo veliko srčkov.
+
+Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.=Dve živali iste vrste se bosta začeli pariti, če sta v ljubezenskem načinu in blizu ena drugi. Kmalu zatem se bo pojavil živalski mladič.
+
+Baby animals:=Živalski mladiči:
+
+Baby animals are just like their adult counterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.=Živalski mladiči so enaki njihovim odraslim vrstnikom, vendar jih ni mogoče udomačiti ali pariti in ko poginejo, ne dajo nobenega izplena. Po kratkem času odrastejo. Če jih hranite, bodo odrasli hitreje.
+
+Hunger=Lakota
+
+Hunger affects your health and your ability to sprint. Hunger is not in effect when damage is disabled.=Lakota vpliva na vaše zdravje in sposobnost šprinta. Lakota ne učinkuje, če je škoda onemogočena.
+
+Core hunger rules:=Osnovna pravila lakote:
+• You start with 20/20 hunger points (more points @= less hungry)=• Začnete z 20/20 točkami lakote (več točk @= manj ste lačni)
+• Actions like combat, jumping, sprinting, etc. decrease hunger points=• Dejanja, kot so boj, skakanje, šprint itd., zmanjšujejo točke lakote
+• Food restores hunger points=• Hrana obnavlja točke lakote
+• If your hunger bar decreases, you're hungry=• Če se vrstica lakote zmanjša, ste lačni
+• At 18-20 hunger points, you regenerate 1 HP every 4 seconds=• Pri 18-20 točkah lakote se vsake 4 sekunde obnovi 1 HP
+• At 6 hunger points or less, you can't sprint=• Pri 6 ali manj točkah lakote ne morete šprintati
+• At 0 hunger points, you lose 1 HP every 4 seconds (down to 1 HP)=• Pri 0 točkah lakote izgubite 1 HP vsake 4 sekunde (do najmanj 1 HP)
+• Poisonous food decreases your health=• Strupena hrana zmanjšuje vaše zdravje
+Details:=Podrobnosti:
+
+You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=Imate 0-20 točk lakote, ki jih označuje 20 polovičk bedrc nad hitro vrstico. Imate tudi neviden atribut: sitost.
+
+Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.=Točke lakote odražajo, kako polni ste, točke sitosti pa, kako dolgo bo trajalo, preden boste spet lačni.
+
+Each food item increases both your hunger level as well your saturation.=Vsaka hrana poveča tako vašo raven lakote kot tudi vašo sitost.
+
+Food with a high saturation boost has the advantage that it will take longer until you get hungry again.=Hrana z visoko sitostjo ima to prednost, da bo minilo več časa, preden boste spet lačni.
+
+A few food items might induce food poisoning by chance. When you're poisoned, the health and hunger symbols turn sickly green. Food poisoning drains your health by 1 HP per second, down to 1 HP. Food poisoning also drains your saturation. Food poisoning goes away after a while or when you drink milk.=Nekatera hrana lahko občasno povzroči zastrupitev. Ko ste zastrupljeni, simboli za zdravje in lakoto postanejo bolno zeleni. Zastrupitev s hrano vam zmanjšuje zdravje za 1 HP na sekundo (do najmanj 1 HP). Zastrupitev s hrano prav tako prazni vašo sitost. Zastrupitev s hrano mine po določenem času ali ko spijete mleko.
+
+You start with 5 saturation points. The maximum saturation is equal to your current hunger level. So with 20 hunger points your maximum saturation is 20. What this means is that food items which restore many saturation points are more effective the more hunger points you have. This is because at low hunger levels, a lot of the saturation boost will be lost due to the low saturation cap.=Začnete s 5 točkami sitosti. Največja sitost je enaka vaši trenutni ravni lakote. Zato je pri 20 točkah lakote vaša največja sitost 20. To pomeni, da je hrana, ki obnovi veliko točk sitosti, učinkovitejša, čim več točk lakote imate. Pri nizkih ravneh lakote se namreč velik del pridobljene sitosti izgubi zaradi nizke omejitve sitosti.
+
+If your saturation reaches 0, you're hungry and start to lose hunger points. Whenever you see the hunger bar decrease, it is a good time to eat.=Če vaša sitost doseže 0, ste lačni in začnete izgubljati točke lakote. Kadar koli vidite, da se vrstica lakote zmanjša, je pravi čas za jed.
+
+Saturation decreases by doing things which exhaust you (highest exhaustion first):=Sitost se zmanjšuje z opravljanjem dejavnosti, ki vas izčrpavajo (najvišja izčrpanost prva):
+
+• Regenerating 1 HP=• Obnavljanje 1 HP
+• Suffering food poisoning=• Trpljenje zaradi zastrupitve s hrano
+• Sprint-jumping=• Skakanje med šprintanjem
+• Sprinting=• Šprintanje
+• Attacking=• Napadanje
+• Taking damage=• Prejemanje škode
+• Swimming=• Plavanje
+• Jumping=• Skakanje
+• Mining a block=• Rudarjenje bloka
+Other actions, like walking, do not exhaust you.=Druga dejanja, na primer hoja, vas ne izčrpavajo.

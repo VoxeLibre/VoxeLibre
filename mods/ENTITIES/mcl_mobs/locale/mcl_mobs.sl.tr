@@ -1,0 +1,33 @@
+# textdomain: mcl_mobs
+You need the “maphack” privilege to change the mob spawner.=Potrebujete privilegij „maphack“ za spreminjanje mrestilnika pošasti
+Only peaceful mobs allowed!=Dovoljene so samo miroljubne pošasti!
+This allows you to place a single mob.=To vam omogoča da postavite eno samo bitje.
+
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Samo postavite jo tja, kjer želite, da se pojavi bitje. Živali se bodo pojavile udomačene, razen če med postavljanjem držite tipko za prikradenje. Če to postavite na mesto, kjer se pojavlja pošast, spremenite pošast, ki se pojavi.=
+
+##[ physics.lua ]##
+
+The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=Največje število potisljivih entitet, ki jih lahko potisne pošast ali igralec, preden prejme 6 (♥♥♥) škode zaradi natrpanih entitet na pol sekunde.
+
+Whether mobs should drop items and experience orbs.=
+Ali naj bitja spustijo predmete in kroglice izkušenj.##[ api.lua ]##
+Peaceful mode active! No monsters will spawn.=Mirni način je aktiven! Nobena pošast se ne bo pojavila.
+
+Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player.=Odstrani določene pošasti, razen poimenovanih in udomačenih. Za drugi parameter uporabite imensko oznako (nametag), da izberete samo poimenovana bitja ali razdaljo od igralca.
+
+Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=Privzeta uporaba. Čiščenje sovražnih bitij. Za več možnosti v klepet vpišite: /help clearmobs
+
+##[ spawning.lua ]##
+
+Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems.=Ali naj se mobi pojavljajo naravno ali prek globalne logike pojavljanja, na primer za mačke, fantome, patrulje, potujoče trgovce ali obleganja zombijev. Ne vpliva na posebne poskuse pojavljanja, kot so pojavljanje pošasti, napadi ali železni stražarji.
+
+spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: @n spawn_mob skeleton:var<passive@=true>:@n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.=spawn_mob je ukaz za klepet, ki vam omogoča, da vnesete ime moba, ne da bi ves čas 'tipkali mobs_mc:', takole; 'spawn_mob spider'.  Vendar pa lahko s tem posebnim ukazom naredite še več. Trenutno lahko urejate poljubno številsko, logično in nizovno spremenljivko v tej obliki: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob je vaša izbrana spremenljivka, mobs_variable je spremenljivka, vrednost spremenljivke pa je vrednost izbrane spremenljivke. Primer te oblike: @n spawn_mob skeleton:var<passive@=true>:@n To bi ustvarilo okostnjaka, ki vas ne bo napadel.  ZAPOMNITE SI TO> pri spreminjanju številske vrednosti vedno dodajte predpono 'ŠTEVILKA', na primer: @n spawn_mob skeleton:var<jump_height@=ŠTEVILKA10>:@n s tem nastavite višino skoka okostnjaka na 10. Če želite na pošasti narediti več sprememb, lahko to storite na primer: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=ŠTEVILKA10>::var<fly@=true>:@n itd.
+
+##[ crafts.lua ]##
+Name Tag=Imenska oznaka
+Give names to mobs=Dodeli ime bitjem
+Set name at anvil=Nastavi ime na nakovalu
+A name tag is an item to name a mob.=Imenska oznaka je predmet, ki omogoča poimenovanje bitij.
+
+Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Preden uporabite imensko oznako, morate nastaviti ime na nakovalu. Nato lahko z oznako  poimenujete pošast. To porabi oznako.
+

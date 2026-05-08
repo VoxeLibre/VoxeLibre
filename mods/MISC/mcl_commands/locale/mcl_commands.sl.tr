@@ -1,0 +1,40 @@
+# textdomain: mcl_commands
+##[ kill.lua ]##
+Players can't be killed right now, damage has been disabled.=Igralca ni mogoče ubiti, ker je šjoda onemogočena.
+Player @1 does not exist.=Igralec @1 ne obstaja.
+You are already dead=Že si mrtev
+@1 is already dead=@1 he že mrtev
+[<name>]=[<name>]
+Kill player or yourself=Ubij igralca ali sebe
+##[ setblock.lua ]##
+<X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <NodeString>
+Set node at given position=Postavi vozlišče na dani položaj
+Invalid node=Neveljavno vozlišče
+@1 spawned.=Ustvarjeno: @1
+Invalid parameters (see /help setblock)=Nepravilni parametri (glejte /help setblock)
+##[ seed.lua ]##
+Displays the world seed=Pokaže seme sveta
+##[ summon.lua ]##
+Only peaceful mobs allowed!=Dovoljena so samo miroljubne bitja!
+##[ say.lua ]##
+Can use /say= Lahko uporabite /say
+<message>=<message>
+Send a message to every player=Pošljite spiročilo kateremu koli uporabniku
+Invalid usage, see /help say.=Nepravilna uporaba, glejte /help say.
+##[ list.lua ]##
+Show who is logged on=Prikaži prijavljene igralce
+##[ sound.lua ]##
+<sound> <target>=<sound> <target>
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=Predvajaj zvok. Argumenti: <sound>: ime zvoka. <target>: Tarča.
+Sound name is invalid!=Ime zvoka ni veljavno!
+Target is invalid!=Tarča ni veljavna!
+##[ alias.lua ]##
+List bans=Seznam izgnanih igralcev
+Ban list: @1=Seznam izgnancev: @1
+List clear commands=Seznam ukazov za brisanje
+To clear inventory use /clearinv or /clearinventory=Za izbris inveventarja uporabite /clearinv ali /clearinventory
+To clear mobs use /clearmobs=Za odstranitev pošasti uporabite /clearmobs
+To clear the weather use /weather clear=Za jasno vreme uporabite /weather clear
+
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=Brisanje klepeta ni mogoče, klepet lahko skrijete s tipko „Preklopi dnevnik klepeta“ (privzeto F2) na računalniku ali ikono klepeta v mobilni različici
+

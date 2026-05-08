@@ -1,0 +1,12 @@
+# textdomain: mcl_droppers
+Dropper=Podajalnik
+Inventory=Inventar
+9 inventory slots=9 rež v inventarju
+Drops item when powered by redstone power=Odvrže predmet, ko je napajan z energijo rdečega kamna
+
+A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.=Podajalnik je komponenta rdečega kamna in vsebnik z 9 režami v inventarju, ki ob dovedeni energiji rdečega kamna odvrže predmet ali ga vloži v vsebnik pred seboj.
+
+Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.=Podajalnike lahko postavite v 6 možnih smeri, predmeti pa bodo izpadli skozi odprtino. Uporabite podajalnik za dostop do njegovega inventarja. Enkrat mu dovedite energijo rdečega kamna, da podajalnik odvrže ali prenese naključen predmet.
+
+Downwards-Facing Dropper=Navzdol obrnjen podajalnik
+Upwards-Facing Dropper=Navzgor obrnjen podajalnik

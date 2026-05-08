@@ -1,0 +1,113 @@
+# textdomain: mcl_enchanting
+### enchantments.lua ###
+Enchant an item=Očaraj predmet
+<player> <enchantment> [<level>]=<player> <enchantment> [<level>]
+Usage: /enchant <player> <enchantment> [<level>]=Uporaba: /enchant <player> <enchantment> [<level>]
+Player '@1' cannot be found.=Igralca »@1« ni mogoče najti.
+There is no such enchantment '@1'.=Čar »@1« ne obstaja.
+The target doesn't hold an item.=Cilj ne drži predmeta.
+The selected enchantment can't be added to the target item.=Izbranega čara ni mogoče dodati ciljnemu predmetu.
+### init.lua ###
+'@1' is not a valid number=»@1« ni veljavna številka
+The number you have entered (@1) is too big, it must be at most @2.=Številka, ki ste jo vnesli (@1), je prevelika; biti mora največ @2.
+The number you have entered (@1) is too small, it must be at least @2.=Številka, ki ste jo vnesli (@1), je premajhna; biti mora najmanj @2.
+@1 can't be combined with @2.=@1 ni mogoče kombinirati z @2.
+Enchanting succeded.=Očaranje uspelo.
+Forcefully enchant an item=Prisilno očaraj predmet
+Usage: /forceenchant <player> <enchantment> [<level>]=Uporaba: /forceenchant <player> <enchantment> [<level>]
+The target item is not enchantable.=Ciljnega predmeta ni mogoče očarati.
+'@1' is not a valid number.=»@1« ni veljavna številka.
+Enchanted Book=Očarana knjiga
+Enchanting Table=Miza za očaranje
+Spend experience, and lapis to enchant various items.=Porabite izkušnje in lapis za očaranje različnih predmetov.
+
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Mize za očaranje vam bodo omogočile očarati oklepe, orodja, orožja in knjige z različnimi sposobnostmi. Vendar za ceno nekaj izkušenj in lapis lazulija.
+
+Rightclick the Enchanting Table to open the enchanting menu.=Desno kliknite na mizo za očaranje, da odprete meni za očaranje.
+
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Postavite orodje, oklep, orožje ali knjigo v zgornjo levo režo, nato pa postavite 1–3 kose lapis lazulija v režo na desni.
+
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Po namestitvi predmetov v reže se bodo prikazale možnosti očaranja. Z miško se pomaknite nad možnosti, da preberete, kaj vam je na voljo.
+
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Te možnosti so naključne in odvisne od stopnje izkušenj; vendar je moč očaranja mogoče povečati.
+
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=Če želite povečati moč očaranja, okoli mize za očaranje postavite knjižne police. Vendar boste morali med mizo in knjižnimi policami pustiti 1 zračni blok, da opolnomočite mizo za očaranje.
+
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Ko končno izberete svoj čar; levo kliknite na izbor in videli boste, da sta se porabila tako lapis lazuli kot vaše stopnje izkušenj. Na mestu pa bo ostal očaran predmet.
+
+Enchant=Očaraj
+##[ engine.lua ]##
+Inventory=Inventar
+@1 Lapis Lazuli=@1 Lapis Lazuli
+### engine.lua ###
+@1 Enchantment Levels=@1 stopenj očaranja
+Level requirement: @1=Zahtevana stopnja: @1
+##[ enchantments.lua ]##
+Bane of Arthropods=Poguba za členonožce
+
+Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Poveča poškodbo in uporabi Počasnost IV na členonožcih (pajki, jamski pajki, srebrne ribice in endermite).
+
+Channeling=Kanaliziranje
+
+Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Usmeri strelo proti cilju. Deluje le med nevihtami in če cilj ni oviran z neprozornimi bloki.
+
+Curse of Vanishing=Prekletstvo izginjanja
+Item destroyed on death.=Predmet se uniči ob smrti.
+Depth Strider=Globinski korak
+Increases underwater movement speed.=Poveča hitrost gibanja pod vodo.
+Efficiency=Učinkovitost
+Increases mining speed.=Poveča hitrost rudarjenja.
+Fire Aspect=Ognjeni vidik
+Sets target on fire.=Zažge cilj.
+Flame=Plamen
+Arrows set target on fire.=Puščice zažgejo cilj.
+Fortune=Sreča
+Increases certain block drops.=Poveča izkupiček določenih blokov.
+Frost Walker=Ledeni korak
+
+Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Spremeni vodo pod igralcem v zmrznjen led in prepreči poškodbe zaradi blokov magme.
+
+Impaling=Nabadanje
+Trident deals additional damage to ocean mobs.=Trizob povzroči dodatno škodo vodnim bitjem.
+Infinity=Neskončnost
+Shooting consumes no regular arrows.=Streljanje ne porablja navadnih puščic.
+Knockback=Odmik
+Increases knockback.=Poveča odmik.
+Looting=Plenjenje
+Increases mob loot.=Poveča plen bitij.
+Loyalty=Zvestoba
+Spear returns after being thrown. Higher levels reduce return time.=Kopje se vrne po metu. Višje stopnje skrajšajo čas vračanja.
+Luck of the Sea=Sreča na morju
+Increases rate of good loot (enchanting books, etc.)=Poveča stopnjo dobrega plena (knjige za očaranje itd.).
+Lure=Vaba
+Decreases time until rod catches something.=Zmanjša čas, dokler se nekaj ne ujame na trnek.
+Mending=Popravilo
+Repair the item while gaining XP orbs.=Popravi predmet ob pridobivanju izkustvenih kroglic.
+Multishot=Večstrel
+Shoot 3 arrows at the cost of one.=Izstreli 3 puščice za ceno ene.
+Piercing=Prebadanje
+Arrows passes through multiple objects.=Puščice preidejo skozi več predmetov.
+Power=Moč
+Increases arrow damage.=Poveča poškodbo puščic.
+Punch=Udarec
+Increases arrow knockback.=Poveča odmik puščic.
+Quick Charge=Hitro polnjenje
+Decreases crossbow charging time.=Zmanjša čas napenjanja samostrela.
+Respiration=Dihanje
+Extends underwater breathing time.=Podaljša čas dihanja pod vodo.
+Riptide=Vrtinec
+Trident launches player with itself when thrown. Works only in water or rain.=Trizob vrže igralca s seboj, ko je vržen. Deluje le v vodi ali dežju.
+Sharpness=Ostrina
+Increases damage.=Poveča poškodbo.
+Silk Touch=Svileni dotik
+Mined blocks drop themselves.=Izkopani bloki odvržejo sami sebe.
+Smite=Kaznovanje
+Increases damage to undead mobs.=Poveča poškodbo nemrtvim bitjem.
+Soul Speed=Dušna hitrost
+Increases walking speed on soul sand and soul soil.=Poveča hitrost hoje po pesku duš in prsti duš.
+Sweeping Edge=Ostrina zamaha
+Increases sweeping attack damage.=Poveča poškodbo napada z zamahom.
+Unbreaking=Neuničljivost
+Increases item durability.=Poveča vzdržljivost predmeta.
+Swift Sneak=Hitro plazenje
+Increases movement speed while sneaking.=Poveča hitrost gibanja med plazenjem.

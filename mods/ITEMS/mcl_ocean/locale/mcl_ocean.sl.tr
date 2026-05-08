@@ -1,0 +1,64 @@
+# textdomain: mcl_ocean
+##[ prismarine.lua ]##
+Sea Lantern=Morska svetilka
+Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Morske svetilke so okrasni viri svetlobe, ki so videti odlično pod vodo, a jih je mogoče postaviti kamor koli.
+Prismarine=Prizmarin
+Prismarine is used as a building block. It slowly changes its color.=Prizmarin se uporablja kot gradnik. Počasi spreminja svojo barvo.
+Prismarine Bricks=Prizmarinska opeka
+Dark Prismarine=Temni prizmarin
+Prismarine Crystals=Prizmarinski kristali
+Prismarine Shard=Prizmarinski črepec
+##[ corals.lua ]##
+Tube Coral Block=Blok cevaste korale
+Dead Tube Coral Block=Blok mrtve cevaste korale
+Tube Coral=Cevasta korala
+Dead Tube Coral=Mrtva cevasta korala
+Tube Coral Fan=Pahljača cevaste korale
+Dead Tube Coral Fan=Mrtva pahljača cevaste korale
+Brain Coral Block=Blok možganske korale
+Dead Brain Coral Block=Blok mrtve možganske korale
+Brain Coral=Možganska korala
+Dead Brain Coral=Mrtva možganska korala
+Brain Coral Fan=Pahljača možganske korale
+Dead Brain Coral Fan=Mrtva pahljača možganske korale
+Bubble Coral Block=Blok mehurčaste korale
+Dead Bubble Coral Block=Blok mrtve mehurčaste korale
+Bubble Coral=Mehurčasta korala
+Dead Bubble Coral=Mrtva mehurčasta korala
+Bubble Coral Fan=Pahljača mehurčaste korale
+Dead Bubble Coral Fan=Mrtva pahljača mehurčaste korale
+Fire Coral Block=Blok ognjene korale
+Dead Fire Coral Block=Blok mrtve ognjene korale
+Fire Coral=Ognjena korala
+Dead Fire Coral=Mrtva ognjena korala
+Fire Coral Fan=Pahljača ognjene korale
+Dead Fire Coral Fan=Mrtva pahljača ognjene korale
+Horn Coral Block=Blok rogate korale
+Dead Horn Coral Block=Blok mrtve rogate korale
+Horn Coral=Rogata korala
+Dead Horn Coral=Mrtva rogata korala
+Horn Coral Fan=Pahljača rogate korale
+Dead Horn Coral Fan=Mrtva pahljača rogate korale
+Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.=Koralni bloki živijo v oceanih in za preživetje potrebujejo vir vode ob sebi. Brez vode odmrejo.
+Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Korale rastejo na koralnih blokih in morajo biti znotraj vira vode, da preživijo. Brez vode odmrejo, prav tako pa tudi koralni blok pod njimi.
+Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Koralne pahljače rastejo na koralnih blokih in morajo biti znotraj vira vode, da preživijo. Brez vode odmrejo, prav tako pa tudi koralni blok pod njimi.
+Needs water to live=Za življenje potrebuje vodo
+Grows on coral block of same species=Raste na koralnem bloku iste vrste
+##[ seagrass.lua ]##
+Grows in water on dirt, sand, gravel=Raste v vodi na prsti, pesku, produ
+Seagrass=Morska trava
+Seagrass grows inside water on top of dirt, sand or gravel.=Morska trava raste v vodi na prsti, pesku ali produ.
+##[ kelp.lua ]##
+Kelp=Haloga
+Kelp grows inside water on top of dirt, sand or gravel.=Haloga raste v vodi na prsti, pesku ali produ.
+Dried Kelp=Posušena haloga
+Dried kelp is a food item.=Posušena haloga je živilo.
+Dried Kelp Block=Blok posušene haloge
+A decorative block that serves as a great furnace fuel.=Okrasni blok, ki služi kot odlično gorivo za peč.
+##[ sea_pickle.lua ]##
+Sea Pickle=Morska kumara
+Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Morske kumare rastejo na blokih mrtve možganske korale in pod vodo oddajajo svetlobo. Na voljo so v 4 velikostih, ki se razlikujejo po svetlosti.
+It can only be placed on top of dead brain coral blocks. Placing a  another sea pickle will make it grow and brighter.=Postaviti jo je mogoče le na bloke mrtve možganske korale. Postavitev morske kumare na drugo morsko kumaro povzroči, da zraste in močneje sveti.
+Glows in the water=Sveti v vodi
+4 possible sizes=4 možne velikosti
+Grows on dead brain coral block=Raste na bloku mrtve možganske korale

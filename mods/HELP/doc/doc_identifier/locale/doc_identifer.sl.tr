@@ -1,0 +1,22 @@
+# textdomain:doc_identifier
+No help entry for this item could be found.=Za ta predmet ni bilo mogoče najti vnosa v pomoči.
+No help entry for this block could be found.=Za ta blok ni bilo mogoče najti vnosa v pomoči.
+Error: This node, item or object is undefined. This is always an error.=Napaka: To vozlišče, ta predmet ali objekt je nedefiniran. To je vedno napaka.
+This can happen for the following reasons:=To se lahko zgodi iz naslednjih razlogov:
+• The mod which is required for it is not enabled=• Mod, ki je zanj potreben, ni omogočen
+• The author of the game or a mod has made a mistake=• Avtor igre ali moda je naredil napako
+It appears to originate from the mod “@1”, which is enabled.=Zdi se, da izvira iz moda »@1«, ki je omogočen.
+It appears to originate from the mod “@1”, which is not enabled!=Zdi se, da izvira iz moda »@1«, ki ni omogočen!
+Its identifier is “@1”.=Njegov identifikator je »@1«.
+
+This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.=Tega bloka ni mogoče prepoznati, ker se svet na tej točki še ni materializiral. Poskusite znova čez nekaj sekund.
+
+No help entry for this object could be found.=Za ta objekt ni bilo mogoče najti vnosa v pomoči.
+This is a player.=To je igralec.
+OK=V redu
+Lookup Tool=Orodje za prepoznavanje
+Show help for pointed thing=Prikaz pomoči za pokazano stvar
+
+This useful little helper can be used to quickly learn more about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used.=Tega uporabnega malega pomočnika lahko uporabite, da se hitro naučite več o svoji ožji okolici. Prepoznava in analizira bloke, predmete ter druge stvari in prikaže izčrpne informacije o stvari, na kateri ga uporabite.
+
+Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case.=Udarite kateri koli blok, predmet ali drugo stvar, o kateri želite izvedeti več. S tem se bo odprl ustrezen vnos v pomoči. Orodje ima dva načina, ki ju preklapljate z njegovo uporabo. V tekočinskem načinu to orodje lahko pokaže tudi na tekočine, medtem ko v trdnem načinu to ne velja.

@@ -1,0 +1,13 @@
+# textdomain: vl_tuning
+Admin tool to tune settings and game rules=Skrbniško orodje za prilagajanje nastavitev in pravil igre
+<setting> <value>=<setting> <value>
+Usage: /tune <setting> <value>=Uporaba: /tune <setting> <value>
+Setting @1 doesn't exist=Nastavitev @1 ne obstaja
+Admin tool to view settings and game rules=Skrbniško orodje za ogled nastavitev in pravil igre
+<setting>=
+Display or set customizable options=
+<rule> [<value>]=<rule> [<value>]
+Usage: /gamerule <rule> [<value>]=
+Game rule @1 doesn't exist=
+##[ settings.lua ]##
+Prevents beds/respawn anchors from exploding in other dimensions.=Preprečuje da bi postelje/sidra za ponovno pojavljanje eksplodirala v drugih dimenzijah.

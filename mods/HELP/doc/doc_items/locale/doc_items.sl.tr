@@ -1,0 +1,170 @@
+# textdomain:doc_items
+This is a decorative block.=To je okrasen blok.
+This block is a building block for creating various buildings.=Ta blok je gradnik za ustvarjanje različnih zgradb.
+This item is primarily used for crafting other items.=Ta predmet se uporablja predvsem za ustvarjanje drugih predmetov.
+Hold it in your hand, then left-click to eat it.=Držite ga v roki, nato kliknite z levim gumbom, da ga pojeste.
+
+Hold it in your hand, then left-click to eat it. But why would you want to do this?=Držite ga v roki, nato kliknite z levim gumbom, da ga pojeste. A le zakaj bi to želeli storiti?
+
+This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=Na vrtenje tega bloka vpliva način postavitve: postavite ga na tla ali strop za navpično usmeritev; postavite ga ob stran za vodoravno usmeritev. Če se med postavljanjem plazite, bo usmeritev namesto tega pravokotna.
+
+Hand=Roka
+Air=Zrak
+Yes=Da
+No=Ne
+# List separator (e.g. “one, two, three”)
+, =, 
+Unknown item (@1)=Neznan predmet (@1)
+unknown=neznano
+1 second=1 sekunda
+@1 seconds=@1 sekund
+• @1: @2=• @1: @2
+• @1, rating @2: @3 s - @4 s=• @1, stopnja @2: @3 s - @4 s
+• @1, rating @2: @3 s=• @1, stopnja @2: @3 s
+• @1, level @2: @3 uses=• @1, raven @2: @3 uporab
+• @1, level @2: Unlimited=• @1, raven @2: Neomejeno
+This tool is capable of mining.=To orodje lahko rudari.
+Maximum toughness levels:=Najvišje ravni trdote:
+Mining times:=Časi rudarjenja:
+Durability:=Vzdržljivost:
+This is a melee weapon which deals damage by punching.=To je orožje za boj od blizu, ki povzroča škodo z udarjanjem.
+Maximum damage per hit:=Največja škoda na udarec:
+• @1: @2 HP=• @1: @2 HP
+Full punch interval: @1 s=Interval polnega udarca: @1 s
+This block can be mined by any mining tool in half a second.=Ta blok je mogoče zrudariti s katerim koli orodjem za rudarjenje v pol sekunde.
+This block can be mined by any mining tool immediately.=Ta blok je mogoče takoj zrudariti s katerim koli orodjem za rudarjenje.
+This block cannot be mined by ordinary mining tools.=Tega bloka ni mogoče rudariti z običajnimi orodji za rudarjenje.
+This block can be destroyed by any mining tool in half a second.=Ta blok lahko katero koli orodje za rudarjenje uniči v pol sekunde.
+This block can be destroyed by any mining tool immediately.=Ta blok lahko katero koli orodje za rudarjenje uniči takoj.
+This block cannot be destroyed by ordinary mining tools.=Tega bloka ni mogoče uničiti z običajnimi orodji za rudarjenje.
+
+This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Ta blok je mogoče rudariti z orodji za rudarjenje, ki ustrezajo kateri koli od naslednjih stopenj rudarjenja in njegovi ravni trdote.
+
+Mining ratings:=Stopnje rudarjenja:
+Toughness level: @1=Raven trdote: @1
+Range: @1=Doseg: @1
+Range: 4=Doseg: 4
+# Range: <Hand> (<Range>)
+Range: @1 (@2)=Doseg: @1 (@2)
+This tool can serve as a smelting fuel with a burning time of @1.=To orodje lahko služi kot gorivo za taljenje s časom gorenja @1.
+This block can serve as a smelting fuel with a burning time of @1.=Ta blok lahko služi kot gorivo za taljenje s časom gorenja @1.
+This item can serve as a smelting fuel with a burning time of @1.=Ta predmet lahko služi kot gorivo za taljenje s časom gorenja @1.
+ Using it as fuel turns it into: @1.= Ob uporabi kot gorivo se spremeni v: @1.
+Itemstring: "@1"=Niz predmeta: "@1"
+Description: @1=Opis: @1
+Usage help: @1=Pomoč za uporabo: @1
+Maximum stack size: @1=Največja velikost sklada: @1
+This block points to liquids.=Ta blok lahko pokaže na tekočine.
+This tool points to liquids.=To orodje lahko pokaže na tekočine.
+This item points to liquids.=Ta predmet lahko pokaže na tekočine.
+
+Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Udarci s tem blokom ne delujejo kot običajno; boj od blizu in rudarjenje bodisi nista mogoča bodisi delujeta drugače.
+
+Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Udarci s tem orodjem ne delujejo kot običajno; boj od blizu in rudarjenje bodisi nista mogoča bodisi delujeta drugače.
+
+Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Udarci s tem predmetom ne delujejo kot običajno; boj od blizu in rudarjenje bodisi nista mogoča bodisi delujeta drugače.
+
+This block belongs to the @1 group.=Ta blok pripada skupini @1.
+This tool belongs to the @1 group.=To orodje pripada skupini @1.
+This item belongs to the @1 group.=Ta predmet pripada skupini @1.
+This block belongs to these groups: @1.=Ta blok pripada naslednjim skupinam: @1.
+This tool belongs to these groups: @1.=To orodje pripada naslednjim skupinam: @1.
+This item belongs to these groups: @1.=Ta predmet pripada naslednjim skupinam: @1.
+Blocks=Bloki
+Item reference of blocks and other things which are capable of occupying space=Referenca za bloke in druge stvari, ki lahko zasedejo prostor
+Collidable: @1=Trkljivo: @1
+Pointable: Yes=Kažljivo: Da
+Pointable: Only by special items=Kažljivo: Samo s posebnimi predmeti
+Pointable: No=Kažljivo: Ne
+This block is a liquid with these properties:=Ta blok je tekočina z naslednjimi lastnostmi:
+• Renewable=• Obnovljiva
+• Not renewable=• Neobnovljivo
+• No flowing=• Brez toka
+• Flowing range: @1=• Doseg toka: @1
+• Viscosity: @1=• Viskoznost: @1
+This block causes a damage of @1 hit points per second.=Ta blok povzroča škodo v višini @1 točk zdravja na sekundo.
+This block causes a damage of @1 hit point per second.=Ta blok povzroča škodo v višini @1 točke zdravja na sekundo.
+
+This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=Ta blok zmanjšuje vaše dihanje in povzroča škodo zaradi utapljanja v višini @1 točk zdravja vsaki 2 sekundi.
+
+This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=Ta blok zmanjšuje vaše dihanje in povzroča škodo zaradi utapljanja v višini @1 točke zdravja vsaki 2 sekundi.
+
+The fall damage on this block is increased by @1%.=Škoda pri padcu na ta blok je povečana za @1 %.
+This block cancels any fall damage.=Ta blok izniči vso škodo pri padcu.
+The fall damage on this block is reduced by @1%.=Škoda pri padcu na ta blok je zmanjšana za @1 %.
+You cannot jump while standing on this block.=Medtem ko stojite na tem bloku, ne morete skakati.
+This block can be climbed.=Po tem bloku je mogoče plezati.
+This block will make you bounce off with an elasticity of @1%.=Od tega bloka se boste odbili z elastičnostjo @1 %.
+This block is slippery.=Ta blok je spolzek.
+This block is completely silent when walked on, mined or built.=Ta blok je popolnoma neslišen pri hoji po njem, rudarjenju ali gradnji.
+This block is completely silent when mined or built.=Ta blok je popolnoma neslišen pri rudarjenju ali gradnji.
+Walking on this block is completely silent.=Hoja po tem bloku je popolnoma neslišna.
+Mining this block is completely silent.=Rudarjenje tega bloka je popolnoma neslišno.
+Building this block is completely silent.=Gradnja tega bloka je popolnoma neslišna.
+This block is affected by gravity and can fall.=Na ta blok vpliva gravitacija in lahko pade.
+Building another block at this block will place it inside and replace it.=Če na tem bloku zgradite drug blok, bo postavljen vanj in ga bo nadomestil.
+Falling blocks can go through this block; they destroy it when doing so.=Padajoči bloki lahko preidejo skozi ta blok; pri tem ga uničijo.
+This block will drop as an item when a falling block ends up inside it.=Ta blok izpade kot predmet, ko padajoči blok pristane v njem.
+This block is destroyed when a falling block ends up inside it.=Ta blok je uničen, ko padajoči blok pristane v njem.
+This block will drop as an item when it is not attached to a surrounding block.=Ta blok izpade kot predmet, ko ni pritrjen na sosednji blok.
+This block will drop as an item when no collidable block is below it.=Ta blok izpade kot predmet, ko pod njim ni trkljivega bloka.
+Liquids can flow into this block and destroy it.=Tekočine lahko stečejo v ta blok in ga uničijo.
+This block is a light source with a light level of @1.=Ta blok je vir svetlobe s stopnjo svetlobe @1.
+This block glows faintly with a light level of @1.=Ta blok medlo sveti s stopnjo svetlobe @1.
+
+This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly.=Ta blok omogoča širjenje svetlobe z majhno izgubo svetlosti, sončna svetloba pa lahko preide celo brez izgub.
+
+This block allows light to propagate with a small loss of brightness.=Ta blok omogoča širjenje svetlobe z majhno izgubo svetlosti.
+This block allows sunlight to propagate without loss in brightness.=Ta blok omogoča širjenje sončne svetlobe brez izgube svetlosti.
+Unknown Node=Neznano vozlišče
+This block connects to this block: @1.=Ta blok se poveže s tem blokom: @1.
+This block connects to these blocks: @1.=Ta blok se poveže s temi bloki: @1.
+This block connects to blocks of the @1 group.=Ta blok se poveže z bloki iz skupine @1.
+This block connects to blocks of the following groups: @1.=Ta blok se poveže z bloki iz naslednjih skupin: @1.
+This block won't drop anything when mined.=Ta blok po rudarjenju ne bo izplenil ničesar.
+This block will drop the following when mined: @1×@2.=Ta blok bo po rudarjenju izplenil naslednje: @1×@2.
+This block will drop the following when mined: @1.=Ta blok bo po rudarjenju izplenil naslednje: @1.
+This block will drop the following items when mined: @1.=Ta blok bo po rudarjenju izplenil naslednje predmete: @1.
+This block will randomly drop one of the following when mined: @1.=Ta blok bo po rudarjenju naključno izplenil eno od naslednjega: @1.
+
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Ta blok bo po rudarjenju naključno izplenil do @1 izmed naslednjih možnih izplenov: @2.
+
+# Final list separator (e.g. “One, two and three”)
+ and = in 
+# Item count times item name
+@1×@2=@1×@2
+# Itemname (<0.5%)
+@1 (<0.5%)=@1 (<0,5 %)
+# Itemname (ca. 25%)
+@1 (ca. @2%)=@1 (pribl. @2 %)
+# Itemname (25%)
+@1 (@2%)=@1 (@2 %)
+Tools and weapons=Orodja in orožja
+Item reference of all wieldable tools and weapons=Referenca za vsa orodja in orožja, ki jih je mogoče držati
+Durability: @1 uses=Vzdržljivost: @1 uporab
+Durability: @1=Vzdržljivost: @1
+Miscellaneous items=Razni predmeti
+
+Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=Referenca za predmete, ki niso niti bloki, niti orodja ali orožja (zlasti predmeti za ustvarjanje)
+
+Mobs=Mobi
+different mobs=različnih mobov
+Type: @1=Vrsta: @1
+spawn class: @1=razred pojavljanja: @1
+Can Jump=Lahko skače
+Can Fly=Lahko leti
+drops: =izpleni: 
+follows player when these items are held:=sledi igralcu, ko ta drži naslednje predmete:
+
+A transparent block, basically empty space. It is usually left behind after digging something.=Prosojen blok, v bistvu prazen prostor. Običajno ostane za nečim, kar izkopljete.
+
+Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Kadar koli v roki ne držite nobenega predmeta, uporabljate roko, ki deluje kot orodje z lastnimi zmožnostmi. Ko držite predmet, ki ni orodje za rudarjenje ali orožje, se bo ta obnašal kot roka.
+
+
+
+##### not used anymore #####
+
+# Rating used for digging times
+Rating @1=Stopnja @1
+# @1 is minimal rating, @2 is maximum rating
+Rating @1-@2=Stopnja @1-@2

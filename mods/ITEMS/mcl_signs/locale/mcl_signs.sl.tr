@@ -1,0 +1,21 @@
+# textdomain: mcl_signs
+##[ api.lua ]##
+Can be written=Omogoča pisanje
+Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Na table je mogoče pisati in so na voljo v dveh različicah: stenska tabla in tabla na stebričku. Table je mogoče postaviti na vrh in na stranice drugih blokov, ne pa pod njih.
+After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=Po postavitvi table lahko nanjo nekaj napišete. Na voljo imate @1 vrstic besedila z do @2 znaki za vsako vrstico; vse, kar presega te omejitve, se izgubi. Vsi znaki niso podprti. Besedilo lahko po zapisu spremenite z desnim klikom na tablo. Lahko se obarva in naredi sijočo. Uporabite kostno moko, da odstranite barvo in sijaj.
+Sign text:=Besedilo table:
+Close=Zapri
+Enter sign text:=Vnesite besedilo table:
+Maximum line length: @1=Največja dolžina vrstice: @1
+Maximum lines: @1=Največje število vrstic: @1
+Done=Končano
+##[ register.lua ]##
+Oak Sign=Hrastova tabla
+Dark Oak Sign=Tabla iz temnega hrasta
+Acacia Sign=Akacijeva tabla
+Birch Sign=Brezova tabla
+Jungle Sign=Džungelska tabla
+Spruce Sign=Smrekova tabla
+Mangrove Sign=Mangrovova tabla
+Crimson Hyphae Sign=Tabla iz škrlatnih hif
+Warped Hyphae Sign=Tabla iz popačenih hif

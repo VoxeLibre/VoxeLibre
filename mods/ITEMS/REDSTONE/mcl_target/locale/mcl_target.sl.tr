@@ -1,0 +1,6 @@
+# textdomain: mcl_target
+Target=Tarča
+
+A target is a block that provides a temporary redstone charge when hit by a projectile.=Tarča je blok, ki ob zadetku izstrelka odda začasen naboj rdečega kamna.
+
+Throw a projectile on the target to activate it.=Vrzite izstrelek v tarčo, da jo aktivirate.

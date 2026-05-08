@@ -1,0 +1,11 @@
+# textdomain: mcl_maps
+It may take a moment for the map to be ready.=Lahko traja trenutek, da bo zemljevid pripravljen.
+The new map is now ready.=Novi zemljevid je zdaj pripravljen.
+Empty Map=Prazen zemljevid
+Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.=Prazni zemljevidi niso uporabni kot zemljevidi, vendar jih je mogoče zlagati na kup in spremeniti v zemljevide, ki se jih da uporabljati.
+Rightclick to create a filled map (which cannot be stacked anymore).=Desno kliknite, da ustvarite izpolnjen zemljevid (ki ga ni več mogoče zlagati na kup).
+Map=Zemljevid
+Shows a map image.=Prikazuje sliko zemljevida.
+When created, the map saves the nearby area as an image that can be viewed any time by holding the map.=Ko je ustvarjen, zemljevid shrani bližnje območje kot sliko, ki si jo lahko kadar koli ogledate z držanjem zemljevida.
+Hold the map in your hand. This will display a map on your screen.=Držite zemljevid v roki. To bo prikazalo zemljevid na vašem zaslonu.
+Level @1=Raven @1

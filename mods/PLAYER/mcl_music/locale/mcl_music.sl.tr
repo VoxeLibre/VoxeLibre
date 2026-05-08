@@ -1,0 +1,9 @@
+# textdomain: mcl_music
+Turn music for yourself or another player on or off.=Vklopi ali izklopi glasbo zase ali za druge igralce.
+
+You need the debug privilege in order to turn in-game music on or off for somebody else!=Za vklop ali izklop glasbe v igri za nekoga drugega potrebujete privilegij za razhroščevanja!
+
+Could not find player @1!=Ni mogoče najti igralca @1!
+off=izklop
+on=vklop
+Set music for @1 to: @2=Nastavi glasbo za @1 na: @2

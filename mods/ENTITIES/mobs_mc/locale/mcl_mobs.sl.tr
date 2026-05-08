@@ -1,0 +1,146 @@
+# textdomain: mobs_mc
+##[ axolotl.lua ]##
+Axolotl=Aksolotl
+##[ bat.lua ]##
+Bat=Netopir
+##[ rabbit.lua ]##
+Rabbit=Zajec
+Killer Bunny=Morilski zajec
+##[ chicken.lua ]##
+Chicken=Kokoš
+##[ cow+mooshroom.lua ]##
+Cow=Krava
+Mooshroom=Gobasta krava
+##[ horse.lua ]##
+Horse=Konj
+Skeleton Horse=Okostnjaški konj
+Zombie Horse=Zombijevski konj
+Donkey=Osel
+Mule=Mula
+##[ llama.lua ]##
+Llama=Lama
+ - Strength @1= - Moč @1
+##[ ocelot.lua ]##
+Ocelot=Ozelot
+Cat=Mačka
+##[ parrot.lua ]##
+Parrot=Papiga
+##[ pig.lua ]##
+Pig=Prašič
+##[ polar_bear.lua ]##
+Polar Bear=Polarni medved
+##[ sheep.lua ]##
+Sheep=Ovca
+##[ wolf.lua ]##
+Wolf=Volk
+Dog=Pes
+##[ squid.lua ]##
+Squid=Ligenj
+##[ villager.lua ]##
+Novice=Novinec
+Apprentice=Vajenec
+Journeyman=Pomočnik
+Expert=Strokovnjak
+Master=Mojster
+Unemployed=Brezposelen
+Farmer=Kmet
+Fisherman=Ribič
+Fletcher=Lokar
+Shepherd=Pastir
+Librarian=Knjižničar
+Cartographer=Kartograf
+Armorer=Oklepar
+Leatherworker=Usnjar
+Butcher=Mesar
+Weapon Smith=Orožar
+Tool Smith=Orodjar
+Cleric=Duhovnik
+Mason=Zidar
+Nitwit=Tepček
+Villager=Vaščan
+##[ pillager.lua ]##
+Pillager=Ropar
+##[ villager_evoker.lua ]##
+Evoker=Priklicovalec
+##[ villager_vindicator.lua ]##
+Vindicator=Maščevalec
+##[ villager_zombie.lua ]##
+Zombie Villager=Zombijevski vaščan
+##[ witch.lua ]##
+Witch=Čarovnica
+##[ elementals.lua ]##
+Fire Elemental=Ognjeni elementar
+##[ ender_dragon.lua ]##
+Ender Dragon=Enderjevski zmaj
+##[ endermite.lua ]##
+Endermite=Endermit
+##[ villager_illusioner.lua ]##
+Illusioner=Iluzionist
+##[ ghast.lua ]##
+Ghast=Strahec
+##[ guardian.lua ]##
+Guardian=Varuh
+##[ guardian_elder.lua ]##
+Elder Guardian=Starejši varuh
+##[ snowman.lua ]##
+Snow Golem=Sneženi stražar
+##[ iron_golem.lua ]##
+Iron Golem=Železni stražar
+##[ rover.lua ]##
+Rover=Klatež
+##[ shulker.lua ]##
+Shulker=Školjkar
+##[ silverfish.lua ]##
+Silverfish=Srebrna ribica
+##[ skeleton+stray.lua ]##
+Skeleton=Okostnjak
+Stray=Zablodeli okostnjak
+##[ skeleton_wither.lua ]##
+Wither Skeleton=Wither okostnjak
+##[ stalker.lua ]##
+Stalker=Zalezovalec
+Overloaded Stalker=Preobremenjeni zalezovalec
+##[ zombie.lua ]##
+Zombie=Zombi
+Baby Zombie=Otroški zombi
+Husk=Suhec
+Baby Husk=Otroški suhec
+##[ slime+magma_cube.lua ]##
+Slime - big=Sluz - velika
+Slime - small=Sluz - majhna
+Slime - tiny=Sluz - drobna
+Magma Cube - big=Magma kocka - velika
+Magma Cube - small=Magma kocka - majhna
+Magma Cube - tiny=Magma kocka - drobna
+Magma Cube=Magma kocka
+Slime=Sluz
+##[ spider.lua ]##
+Spider=Pajek
+Cave Spider=Jamski pajek
+##[ vex.lua ]##
+Vex=Bes
+##[ wither.lua ]##
+Wither=Wither
+##[ cod.lua ]##
+Cod=Trska
+##[ salmon.lua ]##
+Salmon=Losos
+##[ tropical_fish.lua ]##
+Tropical fish=Tropska riba
+##[ dolphin.lua ]##
+Dolphin=Delfin
+##[ glow_squid.lua ]##
+Glow Squid=Svetleči ligenj
+##[ piglin.lua ]##
+Piglin=Prašičan
+Sword Piglin=Prašičan z mečem
+Zombie Piglin=Zombificirani prašičan
+Baby Zombie Piglin=Otroški zombificirani prašičan
+Piglin Brute=Prašičan barbar
+##[ hoglin+zoglin.lua ]##
+Hoglin=Merjasnik
+Zoglin=Zomjasnik
+Baby hoglin=Otroški merjasnik
+##[ strider.lua ]##
+Strider=Korakač
+Baby Strider=Otroški korakač

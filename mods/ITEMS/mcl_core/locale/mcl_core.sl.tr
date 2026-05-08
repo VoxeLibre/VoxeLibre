@@ -1,0 +1,419 @@
+# textdomain: mcl_core
+##[ functions.lua ]##
+
+Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=Ali se vzpenjalke lahko širijo na druge bloke. Jamske vzpenjalke, žalujoče vzpenjalke in zvite vzpenjalke niso prizadete.
+
+##[ nodes_base.lua ]##
+Stone=Kamen
+
+One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava.=Eden najpogostejših blokov na svetu; skoraj celotno podzemlje je sestavljeno iz kamna. Včasih vsebuje rude. Kamen lahko nastane, ko voda pride v stik z lavo.
+
+Coal Ore=Premogova ruda
+
+Some coal contained in stone, it is very common and can be found inside stone in medium to large clusters at nearly every height.=Nekaj premoga v kamnu; je zelo pogost in ga lahko najdete v kamnu v srednjih do velikih grozdih na skoraj vsaki višini.
+
+Iron Ore=Železova ruda
+
+Some iron contained in stone, it is prety common and can be found below sea level.=Nekaj železa v kamnu; je precej pogost in ga lahko najdete pod morsko gladino.
+
+Gold Ore=Zlata ruda
+This stone contains pure gold, a rare metal.=Ta kamen vsebuje čisto zlato, redko kovino.
+Redstone Ore=Ruda rdečega kamna
+
+Redstone ore is commonly found near the bottom of the world. It glows when it is punched or walked upon.=Ruda rdečega kamna se običajno nahaja blizu dna sveta. Zažari, ko jo udarite ali hodite po njej.
+
+Lit Redstone Ore=Prižgana ruda rdečega kamna
+Lapis Lazuli Ore=Ruda lapisa lazula
+
+Lapis lazuli ore is the ore of lapis lazuli. It can be rarely found in clusters near the bottom of the world.=Ruda lapis lazulija je vir lapis lazulija. Redko se najde, v grozdih blizu dna sveta.
+
+Emerald Ore=Smaragdna ruda
+
+Emerald ore is the ore of emeralds. It is very rare and can be found alone, not in clusters.=Smaragdna ruda je vir smaragdov. Je zelo redka in jo najdete posamično, ne v grozdih.
+
+Diamond Ore=Diamantna ruda
+Diamond ore is rare and can be found in clusters near the bottom of the world.=Diamantna ruda je redka in jo lahko najdete v grozdih blizu dna sveta.
+Stone Bricks=Kamnite opeke
+Chiseled Stone Bricks=Izklesane kamnite opeke
+Cracked Stone Bricks=Razpokane kamnite opeke
+Mossy Stone Bricks=Mahovite kamnite opeke
+Polished Stone=Poliran kamen
+Granite=Granit
+Granite is an igneous rock.=Granit je magmatska kamnina.
+Polished Granite=Poliran granit
+Polished granite is a decorative building block made from granite.=Poliran granit je okrasni gradbeni blok, izdelan iz granita.
+Andesite=Andezit
+Andesite is an igneous rock.=Andezit je magmatska kamnina.
+Polished Andesite=Poliran andezit
+Polished andesite is a decorative building block made from andesite.=Poliran andezit je okrasni gradbeni blok, izdelan iz andezita.
+Diorite=Diorit
+Diorite is an igneous rock.=Diorit je magmatska kamnina.
+Polished Diorite=Poliran diorit
+Polished diorite is a decorative building block made from diorite.=Poliran diorit je okrasni gradbeni blok, izdelan iz diorita.
+Grass Block=Blok trave
+
+A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.=Blok trave je prst s travnato prevleko. Bloki trave so uporabni bloki, ki omogočajo rast vseh vrst rastlin. Z motiko jih lahko spremenite v obdelovalno zemljo, z lopato pa v travnate poti. Na svetlobi se trava počasi širi na bližnjo prst. Pod neprozornim blokom ali tekočino se blok trave lahko spremeni nazaj v prst.
+
+Dirt with Snow=Prst s snegom
+Grass Path=Travnata pot
+
+Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=Travnate poti so okrasna različica blokov trave. Njihov vrh ima drugačno barvo in so nekoliko nižje od blokov trave, zaradi česar so uporabne za gradnjo pešpoti. Travnate poti lahko ustvarite z desnim klikom z lopato. Travnata pot se spremeni v prst, če je pod trdnim blokom ali če nanjo desno kliknete z lopato med držanjem tipke Shift.
+
+Mycelium=Micelij
+
+Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.=Micelij je vrsta prsti in idealna podlaga za gobe. Za razliko od drugih blokov prsti ga z motiko ni mogoče spremeniti v obdelovalno zemljo. Na svetlobi se micelij počasi širi na bližnjo prst. Pod neprozornim blokom ali tekočino se sčasoma spremeni nazaj v prst.
+
+Mycelium with Snow=Micelij s snegom
+Podzol=Podzol
+
+Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.=Podzol je vrsta prsti, ki jo najdemo v gozdovih tajge. Na njem lahko preživi le malo rastlin.
+
+Podzol with Snow=Podzol s snegom
+Dirt=Prst
+
+Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby.=Prst deluje kot podlaga za nekatere rastline. Na svetlobi lahko ta blok preraste trava ali micelij, če so takšni bloki v bližini.
+
+Coarse Dirt=Groba prst
+
+Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never grow a cover.=Groba prst deluje kot podlaga za nekatere rastline in je podobna prsti, vendar je nikoli ne bo prerastlo rastje.
+
+Gravel=Prod
+This block consists of a couple of loose stones and can't support itself.=Ta blok je sestavljen iz nekaj razsutih kamnov in se ne more podpirati sam.
+Grey Sand=Sivi pesek
+Grey sand is found where stone erosion takes place.=Siv pesek najdemo tam, kjer prihaja do erozije kamna.
+Sand=Pesek
+Sand is found in large quantities at beaches and deserts.=Pesek se v velikih količinah nahaja na plažah in v puščavah.
+Sandstone=Peščenjak
+Sandstone is compressed sand and is a rather soft kind of stone.=Peščenjak je stisnjen pesek in je precej mehka vrsta kamna.
+Cut Sandstone=Rezan peščenjak
+Cut sandstone is a decorative building block.=Rezan peščenjak je okrasni gradbeni blok.
+Chiseled Sandstone=Izklesan peščenjak
+Chiseled sandstone is a decorative building block.=Izklesan peščenjak je okrasni gradbeni blok.
+Smooth Sandstone=Gladek peščenjak
+Smooth sandstone is compressed sand and is a rather soft kind of stone.=Gladek peščenjak je stisnjen pesek in je precej mehka vrsta kamna.
+Red Sand=Rdeč pesek
+Red sand is found in large quantities in mesa biomes.=Rdeč pesek se v velikih količinah nahaja v biomih mese.
+Red Sandstone=Rdeč peščenjak
+Red sandstone is compressed red sand and is a rather soft kind of stone.=Rdeč peščenjak je stisnjen rdeč pesek in je precej mehka vrsta kamna.
+Cut Red Sandstone=Rezan rdeč peščenjak
+Cut red sandstone is a decorative building block.=Rezan rdeč peščenjak je okrasni gradbeni blok.
+Chiseled Red Sandstone=Izklesan rdeč peščenjak
+Chiseled red sandstone is a decorative building block.=Izklesan rdeč peščenjak je okrasni gradbeni blok.
+Smooth Red Sandstone=Gladek rdeč peščenjak
+Smooth red sandstone is a decorative building block.=Gladek rdeč peščenjak je okrasni gradbeni blok.
+Clay=Glina
+Clay is a versatile kind of earth commonly found at beaches underwater.=Glina je vsestranska vrsta zemlje, ki jo pogosto najdemo na plažah pod vodo.
+Brick Block=Blok opek
+
+Brick blocks are a good building material for building solid houses and can take quite a punch.=Bloki opek so dobri gradbeni materiali za gradnjo trdnih hiš in so precej odporni.
+
+Bedrock=Temeljna skala
+
+Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.=Temeljna skala je zelo trda vrsta kamnine. Ni je mogoče razbiti, uničiti, pobrati ali premakniti z običajnimi sredstvi, razen v ustvarjalnem načinu.
+
+In the End dimension, starting a fire on this block will create an eternal fire.=Če v dimenziji End na tem bloku zanetite ogenj, boste ustvarili večni ogenj.
+Cobblestone=Tlakovec
+Mossy Cobblestone=Mahovit tlakovec
+Block of Coal=Blok premoga
+
+Blocks of coal are useful as a compact storage of coal and very useful as a furnace fuel. A block of coal is as efficient as 10 coal.=Bloki premoga so uporabni za strnjeno shranjevanje premoga in zelo uporabni kot gorivo za peč. En blok premoga je enako učinkovit kot 10 kosov premoga.
+
+Block of Charcoal=Blok oglja
+
+Blocks of charcoal are useful as a compact storage of charcoal and very usefnul as a furnace fuel. A block of charcoal is as efficient as 10 charcoal.=Bloki oglja so uporabni za strnjeno shranjevanje oglja in zelo uporabni kot gorivo za peč. En blok oglja je enako učinkovit kot 10 kosov oglja.
+
+Block of Iron=Blok železa
+
+A block of iron is mostly a decorative block but also useful as a compact storage of iron ingots.=Blok železa je večinoma okrasni blok, uporaben pa je tudi za strnjeno shranjevanje železnih palic.
+
+Block of Gold=Blok zlata
+
+A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Blok zlata je večinoma sijoč okrasni blok, uporaben pa je tudi za strnjeno shranjevanje zlatih palic.
+
+Polished Block of Gold=Poliran blok zlata
+
+A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Poliran blok zlata je večinoma sijoč okrasni blok, uporaben pa je tudi za strnjeno shranjevanje zlatih palic.
+
+Block of Diamond=Blok diamanta
+
+A block of diamond is mostly a shiny decorative block but also useful as a compact storage of diamonds.=Blok diamanta je večinoma sijoč okrasni blok, uporaben pa je tudi za strnjeno shranjevanje diamantov.
+
+Lapis Lazuli Block=Blok lapis lazulija
+
+A lapis lazuli block is mostly a decorative block but also useful as a compact storage of lapis lazuli.=Blok lapis lazulija je večinoma okrasni blok, uporaben pa je tudi za strnjeno shranjevanje lapis lazulija.
+
+Block of Emerald=Blok smaragda
+
+A block of emerald is mostly a shiny decorative block but also useful as a compact storage of emeralds.=Blok smaragda je večinoma sijoč okrasni blok, uporaben pa je tudi za strnjeno shranjevanje smaragdov.
+
+Obsidian=Obsidian
+
+Obsidian is an extremely hard mineral with an enourmous blast-resistance. Obsidian is formed when water meets lava.=Obsidian je izjemno trd mineral z ogromno odpornostjo na eksplozije. Obsidian nastane, ko voda pride v stik z lavo.
+
+Crying Obsidian=Jokajoči obsidian
+
+Crying obsidian is a luminous obsidian that can generate as part of ruined portals.=Jokajoči obsidian je svetleč obsidian, ki lahko nastane kot del porušenih portalov.
+
+Ice=Led
+
+Ice is a solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source.=Led je trden blok, ki ga običajno najdemo v hladnih območjih. Tali se v bližini virov svetlobe pri stopnji svetlobe 12 ali več. Ko se stopi ali razbije, medtem ko leži na drugem bloku, se spremeni v vir vode.
+
+Packed Ice=Zbit led
+Packed ice is a compressed form of ice. It is opaque and solid.=Zbit led je stisnjena oblika ledu. Je neprozoren in trden.
+
+Frosted ice is a short-lived solid block. It melts into a water source within a few seconds.=Zmrznjen led je kratkotrajen trden blok. V nekaj sekundah se stopi v vir vode.
+
+Frosted Ice=Zmrznjen led
+Top Snow=Vrhnji sneg
+Stackable=Zložljivo v sveženj
+
+Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.=Vrhnji sneg je plast snega. Tali se v bližini virov svetlobe, ki niso sonce, pri stopnji svetlobe 12 ali več.
+
+Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.=Vrhnji sneg je mogoče nalagati in ima eno od 8 različnih stopenj višine. Na stopnjah 2–8 je vrhnji sneg trden (se vanj zaletite). Vrhnji sneg odvrže 2–9 snežnih kep, odvisno od njegove višine.
+
+This block can only be placed on full solid blocks and on another top snow (which increases its height).=Ta blok lahko postavite samo na polne trdne bloke in na drug vrhnji sneg (kar poveča njegovo višino).
+
+Snow=Sneg
+
+This is a full block of snow. Snow of this thickness is usually found in areas of extreme cold.=To je poln blok snega. Sneg te debeline se običajno nahaja na območjih hudega mraza.
+
+##[ nodes_liquid.lua ]##
+Flowing Water=Tekoča voda
+Water Source=Vir vode
+Water=Voda
+
+Water is abundant in oceans and also appears in a few springs in the ground. You can swim easily in water, but you need to catch your breath from time to time.=Vode je v oceanih v izobilju, pojavlja pa se tudi v nekaterih izvirih v tleh. V vodi lahko z lahkoto plavate, vendar morate občasno zajeti sapo.
+
+Water interacts with lava in various ways:=Voda na različne načine vpliva na lavo:
+
+• When water is directly above or horizontally next to a lava source, the lava turns into obsidian.=• Ko je voda neposredno nad ali vodoravno ob viru lave, se lava spremeni v obsidian.
+
+• When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.=• Ko se tekoča voda dotakne tekoče lave bodisi od zgoraj ali vodoravno, se lava spremeni v tlakovec.
+
+• When water is directly below lava, the water turns into stone.=• Ko je voda neposredno pod lavo, se voda spremeni v kamen.
+Flowing Lava=Tekoča lava
+
+A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=Vir lave zaneti nekaj zračnih blokov nad seboj, če so ti ob vnetljivem bloku.
+
+Lava Source=Vir lave
+Lava=Lava
+
+Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=Lava je vroča in precej nevarna. Ne dotikajte se je, saj vas bo močno poškodovala in se je težko rešiti iz nje.
+
+Lava interacts with water various ways:=Lava na različne načine vpliva na vodo:
+
+• When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• Ko je vir lave neposredno pod ali vodoravno ob vodi, se lava spremeni v obsidian.
+
+• When lava is directly above water, the water turns into stone.=• Ko je lava neposredno nad vodo, se voda spremeni v kamen.
+##[ nodes_cactuscane.lua ]##
+Cactus=Kaktus
+Grows on sand=Raste na pesku
+Contact damage: @1 per half second=Poškodba ob dotiku: @1 na pol sekunde
+
+This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.=To je kos kaktusa, ki ga pogosto najdemo na suhih območjih, zlasti v puščavah. Sčasoma kaktusi zrastejo do 3 bloke visoko na pesku ali rdečem pesku. Kaktus poškoduje živa bitja, ki se ga dotaknejo, s poškodbo 1 točke zdravja vsake pol sekunde. Ko je blok kaktusa uničen, se uničijo tudi vsi bloki kaktusa, povezani nad njim.
+
+A cactus can only be placed on top of another cactus or any sand.=Kaktus lahko postavite le na drug kaktus ali na kateri koli pesek.
+Sugar Canes=Sladkorni trs
+Grows on sand or dirt next to water=Raste na pesku ali prsti ob vodi
+
+Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.=Sladkorni trs je rastlina, ki se uporablja pri izdelavi. Sladkorni trs bo počasi zrasel do 3 bloke, če je ob vodi in posajen na bloku trave, prsti, pesku, rdečem pesku, podzolu ali grobi prsti. Ko je sladkorni trs uničen, se uniči tudi ves sladkorni trs, povezan nad njim.
+
+Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.=Sladkorni trs lahko postavite le na drug sladkorni trs in na bloke, na katerih lahko raste.
+
+##[ nodes_trees.lua ]##
+This is a decorative block surrounded by the bark of a tree trunk.=To je okrasni blok, obdan s skorjo drevesnega debla.
+Needs soil and light to grow=Za rast potrebuje zemljo in svetlobo
+Oak Wood=Hrastov les
+Oak Bark=Hrastova skorja
+The trunk of an oak tree.=Deblo hrasta.
+Dark Oak Wood=Les temnega hrasta
+Dark Oak Bark=Skorja temnega hrasta
+The trunk of a dark oak tree.=Deblo temnega hrasta.
+Acacia Wood=Akacijev les
+Acacia Bark=Akacijeva skorja
+The trunk of an acacia.=Deblo akacije.
+Spruce Wood=Smrekov les
+Spruce Bark=Smrekova skorja
+The trunk of a spruce tree.=Deblo smreke.
+Birch Wood=Brezov les
+Birch Bark=Brezova skorja
+The trunk of a birch tree.=Deblo breze.
+Jungle Wood=Les džungle
+Jungle Bark=Skorja drevesa džungle
+The trunk of a jungle tree.=Deblo drevesa džungle.
+Stripped Oak Log=Olupljen hrastov hlod
+Stripped Oak Wood=Olupljen hrastov les
+The stripped trunk of an oak tree.=Olupljeno deblo hrasta.
+The stripped wood of an oak tree.=Olupljen les hrasta.
+Stripped Acacia Log=Olupljen akacijev hlod
+Stripped Acacia Wood=Olupljen akacijev les
+The stripped trunk of an acacia tree.=Olupljeno deblo akacije.
+The stripped wood of an acacia tree.=Olupljen les akacije.
+Stripped Dark Oak Log=Olupljen hlod temnega hrasta
+Stripped Dark Oak Wood=Olupljen les temnega hrasta
+The stripped trunk of a dark oak tree.=Olupljeno deblo temnega hrasta.
+The stripped wood of a dark oak tree.=Olupljen les temnega hrasta.
+Stripped Birch Log=Olupljen brezov hlod
+Stripped Birch Wood=Olupljen brezov les
+The stripped trunk of a birch tree.=Olupljeno deblo breze.
+The stripped wood of a birch tree.=Olupljen les breze.
+Stripped Spruce Log=Olupljen smrekov hlod
+Stripped Spruce Wood=Olupljen smrekov les
+The stripped trunk of a spruce tree.=Olupljeno deblo smreke.
+The stripped wood of a spruce tree.=Olupljen les smreke.
+Stripped Jungle Log=Olupljen hlod drevesa džungle
+Stripped Jungle Wood=Olupljen les džungle
+The stripped trunk of a jungle tree.=Olupljeno deblo drevesa džungle.
+The stripped wood of a jungle tree.=Olupljen les drevesa džungle.
+Oak Wood Planks=Hrastove deske
+Dark Oak Wood Planks=Deske temnega hrasta
+Jungle Wood Planks=Deske džungle
+Spruce Wood Planks=Smrekove deske
+Acacia Wood Planks=Akacijeve deske
+Birch Wood Planks=Brezove deske
+2×2 saplings @= large tree=2×2 sadike @= veliko drevo
+Oak Sapling=Hrastova sadika
+
+When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time.=Ko je posajena v zemljo (kot je prst) in izpostavljena svetlobi, bo hrastova sadika čez nekaj časa zrasla v hrast.
+
+Dark Oak Sapling=Sadika temnega hrasta
+
+Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.=Sadike temnega hrasta lahko zrastejo v temne hraste, vendar le v skupinah. Osamljena sadika temnega hrasta ne bo zrasla. Skupina štirih sadik temnega hrasta zraste v temni hrast čez nekaj časa, če so posajene v zemljo (kot je prst) v kvadratu 2×2 in izpostavljene svetlobi.
+
+2×2 saplings required=Potrebne so 2×2 sadike
+Jungle Sapling=Sadika džungle
+
+When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.=Ko je posajena v zemljo (kot je prst) in izpostavljena svetlobi, bo sadika džungle čez nekaj časa zrasla v drevo džungle. Če so 4 sadike džungle v kvadratu 2×2, bodo zrasle v ogromno drevo džungle.
+
+Acacia Sapling=Akacijeva sadika
+
+When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time.=Ko je posajena v zemljo (kot je prst) in izpostavljena svetlobi, bo akacijeva sadika čez nekaj časa zrasla v akacijo.
+
+Spruce Sapling=Smrekova sadika
+
+When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.=Ko je posajena v zemljo (kot je prst) in izpostavljena svetlobi, bo smrekova sadika čez nekaj časa zrasla v smreko. Če so 4 smrekove sadike v kvadratu 2×2, bodo zrasle v ogromno smreko.
+
+Birch Sapling=Brezova sadika
+
+When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time.=Ko je posajena v zemljo (kot je prst) in izpostavljena svetlobi, bo brezova sadika čez nekaj časa zrasla v brezo.
+
+Oak Leaves=Hrastovo listje
+Oak leaves are grown from oak trees.=Hrastovo listje zraste na hrastih.
+Dark Oak Leaves=Listje temnega hrasta
+Dark oak leaves are grown from dark oak trees.=Listje temnega hrasta zraste na temnih hrastih.
+Jungle Leaves=Listje džungle
+Jungle leaves are grown from jungle trees.=Listje džungle zraste na drevesih džungle.
+Acacia Leaves=Akacijevo listje
+Acacia leaves are grown from acacia trees.=Akacijevo listje zraste na akacijah.
+Spruce Leaves=Smrekovo listje
+Spruce leaves are grown from spruce trees.=Smrekovo listje zraste na smrekah.
+Birch Leaves=Brezovo listje
+Birch leaves are grown from birch trees.=Brezovo listje zraste na brezah.
+##[ nodes_glass.lua ]##
+Glass=Steklo
+A decorative and mostly transparent block.=Okrasen in večinoma prozoren blok.
+
+Stained glass is a decorative and mostly transparent block which comes in various different colors.=Obarvano steklo je okrasen in večinoma prozoren blok, ki je na voljo v različnih barvah.
+
+Stained Glass=Obarvano steklo
+Red Stained Glass=Rdeče obarvano steklo
+Green Stained Glass=Zeleno obarvano steklo
+Blue Stained Glass=Modro obarvano steklo
+Light Blue Stained Glass=Svetlo modro obarvano steklo
+Black Stained Glass=Črno obarvano steklo
+White Stained Glass=Belo obarvano steklo
+Yellow Stained Glass=Rumeno obarvano steklo
+Brown Stained Glass=Rjavo obarvano steklo
+Orange Stained Glass=Oranžno obarvano steklo
+Pink Stained Glass=Roza obarvano steklo
+Grey Stained Glass=Sivo obarvano steklo
+Lime Stained Glass=Svetlo zeleno obarvano steklo
+Light Grey Stained Glass=Svetlo sivo obarvano steklo
+Magenta Stained Glass=Škrlatno obarvano steklo
+Purple Stained Glass=Vijolično obarvano steklo
+Cyan Stained Glass=Sinje modro obarvano steklo
+##[ nodes_climb.lua ]##
+Ladder=Lestev
+
+A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=Del lestve, ki vam omogoča navpično plezanje. Lestve lahko postavite samo na stran trdnih blokov.
+
+Vines=Vzpenjalke
+
+Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread.=Vzpenjalke so plezalni bloki, ki jih je mogoče postaviti na stranice trdnih polnih blokov. Vzpenjalke počasi rastejo in se širijo.
+
+##[ nodes_misc.lua ]##
+Bone Block=Kostni blok
+Bone blocks are decorative blocks and a compact storage of bone meal.=Kostni bloki so okrasni bloki in strnjena shramba kostne moke.
+Slime Block=Sluzast blok
+Slime blocks are very bouncy and prevent fall damage.=Sluzasti bloki so zelo prožni in preprečujejo poškodbe pri padcu.
+Cobweb=Pajčevina
+Slows down movement=Upočasni gibanje
+Cobwebs can be walked through, but significantly slow you down.=Skozi pajčevine lahko hodite, vendar vas znatno upočasnijo.
+Dead Bush=Suh grm
+
+Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.=Suhi grmi so neopazne rastline, ki jih pogosto najdemo na suhih območjih. Lahko jih poberete za palice.
+
+Barrier=Pregrada
+
+Barriers are invisible walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.=Pregrade so nevidni pohodni bloki. Uporabljajo se za ustvarjanje meja pustolovskih zemljevidov in podobno. Pošasti in živali se na pregradah ne bodo pojavile, ograje pa se s pregradami ne povezujejo. Druge bloke je mogoče graditi na pregradah kot na katerem koli drugem bloku.
+
+When you hold a barrier in hand, you reveal all placed barriers in a short distance around you.=Ko držite pregrado v roki, razkrijete vse postavljene pregrade v kratki razdalji okoli sebe.
+
+Realm Barrier=Pregrada kraljestva
+Light=Luč
+
+Lights are invisible blocks. They are used to light up adventure maps and the like.=Luči so nevidni bloki. Uporabljajo se za osvetlitev pustolovskih zemljevidov in podobno.
+
+When you hold a light in hand, you reveal all placed lights in a short distance around you.=Ko držite luč v roki, razkrijete vse postavljene luči v kratki razdalji okoli sebe.
+
+Void=Praznina
+##[ craftitems.lua ]##
+Stick=Palica
+
+Sticks are a very versatile crafting material; used in countless crafting recipes.=Palice so zelo vsestranski material za izdelavo; uporabljajo se v neštetih receptih za izdelavo.
+
+Paper=Papir
+Paper is used to craft books and maps.=Papir se uporablja za izdelavo knjig in zemljevidov.
+Coal=Premog
+
+“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.=»Premog« se nanaša na kepe premoga, pridobljene z izkopavanjem premogove rude, ki jo najdemo pod zemljo. Premog je standardno gorivo za peč, uporablja pa se lahko tudi za izdelavo bakel, blokov premoga in nekaj drugih stvari.
+
+Charcoal=Oglje
+
+Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks.=Oglje je alternativno gorivo za peč, ustvarjeno s pečenjem lesa v peči. Ima enak čas gorenja kot premog in si z njim deli tudi veliko receptov za izdelavo, vendar ga ni mogoče uporabiti za ustvarjanje blokov premoga.
+
+Iron Nugget=Železna grudica
+
+Iron nuggets are very small pieces of molten iron; the main purpose is to create iron ingots.=Železne grudice so zelo majhni kosi staljenega železa; glavni namen je ustvarjanje železnih palic.
+
+Gold Nugget=Zlata grudica
+
+Gold nuggets are very small pieces of molten gold; the main purpose is to create gold ingots.=Zlate grudice so zelo majhni kosi staljenega zlata; glavni namen je ustvarjanje zlatih palic.
+
+Diamond=Diamant
+
+Diamonds are precious minerals and useful to create the highest tier of armor and tools.=Diamanti so dragoceni minerali in uporabni za ustvarjanje najboljše opreme in orodja.
+
+Clay Ball=Glinena krogla
+Clay balls are a raw material, mainly used to create bricks in the furnace.=Glinene krogle so surovina, ki se večinoma uporablja za izdelavo opek v peči.
+Iron Ingot=Železna palica
+Molten iron. It is used to craft armor, tools, and whatnot.=Staljeno železo. Uporablja se za izdelavo oklepov, orodja in drugega.
+Gold Ingot=Zlata palica
+Molten gold. It is used to craft armor, tools, and whatnot.=Staljeno zlato. Uporablja se za izdelavo oklepov, orodja in drugega.
+Emerald=Smaragd
+Emeralds are used in villager trades as currency.=Smaragdi se uporabljajo pri trgovanju z vaščani kot valuta.
+Lapis Lazuli=Lapis Lazuli
+Lapis Lazuli are required for enchanting items on an enchanting table.=Lapis lazuli je potreben za očaranje predmetov na mizi za očaranje.
+Brick=Opeka
+Bricks are used to craft brick blocks.=Opeke se uporabljajo za izdelavo blokov opek.
+Flint=Kremen
+Flint is a raw material.=Kremen je surovina.
+Sugar=Sladkor
+Sugar comes from sugar canes and is used to make sweet foods.=Sladkor prihaja iz sladkornega trsa in se uporablja za pripravo sladke hrane.
+Bowl=Skleda
+Bowls are mainly used to hold tasty soups.=Sklede se večinoma uporabljajo za shranjevanje okusnih juh.
+Apple=Jabolko
+Apples are food items which can be eaten.=Jabolka so hrana, ki jo je mogoče pojesti.
+Golden Apple=Zlato jabolko
+Golden apples are precious food items which can be eaten.=Zlata jabolka so dragocena hrana, ki jo je mogoče pojesti.
+Enchanted Golden Apple=Očarano zlato jabolko

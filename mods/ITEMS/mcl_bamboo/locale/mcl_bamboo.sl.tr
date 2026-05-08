@@ -1,0 +1,37 @@
+# textdomain: mcl_bamboo
+### bamboo_base.lua ###
+##[ bamboo_base.lua ]##
+Bamboo=Bambus
+Bamboo Block=Blok bambusa
+Stripped Bamboo Block=Olupljen blok bambusa
+Bamboo Plank=Bambusova deska
+Bamboo Mosaic Plank=Bambusova mozaična deska
+##[ bamboo_items.lua ]##
+Bamboo Door=Bambusova vrata
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Lesena vrata so 2 bloka visoke ovire, ki jih je mogoče odpreti ali zapreti z roko ali z signalom rdečega kamna.
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Za odpiranje ali zapiranje lesenih vrat kliknite nanje z desno tipko miške ali pa na njihovo spodnjo polovico pripeljite signal rdečega kamna.
+Bamboo Trapdoor=Bambusova loputa
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Lesene lopute so vodoravne ovire, ki jih je mogoče odpreti in zapreti z roko ali z signalom rdečega kamna. Zasedajo zgornji ali spodnji del bloka, odvisno od tega, kako so bile postavljene. Ko so odprte, se po njih lahko pleza kot po lestvi.
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=Za odpiranje ali zapiranje lopute kliknite nanjo z desno tipko miške ali ji pošljite signal rdečega kamna.
+Bamboo Stairs=Bambusove stopnice
+Bamboo Slab=Bambusova plošča
+Double Bamboo Slab=Dvojna bambusova plošča
+Stripped Bamboo Stairs=Olupljene bambusove stopnice
+Stripped Bamboo Slab=Olupljena bambusova plošča
+Double Stripped Bamboo Slab=Dvojna olupljena bambusova plošča
+Bamboo Plank Stairs=Stopnice iz bambusovih desk
+Bamboo Plank Slab=Plošča iz bambusovih desk
+Double Bamboo Plank Slab=Dvojna plošča iz bambusovih desk
+Bamboo Pressure Plate=Bambusova pritisna plošča
+A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Lesena pritisna plošča je komponenta rdečega kamna, ki okoliške bloke napaja z energijo, dokler na njej stoji kakršen koli premični predmet (vključno z odvrženimi predmeti, igralci in bitji).
+Bamboo Sign=Bambusova tabla
+Bamboo Fence=Bambusova ograja
+Bamboo Fence Gate=Vrata za bambusovo ograjo
+Bamboo Button=Bambusov gumb
+### bamboo_items.lua ###
+A bamboo button is a redstone component made out of bamboo which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Bambusov gumb je komponenta rdečega kamna iz bambusa, ki jo lahko pritisneš za zagotavljanje energije. Ob pritisku za 1 sekundo napaja sosednje komponente rdečega kamna.
+Bamboo Mosaic Stairs=Mozaične bambusove stopnice
+Bamboo Mosaic Slab=Mozaična bambusova plošča
+Double Bamboo Mosaic Slab=Dvojna mozaična bambusova plošča
+Scaffolding=Gradbeni oder
+Scaffolding block used to climb up or out across areas.=Blok gradbenega odra, ki se uporablja za plezanje navzgor ali prečkanje območij.

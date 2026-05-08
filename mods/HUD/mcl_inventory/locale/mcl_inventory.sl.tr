@@ -1,0 +1,25 @@
+# textdomain: mcl_inventory
+##[ creative.lua ]##
+Building Blocks=Gradniki
+Decoration Blocks=Dekorativni bloki
+Redstone=Rdeči kamen
+Transportation=Prevoz
+Miscellaneous=Razno
+Search Items=Iskanje predmetov
+Foodstuffs=Živila
+Tools=Orodja
+Combat=Boj
+Mobs=Bitja
+Brewing=Varjenje
+Materials=Materiali
+Survival Inventory=Preživetveni inventar
+Recipe book=Knjiga receptov
+Help=Pomoč
+Advancements=Napredki
+Switch stack size=Sprememba velikosti sklada
+Select player skin=Izbor preoblek za igralca
+Server Settings=Nastavitve
+@1 / @2=@1 / @2
+##[ survival.lua ]##
+Crafting=Izdelovanje
+Achievements=Dosežki

@@ -1,0 +1,14 @@
+# textdomain: mcl_lanterns
+Chain=Veriga
+Chains are metallic decoration blocks.=Verige so kovinski okrasni bloki.
+Gold Chain=Zlata veriga
+Gold Chains are metallic decoration blocks.=Zlate verige so kovinski okrasni bloki.
+##[ register.lua ]##
+Lantern=Svetilka
+
+Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Svetilke so svetlobni viri, ki jih lahko postavite na vrh ali dno večine blokov.
+
+Soul Lantern=Dušna svetilka
+Gold Lantern=Zlata svetilka
+
+Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Zlate svetilke so svetlobni viri, ki jih lahko postavite na vrh ali dno večine blokov.

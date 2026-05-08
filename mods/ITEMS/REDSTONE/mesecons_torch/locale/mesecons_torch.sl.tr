@@ -1,0 +1,10 @@
+# textdomain: mesecons_torch
+Redstone Torch (off)=Bakla rdečega kamna (ugasnjena)
+Redstone Torch (overheated)=Bakla rdečega kamna (pregreta)
+Redstone Torch=Bakla rdečega kamna
+A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything.=Bakla rdečega kamna je komponenta rdečega kamna, ki se lahko uporabi za obračanje signala rdečega kamna. Z energijo rdečega kamna napaja sosednje bloke, razen bloka, na katerega je pritrjena. Bakla rdečega kamna je običajno prižgana, lahko pa se ugasne z napajanjem bloka, na katerega je pritrjena. Ko je ugasnjena, bakla rdečega kamna ne napaja ničesar.
+Redstone torches can be placed at the side and on the top of full solid opaque blocks.=Bakle rdečega kamna lahko postavite na stranico ali na vrh polnih trdnih neprosojnih blokov.
+Provides redstone power when it's not powered itself=Zagotavlja energijo rdečega kamna, ko sama ni napajana
+Block of Redstone=Blok rdečega kamna
+Provides redstone power=Zagotavlja energijo rdečega kamna
+A block of redstone permanently supplies redstone power to its surrounding blocks.=Blok rdečega kamna trajno napaja sosednje bloke z energijo rdečega kamna.

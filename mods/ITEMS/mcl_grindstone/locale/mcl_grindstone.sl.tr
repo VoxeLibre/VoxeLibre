@@ -1,0 +1,17 @@
+# textdomain: mcl_grindstone
+Repair & Disenchant=Popravi in razčaraj
+Inventory=Inventar
+Grindstone=Brusni kamen
+Used to disenchant/fix tools=Uporablja se za razčaranje/popravilo orodja
+
+Grindstone disenchants tools and armour except for curses, and repairs two items of the same type it is also the weapon smith's work station.=Brusni kamen razčara orodje in oklep, razen prekletstev, ter popravi dva predmeta iste vrste; je tudi delovna postaja orožarja.
+
+To use the grindstone, rightclick it, Two input slots (on the left) and a single output slot.=Za uporabo brusnega kamna kliknite nanj z desnim gumbom. Vsebuje dve vhodni reži (na levi) in eno izhodno režo.
+
+To disenchant an item place enchanted item in one of the input slots and take the disenchanted item from the output.=Če želite predmet razčarati, postavite začaran predmet v eno od vhodnih rež in vzemite razčaran predmet iz izhodne reže.
+
+To repair a tool you need a tool of the same type and material, put both items in the input slot and the output slot will combine two items durabilities with 5% bonus.=Za popravilo orodja potrebujete orodje iste vrste in materiala; oba predmeta postavite v vhodni reži in v izhodni reži se bosta združili vzdržljivosti obeh predmetov s 5 % dodatkom.
+
+If both items have enchantments the player will get xp from both items from the disenchant.=Če imata oba predmeta čare, bo igralec ob razčaranju dobil izkušnje od obeh predmetov.
+
+Curses cannot be removed and will be transfered to the new repaired item, if both items have a different curse the curses will be combined.=Prekletstev ni mogoče odstraniti in se bodo prenesla na nov popravljen predmet. Če imata predmeta različna prekletstva, se bodo prekletstva združila.

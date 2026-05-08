@@ -1,0 +1,14 @@
+# textdomain: mcl_jukebox
+Music Disc=Glasbena plošča
+
+A music disc holds a single music track which can be used in a jukebox to play music.=Glasbena plošča vsebuje eno skladbo, ki jo lahko predvajate v glasbenem avtomatu.
+
+Place a music disc into an empty jukebox to play the music. Use the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players.=Postavite glasbeno ploščo v prazen glasbeni avtomat, da predvajate glasbo. Ponovno uporabite glasbeni avtomat, da vzamete glasbeno ploščo. Glasbo lahko slišite le vi, drugi igralci pa ne.
+
+@1—@2=@1—@2
+Now playing: @1—@2=Trenutno se predvaja: @1—@2
+Jukebox=Glasbeni avtomat
+Uses music discs to play music=Uporablja glasbene plošče za predvajanje glasbe
+Jukeboxes play music when they're supplied with a music disc.=Glasbeni avtomati predvajajo glasbo, ko vanje vstavite glasbeno ploščo.
+
+Place a music disc into an empty jukebox to insert the music disc and play music. If the jukebox already has a music disc, you will retrieve this music disc first. The music can only be heard by you, not by other players.=Postavite glasbeno ploščo v prazen glasbeni avtomat, da jo vstavite in predvajate glasbo. Če glasbeni avtomat že vsebuje glasbeno ploščo, boste najprej vzeli to ploščo. Glasbo lahko slišite le vi, drugi igralci pa ne.

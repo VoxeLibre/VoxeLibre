@@ -1,0 +1,61 @@
+# textdomain: mcl_copper
+##[ nodes.lua ]##
+Copper Ore=Bakrena ruda
+
+Some copper contained in stone, it is pretty common and can be found below sea level.=Nekaj bakra v kamnu; je precej pogost in ga je mogoče najti pod morsko gladino.
+
+Block of Raw Copper=Blok surovega bakra
+A block used for compact raw copper storage.=Blok, ki se uporablja za strnjeno shranjevanje surovega bakra.
+Block of Copper=Bakren blok
+A block of copper is mostly a decorative block.=Bakren blok je večinoma okrasni blok.
+Waxed Block of Copper=Povoskan bakren blok
+Exposed Copper=Izpostavljen baker
+Exposed copper is a decorative block.=Izpostavljen baker je okrasni blok.
+Waxed Exposed Copper=Povoskan izpostavljen baker
+Weathered Copper=Preperel baker
+Weathered copper is a decorative block.=Preperel baker je okrasni blok.
+Waxed Weathered Copper=Povoskan preperel baker
+Oxidized Copper=Oksidiran baker
+Oxidized copper is a decorative block.=Oksidiran baker je okrasni blok.
+Waxed Oxidized Copper=Povoskan oksidiran baker
+Cut Copper=Rezan baker
+Cut copper is a decorative block.=Rezan baker je okrasni blok.
+Waxed Cut Copper=Povoskan rezan baker
+Exposed Cut Copper=Izpostavljen rezan baker
+Exposed cut copper is a decorative block.=Izpostavljen rezan baker je okrasni blok.
+Waxed Exposed Cut Copper=Povoskan izpostavljen rezan baker
+Weathered Cut Copper=Preperel rezan baker
+Weathered cut copper is a decorative block.=Preperel rezan baker je okrasni blok.
+Waxed Weathered Cut Copper=Povoskan preperel rezan baker
+Oxidized Cut Copper=Oksidiran rezan baker
+Oxidized cut copper is a decorative block.=Oksidiran rezan baker je okrasni blok.
+Waxed Oxidized Cut Copper=Povoskan oksidiran rezan baker
+Slab of Cut Copper=Plošča iz rezanega bakra
+Double Slab of Cut Copper=Dvojna plošča iz rezanega bakra
+Waxed Slab of Cut Copper=Povoskana plošča iz rezanega bakra
+Waxed Double Slab of Cut Copper=Povoskana dvojna plošča iz rezanega bakra
+Slab of Exposed Cut Copper=Plošča iz izpostavljenega rezanega bakra
+Double Slab of Exposed Cut Copper=Dvojna plošča iz izpostavljenega rezanega bakra
+Waxed Slab of Exposed Cut Copper=Povoskana plošča iz izpostavljenega rezanega bakra
+Waxed Double Slab of Exposed Cut Copper=Povoskana dvojna plošča iz izpostavljenega rezanega bakra
+Slab of Weathered Cut Copper=Plošča iz preperelega rezanega bakra
+Double Slab of Weathered Cut Copper=Dvojna plošča iz preperelega rezanega bakra
+Waxed Slab of Weathered Cut Copper=Povoskana plošča iz preperelega rezanega bakra
+Waxed Double Slab of Weathered Cut Copper=Povoskana dvojna plošča iz preperelega rezanega bakra
+Slab of Oxidized Cut Copper=Plošča iz oksidiranega rezanega bakra
+Double Slab of Oxidized Cut Copper=Dvojna plošča iz oksidiranega rezanega bakra
+Waxed Slab of Oxidized Cut Copper=Povoskana plošča iz oksidiranega rezanega bakra
+Waxed Double Slab of Oxidized Cut Copper=Povoskana dvojna plošča iz oksidiranega rezanega bakra
+Stairs of Cut Copper=Stopnice iz rezanega bakra
+Waxed Stairs of Cut Copper=Povoskane stopnice iz rezanega bakra
+Stairs of Exposed Cut Copper=Stopnice iz izpostavljenega rezanega bakra
+Waxed Stairs of Exposed Cut Copper=Povoskane stopnice iz izpostavljenega rezanega bakra
+Stairs of Weathered Cut Copper=Stopnice iz preperelega rezanega bakra
+Waxed Stairs of Weathered Cut Copper=Povoskane stopnice iz preperelega rezanega bakra
+Stairs of Oxidized Cut Copper=Stopnice iz oksidiranega rezanega bakra
+Waxed Stairs of Oxidized Cut Copper=Povoskane stopnice iz oksidiranega rezanega bakra
+##[ items.lua ]##
+Copper Ingot=Bakrena palica
+Molten Raw Copper. It is used to craft blocks.=Staljen surov baker. Uporablja se za izdelavo blokov.
+Raw Copper=Surov baker
+Raw Copper. Mine a Copper Ore to get it.=Surov baker. Izkopljite bakreno rudo, da ga dobite.

@@ -1,0 +1,54 @@
+# textdomain: mcl_crimson
+Warped Fungus=Popačena gliva
+Warped fungus is a mushroom found in the nether's warped forest.=Popačena gliva je goba, ki jo najdemo v popačenem gozdu v Netherju.
+Twisting Vines=Zvite vzpenjalke
+Weeping Vines=Žalujoče vzpenjalke
+Nether Sprouts=Netherski poganjki
+Warped Roots=Popačene korenine
+Warped Wart Block=Blok popačenih bradavic
+Shroomlight=Goboluč
+Warped Hyphae=Popačene hife
+The stem of a warped hyphae=Steblo popačenih hif
+Warped Nylium=Popačen nilij
+Warped Hyphae Bark=Popačena skorja hif
+This is a decorative block surrounded by the bark of an hyphae.=To je okrasni blok, obdan s skorjo hif.
+Stripped Warped Hyphae=Olupljene popačene hife
+The stripped hyphae of a warped fungus=Olupljene hife popačene glive
+Stripped Warped Hyphae Bark=Olupljena skorja popačenih hif
+The stripped hyphae bark of a warped fungus=Olupljena skorja hif popačene glive
+Warped Hyphae Wood=Popačen les hif
+Warped Stairs=Popačene stopnice
+Warped Slab=Popačena plošča
+Double Warped Slab=Dvojna popačena plošča
+Crimson Fungus=Škrlatna gliva
+Crimson fungus is a mushroom found in the nether's crimson forest.=Škrlatna gliva je goba, ki jo najdemo v škrlatnem gozdu v Netherju.
+Crimson Roots=Škrlatne korenine
+Crimson Hyphae=Škrlatne hife
+The stem of a crimson hyphae=Steblo škrlatnih hif
+Crimson Hyphae Bark=Škrlatna skorja hif
+Stripped Crimson Hyphae=Olupljene škrlatne hife
+The stripped stem of a crimson hyphae=Olupljeno steblo škrlatnih hif
+Stripped Crimson Hyphae Bark=Olupljena skorja škrlatnih hif
+The stripped wood of a crimson hyphae=Olupljen les škrlatnih hif
+Crimson Hyphae Wood=Škrlaten les hif
+Crimson Nylium=Škrlaten nilij
+Crimson Stairs=Škrlatne stopnice
+Crimson Slab=Škrlatna plošča
+Double Crimson Slab=Dvojna škrlatna plošča
+Crimson Door=Škrlatna vrata
+
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Lesena vrata so 2 bloka visoke pregrade, ki jih je mogoče odpreti ali zapreti z roko ali s signalom rdečega kamna.
+
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Za odpiranje ali zapiranje lesenih vrat desno kliknite nanje ali dovedite signal rdečega kamna v njihovo spodnjo polovico.
+
+Crimson Trapdoor=Škrlatna loputa
+
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Lesene lopute so vodoravne pregrade, ki jih je mogoče odpreti in zapreti z roko ali s signalom rdečega kamna. Zasedajo zgornji ali spodnji del bloka, odvisno od tega, kako so bile postavljene. Ko so odprte, se po njih da plezati kot po lestvi.
+
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=Za odpiranje ali zapiranje lopute desno kliknite nanjo ali ji pošljite signal rdečega kamna.
+Crimson Fence=Škrlatna ograja
+Crimson Fence Gate=Škrlatna vrata ograje
+Warped Door=Popačena vrata
+Warped Trapdoor=Popačena loputa
+Warped Fence=Popačena ograja
+Warped Fence Gate=Popačena vrata ograje

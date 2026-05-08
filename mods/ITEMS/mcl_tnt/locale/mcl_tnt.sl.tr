@@ -1,0 +1,8 @@
+# textdomain: mcl_tnt
+Whether TNT explodes after activation.=Ali TNT po aktivaciji eksplodira.
+An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=Eksplozivna naprava. Ko eksplodira, poškoduje živa bitja in uniči bloke okoli sebe. TNT ima radij eksplozije @1. Obstaja majhna možnost, da bloki izpadejo kot predmet (kot bi bili izkopani), namesto da bi bili uničeni. TNT lahko prižgete z orodji, eksplozijami, ognjem, lavo in signali rdečega kamna.
+An explosive device. When it explodes, it will hurt living beings. TNT has an explosion radius of @1. TNT can be ignited by tools, explosions, fire, lava and redstone signals.=Eksplozivna naprava. Ko eksplodira, poškoduje živa bitja. TNT ima radij eksplozije @1. TNT lahko prižgete z orodji, eksplozijami, ognjem, lavo in signali rdečega kamna.
+TNT=TNT
+Ignited by tools, explosions, fire, lava, redstone power=Prižge se z orodji, eksplozijami, ognjem, lavo, energijo rdečega kamna
+Explosion radius: @1=Radij eksplozije: @1
+Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds.=Postavite TNT in ga prižgite z eno od zgornjih metod. Hitro se umaknite na varno razdaljo. Na TNT začne vplivati gravitacija in eksplodira čez 4 sekunde.

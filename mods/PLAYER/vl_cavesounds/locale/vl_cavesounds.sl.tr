@@ -1,0 +1,9 @@
+# textdomain: vl_cavesounds
+Turn cave sounds for yourself or another player on or off.=Vklopi ali izklopi jamske zvoke zase ali za druge.
+
+You need the debug privilege in order to turn cave sounds on or off for somebody else!=Za vklop ali izklop jamskih zvokov za nekoga drugega potrebujete privilegij za razhroščevanje!
+
+Could not find player @1!=Igralca @1 ni bilo mogoče najti!
+off=izklop
+on=vklop
+Set cave sounds for @1 to: @2=Nastavi jamske zvoke za @1 na: @2

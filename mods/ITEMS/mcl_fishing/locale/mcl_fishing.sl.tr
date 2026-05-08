@@ -1,0 +1,27 @@
+# textdomain: mcl_fishing
+Fishing Rod=Ribiška palica
+Catches fish in water=Lovi ribe v vodi
+Fishing rods can be used to catch fish.=Ribiške palice se lahko uporabljajo za lovljenje rib.
+
+Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?=Z desnim klikom vrzite plovec. Ko se potopi, znova kliknite z desno tipko, da potegnete predmet ven. Kdo ve, kaj boste ujeli?
+
+Raw Fish=Surova riba
+
+Raw fish is obtained by fishing and is a food item which can be eaten safely. Cooking it improves its nutritional value.=Surova riba je pridobljena z ribolovom in je živilo, ki se lahko varno zaužije. Priprava (pečenje) izboljša njeno hranilno vrednost.
+
+Cooked Fish=Pečena riba
+Mmh, fish! This is a healthy food item.=Mmh, riba! To je zdravo živilo.
+Raw Salmon=Surovi losos
+
+Raw salmon is obtained by fishing and is a food item which can be eaten safely. Cooking it improves its nutritional value.=Surovi losos je pridobljen z ribolovom in je živilo, ki se lahko varno zaužije. Priprava (pečenje) izboljša njegovo hranilno vrednost.
+
+Cooked Salmon=Pečen losos
+This is a healthy food item which can be eaten.=To je zdravo živilo, ki ga je mogoče zaužiti.
+Clownfish=Klovnska ribica
+
+Clownfish may be obtained by fishing (and luck) and is a food item which can be eaten safely.=Klovnsko ribico lahko dobite z ribolovom (in nekaj sreče) in je živilo, ki se lahko varno zaužije.
+
+Pufferfish=Napihovalka
+Very poisonous=Zelo strupena
+
+Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=Napihovalke so pogosta vrsta rib in jih je mogoče dobiti z ribolovom. Tehnično jih je mogoče jesti, vendar so za ljudi zelo škodljive. Uživanje napihovalke obnovi le 1 točko lakote in vas bo zelo močno zastrupilo (kar vam znižuje zdravje, a vas ne ubije) in povzročilo resno zastrupitev s hrano (kar poveča vašo lakoto).

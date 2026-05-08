@@ -1,0 +1,29 @@
+# textdomain: mcl_portals
+##[ portal_nether.lua ]##
+Dump all portal keys=Izpiši vse ključe portalov
+Dump coordinates of registered nether portal exits=Izpiši koordinate registriranih izhodov nether portalov
+Nether Portal=Nether portal
+A Nether portal teleports creatures and objects to the hot and dangerous Nether dimension (and back!). Enter at your own risk!=Nether portal teleportira bitja in predmete v vročo in nevarno dimenzijo Nether (in nazaj!). Vstopite na lastno odgovornost!
+Stand in the portal for a moment to activate the teleportation. Entering a Nether portal for the first time will also create a new portal in the other dimension. If a Nether portal has been built in the Nether, it will lead to the Overworld. A Nether portal is destroyed if the any of the obsidian which surrounds it is destroyed, or if it was caught in an explosion.=Za trenutek postojte v portalu, da aktivirate teleportacijo. Prvi vstop v Nether portal bo ustvaril nov portal tudi v drugi dimenziji. Če je Nether portal zgrajen v Netherju, bo vodil na Površje. Nether portal se uniči, če se uniči kateri koli obsidijan, ki ga obdaja, ali če ga zajame eksplozija.
+Spawn a new nether portal at pointed thing, or at [x],[y],[z]. The portal will either face the player, or use the passed [orientation]. Orientation 0 means alongside X axis.=Ustvari nov nether portal na ciljanem mestu ali na [x],[y],[z]. Portal bo obrnjen proti igralcu ali pa bo uporabil podano [smer]. Smer 0 pomeni vzdolž osi X.
+Obsidian is also used as the frame of Nether portals.=Obsidijan se uporablja tudi kot okvir za Nether portale.
+To open a Nether portal, place an upright frame of obsidian with a width of at least 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether.=Če želite odpreti Nether portal, postavite pokončen okvir iz obsidijana širine vsaj 4 bloke in višine 5 blokov, v sredini pa pustite le zrak. Po postavitvi tega okvirja zanetite ogenj v okvirju iz obsidijana. Nether portali delujejo le na Površju in v Netherju.
+
+##[ portal_end.lua ]##
+End Portal=End portal
+Used to construct end portals=Uporablja se za gradnjo end portalov
+An End portal teleports creatures and objects to the mysterious End dimension (and back!).=End portal teleportira bitja in predmete v skrivnostno dimenzijo End (in nazaj!).
+Hop into the portal to teleport. Entering an End portal in the Overworld teleports you to a fixed position in the End dimension and creates a 5×5 obsidian platform at your destination. End portals in the End will lead back to your spawn point in the Overworld.=Skočite v portal za teleportacijo. Vstop v End portal na Površju vas teleportira na določeno mesto v dimenziji End in ustvari 5×5 ploščad iz obsidijana na vašem cilju. End portali v Endu vodijo nazaj na vašo točko mrestenja na Površju.
+End Portal Frame=Okvir End portala
+End portal frames are used in the construction of End portals. Each block has a socket for an eye of ender.=Okvirji End portala se uporabljajo pri gradnji End portalov. Vsak blok ima vtičnico za ender oko.
+NOTE: The End dimension is currently incomplete and might change in future versions.=OPOMBA: Dimenzija End je trenutno nepopolna in se lahko v prihodnjih različicah spremeni.
+To create an End portal, you need 12 end portal frames and 12 eyes of ender. The end portal frames have to be arranged around a horizontal 3×3 area with each block facing inward. Any other arrangement will fail.=Za ustvarjanje End portala potrebujete 12 okvirjev End portala in 12 ender očes. Okvirji End portala morajo biti razporejeni okoli vodoravnega območja 3×3, pri čemer mora biti vsak blok obrnjen navznoter. Vsaka drugačna postavitev ne bo delovala.
+Place an eye of ender into each block. The end portal appears in the middle after placing the final eye.=V vsak blok postavite ender oko. End portal se pojavi v sredini po postavitvi zadnjega očesa.
+Once placed, an eye of ender can not be taken back.=Ko je ender oko postavljeno, ga ni mogoče več vzeti nazaj.
+End Portal Frame with Eye of Ender=Okvir End portala z ender očesom
+
+##[ portal_gateway.lua ]##
+End Gateway Portal=Portal End prehoda
+Used to construct end gateway portals=Uporablja se za gradnjo portalov End prehodov
+An End gateway portal teleports creatures and objects to the outer End (and back!).=Portal End prehoda teleportira bitja in predmete v zunanji End (in nazaj!).
+Throw an ender pearl into the portal to teleport. Entering an Gateway portal near the Overworld teleports you to the outer End. At this destination another gateway portal will be constructed, which you can use to get back.=Vrzite ender biser v portal za teleportacijo. Vstop v portal prehoda blizu Površja vas teleportira v zunanji End. Na tem cilju bo zgrajen še en portal prehoda, ki ga lahko uporabite za vrnitev.

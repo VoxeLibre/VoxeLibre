@@ -1,0 +1,167 @@
+# textdomain: mcl_farming
+##[ soil.lua ]##
+Farmland=Obdelana zemlja
+Surface for crops=Površina za pridelke
+Can become wet=Lahko postane vlažna
+
+Farmland is used for farming, a necessary surface to plant crops. It is created when a hoe is used on dirt or a similar block. Plants are able to grow on farmland, but slowly. Farmland will become hydrated farmland (on which plants grow faster) when it rains or a water source is nearby. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=Obdelana zemlja se uporablja za kmetovanje in je nujna podlaga za sajenje pridelkov. Nastane, ko na prsti ali podobnem bloku uporabite motiko. Rastline lahko rastejo na obdelani zemlji, vendar počasi. Obdelana zemlja postane vlažna obdelana zemlja (na kateri rastline rastejo hitreje), če dežuje ali če je v bližini vodni vir. Ta blok se spremeni nazaj v prst, če se nad njim pojavi trden blok ali če se nadenj raztegne ročica bata.
+
+Hydrated Farmland=Vlažna obdelana zemlja
+
+Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmland is under rain or near water. Without water, this block will dry out eventually. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=Vlažna obdelana zemlja se uporablja pri kmetovanju; na njej lahko sadite in gojite nekatere rastline. Nastane, ko je obdelana zemlja izpostavljena dežju ali je blizu vode. Brez vode se bo ta blok sčasoma izsušil. Ta blok se spremeni nazaj v prst, če se nad njim pojavi trden blok ali če se nadenj raztegne ročica bata.
+
+##[ hoes.lua ]##
+Turns block into farmland=Spremeni blok v obdelano zemljo
+
+Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Motike so bistveno orodje za gojenje pridelkov. Uporabljajo se za ustvarjanje obdelane zemlje, na katero lahko posadite semena. V sili se lahko motike uporabijo tudi kot zelo šibko orožje.
+
+Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Uporabite motiko na bloku, ki ga je mogoče obdelati (z desnim klikom), da ga spremenite v obdelano zemljo. Prst, travnati bloki in travnate poti so bloki, primerni za obdelavo. Uporaba motike na grobi zemlji jo spremeni v navadno prst.
+
+Wood Hoe=Lesena motika
+Stone Hoe=Kamnita motika
+Iron Hoe=Železna motika
+Gold Hoe=Zlata motika
+Diamond Hoe=Diamantna motika
+Netherite Hoe=Neteritna motika
+##[ wheat.lua ]##
+Grows on farmland=Raste na obdelani zemlji
+This is a food item which can be eaten.=To je živilo, ki ga je mogoče zaužiti.
+Wheat Seeds=Semena pšenice
+Grows into a wheat plant. Chickens like wheat seeds.=Zraste v pšenico. Kokoši imajo rade semena pšenice.
+
+Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant.=Postavite semena pšenice na obdelano zemljo (ki jo lahko ustvarite z motiko), da posadite pšenico.
+
+They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.=Rastejo na sončni svetlobi, hitreje pa na vlažni obdelani zemlji. Z desnim klikom kliknite na žival, da jo nahranite s semeni pšenice.
+
+Premature Wheat Plant=Nedozorela pšenica
+Premature wheat plants grow on farmland under sunlight in 8 stages.=Nedozorela pšenica raste na obdelani zemlji pod sončno svetlobo v 8 stopnjah.
+
+On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.=Na vlažni obdelani zemlji raste hitreje. Požanete jo lahko kadarkoli, vendar bo pridelek dala le, ko bo zrela.
+
+Premature Wheat Plant (Stage @1)=Nedozorela pšenica (stopnja @1)
+Mature Wheat Plant=Dozorela pšenica
+Mature wheat plants are ready to be harvested for wheat and wheat seeds.=Dozorela pšenica je pripravljena na žetev pšenice in semen.
+They won't grow any further.=Ne bo več rasla.
+Wheat=Pšenica
+Wheat is used in crafting. Some animals like wheat.=Pšenica se uporablja pri izdelovanju. Nekatere živali imajo rade pšenico.
+Use the “Place” key on an animal to try to feed it wheat.=Uporabite tipko »Postavi« na živali, če jo želite nahraniti s pšenico.
+Cookie=Piškot
+Bread=Kruh
+Hay Bale=Bala sena
+Hay bales are decorative blocks made from wheat.=Bale sena so okrasni bloki, narejeni iz pšenice.
+##[ pumpkin.lua ]##
+Pumpkin Seeds=Bučna semena
+
+Grows into a pumpkin stem which in turn grows pumpkins. Chickens like pumpkin seeds.=Zraste v bučno steblo, na katerem zrastejo buče. Kokoši imajo rade bučna semena.
+
+Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds.=Postavite bučna semena na obdelano zemljo (ki jo lahko ustvarite z motiko), da posadite bučno steblo. Bučna stebla rastejo na sončni svetlobi, hitreje pa na vlažni obdelani zemlji. Ko je steblo zrelo, poskuša vzgojiti bučo tik ob sebi. Z desnim klikom kliknite na žival, da jo nahranite z bučnimi semeni.
+
+Premature Pumpkin Stem=Nedozorelo bučno steblo
+
+Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins.=Bučna stebla rastejo na obdelani zemlji v 8 stopnjah. Na vlažni obdelani zemlji je rast nekoliko hitrejša. Zrela bučna stebla lahko vzgojijo buče.
+
+Premature Pumpkin Stem (Stage @1)=Nedozorelo bučno steblo (stopnja @1)
+Mature Pumpkin Stem=Dozorelo bučno steblo
+
+A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.=Zrelo bučno steblo poskuša vzgojiti bučo na enem od štirih sosednjih blokov. Buča lahko zraste le na obdelani zemlji, prsti ali travnatem bloku. Ko je buča ob bučnem steblu, se steblo takoj upogne in poveže z bučo. Povezano bučno steblo ne more vzgojiti druge buče. Takoj ko so odstranjene vse buče okoli stebla, steblo izgubi povezavo in je pripravljeno na rast nove buče.
+
+Pumpkin=Buča
+
+A pumpkin is a decorative block. It can be carved with shears to obtain a carved pumpkin and pumpkin seeds.=Buča je okrasni blok. Z uporabo škarij jo lahko izrezljate, da dobite izrezljano bučo in bučna semena.
+
+To carve a pumpkin, use the shears on the side you want the face to appear.=Če želite izrezljati bučo, uporabite škarje na tisti strani, kjer želite, da se pojavi obraz.
+Carved Pumpkin=Izrezljana buča
+
+A carved pumpkin is a decorative block that can be used to summon snow and iron golems. It can also be worn as a helmet. It is made from shearing a pumpkin.=Izrezljana buča je okrasni blok, ki ga lahko uporabite za priklic snežnih in železnih stražarjev. Lahko se nosi tudi kot čelada. Nastane z rezljanjem buče s škarjami.
+
+Jack o'Lantern=Bučna svetilka
+
+A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.=Bučna svetilka je tradicionalna dekoracija za noč čarovnic, narejena iz buče. Sveti zelo močno.
+
+Pumpkin Pie=Bučna pita
+A pumpkin pie is a tasty food item which can be eaten.=Bučna pita je okusno živilo, ki ga je mogoče zaužiti.
+##[ melon.lua ]##
+Melon Seeds=Semena lubenice
+Grows into a melon stem which in turn grows melons. Chickens like melon seeds.=Zraste v steblo lubenice, na katerem zrastejo lubenice. Kokoši imajo rade semena lubenice.
+
+Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melon stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem will attempt to grow a melon at the side. Rightclick an animal to feed it melon seeds.=Postavite semena lubenice na obdelano zemljo (ki jo lahko ustvarite z motiko), da posadite steblo lubenice. Stebla lubenice rastejo na sončni svetlobi, hitreje pa na vlažni obdelani zemlji. Ko je steblo zrelo, bo poskušalo vzgojiti lubenico ob strani. Z desnim klikom kliknite na žival, da jo nahranite s semeni lubenice.
+
+Melon=Lubenica
+
+A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices.=Lubenica je blok, ki zraste iz stebel lubenice, ta pa zrastejo iz semen lubenice. Ob žetvi dobite rezine lubenice.
+
+Premature Melon Stem=Nedozorelo steblo lubenice
+
+Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons.=Stebla lubenice rastejo na obdelani zemlji v 8 stopnjah. Na vlažni obdelani zemlji je rast nekoliko hitrejša. Zrela stebla lubenice lahko vzgojijo lubenice.
+
+Premature Melon Stem (Stage @1)=Nedozorelo steblo lubenice (stopnja @1)
+Mature Melon Stem=Dozorelo steblo lubenice
+
+A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.=Zrelo steblo lubenice poskuša vzgojiti lubenico na enem od štirih sosednjih blokov. Lubenica lahko zraste le na obdelani zemlji, prsti ali travnatem bloku. Ko je lubenica ob steblu, se steblo takoj upogne in poveže z lubenico. Povezano steblo ne more vzgojiti druge lubenice. Takoj ko so odstranjene vse lubenice okoli stebla, steblo izgubi povezavo in je pripravljeno na rast nove lubenice.
+
+Melon Slice=Rezina lubenice
+##[ carrots.lua ]##
+Premature Carrot Plant=Nedozorelo korenje
+
+Carrot plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Korenje je rastlina, ki raste na obdelani zemlji pod sončno svetlobo v 8 stopnjah, vendar je mogoče vizualno razlikovati le 4 stopnje. Na vlažni obdelani zemlji raste nekoliko hitreje. Požanete ga lahko kadarkoli, vendar bo pridelek dalo le, ko bo zrelo.
+
+Premature Carrot Plant (Stage @1)=Nedozorelo korenje (stopnja @1)
+Mature Carrot Plant=Zrelo korenje
+
+Mature carrot plants are ready to be harvested for carrots. They won't grow any further.=Zrelo korenje je pripravljeno na žetev. Ne bo več raslo.
+
+Carrot=Korenje
+Carrots can be eaten and planted. Pigs and rabbits like carrots.=Korenje lahko jeste in sadite. Prašiči in zajci imajo radi korenje.
+
+Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Držite ga v roki in desno kliknite, da ga pojeste. Postavite ga na obdelano zemljo, da ga posadite. Raste na sončni svetlobi, hitreje pa na vlažni obdelani zemlji. Z desnim klikom kliknite na žival, da jo nahranite.
+
+Golden Carrot=Zlato korenje
+
+A golden carrot is a precious food item which can be eaten. It is really, really filling!=Zlato korenje je dragoceno živilo, ki ga je mogoče zaužiti. Je resnično, resnično nasitno!
+
+##[ potatoes.lua ]##
+Premature Potato Plant=Nedozorel krompir
+
+Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Krompir je rastlina, ki raste na obdelani zemlji pod sončno svetlobo v 8 stopnjah, vendar je mogoče vizualno razlikovati le 4 stopnje. Na vlažni obdelani zemlji raste nekoliko hitreje. Požanete ga lahko kadarkoli, vendar bo pridelek dal le, ko bo zrel.
+
+Premature Potato Plant (Stage @1)=Nedozorel krompir (stopnja @1)
+Mature Potato Plant=Zrel krompir
+
+Mature potato plants are ready to be harvested for potatoes. They won't grow any further.=Zrel krompir je pripravljen na žetev. Ne bo več rasel.
+
+Potato=Krompir
+
+Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes.=Krompir je živilo, ki ga lahko jeste, pečete v peči in sadite. Prašiči imajo radi krompir.
+
+Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Držite ga v roki in desno kliknite, da ga pojeste. Postavite ga na obdelano zemljo, da ga posadite. Raste na sončni svetlobi, hitreje pa na vlažni obdelani zemlji. Z desnim klikom kliknite na žival, da jo nahranite.
+
+Baked Potato=Pečen krompir
+Baked potatoes are food items which are more filling than the unbaked ones.=Pečen krompir je živilo, ki je bolj nasitno od nepečenega.
+Poisonous Potato=Strupen krompir
+60% chance of poisoning=60 % možnost zastrupitve
+
+This potato doesn't look too healthy. You can eat it to restore hunger points, but there's a 60% chance it will poison you briefly.=Ta krompir ne izgleda preveč zdravo. Lahko ga pojeste, da obnovite točke lakote, vendar obstaja 60 % verjetnost, da se boste za kratek čas zastrupili.
+
+##[ beetroot.lua ]##
+Beetroot Seeds=Semena rdeče pese
+Grows into a beetroot plant. Chickens like beetroot seeds.=Zraste v rdečo peso. Kokoši imajo rade semena rdeče pese.
+
+Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds.=Postavite semena rdeče pese na obdelano zemljo (ki jo lahko ustvarite z motiko), da posadite rdečo peso. Raste na sončni svetlobi, hitreje pa na vlažni obdelani zemlji. Z desnim klikom kliknite na žival, da jo nahranite s semeni rdeče pese.
+
+Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Rdeča pesa je rastlina, ki raste na obdelani zemlji pod sončno svetlobo v 4 stopnjah. Na vlažni obdelani zemlji raste nekoliko hitreje. Požanete jo lahko kadarkoli, vendar bo pridelek dala le, ko bo zrela.
+
+Premature Beetroot Plant=Nedozorela rdeča pesa
+Mature Beetroot Plant=Zrela rdeča pesa
+
+A mature beetroot plant is a farming plant which is ready to be harvested for a beetroot and some beetroot seeds. It won't grow any further.=Zrela rdeča pesa je poljščina, ki je pripravljena na žetev in daje rdečo peso ter nekaj semen. Ne bo več rasla.
+
+Beetroot=Rdeča pesa
+
+Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too.=Rdeča pesa se uporablja kot živilo in kot sestavina za barvilo. Tudi prašiči imajo radi rdečo peso.
+
+Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.=Držite jo v roki in desno kliknite, da jo pojeste. Z desnim klikom kliknite na žival, da jo nahranite.
+Beetroot Soup=Juha iz rdeče pese
+Beetroot soup is a food item.=Juha iz rdeče pese je živilo.
+##[ sweet_berry.lua ]##
+Sweet Berry Bush (Stage @1)=Grm sladkih jagod (stopnja @1)
+Sweet Berry=Sladke jagode

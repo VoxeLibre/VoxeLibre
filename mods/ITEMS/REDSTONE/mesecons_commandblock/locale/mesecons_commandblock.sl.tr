@@ -1,0 +1,38 @@
+# textdomain: mesecons_commandblock
+Command blocks are not enabled on this server=Ukazni bloki na tem strežniku niso omogočeni.
+Placement denied. You need the “maphack” privilege to place command blocks.=Postavitev zavrnjena. Za postavljanje ukaznih blokov potrebujete privilegij »maphack«.
+Command Block=Ukazni blok
+Executes server commands when powered by redstone power=Izvede strežniške ukaze, ko je napajan z energijo rdečega kamna.
+
+Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power.=Ukazni bloki so mogočne komponente rdečega kamna, ki lahko spreminjajo samo resničnost. Z drugimi besedami, povzročijo, da strežnik izvede strežniške ukaze, ko jim je dovedena energija rdečega kamna.
+
+Everyone can activate a command block and look at its commands, but not everyone can edit and place them.=Vsakdo lahko aktivira ukazni blok in si ogleda njegove ukaze, vendar jih ne more vsak urejati in postavljati.
+
+To view the commands in a command block, use it. To activate the command block, just supply it with redstone power. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.=Za ogled ukazov v ukaznem bloku ga uporabite. Za aktivacijo ukaznega bloka mu preprosto dovedite energijo rdečega kamna. To bo ukaze izvedlo enkrat. Za ponovno izvedbo ukazov izklopite in ponovno vklopite energijo rdečega kamna.
+
+To be able to place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Use the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced usage > Server Commands” to understand how commands work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.=Da bi lahko postavili ukazni blok in spreminjali ukaze, morate biti v ustvarjalnem načinu in imeti privilegij »maphack«. Nov ukazni blok nima nobenih ukazov in ne naredi ničesar. Uporabite ukazni blok (v ustvarjalnem načinu!) za urejanje njegovih ukazov. Preberite vnos pomoči »Napredna uporaba > Strežniški ukazi« za razumevanje, kako delujejo ukazi. Vsaka vrstica vsebuje en sam ukaz. Vnesete jih tako, kot bi jih v konzolo, vendar brez začetne poševnice. Ukazi se bodo izvedli od zgoraj navzdol.
+
+All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.=Vsi ukazi se bodo izvedli v imenu igralca, ki je postavil ukazni blok, kot da bi igralec vtipkal ukaze. Temu igralcu pravimo »poveljnik« bloka.
+
+Command blocks support placeholders, insert one of these placeholders and they will be replaced by some other text:=Ukazni bloki podpirajo nadomestne znake. Vstavite enega od teh nadomestnih znakov in nadomeščeni bodo z drugim besedilom:
+• “@@c”: commander of this command block=• »@@c«: poveljnik tega ukaznega bloka
+• “@@n” or “@@p”: nearest player from the command block=• »@@n« ali »@@p«: najbližji igralec ukaznemu bloku
+• “@@f” farthest player from the command block=• »@@f«: najbolj oddaljen igralec od ukaznega bloka
+• “@@r”: random player currently in the world=• »@@r«: naključen igralec, ki je trenutno na svetu
+• “@@@@”: literal “@@” sign=• "@@@@": dobeseden znak »@@«
+Example 1:@n    time 12000@nSets the game clock to 12:00=Primer 1:@n time 12000@nNastavi uro igre na 12:00
+Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=Primer 2:@n give @@n mcl_core:apple 5@nDá najbližjemu igralcu 5 jabolk
+
+##[ api.lua ]##
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Napaka: Ukaz »@1« ne obstaja; vaš ukazni blok ni bil spremenjen. Uporabite ukaz klepeta »help« za seznam razpoložljivih ukazov.
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Napaka: Ukaz »@1« ne obstaja; vaš ukazni blok ni bil spremenjen. Uporabite ukaz klepeta »help« za seznam razpoložljivih ukazov. Namig: Poskusite odstraniti začetno poševnico.
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Napaka: Imate premalo privilegijev za uporabo ukaza »@1« (manjkajoči privilegij: @2)! Ukazni blok ni bil spremenjen.
+Error: No commander! Block must be replaced.=Napaka: Ni poveljnika! Blok je treba zamenjati.
+Commander: @1=Poveljnik: @1
+Submit=Potrdi
+No commands.=Ni ukazov.
+Commands:=Ukazi:
+Help=Pomoč
+Access denied. You need the “maphack” privilege to edit command blocks.=Dostop zavrnjen. Za urejanje ukaznih blokov potrebujete privilegij »maphack«.
+Editing the command block has failed! You can only change the command block in Creative Mode!=Urejanje ukaznega bloka ni uspelo! Ukazni blok lahko spreminjate le v ustvarjalnem načinu!
+Editing the command block has failed! The command block is gone.=Urejanje ukaznega bloka ni uspelo! Ukazni blok je izginil.

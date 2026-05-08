@@ -1,0 +1,16 @@
+# textdomain: mcl_throwing
+##[ egg.lua ]##
+Use the punch key to throw.=Uporabite tipko »Udari«, da ga vržete.
+Egg=Jajce
+Throwable=Metljivo
+Chance to hatch chicks when broken=Možnost izvalitve piščančkov ob razbitju
+Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chicks will pop out of the egg.=Jajca se lahko mečejo ali izstrelijo iz delilnika in se ob trku razbijejo. Obstaja majhna možnost, da iz jajca skoči 1 ali celo 4 piščančki.
+
+##[ ender_pearl.lua ]##
+Ender Pearl=Ender biser
+Teleports you on impact for cost of 5 HP=Teleportira vas ob trku za ceno 5 točk zdravja
+An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block or a plant. Each teleportation hurts the user by 5 hit points.=Ender biser je predmet, ki se lahko uporabi za teleportacijo za ceno zdravja. Lahko se vrže in teleportira metalca na mesto trka, ko zadene trden blok ali rastlino. Vsaka teleportacija uporabnika poškoduje za 5 točk zdravja.
+
+##[ snowball.lua ]##
+Snowball=Snežna kepa
+Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing.=Snežne kepe se lahko mečejo ali izstrelijo iz delilnika za zabavo. Zadetek nečesa s snežno kepo ne povzroči ničesar.

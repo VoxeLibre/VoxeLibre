@@ -1,0 +1,59 @@
+# textdomain: mcl_beds
+##[ functions.lua ]##
+New respawn position set!=Nova točka oživljanja nastavljena!
+You can only sleep at night or during a thunderstorm.=Spite lahko le ponoči ali med nevihto.
+You can't sleep, the bed's too far away!=Ne morete spati, postelja je preveč oddaljena!
+This bed is already occupied!=Ta postelja je že zasedena!
+You have to stop moving before going to bed!=Preden greste v posteljo, se morate ustaviti!
+You can't sleep now, monsters are nearby!=Zdaj ne morete spati, v bližini so pošasti!
+You can't sleep, the bed is obstructed!=Ne morete spati, postelja je blokirana!
+It's too dangerous to sleep here!=Tukaj je prenevarno za spanje!
+Leave bed=Zapusti posteljo
+Abort sleep=Prekini spanje
+Chat:=Klepet:
+Send=Pošlji
+Players in bed: @1/@2=Igralci v posteljah: @1/@2
+Note: Night skip is disabled.=Opomba: Preskakovanje noči je onemogočeno.
+You're sleeping.=Spite.
+You will fall asleep when all players are in bed.=Zaspali boste, ko bodo vsi igralci v posteljah.
+You will fall asleep when @1% of all players are in bed.=Zaspali boste, ko bo @1 % vseh igralcev v posteljah.
+You're in bed.=Ste v postelji.
+@1/@2 players currently in bed.=Trenutno v postelji: @1/@2 igralcev.
+You exceeded the maximum number of messages per 10 seconds!=Presegli ste največje število sporočil na 10 sekund!
+You are missing the 'shout' privilege! It's required in order to talk in chat...=Manjka vam privilegij ‚shout‘! Potreben je za pogovor v klepetu ...
+Sorry, but you have to wait @1 seconds until you may use this button again!=Oprostite, počakati morate @1 sekund, preden lahko znova uporabite ta gumb!
+Hey! Would you guys mind sleeping?=Hej! Bi lahko šli spat?
+##[ api.lua ]##
+Beds allow you to sleep at night and make the time pass faster.=Postelje vam omogočajo spanje ponoči in pospešijo čas.
+
+To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.=Za uporabo postelje stopite blizu in kliknite nanjo z desno tipko. Spanje deluje le ob sončnem zahodu, ponoči ali med nevihto. Postelja mora biti tudi varna pred nevarnostmi.
+
+You have heard of other worlds in which a bed would set the start point for your next life. But this world is not one of them.=Slišali ste za druge svetove, v katerih postelja določi začetno točko za vaše naslednje življenje. Toda ta svet ni eden izmed njih.
+
+By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.=Z uporabo postelje nastavite začetno točko za svoje naslednje življenje. Če umrete, boste naslednje življenje začeli pri tej postelji, razen če je blokirana ali uničena.
+
+In this world, going to bed won't skip the night, but it will skip thunderstorms.=V tem svetu odhod v posteljo ne preskoči noči, preskoči pa nevihte.
+
+Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.=Spanje omogoča preskakovanje noči. Noč se preskoči, ko gredo spat vsi igralci v tem svetu. Noč se preskoči po nekaj sekundah spanja. Na enak način se lahko preskočijo nevihte.
+
+Allows you to sleep=Omogoča spanje
+##[ beds.lua ]##
+Red Bed=Rdeča postelja
+Blue Bed=Modra postelja
+Cyan Bed=Cijan postelja
+Grey Bed=Siva postelja
+Light Grey Bed=Svetlo siva postelja
+Black Bed=Črna postelja
+Yellow Bed=Rumena postelja
+Green Bed=Zelena postelja
+Magenta Bed=Magenta postelja
+Orange Bed=Oranžna postelja
+Purple Bed=Vijolična postelja
+Brown Bed=Rjava postelja
+Pink Bed=Roza postelja
+Lime Bed=Limetina postelja
+Light Blue Bed=Svetlo modra postelja
+White Bed=Bela postelja
+Bed=Postelja
+##[ respawn_anchor.lua ]##
+Respawn Anchor=Sidro oživljanja

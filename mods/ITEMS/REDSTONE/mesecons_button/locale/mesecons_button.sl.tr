@@ -1,0 +1,27 @@
+# textdomain: mesecons_button
+Use the button to push it.=Uporabite gumb, da ga pritisnete.
+
+A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows.=Lesen gumb je komponenta rdečega kamna iz lesa, ki ga je mogoče pritisniti za zagotavljanje energije rdečega kamna. Ob pritisku napaja sosednje komponente rdečega kamna za 1,5 sekunde. Lesene gumbe lahko aktivirajo tudi puščice.
+
+A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=Gumb je komponenta rdečega kamna, ki ga je mogoče pritisniti za zagotavljanje energije rdečega kamna. Ob pritisku napaja sosednje komponente rdečega kamna za @1 sekund.
+
+Provides redstone power when pushed=Ob pritisku zagotavlja energijo rdečega kamna
+Push duration: @1s=Trajanje pritiska: @1 s
+Pushable by arrow=Aktivira ga lahko puščica
+Stone Button=Kamnit gumb
+
+A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Kamnit gumb je komponenta rdečega kamna iz kamna, ki ga je mogoče pritisniti za zagotavljanje energije rdečega kamna. Ob pritisku napaja sosednje komponente rdečega kamna za 1 sekundo.
+
+Polished Blackstone Button=Gumb iz poliranega črnokamna
+
+A polished blackstone button is a redstone component made out of polished blackstone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Gumb iz poliranega črnokamna je komponenta rdečega kamna iz poliranega črnokamna, ki ga je mogoče pritisniti za zagotavljanje energije rdečega kamna. Ob pritisku napaja sosednje komponente rdečega kamna za 1 sekundo.
+
+Oak Button=Hrastov gumb
+Acacia Button=Akacijev gumb
+Birch Button=Brezov gumb
+Dark Oak Button=Gumb iz temnega hrasta
+Spruce Button=Smrekov gumb
+Jungle Button=Džungelski gumb
+Mangrove Button=Mangrovov gumb
+Crimson Button=Škrlaten gumb
+Warped Button=Popačen gumb

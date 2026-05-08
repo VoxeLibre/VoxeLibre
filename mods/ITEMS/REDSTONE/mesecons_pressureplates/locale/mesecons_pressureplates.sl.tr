@@ -1,0 +1,26 @@
+# textdomain: mesecons_pressureplates
+A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Lesena tlačna plošča je komponenta rdečega kamna, ki sosednje bloke napaja z energijo rdečega kamna, dokler na njej počiva kakršen koli premični predmet (vključno z odvrženimi predmeti, igralci in pošastmi).
+
+A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=Tlačna plošča je komponenta rdečega kamna, ki sosednje bloke napaja z energijo rdečega kamna, dokler na njej počiva nekdo ali nekaj.
+
+Provides redstone power when pushed=Ob pritisku zagotavlja energijo rdečega kamna
+Pushable by players, mobs and objects=Pritisnejo jo lahko igralci, pošasti in predmeti
+Pushable by players and mobs=Pritisnejo jo lahko igralci in pošasti
+Pushable by mobs=Pritisnejo jo lahko pošasti
+Pushable by players=Pritisnejo jo lahko igralci
+Oak Pressure Plate=Hrastova tlačna plošča
+Acacia Pressure Plate=Akacijeva tlačna plošča
+Birch Pressure Plate=Brezova tlačna plošča
+Dark Oak Pressure Plate=Tlačna plošča iz temnega hrasta
+Spruce Pressure Plate=Smrekova tlačna plošča
+Jungle Pressure Plate=Džungelska tlačna plošča
+Mangrove Pressure Plate=Mangrovova tlačna plošča
+Crimson Pressure Plate=Škrlatna tlačna plošča
+Warped Pressure Plate=Popačena tlačna plošča
+Stone Pressure Plate=Kamnita tlačna plošča
+
+A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Kamnita tlačna plošča je komponenta rdečega kamna, ki sosednje bloke napaja z energijo rdečega kamna, dokler na njej stoji igralec ali pošast. Nič drugega je ne sproži.
+
+Polished Blackstone Pressure Plate=Tlačna plošča iz poliranega črnokamna
+
+A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Tlačna plošča iz poliranega črnokamna je komponenta rdečega kamna, ki sosednje bloke napaja z energijo rdečega kamna, dokler na njej stoji igralec ali pošast. Nič drugega je ne sproži.

@@ -1,0 +1,28 @@
+# Pazi, da ti kladivo ne pade na prste!
+
+# textdomain: vl_weaponry
+Can crush blocks=Lahko zdrobi bloke
+Increased knockback=Povečan odsun
+
+Hammers are great in melee combat, as they deal high damage with increased knockback and can endure countless battles. Hammers can also be used to crush things.=Kladiva so odlična v boju od blizu, saj povzročijo veliko škodo s povečanim odsunom in lahko zdržijo nešteto bitk. Kladiva se lahko uporabljajo tudi za drobljenje stvari.
+
+To crush a block, dig the block with the hammer. This only works with some blocks.=Če želite zdrobiti blok, ga izkopljite s kladivom. To deluje le pri nekaterih blokih.
+
+Reaches farther=Doseže dlje
+Can be thrown=Lahko se vrže
+
+Spears are great in melee combat, as they have an increased reach. They can also be thrown.=Kopja so odlična v boju od blizu, saj imajo povečan doseg. Lahko se jih tudi vrže.
+
+To throw a spear, hold it in your hand, then hold use (rightclick) in the air.=Če želite vreči kopje, ga držite v roki in nato pridržite tipko za uporabo (desni klik) v zraku.
+Wooden Hammer=Leseno kladivo
+Stone Hammer=Kamnito kladivo
+Iron Hammer=Železno kladivo
+Golden Hammer=Zlato kladivo
+Diamond Hammer=Diamantno kladivo
+Netherite Hammer=Netheritno kladivo
+Wooden Spear=Leseno kopje
+Stone Spear=Kamnito kopje
+Iron Spear=Železno kopje
+Golden Spear=Zlato kopje
+Diamond Spear=Diamantno kopje
+Netherite Spear=Netheritno kopje

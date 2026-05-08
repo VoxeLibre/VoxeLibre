@@ -1,0 +1,67 @@
+# textdomain: mcl_armor
+
+This is a piece of equippable armor which reduces the amount of damage you receive.=To je kos nosljivega oklepa, ki zmanjša količino prejete škode.
+To equip it, put it on the corresponding armor slot in your inventory menu.=Če ga želite obleči, ga postavite v ustrezno režo za oklep v meniju inventarja.
+Sentry=Stražar
+Dune=Sipina
+Coast=Obala
+Wild=Divjina
+Tide=Plima
+Ward=Varuh
+Vex=Bes
+Rib=Rebro
+Snout=Rilec
+Eye=Oko
+Spire=Konica
+Silence=Tišina
+Wayfinder=Iskalec poti
+##[ api.lua ]##
+Upgrade:=Nadgradnja:
+@1 Armor Trim=@1 okras za oklep
+##[ register.lua ]##
+Golden Helmet=Zlata čelada
+Golden Chestplate=Zlati prsni oklep
+Golden Leggings=Zlate hlače
+Golden Boots=Zlati škornji
+Chainmail Helmet=Verižna čelada
+Chainmail Chestplate=Verižna srajca
+Chainmail Leggings=Verižne hlače
+Chainmail Boots=Verižni škornji
+Iron Helmet=Železna čelada
+Iron Chestplate=Železni prsni oklep
+Iron Leggings=Železne hlače
+Iron Boots=Železni škornji
+Diamond Helmet=Diamantna čelada
+Diamond Chestplate=Diamantni prsni oklep
+Diamond Leggings=Diamantne hlače
+Diamond Boots=Diamantni škornji
+Netherite Helmet=Netheritna čelada
+Netherite Chestplate=Netheritni prsni oklep
+Netherite Leggings=Netheritne hlače
+Netherite Boots=Netheritni škornji
+Projectile Protection=Zaščita pred izstrelki
+Reduces projectile damage.=Zmanjša škodo zaradi izstrelkov.
+Blast Protection=Zaščita pred eksplozijami
+Reduces explosion damage and knockback.=Zmanjša škodo zaradi eksplozij in odsunov.
+Fire Protection=Zaščita pred ognjem
+Reduces fire damage.=Zmanjša škodo zaradi ognja.
+Protection=Zaščita
+Reduces most types of damage by 4% for each level.=Zmanjša večino vrst škode za 4 % na stopnjo.
+Feather Falling=Lahkoten padec
+Reduces fall damage.=Zmanjša škodo pri padcu.
+Aqua Affinity=Naklonjenost vodi
+#Translations of enchantements
+Increases underwater mining speed.=Poveča hitrost rudarjenja pod vodo.
+Curse of Binding=Prekletstvo vezanja
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Predmeta ni mogoče odstraniti iz reže za oklep, razen ob smrti, uničenju ali v ustvarjalnem načinu.
+Thorns=Trnje
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Ob udarcu odbije del prejete škode, vendar se ob vsaki sprožitvi zmanjša trpežnost.
+Elytra=Elitra
+##[ leather.lua ]##
+Leather Cap=Usnjena kapa
+Leather Tunic=Usnjen jopič
+Leather Pants=Usnjene hlače
+Leather Boots=Usnjeni škornji
+##[ trims.lua ]##
+#Translations for armor trims
+Smithing Template '@1'=Kovaška predloga ‚@1‘

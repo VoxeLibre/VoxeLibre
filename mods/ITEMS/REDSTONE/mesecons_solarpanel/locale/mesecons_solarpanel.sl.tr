@@ -1,0 +1,8 @@
+# textdomain: mesecons_solarpanel
+Daylight Sensor=Senzor dnevne svetlobe
+Provides redstone power when in sunlight=Zagotavlja energijo rdečega kamna, ko je na sončni svetlobi
+Can be inverted=Lahko se obrne
+Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.=Senzorji dnevne svetlobe so komponente rdečega kamna, ki zagotavljajo energijo rdečega kamna, ko so na sončni svetlobi, sicer pa ne. Lahko se tudi obrnejo.
+In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=V obrnjenem stanju zagotavljajo energijo rdečega kamna, ko niso na sončni svetlobi, sicer pa ne.
+Use the daylight sensor to toggle its state.=Uporabite (kliknite) senzor dnevne svetlobe, da preklopite njegovo stanje.
+Inverted Daylight Sensor=Obrnjen senzor dnevne svetlobe

@@ -1,0 +1,10 @@
+# textdomain: mcl_sponges
+Sponge=Spužva
+Removes water on contact=Ob stiku odstrani vodo
+Sponges are blocks which remove water around them when they are placed or come in contact with water, turning it into a wet sponge.=Spužve so bloki, ki odstranijo vodo okoli sebe, ko so postavljeni ali pridejo v stik z vodo, pri čemer se spremenijo v mokro spužvo.
+Waterlogged Sponge=Mokra spužva
+Can be dried in furnace=Lahko se posuši v peči
+A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, the water will pour into the bucket.=Mokro spužvo lahko posušite v peči, da jo spremenite v (suho) spužvo. Če je v reži za gorivo v peči prazno vedro, se bo voda zlila v vedro.
+Riverwaterlogged Sponge=Spužva, namočena z rečno vodo
+This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.=To je spužva, prepojena z rečno vodo. Lahko jo posušite v peči, da jo spremenite v (suho) spužvo. Če je v reži za gorivo v peči prazno vedro, se bo rečna voda zlila v vedro.
+A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water.=Spužva postane namočena z rečno vodo (namesto z navadno vodo), če posrka več rečne vode kot (navadne) vode.

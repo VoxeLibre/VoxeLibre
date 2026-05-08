@@ -1,0 +1,16 @@
+# textdomain: mesecons_delayer
+Transmits redstone power only in one direction=Prenaša energijo rdečega kamna le v eno smer
+Delays signal=Zakasni signal
+Output locks when getting active redstone repeater signal from the side=Izhod se zaklene, ko s strani prejme aktivni signal ponavljalnika rdečega kamna
+
+Redstone repeaters are versatile redstone components with multiple purposes: 1. They only allow signals to travel in one direction. 2. They delay the signal. 3. Optionally, they can lock their output in one state.=Ponavljalniki rdečega kamna so vsestranske komponente rdečega kamna z več nameni: 1. Signalom omogočajo potovanje le v eno smer. 2. Zakasnijo signal. 3. Po želji lahko zaklenejo svoj izhod v enem stanju.
+
+To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, use the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.=Če želite napajati ponavljalnik rdečega kamna, pošljite signal v smeri "puščice" (vhod). Signal izstopi na nasprotni strani (izhod) z zakasnitvijo. Za spremembo zakasnitve uporabite ponavljalnik rdečega kamna. Zakasnitev je dolga med 0,1 in 0,4 sekunde in se lahko spreminja v korakih po 0,1 sekunde. Označena je s položajem premikajoče se bakle rdečega kamna.
+
+To lock a repeater, send a signal from an adjacent repeater into one of its sides. While locked, the moving redstone torch disappears, the output doesn't change and the input signal is ignored.=Če želite zakleniti ponavljalnik, pošljite signal iz sosednjega ponavljalnika v eno od njegovih stranic. Ko je zaklenjen, premikajoča se bakla rdečega kamna izgine, izhod se ne spremeni, vhodni signal pa je prezrt.
+
+Redstone Repeater=Ponavljalnik rdečega kamna
+Redstone Repeater (Delay @1)=Ponavljalnik rdečega kamna (zakasnitev @1)
+Redstone Repeater (Delay @1, Powered)=Ponavljalnik rdečega kamna (zakasnitev @1, napajan)
+Redstone Repeater (Locked)=Ponavljalnik rdečega kamna (zaklenjen)
+Redstone Repeater (Locked, Powered)=Ponavljalnik rdečega kamna (zaklenjen, napajan)

@@ -1,0 +1,15 @@
+# textdomain: mcl_cake
+Cake=Torta
+With 7 tasty slices!=S 7 okusnimi kosi!
+Hunger points: +@1 per slice=Točke lakote: +@1 na kos
+
+Cakes can be placed and eaten to restore hunger points. A cake has 7 slices. Each slice restores 2 hunger points and 0.4 saturation points. Cakes will be destroyed when dug or when the block below them is broken.=Torte je mogoče postaviti in pojesti za obnovitev točk lakote. Torta ima 7 kosov. Vsak kos obnovi 2 točki lakote in 0,4 točke sitosti. Torte bodo uničene, če jih izkopljete ali če se uniči blok pod njimi.
+
+Place the cake anywhere, then rightclick it to eat a single slice. You can't eat from the cake when your hunger bar is full.=Postavitw torto kamor koli, nato desno kliknite nanjo, da pojeste en kos. Torte ne morete jesti, ko je vaša vrstica lakote polna.
+
+Cake (6 Slices Left)=Torta (ostalo 6 kosov)
+Cake (5 Slices Left)=Torta (ostalo 5 kosov)
+Cake (4 Slices Left)=Torta (ostali 4 kosi)
+Cake (3 Slices Left)=Torta (ostali 3 kosi)
+Cake (2 Slices Left)=Torta (ostala 2 kosa)
+Cake (1 Slice Left)=Torta (ostal 1 kos)

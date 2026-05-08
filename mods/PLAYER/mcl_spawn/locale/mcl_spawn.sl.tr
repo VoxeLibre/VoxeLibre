@@ -1,0 +1,5 @@
+# textdomain: mcl_spawn
+Respawn position cleared!=Točka ponovnega pojavljanja je izbrisana!
+New respawn position set!=Točka za ponovno pojavljanje je nastavljena!
+Couldn't get level of your respawn anchor!=Ni bilo mogoče dobiti stopnje vašega sidra za ponovno pojavljanje!
+Your spawn bed was missing or blocked, and you had no charged respawn anchor!=Vaša postlja ali sidro za ponovno pojavljanje manjkata ali sta blokirana, ali niste napolnili sidra!

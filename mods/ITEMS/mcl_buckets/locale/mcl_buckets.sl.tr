@@ -1,0 +1,38 @@
+# textdomain: mcl_buckets
+Empty Bucket=Prazno vedro
+A bucket can be used to collect and release liquids.=Vedro se lahko uporablja za zajemanje in izlivanje tekočin.
+
+Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else.=Udari po viru tekočine, da ga zajameš. Polno vedro lahko nato uporabiš, da tekočino postaviš drugam.
+
+Collects liquids=Zajema tekočine
+##[ register.lua ]##
+Lava Bucket=Vedro lave
+
+A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.=Vedro se lahko uporablja za zajemanje in izlivanje tekočin. To je napolnjeno z vročo lavo, ki je varno shranjena v njem. Uporabljaj previdno.
+
+Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!=Postavi se na varno razdaljo in uporabi vedro, da ga izprazniš in na tem mestu ustvariš vir lave. Ne se opečit!
+
+Places a lava source=Postavi vir lave
+Water Bucket=Vedro vode
+
+A bucket can be used to collect and release liquids. This one is filled with water.=Vedro se lahko uporablja za zajemanje in izlivanje tekočin. To je napolnjeno z vodo.
+
+Place it to empty the bucket and create a water source.=Postavi ga, da izprazniš vedro in ustvariš vir vode.
+Places a water source=Postavi vir vode
+River Water Bucket=Vedro rečne vode
+
+A bucket can be used to collect and release liquids. This one is filled with river water.=Vedro se lahko uporablja za zajemanje in izlivanje tekočin. To je napolnjeno z rečno vodo.
+
+Place it to empty the bucket and create a river water source.=Postavi ga, da izprazniš vedro in ustvariš vir rečne vode.
+Places a river water source=Postavi vir rečne vode
+##[ fishbuckets.lua ]##
+Bucket of Cod=Vedro s trsko
+Bucket of Salmon=Vedro z lososom
+Bucket of Tropical Fish=Vedro s tropsko ribo
+Bucket of Axolotl=Vedro z aksolotlom
+Bucket of Pufferfish=Vedro z napihovalko
+This bucket is filled with water and contains an aquatic mob.=To vedro je napolnjeno z vodo in vsebuje vodno bitje.
+
+Place it to empty the bucket and place a mob. Obtain by right clicking on a small aquatic mob with a bucket of water.=Postavi ga, da izprazniš vedro in postaviš bitje. Dobiš ga z desnim klikom na majhno vodno bitje z vedrom vode.
+
+Places a water source and a mob.=Postavi vir vode in bitje.

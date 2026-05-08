@@ -1,0 +1,16 @@
+# textdomain: mcl_itemframes
+Item frames are decorative blocks in which items can be placed.=Okvirji za predmete so okrasni bloki, v katere lahko postavite predmete.
+
+Just place any item on the item frame. Use the item frame again to retrieve the item.=Preprosto postavite kateri koli predmet v okvir za predmete. Ponovno uporabite okvir za predmete, da vzamete predmet.
+
+##[ register.lua ]##
+Item Frame=Okvir za predmete
+Can hold an item=Lahko drži predmet
+Glow Item Frame=Svetleči okvir za predmete
+Can hold an item and glows=Lahko drži predmet in se sveti
+Invisible Item Frame=Neviden okvir za predmete
+Can hold an item but is invisible=Lahko drži predmet, a je neviden
+Invisible Glow Item Frame=Neviden svetleči okvir za predmete
+Can hold an item and glows but is invisible=Lahko drži predmet in se sveti, a je neviden
+Glow and Behold!=Sijaj in glej!
+Craft a glow item frame.=Izdelajte svetleči okvir za predmete.

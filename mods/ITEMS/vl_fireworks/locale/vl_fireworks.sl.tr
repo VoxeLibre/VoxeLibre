@@ -1,0 +1,11 @@
+# textdomain: vl_fireworks
+##[ star.lua ]##
+Firework Star=Ognjemetna zvezda
+
+A firework star is the key component of a firework rocket which is responsible for the visible explosion.=Ognjemetna zvezda je ključna komponenta ognjemetne rakete, ki je odgovorna za vidno eksplozijo.
+
+Generic Firework Star=Splošna ognjemetna zvezda
+Size:=Velikost:
+##[ rockets.lua ]##
+Flight Duration:=Trajanje leta:
+Firework Rocket=Ognjemetna raketa
