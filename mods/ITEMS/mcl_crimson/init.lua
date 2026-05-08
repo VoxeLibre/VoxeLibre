@@ -54,7 +54,6 @@ local nether_plants = {
 	["mcl_crimson:crimson_nylium"] = {
 		"mcl_crimson:crimson_roots",
 		"mcl_crimson:crimson_fungus",
-		"mcl_crimson:warped_fungus",
 	},
 	["mcl_crimson:warped_nylium"] = {
 		"mcl_crimson:warped_roots",
@@ -99,6 +98,10 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1,compostability=65},
 	light_source = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = { -6/16, -0.5, -6/16, 6/16, 7/16, 6/16 },
+	},
 	node_placement_prediction = "",
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.under
@@ -356,7 +359,7 @@ minetest.register_node("mcl_crimson:nether_sprouts", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -4/16, -0.5, -4/16, 4/16, 0, 4/16 },
+		fixed = { -5/16, -0.5, -5/16, 5/16, 1/16, 5/16 },
 	},
 	node_placement_prediction = "",
 	drop = "",
@@ -378,7 +381,7 @@ minetest.register_node("mcl_crimson:warped_roots", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -6/16, -0.5, -6/16, 6/16, -4/16, 6/16 },
+		fixed = { -6/16, -0.5, -6/16, 6/16, 7/16, 6/16 },
 	},
 	node_placement_prediction = "",
 	_mcl_silk_touch_drop = false,
@@ -591,7 +594,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
+		fixed = { -4/16, -0.5, -4/16, 4/16, 5/16, 4/16 },
 	},
 	node_placement_prediction = "",
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
@@ -632,7 +635,7 @@ minetest.register_node("mcl_crimson:crimson_roots", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -6/16, -0.5, -6/16, 6/16, -4/16, 6/16 },
+		fixed = { -6/16, -0.5, -6/16, 6/16, 7/16, 6/16 },
 	},
 	node_placement_prediction = "",
 	_mcl_silk_touch_drop = false,
