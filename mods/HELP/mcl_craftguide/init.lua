@@ -23,11 +23,11 @@ local ESC = M.formspec_escape
 local S = M.get_translator("mcl_craftguide")
 
 local maxn, sort, concat, insert, copy =
-table.maxn, table.sort, table.concat, table.insert,
+	table.maxn, table.sort, table.concat, table.insert,
 	table.copy
 
 local fmt, find, gmatch, match, sub, split, lower =
-string.format, string.find, string.gmatch, string.match,
+	string.format, string.find, string.gmatch, string.match,
 	string.sub, string.split, string.lower
 
 local min, max, floor, ceil = math.min, math.max, math.floor, math.ceil
@@ -109,10 +109,10 @@ local function init_data(name)
 	player_data[name] = {
 		filter  = "",
 		pagenum = 1,
-		iX      = sfinv_only and 8 or DEFAULT_SIZE,
+		iX      = DEFAULT_SIZE,
 		items   = init_items,
 		items_raw = init_items,
-		lang_code = M.get_player_information(name).lang_code or 'en',
+		lang_code = M.get_player_information(name).lang_code or "en",
 	}
 end
 local function get_player_data(name)
@@ -454,13 +454,13 @@ local function get_tooltip(item, groups, cooktime, burntime)
 			tooltip = groupstr
 		else
 
-			local grouptable, c = {}, 0
+			local group_table, c = {}, 0
 			for i = 1, #groups do
 				c = c + 1
-				grouptable[c] = colorize(gcol, groups[i])
+				group_table[c] = colorize(gcol, groups[i])
 			end
 
-			groupstr = concat(grouptable, ", ")
+			groupstr = concat(group_table, ", ")
 			tooltip = S("Any item belonging to the groups: @1", groupstr)
 		end
 	else

@@ -137,7 +137,7 @@ mcl_craftguide.add_formspec_element("export", {
 		if data.recipes then
 			return {
 				data.iX - 3.7,   -- X
-				sfinv_only and 7.9 or 8, -- Y
+				8,               -- Y
 				1.6,             -- W
 				1,               -- H
 				ESC(S("Export")) -- label
