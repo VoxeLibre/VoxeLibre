@@ -65,7 +65,10 @@ function mcl_dripping.register_drop(def)
 		chance = def.chance,
 		action = function(pos)
 			local below = core.get_node(vector.offset(pos, 0, -1, 0)).name
-			if below == "ignore" or mcl_util.is_solid_block(below) then return end
+			if below == "ignore" or mcl_util.is_solid_block(below)
+					or minetest.get_item_group(below, "slab_top") ~= 0 then
+				return
+			end
 			local r = math.ceil(def.interval / 20)
 			local nn = minetest.find_nodes_in_area(vector.offset(pos, -r, 0, -r), vector.offset(pos, r, 0, r), def.nodes)
 			--start a bunch of particle cycles to be able to get away
