@@ -21,7 +21,7 @@ minetest.register_node("mcl_blackstone:blackstone_gilded", {
 	tiles = {"mcl_blackstone_gilded.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, xp=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, xp=5},
 	drop = {
 		max_items = 1,
 		items = {
@@ -49,7 +49,7 @@ minetest.register_node("mcl_blackstone:nether_gold", {
 	tiles = {"mcl_nether_gold_ore.png"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	groups = {cracky = 3, pickaxey=1, material_stone=1, xp=1},
+	groups = {cracky = 3, pickaxey=1, material_stone=1, xp=2},
 	drop = {
 		max_items = 1,
 		items = {
