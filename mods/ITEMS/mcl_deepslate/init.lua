@@ -92,15 +92,15 @@ local lapis_drops = {
 }
 
 local deepslate_ores = {
-	{ "coal", "mcl_core:coal_lump", "mcl_core:coal_lump", 1, 1,
+	{ "coal", "mcl_core:coal_lump", "mcl_core:coal_lump", 1, 3,
 		S("Deepslate Coal Ore"), S("Deepslate coal ore is a variant of coal ore that can generate in deepslate and tuff blobs.") },
-	{ "iron", "mcl_raw_ores:raw_iron", "mcl_core:iron_ingot", 3, 0,
+	{ "iron", "mcl_raw_ores:raw_iron", "mcl_core:iron_ingot", 3, 3,
 		S("Deepslate Iron Ore"), S("Deepslate iron ore is a variant of iron ore that can generate in deepslate and tuff blobs.") },
-	{ "gold", "mcl_raw_ores:raw_gold", "mcl_core:gold_ingot", 4, 0,
+	{ "gold", "mcl_raw_ores:raw_gold", "mcl_core:gold_ingot", 4, 4,
 		S("Deepslate Gold Ore"), S("Deepslate gold ore is a variant of gold ore that can generate in deepslate and tuff blobs.") },
-	{ "emerald", "mcl_core:emerald", "mcl_core:emerald", 4, 6,
+	{ "emerald", "mcl_core:emerald", "mcl_core:emerald", 4, 10,
 		S("Deepslate Emerald Ore"), S("Deepslate emerald ore is a variant of emerald ore that can generate in deepslate and tuff blobs.") },
-	{ "diamond", "mcl_core:diamond", "mcl_core:diamond", 4, 4,
+	{ "diamond", "mcl_core:diamond", "mcl_core:diamond", 4, 10,
 		S("Deepslate Diamond Ore"), S("Deepslate diamond ore is a variant of diamond ore that can generate in deepslate and tuff blobs.") },
 	{ "lapis", lapis_drops, "mcl_core:lapis", 3, 6,
 		S("Deepslate Lapis Lazuli Ore"), S("Deepslate lapis lazuli ore is a variant of lapis lazuli ore that can generate in deepslate and tuff blobs.") },
@@ -111,7 +111,7 @@ for _, p in pairs(deepslate_ores) do
 end
 
 if copper_mod then
-	register_deepslate_ore("copper", "mcl_copper:raw_copper", "mcl_copper:copper_ingot", 3, 4,
+	register_deepslate_ore("copper", "mcl_copper:raw_copper", "mcl_copper:copper_ingot", 3, 2,
 		S("Deepslate Copper Ore"), S("Deepslate copper ore is a variant of copper ore that can generate in deepslate and tuff blobs."))
 end
 
