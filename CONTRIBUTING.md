@@ -22,7 +22,7 @@ Polishing existing features is always welcome.
 * [Reddit](https://www.reddit.com/r/VoxeLibre/)
 * [Luanti forums](https://forum.luanti.org/viewtopic.php?f=50&t=16407)
 * [ContentDB](https://content.luanti.org/packages/wuzzy/mineclone2/)
-* [OpenCollective](https://opencollective.com/mineclone2)
+* [OpenCollective](https://opencollective.com/voxelibre)
 
 ## Using git
 VoxeLibre is developed using the version control system
