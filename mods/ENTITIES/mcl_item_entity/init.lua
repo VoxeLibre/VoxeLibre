@@ -1201,8 +1201,7 @@ minetest.register_entity(":__builtin:item", {
 			-- don't disable if underwater
 			if not is_in_water then
 				-- Smooth drop: if item has horizontal velocity, start sliding instead of snapping
-				local horiz_speed = math.sqrt(v.x * v.x + v.z * v.z)
-				if is_on_floor and horiz_speed > 0.15 then
+				if is_on_floor and (v.x*v.x + v.z*v.z) > 0.0225 then -- 0.15 squared
 					self._slide_vx = v.x
 					self._slide_vz = v.z
 					self._slide_timer = 0.6
