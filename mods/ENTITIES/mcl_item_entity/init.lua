@@ -533,7 +533,7 @@ function minetest.node_dig(pos, node, digger)
 	-- Handle drops
 	minetest.handle_node_drops(pos, drops, digger)
 
-	if wielded then
+	if wielded and not node._vl_indirectly_mined then
 		local wdef = wielded:get_definition()
 		local tp = wielded:get_tool_capabilities()
 		local dp = minetest.get_dig_params(def and def.groups, tp, wielded:get_wear())
