@@ -215,10 +215,11 @@ minetest.register_node("mcl_core:vine", {
 	-- A vine is dependant if it hangs from this node and has no supporting block.
 	on_dig = function(pos, node, digger)
 		local below = vector.offset(pos, 0, -1, 0)
-		local belownode = minetest.get_node(below)
-		minetest.node_dig(pos, node, digger)
+		local belownode = core.get_node(below)
+		belownode._vl_indirectly_mined = true
+		core.node_dig(pos, node, digger)
 		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
-			minetest.registered_nodes[node.name].on_dig(below, node, digger)
+			core.registered_nodes[node.name].on_dig(below, belownode, digger)
 		end
 	end,
 	after_destruct = function(pos, old)
