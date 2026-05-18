@@ -102,6 +102,7 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		self:teleport(puncher)
 	end,
 	do_teleport = function(self, target)
+		local node_ok = false
 		if target ~= nil then
 			local target_pos = target:get_pos()
 			-- Find all solid nodes below air in a 10×10×10 cuboid centered on the target
@@ -128,7 +129,6 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 			local pos = self.object:get_pos()
 			-- Up to 8 top-level attempts to teleport
 			for n=1, 8 do
-				local node_ok = false
 				-- We need to add (or subtract) different random numbers to each vector component, so it couldn't be done with a nice single vector.add() or .subtract():
 				local randomCube = vector.new( pos.x + 8*(pr:next(0,16)-8), pos.y + 8*(pr:next(0,16)-8), pos.z + 8*(pr:next(0,16)-8) )
 				local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(randomCube, 4), vector.add(randomCube, 4), {"group:solid", "group:cracky", "group:crumbly"})
