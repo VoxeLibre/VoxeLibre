@@ -284,10 +284,15 @@ end
 -- Respawn player at specified respawn position
 core.register_on_respawnplayer(mcl_spawn.spawn)
 
+core.register_privilege("setspawn", {
+	description = S("Can set or remove spawn point via command"),
+	give_to_singleplayer = false
+})
+
 core.register_chatcommand("spawnpoint", {
 	description = S("Sets the spawn point for a player, works in all dimensions."),
 	params = S("[<player>] [<x> <y> <z>]"),
-	privs = {},
+	privs = {setspawn = true},
 	func = function(name, param)
 		-- Try different patterns
 		local target_name
@@ -340,7 +345,7 @@ core.register_chatcommand("spawnpoint", {
 core.register_chatcommand("clearspawn", {
 	description = S("Resets the spawn point for a player."),
 	params = S("[<player>]"),
-	privs = {},
+	privs = {setspawn = true},
 	func = function(name, param)
 		-- Try different patterns
 		local target_name
