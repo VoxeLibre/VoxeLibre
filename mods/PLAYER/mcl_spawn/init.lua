@@ -150,7 +150,7 @@ function mcl_spawn.set_player_spawn_pos(player, pos, on_bed, message)
 				core.chat_send_player(player:get_player_name(), S("Respawn position cleared!"))
 			end
 		end
-	else
+	elseif not mcl_worlds.is_in_void(pos) then
 		meta:set_string("mcl_spawn:spawnpoint", core.pos_to_string(pos) .. ";" .. tostring(on_bed))
 		meta:set_string("mcl_beds:spawn", "") -- For compatibility
 
@@ -194,6 +194,10 @@ function mcl_spawn.set_player_spawn_pos(player, pos, on_bed, message)
 		end
 		if spawn_changed and message then
 			core.chat_send_player(player:get_player_name(), S("New respawn position set!"))
+		end
+	else
+		if message then
+			core.chat_send_player(player:get_player_name(), S("Trying to set invalid respawn position!"))
 		end
 	end
 
@@ -335,6 +339,10 @@ core.register_chatcommand("spawnpoint", {
 		else
 			-- Position is not specified, use command executor's position
 			pos = core.get_player_by_name(name):get_pos()
+		end
+
+		if mcl_worlds.is_in_void(pos) then
+			return false, S("Invalid respawn position")
 		end
 
 		mcl_spawn.set_player_spawn_pos(target, pos, false, true)
