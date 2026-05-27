@@ -102,12 +102,10 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 		self:teleport(puncher)
 	end,
 	do_teleport = function(self, target)
-		local node_ok = false
 		if target ~= nil then
 			local target_pos = target:get_pos()
 			-- Find all solid nodes below air in a 10×10×10 cuboid centered on the target
 			local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(target_pos, 5), vector.add(target_pos, 5), {"group:solid", "group:cracky", "group:crumbly"})
-			local telepos
 			if nodes ~= nil then
 				if #nodes > 0 then
 					-- Up to 64 attempts to teleport
@@ -116,12 +114,9 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 						local nodepos = nodes[r]
 						local tg = vector.offset(nodepos,0,1,0)
 						if check_spot(tg) then
-							telepos = tg
-							node_ok = true
+							self.object:set_pos(tg)
+							return
 						end
-					end
-					if telepos then
-						self.object:set_pos(telepos)
 					end
 				end
 			end
@@ -141,14 +136,10 @@ mcl_mobs.register_mob("mobs_mc:shulker", {
 							local tg = vector.offset(nodepos,0,0.5,0)
 							if check_spot(tg) then
 								self.object:set_pos(tg)
-								node_ok = true
-								break
+								return
 							end
 						end
 					end
-				end
-				if node_ok then
-					 break
 				end
 			end
 		end
