@@ -345,6 +345,14 @@ core.register_chatcommand("spawnpoint", {
 			return false, S("Invalid respawn position")
 		end
 
+		-- Warn command executor if the respawn point is set in the end
+		if mcl_worlds.pos_to_dimension(pos) == "end" then
+			local oldpos = mcl_spawn.get_player_spawnpoint(target)
+			if not (oldpos and mcl_worlds.pos_to_dimension(oldpos) == "end") then
+				core.chat_send_player(name, S("Warning: The respawn point of @1 is set in the end. Use /clearspawn command to get out if the player is stuck.", target_name))
+			end
+		end
+
 		mcl_spawn.set_player_spawn_pos(target, pos, false, true)
 		return true, S("Set respawn point for @1 to @2", target_name, core.pos_to_string(pos, 1))
 	end
