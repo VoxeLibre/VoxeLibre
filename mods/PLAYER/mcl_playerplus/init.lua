@@ -24,6 +24,64 @@ local TWOPI = math.pi * 2
 
 -- Internal player state
 local mcl_playerplus_internal = {}
+local recovery_crosshair = {}
+
+local function clear_recovery_crosshair(player)
+	local name = player:get_player_name()
+	local state = recovery_crosshair[name]
+	if not state then return end
+	if state.hud_id then
+		player:hud_remove(state.hud_id)
+	end
+	if state.previous_crosshair ~= nil then
+		player:hud_set_flags({crosshair = state.previous_crosshair})
+	end
+	recovery_crosshair[name] = nil
+end
+
+local function start_recovery_crosshair(player)
+	local wielded = player:get_wielded_item()
+	local caps = wielded:get_tool_capabilities()
+	if not caps or not caps.damage_groups or not caps.damage_groups.fleshy then
+		clear_recovery_crosshair(player)
+		return
+	end
+
+	local interval = caps.full_punch_interval or 1
+	if interval <= 0 then return end
+
+	local name = player:get_player_name()
+	local state = recovery_crosshair[name]
+	if not state then
+		local hud_flags = player:hud_get_flags()
+		state = {
+			previous_crosshair = not hud_flags or hud_flags.crosshair ~= false,
+		}
+		state.hud_id = player:hud_add({
+			[mcl_vars.hud_type_field] = "image",
+			position = {x = 0.5, y = 0.5},
+			scale = {x = 1, y = 1},
+			text = "crosshair.png^[colorize:#ff4040:180",
+			z_index = 100,
+		})
+		recovery_crosshair[name] = state
+	end
+
+	state.started = core.get_us_time()
+	state.interval = interval
+	state.wield_index = player:get_wield_index()
+	state.wield_name = wielded:get_name()
+	player:hud_set_flags({crosshair = false})
+end
+
+controls.register_on_press(function(player, key)
+	if key ~= "LMB" then return end
+	start_recovery_crosshair(player)
+end)
+
+core.register_on_leaveplayer(function(player)
+	recovery_crosshair[player:get_player_name()] = nil
+end)
 
 -- Could occassionally hit about 4.6 but servers and high power machines struggle to keep up with this.
 -- Until mapgen can keep up, it's best to limit for server performance etc.
@@ -196,6 +254,20 @@ minetest.register_globalstep(function(dtime)
 		local wielded = player:get_wielded_item()
 		local player_velocity = player:get_velocity() or player:get_player_velocity()
 		local wielded_def = wielded:get_definition()
+
+		local crosshair_state = recovery_crosshair[name]
+		if crosshair_state then
+			if player:get_wield_index() ~= crosshair_state.wield_index
+					or wielded:get_name() ~= crosshair_state.wield_name then
+				clear_recovery_crosshair(player)
+			else
+				local elapsed = (core.get_us_time() - crosshair_state.started) / 1000000
+				local progress = elapsed / crosshair_state.interval
+				if progress >= 1 then
+					clear_recovery_crosshair(player)
+				end
+			end
+		end
 
 		local c_x, c_y = unpack(player_collision(player))
 
