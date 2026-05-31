@@ -85,8 +85,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		bed_center = {x = bed_pos.x - dir.x/2, y = bed_pos.y + 0.1, z = bed_pos.z - dir.z/2}
 
 		-- save respawn position when entering bed
-		if spawn_mod and mcl_spawn.set_spawn_pos(player, bed_pos, nil) then
-			minetest.chat_send_player(name, S("New respawn position set!"))
+		if spawn_mod and mcl_spawn.set_player_spawn_pos(player, bed_pos, true, true) then
 			awards.unlock(player:get_player_name(), "mcl:sweetDreams")
 		end
 
