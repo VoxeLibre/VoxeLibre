@@ -216,7 +216,7 @@ function mcl_spawn.set_player_spawn_pos(player, pos, on_bed, message)
 					mcl_log("Cannot remove villager from bed bottom meta")
 				end
 
-				if oldpos and oldpos ~= pos then
+				if oldpos and (not vector.equals(oldpos, pos)) then
 					reset_old_bed = true
 				end
 			end
