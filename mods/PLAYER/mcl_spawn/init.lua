@@ -42,7 +42,6 @@ local node_search_list =
 -- Initial variables
 
 local return_spawn = minetest.settings:get_bool("mcl_return_spawn", true)
-local wsp = minetest.string_to_pos(storage:get_string("mcl_spawn_world_spawn_point")) or nil -- world spawn position
 
 
 local function get_far_node(pos)
@@ -91,8 +90,17 @@ end
 
 
 function mcl_spawn.get_world_spawn_pos()
-	local ssp = minetest.setting_get_pos("static_spawnpoint")
-	return ssp or wsp or start_pos
+	local pos
+
+	-- Static spawn position
+	pos = core.setting_get_pos("static_spawnpoint")
+	if pos then return pos end
+
+	-- World spawn position
+	pos = core.string_to_pos(storage:get_string("mcl_spawn_world_spawn_point")) or nil
+	if pos then return pos end
+
+	return start_pos
 end
 
 -- Returns a spawn position of player.
