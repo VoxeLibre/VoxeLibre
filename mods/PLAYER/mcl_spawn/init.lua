@@ -103,6 +103,35 @@ function mcl_spawn.get_world_spawn_pos()
 	return start_pos
 end
 
+-- Sets the world's spawn position to pos.
+-- If message is set to true, informs all players with a chat message when the spawn
+-- position changed, otherwise set to false.
+function mcl_spawn.set_world_spawn_pos(pos, message)
+	local spawn_changed = false
+	local oldpos = core.string_to_pos(storage:get_string("mcl_spawn_world_spawn_point")) or nil
+
+	-- Note: World spawn point can't be in any dimension other than the Overworld
+	if (not mcl_worlds.is_in_void(pos)) and mcl_worlds.pos_to_dimension(pos) == "overworld" then
+		storage:set_string("mcl_spawn_world_spawn_point", core.pos_to_string(pos))
+
+		if oldpos then
+			-- We don't bother sending a message if the new spawn pos is basically the same
+			spawn_changed = vector.distance(pos, oldpos) > 0.1
+		else
+			-- If it wasn't set and now it will be set, it means it is changed
+			spawn_changed = true
+		end
+		if spawn_changed and message then
+			core.chat_send_all(S("New world spawn position set!"))
+		end
+	else
+		if message then
+			core.chat_send_all(S("Trying to set invalid world spawn position!"))
+		end
+	end
+	return spawn_changed
+end
+
 -- Returns a spawn position of player.
 -- If player is nil or not a player, nil is returned.
 -- The second return value is true if returned spawn point is set from a bed
