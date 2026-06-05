@@ -430,3 +430,38 @@ core.register_chatcommand("clearspawn", {
 		return true, S("Cleared respawn point for @1", target_name)
 	end
 })
+
+core.register_chatcommand("setworldspawn", {
+	description = S("Sets the default spawn point for all players, works only in the Overworld."),
+	params = S("[<x> <y> <z>]"),
+	privs = {setspawn = true, server = true},
+	func = function(name, param)
+		-- Try different patterns
+		local pos = {}
+		while true do
+			-- Input has no parameters:
+			if param == "" then break end
+
+			-- Input has position:
+			pos.x, pos.y, pos.z = string.match(param, "^([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+)$")
+			if pos.x and pos.y and pos.z then break end
+
+			-- Invalid input
+			return false, S("Invalid parameters (see /help setworldspawn)")
+		end
+
+		if pos.x and pos.y and pos.z then
+			pos.x, pos.y, pos.z = tonumber(pos.x), tonumber(pos.y), tonumber(pos.z)
+		else
+			-- Position is not specified, use command executor's position
+			pos = core.get_player_by_name(name):get_pos()
+		end
+
+		if mcl_worlds.is_in_void(pos) or mcl_worlds.pos_to_dimension(pos) ~= "overworld" then
+			return false, S("Invalid world spawn position")
+		end
+
+		mcl_spawn.set_world_spawn_pos(pos, true)
+		return true, S("Set world spawn point to @1", core.pos_to_string(pos, 1))
+	end
+})
