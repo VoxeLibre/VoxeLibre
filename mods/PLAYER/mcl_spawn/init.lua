@@ -354,12 +354,12 @@ core.register_chatcommand("spawnpoint", {
 			end
 
 			-- Input has all parameters:
-			target_name, pos.x, pos.y, pos.z = string.match(param, "^(%S+) +([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+)$")
+			target_name, pos.x, pos.y, pos.z = string.match(param, "^(%S+) +(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)$")
 			if target_name and pos.x and pos.y and pos.z then break end
 
 			-- Input has position but no player name:
 			target_name = name
-			pos.x, pos.y, pos.z = string.match(param, "^([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+)$")
+			pos.x, pos.y, pos.z = string.match(param, "^(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)$")
 			if pos.x and pos.y and pos.z then break end
 
 			-- Input has player name but no position:
@@ -451,7 +451,7 @@ core.register_chatcommand("setworldspawn", {
 			if param == "" then break end
 
 			-- Input has position:
-			pos.x, pos.y, pos.z = string.match(param, "^([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+)$")
+			pos.x, pos.y, pos.z = string.match(param, "^(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)$")
 			if pos.x and pos.y and pos.z then break end
 
 			-- Invalid input
