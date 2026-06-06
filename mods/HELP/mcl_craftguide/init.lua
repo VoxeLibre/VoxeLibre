@@ -812,11 +812,18 @@ local function make_formspec(name)
 	]], data.favorites_only and
 		"mcl_end_ender_eye.png" or "mcl_throwing_ender_pearl.png")
 
-	fs[#fs + 1] = fmt([[ tooltip[search;%s]
+	fs[#fs + 1] = fmt([[ tooltip[filter;%s]
+				 tooltip[search;%s]
 				 tooltip[clear;%s]
 				 tooltip[toggle_favorites;%s]
 				 tooltip[prev;%s]
 				 tooltip[next;%s] ]],
+		ESC(S("Search names and descriptions.") .. "\n" ..
+			S("Filter by mod:") .. " @mod\n" ..
+			S("Match group names:") .. " +group1,group2 " ..
+				S("or") .. " +group1 +group2\n" ..
+			S("Require exact groups:") .. " +groups=group1,group2\n" ..
+			S("Example:") .. " wood @mcl_core +flammable"),
 		ESC(S("Search")),
 		ESC(S("Reset")),
 		ESC(data.favorites_only and S("Show all items") or S("Show favorite items only")),
@@ -891,18 +898,32 @@ end
 
 mcl_craftguide.add_search_filter("groups", function(item, groups)
 	local itemdef = reg_items[item]
-	local has_groups = true
 
 	for i = 1, #groups do
-		local group = groups[i]
-		if not itemdef.groups[group] then
-			has_groups = false
-			break
+		if not itemdef.groups[groups[i]] then
+			return false
 		end
 	end
 
-	return has_groups
+	return true
 end)
+
+local function match_group_substrings(item, groups)
+	for i = 1, #groups do
+		local matches_group
+		for item_group, rating in pairs(reg_items[item].groups) do
+			if rating > 0 and find(item_group, groups[i], 1, true) then
+				matches_group = true
+				break
+			end
+		end
+		if not matches_group then
+			return false
+		end
+	end
+
+	return true
+end
 
 local function search(data)
 	local filter = data.filter
@@ -913,34 +934,47 @@ local function search(data)
 	end
 
 	local filtered_list, c = {}, 0
-	local extras = "^(.-)%+([%w_]+)=([%w_,]+)"
-	local search_filter = next(search_filters) and match(filter, extras)
 	local filters = {}
+	local group_substrings = {}
+	local mod_prefix
+	local text_words = {}
 
-	if search_filter then
-		for filter_name, values in gmatch(filter, sub(extras, 6, -1)) do
-			if search_filters[filter_name] then
-				values = split(values, ",")
-				filters[filter_name] = values
-			end
+	for word in gmatch(filter, "%S+") do
+		local filter_name, values = match(word, "^%+([%w_]+)=([%w_,]+)$")
+		local groups = match(word, "^%+([%w_,]+)$")
+
+		if filter_name and search_filters[filter_name] then
+			values = split(values, ",")
+			filters[filter_name] = filters[filter_name] or {}
+			table_merge(filters[filter_name], values)
+		elseif groups then
+			table_merge(group_substrings, split(groups, ","))
+		elseif sub(word, 1, 1) == "@" and #word > 1 then
+			mod_prefix = sub(word, 2)
+		else
+			text_words[#text_words + 1] = word
 		end
 	end
+	local text_filter = concat(text_words, " ")
 
 	for i = 1, #data.items_raw do
 		local item = data.items_raw[i]
 		local def  = reg_items[item]
 		local desc = string.lower(M.get_translated_string(data.lang_code, def.description))
 		local search_in = item .. desc
-		local to_add
+		local item_mod = match(item, "^[^:]+") or ""
+		local matches_mod = not mod_prefix or find(item_mod, mod_prefix, 1, true)
+		local to_add = matches_mod and
+			(text_filter == "" or find(search_in, text_filter, 1, true))
 
-		if search_filter then
+		if next(filters) then
 			for filter_name, values in pairs(filters) do
 				local func = search_filters[filter_name]
-				to_add = func(item, values) and (search_filter == "" or
-					find(search_in, search_filter, 1, true))
+				to_add = to_add and func(item, values)
 			end
-		else
-			to_add = find(search_in, filter, 1, true)
+		end
+		if #group_substrings > 0 then
+			to_add = to_add and match_group_substrings(item, group_substrings)
 		end
 
 		if to_add then
@@ -1045,6 +1079,7 @@ local function on_receive_fields(player, fields)
 	local name = player:get_player_name()
 	local data = get_player_data(name)
 	local recipe_tab
+	local search_submitted = fields.key_enter_field == "filter" or fields.search
 
 	for elem_name, def in pairs(formspec_elements) do
 		if fields[elem_name] and def.action then
@@ -1059,7 +1094,7 @@ local function on_receive_fields(player, fields)
 		end
 	end
 
-	if fields.clear then
+	if fields.clear or (search_submitted and (fields.filter or "") == "") then
 		reset_data(data)
 		refresh_items(data, player)
 		show_fs(player, name)
@@ -1106,8 +1141,7 @@ local function on_receive_fields(player, fields)
 		refresh_items(data, player)
 		show_fs(player, name)
 
-	elseif (fields.key_enter_field == "filter" or fields.search) and
-		fields.filter ~= "" then
+	elseif search_submitted then
 		local fltr = lower(fields.filter)
 		if data.filter == fltr then
 			return
