@@ -39,6 +39,7 @@ DEFAULT_SIZE = min(MAX_LIMIT, max(MIN_LIMIT, DEFAULT_SIZE))
 
 local GRID_LIMIT = 5
 local POLL_FREQ  = 0.25
+local RECIPE_OFFSET = 0.63
 
 local FMT = {
 	box               = "box[%f,%f;%f,%f;%s]",
@@ -108,6 +109,7 @@ local item_lists = {
 local function init_data(name)
 	player_data[name] = {
 		filter  = "",
+		favorites_only = nil,
 		pagenum = 1,
 		iX      = DEFAULT_SIZE,
 		items   = init_items,
@@ -127,6 +129,7 @@ local function get_player_data(name)
 	local data = player_data[name]
 
 	data.inv_items = deserialize(meta:get_string("inv_items")) or {}
+	data.favorite_items = deserialize(meta:get_string("favorite_items")) or {}
 	return data
 end
 
@@ -353,6 +356,24 @@ local function get_filtered_items(player)
 	return items
 end
 
+local function get_player_items(data, player)
+	local items = next(recipe_filters) and get_filtered_items(player) or init_items
+	if not data.favorite_items or not data.favorites_only then
+		return items
+	end
+
+	local filtered, c = {}, 0
+	for i = 1, #items do
+		local item = items[i]
+		if data.favorite_items[item] then
+			c = c + 1
+			filtered[c] = item
+		end
+	end
+
+	return filtered
+end
+
 local function cache_recipes(output)
 	local recipes = M.get_all_craft_recipes(output) or {}
 	local c = 0
@@ -379,6 +400,11 @@ local function get_recipes(item, data, player)
 		recipes = apply_recipe_filters(recipes, player)
 	end
 
+	if recipes and fuel_cache[item] then
+		recipes = copy(recipes)
+		recipes[#recipes + 1] = {type = "fuel", width = 1, items = {item}}
+	end
+
 	local no_recipes = not recipes or #recipes == 0
 	if no_recipes and not usages then
 		return
@@ -394,6 +420,56 @@ local function get_recipes(item, data, player)
 	end
 
 	return recipes
+end
+
+local function get_recipe_type_label(recipe_type)
+	if recipe_type == "normal" then
+		return S("Crafting")
+	elseif recipe_type == "cooking" then
+		return S("Smelting")
+	elseif recipe_type == "fuel" then
+		return S("Fuel")
+	end
+
+	local custom_recipe = craft_types[recipe_type]
+	return custom_recipe and custom_recipe.description or recipe_type
+end
+
+local function set_recipe_list(data, recipes, recipe_type)
+	data.all_recipes = recipes
+	data.recipe_types = {}
+
+	if not recipes or #recipes == 0 then
+		data.selected_recipe_type = nil
+		data.recipes = nil
+		data.rnum = 1
+		return
+	end
+
+	local available_types = {}
+	for i = 1, #recipes do
+		local current_type = recipes[i].type or "normal"
+		if not available_types[current_type] then
+			available_types[current_type] = true
+			data.recipe_types[#data.recipe_types + 1] = current_type
+		end
+	end
+
+	recipe_type = available_types[recipe_type] and recipe_type or data.recipe_types[1]
+	data.selected_recipe_type = recipe_type
+	data.recipes = {}
+
+	for i = 1, #recipes do
+		local recipe = recipes[i]
+		if (recipe.type or "normal") == recipe_type then
+			data.recipes[#data.recipes + 1] = recipe
+		end
+	end
+
+	data.rnum = min(data.rnum or 1, #data.recipes)
+	if data.rnum == 0 then
+		data.rnum = 1
+	end
 end
 
 local function get_burntime(item)
@@ -487,6 +563,38 @@ local function get_recipe_fs(data, iY)
 	local xoffset = data.iX / 2.15
 	local cooktime, shapeless
 
+	if data.recipe_types and #data.recipe_types > 0 then
+		local btn_w = 1.8
+		local gap = 0.1
+		local total_w = (#data.recipe_types * btn_w) + ((#data.recipe_types - 1) * gap)
+		local start_x = max(0.3, (data.iX - total_w) / 2)
+
+		for i = 1, #data.recipe_types do
+			local recipe_type = data.recipe_types[i]
+			local label = get_recipe_type_label(recipe_type)
+
+			local tab_x = start_x + (i - 1) * (btn_w + gap)
+			local tab_y = iY + 1.05
+
+			if recipe_type == data.selected_recipe_type then
+				fs[#fs + 1] = fmt(
+					"style[rtype_%d;border=false;" ..
+					"bgimg=mcl_inventory_button9_pressed.png;" ..
+					"bgimg_pressed=mcl_inventory_button9_pressed.png;" ..
+					"bgimg_middle=2,2]",
+					i)
+			end
+
+			fs[#fs + 1] = fmt(FMT.button,
+				tab_x,
+				tab_y,
+				btn_w,
+				0.8,
+				fmt("rtype_%d", i),
+				ESC(label))
+		end
+	end
+
 	if recipe.type == "cooking" then
 		cooktime, width = width, 1
 	elseif width == 0 then
@@ -505,12 +613,51 @@ local function get_recipe_fs(data, iY)
 		ESC(S("Usage @1 of @2", data.rnum, #data.recipes)) or
 		ESC(S("Recipe @1 of @2", data.rnum, #data.recipes))
 
-	fs[#fs + 1] = fmt(FMT.button, data.iX - 2.6, iY + 3.3, 2.2, 1, "alternate", btn_lab)
+	local favorite_item = data.query_item and data.favorite_items and
+		data.favorite_items[data.query_item]
+
+	if data.query_item then
+		fs[#fs + 1] = fmt(FMT.image_button,
+			data.iX - 1.2,
+			iY + 2.35 + RECIPE_OFFSET,
+			0.8,
+			0.8,
+			favorite_item and
+				"mcl_end_ender_eye.png" or "mcl_throwing_ender_pearl.png",
+			"toggle_item_favorite",
+			"")
+		fs[#fs + 1] = fmt(FMT.tooltip,
+			"toggle_item_favorite",
+			ESC(favorite_item and S("Unfavorite") or S("Favorite")))
+	end
+
+	fs[#fs + 1] = fmt(FMT.image_button,
+		data.iX - 3.4,
+		iY + 3.3 + RECIPE_OFFSET,
+		0.8,
+		0.8,
+		"craftguide_prev_icon.png",
+		"recipe_prev",
+		"")
+
+	fs[#fs + 1] = fmt(FMT.label,
+		data.iX - 2.65,
+		iY + 3.4 + RECIPE_OFFSET,
+		btn_lab)
+
+	fs[#fs + 1] = fmt(FMT.image_button,
+		data.iX - 1.2,
+		iY + 3.3 + RECIPE_OFFSET,
+		0.8,
+		0.8,
+		"craftguide_next_icon.png",
+		"recipe_next",
+		"")
 
 	if width > GRID_LIMIT or rows > GRID_LIMIT then
 		fs[#fs + 1] = fmt(FMT.label,
 			(data.iX / 2) - 2,
-			iY + 2.2,
+			iY + 2.2 + RECIPE_OFFSET,
 			ESC(S("Recipe is too big to be displayed (@1×@2)", width, rows)))
 
 		return concat(fs)
@@ -518,13 +665,14 @@ local function get_recipe_fs(data, iY)
 
 	for i, item in pairs(recipe.items) do
 		local X = ceil((i - 1) % width + xoffset - width) - 0.2
-		local Y = ceil(i / width + (iY + 2) - min(2, rows))
+		local Y = ceil(i / width + (iY + 2) - min(2, rows)) + RECIPE_OFFSET
 
 		if width > 3 or rows > 3 then
 			btn_size = width > 3 and 3 / width or 3 / rows
 			s_btn_size = btn_size
 			X = btn_size * (i % width) + xoffset - 2.65
-			Y = btn_size * floor((i - 1) / width) + (iY + 3) - min(2, rows)
+			Y = btn_size * floor((i - 1) / width) + (iY + 3 + RECIPE_OFFSET)
+				- min(2, rows)
 		end
 
 		if X > rightest then
@@ -572,7 +720,7 @@ local function get_recipe_fs(data, iY)
 
 		fs[#fs + 1] = fmt(FMT.image,
 			rightest + 1.2,
-			iY + 1.7,
+			iY + 1.7 + RECIPE_OFFSET,
 			0.5,
 			0.5,
 			icon)
@@ -582,7 +730,7 @@ local function get_recipe_fs(data, iY)
 
 		fs[#fs + 1] = fmt("tooltip[%f,%f;%f,%f;%s]",
 			rightest + 1.2,
-			iY + 1.7,
+			iY + 1.7 + RECIPE_OFFSET,
 			0.5,
 			0.5,
 			ESC(tooltip))
@@ -593,48 +741,39 @@ local function get_recipe_fs(data, iY)
 
 	fs[#fs + 1] = fmt(FMT.image,
 		arrow_X,
-		iY + 2.35,
+		iY + 2.35 + RECIPE_OFFSET,
 		0.9,
 		0.7,
 		"craftguide_arrow.png")
 
 	if recipe.type == "fuel" then
+		local fuel_name = match(recipe.items[1], "%S+")
+		local burntime = fuel_cache[fuel_name]
+
+		if burntime then
+			fs[#fs + 1] = fmt(FMT.label,
+				output_X + 0.1,
+				iY + 1.78 + RECIPE_OFFSET,
+				ESC(colorize(mcl_colors.YELLOW, burntime)))
+		end
+
 		fs[#fs + 1] = fmt(FMT.image,
 			output_X,
-			iY + 2.18,
+			iY + 2.18 + RECIPE_OFFSET,
 			1.1,
 			1.1,
 			"mcl_craftguide_fuel.png")
 	else
 		local output_name = match(recipe.output, "%S+")
-		local burntime = fuel_cache[output_name]
 
 		fs[#fs + 1] = fmt(FMT.item_image_button,
 			output_X,
-			iY + 2.2,
+			iY + 2.2 + RECIPE_OFFSET,
 			1.1,
 			1.1,
 			recipe.output,
 			ESC(output_name),
 			"")
-
-		if burntime then
-			fs[#fs + 1] = get_tooltip(output_name, nil, nil, burntime)
-
-			fs[#fs + 1] = fmt(FMT.image,
-				output_X + 1,
-				iY + 2.33,
-				0.6,
-				0.4,
-				"craftguide_arrow.png")
-
-			fs[#fs + 1] = fmt(FMT.image,
-				output_X + 1.6,
-				iY + 2.18,
-				0.6,
-				0.6,
-				"mcl_craftguide_fuel.png")
-		end
 	end
 
 	return concat(fs)
@@ -649,7 +788,7 @@ local function make_formspec(name)
 
 	local fs = {}
 
-	fs[#fs + 1] = fmt("size[%f,%f;]", data.iX - 0.35, iY + 4)
+	fs[#fs + 1] = fmt("size[%f,%f;]", data.iX - 0.35, iY + 4.55)
 
 	fs[#fs + 1] = "background9[1,1;1,1;mcl_base_textures_background9.png;true;7]"
 
@@ -664,19 +803,23 @@ local function make_formspec(name)
 		data.iX * 0.47,
 		data.iX * 0.47 + 0.6)
 
-	fs[#fs + 1] = [[
+	fs[#fs + 1] = fmt([[
 		image_button[2.4,0.12;0.8,0.8;craftguide_search_icon.png;search;]
 		image_button[3.05,0.12;0.8,0.8;craftguide_clear_icon.png;clear;]
+		image_button[3.7,0.12;0.8,0.8;%s;toggle_favorites;]
 		field_close_on_enter[filter;false]
 		field_enter_after_edit[filter;true]
-	]]
+	]], data.favorites_only and
+		"mcl_end_ender_eye.png" or "mcl_throwing_ender_pearl.png")
 
 	fs[#fs + 1] = fmt([[ tooltip[search;%s]
 				 tooltip[clear;%s]
+				 tooltip[toggle_favorites;%s]
 				 tooltip[prev;%s]
 				 tooltip[next;%s] ]],
 		ESC(S("Search")),
 		ESC(S("Reset")),
+		ESC(data.favorites_only and S("Show all items") or S("Show favorite items only")),
 		ESC(S("Previous page")),
 		ESC(S("Next page")))
 
@@ -764,7 +907,7 @@ end)
 local function search(data)
 	local filter = data.filter
 
-	if searches[filter] then
+	if not data.favorites_only and searches[filter] then
 		data.items = searches[filter]
 		return
 	end
@@ -806,7 +949,7 @@ local function search(data)
 		end
 	end
 
-	if not next(recipe_filters) then
+	if not next(recipe_filters) and not data.favorites_only then
 		-- Cache the results only if searched 2 times
 		if searches[filter] == nil then
 			searches[filter] = false
@@ -816,6 +959,26 @@ local function search(data)
 	end
 
 	data.items = filtered_list
+end
+
+local function refresh_items(data, player)
+	data.items_raw = get_player_items(data, player)
+
+	if data.filter ~= "" then
+		search(data)
+	else
+		data.items = data.items_raw
+	end
+
+	if data.query_item and table.indexof(data.items_raw, data.query_item) == -1 then
+		data.query_item = nil
+		data.show_usages = nil
+		data.all_recipes = nil
+		data.recipe_types = nil
+		data.selected_recipe_type = nil
+		data.recipes = nil
+		data.rnum = 1
+	end
 end
 
 local function get_inv_items(player)
@@ -849,8 +1012,10 @@ local function reset_data(data)
 	data.rnum        = 1
 	data.query_item  = nil
 	data.show_usages = nil
+	data.all_recipes = nil
+	data.recipe_types = nil
+	data.selected_recipe_type = nil
 	data.recipes     = nil
-	data.items       = data.items_raw
 end
 
 local function cache_usages()
@@ -879,6 +1044,7 @@ end
 local function on_receive_fields(player, fields)
 	local name = player:get_player_name()
 	local data = get_player_data(name)
+	local recipe_tab
 
 	for elem_name, def in pairs(formspec_elements) do
 		if fields[elem_name] and def.action then
@@ -886,17 +1052,58 @@ local function on_receive_fields(player, fields)
 		end
 	end
 
+	for field in pairs(fields) do
+		recipe_tab = match(field, "^rtype_(%d+)$")
+		if recipe_tab then
+			break
+		end
+	end
+
 	if fields.clear then
 		reset_data(data)
+		refresh_items(data, player)
 		show_fs(player, name)
 
-	elseif fields.alternate then
+	elseif fields.recipe_prev or fields.recipe_next then
 		if #data.recipes == 1 then
 			return
 		end
 
-		local num_next = data.rnum + 1
-		data.rnum = data.recipes[num_next] and num_next or 1
+		data.rnum = data.rnum + (fields.recipe_next and 1 or -1)
+		if data.rnum > #data.recipes then
+			data.rnum = 1
+		elseif data.rnum < 1 then
+			data.rnum = #data.recipes
+		end
+
+		show_fs(player, name)
+
+	elseif recipe_tab then
+		local tab_idx = tonumber(recipe_tab)
+		local recipe_type = tab_idx and data.recipe_types and data.recipe_types[tab_idx]
+		if not recipe_type or recipe_type == data.selected_recipe_type then
+			return
+		end
+
+		data.rnum = 1
+		set_recipe_list(data, data.all_recipes, recipe_type)
+		show_fs(player, name)
+
+	elseif fields.toggle_favorites then
+		data.favorites_only = not data.favorites_only
+		data.pagenum = 1
+		refresh_items(data, player)
+		show_fs(player, name)
+
+	elseif fields.toggle_item_favorite and data.query_item then
+		local item = data.query_item
+		if data.favorite_items[item] then
+			data.favorite_items[item] = nil
+		else
+			data.favorite_items[item] = true
+		end
+
+		refresh_items(data, player)
 		show_fs(player, name)
 
 	elseif (fields.key_enter_field == "filter" or fields.search) and
@@ -958,8 +1165,8 @@ local function on_receive_fields(player, fields)
 		end
 
 		data.query_item = item
-		data.recipes    = recipes
 		data.rnum       = 1
+		set_recipe_list(data, recipes)
 
 		show_fs(player, name)
 	end
@@ -974,18 +1181,6 @@ M.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_craftguide.show(player:get_player_name())
 	end
 end)
-
---[[local function on_use(user)
-	local name = user:get_player_name()
-
-	if next(recipe_filters) then
-		local data = player_data[name]
-		data.items_raw = get_filtered_items(user)
-		search(data)
-	end
-
-	show_formspec(name, "mcl_craftguide", make_formspec(name))
-end]]
 
 if progressive_mode then
 	local function item_in_inv(item, inv_items)
@@ -1080,8 +1275,10 @@ if progressive_mode then
 		end
 
 		local inv_items = data.inv_items or {}
+		local favorite_items = data.favorite_items or {}
 
 		meta:set_string("inv_items", serialize(inv_items))
+		meta:set_string("favorite_items", serialize(favorite_items))
 	end
 
 	M.register_on_leaveplayer(function(player)
@@ -1099,23 +1296,37 @@ if progressive_mode then
 	end)
 else
 	M.register_on_joinplayer(function(player)
-		local name = player:get_player_name()
-		init_data(name)
+		get_player_data(player:get_player_name())
 	end)
 
 	M.register_on_leaveplayer(function(player)
+		local meta = player:get_meta()
 		local name = player:get_player_name()
+		local data = player_data[name]
+		if data then
+			meta:set_string("favorite_items", serialize(data.favorite_items or {}))
+		end
 		player_data[name] = nil
+	end)
+
+	M.register_on_shutdown(function()
+		local players = M.get_connected_players()
+		for i = 1, #players do
+			local player = players[i]
+			local meta = player:get_meta()
+			local name = player:get_player_name()
+			local data = player_data[name]
+			if data then
+				meta:set_string("favorite_items", serialize(data.favorite_items or {}))
+			end
+		end
 	end)
 end
 
 function mcl_craftguide.show(name)
 	local player = get_player_by_name(name)
-	if next(recipe_filters) then
-		local data = get_player_data(name)
-		data.items_raw = get_filtered_items(player)
-		search(data)
-	end
+	local data = get_player_data(name)
+	refresh_items(data, player)
 	show_formspec(name, "mcl_craftguide", make_formspec(name))
 end
 
