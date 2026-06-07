@@ -22,6 +22,46 @@ mcl_craftguide.register_craft({
 })
 ```
 
+### Crafting stations
+
+#### `mcl_craftguide.register_station(item_name, def, override)`
+
+Registers an item or node as a crafting station. The station is shown for a
+recipe when it has been discovered by the player and `is_recipe_supported`
+returns true. When progressive mode is disabled, all supported stations are
+shown. The callback receives the displayed recipe, including synthetic recipes
+such as `{ type = "fuel", items = { fuel_item } }`. Recipe-type-specific fields
+may also be present, but are not part of the station API contract.
+
+Set the optional `override` argument to `true` to intentionally replace an
+existing definition. The station keeps its position in the registration order.
+Registering a duplicate without `override` raises an error.
+
+```lua
+mcl_craftguide.register_station("example:processor", {
+	is_recipe_supported = function(recipe)
+		return recipe.type == "example_processing" or recipe.type == "fuel"
+	end,
+})
+```
+
+#### `mcl_craftguide.get_station(item_name)`
+
+Returns a copy of the registered station definition, or `nil` if the item is
+not registered as a station. The returned definition can be modified and
+registered again with the `override` argument set to `true`.
+
+```lua
+local def = mcl_craftguide.get_station("example:processor")
+if def then
+	local original = def.is_recipe_supported
+	def.is_recipe_supported = function(recipe)
+		return original(recipe) and recipe.type ~= "fuel"
+	end
+	mcl_craftguide.register_station("example:processor", def, true)
+end
+```
+
 ---
 
 ### Recipe filters
@@ -126,10 +166,20 @@ Returns a map of search filters, indexed by name.
 Adds a formspec element to the current formspec.
 Supported types: `box`, `label`, `image`, `button`, `tooltip`, `item_image`, `image_button`, `item_image_button`
 
+`api_version` controls the coordinate contract:
+
+- `1` (default) accepts formspec version 1 coordinates and translates them to
+  real coordinates.
+- `2` accepts real coordinates directly, as used by `formspec_version[4]`.
+
+Specify `api_version` explicitly in new integrations. This allows later API
+versions to change the contract without overloading the formspec version.
+
 Example:
 
 ```lua
 mcl_craftguide.add_formspec_element("export", {
+	api_version = 2,
 	type = "button",
 	element = function(data)
 		-- Should return a table of parameters according to the formspec element type.

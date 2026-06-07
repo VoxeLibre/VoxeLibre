@@ -2,6 +2,68 @@ mcl_formspec = {}
 
 mcl_formspec.label_color = "#313131"
 
+local OLD_SPACING_X = 5 / 4
+local OLD_SPACING_Y = 15 / 13
+local OLD_PADDING = 3 / 8
+local OLD_BUTTON_HEIGHT = 21 / 26
+
+mcl_formspec.old_to_real = {}
+
+---Convert a position from the old formspec coordinates to real coordinates.
+---@param x number
+---@param y number
+---@return number x
+---@return number y
+function mcl_formspec.old_to_real.position(x, y)
+	return OLD_PADDING + x * OLD_SPACING_X,
+		OLD_PADDING + y * OLD_SPACING_Y
+end
+
+---Convert dimensions that include old formspec inventory slot spacing.
+---@param w number
+---@param h number
+---@return number w
+---@return number h
+function mcl_formspec.old_to_real.spaced_geometry(w, h)
+	return w * OLD_SPACING_X, h * OLD_SPACING_Y
+end
+
+---Convert old formspec button dimensions to real coordinates.
+---@param w number
+---@param h number
+---@return number w
+---@return number h
+function mcl_formspec.old_to_real.button_geometry(w, h)
+	return w * OLD_SPACING_X - (OLD_SPACING_X - 1),
+		h * OLD_SPACING_Y - (OLD_SPACING_Y - 1)
+end
+
+---Convert an old formspec button rectangle to real coordinates.
+---@param x number
+---@param y number
+---@param w number
+---@param h number
+---@return number x
+---@return number y
+---@return number w
+---@return number h
+function mcl_formspec.old_to_real.button(x, y, w, h)
+	x, y = mcl_formspec.old_to_real.position(x, y)
+	y = y + h / 2 - OLD_BUTTON_HEIGHT / 2
+	w = w * OLD_SPACING_X - (OLD_SPACING_X - 1)
+	return x, y, w, OLD_BUTTON_HEIGHT
+end
+
+---Convert an old formspec label position to real coordinates.
+---@param x number
+---@param y number
+---@return number x
+---@return number y
+function mcl_formspec.old_to_real.label(x, y)
+	return OLD_PADDING + x * OLD_SPACING_X,
+		y * OLD_SPACING_Y + 77 / 104
+end
+
 ---Get the background of inventory slots (formspec version = 1)
 ---@param x number
 ---@param y number

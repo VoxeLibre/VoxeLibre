@@ -664,6 +664,21 @@ minetest.register_craft({
 	}
 })
 
+mcl_craftguide.register_station("mcl_smoker:smoker", {
+	is_recipe_supported = function(recipe)
+		if recipe.type == "fuel" then
+			return true
+		end
+
+		if recipe.type ~= "cooking" then
+			return false
+		end
+
+		local input = ItemStack(recipe.items[1]):get_name()
+		return minetest.get_item_group(input, "smoker_cookable") > 0
+	end,
+})
+
 -- Add entry alias for the Help
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_smoker:smoker", "nodes", "mcl_smoker:smoker_active")

@@ -4,6 +4,20 @@
 
 Contains the color used for formspec labels, currently `#313131`.
 
+## Old formspec coordinate conversion
+
+These helpers convert geometry from the old formspec coordinate system to the
+real coordinate system enabled by formspec version 2 and newer:
+
+- `mcl_formspec.old_to_real.position(x, y)`
+- `mcl_formspec.old_to_real.spaced_geometry(w, h)`
+- `mcl_formspec.old_to_real.button_geometry(w, h)`
+- `mcl_formspec.old_to_real.button(x, y, w, h)`
+- `mcl_formspec.old_to_real.label(x, y)`
+
+They are intended for migrating APIs or forms that still accept old formspec
+coordinates. New forms should use real coordinates directly.
+
 ## `mcl_formspec.get_itemslot_bg(x, y, w, h)`
 
 Get the background of inventory slots (formspec version = 1)

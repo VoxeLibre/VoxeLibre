@@ -700,6 +700,12 @@ minetest.register_craft({
 	}
 })
 
+mcl_craftguide.register_station("mcl_furnaces:furnace", {
+	is_recipe_supported = function(recipe)
+		return recipe.type == "cooking" or recipe.type == "fuel"
+	end,
+})
+
 -- Add entry alias for the Help
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_furnaces:furnace", "nodes", "mcl_furnaces:furnace_active")

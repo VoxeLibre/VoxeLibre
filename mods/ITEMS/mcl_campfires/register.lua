@@ -41,6 +41,23 @@ minetest.register_craft({
 	}
 })
 
+local function is_campfire_recipe_supported(recipe)
+	if recipe.type ~= "cooking" then
+		return false
+	end
+
+	local input = ItemStack(recipe.items[1]):get_name()
+	return minetest.get_item_group(input, "campfire_cookable") > 0
+end
+
+mcl_craftguide.register_station("mcl_campfires:campfire_lit", {
+	is_recipe_supported = is_campfire_recipe_supported,
+})
+
+mcl_craftguide.register_station("mcl_campfires:soul_campfire_lit", {
+	is_recipe_supported = is_campfire_recipe_supported,
+})
+
 --- @param e core.LuaEntity
 local function remove_food_entity_if_orphaned(e)
 	local obj = e.object
