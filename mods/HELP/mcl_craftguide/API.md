@@ -108,7 +108,14 @@ Returns a map of recipe filters, indexed by name.
 ### Search filters
 
 Search filters are used to perform specific searches inside the search field.
-They can be used like so: `<optional name>+<filter name>=<value1>,<value2>,<...>`
+They can be used like so:
+`<optional search text> +<filter name>=<value1>,<value2>,<...>`
+
+Built-in search modifiers:
+
+- `@mod`: filter by mod name.
+- `$group1,group2`: match partial item group names.
+- `#text`: search full item tooltips.
 
 Examples:
 
@@ -118,12 +125,17 @@ Examples:
 Notes:
 - If `optional name` is omitted, the search filter will apply to all items, without pre-filtering.
 - Filters can be combined.
-- The `groups` filter is currently implemented by default.
+- Values are comma-separated. The callback always receives them as a list.
+- Repeated uses of the same filter are merged into one values list.
+- The exact-match `groups` filter is implemented by default.
 
-#### `mcl_craftguide.add_search_filter(name, function(item, values))`
+#### `mcl_craftguide.add_search_filter(name, function(item, values), description)`
 
 Adds a search filter with the given name.
 The search function should return a boolean value (whether the given item should be listed or not).
+The optional `description` is shown in the search field tooltip next to the
+filter syntax. It should be short and must be translated by the registering mod;
+craftguide displays it as provided.
 
 Example function to show items which contain at least a recipe of given width(s):
 
@@ -146,7 +158,7 @@ mcl_craftguide.add_search_filter("widths", function(item, widths)
 	end
 
 	return has_width
-end)
+end, S("Require a recipe with one of these widths"))
 ```
 
 #### `mcl_craftguide.remove_search_filter(name)`

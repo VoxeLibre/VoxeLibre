@@ -329,17 +329,22 @@ local function apply_recipe_filters(recipes, player)
 end
 
 local search_filters = {}
+local search_filter_descriptions = {}
 
-function mcl_craftguide.add_search_filter(name, f)
+function mcl_craftguide.add_search_filter(name, f, description)
 	local func = "mcl_craftguide.add_search_filter(): "
 	assert(name, func .. "filter name missing")
 	assert(f and type(f) == "function", func .. "filter function missing")
+	assert(description == nil or type(description) == "string",
+		func .. "description must be a string")
 
 	search_filters[name] = f
+	search_filter_descriptions[name] = description
 end
 
 function mcl_craftguide.remove_search_filter(name)
 	search_filters[name] = nil
+	search_filter_descriptions[name] = nil
 end
 
 function mcl_craftguide.get_search_filters()
@@ -994,18 +999,36 @@ local function make_formspec(name)
 	fs[#fs + 1] = "field_close_on_enter[filter;false]"
 	fs[#fs + 1] = "field_enter_after_edit[filter;true]"
 
+	local search_help = {
+		S("Search item names and descriptions."),
+		S("Filter by mod:") .. " @mod",
+		S("Search tooltips:") .. " #text",
+		S("Match group names:") .. " $group1,group2 " ..
+			S("or") .. " $group1 $group2",
+	}
+	local described_filters = {}
+	for filter_name, description in pairs(search_filter_descriptions) do
+		if description then
+			described_filters[#described_filters + 1] = filter_name
+		end
+	end
+	sort(described_filters)
+	for i = 1, #described_filters do
+		local filter_name = described_filters[i]
+		search_help[#search_help + 1] =
+			"+" .. filter_name .. "=value1,value2: " ..
+			search_filter_descriptions[filter_name]
+	end
+	search_help[#search_help + 1] =
+		S("Example:") .. " wood @mcl_core $flammable #damage"
+
 	fs[#fs + 1] = fmt([[ tooltip[filter;%s]
 				 tooltip[search;%s]
 				 tooltip[clear;%s]
 				 tooltip[toggle_favorites;%s]
 				 tooltip[prev;%s]
 				 tooltip[next;%s] ]],
-		ESC(S("Search names and descriptions.") .. "\n" ..
-			S("Filter by mod:") .. " @mod\n" ..
-			S("Match group names:") .. " +group1,group2 " ..
-				S("or") .. " +group1 +group2\n" ..
-			S("Require exact groups:") .. " +groups=group1,group2\n" ..
-			S("Example:") .. " wood @mcl_core +flammable"),
+		ESC(concat(search_help, "\n")),
 		ESC(S("Search")),
 		ESC(S("Reset")),
 		ESC(data.favorites_only and S("Show all items") or S("Show favorite items only")),
@@ -1112,7 +1135,7 @@ mcl_craftguide.add_search_filter("groups", function(item, groups)
 	end
 
 	return true
-end)
+end, S("Require exact item groups"))
 
 local function match_group_substrings(item, groups)
 	for i = 1, #groups do
@@ -1142,12 +1165,13 @@ local function search(data)
 	local filtered_list, c = {}, 0
 	local filters = {}
 	local group_substrings = {}
+	local tooltip_words = {}
 	local mod_prefix
 	local text_words = {}
 
 	for word in gmatch(filter, "%S+") do
 		local filter_name, values = match(word, "^%+([%w_]+)=([%w_,]+)$")
-		local groups = match(word, "^%+([%w_,]+)$")
+		local groups = match(word, "^%$([%w_,]+)$")
 
 		if filter_name and search_filters[filter_name] then
 			values = split(values, ",")
@@ -1157,6 +1181,8 @@ local function search(data)
 			table_merge(group_substrings, split(groups, ","))
 		elseif sub(word, 1, 1) == "@" and #word > 1 then
 			mod_prefix = sub(word, 2)
+		elseif sub(word, 1, 1) == "#" and #word > 1 then
+			tooltip_words[#tooltip_words + 1] = sub(word, 2)
 		else
 			text_words[#text_words + 1] = word
 		end
@@ -1166,7 +1192,12 @@ local function search(data)
 	for i = 1, #data.items_raw do
 		local item = data.items_raw[i]
 		local def  = reg_items[item]
-		local desc = string.lower(M.get_translated_string(data.lang_code, def.description))
+		local base_description = def._tt_original_description or def.description
+		base_description = match(base_description, "^[^\n]*") or base_description
+		local desc = lower(M.strip_colors(
+			M.get_translated_string(data.lang_code, base_description)))
+		local tooltip = lower(M.strip_colors(
+			M.get_translated_string(data.lang_code, def.description)))
 		local search_in = item .. desc
 		local item_mod = match(item, "^[^:]+") or ""
 		local matches_mod = not mod_prefix or find(item_mod, mod_prefix, 1, true)
@@ -1181,6 +1212,9 @@ local function search(data)
 		end
 		if #group_substrings > 0 then
 			to_add = to_add and match_group_substrings(item, group_substrings)
+		end
+		for j = 1, #tooltip_words do
+			to_add = to_add and find(tooltip, tooltip_words[j], 1, true)
 		end
 
 		if to_add then
