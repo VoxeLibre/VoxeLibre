@@ -35,6 +35,16 @@ receives the displayed recipe, including synthetic recipes such as
 `{ type = "fuel", items = { fuel_item } }`. Recipe-type-specific fields may
 also be present, but are not part of the station API contract.
 
+Stations may provide an optional `on_recipe_action(player, recipe, craft_all)`
+callback and translated `recipe_action_tooltips.one` and
+`recipe_action_tooltips.all` strings. When the guide is opened with that station
+as its context, supported recipes show actions for one craft and all possible
+crafts. `craft_all` is `false` for the one-craft action and `true` for the
+all-possible-crafts action. Inventory handling and any station formspec changes
+remain the responsibility of the station. On failure, the callback may return a
+set of missing recipe item indices, such as `{ [2] = true, [5] = true }`. The
+guide highlights those inputs until the next formspec interaction.
+
 Set the optional `override` argument to `true` to intentionally replace an
 existing definition. The station keeps its position in the registration order.
 Registering a duplicate without `override` raises an error.
@@ -44,6 +54,13 @@ mcl_craftguide.register_station("example:processor", {
 	is_recipe_supported = function(recipe)
 		return recipe.type == "example_processing" or recipe.type == "fuel"
 	end,
+	on_recipe_action = function(player, recipe, craft_all)
+		-- Populate or otherwise configure the station for this recipe.
+	end,
+	recipe_action_tooltips = {
+		one = "Configure station for one craft",
+		all = "Configure station for all possible crafts",
+	},
 })
 ```
 
@@ -228,8 +245,10 @@ Returns a map of formspec elements, indexed by name.
 
 ### Miscellaneous
 
-#### `mcl_craftguide.show(player_name, item, show_usages)`
+#### `mcl_craftguide.show(player_name, item, show_usages, context)`
 
 Opens the Crafting Guide with the current filter applied.
 
    * `player_name`: string param.
+   * `context`: optional registered station item identifying the formspec that
+     opened the guide.

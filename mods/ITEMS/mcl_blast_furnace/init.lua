@@ -671,7 +671,7 @@ mcl_craftguide.register_station("mcl_blast_furnace:blast_furnace", {
 		end
 
 		local input = ItemStack(recipe.items[1]):get_name()
-		return minetest.get_item_group(input, "blast_furnace_smeltable") > 0
+		return core.get_item_group(input, "blast_furnace_smeltable") > 0
 	end,
 })
 

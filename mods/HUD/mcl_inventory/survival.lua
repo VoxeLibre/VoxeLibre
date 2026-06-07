@@ -196,11 +196,6 @@ mcl_inventory.register_survival_inventory_tab({
 
 ---@param player ObjectRef
 function mcl_inventory.build_survival_formspec(player)
-	local inv = player:get_inventory()
-
-	inv:set_width("craft", 2)
-	inv:set_size("craft", 4)
-
 	local tab = get_player_tab(player)
 
 	local tab_def = nil
@@ -323,4 +318,3 @@ core.register_on_player_inventory_action(function(player, action, inventory, inv
 	end
 	inventory:set_stack("distr", 1, nil)
 end)
-

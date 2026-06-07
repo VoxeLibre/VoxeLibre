@@ -264,6 +264,17 @@ function mcl_craftguide.register_station(item_name, def, override)
 		func .. "'override' must be a boolean")
 	assert(type(def.is_recipe_supported) == "function",
 		func .. "'is_recipe_supported' function missing")
+	assert(def.on_recipe_action == nil or type(def.on_recipe_action) == "function",
+		func .. "'on_recipe_action' must be a function")
+	assert(def.recipe_action_tooltips == nil or
+		type(def.recipe_action_tooltips) == "table",
+		func .. "'recipe_action_tooltips' must be a table")
+	assert(not def.on_recipe_action or
+		(def.recipe_action_tooltips and
+			type(def.recipe_action_tooltips.one) == "string" and
+			type(def.recipe_action_tooltips.all) == "string"),
+		func .. "'recipe_action_tooltips.one' and '.all' required with " ..
+			"'on_recipe_action'")
 
 	for i = 1, #stations do
 		if stations[i].item_name == item_name then
@@ -272,6 +283,8 @@ function mcl_craftguide.register_station(item_name, def, override)
 			stations[i] = {
 				item_name = item_name,
 				is_recipe_supported = def.is_recipe_supported,
+				on_recipe_action = def.on_recipe_action,
+				recipe_action_tooltips = def.recipe_action_tooltips,
 			}
 			return
 		end
@@ -280,6 +293,8 @@ function mcl_craftguide.register_station(item_name, def, override)
 	stations[#stations + 1] = {
 		item_name = item_name,
 		is_recipe_supported = def.is_recipe_supported,
+		on_recipe_action = def.on_recipe_action,
+		recipe_action_tooltips = def.recipe_action_tooltips,
 	}
 end
 
@@ -289,6 +304,8 @@ function mcl_craftguide.get_station(item_name)
 		if station.item_name == item_name then
 			return copy({
 				is_recipe_supported = station.is_recipe_supported,
+				on_recipe_action = station.on_recipe_action,
+				recipe_action_tooltips = station.recipe_action_tooltips,
 			})
 		end
 	end
@@ -810,25 +827,55 @@ local function get_recipe_fs(data, iY)
 
 	local favorite_item = data.query_item and data.favorite_items and
 		data.favorite_items[data.query_item]
+	local right_x = FORM_PADDING + (data.iX - 1.2) * FORM_SPACING_X
+	local right_w = 0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1)
+	local right_h = 0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1)
+	local action_all_y = FORM_PADDING + (iY + 1.3) * FORM_SPACING_Y
+	local action_one_y = FORM_PADDING + (iY + 2.0) * FORM_SPACING_Y
+	local favorite_y = FORM_PADDING + (iY + 2.7) * FORM_SPACING_Y
 
-	if data.query_item then
-		fs[#fs + 1] = fmt(FMT.image_button,
-			FORM_PADDING + (data.iX - 1.2) * FORM_SPACING_X,
-			FORM_PADDING + (iY + 2.35) * FORM_SPACING_Y,
-			0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1),
-			0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1),
-			favorite_item and
-				"mcl_end_ender_eye.png" or "mcl_throwing_ender_pearl.png",
-			"toggle_item_favorite",
-			"")
-		fs[#fs + 1] = fmt("tooltip[%s;%s]",
-			"toggle_item_favorite",
-			ESC(favorite_item and S("Unfavorite") or S("Favorite")))
+	local context_station = data.context and mcl_craftguide.get_station(data.context)
+	if context_station and context_station.on_recipe_action and
+		context_station.is_recipe_supported(recipe) then
+		local overlay_x = right_x + right_w * 10 / 16
+		local overlay_y_shift = (right_h + 0.9) * 4 / 16
+		local overlay_w = right_w * 5 / 16
+		local overlay_h = right_h * 12 / 16
+
+		fs[#fs + 1] = fmt(FMT.item_image_button,
+			right_x, action_all_y, right_w, right_h, data.context,
+			"station_recipe_action_all", "")
+		fs[#fs + 1] = fmt(FMT.image,
+			overlay_x, action_all_y + overlay_y_shift,
+			overlay_w, overlay_h, "_as.png")
+		fs[#fs + 1] = fmt(FMT.tooltip,
+			"station_recipe_action_all",
+			ESC(context_station.recipe_action_tooltips.all))
+
+		fs[#fs + 1] = fmt(FMT.item_image_button,
+			right_x, action_one_y, right_w, right_h, data.context,
+			"station_recipe_action_one", "")
+		fs[#fs + 1] = fmt(FMT.image,
+			overlay_x + 0.05, action_one_y + overlay_y_shift,
+			overlay_w, overlay_h, "_1_sup.png")
+		fs[#fs + 1] = fmt(FMT.tooltip,
+			"station_recipe_action_one",
+			ESC(context_station.recipe_action_tooltips.one))
 	end
 
 	fs[#fs + 1] = fmt(FMT.image_button,
+		right_x, favorite_y, right_w, right_h,
+		favorite_item and
+			"mcl_end_ender_eye.png" or "mcl_throwing_ender_pearl.png",
+		"toggle_item_favorite",
+		"")
+	fs[#fs + 1] = fmt("tooltip[%s;%s]",
+		"toggle_item_favorite",
+		ESC(favorite_item and S("Unfavorite") or S("Favorite")))
+
+	fs[#fs + 1] = fmt(FMT.image_button,
 		FORM_PADDING + (data.iX - 3.4) * FORM_SPACING_X,
-		FORM_PADDING + (iY + 3.3) * FORM_SPACING_Y,
+		FORM_PADDING + (iY + 3.45) * FORM_SPACING_Y,
 		0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1),
 		0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1),
 		"craftguide_prev_icon.png",
@@ -842,7 +889,7 @@ local function get_recipe_fs(data, iY)
 
 	fs[#fs + 1] = fmt(FMT.image_button,
 		FORM_PADDING + (data.iX - 1.2) * FORM_SPACING_X,
-		FORM_PADDING + (iY + 3.3) * FORM_SPACING_Y,
+		FORM_PADDING + (iY + 3.45) * FORM_SPACING_Y,
 		0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1),
 		0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1),
 		"craftguide_next_icon.png",
@@ -884,14 +931,26 @@ local function get_recipe_fs(data, iY)
 			label = "\nG"
 		end
 
+		local item_x = FORM_PADDING + X * FORM_SPACING_X
+		local item_y = FORM_PADDING + (Y + 0.2) * FORM_SPACING_Y
+		local item_w = btn_size * FORM_SPACING_X - (FORM_SPACING_X - 1)
+		local item_h = btn_size * FORM_SPACING_Y - (FORM_SPACING_Y - 1)
+
 		fs[#fs + 1] = fmt(FMT.item_image_button,
-			FORM_PADDING + X * FORM_SPACING_X,
-			FORM_PADDING + (Y + 0.2) * FORM_SPACING_Y,
-			btn_size * FORM_SPACING_X - (FORM_SPACING_X - 1),
-			btn_size * FORM_SPACING_Y - (FORM_SPACING_Y - 1),
+			item_x,
+			item_y,
+			item_w,
+			item_h,
 			item,
 			match(item, "%S*"),
 			ESC(label))
+
+		if data.missing_recipe_slots and data.missing_recipe_slots[i] then
+			fs[#fs + 1] = fmt(FMT.box,
+				item_x + 0.04, item_y + 0.04,
+				item_w - 0.07, item_h - 0.08,
+				"#D84A4A66")
+		end
 
 		local burntime = fuel_cache[item]
 
@@ -1156,6 +1215,7 @@ local function make_formspec(name)
 		end
 	end
 
+	data.missing_recipe_slots = nil
 	return concat(fs)
 end
 
@@ -1358,6 +1418,7 @@ local function on_receive_fields(player, fields)
 	local data = get_player_data(name)
 	local recipe_tab
 	local search_submitted = fields.key_enter_field == "filter" or fields.search
+	data.missing_recipe_slots = nil
 
 	for elem_name, def in pairs(formspec_elements) do
 		if fields[elem_name] and def.action then
@@ -1390,6 +1451,21 @@ local function on_receive_fields(player, fields)
 		end
 
 		show_fs(player, name)
+
+	elseif fields.station_recipe_action_one or fields.station_recipe_action_all then
+		local station = data.context and mcl_craftguide.get_station(data.context)
+		local recipe = data.recipes and data.recipes[data.rnum]
+		if not station or not station.on_recipe_action or not recipe or
+			not station.is_recipe_supported(recipe) then
+			return
+		end
+
+		local missing_slots = station.on_recipe_action(player, recipe,
+			fields.station_recipe_action_all ~= nil)
+		if missing_slots and next(missing_slots) then
+			data.missing_recipe_slots = missing_slots
+			show_fs(player, name)
+		end
 
 	elseif recipe_tab then
 		local tab_idx = tonumber(recipe_tab)
@@ -1635,9 +1711,10 @@ else
 	end)
 end
 
-function mcl_craftguide.show(name)
+function mcl_craftguide.show(name, item, show_usages, context)
 	local player = get_player_by_name(name)
 	local data = get_player_data(name)
+	data.context = context
 	refresh_items(data, player)
 	show_formspec(name, "mcl_craftguide", make_formspec(name))
 end

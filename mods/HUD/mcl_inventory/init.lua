@@ -5,6 +5,12 @@ dofile(minetest.get_modpath(minetest.get_current_modname()) .. "/survival.lua")
 
 local old_is_creative_enabled = minetest.is_creative_enabled
 
+local function reset_crafting_grid(player)
+	local inv = player:get_inventory()
+	inv:set_width("craft", 2)
+	inv:set_size("craft", 4)
+end
+
 function minetest.is_creative_enabled(name)
 	if old_is_creative_enabled(name) then return true end
 	if not name then return false end
@@ -40,6 +46,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		mcl_util.move_player_list(player, "enchanting_lapis")
 		mcl_util.move_player_list(player, "enchanting_item")
 		if not minetest.is_creative_enabled(player:get_player_name()) and (formname == "" or formname == "main") then
+			reset_crafting_grid(player)
 			set_inventory(player)
 		end
 	end
@@ -85,6 +92,9 @@ minetest.register_on_joinplayer(function(player)
 	mcl_util.move_player_list(player, "craftresult")
 	mcl_util.move_player_list(player, "enchanting_lapis")
 	mcl_util.move_player_list(player, "enchanting_item")
+	if not core.is_creative_enabled(player:get_player_name()) then
+		reset_crafting_grid(player)
+	end
 end)
 
 ---@param player mt.PlayerObjectRef

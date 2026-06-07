@@ -675,7 +675,7 @@ mcl_craftguide.register_station("mcl_smoker:smoker", {
 		end
 
 		local input = ItemStack(recipe.items[1]):get_name()
-		return minetest.get_item_group(input, "smoker_cookable") > 0
+		return core.get_item_group(input, "smoker_cookable") > 0
 	end,
 })
 

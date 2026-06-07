@@ -47,7 +47,7 @@ local function is_campfire_recipe_supported(recipe)
 	end
 
 	local input = ItemStack(recipe.items[1]):get_name()
-	return minetest.get_item_group(input, "campfire_cookable") > 0
+	return core.get_item_group(input, "campfire_cookable") > 0
 end
 
 mcl_craftguide.register_station("mcl_campfires:campfire_lit", {
