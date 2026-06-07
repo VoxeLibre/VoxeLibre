@@ -416,6 +416,42 @@ local function groups_item_in_recipe(item, recipe)
 	end
 end
 
+local function append_station_usages(item, usages)
+	local station
+	for i = 1, #stations do
+		if stations[i].item_name == item then
+			station = stations[i]
+			break
+		end
+	end
+
+	if not station then
+		return
+	end
+
+	local included = {}
+	for i = 1, #usages do
+		included[usages[i]] = true
+	end
+
+	for _, recipes in pairs(recipes_cache) do
+		for i = 1, #recipes do
+			local recipe = recipes[i]
+			if not included[recipe] and station.is_recipe_supported(recipe) then
+				usages[#usages + 1] = recipe
+				included[recipe] = true
+			end
+		end
+	end
+
+	for fuel_item in pairs(fuel_cache) do
+		local recipe = { type = "fuel", width = 1, items = { fuel_item } }
+		if station.is_recipe_supported(recipe) then
+			usages[#usages + 1] = recipe
+		end
+	end
+end
+
 local function get_item_usages(item)
 	local usages, c = {}, 0
 
@@ -438,6 +474,8 @@ local function get_item_usages(item)
 	if fuel_cache[item] then
 		usages[#usages + 1] = { type = "fuel", width = 1, items = { item } }
 	end
+
+	append_station_usages(item, usages)
 
 	return usages
 end

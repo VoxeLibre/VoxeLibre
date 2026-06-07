@@ -29,9 +29,11 @@ mcl_craftguide.register_craft({
 Registers an item or node as a crafting station. The station is shown for a
 recipe when it has been discovered by the player and `is_recipe_supported`
 returns true. When progressive mode is disabled, all supported stations are
-shown. The callback receives the displayed recipe, including synthetic recipes
-such as `{ type = "fuel", items = { fuel_item } }`. Recipe-type-specific fields
-may also be present, but are not part of the station API contract.
+shown. Selecting the station in usage mode also shows every supported recipe
+known by the player, grouped into the usual recipe-type tabs. The callback
+receives the displayed recipe, including synthetic recipes such as
+`{ type = "fuel", items = { fuel_item } }`. Recipe-type-specific fields may
+also be present, but are not part of the station API contract.
 
 Set the optional `override` argument to `true` to intentionally replace an
 existing definition. The station keeps its position in the registration order.
