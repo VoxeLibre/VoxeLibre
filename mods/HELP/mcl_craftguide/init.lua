@@ -1440,7 +1440,7 @@ local function on_receive_fields(player, fields)
 
 		data.query_item = item
 		data.rnum       = 1
-		set_recipe_list(data, recipes)
+		set_recipe_list(data, recipes, data.selected_recipe_type)
 
 		show_fs(player, name)
 	end
