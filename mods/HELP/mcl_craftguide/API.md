@@ -1,5 +1,130 @@
 ## API
 
+### Recipe tabs
+
+#### `mcl_craftguide.register_tab(name, def, override)`
+
+Registers an item-centric recipe tab. A tab is shown only when it returns at
+least one recipe for the selected item and the current recipes/usages mode.
+Names should be namespaced, for example `"example:macerating"`.
+
+The guide owns the item list, item paging, tab buttons, recipe paging, crafting
+stations, favorites, and item navigation. The tab only supplies recipes and
+draws the active recipe in the content area between the station list and the
+favorite button.
+
+Definition fields:
+
+- `description`: translated tab label.
+- `icon`: optional item name or texture used by the tab header. Registered
+  items are rendered as item images; other values are treated as textures.
+  Tabs without an icon use their description as the button label.
+- `order`: optional numeric sort order; defaults to `100`.
+- `get_items()`: optional callback returning all item names that the tab can
+  produce or use. Items without ordinary Luanti recipes must be returned here
+  so they are included in the guide's item list. Called during mod loading.
+- `get_recipes(item, show_usages, player)`: returns recipes relevant to
+  `item`. `show_usages` is `false` for ways to obtain the item and `true` for
+  ways to use it.
+- `is_recipe(recipe)`: alternative to `get_recipes`, used to select recipes
+  from craftguide's normal recipe cache.
+- `build(ctx)`: returns formspec content for `ctx.recipe`.
+- `handle(ctx, field_name, fields)`: optional handler for fields created with
+  `ctx:field_name()` or `ctx:button()`. Return true to redraw the guide.
+- `is_visible(player, item, show_usages)`: optional access callback.
+
+Exactly one of `get_recipes` and `is_recipe` is required. Set `override` to
+true to replace an existing tab.
+
+Recipes should use the common fields where applicable:
+
+```lua
+{
+	type = "example:macerating",
+	width = 1,
+	items = { "mcl_core:stone" },
+	output = "mcl_core:cobble",
+	time = 2,
+}
+```
+
+`items` and `output` allow crafting stations and other craftguide features to
+understand the recipe. Tabs may add their own fields.
+
+The build context contains:
+
+- `player`, `item`, `show_usages`, and `recipe`.
+- `recipe_index` and `recipe_count`.
+- `width` and `height`, in formspec units.
+- `state`, a private per-player table belonging to this tab.
+- `item_button(x, y, item, options)`.
+- `image(x, y, width, height, texture)`.
+- `label(x, y, text)`.
+- `button(x, y, width, height, name, label)`.
+- `field_name(name)`.
+
+All coordinates are relative to the content area's top-left corner. Consumers
+start their layout at `0,0`; craftguide wraps the result in a formspec
+`container[]`.
+
+`ctx:item_button()` accepts item names, stack strings, and group ingredients
+directly. Craftguide resolves `group:*` values, adds their marker and tooltip,
+generates a private field name, and selects the displayed item when clicked.
+
+```lua
+mcl_craftguide.register_tab("example:macerating", {
+	description = S("Macerating"),
+	icon = "example_macerator.png",
+	order = 40,
+
+	get_items = function()
+		local items = {}
+		for input, recipe in pairs(example.macerator_recipes) do
+			items[#items + 1] = input
+			items[#items + 1] = recipe.output
+		end
+		return items
+	end,
+
+	get_recipes = function(item, show_usages)
+		local recipes = {}
+		for input, def in pairs(example.macerator_recipes) do
+			local recipe = {
+				type = "example:macerating",
+				width = 1,
+				items = { input },
+				output = def.output,
+				time = def.time,
+			}
+			local relevant = show_usages and input == item or
+				not show_usages and ItemStack(def.output):get_name() == item
+			if relevant then
+				recipes[#recipes + 1] = recipe
+			end
+		end
+		return recipes
+	end,
+
+	build = function(ctx)
+		local recipe = ctx.recipe
+		return table.concat({
+			ctx:item_button(0.5, 0.8, recipe.items[1]),
+			ctx:image(2.0, 1.0, 0.9, 0.7, "craftguide_arrow.png"),
+			ctx:item_button(3.2, 0.8, recipe.output),
+			ctx:label(2.0, 2.2, S("@1 seconds", recipe.time)),
+		})
+	end,
+})
+```
+
+#### `mcl_craftguide.get_tab(name)`
+
+Returns a copy of a registered tab definition or `nil`.
+
+#### `mcl_craftguide.get_tabs()`
+
+Returns copies of all registered tab definitions indexed by name.
+
 ### Custom recipes
 
 #### Registering a custom crafting type (example)
@@ -245,10 +370,13 @@ Returns a map of formspec elements, indexed by name.
 
 ### Miscellaneous
 
-#### `mcl_craftguide.show(player_name, item, show_usages, context)`
+#### `mcl_craftguide.show(player_name, item, show_usages, context, tab_name)`
 
 Opens the Crafting Guide with the current filter applied.
 
    * `player_name`: string param.
+   * `item`: optional item to select.
+   * `show_usages`: whether to initially show usages instead of recipes.
    * `context`: optional registered station item identifying the formspec that
      opened the guide.
+   * `tab_name`: optional preferred registered recipe tab.

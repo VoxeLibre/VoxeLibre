@@ -169,6 +169,7 @@ local function init_data(name)
 		iX      = DEFAULT_SIZE,
 		items   = init_items,
 		items_raw = init_items,
+		tab_state = {},
 		lang_code = M.get_player_information(name).lang_code or "en",
 	}
 end
@@ -235,6 +236,79 @@ local function table_diff(t, t2)
 end
 
 local custom_crafts, craft_types, stations = {}, {}, {}
+local recipe_tabs, recipe_tab_order = {}, {}
+local render_grid_recipe
+
+local function sort_recipe_tabs()
+	sort(recipe_tab_order, function(a, b)
+		local tab_a = recipe_tabs[a]
+		local tab_b = recipe_tabs[b]
+		if tab_a.order == tab_b.order then
+			return a < b
+		end
+		return tab_a.order < tab_b.order
+	end)
+end
+
+function mcl_craftguide.register_tab(name, def, override)
+	local func = "mcl_craftguide.register_tab(): "
+	assert(type(name) == "string" and name ~= "", func .. "'name' must be a string")
+	assert(type(def) == "table", func .. "'def' must be a table")
+	assert(type(def.description) == "string", func .. "'description' must be a string")
+	assert(def.icon == nil or type(def.icon) == "string",
+		func .. "'icon' must be a string")
+	assert(def.order == nil or type(def.order) == "number",
+		func .. "'order' must be a number")
+	assert(def.get_recipes == nil or type(def.get_recipes) == "function",
+		func .. "'get_recipes' must be a function")
+	assert(def.get_items == nil or type(def.get_items) == "function",
+		func .. "'get_items' must be a function")
+	assert(def.is_recipe == nil or type(def.is_recipe) == "function",
+		func .. "'is_recipe' must be a function")
+	assert(type(def.build) == "function", func .. "'build' function missing")
+	assert(def.handle == nil or type(def.handle) == "function",
+		func .. "'handle' must be a function")
+	assert(def.is_visible == nil or type(def.is_visible) == "function",
+		func .. "'is_visible' must be a function")
+	assert(def.get_recipes or def.is_recipe,
+		func .. "either 'get_recipes' or 'is_recipe' is required")
+	assert(override == nil or type(override) == "boolean",
+		func .. "'override' must be a boolean")
+
+	if recipe_tabs[name] then
+		assert(override, func .. "'" .. name .. "' is already registered")
+	else
+		recipe_tab_order[#recipe_tab_order + 1] = name
+	end
+
+	recipe_tabs[name] = {
+		name = name,
+		description = def.description,
+		icon = def.icon,
+		order = def.order or 100,
+		get_recipes = def.get_recipes,
+		get_items = def.get_items,
+		is_recipe = def.is_recipe,
+		build = def.build,
+		handle = def.handle,
+		is_visible = def.is_visible,
+	}
+	sort_recipe_tabs()
+end
+
+function mcl_craftguide.get_tab(name)
+	local tab = recipe_tabs[name]
+	return tab and copy(tab)
+end
+
+function mcl_craftguide.get_tabs()
+	local tabs = {}
+	for i = 1, #recipe_tab_order do
+		local name = recipe_tab_order[i]
+		tabs[name] = copy(recipe_tabs[name])
+	end
+	return tabs
+end
 
 function mcl_craftguide.register_craft_type(name, def)
 	local func = "mcl_craftguide.register_craft_type(): "
@@ -243,6 +317,17 @@ function mcl_craftguide.register_craft_type(name, def)
 	assert(def.icon, func .. "'icon' field missing")
 
 	craft_types[name] = def
+	mcl_craftguide.register_tab(name, {
+		description = def.description,
+		icon = def.icon,
+		order = def.order,
+		is_recipe = function(recipe)
+			return recipe.type == name
+		end,
+		build = function(ctx)
+			return render_grid_recipe(ctx, def)
+		end,
+	}, recipe_tabs[name] ~= nil)
 end
 
 function mcl_craftguide.register_craft(def)
@@ -504,9 +589,31 @@ local function get_filtered_items(player)
 		local item = init_items[i]
 		local recipes = recipes_cache[item]
 		local usages = usages_cache[item]
+		local visible = recipes and #apply_recipe_filters(recipes, player) > 0 or
+			usages and #apply_recipe_filters(usages, player) > 0
 
-		if recipes and #apply_recipe_filters(recipes, player) > 0 or
-			usages and #apply_recipe_filters(usages, player) > 0 then
+		if not visible then
+			for j = 1, #recipe_tab_order do
+				local tab = recipe_tabs[recipe_tab_order[j]]
+				if tab.get_recipes then
+					for direction = 0, 1 do
+						local show_usages = direction == 1
+						if not tab.is_visible or
+							tab.is_visible(player, item, show_usages) then
+							local provided =
+								tab.get_recipes(item, show_usages, player) or {}
+							if #apply_recipe_filters(provided, player) > 0 then
+								visible = true
+								break
+							end
+						end
+					end
+				end
+				if visible then break end
+			end
+		end
+
+		if visible then
 			c = c + 1
 			items[c] = item
 		end
@@ -551,84 +658,85 @@ local function cache_recipes(output)
 	end
 end
 
-local function get_recipes(item, data, player)
-	local recipes = recipes_cache[item]
-	local usages = usages_cache[item]
+local function get_cached_recipes(item, show_usages, player)
+	local recipes = show_usages and usages_cache[item] or recipes_cache[item]
 
 	if recipes then
 		recipes = apply_recipe_filters(recipes, player)
 	end
 
-	if recipes and fuel_cache[item] then
-		recipes = copy(recipes)
-		recipes[#recipes + 1] = {type = "fuel", width = 1, items = {item}}
-	end
-
-	local no_recipes = not recipes or #recipes == 0
-	if no_recipes and not usages then
-		return
-	elseif usages and no_recipes then
-		data.show_usages = true
-	end
-
-	if data.show_usages then
-		recipes = apply_recipe_filters(usages_cache[item], player)
-		if #recipes == 0 then
-			return
-		end
-	end
-
 	return recipes
 end
 
-local function get_recipe_type_label(recipe_type)
-	if recipe_type == "normal" then
-		return S("Crafting")
-	elseif recipe_type == "cooking" then
-		return S("Smelting")
-	elseif recipe_type == "fuel" then
-		return S("Fuel")
+local function collect_recipe_tabs(item, show_usages, player)
+	local cached = get_cached_recipes(item, show_usages, player) or {}
+	local available = {}
+
+	for i = 1, #recipe_tab_order do
+		local tab_name = recipe_tab_order[i]
+		local tab = recipe_tabs[tab_name]
+		local recipes = {}
+		local visible = not tab.is_visible or tab.is_visible(player, item, show_usages)
+
+		if visible and tab.get_recipes then
+			recipes = tab.get_recipes(item, show_usages, player) or {}
+			recipes = apply_recipe_filters(recipes, player)
+		elseif visible then
+			for j = 1, #cached do
+				local recipe = cached[j]
+				if tab.is_recipe(recipe) then
+					recipes[#recipes + 1] = recipe
+				end
+			end
+		end
+
+		if #recipes > 0 then
+			available[#available + 1] = {
+				name = tab_name,
+				def = tab,
+				recipes = recipes,
+			}
+		end
 	end
 
-	local custom_recipe = craft_types[recipe_type]
-	return custom_recipe and custom_recipe.description or recipe_type
+	return available
 end
 
-local function set_recipe_list(data, recipes, recipe_type)
-	data.all_recipes = recipes
-	data.recipe_types = {}
+local function set_recipe_tabs(data, item, player, preferred_tab)
+	local tabs = collect_recipe_tabs(item, data.show_usages, player)
+	if #tabs == 0 and not data.show_usages then
+		local usage_tabs = collect_recipe_tabs(item, true, player)
+		if #usage_tabs > 0 then
+			data.show_usages = true
+			tabs = usage_tabs
+		end
+	end
 
-	if not recipes or #recipes == 0 then
-		data.selected_recipe_type = nil
+	data.recipe_tabs = tabs
+	if #tabs == 0 then
+		data.selected_recipe_tab = nil
 		data.recipes = nil
 		data.rnum = 1
-		return
+		return false
 	end
 
-	local available_types = {}
-	for i = 1, #recipes do
-		local current_type = recipes[i].type or "normal"
-		if not available_types[current_type] then
-			available_types[current_type] = true
-			data.recipe_types[#data.recipe_types + 1] = current_type
+	local selected
+	preferred_tab = preferred_tab or data.selected_recipe_tab
+	for i = 1, #tabs do
+		if tabs[i].name == preferred_tab then
+			selected = tabs[i]
+			break
 		end
 	end
+	selected = selected or tabs[1]
 
-	recipe_type = available_types[recipe_type] and recipe_type or data.recipe_types[1]
-	data.selected_recipe_type = recipe_type
-	data.recipes = {}
-
-	for i = 1, #recipes do
-		local recipe = recipes[i]
-		if (recipe.type or "normal") == recipe_type then
-			data.recipes[#data.recipes + 1] = recipe
-		end
-	end
-
+	data.selected_recipe_tab = selected.name
+	data.recipes = selected.recipes
 	data.rnum = min(data.rnum or 1, #data.recipes)
 	if data.rnum == 0 then
 		data.rnum = 1
 	end
+	return true
 end
 
 local function get_burntime(item)
@@ -664,7 +772,7 @@ local function groups_to_item(groups)
 	return ""
 end
 
-local function get_tooltip(item, groups, cooktime, burntime)
+local function get_tooltip(item, groups, cooktime, burntime, target)
 	local tooltip
 
 	if groups then
@@ -712,7 +820,7 @@ local function get_tooltip(item, groups, cooktime, burntime)
 			S("Burning time: @1", colorize(mcl_colors.YELLOW, burntime))
 	end
 
-	return fmt("tooltip[%s;%s]", item, ESC(tooltip))
+	return fmt("tooltip[%s;%s]", target or item, ESC(tooltip))
 end
 
 local function get_recipe_fs(data, iY)
@@ -1032,8 +1140,377 @@ local function get_recipe_fs(data, iY)
 	return concat(fs)
 end
 
+local function make_tab_context(data, player, area)
+	local recipe = data.recipes[data.rnum]
+	local tab = recipe_tabs[data.selected_recipe_tab]
+	local tab_state = data.tab_state[data.selected_recipe_tab]
+	if not tab_state then
+		tab_state = {}
+		data.tab_state[data.selected_recipe_tab] = tab_state
+	end
+
+	data.recipe_item_fields = {}
+	data.recipe_tab_fields = {}
+	local item_field_index = 0
+
+	local ctx = {
+		player = player,
+		item = data.query_item,
+		show_usages = data.show_usages == true,
+		recipe = recipe,
+		recipe_index = data.rnum,
+		recipe_count = #data.recipes,
+		state = tab_state,
+		width = area.w,
+		height = area.h,
+	}
+
+	function ctx:field_name(name)
+		assert(type(name) == "string" and name ~= "",
+			"mcl_craftguide tab field name must be a non-empty string")
+		local field = "__cg_tab_" .. name:gsub("[^%w_]", "_")
+		data.recipe_tab_fields[field] = name
+		return field
+	end
+
+	function ctx:item_button(x, y, item, options)
+		options = options or {}
+		local w = options.w or 1.1
+		local h = options.h or 1.1
+		local groups
+		local stack = item
+
+		if type(item) ~= "string" then
+			stack = ItemStack(item):to_string()
+		end
+		if sub(stack, 1, 6) == "group:" then
+			groups = extract_groups(stack)
+			stack = groups_to_item(groups)
+		end
+
+		local item_name = match(stack, "%S+")
+		if not item_name or not reg_items[item_name] then
+			return ""
+		end
+
+		item_field_index = item_field_index + 1
+		local field = "__cg_item_" .. item_field_index
+		data.recipe_item_fields[field] = item_name
+
+		local label = options.label or ""
+		if groups and groups[1] ~= "compass" and groups[1] ~= "clock" then
+			label = label .. "\nG"
+		end
+
+		local fs = {
+			fmt(FMT.item_image_button, x, y, w, h, stack, field, ESC(label)),
+		}
+		if groups or options.cooktime or options.burntime then
+			fs[#fs + 1] = get_tooltip(
+				item_name, groups, options.cooktime, options.burntime, field)
+		elseif options.tooltip then
+			fs[#fs + 1] = fmt(FMT.tooltip, field, ESC(options.tooltip))
+		end
+		return concat(fs)
+	end
+
+	function ctx:image(x, y, w, h, texture)
+		return fmt(FMT.image, x, y, w, h, texture)
+	end
+
+	function ctx:label(x, y, text)
+		return fmt(FMT.label, x, y, ESC(text))
+	end
+
+	function ctx:button(x, y, w, h, name, label)
+		return fmt(FMT.button, x, y, w, h, self:field_name(name), ESC(label))
+	end
+
+	return ctx, tab
+end
+
+render_grid_recipe = function(ctx, craft_type)
+	local recipe = ctx.recipe
+	local fs = {}
+	local width = recipe.width
+	local cooktime
+	local shapeless
+
+	if recipe.type == "cooking" then
+		cooktime, width = width, 1
+	elseif width == 0 then
+		shapeless = true
+		width = #recipe.items <= 4 and 2 or min(3, #recipe.items)
+	end
+
+	local rows = ceil(maxn(recipe.items) / width)
+	if width > GRID_LIMIT or rows > GRID_LIMIT then
+		return ctx:label(0.5, ctx.height / 2,
+			S("Recipe is too big to be displayed (@1×@2)", width, rows))
+	end
+
+	local button_size = 1.1
+	if width > 3 or rows > 3 then
+		button_size = width > 3 and 3 / width or 3 / rows
+	end
+
+	local grid_w = width * button_size
+	local grid_h = rows * button_size
+	local total_w = grid_w + 3.1
+	local start_x = max(0, (ctx.width - total_w) / 2)
+	local start_y = max(0, (ctx.height - grid_h) / 2)
+
+	for i, item in pairs(recipe.items) do
+		local x = start_x + ((i - 1) % width) * button_size
+		local y = start_y + floor((i - 1) / width) * button_size
+		local item_name = match(item, "%S+")
+		fs[#fs + 1] = ctx:item_button(x, y, item, {
+			w = button_size,
+			h = button_size,
+			cooktime = cooktime,
+			burntime = item_name and fuel_cache[item_name],
+		})
+
+		if ctx.missing_recipe_slots and ctx.missing_recipe_slots[i] then
+			fs[#fs + 1] = fmt(FMT.box,
+				x + 0.04, y + 0.04, button_size - 0.07,
+				button_size - 0.08, "#D84A4A66")
+		end
+	end
+
+	local icon = craft_type and craft_type.icon
+	local tooltip = craft_type and craft_type.description
+	if shapeless then
+		icon = "craftguide_shapeless.png"
+		tooltip = S("Shapeless")
+	elseif recipe.type == "cooking" then
+		icon = "craftguide_furnace.png"
+		tooltip = S("Cooking")
+	end
+
+	local arrow_x = start_x + grid_w + 0.65
+	if icon then
+		fs[#fs + 1] = ctx:image(arrow_x - 0.05, start_y, 0.5, 0.5, icon)
+		fs[#fs + 1] = fmt("tooltip[%f,%f;%f,%f;%s]",
+			arrow_x - 0.05, start_y, 0.5, 0.5, ESC(tooltip))
+	end
+	fs[#fs + 1] = ctx:image(
+		arrow_x, start_y + max(0.55, grid_h / 2 - 0.35),
+		0.9, 0.7, "craftguide_arrow.png")
+
+	local output_x = arrow_x + 1.25
+	local output_y = start_y + max(0, grid_h / 2 - 0.55)
+	if recipe.type == "fuel" then
+		local fuel_name = match(recipe.items[1], "%S+")
+		local burntime = fuel_name and fuel_cache[fuel_name]
+		if burntime then
+			fs[#fs + 1] = ctx:label(output_x + 0.1, output_y - 0.45,
+				colorize(mcl_colors.YELLOW, burntime))
+		end
+		fs[#fs + 1] = ctx:image(
+			output_x, output_y, 1.1, 1.1, "mcl_craftguide_fuel.png")
+	else
+		fs[#fs + 1] = ctx:item_button(output_x, output_y, recipe.output)
+	end
+
+	return concat(fs)
+end
+
+local function get_tabbed_recipe_fs(data, player, iY)
+	local fs = {}
+	local recipe = data.recipes[data.rnum]
+	local tabs = data.recipe_tabs or {}
+	iY = iY + 1.05
+
+	if #tabs > 0 then
+		local gap = 0.1
+		local tab_height = 0.95
+		local tab_widths = {}
+		local total_w = (#tabs - 1) * gap
+		for i = 1, #tabs do
+			local width = tab_height--tabs[i].def.icon and
+				--1--(FORM_BUTTON_HEIGHT + FORM_SPACING_X - 1) / FORM_SPACING_X or 1.8
+			tab_widths[i] = width
+			total_w = total_w + width
+		end
+		local start_x = max(0.3, (data.iX - total_w) / 2)
+		local tab_x = start_x
+
+		for i = 1, #tabs do
+			local tab = tabs[i]
+			local btn_w = tab_widths[i]
+			local field_name = fmt("rtab_%d", i)
+			local x = FORM_PADDING + tab_x * FORM_SPACING_X
+			local y = FORM_PADDING + iY * FORM_SPACING_Y +
+				0.4 - FORM_BUTTON_HEIGHT / 2
+			local w = btn_w * FORM_SPACING_X - (FORM_SPACING_X - 1)
+			if tab.name == data.selected_recipe_tab then
+				fs[#fs + 1] = fmt(
+					"style[rtab_%d;border=false;" ..
+					"bgimg=mcl_inventory_button9_pressed.png;" ..
+					"bgimg_pressed=mcl_inventory_button9_pressed.png;" ..
+					"bgimg_middle=2,2]", i)
+			end
+
+			if tab.def.icon and reg_items[tab.def.icon] then
+				fs[#fs + 1] = fmt(FMT.item_image_button,
+					x, y, w, tab_height,
+					tab.def.icon, field_name, "")
+			elseif tab.def.icon then
+				fs[#fs + 1] = fmt(FMT.image_button,
+					x, y, w, tab_height,
+					tab.def.icon, field_name, "")
+			else
+				fs[#fs + 1] = fmt(FMT.button,
+					x, y, w, tab_height,
+					field_name, ESC(tab.def.description))
+			end
+			fs[#fs + 1] = fmt(FMT.tooltip,
+				field_name, ESC(tab.def.description))
+			tab_x = tab_x + btn_w + gap
+		end
+	end
+
+	iY = iY - 0.37
+	local visible_items = {}
+	for i = 1, #data.items_raw do
+		visible_items[data.items_raw[i]] = true
+	end
+
+	local supported_stations = {}
+	for i = 1, #stations do
+		local station = stations[i]
+		if visible_items[station.item_name] and station.is_recipe_supported(recipe) then
+			supported_stations[#supported_stations + 1] = station
+		end
+	end
+
+	local station_x = FORM_PADDING
+	local station_y = FORM_PADDING + (iY + 1.25) * FORM_SPACING_Y
+	if #supported_stations > 0 then
+		local station_fs = {}
+		for i = 1, #supported_stations do
+			local station = supported_stations[i]
+			station_fs[#station_fs + 1] = fmt(FMT.item_image_button,
+				(i - 1) % 2 * 0.8,
+				floor((i - 1) / 2) * 0.8,
+				0.75, 0.75, station.item_name, station.item_name, "")
+		end
+		fs[#fs + 1] = fmt(
+			"scroll_container[%f,%f;2.1,3.2;station_scroll;vertical;0.8]",
+			station_x, station_y)
+		fs[#fs + 1] = concat(station_fs)
+		fs[#fs + 1] = "scroll_container_end[]"
+		if #supported_stations > 8 then
+			local station_rows = ceil(#supported_stations / 2)
+			fs[#fs + 1] = fmt(
+				"scrollbaroptions[min=0;max=%d;smallstep=1;largestep=4;arrows=hide]",
+				station_rows - 4)
+			fs[#fs + 1] = fmt(
+				"scrollbar[%f,%f;0.35,3.2;vertical;station_scroll;0]",
+				station_x + 1.7, station_y)
+		end
+	end
+
+	local right_x = FORM_PADDING + (data.iX - 1.2) * FORM_SPACING_X
+	local right_w = 0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1)
+	local right_h = 0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1)
+	local context_station = data.context and mcl_craftguide.get_station(data.context)
+	if context_station and context_station.on_recipe_action and
+		context_station.is_recipe_supported(recipe) then
+		local action_all_y = FORM_PADDING + (iY + 1.3) * FORM_SPACING_Y
+		local action_one_y = FORM_PADDING + (iY + 2.0) * FORM_SPACING_Y
+		fs[#fs + 1] = fmt(FMT.item_image_button,
+			right_x, action_all_y, right_w, right_h, data.context,
+			"station_recipe_action_all", "")
+		fs[#fs + 1] = fmt(FMT.tooltip, "station_recipe_action_all",
+			ESC(context_station.recipe_action_tooltips.all))
+		fs[#fs + 1] = fmt(FMT.item_image_button,
+			right_x, action_one_y, right_w, right_h, data.context,
+			"station_recipe_action_one", "")
+		fs[#fs + 1] = fmt(FMT.tooltip, "station_recipe_action_one",
+			ESC(context_station.recipe_action_tooltips.one))
+	end
+
+	local favorite_item = data.query_item and data.favorite_items and
+		data.favorite_items[data.query_item]
+	local favorite_y = FORM_PADDING + (iY + 2.7) * FORM_SPACING_Y
+	fs[#fs + 1] = fmt(FMT.image_button,
+		right_x, favorite_y, right_w, right_h,
+		favorite_item and "mcl_end_ender_eye.png" or
+			"mcl_throwing_ender_pearl.png",
+		"toggle_item_favorite", "")
+	fs[#fs + 1] = fmt(FMT.tooltip, "toggle_item_favorite",
+		ESC(favorite_item and S("Unfavorite") or S("Favorite")))
+
+	local area = {
+		x = station_x + 2.2,
+		y = station_y,
+		w = max(1, right_x - (station_x + 2.2) - 0.2),
+		h = 3.2,
+	}
+	local ctx, tab = make_tab_context(data, player, area)
+	ctx.missing_recipe_slots = data.missing_recipe_slots
+	fs[#fs + 1] = fmt("container[%f,%f]", area.x, area.y)
+	fs[#fs + 1] = tab.build(ctx) or ""
+	fs[#fs + 1] = "container_end[]"
+
+	local btn_lab = data.show_usages and
+		ESC(S("Usage @1 of @2", data.rnum, #data.recipes)) or
+		ESC(S("Recipe @1 of @2", data.rnum, #data.recipes))
+	fs[#fs + 1] = fmt(FMT.image_button,
+		FORM_PADDING + (data.iX - 3.4) * FORM_SPACING_X,
+		FORM_PADDING + (iY + 3.45) * FORM_SPACING_Y,
+		right_w, right_h, "craftguide_prev_icon.png", "recipe_prev", "")
+	fs[#fs + 1] = fmt(FMT.label,
+		FORM_PADDING + (data.iX - 2.65) * FORM_SPACING_X,
+		(iY + 3.4) * FORM_SPACING_Y + 77 / 104, btn_lab)
+	fs[#fs + 1] = fmt(FMT.image_button,
+		right_x, FORM_PADDING + (iY + 3.45) * FORM_SPACING_Y,
+		right_w, right_h, "craftguide_next_icon.png", "recipe_next", "")
+
+	return concat(fs)
+end
+
+mcl_craftguide.register_tab("mcl_craftguide:crafting", {
+	description = S("Crafting"),
+	icon = "mcl_crafting_table:crafting_table",
+	order = 10,
+	is_recipe = function(recipe)
+		return not recipe.type or recipe.type == "normal"
+	end,
+	build = function(ctx)
+		return render_grid_recipe(ctx)
+	end,
+})
+
+mcl_craftguide.register_tab("mcl_craftguide:smelting", {
+	description = S("Smelting"),
+	icon = "mcl_furnaces:furnace",
+	order = 20,
+	is_recipe = function(recipe)
+		return recipe.type == "cooking"
+	end,
+	build = function(ctx)
+		return render_grid_recipe(ctx)
+	end,
+})
+
+mcl_craftguide.register_tab("mcl_craftguide:fuel", {
+	description = S("Fuel"),
+	icon = "mcl_fire:fire",
+	order = 30,
+	is_recipe = function(recipe)
+		return recipe.type == "fuel"
+	end,
+	build = function(ctx)
+		return render_grid_recipe(ctx)
+	end,
+})
+
 local function make_formspec(name)
 	local data = get_player_data(name)
+	local player = get_player_by_name(name)
 	local iY = data.iX - 5
 	local ipp = data.iX * iY
 
@@ -1197,7 +1674,7 @@ local function make_formspec(name)
 	end
 
 	if data.recipes and #data.recipes > 0 then
-		fs[#fs + 1] = get_recipe_fs(data, iY)
+		fs[#fs + 1] = get_tabbed_recipe_fs(data, player, iY)
 	end
 
 	for elem_name, def in pairs(formspec_elements) do
@@ -1345,9 +1822,8 @@ local function refresh_items(data, player)
 	if data.query_item and table.indexof(data.items_raw, data.query_item) == -1 then
 		data.query_item = nil
 		data.show_usages = nil
-		data.all_recipes = nil
-		data.recipe_types = nil
-		data.selected_recipe_type = nil
+		data.recipe_tabs = nil
+		data.selected_recipe_tab = nil
 		data.recipes = nil
 		data.rnum = 1
 	end
@@ -1384,9 +1860,8 @@ local function reset_data(data)
 	data.rnum        = 1
 	data.query_item  = nil
 	data.show_usages = nil
-	data.all_recipes = nil
-	data.recipe_types = nil
-	data.selected_recipe_type = nil
+	data.recipe_tabs = nil
+	data.selected_recipe_tab = nil
 	data.recipes     = nil
 end
 
@@ -1399,11 +1874,22 @@ end
 
 local function get_init_items()
 	local c = 0
+	local provided_items = {}
+	for i = 1, #recipe_tab_order do
+		local tab = recipe_tabs[recipe_tab_order[i]]
+		if tab.get_items then
+			local items = tab.get_items() or {}
+			for j = 1, #items do
+				provided_items[match(items[j], "%S+")] = true
+			end
+		end
+	end
+
 	for name, def in pairs(reg_items) do
 		local is_fuel = cache_fuel(name)
 		if not (def.groups.not_in_craft_guide == 1) and
 			def.description and def.description ~= "" and
-			(cache_recipes(name) or is_fuel) then
+			(cache_recipes(name) or is_fuel or provided_items[name]) then
 			c = c + 1
 			init_items[c] = name
 		end
@@ -1417,6 +1903,8 @@ local function on_receive_fields(player, fields)
 	local name = player:get_player_name()
 	local data = get_player_data(name)
 	local recipe_tab
+	local selected_recipe_item
+	local tab_field
 	local search_submitted = fields.key_enter_field == "filter" or fields.search
 	data.missing_recipe_slots = nil
 
@@ -1427,13 +1915,42 @@ local function on_receive_fields(player, fields)
 	end
 
 	for field in pairs(fields) do
-		recipe_tab = match(field, "^rtype_(%d+)$")
+		recipe_tab = match(field, "^rtab_(%d+)$")
 		if recipe_tab then
+			break
+		end
+		if data.recipe_item_fields and data.recipe_item_fields[field] then
+			selected_recipe_item = data.recipe_item_fields[field]
+			break
+		end
+		if data.recipe_tab_fields and data.recipe_tab_fields[field] then
+			tab_field = data.recipe_tab_fields[field]
 			break
 		end
 	end
 
-	if fields.clear or (search_submitted and (fields.filter or "") == "") then
+	if selected_recipe_item then
+		if selected_recipe_item ~= data.query_item then
+			data.show_usages = nil
+		else
+			data.show_usages = not data.show_usages
+		end
+		data.query_item = selected_recipe_item
+		data.rnum = 1
+		if set_recipe_tabs(data, selected_recipe_item, player) then
+			show_fs(player, name)
+		end
+
+	elseif tab_field then
+		local tab = recipe_tabs[data.selected_recipe_tab]
+		if tab and tab.handle then
+			local ctx = make_tab_context(data, player, { w = 0, h = 0 })
+			if tab.handle(ctx, tab_field, fields) then
+				show_fs(player, name)
+			end
+		end
+
+	elseif fields.clear or (search_submitted and (fields.filter or "") == "") then
 		reset_data(data)
 		refresh_items(data, player)
 		show_fs(player, name)
@@ -1469,13 +1986,14 @@ local function on_receive_fields(player, fields)
 
 	elseif recipe_tab then
 		local tab_idx = tonumber(recipe_tab)
-		local recipe_type = tab_idx and data.recipe_types and data.recipe_types[tab_idx]
-		if not recipe_type or recipe_type == data.selected_recipe_type then
+		local selected = tab_idx and data.recipe_tabs and data.recipe_tabs[tab_idx]
+		if not selected or selected.name == data.selected_recipe_tab then
 			return
 		end
 
 		data.rnum = 1
-		set_recipe_list(data, data.all_recipes, recipe_type)
+		data.selected_recipe_tab = selected.name
+		data.recipes = selected.recipes
 		show_fs(player, name)
 
 	elseif fields.toggle_favorites then
@@ -1547,14 +2065,11 @@ local function on_receive_fields(player, fields)
 			data.show_usages = not data.show_usages
 		end
 
-		local recipes = get_recipes(item, data, player)
-		if not recipes then
+		data.query_item = item
+		data.rnum = 1
+		if not set_recipe_tabs(data, item, player) then
 			return
 		end
-
-		data.query_item = item
-		data.rnum       = 1
-		set_recipe_list(data, recipes, data.selected_recipe_type)
 
 		show_fs(player, name)
 	end
@@ -1711,11 +2226,20 @@ else
 	end)
 end
 
-function mcl_craftguide.show(name, item, show_usages, context)
+function mcl_craftguide.show(name, item, show_usages, context, tab_name)
 	local player = get_player_by_name(name)
 	local data = get_player_data(name)
 	data.context = context
 	refresh_items(data, player)
+	if item then
+		item = match(item, "%S+")
+		if reg_items[item] then
+			data.query_item = item
+			data.show_usages = show_usages == true
+			data.rnum = 1
+			set_recipe_tabs(data, item, player, tab_name)
+		end
+	end
 	show_formspec(name, "mcl_craftguide", make_formspec(name))
 end
 

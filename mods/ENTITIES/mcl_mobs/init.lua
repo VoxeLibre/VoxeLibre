@@ -42,6 +42,7 @@ dofile(path .. "/spawning.lua")
 dofile(path .. "/mount.lua")
 dofile(path .. "/crafts.lua")
 dofile(path .. "/compat.lua")
+dofile(path .. "/craftguide.lua")
 
 local DEFAULT_FALL_SPEED = -9.81*1.5
 local MAX_MOB_NAME_LENGTH = 30
