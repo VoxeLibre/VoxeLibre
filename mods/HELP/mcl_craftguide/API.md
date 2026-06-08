@@ -160,15 +160,19 @@ receives the displayed recipe, including synthetic recipes such as
 `{ type = "fuel", items = { fuel_item } }`. Recipe-type-specific fields may
 also be present, but are not part of the station API contract.
 
-Stations may provide an optional `on_recipe_action(player, recipe, craft_all)`
-callback and translated `recipe_action_tooltips.one` and
-`recipe_action_tooltips.all` strings. When the guide is opened with that station
-as its context, supported recipes show actions for one craft and all possible
-crafts. `craft_all` is `false` for the one-craft action and `true` for the
-all-possible-crafts action. Inventory handling and any station formspec changes
-remain the responsibility of the station. On failure, the callback may return a
-set of missing recipe item indices, such as `{ [2] = true, [5] = true }`. The
-guide highlights those inputs until the next formspec interaction.
+Stations may provide up to two recipe actions in an ordered `actions` list and
+an `on_action(player, recipe, action_name)` callback. Each action requires a
+unique `name` and translated `tooltip`. Its button uses the station item by
+default. `item` may select another registered item, or `image` may provide the
+complete `image_button` texture. `item` and `image` are mutually exclusive.
+Image composition, padding, and texture modifiers remain entirely under the
+station provider's control. When the guide is opened with that station as its
+context, actions are shown for supported recipes.
+
+Inventory handling and any station formspec changes remain the responsibility
+of the station. On failure, `on_action` may return a set of missing recipe item
+indices, such as `{ [2] = true, [5] = true }`. The guide highlights those inputs
+until the next formspec interaction.
 
 Set the optional `override` argument to `true` to intentionally replace an
 existing definition. The station keeps its position in the registration order.
@@ -179,13 +183,21 @@ mcl_craftguide.register_station("example:processor", {
 	is_recipe_supported = function(recipe)
 		return recipe.type == "example_processing" or recipe.type == "fuel"
 	end,
-	on_recipe_action = function(player, recipe, craft_all)
+	actions = {
+		{
+			name = "fill_one",
+			tooltip = "Configure station for one operation",
+			image = "example_fill_one.png",
+		},
+		{
+			name = "fill_all",
+			tooltip = "Configure station for all possible operations",
+			image = "example_fill_all.png",
+		},
+	},
+	on_action = function(player, recipe, action_name)
 		-- Populate or otherwise configure the station for this recipe.
 	end,
-	recipe_action_tooltips = {
-		one = "Configure station for one craft",
-		all = "Configure station for all possible crafts",
-	},
 })
 ```
 

@@ -324,12 +324,21 @@ mcl_craftguide.register_station("mcl_crafting_table:crafting_table", {
 	is_recipe_supported = function(recipe)
 		return not recipe.type or recipe.type == "normal"
 	end,
-	recipe_action_tooltips = {
-		one = S("Fill the crafting grid for one craft"),
-		all = S("Fill the crafting grid for all possible crafts"),
+	actions = {
+		{
+			name = "fill_all",
+			tooltip = S("Fill the crafting grid for all possible crafts"),
+			image = "[combine:16x16:0,0=crafting_workbench_top.png:11,4=_as.png",
+		},
+		{
+			name = "fill_one",
+			tooltip = S("Fill the crafting grid for one craft"),
+			image = "[combine:16x16:0,0=crafting_workbench_top.png:11,4=_1_sup.png",
+		},
 	},
-	on_recipe_action = function(player, recipe, fill_all)
-		local success, missing_slots = fill_crafting_grid(player, recipe, fill_all)
+	on_action = function(player, recipe, action)
+		local success, missing_slots = fill_crafting_grid(
+			player, recipe, action == "fill_all")
 		if not success then
 			return missing_slots
 		end

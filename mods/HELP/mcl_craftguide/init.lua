@@ -45,6 +45,225 @@ local FORM_SPACING_Y = 15 / 13
 local FORM_PADDING = 3 / 8
 local FORM_BUTTON_HEIGHT = 21 / 26
 
+local UI = {
+	padding = 0.375, -- 3 / 8
+	gap = 0.1,
+	button_height = 0.807692, -- 21 / 26
+	toolbar_button_width = 0.75, -- 0.8 * 1.25 - (1.25 - 1)
+	toolbar_button_height = 0.769231, -- 0.8 * (15 / 13) - ((15 / 13) - 1)
+	item_button_width = 1.125, -- 1.1 * 1.25 - (1.25 - 1)
+	item_button_height = 1.115385, -- 1.1 * (15 / 13) - ((15 / 13) - 1)
+	item_column_step = 1.1875, -- (1 - 0.05) * 1.25
+	item_row_step = 1.153846, -- 15 / 13
+	recipe_height = 3.2,
+	station_width = 2.1,
+	station_cell_size = 0.8,
+	station_button_size = 0.75,
+	tab_size = 0.95,
+	tab_wide_width = 2.5,
+	tab_icon_size = 0.65,
+	tab_icon_padding = 0.15,
+	tab_label_gap = 0.1,
+	action_button_width = 0.75, -- 0.8 * 1.25 - (1.25 - 1)
+	action_button_height = 0.769231, -- 0.8 * (15 / 13) - ((15 / 13) - 1)
+}
+
+local function center_start(available_width, content_width, min_x)
+	return max(min_x or 0, (available_width - content_width) / 2)
+end
+
+local function list_width(count, item_width, gap)
+	if count <= 0 then
+		return 0
+	end
+	return count * item_width + (count - 1) * gap
+end
+
+local function grid_xy(index, columns, cell_size)
+	local column = (index - 1) % columns
+	local row = floor((index - 1) / columns)
+	return column * cell_size, row * cell_size
+end
+
+local function find_selected_tab_index(data, tabs)
+	for i = 1, #tabs do
+		if tabs[i].name == data.selected_recipe_tab then
+			return i
+		end
+	end
+	return 1
+end
+
+local function calculate_tab_header(data, tabs, area)
+	local wide_width = list_width(#tabs, UI.tab_wide_width, UI.gap)
+	if wide_width <= area.w then
+		data.recipe_tab_page = nil
+		return {
+			mode = "wide",
+			first = 1,
+			last = #tabs,
+			button_w = UI.tab_wide_width,
+			total_w = wide_width,
+		}
+	end
+
+	local thin_width = list_width(#tabs, UI.tab_size, UI.gap)
+	if thin_width <= area.w then
+		data.recipe_tab_page = nil
+		return {
+			mode = "thin",
+			first = 1,
+			last = #tabs,
+			button_w = UI.tab_size,
+			total_w = thin_width,
+		}
+	end
+
+	local arrow_space = 2 * UI.tab_size + 2 * UI.gap
+	local tabs_width = max(0, area.w - arrow_space)
+	local tabs_per_page = max(1,
+		floor((tabs_width + UI.gap) / (UI.tab_size + UI.gap)))
+	local page_count = ceil(#tabs / tabs_per_page)
+	local selected_index = find_selected_tab_index(data, tabs)
+	local selected_page = ceil(selected_index / tabs_per_page)
+	local page = data.recipe_tab_page or selected_page
+	page = min(page_count, max(1, page))
+	data.recipe_tab_page = page
+
+	local first = (page - 1) * tabs_per_page + 1
+	local last = min(#tabs, first + tabs_per_page - 1)
+	return {
+		mode = "pages",
+		first = first,
+		last = last,
+		button_w = UI.tab_size,
+		total_w = list_width(last - first + 1, UI.tab_size, UI.gap),
+		page = page,
+		page_count = page_count,
+		arrow_prev_x = area.x,
+		arrow_next_x = area.x + area.w - UI.tab_size,
+		tabs_x = area.x + UI.tab_size + UI.gap,
+		tabs_w = tabs_width,
+	}
+end
+
+local function calculate_layout(data)
+	local columns = data.iX
+	local rows = columns - 5
+
+	local form_width = (columns - 0.35) * FORM_SPACING_X + 0.5
+		-- Legacy: (data.iX - 0.35) * 1.25 + 0.5
+	local form_height = (rows + 4.55) * FORM_SPACING_Y + 45 / 52
+		-- Legacy: (iY + 4.55) * (15 / 13) + 45 / 52
+	local toolbar_y = FORM_PADDING + 0.12 * FORM_SPACING_Y
+		-- Legacy: 0.375 + 0.12 * (15 / 13)
+	local item_grid_y = FORM_PADDING + FORM_SPACING_Y
+		-- Legacy first row: 0.375 + 1 * (15 / 13)
+	local tabs_y = FORM_PADDING + (rows + 1.05) * FORM_SPACING_Y +
+		0.4 - FORM_BUTTON_HEIGHT / 2
+		-- Legacy: 0.375 + (iY + 1.05) * (15 / 13)
+		--   + 0.4 - (21 / 26) / 2
+	local recipe_base_row = rows + 0.68
+		-- Legacy: iY + 1.05 - 0.37
+	local recipe_y = FORM_PADDING + (recipe_base_row + 1.25) * FORM_SPACING_Y
+		-- Legacy: 0.375 + (iY + 1.25) * (15 / 13)
+	local actions_x = FORM_PADDING + (columns - 1.2) * FORM_SPACING_X
+		-- Legacy: 0.375 + (data.iX - 1.2) * 1.25
+	local content_x = FORM_PADDING + UI.station_width + UI.gap
+		-- Legacy: station_x + 2.2
+	local content_width = max(1, actions_x - content_x - 0.2)
+		-- Legacy: max(1, right_x - (station_x + 2.2) - 0.2)
+	local recipe_nav_y = FORM_PADDING + (recipe_base_row + 3.45) * FORM_SPACING_Y
+		-- Legacy: 0.375 + (iY + 3.45) * (15 / 13)
+	local recipe_label_y = (recipe_base_row + 3.4) * FORM_SPACING_Y + 77 / 104
+		-- Legacy: (iY + 3.4) * (15 / 13) + 77 / 104
+
+	return {
+		columns = columns,
+		rows = rows,
+		items_per_page = columns * rows, -- Legacy: data.iX * iY
+		form = { w = form_width, h = form_height },
+		toolbar = {
+			y = toolbar_y,
+			button_w = UI.toolbar_button_width,
+			button_h = UI.toolbar_button_height,
+			zoom_in_x = FORM_PADDING + columns * 0.47 * FORM_SPACING_X,
+				-- Legacy: 0.375 + data.iX * 0.47 * 1.25
+			zoom_out_x = FORM_PADDING + (columns * 0.47 + 0.6) * FORM_SPACING_X,
+				-- Legacy: 0.375 + (data.iX * 0.47 + 0.6) * 1.25
+			search_x = FORM_PADDING + 2.4 * FORM_SPACING_X,
+				-- Legacy: 0.375 + 2.4 * 1.25
+			clear_x = FORM_PADDING + 3.05 * FORM_SPACING_X,
+				-- Legacy: 0.375 + 3.05 * 1.25
+			favorites_x = FORM_PADDING + 3.7 * FORM_SPACING_X,
+				-- Legacy: 0.375 + 3.7 * 1.25
+			page_label_x = FORM_PADDING + (columns - 2.2) * FORM_SPACING_X,
+				-- Legacy: 0.375 + (data.iX - 2.2) * 1.25
+			page_label_y = 0.992308,
+				-- Legacy: 0.22 * (15 / 13) + 77 / 104
+			page_prev_x = FORM_PADDING + (columns - 3.1) * FORM_SPACING_X,
+				-- Legacy: 0.375 + (data.iX - 3.1) * 1.25
+			page_next_x = FORM_PADDING + ((columns - 1.2) -
+				(columns >= 11 and 0.08 or 0)) * FORM_SPACING_X,
+				-- Legacy: 0.375 + ((data.iX - 1.2)
+				--   - (data.iX >= 11 and 0.08 or 0)) * 1.25
+			filter_x = 0.375, -- Legacy: 0.3 * 1.25
+			filter_y = 0.465385,
+				-- Legacy: 0.32 * (15 / 13) + 0.5 - (21 / 26) / 2
+			filter_w = 2.875,
+				-- Legacy: 2.5 * 1.25 - (1.25 - 1)
+		},
+		items = {
+			x = FORM_PADDING,
+			y = item_grid_y,
+			column_step = UI.item_column_step,
+			row_step = UI.item_row_step,
+			button_w = UI.item_button_width,
+			button_h = UI.item_button_height,
+			empty_label_y = 3.048077,
+				-- Legacy: 2 * (15 / 13) + 77 / 104
+		},
+		tabs = {
+			x = FORM_PADDING,
+			y = tabs_y,
+			w = form_width - 2 * FORM_PADDING,
+			h = UI.tab_size,
+		},
+		stations = {
+			x = FORM_PADDING,
+			y = recipe_y,
+			w = UI.station_width,
+			h = UI.recipe_height,
+		},
+		content = {
+			x = content_x,
+			y = recipe_y,
+			w = content_width,
+			h = UI.recipe_height,
+		},
+		actions = {
+			x = actions_x,
+			w = UI.action_button_width,
+			h = UI.action_button_height,
+			first_y = FORM_PADDING + (recipe_base_row + 1.3) * FORM_SPACING_Y,
+				-- Legacy: 0.375 + (iY + 1.3) * (15 / 13)
+			second_y = FORM_PADDING + (recipe_base_row + 2.0) * FORM_SPACING_Y,
+				-- Legacy: 0.375 + (iY + 2.0) * (15 / 13)
+			favorite_y = FORM_PADDING + (recipe_base_row + 2.7) * FORM_SPACING_Y,
+				-- Legacy: 0.375 + (iY + 2.7) * (15 / 13)
+		},
+		recipe_nav = {
+			y = recipe_nav_y,
+			prev_x = FORM_PADDING + (columns - 3.4) * FORM_SPACING_X,
+				-- Legacy: 0.375 + (data.iX - 3.4) * 1.25
+			label_x = FORM_PADDING + (columns - 2.65) * FORM_SPACING_X,
+				-- Legacy: 0.375 + (data.iX - 2.65) * 1.25
+			label_y = recipe_label_y,
+			next_x = actions_x,
+		},
+	}
+end
+
 local FMT = {
 	box               = "box[%f,%f;%f,%f;%s]",
 	label             = "label[%f,%f;%s]",
@@ -170,6 +389,7 @@ local function init_data(name)
 		items   = init_items,
 		items_raw = init_items,
 		tab_state = {},
+		recipe_tab_page = nil,
 		lang_code = M.get_player_information(name).lang_code or "en",
 	}
 end
@@ -349,38 +569,53 @@ function mcl_craftguide.register_station(item_name, def, override)
 		func .. "'override' must be a boolean")
 	assert(type(def.is_recipe_supported) == "function",
 		func .. "'is_recipe_supported' function missing")
-	assert(def.on_recipe_action == nil or type(def.on_recipe_action) == "function",
-		func .. "'on_recipe_action' must be a function")
-	assert(def.recipe_action_tooltips == nil or
-		type(def.recipe_action_tooltips) == "table",
-		func .. "'recipe_action_tooltips' must be a table")
-	assert(not def.on_recipe_action or
-		(def.recipe_action_tooltips and
-			type(def.recipe_action_tooltips.one) == "string" and
-			type(def.recipe_action_tooltips.all) == "string"),
-		func .. "'recipe_action_tooltips.one' and '.all' required with " ..
-			"'on_recipe_action'")
+	assert(def.actions == nil or type(def.actions) == "table",
+		func .. "'actions' must be a table")
+	assert(def.on_action == nil or type(def.on_action) == "function",
+		func .. "'on_action' must be a function")
+	assert(not def.actions or #def.actions <= 2,
+		func .. "at most two actions are supported")
+	assert(not def.actions or #def.actions == 0 or def.on_action,
+		func .. "'on_action' is required with 'actions'")
+
+	local action_names = {}
+	for i = 1, #(def.actions or {}) do
+		local action = def.actions[i]
+		assert(type(action) == "table",
+			func .. "'actions[" .. i .. "]' must be a table")
+		assert(type(action.name) == "string" and action.name ~= "",
+			func .. "'actions[" .. i .. "].name' must be a non-empty string")
+		assert(not action_names[action.name],
+			func .. "duplicate action name '" .. action.name .. "'")
+		assert(type(action.tooltip) == "string",
+			func .. "'actions[" .. i .. "].tooltip' must be a string")
+		assert(action.item == nil or
+			(type(action.item) == "string" and reg_items[action.item]),
+			func .. "'actions[" .. i .. "].item' must be a registered item")
+		assert(action.image == nil or type(action.image) == "string",
+			func .. "'actions[" .. i .. "].image' must be a string")
+		assert(not action.item or not action.image,
+			func .. "'actions[" .. i .. "]' cannot define both 'item' and 'image'")
+		action_names[action.name] = true
+	end
+
+	local station = {
+		item_name = item_name,
+		is_recipe_supported = def.is_recipe_supported,
+		actions = def.actions and copy(def.actions),
+		on_action = def.on_action,
+	}
 
 	for i = 1, #stations do
 		if stations[i].item_name == item_name then
 			assert(override,
 				func .. "'" .. item_name .. "' is already registered")
-			stations[i] = {
-				item_name = item_name,
-				is_recipe_supported = def.is_recipe_supported,
-				on_recipe_action = def.on_recipe_action,
-				recipe_action_tooltips = def.recipe_action_tooltips,
-			}
+			stations[i] = station
 			return
 		end
 	end
 
-	stations[#stations + 1] = {
-		item_name = item_name,
-		is_recipe_supported = def.is_recipe_supported,
-		on_recipe_action = def.on_recipe_action,
-		recipe_action_tooltips = def.recipe_action_tooltips,
-	}
+	stations[#stations + 1] = station
 end
 
 function mcl_craftguide.get_station(item_name)
@@ -389,8 +624,8 @@ function mcl_craftguide.get_station(item_name)
 		if station.item_name == item_name then
 			return copy({
 				is_recipe_supported = station.is_recipe_supported,
-				on_recipe_action = station.on_recipe_action,
-				recipe_action_tooltips = station.recipe_action_tooltips,
+				actions = station.actions,
+				on_action = station.on_action,
 			})
 		end
 	end
@@ -713,6 +948,7 @@ local function set_recipe_tabs(data, item, player, preferred_tab)
 	end
 
 	data.recipe_tabs = tabs
+	data.recipe_tab_page = nil
 	if #tabs == 0 then
 		data.selected_recipe_tab = nil
 		data.recipes = nil
@@ -821,323 +1057,6 @@ local function get_tooltip(item, groups, cooktime, burntime, target)
 	end
 
 	return fmt("tooltip[%s;%s]", target or item, ESC(tooltip))
-end
-
-local function get_recipe_fs(data, iY)
-	local fs = {}
-	local recipe = data.recipes[data.rnum]
-	local width = recipe.width
-	local xoffset = data.iX / 2.15
-	local cooktime, shapeless
-	iY = iY + 1.05
-
-	if data.recipe_types and #data.recipe_types > 0 then
-		local btn_w = 1.8
-		local gap = 0.1
-		local total_w = (#data.recipe_types * btn_w) + ((#data.recipe_types - 1) * gap)
-		local start_x = max(0.3, (data.iX - total_w) / 2)
-
-		for i = 1, #data.recipe_types do
-			local recipe_type = data.recipe_types[i]
-			local label = get_recipe_type_label(recipe_type)
-
-			local tab_x = start_x + (i - 1) * (btn_w + gap)
-
-			if recipe_type == data.selected_recipe_type then
-				fs[#fs + 1] = fmt(
-					"style[rtype_%d;border=false;" ..
-					"bgimg=mcl_inventory_button9_pressed.png;" ..
-					"bgimg_pressed=mcl_inventory_button9_pressed.png;" ..
-					"bgimg_middle=2,2]",
-					i)
-			end
-
-			fs[#fs + 1] = fmt(FMT.button,
-				FORM_PADDING + tab_x * FORM_SPACING_X,
-				FORM_PADDING + iY * FORM_SPACING_Y + 0.4 - FORM_BUTTON_HEIGHT / 2,
-				btn_w * FORM_SPACING_X - (FORM_SPACING_X - 1),
-				FORM_BUTTON_HEIGHT,
-				fmt("rtype_%d", i),
-				ESC(label))
-		end
-	end
-
-	iY = iY - 0.37
-
-	local visible_items = {}
-	for i = 1, #data.items_raw do
-		visible_items[data.items_raw[i]] = true
-	end
-
-	local supported_stations = {}
-	for i = 1, #stations do
-		local station = stations[i]
-		if visible_items[station.item_name] and station.is_recipe_supported(recipe) then
-			supported_stations[#supported_stations + 1] = station
-		end
-	end
-
-	if #supported_stations > 0 then
-		local station_fs = {}
-		for i = 1, #supported_stations do
-			local station = supported_stations[i]
-			local station_x = (i - 1) % 2 * 0.8
-			local station_y = floor((i - 1) / 2) * 0.8
-			station_fs[#station_fs + 1] = fmt(
-				"item_image_button[%f,%f;%f,%f;%s;%s;%s]",
-				station_x,
-				station_y,
-				0.75,
-				0.75,
-				station.item_name,
-				station.item_name,
-				"")
-			end
-
-		local station_x = FORM_PADDING
-		local station_y = FORM_PADDING + (iY + 1.25) * FORM_SPACING_Y
-		fs[#fs + 1] = fmt(
-			"scroll_container[%f,%f;2.1,3.2;station_scroll;vertical;0.8]",
-			station_x,
-			station_y)
-		fs[#fs + 1] = concat(station_fs)
-		fs[#fs + 1] = "scroll_container_end[]"
-
-		if #supported_stations > 8 then
-			local station_rows = ceil(#supported_stations / 2)
-			fs[#fs + 1] = fmt(
-				"scrollbaroptions[min=0;max=%d;smallstep=1;largestep=4;arrows=hide]",
-				station_rows - 4)
-			fs[#fs + 1] = fmt(
-				"scrollbar[%f,%f;0.35,3.2;vertical;station_scroll;0]",
-				station_x + 1.7,
-				station_y)
-		end
-	end
-
-	if recipe.type == "cooking" then
-		cooktime, width = width, 1
-	elseif width == 0 then
-		shapeless = true
-		if #recipe.items <= 4 then
-			width = 2
-		else
-			width = min(3, #recipe.items)
-		end
-	end
-
-	local rows = ceil(maxn(recipe.items) / width)
-	local rightest, btn_size, s_btn_size = 0, 1.1, nil
-
-	local btn_lab = data.show_usages and
-		ESC(S("Usage @1 of @2", data.rnum, #data.recipes)) or
-		ESC(S("Recipe @1 of @2", data.rnum, #data.recipes))
-
-	local favorite_item = data.query_item and data.favorite_items and
-		data.favorite_items[data.query_item]
-	local right_x = FORM_PADDING + (data.iX - 1.2) * FORM_SPACING_X
-	local right_w = 0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1)
-	local right_h = 0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1)
-	local action_all_y = FORM_PADDING + (iY + 1.3) * FORM_SPACING_Y
-	local action_one_y = FORM_PADDING + (iY + 2.0) * FORM_SPACING_Y
-	local favorite_y = FORM_PADDING + (iY + 2.7) * FORM_SPACING_Y
-
-	local context_station = data.context and mcl_craftguide.get_station(data.context)
-	if context_station and context_station.on_recipe_action and
-		context_station.is_recipe_supported(recipe) then
-		local overlay_x = right_x + right_w * 10 / 16
-		local overlay_y_shift = (right_h + 0.9) * 4 / 16
-		local overlay_w = right_w * 5 / 16
-		local overlay_h = right_h * 12 / 16
-
-		fs[#fs + 1] = fmt(FMT.item_image_button,
-			right_x, action_all_y, right_w, right_h, data.context,
-			"station_recipe_action_all", "")
-		fs[#fs + 1] = fmt(FMT.image,
-			overlay_x, action_all_y + overlay_y_shift,
-			overlay_w, overlay_h, "_as.png")
-		fs[#fs + 1] = fmt(FMT.tooltip,
-			"station_recipe_action_all",
-			ESC(context_station.recipe_action_tooltips.all))
-
-		fs[#fs + 1] = fmt(FMT.item_image_button,
-			right_x, action_one_y, right_w, right_h, data.context,
-			"station_recipe_action_one", "")
-		fs[#fs + 1] = fmt(FMT.image,
-			overlay_x + 0.05, action_one_y + overlay_y_shift,
-			overlay_w, overlay_h, "_1_sup.png")
-		fs[#fs + 1] = fmt(FMT.tooltip,
-			"station_recipe_action_one",
-			ESC(context_station.recipe_action_tooltips.one))
-	end
-
-	fs[#fs + 1] = fmt(FMT.image_button,
-		right_x, favorite_y, right_w, right_h,
-		favorite_item and
-			"mcl_end_ender_eye.png" or "mcl_throwing_ender_pearl.png",
-		"toggle_item_favorite",
-		"")
-	fs[#fs + 1] = fmt("tooltip[%s;%s]",
-		"toggle_item_favorite",
-		ESC(favorite_item and S("Unfavorite") or S("Favorite")))
-
-	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + (data.iX - 3.4) * FORM_SPACING_X,
-		FORM_PADDING + (iY + 3.45) * FORM_SPACING_Y,
-		0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1),
-		0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1),
-		"craftguide_prev_icon.png",
-		"recipe_prev",
-		"")
-
-	fs[#fs + 1] = fmt(FMT.label,
-		FORM_PADDING + (data.iX - 2.65) * FORM_SPACING_X,
-		(iY + 3.4) * FORM_SPACING_Y + 77 / 104,
-		btn_lab)
-
-	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + (data.iX - 1.2) * FORM_SPACING_X,
-		FORM_PADDING + (iY + 3.45) * FORM_SPACING_Y,
-		0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1),
-		0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1),
-		"craftguide_next_icon.png",
-		"recipe_next",
-		"")
-
-	if width > GRID_LIMIT or rows > GRID_LIMIT then
-		fs[#fs + 1] = fmt(FMT.label,
-			FORM_PADDING + ((data.iX / 2) - 2) * FORM_SPACING_X,
-			(iY + 2.2) * FORM_SPACING_Y + 77 / 104,
-			ESC(S("Recipe is too big to be displayed (@1×@2)", width, rows)))
-
-		return concat(fs)
-	end
-
-	for i, item in pairs(recipe.items) do
-		local X = (i - 1) % width + xoffset - width - 0.2
-		local Y = ceil(i / width) + (iY + 2) - min(2, rows)
-
-		if width > 3 or rows > 3 then
-			btn_size = width > 3 and 3 / width or 3 / rows
-			s_btn_size = btn_size
-			X = btn_size * (i % width) + xoffset - 2.65
-			Y = btn_size * floor((i - 1) / width) + (iY + 2) - min(2, rows)
-		end
-
-		if X > rightest then
-			rightest = X
-		end
-
-		local groups
-		if sub(item, 1, 6) == "group:" then
-			groups = extract_groups(item)
-			item = groups_to_item(groups)
-		end
-
-		local label = ""
-		if groups and (#groups >= 1 and groups[1] ~= "compass" and groups[1] ~= "clock") then
-			label = "\nG"
-		end
-
-		local item_x = FORM_PADDING + X * FORM_SPACING_X
-		local item_y = FORM_PADDING + (Y + 0.2) * FORM_SPACING_Y
-		local item_w = btn_size * FORM_SPACING_X - (FORM_SPACING_X - 1)
-		local item_h = btn_size * FORM_SPACING_Y - (FORM_SPACING_Y - 1)
-
-		fs[#fs + 1] = fmt(FMT.item_image_button,
-			item_x,
-			item_y,
-			item_w,
-			item_h,
-			item,
-			match(item, "%S*"),
-			ESC(label))
-
-		if data.missing_recipe_slots and data.missing_recipe_slots[i] then
-			fs[#fs + 1] = fmt(FMT.box,
-				item_x + 0.04, item_y + 0.04,
-				item_w - 0.07, item_h - 0.08,
-				"#D84A4A66")
-		end
-
-		local burntime = fuel_cache[item]
-
-		if groups or cooktime or burntime then
-			fs[#fs + 1] = get_tooltip(item, groups, cooktime, burntime)
-		end
-	end
-
-	local custom_recipe = craft_types[recipe.type]
-
-	if custom_recipe or shapeless or recipe.type == "cooking" then
-		local icon = custom_recipe and custom_recipe.icon or
-			shapeless and "shapeless" or "furnace"
-
-		if recipe.type == "cooking" then
-			icon = "craftguide_furnace.png"
-		elseif not custom_recipe then
-			icon = fmt("craftguide_%s.png", icon)
-		end
-
-		fs[#fs + 1] = fmt(FMT.image,
-			FORM_PADDING + (rightest + 1.2) * FORM_SPACING_X,
-			FORM_PADDING + (iY + 1.7) * FORM_SPACING_Y,
-			0.5,
-			0.5,
-			icon)
-
-		local tooltip = custom_recipe and custom_recipe.description or
-			shapeless and S("Shapeless") or S("Cooking")
-
-		fs[#fs + 1] = fmt("tooltip[%f,%f;%f,%f;%s]",
-			FORM_PADDING + (rightest + 1.2) * FORM_SPACING_X,
-			FORM_PADDING + (iY + 1.7) * FORM_SPACING_Y,
-			0.5 * FORM_SPACING_X,
-			0.5 * FORM_SPACING_Y,
-			ESC(tooltip))
-	end
-
-	local arrow_X  = rightest + (s_btn_size or 1.1)
-	local output_X = arrow_X + 0.9
-
-	fs[#fs + 1] = fmt(FMT.image,
-		FORM_PADDING + arrow_X * FORM_SPACING_X,
-		FORM_PADDING + (iY + 2.35) * FORM_SPACING_Y,
-		0.9,
-		0.7,
-		"craftguide_arrow.png")
-
-	if recipe.type == "fuel" then
-		local fuel_name = match(recipe.items[1], "%S+")
-		local burntime = fuel_cache[fuel_name]
-
-		if burntime then
-			fs[#fs + 1] = fmt(FMT.label,
-				FORM_PADDING + (output_X + 0.1) * FORM_SPACING_X,
-				(iY + 1.78) * FORM_SPACING_Y + 77 / 104,
-				ESC(colorize(mcl_colors.YELLOW, burntime)))
-		end
-
-		fs[#fs + 1] = fmt(FMT.image,
-			FORM_PADDING + output_X * FORM_SPACING_X,
-			FORM_PADDING + (iY + 2.18) * FORM_SPACING_Y,
-			1.1,
-			1.1,
-			"mcl_craftguide_fuel.png")
-	else
-		local output_name = match(recipe.output, "%S+")
-
-		fs[#fs + 1] = fmt(FMT.item_image_button,
-			FORM_PADDING + output_X * FORM_SPACING_X,
-			FORM_PADDING + (iY + 2.2) * FORM_SPACING_Y,
-			1.1 * FORM_SPACING_X - (FORM_SPACING_X - 1),
-			1.1 * FORM_SPACING_Y - (FORM_SPACING_Y - 1),
-			recipe.output,
-			ESC(output_name),
-			"")
-	end
-
-	return concat(fs)
 end
 
 local function make_tab_context(data, player, area)
@@ -1316,34 +1235,53 @@ render_grid_recipe = function(ctx, craft_type)
 	return concat(fs)
 end
 
-local function get_tabbed_recipe_fs(data, player, iY)
+local function get_tabbed_recipe_fs(data, player, layout)
 	local fs = {}
 	local recipe = data.recipes[data.rnum]
 	local tabs = data.recipe_tabs or {}
-	iY = iY + 1.05
 
 	if #tabs > 0 then
-		local gap = 0.1
-		local tab_height = 0.95
-		local tab_widths = {}
-		local total_w = (#tabs - 1) * gap
-		for i = 1, #tabs do
-			local width = tab_height--tabs[i].def.icon and
-				--1--(FORM_BUTTON_HEIGHT + FORM_SPACING_X - 1) / FORM_SPACING_X or 1.8
-			tab_widths[i] = width
-			total_w = total_w + width
-		end
-		local start_x = max(0.3, (data.iX - total_w) / 2)
-		local tab_x = start_x
+		local header = calculate_tab_header(data, tabs, layout.tabs)
+		local tab_x
+		if header.mode == "pages" then
+			tab_x = header.tabs_x + center_start(header.tabs_w, header.total_w)
 
-		for i = 1, #tabs do
+			local prev_texture = "craftguide_prev_icon.png"
+			local next_texture = "craftguide_next_icon.png"
+			if header.page > 1 then
+				fs[#fs + 1] = fmt(FMT.image_button,
+					header.arrow_prev_x, layout.tabs.y,
+					UI.tab_size, layout.tabs.h,
+					prev_texture, "recipe_tabs_page_prev", "")
+			else
+				fs[#fs + 1] = fmt(FMT.image,
+					header.arrow_prev_x, layout.tabs.y,
+					UI.tab_size, layout.tabs.h,
+					prev_texture .. "^[opacity:80")
+			end
+			if header.page < header.page_count then
+				fs[#fs + 1] = fmt(FMT.image_button,
+					header.arrow_next_x, layout.tabs.y,
+					UI.tab_size, layout.tabs.h,
+					next_texture, "recipe_tabs_page_next", "")
+			else
+				fs[#fs + 1] = fmt(FMT.image,
+					header.arrow_next_x, layout.tabs.y,
+					UI.tab_size, layout.tabs.h,
+					next_texture .. "^[opacity:80")
+			end
+			fs[#fs + 1] = fmt(FMT.tooltip,
+				"recipe_tabs_page_prev", ESC(S("Previous page")))
+			fs[#fs + 1] = fmt(FMT.tooltip,
+				"recipe_tabs_page_next", ESC(S("Next page")))
+		else
+			tab_x = layout.tabs.x +
+				center_start(layout.tabs.w, header.total_w)
+		end
+
+		for i = header.first, header.last do
 			local tab = tabs[i]
-			local btn_w = tab_widths[i]
 			local field_name = fmt("rtab_%d", i)
-			local x = FORM_PADDING + tab_x * FORM_SPACING_X
-			local y = FORM_PADDING + iY * FORM_SPACING_Y +
-				0.4 - FORM_BUTTON_HEIGHT / 2
-			local w = btn_w * FORM_SPACING_X - (FORM_SPACING_X - 1)
 			if tab.name == data.selected_recipe_tab then
 				fs[#fs + 1] = fmt(
 					"style[rtab_%d;border=false;" ..
@@ -1352,26 +1290,47 @@ local function get_tabbed_recipe_fs(data, player, iY)
 					"bgimg_middle=2,2]", i)
 			end
 
-			if tab.def.icon and reg_items[tab.def.icon] then
+			if header.mode == "wide" then
+				fs[#fs + 1] = fmt(FMT.button,
+					tab_x, layout.tabs.y, header.button_w, layout.tabs.h,
+					field_name, "")
+				if tab.def.icon and reg_items[tab.def.icon] then
+					fs[#fs + 1] = fmt(FMT.item_image,
+						tab_x + UI.tab_icon_padding,
+						layout.tabs.y + UI.tab_icon_padding,
+						UI.tab_icon_size, UI.tab_icon_size, tab.def.icon)
+				elseif tab.def.icon then
+					fs[#fs + 1] = fmt(FMT.image,
+						tab_x + UI.tab_icon_padding,
+						layout.tabs.y + UI.tab_icon_padding,
+						UI.tab_icon_size, UI.tab_icon_size, tab.def.icon)
+				end
+				local label_x = tab_x + UI.tab_icon_padding
+				if tab.def.icon then
+					label_x = label_x + UI.tab_icon_size + UI.tab_label_gap
+				end
+				fs[#fs + 1] = fmt(FMT.label,
+					label_x, layout.tabs.y + layout.tabs.h / 2,
+					ESC(tab.def.description))
+			elseif tab.def.icon and reg_items[tab.def.icon] then
 				fs[#fs + 1] = fmt(FMT.item_image_button,
-					x, y, w, tab_height,
+					tab_x, layout.tabs.y, header.button_w, layout.tabs.h,
 					tab.def.icon, field_name, "")
 			elseif tab.def.icon then
 				fs[#fs + 1] = fmt(FMT.image_button,
-					x, y, w, tab_height,
+					tab_x, layout.tabs.y, header.button_w, layout.tabs.h,
 					tab.def.icon, field_name, "")
 			else
 				fs[#fs + 1] = fmt(FMT.button,
-					x, y, w, tab_height,
+					tab_x, layout.tabs.y, header.button_w, layout.tabs.h,
 					field_name, ESC(tab.def.description))
 			end
 			fs[#fs + 1] = fmt(FMT.tooltip,
 				field_name, ESC(tab.def.description))
-			tab_x = tab_x + btn_w + gap
+			tab_x = tab_x + header.button_w + UI.gap
 		end
 	end
 
-	iY = iY - 0.37
 	local visible_items = {}
 	for i = 1, #data.items_raw do
 		visible_items[data.items_raw[i]] = true
@@ -1385,20 +1344,18 @@ local function get_tabbed_recipe_fs(data, player, iY)
 		end
 	end
 
-	local station_x = FORM_PADDING
-	local station_y = FORM_PADDING + (iY + 1.25) * FORM_SPACING_Y
 	if #supported_stations > 0 then
 		local station_fs = {}
 		for i = 1, #supported_stations do
 			local station = supported_stations[i]
+			local x, y = grid_xy(i, 2, UI.station_cell_size)
 			station_fs[#station_fs + 1] = fmt(FMT.item_image_button,
-				(i - 1) % 2 * 0.8,
-				floor((i - 1) / 2) * 0.8,
-				0.75, 0.75, station.item_name, station.item_name, "")
+				x, y, UI.station_button_size, UI.station_button_size,
+				station.item_name, station.item_name, "")
 		end
 		fs[#fs + 1] = fmt(
 			"scroll_container[%f,%f;2.1,3.2;station_scroll;vertical;0.8]",
-			station_x, station_y)
+			layout.stations.x, layout.stations.y)
 		fs[#fs + 1] = concat(station_fs)
 		fs[#fs + 1] = "scroll_container_end[]"
 		if #supported_stations > 8 then
@@ -1408,50 +1365,51 @@ local function get_tabbed_recipe_fs(data, player, iY)
 				station_rows - 4)
 			fs[#fs + 1] = fmt(
 				"scrollbar[%f,%f;0.35,3.2;vertical;station_scroll;0]",
-				station_x + 1.7, station_y)
+				layout.stations.x + 1.7, layout.stations.y)
 		end
 	end
 
-	local right_x = FORM_PADDING + (data.iX - 1.2) * FORM_SPACING_X
-	local right_w = 0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1)
-	local right_h = 0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1)
 	local context_station = data.context and mcl_craftguide.get_station(data.context)
-	if context_station and context_station.on_recipe_action and
+	if context_station and context_station.actions and
 		context_station.is_recipe_supported(recipe) then
-		local action_all_y = FORM_PADDING + (iY + 1.3) * FORM_SPACING_Y
-		local action_one_y = FORM_PADDING + (iY + 2.0) * FORM_SPACING_Y
-		fs[#fs + 1] = fmt(FMT.item_image_button,
-			right_x, action_all_y, right_w, right_h, data.context,
-			"station_recipe_action_all", "")
-		fs[#fs + 1] = fmt(FMT.tooltip, "station_recipe_action_all",
-			ESC(context_station.recipe_action_tooltips.all))
-		fs[#fs + 1] = fmt(FMT.item_image_button,
-			right_x, action_one_y, right_w, right_h, data.context,
-			"station_recipe_action_one", "")
-		fs[#fs + 1] = fmt(FMT.tooltip, "station_recipe_action_one",
-			ESC(context_station.recipe_action_tooltips.one))
+		local action_y = {
+			layout.actions.first_y,
+			layout.actions.second_y,
+		}
+		for i = 1, #context_station.actions do
+			local action = context_station.actions[i]
+			local field_name = fmt("station_action_%d", i)
+			if action.image then
+				fs[#fs + 1] = fmt(FMT.image_button,
+					layout.actions.x,
+					action_y[i], layout.actions.w, layout.actions.h,
+					action.image, field_name, "")
+			else
+				fs[#fs + 1] = fmt(FMT.item_image_button,
+					layout.actions.x, action_y[i],
+					layout.actions.w, layout.actions.h,
+					action.item or data.context, field_name, "")
+			end
+			fs[#fs + 1] = fmt(FMT.tooltip,
+				field_name, ESC(action.tooltip))
+		end
 	end
 
 	local favorite_item = data.query_item and data.favorite_items and
 		data.favorite_items[data.query_item]
-	local favorite_y = FORM_PADDING + (iY + 2.7) * FORM_SPACING_Y
 	fs[#fs + 1] = fmt(FMT.image_button,
-		right_x, favorite_y, right_w, right_h,
+		layout.actions.x, layout.actions.favorite_y,
+		layout.actions.w, layout.actions.h,
 		favorite_item and "mcl_end_ender_eye.png" or
 			"mcl_throwing_ender_pearl.png",
 		"toggle_item_favorite", "")
 	fs[#fs + 1] = fmt(FMT.tooltip, "toggle_item_favorite",
 		ESC(favorite_item and S("Unfavorite") or S("Favorite")))
 
-	local area = {
-		x = station_x + 2.2,
-		y = station_y,
-		w = max(1, right_x - (station_x + 2.2) - 0.2),
-		h = 3.2,
-	}
-	local ctx, tab = make_tab_context(data, player, area)
+	local ctx, tab = make_tab_context(data, player, layout.content)
 	ctx.missing_recipe_slots = data.missing_recipe_slots
-	fs[#fs + 1] = fmt("container[%f,%f]", area.x, area.y)
+	fs[#fs + 1] = fmt(
+		"container[%f,%f]", layout.content.x, layout.content.y)
 	fs[#fs + 1] = tab.build(ctx) or ""
 	fs[#fs + 1] = "container_end[]"
 
@@ -1459,15 +1417,15 @@ local function get_tabbed_recipe_fs(data, player, iY)
 		ESC(S("Usage @1 of @2", data.rnum, #data.recipes)) or
 		ESC(S("Recipe @1 of @2", data.rnum, #data.recipes))
 	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + (data.iX - 3.4) * FORM_SPACING_X,
-		FORM_PADDING + (iY + 3.45) * FORM_SPACING_Y,
-		right_w, right_h, "craftguide_prev_icon.png", "recipe_prev", "")
+		layout.recipe_nav.prev_x, layout.recipe_nav.y,
+		layout.actions.w, layout.actions.h,
+		"craftguide_prev_icon.png", "recipe_prev", "")
 	fs[#fs + 1] = fmt(FMT.label,
-		FORM_PADDING + (data.iX - 2.65) * FORM_SPACING_X,
-		(iY + 3.4) * FORM_SPACING_Y + 77 / 104, btn_lab)
+		layout.recipe_nav.label_x, layout.recipe_nav.label_y, btn_lab)
 	fs[#fs + 1] = fmt(FMT.image_button,
-		right_x, FORM_PADDING + (iY + 3.45) * FORM_SPACING_Y,
-		right_w, right_h, "craftguide_next_icon.png", "recipe_next", "")
+		layout.recipe_nav.next_x, layout.recipe_nav.y,
+		layout.actions.w, layout.actions.h,
+		"craftguide_next_icon.png", "recipe_next", "")
 
 	return concat(fs)
 end
@@ -1511,25 +1469,19 @@ mcl_craftguide.register_tab("mcl_craftguide:fuel", {
 local function make_formspec(name)
 	local data = get_player_data(name)
 	local player = get_player_by_name(name)
-	local iY = data.iX - 5
-	local ipp = data.iX * iY
+	local layout = calculate_layout(data)
 
-	data.pagemax = max(1, ceil(#data.items / ipp))
+	data.pagemax = max(1, ceil(#data.items / layout.items_per_page))
 
 	local fs = {}
-	local form_w = (data.iX - 0.35) * FORM_SPACING_X + 0.5
-	local form_h = (iY + 4.55) * FORM_SPACING_Y + 45 / 52
-	local toolbar_y = FORM_PADDING + 0.12 * FORM_SPACING_Y
-	local toolbar_w = 0.8 * FORM_SPACING_X - (FORM_SPACING_X - 1)
-	local toolbar_h = 0.8 * FORM_SPACING_Y - (FORM_SPACING_Y - 1)
 
 	fs[#fs + 1] = "formspec_version[10]"
-	fs[#fs + 1] = fmt("size[%f,%f;]", form_w, form_h)
+	fs[#fs + 1] = fmt("size[%f,%f;]", layout.form.w, layout.form.h)
 
 	fs[#fs + 1] = fmt(
 		"background9[0,0;%f,%f;mcl_base_textures_background9.png;false;7]",
-		form_w,
-		form_h)
+		layout.form.w,
+		layout.form.h)
 
 	fs[#fs + 1] = fmt([[ tooltip[size_inc;%s]
 					tooltip[size_dec;%s] ]],
@@ -1537,35 +1489,35 @@ local function make_formspec(name)
 		ESC(S("Decrease window size")))
 
 	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + data.iX * 0.47 * FORM_SPACING_X,
-		toolbar_y,
-		toolbar_w,
-		toolbar_h,
+		layout.toolbar.zoom_in_x,
+		layout.toolbar.y,
+		layout.toolbar.button_w,
+		layout.toolbar.button_h,
 		"craftguide_zoomin_icon.png", "size_inc", "")
 	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + (data.iX * 0.47 + 0.6) * FORM_SPACING_X,
-		toolbar_y,
-		toolbar_w,
-		toolbar_h,
+		layout.toolbar.zoom_out_x,
+		layout.toolbar.y,
+		layout.toolbar.button_w,
+		layout.toolbar.button_h,
 		"craftguide_zoomout_icon.png", "size_dec", "")
 
 	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + 2.4 * FORM_SPACING_X,
-		toolbar_y,
-		toolbar_w,
-		toolbar_h,
+		layout.toolbar.search_x,
+		layout.toolbar.y,
+		layout.toolbar.button_w,
+		layout.toolbar.button_h,
 		"craftguide_search_icon.png", "search", "")
 	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + 3.05 * FORM_SPACING_X,
-		toolbar_y,
-		toolbar_w,
-		toolbar_h,
+		layout.toolbar.clear_x,
+		layout.toolbar.y,
+		layout.toolbar.button_w,
+		layout.toolbar.button_h,
 		"craftguide_clear_icon.png", "clear", "")
 	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + 3.7 * FORM_SPACING_X,
-		toolbar_y,
-		toolbar_w,
-		toolbar_h,
+		layout.toolbar.favorites_x,
+		layout.toolbar.y,
+		layout.toolbar.button_w,
+		layout.toolbar.button_h,
 		data.favorites_only and
 			"mcl_end_ender_eye.png" or "mcl_throwing_ender_pearl.png",
 		"toggle_favorites",
@@ -1610,32 +1562,31 @@ local function make_formspec(name)
 		ESC(S("Next page")))
 
 	fs[#fs + 1] = fmt(FMT.label,
-		FORM_PADDING + (data.iX - 2.2) * FORM_SPACING_X,
-		0.22 * FORM_SPACING_Y + 77 / 104,
+		layout.toolbar.page_label_x,
+		layout.toolbar.page_label_y,
 		ESC(colorize("#383838", fmt("%s / %u", data.pagenum, data.pagemax))))
 
 	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + (data.iX - 3.1) * FORM_SPACING_X,
-		toolbar_y,
-		toolbar_w,
-		toolbar_h,
+		layout.toolbar.page_prev_x,
+		layout.toolbar.y,
+		layout.toolbar.button_w,
+		layout.toolbar.button_h,
 		"craftguide_prev_icon.png", "prev", "")
 	fs[#fs + 1] = fmt(FMT.image_button,
-		FORM_PADDING + ((data.iX - 1.2) -
-			(data.iX >= 11 and 0.08 or 0)) * FORM_SPACING_X,
-		toolbar_y,
-		toolbar_w,
-		toolbar_h,
+		layout.toolbar.page_next_x,
+		layout.toolbar.y,
+		layout.toolbar.button_w,
+		layout.toolbar.button_h,
 		"craftguide_next_icon.png",
 		"next",
 		"")
 
 	fs[#fs + 1] = fmt(
 		"field[%f,%f;%f,%f;filter;;%s]",
-		0.3 * FORM_SPACING_X,
-		0.32 * FORM_SPACING_Y + 0.5 - FORM_BUTTON_HEIGHT / 2,
-		2.5 * FORM_SPACING_X - (FORM_SPACING_X - 1),
-		FORM_BUTTON_HEIGHT,
+		layout.toolbar.filter_x,
+		layout.toolbar.filter_y,
+		layout.toolbar.filter_w,
+		UI.button_height,
 		ESC(data.filter))
 
 	if #data.items == 0 then
@@ -1649,32 +1600,36 @@ local function make_formspec(name)
 
 		fs[#fs + 1] = fmt(FMT.label,
 			FORM_PADDING + pos * FORM_SPACING_X,
-			2 * FORM_SPACING_Y + 77 / 104,
+				-- Legacy: 0.375 + pos * 1.25
+			layout.items.empty_label_y,
 			ESC(no_item))
 	end
 
-	local first_item = (data.pagenum - 1) * ipp
-	for i = first_item, first_item + ipp - 1 do
+	local first_item = (data.pagenum - 1) * layout.items_per_page
+	for i = first_item, first_item + layout.items_per_page - 1 do
 		local item = data.items[i + 1]
 		if not item then
 			break
 		end
 
-		local X = i % data.iX
-		local Y = (i % ipp - X) / data.iX + 1
+		local page_index = i % layout.items_per_page
+		local column = page_index % layout.columns
+		local row = floor(page_index / layout.columns)
+		local item_x = layout.items.x + column * layout.items.column_step
+		local item_y = layout.items.y + row * layout.items.row_step
 
 		fs[#fs + 1] = fmt(FMT.item_image_button,
-			FORM_PADDING + (X - X * 0.05) * FORM_SPACING_X,
-			FORM_PADDING + Y * FORM_SPACING_Y,
-			1.1 * FORM_SPACING_X - (FORM_SPACING_X - 1),
-			1.1 * FORM_SPACING_Y - (FORM_SPACING_Y - 1),
+			item_x,
+			item_y,
+			layout.items.button_w,
+			layout.items.button_h,
 			item,
 			item .. "_inv",
 			"")
 	end
 
 	if data.recipes and #data.recipes > 0 then
-		fs[#fs + 1] = get_tabbed_recipe_fs(data, player, iY)
+		fs[#fs + 1] = get_tabbed_recipe_fs(data, player, layout)
 	end
 
 	for elem_name, def in pairs(formspec_elements) do
@@ -1824,6 +1779,7 @@ local function refresh_items(data, player)
 		data.show_usages = nil
 		data.recipe_tabs = nil
 		data.selected_recipe_tab = nil
+		data.recipe_tab_page = nil
 		data.recipes = nil
 		data.rnum = 1
 	end
@@ -1862,6 +1818,7 @@ local function reset_data(data)
 	data.show_usages = nil
 	data.recipe_tabs = nil
 	data.selected_recipe_tab = nil
+	data.recipe_tab_page = nil
 	data.recipes     = nil
 end
 
@@ -1905,6 +1862,7 @@ local function on_receive_fields(player, fields)
 	local recipe_tab
 	local selected_recipe_item
 	local tab_field
+	local station_action
 	local search_submitted = fields.key_enter_field == "filter" or fields.search
 	data.missing_recipe_slots = nil
 
@@ -1917,6 +1875,10 @@ local function on_receive_fields(player, fields)
 	for field in pairs(fields) do
 		recipe_tab = match(field, "^rtab_(%d+)$")
 		if recipe_tab then
+			break
+		end
+		station_action = match(field, "^station_action_(%d+)$")
+		if station_action then
 			break
 		end
 		if data.recipe_item_fields and data.recipe_item_fields[field] then
@@ -1955,6 +1917,15 @@ local function on_receive_fields(player, fields)
 		refresh_items(data, player)
 		show_fs(player, name)
 
+	elseif fields.recipe_tabs_page_prev or fields.recipe_tabs_page_next then
+		if not data.recipe_tab_page then
+			return
+		end
+
+		data.recipe_tab_page = data.recipe_tab_page +
+			(fields.recipe_tabs_page_next and 1 or -1)
+		show_fs(player, name)
+
 	elseif fields.recipe_prev or fields.recipe_next then
 		if #data.recipes == 1 then
 			return
@@ -1969,16 +1940,17 @@ local function on_receive_fields(player, fields)
 
 		show_fs(player, name)
 
-	elseif fields.station_recipe_action_one or fields.station_recipe_action_all then
+	elseif station_action then
 		local station = data.context and mcl_craftguide.get_station(data.context)
 		local recipe = data.recipes and data.recipes[data.rnum]
-		if not station or not station.on_recipe_action or not recipe or
+		local action = station and station.actions and
+			station.actions[tonumber(station_action)]
+		if not station or not station.on_action or not action or not recipe or
 			not station.is_recipe_supported(recipe) then
 			return
 		end
 
-		local missing_slots = station.on_recipe_action(player, recipe,
-			fields.station_recipe_action_all ~= nil)
+		local missing_slots = station.on_action(player, recipe, action.name)
 		if missing_slots and next(missing_slots) then
 			data.missing_recipe_slots = missing_slots
 			show_fs(player, name)
@@ -2042,6 +2014,7 @@ local function on_receive_fields(player, fields)
 	elseif (fields.size_inc and data.iX < MAX_LIMIT) or
 		(fields.size_dec and data.iX > MIN_LIMIT) then
 		data.pagenum = 1
+		data.recipe_tab_page = nil
 		data.iX = data.iX + (fields.size_inc and 1 or -1)
 		show_fs(player, name)
 	else
