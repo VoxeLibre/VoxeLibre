@@ -262,7 +262,8 @@ function mcl_spawn.set_spawn_pos(player, pos, message)
 	return mcl_spawn.set_player_spawn_pos(player, pos, true, message)
 end
 
--- Note: The second return value is true if returned spawn point is player-chosen,
+-- Returns a spawn position of player (for spawning).
+-- The second return value is true if returned spawn point is player-chosen,
 -- false otherwise.
 function mcl_spawn.get_player_spawn_pos(player)
 	local pos, on_bed = mcl_spawn.get_player_spawnpoint(player)
@@ -322,7 +323,7 @@ function mcl_spawn.spawn(player)
 	local pos, is_psp = mcl_spawn.get_player_spawn_pos(player)
 	local custom_spawn = true
 	if (not is_psp) and pos == start_pos then
-		-- We here if we have no player's or world's spawn point
+		-- We here if we have neither player's nor world's spawn point
 		custom_spawn = false
 	else
 		player:set_pos(pos)
