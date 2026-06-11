@@ -42,7 +42,6 @@ local node_search_list =
 -- Initial variables
 
 local return_spawn = minetest.settings:get_bool("mcl_return_spawn", true)
-local wsp = minetest.string_to_pos(storage:get_string("mcl_spawn_world_spawn_point")) or nil -- world spawn position
 
 
 local function get_far_node(pos)
@@ -91,8 +90,46 @@ end
 
 
 function mcl_spawn.get_world_spawn_pos()
-	local ssp = minetest.setting_get_pos("static_spawnpoint")
-	return ssp or wsp or start_pos
+	local pos
+
+	-- Static spawn position
+	pos = core.setting_get_pos("static_spawnpoint")
+	if pos then return pos end
+
+	-- World spawn position
+	pos = core.string_to_pos(storage:get_string("mcl_spawn_world_spawn_point")) or nil
+	if pos then return pos end
+
+	return start_pos
+end
+
+-- Sets the world's spawn position to pos.
+-- If message is set to true, informs all players with a chat message when the spawn
+-- position changed, otherwise set to false.
+function mcl_spawn.set_world_spawn_pos(pos, message)
+	local spawn_changed = false
+	local oldpos = core.string_to_pos(storage:get_string("mcl_spawn_world_spawn_point")) or nil
+
+	-- Note: World spawn point can't be in any dimension other than the Overworld
+	if (not mcl_worlds.is_in_void(pos)) and mcl_worlds.pos_to_dimension(pos) == "overworld" then
+		storage:set_string("mcl_spawn_world_spawn_point", core.pos_to_string(pos))
+
+		if oldpos then
+			-- We don't bother sending a message if the new spawn pos is basically the same
+			spawn_changed = vector.distance(pos, oldpos) > 0.1
+		else
+			-- If it wasn't set and now it will be set, it means it is changed
+			spawn_changed = true
+		end
+		if spawn_changed and message then
+			core.chat_send_all(S("New world spawn position set!"))
+		end
+	else
+		if message then
+			core.chat_send_all(S("Trying to set invalid world spawn position!"))
+		end
+	end
+	return spawn_changed
 end
 
 -- Returns a spawn position of player.
@@ -121,12 +158,12 @@ end
 -- false otherwise.
 function mcl_spawn.get_bed_spawn_pos(player)
 	local spawn = mcl_spawn.get_player_spawnpoint(player)
-	local custom_spawn = true
+	local is_psp = true
 	if not spawn then
 		spawn = mcl_spawn.get_world_spawn_pos()
-		custom_spawn = false
+		is_psp = false
 	end
-	return spawn, custom_spawn
+	return spawn, is_psp
 end
 
 -- Sets the player's spawn position to pos.
@@ -179,7 +216,7 @@ function mcl_spawn.set_player_spawn_pos(player, pos, on_bed, message)
 					mcl_log("Cannot remove villager from bed bottom meta")
 				end
 
-				if oldpos and oldpos ~= pos then
+				if oldpos and (not vector.equals(oldpos, pos)) then
 					reset_old_bed = true
 				end
 			end
@@ -225,6 +262,9 @@ function mcl_spawn.set_spawn_pos(player, pos, message)
 	return mcl_spawn.set_player_spawn_pos(player, pos, true, message)
 end
 
+-- Returns a spawn position of player (for spawning).
+-- The second return value is true if returned spawn point is player-chosen,
+-- false otherwise.
 function mcl_spawn.get_player_spawn_pos(player)
 	local pos, on_bed = mcl_spawn.get_player_spawnpoint(player)
 	if pos and on_bed then
@@ -280,8 +320,14 @@ function mcl_spawn.get_player_spawn_pos(player)
 end
 
 function mcl_spawn.spawn(player)
-	local pos, custom_spawn = mcl_spawn.get_player_spawn_pos(player)
-	if custom_spawn then player:set_pos(pos) end
+	local pos, is_psp = mcl_spawn.get_player_spawn_pos(player)
+	local custom_spawn = true
+	if (not is_psp) and pos == start_pos then
+		-- We here if we have neither player's nor world's spawn point
+		custom_spawn = false
+	else
+		player:set_pos(pos)
+	end
 	return custom_spawn
 end
 
@@ -309,12 +355,12 @@ core.register_chatcommand("spawnpoint", {
 			end
 
 			-- Input has all parameters:
-			target_name, pos.x, pos.y, pos.z = string.match(param, "^(%S+) +([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+)$")
+			target_name, pos.x, pos.y, pos.z = string.match(param, "^(%S+) +(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)$")
 			if target_name and pos.x and pos.y and pos.z then break end
 
 			-- Input has position but no player name:
 			target_name = name
-			pos.x, pos.y, pos.z = string.match(param, "^([%d.-]+)[, ] *([%d.-]+)[, ] *([%d.-]+)$")
+			pos.x, pos.y, pos.z = string.match(param, "^(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)$")
 			if pos.x and pos.y and pos.z then break end
 
 			-- Input has player name but no position:
@@ -391,5 +437,40 @@ core.register_chatcommand("clearspawn", {
 
 		mcl_spawn.set_player_spawn_pos(target, nil, false, true)
 		return true, S("Cleared respawn point for @1", target_name)
+	end
+})
+
+core.register_chatcommand("setworldspawn", {
+	description = S("Sets the default spawn point for all players, works only in the Overworld."),
+	params = S("[<x> <y> <z>]"),
+	privs = {setspawn = true, server = true},
+	func = function(name, param)
+		-- Try different patterns
+		local pos = {}
+		while true do
+			-- Input has no parameters:
+			if param == "" then break end
+
+			-- Input has position:
+			pos.x, pos.y, pos.z = string.match(param, "^(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)[, ] *(-?%d+%.?%d*)$")
+			if pos.x and pos.y and pos.z then break end
+
+			-- Invalid input
+			return false, S("Invalid parameters (see /help setworldspawn)")
+		end
+
+		if pos.x and pos.y and pos.z then
+			pos.x, pos.y, pos.z = tonumber(pos.x), tonumber(pos.y), tonumber(pos.z)
+		else
+			-- Position is not specified, use command executor's position
+			pos = core.get_player_by_name(name):get_pos()
+		end
+
+		if mcl_worlds.is_in_void(pos) or mcl_worlds.pos_to_dimension(pos) ~= "overworld" then
+			return false, S("Invalid world spawn position")
+		end
+
+		mcl_spawn.set_world_spawn_pos(pos, true)
+		return true, S("Set world spawn point to @1", core.pos_to_string(pos, 1))
 	end
 })
