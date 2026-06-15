@@ -326,51 +326,78 @@ local ELEMENT_RENDERERS_V1 = {
 	item_image_button = render_v1_item_image_button,
 }
 
-local group_stereotypes = {
-	wood                        = "mcl_core:wood",
-	stone                       = "mcl_core:stone",
-	sand                        = "mcl_core:sand",
-	wool                        = "mcl_wool:white",
-	carpet                      = "mcl_wool:white_carpet",
-	dye                         = "mcl_dye:red",
-	water_bucket                = "mcl_buckets:bucket_water",
-	flower                      = "mcl_flowers:dandelion",
-	mushroom                    = "mcl_mushrooms:mushroom_brown",
-	wood_slab                   = "mcl_stairs:slab_wood",
-	wood_stairs                 = "mcl_stairs:stairs_wood",
-	coal                        = "mcl_core:coal_lump",
-	shulker_box                 = "mcl_chests:violet_shulker_box",
-	quartz_block                = "mcl_nether:quartz_block",
-	banner                      = "mcl_banners:banner_item_white",
-	mesecon_conductor_craftable = "mesecons:wire_00000000_off",
-	purpur_block                = "mcl_end:purpur_block",
-	normal_sandstone            = "mcl_core:sandstone",
-	red_sandstone               = "mcl_core:redsandstone",
-	compass                     = mcl_compass.stereotype,
-	clock                       = mcl_clock.sterotype,
+local group_definitions = {
+	wood = { description = S("Any wood planks") },
+	sand = { description = S("Any sand") },
+	wool = { item = "mcl_wool:white", description = S("Any wool") },
+	carpet = { item = "mcl_wool:white_carpet", description = S("Any carpet") },
+	dye = { item = "mcl_dye:red", description = S("Any dye") },
+	water_bucket = {
+		item = "mcl_buckets:bucket_water",
+		description = S("Any water bucket"),
+	},
+	flower = {
+		item = "mcl_flowers:dandelion",
+		description = S("Any flower"),
+	},
+	mushroom = {
+		item = "mcl_mushrooms:mushroom_brown",
+		description = S("Any mushroom"),
+	},
+	wood_slab = {
+		item = "mcl_stairs:slab_wood",
+		description = S("Any wooden slab"),
+	},
+	wood_stairs = {
+		item = "mcl_stairs:stairs_wood",
+		description = S("Any wooden stairs"),
+	},
+	coal = { description = S("Any coal") },
+	shulker_box = {
+		item = "mcl_chests:violet_shulker_box",
+		description = S("Any shulker box"),
+	},
+	quartz_block = {
+		item = "mcl_nether:quartz_block",
+		description = S("Any kind of quartz block"),
+	},
+	banner = { item = "mcl_banners:banner_item_white" },
+	mesecon_conductor_craftable = { item = "mesecons:wire_00000000_off" },
+	purpur_block = {
+		item = "mcl_end:purpur_block",
+		description = S("Any kind of purpur block"),
+	},
+	normal_sandstone = { description = S("Any normal sandstone") },
+	red_sandstone = { description = S("Any red sandstone") },
+	tree = { description = S("Any wood") },
+	stonebrick = { description = S("Any stone bricks") },
+	stick = { description = S("Any stick") },
 }
 
-local group_names = {
-	shulker_box = S("Any shulker box"),
-	wool = S("Any wool"),
-	wood = S("Any wood planks"),
-	tree = S("Any wood"),
-	sand = S("Any sand"),
-	normal_sandstone = S("Any normal sandstone"),
-	red_sandstone = S("Any red sandstone"),
-	carpet = S("Any carpet"),
-	dye = S("Any dye"),
-	water_bucket = S("Any water bucket"),
-	flower = S("Any flower"),
-	mushroom = S("Any mushroom"),
-	wood_slab = S("Any wooden slab"),
-	wood_stairs = S("Any wooden stairs"),
-	coal = S("Any coal"),
-	quartz_block = S("Any kind of quartz block"),
-	purpur_block = S("Any kind of purpur block"),
-	stonebrick = S("Any stone bricks"),
-	stick = S("Any stick"),
-}
+function mcl_craftguide.register_group(name, def)
+	local func = "mcl_craftguide.register_group(): "
+	assert(type(name) == "string" and name ~= "",
+		func .. "'name' must be a string")
+	assert(type(def) == "table", func .. "'def' must be a table")
+	assert(def.item == nil or type(def.item) == "string",
+		func .. "'item' must be a string")
+	assert(def.description == nil or type(def.description) == "string",
+		func .. "'description' must be a string")
+	assert(def.is_item == nil or type(def.is_item) == "boolean",
+		func .. "'is_item' must be a boolean")
+
+	local group_def = group_definitions[name] or {}
+	if def.item ~= nil then
+		group_def.item = def.item
+	end
+	if def.description ~= nil then
+		group_def.description = def.description
+	end
+	if def.is_item ~= nil then
+		group_def.is_item = def.is_item
+	end
+	group_definitions[name] = group_def
+end
 
 
 
@@ -457,46 +484,42 @@ end
 
 local custom_crafts, craft_types, stations = {}, {}, {}
 local recipe_tabs, recipe_tab_order = {}, {}
+local recipe_tab_contributions = {}
 local render_grid_recipe
 
-local function sort_recipe_tabs()
-	sort(recipe_tab_order, function(a, b)
-		local tab_a = recipe_tabs[a]
-		local tab_b = recipe_tabs[b]
-		if tab_a.order == tab_b.order then
-			return a < b
-		end
-		return tab_a.order < tab_b.order
-	end)
-end
-
-function mcl_craftguide.register_tab(name, def, override)
-	local func = "mcl_craftguide.register_tab(): "
-	assert(type(name) == "string" and name ~= "", func .. "'name' must be a string")
-	assert(type(def) == "table", func .. "'def' must be a table")
-	assert(type(def.description) == "string", func .. "'description' must be a string")
-	assert(def.icon == nil or type(def.icon) == "string",
-		func .. "'icon' must be a string")
-	assert(def.order == nil or type(def.order) == "number",
-		func .. "'order' must be a number")
+local function validate_recipe_provider(func, def, required)
 	assert(def.get_recipes == nil or type(def.get_recipes) == "function",
 		func .. "'get_recipes' must be a function")
 	assert(def.get_items == nil or type(def.get_items) == "function",
 		func .. "'get_items' must be a function")
 	assert(def.is_recipe == nil or type(def.is_recipe) == "function",
 		func .. "'is_recipe' must be a function")
+	assert(def.is_visible == nil or type(def.is_visible) == "function",
+		func .. "'is_visible' must be a function")
+	assert(not required or def.get_recipes or def.is_recipe,
+		func .. "either 'get_recipes' or 'is_recipe' is required")
+end
+
+local function registration_source()
+	return M.get_current_modname() or "<unknown>"
+end
+
+function mcl_craftguide.register_tab(name, def)
+	local func = "mcl_craftguide.register_tab(): "
+	assert(type(name) == "string" and name ~= "", func .. "'name' must be a string")
+	assert(type(def) == "table", func .. "'def' must be a table")
+	assert(type(def.description) == "string", func .. "'description' must be a string")
+	assert(def.icon == nil or type(def.icon) == "string",
+		func .. "'icon' must be a string")
 	assert(type(def.build) == "function", func .. "'build' function missing")
 	assert(def.handle == nil or type(def.handle) == "function",
 		func .. "'handle' must be a function")
-	assert(def.is_visible == nil or type(def.is_visible) == "function",
-		func .. "'is_visible' must be a function")
-	assert(def.get_recipes or def.is_recipe,
-		func .. "either 'get_recipes' or 'is_recipe' is required")
-	assert(override == nil or type(override) == "boolean",
-		func .. "'override' must be a boolean")
+	validate_recipe_provider(func, def, false)
 
 	if recipe_tabs[name] then
-		assert(override, func .. "'" .. name .. "' is already registered")
+		M.log("warning", fmt(
+			"[mcl_craftguide] Replacing recipe tab '%s' registered by '%s' with definition from '%s'",
+			name, recipe_tabs[name].source_mod, registration_source()))
 	else
 		recipe_tab_order[#recipe_tab_order + 1] = name
 	end
@@ -505,15 +528,47 @@ function mcl_craftguide.register_tab(name, def, override)
 		name = name,
 		description = def.description,
 		icon = def.icon,
-		order = def.order or 100,
 		get_recipes = def.get_recipes,
 		get_items = def.get_items,
 		is_recipe = def.is_recipe,
 		build = def.build,
 		handle = def.handle,
 		is_visible = def.is_visible,
+		source_mod = registration_source(),
 	}
-	sort_recipe_tabs()
+end
+
+function mcl_craftguide.register_tab_recipes(tab_name, contribution_name, def)
+	local func = "mcl_craftguide.register_tab_recipes(): "
+	assert(type(tab_name) == "string" and tab_name ~= "",
+		func .. "'tab_name' must be a string")
+	assert(type(contribution_name) == "string" and contribution_name ~= "",
+		func .. "'contribution_name' must be a string")
+	assert(type(def) == "table", func .. "'def' must be a table")
+	validate_recipe_provider(func, def, true)
+
+	local contributions = recipe_tab_contributions[tab_name]
+	if not contributions then
+		contributions = { order = {}, definitions = {} }
+		recipe_tab_contributions[tab_name] = contributions
+	end
+
+	local previous = contributions.definitions[contribution_name]
+	if previous then
+		M.log("warning", fmt(
+			"[mcl_craftguide] Replacing contribution '%s' for recipe tab '%s' registered by '%s' with definition from '%s'",
+			contribution_name, tab_name, previous.source_mod, registration_source()))
+	else
+		contributions.order[#contributions.order + 1] = contribution_name
+	end
+
+	contributions.definitions[contribution_name] = {
+		get_recipes = def.get_recipes,
+		get_items = def.get_items,
+		is_recipe = def.is_recipe,
+		is_visible = def.is_visible,
+		source_mod = registration_source(),
+	}
 end
 
 function mcl_craftguide.get_tab(name)
@@ -540,7 +595,6 @@ function mcl_craftguide.register_craft_type(name, def)
 	mcl_craftguide.register_tab(name, {
 		description = def.description,
 		icon = def.icon,
-		order = def.order,
 		is_recipe = function(recipe)
 			return recipe.type == name
 		end,
@@ -817,6 +871,23 @@ local function get_item_usages(item)
 	return usages
 end
 
+local function for_each_tab_provider(tab_name, callback)
+	local tab = recipe_tabs[tab_name]
+	if tab then
+		callback(tab)
+	end
+
+	local contributions = recipe_tab_contributions[tab_name]
+	if not contributions then
+		return
+	end
+
+	for i = 1, #contributions.order do
+		local name = contributions.order[i]
+		callback(contributions.definitions[name])
+	end
+end
+
 local function get_filtered_items(player)
 	local items, c = {}, 0
 
@@ -829,20 +900,27 @@ local function get_filtered_items(player)
 
 		if not visible then
 			for j = 1, #recipe_tab_order do
-				local tab = recipe_tabs[recipe_tab_order[j]]
-				if tab.get_recipes then
-					for direction = 0, 1 do
-						local show_usages = direction == 1
-						if not tab.is_visible or
-							tab.is_visible(player, item, show_usages) then
-							local provided =
-								tab.get_recipes(item, show_usages, player) or {}
-							if #apply_recipe_filters(provided, player) > 0 then
-								visible = true
-								break
+				local tab_name = recipe_tab_order[j]
+				local tab = recipe_tabs[tab_name]
+				for direction = 0, 1 do
+					local show_usages = direction == 1
+					if not tab.is_visible or
+						tab.is_visible(player, item, show_usages) then
+						for_each_tab_provider(tab_name, function(provider)
+							if visible or not provider.get_recipes or
+								provider ~= tab and provider.is_visible and
+								not provider.is_visible(
+									player, item, show_usages) then
+								return
 							end
-						end
+							local provided =
+								provider.get_recipes(
+									item, show_usages, player) or {}
+							visible =
+								#apply_recipe_filters(provided, player) > 0
+						end)
 					end
+					if visible then break end
 				end
 				if visible then break end
 			end
@@ -911,18 +989,37 @@ local function collect_recipe_tabs(item, show_usages, player)
 		local tab_name = recipe_tab_order[i]
 		local tab = recipe_tabs[tab_name]
 		local recipes = {}
+		local included = {}
 		local visible = not tab.is_visible or tab.is_visible(player, item, show_usages)
 
-		if visible and tab.get_recipes then
-			recipes = tab.get_recipes(item, show_usages, player) or {}
-			recipes = apply_recipe_filters(recipes, player)
-		elseif visible then
-			for j = 1, #cached do
-				local recipe = cached[j]
-				if tab.is_recipe(recipe) then
-					recipes[#recipes + 1] = recipe
+		if visible then
+			for_each_tab_provider(tab_name, function(provider)
+				if provider ~= tab and provider.is_visible and
+					not provider.is_visible(player, item, show_usages) then
+					return
 				end
-			end
+
+				if provider.get_recipes then
+					local provided =
+						provider.get_recipes(item, show_usages, player) or {}
+					provided = apply_recipe_filters(provided, player)
+					for j = 1, #provided do
+						local recipe = provided[j]
+						if not included[recipe] then
+							recipes[#recipes + 1] = recipe
+							included[recipe] = true
+						end
+					end
+				elseif provider.is_recipe then
+					for j = 1, #cached do
+						local recipe = cached[j]
+						if not included[recipe] and provider.is_recipe(recipe) then
+							recipes[#recipes + 1] = recipe
+							included[recipe] = true
+						end
+					end
+				end
+			end)
 		end
 
 		if #recipes > 0 then
@@ -990,12 +1087,10 @@ end
 local function groups_to_item(groups)
 	if #groups == 1 then
 		local group = groups[1]
-		local def_gr = "mcl_core:" .. group
+		local group_def = group_definitions[group]
 
-		if group_stereotypes[group] then
-			return group_stereotypes[group]
-		elseif reg_items[def_gr] then
-			return def_gr
+		if group_def and group_def.item then
+			return group_def.item
 		end
 	end
 
@@ -1014,11 +1109,10 @@ local function get_tooltip(item, groups, cooktime, burntime, target)
 	if groups then
 		local gcol = mcl_colors.LIGHT_PURPLE
 		if #groups == 1 then
-			local g = group_names[groups[1]]
+			local group_def = group_definitions[groups[1]]
+			local g = group_def and group_def.description
 			local groupstr
-			-- Treat the groups “compass” and “clock” as fake groups
-			-- and just print the normal item name without special formatting
-			if groups[1] == "compass" or groups[1] == "clock" then
+			if group_def and group_def.is_item then
 				groupstr = reg_items[item].description
 			elseif g then
 				-- Use the special group name string
@@ -1117,7 +1211,9 @@ local function make_tab_context(data, player, area)
 		data.recipe_item_fields[field] = item_name
 
 		local label = options.label or ""
-		if groups and groups[1] ~= "compass" and groups[1] ~= "clock" then
+		local group_def = groups and #groups == 1 and
+			group_definitions[groups[1]]
+		if groups and not (group_def and group_def.is_item) then
 			label = label .. "\nG"
 		end
 
@@ -1235,6 +1331,182 @@ render_grid_recipe = function(ctx, craft_type)
 	return concat(fs)
 end
 
+local function build_construction_recipe(ctx)
+	local recipe = ctx.recipe
+	local items = recipe.items or {}
+	local width = max(1, recipe.width or 1)
+	local rows = ceil(maxn(items) / width)
+	local fs = {}
+
+	if recipe.description then
+		fs[#fs + 1] = ctx:label(0.2, 0.1, recipe.description)
+	end
+	if width > GRID_LIMIT or rows > GRID_LIMIT then
+		fs[#fs + 1] = ctx:label(0.2, 0.7,
+			S("Structure is too big to be displayed (@1×@2)", width, rows))
+		return concat(fs)
+	end
+
+	local available_height = ctx.height - (recipe.description and 0.65 or 0)
+	local button_size = min(1.1, ctx.width / width, available_height / max(1, rows))
+	local start_x = max(0, (ctx.width - width * button_size) / 2)
+	local start_y = (recipe.description and 0.65 or 0) +
+		max(0, (available_height - rows * button_size) / 2)
+
+	for i, item in pairs(items) do
+		if item and item ~= "" then
+			local x = start_x + ((i - 1) % width) * button_size
+			local y = start_y + floor((i - 1) / width) * button_size
+			fs[#fs + 1] = ctx:item_button(x, y, item, {
+				w = button_size,
+				h = button_size,
+			})
+		end
+	end
+	return concat(fs)
+end
+
+local function build_trading_recipe(ctx)
+	local recipe = ctx.recipe
+	local inputs = recipe.items or {}
+	local fs = {}
+	local title = recipe.description or recipe.trader
+	if title then
+		fs[#fs + 1] = ctx:label(0.2, 0.1, title)
+	end
+
+	local input_count = min(3, #inputs)
+	local total_w = input_count * 1.1 + max(0, input_count - 1) * 0.2 + 3
+	local start_x = max(0, (ctx.width - total_w) / 2)
+	local y = max(0.65, (ctx.height - 1.1) / 2)
+
+	for i = 1, input_count do
+		fs[#fs + 1] = ctx:item_button(
+			start_x + (i - 1) * 1.3, y, inputs[i])
+	end
+
+	local arrow_x = start_x + input_count * 1.3 + 0.25
+	fs[#fs + 1] = ctx:image(
+		arrow_x, y + 0.2, 0.9, 0.7, "craftguide_arrow.png")
+	if recipe.output then
+		fs[#fs + 1] = ctx:item_button(arrow_x + 1.25, y, recipe.output)
+	end
+	return concat(fs)
+end
+
+local function format_treasure_chance(entry)
+	if entry.chance_text then
+		return tostring(entry.chance_text)
+	elseif type(entry.chance) == "number" then
+		local chance = entry.chance <= 1 and entry.chance * 100 or entry.chance
+		return fmt("%.2f%%", chance):gsub("%.00%%$", "%%")
+	end
+	return ""
+end
+
+local function build_treasure_recipe(ctx)
+	local recipe = ctx.recipe
+	local loot = recipe.loot or {}
+	local fs = {}
+	local title = recipe.description or recipe.source
+	if title then
+		fs[#fs + 1] = ctx:label(0.2, 0.1, title)
+	end
+
+	local columns = max(1, floor(ctx.width / 1.15))
+	for i = 1, #loot do
+		local entry = loot[i]
+		local item = type(entry) == "table" and (entry.item or entry.name) or entry
+		local column = (i - 1) % columns
+		local row = floor((i - 1) / columns)
+		local x = 0.2 + column * 1.15
+		local y = 0.65 + row * 1.35
+		if y + 0.85 > ctx.height then
+			break
+		end
+
+		if item then
+			fs[#fs + 1] = ctx:item_button(
+				x, y, item, { w = 0.85, h = 0.85 })
+		end
+		if type(entry) == "table" then
+			local chance = format_treasure_chance(entry)
+			if chance ~= "" then
+				fs[#fs + 1] = ctx:label(x, y + 1.02, chance)
+			end
+		end
+	end
+	return concat(fs)
+end
+
+local function format_mob_drop_chance(drop)
+	if type(drop.chance) ~= "number" or drop.chance <= 0 then
+		return S("Conditional")
+	end
+
+	local chance = min(100, 100 / drop.chance)
+	if chance == floor(chance) then
+		return fmt("%d%%", chance)
+	end
+	return fmt("%.2f%%", chance)
+end
+
+local function get_mob_drop_tooltip(drop)
+	local item = reg_items[drop.name]
+	local lines = {
+		item and item.description or drop.name,
+		S("Base roll chance: @1", format_mob_drop_chance(drop)),
+	}
+	local min_count = drop.min or 1
+	local max_count = drop.max or min_count
+	if min_count == max_count then
+		lines[#lines + 1] = S("Amount: @1", min_count)
+	else
+		lines[#lines + 1] = S("Amount: @1-@2", min_count, max_count)
+	end
+
+	if drop.looting == "rare" then
+		lines[#lines + 1] = S("Requires a player kill")
+		lines[#lines + 1] = S("Looting increases the drop chance")
+	elseif drop.looting == "common" then
+		lines[#lines + 1] = S("Looting may increase the amount")
+	end
+	if drop.looting_chance_function then
+		lines[#lines + 1] = S("Chance is modified by Looting")
+	end
+	if drop.conditions then
+		lines[#lines + 1] = S("Special drop conditions apply")
+	end
+	return concat(lines, "\n")
+end
+
+local function build_mob_drop_recipe(ctx)
+	local fs = {
+		ctx:label(0.2, 0.1, ctx.recipe.mob_description),
+	}
+	local columns = max(1, floor(ctx.width / 1.15))
+	local button_size = 0.85
+
+	for i = 1, #ctx.recipe.drops do
+		local drop = ctx.recipe.drops[i]
+		local column = (i - 1) % columns
+		local row = floor((i - 1) / columns)
+		local x = 0.2 + column * 1.15
+		local y = 0.65 + row * 1.35
+		if y + button_size > ctx.height then
+			break
+		end
+
+		fs[#fs + 1] = ctx:item_button(x, y, drop.name, {
+			w = button_size,
+			h = button_size,
+			tooltip = get_mob_drop_tooltip(drop),
+		})
+		fs[#fs + 1] = ctx:label(x, y + 1.02, format_mob_drop_chance(drop))
+	end
+	return concat(fs)
+end
+
 local function get_tabbed_recipe_fs(data, player, layout)
 	local fs = {}
 	local recipe = data.recipes[data.rnum]
@@ -1248,6 +1520,11 @@ local function get_tabbed_recipe_fs(data, player, layout)
 
 			local prev_texture = "craftguide_prev_icon.png"
 			local next_texture = "craftguide_next_icon.png"
+			if data.focus_target then
+				fs[#fs + 1] = fmt(
+					"set_focus[%s;true]", data.focus_target)
+				data.focus_target = nil
+			end
 			if header.page > 1 then
 				fs[#fs + 1] = fmt(FMT.image_button,
 					header.arrow_prev_x, layout.tabs.y,
@@ -1433,7 +1710,6 @@ end
 mcl_craftguide.register_tab("mcl_craftguide:crafting", {
 	description = S("Crafting"),
 	icon = "mcl_crafting_table:crafting_table",
-	order = 10,
 	is_recipe = function(recipe)
 		return not recipe.type or recipe.type == "normal"
 	end,
@@ -1445,7 +1721,6 @@ mcl_craftguide.register_tab("mcl_craftguide:crafting", {
 mcl_craftguide.register_tab("mcl_craftguide:smelting", {
 	description = S("Smelting"),
 	icon = "mcl_furnaces:furnace",
-	order = 20,
 	is_recipe = function(recipe)
 		return recipe.type == "cooking"
 	end,
@@ -1457,7 +1732,6 @@ mcl_craftguide.register_tab("mcl_craftguide:smelting", {
 mcl_craftguide.register_tab("mcl_craftguide:fuel", {
 	description = S("Fuel"),
 	icon = "mcl_fire:fire",
-	order = 30,
 	is_recipe = function(recipe)
 		return recipe.type == "fuel"
 	end,
@@ -1465,6 +1739,59 @@ mcl_craftguide.register_tab("mcl_craftguide:fuel", {
 		return render_grid_recipe(ctx)
 	end,
 })
+
+mcl_craftguide.register_tab("mcl_craftguide:construction", {
+	description = S("Construction"),
+	icon = "mcl_anvils_inventory_hammer.png",
+	build = build_construction_recipe,
+})
+
+mcl_craftguide.register_tab("mcl_craftguide:trading", {
+	description = S("Trading"),
+	icon = "mcl_core_emerald.png",
+	build = build_trading_recipe,
+})
+
+mcl_craftguide.register_tab("mcl_craftguide:treasure", {
+	description = S("Treasure"),
+	icon = "mcl_chests_normal.png",
+	build = build_treasure_recipe,
+})
+
+mcl_craftguide.register_tab("mcl_craftguide:mob_drops", {
+	description = S("Mob Drops"),
+	icon = "mcl_tools:sword_iron",
+	build = build_mob_drop_recipe,
+})
+
+-- for i = 1, 20 do
+-- 	local name = "test_" .. i
+-- 	mcl_craftguide.register_tab(name, {
+-- 		description = name,
+-- 		icon = "mcl_core:ironblock",
+-- 		get_items = function()
+-- 			return { "mcl_core:iron_ingot", "mcl_core:ironblock" }
+-- 		end,
+-- 		get_recipes = function(item, show_usages)
+-- 			local relevant = show_usages and item == "mcl_core:iron_ingot" or
+-- 				not show_usages and item == "mcl_core:ironblock"
+-- 			if not relevant then
+-- 				return {}
+-- 			end
+-- 			return {
+-- 				{
+-- 					type = name,
+-- 					width = 1,
+-- 					items = { "mcl_core:iron_ingot" },
+-- 					output = "mcl_core:ironblock",
+-- 				},
+-- 			}
+-- 		end,
+-- 		build = function(ctx)
+-- 			return render_grid_recipe(ctx)
+-- 		end,
+-- 	})
+-- end
 
 local function make_formspec(name)
 	local data = get_player_data(name)
@@ -1833,13 +2160,14 @@ local function get_init_items()
 	local c = 0
 	local provided_items = {}
 	for i = 1, #recipe_tab_order do
-		local tab = recipe_tabs[recipe_tab_order[i]]
-		if tab.get_items then
-			local items = tab.get_items() or {}
-			for j = 1, #items do
-				provided_items[match(items[j], "%S+")] = true
+		for_each_tab_provider(recipe_tab_order[i], function(provider)
+			if provider.get_items then
+				local items = provider.get_items() or {}
+				for j = 1, #items do
+					provided_items[match(items[j], "%S+")] = true
+				end
 			end
-		end
+		end)
 	end
 
 	for name, def in pairs(reg_items) do
@@ -1924,6 +2252,14 @@ local function on_receive_fields(player, fields)
 
 		data.recipe_tab_page = data.recipe_tab_page +
 			(fields.recipe_tabs_page_next and 1 or -1)
+		local page_count = data.recipe_tabs and
+			calculate_tab_header(data, data.recipe_tabs, calculate_layout(data).tabs).page_count
+		if fields.recipe_tabs_page_next and
+			data.recipe_tab_page == page_count then
+			data.focus_target = "recipe_tabs_page_prev"
+		elseif fields.recipe_tabs_page_prev and data.recipe_tab_page == 1 then
+			data.focus_target = "recipe_tabs_page_next"
+		end
 		show_fs(player, name)
 
 	elseif fields.recipe_prev or fields.recipe_next then
@@ -2084,7 +2420,7 @@ if progressive_mode then
 
 	local function recipe_in_inv(recipe, inv_items)
 		for _, item in pairs(recipe.items) do
-			if not item_in_inv(item, inv_items) then
+			if item ~= "" and not item_in_inv(item, inv_items) then
 				return
 			end
 		end

@@ -11,6 +11,13 @@ mcl_clock = {}
 -- This is the itemstring of the default clock item. It is used for the default inventory image, help entries, and the like
 mcl_clock.stereotype = "mcl_clock:clock"
 
+if mcl_craftguide then
+	mcl_craftguide.register_group("clock", {
+		item = mcl_clock.stereotype,
+		is_item = true,
+	})
+end
+
 mcl_clock.old_time = -1
 
 local clock_frames = 64
@@ -144,4 +151,3 @@ for a=0,clock_frames-1,1 do
 	end
 	mcl_clock.register_item("mcl_clock:clock_"..tostring(a), mcl_clock.images[b+1], false, a+1)
 end
-

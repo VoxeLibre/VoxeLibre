@@ -28,3 +28,40 @@ dofile(modpath.."/nodes_climb.lua") -- Climbable nodes
 dofile(modpath.."/nodes_misc.lua") -- Other and special nodes
 dofile(modpath.."/craftitems.lua")
 dofile(modpath.."/crafting.lua")
+
+if mcl_craftguide then
+	local groups = {
+		wood = "mcl_core:wood",
+		tree = "mcl_core:tree",
+		stone = "mcl_core:stone",
+		stonebrick = "mcl_core:stonebrick",
+		sand = "mcl_core:sand",
+		normal_sandstone = "mcl_core:sandstone",
+		red_sandstone = "mcl_core:redsandstone",
+		coal = "mcl_core:coal_lump",
+		stick = "mcl_core:stick",
+	}
+	for group, item in pairs(groups) do
+		mcl_craftguide.register_group(group, { item = item })
+	end
+
+	-- local test_stations = {
+	-- 	"mcl_core:coalblock",
+	-- 	"mcl_core:ironblock",
+	-- 	"mcl_core:goldblock",
+	-- 	"mcl_core:diamondblock",
+	-- 	"mcl_core:lapisblock",
+	-- 	"mcl_core:emeraldblock",
+	-- 	"mcl_core:stick",
+	-- 	"mcl_core:coal_lump",
+	-- 	"mcl_core:sandstone"
+	-- }
+	-- for i = 1, #test_stations do
+	-- 	mcl_craftguide.register_station(test_stations[i], {
+	-- 		is_recipe_supported = function(recipe)
+	-- 			return recipe.type == "cooking" and
+	-- 				ItemStack(recipe.output):get_name() == "mcl_core:iron_ingot"
+	-- 		end,
+	-- 	})
+	-- end
+end

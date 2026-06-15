@@ -1,8 +1,35 @@
 ## API
 
+### Recipe groups
+
+#### `mcl_craftguide.register_group(name, def)`
+
+Registers presentation metadata for a recipe group. This allows the mod that
+owns a group to choose the representative item shown by craftguide without
+making craftguide depend on that mod.
+
+Repeated registrations merge the supplied fields into the existing definition.
+This allows craftguide to provide a generic translated description while the
+group owner provides its representative item.
+
+Definition fields:
+
+- `item`: optional representative item used for `group:<name>`.
+- `description`: optional translated group description used in the tooltip.
+- `is_item`: optional boolean. When true, the group represents variants of one
+  logical item. Craftguide uses the representative item's normal description
+  and does not add the generic group marker.
+
+```lua
+mcl_craftguide.register_group("clock", {
+	item = "example:clock",
+	is_item = true,
+})
+```
+
 ### Recipe tabs
 
-#### `mcl_craftguide.register_tab(name, def, override)`
+#### `mcl_craftguide.register_tab(name, def)`
 
 Registers an item-centric recipe tab. A tab is shown only when it returns at
 least one recipe for the selected item and the current recipes/usages mode.
@@ -19,22 +46,29 @@ Definition fields:
 - `icon`: optional item name or texture used by the tab header. Registered
   items are rendered as item images; other values are treated as textures.
   Tabs without an icon use their description as the button label.
-- `order`: optional numeric sort order; defaults to `100`.
 - `get_items()`: optional callback returning all item names that the tab can
   produce or use. Items without ordinary Luanti recipes must be returned here
   so they are included in the guide's item list. Called during mod loading.
-- `get_recipes(item, show_usages, player)`: returns recipes relevant to
-  `item`. `show_usages` is `false` for ways to obtain the item and `true` for
-  ways to use it.
-- `is_recipe(recipe)`: alternative to `get_recipes`, used to select recipes
-  from craftguide's normal recipe cache.
+- `get_recipes(item, show_usages, player)`: optional callback returning
+  recipes relevant to `item`. `show_usages` is `false` for ways to obtain the
+  item and `true` for ways to use it.
+- `is_recipe(recipe)`: optional alternative to `get_recipes`, used to select
+  recipes from craftguide's normal recipe cache.
 - `build(ctx)`: returns formspec content for `ctx.recipe`.
 - `handle(ctx, field_name, fields)`: optional handler for fields created with
   `ctx:field_name()` or `ctx:button()`. Return true to redraw the guide.
 - `is_visible(player, item, show_usages)`: optional access callback.
 
-Exactly one of `get_recipes` and `is_recipe` is required. Set `override` to
-true to replace an existing tab.
+A tab may omit both `get_recipes` and `is_recipe` when it only provides the
+presentation for recipes injected by other mods.
+
+Tabs are displayed in first-registration order. Replacing a tab keeps its
+existing position. Ordering between tabs registered by unrelated mods is
+intentionally unspecified because it follows Luanti's mod load order.
+
+Registering an existing tab name replaces its presentation and own recipe
+provider. Craftguide logs a warning containing the previous and replacing mod
+names, but does not stop the server.
 
 Recipes should use the common fields where applicable:
 
@@ -64,8 +98,7 @@ The build context contains:
 - `field_name(name)`.
 
 All coordinates are relative to the content area's top-left corner. Consumers
-start their layout at `0,0`; craftguide wraps the result in a formspec
-`container[]`.
+start their layout at `0,0`; craftguide wraps the result in a formspec `container[]`.
 
 `ctx:item_button()` accepts item names, stack strings, and group ingredients
 directly. Craftguide resolves `group:*` values, adds their marker and tooltip,
@@ -75,7 +108,6 @@ generates a private field name, and selects the displayed item when clicked.
 mcl_craftguide.register_tab("example:macerating", {
 	description = S("Macerating"),
 	icon = "example_macerator.png",
-	order = 40,
 
 	get_items = function()
 		local items = {}
@@ -124,6 +156,142 @@ Returns a copy of a registered tab definition or `nil`.
 #### `mcl_craftguide.get_tabs()`
 
 Returns copies of all registered tab definitions indexed by name.
+
+#### `mcl_craftguide.register_tab_recipes(tab_name, contribution_name, def)`
+
+Injects recipes into an existing or future tab without replacing its
+description, icon, renderer, or handler. This allows independent mods to
+contribute to a shared semantic category while keeping their implementations
+separate.
+
+`contribution_name` identifies the provider within the tab and should be
+globally namespaced, for example `"mcl_portals:nether_portal"`. Contributions
+are evaluated in registration order. Registering the same contribution name
+again replaces it in place and logs a warning instead of stopping the server.
+
+Contribution fields:
+
+- `get_items()`: optional callback returning items that must be added to the
+  guide's item list.
+- `get_recipes(item, show_usages, player)`: supplies custom recipes.
+- `is_recipe(recipe)`: alternatively selects recipes from craftguide's normal
+  recipe cache.
+- `is_visible(player, item, show_usages)`: optionally hides this contribution.
+
+Each contribution must define `get_recipes` or `is_recipe`. The tab must still
+be registered by some mod before it can be displayed, but contributions may be
+registered before or after the tab.
+
+```lua
+-- Shared presentation, typically registered by craftguide or a common API mod.
+mcl_craftguide.register_tab("mcl_craftguide:construction", {
+	description = S("Construction"),
+	icon = "mcl_core:obsidian",
+	build = build_construction_recipe,
+})
+
+-- Independent content contribution.
+mcl_craftguide.register_tab_recipes(
+	"mcl_craftguide:construction",
+	"mcl_portals:nether_portal",
+	{
+		get_items = function()
+			return { "mcl_core:obsidian", "mcl_fire:flint_and_steel" }
+		end,
+		get_recipes = function(item, show_usages)
+			return get_nether_portal_recipes(item, show_usages)
+		end,
+	}
+)
+```
+
+### Shared tabs
+
+Craftguide registers these presentation-only tabs for recipe contributions from
+game and external mods. A shared tab is only shown when at least one
+contribution provides a relevant recipe.
+
+#### Construction
+
+Tab name: `mcl_craftguide:construction`
+
+Construction recipes display a row-major structure grid. Empty strings leave
+empty positions in the structure.
+
+```lua
+{
+	type = "construction",
+	description = S("Nether Portal"),
+	width = 4,
+	items = {
+		"", "mcl_core:obsidian", "mcl_core:obsidian", "",
+		"mcl_core:obsidian", "", "", "mcl_core:obsidian",
+		"mcl_core:obsidian", "", "", "mcl_core:obsidian",
+		"mcl_core:obsidian", "", "", "mcl_core:obsidian",
+		"", "mcl_core:obsidian", "mcl_core:obsidian", "",
+	},
+}
+```
+
+#### Trading
+
+Tab name: `mcl_craftguide:trading`
+
+Trading recipes display up to three input stacks and one output stack.
+`description` is used as the heading when present; otherwise `trader` is used.
+
+```lua
+{
+	type = "trading",
+	trader = S("Armorer"),
+	items = { "mcl_core:emerald 5" },
+	output = "mcl_armor:helmet_iron",
+}
+```
+
+#### Treasure
+
+Tab name: `mcl_craftguide:treasure`
+
+Treasure recipes display the contents of `loot` as clickable item buttons.
+Entries may be item strings or tables. Numeric `chance` values from 0 to 1 are
+treated as fractions; larger values are treated as percentages. `chance_text`
+overrides numeric formatting for conditional or otherwise complex chances.
+`description` is used as the heading when present; otherwise `source` is used.
+
+```lua
+{
+	type = "treasure",
+	source = S("Desert Pyramid"),
+	loot = {
+		{ item = "mcl_core:diamond", chance = 0.0625 },
+		{ item = "mcl_mobitems:rotten_flesh", chance = 28.7 },
+		{ item = "mcl_enchanting:book_enchanted",
+			chance_text = S("Varies by enchantment") },
+	},
+}
+```
+
+#### Mob drops
+
+Tab name: `mcl_craftguide:mob_drops`
+
+Mob-drop recipes display a mob description and its possible drops. Each drop
+may define `name`, `chance`, `min`, `max`, `looting`,
+`looting_chance_function`, and `conditions`. Providers should set `items` and
+`output` to the selected drop for common craftguide routing and filtering.
+
+```lua
+{
+	type = "example:mob_drops",
+	mob_description = S("Example Mob"),
+	items = { "mcl_core:iron_ingot" },
+	output = "mcl_core:iron_ingot",
+	drops = {
+		{ name = "mcl_core:iron_ingot", chance = 5, min = 1, max = 2 },
+	},
+}
+```
 
 ### Custom recipes
 

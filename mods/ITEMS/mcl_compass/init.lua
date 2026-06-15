@@ -133,6 +133,13 @@ end
 -- Export stereotype item for other mods to use
 mcl_compass.stereotype = "mcl_compass:" .. stereotype_frame
 
+if mcl_craftguide then
+	mcl_craftguide.register_group("compass", {
+		item = mcl_compass.stereotype,
+		is_item = true,
+	})
+end
+
 --- Get partial compass itemname.
 -- Returns partial itemname of a compass with needle direction matching compass position.
 -- Legacy compatibility function for mods using older api.
