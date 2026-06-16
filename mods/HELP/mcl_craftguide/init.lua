@@ -399,8 +399,6 @@ function mcl_craftguide.register_group(name, def)
 	group_definitions[name] = group_def
 end
 
-
-
 local item_lists = {
 	"main",
 	"craft",
@@ -482,10 +480,56 @@ local function table_diff(t, t2)
 	return diff
 end
 
-local custom_crafts, craft_types, stations = {}, {}, {}
+local custom_crafts, custom_craft_outputs, craft_types, stations = {}, {}, {}, {}
 local recipe_tabs, recipe_tab_order = {}, {}
 local recipe_tab_contributions = {}
 local render_grid_recipe
+
+local function normalize_recipe(recipe, luanti_recipe)
+	assert(type(recipe) == "table", "craftguide recipe must be a table")
+
+	local normalized = copy(recipe)
+	local outputs = recipe.outputs
+	-- Luanti's craft API still exposes one result through singular `output`.
+	if luanti_recipe and outputs == nil and recipe.output ~= nil then
+		outputs = { recipe.output }
+	end
+	assert(recipe.output == nil or luanti_recipe,
+		"craftguide recipe must use 'outputs' instead of 'output'")
+	assert(outputs == nil or type(outputs) == "table",
+		"craftguide recipe 'outputs' must be a table")
+
+	normalized.output = nil
+	normalized.outputs = {}
+	for i = 1, #(outputs or {}) do
+		assert(type(outputs[i]) == "string",
+			"craftguide recipe output must be an item stack string")
+		normalized.outputs[i] = outputs[i]
+	end
+	return normalized
+end
+
+local function normalize_recipes(recipes, luanti_recipes)
+	local normalized = {}
+	local by_recipe = {}
+	for i = 1, #recipes do
+		local recipe = recipes[i]
+		normalized[i] = by_recipe[recipe] or normalize_recipe(recipe, luanti_recipes)
+		by_recipe[recipe] = normalized[i]
+	end
+	return normalized
+end
+
+local function get_recipe_output_items(recipe)
+	local included = {}
+	for i = 1, #(recipe.outputs or {}) do
+		local output = ItemStack(recipe.outputs[i]):get_name()
+		if output ~= "" then
+			included[output] = true
+		end
+	end
+	return included
+end
 
 local function validate_recipe_provider(func, def, required)
 	assert(def.get_recipes == nil or type(def.get_recipes) == "function",
@@ -514,6 +558,8 @@ function mcl_craftguide.register_tab(name, def)
 	assert(type(def.build) == "function", func .. "'build' function missing")
 	assert(def.handle == nil or type(def.handle) == "function",
 		func .. "'handle' must be a function")
+	assert(def.stations == nil or type(def.stations) == "table",
+		func .. "'stations' must be a table")
 	validate_recipe_provider(func, def, false)
 
 	if recipe_tabs[name] then
@@ -534,8 +580,22 @@ function mcl_craftguide.register_tab(name, def)
 		build = def.build,
 		handle = def.handle,
 		is_visible = def.is_visible,
+		stations = def.stations and copy(def.stations),
 		source_mod = registration_source(),
 	}
+
+	for i = 1, #(def.stations or {}) do
+		local station = def.stations[i]
+		assert(type(station) == "table",
+			func .. "'stations[" .. i .. "]' must be a table")
+		assert(type(station.item) == "string",
+			func .. "'stations[" .. i .. "].item' must be a string")
+		mcl_craftguide.register_station(station.item, {
+			is_recipe_supported = station.is_recipe_supported,
+			actions = station.actions,
+			on_action = station.on_action,
+		}, station.override)
+	end
 end
 
 function mcl_craftguide.register_tab_recipes(tab_name, contribution_name, def)
@@ -607,11 +667,14 @@ end
 function mcl_craftguide.register_craft(def)
 	local func = "mcl_craftguide.register_craft(): "
 	assert(def.type, func .. "'type' field missing")
-	assert(def.width, func .. "'width' field missing")
-	assert(def.output, func .. "'output' field missing")
-	assert(def.items, func .. "'items' field missing")
+	assert(type(def.width) == "number", func .. "'width' must be a number")
+	assert(type(def.outputs) == "table" and #def.outputs > 0,
+		func .. "'outputs' must be a non-empty table")
+	assert(type(def.items) == "table", func .. "'items' must be a table")
 
-	custom_crafts[#custom_crafts + 1] = def
+	local recipe = normalize_recipe(def)
+	custom_crafts[#custom_crafts + 1] = recipe
+	custom_craft_outputs[recipe] = get_recipe_output_items(recipe)
 end
 
 function mcl_craftguide.register_station(item_name, def, override)
@@ -800,6 +863,7 @@ local function groups_item_in_recipe(item, recipe)
 			local groups = extract_groups(recipe_item)
 			if item_has_groups(item_groups, groups) then
 				local usage = copy(recipe)
+				usage.items = copy(recipe.items)
 				table_replace(usage.items, recipe_item, item)
 				return usage
 			end
@@ -836,7 +900,12 @@ local function append_station_usages(item, usages)
 	end
 
 	for fuel_item in pairs(fuel_cache) do
-		local recipe = { type = "fuel", width = 1, items = { fuel_item } }
+		local recipe = {
+			type = "fuel",
+			width = 1,
+			items = { fuel_item },
+			outputs = {},
+		}
 		if station.is_recipe_supported(recipe) then
 			usages[#usages + 1] = recipe
 		end
@@ -845,25 +914,35 @@ end
 
 local function get_item_usages(item)
 	local usages, c = {}, 0
+	local included = {}
 
 	for _, recipes in pairs(recipes_cache) do
 		for i = 1, #recipes do
 			local recipe = recipes[i]
-			if item_in_recipe(item, recipe) then
-				c = c + 1
-				usages[c] = recipe
-			else
-				recipe = groups_item_in_recipe(item, recipe)
-				if recipe then
+			if not included[recipe] then
+				if item_in_recipe(item, recipe) then
 					c = c + 1
 					usages[c] = recipe
+					included[recipe] = true
+				else
+					local usage = groups_item_in_recipe(item, recipe)
+					if usage then
+						c = c + 1
+						usages[c] = usage
+						included[recipe] = true
+					end
 				end
 			end
 		end
 	end
 
 	if fuel_cache[item] then
-		usages[#usages + 1] = { type = "fuel", width = 1, items = { item } }
+		usages[#usages + 1] = {
+			type = "fuel",
+			width = 1,
+			items = { item },
+			outputs = {},
+		}
 	end
 
 	append_station_usages(item, usages)
@@ -916,6 +995,7 @@ local function get_filtered_items(player)
 							local provided =
 								provider.get_recipes(
 									item, show_usages, player) or {}
+							provided = normalize_recipes(provided)
 							visible =
 								#apply_recipe_filters(provided, player) > 0
 						end)
@@ -954,12 +1034,12 @@ local function get_player_items(data, player)
 end
 
 local function cache_recipes(output)
-	local recipes = M.get_all_craft_recipes(output) or {}
-	local c = 0
+	local recipes = normalize_recipes(M.get_all_craft_recipes(output) or {}, true)
+	local c = #recipes
 
 	for i = 1, #custom_crafts do
 		local custom_craft = custom_crafts[i]
-		if match(custom_craft.output, "%S*") == output then
+		if custom_craft_outputs[custom_craft][output] then
 			c = c + 1
 			recipes[c] = custom_craft
 		end
@@ -1002,6 +1082,7 @@ local function collect_recipe_tabs(item, show_usages, player)
 				if provider.get_recipes then
 					local provided =
 						provider.get_recipes(item, show_usages, player) or {}
+					provided = normalize_recipes(provided)
 					provided = apply_recipe_filters(provided, player)
 					for j = 1, #provided do
 						local recipe = provided[j]
@@ -1325,7 +1406,7 @@ render_grid_recipe = function(ctx, craft_type)
 		fs[#fs + 1] = ctx:image(
 			output_x, output_y, 1.1, 1.1, "mcl_craftguide_fuel.png")
 	else
-		fs[#fs + 1] = ctx:item_button(output_x, output_y, recipe.output)
+		fs[#fs + 1] = ctx:item_button(output_x, output_y, recipe.outputs[1])
 	end
 
 	return concat(fs)
@@ -1388,8 +1469,8 @@ local function build_trading_recipe(ctx)
 	local arrow_x = start_x + input_count * 1.3 + 0.25
 	fs[#fs + 1] = ctx:image(
 		arrow_x, y + 0.2, 0.9, 0.7, "craftguide_arrow.png")
-	if recipe.output then
-		fs[#fs + 1] = ctx:item_button(arrow_x + 1.25, y, recipe.output)
+	if recipe.outputs and recipe.outputs[1] then
+		fs[#fs + 1] = ctx:item_button(arrow_x + 1.25, y, recipe.outputs[1])
 	end
 	return concat(fs)
 end
@@ -1783,7 +1864,7 @@ mcl_craftguide.register_tab("mcl_craftguide:mob_drops", {
 -- 					type = name,
 -- 					width = 1,
 -- 					items = { "mcl_core:iron_ingot" },
--- 					output = "mcl_core:ironblock",
+-- 					outputs = { "mcl_core:ironblock" },
 -- 				},
 -- 			}
 -- 		end,
@@ -2173,8 +2254,8 @@ local function get_init_items()
 	for name, def in pairs(reg_items) do
 		local is_fuel = cache_fuel(name)
 		if not (def.groups.not_in_craft_guide == 1) and
-			def.description and def.description ~= "" and
-			(cache_recipes(name) or is_fuel or provided_items[name]) then
+				def.description and def.description ~= "" and
+				(cache_recipes(name) or is_fuel or provided_items[name]) then
 			c = c + 1
 			init_items[c] = name
 		end

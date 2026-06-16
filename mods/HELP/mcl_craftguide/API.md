@@ -5,8 +5,7 @@
 #### `mcl_craftguide.register_group(name, def)`
 
 Registers presentation metadata for a recipe group. This allows the mod that
-owns a group to choose the representative item shown by craftguide without
-making craftguide depend on that mod.
+owns a group to choose the representative item shown by craftguide.
 
 Repeated registrations merge the supplied fields into the existing definition.
 This allows craftguide to provide a generic translated description while the
@@ -46,6 +45,9 @@ Definition fields:
 - `icon`: optional item name or texture used by the tab header. Registered
   items are rendered as item images; other values are treated as textures.
   Tabs without an icon use their description as the button label.
+  If there are many tabs with recipes, they turn square and show only icon (or
+  description if icon was not provided). Descriptions longer than 6 characters
+  may look odd in square tab mode.
 - `get_items()`: optional callback returning all item names that the tab can
   produce or use. Items without ordinary Luanti recipes must be returned here
   so they are included in the guide's item list. Called during mod loading.
@@ -57,10 +59,19 @@ Definition fields:
 - `build(ctx)`: returns formspec content for `ctx.recipe`.
 - `handle(ctx, field_name, fields)`: optional handler for fields created with
   `ctx:field_name()` or `ctx:button()`. Return true to redraw the guide.
-- `is_visible(player, item, show_usages)`: optional access callback.
+- `is_visible(player, item, show_usages)`: optional callback to hide the tab
+  depending on `item` or `show_usages`. It can use machine discovery, quest
+  progression, or similar state. It does not affect crafting and cannot force a
+  tab without recipes to appear.
+- `stations`: optional ordered list of crafting station definitions. Each entry
+  has an `item` field and the fields accepted by
+  `mcl_craftguide.register_station()`. This is a convenience for registering
+  several stations owned by the tab and will be shown for each recipe in tab.
 
 A tab may omit both `get_recipes` and `is_recipe` when it only provides the
 presentation for recipes injected by other mods.
+
+A tab should not implement both `get_recipes` and `is_recipe`. One is enough.
 
 Tabs are displayed in first-registration order. Replacing a tab keeps its
 existing position. Ordering between tabs registered by unrelated mods is
@@ -70,20 +81,76 @@ Registering an existing tab name replaces its presentation and own recipe
 provider. Craftguide logs a warning containing the previous and replacing mod
 names, but does not stop the server.
 
-Recipes should use the common fields where applicable:
+### Recipe definitions
+
+Craftguide recipes are Lua tables. Recipes returned by Luanti use the fields
+described below, and custom providers should follow the same conventions where
+possible:
 
 ```lua
 {
 	type = "example:macerating",
 	width = 1,
 	items = { "mcl_core:stone" },
-	output = "mcl_core:cobble",
+	outputs = { "mcl_core:cobble" },
 	time = 2,
 }
 ```
 
-`items` and `output` allow crafting stations and other craftguide features to
-understand the recipe. Tabs may add their own fields.
+Common fields:
+
+- `type`: recipe type. Ordinary shaped and shapeless recipes use
+  `"normal"` or no type, cooking/smelting recipes use `"cooking"`, and
+  synthetic fuel recipes use `"fuel"`. Custom types should be namespaced.
+- `items`: ordered table of input item stack strings. Group ingredients use
+  `"group:name"` or `"group:name1,name2"`. Empty strings represent empty
+  positions in shaped recipes. This field is required for recipes passed
+  through the general craftguide APIs because progressive discovery, usage
+  lookup, crafting stations, and other consumers inspect it.
+- `outputs`: ordered list of resulting item stack strings, including optional
+  counts, for example `{ "mcl_core:cobble 2", "example:stone_dust" }`. The
+  first entry is the primary output displayed by built-in renderers. Recipes
+  are indexed under every distinct output item name.
+- `width`: number of columns in the input grid. A value of `0` denotes a
+  shapeless recipe. It is required by the built-in grid renderer, but a custom
+  renderer may define different layout fields.
+- Additional fields may carry recipe-specific data, such as `time`,
+  `description`, `source`, etc. Craftguide preserves unknown fields and
+  passes the complete recipe table to renderers, filters, and station
+  callbacks.
+
+Recipe record is consumed by `build(ctx)` of the tab, so required fiels
+may be different for each tab.
+
+Several stacks of the same registered item may be present in `outputs`, but
+craftguide indexes the recipe only once for that item. Custom renderers receive
+the complete list and may display every output; built-in grid and trading
+renderers display only `outputs[1]`.
+
+#### Passing arbitrary recipe definitions
+
+`get_recipes()` may return arbitrary recipe tables; craftguide does not require
+them to correspond to recipes registered with `core.register_craft`. To do so
+safely:
+
+- Return a list of recipe tables, not a single recipe table.
+- Give every recipe an `items` table, even when the recipe is conceptual rather
+  than craftable. Use an empty table when it has no meaningful inputs.
+- Return only recipes relevant to the requested `item` and `show_usages`
+  direction. Craftguide does not infer this relationship for `get_recipes()`.
+- Include every selectable input and output in `get_items()` if it is not
+  already discoverable through an ordinary Luanti recipe. Otherwise the item
+  may not appear in the guide's item list.
+- Register a tab whose `build(ctx)` understands the custom fields. The built-in
+  grid renderer expects `items`, `width`, and, except for fuel recipes,
+  a non-empty `outputs` list.
+- Use the common `items`, `outputs`, and `type` fields whenever possible if the
+  recipe should work with progressive discovery, crafting stations, recipe
+  filters, or other integrations.
+
+After output normalization, recipe filters and station callbacks receive the
+complete recipe table. Custom fields are therefore preserved, but providers
+must not assume that generic consumers understand them.
 
 The build context contains:
 
@@ -113,7 +180,9 @@ mcl_craftguide.register_tab("example:macerating", {
 		local items = {}
 		for input, recipe in pairs(example.macerator_recipes) do
 			items[#items + 1] = input
-			items[#items + 1] = recipe.output
+			for i = 1, #recipe.outputs do
+				items[#items + 1] = recipe.outputs[i]
+			end
 		end
 		return items
 	end,
@@ -125,11 +194,18 @@ mcl_craftguide.register_tab("example:macerating", {
 				type = "example:macerating",
 				width = 1,
 				items = { input },
-				output = def.output,
+				outputs = def.outputs,
 				time = def.time,
 			}
+			local produces_item
+			for i = 1, #def.outputs do
+				if ItemStack(def.outputs[i]):get_name() == item then
+					produces_item = true
+					break
+				end
+			end
 			local relevant = show_usages and input == item or
-				not show_usages and ItemStack(def.output):get_name() == item
+				not show_usages and produces_item
 			if relevant then
 				recipes[#recipes + 1] = recipe
 			end
@@ -142,10 +218,26 @@ mcl_craftguide.register_tab("example:macerating", {
 		return table.concat({
 			ctx:item_button(0.5, 0.8, recipe.items[1]),
 			ctx:image(2.0, 1.0, 0.9, 0.7, "craftguide_arrow.png"),
-			ctx:item_button(3.2, 0.8, recipe.output),
+			ctx:item_button(3.2, 0.8, recipe.outputs[1]),
 			ctx:label(2.0, 2.2, S("@1 seconds", recipe.time)),
 		})
 	end,
+
+	stations = {
+		{
+			item = "example:macerator",
+			is_recipe_supported = function(recipe)
+				return recipe.type == "example:macerating"
+			end,
+		},
+		{
+			item = "example:advanced_macerator",
+			is_recipe_supported = function(recipe)
+				return recipe.type == "example:macerating" and
+					recipe.tier ~= "basic_only"
+			end,
+		},
+	},
 })
 ```
 
@@ -178,9 +270,9 @@ Contribution fields:
   recipe cache.
 - `is_visible(player, item, show_usages)`: optionally hides this contribution.
 
-Each contribution must define `get_recipes` or `is_recipe`. The tab must still
-be registered by some mod before it can be displayed, but contributions may be
-registered before or after the tab.
+Each contribution must define `get_recipes` or `is_recipe` (one is enough).
+The tab must still be registered by some mod before it can be displayed,
+but contributions may be registered before or after the tab.
 
 ```lua
 -- Shared presentation, typically registered by craftguide or a common API mod.
@@ -245,7 +337,7 @@ Trading recipes display up to three input stacks and one output stack.
 	type = "trading",
 	trader = S("Armorer"),
 	items = { "mcl_core:emerald 5" },
-	output = "mcl_armor:helmet_iron",
+	outputs = { "mcl_armor:helmet_iron" },
 }
 ```
 
@@ -279,14 +371,14 @@ Tab name: `mcl_craftguide:mob_drops`
 Mob-drop recipes display a mob description and its possible drops. Each drop
 may define `name`, `chance`, `min`, `max`, `looting`,
 `looting_chance_function`, and `conditions`. Providers should set `items` and
-`output` to the selected drop for common craftguide routing and filtering.
+`outputs` to the available drops for common craftguide routing and filtering.
 
 ```lua
 {
 	type = "example:mob_drops",
 	mob_description = S("Example Mob"),
 	items = { "mcl_core:iron_ingot" },
-	output = "mcl_core:iron_ingot",
+	outputs = { "mcl_core:iron_ingot" },
 	drops = {
 		{ name = "mcl_core:iron_ingot", chance = 5, min = 1, max = 2 },
 	},
@@ -310,7 +402,7 @@ mcl_craftguide.register_craft_type("digging", {
 mcl_craftguide.register_craft({
 	type   = "digging",
 	width  = 1,
-	output = "default:cobble 2",
+	outputs = { "default:cobble 2" },
 	items  = {"default:stone"},
 })
 ```
@@ -323,10 +415,12 @@ Registers an item or node as a crafting station. The station is shown for a
 recipe when it has been discovered by the player and `is_recipe_supported`
 returns true. When progressive mode is disabled, all supported stations are
 shown. Selecting the station in usage mode also shows every supported recipe
-known by the player, grouped into the usual recipe-type tabs. The callback
-receives the displayed recipe, including synthetic recipes such as
-`{ type = "fuel", items = { fuel_item } }`. Recipe-type-specific fields may
-also be present, but are not part of the station API contract.
+known by the player, grouped into the usual recipe-type tabs.
+
+`is_recipe_supported(recipe)` receives the complete normalized recipe table,
+including `items`, `outputs`, `type`, and any custom fields. Synthetic fuel
+recipes have the form `{ type = "fuel", width = 1, items = { fuel_item },
+outputs = {} }`.
 
 Stations may provide up to two recipe actions in an ordered `actions` list and
 an `on_action(player, recipe, action_name)` callback. Each action requires a
@@ -397,8 +491,8 @@ mode is implemented as a recipe filter.
 
 Adds a recipe filter with the given name. The filter function should return the
 recipes to be displayed, given the available recipes and an `ObjectRef` to the
-user. Each recipe is a table of the form returned by
-`minetest.get_craft_recipe`.
+user. Luanti recipes are normalized to the craftguide recipe contract before
+filters run, so their result is available through `outputs`.
 
 Example function to hide recipes for items from a mod called "secretstuff":
 
@@ -406,7 +500,8 @@ Example function to hide recipes for items from a mod called "secretstuff":
 mcl_craftguide.add_recipe_filter("Hide secretstuff", function(recipes)
 	local filtered = {}
 	for _, recipe in ipairs(recipes) do
-		if recipe.output:sub(1,12) ~= "secretstuff:" then
+		if not recipe.outputs[1] or
+				ItemStack(recipe.outputs[1]):get_name():sub(1, 12) ~= "secretstuff:" then
 			filtered[#filtered + 1] = recipe
 		end
 	end

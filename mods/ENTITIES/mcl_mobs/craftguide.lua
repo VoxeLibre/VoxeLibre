@@ -21,11 +21,21 @@ local function get_mob_drop_recipes()
 			end
 
 			if #drops > 0 then
+				local outputs = {}
+				local included = {}
+				for i = 1, #drops do
+					local item = drops[i].name
+					if not included[item] then
+						outputs[#outputs + 1] = item
+						included[item] = true
+					end
+				end
 				mob_drop_recipes[#mob_drop_recipes + 1] = {
 					type = "mcl_mobs:mob_drops",
 					mob_name = mob_name,
 					mob_description = def.description,
 					drops = drops,
+					outputs = outputs,
 				}
 			end
 		end
@@ -69,14 +79,10 @@ mcl_craftguide.register_tab_recipes(
 			local mob_recipes = get_mob_drop_recipes()
 			for i = 1, #mob_recipes do
 				local mob_recipe = mob_recipes[i]
-				for j = 1, #mob_recipe.drops do
-					if mob_recipe.drops[j].name == item then
-						local recipe = table.copy(mob_recipe)
-						recipe.items = { item }
-						recipe.output = item
-						recipes[#recipes + 1] = recipe
-						break
-					end
+				if table.indexof(mob_recipe.outputs, item) ~= -1 then
+					local recipe = table.copy(mob_recipe)
+					recipe.items = { item }
+					recipes[#recipes + 1] = recipe
 				end
 			end
 			return recipes

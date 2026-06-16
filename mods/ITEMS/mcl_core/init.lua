@@ -60,7 +60,7 @@ if mcl_craftguide then
 	-- 	mcl_craftguide.register_station(test_stations[i], {
 	-- 		is_recipe_supported = function(recipe)
 	-- 			return recipe.type == "cooking" and
-	-- 				ItemStack(recipe.output):get_name() == "mcl_core:iron_ingot"
+	-- 				ItemStack(recipe.outputs[1]):get_name() == "mcl_core:iron_ingot"
 	-- 		end,
 	-- 	})
 	-- end
