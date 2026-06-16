@@ -39,6 +39,7 @@ DEFAULT_SIZE = min(MAX_LIMIT, max(MIN_LIMIT, DEFAULT_SIZE))
 
 local GRID_LIMIT = 5
 local POLL_FREQ  = 0.25
+local FAVORITE_ITEMS_META = "mcl_craftguide:favorite_items"
 
 local FORM_SPACING_X = 5 / 4
 local FORM_SPACING_Y = 15 / 13
@@ -425,12 +426,12 @@ local function get_player_data(name)
 
 	-- Initialize player data if it doesn't exist
 	init_data(name)
-	local player = minetest.get_player_by_name(name)
+	local player = M.get_player_by_name(name)
 	local meta = player:get_meta()
 	local data = player_data[name]
 
 	data.inv_items = deserialize(meta:get_string("inv_items")) or {}
-	data.favorite_items = deserialize(meta:get_string("favorite_items")) or {}
+	data.favorite_items = deserialize(meta:get_string(FAVORITE_ITEMS_META)) or {}
 	return data
 end
 
@@ -2574,7 +2575,7 @@ if progressive_mode then
 		local favorite_items = data.favorite_items or {}
 
 		meta:set_string("inv_items", serialize(inv_items))
-		meta:set_string("favorite_items", serialize(favorite_items))
+		meta:set_string(FAVORITE_ITEMS_META, serialize(favorite_items))
 	end
 
 	M.register_on_leaveplayer(function(player)
@@ -2600,7 +2601,7 @@ else
 		local name = player:get_player_name()
 		local data = player_data[name]
 		if data then
-			meta:set_string("favorite_items", serialize(data.favorite_items or {}))
+			meta:set_string(FAVORITE_ITEMS_META, serialize(data.favorite_items or {}))
 		end
 		player_data[name] = nil
 	end)
@@ -2613,7 +2614,7 @@ else
 			local name = player:get_player_name()
 			local data = player_data[name]
 			if data then
-				meta:set_string("favorite_items", serialize(data.favorite_items or {}))
+				meta:set_string(FAVORITE_ITEMS_META, serialize(data.favorite_items or {}))
 			end
 		end
 	end)
