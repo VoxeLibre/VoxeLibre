@@ -1,6 +1,6 @@
 mcl_craftguide = {}
 
-local M = minetest
+local M = core
 local player_data = {}
 
 -- Caches
@@ -721,12 +721,18 @@ function mcl_craftguide.register_station(item_name, def, override)
 		is_recipe_supported = def.is_recipe_supported,
 		actions = def.actions and copy(def.actions),
 		on_action = def.on_action,
+		source_mod = registration_source(),
 	}
 
 	for i = 1, #stations do
-		if stations[i].item_name == item_name then
-			assert(override,
-				func .. "'" .. item_name .. "' is already registered")
+		local previous = stations[i]
+		if previous.item_name == item_name then
+			if not override then
+				M.log("warning", fmt(
+					"[mcl_craftguide] Ignoring duplicate crafting station '%s' registered by '%s'; already registered by '%s'",
+					item_name, station.source_mod, previous.source_mod))
+				return
+			end
 			stations[i] = station
 			return
 		end
@@ -984,20 +990,17 @@ local function get_filtered_items(player)
 				for direction = 0, 1 do
 					local show_usages = direction == 1
 					if not tab.is_visible or
-						tab.is_visible(player, item, show_usages) then
+							tab.is_visible(player, item, show_usages) then
 						for_each_tab_provider(tab_name, function(provider)
 							if visible or not provider.get_recipes or
-								provider ~= tab and provider.is_visible and
-								not provider.is_visible(
-									player, item, show_usages) then
+									provider ~= tab and provider.is_visible and
+									not provider.is_visible(player, item, show_usages) then
 								return
 							end
 							local provided =
-								provider.get_recipes(
-									item, show_usages, player) or {}
+								provider.get_recipes(item, show_usages, player) or {}
 							provided = normalize_recipes(provided)
-							visible =
-								#apply_recipe_filters(provided, player) > 0
+							visible = #apply_recipe_filters(provided, player) > 0
 						end)
 					end
 					if visible then break end
@@ -1075,7 +1078,7 @@ local function collect_recipe_tabs(item, show_usages, player)
 		if visible then
 			for_each_tab_provider(tab_name, function(provider)
 				if provider ~= tab and provider.is_visible and
-					not provider.is_visible(player, item, show_usages) then
+						not provider.is_visible(player, item, show_usages) then
 					return
 				end
 
@@ -1593,6 +1596,13 @@ local function get_tabbed_recipe_fs(data, player, layout)
 	local recipe = data.recipes[data.rnum]
 	local tabs = data.recipe_tabs or {}
 
+	local ctx, tab = make_tab_context(data, player, layout.content)
+	ctx.missing_recipe_slots = data.missing_recipe_slots
+	fs[#fs + 1] = fmt(
+		"container[%f,%f]", layout.content.x, layout.content.y)
+	fs[#fs + 1] = tab.build(ctx) or ""
+	fs[#fs + 1] = "container_end[]"
+
 	if #tabs > 0 then
 		local header = calculate_tab_header(data, tabs, layout.tabs)
 		local tab_x
@@ -1729,7 +1739,7 @@ local function get_tabbed_recipe_fs(data, player, layout)
 
 	local context_station = data.context and mcl_craftguide.get_station(data.context)
 	if context_station and context_station.actions and
-		context_station.is_recipe_supported(recipe) then
+			context_station.is_recipe_supported(recipe) then
 		local action_y = {
 			layout.actions.first_y,
 			layout.actions.second_y,
@@ -1763,13 +1773,6 @@ local function get_tabbed_recipe_fs(data, player, layout)
 		"toggle_item_favorite", "")
 	fs[#fs + 1] = fmt(FMT.tooltip, "toggle_item_favorite",
 		ESC(favorite_item and S("Unfavorite") or S("Favorite")))
-
-	local ctx, tab = make_tab_context(data, player, layout.content)
-	ctx.missing_recipe_slots = data.missing_recipe_slots
-	fs[#fs + 1] = fmt(
-		"container[%f,%f]", layout.content.x, layout.content.y)
-	fs[#fs + 1] = tab.build(ctx) or ""
-	fs[#fs + 1] = "container_end[]"
 
 	local btn_lab = data.show_usages and
 		ESC(S("Usage @1 of @2", data.rnum, #data.recipes)) or
@@ -2336,7 +2339,7 @@ local function on_receive_fields(player, fields)
 		local page_count = data.recipe_tabs and
 			calculate_tab_header(data, data.recipe_tabs, calculate_layout(data).tabs).page_count
 		if fields.recipe_tabs_page_next and
-			data.recipe_tab_page == page_count then
+				data.recipe_tab_page == page_count then
 			data.focus_target = "recipe_tabs_page_prev"
 		elseif fields.recipe_tabs_page_prev and data.recipe_tab_page == 1 then
 			data.focus_target = "recipe_tabs_page_next"
@@ -2363,7 +2366,7 @@ local function on_receive_fields(player, fields)
 		local action = station and station.actions and
 			station.actions[tonumber(station_action)]
 		if not station or not station.on_action or not action or not recipe or
-			not station.is_recipe_supported(recipe) then
+				not station.is_recipe_supported(recipe) then
 			return
 		end
 
@@ -2429,7 +2432,7 @@ local function on_receive_fields(player, fields)
 		show_fs(player, name)
 
 	elseif (fields.size_inc and data.iX < MAX_LIMIT) or
-		(fields.size_dec and data.iX > MIN_LIMIT) then
+			(fields.size_dec and data.iX > MIN_LIMIT) then
 		data.pagenum = 1
 		data.recipe_tab_page = nil
 		data.iX = data.iX + (fields.size_inc and 1 or -1)

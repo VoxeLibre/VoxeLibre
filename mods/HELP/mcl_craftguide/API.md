@@ -119,7 +119,14 @@ Common fields:
   passes the complete recipe table to renderers, filters, and station
   callbacks.
 
-Recipe record is consumed by `build(ctx)` of the tab, so required fiels
+Display strings in recipe definitions, tab definitions, station definitions,
+and build-context helper options should be translated by the registering mod
+before they are passed to craftguide. This includes fields such as
+`description`, `source`, `trader`, `chance_text`, button labels, and tooltips.
+Craftguide escapes and displays these strings as provided; it does not
+translate arbitrary mod text.
+
+Recipe record is consumed by `build(ctx)` of the tab, so required fields
 may be different for each tab.
 
 Several stacks of the same registered item may be present in `outputs`, but
@@ -155,17 +162,30 @@ must not assume that generic consumers understand them.
 The build context contains:
 
 - `player`, `item`, `show_usages`, and `recipe`.
-- `recipe_index` and `recipe_count`.
-- `width` and `height`, in formspec units.
+- `recipe_count` and `recipe_index`: selected recipe count and selected recipe
+  index for the current item and `show_usages` mode.
+- `width` and `height`, in formspec units. The player can resize the guide, and
+  these values change with the selected size.
 - `state`, a private per-player table belonging to this tab.
-- `item_button(x, y, item, options)`.
-- `image(x, y, width, height, texture)`.
-- `label(x, y, text)`.
-- `button(x, y, width, height, name, label)`.
-- `field_name(name)`.
+- `item_button(x, y, item, options)`: returns a clickable item button formspec
+  snippet. `item` may be an item name, stack string, `ItemStack`, or
+  `group:*` ingredient. Clicking it selects that item in the guide. Optional
+  fields include `w`, `h`, `label`, `tooltip`, `cooktime`, and `burntime`.
+- `image(x, y, width, height, texture)`: returns an image element.
+- `label(x, y, text)`: returns an escaped text label.
+- `button(x, y, width, height, name, label)`: returns a tab-owned button.
+  The visible field name is generated internally and delivered to `handle()`
+  as `name`.
+- `field_name(name)`: returns a tab-owned field name for custom formspec
+  elements created manually. Fields created this way are also delivered to
+  `handle()` as `name`.
 
 All coordinates are relative to the content area's top-left corner. Consumers
 start their layout at `0,0`; craftguide wraps the result in a formspec `container[]`.
+The container offsets coordinates but does not clip drawing. Guide-owned
+controls, including tab headers, station buttons, favorite buttons, and recipe
+navigation, are rendered after the tab content and may cover overlapping custom
+elements.
 
 `ctx:item_button()` accepts item names, stack strings, and group ingredients
 directly. Craftguide resolves `group:*` values, adds their marker and tooltip,
@@ -254,7 +274,8 @@ Returns copies of all registered tab definitions indexed by name.
 Injects recipes into an existing or future tab without replacing its
 description, icon, renderer, or handler. This allows independent mods to
 contribute to a shared semantic category while keeping their implementations
-separate.
+separate. Examples of usage could be expanding of mob drop tab or multi-block
+constructions.
 
 `contribution_name` identifies the provider within the tab and should be
 globally namespaced, for example `"mcl_portals:nether_portal"`. Contributions
@@ -417,6 +438,9 @@ returns true. When progressive mode is disabled, all supported stations are
 shown. Selecting the station in usage mode also shows every supported recipe
 known by the player, grouped into the usual recipe-type tabs.
 
+The main way is to provide stations with tab registrations. But this API can be
+used if a tab is registered elsewhere to inject additional stations.
+
 `is_recipe_supported(recipe)` receives the complete normalized recipe table,
 including `items`, `outputs`, `type`, and any custom fields. Synthetic fuel
 recipes have the form `{ type = "fuel", width = 1, items = { fuel_item },
@@ -438,7 +462,8 @@ until the next formspec interaction.
 
 Set the optional `override` argument to `true` to intentionally replace an
 existing definition. The station keeps its position in the registration order.
-Registering a duplicate without `override` raises an error.
+A duplicate without `override` is ignored, logged as a warning, and does not
+stop the server from loading. Explicit replacement with `override` is silent.
 
 ```lua
 mcl_craftguide.register_station("example:processor", {

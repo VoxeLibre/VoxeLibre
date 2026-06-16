@@ -164,7 +164,7 @@ local function take_ingredient(stacks, ingredient, count)
 	local selected
 	for key, candidate in pairs(candidates) do
 		if candidate.count >= count and candidate.item:get_stack_max() >= count and
-			(not selected or candidate.count > selected.count) then
+				(not selected or candidate.count > selected.count) then
 			selected_key = key
 			selected = candidate
 		end
@@ -291,7 +291,7 @@ local function fill_crafting_grid(player, recipe, fill_all)
 
 	for i = 1, #old_craft do
 		if not old_craft[i]:is_empty() and
-			not add_stack_to_list(main, old_craft[i]) then
+				not add_stack_to_list(main, old_craft[i]) then
 			return false
 		end
 	end
