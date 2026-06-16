@@ -52,11 +52,13 @@ function vl_death_screen.show_death_screen(player)
 	table.insert(formspec, "button_exit[" .. form_pos_to_string(pos) .. ";9,0.8;exit_to_menu;" .. S("Exit to Menu") .. "]")
 	pos.y, size.h = pos.y + 0.8, size.h + 0.8
 
-	local spawn_pos = mcl_spawn.get_player_spawnpoint(player)
-	if spawn_pos then
-		pos.y, size.h = pos.y + 0.5, size.h + 0.5
-		table.insert(formspec, "button[" .. form_pos_to_string(pos) .. ";9,0.8;clear_spawn;" .. S("Reset Spawn Point") .. "]")
-		pos.y, size.h = pos.y + 0.8, size.h + 0.8
+	if core.check_player_privs(player, {setspawn = true}) then
+		local spawn_pos = mcl_spawn.get_player_spawnpoint(player)
+		if spawn_pos then
+			pos.y, size.h = pos.y + 0.5, size.h + 0.5
+			table.insert(formspec, "button[" .. form_pos_to_string(pos) .. ";9,0.8;clear_spawn;" .. S("Reset Spawn Point") .. "]")
+			pos.y, size.h = pos.y + 0.8, size.h + 0.8
+		end
 	end
 
 	-- Bottom edge
