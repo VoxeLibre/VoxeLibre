@@ -6,6 +6,28 @@ local FE = core.formspec_escape
 
 local mod_xp = core.get_modpath("mcl_experience")
 
+local death_background = {}
+
+local function add_death_background(player)
+	if not death_background[player] then
+		death_background[player] = player:hud_add({
+			[mcl_vars.hud_type_field] = "image",
+			position = {x = 0.5, y = 0.5},
+			scale = {x = -100, y = -100},
+			text = "vl_death_screen_bg_color.png^[opacity:128",
+		})
+		player:hud_set_flags({wielditem = false})
+	end
+end
+
+local function remove_death_background(player)
+	if death_background[player] then
+		player:hud_remove(death_background[player])
+		death_background[player] = nil
+		player:hud_set_flags({wielditem = true})
+	end
+end
+
 local function form_pos_to_string(pos)
 	return tostring(pos.x) .. "," .. tostring(pos.y)
 end
@@ -25,6 +47,8 @@ local formspec_confirm_clear_spawn = table.concat({
 })
 
 function vl_death_screen.show_death_screen(player)
+	add_death_background(player)
+
 	local pos, size = {x = 0.5, y = 0.5}, {w = 10, h = 0.5}
 	local formspec = {
 		"formspec_version[4]",
@@ -87,6 +111,11 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 			core.disconnect_player(player:get_player_name(), S("You left the game"), false)
 		elseif fields.clear_spawn then
 			core.show_formspec(player:get_player_name(), "vl_death_screen:confirm_clear_spawn", formspec_confirm_clear_spawn)
+		end
+
+		-- Remove background on death screen close
+		if fields.quit then
+			remove_death_background(player)
 		end
 	elseif formname == "vl_death_screen:confirm_clear_spawn" then
 		if fields.yes then
