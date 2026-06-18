@@ -12,6 +12,12 @@ local pp_box_on = {
 	fixed = { -7/16, -8/16, -7/16, 7/16, -7.5/16, 7/16 },
 }
 
+local pressure_plate_contract = {
+	faces = {
+		top = {{-7/16, -7/16, 7/16, 7/16}},
+	},
+}
+
 local function pp_on_timer(pos, elapsed)
 	local node = minetest.get_node(pos)
 	local basename = minetest.registered_nodes[node.name].pressureplate_basename
@@ -139,6 +145,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 	groups_off.attached_node = 1
 	groups_off.dig_by_piston = 1
 	groups_off.pressure_plate = 1
+	groups_off.vl_attach = 1
 	local groups_on = table.copy(groups_off)
 	groups_on.not_in_creative_inventory = 1
 	groups_on.pressure_plate = 2
@@ -177,6 +184,11 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 		pressureplate_activated_by = activated_by,
 		_mcl_blast_resistance = 0.5,
 		_mcl_hardness = 0.5,
+		node_placement_prediction = "",
+		_vl_attach_contract = pressure_plate_contract,
+		_vl_attach_fixed_wdir = 1,
+		on_place = vl_attach.place_attached_fixed,
+		on_rotate = false,
 	},{
 		node_box = pp_box_off,
 		selection_box = pp_box_off,
@@ -266,5 +278,3 @@ mesecon.register_pressure_plate(
 	{pickaxey=1, material_stone=1},
 	{ player = true, mob = true },
 	S("A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else."))
-
-

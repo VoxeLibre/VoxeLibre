@@ -48,6 +48,7 @@ function mcl_fences.register_fence(id, fence_name, texture, groups, hardness, bl
 		drawtype = "nodebox",
 		connect_sides = { "front", "back", "left", "right" },
 		connects_to = connects_to,
+		_vl_attach_surfaces = {source = "node_box"},
 		node_box = {
 			type = "connected",
 			fixed = {p},

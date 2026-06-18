@@ -145,7 +145,8 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=4, not_in_creative_inventory=1, material_stone=1, xp=7, blast_furnace_smeltable=1},
-	_vl_allow_attach = {all = true},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = true,
 	drop = {
 		items = {
 			max_items = 1,
@@ -418,6 +419,12 @@ minetest.register_node("mcl_core:grass_path", {
 			-- 15/16 of the normal height
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
+	},
+	_vl_attach_surfaces = {
+		source = "node_box",
+		faces = {
+			top = false,
+		},
 	},
 	use_texture_alpha = "clip",
 	groups = {handy=1,shovely=1, cultivatable=2, dirtifies_below_solid=1, dirtifier=1, deco_block=1, path_remove_possible=1 },
@@ -940,7 +947,8 @@ minetest.register_node("mcl_core:ice", {
 	use_texture_alpha = ice_texture_alpha,
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1, ice=1},
-	_vl_allow_attach = {all = true},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = true,
 	drop = "",
 	sounds = mcl_sounds.node_sound_ice_defaults(),
 	node_dig_prediction = "mcl_core:water_source",

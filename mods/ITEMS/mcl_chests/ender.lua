@@ -72,6 +72,7 @@ core.register_node("mcl_chests:ender_chest_small", {
 	paramtype = "light",
 	light_source = 7,
 	paramtype2 = "facedir",
+	_vl_attach_surfaces = mcl_chests.attach_surfaces,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	drop = "mcl_core:obsidian 8",
 	on_construct = function(pos)

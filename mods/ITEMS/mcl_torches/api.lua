@@ -91,32 +91,17 @@ local function remove_flames(pos)
 	mcl_particles.delete_node_particlespawners(pos)
 end
 
-vl_attach.set_default("torch", function(_, def, wdir)
-	if not def then return false end
+local torch_floor_contract = {
+	faces = {
+		top = {{-1/16, -1/16, 1/16, 1/16}},
+	},
+}
 
-	-- No ceiling torches
-	if wdir == 0 then return false end
-
-	-- Allow solid, opaque, full cube collision box nodes are allowed.
-	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0
-end)
-vl_attach.register_autogroup({
-	skip_existing = {"torch"},
-	callback = function(allow_attach, _, def)
-		local groups = def.groups
-
-		-- Always allow attaching torches to glass
-		if (groups.glass or 0) ~= 0 then
-			allow_attach.torch = true
-		end
-
-		-- Allow attaching torches to the tops of these node types
-		if groups.fence == 1 or (groups.wall or 0) ~= 0 or (groups.anvil or 0) ~= 0
-		or (groups.pane or 0) ~= 0 then
-			allow_attach.torch = function(_, _, wdir) return wdir == 1 end
-		end
-	end
-})
+local torch_wall_contract = {
+	faces = {
+		side = {{-2/16, -2/16, 2/16, 2/16}},
+	},
+}
 
 --
 -- 3d torch part
@@ -168,7 +153,7 @@ function mcl_torches.register_torch(def)
 		},
 		sounds = def.sounds,
 		node_placement_prediction = "",
-		_vl_attach_type = "torch",
+		_vl_attach_contract = torch_floor_contract,
 		_vl_attach_make_placed_node = function(placed_node, _, dir, _)
 			local wdir = core.dir_to_wallmounted(dir)
 			if wdir == 1 then
@@ -210,7 +195,7 @@ function mcl_torches.register_torch(def)
 			wall_side = {-0.5, -0.3, -0.1, -0.2, 0.325, 0.1},
 		},
 		sounds = def.sounds,
-		_vl_attach_type = "torch",
+		_vl_attach_contract = torch_wall_contract,
 		on_rotate = false,
 		on_construct = function(pos)
 			if def.particles then

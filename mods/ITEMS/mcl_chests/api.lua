@@ -9,6 +9,14 @@ local table = table
 
 local sf = string.format
 
+mcl_chests.attach_surfaces = {
+	faces = {
+		top = false,
+		bottom = {{-7/16, -7/16, 7/16, 7/16}},
+		side = {{-7/16, -8/16, 7/16, 6/16}},
+	},
+}
+
 -- Recursively merge tables with each other
 local function table_merge(tbl, ...)
 	local t = table.copy(tbl)
@@ -707,6 +715,7 @@ function mcl_chests.register_chest(basename, d)
 		_chest_entity_animation_type = "chest",
 		paramtype = "light",
 		paramtype2 = "facedir",
+		_vl_attach_surfaces = mcl_chests.attach_surfaces,
 		drop = d.drop,
 		groups = groups_small,
 		is_ground_content = false,
@@ -834,6 +843,7 @@ function mcl_chests.register_chest(basename, d)
 		_chest_entity_animation_type = "chest",
 		paramtype = "light",
 		paramtype2 = "facedir",
+		_vl_attach_surfaces = mcl_chests.attach_surfaces,
 		groups = groups_left,
 		drop = d.drop,
 		is_ground_content = false,
@@ -862,6 +872,7 @@ function mcl_chests.register_chest(basename, d)
 		drawtype = "nodebox",
 		paramtype = "light",
 		paramtype2 = "facedir",
+		_vl_attach_surfaces = mcl_chests.attach_surfaces,
 		node_box = {
 			type = "fixed",
 			fixed = {-0.5, -0.5, -0.4375, 0.4375, 0.375, 0.4375},

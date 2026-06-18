@@ -86,6 +86,16 @@ local DYE_TO_COLOR = {
 }
 
 local F = core.formspec_escape
+local standing_sign_contract = {
+	faces = {
+		top = {{-1/16, -1/16, 1/16, 1/16}},
+	},
+}
+local wall_sign_contract = {
+	faces = {
+		side = {{-0.5, -7/28, 0.5, 7/28}},
+	},
+}
 
 -- Template definition
 local sign_tpl = {
@@ -108,6 +118,7 @@ local sign_tpl = {
 	stack_max = 16,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	node_placement_prediction = "",
+	_vl_attach_contract = standing_sign_contract,
 	_mcl_sign_type = "standing"
 }
 
@@ -448,21 +459,15 @@ local function make_placed_node_sign(placed_node, placer, dir, itemstack)
 	end
 	return placed_node
 end
-sign_tpl._vl_attach_type = "sign"
-vl_attach.set_default("sign",function(_, def, wdir)
-	-- Don't allow ceiling signs until we have a hanging sign
-	if wdir == 0 then return false end
-
-	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0
-end)
 
 -- Node definition callbacks
 function sign_tpl.on_place(itemstack, placer, pointed_thing)
 	local pos
 	itemstack, pos = vl_attach.place_attached(itemstack, placer, pointed_thing, nil, make_placed_node_sign)
-	if not pos then return end
+	if not pos then return itemstack end
 
 	show_formspec(placer, pos)
+	return itemstack
 end
 
 function sign_tpl.on_rightclick(pos, _, clicker, itemstack)
@@ -528,6 +533,7 @@ local sign_wall = table_merge(sign_tpl, {
 		wall_side = {-0.5, -7/28, -0.5, -23/56, 7/28, 0.5}
 	},
 	groups = {axey = 1, handy = 2, sign = 1, supported_node_wallmounted = 1, deco_block = 1, vl_attach = 1},
+	_vl_attach_contract = wall_sign_contract,
 	_mcl_sign_type = "wall",
 })
 

@@ -1,6 +1,12 @@
 local S = minetest.get_translator(minetest.get_current_modname())
 
 local lever_get_output_rules = mesecon.rules.buttonlike_get
+local lever_contract = {
+	faces = {
+		top = {{-3/16, -3/16, 3/16, 3/16}},
+		side = {{-3/16, -3/16, 3/16, 3/16}},
+	},
+}
 
 local function on_rotate(pos, node, user, mode)
 	if mode == screwdriver.ROTATE_FACE then
@@ -57,7 +63,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	end,
 	node_placement_prediction = "",
 	on_place = vl_attach.place_attached_facedir,
-	_vl_attach_type = "lever",
+	_vl_attach_contract = lever_contract,
 
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
@@ -82,15 +88,12 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 		type = "fixed",
 		fixed = { -3/16, -4/16, 2/16, 3/16, 4/16, 8/16 },
 	},
-<<<<<<< HEAD
 	use_texture_alpha = "clip",
-	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
-=======
 	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1, vl_attach=1},
->>>>>>> de47967ac (Make nodes with group vl_attach=1 drop if they couldn't attach to the node behind them)
 	is_ground_content = false,
 	drop = "mesecons_walllever:wall_lever_off",
 	_doc_items_create_entry = false,
+	_vl_attach_contract = lever_contract,
 	on_rightclick = function(pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_off", param2=node.param2})
 		mesecon.receptor_off(pos, lever_get_output_rules(node))
@@ -117,25 +120,3 @@ minetest.register_craft({
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mesecons_walllever:wall_lever_off", "nodes", "mesecons_walllever:wall_lever_on")
 end
-
-vl_attach.set_default("lever", function(_, _, wdir)
-	-- No ceiling levers
-	if wdir == 0 then return false end
-end)
-vl_attach.register_autogroup({
-	skip_existing = {"lever"},
-	callback = function(allow_attach, name, def)
-		local groups = def.groups
-
-		-- Only allow full-solid blocks to have buttons attached
-		if (groups.solid or 0) ~= 0 and (groups.opaque or 0) ~= 0
-		and (not def.node_box or def.node_box.type ~= "regular") then
-			allow_attach.lever = true
-		end
-
-		-- Exception: allow placing on top of top-slabs
-		if (groups.slab_top or 0) ~= 0 then
-			allow_attach.lever = true
-		end
-	end
-})

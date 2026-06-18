@@ -389,6 +389,7 @@ local anvildef = {
 			{ -8 / 16, 2 / 16, -5 / 16, 8 / 16, 8 / 16, 5 / 16 },
 		},
 	},
+	_vl_attach_surfaces = {source = "node_box"},
 	selection_box = anvilbox,
 	collision_box = anvilbox,
 	sounds = mcl_sounds.node_sound_metal_defaults(),

@@ -69,18 +69,6 @@ end
 
 -- Register stairs.
 -- Node will be called mcl_stairs:stair_<subname>
-local allowed_attach = {
-	[0] = {},
-	[1] = {[20] = true, [21] = true, [22] = true, [23] = true},
-	[2] = {[3] = true, [21] = true},
-	[3] = {[1] = true, [23] = true},
-	[4] = {[2] = true, [22] = true},
-	[5] = {[0] = true, [20] = true},
-}
-local function allow_attach(node, wdir)
-	return allowed_attach[wdir][node.param2]
-end
-
 function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, blast_resistance, hardness, corner_stair_texture_override)
 
 	if recipeitem then
@@ -127,11 +115,8 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 				{-0.5, 0, 0, 0.5, 0.5, 0.5},
 			},
 		},
-		_vl_allow_attach = {
-			torch = allow_attach,
-			button = allow_attach,
-			lever = allow_attach,
-		},
+		_vl_attach_surfaces = {source = "node_box"},
+		_vl_allow_attach = vl_attach.check_geometry,
 		selection_box = {
 			type = "fixed",
 			fixed = {
@@ -264,6 +249,8 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 			type = "fixed",
 			fixed = {-0.5, -0.5, -0.5, 0.5, 0, 0.5},
 		},
+		_vl_attach_surfaces = {source = "node_box"},
+		_vl_allow_attach = vl_attach.check_geometry,
 		on_place = function(itemstack, placer, pointed_thing)
 			if not placer then return end
 
@@ -335,11 +322,6 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	topdef.groups.slab_top = 1
 	topdef.groups.not_in_creative_inventory = 1
 	topdef.groups.not_in_craft_guide = 1
-	topdef._vl_allow_attach = {
-		torch = allow_attach,
-		button = allow_attach,
-		lever = allow_attach,
-	}
 	topdef.description = S("Upper @1", description)
 	topdef._doc_items_create_entry = false
 	topdef._doc_items_longdesc = nil
@@ -427,4 +409,3 @@ function mcl_stairs.register_stair_and_slab_simple(subname, sourcenode, desc_sta
 	end
 	mcl_stairs.register_stair_and_slab(subname, sourcenode, groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_blast_resistance, def._mcl_hardness, desc_double_slab, corner_stair_texture_override)
 end
-
